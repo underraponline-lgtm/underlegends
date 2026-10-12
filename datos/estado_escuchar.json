@@ -1,57 +1,57 @@
 {
  "v": 1,
- "cuando": "2026-10-12T16:33:12Z",
+ "cuando": "2026-10-12T16:58:38Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 302.9,
+ "dur_s": 364.1,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.7
+   "s": 0.6
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 46.9
+   "s": 48.9
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 83.0
+   "s": 102.4
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.6
+   "s": 0.4
   },
   {
    "n": "1a2",
    "que": "el país y el Miembro de DRA, solos",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 28.3
+   "s": 31.4
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 2.8
+   "s": 2.2
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.4
+   "s": 6.6
   },
   {
    "n": "2b",
@@ -81,89 +81,83 @@
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.0
+   "s": 1.3
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 1.3
+   "s": 0.5
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 4.3
+   "s": 3.4
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 28.6
+   "s": 89.2
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 4.6
+   "s": 3.9
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 62.5
+   "s": 47.7
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 0.4
+   "s": 0.3
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 11.4
+   "s": 13.1
   },
   {
    "n": "2e",
    "que": "las tarjetas de quien se fue hace una semana",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 9.1
+   "s": 8.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 3.6
-  },
-  {
-   "n": "5b",
-   "que": "las Bloqueadas",
-   "ok": true,
-   "s": 5.1
+   "s": 2.8
   }
  ],
  "fallas": [],
- "decidir": 117,
+ "decidir": 121,
  "ultimo_evento": {
-  "n": "453",
-  "nombre": "DENME MODERADOR LPM",
-  "sv": "URBF",
-  "dia": "2026-09-27"
+  "n": "455",
+  "nombre": "FMS UNDER",
+  "sv": "DDF",
+  "dia": "2026-10-12"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-12T16:29:01Z",
+  "cuando": "2026-10-12T16:53:27Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 440,
-  "un_evento": 226,
+  "jugadores": 443,
+  "un_evento": 227,
   "diez_o_mas": 37,
   "cohortes": [
    {
@@ -181,27 +175,33 @@
    {
     "semana": "2026-10-05",
     "nuevos": 111,
-    "volvieron": 22,
+    "volvieron": 24,
+    "completa": false
+   },
+   {
+    "semana": "2026-10-12",
+    "nuevos": 3,
+    "volvieron": 0,
     "completa": false
    }
   ]
  },
  "cuotas": {
   "kv": {
-   "write": 144,
-   "read": 23469
+   "write": 165,
+   "read": 25899
   },
   "objeto": {
-   "leidas": 575974,
-   "escritas": 14534,
-   "pedidos": 3347
+   "leidas": 644815,
+   "escritas": 15102,
+   "pedidos": 3550
   },
   "worker": {
-   "pedidos": 5535,
+   "pedidos": 5558,
    "errores": 0,
-   "sub": 5832,
-   "p50_ms": 1.37,
-   "p99_ms": 6.11
+   "sub": 5857,
+   "p50_ms": 1.36,
+   "p99_ms": 6.12
   },
   "r2": {
    "objetos": 3744,

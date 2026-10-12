@@ -20332,5 +20332,395 @@
     1875
    ]
   ]
+ },
+ "454": {
+  "dia": "2026-10-12",
+  "escala": "16+",
+  "fecha": "12/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1559209586454700144",
+   "https://discord.com/channels/1468472442925092958/1487206164864438513/1559211031790878803"
+  ],
+  "n": 454,
+  "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
+  "participantes": 24,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "yinn, Provenza",
+       "Krish"
+      ],
+      "yinn, Provenza",
+      ""
+     ],
+     [
+      [
+       "ONZASS",
+       "VIXOVERSO"
+      ],
+      "ONZASS",
+      ""
+     ],
+     [
+      [
+       "Majiztral",
+       "Trot"
+      ],
+      "Majiztral",
+      ""
+     ],
+     [
+      [
+       "Guess",
+       "Erian, Marto"
+      ],
+      "Guess",
+      "Revivido: erian🇵🇦"
+     ],
+     [
+      [
+       "Cajita",
+       "DO-C"
+      ],
+      "Cajita",
+      ""
+     ],
+     [
+      [
+       "nebu🇪🇸",
+       "Ariaxer"
+      ],
+      "nebu🇪🇸",
+      "Revivido: Ariaxer🇦🇷"
+     ],
+     [
+      [
+       "Mau KC 🇨🇴, Denik",
+       "Jupiter"
+      ],
+      "Mau KC 🇨🇴, Denik",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "OG",
+       "Ariaxer",
+       "ikonoxx",
+       "ONZASS"
+      ],
+      "Erian",
+      "triple (5 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn, Provenza",
+       "nebu🇪🇸"
+      ],
+      "yinn, Provenza",
+      ""
+     ],
+     [
+      [
+       "ONZASS",
+       "Cajita"
+      ],
+      "ONZASS",
+      ""
+     ],
+     [
+      [
+       "Mau KC 🇨🇴, Denik",
+       "Majiztral"
+      ],
+      "Mau KC 🇨🇴, Denik",
+      ""
+     ],
+     [
+      [
+       "Guess",
+       "Erian, Colesito"
+      ],
+      "Guess",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn, Provenza",
+       "ONZASS"
+      ],
+      "yinn, Provenza",
+      ""
+     ],
+     [
+      [
+       "Guess",
+       "Mau KC 🇨🇴, Denik"
+      ],
+      "Guess",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Guess",
+       "yinn, Provenza"
+      ],
+      "Guess",
+      ""
+     ],
+     [
+      [
+       "yinn🇲🇦+za🇮🇨",
+       "Guess 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Guess",
+    "Campeón",
+    10000
+   ],
+   [
+    "ONZASS",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Provenza",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "yinn",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Denik",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Mau KC 🇨🇴",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Cajita",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2500
+   ],
+   [
+    "nebu🇪🇸",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1875
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    1250
+   ],
+   [
+    "DO-C",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Jupiter",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "OG",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
+    "Octavos",
+    1250
+   ],
+   [
+    "VIXOVERSO",
+    "Octavos",
+    1250
+   ],
+   [
+    "ikonoxx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Marto",
+    "Octavos",
+    625
+   ]
+  ]
+ },
+ "455": {
+  "dia": "2026-10-12",
+  "escala": "8-15",
+  "fecha": "12/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1559232620640870432"
+  ],
+  "n": 455,
+  "nombre": "FMS UNDER",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Walker",
+       "Number VE"
+      ],
+      "Walker",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "Keider"
+      ],
+      "Erian",
+      "Revivido: KEIDER"
+     ],
+     [
+      [
+       "TøKīØ🦠🧠",
+       "Teito"
+      ],
+      "TøKīØ🦠🧠",
+      ""
+     ],
+     [
+      [
+       "Keider",
+       "Elbesaabuelas"
+      ],
+      "Keider",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Walker",
+       "Erian"
+      ],
+      "Walker",
+      ""
+     ],
+     [
+      [
+       "TøKīØ🦠🧠",
+       "Keider"
+      ],
+      "TøKīØ🦠🧠",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Walker",
+       "TøKīØ🦠🧠"
+      ],
+      "Walker",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Walker",
+    "Campeón",
+    7500
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Keider",
+    "Semifinal",
+    3750
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Elbesaabuelas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teito",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

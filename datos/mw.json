@@ -162,10 +162,22 @@
     "nivel": "D",
     "base": 4000,
     "o": 54,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 5000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Subcampeón",
+    "valor": 5000,
+    "caza": {
+     "n": 455,
+     "evento": "FMS UNDER",
+     "sv": "DDF",
+     "t": "2026-10-12T15:53:45Z",
+     "por": [
+      {
+       "n": "Walker",
+       "cobra": 5000
+      }
+     ]
+    }
    },
    {
     "n": "Geoka",

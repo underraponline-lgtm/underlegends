@@ -4,9 +4,53 @@
   [],
   [],
   [],
-  [],
-  [],
-  []
+  [
+   [
+    [
+     "Erian",
+     5250,
+     1
+    ]
+   ]
+  ],
+  [
+   [
+    [
+     "Walker",
+     11250,
+     1
+    ],
+    [
+     "TøKīØ🦠🧠",
+     7500,
+     1
+    ]
+   ]
+  ],
+  [
+   [
+    [
+     "Keider",
+     5625,
+     1
+    ],
+    [
+     "Elbesaabuelas",
+     4500,
+     1
+    ],
+    [
+     "Number VE",
+     3000,
+     1
+    ],
+    [
+     "Teito",
+     3000,
+     1
+    ]
+   ]
+  ]
  ],
  "fin": "2026-10-19T15:00:00Z",
  "nivel": {
@@ -24,7 +68,7 @@
   "AREZ": 5,
   "Ab'l 🇦🇷 🇩🇴": 5,
   "Aby": 5,
-  "Abyssus": 4,
+  "Abyssus": 5,
   "Acry": 5,
   "Adriagner": 5,
   "Agre": 5,
@@ -36,7 +80,7 @@
   "Alonso": 5,
   "Andres": 4,
   "Andy": 4,
-  "Ariaxer": 5,
+  "Ariaxer": 4,
   "Armando Faso🇦🇫": 5,
   "Assuan": 5,
   "Axinu": 5,
@@ -58,7 +102,7 @@
   "CHOCLITO": 5,
   "CJ": 5,
   "Cabece": 5,
-  "Cajita": 5,
+  "Cajita": 4,
   "Calíz": 5,
   "Camila": 5,
   "Campoy": 4,
@@ -81,6 +125,7 @@
   "DAVIJUAN": 5,
   "DEWACHOMEFUI 🇨🇲": 5,
   "DIDYER": 5,
+  "DO-C": 5,
   "Damian": 5,
   "DarnBless": 5,
   "Dcet": 5,
@@ -147,8 +192,8 @@
   "Global Hustler": 5,
   "Gocho": 5,
   "Gosu Z": 5,
-  "Greyfitsh🇵🇦": 4,
-  "Guess": 5,
+  "Greyfitsh🇵🇦": 5,
+  "Guess": 4,
   "Gus": 5,
   "Gwynyth": 5,
   "HH": 4,
@@ -287,7 +332,7 @@
   "Oasis": 2,
   "Ola🇲🇽": 5,
   "Oni 🇦🇷": 5,
-  "Ortiz": 4,
+  "Ortiz": 5,
   "PARADOJA": 5,
   "PIERR🇵🇪": 5,
   "PLA PLA": 5,
@@ -374,7 +419,7 @@
   "Tayo": 5,
   "Teito": 5,
   "Tenor": 5,
-  "Teo": 4,
+  "Teo": 5,
   "Tiagoms": 5,
   "Tier": 5,
   "Trot": 5,
@@ -384,6 +429,7 @@
   "UDDIZIM": 5,
   "Under": 5,
   "V-zir 🇻🇪": 5,
+  "VIXOVERSO": 5,
   "VR": 5,
   "Valdoza": 5,
   "Vandu": 4,
@@ -429,13 +475,14 @@
   "g8🇨🇴": 5,
   "g8🇯🇴": 5,
   "gibraltar 🇦🇨": 5,
-  "ikonoxx": 5,
+  "ikonoxx": 4,
   "kerkoide": 5,
   "leteletras": 5,
   "luisito 🏆": 5,
   "maldita enfermedad": 5,
   "melomaniaco": 5,
   "melztube": 5,
+  "nebu🇪🇸": 5,
   "papa": 5,
   "rayito": 5,
   "rodrilp": 5,
@@ -854,12 +901,12 @@
   ],
   [
    "2026-10-05",
-   "NC",
+   "ONZASS",
    4
   ],
   [
    "2026-10-05",
-   "ONZASS",
+   "NC",
    4
   ],
   [
@@ -969,22 +1016,22 @@
   ],
   [
    "2026-10-05",
+   "Guess",
+   4
+  ],
+  [
+   "2026-10-05",
    "Walker",
    4
   ],
   [
    "2026-10-05",
+   "ikonoxx",
+   4
+  ],
+  [
+   "2026-10-05",
    "Santi",
-   4
-  ],
-  [
-   "2026-10-05",
-   "Teo",
-   4
-  ],
-  [
-   "2026-10-05",
-   "Greyfitsh🇵🇦",
    4
   ],
   [
@@ -1004,12 +1051,12 @@
   ],
   [
    "2026-10-05",
-   "Campoy",
+   "Cajita",
    4
   ],
   [
    "2026-10-05",
-   "Ortiz",
+   "Campoy",
    4
   ],
   [
@@ -1024,12 +1071,12 @@
   ],
   [
    "2026-10-05",
-   "PRAISERIZA",
+   "Provenza",
    3
   ],
   [
    "2026-10-05",
-   "Provenza",
+   "PRAISERIZA",
    3
   ],
   [
@@ -1065,8 +1112,8 @@
  ],
  "ult": {
   "baja": [
+   "Abyssus",
    "Adriagner",
-   "Ariaxer",
    "Badterne",
    "Bloody",
    "Hassan",
@@ -1083,6 +1130,7 @@
    "Aldre",
    "Alexi",
    "BastyRetro",
+   "Cajita",
    "Campoy",
    "Carlosmo",
    "Chop",
@@ -1093,7 +1141,7 @@
    "EIDP",
    "Erik",
    "Geoka",
-   "Greyfitsh🇵🇦",
+   "Guess",
    "HH",
    "Hinjkybesuk",
    "Liberia",
@@ -1107,7 +1155,6 @@
    "OG",
    "ONZASS",
    "Oasis",
-   "Ortiz",
    "PRAISERIZA",
    "Paria",
    "Pomberito",
@@ -1118,11 +1165,11 @@
    "Santi",
    "Snow",
    "Tam",
-   "Teo",
    "Vandu",
    "Verc",
    "Walker",
-   "Xclusivo"
+   "Xclusivo",
+   "ikonoxx"
   ]
  },
  "zona": 5

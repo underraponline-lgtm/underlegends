@@ -7567,5 +7567,449 @@
    ]
   ],
   "v": 2
+ },
+ "454": {
+  "antes": {
+   "Ariaxer": [
+    73,
+    111,
+    false
+   ],
+   "Cajita": [
+    288,
+    253,
+    true
+   ],
+   "Colesito": [
+    11,
+    13,
+    false
+   ],
+   "Denik": [
+    307,
+    279,
+    true
+   ],
+   "Erian": [
+    6,
+    7,
+    false
+   ],
+   "Guess": [
+    98,
+    164,
+    false
+   ],
+   "Jupiter": [
+    39,
+    51,
+    false
+   ],
+   "Krish": [
+    70,
+    105,
+    false
+   ],
+   "Majiztral": [
+    20,
+    23,
+    false
+   ],
+   "Marto": [
+    215,
+    135,
+    true
+   ],
+   "OG": [
+    29,
+    34,
+    false
+   ],
+   "ONZASS": [
+    173,
+    44,
+    true
+   ],
+   "Provenza": [
+    10,
+    12,
+    false
+   ],
+   "Trot": [
+    21,
+    25,
+    false
+   ],
+   "ikonoxx": [
+    218,
+    140,
+    true
+   ],
+   "yinn": [
+    18,
+    21,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "yinn, Provenza",
+    "Krish",
+    "yinn, Provenza"
+   ],
+   [
+    "ONZASS",
+    "VIXOVERSO",
+    "ONZASS"
+   ],
+   [
+    "Majiztral",
+    "Trot",
+    "Majiztral"
+   ],
+   [
+    "Guess",
+    "Erian, Marto",
+    "Guess"
+   ],
+   [
+    "Cajita",
+    "DO-C",
+    "Cajita"
+   ],
+   [
+    "nebu🇪🇸",
+    "Ariaxer",
+    "nebu🇪🇸"
+   ],
+   [
+    "Mau KC 🇨🇴, Denik",
+    "Jupiter",
+    "Mau KC 🇨🇴, Denik"
+   ],
+   [
+    "Erian",
+    "OG",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "Ariaxer",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "ikonoxx",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "ONZASS",
+    "Erian"
+   ],
+   [
+    "yinn, Provenza",
+    "nebu🇪🇸",
+    "yinn, Provenza"
+   ],
+   [
+    "ONZASS",
+    "Cajita",
+    "ONZASS"
+   ],
+   [
+    "Mau KC 🇨🇴, Denik",
+    "Majiztral",
+    "Mau KC 🇨🇴, Denik"
+   ],
+   [
+    "Guess",
+    "Erian, Colesito",
+    "Guess"
+   ],
+   [
+    "yinn, Provenza",
+    "ONZASS",
+    "yinn, Provenza"
+   ],
+   [
+    "Guess",
+    "Mau KC 🇨🇴, Denik",
+    "Guess"
+   ],
+   [
+    "Guess",
+    "yinn, Provenza",
+    "Guess"
+   ]
+  ],
+  "ev_antes": {
+   "Ariaxer": 4,
+   "Cajita": 1,
+   "Colesito": 21,
+   "Denik": 2,
+   "Erian": 26,
+   "Guess": 4,
+   "Jupiter": 7,
+   "Krish": 7,
+   "Majiztral": 15,
+   "Marto": 5,
+   "OG": 7,
+   "ONZASS": 7,
+   "Provenza": 22,
+   "Trot": 14,
+   "ikonoxx": 3,
+   "yinn": 15
+  },
+  "fecha": "12/10",
+  "firma": "8cdb19047dc15b13",
+  "msg": "1559247601923137630",
+  "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
+  "num": 454,
+  "participantes": 24,
+  "sello": {
+   "Guess": "442e8eaf9793:9df1984d05ab"
+  },
+  "sv": "FFA",
+  "t": "2026-10-12T16:53:16Z",
+  "tabla": [
+   [
+    "Guess",
+    "Campeón",
+    10000
+   ],
+   [
+    "ONZASS",
+    "Semifinal",
+    5250
+   ],
+   [
+    "yinn",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Provenza",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Mau KC 🇨🇴",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Denik",
+    "Semifinal",
+    2625
+   ],
+   [
+    "nebu🇪🇸",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Cajita",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1875
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "VIXOVERSO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
+    "Octavos",
+    1250
+   ],
+   [
+    "DO-C",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jupiter",
+    "Octavos",
+    1250
+   ],
+   [
+    "OG",
+    "Octavos",
+    1250
+   ],
+   [
+    "ikonoxx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Marto",
+    "Octavos",
+    625
+   ]
+  ],
+  "v": 2
+ },
+ "455": {
+  "antes": {
+   "Elbesaabuelas": [
+    318,
+    294,
+    true
+   ],
+   "Erian": [
+    6,
+    7,
+    false
+   ],
+   "Keider": [
+    93,
+    159,
+    false
+   ],
+   "Number VE": [
+    43,
+    58,
+    false
+   ],
+   "Teito": [
+    47,
+    64,
+    false
+   ],
+   "TøKīØ🦠🧠": [
+    41,
+    55,
+    false
+   ],
+   "Walker": [
+    45,
+    60,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Walker",
+    "Number VE",
+    "Walker"
+   ],
+   [
+    "Erian",
+    "Keider",
+    "Erian"
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Teito",
+    "TøKīØ🦠🧠"
+   ],
+   [
+    "Keider",
+    "Elbesaabuelas",
+    "Keider"
+   ],
+   [
+    "Walker",
+    "Erian",
+    "Walker"
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Keider",
+    "TøKīØ🦠🧠"
+   ],
+   [
+    "Walker",
+    "TøKīØ🦠🧠",
+    "Walker"
+   ]
+  ],
+  "ev_antes": {
+   "Elbesaabuelas": 1,
+   "Erian": 26,
+   "Keider": 3,
+   "Number VE": 11,
+   "Teito": 11,
+   "TøKīØ🦠🧠": 2,
+   "Walker": 4
+  },
+  "fecha": "12/10",
+  "firma": "6f28347bb8e118b0",
+  "msg": "1559247607283454084",
+  "nombre": "FMS UNDER",
+  "num": 455,
+  "participantes": 8,
+  "sello": {
+   "Walker": "b54b540590f9:9df1984d05ab"
+  },
+  "sv": "DDF",
+  "t": "2026-10-12T16:53:18Z",
+  "tabla": [
+   [
+    "Walker",
+    "Campeón",
+    7500
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Keider",
+    "Semifinal",
+    3750
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Elbesaabuelas",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }
