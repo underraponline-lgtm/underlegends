@@ -49,6 +49,17 @@ import escuchar as E  # noqa: E402
 #: 🔑 FORMAS QUE LAS LLAVES REALES TODAVÍA NO TRAEN, recortadas del
 #: self-check de `escuchar.py`: cada una es algo que el lector ya sabe leer.
 INVENTADOS = [
+    # 🌲 las letras parecidas de otros alfabetos y la forma (EL BOSQUE DE ARTEMISA, Snake Rap, 12/10/2026)
+    ("SNAKE RAP: las rondas en letras CHEROQUI (`ᎾᏟᎢᎪᏙᎾᏚ`) y los marcos ❰ ❱ (EL BOSQUE DE ARTEMISA, 12/10/2026)",
+     "══════════════════════\n                    <:GODZ:1548017814177194065> **ᏵᏫᎠᏃ** <:GODZ:1548017814177194065>\n   🌲 **\"El bosque de Artemisa\"** ⛰️\n                     RANGO <:3snake:1266108850793222244>\n╚═══════ ✦ <:mercante:1446236833347403836>✦ ════════╝\n\n☁️ ─ **ᎾᏟᎢᎪᏙᎾᏚ** ─ ☁️\n\n❰ VERC 🇨🇱 ❱ <:VS8:1396617723064094730> ❰ **ZIGNOS 🇩🇴** ❱\n❰ GUESS 🇦🇷 ❱ <:VS8:1396617723064094730> ❰ **SCRITURA 🇻🇪** ❱\n❰ DYNOCO 🇦🇷 ❱ <:VS8:1396617723064094730> ❰ **BNA 🇦🇷** ❱\n❰ **PROSU 🇨🇴** ❱ <:VS8:1396617723064094730> ❰ ZETA 🇨🇴 ❱\n❰ MAKMAH 🇻🇪 ❱ <:VS8:1396617723064094730> ❰ **NC 🇦🇷** ❱ <:VS8:1396617723064094730> ❰ CRONOX 🇨🇱 ❱\n❰ **VELATZ 🇨🇱** ❱ <:VS8:1396617723064094730> ❰ COLESITO 🇨🇴 ❱ <:VS8:1396617723064094730> ❰ MAGIC 🇲🇽 ❱\n❰ JÚPITER 🇲🇽 ❱ <:VS8:1396617723064094730> ❰ ERIAN 🇵🇦 ❱ <:VS8:1396617723064094730> ❰ **ABYSSUS 🇵🇦** ❱\n❰ **JOAQUÍN LA PROFECÍA 🇦🇷** ❱ <:VS8:1396617723064094730> ❰ SYEPORUTE 🏴‍☠️ ❱ <:VS8:1396617723064094730> ❰ VALDOZA 🇨🇱 ❱ <:VS8:1396617723064094730> ❰ VARGAS 🇨🇴 ❱\n\n🌩️ ─ **ᏟᏌᎪᎡᎢᎾᏚ** ─ 🌩️\n\n❰ **ZIGNOS 🇩🇴** ❱ <:VS8:1396617723064094730> ❰ SCRITURA 🇻🇪 ❱\n❰ BNA 🇦🇷 ❱ <:VS8:1396617723064094730> ❰ **PROSU 🇨🇴** ❱\n❰ NC 🇦🇷 ❱ <:VS8:1396617723064094730> ❰ **VELATZ 🇨🇱** ❱\n❰ ABYSSUS 🇵🇦 ❱ <:VS8:1396617723064094730> ❰ JOAQUÍN LA PROFECÍA 🇦🇷 ❱\n\n🌧️ ─ **ᏚᎬᎷᏆᎸᏆᏁᎪᏞ** ─ 🌧️\n\n❰ ZIGNOS 🇩🇴 ❱ <:VS8:1396617723064094730> ❰ PROSU 🇨🇴 ❱\n❰ VELATZ 🇨🇱 ❱ <:VS8:1396617723064094730> ❰ 🏳️ ? 🏳️ ❱\n\n🌤️  ─  **ᎸᏆᏁᎪᏞ**  ─  🌤️\n\n❰ 🏳️ ? 🏳️ ❱ <:VS8:1396617723064094730> ❰ 🏳️ ? 🏳️ ❱\n\n══════════ ✦ <:mercante:1446236833347403836>✦ ════════════\n\n<:CAMPEON1:1446236128779698288> ⋯ ❰ 🏳️ ? 🏳️ ❱ ⋯ <:CAMPEON1:1446236128779698288>\n<:2oPuesto:1131417087450042429> ⋯ ❰ 🏳️ ? 🏳️ ❱ ⋯ <:2oPuesto:1131417087450042429>\n<:mvp:1134949465921441943> ⋯ ❰ 🏳️ ? 🏳️ ❱ ⋯ <:mvp:1134949465921441943>"),
+    ("las letras de fantasía que todavía no se vieron: versalitas, sílabas canadienses, cirílico y griego, negativas",
+     "☆ ᴏᴄᴛᴀᴠᴏs ☆\n❮ ANA 🇦🇷 ❯ 🆚 ❮ BEA 🇨🇱 ❯\n❮ CAMI 🇻🇪 ❯ 🆚 ❮ DORA 🇲🇽 ❯\n❮ EVA 🇵🇪 ❯ 🆚 ❮ FLOR 🇨🇴 ❯\n❮ GIA 🇺🇾 ❯ 🆚 ❮ HANA 🇪🇸 ❯\nᑕᑌᗩᖇTOᔕ\n⟪ ANA 🇦🇷 ⟫ 🆚 ⟪ DORA 🇲🇽 ⟫\n⟪ EVA 🇵🇪 ⟫ 🆚 ⟪ GIA 🇺🇾 ⟫\nЅЕМІFІИΑL\n⦅ ANA 🇦🇷 ⦆ 🆚 ⦅ GIA 🇺🇾 ⦆\n🅵🅸🅽🅰🅻\n"),
+    ("el tachado pegado a cada letra (`C̶U̶A̶R̶T̶O̶S̶`)",
+     "C̶U̶A̶R̶T̶O̶S̶\n[ANA] vs [BEA]\n[CAMI] vs [DORA]\nF̶I̶N̶A̶L̶\n[ANA] vs [CAMI]\n"),
+    ("🌲 la FORMA, sin ningún título legible: bloques que se achican, con gente del anterior adentro",
+     "☁️ ─ ✦✦✦ ─ ☁️\nANA vs BEA\nCAMI vs DORA\nEVA vs FLOR\nGIA vs HANA\n🌩️ ─ ✦✦ ─ 🌩️\nANA vs CAMI\nEVA vs GIA\n🌤️ ─ ✦ ─ 🌤️\nANA vs EVA\n"),
+    ("… y lo que NO es una llave aunque tenga bloques: un fixture (jornadas del mismo tamaño) y una cartelera",
+     "—— J1 ——\nANA vs BEA\nCAMI vs DORA\n—— J2 ——\nANA vs CAMI\nBEA vs DORA\n\n— Sábado —\nEVA vs FLOR\nGIA vs HANA\n— Domingo —\nIRIS vs JUANA\n"),
     # 🏛️ LA ACADEMIA (04/10/2026): dos de sus llaves reales, con las menciones tapadas
     ("LA ACADEMIA: cada batalla es un encabezado `##` con la bandera adelante (FAT BATTLES PALOOZA T.3, 01/10/2026)",
      "# 🏆 SORTEO DE OCTAVOS 🏆\n\n## 🇵🇪 SOSA 🆚 YOR 🇪🇸\n\n## 🇨🇱 KOCHI 🆚 GOSU 🇨🇺\n## 🇨🇴 MTZ 🆚 NEXUZ 🇵🇪\n\n## 🇲🇽 LEONAR-T 🆚 LIL ÑAÑO 🇻🇪\n\n## 🇨🇴 SEKKA 🆚 JAYDEN 🇵🇪\n\n## 🇪🇨 CARLOS 🆚 MASINO 🇨🇱\n\n## 🇻🇪 NUMBER 🆚 DYZZ 🇨🇱\n\n## 🇺🇾 DREXX  🆚 MAIL O 🇵🇪\n\n# 🏆 CUARTOS DE FINAL 🏆 \n\n## YOR 🇪🇦 🆚 KOCHI 🇨🇱 \n\n## MTZ 🇲🇽 🆚 LEONAR-T 🇲🇽 \n\n## SEKKA 🇦🇷 🆚 CARLOS 🇪🇨 \n\n## NUMBER 🇻🇪 🆚 DREXX 🇵🇪\n\n# 🏆 SEMIFINAL 🏆 \n\n## KOCHI 🇨🇱 🆚 MTZ 🇲🇽 \n\n## SEKKA 🇦🇷 🆚 NUMBER 🇻🇪\n\n# 🏆 FINAL 🏆 \n\n## KOCHI 🇨🇱 🆚 SEKKA 🇦🇷\n\n## CAMPEÓN 🥇: KOCHI 🇨🇱 ( <@1> )\n\n## SUBCAMPEÓN 🥈: SEKKA 🇦🇷 ( <@2> )\n\n## MVP 🎖️: NUMBER 🇻🇪 ( <@3> )"),
@@ -331,6 +342,13 @@ def _self_check():
         ok = llaves_v(c['filas']) == c['llaves']
         mal += not ok
         print('   %s llave de veredictos: %s' % ('✅' if ok else '🔴', c['que']))
+    # 🌲 la tabla de letras parecidas es UNA, escrita tres veces: Python, la página y el vigía (12/10/2026)
+    for js in ('paginas/llave_vivo.js', 'avisos.js'):
+        with io.open(os.path.join(SCR, js), encoding='utf-8') as f:
+            m = re.search(r"PARECIDAS = '([^'\n]*)'", f.read())
+        ok = bool(m) and m.group(1) == E.PARECIDAS
+        mal += not ok
+        print('   %s la tabla de letras parecidas de %s es la de escuchar.py' % ('✅' if ok else '🔴', js))
     print('')
     return mal
 

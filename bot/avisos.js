@@ -828,12 +828,40 @@ export const CANAL_LOGS = '1504110449535483924';
  * no falla, se saltea. Dos rondas distintas nombradas y cuatro renglones con dos nombres o más (sin contar los de las
  * rondas). ⚠️ La plantilla vacía (`(< >) ⚔️ (< >)`) y la charla del canal («arrancan los cuartos, la final a las 9») no.
  */
+//: 🌲 `escuchar.PARECIDAS`, la MISMA cadena (la compara el self-check de Python): las letras de otros alfabetos que
+//: imitan a las latinas. EL BOSQUE DE ARTEMISA (Snake Rap, 12/10/2026) escribió sus rondas `ᎾᏟᎢᎪᏙᎾᏚ`, en cheroqui, y
+//: ni `pareceLlave()` ni `intentoDeLlave()` la veían: ni se guardaba en vivo ni avisaba que no se podía leer
+export const PARECIDAS = 'ᎠDᎡRᎢTᎥiᎩYᎪAᎫJᎬEᎯAᎳWᎶGᎷMᎸFᎻHᎾOᏀGᏁNᏂhᏃZᏆIᏌUᏏbᏒRᏔWᏕSᏙVᏚSᏞLᏟCᏢPᏦKᏫOᏳGᏴBᏵGᴀAʙBᴄCᴅDᴇEꜰFɢGʜHɪIᴊJᴋKʟLᴍMɴNᴏOᴘPǫQʀRꜱSᴛTᴜUᴠVᴡWʏYᴢZᗩAᗅAᗷBᑕCᗪDᗞDᗴEᖴFᕼHᒍJᒪLᗰMᑎNᑭPᑫQᖇRᔕSᑌUᐯVᗯW᙭XᘔZꓐBꓑPꓓDꓔTꓖGꓗKꓙJꓚCꓜZꓝFꓟMꓠNꓡLꓢSꓣRꓦVꓧHꓪWꓫXꓬYꓮAꓰEꓲIꓳOꓴUАAВBСCЕEЁEНHІIЈJКKМMОOРPЅSТTХXУYҮYИNЯRШWДAЭEаaеeоoрpсcуyхxіiјjѕsԁdԛqԝwӄkиnяrΑAΒBΕEΖZΗHΙIΚKΜMΝNΟOΡPΤTΥYΧXΛAΔAΣEΞEΘOϴOοoνvαaιiκkτtυuϲcϳjβBεeηnρpωwօoսuռnցgզqքpաwհhոnՈUՕOԼLƈcɖdɛeʄfɠgɦhɨiʝjʍmʊuʋvʐzȶt';
+const PARECE = new Map();
+for (let i = 0; i < PARECIDAS.length; i += 2) PARECE.set(PARECIDAS[i], PARECIDAS[i + 1]);
+/** El texto en NFKD y con las letras parecidas en latinas, para buscar palabras (`OCTAVOS`, `FINAL`). */
+export function latino(texto) {
+  const t = String(texto || '').replace(/[\u{1F150}-\u{1F169}\u{1F170}-\u{1F189}](?:\uFE0F?[\u{1F150}-\u{1F169}\u{1F170}-\u{1F189}])+/gu,
+    (run) => Array.from(run.replace(/\uFE0F/g, ''), (ch) => {
+      const c = ch.codePointAt(0);
+      return String.fromCharCode(0x41 + c - (c >= 0x1F170 ? 0x1F170 : 0x1F150));
+    }).join(''));
+  return Array.from(t.normalize('NFKD').replace(/[\u0305\u0332-\u0338\u033F]/g, ''), (ch) => {
+    const c = ch.codePointAt(0);
+    const u = (c >= 0xAB70 && c <= 0xABBF) || (c >= 0x13F8 && c <= 0x13FD) ? ch.toUpperCase() : ch;
+    return PARECE.get(u) || u;
+  }).join('');
+}
+
+/** 🌲 Cuántos renglones traen un «vs» (🆚, `vs`, `versus` o un emoji propio que lo dice) entre dos nombres. */
+export function conVs(s) {
+  return String(s || '').split('\n').filter((l) => /🆚|\bvs\b|<a?:\w*vs\w*:\d+>|\bversus\b/iu.test(l)
+    && (l.replace(/<a?:\w+:\d+>|<[@#][!&]?\d+>/g, ' ').match(/\p{L}{2,}/gu) || []).length >= 2).length;
+}
+
 export function intentoDeLlave(texto) {
-  const s = String(texto || '').normalize('NFKD').replace(/[̀-ͯ]/g, '');
+  const s = latino(texto).replace(/[̀-ͯ]/g, '');
   const RONDA = /\b(filtros?|clasificatoria|octavos|cuartos|semi\s*-?\s*finale?s?|semis|gran\s*-?\s*final|final)\b/gi;
   const rondas = new Set((s.match(RONDA) || []).map((x) => x.toLowerCase().replace(/[^a-z]/g, '').replace(/^gran/, '')
     .replace(/^semis?finale?s?$|^semis$/, 'semi').replace(/^filtros$/, 'filtro')));
-  if (rondas.size < 2) return false;
+  // 🌲 O LA FORMA, aunque ningún título se lea (EL BOSQUE DE ARTEMISA, 12/10/2026: rondas en cheroqui, y no avisó
+  // nadie): cuatro renglones o más con un «vs» entre dos nombres. Si `LlaveVivo` igual le saca batallas, no se avisa
+  if (rondas.size < 2) return conVs(s) >= 4;
   const esRonda = new RegExp(RONDA.source, 'i');
   const conNombres = s.split('\n').filter((l) => !esRonda.test(l)
     && (l.replace(/<a?:\w+:\d+>|<[@#][!&]?\d+>/g, ' ').match(/\p{L}{2,}/gu) || []).length >= 2);
@@ -2537,7 +2565,8 @@ export const VIVO_TOPE = 4;
 export function pareceLlave(texto) {
   // ⚠️ CON LAS LETRAS DE FANTASÍA EN LETRAS COMUNES: Snake Rap escribe sus
   // rondas `𝙲𝚄𝙰𝚁𝚃𝙾𝚂` y `𝙵𝙸𝙽𝙰𝙻`, y sin esto sus llaves no se guardaban nunca
-  const s = String(texto || '').normalize('NFKD');
+  // 🌲 y las parecidas de otros alfabetos (`latino()`): `ᎾᏟᎢᎪᏙᎾᏚ` es OCTAVOS
+  const s = latino(texto);
   // 🔑 Y EL PODIO SUELTO: a veces el campeón va en un mensaje aparte (FFA
   // WORLD CUP, 27/09/2026) y la página lo pega a su llave (`unirPartidas()`
   // de `llave_vivo.js`). Sin guardarlo, la final quedaba «en juego» siempre.
@@ -2552,8 +2581,11 @@ export function pareceLlave(texto) {
   // 🐍 y los marcos y «vs» de `escuchar.MARCOS_MAS` / `VS_ENTRE` (07/10/2026): Snake Rap escribió `(< A >) ⚔️ (< B >)`
   // y la llave no se guardaba —ninguna marca de las de antes—, así que ni el bot ni la página la vieron en vivo.
   // ⚠️ `s` va en NFKD: `［］` ya llega como `[]`
+  // 🌲 y sin ninguna ronda legible, la FORMA: cuatro renglones con «vs» o más. Se guarda y la página la lee por bloques
+  // (`rondasPorForma()` de `llave_vivo.js`); si no le saca batallas, no muestra nada
+  if (conVs(s) >= 4) return true;
   return /(filtros?|clasificatoria|octavos|cuartos|semi|final)/i.test(s) &&
-    (s.match(/🆚|\bvs\b|<a?:\w*vs\w*:\d+>|⌝|\]|」|〉|>\s*\)|[】〕》⟩⟧〗⦘]|[\u{2694}\u{1F5E1}\u{2716}\u{2715}\u{2717}\u{26A1}\u{1F4A5}\u{1F94A}\u{1F91C}\u{1F52A}]|\b(?:versus|vrs|contra)\b/giu) || []).length >= 2;
+    (s.match(/🆚|\bvs\b|<a?:\w*vs\w*:\d+>|⌝|\]|」|〉|>\s*\)|[】〕》⟩⟧〗⦘❱❯❭❩❫❳❵⟫⟭⟯⦆〙〛⸩⁆]|[\u{2694}\u{1F5E1}\u{2716}\u{2715}\u{2717}\u{26A1}\u{1F4A5}\u{1F94A}\u{1F91C}\u{1F52A}]|\b(?:versus|vrs|contra)\b/giu) || []).length >= 2;
 }
 
 /** El texto con cada `<@id>` como `@Nombre`: Discord manda quién es cada mención. */

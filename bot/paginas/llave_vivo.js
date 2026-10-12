@@ -82,7 +82,8 @@
   var MD = '(?:\\*\\*|__)?';
   /* 🐍 los marcos y los «vs» que todavía no se vieron (Dlx, 07/10/2026): `escuchar.MARCOS_MAS` y `VS_ENTRE`. Sin `«»`,
      `｢｣`, ❌ ni 🔥, a propósito */
-  var MARCOS_MAS = ['【】', '〔〕', '［］', '《》', '⟨⟩', '⟦⟧', '〖〗', '⦗⦘'];
+  var MARCOS_MAS = ['【】', '〔〕', '［］', '《》', '⟨⟩', '⟦⟧', '〖〗', '⦗⦘',
+    '❰❱', '❮❯', '❬❭', '❨❩', '❪❫', '❲❳', '❴❵', '⟪⟫', '⟬⟭', '⟮⟯', '⦅⦆', '〘〙', '〚〛', '⸨⸩', '⁅⁆'];
   var VS_ENTRE = '(?:(?:[\\u{2694}\\u{1F5E1}\\u{2716}\\u{2715}\\u{2717}\\u{D7}\\u{26A1}\\u{1F4A5}\\u{1F94A}\\u{1F91C}' +
     '\\u{1F91B}\\u{1F52A}]\\u{FE0F}?)+|(?<![\\p{L}\\p{N}_])(?:versus|vrs|v\\/s|v\\.s\\.?|contra|x)(?![\\p{L}\\p{N}_]))';
   // y `versus` entero: el `<:versus_:…>` de DIMENSIÓN DEL FREESTYLE. Ver `escuchar.VS_PROPIO`
@@ -125,14 +126,31 @@
     }).join('');
   }
 
+  /* 🌲 `escuchar.PARECIDAS`: las letras de otros alfabetos que imitan a las latinas (las rondas `ᎾᏟᎢᎪᏙᎾᏚ` de EL BOSQUE
+     DE ARTEMISA, Snake Rap, 12/10/2026). ⚠️ LA MISMA CADENA que en `escuchar.py` y `avisos.js`: la compara el
+     self-check de Python */
+  var PARECIDAS = 'ᎠDᎡRᎢTᎥiᎩYᎪAᎫJᎬEᎯAᎳWᎶGᎷMᎸFᎻHᎾOᏀGᏁNᏂhᏃZᏆIᏌUᏏbᏒRᏔWᏕSᏙVᏚSᏞLᏟCᏢPᏦKᏫOᏳGᏴBᏵGᴀAʙBᴄCᴅDᴇEꜰFɢGʜHɪIᴊJᴋKʟLᴍMɴNᴏOᴘPǫQʀRꜱSᴛTᴜUᴠVᴡWʏYᴢZᗩAᗅAᗷBᑕCᗪDᗞDᗴEᖴFᕼHᒍJᒪLᗰMᑎNᑭPᑫQᖇRᔕSᑌUᐯVᗯW᙭XᘔZꓐBꓑPꓓDꓔTꓖGꓗKꓙJꓚCꓜZꓝFꓟMꓠNꓡLꓢSꓣRꓦVꓧHꓪWꓫXꓬYꓮAꓰEꓲIꓳOꓴUАAВBСCЕEЁEНHІIЈJКKМMОOРPЅSТTХXУYҮYИNЯRШWДAЭEаaеeоoрpсcуyхxіiјjѕsԁdԛqԝwӄkиnяrΑAΒBΕEΖZΗHΙIΚKΜMΝNΟOΡPΤTΥYΧXΛAΔAΣEΞEΘOϴOοoνvαaιiκkτtυuϲcϳjβBεeηnρpωwօoսuռnցgզqքpաwհhոnՈUՕOԼLƈcɖdɛeʄfɠgɦhɨiʝjʍmʊuʋvʐzȶt';
+  var PARECE = {};
+  for (var ip = 0; ip < PARECIDAS.length; ip += 2) PARECE[PARECIDAS[ip]] = PARECIDAS[ip + 1];
+  var NEGATIVAS = /[\u{1F150}-\u{1F169}\u{1F170}-\u{1F189}](?:\uFE0F?[\u{1F150}-\u{1F169}\u{1F170}-\u{1F189}])+/gu;
+  var ADORNOS = /[\u0305\u0332-\u0338\u033F]/g;
+
   /* `escuchar.plano()`: las letras de fantasía, en letras comunes. 🏛️ Y las de cuadradito y circulito (la
-     ACADEMIA, 04/10/2026: `🄾🄲🅃🄰🅅🄾🅂`) */
+     ACADEMIA, 04/10/2026: `🄾🄲🅃🄰🅅🄾🅂`), las negativas de a dos o más, y 🌲 las parecidas de otros alfabetos */
   function plano(t) {
     if (!t) return t || '';
+    t = String(t).replace(NEGATIVAS, function (run) {
+      return Array.from(run.replace(/\uFE0F/g, '')).map(function (ch) {
+        var c = ch.codePointAt(0);
+        return String.fromCharCode(0x41 + c - (c >= 0x1F170 ? 0x1F170 : 0x1F150));
+      }).join('');
+    }).replace(ADORNOS, '');
     return Array.from(t).map(function (ch) {
       var c = ch.codePointAt(0);
-      return (c >= 0x1D400 && c <= 0x1D7FF) || (c >= 0xFF01 && c <= 0xFF5E) ||
-        (c >= 0x1F130 && c <= 0x1F149) || (c >= 0x24B6 && c <= 0x24E9) ? ch.normalize('NFKD') : ch;
+      if ((c >= 0x1D400 && c <= 0x1D7FF) || (c >= 0xFF01 && c <= 0xFF5E) ||
+        (c >= 0x1F130 && c <= 0x1F149) || (c >= 0x24B6 && c <= 0x24E9)) return ch.normalize('NFKD');
+      if ((c >= 0xAB70 && c <= 0xABBF) || (c >= 0x13F8 && c <= 0x13FD)) ch = ch.toUpperCase();
+      return PARECE[ch] || ch;
     }).join('');
   }
 
@@ -462,8 +480,29 @@
   /* `escuchar.rondas_de()`: [[ronda, [[lados…]…]]…] */
   /* la ronda de antes, para la primera que viene sin título (`escuchar.RONDA_ANTERIOR`) */
   var RONDA_ANTERIOR = { OCTAVOS: 'DIECISEISAVOS', CUARTOS: 'OCTAVOS', SEMIFINALES: 'CUARTOS', FINAL: 'SEMIFINALES' };
+  /* 🌲 `escuchar._rondas_por_forma()`: sin ningún título legible, las rondas por la forma —bloques de batallas cada
+     uno más chico que el anterior y con gente del anterior adentro—, la primera nombrada por su tamaño */
+  var ESCALERA = ['DIECISEISAVOS', 'OCTAVOS', 'CUARTOS', 'SEMIFINALES', 'FINAL'];
+  function genteDe(bs) {
+    var s = new Set();
+    bs.forEach(function (b) { b.forEach(function (x) { String(x).replace(HISTORIA, '').split(/[+&]/).forEach(function (q) { if (norm(q)) s.add(norm(q)); }); }); });
+    return s;
+  }
+  function rondasPorForma(bloques) {
+    if (bloques.length < 2) return [];
+    for (var k = 1; k < bloques.length; k++) {
+      if (bloques[k].length >= bloques[k - 1].length) return [];
+      var a = genteDe(bloques[k - 1]), comun = false;
+      genteDe(bloques[k]).forEach(function (q) { if (a.has(q)) comun = true; });
+      if (!comun) return [];
+    }
+    var n = bloques[0].length;
+    var i = ESCALERA.indexOf(n <= 1 ? 'FINAL' : n === 2 ? 'SEMIFINALES' : n <= 4 ? 'CUARTOS' : n <= 8 ? 'OCTAVOS' : 'DIECISEISAVOS');
+    if (i + bloques.length > ESCALERA.length) return [];
+    return bloques.map(function (b, j) { return [ESCALERA[i + j], b]; });
+  }
   function rondasDe(texto) {
-    var out = [], actual = null, bats = [], previas = [];
+    var out = [], actual = null, bats = [], previas = [], bloques = [[]];
     texto = plano(texto);
     lineas(unirContinuadas(texto)).forEach(function (l) {
       var m = buscarRonda(l), nombres = nombresDeLinea(l);
@@ -476,9 +515,11 @@
         return;
       }
       if (nombres.length && actual && !(PODIO.test(l) && !CONTRA.test(l))) bats.push(nombres);
-      else if (nombres.length && !actual && !(PODIO.test(l) && !CONTRA.test(l))) previas.push(nombres);
+      else if (nombres.length && !actual && !(PODIO.test(l) && !CONTRA.test(l))) { previas.push(nombres); bloques[bloques.length - 1].push(nombres); }
+      else if (!actual && l.trim() && bloques[bloques.length - 1].length) bloques.push([]);
     });
     if (actual && bats.length) out.push([actual, bats]);
+    if (!out.length) return sinNumeracion(equiposConEspacios(rondasPorForma(bloques.filter(function (b) { return b.length; }))));
     // la primera ronda sin título (FVS UNDER, 26/09/2026): `escuchar._rondas_crudas()`
     if (previas.length >= 2 && out.length && RONDA_ANTERIOR[out[0][0]]) {
       var gente = function (bs) {

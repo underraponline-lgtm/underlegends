@@ -280,6 +280,31 @@ def _sin_pokemon(lado):
                       if x.strip() and not POKEMON.search(x))
 
 
+#: 🌲 LAS LETRAS PARECIDAS DE OTROS ALFABETOS, pasadas a las latinas que imitan: pares «rara → latina» en una sola
+#: cadena. ⚠️ LA MISMA CADENA vive en `bot/paginas/llave_vivo.js` y en `bot/avisos.js` (`PARECIDAS`), y el self-check
+#: se pone rojo si alguna difiere. Ver `plano()`.
+PARECIDAS = 'ᎠDᎡRᎢTᎥiᎩYᎪAᎫJᎬEᎯAᎳWᎶGᎷMᎸFᎻHᎾOᏀGᏁNᏂhᏃZᏆIᏌUᏏbᏒRᏔWᏕSᏙVᏚSᏞLᏟCᏢPᏦKᏫOᏳGᏴBᏵGᴀAʙBᴄCᴅDᴇEꜰFɢGʜHɪIᴊJᴋKʟLᴍMɴNᴏOᴘPǫQʀRꜱSᴛTᴜUᴠVᴡWʏYᴢZᗩAᗅAᗷBᑕCᗪDᗞDᗴEᖴFᕼHᒍJᒪLᗰMᑎNᑭPᑫQᖇRᔕSᑌUᐯVᗯW᙭XᘔZꓐBꓑPꓓDꓔTꓖGꓗKꓙJꓚCꓜZꓝFꓟMꓠNꓡLꓢSꓣRꓦVꓧHꓪWꓫXꓬYꓮAꓰEꓲIꓳOꓴUАAВBСCЕEЁEНHІIЈJКKМMОOРPЅSТTХXУYҮYИNЯRШWДAЭEаaеeоoрpсcуyхxіiјjѕsԁdԛqԝwӄkиnяrΑAΒBΕEΖZΗHΙIΚKΜMΝNΟOΡPΤTΥYΧXΛAΔAΣEΞEΘOϴOοoνvαaιiκkτtυuϲcϳjβBεeηnρpωwօoսuռnցgզqքpաwհhոnՈUՕOԼLƈcɖdɛeʄfɠgɦhɨiʝjʍmʊuʋvʐzȶt'
+_PARECIDAS = {PARECIDAS[i]: PARECIDAS[i + 1] for i in range(0, len(PARECIDAS), 2)}
+#: las letras «negativas» (🅾🅲🆃) de a DOS o más: una sola es un emoji (🅰️, 🅱️)
+_NEGATIVAS = re.compile('[\U0001F150-\U0001F169\U0001F170-\U0001F189](?:\ufe0f?[\U0001F150-\U0001F169\U0001F170-\U0001F189])+')
+#: el tachado, el subrayado y la barra que se le pegan a cada letra («O̶C̶T̶A̶V̶O̶S̶»)
+_ADORNOS = re.compile('[\u0305\u0332-\u0338\u033f]')
+
+
+def _negativas(m):
+    return ''.join(chr(0x41 + ord(c) - (0x1F170 if ord(c) >= 0x1F170 else 0x1F150))
+                   for c in m.group(0) if c != '\ufe0f')
+
+
+def _letra(c):
+    o = ord(c)
+    if 0x1D400 <= o <= 0x1D7FF or 0xFF01 <= o <= 0xFF5E or 0x1F130 <= o <= 0x1F149 or 0x24B6 <= o <= 0x24E9:
+        return unicodedata.normalize('NFKD', c)
+    if 0xAB70 <= o <= 0xABBF or 0x13F8 <= o <= 0x13FD:
+        c = c.upper()
+    return _PARECIDAS.get(c, c)
+
+
 def plano(texto):
     """El texto con las letras «de fantasía» pasadas a letras comunes.
 
@@ -295,15 +320,22 @@ def plano(texto):
 
     🏛️ Y LAS LETRAS EN CUADRADITOS Y EN CIRCULITOS (la ACADEMIA, 04/10/2026): la RED
     BULL CREW CHILE escribe sus rondas `🄾🄲🅃🄰🅅🄾🅂` (U+1F130…U+1F149) y sin esto la
-    llave no tenía ni una ronda. Los «negativos» (`🅰`, `🅾`) no: son emojis.
+    llave no tenía ni una ronda. Los «negativos» (`🅰`, `🅾`) sólo de a dos o más (`🅾🅲🆃`): uno solo es un emoji.
+
+    🌲 Y LAS LETRAS PARECIDAS DE OTROS ALFABETOS (EL BOSQUE DE ARTEMISA, Snake Rap, 12/10/2026). GP escribió sus
+    rondas en letras CHEROQUI —`ᎾᏟᎢᎪᏙᎾᏚ`, `ᏟᏌᎪᎡᎢᎾᏚ`, `ᏚᎬᎷᏆᎸᏆᏁᎪᏞ`, `ᎸᏆᏁᎪᏞ`—, que NFKD no toca porque no son
+    variantes de las latinas: son otro alfabeto que se les parece. La llave no tenía ninguna ronda, así que no era
+    una llave: ni la página en vivo, ni el ciclo, ni el aviso de «no pude leer una llave» la vieron, con 25 anotados
+    jugando. Dlx: *«asegurate de prevenir este tipo de cosas para el futuro»*. Por eso no es sólo el cheroqui:
+    `PARECIDAS` trae los alfabetos que usan los generadores de letras de fantasía —cheroqui, versalitas (`ᴏᴄᴛᴀᴠᴏs`),
+    sílabas canadienses (`ᗩᗷᑕᗪ`), lisu, y el cirílico, el griego y el armenio que se usan como latinos (`ΛИЯ`)—, y
+    el tachado o subrayado que se le pega a cada letra se va. ⚠️ Sólo letras que IMITAN una latina: las que no se
+    parecen a ninguna quedan como vinieron. Y la segunda red, por si mañana es otra cosa: `_rondas_por_forma()`.
     """
     if not texto:
         return texto or ''
-    return ''.join(
-        unicodedata.normalize('NFKD', c)
-        if 0x1D400 <= ord(c) <= 0x1D7FF or 0xFF01 <= ord(c) <= 0xFF5E
-        or 0x1F130 <= ord(c) <= 0x1F149 or 0x24B6 <= ord(c) <= 0x24E9 else c
-        for c in texto)
+    texto = _ADORNOS.sub('', _NEGATIVAS.sub(_negativas, texto))
+    return ''.join(_letra(c) for c in texto)
 
 
 # ── los dialectos de los otros servidores ─────────────────────────────
@@ -331,7 +363,10 @@ _MD = r'(?:\*\*|__)?'
 #: adentro; un «vs» cuenta sólo ENTRE DOS MARCOS, así que un adorno suelto no parte nada.
 #: ⚠️ Afuera a propósito: `«»` (títulos: `«------•`), `｢｣` (FFA decora con `｢ <emoji> ｣`), ❌ (la nave de funa
 #: marca así al eliminado) y 🔥 (adorno de línea: `🔥-------------🔥`). Atado a `llave_vivo.js` por `llaves_casos`
-MARCOS_MAS = ('【】', '〔〕', '［］', '《》', '⟨⟩', '⟦⟧', '〖〗', '⦗⦘')
+#: 🌲 y los de adorno (EL BOSQUE DE ARTEMISA, Snake Rap, 12/10/2026: `❰ VERC 🇨🇱 ❱ <:VS8:…> ❰ **ZIGNOS 🇩🇴** ❱`): sin
+#: ellos los nombres entraban con el marco pegado. Van todos los pares de ese tipo, no sólo el que apareció
+MARCOS_MAS = ('【】', '〔〕', '［］', '《》', '⟨⟩', '⟦⟧', '〖〗', '⦗⦘',
+              '❰❱', '❮❯', '❬❭', '❨❩', '❪❫', '❲❳', '❴❵', '⟪⟫', '⟬⟭', '⟮⟯', '⦅⦆', '〘〙', '〚〛', '⸨⸩', '⁅⁆')
 VS_ENTRE = (r'(?:(?:[\N{CROSSED SWORDS}\N{DAGGER KNIFE}\N{HEAVY MULTIPLICATION X}\N{MULTIPLICATION X}\N{BALLOT X}'
             r'\N{MULTIPLICATION SIGN}\N{HIGH VOLTAGE SIGN}\N{COLLISION SYMBOL}\N{BOXING GLOVE}\N{RIGHT-FACING FIST}'
             r'\N{LEFT-FACING FIST}\N{HOCHO}]\N{VARIATION SELECTOR-16}?)+'
@@ -983,6 +1018,8 @@ def _rondas_crudas(texto):
     que `_negritas()` mire exactamente las mismas líneas."""
     out, actual, bats = [], None, []
     previas = []
+    # 🌲 las batallas de antes de cualquier título, partidas por los renglones que no son batallas: ver `_rondas_por_forma()`
+    bloques = [[]]
     texto = plano(texto)
     # ⚠️ PRIMERO SE UNEN LAS CONTINUADAS. Ver `unir_continuadas()`: sin
     # esto, un equipo partido en dos lineas se pierde y la ronda entera
@@ -1020,8 +1057,13 @@ def _rondas_crudas(texto):
             bats.append((nombres, l))
         elif nombres and actual is None and not (PODIO.search(l) and not CONTRA.search(l)):
             previas.append((nombres, l))
+            bloques[-1].append((nombres, l))
+        elif actual is None and l.strip() and bloques[-1]:
+            bloques.append([])
     if actual and bats:
         out.append((actual, bats))
+    if not out:
+        return _rondas_por_forma([b for b in bloques if b])
     # 🔑 LA PRIMERA RONDA SIN ENCABEZADO (FVS UNDER, FVS, 26/09/2026): cuatro tríos `「Rfran」 vs 「Force」 vs 「Draax」`
     # arriba de `-# CUARTOS`, sin título. Se tiraban: Force, Sosa, Agustín 51 y Molusco quedaban afuera de la llave.
     # Son la ronda de ANTES de la primera que tiene título, si son dos batallas o más y su gente sigue en esa ronda
@@ -1032,6 +1074,44 @@ def _rondas_crudas(texto):
         if len((antes & primera) - {''}) >= 2:
             out.insert(0, (RONDA_ANTERIOR[out[0][0]], previas))
     return out
+
+
+#: 🌲 las rondas de una llave de eliminación, de la primera a la última
+ESCALERA = ('DIECISEISAVOS', 'OCTAVOS', 'CUARTOS', 'SEMIFINALES', 'FINAL')
+
+
+def _gente_de(bats):
+    """Las personas de unas batallas `[(competidores, línea)]`, normalizadas y sin equipos."""
+    return {norm(HISTORIA.sub('', m)) for ns, _l in bats for x in ns for m in re.split(r'[+&]', x)} - {''}
+
+
+def _rondas_por_forma(bloques):
+    """🌲 LAS RONDAS POR LA FORMA, CUANDO NINGÚN TÍTULO SE PUDO LEER: `[(ronda, [(competidores, línea)])]` o `[]`.
+
+    La segunda red de EL BOSQUE DE ARTEMISA (Snake Rap, 12/10/2026). Sus rondas venían en letras cheroqui, y eso ya lo
+    resuelve `plano()`; pero la próxima puede venir en otra cosa —un alfabeto que no está en `PARECIDAS`, sólo emojis,
+    una imagen de título— y la llave entera volvería a no existir. Dlx: *«asegurate de prevenir este tipo de cosas»*.
+
+    Una llave de eliminación tiene una forma que no depende de cómo se escriban los títulos: bloques de batallas
+    separados por un renglón que no es batalla, cada uno MÁS CHICO que el anterior, y con gente del anterior adentro
+    (los que pasaron). Si es así, la primera ronda se nombra por su tamaño —8 batallas son octavos, 4 cuartos— y las
+    demás siguen la escalera.
+
+    ⚠️ ESTRICTAMENTE MÁS CHICO, y con gente en común entre cada bloque y el siguiente: un fixture de liga (fechas del
+    mismo tamaño), dos grupos de la misma ronda o una cartelera de batallas sueltas no son una llave."""
+    if len(bloques) < 2:
+        return []
+    tam = [len(b) for b in bloques]
+    if any(b >= a for a, b in zip(tam, tam[1:])):
+        return []
+    if any(not (_gente_de(a) & _gente_de(b)) for a, b in zip(bloques, bloques[1:])):
+        return []
+    n = tam[0]
+    i = ESCALERA.index('FINAL' if n <= 1 else 'SEMIFINALES' if n == 2 else 'CUARTOS' if n <= 4
+                       else 'OCTAVOS' if n <= 8 else 'DIECISEISAVOS')
+    if i + len(bloques) > len(ESCALERA):
+        return []
+    return [(ESCALERA[i + k], b) for k, b in enumerate(bloques)]
 
 
 def _es_negrita(pedazo):
