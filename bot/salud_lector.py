@@ -93,7 +93,7 @@ def dudosos(eventos, padron, svs_de, apodos, donde):
     return out
 
 
-def armar(ahora=None, llaves=None, sin_ganador=None, finales=None, dudas_id=None):
+def armar(ahora=None, llaves=None, sin_ganador=None, finales=None, dudas_id=None, permisos=None):
     """`(título, líneas)` del informe de la semana que terminó."""
     desde, hasta = semana(ahora)
     llaves = _leer('datos/llaves_t1.json', {}) if llaves is None else llaves
@@ -138,16 +138,96 @@ def armar(ahora=None, llaves=None, sin_ganador=None, finales=None, dudas_id=None
     sol = sum(c['solos'] for c in por_sv.values())
     if tot:
         ls.append('**En total** · %d de %d entraron solos (%d %%)' % (sol, tot, round(100.0 * sol / tot)))
-    dud = dudas_id if dudas_id is not None else _dudosos_de(eventos)
+    dud, ajenas = (dudas_id, []) if dudas_id is not None else _dudosos_de(eventos)
     if dud:
         ls.append('')
         ls.append('🔎 **Nombres que pueden ser otra persona** (la Lista los junta con alguien que no está en ese servidor):')
         for n, ev, sv, quien in dud[:10]:
             ls.append('• «%s» en %s (%s): la Lista dice %s; en %s hay otra cuenta que se llama así' % (n, ev, sv, quien, sv))
+    # ⚠️ «JUGÓ AHÍ Y SU CUENTA DE LA LISTA NO ESTÁ» SOLO NO SE MUESTRA: medido el 12/10/2026, Cronox, Zetryko y Rodas
+    # jugaron en DDF y ya no están (se fueron después), y Xclusivo sí está pero `servidores_de.json` lo tenía viejo.
+    # Era ruido. La señal fuerte es la de arriba: además hay OTRA cuenta con ese nombre en ese servidor
+    falta = permisos if permisos is not None else _permisos()
+    if falta:
+        ls.append('')
+        ls.append('🔑 **Permisos que le faltan al bot** (para pasarle al admin de cada servidor):')
+        for sv, qs in sorted(falta.items()):
+            ls.append('• **%s**: %s' % (sv, ', '.join(qs)))
     return titulo, ls
 
 
+#: 🔑 los permisos del servidor que el bot usa, y para qué (12/10/2026, Dlx: «okok»). En FVS y la ACADEMIA faltan dos
+#: y fallaban callados en cada corrida: el puesto en el apodo (403 por persona) y contar quién entra por la invitación
+PERMISOS = ((1 << 27, 'Gestionar apodos (el puesto en el apodo)'),
+            (1 << 5, 'Gestionar servidor (contar quién entra por la invitación)'),
+            (1 << 11, 'Enviar mensajes (las preguntas al organizador, el bot en vivo)'),
+            (1 << 16, 'Leer el historial (las llaves y los veredictos)'))
+
+
+def _permisos():
+    """`{SV: [lo que falta]}` de los servidores de la Liga, o `{}` si no se pudo preguntar. Mira los roles del bot en
+    cada servidor (los permisos generales, no los de cada canal)."""
+    try:
+        import requests
+        sys.path.insert(0, os.path.join(BASE, 'bot'))
+        import avisar
+        t = avisar._token()
+        if not t:
+            return {}
+        cab = {'Authorization': 'Bot ' + t}
+        yo = '1550026808404217926'
+        svs = (_leer('datos/servidores.json', {}) or {}).get('servidores') or {}
+        out = {}
+        for sv, x in svs.items():
+            if not isinstance(x, dict) or not x.get('confirmado') or not x.get('guild_id'):
+                continue
+            g = x['guild_id']
+            m = requests.get('https://discord.com/api/v10/guilds/%s/members/%s' % (g, yo), headers=cab, timeout=20)
+            rs = requests.get('https://discord.com/api/v10/guilds/%s/roles' % g, headers=cab, timeout=20)
+            if m.status_code != 200 or rs.status_code != 200:
+                continue
+            mios = set(m.json().get('roles') or []) | {g}           # el rol @everyone tiene el ID del servidor
+            p = 0
+            for r in rs.json():
+                if r.get('id') in mios:
+                    p |= int(r.get('permissions') or 0)
+            if p & 8:                                              # administrador: tiene todo
+                continue
+            faltan = [q for b, q in PERMISOS if not p & b]
+            if faltan:
+                out[sv] = faltan
+        return out
+    except Exception:                                    # noqa: BLE001
+        return {}
+
+
+def ajenas(eventos, padron, svs_de, donde):
+    """`[(nombre, evento, sv, quién de la Lista)]`: jugó en `sv` y la cuenta que la Lista tiene para él no está en
+    `sv`. Para jugar en un servidor hay que estar ahí: o el ID de la Lista está mal, o juega con otra cuenta (el caso
+    de «Saiko» en el MULTIVERSE, 12/10/2026)."""
+    por_nombre = {}
+    for p in padron or []:
+        k = _norm(re.sub('[\U0001F1E6-\U0001F1FF]', '', p.get('raw') or p.get('full') or ''))
+        if k and p.get('discord_id'):
+            por_nombre.setdefault(k, []).append(p)
+    out, vistos = [], set()
+    for ev in eventos:
+        sv = ev.get('sv') or ''
+        for n in _nombres(ev):
+            k = _norm(re.sub('[\U0001F1E6-\U0001F1FF]', '', n))
+            ps = por_nombre.get(k) or []
+            if len(k) < 3 or len(ps) != 1 or (k, sv) in vistos:
+                continue
+            d = str(ps[0]['discord_id'])
+            suyos = list(svs_de.get(d) or []) or list(donde.get(d) or [])
+            if suyos and sv not in suyos:
+                vistos.add((k, sv))
+                out.append((n, ev.get('nombre') or '', sv, ps[0].get('full') or ps[0].get('raw') or ''))
+    return out
+
+
 def _dudosos_de(eventos):
+    """`(dudosos, ajenas)`: ver `dudosos()` y `ajenas()`. Sin el caché de apodos del ciclo, nada."""
     crudo = _leer('.cache/apodos_discord.json', {}) or {}
     apodos = {}
     for did, ns in (crudo.get('nombres') or {}).items():
@@ -157,8 +237,18 @@ def _dudosos_de(eventos):
                 apodos.setdefault(k, set()).add(str(did))
     donde = {str(d): list(s or []) for d, s in (crudo.get('servidores') or {}).items()}
     if not apodos:
-        return []
-    return dudosos(eventos, _leer('datos/padron.json', []), _leer('datos/servidores_de.json', {}), apodos, donde)
+        return [], []
+    padron, svs = _leer('datos/padron.json', []), _leer('datos/servidores_de.json', {})
+    # ⚠️ lo que Dlx ya decidió por servidor (`por_servidor` de akas_a_mano.json) no es una duda: «Carlos» en DDF es
+    # Carlosss, no el Carlos 🇲🇽 de la Lista
+    ps = (_leer('datos/akas_a_mano.json', {}) or {}).get('por_servidor') or {}
+    decidido = {(sv, _norm(re.sub('[🇦-🇿]', '', a))) for sv, m in ps.items() for a in (m or {})}
+
+    def _no_decidido(x):
+        return (x[2], _norm(re.sub('[🇦-🇿]', '', x[0]))) not in decidido
+    dud = [x for x in dudosos(eventos, padron, svs, apodos, donde) if _no_decidido(x)]
+    ya = {(x[0], x[2]) for x in dud}
+    return dud, [x for x in ajenas(eventos, padron, svs, donde) if (x[0], x[2]) not in ya and _no_decidido(x)]
 
 
 def publicar(ahora=None):
@@ -194,7 +284,7 @@ def _self_check():
               '2': {'sv': 'FFA', 'dia': '2026-10-07', 'nombre': 'B', 'fecha': '07/10', 'rondas': []},
               '3': {'sv': 'FVS', 'dia': '2026-10-08', 'nombre': 'C', 'fecha': '08/10', 'rondas': []},
               '4': {'sv': 'FFA', 'dia': '2026-09-28', 'nombre': 'viejo', 'fecha': '28/09', 'rondas': []}}
-    t, ls = armar(ahora, llaves, ['B · FFA · 07/10 · cuartos · x 🆚 y'], {}, [])
+    t, ls = armar(ahora, llaves, ['B · FFA · 07/10 · cuartos · x 🆚 y'], {}, [], {})
     todo = '\n'.join(ls)
     if '**FFA** · 2 evento(s), 1 solo(s) (50 %)' not in todo or '**FVS** · 1 evento(s), 1 solo(s) (100 %)' not in todo:
         malos.append('los números por servidor:\n' + todo)
@@ -206,6 +296,8 @@ def _self_check():
     dd = dudosos(ev, pad, svs, {'astral': {'916', '138'}, 'drexx': {'115'}}, {})
     if [x[0] for x in dd] != ['Astral']:
         malos.append('el nombre que puede ser otra persona: %s' % dd)
+    if [x[0] for x in ajenas(ev, pad, svs, {})] != ['Astral']:
+        malos.append('la cuenta de la Lista que no está en el servidor donde jugó')
     if dudosos(ev, pad, svs, {'astral': {'916'}}, {}):
         malos.append('sin otra cuenta en ese servidor no es una alerta')
     for m in malos:
