@@ -1406,12 +1406,73 @@ def _preguntar_h():
         return QUIETA_H
 
 
-def para_organizador(g, nom, sv, fec, ds):
+#: 🏁 una llave se le pregunta al organizador mientras está fresca: Dlx, 12/10/2026, *«al finalizar el evento, o sea
+#: casi de inmediato»*. La primera corrida preguntó por una del 27/09
+PREGUNTA_MAX_H = 48
+#: los lados de una línea de la llave
+_LADOS_RE = re.compile(r'\s*(?:🆚|\bvs\.?(?=\s|$)|<a?:VSF?:\d+>)\s*', re.I)
+#: un lado que ya dice que es un equipo
+_SEP_EQUIPO = re.compile(r'[+&,/]|\s(?:y|and|x)\s', re.I)
+
+
+def _palabras(lado):
+    """Las palabras de un lado, sin banderas, emojis, etiqueta ni el nombre del equipo entre paréntesis."""
+    x = E.ETIQUETA_CRUCE.sub('', lado)
+    x = re.sub(r'<a?:\w+:\d+>|:[A-Za-z_]+:|[\U0001F1E6-\U0001F1FF]|\([^)]*\)', ' ', x)
+    return [w for w in (E.norm(w) for w in re.split(r'[\s\[\]|•▪️●]+', x)) if w]
+
+
+def junta_sin_mas(textos):
+    """👥 True si la llave junta en un lado, sin «+», a dos o más que en otra línea jugaron sueltos.
+
+    Fecha Rempalago Vol. 64 (FFA, 11/10/2026): cuartos de a tres y de a cuatro donde PASAN DOS, que en semis se juntan
+    como «[makmah 🇻🇪 Liam]» y «[Guess Bna 6]», y en la final se suma gente nueva. DENME MODERADOR LPM (URBF, 27/09):
+    «Prosu velatz player erian 7 🆚 Nc jupiter Agustín Cinexfilo MCO». El lector no puede saber quién pasó, y
+    preguntar «¿quién ganó?» con un solo ganador es la pregunta equivocada: a esa llave no se le pregunta nada."""
+    lados = []
+    for t in textos or ():
+        for l in str(t or '').splitlines():
+            partes = _LADOS_RE.split(l)
+            if len(partes) >= 2:
+                lados += [(x, _palabras(x)) for x in partes]
+    sueltos = {' '.join(ws) for x, ws in lados if 1 <= len(ws) <= 2 and not _SEP_EQUIPO.search(x)}
+    for x, ws in lados:
+        if len(ws) < 2 or _SEP_EQUIPO.search(x):
+            continue
+        todo, i, n = ' '.join(ws), 0, 0
+        while i < len(ws):
+            par = ' '.join(ws[i:i + 2])
+            if i + 1 < len(ws) and par != todo and par in sueltos:
+                n, i = n + 1, i + 2
+            elif ws[i] in sueltos and ws[i] != todo:
+                n, i = n + 1, i + 1
+            else:
+                i += 1
+        if n >= 2:
+            return True
+    return False
+
+
+def para_organizador(g, nom, sv, fec, ds, ahora=None):
     """🏁 Lo que se le pregunta a quien publicó la llave (`bot/finales.py`), o `None`: las batallas sin ganador de dos
-    a cinco lados —no las de «pasan 2», que no tienen UN ganador—, la final primero. Ver el docstring de `finales`."""
+    a cinco lados —no las de «pasan 2», que no tienen UN ganador—, la final primero. Ver el docstring de `finales`.
+
+    ⚠️ NUNCA a una llave que junta gente sin «+» (`junta_sin_mas()`), ni a una de hace más de `PREGUNTA_MAX_H`: el
+    12/10/2026 la primera corrida preguntó por DENME MODERADOR LPM, una llave de broma del 27/09 que el lector retenía
+    bien, y con la respuesta entró al ranking."""
     h = g['llaves'][-1] if g.get('llaves') else {}
     qs = [d for d in ds if len(d) >= 5 and 2 <= len(d[4]) <= 5 and not str(d[3]).startswith('pasan')]
     if not qs or not h.get('autor_id') or h.get('vidas'):
+        return None
+    if junta_sin_mas([x.get('texto') for x in g.get('llaves') or []]):
+        return None
+    ult = max([str(x.get('cuando') or '') for x in g.get('llaves') or []] or [''])
+    try:
+        import datetime as _dt
+        t = _dt.datetime.fromisoformat(ult.replace('Z', '+00:00'))
+        if ((ahora or _dt.datetime.now(_dt.timezone.utc)) - t).total_seconds() > PREGUNTA_MAX_H * 3600:
+            return None
+    except ValueError:
         return None
 
     def orden(d):
@@ -3445,6 +3506,33 @@ def _self_check():
         ('y el resumen para confirmar dice el campeón y el orden',
          resumen_vidas(f2, 5).startswith('23 batallas · 5 raperos | Campeón: DELUXE 🇦🇷 | 2.º ')
          if f2 else False),
+    ]
+    for que, ok in casos:
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+
+    print('\n  🏁 qué se le pregunta al organizador')
+    import datetime as _dt
+    _rem = ('▪️ [Six 🇻🇪] 🆚 [Hinjkybesuk 🇻🇪] 🆚 [Jupiter 🇲🇽] 🆚 [Guess 🇻🇪]\n'
+            '▪️ [Lvel 🇻🇪] 🆚 [Valdoza 🇨🇱] 🆚 [tnr :Espana:]  🆚 [JJ :Espana:]\n'
+            '▪️ [makmah 🇻🇪 Liam] 🆚 [Verc 🇻🇪 seko boy🇨🇴]\n▪️ [Guess Bna 6] 🆚 [TNR JJ]')
+    _den = ('Velatz 🇨🇱 🆚 Player 🇻🇪 🆚 Prosu 🇨🇴\nYinn 🆚 makma\n'
+            'Prosu velatz player erian 7 🆚 Nc jupiter Agustín Cinexfilo MCO')
+    _bien = ('⌞Ana⌝ 🆚 ⌞Beto⌝\n⌞Caro⌝ 🆚 ⌞Dani⌝\n⌞Seko Boy🇨🇴⌝ 🆚 ⌞Kun Z⌝\n⌞Ana⌝ 🆚 ⌞Caro⌝\n'
+             'Pain 🇨🇴 + BNA 🇦🇷 🆚 Uzi + Makma')
+    _ahora = _dt.datetime(2026, 10, 12, 16, tzinfo=_dt.timezone.utc)
+    _g = {'llaves': [{'autor_id': '9', 'msg_id': '1', 'canal_id': '2', 'cuando': '2026-10-12T02:00:00+00:00',
+                      'texto': _bien}]}
+    _ds = [('X', 'FINAL', None, 'última ronda y no dice campeón', ['Ana', 'Caro'])]
+    _gv = {'llaves': [dict(_g['llaves'][0], cuando='2026-09-28T02:32:26+00:00')]}
+    _gr = {'llaves': [dict(_g['llaves'][0], texto=_rem)]}
+    casos = [
+        ('la llave que junta sin «+» a gente que jugó suelta (Rempalago, DENME MODERADOR): sí',
+         junta_sin_mas([_rem]) and junta_sin_mas([_den])),
+        ('una llave normal, con nombres de dos palabras y equipos con «+»: no', not junta_sin_mas([_bien])),
+        ('a la normal y fresca se le pregunta', bool(para_organizador(_g, 'X', 'FFA', '12/10', _ds, ahora=_ahora))),
+        ('a la que junta sin «+», nada', para_organizador(_gr, 'X', 'FFA', '12/10', _ds, ahora=_ahora) is None),
+        ('ni a una de hace dos semanas', para_organizador(_gv, 'X', 'FFA', '12/10', _ds, ahora=_ahora) is None),
     ]
     for que, ok in casos:
         mal += not ok
