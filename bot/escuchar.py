@@ -3217,6 +3217,43 @@ def _voto_de(t):
     return norm(MARCAS.sub('', re.sub(r'^#+\s*', '', ls[0])))
 
 
+#: 🖼️ los votos que son una imagen se le piden a la IA SÓLO en la corrida de verdad (`llaves_a_entrada --aplicar`
+#: lo prende); el simulacro y comparar_lector usan lo que ya se leyó. Y como mucho estos por corrida
+OCR_VOTOS = [False]
+OCR_VOTOS_TOPE = 6
+_OCR_VOTOS_CUENTA = [0]
+
+
+def _voto_de_imagen(m, a, b):
+    """🖼️ EL JUEZ QUE VOTA CON UNA IMAGEN (Dlx, 12/10/2026: «Si estaría perfecto»). Un 5 vidas de Snake Rap quedó
+    1–1 porque un voto era una captura, y la batalla se iba a ✅ Decidir. La IA copia el texto de la imagen —la misma
+    lectura que los afiches, `anuncios.texto_de_imagen()`— y es un voto si nombra a UNO SOLO de los dos. Una imagen
+    sin nombres (un GIF, un sticker) no vota. Devuelve lo mismo que `_voto_de()`: el nombre normalizado, o `''`."""
+    im = m.get('img') or {}
+    if not im.get('url'):
+        return ''
+    try:
+        import anuncios as A
+    except Exception:                                    # noqa: BLE001
+        return ''
+    if _OCR['mem'] is None:
+        _OCR['mem'] = A._ocr_memoria(OCR_LLAVES)
+    clave = 'voto:%s:%s' % (m.get('id'), im.get('id'))
+    if clave in _OCR['mem']['msgs']:
+        texto = _OCR['mem']['msgs'][clave].get('texto') or ''
+    elif OCR_VOTOS[0]:
+        falso = {'id': m.get('id'), 'content': '', 'attachments': [{
+            'id': im.get('id'), 'content_type': 'image/jpeg', 'url': im['url'], 'proxy_url': im['url'],
+            'width': im.get('w') or 1, 'height': im.get('h') or 1}]}
+        texto = A.texto_de_imagen(falso, _OCR['mem'], _OCR_VOTOS_CUENTA, tope=OCR_VOTOS_TOPE, clave=clave)
+    else:
+        return ''
+    t = norm(texto)
+    na, nb = norm(a), norm(b)
+    ea, eb = len(na) > 2 and na in t, len(nb) > 2 and nb in t
+    return (na if ea else nb) if ea != eb else ''
+
+
 def _clave_par(a, b):
     return '|'.join(sorted([norm(a), norm(b)]))
 
@@ -3328,6 +3365,8 @@ def _tandas(rows):
                 continue
             cur = tanda['bs'][-1] if tanda['bs'] else None
             v = _voto_de(t)
+            if cur and not v and m.get('img') and m.get('autor') and not t.strip():
+                v = _voto_de_imagen(m, cur['a'], cur['b'])
             if not cur or not v or not m.get('autor'):
                 continue
             if v in ('<izq>', '<der>'):
@@ -3562,9 +3601,16 @@ def fila_de_mensaje(m, canal, sv='', guild=''):
                  .timestamp() * 1000) if ed else pub
     except ValueError:
         ed = pub
-    return {'id': str(m['id']), 'canal': str(canal), 'sv': sv, 'g': str(guild or ''),
+    fila = {'id': str(m['id']), 'canal': str(canal), 'sv': sv, 'g': str(guild or ''),
             'autor': str((m.get('author') or {}).get('id') or ''),
             'pub': pub, 'ed': max(pub, ed), 'texto': con_nombres(m)[:400]}
+    # 🖼️ y su imagen, si trae: un juez que vota con una captura (ver `_voto_de_imagen()`)
+    for x in (m.get('attachments') or []):
+        if str(x.get('content_type') or '').startswith('image/') and x.get('width'):
+            fila['img'] = {'id': str(x.get('id') or ''), 'url': x.get('proxy_url') or x.get('url') or '',
+                           'w': x.get('width'), 'h': x.get('height')}
+            break
+    return fila
 
 
 def canales_veredictos(s, mem, guilds, completo):
@@ -3747,6 +3793,8 @@ def vidas(s, mem, guilds, completo):
                     'canal_id': e['canal'], 'msg_id': primera, 'autor': '',
                     'cuando': _iso(_ms(primera)), 'editado': _iso(e['ed']),
                     'texto': '', 'partes': 1, 'menciones': {}, 'vidas': e})
+    # 🖼️ los votos en imagen que se leyeron acá (`_voto_de_imagen()`), a la misma memoria que las llaves en imagen
+    _guardar_ocr_llaves()
     return out
 
 
@@ -3763,6 +3811,21 @@ def _self_check():
                           '[FINAL]\n[A] 🆚 [C]', True),
     ]
     mal = 0
+    # 🖼️ el voto que es una imagen (12/10/2026, `_voto_de_imagen()`): lo ya leído de la memoria, sin red. Una captura
+    # que nombra a uno solo de los dos vota; un GIF sin nombres no
+    _mem0 = _OCR['mem']
+    _OCR['mem'] = {'msgs': {'voto:300:9': {'texto': 'GANA\nDELUXE 🇦🇷'}, 'voto:301:9': {'texto': 'jaja'}}, 'cambio': False}
+    _f = [{'id': '100', 'canal': 'c', 'sv': 'SR', 'g': 'g', 'autor': 'o', 'pub': 1, 'ed': 1,
+           'texto': '# DELUXE 🇦🇷 VS JIMMY 🇵🇪'},
+          {'id': '200', 'canal': 'c', 'sv': 'SR', 'g': 'g', 'autor': 'j1', 'pub': 2, 'ed': 2, 'texto': 'DELUXE'},
+          {'id': '250', 'canal': 'c', 'sv': 'SR', 'g': 'g', 'autor': 'j2', 'pub': 3, 'ed': 3, 'texto': 'JIMMY'}] + [
+          {'id': i, 'canal': 'c', 'sv': 'SR', 'g': 'g', 'autor': j, 'pub': 4, 'ed': 4, 'texto': '',
+           'img': {'id': '9', 'url': 'u', 'w': 1, 'h': 1}} for i, j in (('300', 'j3'), ('301', 'j4'))]
+    _v = _tandas(_f)[0]['bs'][0]['votos']
+    _OCR['mem'] = _mem0
+    if _v != {'j1': 'a', 'j2': 'b', 'j3': 'a'}:
+        print('   ❌ el voto en imagen: %s' % _v)
+        mal += 1
     # 🔑 «CAMPEÓN: TEAM ANDRES» (DDF, CIUDAD GÓTICA, 27/09/2026; Cronox, 08/10/2026): ver `equipo_de_uno()`
     print('\n  el equipo campeón nombrado por uno de los suyos')
     gotica = ('# CIUDAD GOTICA\n  SEMIFINAL\n⌞ANDRES🇨🇱⌝+ ⌞NEXUZ🇵🇪⌝ 🆚  ⌞CRONOX🇨🇱⌝+ ⌞LEONAR-T🇲🇽⌝\n'

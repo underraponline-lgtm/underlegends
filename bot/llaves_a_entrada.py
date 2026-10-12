@@ -3388,6 +3388,8 @@ def main():
             print('   ⚠️ finales: no pude traer las respuestas (%s)' % str(e)[:80])
     print('\n══ LAS LLAVES DE DISCORD, A `Entrada` ══\n')
     s = E.sesion()
+    # 🖼️ los votos que son una imagen, sólo de verdad: ver `escuchar._voto_de_imagen()`
+    E.OCR_VOTOS[0] = aplicar
     # 🔴 `E.escuchar` Y NO `E.barrer`: la primera elige la cadencia
     # —dirigida casi siempre, completa una vez por dia— y es lo que hace
     # que este paso entre en un ciclo por hora. Ver `escuchar.conocidos()`.
