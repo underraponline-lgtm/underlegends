@@ -1,70 +1,70 @@
 {
  "v": 1,
- "cuando": "2026-10-12T22:16:34Z",
+ "cuando": "2026-10-12T22:41:36Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1023.5,
+ "dur_s": 694.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 9.3
+   "s": 9.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 3.9
+   "s": 3.6
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.8
+   "s": 29.1
   },
   {
    "n": "5",
    "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": true,
-   "s": 939.4
+   "s": 597.4
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 1.0
+   "s": 6.8
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 48.2
+   "s": 47.8
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "458",
-  "nombre": "LA REDENCIÓN",
+  "n": "459",
+  "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL4",
   "sv": "FFA",
   "dia": "2026-10-12"
  },
  "cuotas": {
   "kv": {
-   "write": 427,
-   "read": 56174
+   "write": 443,
+   "read": 57595
   },
   "objeto": {
-   "leidas": 1644419,
-   "escritas": 33718,
-   "pedidos": 6912
+   "leidas": 1717148,
+   "escritas": 35296,
+   "pedidos": 7106
   },
   "worker": {
-   "pedidos": 7533,
+   "pedidos": 7546,
    "errores": 0,
-   "sub": 8011,
-   "p50_ms": 1.29,
-   "p99_ms": 6.84
+   "sub": 8037,
+   "p50_ms": 1.32,
+   "p99_ms": 7.02
   },
   "r2": {
    "objetos": 3921,
