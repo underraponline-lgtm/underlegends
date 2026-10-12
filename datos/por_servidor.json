@@ -2205,17 +2205,6 @@
     "racha": "0/0"
    }
   },
-  "IKONOX🇺🇾": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 0,
-    "pts": 6188,
-    "racha": "0/0"
-   }
-  },
   "ISAIAS": {
    "FFA": {
     "duelos": "0/1",
@@ -6000,14 +5989,14 @@
     "racha": "0/0"
    }
   },
-  "ikonoxx🇺🇾": {
+  "ikonoxx": {
    "FFA": {
     "duelos": "0/2",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 49,
     "pod": 0,
-    "pts": 10313,
+    "pts": 16501,
     "racha": "0/0"
    }
   },
