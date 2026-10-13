@@ -1311,9 +1311,9 @@
   "Saz": {},
   "Scot": {},
   "Scritura": {
-   "competitivo": "1adcf48ba600:180ca0f5feae",
-   "pais": "3b18c3be06b2:b8262c1f04f6",
-   "servidor": "c221822f6925:6d01de31deca:15af16"
+   "competitivo": "ee4087f232be:180ca0f5feae",
+   "pais": "68eb53bb8dbf:b8262c1f04f6",
+   "servidor": "27c7fecb4dc2:6d01de31deca:15af16"
   },
   "Selek": {
    "competitivo": "11d499c0a4bd:180ca0f5feae",
@@ -1723,5 +1723,5 @@
    "servidor": "7f8885a35a6d:6d01de31deca:c9f1f2"
   }
  },
- "cuando": "2026-10-13T01:08:41+00:00"
+ "cuando": "2026-10-13T01:24:09+00:00"
 }
