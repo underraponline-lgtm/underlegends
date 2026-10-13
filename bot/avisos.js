@@ -828,6 +828,14 @@ export const CANAL_LOGS = '1504110449535483924';
  * no falla, se saltea. Dos rondas distintas nombradas y cuatro renglones con dos nombres o más (sin contar los de las
  * rondas). ⚠️ La plantilla vacía (`(< >) ⚔️ (< >)`) y la charla del canal («arrancan los cuartos, la final a las 9») no.
  */
+/**
+ * 🧭 LO QUE CUENTA EL TUTORIAL (12/10/2026, web/src/primera.js): `tour` lo vio, `tour_fin` lo terminó, `salta0`…`salta4`
+ * lo cortó en ese paso (0 es la bienvenida), `repite` lo volvió a pedir desde la Guía, `franja` llegó por un link y vio
+ * la invitación, `franja_si` la tocó, `pasos` vio los primeros pasos en el Inicio y `pasos_fin` los completó
+ */
+export const TUTO_EV = new Set(['tour', 'tour_fin', 'salta0', 'salta1', 'salta2', 'salta3', 'salta4', 'repite', 'franja',
+  'franja_si', 'pasos', 'pasos_fin']);
+
 /** 📣 La clave de un organizador: sin la arroba, en minúsculas y sólo letras y números (`latino()` para las de fantasía). */
 export function claveOrg(nombre) {
   return latino(String(nombre || '').replace(/^[@!\s]+/, '')).toLowerCase().replace(/[\u0300-\u036f]/g, '')
@@ -1795,6 +1803,8 @@ const RUTAS = {
   '/avisos/mi-servidor': 'POST', '/avisos/servidores': 'GET',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026). Ver `visita()` del objeto
   '/avisos/visita': 'POST',
+  // 🧭 el tutorial (12/10/2026): qué vio y qué terminó un navegador, sin nada de nadie. Ver `tutorial()` del objeto
+  '/avisos/tutorial': 'POST',
   // 🔒 el Dashboard del dueño (04/10/2026): ver `/avisos/dueno` en `rutaAvisos()`
   '/avisos/dueno': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx) y los ajustes para el ciclo (con su clave)
@@ -2907,6 +2917,16 @@ export async function rutaAvisos(req, env, ruta) {
     }
     return elObjeto(env).fetch('https://avisos/dueno', { method: 'POST', body: '{}', headers: { 'content-type': 'application/json' } });
   }
+  // 🧭 lo del tutorial: sólo el nombre de lo que pasó, de una lista cerrada (`TUTO_EV`)
+  if (ruta === '/avisos/tutorial') {
+    const crudo = await req.text();
+    let d = null;
+    try { d = crudo.length <= 200 ? JSON.parse(crudo) : null; } catch (e) { d = null; }
+    const ev = d && typeof d.ev === 'string' ? d.ev : '';
+    if (!TUTO_EV.has(ev)) return json({ error: 'faltan datos' }, 400);
+    return elObjeto(env).fetch('https://avisos/tutorial', { method: 'POST', body: JSON.stringify({ ev }),
+      headers: { 'content-type': 'application/json' } });
+  }
   // 📊 una visita sin cuenta: no lleva nada de nadie, sólo suma (ver `visita()` del objeto)
   if (ruta === '/avisos/visita') return elObjeto(env).fetch('https://avisos/visita', { method: 'POST', body: '{}', 
     headers: { 'content-type': 'application/json' } });
@@ -3583,6 +3603,9 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS uso (dia TEXT NOT NULL, quien TEXT NOT NULL, por TEXT NOT NULL, ' +
         'PRIMARY KEY (dia, quien, por)) WITHOUT ROWID');
       this.sql.exec('CREATE TABLE IF NOT EXISTS visitas (dia TEXT PRIMARY KEY, n INTEGER NOT NULL DEFAULT 0)');
+      // 🧭 y el tutorial (12/10/2026): cuántos navegadores vieron, terminaron o saltearon cada cosa, por día. Sólo números
+      this.sql.exec('CREATE TABLE IF NOT EXISTS tutorial (dia TEXT NOT NULL, ev TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
+        'PRIMARY KEY (dia, ev)) WITHOUT ROWID');
       // 🔥 LA RACHA DIARIA Y LOS NIVELES (04/10/2026): qué días contó cada uno (`activo`: el bot, la página con su
       // cuenta o un evento jugado; el día, nunca la hora) y, de los que jugaron, su perfil y cuántos eventos
       // (`jugo_temp`, por temporada, que manda el ciclo). Ver `diaActivo()`, `rachaDe()` y `bot/racha.py`
@@ -3894,6 +3917,7 @@ export class Avisos {
         return json({ ok: true });
       }
       if (ruta === '/visita') return this.visita();
+      if (ruta === '/tutorial') return this.tutorial(await req.json().catch(() => null));
       if (ruta === '/dueno') {
         const p = this.panelDueno();
         // 🎤 y en qué servidores lo prendió su admin (`cfg:<guild>` en KV, `/settings`): una lectura por servidor
@@ -4178,6 +4202,7 @@ export class Avisos {
       // 📊 el uso: quién, `USO_DIAS` días; las visitas (sólo un número por día), 90
       this.sql.exec('DELETE FROM uso WHERE dia < ?', diaET(ahora - USO_DIAS * DIA_MS));
       this.sql.exec('DELETE FROM visitas WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
+      this.sql.exec('DELETE FROM tutorial WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       // 🔴 y los dispositivos que nunca recibieron nada y fallaron cinco veces (revisión del 03/10/2026): sólo 404 y
       // 410 borran al momento (ver `MUERTA`), así que uno inventado con un servicio que no resuelve quedaba para
       // siempre ocupando lugar en el tope y recibiendo cada evento. Uno de verdad recibe la de prueba al anotarse
@@ -5978,6 +6003,8 @@ export class Avisos {
     // 🎬 tus pedidos de videos y tus reportes (12/10/2026)
     this.sql.exec('DELETE FROM videos_pedidos WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM videos_reportes WHERE quien = ?', String(d.quien));
+    // 📅 lo que agendó con /agendar queda (es el evento de su servidor), pero sin su ID
+    this.sql.exec("UPDATE agenda SET quien = '' WHERE quien = ?", String(d.quien));
     this.sql.exec('DELETE FROM cambios_dia WHERE quien = ?', String(d.quien));
     // 🔴 Y LO QUE QUEDABA CON SU ID EN LAS TABLAS DE TRABAJO (revisión del 03/10/2026): de qué perfil es (`idk`), sus
     // inscripciones leídas de Discord (`inscritos`) y las marcas de «ya avisado» que llevan su ID —quién siguió a
@@ -7415,6 +7442,23 @@ export class Avisos {
     return json({ ok: true });
   }
 
+  /** 🧭 Algo del tutorial, de un navegador (ver `TUTO_EV`). Con tope por día, como la visita */
+  tutorial(d) {
+    const ev = d && typeof d.ev === 'string' ? d.ev : '';
+    if (!TUTO_EV.has(ev)) return json({ error: 'faltan datos' }, 400);
+    this.sql.exec('INSERT INTO tutorial (dia, ev, n) VALUES (?, ?, 1) ON CONFLICT(dia, ev) DO UPDATE SET n = n + 1 ' +
+      'WHERE n < 5000', diaET(), ev);
+    return json({ ok: true });
+  }
+
+  /** 🧭 Lo del tutorial de las dos últimas semanas, sumado: `{ev: n}`, y desde qué día se cuenta */
+  tutorialResumen() {
+    const out = {};
+    for (const f of this.sql.exec('SELECT ev, SUM(n) AS n FROM tutorial WHERE dia > ? GROUP BY ev',
+      diaET(Date.now() - 14 * DIA_MS)).toArray()) out[f.ev] = f.n;
+    return { n: out, desde: (this.sql.exec('SELECT MIN(dia) AS d FROM tutorial').toArray()[0] || {}).d || null };
+  }
+
   /** Cuántas personas distintas en los últimos 7 días (y los 7 anteriores, para comparar), y las visitas por día */
   usoResumen() {
     const desde = (n) => diaET(Date.now() - n * DIA_MS);
@@ -7476,6 +7520,7 @@ export class Avisos {
     const e = this.estado();
     return {
       uso: this.usoResumen(),
+      tutorial: this.tutorialResumen(),
       ajustes: this.ajustes(),
       // 🎤 el bot en vivo: el chat general de cada servidor, lo que pasó la última vez, y (lo llena la ruta) dónde lo
       // prendió cada admin

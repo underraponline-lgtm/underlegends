@@ -96,6 +96,8 @@ const AVISOS = {
   '/api/avisos/sumate': 'POST',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026): ver `visita()` en bot/avisos.js
   '/api/avisos/visita': 'POST',
+  // 🧭 el tutorial (12/10/2026): qué vio un navegador, sin nada de nadie. Ver `tutorial()` en bot/avisos.js
+  '/api/avisos/tutorial': 'POST',
   // 🔒 el Dashboard del dueño: el Worker comprueba que es Dlx (ver `/avisos/dueno` en bot/avisos.js)
   '/api/avisos/dueno': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx)
@@ -148,19 +150,35 @@ function sesion(req) {
 // Worker porque el Worker ve la IP de este proxy, no la de quien visita. En la memoria de cada instancia: no es un
 // candado, es un freno —la página ya avisa una vez por día y por navegador—
 const VISITAS = new Map();
-function visitaRepetida(req) {
+function visitaRepetida(req, que) {
   const ip = req.headers.get('cf-connecting-ip') || '';
   if (!ip) return false;
+  const k = que ? ip + '|' + que : ip;
   const ahora = Date.now();
   if (VISITAS.size > 20000) VISITAS.clear();
-  if (ahora - (VISITAS.get(ip) || 0) < 6 * 3600000) return true;
-  VISITAS.set(ip, ahora);
+  if (ahora - (VISITAS.get(k) || 0) < 6 * 3600000) return true;
+  VISITAS.set(k, ahora);
   return false;
 }
 
 async function avisos(req, url) {
   const metodo = AVISOS[url.pathname];
   if (req.method !== metodo) return new Response('no', { status: 405 });
+  // 🧭 lo del tutorial, con el mismo freno que la visita pero por cosa: el navegador ya cuenta cada una una sola vez
+  if (url.pathname === '/api/avisos/tutorial') {
+    const crudo = await req.text();
+    let ev = '';
+    try { ev = crudo.length <= 200 ? String((JSON.parse(crudo) || {}).ev || '').slice(0, 20) : ''; } catch (e) { ev = ''; }
+    // lo que no es de la lista lo rechaza el Worker (`TUTO_EV`); acá sólo se frena lo repetido
+    if (ev && visitaRepetida(req, ev)) {
+      return new Response('{"ok":true}', { headers: { 'content-type': 'application/json; charset=utf-8', ...SEGURO,
+        'cache-control': 'no-store' } });
+    }
+    const r = await fetch(ORIGEN + '/avisos/tutorial', { method: 'POST', headers: { 'content-type': 'application/json',
+      accept: 'application/json' }, body: JSON.stringify({ ev }) });
+    return new Response(r.body, { status: r.status, headers: { 'content-type': 'application/json; charset=utf-8', ...SEGURO,
+      'cache-control': 'no-store' } });
+  }
   if (url.pathname === '/api/avisos/visita' && visitaRepetida(req)) {
     return new Response('{"ok":true}', { headers: { 'content-type': 'application/json; charset=utf-8', ...SEGURO,
       'cache-control': 'no-store' } });

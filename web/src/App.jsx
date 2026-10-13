@@ -8,6 +8,11 @@ import { Cabecera, Hero, Historias, Instalar, IrA, Tira, gruposHistorias, ordenH
 import { Fechas, LaLiga, LosQueMandan, Noticias, Panel } from './medio.jsx';
 import { Menu, Merch, Pie, SeBusca, Tabbar, Visor } from './abajo.jsx';
 import { Encuestas } from './encuestas.jsx';
+// 🧭 el tutorial (Dlx, 12/10/2026, «A … B … C … D … E. Dale»): quién es nuevo se decide al cargar (primera.js, chico);
+// lo que se dibuja se baja sólo si hace falta
+import { pasosEnInicio, quiereTutorial } from './primera.js';
+const Tutorial = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.Tutorial })));
+const PrimerosPasos = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.PrimerosPasos })));
 // 🔑 EL RANKING Y EVENTOS, EN SU PROPIO ARCHIVO: se bajan recién al abrirlos. Con los dos adentro, el JS del Inicio
 // pasaba de 120 a 133 KB comprimido (02/10/2026), y el Inicio es lo que abre todo el mundo, en el celular
 const Ranking = lazy(() => import('./ranking.jsx').then((m) => ({ default: m.Ranking })));
@@ -230,6 +235,13 @@ export default function App() {
   const [yo, setYo] = useState(quienMira);
   const [hash, setHash] = useState(rutaHash);
   const [sigoV, setSigoV] = useState(0);
+  // 🧭 «Ver el recorrido otra vez» (la Guía) avisa `lg:tour`: cada pedido es un número nuevo
+  const [repite, setRepite] = useState(0);
+  useEffect(() => {
+    const f = () => setRepite((n) => n + 1);
+    window.addEventListener('lg:tour', f);
+    return () => window.removeEventListener('lg:tour', f);
+  }, []);
   const raiz = useRef(null);
 
   useEffect(() => {
@@ -398,6 +410,7 @@ export default function App() {
       <div className="barra-ul" />
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} onMenu={() => setMenu(true)} /></Aislada>
       <Aislada n="AvisoWeb"><AvisoWeb aviso={aviso} /></Aislada>
+      {quiereTutorial() || repite ? <Aislada n="Tutorial"><Suspense fallback={null}><Tutorial liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv} repite={repite} /></Suspense></Aislada> : null}
       <span id="contenido" tabIndex={-1} />
       {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} /></Suspense></Aislada>
         : pagina === 'cambios' ? <Aislada key="Cambios" n="Cambios" pagina><Suspense fallback={<Cargando />}><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Suspense></Aislada>
@@ -424,6 +437,7 @@ export default function App() {
         {yo.dc && String(yo.dc.id) === DUENO ? <Aislada n="PanelDueno"><Suspense fallback={null}><PanelDueno liga={liga} /></Suspense></Aislada> : null}
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos || {}} onAbrir={setHistoria} /></Aislada>
         <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
+        {pasosEnInicio(yo.dc) ? <Aislada n="PrimerosPasos"><Suspense fallback={null}><PrimerosPasos liga={liga} dc={yo.dc} /></Suspense></Aislada> : null}
         <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>
         <Aislada n="Instalar"><Instalar /></Aislada>
         <Aislada n="Fechas"><Fechas liga={liga} /></Aislada>

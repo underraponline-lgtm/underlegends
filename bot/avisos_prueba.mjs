@@ -1266,6 +1266,12 @@ const ok = (cond, que, det) => {
     'agendar: el mismo nombre otra vez lo corrige, no lo duplica');
     ok(o.agendar({ sv: 'SR', nombre: 'Copa X', borrar: true }).ok && o.agendaCiclo().agenda.length === 0
       && o.agendar({ sv: 'SR', nombre: 'Copa X', borrar: true }).error === 'no_esta', 'y se borra');
+    // 🧭 el tutorial: sólo lo de la lista, sumado por día; y el Dashboard lo recibe
+    const tu = async (ev) => (await o.tutorial({ ev })).status;
+    ok(await tu('tour') === 200 && await tu('tour') === 200 && await tu('salta2') === 200 && await tu('otra') === 400
+      && await tu('') === 400, 'tutorial: lo de la lista suma, lo demás no');
+    const tr = o.panelDueno().tutorial;
+    ok(tr.n.tour === 2 && tr.n.salta2 === 1 && !tr.n.otra && !!tr.desde, 'y el Dashboard lo ve sumado', JSON.stringify(tr));
   }
 }
 

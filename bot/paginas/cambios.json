@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.78",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T21:10:00-04:00",
+   "titulo": "Bienvenida para quien llega",
+   "items": [
+    "🧭 La primera vez que entrás, un **recorrido** de un minuto por la página. Se vuelve a ver desde la Guía.",
+    "✅ **Primeros pasos**: cinco cosas que se tildan solas, y ninguna pide jugar. La de Temporada sale con el nivel 1 del Pase.",
+    "💡 Una nota corta la primera vez que abrís cada página, con lo que se puede hacer ahí."
+   ]
+  },
+  {
    "version": "2.77",
    "dia": "2026-10-12",
    "cuando": "2026-10-12T21:00:00-04:00",

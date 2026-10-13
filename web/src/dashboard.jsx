@@ -239,6 +239,28 @@ function EnVivo({ vivo, liga, aj, chat }) {
 }
 
 // ── 🎟️ el Pase de rapero, en números (`paseResumen()` en bot/avisos.js: nunca quién) ───────────────────────────────
+// ── 🧭 EL TUTORIAL (Dlx, 12/10/2026, «E. Dale»): cuántos navegadores nuevos lo vieron y cuántos lo terminaron. Cada cosa
+// cuenta una vez por navegador (web/src/primera.js) y acá llega sumada, nunca de quién (`tutorialResumen()`)
+const PASOS_TUTO = ['la bienvenida', 'Eventos', 'Ranking', 'Tarjetas', 'Pase'];
+function TutorialNumeros({ t }) {
+  const v = (k) => ((t && t.n) || {})[k] || 0;
+  const pct = (a, b) => (b ? Math.round((100 * a) / b) + ' %' : '—');
+  const cajas = [
+    ['VIERON EL RECORRIDO', v('tour'), v('repite') ? 'y ' + num(v('repite')) + ' lo pidieron otra vez en la Guía' : 'la primera vez que entraron, por el Inicio'],
+    ['LO TERMINARON', v('tour_fin'), pct(v('tour_fin'), v('tour')) + ' de los que lo vieron'],
+    ['LLEGARON POR UN LINK', v('franja'), num(v('franja_si')) + ' tocaron «Ver cómo»'],
+    ['PRIMEROS PASOS', v('pasos_fin'), 'completos, de ' + num(v('pasos')) + ' que los vieron en el Inicio'],
+  ];
+  const saltos = PASOS_TUTO.map((x, i) => [x, v('salta' + i)]).filter((x) => x[1]);
+  return (
+    <>
+      <div className="act-4">{cajas.map(([k, n, d]) => <div key={k}><span>{k}</span><b>{num(n || 0)}</b><small>{d}</small></div>)}</div>
+      <p className="db-tx">{saltos.length ? 'Dónde lo cortaron: ' + saltos.map(([x, n]) => x + ' ' + num(n)).join(' · ') + '.'
+        : 'Nadie lo cortó a la mitad.'} Cuenta navegadores, no personas: quien cambia de celular cuenta otra vez.</p>
+    </>
+  );
+}
+
 function PaseNumeros({ p, liga }) {
   const dist = Object.entries(p.dist || {}).map(([n, k]) => [Number(n), k]).sort((a, b) => a[0] - b[0]);
   const tope = Math.max(1, ...dist.map((x) => x[1]));
@@ -748,6 +770,12 @@ export function Dashboard({ dc, liga }) {
           <section className="act">
             <div className="mis-cab"><span>DÍA POR DÍA · DOS SEMANAS</span></div>
             <Dias dias={d.dias} />
+          </section>
+        ) : null}
+        {d.tutorial && Object.keys(d.tutorial.n || {}).length ? (
+          <section className="act">
+            <div className="mis-cab"><span>EL TUTORIAL · DOS SEMANAS</span>{d.tutorial.desde ? <em>se cuenta desde el {corto(d.tutorial.desde)}</em> : null}</div>
+            <TutorialNumeros t={d.tutorial} />
           </section>
         ) : null}
         {d.pase ? (

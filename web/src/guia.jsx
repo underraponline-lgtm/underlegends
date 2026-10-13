@@ -6,9 +6,12 @@
 // `comun/rangos.py`, los puntos de `Config` y los pesos de `sheet/ovr.py` y `sheet/competitivo.py` (`_guia()` de
 // bot/subir_web.py). Acá no se escribe ninguno. Lo que es texto —las palabras, las preguntas— es el de la Guía de
 // app.js (index.html), ordenado por tema.
+import { Suspense, lazy } from 'react';
 import { num } from './liga.js';
-import { Carta, accion } from './piezas.jsx';
+import { Carta } from './piezas.jsx';
 import * as RQ from './requisitos.js';
+
+const PrimerosPasos = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.PrimerosPasos })));
 
 // ✍️ lo que pide cada tarjeta, dicho para alguien nuevo (Dlx, 07/10/2026: «sé más descriptivo»). El número sale del
 // payload («10 eventos», de `comun/requisitos.py`); qué es y cómo se consigue, de `requisitos.js`
@@ -104,7 +107,6 @@ export function Guia({ liga, dc }) {
   const P = G.puntos || {};
   const reqs = liga.d.requisitos || [];
   const rangos = liga.d.rangos || [];
-  const yo = liga.yo;
   // el ejemplo de cada tarjeta: la del mejor que la tiene (son cartas de verdad, no dibujos)
   const ejemplo = (id) => liga.oficiales().find((f) => (f.c || []).includes(id));
   const escs = ['16+', '8-15', '4-7'].filter((e) => ((P.tablas || {})[e] || []).length);
@@ -130,24 +132,10 @@ export function Guia({ liga, dc }) {
         {SECCIONES.map(([id, t]) => <button type="button" key={id} onClick={() => ir(id)}>{t}</button>)}
       </nav>
       <div className="gu-cuerpo">
-        <Seccion id="empezar" titulo="Cómo empezar" bajada="Tres pasos, y el resto sale solo.">
-          <ol className="gu-pasos">
-            <li>
-              <b>1</b><h3>Entrá con Discord</h3>
-              <p>Con tu cuenta de Discord: te verificás, y además tu foto, tus avisos, votar, seguir y felicitar.</p>
-              {dc ? <span className="gu-ok">✓ Ya entraste</span> : <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button>}
-            </li>
-            <li>
-              <b>2</b><h3>Jugá un evento</h3>
-              <p>En cualquier servidor de la Liga. Con una participación ya estás en el ranking de la Temporada.</p>
-              <a className="btn borde2 chico" href="#/eventos">Ver los eventos</a>
-            </li>
-            <li>
-              <b>3</b><h3>Tu tarjeta</h3>
-              <p>Verificado, sale tu Servidor; con tu primera Tarea del Pase, tu Temporada. En Discord la pedís con <code>/card</code>.</p>
-              <a className="btn borde2 chico" href={yo ? '#/r/' + encodeURIComponent(yo.k) : '#/tarjetas'}>{yo ? 'Ver mi perfil' : 'Ver las tarjetas'}</a>
-            </li>
-          </ol>
+        {/* 🧭 los pasos se tildan solos (Dlx, 12/10/2026, el tutorial: «A pero que no sea necesariamente con jugar»):
+            la misma lista que el Inicio le muestra a quien llegó hace poco. Ver tutorial.jsx */}
+        <Seccion id="empezar" titulo="Cómo empezar" bajada="Cinco pasos, y ninguno pide jugar: se tildan solos a medida que los hacés.">
+          <Suspense fallback={null}><PrimerosPasos liga={liga} dc={dc} enGuia /></Suspense>
         </Seccion>
         {reqs.length ? (
           <Seccion id="tarjetas" titulo="Tus tarjetas" bajada="Cada una pide algo distinto, porque cada una mide algo distinto. Mientras no llegues, sale la bloqueada con cuánto falta.">
