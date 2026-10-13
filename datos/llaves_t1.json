@@ -21955,8 +21955,8 @@
        "MARITHEA",
        "PUPPY"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "MARITHEA",
+      ""
      ],
      [
       [
@@ -21973,8 +21973,96 @@
     "b": [
      [
       [
+       "JAZZ",
+       "AXL EVANS"
+      ],
+      "JAZZ",
+      "Walk-in 1: JAZZ; Walk-in 1: AXL EVANS"
+     ],
+     [
+      [
+       "AIRON",
+       "HUNTER"
+      ],
+      "AIRON",
+      "Walk-in 1: AIRON; Walk-in 1: HUNTER"
+     ],
+     [
+      [
+       "COLOSO",
+       "PUPPY"
+      ],
+      "COLOSO",
+      ""
+     ],
+     [
+      [
+       "COFFY",
+       "HORUS"
+      ],
+      "COFFY",
+      "Walk-in 1: COFFY; Walk-in 1: HORUS"
+     ],
+     [
+      [
+       "LIT IGNIS",
+       "URKO"
+      ],
+      "LIT IGNIS",
+      "Walk-in 1: LIT IGNIS; Walk-in 1: URKO"
+     ],
+     [
+      [
+       "VISIONARIO",
+       "COLOSO"
+      ],
+      "VISIONARIO",
+      ""
+     ],
+     [
+      [
+       "AIRON",
+       "LIT IGNIS"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
        "FAT N",
-       "J1"
+       "VISIONARIO"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "J1",
+       "VISIONARIO"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "JAZZ",
+       "AIRON"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "JAZZ",
+       "COFFY"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "JM SERNA",
+       "FAT N"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -21989,16 +22077,24 @@
      ],
      [
       [
-       "URKO",
-       "COFFY"
+       "LIT IGNIS",
+       "HORUS"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
      ],
      [
       [
-       "VISIONARIO",
-       "PUPPY"
+       "PANDORA",
+       "J1"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "URKO",
+       "COFFY"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -22010,11 +22106,19 @@
     "b": [
      [
       [
+       "MARITHEA",
+       "VISIONARIO"
+      ],
+      "MARITHEA",
+      ""
+     ],
+     [
+      [
        "FAT N",
        "AIRON"
       ],
       "FAT N",
-      "ganador: ✅ Decidir; Walk-in 2: AIRON"
+      "ganador: ✅ Decidir"
      ],
      [
       [
@@ -22077,18 +22181,7 @@
    }
   ],
   "sv": "URBF",
-  "tabla": [
-   [
-    "FAT N",
-    "Campeón",
-    10000
-   ],
-   [
-    "AIRON",
-    "Subcampeón",
-    1875
-   ]
-  ]
+  "tabla": []
  },
  "464": {
   "dia": "2026-10-12",
