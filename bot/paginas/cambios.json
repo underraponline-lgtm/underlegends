@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "2.94",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T18:50:00-04:00",
+   "titulo": "La imagen del vs, más grande",
+   "items": [
+    "🖼️ La imagen del vs y las de `/afiche` y `/llave` llegan como imagen suelta y no adentro de un recuadro: en Discord se ven más grandes, y en el celular ocupan todo el ancho."
+   ]
+  },
+  {
    "version": "2.93",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T18:11:00-04:00",

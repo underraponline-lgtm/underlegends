@@ -1035,7 +1035,11 @@ const ok = (cond, que, det) => {
     const antesF = globalThis.fetch;
     const pedidos = [];
     globalThis.fetch = async (u, op = {}) => {
-      pedidos.push({ u: String(u), m: op.method || 'GET', b: op.body ? JSON.parse(op.body) : null });
+      // 🖼️ el multipart de un adjunto (13/10/2026, `editarConAdjunto()`): se anota lo que manda
+      const form = typeof FormData !== 'undefined' && op.body instanceof FormData;
+      pedidos.push({ u: String(u), m: op.method || 'GET', form,
+        b: form ? JSON.parse(op.body.get('payload_json')) : op.body ? JSON.parse(op.body) : null,
+        f: form ? op.body.get('files[0]') : null });
       return new Response(JSON.stringify({ id: 'm' + pedidos.length }), { status: 200 });
     };
     const T = Date.parse('2026-10-07T23:00:00Z');
@@ -1062,8 +1066,10 @@ const ok = (cond, que, det) => {
     const vl = await o.vsListo({ id: cola[0].id, url: 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vs/ffa-abc.jpg' });
     ok(vl.ok === true || vl.estado === undefined || true, 'vsListo contesta');
     const ed = pedidos[pedidos.length - 1];
-    ok(pedidos.length === nped + 1 && ed.m === 'PATCH' && ed.u.endsWith('/messages/' + 'm1') && ed.b.flags === 0
-      && ed.b.embeds[0].image.url.endsWith('/vs/ffa-abc.jpg'), 'y se le agrega al mensaje del cruce, editándolo', ed);
+    // 🖼️ como ADJUNTO, que se ve más grande (Dlx, 13/10/2026): baja la imagen y edita con multipart, sin embed
+    ok(pedidos.length === nped + 2 && pedidos[nped].u.endsWith('/vs/ffa-abc.jpg') && ed.m === 'PATCH' && ed.form
+      && ed.u.endsWith('/messages/' + 'm1') && ed.b.embeds.length === 0 && ed.b.attachments[0].filename === 'vs.jpg'
+      && ed.f && ed.f.name === 'vs.jpg', 'y se le agrega al mensaje del cruce como adjunto, editándolo', ed);
     const ini = { inicial: 5000, desde: 0 };
     const pedir = async (d, t = T + 60000) => (await o.apostar(Object.assign({}, ini, d), t)).json();
     const U1 = '100000000000000001', U2 = '100000000000000002', U3 = '100000000000000003';

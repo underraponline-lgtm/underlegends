@@ -881,6 +881,30 @@ export function lineaApuesta(estado, d = {}) {
   return '🎲 ↩️ ' + (d.porque || 'Sin resultado') + ': se devolvió lo apostado';
 }
 
+/**
+ * 🖼️ UNA IMAGEN NUESTRA COMO ADJUNTO Y NO ADENTRO DE UN EMBED (13/10/2026, Dlx: «si la imagen no está en un embed es más
+ * grande… si lo es, hacelo»). Lo es: Discord muestra un adjunto más grande que la imagen de un embed —que va adentro de
+ * la tarjeta, con su borde de color y sus márgenes— y en el celular a todo el ancho. Baja la imagen (de R2, nuestra) y
+ * EDITA el mensaje con multipart, sacándole el embed si tenía. Devuelve la respuesta de Discord, o `null` si no pudo
+ * bajarla o mandarla: quien llama vuelve al embed de antes, así nunca queda sin imagen.
+ */
+export async function editarConAdjunto(urlApi, urlImg, nombre, extra, headers) {
+  let img = null;
+  try { img = await fetch(urlImg); } catch (e) { img = null; }
+  if (!img || !img.ok) return null;
+  const buf = await img.arrayBuffer();
+  if (!buf.byteLength || buf.byteLength > 8 * 1024 * 1024) return null;
+  const png = /\.png$/i.test(nombre);
+  const fd = new FormData();
+  fd.append('payload_json', JSON.stringify(Object.assign({ embeds: [], attachments: [{ id: 0, filename: nombre }],
+    allowed_mentions: { parse: [] } }, extra || {})));
+  fd.append('files[0]', new Blob([buf], { type: png ? 'image/png' : 'image/jpeg' }), nombre);
+  try {
+    // sin content-type: lo pone FormData con su separador
+    return await fetch(urlApi, { method: 'PATCH', headers: headers || {}, body: fd });
+  } catch (e) { return null; }
+}
+
 /** Los botones de una apuesta: una fila por lado, con los cuatro montos. `cerrada` los deja grises */
 export function botonesApuesta(id, a, b, cerrada, montos = AP_MONTOS) {
   const corto = (n) => { const s = sinBandera(n); return s.length > 14 ? s.slice(0, 13) + '…' : s; };
@@ -6482,12 +6506,19 @@ export class Avisos {
       this.sql.exec("UPDATE vs_cola SET estado = 'error' WHERE id = ?", f.id);
       return { error: url ? 'vencido' : 'url' };
     }
-    const r = await fetch(`${DC}/channels/${f.canal}/messages/${f.msg}`, {
-      method: 'PATCH',
-      headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
-      // `flags: 0` saca el freno de las vistas previas con el que salió el mensaje: si no, la imagen no se ve
-      body: JSON.stringify({ embeds: [{ image: { url }, color: 0xE41373 }], flags: 0, allowed_mentions: { parse: [] } }),
-    });
+    const api = `${DC}/channels/${f.canal}/messages/${f.msg}`;
+    // 🖼️ como adjunto, que se ve más grande (ver `editarConAdjunto()`). Un adjunto se ve aunque el mensaje tenga el freno
+    // de las vistas previas, así que no se le tocan las `flags`; si no se pudo, en el embed de antes
+    let r = await editarConAdjunto(api, url, /\.png$/i.test(url) ? 'vs.png' : 'vs.jpg', {},
+      { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA });
+    if (!r || !r.ok) {
+      r = await fetch(api, {
+        method: 'PATCH',
+        headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+        // `flags: 0` saca el freno de las vistas previas con el que salió el mensaje: si no, la imagen no se ve
+        body: JSON.stringify({ embeds: [{ image: { url }, color: 0xE41373 }], flags: 0, allowed_mentions: { parse: [] } }),
+      });
+    }
     this.sql.exec('UPDATE vs_cola SET estado = ? WHERE id = ?', r.ok ? 'hecho' : 'error', f.id);
     return { ok: r.ok, estado: r.status };
   }
@@ -7375,10 +7406,15 @@ export class Avisos {
     // sólo una imagen nuestra, del bucket de las cartas
     const url = /^https:\/\/pub-[a-z0-9]+\.r2\.dev\/kit\/[\w.-]+\.png$/.test(String(d.url || '')) ? String(d.url) : null;
     const texto = String((url ? d.texto : d.error) || '').slice(0, 400) || (url ? '🧰' : 'No pude armarla esta vez.');
-    const r = await fetch(`https://discord.com/api/v10/webhooks/${k.app}/${k.token}/messages/@original`, {
-      method: 'PATCH', headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ content: texto, embeds: url ? [{ image: { url }, color: 0xE41373 }] : [], allowed_mentions: { parse: [] } }),
-    });
+    const api = `https://discord.com/api/v10/webhooks/${k.app}/${k.token}/messages/@original`;
+    // 🖼️ como adjunto, que se ve más grande (ver `editarConAdjunto()`); si no se pudo, en el embed de antes
+    let r = url ? await editarConAdjunto(api, url, k.tipo === 'llave' ? 'llave.png' : 'afiche.png', { content: texto }) : null;
+    if (!r || !r.ok) {
+      r = await fetch(api, {
+        method: 'PATCH', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ content: texto, embeds: url ? [{ image: { url }, color: 0xE41373 }] : [], allowed_mentions: { parse: [] } }),
+      });
+    }
     return { ok: r.ok, estado: r.status };
   }
 
