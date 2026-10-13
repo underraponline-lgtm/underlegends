@@ -1409,6 +1409,12 @@ const ok = (cond, que, det) => {
     const sr = o.panelDueno().secciones;
     ok(sr.n.ranking && sr.n.ranking[0] === 2 && sr.n.ranking[1] === 0 && sr.n.guia[0] === 1 && !sr.n.dashboard && !!sr.desde,
       'y el Dashboard las ve, esta semana contra la anterior', JSON.stringify(sr));
+    // 🔴 y por `fetch()`, como llega de verdad: el cuerpo se lee una sola vez arriba, y el tutorial lo leía de nuevo
+    const porFetch = async (r, ev) => (await o.fetch(new Request('https://avisos' + r, { method: 'POST',
+      body: JSON.stringify({ ev }), headers: { 'content-type': 'application/json' } }))).status;
+    ok(await porFetch('/tutorial', 'franja') === 200 && await porFetch('/seccion', 'pase') === 200
+      && await porFetch('/seccion', 'zzz') === 400 && o.panelDueno().tutorial.n.franja === 1
+      && o.panelDueno().secciones.n.pase[0] === 1, 'tutorial y secciones también entrando por fetch()');
     const enApp = /const SECC = new Set\(\[([^\]]+)\]/.exec(readFileSync(join(aqui, '..', 'web', 'src', 'App.jsx'), 'utf8'));
     const deApp = enApp ? enApp[1].match(/'([a-z]+)'/g).map((x) => x.slice(1, -1)).sort() : [];
     ok(JSON.stringify(deApp) === JSON.stringify([...A.SECC_EV].sort()), 'la lista de App.jsx es SECC_EV', deApp.join(','));

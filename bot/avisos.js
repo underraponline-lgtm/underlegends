@@ -4124,8 +4124,11 @@ export class Avisos {
         return json({ ok: true });
       }
       if (ruta === '/visita') return this.visita();
-      if (ruta === '/tutorial') return this.tutorial(await req.json().catch(() => null));
-      if (ruta === '/seccion') return this.seccion(await req.json().catch(() => null));
+      // 🔴 CON `d`, NO CON OTRO `req.json()` (12/10/2026): el cuerpo ya se leyó arriba, así que leerlo de nuevo daba
+      // null y el tutorial contestó «faltan datos» a todo desde que salió (2.78). Las pruebas llamaban a `tutorial()`
+      // directo y no pasaban por acá; ahora `avisos_prueba.mjs` entra por `fetch()`, como la página
+      if (ruta === '/tutorial') return this.tutorial(d);
+      if (ruta === '/seccion') return this.seccion(d);
       if (ruta === '/dueno') {
         const p = this.panelDueno();
         // 🎤 y en qué servidores lo prendió su admin (`cfg:<guild>` en KV, `/settings`): una lectura por servidor
