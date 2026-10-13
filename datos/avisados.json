@@ -1190,7 +1190,7 @@
    "Xclusivo": 4
   },
   "fecha": "07/10",
-  "firma": "b71afc9a6845ba80",
+  "firma": "05745eb9422517ae",
   "msg": "1557564144360890428",
   "nombre": "__ PRITTY FREE __",
   "num": 425,
@@ -2511,7 +2511,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "2c1ca932df0c0c8d",
+  "firma": "5cfb2a9f6286f24b",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -2833,7 +2833,7 @@
    "Zignos": 11
   },
   "fecha": "08/10",
-  "firma": "ef581f19edd37c0a",
+  "firma": "eaff227e2458ef8b",
   "msg": "1557926458221920299",
   "nombre": "__ LA REDENCIÓN VOL.1 __",
   "num": 431,
@@ -4382,7 +4382,7 @@
    "Velatz": 28
   },
   "fecha": "09/10",
-  "firma": "6bbe0f526bbe1782",
+  "firma": "3453c0c25a8dc06d",
   "msg": "1558266214659260507",
   "nombre": "COPA SOOLAR 4",
   "num": 437,
@@ -5056,7 +5056,7 @@
    "Xclusivo": 10
   },
   "fecha": "09/10",
-  "firma": "c19d87d5ac0672ad",
+  "firma": "d46db3b11b62e2bb",
   "msg": "1558334120172462091",
   "nombre": "PROYECTO X VOL.2",
   "num": 440,
@@ -5537,7 +5537,7 @@
    "Xclusivo": 12
   },
   "fecha": "10/10",
-  "firma": "84fa40b6c27a3dd9",
+  "firma": "13d1be4b72d6be1a",
   "msg": "1558545514931163258",
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
   "num": 442,
@@ -7763,7 +7763,7 @@
    "yinn": 15
   },
   "fecha": "12/10",
-  "firma": "a27453893eec253e",
+  "firma": "764be2dcc9379525",
   "msg": "1559247601923137630",
   "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
   "num": 454,
@@ -7964,7 +7964,7 @@
    "Walker": 4
   },
   "fecha": "12/10",
-  "firma": "2b1c84cf5a44a947",
+  "firma": "9bc1522b94de8f12",
   "msg": "1559247607283454084",
   "nombre": "FMS UNDER",
   "num": 455,
@@ -9396,7 +9396,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "6a7fd4e8d7d0e1cd",
+  "firma": "2ca6befe534ca949",
   "msg": "1559353480601411625",
   "nombre": "GODZ",
   "num": 460,
@@ -10088,63 +10088,18 @@
   "duelos": [
    [
     "COLOSO",
-    "AXL EVANS",
-    "COLOSO"
-   ],
-   [
     "JM SERNA",
-    "JAZZ",
-    "JM SERNA"
-   ],
-   [
-    "PANDORA",
-    "HUNTER",
-    "PANDORA"
-   ],
-   [
-    "FAT N",
-    "AIRON",
-    "FAT N"
-   ],
-   [
-    "MARITHEA",
-    "URKO",
-    "MARITHEA"
-   ],
-   [
-    "J1",
-    "COFFY",
-    "J1"
-   ],
-   [
-    "VISIONARIO",
-    "LIT IGNIS",
-    "VISIONARIO"
-   ],
-   [
-    "PUPPY",
-    "HORUS",
-    "PUPPY"
-   ],
-   [
-    "MARITHEA",
-    "J1",
-    "MARITHEA"
+    "COLOSO"
    ],
    [
     "MARITHEA",
     "COLOSO",
     "MARITHEA"
-   ],
-   [
-    "MARITHEA",
-    "PUPPY",
-    "MARITHEA"
    ]
   ],
   "ev_antes": {},
   "fecha": "12/10",
-  "firma": "bb3f2846074d4807",
+  "firma": "be09dd5340299b8d",
   "msg": "1559406349790617712",
   "nombre": "COMPE CHILL",
   "num": 463,
@@ -10156,14 +10111,19 @@
   "t": "2026-10-13T02:56:28Z",
   "tabla": [
    [
-    "COLOSO",
+    "MARITHEA",
     "Campeón",
-    5000
+    10000
    ],
    [
-    "AXL EVANS",
+    "COLOSO",
     "Subcampeón",
-    3750
+    7500
+   ],
+   [
+    "JM SERNA",
+    "Tercero",
+    6000
    ]
   ],
   "v": 2
@@ -10255,7 +10215,7 @@
    ],
    [
     "Guess, Nemi",
-    "Sosa, ONDADISKO 🇨🇱 🇺🇾",
+    "Sosa, ONDADISKO",
     "Guess, Nemi"
    ],
    [
@@ -10265,7 +10225,7 @@
    ],
    [
     "Presagio, NC, Agus",
-    "Guess, Nemi, ONDADISKO 🇨🇱",
+    "Guess, Nemi, ONDADISKO",
     "Presagio, NC, Agus"
    ]
   ],
@@ -10283,7 +10243,7 @@
    "Tusicario": 6
   },
   "fecha": "12/10",
-  "firma": "ed792edd26c4491a",
+  "firma": "5e0e32a7d031a2a3",
   "msg": "1559414143948431441",
   "nombre": "IDS V.2",
   "num": 464,
@@ -10296,6 +10256,11 @@
   "sv": "URBF",
   "t": "2026-10-13T03:55:03Z",
   "tabla": [
+   [
+    "ONDADISKO",
+    "Semifinal",
+    3416
+   ],
    [
     "NC",
     "Campeón",
@@ -10322,17 +10287,7 @@
     2000
    ],
    [
-    "ONDADISKO 🇨🇱",
-    "Subcampeón",
-    2000
-   ],
-   [
     "Sosa",
-    "Semifinal",
-    2000
-   ],
-   [
-    "ONDADISKO 🇨🇱 🇺🇾",
     "Semifinal",
     2000
    ],

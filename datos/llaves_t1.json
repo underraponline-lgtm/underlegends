@@ -21920,32 +21920,32 @@
     "b": [
      [
       [
-       "MARITHEA",
-       "J1"
+       "COLOSO",
+       "JM SERNA"
       ],
-      "MARITHEA",
-      "Revivido: J1"
+      "COLOSO",
+      ""
      ],
      [
       [
-       "MARITHEA",
-       "COLOSO"
+       "COFFY",
+       "VISIONARIO"
       ],
-      "MARITHEA",
-      "Revivido: COLOSO"
-     ],
-     [
-      [
-       "MARITHEA",
-       "PUPPY"
-      ],
-      "MARITHEA",
-      "Revivido: PUPPY"
+      "",
+      "sin ganador: espera en ✅ Decidir"
      ],
      [
       [
        "COLOSO",
-       "JM SERNA"
+       "MARITHEA"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "LIT IGNIS",
+       "PUPPY"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -21960,8 +21960,77 @@
      ],
      [
       [
+       "URKO",
+       "J1"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Llave de perdedores"
+   },
+   {
+    "b": [
+     [
+      [
+       "AIRON",
+       "FAT N"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "AXL EVANS",
+       "COLOSO"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "HUNTER",
+       "PANDORA"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "J1",
+       "COFFY"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "JM SERNA",
+       "JAZZ"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "MARITHEA",
+       "URKO"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "PUPPY",
+       "HORUS"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
        "VISIONARIO",
-       "PUPPY"
+       "LIT IGNIS"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -21973,67 +22042,11 @@
     "b": [
      [
       [
-       "COLOSO",
-       "AXL EVANS"
-      ],
-      "COLOSO",
-      "Walk-in 1: AXL EVANS"
-     ],
-     [
-      [
-       "JM SERNA",
-       "JAZZ"
-      ],
-      "JM SERNA",
-      "Walk-in 1: JAZZ"
-     ],
-     [
-      [
-       "PANDORA",
-       "HUNTER"
-      ],
-      "PANDORA",
-      "Walk-in 1: HUNTER"
-     ],
-     [
-      [
-       "FAT N",
-       "AIRON"
-      ],
-      "FAT N",
-      "Walk-in 1: AIRON"
-     ],
-     [
-      [
        "MARITHEA",
-       "URKO"
+       "COLOSO"
       ],
       "MARITHEA",
-      "Walk-in 1: URKO"
-     ],
-     [
-      [
-       "J1",
-       "COFFY"
-      ],
-      "J1",
-      "Walk-in 1: COFFY"
-     ],
-     [
-      [
-       "VISIONARIO",
-       "LIT IGNIS"
-      ],
-      "VISIONARIO",
-      "Walk-in 1: LIT IGNIS"
-     ],
-     [
-      [
-       "PUPPY",
-       "HORUS"
-      ],
-      "PUPPY",
-      "Walk-in 1: HORUS"
+      ""
      ]
     ],
     "r": "Final"
@@ -22042,14 +22055,19 @@
   "sv": "URBF",
   "tabla": [
    [
-    "COLOSO",
+    "MARITHEA",
     "Campeón",
-    5000
+    10000
    ],
    [
-    "AXL EVANS",
+    "COLOSO",
     "Subcampeón",
-    3750
+    7500
+   ],
+   [
+    "JM SERNA",
+    "Tercero",
+    6000
    ]
   ]
  },
@@ -22107,7 +22125,7 @@
      [
       [
        "Guess, Nemi",
-       "Sosa, ONDADISKO 🇨🇱 🇺🇾"
+       "Sosa, ONDADISKO"
       ],
       "Guess, Nemi",
       ""
@@ -22128,7 +22146,7 @@
      [
       [
        "Presagio, NC, Agus",
-       "Guess, Nemi, ONDADISKO 🇨🇱"
+       "Guess, Nemi, ONDADISKO"
       ],
       "Presagio, NC, Agus",
       ""
@@ -22139,6 +22157,11 @@
   ],
   "sv": "URBF",
   "tabla": [
+   [
+    "ONDADISKO",
+    "Semifinal",
+    3416
+   ],
    [
     "NC",
     "Campeón",
@@ -22182,16 +22205,6 @@
    [
     "Nemi",
     "Subcampeón",
-    2000
-   ],
-   [
-    "ONDADISKO 🇨🇱",
-    "Subcampeón",
-    2000
-   ],
-   [
-    "ONDADISKO 🇨🇱 🇺🇾",
-    "Semifinal",
     2000
    ],
    [

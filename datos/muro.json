@@ -708,7 +708,8 @@
 "tusicario": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "assuan": {
@@ -5536,6 +5537,14 @@
 ],
 "rg": "D",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-13T04:26:41Z",
+"quien": [
+"Tusicario"
+],
+"carta": "temporada"
 }
 ]
 }

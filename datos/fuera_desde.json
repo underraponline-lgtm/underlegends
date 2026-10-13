@@ -35,9 +35,6 @@
    "sv-urbf": "2026-10-12",
    "temporada": "2026-10-12"
   },
-  "agustin51k": {
-   "temporada": "2026-10-12"
-  },
   "aktybo": {
    "temporada": "2026-10-12"
   },
@@ -1138,9 +1135,6 @@
    "sv-sr": "2026-10-12",
    "temporada": "2026-10-12"
   },
-  "tusicario": {
-   "temporada": "2026-10-12"
-  },
   "typhlosion": {
    "servidor": "2026-10-12",
    "sv-acad": "2026-10-12",
@@ -1251,7 +1245,7 @@
   }
  },
  "pasaban": 384,
- "cuando": "2026-10-13T04:01:13Z",
+ "cuando": "2026-10-13T04:26:57Z",
  "borradas": [
   [
    "infecte",

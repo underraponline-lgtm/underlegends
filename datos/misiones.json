@@ -1554,12 +1554,6 @@
      2,
      0
     ],
-    "AXL EVANS": [
-     1,
-     2,
-     2,
-     0
-    ],
     "Abyssus": [
      1,
      2,
@@ -1610,8 +1604,8 @@
     ],
     "COLOSO": [
      1,
-     1,
-     1,
+     2,
+     2,
      0
     ],
     "Cajita": [
@@ -1686,12 +1680,6 @@
      4,
      0
     ],
-    "FAT N": [
-     0,
-     99,
-     99,
-     0
-    ],
     "Guess": [
      5,
      2,
@@ -1702,12 +1690,6 @@
      1,
      8,
      8,
-     0
-    ],
-    "J1": [
-     0,
-     99,
-     99,
      0
     ],
     "JB🇦🇷": [
@@ -1729,9 +1711,9 @@
      0
     ],
     "JM SERNA": [
-     0,
-     99,
-     99,
+     1,
+     4,
+     4,
      0
     ],
     "Joaquín La Profecia 👨🏻‍🍳": [
@@ -1777,9 +1759,9 @@
      0
     ],
     "MARITHEA": [
-     0,
-     99,
-     99,
+     1,
+     1,
+     1,
      0
     ],
     "Magic": [
@@ -1836,13 +1818,7 @@
      2,
      0
     ],
-    "ONDADISKO 🇨🇱": [
-     1,
-     2,
-     2,
-     0
-    ],
-    "ONDADISKO 🇨🇱 🇺🇾": [
+    "ONDADISKO": [
      1,
      4,
      4,
@@ -1858,18 +1834,6 @@
      1,
      2,
      2,
-     0
-    ],
-    "PANDORA": [
-     0,
-     99,
-     99,
-     0
-    ],
-    "PUPPY": [
-     0,
-     99,
-     99,
      0
     ],
     "Player": [
@@ -1968,12 +1932,6 @@
      16,
      0
     ],
-    "VISIONARIO": [
-     0,
-     99,
-     99,
-     0
-    ],
     "Valdoza": [
      1,
      16,
@@ -2055,14 +2013,13 @@
    },
    "pts": {
     "AKARK": 600,
-    "AXL EVANS": 600,
     "Abyssus": 600,
     "Abysuss": 1600,
     "Agus": 1600,
     "Ariaxer": 300,
     "BNA": 2900,
     "Benjixo": 900,
-    "COLOSO": 1600,
+    "COLOSO": 600,
     "Colesito": 300,
     "Cronox": 300,
     "DO-C": 300,
@@ -2073,15 +2030,16 @@
     "Erik": 600,
     "Guess": 900,
     "JJ": 1600,
+    "JM SERNA": 600,
     "Keider": 900,
     "Lvel": 300,
+    "MARITHEA": 1600,
     "Magic": 300,
     "Makmah": 900,
     "NC": 2900,
     "Nemi": 900,
     "OG": 900,
-    "ONDADISKO 🇨🇱": 600,
-    "ONDADISKO 🇨🇱 🇺🇾": 600,
+    "ONDADISKO": 600,
     "ONZASS": 600,
     "Oasis": 600,
     "Player": 300,
@@ -2113,7 +2071,6 @@
   "ANTONIO🇵🇾": 300,
   "ANTORCHA": 300,
   "ARDEAN": 300,
-  "AXL EVANS": 600,
   "Abyssus": 900,
   "Abysuss": 1600,
   "Agus": 4500,
@@ -2134,7 +2091,7 @@
   "Benjixo": 2200,
   "Bloody": 300,
   "CJ": 300,
-  "COLOSO": 1600,
+  "COLOSO": 600,
   "Cajita": 300,
   "Carlosmo": 1600,
   "Carlosss": 1600,
@@ -2187,6 +2144,7 @@
   "ISAIAS": 300,
   "Iguana": 300,
   "JJ": 2900,
+  "JM SERNA": 600,
   "JOSHU": 2900,
   "Juasmio": 300,
   "Jult": 300,
@@ -2211,6 +2169,7 @@
   "Lord Viruzz": 300,
   "Luzzano": 300,
   "Lvel": 600,
+  "MARITHEA": 1600,
   "MATICERNA": 300,
   "MCO": 2900,
   "MHS": 300,
@@ -2239,8 +2198,7 @@
   "Noone": 300,
   "Number": 300,
   "OG": 3800,
-  "ONDADISKO 🇨🇱": 600,
-  "ONDADISKO 🇨🇱 🇺🇾": 600,
+  "ONDADISKO": 600,
   "ONZASS": 1500,
   "Oasis": 3500,
   "PIERR🇵🇪": 300,

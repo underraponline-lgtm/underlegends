@@ -3,7 +3,7 @@
  "chats": {
   "FFA": "2026-10-12",
   "SR": "2026-10-12",
-  "URBF": "2026-10-12"
+  "URBF": "2026-10-13"
  },
  "retos": {
   "AKARK": {
@@ -17,17 +17,6 @@
    "n": 462,
    "sv": "FFA",
    "vence": "2026-10-20T00:26:10+00:00",
-   "vencido": false
-  },
-  "AXL EVANS": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-13T00:54:11+00:00",
-   "did": "",
-   "evento": "COMPE CHILL",
-   "n": 463,
-   "sv": "URBF",
-   "vence": "2026-10-20T00:54:11+00:00",
    "vencido": false
   },
   "Abysuss": {
@@ -44,6 +33,7 @@
    "vencido": false
   },
   "COLOSO": {
+   "chat": "2026-10-13",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-13T00:54:11+00:00",
@@ -68,6 +58,7 @@
    "vencido": false
   },
   "JB": {
+   "chat": "2026-10-13",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-13T01:56:58+00:00",

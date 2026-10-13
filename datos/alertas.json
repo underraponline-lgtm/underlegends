@@ -4,9 +4,19 @@
   "__ __ Cuentas Pendientes V.1 __ __ · FFA · 08/10 · final · Xubaru🇻🇪 🆚 Greyfitsh🇵🇦"
  ],
  "batallas_desde": {
-  "COMPE CHILL · URBF · 12/10 · llave de ganadores · COLOSO 🆚 JM SERNA": "2026-10-13T04:01:40.237618+00:00",
-  "COMPE CHILL · URBF · 12/10 · llave de ganadores · PANDORA 🆚 FAT N": "2026-10-13T03:03:03.174114+00:00",
-  "COMPE CHILL · URBF · 12/10 · llave de ganadores · VISIONARIO 🆚 PUPPY": "2026-10-13T04:01:40.237618+00:00",
+  "COMPE CHILL · URBF · 12/10 · llave de ganadores · AIRON 🆚 FAT N": "2026-10-13T04:27:09.842380+00:00",
+  "COMPE CHILL · URBF · 12/10 · llave de ganadores · AXL EVANS 🆚 COLOSO": "2026-10-13T04:27:09.842380+00:00",
+  "COMPE CHILL · URBF · 12/10 · llave de ganadores · HUNTER 🆚 PANDORA": "2026-10-13T04:27:09.842380+00:00",
+  "COMPE CHILL · URBF · 12/10 · llave de ganadores · J1 🆚 COFFY": "2026-10-13T04:27:09.842380+00:00",
+  "COMPE CHILL · URBF · 12/10 · llave de ganadores · JM SERNA 🆚 JAZZ": "2026-10-13T04:27:09.842380+00:00",
+  "COMPE CHILL · URBF · 12/10 · llave de ganadores · MARITHEA 🆚 URKO": "2026-10-13T04:27:09.842380+00:00",
+  "COMPE CHILL · URBF · 12/10 · llave de ganadores · PUPPY 🆚 HORUS": "2026-10-13T04:27:09.842380+00:00",
+  "COMPE CHILL · URBF · 12/10 · llave de ganadores · VISIONARIO 🆚 LIT IGNIS": "2026-10-13T04:27:09.842380+00:00",
+  "COMPE CHILL · URBF · 12/10 · llave de perdedores · COFFY 🆚 VISIONARIO": "2026-10-13T04:27:09.842380+00:00",
+  "COMPE CHILL · URBF · 12/10 · llave de perdedores · COLOSO 🆚 MARITHEA": "2026-10-13T04:27:09.842380+00:00",
+  "COMPE CHILL · URBF · 12/10 · llave de perdedores · LIT IGNIS 🆚 PUPPY": "2026-10-13T04:27:09.842380+00:00",
+  "COMPE CHILL · URBF · 12/10 · llave de perdedores · PANDORA 🆚 FAT N": "2026-10-13T04:27:09.842380+00:00",
+  "COMPE CHILL · URBF · 12/10 · llave de perdedores · URKO 🆚 J1": "2026-10-13T04:27:09.842380+00:00",
   "FAT BATTLES PALOOZA T.3 FECHA 6 · ACAD · 09/10 · octavos · ALVA 🇲🇽 🆚 SHADOW 🇨🇴": "2026-10-12T15:30:48.890487+00:00",
   "FVS UNDER · FVS · 26/09 · cuartos · Astral🇦🇷 🆚 Draxx🇨🇱": "2026-10-13T03:03:03.174114+00:00",
   "FVS UNDER · FVS · 26/09 · cuartos · Joaco 🇨🇱 🆚 Tokio🇦🇷 🇺🇸": "2026-10-13T03:03:03.174114+00:00",
@@ -23,5 +33,9 @@
  "recordado:a7": {
   "t": "2026-09-26T03:54:52.348453+00:00",
   "texto": "Lo que me pediste recordarte: **A7**, llevar el Score del Competitivo a 40–99. **PichulaMc ya tiene 8 eventos**: cuando alguien llega a 10 tiene letra, y cambiar la escala después se la mueve a mitad de temporada. Si va, decime y lo aplico junto con los umbrales de los 8 rangos."
+ },
+ "vitrina": {
+  "t": "2026-10-13T04:23:54.288596+00:00",
+  "texto": "**Ranking Temporada no se está escribiendo**: las cartas de Temporada y la web se quedan con los números de la última corrida buena.\n> 🔴 La tabla encogería. Si es a propósito —un reset,\n> 🔴 saldrían 15: AIRON, AXL EVANS, COFFY, FAT N, HORUS, HUNTER, J1, JAZZ…"
  }
 }
