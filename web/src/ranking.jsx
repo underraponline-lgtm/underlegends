@@ -375,9 +375,10 @@ function Vecino({ x, cfg, f, rol, txt }) {
 }
 // 🏆 LA GRAN FINAL DE LA T1 (Dlx, 12/10/2026): clasifican los 16 primeros CON NÚMERO de Temporada y de Competitivo,
 // dos torneos, y quien está en los dos juega los dos. Fecha y nombre los anuncia Dlx: hasta entonces, sólo con la
-// vista previa `?prev=fin` (`lg:prev-fin`)
+// vista previa `?prev=fin` (`lg:prev-fin`).
+// ✅ PARA TODOS DESDE EL 13/10/2026 (Dlx, a «¿la muestro a todos?»: «mostrarla ya a todos»)
 function verFinal() {
-  try { return localStorage.getItem('lg:prev-fin') === '1'; } catch (e) { return false; }
+  return true;
 }
 function clasificados(cfg, base) {
   if (!cfg.final || !verFinal()) return null;
