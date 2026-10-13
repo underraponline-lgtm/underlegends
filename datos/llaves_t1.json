@@ -21497,16 +21497,16 @@
      ],
      [
       [
-       "Mathias🇪🇸 🇻🇪",
-       "DXG🇲🇽"
+       "Rfran🇪🇸",
+       "Ricard🇪🇨"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
      ],
      [
       [
-       "Rfran🇪🇸",
-       "Ricard🇪🇨"
+       "mathias 🇻🇪",
+       "DXG🇲🇽"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -21540,6 +21540,14 @@
      [
       [
        "Mathhias",
+       "Mathhias"
+      ],
+      "Mathhias",
+      "ganador: ✅ Decidir"
+     ],
+     [
+      [
+       "Mathhias",
        "Refran"
       ],
       "Mathhias",
@@ -21553,13 +21561,8 @@
   "tabla": [
    [
     "Mathhias",
-    "Campeón",
-    7500
-   ],
-   [
-    "Refran",
     "Subcampeón",
-    5000
+    12500
    ],
    [
     "Drexx",
@@ -21936,8 +21939,24 @@
      ],
      [
       [
-       "COLOSO",
-       "MARITHEA"
+       "PUPPY",
+       "VISIONARIO"
+      ],
+      "PUPPY",
+      ""
+     ],
+     [
+      [
+       "MARITHEA",
+       "COLOSO"
+      ],
+      "MARITHEA",
+      ""
+     ],
+     [
+      [
+       "MARITHEA",
+       "PUPPY"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -21949,14 +21968,6 @@
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "VISIONARIO",
-       "PUPPY"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Llave de ganadores"
@@ -21965,8 +21976,48 @@
     "b": [
      [
       [
-       "JAZZ",
-       "HUNTER"
+       "COLOSO",
+       "FAT N"
+      ],
+      "COLOSO",
+      ""
+     ],
+     [
+      [
+       "VISIONARIO",
+       "COLOSO"
+      ],
+      "VISIONARIO",
+      ""
+     ],
+     [
+      [
+       "AXL EVANS",
+       "JAZZ"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "HUNTER",
+       "AIRON"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "J1",
+       "VISIONARIO"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "JM SERNA",
+       "PANDORA"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -21975,6 +22026,22 @@
       [
        "LIT IGNIS",
        "HORUS"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "MARITHEA",
+       "VISIONARIO"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "PUPPY",
+       "J1"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -21994,11 +22061,19 @@
     "b": [
      [
       [
+       "MARITHEA",
+       "VISIONARIO"
+      ],
+      "MARITHEA",
+      ""
+     ],
+     [
+      [
        "FAT N",
        "AIRON"
       ],
       "FAT N",
-      "ganador: ✅ Decidir; Walk-in 2: AIRON"
+      "ganador: ✅ Decidir"
      ],
      [
       [
@@ -22061,18 +22136,7 @@
    }
   ],
   "sv": "URBF",
-  "tabla": [
-   [
-    "FAT N",
-    "Campeón",
-    10000
-   ],
-   [
-    "AIRON",
-    "Subcampeón",
-    1875
-   ]
-  ]
+  "tabla": []
  },
  "464": {
   "dia": "2026-10-12",

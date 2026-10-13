@@ -340,11 +340,6 @@
    ],
    [
     [
-     "FAT N",
-     30000,
-     1
-    ],
-    [
      "Rodas",
      12000,
      2
@@ -392,11 +387,6 @@
     [
      "Sin Limites",
      6000,
-     1
-    ],
-    [
-     "AIRON",
-     5625,
      1
     ],
     [
@@ -465,7 +455,7 @@
   "Aby": 5,
   "Abyssus": 4,
   "Acry": 5,
-  "Adriagner": 5,
+  "Adriagner": 4,
   "Agre": 5,
   "Agus": 4,
   "Aktybo": 5,
@@ -565,7 +555,7 @@
   "FALON 🇨🇱": 5,
   "FAT PENIS": 5,
   "Faso": 5,
-  "Fazer": 4,
+  "Fazer": 5,
   "Filozico": 5,
   "Fin": 5,
   "Fisics": 5,
@@ -759,7 +749,6 @@
   "Rayden": 5,
   "Rayo": 5,
   "Redstonita": 5,
-  "Refran": 5,
   "Respawn": 5,
   "Reyes": 5,
   "ReyexXMC": 4,
@@ -1014,17 +1003,17 @@
   ],
   [
    "2026-09-21",
+   "Mathhias",
+   4
+  ],
+  [
+   "2026-09-21",
    "Molusco",
    4
   ],
   [
    "2026-09-21",
    "Drexx",
-   4
-  ],
-  [
-   "2026-09-21",
-   "Fazer",
    4
   ],
   [
@@ -1505,7 +1494,6 @@
  ],
  "ult": {
   "baja": [
-   "Adriagner",
    "BTRX",
    "Badterne",
    "Bloody",
@@ -1514,7 +1502,8 @@
    "MTZ",
    "Prosu",
    "Richard",
-   "Zeta"
+   "Zeta",
+   "dxg"
   ],
   "sem": "2026-10-05",
   "sube": [

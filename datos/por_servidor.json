@@ -87,17 +87,6 @@
     "racha": "0/0"
    }
   },
-  "AIRON": {
-   "URBF": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 47,
-    "pod": 1,
-    "pts": 5625,
-    "racha": "1/1"
-   }
-  },
   "AKARK": {
    "FFA": {
     "duelos": "",
@@ -852,17 +841,6 @@
     "pod": 1,
     "pts": 8999,
     "racha": "0/1"
-   }
-  },
-  "COLOSO": {
-   "URBF": {
-    "duelos": "1/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
    }
   },
   "Cabece": {
@@ -1908,17 +1886,6 @@
     "racha": "0/0"
    }
   },
-  "FAT N": {
-   "URBF": {
-    "duelos": "1/1",
-    "ev": 1,
-    "oro": 1,
-    "ovr": 51,
-    "pod": 1,
-    "pts": 30000,
-    "racha": "1/1"
-   }
-  },
   "FAT PENIS": {
    "FFA": {
     "duelos": "",
@@ -2506,17 +2473,6 @@
     "racha": "0/0"
    }
   },
-  "J1": {
-   "URBF": {
-    "duelos": "0/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
-   }
-  },
   "JB🇦🇷": {
    "URBF": {
     "duelos": "",
@@ -2588,17 +2544,6 @@
     "pod": 2,
     "pts": 50725,
     "racha": "2/2"
-   }
-  },
-  "JM SERNA": {
-   "URBF": {
-    "duelos": "0/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
    }
   },
   "JOACO 🇨🇱": {
@@ -3493,17 +3438,6 @@
     "racha": "0/0"
    }
   },
-  "MARITHEA": {
-   "URBF": {
-    "duelos": "1/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
-   }
-  },
   "MARTYNEZ🇺🇾": {
    "DDF": {
     "duelos": "0/1",
@@ -3919,12 +3853,12 @@
     "racha": "0/0"
    },
    "FVS": {
-    "duelos": "3/3",
+    "duelos": "4/5",
     "ev": 1,
-    "oro": 1,
-    "ovr": 48,
+    "oro": 0,
+    "ovr": 49,
     "pod": 1,
-    "pts": 7500,
+    "pts": 12500,
     "racha": "1/1"
    }
   },
@@ -4991,12 +4925,12 @@
   "Refran": {
    "FVS": {
     "duelos": "2/3",
-    "ev": 1,
+    "ev": 0,
     "oro": 0,
-    "ovr": 47,
-    "pod": 1,
-    "pts": 5000,
-    "racha": "1/1"
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
+    "racha": "0/0"
    }
   },
   "Respawn": {
