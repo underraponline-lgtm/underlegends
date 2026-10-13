@@ -233,6 +233,14 @@
 "temporada"
 ]
 },
+"nxuz": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "carlosss": {
 "rg": "",
 "c": [
@@ -246,14 +254,6 @@
 },
 "sinlimites": {
 "rg": "D",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"nxuz": {
-"rg": "C",
 "c": [
 "competitivo",
 "servidor",
