@@ -97,6 +97,18 @@
    "vence": "2026-10-20T15:18:36+00:00",
    "vencido": false
   },
+  "Kusoh": {
+   "avisado": "2026-10-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-13T15:58:57+00:00",
+   "did": "1447024559197782138",
+   "evento": "mathias cup",
+   "n": 466,
+   "sv": "FVS",
+   "vence": "2026-10-20T15:58:57+00:00",
+   "vencido": false
+  },
   "Magic": {
    "avisado": "2026-10-12",
    "avisado_cumplido": "2026-10-12",
@@ -121,6 +133,18 @@
    "n": 464,
    "sv": "URBF",
    "vence": "2026-10-20T01:56:58+00:00",
+   "vencido": false
+  },
+  "Raizer": {
+   "avisado": "2026-10-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-13T15:58:57+00:00",
+   "did": "",
+   "evento": "mathias cup",
+   "n": 466,
+   "sv": "FVS",
+   "vence": "2026-10-20T15:58:57+00:00",
    "vencido": false
   },
   "SYEPORUTE": {

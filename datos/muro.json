@@ -116,6 +116,14 @@
 "rg": "C",
 "c": []
 },
+"vandu": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "abyssus": {
 "rg": "A",
 "c": [
@@ -136,14 +144,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"vandu": {
-"rg": "D",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -184,6 +184,15 @@
 "xclusivo": {
 "rg": "C",
 "c": []
+},
+"molusco": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "majiztral": {
 "rg": "C",
@@ -235,6 +244,14 @@
 "rg": "",
 "c": []
 },
+"sinlimites": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "nxuz": {
 "rg": "C",
 "c": [
@@ -278,26 +295,9 @@
 "servidor"
 ]
 },
-"molusco": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "walker": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"sinlimites": {
-"rg": "D",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -663,6 +663,13 @@
 "servidor"
 ]
 },
+"mathhias": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "dxg": {
 "rg": "",
 "c": [
@@ -688,13 +695,6 @@
 "c": [
 "competitivo",
 "servidor"
-]
-},
-"mathhias": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
 ]
 },
 "leonart": {
@@ -885,10 +885,6 @@
 "temporada"
 ]
 },
-"coloso": {
-"rg": "",
-"c": []
-},
 "shadow": {
 "rg": "",
 "c": [
@@ -1001,10 +997,6 @@
 "rg": "",
 "c": []
 },
-"axlevans": {
-"rg": "",
-"c": []
-},
 "saz": {
 "rg": "",
 "c": []
@@ -1065,6 +1057,14 @@
 "c": []
 },
 "under": {
+"rg": "",
+"c": []
+},
+"kusoh": {
+"rg": "",
+"c": []
+},
+"raizer": {
 "rg": "",
 "c": []
 },
@@ -1161,6 +1161,14 @@
 "c": []
 },
 "akark": {
+"rg": "",
+"c": []
+},
+"coloso": {
+"rg": "",
+"c": []
+},
+"axlevans": {
 "rg": "",
 "c": []
 },

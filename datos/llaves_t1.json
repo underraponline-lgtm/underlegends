@@ -21958,8 +21958,8 @@
        "MARITHEA",
        "PUPPY"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "MARITHEA",
+      ""
      ],
      [
       [
@@ -21976,40 +21976,88 @@
     "b": [
      [
       [
-       "COLOSO",
-       "FAT N"
+       "JAZZ",
+       "AXL EVANS"
       ],
-      "COLOSO",
-      ""
+      "JAZZ",
+      "Walk-in 1: JAZZ; Walk-in 1: AXL EVANS"
+     ],
+     [
+      [
+       "AIRON",
+       "HUNTER"
+      ],
+      "AIRON",
+      "Walk-in 1: AIRON; Walk-in 1: HUNTER"
+     ],
+     [
+      [
+       "COFFY",
+       "URKO"
+      ],
+      "COFFY",
+      "Walk-in 1: COFFY; Walk-in 1: URKO"
+     ],
+     [
+      [
+       "HORUS",
+       "LIT IGNIS"
+      ],
+      "HORUS",
+      "Walk-in 1: HORUS; Walk-in 1: LIT IGNIS"
      ],
      [
       [
        "VISIONARIO",
-       "COLOSO"
+       "J1"
       ],
       "VISIONARIO",
       ""
      ],
      [
       [
-       "AXL EVANS",
-       "JAZZ"
+       "PUPPY",
+       "COLOSO"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "PUPPY",
+      ""
      ],
      [
       [
-       "HUNTER",
+       "VISIONARIO",
+       "FAT N"
+      ],
+      "VISIONARIO",
+      ""
+     ],
+     [
+      [
+       "JAZZ",
        "AIRON"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "JAZZ",
+      ""
      ],
      [
       [
-       "J1",
+       "COFFY",
+       "HORUS"
+      ],
+      "COFFY",
+      ""
+     ],
+     [
+      [
+       "PUPPY",
        "VISIONARIO"
+      ],
+      "PUPPY",
+      ""
+     ],
+     [
+      [
+       "JAZZ",
+       "COFFY"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -22018,38 +22066,6 @@
       [
        "JM SERNA",
        "PANDORA"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "LIT IGNIS",
-       "HORUS"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "MARITHEA",
-       "VISIONARIO"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "PUPPY",
-       "J1"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "URKO",
-       "COFFY"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -22062,7 +22078,7 @@
      [
       [
        "MARITHEA",
-       "VISIONARIO"
+       "PUPPY"
       ],
       "MARITHEA",
       ""

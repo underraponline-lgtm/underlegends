@@ -10,7 +10,27 @@
   "av": ""
  },
  {
+  "raw": "AXL EVANS",
+  "cc": "",
+  "sv": "",
+  "crew": "",
+  "discord_id": "",
+  "ev": 0.0,
+  "pts": 0,
+  "av": ""
+ },
+ {
   "raw": "COFFY",
+  "cc": "",
+  "sv": "",
+  "crew": "",
+  "discord_id": "",
+  "ev": 0.0,
+  "pts": 0,
+  "av": ""
+ },
+ {
+  "raw": "COLOSO",
   "cc": "",
   "sv": "",
   "crew": "",
@@ -120,7 +140,7 @@
   "av": ""
  },
  {
-  "raw": "PANDORA",
+  "raw": "PUPPY",
   "cc": "",
   "sv": "",
   "crew": "",
@@ -130,11 +150,11 @@
   "av": ""
  },
  {
-  "raw": "PUPPY",
-  "cc": "",
+  "raw": "Refran",
+  "cc": "es",
   "sv": "",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1251917252664623165",
   "ev": 0.0,
   "pts": 0,
   "av": ""
