@@ -63,7 +63,7 @@ def _token():
     return ''
 
 
-def mandar(titulo, lineas, color=AZUL, canal=None, editar=None, embed=None):
+def mandar(titulo, lineas, color=AZUL, canal=None, editar=None, embed=None, flags=None):
     """Un embed al canal. `True` si salio. **Nunca levanta.**
 
     ⚠️ EMBED Y NO TEXTO PELADO porque el titulo se lee de un vistazo en
@@ -77,6 +77,9 @@ def mandar(titulo, lineas, color=AZUL, canal=None, editar=None, embed=None):
     edito, y `False` si no salio — ver `_salio()`.
 
     Con `embed=` manda ese embed tal cual (el aviso de cada evento, que arma `bot/aviso_evento.py`).
+
+    Con `flags=0` le saca al mensaje que edita el «sin vista previa»: el cierre del bot en vivo sin tarjeta sale con él
+    (`flags: 4`), y un embed agregado ahí no se vería (ver `evento()`).
     """
     try:
         import requests
@@ -95,7 +98,8 @@ def mandar(titulo, lineas, color=AZUL, canal=None, editar=None, embed=None):
                                                             'description': cuerpo,
                                                             'color': color}],
                             # ⚠️ sin menciones: un nombre en el aviso no le tiene que sonar a nadie
-                            'allowed_mentions': {'parse': []}})
+                            'allowed_mentions': {'parse': []},
+                            **({'flags': flags} if flags is not None and editar else {})})
         if editar:
             r = requests.patch('%s/%s' % (base, editar), headers=cab,
                                data=datos, timeout=20)
@@ -153,6 +157,55 @@ def canales_chat():
 def _salio(r):
     """`mandar()` devuelve un id, `True` o `False`. Esto normaliza."""
     return bool(r)
+
+
+def _ids_llave(ev):
+    """Los IDs de los mensajes de la llave de `ev`, de `datos/llaves_links.json`, con la misma clave que le pone
+    `procesar_entrada` (`nombre|servidor|fecha`). El primero es el `L.id` del bot en vivo."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'llaves_links.json'), encoding='utf-8') as f:
+            links = json.load(f)
+    except (OSError, ValueError):
+        return []
+    k = '|'.join(str(ev.get(x) or '') for x in ('nombre', 'servidor', 'fecha'))
+    ids = [str(l).rstrip('/').rsplit('/', 1)[-1] for l in (links.get(k) or ()) if isinstance(links, dict)]
+    return [x for x in ids if x.isdigit()][:10]
+
+
+def _cierre_vivo(canal, ids, msg=None):
+    """🏆 UN SOLO MENSAJE POR CAMPEÓN (ver `evento()` y `cierreVivo()` de avisos.js). Sin `msg`: el id del cierre que el
+    bot en vivo ya mandó para esa llave en ese canal, o `None`. Con `msg`: anota el aviso del ciclo como el campeón de
+    la llave, para que el cierre que llegue después se le sume. **Nunca levanta.**"""
+    if not canal or not ids:
+        return None
+    try:
+        import hashlib
+        import requests
+        t = _token()
+        if not t:
+            return None
+        k = hashlib.sha256(('lg-ciclo:' + t).encode('utf-8')).hexdigest()
+        d = {'canal': str(canal), 'ids': list(ids)}
+        if msg:
+            d['msg'] = str(msg)
+        r = requests.post(WORKER + '/avisos/cierre-vivo', headers={'x-lg-ciclo': k, 'content-type': 'application/json'},
+                          data=json.dumps(d), timeout=20)
+        x = r.json() if r.ok else {}
+    except Exception:                                    # noqa: BLE001
+        return None
+    return (str(x.get('msg') or '') or None) if isinstance(x, dict) else None
+
+
+def _imagen(canal, msg):
+    """La imagen del primer embed del mensaje (la tarjeta del campeón del cierre), o `''`. **Nunca levanta.**"""
+    try:
+        import requests
+        r = requests.get('https://discord.com/api/v10/channels/%s/messages/%s' % (canal, msg),
+                         headers={'Authorization': 'Bot ' + _token()}, timeout=20)
+        es = (r.json() or {}).get('embeds') or [] if r.ok else []
+        return str(((es[0] if es else {}).get('image') or {}).get('url') or '')
+    except Exception:                                    # noqa: BLE001
+        return ''
 
 
 #: lo que ya se avisó: `{num: {'firma': …, 'msg': <id>}}`. Ver `evento()`.
@@ -230,6 +283,7 @@ def evento(ev, n_res, n_duelos, dudas=(), equipos=0):
     if antes and antes.get('canal') == '' and not antes.get('msg'):
         return False
     canal = (antes or {}).get('canal') if (antes or {}).get('msg') else None
+    cierre, ids = None, []
     if not (antes or {}).get('msg'):
         cc = canales_chat()
         if cc is None:
@@ -240,19 +294,34 @@ def evento(ev, n_res, n_duelos, dudas=(), equipos=0):
             ya[num] = reg
             _guardar(ya)
             return False
+        # 🏆 UN SOLO MENSAJE POR CAMPEÓN (Dlx, 13/10/2026, con los dos uno abajo del otro en el chat de FFA: «we have to
+        # avoid making duplications of the same thing… combine these two into one»). El cierre del bot en vivo —el
+        # campeón, cuántas ganó, lo mejor de la noche y su tarjeta— sale al minuto de la final, y este aviso media hora
+        # después, en el mismo chat. Si el cierre ya está, el aviso se le AGREGA editándolo: el texto del cierre arriba y
+        # este embed abajo, en un mensaje. Si no está, sale el aviso y queda anotado para que el cierre se le sume
+        ids = _ids_llave(ev)
+        cierre = _cierre_vivo(canal, ids)
     e = AE.armar(reg, AE.nivel())
     f = AE.firma(e)
     if antes and antes.get('firma') == f:
         return False
-    r = mandar(None, None, embed=e, canal=canal, editar=(antes or {}).get('msg'))
+    if cierre and not e.get('image'):
+        # la tarjeta del cierre se queda (el embed la reemplaza: en «poco» o con campeones de a varios, no trae una)
+        img = _imagen(canal, cierre)
+        if img:
+            e['image'] = {'url': img}
+    editar = (antes or {}).get('msg') or cierre
+    r = mandar(None, None, embed=e, canal=canal, editar=editar, flags=0 if cierre else None)
     if _salio(r):
         # ⚠️ SE ANOTA SOLO SI SALIO, como siempre
         reg['firma'] = f
-        reg['msg'] = r if isinstance(r, str) else (antes or {}).get('msg')
+        reg['msg'] = r if isinstance(r, str) else editar
         if canal:
             reg['canal'] = canal
         ya[num] = reg
         _guardar(ya)
+        if isinstance(r, str) and ids:
+            _cierre_vivo(canal, ids, msg=r)
     return _salio(r)
 
 
@@ -431,7 +500,7 @@ def _self_check():
         # dejar el aviso congelado en lo que se sabia a las 3 AM.
         visto = {}
 
-        def _falso(titulo, lineas, color=AZUL, canal=None, editar=None, embed=None):
+        def _falso(titulo, lineas, color=AZUL, canal=None, editar=None, embed=None, flags=None):
             visto['editar'] = editar
             visto['embed'] = embed
             visto['n'] = visto.get('n', 0) + 1
@@ -487,7 +556,7 @@ def _self_check():
                 json.dump({'999': {'v': 2, 'firma': 'otra', 'msg': 'viejo'}}, f)
             visto.clear()
 
-            def _falso2(titulo, lineas, color=AZUL, canal=None, editar=None, embed=None):
+            def _falso2(titulo, lineas, color=AZUL, canal=None, editar=None, embed=None, flags=None):
                 visto['canal'], visto['editar'] = canal, editar
                 return True
             globals()['mandar'] = _falso2
@@ -495,6 +564,46 @@ def _self_check():
             ok = visto.get('editar') == 'viejo' and visto.get('canal') is None
             mal += not ok
             print('   %s el que ya salió se edita donde está (canal %r)' % ('ok' if ok else '🔴', visto.get('canal')))
+
+            # 🏆 UN SOLO MENSAJE POR CAMPEÓN (13/10/2026): con el cierre del bot en vivo ya en el chat, el aviso se le
+            # agrega editándolo —sin el «sin vista previa» y con su tarjeta si el embed no trae una—; sin él, sale uno
+            # nuevo y queda anotado para que el cierre se le sume
+            anotados = []
+            hay = {'cierre': 'cierre-1'}
+
+            def _cierre_falso(canal, ids, msg=None):
+                if msg:
+                    anotados.append((canal, tuple(ids), msg))
+                    return None
+                return hay['cierre']
+
+            def _falso3(titulo, lineas, color=AZUL, canal=None, editar=None, embed=None, flags=None):
+                visto.update(canal=canal, editar=editar, flags=flags, img=((embed or {}).get('image') or {}).get('url'))
+                return True if editar else 'msg-nuevo'
+            reales = {k: globals()[k] for k in ('_cierre_vivo', '_ids_llave', '_imagen')}
+            globals().update(_cierre_vivo=_cierre_falso, _ids_llave=lambda ev: ['111'], _imagen=lambda c, m: 'img-cierre',
+                             mandar=_falso3)
+            try:
+                os.remove(YA)
+                visto.clear()
+                evento(ev2, 5, 2)
+                g = _avisados().get('999', {})
+                ok = (visto.get('editar') == 'cierre-1' and visto.get('flags') == 0 and visto.get('canal') == 'chat-ffa'
+                      and visto.get('img') == 'img-cierre' and g.get('msg') == 'cierre-1' and not anotados)
+                mal += not ok
+                print('   %s con el cierre del bot en vivo, el aviso se le agrega a ESE mensaje (%r)'
+                      % ('ok' if ok else '🔴', visto))
+                os.remove(YA)
+                visto.clear()
+                hay['cierre'] = None
+                evento(ev2, 5, 2)
+                ok = (visto.get('editar') is None and visto.get('flags') is None
+                      and anotados == [('chat-ffa', ('111',), 'msg-nuevo')])
+                mal += not ok
+                print('   %s sin cierre, sale uno nuevo y queda anotado para que el cierre se le sume (%r)'
+                      % ('ok' if ok else '🔴', anotados))
+            finally:
+                globals().update(reales)
         finally:
             _CHAT = guardo_chat
             globals()['mandar'] = real

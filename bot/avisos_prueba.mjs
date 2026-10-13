@@ -163,6 +163,20 @@ const ok = (cond, que, det) => {
   ok(p.map((x) => x.tipo + ':' + x.m).join() === 'editar:rondas,mandar:final' && p[0].msg === '6',
     'a los 10 minutos sí; y las rondas se editan en su mensaje («Arrancó» no: sus favoritos se leen una vez)');
   ok(!A.planChat(m1, {}, 0, T, false).some((x) => x.tipo === 'mandar'), 'de una llave quieta no se dice nada nuevo');
+  // 🏆 UN SOLO MENSAJE POR CAMPEÓN (13/10/2026): si el aviso del ciclo salió antes, el cierre se le agrega a ESE mensaje
+  const hCiclo = { llave: { msg: '5', texto: m2[0].texto }, campeon: { msg: '9', texto: '' } };
+  p = A.planChat(m2, hCiclo, T, T, false);
+  ok(p.filter((x) => x.tipo !== 'saltar').map((x) => x.tipo + ':' + x.m + ':' + x.msg).join() === 'editar:campeon:9'
+    && p.find((x) => x.tipo === 'editar').texto === m2[m2.length - 1].texto,
+  'el cierre, después del aviso del ciclo: se edita en ese mensaje, aunque la llave ya esté quieta');
+  ok(!A.planChat(m2, { campeon: { msg: '9', texto: 'ya dicho' } }, 0, T, true).some((x) => x.tipo !== 'saltar')
+    && !A.planChat(m2, { campeon: { msg: '', texto: '' } }, 0, T, true).some((x) => x.tipo !== 'saltar'),
+  'el cierre que ya dijo el bot en vivo (o que salteó) no se vuelve a tocar');
+  const m2t = A.momentosChat(llaveDe(SEMIS + '\nCAMPEÓN: Dora 🇲🇽\n'), 'COPA SOOLAR', [], 'todo');
+  const hTodo = Object.fromEntries(m2t.map((x) => [x.m, { msg: '5', texto: 'x' }]));
+  hTodo.campeon = { msg: '9', texto: '' };
+  ok(A.planChat(m2t, hTodo, T, T, false, 'todo').map((x) => x.tipo + ':' + x.m).join() === 'editar:campeon',
+    'y en «cada batalla» también');
   // 🔊 CUÁNTO HABLA (05/10/2026, Dlx: «por cada llave o un nivel de intensidad»): lo justo, normal o cada batalla
   ok(A.nivelChat('', '') === 'normal' && A.nivelChat('', 'todo') === 'todo' && A.nivelChat('poco', 'todo') === 'poco'
     && A.nivelChat('cualquiera', 'poco') === 'poco', 'el nivel: el de Dlx gana, si no el del admin, si no «normal»');
@@ -831,6 +845,25 @@ const ok = (cond, que, det) => {
     sql.exec('DELETE FROM chat_vivo');
     await o.chatVivo(T + 60 * 60000);
     ok(pedidos.length === 4, 'sin canal del admin ni el Dashboard, no escribe');
+    // 🏆 UN SOLO MENSAJE POR CAMPEÓN (13/10/2026): el aviso del ciclo salió primero y quedó anotado; el cierre se le suma
+    kv.set('cfg:111', JSON.stringify({ vivo: CANAL }));
+    o.guardar('canales', { generales: [] });
+    ok(o.cierreVivo({ canal: CANAL, ids: ['9'], msg: '777' }).ok && !o.cierreVivo({ canal: CANAL, ids: ['9'] }).msg
+      && o.cierreVivo({ canal: 'x', ids: ['9'] }).error && o.cierreVivo({ canal: CANAL, ids: [] }).error,
+    'el aviso del ciclo queda anotado como el campeón de la llave, y sin texto todavía no es un cierre');
+    llave(FI + '\nCAMPEÓN: Dora 🇲🇽\n', T + 70 * 60000);
+    const a70 = pedidos.length;
+    await o.chatVivo(T + 70 * 60000);
+    await o.chatVivo(T + 90 * 60000);
+    const ed = pedidos.slice(a70);
+    ok(ed.length === 1 && ed[0].m === 'PATCH' && ed[0].u.endsWith('/channels/' + CANAL + '/messages/777')
+      && /🏆 \*\*Dora 🇲🇽\*\* es el campeón/.test(ed[0].b.content) && !('embeds' in ed[0].b) && !('flags' in ed[0].b),
+    'el cierre se le agrega al mensaje del ciclo (sólo el texto: su embed se queda), una vez y sin mensaje nuevo',
+    JSON.stringify(ed.map((x) => x.m + ' ' + x.u)));
+    o.cierreVivo({ canal: CANAL, ids: ['9'], msg: '888' });
+    const cv = await (await o.fetch(new Request('https://avisos/cierre-vivo', { method: 'POST',
+      body: JSON.stringify({ canal: CANAL, ids: ['1', '9'] }), headers: { 'content-type': 'application/json' } }))).json();
+    ok(cv.msg === '777', 'y el ciclo lo encuentra como el cierre (por fetch); anotar otro no lo pisa', JSON.stringify(cv));
     // 📏 y lo medido (05/10/2026): las lecturas de KV de cada persona van juntas, y nunca dicen de quién
     const md = o.medidasVer();
     ok(md.kv['cfg:*'] > 0 && !Object.keys(md.kv).some((k) => /111/.test(k)),

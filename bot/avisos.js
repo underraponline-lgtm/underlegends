@@ -589,10 +589,23 @@ export function momentosChat(L, nombre, fav, nivel = 'normal', opc = {}) {
  * si la llave se movió hace poco y pasaron `CHAT_ENTRE_TODO` del último. Lo que se juntó de más (`CHAT_JUNTAS`) ya es
  * viejo y se saltea, salvo el campeón y la final, que van siempre. `m` del mandar es la lista de momentos que lleva.
  */
+/**
+ * 🏆 UN SOLO MENSAJE POR CAMPEÓN (Dlx, 13/10/2026, con los dos del campeón uno abajo del otro en el chat de FFA: «we have
+ * to avoid making duplications of the same thing… combine these two into one»). Casi siempre el cierre sale primero y
+ * el ciclo le agrega su embed editándolo (`avisar.evento()`); si el ciclo llegó antes, su mensaje queda anotado como el
+ * «campeon» de la llave SIN texto (`cierreVivo()`), y el cierre se le agrega a ESE mensaje en vez de salir aparte. Una
+ * edición del bot en vivo sólo cambia el texto: el embed del ciclo, con los puntos y la tarjeta, se queda.
+ */
+export function cierreDelCiclo(x, h) {
+  return !!(x && x.m === 'campeon' && h && h.msg && !h.texto);
+}
+
 function planChatTodo(ms, hechos, ultimo, ahora, fresca, entre = CHAT_ENTRE_TODO) {
   const h = hechos || {};
+  // 🏆 el cierre, en el mensaje que ya mandó el ciclo (ver `cierreDelCiclo()`)
+  const ed = ms.filter((x) => cierreDelCiclo(x, h[x.m])).map((x) => ({ tipo: 'editar', m: x.m, texto: x.texto, msg: h[x.m].msg }));
   const pend = ms.filter((x) => !h[x.m]);
-  if (!pend.length || !fresca || ahora - (ultimo || 0) < entre) return [];
+  if (!pend.length || !fresca || ahora - (ultimo || 0) < entre) return ed;
   // 🧩 quien ya estaba en el equipo cuando se dice su «pasa» va en esa línea: no tiene una propia
   const conLider = pend.filter((x) => x.de && !h[x.de]);
   const propias = pend.filter((x) => !conLider.includes(x));
@@ -609,7 +622,7 @@ function planChatTodo(ms, hechos, ultimo, ahora, fresca, entre = CHAT_ENTRE_TODO
   const vs = (van.find((x) => x.vs) || {}).vs;
   plan.push(Object.assign({ tipo: 'mandar', m: van.map((x) => x.m).concat(junto),
     texto: (cab ? [cab.cab] : []).concat(van.map((x) => x.texto)).join('\n') }, img ? { img } : {}, vs ? { vs } : {}));
-  return plan;
+  return ed.concat(plan);
 }
 
 /**
@@ -628,6 +641,7 @@ export function planChat(ms, hechos, ultimo, ahora, fresca, nivel = 'normal', en
       // ⚠️ SÓLO SE EDITA EL DE LAS RONDAS, que es el que crece. «Arrancó» lleva los favoritos, que se leen una vez al
       // mandarlo (el lobby pesa): recalcularlo sin ellos los borraba al minuto siguiente (lo encontró la prueba)
       if (x.m === 'rondas' && h.msg && h.texto !== x.texto) plan.push({ tipo: 'editar', m: x.m, texto: x.texto, msg: h.msg });
+      else if (cierreDelCiclo(x, h)) plan.push({ tipo: 'editar', m: x.m, texto: x.texto, msg: h.msg });
       continue;
     }
     if (x !== meta) plan.push({ tipo: 'saltar', m: x.m });
@@ -2022,6 +2036,8 @@ const RUTAS = {
   '/avisos/personas-ciclo': 'POST', '/avisos/personas-leer': 'GET',
   // 💬 el chat de cada servidor, donde habla el bot en vivo: el ciclo manda ahí el aviso de cada evento. Ver `canalesChat()`
   '/avisos/chat-canales': 'GET',
+  // 🏆 el cierre del bot en vivo y el aviso del ciclo, en UN mensaje (13/10/2026): con `claveCiclo()`. Ver `cierreVivo()`
+  '/avisos/cierre-vivo': 'POST',
   // 🏁 quién ganó cada final que se preguntó con botones, para el ciclo: con `claveCiclo()`. Ver `finalElegir()`
   '/avisos/finales': 'GET',
   // 🧰 la imagen de /afiche o /llave ya dibujada (`bot/kit.py`), con `claveCiclo()`. Ver `kitListo()`
@@ -3493,6 +3509,16 @@ export async function rutaAvisos(req, env, ruta) {
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     return elObjeto(env).fetch('https://avisos/chat-canales');
   }
+  // 🏆 EL CIERRE DEL BOT EN VIVO, PARA EL CICLO (`avisar.evento()`): con su clave. Ver `cierreVivo()`
+  if (ruta === '/avisos/cierre-vivo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 4000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/cierre-vivo', {
+      method: 'POST', body: crudo, headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🎟️ QUIÉN TIENE NIVEL EN EL PASE, PARA EL CICLO: trae Discord IDs, así que sin su clave «no existe»
   if (ruta === '/avisos/pase-niveles') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -4060,6 +4086,10 @@ export class Avisos {
       if (ruta === '/pases') return json(this.pases(), 200, 300);
       if (ruta === '/pase-niveles') return json(this.paseNiveles());
       if (ruta === '/chat-canales') return json(await this.canalesChat());
+      if (ruta === '/cierre-vivo') {
+        const d = await req.json().catch(() => null);
+        return d ? json(this.cierreVivo(d)) : json({ error: 'no es JSON' }, 400);
+      }
       // 🧠 una persona, para el Worker (`leerP()`): el valor tal cual, o 404. No está en `RUTAS_AVISOS`: de afuera no
       // se llega, sólo por el binding
       if (ruta === '/persona') {
@@ -5145,6 +5175,32 @@ export class Avisos {
    * servidor» y sale de LIGA GLOBAL, que está en «registros» («Sacarlo de ahí»). Un servidor sin el bot en vivo prendido
    * no está, y su aviso no se manda: se prende desde el Dashboard o con /settings.
    */
+  /**
+   * 🏆 EL CIERRE Y EL AVISO DEL CICLO, EN UN MENSAJE (ver `cierreDelCiclo()`). `d` = `{canal, ids, msg?}`, con `ids` los
+   * mensajes de la llave (sus links, en `datos/llaves_links.json`; el primero es `L.id`). Sin `msg`: `{msg}` del cierre
+   * que el bot en vivo ya mandó en ese canal, o `{}`, y el ciclo le agrega su embed editándolo. Con `msg`: el ciclo mandó
+   * el suyo primero y queda anotado como el «campeon» de la llave, sin texto, para que el cierre se le sume.
+   * ⚠️ `INSERT OR IGNORE`: si el bot en vivo ya decidió algo con el campeón (lo mandó o lo salteó), eso se queda.
+   */
+  cierreVivo(d) {
+    const id = (x) => /^\d{1,25}$/.test(String(x || ''));
+    const canal = String(d.canal || '');
+    const ids = [].concat(d.ids || []).map(String).filter(id).slice(0, 10);
+    if (!id(canal) || !ids.length) return { error: 'faltan el canal o la llave' };
+    if (d.msg !== undefined) {
+      if (!id(d.msg)) return { error: 'msg' };
+      const ahora = Date.now();
+      for (const l of ids) {
+        this.sql.exec("INSERT OR IGNORE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, 'campeon', ?, '', ?)",
+          l, canal, String(d.msg), ahora);
+      }
+      return { ok: true };
+    }
+    const r = this.sql.exec("SELECT msg FROM chat_vivo WHERE canal = ? AND m = 'campeon' AND msg != '' AND texto != '' " +
+      'AND llave IN (' + ids.map(() => '?').join(', ') + ')', canal, ...ids).toArray()[0];
+    return r ? { msg: String(r.msg) } : {};
+  }
+
   async canalesChat() {
     const aj = this.ajustes();
     const dash = (aj.en_vivo && typeof aj.en_vivo === 'object') ? aj.en_vivo : {};
