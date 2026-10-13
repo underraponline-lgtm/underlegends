@@ -2,7 +2,7 @@
 // historias. Nació de docs/remake/reales.py y del prototipo (prototipo.js). El 30/09/2026 se fueron de acá la Tienda
 // y los servidores (Dlx: «la TIENDA no debería estar ahí, debería estar merchandising» y «los servidores de la liga
 // estando abajo es algo tonto porque ya están arriba»), y El Elegido se mudó a Encuestas.
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { limpio, nuevaQue, num } from './liga.js';
 import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, subirSiEsta } from './piezas.jsx';
 import { Buscar, CaraDc, CaraH, MENU, QUE_ES } from './arriba.jsx';
@@ -40,59 +40,175 @@ export function SeBusca({ liga, aca }) {
 // ── el Merchandising: donde estaba la Tienda (Dlx, 30/09/2026), y con EJEMPLOS desde el 04/10/2026 (Dlx: «en
 // mercancía creá ejemplos de lo que sería nuestra mercancía… con nosotros y nuestros socios… no venderemos nada
 // todavía, pero sería un ejemplo»). Todo dice que es un ejemplo y que no está a la venta: no hay precio ni botón.
-// Los dibujos son planos, en SVG, como pide el remake (sin degradés ni sombras); el logo de cada socio sale del lobby.
+// 🧵 MÁS REALISTA DESDE EL 13/10/2026 (Dlx: «¿podés hacer que el merchandising tenga un estilo más realista?»). Eran
+// siluetas planas, como pedía el remake (sin degradés ni sombras); eso es para la INTERFAZ, y una prenda sin volumen
+// no se lee como ropa. Así que adentro del dibujo —y sólo ahí— hay luz y sombra: volumen a los costados, pliegues
+// suaves, la trama de la tela por encima del estampado (así el logo parece impreso y no pegado), costuras, el cuello
+// acanalado, la capucha y sus cordones, el bolsillo canguro, los gajos y el bordado de la gorra, y la sombra en el
+// piso. Sigue siendo SVG: el color y el logo de cada socio salen del lobby, sin fotos ni archivos nuevos.
 const oscuro = (hex) => {
   const h = String(hex || '#000').replace('#', '');
   const [r, g, b] = [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16) || 0);
   return 0.299 * r + 0.587 * g + 0.114 * b < 140;
 };
 
+// la luz, la trama y el desenfoque de los pliegues: uno por dibujo (los `id` no se pueden repetir en la página)
+function Luz({ id, osc }) {
+  // en una prenda oscura la sombra casi no se ve: manda la luz. En una clara, al revés
+  const s = osc ? 0.42 : 0.24, l = osc ? 0.13 : 0.1;
+  return (
+    <defs>
+      <linearGradient id={id + 'h'} x1="0" x2="1" y1="0" y2="0">
+        <stop offset="0" stopColor="#000" stopOpacity={s} />
+        <stop offset=".2" stopColor="#000" stopOpacity={s * 0.3} />
+        <stop offset=".42" stopColor="#fff" stopOpacity={l} />
+        <stop offset=".62" stopColor="#fff" stopOpacity="0" />
+        <stop offset=".82" stopColor="#000" stopOpacity={s * 0.35} />
+        <stop offset="1" stopColor="#000" stopOpacity={s * 1.1} />
+      </linearGradient>
+      <linearGradient id={id + 'v'} x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stopColor="#fff" stopOpacity={l * 0.8} />
+        <stop offset=".45" stopColor="#fff" stopOpacity="0" />
+        <stop offset="1" stopColor="#000" stopOpacity={s * 0.55} />
+      </linearGradient>
+      <filter id={id + 't'} x="0" y="0" width="100%" height="100%">
+        {/* ⚠️ apenas: con el doble se veía como lija en los colores claros (medido en la captura del 13/10/2026) */}
+        <feTurbulence type="fractalNoise" baseFrequency="2.4" numOctaves="2" seed="7" />
+        <feColorMatrix type="matrix" values={'0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -0.4 ' + (osc ? 0.3 : 0.24)} />
+        <feComposite in2="SourceGraphic" operator="in" />
+      </filter>
+      <filter id={id + 'b'} x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.6" /></filter>
+      {/* el estampado, redondo: los logos de Discord son cuadrados con fondo y pegados así parecían un papel */}
+      <clipPath id={id + 'r'}><circle cx="100" cy="75" r="23" /></clipPath>
+      <clipPath id={id + 'q'}><circle cx="100" cy="93" r="19" /></clipPath>
+      <clipPath id={id + 'g'}><circle cx="99" cy="93" r="18" /></clipPath>
+      <filter id={id + 'p'} x="-30%" y="-200%" width="160%" height="500%"><feGaussianBlur stdDeviation="3.2" /></filter>
+    </defs>
+  );
+}
+
+// lo que va arriba de la tela y del estampado, en este orden: trama, volumen y luz
+function Encima({ id, d }) {
+  return (
+    <>
+      <path d={d} fill="#000" filter={'url(#' + id + 't)'} />
+      <path d={d} fill={'url(#' + id + 'h)'} />
+      <path d={d} fill={'url(#' + id + 'v)'} />
+    </>
+  );
+}
+
+const REMERA = 'M84 26 Q100 38 116 26 L140 33 Q157 41 171 62 L156 85 L140 76 Q137 130 141 184 Q100 189 59 184 Q63 130 60 76 L44 85 L29 62 Q43 41 60 33 Z';
+const BUZO = 'M78 34 Q100 46 122 34 L142 40 Q161 50 172 86 L167 150 L147 150 L144 98 Q142 140 145 181 Q100 187 55 181 Q58 140 56 98 L53 150 L33 150 L28 86 Q39 50 58 40 Z';
+
 function Prenda({ tipo, color, logo, texto }) {
-  const borde = oscuro(color) ? 'rgba(255,255,255,.28)' : 'rgba(0,0,0,.28)';
-  const tinta = oscuro(color) ? '#FFFFFF' : '#141414';
+  const id = 'pr' + useId().replace(/[^a-z0-9]/gi, '');
+  const osc = oscuro(color);
+  const tinta = osc ? '#FFFFFF' : '#141414';
+  const linea = osc ? 'rgba(255,255,255,.22)' : 'rgba(0,0,0,.28)';
+  const costura = osc ? 'rgba(255,255,255,.3)' : 'rgba(0,0,0,.32)';
+  const piso = <ellipse cx="100" cy="190" rx="64" ry="5" fill="#000" opacity=".22" filter={'url(#' + id + 'p)'} />;
+  const pliegue = (d, k) => <path key={k} d={d} fill="none" stroke="#000" strokeOpacity={osc ? 0.5 : 0.2} strokeWidth="3" strokeLinecap="round" filter={'url(#' + id + 'b)'} />;
+  const brillo = (d, k) => <path key={k} d={d} fill="none" stroke="#fff" strokeOpacity={osc ? 0.12 : 0.35} strokeWidth="2" strokeLinecap="round" filter={'url(#' + id + 'b)'} />;
   if (tipo === 'gorra') {
+    const COPA = 'M42 121 Q40 66 97 56 Q152 57 158 117 Q100 110 42 121 Z';
     return (
       <svg viewBox="0 0 200 200" role="img" aria-hidden="true">
-        <path d="M48 124 Q48 62 100 58 Q152 62 152 124 Z" fill={color} stroke={borde} strokeWidth="2" />
-        <path d="M44 124 L156 124 Q182 127 188 138 L62 138 Q46 136 44 124 Z" fill={color} stroke={borde} strokeWidth="2" />
-        <circle cx="100" cy="60" r="4" fill={borde} />
-        <image href={logo} x="78" y="76" width="44" height="44" preserveAspectRatio="xMidYMid meet" />
+        <Luz id={id} osc={osc} />
+        <ellipse cx="112" cy="156" rx="78" ry="6" fill="#000" opacity=".22" filter={'url(#' + id + 'p)'} />
+        <path d={COPA} fill={color} stroke={linea} strokeWidth="1.2" />
+        {/* el bordado: el logo con su relieve, apenas corrido */}
+        <circle cx="99.8" cy="94.2" r="19" fill="#000" opacity=".3" filter={'url(#' + id + 'b)'} />
+        <image href={logo} x="81" y="75" width="36" height="36" preserveAspectRatio="xMidYMid slice" clipPath={'url(#' + id + 'g)'} />
+        <circle cx="99" cy="93" r="16.6" fill="none" stroke={osc ? 'rgba(255,255,255,.55)' : 'rgba(0,0,0,.4)'} strokeWidth=".9" strokeDasharray="1.6 1.2" />
+        <Encima id={id} d={COPA} />
+        {/* los gajos, el botón y los ojalitos */}
+        <path d="M97 57 Q102 88 100 113 M73 63 Q64 90 67 116 M124 62 Q134 88 133 112" fill="none" stroke={costura} strokeWidth="1" strokeDasharray="2 1.6" />
+        <circle cx="97" cy="57" r="5" fill={color} stroke={linea} strokeWidth="1" />
+        <circle cx="97" cy="57" r="5" fill="#000" opacity=".18" />
+        <circle cx="60" cy="84" r="1.6" fill="#000" opacity=".35" /><circle cx="138" cy="82" r="1.6" fill="#000" opacity=".35" />
+        {/* la visera: arriba con luz, abajo en sombra */}
+        <path d="M38 119 Q100 109 160 116 Q189 122 194 139 Q150 149 96 145 Q52 141 38 119 Z" fill={color} stroke={linea} strokeWidth="1.2" />
+        <path d="M38 119 Q100 109 160 116 Q189 122 194 139 Q150 149 96 145 Q52 141 38 119 Z" fill={'url(#' + id + 'v)'} />
+        <path d="M44 126 Q100 141 192 139 Q150 149 96 145 Q55 141 44 126 Z" fill="#000" opacity=".28" />
+        <path d="M46 121 Q100 113 158 119 Q182 124 188 135" fill="none" stroke={costura} strokeWidth="1" strokeDasharray="2 1.6" />
+        <path d="M52 124 Q100 117 156 123 Q178 127 183 136" fill="none" stroke={costura} strokeWidth="1" strokeDasharray="2 1.6" />
       </svg>
     );
   }
   if (tipo === 'buzo') {
     return (
       <svg viewBox="0 0 200 200" role="img" aria-hidden="true">
-        <path d="M66 40 L84 26 Q100 22 116 26 L134 40 L170 64 L162 152 L146 152 L142 94 L142 184 L58 184 L58 94 L54 152 L38 152 L30 64 Z"
-          fill={color} stroke={borde} strokeWidth="2" strokeLinejoin="round" />
-        <path d="M84 26 Q100 4 116 26 Q100 42 84 26 Z" fill={color} stroke={borde} strokeWidth="2" />
-        <path d="M74 146 L126 146 L132 172 L68 172 Z" fill="none" stroke={borde} strokeWidth="2" />
-        <image href={logo} x="80" y="66" width="40" height="40" preserveAspectRatio="xMidYMid meet" />
-        {texto ? <text x="100" y="126" textAnchor="middle" fill={tinta} style={{ font: '900 11px Archivo, sans-serif', letterSpacing: '.08em' }}>{texto}</text> : null}
+        <Luz id={id} osc={osc} />
+        {piso}
+        {/* la capucha, detrás del cuello, y lo de adentro en sombra */}
+        <path d="M70 41 Q64 9 100 7 Q136 9 130 41 Q118 32 100 32 Q82 32 70 41 Z" fill={color} stroke={linea} strokeWidth="1.2" />
+        <path d="M70 41 Q64 9 100 7 Q136 9 130 41 Q118 32 100 32 Q82 32 70 41 Z" fill="#000" opacity=".22" />
+        <path d={BUZO} fill={color} stroke={linea} strokeWidth="1.2" strokeLinejoin="round" />
+        <image href={logo} x="81" y="74" width="38" height="38" preserveAspectRatio="xMidYMid slice" clipPath={'url(#' + id + 'q)'} />
+        {texto ? <text x="100" y="125" textAnchor="middle" fill={tinta} style={{ font: '900 9px Archivo, sans-serif', letterSpacing: '.05em' }}>{texto}</text> : null}
+        <Encima id={id} d={BUZO} />
+        <path d="M80 40 Q82 19 100 18 Q118 19 120 40 Q110 49 100 49 Q90 49 80 40 Z" fill="#000" opacity=".5" />
+        {/* el bolsillo canguro, con su costura y su borde en sombra */}
+        <path d="M70 138 L130 138 L138 170 L62 170 Z" fill="#000" opacity=".08" stroke={linea} strokeWidth="1" />
+        <path d="M73 141 L127 141 L134 167 L66 167 Z" fill="none" stroke={costura} strokeWidth=".9" strokeDasharray="2 1.6" />
+        <path d="M70 138 L62 170" fill="none" stroke="#000" strokeOpacity=".3" strokeWidth="2" filter={'url(#' + id + 'b)'} />
+        <path d="M130 138 L138 170" fill="none" stroke="#000" strokeOpacity=".3" strokeWidth="2" filter={'url(#' + id + 'b)'} />
+        {/* puños y cintura acanalados */}
+        {[34, 36.5, 39, 41.5, 44, 46.5, 49, 51.5].map((x) => <line key={'a' + x} x1={x} y1="140" x2={x - 0.4} y2="150" stroke="#000" strokeOpacity=".16" strokeWidth=".8" />)}
+        {[148.5, 151, 153.5, 156, 158.5, 161, 163.5, 166].map((x) => <line key={'b' + x} x1={x} y1="140" x2={x + 0.4} y2="150" stroke="#000" strokeOpacity=".16" strokeWidth=".8" />)}
+        <path d="M33 140 L53 140 M147 140 L167 140 M56 172 Q100 177 144 172" fill="none" stroke={costura} strokeWidth=".9" strokeDasharray="2 1.6" />
+        {Array.from({ length: 30 }, (_, i) => 57 + i * 2.95).map((x) => <line key={'c' + x} x1={x} y1="173" x2={x} y2="183" stroke="#000" strokeOpacity=".14" strokeWidth=".8" />)}
+        {/* los cordones con sus puntas */}
+        <path d="M92 48 Q90 58 91 68" fill="none" stroke="#EDEDED" strokeWidth="2.2" strokeLinecap="round" />
+        <path d="M108 48 Q110 58 109 70" fill="none" stroke="#EDEDED" strokeWidth="2.2" strokeLinecap="round" />
+        <rect x="89.6" y="66" width="2.8" height="6" rx="1" fill="#9A9A96" /><rect x="107.6" y="68" width="2.8" height="6" rx="1" fill="#9A9A96" />
+        {[pliegue('M60 104 Q66 124 62 150', 1), pliegue('M140 104 Q134 124 138 150', 2), pliegue('M44 96 Q40 118 42 138', 3), pliegue('M156 96 Q160 118 158 138', 4)]}
+        {[brillo('M84 52 Q92 60 90 72', 5), brillo('M47 92 Q45 112 47 130', 6)]}
       </svg>
     );
   }
   return (
     <svg viewBox="0 0 200 200" role="img" aria-hidden="true">
-      <path d="M70 28 L88 20 Q100 32 112 20 L130 28 L168 52 L152 82 L138 74 L138 184 L62 184 L62 74 L48 82 L32 52 Z"
-        fill={color} stroke={borde} strokeWidth="2" strokeLinejoin="round" />
-      <path d="M88 20 Q100 32 112 20" fill="none" stroke={borde} strokeWidth="2" />
-      <image href={logo} x="76" y="58" width="48" height="48" preserveAspectRatio="xMidYMid meet" />
-      {texto ? <text x="100" y="128" textAnchor="middle" fill={tinta} style={{ font: '900 10px Archivo, sans-serif', letterSpacing: '.08em' }}>{texto}</text> : null}
+      <Luz id={id} osc={osc} />
+      {piso}
+      <path d={REMERA} fill={color} stroke={linea} strokeWidth="1.2" strokeLinejoin="round" />
+      <image href={logo} x="77" y="52" width="46" height="46" preserveAspectRatio="xMidYMid slice" clipPath={'url(#' + id + 'r)'} />
+      {texto ? <text x="100" y="114" textAnchor="middle" fill={tinta} style={{ font: '900 10px Archivo, sans-serif', letterSpacing: '.08em' }}>{texto}</text> : null}
+      <Encima id={id} d={REMERA} />
+      {/* el cuello acanalado, y adentro la espalda en sombra */}
+      <path d="M86 27 Q100 21 114 27 Q100 36 86 27 Z" fill="#000" opacity=".45" />
+      <path d="M82 25 Q100 42 118 25 L114 27 Q100 37 86 27 Z" fill={color} stroke={linea} strokeWidth="1" />
+      <path d="M82 25 Q100 42 118 25 L114 27 Q100 37 86 27 Z" fill="#000" opacity=".14" />
+      {/* las costuras: mangas, hombros y ruedo */}
+      <path d="M32 65 L46 82 M168 65 L154 82 M61 179 Q100 183 139 179 M60 34 Q63 52 60 74 M140 34 Q137 52 140 74" fill="none" stroke={costura} strokeWidth=".9" strokeDasharray="2 1.6" />
+      {[pliegue('M64 80 Q76 96 72 118', 1), pliegue('M136 80 Q124 96 128 118', 2), pliegue('M82 150 Q90 168 86 182', 3), pliegue('M118 152 Q111 168 115 182', 4)]}
+      {[brillo('M70 104 Q78 128 74 160', 5), brillo('M120 60 Q132 70 130 86', 6)]}
     </svg>
   );
 }
 
+// la plancha de stickers: troquelados, con su borde blanco, su sombra y un brillo, cada uno un poco girado
 function Stickers({ logos }) {
-  const pos = [[62, 62], [138, 62], [100, 100], [62, 138], [138, 138]];
+  const id = 'st' + useId().replace(/[^a-z0-9]/gi, '');
+  const pos = [[64, 62, -8], [136, 64, 6], [100, 102, -3], [62, 140, 7], [138, 138, -6]];
   return (
     <svg viewBox="0 0 200 200" role="img" aria-hidden="true">
-      <defs>{pos.map(([x, y], i) => <clipPath key={i} id={'mq-st-' + i}><circle cx={x} cy={y} r="26" /></clipPath>)}</defs>
-      <rect x="22" y="22" width="156" height="156" rx="4" fill="#F6F6F6" stroke="rgba(0,0,0,.28)" strokeWidth="2" />
-      {pos.map(([x, y], i) => (logos[i] ? (
-        <g key={i}>
-          <circle cx={x} cy={y} r="29" fill="#FFFFFF" stroke="rgba(0,0,0,.18)" strokeWidth="1.5" />
-          <image href={logos[i]} x={x - 26} y={y - 26} width="52" height="52" clipPath={'url(#mq-st-' + i + ')'} preserveAspectRatio="xMidYMid slice" />
+      <defs>
+        {pos.map(([x, y], i) => <clipPath key={i} id={id + 'c' + i}><circle cx={x} cy={y} r="25" /></clipPath>)}
+        <filter id={id + 's'} x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="1.6" stdDeviation="1.8" floodOpacity=".3" /></filter>
+        <linearGradient id={id + 'g'} x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stopColor="#fff" stopOpacity=".55" />
+          <stop offset=".45" stopColor="#fff" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <rect x="20" y="22" width="160" height="160" rx="3" fill="#FAFAF8" filter={'url(#' + id + 's)'} />
+      <rect x="26" y="28" width="148" height="148" rx="2" fill="none" stroke="rgba(0,0,0,.12)" strokeWidth=".8" strokeDasharray="3 2" />
+      {pos.map(([x, y, r], i) => (logos[i] ? (
+        <g key={i} transform={'rotate(' + r + ' ' + x + ' ' + y + ')'}>
+          <circle cx={x} cy={y} r="29" fill="#FFFFFF" filter={'url(#' + id + 's)'} />
+          <image href={logos[i]} x={x - 25} y={y - 25} width="50" height="50" clipPath={'url(#' + id + 'c' + i + ')'} preserveAspectRatio="xMidYMid slice" />
+          <circle cx={x} cy={y} r="29" fill={'url(#' + id + 'g)'} />
         </g>
       ) : null))}
     </svg>
