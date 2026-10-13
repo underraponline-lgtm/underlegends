@@ -10,7 +10,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { DIAS, MESES, hora, limpio, minutosDelDia, norm, num, quienMira, recorte, resultado, siglaDe, utc } from './liga.js';
 import { claveOrg, seguirOrg, useOrgs } from './orgs.js';
 import { Anotados, Cara, Carta, Compartir, Ico, aDiscord, accion, enlace, useCampana } from './piezas.jsx';
-import { CuadroMini, LlaveCorta, cortaDe, gcal, llaveEnVivo } from './arriba.jsx';
+import { CuadroMini, LlaveCorta, cortaDe, eventoDelBoton, gcal, llaveEnVivo } from './arriba.jsx';
 import { H, W, aPng, armarYCompartir, cargarImg, carta, lienzo, pie } from './historia.js';
 
 // 🔑 CÓMO TE FUE (Dlx, 02/10/2026, al ver la preview: «sí, hazla como sugeriste»): en cada evento que jugaste, una línea
@@ -295,7 +295,21 @@ function Abierto({ liga, ll }) {
 }
 // `arriba`: el evento en vivo cuya llave ya está en la tarjeta negra de arriba: acá no se repite
 // `campVivo`: el campeón de una llave que terminó y el ciclo todavía no procesó (`liga.recienTerminadas()`)
-function Evento({ liga, e, est, L, abierto, arriba, campVivo }) {
+// ── 🔁 DESPUÉS DE JUGAR, TU PRÓXIMO (Dlx, 13/10/2026, «dale haz todo»: ahí se pierde el 42 % que juega una sola vez).
+// Debajo de tu resultado del último evento que jugaste (48 h), el mismo que el botón grande del Inicio
+// (`eventoDelBoton()`), y SÓLO si ese día ya no queda nada por jugar: si queda, «Más tarde» ya está arriba con su
+// botón, y repetirlo acá sería lo mismo dos veces
+function TuProximo({ liga, s }) {
+  const ins = s.anotado ? null : aDiscord(liga, s.e, false);
+  return (
+    <p className="evp-sig">
+      <span>{s.anotado ? 'Ya estás anotado en' : 'Tu próximo:'} <b>{limpio(s.e.nombre)}</b> · {liga.dia(s.e.cuando)}</span>
+      {ins ? <a className="btn verde chico" href={ins.url} target="_blank" rel="noopener noreferrer">Anotarme</a> : null}
+    </p>
+  );
+}
+
+function Evento({ liga, e, est, L, abierto, arriba, campVivo, sig }) {
   const ll = e.ll ? (liga.d.llaves || {})[e.ll] : null;
   const inf = (ll && ll.info) || {};
   const x = e.px || {};
@@ -334,6 +348,7 @@ function Evento({ liga, e, est, L, abierto, arriba, campVivo }) {
       ) : null}
       {st ? <p className="evp-aviso"><b>{liga.estadoTexto(st, { cuando: e.t, t: e.t, sv: e.sv, n: e.n, link: e.link })}</b>{st.texto ? <span>«{recorte(st.texto.replace(/<a?:\w+:\d+>/g, '').replace(/\s+/g, ' ').trim(), 140)}»</span> : null}</p> : null}
       {mia ? <p className="evp-vos"><em className="rk-vos">VOS</em><b>{resultado(mia[1])}</b><span>· +{num(mia[2])}</span></p> : null}
+      {mia && sig && sig.e ? <TuProximo liga={liga} s={sig} /> : null}
       {camp.length && !abierto ? <p className="evp-camp">{camp.length > 1 ? 'Campeones' : 'Campeón'}: <b>{camp.join(' y ')}</b></p> : null}
       {!camp.length && campVivo ? <p className="evp-camp">Campeón: <b>{campVivo}</b></p> : null}
       {abierto && ll ? <Abierto liga={liga} ll={ll} /> : null}
@@ -730,6 +745,10 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   const nada = !vivos.length && !prox.length && !hechos.length && !cancelados.length;
   // lo último que hubo, para el día vacío
   const ultimoDia = conDias.filter((k) => k < dia).pop();
+  // 🔁 tu último evento (48 h) y tu próximo, para «después de jugar» (ver `TuProximo`)
+  const tuUlt = liga.yo ? cal.filter((c) => c.ll && (liga.ahora - utc(c.t)) / 3600000 < 48 && miFila(liga, (liga.d.llaves || {})[c.ll]))
+    .sort((a, b) => (a.t < b.t ? 1 : -1))[0] : null;
+  const sigDe = (c, quedan) => (tuUlt && c === tuUlt && !quedan ? eventoDelBoton(liga) : null);
 
   return (
     <>
@@ -797,7 +816,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
           ) : null}
           {hechos.length ? (
             <section className="grupo"><h3 className="g-t">Terminados</h3>
-              {hechos.map((c, i) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={i === 0 && !!c.ll} L={termDe(c) ? termDe(c).L : undefined} campVivo={termDe(c) ? termDe(c).camp : ''} />)}</section>
+              {hechos.map((c, i) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={i === 0 && !!c.ll} L={termDe(c) ? termDe(c).L : undefined} campVivo={termDe(c) ? termDe(c).camp : ''} sig={sigDe(c, prox.length + vivos.length)} />)}</section>
           ) : null}
           {cancelados.length ? (
             <section className="grupo"><h3 className="g-t">Cancelados</h3>
@@ -815,7 +834,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
           {nada && ultimoDia ? (
             <section className="grupo evp-ultdia"><h3 className="g-t">Lo último que se jugó · {tituloDe(ultimoDia)}</h3>
               {(porDia[ultimoDia] || []).slice().sort((a, b) => (a.t < b.t ? 1 : -1)).slice(0, 3)
-                .map((c, i) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={i === 0 && !!c.ll} />)}
+                .map((c, i) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={i === 0 && !!c.ll} sig={sigDe(c, 0)} />)}
             </section>
           ) : null}
         </main>

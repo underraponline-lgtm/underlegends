@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.90",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T04:40:00-04:00",
+   "titulo": "Tu próxima meta y tu próximo evento",
+   "items": [
+    "🎯 En cada perfil, su próxima meta: a quién pasa y cuánto OVR le falta, y si entra al torneo de cierre de los 16.",
+    "🔁 En Eventos, debajo de tu resultado, tu próximo evento con «Anotarme», cuando ese día ya no queda nada por jugar."
+   ]
+  },
+  {
    "version": "2.89",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T03:00:00-04:00",

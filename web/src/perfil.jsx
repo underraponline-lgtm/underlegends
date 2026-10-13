@@ -457,6 +457,40 @@ function Fortalezas({ liga, f, p, dmp, esYo }) {
   );
 }
 
+// ── 🎯 SU PRÓXIMA META (Dlx, 13/10/2026, «dale haz todo», del research de los lobbies: «la próxima meta tiene que verse
+// y estar cerca»). A quién pasa y cuánto le falta en la Temporada, y el torneo de cierre (los 16 primeros con número).
+// En el perfil no estaba: «En cada ranking» dice el puesto, no la distancia. Con la misma medida que el Ranking (OVR;
+// `Cerca` de ranking.jsx). Fuera de concurso no tiene puesto, así que no hay meta
+const D_OVR = (d) => (d === 1 ? '1 de OVR' : num(Math.round(d * 10) / 10) + ' de OVR');
+function ProximaMeta({ liga, f, esYo }) {
+  if (f.fc || !f.pos) return null;
+  const of = liga.oficiales();
+  const i = of.findIndex((x) => x.k === f.k);
+  if (i < 0) return null;
+  const ovr = (x) => Number(x && x.ovr) || 0;
+  const arriba = i > 0 ? of[i - 1] : null;
+  const abajo = of[i + 1] || null;
+  const corte = f.pos > 16 && of.length >= 16 ? of[15] : null;
+  const n = (x) => limpio(x.n);
+  let t;
+  if (!arriba) t = (esYo ? 'Sos el #1 de la Temporada' : 'Es el #1 de la Temporada')
+    + (abajo && ovr(f) > ovr(abajo) ? ' · ' + (esYo ? 'le sacás ' : 'le saca ') + D_OVR(ovr(f) - ovr(abajo)) + ' a ' + n(abajo) : '');
+  else if (ovr(arriba) > ovr(f)) t = (esYo ? 'Te faltan ' : 'Le faltan ') + D_OVR(ovr(arriba) - ovr(f)) + ' para pasar a ' + n(arriba)
+    + ' y subir al #' + arriba.pos;
+  else t = (esYo ? 'Estás pegado a ' : 'Está pegado a ') + n(arriba) + ', el #' + arriba.pos + ': el próximo evento los separa';
+  const sub = corte ? (ovr(corte) > ovr(f) ? 'Y ' + D_OVR(ovr(corte) - ovr(f)) + ' para entrar a los 16 del torneo de cierre' : '')
+    : (esYo ? 'Si la temporada terminara hoy, jugás el torneo de cierre' : 'Si la temporada terminara hoy, juega el torneo de cierre');
+  return (
+    <section className="sec pf-sec pf-meta-sec">
+      <a className="pf-meta" href="#/ranking/temporada">
+        <span className="pf-meta-et">{esYo ? 'TU PRÓXIMA META' : 'SU PRÓXIMA META'} · #{f.pos} DE LA TEMPORADA</span>
+        <b>{t}</b>
+        {sub ? <small>{sub}</small> : null}
+      </a>
+    </section>
+  );
+}
+
 function EnCadaRanking({ liga, f, p }) {
   const rk = (p && p.rk) || {};
   const filas = [];
@@ -788,6 +822,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
       {f.fuera ? <section className="sec pf-sec"><p className="pronto-p">Tu historial todavía no está en la página: aparece cuando entrás entre los 200 de la tabla.</p></section> : null}
       {!P ? <div className="cargando">Cargando…</div> : (
         <>
+          <ProximaMeta liga={liga} f={f} esYo={esYo} />
           <Numeros f={f} p={p} />
           {/* 🎬 arriba, debajo de sus números (Dlx, 12/10/2026: «que esto esté más arriba… debajo de sus números») */}
           <div id="pf-videos"><Videos liga={liga} p={p} k={k} esYo={esYo} dc={dc} /></div>
