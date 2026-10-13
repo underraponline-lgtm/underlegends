@@ -1000,6 +1000,15 @@ export const CANAL_LOGS = '1504110449535483924';
 export const TUTO_EV = new Set(['tour', 'tour_fin', 'salta0', 'salta1', 'salta2', 'salta3', 'salta4', 'repite', 'franja',
   'franja_si', 'pasos', 'pasos_fin']);
 
+/**
+ * 📊 QUÉ SECCIONES SE ABREN (Dlx, 12/10/2026, el research «página sencilla»: «hacé todo menos los dos puntos que
+ * chocan»; el primer punto era medir antes de mover nada). Cada navegador cuenta cada sección UNA vez por día
+ * (web/src/App.jsx, `lg:secc`) y acá sólo se suma un número por sección y por día: nunca quién. Es lo que hace falta
+ * para ordenar la tira de abajo por uso de verdad y no por intuición
+ */
+export const SECC_EV = new Set(['inicio', 'eventos', 'ranking', 'publicaciones', 'tarjetas', 'pase', 'tienda', 'socios',
+  'guia', 'perfil', 'servidor', 'crew', 'pais', 'cuenta', 'cambios', 'sumate']);
+
 /** 📣 La clave de un organizador: sin la arroba, en minúsculas y sólo letras y números (`latino()` para las de fantasía). */
 export function claveOrg(nombre) {
   return latino(String(nombre || '').replace(/^[@!\s]+/, '')).toLowerCase().replace(/[\u0300-\u036f]/g, '')
@@ -1969,6 +1978,8 @@ const RUTAS = {
   '/avisos/visita': 'POST',
   // 🧭 el tutorial (12/10/2026): qué vio y qué terminó un navegador, sin nada de nadie. Ver `tutorial()` del objeto
   '/avisos/tutorial': 'POST',
+  // 📊 qué secciones se abren (12/10/2026): una por navegador y por día, sin nada de nadie. Ver `seccion()` del objeto
+  '/avisos/seccion': 'POST',
   // 🔒 el Dashboard del dueño (04/10/2026): ver `/avisos/dueno` en `rutaAvisos()`
   '/avisos/dueno': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx) y los ajustes para el ciclo (con su clave)
@@ -3093,6 +3104,16 @@ export async function rutaAvisos(req, env, ruta) {
     return elObjeto(env).fetch('https://avisos/tutorial', { method: 'POST', body: JSON.stringify({ ev }),
       headers: { 'content-type': 'application/json' } });
   }
+  // 📊 qué sección se abrió: sólo el nombre, de una lista cerrada (`SECC_EV`)
+  if (ruta === '/avisos/seccion') {
+    const crudo = await req.text();
+    let d = null;
+    try { d = crudo.length <= 200 ? JSON.parse(crudo) : null; } catch (e) { d = null; }
+    const ev = d && typeof d.ev === 'string' ? d.ev : '';
+    if (!SECC_EV.has(ev)) return json({ error: 'faltan datos' }, 400);
+    return elObjeto(env).fetch('https://avisos/seccion', { method: 'POST', body: JSON.stringify({ ev }),
+      headers: { 'content-type': 'application/json' } });
+  }
   // 📊 una visita sin cuenta: no lleva nada de nadie, sólo suma (ver `visita()` del objeto)
   if (ruta === '/avisos/visita') return elObjeto(env).fetch('https://avisos/visita', { method: 'POST', body: '{}', 
     headers: { 'content-type': 'application/json' } });
@@ -3787,6 +3808,9 @@ export class Avisos {
       // 🧭 y el tutorial (12/10/2026): cuántos navegadores vieron, terminaron o saltearon cada cosa, por día. Sólo números
       this.sql.exec('CREATE TABLE IF NOT EXISTS tutorial (dia TEXT NOT NULL, ev TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
         'PRIMARY KEY (dia, ev)) WITHOUT ROWID');
+      // 📊 y qué secciones se abren (12/10/2026): cuántos navegadores abrieron cada una, por día. Sólo números
+      this.sql.exec('CREATE TABLE IF NOT EXISTS secciones (dia TEXT NOT NULL, s TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
+        'PRIMARY KEY (dia, s)) WITHOUT ROWID');
       // 🔥 LA RACHA DIARIA Y LOS NIVELES (04/10/2026): qué días contó cada uno (`activo`: el bot, la página con su
       // cuenta o un evento jugado; el día, nunca la hora) y, de los que jugaron, su perfil y cuántos eventos
       // (`jugo_temp`, por temporada, que manda el ciclo). Ver `diaActivo()`, `rachaDe()` y `bot/racha.py`
@@ -4101,6 +4125,7 @@ export class Avisos {
       }
       if (ruta === '/visita') return this.visita();
       if (ruta === '/tutorial') return this.tutorial(await req.json().catch(() => null));
+      if (ruta === '/seccion') return this.seccion(await req.json().catch(() => null));
       if (ruta === '/dueno') {
         const p = this.panelDueno();
         // 🎤 y en qué servidores lo prendió su admin (`cfg:<guild>` en KV, `/settings`): una lectura por servidor
@@ -4390,6 +4415,7 @@ export class Avisos {
       this.sql.exec('DELETE FROM uso WHERE dia < ?', diaET(ahora - USO_DIAS * DIA_MS));
       this.sql.exec('DELETE FROM visitas WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM tutorial WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
+      this.sql.exec('DELETE FROM secciones WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       // 🔴 y los dispositivos que nunca recibieron nada y fallaron cinco veces (revisión del 03/10/2026): sólo 404 y
       // 410 borran al momento (ver `MUERTA`), así que uno inventado con un servicio que no resuelve quedaba para
       // siempre ocupando lugar en el tope y recibiendo cada evento. Uno de verdad recibe la de prueba al anotarse
@@ -7808,6 +7834,27 @@ export class Avisos {
     return { n: out, desde: (this.sql.exec('SELECT MIN(dia) AS d FROM tutorial').toArray()[0] || {}).d || null };
   }
 
+  /** 📊 Una sección abierta, de un navegador (ver `SECC_EV`). Con tope por día, como la visita */
+  seccion(d) {
+    const s = d && typeof d.ev === 'string' ? d.ev : '';
+    if (!SECC_EV.has(s)) return json({ error: 'faltan datos' }, 400);
+    this.sql.exec('INSERT INTO secciones (dia, s, n) VALUES (?, ?, 1) ON CONFLICT(dia, s) DO UPDATE SET n = n + 1 ' +
+      'WHERE n < 20000', diaET(), s);
+    return json({ ok: true });
+  }
+
+  /** 📊 Las secciones de los últimos 7 días y de los 7 anteriores, sumadas: `{s: [estos7, anteriores7]}`, y desde
+   *  cuándo se cuenta */
+  seccionesResumen() {
+    const desde = (n) => diaET(Date.now() - n * DIA_MS);
+    const out = {};
+    for (const [i, a, b] of [[0, 7, 0], [1, 14, 7]]) {
+      for (const f of this.sql.exec('SELECT s, SUM(n) AS n FROM secciones WHERE dia > ? AND dia <= ? GROUP BY s',
+        desde(a), desde(b)).toArray()) (out[f.s] = out[f.s] || [0, 0])[i] = f.n;
+    }
+    return { n: out, desde: (this.sql.exec('SELECT MIN(dia) AS d FROM secciones').toArray()[0] || {}).d || null };
+  }
+
   /** Cuántas personas distintas en los últimos 7 días (y los 7 anteriores, para comparar), y las visitas por día */
   usoResumen() {
     const desde = (n) => diaET(Date.now() - n * DIA_MS);
@@ -7870,6 +7917,7 @@ export class Avisos {
     return {
       uso: this.usoResumen(),
       tutorial: this.tutorialResumen(),
+      secciones: this.seccionesResumen(),
       ajustes: this.ajustes(),
       // 🎤 el bot en vivo: el chat general de cada servidor, lo que pasó la última vez, y (lo llena la ruta) dónde lo
       // prendió cada admin

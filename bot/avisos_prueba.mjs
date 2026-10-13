@@ -1402,6 +1402,16 @@ const ok = (cond, que, det) => {
       && await tu('') === 400, 'tutorial: lo de la lista suma, lo demás no');
     const tr = o.panelDueno().tutorial;
     ok(tr.n.tour === 2 && tr.n.salta2 === 1 && !tr.n.otra && !!tr.desde, 'y el Dashboard lo ve sumado', JSON.stringify(tr));
+    // 📊 las secciones: igual que el tutorial, y la lista de la página es la misma que la de acá
+    const se = async (ev) => (await o.seccion({ ev })).status;
+    ok(await se('ranking') === 200 && await se('ranking') === 200 && await se('guia') === 200 && await se('dashboard') === 400
+      && await se('') === 400, 'secciones: lo de la lista suma, lo demás no');
+    const sr = o.panelDueno().secciones;
+    ok(sr.n.ranking && sr.n.ranking[0] === 2 && sr.n.ranking[1] === 0 && sr.n.guia[0] === 1 && !sr.n.dashboard && !!sr.desde,
+      'y el Dashboard las ve, esta semana contra la anterior', JSON.stringify(sr));
+    const enApp = /const SECC = new Set\(\[([^\]]+)\]/.exec(readFileSync(join(aqui, '..', 'web', 'src', 'App.jsx'), 'utf8'));
+    const deApp = enApp ? enApp[1].match(/'([a-z]+)'/g).map((x) => x.slice(1, -1)).sort() : [];
+    ok(JSON.stringify(deApp) === JSON.stringify([...A.SECC_EV].sort()), 'la lista de App.jsx es SECC_EV', deApp.join(','));
   }
 }
 

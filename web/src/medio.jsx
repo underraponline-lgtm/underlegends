@@ -254,7 +254,7 @@ export function LosQueMandan({ liga, dc }) {
       <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar</button></div>
   ) : null;
   const items = cats.filter((c) => c[2].length).map(([c, et, h, yoFila]) => ({ c, et, t: 'Los que mandan', cuerpo: <><div className="rail mcs2">{h}</div>{yoFila || invita}</> }));
-  return <Pest id="raperos" titulo="Los que mandan" enlace="Todos los raperos" href="#/ranking" items={items} extra="negra" />;
+  return <Pest id="raperos" titulo="Los que mandan" bajada="Los cinco primeros de cada ranking de la temporada." enlace="Todos los raperos" href="#/ranking" items={items} extra="negra" />;
 }
 
 // ── el panel de abajo: Misiones + el Pase · Tus eventos + Tu temporada · La Liga en números ──────────

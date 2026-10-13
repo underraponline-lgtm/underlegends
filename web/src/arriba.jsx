@@ -11,6 +11,16 @@ export const MENU = [
   ['Tarjetas', '#/tarjetas'], ['Pase rapero', '#/pase'], ['Tienda', '#/tienda'], ['Socios', '#/socios'], ['Guía', '#/guia'],
 ];
 // «Socios» es lo que era «Mundo» (Dlx, 03/10/2026: «1. A»); `#/mundo` sigue abriéndolo (App.jsx)
+// 🗣️ QUÉ ES CADA UNA, en palabras comunes (Dlx, 12/10/2026, el research «página sencilla»: «hacé todo menos los dos
+// puntos que chocan»). Los nombres se quedan —«Pase rapero» y «Socios» son de la Liga— y llevan al lado lo que son: en
+// el menú ☰ debajo del nombre, y arriba en la compu al pasar el mouse
+export const QUE_ES = {
+  '#/': 'Lo que pasa ahora en la Liga', '#/eventos': 'Cuándo se juega, y la campana para enterarte',
+  '#/ranking': 'Las tablas de la temporada', '#/publicaciones': 'Campeones, rangos nuevos y anuncios',
+  '#/tarjetas': 'Las tarjetas de cada rapero', '#/pase': 'Premios por participar en la temporada',
+  '#/tienda': 'Tus Puntos de Tienda, y el precio por cabeza', '#/socios': 'Los servidores que forman la Liga',
+  '#/guia': 'Cómo funciona todo',
+};
 
 function Marca({ liga }) {
   return (
@@ -120,7 +130,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
     <header className="cab negra">
       <Marca liga={liga} />
       <nav className="menu" aria-label="Secciones">
-        {MENU.map(([n, r]) => <a key={n} href={r} onClick={subirSiEsta(r)} className={(n === 'Inicio' ? !pagina : pagina && r === '#/' + pagina) ? 'on' : ''}>{n}</a>)}
+        {MENU.map(([n, r]) => <a key={n} href={r} title={QUE_ES[r]} onClick={subirSiEsta(r)} className={(n === 'Inicio' ? !pagina : pagina && r === '#/' + pagina) ? 'on' : ''}>{n}</a>)}
       </nav>
       <div className="cab-der">
         <Buscar liga={liga} />

@@ -5,7 +5,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { limpio, nuevaQue, num } from './liga.js';
 import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, subirSiEsta } from './piezas.jsx';
-import { Buscar, CaraDc, CaraH, MENU } from './arriba.jsx';
+import { Buscar, CaraDc, CaraH, MENU, QUE_ES } from './arriba.jsx';
 
 
 // ── Se busca ──────────────────────────────────────────────────────────────────────────────────────
@@ -18,7 +18,7 @@ export function SeBusca({ liga }) {
   const diario = mw.tipo === 'dia';
   const correr = (d) => { if (tira.current) tira.current.scrollBy({ left: d * tira.current.clientWidth * 0.8, behavior: 'smooth' }); };
   return (
-    <Sec id="sebusca" titulo="Se busca" enlace="Most Wanted" href="#/ranking/mw" extra="negra">
+    <Sec id="sebusca" titulo="Se busca" bajada="Los buscados del Most Wanted: si le ganás a uno en un evento, te llevás su recompensa." enlace="Most Wanted" href="#/ranking/mw" extra="negra">
       <div className="mw-cab"><span>{mw.b.length} buscados {diario ? 'hoy' : 'esta semana'} · vencen {liga.dia(mw.fin)}</span>
         <span className="mw-fl"><button type="button" className="mw-b" aria-label="Anteriores" onClick={() => correr(-1)}>←</button>
           <button type="button" className="mw-b" aria-label="Siguientes" onClick={() => correr(1)}>→</button></span></div>
@@ -204,7 +204,8 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema }) {
         <div className="x-caja-cab"><b>MENÚ</b><button className="btn-ico x-cerrar" type="button" aria-label="Cerrar el menú" onClick={onCerrar} ref={cerrarB}><Ico n="cerrar" t={22} /></button></div>
         {/* en el celular el buscador no entra arriba: vive acá */}
         {liga ? <div className="x-busca"><Buscar liga={liga} onIr={onCerrar} /></div> : null}
-        <nav className="x-lista" aria-label="Secciones">{MENU.slice(1).map(([n, r]) => <a key={n} href={r} onClick={onCerrar}>{n}<Ico n="flecha" t={20} /></a>)}</nav>
+        <nav className="x-lista" aria-label="Secciones">{MENU.slice(1).map(([n, r]) => (
+          <a key={n} href={r} onClick={onCerrar}><span>{n}{QUE_ES[r] ? <small>{QUE_ES[r]}</small> : null}</span><Ico n="flecha" t={20} /></a>))}</nav>
         <div className="x-aj">
           <span className="x-aj-t">AJUSTES</span>
           <div className="x-fila"><span>Tema</span>

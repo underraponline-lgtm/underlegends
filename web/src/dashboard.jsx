@@ -261,6 +261,27 @@ function TutorialNumeros({ t }) {
   );
 }
 
+// ── 📊 QUÉ SECCIONES SE ABREN (Dlx, 12/10/2026, el research «página sencilla»: medir antes de mover la tira). Cada
+// navegador cuenta cada sección una vez por día (App.jsx, `lg:secc`) y acá llega sumado: esta semana y la anterior
+const NOMBRE_SECC = { inicio: 'Inicio', eventos: 'Eventos', ranking: 'Ranking', publicaciones: 'Publicaciones',
+  tarjetas: 'Tarjetas', pase: 'Pase', tienda: 'Tienda', socios: 'Socios', guia: 'Guía', perfil: 'Un perfil',
+  servidor: 'Un servidor', crew: 'Una crew', pais: 'Un país', cuenta: 'Mi cuenta', cambios: 'Novedades', sumate: 'Sumate' };
+function SeccionesNumeros({ s }) {
+  const filas = Object.entries((s && s.n) || {}).map(([k, v]) => [k, v[0] || 0, v[1] || 0])
+    .filter((f) => f[1] || f[2]).sort((a, b) => b[1] - a[1] || b[2] - a[2]);
+  const tope = Math.max(1, ...filas.map((f) => f[1]));
+  if (!filas.length) return <p className="pronto-p">Todavía no se abrió ninguna.</p>;
+  return (
+    <div className="db-aj">
+      <div className="db-q">{filas.map(([k, n, ant]) => (
+        <div key={k} className="db-q-f"><span>{NOMBRE_SECC[k] || k}</span><i><u style={{ width: ((100 * n) / tope).toFixed(1) + '%' }} /></i>
+          <b>{num(n)} <small>{ant ? 'antes ' + num(ant) : 'esta semana'}</small></b></div>
+      ))}</div>
+      <p className="db-tx">Cuántos celus o compus abrieron cada sección en los últimos 7 días (cada uno cuenta una vez por día), y la semana anterior al lado. Sirve para ordenar la barra de abajo por lo que la gente usa.</p>
+    </div>
+  );
+}
+
 function PaseNumeros({ p, liga }) {
   const dist = Object.entries(p.dist || {}).map(([n, k]) => [Number(n), k]).sort((a, b) => a[0] - b[0]);
   const tope = Math.max(1, ...dist.map((x) => x[1]));
@@ -776,6 +797,12 @@ export function Dashboard({ dc, liga }) {
           <section className="act">
             <div className="mis-cab"><span>EL TUTORIAL · DOS SEMANAS</span>{d.tutorial.desde ? <em>se cuenta desde el {corto(d.tutorial.desde)}</em> : null}</div>
             <TutorialNumeros t={d.tutorial} />
+          </section>
+        ) : null}
+        {d.secciones && Object.keys(d.secciones.n || {}).length ? (
+          <section className="act">
+            <div className="mis-cab"><span>QUÉ SECCIONES SE ABREN · 7 DÍAS</span>{d.secciones.desde ? <em>se cuenta desde el {corto(d.secciones.desde)}</em> : null}</div>
+            <SeccionesNumeros s={d.secciones} />
           </section>
         ) : null}
         {d.pase ? (

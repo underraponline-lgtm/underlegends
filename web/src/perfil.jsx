@@ -10,7 +10,7 @@
 // —seguir, el precio por cabeza, el visor de cartas y de llaves— son las de app.js.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
-import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, Ico, Rango, SinCarta, accion, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
+import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, Ico, QueEsBoton, QueEsTexto, Rango, SinCarta, accion, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
 import { usePaseDe } from './pase.js';
@@ -130,6 +130,10 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
   const nv = nvs && nvs[k];
   // 🎟️ y su Pase de rapero (05/10/2026): el nivel, el título y el color de su nombre, por la clave del perfil
   const pa = usePaseDe(k);
+  // ❔ cuál de sus números está explicado abajo (uno a la vez)
+  const [qe, setQe] = useState('');
+  useEffect(() => { setQe(''); }, [k]);
+  const q = (id) => <QueEsBoton k={id} abierto={qe === id} onToggle={() => setQe(qe === id ? '' : id)} />;
   return (
     <div className="escena pf-esc" style={{ '--mo-c': (sv && sv.color) || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298' }}>
       <section className={'rk-cab pf-cab' + (resumen ? '' : ' sin-carta')}>
@@ -155,12 +159,14 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
             </ul>
           ) : null}
           <dl className="pf-num">
-            <div><dt>OVR</dt><dd className="ovr">{f.ovr || '—'}</dd></div>
-            <div><dt>RANGO</dt><dd><Rango liga={liga} rg={f.rg} /></dd></div>
-            <div><dt>PUNTOS</dt><dd>{num(f.pts || 0)}</dd></div>
-            <div><dt>EVENTOS</dt><dd>{f.ev || 0}</dd></div>
-            <div><dt>WIN%</dt><dd title={f.wr ? undefined : 'El Win% aparece con 10 eventos'}>{f.wr ? String(f.wr).replace('.', ',') : '—'}</dd></div>
+            <div><dt>OVR {q('ovr')}</dt><dd className="ovr">{f.ovr || '—'}</dd></div>
+            <div><dt>RANGO {q('rango')}</dt><dd><Rango liga={liga} rg={f.rg} /></dd></div>
+            {/* ⚠️ seis cifras («271.108») no entran a 26 px en un tercio de un celular de 375: se salían por la derecha */}
+            <div><dt>PUNTOS {q('puntos')}</dt><dd className={num(f.pts || 0).length > 6 ? 'largo' : undefined}>{num(f.pts || 0)}</dd></div>
+            <div><dt>EVENTOS {q('eventos')}</dt><dd>{f.ev || 0}</dd></div>
+            <div><dt>WIN% {q('win')}</dt><dd title={f.wr ? undefined : 'El Win% aparece con 10 eventos'}>{f.wr ? String(f.wr).replace('.', ',') : '—'}</dd></div>
           </dl>
+          <QueEsTexto k={qe} />
           <div className="hero-acc pf-acc">
             {!esYo && typeof window.alternarSigo === 'function' ? <Seguir si={si} onSeguir={() => window.alternarSigo(k)} /> : null}
             {esYo && dc ? <button type="button" className="btn borde chico" onClick={accion.foto}>Cambiar mi foto</button> : null}

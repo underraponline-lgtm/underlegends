@@ -98,6 +98,8 @@ const AVISOS = {
   '/api/avisos/visita': 'POST',
   // 🧭 el tutorial (12/10/2026): qué vio un navegador, sin nada de nadie. Ver `tutorial()` en bot/avisos.js
   '/api/avisos/tutorial': 'POST',
+  // 📊 qué secciones se abren (12/10/2026): una por navegador y por día. Ver `seccion()` en bot/avisos.js
+  '/api/avisos/seccion': 'POST',
   // 🔒 el Dashboard del dueño: el Worker comprueba que es Dlx (ver `/avisos/dueno` en bot/avisos.js)
   '/api/avisos/dueno': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx)
@@ -164,17 +166,19 @@ function visitaRepetida(req, que) {
 async function avisos(req, url) {
   const metodo = AVISOS[url.pathname];
   if (req.method !== metodo) return new Response('no', { status: 405 });
-  // 🧭 lo del tutorial, con el mismo freno que la visita pero por cosa: el navegador ya cuenta cada una una sola vez
-  if (url.pathname === '/api/avisos/tutorial') {
+  // 🧭 lo del tutorial, con el mismo freno que la visita pero por cosa: el navegador ya cuenta cada una una sola vez.
+  // 📊 Y las secciones (12/10/2026), igual: el nombre de la sección es la «cosa»
+  const secc = url.pathname === '/api/avisos/seccion';
+  if (url.pathname === '/api/avisos/tutorial' || secc) {
     const crudo = await req.text();
     let ev = '';
     try { ev = crudo.length <= 200 ? String((JSON.parse(crudo) || {}).ev || '').slice(0, 20) : ''; } catch (e) { ev = ''; }
     // lo que no es de la lista lo rechaza el Worker (`TUTO_EV`); acá sólo se frena lo repetido
-    if (ev && visitaRepetida(req, ev)) {
+    if (ev && visitaRepetida(req, (secc ? 's:' : '') + ev)) {
       return new Response('{"ok":true}', { headers: { 'content-type': 'application/json; charset=utf-8', ...SEGURO,
         'cache-control': 'no-store' } });
     }
-    const r = await fetch(ORIGEN + '/avisos/tutorial', { method: 'POST', headers: { 'content-type': 'application/json',
+    const r = await fetch(ORIGEN + (secc ? '/avisos/seccion' : '/avisos/tutorial'), { method: 'POST', headers: { 'content-type': 'application/json',
       accept: 'application/json' }, body: JSON.stringify({ ev }) });
     return new Response(r.body, { status: r.status, headers: { 'content-type': 'application/json; charset=utf-8', ...SEGURO,
       'cache-control': 'no-store' } });

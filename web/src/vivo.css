@@ -1777,6 +1777,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .pf-num dt{font:700 12px/1 "Space Mono",monospace;letter-spacing:.1em;color:var(--esc-gris)}
 .pf-num dd{margin:0;font:900 26px/1 Archivo,sans-serif;font-stretch:110%;color:var(--esc-tinta);font-variant-numeric:tabular-nums}
 .pf-num dd.ovr{color:#29B298}
+.pf-num dd.largo{font-size:clamp(18px,5.4vw,26px)}
 .pf-num .rg{display:inline-grid;place-items:center;min-width:34px;height:30px;padding:0 6px;font:900 18px/1 Archivo,sans-serif;color:#030304}
 .pf-acc{margin-top:2px}
 .pf-nv{margin:0;font:700 12px/1.4 "Space Mono",monospace;letter-spacing:.03em;color:#F0559A}
@@ -2395,3 +2396,26 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .pp-lista{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
   .app .pp-lista li+li{border-top:0;border-left:1.5px solid var(--suave)}
 }
+
+/* 🗣️ las líneas en palabras comunes (12/10/2026, el research «página sencilla»): debajo del título de una sección y de
+   cada entrada del menú ☰ */
+.sec-baj{margin:-6px 0 14px;color:var(--gris);font-size:14px;line-height:1.4;max-width:62ch}
+.x-lista a span{display:grid;gap:4px;padding:10px 0}
+.x-lista a small{font:500 13px/1.3 Archivo,sans-serif;font-stretch:100%;text-transform:none;color:var(--gris);letter-spacing:0}
+
+/* ❔ «¿qué es?» a un toque (12/10/2026): el «?» al lado de un número, su línea debajo, y en el Ranking qué es cada
+   columna */
+.qe-b{display:inline-grid;place-items:center;width:18px;height:18px;margin-left:4px;padding:0;vertical-align:1px;cursor:pointer;
+  border:1.5px solid currentColor;border-radius:50%;background:none;color:inherit;font:700 11px/1 "Space Mono",monospace;opacity:.8}
+.qe-b.on{background:var(--verde);border-color:var(--verde);color:#030304;opacity:1}
+.qe-b::after{content:"";position:absolute;width:44px;height:44px;margin:-13px}
+.qe-b{position:relative}
+.qe-t{margin:10px 0 0;padding:10px 12px;border-left:3px solid var(--verde);background:rgba(255,255,255,.06);
+  font-size:14px;line-height:1.45;max-width:62ch}
+.rk-qe{margin:0 0 12px}
+.rk-qe summary{cursor:pointer;font:700 13px/1.2 "Space Mono",monospace;letter-spacing:.06em;color:var(--gris);padding:6px 0;
+  min-height:32px}
+.rk-qe dl{margin:6px 0 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:14px;line-height:1.35}
+.rk-qe dl div{display:contents}
+.rk-qe dt{font-weight:800}
+.rk-qe dd{margin:0;color:var(--gris)}

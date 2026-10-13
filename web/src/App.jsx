@@ -11,6 +11,9 @@ import { Encuestas } from './encuestas.jsx';
 // 🧭 el tutorial (Dlx, 12/10/2026, «A … B … C … D … E. Dale»): quién es nuevo se decide al cargar (primera.js, chico);
 // lo que se dibuja se baja sólo si hace falta
 import { pasosEnInicio, quiereTutorial } from './primera.js';
+// 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
+const SECC = new Set(['inicio', 'eventos', 'ranking', 'publicaciones', 'tarjetas', 'pase', 'tienda', 'socios', 'guia',
+  'perfil', 'servidor', 'crew', 'pais', 'cuenta', 'cambios', 'sumate']);
 const Tutorial = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.Tutorial })));
 const PrimerosPasos = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.PrimerosPasos })));
 // 🔑 EL RANKING Y EVENTOS, EN SU PROPIO ARCHIVO: se bajan recién al abrirlos. Con los dos adentro, el JS del Inicio
@@ -351,6 +354,24 @@ export default function App() {
   if (pagina === 'crew') { const r = partes.slice(1).join('/'); try { crewId = decodeURIComponent(r); } catch (e) { crewId = r; } }
   // la del menú: `#/duelos` es el Ranking, y `#/mundo` es Socios
   const paginaMenu = pagina === 'duelos' ? 'ranking' : pagina === 'avisos' ? 'eventos' : pagina === 'mundo' ? 'socios' : pagina;
+  // 📊 QUÉ SECCIONES SE ABREN (Dlx, 12/10/2026, el research «página sencilla»: medir antes de mover la tira). Cada
+  // sección cuenta UNA vez por día y por navegador (`lg:secc`, en hora del este como la visita) y el vigía sólo suma un
+  // número: nunca quién. La lista cerrada es `SECC_EV` de bot/avisos.js; lo que no está ahí no se manda
+  const seccion = sv ? 'servidor' : pagina === '' ? 'inicio' : pagina === 'r' ? 'perfil' : paginaMenu;
+  useEffect(() => {
+    if (!SECC.has(seccion)) return;
+    try {
+      const hoy = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());
+      let m = null;
+      try { m = JSON.parse(localStorage.getItem('lg:secc') || 'null'); } catch (e) { m = null; }
+      if (!m || m.dia !== hoy || !Array.isArray(m.s)) m = { dia: hoy, s: [] };
+      if (m.s.includes(seccion)) return;
+      m.s.push(seccion);
+      localStorage.setItem('lg:secc', JSON.stringify(m));
+      fetch('/api/avisos/seccion', { method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ ev: seccion }), keepalive: true }).catch(() => {});
+    } catch (e) { /* sin almacenamiento, no se cuenta: si no, cada recarga sería otra */ }
+  }, [seccion]);
   // 🔑 EL TÍTULO DE LA PESTAÑA de lo que dibuja esta app y app.js no conoce: app.js lo pone con el <h1> de su vista
   // vieja, así que /mundo decía «El mundo» abriendo Socios, y Socios, Sumate, cada servidor, Mi cuenta y Ajustes
   // quedaban con el genérico (recorrido del 03/10/2026). Corre después de `ir()` de app.js, así que gana

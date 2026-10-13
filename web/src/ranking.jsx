@@ -125,10 +125,10 @@ const COL = {
   n: { t: 'Rapero', cls: 'c-n', txt: 1, s: (f) => norm(limpio(f.n)), v: (f, x) => <Quien x={x} f={f} /> },
   ovr: { t: 'OVR', tit: 'El número de la temporada, de 40 a 99', s: (f) => f.ovr || 0, v: (f) => (f.ovr ? f.ovr : NADA) },
   // ⚠️ EL RANGO SE ORDENA POR SCORE, que es de donde sale: por letra, «SSS» quedaría abajo de «S»
-  rg: { t: 'Rango', s: (f) => (f.rg ? f.sc || 0 : ''),
+  rg: { t: 'Rango', tit: 'La letra, de E a SSS: sale del Score y aparece con 10 eventos', s: (f) => (f.rg ? f.sc || 0 : ''),
     v: (f, x) => (f.rg ? <span className="rg rk-rg" style={{ background: x.liga.colorRg(f.rg) }}>{f.rg}</span> : NADA) },
   sc: { t: 'Score', tit: 'El número del Competitivo, de 0 a 100', s: (f) => f.sc || 0, v: (f) => (f.sc ? coma(f.sc) : NADA) },
-  pts: { t: 'Puntos', tc: 'Pts', s: (f) => f.pts || 0, v: (f) => num(f.pts) },
+  pts: { t: 'Puntos', tc: 'Pts', tit: 'Cada evento suma según el puesto y cuánta gente jugó', s: (f) => f.pts || 0, v: (f) => num(f.pts) },
   ev: { t: 'Eventos', tc: 'Ev', tit: 'Eventos jugados en la temporada', s: (f) => f.ev || 0, v: (f) => f.ev || 0 },
   wr: { t: 'Win%', tit: 'Duelos ganados sobre duelos jugados', s: (f) => (f.wr ? pct(f.wr) : ''), v: (f) => (f.wr ? Math.round(pct(f.wr)) + '%' : NADA) },
   racha: { t: 'Racha', tit: 'La que lleva ahora / la más larga de la temporada',
@@ -144,9 +144,9 @@ const COL = {
   sob: { t: 'Sobrevivió', tit: 'Most Wanted: cuántas veces sobrevivió', s: (f) => f.sob || 0, v: (f, x) => (x.mw ? f.sob || 0 : NADA) },
   mis: { t: 'Misiones', tit: 'Lo sumado con las misiones de la semana en la temporada', s: (f) => f.mis || 0, v: (f) => (f.mis ? num(f.mis) : NADA) },
   mwp: { t: 'Cobró', tit: 'Puntos cobrados en Most Wanted', s: (f) => f.pts || 0, v: (f) => (f.pts ? num(f.pts) : NADA) },
-  mwc: { t: 'Cazó', s: (f) => f.caz || 0, v: (f) => f.caz || NADA },
-  mwz: { t: 'Cazado', s: (f) => f.czd || 0, v: (f) => f.czd || NADA },
-  mws: { t: 'Sobrevivió', tc: 'Sobr.', s: (f) => f.sob || 0, v: (f) => f.sob || NADA },
+  mwc: { t: 'Cazó', tit: 'A cuántos buscados cazó', s: (f) => f.caz || 0, v: (f) => f.caz || NADA },
+  mwz: { t: 'Cazado', tit: 'Cuántas veces lo cazaron', s: (f) => f.czd || 0, v: (f) => f.czd || NADA },
+  mws: { t: 'Sobrevivió', tc: 'Sobr.', tit: 'Cuántas veces sobrevivió siendo buscado', s: (f) => f.sob || 0, v: (f) => f.sob || NADA },
   g: { t: 'Ganados', tc: 'Gan.', s: (f) => f.g || 0, v: (f) => f.g || 0 },
   t: { t: 'Jugados', tc: 'Jug.', s: (f) => f.t || 0, v: (f) => f.t || 0 },
   wrd: { t: '%', tit: 'Ganados sobre jugados', s: (f) => (f.t ? f.g / f.t : 0), v: (f) => (f.t ? Math.round((100 * f.g) / f.t) + '%' : NADA) },
@@ -761,7 +761,10 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
     <>
       <nav className="rk-subs" aria-label="Rankings" ref={nav}>
         <div className="rk-subs-in" ref={tabs}>
-          {RANKINGS.map((id) => {
+          {/* 🧹 SÓLO LAS QUE TIENEN DATOS (Dlx, 12/10/2026, el research «página sencilla»: «hacé todo menos los dos
+              puntos que chocan»): las «PRONTO» sumaban opciones sin nada detrás, contra la regla de no dibujar nada
+              vacío. Aparecen solas con su primer dato. La que se abrió por un link se ve igual, con su explicación */}
+          {RANKINGS.filter((id) => id === sub || !(SUBS[id].pronto || (SUBS[id].hay && !SUBS[id].hay(liga)))).map((id) => {
             const s = SUBS[id];
             const pr = s.pronto || (s.hay && !s.hay(liga));
             return (
@@ -832,6 +835,14 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
                 <button type="button" className="btn verde chico" onClick={accion.cuenta}>Entrar</button></div>
             ) : null}
             {iYo >= 0 && lugar && lugar.n ? <Cerca x={x} cfg={cfg} base={base} i={iYo} sub={sub} clas={clas} /> : null}
+            {/* ❔ qué es cada columna (Dlx, 12/10/2026, el research «página sencilla»): los títulos de `COL`, que
+                en la compu se ven al pasar el mouse y en el celular no se veían nunca */}
+            {base.length && fs.length && cols.some((id) => COL[id].tit) ? (
+              <details className="rk-qe">
+                <summary>¿Qué es cada columna?</summary>
+                <dl>{cols.filter((id) => COL[id].tit).map((id) => <div key={id}><dt>{COL[id].t}</dt><dd>{COL[id].tit}</dd></div>)}</dl>
+              </details>
+            ) : null}
             {!base.length ? <p className="rk-vacio">{vacioTxt}</p>
               : !fs.length ? (
                 <p className="rk-vacio">Nadie con ese filtro. <button type="button" className="rk-lnk" onClick={() => { setQ(''); setSv(''); setCc(''); setSoloSigo(false); setSoloNuevos(false); }}>Sacar los filtros</button></p>

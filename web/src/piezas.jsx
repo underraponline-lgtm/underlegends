@@ -258,8 +258,33 @@ export function Anotados({ liga, e }) {
   );
 }
 
+// ── ❔ «¿QUÉ ES?» A UN TOQUE (Dlx, 12/10/2026, el research «página sencilla»: «hacé todo menos los dos puntos que
+// chocan»). Cinco sistemas de números son más de lo que alguien nuevo retiene a la vez: al lado de cada uno, un «?» que
+// abre UNA línea donde está el número, y otro toque la cierra. Nunca un tercer nivel. Los textos son los de la Guía
+export const QUE_ES_NUM = {
+  ovr: 'OVR: el número de la temporada, de 40 a 99. Ordena el ranking y es el que lleva la tarjeta de Temporada.',
+  rango: 'Rango: la letra, de E a SSS. Sale del Score del Competitivo y aparece con 10 eventos en la temporada.',
+  puntos: 'Puntos: los de la temporada. Cada evento suma según el puesto y cuánta gente jugó.',
+  eventos: 'Eventos: los de la Liga que jugó en la temporada, ganara o perdiera.',
+  win: 'Win%: duelos ganados sobre duelos jugados. Aparece con 10 eventos.',
+};
+/** El «?» de un número. `abierto` y `onToggle` los maneja quien muestra el texto (`QueEsTexto`), una vez por bloque. */
+export function QueEsBoton({ k, abierto, onToggle }) {
+  if (!QUE_ES_NUM[k]) return null;
+  return (
+    <button type="button" className={'qe-b' + (abierto ? ' on' : '')} aria-expanded={!!abierto}
+      aria-label={abierto ? 'Cerrar la explicación' : '¿Qué es?'} onClick={onToggle}>?</button>
+  );
+}
+/** La línea del número abierto, o nada. */
+export function QueEsTexto({ k }) {
+  return k && QUE_ES_NUM[k] ? <p className="qe-t" role="note">{QUE_ES_NUM[k]}</p> : null;
+}
+
 // una sección con su título y el link de la derecha
-export function Sec({ id, titulo, enlace, href, onEnlace, extra = '', children, ...resto }) {
+// 🗣️ `bajada`: una línea en palabras comunes debajo del título, para los nombres propios de la Liga («Se busca», «Los que
+// mandan»). Dlx, 12/10/2026, el research «página sencilla»: quien llega no sabe qué hay detrás de un nombre inventado
+export function Sec({ id, titulo, bajada, enlace, href, onEnlace, extra = '', children, ...resto }) {
   return (
     <section className={('sec ' + extra).trim()} id={id} {...resto}>
       <div className="sec-t">
@@ -271,6 +296,7 @@ export function Sec({ id, titulo, enlace, href, onEnlace, extra = '', children, 
           </a>
         ) : null}
       </div>
+      {bajada ? <p className="sec-baj">{bajada}</p> : null}
       {children}
     </section>
   );
@@ -278,7 +304,7 @@ export function Sec({ id, titulo, enlace, href, onEnlace, extra = '', children, 
 
 // una sección con pestañas y flechas (Dlx, 29/09: «Los que mandan» y el panel de abajo). En el celular, un paginador
 // ‹ selector ›. Con `titulos`, el título de la sección es el de la pestaña que se ve.
-export function Pest({ id, titulo, enlace, href, onEnlace, items, extra = '', titulos = false }) {
+export function Pest({ id, titulo, bajada, enlace, href, onEnlace, items, extra = '', titulos = false }) {
   const [i0, setI] = useState(0);
   const x0 = useRef(null);
   const n = items.length;
@@ -293,7 +319,7 @@ export function Pest({ id, titulo, enlace, href, onEnlace, items, extra = '', ti
   }, [i]);
   if (!n) return null;
   return (
-    <Sec id={id} titulo={titulos ? items[i].t : titulo} enlace={enlace} href={href} onEnlace={onEnlace} extra={'pest ' + extra}
+    <Sec id={id} titulo={titulos ? items[i].t : titulo} bajada={bajada} enlace={enlace} href={href} onEnlace={onEnlace} extra={'pest ' + extra}
       onPointerDown={(e) => { x0.current = e.target.closest('.rail, .pz-tabs, .mw-rail, select, input') ? null : e.clientX; }}
       onPointerUp={(e) => { if (x0.current !== null && Math.abs(e.clientX - x0.current) > 50) ver(i + (e.clientX < x0.current ? 1 : -1)); x0.current = null; }}>
       <div className="pz-cab">

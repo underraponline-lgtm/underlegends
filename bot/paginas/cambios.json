@@ -11,6 +11,28 @@
  ],
  "cambios": [
   {
+   "version": "2.83",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T23:55:00-04:00",
+   "titulo": "La página, más fácil de leer",
+   "items": [
+    "🏆 El Ranking muestra sólo las tablas que ya tienen gente.",
+    "❔ En tu perfil, un **?** al lado del OVR, el rango, los puntos, los eventos y el Win% te dice qué es cada uno. Y arriba de cada tabla del Ranking, «¿Qué es cada columna?».",
+    "📋 El menú y algunas secciones dicen en una línea para qué sirven."
+   ]
+  },
+  {
+   "version": "2.82",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T23:20:00-04:00",
+   "titulo": "El bot en vivo, menos de golpe",
+   "items": [
+    "🎤 En el chat de tu servidor, el resultado de cada batalla se suma al mensaje del vs en vez de llegar en otro, y la final se anuncia una sola vez.",
+    "👤 Los raperos salen nombrados con su @, sin que les suene nada: tocás el nombre y ves su perfil.",
+    "🖼️ El link de la Liga que manda el bot en cada servidor muestra la imagen de ese servidor."
+   ]
+  },
+  {
    "version": "2.81",
    "dia": "2026-10-12",
    "cuando": "2026-10-12T22:35:00-04:00",
