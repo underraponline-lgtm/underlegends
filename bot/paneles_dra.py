@@ -14,7 +14,8 @@ esta-semana, en LIGA GLOBAL) y deja sus ids en `datos/dra_hub.json`.
 aviso de cada evento, [[avisar una vez y editar]]). El id queda en `datos/dra_hub.json` (`paneles`); si lo borraron, se
 manda otro. Y sólo se edita si la imagen cambió (`firma`): cada media hora el ciclo lo mira, y casi nunca cambia.
 ⚠️ LOS BOTONES SON LINKS a la página: no hace falta que el Worker atienda nada.
-⚠️ FVS NO SALE en el panel de la semana: Dlx decidió no anunciar FVS en FFA ni en DRA (12/10, «b»).
+✅ FVS SALE, como cualquier servidor de la Liga (Dlx, 13/10/2026, al ver la vista previa sin él: «FVS debería estar en
+esto»). Lo del 12/10 («b») era no anunciar su llegada; no esconderlo. `FUERA` queda vacío por si algún día hace falta.
 """
 import base64
 import datetime as dt
@@ -38,7 +39,7 @@ except AttributeError:
 
 WEB = 'https://underlegends.pages.dev/freestyle-rap'
 HUB = os.path.join(BASE, 'datos', 'dra_hub.json')
-FUERA = {'FVS'}          # no se anuncia en DRA (ver arriba)
+FUERA = set()            # servidores que no salen en el panel de la semana (ver arriba)
 MAGENTA, VERDE, AMARILLO = '#E41373', '#29B298', '#F5C542'
 #: dónde va la hora de «Actualizado»: se pone al dibujar, así la firma del panel no cambia sólo porque pasó el tiempo
 CUANDO = '{{CUANDO}}'
@@ -427,8 +428,7 @@ def _self_check():
     ok(all(1 <= len(p[3]) <= 5 and all(u.startswith('https://underlegends.pages.dev/') for _t, u in p[3]) for p in ps),
        'cada uno con 1 a 5 botones, todos a la página')
     s = datos_semana()
-    ok(not any(k in FUERA for k, _v in s['sv']) and not any(set(p) & FUERA for p in s['guerra']),
-       'FVS no sale en el panel de DRA (Dlx: no anunciarlo en FFA ni en DRA)')
+    ok('FVS' not in FUERA, 'FVS sale en el panel de la semana (Dlx, 13/10: «FVS debería estar en esto»)')
     ok(_num(273733) == '274K' and _num(9500) == '9.500' and _num(None) == '0', 'los números como en la página')
     ok('<script' not in ''.join(p[2] for p in ps).lower(), 'el HTML no lleva scripts')
     ok(all(CUANDO in p[2] for p in ps), 'la hora va aparte: la firma no cambia sólo porque pasó el tiempo')
