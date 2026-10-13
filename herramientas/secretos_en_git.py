@@ -124,6 +124,7 @@ def de_los_json():
 #: a no leerlo. Medido el 24/09/2026: era el único «sin anotar» de 14.
 DERIVADOS = {
     'oauth_token.json · token': 'dura una hora; sale del refresh_token',
+    'derivada · clave del ciclo': 'sha256 de «lg-ciclo:» + el token del bot; abre las rutas del Worker que usa el ciclo',
 }
 
 
@@ -198,6 +199,13 @@ def main():
             continue
         secretos['.env · %s' % k] = v
     secretos.update(de_los_json())
+    # 🔴 Y LA CLAVE DEL CICLO, QUE NO ESTÁ EN NINGÚN ARCHIVO PORQUE SE DERIVA DEL TOKEN (13/10/2026). Un error en
+    # `anuncios.texto_de_imagen()` la escribía en `datos/ocr_*.json`, en el repo público, desde el 08/10; este chequeo
+    # buscaba los valores de .env y de los json, y una derivada no está en ninguno: no la podía ver
+    tok = del_env().get('DISCORD_TOKEN', '').strip().strip('"').strip("'")
+    if tok:
+        import hashlib
+        secretos['derivada · clave del ciclo'] = hashlib.sha256(('lg-ciclo:' + tok).encode('utf-8')).hexdigest()
 
     print('\n  los valores (%d, de .env, los tres json y el gh):'
           % len(secretos))

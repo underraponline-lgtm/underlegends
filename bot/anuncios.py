@@ -843,7 +843,9 @@ def _ocr_memoria(ruta=None):
 def _ocr_guardar(mem, ruta=None, leeme=None):
     import datetime as dt
     corte = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=OCR_DIAS)).strftime('%Y-%m-%dT%H:%M:%S')
-    msgs = {k: v for k, v in mem['msgs'].items() if str(v.get('t') or '') >= corte}
+    # 🔴 sólo claves de mensaje (`<id>` o `<id>:<adjunto>`): una de 64 letras hexadecimales es un secreto, no un mensaje
+    # —así quedó escrita la clave del ciclo en el repo público hasta el 13/10/2026 (ver `texto_de_imagen()`)—
+    msgs = {k: v for k, v in mem['msgs'].items() if str(v.get('t') or '') >= corte and re.fullmatch(r'\d+(?::\d*)?', str(k))}
     out = {'_leeme': (leeme or 'El texto de los anuncios que son una imagen, leído por la IA de Cloudflare '
                       '(/avisos/ocr del Worker), por id del mensaje: así cada afiche se lee una sola '
                       'vez. Lo escribe bot/anuncios.py. Dlx, 05/10/2026.') + ' Se borra a los %d días.' % OCR_DIAS,
@@ -881,9 +883,14 @@ def texto_de_imagen(m, mem, cuenta, tipo='afiche', tope=None, clave=None):
         if img.status_code != 200 or not img.content:
             print('   ⚠️ el afiche de %s no bajó (%s)' % (mid, img.status_code))
             return ''
-        k = hashlib.sha256(('lg-ciclo:' + F.env('DISCORD_TOKEN')).encode('utf-8')).hexdigest()
+        # 🔴 `ck`, NO `k` (13/10/2026): esto pisaba `k` —la clave de la memoria— con la clave del ciclo, y lo leído se
+        # guardaba bajo ESA clave. Dos daños: la memoria no encontraba nunca lo leído, así que cada corrida le volvía a
+        # pedir la imagen a la IA y la IA no lee igual dos veces (COMPE CHILL, URBF: 16 personas en una corrida y 4 en la
+        # siguiente, y «Ranking Temporada no se está escribiendo» cada media hora); y la clave del ciclo quedaba escrita en
+        # `datos/ocr_*.json`, que está en el repo PÚBLICO
+        ck = hashlib.sha256(('lg-ciclo:' + F.env('DISCORD_TOKEN')).encode('utf-8')).hexdigest()
         r = requests.post(WORKER + '/avisos/ocr' + ('?tipo=llave' if tipo == 'llave' else ''), data=img.content, timeout=90,
-                          headers={'x-lg-ciclo': k, 'content-type': 'image/jpeg'})
+                          headers={'x-lg-ciclo': ck, 'content-type': 'image/jpeg'})
         if r.status_code != 200:
             print('   ⚠️ el Worker no leyó el afiche de %s (%s %s)' % (mid, r.status_code, r.text[:80]))
             return ''
