@@ -1,70 +1,70 @@
 {
  "v": 1,
- "cuando": "2026-10-13T02:41:56Z",
+ "cuando": "2026-10-13T03:22:15Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 869.1,
+ "dur_s": 1126.2,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.8
+   "s": 5.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 3.6
+   "s": 3.7
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 23.7
+   "s": 22.7
   },
   {
    "n": "5",
    "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": true,
-   "s": 779.6
+   "s": 1026.2
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 3.8
+   "s": 13.7
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 51.3
+   "s": 53.2
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "460",
-  "nombre": "GODZ",
-  "sv": "SR",
+  "n": "463",
+  "nombre": "COMPE CHILL",
+  "sv": "URBF",
   "dia": "2026-10-12"
  },
  "cuotas": {
   "kv": {
-   "write": 65,
-   "read": 9057
+   "write": 93,
+   "read": 10882
   },
   "objeto": {
-   "leidas": 577330,
-   "escritas": 5398,
-   "pedidos": 1860
+   "leidas": 738920,
+   "escritas": 7229,
+   "pedidos": 2451
   },
   "worker": {
-   "pedidos": 9235,
+   "pedidos": 9637,
    "errores": 0,
-   "sub": 9873,
+   "sub": 10388,
    "p50_ms": 1.28,
-   "p99_ms": 7.07
+   "p99_ms": 7.11
   },
   "r2": {
    "objetos": 3921,
