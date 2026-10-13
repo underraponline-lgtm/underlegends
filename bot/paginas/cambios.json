@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.79",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T22:15:00-04:00",
+   "titulo": "El bot en vivo, más claro y con las tarjetas",
+   "items": [
+    "🖼️ En «Con datos» y «A full», cada **vs** sale con una imagen de las dos tarjetas.",
+    "🏆 Al terminar, **un solo mensaje** con el campeón y su tarjeta, cuántas ganó, el batacazo y la racha de la noche.",
+    "🧩 Cada uno con su bandera y su nombre de la Liga, y los equipos que se arman durante el evento ya no repiten «pasa»."
+   ]
+  },
+  {
    "version": "2.78",
    "dia": "2026-10-12",
    "cuando": "2026-10-12T21:10:00-04:00",

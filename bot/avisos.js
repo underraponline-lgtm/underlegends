@@ -374,6 +374,10 @@ export const NIVELES_CHAT = {
 /** ¿Este nivel habla batalla por batalla? «Cada batalla» y los dos de arriba. */
 export const porBatalla = (n) => n === 'todo' || n === 'datos' || n === 'full';
 export const CHAT_ENTRE_TODO = 2 * MIN;
+//: 🖼️ el vs: la tarea se prende como mucho una vez cada tanto por servidor (se lleva todos los que esperan), y lo que
+//: no se dibujó en `VS_VENCE` ya no va: esa batalla ya se jugó
+export const VS_ENTRE = 75 * 1000;
+export const VS_VENCE = 8 * MIN;
 //: en «cada batalla», lo que se juntó sin decir se dice hasta este tanto; lo de antes ya es viejo
 export const CHAT_JUNTAS = 8;
 /** El nivel que vale: el de Dlx, si eligió; si no, el del admin; si no, «normal». */
@@ -394,16 +398,122 @@ function pasaronChat(rondas, k, b) {
   return (b[0] || []).filter((lado) => lado && sig.has(claveTurno(lado)));
 }
 
+const BANDERAS_RE = /[\u{1F1E6}-\u{1F1FF}]{2}/gu;
+// los adornos que no son letras: 🏳️‍⚧️, los tonos de piel, el selector de variante y las etiquetas de las banderas
+const EMOJIS_RE = /[\p{Extended_Pictographic}\u{FE0F}\u{200D}\u{1F3FB}-\u{1F3FF}\u{E0020}-\u{E007F}]/gu;
+/** El emoji de la bandera de un país (`ar` → 🇦🇷); `''` si no es un código. */
+export const banderaDe = (cc) => (/^[a-z]{2}$/i.test(String(cc || ''))
+  ? String.fromCodePoint(...[...String(cc).toUpperCase()].map((c) => 0x1F1E6 + c.charCodeAt(0) - 65)) : '');
+
+/**
+ * 🧑‍🤝‍🧑 LA GENTE DE UN LADO DE LA LLAVE, PARA EL CHAT: `[{n, fl, k}]`, cada uno una vez y con UNA bandera (Dlx,
+ * 12/10/2026: «arreglá los 5 errores»). El organizador de FFA escribe «🇦🇷 RODRILP 🇦🇷 + 🇨🇱 VELATZ 🇨🇱» y el lector
+ * corre la primera bandera al final del lado, así que el chat decía «🇵🇦 ERIAN 🇵🇦 🇷🇪»: la de Betelgeuse, pegada a
+ * Erian. Cada uno se queda con la bandera que más se repite en SU pedazo; y si la Liga lo conoce (`buscar`, la tabla),
+ * con su nombre y su país de la Liga, no con las mayúsculas de la llave.
+ */
+export function genteChat(lado, buscar, tabla) {
+  const out = [];
+  for (const seg of String(lado || '').split(/\s*[,+&]\s*/)) {
+    const fls = seg.match(BANDERAS_RE) || [];
+    const cuenta = new Map();
+    for (const f of fls) cuenta.set(f, (cuenta.get(f) || 0) + 1);
+    let fl = '';
+    for (const f of fls) if (!fl || cuenta.get(f) > cuenta.get(fl)) fl = f;
+    const rev = /\(\s*r\s*\)/i.test(seg);
+    let n = seg.replace(BANDERAS_RE, ' ').replace(EMOJIS_RE, ' ').replace(/\(\s*r\s*\)/gi, ' ').replace(/\s+/g, ' ').trim();
+    if (!n) continue;
+    const k = buscar ? buscar(n) || '' : '';
+    const f = k && tabla ? tabla[k] : null;
+    if (f && f.n) {
+      n = sinBandera(f.n);
+      fl = banderaDe(f.cc) || fl;
+    }
+    out.push({ n: n + (rev ? ' (R)' : ''), fl, k });
+  }
+  return out;
+}
+/** «A, B y C». */
+const conY = (xs) => (xs.length < 2 ? xs.join('') : xs.slice(0, -1).join(', ') + ' y ' + xs[xs.length - 1]);
+/** Los nombres de `genteChat()`, cada uno con su bandera: «RodriLP 🇦🇷, Velatz 🇨🇱 y Snow 🇨🇴». */
+export const nombresChat = (gs) => conY(gs.map((y) => escMd(y.n) + (y.fl ? ' ' + y.fl : '')));
+//: el batacazo del cierre: tantos puntos de OVR de diferencia, o más
+export const BATACAZO = 10;
+//: la racha del cierre: tantos duelos ganados seguidos, o más
+export const RACHA_CHAT = 5;
+
+/**
+ * 🏆 EL CIERRE (Dlx, 12/10/2026: «B y C juntos», «un solo mensaje»): el campeón con su noche —cuántas ganó y a quién
+ * le ganó la final—, su tarjeta (la imagen va en el mensaje) y lo mejor de la noche: el batacazo (el de menos OVR que le
+ * ganó al de más) y la racha de duelos más larga. ⚠️ La racha suma lo de esta noche a la de antes SÓLO si los perfiles
+ * son de antes de la llave (`perfT`): si el ciclo ya cargó el evento, la noche estaría contada dos veces, y se calla.
+ */
+function cierreChat(L, rondas, fb, tit, opc, gente, rival) {
+  const quien = (y) => y.k || claveTurno(y.n);
+  const camp = gente(fb[1]);
+  const lider = camp[0] ? quien(camp[0]) : '';
+  const varios = camp.length > 1;
+  let ganadas = 0;
+  rondas.forEach((R, k) => batallasDe(R).forEach((b) => {
+    if (lider && pasaronChat(rondas, k, b).some((g) => gente(g).some((y) => quien(y) === lider))) ganadas++;
+  }));
+  const otros = (fb[0] || []).filter((x) => x && x !== fb[1]).map(rival);
+  const lineas = ['🏆 **' + nombresChat(camp) + '** ' + (varios ? 'son los campeones' : 'es el campeón') + ' de **' + tit + '**'];
+  if (ganadas) {
+    lineas.push((varios ? 'Ganaron ' : 'Ganó ') + ganadas + (ganadas === 1 ? ' batalla' : ' batallas')
+      + (otros.length ? ' y en la final le ' + (varios ? 'ganaron' : 'ganó') + ' a ' + conY(otros) : '') + '.');
+  }
+  const tabla = opc.tabla || {};
+  const ovr = (y) => (y && y.k && tabla[y.k] && tabla[y.k].ovr) || 0;
+  const conRacha = !!(opc.perf && opc.perfT && L && L.pub && opc.perfT < L.pub);
+  const racha = new Map();
+  let bat = null;
+  rondas.forEach((R) => batallasDe(R).forEach((b) => {
+    const lados = (b[0] || []).filter(Boolean);
+    if (lados.length !== 2 || !b[1]) return;
+    const [ga, gb] = lados.map(gente);
+    if (ga.length !== 1 || gb.length !== 1) return;
+    const gano = b[1] === lados[0] ? ga[0] : b[1] === lados[1] ? gb[0] : null;
+    if (!gano) return;
+    const perdio = gano === ga[0] ? gb[0] : ga[0];
+    const d = ovr(perdio) - ovr(gano);
+    if (ovr(gano) && ovr(perdio) && d >= BATACAZO && (!bat || d > bat.d)) bat = { d, g: gano, p: perdio, r: R.r };
+    if (!conRacha) return;
+    for (const y of [gano, perdio]) {
+      if (y.k && !racha.has(y.k)) {
+        const p = opc.perf[y.k];
+        racha.set(y.k, [y, (p && Array.isArray(p.rd) && Number(p.rd[0])) || 0]);
+      }
+    }
+    if (gano.k) racha.get(gano.k)[1]++;
+    if (perdio.k) racha.get(perdio.k)[1] = 0;
+  }));
+  const mejor = [];
+  if (bat) {
+    mejor.push('💥 El batacazo: **' + nombresChat([bat.g]) + '** (OVR ' + ovr(bat.g) + ') le ganó a **' + nombresChat([bat.p])
+      + '** (OVR ' + ovr(bat.p) + ') en ' + bat.r + '.');
+  }
+  const top = [...racha.values()].sort((a, b) => b[1] - a[1])[0];
+  if (top && top[1] >= RACHA_CHAT) mejor.push('🔥 La racha: **' + nombresChat([top[0]]) + '** lleva ' + top[1] + ' duelos ganados seguidos.');
+  if (mejor.length) lineas.push('', '✨ **Lo mejor de la noche**', ...mejor);
+  const img = !varios && camp[0] && camp[0].k && opc.cartaDe ? opc.cartaDe(camp[0].k) : '';
+  return Object.assign({ m: 'campeon', texto: lineas.join('\n') }, img ? { img } : {});
+}
+
 /**
  * Lo que el bot diría HOY de la llave `L` (`LlaveVivo.aLlave()`), en orden: `[{m, texto}]`, con `m` = llave, rondas,
  * final, campeon o —en «cada batalla»— `b:<ronda>:<quiénes>`, una por batalla jugada (con `cab`, el título para cuando
  * van juntas). `nombre` es el del evento, `fav` los favoritos, `[[nombre, ovr], …]` ya ordenados, y `nivel` uno de
- * `NIVELES_CHAT`.
+ * `NIVELES_CHAT`. `opc` = `{buscar, tabla, perf, perfT, cartaDe}` (`datosCruce()`): con eso cada uno sale con su nombre de
+ * la Liga y el cierre trae lo mejor de la noche y la tarjeta del campeón; sin eso, como lo escribe la llave.
  */
-export function momentosChat(L, nombre, fav, nivel = 'normal') {
+export function momentosChat(L, nombre, fav, nivel = 'normal', opc = {}) {
   const out = [];
   const rondas = (L && L.rondas) || [];
   if (!rondas.some((R) => batallasDe(R).length)) return out;
+  const gente = (lado) => genteChat(lado, opc.buscar, opc.tabla);
+  // un rival: su nombre, o «el equipo de …» si son varios
+  const rival = (lado) => { const gs = gente(lado); return (gs.length > 1 ? 'el equipo de ' : '') + nombresChat(gs); };
   const tit = escMd(String(nombre || (L && L.nombre) || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
   const n = (L && L.participantes) || 0;
   out.push({ m: 'llave', texto: '🎤 Arrancó **' + tit + '**' + (n ? ' · ' + n + ' en la llave' : '')
@@ -416,21 +526,30 @@ export function momentosChat(L, nombre, fav, nivel = 'normal') {
     // organizador escribe a uno en la ronda siguiente y al rato al otro. Con un momento por batalla salía «A pasa ·
     // contra B y C» y, cuando aparecía B, ya estaba dicho. Así sale «A pasa» y después «B pasa», y ninguno miente.
     // Menos la final: la cuenta el campeón
+    // 🧩 Y UN EQUIPO QUE CRECE NO ES OTRA BATALLA (12/10/2026, la COMPE POR 1.5 DÓLARES de FFA): el ganador del grupo
+    // suma gente después, y como la clave llevaba los nombres, cada uno que se sumaba volvía a decir «RODRILP, VELATZ
+    // pasa · de un grupo con…». Ahora la clave es la batalla (su lugar en la ronda) y el primero del equipo; quien estaba
+    // cuando se dijo «pasa» va en esa línea, y quien llega después sale como «suma a» (`de`: ver `planChatTodo()`)
     rondas.forEach((R, k) => {
       if (R === F) return;
-      for (const b of batallasDe(R)) {
-        if (!jugadaChat(b)) continue;
+      batallasDe(R).forEach((b, i) => {
+        if (!jugadaChat(b)) return;
         const lados = (b[0] || []).filter(Boolean);
-        const clave = lados.map(claveTurno).sort().join('|');
         for (const g of pasaronChat(rondas, k, b)) {
-          const otros = lados.filter((x) => x !== g);
+          const gs = gente(g);
+          if (!gs.length) continue;
+          const base = 'b:' + R.r + ':' + i + ':' + (gs[0].k || claveTurno(gs[0].n));
+          const otros = lados.filter((x) => x !== g).map(rival);
           // un mano a mano dice contra quién; un grupo, con quiénes (de ahí puede pasar más de uno)
-          const resto = !otros.length ? '' : lados.length === 2 ? ' · contra ' + escMd(otros[0])
-            : ' · de un grupo con ' + otros.map(escMd).join(', ');
-          out.push({ m: 'b:' + R.r + ':' + clave + ':' + claveTurno(g), cab: '⚔️ **' + tit + '**',
-            texto: '✅ **' + escMd(g) + '** pasa · ' + R.r + resto });
+          const resto = !otros.length ? '' : lados.length === 2 ? ' · contra ' + otros[0] : ' · de un grupo con ' + conY(otros);
+          const cab = '⚔️ **' + tit + '**';
+          out.push({ m: base, cab, texto: '✅ **' + nombresChat(gs) + '** ' + (gs.length > 1 ? 'pasan' : 'pasa') + ' · ' + R.r + resto });
+          for (const y of gs.slice(1)) {
+            out.push({ m: 'u:' + R.r + ':' + i + ':' + (y.k || claveTurno(y.n)), de: base, cab,
+              texto: '🧩 **' + escMd(gs[0].n) + '** suma a **' + nombresChat([y]) + '** a su equipo' });
+          }
         }
-      }
+      });
     });
   } else if (nivel !== 'poco') {
     // ⚠️ quién pasó, con los grupos de «pasan N» también: su `b[1]` está vacío y la ronda salía «pasaron » sin nadie
@@ -438,14 +557,16 @@ export function momentosChat(L, nombre, fav, nivel = 'normal') {
     const cerradas = rondas.filter((R) => !/^final$|tercer/i.test(String(R.r || '')) && batallasDe(R).length
       && batallasDe(R).every(jugadaChat));
     if (cerradas.length) {
+      // un equipo va entre paréntesis: «pasaron (RodriLP, Velatz y Snow), Guty»
+      const uno = (g) => { const gs = gente(g); return gs.length > 1 ? '(' + nombresChat(gs) + ')' : nombresChat(gs); };
       out.push({ m: 'rondas', texto: '⏱️ **' + tit + '**\n' + cerradas.map((R) => '**' + R.r + '**: pasaron '
-        + batallasDe(R).flatMap((b) => pasaronChat(rondas, rondas.indexOf(R), b)).map(escMd).join(', ')).join('\n') });
+        + batallasDe(R).flatMap((b) => pasaronChat(rondas, rondas.indexOf(R), b)).map(uno).join(', ')).join('\n') });
     }
   }
   if (fb && !fb[1] && nivel !== 'poco') {
-    out.push({ m: 'final', texto: '🔥 La final de **' + tit + '**: ' + fb[0].filter(Boolean).map(escMd).join(' contra ') });
+    out.push({ m: 'final', texto: '🔥 La final de **' + tit + '**: ' + fb[0].filter(Boolean).map(rival).join(' contra ') });
   }
-  if (fb && fb[1]) out.push({ m: 'campeon', texto: '🏆 Campeón de **' + tit + '**: **' + escMd(fb[1]) + '**' });
+  if (fb && fb[1]) out.push(cierreChat(L, rondas, fb, tit, opc, gente, rival));
   return out;
 }
 
@@ -455,14 +576,25 @@ export function momentosChat(L, nombre, fav, nivel = 'normal') {
  * viejo y se saltea, salvo el campeón y la final, que van siempre. `m` del mandar es la lista de momentos que lleva.
  */
 function planChatTodo(ms, hechos, ultimo, ahora, fresca, entre = CHAT_ENTRE_TODO) {
-  const pend = ms.filter((x) => !(hechos || {})[x.m]);
+  const h = hechos || {};
+  const pend = ms.filter((x) => !h[x.m]);
   if (!pend.length || !fresca || ahora - (ultimo || 0) < entre) return [];
-  const bats = pend.filter((x) => x.cab);
+  // 🧩 quien ya estaba en el equipo cuando se dice su «pasa» va en esa línea: no tiene una propia
+  const conLider = pend.filter((x) => x.de && !h[x.de]);
+  const propias = pend.filter((x) => !conLider.includes(x));
+  const bats = propias.filter((x) => x.cab);
   const viejas = new Set(bats.slice(0, Math.max(0, bats.length - CHAT_JUNTAS)));
   const plan = [...viejas].map((x) => ({ tipo: 'saltar', m: x.m }));
-  const van = pend.filter((x) => !viejas.has(x));
+  const viejasM = new Set([...viejas].map((x) => x.m));
+  for (const x of conLider) if (viejasM.has(x.de)) plan.push({ tipo: 'saltar', m: x.m });
+  const van = propias.filter((x) => !viejas.has(x));
+  if (!van.length) return plan;
+  const junto = conLider.filter((x) => !viejasM.has(x.de)).map((x) => x.m);
   const cab = !van.some((x) => x.m === 'llave') && van.find((x) => x.cab);
-  plan.push({ tipo: 'mandar', m: van.map((x) => x.m), texto: (cab ? [cab.cab] : []).concat(van.map((x) => x.texto)).join('\n') });
+  const img = (van.find((x) => x.img) || {}).img;
+  const vs = (van.find((x) => x.vs) || {}).vs;
+  plan.push(Object.assign({ tipo: 'mandar', m: van.map((x) => x.m).concat(junto),
+    texto: (cab ? [cab.cab] : []).concat(van.map((x) => x.texto)).join('\n') }, img ? { img } : {}, vs ? { vs } : {}));
   return plan;
 }
 
@@ -485,7 +617,9 @@ export function planChat(ms, hechos, ultimo, ahora, fresca, nivel = 'normal', en
       continue;
     }
     if (x !== meta) plan.push({ tipo: 'saltar', m: x.m });
-    else if (fresca && ahora - (ultimo || 0) >= (entre || CHAT_ENTRE)) plan.push({ tipo: 'mandar', m: x.m, texto: x.texto });
+    else if (fresca && ahora - (ultimo || 0) >= (entre || CHAT_ENTRE)) {
+      plan.push(Object.assign({ tipo: 'mandar', m: x.m, texto: x.texto }, x.img ? { img: x.img } : {}));
+    }
   }
   return plan;
 }
@@ -496,6 +630,22 @@ export function planChat(ms, hechos, ultimo, ahora, fresca, nivel = 'normal', en
  * campeón no se decía nunca. Media hora sólo si no se arregla solo —sin permiso (403) o el canal no existe (404)—; un
  * 429 espera lo que Discord pide (`retry_after`, en segundos); un 5xx o la red se reintentan al minuto siguiente.
  */
+/**
+ * 🔁 LAS CLAVES DE ANTES DEL 12/10/2026 llevaban los nombres de la batalla (`b:Octavos:ana|bea:ana`, `v:Cuartos:a|b`);
+ * las de ahora, su lugar en la ronda (`b:Octavos:0:ana`, `v:Cuartos:3`). Una llave que ya venía hablando cuando se
+ * desplegó el cambio vería todo lo dicho como nuevo y lo repetiría: si en `hechos` hay alguna de las de antes, lo de
+ * las batallas que hoy no está en `hechos` se da por dicho —y la batalla que viene (`bat`), por anunciada—. ⚠️ UNA SOLA
+ * VEZ por llave (`migrado`): si no, cada minuto daba por dicho lo nuevo y el bot se callaba hasta el final. Devuelve las
+ * claves a anotar como salteadas.
+ */
+export function migrarHechos(hechos, ms, bat) {
+  const h = hechos || {};
+  if (h.migrado || !Object.keys(h).some((m) => /^[bv]:[^:]*:(?!\d+(?::|$))/.test(m))) return [];
+  const out = (ms || []).filter((x) => /^[buv]:/.test(x.m) && !h[x.m]).map((x) => x.m);
+  if (bat && !h['v:' + bat.r + ':' + bat.i]) out.push('v:' + bat.r + ':' + bat.i);
+  return out.concat('migrado');
+}
+
 export function pausaChat(estado, retryAfter) {
   if (estado === 403 || estado === 404) return 30 * MIN;
   if (estado === 429) return Math.min(10 * MIN, Math.max(5000, Math.round((Number(retryAfter) || 0) * 1000)));
@@ -1839,6 +1989,8 @@ const RUTAS = {
   '/avisos/finales': 'GET',
   // 🧰 la imagen de /afiche o /llave ya dibujada (`bot/kit.py`), con `claveCiclo()`. Ver `kitListo()`
   '/avisos/kit-listo': 'POST',
+  // 🖼️ los vs que esperan su imagen y la imagen ya dibujada (`bot/kit.py --tipo vs`), con `claveCiclo()`. Ver `vsCola()`
+  '/avisos/vs-cola': 'GET', '/avisos/vs-listo': 'POST',
   // 🎬 tus batallas en video (12/10/2026): pedir un link o un canal, ver tus pedidos y quitar uno, con tu sesión y
   // verificado; reportar el de otro; lo del ciclo, con su clave; y aprobar lo raro, sólo Dlx. Ver `misVideos()`
   '/avisos/mis-videos': 'POST', '/avisos/video-reportar': 'POST',
@@ -3270,6 +3422,18 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: await req.text(), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🖼️ LOS VS QUE ESPERAN SU IMAGEN, Y LA IMAGEN: para la tarea `kit.yml` (`bot/kit.py --tipo vs`), con la clave del ciclo
+  if (ruta === '/avisos/vs-cola' || ruta === '/avisos/vs-listo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    if (ruta === '/avisos/vs-cola') {
+      const sv = String(new URL(req.url).searchParams.get('sv') || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 6);
+      return elObjeto(env).fetch('https://avisos/vs-cola?sv=' + sv);
+    }
+    return elObjeto(env).fetch('https://avisos/vs-listo', {
+      method: 'POST', body: await req.text(), headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🏁 LAS FINALES QUE CONTESTÓ CADA ORGANIZADOR, PARA EL CICLO (`bot/finales.py`): con su clave
   if (ruta === '/avisos/finales') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -3581,6 +3745,9 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS hechos (id TEXT PRIMARY KEY, t INTEGER NOT NULL)');
       // 🎤 EL BOT EN VIVO EN LOS CHATS (05/10/2026): qué dijo de cada llave en cada canal (`msg` vacío = salteado).
       // Ver `chatVivo()`
+      // 🖼️ los vs que esperan su imagen (12/10/2026, «más visual… las tarjetas»): ver `vsEncolar()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS vs_cola (id TEXT PRIMARY KEY, sv TEXT NOT NULL, canal TEXT NOT NULL, ' +
+        "msg TEXT NOT NULL, datos TEXT NOT NULL, estado TEXT NOT NULL DEFAULT 'espera', t INTEGER NOT NULL)");
       this.sql.exec('CREATE TABLE IF NOT EXISTS chat_vivo (llave TEXT NOT NULL, canal TEXT NOT NULL, m TEXT NOT NULL, ' +
         "msg TEXT NOT NULL DEFAULT '', texto TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, PRIMARY KEY (llave, canal, m))");
       // 🔑 LAS ENCUESTAS (27/09/2026): un voto por Discord ID y por encuesta,
@@ -3854,6 +4021,7 @@ export class Avisos {
       if (ruta === '/inscritos') return json(this.inscritosLista(), 200, 0);
       // 🏁 quién ganó cada final que el ciclo preguntó (`bot/finales.py`), con la clave del ciclo
       if (ruta === '/finales') return json(this.leer('finales') || {}, 200, 0);
+      if (ruta === '/vs-cola') return json(this.vsCola(new URL(req.url).searchParams.get('sv') || ''), 200, 0);
       // 🎬 los pedidos de videos, para el ciclo (`bot/videos_propios.py`), con su clave
       if (ruta === '/videos-ciclo') return json(this.videosCiclo(), 200, 0);
       // 📅 lo agendado con /agendar, para el ciclo (`bot/agenda.py`), con su clave
@@ -3864,6 +4032,7 @@ export class Avisos {
       // 🧰 /afiche y /llave: el permiso para contestar, del Worker; y la imagen, de la tarea (ver `kitGuardar()`)
       if (ruta === '/kit') return json(this.kitGuardar(d));
       if (ruta === '/kit-listo') return json(await this.kitListo(d));
+      if (ruta === '/vs-listo') return json(await this.vsListo(d));
       if (ruta === '/mis-videos') return this.misVideos(d);
       if (ruta === '/seguir-org') return json(this.seguirOrg(d));
       // 📅 /agendar: sólo el Worker llega acá (no está en `RUTAS_AVISOS`), ya con el staff comprobado
@@ -4167,6 +4336,10 @@ export class Avisos {
       try { await this.chatVivo(ahora); } catch (e) {
         this.guardar('chat_vivo', { t: ahora, error: String(e).slice(0, 160) });
       }
+      // 🖼️ y las imágenes de los vs que esperan. Nunca frena al vigía: ver `vsDespachar()`
+      try { await this.vsDespachar(ahora); } catch (e) {
+        this.guardar('vs', { t: ahora, error: String(e).slice(0, 160) });
+      }
       // 📝 y quiénes se anotan, antes de la llave («Con datos» y «A full»). Nunca frena al vigía: ver `inscriptosChat()`
       try { await this.inscriptosChat(ahora); } catch (e) {
         this.guardar('inscriptos_chat', { t: ahora, error: String(e).slice(0, 160) });
@@ -4362,7 +4535,13 @@ export class Avisos {
         if (!nombres[L.id] || nombres[L.id].n !== a.nombre) { nombres[L.id] = { n: a.nombre, t: ahora }; cambio = true; }
         return a.nombre;
       }
-      return (nombres[L.id] && nombres[L.id].n) || L.nombre;
+      // ⚠️ «La llave» no es el nombre de un evento (la ACADEMIA, 09/10/2026: «Arrancó La llave»): sin anuncio, el servidor
+      const n = (nombres[L.id] && nombres[L.id].n) || L.nombre;
+      if (!n || /^(la\s+)?llave$/i.test(String(n).replace(/[\s_*~#]+/g, ' ').trim())) {
+        const s = ((this.leer('canales') || {}).lista || []).find((x) => x.sv === L.sv);
+        return 'el evento de ' + ((s && s.svn) || L.sv || 'la Liga');
+      }
+      return n;
     };
     for (const b of bloques) {
       // 🌙 en el horario de silencio no habla; las apuestas se siguen cerrando y pagando (abajo)
@@ -4395,14 +4574,23 @@ export class Avisos {
         .toArray()[0] || {}).t || 0;
       const fresca = ahora - (L.ed || 0) <= CHAT_FRESCA;
       const nombre = nombreDe(L);
-      let ms = momentosChat(L, nombre, [], nivel);
+      // la gente con su nombre de la Liga, y lo del cierre: la tabla y los perfiles (10 minutos en la memoria)
+      const dc = await this.datosCruce(ahora);
+      const opc = { buscar: dc.buscar, tabla: dc.tabla, perf: dc.perf, perfT: dc.perfT, cartaDe: dc.cartaDe };
+      let ms = momentosChat(L, nombre, [], nivel, opc);
       // los favoritos sólo si «Arrancó» sale ahora: el lobby pesa, no se lee cada minuto
       if (!hechos.llave && ms.length && (porBatalla(nivel) || ms[ms.length - 1].m === 'llave') && fresca
           && ahora - ult >= entre) {
         if (lobby === null) {
           try { lobby = JSON.parse((await this.env.KV.get('web:lobby')) || '{}') || {}; } catch (e) { lobby = {}; }
         }
-        ms = momentosChat(L, nombre, favoritosDe(L, lobby.tabla || []), nivel);
+        ms = momentosChat(L, nombre, favoritosDe(L, lobby.tabla || []), nivel, opc);
+      }
+      // 🔁 una llave que ya venía hablando con las claves de antes no repite lo que ya dijo (ver `migrarHechos()`)
+      for (const m of migrarHechos(hechos, ms, porBatalla(nivel) ? batallaChat(L) : null)) {
+        this.sql.exec('INSERT OR IGNORE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
+          L.id, canal, m, '', '', ahora);
+        hechos[m] = { m, msg: '', texto: '' };
       }
       // 🔥🎲 «CON DATOS» Y «A FULL»: la batalla que VIENE (`batallaChat()`), con su título, su «¿sabías que…?» y —en «A
       // full»— la apuesta, que va con botones en el mismo mensaje. Sólo de dos lados, y una vez por batalla
@@ -4411,22 +4599,33 @@ export class Avisos {
         const bat = batallaChat(L);
         if (bat && bat.lados.length === 2) {
           const clave = bat.r + ':' + bat.lados.map(claveTurno).sort().join('|');
-          const mv = 'v:' + clave;
+          // 🧩 la clave es la batalla, no sus nombres: un equipo que crece antes de jugar no la anuncia dos veces
+          const mv = 'v:' + bat.r + ':' + bat.i;
           if (!hechos[mv]) {
-            const dc = await this.datosCruce(ahora);
             const x = infoCruce(bat.lados, dc.buscar, dc.tabla, dc.perf);
+            const [ga, gb] = bat.lados.map((l) => genteChat(l, dc.buscar, dc.tabla));
+            // el nombre de la Liga también en el título y el dato («MAKMAH le ganó la última vez» → Makmah)
+            if (ga.length === 1) x.a.n = ga[0].n;
+            if (gb.length === 1) x.b.n = gb[0].n;
             const tt = tituloCruce(x);
             const dato = datoCurioso(x, L.id + clave, (y) => (y.f ? this.encima(y.f.n, ahora) : 0));
             const lineas = [];
             if (tt) lineas.push('🔥 **' + tt.t + '**' + (tt.sub ? ' · ' + escMd(tt.sub) : ''));
-            lineas.push('⚔️ ' + bat.r + ': **' + escMd(x.a.n) + '** vs **' + escMd(x.b.n) + '**');
+            lineas.push('⚔️ ' + bat.r + ': **' + nombresChat(ga) + '** vs **' + nombresChat(gb) + '**');
             if (dato) lineas.push('💡 ' + escMd(dato));
             if (nivel === 'full' && !apc.apagadas[b.sv]) {
               apuesta = { id: codigoDe(L.id + ':' + clave).slice(0, 12), m: mv, ronda: bat.r, a: bat.lados[0], b: bat.lados[1] };
               lineas.push(lineaApuesta('abierta', apc));
             }
             const titEv = escMd(String(nombre || L.nombre || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
-            ms.push({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n') });
+            // 🖼️ EL VS CON LAS DOS TARJETAS (Dlx, 12/10/2026: «hacerlo más visual… las tarjetas», «B», «con datos y a
+            // full»): sólo mano a mano. La imagen la dibuja `bot/kit.py` (`vsEncolar()`) y llega en un minuto: el mensaje
+            // sale ya, con el texto, y la imagen se le agrega editándolo (una edición no le suena a nadie)
+            const vs = ga.length === 1 && gb.length === 1 ? { ev: String(nombre || L.nombre || '').replace(/[_*~`]+/g, '').trim(),
+              ronda: bat.r, titulo: tt ? tt.t : '', sub: tt ? tt.sub || '' : '',
+              a: { n: ga[0].n, fl: ga[0].fl, k: ga[0].k, ovr: (dc.tabla[ga[0].k] || {}).ovr || 0, carta: ga[0].k ? dc.cartaDe(ga[0].k) : '' },
+              b: { n: gb[0].n, fl: gb[0].fl, k: gb[0].k, ovr: (dc.tabla[gb[0].k] || {}).ovr || 0, carta: gb[0].k ? dc.cartaDe(gb[0].k) : '' } } : null;
+            ms.push(Object.assign({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n') }, vs ? { vs } : {}));
           }
         }
       }
@@ -4445,8 +4644,10 @@ export class Avisos {
           r = await fetch(`${DC}/channels/${canal}/messages` + (p.tipo === 'editar' ? '/' + p.msg : ''), {
             method: p.tipo === 'editar' ? 'PATCH' : 'POST',
             headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
-            // 🛑 nunca menciona a nadie, y sin la vista previa del link
-            body: JSON.stringify(Object.assign({ content: p.texto.slice(0, 1900), allowed_mentions: { parse: [] }, flags: 4 },
+            // 🛑 nunca menciona a nadie, y sin la vista previa del link. 🏆 Con imagen (la tarjeta del campeón) va como
+            // adjunto del mensaje, y sin el freno de las vistas previas, que también la escondería: los links van entre <>
+            body: JSON.stringify(Object.assign({ content: p.texto.slice(0, 1900), allowed_mentions: { parse: [] } },
+              p.img && p.tipo === 'mandar' ? { embeds: [{ image: { url: p.img }, color: 0xE41373 }] } : { flags: 4 },
               conAp ? { components: botonesApuesta(conAp.id, conAp.a, conAp.b, false, apc.montos) } : {})),
           });
         } catch (e) { r = null; }
@@ -4462,6 +4663,10 @@ export class Avisos {
           for (const m of [].concat(p.m)) {
             this.sql.exec('INSERT OR REPLACE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
               L.id, canal, m, id, p.texto, ahora);
+          }
+          // 🖼️ el vs: a la cola de las imágenes, con el mensaje donde va (ver `vsEncolar()`)
+          if (p.vs && id) {
+            try { this.vsEncolar(Object.assign({}, p.vs, { sv: b.sv || '', canal, msg: id }), ahora); } catch (e) { /* sin imagen */ }
           }
           if (conAp && id) {
             this.sql.exec('INSERT OR IGNORE INTO apuestas (id, canal, msg, sv, llave, ronda, a, b, texto, abre, cierra) ' +
@@ -4684,16 +4889,30 @@ export class Avisos {
    */
   async datosCruce(ahora) {
     if (this.cruceMem && ahora - this.cruceMem.t < 10 * MIN) return this.cruceMem;
-    let lobby = {}, perf = {};
+    let lobby = {}, perf = {}, perfT = 0;
     try { lobby = JSON.parse((await this.env.KV.get('web:lobby')) || '{}') || {}; } catch (e) { lobby = {}; }
-    try { perf = (JSON.parse((await this.env.KV.get('web:perfiles')) || '{}') || {}).p || {}; } catch (e) { perf = {}; }
+    try {
+      const pj = JSON.parse((await this.env.KV.get('web:perfiles')) || '{}') || {};
+      perf = pj.p || {};
+      perfT = Date.parse(String(pj.sello || '')) || 0;
+    } catch (e) { perf = {}; }
     const tabla = {}, por = {};
     for (const f of lobby.tabla || []) {
       if (f && f.k) { tabla[f.k] = f; por[claveTurno(f.n)] = f.k; }
     }
     const alias = lobby.alias || {};
     const buscar = (n) => { const c = claveTurno(n); return por[c] || alias[c] || (perf[c] ? c : '') || ''; };
-    this.cruceMem = { t: ahora, tabla, perf, buscar };
+    // 🃏 la tarjeta de alguien para el chat: la de Temporada, o la que tenga (`Liga.cartaUrl()` de la página)
+    const r2 = String(lobby.r2 || ''), cartas = lobby.cartas || [];
+    const cartaDe = (k) => {
+      const f = tabla[k];
+      const cual = f && ['temporada', 'competitivo', 'servidor'].find((c) => (f.c || []).includes(c));
+      if (!cual || !/^https:\/\//.test(r2)) return '';
+      const i = cartas.indexOf(cual);
+      const v = typeof f.cv === 'string' && i >= 0 ? f.cv.split('.')[i] : '';
+      return r2 + '/' + encodeURIComponent(k) + '/' + cual + '.webp' + (v ? '?v=' + v : '');
+    };
+    this.cruceMem = { t: ahora, tabla, perf, perfT, buscar, cartaDe };
     return this.cruceMem;
   }
 
@@ -5743,6 +5962,74 @@ export class Avisos {
 
   /** Todos los dispositivos de esa persona, sueltos, y sus votos. Ver `olvidarAvisos()`. */
   /** 🤝 La postulación de /sumate: una por persona cada 24 horas, guardada 90 días y al DM de Dlx. Ver `validarPostulacion()`. */
+  // ── 🖼️ EL VS CON LAS DOS TARJETAS ──────────────────────────────────────
+  // Dlx, 12/10/2026: «hacerlo más visual para mostrar las imágenes cuando sea un vs, o sea las tarjetas»; a las dos
+  // formas, «B» (una imagen armada, con las dos tarjetas y el VS); y «salen en cada nivel con datos y a full». El Worker
+  // no dibuja: el vs queda en `vs_cola`, el vigía prende la tarea `kit.yml` (tipo vs, uno por servidor cada `VS_ENTRE`),
+  // `bot/kit.py` se lleva los de su servidor (`/avisos/vs-cola`), los dibuja y devuelve cada imagen (`vsListo()`), que se
+  // le agrega al mensaje editándolo. Lo que no llegó en `VS_VENCE` ya no se dibuja: esa batalla ya se jugó.
+  /** Un vs para dibujar: `{sv, canal, msg, ev, ronda, titulo, sub, a, b}`, cada lado `{n, fl, k, ovr, carta}`. */
+  vsEncolar(d, ahora = Date.now()) {
+    if (!/^\d{5,25}$/.test(String(d.canal || '')) || !/^\w{1,25}$/.test(String(d.msg || ''))) return { error: 'datos' };
+    const id = [...crypto.getRandomValues(new Uint8Array(10))].map((x) => x.toString(16).padStart(2, '0')).join('');
+    const lado = (y) => ({ n: String((y && y.n) || '').slice(0, 40), fl: String((y && y.fl) || '').slice(0, 8),
+      k: String((y && y.k) || '').slice(0, 60), ovr: Number(y && y.ovr) || 0,
+      carta: /^https:\/\/pub-[a-z0-9]+\.r2\.dev\//.test(String((y && y.carta) || '')) ? String(y.carta).slice(0, 300) : '' });
+    const datos = { ev: String(d.ev || '').slice(0, 80), ronda: String(d.ronda || '').slice(0, 30),
+      titulo: String(d.titulo || '').slice(0, 40), sub: String(d.sub || '').slice(0, 120), a: lado(d.a), b: lado(d.b) };
+    this.sql.exec('INSERT INTO vs_cola (id, sv, canal, msg, datos, t) VALUES (?, ?, ?, ?, ?, ?)', id,
+      String(d.sv || '').toUpperCase().slice(0, 6), String(d.canal), String(d.msg), JSON.stringify(datos), ahora);
+    return { ok: true, id };
+  }
+
+  /** Prende la tarea de los servidores con vs esperando, como mucho una vez cada `VS_ENTRE` por servidor. */
+  async vsDespachar(ahora) {
+    this.sql.exec("UPDATE vs_cola SET estado = 'vencido' WHERE estado IN ('espera', 'dibujando') AND t < ?", ahora - VS_VENCE);
+    this.sql.exec('DELETE FROM vs_cola WHERE t < ?', ahora - DIA_MS);
+    const svs = this.sql.exec("SELECT DISTINCT sv FROM vs_cola WHERE estado = 'espera'").toArray().map((r) => r.sv);
+    if (!svs.length || !this.env.GH_TOKEN || !this.env.GH_REPO) return 0;
+    const ult = this.leer('vs_desp') || {};
+    let n = 0;
+    for (const sv of svs) {
+      if (!/^[A-Z]{2,5}$/.test(sv) || ahora - (ult[sv] || 0) < VS_ENTRE) continue;
+      const id = [...crypto.getRandomValues(new Uint8Array(12))].map((x) => x.toString(16).padStart(2, '0')).join('');
+      const r = await this.gh('/actions/workflows/kit.yml/dispatches', { method: 'POST',
+        body: JSON.stringify({ ref: 'main', inputs: { tipo: 'vs', sv, id } }) });
+      ult[sv] = ahora;
+      if (r.status === 204) n++;
+      else this.guardar('vs', { t: ahora, sv, estado: r.status });
+    }
+    this.guardar('vs_desp', ult);
+    return n;
+  }
+
+  /** Para la tarea (`/avisos/vs-cola`, con la clave del ciclo): los vs de ese servidor que esperan, que pasan a «dibujando». */
+  vsCola(sv, ahora = Date.now()) {
+    const filas = this.sql.exec("SELECT id, datos FROM vs_cola WHERE sv = ? AND estado = 'espera' AND t > ? ORDER BY t LIMIT 12",
+      String(sv || '').toUpperCase(), ahora - VS_VENCE).toArray();
+    for (const f of filas) this.sql.exec("UPDATE vs_cola SET estado = 'dibujando' WHERE id = ?", f.id);
+    return { vs: filas.map((f) => Object.assign({ id: f.id }, JSON.parse(f.datos))) };
+  }
+
+  /** La imagen de un vs ya dibujada (`/avisos/vs-listo`): se le agrega al mensaje, editándolo. Sólo una imagen nuestra. */
+  async vsListo(d) {
+    const f = this.sql.exec('SELECT * FROM vs_cola WHERE id = ?', String(d.id || '')).toArray()[0];
+    if (!f) return { error: 'no existe' };
+    const url = /^https:\/\/pub-[a-z0-9]+\.r2\.dev\/vs\/[\w.-]+\.(?:png|jpg)$/.test(String(d.url || '')) ? String(d.url) : null;
+    if (!url || f.estado === 'vencido') {
+      this.sql.exec("UPDATE vs_cola SET estado = 'error' WHERE id = ?", f.id);
+      return { error: url ? 'vencido' : 'url' };
+    }
+    const r = await fetch(`${DC}/channels/${f.canal}/messages/${f.msg}`, {
+      method: 'PATCH',
+      headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+      // `flags: 0` saca el freno de las vistas previas con el que salió el mensaje: si no, la imagen no se ve
+      body: JSON.stringify({ embeds: [{ image: { url }, color: 0xE41373 }], flags: 0, allowed_mentions: { parse: [] } }),
+    });
+    this.sql.exec('UPDATE vs_cola SET estado = ? WHERE id = ?', r.ok ? 'hecho' : 'error', f.id);
+    return { ok: r.ok, estado: r.status };
+  }
+
   // ── 📣 SEGUIR A UN ORGANIZADOR ───────────────────────────────────────
   // Dlx, 12/10/2026, «5. E»: casi todo se anuncia a último momento, así que el aviso tiene que llegar al anunciarse. La
   // campana ya avisa por servidor (`subs.svs`); esto es por PERSONA: «avisame cuando Kravitz organice algo».

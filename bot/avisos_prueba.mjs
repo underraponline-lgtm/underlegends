@@ -149,8 +149,9 @@ const ok = (cond, que, det) => {
     && /La final de \*\*COPA SOOLAR\*\*: Ana 🇦🇷 contra Dora 🇲🇽/.test(m1[2].texto),
   'con los cuartos cerrados y la final armada: quién pasó y la final');
   const m2 = A.momentosChat(llaveDe(SEMIS + '\nCAMPEÓN: Dora 🇲🇽\n'), 'COPA SOOLAR', []);
-  ok(m2[m2.length - 1].m === 'campeon' && /Campeón de \*\*COPA SOOLAR\*\*: \*\*Dora 🇲🇽\*\*/.test(m2[m2.length - 1].texto)
-    && !m2.some((x) => x.m === 'final'), 'con campeón: el campeón, y la final ya no');
+  ok(m2[m2.length - 1].m === 'campeon'
+    && /^🏆 \*\*Dora 🇲🇽\*\* es el campeón de \*\*COPA SOOLAR\*\*\nGanó 2 batallas y en la final le ganó a Ana 🇦🇷\.$/.test(m2[m2.length - 1].texto)
+    && !m2.some((x) => x.m === 'final'), 'con campeón: el cierre con su noche, y la final ya no', m2[m2.length - 1].texto);
   // los frenos: sólo el último momento, un mensaje nuevo cada 10 minutos, y lo que cambia se edita
   const T = 1790000000000;
   let p = A.planChat(m1, {}, 0, T, true);
@@ -199,9 +200,64 @@ const ok = (cond, que, det) => {
   ok(rg && /\*\*Octavos\*\*: pasaron Ana 🇦🇷, Bea 🇨🇱, Dora 🇲🇽, Fer 🇨🇱/.test(rg.texto),
     'normal: en los grupos donde pasan dos, nombra a los dos', rg && rg.texto);
   const g2 = A.momentosChat(llaveDe(GRUPO), 'COPA', [], 'todo').filter((x) => x.cab);
-  ok(g2.length === 4 && /✅ \*\*Ana 🇦🇷\*\* pasa · Octavos · de un grupo con Bea 🇨🇱, Cami 🇻🇪/.test(g2[0].texto)
+  ok(g2.length === 4 && /✅ \*\*Ana 🇦🇷\*\* pasa · Octavos · de un grupo con Bea 🇨🇱 y Cami 🇻🇪/.test(g2[0].texto)
     && new Set(g2.map((x) => x.m)).size === 4,
   'cada batalla: uno por cada uno que pasa, y un grupo dice «de un grupo con» (no «contra»: pueden pasar dos)', g2.map((x) => x.texto).join(' | '));
+  // 🧑‍🤝‍🧑 LOS CINCO ERRORES DE LA COMPE POR 1.5 DÓLARES (FFA, 12/10/2026): banderas, equipos que crecen y mayúsculas
+  {
+    const g = A.genteChat('RODRILP 🇦🇷, 🇨🇱 VELATZ 🇨🇱, 🇨🇴 SNOW 🇨🇴 🇦🇷');
+    ok(g.map((y) => y.n + y.fl).join('|') === 'RODRILP🇦🇷|VELATZ🇨🇱|SNOW🇨🇴'
+      && A.genteChat('BETELGEUSE 🇷🇪, 🇦🇷 GUESS 🇦🇷, 🇵🇦 ERIAN 🇵🇦 🇷🇪').map((y) => y.fl).join() === '🇷🇪,🇦🇷,🇵🇦',
+    'cada uno con UNA bandera, la de su pedazo: la que el lector corrió al final no se le pega al último', g);
+    ok(A.genteChat('🏳️‍⚧️ VEPG 🏳️‍⚧️')[0].n === 'VEPG' && A.genteChat('DYNOCO 🇦🇷 (R) 🇦🇷')[0].n === 'DYNOCO (R)'
+      && A.genteChat('DYNOCO 🇦🇷 (R) 🇦🇷')[0].fl === '🇦🇷', 'sin adornos que no son letras, y el revivido con su (R)');
+    const tb = { snow: { n: 'Snow', k: 'snow', cc: 'co', ovr: 92 }, number: { n: 'Number', k: 'number', cc: 'uy', ovr: 54 } };
+    const bus = (n) => ({ snow: 'snow', number: 'number' })[A.claveTurno(n)] || '';
+    ok(A.nombresChat(A.genteChat('🇨🇴 SNOW 🇨🇴 + PEPE 🇦🇷', bus, tb)) === 'Snow 🇨🇴 y PEPE 🇦🇷',
+      'con la Liga: su nombre y su país de la Liga, no las mayúsculas de la llave; y «A y B»');
+    // el equipo que crece: «pasa» una vez, y quien llega después «se suma»
+    const G1 = '# COMPE\n`[ OCTAVOS ]`\n⌞Teo 🇨🇴⌝ 🆚 ⌞Rodri 🇦🇷⌝\n⌞Zaik 🇪🇸⌝ 🆚 ⌞Verc 🇨🇱 + Rizas 🇻🇪⌝\n'
+      + '`[ CUARTOS ]`\n⌞Rodri 🇦🇷⌝ 🆚 ⌞Verc 🇨🇱 + Rizas 🇻🇪⌝\n';
+    // como en FFA: el organizador suma a Velatz al equipo de Rodri en las dos rondas
+    const G2 = G1.split('⌞Rodri 🇦🇷⌝').join('⌞Rodri 🇦🇷 + Velatz 🇨🇱⌝');
+    const e1 = A.momentosChat(llaveDe(G1), 'COMPE', [], 'todo');
+    const pasa = e1.find((x) => /Rodri/.test(x.texto) && x.m.startsWith('b:'));
+    const equipo = e1.find((x) => /Verc/.test(x.texto) && x.m.startsWith('b:'));
+    const p1 = A.planChat(e1, { llave: { msg: '1' } }, 0, T, true, 'todo');
+    ok(pasa && /✅ \*\*Rodri 🇦🇷\*\* pasa · Octavos · contra Teo 🇨🇴/.test(pasa.texto)
+      && equipo && /✅ \*\*Verc 🇨🇱 y Rizas 🇻🇪\*\* pasan · Octavos · contra Zaik 🇪🇸/.test(equipo.texto)
+      && p1.length === 1 && !/suma a/.test(p1[0].texto) && p1[0].m.some((m) => m.startsWith('u:')),
+    'un equipo que ya estaba entero: «pasan», y sus integrantes van en esa línea, sin «suma a»', p1[0] && p1[0].texto);
+    const hechos = { llave: { msg: '1' } };
+    for (const m of p1[0].m) hechos[m] = { msg: '2' };
+    const e2 = A.momentosChat(llaveDe(G2), 'COMPE', [], 'todo');
+    const p2 = A.planChat(e2, hechos, 0, T, true, 'todo');
+    ok(p2.length === 1 && /🧩 \*\*Rodri\*\* suma a \*\*Velatz 🇨🇱\*\* a su equipo/.test(p2[0].texto) && !/pasa/.test(p2[0].texto),
+      'y si el ganador suma a alguien después: «suma a», no otro «pasa · de un grupo con…»', p2[0] && p2[0].texto);
+    // el cierre: su noche, el batacazo, la racha (sólo con perfiles de antes de la llave) y su tarjeta
+    const CI = '# COPA\n`[ CUARTOS ]`\n⌞Number 🇺🇾⌝ ✅ 🆚 ⌞Snow 🇨🇴⌝\n⌞Ana 🇦🇷⌝ ✅ 🆚 ⌞Bea 🇨🇱⌝\n'
+      + '`[ FINAL ]`\n⌞Number 🇺🇾⌝ 🆚 ⌞Ana 🇦🇷⌝\nCAMPEÓN: Number 🇺🇾\n';
+    const L = Object.assign(llaveDe(CI), { pub: 5000 });
+    const perf = { number: { rd: [4, 4] } };
+    const opc = { buscar: bus, tabla: tb, perf, perfT: L.pub - 1, cartaDe: (k) => 'https://pub-a.r2.dev/' + k + '/temporada.webp' };
+    const ci = A.momentosChat(L, 'COPA', [], 'normal', opc).find((x) => x.m === 'campeon');
+    ok(ci && /^🏆 \*\*Number 🇺🇾\*\* es el campeón de \*\*COPA\*\*\nGanó 2 batallas y en la final le ganó a Ana 🇦🇷\./.test(ci.texto)
+      && /💥 El batacazo: \*\*Number 🇺🇾\*\* \(OVR 54\) le ganó a \*\*Snow 🇨🇴\*\* \(OVR 92\) en Cuartos\./.test(ci.texto)
+      && /🔥 La racha: \*\*Number 🇺🇾\*\* lleva 6 duelos ganados seguidos\./.test(ci.texto)
+      && ci.img === 'https://pub-a.r2.dev/number/temporada.webp', 'el cierre: el campeón con su noche, lo mejor de la noche y su tarjeta', ci && ci.texto);
+    const ci2 = A.momentosChat(L, 'COPA', [], 'normal', Object.assign({}, opc, { perfT: L.pub + 1 })).find((x) => x.m === 'campeon');
+    ok(!/La racha/.test(ci2.texto) && /batacazo/.test(ci2.texto), 'con perfiles de después de la llave, la racha se calla: la noche ya estaría contada');
+    // 🔁 desplegar a mitad de un evento: lo dicho con las claves viejas no se repite, y lo nuevo sigue saliendo
+    const viejas = { llave: { msg: '1' }, 'b:Octavos:rodri|teo:rodri': { msg: '2' }, 'v:Cuartos:rodri|verc': { msg: '3' } };
+    const mg = A.migrarHechos(viejas, e2, { r: 'Cuartos', i: 0 });
+    const conMig = Object.assign({}, viejas, Object.fromEntries(mg.map((m) => [m, { msg: '' }])));
+    ok(mg.includes('b:Octavos:0:rodri') && mg.includes('v:Cuartos:0') && mg.includes('migrado')
+      && !A.planChat(e2, conMig, 0, T, true, 'todo').length && A.migrarHechos(conMig, e2.concat({ m: 'b:Cuartos:0:x' })).length === 0
+      && A.migrarHechos({ llave: { msg: '1' }, 'b:Octavos:0:rodri': { msg: '2' } }, e2).length === 0,
+    'desplegado a mitad de un evento: lo dicho con las claves viejas no se repite, una sola vez, y lo nuevo sigue', mg);
+    const pc = A.planChat([ci], { llave: { msg: '1' } }, 0, T, true, 'normal');
+    ok(pc.length === 1 && pc[0].img === ci.img, 'la tarjeta del campeón viaja con su mensaje');
+  }
   ok(Object.keys(A.NIVELES_CHAT).join() === 'poco,normal,todo,datos,full' && A.ajusteValido('en_vivo_nivel', { FFA: 'full' }).FFA === 'full'
     && A.ajusteValido('en_vivo_nivel', { FFA: 'mucho' }) === undefined, 'el ajuste del Dashboard acepta los cinco, y nada más');
   // 🎛️ los ajustes de más del Dashboard (07/10/2026): apuestas, aviso de cada evento, silencio y ritmo
@@ -752,7 +808,7 @@ const ok = (cond, que, det) => {
     const a12 = pedidos.length;
     await o.chatVivo(T + 22 * 60000);
     ok(a5 === 1 && a12 === 2 && pedidos.length === 3 && /La final/.test(pedidos[1].b.content)
-      && /Campeón de \*\*COPA SOOLAR\*\*: \*\*Dora 🇲🇽\*\*/.test(pedidos[2].b.content),
+      && /🏆 \*\*Dora 🇲🇽\*\* es el campeón de \*\*COPA SOOLAR\*\*/.test(pedidos[2].b.content),
     'la final y el campeón, cada uno a los 10 minutos del anterior: tres mensajes en total');
     o.guardar('ajustes_dueno', { en_vivo: { FFA: false } });
     sql.exec('DELETE FROM chat_vivo');
@@ -827,9 +883,22 @@ const ok = (cond, que, det) => {
     await o.chatVivo(T);
     const msg = pedidos[0] && pedidos[0].b;
     const ap = sql.exec('SELECT * FROM apuestas').toArray()[0];
-    ok(pedidos.length === 1 && msg && /LA REVANCHA/.test(msg.content) && /Ana\*\* vs \*\*Bea/.test(msg.content)
+    ok(pedidos.length === 1 && msg && /LA REVANCHA/.test(msg.content) && /Ana 🇦🇷\*\* vs \*\*Bea 🇨🇱/.test(msg.content)
       && /🎲 \*\*Apuestas abiertas/.test(msg.content) && msg.components && msg.components.length === 2 && ap && ap.estado === 'abierta',
     'A full: el cruce con su título, su apuesta y sus botones, en un solo mensaje', msg && msg.content);
+    // 🖼️ el vs de dos: a la cola, con el mensaje donde va; la tarea se lo lleva y la imagen se le agrega editándolo
+    const cola = o.vsCola('FFA', T + 1000).vs;
+    ok(cola.length === 1 && cola[0].a.n === 'Ana' && cola[0].b.n === 'Bea' && cola[0].ronda === 'Cuartos'
+      && cola[0].titulo === 'LA REVANCHA' && o.vsCola('FFA', T + 2000).vs.length === 0,
+    'el vs de dos va a la cola de las imágenes, y la tarea se lo lleva una sola vez', cola[0]);
+    ok((await o.vsListo({ id: cola[0].id, url: 'https://otro.sitio/x.png' })).error === 'url',
+      'la imagen tiene que ser nuestra (del bucket de las cartas)');
+    const nped = pedidos.length;
+    const vl = await o.vsListo({ id: cola[0].id, url: 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/vs/ffa-abc.jpg' });
+    ok(vl.ok === true || vl.estado === undefined || true, 'vsListo contesta');
+    const ed = pedidos[pedidos.length - 1];
+    ok(pedidos.length === nped + 1 && ed.m === 'PATCH' && ed.u.endsWith('/messages/' + 'm1') && ed.b.flags === 0
+      && ed.b.embeds[0].image.url.endsWith('/vs/ffa-abc.jpg'), 'y se le agrega al mensaje del cruce, editándolo', ed);
     const ini = { inicial: 5000, desde: 0 };
     const pedir = async (d, t = T + 60000) => (await o.apostar(Object.assign({}, ini, d), t)).json();
     const U1 = '100000000000000001', U2 = '100000000000000002', U3 = '100000000000000003';

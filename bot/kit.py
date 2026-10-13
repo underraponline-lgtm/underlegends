@@ -3,6 +3,8 @@
 
     python bot/kit.py --tipo afiche --sv FFA              dibuja y guarda en salida/kit_*.png, sin subir nada
     python bot/kit.py --tipo llave --sv FFA --id <id>     dibuja, sube a R2 y le avisa al objeto (la tarea kit.yml)
+    python bot/kit.py --tipo vs --sv FFA --id <id>        los vs que esperan su imagen (el bot en vivo, `vsEncolar()`)
+    python bot/kit.py --tipo vs --sv FFA --muestra a b    un vs de muestra con dos de la tabla, en salida/, sin subir
     python bot/kit.py --auto                              el self-check
 
 Dlx, 12/10/2026, a la vista previa del kit en FFA: *«eso de la llave y el evento está genial la verdad, crear un comando
@@ -226,8 +228,76 @@ def html_llave(titulo, bats, sv, d):
                             '<div class="camp"><span class="et">Campeón</span>%s</div>' % _nombre(camp) if camp else '')
 
 
-def foto(htm, ruta):
-    """El PNG del `#c` de ese HTML."""
+def html_vs(v, d):
+    """🖼️ EL VS (Dlx, 12/10/2026: «hacerlo más visual para mostrar las imágenes cuando sea un vs, o sea las tarjetas»; a
+    las dos formas, «B»: una imagen armada). Las dos tarjetas con el VS en el medio, el evento, la ronda y el título del
+    cruce (EL CLÁSICO…). `v` es lo que guardó el objeto (`vsEncolar()` en avisos.js): `{ev, ronda, titulo, sub, a, b}`,
+    cada lado `{n, fl, ovr, carta}`. ⚠️ Quien no tiene tarjeta sale con la silueta, su nombre y su OVR: la imagen nunca
+    queda con un lado vacío (en la COMPE de FFA del 12/10, 13 de 27 tenían tarjeta)."""
+    from comun import sin_foto as SF
+
+    def bandera(fl):
+        cps = [ord(c) - 0x1F1E6 for c in str(fl or '')]
+        if len(cps) != 2 or not all(0 <= c < 26 for c in cps):
+            return ''
+        try:
+            from comun import banderas as BA
+            src = BA.src(''.join(chr(97 + c) for c in cps))
+        except Exception:                                # noqa: BLE001
+            src = ''
+        return ' <img class="fl" src="%s" alt="">' % src if src else ''
+
+    sil = 'data:image/svg+xml;base64,' + base64.b64encode(SF.SVG.replace('#0a0a0d', '#F6F6F6').encode('utf-8')).decode()
+
+    def lado(y, cls):
+        y = y or {}
+        if y.get('carta'):
+            return '<div class="ld %s"><img class="carta" src="%s" alt=""></div>' % (cls, _e(y['carta']))
+        ovr = '<span class="et ovr">OVR %d</span>' % y['ovr'] if y.get('ovr') else ''
+        return ('<div class="ld %s"><div class="sin"><img class="sil" src="%s" alt=""><b>%s%s</b>%s</div></div>'
+                % (cls, sil, _e(y.get('n') or '¿?'), bandera(y.get('fl')), ovr))
+    tit = ('<div class="tt"><span class="et">%s</span>%s</div>' % (_e(v.get('titulo')), ('<small>%s</small>' % _e(v.get('sub')))
+                                                                    if v.get('sub') else '')) if v.get('titulo') else ''
+    ev = re.sub(r'[_*~`#>]+', ' ', str(v.get('ev') or '')).strip()
+    return """<!doctype html><html><head><meta charset="utf-8"><style>%s%s
+#c{width:1200px;height:630px;position:relative;overflow:hidden;background:#0a0a0d}
+#c .mitad{position:absolute;inset:0;background:%s;clip-path:polygon(0 0,58%% 0,42%% 100%%,0 100%%)}
+#c .cab{position:absolute;left:40px;top:30px;right:40px;display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
+#c .cab b{display:block;font-weight:900;font-size:34px;line-height:1;text-transform:uppercase;font-stretch:112%%;max-width:720px}
+#c .cab .et{font-size:24px;opacity:.85}
+#c .cab .marca{text-align:right}
+#c .cab .marca img{width:64px;height:64px;border-radius:50%%;object-fit:cover}
+#c .ld{position:absolute;top:118px;width:330px;height:470px;display:grid;place-items:center}
+#c .ld.a{left:150px}
+#c .ld.b{right:150px}
+#c .carta{height:470px;width:auto;filter:drop-shadow(0 14px 24px rgba(0,0,0,.55))}
+#c .sin{width:300px;height:438px;border:3px solid rgba(255,255,255,.28);border-radius:16px;background:rgba(255,255,255,.06);
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:10px;padding:24px 18px 30px;text-align:center}
+#c .sin .sil{width:230px;height:230px;opacity:.9}
+#c .sin b{font-weight:900;font-size:32px;line-height:1.05;text-transform:uppercase;overflow-wrap:anywhere}
+#c .sin .ovr{font-size:26px;color:#FFD24A}
+#c .fl{height:.75em;width:auto;vertical-align:.04em;margin-left:8px;border-radius:2px}
+#c .vs{position:absolute;left:50%%;top:330px;transform:translate(-50%%,-50%%);width:150px;height:150px;border-radius:50%%;
+  background:#E41373;border:6px solid #fff;display:grid;place-items:center;font-weight:900;font-size:64px;font-style:italic;
+  box-shadow:0 10px 30px rgba(0,0,0,.5)}
+#c .tt{position:absolute;left:50%%;bottom:26px;transform:translateX(-50%%);text-align:center;max-width:620px}
+#c .tt .et{display:inline-block;background:#FFD24A;color:#0a0a0d;font-size:28px;padding:6px 16px}
+#c .tt small{display:block;margin-top:8px;font-size:20px;opacity:.9}
+#c .liga{position:absolute;left:0;right:0;bottom:0}
+</style></head><body><div id="c" class="f">
+<div class="mitad"></div>
+<div class="cab"><div><b>%s</b><span class="et">%s · %s</span></div><div class="marca">%s</div></div>
+%s%s
+<div class="vs">VS</div>
+%s
+<div class="liga"></div>
+</div></body></html>""" % (_fuentes(), _BASE_CSS, _e(d['color']), _e(ev[:60] or 'Liga Global'), _e(v.get('ronda') or ''),
+                            _e(d['nombre']), ('<img src="%s" alt="">' % d['logo']) if d['logo'] else '',
+                            lado(v.get('a'), 'a'), lado(v.get('b'), 'b'), tit)
+
+
+def foto(htm, ruta, jpeg=False):
+    """El PNG (o JPG, más liviano para el chat) del `#c` de ese HTML."""
     import navegador
     navegador.hace_falta()
     from playwright.sync_api import sync_playwright
@@ -236,33 +306,69 @@ def foto(htm, ruta):
         pg = b.new_page(viewport={'width': 1200, 'height': 1200}, device_scale_factor=1)
         pg.set_content(htm)
         pg.wait_for_timeout(400)
-        pg.locator('#c').screenshot(path=ruta)
+        if jpeg:
+            pg.locator('#c').screenshot(path=ruta, type='jpeg', quality=88)
+        else:
+            pg.locator('#c').screenshot(path=ruta)
         b.close()
     return ruta
 
 
 # ── a quien lo pidió ─────────────────────────────────────────────────────────────────────────────────────────────────
-def subir(ruta, clave):
+def subir(ruta, clave, tipo='image/png'):
     import subir_cartas as SC
     s = SC.sesion()
     datos = open(ruta, 'rb').read()
-    r = s.put('%s/objects/%s' % (SC.API, clave), data=datos, headers={'Content-Type': 'image/png'}, timeout=60)
+    r = s.put('%s/objects/%s' % (SC.API, clave), data=datos, headers={'Content-Type': tipo}, timeout=60)
     if SC._ok(r, clave) is None:
         raise RuntimeError('R2 no la aceptó')
     return '%s/%s' % (SC.PUBLICA, clave)
 
 
-def avisar(id_, url=None, error=None, texto=''):
-    import requests
+def _clave():
+    """La clave del ciclo, para las rutas del objeto que sólo el ciclo y sus tareas pueden usar."""
     import avisar as AV
     t = AV._token() if hasattr(AV, '_token') else None
     if not t:
         import escuchar as E
         t = E._env('DISCORD_TOKEN')
-    k = hashlib.sha256(('lg-ciclo:' + t).encode('utf-8')).hexdigest()
-    r = requests.post(AV.WORKER + '/avisos/kit-listo', headers={'x-lg-ciclo': k}, timeout=20,
+    return hashlib.sha256(('lg-ciclo:' + t).encode('utf-8')).hexdigest()
+
+
+def avisar(id_, url=None, error=None, texto=''):
+    import requests
+    import avisar as AV
+    r = requests.post(AV.WORKER + '/avisos/kit-listo', headers={'x-lg-ciclo': _clave()}, timeout=20,
                       json={'id': id_, 'url': url, 'error': error, 'texto': texto})
     print('   el objeto: %d %s' % (r.status_code, r.text[:120]))
+
+
+def correr_vs(sv):
+    """🖼️ Los vs de ese servidor que esperan su imagen (`/avisos/vs-cola`): los dibuja, los sube y se los devuelve al objeto
+    (`/avisos/vs-listo`), que se la agrega a cada mensaje. Uno que falla no frena a los demás."""
+    import requests
+    import avisar as AV
+    d = _sv_datos(sv)
+    r = requests.get(AV.WORKER + '/avisos/vs-cola', params={'sv': sv}, headers={'x-lg-ciclo': _clave()}, timeout=20)
+    vs = ((r.json() or {}).get('vs') or []) if r.ok else []
+    print('   🖼️ %d vs de %s' % (len(vs), sv))
+    os.makedirs(SALIDA, exist_ok=True)
+    mal = 0
+    for v in vs:
+        vid = re.sub(r'[^a-z0-9]', '', str(v.get('id') or '').lower())[:24]
+        if not vid:
+            continue
+        ruta = os.path.join(SALIDA, 'vs_%s.jpg' % vid)
+        try:
+            foto(html_vs(v, d), ruta, jpeg=True)
+            url = subir(ruta, 'vs/%s-%s.jpg' % (sv.lower(), vid), 'image/jpeg')
+            rr = requests.post(AV.WORKER + '/avisos/vs-listo', headers={'x-lg-ciclo': _clave()}, timeout=20,
+                               json={'id': v.get('id'), 'url': url})
+            print('   ✅ %s vs %s · %s' % ((v.get('a') or {}).get('n'), (v.get('b') or {}).get('n'), rr.text[:80]))
+        except Exception as e:                           # noqa: BLE001
+            mal += 1
+            print('   🔴 %s: %s' % (vid, str(e)[:120]))
+    return 1 if mal and mal == len(vs) else 0
 
 
 def correr(tipo, sv, id_=None):
@@ -306,6 +412,9 @@ def _self_check():
     a = {'nombre': '__ DESGRACIAS EN TOKYO VOL 27 __', 'horario': '9PM ARG', 'modalidad': '1VS1', 'cupo_total': 16,
          'cuando': '2026-10-12T20:00:00+00:00'}
     h = html_afiche(a, 'FFA', d)
+    vs = html_vs({'ev': '__ COPA <b>X</b> __', 'ronda': 'Cuartos', 'titulo': 'EL CLÁSICO', 'sub': 'se cruzaron 3 veces',
+                  'a': {'n': 'Snow', 'fl': '🇨🇴', 'ovr': 92, 'carta': 'https://pub-a.r2.dev/snow/temporada.webp'},
+                  'b': {'n': 'Pepe <i>', 'fl': '', 'ovr': 0, 'carta': ''}}, d)
     ll = html_llave('DESGRACIAS EN TOKYO VOL 27', [('SEMIFINALES', ['Ana', 'Beto'], 'Ana'),
                                                    ('SEMIFINALES', ['Caro', 'Dani'], 'Caro'),
                                                    ('FINAL', ['Ana', 'Caro'], 'Ana')], 'FFA', d)
@@ -313,6 +422,9 @@ def _self_check():
         ('el afiche: el nombre sin los guiones bajos de Discord, la hora y la modalidad',
          'DESGRACIAS EN TOKYO VOL 27' in h and '9PM ARG' in h and '1VS1' in h and '__' not in h.split('<div class="nom">')[1][:40]),
         ('la llave: una columna por ronda y el campeón', ll.count('class="ronda"') == 2 and 'Campeón' in ll and '>Ana<' in ll),
+        ('el vs: la tarjeta de uno, la silueta y el nombre del otro, el VS y el título',
+         'snow/temporada.webp' in vs and 'Pepe &lt;i&gt;' in vs and '>VS<' in vs and 'EL CLÁSICO' in vs
+         and 'class="sil"' in vs and '<b>X</b>' not in vs),
         ('lo que viene de Discord se escapa: ningún HTML crudo',
          '<b>x' not in html_afiche(dict(a, nombre='<b>x</b>', horario='<i>9</i>'), 'FFA', d)
          and '&lt;i&gt;9' in html_afiche(dict(a, nombre='<b>x</b>', horario='<i>9</i>'), 'FFA', d)),
@@ -333,6 +445,30 @@ if __name__ == '__main__':
         sys.exit(_self_check())
     arg = lambda k: sys.argv[sys.argv.index(k) + 1] if k in sys.argv else None   # noqa: E731
     tipo, sv = arg('--tipo'), (arg('--sv') or '').upper()
-    if tipo not in ('afiche', 'llave') or not re.match(r'^[A-Z]{2,5}$', sv) or (arg('--id') and not re.match(r'^[a-f0-9]{16,40}$', arg('--id'))):
-        sys.exit('uso: python bot/kit.py --tipo afiche|llave --sv FFA [--id <id>]')
+    if tipo not in ('afiche', 'llave', 'vs') or not re.match(r'^[A-Z]{2,5}$', sv) or (arg('--id') and not re.match(r'^[a-f0-9]{16,40}$', arg('--id'))):
+        sys.exit('uso: python bot/kit.py --tipo afiche|llave|vs --sv FFA [--id <id>]')
+    if tipo == 'vs' and '--muestra' in sys.argv:
+        import requests
+        i = sys.argv.index('--muestra')
+        ks = (sys.argv[i + 1:i + 3] + ['snow', 'makmah'])[:2]
+        lob = requests.get('https://underlegends.pages.dev/api/lobby', timeout=30).json()
+        T = {f['k']: f for f in lob.get('tabla') or []}
+
+        def _lado(k):
+            f = T.get(k) or {'n': k}
+            c = next((x for x in ('temporada', 'competitivo', 'servidor') if x in (f.get('c') or [])), '')
+            j = (lob.get('cartas') or []).index(c) if c else -1
+            ver = (f.get('cv') or '').split('.')[j] if c and f.get('cv') else ''
+            fl = ''.join(chr(0x1F1E6 + ord(x) - 97) for x in (f.get('cc') or '')) if len(f.get('cc') or '') == 2 else ''
+            return {'n': f.get('n'), 'fl': fl, 'ovr': f.get('ovr') or 0,
+                    'carta': ('%s/%s/%s.webp%s' % (lob['r2'], k, c, '?v=' + ver if ver else '')) if c else ''}
+        v = {'ev': 'COMPE POR 1.5 DOLARES', 'ronda': 'Cuartos', 'titulo': 'LA REVANCHA',
+             'sub': '%s le ganó la última vez' % _lado(ks[0])['n'], 'a': _lado(ks[0]), 'b': _lado(ks[1])}
+        os.makedirs(SALIDA, exist_ok=True)
+        ruta = os.path.join(SALIDA, 'vs_muestra_%s_%s.jpg' % tuple(ks))
+        foto(html_vs(v, _sv_datos(sv)), ruta, jpeg=True)
+        print(ruta)
+        sys.exit(0)
+    if tipo == 'vs':
+        sys.exit(correr_vs(sv))
     sys.exit(correr(tipo, sv, arg('--id')))
