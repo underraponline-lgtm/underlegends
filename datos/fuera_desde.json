@@ -715,9 +715,6 @@
    "sv-ffa": "2026-10-12",
    "temporada": "2026-10-12"
   },
-  "masino": {
-   "temporada": "2026-10-12"
-  },
   "maticerna": {
    "servidor": "2026-10-12",
    "sv-ffa": "2026-10-12",
@@ -1240,7 +1237,7 @@
   }
  },
  "pasaban": 384,
- "cuando": "2026-10-13T23:29:27Z",
+ "cuando": "2026-10-13T23:34:23Z",
  "borradas": [
   [
    "infecte",

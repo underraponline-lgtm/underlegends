@@ -47,6 +47,15 @@
 "temporada"
 ]
 },
+"colesito": {
+"rg": "B",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "panchok": {
 "rg": "S",
 "c": [
@@ -74,15 +83,6 @@
 ]
 },
 "six": {
-"rg": "B",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"colesito": {
 "rg": "B",
 "c": [
 "competitivo",
@@ -254,16 +254,16 @@
 "temporada"
 ]
 },
+"bna": {
+"rg": "",
+"c": []
+},
 "carlosss": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
-},
-"bna": {
-"rg": "",
-"c": []
 },
 "sinlimites": {
 "rg": "D",
@@ -733,7 +733,8 @@
 "masino": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "fleivaman": {
@@ -2306,14 +2307,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T15:44:55Z",
-"quien": [
-"Polosport"
-],
-"carta": "temporada"
-},
 {
 "tipo": "rango",
 "t": "2026-09-29T17:25:28Z",
@@ -5582,6 +5575,14 @@
 "Jult"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-13T23:34:02Z",
+"quien": [
+"Masino"
+],
+"carta": "temporada"
 }
 ]
 }
