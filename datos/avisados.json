@@ -10164,7 +10164,7 @@
   ],
   "ev_antes": {},
   "fecha": "12/10",
-  "firma": "80db81c72ab4482f",
+  "firma": "693312f33fed99e0",
   "msg": "1559406349790617712",
   "nombre": "COMPE CHILL",
   "num": 463,
@@ -10178,6 +10178,7 @@
   "v": 2
  },
  "464": {
+  "al_dia": true,
   "antes": {
    "Agus": [
     9,
@@ -10374,6 +10375,7 @@
   "v": 2
  },
  "465": {
+  "al_dia": true,
   "antes": {
    "Cinexfilo": [
     68,
