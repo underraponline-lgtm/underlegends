@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.92",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T16:02:00-04:00",
+   "titulo": "Un evento que no era de la Liga, fuera",
+   "items": [
+    "🧹 Salió del ranking de Temporada un «evento» que no era de la Liga: un pronóstico de Red Bull Batalla subido a un canal de llaves se había leído como si fuera una llave. Nadie que juega la Liga pierde puntos, y algunos suben de puesto.",
+    "🖼️ Las llaves que son una imagen se leen una sola vez y quedan guardadas. Antes se volvían a leer en cada vuelta y podían salir distintas."
+   ]
+  },
+  {
    "version": "2.91",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T05:40:00-04:00",
