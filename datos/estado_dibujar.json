@@ -1,69 +1,69 @@
 {
  "v": 1,
- "cuando": "2026-10-13T06:35:01Z",
+ "cuando": "2026-10-13T07:32:37Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 407.6,
+ "dur_s": 1967.0,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.3
+   "s": 6.3
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 4.5
+   "s": 4.4
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.7
+   "s": 25.4
   },
   {
    "n": "5",
-   "que": "tanda 1 de 4 · 40 persona(s)",
+   "que": "tanda 1 de 10 · 40 persona(s)",
    "ok": true,
-   "s": 327.6
+   "s": 1862.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 1.0
+   "s": 15.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 47.8
+   "s": 51.3
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "464",
-  "nombre": "IDS V.2",
-  "sv": "URBF",
-  "dia": "2026-10-12"
+  "n": "465",
+  "nombre": "QCYO RAPEEN",
+  "sv": "FFA",
+  "dia": "2026-10-13"
  },
  "cuotas": {
   "kv": {
-   "write": 200,
-   "read": 21731
+   "write": 214,
+   "read": 23241
   },
   "objeto": {
-   "leidas": 1355586,
-   "escritas": 12879,
-   "pedidos": 4581
+   "leidas": 1462773,
+   "escritas": 14645,
+   "pedidos": 5025
   },
   "worker": {
-   "pedidos": 10852,
+   "pedidos": 11028,
    "errores": 0,
-   "sub": 11799,
-   "p50_ms": 1.24,
+   "sub": 12022,
+   "p50_ms": 1.23,
    "p99_ms": 7.11
   },
   "r2": {
