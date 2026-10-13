@@ -153,8 +153,8 @@
    "servidor": "09b6aba527d2:38fa4546320c:874d2d"
   },
   "Bloody": {
-   "competitivo": "d16ea1721b2b:2256fa928e50",
-   "pais": "0da1e0a765fd:a83947948804",
+   "competitivo": "62b65181c2c9:2256fa928e50",
+   "pais": "69a2f1a6f214:a83947948804",
    "servidor": "4d34b21eb698:38fa4546320c:3580af",
    "temporada": "b8664e417866:5f7648916ad1"
   },
@@ -1577,7 +1577,8 @@
   "Xubaru": {
    "competitivo": "79db598cf09b:2256fa928e50",
    "pais": "a09de9e9987d:a83947948804",
-   "servidor": "dbfc14ad7baa:38fa4546320c:c9f1f2"
+   "servidor": "dbfc14ad7baa:38fa4546320c:c9f1f2",
+   "temporada": "adc296073f04:5f7648916ad1"
   },
   "YACO": {
    "servidor": "8dc17afd358c:38fa4546320c:980594"
@@ -1755,5 +1756,5 @@
    "servidor": "7f8885a35a6d:38fa4546320c:c9f1f2"
   }
  },
- "cuando": "2026-10-13T21:59:05+00:00"
+ "cuando": "2026-10-13T22:59:14+00:00"
 }
