@@ -369,5 +369,32 @@
    "por": "Claude (no es un evento)",
    "nota": "no era COMPE CHILL ni un evento de la Liga: era el pronóstico que arma la página de Red Bull Batalla («rb-batalla-llave.png»: «Final Nacional Colombia, 17 de octubre · MI CAMPEÓN: MARITHEA»), subido al canal de llaves de URBF. Cargó a dieciséis finalistas de Red Bull Colombia que no juegan en la Liga. El lector ya no lee esas imágenes (escuchar.es_de_red_bull())"
   }
+ },
+ "quien": {
+  "_leeme": "Quién era de verdad un nombre de UNA llave: «evento · servidor · fecha · nombre» -> {\"es\": persona}. Lo decide Dlx desde un reporte en el Dashboard (13/10/2026) y lo lee llaves_a_entrada.otro_en_evento(); bot/reportes.py corrige además las filas ya escritas.",
+  "DESGRACIAS EN BELLAS ARTES VOL1 · FFA · 07/10 · Agus": {
+   "es": "EIDP",
+   "antes": "Agus",
+   "cuando": "13/10 7:52 PM ET",
+   "por": "Dlx (Dashboard)",
+   "reporte": 4,
+   "nota": "es agustin🇺🇾 no es agus🇦🇷"
+  },
+  "LA BELLA ARTE DE LA DESGRACIA VOL2 · FFA · 08/10 · Agus": {
+   "es": "EIDP",
+   "antes": "Agus",
+   "cuando": "13/10 7:52 PM ET",
+   "por": "Dlx (Dashboard)",
+   "reporte": 5,
+   "nota": "esta igual, agustin🇺🇾 no es agus🇦🇷"
+  },
+  "IDS V.2 · URBF · 12/10 · Agus": {
+   "es": "AGUSTÍN51K",
+   "antes": "Agus",
+   "cuando": "13/10 7:52 PM ET",
+   "por": "Dlx (Dashboard)",
+   "reporte": 6,
+   "nota": "el agustin soy yo y soy de chile jaja, se confundio el bot con el agus argentino"
+  }
  }
 }
