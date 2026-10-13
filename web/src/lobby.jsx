@@ -105,6 +105,72 @@ function TuBarra({ liga, dc, P, R, saldo }) {
   );
 }
 
+// ── ⏳ LA TEMPORADA: cuánto falta y dónde estás contra el top 16 (Dlx, 13/10/2026, a las ideas del research: «me gustan
+// todas»). La fecha es la de `comun/temporada.py` (`fase.termina` del payload): el último día entero, en hora del este
+// —en diciembre, EST—. El top 16 es el del torneo de cierre, contado igual que el Ranking (`clasificados()` de
+// ranking.jsx): los primeros 16 CON NÚMERO de la Temporada, por OVR. Sin número tuyo, sólo los días
+function Temporada({ liga }) {
+  const fin = (liga.d.fase || {}).termina;
+  // días de calendario en el este: del 13/10 al 31/12 son 79, aunque queden horas de hoy; el 31/12 «termina hoy»
+  const hoy = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date(liga.ahora));
+  const dias = fin ? Math.round((Date.parse(fin) - Date.parse(hoy)) / 86400000) : NaN;
+  if (!(dias >= 0)) return null;
+  const yo = liga.yo;
+  let top = '';
+  if (yo && yo.pos) {
+    const clas = (liga.d.tabla || []).filter((f) => f.pos).sort((a, b) => a.pos - b.pos).slice(0, 16);
+    if (clas.some((f) => f.k === yo.k)) top = 'ESTÁS EN EL TOP 16: JUGÁS EL CIERRE';
+    else if (clas.length === 16) {
+      const d = (clas[15].ovr || 0) - (yo.ovr || 0);
+      top = d > 0 ? 'A ' + d + ' DE OVR DEL TOP 16' : 'PEGADO AL TOP 16';
+    }
+  }
+  return (
+    <a className="lb-t1" href="#/ranking">
+      <b>{(liga.temp || 'T1') + ' · ' + (dias === 0 ? 'TERMINA HOY' : dias === 1 ? 'FALTA 1 DÍA' : 'FALTAN ' + dias + ' DÍAS')}</b>
+      {top ? <span>{top}</span> : null}
+    </a>
+  );
+}
+
+// ── 👀 TUS SEGUIDOS HOY (Dlx, 13/10/2026, la misma tanda): de la gente que seguís, quién juega hoy —anotado en un evento en
+// vivo o de las próximas 18 horas, lo que junta el vigía de los canales de inscripción (`anotados()`)— y quién ganó en
+// las últimas 36. Sin nada, no se dibuja: «sin dato no hay pieza»
+function Seguidos({ liga }) {
+  const sig = new Set(liga.sigue || []);
+  if (!sig.size) return null;
+  const out = new Map();
+  const vivos = liga.vivo();
+  const hasta = liga.ahora + 18 * 3600000;
+  for (const e of vivos.concat(liga.luego().filter((x) => utc(liga.cuandoDe(x)) <= hasta))) {
+    for (const x of liga.anotados(e)) {
+      const k = x.f && x.f.k;
+      if (k && sig.has(k) && !out.has(k)) {
+        out.set(k, { k, n: x.f.n, que: (vivos.includes(e) ? 'juega ahora' : 'juega ' + liga.dia(liga.cuandoDe(e))) + ' · ' + limpio(e.nombre) });
+      }
+    }
+  }
+  for (const ll of liga.llavesPorFecha()) {
+    if (liga.ahora - utc(liga.fechaLlave(ll)) > 36 * 3600000) break;
+    for (const n of liga.campeon(ll)) {
+      const f = liga.fila(n);
+      if (f && sig.has(f.k) && !out.has(f.k)) out.set(f.k, { k: f.k, n: f.n, que: 'ganó ' + limpio(ll.nombre) });
+    }
+  }
+  const l = [...out.values()].slice(0, 6);
+  if (!l.length) return null;
+  return (
+    <section className="lb-sig" aria-label="Tus seguidos hoy">
+      <span className="lb-sig-t">TUS SEGUIDOS HOY</span>
+      <ul>{l.map((x) => (
+        <li key={x.k}><a href={'#/r/' + encodeURIComponent(x.k)}>
+          <Cara liga={liga} k={x.k} nombre={x.n} cls="lb-sig-c" /><b>{limpio(x.n)}</b><small>{x.que}</small>
+        </a></li>
+      ))}</ul>
+    </section>
+  );
+}
+
 // ── ⚡ «¡TE TOCA!»: tu momento en tu llave en vivo (Dlx, 13/10/2026, de los toques del research de los lobbies: «¡Te
 // toca!» en el botón). Con la misma lectura que la llave corta (`momentosLlave()`: «AHORA» sólo si se juega en orden):
 // te toca, sos el próximo, esperás tu turno, pasaste, o quedaste afuera. La ronda más honda donde aparecés dice cómo te
@@ -294,8 +360,10 @@ export function Lobby({ liga, dc }) {
   return (
     <section className="lobby" aria-label="Tu lobby">
       <TuBarra liga={liga} dc={dc} P={P} R={R} saldo={saldo} />
+      <Temporada liga={liga} />
       <ElBoton liga={liga} />
       <PedirCampana liga={liga} dc={dc} />
+      <Seguidos liga={liga} />
       <div className="lb-grid">
         {bus.length ? (
           <a className="pu lb lb-mw" href="#/ranking/mw">
