@@ -87,6 +87,17 @@
     "racha": "0/0"
    }
   },
+  "AIRON": {
+   "URBF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 47,
+    "pod": 1,
+    "pts": 5625,
+    "racha": "1/1"
+   }
+  },
   "AKARK": {
    "FFA": {
     "duelos": "",
@@ -846,12 +857,12 @@
   "COLOSO": {
    "URBF": {
     "duelos": "1/2",
-    "ev": 1,
+    "ev": 0,
     "oro": 0,
-    "ovr": 50,
-    "pod": 1,
-    "pts": 22500,
-    "racha": "1/1"
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
+    "racha": "0/0"
    }
   },
   "Cabece": {
@@ -1897,6 +1908,17 @@
     "racha": "0/0"
    }
   },
+  "FAT N": {
+   "URBF": {
+    "duelos": "1/1",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 51,
+    "pod": 1,
+    "pts": 30000,
+    "racha": "1/1"
+   }
+  },
   "FAT PENIS": {
    "FFA": {
     "duelos": "",
@@ -2473,6 +2495,17 @@
     "racha": "0/0"
    }
   },
+  "J1": {
+   "URBF": {
+    "duelos": "0/1",
+    "ev": 0,
+    "oro": 0,
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
+    "racha": "0/0"
+   }
+  },
   "JB🇦🇷": {
    "URBF": {
     "duelos": "",
@@ -2549,11 +2582,11 @@
   "JM SERNA": {
    "URBF": {
     "duelos": "0/1",
-    "ev": 1,
+    "ev": 0,
     "oro": 0,
-    "ovr": 50,
-    "pod": 1,
-    "pts": 18000,
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
     "racha": "0/0"
    }
   },
@@ -3440,13 +3473,13 @@
   },
   "MARITHEA": {
    "URBF": {
-    "duelos": "1/1",
-    "ev": 1,
-    "oro": 1,
-    "ovr": 51,
-    "pod": 1,
-    "pts": 30000,
-    "racha": "1/1"
+    "duelos": "2/2",
+    "ev": 0,
+    "oro": 0,
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
+    "racha": "0/0"
    }
   },
   "MARTYNEZ🇺🇾": {
@@ -4529,6 +4562,17 @@
     "ovr": 43,
     "pod": 0,
     "pts": 1250,
+    "racha": "0/0"
+   }
+  },
+  "PUPPY": {
+   "URBF": {
+    "duelos": "1/1",
+    "ev": 0,
+    "oro": 0,
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
     "racha": "0/0"
    }
   },
@@ -5968,6 +6012,17 @@
   "V-zir🏳️‍⚧️": {
    "DDF": {
     "duelos": "1/1",
+    "ev": 0,
+    "oro": 0,
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
+    "racha": "0/0"
+   }
+  },
+  "VISIONARIO": {
+   "URBF": {
+    "duelos": "0/1",
     "ev": 0,
     "oro": 0,
     "ovr": 40,

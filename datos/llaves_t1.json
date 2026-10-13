@@ -21928,23 +21928,31 @@
      ],
      [
       [
-       "COFFY",
+       "MARITHEA",
+       "J1"
+      ],
+      "MARITHEA",
+      ""
+     ],
+     [
+      [
+       "PUPPY",
        "VISIONARIO"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "PUPPY",
+      ""
      ],
      [
       [
-       "COLOSO",
-       "MARITHEA"
+       "MARITHEA",
+       "COLOSO"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "MARITHEA",
+      ""
      ],
      [
       [
-       "LIT IGNIS",
+       "MARITHEA",
        "PUPPY"
       ],
       "",
@@ -21957,11 +21965,40 @@
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Llave de ganadores"
+   },
+   {
+    "b": [
+     [
+      [
+       "FAT N",
+       "J1"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "JM SERNA",
+       "PANDORA"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
      ],
      [
       [
        "URKO",
-       "J1"
+       "COFFY"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "VISIONARIO",
+       "PUPPY"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -21973,11 +22010,11 @@
     "b": [
      [
       [
-       "AIRON",
-       "FAT N"
+       "FAT N",
+       "AIRON"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "FAT N",
+      "ganador: ✅ Decidir; Walk-in 2: AIRON"
      ],
      [
       [
@@ -22036,38 +22073,20 @@
       "sin ganador: espera en ✅ Decidir"
      ]
     ],
-    "r": "Llave de ganadores"
-   },
-   {
-    "b": [
-     [
-      [
-       "MARITHEA",
-       "COLOSO"
-      ],
-      "MARITHEA",
-      ""
-     ]
-    ],
     "r": "Final"
    }
   ],
   "sv": "URBF",
   "tabla": [
    [
-    "MARITHEA",
+    "FAT N",
     "Campeón",
     10000
    ],
    [
-    "COLOSO",
+    "AIRON",
     "Subcampeón",
-    7500
-   ],
-   [
-    "JM SERNA",
-    "Tercero",
-    6000
+    1875
    ]
   ]
  },
