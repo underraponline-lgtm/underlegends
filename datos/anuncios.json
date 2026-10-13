@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-13T20:59:17+00:00",
+ "cuando": "2026-10-13T21:25:10+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -970,28 +970,6 @@
     ]
    },
    "autor": "Kravitz",
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "PRITTY FREE",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1557523952891338893",
-   "cuando": "2026-10-07T22:44:07",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@nachonc_",
-   "autor_h": "d83234c3da26ac85",
-   "cupos_texto": "∞",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Bronce",
-   "modalidad": "MULTIVERSE 1-4",
-   "horario": "EN 15",
-   "fecha": "",
-   "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
-   "staff": {},
-   "autor": "Nc",
    "categoria_id": "1468478330826260500"
   },
   {
@@ -4445,6 +4423,87 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Praiseriza",
+   "quien": "lein7426",
+   "discord_id": "1078792444080046271",
+   "msg_id": "1559676450137706508",
+   "cuando": "2026-10-13T21:17:23"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Shisui 🇯🇵",
+   "quien": "funhorlavild",
+   "discord_id": "1426686911908675628",
+   "msg_id": "1559676376834113559",
+   "cuando": "2026-10-13T21:17:05"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Pichulamc 🇦🇷",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1559675303859593227",
+   "cuando": "2026-10-13T21:12:49"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Riolu🇪🇸",
+   "quien": "alvaroriolu03",
+   "discord_id": "522777983921029162",
+   "msg_id": "1559675218425938103",
+   "cuando": "2026-10-13T21:12:29"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Bloody 🇨🇴",
+   "quien": "bloodypintor",
+   "discord_id": "692881329573986317",
+   "msg_id": "1559675148099911824",
+   "cuando": "2026-10-13T21:12:12"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Ax🇻🇪",
+   "quien": "xxxxxx.fl",
+   "discord_id": "1397110475594010700",
+   "msg_id": "1559674560842829906",
+   "cuando": "2026-10-13T21:09:52"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Bloody",
+   "quien": "bloodypintor",
+   "discord_id": "692881329573986317",
+   "msg_id": "1559673454217658369",
+   "cuando": "2026-10-13T21:05:28"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "delux🇦🇷",
+   "quien": "delux.13",
+   "discord_id": "729809358627536938",
+   "msg_id": "1559672542321582193",
+   "cuando": "2026-10-13T21:01:51"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Pichulamc",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1559672157716619409",
+   "cuando": "2026-10-13T21:00:19"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
