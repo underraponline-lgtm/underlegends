@@ -143,9 +143,6 @@
    "sv-ffa": "2026-10-12",
    "temporada": "2026-10-12"
   },
-  "bloody": {
-   "temporada": "2026-10-12"
-  },
   "btrece": {
    "temporada": "2026-10-12"
   },
@@ -801,9 +798,6 @@
   "motera": {
    "temporada": "2026-10-12"
   },
-  "mtz": {
-   "temporada": "2026-10-12"
-  },
   "mva": {
    "servidor": "2026-10-12",
    "sv-ffa": "2026-10-12",
@@ -1252,7 +1246,7 @@
   }
  },
  "pasaban": 384,
- "cuando": "2026-10-13T06:59:15Z",
+ "cuando": "2026-10-13T15:30:06Z",
  "borradas": [
   [
    "infecte",

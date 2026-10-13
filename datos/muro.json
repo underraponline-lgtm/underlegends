@@ -173,10 +173,6 @@
 "temporada"
 ]
 },
-"xclusivo": {
-"rg": "C",
-"c": []
-},
 "guess": {
 "rg": "C",
 "c": [
@@ -184,6 +180,10 @@
 "servidor",
 "temporada"
 ]
+},
+"xclusivo": {
+"rg": "C",
+"c": []
 },
 "majiztral": {
 "rg": "C",
@@ -220,7 +220,8 @@
 "rg": "C",
 "c": [
 "competitivo",
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "carlosss": {
@@ -293,6 +294,14 @@
 "temporada"
 ]
 },
+"sinlimites": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "geoka": {
 "rg": "E",
 "c": [
@@ -305,10 +314,11 @@
 "rg": "",
 "c": []
 },
-"sinlimites": {
-"rg": "E",
+"lordviruzz": {
+"rg": "D",
 "c": [
 "competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -325,8 +335,8 @@
 "rg": "",
 "c": []
 },
-"lordviruzz": {
-"rg": "D",
+"lrs": {
+"rg": "E",
 "c": [
 "competitivo",
 "pais",
@@ -361,15 +371,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"lrs": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -444,6 +445,12 @@
 "pais",
 "servidor",
 "temporada"
+]
+},
+"cinexfilo": {
+"rg": "",
+"c": [
+"servidor"
 ]
 },
 "dyzz": {
@@ -549,6 +556,13 @@
 "temporada"
 ]
 },
+"tenor": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "kochi": {
 "rg": "",
 "c": [
@@ -591,6 +605,13 @@
 "rg": "",
 "c": [
 "servidor"
+]
+},
+"rodas": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
 ]
 },
 "teo": {
@@ -636,12 +657,6 @@
 "temporada"
 ]
 },
-"cinexfilo": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
 "bastyretro": {
 "rg": "",
 "c": [
@@ -664,7 +679,8 @@
 "mtz": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "richard": {
@@ -684,13 +700,6 @@
 "leonart": {
 "rg": "",
 "c": []
-},
-"rodas": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "keider": {
 "rg": "",
@@ -857,13 +866,6 @@
 "rg": "",
 "c": []
 },
-"tenor": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "ezias": {
 "rg": "",
 "c": [
@@ -926,6 +928,12 @@
 "liam": {
 "rg": "",
 "c": []
+},
+"darnbless": {
+"rg": "",
+"c": [
+"servidor"
+]
 },
 "setesfifi": {
 "rg": "",
@@ -1083,12 +1091,6 @@
 "araya": {
 "rg": "",
 "c": []
-},
-"darnbless": {
-"rg": "",
-"c": [
-"servidor"
-]
 },
 "egi": {
 "rg": "",
@@ -2291,14 +2293,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-28T19:07:36Z",
-"quien": [
-"Jult"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-28T20:54:51Z",
@@ -5552,6 +5546,22 @@
 "MTZ"
 ],
 "carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-13T15:29:43Z",
+"quien": [
+"Bloody"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-13T15:29:43Z",
+"quien": [
+"MTZ"
+],
+"carta": "temporada"
 }
 ]
 }

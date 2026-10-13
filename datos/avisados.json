@@ -1190,7 +1190,7 @@
    "Xclusivo": 4
   },
   "fecha": "07/10",
-  "firma": "05745eb9422517ae",
+  "firma": "ae04465e3c596723",
   "msg": "1557564144360890428",
   "nombre": "__ PRITTY FREE __",
   "num": 425,
@@ -1533,7 +1533,7 @@
    "setesfifi": 1
   },
   "fecha": "07/10",
-  "firma": "0e4294107b1bf148",
+  "firma": "e9db1b11002c618b",
   "msg": "1557616971858579527",
   "nombre": "Doble Eliminación Vol. 2",
   "num": 426,
@@ -2511,7 +2511,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "5cfb2a9f6286f24b",
+  "firma": "39b92c473c642234",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -2833,7 +2833,7 @@
    "Zignos": 11
   },
   "fecha": "08/10",
-  "firma": "eaff227e2458ef8b",
+  "firma": "0f96922ee98fe49e",
   "msg": "1557926458221920299",
   "nombre": "__ LA REDENCIÓN VOL.1 __",
   "num": 431,
@@ -3790,7 +3790,7 @@
    "Xubaru": 3
   },
   "fecha": "08/10",
-  "firma": "88fbbcc7ce8a3ea2",
+  "firma": "a3f32f3c66d03745",
   "msg": "1557986840865411073",
   "nombre": "__ __ Cuentas Pendientes V.1 __ __",
   "num": 435,
@@ -4382,7 +4382,7 @@
    "Velatz": 28
   },
   "fecha": "09/10",
-  "firma": "3453c0c25a8dc06d",
+  "firma": "578eeb8b3a41d8a6",
   "msg": "1558266214659260507",
   "nombre": "COPA SOOLAR 4",
   "num": 437,
@@ -4622,7 +4622,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "09fd81e992e420bb",
+  "firma": "3f3836f0886142aa",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -5056,7 +5056,7 @@
    "Xclusivo": 10
   },
   "fecha": "09/10",
-  "firma": "d46db3b11b62e2bb",
+  "firma": "561e19b1b2119c74",
   "msg": "1558334120172462091",
   "nombre": "PROYECTO X VOL.2",
   "num": 440,
@@ -5537,7 +5537,7 @@
    "Xclusivo": 12
   },
   "fecha": "10/10",
-  "firma": "13d1be4b72d6be1a",
+  "firma": "d1672b6191406e43",
   "msg": "1558545514931163258",
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
   "num": 442,
@@ -6092,7 +6092,7 @@
    "Spartan": 1
   },
   "fecha": "10/10",
-  "firma": "198e8f3f5f6c5028",
+  "firma": "1ac708d82e554bf0",
   "msg": "1558711595163590740",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
   "num": 446,
@@ -6726,7 +6726,7 @@
    "Verc": 2
   },
   "fecha": "11/10",
-  "firma": "b27dd11f844c289b",
+  "firma": "c28dbef8a3898bcb",
   "msg": "1558907912582078525",
   "nombre": "__ HJKSLOWT V.1 __",
   "num": 449,
@@ -7964,7 +7964,7 @@
    "Walker": 4
   },
   "fecha": "12/10",
-  "firma": "9bc1522b94de8f12",
+  "firma": "db5229f3835202d1",
   "msg": "1559247607283454084",
   "nombre": "FMS UNDER",
   "num": 455,
@@ -9396,8 +9396,8 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "2ca6befe534ca949",
-  "msg": "1559353480601411625",
+  "firma": "c5c33c259cd8b936",
+  "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
   "participantes": 21,
@@ -10088,18 +10088,48 @@
   "duelos": [
    [
     "COLOSO",
-    "JM SERNA",
+    "AXL EVANS",
     "COLOSO"
+   ],
+   [
+    "JM SERNA",
+    "JAZZ",
+    "JM SERNA"
+   ],
+   [
+    "PANDORA",
+    "HUNTER",
+    "PANDORA"
+   ],
+   [
+    "FAT N",
+    "AIRON",
+    "FAT N"
+   ],
+   [
+    "MARITHEA",
+    "URKO",
+    "MARITHEA"
+   ],
+   [
+    "J1",
+    "COFFY",
+    "J1"
+   ],
+   [
+    "VISIONARIO",
+    "LIT IGNIS",
+    "VISIONARIO"
+   ],
+   [
+    "PUPPY",
+    "HORUS",
+    "PUPPY"
    ],
    [
     "MARITHEA",
     "J1",
     "MARITHEA"
-   ],
-   [
-    "PUPPY",
-    "VISIONARIO",
-    "PUPPY"
    ],
    [
     "MARITHEA",
@@ -10108,23 +10138,13 @@
    ],
    [
     "MARITHEA",
-    "FAT N",
+    "PUPPY",
     "MARITHEA"
-   ],
-   [
-    "MARITHEA",
-    "MARITHEA",
-    "MARITHEA"
-   ],
-   [
-    "FAT N",
-    "AIRON",
-    "FAT N"
    ]
   ],
   "ev_antes": {},
   "fecha": "12/10",
-  "firma": "80db81c72ab4482f",
+  "firma": "bb3f2846074d4807",
   "msg": "1559406349790617712",
   "nombre": "COMPE CHILL",
   "num": 463,
@@ -10134,7 +10154,18 @@
   },
   "sv": "URBF",
   "t": "2026-10-13T02:56:28Z",
-  "tabla": [],
+  "tabla": [
+   [
+    "COLOSO",
+    "Campeón",
+    5000
+   ],
+   [
+    "AXL EVANS",
+    "Subcampeón",
+    3750
+   ]
+  ],
   "v": 2
  },
  "464": {
@@ -10394,14 +10425,14 @@
     "Erian"
    ],
    [
-    "francis 🇨🇷",
+    "EGI",
     "Frifaier 🇨🇱",
-    "francis 🇨🇷"
+    "EGI"
    ],
    [
-    "francis 🇨🇷",
+    "EGI",
     "LRS",
-    "francis 🇨🇷"
+    "EGI"
    ],
    [
     "Tenor",
@@ -10425,7 +10456,7 @@
    ],
    [
     "Erian",
-    "francis 🇨🇷",
+    "EGI",
     "Erian"
    ],
    [
@@ -10446,7 +10477,7 @@
    "Tenor": 3
   },
   "fecha": "13/10",
-  "firma": "d6280385bd38b3c3",
+  "firma": "4c18231d7abb7d23",
   "msg": "1559459229411057705",
   "nombre": "QCYO RAPEEN",
   "num": 465,

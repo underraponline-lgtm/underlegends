@@ -1,7 +1,7 @@
 {
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
-  "FFA": "2026-10-12",
+  "FFA": "2026-10-13",
   "SR": "2026-10-12",
   "URBF": "2026-10-13"
  },
@@ -19,6 +19,18 @@
    "vence": "2026-10-20T00:26:10+00:00",
    "vencido": false
   },
+  "AXL EVANS": {
+   "avisado": "2026-10-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-13T00:54:11+00:00",
+   "did": "",
+   "evento": "COMPE CHILL",
+   "n": 463,
+   "sv": "URBF",
+   "vence": "2026-10-20T00:54:11+00:00",
+   "vencido": false
+  },
   "Abysuss": {
    "avisado": "2026-10-12",
    "chat": "2026-10-12",
@@ -30,6 +42,31 @@
    "n": 462,
    "sv": "FFA",
    "vence": "2026-10-20T00:26:10+00:00",
+   "vencido": false
+  },
+  "COLOSO": {
+   "avisado": "2026-10-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-13T00:54:11+00:00",
+   "did": "",
+   "evento": "COMPE CHILL",
+   "n": 463,
+   "sv": "URBF",
+   "vence": "2026-10-20T00:54:11+00:00",
+   "vencido": false
+  },
+  "Frifaier": {
+   "avisado": "2026-10-13",
+   "chat": "2026-10-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-13T15:18:36+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN",
+   "n": 465,
+   "sv": "FFA",
+   "vence": "2026-10-20T15:18:36+00:00",
    "vencido": false
   },
   "Guty": {
@@ -46,6 +83,7 @@
    "vencido": false
   },
   "JB": {
+   "avisado": "2026-10-13",
    "chat": "2026-10-13",
    "con": null,
    "cumplido": "",
@@ -70,6 +108,19 @@
    "vence": "2026-10-19T22:01:43+00:00",
    "vencido": false
   },
+  "Joshema": {
+   "avisado": "2026-10-13",
+   "chat": "2026-10-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-13T15:18:36+00:00",
+   "did": "1342989767184486401",
+   "evento": "QCYO RAPEEN",
+   "n": 465,
+   "sv": "FFA",
+   "vence": "2026-10-20T15:18:36+00:00",
+   "vencido": false
+  },
   "Magic": {
    "avisado": "2026-10-12",
    "avisado_cumplido": "2026-10-12",
@@ -82,6 +133,18 @@
    "n": 460,
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
+   "vencido": false
+  },
+  "ONDADISKO": {
+   "avisado": "2026-10-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-13T01:56:58+00:00",
+   "did": "1151966158233280615",
+   "evento": "IDS V.2",
+   "n": 464,
+   "sv": "URBF",
+   "vence": "2026-10-20T01:56:58+00:00",
    "vencido": false
   },
   "SYEPORUTE": {

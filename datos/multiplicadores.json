@@ -426,24 +426,31 @@
    },
    "copa": {
     "org": "nachonc_",
-    "clave": "nachonc"
+    "clave": "nachonc",
+    "n": 465,
+    "nombre": "QCYO RAPEEN"
    },
    "organizadores": [
     [
      "𓂀",
      28,
      1
+    ],
+    [
+     "nachonc_",
+     11,
+     1
     ]
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 7,
+     "FFA": 8,
      "URBF": 11,
      "SR": 4
     },
     "gente": {
      "DDF": 7,
-     "FFA": 54,
+     "FFA": 62,
      "SR": 21,
      "URBF": 13
     },
@@ -453,7 +460,7 @@
     "ACAD": 0,
     "DDF": 7,
     "DRA": 0,
-    "FFA": 54,
+    "FFA": 62,
     "FFS": 0,
     "FVS": 0,
     "SR": 21,
