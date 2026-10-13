@@ -4036,6 +4036,32 @@ export default {
       const id = (i.data && i.data.custom_id) || '';
       const [que, quien, extra, dueno] = id.split(':');
 
+      // ── 🗳️ «¿Quién gana?» (13/10/2026): `qg:<id>:<A|B>`, un voto por persona y sin plata ───────────────────
+      // Quién vota es quien tocó (Discord lo firma); el objeto lo anota (`qgVotar()`) y la respuesta la ve sólo él. El
+      // mensaje se actualiza con cómo va en la vuelta siguiente del vigía (`qgRevisar()`)
+      if (que === 'qg') {
+        const esperarQg = frenado(idDe(i), 'click');
+        if (esperarQg) return espera(esperarQg);
+        const did = idDe(i);
+        if (!did) return aviso('No pude saber quién sos: probá de nuevo.');
+        let j = {};
+        try {
+          const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/qg-votar', {
+            method: 'POST', headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ quien: did, id: quien, lado: extra }),
+          });
+          j = await r.json();
+        } catch (e) { j = { error: 'red' }; }
+        if (j.ok) {
+          const n = (j.na || 0) + (j.nb || 0);
+          const pct = n ? Math.round((100 * (j.lado === 'A' ? j.na : j.nb)) / n) : 0;
+          return aviso('🗳️ ' + (j.cambio ? 'Cambiaste tu voto: ahora vas con' : 'Votaste por') + ' **' + j.nombre + '**, que tiene el '
+            + pct + ' % de ' + n + (n === 1 ? ' voto' : ' votos') + '. En el mensaje se ve en un minuto.');
+        }
+        return aviso('🗳️ ' + ({ cerrada: 'Ese voto ya cerró: la batalla se jugó.', 'no existe': 'Ese voto ya no existe.' }[j.error]
+          || 'No pude anotar tu voto: probá de nuevo.'));
+      }
+
       // ── 🎲 Una apuesta en vivo (07/10/2026, el nivel «A full» del bot en vivo) ──────────
       // `ap:<id>:<lado>:<monto>`. Quién apuesta es quien tocó (Discord lo firma); el objeto valida todo —abierta, monto,
       // tope, saldo, que no sea su propia batalla— y la respuesta la ve sólo él. Los Puntos de Tienda son los de su cuenta

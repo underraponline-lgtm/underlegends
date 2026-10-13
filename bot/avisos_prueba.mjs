@@ -299,6 +299,16 @@ const ok = (cond, que, det) => {
       && A.hayApuestas('FFA', 'full', c2, {}) && A.hayApuestas('FFA', 'full', c0, {})
       && !A.hayApuestas('DDF', 'full', c2, { apuestas: true }) && !A.hayApuestas('DDF', 'normal', c2, {}),
     'las apuestas: «No hay apuestas en» gana; prendidas a mano (Dashboard o /settings) van en cualquier nivel; si no, sólo «A full»');
+    // 🗳️ «¿Quién gana?» (13/10/2026): el renglón, cómo cierra, y que se cambia SÓLO su renglón
+    const bv = A.botonesVoto('q1', 'Snow 🇨🇴', 'Makmah');
+    ok(bv[0].components.map((x) => x.custom_id).join() === 'qg:q1:A,qg:q1:B' && bv[0].components[0].label === 'Snow'
+      && /Votá abajo/.test(A.lineaVoto('A', 'B', 0, 0)) && /\*\*A\*\* 75 % · \*\*B\*\* 25 % \(4 votos\)/.test(A.lineaVoto('A', 'B', 3, 1))
+      && /iba con \*\*A\*\* \(75 %, 4 votos\): acertó/.test(A.lineaVoto('A', 'B', 3, 1, 'A'))
+      && /se equivocó/.test(A.lineaVoto('A', 'B', 3, 1, 'B')) && /dividido/.test(A.lineaVoto('A', 'B', 2, 2, 'A'))
+      && /Nadie votó/.test(A.lineaVoto('A', 'B', 0, 0, 'x'))
+      && A.conLineaVoto('⚔️ x\n🗳️ viejo\n✅ Pasa A', '🗳️ nuevo') === '⚔️ x\n🗳️ nuevo\n✅ Pasa A'
+      && A.conLineaVoto('⚔️ x', '🗳️ nuevo') === '⚔️ x\n🗳️ nuevo',
+    '«¿Quién gana?»: los dos botones, cómo va, si el público acertó, y se cambia sólo su renglón');
     ok(A.ajusteValido('aviso_evento', { sv: { DRA: 'chat', FFA: 'no' }, resto: 'DRA' }).sv.FFA === 'no'
       && A.ajusteValido('aviso_evento', { sv: { DRA: 'siempre' } }) === undefined,
     'el aviso de cada evento: por servidor «chat» o «no», y a dónde va el que no tiene');
@@ -873,6 +883,39 @@ const ok = (cond, que, det) => {
     ok((o.leer('medidas') || {}).kv && o.medidasVer().kv['cfg:*'] === md.kv['cfg:*'],
       'guardar lo medido no lo cuenta dos veces');
     globalThis.fetch = antesF;
+  }
+}
+
+// 🗳️ «¿QUIÉN GANA?» SOBRE EL OBJETO DE VERDAD (13/10/2026): un voto por persona, que se cambia, y cerrado no se vota
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        st.run(...ps);
+        return { toArray: () => [] };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
+      { DISCORD_TOKEN: 'x', KV: { get: async () => null } });
+    await new Promise((r) => setTimeout(r, 0));
+    o.sql.exec('INSERT INTO qg (id, canal, msg, sv, llave, ronda, a, b, dicho, abre) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      'q1', '555', '777', 'FFA', 'L1', 'Octavos', 'Snow 🇨🇴', 'Makmah', '', Date.now());
+    const v1 = o.qgVotar({ quien: '100000001', id: 'q1', lado: 'A' });
+    const v2 = o.qgVotar({ quien: '100000002', id: 'q1', lado: 'A' });
+    const v3 = o.qgVotar({ quien: '100000002', id: 'q1', lado: 'B' });
+    o.sql.exec("UPDATE qg SET estado = 'cerrada' WHERE id = 'q1'");
+    const v4 = o.qgVotar({ quien: '100000003', id: 'q1', lado: 'A' });
+    ok(v1.ok && v1.nombre === 'Snow' && !v1.cambio && v2.na === 2 && v3.cambio && v3.na === 1 && v3.nb === 1
+      && v4.error === 'cerrada' && o.qgVotar({ quien: 'x', id: 'q1', lado: 'A' }).error === 'datos'
+      && o.qgVotar({ quien: '100000004', id: 'nada', lado: 'A' }).error === 'no existe',
+    '«¿Quién gana?» en el objeto: un voto por persona que se puede cambiar, y cerrado no se vota', JSON.stringify([v1, v3, v4]));
   }
 }
 

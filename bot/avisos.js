@@ -891,6 +891,45 @@ export function botonesApuesta(id, a, b, cerrada, montos = AP_MONTOS) {
   }));
 }
 
+// ═════════════════════════════════════════════════════════════════════
+// 🗳️ «¿QUIÉN GANA?», VOTADO POR EL PÚBLICO Y SIN PLATA (13/10/2026, Dlx a las ideas del vs: «me gustan todas»). En el
+// mensaje del cruce de «Con datos» y «A full» que NO lleva apuestas —con apuestas serían dos juegos de botones, y la
+// apuesta ya dice a quién le tiene fe la gente—: dos botones, un voto por persona que se puede cambiar, y el renglón
+// «🗳️ El público…» se edita con cómo va (una edición no le suena a nadie). Cuando la llave dice quién pasó —o a los
+// `QG_VENCE`— cierra: dice si el público acertó y se van los botones. Ver `qgVotar()` y `qgRevisar()`
+// ═════════════════════════════════════════════════════════════════════
+export const QG_VENCE = 30 * MIN;
+export const QG_TOPE = 6;
+
+/** Los dos botones del voto, con el nombre de cada uno. */
+export function botonesVoto(id, a, b) {
+  const corto = (n) => { const s = sinBandera(n); return s.length > 30 ? s.slice(0, 29) + '…' : s || '¿?'; };
+  return [{ type: 1, components: [['A', a], ['B', b]].map(([lado, n]) => ({
+    type: 2, style: 2, emoji: { name: '🗳️' }, label: corto(n), custom_id: 'qg:' + id + ':' + lado })) }];
+}
+
+/** El renglón del voto: cómo va, o —con `ganador` ('A', 'B', o 'x' sin resultado)— si el público acertó. */
+export function lineaVoto(a, b, na, nb, ganador) {
+  const n = (na || 0) + (nb || 0);
+  const A = escMd(sinBandera(a)), B = escMd(sinBandera(b));
+  if (!n) return ganador ? '🗳️ Nadie votó quién ganaba' : '🗳️ ¿Quién gana? Votá abajo: sin plata, para ver qué dice el público';
+  const pa = Math.round((100 * na) / n), pb = 100 - pa;
+  const votos = n + (n === 1 ? ' voto' : ' votos');
+  if (!ganador) return '🗳️ El público: **' + A + '** ' + pa + ' % · **' + B + '** ' + pb + ' % (' + votos + ')';
+  if (na === nb) return '🗳️ El público estaba dividido: ' + pa + ' a ' + pb + ' (' + votos + ')';
+  const fav = na > nb ? 'A' : 'B';
+  return '🗳️ El público iba con **' + (fav === 'A' ? A : B) + '** (' + Math.max(pa, pb) + ' %, ' + votos + '): '
+    + (ganador === 'x' ? 'sin resultado' : ganador === fav ? 'acertó' : 'se equivocó');
+}
+
+/** El texto del mensaje con el renglón del voto cambiado, o agregado al final si no estaba. */
+export function conLineaVoto(texto, linea) {
+  const ls = String(texto || '').split('\n');
+  const i = ls.findIndex((l) => l.startsWith('🗳️'));
+  if (i >= 0) ls[i] = linea; else ls.push(linea);
+  return ls.join('\n');
+}
+
 /**
  * EL POZO COMPARTIDO: `{out: {quien: cobra}, devuelto, total}`. `ap` es `[[quien, lado, monto]]`. Lo de los que pierden se
  * reparte entre los que aciertan, según cuánto puso cada uno, y el bot no crea ni quema puntos —lo que sobra del redondeo
@@ -3911,6 +3950,13 @@ export class Avisos {
         "ganador TEXT NOT NULL DEFAULT '')");
       this.sql.exec('CREATE TABLE IF NOT EXISTS apostado (ap TEXT NOT NULL, quien TEXT NOT NULL, lado TEXT NOT NULL, ' +
         'monto INTEGER NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (ap, quien))');
+      // 🗳️ «¿QUIÉN GANA?» (13/10/2026): cada cruce votado con su mensaje (`qg`) y un voto por persona (`qg_voto`), que se
+      // puede cambiar mientras está abierto. Ver `qgVotar()` y `qgRevisar()`
+      this.sql.exec("CREATE TABLE IF NOT EXISTS qg (id TEXT PRIMARY KEY, canal TEXT NOT NULL, msg TEXT NOT NULL, sv TEXT NOT NULL DEFAULT '', " +
+        "llave TEXT NOT NULL, ronda TEXT NOT NULL, a TEXT NOT NULL, b TEXT NOT NULL, na INTEGER NOT NULL DEFAULT 0, " +
+        "nb INTEGER NOT NULL DEFAULT 0, dicho TEXT NOT NULL DEFAULT '', abre INTEGER NOT NULL, estado TEXT NOT NULL DEFAULT 'abierta')");
+      this.sql.exec('CREATE TABLE IF NOT EXISTS qg_voto (id TEXT NOT NULL, quien TEXT NOT NULL, lado TEXT NOT NULL, ' +
+        't INTEGER NOT NULL, PRIMARY KEY (id, quien))');
       // 👏 FELICITAR (02/10/2026): un aplauso por Discord ID y publicación (`aplausos`), y de cada publicación
       // felicitada lo que dice el aviso y hasta cuántos se avisó (`aplaudidas`). Ver `aplaudir()` y `avisarAplausos()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS aplausos (id TEXT NOT NULL, quien TEXT NOT NULL, ' +
@@ -4167,6 +4213,8 @@ export class Avisos {
       if (ruta === '/precio') return this.precio(d);
       // 🎲 una apuesta, desde el botón del chat (`worker.js`, firmado por Discord): ver `apostar()`
       if (ruta === '/apostar') return this.apostar(d);
+      // 🗳️ un voto de «¿Quién gana?», desde el botón del chat: ver `qgVotar()`
+      if (ruta === '/qg-votar') return json(this.qgVotar(d));
       if (ruta === '/billetera') {
         await this.resolverPrecios(Date.now());
         return this.billetera(d);
@@ -4599,7 +4647,12 @@ export class Avisos {
     const filas = this.sql.exec('SELECT id, canal, sv, g, autor, pub, ed, texto FROM vivo WHERE ed > ?',
       ahora - 3 * HORA).toArray();
     // 🎲 sin llaves en juego, las apuestas que quedaron se revisan igual: así se devuelven
-    if (!filas.length) { await this.apuestasRevisar(ahora, new Map()); return 0; }
+    if (!filas.length) {
+      await this.apuestasRevisar(ahora, new Map());
+      // 🗳️ y los votos que quedaron abiertos se cierran solos a los `QG_VENCE`
+      try { await this.qgRevisar(ahora, new Map()); } catch (e) { this.guardar('qg', { t: ahora, error: String(e).slice(0, 160) }); }
+      return 0;
+    }
     if (!globalThis.LlaveVivo) await import('./llave_vivo.js');
     const LV = globalThis.LlaveVivo;
     if (!LV) return 0;
@@ -4757,7 +4810,7 @@ export class Avisos {
       }
       // 🔥🎲 «CON DATOS» Y «A FULL»: la batalla que VIENE (`batallaChat()`), con su título, su «¿sabías que…?» y —en «A
       // full»— la apuesta, que va con botones en el mismo mensaje. Sólo de dos lados, y una vez por batalla
-      let apuesta = null;
+      let apuesta = null, voto = null;
       if ((nivel === 'datos' || nivel === 'full') && fresca) {
         const bat = batallaChat(L);
         if (bat && bat.lados.length === 2) {
@@ -4779,6 +4832,10 @@ export class Avisos {
             if (nivel === 'full' && hayApuestas(b.sv, nivel, apc, cfgs.get(b.g))) {
               apuesta = { id: codigoDe(L.id + ':' + clave).slice(0, 12), m: mv, ronda: bat.r, a: bat.lados[0], b: bat.lados[1] };
               lineas.push(lineaApuesta('abierta', apc));
+            } else {
+              // 🗳️ sin apuestas, «¿Quién gana?» votado por el público (ver `botonesVoto()`)
+              voto = { id: codigoDe(L.id + ':' + clave + ':qg').slice(0, 12), m: mv, ronda: bat.r, a: bat.lados[0], b: bat.lados[1] };
+              lineas.push(lineaVoto(voto.a, voto.b, 0, 0));
             }
             const titEv = escMd(String(nombre || L.nombre || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
             // 🖼️ EL VS CON LAS DOS TARJETAS (Dlx, 12/10/2026: «hacerlo más visual… las tarjetas», «B», «con datos y a
@@ -4899,6 +4956,7 @@ export class Avisos {
         pedidos++;
         // 🎲 la apuesta va en el mensaje que lleva su cruce, con sus botones
         const conAp = apuesta && p.tipo === 'mandar' && [].concat(p.m).includes(apuesta.m) ? apuesta : null;
+        const conVoto = !conAp && voto && p.tipo === 'mandar' && [].concat(p.m).includes(voto.m) ? voto : null;
         let r = null;
         try {
           r = await fetch(`${DC}/channels/${canal}/messages` + (p.tipo === 'editar' ? '/' + p.msg : ''), {
@@ -4909,7 +4967,8 @@ export class Avisos {
             // ⚠️ una EDICIÓN no manda `flags`: el mensaje se queda con las suyas (con `flags: 4` se escondía la imagen)
             body: JSON.stringify(Object.assign({ content: p.texto.slice(0, 1900), allowed_mentions: { parse: [] } },
               p.tipo === 'editar' ? {} : p.img ? { embeds: [{ image: { url: p.img }, color: 0xE41373 }] } : { flags: 4 },
-              conAp ? { components: botonesApuesta(conAp.id, conAp.a, conAp.b, false, apc.montos) } : {})),
+              conAp ? { components: botonesApuesta(conAp.id, conAp.a, conAp.b, false, apc.montos) }
+                : conVoto ? { components: botonesVoto(conVoto.id, conVoto.a, conVoto.b) } : {})),
           });
         } catch (e) { r = null; }
         if (r && r.ok) {
@@ -4928,6 +4987,10 @@ export class Avisos {
           // 🖼️ el vs: a la cola de las imágenes, con el mensaje donde va (ver `vsEncolar()`)
           if (p.vs && id) {
             try { this.vsEncolar(Object.assign({}, p.vs, { sv: b.sv || '', canal, msg: id }), ahora); } catch (e) { /* sin imagen */ }
+          }
+          if (conVoto && id) {
+            this.sql.exec('INSERT OR IGNORE INTO qg (id, canal, msg, sv, llave, ronda, a, b, dicho, abre) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+              conVoto.id, canal, id, b.sv || '', L.id, conVoto.ronda, conVoto.a, conVoto.b, lineaVoto(conVoto.a, conVoto.b, 0, 0), ahora);
           }
           if (conAp && id) {
             this.sql.exec('INSERT OR IGNORE INTO apuestas (id, canal, msg, sv, llave, ronda, a, b, texto, abre, cierra) ' +
@@ -4953,6 +5016,8 @@ export class Avisos {
     if (pedidos) this.guardar('chat_vivo', { t: ahora, mandados, editados, errores: errores.slice(0, 5) });
     // 🎲 y las apuestas: cerrar, pagar o devolver (ver `apuestasRevisar()`)
     try { await this.apuestasRevisar(ahora, llaves); } catch (e) { this.guardar('apuestas', { t: ahora, error: String(e).slice(0, 160) }); }
+    // 🗳️ y los votos de «¿Quién gana?»: cómo va y, con el resultado, si el público acertó (ver `qgRevisar()`)
+    try { await this.qgRevisar(ahora, llaves); } catch (e) { this.guardar('qg', { t: ahora, error: String(e).slice(0, 160) }); }
     if (cambio) {
       for (const [k, v] of Object.entries(nombres)) if (ahora - (v.t || 0) > 12 * HORA) delete nombres[k];
       this.guardar('nombres_vivo', nombres);
@@ -5182,6 +5247,70 @@ export class Avisos {
    * así que dos clics a la vez no gastan la misma plata—: que esté abierta, el monto (50 a 500 en total, de un solo lado),
    * el saldo y que no sea su propia batalla (`clave`, de su cuenta). Se anota en `apostado` y se descuenta en `tienda`.
    */
+  /**
+   * 🗳️ Un voto de «¿Quién gana?», desde el botón del chat (`worker.js`, firmado por Discord): uno por persona y cruce, que
+   * se puede cambiar mientras esté abierto. Devuelve cómo va, para contestarle sólo a quien votó.
+   */
+  qgVotar(d, ahora = Date.now()) {
+    const quien = String(d.quien || '');
+    const lado = d.lado === 'A' || d.lado === 'B' ? d.lado : '';
+    if (!/^[0-9]{5,25}$/.test(quien) || !lado) return { error: 'datos' };
+    const q = this.sql.exec('SELECT * FROM qg WHERE id = ?', String(d.id || '')).toArray()[0];
+    if (!q) return { error: 'no existe' };
+    if (q.estado !== 'abierta') return { error: 'cerrada' };
+    const antes = this.sql.exec('SELECT lado FROM qg_voto WHERE id = ? AND quien = ?', q.id, quien).toArray()[0];
+    this.sql.exec('INSERT OR REPLACE INTO qg_voto (id, quien, lado, t) VALUES (?, ?, ?, ?)', q.id, quien, lado, ahora);
+    const c = this.sql.exec("SELECT SUM(CASE WHEN lado = 'A' THEN 1 ELSE 0 END) AS a, SUM(CASE WHEN lado = 'B' THEN 1 ELSE 0 END) AS b " +
+      'FROM qg_voto WHERE id = ?', q.id).toArray()[0] || {};
+    const na = Number(c.a) || 0, nb = Number(c.b) || 0;
+    this.sql.exec('UPDATE qg SET na = ?, nb = ? WHERE id = ?', na, nb, q.id);
+    return { ok: true, lado, nombre: sinBandera(lado === 'A' ? q.a : q.b), cambio: !!(antes && antes.lado !== lado), na, nb };
+  }
+
+  /**
+   * 🗳️ Los votos abiertos, cada minuto (después de la charla del bot en vivo): el renglón con cómo va, sólo si cambió; y
+   * cuando la llave dice quién pasó —o a los `QG_VENCE`— el cierre, con si el público acertó y sin los botones. El texto
+   * sale de `chat_vivo`, que es donde la charla anota lo que agrega al mensaje («✅ Pasan…»), y se guarda ahí: así
+   * ninguna de las dos borra lo de la otra. Como mucho `QG_TOPE` ediciones por vuelta.
+   */
+  async qgRevisar(ahora, llaves) {
+    const abiertos = this.sql.exec("SELECT * FROM qg WHERE estado = 'abierta' ORDER BY abre LIMIT 20").toArray();
+    let n = 0;
+    for (const q of abiertos) {
+      if (n >= QG_TOPE) break;
+      const L = llaves.get(q.llave);
+      let g = L ? ladoGanador(L, q.ronda, q.a, q.b) : '';
+      if (!g && ahora - q.abre > QG_VENCE) g = 'x';
+      const linea = lineaVoto(q.a, q.b, q.na, q.nb, g);
+      if (!g && linea === q.dicho) continue;
+      const h = this.sql.exec('SELECT texto FROM chat_vivo WHERE canal = ? AND msg = ? ORDER BY t DESC LIMIT 1', q.canal, q.msg).toArray()[0];
+      // ⚠️ sin el texto del mensaje no se edita: se pisaría todo con el renglón solo
+      if (!h || !h.texto) {
+        if (g) this.sql.exec("UPDATE qg SET estado = 'cerrada' WHERE id = ?", q.id);
+        continue;
+      }
+      const texto = conLineaVoto(h.texto, linea);
+      n++;
+      let r = null;
+      try {
+        r = await fetch(`${DC}/channels/${q.canal}/messages/${q.msg}`, {
+          method: 'PATCH',
+          headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+          body: JSON.stringify(Object.assign({ content: texto.slice(0, 1900), allowed_mentions: { parse: [] } }, g ? { components: [] } : {})),
+        });
+      } catch (e) { r = null; }
+      if (r && r.ok) {
+        this.sql.exec('UPDATE chat_vivo SET texto = ? WHERE canal = ? AND msg = ?', texto, q.canal, q.msg);
+        this.sql.exec('UPDATE qg SET dicho = ?, estado = ? WHERE id = ?', linea, g ? 'cerrada' : 'abierta', q.id);
+      } else if (r && r.status === 404) {
+        this.sql.exec("UPDATE qg SET estado = 'borrada' WHERE id = ?", q.id);
+      }
+    }
+    this.sql.exec("DELETE FROM qg_voto WHERE id IN (SELECT id FROM qg WHERE estado != 'abierta' AND abre < ?)", ahora - 7 * DIA_MS);
+    this.sql.exec("DELETE FROM qg WHERE estado != 'abierta' AND abre < ?", ahora - 7 * DIA_MS);
+    return n;
+  }
+
   apostar(d, ahora = Date.now()) {
     // `ahora` sólo lo pasan las pruebas
     const quien = String(d.quien || '');
