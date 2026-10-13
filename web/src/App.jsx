@@ -5,8 +5,8 @@ import { Component, Suspense, lazy, useCallback, useEffect, useMemo, useRef, use
 import { DUENO, Liga, aQuienSigo, limpio, quienMira } from './liga.js';
 import { nombrePais } from './piezas.jsx';
 import { Cabecera, Hero, Historias, Instalar, IrA, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
-import { Fechas, LaLiga, LosQueMandan, Noticias, Panel, Puertas } from './medio.jsx';
-import { Menu, Merch, Pie, SeBusca, Subir, Tabbar, Visor } from './abajo.jsx';
+import { LaLiga, LosQueMandan, Noticias, Panel } from './medio.jsx';
+import { Menu, Merch, Pie, Subir, Tabbar, Visor } from './abajo.jsx';
 import { Encuestas } from './encuestas.jsx';
 import { Lobby } from './lobby.jsx';
 // 🧭 el tutorial (Dlx, 12/10/2026, «A … B … C … D … E. Dale»): quién es nuevo se decide al cargar (primera.js, chico);
@@ -165,9 +165,8 @@ try {
   if (mn) localStorage.removeItem('lg:prev-' + mn[1]);
 } catch (e) { /* sin almacenamiento, sin preview */ }
 // ✅ /sumate, publicada (Dlx, 03/10/2026: «2. A»): ya no hace falta `lg:prev-sum`
-// 🎮 el lobby como en los juegos (13/10/2026), hasta que Dlx lo apruebe: `?prev=lobby`
-let PREV_LOBBY = false;
-try { PREV_LOBBY = localStorage.getItem('lg:prev-lobby') === '1'; } catch (e) { PREV_LOBBY = false; }
+// 🎮 el lobby como en los juegos (13/10/2026): con `?prev=lobby` hasta que Dlx lo vio, y desde las 3 AM para todos
+// (Dlx: «1. yes»). Las puertas de la 2.87 (`Puertas` de medio.jsx) y Fechas quedan en el código, sin usar
 
 // ── la ruta, siempre como `#/…` aunque la dirección sea /freestyle-rap/… (01/10/2026): la lee `rutaLG()`, del script
 // del principio de index.html (web/montar.py). Lo que vuelve de Discord (`#access_token=…`) va tal cual ──
@@ -499,13 +498,11 @@ export default function App() {
             de seis bloques: «enfoquémonos en cambiar, mejorar o mover; remover, al último de la lista»): volvieron los
             cinco, Se busca subió (le gusta en el Inicio) y Encuestas se achicó. Qué se toca acá lo cuenta `TOQUES` */}
         <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>
-        {PREV_LOBBY ? <Aislada n="Lobby"><Lobby liga={liga} dc={yo.dc} /></Aislada>
-          : <Aislada n="Puertas"><Puertas liga={liga} dc={yo.dc} /></Aislada>}
+        <Aislada n="Lobby"><Lobby liga={liga} dc={yo.dc} /></Aislada>
         <Aislada n="Instalar"><Instalar /></Aislada>
         {/* 🎮 con el lobby, cada dato una vez (Dlx, 13/10/2026, «3. A» y «4. A»): tu próximo evento va en el botón y la
-            semana en la puerta de Eventos, y Se busca es el destacado amarillo; el tablero entero sigue en el Ranking */}
-        {PREV_LOBBY ? null : <Aislada n="Fechas"><Fechas liga={liga} /></Aislada>}
-        {PREV_LOBBY ? null : <Aislada n="SeBusca"><SeBusca liga={liga} /></Aislada>}
+            semana en la puerta de Eventos, y Se busca es el destacado amarillo; el tablero entero sigue en el Ranking.
+            Por eso Fechas y el panel de Se busca ya no van acá */}
         <Aislada n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>
         <Aislada n="Encuestas"><Encuestas liga={liga} enc={enc} dc={yo.dc} corta /></Aislada>
         <Aislada n="LosQueMandan"><LosQueMandan liga={liga} dc={yo.dc} /></Aislada>

@@ -9,7 +9,7 @@
 //   3. SE BUSCA, el destacado en amarillo (el panel de abajo se va del Inicio: cada dato, una vez);
 //   4. LAS PUERTAS, cada una con una sola cosa y un globito SÓLO por algo tuyo (Supercell: el punto rojo sólo «cuando
 //      hay un motivo de verdad»), que se apaga al entrar.
-// Mientras Dlx no lo vea, sólo con `?prev=lobby`; si no, las puertas de la 2.87. Las puertas llevan `pu` y su
+// Para todos desde el 13/10/2026 (Dlx: «1. yes»); antes, sólo con `?prev=lobby`. Las puertas llevan `pu` y su
 // dirección: los toques se cuentan igual (`queToco()` de App.jsx)
 import { useEffect, useState } from 'react';
 import { limpio, mult, num, siglaDe, utc } from './liga.js';

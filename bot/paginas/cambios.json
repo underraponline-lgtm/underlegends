@@ -11,6 +11,20 @@
  ],
  "cambios": [
   {
+   "version": "2.89",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T03:00:00-04:00",
+   "titulo": "El Inicio, como el lobby de un juego",
+   "items": [
+    "🎮 Arriba de todo, tu barra: tu racha, tu letra (o cuánto te falta), tu nivel del Pase y tus Puntos de Tienda.",
+    "🎯 Un botón grande con tu próximo evento y su cuenta atrás: te anotás de un toque. Si ya jugaste uno, te muestra tu segundo, con el premio del reto.",
+    "🟨 Se busca, en grande y en amarillo, y puertas a cada sección con lo que hay hoy para vos.",
+    "🛟 Tu racha aguanta un día sin entrar por semana, y la página te festeja a los 7 y a los 30 días.",
+    "🕴️ Quien no tiene foto ahora tiene una de cuatro siluetas, siempre la misma.",
+    "🎤 El bot en vivo reconoce a cada uno por cómo se anotó, y ya no repite mensajes."
+   ]
+  },
+  {
    "version": "2.88",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T01:25:00-04:00",
