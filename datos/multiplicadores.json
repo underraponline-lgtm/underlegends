@@ -453,7 +453,7 @@
      "DDF": 7,
      "FFA": 62,
      "SR": 21,
-     "URBF": 15,
+     "URBF": 17,
      "FVS": 5
     },
     "gana": "URBF"
@@ -466,7 +466,7 @@
     "FFS": 0,
     "FVS": 5,
     "SR": 21,
-    "URBF": 15
+    "URBF": 17
    },
    "sv_sorteo": {
     "DRA": 3,
