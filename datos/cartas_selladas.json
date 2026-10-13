@@ -550,7 +550,8 @@
    "servidor": "5e85d15ed979:38fa4546320c:055f77"
   },
   "Hades": {
-   "servidor": "34ccdc766390:38fa4546320c:fbc56e"
+   "servidor": "34ccdc766390:38fa4546320c:fbc56e",
+   "temporada": "22b12af787be:5f7648916ad1"
   },
   "Hardcore": {
    "competitivo": "24fd7b3bc791:2256fa928e50",
@@ -1753,5 +1754,5 @@
    "servidor": "7f8885a35a6d:38fa4546320c:c9f1f2"
   }
  },
- "cuando": "2026-10-13T21:05:07+00:00"
+ "cuando": "2026-10-13T21:39:51+00:00"
 }
