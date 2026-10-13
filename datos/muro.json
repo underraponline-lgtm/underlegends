@@ -852,7 +852,8 @@
 "xubaru": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "cajita": {
@@ -2303,14 +2304,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-28T22:40:07Z",
-"quien": [
-"LEWITO"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-28T22:40:07Z",
@@ -5573,6 +5566,14 @@
 "t": "2026-10-13T21:57:27Z",
 "quien": [
 "Cinexfilo"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-13T22:57:25Z",
+"quien": [
+"Xubaru"
 ],
 "carta": "temporada"
 }
