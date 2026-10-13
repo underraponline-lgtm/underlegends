@@ -1590,7 +1590,9 @@ console.log('\nEL PROXY DE PAGES DEJA PASAR TODO LO QUE LA PÁGINA PIDE\n');
   // service worker también piden `/api/…` —la postulación de /sumate, el muro—, y esto sólo leía app.js y campana.js.
   // Con las dos comillas: el build escribe "…"
   const nuevos = readdirSync(new URL('paginas/inicio/', import.meta.url)).filter((f) => f.endsWith('.js')).map((f) => 'paginas/inicio/' + f);
-  const src = ['paginas/app.js', 'paginas/campana.js', 'paginas/sw.js', ...nuevos]
+  // y lo que salió de app.js el 13/10/2026 (la tanda 2): comun, cuenta, tienda y social
+  const src = ['paginas/comun.js', 'paginas/cuenta.js', 'paginas/tienda.js', 'paginas/social.js', 'paginas/app.js',
+    'paginas/campana.js', 'paginas/sw.js', ...nuevos]
     .map((f) => readFileSync(new URL(f, import.meta.url), 'utf8')).join('\n');
   const rutas = new Set((src.match(/['"]\/api\/[a-z0-9/._-]*[a-z0-9]['"]/gi) || []).map((x) => x.slice(1, -1)));
   // campana.js las arma como '/api/avisos/' + ruta: `pedir('alta', …)`
