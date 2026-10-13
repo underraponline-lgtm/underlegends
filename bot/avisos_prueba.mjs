@@ -916,6 +916,20 @@ const ok = (cond, que, det) => {
       && v4.error === 'cerrada' && o.qgVotar({ quien: 'x', id: 'q1', lado: 'A' }).error === 'datos'
       && o.qgVotar({ quien: '100000004', id: 'nada', lado: 'A' }).error === 'no existe',
     '«¿Quién gana?» en el objeto: un voto por persona que se puede cambiar, y cerrado no se vota', JSON.stringify([v1, v3, v4]));
+    // 🎁 el premio de la semana: 50 + 50 por día entrado la semana pasada, una vez por semana (13/10/2026)
+    const martes = Date.UTC(2026, 9, 13, 18, 0);
+    for (const dia of ['2026-10-05', '2026-10-06', '2026-10-06', '2026-10-09', '2026-10-12']) {
+      o.sql.exec('INSERT OR IGNORE INTO activo (quien, dia) VALUES (?, ?)', '100000009', dia);
+    }
+    const s0 = o.semanal('100000009', false, martes);
+    const s1 = o.semanal('100000009', true, martes);
+    const s2 = o.semanal('100000009', true, martes);
+    const cobrado = o.sql.exec("SELECT COALESCE(SUM(monto), 0) AS n FROM tienda WHERE quien = '100000009'").toArray()[0].n;
+    const nadie = o.semanal('100000010', false, martes);
+    ok(s0.dias === 3 && s0.monto === 200 && !s0.cobrado && s1.cobrado && s2.cobrado && cobrado === 200
+      && nadie.monto === 50 && s0.semana === '2026-10-12' && s0.proximo === '2026-10-19',
+    'el premio de la semana: los días distintos de la semana pasada (el lunes de ésta no), y tocar dos veces paga una',
+    JSON.stringify([s0, s1, cobrado]));
   }
 }
 

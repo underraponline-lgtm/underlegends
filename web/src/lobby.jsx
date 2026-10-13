@@ -133,6 +133,53 @@ function Temporada({ liga }) {
   );
 }
 
+// ── 🎁 EL PREMIO DE LA SEMANA (Dlx, 13/10/2026, la misma tanda; y «lo de azar lo vamos a incluir eventualmente»: por
+// ahora sin azar). 50 Puntos de Tienda y 50 por cada día que entraste la semana pasada, hasta 400, una vez por semana
+// (`semanal()` en bot/avisos.js): se ve cuánto ANTES de tocar. Cobrado, dice cuándo viene el próximo. Sin cuenta, nada
+const fechaCorta = (dia) => { const [, m, d] = String(dia || '').split('-'); return d && m ? Number(d) + '/' + Number(m) : ''; };
+async function pedirSemanal(cobrar) {
+  const r = await fetch('/api/avisos/semanal', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ cobrar }) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || !j.ok) throw new Error(j.error || String(r.status));
+  return j;
+}
+function PremioSemanal({ dc }) {
+  const [st, setSt] = useState(null);
+  const [ocup, setOcup] = useState(false);
+  useEffect(() => {
+    if (!dc) return undefined;
+    let vivo = true;
+    pedirSemanal(false).then((j) => { if (vivo) setSt(j); }).catch(() => { /* sin sesión o sin red: no se dibuja */ });
+    return () => { vivo = false; };
+  }, [dc && dc.id]);
+  if (!dc || !st) return null;
+  const cobrar = async () => {
+    setOcup(true);
+    try {
+      setSt(await pedirSemanal(true));
+      // el saldo de tu barra se actualiza (avisa `lg:precios`)
+      if (typeof W.pedirBilletera === 'function') { try { W.pedirBilletera(); } catch (e) { /* sin saldo */ } }
+    } catch (e) { setSt(Object.assign({}, st, { error: true })); }
+    setOcup(false);
+  };
+  if (st.cobrado) {
+    return (
+      <div className="lb-sem hecho"><Ico n="moneda" t={20} />
+        <span><b>PREMIO DE LA SEMANA, COBRADO</b><small>El próximo, el lunes {fechaCorta(st.proximo)}: 50 por cada día que entres hasta entonces.</small></span>
+      </div>
+    );
+  }
+  return (
+    <div className="lb-sem"><Ico n="moneda" t={24} />
+      <span><b>PREMIO DE LA SEMANA · {num(st.monto)} PUNTOS</b>
+        <small>{st.error ? 'No se pudo cobrar: probá de nuevo.' : st.dias
+          ? 'Entraste ' + st.dias + (st.dias === 1 ? ' día' : ' días') + ' la semana pasada: 50 + 50 por cada uno.'
+          : '50 de base, y la semana que viene 50 más por cada día que entres.'}</small></span>
+      <button type="button" className="btn verde chico" disabled={ocup} onClick={cobrar}>{ocup ? '…' : 'Cobrar'}</button>
+    </div>
+  );
+}
+
 // ── 👀 TUS SEGUIDOS HOY (Dlx, 13/10/2026, la misma tanda): de la gente que seguís, quién juega hoy —anotado en un evento en
 // vivo o de las próximas 18 horas, lo que junta el vigía de los canales de inscripción (`anotados()`)— y quién ganó en
 // las últimas 36. Sin nada, no se dibuja: «sin dato no hay pieza»
@@ -361,6 +408,7 @@ export function Lobby({ liga, dc }) {
     <section className="lobby" aria-label="Tu lobby">
       <TuBarra liga={liga} dc={dc} P={P} R={R} saldo={saldo} />
       <Temporada liga={liga} />
+      <PremioSemanal dc={dc} />
       <ElBoton liga={liga} />
       <PedirCampana liga={liga} dc={dc} />
       <Seguidos liga={liga} />

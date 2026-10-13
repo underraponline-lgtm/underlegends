@@ -86,6 +86,8 @@ const AVISOS = {
   // 🔥 la racha diaria y los niveles (04/10/2026): la tuya con tu sesión, y la de cada perfil. Ver `rachaDe()` y
   // `niveles()` en bot/avisos.js
   '/api/avisos/racha': 'POST',
+  // 🎁 el premio de la semana (13/10/2026)
+  '/api/avisos/semanal': 'POST',
   '/api/avisos/niveles': 'GET',
   // 🎟️ el Pase de rapero (05/10/2026): el tuyo y «miré una llave en vivo» con tu sesión, y el de cada perfil. Ver
   // `paseDe()`, `paseVivo()` y `pases()` en bot/avisos.js. ⚠️ `pase-ciclo` NO va acá: es sólo del ciclo, con su clave

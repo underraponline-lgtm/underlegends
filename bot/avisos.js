@@ -1558,6 +1558,27 @@ const DIA_MS = 24 * HORA;
 // guardar nada de nadie: el navegador avisa una vez por día (`lg:visita`) y acá sólo sube un número.
 export const USO_DIAS = 35;
 /** El día en hora del este, `AAAA-MM-DD`: el de quien mira la Liga, no el de UTC */
+// 🎁 EL PREMIO DE LA SEMANA (ver `semanal()` del objeto): 50 Puntos de Tienda de base y 50 por cada día que entraste la
+// semana pasada, hasta 400
+export const SEM_BASE = 50;
+export const SEM_DIA = 50;
+export const SEM_TOPE = 400;
+/** El lunes (`AAAA-MM-DD`) de la semana de un día del este (`AAAA-MM-DD`), y correrlo `n` días. */
+export function lunesDe(dia) {
+  const d = new Date(String(dia) + 'T12:00:00Z');
+  d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7));
+  return d.toISOString().slice(0, 10);
+}
+export function masDias(dia, n) {
+  const d = new Date(String(dia) + 'T12:00:00Z');
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+/** Cuánto paga el premio de la semana con `dias` días entrados la semana pasada. */
+export function montoSemanal(dias) {
+  return Math.min(SEM_TOPE, SEM_BASE + SEM_DIA * Math.max(0, Math.min(7, Number(dias) || 0)));
+}
+
 export function diaET(t = Date.now()) {
   return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' })
     .format(new Date(t));
@@ -2096,6 +2117,8 @@ const RUTAS = {
   '/avisos/bandeja': 'POST',
   // 🔥 tu racha diaria y tu nivel, con tu sesión; y el nivel y la racha de cada perfil. Ver `rachaDe()` y `niveles()`
   '/avisos/racha': 'POST', '/avisos/niveles': 'GET',
+  // 🎁 el premio de la semana, con tu sesión: ver `semanal()`
+  '/avisos/semanal': 'POST',
   // 🔑 las inscripciones que guardó el vigía, para el ciclo: con `claveCiclo()`
   '/avisos/inscritos': 'GET',
   // 🖼️ el texto de un anuncio que es una imagen, para el ciclo: con `claveCiclo()`. Ver `textoDeImagen()`
@@ -3388,6 +3411,21 @@ export async function rutaAvisos(req, env, ruta) {
     });
   }
   // 🔥 TU RACHA Y TU NIVEL, con tu sesión. Pedirla ya cuenta el día: pasa por `quienPide()`, que lo anota
+  // 🎁 EL PREMIO DE LA SEMANA, con tu sesión: verlo (`cobrar` falso) o cobrarlo. El `quien` lo pone la sesión
+  if (ruta === '/avisos/semanal') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/semanal', {
+      method: 'POST', body: JSON.stringify({ quien: q.id, cobrar: d.cobrar === true }), headers: { 'content-type': 'application/json' },
+    });
+  }
   if (ruta === '/avisos/racha') {
     const crudo = await req.text();
     if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
@@ -4161,6 +4199,10 @@ export class Avisos {
       if (ruta === '/mi-foto') return await this.miFoto(d);
       if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
       if (ruta === '/uso') return this.usoAnotar(d);
+      if (ruta === '/semanal') {
+        if (!/^[0-9]{5,25}$/.test(String(d.quien || ''))) return json({ error: 'falta quién' }, 400);
+        return json(this.semanal(String(d.quien), d.cobrar === true));
+      }
       if (ruta === '/racha') {
         if (!/^[0-9]{5,25}$/.test(String(d.quien || ''))) return json({ error: 'falta quién' }, 400);
         return json(this.rachaDe(String(d.quien)));
@@ -7642,6 +7684,27 @@ export class Avisos {
    * 🔥 La racha y el nivel de alguien. Cuentan los días desde el arranque de la temporada (`desde`): lo de la
    * prueba no. `falta` es cuántos días más para el próximo premio.
    */
+  /**
+   * 🎁 EL PREMIO DE LA SEMANA (13/10/2026, Dlx a las ideas del research: «me gustan todas», y «lo de azar lo vamos a
+   * incluir eventualmente»: por ahora SIN AZAR, se sabe cuánto antes de tocar). `montoSemanal()`: 50 Puntos de Tienda de
+   * base y 50 por cada día que entraste la semana pasada —de lunes a domingo, en el este (`activo`)—, hasta 400. Se
+   * cobra una vez por semana, cualquier día de lunes a domingo: la fila es `semana:<lunes>:<quien>`, así que tocar dos
+   * veces no paga dos. Con `cobrar` falso sólo dice cuánto y si ya se cobró.
+   */
+  semanal(quien, cobrar, ahora = Date.now()) {
+    const lun = lunesDe(diaET(ahora));
+    const dias = this.sql.exec('SELECT COUNT(DISTINCT dia) AS n FROM activo WHERE quien = ? AND dia >= ? AND dia < ?',
+      quien, masDias(lun, -7), lun).toArray()[0].n || 0;
+    const monto = montoSemanal(dias);
+    const id = 'semana:' + lun + ':' + quien;
+    let ya = !!this.sql.exec('SELECT 1 AS x FROM tienda WHERE id = ?', id).toArray()[0];
+    if (cobrar && !ya) {
+      this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', id, quien, monto, ahora);
+      ya = true;
+    }
+    return { ok: true, monto, dias, cobrado: ya, semana: lun, proximo: masDias(lun, 7) };
+  }
+
   rachaDe(quien) {
     const c = this.rachaCfg();
     const desde = c.desde ? diaET(c.desde) : '';
