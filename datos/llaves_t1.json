@@ -21923,27 +21923,11 @@
     "b": [
      [
       [
-       "COLOSO",
-       "JM SERNA"
-      ],
-      "COLOSO",
-      ""
-     ],
-     [
-      [
        "MARITHEA",
        "J1"
       ],
       "MARITHEA",
-      ""
-     ],
-     [
-      [
-       "PUPPY",
-       "VISIONARIO"
-      ],
-      "PUPPY",
-      ""
+      "Revivido: J1"
      ],
      [
       [
@@ -21951,12 +21935,20 @@
        "COLOSO"
       ],
       "MARITHEA",
-      ""
+      "Revivido: COLOSO"
      ],
      [
       [
        "MARITHEA",
        "PUPPY"
+      ],
+      "MARITHEA",
+      "Revivido: PUPPY"
+     ],
+     [
+      [
+       "COLOSO",
+       "JM SERNA"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -21965,6 +21957,14 @@
       [
        "PANDORA",
        "FAT N"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "VISIONARIO",
+       "PUPPY"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -21977,95 +21977,26 @@
      [
       [
        "COLOSO",
-       "FAT N"
+       "AXL EVANS"
       ],
       "COLOSO",
-      ""
-     ],
-     [
-      [
-       "VISIONARIO",
-       "COLOSO"
-      ],
-      "VISIONARIO",
-      ""
-     ],
-     [
-      [
-       "AXL EVANS",
-       "JAZZ"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "HUNTER",
-       "AIRON"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "J1",
-       "VISIONARIO"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Walk-in 1: AXL EVANS"
      ],
      [
       [
        "JM SERNA",
-       "PANDORA"
+       "JAZZ"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "JM SERNA",
+      "Walk-in 1: JAZZ"
      ],
      [
       [
-       "LIT IGNIS",
-       "HORUS"
+       "PANDORA",
+       "HUNTER"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "MARITHEA",
-       "VISIONARIO"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "PUPPY",
-       "J1"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "URKO",
-       "COFFY"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ]
-    ],
-    "r": "Llave de perdedores"
-   },
-   {
-    "b": [
-     [
-      [
-       "MARITHEA",
-       "VISIONARIO"
-      ],
-      "MARITHEA",
-      ""
+      "PANDORA",
+      "Walk-in 1: HUNTER"
      ],
      [
       [
@@ -22073,70 +22004,57 @@
        "AIRON"
       ],
       "FAT N",
-      "ganador: ✅ Decidir"
-     ],
-     [
-      [
-       "AXL EVANS",
-       "COLOSO"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "HUNTER",
-       "PANDORA"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "J1",
-       "COFFY"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "JM SERNA",
-       "JAZZ"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Walk-in 1: AIRON"
      ],
      [
       [
        "MARITHEA",
        "URKO"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "MARITHEA",
+      "Walk-in 1: URKO"
      ],
      [
       [
-       "PUPPY",
-       "HORUS"
+       "J1",
+       "COFFY"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "J1",
+      "Walk-in 1: COFFY"
      ],
      [
       [
        "VISIONARIO",
        "LIT IGNIS"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "VISIONARIO",
+      "Walk-in 1: LIT IGNIS"
+     ],
+     [
+      [
+       "PUPPY",
+       "HORUS"
+      ],
+      "PUPPY",
+      "Walk-in 1: HORUS"
      ]
     ],
     "r": "Final"
    }
   ],
   "sv": "URBF",
-  "tabla": []
+  "tabla": [
+   [
+    "COLOSO",
+    "Campeón",
+    5000
+   ],
+   [
+    "AXL EVANS",
+    "Subcampeón",
+    3750
+   ]
+  ]
  },
  "464": {
   "dia": "2026-10-12",

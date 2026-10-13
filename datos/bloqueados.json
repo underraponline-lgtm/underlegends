@@ -10,27 +10,7 @@
   "av": ""
  },
  {
-  "raw": "AXL EVANS",
-  "cc": "",
-  "sv": "",
-  "crew": "",
-  "discord_id": "",
-  "ev": 0.0,
-  "pts": 0,
-  "av": ""
- },
- {
   "raw": "COFFY",
-  "cc": "",
-  "sv": "",
-  "crew": "",
-  "discord_id": "",
-  "ev": 0.0,
-  "pts": 0,
-  "av": ""
- },
- {
-  "raw": "COLOSO",
   "cc": "",
   "sv": "",
   "crew": "",
@@ -131,6 +111,16 @@
  },
  {
   "raw": "MARITHEA",
+  "cc": "",
+  "sv": "",
+  "crew": "",
+  "discord_id": "",
+  "ev": 0.0,
+  "pts": 0,
+  "av": ""
+ },
+ {
+  "raw": "PANDORA",
   "cc": "",
   "sv": "",
   "crew": "",
