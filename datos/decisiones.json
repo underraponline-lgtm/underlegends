@@ -359,6 +359,15 @@
    "cuando": "2026-10-12 5:23 PM ET",
    "por": "Claude (duplicado)",
    "nota": "un barrido dirigido de las 4:22 PM del 12/10 leyó un pedazo suelto de la llave del #414 (DESGRACIAS EN TOKYO VOL 26 PANDILLAS) y lo cargó otra vez: 15 de sus 24 personas, con los mismos puestos. ya_cargada() no lo vio porque comparaba el equipo entero («Snow, BNA» contra «PAIN + BNA»): arreglado."
+  },
+  "463": {
+   "es": null,
+   "nombre": "COMPE CHILL",
+   "sv": "URBF",
+   "fecha": "12/10",
+   "cuando": "2026-10-13 3:42 PM ET",
+   "por": "Claude (no es un evento)",
+   "nota": "no era COMPE CHILL ni un evento de la Liga: era el pronóstico que arma la página de Red Bull Batalla («rb-batalla-llave.png»: «Final Nacional Colombia, 17 de octubre · MI CAMPEÓN: MARITHEA»), subido al canal de llaves de URBF. Cargó a dieciséis finalistas de Red Bull Colombia que no juegan en la Liga. El lector ya no lee esas imágenes (escuchar.es_de_red_bull())"
   }
  }
 }
