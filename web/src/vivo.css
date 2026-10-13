@@ -2566,6 +2566,8 @@ a.rk-z:hover{border-color:var(--linea)}
 .lb-fest b{display:block;font:900 22px/1 Archivo,sans-serif;font-stretch:115%}
 .lb-fest small{font:600 15px/1.2 "Barlow Condensed",sans-serif;opacity:.9}
 @keyframes lb-fest{0%{transform:scale(.96)}50%{transform:scale(1.02)}100%{transform:none}}
+/* 🎯 el buscado en tu evento: la franja amarilla de Se busca, adentro del botón */
+.lb-b-pr em.mw{justify-self:start;background:#F5C542;color:#030304;padding:3px 8px}
 .lb-boton{display:grid;gap:10px;padding:16px;background:#F6F6F6;color:#030304;border:2px solid #F6F6F6;box-shadow:6px 6px 0 #29B298}
 .lb-boton.anotado{box-shadow:6px 6px 0 #F5C542}
 .lb-boton.vivo{background:#E41373;border-color:#E41373;color:#F6F6F6;box-shadow:6px 6px 0 #F6F6F6}

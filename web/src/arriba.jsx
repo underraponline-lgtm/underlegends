@@ -1055,6 +1055,19 @@ export function gcal(e) {
     '&dates=' + f(t) + '/' + f(fin) + '&details=' + encodeURIComponent(e.link || 'https://underlegends.pages.dev/freestyle-rap/eventos');
 }
 
+// 🎯 EL EVENTO DEL BOTÓN GRANDE DEL LOBBY (`ElBoton` de lobby.jsx): en el que estás anotado o, si no, el próximo para
+// anotarte —el de tu servidor primero, en las próximas 36 h—. `e: null` si estás jugando uno en vivo (ahí el botón dice tu
+// turno). Vive acá para que el escenario no lo repita (Dlx, 13/10/2026: «evitar que se repitan las cosas»)
+export function eventoDelBoton(liga) {
+  const yo = liga.yo;
+  const estoy = (e) => !!(yo && liga.anotados(e).some((x) => x.f && x.f.k === yo.k));
+  if (liga.vivo().some(estoy)) return { e: null, anotado: null };
+  const luego = liga.luego();
+  const anotado = luego.find(estoy) || null;
+  const cerca = luego.filter((x) => utc(x.cuando) - liga.ahora < 36 * 3600000);
+  return { e: anotado || (yo && cerca.find((x) => x.sv === yo.sv)) || cerca[0] || luego[0] || null, anotado };
+}
+
 export function llaveEnVivo(e, vivoL) {
   if (!vivoL || !window.llaveDeEvento) return null;
   try { return window.llaveDeEvento(e, Object.values(vivoL)); } catch (err) { return null; }
@@ -1093,32 +1106,8 @@ function momentosTuyos(liga) {
       vis: <div className="mo-carta-w"><Carta liga={liga} k={yo.k} cual="temporada" cls="mo-carta" /></div>,
     });
   }
-  // ── tu próximo evento (Dlx, 01/10/2026: «me gusta tu idea», la B): a quien todavía no tiene letra, el próximo de SU
-  // servidor en las próximas 36 h —o, si no hay, el que sigue en la Liga— con cuánto le falta para su letra. Lo ve sólo
-  // esa persona, en la página: nada de DMs. De los 188 que jugaron la T1, 106 jugaron uno solo (29/09), y quien ya
-  // jugó uno es el más fácil de traer de vuelta
-  if (!yo.rg) {
-    const cerca = liga.luego().filter((x) => (utc(x.cuando) - liga.ahora) / 1000 < 36 * 3600);
-    const e = cerca.find((x) => x.sv === yo.sv) || cerca[0];
-    if (e) {
-      const ev = yo.ev || 0;
-      const falta = Math.max(0, 10 - ev);
-      const m = liga.multSv(e.sv);
-      const n = limpio(e.nombre);
-      const cuantos = ev === 0 ? 'Tu primer evento en la ' + liga.temp : (ev === 1 ? 'Jugaste 1 evento en la ' + liga.temp : 'Llevás ' + ev + ' eventos en la ' + liga.temp);
-      out.push({
-        tipo: 'tuprox', et: 'Tu próximo', sv: e.sv, ev: e,
-        txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag tg-seguis">TU PRÓXIMO EVENTO · {liga.dia(e.cuando).toUpperCase()}</span></div>
-          <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
-          <p className="hero-p">{cuantos}{falta ? (falta === 1 ? ': te falta 1 para tu letra' : ': te faltan ' + falta + ' para tu letra') : ''}{m > 1 ? '. ' + siglaDe(e.sv) + ' va ' + mult(m) + ' esta semana' : ''}.</p>
-          <Anotados liga={liga} e={e} />
-          <div className="mo-cuenta"><small>EMPIEZA EN</small><b>{liga.falta(e.cuando)}</b></div>
-          <div className="hero-acc"><a className="btn verde" href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>
-            <a className="btn borde" href={gcal(e)} target="_blank" rel="noopener noreferrer">+ Calendario</a></div></>,
-        vis: <div className="mo-logo"><img alt="" src={liga.logo(e.sv, true)} />{liga.esDorado(e.nombre, e.sv) ? <span className="mo-sello">DORADO ×3</span> : null}</div>,
-      });
-    }
-  }
+  // ── «Tu próximo» (Dlx, 01/10/2026, la B) vivía acá hasta el 13/10/2026: desde el lobby lo dice su botón grande, con
+  // «Anotarme», y Dlx pidió «evitar que se repitan las cosas». El escenario se queda con lo que ya pasó
   return out;
 }
 
@@ -1154,9 +1143,9 @@ function momentos(liga, vivoL) {
         : <div className="mo-logo vivo"><img alt="" src={liga.logo(e.sv, true)} /></div>,
     });
   });
-  // el próximo de la Liga, si no es el mismo que ya va como «tu próximo»
-  const tuyo = out.find((m) => m.tipo === 'tuprox');
-  liga.luego().filter((x) => (utc(x.cuando) - liga.ahora) / 1000 < 36 * 3600 && !(tuyo && tuyo.ev === x)).slice(0, 1).forEach((e) => {
+  // el próximo de la Liga, si no es el mismo que ya muestra el botón grande del lobby (`eventoDelBoton()`)
+  const delBoton = eventoDelBoton(liga).e;
+  liga.luego().filter((x) => (utc(x.cuando) - liga.ahora) / 1000 < 36 * 3600 && x !== delBoton).slice(0, 1).forEach((e) => {
     const dor = liga.esDorado(e.nombre, e.sv);
     const det = [siglaDe(e.sv), e.modalidad, e.cupos ? 'cupos ' + String(e.cupos).toLowerCase() : '', e.org ? 'organiza ' + e.org : ''].filter(Boolean).join(' · ');
     const n = limpio(e.nombre);

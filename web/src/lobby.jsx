@@ -16,7 +16,7 @@ import { limpio, mult, num, siglaDe, utc } from './liga.js';
 import { Cara, Ico, aDiscord, accion } from './piezas.jsx';
 import { avance, usePase } from './pase.js';
 import { useRacha } from './racha.js';
-import { esDoble, ganador, lados, llaveEnVivo, momentosLlave } from './arriba.jsx';
+import { esDoble, eventoDelBoton, ganador, lados, llaveEnVivo, momentosLlave } from './arriba.jsx';
 
 const W = typeof window !== 'undefined' ? window : {};
 const leer = (k) => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } };
@@ -171,11 +171,9 @@ function ElBoton({ liga }) {
       </div>
     );
   }
-  // 2 · en el que estás anotado
-  const anotado = luego.find(estoy);
-  // 3 · si no, el próximo para anotarte: el de tu servidor primero, en las próximas 36 h
-  const cerca = luego.filter((x) => utc(x.cuando) - ahora < 36 * 3600000);
-  const e = anotado || (yo && cerca.find((x) => x.sv === yo.sv)) || cerca[0] || luego[0];
+  // 2 · en el que estás anotado, y 3 · si no, el próximo para anotarte (el de tu servidor primero, en las próximas 36 h):
+  // `eventoDelBoton()`, que el escenario usa para no repetirlo
+  const { e, anotado } = eventoDelBoton(liga);
   if (!e) {
     return (
       <div className="lb-boton nada">
@@ -194,15 +192,27 @@ function ElBoton({ liga }) {
   const m = liga.multSv(e.sv);
   const ins = aDiscord(liga, e, false);
   const et = anotado ? 'ESTÁS ANOTADO' : reto ? 'TU SEGUNDO EVENTO' : yo && ev === 0 ? 'TU PRIMER EVENTO' : 'EL PRÓXIMO EVENTO';
+  // 🎯 EL BUSCADO EN TU EVENTO (Dlx, 13/10/2026, «me gusta»): si alguien de Se busca que sigue suelto está anotado, el
+  // botón lo dice y cuánto cobrás. Vos no contás: si te buscan a vos, eso ya lo dice Se busca
+  const anot = liga.anotados(e);
+  const juegan = ((liga.d.mw || {}).b || []).filter((b) => b.e !== 'cazado' && b.e !== 'escondio' && !(yo && b.k === yo.k)
+    && anot.some((x) => x.f && x.f.k === b.k));
+  const cobras = juegan.reduce((mx, b) => Math.max(mx, Number(b.v) || 0), 0);
+  // 🔁 tu debut ya lo dice el escenario («Tu evento», las primeras 48 h): acá, recién después
+  const debut = primero && (ahora - utc(liga.fechaLlave(primero[0]))) / 3600000 >= 48 ? primero : null;
   return (
     <div className={'lb-boton' + (anotado ? ' anotado' : '')}>
       <span className="lb-b-et">{et} · EMPIEZA EN {falta(utc(e.cuando) - ahora) || 'UN RATO'}</span>
       <span className="lb-b-ev"><img alt="" src={liga.logo(e.sv)} /><b>{limpio(e.nombre)}</b></span>
-      {reto || m > 1 || primero ? (
+      {reto || m > 1 || debut || juegan.length ? (
         <span className="lb-b-pr">
+          {juegan.length ? (
+            <em className="mw">{juegan.length === 1 ? 'Juega ' + limpio(juegan[0].n) : 'Juegan ' + juegan.slice(0, 3).map((b) => limpio(b.n)).join(', ')}
+              , de Se busca{cobras ? ': ' + (juegan.length === 1 ? 'ganale y cobrás ' : 'cobrás hasta ') + num(cobras) + ' pts' : ''}</em>
+          ) : null}
           {reto ? <em>Jugalo antes del {liga.dia(new Date(vence))} y ganás 1.000 Puntos de Tienda</em> : null}
           {m > 1 ? <em>{siglaDe(e.sv)} va {mult(m)} esta semana</em> : null}
-          {primero ? <em className="gris">Tu debut: {limpio(primero[0].nombre)} · +{num(primero[2])} pts</em> : null}
+          {debut ? <em className="gris">Tu debut: {limpio(debut[0].nombre)} · +{num(debut[2])} pts</em> : null}
         </span>
       ) : null}
       {anotado ? <a className="btn verde" href="#/avisos"><Ico n="campana" t={18} />Avisame cuando empiece</a>
@@ -248,6 +258,9 @@ export function Lobby({ liga, dc }) {
   // 💰 la cabeza más cara de la semana (`valorCabezas()` de app.js; se redibuja con `lg:precios`, como el saldo)
   const valor = typeof window.valorCabezas === 'function' ? window.valorCabezas() || {} : {};
   const cara = Object.keys(valor).filter((c) => valor[c] > 0).sort((x, y) => valor[y] - valor[x])[0] || '';
+  // 🔒 LA PUERTA SIN NADA TUYO DICE QUÉ LA ABRE (Dlx, 13/10/2026, «me gusta»; el research: como la Bloqueada dice cuánto
+  // falta). Sin entrar con Discord no: eso ya lo pide tu barra, y tres puertas diciéndolo sería repetirlo
+  const sinVerif = !!(dc && P && P.listo && !P.miembro);
   return (
     <section className="lobby" aria-label="Tu lobby">
       <TuBarra liga={liga} dc={dc} P={P} R={R} saldo={saldo} />
@@ -275,14 +288,16 @@ export function Lobby({ liga, dc }) {
           {subio ? <span className="lb-glob" aria-label="cambió tu puesto">{subio > 0 ? '▲' : '▼'}</span> : null}
           {pos ? <span className="lb-nivel"><b>#{pos}</b><small>{subio ? (subio > 0 ? 'SUBISTE ' + subio : 'BAJASTE ' + -subio) : 'TU PUESTO'}</small></span>
             : <span className="lb-nivel"><b>#1</b><small>{uno ? limpio(uno.n).toUpperCase() : 'LA TEMPORADA'}</small></span>}
-          <small>{pos ? 'en la Temporada' : 'Las tablas de la temporada'}</small>
+          <small>{pos ? 'en la Temporada' : dc && !yo ? 'Jugá un evento y entrás a la tabla'
+            : dc && (sinVerif || yo.fc) ? 'Verificate en DRA y entrás al ranking oficial' : 'Las tablas de la temporada'}</small>
         </a>
         <a className="pu lb lb-tj" href="#/tarjetas" onClick={() => { if (tuya) guardar('lg:lb-carta', tuya); }}>
           <span className="lb-t">TARJETAS</span>
           {cartaNueva ? <span className="lb-glob nueva">NUEVA</span> : null}
           <span className="lb-abanico">{tuya ? <img alt="" loading="lazy" src={tuya} className="sola" />
             : otras.map((f) => <img key={f.k} alt="" loading="lazy" src={liga.cartaUrl(f.k, 'temporada')} />)}</span>
-          <small>{tuya ? (cartaNueva ? 'Tu carta cambió' : 'La tuya') : 'Las de cada rapero'}</small>
+          <small>{tuya ? (cartaNueva ? 'Tu carta cambió' : 'La tuya') : sinVerif ? 'Verificate en DRA y tenés tu primera carta'
+            : 'Las de cada rapero'}</small>
         </a>
         {/* 🔁 CADA DATO UNA VEZ, también adentro del lobby (Dlx, 13/10/2026: «evitar que se repitan las cosas»): tu nivel
             y tus Puntos ya están en tu barra, así que la puerta del Pase muestra las Tareas de hoy y la de la Tienda, la
@@ -293,7 +308,8 @@ export function Lobby({ liga, dc }) {
           {a && hoy ? <span className="lb-nivel"><b>{hechas}/{hoy.length}</b><small>{hechas === hoy.length ? 'HECHAS HOY' : 'TAREAS DE HOY'}</small></span>
             : <span className="lb-nivel"><b>30</b><small>NIVELES</small></span>}
           <i className="lb-barra"><u style={{ width: (a && hoy ? Math.round((100 * hechas) / hoy.length) : 0) + '%' }} /></i>
-          <small>{a && hoy ? (hechas === hoy.length ? 'Mañana vienen otras' : 'Cada una te da XP') : 'Tareas que dan premios'}</small>
+          <small>{a && hoy ? (hechas === hoy.length ? 'Mañana vienen otras' : 'Cada una te da XP')
+            : sinVerif ? 'Es de los miembros de DRA: verificate para subir de nivel' : 'Tareas que dan premios'}</small>
         </a>
         <a className="pu lb lb-ti" href="#/tienda">
           <span className="lb-big"><Ico n="moneda" t={34} /></span>
