@@ -7,7 +7,7 @@ existe—. Este archivo es el que arma las 138 desde `datos/`.
     python 04_Pais/generar.py --auditar        que se puede llenar y que no
     python 04_Pais/generar.py Konan            una carta
     python 04_Pais/generar.py Konan Bloody Am  varias, en una hoja
-    python 04_Pais/generar.py --todas          las 138
+    python 04_Pais/generar.py --todas          todas, en hojas: pais-1.png, pais-2.png…
 
 ⚠️ **NO INVENTA NADA.** Lo que no tiene dato sale como `—` y `--auditar` lo
 lista. Eso hace que el agujero se vea en la carta en vez de esconderse detrás
@@ -44,6 +44,7 @@ import base64
 import json
 import math
 import os
+import re
 import sys
 import unicodedata
 
@@ -393,7 +394,53 @@ def montar(gente, cols=0):
 # lo que pintó estaría dando por buenas 137 cartas de las que vio 96.
 #
 # Por eso no se elige una escala: se dibuja, SE CUENTAN, y si faltan se baja.
+#
+# 🔴 Y BAJAR LA ESCALA DEJÓ DE ALCANZAR: HOY LA HOJA SE PARTE. El 13/10/2026
+# el pool llegó a 458 y `--todas` murió entero con `Page.screenshot: Protocol
+# error (Page.captureScreenshot): Unable to capture screenshot` —411 con país,
+# 35 filas de 12, 593 Mpx a escala 3—. No era una carta en blanco que el conteo
+# agarra: era una excepción, y el bucle de escalas no llegaba a intentar la 2.
+# Medido en esta máquina, 12 por fila a escala 3:
+#
+#   | filas | Mpx | pintadas |
+#   |-------|-----|----------|
+#   | 6     |  94 | 72 / 72  |
+#   | 8     | 124 | 96 / 96  |
+#   | 10    | 154 | **96 / 120** |
+#
+# El techo es de ÁREA, no de alto: a escala 2 entran 16 filas (109 Mpx, 13.816
+# px de alto) y a escala 3 diez filas (13.020 px) ya pierden dos. O sea que una
+# hoja de más de ~124 Mpx tira cartas, y una mucho más grande ni se captura.
+#
+# ⚠️ Y BAJAR LA ESCALA SÓLO CORRE EL PROBLEMA: a escala 1 las 411 son 15.040 px
+# de alto y Chromium no captura más de 16.384 — una veintena de personas más y
+# vuelve. Lo que no crece con el pool es la HOJA: se arma de MAX_MPX, la que
+# sobra va a otra, y cada una se cuenta sola.
+MAX_MPX = 100
 FONDO = (11, 11, 18)
+
+
+# ══ LAS FUENTES, ADENTRO ══
+# 🔴 LA HOJA DEPENDÍA DE LA RED. La maqueta trae `@import` de Google Fonts y
+# `goto` espera el `load`, que espera a esa hoja de estilos. El 13/10/2026,
+# con la hoja ya partida, dos corridas seguidas de `--todas` murieron en
+# `Page.goto: Timeout 30000ms exceeded` —cada vez en otra hoja, a las tres
+# escalas— y la siguiente salió entera con `goto` en menos de 1 s por hoja.
+#
+# ⚠️ LA CAUSA NO SE REPRODUJO: un sondeo de esa URL justo después dio 0
+# lentos de 120, y escribir antes la hoja entera (217 MB) o las imágenes
+# tampoco la frenaba. Lo que sí es seguro es que la fuente era LO ÚNICO de
+# afuera que esa página pide; sin ella, `load` no espera a nadie. Si vuelve a
+# pasar con las fuentes adentro, la causa es otra.
+#
+# ⚠️ Es lo que ya hace el exportador —y por eso vive acá y él la importa—: la
+# hoja de control se dibuja con las mismas nueve woff2 que el PNG, sin red.
+def fuentes(html):
+    """Fuera el @import remoto, adentro las nueve woff2 en base64."""
+    html = re.sub(r"@import url\([^)]*\);", '', html)
+    ruta = os.path.join(BASE, 'comun', 'fonts', 'embed.css')
+    with open(ruta, encoding='utf-8') as f:
+        return html.replace('<style>', '<style>' + f.read(), 1)
 
 
 def _pintadas(png, alto_c, ancho_c, cols, escala):
@@ -412,19 +459,33 @@ def _pintadas(png, alto_c, ancho_c, cols, escala):
     return n
 
 
-async def dibujar(gente, salida, cols=0):
-    os.makedirs(SALIDA, exist_ok=True)
-    cols = cols or len(gente)
-    dest = os.path.join(SALIDA, salida)
+def hojas(gente, cols):
+    """La gente partida en hojas de MAX_MPX a la escala de la maqueta."""
+    P = MQ.PRESET
+    ancho = cols * (MQ.W + 26) + 40
+    fila = ancho * (MQ.alto_de(P['remate'], P['acorta']) + 26) * MQ.ESCALA ** 2 / 1e6
+    margen = ancho * 60 * MQ.ESCALA ** 2 / 1e6
+    n = max(1, int((MAX_MPX - margen) // fila)) * cols
+    return [gente[i:i + n] for i in range(0, len(gente), n)]
+
+
+async def _una_hoja(gente, dest, cols):
+    """Dibuja una hoja, cuenta las cartas y baja la escala si faltan."""
+    from playwright.async_api import Error as ErrorPW
     original = MQ.ESCALA
     try:
         for escala in (original, 2, 1):
             MQ.ESCALA = escala
             html, alto, ancho = montar(gente, cols)
-            with open(os.path.join(SALIDA, 'pais.html'), 'w',
-                      encoding='utf-8') as f:
-                f.write(html)
-            await MQ.disparar(html, ancho, alto, dest, '_generar.html')
+            try:
+                await MQ.disparar(fuentes(html), ancho, alto, dest,
+                                  '_generar.html')
+            except ErrorPW as e:
+                # ⚠️ QUE CHROMIUM FALLE TAMBIÉN ES «NO SALIERON»: se baja igual
+                # que cuando el conteo da corto. Ver MAX_MPX.
+                print('   escala %d: Chromium falló (%s), bajo la escala'
+                      % (escala, str(e).splitlines()[0][:80]))
+                continue
             if len(gente) == 1:
                 return
             n = _pintadas(dest, MQ.alto_de('recta', 0) + 26, ancho, cols, escala)
@@ -435,10 +496,37 @@ async def dibujar(gente, salida, cols=0):
                 return
             print('   escala %d: salieron %d de %d, bajo la escala'
                   % (escala, n, len(gente)))
-        raise SystemExit('no se pudieron dibujar las %d ni a escala 1'
-                         % len(gente))
+        raise SystemExit('no se pudieron dibujar las %d de %s ni a escala 1'
+                         % (len(gente), os.path.basename(dest)))
     finally:
         MQ.ESCALA = original
+
+
+async def dibujar(gente, salida, cols=0):
+    os.makedirs(SALIDA, exist_ok=True)
+    cols = cols or len(gente)
+    raiz, ext = os.path.splitext(salida)
+    # 🔴 LA FAMILIA DE ESA SALIDA SE BORRA ANTES DE ESCRIBIR. Con hojas, el
+    # número de archivos sale del pool: si ayer eran seis y hoy cinco, la
+    # sexta de ayer se queda en la carpeta con cara de hoy. Es «contar lo que
+    # hay en disco no es contar lo que salió» (CLAUDE.md). El guión no choca
+    # con las cartas sueltas del exportador —`pais_<nombre>.png`, y `norm()`
+    # no deja guiones—.
+    familia = re.compile(r'^%s(-\d+)?%s$' % (re.escape(raiz), re.escape(ext)))
+    for f in os.listdir(SALIDA):
+        if familia.match(f):
+            os.remove(os.path.join(SALIDA, f))
+    # ⚠️ `pais.html` ES LA HOJA ENTERA, aunque se capture partida: es lo que
+    # cuenta `herramientas/puedo_generar.py` y lo que se abre en un navegador.
+    with open(os.path.join(SALIDA, 'pais.html'), 'w', encoding='utf-8') as f:
+        f.write(montar(gente, cols)[0])
+    partes = hojas(gente, cols)
+    for i, parte in enumerate(partes, 1):
+        dest = os.path.join(SALIDA, salida if len(partes) == 1
+                            else '%s-%d%s' % (raiz, i, ext))
+        if len(partes) > 1:
+            print('   hoja %d de %d: %d cartas' % (i, len(partes), len(parte)))
+        await _una_hoja(parte, dest, cols)
 
 
 # ══ LA AUDITORIA ══

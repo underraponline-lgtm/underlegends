@@ -45,7 +45,6 @@ LAS CUATRO TRAMPAS
 import argparse
 import asyncio
 import os
-import re
 import sys
 
 SCR = os.path.dirname(os.path.abspath(__file__))
@@ -57,14 +56,6 @@ import generar as G
 import maqueta as MQ
 
 MARGEN = 4
-
-
-def _fuentes(html):
-    """Fuera el @import remoto, adentro las nueve woff2 en base64."""
-    html = re.sub(r"@import url\([^)]*\);", '', html)
-    ruta = os.path.join(BASE, 'comun', 'fonts', 'embed.css')
-    with open(ruta, encoding='utf-8') as f:
-        return html.replace('<style>', '<style>' + f.read(), 1)
 
 
 # ⚠️ SE SALTEA LO QUE ESTA DENTRO DE UN <svg>, NO LO QUE ES UN <svg>. La
@@ -92,7 +83,7 @@ async def exportar(gente):
     from playwright.async_api import async_playwright
 
     html, alto, ancho = G.montar(gente, cols=min(len(gente), 6))
-    html = _fuentes(html)
+    html = G.fuentes(html)    # vive en generar.py: la hoja de control también la usa
     tmp = os.path.join(SCR, '_export.html')
     with open(tmp, 'w', encoding='utf-8') as f:
         f.write(html)

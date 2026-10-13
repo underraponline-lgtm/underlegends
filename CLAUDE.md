@@ -1774,7 +1774,7 @@ las hojas; **cualquier cosa que se quiera saber sobre las 138 se pregunta con
 ```bash
 python 04_Pais/generar.py --auditar        # qué se puede llenar y qué no
 python 04_Pais/generar.py Konan Axinu Am   # una hoja con esos tres
-python 04_Pais/generar.py --todas          # las 137 que tienen país
+python 04_Pais/generar.py --todas          # todos los que tienen país, en hojas
 python 04_Pais/generar.py --paises         # una por país, el mejor de cada uno
 python 04_Pais/generar.py --paises --caras # la misma, con caras de muestra
 python 04_Pais/exportar_png.py Konan       # el PNG transparente
@@ -2144,6 +2144,18 @@ correcto y no hay ningún error. Por eso `generar.py` **cuenta las cartas que
 pintó** y baja la escala si faltan, y `exportar_png.py` trabaja en tandas de 24.
 Una hoja de control que no cuente estaría dando por buenas 137 cartas de las
 que vio 96.
+
+🔴 **Y DESDE EL 13/10/2026 LA HOJA SE PARTE: bajar la escala dejó de
+alcanzar.** Con 411 con país, `--todas` eran 593 Mpx a escala 3 y Chromium
+ni la capturaba (`Unable to capture screenshot`, una excepción que el bucle
+de escalas no agarraba). El techo es de **área**: a escala 3, 124 Mpx salen
+enteros y 154 pierden dos filas. Ahora cada hoja tiene hasta `MAX_MPX` (100)
+y sale como `pais-1.png`, `pais-2.png`…, cada una contada sola; `pais.html`
+sigue siendo la hoja entera. Y la hoja se dibuja con `embed.css` en vez del
+`@import` de Google, igual que el exportador: dos corridas murieron en
+`Page.goto: Timeout 30000ms` y esa hoja de estilos era lo único de afuera que
+esperaba el `load`. ⚠️ La causa **no se reprodujo** (ver `fuentes()` en
+`generar.py`): si vuelve a pasar con las fuentes adentro, es otra cosa.
 
 ⚠️ **`fonts/embed.css` NO trae Archivo 600**, y el `@import` de la maqueta lo
 pide. No es un error: el 600 es de los **títulos de las hojas comparativas**,

@@ -96,10 +96,32 @@ def _cuantas(ruta, patron='class="card'):
 # dice que no se le emite— o rota. Por eso cada una declara su techo y por qué,
 # y el informe compara contra eso y no contra el total del pool.
 def temporada(nombres):
-    """Lee datos/temporada_pool.json directo. Se le pasan los nombres por argv."""
+    """Lee datos/temporada_pool.json directo. Se le pasan los nombres por argv.
+
+    🔴 SU TECHO ES EL POOL DE TEMPORADA, NO LA UNION — la misma regla que el
+    Competitivo, aplicada a la otra punta. El 13/10/2026 el informe dijo
+    *«Temporada 456 de 458 ⚠️ LE FALTAN 2»*, y el generador estaba bien: los
+    dos eran AIRON y FAT N, de COMPE CHILL (URBF, 12/10), que estaban en el
+    pool competitivo y no en el de temporada. Los pools salen de lugares
+    distintos —el de temporada lee la vitrina `Ranking Temporada`; el
+    competitivo se calcula de `Resultados`— y esa noche el ciclo avisaba que
+    la vitrina no se estaba escribiendo («la tabla encogería»). La carta no
+    puede dibujar a quien su pool no tiene; contarlo como una carta que
+    falta mandaba a buscar el bug al generador.
+
+    ⚠️ El desfasaje NO se esconde: lo lista `desfasados()`, con los nombres.
+    """
     cod, log = _corre([os.path.join('01_Temporada', 'generar.py')] + nombres)
+    suyos = {x.get('raw') for x in _j('datos', 'temporada_pool.json')} - {None, ''}
     return (cod, _cuantas('01_Temporada/salida/tarjeta_temporada.html'),
-            len(nombres), 'el pool entero', log)
+            len(suyos), 'el pool de temporada', log)
+
+
+def desfasados():
+    """Quién está en un pool y no en el otro. Es un dato, no una carta rota."""
+    t = {x.get('raw') for x in _j('datos', 'temporada_pool.json')} - {None, ''}
+    c = {x.get('raw') for x in _j('datos', 'competitivo_pool.json')} - {None, ''}
+    return sorted(c - t), sorted(t - c)
 
 
 def competitivo(nombres):
@@ -474,6 +496,15 @@ def main():
             print('   %-12s %3d de %3d   ⚠️ LE FALTAN %d' % (nom, k, techo,
                                                              techo - k))
             malas += 1
+
+    # ⓘ y no ⚠️: ningún generador falla por esto. Ver `temporada()`.
+    for cuales, donde in zip(desfasados(), ('en el competitivo y no en el de temporada',
+                                            'en el de temporada y no en el competitivo')):
+        if cuales:
+            print('\n   ⓘ %s (%d): %s%s' % (donde, len(cuales), ', '.join(cuales[:10]),
+                                         '…' if len(cuales) > 10 else ''))
+            print('     los pools salen de lugares distintos: si la vitrina de Temporada')
+            print('     está frenada, lo dice «vitrina» en datos/alertas.json')
 
     print('\n¿Y EL PNG SALE BIEN?\n')
     for nom, quien, w, h, tinta, est in exportadores():
