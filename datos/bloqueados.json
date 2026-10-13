@@ -1,12 +1,22 @@
 [
  {
-  "raw": "COLOSO",
+  "raw": "AIRON",
   "cc": "",
   "sv": "",
   "crew": "",
   "discord_id": "",
   "ev": 0.0,
   "pts": 600,
+  "av": ""
+ },
+ {
+  "raw": "COFFY",
+  "cc": "",
+  "sv": "",
+  "crew": "",
+  "discord_id": "",
+  "ev": 0.0,
+  "pts": 0,
   "av": ""
  },
  {
@@ -20,7 +30,47 @@
   "av": ""
  },
  {
+  "raw": "FAT N",
+  "cc": "",
+  "sv": "",
+  "crew": "",
+  "discord_id": "",
+  "ev": 0.0,
+  "pts": 1600,
+  "av": ""
+ },
+ {
+  "raw": "HORUS",
+  "cc": "",
+  "sv": "",
+  "crew": "",
+  "discord_id": "",
+  "ev": 0.0,
+  "pts": 0,
+  "av": ""
+ },
+ {
+  "raw": "HUNTER",
+  "cc": "",
+  "sv": "",
+  "crew": "",
+  "discord_id": "",
+  "ev": 0.0,
+  "pts": 0,
+  "av": ""
+ },
+ {
   "raw": "J1",
+  "cc": "",
+  "sv": "",
+  "crew": "",
+  "discord_id": "",
+  "ev": 0.0,
+  "pts": 0,
+  "av": ""
+ },
+ {
+  "raw": "JAZZ",
   "cc": "",
   "sv": "",
   "crew": "",
@@ -50,13 +100,33 @@
   "av": ""
  },
  {
+  "raw": "LIT IGNIS",
+  "cc": "",
+  "sv": "",
+  "crew": "",
+  "discord_id": "",
+  "ev": 0.0,
+  "pts": 0,
+  "av": ""
+ },
+ {
   "raw": "MARITHEA",
   "cc": "",
   "sv": "",
   "crew": "",
   "discord_id": "",
   "ev": 0.0,
-  "pts": 600,
+  "pts": 0,
+  "av": ""
+ },
+ {
+  "raw": "PANDORA",
+  "cc": "",
+  "sv": "",
+  "crew": "",
+  "discord_id": "",
+  "ev": 0.0,
+  "pts": 0,
   "av": ""
  },
  {
@@ -66,7 +136,17 @@
   "crew": "",
   "discord_id": "",
   "ev": 0.0,
-  "pts": 1600,
+  "pts": 0,
+  "av": ""
+ },
+ {
+  "raw": "URKO",
+  "cc": "",
+  "sv": "",
+  "crew": "",
+  "discord_id": "",
+  "ev": 0.0,
+  "pts": 0,
   "av": ""
  },
  {

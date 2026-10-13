@@ -21920,27 +21920,11 @@
     "b": [
      [
       [
-       "COLOSO",
-       "JM SERNA"
-      ],
-      "COLOSO",
-      ""
-     ],
-     [
-      [
        "MARITHEA",
        "J1"
       ],
       "MARITHEA",
-      ""
-     ],
-     [
-      [
-       "PUPPY",
-       "VISIONARIO"
-      ],
-      "PUPPY",
-      ""
+      "Revivido: J1"
      ],
      [
       [
@@ -21948,12 +21932,20 @@
        "COLOSO"
       ],
       "MARITHEA",
-      ""
+      "Revivido: COLOSO"
      ],
      [
       [
        "MARITHEA",
        "PUPPY"
+      ],
+      "MARITHEA",
+      "Revivido: PUPPY"
+     ],
+     [
+      [
+       "COLOSO",
+       "JM SERNA"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -21965,6 +21957,14 @@
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "VISIONARIO",
+       "PUPPY"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Llave de ganadores"
@@ -21973,88 +21973,67 @@
     "b": [
      [
       [
-       "LIT IGNIS",
-       "HORUS"
+       "COLOSO",
+       "AXL EVANS"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "URKO",
-       "COFFY"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ]
-    ],
-    "r": "Llave de perdedores"
-   },
-   {
-    "b": [
-     [
-      [
-       "FAT N",
-       "AIRON"
-      ],
-      "FAT N",
-      "ganador: ✅ Decidir; Walk-in 2: AIRON"
-     ],
-     [
-      [
-       "AXL EVANS",
-       "COLOSO"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "HUNTER",
-       "PANDORA"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "J1",
-       "COFFY"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "COLOSO",
+      "Walk-in 1: AXL EVANS"
      ],
      [
       [
        "JM SERNA",
        "JAZZ"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "JM SERNA",
+      "Walk-in 1: JAZZ"
+     ],
+     [
+      [
+       "PANDORA",
+       "HUNTER"
+      ],
+      "PANDORA",
+      "Walk-in 1: HUNTER"
+     ],
+     [
+      [
+       "FAT N",
+       "AIRON"
+      ],
+      "FAT N",
+      "Walk-in 1: AIRON"
      ],
      [
       [
        "MARITHEA",
        "URKO"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "MARITHEA",
+      "Walk-in 1: URKO"
      ],
      [
       [
-       "PUPPY",
-       "HORUS"
+       "J1",
+       "COFFY"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "J1",
+      "Walk-in 1: COFFY"
      ],
      [
       [
        "VISIONARIO",
        "LIT IGNIS"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "VISIONARIO",
+      "Walk-in 1: LIT IGNIS"
+     ],
+     [
+      [
+       "PUPPY",
+       "HORUS"
+      ],
+      "PUPPY",
+      "Walk-in 1: HORUS"
      ]
     ],
     "r": "Final"
@@ -22063,14 +22042,172 @@
   "sv": "URBF",
   "tabla": [
    [
-    "FAT N",
+    "COLOSO",
     "Campeón",
-    10000
+    5000
    ],
    [
-    "AIRON",
+    "AXL EVANS",
     "Subcampeón",
-    1875
+    3750
+   ]
+  ]
+ },
+ "464": {
+  "dia": "2026-10-12",
+  "escala": "8-15",
+  "fecha": "12/10",
+  "links": [
+   "https://discord.com/channels/1467763447117778989/1511963625793912892/1559384423710072833"
+  ],
+  "n": 464,
+  "nombre": "IDS V.2",
+  "participantes": 13,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Guess",
+       "Rodas"
+      ],
+      "Guess",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Sosa",
+       "JB🇦🇷"
+      ],
+      "Sosa",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Agus",
+       "Korey"
+      ],
+      "Agus",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Makmah",
+       "Cronox",
+       "Tusicario"
+      ],
+      "Makmah",
+      "triple (4 bandas, pasan 2)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Guess, Nemi",
+       "Sosa, ONDADISKO 🇨🇱 🇺🇾"
+      ],
+      "Guess, Nemi",
+      ""
+     ],
+     [
+      [
+       "Presagio, Agus",
+       "NC, Makmah"
+      ],
+      "Presagio, Agus",
+      "Revivido: NC"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Presagio, NC, Agus",
+       "Guess, Nemi, ONDADISKO 🇨🇱"
+      ],
+      "Presagio, NC, Agus",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "URBF",
+  "tabla": [
+   [
+    "NC",
+    "Campeón",
+    3000
+   ],
+   [
+    "Agus",
+    "Campeón",
+    2500
+   ],
+   [
+    "Presagio",
+    "Campeón",
+    2500
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Guess",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "JB🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Korey",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    2000
+   ],
+   [
+    "Nemi",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "ONDADISKO 🇨🇱",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "ONDADISKO 🇨🇱 🇺🇾",
+    "Semifinal",
+    2000
+   ],
+   [
+    "Rodas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sosa",
+    "Semifinal",
+    2000
+   ],
+   [
+    "Tusicario",
+    "Cuartos",
+    2000
    ]
   ]
  }

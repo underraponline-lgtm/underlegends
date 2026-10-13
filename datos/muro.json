@@ -64,7 +64,7 @@
 "temporada"
 ]
 },
-"six": {
+"agus": {
 "rg": "B",
 "c": [
 "competitivo",
@@ -73,7 +73,7 @@
 "temporada"
 ]
 },
-"agus": {
+"six": {
 "rg": "B",
 "c": [
 "competitivo",
@@ -131,19 +131,19 @@
 "temporada"
 ]
 },
-"vandu": {
-"rg": "E",
+"nc": {
+"rg": "D",
 "c": [
 "competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
 },
-"nc": {
+"vandu": {
 "rg": "E",
 "c": [
 "competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -177,6 +177,14 @@
 "rg": "C",
 "c": []
 },
+"guess": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "majiztral": {
 "rg": "C",
 "c": [
@@ -191,14 +199,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"guess": {
-"rg": "C",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -223,14 +223,6 @@
 "servidor"
 ]
 },
-"nxuz": {
-"rg": "C",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "carlosss": {
 "rg": "",
 "c": [
@@ -242,11 +234,26 @@
 "rg": "",
 "c": []
 },
+"nxuz": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "drexx": {
 "rg": "C",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"presagio": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -263,6 +270,13 @@
 "rg": "",
 "c": []
 },
+"miniboy": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor"
+]
+},
 "molusco": {
 "rg": "D",
 "c": [
@@ -270,13 +284,6 @@
 "pais",
 "servidor",
 "temporada"
-]
-},
-"miniboy": {
-"rg": "D",
-"c": [
-"competitivo",
-"servidor"
 ]
 },
 "walker": {
@@ -298,30 +305,10 @@
 "rg": "",
 "c": []
 },
-"presagio": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"alexi": {
-"rg": "",
-"c": []
-},
 "sinlimites": {
 "rg": "D",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"lordviruzz": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -333,6 +320,19 @@
 "criszj": {
 "rg": "",
 "c": []
+},
+"alexi": {
+"rg": "",
+"c": []
+},
+"lordviruzz": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "benjixo": {
 "rg": "",
@@ -422,7 +422,7 @@
 ]
 },
 "sosa": {
-"rg": "E",
+"rg": "D",
 "c": [
 "competitivo",
 "servidor",
@@ -450,13 +450,6 @@
 "rg": "",
 "c": []
 },
-"number": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "chop": {
 "rg": "",
 "c": []
@@ -479,6 +472,13 @@
 "servidor"
 ]
 },
+"number": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "juasmio": {
 "rg": "",
 "c": [
@@ -491,6 +491,13 @@
 "c": []
 },
 "ariaxer": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"nemi": {
 "rg": "",
 "c": [
 "servidor",
@@ -542,10 +549,6 @@
 "temporada"
 ]
 },
-"emizor": {
-"rg": "",
-"c": []
-},
 "kochi": {
 "rg": "",
 "c": [
@@ -596,6 +599,10 @@
 "servidor",
 "temporada"
 ]
+},
+"emizor": {
+"rg": "",
+"c": []
 },
 "pomberito": {
 "rg": "",
@@ -676,9 +683,12 @@
 "rg": "",
 "c": []
 },
-"fatn": {
+"rodas": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
 "keider": {
 "rg": "",
@@ -695,6 +705,12 @@
 "rg": "",
 "c": []
 },
+"tusicario": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "assuan": {
 "rg": "",
 "c": []
@@ -705,6 +721,10 @@
 "servidor",
 "temporada"
 ]
+},
+"korey": {
+"rg": "",
+"c": []
 },
 "fleivaman": {
 "rg": "",
@@ -761,24 +781,6 @@
 "rg": "",
 "c": []
 },
-"rodas": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"sintext": {
-"rg": "",
-"c": []
-},
-"nemi": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "joshu": {
 "rg": "",
 "c": []
@@ -820,12 +822,6 @@
 "rg": "",
 "c": []
 },
-"tusicario": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
 "rayo": {
 "rg": "",
 "c": []
@@ -847,6 +843,10 @@
 ]
 },
 "cajita": {
+"rg": "",
+"c": []
+},
+"sintext": {
 "rg": "",
 "c": []
 },
@@ -880,7 +880,7 @@
 "temporada"
 ]
 },
-"korey": {
+"coloso": {
 "rg": "",
 "c": []
 },
@@ -986,6 +986,10 @@
 ]
 },
 "malva": {
+"rg": "",
+"c": []
+},
+"axlevans": {
 "rg": "",
 "c": []
 },
@@ -1157,6 +1161,10 @@
 "rg": "",
 "c": []
 },
+"fatn": {
+"rg": "",
+"c": []
+},
 "focox": {
 "rg": "",
 "c": [
@@ -1168,10 +1176,6 @@
 "c": []
 },
 "marithea": {
-"rg": "",
-"c": []
-},
-"coloso": {
 "rg": "",
 "c": []
 },
@@ -5514,6 +5518,24 @@
 "rodrilp"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-10-13T04:00:43Z",
+"quien": [
+"NC"
+],
+"rg": "D",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-13T04:00:43Z",
+"quien": [
+"Sosa"
+],
+"rg": "D",
+"primero": false
 }
 ]
 }

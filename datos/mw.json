@@ -109,7 +109,7 @@
      "por": [
       {
        "n": "JJ",
-       "cobra": 3500
+       "cobra": 3750
       },
       {
        "n": "Snow",
@@ -173,9 +173,9 @@
     "base": 5000,
     "o": 40,
     "estado": "suelto",
-    "ev": 1,
+    "ev": 2,
     "fase": "Campeón",
-    "valor": 6000
+    "valor": 7000
    },
    {
     "n": "Gocho",

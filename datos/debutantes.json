@@ -6,17 +6,6 @@
   "URBF": "2026-10-12"
  },
  "retos": {
-  "AIRON": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-13T00:54:11+00:00",
-   "did": "",
-   "evento": "COMPE CHILL",
-   "n": 463,
-   "sv": "URBF",
-   "vence": "2026-10-20T00:54:11+00:00",
-   "vencido": false
-  },
   "AKARK": {
    "avisado": "2026-10-12",
    "chat": "2026-10-12",
@@ -28,6 +17,17 @@
    "n": 462,
    "sv": "FFA",
    "vence": "2026-10-20T00:26:10+00:00",
+   "vencido": false
+  },
+  "AXL EVANS": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-13T00:54:11+00:00",
+   "did": "",
+   "evento": "COMPE CHILL",
+   "n": 463,
+   "sv": "URBF",
+   "vence": "2026-10-20T00:54:11+00:00",
    "vencido": false
   },
   "Abysuss": {
@@ -43,9 +43,7 @@
    "vence": "2026-10-20T00:26:10+00:00",
    "vencido": false
   },
-  "FAT N": {
-   "avisado": "2026-10-12",
-   "chat": "2026-10-12",
+  "COLOSO": {
    "con": null,
    "cumplido": "",
    "debut": "2026-10-13T00:54:11+00:00",
@@ -67,6 +65,17 @@
    "n": 462,
    "sv": "FFA",
    "vence": "2026-10-20T00:26:10+00:00",
+   "vencido": false
+  },
+  "JB": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-13T01:56:58+00:00",
+   "did": "",
+   "evento": "IDS V.2",
+   "n": 464,
+   "sv": "URBF",
+   "vence": "2026-10-20T01:56:58+00:00",
    "vencido": false
   },
   "Joaquín La Profecia 👨🏻‍🍳": {

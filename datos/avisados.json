@@ -1190,7 +1190,7 @@
    "Xclusivo": 4
   },
   "fecha": "07/10",
-  "firma": "7e9c9a749c452ca0",
+  "firma": "b71afc9a6845ba80",
   "msg": "1557564144360890428",
   "nombre": "__ PRITTY FREE __",
   "num": 425,
@@ -9396,7 +9396,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "8247b526965a86b3",
+  "firma": "6a7fd4e8d7d0e1cd",
   "msg": "1559353480601411625",
   "nombre": "GODZ",
   "num": 460,
@@ -10088,8 +10088,43 @@
   "duelos": [
    [
     "COLOSO",
-    "JM SERNA",
+    "AXL EVANS",
     "COLOSO"
+   ],
+   [
+    "JM SERNA",
+    "JAZZ",
+    "JM SERNA"
+   ],
+   [
+    "PANDORA",
+    "HUNTER",
+    "PANDORA"
+   ],
+   [
+    "FAT N",
+    "AIRON",
+    "FAT N"
+   ],
+   [
+    "MARITHEA",
+    "URKO",
+    "MARITHEA"
+   ],
+   [
+    "J1",
+    "COFFY",
+    "J1"
+   ],
+   [
+    "VISIONARIO",
+    "LIT IGNIS",
+    "VISIONARIO"
+   ],
+   [
+    "PUPPY",
+    "HORUS",
+    "PUPPY"
    ],
    [
     "MARITHEA",
@@ -10097,24 +10132,19 @@
     "MARITHEA"
    ],
    [
-    "PUPPY",
-    "VISIONARIO",
-    "PUPPY"
-   ],
-   [
     "MARITHEA",
     "COLOSO",
     "MARITHEA"
    ],
    [
-    "FAT N",
-    "AIRON",
-    "FAT N"
+    "MARITHEA",
+    "PUPPY",
+    "MARITHEA"
    ]
   ],
   "ev_antes": {},
   "fecha": "12/10",
-  "firma": "b3a32ceecc8dfae4",
+  "firma": "bb3f2846074d4807",
   "msg": "1559406349790617712",
   "nombre": "COMPE CHILL",
   "num": 463,
@@ -10126,14 +10156,215 @@
   "t": "2026-10-13T02:56:28Z",
   "tabla": [
    [
-    "FAT N",
+    "COLOSO",
     "Campeón",
-    10000
+    5000
    ],
    [
-    "AIRON",
+    "AXL EVANS",
     "Subcampeón",
-    1875
+    3750
+   ]
+  ],
+  "v": 2
+ },
+ "464": {
+  "antes": {
+   "Agus": [
+    9,
+    10,
+    false
+   ],
+   "Cronox": [
+    17,
+    20,
+    false
+   ],
+   "Guess": [
+    22,
+    26,
+    false
+   ],
+   "Korey": [
+    229,
+    144,
+    true
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "NC": [
+    16,
+    19,
+    false
+   ],
+   "Nemi": [
+    80,
+    123,
+    false
+   ],
+   "Presagio": [
+    33,
+    41,
+    false
+   ],
+   "Rodas": [
+    79,
+    121,
+    false
+   ],
+   "Sosa": [
+    45,
+    61,
+    false
+   ],
+   "Tusicario": [
+    83,
+    133,
+    false
+   ]
+  },
+  "canal": "1511962554547703960",
+  "duelos": [
+   [
+    "Guess",
+    "Rodas",
+    "Guess"
+   ],
+   [
+    "Sosa",
+    "JB🇦🇷",
+    "Sosa"
+   ],
+   [
+    "Agus",
+    "Korey",
+    "Agus"
+   ],
+   [
+    "Makmah",
+    "Cronox",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Tusicario",
+    "Makmah"
+   ],
+   [
+    "Guess, Nemi",
+    "Sosa, ONDADISKO 🇨🇱 🇺🇾",
+    "Guess, Nemi"
+   ],
+   [
+    "Presagio, Agus",
+    "NC, Makmah",
+    "Presagio, Agus"
+   ],
+   [
+    "Presagio, NC, Agus",
+    "Guess, Nemi, ONDADISKO 🇨🇱",
+    "Presagio, NC, Agus"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 13,
+   "Cronox": 23,
+   "Guess": 10,
+   "Korey": 6,
+   "Makmah": 40,
+   "NC": 26,
+   "Nemi": 6,
+   "Presagio": 6,
+   "Rodas": 5,
+   "Sosa": 12,
+   "Tusicario": 6
+  },
+  "fecha": "12/10",
+  "firma": "ed792edd26c4491a",
+  "msg": "1559414143948431441",
+  "nombre": "IDS V.2",
+  "num": 464,
+  "participantes": 13,
+  "sello": {
+   "Agus": "884179c75500:9df1984d05ab",
+   "NC": "67bf6693e45f:9df1984d05ab",
+   "Presagio": "9c35e63ab259:9df1984d05ab"
+  },
+  "sv": "URBF",
+  "t": "2026-10-13T03:55:03Z",
+  "tabla": [
+   [
+    "NC",
+    "Campeón",
+    3000
+   ],
+   [
+    "Presagio",
+    "Campeón",
+    2500
+   ],
+   [
+    "Agus",
+    "Campeón",
+    2500
+   ],
+   [
+    "Guess",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "Nemi",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "ONDADISKO 🇨🇱",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "Sosa",
+    "Semifinal",
+    2000
+   ],
+   [
+    "ONDADISKO 🇨🇱 🇺🇾",
+    "Semifinal",
+    2000
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    2000
+   ],
+   [
+    "Rodas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "JB🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Korey",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Tusicario",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2
