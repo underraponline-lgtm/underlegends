@@ -14,7 +14,7 @@ const parser = require('@babel/parser');
 const traverse = require('@babel/traverse').default;
 const RAIZ = path.join(__dirname, '..');
 // ⚠️ desde el 13/10/2026 app.js está partido (la tanda 2): se lee todo junto, en el orden en que carga la página
-const src = ['comun.js', 'cuenta.js', 'tienda.js', 'social.js', 'app.js']
+const src = ['comun.js', 'cuenta.js', 'tienda.js', 'social.js', 'datos.js', 'app.js']
   .map((f) => fs.readFileSync(path.join(RAIZ, 'bot/paginas', f), 'utf8')).join('\n');
 const ast = parser.parse(src, { sourceType: 'script', errorRecovery: true });
 
