@@ -1059,7 +1059,8 @@
 "rodrilp": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "selek": {
@@ -5505,6 +5506,14 @@
 "Guess"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-13T03:47:06Z",
+"quien": [
+"rodrilp"
+],
+"carta": "temporada"
 }
 ]
 }
