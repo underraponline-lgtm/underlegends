@@ -256,6 +256,24 @@ def _poner(desde, filas):
                json={'values': filas})
 
 
+_CERRADOS = []
+
+
+def _reportes_cerrados():
+    """Los números de los reportes que Dlx decidió desde el Dashboard (`bot/reportes.cerrados()`), leídos una vez.
+    Vacío si KV no contesta: entonces la fila sigue abierta, que es lo seguro."""
+    if not _CERRADOS:
+        try:
+            bot = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'bot')
+            if bot not in sys.path:
+                sys.path.insert(0, bot)
+            import reportes
+            _CERRADOS.append(reportes.cerrados())
+        except Exception:                                # noqa: BLE001
+            _CERRADOS.append(set())
+    return _CERRADOS[0]
+
+
 def _resuelto_ya(fila, resolver):
     """Por qué esa fila ya no hace falta. `''` si todavía hace falta.
 
@@ -277,6 +295,12 @@ def _resuelto_ya(fila, resolver):
     tipo, detalle = fila.get('Tipo', ''), fila.get('Detalle', '')
     if (fila.get('Estado') or '').strip().lower() not in ('', 'pendiente'):
         return ''                                    # ya lo tocó alguien
+    if tipo == 'Reporte':
+        # 📣 LO QUE DLX YA DECIDIÓ DESDE EL DASHBOARD (13/10/2026): el detalle termina en el número del reporte
+        m = re.search(r'#(\d+)\s*$', detalle)
+        if m and m.group(1) in _reportes_cerrados():
+            return 'lo decidió Dlx desde el Dashboard'
+        return ''
     if tipo == 'Nombre desconocido' and _es_equipo_con_nombre(detalle):
         # 🔑 «TEAM VENECIA» NO ES UNA PERSONA: es un equipo que la llave
         # nombra con un solo nombre (Dlx, 29/09/2026). No hay a quién buscar.

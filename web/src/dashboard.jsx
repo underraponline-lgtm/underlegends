@@ -779,6 +779,9 @@ function atencion(d, liga, q) {
     ult && ult.estado === 'completed' && ult.fin && ult.fin !== 'success' && ult.fin !== 'skipped'
       ? ['⚠️', 'La última corrida del ciclo ' + String(FIN_CORRIDA[ult.fin] || ult.fin).replace(/^\S+\s/, ''), 'Mirá Sistema.'] : null,
     ...cuotasEnRojo(q).map(([, , t]) => ['⚠️', t + ' casi llenas hoy', 'Se renuevan a las 8 PM ET.']),
+    // 📣 los reportes de las llaves sin mirar, y una corrección que no se pudo (13/10/2026)
+    ...(() => { const r = (d.reportes || []).filter((x) => x.estado === ''); return r.length ? [['📣', r.length === 1 ? 'Un reporte de una llave sin mirar' : r.length + ' reportes de llaves sin mirar', 'Abajo, en Lo que te llegó: corregilo o marcalo como listo.']] : []; })(),
+    ...(d.reportes || []).filter((x) => x.estado === 'no_pude').map((x) => ['⚠️', 'No se pudo corregir la llave #' + x.llave, x.resultado]),
   ].filter(Boolean);
 }
 function Atencion({ xs }) {
@@ -955,25 +958,161 @@ function VideosRevisar({ vs }) {
   );
 }
 
+// ── 📣 LOS ERRORES REPORTADOS EN LAS LLAVES, CON QUÉ HACER (13/10/2026). Dlx: «me llegaron los reportes pero ¿qué
+// acciones puedo hacer acá?», y a la propuesta, «Sí, todas». «Corregir» elige de quién era un nombre de esa llave —quien
+// lo reportó, otro de la Lista o alguien que no está— o quién ganó una batalla; vale SÓLO para ese evento, lo aplica el
+// ciclo en su próxima corrida (`bot/reportes.py --corregir`) y a quien reportó le llega a su campana. «Listo» y «Era una
+// prueba» lo sacan de la lista. Lo que se ve de cada llave sale de `/api/llaves`, como las llaves viejas de la página ──
+let LLAVES = null;
+const pedirLlaves = () => {
+  if (!LLAVES) {
+    LLAVES = fetch('/api/llaves', { headers: { accept: 'application/json' } })
+      .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then((t) => (t && t.llaves) || t || {})
+      .catch(() => { LLAVES = null; return null; });
+  }
+  return LLAVES;
+};
+const ESTADO_REP = {
+  corregir: ['⏳ en la próxima corrida', ''], aplicado: ['✅ corregido', 'ok'], no_pude: ['⚠️ no se pudo', 'ojo'],
+  listo: ['listo', ''], prueba: ['era una prueba', ''],
+};
+const QUE_REP = { ganador: 'el ganador', gente: 'falta o sobra alguien', nombre: 'un nombre', otro: 'otra cosa' };
+// las partes de un lado: «Presagio, NC, Agus» son tres
+const partes = (x) => String(x || '').split(/\s*[,+&]\s*/).map((s) => s.trim()).filter(Boolean);
+
+async function decidirReporte(cuerpo) {
+  const r = await fetch('/api/avisos/dueno/reporte', { method: 'POST', credentials: 'same-origin',
+    headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || j.error) throw new Error(r.status === 401 ? 'la sesión venció: entrá de nuevo' : j.error || String(r.status));
+  return j.reportes || [];
+}
+
+// el formulario de «Corregir»: un nombre o el ganador, con lo que la llave de verdad trae
+function Corregir({ r, liga, alListo }) {
+  const [L, setL] = useState(undefined);
+  const [modo, setModo] = useState(r.que === 'ganador' ? 'ganador' : 'nombre');
+  const [nombre, setNombre] = useState('');
+  const [quien, setQuien] = useState(r.de ? 'reporta' : 'es');
+  const [es, setEs] = useState('');
+  const [nuevo, setNuevo] = useState('');
+  const [bat, setBat] = useState('');
+  const [gana, setGana] = useState('');
+  const [msg, setMsg] = useState('');
+  const [ocup, setOcup] = useState(false);
+  useEffect(() => { let vivo = true; pedirLlaves().then((t) => { if (vivo) setL((t && t[r.llave]) || null); }); return () => { vivo = false; }; }, [r.llave]);
+  if (L === undefined) return <p className="db-rep-nota">Trayendo la llave…</p>;
+  if (!L) return <p className="db-rep-nota">No encuentro la llave #{r.llave} en la página: no se puede corregir desde acá.</p>;
+  // los nombres de la llave, una vez: la tabla y cada parte de cada lado
+  const nombres = [];
+  for (const f of L.tabla || []) if (f[0] && !nombres.includes(f[0])) nombres.push(f[0]);
+  for (const ro of L.rondas || []) for (const b of ro.b || []) for (const lado of b[0] || []) for (const p of partes(lado)) if (!nombres.includes(p)) nombres.push(p);
+  const batallas = [];
+  (L.rondas || []).forEach((ro, i) => (ro.b || []).forEach((b, j) => { if ((b[0] || []).length >= 2) batallas.push({ k: i + ':' + j, ronda: ro.r, lados: b[0], ganador: b[1] }); }));
+  const b = batallas.find((x) => x.k === bat);
+  const lista = ((liga && liga.d && liga.d.tabla) || []).map((x) => x.n);
+  const listo = modo === 'nombre' ? !!nombre && (quien === 'reporta' || (quien === 'es' ? !!es.trim() : !!nuevo.trim()))
+    : !!b && !!gana && gana !== b.ganador;
+  const aplicar = async () => {
+    setOcup(true); setMsg('');
+    try {
+      const c = modo === 'nombre'
+        ? Object.assign({ id: r.id, accion: 'nombre', n: r.llave, nombre }, quien === 'reporta' ? { reporta: true } : quien === 'es' ? { es: es.trim() } : { nuevo: nuevo.trim() })
+        : { id: r.id, accion: 'ganador', n: r.llave, ronda: b.ronda, lados: b.lados, ganador: gana };
+      alListo(await decidirReporte(c));
+    } catch (e) { setMsg('No se pudo: ' + e.message); setOcup(false); }
+  };
+  const id = 'rep' + r.id;
+  return (
+    <div className="db-rep-form">
+      <div className="db-opc" role="group" aria-label="Qué corregir">
+        <button type="button" className={modo === 'nombre' ? 'on' : ''} onClick={() => setModo('nombre')}>Un nombre</button>
+        <button type="button" className={modo === 'ganador' ? 'on' : ''} onClick={() => setModo('ganador')}>El ganador</button>
+      </div>
+      {modo === 'nombre' ? <>
+        <span className="db-rep-p">¿Qué nombre está mal en la #{r.llave}?</span>
+        <div className="db-opc">{nombres.map((x) => <button key={x} type="button" className={nombre === x ? 'on' : ''} onClick={() => setNombre(x)}>{x}</button>)}</div>
+        {nombre ? <>
+          <span className="db-rep-p">«{nombre}» era…</span>
+          <div className="db-rep-q">
+            {r.de ? <label><input type="radio" name={id} checked={quien === 'reporta'} onChange={() => setQuien('reporta')} /> quien lo reportó <a href={'#/r/' + r.de}>({r.de})</a></label> : null}
+            <label><input type="radio" name={id} checked={quien === 'es'} onChange={() => setQuien('es')} /> otro de la Lista:
+              <input type="text" list={id + 'l'} value={es} placeholder="su nombre" onFocus={() => setQuien('es')} onChange={(e) => setEs(e.target.value)} maxLength={60} /></label>
+            <label><input type="radio" name={id} checked={quien === 'nuevo'} onChange={() => setQuien('nuevo')} /> alguien que no está en la Lista:
+              <input type="text" value={nuevo} placeholder="Agustin 🇺🇾" onFocus={() => setQuien('nuevo')} onChange={(e) => setNuevo(e.target.value)} maxLength={40} /></label>
+            <datalist id={id + 'l'}>{lista.map((x) => <option key={x} value={x} />)}</datalist>
+          </div>
+        </> : null}
+      </> : <>
+        <span className="db-rep-p">¿Qué batalla de la #{r.llave}?</span>
+        <select className="db-sel" value={bat} onChange={(e) => { setBat(e.target.value); setGana(''); }}>
+          <option value="">Elegí la batalla</option>
+          {batallas.map((x) => <option key={x.k} value={x.k}>{x.ronda} · {x.lados.join(' vs ')} (dice: {x.ganador || '—'})</option>)}
+        </select>
+        {b ? <>
+          <span className="db-rep-p">¿Quién la ganó?</span>
+          <div className="db-opc">{b.lados.map((x) => <button key={x} type="button" className={gana === x ? 'on' : ''} onClick={() => setGana(x)}>{x}{x === b.ganador ? ' (lo que dice hoy)' : ''}</button>)}</div>
+        </> : null}
+      </>}
+      <p className="db-rep-nota">Cambia sólo en la #{r.llave}. Lo aplica el ciclo en su próxima corrida y a quien lo reportó le llega a la campana.</p>
+      <div className="cu-btns">
+        <button type="button" className="btn verde chico" disabled={!listo || ocup} onClick={aplicar}>{ocup ? 'Guardando…' : 'Aplicar'}</button>
+        {msg ? <small role="status">{msg}</small> : null}
+      </div>
+    </div>
+  );
+}
+
+function Reportes({ rep, liga }) {
+  const [lista, setLista] = useState(rep);
+  useEffect(() => { setLista(rep); }, [rep]);
+  const [abierto, setAbierto] = useState(null);
+  const [msg, setMsg] = useState({});
+  const cerrar = async (r, accion) => {
+    setMsg((m) => Object.assign({}, m, { [r.id]: '…' }));
+    try { setLista(await decidirReporte({ id: r.id, accion })); setMsg((m) => Object.assign({}, m, { [r.id]: '' })); } catch (e) { setMsg((m) => Object.assign({}, m, { [r.id]: 'No se pudo: ' + e.message })); }
+  };
+  if (!lista.length) return null;
+  return (
+    <div><h3>Errores en las llaves <small>reportados</small></h3>
+      <ul>{lista.map((r) => {
+        const est = ESTADO_REP[r.estado];
+        const abiertoA = r.estado === '' || r.estado === 'no_pude';
+        return (
+          <li key={r.id}>
+            <div className="db-l1"><b>{/^\d+$/.test(r.llave) ? <a href={'#/llave/' + r.llave}>Llave #{r.llave}</a> : 'Llave en vivo'}</b>
+              <span className="db-chip">{QUE_REP[r.que] || r.que}</span>{est ? <span className={'db-chip ' + est[1]}>{est[0]}</span> : null}</div>
+            <small>{hace(r.t)}{r.batalla ? ' · ' + r.batalla : ''}{r.de ? <> · lo mandó <a href={'#/r/' + r.de}>{r.de}</a></> : null}</small>
+            {r.texto ? <p>{r.texto}</p> : null}
+            {r.estado === 'corregir' && r.fix ? <small>{r.fix.tipo === 'ganador' ? 'Ganó ' + r.fix.ganador + ' (' + r.fix.ronda + ')'
+              : '«' + r.fix.nombre + '» era ' + (r.fix.reporta ? 'quien lo reportó' : r.fix.es || r.fix.nuevo)}</small> : null}
+            {r.resultado ? <small>{r.resultado}</small> : null}
+            {abiertoA || r.estado === 'corregir' ? (
+              abierto === r.id ? <Corregir r={r} liga={liga} alListo={(l) => { setLista(l); setAbierto(null); }} /> : (
+                <div className="cu-btns">
+                  {/^\d+$/.test(r.llave) ? <button type="button" className="btn verde chico" onClick={() => setAbierto(r.id)}>{r.estado === 'corregir' ? 'Cambiar la corrección' : 'Corregir'}</button> : null}
+                  <button type="button" className="btn borde2 chico" disabled={msg[r.id] === '…'} onClick={() => cerrar(r, 'listo')}>Listo</button>
+                  <button type="button" className="btn borde2 chico" disabled={msg[r.id] === '…'} onClick={() => cerrar(r, 'prueba')}>Era una prueba</button>
+                  {msg[r.id] && msg[r.id] !== '…' ? <small role="status">{msg[r.id]}</small> : null}
+                </div>)
+            ) : null}
+          </li>
+        );
+      })}</ul>
+    </div>
+  );
+}
+
 // 🤝 lo que también te llega: los errores reportados en las llaves y los videos para revisar (lo de /sumate se fue con
 // la página, el 13/10/2026)
-function Llego({ d }) {
+function Llego({ d, liga }) {
   const rep = d.reportes || [], vs = d.videos || [];
   if (!rep.length && !vs.length) return <p className="pronto-p">Nada todavía: ni errores reportados en las llaves ni videos para revisar.</p>;
   return (
     <div className="db-llego">
       {vs.length ? <VideosRevisar vs={vs} /> : null}
-      {rep.length ? (
-        <div><h3>Errores en las llaves <small>reportados</small></h3>
-          <ul>{rep.map((r) => (
-            <li key={r.t + r.llave}>
-              <div className="db-l1"><b><a href={'#/llave/' + r.llave}>Llave #{r.llave}</a></b><span className="db-chip">{r.que}</span></div>
-              <small>{hace(r.t)}{r.batalla ? ' · ' + r.batalla : ''}{r.de ? <> · <a href={'#/r/' + r.de}>quién lo reportó</a></> : null}</small>
-              {r.texto ? <p>{r.texto}</p> : null}
-            </li>
-          ))}</ul>
-        </div>
-      ) : null}
+      {rep.length ? <Reportes rep={rep} liga={liga} /> : null}
     </div>
   );
 }
@@ -1019,7 +1158,7 @@ export function Dashboard({ dc, liga }) {
           {sec('LO QUE PIDE ATENCIÓN', null, <Atencion xs={at} />)}
           {(d.vivo || []).length ? sec('EN VIVO AHORA', 'se actualiza al abrir el Dashboard',
             <EnVivo vivo={d.vivo} liga={liga} aj={d.ajustes || {}} chat={d.chat} />) : null}
-          {sec('LO QUE TE LLEGÓ', null, <Llego d={d} />)}
+          {sec('LO QUE TE LLEGÓ', null, <Llego d={d} liga={liga} />)}
           {sec('ATAJOS', null, <ul className="db-atajos">{ATAJOS.map(([t, h]) => (
             <li key={h}><a href={h} target={h[0] === '/' ? undefined : '_blank'} rel={h[0] === '/' ? undefined : 'noopener noreferrer'}>{t} ↗</a></li>
           ))}</ul>)}

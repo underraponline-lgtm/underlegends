@@ -2204,6 +2204,57 @@ def cobra_ronda(ev, sv, fecha):
     return out
 
 
+def _del_evento(seccion, ev, sv, fecha):
+    """`[(nombre de la clave, valor)]` de una sección «evento · sv · fecha · nombre» de `datos/decisiones.json`."""
+    out = []
+    for clave, v in (_decisiones().get(seccion) or {}).items():
+        if clave.startswith('_'):
+            continue
+        p = [x.strip() for x in clave.split(' · ')]
+        if len(p) == 4 and norm(p[0]) == norm(ev) and p[1] == sv and p[2] in (fecha, '*') and p[3]:
+            out.append((p[3], v))
+    return out
+
+
+def quien_en_evento(ev, sv, fecha):
+    """`{nombre normalizado sin bandera: persona}`: quién era de verdad un nombre de ESA llave, si Dlx lo dijo.
+
+    `datos/decisiones.json`, `quien`: «evento · sv · fecha · nombre» -> `{"es": "AGUSTÍN51K", ...}`. Lo lee
+    `llaves_a_entrada.otro_en_evento()`, que cambia el nombre en las filas de ese evento y de ningún otro.
+
+    🔑 Dlx, 13/10/2026, a los reportes de la página (*«me llegaron los reportes pero ¿qué acciones puedo hacer acá?»*,
+    y a la propuesta, *«Sí, todas»*): «Agus» es un nombre común y el lector une por nombre, así que todo «Agus» iba a
+    Agus 🇦🇷 —la #464 de URBF era AGUSTÍN51K 🇨🇱, y la #423 y la #429 de FFA, un Agustin 🇺🇾 que no está en la Lista—.
+    `akas_a_mano.json` (`por_servidor`) lo resuelve para un servidor entero; esto, para un evento. Se decide desde el
+    Dashboard («Corregir» en el reporte) y lo aplica `bot/reportes.py --corregir`.
+    """
+    out = {}
+    for nombre, v in _del_evento('quien', ev, sv, fecha):
+        es = v.get('es') if isinstance(v, dict) else v
+        if es and norm(_sin_bandera(nombre)):
+            out[norm(_sin_bandera(nombre))] = str(es).strip()
+    return out
+
+
+def ganadores_forzados(ev, sv, fecha):
+    """`[{ronda, lados, ganador}]`: las batallas de ese evento cuyo ganador corrigió Dlx, AUNQUE LA LLAVE DIGA OTRO.
+
+    `datos/decisiones.json`, `ganador`: «evento · sv · fecha · ronda» -> `[{"lados": [...], "ganador": "X"}, ...]`.
+    Lo lee `llaves_a_entrada.ganador_forzado()`. ⚠️ No es `batallas`: ésa sólo completa lo que la llave NO dijo
+    (`decision_batalla()`), y un reporte de «el ganador está mal» es justo lo contrario (Dlx, 13/10/2026).
+    """
+    out = []
+    for ronda, v in _del_evento('ganador', ev, sv, fecha):
+        for b in (v if isinstance(v, list) else [v]):
+            if not isinstance(b, dict):
+                continue
+            lados = [str(x).strip() for x in (b.get('lados') or []) if str(x).strip()]
+            gana = str(b.get('ganador') or '').strip()
+            if len(lados) >= 2 and norm(_sin_bandera(gana)) in {norm(_sin_bandera(x)) for x in lados}:
+                out.append({'ronda': str(ronda).strip().lower(), 'lados': lados, 'ganador': gana})
+    return out
+
+
 def _persona(nombre, padron, akas):
     """El nombre de la Lista de Raperos al que se refiere, o None."""
     k = norm(_sin_bandera(nombre))

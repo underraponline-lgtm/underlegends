@@ -91,6 +91,20 @@
 .db-l1{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .db-chip{display:inline-block;padding:1px 6px;font:700 15px/1.5 "Barlow Condensed",sans-serif;text-transform:uppercase;border:1.5px solid var(--suave)}
 .db-chip.ojo{border-color:var(--magenta);color:var(--magenta-tx)}
+.db-chip.ok{border-color:var(--verde)}
+/* 📣 corregir un reporte de una llave (13/10/2026) */
+.db-rep-form{display:grid;gap:8px;padding:10px 12px;border-left:4px solid var(--verde);background:var(--caja)}
+.db-rep-p{font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:var(--gris);text-transform:uppercase}
+.db-opc{display:flex;flex-wrap:wrap;gap:6px}
+.db-opc button{font:700 13px/1.2 Archivo,sans-serif;color:var(--tinta);background:var(--fondo);border:1.5px solid var(--suave);border-radius:0;padding:6px 9px;cursor:pointer;overflow-wrap:anywhere;text-align:left}
+.db-opc button.on{border-color:var(--linea);background:var(--tinta);color:var(--fondo)}
+.db-opc button:focus-visible,.db-sel:focus-visible,.db-rep-q input[type=text]:focus-visible{outline:2px solid var(--verde);outline-offset:1px}
+.db-rep-q{display:grid;gap:8px}
+.db-rep-q label{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13.5px}
+.db-rep-q input[type=text],.db-sel{font:600 14px/1.3 Archivo,sans-serif;color:var(--tinta);background:var(--fondo);border:1.5px solid var(--linea);border-radius:0;padding:6px 8px;min-width:0;max-width:100%}
+.db-rep-q input[type=text]{flex:1 1 160px}
+.db-sel{width:100%}
+.db-rep-nota{margin:0;font-size:12.5px;color:var(--gris)}
 .db .db-sis{padding:10px 14px 0}
 .db .db-dias{padding:14px}
 .db-atajos{list-style:none;margin:0;padding:10px 14px 14px;display:flex;flex-wrap:wrap;gap:8px 18px}

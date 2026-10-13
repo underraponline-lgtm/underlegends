@@ -690,6 +690,21 @@ def _lo_barato(correr):
         if not corre(['bot/multiplicadores.py', '--aplicar'], callado=False):
             print('      ⚠️ no pude sortear los multiplicadores: quedan los que había')
 
+    # ── 0c · lo que Dlx corrigió desde un reporte ──────────────────
+    #
+    # 🔑 Dlx, 13/10/2026, a los reportes de las llaves (*«¿qué acciones puedo
+    # hacer acá?»* → *«Sí, todas»*): desde el Dashboard elige de quién era un
+    # nombre o quién ganó una batalla, y esto lo aplica. VA ANTES DEL LECTOR:
+    # la regla queda en `datos/decisiones.json` y el lector (paso 1) ya la usa
+    # al releer la llave, así las vitrinas de ESTA corrida salen corregidas.
+    # Ver `bot/reportes.py` (`corregir()`).
+    #
+    # ⚠️ NUNCA FRENA EL CICLO: lo que no se pudo vuelve como «no pude».
+    if correr:
+        paso('0c', 'lo corregido desde los reportes')
+        if not corre(['bot/reportes.py', '--corregir', '--aplicar'], callado=False):
+            print('      ⚠️ no pude aplicar las correcciones: quedan para la próxima corrida')
+
     paso(1, 'las llaves cargadas en `Entrada`')
     # ✅ EL LECTOR **YA ESCRIBE**, desde el 22/09/2026. Dlx: «pongamos
     # esto a prueba, estos 3 dias pongamos a prueba FFA, quiero ver si

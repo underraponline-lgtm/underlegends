@@ -1361,6 +1361,79 @@ def otro_en_servidor(filas, sv, mapa=None):
     return filas
 
 
+def _del_evento(filas):
+    f0 = filas[0] if filas else {}
+    return f0.get('evento') or '', f0.get('servidor') or '', f0.get('fecha') or ''
+
+
+def otro_en_evento(filas, decidir=None):
+    """Las filas de un evento con los nombres que EN ESE EVENTO eran otra persona, si Dlx lo dijo.
+
+    🔑 Dlx, 13/10/2026, a los reportes de la página (*«Sí, todas»*): «Agus» de la IDS V.2 (URBF, #464) era
+    AGUSTÍN51K, y el de dos eventos de FFA un Agustin 🇺🇾 que no está en la Lista; el lector se los daba a Agus 🇦🇷
+    porque el nombre coincide. `otro_en_servidor()` lo arregla para un servidor entero; esto, para UN evento. La
+    decisión vive en `datos/decisiones.json` (`quien`, ver `decidir.quien_en_evento()`) y la toma Dlx desde el
+    Dashboard. Mismo reemplazo que `otro_en_servidor()`: por nombre sin bandera, también adentro de un equipo y en la
+    nota `cobra: X`.
+    """
+    if not filas:
+        return filas
+    if decidir is None:
+        try:
+            import decidir as DEC
+            decidir = DEC.quien_en_evento
+        except Exception:                                # noqa: BLE001
+            return filas
+    try:
+        m = decidir(*_del_evento(filas)) or {}
+    except Exception:                                    # noqa: BLE001
+        return filas
+    if not m:
+        return filas
+    sv = _del_evento(filas)[1]
+    return otro_en_servidor(filas, sv, {sv: m})
+
+
+def ganador_forzado(filas, decidir=None):
+    """Las batallas de un evento cuyo ganador corrigió Dlx, con ESE ganador aunque la llave diga otro.
+
+    🔑 Dlx, 13/10/2026 (*«Sí, todas»*): el reporte «el ganador está mal» se corrige desde el Dashboard. La decisión
+    vive en `datos/decisiones.json` (`ganador`, ver `decidir.ganadores_forzados()`). Las filas de esa batalla se
+    rehacen —el ganador contra cada uno de los otros lados, como una triple— en el mismo lugar donde estaban, así el
+    motor las lee en el mismo orden. Una batalla que la llave no trae no se inventa: para eso está `batallas`.
+    """
+    if not filas:
+        return filas
+    if decidir is None:
+        try:
+            import decidir as DEC
+            decidir = DEC.ganadores_forzados
+        except Exception:                                # noqa: BLE001
+            return filas
+    try:
+        fz = decidir(*_del_evento(filas)) or []
+    except Exception:                                    # noqa: BLE001
+        return filas
+    for b in fz:
+        lados = {E.norm(x): x for x in b['lados']}
+        kg = E.norm(b['ganador'])
+        idx = [i for i, f in enumerate(filas) if E.norm(f.get('ronda')) == E.norm(b['ronda'])
+               and E.norm(f.get('ladoA')) in lados and E.norm(f.get('ladoB')) in lados]
+        if not idx or all(E.norm(filas[i].get('ganador')) == kg for i in idx):
+            continue
+        # el texto de cada lado como lo escribió la llave, si está; si no, el de la decisión
+        txt = dict(lados)
+        for i in idx:
+            for c in ('ladoA', 'ladoB'):
+                txt[E.norm(filas[i][c])] = filas[i][c]
+        base = dict(filas[idx[0]])
+        nota = '; '.join([x for x in re.split(r'\s*;\s*', str(base.get('notas') or ''))
+                          if x.lower().startswith('triple')] + ['ganador: corregido por Dlx'])
+        nuevas = [dict(base, ladoA=txt[kg], ladoB=txt[k], ganador=txt[kg], notas=nota) for k in lados if k != kg]
+        filas = filas[:idx[0]] + nuevas + [f for i, f in enumerate(filas) if i > idx[0] and i not in idx]
+    return filas
+
+
 #: 🔒 los eventos que corrigió `herramientas/recalcular_t1.py --aplicar`: ver `corregido_por_recalculo()`
 RECALCULADOS = os.path.join(BASE, 'datos', 'recalculados.json')
 
@@ -3226,7 +3299,30 @@ def _self_check():
     _fo_cob = otro_en_servidor([{'ladoA': 'Sin límites 🇵🇪', 'ladoB': 'Yo mc 🇨🇱', 'ganador': '',
                                  'notas': 'cobra: Sin límites 🇵🇪; cobra: Yo mc 🇨🇱; nadie siguió: ✅ Decidir'}],
                                'FFA', mapa={'FFA': {'yomc': 'Cronox'}})
+    # 📣 lo corregido desde un reporte (13/10/2026): el nombre, sólo en ESE evento; el ganador, aunque la llave diga otro
+    _ev464 = [{'evento': 'IDS V.2', 'servidor': 'URBF', 'fecha': '12/10', 'ronda': 'cuartos', 'ladoA': 'Agus 🇦🇷',
+               'ladoB': 'Korey', 'ganador': 'Agus 🇦🇷', 'notas': ''},
+              {'evento': 'IDS V.2', 'servidor': 'URBF', 'fecha': '12/10', 'ronda': 'final',
+               'ladoA': 'Presagio, NC, Agus', 'ladoB': 'Guess, Nemi', 'ganador': 'Presagio, NC, Agus', 'notas': ''}]
+    _qe = lambda ev, sv, fe: {'agus': 'AGUSTÍN51K'} if (ev, sv, fe) == ('IDS V.2', 'URBF', '12/10') else {}  # noqa: E731
+    _oe = otro_en_evento([dict(f) for f in _ev464], decidir=_qe)
+    _oe_otro = otro_en_evento([dict(f, fecha='13/10') for f in _ev464], decidir=_qe)
+    _gf_t = [{'ronda': 'octavos', 'ladoA': 'MATICERNA', 'ladoB': 'Agus', 'ganador': 'MATICERNA', 'notas': 'triple (3 bandas)'},
+             {'ronda': 'octavos', 'ladoA': 'MATICERNA', 'ladoB': 'Henry', 'ganador': 'MATICERNA', 'notas': 'triple (3 bandas)'},
+             {'ronda': 'final', 'ladoA': 'PRAISERIZA', 'ladoB': 'Liberia', 'ganador': 'PRAISERIZA', 'notas': ''}]
+    _gf = ganador_forzado([dict(f, evento='X', servidor='FFA', fecha='07/10') for f in _gf_t], decidir=lambda *a: [
+        {'ronda': 'octavos', 'lados': ['MATICERNA', 'Agus', 'Henry'], 'ganador': 'Henry'},
+        {'ronda': 'final', 'lados': ['PRAISERIZA', 'Liberia'], 'ganador': 'PRAISERIZA'}])
     casos = [
+        ('un nombre corregido desde un reporte cambia SÓLO en ese evento, también adentro de un equipo, y en otra fecha '
+         'no (Agus en la IDS V.2 era AGUSTÍN51K, 13/10/2026)',
+         _oe[0]['ladoA'] == 'AGUSTÍN51K' and _oe[0]['ganador'] == 'AGUSTÍN51K' and _oe[0]['ladoB'] == 'Korey'
+         and _oe[1]['ladoA'] == 'Presagio, NC, AGUSTÍN51K' and _oe_otro[0]['ladoA'] == 'Agus 🇦🇷'),
+        ('el ganador corregido desde un reporte rehace esa batalla en su lugar —una triple, contra cada otro lado— y la '
+         'que ya estaba bien no se toca',
+         [(f['ladoA'], f['ladoB'], f['ganador']) for f in _gf] == [('Henry', 'MATICERNA', 'Henry'), ('Henry', 'Agus', 'Henry'),
+                                                                   ('PRAISERIZA', 'Liberia', 'PRAISERIZA')]
+         and _gf[0]['notas'] == 'triple (3 bandas); ganador: corregido por Dlx' and _gf[2]['notas'] == ''),
         ('la mitad de una llave ya cargada, con otro nombre, es la ya cargada (#409 = #366, FFA WORLD CUP); con dos '
          'batallas, otro servidor u otra semana, no',
          ya_cargada('(sin titulo)', 'FFA', '27/09', [{'ladoA': 'FULLY', 'ladoB': 'SOL'}, {'ladoA': 'Snow', 'ladoB': 'DXG'},
@@ -3844,6 +3940,8 @@ def main():
             limpias = marcar_paga(limpias)
             # y el nombre que en ESE servidor es otra persona (Carlosss y Number VE en DDF): ver `otro_en_servidor()`
             limpias = otro_en_servidor(limpias, codigo_servidor((g['llaves'][0] if g['llaves'] else {}).get('guild'))[0])
+            # y el que en ESE evento era otra persona, si Dlx lo dijo desde un reporte (13/10/2026): `otro_en_evento()`
+            limpias = otro_en_evento(limpias)
 
         # 🔴 SIN CAMPEÓN NO SE SUMA NADA. La guía de formatos de Dlx
         # (23/09/2026) abre con *«esto se decide ANTES de sumar nada»*, y
@@ -3985,7 +4083,10 @@ def main():
         # y las filas que sumó ✅ Decidir, con los nombres que en ESE servidor son otra persona (`otro_en_servidor()` ya
         # corrió sobre las leídas; aplicarlo otra vez no cambia lo que ya estaba): «Yo mc» en FFA es Cronox (07/10/2026)
         if decididas and ligas:
-            limpias = otro_en_servidor(limpias, ligas[0])
+            limpias = otro_en_evento(otro_en_servidor(limpias, ligas[0]))
+        # 🔑 y el ganador que Dlx corrigió desde un reporte, aunque la llave diga otro (13/10/2026): `ganador_forzado()`.
+        # Al final, con todas las filas —también las de ✅ Decidir— y los nombres ya corregidos
+        limpias = ganador_forzado(limpias)
         # 🔑 Y LOS WALK-INS, OTRA VEZ, CON LAS FILAS DE ✅ DECIDIR (07/10/2026). Se marcaban antes de sumarlas, así que
         # quien jugó una batalla decidida no constaba en esa ronda: en la DEM UZBEKISTAN (FFA, 06/10) Provenza ganó sus
         # cuartos como «za» —«pasó Za», Dlx— y salía «Walk-in 2» en semis; y Saz, que entró de reemplazo a esos

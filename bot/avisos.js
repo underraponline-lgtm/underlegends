@@ -2171,6 +2171,9 @@ const RUTAS = {
   '/avisos/videos-ciclo': 'GET', '/avisos/videos-estados': 'POST', '/avisos/dueno/video': 'POST',
   // 📅 lo agendado con /agendar, para el ciclo: con su clave. Ver `agendar()`
   '/avisos/agenda-ciclo': 'GET',
+  // 📣 qué hacer con un reporte de una llave (13/10/2026, Dlx: «Sí, todas»): lo decide Dlx desde el Dashboard y el
+  // ciclo, con su clave, avisa lo que aplicó. Ver `validarDecisionReporte()`, `duenoReporte()` y `reportesEstados()`
+  '/avisos/dueno/reporte': 'POST', '/avisos/reportes-estados': 'POST',
   // 📣 seguir a un organizador, con tu sesión. Ver `seguirOrg()`
   '/avisos/seguir-org': 'POST',
 };
@@ -2528,6 +2531,45 @@ export function validarReporte(d, id, ahora) {
     return { error: 'nueva', estado: 403, desde: new Date(creada + EDAD_MIN_DIAS * DIA_MS).toISOString() };
   }
   return { llave, que, texto, batalla };
+}
+
+/**
+ * 📣 ¿VALE LO QUE DLX DECIDIÓ DE UN REPORTE? (13/10/2026, a «¿qué acciones puedo hacer acá?»: *«Sí, todas»*).
+ * `{id, accion, fix}` si vale, `{error}` si no. Pura, sin red: `bot/avisos_prueba.mjs`.
+ *
+ * · `listo` y `prueba` lo cierran (`fix` null).
+ * · `nombre`: en el evento `n`, el nombre `nombre` de la llave era otra persona: quien lo reportó (`reporta`), una
+ *   de la Lista (`es`) o alguien que no está (`nuevo`). Sólo una de las tres.
+ * · `ganador`: en el evento `n`, la batalla de `ronda` entre `lados` la ganó `ganador` (uno de los lados).
+ * Lo aplica el ciclo (`bot/reportes.py --corregir`), que valida además contra la Lista y la llave de verdad.
+ */
+export function validarDecisionReporte(d) {
+  const id = Number(d && d.id);
+  if (!Number.isInteger(id) || id < 1) return { error: 'falta el reporte' };
+  const accion = String((d && d.accion) || '');
+  if (accion === 'listo' || accion === 'prueba') return { id, accion, fix: null };
+  const n = String((d && d.n) || '');
+  if (!/^\d{1,6}$/.test(n)) return { error: 'falta el evento' };
+  // un texto corto, de una línea y sin `<>`: va a una hoja y a la campana de alguien
+  const txt = (x, max) => {
+    const t = String(x == null ? '' : x).replace(/\s+/g, ' ').trim();
+    return t && t.length <= max && !/[<>]/.test(t) ? t : '';
+  };
+  if (accion === 'nombre') {
+    const nombre = txt(d.nombre, 80);
+    if (!nombre) return { error: 'falta el nombre' };
+    if (d.reporta === true) return { id, accion, fix: { tipo: 'nombre', n, nombre, reporta: true } };
+    const es = txt(d.es, 60), nuevo = txt(d.nuevo, 40);
+    if (!!es === !!nuevo) return { error: 'elegí de quién es' };
+    return { id, accion, fix: es ? { tipo: 'nombre', n, nombre, es } : { tipo: 'nombre', n, nombre, nuevo } };
+  }
+  if (accion === 'ganador') {
+    const ronda = txt(d.ronda, 30), ganador = txt(d.ganador, 120);
+    const lados = Array.isArray(d.lados) ? d.lados.map((x) => txt(x, 120)).filter(Boolean) : [];
+    if (!ronda || lados.length < 2 || lados.length > 6 || !lados.includes(ganador)) return { error: 'falta la batalla' };
+    return { id, accion, fix: { tipo: 'ganador', n, ronda, lados, ganador } };
+  }
+  return { error: 'no sé qué hacer' };
 }
 
 // ── el precio por cabeza ───────────────────────────────────────────────
@@ -3555,6 +3597,36 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ id: Number(d.id), si: d.si }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 📣 QUÉ HACER CON UN REPORTE DE UNA LLAVE: sólo Dlx, como los videos (13/10/2026). Ver `validarDecisionReporte()`
+  if (ruta === '/avisos/dueno/reporte') {
+    const crudo = await req.text();
+    if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const v = validarDecisionReporte(d);
+    if (v.error) return json(v, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (q.id !== DUENO) {
+      console.warn('[seguridad] decidir un reporte lo pidió alguien que no es el dueño');
+      return json({ error: 'no' }, 403);
+    }
+    return elObjeto(env).fetch('https://avisos/dueno-reporte', {
+      method: 'POST', body: JSON.stringify(v), headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 📣 Y LO QUE EL CICLO APLICÓ DE CADA UNO: con su clave (el objeto le avisa a quien reportó)
+  if (ruta === '/avisos/reportes-estados') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 20000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/reportes-estados', { method: 'POST', body: crudo,
+      headers: { 'content-type': 'application/json' } });
+  }
   // 🧰 LA IMAGEN DEL KIT, DE LA TAREA `kit.yml` (`bot/kit.py`): con la clave del ciclo
   if (ruta === '/avisos/kit-listo') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -3993,6 +4065,11 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS reportes (id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
         "quien TEXT NOT NULL, llave TEXT NOT NULL, que TEXT NOT NULL, texto TEXT NOT NULL DEFAULT '', " +
         "batalla TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
+      // 📣 y qué decidió Dlx de cada uno y qué hizo el ciclo (13/10/2026): ver `duenoReporte()` y `reportesEstados()`
+      for (const c of ["estado TEXT NOT NULL DEFAULT ''", "fix TEXT NOT NULL DEFAULT ''",
+        "resultado TEXT NOT NULL DEFAULT ''", 't_estado INTEGER NOT NULL DEFAULT 0']) {
+        try { this.sql.exec('ALTER TABLE reportes ADD COLUMN ' + c); } catch (e) { /* ya estaba */ }
+      }
       // 🔑 LOS EVENTOS CANCELADOS (01/10/2026): ver `cancelado()` y `cancelaciones()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS cancelados (id TEXT PRIMARY KEY, sv TEXT NOT NULL, ' +
         "cuerpo TEXT NOT NULL, t INTEGER NOT NULL, por TEXT NOT NULL DEFAULT '')");
@@ -4206,6 +4283,8 @@ export class Avisos {
       if (ruta === '/video-reportar') return this.videoReportar(d);
       if (ruta === '/videos-estados') return json(this.videosEstados(d));
       if (ruta === '/dueno-video') return json(this.duenoVideo(d));
+      if (ruta === '/dueno-reporte') return json(await this.duenoReporte(d));
+      if (ruta === '/reportes-estados') return json(await this.reportesEstados(d));
       if (ruta === '/alta') return await this.alta(d);
       if (ruta === '/baja') return this.baja(d);
       if (ruta === '/probar') return this.probar(d);
@@ -6780,13 +6859,68 @@ export class Avisos {
   async colaReportes(ahora) {
     // lo de más de un mes se va: el ciclo ya lo pasó a ✅ Decidir
     this.sql.exec('DELETE FROM reportes WHERE t < ?', ahora - 30 * DIA_MS);
-    const cola = this.sql.exec('SELECT id, quien, llave, que, texto, batalla, t FROM reportes ' +
+    // 📣 con lo que decidió Dlx (`estado`, `fix`): el ciclo aplica lo de `corregir` (13/10/2026)
+    const cola = this.sql.exec('SELECT id, quien, llave, que, texto, batalla, t, estado, fix FROM reportes ' +
       'ORDER BY id DESC LIMIT ?', REPORTES_COLA).toArray().reverse();
     try {
       await this.env.KV.put('reportes', JSON.stringify(cola));
     } catch (e) {
       this.guardar('ultimo_error', { t: ahora, ruta: '/reportar', error: String(e).slice(0, 160) });
     }
+  }
+
+  /**
+   * 📣 Dlx decide qué hacer con un reporte (13/10/2026, *«Sí, todas»*): `listo` y `prueba` lo cierran ya; `nombre` y
+   * `ganador` quedan en `corregir` para el ciclo (`bot/reportes.py --corregir`), que lo aplica y avisa por
+   * `reportesEstados()`. Se puede cambiar de idea mientras no esté aplicado. Devuelve la lista nueva del Dashboard.
+   */
+  async duenoReporte(d) {
+    const ahora = Date.now();
+    const r = this.sql.exec('SELECT id, estado FROM reportes WHERE id = ?', Number(d.id)).toArray()[0];
+    if (!r) return { error: 'ya no está' };
+    if (r.estado === 'aplicado') return { error: 'ya está aplicado' };
+    this.sql.exec('UPDATE reportes SET estado = ?, fix = ?, resultado = ?, t_estado = ? WHERE id = ?',
+      d.fix ? 'corregir' : String(d.accion), d.fix ? JSON.stringify(d.fix) : '', '', ahora, Number(d.id));
+    await this.colaReportes(ahora);
+    return { ok: true, reportes: this.reportesDueno(ahora) };
+  }
+
+  /**
+   * 📣 Lo que el ciclo hizo con cada corrección: `{estados: {id: ['aplicado' | 'no_pude', 'qué cambió']}}`. Lo
+   * aplicado le llega a quien lo reportó a su campana (la bandeja de la página, nunca por DM).
+   */
+  async reportesEstados(d) {
+    const ahora = Date.now();
+    let n = 0;
+    for (const [id, x] of Object.entries((d && d.estados) || {})) {
+      if (!/^\d{1,12}$/.test(id) || !Array.isArray(x)) continue;
+      const est = x[0] === 'aplicado' ? 'aplicado' : 'no_pude';
+      const msg = String(x[1] || '').replace(/\s+/g, ' ').trim().slice(0, 200);
+      const r = this.sql.exec('SELECT quien, llave, estado FROM reportes WHERE id = ?', Number(id)).toArray()[0];
+      // abierto también: lo que Dlx decidió en el chat y se aplicó a mano (los de Agus, 13/10/2026)
+      if (!r || (r.estado !== 'corregir' && r.estado !== '')) continue;
+      this.sql.exec('UPDATE reportes SET estado = ?, resultado = ?, t_estado = ? WHERE id = ?', est, msg, ahora, Number(id));
+      if (est === 'aplicado') {
+        const num = /^\d+$/.test(r.llave) ? r.llave : '';
+        this.aBandeja(r.quien, 'reporte:' + id, 'reporte', num ? '✅ Corregimos la llave #' + num : '✅ Corregimos la llave',
+          (msg ? msg + '. ' : '') + 'Gracias por avisar.', num ? HUB + '/freestyle-rap/llave/' + num : HUB + HUB_EVENTOS, '', ahora);
+      }
+      n++;
+    }
+    if (n) await this.colaReportes(ahora);
+    return { ok: true, n };
+  }
+
+  /** Los reportes para el Dashboard: los abiertos y los que esperan al ciclo, y lo decidido en los últimos 3 días. */
+  reportesDueno(ahora) {
+    return this.sql.exec('SELECT r.id, r.t, r.llave, r.que, r.texto, r.batalla, r.estado, r.fix, r.resultado, i.k ' +
+      "FROM reportes r LEFT JOIN idk i ON i.id = r.quien WHERE r.estado IN ('', 'corregir') OR r.t_estado > ? " +
+      'ORDER BY r.t DESC LIMIT 30', ahora - 3 * DIA_MS).toArray().map((f) => {
+      let fix = null;
+      try { fix = f.fix ? JSON.parse(f.fix) : null; } catch (e) { fix = null; }
+      return { id: f.id, t: f.t, llave: f.llave, que: f.que, texto: String(f.texto || '').slice(0, 300), batalla: f.batalla,
+        de: f.k || '', estado: f.estado || '', fix, resultado: f.resultado || '' };
+    });
   }
 
   // ── «tu servidor» ────────────────────────────────────────────────────
@@ -8373,9 +8507,8 @@ export class Avisos {
           ritmo: { normal: CHAT_ENTRE / MIN, batalla: CHAT_ENTRE_TODO / MIN } } },
       // 🤝 los errores reportados en las llaves (los 10 últimos), con la clave de la página de quien lo mandó si se la
       // conoce. Las postulaciones de /sumate se fueron con la página (13/10/2026)
-      reportes: this.sql.exec('SELECT r.t, r.llave, r.que, r.texto, r.batalla, i.k FROM reportes r ' +
-        'LEFT JOIN idk i ON i.id = r.quien ORDER BY r.t DESC LIMIT 10').toArray()
-        .map((f) => ({ t: f.t, llave: f.llave, que: f.que, texto: String(f.texto || '').slice(0, 300), batalla: f.batalla, de: f.k || '' })),
+      // 📣 con qué decidió Dlx y qué hizo el ciclo (13/10/2026): ver `reportesDueno()`
+      reportes: this.reportesDueno(ahora),
       dias,
       sesiones: this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM sesiones WHERE vence > ?', ahora).toArray()[0].n,
       sistema: {

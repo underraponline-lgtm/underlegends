@@ -233,6 +233,51 @@ def reescribir(h, nums, nuevas):
     return len(viejas) - len(quedan)
 
 
+def renombrar(num, viejo, nuevo, cc='', dry=True):
+    """«viejo» pasa a ser «nuevo» en las filas de UN evento, en `Resultados` y `1v1`. `{hoja: celdas cambiadas}`.
+
+    🔑 Dlx, 13/10/2026, a los reportes de la página (*«Sí, todas»*): «Agus» de la #464 era AGUSTÍN51K. La regla
+    queda en `datos/decisiones.json` (`quien`) y el lector la aplica cada vez que relee esa llave, pero el ciclo relee
+    sólo los últimos 25 mensajes de cada canal: un evento de hace una semana ya no vuelve a pasar por el lector, y
+    sus filas se corrigen acá. Es un cambio de NOMBRE, no de resultado: los puestos y los puntos son los mismos.
+
+    ⚠️ EN SU LUGAR, no con `reescribir()`: ése deja el evento al final de la tabla, y `rankings.py` lee la racha en
+    el orden de las filas.
+    ⚠️ Si el evento ya tiene a «nuevo» en `Resultados`, no se toca nada (`ValueError`): serían dos personas en una.
+    ⚠️ Idempotente: con el nombre ya cambiado, cambia 0 celdas y no escribe.
+    """
+    import requests
+    from comun.claves import clave
+    kv, kn = clave(viejo), clave(nuevo)
+    if not kv or not kn or kv == kn:
+        raise ValueError('nombres vacíos o iguales: «%s» → «%s»' % (viejo, nuevo))
+    planes = []
+    for hoja, cols in (('Resultados', (4,)), ('1v1', (4, 5, 6, 7))):
+        h = Hoja(hoja)
+        filas = [list(f) + [''] * (h.ancho - len(f)) for f in _filas_crudas(h)]
+        del_ev = [f for f in filas if str(f[0]).strip() == str(num).strip()]
+        if hoja == 'Resultados' and any(clave(f[4]) == kn for f in del_ev) and any(clave(f[4]) == kv for f in del_ev):
+            raise ValueError('el #%s ya tiene a «%s» y a «%s»: no los junto' % (num, viejo, nuevo))
+        n = 0
+        for f in del_ev:
+            for c in cols:
+                if clave(f[c]) == kv:
+                    f[c] = nuevo
+                    n += 1
+                    if hoja == 'Resultados':
+                        f[5] = cc or ''
+        planes.append((h, filas, n))
+    if not dry:
+        for h, filas, n in planes:
+            if not n:
+                continue
+            ult = chr(ord('A') + h.ancho - 1)
+            _pedir('PUT', '/values/%s?valueInputOption=RAW' % requests.utils.quote(
+                '%s!A%d:%s%d' % (h.nombre, h.fila_datos, ult, h.fila_datos + len(filas) - 1)),
+                json={'values': filas})
+    return {h.nombre: n for h, _f, n in planes}
+
+
 def guardar_varios(evs, dry=True):
     """Escribe varios eventos en las dos hojas. `{num: (resultados, duelos)}`.
 

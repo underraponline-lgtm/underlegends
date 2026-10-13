@@ -930,6 +930,35 @@ const ok = (cond, que, det) => {
       && nadie.monto === 50 && s0.semana === '2026-10-12' && s0.proximo === '2026-10-19',
     'el premio de la semana: los días distintos de la semana pasada (el lunes de ésta no), y tocar dos veces paga una',
     JSON.stringify([s0, s1, cobrado]));
+    // 📣 los reportes de las llaves, con acciones (13/10/2026, Dlx: «Sí, todas»)
+    const V = A.validarDecisionReporte;
+    const vn = V({ id: 6, accion: 'nombre', n: '464', nombre: 'Agus', reporta: true });
+    const vg = V({ id: 3, accion: 'ganador', n: '401', ronda: 'Final', lados: ['Zetryko', 'Abyssus'], ganador: 'Zetryko' });
+    ok(V({ id: 1, accion: 'prueba' }).accion === 'prueba' && vn.fix && vn.fix.reporta === true && vn.fix.n === '464'
+      && V({ id: 4, accion: 'nombre', n: '423', nombre: 'Agus', nuevo: 'Agustin 🇺🇾' }).fix.nuevo === 'Agustin 🇺🇾'
+      && V({ id: 4, accion: 'nombre', n: '423', nombre: 'Agus', es: 'X', nuevo: 'Y' }).error
+      && V({ id: 4, accion: 'nombre', n: '423', nombre: 'Agus' }).error
+      && V({ id: 4, accion: 'nombre', n: 'v:1', nombre: 'Agus', es: 'X' }).error
+      && V({ id: 4, accion: 'nombre', n: '423', nombre: '<b>', es: 'X' }).error
+      && vg.fix.ganador === 'Zetryko' && V({ id: 3, accion: 'ganador', n: '401', ronda: 'Final', lados: ['A', 'B'], ganador: 'C' }).error
+      && V({ id: 0, accion: 'listo' }).error && V({ id: 2, accion: 'borrar' }).error,
+    'lo que Dlx decide de un reporte se valida: una sola persona por nombre, el ganador es uno de los lados, sin HTML',
+    JSON.stringify([vn, vg]));
+    o.sql.exec("INSERT INTO reportes (quien, llave, que, texto, t) VALUES ('100000021', '464', 'nombre', 'soy yo', ?)", martes);
+    o.sql.exec("INSERT INTO reportes (quien, llave, que, texto, t) VALUES ('100000022', '360', 'otro', 'probando', ?)", martes);
+    const [r1, r2] = o.sql.exec('SELECT id FROM reportes ORDER BY id').toArray().map((x) => x.id);
+    const d1 = await o.duenoReporte(V({ id: r1, accion: 'nombre', n: '464', nombre: 'Agus', reporta: true }));
+    const d2 = await o.duenoReporte(V({ id: r2, accion: 'prueba' }));
+    const e1 = await o.reportesEstados({ estados: { [r1]: ['aplicado', '«Agus» en la #464 ahora es AGUSTÍN51K'], [r2]: ['aplicado', 'x'] } });
+    const band = o.sql.exec("SELECT titulo, cuerpo, url FROM bandeja WHERE quien = '100000021'").toArray();
+    const fin = o.reportesDueno(martes + 60000);
+    ok(d1.ok && d1.reportes.find((x) => x.id === r1).estado === 'corregir' && d2.ok && e1.n === 1
+      && band.length === 1 && band[0].titulo === '✅ Corregimos la llave #464' && band[0].cuerpo.startsWith('«Agus» en la #464')
+      && band[0].url.endsWith('/freestyle-rap/llave/464')
+      && !o.sql.exec("SELECT 1 FROM bandeja WHERE quien = '100000022'").toArray().length
+      && fin.find((x) => x.id === r1).estado === 'aplicado' && (await o.duenoReporte(V({ id: r1, accion: 'listo' }))).error,
+    'un reporte: Dlx elige qué corregir, el ciclo dice que lo aplicó y a quien lo mandó le llega a su campana (sólo lo '
+    + 'que se corrigió, y lo aplicado ya no se cambia)', JSON.stringify([d1.reportes, e1, band]));
   }
 }
 

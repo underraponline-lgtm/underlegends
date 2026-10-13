@@ -111,6 +111,8 @@ const AVISOS = {
   '/api/avisos/mis-videos': 'POST',
   '/api/avisos/video-reportar': 'POST',
   '/api/avisos/dueno/video': 'POST',
+  // 📣 qué hacer con un reporte de una llave (13/10/2026, sólo Dlx). ⚠️ `reportes-estados` NO va acá: es del ciclo
+  '/api/avisos/dueno/reporte': 'POST',
   // 📣 seguir a un organizador (12/10/2026): con tu sesión. Ver `seguirOrg()` en bot/avisos.js
   '/api/avisos/seguir-org': 'POST',
 };
