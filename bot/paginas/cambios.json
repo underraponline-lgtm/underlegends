@@ -11,6 +11,23 @@
  ],
  "cambios": [
   {
+   "version": "2.93",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T18:11:00-04:00",
+   "titulo": "«¿Quién gana?», el premio de la semana y el vs nuevo",
+   "items": [
+    "🎁 **Premio de la semana**: en el Inicio, con tu cuenta, cobrás 50 Puntos de Tienda y 50 más por cada día que entraste la semana pasada (hasta 400). Una vez por semana.",
+    "⏳ Debajo de tu barra, cuánto falta para que termine la T1 y si estás adentro del top 16 del torneo de cierre (o a cuánto de OVR).",
+    "👀 **Tus seguidos hoy**: quién de la gente que seguís juega hoy o ganó ayer.",
+    "🗳️ **¿Quién gana?**: en el chat de tu servidor, votá antes de cada cruce. Sin plata: al final dice si el público acertó.",
+    "🖼️ La imagen del vs, más ordenada: el cara a cara, los últimos 5 duelos, la racha, la letra de cada uno con su color y el pronóstico con su barra.",
+    "🎲 Las apuestas ya no necesitan el nivel «A full»: el admin de cada servidor las puede prender con `/settings`.",
+    "📺 En Socios, **Lo que publican**: el último video de cada servidor y todas sus redes juntas. Compartimos sus eventos y también lo que suben.",
+    "🧵 El merchandising de ejemplo, con más detalle: tela, costuras y el logo estampado.",
+    "🔧 Las páginas de cada servidor volvieron a abrir, y el bot en vivo ya no repite «Arrancó» cuando se publica una llave corregida."
+   ]
+  },
+  {
    "version": "2.92",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T16:02:00-04:00",
