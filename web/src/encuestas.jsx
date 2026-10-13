@@ -10,11 +10,31 @@ import { TuTemporada, TusEventos } from './medio.jsx';
 const DivisionPrevia = lazy(() => import('./divisiones.jsx').then((m) => ({ default: m.DivisionPrevia })));
 
 const suma = (cu) => Object.values(cu).reduce((s, v) => s + (Number(v) || 0), 0);
+// 🗳️ LA ENCUESTA CORTA DEL INICIO (Dlx, 13/10/2026: «poco a poco más gente la estaba viendo y reaccionando… que
+// ocupe bastante era una mala opción»): la pregunta y una línea de cómo va, y las opciones recién al tocar «Votar».
+// En Publicaciones sigue entera. Devuelve la línea, o null si no hay que plegar
+function comoVa(E, cu, mio, nombre) {
+  const tot = suma(cu);
+  const top = Object.keys(cu).sort((a, b) => (cu[b] || 0) - (cu[a] || 0))[0];
+  if (mio) return '✓ Votaste a ' + nombre(mio) + (top && tot ? ' · va ganando ' + nombre(top) : '');
+  return tot && top ? 'Va ganando ' + nombre(top) + ' · ' + votos(tot) : 'Todavía nadie votó: ¿sos el primero?';
+}
+function Plegada({ linea, mio, children }) {
+  const [abierta, setAbierta] = useState(false);
+  return (
+    <>
+      <div className="en-corta"><p className="en-va">{linea}</p>
+        <button type="button" className={'btn chico ' + (abierta ? 'borde2' : 'verde')} aria-expanded={abierta}
+          onClick={() => setAbierta(!abierta)}>{abierta ? 'Cerrar' : mio ? 'Cambiar mi voto' : 'Votar'}</button></div>
+      {abierta ? children : null}
+    </>
+  );
+}
 const votos = (n) => n + (n === 1 ? ' voto' : ' votos');
 const pct = (n, tot) => (tot ? Math.round(100 * n / tot) : 0) + '%';
 
 // las dos, también en Publicaciones (votar ahí mismo: Dlx, 02/10/2026)
-export function X2({ liga, enc, E }) {
+export function X2({ liga, enc, E, corta }) {
   const cu = enc.cuenta(E.id);
   const tot = suma(cu);
   const mio = enc.mio[E.id];
@@ -25,7 +45,8 @@ export function X2({ liga, enc, E }) {
     <article className="en">
       <div className="en-cab"><span>EL ×{x} DE LA SEMANA QUE VIENE</span><em>CIERRA {liga.dia(E.hasta).toUpperCase()}</em></div>
       <h3 className="en-p">¿Qué servidor se lleva el ×{x}?</h3>
-      <p className="en-b">El más votado sale del sorteo del lunes con ×{x} como mínimo. {tot ? votos(tot) : 'Todavía sin votos'}{tot < min ? ' · hacen falta ' + min : ''}.</p>
+      {corta ? null : <p className="en-b">El más votado sale del sorteo del lunes con ×{x} como mínimo. {tot ? votos(tot) : 'Todavía sin votos'}{tot < min ? ' · hacen falta ' + min : ''}.</p>}
+      {(corta ? (ops) => <Plegada linea={comoVa(E, cu, mio, siglaDe)} mio={mio}>{ops}</Plegada> : (ops) => ops)(<>
       <div className="en-ops">
         {E.op.map((sv) => {
           const n = Number(cu[sv] || 0);
@@ -38,11 +59,12 @@ export function X2({ liga, enc, E }) {
         })}
       </div>
       <p className="en-e" aria-live="polite">{enc.pie(E, siglaDe)}</p>
+      </>)}
     </article>
   );
 }
 
-export function Elegido({ liga, enc, E }) {
+export function Elegido({ liga, enc, E, corta }) {
   const [q, setQ] = useState('');
   const cu = enc.cuenta(E.id);
   const tot = suma(cu);
@@ -62,7 +84,8 @@ export function Elegido({ liga, enc, E }) {
     <article className="en">
       <div className="en-cab"><span>EL ELEGIDO · MOST WANTED</span><em>CIERRA {liga.dia(E.hasta).toUpperCase()}</em></div>
       <h3 className="en-p">¿A quién salimos a buscar?</h3>
-      <p className="en-b">El más votado entra al Most Wanted como <b>El Elegido</b>. {tot ? votos(tot) : 'Todavía sin votos'}{tot < min ? ' · hacen falta ' + min : ''}.</p>
+      {corta ? null : <p className="en-b">El más votado entra al Most Wanted como <b>El Elegido</b>. {tot ? votos(tot) : 'Todavía sin votos'}{tot < min ? ' · hacen falta ' + min : ''}.</p>}
+      {(corta ? (ops) => <Plegada linea={comoVa(E, cu, mio, nombre)} mio={mio}>{ops}</Plegada> : (ops) => ops)(<>
       <div className="en-ops">
         {ver.length ? ver.map((op) => {
           const f = liga.fila(op);
@@ -81,6 +104,7 @@ export function Elegido({ liga, enc, E }) {
       <input type="search" className="en-busca" placeholder={'Buscá entre los ' + E.op.length} aria-label="Buscar a quién votar"
         value={q} onChange={(e) => setQ(e.target.value)} />
       <p className="en-e" aria-live="polite">{enc.pie(E, nombre)}</p>
+      </>)}
     </article>
   );
 }
@@ -91,7 +115,7 @@ export function Elegido({ liga, enc, E }) {
 // Y si ya votaste en todas las abiertas, Tus eventos va primero y las encuestas quedan de segunda página (Dlx,
 // 30/09: «que encuesta sea la segunda página de ese panel si ya votaste»). El orden se decide al abrir la página: si
 // cambiara en el momento de votar, lo que la persona está mirando se le iría de abajo del dedo.
-export function Encuestas({ liga, enc, dc }) {
+export function Encuestas({ liga, enc, dc, corta }) {
   const x2 = liga.encuesta('x2');
   const el = liga.encuesta('elegido');
   const abiertas = [x2, el].filter(Boolean);
@@ -113,8 +137,8 @@ export function Encuestas({ liga, enc, dc }) {
   const items = [
     { c: 'encuestas', et: 'Encuestas', t: 'Encuestas', cuerpo: (
       <div className={'en-g' + (x2 && el ? ' dos' : '')}>
-        {x2 ? <X2 liga={liga} enc={enc} E={x2} /> : null}
-        {el ? <Elegido liga={liga} enc={enc} E={el} /> : null}
+        {x2 ? <X2 liga={liga} enc={enc} E={x2} corta={corta} /> : null}
+        {el ? <Elegido liga={liga} enc={enc} E={el} corta={corta} /> : null}
       </div>
     ) },
     { c: 'tuseventos', et: 'Tus eventos', t: 'Tus eventos', cuerpo: tuyos },

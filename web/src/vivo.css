@@ -2473,3 +2473,8 @@ a.rk-z:hover{border-color:var(--linea)}
 @media (min-width: 900px){.app .puertas{padding-left:var(--gut);padding-right:var(--gut)}}
 @media (min-width: 1100px){.app .puertas{grid-template-columns:repeat(6,minmax(0,1fr));padding-top:28px}}
 @media (prefers-reduced-motion: reduce){.pu{transition:none}.pu:hover{transform:none}}
+
+/* 🗳️ la encuesta corta del Inicio (13/10/2026): la pregunta, cómo va y «Votar»; las opciones al tocar */
+.en-corta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:10px 14px 14px}
+.en-va{margin:0;flex:1 1 200px;font:600 15px/1.35 "Barlow Condensed",sans-serif;letter-spacing:.02em}
+.en-corta+.en-ops{margin-top:12px}

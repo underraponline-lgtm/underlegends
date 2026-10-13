@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.88",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T01:25:00-04:00",
+   "titulo": "Vuelve todo al Inicio",
+   "items": [
+    "🎯 Se busca vuelve al Inicio, más arriba. Y Misiones, Encuestas, Merchandising y la Liga en números también.",
+    "🗳️ Las encuestas del Inicio ocupan menos: ves cómo va y tocás «Votar» para elegir."
+   ]
+  },
+  {
    "version": "2.87",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T00:58:00-04:00",

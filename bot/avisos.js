@@ -1007,7 +1007,11 @@ export const TUTO_EV = new Set(['tour', 'tour_fin', 'salta0', 'salta1', 'salta2'
  * para ordenar la tira de abajo por uso de verdad y no por intuición
  */
 export const SECC_EV = new Set(['inicio', 'eventos', 'ranking', 'publicaciones', 'tarjetas', 'pase', 'tienda', 'socios',
-  'guia', 'perfil', 'servidor', 'crew', 'pais', 'cuenta', 'cambios', 'sumate']);
+  'guia', 'perfil', 'servidor', 'crew', 'pais', 'cuenta', 'cambios', 'sumate',
+  // 👆 y QUÉ SE TOCA EN EL INICIO (Dlx, 13/10/2026: «añadir eso de saber qué clickea la gente, y después tomar
+  // decisiones así de drásticas»): `i-` cada bloque, `p-` cada puerta. Mismo trato: una vez por navegador y por día
+  'i-historias', 'i-envivo', 'i-semana', 'i-ira', 'i-fechas', 'i-sebusca', 'i-noticias', 'i-encuestas', 'i-raperos',
+  'i-panel', 'i-merch', 'i-numeros', 'p-eventos', 'p-ranking', 'p-mw', 'p-tarjetas', 'p-pase', 'p-tienda']);
 
 /** 📣 La clave de un organizador: sin la arroba, en minúsculas y sólo letras y números (`latino()` para las de fantasía). */
 export function claveOrg(nombre) {

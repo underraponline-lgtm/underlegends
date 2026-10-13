@@ -1416,7 +1416,7 @@ const ok = (cond, que, det) => {
       && await porFetch('/seccion', 'zzz') === 400 && o.panelDueno().tutorial.n.franja === 1
       && o.panelDueno().secciones.n.pase[0] === 1, 'tutorial y secciones también entrando por fetch()');
     const enApp = /const SECC = new Set\(\[([^\]]+)\]/.exec(readFileSync(join(aqui, '..', 'web', 'src', 'App.jsx'), 'utf8'));
-    const deApp = enApp ? enApp[1].match(/'([a-z]+)'/g).map((x) => x.slice(1, -1)).sort() : [];
+    const deApp = enApp ? enApp[1].match(/'([a-z-]+)'/g).map((x) => x.slice(1, -1)).sort() : [];
     ok(JSON.stringify(deApp) === JSON.stringify([...A.SECC_EV].sort()), 'la lista de App.jsx es SECC_EV', deApp.join(','));
   }
 }

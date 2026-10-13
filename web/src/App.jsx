@@ -4,15 +4,47 @@
 import { Component, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DUENO, Liga, aQuienSigo, limpio, quienMira } from './liga.js';
 import { nombrePais } from './piezas.jsx';
-import { Cabecera, Hero, Historias, Instalar, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
-import { Fechas, LosQueMandan, Noticias, Puertas } from './medio.jsx';
-import { Menu, Pie, Subir, Tabbar, Visor } from './abajo.jsx';
+import { Cabecera, Hero, Historias, Instalar, IrA, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
+import { Fechas, LaLiga, LosQueMandan, Noticias, Panel, Puertas } from './medio.jsx';
+import { Menu, Merch, Pie, SeBusca, Subir, Tabbar, Visor } from './abajo.jsx';
+import { Encuestas } from './encuestas.jsx';
 // 🧭 el tutorial (Dlx, 12/10/2026, «A … B … C … D … E. Dale»): quién es nuevo se decide al cargar (primera.js, chico);
 // lo que se dibuja se baja sólo si hace falta
 import { pasosEnInicio, quiereTutorial } from './primera.js';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
 const SECC = new Set(['inicio', 'eventos', 'ranking', 'publicaciones', 'tarjetas', 'pase', 'tienda', 'socios', 'guia',
-  'perfil', 'servidor', 'crew', 'pais', 'cuenta', 'cambios', 'sumate']);
+  'perfil', 'servidor', 'crew', 'pais', 'cuenta', 'cambios', 'sumate',
+  'i-historias', 'i-envivo', 'i-semana', 'i-ira', 'i-fechas', 'i-sebusca', 'i-noticias', 'i-encuestas', 'i-raperos',
+  'i-panel', 'i-merch', 'i-numeros', 'p-eventos', 'p-ranking', 'p-mw', 'p-tarjetas', 'p-pase', 'p-tienda']);
+// 👆 qué bloque del Inicio es cada toque: la puerta por su dirección, lo demás por el bloque que lo contiene
+const PUERTA = { '#/eventos': 'p-eventos', '#/ranking': 'p-ranking', '#/ranking/mw': 'p-mw', '#/tarjetas': 'p-tarjetas',
+  '#/pase': 'p-pase', '#/tienda': 'p-tienda' };
+function queToco(el) {
+  if (!el || !el.closest) return '';
+  const pu = el.closest('.pu');
+  if (pu) return PUERTA[pu.getAttribute('href')] || '';
+  if (el.closest('.historias')) return 'i-historias';
+  if (el.closest('.ir-a')) return 'i-ira';
+  if (el.closest('#semana')) return 'i-semana';
+  const s = el.closest('#envivo, #fechas, #sebusca, #noticias, #encuestas, #raperos, #panel, #merch, #numeros');
+  if (s) return 'i-' + s.id;
+  return el.closest('.escena') ? 'i-envivo' : '';
+}
+/** Anota una vez por día y por navegador (`lg:secc`, como las secciones). Lo que no está en `SECC` no se manda */
+function anotarUnaVez(k) {
+  if (!SECC.has(k)) return;
+  try {
+    const hoy = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());
+    let m = null;
+    try { m = JSON.parse(localStorage.getItem('lg:secc') || 'null'); } catch (e) { m = null; }
+    if (!m || m.dia !== hoy || !Array.isArray(m.s)) m = { dia: hoy, s: [] };
+    if (m.s.includes(k)) return;
+    m.s.push(k);
+    localStorage.setItem('lg:secc', JSON.stringify(m));
+    fetch('/api/avisos/seccion', { method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ ev: k }), keepalive: true }).catch(() => {});
+  } catch (e) { /* sin almacenamiento, no se cuenta */ }
+}
 const Tutorial = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.Tutorial })));
 const PrimerosPasos = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.PrimerosPasos })));
 // 🔑 EL RANKING Y EVENTOS, EN SU PROPIO ARCHIVO: se bajan recién al abrirlos. Con los dos adentro, el JS del Inicio
@@ -357,20 +389,20 @@ export default function App() {
   // sección cuenta UNA vez por día y por navegador (`lg:secc`, en hora del este como la visita) y el vigía sólo suma un
   // número: nunca quién. La lista cerrada es `SECC_EV` de bot/avisos.js; lo que no está ahí no se manda
   const seccion = sv ? 'servidor' : pagina === '' ? 'inicio' : pagina === 'r' ? 'perfil' : paginaMenu;
+  useEffect(() => { anotarUnaVez(seccion); }, [seccion]);
+  // 👆 los toques del Inicio: sólo lo que se toca (un link, un botón, una burbuja), y sólo en el Inicio
+  // ⚠️ en la ventana y no en `raiz`: al montar, el Inicio todavía no está dibujado (espera los datos) y el efecto no
+  // vuelve a correr. El toque llega del shadow root, así que lo tocado es `composedPath()[0]`, no `e.target`
   useEffect(() => {
-    if (!SECC.has(seccion)) return;
-    try {
-      const hoy = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());
-      let m = null;
-      try { m = JSON.parse(localStorage.getItem('lg:secc') || 'null'); } catch (e) { m = null; }
-      if (!m || m.dia !== hoy || !Array.isArray(m.s)) m = { dia: hoy, s: [] };
-      if (m.s.includes(seccion)) return;
-      m.s.push(seccion);
-      localStorage.setItem('lg:secc', JSON.stringify(m));
-      fetch('/api/avisos/seccion', { method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ ev: seccion }), keepalive: true }).catch(() => {});
-    } catch (e) { /* sin almacenamiento, no se cuenta: si no, cada recarga sería otra */ }
-  }, [seccion]);
+    if (pagina !== '' || sv) return undefined;
+    const f = (e) => {
+      const t = e.composedPath ? e.composedPath()[0] : e.target;
+      const el = t && t.closest ? t.closest('a, button, [role="button"], summary, .h') : null;
+      if (el) anotarUnaVez(queToco(el));
+    };
+    window.addEventListener('click', f, true);
+    return () => window.removeEventListener('click', f, true);
+  }, [pagina, sv]);
   // 🔑 EL TÍTULO DE LA PESTAÑA de lo que dibuja esta app y app.js no conoce: app.js lo pone con el <h1> de su vista
   // vieja, así que /mundo decía «El mundo» abriendo Socios, y Socios, Sumate, cada servidor, Mi cuenta y Ajustes
   // quedaban con el genérico (recorrido del 03/10/2026). Corre después de `ir()` de app.js, así que gana
@@ -459,14 +491,20 @@ export default function App() {
         <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
         {pasosEnInicio(yo.dc) ? <Aislada n="PrimerosPasos"><Suspense fallback={null}><PrimerosPasos liga={liga} dc={yo.dc} /></Suspense></Aislada> : null}
         {/* 🚪 EL INICIO ES UN LOBBY (Dlx, 13/10/2026: «que se sienta como un inicio, un home, un lobby»): el escenario,
-            las puertas, lo que viene, lo que pasó y los que mandan. Misiones vive en el Ranking, Encuestas en
-            Publicaciones, Se busca en el Most Wanted, el Merchandising en la Tienda y los números en Socios; los links
-            viejos a esas secciones llegan ahí (`accion.ir()`). Sin la barra IR A: con seis bloques no hace falta */}
+            las puertas, y después todo lo de antes. ⚠️ NO SE SACA NADA SIN NÚMEROS (Dlx, el mismo día, al ver el Inicio
+            de seis bloques: «enfoquémonos en cambiar, mejorar o mover; remover, al último de la lista»): volvieron los
+            cinco, Se busca subió (le gusta en el Inicio) y Encuestas se achicó. Qué se toca acá lo cuenta `TOQUES` */}
+        <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>
         <Aislada n="Puertas"><Puertas liga={liga} dc={yo.dc} /></Aislada>
         <Aislada n="Instalar"><Instalar /></Aislada>
         <Aislada n="Fechas"><Fechas liga={liga} /></Aislada>
+        <Aislada n="SeBusca"><SeBusca liga={liga} /></Aislada>
         <Aislada n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>
+        <Aislada n="Encuestas"><Encuestas liga={liga} enc={enc} dc={yo.dc} corta /></Aislada>
         <Aislada n="LosQueMandan"><LosQueMandan liga={liga} dc={yo.dc} /></Aislada>
+        <Aislada n="Panel"><Panel liga={liga} dc={yo.dc} /></Aislada>
+        <Aislada n="Merch"><Merch liga={liga} /></Aislada>
+        <Aislada n="LaLiga"><LaLiga liga={liga} /></Aislada>
       </>}
       <Aislada n="Pie"><Pie liga={liga} /></Aislada>
       <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} pagina={paginaMenu} /></Aislada>

@@ -265,9 +265,15 @@ function TutorialNumeros({ t }) {
 // navegador cuenta cada sección una vez por día (App.jsx, `lg:secc`) y acá llega sumado: esta semana y la anterior
 const NOMBRE_SECC = { inicio: 'Inicio', eventos: 'Eventos', ranking: 'Ranking', publicaciones: 'Publicaciones',
   tarjetas: 'Tarjetas', pase: 'Pase', tienda: 'Tienda', socios: 'Socios', guia: 'Guía', perfil: 'Un perfil',
-  servidor: 'Un servidor', crew: 'Una crew', pais: 'Un país', cuenta: 'Mi cuenta', cambios: 'Novedades', sumate: 'Sumate' };
-function SeccionesNumeros({ s }) {
-  const filas = Object.entries((s && s.n) || {}).map(([k, v]) => [k, v[0] || 0, v[1] || 0])
+  servidor: 'Un servidor', crew: 'Una crew', pais: 'Un país', cuenta: 'Mi cuenta', cambios: 'Novedades', sumate: 'Sumate',
+  'i-historias': 'Las historias', 'i-envivo': 'Lo de arriba (Ahora)', 'i-semana': 'Esta semana', 'i-ira': 'La barra IR A',
+  'i-fechas': 'Fechas', 'i-sebusca': 'Se busca', 'i-noticias': 'Lo último', 'i-encuestas': 'Encuestas y Tus eventos',
+  'i-raperos': 'Los que mandan', 'i-panel': 'Misiones', 'i-merch': 'Merchandising', 'i-numeros': 'La Liga en números',
+  'p-eventos': 'Puerta · Eventos', 'p-ranking': 'Puerta · Ranking', 'p-mw': 'Puerta · Se busca', 'p-tarjetas': 'Puerta · Tarjetas',
+  'p-pase': 'Puerta · Pase', 'p-tienda': 'Puerta · Tienda' };
+function SeccionesNumeros({ s, toques }) {
+  // `toques`: lo que se toca en el Inicio (`i-` y `p-`); si no, las secciones que se abren
+  const filas = Object.entries((s && s.n) || {}).filter(([k]) => /^[ip]-/.test(k) === !!toques).map(([k, v]) => [k, v[0] || 0, v[1] || 0])
     .filter((f) => f[1] || f[2]).sort((a, b) => b[1] - a[1] || b[2] - a[2]);
   const tope = Math.max(1, ...filas.map((f) => f[1]));
   if (!filas.length) return <p className="pronto-p">Todavía no se abrió ninguna.</p>;
@@ -277,7 +283,8 @@ function SeccionesNumeros({ s }) {
         <div key={k} className="db-q-f"><span>{NOMBRE_SECC[k] || k}</span><i><u style={{ width: ((100 * n) / tope).toFixed(1) + '%' }} /></i>
           <b>{num(n)} <small>{ant ? 'antes ' + num(ant) : 'esta semana'}</small></b></div>
       ))}</div>
-      <p className="db-tx">Cuántos celus o compus abrieron cada sección en los últimos 7 días (cada uno cuenta una vez por día), y la semana anterior al lado. Sirve para ordenar la barra de abajo por lo que la gente usa.</p>
+      <p className="db-tx">{toques ? 'Cuántos celus o compus tocaron algo de cada bloque del Inicio, o cada puerta, en los últimos 7 días (una vez por día cada uno). Para decidir qué sube, qué baja y qué sobra con números.'
+        : 'Cuántos celus o compus abrieron cada sección en los últimos 7 días (cada uno cuenta una vez por día), y la semana anterior al lado. Sirve para ordenar la barra de abajo por lo que la gente usa.'}</p>
     </div>
   );
 }
@@ -803,6 +810,12 @@ export function Dashboard({ dc, liga }) {
           <section className="act">
             <div className="mis-cab"><span>QUÉ SECCIONES SE ABREN · 7 DÍAS</span>{d.secciones.desde ? <em>se cuenta desde el {corto(d.secciones.desde)}</em> : null}</div>
             <SeccionesNumeros s={d.secciones} />
+          </section>
+        ) : null}
+        {d.secciones && Object.keys(d.secciones.n || {}).some((k) => /^[ip]-/.test(k)) ? (
+          <section className="act">
+            <div className="mis-cab"><span>QUÉ SE TOCA EN EL INICIO · 7 DÍAS</span></div>
+            <SeccionesNumeros s={d.secciones} toques />
           </section>
         ) : null}
         {d.pase ? (
