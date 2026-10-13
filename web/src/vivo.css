@@ -1466,6 +1466,15 @@ a.rk-z:hover{border-color:var(--linea)}
 .soc-pat{padding:18px 16px}
 .soc-pat ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:16px}
 .soc-pat img{height:56px;width:auto}
+/* 📺 «Lo que publican» (13/10/2026): el video más nuevo de cada socio y las redes de todos, arriba de la lista */
+.soc-pub{display:grid;gap:12px;justify-items:start;padding:24px 16px 6px}
+.soc-pub .evp-h2{margin:0}
+.soc-pub-p{margin:0;max-width:62ch;color:var(--gris)}
+.soc-pub .soc-vid,.soc-sig{width:100%}
+.soc-sig{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:10px}
+.soc-sig li{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:10px 12px;border:2px solid var(--linea);box-shadow:4px 4px 0 var(--c)}
+.soc-sig-sv{display:flex;align-items:center;gap:8px;min-width:74px;font:900 15px/1 Archivo,sans-serif}
+.soc-sig-sv img{width:28px;height:28px;border-radius:50%;object-fit:cover}
 .soc-sumar{display:grid;gap:18px;margin-top:20px;padding:26px 16px 32px;background:#030304;color:#F6F6F6}
 .soc-sumar-tit{display:grid;gap:10px;justify-items:start}
 .soc-sumar .hero-ev{margin:0}
@@ -1547,6 +1556,11 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .soc-lista{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding:26px var(--gut) 10px}
   .app .soc-num{grid-template-columns:repeat(4,minmax(0,1fr))}
   .app .soc-num.dos{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .app .soc-pub{padding:30px var(--gut) 6px}
+  /* los videos llenan la fila con los que haya (de 4 a 6), y las redes se acomodan sin dejar uno solo con medio hueco */
+  .app .soc-vid{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+  .app .soc-sig{display:flex;flex-wrap:wrap}
+  .app .soc-sig li{flex:1 1 360px}
   .app .soc-pat{padding:22px var(--gut)}
   .app .soc-sumar{padding:34px var(--gut) 40px}
   .app .soc-dos{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}

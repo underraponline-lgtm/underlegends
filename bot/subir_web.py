@@ -1157,7 +1157,7 @@ def _youtube(canal, tope=3):
     return out
 
 
-def _feed(tope=9):
+def _feed(tope=16, por_sv=2):
     """Las redes de la Liga: los últimos videos de YouTube de cada servidor.
 
     🔑 Dlx, 25/09/2026: *«abajo de la Liga hoy irían los posts más recientes
@@ -1171,7 +1171,11 @@ def _feed(tope=9):
     out = []
     for sv, x in svs.items():
         if x.get('confirmado') and x.get('youtube_id'):
-            for v in _youtube(x['youtube_id']):
+            # 📺 LOS DOS MÁS NUEVOS DE CADA UNO, no los nueve más nuevos de toda la Liga (13/10/2026): con nueve, el que
+            # sube mucho tapaba a los demás —esa tarde eran DRA 3, FFS 3, SR 2 y FFA 1—, y Socios muestra el último
+            # de cada socio («Lo que publican», Dlx: «promocionamos los eventos pero también lo que se publica de las
+            # redes sociales»). El más nuevo de todos sigue primero
+            for v in _youtube(x['youtube_id'])[:por_sv]:
                 out.append(dict(v, sv=sv, de=x.get('nombre') or sv))
     out.sort(key=lambda x: x['t'], reverse=True)
     return out[:tope]

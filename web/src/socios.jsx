@@ -16,6 +16,7 @@ import { Carta, Compartir, enlace } from './piezas.jsx';
 import { LaLiga } from './medio.jsx';
 import { REDES } from './servidor.jsx';
 import { BotHace, DLX, QueGana } from './sumar.jsx';
+import { Miniatura, abrirVideo } from './video.jsx';
 
 // lo que hace la Liga por cada servidor, el bot y Dlx: en `sumar.jsx` (era también de /sumate, que se fue el 13/10/2026)
 
@@ -61,16 +62,56 @@ function Socio({ liga, s }) {
             : ll ? <li><b>EL ÚLTIMO</b>{limpio(ll.nombre)}{camp.length ? ' · ganó ' + camp.join(' y ') : ''}</li> : null}
         </ul>
       </div>
-      {(s.redes || []).length ? (
-        <nav className="soc-redes" aria-label={'Las redes de ' + (s.nombre || s.sv)}>
-          {s.redes.map(([r, u]) => <a key={r} href={u} target="_blank" rel="noopener noreferrer">{REDES[r] || r} ↗</a>)}
-        </nav>
-      ) : null}
       <div className="soc-acc">
         <a className="btn negro chico" href={'#/sv/' + siglaDe(s.sv)}>Ver su página</a>
         {s.invita ? <a className="btn borde2 chico" href={s.invita} target="_blank" rel="noopener noreferrer">Entrar ↗</a> : null}
       </div>
     </article>
+  );
+}
+
+// 📺 LO QUE PUBLICAN. Dlx, 13/10/2026: «recordá que nosotros promocionamos los eventos pero también lo que se publica de
+// las redes sociales… añadí las redes sociales en la sección de socios». El video más nuevo de cada socio con YouTube
+// —el `feed` del payload trae los dos más nuevos de cada uno, `_feed()` de bot/subir_web.py— y, abajo, las redes de
+// cada uno, que antes iban chiquitas al pie de su tarjeta: cada dato una vez. Instagram y TikTok no tienen un feed
+// abierto (piden una app aprobada y un token por cuenta), así que de esos van los links. Sin nada, no se dibuja
+function Publican({ liga, svs }) {
+  const uno = new Map();
+  (liga.d.feed || []).filter((x) => x.tipo === 'youtube' && x.vid).forEach((x) => { if (!uno.has(x.sv)) uno.set(x.sv, x); });
+  const vids = [...uno.values()].slice(0, 6);
+  const conRedes = svs.filter((s) => (s.redes || []).length);
+  if (!vids.length && !conRedes.length) return null;
+  return (
+    <section className="soc-pub" aria-label="Lo que publican">
+      <span className="tag">SUS REDES</span>
+      <h2 className="evp-h2">Lo que publican</h2>
+      <p className="soc-pub-p">Promocionamos sus eventos y también lo que suben a sus redes: lo compartimos en las de Under Legends y acá.{vids.length ? ' Tocá un video para verlo.' : ''}</p>
+      {vids.length ? (
+        <ul className="pf-vid soc-vid">
+          {vids.map((v) => (
+            <li key={v.vid}>
+              <button type="button" className="pf-vid-b" onClick={() => abrirVideo({ vid: v.vid, tit: v.tit, link: v.link })}>
+                <span className="pf-vid-m"><Miniatura vid={v.vid} cls="pf-vid-img" /><i aria-hidden="true">▶</i></span>
+                <b>{v.tit}</b>
+                <small>{siglaDe(v.sv)} · {liga.cuando(v.t)}</small>
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      {conRedes.length ? (
+        <ul className="soc-sig" aria-label="Sus redes">
+          {conRedes.map((s) => (
+            <li key={s.sv} style={{ '--c': s.color || '#29B298' }}>
+              <a className="soc-sig-sv" href={'#/sv/' + siglaDe(s.sv)} aria-label={'Perfil de ' + (s.nombre || s.sv)}><img alt="" src={liga.logo(s.sv)} /><b>{siglaDe(s.sv)}</b></a>
+              <nav className="soc-redes" aria-label={'Las redes de ' + (s.nombre || s.sv)}>
+                {s.redes.map(([r, u]) => <a key={r} href={u} target="_blank" rel="noopener noreferrer">{REDES[r] || r} ↗</a>)}
+              </nav>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+    </section>
   );
 }
 
@@ -102,6 +143,7 @@ export function Socios({ liga }) {
           <Compartir cls="btn borde" url={enlace('#/socios')} texto="Los servidores de la Liga Global" />
         </section>
       </div>
+      <Publican liga={liga} svs={svs} />
       <section className="soc-lista" aria-label="Los servidores de la Liga">
         {svs.map((s) => <Socio key={s.sv} liga={liga} s={s} />)}
         {/* con un número impar de servidores, el lugar que sobra en la compu invita al que falta (sin huecos grandes) */}
