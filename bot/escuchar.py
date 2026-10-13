@@ -3100,10 +3100,23 @@ def canal_de_llaves(nombre):
 
 #: 🐉 el adjunto que se llama como una llave: «Llaves_Matanza.jpg» (MATANZA DE DIOSES, Snake Rap)
 _ARCHIVO_LLAVE = re.compile(r'llave|bracket|cuadro', re.I)
+#: 🔴 el pronóstico que arma la página de Red Bull Batalla: se llama «rb-batalla-llave.png» y NO es una llave de la Liga
+#: (13/10/2026). Alguien subió el suyo —«Final Nacional Colombia, 17 de octubre · MI CAMPEÓN: MARITHEA»— al canal de
+#: llaves de URBF; por el «llave» del nombre se leyó como COMPE CHILL (#463) y cargó a dieciséis finalistas de Red Bull
+#: Colombia —Coloso, Marithea, Fat N…— que no juegan en la Liga. Y como la IA lo leía distinto en cada corrida (ver
+#: `anuncios.texto_de_imagen()`), la vitrina de Temporada se encogía y crecía cada media hora
+_ARCHIVO_RED_BULL = re.compile(r'^rb[-_ ]?batalla', re.I)
+
+
+def es_de_red_bull(m):
+    """¿Trae `m` una imagen del generador de pronósticos de Red Bull Batalla? Ver `_ARCHIVO_RED_BULL`."""
+    return any(_ARCHIVO_RED_BULL.match(a.get('filename') or '') for a in m.get('attachments') or [])
 
 
 def adjunto_llave(m):
     """El adjunto de imagen que por su NOMBRE es una llave («Llaves_Matanza.jpg»), o `None`."""
+    if es_de_red_bull(m):
+        return None
     for a in m.get('attachments') or []:
         if (a.get('content_type') or '').startswith('image') and _ARCHIVO_LLAVE.search(a.get('filename') or ''):
             return a
@@ -3136,6 +3149,9 @@ def llave_de_imagen(m, canal):
     try:
         import anuncios as A
     except Exception:                                    # noqa: BLE001
+        return ''
+    # tampoco por el canal: en un canal de llaves seguiría siendo el pronóstico de Red Bull
+    if es_de_red_bull(m):
         return ''
     al = adjunto_llave(m)
     if al:
@@ -3962,7 +3978,12 @@ def _self_check():
              (adjunto_llave({'attachments': [{'filename': 'Formato_Matanza.jpg', 'content_type': 'image/jpeg'},
                                              {'filename': 'Llaves_Matanza.jpg', 'content_type': 'image/jpeg'}]})
               or {}).get('filename') == 'Llaves_Matanza.jpg'
-             and adjunto_llave({'attachments': [{'filename': 'Flyer.jpg', 'content_type': 'image/jpeg'}]}) is None)):
+             and adjunto_llave({'attachments': [{'filename': 'Flyer.jpg', 'content_type': 'image/jpeg'}]}) is None),
+            ('el pronóstico de Red Bull Batalla («rb-batalla-llave.png») no es una llave, ni en un canal de llaves',
+             adjunto_llave({'attachments': [{'filename': 'rb-batalla-llave.png', 'content_type': 'image/png'}]}) is None
+             and llave_de_imagen({'id': '1', 'attachments': [{'filename': 'rb-batalla-llave.png',
+                                                             'content_type': 'image/png'}]}, 'llaves') == ''
+             and not es_de_red_bull({'attachments': [{'filename': 'Llaves_Matanza.jpg'}]}))):
         mal += not ok
         print('   %s %s' % ('✅' if ok else '🔴', que))
     # 🖼️ el voto que es una imagen (12/10/2026, `_voto_de_imagen()`): lo ya leído de la memoria, sin red. Una captura
