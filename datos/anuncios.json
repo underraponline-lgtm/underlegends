@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-13T05:24:56+00:00",
+ "cuando": "2026-10-13T05:55:01+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -356,6 +356,28 @@
    "staff": {},
    "autor": "Geronimo",
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "qcyo rapeen",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1559441367325741117",
+   "cuando": "2026-10-13T05:43:14",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "@nachonc_",
+   "autor_h": "d83234c3da26ac85",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "bronce",
+   "modalidad": "1v1",
+   "horario": "ya",
+   "fecha": "",
+   "premios": "aura",
+   "staff": {},
+   "autor": "Nc",
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "COMPE POR 1.5 DOLARES",
@@ -938,39 +960,6 @@
    "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
    "staff": {},
    "autor": "Nc",
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "DESGRACIAS EN BELLAS ARTES VOL1",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1557477590313210007",
-   "cuando": "2026-10-07T19:39:54",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "autor_h": "6a6481d106eda6d3",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "PLATA III",
-   "modalidad": "⚔️  1VS1",
-   "horario": "EN 20 MINUTOS",
-   "fecha": "HOY PE MANO",
-   "premios": "ROL CAMPEÓN +  CUPO PARA COMPE POR PLATA RANGO ORO II",
-   "staff": {
-    "jurado": [
-     "Flennzs | ⛩️"
-    ],
-    "host": [
-     "l3wito"
-    ],
-    "dj": [
-     "Flennzs | ⛩️",
-     "l3wito"
-    ]
-   },
-   "autor": "Flennzs | ⛩️",
    "categoria_id": "1468478330826260500"
   },
   {
@@ -4424,6 +4413,123 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Erian 🇵🇦",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1559443848961335337",
+   "cuando": "2026-10-13T05:53:06"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "TENOR🇵🇪",
+   "quien": "tenor_25499",
+   "discord_id": "1370860602972569632",
+   "msg_id": "1559443675329597504",
+   "cuando": "2026-10-13T05:52:25"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "erian 🇵🇷",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1559442975887593585",
+   "cuando": "2026-10-13T05:49:38"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "joshema 🇵🇪",
+   "quien": "joshema0712",
+   "discord_id": "1342989767184486401",
+   "msg_id": "1559442695561289800",
+   "cuando": "2026-10-13T05:48:31"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Cinexfilo 🇻🇪",
+   "quien": "cinexfilosanity",
+   "discord_id": "781971857519804417",
+   "msg_id": "1559442431760535563",
+   "cuando": "2026-10-13T05:47:28"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "ikonoxx 🇺🇾",
+   "quien": "_.the.goat",
+   "discord_id": "1470870791351570630",
+   "msg_id": "1559441891450163242",
+   "cuando": "2026-10-13T05:45:19"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lord 🇨🇴",
+   "quien": "kidbuu02124",
+   "discord_id": "1323444294534828104",
+   "msg_id": "1559441646951862303",
+   "cuando": "2026-10-13T05:44:21"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Guess 🇦🇷",
+   "quien": "sinergiabreak",
+   "discord_id": "1515482513106272366",
+   "msg_id": "1559441633639137331",
+   "cuando": "2026-10-13T05:44:18"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Frifaier 🇨🇱",
+   "quien": "cronoxzito",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1559441633202937858",
+   "cuando": "2026-10-13T05:44:18"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "francis 🇨🇷",
+   "quien": "franciscoegipto",
+   "discord_id": "1517014246087589923",
+   "msg_id": "1559441620422758423",
+   "cuando": "2026-10-13T05:44:15"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1559441613271466065",
+   "cuando": "2026-10-13T05:44:13"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Blitz primera 🇮🇱",
+   "quien": "nahanah",
+   "discord_id": "1023727385822122104",
+   "msg_id": "1559441603373039688",
+   "cuando": "2026-10-13T05:44:11"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Roda🇵🇦",
+   "quien": "rodaaa_mc",
+   "discord_id": "1492592375812587551",
+   "msg_id": "1559441585467293707",
+   "cuando": "2026-10-13T05:44:06"
+  },
   {
    "servidor": "URBF",
    "canal": "《📑》Inscripciones",

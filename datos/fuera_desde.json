@@ -69,6 +69,18 @@
    "sv-sr": "2026-10-12",
    "temporada": "2026-10-12"
   },
+  "araya": {
+   "bloq-competitivo": "2026-10-13",
+   "bloq-pais": "2026-10-13",
+   "competitivo": "2026-10-13",
+   "pais": "2026-10-13",
+   "servidor": "2026-10-13",
+   "sv-acad": "2026-10-13",
+   "sv-ddf": "2026-10-13",
+   "sv-dra": "2026-10-13",
+   "sv-ffa": "2026-10-13",
+   "temporada": "2026-10-13"
+  },
   "arez": {
    "servidor": "2026-10-12",
    "sv-ffa": "2026-10-12",
@@ -1239,8 +1251,8 @@
    "temporada": "2026-10-12"
   }
  },
- "pasaban": 385,
- "cuando": "2026-10-13T05:27:32Z",
+ "pasaban": 384,
+ "cuando": "2026-10-13T05:57:34Z",
  "borradas": [
   [
    "infecte",
