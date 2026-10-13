@@ -186,7 +186,7 @@
   "Camila": {},
   "Carlos": {},
   "Carlosmo": {
-   "competitivo": "48f7bfc2a713:2256fa928e50",
+   "competitivo": "ec3f8b8fb8fc:2256fa928e50",
    "pais": "d9126b10e46a:a83947948804",
    "servidor": "3e800acbcceb:38fa4546320c:3580af"
   },
@@ -197,7 +197,7 @@
    "temporada": "16bc3c3ac28f:5f7648916ad1"
   },
   "Catarsis": {
-   "competitivo": "3a507d6b474e:2256fa928e50",
+   "competitivo": "f34cf22dd2ce:2256fa928e50",
    "servidor": "b22f8354ee0c:38fa4546320c:4975e5"
   },
   "Char": {},
@@ -1752,5 +1752,5 @@
    "servidor": "7f8885a35a6d:38fa4546320c:c9f1f2"
   }
  },
- "cuando": "2026-10-13T18:35:17+00:00"
+ "cuando": "2026-10-13T18:59:46+00:00"
 }
