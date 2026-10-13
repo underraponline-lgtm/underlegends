@@ -21973,16 +21973,40 @@
     "b": [
      [
       [
-       "FAT N",
-       "J1"
+       "MARITHEA",
+       "FAT N"
+      ],
+      "MARITHEA",
+      ""
+     ],
+     [
+      [
+       "AXL EVANS",
+       "JAZZ"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
      ],
      [
       [
-       "JAZZ",
-       "HUNTER"
+       "COLOSO",
+       "PUPPY"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "HUNTER",
+       "AIRON"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "J1",
+       "VISIONARIO"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -22018,11 +22042,19 @@
     "b": [
      [
       [
+       "MARITHEA",
+       "MARITHEA"
+      ],
+      "MARITHEA",
+      ""
+     ],
+     [
+      [
        "FAT N",
        "AIRON"
       ],
       "FAT N",
-      "ganador: ✅ Decidir; Walk-in 2: AIRON"
+      "ganador: ✅ Decidir"
      ],
      [
       [
@@ -22085,18 +22117,7 @@
    }
   ],
   "sv": "URBF",
-  "tabla": [
-   [
-    "FAT N",
-    "Campeón",
-    10000
-   ],
-   [
-    "AIRON",
-    "Subcampeón",
-    1875
-   ]
-  ]
+  "tabla": []
  },
  "464": {
   "dia": "2026-10-12",
