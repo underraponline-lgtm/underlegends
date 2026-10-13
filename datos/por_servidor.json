@@ -856,7 +856,7 @@
   },
   "COLOSO": {
    "URBF": {
-    "duelos": "1/2",
+    "duelos": "1/1",
     "ev": 0,
     "oro": 0,
     "ovr": 40,
@@ -3495,7 +3495,7 @@
   },
   "MARITHEA": {
    "URBF": {
-    "duelos": "2/2",
+    "duelos": "1/1",
     "ev": 0,
     "oro": 0,
     "ovr": 40,
@@ -4584,17 +4584,6 @@
     "ovr": 43,
     "pod": 0,
     "pts": 1250,
-    "racha": "0/0"
-   }
-  },
-  "PUPPY": {
-   "URBF": {
-    "duelos": "1/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
     "racha": "0/0"
    }
   },
@@ -6034,17 +6023,6 @@
   "V-zir🏳️‍⚧️": {
    "DDF": {
     "duelos": "1/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
-   }
-  },
-  "VISIONARIO": {
-   "URBF": {
-    "duelos": "0/1",
     "ev": 0,
     "oro": 0,
     "ovr": 40,

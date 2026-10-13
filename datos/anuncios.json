@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-13T15:34:50+00:00",
+ "cuando": "2026-10-13T15:55:57+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -3597,6 +3597,40 @@
    "nombre": "👀👀👀",
    "servidor": "FVS",
    "canal": "「📢」Anuncios",
+   "msg_id": "1559592116567412767",
+   "cuando": "2026-10-13T15:42:16",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "Mathhias",
+   "autor_h": "c8f035765c7a24b7",
+   "cupos_texto": "A COMPE IMPORTANTE HECHA POR MI TAMBIEN",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "C",
+   "modalidad": "1v1",
+   "horario": "LLENEN INSCRIPCIONES",
+   "fecha": "",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "Mathhias"
+    ],
+    "dj": [
+     "Mathhias"
+    ],
+    "host": [
+     "Mathhias"
+    ]
+   },
+   "autor": "Mathhias",
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
+  },
+  {
+   "nombre": "👀👀👀",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
    "msg_id": "1548763144048873527",
    "cuando": "2026-09-13T18:31:48",
    "canal_id": "1337126096373809284",
@@ -3623,7 +3657,9 @@
     ]
    },
    "autor": "Mathhias",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "Sic Seven kup",
@@ -3655,7 +3691,9 @@
     ]
    },
    "autor": "RFran",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "FOR FAITH",
@@ -3687,7 +3725,9 @@
     ]
    },
    "autor": "eselkz4",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "Copa Olimpo",
@@ -3719,7 +3759,9 @@
     ]
    },
    "autor": "MC_Glock",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "Conference League",
@@ -3751,7 +3793,9 @@
     ]
    },
    "autor": "MC_Glock",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "SEKA'T KATANNA",
@@ -3783,7 +3827,9 @@
     ]
    },
    "autor": "¢RAIZER¥",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "CLASIFICATORIA A ZAMO CUP MULTIVERSE (OFICIAL)",
@@ -3815,7 +3861,9 @@
     ]
    },
    "autor": "zamo1.",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "NO SUPE COMO SOLTAR",
@@ -3847,7 +3895,9 @@
     ]
    },
    "autor": "¢RAIZER¥",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "EN BUSCA DE LAS 6 LUNAS DEMONÍACAS 6/6 (KOKUSHIBO)",
@@ -3879,7 +3929,9 @@
     ]
    },
    "autor": "Bloody",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "EN BUSCA DE LAS 6 LUNAS DEMONÍACAS 5/6 (DOUMA)",
@@ -3911,7 +3963,9 @@
     ]
    },
    "autor": "Bloody",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "ALERTA FORENSE",
@@ -3943,7 +3997,9 @@
     ]
    },
    "autor": "¢RAIZER¥",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "EN BUSCA DE LAS 6 LUNAS DEMONÍACAS 4/6 (AKAZA)",
@@ -3975,7 +4031,9 @@
     ]
    },
    "autor": "Bloody",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "Copa RHLM",
@@ -4007,7 +4065,9 @@
     ]
    },
    "autor": "MC_Glock",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "PREREDBULL",
@@ -4033,7 +4093,9 @@
     ]
    },
    "autor": "RFran",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "EN BUSCA DE LAS 6 LUNAS DEMONÍACAS 3/6 (HANTENGU)",
@@ -4065,7 +4127,9 @@
     ]
    },
    "autor": "Bloody",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "Copa Juicio Final",
@@ -4097,7 +4161,9 @@
     ]
    },
    "autor": "MC_Glock",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "EN BUSCA DE LAS 6 LUNAS DEMONÍACAS 2/6 (GYOKKO)",
@@ -4129,7 +4195,9 @@
     ]
    },
    "autor": "Bloody",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "Copa Champions League",
@@ -4161,7 +4229,9 @@
     ]
    },
    "autor": "MC_Glock",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "FOR FAITH",
@@ -4193,7 +4263,9 @@
     ]
    },
    "autor": "eselkz4",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "10 DE PIKAS",
@@ -4225,7 +4297,9 @@
     ]
    },
    "autor": "¢RAIZER¥",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "Copa God Battels",
@@ -4257,7 +4331,9 @@
     ]
    },
    "autor": "MC_Glock",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "RED BULL - FINAL NACIONAL MÉXICO T11",
@@ -4289,39 +4365,9 @@
     ]
    },
    "autor": "thedinamite",
-   "categoria_id": "1337125417018200166"
-  },
-  {
-   "nombre": "EN BUSCA DE LAS 6 LUNAS DEMONÍACAS 1/6 (GYUTARO Y DAKI)",
-   "servidor": "FVS",
-   "canal": "「📢」Anuncios",
-   "msg_id": "1530651092747026442",
-   "cuando": "2026-07-25T19:00:58",
-   "canal_id": "1337126096373809284",
-   "guild_id": "1283205153624952975",
-   "organizador": "Bloody",
-   "autor_h": "745aa43302deb894",
-   "cupos_texto": "8",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "D",
-   "modalidad": "2v2",
-   "horario": "LLENEN INSCRIPCIONES",
-   "fecha": "",
-   "premios": "puntos de ascenso",
-   "staff": {
-    "jurado": [
-     "Bloody"
-    ],
-    "dj": [
-     "Bloody"
-    ],
-    "host": [
-     "Bloody"
-    ]
-   },
-   "autor": "Bloody",
-   "categoria_id": "1337125417018200166"
+   "categoria_id": "1337125417018200166",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "El Bi-Campeón de Red Bull Nacional USA 🇺🇸 llega a la inter como jurado",
@@ -4343,7 +4389,9 @@
    "premios": "",
    "staff": {},
    "autor": "thedinamite",
-   "categoria_id": "1283208296714600560"
+   "categoria_id": "1283208296714600560",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "Este Jurado es actualmente considerado para muchos el mejor jurado de ",
@@ -4365,7 +4413,9 @@
    "premios": "",
    "staff": {},
    "autor": "thedinamite",
-   "categoria_id": "1283208296714600560"
+   "categoria_id": "1283208296714600560",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "Esta Persona , de los mas OG’S del servidor, actual Owner de Nuestro S",
@@ -4387,7 +4437,9 @@
    "premios": "",
    "staff": {},
    "autor": "thedinamite",
-   "categoria_id": "1283208296714600560"
+   "categoria_id": "1283208296714600560",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   },
   {
    "nombre": "La siguiente semana se realizará la ultima nacional Final Nacional Méx",
@@ -4409,10 +4461,75 @@
    "premios": "",
    "staff": {},
    "autor": "thedinamite",
-   "categoria_id": "1283208296714600560"
+   "categoria_id": "1283208296714600560",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T15:42:38"
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "mathias 🇻🇪",
+   "quien": "elthiasmathias",
+   "discord_id": "1177916322122833933",
+   "msg_id": "1559595487550775359",
+   "cuando": "2026-10-13T15:55:40"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "me bajo pq los venekos son gays y pq estoy en clase MC 🇦🇬",
+   "quien": "agustin51k",
+   "discord_id": "1114241587262783631",
+   "msg_id": "1559593587799228548",
+   "cuando": "2026-10-13T15:48:07"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Richard 🇪🇨",
+   "quien": "ricardflex",
+   "discord_id": "750718442050551858",
+   "msg_id": "1559592961182797935",
+   "cuando": "2026-10-13T15:45:37"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Raizer🇵🇪",
+   "quien": "dxni909",
+   "discord_id": "1455038503304827103",
+   "msg_id": "1559592489785233499",
+   "cuando": "2026-10-13T15:43:45"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Kusoh 🇲🇽",
+   "quien": "kuzoh_",
+   "discord_id": "1447024559197782138",
+   "msg_id": "1559592362127138928",
+   "cuando": "2026-10-13T15:43:14"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "Trot🇪🇸",
+   "quien": "eresmatrot",
+   "discord_id": "1347663033949880360",
+   "msg_id": "1559592313750163628",
+   "cuando": "2026-10-13T15:43:03"
+  },
+  {
+   "servidor": "FVS",
+   "canal": "「📜」Inscripciones",
+   "texto": "muy temprano pa rapear veneko MC 🇦🇬",
+   "quien": "agustin51k",
+   "discord_id": "1114241587262783631",
+   "msg_id": "1559592251020021912",
+   "cuando": "2026-10-13T15:42:48"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
