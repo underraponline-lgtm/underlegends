@@ -3367,10 +3367,21 @@ def _self_check():
     ok([bool(c.get('can')) for c in _cc] == [True, False, False, False, False] and _nc == 1,
        'cancelado: la llave borrada sin otra sí; otra edición, la procesada, la vuelta a publicar y la de hace '
        '5 min no')
-    _arr = _dt0.datetime(2026, 10, 14, 18, 0, tzinfo=_dt0.timezone.utc)
-    _pf2 = {'e': {'9': ['X', 'FFA', '2026-10-13T01:00:00Z']}, 'p': {'ana': {'ev': [[9, 'Octavos', 1250]]}}}
-    ok(not debutantes([{'k': 'ana'}], _pf2, ahora=_arr)[0].get('nu'),
-       'y la semana del arranque, a nadie: todos debutan en la temporada')
+    # ⚠️ LA SEMANA DEL ARRANQUE SALE DE `comun/temporada.py`, NO SE ESCRIBE. Este caso clavaba el 14/10, de cuando la
+    # T1 arrancaba el 12/10; el 08/10 pasó a arrancar el 22/09 sin corte, `debutantes()` siguió a `FECHAS` y el chequeo
+    # quedó rojo culpando al «NUEVO», que estaba bien (13/10/2026: los 5 de esa semana, iguales que a mano). Y la semana
+    # siguiente SÍ marca: sin eso, esto pasaría también con un `debutantes()` que no marca a nadie.
+    from comun import temporada as _TMP
+    _d0 = _dt0.date.fromisoformat(_TMP.FECHAS[_TMP.ACTUAL][0])
+
+    def _nu_el(d):
+        a = _dt0.datetime(d.year, d.month, d.day, 18, 0, tzinfo=_dt0.timezone.utc)
+        pf = {'e': {'9': ['X', 'FFA', (a - _dt0.timedelta(hours=1)).strftime('%Y-%m-%dT%H:%M:%SZ')]},
+              'p': {'ana': {'ev': [[9, 'Octavos', 1250]]}}}
+        return bool(debutantes([{'k': 'ana'}], pf, ahora=a)[0].get('nu'))
+    ok(not _nu_el(_d0) and _nu_el(_d0 + _dt0.timedelta(days=7)),
+       'y la semana del arranque (%s), a nadie: todos debutan en la temporada; la siguiente, sí'
+       % _d0.strftime('%d/%m'))
     ok(_lunes(__import__('datetime').datetime(2026, 10, 5, 3, 59, tzinfo=__import__('datetime').timezone.utc)) == '2026-09-28'
        and _lunes(__import__('datetime').datetime(2026, 10, 5, 4, 1, tzinfo=__import__('datetime').timezone.utc)) == '2026-10-05',
        'la semana cambia el lunes a las 00:00 ET, no en UTC')

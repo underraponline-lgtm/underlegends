@@ -416,8 +416,14 @@ def huellas():
         import fotos as _FT
         import requests as _rq2
         _se = _rq2.Session()
-        _se.headers['Authorization'] = ('Bearer '
-                                        + _FT.env('CLOUDFLARE_API_TOKEN'))
+        # ⚠️ `obligatorio=False`: sin token, `env()` hace `sys.exit` y el
+        # `except` de abajo no lo ataja. Cortaba el proceso entero —el
+        # self-check de `subir_web.py` en un clon sin `.env`, 13/10/2026—
+        # en vez de usar las caras de antes, que es lo que dice arriba.
+        _tk = _FT.env('CLOUDFLARE_API_TOKEN', obligatorio=False)
+        if not _tk:
+            raise RuntimeError('sin CLOUDFLARE_API_TOKEN')
+        _se.headers['Authorization'] = 'Bearer ' + _tk
         caras = _FT.etags(_se)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude leer las caras de R2 (%s): uso las de antes'
