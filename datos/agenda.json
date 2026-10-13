@@ -1,0 +1,4 @@
+{
+ "_leeme": "Lo agendado con /agendar (bot/agenda.py): cada evento con su hora en ms UTC (`ini`) y cuándo se agendó (`t`). Se vuelve un anuncio más con `como_anuncios()`.",
+ "agenda": []
+}
