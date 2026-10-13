@@ -305,7 +305,7 @@ button.btn{background:transparent;cursor:pointer}
 .svp-semana li.dor{background:var(--magenta);border-color:var(--magenta)}
 .svp-semana li.dor b{color:#fff}
 .svp-otros{display:flex;flex-wrap:wrap;gap:10px}
-.svp-otros a{display:flex;align-items:center;gap:8px;border:2px solid var(--linea);border-left:8px solid var(--c);padding:8px 12px;font:900 15px/1 Archivo,sans-serif;font-stretch:115%}
+.svp-otros a{display:flex;align-items:center;gap:8px;border:2px solid var(--linea);box-shadow:4px 4px 0 var(--c);padding:8px 12px;font:900 15px/1 Archivo,sans-serif;font-stretch:115%}
 .svp-otros img{width:30px;height:30px;border-radius:50%}
 /* ── la página de una crew y la de un país (grupo.jsx, desde la 2.21): el esquema de la del servidor ── */
 .svp-logo.gp-crew,.svp-logo.gp-pais{display:grid;place-items:center;overflow:hidden}
@@ -606,7 +606,7 @@ button.btn{background:transparent;cursor:pointer}
 .cu-sw small{color:var(--gris);font-size:13px}
 .cu-sw input{position:absolute;opacity:0;pointer-events:none}
 .cu-svs{display:flex;flex-wrap:wrap;gap:8px}
-.cu-sv{display:flex;align-items:center;gap:8px;padding:8px 12px;border:2px solid var(--linea);border-left:8px solid var(--c);background:transparent;color:inherit;
+.cu-sv{display:flex;align-items:center;gap:8px;padding:8px 12px;border:2px solid var(--linea);box-shadow:4px 4px 0 var(--c);background:transparent;color:inherit;
   font:900 14px/1 Archivo,sans-serif;font-stretch:115%;cursor:pointer}
 .cu-sv img{width:26px;height:26px;border-radius:50%}
 .cu-sv.on{background:var(--inv);color:var(--inv-tinta)}
@@ -976,7 +976,7 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .rk-t tr.rk-corte td{padding:0;border:0;background:none}
 .rk-corte span{display:block;margin:2px 0;padding:6px 10px;border-top:2px dashed var(--magenta);color:var(--magenta-tx);
   font:700 11px/1.3 "Space Mono",monospace;letter-spacing:.1em;text-transform:uppercase}
-.rk-final{margin:10px 0 0;padding:8px 10px;border-left:3px solid var(--magenta);background:var(--caja);font-size:14px}
+.rk-final{margin:10px 0 0;padding:8px 10px;border:2px solid var(--magenta);background:var(--caja);font-size:14px}
 /* 2 · los que tenés cerca */
 .rk-cerca{margin:0 0 16px}
 .rk-cerca-t{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 14px;margin-bottom:10px;
@@ -1999,7 +1999,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .lk-datos .lk-mult{border-color:var(--magenta)}
 .lk-vivo{margin:0;font:700 12px/1.5 "Space Mono",monospace;letter-spacing:.04em;color:var(--esc-gris)}
 /* 🎟️ si mirar la llave contó para el Pase (07/10/2026): dorado, el color del Pase */
-.lk-pase{margin:8px 0 0;padding:8px 10px;border-left:3px solid #F5C542;background:rgba(245,197,66,.08);font:600 13px/1.45 Archivo,sans-serif;color:var(--esc-tinta)}
+.lk-pase{margin:8px 0 0;padding:8px 10px;border:2px solid #F5C542;background:rgba(245,197,66,.08);font:600 13px/1.45 Archivo,sans-serif;color:var(--esc-tinta)}
 .lk-pase a{color:#F5C542}
 .lk-pase.si{border-left-color:#29B298;background:rgba(41,178,152,.1)}
 
@@ -2238,7 +2238,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .vc-img{display:grid;justify-items:center}
 .vc-img .tj-c{width:auto;max-width:100%;height:min(56vh,520px)}
 .vc-sin{width:100%;margin:0;padding:30px 10px;border:2px dashed var(--gris);font:700 13px/1.4 "Space Mono",monospace;color:var(--gris);text-align:center}
-.vc-aviso{margin:0;padding:8px 10px;border-left:3px solid var(--magenta);background:var(--caja);font:600 12.5px/1.4 Archivo,sans-serif}
+.vc-aviso{margin:0;padding:8px 10px;border:2px solid var(--magenta);background:var(--caja);font:600 12.5px/1.4 Archivo,sans-serif}
 .vc-num{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:0;border:2px solid var(--linea)}
 .vc-num div{display:grid;justify-items:center;gap:4px;padding:8px 4px}
 .vc-num div+div{border-left:1px solid var(--suave)}
@@ -2336,7 +2336,7 @@ a.rk-z:hover{border-color:var(--linea)}
 
 /* 🔒 el Dashboard del dueño: vive en dashboard.css, que carga su propio pedazo (05/10/2026) */
 /* 📣 el aviso de la página */
-.aviso-web{display:flex;align-items:flex-start;gap:12px;padding:10px var(--gut);background:var(--inv);color:var(--inv-tinta);border-left:6px solid var(--magenta)}
+.aviso-web{display:flex;align-items:flex-start;gap:12px;padding:10px var(--gut);background:var(--inv);color:var(--inv-tinta);border-bottom:4px solid var(--magenta)}
 .aviso-web p{margin:0;flex:1;font-weight:700;line-height:1.4;overflow-wrap:anywhere}
 .aviso-web button{flex:none;width:32px;height:32px;margin:-4px -6px -4px 0;border:0;background:none;color:inherit;font:700 16px/1 Archivo,sans-serif;cursor:pointer}
 .aviso-web button:focus-visible{outline:2px solid var(--magenta);outline-offset:0}
@@ -2414,7 +2414,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .qe-b.on{background:var(--verde);border-color:var(--verde);color:#030304;opacity:1}
 .qe-b::after{content:"";position:absolute;width:44px;height:44px;margin:-13px}
 .qe-b{position:relative}
-.qe-t{margin:10px 0 0;padding:10px 12px;border-left:3px solid var(--verde);background:rgba(255,255,255,.06);
+.qe-t{margin:10px 0 0;padding:10px 12px;border:2px solid var(--verde);background:none;
   font-size:14px;line-height:1.45;max-width:62ch}
 .rk-qe{margin:0 0 12px}
 .rk-qe summary{cursor:pointer;font:700 13px/1.2 "Space Mono",monospace;letter-spacing:.06em;color:var(--gris);padding:6px 0;
@@ -2428,7 +2428,7 @@ a.rk-z:hover{border-color:var(--linea)}
    el borde claro es para que se vea también sobre lo negro */
 .subir{position:fixed;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 76px);z-index:25;width:48px;height:48px;
   display:grid;place-items:center;padding:0;cursor:pointer;background:#030304;color:#F6F6F6;border:2px solid #F6F6F6;
-  border-radius:4px;box-shadow:0 4px 14px rgba(0,0,0,.35);opacity:0;transform:translateY(8px);pointer-events:none;
+  border-radius:0;box-shadow:3px 3px 0 #29B298;opacity:0;transform:translateY(8px);pointer-events:none;
   transition:opacity .18s,transform .18s}
 .subir.ver{opacity:1;transform:none;pointer-events:auto}
 .subir svg{transform:rotate(-90deg)}
@@ -2436,3 +2436,16 @@ a.rk-z:hover{border-color:var(--linea)}
 .subir:focus-visible{outline:3px solid #29B298;outline-offset:2px}
 @media (min-width: 900px){.subir{right:24px;bottom:24px;width:52px;height:52px}}
 @media (prefers-reduced-motion: reduce){.subir{transition:none}}
+
+/* 🥇 la medalla de las cartas (13/10/2026, en vez de 🥇🥈🥉): un punto macizo con su anillo, sin brillo */
+.med{display:inline-block;flex:none;width:.72em;height:.72em;margin-right:.32em;border-radius:50%;vertical-align:-.02em;
+  box-shadow:inset 0 0 0 .14em rgba(3,3,4,.28)}
+.med.m1{background:#E7B622}
+.med.m2{background:#C9CDD2}
+.med.m3{background:#C7773A}
+.med.m4{background:#6E6E6A}
+.pf-dt-ic .med{width:20px;height:20px;margin:0}
+/* el ícono pegado a su número o su texto, donde antes iba el emoji */
+.pf-con,.cu-con{display:inline-flex;align-items:center;gap:5px}
+.yo-racha{display:inline-flex;align-items:center;gap:2px}
+.lk-ok svg,.lk-cae svg,.lk-mw svg{vertical-align:-2px}

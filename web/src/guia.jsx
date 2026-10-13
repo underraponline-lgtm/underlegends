@@ -8,7 +8,7 @@
 // app.js (index.html), ordenado por tema.
 import { Suspense, lazy } from 'react';
 import { num } from './liga.js';
-import { Carta } from './piezas.jsx';
+import { Carta, Medalla, PUESTO_MEDALLA } from './piezas.jsx';
 import * as RQ from './requisitos.js';
 
 const PrimerosPasos = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.PrimerosPasos })));
@@ -41,7 +41,7 @@ const SEMANA = [
   ['Evento dorado', 'Cada semana, el primer evento de un servidor desde un día sorteado vale ×3 encima de su multiplicador. Se sabe desde el lunes.'],
   ['Guerra de servidores', 'Cada semana los servidores se enfrentan de a dos: gana el que más puntos hace por persona en sus eventos, y la semana siguiente lleva ×1,5.'],
   ['Copa de la Liga', 'Cada evento de 8 o más le suma a su organizador (el «Organiza:» del anuncio) la gente que juntó. El primero de la semana organiza la Copa de la siguiente: su próximo evento vale ×2.'],
-  ['Semillero', 'Cada semana gana el servidor que más gente nueva trae —gente que juega por primera vez en su vida en la Liga—, en proporción a su gente y con 3 como mínimo. Lleva ×1,5 la semana siguiente.'],
+  ['Semillero', 'Cada semana gana el servidor que más gente nueva trae (gente que juega por primera vez en su vida en la Liga), en proporción a su gente y con 3 como mínimo. Lleva ×1,5 la semana siguiente.'],
   ['Meta de comunidad', 'Cada lunes, cada servidor recibe una meta de gente distinta en sus eventos (un 10 % más que su promedio). Si la junta, todos los que jugaron ahí esa semana suman +10 %.'],
   ['Bonos', 'Tu segundo evento de la temporada vale ×1,5 si lo jugás dentro de los 7 días del primero. En una semana, jugar en 3 servidores da +1.500 y jugar 3 días distintos, +1.000. Nada de esto toca el Competitivo.'],
   ['Clásico', 'Cuando dos se cruzan en un duelo en su tercer evento (o más), es un Clásico: la llave lo marca con cómo venían, y el que gana suma +10 % en ese evento. Cuentan los eventos, no las batallas. Las rivalidades no se borran con la temporada.'],
@@ -49,7 +49,7 @@ const SEMANA = [
   ['Divisiones', 'Una tabla por semana con los puntos de Temporada de esa semana, en grupos de 30, de Sexta a Primera: los primeros de cada grupo suben de división y ganan Puntos de Tienda, y los últimos bajan.'],
   // ⚠️ decía «cada Tarea de la semana es un nivel», que es de antes de la XP (2.46): se corrigió con lo de «sé más
   // descriptivo» (Dlx, 07/10/2026)
-  ['Pase de rapero', 'Para los miembros de Discord Rap Español: 30 niveles por temporada. Las Tareas —diarias, semanales y de toda la temporada— dan XP, y la XP te sube de nivel; cada nivel paga Puntos de Tienda. El primero (dos Tareas diarias o una semanal) da tu tarjeta de Temporada, y otros una insignia, un título o tu nombre en dorado. Están en la página del Pase.'],
+  ['Pase de rapero', 'Para los miembros de Discord Rap Español: 30 niveles por temporada. Las Tareas (diarias, semanales y de toda la temporada) dan XP, y la XP te sube de nivel; cada nivel paga Puntos de Tienda. El primero (dos Tareas diarias o una semanal) da tu tarjeta de Temporada, y otros una insignia, un título o tu nombre en dorado. Están en la página del Pase.'],
   ['Premios de la semana', 'Al cerrar cada semana: la figura (más puntos), la revelación (la figura de los que debutaron), el cazador del Most Wanted y el servidor que más gente movió. La figura y la revelación dan insignia.'],
   ['Insignias', 'Lo que te ganaste, para siempre: debut, podio, campeón, racha, duelos, Most Wanted… Están en tu perfil, con las que te faltan.'],
   ['Con tiempo', 'Los eventos anunciados con 12 horas o más de anticipación llevan 📣 en «Lo que viene» y en el calendario.'],
@@ -72,10 +72,10 @@ const PALABRAS = [
   ['Crew', 'Tu equipo. Suma los puntos de su gente; para tener puesto necesita tres raperos en la temporada.'],
   ['Verificado', 'Tener el rol de Miembro en Discord Rap Español (DRA), con tu cuenta y tu país. Se hace una vez, en «Verificarme» (Mi cuenta): entrás con Discord, elegís tu país y el bot te mete al servidor y te da el rol. Sin verificarte no hay tarjetas: verificarte desbloquea tu Servidor, y con el nivel 1 del Pase, tu Temporada.'],
   ['Bloqueada', 'La tarjeta que todavía no te ganaste: dice cuánto te falta.'],
-  ['Felicitar', 'En Publicaciones, un toque en un logro —un campeón, un rango, el Most Wanted—, uno por persona. Se ve cuántos felicitaron, nunca quiénes, y a quien felicitan le llega un aviso.'],
+  ['Felicitar', 'En Publicaciones, un toque en un logro (un campeón, un rango, el Most Wanted), uno por persona. Se ve cuántos felicitaron, nunca quiénes, y a quien felicitan le llega un aviso.'],
 ];
 const PREGUNTAS = [
-  ['¿Cómo pido mi tarjeta?', <>En Discord, con <code>/card</code>. Son dos pasos: verificate —entrando con Discord en <a href="#/cuenta">Mi cuenta</a>— y se desbloquea tu Servidor; cumplí tu primera Tarea del <a href="#/pase">Pase de rapero</a> y se desbloquea tu Temporada. La Competitiva y la de País piden además su requisito, y <code>/verificar</code> te dice qué te falta.</>],
+  ['¿Cómo pido mi tarjeta?', <>En Discord, con <code>/card</code>. Son dos pasos: verificate (entrando con Discord en <a href="#/cuenta">Mi cuenta</a>) y se desbloquea tu Servidor; cumplí tu primera Tarea del <a href="#/pase">Pase de rapero</a> y se desbloquea tu Temporada. La Competitiva y la de País piden además su requisito, y <code>/verificar</code> te dice qué te falta.</>],
   ['¿Cómo aparezco en el ranking?', <>Jugando un evento en un servidor de la Liga. Con una participación ya entrás al ranking de Temporada.</>],
   ['¿Cada cuánto se actualiza?', <>Sola, cada media hora. De 3 a 11 de la mañana (hora del este de EE. UU.) corre dos veces.</>],
   ['¿Por qué mi Competitiva está bloqueada?', <>Pide participar en diez eventos de cualquier servidor asociado a la Liga Global, en la temporada, y estar verificado. Hasta entonces la tarjeta sale bloqueada, con cuántos te faltan; tu perfil también lo dice.</>],
@@ -86,7 +86,7 @@ const PREGUNTAS = [
 ];
 const NOMBRE_EV = { '16+': '16 o más', '8-15': '8 a 15', '4-7': '4 a 7' };
 const PUESTOS = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos', 'Dieciseisavos'];
-const MEDALLA = { 'Campeón': '🥇', 'Subcampeón': '🥈', 'Tercero': '🥉' };
+const MEDALLA = PUESTO_MEDALLA;
 
 const Lista = ({ xs }) => (
   <dl className="gu-glos">{xs.map(([t, d]) => <div key={t}><dt>{t}</dt><dd>{d}</dd></div>)}</dl>
@@ -164,7 +164,7 @@ export function Guia({ liga, dc }) {
               <table>
                 <thead><tr><th>Puesto</th>{escs.map((e) => <th key={e}>{NOMBRE_EV[e]}<small>raperos</small></th>)}</tr></thead>
                 <tbody>{PUESTOS.filter((p) => escs.some((e) => vale(e, p) != null)).map((p) => (
-                  <tr key={p}><td>{MEDALLA[p] ? MEDALLA[p] + ' ' : ''}{p}{p === 'Semifinal' ? <small>cuando no se juega el tercer puesto</small> : null}</td>
+                  <tr key={p}><td><Medalla p={MEDALLA[p]} />{p}{p === 'Semifinal' ? <small>cuando no se juega el tercer puesto</small> : null}</td>
                     {escs.map((e) => <td key={e}>{vale(e, p) == null ? '—' : num(vale(e, p))}</td>)}</tr>
                 ))}</tbody>
               </table>

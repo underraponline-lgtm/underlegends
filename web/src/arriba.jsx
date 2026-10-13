@@ -141,7 +141,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
         <a className="btn-ico ajustes-b" href="#/ajustes" aria-label="Ajustes"><Ico n="engranaje" t={20} /></a>
         {cara ? (
           <a className="yo-chip" href="#/cuenta" aria-label={'Mi cuenta' + (fuego ? ' · ' + fuego + (fuego === 1 ? ' día seguido' : ' días seguidos') : '')}>
-            {cara}<span>{nombre}</span>{fuego ? <span className="yo-racha" aria-hidden="true">🔥{fuego}</span> : null}</a>
+            {cara}<span>{nombre}</span>{fuego ? <span className="yo-racha" aria-hidden="true"><Ico n="fuego" t={13} />{fuego}</span> : null}</a>
         ) : (
           <button type="button" className="btn verde chico entrar" onClick={accion.entrar}>Entrar</button>
         )}
@@ -238,7 +238,7 @@ function PanelAvisos({ liga, B, onCerrar }) {
   // la campana del teléfono, al pie: lo que falta para que también llegue ahí
   let pie = null;
   if (e && C) {
-    if (e.activa && e.yo && e.yo.id) pie = <p className="nt-ok">✅ También te llega al teléfono. <a href="#/avisos" onClick={onCerrar}>Ajustes de avisos</a></p>;
+    if (e.activa && e.yo && e.yo.id) pie = <p className="nt-ok">También te llega al teléfono. <a href="#/avisos" onClick={onCerrar}>Ajustes de avisos</a></p>;
     else if (!e.soporta || e.negado) pie = <a className="pub-a" href="#/avisos" onClick={onCerrar}>Cómo hacer que te llegue al teléfono</a>;
     else if (!e.activa) pie = <><p className="nt-tx">Que también te llegue al teléfono, al momento:</p><button type="button" className="btn verde chico" onClick={() => C.activar()}><Ico n="campana" t={16} />Activar avisos</button></>;
     else pie = <><p className="nt-tx">Este teléfono recibe los eventos. Para que te lleguen también los tuyos:</p><button type="button" className="btn borde2 chico" onClick={() => C.vincular()}>Vincular con mi Discord</button></>;
@@ -413,7 +413,7 @@ function historiasLiga(liga, mm) {
   // 🔥 la racha más larga de las que siguen vivas
   const r = (liga.d.rachas || []).filter((x) => x.r >= 2)[0];
   if (r) {
-    out.push(Slide('🔥 EN RACHA', <><Cara liga={liga} k={r.k} nombre={r.n} cls="st-cara" /><h3 className="st-h">{limpio(r.n)} lleva {r.r} seguidos</h3>
+    out.push(Slide('EN RACHA', <><Cara liga={liga} k={r.k} nombre={r.n} cls="st-cara" /><h3 className="st-h">{limpio(r.n)} lleva {r.r} seguidos</h3>
       <small className="st-s">eventos seguidos llegando arriba de la llave</small></>,
     'ahora', 'Ver las rachas', { ruta: '#/ranking/rachas' }, 'racha:' + r.k + ':' + r.r));
   }

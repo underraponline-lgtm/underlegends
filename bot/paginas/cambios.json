@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.85",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T00:55:00-04:00",
+   "titulo": "Con la cara de la Liga",
+   "items": [
+    "🎨 Los íconos de la página son más rectos y gruesos, como el resto de la Liga.",
+    "🏅 Las medallas de los perfiles, las llaves y la Guía son los puntos de oro, plata y bronce de las tarjetas.",
+    "✏️ Menos emojis sueltos: se ven igual en todos los celulares."
+   ]
+  },
+  {
    "version": "2.84",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T00:25:00-04:00",

@@ -212,7 +212,7 @@ export function PasosInstalar() {
     setEv(null);
     try { e.prompt(); await e.userChoice; } catch (err) { /* el navegador no quiso */ }
   };
-  if (app) return <p className="cu-d">Ya la estás usando como app ✅</p>;
+  if (app) return <p className="cu-d">Ya la estás usando como app.</p>;
   return (
     <>
       {ev ? (

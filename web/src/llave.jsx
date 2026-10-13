@@ -11,11 +11,11 @@
 // entero con sus ramas (en espejo si entra), como antes.
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { PAIS, capital, limpio, norm, num } from './liga.js';
-import { Bandera, Cara, Compartir, enlace } from './piezas.jsx';
+import { Bandera, Cara, Compartir, Ico, Medalla, PUESTO_MEDALLA, enlace } from './piezas.jsx';
 import { completar, enOrden, esArbol, esDoble, jugado, partirDoble } from './arriba.jsx';
 import { vioVivo, vivoPendiente } from './pase.js';
 
-const MEDALLA = { Campeón: '🥇', Subcampeón: '🥈', Tercero: '🥉', Cuarto: '🎖️' };
+const MEDALLA = PUESTO_MEDALLA;
 const ORD_P = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos', 'Dieciseisavos', 'R32'];
 const PREVIAS = ['Filtros', 'Clasificatorias', 'Preliminares'];
 const BANDERAS = /[\u{1F1E6}-\u{1F1FF}]/gu;
@@ -116,7 +116,7 @@ function Lado({ ctx, b, s, copa, alto, pasa }) {
     <div className={cls} style={alto ? { height: alto } : undefined}>
       {eq ? <span className="lk-caras">{ms.map((m, i) => { const f = ctx.fila(m); return <Cara key={i} liga={ctx.liga} k={f ? f.k : ''} nombre={f ? f.n : sinBanderas(m).txt} cls="lk-cara" />; })}</span> : null}
       <span className="lk-ns">{ms.map((m, i) => <Persona key={i} ctx={ctx} x={m} conCara={!eq} perdio={perdio} />)}</span>
-      {g ? <span className="lk-ok" aria-label={copa ? 'Campeón' : 'Pasó'}>{copa ? '🏆' : '✓'}</span> : null}
+      {g ? <span className="lk-ok" aria-label={copa ? 'Campeón' : 'Pasó'}>{copa ? <Ico n="copa" t={14} /> : '✓'}</span> : null}
     </div>
   );
 }
@@ -137,8 +137,8 @@ function etiquetas(ctx, b, est, copa) {
   if (/refuerzo/i.test(s)) out.push(['Refuerzo', '']);
   if (/^podio/i.test(s)) out.push(['Por el podio', '']);
   const c = ctx.clasico(b);
-  if (c) out.push(['🤜 Clásico ' + c[2] + '–' + c[3], 'cl', 'Ya se cruzaron ' + (c[2] + c[3]) + ' veces (' + limpio(c[0]) + ' ' + c[2] + '–' + c[3] + ' ' + limpio(c[1]) + '). El que gana suma +10 %.']);
-  if (copa && b[1]) out.push(['🏆 Campeón', 'copa']);
+  if (c) out.push(['Clásico ' + c[2] + '–' + c[3], 'cl', 'Ya se cruzaron ' + (c[2] + c[3]) + ' veces (' + limpio(c[0]) + ' ' + c[2] + '–' + c[3] + ' ' + limpio(c[1]) + '). El que gana suma +10 %.']);
+  if (copa && b[1]) out.push(['Campeón', 'copa']);
   return out;
 }
 
@@ -404,7 +404,7 @@ function Doble({ ctx, d, compu }) {
       })}
       {d.F.length ? (
         <div className="lk-db f">
-          <h3 className="lk-h">Gran final<small>{'El mejor de cada llave' + (d.ptsF ? ' · 🏆 ' + d.ptsF + ' pts' : '')}</small></h3>
+          <h3 className="lk-h">Gran final<small>{'El mejor de cada llave' + (d.ptsF ? ' · el campeón, ' + d.ptsF + ' pts' : '')}</small></h3>
           <div className="lk-gf">
             {d.F.map((b, j) => <Batalla key={j} ctx={ctx} b={b} est={ctx.cerrada && !b[1] && b[0].length >= 2 ? 'singan' : ''} copa={j === d.F.length - 1} />)}
           </div>
@@ -455,7 +455,7 @@ function Vidas({ ctx, L, N }) {
             <span className="lk-vd-cs" aria-label={(N - perd[s]) + ' de ' + N + ' vidas'}>
               {Array.from({ length: N }, (_, k) => <i key={k} className={k < N - perd[s] ? '' : 'x'}>{k < N - perd[s] ? '♥' : '♡'}</i>)}
             </span>
-            <small>{cae[s] ? 'cayó en la batalla ' + cae[s] : '🏆 en pie'}</small>
+            <small>{cae[s] ? 'cayó en la batalla ' + cae[s] : 'en pie'}</small>
           </li>
         ))}
       </ol>
@@ -518,7 +518,7 @@ function Funa({ ctx, L }) {
       <h3 className="lk-h">Fase de eliminación<small>{fs.length} raperos · {quedan === fs.length ? 'se juega' : 'quedan ' + quedan}</small></h3>
       <ul>
         {fs.map((x, i) => (
-          <li key={i} className={x[1] ? 'cae' : ''}><Persona ctx={ctx} x={x[0]} perdio={!!x[1]} />{x[1] ? <i className="lk-cae" title="Cayó en la fase">❌</i> : null}</li>
+          <li key={i} className={x[1] ? 'cae' : ''}><Persona ctx={ctx} x={x[0]} perdio={!!x[1]} />{x[1] ? <i className="lk-cae" title="Cayó en la fase"><Ico n="falta" t={14} /></i> : null}</li>
         ))}
       </ul>
     </div>
@@ -532,7 +532,7 @@ function Barra({ ctx, tb }) {
   const f = k ? ctx.liga.T[k] : null;
   const nombre = f ? limpio(f.n) : ctx.nombres[ctx.sigo] || '';
   const p = ctx.pts[ctx.sigo];
-  const res = p ? (MEDALLA[p[0]] ? MEDALLA[p[0]] + ' ' + p[0] : 'Quedó en ' + p[0]) + ' · ' + num(p[1]) + ' pts'
+  const res = p ? <><Medalla p={MEDALLA[p[0]]} />{(MEDALLA[p[0]] ? p[0] : 'Quedó en ' + p[0]) + ' · ' + num(p[1]) + ' pts'}</>
     : ctx.L.vivo ? 'Se juega ahora' : 'Sin puntos en esta llave';
   return (
     <aside className="lk-barra" style={{ '--lk-tb': tb + 'px' }} aria-live="polite">
@@ -666,9 +666,9 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
     const mwDe = (x) => { const f = fila(x); return (mw.b || []).find((y) => y.n === x || (f && y.k === f.k)) || null; };
     const marca = (x, f, perdio) => {
       const k = f ? f.k : x;
-      if (cazado[k]) return perdio ? <i className="lk-mw cz" title={'Lo cazaron acá (' + cazado[k][1] + ')'}>🎯</i> : null;
+      if (cazado[k]) return perdio ? <i className="lk-mw cz" title={'Lo cazaron acá (' + cazado[k][1] + ')'}><Ico n="mira" t={14} /></i> : null;
       const y = L.vivo && mwDe(x);
-      return y && y.e === 'suelto' ? <i className="lk-mw" title={'Buscado · ' + y.cn + ' · ' + num(y.v) + ' pts'}>🎯</i> : null;
+      return y && y.e === 'suelto' ? <i className="lk-mw" title={'Buscado · ' + y.cn + ' · ' + num(y.v) + ' pts'}><Ico n="mira" t={14} /></i> : null;
     };
     // en una en vivo, quiénes de los buscados juegan: es la invitación a cazar
     const aca = [];
@@ -732,7 +732,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
     const vale = prin.map((R, i) => {
       const v = valeR(R);
       const t = v != null ? num(v) + ' pts' : '';
-      return i === ult && final && ptsCamp ? (t ? t + ' · ' : '') + '🏆 ' + ptsCamp : t;
+      return i === ult && final && ptsCamp ? (t ? t + ' · ' : '') + 'campeón ' + ptsCamp : t;
     });
     // 🔑 LA DOBLE: sus dos llaves y la gran final, con sus rondas y sus ramas (`partirDoble()`). La rama sale de quién
     // ganó: la batalla de la ronda de antes cuyo ganador pelea en ésta. En la de perdedores, el otro lado viene de la
@@ -825,7 +825,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const dia = cal ? liga.diaClave(cal.t) : (L.dia || '');
   // ── el podio ──
   const puesto = (p) => (L.tabla || []).filter((r) => r[1] === p);
-  const podio = [['Campeón', '🥇', 'p1'], ['Subcampeón', '🥈', 'p2'], ['Tercero', '🥉', 'p3']].map(([p, m, c]) => {
+  const podio = [['Campeón', 1, 'p1'], ['Subcampeón', 2, 'p2'], ['Tercero', 3, 'p3']].map(([p, m, c]) => {
     const rs = puesto(p);
     if (!rs.length) return null;
     // ⚠️ UN EQUIPO NO SIEMPRE SUMA PAREJO: en GENESIS el revivido se llevó 3000 y sus compañeros 2500
@@ -856,14 +856,14 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
             </div>
           </div>
           <ul className="lk-datos">
-            {mod ? <li>🎤 {mod}</li> : null}
+            {mod ? <li><Ico n="micro" t={16} />{mod}</li> : null}
             {rgo ? <li title={asc ? 'Puntos de ascenso en ' + (sv.nombre || L.sv) + ' (no en la Liga): ' + asc : undefined}>{rgo}{asc ? <small> · {asc}</small> : null}</li> : null}
             {L.participantes ? <li>{L.participantes} raperos</li> : null}
             {org ? <li>{L.vivo && !L.terminada ? 'organiza' : 'organizó'} {fOrg ? <a href={'#/r/' + encodeURIComponent(fOrg.k)}>{limpio(fOrg.n)}</a> : <b>{limpio(org)}</b>}</li> : null}
-            {st.j ? <li>⚖️ jurado {gente(st.j)}</li> : null}
-            {st.h ? <li>🎙️ host {gente(st.h)}</li> : null}
-            {st.d ? <li>🎧 DJ {gente(st.d)}</li> : null}
-            {inf.pre ? <li>🏅 {inf.pre}</li> : null}
+            {st.j ? <li><Ico n="jurado" t={16} />jurado {gente(st.j)}</li> : null}
+            {st.h ? <li><Ico n="micro" t={16} />host {gente(st.h)}</li> : null}
+            {st.d ? <li><Ico n="auris" t={16} />DJ {gente(st.d)}</li> : null}
+            {inf.pre ? <li><Ico n="premio" t={16} />{inf.pre}</li> : null}
             {mult && mult !== 1 ? <li className="lk-mult">×{String(mult).replace('.', ',')} esta semana</li> : null}
           </ul>
           {L.vivo ? (
@@ -871,7 +871,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
               {' · se actualiza sola cada minuto · último cambio ' + hace(L.ed || L.pub || Date.now())}</p>
           ) : null}
           {contoPase ? <p className="lk-pase si" role="status">✓ Contó para tu Pase: miraste esta llave en vivo</p> : null}
-          {tareaVivo ? <p className="lk-pase">🎟️ Tu Tarea «{tareaVivo.t}» cuenta con una llave que se esté jugando, y ésta ya terminó. Las que se juegan están en <a href="#/">En vivo, en el Inicio</a>.</p> : null}
+          {tareaVivo ? <p className="lk-pase">Tu Tarea «{tareaVivo.t}» cuenta con una llave que se esté jugando, y ésta ya terminó. Las que se juegan están en <a href="#/">En vivo, en el Inicio</a>.</p> : null}
           {/* 🔝 ARRIBA DE TODO (Dlx, 03/10/2026: «estas cosas dentro de la llave deberían estar arriba de todo, no
               debajo»): ir a Discord, compartir y avisar si algo está mal. Estaban al pie, después del cuadro entero */}
           <div className="lk-acc-b">
@@ -886,15 +886,15 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
               <li key={x.p} className={'lk-pd ' + x.c}>
                 <span className="lk-pd-caras">{x.rs.map((r, i) => { const f = base.fila(r[0]); return <Cara key={i} liga={liga} k={f ? f.k : ''} nombre={f ? f.n : sinBanderas(r[0]).txt} cls="lk-pd-cara" />; })}</span>
                 <span className="lk-pd-ns">{x.rs.map((r, i) => <Persona key={i} ctx={ctx} x={r[0]} conCara={false} />)}</span>
-                <small>{x.m} {x.p} · {x.pts} pts</small>
+                <small><Medalla p={x.m} />{x.p} · {x.pts} pts</small>
               </li>
             ))}
           </ol>
         ) : null}
         {base.cazas.length || base.aca.length ? (
           <div className="lk-mwtx">
-            {base.cazas.map((c, i) => <p key={i}>🎯 Acá cazaron a <b>{limpio(c[0])}</b> ({c[1]}): {c[2].length ? <>cobró <b>{c[2].map(limpio).join(' y ')}</b></> : 'no cobró nadie'}.</p>)}
-            {base.aca.length ? <p>🎯 {base.aca.length === 1 ? 'Juega un buscado' : 'Juegan ' + base.aca.length + ' buscados'}: {base.aca.map((y, i) => <span key={i}>{i ? ', ' : ''}<b>{limpio(y.n)}</b> ({y.cn}, {num(y.v)} pts)</span>)}. Quien le gane, cobra.</p> : null}
+            {base.cazas.map((c, i) => <p key={i}><Ico n="mira" t={15} /> Acá cazaron a <b>{limpio(c[0])}</b> ({c[1]}): {c[2].length ? <>cobró <b>{c[2].map(limpio).join(' y ')}</b></> : 'no cobró nadie'}.</p>)}
+            {base.aca.length ? <p><Ico n="mira" t={15} /> {base.aca.length === 1 ? 'Juega un buscado' : 'Juegan ' + base.aca.length + ' buscados'}: {base.aca.map((y, i) => <span key={i}>{i ? ', ' : ''}<b>{limpio(y.n)}</b> ({y.cn}, {num(y.v)} pts)</span>)}. Quien le gane, cobra.</p> : null}
           </div>
         ) : null}
         {/* 🔝 los puntos, también arriba: cerrados, son un renglón; lo que se vino a ver es la llave */}
@@ -904,7 +904,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
             <div className="lk-pgs">
               {orden.map((g) => (
                 <div key={g} className="lk-pg">
-                  <h4>{MEDALLA[g] ? MEDALLA[g] + ' ' : ''}{g}<small>{grupos[g].length}</small></h4>
+                  <h4><Medalla p={MEDALLA[g]} />{g}<small>{grupos[g].length}</small></h4>
                   <ul>
                     {grupos[g].map((r, i) => {
                       const f = r[3] ? liga.T[r[3]] : base.fila(r[0]);

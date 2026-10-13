@@ -27,7 +27,7 @@ export function Ligas({ liga }) {
   return (
     <div className="dv lgs">
       <p className="dv-cab">Las ligas de los servidores, con sus jornadas: cada una arranca y termina cuando la organiza su servidor.
-        {' '}Sus batallas suman a tus <b>duelos</b> —el Ranking Duelos y el Win%—; al Score, no.</p>
+        {' '}Sus batallas suman a tus <b>duelos</b> (el Ranking Duelos y el Win%); al Score, no.</p>
       <div className="lg-tabs" role="tablist" aria-label="Las ligas">
         {ls.map((x, i) => (
           <button key={x.id} type="button" role="tab" aria-selected={i === sel} className={i === sel ? 'on' : ''} onClick={() => setSel(i)}>

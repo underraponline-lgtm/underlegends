@@ -10,7 +10,7 @@
 // —seguir, el precio por cabeza, el visor de cartas y de llaves— son las de app.js.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
-import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, Ico, QueEsBoton, QueEsTexto, Rango, SinCarta, accion, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
+import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, QueEsTexto, Rango, SinCarta, accion, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
 import { usePaseDe } from './pase.js';
@@ -28,7 +28,7 @@ const NOMBRE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: '
 // quién está en «Comparar dos» de Tarjetas (la de Temporada, que es la que abre): con carta y con cara, como
 // `conTarjeta()` de app.js. Sin esto, «Comparar conmigo» con alguien sin cara ponía en su lugar al #1 de la lista
 const enComparar = (x) => !!x && (x.c || []).includes('temporada') && x.fo !== 0;
-const MEDALLA = { Campeón: '🥇', Subcampeón: '🥈', Tercero: '🥉' };
+const MEDALLA = PUESTO_MEDALLA;
 // en la zona de quien mira (Ajustes), no la del aparato (revisión del 04/10/2026)
 const fecha = (iso) => {
   const d = new Date(iso);
@@ -150,8 +150,8 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
             {crew ? <li><a href={'#/crew/' + encodeURIComponent(crew.clave || crew.crew)}>{limpio(crew.crew)}</a></li>
               : f.crew ? <li><span>{limpio(f.crew)}</span></li> : null}
             {nv ? <li><span className="pf-nivel" title="Sube jugando eventos y entrando cada día">Nivel {nv[0]}</span></li> : null}
-            {nv && nv[1] >= 2 ? <li><span title={nv[1] + ' días seguidos en la Liga'}>🔥 {nv[1]} días</span></li> : null}
-            {pa ? <li><a className="pf-pase" href="#/pase" title="Su nivel en el Pase de rapero de la temporada">🎟️ Pase {pa.nivel}{pa.titulo ? ' · ' + pa.titulo : ''}</a></li> : null}
+            {nv && nv[1] >= 2 ? <li><span className="pf-con" title={nv[1] + ' días seguidos en la Liga'}><Ico n="fuego" t={15} />{nv[1]} días</span></li> : null}
+            {pa ? <li><a className="pf-pase" href="#/pase" title="Su nivel en el Pase de rapero de la temporada"><Ico n="pase" t={15} />Pase {pa.nivel}{pa.titulo ? ' · ' + pa.titulo : ''}</a></li> : null}
           </ul>
           {redes.length ? (
             <ul className="pf-redes" aria-label="Sus redes">
@@ -216,7 +216,7 @@ function Numeros({ f, p }) {
     <section className="sec pf-sec">
       <div className="sec-t"><h2>Sus números</h2></div>
       <dl className="pf-tiles">
-        <div><dd className="pf-med"><span>🥇 {f.oro || 0}</span><span>🥈 {f.seg || 0}</span><span>🥉 {f.ter || 0}</span></dd><dt>PODIOS</dt></div>
+        <div><dd className="pf-med"><span title="Campeón"><Medalla p={1} />{f.oro || 0}</span><span title="Subcampeón"><Medalla p={2} />{f.seg || 0}</span><span title="Tercero"><Medalla p={3} />{f.ter || 0}</span></dd><dt>PODIOS</dt></div>
         <div><dd>{f.sem || 0}</dd><dt>QUEDÓ EN SEMIS</dt></div>
         <div><dd>{g}<small>/{du.length}</small></dd><dt>DUELOS GANADOS</dt></div>
         <div><dd>{rd ? rd[0] : 0}{rd ? <small> · máx {rd[1]}</small> : null}</dd><dt>RACHA DE DUELOS</dt></div>
@@ -256,11 +256,11 @@ function Datos({ liga, p, e }) {
     const [franja, nf] = Object.entries(fr).sort((a, b) => b[1] - a[1])[0] || [];
     const aHora = franja && nf * 2 > conFecha.length ? franja : '';
     if (dias.length) {
-      filas.push(['📅', 'Suele jugar', 'los ' + dias.map(([, i]) => DIAS[i]).join(' y los ') + (aHora ? ', ' + aHora : ''),
+      filas.push(['eventos', 'Suele jugar', 'los ' + dias.map(([, i]) => DIAS[i]).join(' y los ') + (aHora ? ', ' + aHora : ''),
         dias.map(([v, i]) => v + ' ' + (v === 1 ? 'evento' : 'eventos') + ' un ' + DIA1[i]).join(' · ')
         + (aHora ? ' · ' + nf + ' de ' + conFecha.length + ' ' + aHora + ' (tu hora)' : '')]);
     } else if (aHora && conFecha.length >= 3) {
-      filas.push(['🕘', 'Suele jugar', aHora, nf + ' de ' + conFecha.length + ' eventos, en tu hora']);
+      filas.push(['reloj', 'Suele jugar', aHora, nf + ' de ' + conFecha.length + ' eventos, en tu hora']);
     }
   }
   // 🏟️ dónde juega más
@@ -270,7 +270,7 @@ function Datos({ liga, p, e }) {
     const [s, k] = Object.entries(sv).sort((a, b) => b[1] - a[1])[0] || [];
     const otros = Object.keys(sv).length - 1;
     if (s) {
-      filas.push(['🏟️', 'Juega más en', liga.svs[s] ? (liga.svs[s].nombre || siglaDe(s)) : siglaDe(s),
+      filas.push(['socios', 'Juega más en', liga.svs[s] ? (liga.svs[s].nombre || siglaDe(s)) : siglaDe(s),
         k + ' de ' + ev.length + ' eventos' + (otros > 0 ? ' · también en ' + otros + (otros === 1 ? ' servidor más' : ' servidores más') : '')]);
     }
   }
@@ -281,7 +281,7 @@ function Datos({ liga, p, e }) {
     const esos = conPuesto.filter(([, pu]) => PUESTOS.indexOf(pu) === mejor);
     const [n] = esos[0];
     const x = de(n);
-    filas.push([MEDALLA[PUESTOS[mejor]] || '🎖️', 'Su mejor resultado', PUESTOS[mejor],
+    filas.push([MEDALLA[PUESTOS[mejor]] || 'premio', 'Su mejor resultado', PUESTOS[mejor],
       limpio(x[0] || 'Evento ' + n) + (x[2] ? ' · ' + fecha(x[2]).toLowerCase() : '')
       + (esos.length > 1 ? ' · y ' + (esos.length - 1) + (esos.length === 2 ? ' vez más' : ' veces más') : '')]);
   }
@@ -289,7 +289,7 @@ function Datos({ liga, p, e }) {
   if (ev.length >= 2) {
     const tot = ev.reduce((s, x) => s + (Number(x[2]) || 0), 0);
     const top = Math.max(...ev.map((x) => Number(x[2]) || 0));
-    filas.push(['📈', 'Por evento', num(Math.round(tot / ev.length)) + ' puntos', 'el que más le dio: ' + num(top)]);
+    filas.push(['ranking', 'Por evento', num(Math.round(tot / ev.length)) + ' puntos', 'el que más le dio: ' + num(top)]);
   }
   const du = (p && p.du) || [];
   if (du.length) {
@@ -308,28 +308,28 @@ function Datos({ liga, p, e }) {
     const clasicos = rs.filter((r) => r.evs.size >= 3).sort((a, b) => b.evs.size - a.evs.size || (b.g + b.p) - (a.g + a.p));
     if (clasicos.length) {
       const c = clasicos[0];
-      filas.push(['🔥', 'Su clásico', c, c.evs.size + ' eventos cruzados · ' + c.g + '–' + c.p + ' en duelos'
+      filas.push(['cruce', 'Su clásico', c, c.evs.size + ' eventos cruzados · ' + c.g + '–' + c.p + ' en duelos'
         + (clasicos.length > 1 ? ' · y ' + (clasicos.length - 1) + (clasicos.length === 2 ? ' clásico más' : ' clásicos más') : '')]);
     }
     // 🔑 MÁS FORMAL (Dlx, 07/10/2026: «¿puedes hacer que sea más formal lo de verdugo e hijo?»): decía «su verdugo» y
     // «su hijo»; la cuenta es la misma —desde dos, y más ganadas que perdidas (o al revés)—
     const dificil = rs.filter((r) => r.p >= 2 && r.p > r.g).sort((a, b) => b.p - a.p || a.g - b.g)[0];
     const vencio = rs.filter((r) => r.g >= 2 && r.g > r.p).sort((a, b) => b.g - a.g || a.p - b.p)[0];
-    if (dificil) filas.push(['🛡️', 'Su rival más difícil', dificil, 'le ganó ' + dificil.p + ' de ' + (dificil.g + dificil.p) + ' duelos']);
-    if (vencio) filas.push(['🎯', 'El rival que más venció', vencio, 'le ganó ' + vencio.g + ' de ' + (vencio.g + vencio.p) + ' duelos']);
+    if (dificil) filas.push(['escudo', 'Su rival más difícil', dificil, 'le ganó ' + dificil.p + ' de ' + (dificil.g + dificil.p) + ' duelos']);
+    if (vencio) filas.push(['mira', 'El rival que más venció', vencio, 'le ganó ' + vencio.g + ' de ' + (vencio.g + vencio.p) + ' duelos']);
   }
   if (p && p.eq) {
     const r = liga.T[p.eq[0]];
-    filas.push(['🤝', 'Hace mejor equipo con', { k: r ? r.k : '', n: r ? r.n : p.eq[1] }, 'ganaron ' + p.eq[2] + ' de ' + p.eq[3] + ' juntos']);
+    filas.push(['seguir', 'Hace mejor equipo con', { k: r ? r.k : '', n: r ? r.n : p.eq[1] }, 'ganaron ' + p.eq[2] + ' de ' + p.eq[3] + ' juntos']);
   }
-  if (p && p.rp && p.rp[1]) filas.push(['🔁', 'En réplicas', 'ganó ' + p.rp[0] + ' de ' + p.rp[1], 'las votadas en un canal que lee el bot']);
+  if (p && p.rp && p.rp[1]) filas.push(['replica', 'En réplicas', 'ganó ' + p.rp[0] + ' de ' + p.rp[1], 'las votadas en un canal que lee el bot']);
   // 🌱 cuándo debutó, y 🕒 su último evento
   if (conFecha.length) {
     const orden = conFecha.slice().sort((a, b) => new Date(de(a[0])[2]) - new Date(de(b[0])[2]));
     const [n0] = orden[0];
     const [n1] = orden[orden.length - 1];
-    filas.push(['🌱', 'Debutó', fecha(de(n0)[2]).toLowerCase(), limpio(de(n0)[0] || 'Evento ' + n0)]);
-    if (orden.length > 1) filas.push(['🕒', 'Su último evento', haceDias(de(n1)[2]), limpio(de(n1)[0] || 'Evento ' + n1)]);
+    filas.push(['brote', 'Debutó', fecha(de(n0)[2]).toLowerCase(), limpio(de(n0)[0] || 'Evento ' + n0)]);
+    if (orden.length > 1) filas.push(['reloj', 'Su último evento', haceDias(de(n1)[2]), limpio(de(n1)[0] || 'Evento ' + n1)]);
   }
   if (!filas.length) return null;
   return (
@@ -338,7 +338,8 @@ function Datos({ liga, p, e }) {
       <ul className="pf-datos">
         {filas.map(([ic, et, v, sub]) => (
           <li key={et}>
-            <span className="pf-dt-ic" aria-hidden="true">{ic}</span>
+            {/* el ícono: el nombre de uno de `Ico`, o el puesto (1 a 3) para la medalla */}
+            <span className="pf-dt-ic" aria-hidden="true">{typeof ic === 'number' ? <Medalla p={ic} /> : <Ico n={ic} t={24} />}</span>
             <small>{et}</small>
             {typeof v === 'object' ? (
               v.k ? <a className="pf-dt-q" href={'#/r/' + encodeURIComponent(v.k)}><Cara liga={liga} k={v.k} nombre={v.n} cls="cara pf-dt-cara" lazy />{limpio(v.n)}</a>
@@ -543,7 +544,7 @@ function Eventos({ liga, p, e }) {
               <button type="button" className={!pu ? 'on' : ''} aria-pressed={!pu} onClick={() => setPu('')}>Todos · {ev.length}</button>
               {puestos.map((x) => (
                 <button type="button" key={x} className={pu === x ? 'on' : ''} aria-pressed={pu === x} onClick={() => setPu(pu === x ? '' : x)}>
-                  {MEDALLA[x] ? MEDALLA[x] + ' ' : ''}{x} · {cuenta[x]}
+                  <Medalla p={MEDALLA[x]} />{x} · {cuenta[x]}
                 </button>
               ))}
             </div>
@@ -561,7 +562,7 @@ function Eventos({ liga, p, e }) {
                 <b>{limpio(x[0] || 'Evento ' + n)}</b>
                 <small>{x[1] ? <img alt="" src={liga.logo(x[1])} /> : null}{x[1] ? siglaDe(x[1]) : ''}{x[3] ? ' · ' + x[3] + ' raperos' : ''}</small>
               </div>
-              <span className="pf-ev-p">{MEDALLA[puesto] ? MEDALLA[puesto] + ' ' : ''}{puesto}</span>
+              <span className="pf-ev-p"><Medalla p={MEDALLA[puesto]} />{puesto}</span>
               <b className="pf-ev-pts">{num(pts)}</b>
               <button type="button" className="pf-ev-ll" onClick={() => accion.llave(String(n))}>Ver llave</button>
             </li>

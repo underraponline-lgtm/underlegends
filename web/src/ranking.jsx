@@ -414,8 +414,8 @@ function Cerca({ x, cfg, base, i, sub, clas }) {
         <Vecino x={x} cfg={cfg} f={abajo} rol="abajo" txt={tB} />
       </div>
       {clas && numero(cfg, yo) ? (
-        <p className="rk-final">{dentro ? <>🏆 Si la temporada terminara hoy, <b>jugás el torneo de cierre</b>.</>
-          : falta ? <>🏆 Te faltan <b>{falta}</b> para entrar al torneo de cierre: clasifican los {cfg.final} primeros.</>
+        <p className="rk-final">{dentro ? <>Si la temporada terminara hoy, <b>jugás el torneo de cierre</b>.</>
+          : falta ? <>Te faltan <b>{falta}</b> para entrar al torneo de cierre: clasifican los {cfg.final} primeros.</>
             : null}</p>
       ) : null}
     </section>
@@ -880,7 +880,7 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
                               <tr className="rk-det"><td colSpan={cols.length}><Detalle x={x} cfg={cfg} f={f} perf={perf} /></td></tr>
                             ) : null}
                             {esCorte ? (
-                              <tr className="rk-corte"><td colSpan={cols.length}><span>🏆 Hasta acá clasifican al torneo de cierre de la T1</span></td></tr>
+                              <tr className="rk-corte"><td colSpan={cols.length}><span><Ico n="copa" t={14} /> Hasta acá clasifican al torneo de cierre de la T1</span></td></tr>
                             ) : null}
                           </Fragment>
                         );

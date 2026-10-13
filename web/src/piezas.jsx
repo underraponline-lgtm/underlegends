@@ -25,7 +25,7 @@ const TRAZOS = {
   reloj: <><circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" /></>,
   calma: <><circle cx="12" cy="4.5" r="1.8" /><path d="M5 8.5l7 1.5 7-1.5M12 10v4.5l-3 6M12 14.5l3 6" /></>,
   instalar: <><rect x="6.5" y="2.5" width="11" height="19" rx="1.5" /><path d="M12 7v7M9 11.5l3 3 3-3M10.5 18.5h3" /></>,
-  novedades: <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" />,
+  novedades: <><path d="M5 3.5h10l4 4v13H5z" /><path d="M15 3.5v4h4M8.5 12h7M8.5 16h5" /></>,
   guia: <><path d="M4 5.5A2.5 2.5 0 016.5 3H20v15H6.5A2.5 2.5 0 004 20.5z" /><path d="M4 20.5A2.5 2.5 0 016.5 18H20v3H6.5" /></>,
   // los que faltaban para la tira de abajo del celular (02/10/2026): el pase es una entrada, la tienda una bolsa
   pase: <><path d="M3 7h18v3.2a1.8 1.8 0 000 3.6V17H3v-3.2a1.8 1.8 0 000-3.6z" /><path d="M15 7.5v1.5M15 11.2v1.6M15 15v1.5" /></>,
@@ -40,12 +40,36 @@ const TRAZOS = {
   falta: <path d="M7 7l10 10M17 7L7 17" />,
   espera: <><circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" /></>,
   aviso: <><path d="M12 3.5l9.5 16.5h-19z" /><path d="M12 10v4.5M12 17.2v.3" /></>,
+  // 🎨 LOS QUE REEMPLAZAN A LOS EMOJIS (Dlx, 13/10/2026, la lista de «sitio vibecodeado»: un emoji se ve distinto en
+  // cada celular y dice «plantilla»). Mismo trazo que los de arriba
+  copa: <path d="M7 4h10v5a5 5 0 01-10 0zM7 6H4v1.5A3 3 0 007 10.5M17 6h3v1.5a3 3 0 01-3 3M12 14v3.5M8 20.5h8M9.5 17.5h5" />,
+  fuego: <path d="M12 3c.6 3 4.8 5.2 4.8 10.2A4.8 4.8 0 0112 18a4.8 4.8 0 01-4.8-4.8c0-2.6 1.4-4 2.4-5 .2 1.6.9 2.6 1.9 3.1C11.6 8.6 12 6 12 3z" />,
+  mira: <><circle cx="12" cy="12" r="7.5" /><circle cx="12" cy="12" r="2.5" /><path d="M12 2v4M12 18v4M2 12h4M18 12h4" /></>,
+  micro: <><path d="M9 3h6v10H9z" /><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21M8 21h8" /></>,
+  jurado: <path d="M12 4v16M7 20h10M4 7h16M6.5 7L4 13.5h5zM17.5 7L15 13.5h5z" />,
+  auris: <><path d="M4 15v-3a8 8 0 0116 0v3" /><path d="M4 14h4v6H4zM16 14h4v6h-4z" /></>,
+  premio: <><circle cx="12" cy="9" r="5" /><path d="M9 13.2L7.5 21l4.5-2.5 4.5 2.5-1.5-7.8" /></>,
+  escudo: <path d="M12 3l8 3v6c0 4.6-3.3 7.9-8 9-4.7-1.1-8-4.4-8-9V6z" />,
+  replica: <path d="M4 8.5h13.5M14 5l3.5 3.5L14 12M20 15.5H6.5M10 12l-3.5 3.5L10 19" />,
+  brote: <path d="M12 21v-9M12 12c0-4.2 3-6.5 7.5-6.5 0 4.2-3 6.5-7.5 6.5zM12 15c0-3.2-2.3-5-6-5 0 3.2 2.3 5 6 5z" />,
+  cruce: <path d="M4 4l6.5 6.5M20 20l-6.5-6.5M20 4L4 20M4 4h4.5M4 4v4.5M20 20h-4.5M20 20v-4.5" />,
+  moneda: <><circle cx="12" cy="12" r="8.5" /><path d="M14.5 8.5h-3.2a1.8 1.8 0 000 3.6h1.4a1.8 1.8 0 010 3.6H9.5M12 6.5v2M12 15.7v1.8" /></>,
 };
+// ✏️ EL TRAZO ES NUESTRO, NO EL DE LUCIDE (13/10/2026): punta y esquina rectas, un poco más grueso. Redondeado y en 2
+// era exactamente el de Lucide y Feather, la segunda señal de la lista de «sitio vibecodeado»; recto va con lo demás de la
+// Liga —bordes de 2 px, sin radios, el Chevron— y con los afiches
 export function Ico({ n, t = 20 }) {
   return (
-    <svg className="ico" width={t} height={t} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-      strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{TRAZOS[n]}</svg>
+    <svg className="ico" width={t} height={t} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25"
+      strokeLinecap="square" strokeLinejoin="miter" aria-hidden="true">{TRAZOS[n]}</svg>
   );
+}
+
+// 🥇 LAS MEDALLAS, COMO EN LAS CARTAS: el punto de oro, plata o bronce de las cartas (`.lv-oro` y compañía) en vez de
+// 🥇🥈🥉, que en cada celular se dibujan distinto. El puesto va escrito al lado: el punto no es lo único que lo dice
+export const PUESTO_MEDALLA = { Campeón: 1, Subcampeón: 2, Tercero: 3, Cuarto: 4 };
+export function Medalla({ p }) {
+  return p ? <i className={'med m' + p} aria-hidden="true" /> : null;
 }
 export function Chevron() {
   return (

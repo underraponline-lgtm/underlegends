@@ -142,7 +142,7 @@ function RachaNivel({ dc }) {
   return (
     <div className="cu-rn">
       <div className="cu-rn-c">
-        <b>🔥 {r.actual ? dias(r.actual) + ' seguidos' : 'Sin racha todavía'}</b>
+        <b className="cu-con"><Ico n="fuego" t={18} />{r.actual ? dias(r.actual) + ' seguidos' : 'Sin racha todavía'}</b>
         <small>{r.actual ? (r.hoy ? 'Hoy ya contó. ' : 'Entrá o jugá hoy para no cortarla. ') : 'Cuenta cada día que usás el bot, entrás con tu cuenta o jugás un evento. '}
           Faltan {dias(falta)} para <b>+{premio} Puntos de Tienda</b>.{r.maxima > r.actual ? ' Tu mejor racha: ' + dias(r.maxima) + '.' : ''}</small>
       </div>
@@ -209,7 +209,7 @@ function FotoCaja({ liga, dc }) {
   } else if (!dc.clave) {
     cuerpo = <a className="btn verde chico" href="#/cuenta/verificar">Verificarme</a>;
   } else if (F && F.hecho) {
-    cuerpo = <p className="cu-d">📸 <b>Listo</b>: ésa es tu foto de la {T}. Tus tarjetas se vuelven a dibujar en la próxima vuelta del ciclo (cada media hora; de 3 a 11 AM, hora del este, no corre).{F.libre ? ' ' + libre(F) : ''}</p>;
+    cuerpo = <p className="cu-d"><b>Listo</b>: ésa es tu foto de la {T}. Tus tarjetas se vuelven a dibujar en la próxima vuelta del ciclo (cada media hora; de 3 a 11 AM, hora del este, no corre).{F.libre ? ' ' + libre(F) : ''}</p>;
   } else if (F && F.error) {
     const m = F.error === 'sin_foto' ? 'No tenés foto puesta en Discord: tu tarjeta va con la inicial, que con el color de tu rango queda bien. Si te ponés una, volvé.'
       : F.error === 'sin_perfil' ? 'Primero necesitás tu tarjeta: verificate en la página.'
@@ -244,7 +244,7 @@ function FotoCaja({ liga, dc }) {
   const oculta = !!(est.MIFOTO && est.MIFOTO.oculta);
   return (
     <Caja t="Tu foto de la tarjeta" d={!dc ? 'La de tu Discord. Entrá con Discord para cambiarla.' : !dc.clave ? 'Primero necesitás tu tarjeta.' : 'La de tu Discord. Va una por temporada.'}>
-      {oculta ? <p className="cu-d">🙈 La tenés <b>oculta</b>: tus tarjetas van con tu inicial. Se cambia en <a href="#/cuenta/privacidad">Privacidad</a>.</p> : null}
+      {oculta ? <p className="cu-d">La tenés <b>oculta</b>: tus tarjetas van con tu inicial. Se cambia en <a href="#/cuenta/privacidad">Privacidad</a>.</p> : null}
       {cuerpo}
     </Caja>
   );
@@ -435,7 +435,7 @@ function ServidorCaja({ liga, dc, paso }) {
 function OcultarFoto({ dc }) {
   const est = useCuentaEst();
   useEffect(() => { if (dc && W.pedirMiFoto) W.pedirMiFoto(); }, [dc && dc.id]);
-  const d = 'Si la ocultás, la página y tus tarjetas —también las de Discord— te muestran con tu inicial. Se aplica en la próxima vuelta del ciclo: cada media hora, salvo de 3 a 11 AM (hora del este).';
+  const d = 'Si la ocultás, la página y tus tarjetas (también las de Discord) te muestran con tu inicial. Se aplica en la próxima vuelta del ciclo: cada media hora, salvo de 3 a 11 AM (hora del este).';
   if (!dc) {
     return (
       <Caja t="Tu foto" d={d}>
@@ -501,7 +501,7 @@ function Parte({ id, liga, dc, tema, onTema }) {
           </Caja>
         ) : null}
         {dc && !yo && !dc.rapero ? (
-          <Caja t="Tu tarjeta" d="Son dos pasos: verificate en DRA —acá, en un toque— y se abre tu Servidor; con tu primera Tarea del Pase de rapero, tu Temporada.">
+          <Caja t="Tu tarjeta" d="Son dos pasos: verificate en DRA (acá, en un toque) y se abre tu Servidor; con tu primera Tarea del Pase de rapero, tu Temporada.">
             <div className="cu-btns"><a className="btn verde chico" href="#/cuenta/verificar">Verificarme</a>
               <a className="btn borde2 chico" href="#/guia">Cómo conseguir tu tarjeta</a></div>
           </Caja>
@@ -649,7 +649,7 @@ function Verificar({ liga, dc }) {
   if ((dc && dc.rapero) || (v && v.listo)) {
     return (
       <>
-        <Caja t="Ya estás verificado ✅" d="Tus tarjetas salen con /card en Discord, y tu perfil está en la página.">
+        <Caja t="Ya estás verificado" d="Tus tarjetas salen con /card en Discord, y tu perfil está en la página.">
           {yo ? <a className="btn verde chico" href={'#/r/' + encodeURIComponent(yo.k)}>Ver mi perfil</a> : null}
         </Caja>
         <ServidorCaja liga={liga} dc={dc} paso />
@@ -704,8 +704,8 @@ function Verificar({ liga, dc }) {
     miembro,
   ];
   const resumen = v.completo
-    ? (v.rol ? 'Estás verificado en DRA ✅. Tus tarjetas salen cuando el bot te cargue' + (vuelta ? ': en la vuelta de las ' + vuelta + ' o en la siguiente.' : '.')
-      : 'Lo tuyo está completo ✅. El resto lo hace el bot solo.')
+    ? (v.rol ? 'Estás verificado en DRA. Tus tarjetas salen cuando el bot te cargue' + (vuelta ? ': en la vuelta de las ' + vuelta + ' o en la siguiente.' : '.')
+      : 'Lo tuyo está completo. El resto lo hace el bot solo.')
     : v.revisa ? 'Lo tuyo está completo. Tu caso lo revisa un admin.' : 'Te falta lo que está marcado abajo.';
   return (
     <>

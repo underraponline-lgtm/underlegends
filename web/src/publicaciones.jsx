@@ -119,7 +119,7 @@ function Pub({ liga, it, A }) {
     cat = 'EVENTO · ' + siglaDe(it.sv);
     vis = <img className="pub-logo" alt="" src={liga.logo(it.sv)} />;
     txt = <b>{limpio(it.ev)}</b>;
-    det = [it.mod, it.org ? 'organiza ' + it.org : '', it.pre ? '🏅 ' + it.pre : ''].filter(Boolean).join(' · ');
+    det = [it.mod, it.org ? 'organiza ' + it.org : '', it.pre ? 'premio: ' + it.pre : ''].filter(Boolean).join(' · ');
     acc = <>{it.link ? <a className="pub-a" href={it.link} target="_blank" rel="noopener noreferrer">Ver en Discord ↗</a> : null}
       <a className="pub-a" href="#/eventos">Eventos</a></>;
   } else if (it.tipo === 'liga') {
@@ -242,7 +242,7 @@ function Avisame() {
   const puede = e.soporta && !e.negado;
   return (
     <section className="pub-bloque">
-      <h2 className="evp-h2">🔔 Que te llegue</h2>
+      <h2 className="evp-h2">Que te llegue</h2>
       <p className="pub-tx">Cuando te felicitan, cuando alguien te sigue, cuando la Liga publica algo de quien seguís y cuando te toca pelear: un aviso en este dispositivo. Nunca por DM.</p>
       {!puede ? <a className="pub-a" href="#/avisos">Cómo activarlos</a>
         : !e.activa ? <button type="button" className="btn verde chico pub-avb" onClick={() => C.activar()}><Ico n="campana" t={16} />Activar avisos</button>
@@ -338,9 +338,9 @@ export function Publicaciones({ liga, enc }) {
         </main>
         <aside className="pub-der">
           <div className="pub-der-in">
-            <section className="pub-bloque"><h2 className="evp-h2">👏 Lo más felicitado</h2><MasFelicitado liga={liga} pubs={semana} A={A} /></section>
+            <section className="pub-bloque"><h2 className="evp-h2">Lo más felicitado</h2><MasFelicitado liga={liga} pubs={semana} A={A} /></section>
             <Avisame />
-            {sigo.length ? <section className="pub-bloque"><h2 className="evp-h2">★ A quién seguís</h2><Sigo liga={liga} sigo={sigo} onVer={() => { setFil('sigo'); setVer(40); }} /></section> : null}
+            {sigo.length ? <section className="pub-bloque"><h2 className="evp-h2">A quién seguís</h2><Sigo liga={liga} sigo={sigo} onVer={() => { setFil('sigo'); setVer(40); }} /></section> : null}
           </div>
         </aside>
       </div>
