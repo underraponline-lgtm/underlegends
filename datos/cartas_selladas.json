@@ -191,10 +191,10 @@
    "servidor": "3e800acbcceb:38fa4546320c:3580af"
   },
   "Carlosss": {
-   "competitivo": "64a16ebe43c0:2256fa928e50",
+   "competitivo": "c86b2c05da36:2256fa928e50",
    "pais": "a7baaa11d4e9:6e96b9946947",
    "servidor": "c7c3d734f5ca:38fa4546320c:abdb4a",
-   "temporada": "16bc3c3ac28f:5f7648916ad1"
+   "temporada": "44a2881484da:5f7648916ad1"
   },
   "Catarsis": {
    "competitivo": "3a507d6b474e:2256fa928e50",
@@ -1065,10 +1065,10 @@
    "servidor": "62285a56b056:38fa4546320c:055f77"
   },
   "NXUZ": {
-   "competitivo": "b74e04fdd946:2256fa928e50",
-   "pais": "9419d54b5341:a83947948804",
-   "servidor": "9d443f90cbd8:38fa4546320c:3580af",
-   "temporada": "6ebfd1f3e853:5f7648916ad1"
+   "competitivo": "b3c9b1c4bb38:2256fa928e50",
+   "pais": "912f5081661b:a83947948804",
+   "servidor": "4e7efa4a31e0:38fa4546320c:3580af",
+   "temporada": "0ca77dbfde28:5f7648916ad1"
   },
   "Nahu": {
    "servidor": "4a1ff1fe7a60:38fa4546320c:15af16"
@@ -1362,10 +1362,10 @@
    "servidor": "a7f2c6559975:38fa4546320c:874d2d"
   },
   "Sin Limites": {
-   "competitivo": "8b657bae3fdb:2256fa928e50",
+   "competitivo": "7315e253cacb:2256fa928e50",
    "pais": "d936877e45ef:a83947948804",
    "servidor": "2dad8df83253:38fa4546320c:abdb4a",
-   "temporada": "8ee4cd17af25:5f7648916ad1"
+   "temporada": "8c04b36c089c:5f7648916ad1"
   },
   "Six": {
    "competitivo": "b8b22e132522:2256fa928e50",
@@ -1753,5 +1753,5 @@
    "servidor": "7f8885a35a6d:38fa4546320c:c9f1f2"
   }
  },
- "cuando": "2026-10-13T20:32:32+00:00"
+ "cuando": "2026-10-13T21:05:07+00:00"
 }
