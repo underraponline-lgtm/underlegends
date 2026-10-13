@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.84",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T00:25:00-04:00",
+   "titulo": "Una flecha para volver arriba",
+   "items": [
+    "⬆️ Abajo a la derecha, una flecha te lleva arriba de todo cuando bajaste mucho.",
+    "🏆 Las pestañas del Ranking, más grandes y fáciles de ver."
+   ]
+  },
+  {
    "version": "2.83",
    "dia": "2026-10-12",
    "cuando": "2026-10-12T23:55:00-04:00",

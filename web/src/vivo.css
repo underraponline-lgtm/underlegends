@@ -760,11 +760,15 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .rk-subs{position:sticky;top:0;z-index:20;background:#030304;color:#F6F6F6;border-bottom:2px solid #2A2A2C}
 .rk-subs-in{display:flex;overflow-x:auto;scrollbar-width:none;padding:0 6px}
 .rk-subs-in::-webkit-scrollbar{display:none}
-.rk-subs a{flex:none;display:inline-flex;align-items:center;gap:6px;padding:15px 10px 12px;margin-bottom:-2px;
-  font:700 12px/1 "Space Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:#A5A5A0;
-  border-bottom:3px solid transparent;white-space:nowrap}
-.rk-subs a:hover{color:#F6F6F6}
-.rk-subs a.on{color:#F6F6F6;border-bottom-color:#29B298}
+/* ↕️ MÁS GRANDES Y QUE SE NOTEN (Dlx, 13/10/2026: «hacer esta sección más grande, que se note más»): eran 12 px en gris
+   y la elegida sólo se marcaba con la raya. Ahora 14 px, más claras, más altas, y la elegida con fondo verde */
+.rk-subs a{flex:none;display:inline-flex;align-items:center;gap:6px;padding:18px 12px 15px;margin-bottom:-2px;
+  font:700 14px/1 "Space Mono",monospace;letter-spacing:.05em;text-transform:uppercase;color:#C4C4BE;
+  border-bottom:4px solid transparent;white-space:nowrap}
+.rk-subs a:hover{color:#F6F6F6;background:rgba(246,246,246,.06)}
+.rk-subs a.on{color:#F6F6F6;border-bottom-color:#29B298;background:rgba(41,178,152,.16)}
+/* en la compu, las doce tienen que entrar sin deslizar desde ~1150 px (Dlx mira a 1180–1333): menos aire entre letras */
+@media (min-width: 900px){.rk-subs a{padding-inline:10px;letter-spacing:.03em}}
 .rk-subs a i{font-style:normal;font-size:12px;letter-spacing:.06em;border:1.5px solid currentColor;padding:2px 4px}
 .rk-subs a.pronto:not(.on){color:#6E6E6A}
 /* en el celular el círculo de color va abajo, detrás del podio: arriba quedaba debajo del texto gris */
@@ -2419,3 +2423,16 @@ a.rk-z:hover{border-color:var(--linea)}
 .rk-qe dl div{display:contents}
 .rk-qe dt{font-weight:800}
 .rk-qe dd{margin:0;color:var(--gris)}
+
+/* ⬆️ la flecha para subir (13/10/2026): negra, abajo a la derecha. En el celular, arriba de la barra de abajo (~62 px);
+   el borde claro es para que se vea también sobre lo negro */
+.subir{position:fixed;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 76px);z-index:25;width:48px;height:48px;
+  display:grid;place-items:center;padding:0;cursor:pointer;background:#030304;color:#F6F6F6;border:2px solid #F6F6F6;
+  border-radius:4px;box-shadow:0 4px 14px rgba(0,0,0,.35);opacity:0;transform:translateY(8px);pointer-events:none;
+  transition:opacity .18s,transform .18s}
+.subir.ver{opacity:1;transform:none;pointer-events:auto}
+.subir svg{transform:rotate(-90deg)}
+.subir:hover{background:#29B298;border-color:#29B298;color:#030304}
+.subir:focus-visible{outline:3px solid #29B298;outline-offset:2px}
+@media (min-width: 900px){.subir{right:24px;bottom:24px;width:52px;height:52px}}
+@media (prefers-reduced-motion: reduce){.subir{transition:none}}

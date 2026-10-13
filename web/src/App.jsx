@@ -6,7 +6,7 @@ import { DUENO, Liga, aQuienSigo, limpio, quienMira } from './liga.js';
 import { nombrePais } from './piezas.jsx';
 import { Cabecera, Hero, Historias, Instalar, IrA, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
 import { Fechas, LaLiga, LosQueMandan, Noticias, Panel } from './medio.jsx';
-import { Menu, Merch, Pie, SeBusca, Tabbar, Visor } from './abajo.jsx';
+import { Menu, Merch, Pie, SeBusca, Subir, Tabbar, Visor } from './abajo.jsx';
 import { Encuestas } from './encuestas.jsx';
 // 🧭 el tutorial (Dlx, 12/10/2026, «A … B … C … D … E. Dale»): quién es nuevo se decide al cargar (primera.js, chico);
 // lo que se dibuja se baja sólo si hace falta
@@ -472,6 +472,7 @@ export default function App() {
       </>}
       <Aislada n="Pie"><Pie liga={liga} /></Aislada>
       <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} pagina={paginaMenu} /></Aislada>
+      {pagina && !sv ? <Aislada n="Subir"><Subir key={paginaMenu} /></Aislada> : null}
       <Aislada n="Menu"><Menu liga={liga} abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} /></Aislada>
       {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={cerrarHistoria} onVisto={visto} vistos={vistos || {}} raiz={raiz} /></Aislada> : null}
       <Aislada n="Video"><VentanaVideo /></Aislada>

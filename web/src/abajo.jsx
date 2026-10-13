@@ -146,6 +146,28 @@ export function Pie({ liga }) {
   );
 }
 
+// ── ⬆️ LA FLECHA PARA SUBIR (Dlx, 13/10/2026: «poner la flecha negra abajo a la derecha, en la esquina inferior
+// derecha, que te lleve hacia arriba de todo»). Aparece cuando ya bajaste más de una pantalla y media; en el celular va
+// arriba de la barra de abajo. No en el Inicio: ahí la barra «IR A» ya trae su «volver arriba»
+export function Subir() {
+  const [ver, setVer] = useState(false);
+  useEffect(() => {
+    const mirar = () => setVer(window.scrollY > window.innerHeight * 1.5);
+    window.addEventListener('scroll', mirar, { passive: true });
+    mirar();
+    return () => window.removeEventListener('scroll', mirar);
+  }, []);
+  const subir = () => {
+    let quieto = false;
+    try { quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { quieto = false; }
+    window.scrollTo({ top: 0, behavior: quieto ? 'auto' : 'smooth' });
+  };
+  return (
+    <button type="button" className={'subir' + (ver ? ' ver' : '')} aria-label="Volver arriba de todo" title="Volver arriba"
+      tabIndex={ver ? 0 : -1} aria-hidden={!ver} onClick={subir}><Ico n="flecha" t={22} /></button>
+  );
+}
+
 // ── la barra de abajo del celular y el menú ☰ ─────────────────────────────────────────────────────
 export function Tabbar({ liga, dc, pagina = '' }) {
   // 🔑 UNA TIRA QUE SE DESLIZA, con todas las secciones como en la compu. Dlx, 28/09/2026: «en el PC será normal pero
