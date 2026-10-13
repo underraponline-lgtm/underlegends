@@ -1776,6 +1776,12 @@
      16,
      0
     ],
+    "Kusoh": [
+     1,
+     4,
+     4,
+     0
+    ],
     "LRS": [
      2,
      8,
@@ -1816,6 +1822,12 @@
      1,
      8,
      8,
+     0
+    ],
+    "Molusco": [
+     1,
+     1,
+     1,
      0
     ],
     "NC": [
@@ -1896,6 +1908,12 @@
      1,
      0
     ],
+    "Raizer": [
+     1,
+     4,
+     4,
+     0
+    ],
     "Rodas": [
      2,
      8,
@@ -1921,9 +1939,9 @@
      0
     ],
     "Sin Limites": [
-     1,
-     8,
-     8,
+     2,
+     4,
+     4,
      0
     ],
     "Snow": [
@@ -1990,6 +2008,12 @@
      1,
      16,
      16,
+     0
+    ],
+    "Vandu": [
+     1,
+     2,
+     2,
      0
     ],
     "Vargas": [
@@ -2087,10 +2111,12 @@
     "Guess": 900,
     "JJ": 1600,
     "Keider": 900,
+    "Kusoh": 600,
     "LRS": 300,
     "Lvel": 300,
     "Magic": 300,
     "Makmah": 900,
+    "Molusco": 1600,
     "NC": 2900,
     "Nemi": 900,
     "OG": 900,
@@ -2100,14 +2126,17 @@
     "Player": 300,
     "Presagio": 2900,
     "Prosu": 1600,
+    "Raizer": 600,
     "Rodas": 300,
     "SINTEXT": 300,
+    "Sin Limites": 900,
     "Snow": 2900,
     "Sosa": 600,
     "Tam": 600,
     "Tenor": 600,
     "Teo": 300,
     "TøKīØ🦠🧠": 600,
+    "Vandu": 600,
     "Velatz": 900,
     "Verc": 2900,
     "Walker": 1600,
@@ -2214,6 +2243,7 @@
   "Krinkross🇪🇸": 300,
   "Krish": 300,
   "Kun Z": 300,
+  "Kusoh": 600,
   "Kyss": 300,
   "LEWITO": 300,
   "LKS 🇨🇱": 300,
@@ -2240,7 +2270,7 @@
   "Mau Kc 🇨🇴": 300,
   "Miniboy": 300,
   "Mito": 300,
-  "Molusco": 300,
+  "Molusco": 1900,
   "Motera": 1000,
   "Mr Still Ballin": 2900,
   "Musicdum": 300,
@@ -2273,6 +2303,7 @@
   "Prosu": 1900,
   "Provenza": 2900,
   "RT": 1300,
+  "Raizer": 600,
   "Ram": 300,
   "Rayo": 300,
   "Respawn": 1300,
@@ -2292,7 +2323,7 @@
   "Saz": 300,
   "Scot": 300,
   "Selek": 300,
-  "Sin Limites": 300,
+  "Sin Limites": 1200,
   "Six": 2900,
   "Snow": 5800,
   "Soneto": 300,
@@ -2309,7 +2340,7 @@
   "Under": 300,
   "VIXOVERSO": 300,
   "Valdoza": 300,
-  "Vandu": 2900,
+  "Vandu": 3500,
   "Velatz": 3800,
   "Verc": 5800,
   "Walker": 4500,

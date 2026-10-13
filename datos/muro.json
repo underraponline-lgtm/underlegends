@@ -141,7 +141,7 @@
 ]
 },
 "vandu": {
-"rg": "E",
+"rg": "D",
 "c": [
 "competitivo",
 "servidor",
@@ -279,7 +279,7 @@
 ]
 },
 "molusco": {
-"rg": "D",
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -295,7 +295,7 @@
 ]
 },
 "sinlimites": {
-"rg": "E",
+"rg": "D",
 "c": [
 "competitivo",
 "servidor",
@@ -2294,30 +2294,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-28T21:07:49Z",
-"quien": [
-"Motera"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-28T22:23:57Z",
-"quien": [
-"tormen"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-28T22:23:57Z",
-"quien": [
-"tormen"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-28T22:40:07Z",
@@ -5563,6 +5539,33 @@
 "DarnBless"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-10-13T17:02:51Z",
+"quien": [
+"Vandu"
+],
+"rg": "D",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-13T17:02:51Z",
+"quien": [
+"Molusco"
+],
+"rg": "C",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-13T17:02:51Z",
+"quien": [
+"Sin Limites"
+],
+"rg": "D",
+"primero": false
 }
 ]
 }

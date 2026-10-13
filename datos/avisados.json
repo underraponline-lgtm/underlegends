@@ -10114,7 +10114,7 @@
   ],
   "ev_antes": {},
   "fecha": "12/10",
-  "firma": "b53999658e53fae4",
+  "firma": "b3a32ceecc8dfae4",
   "msg": "1559406349790617712",
   "nombre": "COMPE CHILL",
   "num": 463,
@@ -10133,7 +10133,7 @@
    [
     "AIRON",
     "Subcampeón",
-    7500
+    1875
    ]
   ],
   "v": 2
@@ -10512,6 +10512,90 @@
     "DarnBless",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "466": {
+  "antes": {
+   "Molusco": [
+    31,
+    38,
+    false
+   ],
+   "Sin Limites": [
+    33,
+    40,
+    false
+   ],
+   "Vandu": [
+    16,
+    19,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Molusco",
+    "Raizer",
+    "Molusco"
+   ],
+   [
+    "Vandu",
+    "Kusoh",
+    "Vandu"
+   ],
+   [
+    "Vandu",
+    "Sin Limites",
+    "Vandu"
+   ],
+   [
+    "Molusco",
+    "Vandu",
+    "Molusco"
+   ]
+  ],
+  "ev_antes": {
+   "Molusco": 11,
+   "Sin Limites": 13,
+   "Vandu": 17
+  },
+  "fecha": "13/10",
+  "nombre": "mathias cup",
+  "num": 466,
+  "participantes": 5,
+  "sello": {
+   "Molusco": "c652d9cae659:5f7648916ad1"
+  },
+  "sv": "FVS",
+  "t": "2026-10-13T16:55:04Z",
+  "tabla": [
+   [
+    "Molusco",
+    "Campeón",
+    5000
+   ],
+   [
+    "Vandu",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Raizer",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Kusoh",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Sin Limites",
+    "Semifinal",
+    2625
    ]
   ],
   "v": 2
