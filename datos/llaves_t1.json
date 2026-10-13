@@ -21923,32 +21923,133 @@
     "b": [
      [
       [
+       "COLOSO",
+       "JM SERNA"
+      ],
+      "COLOSO",
+      ""
+     ],
+     [
+      [
        "MARITHEA",
-       "VISIONARIO"
+       "J1"
       ],
       "MARITHEA",
       ""
      ],
      [
       [
-       "AXL EVANS",
-       "JAZZ"
+       "PUPPY",
+       "VISIONARIO"
+      ],
+      "PUPPY",
+      ""
+     ],
+     [
+      [
+       "MARITHEA",
+       "COLOSO"
+      ],
+      "MARITHEA",
+      ""
+     ],
+     [
+      [
+       "MARITHEA",
+       "PUPPY"
+      ],
+      "MARITHEA",
+      ""
+     ],
+     [
+      [
+       "PANDORA",
+       "FAT N"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Llave de ganadores"
+   },
+   {
+    "b": [
+     [
+      [
+       "JAZZ",
+       "AXL EVANS"
+      ],
+      "JAZZ",
+      "Walk-in 1: JAZZ; Walk-in 1: AXL EVANS"
+     ],
+     [
+      [
+       "AIRON",
+       "HUNTER"
+      ],
+      "AIRON",
+      "Walk-in 1: AIRON; Walk-in 1: HUNTER"
      ],
      [
       [
        "COLOSO",
-       "PANDORA"
+       "PUPPY"
+      ],
+      "COLOSO",
+      ""
+     ],
+     [
+      [
+       "COFFY",
+       "HORUS"
+      ],
+      "COFFY",
+      "Walk-in 1: COFFY; Walk-in 1: HORUS"
+     ],
+     [
+      [
+       "PANDORA",
+       "J1"
+      ],
+      "PANDORA",
+      ""
+     ],
+     [
+      [
+       "FAT N",
+       "JM SERNA"
+      ],
+      "FAT N",
+      ""
+     ],
+     [
+      [
+       "COLOSO",
+       "VISIONARIO"
+      ],
+      "COLOSO",
+      ""
+     ],
+     [
+      [
+       "COLOSO",
+       "FAT N"
+      ],
+      "COLOSO",
+      ""
+     ],
+     [
+      [
+       "AIRON",
+       "LIT IGNIS"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
      ],
      [
       [
-       "HUNTER",
-       "AIRON"
+       "FAT N",
+       "VISIONARIO"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -21956,7 +22057,23 @@
      [
       [
        "J1",
-       "PUPPY"
+       "VISIONARIO"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "JAZZ",
+       "AIRON"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "JAZZ",
+       "COFFY"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -21964,7 +22081,7 @@
      [
       [
        "JM SERNA",
-       "FAT N"
+       "PANDORA"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -21984,6 +22101,22 @@
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "URKO",
+       "LIT IGNIS"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "URKO",
+       "PANDORA"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Llave de perdedores"
@@ -21992,45 +22125,8 @@
     "b": [
      [
       [
-       "COLOSO",
-       "JM SERNA"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "J1",
-       "VISIONARIO"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
        "MARITHEA",
-       "MARITHEA"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "PANDORA",
-       "FAT N"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ]
-    ],
-    "r": "Llave de ganadores"
-   },
-   {
-    "b": [
-     [
-      [
-       "MARITHEA",
-       "MARITHEA"
+       "COLOSO"
       ],
       "MARITHEA",
       ""
@@ -22104,28 +22200,7 @@
    }
   ],
   "sv": "URBF",
-  "tabla": [
-   [
-    "FAT N",
-    "Campeón",
-    10000
-   ],
-   [
-    "AIRON",
-    "Subcampeón",
-    7500
-   ],
-   [
-    "MARITHEA",
-    "Tercero",
-    6000
-   ],
-   [
-    "VISIONARIO",
-    "Cuarto",
-    4500
-   ]
-  ]
+  "tabla": []
  },
  "464": {
   "dia": "2026-10-12",
