@@ -234,7 +234,8 @@
 },
 "1177668622227886112": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -1439,7 +1440,8 @@
 },
 "535579351710957568": {
 "cs": [
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": ""
 },
@@ -1516,7 +1518,8 @@
 "588547235621371936": {
 "cs": [
 "competitivo",
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": "C"
 },
@@ -1975,7 +1978,8 @@
 "768561204707983361": {
 "cs": [
 "competitivo",
-"servidor"
+"servidor",
+"temporada"
 ],
 "rg": "A"
 },
