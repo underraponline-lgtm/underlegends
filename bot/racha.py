@@ -13,7 +13,9 @@ LAS REGLAS (los números, acá arriba)
 - **Un día cuenta** (en hora del este) si ese día usaste el bot, hiciste algo en la página con tu cuenta o
   **jugaste un evento**. Lo de los dos primeros lo anota el Worker solo (`anotarUso()` en `bot/avisos.js`); lo
   de jugar se lo pasa el ciclo, con la fecha del evento y no la de la corrida.
-- **La racha** son los días seguidos hasta hoy. Sigue viva todo el día de hoy si ayer contó.
+- **La racha** son los días seguidos hasta hoy. Sigue viva todo el día de hoy si ayer contó. 🛟 Y aguanta UN día
+  sin entrar por semana (Dlx, 13/10/2026, «8. B»): el día perdonado no suma, y la cuenta vive en `rachaDeDias()` de
+  `bot/avisos.js` (`RACHA_PERDON`). La página festeja la racha al llegar a 7 y a 30 (`web/src/lobby.jsx`).
 - **Cada `CADA` días seguidos, `PREMIO` Puntos de Tienda** (Dlx: *«A»*). Una racha que se corta y vuelve a
   arrancar vuelve a pagar desde el primer `CADA`.
 - **El nivel** sube con la experiencia (Dlx: *«A y B»*): `XP_EVENTO` por cada evento jugado y `XP_DIA` por cada

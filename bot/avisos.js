@@ -1561,17 +1561,25 @@ export function paseCola(cfg, xp) {
 /**
  * `{actual, maxima, total, inicio, hoy}` de los días `AAAA-MM-DD` de alguien, en orden y sin repetir.
  * La racha sigue viva todo el día de hoy si ayer contó; `inicio` es el primer día de la de ahora.
+ * 🛟 Y AGUANTA UN DÍA SIN ENTRAR, UNA VEZ POR SEMANA (Dlx, 13/10/2026, «8. B» del research de los lobbies: «que aguante
+ * un día sin entrar»). Es el protector de Duolingo sin comprarlo: un día suelto en blanco no la corta si en los 7 días
+ * de antes no se perdonó otro. El día perdonado no suma (la racha cuenta días jugados), y sólo se puede salvar hoy:
+ * con ayer en blanco, sigue viva hoy si el perdón de la semana está libre
  */
+export const RACHA_PERDON = 7;
 export function rachaDeDias(dias, hoy) {
-  let maxima = 0, run = 0, prev = null, inicio = '';
+  let maxima = 0, run = 0, prev = null, inicio = '', perdon = null;
   for (const d of dias) {
     const n = diaNum(d);
-    if (prev !== null && n === prev + 1) run++; else { run = 1; inicio = d; }
+    if (prev !== null && n === prev + 1) run++;
+    else if (prev !== null && n === prev + 2 && (perdon === null || n - perdon > RACHA_PERDON)) { run++; perdon = n; }
+    else { run = 1; inicio = d; perdon = null; }
     if (run > maxima) maxima = run;
     prev = n;
   }
   const h = diaNum(hoy);
-  const viva = prev !== null && (prev === h || prev === h - 1);
+  const viva = prev !== null && (prev === h || prev === h - 1
+    || (prev === h - 2 && (perdon === null || h - perdon > RACHA_PERDON)));
   return { actual: viva ? run : 0, maxima, total: dias.length, inicio: viva ? inicio : '', hoy: prev === h };
 }
 /** El nivel con esa experiencia: `{n, xp, base, sig}`. Para el nivel N hacen falta `paso · N · (N − 1)` (`racha.nivel()`) */

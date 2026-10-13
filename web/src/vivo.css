@@ -2550,3 +2550,49 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .lb-ti{grid-column:1 / -1;min-height:0}
 }
 @media (prefers-reduced-motion: reduce){.lb{transition:none}.lb:hover{transform:none}}
+
+/* 🎮 el lobby, la segunda vuelta (13/10/2026, las nueve decisiones): tu barra con la llama, la letra y los Puntos; el
+   festejo de la racha; y el botón grande, lo más grande de la página */
+.lb-cw{position:relative;flex:none;display:block}
+.lb-cara,.lb-p-c{display:block}
+.lb-fuego{position:absolute;right:-8px;bottom:-6px;display:inline-flex;align-items:center;gap:1px;padding:2px 5px;
+  background:#E41373;color:#F6F6F6;font:800 13px/1 "Barlow Condensed",sans-serif;box-shadow:0 0 0 2px #030304}
+.lb-mini{display:block;height:6px;max-width:180px;border:1.5px solid #F5C542;margin-top:3px}
+.lb-mini u{display:block;height:100%;background:#F5C542}
+.lb-saldo{display:inline-flex;align-items:center;gap:6px;flex:none;padding:6px 10px;border:2px solid #3A3A3E;color:#F5C542}
+.lb-saldo b{font:900 18px/1 Archivo,sans-serif;color:#F6F6F6}
+.lb-fest{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border:2px solid #E41373;background:#E41373;
+  color:#F6F6F6;text-align:left;cursor:pointer;font:inherit;animation:lb-fest .6s ease-out 2}
+.lb-fest b{display:block;font:900 22px/1 Archivo,sans-serif;font-stretch:115%}
+.lb-fest small{font:600 15px/1.2 "Barlow Condensed",sans-serif;opacity:.9}
+@keyframes lb-fest{0%{transform:scale(.96)}50%{transform:scale(1.02)}100%{transform:none}}
+.lb-boton{display:grid;gap:10px;padding:16px;background:#F6F6F6;color:#030304;border:2px solid #F6F6F6;box-shadow:6px 6px 0 #29B298}
+.lb-boton.anotado{box-shadow:6px 6px 0 #F5C542}
+.lb-boton.vivo{background:#E41373;border-color:#E41373;color:#F6F6F6;box-shadow:6px 6px 0 #F6F6F6}
+.lb-boton.nada{background:transparent;color:#F6F6F6;border-color:#3A3A3E;box-shadow:none}
+.lb-boton.nada p{margin:0;font:500 15px/1.4 Archivo,sans-serif;color:#C4C4BE}
+.lb-b-et{display:inline-flex;align-items:center;gap:8px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em}
+.lb-b-et i{width:10px;height:10px;border-radius:50%;background:#F6F6F6;animation:lb-latido 1.2s ease-in-out infinite}
+@keyframes lb-latido{50%{opacity:.25}}
+.lb-b-ev{display:flex;align-items:center;gap:12px;min-width:0}
+.lb-b-ev img{width:54px;height:54px;border-radius:50%;flex:none;border:2px solid currentColor}
+.lb-b-ev b{font:900 28px/1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;overflow-wrap:anywhere}
+.lb-b-pr{display:grid;gap:4px}
+.lb-b-pr em{font:700 16px/1.25 "Barlow Condensed",sans-serif;font-style:normal;color:#1F7A68}
+.lb-boton.vivo .lb-b-pr em{color:#F6F6F6}
+.lb-b-pr em.gris{color:#5A5A55;font-weight:600}
+.lb-boton .btn{justify-self:stretch;justify-content:center;font-size:18px;padding-block:14px}
+.lb-glob.nueva{width:auto;border-radius:0;font-size:13px;letter-spacing:.06em;padding:0 7px}
+.lb-abanico img.sola{width:62px;transform:rotate(-4deg)}
+@media (min-width: 900px){
+  .app .lb-boton{grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:24px}
+  .app .lb-boton .lb-b-et,.app .lb-boton .lb-b-ev,.app .lb-boton .lb-b-pr,.app .lb-boton p{grid-column:1}
+  .app .lb-boton .btn{grid-column:2;grid-row:1 / span 3;min-width:240px}
+  .app .lb-b-ev b{font-size:36px}
+}
+@media (prefers-reduced-motion: reduce){.lb-fest,.lb-b-et i{animation:none}}
+
+/* la cara adentro de su círculo o su afiche: sin esto la foto salía a su tamaño (con cuenta, la barra mostraba la cara
+   entera, 13/10/2026) */
+.lb-cara img,.lb-p-c img,.lb-af-c img{display:block;width:100%;height:100%;object-fit:cover}
+.lb-cara.ini,.lb-p-c.ini,.lb-af-c.ini{display:grid;place-items:center;font:900 20px/1 Archivo,sans-serif;background:#1C1C20;color:#F6F6F6}

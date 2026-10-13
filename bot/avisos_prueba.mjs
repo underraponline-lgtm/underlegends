@@ -728,8 +728,14 @@ const ok = (cond, que, det) => {
   const x = r(['2026-10-01', '2026-10-02', '2026-10-03'], '2026-10-04');
   ok(x.actual === 3 && x.inicio === '2026-10-01' && !x.hoy && x.maxima === 3 && x.total === 3,
     'ayer contó: la racha sigue viva todo el día de hoy');
-  ok(r(['2026-10-01', '2026-10-02'], '2026-10-04').actual === 0 && r([], '2026-10-04').actual === 0,
-    'con un día sin nada se corta, y sin días no hay racha');
+  // 🛟 un día en blanco no la corta (una vez por semana); dos sí (13/10/2026, «8. B»)
+  ok(r(['2026-10-01', '2026-10-02'], '2026-10-04').actual === 2 && r(['2026-10-01', '2026-10-02'], '2026-10-05').actual === 0
+    && r([], '2026-10-04').actual === 0, 'un día en blanco no la corta, dos sí, y sin días no hay racha');
+  ok(r(['2026-10-01', '2026-10-02', '2026-10-04', '2026-10-05'], '2026-10-05').actual === 4
+    && r(['2026-10-01', '2026-10-03', '2026-10-05'], '2026-10-05').actual === 1
+    && r(['2026-10-01', '2026-10-03', '2026-10-04', '2026-10-05', '2026-10-06', '2026-10-07', '2026-10-08', '2026-10-09',
+      '2026-10-10', '2026-10-12'], '2026-10-12').actual === 10,
+  'el día perdonado no suma, y se perdona uno por semana');
   const y = r(['2026-09-20', '2026-09-21', '2026-09-22', '2026-09-23', '2026-10-03', '2026-10-04'], '2026-10-04');
   ok(y.actual === 2 && y.maxima === 4 && y.hoy && y.inicio === '2026-10-03', 'la de ahora y la mejor son distintas');
   ok(r(['2026-10-31', '2026-11-01', '2026-11-02'], '2026-11-02').actual === 3 && r(['2026-12-31', '2027-01-01'], '2027-01-01').actual === 2,

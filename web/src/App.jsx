@@ -502,8 +502,10 @@ export default function App() {
         {PREV_LOBBY ? <Aislada n="Lobby"><Lobby liga={liga} dc={yo.dc} /></Aislada>
           : <Aislada n="Puertas"><Puertas liga={liga} dc={yo.dc} /></Aislada>}
         <Aislada n="Instalar"><Instalar /></Aislada>
-        <Aislada n="Fechas"><Fechas liga={liga} /></Aislada>
-        <Aislada n="SeBusca"><SeBusca liga={liga} /></Aislada>
+        {/* 🎮 con el lobby, cada dato una vez (Dlx, 13/10/2026, «3. A» y «4. A»): tu próximo evento va en el botón y la
+            semana en la puerta de Eventos, y Se busca es el destacado amarillo; el tablero entero sigue en el Ranking */}
+        {PREV_LOBBY ? null : <Aislada n="Fechas"><Fechas liga={liga} /></Aislada>}
+        {PREV_LOBBY ? null : <Aislada n="SeBusca"><SeBusca liga={liga} /></Aislada>}
         <Aislada n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>
         <Aislada n="Encuestas"><Encuestas liga={liga} enc={enc} dc={yo.dc} corta /></Aislada>
         <Aislada n="LosQueMandan"><LosQueMandan liga={liga} dc={yo.dc} /></Aislada>

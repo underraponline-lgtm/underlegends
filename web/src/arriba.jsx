@@ -462,11 +462,15 @@ export function gruposHistorias(liga) {
   liga.vivo().forEach((e) => {
     const m = liga.multSv(e.sv);
     const dd = aDiscord(liga, e, true);
+    // 🎮 un toque a la llave, cuando ya está (13/10/2026, el research de los lobbies: «en vivo primero, y un toque te
+    // lleva a la llave», como el aro de Instagram o de Twitch); si todavía no, a Discord como antes
+    const L = llaveEnVivo(e, typeof window !== 'undefined' ? window.VIVO_L : null);
     grupos.push({
       id: 'vivo-' + e.sv + '-' + limpio(e.nombre).toLowerCase(), tipo: 'vivo', nombre: 'En vivo · ' + siglaDe(e.sv), logo: liga.logo(e.sv), nom: limpio(e.nombre), firma: 'vivo:' + e.nombre + e.cuando,
       slides: [Slide('EN VIVO AHORA · ' + siglaDe(e.sv), <><img className="st-logo grande" alt="" src={liga.logo(e.sv, true)} /><h3 className="st-h grande">{limpio(e.nombre)}</h3>
         <small className="st-s">Empezó a las {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' esta semana' : ''}. La llave aparece acá apenas la carguen.</small></>,
-      'ahora', dd ? dd.txt : 'Mirar en Discord', { link: dd ? dd.url : e.link }, 'vivo:' + e.sv + ':' + limpio(e.nombre) + ':' + e.cuando)],
+      'ahora', L ? 'Ver la llave' : dd ? dd.txt : 'Mirar en Discord', L ? { llave: 'v:' + L.id } : { link: dd ? dd.url : e.link },
+      'vivo:' + e.sv + ':' + limpio(e.nombre) + ':' + e.cuando)],
     });
   });
   const mm = liga.d.mult || {};
