@@ -10640,5 +10640,406 @@
    ]
   ],
   "v": 2
+ },
+ "467": {
+  "antes": {
+   "Ariaxer": [
+    53,
+    73,
+    false
+   ],
+   "Bloody": [
+    25,
+    30,
+    false
+   ],
+   "Cinexfilo": [
+    48,
+    64,
+    false
+   ],
+   "Colesito": [
+    11,
+    13,
+    false
+   ],
+   "DO-C": [
+    237,
+    159,
+    true
+   ],
+   "Delux": [
+    56,
+    78,
+    false
+   ],
+   "Drexx": [
+    29,
+    35,
+    false
+   ],
+   "Jult": [
+    70,
+    99,
+    false
+   ],
+   "Magic": [
+    137,
+    287,
+    false
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "Masino": [
+    80,
+    115,
+    false
+   ],
+   "OG": [
+    19,
+    22,
+    false
+   ],
+   "ONZASS": [
+    182,
+    42,
+    true
+   ],
+   "PichulaMc": [
+    4,
+    5,
+    false
+   ],
+   "Polosport": [
+    38,
+    50,
+    false
+   ],
+   "Rayo": [
+    223,
+    134,
+    true
+   ],
+   "Sami": [
+    236,
+    156,
+    true
+   ],
+   "Six": [
+    9,
+    10,
+    false
+   ],
+   "Snow": [
+    1,
+    1,
+    false
+   ],
+   "Teo": [
+    66,
+    93,
+    false
+   ],
+   "Trot": [
+    24,
+    29,
+    false
+   ],
+   "Vandu": [
+    13,
+    16,
+    false
+   ],
+   "Verc": [
+    15,
+    18,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Snow",
+    "Makmah",
+    "Snow"
+   ],
+   [
+    "Snow",
+    "Trot",
+    "Snow"
+   ],
+   [
+    "Drexx",
+    "DO-C",
+    "Drexx"
+   ],
+   [
+    "Drexx",
+    "Rayo",
+    "Drexx"
+   ],
+   [
+    "Cinexfilo",
+    "Teo",
+    "Cinexfilo"
+   ],
+   [
+    "Cinexfilo",
+    "Masino",
+    "Cinexfilo"
+   ],
+   [
+    "Colesito",
+    "Ariaxer",
+    "Colesito"
+   ],
+   [
+    "Colesito",
+    "PichulaMc",
+    "Colesito"
+   ],
+   [
+    "OG",
+    "Magic, OG",
+    "OG"
+   ],
+   [
+    "OG",
+    "Ax🇻🇪",
+    "OG"
+   ],
+   [
+    "Polosport",
+    "Bloody",
+    "Polosport"
+   ],
+   [
+    "Polosport",
+    "Six",
+    "Polosport"
+   ],
+   [
+    "Vandu",
+    "ONZASS",
+    "Vandu"
+   ],
+   [
+    "Vandu",
+    "Sami",
+    "Vandu"
+   ],
+   [
+    "Verc",
+    "Jult",
+    "Verc"
+   ],
+   [
+    "Verc",
+    "Delux",
+    "Verc"
+   ],
+   [
+    "OG",
+    "Snow",
+    "OG"
+   ],
+   [
+    "Polosport",
+    "Drexx",
+    "Polosport"
+   ],
+   [
+    "Vandu",
+    "Cinexfilo",
+    "Vandu"
+   ],
+   [
+    "Colesito",
+    "Verc",
+    "Colesito"
+   ],
+   [
+    "OG",
+    "Vandu",
+    "OG"
+   ],
+   [
+    "Colesito",
+    "Polosport",
+    "Colesito"
+   ],
+   [
+    "Colesito",
+    "OG",
+    "Colesito"
+   ],
+   [
+    "Polosport",
+    "Vandu",
+    "Polosport"
+   ]
+  ],
+  "ev_antes": {
+   "Ariaxer": 7,
+   "Bloody": 15,
+   "Cinexfilo": 9,
+   "Colesito": 24,
+   "DO-C": 3,
+   "Delux": 5,
+   "Drexx": 11,
+   "Jult": 9,
+   "Magic": 2,
+   "Makmah": 41,
+   "Masino": 3,
+   "OG": 10,
+   "ONZASS": 9,
+   "PichulaMc": 29,
+   "Polosport": 8,
+   "Rayo": 2,
+   "Sami": 3,
+   "Six": 16,
+   "Snow": 35,
+   "Teo": 7,
+   "Trot": 15,
+   "Vandu": 18,
+   "Verc": 8
+  },
+  "fecha": "13/10",
+  "firma": "091b14a61d871aa0",
+  "msg": "1559705366705475605",
+  "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL5 __",
+  "num": 467,
+  "participantes": 24,
+  "sello": {
+   "Colesito": "66c4c9cabde3:5f7648916ad1"
+  },
+  "sv": "FFA",
+  "t": "2026-10-13T23:23:32Z",
+  "tabla": [
+   [
+    "Colesito",
+    "Campeón",
+    10000
+   ],
+   [
+    "OG",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Polosport",
+    "Tercero",
+    6000
+   ],
+   [
+    "Vandu",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Cinexfilo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Verc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
+    "Octavos",
+    1250
+   ],
+   [
+    "DO-C",
+    "Octavos",
+    1250
+   ],
+   [
+    "Rayo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Masino",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ax🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Bloody",
+    "Octavos",
+    1250
+   ],
+   [
+    "Six",
+    "Octavos",
+    1250
+   ],
+   [
+    "ONZASS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sami",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jult",
+    "Octavos",
+    1250
+   ],
+   [
+    "Delux",
+    "Octavos",
+    1250
+   ],
+   [
+    "Magic",
+    "Octavos",
+    625
+   ]
+  ],
+  "v": 2
  }
 }

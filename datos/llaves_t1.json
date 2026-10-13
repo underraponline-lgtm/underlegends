@@ -22274,5 +22274,302 @@
     2625
    ]
   ]
+ },
+ "467": {
+  "dia": "2026-10-13",
+  "escala": "16+",
+  "fecha": "13/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1559674370987786291"
+  ],
+  "n": 467,
+  "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL5",
+  "participantes": 24,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Snow",
+       "Makmah",
+       "Trot"
+      ],
+      "Snow",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Drexx",
+       "DO-C",
+       "Rayo"
+      ],
+      "Drexx",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Cinexfilo",
+       "Teo",
+       "Masino"
+      ],
+      "Cinexfilo",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Colesito",
+       "Ariaxer",
+       "PichulaMc"
+      ],
+      "Colesito",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "OG",
+       "Magic, OG",
+       "Ax🇻🇪"
+      ],
+      "OG",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Polosport",
+       "Bloody",
+       "Six"
+      ],
+      "Polosport",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Vandu",
+       "ONZASS",
+       "Sami"
+      ],
+      "Vandu",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Verc",
+       "Jult",
+       "Delux"
+      ],
+      "Verc",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "OG",
+       "Snow"
+      ],
+      "OG",
+      ""
+     ],
+     [
+      [
+       "Polosport",
+       "Drexx"
+      ],
+      "Polosport",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "Cinexfilo"
+      ],
+      "Vandu",
+      ""
+     ],
+     [
+      [
+       "Colesito",
+       "Verc"
+      ],
+      "Colesito",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "OG",
+       "Vandu"
+      ],
+      "OG",
+      ""
+     ],
+     [
+      [
+       "Colesito",
+       "Polosport"
+      ],
+      "Colesito",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Polosport",
+       "Vandu"
+      ],
+      "Polosport",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Colesito",
+       "OG"
+      ],
+      "Colesito",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Colesito",
+    "Campeón",
+    10000
+   ],
+   [
+    "OG",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Polosport",
+    "Tercero",
+    6000
+   ],
+   [
+    "Vandu",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Cinexfilo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Verc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ax🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Bloody",
+    "Octavos",
+    1250
+   ],
+   [
+    "DO-C",
+    "Octavos",
+    1250
+   ],
+   [
+    "Delux",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jult",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Masino",
+    "Octavos",
+    1250
+   ],
+   [
+    "ONZASS",
+    "Octavos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    1250
+   ],
+   [
+    "Rayo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sami",
+    "Octavos",
+    1250
+   ],
+   [
+    "Six",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
+    "Octavos",
+    1250
+   ],
+   [
+    "Magic",
+    "Octavos",
+    625
+   ]
+  ]
  }
 }

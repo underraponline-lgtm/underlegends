@@ -45,10 +45,22 @@
     "nivel": "A",
     "base": 12000,
     "o": 4,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 12000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 12000,
+    "caza": {
+     "n": 467,
+     "evento": "LA BELLA ARTE DE LA DESGRACIA VOL5",
+     "sv": "FFA",
+     "t": "2026-10-13T21:09:07Z",
+     "por": [
+      {
+       "n": "Colesito",
+       "cobra": 13750
+      }
+     ]
+    }
    },
    {
     "n": "Motera",
@@ -159,7 +171,7 @@
      "por": [
       {
        "n": "BNA",
-       "cobra": 11250
+       "cobra": 11500
       }
      ]
     }
