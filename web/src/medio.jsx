@@ -1,8 +1,36 @@
 // El medio del Inicio: Fechas, Lo último, Los que mandan y el panel de abajo. Traducido de docs/remake/reales.py
 // (fechas, noticias, raperos, panel, tus_eventos, tu_temporada, numeros).
-import { DIAS, hora, limpio, num, resultado, siglaDe, utc } from './liga.js';
+import { DIAS, hora, limpio, minutosDelDia, num, resultado, siglaDe, utc } from './liga.js';
 import { Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, aDiscord, accion, enlace, nombrePais } from './piezas.jsx';
 import { avance, premioTexto, proximoEspecial, usePase, usePases } from './pase.js';
+
+// 🗓️ HOY SUELE HABER (Dlx, 12/10/2026, «5. B»: casi todos anuncian a último momento, así que lo que no se ve con
+// tiempo se adivina por costumbre). Un servidor que jugó este mismo día de la semana dos veces o más en las últimas
+// cuatro semanas y todavía no anunció nada para hoy: «suele jugar · 18:00», marcado como probable. ⚠️ Sólo hasta una
+// hora después de su hora de siempre: más tarde, ya no va a pasar. Como mucho dos, para no tapar lo anunciado
+function sueleHoy(liga) {
+  const hoy = liga.diaClave(liga.ahora);
+  if (!hoy) return [];
+  const dow = (k) => { const [y, m, d] = k.split('-').map(Number); return new Date(Date.UTC(y, m - 1, d, 12)).getUTCDay(); };
+  const dHoy = dow(hoy);
+  const ya = new Set();
+  liga.vivo().concat(liga.luego()).forEach((e) => { if (liga.diaClave(liga.cuandoDe(e)) === hoy) ya.add(e.sv); });
+  const por = {};
+  (liga.d.calendario || []).forEach((c) => {
+    const t = utc(c.t);
+    if (!c.sv || isNaN(t)) return;
+    const k = liga.diaClave(t);
+    if (k === hoy) { ya.add(c.sv); return; }
+    if (c.fut || t > liga.ahora || liga.ahora - t > 28 * 864e5 || dow(k) !== dHoy) return;
+    (por[c.sv] = por[c.sv] || []).push(t);
+  });
+  const ahoraM = minutosDelDia(liga.ahora);
+  return Object.entries(por).filter(([sv, ts]) => ts.length >= 2 && !ya.has(sv)).map(([sv, ts]) => {
+    const xs = ts.map((t) => [minutosDelDia(t), t]).sort((a, b) => a[0] - b[0]);
+    const [m, t] = xs[Math.floor((xs.length - 1) / 2)];
+    return { sv, m, t, n: ts.length };
+  }).filter((x) => ahoraM <= x.m + 60).sort((a, b) => a.m - b.m).slice(0, 2);
+}
 
 // ── Fechas ────────────────────────────────────────────────────────────────────────────────────────
 export function Fechas({ liga }) {
@@ -22,6 +50,9 @@ export function Fechas({ liga }) {
       hora: (atr ? '⏰ ' : '') + hora(cu) + (atr ? ' · se atrasó' : ' · tu hora'),
       sv: e.sv, ev: limpio(e.nombre), det, badge: dor ? 'DORADO ×3' : '', link: (aDiscord(liga, e, false) || {}).url });
   });
+  // 🗓️ lo que suele haber hoy y todavía no se anunció (ver `sueleHoy()`)
+  sueleHoy(liga).forEach((x) => t.push({ c: 'suele', dia: 'HOY', hora: 'SUELE JUGAR · ' + hora(x.t), sv: x.sv,
+    ev: (liga.svs[x.sv] || {}).nombre || siglaDe(x.sv), det: 'probable · todavía sin anuncio' }));
   // 🔴 lo que se canceló (el vigía vio que el anuncio se borró, ver `liga.cancelados()`): dice «CANCELADO» hasta seis
   // horas después de la hora en que era, en vez de desaparecer como si nada (Dlx, 01/10/2026: «B»). Uno borrado y vuelto
   // a publicar no: ver `cancelacionesVisibles()`

@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.76",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T20:45:00-04:00",
+   "titulo": "Anunciar con tiempo vale más",
+   "items": [
+    "⏰ Un evento anunciado con 12 horas o más suma **+10 %** a quienes lo juegan, y a su organizador le cuenta doble para el Organizador de la semana.",
+    "🗓️ En las Fechas del Inicio aparece qué servidor **suele jugar hoy** aunque todavía no lo haya anunciado.",
+    "📅 En Eventos, «Cuándo suele jugar» dice también quiénes organizan en cada servidor."
+   ]
+  },
+  {
    "version": "2.75",
    "dia": "2026-10-12",
    "cuando": "2026-10-12T20:30:00-04:00",

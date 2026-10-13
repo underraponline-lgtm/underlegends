@@ -147,6 +147,12 @@ META_X, META_MIN, META_SEMANAS, META_BONO = 1.1, 8, 4, 1.1
 #: el destacado del calendario: anunciado con al menos estas horas de anticipación.
 #: Dlx, 27/09/2026: *«de 12 h a 24 h a más»*. Medido: 2 de 48 anuncios llegan
 DESTACADO_H = 12
+#: ⏰ EL PREMIO POR ANUNCIAR CON TIEMPO (Dlx, 12/10/2026, «5. C»: casi todos anuncian a último momento, y lo que no se
+#: anuncia con tiempo no se puede planear). El evento anunciado con `DESTACADO_H` horas o más: quienes lo juegan suman
+#: ×`ANTICIPO_X` (dentro del techo) y a su organizador le cuenta DOBLE para el Organizador de la semana. Desde
+#: `ANTICIPO_DESDE`: lo jugado antes no cambia
+ANTICIPO_X = 1.1
+ANTICIPO_DESDE = '2026-10-13T04:00:00Z'
 #: el Clásico: en cuántos EVENTOS distintos se tienen que haber cruzado antes,
 #: y lo que suma el que gana. ⚠️ EVENTOS, NO DUELOS: en un 5 vidas los mismos
 #: dos pelean hasta cinco veces en una noche (la Snake Arena Vol. 2, 28/09).
@@ -454,11 +460,41 @@ def organizados(regs=None, anuncios=None):
     return {int(p['llave']): p['org'] for p in pas if str(p.get('llave') or '').isdigit()}
 
 
-def ranking_org(ini, fin, eventos, org_de):
+def con_tiempo(regs=None, anuncios=None):
+    """⏰ `{n}`: las llaves cuyo anuncio salió con `DESTACADO_H` horas o más antes de la hora del evento (`ANTICIPO_X`).
+
+    El anuncio y la llave se unen igual que en `organizados()`: `llaves_web.cruzar()`."""
+    import llaves_web as LW
+    import cuando as CU
+    regs = LW.leer() if regs is None else regs
+    if anuncios is None:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'anuncios.json'), encoding='utf-8') as f:
+                anuncios = (json.load(f) or {}).get('anuncios') or []
+        except (OSError, ValueError):
+            anuncios = []
+    pas = []
+    for x in anuncios:
+        ini, pub = CU.momento(x), x.get('cuando')
+        if not (x.get('nombre') and ini and pub):
+            continue
+        try:
+            antes = (dt.datetime.fromisoformat(str(ini)[:19]) - dt.datetime.fromisoformat(str(pub)[:19])).total_seconds()
+        except ValueError:
+            continue
+        if antes >= DESTACADO_H * 3600:
+            pas.append({'nombre': x.get('nombre'), 'sv': x.get('servidor') or '', 'cuando': ini})
+    LW.cruzar(pas, regs)
+    return {int(p['llave']) for p in pas if str(p.get('llave') or '').isdigit()}
+
+
+def ranking_org(ini, fin, eventos, org_de, anticipados=()):
     """`[[organizador, gente, eventos], …]` de esa semana, de más a menos.
 
-    Cada evento de `MIN_ORG` o más, con su llave, le suma su gente distinta.
+    Cada evento de `MIN_ORG` o más, con su llave, le suma su gente distinta. ⏰ El anunciado con tiempo (`anticipados`,
+    desde `ANTICIPO_DESDE`), el doble.
     """
+    desde_a = _de_iso(ANTICIPO_DESDE)
     por = {}
     for e in eventos:
         n, t, tabla = e[0], e[2], e[3]
@@ -469,7 +505,7 @@ def ranking_org(ini, fin, eventos, org_de):
         if gente < MIN_ORG:
             continue
         x = por.setdefault(_clave_org(org), [org, 0, 0])
-        x[1] += gente
+        x[1] += gente * (2 if n in anticipados and t >= desde_a else 1)
         x[2] += 1
     return sorted(por.values(), key=lambda x: (-x[1], -x[2], x[0].lower()))
 
@@ -750,7 +786,7 @@ def actual(d=None, ahora=None):
     return None
 
 
-def factor_de(d=None, filas=None, rivales=None):
+def factor_de(d=None, filas=None, rivales=None, anticipados=None):
     """Una función `(servidor, instante, evento, rapero) -> multiplicador`.
 
     El multiplicador de la semana de ese servidor, ×3 si es el evento dorado
@@ -770,6 +806,15 @@ def factor_de(d=None, filas=None, rivales=None):
                 d = json.load(f) or {}
         else:
             d = {}
+        # ⏰ los anunciados con tiempo, de los archivos, sólo cuando el factor es el de verdad (los self-checks pasan `d`)
+        if anticipados is None:
+            try:
+                anticipados = con_tiempo()
+            except Exception as e:                       # noqa: BLE001
+                print('   ⚠️ sin los anunciados con tiempo (%s)' % str(e)[:60])
+                anticipados = set()
+    anticipados = anticipados or set()
+    desde_a = _de_iso(ANTICIPO_DESDE)
     filas = filas or []
     # ⚙️ CON LOS TRAMOS A MANO (el Dashboard): la semana arranca con su sorteo y cada tramo vale desde su `desde`.
     # Ver `a_mano()`
@@ -813,6 +858,8 @@ def factor_de(d=None, filas=None, rivales=None):
             x *= DORADO_X
         if n is not None and n in copas:
             x *= COPA_X
+        if n is not None and n in anticipados and instante and instante >= desde_a:
+            x *= ANTICIPO_X
         if quien is not None and (quien, n) in volve:
             x *= VOLVE_X
         if quien is not None and ganados:
@@ -936,6 +983,12 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ sin organizadores (%s)' % str(e)[:80])
             org_de = {}
+    # ⏰ los anunciados con tiempo le cuentan doble a su organizador (`ANTICIPO_X`)
+    try:
+        anticip = con_tiempo() if eventos is None else set()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ sin los anunciados con tiempo (%s)' % str(e)[:80])
+        anticip = set()
     # 🔑 QUIÉN JUGÓ ALGUNA VEZ: se anota antes de todo, así el Semillero lo ve.
     # ⚠️ SIN EL REGISTRO NO HAY SEMILLERO: vacío, todos serían «nuevos».
     vistos = leer_vistos() if vistos is None else vistos
@@ -1002,7 +1055,7 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=
         prev = semanas[-1] if semanas else None
         # 🔑 Y SU ORGANIZADOR: el primero es la sede de ésta, con la Copa
         if prev and _de_iso(prev['inicio']) >= _desde('semana') and 'organizadores_final' not in prev:
-            rk = ranking_org(_de_iso(prev['inicio']), _de_iso(prev['fin']), evs, org_de)
+            rk = ranking_org(_de_iso(prev['inicio']), _de_iso(prev['fin']), evs, org_de, anticip)
             prev['organizadores'] = rk[:10]
             prev['organizadores_final'] = True
             if rk:
@@ -1039,7 +1092,7 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=
     if a_mano(cur, ajustes, ahora):
         print('   ⚙️ el multiplicador a mano: %s' % ', '.join('%s ×%g' % kv for kv in sorted(cur['sv'].items())))
     if cur and _de_iso(cur['inicio']) >= _desde('semana'):
-        cur['organizadores'] = ranking_org(_de_iso(cur['inicio']), _de_iso(cur['fin']), evs, org_de)[:10]
+        cur['organizadores'] = ranking_org(_de_iso(cur['inicio']), _de_iso(cur['fin']), evs, org_de, anticip)[:10]
         if semillero_ok:
             cur['semillero'] = resultado_semillero(cur, evs, vistos)
         if cur.get('metas'):
@@ -1198,6 +1251,14 @@ def _self_check():
            (24, 'FFA', en(10, 16, 20), [['s%d' % i, 'x', 1] for i in range(10)], 'C')]
     orgs = {21: '@nachonc_', 22: 'Carlos', 23: 'Carlos', 24: 'nachonc_'}
     rk = ranking_org(en(10, 12, 11), en(10, 19, 11), evo, orgs)
+    # ⏰ el anunciado con tiempo (desde el 13/10) le cuenta doble al organizador, y sus jugadores suman ×1,1
+    _rk2 = ranking_org(en(10, 12, 11), en(10, 19, 11), evo, orgs, anticipados={e[0] for e in evo})
+    ok(sum(x[1] for x in _rk2) == 2 * sum(x[1] for x in rk) if any(e[2] >= _de_iso(ANTICIPO_DESDE) for e in evo) else True,
+       'el evento anunciado con tiempo le cuenta doble a su organizador')
+    _f = factor_de({'semanas': []}, anticipados={77})
+    ok(abs(_f('FFA', en(10, 14, 20), 77) - ANTICIPO_X) < 1e-9 and _f('FFA', en(10, 14, 20), 78) == 1
+       and _f('FFA', en(10, 10, 20), 77) == 1,
+       'y quienes lo juegan suman ×1,1, desde el 13/10 (lo de antes no cambia)')
     ok([r[:3] for r in rk] == [['@nachonc_', 22, 2], ['Carlos', 9, 1]],
        'suma la gente de sus eventos de 8 o más (el de 5 no cuenta)  %s' % rk)
     dc = {'semanas': [{'id': '2026-10-12', 'inicio': _iso(en(10, 12, 11)), 'fin': _iso(en(10, 19, 11)),

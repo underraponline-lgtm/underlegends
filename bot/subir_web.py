@@ -660,6 +660,9 @@ def armar():
         # 🏟️ LAS LIGAS DE LOS SERVIDORES (12/10/2026, Dlx: «2. Me gusta»): la tabla de cada una y sus últimos resultados.
         # Ver `bot/ligas.py`
         'ligas': _ligas(),
+        # 📅 QUIÉNES ORGANIZAN EN CADA SERVIDOR (12/10/2026, Dlx «5. A»: «uno donde diga cuándo cada sv organiza
+        # usualmente y quiénes»). El cuándo ya lo saca la página del calendario; el quiénes, de acá. Ver `_agenda()`
+        'agenda': _agenda(),
         # 🔑 LO QUE DLX PIDIÓ PARA EL INICIO EL 25/09/2026: «medir la
         # actividad», «3 mini recent feeds de DRA… información de la liga»
         # y las redes. Ver `_actividad()`, `_novedades()` y `_redes()`.
@@ -2648,6 +2651,27 @@ def _mis():
         return _M.para_web(_M.leer())
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ las misiones no entran al lobby: %s' % str(e)[:120])
+        return None
+
+
+def _agenda():
+    """📅 `{sv: [[organizador, eventos], …]}`: los tres que más organizan en cada servidor esta temporada, por el
+    «Organiza:» del anuncio o, sin él, por quien lo publicó. Nunca frena el lobby."""
+    try:
+        from collections import Counter
+        from comun import temporada as _T
+        desde = str(getattr(_T, 'INICIO', '') or '')[:10]
+        an = (_json('datos', 'anuncios.json') or {}).get('anuncios') or []
+        por = {}
+        for x in an:
+            if desde and str(x.get('cuando') or '') < desde:
+                continue
+            o = re.sub(r'^\d+\s*\|\s*', '', _org(x.get('organizador') or x.get('autor') or ''))
+            if o and x.get('servidor'):
+                por.setdefault(x['servidor'], Counter())[o] += 1
+        return {sv: [[o, n] for o, n in c.most_common(3)] for sv, c in por.items()} or None
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ la agenda no entra al lobby: %s' % str(e)[:120])
         return None
 
 

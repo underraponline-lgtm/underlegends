@@ -323,9 +323,11 @@ function Evento({ liga, e, est, L, abierto, arriba, campVivo }) {
         </div>
         <span className="t-est">{etq}</span>
       </header>
-      {dor || m > 1 || x.premios ? (
+      {dor || m > 1 || x.premios || (e.ct && est !== 'hecho') ? (
         <div className="evp-xtra">
           {dor ? <span className="evp-dor">EVENTO DORADO · VALE ×3</span> : m > 1 ? <span className="evp-mult">{siglaDe(e.sv)} VA ×{String(m).replace('.', ',')} ESTA SEMANA</span> : null}
+          {/* ⏰ anunciado con tiempo (Dlx, 12/10/2026, «5. C»): +10 % para quien lo juega (`multiplicadores.ANTICIPO_X`) */}
+          {e.ct && est !== 'hecho' ? <span className="evp-mult">ANUNCIADO CON TIEMPO · +10 %</span> : null}
           {x.premios ? <span className="evp-premio">Premio: {recorte(x.premios, 90)}</span> : null}
         </div>
       ) : null}
@@ -443,6 +445,9 @@ function diasEnPalabras(dias) {
 }
 function CuandoJuega({ liga, cal, dia, color, et }) {
   const P = useMemo(() => patrones(liga, cal), [liga, cal]);
+  // 📅 y quiénes organizan en cada uno (Dlx, 12/10/2026, «5. A»: «cuándo cada sv organiza usualmente y quiénes»), del
+  // «Organiza:» de sus anuncios o de quien los publica (`subir_web._agenda()`)
+  const ag = liga.d.agenda || {};
   if (!P.svs.length) return null;
   const desde = P.primero ? liga.fechaLarga(P.primero) : '';
   const dow = dia ? dowDe(dia) : -1;
@@ -467,6 +472,7 @@ function CuandoJuega({ liga, cal, dia, color, et }) {
                 title={k ? k + (k === 1 ? ' evento un ' + SEMANA_S[i] : ' eventos los ' + SEMANA_P[i]) : 'ningún ' + SEMANA_S[i]} />
             ))}
             <b className="evp-cj-h">{horaDe(s.ref, s.desde)} a {horaDe(s.ref, s.hasta)}</b>
+            {(ag[s.sv] || []).length ? <small className="evp-cj-org">organiza{ag[s.sv].length > 1 ? 'n' : ''} {ag[s.sv].map(([o]) => limpio(o)).join(' · ')}</small> : null}
           </li>
         ))}
       </ul>
