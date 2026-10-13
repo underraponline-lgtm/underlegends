@@ -1,39 +1,39 @@
 {
  "v": 1,
- "cuando": "2026-10-13T16:43:15Z",
+ "cuando": "2026-10-13T17:15:56Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 443.8,
+ "dur_s": 690.1,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 9.4
+   "s": 41.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.2
+   "s": 6.6
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 26.4
+   "s": 22.6
   },
   {
    "n": "5",
    "que": "tanda 1 de 4 · 40 persona(s)",
    "ok": true,
-   "s": 342.7
+   "s": 559.2
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 1.0
+   "s": 1.1
   },
   {
    "n": "6",
@@ -44,26 +44,26 @@
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "465",
-  "nombre": "QCYO RAPEEN",
-  "sv": "FFA",
+  "n": "466",
+  "nombre": "mathias cup",
+  "sv": "FVS",
   "dia": "2026-10-13"
  },
  "cuotas": {
   "kv": {
-   "write": 268,
-   "read": 31072
+   "write": 281,
+   "read": 33086
   },
   "objeto": {
-   "leidas": 1812618,
-   "escritas": 20123,
-   "pedidos": 6840
+   "leidas": 1923390,
+   "escritas": 21967,
+   "pedidos": 7059
   },
   "worker": {
-   "pedidos": 11139,
+   "pedidos": 11095,
    "errores": 0,
-   "sub": 12056,
-   "p50_ms": 1.24,
+   "sub": 12013,
+   "p50_ms": 1.25,
    "p99_ms": 7.25
   },
   "r2": {
