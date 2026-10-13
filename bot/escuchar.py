@@ -3291,7 +3291,8 @@ def escuchar(s, forzar=None, por_canal=25):
 VEREDICTOS = re.compile(r'veredict|votaci|resultad', re.I)
 NO_VEREDICTOS = re.compile(r'postulaci', re.I)
 #: la versión del patrón: si cambia, la memoria de canales se vuelve a buscar sin esperar al barrido completo
-VEREDICTOS_V = 2
+#: 3 (12/10/2026): las categorías de LIGA de Urban, DDF y Snake Rap pasaron a `categorias_fuera`
+VEREDICTOS_V = 3
 STAFF = re.compile(r'staff|moderat|admin|organiz', re.I)  # 🏛️ y «organiz»: el canal «organizar-eventos» de la ACADEMIA (04/10/2026) es del staff y dice «eventos»
 #: minutos sin mensajes que parten dos tandas (`TANDA_MS` de la página)
 TANDA_MIN = 45
@@ -3527,8 +3528,8 @@ def batallas_veredicto(rows):
             vb = sum(1 for v in b['votos'].values() if v == 'b')
             if va == vb:
                 continue
-            out.append({'id': b['id'], 'sv': T['sv'], 'g': str(T['g'] or ''), 'pub': _ms(b['id']),
-                        'a': b['a'], 'b': b['b'], 'ganador': b['a'] if va > vb else b['b'],
+            out.append({'id': b['id'], 'sv': T['sv'], 'g': str(T['g'] or ''), 'canal': str(T.get('canal') or ''),
+                        'pub': _ms(b['id']), 'a': b['a'], 'b': b['b'], 'ganador': b['a'] if va > vb else b['b'],
                         'votos': '%d–%d' % (max(va, vb), min(va, vb))})
     return out
 
@@ -3882,6 +3883,14 @@ def vidas(s, mem, guilds, completo):
     for b in batallas_veredicto(filas):
         bats[b['id']] = b
     bats = {k: b for k, b in bats.items() if ahora_ms - int(b.get('pub') or 0) <= VER_BAT_DIAS * 86400000}
+    # 🏟️ LO GUARDADO DE UN CANAL QUE YA NO SE LEE, SE VA (12/10/2026). Los #veredictos de las LIGAS —las seis FMH de
+    # Urban, las de DDF y las de Snake Rap— se leían como de eventos: una «RÉPLICA FINAL» de FMH Carimex quedó como la
+    # llave «FINAL MCO 🆚 FORCE», y sus batallas servían para decidir el ganador de una llave que no lo dice. Ahora esas
+    # categorías están en `categorias_fuera`, y lo que ya se había guardado de ahí sale acá. ⚠️ Sólo si hay canales:
+    # sin respuesta de Discord, la lista vacía borraría todo
+    vivos = set(canales or {})
+    if vivos:
+        bats = {k: b for k, b in bats.items() if not b.get('canal') or b['canal'] in vivos}
     _VER_BATALLAS[0] = [bats[k] for k in sorted(bats)]
     # 🔑 Y CADA LLAVE TAL COMO SE JUGÓ (02/10/2026): ver `llaves_de_veredictos()`. Se guardan `VER_DIAS`: FFA vacía
     # #votaciones después de cada evento, y sin la copia la llave verdadera se pierde con el evento siguiente. La que se
@@ -3889,7 +3898,8 @@ def vidas(s, mem, guilds, completo):
     lls = {x['id']: x for x in _memoria_llaves_v()}
     for x in llaves_de_veredictos(filas):
         lls[x['id']] = x
-    lls = {k: x for k, x in lls.items() if ahora_ms - int(x.get('pub') or 0) <= VER_DIAS * 86400000}
+    lls = {k: x for k, x in lls.items() if ahora_ms - int(x.get('pub') or 0) <= VER_DIAS * 86400000
+           and (not vivos or not x.get('canal') or x['canal'] in vivos)}
     _VER_LLAVES[0] = [lls[k] for k in sorted(lls)]
     try:
         os.makedirs(os.path.dirname(VER_MEMORIA), exist_ok=True)

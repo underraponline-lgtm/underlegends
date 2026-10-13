@@ -251,7 +251,14 @@
      "creada": "2026-10-03"
     }
    ],
-   "sigla": "SNK"
+   "sigla": "SNK",
+   "categorias_fuera": {
+    "ids": [
+     "1117079808405413928"
+    ],
+    "_por_que": "Las ligas de Snake Rap (Generations y New Chapter) no son eventos: Dlx, 12/10/2026, «1. A». Su 〔🙅〕veredicto y su 〔🔢〕resultados se leían como #veredictos de eventos.",
+    "_ids": "la categoría LEAGUES: Snake League Generations y Snake New Chapter"
+   }
   },
   "FTN": {
    "nombre": "Fontana",
@@ -304,7 +311,19 @@
      "creada": "2026-10-03"
     }
    ],
-   "sigla": "URB"
+   "sigla": "URB",
+   "categorias_fuera": {
+    "ids": [
+     "1511966707441209444",
+     "1511966587555549314",
+     "1511966248219578389",
+     "1511966129898393730",
+     "1527564330965536820",
+     "1511966008628351086"
+    ],
+    "_por_que": "Las ligas FMH (jornadas, veredictos, tabla) no son eventos: Dlx, 12/10/2026, «1. A» (cuentan como duelos, por bot/ligas.py). Sin esto su #Veredictos se leía como de eventos: una «RÉPLICA FINAL» de Carimex quedó como la llave «FINAL MCO 🆚 FORCE». La RedBull Cabrana (nacionales en llave) sí es un evento: no va.",
+    "_ids": "las seis categorías FMH: Albiceleste, Andes, Carimex, Tricolor, Under y España"
+   }
   },
   "EFA": {
    "nombre": "EFA",
@@ -378,9 +397,12 @@
     "_por_que": "Sus ligas (jornadas, tabla, veredictos de liga) no son eventos: Dlx, 03/10/2026, «que no cuenten aún pero podría contar para el ranking ligas». Sin esto, su #Anuncios, #Inscripciones y #Veredictos de liga se leerían como eventos y 5 vidas.",
     "ids": [
      "1555765834620735519",
-     "1550946824997834853"
+     "1550946824997834853",
+     "1556501423662039110",
+     "1557528034859294800",
+     "1559100419165130793"
     ],
-    "_ids": "las dos categorías de liga: ⚔️「LIGA AK47」⚔️ y 🐊「FMS TITANS」🐊"
+    "_ids": "las dos categorías de liga: ⚔️「LIGA AK47」⚔️ y 🐊「FMS TITANS」🐊; y FMS PERU, FMS TRICOLOR y FMS WORLD SERIES (12/10/2026)"
    },
    "invitacion": "https://discord.gg/9jxbKT9Hfv",
    "invitacion_liga": {

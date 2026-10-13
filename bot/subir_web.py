@@ -657,6 +657,9 @@ def armar():
         'div': _div(),
         # 🎯 LAS MISIONES DE LA SEMANA (05/10/2026): las tres, el progreso y lo sumado. Ver `_mis()`
         'mis': _mis(),
+        # 🏟️ LAS LIGAS DE LOS SERVIDORES (12/10/2026, Dlx: «2. Me gusta»): la tabla de cada una y sus últimos resultados.
+        # Ver `bot/ligas.py`
+        'ligas': _ligas(),
         # 🔑 LO QUE DLX PIDIÓ PARA EL INICIO EL 25/09/2026: «medir la
         # actividad», «3 mini recent feeds de DRA… información de la liga»
         # y las redes. Ver `_actividad()`, `_novedades()` y `_redes()`.
@@ -2635,6 +2638,16 @@ def _mis():
         return _M.para_web(_M.leer())
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ las misiones no entran al lobby: %s' % str(e)[:120])
+        return None
+
+
+def _ligas():
+    """🏟️ Las ligas de los servidores (`bot/ligas.py`), o `None`. Nunca frena el lobby."""
+    try:
+        import ligas as _L
+        return _L.para_web()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ las ligas no entran al lobby: %s' % str(e)[:120])
         return None
 
 

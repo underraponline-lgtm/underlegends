@@ -587,7 +587,28 @@ def escribir_retencion(filas):
         print('   ⚠️ no pude medir quién vuelve a jugar: %s' % str(e)[:100])
 
 
-def agregar(filas_res, filas_uno, instantes=None, factor=None):
+def duelos_de_ligas():
+    """🏟️ Los duelos de las LIGAS de los servidores (`bot/ligas.py`), para `agregar(duelos_extra=…)`:
+    `[(instante, a, b, ganador)]` de esta temporada, con los nombres pasados por el padrón. `[]` si no se puede leer.
+
+    Dlx, 12/10/2026: *«1. A»* —las batallas de liga cuentan como DUELOS (el Ranking Duelos y el Win%) y el Score no—.
+    Por eso entran sólo a esto: `competitivo.py` lee `Resultados` y no los ve."""
+    try:
+        _b = os.path.join(BASE, 'bot')
+        if _b not in sys.path:
+            sys.path.insert(0, _b)
+        import ligas as _LI
+        import motor as _MO
+        from comun import temporada as _T
+        desde = str(getattr(_T, 'INICIO', '') or '')[:10]
+        r, _n = _MO._resolvedor()
+        return [(t, r(a), r(b), r(g)) for t, a, b, g in _LI.duelos(desde + 'T00:00:00Z' if desde else None)]
+    except Exception as e:                                # noqa: BLE001
+        print('   ⚠️ sin los duelos de las ligas (%s)' % str(e)[:80])
+        return []
+
+
+def agregar(filas_res, filas_uno, instantes=None, factor=None, duelos_extra=None):
     """Las filas crudas -> {rapero: {columna: valor}}.
 
     `factor(servidor, instante, evento, rapero) -> multiplicador` multiplica
@@ -754,6 +775,12 @@ def agregar(filas_res, filas_uno, instantes=None, factor=None):
         except ValueError:
             num = 0
         orden.append((cuando(num, f[1]), i, f))
+    # 🏟️ Y LOS DE LAS LIGAS (`duelos_de_ligas()`, Dlx 12/10/2026: «1. A»), en su lugar en el tiempo. ⚠️ Sólo cuentan
+    # para quien ya juega en la Liga —tiene fila—: una liga no da de alta a nadie en las vitrinas
+    liga = set()
+    for k, (ti, a, b, gan) in enumerate(duelos_extra or []):
+        orden.append(((ti.timestamp() * 1000, 0), len(filas_uno) + k, ['', '', '', '', a, b, gan]))
+        liga.add(len(filas_uno) + k)
     for _num, _i, f in sorted(orden, key=lambda x: (x[0], x[1])):
         a, b, gan = str(f[4]).strip(), str(f[5]).strip(), str(f[6]).strip()
         if not (a and b and gan):
@@ -766,11 +793,11 @@ def agregar(filas_res, filas_uno, instantes=None, factor=None):
         # ganado y el que le perdió, el perdido. Sólo no se le cuentan al
         # troll, que no tiene fila.
         for x in (a, b):
-            if es_troll(x):
+            if es_troll(x) or (_i in liga and x not in d):
                 continue
             j[x] += 1
             hist[x].append(x == gan)
-        if not es_troll(gan):
+        if not es_troll(gan) and not (_i in liga and gan not in d):
             g[gan] += 1
     # 🔑 SIN WIN% HASTA LOS 10 EVENTOS (Dlx, 07/10/2026: *«asegurate de que nadie pueda tener un win rate hasta que
     # tenga 10 eventos»*). El mismo piso que el Competitivo —`comun/requisitos.py`, no un 10 escrito acá—: con dos
@@ -1226,7 +1253,7 @@ def agregar_temporada(filas_res, filas_uno, instantes=None):
     # a lo largo de la semana, y eso hay que saberlo antes de multiplicar
     agregar(filas_res, filas_uno, instantes)
     filas = agregar.filas
-    ag = agregar(filas_res, filas_uno, instantes, factor=_MU.factor_de(filas=filas))
+    ag = agregar(filas_res, filas_uno, instantes, factor=_MU.factor_de(filas=filas), duelos_extra=duelos_de_ligas())
     # 🔑 LOS BONOS FIJOS DE LA SEMANA: el Pasaporte y la Asistencia
     for quien, b in _MU.bonos(filas).items():
         if quien in ag:
@@ -2651,6 +2678,17 @@ def _self_check():
     print('   %s Ana gana el #1, pierde el #2, gana el #3 -> %s '
           '(en orden de hoja daria 1/2)'
           % ('✅' if ok else '🔴', ag.get('Ana', {}).get('_racha_duelos')))
+
+    # 🏟️ los duelos de las ligas (Dlx, 12/10/2026: «1. A»): suman a quien ya juega en la Liga, y a nadie lo dan de alta
+    import datetime as _dtl
+    _r1 = [[1, '22/09', 'FFA', '8-15', 'Ana', 'ar', 'Campeón', 10, '', 10, '']]
+    _ext = [(_dtl.datetime(2026, 10, 1, tzinfo=_dtl.timezone.utc), 'Ana', 'Zed', 'Ana'),
+            (_dtl.datetime(2026, 10, 2, tzinfo=_dtl.timezone.utc), 'Ana', 'Zed', 'Zed')]
+    agl = agregar(_r1, [], duelos_extra=_ext)
+    ok = agl.get('Ana', {}).get('_dj') == 2 and agl['Ana'].get('_dg') == 1 and 'Zed' not in agl
+    mal += not ok
+    print('   %s las batallas de liga suman duelos a Ana (1 de 2), y Zed, que no juega en la Liga, no entra'
+          % ('✅' if ok else '🔴'))
 
     # 🔑 LA RACHA DE EVENTOS, como la definió Dlx el 25/09/2026. Ver
     # `_umbral()`: semifinal si la llave es de 16, la final si es de 8.

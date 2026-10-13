@@ -21,6 +21,7 @@ import { Bandera, Cara, Carta, Chevron, Compartir, Ico, accion, enlace, nombrePa
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 import { Divisiones } from './divisiones.jsx';
 import { Misiones } from './misiones.jsx';
+import { Ligas } from './ligas.jsx';
 
 const pct = (x) => parseFloat(String(x == null ? '' : x).replace(',', '.')) || 0;
 const coma = (x, d = 1) => Number(x || 0).toFixed(d).replace('.', ',');
@@ -243,7 +244,12 @@ const SUBS = {
     siNo: <><b>Misiones</b>: tres por semana, las mismas para todos, que se cumplen jugando y suman a tu Temporada. Las primeras arrancan el lunes a las 11 AM.</>,
     baj: <>Tres por semana, las mismas para todos: se cumplen <b>jugando</b> y cada una suma a tu <b>Temporada</b>. Las tres juntas dan un bono.</>,
   },
-  ligas: { et: 'Ligas', cuando: 'T2', corto: 'Llega con la Temporada 2.', pronto: <><b>El ranking de ligas</b> llega en la Temporada 2.</> },
+  // 🏟️ las ligas de los servidores (12/10/2026, Dlx: «2. Me gusta»): su propia vista (`Ligas`), una tabla por liga
+  ligas: {
+    et: 'Ligas', propia: Ligas, filas: () => [], orden: () => 0, hay: (L) => !!(L.d.ligas && (L.d.ligas.ligas || []).length),
+    siNo: <><b>Ligas</b>: las ligas de los servidores, con su tabla y sus resultados. Aparecen con su primera batalla.</>,
+    baj: <>Las ligas de los servidores de la Liga: la tabla de cada una y sus últimos resultados. Sus batallas suman a tus <b>duelos</b>.</>,
+  },
   // 🏟️ las divisiones de la semana (04/10/2026): su propia vista (`Divisiones`), no la tabla de los demás
   divisiones: {
     // ⚠️ `orden` tiene que estar aunque no haya tabla: `armar()` busca su columna en `COL` y sin él revienta

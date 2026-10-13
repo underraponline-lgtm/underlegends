@@ -490,6 +490,20 @@ button.btn{background:transparent;cursor:pointer}
 .dv-esc-p.on{background:var(--inv);color:var(--inv-tinta)}
 .dv-esc-p.on small{color:inherit;opacity:.8}
 .dv-vacia,.dv-tuyo{margin:0;font:700 14px/1.45 Archivo,sans-serif;max-width:70ch}
+/* 🏟️ las ligas de los servidores (12/10/2026): una pestaña por liga, su tabla y sus últimos resultados */
+.lg-tabs{display:flex;flex-wrap:wrap;gap:6px}
+.lg-tabs button{display:inline-flex;align-items:baseline;gap:6px;padding:7px 11px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);font:800 13px/1.1 Archivo,sans-serif;cursor:pointer}
+.lg-tabs button small{font:700 10px/1 "Space Mono",monospace;letter-spacing:.06em;color:var(--gris)}
+.lg-tabs button.on{background:var(--tinta);color:var(--fondo)}
+.lg-tabs button.on small{color:var(--fondo)}
+.lg-pj{font:700 12px/1 "Space Mono",monospace;color:var(--gris);font-variant-numeric:tabular-nums}
+.lg-st{margin:10px 0 0;font:900 14px/1.1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+.lg-ult{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.lg-ult li{font:600 14px/1.4 Archivo,sans-serif}
+.lg-ult .lg-g{font-weight:900;color:inherit}
+.lg-ult .lg-p{color:inherit}
+.lg-ult small{margin-left:8px;font:700 11px/1 "Space Mono",monospace;letter-spacing:.04em;color:var(--gris);text-transform:uppercase}
+.lg-nota{margin:4px 0 0;font:600 12px/1.45 Archivo,sans-serif;color:var(--gris);max-width:70ch}
 /* las líneas de corte: hasta dónde se sube y desde dónde se baja */
 .dv-tabla li.dv-corte{display:block;padding:5px 10px;border-left:4px solid transparent;font:700 12px/1.35 "Space Mono",monospace;
   letter-spacing:.03em}

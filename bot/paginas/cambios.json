@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.74",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T20:30:00-04:00",
+   "titulo": "Las ligas de los servidores",
+   "items": [
+    "🏟️ **Ligas**, en el Ranking: las ligas de los servidores (FMH, FMS, Snake League…) con su tabla y sus últimos resultados.",
+    "⚔️ Las batallas de liga ahora suman a tus **duelos** y a tu Win%."
+   ]
+  },
+  {
    "version": "2.73",
    "dia": "2026-10-12",
    "cuando": "2026-10-12T19:50:00-04:00",
