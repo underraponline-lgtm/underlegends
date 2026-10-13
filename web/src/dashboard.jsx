@@ -990,11 +990,12 @@ async function decidirReporte(cuerpo) {
 }
 
 // el formulario de «Corregir»: un nombre o el ganador, con lo que la llave de verdad trae
-function Corregir({ r, liga, alListo }) {
+function Corregir({ r, liga, alListo, hermanos }) {
   const [L, setL] = useState(undefined);
   const [modo, setModo] = useState(r.que === 'ganador' ? 'ganador' : 'nombre');
   const [nombre, setNombre] = useState('');
-  const [quien, setQuien] = useState(r.de ? 'reporta' : 'es');
+  const [quien, setQuien] = useState('reporta');
+  const [conHermanos, setConHermanos] = useState(true);
   const [es, setEs] = useState('');
   const [nuevo, setNuevo] = useState('');
   const [bat, setBat] = useState('');
@@ -1014,14 +1015,27 @@ function Corregir({ r, liga, alListo }) {
   const lista = ((liga && liga.d && liga.d.tabla) || []).map((x) => x.n);
   const listo = modo === 'nombre' ? !!nombre && (quien === 'reporta' || (quien === 'es' ? !!es.trim() : !!nuevo.trim()))
     : !!b && !!gana && gana !== b.ganador;
+  // ⚠️ ELEGIR LO QUE LA LLAVE YA DICE NO CAMBIA NADA, y el botón apagado no lo decía (Dlx, con el de Zetryko: «estoy
+  // haciendo click a aplicar pero nada»): se dice, y se ofrece cerrarlo
+  const yaDice = modo === 'ganador' && !!b && !!gana && gana === b.ganador;
+  const falta = modo === 'nombre' ? (!nombre ? 'Elegí el nombre que está mal.' : !listo ? 'Elegí de quién era.' : '')
+    : (!b ? 'Elegí la batalla.' : !gana ? 'Elegí quién la ganó.' : '');
   const aplicar = async () => {
     setOcup(true); setMsg('');
     try {
       const c = modo === 'nombre'
-        ? Object.assign({ id: r.id, accion: 'nombre', n: r.llave, nombre }, quien === 'reporta' ? { reporta: true } : quien === 'es' ? { es: es.trim() } : { nuevo: nuevo.trim() })
-        : { id: r.id, accion: 'ganador', n: r.llave, ronda: b.ronda, lados: b.lados, ganador: gana };
-      alListo(await decidirReporte(c));
+        ? Object.assign({ accion: 'nombre', n: r.llave, nombre }, quien === 'reporta' ? { reporta: true } : quien === 'es' ? { es: es.trim() } : { nuevo: nuevo.trim() })
+        : { accion: 'ganador', n: r.llave, ronda: b.ronda, lados: b.lados, ganador: gana };
+      // 🧩 y lo mismo para los otros reportes abiertos de esta llave, si se marcó (Dlx: «hazlo sencillo de solucionar
+      // múltiples problemas»): el ciclo los da por corregidos con la misma regla
+      let l = await decidirReporte(Object.assign({ id: r.id }, c));
+      for (const h of (conHermanos ? hermanos : [])) l = await decidirReporte(Object.assign({ id: h.id }, c));
+      alListo(l);
     } catch (e) { setMsg('No se pudo: ' + e.message); setOcup(false); }
+  };
+  const cerrarListo = async () => {
+    setOcup(true);
+    try { alListo(await decidirReporte({ id: r.id, accion: 'listo' })); } catch (e) { setMsg('No se pudo: ' + e.message); setOcup(false); }
   };
   const id = 'rep' + r.id;
   return (
@@ -1036,7 +1050,8 @@ function Corregir({ r, liga, alListo }) {
         {nombre ? <>
           <span className="db-rep-p">«{nombre}» era…</span>
           <div className="db-rep-q">
-            {r.de ? <label><input type="radio" name={id} checked={quien === 'reporta'} onChange={() => setQuien('reporta')} /> quien lo reportó <a href={'#/r/' + r.de}>({r.de})</a></label> : null}
+            {/* quien lo mandó, siempre: el ciclo sabe su cuenta aunque no tenga perfil en la página */}
+            <label><input type="radio" name={id} checked={quien === 'reporta'} onChange={() => setQuien('reporta')} /> quien lo mandó{r.evid && r.evid.quien ? ' (' + r.evid.quien + ')' : r.de ? ' (' + r.de + ')' : ''}</label>
             <label><input type="radio" name={id} checked={quien === 'es'} onChange={() => setQuien('es')} /> otro de la Lista:
               <input type="text" list={id + 'l'} value={es} placeholder="su nombre" onFocus={() => setQuien('es')} onChange={(e) => setEs(e.target.value)} maxLength={60} /></label>
             <label><input type="radio" name={id} checked={quien === 'nuevo'} onChange={() => setQuien('nuevo')} /> alguien que no está en la Lista:
@@ -1055,9 +1070,14 @@ function Corregir({ r, liga, alListo }) {
           <div className="db-opc">{b.lados.map((x) => <button key={x} type="button" className={gana === x ? 'on' : ''} onClick={() => setGana(x)}>{x}{x === b.ganador ? ' (lo que dice hoy)' : ''}</button>)}</div>
         </> : null}
       </>}
-      <p className="db-rep-nota">Cambia sólo en la #{r.llave}. Lo aplica el ciclo en su próxima corrida y a quien lo reportó le llega a la campana.</p>
+      {yaDice ? <p className="db-rep-ya">La llave ya dice que ganó {gana}: no hay nada que corregir. Si el reporte pedía eso, cerralo con «Listo».</p>
+        : <p className="db-rep-nota">Cambia sólo en la #{r.llave}. Lo aplica el ciclo en su próxima corrida y a quien lo reportó le llega a la campana.</p>}
+      {hermanos.length && !yaDice ? <label className="db-rep-herm"><input type="checkbox" checked={conHermanos} onChange={(e) => setConHermanos(e.target.checked)} />
+        {' '}lo mismo para {hermanos.length === 1 ? 'el otro reporte' : 'los otros ' + hermanos.length + ' reportes'} de la #{r.llave}</label> : null}
       <div className="cu-btns">
-        <button type="button" className="btn verde chico" disabled={!listo || ocup} onClick={aplicar}>{ocup ? 'Guardando…' : 'Aplicar'}</button>
+        {yaDice ? <button type="button" className="btn verde chico" disabled={ocup} onClick={cerrarListo}>Listo</button>
+          : <button type="button" className="btn verde chico" disabled={!listo || ocup} onClick={aplicar}>{ocup ? 'Guardando…' : 'Aplicar'}</button>}
+        {!yaDice && falta ? <small>{falta}</small> : null}
         {msg ? <small role="status">{msg}</small> : null}
       </div>
     </div>
@@ -1103,8 +1123,25 @@ function Reportes({ rep, liga }) {
     try { setLista(await decidirReporte({ id: r.id, accion })); setMsg((m) => Object.assign({}, m, { [r.id]: '' })); } catch (e) { setMsg((m) => Object.assign({}, m, { [r.id]: 'No se pudo: ' + e.message })); }
   };
   if (!lista.length) return null;
+  // 🧩 todo lo que el bot ya sabe cómo corregir, de una (Dlx: «hazlo sencillo de solucionar múltiples problemas»)
+  const sugeridos = lista.filter((x) => (x.estado === '' || x.estado === 'no_pude') && x.evid && x.evid.sugerencia && /^\d+$/.test(x.llave));
+  const todos = async () => {
+    setMsg((m) => Object.assign({}, m, { todos: '…' }));
+    try {
+      let l = lista;
+      for (const x of sugeridos) {
+        const s = x.evid.sugerencia;
+        l = await decidirReporte(Object.assign({ id: x.id, accion: 'nombre', n: x.llave, nombre: s.nombre }, s.reporta ? { reporta: true } : { es: s.es }));
+      }
+      setLista(l); setMsg((m) => Object.assign({}, m, { todos: '' }));
+    } catch (e) { setMsg((m) => Object.assign({}, m, { todos: 'No se pudo: ' + e.message })); }
+  };
   return (
     <div><h3>Errores en las llaves <small>reportados</small></h3>
+      {sugeridos.length >= 2 ? <div className="cu-btns">
+        <button type="button" className="btn verde chico" disabled={msg.todos === '…'} onClick={todos}>Aplicar todo lo sugerido ({sugeridos.length})</button>
+        {msg.todos && msg.todos !== '…' ? <small role="status">{msg.todos}</small> : null}
+      </div> : null}
       <ul>{lista.map((r) => {
         const est = ESTADO_REP[r.estado];
         const abiertoA = r.estado === '' || r.estado === 'no_pude';
@@ -1122,7 +1159,8 @@ function Reportes({ rep, liga }) {
               : '«' + r.fix.nombre + '» era ' + (r.fix.reporta ? 'quien lo reportó' : r.fix.es || r.fix.nuevo)}</small> : null}
             {r.resultado ? <small>{r.resultado}</small> : null}
             {abiertoA || r.estado === 'corregir' ? (
-              abierto === r.id ? <Corregir r={r} liga={liga} alListo={(l) => { setLista(l); setAbierto(null); }} /> : (
+              abierto === r.id ? <Corregir r={r} liga={liga} alListo={(l) => { setLista(l); setAbierto(null); }}
+                hermanos={lista.filter((x) => x.id !== r.id && x.llave === r.llave && (x.estado === '' || x.estado === 'no_pude'))} /> : (
                 <div className="cu-btns">
                   {/^\d+$/.test(r.llave) ? <button type="button" className="btn verde chico" onClick={() => setAbierto(r.id)}>{r.estado === 'corregir' ? 'Cambiar la corrección' : 'Corregir'}</button> : null}
                   <button type="button" className="btn borde2 chico" disabled={msg[r.id] === '…'} onClick={() => cerrar(r, 'listo')}>Listo</button>
