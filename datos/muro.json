@@ -450,7 +450,8 @@
 "cinexfilo": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "dyzz": {
@@ -2302,14 +2303,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-28T22:40:07Z",
-"quien": [
-"LEWITO"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-28T22:40:07Z",
@@ -5574,6 +5567,14 @@
 ],
 "rg": "D",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-13T21:57:27Z",
+"quien": [
+"Cinexfilo"
+],
+"carta": "temporada"
 }
 ]
 }
