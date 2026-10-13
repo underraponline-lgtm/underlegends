@@ -1805,14 +1805,15 @@ console.log('\n/VERIFICAR\n');
 
 {
   const { diagnostico, banderasEn, proximaVuelta } = await import('./worker.js');
-  const P = { guild: G.DRA, rol: 'MIEMBRO', paises: { R_AR: 'ar', R_US: 'us', R_CL: 'cl' },
+  // ✅ el rol con forma de ID: desde el 12/10/2026 el Worker lo da él (`darMiembro()`), y sólo con un ID de verdad
+  const P = { guild: G.DRA, rol: '900000000000000001', paises: { R_AR: 'ar', R_US: 'us', R_CL: 'cl' },
               revisa: ['700700'] };
   ok('las banderas de un apodo, sin repetir', JSON.stringify(banderasEn('Juan 🇦🇷🔥🇦🇷')) === '["ar"]');
   const d1 = diagnostico(null, P);
   ok('fuera de DRA: nada', !d1.enDra && !d1.rol && !d1.paises.length);
   const d2 = diagnostico({ roles: ['R_AR'], user: { username: 'x' } }, P);
   ok('en DRA con rol de país y sin Miembro', d2.enDra && !d2.rol && d2.paises.join() === 'ar');
-  const d3 = diagnostico({ roles: ['MIEMBRO', 'R_AR', 'R_CL'], user: {} }, P);
+  const d3 = diagnostico({ roles: [P.rol, 'R_AR', 'R_CL'], user: {} }, P);
   ok('dos roles de país son dos', d3.rol && d3.paises.length === 2);
   const d4 = diagnostico({ roles: ['R_CL'], nick: 'Ana 🇺🇸', user: {} }, P);
   ok('Estados Unidos gana si aparece, como en pais_por_rol', d4.paises.join() === 'us');
@@ -1828,10 +1829,17 @@ console.log('\n/VERIFICAR\n');
 
   // el comando entero, con un miembro de mentira en DRA
   const antes = globalThis.fetch;
+  const ROLES_PUESTOS = [];
   const pedirVer = async (id, miembro, estado) => {
-    globalThis.fetch = async (url) => (String(url).indexOf('/members/') >= 0
-      ? new Response(JSON.stringify(miembro || {}), { status: estado || 200 })
-      : new Response('{}', { status: 200 }));
+    globalThis.fetch = async (url, opc = {}) => {
+      if (/\/roles\//.test(String(url)) && String(opc.method || '').toUpperCase() === 'PUT') {
+        ROLES_PUESTOS.push(String(url));
+        return new Response(null, { status: 204 });
+      }
+      return String(url).indexOf('/members/') >= 0
+        ? new Response(JSON.stringify(miembro || {}), { status: estado || 200 })
+        : new Response('{}', { status: 200 });
+    };
     env.DISCORD_TOKEN = 'x';
     META.porton = P;
     try {
@@ -1850,12 +1858,20 @@ console.log('\n/VERIFICAR\n');
   r = await pedirVer('700003', { roles: ['R_AR', 'R_CL'], user: {} });
   ok('dos países: pide dejar uno', /dejá uno solo/.test(texto(r)), texto(r));
   r = await pedirVer('700004', { roles: ['R_AR'], user: {} });
-  ok('completo sin Miembro: el bot se lo da, y dice cuándo',
-     /te lo da el bot solo/.test(texto(r)) && /próxima vuelta arranca/.test(texto(r)), texto(r));
+  const bots = (r.json?.data?.components || []).flatMap((f) => f.components || []);
+  ok('completo sin Miembro: se lo damos EN EL MOMENTO (Dlx, 12/10/2026: «A»), y dice cuándo sale la tarjeta',
+     /Te dimos el rol de \*\*Miembro\*\*/.test(texto(r)) && /✅ Tener el rol \*\*Miembro\*\*/.test(texto(r))
+     && /próxima vuelta arranca/.test(texto(r)) && ROLES_PUESTOS.some((u) => u.endsWith('/members/700004/roles/' + P.rol)), texto(r));
+  ok('y siempre con el botón para seguirlo en la página («B»)',
+     bots.some((b) => b.style === 5 && /\/cuenta\/verificar$/.test(b.url)), JSON.stringify(bots));
   await esperarSeguimientos();
   ok('y lo anota en la cola, para que esa vuelta lo encuentre', !!PUESTO['reg:700004']);
   r = await pedirVer('700700', { roles: ['R_AR'], user: {} });
-  ok('a quien revisa un admin no se le promete el rol', /lo revisa un admin/.test(texto(r)), texto(r));
+  ok('a quien revisa un admin no se le promete el rol, ni se le da', /lo revisa un admin/.test(texto(r))
+     && !ROLES_PUESTOS.some((u) => /\/members\/700700\//.test(u)), texto(r));
+  r = await pedirVer('700006', { roles: ['R_AR'], pending: true, user: {} });
+  ok('quien no aceptó las reglas de DRA: se las pide, y no se le da nada', /aceptar las reglas/.test(texto(r))
+     && !ROLES_PUESTOS.some((u) => /\/members\/700006\//.test(u)), texto(r));
   r = await pedir({ type: 2, guild_id: G.DRA, channel_id: '1',
                     member: { user: { id: '700005' } }, data: { name: 'verificar' } });
   ok('sin token ni portón, hace lo de /card: anota y explica', /Ya te anoté/.test(texto(r)), texto(r));
@@ -1866,7 +1882,7 @@ console.log('\nVERIFICARSE DESDE LA PÁGINA, ENTRANDO A DRA\n');
 {
   // 🔑 Dlx, 01/10/2026: «que te entres a DRA automáticamente», el país elegido
   // en la página (su «A») y el Miembro, del ciclo (su otra «A»).
-  const P = { guild: G.DRA, rol: 'MIEMBRO', paises: { R_AR: 'ar', R_US: 'us', R_CL: 'cl' },
+  const P = { guild: G.DRA, rol: '900000000000000001', paises: { R_AR: 'ar', R_US: 'us', R_CL: 'cl' },
               revisa: ['700699'] };
   // un Discord de mentira: de quién es cada permiso, quién está en DRA y todo lo que se le pidió
   const USUARIOS = {
@@ -1960,23 +1976,28 @@ console.log('\nVERIFICARSE DESDE LA PÁGINA, ENTRANDO A DRA\n');
     ok('aceptó las reglas y no tiene país: lo pide', !r.json.pendiente && !r.json.paises.length &&
        !r.json.completo && !pusoRol('700601').length, JSON.stringify(r.json));
     r = await ver({ token: 'permisoNuevo1234567890', pais: 'ar' });
+    const deMiembro = (id) => pusoRol(id).filter((l) => l.u.endsWith('/roles/' + P.rol));
+    const dePais = (id) => pusoRol(id).filter((l) => /\/roles\/R_/.test(l.u));
     ok('elige Argentina: el bot le pone ESE rol de DRA, y una sola vez',
        r.json.puso === 'ar' && r.json.paises.join() === 'ar' && r.json.completo === true &&
-       pusoRol('700601').length === 1 && /\/roles\/R_AR$/.test(pusoRol('700601')[0].u), JSON.stringify(r.json));
+       dePais('700601').length === 1 && /\/roles\/R_AR$/.test(dePais('700601')[0].u), JSON.stringify(r.json));
+    ok('✅ y con todo completo, el Miembro en el momento (Dlx, 12/10/2026: «A»)',
+       r.json.dimos === true && r.json.rol === true && deMiembro('700601').length === 1, JSON.stringify(r.json));
     await esperarSeguimientos();
     const reg = JSON.parse(PUESTO['reg:700601'] || '{}');
     ok('completo: queda anotado como «yo», así la vuelta del ciclo lo encuentra',
        reg.id === '700601' && reg.por === 'yo' && reg.sv === 'DRA', JSON.stringify(reg));
     ok('y dice cuándo es esa vuelta', /^\d{4}-\d\d-\d\dT\d\d:(22|52):00/.test(r.json.vuelta || ''), r.json.vuelta);
     r = await ver({ token: 'permisoNuevo1234567890', pais: 'cl' });
-    ok('con rol de país ya puesto, otro país no se pone: cambiarlo es cosa de DRA',
-       pusoRol('700601').length === 1 && r.json.paises.join() === 'ar' && !r.json.puso);
+    ok('con rol de país ya puesto, otro país no se pone: cambiarlo es cosa de DRA (y el Miembro, una sola vez)',
+       dePais('700601').length === 1 && deMiembro('700601').length === 1 && r.json.paises.join() === 'ar' && !r.json.puso);
 
     // 4 · los que ya estaban en DRA
     LLAMADAS.length = 0;
     r = await ver({ token: 'permisoChile1234567890', pais: 'ar' });
-    ok('ya en DRA con su rol de Chile: no se lo mete ni se le toca el país',
-       r.json.entro === false && r.json.paises.join() === 'cl' && !LLAMADAS.some((l) => l.m === 'PUT'),
+    ok('ya en DRA con su rol de Chile: no se lo mete ni se le toca el país; el Miembro, sí',
+       r.json.entro === false && r.json.paises.join() === 'cl'
+       && !LLAMADAS.some((l) => l.m === 'PUT' && !l.u.endsWith('/roles/' + P.rol)) && r.json.dimos === true,
        JSON.stringify(r.json));
     r = await ver({ token: 'permisoDosBand12345678' });
     ok('dos banderas en el nombre y ningún rol: dos países, y se pueden arreglar acá',
@@ -1988,8 +2009,8 @@ console.log('\nVERIFICARSE DESDE LA PÁGINA, ENTRANDO A DRA\n');
     await esperarSeguimientos();
     ok('a quien revisa un admin: el país sí, pero no se anota ni se le promete nada',
        r.json.revisa === true && !r.json.completo && !PUESTO['reg:700699'], JSON.stringify(r.json));
-    ok('🔴 y el rol de Miembro no lo pone nunca la página: lo da el ciclo',
-       !LLAMADAS.some((l) => /\/roles\/MIEMBRO$/.test(l.u)));
+    ok('🔴 y a quien revisa un admin la página no le da el Miembro nunca',
+       !LLAMADAS.some((l) => l.u.endsWith('/members/700699/roles/' + P.rol)));
     r = await ver({ token: 'permisoChile1234567890', pais: 'zz' });
     ok('un país que DRA no tiene: 400, sin tocar nada', r.status === 400 && r.json.error === 'pais');
 

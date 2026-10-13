@@ -1355,6 +1355,28 @@ async function miembroDra(env, guild, uid) {
   }
 }
 
+// ✅ EL MIEMBRO DE DRA AL MOMENTO (Dlx, 12/10/2026, a «/verificar con todo completo»: «A y B»). Hasta acá lo daba sólo el
+// ciclo (`bot/autoverificar.py`), y quien tenía todo de su lado leía «en menos de una hora» sin nada que hacer. Ahora,
+// con lo mismo que pide el ciclo —estar en DRA, un solo país y no estar en la lista de revisión (`porton.revisa`, la
+// de `autoverificar._saltear()`)—, lo da el Worker en el momento, desde /verificar y desde la página. Le saca el
+// Invitado, como el ciclo. La tarjeta igual sale con la vuelta siguiente: se dibuja ahí.
+// ⚠️ Sólo si el portón dice qué rol es (`porton.rol`, un ID): sin eso no se le da nada a nadie.
+async function darMiembro(env, P, uid, razon) {
+  if (!P || !/^\d{5,25}$/.test(String(P.rol || '')) || !/^\d{5,25}$/.test(String(P.guild || ''))) return false;
+  const h = { 'Authorization': 'Bot ' + env.DISCORD_TOKEN, 'X-Audit-Log-Reason': encodeURIComponent(razon) };
+  const base = `${DC_API}/guilds/${P.guild}/members/${uid}/roles/`;
+  try {
+    const r = await fetch(base + P.rol, { method: 'PUT', headers: h });
+    if (r.status !== 204) return false;
+    if (/^\d{5,25}$/.test(String(P.invitado || ''))) {
+      try { await fetch(base + P.invitado, { method: 'DELETE', headers: h }); } catch (e) { /* queda el Invitado */ }
+    }
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 // ── «Mi cuenta» con Discord ───────────────────────────────────────────────
 // 🔑 Dlx, 25/09/2026: «creo que sería mejor meter el login de Discord». SIN
 // SECRETO DE CLIENTE: la app de la Liga no tiene uno guardado y generarlo es
@@ -1519,15 +1541,20 @@ export async function cuentaVerificar(req, env, ctx) {
   }
   const revisa = (P.revisa || []).indexOf(String(u.id)) >= 0;
   const completo = !pendiente && dg.paises.length === 1 && !revisa;
-  // lo tuyo está completo: el ciclo hace lo que falta, y para eso te anota
+  // lo tuyo está completo: el Miembro en el momento (`darMiembro()`), y el ciclo hace la tarjeta: para eso te anota
+  let dimos = false;
   if (completo) {
+    if (!dg.rol && await darMiembro(env, P, u.id, 'Liga Global: se verificó en la página (en DRA + país)')) {
+      dimos = true;
+      dg = Object.assign({}, dg, { rol: true });
+    }
     anotar(env, ctx, u.id, miembro.nick || '', u.username || '', u.global_name || '', P.guild, 'yo');
   }
   const vuelta = proximaVuelta(Date.now());
   return json({
     enDra: true, entro, pendiente, rol: dg.rol, paises: dg.paises,
     // con varios países: si alguno es rol, se arregla en DRA; si son banderas del nombre, eligiendo acá
-    porRol: conRol.length > 0, puso, revisa, completo,
+    porRol: conRol.length > 0, puso, revisa, completo, dimos,
     vuelta: vuelta ? vuelta.toISOString() : '', opciones,
   });
 }
@@ -2959,7 +2986,9 @@ const COMANDOS = {
       return aviso('No pude mirar Discord Rap Español ahora mismo (contestó ' + estado +
                    '). Probá de nuevo en un rato.');
     }
-    const dg = diagnostico(miembro, P);
+    let dg = diagnostico(miembro, P);
+    // 🔗 «B»: el botón de la página va siempre, también cuando no te falta nada: ahí se ve cómo va
+    const aLaPagina = [botonLink('Seguilo en la página', URL_VERIFICAR)];
     const unPais = dg.paises.length === 1;
     const si = (b) => (b ? '✅' : '❌');
     const lista = [
@@ -2974,7 +3003,7 @@ const COMANDOS = {
     if (dg.paises.length > 1) {
       return aviso(lista + '\n\nTenés **' + dg.paises.length + ' países** en DRA (' +
                    dg.paises.map(emojiBandera).join(' ') + '): dejá uno solo y volvé a ' +
-                   'escribir `/verificar`.');
+                   'escribir `/verificar`.', aLaPagina);
     }
     if (!unPais) {
       // 🔑 y desde el 01/10/2026 se elige en la página: el bot te pone el rol
@@ -2982,20 +3011,33 @@ const COMANDOS = {
                    'bot te pone el rol 👇 (o elegí tu rol de país en DRA, o poné tu bandera ' +
                    'en el apodo, y volvé a escribir `/verificar`).', v.botones);
     }
-    // lo tuyo está completo: lo que falta lo hace el ciclo
+    // las reglas de DRA sin aceptar: Discord no deja darle roles a quien no entró del todo
+    if (miembro && miembro.pending === true) {
+      return aviso(lista + '\n\nTe falta **aceptar las reglas de DRA**: Discord te las muestra al abrir el ' +
+                   'servidor, es un toque. Después volvé a escribir `/verificar`.', aLaPagina);
+    }
     if ((P.revisa || []).indexOf(String(yo)) >= 0) {
       return aviso(lista + '\n\nLo tuyo está completo. Tu caso lo revisa un admin: no ' +
-                   'hace falta que hagas nada más.');
+                   'hace falta que hagas nada más.', aLaPagina);
     }
+    // ✅ «A»: lo tuyo está completo y te falta el Miembro: te lo damos ahora (`darMiembro()`), no en la vuelta del ciclo
+    let dimos = false;
+    if (!dg.rol && await darMiembro(env, P, yo, 'Liga Global: /verificar (en DRA + país)')) {
+      dimos = true;
+      dg = Object.assign({}, dg, { rol: true });
+    }
+    const lista2 = dimos ? lista.replace('❌ Tener el rol **Miembro** ahí', '✅ Tener el rol **Miembro** ahí') : lista;
     anotar(env, ctx, yo, d.nick, d.user, d.glob, i.guild_id, 'yo');
     const vuelta = proximaVuelta(Date.now());
     const hora = vuelta ? horaEste(vuelta.toISOString()).replace(/^\S+ /, '') : '';
     const cuando = hora ? ` La próxima vuelta arranca a las **${hora}**.` : '';
-    return aviso(lista + '\n\n' + (dg.rol
-      ? 'Estás verificado en DRA ✅. Tu tarjeta sale cuando el bot te cargue: en menos ' +
-        'de una hora.'
-      : 'Lo tuyo está completo ✅. El rol de **Miembro** te lo da el bot solo, y con él ' +
-        'sale tu tarjeta: en menos de una hora.') + cuando);
+    return aviso(lista2 + '\n\n' + (dimos
+      ? '¡Listo! Te dimos el rol de **Miembro** en DRA ✅: ya estás verificado. Tu tarjeta sale cuando el bot te ' +
+        'cargue, en menos de una hora.'
+      : dg.rol
+        ? 'Estás verificado en DRA ✅. Tu tarjeta sale cuando el bot te cargue: en menos de una hora.'
+        : 'Lo tuyo está completo ✅. El rol de **Miembro** te lo da el bot solo, y con él sale tu tarjeta: en ' +
+          'menos de una hora.') + cuando, aLaPagina);
   },
 
   async card(i, env, ctx) {

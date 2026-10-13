@@ -354,6 +354,14 @@ def _porton(padron):
     normalizados, así que los nombres se traducen por el padrón.
     """
     out = {'guild': VERIF.GUILD_DRA, 'rol': VERIF.ROL_MIEMBRO, 'paises': {}, 'revisa': []}
+    # el Invitado, que se saca al dar el Miembro (`darMiembro()` del Worker, como `autoverificar.dar_miembro()`)
+    try:
+        with open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
+            inv = ((json.load(f).get('canales') or {}).get('DRA') or {}).get('rol_invitado') or ''
+        if inv:
+            out['invitado'] = str(inv)
+    except (OSError, ValueError) as e:
+        print('  ⚠️ /verificar sin el rol de Invitado (%s)' % str(e)[:60])
     try:
         import pais_por_rol as PR
         out['paises'] = dict(PR.ROLES)

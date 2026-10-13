@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.81",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T22:35:00-04:00",
+   "titulo": "Verificarte, al momento",
+   "items": [
+    "✅ Si ya tenés todo (estás en Discord Rap Español, con las reglas aceptadas y tu país), `/verificar` y la página te dan el rol de **Miembro** en el momento. Tu tarjeta sale con la vuelta siguiente del bot.",
+    "🔗 `/verificar` trae siempre el botón para seguirlo en la página."
+   ]
+  },
+  {
    "version": "2.80",
    "dia": "2026-10-12",
    "cuando": "2026-10-12T22:30:00-04:00",

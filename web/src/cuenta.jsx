@@ -690,7 +690,8 @@ function Verificar({ liga, dc }) {
       : 'Elegilo y el bot te pone ese rol en DRA.', <ElegirPais key="p" v={v} />];
   }
   const vuelta = v.vuelta ? hora(v.vuelta) : '';
-  const miembro = v.rol ? ['ok', 'Tenés el rol de Miembro', '']
+  // ✅ con todo completo, el Worker te lo da en el momento (`darMiembro()`, Dlx 12/10/2026: «A y B»)
+  const miembro = v.rol ? ['ok', 'Tenés el rol de Miembro', v.dimos ? 'Te lo dimos recién.' : '']
     : v.revisa ? ['aviso', 'Tu caso lo revisa un admin', 'No hace falta que hagas nada más.']
       : v.completo ? ['espera', 'Tu rol de Miembro', 'Te lo da el bot solo' + (vuelta ? ', en la vuelta de las ' + vuelta + ' o en la siguiente' : '') + '. Con él salen tus tarjetas.']
         : ['espera', 'Tu rol de Miembro', 'Te lo da el bot cuando completes lo de arriba.'];
