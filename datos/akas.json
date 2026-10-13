@@ -266,6 +266,7 @@
   "doce": "DO-C",
   "hinjkybesuk": "BNA",
   "parkjingsun": "Oasis",
+  "francis": "EGI",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1364,6 +1365,10 @@
   [
    "PARKJINGSUN",
    "Oasis"
+  ],
+  [
+   "francis",
+   "EGI"
   ],
   [
    "Nexus",

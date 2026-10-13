@@ -2034,6 +2034,28 @@
    "b": "TENOR",
    "ganador": "TENOR",
    "votos": "1–0"
+  },
+  "1559451418597785722": {
+   "id": "1559451418597785722",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791872591400,
+   "a": "DARNBLES",
+   "b": "CINEXFILO",
+   "ganador": "CINEXFILO",
+   "votos": "1–0"
+  },
+  "1559454580742426648": {
+   "id": "1559454580742426648",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791873345314,
+   "a": "ERIAN",
+   "b": "NHP",
+   "ganador": "ERIAN",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5563,6 +5585,47 @@
      [
       "GEEKTO",
       "NEMI"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1559452979076010098": {
+   "id": "1559452979076010098",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791872963447,
+   "ed": 1791873363812,
+   "texto": "`[ SEMIFINALES ]`\n⌞CINEXFILO⌝ 🆚 ⌞TENOR⌝\n⌞ERIAN⌝ 🆚 ⌞NHP⌝\n`[ FINAL ]`\n⌞ERIAN⌝ 🆚 ⌞NHP CINEXFILO⌝",
+   "batallas": [
+    [
+     "SEMIFINALES",
+     [
+      "CINEXFILO",
+      "TENOR"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "ERIAN",
+      "NHP"
+     ],
+     "ERIAN",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ERIAN",
+      "NHP CINEXFILO"
      ],
      null,
      "última ronda y no dice campeón",

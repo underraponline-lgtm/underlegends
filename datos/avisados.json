@@ -10332,5 +10332,187 @@
    ]
   ],
   "v": 2
+ },
+ "465": {
+  "antes": {
+   "Cinexfilo": [
+    68,
+    97,
+    false
+   ],
+   "DarnBless": [
+    104,
+    186,
+    false
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Guess": [
+    20,
+    24,
+    false
+   ],
+   "LRS": [
+    39,
+    52,
+    false
+   ],
+   "Lord Viruzz": [
+    35,
+    46,
+    false
+   ],
+   "Rodas": [
+    75,
+    105,
+    false
+   ],
+   "Sin Limites": [
+    34,
+    42,
+    false
+   ],
+   "Tenor": [
+    87,
+    140,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Erian",
+    "Rodas",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "Sin Limites",
+    "Erian"
+   ],
+   [
+    "francis 🇨🇷",
+    "Frifaier 🇨🇱",
+    "francis 🇨🇷"
+   ],
+   [
+    "francis 🇨🇷",
+    "LRS",
+    "francis 🇨🇷"
+   ],
+   [
+    "Tenor",
+    "Guess",
+    "Tenor"
+   ],
+   [
+    "Tenor",
+    "Lord Viruzz",
+    "Tenor"
+   ],
+   [
+    "Cinexfilo",
+    "Joshema",
+    "Cinexfilo"
+   ],
+   [
+    "Cinexfilo",
+    "DarnBless",
+    "Cinexfilo"
+   ],
+   [
+    "Erian",
+    "francis 🇨🇷",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "Tenor, Cinexfilo",
+    "Erian"
+   ]
+  ],
+  "ev_antes": {
+   "Cinexfilo": 8,
+   "DarnBless": 2,
+   "Erian": 30,
+   "Guess": 11,
+   "LRS": 10,
+   "Lord Viruzz": 11,
+   "Rodas": 6,
+   "Sin Limites": 12,
+   "Tenor": 3
+  },
+  "fecha": "13/10",
+  "firma": "d6280385bd38b3c3",
+  "msg": "1559459229411057705",
+  "nombre": "QCYO RAPEEN",
+  "num": 465,
+  "participantes": 12,
+  "sello": {
+   "Erian": "28a9c1eb9c3a:9df1984d05ab"
+  },
+  "sv": "FFA",
+  "t": "2026-10-13T06:54:12Z",
+  "tabla": [
+   [
+    "Erian",
+    "Campeón",
+    7500
+   ],
+   [
+    "Tenor",
+    "Subcampeón",
+    3500
+   ],
+   [
+    "Cinexfilo",
+    "Subcampeón",
+    3500
+   ],
+   [
+    "Rodas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Frifaier 🇨🇱",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Guess",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lord Viruzz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Joshema",
+    "Cuartos",
+    2000
+   ],
+   [
+    "DarnBless",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

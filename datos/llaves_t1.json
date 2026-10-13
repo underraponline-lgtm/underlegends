@@ -21973,24 +21973,24 @@
     "b": [
      [
       [
-       "MARITHEA",
+       "COLOSO",
        "FAT N"
       ],
-      "MARITHEA",
+      "COLOSO",
+      ""
+     ],
+     [
+      [
+       "VISIONARIO",
+       "COLOSO"
+      ],
+      "VISIONARIO",
       ""
      ],
      [
       [
        "AXL EVANS",
        "JAZZ"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "COLOSO",
-       "PUPPY"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -22029,6 +22029,22 @@
      ],
      [
       [
+       "MARITHEA",
+       "VISIONARIO"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "PUPPY",
+       "J1"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
        "URKO",
        "COFFY"
       ],
@@ -22043,7 +22059,7 @@
      [
       [
        "MARITHEA",
-       "MARITHEA"
+       "VISIONARIO"
       ],
       "MARITHEA",
       ""
@@ -22267,6 +22283,144 @@
    ],
    [
     "Tusicario",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "465": {
+  "dia": "2026-10-13",
+  "escala": "8-15",
+  "fecha": "13/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1559443082489888819"
+  ],
+  "n": 465,
+  "nombre": "QCYO RAPEEN",
+  "participantes": 12,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "Rodas",
+       "Sin Limites"
+      ],
+      "Erian",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "francis 🇨🇷",
+       "Frifaier 🇨🇱",
+       "LRS"
+      ],
+      "francis 🇨🇷",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Tenor",
+       "Guess",
+       "Lord Viruzz"
+      ],
+      "Tenor",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Cinexfilo",
+       "Joshema",
+       "DarnBless"
+      ],
+      "Cinexfilo",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "francis 🇨🇷"
+      ],
+      "Erian",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "Tenor, Cinexfilo"
+      ],
+      "Erian",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Erian",
+    "Campeón",
+    7500
+   ],
+   [
+    "Cinexfilo",
+    "Subcampeón",
+    3500
+   ],
+   [
+    "Tenor",
+    "Subcampeón",
+    3500
+   ],
+   [
+    "DarnBless",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Frifaier 🇨🇱",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Guess",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Joshema",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lord Viruzz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Rodas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
     "Cuartos",
     2000
    ]
