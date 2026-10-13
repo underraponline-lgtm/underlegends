@@ -233,16 +233,6 @@
   }
  },
  "batallas": {
-  "1556852245121994844": {
-   "id": "1556852245121994844",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791252900153,
-   "a": "Tokio",
-   "b": "Ardean 🇵🇪",
-   "ganador": "Tokio",
-   "votos": "1–0"
-  },
   "1556869320330707056": {
    "id": "1556869320330707056",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1981,6 +1971,39 @@
    "a": "OASIS",
    "b": "NUMBER",
    "ganador": "OASIS",
+   "votos": "1–0"
+  },
+  "1559384055521349725": {
+   "id": "1559384055521349725",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791856530791,
+   "a": "RODRI LP",
+   "b": "OASIS",
+   "ganador": "OASIS",
+   "votos": "1–0"
+  },
+  "1559387806466445343": {
+   "id": "1559387806466445343",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791857425086,
+   "a": "ABYSUSS",
+   "b": "OASIS",
+   "ganador": "ABYSUSS",
+   "votos": "1–0"
+  },
+  "1559388697357713419": {
+   "id": "1559388697357713419",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791857637491,
+   "a": "ABYSUSS",
+   "b": "AKARK",
+   "ganador": "ABYSUSS",
    "votos": "1–0"
   }
  },
@@ -5341,6 +5364,57 @@
      ],
      "GUESS🇦🇷",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1559383999531589753": {
+   "id": "1559383999531589753",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791856517442,
+   "ed": 1791858113884,
+   "texto": "`[ SEMIFINALES ]`\n⌞RODRI LP⌝ 🆚 ⌞OASIS⌝\n`[ SEMIFINALES ]`\n`[ FINAL ]`\n⌞ABYSUSS⌝ 🆚 ⌞OASIS⌝\n⌞abysuss⌝ 🆚 ⌞AKARK⌝\n⌞ABYSUSS⌝ 🆚 ⌞OASIS⌝",
+   "batallas": [
+    [
+     "SEMIFINALES",
+     [
+      "RODRI LP",
+      "OASIS"
+     ],
+     "OASIS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ABYSUSS",
+      "OASIS"
+     ],
+     "ABYSUSS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "abysuss",
+      "AKARK"
+     ],
+     "abysuss",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ABYSUSS",
+      "OASIS"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

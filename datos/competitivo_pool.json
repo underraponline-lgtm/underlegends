@@ -33,7 +33,7 @@
   "av": "",
   "pos_pais": "1/25",
   "arc_pais": 100,
-  "pos_sv": "1/124",
+  "pos_sv": "1/125",
   "arc_sv": 100
  },
  {
@@ -70,7 +70,7 @@
   "av": "",
   "pos_pais": "2/25",
   "arc_pais": 96,
-  "pos_sv": "2/124",
+  "pos_sv": "2/125",
   "arc_sv": 99,
   "pos_crew": "1/3"
  },
@@ -108,7 +108,7 @@
   "av": "",
   "pos_pais": "1/40",
   "arc_pais": 100,
-  "pos_sv": "3/124",
+  "pos_sv": "3/125",
   "arc_sv": 98,
   "pos_crew": "1/4"
  },
@@ -258,7 +258,7 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "4/124",
+  "pos_sv": "4/125",
   "arc_sv": 98,
   "pos_crew": "1/3"
  },
@@ -296,7 +296,7 @@
   "av": "",
   "pos_pais": "2/40",
   "arc_pais": 98,
-  "pos_sv": "5/124",
+  "pos_sv": "5/125",
   "arc_sv": 97,
   "pos_crew": ""
  },
@@ -332,9 +332,9 @@
   "subrango": "B+",
   "ovr": 0,
   "av": "",
-  "pos_pais": "1/22",
+  "pos_pais": "1/23",
   "arc_pais": 100,
-  "pos_sv": "6/124",
+  "pos_sv": "6/125",
   "arc_sv": 96
  },
  {
@@ -371,7 +371,7 @@
   "av": "",
   "pos_pais": "3/25",
   "arc_pais": 92,
-  "pos_sv": "7/124",
+  "pos_sv": "7/125",
   "arc_sv": 95,
   "pos_crew": ""
  },
@@ -409,7 +409,7 @@
   "av": "",
   "pos_pais": "3/40",
   "arc_pais": 95,
-  "pos_sv": "8/124",
+  "pos_sv": "8/125",
   "arc_sv": 94,
   "pos_crew": ""
  },
@@ -445,8 +445,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "2/22",
-  "arc_pais": 95,
+  "pos_pais": "2/23",
+  "arc_pais": 96,
   "pos_sv": "2/13",
   "arc_sv": 92
  },
@@ -484,7 +484,7 @@
   "av": "",
   "pos_pais": "4/40",
   "arc_pais": 92,
-  "pos_sv": "9/124",
+  "pos_sv": "9/125",
   "arc_sv": 94,
   "pos_crew": "2/4"
  },
@@ -522,7 +522,7 @@
   "av": "",
   "pos_pais": "5/40",
   "arc_pais": 90,
-  "pos_sv": "10/124",
+  "pos_sv": "10/125",
   "arc_sv": 93
  },
  {
@@ -596,7 +596,7 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "11/124",
+  "pos_sv": "11/125",
   "arc_sv": 92,
   "pos_crew": "1/8"
  },
@@ -634,7 +634,7 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "12/124",
+  "pos_sv": "12/125",
   "arc_sv": 91,
   "pos_crew": "2/3"
  },
@@ -709,7 +709,7 @@
   "av": "",
   "pos_pais": "1/15",
   "arc_pais": 100,
-  "pos_sv": "13/124",
+  "pos_sv": "13/125",
   "arc_sv": 90,
   "pos_crew": "1/3"
  },
@@ -745,9 +745,9 @@
   "subrango": "C+",
   "ovr": 0,
   "av": "",
-  "pos_pais": "3/22",
+  "pos_pais": "3/23",
   "arc_pais": 91,
-  "pos_sv": "14/124",
+  "pos_sv": "14/125",
   "arc_sv": 90,
   "pos_crew": "2/8"
  },
@@ -822,7 +822,7 @@
   "av": "",
   "pos_pais": "5/25",
   "arc_pais": 84,
-  "pos_sv": "15/124",
+  "pos_sv": "15/125",
   "arc_sv": 89,
   "pos_crew": ""
  },
@@ -858,9 +858,9 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "4/22",
-  "arc_pais": 86,
-  "pos_sv": "16/124",
+  "pos_pais": "4/23",
+  "arc_pais": 87,
+  "pos_sv": "16/125",
   "arc_sv": 88,
   "pos_crew": "3/8"
  },
@@ -1047,7 +1047,7 @@
   "av": "",
   "pos_pais": "1/3",
   "arc_pais": 0,
-  "pos_sv": "17/124",
+  "pos_sv": "17/125",
   "arc_sv": 87
  },
  {
@@ -1122,7 +1122,7 @@
   "av": "",
   "pos_pais": "6/40",
   "arc_pais": 88,
-  "pos_sv": "18/124",
+  "pos_sv": "18/125",
   "arc_sv": 86,
   "pos_crew": ""
  },
@@ -1197,8 +1197,8 @@
   "av": "",
   "pos_pais": "2/15",
   "arc_pais": 93,
-  "pos_sv": "19/124",
-  "arc_sv": 85
+  "pos_sv": "19/125",
+  "arc_sv": 86
  },
  {
   "full": "Guess",
@@ -1234,7 +1234,7 @@
   "av": "",
   "pos_pais": "7/40",
   "arc_pais": 85,
-  "pos_sv": "20/124",
+  "pos_sv": "20/125",
   "arc_sv": 85
  },
  {
@@ -1306,9 +1306,9 @@
   "subrango": "C-",
   "ovr": 0,
   "av": "",
-  "pos_pais": "5/22",
-  "arc_pais": 82,
-  "pos_sv": "21/124",
+  "pos_pais": "5/23",
+  "arc_pais": 83,
+  "pos_sv": "21/125",
   "arc_sv": 84
  },
  {
@@ -1380,9 +1380,9 @@
   "subrango": "C-",
   "ovr": 0,
   "av": "",
-  "pos_pais": "6/22",
-  "arc_pais": 77,
-  "pos_sv": "22/124",
+  "pos_pais": "6/23",
+  "arc_pais": 78,
+  "pos_sv": "22/125",
   "arc_sv": 83,
   "pos_crew": "4/8"
  },
@@ -1494,7 +1494,7 @@
   "av": "",
   "pos_pais": "8/40",
   "arc_pais": 82,
-  "pos_sv": "23/124",
+  "pos_sv": "23/125",
   "arc_sv": 82
  },
  {
@@ -1531,8 +1531,8 @@
   "av": "",
   "pos_pais": "9/40",
   "arc_pais": 80,
-  "pos_sv": "24/124",
-  "arc_sv": 81
+  "pos_sv": "24/125",
+  "arc_sv": 82
  },
  {
   "full": "Masino",
@@ -1568,7 +1568,7 @@
   "av": "",
   "pos_pais": "7/25",
   "arc_pais": 76,
-  "pos_sv": "25/124",
+  "pos_sv": "25/125",
   "arc_sv": 81,
   "pos_crew": "1/3"
  },
@@ -1642,9 +1642,9 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "7/22",
-  "arc_pais": 73,
-  "pos_sv": "26/124",
+  "pos_pais": "7/23",
+  "arc_pais": 74,
+  "pos_sv": "26/125",
   "arc_sv": 80,
   "pos_crew": "5/8"
  },
@@ -1682,7 +1682,7 @@
   "av": "",
   "pos_pais": "11/40",
   "arc_pais": 75,
-  "pos_sv": "27/124",
+  "pos_sv": "27/125",
   "arc_sv": 79,
   "pos_crew": ""
  },
@@ -1720,7 +1720,7 @@
   "av": "",
   "pos_pais": "12/40",
   "arc_pais": 72,
-  "pos_sv": "28/124",
+  "pos_sv": "28/125",
   "arc_sv": 78,
   "pos_crew": "2/5"
  },
@@ -1795,8 +1795,8 @@
   "av": "",
   "pos_pais": "8/25",
   "arc_pais": 72,
-  "pos_sv": "29/124",
-  "arc_sv": 77,
+  "pos_sv": "29/125",
+  "arc_sv": 78,
   "pos_crew": "2/3"
  },
  {
@@ -1833,7 +1833,7 @@
   "av": "",
   "pos_pais": "9/25",
   "arc_pais": 68,
-  "pos_sv": "30/124",
+  "pos_sv": "30/125",
   "arc_sv": 77
  },
  {
@@ -1981,7 +1981,7 @@
   "av": "",
   "pos_pais": "2/15",
   "arc_pais": 93,
-  "pos_sv": "31/124",
+  "pos_sv": "31/125",
   "arc_sv": 76,
   "pos_crew": "2/3"
  },
@@ -2167,7 +2167,7 @@
   "av": "",
   "pos_pais": "10/25",
   "arc_pais": 64,
-  "pos_sv": "32/124",
+  "pos_sv": "32/125",
   "arc_sv": 75
  },
  {
@@ -2241,7 +2241,7 @@
   "av": "",
   "pos_pais": "13/40",
   "arc_pais": 70,
-  "pos_sv": "33/124",
+  "pos_sv": "33/125",
   "arc_sv": 74
  },
  {
@@ -2278,8 +2278,8 @@
   "av": "",
   "pos_pais": "3/15",
   "arc_pais": 87,
-  "pos_sv": "34/124",
-  "arc_sv": 73
+  "pos_sv": "34/125",
+  "arc_sv": 74
  },
  {
   "full": "ENEK 🇪🇸",
@@ -2611,7 +2611,7 @@
   "av": "",
   "pos_pais": "3/9",
   "arc_pais": 78,
-  "pos_sv": "35/124",
+  "pos_sv": "35/125",
   "arc_sv": 73
  },
  {
@@ -2685,7 +2685,7 @@
   "av": "",
   "pos_pais": "1/14",
   "arc_pais": 100,
-  "pos_sv": "36/124",
+  "pos_sv": "36/125",
   "arc_sv": 72
  },
  {
@@ -2720,9 +2720,9 @@
   "subrango": "D-",
   "ovr": 0,
   "av": "",
-  "pos_pais": "8/22",
-  "arc_pais": 68,
-  "pos_sv": "37/124",
+  "pos_pais": "8/23",
+  "arc_pais": 70,
+  "pos_sv": "37/125",
   "arc_sv": 71
  },
  {
@@ -2759,7 +2759,7 @@
   "av": "",
   "pos_pais": "1/5",
   "arc_pais": 100,
-  "pos_sv": "38/124",
+  "pos_sv": "38/125",
   "arc_sv": 70
  },
  {
@@ -2796,8 +2796,8 @@
   "av": "",
   "pos_pais": "3/15",
   "arc_pais": 87,
-  "pos_sv": "39/124",
-  "arc_sv": 69
+  "pos_sv": "39/125",
+  "arc_sv": 70
  },
  {
   "full": "Sin Limites",
@@ -2833,7 +2833,7 @@
   "av": "",
   "pos_pais": "4/15",
   "arc_pais": 80,
-  "pos_sv": "40/124",
+  "pos_sv": "40/125",
   "arc_sv": 69
  },
  {
@@ -3018,7 +3018,7 @@
   "av": "",
   "pos_pais": "14/40",
   "arc_pais": 68,
-  "pos_sv": "41/124",
+  "pos_sv": "41/125",
   "arc_sv": 68,
   "pos_crew": ""
  },
@@ -3093,7 +3093,7 @@
   "av": "",
   "pos_pais": "15/40",
   "arc_pais": 65,
-  "pos_sv": "42/124",
+  "pos_sv": "42/125",
   "arc_sv": 67,
   "pos_crew": ""
  },
@@ -3166,8 +3166,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "9/22",
-  "arc_pais": 64,
+  "pos_pais": "9/23",
+  "arc_pais": 65,
   "pos_sv": "1/13",
   "arc_sv": 100,
   "pos_crew": "3/5"
@@ -3206,7 +3206,7 @@
   "av": "",
   "pos_pais": "16/40",
   "arc_pais": 62,
-  "pos_sv": "43/124",
+  "pos_sv": "43/125",
   "arc_sv": 66
  },
  {
@@ -3355,8 +3355,8 @@
   "av": "",
   "pos_pais": "4/15",
   "arc_pais": 80,
-  "pos_sv": "44/124",
-  "arc_sv": 65
+  "pos_sv": "44/125",
+  "arc_sv": 66
  },
  {
   "full": "Luzzano",
@@ -3430,7 +3430,7 @@
   "av": "",
   "pos_pais": "17/40",
   "arc_pais": 60,
-  "pos_sv": "45/124",
+  "pos_sv": "45/125",
   "arc_sv": 65
  },
  {
@@ -3504,7 +3504,7 @@
   "av": "",
   "pos_pais": "18/40",
   "arc_pais": 58,
-  "pos_sv": "46/124",
+  "pos_sv": "46/125",
   "arc_sv": 64
  },
  {
@@ -3578,7 +3578,7 @@
   "av": "",
   "pos_pais": "5/15",
   "arc_pais": 73,
-  "pos_sv": "47/124",
+  "pos_sv": "47/125",
   "arc_sv": 63
  },
  {
@@ -3653,7 +3653,7 @@
   "av": "",
   "pos_pais": "2/4",
   "arc_pais": 0,
-  "pos_sv": "48/124",
+  "pos_sv": "48/125",
   "arc_sv": 62
  },
  {
@@ -3727,8 +3727,8 @@
   "av": "",
   "pos_pais": "4/9",
   "arc_pais": 67,
-  "pos_sv": "49/124",
-  "arc_sv": 61
+  "pos_sv": "49/125",
+  "arc_sv": 62
  },
  {
   "full": "SGB",
@@ -3836,10 +3836,10 @@
   "subrango": "E",
   "ovr": 0,
   "av": "",
-  "pos_pais": "10/22",
-  "arc_pais": 59,
-  "pos_sv": "50/124",
-  "arc_sv": 60,
+  "pos_pais": "10/23",
+  "arc_pais": 61,
+  "pos_sv": "50/125",
+  "arc_sv": 61,
   "pos_crew": "6/8"
  },
  {
@@ -3874,8 +3874,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "11/22",
-  "arc_pais": 55,
+  "pos_pais": "11/23",
+  "arc_pais": 57,
   "pos_sv": "3/13",
   "arc_sv": 85
  },
@@ -3913,7 +3913,7 @@
   "av": "",
   "pos_pais": "12/25",
   "arc_pais": 56,
-  "pos_sv": "51/124",
+  "pos_sv": "51/125",
   "arc_sv": 60
  },
  {
@@ -3987,7 +3987,7 @@
   "av": "",
   "pos_pais": "20/40",
   "arc_pais": 52,
-  "pos_sv": "52/124",
+  "pos_sv": "52/125",
   "arc_sv": 59
  },
  {
@@ -4172,7 +4172,7 @@
   "av": "",
   "pos_pais": "21/40",
   "arc_pais": 50,
-  "pos_sv": "53/124",
+  "pos_sv": "53/125",
   "arc_sv": 58
  },
  {
@@ -4209,8 +4209,8 @@
   "av": "",
   "pos_pais": "2/14",
   "arc_pais": 93,
-  "pos_sv": "54/124",
-  "arc_sv": 57
+  "pos_sv": "54/125",
+  "arc_sv": 58
  },
  {
   "full": "Dyzz",
@@ -4283,8 +4283,8 @@
   "av": "",
   "pos_pais": "5/15",
   "arc_pais": 73,
-  "pos_sv": "55/124",
-  "arc_sv": 56
+  "pos_sv": "55/125",
+  "arc_sv": 57
  },
  {
   "full": "Teito",
@@ -4318,9 +4318,9 @@
   "subrango": "E",
   "ovr": 0,
   "av": "",
-  "pos_pais": "12/22",
-  "arc_pais": 50,
-  "pos_sv": "56/124",
+  "pos_pais": "12/23",
+  "arc_pais": 52,
+  "pos_sv": "56/125",
   "arc_sv": 56
  },
  {
@@ -4579,7 +4579,7 @@
   "av": "",
   "pos_pais": "3/14",
   "arc_pais": 86,
-  "pos_sv": "57/124",
+  "pos_sv": "57/125",
   "arc_sv": 55
  },
  {
@@ -4987,7 +4987,7 @@
   "av": "",
   "pos_pais": "2/5",
   "arc_pais": 80,
-  "pos_sv": "58/124",
+  "pos_sv": "58/125",
   "arc_sv": 54
  },
  {
@@ -5024,8 +5024,8 @@
   "av": "",
   "pos_pais": "22/40",
   "arc_pais": 48,
-  "pos_sv": "59/124",
-  "arc_sv": 53
+  "pos_sv": "59/125",
+  "arc_sv": 54
  },
  {
   "full": "Saiko",
@@ -5136,8 +5136,8 @@
   "av": "",
   "pos_pais": "5/9",
   "arc_pais": 56,
-  "pos_sv": "60/124",
-  "arc_sv": 52
+  "pos_sv": "60/125",
+  "arc_sv": 53
  },
  {
   "full": "Ariaxer",
@@ -5173,7 +5173,7 @@
   "av": "",
   "pos_pais": "23/40",
   "arc_pais": 45,
-  "pos_sv": "61/124",
+  "pos_sv": "61/125",
   "arc_sv": 52
  },
  {
@@ -5396,7 +5396,7 @@
   "av": "",
   "pos_pais": "24/40",
   "arc_pais": 42,
-  "pos_sv": "62/124",
+  "pos_sv": "62/125",
   "arc_sv": 51,
   "pos_crew": "3/4"
  },
@@ -5471,7 +5471,7 @@
   "av": "",
   "pos_pais": "4/14",
   "arc_pais": 79,
-  "pos_sv": "63/124",
+  "pos_sv": "63/125",
   "arc_sv": 50
  },
  {
@@ -5545,8 +5545,8 @@
   "av": "",
   "pos_pais": "3/5",
   "arc_pais": 60,
-  "pos_sv": "64/124",
-  "arc_sv": 49
+  "pos_sv": "64/125",
+  "arc_sv": 50
  },
  {
   "full": "Rayo",
@@ -5692,8 +5692,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "13/22",
-  "arc_pais": 45,
+  "pos_pais": "13/23",
+  "arc_pais": 48,
   "pos_sv": "4/6",
   "arc_sv": 50
  },
@@ -5842,8 +5842,8 @@
   "av": "",
   "pos_pais": "7/15",
   "arc_pais": 60,
-  "pos_sv": "65/124",
-  "arc_sv": 48
+  "pos_sv": "65/125",
+  "arc_sv": 49
  },
  {
   "full": "wei shenlong",
@@ -5990,7 +5990,7 @@
   "av": "",
   "pos_pais": "25/40",
   "arc_pais": 40,
-  "pos_sv": "66/124",
+  "pos_sv": "66/125",
   "arc_sv": 48,
   "pos_crew": "3/3"
  },
@@ -6140,7 +6140,7 @@
   "av": "",
   "pos_pais": "26/40",
   "arc_pais": 38,
-  "pos_sv": "67/124",
+  "pos_sv": "67/125",
   "arc_sv": 47
  },
  {
@@ -6214,7 +6214,7 @@
   "av": "",
   "pos_pais": "1/3",
   "arc_pais": 0,
-  "pos_sv": "68/124",
+  "pos_sv": "68/125",
   "arc_sv": 46
  },
  {
@@ -6251,8 +6251,8 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "69/124",
-  "arc_sv": 45
+  "pos_sv": "69/125",
+  "arc_sv": 46
  },
  {
   "full": "Emilio Alva",
@@ -6398,8 +6398,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "14/22",
-  "arc_pais": 41,
+  "pos_pais": "14/23",
+  "arc_pais": 43,
   "pos_sv": "5/13",
   "arc_sv": 69,
   "pos_crew": ""
@@ -6512,8 +6512,8 @@
   "av": "",
   "pos_pais": "6/9",
   "arc_pais": 44,
-  "pos_sv": "70/124",
-  "arc_sv": 44
+  "pos_sv": "70/125",
+  "arc_sv": 45
  },
  {
   "full": "SOL",
@@ -6549,7 +6549,7 @@
   "av": "",
   "pos_pais": "8/15",
   "arc_pais": 53,
-  "pos_sv": "71/124",
+  "pos_sv": "71/125",
   "arc_sv": 44
  },
  {
@@ -6586,7 +6586,7 @@
   "av": "",
   "pos_pais": "9/15",
   "arc_pais": 47,
-  "pos_sv": "72/124",
+  "pos_sv": "72/125",
   "arc_sv": 43
  },
  {
@@ -6621,9 +6621,9 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "15/22",
-  "arc_pais": 36,
-  "pos_sv": "73/124",
+  "pos_pais": "15/23",
+  "arc_pais": 39,
+  "pos_sv": "73/125",
   "arc_sv": 42
  },
  {
@@ -6696,10 +6696,10 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "16/22",
-  "arc_pais": 32,
-  "pos_sv": "74/124",
-  "arc_sv": 41,
+  "pos_pais": "16/23",
+  "arc_pais": 35,
+  "pos_sv": "74/125",
+  "arc_sv": 42,
   "pos_crew": ""
  },
  {
@@ -6736,8 +6736,8 @@
   "av": "",
   "pos_pais": "15/25",
   "arc_pais": 44,
-  "pos_sv": "75/124",
-  "arc_sv": 40
+  "pos_sv": "75/125",
+  "arc_sv": 41
  },
  {
   "full": "MaYeuTyK",
@@ -6808,8 +6808,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "17/22",
-  "arc_pais": 27,
+  "pos_pais": "17/23",
+  "arc_pais": 30,
   "pos_sv": "9/13",
   "arc_sv": 38
  },
@@ -6847,7 +6847,7 @@
   "av": "",
   "pos_pais": "3/4",
   "arc_pais": 0,
-  "pos_sv": "76/124",
+  "pos_sv": "76/125",
   "arc_sv": 40
  },
  {
@@ -6922,7 +6922,7 @@
   "av": "",
   "pos_pais": "16/25",
   "arc_pais": 40,
-  "pos_sv": "77/124",
+  "pos_sv": "77/125",
   "arc_sv": 39
  },
  {
@@ -7033,7 +7033,7 @@
   "av": "",
   "pos_pais": "27/40",
   "arc_pais": 35,
-  "pos_sv": "78/124",
+  "pos_sv": "78/125",
   "arc_sv": 38
  },
  {
@@ -7105,10 +7105,10 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "18/22",
-  "arc_pais": 23,
-  "pos_sv": "79/124",
-  "arc_sv": 37,
+  "pos_pais": "18/23",
+  "arc_pais": 26,
+  "pos_sv": "79/125",
+  "arc_sv": 38,
   "pos_crew": "7/8"
  },
  {
@@ -7219,8 +7219,8 @@
   "av": "",
   "pos_pais": "28/40",
   "arc_pais": 32,
-  "pos_sv": "80/124",
-  "arc_sv": 36
+  "pos_sv": "80/125",
+  "arc_sv": 37
  },
  {
   "full": "Alonso",
@@ -7330,8 +7330,8 @@
   "av": "",
   "pos_pais": "5/14",
   "arc_pais": 71,
-  "pos_sv": "81/124",
-  "arc_sv": 35,
+  "pos_sv": "81/125",
+  "arc_sv": 36,
   "pos_crew": ""
  },
  {
@@ -7405,7 +7405,7 @@
   "av": "",
   "pos_pais": "7/9",
   "arc_pais": 33,
-  "pos_sv": "82/124",
+  "pos_sv": "82/125",
   "arc_sv": 35
  },
  {
@@ -7479,7 +7479,7 @@
   "av": "",
   "pos_pais": "6/14",
   "arc_pais": 64,
-  "pos_sv": "83/124",
+  "pos_sv": "83/125",
   "arc_sv": 34,
   "pos_crew": "2/3"
  },
@@ -7517,8 +7517,8 @@
   "av": "",
   "pos_pais": "29/40",
   "arc_pais": 30,
-  "pos_sv": "84/124",
-  "arc_sv": 33
+  "pos_sv": "84/125",
+  "arc_sv": 34
  },
  {
   "full": "Sami",
@@ -7592,8 +7592,8 @@
   "av": "",
   "pos_pais": "30/40",
   "arc_pais": 28,
-  "pos_sv": "85/124",
-  "arc_sv": 32,
+  "pos_sv": "85/125",
+  "arc_sv": 33,
   "pos_crew": ""
  },
  {
@@ -7741,8 +7741,8 @@
   "av": "",
   "pos_pais": "31/40",
   "arc_pais": 25,
-  "pos_sv": "86/124",
-  "arc_sv": 31,
+  "pos_sv": "86/125",
+  "arc_sv": 32,
   "pos_crew": "4/4"
  },
  {
@@ -7779,7 +7779,7 @@
   "av": "",
   "pos_pais": "2/5",
   "arc_pais": 80,
-  "pos_sv": "87/124",
+  "pos_sv": "87/125",
   "arc_sv": 31
  },
  {
@@ -7853,7 +7853,7 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "88/124",
+  "pos_sv": "88/125",
   "arc_sv": 30
  },
  {
@@ -7927,8 +7927,8 @@
   "av": "",
   "pos_pais": "2/3",
   "arc_pais": 0,
-  "pos_sv": "89/124",
-  "arc_sv": 29
+  "pos_sv": "89/125",
+  "arc_sv": 30
  },
  {
   "full": "GS🇦🇷",
@@ -8038,8 +8038,8 @@
   "av": "",
   "pos_pais": "8/14",
   "arc_pais": 50,
-  "pos_sv": "90/124",
-  "arc_sv": 28
+  "pos_sv": "90/125",
+  "arc_sv": 29
  },
  {
   "full": "CHOCLITO",
@@ -8112,8 +8112,8 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "91/124",
-  "arc_sv": 27
+  "pos_sv": "91/125",
+  "arc_sv": 28
  },
  {
   "full": "Garxzii",
@@ -8149,7 +8149,7 @@
   "av": "",
   "pos_pais": "9/14",
   "arc_pais": 43,
-  "pos_sv": "92/124",
+  "pos_sv": "92/125",
   "arc_sv": 27
  },
  {
@@ -8186,7 +8186,7 @@
   "av": "",
   "pos_pais": "17/25",
   "arc_pais": 36,
-  "pos_sv": "93/124",
+  "pos_sv": "93/125",
   "arc_sv": 26,
   "pos_crew": ""
  },
@@ -8261,8 +8261,8 @@
   "av": "",
   "pos_pais": "32/40",
   "arc_pais": 22,
-  "pos_sv": "94/124",
-  "arc_sv": 25
+  "pos_sv": "94/125",
+  "arc_sv": 26
  },
  {
   "full": "Btrece",
@@ -8298,8 +8298,8 @@
   "av": "",
   "pos_pais": "3/5",
   "arc_pais": 60,
-  "pos_sv": "95/124",
-  "arc_sv": 24
+  "pos_sv": "95/125",
+  "arc_sv": 25
  },
  {
   "full": "Reyes",
@@ -8409,8 +8409,8 @@
   "av": "",
   "pos_pais": "33/40",
   "arc_pais": 20,
-  "pos_sv": "96/124",
-  "arc_sv": 23,
+  "pos_sv": "96/125",
+  "arc_sv": 24,
   "pos_crew": "3/3"
  },
  {
@@ -8669,7 +8669,7 @@
   "av": "",
   "pos_pais": "8/9",
   "arc_pais": 22,
-  "pos_sv": "97/124",
+  "pos_sv": "97/125",
   "arc_sv": 23
  },
  {
@@ -8780,7 +8780,7 @@
   "av": "",
   "pos_pais": "9/15",
   "arc_pais": 47,
-  "pos_sv": "98/124",
+  "pos_sv": "98/125",
   "arc_sv": 22
  },
  {
@@ -8928,8 +8928,8 @@
   "av": "",
   "pos_pais": "10/14",
   "arc_pais": 36,
-  "pos_sv": "99/124",
-  "arc_sv": 21
+  "pos_sv": "99/125",
+  "arc_sv": 22
  },
  {
   "full": "NYCO",
@@ -9446,8 +9446,8 @@
   "av": "",
   "pos_pais": "34/40",
   "arc_pais": 18,
-  "pos_sv": "100/124",
-  "arc_sv": 20
+  "pos_sv": "100/125",
+  "arc_sv": 21
  },
  {
   "full": "Under",
@@ -9631,8 +9631,8 @@
   "av": "",
   "pos_pais": "4/5",
   "arc_pais": 40,
-  "pos_sv": "101/124",
-  "arc_sv": 19,
+  "pos_sv": "101/125",
+  "arc_sv": 20,
   "pos_crew": ""
  },
  {
@@ -9669,7 +9669,7 @@
   "av": "",
   "pos_pais": "10/15",
   "arc_pais": 40,
-  "pos_sv": "102/124",
+  "pos_sv": "102/125",
   "arc_sv": 19
  },
  {
@@ -9743,7 +9743,7 @@
   "av": "",
   "pos_pais": "11/15",
   "arc_pais": 33,
-  "pos_sv": "103/124",
+  "pos_sv": "103/125",
   "arc_sv": 18
  },
  {
@@ -10557,8 +10557,8 @@
   "av": "",
   "pos_pais": "",
   "arc_pais": 0,
-  "pos_sv": "104/124",
-  "arc_sv": 17
+  "pos_sv": "104/125",
+  "arc_sv": 18
  },
  {
   "full": ".SosaATR",
@@ -10594,8 +10594,8 @@
   "av": "",
   "pos_pais": "5/5",
   "arc_pais": 20,
-  "pos_sv": "105/124",
-  "arc_sv": 16
+  "pos_sv": "105/125",
+  "arc_sv": 17
  },
  {
   "full": "DO-C",
@@ -10779,8 +10779,8 @@
   "av": "",
   "pos_pais": "35/40",
   "arc_pais": 15,
-  "pos_sv": "106/124",
-  "arc_sv": 15
+  "pos_sv": "106/125",
+  "arc_sv": 16
  },
  {
   "full": "AREZ",
@@ -10853,7 +10853,7 @@
   "av": "",
   "pos_pais": "36/40",
   "arc_pais": 12,
-  "pos_sv": "107/124",
+  "pos_sv": "107/125",
   "arc_sv": 15
  },
  {
@@ -10888,9 +10888,9 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "19/22",
-  "arc_pais": 18,
-  "pos_sv": "108/124",
+  "pos_pais": "19/23",
+  "arc_pais": 22,
+  "pos_sv": "108/125",
   "arc_sv": 14
  },
  {
@@ -11036,10 +11036,10 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "20/22",
-  "arc_pais": 14,
-  "pos_sv": "109/124",
-  "arc_sv": 13
+  "pos_pais": "20/23",
+  "arc_pais": 17,
+  "pos_sv": "109/125",
+  "arc_sv": 14
  },
  {
   "full": "EGI",
@@ -11112,8 +11112,8 @@
   "av": "",
   "pos_pais": "19/25",
   "arc_pais": 28,
-  "pos_sv": "110/124",
-  "arc_sv": 12
+  "pos_sv": "110/125",
+  "arc_sv": 13
  },
  {
   "full": "g8🇯🇴",
@@ -11297,8 +11297,8 @@
   "av": "",
   "pos_pais": "37/40",
   "arc_pais": 10,
-  "pos_sv": "111/124",
-  "arc_sv": 11
+  "pos_sv": "111/125",
+  "arc_sv": 12
  },
  {
   "full": "Lizeninn",
@@ -11371,8 +11371,8 @@
   "av": "",
   "pos_pais": "12/14",
   "arc_pais": 21,
-  "pos_sv": "112/124",
-  "arc_sv": 10
+  "pos_sv": "112/125",
+  "arc_sv": 11
  },
  {
   "full": "Jotap",
@@ -11704,7 +11704,7 @@
   "av": "",
   "pos_pais": "13/14",
   "arc_pais": 14,
-  "pos_sv": "113/124",
+  "pos_sv": "113/125",
   "arc_sv": 10
  },
  {
@@ -11850,10 +11850,10 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "",
-  "arc_pais": 0,
-  "pos_sv": "",
-  "arc_sv": 0
+  "pos_pais": "21/23",
+  "arc_pais": 13,
+  "pos_sv": "114/125",
+  "arc_sv": 10
  },
  {
   "full": "KC 🇨🇴",
@@ -12261,7 +12261,7 @@
   "av": "",
   "pos_pais": "13/15",
   "arc_pais": 20,
-  "pos_sv": "114/124",
+  "pos_sv": "115/125",
   "arc_sv": 9
  },
  {
@@ -12372,7 +12372,7 @@
   "av": "",
   "pos_pais": "20/25",
   "arc_pais": 24,
-  "pos_sv": "115/124",
+  "pos_sv": "116/125",
   "arc_sv": 8
  },
  {
@@ -12779,7 +12779,7 @@
   "av": "",
   "pos_pais": "21/25",
   "arc_pais": 20,
-  "pos_sv": "116/124",
+  "pos_sv": "117/125",
   "arc_sv": 7
  },
  {
@@ -13707,7 +13707,7 @@
   "av": "",
   "pos_pais": "15/15",
   "arc_pais": 7,
-  "pos_sv": "117/124",
+  "pos_sv": "118/125",
   "arc_sv": 6
  },
  {
@@ -14115,7 +14115,7 @@
   "av": "",
   "pos_pais": "39/40",
   "arc_pais": 5,
-  "pos_sv": "118/124",
+  "pos_sv": "119/125",
   "arc_sv": 6
  },
  {
@@ -14263,7 +14263,7 @@
   "av": "",
   "pos_pais": "5/5",
   "arc_pais": 20,
-  "pos_sv": "119/124",
+  "pos_sv": "120/125",
   "arc_sv": 5
  },
  {
@@ -14300,7 +14300,7 @@
   "av": "",
   "pos_pais": "23/25",
   "arc_pais": 12,
-  "pos_sv": "120/124",
+  "pos_sv": "121/125",
   "arc_sv": 4
  },
  {
@@ -14337,7 +14337,7 @@
   "av": "",
   "pos_pais": "24/25",
   "arc_pais": 8,
-  "pos_sv": "121/124",
+  "pos_sv": "122/125",
   "arc_sv": 3
  },
  {
@@ -14779,9 +14779,9 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "21/22",
+  "pos_pais": "22/23",
   "arc_pais": 9,
-  "pos_sv": "122/124",
+  "pos_sv": "123/125",
   "arc_sv": 2,
   "pos_crew": "5/5"
  },
@@ -14930,7 +14930,7 @@
   "av": "",
   "pos_pais": "40/40",
   "arc_pais": 2,
-  "pos_sv": "123/124",
+  "pos_sv": "124/125",
   "arc_sv": 2
  },
  {
@@ -15078,7 +15078,7 @@
   "av": "",
   "pos_pais": "25/25",
   "arc_pais": 4,
-  "pos_sv": "124/124",
+  "pos_sv": "125/125",
   "arc_sv": 1
  },
  {
@@ -15113,8 +15113,8 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "22/22",
-  "arc_pais": 5,
+  "pos_pais": "23/23",
+  "arc_pais": 4,
   "pos_sv": "13/13",
   "arc_sv": 8,
   "pos_crew": "8/8"
