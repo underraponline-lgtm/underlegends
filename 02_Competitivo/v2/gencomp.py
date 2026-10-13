@@ -364,7 +364,7 @@ def card(c,i):
     av = _avatar(c['raw'], (c.get('av') or '').replace('?size=128', '?size=512'))
     # 🎤 SIN FOTO —no se puso o la ocultó— VA LA SILUETA, no la inicial (Dlx, 03/10/2026). Ver comun/sin_foto.py
     from comun import sin_foto as _SF
-    foto = ('<img src="%s" onerror="%s">' % (av, _SF.onerror('sil'))) if _hay_foto(av) else _SF.img('sil')
+    foto = ('<img src="%s" onerror="%s">' % (av, _SF.onerror('sil', c['raw']))) if _hay_foto(av) else _SF.img('sil', c['raw'])
     stops = ''.join('<stop offset="%s" stop-color="%s"/>' % (o,c_)
                     for o,c_ in zip(['0','0.20','0.42','0.60','0.80','1'], met))
     vals = [c['E'],c['C'],c['Dm'],c['T'],c['V'],c['ev']]

@@ -275,7 +275,8 @@ def card(c):
     av  = c['av'].replace('?size=128', '?size=512')
     # 🎤 SIN FOTO —no se puso o la ocultó— VA LA SILUETA, no la inicial (Dlx, 03/10/2026). Ver comun/sin_foto.py
     from comun import sin_foto as SF
-    foto = ('<img src="%s" onerror="%s">' % (av, SF.onerror('c-sil'))) if _hay_foto(av) else SF.img('c-sil')
+    _quien = c.get('raw') or c.get('n') or ''
+    foto = ('<img src="%s" onerror="%s">' % (av, SF.onerror('c-sil', _quien))) if _hay_foto(av) else SF.img('c-sil', _quien)
     pts = puntos_k(c['pts'])
     # SET B — las seis se leen por tema, de a pares por fila:
     #   volumen (PTS EVT) · logro (POD SEM) · most wanted (CAZ MW)

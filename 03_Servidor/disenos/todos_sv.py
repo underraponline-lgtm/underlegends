@@ -834,7 +834,7 @@ def carta(i, sufijo):
     # el caso de que ese módulo no esté
     try:
         from comun import sin_foto as _SF
-        sil = '' if av else _SF.URI
+        sil = '' if av else _SF.uri(nom)
     except ImportError:
         sil = ''
     foto = (f'<div class="foto" style="-webkit-mask-image:{M_FOTO};'

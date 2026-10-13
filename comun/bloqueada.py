@@ -217,7 +217,7 @@ def html(nom, cc='', ev=0, foto=None, silueta=None, carta='temporada',
     rem = NOM.rem(nom)
     # 🎤 sin foto —no se puso o la ocultó— va la silueta, apagada como iría su foto (Dlx, 03/10/2026; comun/sin_foto.py)
     from comun import sin_foto as SF
-    foto_html = '<img src="%s">' % foto if foto else SF.img('sil')
+    foto_html = '<img src="%s">' % foto if foto else SF.img('sil', nom)
     return (
         '<div class="bloq">'
         '<div class="bg"></div><div class="tex"></div>'

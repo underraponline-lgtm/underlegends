@@ -247,7 +247,9 @@ def html_vs(v, d):
             src = ''
         return ' <img class="fl" src="%s" alt="">' % src if src else ''
 
-    sil = 'data:image/svg+xml;base64,' + base64.b64encode(SF.SVG.replace('#0a0a0d', '#F6F6F6').encode('utf-8')).decode()
+    def sil(n):
+        return 'data:image/svg+xml;base64,' + base64.b64encode(
+            SF.svg(SF.cual(n)).replace('#0a0a0d', '#F6F6F6').encode('utf-8')).decode()
 
     def lado(y, cls):
         y = y or {}
@@ -255,7 +257,7 @@ def html_vs(v, d):
             return '<div class="ld %s"><img class="carta" src="%s" alt=""></div>' % (cls, _e(y['carta']))
         ovr = '<span class="et ovr">OVR %d</span>' % y['ovr'] if y.get('ovr') else ''
         return ('<div class="ld %s"><div class="sin"><img class="sil" src="%s" alt=""><b>%s%s</b>%s</div></div>'
-                % (cls, sil, _e(y.get('n') or '¿?'), bandera(y.get('fl')), ovr))
+                % (cls, sil(y.get('n')), _e(y.get('n') or '¿?'), bandera(y.get('fl')), ovr))
     tit = ('<div class="tt"><span class="et">%s</span>%s</div>' % (_e(v.get('titulo')), ('<small>%s</small>' % _e(v.get('sub')))
                                                                     if v.get('sub') else '')) if v.get('titulo') else ''
     ev = re.sub(r'[_*~`#>]+', ' ', str(v.get('ev') or '')).strip()

@@ -1350,14 +1350,14 @@ def panel_svg(i, LW, acc, remate, acorta=0):
             f'stroke="{acc}" stroke-width="2"/></g></svg>')
 
 
-def _sin_foto():
+def _sin_foto(quien=''):
     """🎤 Quien no tiene foto —no se puso o la ocultó— lleva la silueta de rapero, no la inicial (Dlx, 03/10/2026).
 
     ⚠️ Con `vacia` en la caja, a propósito: el plato oscuro es para integrar una FOTO contra la bandera, y detrás de
     una silueta negra sólo apagaría la bandera, que es lo único que esta carta tiene para decir de dónde sos.
     Ver comun/sin_foto.py."""
     from comun import sin_foto as SF
-    return SF.img('sil')
+    return SF.img('sil', quien)
 
 
 def marco_svg(modo, i, acc, acento_pais, acorta=0, remate='punta'):
@@ -1721,7 +1721,7 @@ def carta(i, LW, marco, tag_centro=True, acorta=0, remate='punta',
         _et, av = avatares.para(avatares.cuantas() - 1
                                 if len(GENTE) > 2 and i == len(GENTE) - 1 else i)
     foto = (f'<div class="foto"><img src="{av}"></div>' if av else
-            f'<div class="foto vacia">{_sin_foto()}</div>')
+            f'<div class="foto vacia">{_sin_foto(nom)}</div>')
 
     # ⚠️ FUERA LOS PUNTOS. Dlx: "eso de los pts que no este puntos". Y hay
     # un motivo ademas del gusto: los puntos de temporada son EXACTAMENTE de
@@ -1895,7 +1895,7 @@ def carta(i, LW, marco, tag_centro=True, acorta=0, remate='punta',
   <div class="panel" style="width:{LW}px;{_bg_panel}"></div>
 
   <div class="foto{"" if av else " vacia"}" style="left:{LW}px">{
-      f'<img src="{av}">' if av else _sin_foto()}</div>
+      f'<img src="{av}">' if av else _sin_foto(nom)}</div>
   <div class="ovr" style="width:{LW - 5}px;font-size:{2.45 * LW / 78:.2f}rem">{ovr}{pst}</div>
   <div class="lane {iconos} {num}{' etiq' if etiq else ''} n{len(cas)}"
        style="width:{LW - 5}px;--acc:{acc}">{col}</div>
