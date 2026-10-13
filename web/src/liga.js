@@ -76,6 +76,11 @@ const W = typeof window !== 'undefined' ? window : {};
 // lee. Sale del payload (`svs[].sigla`, de `datos/servidores.json`) y la llena cada `Liga` nueva
 let SIGLAS = {};
 export function siglaDe(sv) { return SIGLAS[sv] || sv || ''; }
+// 🔑 los perfiles de una publicación del muro, SIEMPRE en lista. En los premios de la semana `ks` es un objeto
+// —`{figura: clave, revelacion: clave, cazador: clave}`, ver bot/muro.py— y recorrerlo como lista tiraba el perfil de
+// TODOS los servidores (`svDe()`) y las historias de tu país, tu crew y a quién seguís desde el 12/10/2026 a las
+// 11 AM, cuando salieron los primeros premios. Lo de antes vivía sólo en publicaciones.jsx (13/10/2026)
+export const ksDe = (it) => (Array.isArray(it && it.ks) ? it.ks : it && it.ks && typeof it.ks === 'object' ? Object.values(it.ks) : []);
 // como `normNombre()` de app.js: la clave de `alias` en el payload (`respaldo._norm`)
 const normNombre = (s) => String(s || '').normalize('NFKD').toLowerCase().replace(/[^\p{L}\p{N}]/gu, '');
 // «1.10» es más nueva que «1.9»: se comparan los números, no el texto (la regla de `nuevaQue()` de app.js)
@@ -591,7 +596,7 @@ export class Liga {
   }
   svDe(it) {
     if (it.sv) return it.sv;
-    for (const k of it.ks || []) if (this.T[k]) return this.T[k].sv;
+    for (const k of ksDe(it)) if (this.T[k]) return this.T[k].sv;
     return '';
   }
   // las caras de la fila de arriba: gente con algo nuevo (carta, letra, título, caza)
@@ -614,7 +619,7 @@ export class Liga {
   // una novedad del muro, para «Lo último»: [categoría, título, visual, cuándo, destino]
   itemMuro(it) {
     const q = (it.quien || []).map(limpio);
-    const ks = it.ks || [];
+    const ks = ksDe(it);
     const c = this.cuando(it.t);
     if (it.tipo === 'tarjeta') {
       const nombre = { pais: 'de País', temporada: 'de Temporada', servidor: 'de Servidor', competitivo: 'Competitiva' }[it.carta];

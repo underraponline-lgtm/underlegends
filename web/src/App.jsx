@@ -5,7 +5,7 @@ import { Component, Suspense, lazy, useCallback, useEffect, useMemo, useRef, use
 import { DUENO, Liga, aQuienSigo, limpio, quienMira } from './liga.js';
 import { nombrePais } from './piezas.jsx';
 import { Cabecera, Hero, Historias, Instalar, IrA, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
-import { LaLiga, LosQueMandan, Noticias } from './medio.jsx';
+import { LosQueMandan, Noticias } from './medio.jsx';
 import { Menu, Merch, Pie, Subir, Tabbar, Visor } from './abajo.jsx';
 import { Encuestas } from './encuestas.jsx';
 import { Lobby } from './lobby.jsx';
@@ -508,7 +508,8 @@ export default function App() {
         <Aislada n="Encuestas"><Encuestas liga={liga} enc={enc} dc={yo.dc} corta /></Aislada>
         <Aislada n="LosQueMandan"><LosQueMandan liga={liga} dc={yo.dc} /></Aislada>
         <Aislada n="Merch"><Merch liga={liga} /></Aislada>
-        <Aislada n="LaLiga"><LaLiga liga={liga} /></Aislada>
+        {/* 📊 La Liga en números ya no va en el Inicio (Dlx, 13/10/2026: «QUITA LA liga en numeros de inicio»): vive en
+            Socios, que es donde estaba desde la 2.87 además de acá */}
       </>}
       <Aislada n="Pie"><Pie liga={liga} /></Aislada>
       <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} pagina={paginaMenu} /></Aislada>

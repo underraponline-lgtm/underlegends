@@ -8,7 +8,7 @@
 // ⚠️ NO SOBRECARGAR (Dlx, 02/10: «la cosa no es sobrecargar las cosas»): las cartas nuevas de un mismo día van en UNA
 // publicación —eran 46 de 80 renglones—, y Felicitar va sólo en los logros de verdad (campeón, rango, Most Wanted).
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import { limpio, num, siglaDe } from './liga.js';
+import { ksDe, limpio, num, siglaDe } from './liga.js';
 import { Cara, Carta, Ico, accion, useCampana } from './piezas.jsx';
 import { Elegido, X2 } from './encuestas.jsx';
 
@@ -17,8 +17,7 @@ const ANUNCIOS = { anuncio: 1, liga: 1 };
 const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1 };
 const CARTA = { pais: 'de País', temporada: 'de Temporada', servidor: 'de Servidor', competitivo: 'Competitiva' };
 
-// los perfiles de una publicación, siempre en lista: en los premios `ks` es `{figura: clave, …}` (bot/muro.py)
-const ksDe = (it) => (Array.isArray(it.ks) ? it.ks : it.ks && typeof it.ks === 'object' ? Object.values(it.ks) : []);
+// los perfiles de una publicación, siempre en lista: `ksDe()` de liga.js (en los premios `ks` es un objeto)
 
 // el estado de los aplausos lo tiene app.js (`APLAUSOS`, `felicitar()`), como el de las encuestas: acá se dibuja.
 // ⚠️ Cada publicación trae su `id` del muro (`id_de()` en bot/muro.py): es lo que se felicita, y el Worker lo busca ahí

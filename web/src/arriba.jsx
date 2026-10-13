@@ -1,7 +1,7 @@
 // Lo de arriba del Inicio: la cabecera negra, las historias, el escenario (el carrusel de momentos), la Tira de
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { MESES, capital, diaISO, limpio, mult, norm, num, recorte, resultado, siglaDe, utc } from './liga.js';
+import { MESES, capital, diaISO, ksDe, limpio, mult, norm, num, recorte, resultado, siglaDe, utc } from './liga.js';
 import { Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, silueta, subirSiEsta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { useRacha } from './racha.js';
@@ -305,7 +305,7 @@ function slidesDe(liga, items) {
     // cada historia lleva la hora de lo que cuenta: el visor abre en la primera que no viste (ver `Visor`)
     const n0 = out.length;
     const q = (it.quien || []).map(limpio);
-    const ks = it.ks || [];
+    const ks = ksDe(it);
     const c = liga.cuando(it.t);
     if (it.tipo === 'tarjeta' && g.length > 1) {
       const quienes = [];
@@ -523,7 +523,7 @@ export function gruposHistorias(liga) {
   if (pa) {
     const ks = new Set(pa.gente.map((f) => f.k));
     ks.delete(yo.k);
-    const propios = muro.filter((it) => (it.ks || []).some((k) => ks.has(k)));
+    const propios = muro.filter((it) => ksDe(it).some((k) => ks.has(k)));
     const nom = nombrePais(pa.cc);
     const top = pa.gente.slice(0, 6);
     const slides = [Slide('TU PAÍS', <><span className="st-bandera"><img alt="" src={'/banderas/g/' + pa.cc + '.webp'} /></span><h3 className="st-h">{nom}</h3>
@@ -543,7 +543,7 @@ export function gruposHistorias(liga) {
       <ul className="st-gente">{c.gente.slice(0, 8).map((n, i) => { const f = liga.fila(n); return <li key={i}><Cara liga={liga} k={f ? f.k : ''} nombre={n} cls="st-mini" /><span>{limpio(n)}</span></li>; })}</ul></>,
     'esta temporada', 'Ver la crew', { ruta: '#/crew/' + encodeURIComponent(c.clave || c.crew) }, 'crew:' + claveCrew(c.crew) + ':' + (mm.ini || ''),
     String(mm.ini || ''))];
-    const propios = muro.filter((it) => (it.ks || []).some((k) => ks.has(k)));
+    const propios = muro.filter((it) => ksDe(it).some((k) => ks.has(k)));
     slidesDe(liga, propios).slice(0, 3).forEach((x) => slides.push(x));
     slides.sort(masViejo);
     grupos.push({ id: 'crew-' + claveCrew(c.crew), tipo: 'crew', nombre: limpio(c.crew), crew: c, nom: limpio(c.crew), nuevo: propios.length > 0, firma: firma(propios, 'crew'), slides });
@@ -551,7 +551,7 @@ export function gruposHistorias(liga) {
   const ETIQUETA = { tarjeta: 'carta nueva', campeon: 'campeón', caza: 'cazó' };
   const sig = liga.sigue.map((k) => {
     const f = liga.T[k];
-    const propios = muro.filter((it) => (it.ks || []).includes(k));
+    const propios = muro.filter((it) => ksDe(it).includes(k));
     let slides = slidesDe(liga, propios).slice(0, 4);
     // alguien que seguís y no hizo nada nuevo igual tiene su círculo: su carta y cómo va (una vez por semana)
     if (!slides.length) {
@@ -1208,7 +1208,7 @@ function momentos(liga, vivoL) {
   if (liga.sigue.length) {
     const sig = new Set(liga.sigue);
     for (const it of liga.muroLimpio()) {
-      const ks = (it.ks || []).filter((k) => sig.has(k));
+      const ks = ksDe(it).filter((k) => sig.has(k));
       if (!ks.length || !['campeon', 'caza', 'rango', 'tarjeta'].includes(it.tipo) || (ll && it.ll === ll.n)) continue;
       const x = liga.itemMuro(it);
       if (!x) continue;

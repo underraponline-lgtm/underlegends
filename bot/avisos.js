@@ -4260,7 +4260,30 @@ export class Avisos {
   }
 
   // ── el latido ────────────────────────────────────────────────────────
+  /**
+   * 🔒 UNA VUELTA DEL VIGÍA POR VEZ, ENTERA (13/10/2026). El cron dispara cada minuto y una vuelta puede tardar más:
+   * entonces dos vueltas viven a la vez adentro del objeto, y todo lo que anota «ya lo mandé» DESPUÉS de esperar a
+   * Discord sale dos veces. Pasó dos veces el mismo día: «Erian pasa · Cuartos…» en el chat de FFA a las 2:02 AM (se
+   * cerró sólo `chatVivo()`, ver `chatEn`) y «LA BELLA ARTE DE LA DESGRACIA VOL 5» en `eventos-hoy` a las 4:01 PM,
+   * dos copias a 127 ms —`publicar()` toma la fila pendiente, espera el POST y recién ahí la marca—. Cerrar pieza por
+   * pieza deja la próxima abierta: se cierra la vuelta. La que llega mientras otra trabaja se saltea (el minuto
+   * siguiente lo hace), y si una quedó colgada, a los 3 minutos se suelta sola.
+   */
   async vigilar(d) {
+    const ahora = Date.now();
+    if (this.vigiaEn && ahora - this.vigiaEn < 3 * MIN) {
+      this.guardar('vigia_salteada', { t: ahora, desde: this.vigiaEn });
+      return { ok: true, salteada: true };
+    }
+    this.vigiaEn = ahora;
+    try {
+      return await this.vueltaVigia(d);
+    } finally {
+      this.vigiaEn = 0;
+    }
+  }
+
+  async vueltaVigia(d) {
     const ahora = Date.now();
     if (!this.env.DISCORD_TOKEN) {
       this.guardar('vigia', { t: ahora, error: 'el Worker no tiene DISCORD_TOKEN' });
