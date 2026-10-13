@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-12T23:55:06+00:00",
+ "cuando": "2026-10-13T00:24:40+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -355,7 +355,33 @@
    "premios": "",
    "staff": {},
    "autor": "Geronimo",
-   "categoria_id": "1497457390637809837"
+   "categoria_id": "1497457390637809837",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
+  },
+  {
+   "nombre": "COMPE POR 1.5 DOLARES",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1559356695921295441",
+   "cuando": "2026-10-13T00:06:47",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "𓂀",
+   "autor_h": "335e29b6c78f88b1",
+   "cupos_texto": "lo q sean",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "BRONCE 3",
+   "modalidad": "MULTIVERSE",
+   "horario": "Ahora",
+   "fecha": "",
+   "premios": "1.5 Dolares gente (NO ES JODA DA PA COMPRARSE UNA EMPANADA, INSCRIBANSE)",
+   "staff": {},
+   "autor": "𓂀",
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 4",
@@ -387,7 +413,9 @@
     ]
    },
    "autor": "Lewito",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "LA REDENCION VOL.4",
@@ -419,7 +447,9 @@
     ]
    },
    "autor": "Velatz",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "LA SUPERVIVENCIA DEL MAS FUERTE #5",
@@ -451,7 +481,9 @@
     ]
    },
    "autor": "CRONOX 🇨🇱",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "ME QUISIERA MORIR, PERO NO MULTIVERSE VOL.1",
@@ -488,7 +520,9 @@
     ]
    },
    "autor": "Kravitz",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "Competencia Rango Bronce",
@@ -520,7 +554,9 @@
     ]
    },
    "autor": "Colesito",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "HJKSLOWT V.1",
@@ -552,7 +588,9 @@
     ]
    },
    "autor": "Guess",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "LA REDENCION VOL.3",
@@ -584,7 +622,9 @@
     ]
    },
    "autor": "Velatz",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "COMPE SACABRONCA",
@@ -616,7 +656,9 @@
     ]
    },
    "autor": "Kravitz",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "DESGRACIAS EN TOKIO X LA REDENCIÓN X COPA SOLAR VOL.1",
@@ -650,7 +692,9 @@
     ]
    },
    "autor": "Lewito",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "COPA SOOLAR 4",
@@ -679,7 +723,9 @@
     ]
    },
    "autor": "Elsoolar",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 3",
@@ -713,7 +759,9 @@
     ]
    },
    "autor": "Lewito",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "Cuentas Pendientes V.1",
@@ -745,7 +793,9 @@
     ]
    },
    "autor": "Kravitz",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "PRITTY FREE",
@@ -767,7 +817,9 @@
    "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
    "staff": {},
    "autor": "Nc",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "LA REDENCION VOL.1",
@@ -801,7 +853,9 @@
     ]
    },
    "autor": "Velatz",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL2",
@@ -835,7 +889,9 @@
     ]
    },
    "autor": "Flennzs | ⛩️",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "PELICULA SACABRONCA",
@@ -857,7 +913,9 @@
    "premios": "Respeto",
    "staff": {},
    "autor": "Nc",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "Doble Eliminación Vol. 2",
@@ -894,7 +952,9 @@
     ]
    },
    "autor": "Kravitz",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "PRITTY FREE",
@@ -916,7 +976,9 @@
    "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
    "staff": {},
    "autor": "Nc",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "DESGRACIAS EN BELLAS ARTES VOL1",
@@ -949,39 +1011,9 @@
     ]
    },
    "autor": "Flennzs | ⛩️",
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "WETTTSIIIDEE #2",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1557455756029206689",
-   "cuando": "2026-10-07T18:13:08",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "CRONOX",
-   "autor_h": "6b35a4d4e6f57111",
-   "cupos_texto": "12 / 16 /",
-   "inscriptos": 12,
-   "cupo_total": 16,
-   "rango": "Bronce",
-   "modalidad": "1V1",
-   "horario": "ahora",
-   "fecha": "",
-   "premios": "AURA",
-   "staff": {
-    "jurado": [
-     "CRONOX 🇨🇱"
-    ],
-    "host": [
-     "CRONOX 🇨🇱"
-    ],
-    "dj": [
-     "CRONOX 🇨🇱"
-    ]
-   },
-   "autor": "CRONOX 🇨🇱",
-   "categoria_id": "1468478330826260500"
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-13T00:07:56"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -4369,6 +4401,249 @@
  ],
  "inscripciones": [
   {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Ariaxer🇦🇷",
+   "quien": "ariaxer",
+   "discord_id": "659687894587277322",
+   "msg_id": "1559360989009543330",
+   "cuando": "2026-10-13T00:23:51"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Dyzz🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1559360116829192275",
+   "cuando": "2026-10-13T00:20:23"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Korey 🇨🇱",
+   "quien": "korey6312",
+   "discord_id": "1467969065199997000",
+   "msg_id": "1559358513640243371",
+   "cuando": "2026-10-13T00:14:01"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "BETELGEUSE 🇷🇪 + GUESS🇦🇷",
+   "quien": "csgo47.",
+   "discord_id": "1493317254581063680",
+   "msg_id": "1559358149281058848",
+   "cuando": "2026-10-13T00:12:34"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "nc🇰🇷",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1559358104955789458",
+   "cuando": "2026-10-13T00:12:23"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "nemi 🇦🇷",
+   "quien": "nemmii_as_26264",
+   "discord_id": "1458311513667276830",
+   "msg_id": "1559358093790543974",
+   "cuando": "2026-10-13T00:12:21"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Geoka 🇦🇷",
+   "quien": "goksito_8",
+   "discord_id": "1325042155819106324",
+   "msg_id": "1559357717641166859",
+   "cuando": "2026-10-13T00:10:51"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "nemi+nc🇰🇷🇦🇷",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1559357699769106524",
+   "cuando": "2026-10-13T00:10:47"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Zaik 🇪🇸",
+   "quien": "zaik0009",
+   "discord_id": "1555067257376346122",
+   "msg_id": "1559357401906544641",
+   "cuando": "2026-10-13T00:09:36"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Tusicario 🇨🇱",
+   "quien": "tusicario0o",
+   "discord_id": "1501380948946583642",
+   "msg_id": "1559357289000083592",
+   "cuando": "2026-10-13T00:09:09"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "1.5 DOLARES, WAW PERO QUEE DINERAL TIO!🇪🇸",
+   "quien": "csgo47.",
+   "discord_id": "1493317254581063680",
+   "msg_id": "1559357285883707595",
+   "cuando": "2026-10-13T00:09:08"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "snow",
+   "quien": "snowzzzzzzzz",
+   "discord_id": "1097714486795849748",
+   "msg_id": "1559357265717231798",
+   "cuando": "2026-10-13T00:09:03"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "SinText🇦🇷",
+   "quien": "20_sintext_10",
+   "discord_id": "882120927096209449",
+   "msg_id": "1559357237590495263",
+   "cuando": "2026-10-13T00:08:56"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Minis🇲🇽",
+   "quien": "miniswchy.",
+   "discord_id": "868502873980403762",
+   "msg_id": "1559357190622421113",
+   "cuando": "2026-10-13T00:08:45"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Magic🇲🇽",
+   "quien": "soul011294",
+   "discord_id": "915051512575717457",
+   "msg_id": "1559357143898128395",
+   "cuando": "2026-10-13T00:08:34"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Shisui 🇯🇵 Snow🇨🇴",
+   "quien": "funhorlavild",
+   "discord_id": "1426686911908675628",
+   "msg_id": "1559357077766545549",
+   "cuando": "2026-10-13T00:08:18"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "rosario (nemi,presagio,nc)🇦🇷🇦🇷🇦🇷",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1559357072150102069",
+   "cuando": "2026-10-13T00:08:17"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "MCNADIE🇦🇷",
+   "quien": "mcnadie5",
+   "discord_id": "792195339717312512",
+   "msg_id": "1559357047781335194",
+   "cuando": "2026-10-13T00:08:11"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Guty🇨🇱",
+   "quien": "aguusklein",
+   "discord_id": "1173707334216859860",
+   "msg_id": "1559357037513810073",
+   "cuando": "2026-10-13T00:08:09"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Guess 🇦🇷",
+   "quien": "sinergiabreak",
+   "discord_id": "1515482513106272366",
+   "msg_id": "1559357026054701088",
+   "cuando": "2026-10-13T00:08:06"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "sosa",
+   "quien": "sosaatrz",
+   "discord_id": "1471153954254622774",
+   "msg_id": "1559357025656373360",
+   "cuando": "2026-10-13T00:08:06"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "delux🇦🇷 + erik daniel🇦🇷",
+   "quien": "delux.13",
+   "discord_id": "729809358627536938",
+   "msg_id": "1559357021801812089",
+   "cuando": "2026-10-13T00:08:05"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Mauzz 🇻🇪",
+   "quien": "mauzzitoemeces_79548",
+   "discord_id": "1463712703658070171",
+   "msg_id": "1559357016470986893",
+   "cuando": "2026-10-13T00:08:04"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Verc 🇨🇱 presagio 🇦🇷",
+   "quien": "jovenvesta",
+   "discord_id": "913652602208649226",
+   "msg_id": "1559357016156278835",
+   "cuando": "2026-10-13T00:08:04"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Number 🇺🇾",
+   "quien": "number9408",
+   "discord_id": "458519920330670086",
+   "msg_id": "1559357007428067523",
+   "cuando": "2026-10-13T00:08:02"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1559357006173966421",
+   "cuando": "2026-10-13T00:08:01"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Teo 🇨🇴(solo)",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1559356989908459581",
+   "cuando": "2026-10-13T00:07:57"
+  },
+  {
    "servidor": "SR",
    "canal": "[📝]inscripciones",
    "texto": "JUASMIO",
@@ -4560,19 +4835,19 @@
   {
    "servidor": "SR",
    "canal": "[📝]inscripciones",
-   "texto": "Guess 🇦🇷",
-   "quien": "sinergiabreak",
-   "discord_id": "1515482513106272366",
-   "msg_id": "1559321116667936821",
+   "texto": "SYEPORUTE🇿🇲",
+   "quien": "csgo47.",
+   "discord_id": "1493317254581063680",
+   "msg_id": "1559321114247962806",
    "cuando": "2026-10-12T21:45:24"
   },
   {
    "servidor": "SR",
    "canal": "[📝]inscripciones",
-   "texto": "SYEPORUTE🇿🇲",
-   "quien": "csgo47.",
-   "discord_id": "1493317254581063680",
-   "msg_id": "1559321114247962806",
+   "texto": "Guess 🇦🇷",
+   "quien": "sinergiabreak",
+   "discord_id": "1515482513106272366",
+   "msg_id": "1559321116667936821",
    "cuando": "2026-10-12T21:45:24"
   },
   {

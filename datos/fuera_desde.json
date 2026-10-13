@@ -25,9 +25,6 @@
    "sv-urbf": "2026-10-12",
    "temporada": "2026-10-12"
   },
-  "abyssus": {
-   "temporada": "2026-10-12"
-  },
   "acry": {
    "temporada": "2026-10-12"
   },
@@ -283,9 +280,6 @@
    "temporada": "2026-10-12"
   },
   "dxg": {
-   "temporada": "2026-10-12"
-  },
-  "dynoco": {
    "temporada": "2026-10-12"
   },
   "dyzz": {
@@ -943,9 +937,6 @@
    "sv-sr": "2026-10-12",
    "temporada": "2026-10-12"
   },
-  "prosu": {
-   "temporada": "2026-10-12"
-  },
   "queen": {
    "temporada": "2026-10-12"
   },
@@ -1258,9 +1249,6 @@
   "zekha": {
    "temporada": "2026-10-12"
   },
-  "zeta": {
-   "temporada": "2026-10-12"
-  },
   "ziarki": {
    "servidor": "2026-10-12",
    "sv-ffa": "2026-10-12",
@@ -1278,7 +1266,7 @@
   }
  },
  "pasaban": 378,
- "cuando": "2026-10-12T23:58:42Z",
+ "cuando": "2026-10-13T00:27:06Z",
  "borradas": [
   [
    "infecte",

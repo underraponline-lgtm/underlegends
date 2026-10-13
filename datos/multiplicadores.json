@@ -431,13 +431,15 @@
    "organizadores": [],
    "semillero": {
     "nuevos": {
-     "FFA": 2
+     "FFA": 2,
+     "SR": 4
     },
     "gente": {
      "DDF": 7,
-     "FFA": 34
+     "FFA": 34,
+     "SR": 21
     },
-    "gana": null
+    "gana": "SR"
    },
    "meta_va": {
     "ACAD": 0,
@@ -446,7 +448,7 @@
     "FFA": 34,
     "FFS": 0,
     "FVS": 0,
-    "SR": 0,
+    "SR": 21,
     "URBF": 0
    },
    "sv_sorteo": {

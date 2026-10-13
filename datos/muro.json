@@ -120,7 +120,8 @@
 "rg": "A",
 "c": [
 "competitivo",
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "verc": {
@@ -155,18 +156,18 @@
 "temporada"
 ]
 },
-"liberia": {
-"rg": "",
+"cronox": {
+"rg": "D",
 "c": [
+"competitivo",
 "pais",
 "servidor",
 "temporada"
 ]
 },
-"cronox": {
-"rg": "D",
+"liberia": {
+"rg": "",
 "c": [
-"competitivo",
 "pais",
 "servidor",
 "temporada"
@@ -185,10 +186,6 @@
 "temporada"
 ]
 },
-"mrstillballin": {
-"rg": "",
-"c": []
-},
 "mco": {
 "rg": "D",
 "c": [
@@ -197,6 +194,10 @@
 "servidor",
 "temporada"
 ]
+},
+"mrstillballin": {
+"rg": "",
+"c": []
 },
 "trot": {
 "rg": "D",
@@ -260,7 +261,8 @@
 "rg": "C",
 "c": [
 "competitivo",
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "jj": {
@@ -505,6 +507,13 @@
 "temporada"
 ]
 },
+"prosu": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "kravitz": {
 "rg": "",
 "c": [
@@ -515,7 +524,8 @@
 "zeta": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "btrx": {
@@ -550,12 +560,6 @@
 "tambaggio": {
 "rg": "",
 "c": []
-},
-"prosu": {
-"rg": "",
-"c": [
-"servidor"
-]
 },
 "tuca": {
 "rg": "",
@@ -5427,6 +5431,38 @@
 ],
 "rg": "A",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-13T00:26:49Z",
+"quien": [
+"Abyssus"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-13T00:26:49Z",
+"quien": [
+"Dynoco"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-13T00:26:49Z",
+"quien": [
+"Prosu"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-13T00:26:49Z",
+"quien": [
+"Zeta"
+],
+"carta": "temporada"
 }
 ]
 }
