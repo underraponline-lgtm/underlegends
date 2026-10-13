@@ -10087,64 +10087,24 @@
   "canal": "1511962554547703960",
   "duelos": [
    [
-    "COLOSO",
-    "AXL EVANS",
-    "COLOSO"
+    "MARITHEA",
+    "VISIONARIO",
+    "MARITHEA"
    ],
    [
-    "JM SERNA",
-    "JAZZ",
-    "JM SERNA"
-   ],
-   [
-    "PANDORA",
-    "HUNTER",
-    "PANDORA"
+    "MARITHEA",
+    "MARITHEA",
+    "MARITHEA"
    ],
    [
     "FAT N",
     "AIRON",
     "FAT N"
-   ],
-   [
-    "MARITHEA",
-    "URKO",
-    "MARITHEA"
-   ],
-   [
-    "J1",
-    "COFFY",
-    "J1"
-   ],
-   [
-    "VISIONARIO",
-    "LIT IGNIS",
-    "VISIONARIO"
-   ],
-   [
-    "PUPPY",
-    "HORUS",
-    "PUPPY"
-   ],
-   [
-    "MARITHEA",
-    "J1",
-    "MARITHEA"
-   ],
-   [
-    "MARITHEA",
-    "COLOSO",
-    "MARITHEA"
-   ],
-   [
-    "MARITHEA",
-    "PUPPY",
-    "MARITHEA"
    ]
   ],
   "ev_antes": {},
   "fecha": "12/10",
-  "firma": "bb3f2846074d4807",
+  "firma": "814d62270fc33ddc",
   "msg": "1559406349790617712",
   "nombre": "COMPE CHILL",
   "num": 463,
@@ -10156,14 +10116,24 @@
   "t": "2026-10-13T02:56:28Z",
   "tabla": [
    [
-    "COLOSO",
+    "FAT N",
     "Campeón",
-    5000
+    10000
    ],
    [
-    "AXL EVANS",
+    "AIRON",
     "Subcampeón",
-    3750
+    7500
+   ],
+   [
+    "MARITHEA",
+    "Tercero",
+    6000
+   ],
+   [
+    "VISIONARIO",
+    "Cuarto",
+    4500
    ]
   ],
   "v": 2

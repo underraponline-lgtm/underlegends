@@ -1,33 +1,33 @@
 {
  "v": 1,
- "cuando": "2026-10-13T18:15:42Z",
+ "cuando": "2026-10-13T18:29:02Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 413.1,
+ "dur_s": 334.2,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.8
+   "s": 0.6
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 100.9
+   "s": 79.5
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
-   "ok": true,
-   "s": 58.1
+   "ok": false,
+   "s": 49.7
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.5
+   "s": 0.6
   },
   {
    "n": "1a2",
@@ -39,19 +39,19 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 32.4
+   "s": 28.9
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 2.0
+   "s": 1.3
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 5.6
+   "s": 6.4
   },
   {
    "n": "2b",
@@ -69,13 +69,13 @@
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.1
+   "s": 0.5
   },
   {
    "n": "2b3d",
    "que": "los paneles de DRA",
    "ok": true,
-   "s": 0.1
+   "s": 28.4
   },
   {
    "n": "2b3b",
@@ -87,73 +87,73 @@
    "n": "2b3c",
    "que": "el reto del debut",
    "ok": true,
-   "s": 1.8
+   "s": 1.4
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.2
+   "s": 0.8
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 1.3
+   "s": 0.5
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.1
+   "s": 3.4
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 29.8
+   "s": 30.8
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 4.4
+   "s": 4.1
   },
   {
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 82.8
+   "s": 3.4
   },
   {
    "n": "2b8b",
    "que": "la agenda",
    "ok": true,
-   "s": 0.5
+   "s": 0.3
   },
   {
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 11.3
+   "s": 14.1
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 48.7
+   "s": 49.0
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 0.6
+   "s": 4.0
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 14.3
+   "s": 13.1
   },
   {
    "n": "2e",
@@ -165,17 +165,22 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.2
+   "s": 6.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 2.9
+   "s": 4.4
   }
  ],
- "fallas": [],
- "decidir": 138,
+ "fallas": [
+  {
+   "paso": "1c",
+   "que": "sheet/rankings.py --escribir"
+  }
+ ],
+ "decidir": 143,
  "ultimo_evento": {
   "n": "466",
   "nombre": "mathias cup",
@@ -184,10 +189,10 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-13T18:10:35Z",
+  "cuando": "2026-10-13T18:24:52Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 461,
-  "un_evento": 237,
+  "jugadores": 463,
+  "un_evento": 239,
   "diez_o_mas": 40,
   "cohortes": [
    {
@@ -210,7 +215,7 @@
    },
    {
     "semana": "2026-10-12",
-    "nuevos": 24,
+    "nuevos": 26,
     "volvieron": 0,
     "completa": false
    }
@@ -218,25 +223,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 309,
-   "read": 38596
+   "write": 317,
+   "read": 40010
   },
   "objeto": {
-   "leidas": 2145311,
-   "escritas": 24335,
-   "pedidos": 7774
+   "leidas": 2193184,
+   "escritas": 24501,
+   "pedidos": 8133
   },
   "worker": {
-   "pedidos": 11141,
+   "pedidos": 11286,
    "errores": 0,
-   "sub": 12032,
-   "p50_ms": 1.25,
-   "p99_ms": 7.35
+   "sub": 12213,
+   "p50_ms": 1.24,
+   "p99_ms": 7.32
   },
   "r2": {
-   "objetos": 4015,
-   "gb": 0.446,
-   "ts": 1791872868
+   "objetos": 4023,
+   "gb": 0.447,
+   "ts": 1791916148
   }
  }
 }

@@ -1548,13 +1548,13 @@
      16,
      0
     ],
-    "AKARK": [
+    "AIRON": [
      1,
      2,
      2,
      0
     ],
-    "AXL EVANS": [
+    "AKARK": [
      1,
      2,
      2,
@@ -1606,12 +1606,6 @@
      1,
      16,
      16,
-     0
-    ],
-    "COLOSO": [
-     1,
-     1,
-     1,
      0
     ],
     "Cajita": [
@@ -1699,9 +1693,9 @@
      0
     ],
     "FAT N": [
-     0,
-     99,
-     99,
+     1,
+     1,
+     1,
      0
     ],
     "Frifaier 🇨🇱": [
@@ -1722,12 +1716,6 @@
      8,
      0
     ],
-    "J1": [
-     0,
-     99,
-     99,
-     0
-    ],
     "JB🇦🇷": [
      1,
      8,
@@ -1744,12 +1732,6 @@
      1,
      1,
      1,
-     0
-    ],
-    "JM SERNA": [
-     0,
-     99,
-     99,
      0
     ],
     "Joaquín La Profecia 👨🏻‍🍳": [
@@ -1813,9 +1795,9 @@
      0
     ],
     "MARITHEA": [
-     0,
-     99,
-     99,
+     1,
+     4,
+     4,
      0
     ],
     "Magic": [
@@ -1894,18 +1876,6 @@
      1,
      2,
      2,
-     0
-    ],
-    "PANDORA": [
-     0,
-     99,
-     99,
-     0
-    ],
-    "PUPPY": [
-     0,
-     99,
-     99,
      0
     ],
     "Player": [
@@ -2023,9 +1993,9 @@
      0
     ],
     "VISIONARIO": [
-     0,
-     99,
-     99,
+     1,
+     4,
+     4,
      0
     ],
     "Valdoza": [
@@ -2114,15 +2084,14 @@
     ]
    },
    "pts": {
+    "AIRON": 600,
     "AKARK": 600,
-    "AXL EVANS": 600,
     "Abyssus": 600,
     "Abysuss": 1600,
     "Agus": 1600,
     "Ariaxer": 300,
     "BNA": 2900,
     "Benjixo": 900,
-    "COLOSO": 1600,
     "Cinexfilo": 600,
     "Colesito": 300,
     "Cronox": 300,
@@ -2132,12 +2101,14 @@
     "EmiZor": 900,
     "Erian": 2900,
     "Erik": 600,
+    "FAT N": 1600,
     "Guess": 900,
     "JJ": 1600,
     "Keider": 900,
     "Kusoh": 600,
     "LRS": 300,
     "Lvel": 300,
+    "MARITHEA": 600,
     "Magic": 300,
     "Makmah": 900,
     "Molusco": 1600,
@@ -2160,6 +2131,7 @@
     "Tenor": 600,
     "Teo": 300,
     "TøKīØ🦠🧠": 600,
+    "VISIONARIO": 600,
     "Vandu": 600,
     "Velatz": 900,
     "Verc": 2900,
@@ -2175,13 +2147,13 @@
   ".SosaATR": 300,
   "1200": 300,
   "19": 1600,
+  "AIRON": 600,
   "AKARK": 600,
   "ALESS": 300,
   "ALTER 🇨🇱": 300,
   "ANTONIO🇵🇾": 300,
   "ANTORCHA": 300,
   "ARDEAN": 300,
-  "AXL EVANS": 600,
   "Abyssus": 900,
   "Abysuss": 1600,
   "Agus": 4500,
@@ -2202,7 +2174,6 @@
   "Benjixo": 2200,
   "Bloody": 300,
   "CJ": 300,
-  "COLOSO": 1600,
   "Cajita": 300,
   "Carlosmo": 1600,
   "Carlosss": 1600,
@@ -2240,6 +2211,7 @@
   "Eze": 300,
   "Ezias🥈✒️🧢🐍": 300,
   "F1THER": 300,
+  "FAT N": 1600,
   "FAT PENIS": 300,
   "Fin": 300,
   "Geoka": 300,
@@ -2281,6 +2253,7 @@
   "Lord Viruzz": 300,
   "Luzzano": 300,
   "Lvel": 600,
+  "MARITHEA": 600,
   "MATICERNA": 300,
   "MCO": 2900,
   "MHS": 300,
@@ -2362,6 +2335,7 @@
   "Tusicario": 300,
   "TøKīØ🦠🧠": 3500,
   "Under": 300,
+  "VISIONARIO": 600,
   "VIXOVERSO": 300,
   "Valdoza": 300,
   "Vandu": 3500,
