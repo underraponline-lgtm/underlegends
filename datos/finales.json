@@ -303,5 +303,48 @@
   "sin_permiso": false,
   "sv": "FFA"
  },
+ "1559368624446242837": {
+  "autor": "1071915431696277504",
+  "canal": "1511962615465902261",
+  "cuando": "2026-10-13T00:54:11.736000+00:00",
+  "evento": "COMPE CHILL",
+  "fecha": "12/10",
+  "llave": "1559368624446242837",
+  "pregunta": "1559399294992257165",
+  "preguntada": "2026-10-12 10:56 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "AXL EVANS",
+     "COLOSO"
+    ],
+    "ronda": "FINAL"
+   },
+   {
+    "lados": [
+     "JM SERNA",
+     "JAZZ"
+    ],
+    "ronda": "FINAL"
+   },
+   {
+    "lados": [
+     "HUNTER",
+     "PANDORA"
+    ],
+    "ronda": "FINAL"
+   },
+   {
+    "lados": [
+     "AIRON",
+     "FAT N"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "URBF"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

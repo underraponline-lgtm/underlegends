@@ -265,6 +265,7 @@
   "sintexto": "SINTEXT",
   "doce": "DO-C",
   "hinjkybesuk": "BNA",
+  "parkjingsun": "Oasis",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1359,6 +1360,10 @@
   [
    "Hinjkybesuk",
    "BNA"
+  ],
+  [
+   "PARKJINGSUN",
+   "Oasis"
   ],
   [
    "Nexus",

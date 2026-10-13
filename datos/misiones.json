@@ -1536,6 +1536,12 @@
     ]
    ],
    "prog": {
+    "7": [
+     1,
+     8,
+     8,
+     0
+    ],
     "AFR": [
      1,
      16,
@@ -1546,6 +1552,12 @@
      1,
      2,
      2,
+     0
+    ],
+    "Abysuss": [
+     1,
+     1,
+     1,
      0
     ],
     "Agente sombra 🇵🇪": [
@@ -1568,6 +1580,18 @@
     ],
     "Benjixo": [
      2,
+     4,
+     4,
+     0
+    ],
+    "Betelguese": [
+     1,
+     16,
+     16,
+     0
+    ],
+    "COLOSO": [
+     1,
      4,
      4,
      0
@@ -1602,8 +1626,14 @@
      16,
      0
     ],
-    "Dynoco": [
+    "Delux": [
      1,
+     4,
+     4,
+     0
+    ],
+    "Dynoco": [
+     2,
      16,
      16,
      0
@@ -1627,15 +1657,39 @@
      0
     ],
     "Erian": [
-     2,
+     3,
+     4,
+     4,
+     0
+    ],
+    "Erik": [
+     1,
+     4,
+     4,
+     0
+    ],
+    "FAT N": [
+     1,
      4,
      4,
      0
     ],
     "Guess": [
-     3,
+     4,
      2,
      2,
+     0
+    ],
+    "Guty🇨🇱": [
+     1,
+     8,
+     8,
+     0
+    ],
+    "J1": [
+     1,
+     8,
+     8,
      0
     ],
     "JHEYSON": [
@@ -1648,6 +1702,12 @@
      1,
      1,
      1,
+     0
+    ],
+    "JM SERNA": [
+     1,
+     16,
+     16,
      0
     ],
     "Joaquín La Profecia 👨🏻‍🍳": [
@@ -1686,22 +1746,46 @@
      16,
      0
     ],
-    "Magic": [
+    "MARITHEA": [
      1,
+     2,
+     2,
+     0
+    ],
+    "Magic": [
+     2,
      16,
      16,
      0
     ],
     "Makmah": [
-     3,
+     4,
      2,
      2,
      0
     ],
+    "MauzzitoEmeces": [
+     1,
+     8,
+     8,
+     0
+    ],
     "NC": [
-     3,
+     4,
      2,
      2,
+     0
+    ],
+    "Nemi": [
+     1,
+     16,
+     16,
+     0
+    ],
+    "Number": [
+     1,
+     8,
+     8,
      0
     ],
     "Number VE": [
@@ -1728,10 +1812,28 @@
      4,
      0
     ],
+    "PARKJINGSUN 🇨🇱": [
+     1,
+     2,
+     2,
+     0
+    ],
+    "PUPPY": [
+     1,
+     1,
+     1,
+     0
+    ],
     "Player": [
      2,
      16,
      16,
+     0
+    ],
+    "Presagio": [
+     1,
+     1,
+     1,
      0
     ],
     "Prosu": [
@@ -1741,7 +1843,7 @@
      0
     ],
     "SINTEXT": [
-     1,
+     2,
      16,
      16,
      0
@@ -1759,9 +1861,21 @@
      0
     ],
     "Snow": [
-     2,
+     3,
      1,
      1,
+     0
+    ],
+    "TRRR 🇦🇷": [
+     1,
+     16,
+     16,
+     0
+    ],
+    "Tam": [
+     1,
+     4,
+     4,
      0
     ],
     "Teito": [
@@ -1771,7 +1885,7 @@
      0
     ],
     "Teo": [
-     2,
+     3,
      8,
      8,
      0
@@ -1788,6 +1902,12 @@
      16,
      0
     ],
+    "VISIONARIO": [
+     1,
+     8,
+     8,
+     0
+    ],
     "Valdoza": [
      1,
      16,
@@ -1801,13 +1921,13 @@
      0
     ],
     "Velatz": [
-     2,
+     3,
      4,
      4,
      0
     ],
     "Verc": [
-     3,
+     4,
      1,
      1,
      0
@@ -1822,6 +1942,12 @@
      1,
      4,
      4,
+     0
+    ],
+    "Zaik": [
+     1,
+     16,
+     16,
      0
     ],
     "Zeta": [
@@ -1842,33 +1968,64 @@
      8,
      0
     ],
+    "rodrilp": [
+     1,
+     4,
+     4,
+     0
+    ],
     "yinn": [
      2,
      1,
      1,
      0
+    ],
+    "🇪🇸 AKARK 🇪🇸 🇨🇱": [
+     1,
+     2,
+     2,
+     0
+    ],
+    "🏳️‍⚧️ VEPG 🏳️‍⚧️": [
+     1,
+     16,
+     16,
+     0
     ]
    },
    "pts": {
     "Abyssus": 600,
+    "Abysuss": 1600,
     "Ariaxer": 300,
     "BNA": 2900,
     "Benjixo": 900,
+    "COLOSO": 600,
     "Colesito": 300,
     "DO-C": 300,
+    "Delux": 600,
+    "Dynoco": 300,
     "EmiZor": 900,
     "Erian": 900,
+    "Erik": 600,
+    "FAT N": 600,
     "Guess": 900,
     "JJ": 1600,
     "Keider": 900,
     "Lvel": 300,
+    "MARITHEA": 600,
+    "Magic": 300,
     "Makmah": 900,
     "NC": 900,
     "OG": 900,
     "ONZASS": 600,
+    "PARKJINGSUN 🇨🇱": 600,
+    "PUPPY": 1600,
     "Player": 300,
+    "Presagio": 1600,
     "Prosu": 1600,
+    "SINTEXT": 300,
     "Snow": 2900,
+    "Tam": 600,
     "Teo": 300,
     "TøKīØ🦠🧠": 600,
     "Velatz": 900,
@@ -1876,7 +2033,9 @@
     "Walker": 1600,
     "Xclusivo": 600,
     "Zignos": 900,
-    "yinn": 2900
+    "rodrilp": 600,
+    "yinn": 2900,
+    "🇪🇸 AKARK 🇪🇸 🇨🇱": 600
    }
   }
  },
@@ -1890,6 +2049,7 @@
   "ANTORCHA": 300,
   "ARDEAN": 300,
   "Abyssus": 900,
+  "Abysuss": 1600,
   "Agus": 2900,
   "Akutagawa🇹🇼": 300,
   "Aldre": 2900,
@@ -1908,6 +2068,7 @@
   "Benjixo": 2200,
   "Bloody": 300,
   "CJ": 300,
+  "COLOSO": 600,
   "Cajita": 300,
   "Carlosmo": 1600,
   "Carlosss": 1600,
@@ -1920,14 +2081,14 @@
   "DAVIJUAN": 300,
   "DO-C": 600,
   "DarnBless": 300,
-  "Delux": 900,
+  "Delux": 1500,
   "Denik": 300,
   "Desio": 300,
   "Deuxs": 300,
   "Dominick": 1300,
   "Drexx": 300,
   "Drezz🇵🇪": 300,
-  "Dynoco": 1300,
+  "Dynoco": 1600,
   "Dyzz": 900,
   "EGI": 300,
   "EIDP": 2900,
@@ -1939,11 +2100,12 @@
   "Emily Family": 300,
   "Enkil 🇦🇷": 300,
   "Erian": 3800,
-  "Erik": 1300,
+  "Erik": 1900,
   "Erizo": 300,
   "Eze": 300,
   "Ezias🥈✒️🧢🐍": 300,
   "F1THER": 300,
+  "FAT N": 600,
   "FAT PENIS": 300,
   "Fin": 300,
   "Geoka": 300,
@@ -1984,10 +2146,12 @@
   "Lord Viruzz": 300,
   "Luzzano": 300,
   "Lvel": 600,
+  "MARITHEA": 600,
   "MATICERNA": 300,
   "MCO": 2900,
   "MHS": 300,
   "MTZ": 300,
+  "Magic": 300,
   "Majiztral": 900,
   "Makmah": 3800,
   "Malva": 300,
@@ -2013,9 +2177,11 @@
   "OG": 3800,
   "ONZASS": 1500,
   "Oasis": 2900,
+  "PARKJINGSUN 🇨🇱": 600,
   "PIERR🇵🇪": 300,
   "PRAISERIZA": 2900,
   "PROMETHEUS BIB 🇨🇴": 300,
+  "PUPPY": 1600,
   "Panchok": 2900,
   "Paria": 300,
   "Personality": 300,
@@ -2023,7 +2189,7 @@
   "Player": 3200,
   "Polosport": 1300,
   "Pomberito": 2900,
-  "Presagio": 1300,
+  "Presagio": 2900,
   "Prodigy": 300,
   "Prosu": 1900,
   "Provenza": 2900,
@@ -2039,7 +2205,7 @@
   "Rosmel 🇻🇪": 300,
   "Ruvick": 300,
   "SAEVA": 300,
-  "SINTEXT": 300,
+  "SINTEXT": 600,
   "Saiko": 300,
   "Sami": 300,
   "Santi": 300,
@@ -2053,7 +2219,7 @@
   "Soneto": 300,
   "Sosa": 300,
   "Soulb": 300,
-  "Tam": 1300,
+  "Tam": 1900,
   "Tenor": 300,
   "Teo": 600,
   "Tier": 300,
@@ -2085,11 +2251,12 @@
   "kerkoide": 300,
   "melomaniaco": 300,
   "nebu": 300,
-  "rodrilp": 300,
+  "rodrilp": 900,
   "setesfifi": 300,
   "tnr": 300,
   "wei shenlong": 300,
-  "yinn": 4200
+  "yinn": 4200,
+  "🇪🇸 AKARK 🇪🇸 🇨🇱": 600
  },
  "temp": "prueba"
 }

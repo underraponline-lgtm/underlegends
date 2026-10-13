@@ -2005,6 +2005,50 @@
    "b": "AKARK",
    "ganador": "ABYSUSS",
    "votos": "1–0"
+  },
+  "1559390695494787194": {
+   "id": "1559390695494787194",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791858113884,
+   "a": "ABYSUSS",
+   "b": "OASIS",
+   "ganador": "OASIS",
+   "votos": "1–0"
+  },
+  "1559391363223658587": {
+   "id": "1559391363223658587",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791858273083,
+   "a": "NC",
+   "b": "OASIS",
+   "ganador": "OASIS",
+   "votos": "1–0"
+  },
+  "1559392182434136115": {
+   "id": "1559392182434136115",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791858468398,
+   "a": "OASIS",
+   "b": "VERC",
+   "ganador": "VERC",
+   "votos": "1–0"
+  },
+  "1559392967150534758": {
+   "id": "1559392967150534758",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1791858655489,
+   "a": "AKARK",
+   "b": "VERC",
+   "ganador": "VERC",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5374,8 +5418,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1791856517442,
-   "ed": 1791858113884,
-   "texto": "`[ SEMIFINALES ]`\n⌞RODRI LP⌝ 🆚 ⌞OASIS⌝\n`[ SEMIFINALES ]`\n`[ FINAL ]`\n⌞ABYSUSS⌝ 🆚 ⌞OASIS⌝\n⌞abysuss⌝ 🆚 ⌞AKARK⌝\n⌞ABYSUSS⌝ 🆚 ⌞OASIS⌝",
+   "ed": 1791858860907,
+   "texto": "`[ SEMIFINALES ]`\n⌞RODRI LP⌝ 🆚 ⌞OASIS⌝\n`[ SEMIFINALES ]`\n`[ FINAL ]`\n⌞ABYSUSS⌝ 🆚 ⌞OASIS⌝\n⌞abysuss⌝ 🆚 ⌞AKARK⌝\n⌞ABYSUSS⌝ 🆚 ⌞OASIS⌝\n⌞NC⌝ 🆚 ⌞OASIS⌝\n⌞OASIS⌝ 🆚 ⌞VERC⌝\n⌞AKARK⌝ 🆚 ⌞VERC⌝",
    "batallas": [
     [
      "SEMIFINALES",
@@ -5413,8 +5457,38 @@
       "ABYSUSS",
       "OASIS"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "OASIS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "NC",
+      "OASIS"
+     ],
+     "OASIS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "OASIS",
+      "VERC"
+     ],
+     "VERC",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "AKARK",
+      "VERC"
+     ],
+     "VERC",
+     "veredicto",
      []
     ]
    ]

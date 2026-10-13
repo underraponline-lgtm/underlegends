@@ -9513,5 +9513,656 @@
    ]
   ],
   "v": 2
+ },
+ "461": {
+  "antes": {
+   "AGUSTÍN51K": [
+    327,
+    301,
+    true
+   ],
+   "Drexx": [
+    26,
+    32,
+    false
+   ],
+   "Mathhias": [
+    97,
+    165,
+    false
+   ],
+   "Molusco": [
+    31,
+    38,
+    false
+   ],
+   "Richard": [
+    70,
+    102,
+    false
+   ],
+   "Sosa": [
+    49,
+    69,
+    false
+   ],
+   "TøKīØ🦠🧠": [
+    36,
+    47,
+    false
+   ],
+   "dxg": [
+    74,
+    107,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Refran",
+    "Force",
+    "Refran"
+   ],
+   [
+    "Joaco Zeo",
+    "Sosa",
+    "Joaco Zeo"
+   ],
+   [
+    "Mathhias",
+    "AGUSTÍN51K",
+    "Mathhias"
+   ],
+   [
+    "Astral",
+    "Molusco",
+    "Astral"
+   ],
+   [
+    "Refran",
+    "Richard",
+    "Refran"
+   ],
+   [
+    "Joaco Zeo",
+    "TøKīØ🦠🧠",
+    "Joaco Zeo"
+   ],
+   [
+    "Mathhias",
+    "dxg",
+    "Mathhias"
+   ],
+   [
+    "Drexx",
+    "Astral",
+    "Drexx"
+   ],
+   [
+    "Refran",
+    "Joaco Zeo",
+    "Refran"
+   ],
+   [
+    "Mathhias",
+    "Drexx",
+    "Mathhias"
+   ],
+   [
+    "Mathhias",
+    "Refran",
+    "Mathhias"
+   ]
+  ],
+  "ev_antes": {
+   "AGUSTÍN51K": 1,
+   "Drexx": 10,
+   "Mathhias": 4,
+   "Molusco": 10,
+   "Richard": 11,
+   "Sosa": 11,
+   "TøKīØ🦠🧠": 3,
+   "dxg": 8
+  },
+  "fecha": "26/09",
+  "nombre": "FVS UNDER",
+  "num": 461,
+  "participantes": 15,
+  "sello": {
+   "Mathhias": "1e66d4bed6b7:9df1984d05ab"
+  },
+  "sv": "FVS",
+  "t": "2026-10-13T02:56:18Z",
+  "tabla": [
+   [
+    "Mathhias",
+    "Campeón",
+    7500
+   ],
+   [
+    "Refran",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Joaco Zeo",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Drexx",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Richard",
+    "Cuartos",
+    2000
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Cuartos",
+    2000
+   ],
+   [
+    "dxg",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Astral",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Force",
+    "Octavos",
+    625
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    625
+   ],
+   [
+    "AGUSTÍN51K",
+    "Octavos",
+    625
+   ],
+   [
+    "Molusco",
+    "Octavos",
+    625
+   ]
+  ],
+  "v": 2
+ },
+ "462": {
+  "antes": {
+   "7": [
+    326,
+    300,
+    true
+   ],
+   "Betelguese": [
+    227,
+    148,
+    true
+   ],
+   "Delux": [
+    60,
+    89,
+    false
+   ],
+   "Dynoco": [
+    29,
+    35,
+    false
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Erik": [
+    72,
+    104,
+    false
+   ],
+   "Guess": [
+    28,
+    34,
+    false
+   ],
+   "Magic": [
+    159,
+    371,
+    false
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "MauzzitoEmeces": [
+    423,
+    419,
+    true
+   ],
+   "NC": [
+    17,
+    20,
+    false
+   ],
+   "Nemi": [
+    80,
+    123,
+    false
+   ],
+   "Number": [
+    53,
+    74,
+    false
+   ],
+   "Presagio": [
+    35,
+    45,
+    false
+   ],
+   "SINTEXT": [
+    222,
+    139,
+    true
+   ],
+   "Snow": [
+    1,
+    1,
+    false
+   ],
+   "Tam": [
+    180,
+    46,
+    true
+   ],
+   "Teo": [
+    62,
+    92,
+    false
+   ],
+   "Velatz": [
+    7,
+    8,
+    false
+   ],
+   "Verc": [
+    14,
+    17,
+    false
+   ],
+   "rodrilp": [
+    118,
+    210,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "rodrilp, Velatz, Snow",
+    "Teo",
+    "rodrilp, Velatz, Snow"
+   ],
+   [
+    "rodrilp, Velatz, Snow",
+    "Betelguese, Guess, Erian",
+    "rodrilp, Velatz, Snow"
+   ],
+   [
+    "Guty🇨🇱",
+    "🏳️‍⚧️ VEPG 🏳️‍⚧️",
+    "Guty🇨🇱"
+   ],
+   [
+    "Guty🇨🇱",
+    "Zaik 🇪🇸",
+    "Guty🇨🇱"
+   ],
+   [
+    "PARKJINGSUN 🇨🇱, 🇪🇸 AKARK 🇪🇸 🇨🇱",
+    "Makmah",
+    "PARKJINGSUN 🇨🇱, 🇪🇸 AKARK 🇪🇸 🇨🇱"
+   ],
+   [
+    "Number",
+    "Dynoco",
+    "Number"
+   ],
+   [
+    "Number",
+    "Nemi",
+    "Number"
+   ],
+   [
+    "MauzzitoEmeces",
+    "Magic",
+    "MauzzitoEmeces"
+   ],
+   [
+    "MauzzitoEmeces",
+    "Dynoco",
+    "MauzzitoEmeces"
+   ],
+   [
+    "Delux, Erik, Tam",
+    "TRRR 🇦🇷, NC",
+    "Delux, Erik, Tam"
+   ],
+   [
+    "7, NC",
+    "SINTEXT",
+    "7, NC"
+   ],
+   [
+    "rodrilp, Velatz, Snow",
+    "Guty🇨🇱",
+    "rodrilp, Velatz, Snow"
+   ],
+   [
+    "PARKJINGSUN 🇨🇱, 🇪🇸 AKARK 🇪🇸 🇨🇱",
+    "Number",
+    "PARKJINGSUN 🇨🇱, 🇪🇸 AKARK 🇪🇸 🇨🇱"
+   ],
+   [
+    "Verc, Presagio, Abysuss",
+    "MauzzitoEmeces",
+    "Verc, Presagio, Abysuss"
+   ],
+   [
+    "Delux, Erik, Tam",
+    "7, NC",
+    "Delux, Erik, Tam"
+   ],
+   [
+    "PARKJINGSUN 🇨🇱, 🇪🇸 AKARK 🇪🇸 🇨🇱",
+    "rodrilp, Velatz, Snow",
+    "PARKJINGSUN 🇨🇱, 🇪🇸 AKARK 🇪🇸 🇨🇱"
+   ],
+   [
+    "Verc, Presagio, Abysuss",
+    "Delux, Erik, Tam",
+    "Verc, Presagio, Abysuss"
+   ],
+   [
+    "Verc, Presagio, Abysuss",
+    "PARKJINGSUN 🇨🇱, 🇪🇸 AKARK 🇪🇸 🇨🇱",
+    "Verc, Presagio, Abysuss"
+   ]
+  ],
+  "ev_antes": {
+   "7": 1,
+   "Betelguese": 2,
+   "Delux": 4,
+   "Dynoco": 12,
+   "Erian": 29,
+   "Erik": 2,
+   "Guess": 9,
+   "Magic": 1,
+   "Makmah": 39,
+   "MauzzitoEmeces": 1,
+   "NC": 25,
+   "Nemi": 5,
+   "Number": 6,
+   "Presagio": 5,
+   "SINTEXT": 3,
+   "Snow": 34,
+   "Tam": 8,
+   "Teo": 6,
+   "Velatz": 32,
+   "Verc": 7,
+   "rodrilp": 1
+  },
+  "fecha": "12/10",
+  "firma": "111fa555fd0d66ea",
+  "msg": "1559399391536611440",
+  "nombre": "COMPE POR 1.5 DOLARES",
+  "num": 462,
+  "participantes": 28,
+  "sello": {
+   "Abysuss": "",
+   "Presagio": "98282e18f3d6:9df1984d05ab",
+   "Verc": "8c6bfae3676e:9df1984d05ab"
+  },
+  "sv": "FFA",
+  "t": "2026-10-13T02:56:26Z",
+  "tabla": [
+   [
+    "PARKJINGSUN 🇨🇱",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "🇪🇸 AKARK 🇪🇸 🇨🇱",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Verc",
+    "Campeón",
+    3333
+   ],
+   [
+    "Presagio",
+    "Campeón",
+    3333
+   ],
+   [
+    "Abysuss",
+    "Campeón",
+    3333
+   ],
+   [
+    "Guty🇨🇱",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Number",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MauzzitoEmeces",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dynoco",
+    "Octavos",
+    1875
+   ],
+   [
+    "rodrilp",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Velatz",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Snow",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Delux",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Erik",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Tam",
+    "Semifinal",
+    1750
+   ],
+   [
+    "7",
+    "Cuartos",
+    1250
+   ],
+   [
+    "NC",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "🏳️‍⚧️ VEPG 🏳️‍⚧️",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Nemi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Magic",
+    "Octavos",
+    1250
+   ],
+   [
+    "SINTEXT",
+    "Octavos",
+    1250
+   ],
+   [
+    "TRRR 🇦🇷",
+    "Octavos",
+    625
+   ],
+   [
+    "Betelguese",
+    "Octavos",
+    416
+   ],
+   [
+    "Guess",
+    "Octavos",
+    416
+   ],
+   [
+    "Erian",
+    "Octavos",
+    416
+   ]
+  ],
+  "v": 2
+ },
+ "463": {
+  "antes": {},
+  "canal": "1511962554547703960",
+  "duelos": [
+   [
+    "COLOSO",
+    "JM SERNA",
+    "COLOSO"
+   ],
+   [
+    "MARITHEA",
+    "J1",
+    "MARITHEA"
+   ],
+   [
+    "PUPPY",
+    "VISIONARIO",
+    "PUPPY"
+   ],
+   [
+    "MARITHEA",
+    "COLOSO",
+    "MARITHEA"
+   ],
+   [
+    "MARITHEA",
+    "FAT N",
+    "MARITHEA"
+   ],
+   [
+    "MARITHEA",
+    "MARITHEA",
+    "MARITHEA"
+   ]
+  ],
+  "ev_antes": {},
+  "fecha": "12/10",
+  "firma": "e85aa71092a1050e",
+  "msg": "1559399396175511593",
+  "nombre": "COMPE CHILL",
+  "num": 463,
+  "participantes": 16,
+  "sello": {
+   "PUPPY": ""
+  },
+  "sv": "URBF",
+  "t": "2026-10-13T02:56:28Z",
+  "tabla": [
+   [
+    "PUPPY",
+    "Campeón",
+    10000
+   ],
+   [
+    "MARITHEA",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "FAT N",
+    "Tercero",
+    6000
+   ],
+   [
+    "COLOSO",
+    "Cuarto",
+    4500
+   ],
+   [
+    "VISIONARIO",
+    "Cuartos",
+    2500
+   ],
+   [
+    "J1",
+    "Cuartos",
+    2500
+   ],
+   [
+    "JM SERNA",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

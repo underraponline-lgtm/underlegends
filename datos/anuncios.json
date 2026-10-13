@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-13T02:24:21+00:00",
+ "cuando": "2026-10-13T02:57:28+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -4466,6 +4466,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "verc",
+   "quien": "jovenvesta",
+   "discord_id": "913652602208649226",
+   "msg_id": "1559394824791138425",
+   "cuando": "2026-10-13T02:38:18"
+  },
   {
    "servidor": "URBF",
    "canal": "《📑》Inscripciones",

@@ -8,56 +8,56 @@
    [
     [
      "Snow",
-     15000,
-     2
-    ],
-    [
-     "Makmah",
-     14375,
+     17625,
      3
     ],
     [
+     "Makmah",
+     16250,
+     4
+    ],
+    [
      "Erian",
-     6500,
-     2
+     8624,
+     3
+    ],
+    [
+     "Presagio",
+     5000,
+     1
     ]
    ]
   ],
   [
    [
     [
+     "Verc",
+     36250,
+     4
+    ],
+    [
      "BNA",
      32500,
      2
     ],
     [
-     "Verc",
-     31250,
-     3
-    ],
-    [
      "Guess",
-     23561,
-     3
+     24185,
+     4
     ],
     [
      "Velatz",
-     21000,
-     2
+     23625,
+     3
     ],
     [
      "NC",
-     11875,
-     3
+     13750,
+     4
     ],
     [
      "OG",
      11811,
-     2
-    ],
-    [
-     "yinn",
-     11250,
      2
     ],
     [
@@ -91,6 +91,11 @@
      1
     ],
     [
+     "Abyssus",
+     7500,
+     1
+    ],
+    [
      "ONZASS",
      5250,
      1
@@ -99,6 +104,11 @@
      "Xclusivo",
      5250,
      1
+    ],
+    [
+     "Dynoco",
+     4062,
+     2
     ],
     [
      "Cajita",
@@ -116,12 +126,27 @@
      1
     ],
     [
-     "Cronox",
-     1250,
+     "Number",
+     3750,
      1
     ],
     [
-     "Dynoco",
+     "Delux",
+     2625,
+     1
+    ],
+    [
+     "Tam",
+     2625,
+     1
+    ],
+    [
+     "Nemi",
+     1875,
+     1
+    ],
+    [
+     "Cronox",
      1250,
      1
     ],
@@ -140,9 +165,19 @@
      2
     ],
     [
+     "yinn",
+     11250,
+     2
+    ],
+    [
      "Prosu",
      10000,
      1
+    ],
+    [
+     "Teo",
+     9375,
+     3
     ],
     [
      "Keider",
@@ -170,14 +205,9 @@
      2
     ],
     [
-     "Teo",
-     7500,
+     "SINTEXT",
+     5625,
      2
-    ],
-    [
-     "Abyssus",
-     7500,
-     1
     ],
     [
      "doble h",
@@ -190,9 +220,19 @@
      1
     ],
     [
+     "Abysuss",
+     5000,
+     1
+    ],
+    [
      "Elbesaabuelas",
      4500,
      1
+    ],
+    [
+     "Magic",
+     4062,
+     2
     ],
     [
      "AFR",
@@ -225,11 +265,6 @@
      1
     ],
     [
-     "SINTEXT",
-     3750,
-     1
-    ],
-    [
      "Number VE",
      3000,
      1
@@ -250,8 +285,8 @@
      1
     ],
     [
-     "Magic",
-     1250,
+     "7",
+     1875,
      1
     ],
     [
@@ -274,6 +309,93 @@
      1250,
      1
     ]
+   ],
+   [
+    [
+     "PUPPY",
+     30000,
+     1
+    ],
+    [
+     "MARITHEA",
+     22500,
+     1
+    ],
+    [
+     "FAT N",
+     18000,
+     1
+    ],
+    [
+     "COLOSO",
+     13500,
+     1
+    ],
+    [
+     "J1",
+     7500,
+     1
+    ],
+    [
+     "VISIONARIO",
+     7500,
+     1
+    ],
+    [
+     "PARKJINGSUN 🇨🇱",
+     5625,
+     1
+    ],
+    [
+     "🇪🇸 AKARK 🇪🇸 🇨🇱",
+     5625,
+     1
+    ],
+    [
+     "rodrilp",
+     3938,
+     1
+    ],
+    [
+     "Guty🇨🇱",
+     3750,
+     1
+    ],
+    [
+     "MauzzitoEmeces",
+     3750,
+     1
+    ],
+    [
+     "JM SERNA",
+     3750,
+     1
+    ],
+    [
+     "Erik",
+     2625,
+     1
+    ],
+    [
+     "Zaik",
+     1875,
+     1
+    ],
+    [
+     "🏳️‍⚧️ VEPG 🏳️‍⚧️",
+     1875,
+     1
+    ],
+    [
+     "TRRR 🇦🇷",
+     938,
+     1
+    ],
+    [
+     "Betelguese",
+     624,
+     1
+    ]
    ]
   ]
  ],
@@ -293,7 +415,7 @@
   "AREZ": 5,
   "Ab'l 🇦🇷 🇩🇴": 5,
   "Aby": 5,
-  "Abyssus": 5,
+  "Abyssus": 4,
   "Acry": 5,
   "Adriagner": 5,
   "Agre": 5,
@@ -301,13 +423,14 @@
   "Aktybo": 5,
   "Akutagawa🇹🇼": 5,
   "Aldre": 4,
-  "Alexi": 4,
+  "Alexi": 3,
   "Alonso": 5,
   "Andres": 4,
-  "Andy": 4,
+  "Andy": 5,
   "Ariaxer": 4,
   "Armando Faso🇦🇫": 5,
   "Assuan": 5,
+  "Astral": 5,
   "Axinu": 5,
   "BLANKO 🇺🇸": 5,
   "BLITZ": 5,
@@ -378,7 +501,7 @@
   "El Wachin": 5,
   "Elbesaabuelas": 5,
   "Elinge_TIMP": 5,
-  "Eliot": 5,
+  "Eliot": 4,
   "Elsoolar": 5,
   "EmiZor": 5,
   "Emilio Alva": 5,
@@ -402,6 +525,7 @@
   "Fleivacheck": 5,
   "Focox": 5,
   "Fol": 5,
+  "Force": 5,
   "Freestyle4AllmyNiggaz 🌏🌏": 5,
   "G-MC": 5,
   "GP": 5,
@@ -427,7 +551,7 @@
   "Heat": 5,
   "Henry": 5,
   "Holden": 5,
-  "Humildad": 4,
+  "Humildad": 5,
   "IFX": 5,
   "ISAIAS": 5,
   "Iguana": 5,
@@ -443,6 +567,7 @@
   "JULIX": 5,
   "Jayden": 5,
   "Jere": 5,
+  "Joaco Zeo": 5,
   "Johao": 5,
   "Jotap": 5,
   "Juanpa": 4,
@@ -482,7 +607,7 @@
   "Lambroggini": 5,
   "Launok": 5,
   "Leonart": 5,
-  "Letrao🇨🇱": 4,
+  "Letrao🇨🇱": 5,
   "Leyenda": 5,
   "Lhyon": 5,
   "Liam": 5,
@@ -554,7 +679,7 @@
   "Oasis": 2,
   "Ola🇲🇽": 5,
   "Oni 🇦🇷": 5,
-  "Ortiz": 5,
+  "Ortiz": 4,
   "PARADOJA": 5,
   "PIERR🇵🇪": 5,
   "PLA PLA": 5,
@@ -581,11 +706,12 @@
   "REPTILE JR": 5,
   "RICKYFORT": 5,
   "RIQUEZA": 5,
-  "RT": 5,
+  "RT": 4,
   "Ram": 5,
   "Rayden": 5,
   "Rayo": 5,
   "Redstonita": 5,
+  "Refran": 5,
   "Respawn": 5,
   "Reyes": 5,
   "ReyexXMC": 4,
@@ -628,7 +754,7 @@
   "Soft": 5,
   "Sombra": 5,
   "Soneto": 5,
-  "Sosa": 3,
+  "Sosa": 4,
   "Soulb": 5,
   "Spartan": 5,
   "Steven🇨🇴": 5,
@@ -669,7 +795,7 @@
   "YOUNG VLAD 🇨🇴": 5,
   "Yeyox": 5,
   "Yio": 5,
-  "Yor": 4,
+  "Yor": 5,
   "ZTR": 5,
   "ZWO 🇦🇷": 5,
   "Zafka": 5,
@@ -699,7 +825,7 @@
   "luisito 🏆": 5,
   "maldita enfermedad": 5,
   "melomaniaco": 5,
-  "melztube": 5,
+  "melztube": 4,
   "nebu": 5,
   "papa": 5,
   "rayito": 5,
@@ -714,7 +840,7 @@
   "volk 🇨🇴": 5,
   "wei shenlong": 5,
   "xz": 5,
-  "yinn": 4,
+  "yinn": 5,
   "🇺🇾 ATR": 5
  },
  "nombres": [
@@ -775,7 +901,7 @@
   ],
   [
    "2026-09-21",
-   "yinn",
+   "dxg",
    4
   ],
   [
@@ -790,17 +916,17 @@
   ],
   [
    "2026-09-21",
+   "Richard",
+   4
+  ],
+  [
+   "2026-09-21",
    "Miniboy",
    4
   ],
   [
    "2026-09-21",
    "Saito",
-   4
-  ],
-  [
-   "2026-09-21",
-   "Richard",
    4
   ],
   [
@@ -840,17 +966,17 @@
   ],
   [
    "2026-09-21",
+   "Molusco",
+   4
+  ],
+  [
+   "2026-09-21",
+   "Drexx",
+   4
+  ],
+  [
+   "2026-09-21",
    "Fazer",
-   4
-  ],
-  [
-   "2026-09-21",
-   "Panchok",
-   4
-  ],
-  [
-   "2026-09-21",
-   "Kochi",
    4
   ],
   [
@@ -870,12 +996,12 @@
   ],
   [
    "2026-09-21",
-   "Andy",
+   "Panchok",
    4
   ],
   [
    "2026-09-21",
-   "Humildad",
+   "Kochi",
    4
   ],
   [
@@ -885,12 +1011,12 @@
   ],
   [
    "2026-09-21",
-   "Molusco",
+   "JIMMY",
    4
   ],
   [
    "2026-09-21",
-   "JIMMY",
+   "NXUZ",
    4
   ],
   [
@@ -950,17 +1076,12 @@
   ],
   [
    "2026-09-28",
-   "Drexx",
+   "MCO",
    4
   ],
   [
    "2026-09-28",
    "Lord Viruzz",
-   4
-  ],
-  [
-   "2026-09-28",
-   "NXUZ",
    4
   ],
   [
@@ -980,7 +1101,17 @@
   ],
   [
    "2026-09-28",
+   "melztube",
+   4
+  ],
+  [
+   "2026-09-28",
    "Sosa",
+   4
+  ],
+  [
+   "2026-09-28",
+   "Number",
    4
   ],
   [
@@ -1000,17 +1131,7 @@
   ],
   [
    "2026-09-28",
-   "Yor",
-   4
-  ],
-  [
-   "2026-09-28",
    "Catarsis",
-   4
-  ],
-  [
-   "2026-09-28",
-   "Number",
    4
   ],
   [
@@ -1026,6 +1147,11 @@
   [
    "2026-09-28",
    "Eclipsito",
+   4
+  ],
+  [
+   "2026-09-28",
+   "Alexi",
    4
   ],
   [
@@ -1150,7 +1276,7 @@
   ],
   [
    "2026-10-05",
-   "MCO",
+   "RT",
    4
   ],
   [
@@ -1185,11 +1311,6 @@
   ],
   [
    "2026-10-05",
-   "Alexi",
-   4
-  ],
-  [
-   "2026-10-05",
    "Geoka",
    4
   ],
@@ -1201,6 +1322,11 @@
   [
    "2026-10-05",
    "Nemi",
+   4
+  ],
+  [
+   "2026-10-05",
+   "Eliot",
    4
   ],
   [
@@ -1270,12 +1396,12 @@
   ],
   [
    "2026-10-05",
-   "Letrao🇨🇱",
+   "Campoy",
    4
   ],
   [
    "2026-10-05",
-   "Campoy",
+   "Ortiz",
    4
   ],
   [
@@ -1315,12 +1441,12 @@
   ],
   [
    "2026-10-05",
-   "Motera",
+   "Alexi",
    3
   ],
   [
    "2026-10-05",
-   "Sosa",
+   "Motera",
    3
   ],
   [
@@ -1331,7 +1457,6 @@
  ],
  "ult": {
   "baja": [
-   "Abyssus",
    "Adriagner",
    "BTRX",
    "Badterne",
@@ -1340,6 +1465,7 @@
    "Krtman",
    "MTZ",
    "Prosu",
+   "Richard",
    "Zeta"
   ],
   "sem": "2026-10-05",
@@ -1358,12 +1484,11 @@
    "Dominick",
    "Dynoco",
    "EIDP",
+   "Eliot",
    "Geoka",
    "Guess",
    "HH",
-   "Letrao🇨🇱",
    "Liberia",
-   "MCO",
    "Makmah",
    "Medster",
    "Motera",
@@ -1374,15 +1499,16 @@
    "OG",
    "ONZASS",
    "Oasis",
+   "Ortiz",
    "PRAISERIZA",
    "Paria",
    "Pomberito",
    "Presagio",
    "Prodigy",
    "Provenza",
+   "RT",
    "Santi",
    "Snow",
-   "Sosa",
    "Tam",
    "Vandu",
    "Verc",
