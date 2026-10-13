@@ -461,7 +461,8 @@ function cierreChat(L, rondas, fb, tit, opc, gente, rival) {
   const lineas = ['🏆 **' + nombresChat(camp) + '** ' + (varios ? 'son los campeones' : 'es el campeón') + ' de **' + tit + '**'];
   if (ganadas) {
     lineas.push((varios ? 'Ganaron ' : 'Ganó ') + ganadas + (ganadas === 1 ? ' batalla' : ' batallas')
-      + (otros.length ? ' y en la final le ' + (varios ? 'ganaron' : 'ganó') + ' a ' + conY(otros) : '') + '.');
+      // «a el equipo de…» es «al equipo de…»
+      + (otros.length ? ' y en la final le ' + (varios ? 'ganaron' : 'ganó') + ' ' + ('a ' + conY(otros)).replace(/^a el /, 'al ') : '') + '.');
   }
   const tabla = opc.tabla || {};
   const ovr = (y) => (y && y.k && tabla[y.k] && tabla[y.k].ovr) || 0;
