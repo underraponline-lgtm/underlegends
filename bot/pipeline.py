@@ -1131,6 +1131,13 @@ def _lo_barato(correr):
         paso('2b3', 'el Lunes de la Liga')
         if not corre(['bot/lunes.py', '--publicar'], callado=False):
             print('      ⚠️ el Lunes de la Liga no salió: se reintenta en la próxima')
+        # ── 2b3d · los paneles de DRA: el ranking, Most Wanted y la semana ─
+        # 🔑 Dlx, 13/10/2026: «que DRA sea el centro de la Liga Global», «imagen con botones». Un mensaje por panel que
+        # se edita sólo si la imagen cambió (ver `bot/paneles_dra.py`). Sin los canales armados (`herramientas/dra_hub.py`)
+        # no hace nada. Nunca frena el ciclo
+        paso('2b3d', 'los paneles de DRA')
+        if not corre(['bot/paneles_dra.py', '--aplicar'], callado=False):
+            print('      ⚠️ los paneles de DRA no se actualizaron: se reintenta en la próxima')
         # ── 2b3b · cómo leyó el bot las llaves de la semana, a Logs ──────
         # 🔑 Dlx, 12/10/2026: «Si me gusta». Uno por semana; ver `bot/salud_lector.py`.
         paso('2b3b', 'cómo leyó el bot las llaves')

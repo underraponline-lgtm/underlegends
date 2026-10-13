@@ -1,0 +1,3 @@
+{
+ "_leeme": "DRA como centro de la Liga (Dlx, 13/10/2026): los ids de los canales que crea herramientas/dra_hub.py y los mensajes de cada panel de bot/paneles_dra.py (paneles: canal, msg y firma). Lo guarda el ciclo para no mandar un panel nuevo en cada corrida."
+}
