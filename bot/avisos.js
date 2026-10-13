@@ -1021,7 +1021,7 @@ export const TUTO_EV = new Set(['tour', 'tour_fin', 'salta0', 'salta1', 'salta2'
  * para ordenar la tira de abajo por uso de verdad y no por intuición
  */
 export const SECC_EV = new Set(['inicio', 'eventos', 'ranking', 'publicaciones', 'tarjetas', 'pase', 'tienda', 'socios',
-  'guia', 'perfil', 'servidor', 'crew', 'pais', 'cuenta', 'cambios', 'sumate',
+  'guia', 'perfil', 'servidor', 'crew', 'pais', 'cuenta', 'cambios',
   // 👆 y QUÉ SE TOCA EN EL INICIO (Dlx, 13/10/2026: «añadir eso de saber qué clickea la gente, y después tomar
   // decisiones así de drásticas»): `i-` cada bloque, `p-` cada puerta. Mismo trato: una vez por navegador y por día
   'i-historias', 'i-envivo', 'i-semana', 'i-ira', 'i-fechas', 'i-sebusca', 'i-noticias', 'i-encuestas', 'i-raperos',
@@ -2020,8 +2020,6 @@ const RUTAS = {
   '/avisos/bandeja': 'POST',
   // 🔥 tu racha diaria y tu nivel, con tu sesión; y el nivel y la racha de cada perfil. Ver `rachaDe()` y `niveles()`
   '/avisos/racha': 'POST', '/avisos/niveles': 'GET',
-  // 🤝 la postulación de /sumate, con tu sesión, al DM de Dlx. Ver `validarPostulacion()` y `postular()`
-  '/avisos/sumate': 'POST',
   // 🔑 las inscripciones que guardó el vigía, para el ciclo: con `claveCiclo()`
   '/avisos/inscritos': 'GET',
   // 🖼️ el texto de un anuncio que es una imagen, para el ciclo: con `claveCiclo()`. Ver `textoDeImagen()`
@@ -2280,51 +2278,6 @@ export function motivoAplauso(x) {
  * muro de KV, `id` el Discord ID que dijo Discord y `mios` sus perfiles (`d:`
  * y `dn:`). Pura, sin red: la prueba `bot/probar_local.mjs`.
  */
-// ═════════════════════════════════════════════════════════════════════
-// LA POSTULACIÓN DE /sumate
-// ═════════════════════════════════════════════════════════════════════
-//
-// 🔑 Dlx, 03/10/2026, a «¿qué le pedís a un servidor?»: «hacer 1 evento a la semana como mínimo… y entre otras cosas
-// que se discutirá conmigo… o incluso para hacerlo sencillo podríamos crear un ticket donde te envía el formulario a ti
-// y me lo envías a mí por Discord». Un formulario en /sumate que le llega a Dlx por DM —el único DM que hace el bot es a
-// él: `herramientas/sin_dm.py`—, con la sesión de Discord de quien la manda: así sabe quién escribió y le contesta.
-//
-// ⚠️ UNA POR PERSONA CADA 24 HORAS, y se guarda 90 días (`postulaciones`; `/borrar-mis-datos` la borra).
-export const TIPOS_POSTULACION = { servidor: 'Servidor de freestyle', comunidad: 'Comunidad o creador',
-  marca: 'Marca o patrocinador', otro: 'Otra cosa' };
-const texto1 = (v, max) => String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max);
-export function validarPostulacion(d) {
-  if (!d || typeof d !== 'object') return { error: 'faltan', que: 'Faltan los datos.' };
-  const tipo = TIPOS_POSTULACION[d.tipo] ? d.tipo : '';
-  if (!tipo) return { error: 'faltan', que: 'Elegí qué sos.' };
-  const nombre = texto1(d.nombre, 80);
-  if (nombre.length < 2) return { error: 'faltan', que: 'Falta el nombre.' };
-  let link = texto1(d.link, 200);
-  if (link && !/^https?:\/\/[^\s<>]+$/i.test(link)) return { error: 'faltan', que: 'El link tiene que empezar con https://' };
-  const n = (v, max) => {
-    const x = parseInt(String(v == null ? '' : v).replace(/[^\d]/g, ''), 10);
-    return Number.isFinite(x) && x >= 0 ? Math.min(x, max) : null;
-  };
-  // el mensaje conserva sus saltos de línea (hasta 1000 caracteres), sin el resto de los caracteres de control
-  const mensaje = String(d.mensaje == null ? '' : d.mensaje).replace(/\r\n?/g, '\n')
-    .replace(/[\u0000-\u0009\u000b-\u001f\u007f]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim().slice(0, 1000);
-  return { tipo, nombre, link, miembros: n(d.miembros, 10000000), eventos: tipo === 'servidor' ? n(d.eventos, 50) : null, mensaje };
-}
-/** El DM a Dlx con una postulación. Sin menciones que suenen (`allowed_mentions` vacío en el envío). */
-export function mensajePostulacion(p, quien, nombreDc) {
-  // ⚠️ lo que escribió otro va sin Markdown: un «[link](…)» en el nombre se vería como otro link (revisión del 03/10/2026)
-  const sinMd = (t) => String(t || '').replace(/([\\`*_~|[\]()<>#])/g, '\\$1');
-  const cita = (t) => sinMd(t).split('\n').map((l) => '> ' + l).join('\n');
-  const l = [`🤝 **Postulación desde /sumate** · ${TIPOS_POSTULACION[p.tipo] || p.tipo}`, `**Nombre:** ${sinMd(p.nombre)}`];
-  if (p.link) l.push(`**Link:** <${p.link}>`);
-  const nums = [p.miembros != null ? `**Son:** ${p.miembros.toLocaleString('es-AR')}` : '',
-    p.eventos != null ? `**Eventos por semana:** ${p.eventos}` : ''].filter(Boolean);
-  if (nums.length) l.push(nums.join(' · '));
-  l.push(`**Quién:** <@${quien}>${nombreDc ? ' · su perfil: ' + nombreDc : ''}`);
-  if (p.mensaje) l.push(cita(p.mensaje));
-  return l.join('\n').slice(0, 1900);
-}
-
 export function validarAplauso(items, d, id, mios, ahora) {
   const x = (Array.isArray(items) ? items : []).find((it) => it && it.id === (d && d.id));
   if (!x) return { error: 'no_existe', estado: 404 };
@@ -3368,24 +3321,6 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ quien: q.id }), headers: { 'content-type': 'application/json' },
     });
   }
-  // 🤝 LA POSTULACIÓN DE /sumate: validada acá, con quién la manda (su sesión), y al objeto, que se la manda a Dlx
-  if (ruta === '/avisos/sumate') {
-    const crudo = await req.text();
-    if (crudo.length > 4096) return json({ error: 'demasiado grande' }, 413);
-    let d = null;
-    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
-    const v = validarPostulacion(d);
-    if (v.error) return json(v, 400);
-    const q = await quienPide(req, env, d || {});
-    if (!q.id) return json({ error: q.error }, q.estado);
-    // ⚠️ es el único camino de un desconocido al DM de Dlx: con la misma antigüedad que votar o felicitar, o una
-    // cuenta recién hecha por persona y por día era un DM más (revisión del 03/10/2026)
-    const creada = creadaEn(q.id);
-    if (!creada || Date.now() - creada < EDAD_MIN_DIAS * DIA_MS) return json({ error: 'nueva' }, 403);
-    return elObjeto(env).fetch('https://avisos/sumate', {
-      method: 'POST', body: JSON.stringify({ quien: q.id, p: v }), headers: { 'content-type': 'application/json' },
-    });
-  }
   // 🎟️ EL PASE: el tuyo (pedirlo ya revisa tus Tareas) y «miré una llave en vivo», con tu sesión. ⚠️ Nunca por el
   // reenvío de abajo: ese pasa el cuerpo tal cual, y acá el `quien` lo pone la sesión
   if (ruta === '/avisos/pase' || ruta === '/avisos/pase-vivo') {
@@ -3953,7 +3888,8 @@ export class Avisos {
       // 🔢 cuántas veces cambió cada uno algo por día (ver `cuentaCambio()`): el tope de lo que escribe en KV
       this.sql.exec('CREATE TABLE IF NOT EXISTS cambios_dia (quien TEXT NOT NULL, que TEXT NOT NULL, dia TEXT NOT NULL, ' +
         'n INTEGER NOT NULL DEFAULT 0, PRIMARY KEY (quien, que, dia))');
-      // 🤝 las postulaciones de /sumate: 90 días (ver `postular()`)
+      // 🤝 las postulaciones de /sumate (la página se fue el 13/10/2026: «descartado»): la tabla se queda hasta que
+      // las que llegaron se borran solas a los 90 días
       this.sql.exec('CREATE TABLE IF NOT EXISTS postulaciones (id INTEGER PRIMARY KEY AUTOINCREMENT, quien TEXT NOT NULL, ' +
         "t INTEGER NOT NULL, datos TEXT NOT NULL, enviada INTEGER NOT NULL DEFAULT 0, error TEXT NOT NULL DEFAULT '')");
       // 🎟️ EL PASE DE RAPERO (05/10/2026): cada Tarea cumplida, por temporada y semana (`pase_hecho`: una cumplida no
@@ -4133,7 +4069,6 @@ export class Avisos {
       if (ruta === '/sigo') return this.sigo(d);
       if (ruta === '/aplaudir') return this.aplaudir(d);
       if (ruta === '/bandeja') return this.bandeja(d);
-      if (ruta === '/sumate') return await this.postular(d);
       if (ruta === '/mi-servidor') return this.miServidor(d);
       if (ruta === '/mi-foto') return await this.miFoto(d);
       if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
@@ -4341,7 +4276,7 @@ export class Avisos {
     }
     this.yo = canales.yo || '';
     this.dueno = (d && d.dueno) || '';
-    // guardado, para lo que llega por una ruta y no por el vigía (la postulación de /sumate): ver `postular()`
+    // guardado, para lo que llega por una ruta y no por el vigía (era la postulación de /sumate, que se fue el 13/10/2026)
     if (this.dueno && this.leer('dueno') !== this.dueno) this.guardar('dueno', this.dueno);
     let leidos = 0, nuevos = 0, pausa = 0;
     const errores = [];
@@ -6145,7 +6080,6 @@ export class Avisos {
   }
 
   /** Todos los dispositivos de esa persona, sueltos, y sus votos. Ver `olvidarAvisos()`. */
-  /** 🤝 La postulación de /sumate: una por persona cada 24 horas, guardada 90 días y al DM de Dlx. Ver `validarPostulacion()`. */
   // ── 🖼️ EL VS CON LAS DOS TARJETAS ──────────────────────────────────────
   // Dlx, 12/10/2026: «hacerlo más visual para mostrar las imágenes cuando sea un vs, o sea las tarjetas»; a las dos
   // formas, «B» (una imagen armada, con las dos tarjetas y el VS); y «salen en cada nivel con datos y a full». El Worker
@@ -6380,53 +6314,6 @@ export class Avisos {
     this.sql.exec('INSERT OR REPLACE INTO videos_decididos (id, si, t) VALUES (?, ?, ?)', Number(d.id), d.si ? 1 : 0, Date.now());
     this.guardar('videos_revisar', (this.leer('videos_revisar') || []).filter((x) => Number(x[0]) !== Number(d.id)));
     return { ok: true };
-  }
-
-  async postular(d) {
-    const quien = String((d && d.quien) || '');
-    if (!/^[0-9]{5,25}$/.test(quien) || !d.p) return json({ error: 'faltan' }, 400);
-    const ahora = Date.now();
-    // 🔴 SÓLO CUENTAN LAS QUE LLEGARON (revisión del 03/10/2026): si el DM fallaba, la que no llegó trababa el reintento
-    // 24 horas y la página decía «Dlx la tiene»
-    // ⚠️ Y LAS QUE ESTÁN SALIENDO: el objeto atiende otros pedidos mientras espera a Discord, así que N pedidos juntos
-    // pasaban los dos topes y le llegaban N DMs a Dlx (revisión del 04/10/2026). Una en curso (sin error todavía, de
-    // hace menos de dos minutos) cuenta como mandada
-    const cuenta = "(enviada = 1 OR (enviada = 0 AND error = '' AND t > " + (ahora - 2 * MIN) + '))';
-    if (this.sql.exec('SELECT 1 FROM postulaciones WHERE quien = ? AND t > ? AND ' + cuenta, quien, ahora - 24 * HORA).toArray().length) {
-      return json({ error: 'ya' }, 429);
-    }
-    // y un tope para todos: veinte DMs por día a Dlx como mucho (un día así es raro; lo demás, por @itsdlx)
-    if (this.sql.exec('SELECT COUNT(*) AS n FROM postulaciones WHERE t > ? AND ' + cuenta, ahora - 24 * HORA).toArray()[0].n >= 20) {
-      return json({ error: 'muchas' }, 429);
-    }
-    const id = this.sql.exec('INSERT INTO postulaciones (quien, t, datos) VALUES (?, ?, ?) RETURNING id',
-      quien, ahora, JSON.stringify(d.p)).toArray()[0].id;
-    // el nombre de Discord de quien la manda, si ya entró alguna vez (lo guarda `idk`): para que Dlx lo reconozca
-    let nombreDc = '';
-    try { nombreDc = ((this.sql.exec('SELECT k FROM idk WHERE id = ?', quien).toArray()[0] || {}).k) || ''; } catch (e) { nombreDc = ''; }
-    this.dueno = this.dueno || this.leer('dueno') || '';
-    let error = '';
-    if (!this.dueno || !this.env.DISCORD_TOKEN) error = 'sin dueño';
-    else {
-      const h = { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' };
-      try {
-        const r = await fetch(`${DC}/users/@me/channels`, { method: 'POST', headers: h,
-          body: JSON.stringify({ recipient_id: this.dueno }) });
-        if (r.status !== 200) error = 'canal ' + r.status;
-        else {
-          const ch = await r.json();
-          const r2 = await fetch(`${DC}/channels/${ch.id}/messages`, { method: 'POST', headers: h,
-            body: JSON.stringify({ content: mensajePostulacion(d.p, quien, nombreDc), allowed_mentions: { parse: [] } }) });
-          if (r2.status !== 200) error = 'mensaje ' + r2.status;
-        }
-      } catch (e) { error = String(e).slice(0, 120); }
-    }
-    this.sql.exec('UPDATE postulaciones SET enviada = ?, error = ? WHERE id = ?', error ? 0 : 1, error, id);
-    if (error) {
-      this.guardar('ultimo_error', { t: ahora, ruta: 'sumate', error });
-      return json({ error: 'no_llego' }, 502);
-    }
-    return json({ ok: true });
   }
 
   async olvidar(d) {
@@ -8022,16 +7909,8 @@ export class Avisos {
         // 🎛️ lo de siempre, para que el Dashboard lo muestre sin escribir los números (ver `apuestasCfg()`)
         def: { apuestas: { montos: AP_MONTOS, minutos: AP_CIERRA / MIN, tope: AP_TOPE },
           ritmo: { normal: CHAT_ENTRE / MIN, batalla: CHAT_ENTRE_TODO / MIN } } },
-      // 🤝 y lo que te llega por DM, junto: las postulaciones de /sumate y los errores reportados en las llaves (los 10
-      // últimos de cada uno), con la clave de la página de quien lo mandó si se la conoce
-      postulaciones: this.sql.exec('SELECT p.t, p.datos, p.enviada, p.error, i.k FROM postulaciones p ' +
-        'LEFT JOIN idk i ON i.id = p.quien ORDER BY p.t DESC LIMIT 10').toArray().map((f) => {
-        let p = {};
-        try { p = JSON.parse(f.datos) || {}; } catch (e) { p = {}; }
-        return { t: f.t, tipo: p.tipo || '', nombre: p.nombre || '', link: p.link || '', miembros: p.miembros,
-          eventos: p.eventos, mensaje: String(p.mensaje || '').slice(0, 400), llego: f.enviada === 1, error: f.error || '',
-          de: f.k || '' };
-      }),
+      // 🤝 los errores reportados en las llaves (los 10 últimos), con la clave de la página de quien lo mandó si se la
+      // conoce. Las postulaciones de /sumate se fueron con la página (13/10/2026)
       reportes: this.sql.exec('SELECT r.t, r.llave, r.que, r.texto, r.batalla, i.k FROM reportes r ' +
         'LEFT JOIN idk i ON i.id = r.quien ORDER BY r.t DESC LIMIT 10').toArray()
         .map((f) => ({ t: f.t, llave: f.llave, que: f.que, texto: String(f.texto || '').slice(0, 300), batalla: f.batalla, de: f.k || '' })),

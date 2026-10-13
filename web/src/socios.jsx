@@ -17,7 +17,7 @@ import { LaLiga } from './medio.jsx';
 import { REDES } from './servidor.jsx';
 import { BotHace, DLX, QueGana } from './sumar.jsx';
 
-// lo que hace la Liga por cada servidor, el bot y Dlx: en `sumar.jsx`, el mismo para Socios y para /sumate
+// lo que hace la Liga por cada servidor, el bot y Dlx: en `sumar.jsx` (era también de /sumate, que se fue el 13/10/2026)
 
 function Socio({ liga, s }) {
   const mm = liga.d.mult || {};
@@ -141,8 +141,6 @@ export function Socios({ liga }) {
             <p>Escribile a <b>@itsdlx</b> en Discord.</p>
             {/* el usuario de Discord va como es, en minúsculas: el botón pone todo en mayúsculas */}
             <a className="btn verde" href={DLX} target="_blank" rel="noopener noreferrer"><span>Escribirle a <span className="soc-at">@itsdlx</span> ↗</span></a>
-            {/* 🔍 la página aparte, con todo en detalle y la postulación (Dlx, 03/10/2026: «3. A», en la raíz) */}
-            <a className="soc-mas-l" href="#/sumate">Todo en detalle, y la postulación →</a>
           </div>
         </div>
       </section>

@@ -14,7 +14,7 @@ import { Lobby } from './lobby.jsx';
 import { pasosEnInicio, quiereTutorial } from './primera.js';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
 const SECC = new Set(['inicio', 'eventos', 'ranking', 'publicaciones', 'tarjetas', 'pase', 'tienda', 'socios', 'guia',
-  'perfil', 'servidor', 'crew', 'pais', 'cuenta', 'cambios', 'sumate',
+  'perfil', 'servidor', 'crew', 'pais', 'cuenta', 'cambios',
   'i-historias', 'i-envivo', 'i-semana', 'i-ira', 'i-fechas', 'i-sebusca', 'i-noticias', 'i-encuestas', 'i-raperos',
   'i-panel', 'i-merch', 'i-numeros', 'p-eventos', 'p-ranking', 'p-mw', 'p-tarjetas', 'p-pase', 'p-tienda']);
 // 👆 qué bloque del Inicio es cada toque: la puerta por su dirección, lo demás por el bloque que lo contiene
@@ -55,7 +55,6 @@ const Eventos = lazy(() => import('./eventos.jsx').then((m) => ({ default: m.Eve
 const Publicaciones = lazy(() => import('./publicaciones.jsx').then((m) => ({ default: m.Publicaciones })));
 const Socios = lazy(() => import('./socios.jsx').then((m) => ({ default: m.Socios })));
 const Guia = lazy(() => import('./guia.jsx').then((m) => ({ default: m.Guia })));
-const Sumate = lazy(() => import('./sumate.jsx').then((m) => ({ default: m.Sumate })));
 const Tarjetas = lazy(() => import('./tarjetas.jsx').then((m) => ({ default: m.Tarjetas })));
 const Perfil = lazy(() => import('./perfil.jsx').then((m) => ({ default: m.Perfil })));
 const Llave = lazy(() => import('./llave.jsx').then((m) => ({ default: m.Llave })));
@@ -164,7 +163,8 @@ try {
   if (mp) localStorage.setItem('lg:prev-' + mp[1], '1');
   if (mn) localStorage.removeItem('lg:prev-' + mn[1]);
 } catch (e) { /* sin almacenamiento, sin preview */ }
-// ✅ /sumate, publicada (Dlx, 03/10/2026: «2. A»): ya no hace falta `lg:prev-sum`
+// 🗑️ /sumate se fue el 13/10/2026 (Dlx: «descartado… nosotros elegimos manualmente a qué servidores el bot puede entrar
+// y asociarnos»): una dirección vieja a /sumate cae en el Inicio, como cualquier ruta que no existe
 // 🎮 el lobby como en los juegos (13/10/2026): con `?prev=lobby` hasta que Dlx lo vio, y desde las 3 AM para todos
 // (Dlx: «1. yes»). Las puertas de la 2.87 (`Puertas` de medio.jsx) y Fechas quedan en el código, sin usar
 
@@ -377,7 +377,7 @@ export default function App() {
   // 🔤 `/sv/SNK` es Snake Rap: la sigla que se lee abre el mismo perfil que el código (`Liga.codigo()`)
   if (sv && liga) sv = liga.codigo(sv);
   useEffect(() => { if (sv) window.scrollTo(0, 0); }, [sv]);
-  const enRanking = /^#\/(ranking|duelos|eventos|publicaciones|socios|mundo|guia|sumate|tarjetas)(\/|$|\?)/.test(hash || '');
+  const enRanking = /^#\/(ranking|duelos|eventos|publicaciones|socios|mundo|guia|tarjetas)(\/|$|\?)/.test(hash || '');
   useEffect(() => { if (enRanking) window.scrollTo(0, 0); }, [enRanking]);
   // qué página: '' es el Inicio; `cambios` (01/10/2026) la primera que el Inicio nuevo le sacó a la de hoy
   const partes = (hash || '').replace(/^#\/?/, '').split('?')[0].split('/');
@@ -413,7 +413,7 @@ export default function App() {
   // ⚠️ también cuando llegan los datos (`liga`), y un instante después: app.js vuelve a poner el suyo al pintarlos
   useEffect(() => {
     const crewT = pagina === 'crew' && liga ? (liga.d.crews || []).find((c) => (c.clave || c.crew) === crewId) : null;
-    const t = sv ? nombreSv : pagina === 'socios' || pagina === 'mundo' ? 'Socios' : pagina === 'sumate' ? 'Sumate'
+    const t = sv ? nombreSv : pagina === 'socios' || pagina === 'mundo' ? 'Socios'
       : pagina === 'tarjetas' ? 'Tarjetas'
       : crewT ? limpio(crewT.crew)
       : pagina === 'pais' && liga && (liga.d.tabla || []).some((f) => String(f.cc).toLowerCase() === String(partes[1]).toLowerCase())
@@ -477,7 +477,6 @@ export default function App() {
         : pagina === 'pais' && partes[1] ? <Aislada key={'Pais' + partes[1]} n="Pais" pagina><Suspense fallback={<Cargando />}><PaginaPais liga={liga} cc={partes[1]} /></Suspense></Aislada>
         : pagina === 'r' && partes[1] ? <Aislada key="Perfil" n="Perfil" pagina><Suspense fallback={<Cargando />}><Perfil liga={liga} dc={yo.dc} k={partes[1]} tab={partes[2] || ''} /></Suspense></Aislada>
         : pagina === 'tarjetas' ? <Aislada key="Tarjetas" n="Tarjetas" pagina><Suspense fallback={<Cargando />}><Tarjetas liga={liga} dc={yo.dc} tipo={partes[1] || ''} q={(hash || '').split('?')[1] || ''} /></Suspense></Aislada>
-        : pagina === 'sumate' ? <Aislada key="Sumate" n="Sumate" pagina><Suspense fallback={<Cargando />}><Sumate liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'guia' ? <Aislada key="Guia" n="Guia" pagina><Suspense fallback={<Cargando />}><Guia liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'publicaciones' ? <Aislada key="Publicaciones" n="Publicaciones" pagina><Suspense fallback={<Cargando />}><Publicaciones liga={liga} enc={enc} /></Suspense></Aislada>
         : pagina === 'eventos' || pagina === 'avisos' ? <Aislada key="Eventos" n="Eventos" pagina><Suspense fallback={<Cargando />}><Eventos liga={liga} vivoL={vivoL} dia={pagina === 'eventos' ? partes[1] || null : null} avisos={pagina === 'avisos'} /></Suspense></Aislada>

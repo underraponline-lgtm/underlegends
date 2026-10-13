@@ -158,13 +158,16 @@ const TOPES = [
   ['objeto', 'pedidos', 'El objeto · pedidos', 100000],
 ];
 const corta = (n) => (n >= 1e6 ? String(Math.round(n / 1e5) / 10).replace('.', ',') + ' M' : num(n));
+// los dos estados del ciclo, una vez por visita: los leen las cuotas y la meta del lobby
+let estadosP = null;
+const estados = () => (estadosP = estadosP || Promise.all(['estado_dibujar.json', 'estado_escuchar.json'].map((f) =>
+  fetch(RAW + f, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null))));
 function useCuotas(activo) {
   const [q, setQ] = useState(null);
   useEffect(() => {
     if (!activo) return undefined;
     let vivo = true;
-    Promise.all(['estado_dibujar.json', 'estado_escuchar.json'].map((f) =>
-      fetch(RAW + f, { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null)))
+    estados()
       .then((xs) => {
         const c = xs.filter((x) => x && x.cuotas).sort((a, b) => String(b.cuando).localeCompare(String(a.cuando)))[0];
         if (vivo) setQ(c ? Object.assign({ cuando: c.cuando }, c.cuotas) : false);
@@ -173,6 +176,67 @@ function useCuotas(activo) {
   }, [activo]);
   return q;
 }
+// ── 🎯 LA META DEL LOBBY, ESCRITA ANTES DE MIRAR (Dlx, 13/10/2026: «hacer todo»; el research «Lobbies de juegos que
+// enganchan», decisión 9 A: «se mide dos semanas antes y cuatro después contra una meta escrita»). El número es
+// «Vuelven a jugar» (`rankings.retencion()`): de los que debutan en una semana, cuántos juegan otro evento, otro día,
+// dentro de 14 días. Antes = las semanas de debut del 28/09 y el 05/10; con el lobby (para todos desde el 13/10) = las
+// del 12/10, 19/10, 26/10 y 02/11. La del 21/09 no cuenta: fue la del arranque, con todos nuevos. ⚠️ Una semana se
+// sabe recién 21 días después de su lunes (7 de debut + 14), por eso «completa». ⚠️ LA META NO SE CAMBIA DESPUÉS DE
+// MIRAR: es lo que la hace una meta
+const META_LOBBY = {
+  puntos: 10, escrita: '2026-10-13',
+  antes: ['2026-09-28', '2026-10-05'], despues: ['2026-10-12', '2026-10-19', '2026-10-26', '2026-11-02'],
+  // lo que puede torcer el número, anotado antes (el research: «una semana rara, un feriado o un servidor nuevo»)
+  ojo: ['FVS entró a la Liga el 12/10: gente nueva de otro servidor justo en la primera semana con el lobby'],
+};
+function useRetencion(activo) {
+  const [r, setR] = useState(null);
+  useEffect(() => {
+    if (!activo) return undefined;
+    let vivo = true;
+    estados().then((xs) => {
+      const c = xs.filter((x) => x && x.retencion && x.retencion.cohortes).sort((a, b) => String(b.cuando).localeCompare(String(a.cuando)))[0];
+      if (vivo) setR(c ? c.retencion : false);
+    });
+    return () => { vivo = false; };
+  }, [activo]);
+  return r;
+}
+function MetaLobby({ r }) {
+  if (r === null) return <p className="pronto-p">Midiendo…</p>;
+  if (!r) return <p className="pronto-p">Todavía no hay una medición del ciclo.</p>;
+  const por = Object.fromEntries((r.cohortes || []).map((c) => [c.semana, c]));
+  const pct = (xs) => {
+    const cs = xs.map((k) => por[k]).filter((c) => c && c.completa && c.nuevos);
+    const n = cs.reduce((t, c) => t + c.nuevos, 0);
+    return cs.length === xs.length && n ? (100 * cs.reduce((t, c) => t + c.volvieron, 0)) / n : null;
+  };
+  const a = pct(META_LOBBY.antes), d = pct(META_LOBBY.despues);
+  const fila = (k, cuando) => {
+    const c = por[k];
+    return (
+      <tr key={k}><td>{corto(k)}</td><td>{cuando}</td><td>{c ? num(c.nuevos) : '—'}</td>
+        <td>{c ? num(c.volvieron) + ' · ' + Math.round((100 * c.volvieron) / Math.max(1, c.nuevos)) + ' %' : '—'}</td>
+        <td>{c && c.completa ? 'completa' : 'se está midiendo'}</td></tr>
+    );
+  };
+  const fin = new Date(Date.parse(META_LOBBY.despues[META_LOBBY.despues.length - 1] + 'T12:00:00Z') + 21 * 864e5);
+  return (
+    <div className="db-aj">
+      <p className="db-tx"><b>La meta, escrita el {corto(META_LOBBY.escrita)} antes de mirar:</b> «Vuelven a jugar» sube <b>{META_LOBBY.puntos} puntos</b> con el
+        lobby. Es la parte de los que debutan en una semana que juega otro evento, otro día, dentro de 14 días.</p>
+      <div className="db-tabla"><table>
+        <thead><tr><th>Debut</th><th></th><th>Nuevos</th><th>Volvieron</th><th></th></tr></thead>
+        <tbody>{META_LOBBY.antes.map((k) => fila(k, 'antes'))}{META_LOBBY.despues.map((k) => fila(k, 'con el lobby'))}</tbody>
+      </table></div>
+      <p className="db-tx">{a == null ? 'Antes: se sabe cuando cierre la semana del ' + corto(META_LOBBY.antes[1]) + '. '
+        : 'Antes: ' + Math.round(a) + ' %. '}{d == null ? 'Con el lobby: se sabe el ' + corto(fin.toISOString().slice(0, 10)) + '.'
+        : 'Con el lobby: ' + Math.round(d) + ' %. ' + (d - a >= META_LOBBY.puntos ? '✅ Se cumplió la meta.' : '❌ No llegó a la meta (' + (d >= a ? '+' : '') + Math.round(d - a) + ' puntos).')}</p>
+      {META_LOBBY.ojo.map((x) => <p key={x} className="db-tx">⚠️ {x}.</p>)}
+    </div>
+  );
+}
+
 // lo que está cerca del techo, para el panel del Inicio
 const cuotasEnRojo = (q) => (q ? TOPES.filter(([g, k, , tope]) => ((q[g] || {})[k] || 0) >= 0.9 * tope) : []);
 function Cuotas({ q }) {
@@ -265,7 +329,7 @@ function TutorialNumeros({ t }) {
 // navegador cuenta cada sección una vez por día (App.jsx, `lg:secc`) y acá llega sumado: esta semana y la anterior
 const NOMBRE_SECC = { inicio: 'Inicio', eventos: 'Eventos', ranking: 'Ranking', publicaciones: 'Publicaciones',
   tarjetas: 'Tarjetas', pase: 'Pase', tienda: 'Tienda', socios: 'Socios', guia: 'Guía', perfil: 'Un perfil',
-  servidor: 'Un servidor', crew: 'Una crew', pais: 'Un país', cuenta: 'Mi cuenta', cambios: 'Novedades', sumate: 'Sumate',
+  servidor: 'Un servidor', crew: 'Una crew', pais: 'Un país', cuenta: 'Mi cuenta', cambios: 'Novedades',
   'i-historias': 'Las historias', 'i-envivo': 'Lo de arriba (Ahora)', 'i-semana': 'Esta semana', 'i-ira': 'La barra IR A',
   'i-fechas': 'Fechas', 'i-sebusca': 'Se busca', 'i-noticias': 'Lo último', 'i-encuestas': 'Encuestas y Tus eventos',
   'i-raperos': 'Los que mandan', 'i-panel': 'Misiones', 'i-merch': 'Merchandising', 'i-numeros': 'La Liga en números',
@@ -688,8 +752,6 @@ function Ajustes({ liga, aj, onAj, chat }) {
   );
 }
 
-const TIPO = { servidor: 'Servidor', marca: 'Marca', creador: 'Creador', otro: 'Otro' };
-
 // 🎬 LOS VIDEOS QUE NO ENTRARON SOLOS (12/10/2026): un canal grande, un nombre famoso o parecido, o dos de la Liga con
 // el mismo nombre. Aprobar o no lo aplica el ciclo (`bot/videos_propios.py`); acá sale de la lista al tocar
 function VideosRevisar({ vs }) {
@@ -721,25 +783,14 @@ function VideosRevisar({ vs }) {
   );
 }
 
-// 🤝 lo que también te llega por DM: las postulaciones de /sumate y los errores reportados en las llaves
+// 🤝 lo que también te llega: los errores reportados en las llaves y los videos para revisar (lo de /sumate se fue con
+// la página, el 13/10/2026)
 function Llego({ d }) {
-  const pos = d.postulaciones || [], rep = d.reportes || [], vs = d.videos || [];
-  if (!pos.length && !rep.length && !vs.length) return <p className="pronto-p">Nada todavía: ni errores reportados en las llaves ni videos para revisar.</p>;
+  const rep = d.reportes || [], vs = d.videos || [];
+  if (!rep.length && !vs.length) return <p className="pronto-p">Nada todavía: ni errores reportados en las llaves ni videos para revisar.</p>;
   return (
     <div className="db-llego">
       {vs.length ? <VideosRevisar vs={vs} /> : null}
-      {pos.length ? (
-        <div><h3>Quieren sumarse <small>/sumate</small></h3>
-          <ul>{pos.map((p) => (
-            <li key={p.t + p.nombre}>
-              <div className="db-l1"><b>{limpio(p.nombre)}</b><span className="db-chip">{TIPO[p.tipo] || p.tipo}</span>{!p.llego ? <span className="db-chip ojo">no llegó por DM</span> : null}</div>
-              <small>{hace(p.t)}{p.miembros != null ? ' · ' + num(p.miembros) + ' miembros' : ''}{p.eventos != null ? ' · ' + p.eventos + ' eventos por semana' : ''}{p.de ? <> · <a href={'#/r/' + p.de}>quién la mandó</a></> : null}</small>
-              {p.link ? <a className="db-link" href={p.link} target="_blank" rel="noopener noreferrer">{p.link}</a> : null}
-              {p.mensaje ? <p>{p.mensaje}</p> : null}
-            </li>
-          ))}</ul>
-        </div>
-      ) : null}
       {rep.length ? (
         <div><h3>Errores en las llaves <small>reportados</small></h3>
           <ul>{rep.map((r) => (
@@ -767,6 +818,7 @@ export function Dashboard({ dc, liga }) {
   }, [dc && dc.id]);
   useEffect(() => { W.scrollTo && W.scrollTo(0, 0); }, []);
   const cuotas = useCuotas(!!st.d);
+  const retencion = useRetencion(!!st.d);
   const onAj = (aj) => setSt((s) => (s.d ? { d: Object.assign({}, s.d, { ajustes: aj }) } : s));
   let cuerpo;
   if (st.cargando) cuerpo = <p className="pronto-p">Cargando…</p>;
@@ -818,6 +870,10 @@ export function Dashboard({ dc, liga }) {
             <SeccionesNumeros s={d.secciones} toques />
           </section>
         ) : null}
+        <section className="act">
+          <div className="mis-cab"><span>¿EL LOBBY HACE VOLVER A LA GENTE?</span><em>la meta del research</em></div>
+          <MetaLobby r={retencion} />
+        </section>
         {d.pase ? (
           <section className="act">
             <div className="mis-cab"><span>EL PASE DE RAPERO</span>{d.pase.semana ? <em>la semana del {corto(d.pase.semana)}</em> : null}</div>
@@ -902,7 +958,6 @@ export function PanelDueno({ liga }) {
             <div><dt>Usaron el bot</dt><dd>{num(s.bot || 0)}</dd><dd className="db-ini-s">personas · 7 días</dd></div>
             <div><dt>Entraron con Discord</dt><dd>{num(s.web || 0)}</dd><dd className="db-ini-s">a la página · 7 días</dd></div>
             <div><dt>Abrieron la página</dt><dd>{num(s.visitas_dia || 0)}</dd><dd className="db-ini-s">celus o compus por día · prom. 7 días</dd></div>
-            <div><dt>Postulaciones</dt><dd>{num((d.postulaciones || []).filter((p) => Date.now() - p.t < 7 * 864e5).length)}</dd><dd className="db-ini-s">servidores, por /sumate · 7 días</dd></div>
           </dl>
           {marcas.length ? <p className="db-ini-m">{marcas.join(' · ')}</p> : null}
         </>
