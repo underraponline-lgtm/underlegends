@@ -4789,6 +4789,15 @@ export class Avisos {
               // 📊 el Score va también: la barra de quién gana de la imagen lo prefiere al OVR (`prob_vs()` de bot/kit.py)
               a: { n: ga[0].n, fl: ga[0].fl, k: ga[0].k, ovr: (dc.tabla[ga[0].k] || {}).ovr || 0, sc: (dc.tabla[ga[0].k] || {}).sc || 0, carta: ga[0].k ? dc.cartaDe(ga[0].k) : '' },
               b: { n: gb[0].n, fl: gb[0].fl, k: gb[0].k, ovr: (dc.tabla[gb[0].k] || {}).ovr || 0, sc: (dc.tabla[gb[0].k] || {}).sc || 0, carta: gb[0].k ? dc.cartaDe(gb[0].k) : '' } } : null;
+            // 🧾 y lo de los costados de la imagen y el cara a cara (13/10/2026): la letra, los últimos 5 y la racha de cada
+            // uno, y cuántas ganó cada uno contra el otro (`html_vs()` de bot/kit.py)
+            if (vs) {
+              const forma = (y) => (y.du || []).slice().sort((p, q) => Number(p[0]) - Number(q[0])).slice(-5).map((d) => (d[2] ? 'G' : 'P')).join('');
+              for (const [l, y] of [[vs.a, x.a], [vs.b, x.b]]) {
+                Object.assign(l, { rg: (y.f || {}).rg || '', forma: forma(y), racha: (y.rd && y.rd[0]) || 0 });
+              }
+              vs.h2h = [x.h2h.ga, x.h2h.gb];
+            }
             ms.push(Object.assign({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n') }, vs ? { vs } : {}));
           }
         }
@@ -6251,9 +6260,14 @@ export class Avisos {
     const id = [...crypto.getRandomValues(new Uint8Array(10))].map((x) => x.toString(16).padStart(2, '0')).join('');
     const lado = (y) => ({ n: String((y && y.n) || '').slice(0, 40), fl: String((y && y.fl) || '').slice(0, 8),
       k: String((y && y.k) || '').slice(0, 60), ovr: Number(y && y.ovr) || 0,
+      // 📊🧾 lo de la barra y los costados (13/10/2026): el Score, la letra, los últimos 5 y la racha. ⚠️ Esta lista
+      // decide qué llega a la imagen: lo que no esté acá se pierde callado (el Score se perdía así la primera vez)
+      sc: Number(y && y.sc) || 0, rg: /^(S{1,3}|[A-E][+\-−]?)$/.test(String((y && y.rg) || '')) ? String(y.rg) : '',
+      forma: String((y && y.forma) || '').replace(/[^GP]/g, '').slice(-5), racha: Math.max(0, Math.min(999, Number(y && y.racha) || 0)),
       carta: /^https:\/\/pub-[a-z0-9]+\.r2\.dev\//.test(String((y && y.carta) || '')) ? String(y.carta).slice(0, 300) : '' });
-    const datos = { ev: String(d.ev || '').slice(0, 80), ronda: String(d.ronda || '').slice(0, 30),
-      titulo: String(d.titulo || '').slice(0, 40), sub: String(d.sub || '').slice(0, 120), a: lado(d.a), b: lado(d.b) };
+    const h2h = Array.isArray(d.h2h) && d.h2h.length === 2 ? d.h2h.map((x) => Math.max(0, Math.min(999, Number(x) || 0))) : null;
+    const datos = Object.assign({ ev: String(d.ev || '').slice(0, 80), ronda: String(d.ronda || '').slice(0, 30),
+      titulo: String(d.titulo || '').slice(0, 40), sub: String(d.sub || '').slice(0, 120), a: lado(d.a), b: lado(d.b) }, h2h ? { h2h } : {});
     this.sql.exec('INSERT INTO vs_cola (id, sv, canal, msg, datos, t) VALUES (?, ?, ?, ?, ?, ?)', id,
       String(d.sv || '').toUpperCase().slice(0, 6), String(d.canal), String(d.msg), JSON.stringify(datos), ahora);
     return { ok: true, id };

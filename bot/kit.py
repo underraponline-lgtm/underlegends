@@ -283,6 +283,35 @@ def html_vs(v, d):
         ovr = '<span class="et ovr">OVR %d</span>' % y['ovr'] if y.get('ovr') else ''
         return ('<div class="ld %s"><div class="sin"><img class="sil" src="%s" alt=""><b>%s%s</b>%s</div></div>'
                 % (cls, sil(y.get('n')), _e(y.get('n') or '¿?'), bandera(y.get('fl')), ovr))
+    def panel(y, cls):
+        """🧾 a un costado de cada tarjeta (13/10/2026, Dlx: «me gustan todas las ideas»): su letra con su color, los
+        últimos 5 duelos —verde ganó, magenta perdió, del más viejo al más nuevo— y la racha si es de 2 o más. Sobre una
+        placa oscura: el costado izquierdo es del color del servidor, y en Urban (amarillo) el blanco no se leía"""
+        y = y or {}
+        partes = []
+        rg = str(y.get('rg') or '')
+        if rg:
+            from comun.rangos import ACENTO
+            col = ACENTO.get(rg.rstrip('+-\u2212'), '#F6F6F6')
+            partes.append('<div class="pz"><span class="et">Rango</span><b class="rg" style="color:%s;border-color:%s">%s</b></div>'
+                          % (col, col, _e(rg)))
+        forma = re.sub(r'[^GP]', '', str(y.get('forma') or ''))[-5:]
+        if forma:
+            partes.append('<div class="pz"><span class="et">%s</span><span class="fm">%s</span></div>'
+                          % ('\u00daltimo' if len(forma) == 1 else '\u00daltimos %d' % len(forma),
+                             ''.join('<i class="%s"></i>' % ('g' if c == 'G' else 'p') for c in forma)))
+        if int(y.get('racha') or 0) >= 2:
+            partes.append('<div class="pz"><span class="et">Racha</span><b class="rc">%d</b></div>' % int(y['racha']))
+        return '<div class="pn %s">%s</div>' % (cls, ''.join(partes)) if partes else ''
+
+    def cara_a_cara():
+        h = v.get('h2h')
+        if not isinstance(h, (list, tuple)) or len(h) != 2:
+            return ''
+        if not (h[0] or h[1]):
+            return '<div class="hh"><span class="et">Primer cruce</span></div>'
+        return '<div class="hh"><span class="et">Cara a cara</span><b>%d<i>\u2013</i>%d</b></div>' % (int(h[0]), int(h[1]))
+
     def barra():
         pr = prob_vs(v.get('a'), v.get('b'))
         if not pr:
@@ -324,16 +353,35 @@ def html_vs(v, d):
 #c .pr-b i{display:block;height:100%%;background:#E41373;border-right:3px solid #0a0a0d}
 #c .pr.nada .pr-b{background:#3A3A3E}
 #c .pr .et{display:block;margin-top:8px;font-size:18px;opacity:.85}
+#c .pn{position:absolute;top:140px;width:120px;display:grid;gap:20px;justify-items:center;text-align:center;
+  padding:14px 6px;background:rgba(10,10,13,.72);border-radius:10px}
+#c .pn.a{left:15px}
+#c .pn.b{right:15px}
+#c .pz{display:grid;gap:7px;justify-items:center}
+#c .pz .et{font-size:16px;opacity:.85}
+#c .pz .rg{font-weight:900;font-size:40px;line-height:1;padding:4px 10px;border:3px solid;min-width:62px}
+#c .fm{display:flex;gap:4px}
+#c .fm i{display:block;width:17px;height:17px;border:2px solid #fff}
+#c .fm i.g{background:#29B298}
+#c .fm i.p{background:#E41373}
+#c .rc{font-weight:900;font-size:40px;line-height:1;color:#FFD24A}
+#c .hh{position:absolute;left:50%%;top:136px;transform:translateX(-50%%);width:212px;text-align:center;
+  padding:10px 8px 12px;background:rgba(10,10,13,.72);border-radius:10px}
+#c .hh .et{font-size:20px;opacity:.9}
+#c .hh b{display:block;margin-top:4px;font-weight:900;font-size:60px;line-height:1}
+#c .hh b i{font-style:normal;opacity:.55;margin:0 10px}
 </style></head><body><div id="c" class="f">
 <div class="mitad"></div>
 <div class="cab"><div><b>%s</b><span class="et">%s · %s</span></div><div class="marca">%s</div></div>
 %s%s
+%s%s%s
 <div class="vs">VS</div>
 %s%s
 <div class="liga"></div>
 </div></body></html>""" % (_fuentes(), _BASE_CSS, _e(d['color']), _e(ev[:60] or 'Liga Global'), _e(v.get('ronda') or ''),
                             _e(d['nombre']), ('<img src="%s" alt="">' % d['logo']) if d['logo'] else '',
-                            lado(v.get('a'), 'a'), lado(v.get('b'), 'b'), barra(), tit)
+                            lado(v.get('a'), 'a'), lado(v.get('b'), 'b'), panel(v.get('a'), 'a'), panel(v.get('b'), 'b'),
+                            cara_a_cara(), barra(), tit)
 
 
 def foto(htm, ruta, jpeg=False):
@@ -505,10 +553,12 @@ if __name__ == '__main__':
             j = (lob.get('cartas') or []).index(c) if c else -1
             ver = (f.get('cv') or '').split('.')[j] if c and f.get('cv') else ''
             fl = ''.join(chr(0x1F1E6 + ord(x) - 97) for x in (f.get('cc') or '')) if len(f.get('cc') or '') == 2 else ''
-            return {'n': f.get('n'), 'fl': fl, 'ovr': f.get('ovr') or 0, 'sc': f.get('sc') or 0,
+            return {'n': f.get('n'), 'fl': fl, 'ovr': f.get('ovr') or 0, 'sc': f.get('sc') or 0, 'rg': f.get('rg') or '',
                     'carta': ('%s/%s/%s.webp%s' % (lob['r2'], k, c, '?v=' + ver if ver else '')) if c else ''}
         v = {'ev': 'COMPE POR 1.5 DOLARES', 'ronda': 'Cuartos', 'titulo': 'LA REVANCHA',
              'sub': '%s le ganó la última vez' % _lado(ks[0])['n'], 'a': _lado(ks[0]), 'b': _lado(ks[1])}
+        # ⚠️ de MUESTRA: los últimos 5, la racha y el cara a cara salen de los perfiles, que el lobby no trae
+        v['a'].update(forma='GGPGG', racha=3); v['b'].update(forma='PGGPG', racha=0); v['h2h'] = [2, 1]
         os.makedirs(SALIDA, exist_ok=True)
         ruta = os.path.join(SALIDA, 'vs_muestra_%s_%s.jpg' % tuple(ks))
         foto(html_vs(v, _sv_datos(sv)), ruta, jpeg=True)
