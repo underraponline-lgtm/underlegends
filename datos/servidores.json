@@ -451,7 +451,18 @@
      "categoria_id": "1309234419525222477",
      "creada": "2026-10-04"
     }
-   ]
+   ],
+   "redes": [
+    [
+     "instagram",
+     "https://www.instagram.com/lacrew.renovacion.02/"
+    ],
+    [
+     "youtube",
+     "https://www.youtube.com/@lacrewoficial-g4i"
+    ]
+   ],
+   "youtube_id": "UCHl-Olxawp-GwiKW3P2kWMQ"
   },
   "FVS": {
    "nombre": "Freestyle Versus",
@@ -490,7 +501,14 @@
      "categoria_id": "1543048026107412489",
      "creada": "2026-10-12"
     }
-   ]
+   ],
+   "redes": [
+    [
+     "youtube",
+     "https://www.youtube.com/channel/UCvBsCGWVsw0lq0jf_d8O98g"
+    ]
+   ],
+   "youtube_id": "UCvBsCGWVsw0lq0jf_d8O98g"
   }
  },
  "_fuera_de_la_tabla": [
