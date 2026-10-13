@@ -1251,6 +1251,21 @@ const ok = (cond, que, det) => {
     o.duenoVideo({ id: c.pedidos[1].id, si: true });
     ok(o.panelDueno().videos.length === 0 && o.videosCiclo().decididos[c.pedidos[1].id] === true,
       'Dlx lo aprueba: sale del Dashboard y el ciclo lo recibe');
+    // 📣 seguir a un organizador: el anuncio nuevo va a su bandeja y a la cola del push
+    const so = o.seguirOrg({ quien: '700000000000000003', nombre: '@Kravitz', si: true });
+    ok(so.ok && so.orgs[0].org === 'kravitz' && A.claveOrg('𝐊𝐫𝐚𝐯𝐢𝐭𝐳') === 'kravitz', 'seguir a «@Kravitz»: su clave, también con letras de fantasía');
+    const n = o.colaOrg('Kravitz', 'DESGRACIAS EN TOKYO VOL 30', null, 'https://discord.com/x', 'FFA', '999', Date.now());
+    const ban = (await (await o.bandeja({ quien: '700000000000000003' })).json());
+    ok(n === 1 && JSON.stringify(ban).includes('Kravitz organiza DESGRACIAS'), 'su anuncio llega a la bandeja de quien lo sigue');
+    ok(o.seguirOrg({ quien: '700000000000000003', nombre: 'Kravitz', si: false }).orgs.length === 0, 'y se deja de seguir');
+    // 📅 /agendar: hasta 20 por servidor, el mismo nombre lo corrige, y se borra
+    const ini = Date.now() + 3 * 864e5;
+    ok(o.agendar({ sv: 'SR', g: '1', quien: '700000000000000001', nombre: 'Copa X', ini, formato: '1vs1' }).ok
+      && o.agendar({ sv: 'SR', g: '1', quien: '700000000000000001', nombre: 'copa x', ini: ini + 3600000 }).ok
+      && o.agendaCiclo().agenda.length === 1 && o.agendaCiclo().agenda[0].ini === ini + 3600000,
+    'agendar: el mismo nombre otra vez lo corrige, no lo duplica');
+    ok(o.agendar({ sv: 'SR', nombre: 'Copa X', borrar: true }).ok && o.agendaCiclo().agenda.length === 0
+      && o.agendar({ sv: 'SR', nombre: 'Copa X', borrar: true }).error === 'no_esta', 'y se borra');
   }
 }
 

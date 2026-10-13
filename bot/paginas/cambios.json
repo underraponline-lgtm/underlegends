@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.77",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T21:00:00-04:00",
+   "titulo": "/agendar y seguir organizadores",
+   "items": [
+    "📅 **`/agendar`** para el staff de cada servidor: un evento con día, hora y país sale en el calendario de la Liga, y cada uno lo ve en su hora.",
+    "📣 En Eventos podés **seguir a un organizador**: te avisa la campana cuando anuncia un evento."
+   ]
+  },
+  {
    "version": "2.76",
    "dia": "2026-10-12",
    "cuando": "2026-10-12T20:45:00-04:00",

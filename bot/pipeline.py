@@ -1212,6 +1212,12 @@ def _lo_barato(correr):
     # ── 2b9 · 🏟️ las ligas de los servidores (`bot/ligas.py`, Dlx 12/10/2026: «1. A», «2. Me gusta»): cada batalla con
     # su resultado, para la pestaña «Ligas» de la web y como duelos (Ranking Duelos y Win%: los toma el paso 1c de la
     # corrida siguiente, como las misiones). Nunca frena el ciclo
+    # ── 2b8b · 📅 lo agendado con /agendar (`bot/agenda.py`, Dlx 12/10/2026: «5. D»): antes de la web, que lo pone en
+    # el calendario como un anuncio más. Nunca frena el ciclo
+    if correr:
+        paso('2b8b', 'la agenda')
+        if not corre(['bot/agenda.py', '--aplicar'], callado=True, mostrar=('📅', '⚠️')):
+            print('      ⚠️ la agenda falló: queda lo de la corrida anterior')
     if correr:
         paso('2b9', 'las ligas')
         if not corre(['bot/ligas.py', '--aplicar'], callado=False):

@@ -828,6 +828,12 @@ export const CANAL_LOGS = '1504110449535483924';
  * no falla, se saltea. Dos rondas distintas nombradas y cuatro renglones con dos nombres o más (sin contar los de las
  * rondas). ⚠️ La plantilla vacía (`(< >) ⚔️ (< >)`) y la charla del canal («arrancan los cuartos, la final a las 9») no.
  */
+/** 📣 La clave de un organizador: sin la arroba, en minúsculas y sólo letras y números (`latino()` para las de fantasía). */
+export function claveOrg(nombre) {
+  return latino(String(nombre || '').replace(/^[@!\s]+/, '')).toLowerCase().replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]/g, '').slice(0, 40);
+}
+
 //: 🌲 `escuchar.PARECIDAS`, la MISMA cadena (la compara el self-check de Python): las letras de otros alfabetos que
 //: imitan a las latinas. EL BOSQUE DE ARTEMISA (Snake Rap, 12/10/2026) escribió sus rondas `ᎾᏟᎢᎪᏙᎾᏚ`, en cheroqui, y
 //: ni `pareceLlave()` ni `intentoDeLlave()` la veían: ni se guardaba en vivo ni avisaba que no se podía leer
@@ -1827,6 +1833,10 @@ const RUTAS = {
   // verificado; reportar el de otro; lo del ciclo, con su clave; y aprobar lo raro, sólo Dlx. Ver `misVideos()`
   '/avisos/mis-videos': 'POST', '/avisos/video-reportar': 'POST',
   '/avisos/videos-ciclo': 'GET', '/avisos/videos-estados': 'POST', '/avisos/dueno/video': 'POST',
+  // 📅 lo agendado con /agendar, para el ciclo: con su clave. Ver `agendar()`
+  '/avisos/agenda-ciclo': 'GET',
+  // 📣 seguir a un organizador, con tu sesión. Ver `seguirOrg()`
+  '/avisos/seguir-org': 'POST',
 };
 
 // ── los anuncios que son una imagen ────────────────────────────────────
@@ -3181,6 +3191,29 @@ export async function rutaAvisos(req, env, ruta) {
       headers: { 'content-type': 'application/json' },
     });
   }
+  // 📣 SEGUIR A UN ORGANIZADOR: quién sos lo dice Discord (o la sesión). Ver `seguirOrg()`
+  if (ruta === '/avisos/seguir-org') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/seguir-org', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ quien: q.id, accion: String(d.accion || '').slice(0, 6), nombre: String(d.nombre || '').slice(0, 80),
+        si: d.si !== false }),
+    });
+  }
+  // 📅 LO AGENDADO CON /agendar, PARA EL CICLO: con su clave (trae quién lo agendó)
+  if (ruta === '/avisos/agenda-ciclo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    return elObjeto(env).fetch('https://avisos/agenda-ciclo');
+  }
   // 🎬 LOS PEDIDOS DE VIDEOS, PARA EL CICLO, Y LO QUE DECIDIÓ: con su clave (traen Discord IDs)
   if (ruta === '/avisos/videos-ciclo' || ruta === '/avisos/videos-estados') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -3579,6 +3612,18 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS videos_quitados (clave TEXT NOT NULL, vid TEXT NOT NULL, t INTEGER NOT NULL, ' +
         'PRIMARY KEY (clave, vid))');
       this.sql.exec('CREATE TABLE IF NOT EXISTS videos_decididos (id INTEGER PRIMARY KEY, si INTEGER NOT NULL, t INTEGER NOT NULL)');
+      // 📣 SEGUIR A UN ORGANIZADOR (12/10/2026, Dlx «5. E»): a quién sigue cada uno, y la cola de avisos cuando anuncia.
+      // Ver `seguirOrg()` y `avisarOrgs()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS sigue_org (quien TEXT NOT NULL, org TEXT NOT NULL, nombre TEXT NOT NULL, ' +
+        't INTEGER NOT NULL, PRIMARY KEY (quien, org))');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS sigue_org_o ON sigue_org (org)');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS org_cola (id INTEGER PRIMARY KEY AUTOINCREMENT, quien TEXT NOT NULL, ' +
+        'clave TEXT NOT NULL, titulo TEXT NOT NULL, cuerpo TEXT NOT NULL, url TEXT NOT NULL, t INTEGER NOT NULL, ' +
+        'hecho INTEGER NOT NULL DEFAULT 0)');
+      // 📅 /agendar (12/10/2026): los eventos que agenda el staff de cada servidor. Ver `agendar()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS agenda (id INTEGER PRIMARY KEY AUTOINCREMENT, sv TEXT NOT NULL, g TEXT NOT NULL, ' +
+        "quien TEXT NOT NULL, nombre TEXT NOT NULL, ini INTEGER NOT NULL, formato TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, " +
+        'borrado INTEGER NOT NULL DEFAULT 0)');
       // ⭐ «ALGUIEN TE SIGUE» (02/10/2026): qué seguimiento ya se avisó, y cuándo fue el último aviso de cada perfil.
       // ⚠️ LO QUE YA EXISTÍA NACE AVISADO (DEFAULT 1): si no, la primera vuelta le diría a cada uno «N personas nuevas
       // te siguen» por lo de siempre. `seguir()` anota 0. Ver `avisarSeguidores()`
@@ -3788,6 +3833,8 @@ export class Avisos {
       if (ruta === '/finales') return json(this.leer('finales') || {}, 200, 0);
       // 🎬 los pedidos de videos, para el ciclo (`bot/videos_propios.py`), con su clave
       if (ruta === '/videos-ciclo') return json(this.videosCiclo(), 200, 0);
+      // 📅 lo agendado con /agendar, para el ciclo (`bot/agenda.py`), con su clave
+      if (ruta === '/agenda-ciclo') return json(this.agendaCiclo(), 200, 0);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
       if (ruta === '/final') return json(this.finalElegir(d));
@@ -3795,6 +3842,9 @@ export class Avisos {
       if (ruta === '/kit') return json(this.kitGuardar(d));
       if (ruta === '/kit-listo') return json(await this.kitListo(d));
       if (ruta === '/mis-videos') return this.misVideos(d);
+      if (ruta === '/seguir-org') return json(this.seguirOrg(d));
+      // 📅 /agendar: sólo el Worker llega acá (no está en `RUTAS_AVISOS`), ya con el staff comprobado
+      if (ruta === '/agendar') return json(this.agendar(d));
       if (ruta === '/video-reportar') return this.videoReportar(d);
       if (ruta === '/videos-estados') return json(this.videosEstados(d));
       if (ruta === '/dueno-video') return json(this.duenoVideo(d));
@@ -4162,6 +4212,10 @@ export class Avisos {
     // 👏 y cuántos te felicitaron. Nunca frena al vigía: ver `avisarAplausos()`
     try { await this.avisarAplausos(ahora); } catch (e) {
       this.guardar('aplausos', { t: ahora, error: String(e).slice(0, 120) });
+    }
+    // 📣 y el organizador que seguís anunció. Nunca frena al vigía: ver `avisarOrgs()`
+    try { await this.avisarOrgs(ahora); } catch (e) {
+      this.guardar('orgs', { t: ahora, error: String(e).slice(0, 120) });
     }
     // 🔑 el precio por cabeza: lo que el ciclo resolvió (cazado o devuelto),
     // cada cinco minutos. Nunca frena al vigía: ver `resolverPrecios()`
@@ -5351,6 +5405,12 @@ export class Avisos {
     const hasta = ini != null ? ini + GRACIA : publicado + EDAD_SIN_HORA;
     this.sql.exec('INSERT OR IGNORE INTO avisos (id, sv, cuerpo, desde, hasta, creado) ' +
       'VALUES (?, ?, ?, ?, ?, ?)', m.id, c.sv, JSON.stringify(cuerpo), ahora, hasta, ahora);
+    // 📣 y a quienes siguen a su organizador —el «Organiza:» o, sin él, quien lo publicó—. Nunca frena
+    try {
+      const au = m.author || {};
+      this.colaOrg(a.organizador || (m.member && m.member.nick) || au.global_name || au.username || '', a.nombre, ini,
+        cuerpo.url, c.svn || c.sv, m.id, ahora);
+    } catch (e) { /* sigue */ }
     // y a la cola de `eventos-hoy`, salvo que el anuncio haya salido de ahí
     if (c.id !== CANAL_RED) {
       this.sql.exec('INSERT OR IGNORE INTO posts (id, cuerpo, creado) VALUES (?, ?, ?)',
@@ -5658,6 +5718,92 @@ export class Avisos {
 
   /** Todos los dispositivos de esa persona, sueltos, y sus votos. Ver `olvidarAvisos()`. */
   /** 🤝 La postulación de /sumate: una por persona cada 24 horas, guardada 90 días y al DM de Dlx. Ver `validarPostulacion()`. */
+  // ── 📣 SEGUIR A UN ORGANIZADOR ───────────────────────────────────────
+  // Dlx, 12/10/2026, «5. E»: casi todo se anuncia a último momento, así que el aviso tiene que llegar al anunciarse. La
+  // campana ya avisa por servidor (`subs.svs`); esto es por PERSONA: «avisame cuando Kravitz organice algo».
+  /** Seguir (`si`) o dejar de seguir a un organizador, o ver a quiénes seguís (`ver`). */
+  seguirOrg(d) {
+    const quien = String(d.quien || '');
+    if (!/^[0-9]{5,25}$/.test(quien)) return { error: 'faltan datos' };
+    const lista = () => this.sql.exec('SELECT org, nombre FROM sigue_org WHERE quien = ? ORDER BY t DESC', quien).toArray();
+    if (d.accion === 'ver') return { ok: true, orgs: lista() };
+    const nombre = String(d.nombre || '').replace(/^[@!\s]+/, '').trim().slice(0, 60);
+    const org = claveOrg(nombre);
+    if (!org) return { error: 'nombre' };
+    if (d.si === false) this.sql.exec('DELETE FROM sigue_org WHERE quien = ? AND org = ?', quien, org);
+    else {
+      if (this.sql.exec('SELECT COUNT(*) AS n FROM sigue_org WHERE quien = ?', quien).toArray()[0].n >= 30) return { error: 'muchos' };
+      this.sql.exec('INSERT OR REPLACE INTO sigue_org (quien, org, nombre, t) VALUES (?, ?, ?, ?)', quien, org, nombre, Date.now());
+    }
+    return { ok: true, orgs: lista() };
+  }
+
+  /** Un anuncio nuevo de `nombre` (el organizador): a la bandeja de quienes lo siguen, y a la cola del push. */
+  colaOrg(nombre, evento, ini, url, svn, id, ahora) {
+    const org = claveOrg(nombre);
+    if (!org) return 0;
+    const qs = this.sql.exec('SELECT quien, nombre FROM sigue_org WHERE org = ? LIMIT 200', org).toArray();
+    for (const q of qs) {
+      const titulo = '📣 ' + q.nombre + ' organiza ' + String(evento || '').slice(0, 60);
+      // ⚠️ sin la hora: el objeto no sabe en qué zona estás, y la página y Discord sí (el anuncio la muestra en la tuya)
+      const cuerpo = String(svn || '') + ' · tocá para ver el anuncio';
+      this.aBandeja(q.quien, 'org:' + id, 'organiza', titulo, cuerpo, url, '', ahora);
+      this.sql.exec('INSERT INTO org_cola (quien, clave, titulo, cuerpo, url, t) VALUES (?, ?, ?, ?, ?, ?)', q.quien,
+        'org' + id, titulo, cuerpo, url, ahora);
+    }
+    return qs.length;
+  }
+
+  /** El push de la cola de organizadores: de a 30 por minuto, a los dispositivos vinculados de cada uno. */
+  async avisarOrgs(ahora) {
+    const filas = this.sql.exec('SELECT id, quien, clave, titulo, cuerpo, url FROM org_cola WHERE hecho = 0 ORDER BY id LIMIT 30')
+      .toArray();
+    let enviados = 0;
+    for (const f of filas) {
+      this.sql.exec('UPDATE org_cola SET hecho = 1 WHERE id = ?', f.id);
+      const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', f.quien).toArray();
+      if (!subs.length) continue;
+      const c = cuerpoPersonal({ id: f.clave, titulo: f.titulo, cuerpo: f.cuerpo, url: f.url });
+      const estados = await Promise.all(subs.map((s) => empujar(s, c, { ttl: 6 * 3600, topic: f.clave.slice(0, 32) }, this.env, new Map())));
+      estados.forEach((e, i) => {
+        if (e >= 200 && e < 300) enviados++;
+        else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
+      });
+    }
+    this.sql.exec('DELETE FROM org_cola WHERE hecho = 1 AND t < ?', ahora - 2 * DIA_MS);
+    if (filas.length) this.guardar('orgs', { t: ahora, filas: filas.length, enviados });
+    return enviados;
+  }
+
+  // ── 📅 /agendar ──────────────────────────────────────────────────────
+  /** Agendar (o `borrar`) un evento de un servidor: como mucho 20 por servidor, y lo pasado sale solo. */
+  agendar(d) {
+    const sv = String(d.sv || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 6);
+    const nombre = String(d.nombre || '').slice(0, 80);
+    if (!sv || !nombre) return { error: 'faltan datos' };
+    const ahora = Date.now();
+    if (d.borrar) {
+      const r = this.sql.exec('UPDATE agenda SET borrado = 1 WHERE sv = ? AND lower(nombre) = lower(?) AND borrado = 0 AND ini > ?',
+        sv, nombre, ahora - 6 * HORA);
+      return r.rowsWritten ? { ok: true } : { error: 'no_esta' };
+    }
+    if (!Number.isFinite(d.ini) || !/^[0-9]{5,25}$/.test(String(d.quien || ''))) return { error: 'faltan datos' };
+    const hay = this.sql.exec('SELECT COUNT(*) AS n FROM agenda WHERE sv = ? AND borrado = 0 AND ini > ?', sv, ahora).toArray()[0].n;
+    if (hay >= 20) return { error: 'muchos' };
+    // el mismo nombre otra vez es corregirlo: se reemplaza el que estaba
+    this.sql.exec('UPDATE agenda SET borrado = 1 WHERE sv = ? AND lower(nombre) = lower(?) AND borrado = 0', sv, nombre);
+    this.sql.exec('INSERT INTO agenda (sv, g, quien, nombre, ini, formato, t) VALUES (?, ?, ?, ?, ?, ?, ?)', sv,
+      String(d.g || ''), String(d.quien), nombre, Math.round(d.ini), String(d.formato || ''), ahora);
+    this.sql.exec('DELETE FROM agenda WHERE ini < ?', ahora - 30 * DIA_MS);
+    return { ok: true };
+  }
+
+  /** Para el ciclo: lo agendado de los últimos 30 días y lo que viene, sin lo borrado. */
+  agendaCiclo() {
+    return { agenda: this.sql.exec('SELECT id, sv, g, nombre, ini, formato, t, quien FROM agenda WHERE borrado = 0 AND ini > ? ' +
+      'ORDER BY ini', Date.now() - 30 * DIA_MS).toArray() };
+  }
+
   // ── 🎬 TUS BATALLAS EN VIDEO ──────────────────────────────────────────
   // Dlx, 12/10/2026: «las 2 [un link o un canal], pero asegurate que haya restricciones». Acá sólo se anota el pedido
   // y se lleva la cuenta; si el video entra, queda en revisión o no, lo decide el ciclo (`bot/videos_propios.py`).
@@ -5826,6 +5972,9 @@ export class Avisos {
     this.sql.exec('DELETE FROM bandeja WHERE quien = ?', String(d.quien));
     // 🤝 y sus postulaciones de /sumate, y cuántas veces cambió algo hoy
     this.sql.exec('DELETE FROM postulaciones WHERE quien = ?', String(d.quien));
+    // 📣 a quién seguís como organizador, y sus avisos (12/10/2026)
+    this.sql.exec('DELETE FROM sigue_org WHERE quien = ?', String(d.quien));
+    this.sql.exec('DELETE FROM org_cola WHERE quien = ?', String(d.quien));
     // 🎬 tus pedidos de videos y tus reportes (12/10/2026)
     this.sql.exec('DELETE FROM videos_pedidos WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM videos_reportes WHERE quien = ?', String(d.quien));

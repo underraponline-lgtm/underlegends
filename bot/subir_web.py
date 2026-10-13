@@ -375,6 +375,12 @@ def armar():
 
     _an = _json('datos', 'anuncios.json') or {}
     ann = _an.get('anuncios') or []
+    # 📅 Y LO AGENDADO CON /agendar (12/10/2026), como un anuncio más: ver `bot/agenda.py`
+    try:
+        import agenda as _AG
+        ann = ann + _AG.como_anuncios(ann)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ sin la agenda: %s' % str(e)[:80])
     _link = lambda x: ('https://discord.com/channels/%s/%s/%s'
                        % (x['guild_id'], x['canal_id'], x['msg_id'])
                        if x.get('guild_id') and x.get('canal_id') and x.get('msg_id')

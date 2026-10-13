@@ -473,6 +473,12 @@ def con_tiempo(regs=None, anuncios=None):
                 anuncios = (json.load(f) or {}).get('anuncios') or []
         except (OSError, ValueError):
             anuncios = []
+        # 📅 y lo agendado con /agendar, que casi siempre es con tiempo (`bot/agenda.py`)
+        try:
+            import agenda as _AG
+            anuncios = anuncios + _AG.como_anuncios(anuncios)
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ sin la agenda (%s)' % str(e)[:60])
     pas = []
     for x in anuncios:
         ini, pub = CU.momento(x), x.get('cuando')

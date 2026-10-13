@@ -12,6 +12,7 @@ import { DUENO, PAIS, hora, limpio, nuevaQue, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, DosToques, Ico, accion } from './piezas.jsx';
 import { CaraDc } from './arriba.jsx';
 import { useRacha } from './racha.js';
+import { seguirOrg, useOrgs } from './orgs.js';
 
 import { PasosInstalar } from './instalar.jsx';
 
@@ -304,6 +305,23 @@ function RedesCaja({ dc }) {
   );
 }
 
+// 📣 LOS ORGANIZADORES QUE SEGUÍS (Dlx, 12/10/2026, «5. E»): te avisa la campana cuando anuncian. Se siguen desde Eventos
+function OrgsCaja({ dc }) {
+  const orgs = useOrgs(dc);
+  if (!dc) return null;
+  return (
+    <Caja t="Organizadores que seguís" d={orgs && orgs.length ? 'Te llega a la campana cuando anuncian un evento.'
+      : 'En Eventos, «Cuándo suele jugar» dice quiénes organizan en cada servidor: tocá uno y te avisamos cuando anuncie.'}>
+      {orgs && orgs.length ? (
+        <ul className="cu-lista">{orgs.map((o) => (
+          <li key={o.org}><b>{limpio(o.nombre)}</b>
+            <button type="button" className="btn borde2 chico" onClick={() => seguirOrg(o.nombre, false)}>Dejar de seguir</button></li>
+        ))}</ul>
+      ) : <a className="btn borde2 chico" href="#/eventos">Ir a Eventos</a>}
+    </Caja>
+  );
+}
+
 // 🎬 TUS BATALLAS EN VIDEO (Dlx, 12/10/2026: «las 2 [un link o un canal], pero asegurate que haya restricciones»). Acá
 // sólo se pide y se ve cómo terminó cada pedido: lo que entra lo decide el ciclo (`bot/videos_propios.py`) con sus reglas
 const VID_ERR = {
@@ -512,6 +530,7 @@ function Parte({ id, liga, dc, tema, onTema }) {
           ))}</ul> : <a className="btn borde2 chico" href="#/ranking">Buscar a quién seguir</a>}
         </Caja>
         <TeSiguen liga={liga} />
+        <OrgsCaja dc={dc} />
       </>
     );
   }

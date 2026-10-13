@@ -1934,6 +1934,15 @@ function requisitos(m) {
 }
 
 const AYUDA = {
+  agendar: () => [
+    '## `/agendar` — un evento en el calendario de la Liga',
+    'Agendá un evento de este servidor con **día** (`18/10`), **hora** (`20:00`) y el **país** de esa hora: sale en el ' +
+    'calendario de la página y cada uno lo ve en su hora.',
+    '',
+    'Con **12 horas o más** de anticipación, quienes lo juegan suman **+10 %** en la Temporada, y al organizador le ' +
+    'cuenta doble para el Organizador de la semana.',
+    'Para sacarlo: `/agendar nombre:<el mismo> borrar:True`. Es para el **staff y los organizadores** del servidor.',
+  ].join('\n'),
   afiche: () => [
     '## `/afiche` — el afiche del evento',
     'Toma el **último anuncio de este servidor** (de las últimas 48 horas) y lo dibuja como una imagen cuadrada, con el ' +
@@ -2108,6 +2117,7 @@ const AYUDA_INDICE = [
   '· **`/numeral`** — mostrá u ocultá tu `#N` en tu apodo *(en un servidor)*',
   '· **`/settings`** — los ajustes del servidor *(admins)*',
   '· **`/afiche`** y **`/llave`** — la imagen del último anuncio y de la última llave *(staff y organizadores)*',
+  '· **`/agendar`** — un evento en el calendario de la Liga, con tiempo *(staff y organizadores)*',
   '· **`/borrar-mis-datos`** — borrá tu perfil, tus tarjetas y tu foto de la Liga',
   '· **`/ping`** — ¿está vivo?',
   '',
@@ -2653,7 +2663,66 @@ async function kit(i, env, ctx, tipo) {
   return new Response(JSON.stringify({ type: RESPONDE.PENSANDO }), { headers: { 'content-type': 'application/json' } });
 }
 
+// ── 📅 /agendar (Dlx, 12/10/2026, «5. D»: «casi no hay eventos futuros… la mayoría anuncian eventos instantáneos»).
+// El staff de un servidor agenda un evento con día, hora y el país de esa hora; queda en el objeto (`agendar()`), el
+// ciclo lo pasa al calendario como un anuncio más (`bot/agenda.py`) y, con 12 horas o más, suma +10 %.
+// ⚠️ LAS ZONAS SON LAS DE `cuando.ZONA_BANDERA` (bot/cuando.py), más el este de Estados Unidos
+export const ZONAS_AGENDA = { AR: 'America/Argentina/Buenos_Aires', BO: 'America/La_Paz', CL: 'America/Santiago', CO: 'America/Bogota', CR: 'America/Costa_Rica', CU: 'America/Havana', DO: 'America/Santo_Domingo', EC: 'America/Guayaquil', ES: 'Europe/Madrid', GT: 'America/Guatemala', HN: 'America/Tegucigalpa', MX: 'America/Mexico_City', NI: 'America/Managua', PA: 'America/Panama', PE: 'America/Lima', PR: 'America/Puerto_Rico', PY: 'America/Asuncion', SV: 'America/El_Salvador', UY: 'America/Montevideo', VE: 'America/Caracas', US: 'America/New_York' };
+/** El instante UTC (ms) de `d/m` a `h:mi` en la zona `z`, del año que corresponda (el próximo si esa fecha ya pasó). */
+export function utcDeZona(dia, mes, h, mi, z, ahora = Date.now()) {
+  const enZona = (ms) => {
+    const p = {};
+    new Intl.DateTimeFormat('en-US', { timeZone: z, year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric',
+      minute: 'numeric', hourCycle: 'h23' }).formatToParts(new Date(ms)).forEach((x) => { p[x.type] = Number(x.value); });
+    return Date.UTC(p.year, p.month - 1, p.day, p.hour % 24, p.minute);
+  };
+  const año = new Date(ahora).getUTCFullYear();
+  for (const y of [año, año + 1]) {
+    const pared = Date.UTC(y, mes - 1, dia, h, mi);
+    let t = pared - (enZona(pared) - pared);
+    t -= enZona(t) - pared;                            // una segunda vuelta por si el cambio de hora cae en el medio
+    if (t > ahora - 3 * 3600000) return t;
+  }
+  return null;
+}
+
 const COMANDOS = {
+  async agendar(i, env) {
+    const sv = aquiEs(i.guild_id);
+    if (!sv) return aviso('`/agendar` funciona en los servidores de la Liga.');
+    if (!(await esStaff(i, env))) return aviso('`/agendar` es para el staff y los organizadores del servidor.');
+    if (!env.AVISOS) return aviso('Ahora no puedo agendarlo: probá en un rato.');
+    const op = Object.fromEntries(((i.data && i.data.options) || []).map((o) => [o.name, o.value]));
+    const nombre = String(op.nombre || '').replace(/[`*_~|<>@]/g, '').trim().slice(0, 80);
+    if (!nombre) return aviso('Falta el nombre del evento.');
+    const objeto = env.AVISOS.get(env.AVISOS.idFromName('liga'));
+    if (op.borrar) {
+      const r = await objeto.fetch('https://avisos/agendar', { method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ sv, borrar: true, nombre }) });
+      const d = await r.json().catch(() => ({}));
+      return aviso(d.ok ? '🗑️ Saqué **' + nombre + '** de la agenda de la Liga.' : 'No encontré **' + nombre + '** agendado en este servidor.');
+    }
+    const fm = /^\s*(\d{1,2})\s*[\/.-]\s*(\d{1,2})\s*$/.exec(String(op.dia || ''));
+    const hm = /^\s*(\d{1,2})(?:\s*[:.h]\s*(\d{2}))?\s*(?:hs?)?\s*$/i.exec(String(op.hora || ''));
+    const z = ZONAS_AGENDA[String(op.pais || '')];
+    if (!fm || +fm[1] < 1 || +fm[1] > 31 || +fm[2] < 1 || +fm[2] > 12) return aviso('El día va como **dd/mm**: `18/10`.');
+    if (!hm || +hm[1] > 23 || (hm[2] && +hm[2] > 59)) return aviso('La hora va de **0 a 23**, como `20:00`.');
+    if (!z) return aviso('Elegí el país de esa hora.');
+    const ini = utcDeZona(+fm[1], +fm[2], +hm[1], +(hm[2] || 0), z);
+    if (!ini || ini - Date.now() > 300 * 24 * 3600000) return aviso('Esa fecha ya pasó.');
+    if (ini - Date.now() > 60 * 24 * 3600000) return aviso('Se puede agendar hasta dos meses adelante.');
+    const r = await objeto.fetch('https://avisos/agendar', { method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ sv, g: String(i.guild_id || ''), quien: idDe(i), nombre, ini,
+        formato: String(op.formato || '').replace(/[`*_~|<>@]/g, '').slice(0, 30) }) });
+    const d = await r.json().catch(() => ({}));
+    if (d.error === 'muchos') return aviso('Este servidor ya tiene 20 eventos agendados: borrá alguno con `borrar: True`.');
+    if (!d.ok) return aviso('Ahora no puedo agendarlo: probá en un rato.');
+    const s = Math.floor(ini / 1000);
+    const conTiempo = ini - Date.now() >= 12 * 3600000;
+    return aviso('📅 Agendado: **' + nombre + '** · <t:' + s + ':F> (<t:' + s + ':R>; cada uno lo ve en su hora).\n' +
+      'Sale en el calendario de la Liga en la próxima media hora.' +
+      (conTiempo ? ' Con 12 horas o más de anticipación, quienes lo juegan suman **+10 %**.' : ''));
+  },
   async afiche(i, env, ctx) { return kit(i, env, ctx, 'afiche'); },
   async llave(i, env, ctx) { return kit(i, env, ctx, 'llave'); },
   // 🖱️ click derecho en una persona → Apps → Carta (Dlx, 08/10/2026): es `/card quien:<esa persona>`. Discord manda

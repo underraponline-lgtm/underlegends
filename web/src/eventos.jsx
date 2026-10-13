@@ -7,7 +7,8 @@
 // ⚠️ TODO SALE DEL PAYLOAD (`calendario`, `proximos`, `llaves`, `actividad`, `orgs`) y de lo que app.js ya sabe en vivo
 // (`VIVO_L`): no hay ninguna llamada nueva. La campana la maneja campana.js (`window.Campana`); acá sólo se dibuja.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { DIAS, MESES, hora, limpio, minutosDelDia, norm, num, recorte, resultado, siglaDe, utc } from './liga.js';
+import { DIAS, MESES, hora, limpio, minutosDelDia, norm, num, quienMira, recorte, resultado, siglaDe, utc } from './liga.js';
+import { claveOrg, seguirOrg, useOrgs } from './orgs.js';
 import { Anotados, Cara, Carta, Compartir, Ico, aDiscord, accion, enlace, useCampana } from './piezas.jsx';
 import { CuadroMini, LlaveCorta, cortaDe, gcal, llaveEnVivo } from './arriba.jsx';
 import { H, W, aPng, armarYCompartir, cargarImg, carta, lienzo, pie } from './historia.js';
@@ -448,6 +449,17 @@ function CuandoJuega({ liga, cal, dia, color, et }) {
   // 📅 y quiénes organizan en cada uno (Dlx, 12/10/2026, «5. A»: «cuándo cada sv organiza usualmente y quiénes»), del
   // «Organiza:» de sus anuncios o de quien los publica (`subir_web._agenda()`)
   const ag = liga.d.agenda || {};
+  // 📣 y seguirlos: con la cuenta, un ☆ al lado de cada uno (Dlx, 12/10/2026, «5. E»). Ver `orgs.js`
+  const dc = quienMira().dc;
+  const orgs = useOrgs(dc);
+  const sigo = new Set((orgs || []).map((o) => o.org));
+  const [nota, setNota] = useState('');
+  const alternar = async (n) => {
+    const si = !sigo.has(claveOrg(n));
+    const e = await seguirOrg(n, si);
+    setNota(e === 'sin_sesion' ? 'Entrá con Discord para seguir organizadores.' : e === 'muchos' ? 'Ya seguís a 30.'
+      : e ? 'No se pudo.' : si ? 'Te avisamos cuando ' + limpio(n) + ' anuncie un evento (en la campana).' : '');
+  };
   if (!P.svs.length) return null;
   const desde = P.primero ? liga.fechaLarga(P.primero) : '';
   const dow = dia ? dowDe(dia) : -1;
@@ -472,11 +484,21 @@ function CuandoJuega({ liga, cal, dia, color, et }) {
                 title={k ? k + (k === 1 ? ' evento un ' + SEMANA_S[i] : ' eventos los ' + SEMANA_P[i]) : 'ningún ' + SEMANA_S[i]} />
             ))}
             <b className="evp-cj-h">{horaDe(s.ref, s.desde)} a {horaDe(s.ref, s.hasta)}</b>
-            {(ag[s.sv] || []).length ? <small className="evp-cj-org">organiza{ag[s.sv].length > 1 ? 'n' : ''} {ag[s.sv].map(([o]) => limpio(o)).join(' · ')}</small> : null}
+            {(ag[s.sv] || []).length ? (
+              <small className="evp-cj-org">organiza{ag[s.sv].length > 1 ? 'n' : ''}{' '}
+                {ag[s.sv].map(([o], j) => (
+                  <span key={o}>{j ? ' · ' : ''}{dc ? (
+                    <button type="button" className={'evp-org' + (sigo.has(claveOrg(o)) ? ' si' : '')} onClick={() => alternar(o)}
+                      title={sigo.has(claveOrg(o)) ? 'Dejar de seguir' : 'Avisame cuando organice'}>{sigo.has(claveOrg(o)) ? '★' : '☆'} {limpio(o)}</button>
+                  ) : limpio(o)}</span>
+                ))}
+              </small>
+            ) : null}
           </li>
         ))}
       </ul>
-      <p className="evp-nota">Sobre los {P.todos.length} eventos {desde === 'hoy' || desde === 'ayer' ? 'desde ' + desde : 'desde el ' + desde}, en tu hora.</p>
+      {nota ? <p className="evp-nota" role="status">{nota}</p> : null}
+      <p className="evp-nota">Sobre los {P.todos.length} eventos {desde === 'hoy' || desde === 'ayer' ? 'desde ' + desde : 'desde el ' + desde}, en tu hora.{dc ? ' Tocá un organizador para que te avisemos cuando anuncie.' : ''}</p>
     </div>
   );
 }

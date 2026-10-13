@@ -107,6 +107,8 @@ const AVISOS = {
   '/api/avisos/mis-videos': 'POST',
   '/api/avisos/video-reportar': 'POST',
   '/api/avisos/dueno/video': 'POST',
+  // 📣 seguir a un organizador (12/10/2026): con tu sesión. Ver `seguirOrg()` en bot/avisos.js
+  '/api/avisos/seguir-org': 'POST',
 };
 
 // 🔑 «MI CUENTA»: el login y lo que se hace con ese permiso, nombradas una por
