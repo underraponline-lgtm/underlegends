@@ -446,13 +446,15 @@
     "nuevos": {
      "FFA": 8,
      "URBF": 11,
-     "SR": 4
+     "SR": 4,
+     "FVS": 1
     },
     "gente": {
      "DDF": 7,
      "FFA": 62,
      "SR": 21,
-     "URBF": 15
+     "URBF": 15,
+     "FVS": 5
     },
     "gana": "URBF"
    },
@@ -462,7 +464,7 @@
     "DRA": 0,
     "FFA": 62,
     "FFS": 0,
-    "FVS": 0,
+    "FVS": 5,
     "SR": 21,
     "URBF": 15
    },
