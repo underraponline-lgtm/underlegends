@@ -11,7 +11,7 @@
 // entero con sus ramas (en espejo si entra), como antes.
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { PAIS, capital, limpio, norm, num } from './liga.js';
-import { Bandera, Cara, Compartir, Ico, Medalla, PUESTO_MEDALLA, enlace } from './piezas.jsx';
+import { Bandera, Cara, Compartir, Ico, Medalla, PUESTO_MEDALLA, enlace, silueta } from './piezas.jsx';
 import { completar, enOrden, esArbol, esDoble, jugado, partirDoble } from './arriba.jsx';
 import { vioVivo, vivoPendiente } from './pase.js';
 
@@ -844,7 +844,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const fechaEv = cal ? '#/eventos/' + liga.diaClave(cal.t) : dia ? '#/eventos/' + dia : '#/eventos';
   return (
     <>
-      <div className="escena lk-esc" style={{ '--mo-c': sv.color || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298' }}>
+      <div className="escena lk-esc" style={{ '--mo-c': sv.color || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298', ...silueta(L.sv, sv.color) }}>
         <section className="lk-cab">
           <a className="lk-volver" href={fechaEv}>‹ Eventos</a>
           <div className="lk-cab-in">

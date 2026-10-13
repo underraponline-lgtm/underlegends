@@ -13,6 +13,7 @@
 // algo que ya anda: si alguna se apaga, se saca de acá.
 import { limpio, mult, num, siglaDe } from './liga.js';
 import { Carta, Compartir, enlace } from './piezas.jsx';
+import { LaLiga } from './medio.jsx';
 import { REDES } from './servidor.jsx';
 import { BotHace, DLX, QueGana } from './sumar.jsx';
 
@@ -145,6 +146,8 @@ export function Socios({ liga }) {
           </div>
         </div>
       </section>
+      {/* 📊 la Liga en números, que vivía en el Inicio hasta el 13/10/2026: es de todos los socios juntos */}
+      <LaLiga liga={liga} />
     </>
   );
 }

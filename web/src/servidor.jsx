@@ -3,7 +3,7 @@
 // en el Inicio, y el Inicio mira la dirección (ver App.jsx). Todo sale del payload: `svs` (el color acordado, el
 // logo de hoy, la invitación, las redes), la tabla, las llaves, los próximos, el muro, Se busca y la semana.
 import { limpio, mult, num, siglaDe, utc } from './liga.js';
-import { Cara, Carta, Compartir, Poster, Sec, aDiscord, accion, enlace } from './piezas.jsx';
+import { Cara, Carta, Compartir, Poster, Sec, aDiscord, accion, enlace, silueta } from './piezas.jsx';
 import { McPersona } from './medio.jsx';
 
 export const REDES = { instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', twitch: 'Twitch', x: 'X', twitter: 'X', kick: 'Kick' };
@@ -73,7 +73,7 @@ export function PerfilSv({ liga, sv }) {
   fechas.splice(5);
   return (
     <>
-      <div className="escena sv-cab" style={{ '--mo-c': s.color || '#29B298', '--mo-o': 0.9, '--mo-logo': 'url("' + liga.logo(sv, true) + '")' }}>
+      <div className="escena sv-cab" style={{ '--mo-c': s.color || '#29B298', '--mo-o': 0.9, '--mo-logo': 'url("' + liga.logo(sv, true) + '")', ...silueta(sv, s.color) }}>
         <section className="svp" id="sv-perfil">
           <img className="svp-logo" alt="" src={liga.logo(sv, true)} />
           <div className="svp-tx">

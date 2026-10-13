@@ -10,7 +10,7 @@
 // —seguir, el precio por cabeza, el visor de cartas y de llaves— son las de app.js.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
-import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, QueEsTexto, Rango, SinCarta, accion, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
+import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, SinCarta, accion, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
 import { usePaseDe } from './pase.js';
@@ -135,7 +135,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
   useEffect(() => { setQe(''); }, [k]);
   const q = (id) => <QueEsBoton k={id} abierto={qe === id} onToggle={() => setQe(qe === id ? '' : id)} />;
   return (
-    <div className="escena pf-esc" style={{ '--mo-c': (sv && sv.color) || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298' }}>
+    <div className="escena pf-esc" style={{ '--mo-c': (sv && sv.color) || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298', ...silueta(sv && svE, sv && sv.color) }}>
       <section className={'rk-cab pf-cab' + (resumen ? '' : ' sin-carta')}>
         <div className="rk-tx pf-tx">
           <span className="tag">{f.pos ? '#' + f.pos + ' DE LA TEMPORADA' : 'FUERA DE CONCURSO'} · {liga.temp}</span>

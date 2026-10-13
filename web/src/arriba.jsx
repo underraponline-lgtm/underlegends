@@ -2,7 +2,7 @@
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, capital, diaISO, limpio, mult, norm, num, recorte, resultado, siglaDe, utc } from './liga.js';
-import { Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, subirSiEsta, useCampana } from './piezas.jsx';
+import { Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, silueta, subirSiEsta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { useRacha } from './racha.js';
 
@@ -1243,13 +1243,14 @@ function fondoDe(liga, m) {
   const x = /^#?([0-9a-f]{6})$/i.exec(col);
   const n = x ? parseInt(x[1], 16) : 0;
   const luz = (0.2126 * (n >> 16) + 0.7152 * ((n >> 8) & 255) + 0.0722 * (n & 255)) / 255;
-  return { '--mo-c': col, '--mo-o': luz < 0.2 ? 1 : 0.82, '--mo-logo': 'url("' + logo + '")' };
+  return { '--mo-c': col, '--mo-o': luz < 0.2 ? 1 : 0.82, '--mo-logo': 'url("' + logo + '")', ...silueta(m && m.sv, col) };
 }
 
 // El escenario y «Esta semana» son un solo panel (Dlx, 30/09: «hazla como si estuviese dentro de ese panel»): la
 // Tira entra como `children`, sin la línea que la separaba, y los círculos del fondo ya no se cortan entre los dos.
-// Pasa solo al momento siguiente cada 15 segundos (Dlx: «después de 15 segundos»), contados desde el último cambio,
-// también el que hace la persona. Ya no se frena con el mouse encima: en la compu parecía que no andaba.
+// ⏸️ YA NO PASA SOLO (13/10/2026). Pasaba cada 15 segundos (Dlx, 30/09: «después de 15 segundos»); con el Inicio
+// hecho lobby (Dlx: «hacé lo que consideres mejor»), lo de arriba se queda quieto en lo más importante y se pasa con
+// las flechas o las pestañas: algo que se mueve solo mientras leés es de lo que más confunde a quien llega.
 export function Hero({ liga, vivoL, children }) {
   const mo = momentos(liga, vivoL);
   // ⚠️ el momento que se mira se sigue por su TIPO, no por su lugar: si empieza un evento en vivo, el suyo entra
@@ -1274,20 +1275,6 @@ export function Hero({ liga, vivoL, children }) {
     window.addEventListener('lg:video-abierto', f);
     return () => window.removeEventListener('lg:video-abierto', f);
   }, []);
-  useEffect(() => {
-    if (n < 2 || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return undefined;
-    const t = setInterval(() => {
-      if (quieto.current || video.current || document.visibilityState !== 'visible' || Date.now() - ultimo.current < 15000) return;
-      // «Menos animaciones» (Ajustes): no pasa solo
-      if (document.documentElement.classList.contains('calma')) return;
-      ultimo.current = Date.now();
-      const l = lista.current;
-      if (!l.length) return;
-      const a = Math.max(0, l.findIndex((m) => (m.clave || m.tipo) === actual.current));
-      setTipo(l[(a + 1) % l.length].clave || l[(a + 1) % l.length].tipo);
-    }, 1000);
-    return () => clearInterval(t);
-  }, [n]);
   if (!n) return children ? <div className="escena" style={fondoDe(liga, null)}>{children}</div> : null;
   return (
     <div className="escena" style={fondoDe(liga, mo[j])}>

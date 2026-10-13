@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "2.87",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T00:58:00-04:00",
+   "titulo": "El Inicio, como un lobby",
+   "items": [
+    "🚪 El Inicio es más corto y tiene puertas: Eventos, Ranking, Se busca, Tarjetas, Pase y Tienda, cada una con lo que hay hoy.",
+    "⏸️ Lo de arriba ya no pasa solo: lo pasás vos con las flechas.",
+    "📍 Se busca está ahora arriba del Most Wanted en el Ranking, el Merchandising en la Tienda y la Liga en números en Socios.",
+    "🔤 La letra de las etiquetas es la misma de las tarjetas.",
+    "🎨 Atrás de los títulos, la silueta del servidor cuando la página es de uno."
+   ]
+  },
+  {
    "version": "2.86",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T00:28:00-04:00",

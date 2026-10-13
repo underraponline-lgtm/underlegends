@@ -132,7 +132,7 @@ function irA(d, raiz) {
   else if (d.llave) accion.llave(d.llave);
   else if (d.ruta) location.hash = d.ruta;
   else if (d.link) window.open(d.link, '_blank', 'noopener');
-  else if (d.ancla && raiz && raiz.current) { const s = raiz.current.querySelector('#' + d.ancla); if (s) s.scrollIntoView({ behavior: 'smooth' }); }
+  else if (d.ancla) accion.ir(d.ancla);
 }
 export function Noticias({ liga, raiz }) {
   const items = liga.variados(6);
@@ -290,6 +290,44 @@ function Misiones({ liga }) {
     </section>
   );
 }
+// ── 🚪 LAS PUERTAS DEL LOBBY (Dlx, 13/10/2026: «el Inicio quiero que se sienta como un inicio, un home, un lobby»). En
+// el lobby de un juego, lo de abajo del escenario son puertas, y cada una dice qué hay del otro lado AHORA: cuántos
+// eventos hay hoy, en qué puesto vas, cuántos buscados quedan, tu nivel. Son la forma corta de los bloques que se
+// mudaron a su sección (Misiones, Se busca, Encuestas, Merch, La Liga en números): el Inicio pasó de 11 a 6
+export function Puertas({ liga, dc }) {
+  const P = usePase(!!dc);
+  const ahora = liga.ahora;
+  const hoyK = liga.diaClave(new Date(ahora).toISOString());
+  const cal = (liga.d.calendario || []).filter((c) => !liga.canceladoCal(c));
+  const hoy = cal.filter((c) => liga.diaClave(c.t) === hoyK && utc(c.t) > ahora - 3 * 3600000);
+  const prox = cal.filter((c) => utc(c.t) > ahora).sort((a, b) => utc(a.t) - utc(b.t))[0];
+  const ev = hoy.length ? (hoy.length === 1 ? 'Hoy hay 1 evento' : 'Hoy hay ' + hoy.length + ' eventos')
+    : prox ? 'El próximo, ' + liga.cuando(new Date(utc(prox.t))) : 'El calendario de la Liga';
+  const yo = liga.yo;
+  const uno = (liga.d.tabla || []).find((f) => f.pos === 1);
+  const rk = yo && yo.pos ? 'Vas #' + yo.pos + ' de la temporada' : uno ? '#1: ' + limpio(uno.n) : 'Las tablas de la temporada';
+  const mw = liga.d.mw || {};
+  const bus = (mw.b || []).length;
+  const se = bus ? bus + ' buscados · vencen ' + liga.dia(mw.fin) : 'Quién cazó a quién';
+  const pa = dc && P && P.listo && P.miembro ? 'Vas en el nivel ' + P.nivel + ' de ' + P.niveles : '30 niveles con premios';
+  const tj = yo ? 'La tuya y las de todos' : 'Las de cada rapero';
+  const puertas = [
+    ['eventos', '#/eventos', 'Eventos', ev],
+    ['ranking', '#/ranking', 'Ranking', rk],
+    ['mira', '#/ranking/mw', 'Se busca', se],
+    ['tarjetas', '#/tarjetas', 'Tarjetas', tj],
+    ['pase', '#/pase', 'Pase', pa],
+    ['tienda', '#/tienda', 'Tienda', 'Puntos, precios y ropa'],
+  ];
+  return (
+    <nav className="puertas" aria-label="Entrar a">
+      {puertas.map(([ic, href, t, d]) => (
+        <a key={href} className="pu" href={href}><Ico n={ic} t={26} /><b>{t}</b><small>{d}</small></a>
+      ))}
+    </nav>
+  );
+}
+
 // 🎟️ el Pase: tu nivel y tu XP si sos miembro de DRA; si no, qué es y cómo se sube (con XP desde el 06/10/2026)
 function Pase({ liga, dc }) {
   const P = usePase(!!dc);

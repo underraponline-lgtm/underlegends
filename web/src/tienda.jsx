@@ -8,6 +8,7 @@
 import { useEffect, useState } from 'react';
 import { limpio, norm, num } from './liga.js';
 import { Bandera, Cara, DosToques } from './piezas.jsx';
+import { Merch } from './abajo.jsx';
 
 const sinEtiquetas = (h) => String(h || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
 function usePrecios() {
@@ -203,6 +204,8 @@ export function Tienda({ liga, dc }) {
           <a className="btn borde2 chico" href="#/avisos">Activar los avisos</a>
         </div>
       </section>
+      {/* 👕 la ropa de ejemplo, que vivía en el Inicio hasta el 13/10/2026: es de la tienda */}
+      <Merch liga={liga} />
     </>
   );
 }

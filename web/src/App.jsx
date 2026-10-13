@@ -4,10 +4,9 @@
 import { Component, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DUENO, Liga, aQuienSigo, limpio, quienMira } from './liga.js';
 import { nombrePais } from './piezas.jsx';
-import { Cabecera, Hero, Historias, Instalar, IrA, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
-import { Fechas, LaLiga, LosQueMandan, Noticias, Panel } from './medio.jsx';
-import { Menu, Merch, Pie, SeBusca, Subir, Tabbar, Visor } from './abajo.jsx';
-import { Encuestas } from './encuestas.jsx';
+import { Cabecera, Hero, Historias, Instalar, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
+import { Fechas, LosQueMandan, Noticias, Puertas } from './medio.jsx';
+import { Menu, Pie, Subir, Tabbar, Visor } from './abajo.jsx';
 // 🧭 el tutorial (Dlx, 12/10/2026, «A … B … C … D … E. Dale»): quién es nuevo se decide al cargar (primera.js, chico);
 // lo que se dibuja se baja sólo si hace falta
 import { pasosEnInicio, quiereTutorial } from './primera.js';
@@ -459,16 +458,15 @@ export default function App() {
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos || {}} onAbrir={setHistoria} /></Aislada>
         <Aislada n="Hero"><Hero liga={liga} vivoL={vivoL}><Aislada n="Tira"><Tira liga={liga} /></Aislada></Hero></Aislada>
         {pasosEnInicio(yo.dc) ? <Aislada n="PrimerosPasos"><Suspense fallback={null}><PrimerosPasos liga={liga} dc={yo.dc} /></Suspense></Aislada> : null}
-        <Aislada n="IrA"><IrA raiz={raiz} /></Aislada>
+        {/* 🚪 EL INICIO ES UN LOBBY (Dlx, 13/10/2026: «que se sienta como un inicio, un home, un lobby»): el escenario,
+            las puertas, lo que viene, lo que pasó y los que mandan. Misiones vive en el Ranking, Encuestas en
+            Publicaciones, Se busca en el Most Wanted, el Merchandising en la Tienda y los números en Socios; los links
+            viejos a esas secciones llegan ahí (`accion.ir()`). Sin la barra IR A: con seis bloques no hace falta */}
+        <Aislada n="Puertas"><Puertas liga={liga} dc={yo.dc} /></Aislada>
         <Aislada n="Instalar"><Instalar /></Aislada>
         <Aislada n="Fechas"><Fechas liga={liga} /></Aislada>
         <Aislada n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>
         <Aislada n="LosQueMandan"><LosQueMandan liga={liga} dc={yo.dc} /></Aislada>
-        <Aislada n="Panel"><Panel liga={liga} dc={yo.dc} /></Aislada>
-        <Aislada n="Encuestas"><Encuestas liga={liga} enc={enc} dc={yo.dc} /></Aislada>
-        <Aislada n="SeBusca"><SeBusca liga={liga} /></Aislada>
-        <Aislada n="Merch"><Merch liga={liga} /></Aislada>
-        <Aislada n="LaLiga"><LaLiga liga={liga} /></Aislada>
       </>}
       <Aislada n="Pie"><Pie liga={liga} /></Aislada>
       <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} pagina={paginaMenu} /></Aislada>

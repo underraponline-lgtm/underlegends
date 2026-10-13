@@ -65,6 +65,20 @@ export function Ico({ n, t = 20 }) {
   );
 }
 
+// 🎨 LA SILUETA DEL SERVIDOR ATRÁS DE LOS TÍTULOS (Dlx, 13/10/2026, a las maquetas: «hacé lo que consideres mejor»;
+// la D). Es la misma máscara de los rombos de las cartas (comun/logos_sv/, copiada en webp a bot/paginas/logos_sv/), en el
+// color del servidor. Donde no hay servidor, la cinta de las esquinas (vivo.css). Con un color claro va más tenue: blanca
+// a .55 competía con el texto blanco
+const SILUETAS = new Set(['acad', 'ddf', 'dra', 'efa', 'ffa', 'ffs', 'frz', 'ftn', 'fvs', 'sr', 'tfc', 'twr', 'urbf']);
+export function silueta(sv, col) {
+  const k = String(sv || '').toLowerCase();
+  if (!SILUETAS.has(k)) return {};
+  const x = /^#?([0-9a-f]{6})$/i.exec(col || '');
+  const n = x ? parseInt(x[1], 16) : 0;
+  const luz = (0.2126 * (n >> 16) + 0.7152 * ((n >> 8) & 255) + 0.0722 * (n & 255)) / 255;
+  return { '--mo-sil': 'url("/logos_sv/sv_' + k + '.webp")', '--mo-so': luz > 0.6 ? 0.22 : luz > 0.4 ? 0.38 : 0.55 };
+}
+
 // 🥇 LAS MEDALLAS, COMO EN LAS CARTAS: el punto de oro, plata o bronce de las cartas (`.lv-oro` y compañía) en vez de
 // 🥇🥈🥉, que en cada celular se dibujan distinto. El puesto va escrito al lado: el punto no es lo único que lo dice
 export const PUESTO_MEDALLA = { Campeón: 1, Subcampeón: 2, Tercero: 3, Cuarto: 4 };
@@ -99,13 +113,19 @@ export const accion = {
   llave: (n) => { location.hash = '#/llave/' + encodeURIComponent(n); },
   perfil: (k) => { location.hash = '#/r/' + encodeURIComponent(k); },
   votar: (id, op) => { if (window.votar) window.votar(id, op); },
-  // bajar hasta una sección del Inicio: viven en el shadow root, así que `#id` en la dirección no llega
+  // bajar hasta una sección del Inicio: viven en el shadow root, así que `#id` en la dirección no llega. Y las que se
+  // mudaron del Inicio al hacerlo lobby (13/10/2026) van a su página nueva
   ir: (id) => {
     const h = document.getElementById('inicio-nuevo');
     const el = h && h.shadowRoot && h.shadowRoot.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    else if (MUDADAS[id]) location.hash = MUDADAS[id];
   },
 };
+
+// 🚪 las secciones que se fueron del Inicio (13/10/2026) y dónde viven ahora
+const MUDADAS = { sebusca: '#/ranking/mw', panel: '#/ranking/misiones', encuestas: '#/publicaciones', merch: '#/tienda',
+  numeros: '#/socios' };
 
 // la dirección de algo de la página, para compartirla (sirve también en las direcciones de prueba de Pages):
 // «#/r/hassan» -> «https://…/freestyle-rap/r/hassan», con `urlLG()` del script del principio (web/montar.py)

@@ -18,6 +18,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, limpio, norm, num, resultado, siglaDe, utc } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
+import { SeBusca } from './abajo.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 import { Divisiones } from './divisiones.jsx';
 import { Misiones } from './misiones.jsx';
@@ -795,6 +796,8 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
           {top.length ? <Podio liga={liga} cfg={cfg} top={top} /> : null}
         </section>
       </div>
+      {/* 🎯 los buscados de esta semana, arriba de quién cazó a quién (vivían en el Inicio hasta el 13/10/2026) */}
+      {sub === 'mw' ? <SeBusca liga={liga} aca /> : null}
       <section className="sec rk-sec" id="rk-tabla">
         {pronto ? (
           <div className="rk-pronto"><span className="tag-pronto">{cfg.cuando ? 'TEMPORADA 2' : 'PRÓXIMAMENTE'}</span><p>{pronto}</p>

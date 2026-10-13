@@ -11,14 +11,14 @@ import { Buscar, CaraDc, CaraH, MENU, QUE_ES } from './arriba.jsx';
 // ── Se busca ──────────────────────────────────────────────────────────────────────────────────────
 
 
-export function SeBusca({ liga }) {
+export function SeBusca({ liga, aca }) {
   const mw = liga.d.mw || {};
   const tira = useRef(null);
   if (!(mw.b || []).length) return null;
   const diario = mw.tipo === 'dia';
   const correr = (d) => { if (tira.current) tira.current.scrollBy({ left: d * tira.current.clientWidth * 0.8, behavior: 'smooth' }); };
   return (
-    <Sec id="sebusca" titulo="Se busca" bajada="Los buscados del Most Wanted: si le ganás a uno en un evento, te llevás su recompensa." enlace="Most Wanted" href="#/ranking/mw" extra="negra">
+    <Sec id="sebusca" titulo="Se busca" bajada="Los buscados del Most Wanted: si le ganás a uno en un evento, te llevás su recompensa." enlace={aca ? undefined : 'Most Wanted'} href={aca ? undefined : '#/ranking/mw'} extra="negra">
       <div className="mw-cab"><span>{mw.b.length} buscados {diario ? 'hoy' : 'esta semana'} · vencen {liga.dia(mw.fin)}</span>
         <span className="mw-fl"><button type="button" className="mw-b" aria-label="Anteriores" onClick={() => correr(-1)}>←</button>
           <button type="button" className="mw-b" aria-label="Siguientes" onClick={() => correr(1)}>→</button></span></div>
@@ -329,7 +329,7 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
     else if (d.llave) accion.llave(d.llave);
     else if (d.ruta) location.hash = d.ruta;
     else if (d.link) window.open(d.link, '_blank', 'noopener');
-    else if (d.ancla && raiz.current) { const s = raiz.current.querySelector('#' + d.ancla); if (s) s.scrollIntoView({ behavior: 'smooth' }); }
+    else if (d.ancla) accion.ir(d.ancla);
   }, [onCerrar, raiz]);
   if (!hay) return null;
   const s = g.slides.find((x) => x.id === idAct) || g.slides[0];
