@@ -627,8 +627,9 @@ export function Historias({ liga, grupos, vistos, onAbrir }) {
 // 🔴 TODOS LOS LADOS, NO DOS. Dlx, 01/10/2026, «check the llaves», con la del Desgracias en Tokyo: los Octavos eran
 // TRIANGULARES (CRK vs O.E.P vs ELSOLAR) y esto se quedaba con los dos primeros, así que ELSOLAR y ZIGNOS —que
 // ganaron y pasaron a Cuartos— no aparecían, y esos cruces quedaban sin ganador. «Ver la llave» ya los dibujaba
-const lados = (b) => (b[0] || []).map((z) => limpio(typeof z === 'string' ? z : z.join(' & ')));
-const ganador = (b) => limpio(typeof b[1] === 'string' ? b[1] : (b[1] || []).join(' & '));
+// (los dos los usa también el botón del lobby, para «¡Te toca!»)
+export const lados = (b) => (b[0] || []).map((z) => limpio(typeof z === 'string' ? z : z.join(' & ')));
+export const ganador = (b) => limpio(typeof b[1] === 'string' ? b[1] : (b[1] || []).join(' & '));
 
 // 🔑 `previa`: la llave en vivo que todavía sólo tiene la fase previa —el CYPHER de POESÍA CRUDA (URBF, 01/10/2026),
 // grupos de tres y los cuartos vacíos—. Sin esto no se veía nada: los filtros no van en el cuadro.

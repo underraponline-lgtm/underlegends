@@ -2569,6 +2569,10 @@ a.rk-z:hover{border-color:var(--linea)}
 .lb-boton{display:grid;gap:10px;padding:16px;background:#F6F6F6;color:#030304;border:2px solid #F6F6F6;box-shadow:6px 6px 0 #29B298}
 .lb-boton.anotado{box-shadow:6px 6px 0 #F5C542}
 .lb-boton.vivo{background:#E41373;border-color:#E41373;color:#F6F6F6;box-shadow:6px 6px 0 #F6F6F6}
+/* ⚡ «¡TE TOCA!» y «SOS EL PRÓXIMO» (13/10/2026): lo más grande del botón, y la sombra amarilla de lo tuyo */
+.lb-boton.vivo.toca{box-shadow:6px 6px 0 #F5C542}
+.lb-boton.vivo.toca .lb-b-et{font-size:30px;letter-spacing:.03em}
+.lb-boton.vivo.toca .lb-b-et i{width:14px;height:14px;background:#F5C542}
 .lb-boton.nada{background:transparent;color:#F6F6F6;border-color:#3A3A3E;box-shadow:none}
 .lb-boton.nada p{margin:0;font:500 15px/1.4 Archivo,sans-serif;color:#C4C4BE}
 .lb-b-et{display:inline-flex;align-items:center;gap:8px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em}

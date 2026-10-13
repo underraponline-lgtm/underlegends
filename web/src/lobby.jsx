@@ -16,7 +16,7 @@ import { limpio, mult, num, siglaDe, utc } from './liga.js';
 import { Cara, Ico, aDiscord, accion } from './piezas.jsx';
 import { avance, usePase } from './pase.js';
 import { useRacha } from './racha.js';
-import { llaveEnVivo } from './arriba.jsx';
+import { esDoble, ganador, lados, llaveEnVivo, momentosLlave } from './arriba.jsx';
 
 const W = typeof window !== 'undefined' ? window : {};
 const leer = (k) => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } };
@@ -105,6 +105,41 @@ function TuBarra({ liga, dc, P, R, saldo }) {
   );
 }
 
+// ── ⚡ «¡TE TOCA!»: tu momento en tu llave en vivo (Dlx, 13/10/2026, de los toques del research de los lobbies: «¡Te
+// toca!» en el botón). Con la misma lectura que la llave corta (`momentosLlave()`: «AHORA» sólo si se juega en orden):
+// te toca, sos el próximo, esperás tu turno, pasaste, o quedaste afuera. La ronda más honda donde aparecés dice cómo te
+// fue: si pasaste, ya estás en la siguiente. `null` si la llave todavía no te nombra
+const sinBandera = (s) => String(s || '').replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').trim();
+export function tuMomento(liga, L) {
+  const yo = liga.yo;
+  if (!yo || !L) return null;
+  const mio = (lado) => String(lado || '').split(/\s*[,+&]\s*/).some((n) => {
+    const f = liga.fila(sinBandera(n));
+    return !!(f && f.k === yo.k);
+  });
+  const contra = (ls) => ls.filter((x) => !mio(x)).map(sinBandera).join(' y ');
+  const m = momentosLlave(L);
+  if (m && m.ahora && m.ahora.lados.some(mio)) return { et: '¡TE TOCA!', sub: m.ahora.r + ' · contra ' + contra(m.ahora.lados), toca: true };
+  if (m && m.sigue && m.sigue.lados.some(mio)) return { et: 'SOS EL PRÓXIMO', sub: m.sigue.r + ' · contra ' + contra(m.sigue.lados), toca: true };
+  let ult = null;
+  (L.rondas || []).forEach((R) => (R.b || []).forEach((b) => { if (lados(b).length >= 2 && lados(b).some(mio)) ult = { r: R.r, b }; }));
+  if (!ult) return null;
+  const r = String(ult.r || '');
+  const g = ganador(ult.b);
+  if (!g) return { et: 'ESPERÁ TU TURNO', sub: r + ' · contra ' + contra(lados(ult.b)) };
+  if (mio(g)) {
+    if (r === 'Final') return { et: '¡SOS EL CAMPEÓN!', sub: 'Ganaste la final' };
+    if (r === 'Tercer puesto') return { et: '¡TERCER PUESTO!', sub: 'Ganaste el tercer puesto' };
+    return { et: 'PASASTE ' + r.toUpperCase(), sub: 'Seguís en carrera: esperá la próxima ronda' };
+  }
+  if (r === 'Final') return { et: '¡SUBCAMPEÓN!', sub: 'Llegaste a la final' };
+  if (r === 'Tercer puesto') return { et: 'CUARTO PUESTO', sub: 'Llegaste a las semifinales' };
+  // la doble se ve por su llave de perdedores o, antes de que se escriba, por la de ganadores
+  const doble = esDoble(L.rondas) || (L.rondas || []).some((R) => /ganadores/i.test(R.r || ''));
+  if (doble && !/perdedores/i.test(r)) return { et: 'PERDISTE EN ' + r.toUpperCase(), sub: 'Bajás a la llave de perdedores: seguís' };
+  return { et: 'QUEDASTE AFUERA EN ' + r.toUpperCase(), sub: 'Te ganó ' + sinBandera(g), afuera: true };
+}
+
 // ── 🎯 EL BOTÓN GRANDE: lo tuyo, una sola vez, en su estado de ahora ──
 function ElBoton({ liga }) {
   const yo = liga.yo;
@@ -117,10 +152,20 @@ function ElBoton({ liga }) {
   if (vivoMio) {
     const L = llaveEnVivo(vivoMio, W.VIVO_L);
     const dd = aDiscord(liga, vivoMio, true);
+    let t = null;
+    try { t = tuMomento(liga, L); } catch (err) { t = null; }
+    // quedaste afuera: el próximo evento, para volver (sin otro botón: el de la llave se queda)
+    const otro = t && t.afuera ? luego.find((x) => x !== vivoMio) : null;
     return (
-      <div className="lb-boton vivo">
-        <span className="lb-b-et"><i />TU EVENTO ESTÁ EN VIVO</span>
+      <div className={'lb-boton vivo' + (t && t.toca ? ' toca' : '')}>
+        <span className="lb-b-et"><i />{t ? t.et : 'TU EVENTO ESTÁ EN VIVO'}</span>
         <span className="lb-b-ev"><img alt="" src={liga.logo(vivoMio.sv)} /><b>{limpio(vivoMio.nombre)}</b></span>
+        {t ? (
+          <span className="lb-b-pr">
+            <em>{t.sub}</em>
+            {otro ? <em className="gris">El próximo: {limpio(otro.nombre)} · en {falta(utc(otro.cuando) - ahora) || 'un rato'}</em> : null}
+          </span>
+        ) : null}
         {L ? <button type="button" className="btn verde" onClick={() => accion.llave('v:' + L.id)}>Ver la llave</button>
           : dd ? <a className="btn verde" href={dd.url} target="_blank" rel="noopener noreferrer">{dd.txt}</a> : null}
       </div>
