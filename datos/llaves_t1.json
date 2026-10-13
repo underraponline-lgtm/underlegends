@@ -21958,8 +21958,8 @@
        "MARITHEA",
        "PUPPY"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "MARITHEA",
+      ""
      ],
      [
       [
@@ -21976,18 +21976,26 @@
     "b": [
      [
       [
+       "VISIONARIO",
+       "J1"
+      ],
+      "VISIONARIO",
+      ""
+     ],
+     [
+      [
        "COLOSO",
-       "FAT N"
+       "VISIONARIO"
       ],
       "COLOSO",
       ""
      ],
      [
       [
-       "VISIONARIO",
+       "PUPPY",
        "COLOSO"
       ],
-      "VISIONARIO",
+      "PUPPY",
       ""
      ],
      [
@@ -22002,14 +22010,6 @@
       [
        "HUNTER",
        "AIRON"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "J1",
-       "VISIONARIO"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -22032,22 +22032,6 @@
      ],
      [
       [
-       "MARITHEA",
-       "VISIONARIO"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "PUPPY",
-       "J1"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
        "URKO",
        "COFFY"
       ],
@@ -22062,7 +22046,7 @@
      [
       [
        "MARITHEA",
-       "VISIONARIO"
+       "PUPPY"
       ],
       "MARITHEA",
       ""

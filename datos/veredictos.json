@@ -2056,6 +2056,17 @@
    "b": "NHP",
    "ganador": "ERIAN",
    "votos": "1–0"
+  },
+  "1559598456505503815": {
+   "id": "1559598456505503815",
+   "sv": "╔═══ஜ𝕍.𝕊ஜ═══╗",
+   "g": "1283205153624952975",
+   "canal": "1439611946906157079",
+   "pub": 1791907647969,
+   "a": "MOLUSCO",
+   "b": "RAIZER",
+   "ganador": "MOLUSCO",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5626,6 +5637,27 @@
      [
       "ERIAN",
       "NHP CINEXFILO"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1559602670447108097": {
+   "id": "1559602670447108097",
+   "sv": "╔═══ஜ𝕍.𝕊ஜ═══╗",
+   "g": "1283205153624952975",
+   "canal": "1439611946906157079",
+   "pub": 1791908652651,
+   "ed": 1791908658825,
+   "texto": "`[ FINAL ]`\n⌞MOLUSCO⌝ 🆚 ⌞VANDU⌝",
+   "batallas": [
+    [
+     "FINAL",
+     [
+      "MOLUSCO",
+      "VANDU"
      ],
      null,
      "última ronda y no dice campeón",
