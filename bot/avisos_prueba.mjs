@@ -896,6 +896,16 @@ const ok = (cond, que, det) => {
     const finales = pedidos.slice(n2).filter((p) => p.m === 'POST');
     ok(finales.length === 1 && /⚔️ Final: /.test(finales[0].b.content) && !/🔥 La final de/.test(finales[0].b.content),
       'la final sale una sola vez: el cruce, sin el «🔥 La final de…» repetido', JSON.stringify(finales.map((p) => p.b.content)));
+    // 🕵️ quien se anotó con otro nombre (13/10/2026: «Frifaier» era Cronox): lo que sabe la página (`quien`) va primero
+    o.guardar('quien', { t: T, svs: { FFA: { frifaier: 'ana' } } });
+    const n3 = pedidos.length;
+    sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto, men) ' +
+      "VALUES ('10', '2', 'FFA', '111', 'x', ?, ?, ?, ?, '[]')", T + 29 * 60000, T + 30 * 60000,
+    '# COPA Z\n`[ CUARTOS ]`\n⌞Frifaier 🇨🇱⌝ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n', T + 30 * 60000);
+    await o.chatVivo(T + 30 * 60000);
+    const zf = pedidos.slice(n3).find((p) => p.m === 'POST' && /COPA Z/.test((p.b && p.b.content) || ''));
+    ok(zf && zf.b.content.includes('<@' + ANA + '>') && !zf.b.content.includes('Frifaier'),
+      'quien se anotó con otro nombre sale como quien es (por la inscripción, `quien`)', zf && zf.b.content);
     globalThis.fetch = antesF;
   }
 }

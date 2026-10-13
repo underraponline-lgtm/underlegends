@@ -230,7 +230,13 @@ def armar():
     _ver, _vieja = _versiones()
     # 🙈 quien ocultó su foto va con su inicial en toda la página (Dlx, 02/10/2026: «1. A»; ver `fotos.ocultas()`)
     _sin = set(_ocultas_ids())
-    _avs = {k: v for k, v in (_avatares({str(p.get('discord_id')) for p in pool if p.get('discord_id')}) or {}).items()
+    # 🧑 EL ID DEL PADRÓN CUANDO EL POOL NO LO TRAE (13/10/2026: Catarsis salía con la «C» en el Ranking —Valen: «me veo
+    # en el top global y mi foto es una C»—; el pool lo tenía sin Discord ID y el padrón, verificado y con el suyo). Sólo
+    # si ese nombre es de UNA persona en el padrón: dos con el mismo nombre no son ninguna. Medido: 2 de 108 sin ID
+    _pid = _ids_del_padron(_resp._norm)
+    def _did(p):
+        return str(p.get('discord_id') or '').strip() or _pid.get(_resp._norm(p.get('raw')), '')
+    _avs = {k: v for k, v in (_avatares({_did(p) for p in pool if _did(p)}) or {}).items()
             if str(k) not in _sin}
     _de = _quien(gente)
     _ult = _ultimos(_de)
@@ -345,8 +351,7 @@ def armar():
                 or []),
         # 🔑 EL AVATAR DE DISCORD, `<id>/<hash>`, para el círculo del ranking.
         # Ver `_avatares()`: la foto de R2 NO, que su dirección es secreta.
-        'av': ('%s/%s' % (p.get('discord_id'), _avs[str(p.get('discord_id'))])
-               if _avs.get(str(p.get('discord_id') or '')) else ''),
+        'av': ('%s/%s' % (_did(p), _avs[_did(p)]) if _avs.get(_did(p)) else ''),
     } for p in gente]
     # ▲▼ cuánto subió cada uno esta semana y quién debutó: contra la foto del lunes (ver `foto_semana()`)
     movimientos(tabla, gente, foto_semana(pool, escribir='--aplicar' in sys.argv))
@@ -354,9 +359,8 @@ def armar():
     # nombran igual, y sin esto salían con la inicial —medido el 02/10/2026: 19 de 219—. Nombre y cara, nada más (~45
     # bytes cada uno): la página la busca por nombre, `avNombre()` de web/src/liga.js
     _en_tabla = {id(p) for p in gente}
-    avs_fuera = [[p.get('raw'), '%s/%s' % (str(p.get('discord_id')), _avs[str(p.get('discord_id'))])]
-                 for p in pool if id(p) not in _en_tabla and p.get('raw')
-                 and _avs.get(str(p.get('discord_id') or ''))]
+    avs_fuera = [[p.get('raw'), '%s/%s' % (_did(p), _avs[_did(p)])]
+                 for p in pool if id(p) not in _en_tabla and p.get('raw') and _avs.get(_did(p))]
     # 🔑 CAZÓ · CAZADO · SOBREVIVIÓ, DE MOST WANTED. Las columnas ya estaban
     # en el ranking (Dlx, 25/09/2026) y leían del pool, que no las tiene: la
     # cuenta vive en `datos/mw.json`. Ver `_mw_suma()`.
@@ -848,6 +852,22 @@ def _ocultas_ids():
 #: cuántas caras se le piden a Discord de a una por corrida (ver `_avatares()`): las que faltan son pocas, y esto es
 #: un techo por si un día faltan muchas
 TOPE_USUARIOS = 60
+
+
+def _ids_del_padron(norm):
+    """`{nombre normalizado: discord_id}` del padrón, sólo los nombres de UNA persona. Sin padrón, vacío."""
+    try:
+        _sh = os.path.join(BASE, 'sheet')
+        if _sh not in sys.path:
+            sys.path.append(_sh)
+        import construir_padron as _PAD
+        pad = _PAD.cargar() or []
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ sin padrón para las caras (%s)' % str(e)[:60])
+        return {}
+    cuenta = Counter(norm(p.get('raw')) for p in pad if p.get('raw'))
+    return {norm(p.get('raw')): str(p.get('discord_id')).strip() for p in pad
+            if p.get('raw') and str(p.get('discord_id') or '').strip().isdigit() and cuenta[norm(p.get('raw'))] == 1}
 
 
 def _avatares(ids=()):

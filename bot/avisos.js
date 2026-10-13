@@ -4379,8 +4379,14 @@ export class Avisos {
         this.guardar('turnos', { t: ahora, error: String(e).slice(0, 160) });
       }
       // 🎤 y el bot en vivo, en el chat de cada servidor. Nunca frena al vigía: ver `chatVivo()`
-      try { await this.chatVivo(ahora); } catch (e) {
-        this.guardar('chat_vivo', { t: ahora, error: String(e).slice(0, 160) });
+      // 🔒 UNA VUELTA POR VEZ (13/10/2026: «Erian pasa · Cuartos…» salió dos veces a las 2:02 en FFA). Lo dicho se anota
+      // después de mandarlo, y mientras se espera a Discord otra vuelta del vigía puede entrar al objeto y verlo
+      // pendiente. Si la otra quedó colgada, a los 3 minutos se suelta sola
+      if (!this.chatEn || ahora - this.chatEn > 3 * MIN) {
+        this.chatEn = ahora;
+        try { await this.chatVivo(ahora); } catch (e) {
+          this.guardar('chat_vivo', { t: ahora, error: String(e).slice(0, 160) });
+        } finally { this.chatEn = 0; }
       }
       // 🖼️ y las imágenes de los vs que esperan. Nunca frena al vigía: ver `vsDespachar()`
       try { await this.vsDespachar(ahora); } catch (e) {
@@ -4623,7 +4629,16 @@ export class Avisos {
       const nombre = nombreDe(L);
       // la gente con su nombre de la Liga, y lo del cierre: la tabla y los perfiles (10 minutos en la memoria)
       const dc = await this.datosCruce(ahora);
-      const opc = { buscar: dc.buscar, tabla: dc.tabla, perf: dc.perf, perfT: dc.perfT, cartaDe: dc.cartaDe,
+      // 🕵️ QUIÉN ES CADA NOMBRE, PRIMERO POR LO QUE YA SABE LA PÁGINA (13/10/2026, Dlx con el vs de QCYO RAPEEN:
+      // «el bot debería saber quiénes son esas personas… en el canal de inscripciones está todo»; Frifaier era Cronox,
+      // que se anotó así). `quien` es la inscripción de cada cuenta, la llamada y las menciones de ese servidor, cada
+      // minuto (`quienes()`); si no lo sabe, la tabla y los alias, como antes
+      const qsv = ((this.leer('quien') || {}).svs || {})[L.sv || b.sv] || {};
+      const buscar = (n) => {
+        const q = qsv[normPagina(n)];
+        return (q && (dc.tabla[q] || dc.perf[q]) ? q : '') || dc.buscar(n);
+      };
+      const opc = { buscar, tabla: dc.tabla, perf: dc.perf, perfT: dc.perfT, cartaDe: dc.cartaDe,
         ids: await this.indiceNombres(ahora) };
       let ms = momentosChat(L, nombre, [], nivel, opc);
       // los favoritos sólo si «Arrancó» sale ahora: el lobby pesa, no se lee cada minuto
@@ -4633,6 +4648,16 @@ export class Avisos {
           try { lobby = JSON.parse((await this.env.KV.get('web:lobby')) || '{}') || {}; } catch (e) { lobby = {}; }
         }
         ms = momentosChat(L, nombre, favoritosDe(L, lobby.tabla || []), nivel, opc);
+      }
+      // 🔁 LO QUE YA SE DIJO, CON OTRA CLAVE, TAMPOCO SE REPITE (13/10/2026): la clave de «pasa» lleva el lugar de la
+      // batalla en la ronda y quién es, y si el organizador corre las batallas o un nombre se reconoce más tarde, cambia.
+      // Una línea que ya está, igual, en un mensaje de esta llave queda dicha
+      const dichos = Object.values(hechos).map((h) => h.texto || '').join('\n');
+      for (const x of ms) {
+        if (hechos[x.m] || !x.texto || x.texto.length < 12 || !dichos.includes(x.texto)) continue;
+        this.sql.exec('INSERT OR IGNORE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
+          L.id, canal, x.m, '', '', ahora);
+        hechos[x.m] = { m: x.m, msg: '', texto: '' };
       }
       // 🔁 una llave que ya venía hablando con las claves de antes no repite lo que ya dijo (ver `migrarHechos()`)
       for (const m of migrarHechos(hechos, ms, porBatalla(nivel) ? batallaChat(L) : null)) {
@@ -4650,8 +4675,8 @@ export class Avisos {
           // 🧩 la clave es la batalla, no sus nombres: un equipo que crece antes de jugar no la anuncia dos veces
           const mv = 'v:' + bat.r + ':' + bat.i;
           if (!hechos[mv]) {
-            const x = infoCruce(bat.lados, dc.buscar, dc.tabla, dc.perf);
-            const [ga, gb] = bat.lados.map((l) => genteChat(l, dc.buscar, dc.tabla, opc.ids));
+            const x = infoCruce(bat.lados, buscar, dc.tabla, dc.perf);
+            const [ga, gb] = bat.lados.map((l) => genteChat(l, buscar, dc.tabla, opc.ids));
             // el nombre de la Liga también en el título y el dato («MAKMAH le ganó la última vez» → Makmah)
             if (ga.length === 1) x.a.n = ga[0].n;
             if (gb.length === 1) x.b.n = gb[0].n;
