@@ -153,9 +153,12 @@ export function svsInscribiendo(cuerpos, ahora) {
  * La clave con que el ciclo pide lo que el vigía guardó (`/avisos/inscritos`).
  * ⚠️ SALE DEL TOKEN DEL BOT, QUE LOS DOS YA TIENEN: no es un secreto nuevo (los
  * tokens nuevos, al final: Dlx). Esa ruta trae Discord IDs y no es pública.
+ * ⚠️ El ciclo la calcula en `bot/clave_ciclo.py`, con el MISMO prefijo: su `--auto` lee esta línea y se pone rojo
+ * si no coinciden. El prefijo no es secreto; cambiarlo invalida una clave filtrada sin tocar el token (13/10/2026).
  */
+const PREFIJO_CICLO = 'lg-ciclo:';
 export async function claveCiclo(token) {
-  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('lg-ciclo:' + String(token || '')));
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(PREFIJO_CICLO + String(token || '')));
   return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, '0')).join('');
 }
 

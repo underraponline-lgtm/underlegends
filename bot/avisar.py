@@ -36,6 +36,7 @@ BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if os.path.join(BASE, 'bot') not in sys.path:
     sys.path.insert(0, os.path.join(BASE, 'bot'))
 from siglas import sigla  # noqa: E402  la sigla que se lee (SNK, URB)
+import clave_ciclo as CC  # noqa: E402  la clave del ciclo, en un solo lugar
 
 #: «LIGA GLOBAL» en DRA — donde el bot de sync ya publica sus informes.
 #: Inventariado en `ACCESOS.md`; hasta hoy no lo usaba ningun codigo.
@@ -138,12 +139,11 @@ def canales_chat():
     if _CHAT is not None:
         return _CHAT
     try:
-        import hashlib
         import requests
         t = _token()
         if not t:
             return None
-        k = hashlib.sha256(('lg-ciclo:' + t).encode('utf-8')).hexdigest()
+        k = CC.clave(t)
         r = requests.get(WORKER + '/avisos/chat-canales', headers={'x-lg-ciclo': k}, timeout=20)
         d = r.json() if r.ok else None
     except Exception:                                    # noqa: BLE001
@@ -179,12 +179,11 @@ def _cierre_vivo(canal, ids, msg=None):
     if not canal or not ids:
         return None
     try:
-        import hashlib
         import requests
         t = _token()
         if not t:
             return None
-        k = hashlib.sha256(('lg-ciclo:' + t).encode('utf-8')).hexdigest()
+        k = CC.clave(t)
         d = {'canal': str(canal), 'ids': list(ids)}
         if msg:
             d['msg'] = str(msg)

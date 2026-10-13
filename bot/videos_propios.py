@@ -32,12 +32,12 @@ nadie los videos de otro que se llame parecido. Y se vuelve a mirar una vez por 
 """
 import datetime as dt
 import difflib
-import hashlib
 import io
 import json
 import os
 import re
 import sys
+import clave_ciclo as CC  # noqa: E402  la clave del ciclo, en un solo lugar
 
 SCR = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(SCR)
@@ -213,7 +213,7 @@ def _objeto(metodo, cuerpo=None):
     tok = F.env('DISCORD_TOKEN', obligatorio=False)
     if not tok:
         return None
-    k = hashlib.sha256(('lg-ciclo:' + tok).encode('utf-8')).hexdigest()
+    k = CC.clave(tok)
     if metodo == 'GET':
         r = requests.get(WORKER + '/avisos/videos-ciclo', headers={'x-lg-ciclo': k}, timeout=30)
     else:

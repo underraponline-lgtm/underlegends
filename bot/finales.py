@@ -26,6 +26,7 @@ import io
 import json
 import os
 import sys
+import clave_ciclo as CC  # noqa: E402  la clave del ciclo, en un solo lugar
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ESTADO = os.path.join(BASE, 'datos', 'finales.json')
@@ -158,13 +159,12 @@ def preguntar(llaves):
 def respuestas():
     """`{'<llave>:<i>': {nombre, v, quien, t}}` del objeto, o `{}`."""
     try:
-        import hashlib
         import requests
         t = _token()
         if not t:
             return {}
         import avisar
-        k = hashlib.sha256(('lg-ciclo:' + t).encode('utf-8')).hexdigest()
+        k = CC.clave(t)
         r = requests.get(avisar.WORKER + '/avisos/finales', headers={'x-lg-ciclo': k}, timeout=20)
         d = r.json() if r.ok else {}
         return d if isinstance(d, dict) else {}

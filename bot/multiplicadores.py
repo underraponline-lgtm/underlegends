@@ -94,6 +94,7 @@ import json
 import os
 import random
 import sys
+import clave_ciclo as CC  # noqa: E402  la clave del ciclo, en un solo lugar
 
 SCR = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(SCR)
@@ -926,7 +927,7 @@ def ajustes_dueno():
         print('   ⚠️ sin DISCORD_TOKEN: no leo los ajustes del Dashboard')
         return None
     try:
-        k = hashlib.sha256(('lg-ciclo:' + tok).encode('utf-8')).hexdigest()
+        k = CC.clave(tok)
         r = requests.get(WORKER + '/avisos/ajustes', headers={'x-lg-ciclo': k}, timeout=20)
         if r.status_code == 200:
             return r.json() or {}

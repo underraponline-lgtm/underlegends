@@ -21,13 +21,13 @@ CÓMO VIAJA
 """
 import base64
 import datetime as dt
-import hashlib
 import html
 import io
 import json
 import os
 import re
 import sys
+import clave_ciclo as CC  # noqa: E402  la clave del ciclo, en un solo lugar
 
 SCR = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(SCR)
@@ -334,7 +334,7 @@ def _clave():
     if not t:
         import escuchar as E
         t = E._env('DISCORD_TOKEN')
-    return hashlib.sha256(('lg-ciclo:' + t).encode('utf-8')).hexdigest()
+    return CC.clave(t)
 
 
 def avisar(id_, url=None, error=None, texto=''):

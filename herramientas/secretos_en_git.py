@@ -204,8 +204,9 @@ def main():
     # buscaba los valores de .env y de los json, y una derivada no está en ninguno: no la podía ver
     tok = del_env().get('DISCORD_TOKEN', '').strip().strip('"').strip("'")
     if tok:
-        import hashlib
-        secretos['derivada · clave del ciclo'] = hashlib.sha256(('lg-ciclo:' + tok).encode('utf-8')).hexdigest()
+        sys.path.insert(0, os.path.join(BASE, 'bot'))
+        import clave_ciclo  # noqa: E402  la misma cuenta que el ciclo: si cambia el prefijo, busca la clave nueva
+        secretos['derivada · clave del ciclo'] = clave_ciclo.clave(tok)
 
     print('\n  los valores (%d, de .env, los tres json y el gh):'
           % len(secretos))

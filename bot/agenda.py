@@ -18,12 +18,12 @@ lo tratan igual que a un anuncio, sin una regla nueva en cada uno.
 palabra propia del nombre en común—, lo agendado no se duplica.
 """
 import datetime as dt
-import hashlib
 import io
 import json
 import os
 import re
 import sys
+import clave_ciclo as CC  # noqa: E402  la clave del ciclo, en un solo lugar
 
 SCR = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(SCR)
@@ -97,7 +97,7 @@ def correr(aplicar=False):
     if not tok:
         print('   ⚠️ sin DISCORD_TOKEN: no traigo la agenda')
         return 0
-    k = hashlib.sha256(('lg-ciclo:' + tok).encode('utf-8')).hexdigest()
+    k = CC.clave(tok)
     try:
         r = requests.get(WORKER + '/avisos/agenda-ciclo', headers={'x-lg-ciclo': k}, timeout=30)
         ag = (r.json() or {}).get('agenda') if r.ok else None

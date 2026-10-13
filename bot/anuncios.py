@@ -48,6 +48,7 @@ import re
 import sys
 import time
 import unicodedata
+import clave_ciclo as CC  # noqa: E402  la clave del ciclo, en un solo lugar
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SCR = os.path.dirname(os.path.abspath(__file__))
@@ -722,11 +723,10 @@ def del_vigia():
     trae Discord IDs y no es pública.
     """
     import datetime as dt
-    import hashlib
     import requests
     import fotos as F
     try:
-        k = hashlib.sha256(('lg-ciclo:' + F.env('DISCORD_TOKEN')).encode('utf-8')).hexdigest()
+        k = CC.clave(F.env('DISCORD_TOKEN'))
         r = requests.get(WORKER + '/avisos/inscritos', headers={'x-lg-ciclo': k}, timeout=20)
         filas = (r.json() or {}).get('inscritos') or [] if r.ok else []
     except Exception as e:                               # noqa: BLE001
@@ -862,7 +862,6 @@ def texto_de_imagen(m, mem, cuenta, tipo='afiche', tope=None, clave=None):
     el formato que lee `escuchar.py` (ver `llave_de_imagen()` ahí), con su `tope` y su `clave` de memoria (el mensaje y
     el adjunto: la llave que se edita cambiando la imagen se vuelve a leer)."""
     import datetime as dt
-    import hashlib
     import requests
     import fotos as F
     mid = str(m.get('id') or '')
@@ -888,7 +887,7 @@ def texto_de_imagen(m, mem, cuenta, tipo='afiche', tope=None, clave=None):
         # pedir la imagen a la IA y la IA no lee igual dos veces (COMPE CHILL, URBF: 16 personas en una corrida y 4 en la
         # siguiente, y «Ranking Temporada no se está escribiendo» cada media hora); y la clave del ciclo quedaba escrita en
         # `datos/ocr_*.json`, que está en el repo PÚBLICO
-        ck = hashlib.sha256(('lg-ciclo:' + F.env('DISCORD_TOKEN')).encode('utf-8')).hexdigest()
+        ck = CC.clave(F.env('DISCORD_TOKEN'))
         r = requests.post(WORKER + '/avisos/ocr' + ('?tipo=llave' if tipo == 'llave' else ''), data=img.content, timeout=90,
                           headers={'x-lg-ciclo': ck, 'content-type': 'image/jpeg'})
         if r.status_code != 200:

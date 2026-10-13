@@ -66,6 +66,7 @@ from comun.requisitos import falta as REQ_FALTA  # noqa: E402
 from comun.rangos import UMBRAL  # noqa: E402
 sys.path.insert(0, SCR)
 import verificados as VERIF  # noqa: E402
+import clave_ciclo as CC  # noqa: E402  la clave del ciclo, en un solo lugar
 
 # ⚠️ LOS SEIS TRAMOS VIEJOS DEL SHEET. No son una alternativa ni una opción:
 # son lo que la columna `Rango` del Sheet y los roles de Discord dicen HOY,
@@ -1209,7 +1210,6 @@ WORKER = 'https://liga-global-bot.liga-global-ul.workers.dev'
 
 def _clave_ciclo():
     """La clave del ciclo (la misma de `bot/pase.py`), o `None` sin el token del bot."""
-    import hashlib
     tok = os.environ.get('DISCORD_TOKEN') or ''
     if not tok:
         try:
@@ -1217,7 +1217,7 @@ def _clave_ciclo():
             tok = F.env('DISCORD_TOKEN', obligatorio=False) or ''
         except Exception:                                # noqa: BLE001
             tok = ''
-    return hashlib.sha256(('lg-ciclo:' + tok).encode('utf-8')).hexdigest() if tok else None
+    return CC.clave(tok) if tok else None
 
 
 def subir_personas(pares_p):

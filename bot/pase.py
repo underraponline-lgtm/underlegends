@@ -50,6 +50,7 @@ import io
 import json
 import os
 import sys
+import clave_ciclo as CC  # noqa: E402  la clave del ciclo, en un solo lugar
 
 SCR = os.path.dirname(os.path.abspath(__file__))
 BASE = os.path.dirname(SCR)
@@ -291,7 +292,7 @@ def mandar(d):
     if not tok:
         print('   ⚠️ sin DISCORD_TOKEN: no le mando el Pase al objeto')
         return False
-    k = hashlib.sha256(('lg-ciclo:' + tok).encode('utf-8')).hexdigest()
+    k = CC.clave(tok)
     try:
         r = requests.post(WORKER + '/avisos/pase-ciclo', data=json.dumps(d, ensure_ascii=False).encode('utf-8'),
                           headers={'x-lg-ciclo': k, 'content-type': 'application/json'}, timeout=30)
@@ -322,7 +323,7 @@ def traer_niveles():
     tok = F.env('DISCORD_TOKEN', obligatorio=False)
     if not tok:
         return None
-    k = hashlib.sha256(('lg-ciclo:' + tok).encode('utf-8')).hexdigest()
+    k = CC.clave(tok)
     try:
         r = requests.get(WORKER + '/avisos/pase-niveles', headers={'x-lg-ciclo': k}, timeout=20)
         d = r.json() if r.ok else None
