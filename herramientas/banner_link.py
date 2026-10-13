@@ -5,9 +5,15 @@
     python herramientas/banner_link.py --servidores   -> bot/paginas/og/<sv>.png, una por servidor
 
 🔑 Y UNA POR SERVIDOR (Dlx, 12/10/2026: «si el link está en un servidor, que la foto de portada tenga temática de ese
-servidor; si no se puede, quitá ese thumbnail»). Misma piel, con el color y el logo de ese servidor. La página la pone
-cuando el link lleva `?sv=<SIGLA>` (`_worker.js`, `ogDeServidor()`), y el bot se lo agrega al link que manda en el chat
-de cada servidor (`bot/debutantes.py`). El color sale de `datos/colores_sv_marca.json` y el logo de `bot/paginas/logos/`.
+servidor; si no se puede, quitá ese thumbnail»). Misma piel, con el color y el logo de ese servidor, y al lado una página
+chiquita, `bot/paginas/s/<sv>/index.html`, que sólo tiene la vista previa de ese servidor (su imagen, su nombre y su
+color en la barrita de Discord) y lleva a la Liga al toque. El bot manda ese link en el chat de cada servidor
+(`bot/debutantes.py`).
+
+⚠️ UNA PÁGINA FIJA Y NO EL WORKER: desde el 04/10/2026 las páginas las sirve Pages directo (`_routes.json` sólo deja
+pasar la API por `_worker.js`). Cambiar la vista previa de la portada según `?sv=` obligaba a mandar cada visita de la
+Liga por el Worker. Discord no sigue el `refresh` ni el script: lee la vista previa de esta página; la persona, no la
+ve. El color sale de `datos/colores_sv_marca.json` y el logo de `bot/paginas/logos/`.
 
 🔑 Dlx, 28/09/2026, a «¿una imagen grande en la vista previa del link?»:
 *«Siii»*. Hasta ese día el link pegado en Discord salía con el logo chico a
@@ -48,6 +54,35 @@ def _servidores():
 def _esc(t):
     import html as H
     return H.escape(str(t or ''))
+
+
+WEB = 'https://underlegends.pages.dev'
+LIGA = '/freestyle-rap/'
+
+
+def pagina_sv(sv):
+    """La página chiquita de un servidor, `(sigla, nombre, color, logo)`: su vista previa, y a la Liga."""
+    s, nom, col = sv[0].lower(), _esc(sv[1]), _esc(sv[2])
+    desc = 'Sus eventos, su gente y sus tarjetas, en el ranking mundial del freestyle online.'
+    return ('<!doctype html><html lang="es"><head><meta charset="utf-8">\n'
+            '<meta name="viewport" content="width=device-width,initial-scale=1">\n'
+            '<title>%(nom)s · Liga Global de Freestyle</title>\n'
+            '<meta name="description" content="%(desc)s">\n'
+            '<meta name="theme-color" content="%(col)s">\n'
+            '<meta property="og:title" content="%(nom)s en la Liga Global de Freestyle">\n'
+            '<meta property="og:description" content="%(desc)s">\n'
+            '<meta property="og:type" content="website">\n'
+            '<meta property="og:site_name" content="Under Legends">\n'
+            '<meta property="og:url" content="%(web)s/s/%(s)s/">\n'
+            '<meta property="og:image" content="%(web)s/og/%(s)s.png">\n'
+            '<meta property="og:image:width" content="1200">\n'
+            '<meta property="og:image:height" content="630">\n'
+            '<meta name="twitter:card" content="summary_large_image">\n'
+            '<meta name="twitter:image" content="%(web)s/og/%(s)s.png">\n'
+            '<meta http-equiv="refresh" content="0;url=%(liga)s">\n'
+            '<script>location.replace(%(ligaj)s)</script>\n'
+            '</head><body><a href="%(liga)s">Liga Global de Freestyle</a></body></html>\n'
+            % {'nom': nom, 'desc': desc, 'col': col, 'web': WEB, 's': s, 'liga': LIGA, 'ligaj': "'" + LIGA + "'"})
 
 
 def html(sv=None):
@@ -138,6 +173,11 @@ def main():
             pg.wait_for_timeout(300)
             pg.screenshot(path=ruta)
             print('   ✅ %s (%d KB)' % (os.path.relpath(ruta, BASE), os.path.getsize(ruta) // 1024))
+            if sv:
+                d = os.path.join(BASE, 'bot', 'paginas', 's', sv[0].lower())
+                os.makedirs(d, exist_ok=True)
+                with io.open(os.path.join(d, 'index.html'), 'w', encoding='utf-8', newline='\n') as f:
+                    f.write(pagina_sv(sv))
         b.close()
 
 

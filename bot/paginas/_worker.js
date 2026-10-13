@@ -140,21 +140,6 @@ const CUENTA = {
 // cabeceras de la página (los archivos) están en `_headers`
 const SEGURO = { 'x-content-type-options': 'nosniff' };
 
-// 🖼️ La página con la imagen de vista previa de un servidor: cambia `og:image` y `twitter:image` en el HTML (no toca
-// nada más, ni lo que ve quien abre la página). Lo que no es HTML, o un servidor sin imagen, pasa tal cual
-async function ogDeServidor(req, env, url, sv) {
-  const r = await env.ASSETS.fetch(req);
-  if (!(r.headers.get('content-type') || '').includes('text/html')) return r;
-  const img = url.origin + '/og/' + sv + '.png';
-  const hay = await env.ASSETS.fetch(new Request(img, { method: 'HEAD' }));
-  if (!hay.ok || !(hay.headers.get('content-type') || '').includes('image')) return r;
-  const poner = { element(e) { e.setAttribute('content', img); } };
-  return new HTMLRewriter()
-    .on('meta[property="og:image"]', poner)
-    .on('meta[name="twitter:image"]', poner)
-    .transform(r);
-}
-
 function sesion(req) {
   const m = /(?:^|;\s*)lg_ses=([A-Za-z0-9_-]{30,100})/.exec(req.headers.get('cookie') || '');
   return m ? m[1] : '';
@@ -335,13 +320,6 @@ export default {
     if (url.pathname === '/lobby' || url.pathname === '/lobby/') {
       return Response.redirect(url.origin + '/', 301);
     }
-
-    // 🖼️ LA VISTA PREVIA CON EL TEMA DEL SERVIDOR (Dlx, 12/10/2026: «si el link está en un servidor, que la foto de
-    // portada tenga temática de ese servidor»): un link con `?sv=URBF` que se pega en Discord muestra la imagen de ese
-    // servidor (`og/urbf.png`, de `herramientas/banner_link.py --servidores`) en vez de la de la Liga. Sólo si esa
-    // imagen existe; si no, la de siempre. Ver `ogDeServidor()`
-    const svq = String(url.searchParams.get('sv') || '').toLowerCase();
-    if (req.method === 'GET' && /^[a-z]{2,5}$/.test(svq)) return ogDeServidor(req, env, url, svq);
 
     // Todo lo demás son los archivos de `bot/paginas/`. En modo avanzado
     // el `_worker.js` recibe TODO, así que hay que pasarle la pelota a

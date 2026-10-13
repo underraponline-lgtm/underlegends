@@ -114,11 +114,19 @@ def avisos_pagina(nuevos, cumplidos):
     return out
 
 
+def _link(sv):
+    """La página de ese servidor si existe (`bot/paginas/s/<sv>/`), y si no, la de la Liga."""
+    if sv and os.path.exists(os.path.join(BASE, 'bot', 'paginas', 's', sv.lower(), 'index.html')):
+        return 'https://underlegends.pages.dev/s/%s/' % sv.lower()
+    return WEB.rstrip('/')
+
+
 def mensaje_chat(gente, sv=''):
     """El mensaje del chat de un servidor: `(texto, [discord_ids])`. `gente` = `[(raw, reto)]` de ese servidor.
 
-    🖼️ El link lleva `?sv=<SIGLA>` (Dlx, 12/10/2026: «que la foto de portada tenga temática de ese servidor»): la
-    vista previa que arma Discord sale con la imagen de ese servidor (`ogDeServidor()` de bot/paginas/_worker.js)."""
+    🖼️ El link es la página de su servidor, `/s/<sigla>/` (Dlx, 12/10/2026: «que la foto de portada tenga temática de
+    ese servidor»): la vista previa que arma Discord sale con su imagen y lleva a la Liga (`herramientas/banner_link.py`).
+    Sin esa página, el link de siempre."""
     nombres = ['<@%s>' % r['did'] if r.get('did') else '**%s**' % raw for raw, r in gente]
     if len(nombres) > 1:
         quien = ', '.join(nombres[:-1]) + ' y ' + nombres[-1]
@@ -130,7 +138,7 @@ def mensaje_chat(gente, sv=''):
              'cuenta. Lo siguen en %s'
              % (quien, 'jugaron' if len(gente) > 1 else 'jugó', 'jueguen' if len(gente) > 1 else 'jugá',
                 _dia(vence), 'se llevan' if len(gente) > 1 else 'te llevás',
-                '{:,}'.format(PREMIO).replace(',', '.'), WEB.rstrip('/') + ('?sv=' + sv if sv else '')))
+                '{:,}'.format(PREMIO).replace(',', '.'), _link(sv)))
     return texto, [r['did'] for _raw, r in gente if r.get('did')]
 
 
@@ -243,7 +251,8 @@ def _self_check():
         ('el mensaje no menciona a nadie más que a los debutantes: ni @here ni @everyone',
          '@here' not in mensaje_chat([('Beto', r['Beto'])])[0] and '@everyone' not in mensaje_chat([('Beto', r['Beto'])])[0]),
         ('el link del chat de un servidor lleva su sigla: la vista previa sale con su imagen',
-         mensaje_chat([('Beto', r['Beto'])], 'URBF')[0].endswith('/freestyle-rap?sv=URBF')),
+         mensaje_chat([('Beto', r['Beto'])], 'URBF')[0].endswith('/s/urbf/')
+         and mensaje_chat([('Beto', r['Beto'])], 'ZZZ')[0].endswith('/freestyle-rap')),
     ]
     for que, ok in casos:
         mal += not ok
