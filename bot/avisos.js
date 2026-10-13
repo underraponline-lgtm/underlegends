@@ -4669,6 +4669,16 @@ export class Avisos {
         .toArray()[0] || {}).t || 0;
       const fresca = ahora - (L.ed || 0) <= CHAT_FRESCA;
       const nombre = nombreDe(L);
+      // 🔁 UNA LLAVE POR EVENTO EN EL CHAT (13/10/2026, Dlx: «se sigue repitiendo esto», con «🎤 Arrancó LA BELLA ARTE DE
+      // LA DESGRACIA VOL 5 · 15 en la llave» a las 5:02 PM y otra vez «· 24 en la llave» a las 5:09: el organizador
+      // publicó la llave corregida —faltaba gente— y para el chat era otra llave, con su propio «Arrancó»). Si otra llave
+      // del mismo servidor va con EL MISMO ANUNCIO y se publicó después, ésta la reemplazó y ya no habla. ⚠️ Sólo con
+      // anuncio: dos llaves sin anunciar del mismo servidor pueden ser dos eventos distintos
+      const anL = (asig || {})[L.id];
+      if (anL && [...llaves.values()].some((M) => {
+        const anM = M.id !== L.id && (M.sv || '') === (L.sv || '') && (M.pub || 0) > (L.pub || 0) ? asig[M.id] : null;
+        return !!anM && anM.nombre === anL.nombre && (anM.link || '') === (anL.link || '');
+      })) continue;
       // la gente con su nombre de la Liga, y lo del cierre: la tabla y los perfiles (10 minutos en la memoria)
       const dc = await this.datosCruce(ahora);
       // 🕵️ QUIÉN ES CADA NOMBRE, PRIMERO POR LO QUE YA SABE LA PÁGINA (13/10/2026, Dlx con el vs de QCYO RAPEEN:
@@ -4700,6 +4710,44 @@ export class Avisos {
         this.sql.exec('INSERT OR IGNORE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
           L.id, canal, x.m, '', '', ahora);
         hechos[x.m] = { m: x.m, msg: '', texto: '' };
+      }
+      // 🔁 Y EL «ARRANCÓ» DE ESE EVENTO SE DICE UNA VEZ (13/10/2026, ver arriba). Si en este canal ya salió con la llave de
+      // antes, ésta no manda otro: EDITA aquél con sus números —cuántos hay en la llave y los favoritos—. Un mensaje nuevo
+      // volvía a sonar; una edición no. Por el nombre del evento en el texto, de las últimas 12 horas
+      if (anL && !hechos.llave && ms.some((x) => x.m === 'llave')) {
+        const plano = (t) => String(t || '').normalize('NFKD').replace(/[^\p{L}\p{N}]+/gu, '').toLowerCase();
+        const nn = plano(nombre);
+        const prev = nn ? this.sql.exec("SELECT llave, msg, texto FROM chat_vivo WHERE canal = ? AND m = 'llave' AND msg != '' " +
+          'AND llave != ? AND t > ? ORDER BY t DESC', canal, L.id, ahora - 12 * HORA).toArray()
+          .find((r) => plano(r.texto).includes(nn)) : null;
+        if (prev) {
+          // los favoritos de ESTA llave: el lobby se lee una vez por vuelta
+          if (lobby === null) {
+            try { lobby = JSON.parse((await this.env.KV.get('web:lobby')) || '{}') || {}; } catch (e) { lobby = {}; }
+          }
+          ms = momentosChat(L, nombre, favoritosDe(L, lobby.tabla || []), nivel, opc);
+          const x = ms.find((y) => y.m === 'llave');
+          let texto = prev.texto || '';
+          // ⚠️ SÓLO SU RENGLÓN: en «Cada batalla» el mensaje del «Arrancó» puede llevar más cosas, y no se pisan
+          const lineas = texto.split('\n');
+          const i = lineas.findIndex((l) => l.startsWith('🎤 Arrancó'));
+          const nuevo = x && x.texto && i >= 0 ? lineas.map((l, j) => (j === i ? x.texto.split('\n')[0] : l)).join('\n') : texto;
+          if (nuevo !== texto && pedidos < CHAT_TOPE) {
+            pedidos++;
+            let r = null;
+            try {
+              r = await fetch(`${DC}/channels/${canal}/messages/${prev.msg}`, {
+                method: 'PATCH',
+                headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+                body: JSON.stringify({ content: nuevo.slice(0, 1900), allowed_mentions: { parse: [] } }),
+              });
+            } catch (e) { r = null; }
+            if (r && r.ok) { texto = nuevo; editados++; }
+          }
+          this.sql.exec('INSERT OR REPLACE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
+            L.id, canal, 'llave', prev.msg, texto, ahora);
+          hechos.llave = { m: 'llave', msg: prev.msg, texto };
+        }
       }
       // 🔁 una llave que ya venía hablando con las claves de antes no repite lo que ya dijo (ver `migrarHechos()`)
       for (const m of migrarHechos(hechos, ms, porBatalla(nivel) ? batallaChat(L) : null)) {
