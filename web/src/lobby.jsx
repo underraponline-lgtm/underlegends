@@ -13,7 +13,7 @@
 // dirección: los toques se cuentan igual (`queToco()` de App.jsx)
 import { useEffect, useState } from 'react';
 import { limpio, mult, num, siglaDe, utc } from './liga.js';
-import { Cara, Ico, aDiscord, accion } from './piezas.jsx';
+import { Cara, Ico, aDiscord, accion, useCampana } from './piezas.jsx';
 import { avance, usePase } from './pase.js';
 import { useRacha } from './racha.js';
 import { esDoble, eventoDelBoton, ganador, lados, llaveEnVivo, momentosLlave } from './arriba.jsx';
@@ -221,6 +221,36 @@ function ElBoton({ liga }) {
   );
 }
 
+// ── 🔔 LA CAMPANA, EN EL MOMENTO JUSTO (Dlx, 13/10/2026: «hacer todo»). El 13/10 la tenían 9 teléfonos, y todo aviso al
+// celular —te toca, tu carta, te pasaron, tu racha— le llega sólo a esos: es lo que más multiplica lo demás. Se pide a
+// quien ya jugó (ya le puede pasar algo), con su sesión, debajo de su próximo evento; no donde el botón grande ya la
+// ofrece (sin evento anunciado, o ya anotado) ni a quien ya la tiene vinculada. Son dos pasos: activarla en este
+// teléfono y vincularla con tu Discord (los tuyos). «Ahora no» la esconde una semana
+function PedirCampana({ liga, dc }) {
+  const c = useCampana();
+  const [no, setNo] = useState(() => { const t = leer('lg:lb-camp-no'); return !!(t && Date.now() - t < 7 * 864e5); });
+  const C = W.Campana;
+  const yo = liga.yo;
+  if (!dc || !yo || !(yo.ev >= 1) || no || !c || !C) return null;
+  if (!c.soporta || c.negado || (c.ios && !c.instalada) || c.pausada) return null;
+  if (c.activa && c.yo && c.yo.id) return null;
+  const b = eventoDelBoton(liga);
+  if (!b.e || b.anotado) return null;
+  const paso2 = !!c.activa;
+  return (
+    <div className="lb-camp">
+      <span className="lb-camp-ic"><Ico n="campana" t={22} /></span>
+      <span className="lb-camp-t"><b>{paso2 ? 'FALTA UN PASO' : '¿TE AVISAMOS CUANDO TE TOQUE?'}</b>
+        <small>{paso2 ? 'Vinculá este teléfono con tu Discord y te llegan los tuyos: te toca, tu carta, te pasaron.'
+          : 'Cuando te toca pelear, sale tu carta o te pasan en el ranking: al teléfono, al momento. Nunca por DM.'}</small></span>
+      <span className="lb-camp-b">
+        <button type="button" className="btn verde chico" onClick={() => (paso2 ? C.vincular() : C.activar())}>{paso2 ? 'Vincular' : 'Activar'}</button>
+        <button type="button" className="lb-camp-no" onClick={() => { guardar('lg:lb-camp-no', Date.now()); setNo(true); }}>Ahora no</button>
+      </span>
+    </div>
+  );
+}
+
 export function Lobby({ liga, dc }) {
   const P = usePase(!!dc);
   const R = useRacha(!!dc);
@@ -265,6 +295,7 @@ export function Lobby({ liga, dc }) {
     <section className="lobby" aria-label="Tu lobby">
       <TuBarra liga={liga} dc={dc} P={P} R={R} saldo={saldo} />
       <ElBoton liga={liga} />
+      <PedirCampana liga={liga} dc={dc} />
       <div className="lb-grid">
         {bus.length ? (
           <a className="pu lb lb-mw" href="#/ranking/mw">

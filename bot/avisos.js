@@ -1596,6 +1596,26 @@ export function rachaDeDias(dias, hoy) {
     || (prev === h - 2 && (perdon === null || h - perdon > RACHA_PERDON)));
   return { actual: viva ? run : 0, maxima, total: dias.length, inicio: viva ? inicio : '', hoy: prev === h };
 }
+/**
+ * 🔥 «TU RACHA SE CORTA HOY» (Dlx, 13/10/2026: «hacer todo», del research de enganche: el recordatorio de la racha es
+ * la palanca más fuerte de Duolingo). La racha de `dias` está viva hoy, todavía no entraste, es de `RACHA_AVISO_MIN`
+ * días o más y, si hoy no entrás, mañana vale 0: o sea que el día de perdón de esta semana ya se usó. Si todavía lo
+ * tenés, no se corta y no se avisa —decir «se corta» sería mentir—. Devuelve la racha (`rachaDeDias()`) o `null`.
+ */
+export const RACHA_AVISO_MIN = 3;
+export function rachaEnPeligro(dias, hoy) {
+  const r = rachaDeDias(dias, hoy);
+  if (r.hoy || r.actual < RACHA_AVISO_MIN) return null;
+  const manana = new Date((diaNum(hoy) + 1) * DIA_MS).toISOString().slice(0, 10);
+  return rachaDeDias(dias, manana).actual === 0 ? r : null;
+}
+/** La hora del este, «HH:MM» (como `enSilencio()`) */
+const horaET = (t = Date.now()) => new Intl.DateTimeFormat('en-GB', { timeZone: 'America/New_York', hour: '2-digit',
+  minute: '2-digit', hourCycle: 'h23' }).format(new Date(t));
+//: desde qué hora del este se avisa la racha: con tiempo para entrar antes de la medianoche, y no a la tarde, cuando
+//: todavía puede entrar solo
+export const RACHA_AVISO_HORA = '20:00';
+
 /** El nivel con esa experiencia: `{n, xp, base, sig}`. Para el nivel N hacen falta `paso · N · (N − 1)` (`racha.nivel()`) */
 export function nivelDeXp(xp, paso = RACHA_CFG.paso) {
   let n = 1;
@@ -4437,6 +4457,10 @@ export class Avisos {
     try { await this.avisarAplausos(ahora); } catch (e) {
       this.guardar('aplausos', { t: ahora, error: String(e).slice(0, 120) });
     }
+    // 🔥 y la racha que se corta hoy, a la noche. Nunca frena al vigía: ver `recordarRacha()`
+    try { await this.recordarRacha(ahora); } catch (e) {
+      this.guardar('racha_aviso', { t: ahora, error: String(e).slice(0, 120) });
+    }
     // 📣 y el organizador que seguís anunció. Nunca frena al vigía: ver `avisarOrgs()`
     try { await this.avisarOrgs(ahora); } catch (e) {
       this.guardar('orgs', { t: ahora, error: String(e).slice(0, 120) });
@@ -7184,6 +7208,54 @@ export class Avisos {
     // repetir, y lo de más de una semana no sale (`colaPersonal()`).
     this.guardar('personales', { t: ahora, cola: cola.length, enviados, sin_vinculo: sinVinculo,
       quedan });
+    return enviados;
+  }
+
+  /**
+   * 🔥 «Tu racha se corta hoy» (ver `rachaEnPeligro()`): una vez por día, desde las `RACHA_AVISO_HORA` del este, y
+   * SÓLO AL TELÉFONO de quien vinculó la campana. No va a la campanita de la página: si la abrís, ya entraste y la racha
+   * está salvada. Con el mismo tope por minuto que los demás: lo que no entra sale al minuto siguiente, y `hechos` evita
+   * repetir.
+   */
+  async recordarRacha(ahora) {
+    if (this.pausada()) return 0;
+    const hoy = diaET(ahora);
+    if (horaET(ahora) < RACHA_AVISO_HORA || this.leer('racha_aviso_dia') === hoy) return 0;
+    const c = this.rachaCfg();
+    const desde = c.desde ? diaET(c.desde) : '';
+    const hace3 = new Date((diaNum(hoy) - 3) * DIA_MS).toISOString().slice(0, 10);
+    // los que tienen la campana vinculada y entraron hace poco, pero hoy no
+    const cands = this.sql.exec('SELECT DISTINCT a.quien FROM activo a JOIN subs s ON s.quien = a.quien ' +
+      'WHERE a.dia >= ? AND a.quien NOT IN (SELECT quien FROM activo WHERE dia = ?)', hace3, hoy).toArray().map((x) => x.quien);
+    let enviados = 0, pedidos = 0, quedan = 0, avisados = 0;
+    for (const quien of cands) {
+      const dias = this.sql.exec('SELECT dia FROM activo WHERE quien = ? AND dia >= ? ORDER BY dia', quien, desde)
+        .toArray().map((x) => x.dia);
+      const r = rachaEnPeligro(dias, hoy);
+      if (!r) continue;
+      const id = 'racha-aviso:' + quien + ':' + hoy;
+      if (this.sql.exec('SELECT id FROM hechos WHERE id = ?', id).toArray()[0]) continue;
+      const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', quien).toArray();
+      if (!subs.length) continue;
+      if (pedidos + subs.length > TOPE_PERSONALES && pedidos) { quedan++; continue; }
+      this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
+      pedidos += subs.length;
+      avisados++;
+      const cuerpo = cuerpoPersonal({ id: 'racha' + hoy.replace(/-/g, ''),
+        titulo: '🔥 Tu racha de ' + r.actual + ' días se corta hoy', cuerpo: 'Entrá a la página antes de la medianoche y la mantenés.',
+        url: HUB + '/freestyle-rap' });
+      const estados = await Promise.all(subs.map((x) => empujar(x, cuerpo, { ttl: 4 * 3600, topic: 'racha' }, this.env, new Map())));
+      let llego = 0, reintentar = false;
+      estados.forEach((e, i) => {
+        if (e >= 200 && e < 300) { enviados++; llego++; }
+        else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
+        else if (e === 0 || e === 429 || e >= 500) reintentar = true;
+      });
+      if (reintentar && !llego) this.sql.exec('DELETE FROM hechos WHERE id = ?', id);
+    }
+    // el día queda hecho cuando no quedó nadie esperando el tope
+    if (!quedan) this.guardar('racha_aviso_dia', hoy);
+    this.guardar('racha_aviso', { t: ahora, candidatos: cands.length, avisados, enviados, quedan });
     return enviados;
   }
 

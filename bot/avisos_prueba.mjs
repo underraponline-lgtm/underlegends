@@ -734,6 +734,14 @@ const ok = (cond, que, det) => {
   ok(y.actual === 2 && y.maxima === 4 && y.hoy && y.inicio === '2026-10-03', 'la de ahora y la mejor son distintas');
   ok(r(['2026-10-31', '2026-11-01', '2026-11-02'], '2026-11-02').actual === 3 && r(['2026-12-31', '2027-01-01'], '2027-01-01').actual === 2,
     'el cambio de mes, de año y de horario no la cortan');
+  // 🔥 «tu racha se corta hoy» (13/10/2026, «hacer todo»): sólo si hoy no entraste y mañana valdría 0
+  const p = A.rachaEnPeligro;
+  ok(!p(['2026-10-01', '2026-10-02', '2026-10-03'], '2026-10-04'), 'con el día de perdón sin usar, no se corta: no se avisa');
+  const pe = p(['2026-10-01', '2026-10-03', '2026-10-04', '2026-10-05'], '2026-10-06');
+  ok(pe && pe.actual === 4, 'con el perdón ya usado esta semana, sí: se avisa con los días que lleva');
+  ok(!p(['2026-10-01', '2026-10-03', '2026-10-04', '2026-10-05', '2026-10-06'], '2026-10-06'), 'si hoy ya entraste, no');
+  ok(!p(['2026-10-03', '2026-10-05'], '2026-10-06'), 'una racha de menos de ' + A.RACHA_AVISO_MIN + ' días, no');
+  ok(!p(['2026-10-01', '2026-10-02'], '2026-10-05'), 'una que ya se cortó, tampoco');
   const nv = (xp) => A.nivelDeXp(xp, 10).n;
   ok([0, 19, 20, 899, 900].map(nv).join() === '1,1,2,9,10', 'el nivel de cada experiencia, como `racha.nivel()`');
   const n5 = A.nivelDeXp(250, 10);
@@ -1447,6 +1455,62 @@ const ok = (cond, que, det) => {
     const enApp = /const SECC = new Set\(\[([^\]]+)\]/.exec(readFileSync(join(aqui, '..', 'web', 'src', 'App.jsx'), 'utf8'));
     const deApp = enApp ? enApp[1].match(/'([a-z-]+)'/g).map((x) => x.slice(1, -1)).sort() : [];
     ok(JSON.stringify(deApp) === JSON.stringify([...A.SECC_EV].sort()), 'la lista de App.jsx es SECC_EV', deApp.join(','));
+  }
+}
+
+// 🔥 «TU RACHA SE CORTA HOY», sobre el objeto (13/10/2026, «hacer todo»): a la noche, sólo a quien la pierde si no
+// entra, sólo a su teléfono vinculado, y una vez por día
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    console.log('\n🔥 tu racha se corta hoy\n');
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [], rowsWritten: 0 }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: r.changes };
+      },
+    };
+    const par = await crypto.subtle.generateKey({ name: 'ECDSA', namedCurve: 'P-256' }, true, ['sign', 'verify']);
+    const jwk = await crypto.subtle.exportKey('jwk', par.privateKey);
+    const pub = new Uint8Array(await crypto.subtle.exportKey('raw', par.publicKey));
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
+      { DISCORD_TOKEN: 'x', KV: { get: async () => null }, VAPID_PUBLICA: A.b64u.enc(pub), VAPID_PRIVADA: jwk.d });
+    await new Promise((r) => setTimeout(r, 5));
+    const tel = async (quien, n) => {
+      const k = await crypto.subtle.generateKey({ name: 'ECDH', namedCurve: 'P-256' }, true, ['deriveBits']);
+      const p256 = A.b64u.enc(new Uint8Array(await crypto.subtle.exportKey('raw', k.publicKey)));
+      const auth = A.b64u.enc(crypto.getRandomValues(new Uint8Array(16)));
+      sql.exec('INSERT INTO subs (endpoint, p256dh, auth, alta, visto, quien) VALUES (?, ?, ?, ?, ?, ?)',
+        'https://push.example/' + n, p256, auth, 1, 1, quien);
+    };
+    const dias = (quien, ds) => ds.forEach((d) => sql.exec('INSERT INTO activo (quien, dia) VALUES (?, ?)', quien, d));
+    const ANA = '700000000000000001', BEA = '700000000000000002', CID = '700000000000000003';
+    dias(ANA, ['2026-09-30', '2026-10-02', '2026-10-03', '2026-10-04']);   // el perdón ya usado: hoy se corta
+    dias(BEA, ['2026-10-02', '2026-10-03', '2026-10-04']);                 // el perdón sin usar: hoy no se corta
+    dias(CID, ['2026-09-30', '2026-10-02', '2026-10-03', '2026-10-04']);   // se corta, pero sin teléfono vinculado
+    await tel(ANA, 'ana');
+    await tel(BEA, 'bea');
+    const antesF = globalThis.fetch;
+    const fue = [];
+    globalThis.fetch = async (u) => { fue.push(String(u)); return new Response('', { status: 201 }); };
+    const tarde = Date.parse('2026-10-05T22:00:00Z');   // 6 PM del este: todavía no
+    const noche = Date.parse('2026-10-06T01:30:00Z');   // 9:30 PM del este del 05/10
+    await o.recordarRacha(tarde);
+    const aLaTarde = fue.length;
+    await o.recordarRacha(noche);
+    const n1 = fue.slice();
+    await o.recordarRacha(noche + 60000);
+    globalThis.fetch = antesF;
+    ok(aLaTarde === 0, 'a la tarde todavía no (desde las ' + A.RACHA_AVISO_HORA + ' del este)');
+    ok(n1.length === 1 && n1[0].endsWith('/ana'), 'a la noche, sólo a quien la pierde si no entra y tiene el teléfono vinculado',
+      JSON.stringify(n1));
+    ok(fue.length === 1, 'y una sola vez por día');
   }
 }
 

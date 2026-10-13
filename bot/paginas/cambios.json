@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.91",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T05:40:00-04:00",
+   "titulo": "Avisos que te traen de vuelta",
+   "items": [
+    "📉 Si alguien te pasa en el ranking de Temporada, te avisamos: quién es y cuánto OVR te lleva (una vez por día como mucho).",
+    "🔥 Si tu racha se corta hoy, a las 8 PM (hora del este) te llega un aviso al teléfono para que no la pierdas.",
+    "🔔 Si ya jugaste y todavía no tenés los avisos, el Inicio te los ofrece debajo de tu próximo evento. Nunca por DM."
+   ]
+  },
+  {
    "version": "2.90",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T04:40:00-04:00",

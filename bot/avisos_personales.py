@@ -22,6 +22,12 @@ QUÉ AVISA
   que ya pregunta a R2 y al requisito: cuando llega el aviso, la carta está.
 · 🏅 el primer rango —a los 10 eventos, la misma puerta que la carta— y
   📈 cada vez que sube.
+· 📉 TE PASARON EN EL RANKING (Dlx, 13/10/2026: «hacer todo», del research
+  de enganche: en las ligas de Duolingo, que te pasen es lo que te hace
+  volver). Tu puesto oficial de la Temporada bajó desde la última corrida:
+  quién es el de arriba ahora y cuánto OVR te lleva. Una vez por día como
+  mucho (el id lleva el día), y a quien no tiene puesto (fuera de concurso)
+  nada.
 
 ⚠️ BAJAR DE RANGO NO SE AVISA. Es un dato público —está en la página— pero un
 aviso al celular para decirte que bajaste no suma. Si Dlx lo quiere, es una
@@ -85,6 +91,12 @@ def _id(*partes):
     return hashlib.sha1('|'.join(str(p) for p in partes).encode('utf-8')).hexdigest()[:16]
 
 
+def _num(x):
+    """3 → «3»; 2.5 → «2,5»: el OVR como lo escribe la página."""
+    x = round(float(x or 0), 1)
+    return str(int(x)) if x == int(x) else str(x).replace('.', ',')
+
+
 def _ahora_iso():
     import datetime as _dt
     return _dt.datetime.now(_dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
@@ -122,6 +134,15 @@ def eventos(antes, hoy):
                 out.append({'id': _id(did, 'baja', rh), 'quien': did,
                             'titulo': '📉 Ahora sos rango %s' % rh,
                             'cuerpo': 'Antes eras %s.' % ra, 'url': url})
+        # 📉 te pasaron: tu puesto bajó desde la última corrida. Va al perfil, que dice tu próxima meta
+        pa, ph, arr = a.get('pos'), h.get('pos'), h.get('arriba')
+        if pa and ph and ph > pa and arr:
+            d = arr[1]
+            cuerpo = ('%s es el #%d y te lleva %s de OVR.' % (arr[0], ph - 1, _num(d)) if d > 0
+                      else '%s es el #%d, con tu mismo OVR: el próximo evento los separa.' % (arr[0], ph - 1))
+            out.append({'id': _id(did, 'pasado', t[:10]), 'quien': did,
+                        'titulo': '📉 Te pasaron: ahora sos #%d de la Temporada' % ph,
+                        'cuerpo': cuerpo, 'url': url})
     # ⚠️ CON FECHA: el objeto no manda lo de más de una semana, y la cola se
     # recorta por fecha (`encolar()`), porque ya no se borra al leerla
     for e in out:
@@ -167,11 +188,29 @@ def estado_de_hoy():
                     letra[_clave(x['raw'])] = _rg(rg)
     except (OSError, ValueError):
         pass
+    # 📉 el puesto oficial de la Temporada (sin los de fuera de concurso) y quién está justo arriba, con cuánto OVR
+    # te lleva: para «te pasaron». Lo mismo que muestra el Ranking (`pos`, `ovr` del pool)
+    puesto, arriba = {}, {}
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'temporada_pool.json'), encoding='utf-8') as f:
+            of = sorted((x for x in json.load(f) if x.get('raw') and x.get('pos') and not x.get('fc')),
+                        key=lambda x: x['pos'])
+        for i, x in enumerate(of):
+            k = _clave(x['raw'])
+            puesto[k] = x['pos']
+            if i:
+                arriba[k] = [of[i - 1]['raw'], round(float(of[i - 1].get('ovr') or 0) - float(x.get('ovr') or 0), 1)]
+    except (OSError, ValueError, TypeError):
+        pass
     out = {}
     for did, k in clave_de.items():
         p = cs.get(k) or {}
         out[did] = {'k': k, 'n': p.get('n') or '', 'rg': letra.get(k, ''),
                     'cs': sorted(p.get('cs') or [])}
+        if puesto.get(k):
+            out[did]['pos'] = puesto[k]
+            if arriba.get(k):
+                out[did]['arriba'] = arriba[k]
     return out
 
 
@@ -229,12 +268,14 @@ def _leer_estado():
 
 
 def _guardar_estado(hoy):
-    """Sólo lo que hace falta comparar: la letra y las cartas."""
-    gente = {did: {'rg': h['rg'], 'cs': h['cs']} for did, h in sorted(hoy.items())}
+    """Sólo lo que hace falta comparar: la letra, las cartas y el puesto de la Temporada."""
+    gente = {did: dict({'rg': h['rg'], 'cs': h['cs']}, **({'pos': h['pos']} if h.get('pos') else {}))
+             for did, h in sorted(hoy.items())}
     with io.open(ESTADO, 'w', encoding='utf-8', newline='\n') as f:
         json.dump({'_leeme': 'Cómo estaba cada uno la última vez que se miró: la letra de rango y '
-                             'las tarjetas que tiene. Lo escribe bot/avisos_personales.py para '
-                             'saber qué avisar (subiste de rango, desbloqueaste una tarjeta).',
+                             'las tarjetas que tiene, y su puesto de la Temporada. Lo escribe '
+                             'bot/avisos_personales.py para saber qué avisar (subiste de rango, '
+                             'desbloqueaste una tarjeta, te pasaron).',
                    'gente': gente}, f, ensure_ascii=False, indent=0, sort_keys=True)
 
 
@@ -423,6 +464,18 @@ def _self_check():
     ok(eventos({'1': dict(base, rg='A')}, {'1': dict(base, rg='B+')}) == [], 'bajar no se avisa')
     ok(eventos({'1': dict(base, rg='A−')}, {'1': dict(base, rg='A-')}) == [],
        'el mismo rango escrito con otro guion no es un cambio')
+    # 📉 te pasaron
+    e = eventos({'1': dict(base, pos=5)}, {'1': dict(base, pos=6, arriba=['Bea', 2])})
+    ok(len(e) == 1 and e[0]['titulo'] == '📉 Te pasaron: ahora sos #6 de la Temporada'
+       and e[0]['cuerpo'] == 'Bea es el #5 y te lleva 2 de OVR.', 'te pasaron: tu puesto nuevo, quién y cuánto te lleva')
+    e = eventos({'1': dict(base, pos=5)}, {'1': dict(base, pos=6, arriba=['Bea', 0])})
+    ok(len(e) == 1 and 'mismo OVR' in e[0]['cuerpo'], 'empatados: el próximo evento los separa')
+    ok(eventos({'1': dict(base, pos=6)}, {'1': dict(base, pos=5, arriba=['Bea', 1])}) == [], 'subir no es que te pasaron')
+    ok(eventos({'1': base}, {'1': dict(base, pos=6, arriba=['Bea', 1])}) == [],
+       'sin puesto la vez anterior (recién llegado o la primera corrida con esto), nada')
+    a1 = eventos({'1': dict(base, pos=5)}, {'1': dict(base, pos=6, arriba=['Bea', 2])})
+    a2 = eventos({'1': dict(base, pos=6)}, {'1': dict(base, pos=8, arriba=['Cid', 1])})
+    ok(a1[0]['id'] == a2[0]['id'], 'una vez por día: el segundo del mismo día tiene el mismo id y el objeto no lo repite')
     a = eventos({'1': base}, {'1': dict(base, rg='S')})
     b = eventos({'1': base}, {'1': dict(base, rg='S')})
     ok(a[0]['id'] == b[0]['id'], 'el mismo aviso tiene el mismo id (el objeto no lo repite)')

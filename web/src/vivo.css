@@ -2615,3 +2615,14 @@ a.rk-z:hover{border-color:var(--linea)}
   font:600 16px/1.3 "Barlow Condensed",sans-serif;color:var(--tinta)}
 .evp-sig .btn{flex:none}
 .evp-sig b{font-weight:700}
+
+/* 🔔 la campana pedida en el momento justo, debajo del botón grande del lobby (13/10/2026) */
+.lb-camp{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px 12px;align-items:center;padding:14px;
+  border:2px solid #29B298;background:#0B0B0D;color:#F6F6F6}
+.lb-camp-ic{display:grid;place-items:center;width:40px;height:40px;background:#29B298;color:#030304}
+.lb-camp-t b{display:block;font:700 16px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.05em}
+.lb-camp-t small{display:block;margin-top:4px;font:500 14px/1.4 Archivo,sans-serif;color:#C4C4BE}
+.lb-camp-b{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.lb-camp-no{background:none;border:0;padding:8px 2px;color:#C4C4BE;font:600 16px/1 "Barlow Condensed",sans-serif;
+  text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+
