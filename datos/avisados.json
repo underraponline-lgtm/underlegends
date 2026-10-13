@@ -10107,21 +10107,6 @@
     "MARITHEA"
    ],
    [
-    "COLOSO",
-    "FAT N",
-    "COLOSO"
-   ],
-   [
-    "VISIONARIO",
-    "COLOSO",
-    "VISIONARIO"
-   ],
-   [
-    "MARITHEA",
-    "VISIONARIO",
-    "MARITHEA"
-   ],
-   [
     "FAT N",
     "AIRON",
     "FAT N"
@@ -10129,7 +10114,7 @@
   ],
   "ev_antes": {},
   "fecha": "12/10",
-  "firma": "80db81c72ab4482f",
+  "firma": "b53999658e53fae4",
   "msg": "1559406349790617712",
   "nombre": "COMPE CHILL",
   "num": 463,
@@ -10139,7 +10124,18 @@
   },
   "sv": "URBF",
   "t": "2026-10-13T02:56:28Z",
-  "tabla": [],
+  "tabla": [
+   [
+    "FAT N",
+    "Campeón",
+    10000
+   ],
+   [
+    "AIRON",
+    "Subcampeón",
+    7500
+   ]
+  ],
   "v": 2
  },
  "464": {

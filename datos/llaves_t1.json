@@ -21958,8 +21958,8 @@
        "MARITHEA",
        "PUPPY"
       ],
-      "MARITHEA",
-      ""
+      "",
+      "sin ganador: espera en ✅ Decidir"
      ],
      [
       [
@@ -21976,30 +21976,6 @@
     "b": [
      [
       [
-       "VISIONARIO",
-       "J1"
-      ],
-      "VISIONARIO",
-      ""
-     ],
-     [
-      [
-       "COLOSO",
-       "VISIONARIO"
-      ],
-      "COLOSO",
-      ""
-     ],
-     [
-      [
-       "PUPPY",
-       "COLOSO"
-      ],
-      "PUPPY",
-      ""
-     ],
-     [
-      [
        "AXL EVANS",
        "JAZZ"
       ],
@@ -22008,8 +21984,24 @@
      ],
      [
       [
+       "FAT N",
+       "COLOSO"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
        "HUNTER",
        "AIRON"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "J1",
+       "VISIONARIO"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -22032,6 +22024,14 @@
      ],
      [
       [
+       "PUPPY",
+       "MARITHEA"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
        "URKO",
        "COFFY"
       ],
@@ -22043,14 +22043,6 @@
    },
    {
     "b": [
-     [
-      [
-       "MARITHEA",
-       "PUPPY"
-      ],
-      "MARITHEA",
-      ""
-     ],
      [
       [
        "FAT N",
@@ -22120,7 +22112,18 @@
    }
   ],
   "sv": "URBF",
-  "tabla": []
+  "tabla": [
+   [
+    "FAT N",
+    "Campeón",
+    10000
+   ],
+   [
+    "AIRON",
+    "Subcampeón",
+    7500
+   ]
+  ]
  },
  "464": {
   "dia": "2026-10-12",
