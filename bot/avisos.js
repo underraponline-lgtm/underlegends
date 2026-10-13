@@ -412,7 +412,7 @@ export const banderaDe = (cc) => (/^[a-z]{2}$/i.test(String(cc || ''))
  * Erian. Cada uno se queda con la bandera que más se repite en SU pedazo; y si la Liga lo conoce (`buscar`, la tabla),
  * con su nombre y su país de la Liga, no con las mayúsculas de la llave.
  */
-export function genteChat(lado, buscar, tabla) {
+export function genteChat(lado, buscar, tabla, ids) {
   const out = [];
   for (const seg of String(lado || '').split(/\s*[,+&]\s*/)) {
     const fls = seg.match(BANDERAS_RE) || [];
@@ -425,18 +425,27 @@ export function genteChat(lado, buscar, tabla) {
     if (!n) continue;
     const k = buscar ? buscar(n) || '' : '';
     const f = k && tabla ? tabla[k] : null;
+    // 🔔 su cuenta, si la Liga la conoce (`turnos:nombres`, el índice de «te toca»): por cómo lo escribe la llave o por
+    // su nombre de la Liga
+    const id = ids ? String(ids[claveTurno(n)] || (f && f.n ? ids[claveTurno(f.n)] : '') || '') : '';
     if (f && f.n) {
       n = sinBandera(f.n);
       fl = banderaDe(f.cc) || fl;
     }
-    out.push({ n: n + (rev ? ' (R)' : ''), fl, k });
+    out.push({ n: n + (rev ? ' (R)' : ''), fl, k, id: /^\d{5,25}$/.test(id) ? id : '' });
   }
   return out;
 }
 /** «A, B y C». */
 const conY = (xs) => (xs.length < 2 ? xs.join('') : xs.slice(0, -1).join(', ') + ' y ' + xs[xs.length - 1]);
+/**
+ * 🔔 Un nombre para el chat: la MENCIÓN de su cuenta si la conocemos (Dlx, 12/10/2026: «no menciona a la gente»), y si
+ * no, su nombre. ⚠️ La mención no suena: todos los mensajes van con `allowed_mentions` vacío, así que se ve y se toca
+ * (abre su perfil de Discord) sin notificar a nadie. El freno de «nunca molestar» sigue en pie.
+ */
+export const nombreChat = (y) => (y.id ? '<@' + y.id + '>' : escMd(y.n));
 /** Los nombres de `genteChat()`, cada uno con su bandera: «RodriLP 🇦🇷, Velatz 🇨🇱 y Snow 🇨🇴». */
-export const nombresChat = (gs) => conY(gs.map((y) => escMd(y.n) + (y.fl ? ' ' + y.fl : '')));
+export const nombresChat = (gs) => conY(gs.map((y) => nombreChat(y) + (y.fl ? ' ' + y.fl : '')));
 //: el batacazo del cierre: tantos puntos de OVR de diferencia, o más
 export const BATACAZO = 10;
 //: la racha del cierre: tantos duelos ganados seguidos, o más
@@ -512,7 +521,7 @@ export function momentosChat(L, nombre, fav, nivel = 'normal', opc = {}) {
   const out = [];
   const rondas = (L && L.rondas) || [];
   if (!rondas.some((R) => batallasDe(R).length)) return out;
-  const gente = (lado) => genteChat(lado, opc.buscar, opc.tabla);
+  const gente = (lado) => genteChat(lado, opc.buscar, opc.tabla, opc.ids);
   // un rival: su nombre, o «el equipo de …» si son varios
   const rival = (lado) => { const gs = gente(lado); return (gs.length > 1 ? 'el equipo de ' : '') + nombresChat(gs); };
   const tit = escMd(String(nombre || (L && L.nombre) || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
@@ -533,9 +542,11 @@ export function momentosChat(L, nombre, fav, nivel = 'normal', opc = {}) {
     // cuando se dijo «pasa» va en esa línea, y quien llega después sale como «suma a» (`de`: ver `planChatTodo()`)
     rondas.forEach((R, k) => {
       if (R === F) return;
-      batallasDe(R).forEach((b, i) => {
-        if (!jugadaChat(b)) return;
+      // ⚠️ `i` es su lugar en la ronda tal cual (`R.b`), el mismo que usa el cruce (`v:` en `chatVivo()`): así el
+      // resultado sabe a qué mensaje de cruce agregarse
+      (R.b || []).forEach((b, i) => {
         const lados = (b[0] || []).filter(Boolean);
+        if (lados.length < 2 || !jugadaChat(b)) return;
         for (const g of pasaronChat(rondas, k, b)) {
           const gs = gente(g);
           if (!gs.length) continue;
@@ -544,10 +555,12 @@ export function momentosChat(L, nombre, fav, nivel = 'normal', opc = {}) {
           // un mano a mano dice contra quién; un grupo, con quiénes (de ahí puede pasar más de uno)
           const resto = !otros.length ? '' : lados.length === 2 ? ' · contra ' + otros[0] : ' · de un grupo con ' + conY(otros);
           const cab = '⚔️ **' + tit + '**';
-          out.push({ m: base, cab, texto: '✅ **' + nombresChat(gs) + '** ' + (gs.length > 1 ? 'pasan' : 'pasa') + ' · ' + R.r + resto });
+          out.push({ m: base, cab, bi: R.r + ':' + i, texto: '✅ **' + nombresChat(gs) + '** ' + (gs.length > 1 ? 'pasan' : 'pasa') + ' · ' + R.r + resto,
+            // lo que se le agrega al mensaje del cruce cuando ya salió: los nombres ya están arriba, alcanza con quién
+            res: '✅ ' + (gs.length > 1 ? 'Pasan' : 'Pasa') + ' **' + nombresChat(gs) + '**' });
           for (const y of gs.slice(1)) {
             out.push({ m: 'u:' + R.r + ':' + i + ':' + (y.k || claveTurno(y.n)), de: base, cab,
-              texto: '🧩 **' + escMd(gs[0].n) + '** suma a **' + nombresChat([y]) + '** a su equipo' });
+              texto: '🧩 **' + nombreChat(gs[0]) + '** suma a **' + nombresChat([y]) + '** a su equipo' });
           }
         }
       });
@@ -4577,7 +4590,8 @@ export class Avisos {
       const nombre = nombreDe(L);
       // la gente con su nombre de la Liga, y lo del cierre: la tabla y los perfiles (10 minutos en la memoria)
       const dc = await this.datosCruce(ahora);
-      const opc = { buscar: dc.buscar, tabla: dc.tabla, perf: dc.perf, perfT: dc.perfT, cartaDe: dc.cartaDe };
+      const opc = { buscar: dc.buscar, tabla: dc.tabla, perf: dc.perf, perfT: dc.perfT, cartaDe: dc.cartaDe,
+        ids: await this.indiceNombres(ahora) };
       let ms = momentosChat(L, nombre, [], nivel, opc);
       // los favoritos sólo si «Arrancó» sale ahora: el lobby pesa, no se lee cada minuto
       if (!hechos.llave && ms.length && (porBatalla(nivel) || ms[ms.length - 1].m === 'llave') && fresca
@@ -4604,7 +4618,7 @@ export class Avisos {
           const mv = 'v:' + bat.r + ':' + bat.i;
           if (!hechos[mv]) {
             const x = infoCruce(bat.lados, dc.buscar, dc.tabla, dc.perf);
-            const [ga, gb] = bat.lados.map((l) => genteChat(l, dc.buscar, dc.tabla));
+            const [ga, gb] = bat.lados.map((l) => genteChat(l, dc.buscar, dc.tabla, opc.ids));
             // el nombre de la Liga también en el título y el dato («MAKMAH le ganó la última vez» → Makmah)
             if (ga.length === 1) x.a.n = ga[0].n;
             if (gb.length === 1) x.b.n = gb[0].n;
@@ -4630,6 +4644,52 @@ export class Avisos {
           }
         }
       }
+      // 🧹 MENOS DE GOLPE (Dlx, 12/10/2026, el General de Urban: «siento que eso es mucho spam… todo de golpe»):
+      // en «Con datos» y «A full», (a) la final sale UNA vez —el cruce ya la anuncia con su título y su dato, y
+      // «🔥 La final de…» la repetía en el mismo mensaje— y (b) el resultado de una batalla cuyo cruce ya salió se le
+      // agrega a ESE mensaje, editándolo («✅ Pasan Guess y Nemi»): una edición no le suena a nadie y el chat no suma
+      // otro mensaje por batalla
+      if (nivel === 'datos' || nivel === 'full') {
+        const finalV = ms.some((x) => /^v:final:/i.test(x.m)) || Object.keys(hechos).some((m) => /^v:final:/i.test(m));
+        if (finalV && ms.some((x) => x.m === 'final') && !hechos.final) {
+          this.sql.exec('INSERT OR IGNORE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
+            L.id, canal, 'final', '', '', ahora);
+          hechos.final = { m: 'final', msg: '', texto: '' };
+        }
+        const ediciones = new Map();
+        for (const x of ms) {
+          const v = x.bi && x.res && !hechos[x.m] ? hechos['v:' + x.bi] : null;
+          if (!v || !v.msg) continue;
+          const e = ediciones.get(v.msg) || { texto: v.texto || '', ms: [] };
+          e.texto += '\n' + x.res;
+          e.ms.push(x.m);
+          for (const u of ms) if (u.de === x.m && !hechos[u.m]) e.ms.push(u.m);
+          ediciones.set(v.msg, e);
+        }
+        for (const [msg, e] of ediciones) {
+          if (pedidos >= CHAT_TOPE) break;
+          pedidos++;
+          let r = null;
+          try {
+            r = await fetch(`${DC}/channels/${canal}/messages/${msg}`, {
+              method: 'PATCH',
+              headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+              body: JSON.stringify({ content: e.texto.slice(0, 1900), allowed_mentions: { parse: [] } }),
+            });
+          } catch (err) { r = null; }
+          if (!r || !r.ok) { errores.push(b.sv + ' ' + (r ? r.status : 'red')); continue; }
+          editados++;
+          this.sql.exec('UPDATE chat_vivo SET texto = ? WHERE canal = ? AND msg = ?', e.texto, canal, msg);
+          // la apuesta de ese cruce reescribe su mensaje al cerrar: que lo haga sobre el texto con el resultado
+          this.sql.exec('UPDATE apuestas SET texto = ? WHERE canal = ? AND msg = ?', e.texto.slice(0, 1900), canal, msg);
+          for (const m of e.ms) {
+            this.sql.exec('INSERT OR REPLACE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
+              L.id, canal, m, msg, e.texto, ahora);
+            hechos[m] = { m, msg, texto: e.texto };
+          }
+          for (const m of Object.keys(hechos)) if (hechos[m].msg === msg) hechos[m].texto = e.texto;
+        }
+      }
       for (const p of planChat(ms, hechos, ult, ahora, fresca, nivel, entre)) {
         if (p.tipo === 'saltar') {
           this.sql.exec('INSERT OR IGNORE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
@@ -4647,8 +4707,9 @@ export class Avisos {
             headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
             // 🛑 nunca menciona a nadie, y sin la vista previa del link. 🏆 Con imagen (la tarjeta del campeón) va como
             // adjunto del mensaje, y sin el freno de las vistas previas, que también la escondería: los links van entre <>
+            // ⚠️ una EDICIÓN no manda `flags`: el mensaje se queda con las suyas (con `flags: 4` se escondía la imagen)
             body: JSON.stringify(Object.assign({ content: p.texto.slice(0, 1900), allowed_mentions: { parse: [] } },
-              p.img && p.tipo === 'mandar' ? { embeds: [{ image: { url: p.img }, color: 0xE41373 }] } : { flags: 4 },
+              p.tipo === 'editar' ? {} : p.img ? { embeds: [{ image: { url: p.img }, color: 0xE41373 }] } : { flags: 4 },
               conAp ? { components: botonesApuesta(conAp.id, conAp.a, conAp.b, false, apc.montos) } : {})),
           });
         } catch (e) { r = null; }

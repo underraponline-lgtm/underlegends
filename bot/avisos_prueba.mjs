@@ -839,6 +839,67 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 🧹 «CON DATOS», MENOS DE GOLPE (Dlx, 12/10/2026, el General de Urban: «mucho spam… todo de golpe… no menciona a la
+// gente»): el cruce menciona sin que suene, el resultado se le agrega a ESE mensaje y la final sale una sola vez
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    console.log('\n🧹 «con datos»: el resultado en el mensaje del cruce\n');
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        st.run(...ps);
+        return { toArray: () => [] };
+      },
+    };
+    const CANAL = '555000000000000077';
+    const ANA = '123456789012345678';
+    const kv = new Map([['cfg:111', JSON.stringify({ vivo: CANAL, vivo_nivel: 'datos' })],
+      ['web:lobby', JSON.stringify({ tabla: [{ n: 'Ana', k: 'ana', ovr: 88, cc: 'ar' }, { n: 'Bea', k: 'bea', ovr: 60, cc: 'cl' }] })],
+      ['turnos:nombres', JSON.stringify({ n: { ana: ANA } })]]);
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+      blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async (k) => kv.get(k) ?? null } });
+    await new Promise((r) => setTimeout(r, 5));
+    const antesF = globalThis.fetch;
+    const pedidos = [];
+    globalThis.fetch = async (u, op = {}) => {
+      pedidos.push({ u: String(u), m: op.method || 'GET', b: op.body ? JSON.parse(op.body) : null });
+      return new Response(JSON.stringify({ id: 'm' + pedidos.length }), { status: 200 });
+    };
+    const T = Date.parse('2026-10-12T23:00:00Z');
+    const llave = (texto, ed) => sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto, men) ' +
+      "VALUES ('9', '2', 'FFA', '111', 'x', ?, ?, ?, ?, '[]') ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, " +
+      'texto = excluded.texto', T - 60000, ed, texto, ed);
+    llave('# COPA Y\n`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n', T);
+    await o.chatVivo(T);
+    const m1 = pedidos[0];
+    ok(pedidos.length === 1 && m1.m === 'POST' && m1.b.content.includes('⚔️ Cuartos: **<@' + ANA + '> 🇦🇷** vs **Bea 🇨🇱**')
+      && JSON.stringify(m1.b.allowed_mentions) === '{"parse":[]}',
+    'con datos: el cruce menciona a quien la Liga conoce, y no suena', m1 && m1.b.content);
+    llave('# COPA Y\n`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ ✅ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ 🆚 ⌞Dora 🇲🇽⌝\n`[ FINAL ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞⌝\n', T + 3 * 60000);
+    await o.chatVivo(T + 3 * 60000);
+    const ed = pedidos.find((p, i) => i >= 1 && p.m === 'PATCH');
+    const nuevo = pedidos.find((p, i) => i >= 1 && p.m === 'POST');
+    ok(ed && ed.u.endsWith('/messages/m1') && /\n✅ Pasa \*\*<@123456789012345678> 🇦🇷\*\*$/.test(ed.b.content) && !('flags' in ed.b)
+      && nuevo && !/✅/.test(nuevo.b.content) && /Cuartos: \*\*Cami 🇻🇪\*\* vs \*\*Dora 🇲🇽\*\*/.test(nuevo.b.content),
+    'el resultado se le agrega al mensaje de su cruce (sin tocar sus banderas), y el mensaje nuevo es sólo el cruce que viene',
+    JSON.stringify(pedidos.slice(1).map((p) => [p.m, p.u.slice(-14), p.b && p.b.content])));
+    const n2 = pedidos.length;
+    llave('# COPA Y\n`[ CUARTOS ]`\n⌞Ana 🇦🇷⌝ ✅ 🆚 ⌞Bea 🇨🇱⌝\n⌞Cami 🇻🇪⌝ ✅ 🆚 ⌞Dora 🇲🇽⌝\n`[ FINAL ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Cami 🇻🇪⌝\n',
+      T + 6 * 60000);
+    await o.chatVivo(T + 6 * 60000);
+    const finales = pedidos.slice(n2).filter((p) => p.m === 'POST');
+    ok(finales.length === 1 && /⚔️ Final: /.test(finales[0].b.content) && !/🔥 La final de/.test(finales[0].b.content),
+      'la final sale una sola vez: el cruce, sin el «🔥 La final de…» repetido', JSON.stringify(finales.map((p) => p.b.content)));
+    globalThis.fetch = antesF;
+  }
+}
+
 // 🎲 LAS APUESTAS SOBRE EL OBJETO DE VERDAD (07/10/2026, «A full»): se abre con botones, se apuesta con sus frenos, se
 // cierra a los 3 minutos y se paga el pozo cuando la llave dice quién ganó
 {

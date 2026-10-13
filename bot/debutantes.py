@@ -114,8 +114,11 @@ def avisos_pagina(nuevos, cumplidos):
     return out
 
 
-def mensaje_chat(gente):
-    """El mensaje del chat de un servidor: `(texto, [discord_ids])`. `gente` = `[(raw, reto)]` de ese servidor."""
+def mensaje_chat(gente, sv=''):
+    """El mensaje del chat de un servidor: `(texto, [discord_ids])`. `gente` = `[(raw, reto)]` de ese servidor.
+
+    🖼️ El link lleva `?sv=<SIGLA>` (Dlx, 12/10/2026: «que la foto de portada tenga temática de ese servidor»): la
+    vista previa que arma Discord sale con la imagen de ese servidor (`ogDeServidor()` de bot/paginas/_worker.js)."""
     nombres = ['<@%s>' % r['did'] if r.get('did') else '**%s**' % raw for raw, r in gente]
     if len(nombres) > 1:
         quien = ', '.join(nombres[:-1]) + ' y ' + nombres[-1]
@@ -127,7 +130,7 @@ def mensaje_chat(gente):
              'cuenta. Lo siguen en %s'
              % (quien, 'jugaron' if len(gente) > 1 else 'jugó', 'jueguen' if len(gente) > 1 else 'jugá',
                 _dia(vence), 'se llevan' if len(gente) > 1 else 'te llevás',
-                '{:,}'.format(PREMIO).replace(',', '.'), WEB.rstrip('/')))
+                '{:,}'.format(PREMIO).replace(',', '.'), WEB.rstrip('/') + ('?sv=' + sv if sv else '')))
     return texto, [r['did'] for _raw, r in gente if r.get('did')]
 
 
@@ -186,7 +189,7 @@ def correr(aplicar=False, ahora=None):
     for sv, gente in sorted(por_sv.items()):
         if chats.get(sv) == hoy:
             continue
-        texto, ids = mensaje_chat(gente)
+        texto, ids = mensaje_chat(gente, sv)
         salida.append((sv, gente, texto, ids))
         print('\n   💬 %s%s:\n      %s' % (sv, '' if CHAT else ' (apagado: CHAT = False)', texto.replace('\n', '\n      ')))
     if not aplicar:
@@ -239,6 +242,8 @@ def _self_check():
          and '**Caro**' in mensaje_chat([('Beto', r['Beto']), ('Caro', r['Caro'])])[0]),
         ('el mensaje no menciona a nadie más que a los debutantes: ni @here ni @everyone',
          '@here' not in mensaje_chat([('Beto', r['Beto'])])[0] and '@everyone' not in mensaje_chat([('Beto', r['Beto'])])[0]),
+        ('el link del chat de un servidor lleva su sigla: la vista previa sale con su imagen',
+         mensaje_chat([('Beto', r['Beto'])], 'URBF')[0].endswith('/freestyle-rap?sv=URBF')),
     ]
     for que, ok in casos:
         mal += not ok
