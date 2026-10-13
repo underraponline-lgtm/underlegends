@@ -424,7 +424,7 @@
    "Vandu": 14
   },
   "fecha": "07/10",
-  "firma": "065a89383a6af564",
+  "firma": "16b140b42cf01123",
   "msg": "1557481124282892360",
   "nombre": "WETTSIDDEE 2",
   "num": 422,
@@ -1533,7 +1533,7 @@
    "setesfifi": 1
   },
   "fecha": "07/10",
-  "firma": "e3a7cfde1c064381",
+  "firma": "0e4294107b1bf148",
   "msg": "1557616971858579527",
   "nombre": "Doble Eliminación Vol. 2",
   "num": 426,
@@ -2833,7 +2833,7 @@
    "Zignos": 11
   },
   "fecha": "08/10",
-  "firma": "490e1edcac0c82bc",
+  "firma": "ef581f19edd37c0a",
   "msg": "1557926458221920299",
   "nombre": "__ LA REDENCIÓN VOL.1 __",
   "num": 431,
@@ -3790,7 +3790,7 @@
    "Xubaru": 3
   },
   "fecha": "08/10",
-  "firma": "d49d04c0c941da64",
+  "firma": "88fbbcc7ce8a3ea2",
   "msg": "1557986840865411073",
   "nombre": "__ __ Cuentas Pendientes V.1 __ __",
   "num": 435,
@@ -4622,7 +4622,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "349c5093c9217214",
+  "firma": "09fd81e992e420bb",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -5537,7 +5537,7 @@
    "Xclusivo": 12
   },
   "fecha": "10/10",
-  "firma": "6f894786e4fc49cd",
+  "firma": "84fa40b6c27a3dd9",
   "msg": "1558545514931163258",
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
   "num": 442,
@@ -5786,7 +5786,7 @@
    "PichulaMc": 27
   },
   "fecha": "10/10",
-  "firma": "e6c7cc34b0ff1707",
+  "firma": "7b816c1c7f4c89cd",
   "msg": "1558643633110917121",
   "nombre": "(sin titulo)",
   "num": 444,
@@ -6726,7 +6726,7 @@
    "Verc": 2
   },
   "fecha": "11/10",
-  "firma": "4d80d5339727f9fe",
+  "firma": "b27dd11f844c289b",
   "msg": "1558907912582078525",
   "nombre": "__ HJKSLOWT V.1 __",
   "num": 449,
@@ -7763,7 +7763,7 @@
    "yinn": 15
   },
   "fecha": "12/10",
-  "firma": "6e1c9f6350399e8e",
+  "firma": "a27453893eec253e",
   "msg": "1559247601923137630",
   "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
   "num": 454,
@@ -7964,7 +7964,7 @@
    "Walker": 4
   },
   "fecha": "12/10",
-  "firma": "dc7ad08872841361",
+  "firma": "2b1c84cf5a44a947",
   "msg": "1559247607283454084",
   "nombre": "FMS UNDER",
   "num": 455,
@@ -9191,6 +9191,7 @@
   "v": 2
  },
  "460": {
+  "al_dia": true,
   "antes": {
    "Abyssus": [
     17,
@@ -9395,7 +9396,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "f50af1a2b05fbac0",
+  "firma": "8247b526965a86b3",
   "msg": "1559353480601411625",
   "nombre": "GODZ",
   "num": 460,
@@ -9699,6 +9700,7 @@
   "v": 2
  },
  "462": {
+  "al_dia": true,
   "antes": {
    "7": [
     326,
@@ -9819,19 +9821,19 @@
     "rodrilp, Velatz, Snow"
    ],
    [
-    "Guty🇨🇱",
+    "Guty",
     "🏳️‍⚧️ VEPG 🏳️‍⚧️",
-    "Guty🇨🇱"
+    "Guty"
    ],
    [
-    "Guty🇨🇱",
+    "Guty",
     "Zaik 🇪🇸",
-    "Guty🇨🇱"
+    "Guty"
    ],
    [
-    "PARKJINGSUN 🇨🇱, 🇪🇸 AKARK 🇪🇸 🇨🇱",
+    "Oasis, AKARK",
     "Makmah",
-    "PARKJINGSUN 🇨🇱, 🇪🇸 AKARK 🇪🇸 🇨🇱"
+    "Oasis, AKARK"
    ],
    [
     "Number",
@@ -9865,13 +9867,13 @@
    ],
    [
     "rodrilp, Velatz, Snow",
-    "Guty🇨🇱",
+    "Guty",
     "rodrilp, Velatz, Snow"
    ],
    [
-    "PARKJINGSUN 🇨🇱, 🇪🇸 AKARK 🇪🇸 🇨🇱",
+    "Oasis, AKARK",
     "Number",
-    "PARKJINGSUN 🇨🇱, 🇪🇸 AKARK 🇪🇸 🇨🇱"
+    "Oasis, AKARK"
    ],
    [
     "Verc, Presagio, Abysuss",
@@ -9884,9 +9886,9 @@
     "Delux, Erik, Tam"
    ],
    [
-    "PARKJINGSUN 🇨🇱, 🇪🇸 AKARK 🇪🇸 🇨🇱",
+    "Oasis, AKARK",
     "rodrilp, Velatz, Snow",
-    "PARKJINGSUN 🇨🇱, 🇪🇸 AKARK 🇪🇸 🇨🇱"
+    "Oasis, AKARK"
    ],
    [
     "Verc, Presagio, Abysuss",
@@ -9895,7 +9897,7 @@
    ],
    [
     "Verc, Presagio, Abysuss",
-    "PARKJINGSUN 🇨🇱, 🇪🇸 AKARK 🇪🇸 🇨🇱",
+    "Oasis, AKARK",
     "Verc, Presagio, Abysuss"
    ]
   ],
@@ -9923,7 +9925,7 @@
    "rodrilp": 1
   },
   "fecha": "12/10",
-  "firma": "111fa555fd0d66ea",
+  "firma": "341abd2b2038e8f0",
   "msg": "1559399391536611440",
   "nombre": "COMPE POR 1.5 DOLARES",
   "num": 462,
@@ -9937,12 +9939,12 @@
   "t": "2026-10-13T02:56:26Z",
   "tabla": [
    [
-    "PARKJINGSUN 🇨🇱",
+    "Oasis",
     "Subcampeón",
     3750
    ],
    [
-    "🇪🇸 AKARK 🇪🇸 🇨🇱",
+    "AKARK",
     "Subcampeón",
     3750
    ],
@@ -9962,7 +9964,7 @@
     3333
    ],
    [
-    "Guty🇨🇱",
+    "Guty",
     "Cuartos",
     2500
    ],
@@ -10080,6 +10082,7 @@
   "v": 2
  },
  "463": {
+  "al_dia": true,
   "antes": {},
   "canal": "1511962554547703960",
   "duelos": [
@@ -10104,20 +10107,15 @@
     "MARITHEA"
    ],
    [
-    "MARITHEA",
     "FAT N",
-    "MARITHEA"
-   ],
-   [
-    "MARITHEA",
-    "MARITHEA",
-    "MARITHEA"
+    "AIRON",
+    "FAT N"
    ]
   ],
   "ev_antes": {},
   "fecha": "12/10",
-  "firma": "e85aa71092a1050e",
-  "msg": "1559399396175511593",
+  "firma": "b3a32ceecc8dfae4",
+  "msg": "1559406349790617712",
   "nombre": "COMPE CHILL",
   "num": 463,
   "participantes": 16,
@@ -10128,39 +10126,14 @@
   "t": "2026-10-13T02:56:28Z",
   "tabla": [
    [
-    "PUPPY",
+    "FAT N",
     "Campeón",
     10000
    ],
    [
-    "MARITHEA",
+    "AIRON",
     "Subcampeón",
-    7500
-   ],
-   [
-    "FAT N",
-    "Tercero",
-    6000
-   ],
-   [
-    "COLOSO",
-    "Cuarto",
-    4500
-   ],
-   [
-    "VISIONARIO",
-    "Cuartos",
-    2500
-   ],
-   [
-    "J1",
-    "Cuartos",
-    2500
-   ],
-   [
-    "JM SERNA",
-    "Octavos",
-    1250
+    1875
    ]
   ],
   "v": 2

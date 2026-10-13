@@ -1548,6 +1548,18 @@
      16,
      0
     ],
+    "AIRON": [
+     1,
+     2,
+     2,
+     0
+    ],
+    "AKARK": [
+     1,
+     2,
+     2,
+     0
+    ],
     "Abyssus": [
      1,
      2,
@@ -1591,9 +1603,9 @@
      0
     ],
     "COLOSO": [
-     1,
-     4,
-     4,
+     0,
+     99,
+     99,
      0
     ],
     "Cajita": [
@@ -1670,8 +1682,8 @@
     ],
     "FAT N": [
      1,
-     4,
-     4,
+     1,
+     1,
      0
     ],
     "Guess": [
@@ -1680,13 +1692,7 @@
      2,
      0
     ],
-    "Guty🇨🇱": [
-     1,
-     8,
-     8,
-     0
-    ],
-    "J1": [
+    "Guty": [
      1,
      8,
      8,
@@ -1702,12 +1708,6 @@
      1,
      1,
      1,
-     0
-    ],
-    "JM SERNA": [
-     1,
-     16,
-     16,
      0
     ],
     "Joaquín La Profecia 👨🏻‍🍳": [
@@ -1747,9 +1747,9 @@
      0
     ],
     "MARITHEA": [
-     1,
-     2,
-     2,
+     0,
+     99,
+     99,
      0
     ],
     "Magic": [
@@ -1812,16 +1812,16 @@
      4,
      0
     ],
-    "PARKJINGSUN 🇨🇱": [
+    "Oasis": [
      1,
      2,
      2,
      0
     ],
     "PUPPY": [
-     1,
-     1,
-     1,
+     0,
+     99,
+     99,
      0
     ],
     "Player": [
@@ -1902,12 +1902,6 @@
      16,
      0
     ],
-    "VISIONARIO": [
-     1,
-     8,
-     8,
-     0
-    ],
     "Valdoza": [
      1,
      16,
@@ -1980,12 +1974,6 @@
      1,
      0
     ],
-    "🇪🇸 AKARK 🇪🇸 🇨🇱": [
-     1,
-     2,
-     2,
-     0
-    ],
     "🏳️‍⚧️ VEPG 🏳️‍⚧️": [
      1,
      16,
@@ -1994,12 +1982,13 @@
     ]
    },
    "pts": {
+    "AIRON": 600,
+    "AKARK": 600,
     "Abyssus": 600,
     "Abysuss": 1600,
     "Ariaxer": 300,
     "BNA": 2900,
     "Benjixo": 900,
-    "COLOSO": 600,
     "Colesito": 300,
     "DO-C": 300,
     "Delux": 600,
@@ -2007,19 +1996,17 @@
     "EmiZor": 900,
     "Erian": 900,
     "Erik": 600,
-    "FAT N": 600,
+    "FAT N": 1600,
     "Guess": 900,
     "JJ": 1600,
     "Keider": 900,
     "Lvel": 300,
-    "MARITHEA": 600,
     "Magic": 300,
     "Makmah": 900,
     "NC": 900,
     "OG": 900,
     "ONZASS": 600,
-    "PARKJINGSUN 🇨🇱": 600,
-    "PUPPY": 1600,
+    "Oasis": 600,
     "Player": 300,
     "Presagio": 1600,
     "Prosu": 1600,
@@ -2034,8 +2021,7 @@
     "Xclusivo": 600,
     "Zignos": 900,
     "rodrilp": 600,
-    "yinn": 2900,
-    "🇪🇸 AKARK 🇪🇸 🇨🇱": 600
+    "yinn": 2900
    }
   }
  },
@@ -2043,6 +2029,8 @@
   ".SosaATR": 300,
   "1200": 300,
   "19": 1600,
+  "AIRON": 600,
+  "AKARK": 600,
   "ALESS": 300,
   "ALTER 🇨🇱": 300,
   "ANTONIO🇵🇾": 300,
@@ -2068,7 +2056,6 @@
   "Benjixo": 2200,
   "Bloody": 300,
   "CJ": 300,
-  "COLOSO": 600,
   "Cajita": 300,
   "Carlosmo": 1600,
   "Carlosss": 1600,
@@ -2105,7 +2092,7 @@
   "Eze": 300,
   "Ezias🥈✒️🧢🐍": 300,
   "F1THER": 300,
-  "FAT N": 600,
+  "FAT N": 1600,
   "FAT PENIS": 300,
   "Fin": 300,
   "Geoka": 300,
@@ -2146,7 +2133,6 @@
   "Lord Viruzz": 300,
   "Luzzano": 300,
   "Lvel": 600,
-  "MARITHEA": 600,
   "MATICERNA": 300,
   "MCO": 2900,
   "MHS": 300,
@@ -2176,12 +2162,10 @@
   "Number": 300,
   "OG": 3800,
   "ONZASS": 1500,
-  "Oasis": 2900,
-  "PARKJINGSUN 🇨🇱": 600,
+  "Oasis": 3500,
   "PIERR🇵🇪": 300,
   "PRAISERIZA": 2900,
   "PROMETHEUS BIB 🇨🇴": 300,
-  "PUPPY": 1600,
   "Panchok": 2900,
   "Paria": 300,
   "Personality": 300,
@@ -2255,8 +2239,7 @@
   "setesfifi": 300,
   "tnr": 300,
   "wei shenlong": 300,
-  "yinn": 4200,
-  "🇪🇸 AKARK 🇪🇸 🇨🇱": 600
+  "yinn": 4200
  },
  "temp": "prueba"
 }

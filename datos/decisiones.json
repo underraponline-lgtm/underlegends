@@ -267,6 +267,13 @@
    "cuando": "2026-10-12 10:15 PM ET",
    "por": "Dlx (chat)",
    "nota": "la llave no dice quién ganó, y Abyssus sigue en cuartos («Oasis, Abyssus»). Dlx, a «¿la cierro a favor de ellos?»: «sí cierra a favor de ellos»."
+  },
+  "compechill|URBF|12/10|final|airon|fatn": {
+   "ganador": "FAT N",
+   "batalla": "COMPE CHILL · URBF · 12/10 · final · AIRON 🆚 FAT N",
+   "cuando": "2026-10-12 11:23 PM ET",
+   "por": "el organizador, con el menú (<@1403518820022222929>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   }
  },
  "anuncios_fuera": {

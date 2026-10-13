@@ -342,7 +342,9 @@
     "ronda": "FINAL"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "3": "FAT N"
+  },
   "sin_permiso": false,
   "sv": "URBF"
  },

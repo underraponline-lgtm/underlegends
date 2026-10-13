@@ -428,28 +428,36 @@
     "org": "nachonc_",
     "clave": "nachonc"
    },
-   "organizadores": [],
+   "organizadores": [
+    [
+     "𓂀",
+     28,
+     1
+    ]
+   ],
    "semillero": {
     "nuevos": {
-     "FFA": 2,
-     "SR": 4
+     "FFA": 7,
+     "SR": 4,
+     "URBF": 7
     },
     "gente": {
      "DDF": 7,
-     "FFA": 34,
-     "SR": 21
+     "FFA": 54,
+     "SR": 21,
+     "URBF": 7
     },
-    "gana": "SR"
+    "gana": "URBF"
    },
    "meta_va": {
     "ACAD": 0,
     "DDF": 7,
     "DRA": 0,
-    "FFA": 34,
+    "FFA": 54,
     "FFS": 0,
     "FVS": 0,
     "SR": 21,
-    "URBF": 0
+    "URBF": 7
    },
    "sv_sorteo": {
     "DRA": 3,

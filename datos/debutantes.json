@@ -6,13 +6,24 @@
   "URBF": "2026-10-12"
  },
  "retos": {
+  "AIRON": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-13T00:54:11+00:00",
+   "did": "",
+   "evento": "COMPE CHILL",
+   "n": 463,
+   "sv": "URBF",
+   "vence": "2026-10-20T00:54:11+00:00",
+   "vencido": false
+  },
   "AKARK": {
    "avisado": "2026-10-12",
    "chat": "2026-10-12",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-13T00:26:10+00:00",
-   "did": "",
+   "did": "567047504491708416",
    "evento": "COMPE POR 1.5 DOLARES",
    "n": 462,
    "sv": "FFA",
@@ -30,19 +41,6 @@
    "n": 462,
    "sv": "FFA",
    "vence": "2026-10-20T00:26:10+00:00",
-   "vencido": false
-  },
-  "COLOSO": {
-   "avisado": "2026-10-12",
-   "chat": "2026-10-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-13T00:54:11+00:00",
-   "did": "",
-   "evento": "COMPE CHILL",
-   "n": 463,
-   "sv": "URBF",
-   "vence": "2026-10-20T00:54:11+00:00",
    "vencido": false
   },
   "FAT N": {
@@ -64,37 +62,11 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-13T00:26:10+00:00",
-   "did": "",
+   "did": "1173707334216859860",
    "evento": "COMPE POR 1.5 DOLARES",
    "n": 462,
    "sv": "FFA",
    "vence": "2026-10-20T00:26:10+00:00",
-   "vencido": false
-  },
-  "J1": {
-   "avisado": "2026-10-12",
-   "chat": "2026-10-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-13T00:54:11+00:00",
-   "did": "",
-   "evento": "COMPE CHILL",
-   "n": 463,
-   "sv": "URBF",
-   "vence": "2026-10-20T00:54:11+00:00",
-   "vencido": false
-  },
-  "JM SERNA": {
-   "avisado": "2026-10-12",
-   "chat": "2026-10-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-13T00:54:11+00:00",
-   "did": "",
-   "evento": "COMPE CHILL",
-   "n": 463,
-   "sv": "URBF",
-   "vence": "2026-10-20T00:54:11+00:00",
    "vencido": false
   },
   "Joaquín La Profecia 👨🏻‍🍳": {
@@ -110,19 +82,6 @@
    "vence": "2026-10-19T22:01:43+00:00",
    "vencido": false
   },
-  "MARITHEA": {
-   "avisado": "2026-10-12",
-   "chat": "2026-10-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-13T00:54:11+00:00",
-   "did": "",
-   "evento": "COMPE CHILL",
-   "n": 463,
-   "sv": "URBF",
-   "vence": "2026-10-20T00:54:11+00:00",
-   "vencido": false
-  },
   "Magic": {
    "avisado": "2026-10-12",
    "avisado_cumplido": "2026-10-12",
@@ -135,32 +94,6 @@
    "n": 460,
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
-   "vencido": false
-  },
-  "PARKJINGSUN": {
-   "avisado": "2026-10-12",
-   "chat": "2026-10-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-13T00:26:10+00:00",
-   "did": "",
-   "evento": "COMPE POR 1.5 DOLARES",
-   "n": 462,
-   "sv": "FFA",
-   "vence": "2026-10-20T00:26:10+00:00",
-   "vencido": false
-  },
-  "PUPPY": {
-   "avisado": "2026-10-12",
-   "chat": "2026-10-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-13T00:54:11+00:00",
-   "did": "",
-   "evento": "COMPE CHILL",
-   "n": 463,
-   "sv": "URBF",
-   "vence": "2026-10-20T00:54:11+00:00",
    "vencido": false
   },
   "SYEPORUTE": {
@@ -200,19 +133,6 @@
    "n": 462,
    "sv": "FFA",
    "vence": "2026-10-20T00:26:10+00:00",
-   "vencido": false
-  },
-  "VISIONARIO": {
-   "avisado": "2026-10-12",
-   "chat": "2026-10-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-13T00:54:11+00:00",
-   "did": "",
-   "evento": "COMPE CHILL",
-   "n": 463,
-   "sv": "URBF",
-   "vence": "2026-10-20T00:54:11+00:00",
    "vencido": false
   },
   "Vargas": {

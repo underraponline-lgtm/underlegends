@@ -233,16 +233,6 @@
   }
  },
  "batallas": {
-  "1556869320330707056": {
-   "id": "1556869320330707056",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791256971200,
-   "a": "PICHULA",
-   "b": "TAM",
-   "ganador": "PICHULA",
-   "votos": "1–0"
-  },
   "1556873703705280544": {
    "id": "1556873703705280544",
    "sv": "[FFA] Freestyle For All 👾",
@@ -2048,6 +2038,17 @@
    "a": "AKARK",
    "b": "VERC",
    "ganador": "VERC",
+   "votos": "1–0"
+  },
+  "1559400431740919860": {
+   "id": "1559400431740919860",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1791860435186,
+   "a": "PLINK",
+   "b": "AGUSTIN",
+   "ganador": "PLINK",
    "votos": "1–0"
   }
  },
@@ -5489,6 +5490,67 @@
      ],
      "VERC",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1559385864231067735": {
+   "id": "1559385864231067735",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1791856962021,
+   "ed": 1791861624162,
+   "texto": "`[ CUARTOS ]`\n`[ SEMIFINALES ]`\n`[ FINAL ]`\n⌞PLINK⌝ 🆚 ⌞AGUSTIN⌝\n⌞NC⌝ 🆚 ⌞PLINK⌝\n⌞ONDADISKO⌝ 🆚 ⌞ASURA⌝\n⌞MAKMA⌝ 🆚 ⌞AKARK⌝\n⌞NEMI⌝ 🆚 ⌞ASURA⌝",
+   "batallas": [
+    [
+     "FINAL",
+     [
+      "PLINK",
+      "AGUSTIN"
+     ],
+     "PLINK",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "NC",
+      "PLINK"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ONDADISKO",
+      "ASURA"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MAKMA",
+      "AKARK"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "NEMI",
+      "ASURA"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
