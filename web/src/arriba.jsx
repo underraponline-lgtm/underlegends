@@ -481,7 +481,9 @@ export function gruposHistorias(liga) {
   if (ligaS.length) {
     grupos.push({ id: 'liga', tipo: 'liga', nombre: 'La Liga', nom: 'La Liga', nuevo: true, firma: 'liga', slides: ligaS });
   }
-  Object.values(liga.svs).sort((a, b) => b.n - a.n).forEach((s) => {
+  // 🎮 tu servidor primero (13/10/2026, el research de los lobbies: «las historias por cercanía»), y después por tamaño
+  const miSv = liga.yo ? liga.yo.sv : '';
+  Object.values(liga.svs).sort((a, b) => (Number(b.sv === miSv) - Number(a.sv === miSv)) || b.n - a.n).forEach((s) => {
     const sv = s.sv;
     const slides = [];
     const m = (mm.sv || {})[sv];
