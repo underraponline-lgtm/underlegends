@@ -14,6 +14,7 @@ import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, Ico, Rango, Sin
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
 import { usePaseDe } from './pase.js';
+import { svElegido, useElegidos } from './elegidos.js';
 import * as RQ from './requisitos.js';
 import { Miniatura, abrirVideo } from './video.jsx';
 
@@ -119,7 +120,10 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
   const [otroSv, setOtroSv] = useState('');
   const propio = String(f.sv || '').toLowerCase();
   const svc = ((p && p.svc) || []).filter((x) => x !== propio);
-  const sv = f.sv && liga.svs[f.sv];
+  // 🏠 de dónde es, sólo si lo eligió (Dlx, 12/10/2026: «quitá de dónde son todos… a menos que lo hayan elegido»): ni
+  // el chip ni el color de arriba salen del servidor donde más jugó. Ver elegidos.js
+  const svE = svElegido(liga, useElegidos(), k);
+  const sv = svE && liga.svs[svE];
   const crew = liga.crewDe(f);
   // 🔥 su nivel y su racha diaria (04/10/2026): por la clave del perfil, nunca por cuenta. Sin Discord no hay
   const nvs = useNiveles();
@@ -138,7 +142,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
           {segs ? <p className="pf-segs"><b>{num(segs)}</b> {segs === 1 ? 'seguidor' : 'seguidores'}</p> : null}
           <ul className="pf-chips">
             {f.cc ? <li><a href={'#/pais/' + f.cc}><Bandera cc={f.cc} cls="pf-flag" />{nombrePais(f.cc)}</a></li> : null}
-            {f.sv ? <li><a href={'#/sv/' + siglaDe(f.sv)}><img alt="" src={liga.logo(f.sv)} />{(sv && sv.nombre) || siglaDe(f.sv)}</a></li> : null}
+            {svE ? <li><a href={'#/sv/' + siglaDe(svE)} title="Eligió este servidor"><img alt="" src={liga.logo(svE)} />{(sv && sv.nombre) || siglaDe(svE)}</a></li> : null}
             {crew ? <li><a href={'#/crew/' + encodeURIComponent(crew.clave || crew.crew)}>{limpio(crew.crew)}</a></li>
               : f.crew ? <li><span>{limpio(f.crew)}</span></li> : null}
             {nv ? <li><span className="pf-nivel" title="Sube jugando eventos y entrando cada día">Nivel {nv[0]}</span></li> : null}

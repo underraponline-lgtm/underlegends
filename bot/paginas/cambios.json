@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "2.80",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T22:30:00-04:00",
+   "titulo": "Tu servidor, sólo si lo elegís",
+   "items": [
+    "🏠 Tu perfil, el Ranking y Tarjetas muestran **el servidor que elegiste** en Mi cuenta. Si no elegiste ninguno, no se muestra ninguno."
+   ]
+  },
+  {
    "version": "2.79",
    "dia": "2026-10-12",
    "cuando": "2026-10-12T22:15:00-04:00",

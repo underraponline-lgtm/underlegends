@@ -22,6 +22,7 @@ import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 import { Divisiones } from './divisiones.jsx';
 import { Misiones } from './misiones.jsx';
 import { Ligas } from './ligas.jsx';
+import { svElegido, useElegidos } from './elegidos.js';
 
 const pct = (x) => parseFloat(String(x == null ? '' : x).replace(',', '.')) || 0;
 const coma = (x, d = 1) => Number(x || 0).toFixed(d).replace('.', ',');
@@ -77,7 +78,7 @@ function Quien({ x, f }) {
         </span>
         {/* las etiquetas van ANTES del servidor y la crew: al final se las comía el «…» de una crew larga en el celular */}
         <small>{mio ? <em className="rk-vos">VOS</em> : sigo ? <em className="rk-sigo">SEGUÍS</em> : null}
-          {nuevo ? <em className="rk-nuevo">NUEVO</em> : null}<span className="rk-qx">{[siglaDe(f.sv), crew].filter(Boolean).join(' · ')}</span></small>
+          {nuevo ? <em className="rk-nuevo">NUEVO</em> : null}<span className="rk-qx">{[siglaDe(svElegido(liga, x.eleg, f.k)), crew].filter(Boolean).join(' · ')}</span></small>
       </span>
     </span>
   );
@@ -563,13 +564,15 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
   const tabla = useRef(null);
   const tabs = useRef(null);
 
+  // 🏠 de dónde es cada uno, sólo si lo eligió (Dlx, 12/10/2026). Ver elegidos.js
+  const eleg = useElegidos();
   const cfg = SUBS[sub] || SUBS.temporada;
   const pronto = cfg.pronto || (cfg.hay && !cfg.hay(liga) ? cfg.siNo : null);
   const mwOn = !!((liga.d.mw && (liga.d.mw.b || []).length) || (liga.d.tabla || []).some((f) => f.caz || f.czd || f.sob));
   const yo = liga.yo;
   const miCrewF = yo ? liga.crewDe(yo) : null;
   const x = {
-    liga, mw: mwOn, yoK: yo ? yo.k : '', sigo: new Set(liga.sigue || []),
+    liga, mw: mwOn, yoK: yo ? yo.k : '', sigo: new Set(liga.sigue || []), eleg,
     miCc: yo ? yo.cc : '', miCrew: miCrewF ? limpio(miCrewF.crew).toLowerCase() : '',
   };
 

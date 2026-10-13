@@ -12,6 +12,7 @@ import { limpio, norm, num, siglaDe, utc } from './liga.js';
 import { Carta, Compartir, FaltaLista, Ico, accion, enlace, nombrePais, usePerfiles } from './piezas.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 import { usePaseDe } from './pase.js';
+import { svElegido, useElegidos } from './elegidos.js';
 import * as RQ from './requisitos.js';
 
 const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
@@ -197,6 +198,8 @@ function Galeria({ liga, t, lista }) {
     return new Set(liga.muro.filter((it) => it.tipo === 'tarjeta' && it.carta === t && utc(it.t) >= d).flatMap((it) => it.ks || []));
   }, [liga, t]);
   const sigo = useMemo(() => new Set(liga.sigue || []), [liga]);
+  // 🏠 de dónde es cada uno, sólo si lo eligió (Dlx, 12/10/2026). Ver elegidos.js
+  const eleg = useElegidos();
   const svs = useMemo(() => [...new Set(lista.map((f) => f.sv).filter(Boolean))].sort(), [lista]);
   const nNuevas = lista.filter((f) => nuevas.has(f.k)).length;
   const nSigo = lista.filter((f) => sigo.has(f.k)).length;
@@ -239,7 +242,7 @@ function Galeria({ liga, t, lista }) {
                   <Carta liga={liga} k={f.k} cual={t} cls="tj-c" />
                   <div className="tj-pie">
                     <b>{limpio(f.n)}</b>
-                    <small>{f.pos ? '#' + f.pos : 'fuera de concurso'}{f.sv ? ' · ' + siglaDe(f.sv) : ''}</small>
+                    <small>{f.pos ? '#' + f.pos : 'fuera de concurso'}{svElegido(liga, eleg, f.k) ? ' · ' + siglaDe(svElegido(liga, eleg, f.k)) : ''}</small>
                     {liga.cartaVieja(f.k, t) ? <small className="tj-dib"><Ico n="reloj" t={13} />se está redibujando</small> : null}
                   </div>
                 </li>

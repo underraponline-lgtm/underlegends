@@ -378,7 +378,7 @@ function VideosCaja({ dc }) {
 
 // 🏠 Y AL FINAL DE VERIFICARSE (`paso`; Dlx, 07/10/2026: «que al final te pregunte de qué servidor venís y/o a qué
 // servidor querés representar… todos los socios y la opción ninguno»). La misma elección que Mi cuenta, con «Ninguno»
-// (`sv: ''`), que queda contestado sin fijar la temporada: tu perfil sigue con donde más jugás
+// (`sv: ''`), que queda contestado sin fijar la temporada: tu perfil no muestra ningún servidor
 function ServidorCaja({ liga, dc, paso }) {
   const est = useCuentaEst();
   useEffect(() => { if (dc && W.pedirMiServidor) W.pedirMiServidor(); }, [dc && dc.id]);
@@ -391,7 +391,8 @@ function ServidorCaja({ liga, dc, paso }) {
     : e.error ? e.error
     : M.error ? ((W.errorCuenta && W.errorCuenta(M.error)) || 'No pude leerlo. Probá en un rato.')
     : e.va ? 'Guardando…'
-    : M.elegido && !M.sv ? 'Elegiste ninguno: tu perfil muestra donde más jugás. Podés elegir uno cuando quieras.'
+    // 🏠 sin elegir, ninguno: la página ya no le pone a nadie el servidor donde más jugó (Dlx, 12/10/2026, elegidos.js)
+    : M.elegido && !M.sv ? 'Elegiste ninguno: tu perfil no muestra ningún servidor. Podés elegir uno cuando quieras.'
     : M.libre ? 'Cambialo cuantas veces quieras hasta el ' + hasta + '; después, uno por temporada.'
     : M.puede ? (M.sv ? 'Podés cambiarlo una vez en esta temporada.' : 'Se elige una vez por temporada.')
     : 'Ya lo elegiste esta temporada: se vuelve a abrir en la que viene.';

@@ -68,7 +68,7 @@ const PALABRAS = [
   ['Revivido', 'Volver a la llave después de caer. Cobra su primer puesto entero y una parte del final.'],
   ['Llave', 'El cuadro de un evento, ronda por ronda. Se abre desde «Ver la llave».'],
   ['Temporada', 'La T1 es la primera. El Competitivo se mide dentro de cada temporada y vuelve a cero en la siguiente.'],
-  ['Tu servidor', 'El que representás en la Liga: lo elegís en Mi cuenta, entrando con Discord, y sale en tu perfil. Al arrancar la temporada se cambia libre; después, una vez por temporada. Tu tarjeta de Servidor sigue siendo la de donde jugás.'],
+  ['Tu servidor', 'El que representás en la Liga: lo elegís en Mi cuenta, entrando con Discord, y sale en tu perfil y en el Ranking. Si no elegís, no se muestra ninguno. Al arrancar la temporada se cambia libre; después, una vez por temporada. Tu tarjeta de Servidor sigue siendo la de donde jugás.'],
   ['Crew', 'Tu equipo. Suma los puntos de su gente; para tener puesto necesita tres raperos en la temporada.'],
   ['Verificado', 'Tener el rol de Miembro en Discord Rap Español (DRA), con tu cuenta y tu país. Se hace una vez, en «Verificarme» (Mi cuenta): entrás con Discord, elegís tu país y el bot te mete al servidor y te da el rol. Sin verificarte no hay tarjetas: verificarte desbloquea tu Servidor, y con el nivel 1 del Pase, tu Temporada.'],
   ['Bloqueada', 'La tarjeta que todavía no te ganaste: dice cuánto te falta.'],
