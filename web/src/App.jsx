@@ -5,7 +5,7 @@ import { Component, Suspense, lazy, useCallback, useEffect, useMemo, useRef, use
 import { DUENO, Liga, aQuienSigo, limpio, quienMira } from './liga.js';
 import { nombrePais } from './piezas.jsx';
 import { Cabecera, Hero, Historias, Instalar, IrA, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
-import { LaLiga, LosQueMandan, Noticias, Panel } from './medio.jsx';
+import { LaLiga, LosQueMandan, Noticias } from './medio.jsx';
 import { Menu, Merch, Pie, Subir, Tabbar, Visor } from './abajo.jsx';
 import { Encuestas } from './encuestas.jsx';
 import { Lobby } from './lobby.jsx';
@@ -502,11 +502,12 @@ export default function App() {
         <Aislada n="Instalar"><Instalar /></Aislada>
         {/* 🎮 con el lobby, cada dato una vez (Dlx, 13/10/2026, «3. A» y «4. A»): tu próximo evento va en el botón y la
             semana en la puerta de Eventos, y Se busca es el destacado amarillo; el tablero entero sigue en el Ranking.
-            Por eso Fechas y el panel de Se busca ya no van acá */}
+            Por eso Fechas y el panel de Se busca ya no van acá. Y tampoco el panel de Misiones y el Pase (Dlx, 13/10/2026:
+            «hay uno de panel pero abajo hay misiones y el pase de rapero… quita esa parte de abajo»): el Pase ya es una
+            puerta y está en tu barra, y las Misiones viven en el Ranking. `Panel` de medio.jsx queda, sin usar */}
         <Aislada n="Noticias"><Noticias liga={liga} raiz={raiz} /></Aislada>
         <Aislada n="Encuestas"><Encuestas liga={liga} enc={enc} dc={yo.dc} corta /></Aislada>
         <Aislada n="LosQueMandan"><LosQueMandan liga={liga} dc={yo.dc} /></Aislada>
-        <Aislada n="Panel"><Panel liga={liga} dc={yo.dc} /></Aislada>
         <Aislada n="Merch"><Merch liga={liga} /></Aislada>
         <Aislada n="LaLiga"><LaLiga liga={liga} /></Aislada>
       </>}

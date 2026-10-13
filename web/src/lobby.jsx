@@ -198,6 +198,11 @@ export function Lobby({ liga, dc }) {
   const otras = (liga.d.tabla || []).filter((f) => f.pos && liga.cartaUrl(f.k, 'temporada')).slice(0, 3);
   // 🎟️ el Pase: tu nivel, y cuándo vencen las Tareas de hoy
   const a = P && P.listo && P.miembro ? avance(P) : null;
+  const hoy = a && P.hoy && Array.isArray(P.hoy.tareas) && P.hoy.tareas.length ? P.hoy.tareas : null;
+  const hechas = hoy ? hoy.filter((t) => t.hecha).length : 0;
+  // 💰 la cabeza más cara de la semana (`valorCabezas()` de app.js; se redibuja con `lg:precios`, como el saldo)
+  const valor = typeof window.valorCabezas === 'function' ? window.valorCabezas() || {} : {};
+  const cara = Object.keys(valor).filter((c) => valor[c] > 0).sort((x, y) => valor[y] - valor[x])[0] || '';
   return (
     <section className="lobby" aria-label="Tu lobby">
       <TuBarra liga={liga} dc={dc} P={P} R={R} saldo={saldo} />
@@ -234,17 +239,22 @@ export function Lobby({ liga, dc }) {
             : otras.map((f) => <img key={f.k} alt="" loading="lazy" src={liga.cartaUrl(f.k, 'temporada')} />)}</span>
           <small>{tuya ? (cartaNueva ? 'Tu carta cambió' : 'La tuya') : 'Las de cada rapero'}</small>
         </a>
+        {/* 🔁 CADA DATO UNA VEZ, también adentro del lobby (Dlx, 13/10/2026: «evitar que se repitan las cosas»): tu nivel
+            y tus Puntos ya están en tu barra, así que la puerta del Pase muestra las Tareas de hoy y la de la Tienda, la
+            cabeza más cara de la semana */}
         <a className="pu lb lb-pa" href="#/pase">
           <span className="lb-t">PASE</span>
-          {a ? <span className="lb-reloj">TAREAS: {falta(hastaMedianocheET(ahora))}</span> : null}
-          <span className="lb-nivel"><b>{a ? P.nivel : 30}</b><small>{a ? 'TU NIVEL' : 'NIVELES'}</small></span>
-          <i className="lb-barra"><u style={{ width: (a ? Math.round((100 * a.lleva) / a.de) : 0) + '%' }} /></i>
-          <small>{a ? num(a.falta) + ' XP para el siguiente' : 'Tareas que dan premios'}</small>
+          {a ? <span className="lb-reloj">VENCEN EN {falta(hastaMedianocheET(ahora))}</span> : null}
+          {a && hoy ? <span className="lb-nivel"><b>{hechas}/{hoy.length}</b><small>{hechas === hoy.length ? 'HECHAS HOY' : 'TAREAS DE HOY'}</small></span>
+            : <span className="lb-nivel"><b>30</b><small>NIVELES</small></span>}
+          <i className="lb-barra"><u style={{ width: (a && hoy ? Math.round((100 * hechas) / hoy.length) : 0) + '%' }} /></i>
+          <small>{a && hoy ? (hechas === hoy.length ? 'Mañana vienen otras' : 'Cada una te da XP') : 'Tareas que dan premios'}</small>
         </a>
         <a className="pu lb lb-ti" href="#/tienda">
           <span className="lb-big"><Ico n="moneda" t={34} /></span>
           <span className="lb-ti-t"><span className="lb-t">TIENDA</span>
-            <small>{saldo != null ? 'Tenés ' + num(saldo) + ' Puntos de Tienda' : 'Puntos, el precio por cabeza y la ropa'}</small></span>
+            <small>{cara ? 'La cabeza más cara: ' + limpio((liga.fila(cara) || {}).n || cara) + ' · ' + num(valor[cara])
+              : saldo != null ? 'Ponele precio a la cabeza de alguien' : 'Todos arrancan con Puntos de Tienda'}</small></span>
         </a>
       </div>
     </section>
