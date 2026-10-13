@@ -44,7 +44,9 @@ H = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
 CK = {'CONSENT': 'YES+cb', 'SOCS': 'CAISEwgDEgk0ODE3Nzk3MjQaAmVzIAEaBgiA_LyaBg'}
 
 _VS = re.compile(r'\s*🆚\s*|\s+(?:vs\.?|v\.s\.?)\s+', re.I)
-_TRAMO = re.compile(r'\s*(?:\|\||\||│|┃|\s-\s|\s–\s|\[|\]|«|»|“|”)\s*')
+# 🎬 y la barra sola, «Makma vs Moosby/Cuartos/Liga del volcán» (Makma, 12/10/2026): sin ella el rival se llevaba
+# «Cuartos Liga del volcán» pegado al nombre. La doble no corta: «Juancito//MCO» es un nombre
+_TRAMO = re.compile(r'\s*(?:\|\||\||│|┃|\s-\s|\s–\s|\[|\]|«|»|“|”|(?<!/)/(?!/))\s*')
 _BANDERA = re.compile('[\U0001F1E6-\U0001F1FF]{2}')
 _MIEMBROS = re.compile(r'\s*(?:,|&|\+|\s+y\s+|\(|\))\s*', re.I)
 
@@ -300,6 +302,10 @@ def _self_check():
          lados('MINUTOS DE PRESENTACION | Anbeck, BneDto vs Jose, BlueStyles | Under Level #1')
          == [[('Anbeck', ''), ('BneDto', '')], [('Jose', ''), ('BlueStyles', '')]]),
         ('sin «vs» no hay batalla', lados('MINUTAZO DE PANCHOK EN OCTAVOS DE LA NACIONAL ANDES') == []),
+        ('la barra corta como el «|»: «Manu vs Makma/Liga del volcán»',
+         lados('Manu vs Makma/Liga del volcán Face To Face') == [[('Manu', '')], [('Makma', '')]]
+         and lados('Makma vs Moosby/Cuartos/Liga del volcán') == [[('Makma', '')], [('Moosby', '')]]
+         and lados('Juancito//MCO vs Erian') == [[('Juancito MCO', '')], [('Erian', '')]]),
         ('con bandera: la de su país', quien('Carlos', 'cl', 'FVS', idx, svs) is None
          and quien('Carlos', 'mx', 'DRA', idx, svs) == 'Carlos'),
         ('sin bandera: sólo si juega en ese servidor', quien('Carlos', '', 'FVS', idx, svs) is None
