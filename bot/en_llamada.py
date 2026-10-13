@@ -37,8 +37,8 @@ de la lista entera.
 🔒 SON IDS DE GENTE: VAN A KV, NUNCA AL REPO NI AL LOG. El repo es público
 y los logs de Actions también: el log dice cuántos, nunca quién. En KV,
 `voz:<SV>` guarda de cada cuenta sus nombres, los canales y **cuándo se la
-vio** (una marca por foto), y vence a los 3 días, como las inscripciones
-del vigía. Por hora y no por fecha: un evento de las 11:50 PM con la llave
+vio** (una marca por foto), y vence a los 14 días (eran 3; ver `VENCE_S`).
+Por hora y no por fecha: un evento de las 11:50 PM con la llave
 de las 12:05 AM cae en dos días, y lo que importa es quién estaba cuando
 se jugó esa llave.
 
@@ -67,8 +67,10 @@ DESPUES_H = 5
 LLAVE_H = 3
 #: cuánto se espera el estado de los servidores antes de irse
 ESPERA_S = 20
-#: lo que se guarda vence a los 3 días, como las inscripciones del vigía
-VENCE_S = 3 * 24 * 3600
+#: lo que se guarda vence a los 14 días. Eran 3, como las inscripciones del vigía, y se subió para que sirva de PRUEBA
+#: en un reporte (Dlx, 13/10/2026: *«usualmente las quejas pasan dentro de 1-2 semanas, luego de eso diría que se
+#: borren»*). Sigue en KV, nunca en el repo ni en el log
+VENCE_S = 14 * 24 * 3600
 VIGIA = 'https://liga-global-bot.liga-global-ul.workers.dev'
 CLAVE = 'voz:%s'
 
@@ -546,7 +548,7 @@ def correr(aplicar=True, foto_sola=False, probar=''):
         print('      %-5s %2d en la llamada%s' % (sv, len(g), (' · ' + ', '.join(canales)[:60]) if canales else ''))
         if aplicar and g:
             ok = guardar(sv, g, ahora)
-            print('            %s' % ('guardado en KV (vence en 3 días)' if ok else '⚠️ no pude guardarlo'))
+            print('            %s' % ('guardado en KV (vence en 14 días)' if ok else '⚠️ no pude guardarlo'))
     for sv in sin:
         print('      %-5s ⚠️ Discord no mandó su estado' % sv)
     return 0
@@ -592,7 +594,7 @@ def _self_check():
     ok(e['t'] == [1000, 2000] and e['c'] == ['🎤 Escenario', 'Chill'] and e['n'] == ['NC 🇦🇷', 'NC', 'nachonc_'],
        'dos fotos: las dos marcas, los dos canales, los nombres sin repetir')
     viejo = {'gente': {'9': {'n': ['X'], 'c': [], 't': [1]}}}
-    ok('9' not in fusionar(viejo, [], 1 + VENCE_S * 1000 + 1)['gente'], 'lo de hace más de 3 días se va')
+    ok('9' not in fusionar(viejo, [], 1 + VENCE_S * 1000 + 1)['gente'], 'lo de hace más de 14 días se va')
     ok(en_la_ventana(e, 1500, 2500) and not en_la_ventana(e, 2500, 3000), 'se la vio entre tal y tal hora')
     ok(INTENTS == 129, 'pide sólo GUILDS y GUILD_VOICE_STATES (129), ninguno privilegiado')
 

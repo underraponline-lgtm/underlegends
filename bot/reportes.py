@@ -231,9 +231,11 @@ def corregir_nombre(r, fix, L, decis, resolver, padron, aplicar):
     # todas las formas en que esa persona aparece escrita en la llave: «Agus», «agus🇦🇷», «agustin»…
     variantes = {_norm(x): x for x in _nombres_de_llave(L) if clave(resolver(x)) == clave(viejo) or _norm(x) == _norm(viejo_txt)}
     if not variantes:
-        # ⚠️ IDEMPOTENTE: si ya se aplicó en una corrida anterior (y el objeto no se enteró), la llave ya no lo tiene
-        hecho = next((v for k, v in (decis.get('quien') or {}).items() if isinstance(v, dict)
-                      and str(v.get('reporte')) == str(r.get('id')) and k.startswith('%s · %s · %s · ' % (L['nombre'], L['sv'], L['fecha']))), None)
+        # ⚠️ IDEMPOTENTE: si ya se aplicó —en una corrida anterior, o por otro reporte de la misma llave que pedía lo
+        # mismo (el #4 y el #7 de la #423)—, la llave ya no lo tiene: vale la regla que quedó para ese nombre
+        pre = '%s · %s · %s · ' % (L['nombre'], L['sv'], L['fecha'])
+        hecho = next((v for k, v in (decis.get('quien') or {}).items() if isinstance(v, dict) and k.startswith(pre)
+                      and _norm(k[len(pre):]) == _norm(viejo_txt)), None)
         if hecho:
             return 'aplicado', '«%s» en la #%s ahora es %s' % (_sin_bandera(viejo_txt), fix['n'], hecho.get('es'))
         raise ValueError('«%s» no está en la llave #%s' % (viejo_txt, fix['n']))
@@ -296,26 +298,176 @@ def corregir_ganador(r, fix, L, decis, ahora_ms):
     return None, ''
 
 
-def _al_objeto(estados):
-    """Lo aplicado, al objeto (con la clave del ciclo): marca el reporte y avisa en la campana de quien lo mandó."""
+# ══ 🔎 LA EVIDENCIA DE CADA REPORTE ═════════════════════════════════════════════════════════════════════════════════
+# 🔑 Dlx, 13/10/2026: *«para cada cosa necesitaremos evidencia y soporte… no necesariamente evidencia que el usuario
+# adjunte, pero que el bot nos dé evidencia»*, y mirando «yo no rapee esta compe»: *«¿pero quién lo dice? necesitamos
+# información también»*. Lo que el bot ya tiene y sirve de prueba, dicho en una línea cada cosa:
+#   · QUIÉN LO MANDÓ: su nombre en la Lista y su cuenta. Antes sólo salía si tenía perfil en la página (`idk`).
+#   · LAS INSCRIPCIONES de ese servidor en las horas antes de la llave, con la cuenta que las escribió: la firma
+#     Discord, así que es la prueba más fuerte. Con ellas apareció que el «Agustin 🇺🇾» de la #423 y la #429 era EIDP
+#     («Agustín la reliquia 🇺🇾», seis veces) y no alguien nuevo.
+#   · LA LLAMADA de ese evento (`voz:<SV>`, 14 días): quién estaba mientras se jugó.
+#   · LO QUE YA SE DECIDIÓ: `akas_a_mano.json` (`por_servidor`) y `decisiones.json` (`quien`).
+# Y una SUGERENCIA cuando la prueba apunta a una sola persona. ⚠️ ES UNA PISTA: decide Dlx (la identidad no se
+# interpreta). Viaja al objeto con el reporte y se borra con él, a los 14 días.
+
+#: cuántas horas antes de la llave se mira quién se anotó (una inscripción es de las horas antes del evento)
+INSC_ANTES_H = 30
+_MULTI = re.compile(r'\+|,|&|\by\b|/')
+
+
+def _ms_link(link):
+    """La hora de un mensaje de Discord, de su link (el snowflake la trae), en ms. `None` si no se puede."""
+    try:
+        return ((int(str(link).rstrip('/').split('/')[-1]) >> 22) + 1420070400000)
+    except (ValueError, IndexError):
+        return None
+
+
+def _ms_iso(iso):
+    try:
+        t = dt.datetime.fromisoformat(str(iso).replace('Z', '+00:00'))
+    except ValueError:
+        return None
+    if t.tzinfo is None:
+        t = t.replace(tzinfo=dt.timezone.utc)
+    return int(t.timestamp() * 1000)
+
+
+def _parecido(a, b):
+    """¿Dos nombres son el mismo escrito distinto? Igual, o uno es el principio del otro (con 4 letras o más)."""
+    a, b = _norm(re.sub(r'\(.*?\)', '', str(a or ''))), _norm(re.sub(r'\(.*?\)', '', str(b or '')))
+    if not a or not b:
+        return False
+    return a == b or (min(len(a), len(b)) >= 4 and (a.startswith(b) or b.startswith(a)))
+
+
+def _inscripciones():
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'anuncios.json'), encoding='utf-8') as f:
+            return (json.load(f) or {}).get('inscripciones') or []
+    except (OSError, ValueError):
+        return []
+
+
+def evidencia(r, L, ins, padron, decis, mano, resolver=None, voz=None):
+    """`{quien, lineas: [[icono, texto]], sugerencia}` de un reporte. Pura: lo de afuera entra por argumento."""
+    did = str(r.get('quien') or '')
+    por_id = {str(p.get('discord_id')): p for p in padron if p.get('discord_id')}
+    yo = por_id.get(did) or {}
+    nom_yo = yo.get('full') or yo.get('raw') or ''
+    cuenta = lambda d, u='': ((por_id.get(str(d)) or {}).get('full') or ('la cuenta @%s, que no está en la Lista' % u if u else  # noqa: E731
+                              'una cuenta que no está en la Lista'))
+    lineas, sug = [], None
+    user = next((x.get('quien') for x in ins if str(x.get('discord_id')) == did and x.get('quien')), '')
+    quien = nom_yo or ('@' + user if user else 'una cuenta de Discord que no está en la Lista')
+    lineas.append(['👤', 'Lo mandó %s%s.' % (quien, (' (@%s)' % user) if nom_yo and user else '')])
+    if not L:
+        return {'quien': quien, 'lineas': lineas, 'sugerencia': None}
+    t0 = min([t for t in (_ms_link(x) for x in L.get('links') or []) if t] or [0]) or None
+    sv = L.get('sv')
+    W = []
+    if t0:
+        W = [x for x in ins if x.get('servidor') == sv and _ms_iso(x.get('cuando')) is not None
+             and t0 - INSC_ANTES_H * 3600000 <= _ms_iso(x['cuando']) <= t0 + 2 * 3600000]
+    nombres = _nombres_de_llave(L)
+    res = resolver or (lambda x: x)
+    from comun.claves import clave
+    # 1) quien lo mandó: ¿se anotó? ¿con qué nombre? ¿qué nombre de la llave se le parece?
+    mias = [x for x in W if str(x.get('discord_id')) == did]
+    if t0:
+        lineas.append(['🕒', 'La llave se publicó el %s.' % _et(t0)])
+    if not W:
+        lineas.append(['📝', 'No tengo las inscripciones de ese evento.'])
+    elif mias:
+        # con la hora: dos eventos el mismo día en el mismo servidor no se separan de otra forma
+        lineas.append(['📝', '%s se anotó en %s: %s.' % (quien, sv, ', '.join(
+            '«%s» (%s)' % (x['texto'][:40], _et(_ms_iso(x['cuando']))) for x in mias[:3]))])
+        for x in mias:
+            for n in nombres:
+                if _parecido(n, x['texto']) and nom_yo and clave(res(n)) != clave(res(nom_yo)):
+                    lineas.append(['🔗', '«%s» de la llave se parece a lo que escribió, y se lo dimos a %s.' % (n, res(n))])
+                    sug = sug or {'tipo': 'nombre', 'nombre': n, 'reporta': True, 'es_txt': nom_yo}
+    else:
+        lineas.append(['📝', '%s no se anotó en %s en las %d horas antes de la llave.' % (quien, sv, INSC_ANTES_H)])
+    # ⚔️ el ganador: qué dice la llave de las batallas de quien lo mandó
+    if r.get('que') == 'ganador' and nom_yo:
+        for ro in L.get('rondas') or []:
+            for b in ro.get('b') or []:
+                lados = list(b[0] or [])
+                if any(clave(res(p)) == clave(res(nom_yo)) for lado in lados for p in _SEP.split(str(lado))[::2]):
+                    lineas.append(['⚔️', '%s · %s: la llave dice que ganó %s.' % (ro.get('r'), ' vs '.join(lados), b[1] or '—')])
+    # 2) lo que el bot le dio a quien lo mandó en esa llave, y quién se anotó con ese nombre
+    if nom_yo and r.get('que') != 'ganador':
+        suyos = [n for n in nombres if clave(res(n)) == clave(res(nom_yo))]
+        for n in suyos:
+            otros = {}
+            for x in W:
+                if str(x.get('discord_id')) != did and not _MULTI.search(x.get('texto') or '') and _parecido(n, x['texto']):
+                    otros.setdefault(str(x.get('discord_id')), x)
+            if suyos and not mias:
+                lineas.append(['🏷️', 'La llave dice «%s» y el bot se lo dio a %s por el nombre.' % (n, nom_yo)])
+            for d2, x in list(otros.items())[:3]:
+                lineas.append(['📝', '«%s» se anotó en %s desde la cuenta de %s.' % (x['texto'][:40], sv, cuenta(d2, x.get('quien')))])
+            if len(otros) == 1 and not mias:
+                d2 = next(iter(otros))
+                p2 = por_id.get(d2)
+                if p2:
+                    sug = sug or {'tipo': 'nombre', 'nombre': n, 'es': p2.get('raw') or p2.get('full'), 'es_txt': p2.get('full')}
+    # 3) la llamada de ese evento (14 días)
+    gente = (voz or {}).get('gente') or {}
+    if t0 and gente:
+        en = {i for i, e in gente.items() if any(t0 - 3600000 <= t <= t0 + 5 * 3600000 for t in e.get('t') or ())}
+        if en:
+            lineas.append(['🎙️', '%s %s en la llamada mientras se jugó.' % (quien, 'estaba' if did in en else 'no estaba')])
+            if sug and sug.get('es_txt') and sug.get('es') and not sug.get('reporta'):
+                p2 = next((p for p in padron if (p.get('raw') or p.get('full')) == sug['es']), {})
+                if p2.get('discord_id'):
+                    lineas.append(['🎙️', '%s %s en la llamada.' % (sug['es_txt'], 'estaba' if str(p2['discord_id']) in en else 'no estaba')])
+    # 4) lo que ya se decidió de esos nombres
+    for n in nombres:
+        for svx, m in (mano.get('por_servidor') or {}).items():
+            for a, real in (m or {}).items():
+                if _norm(a) == _norm(n):
+                    lineas.append(['📌', 'Ya decidiste que en %s «%s» es %s.' % (svx, a, real)])
+    for k, v in (decis.get('quien') or {}).items():
+        p = k.split(' · ')
+        if len(p) == 4 and isinstance(v, dict) and any(_norm(p[3]) == _norm(n) for n in nombres) and not (
+                _norm(p[0]) == _norm(L.get('nombre')) and p[2] == L.get('fecha')):
+            lineas.append(['📌', 'En %s (%s) ya decidiste que «%s» era %s.' % (p[0], p[1], p[3], v.get('es'))])
+    # una línea de cada cosa, sin repetir
+    vistas, limpias = set(), []
+    for x in lineas:
+        if x[1] not in vistas:
+            vistas.add(x[1])
+            limpias.append(x)
+    return {'quien': quien, 'lineas': limpias[:9], 'sugerencia': sug}
+
+
+def _al_objeto(estados, evid=None):
+    """Lo aplicado y la evidencia, al objeto (con la clave del ciclo): marca el reporte y avisa en la campana de quien
+    lo mandó."""
     import requests
     import fotos as F
     import clave_ciclo as CC
     tok = F.env('DISCORD_TOKEN', obligatorio=False)
-    if not tok or not estados:
+    if not tok or not (estados or evid):
         return False
     r = requests.post(WORKER + '/avisos/reportes-estados',
-                      data=json.dumps({'estados': estados}, ensure_ascii=False).encode('utf-8'),
+                      data=json.dumps({'estados': estados or {}, 'evidencia': evid or {}}, ensure_ascii=False).encode('utf-8'),
                       headers={'x-lg-ciclo': CC.clave(tok), 'content-type': 'application/json'}, timeout=30)
     return r.ok
 
 
 def corregir(cola, aplicar=False):
-    """Lo que Dlx eligió corregir desde el Dashboard (`estado` = `corregir`). Cuántos se aplicaron."""
+    """Lo que Dlx eligió corregir desde el Dashboard (`estado` = `corregir`), y la evidencia de cada reporte que todavía
+    no se cerró (ver `evidencia()`). Cuántos se aplicaron."""
     pend = [(r, _fix(r)) for r in cola or [] if isinstance(r, dict) and r.get('estado') == 'corregir']
     pend = [(r, f) for r, f in pend if f and str(f.get('n') or '').isdigit()]
-    print('   %d corrección(es) esperando' % len(pend))
-    if not pend:
+    abiertos = [r for r in cola or [] if isinstance(r, dict) and r.get('id')
+                and (r.get('estado') or '') in ('', 'corregir', 'no_pude')]
+    print('   %d corrección(es) esperando · %d reporte(s) abiertos' % (len(pend), len(abiertos)))
+    if not pend and not abiertos:
         return 0
     import motor
     import decidir as DEC
@@ -348,6 +500,28 @@ def corregir(cola, aplicar=False):
         print('   #%s  %s: %s' % (r.get('id'), est or 'esperando', que))
         if est:
             estados[str(r['id'])] = [est, que]
+    # 🔎 la evidencia de cada reporte abierto, con lo que quedó después de corregir
+    evid = {}
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'akas_a_mano.json'), encoding='utf-8') as f:
+            mano = json.load(f) or {}
+    except (OSError, ValueError):
+        mano = {}
+    ins = _inscripciones()
+    voces = {}
+    for r in abiertos:
+        if str(r['id']) in estados:
+            continue
+        L = llaves.get(str(r.get('llave') or ''))
+        if L and L.get('sv') not in voces:
+            try:
+                import en_llamada as EL
+                voces[L['sv']] = EL.leer(L['sv'])
+            except Exception:                            # noqa: BLE001
+                voces[L['sv']] = {}
+        ev = evidencia(r, L, ins, padron, decis, mano, resolver, voces.get((L or {}).get('sv')))
+        evid[str(r['id'])] = ev
+        print('   🔎 #%s %s' % (r['id'], ' · '.join(x[1] for x in ev['lineas'])[:400]))
     if not aplicar:
         print('\n   (simulacro: no escribí nada — corré con --corregir --aplicar)\n')
         return 0
@@ -358,7 +532,7 @@ def corregir(cola, aplicar=False):
     if json.dumps(llaves, ensure_ascii=False, sort_keys=True) != antes_ll:
         with io.open(LLAVES, 'w', encoding='utf-8', newline='') as f:
             json.dump(llaves, f, ensure_ascii=False, indent=1, sort_keys=True)
-    if estados and not _al_objeto(estados):
+    if (estados or evid) and not _al_objeto(estados, evid):
         print('   ⚠️ el objeto no contestó: se lo vuelvo a decir en la próxima corrida')
     return sum(1 for x in estados.values() if x[0] == 'aplicado')
 

@@ -2510,6 +2510,8 @@ export const QUE_REPORTE = {
 export const REPORTE_TOPE = 5;
 //: cuántos viajan en la cola de KV para el ciclo
 const REPORTES_COLA = 50;
+//: cuántos días vive un reporte, con su evidencia (13/10/2026: eran 30). Lo mismo dice la página de privacidad
+export const REPORTE_VIDA_DIAS = 14;
 
 /**
  * ¿Vale este reporte? `{llave, que, texto, batalla}` si vale, `{error, estado}`
@@ -4066,8 +4068,10 @@ export class Avisos {
         "quien TEXT NOT NULL, llave TEXT NOT NULL, que TEXT NOT NULL, texto TEXT NOT NULL DEFAULT '', " +
         "batalla TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
       // 📣 y qué decidió Dlx de cada uno y qué hizo el ciclo (13/10/2026): ver `duenoReporte()` y `reportesEstados()`
+      // 🔎 y `evid`: lo que encontró el bot de cada reporte (quién lo mandó, las inscripciones, la llamada), lo pone el
+      // ciclo (`bot/reportes.py`, `evidencia()`) y se borra con el reporte
       for (const c of ["estado TEXT NOT NULL DEFAULT ''", "fix TEXT NOT NULL DEFAULT ''",
-        "resultado TEXT NOT NULL DEFAULT ''", 't_estado INTEGER NOT NULL DEFAULT 0']) {
+        "resultado TEXT NOT NULL DEFAULT ''", 't_estado INTEGER NOT NULL DEFAULT 0', "evid TEXT NOT NULL DEFAULT ''"]) {
         try { this.sql.exec('ALTER TABLE reportes ADD COLUMN ' + c); } catch (e) { /* ya estaba */ }
       }
       // 🔑 LOS EVENTOS CANCELADOS (01/10/2026): ver `cancelado()` y `cancelaciones()`
@@ -6857,8 +6861,9 @@ export class Avisos {
 
   /** Los últimos reportes a KV (`reportes`), para `bot/reportes.py`. */
   async colaReportes(ahora) {
-    // lo de más de un mes se va: el ciclo ya lo pasó a ✅ Decidir
-    this.sql.exec('DELETE FROM reportes WHERE t < ?', ahora - 30 * DIA_MS);
+    // 🗑️ a los 14 días se va, con su evidencia (Dlx, 13/10/2026: «usualmente las quejas pasan dentro de 1-2 semanas,
+    // luego de eso diría que se borren»; antes era un mes). Ver `REPORTE_VIDA_DIAS`
+    this.sql.exec('DELETE FROM reportes WHERE t < ?', ahora - REPORTE_VIDA_DIAS * DIA_MS);
     // 📣 con lo que decidió Dlx (`estado`, `fix`): el ciclo aplica lo de `corregir` (13/10/2026)
     const cola = this.sql.exec('SELECT id, quien, llave, que, texto, batalla, t, estado, fix FROM reportes ' +
       'ORDER BY id DESC LIMIT ?', REPORTES_COLA).toArray().reverse();
@@ -6907,19 +6912,39 @@ export class Avisos {
       }
       n++;
     }
+    // ✍️ lo que Dlx decidió EN EL CHAT (`{id: fix}`, lo carga Claude con la clave del ciclo): queda como si lo hubiera
+    // elegido en el Dashboard y lo aplica el ciclo en su corrida siguiente. Sólo sobre un reporte abierto (13/10/2026)
+    for (const [id, fix] of Object.entries((d && d.decididos) || {})) {
+      if (!/^\d{1,12}$/.test(id) || !fix || typeof fix !== 'object') continue;
+      const v = validarDecisionReporte(Object.assign({}, fix, { id: Number(id), accion: fix.tipo }));
+      const r = this.sql.exec('SELECT estado FROM reportes WHERE id = ?', Number(id)).toArray()[0];
+      if (v.error || !v.fix || !r || r.estado !== '') continue;
+      this.sql.exec("UPDATE reportes SET estado = 'corregir', fix = ?, resultado = '', t_estado = ? WHERE id = ?",
+        JSON.stringify(v.fix), ahora, Number(id));
+      n++;
+    }
+    // 🔎 la evidencia de cada reporte abierto (`{id: {quien, lineas, sugerencia}}`), tal cual la arma el ciclo
+    let e = 0;
+    for (const [id, x] of Object.entries((d && d.evidencia) || {})) {
+      if (!/^\d{1,12}$/.test(id) || !x || typeof x !== 'object') continue;
+      const t = JSON.stringify(x);
+      if (t.length > 4000) continue;
+      e += this.sql.exec('UPDATE reportes SET evid = ? WHERE id = ? AND evid != ?', t, Number(id), t).rowsWritten || 0;
+    }
     if (n) await this.colaReportes(ahora);
-    return { ok: true, n };
+    return { ok: true, n, evidencia: e };
   }
 
   /** Los reportes para el Dashboard: los abiertos y los que esperan al ciclo, y lo decidido en los últimos 3 días. */
   reportesDueno(ahora) {
-    return this.sql.exec('SELECT r.id, r.t, r.llave, r.que, r.texto, r.batalla, r.estado, r.fix, r.resultado, i.k ' +
+    return this.sql.exec('SELECT r.id, r.t, r.llave, r.que, r.texto, r.batalla, r.estado, r.fix, r.resultado, r.evid, i.k ' +
       "FROM reportes r LEFT JOIN idk i ON i.id = r.quien WHERE r.estado IN ('', 'corregir') OR r.t_estado > ? " +
       'ORDER BY r.t DESC LIMIT 30', ahora - 3 * DIA_MS).toArray().map((f) => {
-      let fix = null;
+      let fix = null, evid = null;
       try { fix = f.fix ? JSON.parse(f.fix) : null; } catch (e) { fix = null; }
+      try { evid = f.evid ? JSON.parse(f.evid) : null; } catch (e) { evid = null; }
       return { id: f.id, t: f.t, llave: f.llave, que: f.que, texto: String(f.texto || '').slice(0, 300), batalla: f.batalla,
-        de: f.k || '', estado: f.estado || '', fix, resultado: f.resultado || '' };
+        de: f.k || '', estado: f.estado || '', fix, resultado: f.resultado || '', evid };
     });
   }
 

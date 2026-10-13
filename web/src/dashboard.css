@@ -105,6 +105,10 @@
 .db-rep-q input[type=text]{flex:1 1 160px}
 .db-sel{width:100%}
 .db-rep-nota{margin:0;font-size:12.5px;color:var(--gris)}
+/* 🔎 lo que encontró el bot de un reporte */
+.db-evid{display:grid;gap:6px;padding:8px 10px;border-left:4px solid var(--suave);background:var(--caja)}
+.db-evid ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.db-evid li{display:grid;grid-template-columns:20px 1fr;gap:4px;padding:0;border:0;font-size:13px;overflow-wrap:anywhere}
 .db .db-sis{padding:10px 14px 0}
 .db .db-dias{padding:14px}
 .db-atajos{list-style:none;margin:0;padding:10px 14px 14px;display:flex;flex-wrap:wrap;gap:8px 18px}

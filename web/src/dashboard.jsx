@@ -1064,6 +1064,35 @@ function Corregir({ r, liga, alListo }) {
   );
 }
 
+// 🔎 LO QUE ENCONTRÓ EL BOT de un reporte (13/10/2026, Dlx: «para cada cosa necesitaremos evidencia… que el bot nos dé
+// evidencia»): una línea por prueba —las inscripciones con la cuenta que las escribió, la llamada, lo ya decidido— y,
+// si todo apunta a una persona, la corrección sugerida para aplicar con un toque. Es una pista: decide Dlx
+function Evidencia({ r, alListo }) {
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  const s = r.evid.sugerencia;
+  const abierto = r.estado === '' || r.estado === 'no_pude';
+  const aplicar = async () => {
+    setOcup(true); setMsg('');
+    try {
+      alListo(await decidirReporte(Object.assign({ id: r.id, accion: 'nombre', n: r.llave, nombre: s.nombre },
+        s.reporta ? { reporta: true } : { es: s.es })));
+    } catch (e) { setMsg('No se pudo: ' + e.message); setOcup(false); }
+  };
+  return (
+    <div className="db-evid">
+      <span className="db-rep-p">🔎 Lo que encontró el bot</span>
+      <ul>{r.evid.lineas.slice(1).map(([ic, t]) => <li key={t}><span aria-hidden="true">{ic}</span>{t}</li>)}</ul>
+      {s && abierto && /^\d+$/.test(r.llave) ? (
+        <div className="cu-btns">
+          <button type="button" className="btn verde chico" disabled={ocup} onClick={aplicar}>
+            {ocup ? 'Guardando…' : 'Aplicar lo sugerido: «' + s.nombre + '» era ' + (s.reporta ? 'quien lo mandó' : s.es_txt || s.es)}</button>
+          {msg ? <small role="status">{msg}</small> : null}
+        </div>) : null}
+    </div>
+  );
+}
+
 function Reportes({ rep, liga }) {
   const [lista, setLista] = useState(rep);
   useEffect(() => { setLista(rep); }, [rep]);
@@ -1083,8 +1112,12 @@ function Reportes({ rep, liga }) {
           <li key={r.id}>
             <div className="db-l1"><b>{/^\d+$/.test(r.llave) ? <a href={'#/llave/' + r.llave}>Llave #{r.llave}</a> : 'Llave en vivo'}</b>
               <span className="db-chip">{QUE_REP[r.que] || r.que}</span>{est ? <span className={'db-chip ' + est[1]}>{est[0]}</span> : null}</div>
-            <small>{hace(r.t)}{r.batalla ? ' · ' + r.batalla : ''}{r.de ? <> · lo mandó <a href={'#/r/' + r.de}>{r.de}</a></> : null}</small>
+            {/* 👤 quién lo mandó: el nombre de la Lista que pone el ciclo (`evid.quien`), aunque no tenga perfil en la página
+                (Dlx, 13/10/2026: «¿pero quién lo dice?») */}
+            <small>{hace(r.t)}{r.batalla ? ' · ' + r.batalla : ''}{r.evid && r.evid.quien ? <> · lo mandó {r.de ? <a href={'#/r/' + r.de}>{r.evid.quien}</a> : r.evid.quien}</>
+              : r.de ? <> · lo mandó <a href={'#/r/' + r.de}>{r.de}</a></> : <> · quién lo mandó: lo dice el ciclo en su próxima corrida</>}</small>
             {r.texto ? <p>{r.texto}</p> : null}
+            {r.evid && (r.evid.lineas || []).length > 1 ? <Evidencia r={r} alListo={setLista} /> : null}
             {r.estado === 'corregir' && r.fix ? <small>{r.fix.tipo === 'ganador' ? 'Ganó ' + r.fix.ganador + ' (' + r.fix.ronda + ')'
               : '«' + r.fix.nombre + '» era ' + (r.fix.reporta ? 'quien lo reportó' : r.fix.es || r.fix.nuevo)}</small> : null}
             {r.resultado ? <small>{r.resultado}</small> : null}
