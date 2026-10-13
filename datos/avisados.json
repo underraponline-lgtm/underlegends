@@ -5786,7 +5786,7 @@
    "PichulaMc": 27
   },
   "fecha": "10/10",
-  "firma": "7b816c1c7f4c89cd",
+  "firma": "2337d0848aa9ebb4",
   "msg": "1558643633110917121",
   "nombre": "(sin titulo)",
   "num": 444,
@@ -7763,7 +7763,7 @@
    "yinn": 15
   },
   "fecha": "12/10",
-  "firma": "764be2dcc9379525",
+  "firma": "f555ef7c911f0e43",
   "msg": "1559247601923137630",
   "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
   "num": 454,
@@ -10088,48 +10088,18 @@
   "duelos": [
    [
     "COLOSO",
-    "AXL EVANS",
+    "JM SERNA",
     "COLOSO"
    ],
    [
-    "JM SERNA",
-    "JAZZ",
-    "JM SERNA"
-   ],
-   [
-    "PANDORA",
-    "HUNTER",
-    "PANDORA"
-   ],
-   [
-    "FAT N",
-    "AIRON",
-    "FAT N"
-   ],
-   [
     "MARITHEA",
-    "URKO",
-    "MARITHEA"
-   ],
-   [
     "J1",
-    "COFFY",
-    "J1"
-   ],
-   [
-    "VISIONARIO",
-    "LIT IGNIS",
-    "VISIONARIO"
+    "MARITHEA"
    ],
    [
     "PUPPY",
-    "HORUS",
+    "VISIONARIO",
     "PUPPY"
-   ],
-   [
-    "MARITHEA",
-    "J1",
-    "MARITHEA"
    ],
    [
     "MARITHEA",
@@ -10137,14 +10107,14 @@
     "MARITHEA"
    ],
    [
-    "MARITHEA",
-    "PUPPY",
-    "MARITHEA"
+    "FAT N",
+    "AIRON",
+    "FAT N"
    ]
   ],
   "ev_antes": {},
   "fecha": "12/10",
-  "firma": "bb3f2846074d4807",
+  "firma": "b3a32ceecc8dfae4",
   "msg": "1559406349790617712",
   "nombre": "COMPE CHILL",
   "num": 463,
@@ -10156,14 +10126,14 @@
   "t": "2026-10-13T02:56:28Z",
   "tabla": [
    [
-    "COLOSO",
+    "FAT N",
     "Campeón",
-    5000
+    10000
    ],
    [
-    "AXL EVANS",
+    "AIRON",
     "Subcampeón",
-    3750
+    1875
    ]
   ],
   "v": 2
