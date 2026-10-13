@@ -1823,6 +1823,10 @@ const RUTAS = {
   '/avisos/finales': 'GET',
   // 🧰 la imagen de /afiche o /llave ya dibujada (`bot/kit.py`), con `claveCiclo()`. Ver `kitListo()`
   '/avisos/kit-listo': 'POST',
+  // 🎬 tus batallas en video (12/10/2026): pedir un link o un canal, ver tus pedidos y quitar uno, con tu sesión y
+  // verificado; reportar el de otro; lo del ciclo, con su clave; y aprobar lo raro, sólo Dlx. Ver `misVideos()`
+  '/avisos/mis-videos': 'POST', '/avisos/video-reportar': 'POST',
+  '/avisos/videos-ciclo': 'GET', '/avisos/videos-estados': 'POST', '/avisos/dueno/video': 'POST',
 };
 
 // ── los anuncios que son una imagen ────────────────────────────────────
@@ -3155,6 +3159,56 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ quien: q.id, llave }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🎬 TUS BATALLAS EN VIDEO (Dlx, 12/10/2026: «las 2, pero asegurate que haya restricciones…»): pedir un link o un
+  // canal, ver tus pedidos, quitar uno tuyo y reportar el de otro. ⚠️ SÓLO VERIFICADOS: tu perfil sale de `d:` (el
+  // Miembro de DRA), nunca de la página. Lo que entra y lo que no lo decide el ciclo (`bot/videos_propios.py`)
+  if (ruta === '/avisos/mis-videos' || ruta === '/avisos/video-reportar') {
+    const crudo = await req.text();
+    if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    let de = '';
+    try { de = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { de = ''; }
+    if (!claveValida(de)) return json({ error: 'sin_verificar' }, 403);
+    return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
+      method: 'POST', body: JSON.stringify({ quien: q.id, de, accion: String(d.accion || '').slice(0, 10),
+        url: String(d.url || '').slice(0, 300), vid: String(d.vid || '').slice(0, 20), clave: String(d.clave || '').slice(0, 80) }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 🎬 LOS PEDIDOS DE VIDEOS, PARA EL CICLO, Y LO QUE DECIDIÓ: con su clave (traen Discord IDs)
+  if (ruta === '/avisos/videos-ciclo' || ruta === '/avisos/videos-estados') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    if (ruta === '/avisos/videos-ciclo') return elObjeto(env).fetch('https://avisos/videos-ciclo');
+    const crudo = await req.text();
+    if (crudo.length > 200000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/videos-estados', { method: 'POST', body: crudo,
+      headers: { 'content-type': 'application/json' } });
+  }
+  // 🎬 APROBAR O NO UN VIDEO QUE QUEDÓ EN REVISIÓN: sólo Dlx, como los ajustes del Dashboard
+  if (ruta === '/avisos/dueno/video') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token))) ||
+        !/^\d{1,12}$/.test(String(d.id || '')) || typeof d.si !== 'boolean') return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (q.id !== DUENO) {
+      console.warn('[seguridad] aprobar un video lo pidió alguien que no es el dueño');
+      return json({ error: 'no' }, 403);
+    }
+    return elObjeto(env).fetch('https://avisos/dueno-video', {
+      method: 'POST', body: JSON.stringify({ id: Number(d.id), si: d.si }), headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🧰 LA IMAGEN DEL KIT, DE LA TAREA `kit.yml` (`bot/kit.py`): con la clave del ciclo
   if (ruta === '/avisos/kit-listo') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -3514,6 +3568,17 @@ export class Avisos {
         "t INTEGER NOT NULL, de TEXT NOT NULL DEFAULT '', creada INTEGER NOT NULL DEFAULT 0, " +
         'PRIMARY KEY (quien, a))');
       this.sql.exec('CREATE INDEX IF NOT EXISTS sigue_a ON sigue (a)');
+      // 🎬 TUS BATALLAS EN VIDEO (12/10/2026): cada pedido y cómo terminó, los reportes («esto no es suyo»), lo que
+      // cada uno quitó de su perfil y lo que Dlx aprobó o no. Ver `misVideos()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS videos_pedidos (id INTEGER PRIMARY KEY AUTOINCREMENT, quien TEXT NOT NULL, ' +
+        "clave TEXT NOT NULL, tipo TEXT NOT NULL, url TEXT NOT NULL, t INTEGER NOT NULL, estado TEXT NOT NULL DEFAULT 'espera', " +
+        "motivo TEXT NOT NULL DEFAULT '')");
+      this.sql.exec('CREATE INDEX IF NOT EXISTS videos_pedidos_q ON videos_pedidos (quien, t)');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS videos_reportes (vid TEXT NOT NULL, clave TEXT NOT NULL, quien TEXT NOT NULL, ' +
+        't INTEGER NOT NULL, PRIMARY KEY (vid, quien))');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS videos_quitados (clave TEXT NOT NULL, vid TEXT NOT NULL, t INTEGER NOT NULL, ' +
+        'PRIMARY KEY (clave, vid))');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS videos_decididos (id INTEGER PRIMARY KEY, si INTEGER NOT NULL, t INTEGER NOT NULL)');
       // ⭐ «ALGUIEN TE SIGUE» (02/10/2026): qué seguimiento ya se avisó, y cuándo fue el último aviso de cada perfil.
       // ⚠️ LO QUE YA EXISTÍA NACE AVISADO (DEFAULT 1): si no, la primera vuelta le diría a cada uno «N personas nuevas
       // te siguen» por lo de siempre. `seguir()` anota 0. Ver `avisarSeguidores()`
@@ -3721,12 +3786,18 @@ export class Avisos {
       if (ruta === '/inscritos') return json(this.inscritosLista(), 200, 0);
       // 🏁 quién ganó cada final que el ciclo preguntó (`bot/finales.py`), con la clave del ciclo
       if (ruta === '/finales') return json(this.leer('finales') || {}, 200, 0);
+      // 🎬 los pedidos de videos, para el ciclo (`bot/videos_propios.py`), con su clave
+      if (ruta === '/videos-ciclo') return json(this.videosCiclo(), 200, 0);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
       if (ruta === '/final') return json(this.finalElegir(d));
       // 🧰 /afiche y /llave: el permiso para contestar, del Worker; y la imagen, de la tarea (ver `kitGuardar()`)
       if (ruta === '/kit') return json(this.kitGuardar(d));
       if (ruta === '/kit-listo') return json(await this.kitListo(d));
+      if (ruta === '/mis-videos') return this.misVideos(d);
+      if (ruta === '/video-reportar') return this.videoReportar(d);
+      if (ruta === '/videos-estados') return json(this.videosEstados(d));
+      if (ruta === '/dueno-video') return json(this.duenoVideo(d));
       if (ruta === '/alta') return await this.alta(d);
       if (ruta === '/baja') return this.baja(d);
       if (ruta === '/probar') return this.probar(d);
@@ -5587,6 +5658,88 @@ export class Avisos {
 
   /** Todos los dispositivos de esa persona, sueltos, y sus votos. Ver `olvidarAvisos()`. */
   /** 🤝 La postulación de /sumate: una por persona cada 24 horas, guardada 90 días y al DM de Dlx. Ver `validarPostulacion()`. */
+  // ── 🎬 TUS BATALLAS EN VIDEO ──────────────────────────────────────────
+  // Dlx, 12/10/2026: «las 2 [un link o un canal], pero asegurate que haya restricciones». Acá sólo se anota el pedido
+  // y se lleva la cuenta; si el video entra, queda en revisión o no, lo decide el ciclo (`bot/videos_propios.py`).
+  /** Pedir (`url` de un video o un canal de YouTube), ver tus pedidos (`ver`) o quitar uno de tu perfil (`quitar`). */
+  misVideos(d) {
+    const quien = String(d.quien || ''), de = String(d.de || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !claveValida(de)) return json({ error: 'faltan datos' }, 400);
+    const ahora = Date.now();
+    const lista = () => this.sql.exec('SELECT id, tipo, url, t, estado, motivo FROM videos_pedidos WHERE quien = ? ' +
+      'ORDER BY t DESC LIMIT 30', quien).toArray();
+    if (d.accion === 'ver') return json({ ok: true, pedidos: lista() });
+    if (d.accion === 'quitar') {
+      if (!/^[\w-]{11}$/.test(String(d.vid || ''))) return json({ error: 'video' }, 400);
+      this.sql.exec('INSERT OR REPLACE INTO videos_quitados (clave, vid, t) VALUES (?, ?, ?)', de, String(d.vid), ahora);
+      return json({ ok: true });
+    }
+    if (d.accion !== 'pedir') return json({ error: 'acción' }, 400);
+    // 🧹 los pedidos y los reportes duran 90 días (lo dice la privacidad)
+    this.sql.exec('DELETE FROM videos_pedidos WHERE t < ?', ahora - 90 * DIA_MS);
+    this.sql.exec('DELETE FROM videos_reportes WHERE t < ?', ahora - 90 * DIA_MS);
+    const url = String(d.url || '').trim();
+    const esVideo = /^https?:\/\/(?:www\.|m\.)?(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|live\/)|youtu\.be\/)[\w-]{11}/i.test(url);
+    const esCanal = /^https?:\/\/(?:www\.|m\.)?youtube\.com\/(?:@[\w.-]+|channel\/UC[\w-]{22}|c\/[\w.-]+|user\/[\w.-]+)\/?(?:videos|streams|featured)?\/?(?:\?.*)?$/i.test(url);
+    if (!esVideo && !esCanal) return json({ error: 'link' }, 400);
+    // ⚠️ LOS TOPES, ACÁ: cinco pedidos por día y diez esperando a la vez, por persona
+    const hoy = this.sql.exec('SELECT COUNT(*) AS n FROM videos_pedidos WHERE quien = ? AND t > ?', quien, ahora - DIA_MS)
+      .toArray()[0].n;
+    if (hoy >= 5) return json({ error: 'muchos' }, 429);
+    const espera = this.sql.exec("SELECT COUNT(*) AS n FROM videos_pedidos WHERE quien = ? AND estado = 'espera'", quien)
+      .toArray()[0].n;
+    if (espera >= 10) return json({ error: 'espera' }, 429);
+    if (this.sql.exec("SELECT 1 FROM videos_pedidos WHERE quien = ? AND url = ? AND estado != 'no'", quien, url).toArray().length) {
+      return json({ error: 'ya' }, 409);
+    }
+    this.sql.exec('INSERT INTO videos_pedidos (quien, clave, tipo, url, t) VALUES (?, ?, ?, ?, ?)', quien, de,
+      esVideo ? 'link' : 'canal', url, ahora);
+    return json({ ok: true, pedidos: lista() });
+  }
+
+  /** «Esto no es suyo»: un reporte por persona y video. El tuyo no lo podés reportar. */
+  videoReportar(d) {
+    const quien = String(d.quien || ''), de = String(d.de || ''), clave = String(d.clave || ''), vid = String(d.vid || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !claveValida(clave) || !/^[\w-]{11}$/.test(vid)) return json({ error: 'faltan datos' }, 400);
+    if (clave === de) return json({ error: 'tuyo' }, 400);
+    this.sql.exec('INSERT OR IGNORE INTO videos_reportes (vid, clave, quien, t) VALUES (?, ?, ?, ?)', vid, clave, quien, Date.now());
+    return json({ ok: true });
+  }
+
+  /** Para el ciclo: los pedidos que esperan, los reportes por video, lo quitado y lo que Dlx decidió. */
+  videosCiclo() {
+    const reportes = {};
+    for (const r of this.sql.exec('SELECT vid, COUNT(*) AS n FROM videos_reportes GROUP BY vid').toArray()) reportes[r.vid] = r.n;
+    const decididos = {};
+    for (const r of this.sql.exec('SELECT id, si FROM videos_decididos').toArray()) decididos[r.id] = r.si === 1;
+    return {
+      pedidos: this.sql.exec("SELECT id, clave, tipo, url FROM videos_pedidos WHERE estado = 'espera' ORDER BY t LIMIT 60").toArray(),
+      reportes, decididos,
+      quitados: this.sql.exec('SELECT clave, vid FROM videos_quitados').toArray(),
+    };
+  }
+
+  /** Lo que el ciclo decidió de cada pedido, y lo que queda para Dlx (`revisar`, para el Dashboard). */
+  videosEstados(d) {
+    let n = 0;
+    for (const [id, x] of Object.entries((d && d.estados) || {})) {
+      if (!/^\d{1,12}$/.test(id) || !Array.isArray(x)) continue;
+      const est = ['ok', 'no', 'revisar'].includes(x[0]) ? x[0] : 'no';
+      this.sql.exec('UPDATE videos_pedidos SET estado = ?, motivo = ? WHERE id = ?', est, String(x[1] || '').slice(0, 120), Number(id));
+      if (est !== 'revisar') this.sql.exec('DELETE FROM videos_decididos WHERE id = ?', Number(id));
+      n++;
+    }
+    if (Array.isArray(d && d.revisar)) this.guardar('videos_revisar', d.revisar.slice(0, 40));
+    return { ok: true, n };
+  }
+
+  /** Dlx aprueba o no un video en revisión: lo aplica el ciclo, y sale ya del Dashboard. */
+  duenoVideo(d) {
+    this.sql.exec('INSERT OR REPLACE INTO videos_decididos (id, si, t) VALUES (?, ?, ?)', Number(d.id), d.si ? 1 : 0, Date.now());
+    this.guardar('videos_revisar', (this.leer('videos_revisar') || []).filter((x) => Number(x[0]) !== Number(d.id)));
+    return { ok: true };
+  }
+
   async postular(d) {
     const quien = String((d && d.quien) || '');
     if (!/^[0-9]{5,25}$/.test(quien) || !d.p) return json({ error: 'faltan' }, 400);
@@ -5673,6 +5826,9 @@ export class Avisos {
     this.sql.exec('DELETE FROM bandeja WHERE quien = ?', String(d.quien));
     // 🤝 y sus postulaciones de /sumate, y cuántas veces cambió algo hoy
     this.sql.exec('DELETE FROM postulaciones WHERE quien = ?', String(d.quien));
+    // 🎬 tus pedidos de videos y tus reportes (12/10/2026)
+    this.sql.exec('DELETE FROM videos_pedidos WHERE quien = ?', String(d.quien));
+    this.sql.exec('DELETE FROM videos_reportes WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM cambios_dia WHERE quien = ?', String(d.quien));
     // 🔴 Y LO QUE QUEDABA CON SU ID EN LAS TABLAS DE TRABAJO (revisión del 03/10/2026): de qué perfil es (`idk`), sus
     // inscripciones leídas de Discord (`inscritos`) y las marcas de «ya avisado» que llevan su ID —quién siguió a
@@ -7201,6 +7357,8 @@ export class Avisos {
         ciclo_mano: this.leer('ciclo_mano'),
       },
       pase: this.paseResumen(),
+      // 🎬 los videos que no entraron solos: `[id, rapero, título, link, por qué]`, para aprobar o no
+      videos: this.leer('videos_revisar') || [],
     };
   }
 

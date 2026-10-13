@@ -102,6 +102,11 @@ const AVISOS = {
   '/api/avisos/dueno/ajuste': 'POST',
   // ▶️ correr el ciclo ahora, desde el Dashboard (sólo Dlx)
   '/api/avisos/dueno/ciclo': 'POST',
+  // 🎬 tus batallas en video (12/10/2026): pedir, ver y quitar las tuyas, reportar la de otro, y aprobar lo raro (sólo
+  // Dlx). Ver `misVideos()` en bot/avisos.js. ⚠️ `videos-ciclo` y `videos-estados` NO van acá: son del ciclo
+  '/api/avisos/mis-videos': 'POST',
+  '/api/avisos/video-reportar': 'POST',
+  '/api/avisos/dueno/video': 'POST',
 };
 
 // 🔑 «MI CUENTA»: el login y lo que se hace con ese permiso, nombradas una por

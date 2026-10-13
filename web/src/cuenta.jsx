@@ -304,6 +304,60 @@ function RedesCaja({ dc }) {
   );
 }
 
+// 🎬 TUS BATALLAS EN VIDEO (Dlx, 12/10/2026: «las 2 [un link o un canal], pero asegurate que haya restricciones»). Acá
+// sólo se pide y se ve cómo terminó cada pedido: lo que entra lo decide el ciclo (`bot/videos_propios.py`) con sus reglas
+const VID_ERR = {
+  sin_verificar: 'Sólo los verificados pueden sumar videos: verificate en DRA.',
+  link: 'Pegá el link de un video o de un canal de YouTube.',
+  muchos: 'Ya mandaste cinco hoy: probá mañana.',
+  espera: 'Tenés diez esperando: esperá a que se revisen.',
+  ya: 'Ese ya lo mandaste.',
+  sin_sesion: 'Tu sesión venció: entrá con Discord de nuevo.',
+};
+const VID_EST = { espera: 'En cola · se revisa en la próxima media hora', ok: '✓', no: '✗', revisar: 'Lo revisa Dlx' };
+function VideosCaja({ dc }) {
+  const [ps, setPs] = useState(null);
+  const [url, setUrl] = useState('');
+  const [msg, setMsg] = useState('');
+  const [va, setVa] = useState(false);
+  const pedir = async (cuerpo) => {
+    const r = await fetch('/api/avisos/mis-videos', { method: 'POST', credentials: 'same-origin',
+      headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
+    const j = await r.json().catch(() => ({}));
+    if (j.pedidos) setPs(j.pedidos);
+    return r.ok ? '' : VID_ERR[j.error] || 'No se pudo. Probá de nuevo.';
+  };
+  useEffect(() => {
+    if (!dc || !dc.clave) return;
+    pedir({ accion: 'ver' }).then((e) => { if (e) setMsg(e); });
+  }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  if (!dc || !dc.clave) return null;
+  const mandar = async (e) => {
+    e.preventDefault();
+    if (va || !url.trim()) return;
+    setVa(true);
+    const err = await pedir({ accion: 'pedir', url: url.trim() });
+    setVa(false);
+    setMsg(err || 'Listo: se revisa en la próxima media hora y, si entra, sale en tu perfil.');
+    if (!err) setUrl('');
+  };
+  return (
+    <Caja t="Mis batallas en video" d="Pegá el link de una batalla tuya en YouTube, o el de un canal donde estén tus batallas (una liga, una plaza). Entra si el título es una batalla («A vs B») y dice tu nombre de la Liga o un apodo tuyo; si trae bandera, la de tu país. Un canal grande o un nombre famoso lo revisa Dlx.">
+      <form className="cu-vid" onSubmit={mandar}>
+        <input type="url" maxLength={300} value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://youtube.com/…" aria-label="Link de YouTube" />
+        <button type="submit" className="btn verde chico" disabled={va}>{va ? 'Mandando…' : 'Sumar'}</button>
+      </form>
+      {msg ? <p className="cu-d" role="status">{msg}</p> : null}
+      {ps && ps.length ? (
+        <ul className="cu-lista cu-vids">{ps.map((p) => (
+          <li key={p.id}><span className={'cu-vid-e ' + p.estado}>{VID_EST[p.estado] || p.estado}{p.motivo && p.estado !== 'espera' ? ' ' + p.motivo : ''}</span>
+            <a href={p.url} target="_blank" rel="noopener noreferrer">{p.tipo === 'canal' ? 'Canal · ' : ''}{p.url.replace(/^https?:\/\/(www\.)?/, '')}</a></li>
+        ))}</ul>
+      ) : null}
+    </Caja>
+  );
+}
+
 // 🏠 Y AL FINAL DE VERIFICARSE (`paso`; Dlx, 07/10/2026: «que al final te pregunte de qué servidor venís y/o a qué
 // servidor querés representar… todos los socios y la opción ninguno»). La misma elección que Mi cuenta, con «Ninguno»
 // (`sv: ''`), que queda contestado sin fijar la temporada: tu perfil sigue con donde más jugás
@@ -441,6 +495,7 @@ function Parte({ id, liga, dc, tema, onTema }) {
       <>
         <FotoCaja liga={liga} dc={dc} />
         <RedesCaja dc={dc} />
+        <VideosCaja dc={dc} />
         <ServidorCaja liga={liga} dc={dc} />
       </>
     );

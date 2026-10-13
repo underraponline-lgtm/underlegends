@@ -640,12 +640,44 @@ function Ajustes({ liga, aj, onAj, chat }) {
 
 const TIPO = { servidor: 'Servidor', marca: 'Marca', creador: 'Creador', otro: 'Otro' };
 
+// 🎬 LOS VIDEOS QUE NO ENTRARON SOLOS (12/10/2026): un canal grande, un nombre famoso o parecido, o dos de la Liga con
+// el mismo nombre. Aprobar o no lo aplica el ciclo (`bot/videos_propios.py`); acá sale de la lista al tocar
+function VideosRevisar({ vs }) {
+  const [hecho, setHecho] = useState({});
+  const decidir = async (id, si) => {
+    setHecho(Object.assign({}, hecho, { [id]: '…' }));
+    try {
+      const r = await fetch('/api/avisos/dueno/video', { method: 'POST', credentials: 'same-origin',
+        headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id, si }) });
+      setHecho((h) => Object.assign({}, h, { [id]: r.ok ? (si ? 'aprobado' : 'no') : 'falló' }));
+    } catch (e) { setHecho((h) => Object.assign({}, h, { [id]: 'falló' })); }
+  };
+  return (
+    <div><h3>Videos para revisar <small>los que no entraron solos</small></h3>
+      <ul>{vs.map(([id, raw, tit, url, motivo]) => (
+        <li key={id}>
+          <div className="db-l1"><b>{limpio(raw)}</b><span className="db-chip ojo">{motivo}</span></div>
+          <a className="db-link" href={url} target="_blank" rel="noopener noreferrer">{tit || url}</a>
+          {hecho[id] && hecho[id] !== 'falló' ? <small>{hecho[id] === '…' ? 'mandando…' : hecho[id] === 'aprobado' ? '✓ aprobado: entra en la próxima corrida' : '✗ no entra'}</small> : (
+            <div className="cu-btns">
+              <button type="button" className="btn verde chico" onClick={() => decidir(id, true)}>Aprobar</button>
+              <button type="button" className="btn borde2 chico" onClick={() => decidir(id, false)}>No</button>
+              {hecho[id] === 'falló' ? <small>No se pudo: probá de nuevo.</small> : null}
+            </div>
+          )}
+        </li>
+      ))}</ul>
+    </div>
+  );
+}
+
 // 🤝 lo que también te llega por DM: las postulaciones de /sumate y los errores reportados en las llaves
 function Llego({ d }) {
-  const pos = d.postulaciones || [], rep = d.reportes || [];
-  if (!pos.length && !rep.length) return <p className="pronto-p">Nada todavía: ni postulaciones de /sumate ni errores reportados en las llaves.</p>;
+  const pos = d.postulaciones || [], rep = d.reportes || [], vs = d.videos || [];
+  if (!pos.length && !rep.length && !vs.length) return <p className="pronto-p">Nada todavía: ni errores reportados en las llaves ni videos para revisar.</p>;
   return (
     <div className="db-llego">
+      {vs.length ? <VideosRevisar vs={vs} /> : null}
       {pos.length ? (
         <div><h3>Quieren sumarse <small>/sumate</small></h3>
           <ul>{pos.map((p) => (

@@ -1206,6 +1206,9 @@ def _lo_barato(correr):
         paso('2b8', 'las batallas en video')
         if not corre(['bot/videos.py', '--aplicar'], callado=True, mostrar=('🎬', '⚠️')):
             print('      ⚠️ los videos fallaron: queda lo de la corrida anterior')
+        # 🎬 y los que sumó cada uno, con sus restricciones (`bot/videos_propios.py`, 12/10/2026)
+        if not corre(['bot/videos_propios.py', '--aplicar'], callado=True, mostrar=('🎬', '⚠️')):
+            print('      ⚠️ los videos de cada uno fallaron: queda lo de la corrida anterior')
     # ── 2b9 · 🏟️ las ligas de los servidores (`bot/ligas.py`, Dlx 12/10/2026: «1. A», «2. Me gusta»): cada batalla con
     # su resultado, para la pestaña «Ligas» de la web y como duelos (Ranking Duelos y Win%: los toma el paso 1c de la
     # corrida siguiente, como las misiones). Nunca frena el ciclo

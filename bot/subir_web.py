@@ -1572,6 +1572,8 @@ def _perfiles(gente, comp, regs):
     inv = _json('datos', 'cartas_r2.json') or {}
     _vj = _json('datos', 'videos.json') or {}
     _vids, _vpor = _vj.get('videos') or {}, _vj.get('por') or {}
+    # 🎬 y las que sumó cada uno (`bot/videos_propios.py`, 12/10/2026): aparte, «de plazas y otras ligas»
+    _vp = _json('datos', 'videos_propios.json') or {}
     out = {}
     for q, p in por.items():
         cp = comp_raw.get(p.get('raw')) or (comp_de.get(norm(p.get('raw')))
@@ -1645,6 +1647,14 @@ def _perfiles(gente, comp, regs):
                for v in (_vpor.get(p.get('raw')) or []) if v in _vids]
         if vid:
             x['vid'] = vid
+        # 🎬 las que sumó él: [id, título, canal], sin las que ya están arriba ni las ocultas por reportes
+        try:
+            import videos_propios as _VP
+            vp = [v for v in _VP.para_perfil(p.get('raw'), d=_vp) if v[0] not in {y[0] for y in vid}]
+        except Exception:                                # noqa: BLE001
+            vp = []
+        if vp:
+            x['vp'] = vp
         out[q] = x
     import time
     # el promedio de la Liga en cada dimensión, para comparar en el gráfico:

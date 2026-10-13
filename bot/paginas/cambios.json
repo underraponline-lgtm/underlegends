@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.75",
+   "dia": "2026-10-12",
+   "cuando": "2026-10-12T20:30:00-04:00",
+   "titulo": "Sumá tus batallas en video",
+   "items": [
+    "🎬 En **Mi cuenta → Mi perfil** podés sumar tus batallas: el link de un video o de un canal de YouTube. Entran las que son una batalla con tu nombre, y salen en tu perfil en «De plazas y otras ligas».",
+    "🚩 Si un video del perfil de alguien no es suyo, tocá «Esto no es suyo»."
+   ]
+  },
+  {
    "version": "2.74",
    "dia": "2026-10-12",
    "cuando": "2026-10-12T20:30:00-04:00",

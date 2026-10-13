@@ -567,14 +567,40 @@ function Eventos({ liga, p, e }) {
 // Sin videos, no se dibuja. Se toca y se mira acá (`abrirVideo()`): nada de YouTube antes del toque, salvo la miniatura.
 // Va debajo de Sus números y en NEGRO: entre dos blancas (Sus números y Datos), así sigue la regla de intercalar
 const SV_CANAL = { DRA: 'Under Legends', SR: 'Snake Rap', FFS: 'Freestyle Future Series', FFA: 'Free for All', FVS: 'Freestyle Versus' };
-function Videos({ liga, p }) {
+// 🎬 Y LAS QUE SUMÓ ÉL (12/10/2026, `vp`: `bot/videos_propios.py`), aparte: «De plazas y otras ligas». Cualquiera
+// verificado puede decir «esto no es suyo» (con dos reportes se oculta), y él puede quitar las suyas
+function VideoPropio({ v: [vid, tit, cn], k, esYo, dc }) {
+  const [hecho, setHecho] = useState('');
+  const mandar = async (ruta, cuerpo, ok) => {
+    try {
+      const r = await fetch(ruta, { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
+      const j = await r.json().catch(() => ({}));
+      setHecho(r.ok ? ok : j.error === 'sin_verificar' ? 'Sólo los verificados pueden reportar.' : 'No se pudo.');
+    } catch (e) { setHecho('No se pudo.'); }
+  };
+  return (
+    <li>
+      <button type="button" className="pf-vid-b" onClick={() => abrirVideo({ vid, tit, link: 'https://www.youtube.com/watch?v=' + vid })}>
+        <span className="pf-vid-m"><Miniatura vid={vid} cls="pf-vid-img" /><i aria-hidden="true">▶</i></span>
+        <b>{tit}</b>
+        <small>{cn}</small>
+      </button>
+      {hecho ? <small className="pf-vid-r">{hecho}</small> : dc ? (esYo
+        ? <button type="button" className="pf-vid-r" onClick={() => mandar('/api/avisos/mis-videos', { accion: 'quitar', vid }, 'Lo quitaste: sale en la próxima actualización.')}>Quitar</button>
+        : <button type="button" className="pf-vid-r" onClick={() => mandar('/api/avisos/video-reportar', { clave: k, vid }, 'Gracias: lo vamos a mirar.')}>Esto no es suyo</button>) : null}
+    </li>
+  );
+}
+
+function Videos({ liga, p, k, esYo, dc }) {
   const vs = (p && p.vid) || [];
-  if (!vs.length) return null;
+  const vp = (p && p.vp) || [];
+  if (!vs.length && !vp.length) return null;
   return (
     <section className="sec pf-sec negra">
-      <div className="sec-t"><h2>Sus batallas en video</h2><span className="tj-n">{vs.length === 1 ? 'una' : vs.length}</span></div>
-      <p className="pf-bajada">De los canales de YouTube de los servidores de la Liga. Tocá una para verla acá.</p>
-      <ul className="pf-vid">
+      <div className="sec-t"><h2>Sus batallas en video</h2><span className="tj-n">{vs.length + vp.length === 1 ? 'una' : vs.length + vp.length}</span></div>
+      {vs.length ? <p className="pf-bajada">De los canales de YouTube de los servidores de la Liga. Tocá una para verla acá.</p> : null}
+      {vs.length ? <ul className="pf-vid">
         {vs.map(([vid, tit, sv]) => (
           <li key={vid}>
             <button type="button" className="pf-vid-b" onClick={() => abrirVideo({ vid, tit, link: 'https://www.youtube.com/watch?v=' + vid })}>
@@ -584,7 +610,14 @@ function Videos({ liga, p }) {
             </button>
           </li>
         ))}
-      </ul>
+      </ul> : null}
+      {vp.length ? (
+        <>
+          <h3 className="pf-vid-t">De plazas y otras ligas</h3>
+          <p className="pf-bajada">Las sumó {esYo ? 'vos' : 'él'}: entran solas si el título es una batalla con su nombre.{esYo ? ' Las tuyas se suman en Mi cuenta → Mi perfil.' : ''}</p>
+          <ul className="pf-vid">{vp.map((v) => <VideoPropio key={v[0]} v={v} k={k} esYo={esYo} dc={dc} />)}</ul>
+        </>
+      ) : null}
     </section>
   );
 }
@@ -746,7 +779,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
         <>
           <Numeros f={f} p={p} />
           {/* 🎬 arriba, debajo de sus números (Dlx, 12/10/2026: «que esto esté más arriba… debajo de sus números») */}
-          <div id="pf-videos"><Videos liga={liga} p={p} /></div>
+          <div id="pf-videos"><Videos liga={liga} p={p} k={k} esYo={esYo} dc={dc} /></div>
           <Datos liga={liga} p={p} e={P.e} />
           <Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} />
           <div className="pf-dos">

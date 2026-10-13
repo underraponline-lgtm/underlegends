@@ -1201,6 +1201,57 @@ const ok = (cond, que, det) => {
   ok(!A.intentoDeLlave('## 4️⃣ Cuartos 4️⃣\n** (< >) ⚔️ (< >)**\n** (< >) ⚔️ (< >)**\n## 🧨 Semifinal 🧨\n** (< >) ⚔️ (< >)**'),
     'la plantilla vacía tampoco: no tiene nombres');
   ok(A.CANAL_LOGS === '1504110449535483924', 'el canal de Logs es el de siempre (`avisar.CANAL`)');
+  // 🌲 EL BOSQUE DE ARTEMISA (12/10/2026): rondas en cheroqui; y la forma, aunque ningún título se lea
+  const bosque = '☁️ ─ **ᎾᏟᎢᎪᏙᎾᏚ** ─ ☁️\n❰ VERC ❱ <:VS8:1> ❰ ZIGNOS ❱\n❰ GUESS ❱ <:VS8:1> ❰ SCRITURA ❱\n' +
+    '🌩️ ─ **ᏟᏌᎪᎡᎢᎾᏚ** ─ 🌩️\n❰ ZIGNOS ❱ <:VS8:1> ❰ SCRITURA ❱';
+  ok(A.pareceLlave(bosque) && bats(bosque) === 3, 'las rondas en cheroqui se guardan y se leen', `batallas ${bats(bosque)}`);
+  ok(A.latino('ᎾᏟᎢᎪᏙᎾᏚ ᴄᴜᴀʀᴛᴏꜱ 🅵🅸🅽🅰🅻') === 'OCTAVOS CUARTOS FINAL', 'las letras parecidas, en latinas', A.latino('ᎾᏟᎢᎪᏙᎾᏚ ᴄᴜᴀʀᴛᴏꜱ 🅵🅸🅽🅰🅻'));
+}
+
+// ── 🎬 tus batallas en video, sobre el objeto (12/10/2026) ───────────────────────────────────────────────────────
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (!DatabaseSync) {
+    console.log('  ⓘ sin node:sqlite (Node ' + process.version + '): los videos no se prueban sobre el objeto');
+  } else {
+    console.log('\n🎬 tus batallas en video\n');
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [], rowsWritten: 0 }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: r.changes };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
+      { DISCORD_TOKEN: 'x', KV: { get: async () => null } });
+    await new Promise((r) => setTimeout(r, 5));
+    const pedir = async (url, quien = '700000000000000001', de = 'ana') =>
+      (await o.misVideos({ quien, de, accion: 'pedir', url })).json();
+    const r1 = await pedir('https://www.youtube.com/watch?v=kiyYaiFqTzw');
+    const r2 = await pedir('https://www.youtube.com/@FalconMusic33/videos');
+    const r3 = await pedir('https://example.com/video');
+    const r4 = await pedir('https://www.youtube.com/watch?v=kiyYaiFqTzw');
+    ok(r1.ok && r2.ok && r2.pedidos.length === 2 && r2.pedidos[0].tipo === 'canal' && r3.error === 'link' && r4.error === 'ya',
+      'un video y un canal entran a la cola; otro sitio no; el mismo dos veces no', JSON.stringify([r3, r4]));
+    for (const v of ['aaaaaaaaaaa', 'bbbbbbbbbbb', 'ccccccccccc']) await pedir('https://youtu.be/' + v);
+    ok((await pedir('https://youtu.be/ddddddddddd')).error === 'muchos', 'cinco por día, y no más');
+    ok((await (await o.videoReportar({ quien: '700000000000000002', de: 'bea', clave: 'ana', vid: 'kiyYaiFqTzw' })).json()).ok
+      && (await (await o.videoReportar({ quien: '700000000000000001', de: 'ana', clave: 'ana', vid: 'kiyYaiFqTzw' })).json()).error === 'tuyo',
+    'reportar el de otro sí; el tuyo no');
+    const c = o.videosCiclo();
+    ok(c.pedidos.length === 5 && c.reportes.kiyYaiFqTzw === 1, 'el ciclo recibe los cinco que esperan y el reporte');
+    o.videosEstados({ estados: { [c.pedidos[0].id]: ['ok', 'sumado a tu perfil'], [c.pedidos[1].id]: ['revisar', 'canal grande'] },
+      revisar: [[c.pedidos[1].id, 'Ana', 'Falcon', 'https://www.youtube.com/@FalconMusic33', 'canal grande']] });
+    ok(o.videosCiclo().pedidos.length === 3 && o.panelDueno().videos.length === 1, 'lo decidido sale de la cola; lo raro, al Dashboard');
+    o.duenoVideo({ id: c.pedidos[1].id, si: true });
+    ok(o.panelDueno().videos.length === 0 && o.videosCiclo().decididos[c.pedidos[1].id] === true,
+      'Dlx lo aprueba: sale del Dashboard y el ciclo lo recibe');
+  }
 }
 
 if (fallas) {
