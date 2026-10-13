@@ -37,23 +37,30 @@ async function ajustar(cual, valor) {
   const r = await fetch('/api/avisos/dueno/ajuste', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ cual, valor }) });
   const j = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(r.status === 401 ? 'la sesión venció: entrá de nuevo' : j.error || String(r.status));
-  return j.ajustes || {};
+  return { ajustes: j.ajustes || {}, hist: j.hist };
 }
 
 const avisoVigente = (aj) => (aj.aviso_web && Date.parse(aj.aviso_web.hasta) > Date.now() ? aj.aviso_web : null);
 
 function Cajas({ u }) {
   const s = u.semana || {}, a = u.anterior || {};
-  const antes = (x, y) => ((a.dias || 0) >= 7 && y != null ? (x >= y ? '+' : '') + num(x - y) + ' contra la anterior' : null);
+  // ▲▼ contra la semana anterior, con color (13/10/2026); sin una semana entera antes, lo que mide cada caja
+  const antes = (x, y) => ((a.dias || 0) >= 7 && y != null ? (x || 0) - y : null);
   const cajas = [
-    ['USARON EL BOT', s.bot, antes(s.bot, a.bot) || 'personas distintas'],
-    ['ENTRARON CON DISCORD', s.web, antes(s.web, a.web) || 'a la página, con su cuenta'],
-    ['EN TOTAL', s.personas, antes(s.personas, a.personas) || 'en el bot o en la página'],
+    ['USARON EL BOT', s.bot, antes(s.bot, a.bot) ?? 'personas distintas'],
+    ['ENTRARON CON DISCORD', s.web, antes(s.web, a.web) ?? 'a la página, con su cuenta'],
+    ['EN TOTAL', s.personas, antes(s.personas, a.personas) ?? 'en el bot o en la página'],
     // ⚠️ «VISITAS» SOLO NO DECÍA A QUÉ (Dlx, 07/10/2026: «visitas, pero visitas a qué?»): es cuántos celulares o
     // compus abrieron la página en el día —cada uno cuenta una vez, con o sin cuenta (`lg:visita` de App.jsx)—
-    ['ABRIERON LA PÁGINA', s.visitas_dia, antes(s.visitas_dia, a.visitas_dia) || 'celus o compus por día, en promedio'],
+    ['ABRIERON LA PÁGINA', s.visitas_dia, antes(s.visitas_dia, a.visitas_dia) ?? 'celus o compus por día, en promedio'],
   ];
-  return <div className="act-4">{cajas.map(([t, v, d]) => <div key={t}><span>{t}</span><b>{num(v || 0)}</b><small>{d}</small></div>)}</div>;
+  return (
+    <div className="act-4">{cajas.map(([t, v, d]) => (
+      <div key={t}><span>{t}</span><b>{num(v || 0)}</b>
+        {typeof d === 'number' ? <small className={d > 0 ? 'db-sube' : d < 0 ? 'db-baja' : ''}>{d > 0 ? '▲ ' : d < 0 ? '▼ ' : '= '}{num(Math.abs(d))} contra la semana anterior</small>
+          : <small>{d}</small>}</div>
+    ))}</div>
+  );
 }
 
 // día por día, las tres cosas en barras: el alto es contra el máximo de cada serie, así una no aplasta a las otras
@@ -480,7 +487,7 @@ function AjAviso({ liga, aj, hacer, ocup }) {
 // 🔊 Y CUÁNTO HABLA (05/10/2026): lo justo, normal o cada batalla (`NIVELES_CHAT` de avisos.js, que llega en `chat`).
 // También lo elige el admin con /settings; lo de acá gana.
 const NIVELES_VIVO = { poco: ['Lo justo'], normal: ['Normal'], todo: ['Cada batalla'] };
-function AjVivo({ liga, aj, hacer, ocup, chat }) {
+function AjVivo({ liga, aj, hacer, ocup, chat, general }) {
   const c = chat || {};
   const dash = aj.en_vivo || {};
   const dashNivel = aj.en_vivo_nivel || {};
@@ -506,7 +513,7 @@ function AjVivo({ liga, aj, hacer, ocup, chat }) {
     <div className="db-aj">
       <div className="db-aj-c"><h3>El bot en vivo</h3><span className={'db-est' + (svs.some(prendido) ? ' ok' : '')}>{svs.filter(prendido).length} prendido(s)</span></div>
       <p className="db-tx">Durante un evento cuenta en el chat cómo va, y cuánto habla se elige: <b>lo justo</b> (el arranque y el campeón), <b>normal</b> (además quién pasa cada ronda y la final, como mucho un mensaje cada 10 minutos) o <b>cada batalla</b> (quién gana cada una apenas se sabe, como mucho uno cada 2 minutos). No menciona a nadie. Lo prende el admin de cada servidor con /settings; desde acá lo prendés en el chat general, lo apagás o le cambiás cuánto habla aunque su admin haya elegido otra cosa.</p>
-      {svs.length ? (
+      {general ? <p className="db-tx">Si habla y cuánto, servidor por servidor, en su tarjeta de arriba.</p> : svs.length ? (
         <div className="db-mult db-mult-vivo">{svs.map((sv) => (
           <label key={sv} className="db-sv db-sv-vivo" title={estado(sv)}>
             <span><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b></span>
@@ -540,7 +547,7 @@ const NIVELES_AVISO = {
 // 🎛️ Y DÓNDE VA (07/10/2026): ya no a LIGA GLOBAL —que está en «registros»— sino al chat de cada servidor; servidor por
 // servidor se elige si va donde habla el bot en vivo, a su chat general siempre o a ningún lado, y a dónde va el que no
 // tiene a dónde (ver `canalesChat()` en bot/avisos.js)
-function AjAvisos({ liga, aj, hacer, ocup, chat }) {
+function AjAvisos({ liga, aj, hacer, ocup, chat, general }) {
   const v = NIVELES_AVISO[aj.avisos_nivel] ? aj.avisos_nivel : 'normal';
   const ae = aj.aviso_evento || {};
   const porSv = ae.sv || {};
@@ -551,16 +558,13 @@ function AjAvisos({ liga, aj, hacer, ocup, chat }) {
     <div className="db-aj">
       <div className="db-aj-c"><h3>El aviso de cada evento</h3><span className="db-est ok">{NIVELES_AVISO[v][0]}</span></div>
       <p className="db-tx">Cuando el ciclo carga un evento, el bot lo cuenta en el chat del servidor donde se jugó: el mismo donde habla el bot en vivo. Después, sin volver a sonar, le suma lo que cambió y la tarjeta nueva del campeón. Cuánto dice: <b>{NIVELES_AVISO[v][0].toLowerCase()}</b>, {NIVELES_AVISO[v][1]}.</p>
-      <div className="db-mult">
-        <label className="db-sv">
-          <span><b>Cuánto dice</b></span>
-          <select value={v} disabled={ocup} aria-label="Cuánto dice el aviso de cada evento"
-            onChange={(e) => hacer('avisos_nivel', e.target.value, 'Guardado: vale desde el próximo evento.')}>
-            {Object.keys(NIVELES_AVISO).map((k) => <option key={k} value={k}>{NIVELES_AVISO[k][0]}</option>)}
-          </select>
-        </label>
-      </div>
-      {svs.length ? (
+      <label className="db-campo"><span>Cuánto dice</span>
+        <select value={v} disabled={ocup} aria-label="Cuánto dice el aviso de cada evento"
+          onChange={(e) => hacer('avisos_nivel', e.target.value, 'Guardado: vale desde el próximo evento.')}>
+          {Object.keys(NIVELES_AVISO).map((k) => <option key={k} value={k}>{NIVELES_AVISO[k][0]}</option>)}
+        </select></label>
+      {general ? <p className="db-tx">Dónde va el de cada servidor, en su tarjeta de arriba.</p> : null}
+      {!general && svs.length ? (
         <div className="db-mult db-mult-vivo">{svs.map((sv) => (
           <label key={sv} className="db-sv">
             <span><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b></span>
@@ -600,7 +604,7 @@ const DEF_AP = { montos: [50, 100, 250, 500], minutos: 3, tope: 500 };
 const DEF_RIT = { normal: 10, batalla: 2 };
 
 // 🎲 las apuestas: los botones, cuánto quedan abiertas, el tope por batalla, dónde van en cualquier nivel y dónde no van
-function AjApuestas({ liga, aj, hacer, ocup, chat }) {
+function AjApuestas({ liga, aj, hacer, ocup, chat, general }) {
   const def = ((chat || {}).def || {}).apuestas || DEF_AP;
   const a = aj.apuestas || null;
   const firma = JSON.stringify(a);
@@ -639,7 +643,7 @@ function AjApuestas({ liga, aj, hacer, ocup, chat }) {
           <label className="db-campo db-corto"><span>Tope por batalla</span>
             <input type="number" min={10} max={20000} step={10} value={tope} onChange={(e) => setTope(e.target.value)} /></label>
         </div>
-        {svs.length ? (
+        {!general && svs.length ? (
           <fieldset className="db-chk"><legend>Prendidas en <small>(en cualquier nivel)</small></legend>
             {svs.map((sv) => (
               <label key={sv}><input type="checkbox" checked={!!dentro[sv]} disabled={!!fuera[sv]} onChange={(e) => {
@@ -650,7 +654,7 @@ function AjApuestas({ liga, aj, hacer, ocup, chat }) {
             ))}
           </fieldset>
         ) : null}
-        {svs.length ? (
+        {!general && svs.length ? (
           <fieldset className="db-chk"><legend>No hay apuestas en</legend>
             {svs.map((sv) => (
               <label key={sv}><input type="checkbox" checked={!!fuera[sv]} onChange={(e) => {
@@ -738,10 +742,19 @@ function AjRitmo({ aj, hacer, ocup, chat }) {
 }
 
 
-function Ajustes({ liga, aj, onAj, chat }) {
+// ── 🧭 EL DASHBOARD, ORDENADO (13/10/2026, Dlx a las ideas: «me gustan todas»). Eran catorce bloques uno abajo del
+// otro; ahora cuatro pestañas —Hoy, Ajustes, Números, Sistema—, la de Hoy con lo que pide atención; los ajustes de cada
+// servidor juntos en su tarjeta; las flechas contra la semana anterior; y el historial de cambios con «Deshacer».
+// La pestaña elegida se recuerda en este navegador (`lg:db-tab`)
+const PESTANAS = [['hoy', 'Hoy'], ['ajustes', 'Ajustes'], ['numeros', 'Números'], ['sistema', 'Sistema']];
+const TAB = 'lg:db-tab';
+const leerTab = () => { try { const t = localStorage.getItem(TAB); return PESTANAS.some(([k]) => k === t) ? t : 'hoy'; } catch (e) { return 'hoy'; } };
+const ponerTab = (t) => { try { localStorage.setItem(TAB, t); } catch (e) { /* sin almacenamiento */ } };
+
+// el `hacer` de los ajustes: guarda, avisa y dice si salió. Lo comparten los ajustes y el historial
+function useHacer(onAj) {
   const [msg, setMsg] = useState('');
   const [ocup, setOcup] = useState(false);
-  // devuelve si salió, así el formulario sabe si vaciarse
   const hacer = async (cual, valor, ok) => {
     setOcup(true); setMsg('');
     let bien = false;
@@ -749,19 +762,164 @@ function Ajustes({ liga, aj, onAj, chat }) {
     setOcup(false);
     return bien;
   };
+  return { hacer, msg, ocup };
+}
+
+// 🔔 lo que pide atención: lo mismo que marca el panel del Inicio, y la última corrida del ciclo si salió mal
+function atencion(d, liga, q) {
+  const aj = d.ajustes || {};
+  const m = liga.d.mult || {};
+  const ult = (d.corridas || [])[0];
+  const av = avisoVigente(aj);
+  return [
+    aj.campana_pausada ? ['⏸', 'La campana está en pausa', 'No sale ningún aviso de evento hasta que la reanudes (Ajustes).'] : null,
+    av ? ['📣', 'Hay un aviso publicado en la página', av.texto] : null,
+    aj.multiplicadores && aj.multiplicadores.semana === m.id ? ['✍', 'El multiplicador de esta semana va a mano', 'No es el del sorteo.'] : null,
+    d.sistema && d.sistema.ok === false ? ['⚠️', 'El vigía no contesta', 'Los avisos al minuto y el bot en vivo pueden estar quietos.'] : null,
+    ult && ult.estado === 'completed' && ult.fin && ult.fin !== 'success' && ult.fin !== 'skipped'
+      ? ['⚠️', 'La última corrida del ciclo ' + String(FIN_CORRIDA[ult.fin] || ult.fin).replace(/^\S+\s/, ''), 'Mirá Sistema.'] : null,
+    ...cuotasEnRojo(q).map(([, , t]) => ['⚠️', t + ' casi llenas hoy', 'Se renuevan a las 8 PM ET.']),
+  ].filter(Boolean);
+}
+function Atencion({ xs }) {
+  if (!xs.length) return <p className="db-ok">✅ Todo en orden: nada pide tu atención ahora.</p>;
+  return <ul className="db-at">{xs.map(([ic, t, s]) => <li key={t}><span aria-hidden="true">{ic}</span><div><b>{t}</b>{s ? <small>{s}</small> : null}</div></li>)}</ul>;
+}
+
+// ── 🏟️ AJUSTES POR SERVIDOR: todo lo de cada uno en su tarjeta —el bot en vivo y cuánto habla, las apuestas, el aviso de
+// cada evento y el multiplicador de la semana— en vez de que cada ajuste repita la lista de servidores. Cada selector
+// guarda con el mismo `ajustar()` y el mismo valor entero que guardaban las cajas de antes
+function AjServidores({ liga, aj, hacer, ocup, chat }) {
+  const c = chat || {};
+  const svs = svsDe(chat, aj);
+  if (!svs.length) return <p className="db-tx">Todavía no sé el chat general de ningún servidor: el vigía lo busca en su próxima vuelta.</p>;
+  const dash = aj.en_vivo || {}, dashNivel = aj.en_vivo_nivel || {};
+  const niveles = c.niveles || NIVELES_VIVO;
+  const admin = c.admin || {};
+  const nivelAdmin = (sv) => (c.nivel || {})[sv] || 'normal';
+  const prendido = (sv) => dash[sv] !== false && (!!admin[sv] || dash[sv] === true);
+  const defAp = (c.def || {}).apuestas || DEF_AP;
+  const ap = aj.apuestas || null;
+  const apBase = { montos: (ap || defAp).montos, minutos: (ap || defAp).minutos, tope: (ap || defAp).tope,
+    apagadas: (ap && ap.apagadas) || {}, prendidas: (ap && ap.prendidas) || {} };
+  const apDe = (sv) => (apBase.apagadas[sv] ? 'no' : apBase.prendidas[sv] ? 'si' : '');
+  const ae = aj.aviso_evento || {};
+  const porSv = ae.sv || {};
+  const m = liga.d.mult || {};
+  const base = m.sv || {};
+  const man = aj.multiplicadores && aj.multiplicadores.semana === m.id ? aj.multiplicadores.sv || {} : null;
+  const ref = Object.assign({}, base, man || {});
+  const YA = 'Guardado: vale desde el próximo minuto.';
+  const cambiar = (cual, obj, sv, v) => { const n = Object.assign({}, obj); if (v === '') delete n[sv]; else n[sv] = v; return hacer(cual, n, YA); };
+  const cambiarAp = (sv, v) => {
+    const ag = Object.assign({}, apBase.apagadas), pr = Object.assign({}, apBase.prendidas);
+    delete ag[sv]; delete pr[sv];
+    if (v === 'no') ag[sv] = true; else if (v === 'si') pr[sv] = true;
+    return hacer('apuestas', Object.assign({}, apBase, { apagadas: ag, prendidas: pr }), 'Guardado: vale para la próxima apuesta.');
+  };
+  const cambiarAviso = (sv, v) => {
+    const n = Object.assign({}, porSv);
+    if (v) n[sv] = v; else delete n[sv];
+    return hacer('aviso_evento', { sv: n, resto: ae.resto || '' }, 'Guardado: vale desde el próximo evento.');
+  };
+  const cambiarMult = (sv, x) => hacer('multiplicadores', { semana: m.id, sv: Object.assign({}, ref, { [sv]: x }) },
+    'Guardado. Entra en la próxima corrida del ciclo.');
   return (
     <>
+      {m.id ? (
+        <div className="db-svs-c">
+          <span className={'db-est' + (man ? ' ojo' : '')}>{man ? '✍ El multiplicador de esta semana va a mano' : 'El multiplicador de esta semana es el del sorteo'}</span>
+          {man ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Tocá de nuevo para volver al sorteo"
+            onClick={() => hacer('multiplicadores', null, 'Vuelve el sorteo en la próxima corrida del ciclo.')}>Volver al sorteo</DosToques> : null}
+        </div>
+      ) : null}
+      <div className="db-svs">{svs.map((sv) => {
+        const ops = base[sv] == null ? [] : FACTORES.indexOf(ref[sv]) < 0 ? [...FACTORES, ref[sv]].sort((a, b) => a - b) : FACTORES;
+        return (
+          <section key={sv} className="db-svc" aria-label={'Ajustes de ' + siglaDe(sv)}>
+            <header><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b>
+              <span className={'db-est' + (prendido(sv) ? ' ok' : '')}>{prendido(sv) ? '● bot en vivo' : 'bot apagado'}</span></header>
+            <label><span>Bot en vivo</span>
+              <select value={dash[sv] === true ? 'si' : dash[sv] === false ? 'no' : ''} disabled={ocup}
+                onChange={(e) => cambiar('en_vivo', dash, sv, e.target.value === '' ? '' : e.target.value === 'si')}>
+                <option value="">{admin[sv] ? 'Lo que eligió su admin: prendido' : 'Lo que eligió su admin: apagado'}</option>
+                <option value="si">Prendido, en su chat general</option>
+                <option value="no">Apagado</option>
+              </select></label>
+            <label><span>Cuánto habla</span>
+              <select value={niveles[dashNivel[sv]] ? dashNivel[sv] : ''} disabled={ocup || !prendido(sv)}
+                onChange={(e) => cambiar('en_vivo_nivel', dashNivel, sv, e.target.value)}>
+                <option value="">{'Lo que eligió su admin: ' + ((niveles[nivelAdmin(sv)] || ['normal'])[0]).toLowerCase()}</option>
+                {Object.keys(niveles).map((k) => <option key={k} value={k}>{niveles[k][0]}</option>)}
+              </select></label>
+            <label><span>Apuestas</span>
+              <select value={apDe(sv)} disabled={ocup} onChange={(e) => cambiarAp(sv, e.target.value)}>
+                <option value="">Como siempre: sólo en «A full»</option>
+                <option value="si">Prendidas, en cualquier nivel</option>
+                <option value="no">Apagadas</option>
+              </select></label>
+            <label><span>Aviso de cada evento</span>
+              <select value={porSv[sv] || ''} disabled={ocup} onChange={(e) => cambiarAviso(sv, e.target.value)}>
+                <option value="">Donde habla el bot en vivo</option>
+                <option value="chat">En su chat general, siempre</option>
+                <option value="no">Apagado</option>
+              </select></label>
+            {ops.length ? (
+              <label><span>Multiplicador de la semana</span>
+                <select value={String(ref[sv])} disabled={ocup} onChange={(e) => cambiarMult(sv, Number(e.target.value))}>
+                  {ops.map((x) => <option key={x} value={String(x)}>{mult(x)}</option>)}
+                </select></label>
+            ) : null}
+          </section>
+        );
+      })}</div>
+    </>
+  );
+}
+
+// ── 🕓 LOS ÚLTIMOS CAMBIOS, CON «DESHACER» (13/10/2026): lo anota el objeto en cada ajuste (`ajuste()` en avisos.js), con
+// lo que había antes. «Deshacer» sólo en el último cambio de cada ajuste: deshacer uno más viejo pisaría los de después
+const NOMBRE_AJ = { campana_pausada: 'La campana', multiplicadores: 'El multiplicador de la semana', aviso_web: 'El aviso en la página',
+  en_vivo: 'El bot en vivo', en_vivo_nivel: 'Cuánto habla el bot en vivo', ritmo: 'El ritmo del bot en vivo', silencio: 'El horario de silencio',
+  apuestas: 'Las apuestas', aviso_evento: 'Dónde va el aviso de cada evento', avisos_nivel: 'Cuánto dice el aviso de cada evento' };
+function Historial({ hist, hacer, ocup }) {
+  const xs = (hist || []).slice(0, 15);
+  if (!xs.length) return <p className="db-tx">Todavía no hay cambios anotados: el historial empezó el 13/10/2026.</p>;
+  const ultimo = new Set();
+  return (
+    <ul className="db-hist">{xs.map((x) => {
+      const puede = !ultimo.has(x.cual);
+      ultimo.add(x.cual);
+      return (
+        <li key={x.t + x.cual}>
+          <div><b>{NOMBRE_AJ[x.cual] || x.cual}</b>
+            <small>{hace(x.t)} · {x.despues === null ? 'volvió a lo de siempre' : x.antes === null ? 'pasó a tu gusto' : 'cambió'}</small></div>
+          {puede ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Tocá de nuevo: vuelve a como estaba"
+            onClick={() => hacer(x.cual, x.antes, 'Deshecho: volvió a como estaba.')}>Deshacer</DosToques> : null}
+        </li>
+      );
+    })}</ul>
+  );
+}
+
+function Ajustes({ liga, aj, chat, hist, hacer, msg, ocup }) {
+  return (
+    <>
+      <h2 className="db-h">Cada servidor</h2>
+      <AjServidores liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} />
+      {msg ? <p className="db-msg" role="status">{msg}</p> : null}
+      <h2 className="db-h">Para todos</h2>
       <div className="db-ajs">
         <AjCampana aj={aj} hacer={hacer} ocup={ocup} />
-        <AjMult liga={liga} aj={aj} hacer={hacer} ocup={ocup} />
         <AjAviso liga={liga} aj={aj} hacer={hacer} ocup={ocup} />
-        <AjVivo liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} />
+        <AjVivo liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} general />
         <AjRitmo aj={aj} hacer={hacer} ocup={ocup} chat={chat} />
         <AjSilencio aj={aj} hacer={hacer} ocup={ocup} />
-        <AjApuestas liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} />
-        <AjAvisos liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} />
+        <AjApuestas liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} general />
+        <AjAvisos liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} general />
       </div>
-      {msg ? <p className="db-msg" role="status">{msg}</p> : null}
+      <h2 className="db-h">Los últimos cambios</h2>
+      <Historial hist={hist} hacer={hacer} ocup={ocup} />
     </>
   );
 }
@@ -833,7 +991,11 @@ export function Dashboard({ dc, liga }) {
   useEffect(() => { W.scrollTo && W.scrollTo(0, 0); }, []);
   const cuotas = useCuotas(!!st.d);
   const retencion = useRetencion(!!st.d);
-  const onAj = (aj) => setSt((s) => (s.d ? { d: Object.assign({}, s.d, { ajustes: aj }) } : s));
+  // `ajustar()` devuelve los ajustes y el historial (ver `ajuste()` en avisos.js)
+  const onAj = (r) => setSt((x) => (x.d ? { d: Object.assign({}, x.d, { ajustes: r.ajustes }, r.hist ? { ajustes_hist: r.hist } : {}) } : x));
+  const { hacer, msg, ocup } = useHacer(onAj);
+  const [tab, setTab] = useState(leerTab);
+  const elegir = (t) => { setTab(t); ponerTab(t); };
   let cuerpo;
   if (st.cargando) cuerpo = <p className="pronto-p">Cargando…</p>;
   else if (st.sinCuenta) {
@@ -844,72 +1006,42 @@ export function Dashboard({ dc, liga }) {
   else {
     const d = st.d || {};
     const u = d.uso || {};
+    const at = atencion(d, liga, cuotas);
+    const sec = (titulo, em, hijo) => <section className="act"><div className="mis-cab"><span>{titulo}</span>{em ? <em>{em}</em> : null}</div>{hijo}</section>;
     cuerpo = (
       <>
-        {(d.vivo || []).length ? (
-          <section className="act">
-            <div className="mis-cab"><span>EN VIVO AHORA</span><em>se actualiza al abrir el Dashboard</em></div>
-            <EnVivo vivo={d.vivo} liga={liga} aj={d.ajustes || {}} chat={d.chat} />
-          </section>
-        ) : null}
-        <section className="act">
-          <div className="mis-cab"><span>CONFIGURACIÓN · SÓLO VOS</span></div>
-          <Ajustes liga={liga} aj={d.ajustes || {}} onAj={onAj} chat={d.chat} />
-        </section>
-        <section className="act">
-          <div className="mis-cab"><span>EL BOT Y LA PÁGINA · 7 DÍAS</span>{u.desde ? <em>se cuenta desde el {corto(u.desde)}</em> : null}</div>
-          <Cajas u={u} />
-        </section>
-        {(d.dias || []).length ? (
-          <section className="act">
-            <div className="mis-cab"><span>DÍA POR DÍA · DOS SEMANAS</span></div>
-            <Dias dias={d.dias} />
-          </section>
-        ) : null}
-        {d.tutorial && Object.keys(d.tutorial.n || {}).length ? (
-          <section className="act">
-            <div className="mis-cab"><span>EL TUTORIAL · DOS SEMANAS</span>{d.tutorial.desde ? <em>se cuenta desde el {corto(d.tutorial.desde)}</em> : null}</div>
-            <TutorialNumeros t={d.tutorial} />
-          </section>
-        ) : null}
-        {d.secciones && Object.keys(d.secciones.n || {}).length ? (
-          <section className="act">
-            <div className="mis-cab"><span>QUÉ SECCIONES SE ABREN · 7 DÍAS</span>{d.secciones.desde ? <em>se cuenta desde el {corto(d.secciones.desde)}</em> : null}</div>
-            <SeccionesNumeros s={d.secciones} />
-          </section>
-        ) : null}
-        {d.secciones && Object.keys(d.secciones.n || {}).some((k) => /^[ip]-/.test(k)) ? (
-          <section className="act">
-            <div className="mis-cab"><span>QUÉ SE TOCA EN EL INICIO · 7 DÍAS</span></div>
-            <SeccionesNumeros s={d.secciones} toques />
-          </section>
-        ) : null}
-        <section className="act">
-          <div className="mis-cab"><span>¿EL LOBBY HACE VOLVER A LA GENTE?</span><em>la meta del research</em></div>
-          <MetaLobby r={retencion} />
-        </section>
-        {d.pase ? (
-          <section className="act">
-            <div className="mis-cab"><span>EL PASE DE RAPERO</span>{d.pase.semana ? <em>la semana del {corto(d.pase.semana)}</em> : null}</div>
-            <PaseNumeros p={d.pase} liga={liga} />
-          </section>
-        ) : null}
-        <section className="act">
-          <div className="mis-cab"><span>LO QUE TE LLEGÓ</span></div>
-          <Llego d={d} />
-        </section>
-        <section className="act">
-          <div className="mis-cab"><span>LO QUE GASTA CLOUDFLARE HOY</span><em>el plan gratis</em></div>
-          <Cuotas q={cuotas} />
-        </section>
-        <section className="act">
-          <div className="mis-cab"><span>CÓMO ANDA TODO</span></div>
-          <Corridas corridas={d.corridas} s={d.sistema || {}} github={d.github} />
-          <Sistema s={d.sistema || {}} sesiones={d.sesiones} />
-          <ul className="db-atajos">{ATAJOS.map(([t, h]) => (
+        <nav className="db-tabs" role="tablist" aria-label="El Dashboard">{PESTANAS.map(([k, n]) => (
+          <button key={k} type="button" role="tab" aria-selected={tab === k} className={'db-tab' + (tab === k ? ' on' : '')} onClick={() => elegir(k)}>
+            {n}{k === 'hoy' && at.length ? <i aria-label={at.length === 1 ? 'una cosa' : at.length + ' cosas'}>{at.length}</i> : null}
+          </button>
+        ))}</nav>
+        {tab === 'hoy' ? <>
+          {sec('LO QUE PIDE ATENCIÓN', null, <Atencion xs={at} />)}
+          {(d.vivo || []).length ? sec('EN VIVO AHORA', 'se actualiza al abrir el Dashboard',
+            <EnVivo vivo={d.vivo} liga={liga} aj={d.ajustes || {}} chat={d.chat} />) : null}
+          {sec('LO QUE TE LLEGÓ', null, <Llego d={d} />)}
+          {sec('ATAJOS', null, <ul className="db-atajos">{ATAJOS.map(([t, h]) => (
             <li key={h}><a href={h} target={h[0] === '/' ? undefined : '_blank'} rel={h[0] === '/' ? undefined : 'noopener noreferrer'}>{t} ↗</a></li>
-          ))}</ul>
-        </section>
+          ))}</ul>)}
+        </> : null}
+        {tab === 'ajustes' ? sec('CONFIGURACIÓN · SÓLO VOS', null,
+          <Ajustes liga={liga} aj={d.ajustes || {}} chat={d.chat} hist={d.ajustes_hist} hacer={hacer} msg={msg} ocup={ocup} />) : null}
+        {tab === 'numeros' ? <>
+          {sec('EL BOT Y LA PÁGINA · 7 DÍAS', u.desde ? 'se cuenta desde el ' + corto(u.desde) : null, <Cajas u={u} />)}
+          {(d.dias || []).length ? sec('DÍA POR DÍA · DOS SEMANAS', null, <Dias dias={d.dias} />) : null}
+          {d.tutorial && Object.keys(d.tutorial.n || {}).length ? sec('EL TUTORIAL · DOS SEMANAS',
+            d.tutorial.desde ? 'se cuenta desde el ' + corto(d.tutorial.desde) : null, <TutorialNumeros t={d.tutorial} />) : null}
+          {d.secciones && Object.keys(d.secciones.n || {}).length ? sec('QUÉ SECCIONES SE ABREN · 7 DÍAS',
+            d.secciones.desde ? 'se cuenta desde el ' + corto(d.secciones.desde) : null, <SeccionesNumeros s={d.secciones} />) : null}
+          {d.secciones && Object.keys(d.secciones.n || {}).some((k) => /^[ip]-/.test(k)) ? sec('QUÉ SE TOCA EN EL INICIO · 7 DÍAS', null,
+            <SeccionesNumeros s={d.secciones} toques />) : null}
+          {sec('¿EL LOBBY HACE VOLVER A LA GENTE?', 'la meta del research', <MetaLobby r={retencion} />)}
+          {d.pase ? sec('EL PASE DE RAPERO', d.pase.semana ? 'la semana del ' + corto(d.pase.semana) : null, <PaseNumeros p={d.pase} liga={liga} />) : null}
+        </> : null}
+        {tab === 'sistema' ? <>
+          {sec('LO QUE GASTA CLOUDFLARE HOY', 'el plan gratis', <Cuotas q={cuotas} />)}
+          {sec('CÓMO ANDA TODO', null, <><Corridas corridas={d.corridas} s={d.sistema || {}} github={d.github} /><Sistema s={d.sistema || {}} sesiones={d.sesiones} /></>)}
+        </> : null}
       </>
     );
   }

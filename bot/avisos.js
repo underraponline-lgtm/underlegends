@@ -8214,11 +8214,22 @@ export class Avisos {
   /** ⚙️ Uno, ya validado por la ruta. `null` lo saca */
   ajuste(d) {
     const a = this.ajustes();
+    // 🕓 EL HISTORIAL (13/10/2026, Dlx a las ideas del Dashboard: «me gustan todas»): qué había antes de cada cambio, así
+    // «Deshacer» lo vuelve a poner por el MISMO camino validado (`/avisos/dueno/ajuste`). Los 30 últimos; lo que no
+    // cambió nada no se anota
+    const antes = Object.prototype.hasOwnProperty.call(a, d.cual) ? a[d.cual] : null;
+    const despues = d.valor === null || d.valor === undefined ? null : d.valor;
+    if (JSON.stringify(antes) !== JSON.stringify(despues)) {
+      const h = this.leer('ajustes_hist') || [];
+      h.unshift({ cual: d.cual, antes, despues, t: Date.now() });
+      this.guardar('ajustes_hist', h.slice(0, 30));
+    }
     if (d.valor === null || d.valor === undefined) delete a[d.cual];
     else a[d.cual] = d.valor;
     a._t = Date.now();
     this.guardar('ajustes_dueno', a);
-    return { ok: true, ajustes: a };
+    // y el historial, así el Dashboard lo muestra al toque, sin volver a pedir todo
+    return { ok: true, ajustes: a, hist: this.leer('ajustes_hist') || [] };
   }
 
   /** 📣 El aviso de la página, si sigue vigente: `{texto, hasta}` o `null` */
@@ -8252,6 +8263,8 @@ export class Avisos {
       tutorial: this.tutorialResumen(),
       secciones: this.seccionesResumen(),
       ajustes: this.ajustes(),
+      // 🕓 los últimos cambios de ajustes, con lo que había antes (ver `ajuste()`)
+      ajustes_hist: this.leer('ajustes_hist') || [],
       // 🎤 el bot en vivo: el chat general de cada servidor, lo que pasó la última vez, y (lo llena la ruta) dónde lo
       // prendió cada admin
       chat: { generales: ((this.leer('canales') || {}).generales || []).map((x) => ({ sv: x.sv, g: x.g })),

@@ -129,3 +129,40 @@
 .db-tabla th{text-align:left;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris);padding:4px 8px 6px 0}
 .db-tabla td{padding:6px 8px 6px 0;border-top:1px solid var(--suave);white-space:nowrap}
 
+/* 🧭 el Dashboard en pestañas, los ajustes por servidor, lo que pide atención y el historial (13/10/2026) */
+.db-tabs{display:flex;gap:6px;margin-top:14px;overflow-x:auto;scrollbar-width:thin;border-bottom:2px solid var(--linea)}
+.db-tab{position:relative;flex:none;padding:10px 16px;border:2px solid transparent;border-bottom:0;background:none;color:var(--gris);
+  font:900 15px/1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.02em;cursor:pointer}
+.db-tab.on{color:var(--tinta);border-color:var(--linea);background:var(--fondo);margin-bottom:-2px}
+.db-tab i{display:inline-grid;place-items:center;min-width:20px;height:20px;margin-left:8px;padding:0 5px;border-radius:10px;
+  background:var(--magenta);color:#fff;font:700 13px/1 "Barlow Condensed",sans-serif;font-style:normal}
+.db-h{margin:16px 0 8px;font:900 16px/1.1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+.db-svs-c{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-bottom:10px}
+.db-svs{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.db-svc{display:grid;gap:8px;align-content:start;padding:12px;border:2px solid var(--linea);background:var(--caja)}
+.db-svc header{display:flex;align-items:center;gap:8px;padding-bottom:6px;border-bottom:1px solid var(--suave)}
+.db-svc header img{width:26px;height:26px;object-fit:contain}
+.db-svc header b{font:900 16px/1 Archivo,sans-serif}
+.db-svc header .db-est{margin-left:auto}
+.db-svc label{display:grid;gap:4px}
+.db-svc label span{font:700 13px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+.db-svc select{width:100%;min-width:0}
+.db-at{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.db-at li{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:2px solid var(--magenta-tx)}
+.db-at li>span{font-size:18px;line-height:1.2}
+.db-at b{display:block;font:800 15px/1.2 Archivo,sans-serif}
+.db-at small{display:block;margin-top:2px;color:var(--gris)}
+.db-ok{margin:0;padding:10px 12px;border:2px solid var(--verde);font-weight:700}
+.db-hist{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid var(--suave)}
+.db-hist li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--suave)}
+.db-hist b{display:block;font:800 14px/1.2 Archivo,sans-serif}
+.db-hist small{color:var(--gris)}
+.db-sube{color:var(--verde) !important;font-weight:700}
+.db-baja{color:var(--magenta-tx) !important;font-weight:700}
+/* el aire de adentro de cada caja, como el de .db-aj; y las cuatro pestañas entran en el celular */
+.db-h{margin:18px 14px 8px}
+.db-svs-c{margin:0 14px 10px}
+.db-svs{margin:0 14px 4px}
+.db-hist{margin:0 14px 14px}
+.db-at,.db-ok{margin:12px}
+@media (max-width:560px){.db-tabs{gap:2px}.db-tab{padding:10px 9px;font-size:13.5px}.db-tab i{margin-left:4px}}
