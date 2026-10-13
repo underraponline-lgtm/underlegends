@@ -289,6 +289,16 @@ const ok = (cond, que, det) => {
       && /5 minutos/.test(A.lineaApuesta('abierta', c)) && /de 20 a 300/.test(A.lineaApuesta('abierta', c))
       && /3 minutos/.test(A.lineaApuesta('abierta', c0)),
     'sin ajuste vale lo de siempre, y con ajuste los botones y el texto lo dicen', A.lineaApuesta('abierta', c));
+    // 🎲 prendidas a mano en cualquier nivel (13/10/2026, Dlx: «sin la necesidad de que el bot esté en full o con datos»)
+    const ap2 = A.ajusteValido('apuestas', { montos: [50, 100], minutos: 3, tope: 500, apagadas: { DDF: true }, prendidas: { URBF: true } });
+    const c2 = A.apuestasCfg({ apuestas: ap2 });
+    ok(ap2 && ap2.prendidas.URBF === true
+      && A.ajusteValido('apuestas', { montos: [50, 100], minutos: 3, tope: 500, prendidas: { URBF: 'si' } }) === undefined
+      && A.hayApuestas('URBF', 'normal', c2, {}) && A.hayApuestas('URBF', 'poco', c2, null)
+      && !A.hayApuestas('FFA', 'normal', c2, {}) && A.hayApuestas('FFA', 'todo', c2, { apuestas: true })
+      && A.hayApuestas('FFA', 'full', c2, {}) && A.hayApuestas('FFA', 'full', c0, {})
+      && !A.hayApuestas('DDF', 'full', c2, { apuestas: true }) && !A.hayApuestas('DDF', 'normal', c2, {}),
+    'las apuestas: «No hay apuestas en» gana; prendidas a mano (Dashboard o /settings) van en cualquier nivel; si no, sólo «A full»');
     ok(A.ajusteValido('aviso_evento', { sv: { DRA: 'chat', FFA: 'no' }, resto: 'DRA' }).sv.FFA === 'no'
       && A.ajusteValido('aviso_evento', { sv: { DRA: 'siempre' } }) === undefined,
     'el aviso de cada evento: por servidor «chat» o «no», y a dónde va el que no tiene');

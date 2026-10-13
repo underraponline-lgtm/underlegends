@@ -722,7 +722,7 @@ export const AP_CIERRA = 3 * MIN;
 // 🎛️ MÁS AJUSTES DEL DASHBOARD (Dlx, 07/10/2026: «dame más configuraciones», y a la lista: «Apuestas», «Aviso de cada
 // evento», «Horario de silencio»). Sin ajuste vale lo de siempre: los de arriba, `CHAT_ENTRE` y `CHAT_ENTRE_TODO`
 
-/** Las apuestas como las dejó Dlx: `{montos, cierra (ms), tope, apagadas: {SV: true}}` */
+/** Las apuestas como las dejó Dlx: `{montos, cierra (ms), tope, apagadas: {SV: true}, prendidas: {SV: true}}` */
 export function apuestasCfg(aj) {
   const a = (aj && aj.apuestas) || {};
   return {
@@ -730,7 +730,21 @@ export function apuestasCfg(aj) {
     cierra: (Number(a.minutos) || AP_CIERRA / MIN) * MIN,
     tope: Number(a.tope) || AP_TOPE,
     apagadas: (a.apagadas && typeof a.apagadas === 'object') ? a.apagadas : {},
+    prendidas: (a.prendidas && typeof a.prendidas === 'object') ? a.prendidas : {},
   };
+}
+
+/**
+ * 🎲 ¿HAY APUESTAS EN ESE SERVIDOR? Dlx, 13/10/2026: «que se pueda apostar sin la necesidad de que el bot esté en full o
+ * con datos, pero que se requiera manualmente encenderlo desde el dashboard o desde settings». En orden: «No hay
+ * apuestas en» del Dashboard gana siempre; después, PRENDIDAS A MANO —Dlx en el Dashboard (`prendidas`) o el admin del
+ * servidor con /settings (`apuestas` en `cfg:<guild>`)—, en cualquier nivel; y si no, como hasta hoy: sólo «A full».
+ * Con el bot en vivo apagado en ese servidor no hay chat donde ponerlas, así que tampoco hay apuestas.
+ */
+export function hayApuestas(sv, nivel, apc, cfg) {
+  if (apc.apagadas[sv]) return false;
+  if (apc.prendidas[sv] || (cfg && cfg.apuestas === true)) return true;
+  return nivel === 'full';
 }
 
 /** Cada cuánto puede hablar el bot en vivo en un canal, en ms: `normal` (y lo justo) y `batalla` (cada batalla y más) */
@@ -2559,12 +2573,17 @@ export function ajusteValido(cual, valor) {
     const minutos = Number(valor.minutos), tope = Number(valor.tope);
     if (!Number.isInteger(minutos) || minutos < 1 || minutos > 15) return undefined;
     if (!Number.isInteger(tope) || tope < montos[montos.length - 1] || tope > 20000) return undefined;
-    const apagadas = {};
+    const apagadas = {}, prendidas = {};
     for (const [k, v] of Object.entries(valor.apagadas || {})) {
       if (!/^[A-Z]{2,5}$/.test(k) || v !== true) return undefined;
       apagadas[k] = true;
     }
-    return { montos, minutos, tope, apagadas };
+    // 🎲 prendidas a mano, en cualquier nivel del bot en vivo (13/10/2026, ver `hayApuestas()`)
+    for (const [k, v] of Object.entries(valor.prendidas || {})) {
+      if (!/^[A-Z]{2,5}$/.test(k) || v !== true) return undefined;
+      prendidas[k] = true;
+    }
+    return { montos, minutos, tope, apagadas, prendidas };
   }
   if (cual === 'aviso_evento') {
     if (valor === null) return null;
@@ -4709,7 +4728,7 @@ export class Avisos {
             if (tt) lineas.push('🔥 **' + tt.t + '**' + (tt.sub ? ' · ' + escMd(tt.sub) : ''));
             lineas.push('⚔️ ' + bat.r + ': **' + nombresChat(ga) + '** vs **' + nombresChat(gb) + '**');
             if (dato) lineas.push('💡 ' + escMd(dato));
-            if (nivel === 'full' && !apc.apagadas[b.sv]) {
+            if (nivel === 'full' && hayApuestas(b.sv, nivel, apc, cfgs.get(b.g))) {
               apuesta = { id: codigoDe(L.id + ':' + clave).slice(0, 12), m: mv, ronda: bat.r, a: bat.lados[0], b: bat.lados[1] };
               lineas.push(lineaApuesta('abierta', apc));
             }
@@ -4719,9 +4738,51 @@ export class Avisos {
             // sale ya, con el texto, y la imagen se le agrega editándolo (una edición no le suena a nadie)
             const vs = ga.length === 1 && gb.length === 1 ? { ev: String(nombre || L.nombre || '').replace(/[_*~`]+/g, '').trim(),
               ronda: bat.r, titulo: tt ? tt.t : '', sub: tt ? tt.sub || '' : '',
-              a: { n: ga[0].n, fl: ga[0].fl, k: ga[0].k, ovr: (dc.tabla[ga[0].k] || {}).ovr || 0, carta: ga[0].k ? dc.cartaDe(ga[0].k) : '' },
-              b: { n: gb[0].n, fl: gb[0].fl, k: gb[0].k, ovr: (dc.tabla[gb[0].k] || {}).ovr || 0, carta: gb[0].k ? dc.cartaDe(gb[0].k) : '' } } : null;
+              // 📊 el Score va también: la barra de quién gana de la imagen lo prefiere al OVR (`prob_vs()` de bot/kit.py)
+              a: { n: ga[0].n, fl: ga[0].fl, k: ga[0].k, ovr: (dc.tabla[ga[0].k] || {}).ovr || 0, sc: (dc.tabla[ga[0].k] || {}).sc || 0, carta: ga[0].k ? dc.cartaDe(ga[0].k) : '' },
+              b: { n: gb[0].n, fl: gb[0].fl, k: gb[0].k, ovr: (dc.tabla[gb[0].k] || {}).ovr || 0, sc: (dc.tabla[gb[0].k] || {}).sc || 0, carta: gb[0].k ? dc.cartaDe(gb[0].k) : '' } } : null;
             ms.push(Object.assign({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n') }, vs ? { vs } : {}));
+          }
+        }
+      }
+      // 🎲 LA APUESTA SOLA, CON EL BOT EN UN NIVEL DE ABAJO Y LAS APUESTAS PRENDIDAS A MANO (13/10/2026, ver
+      // `hayApuestas()`). En «Con datos» y «A full» va en el mensaje del cruce (arriba); acá no hay cruce, así que sale
+      // un mensaje propio con la batalla que viene y sus botones. ⚠️ VA APARTE DEL PLAN DE LA CHARLA, a propósito: en
+      // «normal» el plan manda sólo el último momento y como mucho uno cada 10 minutos, y la apuesta cierra a los 3 —
+      // frenada, saldría con la batalla ya jugada—. Una por batalla (`v:<ronda>:<i>`, la misma clave del cruce)
+      if (nivel !== 'datos' && nivel !== 'full' && fresca && pedidos < CHAT_TOPE && hayApuestas(b.sv, nivel, apc, cfgs.get(b.g))) {
+        const bat = batallaChat(L);
+        const mv = bat ? 'v:' + bat.r + ':' + bat.i : '';
+        if (bat && bat.lados.length === 2 && !hechos[mv]) {
+          const clave = bat.r + ':' + bat.lados.map(claveTurno).sort().join('|');
+          const [ga, gb] = bat.lados.map((l) => genteChat(l, buscar, dc.tabla, opc.ids));
+          const titEv = escMd(String(nombre || L.nombre || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
+          const texto = ['⚔️ **' + titEv + '**', '⚔️ ' + bat.r + ': **' + nombresChat(ga) + '** vs **' + nombresChat(gb) + '**',
+            lineaApuesta('abierta', apc)].join('\n');
+          const ap = { id: codigoDe(L.id + ':' + clave).slice(0, 12), ronda: bat.r, a: bat.lados[0], b: bat.lados[1] };
+          pedidos++;
+          let r = null;
+          try {
+            r = await fetch(`${DC}/channels/${canal}/messages`, {
+              method: 'POST',
+              headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+              body: JSON.stringify({ content: texto.slice(0, 1900), allowed_mentions: { parse: [] }, flags: 4,
+                components: botonesApuesta(ap.id, ap.a, ap.b, false, apc.montos) }),
+            });
+          } catch (e) { r = null; }
+          let id = '';
+          if (r && r.ok) { try { id = String((await r.json()).id || ''); } catch (e) { id = ''; } }
+          if (id) {
+            // anotada antes que nada: así la vuelta siguiente no la manda otra vez
+            this.sql.exec('INSERT OR REPLACE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, ?, ?, ?, ?)',
+              L.id, canal, mv, id, texto, ahora);
+            hechos[mv] = { m: mv, msg: id, texto };
+            this.sql.exec('INSERT OR IGNORE INTO apuestas (id, canal, msg, sv, llave, ronda, a, b, texto, abre, cierra) ' +
+              'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', ap.id, canal, id, b.sv || '', L.id, ap.ronda, ap.a, ap.b,
+            texto.slice(0, 1900), ahora, ahora + apc.cierra);
+            mandados++;
+          } else {
+            errores.push(b.sv + ' apuesta ' + (r ? r.status : 'red'));
           }
         }
       }

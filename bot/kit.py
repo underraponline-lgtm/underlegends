@@ -228,6 +228,31 @@ def html_llave(titulo, bats, sv, d):
                             '<div class="camp"><span class="et">Campeón</span>%s</div>' % _nombre(camp) if camp else '')
 
 
+#: 📊 la curva de la barra de quién gana: con esta diferencia, el de arriba tiene 10 a 1 (la misma forma que el Elo)
+PROB_SCORE = 30
+PROB_OVR = 40
+
+
+def prob_vs(a, b):
+    """📊 QUIÉN GANA, PARA LA BARRA DEL VS (Dlx, 13/10/2026: «agregar una barra diciendo con el porcentaje de ganar para
+    cada uno, incluyendo uno ?? para los que no se pueda hacer»). `(pa, pb, por)` en enteros que suman 100, o `None`.
+
+    Con el Score competitivo de los dos —la calidad, que es lo que mide—; si no, con el OVR de la temporada; si a uno
+    le falta, no se inventa: `None`, y la imagen dice «??». La forma es la del Elo: con 10 puntos de OVR de diferencia el
+    de arriba queda en ~64 %, con 20 en ~76 %. Nunca 0 ni 100: entre 3 y 97, porque una batalla nunca está ganada."""
+    a, b = a or {}, b or {}
+    for campo, escala, por in (('sc', PROB_SCORE, 'Score'), ('ovr', PROB_OVR, 'OVR')):
+        try:
+            xa, xb = float(a.get(campo) or 0), float(b.get(campo) or 0)
+        except (TypeError, ValueError):
+            continue
+        if xa > 0 and xb > 0:
+            p = 1 / (1 + 10 ** ((xb - xa) / escala))
+            pa = min(97, max(3, int(round(p * 100))))
+            return pa, 100 - pa, por
+    return None
+
+
 def html_vs(v, d):
     """🖼️ EL VS (Dlx, 12/10/2026: «hacerlo más visual para mostrar las imágenes cuando sea un vs, o sea las tarjetas»; a
     las dos formas, «B»: una imagen armada). Las dos tarjetas con el VS en el medio, el evento, la ronda y el título del
@@ -258,6 +283,13 @@ def html_vs(v, d):
         ovr = '<span class="et ovr">OVR %d</span>' % y['ovr'] if y.get('ovr') else ''
         return ('<div class="ld %s"><div class="sin"><img class="sil" src="%s" alt=""><b>%s%s</b>%s</div></div>'
                 % (cls, sil(y.get('n')), _e(y.get('n') or '¿?'), bandera(y.get('fl')), ovr))
+    def barra():
+        pr = prob_vs(v.get('a'), v.get('b'))
+        if not pr:
+            return ('<div class="pr nada"><div class="pr-n"><b>??</b><b>??</b></div><div class="pr-b"></div>'
+                    '<span class="et">Sin datos de uno</span></div>')
+        return ('<div class="pr"><div class="pr-n"><b>%d%%</b><b>%d%%</b></div><div class="pr-b"><i style="width:%d%%"></i>'
+                '</div><span class="et">Pron\u00f3stico \u00b7 por %s</span></div>' % (pr[0], pr[1], pr[0], pr[2]))
     tit = ('<div class="tt"><span class="et">%s</span>%s</div>' % (_e(v.get('titulo')), ('<small>%s</small>' % _e(v.get('sub')))
                                                                     if v.get('sub') else '')) if v.get('titulo') else ''
     ev = re.sub(r'[_*~`#>]+', ' ', str(v.get('ev') or '')).strip()
@@ -286,16 +318,22 @@ def html_vs(v, d):
 #c .tt .et{display:inline-block;background:#FFD24A;color:#0a0a0d;font-size:28px;padding:6px 16px}
 #c .tt small{display:block;margin-top:8px;font-size:20px;opacity:.9}
 #c .liga{position:absolute;left:0;right:0;bottom:0}
+#c .pr{position:absolute;left:50%%;top:426px;transform:translateX(-50%%);width:232px;text-align:center}
+#c .pr-n{display:flex;justify-content:space-between;font-weight:900;font-size:36px;line-height:1}
+#c .pr-b{display:flex;height:16px;margin-top:8px;border:3px solid #fff;background:#F6F6F6}
+#c .pr-b i{display:block;height:100%%;background:#E41373;border-right:3px solid #0a0a0d}
+#c .pr.nada .pr-b{background:#3A3A3E}
+#c .pr .et{display:block;margin-top:8px;font-size:18px;opacity:.85}
 </style></head><body><div id="c" class="f">
 <div class="mitad"></div>
 <div class="cab"><div><b>%s</b><span class="et">%s · %s</span></div><div class="marca">%s</div></div>
 %s%s
 <div class="vs">VS</div>
-%s
+%s%s
 <div class="liga"></div>
 </div></body></html>""" % (_fuentes(), _BASE_CSS, _e(d['color']), _e(ev[:60] or 'Liga Global'), _e(v.get('ronda') or ''),
                             _e(d['nombre']), ('<img src="%s" alt="">' % d['logo']) if d['logo'] else '',
-                            lado(v.get('a'), 'a'), lado(v.get('b'), 'b'), tit)
+                            lado(v.get('a'), 'a'), lado(v.get('b'), 'b'), barra(), tit)
 
 
 def foto(htm, ruta, jpeg=False):
@@ -427,6 +465,11 @@ def _self_check():
         ('el vs: la tarjeta de uno, la silueta y el nombre del otro, el VS y el título',
          'snow/temporada.webp' in vs and 'Pepe &lt;i&gt;' in vs and '>VS<' in vs and 'EL CLÁSICO' in vs
          and 'class="sil"' in vs and '<b>X</b>' not in vs),
+        ('la barra de quién gana: por Score si lo tienen los dos, si no por OVR, «??» si a uno le falta, nunca 0 ni 100',
+         prob_vs({'ovr': 92, 'sc': 60}, {'ovr': 70, 'sc': 60})[:2] == (50, 50) and prob_vs({'ovr': 92}, {'ovr': 82})[2] == 'OVR'
+         and prob_vs({'ovr': 92}, {'ovr': 0}) is None and prob_vs({'ovr': 99, 'sc': 95}, {'ovr': 40, 'sc': 5})[0] == 97
+         and '??' in vs and 'Sin datos de uno' in vs
+         and 'width:64%' in html_vs({'a': {'n': 'A', 'ovr': 92}, 'b': {'n': 'B', 'ovr': 82}}, d)),
         ('lo que viene de Discord se escapa: ningún HTML crudo',
          '<b>x' not in html_afiche(dict(a, nombre='<b>x</b>', horario='<i>9</i>'), 'FFA', d)
          and '&lt;i&gt;9' in html_afiche(dict(a, nombre='<b>x</b>', horario='<i>9</i>'), 'FFA', d)),
@@ -462,7 +505,7 @@ if __name__ == '__main__':
             j = (lob.get('cartas') or []).index(c) if c else -1
             ver = (f.get('cv') or '').split('.')[j] if c and f.get('cv') else ''
             fl = ''.join(chr(0x1F1E6 + ord(x) - 97) for x in (f.get('cc') or '')) if len(f.get('cc') or '') == 2 else ''
-            return {'n': f.get('n'), 'fl': fl, 'ovr': f.get('ovr') or 0,
+            return {'n': f.get('n'), 'fl': fl, 'ovr': f.get('ovr') or 0, 'sc': f.get('sc') or 0,
                     'carta': ('%s/%s/%s.webp%s' % (lob['r2'], k, c, '?v=' + ver if ver else '')) if c else ''}
         v = {'ev': 'COMPE POR 1.5 DOLARES', 'ronda': 'Cuartos', 'titulo': 'LA REVANCHA',
              'sub': '%s le ganó la última vez' % _lado(ks[0])['n'], 'a': _lado(ks[0]), 'b': _lado(ks[1])}

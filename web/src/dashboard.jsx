@@ -599,7 +599,7 @@ function svsDe(chat, aj) {
 const DEF_AP = { montos: [50, 100, 250, 500], minutos: 3, tope: 500 };
 const DEF_RIT = { normal: 10, batalla: 2 };
 
-// 🎲 las apuestas del nivel «A full»: los botones, cuánto quedan abiertas, el tope por batalla y dónde no van
+// 🎲 las apuestas: los botones, cuánto quedan abiertas, el tope por batalla, dónde van en cualquier nivel y dónde no van
 function AjApuestas({ liga, aj, hacer, ocup, chat }) {
   const def = ((chat || {}).def || {}).apuestas || DEF_AP;
   const a = aj.apuestas || null;
@@ -608,9 +608,12 @@ function AjApuestas({ liga, aj, hacer, ocup, chat }) {
   const [minutos, setMinutos] = useState((a || def).minutos);
   const [tope, setTope] = useState((a || def).tope);
   const [fuera, setFuera] = useState((a && a.apagadas) || {});
+  // 🎲 prendidas a mano, en cualquier nivel del bot en vivo (13/10/2026, ver `hayApuestas()` en avisos.js)
+  const [dentro, setDentro] = useState((a && a.prendidas) || {});
   useEffect(() => {
     const r = a || def;
     setMontos(r.montos.join(', ')); setMinutos(r.minutos); setTope(r.tope); setFuera((a && a.apagadas) || {});
+    setDentro((a && a.prendidas) || {});
   }, [firma]); // eslint-disable-line react-hooks/exhaustive-deps
   const ms = montos.split(/[\s,;.]+/).filter(Boolean).map(Number);
   const t = Number(tope);
@@ -621,10 +624,10 @@ function AjApuestas({ liga, aj, hacer, ocup, chat }) {
   return (
     <div className="db-aj">
       <div className="db-aj-c"><h3>Las apuestas</h3><span className={'db-est' + (a ? ' ojo' : ' ok')}>{a ? '✍ A tu gusto' : 'Como siempre'}</span></div>
-      <p className="db-tx">Salen con el bot en vivo en <b>A full</b>: botones en el mensaje de cada cruce, con Puntos de Tienda, y el pozo se reparte entre los que aciertan. Acá elegís los botones, cuántos minutos quedan abiertas, cuánto puede poner cada uno por batalla y en qué servidores no van.</p>
+      <p className="db-tx">Con el bot en vivo en <b>A full</b> salen solas, en el mensaje de cada cruce. <b>Prendidas</b> en un servidor salen en cualquier nivel: un mensaje con la batalla que viene y sus botones (el admin de cada servidor también las puede prender con <code>/settings</code>). Se apuesta con Puntos de Tienda y el pozo se reparte entre los que aciertan. «No hay apuestas en» gana sobre todo.</p>
       <form className="db-form uno" onSubmit={(e) => {
         e.preventDefault();
-        if (!mal) hacer('apuestas', { montos: ms, minutos: Number(minutos), tope: t, apagadas: fuera }, 'Guardado: vale para la próxima apuesta.');
+        if (!mal) hacer('apuestas', { montos: ms, minutos: Number(minutos), tope: t, apagadas: fuera, prendidas: dentro }, 'Guardado: vale para la próxima apuesta.');
       }}>
         <label className="db-campo"><span>Los botones <small>de menor a mayor, separados por coma</small></span>
           <input value={montos} inputMode="numeric" placeholder="50, 100, 250, 500" onChange={(e) => setMontos(e.target.value)} /></label>
@@ -636,6 +639,17 @@ function AjApuestas({ liga, aj, hacer, ocup, chat }) {
           <label className="db-campo db-corto"><span>Tope por batalla</span>
             <input type="number" min={10} max={20000} step={10} value={tope} onChange={(e) => setTope(e.target.value)} /></label>
         </div>
+        {svs.length ? (
+          <fieldset className="db-chk"><legend>Prendidas en <small>(en cualquier nivel)</small></legend>
+            {svs.map((sv) => (
+              <label key={sv}><input type="checkbox" checked={!!dentro[sv]} disabled={!!fuera[sv]} onChange={(e) => {
+                const n = Object.assign({}, dentro);
+                if (e.target.checked) n[sv] = true; else delete n[sv];
+                setDentro(n);
+              }} /><img alt="" src={liga.logo(sv)} />{siglaDe(sv)}</label>
+            ))}
+          </fieldset>
+        ) : null}
         {svs.length ? (
           <fieldset className="db-chk"><legend>No hay apuestas en</legend>
             {svs.map((sv) => (

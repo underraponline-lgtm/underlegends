@@ -1851,6 +1851,11 @@ function panelAjustes(sv, cfg) {
     '**lo justo** (el arranque y el campeón), **normal** (además quién pasa cada ronda y la final; como mucho un ' +
     'mensaje cada 10 minutos) o **cada batalla** (quién gana cada una apenas se sabe; como mucho uno cada 2 ' +
     'minutos). Nunca menciona a nadie.',
+    '',
+    `**Apuestas** · ${cfg.apuestas === true ? '🟢 prendidas' : nivel === 'full' ? '🟢 van con «A full»' : '🔴 apagadas'}`,
+    '> Con el bot en vivo, antes de cada batalla se puede apostar con Puntos de Tienda desde unos botones en el chat, ' +
+    'y el pozo se reparte entre los que aciertan. En «A full» van siempre; prendidas, van en cualquier nivel. ' +
+    'Desde la Liga se pueden apagar para un servidor, y eso gana.',
   ].join('\n');
 
   return {
@@ -1861,6 +1866,14 @@ function panelAjustes(sv, cfg) {
         style: cfg.nick ? ESTILO.SECUNDARIO : ESTILO.PRIMARIO,
         label: cfg.nick ? 'Apagar el #N para el servidor' : 'Activar el #N para el servidor',
         custom_id: 'cfg:nick',
+      },
+      // 🎲 las apuestas, prendidas a mano en cualquier nivel (13/10/2026): va en la fila del #N porque las cinco filas que
+      // Discord deja ya están usadas, y una fila lleva hasta cinco botones. Ver `hayApuestas()` en avisos.js
+      {
+        type: COMP.BOTON,
+        style: cfg.apuestas === true ? ESTILO.SECUNDARIO : ESTILO.PRIMARIO,
+        label: cfg.apuestas === true ? 'Apagar las apuestas' : 'Prender las apuestas',
+        custom_id: 'cfg:apuestas',
       }] },
       { type: COMP.FILA, components: [{
         type: 8,                       // CHANNEL_SELECT
@@ -4129,6 +4142,7 @@ export default {
         const antesCfg = JSON.stringify(cfg);
         const vals = (i.data && i.data.values) || [];
         if (quien === 'nick') cfg.nick = !cfg.nick;
+        else if (quien === 'apuestas') cfg.apuestas = cfg.apuestas !== true;
         else if (quien === 'canales') cfg.canales = vals.slice(0, 10);
         else if (quien === 'avisos') cfg.avisos = vals[0] || '';
         else if (quien === 'vivo') cfg.vivo = vals[0] || '';
