@@ -221,7 +221,8 @@
   "Cinexfilo": {
    "competitivo": "4a47f34ca56a:2256fa928e50",
    "pais": "eeed2bc0f798:a83947948804",
-   "servidor": "7af9ff800d74:38fa4546320c:4975e5"
+   "servidor": "7af9ff800d74:38fa4546320c:4975e5",
+   "temporada": "fa52528e1102:5f7648916ad1"
   },
   "Clitax": {},
   "Colesito": {
@@ -1754,5 +1755,5 @@
    "servidor": "7f8885a35a6d:38fa4546320c:c9f1f2"
   }
  },
- "cuando": "2026-10-13T21:39:51+00:00"
+ "cuando": "2026-10-13T21:59:05+00:00"
 }
