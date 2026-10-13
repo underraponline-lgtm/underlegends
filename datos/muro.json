@@ -932,7 +932,8 @@
 "darnbless": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "setesfifi": {
@@ -2293,14 +2294,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-28T20:54:51Z",
-"quien": [
-"Juasmio"
-],
-"carta": "pais"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-28T21:07:49Z",
@@ -5560,6 +5553,14 @@
 "t": "2026-10-13T15:29:43Z",
 "quien": [
 "MTZ"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-13T15:40:35Z",
+"quien": [
+"DarnBless"
 ],
 "carta": "temporada"
 }
