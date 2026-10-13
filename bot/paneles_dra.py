@@ -2,7 +2,8 @@
 """LOS PANELES DE DRA: el ranking, Most Wanted y la semana, como imagen con botones (Dlx, 13/10/2026).
 
     python bot/paneles_dra.py --vista [carpeta]   dibuja los PNG, sin tocar Discord ni R2
-    python bot/paneles_dra.py --aplicar            los sube y los pone en DRA (sólo de 11 AM a 3 AM ET)
+    python bot/paneles_dra.py --aplicar            los actualiza en DRA (sólo de 11 AM a 3 AM ET; lo corre el ciclo)
+    python bot/paneles_dra.py --aplicar --prender  la primera vez, con el sí de Dlx a la vista previa
     python bot/paneles_dra.py --auto               el self-check, sin red ni navegador
 
 🔑 Dlx: *«acá irían los paneles con el ranking, paneles de most wanted… que DRA sea el centro de la Liga Global»*, y a
@@ -361,6 +362,12 @@ def aplicar():
     import requests
     import avisar as AV
     hub = _json('datos', 'dra_hub.json') or {}
+    # 🔒 APAGADO HASTA QUE DLX DIGA QUE SÍ a la vista previa (13/10/2026: «te muestro cada panel antes de que salga»).
+    # Sin esto, el ciclo de las 11:22 ponía el de Most Wanted —ese canal ya existía— antes de que nadie lo viera
+    if not hub.get('paneles_prendidos') and '--prender' not in sys.argv:
+        print('  los paneles de DRA están apagados hasta que Dlx los apruebe (--aplicar --prender la primera vez)')
+        return 0
+    hub['paneles_prendidos'] = True
     estado = hub.setdefault('paneles', {})
     tok = AV._token()
     if not tok:
