@@ -1,3 +1,29 @@
 {
- "_leeme": "DRA como centro de la Liga (Dlx, 13/10/2026): los ids de los canales que crea herramientas/dra_hub.py y los mensajes de cada panel de bot/paneles_dra.py (paneles: canal, msg y firma). Lo guarda el ciclo para no mandar un panel nuevo en cada corrida."
+ "_leeme": "DRA como centro de la Liga (Dlx, 13/10/2026): los ids de los canales que crea herramientas/dra_hub.py y los mensajes de cada panel de bot/paneles_dra.py (paneles: canal, msg y firma). Lo guarda el ciclo para no mandar un panel nuevo en cada corrida.",
+ "archivo": "1559629540874260485",
+ "esta_semana": "1559629626920411237",
+ "paneles": {
+  "mw": {
+   "canal": "1500262299112439839",
+   "firma": "84d8d34de62ad1a5",
+   "msg": "1559630671847358677",
+   "t": "2026-10-13T18:15:29Z"
+  },
+  "semana": {
+   "canal": "1559629626920411237",
+   "firma": "d490f0ecba48016e",
+   "msg": "1559630696086114471",
+   "t": "2026-10-13T18:15:35Z"
+  },
+  "temporada": {
+   "canal": "1559629622612721765",
+   "firma": "1835b781149a7917",
+   "msg": "1559630637042896908",
+   "t": "2026-10-13T18:15:21Z"
+  }
+ },
+ "paneles_prendidos": true,
+ "ranking": "1559629622612721765",
+ "t": "2026-10-13T18:11:30Z",
+ "tu_tarjeta": "1559629631873875998"
 }

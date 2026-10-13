@@ -334,13 +334,22 @@ def foto(htm, ruta):
     import navegador
     navegador.hace_falta()
     from playwright.sync_api import sync_playwright
+    # ⚠️ SE MIDE Y SE RECORTA, NO SE LE PIDE AL ELEMENTO (13/10/2026). `locator.screenshot()` espera a que el elemento
+    # «se quede quieto», y con un panel más alto que la ventana se colgó dos veces esperando —dejando el navegador
+    # abierto—. Ahora: la ventana del alto del panel y una foto de ese recorte, con tope de tiempo en cada paso
     with sync_playwright() as p:
         b = p.chromium.launch(args=['--no-sandbox'])
-        pg = b.new_page(viewport={'width': 1080, 'height': 1400}, device_scale_factor=1)
-        pg.set_content(htm, wait_until='load')
-        pg.wait_for_timeout(500)
-        pg.locator('#c').screenshot(path=ruta)
-        b.close()
+        try:
+            pg = b.new_page(viewport={'width': 1080, 'height': 1400}, device_scale_factor=1)
+            pg.set_default_timeout(60000)
+            pg.set_content(htm, wait_until='load', timeout=60000)
+            pg.wait_for_timeout(500)
+            alto = int(pg.evaluate("() => Math.ceil(document.querySelector('#c').getBoundingClientRect().height)"))
+            pg.set_viewport_size({'width': 1080, 'height': max(400, alto)})
+            pg.wait_for_timeout(300)
+            pg.screenshot(path=ruta, clip={'x': 0, 'y': 0, 'width': 1080, 'height': alto}, timeout=60000)
+        finally:
+            b.close()
     return ruta
 
 
