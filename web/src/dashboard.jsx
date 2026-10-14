@@ -1240,6 +1240,19 @@ function Filtros({ grupos, f, setF, limpiar, n, total, nota }) {
     </div>
   );
 }
+// 🔎 BUSCAR POR NOMBRE (Dlx, 13/10/2026, de las ideas del Dashboard): sin tildes ni banderas, en todo lo que se ve de
+// cada uno (la pregunta, las pistas, las opciones, el evento; en Reportes, la llave, el texto y quién lo mandó)
+const plano = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  .replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').replace(/\s+/g, ' ').trim();
+const contiene = (campos, q) => !q || plano(campos.join(' \n ')).includes(plano(q));
+function Buscar({ q, setQ, que }) {
+  return (
+    <label className="db-buscar"><Ico n="buscar" t={16} />
+      <input type="search" value={q} placeholder={'Buscar ' + que} aria-label={'Buscar ' + que} onChange={(e) => setQ(e.target.value)} />
+    </label>
+  );
+}
+
 //: el servidor de una pregunta, de su título («COPA · FFA · 12/10 · #380»): la parte que es una sigla de la Liga
 const svDeSec = (sec, liga) => {
   const ps = String(sec || '').split(' · ');
@@ -1260,9 +1273,11 @@ function Reportes({ rep, liga, alCambiar, corrige = true }) {
     try { setLista(await decidirReporte({ id: r.id, accion })); setMsg((m) => Object.assign({}, m, { [r.id]: '' })); } catch (e) { setMsg((m) => Object.assign({}, m, { [r.id]: 'No se pudo: ' + e.message })); }
   };
   const [f, setF, limpiar] = useFiltro('rep');
+  const [q, setQ] = useState('');
   if (!lista.length) return null;
   const pasa = (r) => (!f.sv || (r.evid && r.evid.sv) === f.sv) && (!f.estado || estadoRep(r) === f.estado)
-    && (!f.que || r.que === f.que) && (!f.imp || impRep(r) === f.imp);
+    && (!f.que || r.que === f.que) && (!f.imp || impRep(r) === f.imp)
+    && contiene(['#' + r.llave, r.texto, r.batalla, r.de, r.evid && r.evid.quien, ...((r.evid && r.evid.lineas) || []).map((l) => l[1])], q);
   const vista = lista.filter(pasa);
   // 🧩 todo lo que el bot ya sabe cómo corregir, de una (Dlx: «hazlo sencillo de solucionar múltiples problemas»): de
   // lo que se está mostrando, así se puede aplicar por servidor
@@ -1280,6 +1295,7 @@ function Reportes({ rep, liga, alCambiar, corrige = true }) {
   };
   return (
     <div><h3>Errores en las llaves <small>reportados</small></h3>
+      <Buscar q={q} setQ={setQ} que="un nombre o una llave" />
       <Filtros f={f} setF={setF} limpiar={limpiar} n={vista.length} total={lista.length} grupos={[
         ['sv', 'Servidor', opciones(lista, (r) => r.evid && r.evid.sv)],
         ['estado', 'Estado', opciones(lista, estadoRep, [['abierto', 'Sin mirar'], ['en_curso', 'Corrigiéndose'], ['cerrado', 'Cerrados']])],
@@ -1418,7 +1434,7 @@ async function contestarDecidir(cuerpo) {
 }
 export const sinContestar = (dec) => ((dec && dec.preguntas) || []).filter((p) => !((dec.respuestas || {})[p.id])).length;
 
-function Pregunta({ p, r, alListo }) {
+function Pregunta({ p, r, alListo, marcada, alMarcar }) {
   const [libre, setLibre] = useState('');
   const [nota, setNota] = useState((r && r.nota) || '');
   const [ocup, setOcup] = useState(false);
@@ -1430,7 +1446,10 @@ function Pregunta({ p, r, alListo }) {
   };
   return (
     <li className={r ? 'db-dec-hecha' : ''}>
-      <div className="db-l1"><span className="db-chip">{p.tipo}</span></div>
+      <div className="db-l1">
+        {/* ☑️ para contestar varias juntas (ver `Lote`) */}
+        {!r && alMarcar ? <label className="db-marca"><input type="checkbox" checked={!!marcada} onChange={() => alMarcar(p.id)} aria-label="Elegir para contestar junto con otras" /></label> : null}
+        <span className="db-chip">{p.tipo}</span></div>
       <p className="db-dec-que">{p.que}</p>
       {p.pistas && p.pistas !== '—' ? <p className="db-dec-pistas">{p.pistas}</p> : null}
       {r ? (
@@ -1513,8 +1532,52 @@ function LlaveAlCostado({ s }) {
   );
 }
 
+// ☑️ CONTESTAR EN LOTE (Dlx, 13/10/2026, de las ideas del Dashboard): las elegidas, con una respuesta que tengan TODAS
+// entre sus opciones («Es alguien nuevo», «Ya lo revisé», «Dejar para después»…). Se mandan de a una, como si se
+// tocaran a mano: el objeto y el ciclo no saben que fue en lote
+function Lote({ ps, sel, setSel, alListo, visibles }) {
+  const [nota, setNota] = useState('');
+  const [ocup, setOcup] = useState('');
+  const [msg, setMsg] = useState('');
+  const elegidas = ps.filter((p) => sel.has(p.id));
+  const libres = visibles.filter((p) => !p.r);
+  const comunes = elegidas.length ? elegidas[0].opciones.filter((o) => elegidas.every((p) => (p.opciones || []).includes(o))) : [];
+  const contestar = async (resp) => {
+    setOcup(resp); setMsg('');
+    let ultimo = null, mal = 0;
+    for (const p of elegidas) {
+      try { ultimo = await contestarDecidir({ id: p.id, r: resp, nota }); } catch (e) { mal += 1; }
+    }
+    if (ultimo) alListo(ultimo);
+    setSel(new Set()); setOcup(''); setNota('');
+    setMsg(mal ? 'Quedaron ' + mal + ' sin contestar: probá de nuevo.' : '✓ Contestadas ' + elegidas.length + ': «' + resp + '».');
+  };
+  if (!elegidas.length) {
+    return (
+      <div className="db-lote apagado">
+        {libres.length >= 2 ? <button type="button" className="evp-lnk" onClick={() => setSel(new Set(libres.map((p) => p.id)))}>Elegir las {libres.length} que se ven, para contestarlas juntas</button> : null}
+        {msg ? <small role="status">{msg}</small> : null}
+      </div>
+    );
+  }
+  return (
+    <div className="db-lote" role="region" aria-label="Contestar varias juntas">
+      <p><b>{elegidas.length} elegida{elegidas.length === 1 ? '' : 's'}</b> · <button type="button" className="evp-lnk" onClick={() => setSel(new Set())}>soltarlas</button>
+        {libres.length > elegidas.length ? <> · <button type="button" className="evp-lnk" onClick={() => setSel(new Set(libres.map((p) => p.id)))}>elegir las {libres.length} que se ven</button></> : null}</p>
+      {comunes.length ? <div className="db-opc">{comunes.map((o) => <button key={o} type="button" disabled={!!ocup} onClick={() => contestar(o)}>{ocup === o ? '…' : o}</button>)}</div>
+        : <small>Estas preguntas no tienen ninguna respuesta en común: elegí de un solo tipo (el filtro «Tipo» ayuda).</small>}
+      {comunes.length ? <div className="db-rep-q"><label>Nota para todas (opcional):
+        <input type="text" value={nota} maxLength={300} onChange={(e) => setNota(e.target.value)} /></label></div> : null}
+      {msg ? <small role="status">{msg}</small> : null}
+    </div>
+  );
+}
+
 function Decisiones({ dec, alCambiar, liga }) {
   const [f, setF, limpiar] = useFiltro('dec');
+  const [q, setQ] = useState('');
+  const [sel, setSel] = useState(() => new Set());
+  const marcar = (id) => setSel((s) => { const n = new Set(s); if (n.has(id)) n.delete(id); else n.add(id); return n; });
   const [x, setX0] = useState(dec || {});
   useEffect(() => { setX0(dec || {}); }, [dec]);
   const setX = (y) => { setX0(y); if (alCambiar) alCambiar(y); };
@@ -1527,7 +1590,8 @@ function Decisiones({ dec, alCambiar, liga }) {
   const imp = (p) => p.imp || 'media';
   const resp = (p) => (rs[p.id] ? 'si' : 'no');
   const vista = ps.filter((p) => (!f.sv || sv(p) === f.sv) && (!f.tipo || (p.grupo || p.tipo) === f.tipo)
-    && (!f.imp || imp(p) === f.imp) && (!f.resp || resp(p) === f.resp));
+    && (!f.imp || imp(p) === f.imp) && (!f.resp || resp(p) === f.resp)
+    && contiene([p.que, p.pistas, p.sec, ...(p.opciones || [])], q));
   // por evento, en el orden en que vienen (el de la hoja: primero lo que mueve puntos)
   const secs = [];
   for (const p of vista) {
@@ -1537,6 +1601,7 @@ function Decisiones({ dec, alCambiar, liga }) {
   return (
     <div className="db-dec">
       <p className="db-rep-nota">{sinContestar(x)} sin contestar de {ps.length}{x.t ? ' · el ciclo las publicó ' + hace(x.t) : ''}. Lo que contestes acá vale igual que en la hoja.</p>
+      <Buscar q={q} setQ={setQ} que="un nombre, un evento o una llave" />
       <Filtros f={f} setF={setF} limpiar={limpiar} n={vista.length} total={ps.length}
         nota={ps.some((p) => p.imp) ? IMP_DICE : ''} grupos={[
           ['sv', 'Servidor', opciones(ps, sv)],
@@ -1545,13 +1610,14 @@ function Decisiones({ dec, alCambiar, liga }) {
           ['resp', 'Respuesta', opciones(ps, resp, [['no', 'Sin contestar'], ['si', 'Contestadas']])],
         ]} />
       {!vista.length ? <p className="pronto-p">Ninguna con estos filtros.</p> : null}
+      <Lote ps={ps} sel={sel} setSel={setSel} alListo={setX} visibles={vista.map((p) => Object.assign({ r: rs[p.id] }, p))} />
       {secs.map((s) => {
         const link = (s.ps.find((p) => p.link) || {}).link;
         return (
           <div key={s.sec} className="db-dec-sec">
             <h3>{s.sec}{link ? <> <a className="db-link" href={link} target="_blank" rel="noopener noreferrer">la llave en Discord ↗</a></> : null}</h3>
             <div className="db-dec-cuerpo">
-              <ul>{s.ps.map((p) => <Pregunta key={p.id} p={p} r={rs[p.id]} alListo={setX} />)}</ul>
+              <ul>{s.ps.map((p) => <Pregunta key={p.id} p={p} r={rs[p.id]} alListo={setX} marcada={sel.has(p.id)} alMarcar={marcar} />)}</ul>
               <LlaveAlCostado s={s} />
             </div>
           </div>
