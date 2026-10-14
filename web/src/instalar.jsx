@@ -176,6 +176,68 @@ function I4() {
   );
 }
 
+// ── Samsung Internet (Dlx, 13/10/2026: «agregar aquí Samsung también»): la barra de abajo, con el menú ≡ a la derecha ──
+function SamsungBarra({ anillo }) {
+  return (
+    <>
+      <Marco abajo /><Pagina y={-4} />
+      <rect className="pi-g" x="16" y="101" width="128" height="1.5" />
+      {[30, 50, 70, 90, 110].map((cx) => <circle key={cx} className="pi-g" cx={cx} cy="116" r="5.5" />)}
+      {[111, 115.5, 120].map((y) => <rect key={y} className="pi-t" x="124" y={y} width="12" height="2.2" rx="1.1" />)}
+      {anillo ? <circle className="pi-anillo" cx="130" cy="116" r="12" /> : null}
+      <rect className="pi-t" x="62" y="136" width="36" height="3" rx="1.5" />
+    </>
+  );
+}
+function S1() {
+  return <Svg><SamsungBarra anillo /><Borde abajo /></Svg>;
+}
+function S2() {
+  return (
+    <Svg>
+      <SamsungBarra />
+      <rect className="pi-menu" x="18" y="22" width="124" height="74" rx="10" />
+      {[0, 1, 2, 3].map((i) => <rect key={i} className="pi-g" x={30 + i * 28} y="30" width="12" height="12" rx="3" />)}
+      <rect className="pi-trazo" x="30" y="56" width="12" height="12" rx="3" />
+      <path className="pi-trazo" d="M36 59v6M33 62h6" />
+      <text className="pi-tx" x="48" y="65">Agregar página a</text>
+      <Anillo x="24" y="51" width="106" height="22" />
+      {[0, 1, 2, 3].map((i) => <rect key={i} className="pi-g" x={30 + i * 28} y="78" width="12" height="12" rx="3" />)}
+      <Borde abajo />
+    </Svg>
+  );
+}
+function S3() {
+  return (
+    <Svg>
+      <SamsungBarra /><Velo abajo />
+      <rect className="pi-caja" x="20" y="18" width="120" height="98" rx="12" />
+      <text className="pi-tx pi-tit" x="30" y="36">Agregar página a</text>
+      <text className="pi-tx pi-gr" x="30" y="56">Favoritos</text>
+      <text className="pi-tx pi-gr" x="30" y="74">Accesos rápidos</text>
+      <text className="pi-tx" x="30" y="95">Pantalla de inicio</text>
+      <Anillo x="24" y="84" width="112" height="17" />
+      <Borde abajo />
+    </Svg>
+  );
+}
+function S4() {
+  return (
+    <Svg>
+      <SamsungBarra /><Velo abajo />
+      <rect className="pi-caja" x="20" y="22" width="120" height="94" rx="12" />
+      <text className="pi-tx pi-tit" x="30" y="39">Pantalla de inicio</text>
+      <Icono x={30} y={50} s={22} />
+      <text className="pi-tx" x="58" y="60">Liga Global</text>
+      <text className="pi-url" x="58" y="69">underlegends.pages.dev</text>
+      <text className="pi-tx pi-gr" x="38" y="103">Cancelar</text>
+      <text className="pi-tx pi-acc" x="94" y="103">Agregar</text>
+      <Anillo x="86" y="92" width="48" height="17" />
+      <Borde abajo />
+    </Svg>
+  );
+}
+
 const PASOS = {
   android: [
     [A1, <>Abrí <b>underlegends.pages.dev</b> en <b>Chrome</b> y tocá los <b>tres puntos ⋮</b>, arriba a la derecha.</>],
@@ -190,7 +252,21 @@ const PASOS = {
     [I4, <>Si aparece <b>«Abrir como app web»</b>, dejalo prendido. Tocá <b>«Agregar»</b>.</>],
     [Listo, <>Abrila desde el <b>ícono nuevo</b>: en el iPhone, así es como se pueden activar los avisos de eventos.</>],
   ],
+  samsung: [
+    [S1, <>Abrí <b>underlegends.pages.dev</b> en <b>Samsung Internet</b> y tocá el menú <b>≡</b>, abajo a la derecha.</>],
+    [S2, <>Tocá <b>«Agregar página a»</b> (el ícono con el <b>+</b>).</>],
+    [S3, <>Elegí <b>«Pantalla de inicio»</b>.</>],
+    [S4, <>Confirmá con <b>«Agregar»</b>. Si arriba en la barra ves un ícono de <b>descargar</b>, también sirve: es «Instalar».</>],
+    [Listo, <>Listo: la Liga queda en tu <b>pantalla de inicio</b>. Se abre desde ahí, como cualquier app.</>],
+  ],
 };
+
+//: los nombres de cada pestaña, y cómo se lee cada lista
+const CUALES = [['android', 'Android'], ['samsung', 'Samsung'], ['ios', 'iPhone']];
+const DICE = { android: 'En Android, con Chrome', samsung: 'En un Samsung, con Samsung Internet', ios: 'En el iPhone, con Safari' };
+export function esSamsung() {
+  return /SamsungBrowser/i.test((W.navigator || {}).userAgent || '');
+}
 
 export function esIphone() {
   const n = W.navigator || {};
@@ -198,7 +274,7 @@ export function esIphone() {
 }
 
 export function PasosInstalar() {
-  const [cual, setCual] = useState(() => (esIphone() ? 'ios' : 'android'));
+  const [cual, setCual] = useState(() => (esIphone() ? 'ios' : esSamsung() ? 'samsung' : 'android'));
   const [ev, setEv] = useState(() => W.__instalar || null);
   useEffect(() => {
     const f = () => setEv(W.__instalar || null);
@@ -222,11 +298,11 @@ export function PasosInstalar() {
         </div>
       ) : null}
       <div className="x-seg cu-seg pi-cual" role="group" aria-label="Tu teléfono">
-        {[['android', 'Android'], ['ios', 'iPhone']].map(([v, n]) => (
+        {CUALES.map(([v, n]) => (
           <button type="button" key={v} aria-pressed={cual === v} onClick={() => setCual(v)}>{n}</button>
         ))}
       </div>
-      <ol className="pi-pasos" aria-label={cual === 'ios' ? 'En el iPhone, con Safari' : 'En Android, con Chrome'}>
+      <ol className="pi-pasos" aria-label={DICE[cual]}>
         {PASOS[cual].map(([Dibujo, texto], i) => (
           <li className="pi-paso" key={cual + i}>
             <div className="pi-fig"><span className="pi-n" aria-hidden="true">{i + 1}</span><Dibujo /></div>
@@ -234,7 +310,7 @@ export function PasosInstalar() {
           </li>
         ))}
       </ol>
-      {cual === 'android' ? <p className="cu-nota">¿Usás Samsung Internet? Menú <b>≡</b> → <b>«Agregar página a»</b> → <b>«Pantalla de inicio»</b>.</p> : null}
+      {cual === 'android' ? <p className="cu-nota">¿Tenés un Samsung y usás Samsung Internet? Mirá la pestaña <b>Samsung</b>.</p> : null}
     </>
   );
 }
