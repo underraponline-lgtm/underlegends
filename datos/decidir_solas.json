@@ -772,6 +772,25 @@
     "13` vandu 🇨🇦 - Vandu"
    ],
    "escribio": {}
+  },
+  {
+   "id": "0fac65c5d5",
+   "tipo": "Nombre desconocido",
+   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
+   "que": "¿Quién es «16` agre 🇦🇷 - Benjixo»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792015054348,
+   "filas": [
+    707
+   ],
+   "variantes": [
+    "16` agre 🇦🇷 - Benjixo"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

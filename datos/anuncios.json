@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-14T21:36:20+00:00",
+ "cuando": "2026-10-14T21:54:49+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1666,6 +1666,37 @@
    "categoria_id": "863207988739309600"
   },
   {
+   "nombre": "FF Freestyle Clasico VOL. 1",
+   "servidor": "URBF",
+   "canal": "⋆🏆│Eventos",
+   "msg_id": "1560045718352433244",
+   "cuando": "2026-10-14T21:44:43",
+   "canal_id": "1511963470956990494",
+   "guild_id": "1467763447117778989",
+   "organizador": "",
+   "autor_h": "6a4dfd082a18bc77",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1v1",
+   "horario": "Cuando se llenen los cupos",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧"
+    ],
+    "host": [
+     "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧"
+    ]
+   },
+   "autor": "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧",
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
+  },
+  {
    "nombre": "COMPE CHILL",
    "servidor": "URBF",
    "canal": "⋆🏆│Eventos",
@@ -1695,7 +1726,9 @@
     ]
    },
    "autor": "Erian 恵理久",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "POESÍA CRUDA",
@@ -1727,7 +1760,9 @@
     ]
    },
    "autor": "DSM-5 (MTZ)",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "COMPE CHILL DE FASO",
@@ -1759,7 +1794,9 @@
     ]
    },
    "autor": "FASOO",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "CCFF V.3",
@@ -1791,7 +1828,9 @@
     ]
    },
    "autor": "Carlos",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "COMPE DEL VACILE T2 #1",
@@ -1823,7 +1862,9 @@
     ]
    },
    "autor": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "COMPE NOCTURNA",
@@ -1855,7 +1896,9 @@
     ]
    },
    "autor": "Guty",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "CCFF V.2",
@@ -1887,7 +1930,9 @@
     ]
    },
    "autor": "Carlos",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "COMPE SOLO 4X4",
@@ -1919,7 +1964,9 @@
     ]
    },
    "autor": "Guty",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "CCFF V.1",
@@ -1951,7 +1998,9 @@
     ]
    },
    "autor": "Carlos",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "PNC V.15",
@@ -1983,7 +2032,9 @@
     ]
    },
    "autor": "Carlos",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "COMPE NOCTURNA",
@@ -2015,7 +2066,9 @@
     ]
    },
    "autor": "Guty",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "PNC V.14",
@@ -2047,7 +2100,9 @@
     ]
    },
    "autor": "Carlos",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "PNC V.13",
@@ -2079,7 +2134,9 @@
     ]
    },
    "autor": "Carlos",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "WACHINTON",
@@ -2111,7 +2168,9 @@
     ]
    },
    "autor": "Erian 恵理久",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "STEVE JOSEO",
@@ -2143,7 +2202,9 @@
     ]
    },
    "autor": "Erian 恵理久",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "ISLA DE SOCOTRA",
@@ -2175,7 +2236,9 @@
     ]
    },
    "autor": "Erian 恵理久",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "PNC V.12",
@@ -2207,7 +2270,9 @@
     ]
    },
    "autor": "Carlos",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "PNC V.11",
@@ -2239,7 +2304,9 @@
     ]
    },
    "autor": "Carlos",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "Arima Kinen Triple Crown | Clasificatoria N°1",
@@ -2271,7 +2338,9 @@
     ]
    },
    "autor": "💗ValenAdoratesJuan💗",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "PNC V.10",
@@ -2303,7 +2372,9 @@
     ]
    },
    "autor": "Carlos",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "COMPE INVITACIONAL PA LOS JAJAS",
@@ -2335,7 +2406,9 @@
     ]
    },
    "autor": "Carlos",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "PNC V.9",
@@ -2367,7 +2440,9 @@
     ]
    },
    "autor": "Carlos",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "FF Freestyle: Classic VOL.1",
@@ -2399,39 +2474,9 @@
     ]
    },
    "autor": "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧",
-   "categoria_id": "1511963280128868504"
-  },
-  {
-   "nombre": "PNC V.8",
-   "servidor": "URBF",
-   "canal": "⋆🏆│Eventos",
-   "msg_id": "1543442150635601960",
-   "cuando": "2026-08-30T02:08:04",
-   "canal_id": "1511963470956990494",
-   "guild_id": "1467763447117778989",
-   "organizador": "@Carlos",
-   "autor_h": "608cfa4b650ba173",
-   "cupos_texto": "4/8(si me dan ganas y se llena maybe de 16)",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "(2k puntos de ascenso al primero)",
-   "modalidad": "1vs1",
-   "horario": "Cuando se llene",
-   "fecha": "",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "Carlos"
-    ],
-    "host": [
-     "Carlos"
-    ],
-    "dj": [
-     "Carlos"
-    ]
-   },
-   "autor": "Carlos",
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "REGIONAL TRICOLOR RED BULL CABRANA",
@@ -2453,7 +2498,9 @@
    "premios": "",
    "staff": {},
    "autor": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "PINCHE MTZ Y FORCE OJALÁ TE ASALTEN LA TIENDA",
@@ -2475,7 +2522,9 @@
    "premios": "",
    "staff": {},
    "autor": "Christopher",
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "RED BULL CABRANA 5 VIDAS ESTA DE VUELTA",
@@ -2497,7 +2546,9 @@
    "premios": "",
    "staff": {},
    "autor": "Christopher",
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "REGIONAL TRICOLOR RED BULL CABRANA",
@@ -2519,7 +2570,9 @@
    "premios": "",
    "staff": {},
    "autor": "dxg",
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "REGIONAL ESPAÑA RED BULL CABRANA",
@@ -2541,7 +2594,9 @@
    "premios": "",
    "staff": {},
    "autor": "dxg",
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "¡LA BÚSQUEDA DEL MEJOR MC COMIENZA AHORA!",
@@ -2563,7 +2618,9 @@
    "premios": "",
    "staff": {},
    "autor": "Suzuhara",
-   "categoria_id": "1511961628500037662"
+   "categoria_id": "1511961628500037662",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "¡LA BÚSQUEDA DEL MEJOR MC COMIENZA AHORA!",
@@ -2585,7 +2642,9 @@
    "premios": "",
    "staff": {},
    "autor": "Suzuhara",
-   "categoria_id": "1511961628500037662"
+   "categoria_id": "1511961628500037662",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "SPECIAL WEEKS X TFC CHAMPIONS UNDER",
@@ -2607,7 +2666,9 @@
    "premios": "",
    "staff": {},
    "autor": "💗ValenAdoratesJuan💗",
-   "categoria_id": "1511964043647123527"
+   "categoria_id": "1511964043647123527",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-14T21:46:37"
   },
   {
    "nombre": "Dos barras",
@@ -4365,6 +4426,123 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "VR🇨🇴",
+   "quien": "1mrvargas",
+   "discord_id": "1456416455405863038",
+   "msg_id": "1560047269879746615",
+   "cuando": "2026-10-14T21:50:53"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Cristofer 🇪🇸",
+   "quien": "christopher_hongo",
+   "discord_id": "1403518820022222929",
+   "msg_id": "1560047253316571179",
+   "cuando": "2026-10-14T21:50:49"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Chuwin",
+   "quien": "chuwin_",
+   "discord_id": "618818177073414144",
+   "msg_id": "1560046599646744718",
+   "cuando": "2026-10-14T21:48:13"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Cinexfilo 🇻🇪",
+   "quien": "cinexfilosanity",
+   "discord_id": "781971857519804417",
+   "msg_id": "1560046043369046098",
+   "cuando": "2026-10-14T21:46:00"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "mr still ballin",
+   "quien": "imstillplayin",
+   "discord_id": "794200141023412244",
+   "msg_id": "1560046004622069802",
+   "cuando": "2026-10-14T21:45:51"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "agustin51k 🇨🇱",
+   "quien": "agustin51k",
+   "discord_id": "1114241587262783631",
+   "msg_id": "1560045970731835574",
+   "cuando": "2026-10-14T21:45:43"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Vacile🇪🇸",
+   "quien": "hbrsg_",
+   "discord_id": "885365894606381068",
+   "msg_id": "1560045933331349635",
+   "cuando": "2026-10-14T21:45:34"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Frenético 🇨🇺",
+   "quien": "zeretdshomski",
+   "discord_id": "718538903472046130",
+   "msg_id": "1560045923365822607",
+   "cuando": "2026-10-14T21:45:32"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1560045893766615183",
+   "cuando": "2026-10-14T21:45:25"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "kochi🇨🇱",
+   "quien": "ricardocortes0758",
+   "discord_id": "1357885526404894870",
+   "msg_id": "1560045883591098489",
+   "cuando": "2026-10-14T21:45:22"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Motera",
+   "quien": "1ortiz.",
+   "discord_id": "554307478326738946",
+   "msg_id": "1560045852079427649",
+   "cuando": "2026-10-14T21:45:15"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "SHADOW 🇨🇴",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1560045838879821875",
+   "cuando": "2026-10-14T21:45:12"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Ortiz🇪🇸",
+   "quien": "hbrsg_",
+   "discord_id": "885365894606381068",
+   "msg_id": "1560045829811609651",
+   "cuando": "2026-10-14T21:45:10"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
