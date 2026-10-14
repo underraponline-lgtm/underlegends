@@ -150,6 +150,12 @@
 .db-dec-sec ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .db-dec-sec li{display:grid;gap:6px;padding:10px 12px;border-left:4px solid var(--magenta);background:var(--caja)}
 .db-dec-sec li.db-dec-hecha{border-left-color:var(--verde)}
+/* ❔ qué se pregunta y qué hace cada respuesta (13/10/2026) */
+.db-dec-ayuda{margin:0;padding:6px 10px;border-left:3px solid var(--verde);background:var(--fondo);font-size:13.5px;line-height:1.4}
+.db-dec-hace{font-size:13px;color:var(--gris)}
+.db-dec-hace summary{cursor:pointer;font-weight:600;color:var(--tinta)}
+.db-dec-hace ul{margin:6px 0 0;padding-left:18px;display:grid;gap:3px}
+.db-dec-hace b{color:var(--tinta);font-weight:700}
 /* 🏆 la llave al costado de cada evento (13/10/2026): a la derecha en la compu, debajo en el celular */
 .db-dec-cuerpo{display:grid;gap:10px;align-items:start}
 @media (min-width:1000px){.db-dec-cuerpo{grid-template-columns:minmax(0,1fr) 340px}.db-dec-llave{position:sticky;top:12px}}

@@ -926,9 +926,10 @@ const ok = (cond, que, det) => {
     const s2 = o.semanal('100000009', true, martes);
     const cobrado = o.sql.exec("SELECT COALESCE(SUM(monto), 0) AS n FROM tienda WHERE quien = '100000009'").toArray()[0].n;
     const nadie = o.semanal('100000010', false, martes);
-    ok(s0.dias === 3 && s0.monto === 200 && !s0.cobrado && s1.cobrado && s2.cobrado && cobrado === 200
+    // 🔥 desde el 13/10/2026 ya no paga: lo reemplaza la racha, día por día (Dlx: «La racha lo reemplaza»)
+    ok(s0.dias === 3 && s0.monto === 200 && !s0.cobrado && !s1.cobrado && !s2.cobrado && cobrado === 0
       && nadie.monto === 50 && s0.semana === '2026-10-12' && s0.proximo === '2026-10-19',
-    'el premio de la semana: los días distintos de la semana pasada (el lunes de ésta no), y tocar dos veces paga una',
+    'el premio de la semana ya no se cobra: lo paga la racha (cuenta igual los días de la semana pasada)',
     JSON.stringify([s0, s1, cobrado]));
     // 📣 los reportes de las llaves, con acciones (13/10/2026, Dlx: «Sí, todas»)
     const V = A.validarDecisionReporte;
@@ -1516,15 +1517,40 @@ const ok = (cond, que, det) => {
     const hace = (i) => A.diaET(Date.now() - i * 86400000);
     for (const i of [14, 13, 12, 11, 10, 9, 8, 6, 5, 4, 3, 2, 1, 0]) sql.exec('INSERT INTO activo (quien, dia) VALUES (?, ?)', DANI, hace(i));
     sql.exec("INSERT INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, 500, 1)", 'racha:' + DANI + ':' + hace(14) + ':7', DANI);
-    o.premiarRacha(DANI);
-    const antes = tienda(DANI).length;
+    // 🔥 desde el 13/10/2026 la racha paga por día y por hito (14 y 30 días), no cada 7: con 15 seguidos, el de 14 una vez
     sql.exec('INSERT INTO activo (quien, dia) VALUES (?, ?)', DANI, hace(7));
     o.premiarRacha(DANI);
-    ok(antes === 2 && tienda(DANI).length === 2 && o.rachaDe(DANI).racha.actual === 15,
-      'dos rachas de 7 que se unen en una de 15: dos premios, no tres', JSON.stringify(tienda(DANI)));
-    for (let i = 1; i <= 6; i++) sql.exec('INSERT OR IGNORE INTO activo (quien, dia) VALUES (?, ?)', DANI, hace(14 + i));
     o.premiarRacha(DANI);
-    ok(tienda(DANI).length === 3, 'y si sigue hasta 21, el tercero sí');
+    const hitos = tienda(DANI).filter((x) => String(x.id).startsWith('rhito:'));
+    ok(o.rachaDe(DANI).racha.actual === 15 && hitos.length === 1 && hitos[0].monto === 500,
+      'la racha de 15: el hito de 14 días paga 500, una sola vez', JSON.stringify(tienda(DANI)));
+    // 🔥 el premio de hoy: se cobra una vez, y lo que paga es el del día de la semana
+    const rd = o.rachaDe(DANI);
+    const hoyP = rd.premios.find((x) => x[0] === rd.hoy);
+    const c1 = o.cobrarDia(DANI), c2 = o.cobrarDia(DANI);
+    const dias = tienda(DANI).filter((x) => String(x.id).startsWith('rdia:'));
+    ok(rd.premios.length === 7 && hoyP && hoyP[3] === 1 && c1.cobrado === hoyP[1] && c2.error === 'ya' && dias.length === 1
+      && A.RACHA_DIA.includes(hoyP[1]),
+    'el premio de hoy de la racha: se cobra una vez, y es el de ese día de la semana', JSON.stringify([hoyP, c1.cobrado, c2.error]));
+    // 🌱 la bienvenida: alguien que entró por primera vez hoy, un paso por día, y cada uno pide lo suyo
+    const NUEVO = '555555555555555555';
+    sql.exec('INSERT INTO activo (quien, dia) VALUES (?, ?)', NUEVO, hace(0));
+    const b0 = await o.bienvenidaDe(NUEVO);
+    const cb1 = await o.cobrarBienvenida(NUEVO);
+    const cb2 = await o.cobrarBienvenida(NUEVO);
+    const relojB = Date.now;
+    Date.now = () => relojB() + 86400000;
+    let cb3, cb4;
+    try {
+      cb3 = await o.cobrarBienvenida(NUEVO);
+      sql.exec('INSERT INTO sigue (quien, a, t) VALUES (?, ?, ?)', NUEVO, 'snow', Date.now());
+      cb4 = await o.cobrarBienvenida(NUEVO);
+    } finally { Date.now = relojB; }
+    const viejo = await o.bienvenidaDe(DANI);
+    ok(b0 && b0.paso === 0 && b0.hecha && cb1.cobrado === 200 && cb2.error === 'manana' && cb3.error === 'falta'
+      && cb3.pasos[1][1] === 'seguir' && cb4.cobrado === 200 && cb4.paso === 2 && viejo === null,
+    'la bienvenida: el día 1 se cobra, uno por día, el 2 pide seguir a alguien, y quien no es nuevo no la tiene',
+    JSON.stringify([b0, cb1.cobrado, cb2.error, cb3.error, cb4 && cb4.paso, viejo]));
     // 🧠 LOS DATOS DE CADA PERSONA PARA /card, EN EL OBJETO (06/10/2026): se escribe sólo lo que cambió, se borra a
     // quien ya no está, y una lista que perdió más de la mitad no borra nada (es el ciclo, no la gente)
     const gente = Array.from({ length: 30 }, (_, i) => ['p:r' + i, JSON.stringify({ n: 'R' + i, ev: i })]);

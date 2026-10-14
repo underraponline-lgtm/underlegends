@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import { limpio, mult, num, siglaDe, utc } from './liga.js';
 import { Cara, Ico, aDiscord, accion, useCampana } from './piezas.jsx';
 import { avance, usePase } from './pase.js';
-import { useRacha } from './racha.js';
+import { cobrarRacha, useRacha } from './racha.js';
 import { esDoble, eventoDelBoton, ganador, lados, llaveEnVivo, momentosLlave } from './arriba.jsx';
 
 const W = typeof window !== 'undefined' ? window : {};
@@ -167,25 +167,85 @@ async function pedirSemanal(cobrar) {
 // sólo se veía como un 🔥 chiquito en tu barra. Ahora, con el premio de la semana ya cobrado, ocupa su lugar: los siete
 // días de esta semana, cuántos llevás y cuánto falta para los próximos Puntos de Tienda (cada `cada` días, `premio`)
 const LETRAS_DIA = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+// 🔥 LA RACHA CON SU PREMIO DE CADA DÍA (Dlx, 13/10/2026: «que este daily streak tenga sus propias recompensas», y «La racha
+// lo reemplaza» al premio de la semana). Los siete días de esta semana con lo que paga cada uno; el de hoy se cobra con un
+// toque (si no, se pierde: no se cobra después) y el domingo es un cofre si entraste 5 días. Ver `RACHA_DIA` en avisos.js
 function Racha({ R }) {
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
   const r = (R && R.racha) || {};
-  const sem = (R && R.semana) || [];
-  if (!sem.length) return null;
+  const ps = (R && R.premios) || [];
+  if (!ps.length) return null;
   const actual = r.actual || 0;
+  const hoy = ps.find((x) => x[0] === R.hoy);
+  const cobrar = async () => {
+    setOcup(true); setMsg('');
+    const d = await cobrarRacha('dia').catch(() => null);
+    setMsg(d && d.cobrado ? '+' + num(d.cobrado) + ' Puntos de Tienda' : 'No se pudo: probá de nuevo.');
+    setOcup(false);
+  };
   return (
-    <a className="lb-racha" href="#/pase">
-      <span className="lb-racha-n"><Ico n="fuego" t={26} /><b>{actual}</b></span>
-      <span className="lb-racha-tx"><b>{actual === 1 ? '1 DÍA SEGUIDO' : actual + ' DÍAS SEGUIDOS'}</b>
-        <small>{R.premio && R.falta ? 'En ' + (R.falta === 1 ? '1 día' : R.falta + ' días') + ' cobrás ' + num(R.premio) + ' Puntos de Tienda'
-          : 'Entrá todos los días: la página, el bot o un evento'}{r.maxima > actual ? ' · tu mejor: ' + r.maxima : ''}</small></span>
-      <span className="lb-semana" aria-label="Esta semana">{sem.map(([d, si], i) => (
-        <i key={d} className={(si ? 'si' : '') + (d === R.hoy ? ' hoy' : '') + (d > R.hoy ? ' luego' : '')} title={d}>
-          {si ? <Ico n="fuego" t={14} /> : LETRAS_DIA[i]}</i>
-      ))}</span>
-    </a>
+    <section className="lb-racha" aria-label="Tu racha">
+      <div className="lb-racha-cab">
+        <span className="lb-racha-n"><Ico n="fuego" t={26} /><b>{actual}</b></span>
+        <span className="lb-racha-tx"><b>{actual === 1 ? '1 DÍA SEGUIDO' : actual + ' DÍAS SEGUIDOS'}</b>
+          <small>{R.hito ? 'A los ' + R.hito[0] + ' días: +' + num(R.hito[1]) : 'Entrá todos los días: la página, el bot o un evento'}
+            {r.maxima > actual ? ' · tu mejor: ' + r.maxima : ''}</small></span>
+        {hoy && hoy[3] ? <button type="button" className="btn verde chico" disabled={ocup} onClick={cobrar}>{ocup ? '…' : 'Cobrar ' + num(hoy[1])}</button>
+          : msg ? <small className="lb-racha-ok" role="status">{msg}</small> : null}
+      </div>
+      <ol className="lb-premios">{ps.map(([d, monto, cobrado, , cofre], i) => (
+        <li key={d} className={(cobrado ? 'si' : '') + (d === R.hoy ? ' hoy' : '') + (d > R.hoy ? ' luego' : '') + (i === 6 ? ' cofre' : '')}
+          title={i === 6 ? (cofre ? 'Cofre: entraste ' + (R.cofre_dias || 5) + ' días' : 'Cofre si entrás ' + (R.cofre_dias || 5) + ' días de la semana') : d}>
+          <small>{LETRAS_DIA[i]}</small>
+          {cobrado ? <Ico n="ok" t={16} /> : <Ico n={i === 6 ? 'premio' : 'moneda'} t={16} />}
+          <b>{num(monto)}</b>
+        </li>
+      ))}</ol>
+      {ps[6] && !ps[6][4] && !ps[6][2] ? <small className="lb-racha-pie">El domingo es un cofre de {num(300)} si entrás {R.cofre_dias || 5} días de la semana.</small> : null}
+    </section>
   );
 }
 
+// 🌱 «TUS PRIMEROS 7 DÍAS» (Dlx, 13/10/2026: «hacer así también uno especial para los nuevos», y «Así, con tareas»): en
+// vez de la racha, la primera semana. Un paso por día; cada uno pide algo chico que enseña una parte de la Liga
+const IR_PASO = { seguir: '#/ranking', campana: '#/avisos', llave: '#/eventos', verificar: '#/cuenta/verificar', anotarse: '#/eventos' };
+function Bienvenida({ B }) {
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  const pasos = B.pasos || [];
+  const ahora = pasos[B.paso];
+  if (!ahora) return null;
+  const cobrar = async () => {
+    setOcup(true); setMsg('');
+    const d = await cobrarRacha('bienvenida').catch(() => null);
+    setMsg(d && d.cobrado ? '+' + num(d.cobrado) + ' Puntos de Tienda. Mañana, el que sigue.' : d && d.error === 'falta' ? 'Primero: ' + ahora[2].toLowerCase() + '.'
+      : d && d.error === 'manana' ? 'Uno por día: volvé mañana.' : 'No se pudo: probá de nuevo.');
+    setOcup(false);
+  };
+  return (
+    <section className="lb-racha lb-bien" aria-label="Tus primeros 7 días">
+      <div className="lb-racha-cab">
+        <span className="lb-racha-n"><Ico n="premio" t={24} /><b>{B.paso + 1}</b><small>/7</small></span>
+        <span className="lb-racha-tx"><b>TUS PRIMEROS 7 DÍAS</b>
+          <small>{B.hoy ? 'Ya cobraste el de hoy: mañana viene el que sigue.' : B.hecha ? 'Listo: cobrá ' + num(ahora[0]) + ' Puntos de Tienda.'
+            : 'Hoy: ' + ahora[2].toLowerCase() + ' y cobrás ' + num(ahora[0]) + '.'}</small></span>
+        {!B.hoy && B.hecha ? <button type="button" className="btn verde chico" disabled={ocup} onClick={cobrar}>{ocup ? '…' : 'Cobrar ' + num(ahora[0])}</button>
+          : !B.hoy && IR_PASO[ahora[1]] ? <a className="btn verde chico" href={IR_PASO[ahora[1]]}>Ir</a> : null}
+      </div>
+      <ol className="lb-premios">{pasos.map(([monto, clave, texto, cobrado], i) => (
+        <li key={clave} className={(cobrado ? 'si' : '') + (i === B.paso ? ' hoy' : '') + (i > B.paso ? ' luego' : '') + (i === 6 ? ' cofre' : '')} title={texto}>
+          <small>{i + 1}</small>
+          {cobrado ? <Ico n="ok" t={16} /> : <Ico n={i === 6 ? 'premio' : 'moneda'} t={16} />}
+          <b>{num(monto)}</b>
+        </li>
+      ))}</ol>
+      {msg ? <small className="lb-racha-ok" role="status">{msg}</small> : null}
+    </section>
+  );
+}
+
+// eslint-disable-next-line no-unused-vars
 function PremioSemanal({ dc, R }) {
   const [st, setSt] = useState(null);
   const [ocup, setOcup] = useState(false);
@@ -516,7 +576,8 @@ export function Lobby({ liga, dc }) {
   return (
     <section className="lobby" aria-label="Tu lobby">
       <TuBarra liga={liga} dc={dc} P={P} R={R} saldo={saldo} />
-      <PremioSemanal dc={dc} R={R} />
+      {/* 🔥 la racha (o 🌱 la bienvenida, si sos nuevo) reemplaza al premio de la semana (Dlx: «La racha lo reemplaza») */}
+      {dc && R ? (R.bienvenida ? <Bienvenida B={R.bienvenida} /> : <Racha R={R} />) : null}
       <ElBoton liga={liga} />
       <PedirCampana liga={liga} dc={dc} />
       <Rival liga={liga} dc={dc} />

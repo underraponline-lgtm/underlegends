@@ -1434,6 +1434,44 @@ async function contestarDecidir(cuerpo) {
 }
 export const sinContestar = (dec) => ((dec && dec.preguntas) || []).filter((p) => !((dec.respuestas || {})[p.id])).length;
 
+// ❔ QUÉ SE PREGUNTA Y QUÉ HACE CADA RESPUESTA (Dlx, 13/10/2026: «¿cómo lo resuelvo yo? ¿qué pongo?… que se pueda
+// resolver bien y que se entienda bien»). Una línea por tipo, en palabras, y debajo de los botones lo que hace cada uno
+const QUE_ES = {
+  'Bracket incompleto': 'La llave no dice quién ganó y nadie la terminó. Si sabés quién salió campeón, tocá «Ganó…». Si era de prueba o no se jugó, «No cuenta».',
+  'Batalla sin ganador': 'La llave no dice quién ganó esta batalla. Elegí al que pasó; si nadie siguió (no se presentó o lo reemplazaron), «Nadie siguió».',
+  'Evento dudoso': 'Algo de este evento no le cierra al bot. Mirá la llave al costado: si está bien así, confirmalo; si no, marcalo para revisar.',
+  'Nombre desconocido': 'Este nombre está en una llave y el bot no sabe de quién es. Elegí la cuenta, escribí quién es, o marcalo como nuevo.',
+  'Alias posible': 'Una misma cuenta de Discord usó dos nombres. Decí si son la misma persona: así suma todo junto.',
+  'alta': 'Alguien que no está en la Lista apareció en el bot. Si es alguien nuevo de verdad, sumalo; si no, cerralo.',
+  'conflicto': 'Una cuenta de Discord apareció con un nombre que en la Lista ya tiene otra cuenta. Revisalo y cerralo.',
+  'ambiguo': 'Esta cuenta se parece a más de una persona de la Lista.',
+  'Vidas cargado': 'El bot cargó solo un 5 vidas desde #veredictos. Confirmá que está bien o sacalo.',
+  'Evento duplicado': 'El mismo evento quedó cargado dos veces. Si es el mismo, se saca el repetido.',
+  'Llave sin resolver': 'El bot no pudo leer esta llave.',
+};
+const HACE = [
+  [/^No cuenta$/, 'la llave no suma nada, para nadie.'],
+  [/^Sí cuenta$/, 'la llave suma como cualquier evento.'],
+  [/^La completo en Discord$/, 'la editás (o el organizador) en Discord con quién ganó, y el bot la lee sola en la próxima vuelta.'],
+  [/^Ganó /, 'ése gana (o sale campeón) y el resto queda como está en la llave.'],
+  [/^Pasó /, 'ése pasa de ronda y los otros quedan afuera.'],
+  [/^Nadie siguió/, 'todos cobran esa ronda, nadie pasa y no cuenta como duelo.'],
+  [/^No se jugó$/, 'la batalla se borra: nadie cobra ni suma duelo.'],
+  [/^Dejar para después$/, 'queda para otro día, sin cambiar nada.'],
+  [/^Está bien así$/, 'el bot deja todo como lo leyó.'],
+  [/^Hay que revisarlo$/, 'queda marcado para revisarlo a mano.'],
+  [/^Es la misma persona$/, 'une los dos nombres: los puntos y la tarjeta van juntos.'],
+  [/^Es otra persona$/, 'quedan separados y no se vuelve a preguntar.'],
+  [/^Es alguien nuevo$/, 'lo cuenta como una persona nueva.'],
+  [/^Es un troll/, 'ese nombre no suma nada.'],
+  [/^Es la cuenta /, 'ese nombre es de esa cuenta de Discord: suma a su persona.'],
+  [/^Es /, 'ese nombre es de esa persona de la Lista.'],
+  [/^(Ya está resuelto|Ya lo revisé)$/, 'sólo cierra la pregunta.'],
+  [/^Sí, es el mismo/, 'se saca el repetido y queda uno solo.'],
+  [/^No, son eventos distintos$/, 'quedan los dos.'],
+];
+const haceQue = (o) => (HACE.find(([re]) => re.test(o)) || [0, ''])[1];
+
 function Pregunta({ p, r, alListo, marcada, alMarcar }) {
   const [libre, setLibre] = useState('');
   const [nota, setNota] = useState((r && r.nota) || '');
@@ -1451,6 +1489,7 @@ function Pregunta({ p, r, alListo, marcada, alMarcar }) {
         {!r && alMarcar ? <label className="db-marca"><input type="checkbox" checked={!!marcada} onChange={() => alMarcar(p.id)} aria-label="Elegir para contestar junto con otras" /></label> : null}
         <span className="db-chip">{p.tipo}</span></div>
       <p className="db-dec-que">{p.que}</p>
+      {QUE_ES[p.tipo] && !r ? <p className="db-dec-ayuda">{QUE_ES[p.tipo]}</p> : null}
       {p.pistas && p.pistas !== '—' ? <p className="db-dec-pistas">{p.pistas}</p> : null}
       {r ? (
         <div className="cu-btns">
@@ -1458,7 +1497,11 @@ function Pregunta({ p, r, alListo, marcada, alMarcar }) {
           <button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => mandar({ borrar: true })}>Deshacer</button>
         </div>
       ) : <>
-        <div className="db-opc">{p.opciones.map((x) => <button key={x} type="button" disabled={ocup} onClick={() => mandar({ r: x, nota })}>{x}</button>)}</div>
+        <div className="db-opc">{p.opciones.map((x) => <button key={x} type="button" disabled={ocup} title={haceQue(x)} onClick={() => mandar({ r: x, nota })}>{x}</button>)}</div>
+        {p.opciones.some(haceQue) ? (
+          <details className="db-dec-hace"><summary>Qué hace cada respuesta</summary>
+            <ul>{p.opciones.filter(haceQue).map((x) => <li key={x}><b>{x}</b>: {haceQue(x)}</li>)}</ul>
+          </details>) : null}
         {p.libre ? (
           <div className="db-rep-q"><label>Es otro de la Lista:
             <input type="text" value={libre} placeholder="su nombre como figura en la Lista" maxLength={56} onChange={(e) => setLibre(e.target.value)} />

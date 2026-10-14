@@ -24,6 +24,20 @@ export function pedirRacha() {
   return pidiendo;
 }
 
+/** 🔥 Cobrar el premio de hoy de la racha (`que: 'dia'`) o el paso de la bienvenida (`'bienvenida'`). Devuelve la racha
+ * nueva (y la deja en `W.RACHA`, con `lg:racha`), con `cobrado` o `error` */
+export async function cobrarRacha(que) {
+  const r = await fetch('/api/avisos/racha', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ cobrar: que }) });
+  const d = await r.json().catch(() => null);
+  if (d && d.racha && d.nivel) {
+    W.RACHA = d;
+    try { W.dispatchEvent(new Event('lg:racha')); } catch (e) { /* sin aviso */ }
+    // el saldo de tu barra se actualiza (avisa `lg:precios`)
+    if (typeof W.pedirBilletera === 'function') { try { W.pedirBilletera(); } catch (e) { /* sin saldo */ } }
+  }
+  return d;
+}
+
 /** Tu racha, si `activo` (entraste con Discord). Se vuelve a pedir si cambia quién sos */
 export function useRacha(activo) {
   const [d, setD] = useState(() => W.RACHA || null);

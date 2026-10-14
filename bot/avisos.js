@@ -1631,6 +1631,23 @@ export async function anotarUso(env, quien, por) {
 // Un día cuenta si usaste el bot, hiciste algo en la página con tu cuenta o jugaste un evento. Las reglas y los
 // números viven en `bot/racha.py` y llegan con lo del precio por cabeza (`racha_cfg`); estos son los de arranque.
 export const RACHA_CFG = { cada: 7, premio: 500, xp_ev: 10, xp_dia: 2, paso: 10, desde: 0 };
+
+// 🔥 LA RACHA CON SU PREMIO DE CADA DÍA (Dlx, 13/10/2026: «que este daily streak tenga sus propias recompensas… y hacer
+// así también uno especial para los nuevos»; a la propuesta, «La racha lo reemplaza» —al premio de la semana— y «Así, con
+// tareas»). De lunes a domingo, en el este: cada día que entrás cobrás el de ese día —el que no se cobró ese día, no se
+// cobra después— y el domingo es un cofre si entraste al menos `COFRE_DIAS` días de la semana (si no, paga como el
+// sábado). Junta lo que pagaban el premio de la semana (hasta 400) y el de la racha cada 7 días (500): una semana entera
+// son 900, igual que antes, pero se cobra de a un día. Sin azar: el azar entra cuando Dlx diga
+export const RACHA_DIA = [50, 50, 100, 100, 150, 150, 300];
+export const COFRE_DIAS = 5;
+//: los hitos de una racha, una vez por racha (se cobran solos, y avisan a la campana)
+export const RACHA_HITOS = [[14, 500], [30, 1000]];
+// 🌱 «TUS PRIMEROS 7 DÍAS»: en vez de la racha, para quien entró por primera vez hace menos de `BIENVENIDA_DIAS` días. Siete
+// pasos, uno por día como mucho, cada uno con algo chico que hacer —es el tutorial, con premio— y más grandes que la racha
+export const BIENVENIDA = [[200, 'entrar', 'Entrá a la Liga'], [200, 'seguir', 'Seguí a un rapero'],
+  [300, 'campana', 'Activá la campana de avisos'], [300, 'llave', 'Mirá una llave en vivo'], [400, 'verificar', 'Verificate'],
+  [400, 'anotarse', 'Anotate a un evento'], [500, 'listo', 'Completá tu primera semana']];
+export const BIENVENIDA_DIAS = 14;
 // 🎟️ lo que el Pase sabe contar: el «qué mide» de cada Tarea (`MIDE` en `bot/pase.py`). `dra` (eventos jugados en
 // DRA) y `caza` (buscados cazados) los manda el ciclo; los días (`activo`), las felicitaciones y las llaves en vivo
 // (`pase_log`) y los precios (`precios`) los ve pasar el objeto
@@ -3729,8 +3746,9 @@ export async function rutaAvisos(req, env, ruta) {
     }
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
+    const cobrar = d.cobrar === 'dia' || d.cobrar === 'bienvenida' ? d.cobrar : undefined;
     return elObjeto(env).fetch('https://avisos/racha', {
-      method: 'POST', body: JSON.stringify({ quien: q.id }), headers: { 'content-type': 'application/json' },
+      method: 'POST', body: JSON.stringify({ quien: q.id, cobrar }), headers: { 'content-type': 'application/json' },
     });
   }
   // 🎟️ EL PASE: el tuyo (pedirlo ya revisa tus Tareas) y «miré una llave en vivo», con tu sesión. ⚠️ Nunca por el
@@ -4708,7 +4726,14 @@ export class Avisos {
       }
       if (ruta === '/racha') {
         if (!/^[0-9]{5,25}$/.test(String(d.quien || ''))) return json({ error: 'falta quién' }, 400);
-        return json(this.rachaDe(String(d.quien)));
+        const q = String(d.quien);
+        // 🔥 cobrar el de hoy, o 🌱 el paso de la bienvenida (13/10/2026)
+        if (d.cobrar === 'bienvenida') {
+          const b = await this.cobrarBienvenida(q);
+          return json(Object.assign(this.rachaDe(q), { bienvenida: b && !b.error ? b : (b && b.error === 'no' ? null : b), cobrado: b && b.cobrado, error: b && b.error }));
+        }
+        const r = d.cobrar === 'dia' ? this.cobrarDia(q) : this.rachaDe(q);
+        return json(Object.assign(r, { bienvenida: await this.bienvenidaDe(q) }));
       }
       if (ruta === '/pase') {
         if (!/^[0-9]{5,25}$/.test(String(d.quien || ''))) return json({ error: 'falta quién' }, 400);
@@ -8780,7 +8805,8 @@ export class Avisos {
     const monto = montoSemanal(dias);
     const id = 'semana:' + lun + ':' + quien;
     let ya = !!this.sql.exec('SELECT 1 AS x FROM tienda WHERE id = ?', id).toArray()[0];
-    if (cobrar && !ya) {
+    // 🔥 YA NO SE COBRA (13/10/2026, Dlx: «La racha lo reemplaza»): lo paga la racha, día por día (`RACHA_DIA`)
+    if (cobrar && !ya && false) {
       this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', id, quien, monto, ahora);
       ya = true;
     }
@@ -8800,8 +8826,67 @@ export class Avisos {
     // 🔥 `semana`: los siete días de esta semana (lunes a domingo, en el este), entrados o no, para el Inicio (13/10/2026)
     const hoy = diaET(), lun = lunesDe(hoy), set = new Set(dias);
     const semana = [0, 1, 2, 3, 4, 5, 6].map((i) => { const d = masDias(lun, i); return [d, set.has(d) ? 1 : 0]; });
+    // y lo que paga cada día (`RACHA_DIA`): [día, monto, cobrado, se puede cobrar ahora, es cofre]
+    const entrados = semana.filter((x) => x[1]).length;
+    const premios = semana.map(([d, si], i) => {
+      const cofre = i === 6 && entrados >= COFRE_DIAS;
+      const monto = i === 6 && !cofre ? RACHA_DIA[5] : RACHA_DIA[i];
+      const cobrado = !!this.sql.exec('SELECT 1 AS x FROM tienda WHERE id = ?', 'rdia:' + d + ':' + quien).toArray()[0];
+      return [d, monto, cobrado ? 1 : 0, d === hoy && si && !cobrado ? 1 : 0, cofre ? 1 : 0];
+    });
+    const sigHito = RACHA_HITOS.find(([n]) => n > r.actual) || null;
     return { racha: r, eventos, nivel: nivelDeXp(eventos * c.xp_ev + r.total * c.xp_dia, c.paso),
-      cada: c.cada, premio: c.premio, falta: c.cada - (r.actual % c.cada), xp_ev: c.xp_ev, xp_dia: c.xp_dia, hoy, semana };
+      cada: c.cada, premio: c.premio, falta: c.cada - (r.actual % c.cada), xp_ev: c.xp_ev, xp_dia: c.xp_dia, hoy, semana,
+      premios, cofre_dias: COFRE_DIAS, hito: sigHito };
+  }
+
+  /** 🔥 Cobrar el premio de hoy. Estar en la página ya es entrar: el día se anota primero */
+  cobrarDia(quien) {
+    const hoy = diaET();
+    this.diaActivo(quien, hoy);
+    const x = this.rachaDe(quien);
+    const p = x.premios.find((y) => y[0] === hoy);
+    if (!p || p[2]) return Object.assign(x, { error: p && p[2] ? 'ya' : 'no' });
+    this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', 'rdia:' + hoy + ':' + quien, quien, p[1], Date.now());
+    return Object.assign(this.rachaDe(quien), { cobrado: p[1] });
+  }
+
+  /**
+   * 🌱 La bienvenida de alguien, o `null` si no es nuevo (su primer día fue hace `BIENVENIDA_DIAS` o más) o ya la
+   * terminó. `{paso, pasos: [[monto, clave, texto, cobrado]], hecha, hoy}`: `paso` es el que sigue, `hecha` si ya hizo
+   * lo que pide, `hoy` si ya cobró uno hoy (uno por día).
+   */
+  async bienvenidaDe(quien) {
+    const hoy = diaET();
+    const pri = (this.sql.exec('SELECT MIN(dia) AS d FROM activo WHERE quien = ?', quien).toArray()[0] || {}).d;
+    if (!pri || pri < masDias(hoy, -(BIENVENIDA_DIAS - 1))) return null;
+    const filas = this.sql.exec('SELECT id, t FROM tienda WHERE quien = ? AND id LIKE ?', quien, 'bien:' + quien + ':%').toArray();
+    const n = filas.length;
+    if (n >= BIENVENIDA.length) return null;
+    const hoyYa = filas.some((f) => diaET(f.t) === hoy);
+    const clave = BIENVENIDA[n][1];
+    const hay = (sql, ...a) => !!this.sql.exec(sql, ...a).toArray()[0];
+    let hecha = true;
+    if (clave === 'seguir') hecha = hay('SELECT 1 AS x FROM sigue WHERE quien = ? LIMIT 1', quien);
+    else if (clave === 'campana') hecha = hay('SELECT 1 AS x FROM subs WHERE quien = ? LIMIT 1', quien);
+    else if (clave === 'llave') hecha = hay('SELECT 1 AS x FROM pase_vivo WHERE quien = ? LIMIT 1', quien);
+    else if (clave === 'anotarse') hecha = hay('SELECT 1 AS x FROM inscritos WHERE autor_id = ? LIMIT 1', quien);
+    else if (clave === 'verificar') {
+      try { hecha = !!(await this.env.KV.get('d:' + quien)); } catch (e) { hecha = false; }
+    }
+    return { paso: n, pasos: BIENVENIDA.map(([m, k, t], i) => [m, k, t, i < n ? 1 : 0]), hecha, hoy: hoyYa };
+  }
+
+  /** 🌱 Cobrar el paso que sigue de la bienvenida: hecho lo que pide, y uno por día */
+  async cobrarBienvenida(quien) {
+    this.diaActivo(quien, diaET());
+    const b = await this.bienvenidaDe(quien);
+    if (!b) return { error: 'no' };
+    if (b.hoy) return Object.assign(b, { error: 'manana' });
+    if (!b.hecha) return Object.assign(b, { error: 'falta' });
+    const [monto] = BIENVENIDA[b.paso];
+    this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', 'bien:' + quien + ':' + (b.paso + 1), quien, monto, Date.now());
+    return Object.assign((await this.bienvenidaDe(quien)) || { terminada: true }, { cobrado: monto });
   }
 
   /**
@@ -8810,6 +8895,26 @@ export class Avisos {
    * a arrancar tiene otro inicio y vuelve a pagar desde el primero.
    */
   premiarRacha(quien) {
+    // 🔥 DESDE EL 13/10/2026 LA RACHA PAGA POR DÍA (`cobrarDia()`) Y POR HITO, no cada 7 días: ver `RACHA_DIA`
+    return this.hitosRacha(quien);
+  }
+
+  /** 🔥 Los hitos de la racha de ahora (`RACHA_HITOS`), una vez por racha, con su aviso. */
+  hitosRacha(quien) {
+    const { racha } = this.rachaDe(quien);
+    if (!racha.inicio) return;
+    const ahora = Date.now();
+    for (const [n, monto] of RACHA_HITOS) {
+      if (racha.actual < n) continue;
+      const id = 'rhito:' + quien + ':' + racha.inicio + ':' + n;
+      if (this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', id, quien, monto, ahora).rowsWritten) {
+        this.aBandeja(quien, id, 'racha', '🔥 ¡' + n + ' días seguidos!', '+' + monto + ' Puntos de Tienda. Seguí así.', HUB + '/', '', ahora);
+      }
+    }
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  premiarRachaViejo(quien) {
     const c = this.rachaCfg();
     const { racha } = this.rachaDe(quien);
     if (!racha.inicio || !(c.cada > 0) || !(c.premio > 0)) return;
