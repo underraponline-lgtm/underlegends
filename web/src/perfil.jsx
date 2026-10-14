@@ -749,6 +749,32 @@ function Duelos({ liga, p, e }) {
 }
 
 // ── Insignias y su cacería ──
+// 🏟️ SUS LIGAS (ForceGP, 14/10/2026, por Dlx: «no sale mis partes»): las ligas de los servidores donde juega, con su
+// puesto y su récord. Sale de lo que ya viaja en el lobby (`ligas`, con el perfil de cada nombre en `ks`): sirve también
+// para el staff que no juega eventos y sí ligas
+export function SusLigas({ liga, k, esYo }) {
+  const ls = ((liga.d.ligas || {}).ligas) || [];
+  const mias = [];
+  for (const L of ls) {
+    const i = (L.tabla || []).findIndex(([raw]) => ((L.ks || {})[raw] || (liga.fila(raw) || {}).k) === k);
+    if (i >= 0) mias.push([L, i, L.tabla[i]]);
+  }
+  if (!mias.length) return null;
+  return (
+    <section className="sec pf-sec pf-ligas">
+      <div className="sec-t"><h2>{esYo ? 'Tus ligas' : 'Sus ligas'}</h2><a href="#/ranking/ligas">Ligas <Ico n="flecha" t={16} /></a></div>
+      <ul className="pf-lg">{mias.map(([L, i, [, pj, pg, pts]]) => (
+        <li key={L.id}>
+          <b>{L.n}</b><small>{siglaDe(L.sv)}</small>
+          <span className="pf-lg-p">{i + 1}º de {L.tabla.length}</span>
+          <span>{pg} de {pj} {pj === 1 ? 'ganada' : 'ganadas'} · <b>{pts}</b> pts</span>
+        </li>
+      ))}</ul>
+      <p className="pronto-p">Las batallas de liga suman a {esYo ? 'tus' : 'sus'} duelos (el Ranking Duelos y el Win%); al Score, no.</p>
+    </section>
+  );
+}
+
 // 📰 SUS PUBLICACIONES (Dlx, 13/10/2026: «pon ahí las publicaciones de cada uno que el bot publica también en alguna
 // parte, no todas claramente pero con la opción de ver todas»): las de toda la temporada (`mu`, `muro.de_cada_uno()`),
 // las tres más nuevas y «Ver todas». Las mismas piezas que Publicaciones, con 👏 Felicitar
@@ -866,7 +892,8 @@ export function Perfil({ liga, dc, k: k0, tab }) {
     return (
       <>
         <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} resumen={false} />
-        <section className="sec pf-sec"><p className="pronto-p">No compite esta temporada: está en la Liga por su rol.</p></section>
+        <section className="sec pf-sec"><p className="pronto-p">{esYo ? 'No jugaste eventos esta temporada: estás en la Liga por tu rol.' : 'No jugó eventos esta temporada: está en la Liga por su rol.'}</p></section>
+        <SusLigas liga={liga} k={k} esYo={esYo} />
       </>
     );
   }
@@ -885,6 +912,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
           {/* 🎬 arriba, debajo de sus números (Dlx, 12/10/2026: «que esto esté más arriba… debajo de sus números») */}
           <div id="pf-videos"><Videos liga={liga} p={p} k={k} esYo={esYo} dc={dc} /></div>
           <div id="pf-publicaciones"><SusPublicaciones liga={liga} p={p} esYo={esYo} /></div>
+          <SusLigas liga={liga} k={k} esYo={esYo} />
           <Datos liga={liga} p={p} e={P.e} />
           <Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} />
           <div className="pf-dos">

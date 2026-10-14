@@ -15,14 +15,18 @@ export function Ligas({ liga }) {
   if (!ls.length) return null;
   const L = ls[Math.min(sel, ls.length - 1)];
   const yo = liga.yo;
-  const esYo = (raw) => !!yo && liga.esDe(raw, yo.k);
+  // 🔑 el perfil de cada nombre: el de la tabla del lobby, y si no está ahí, el que manda el ciclo (`ks`, 14/10/2026:
+  // ForceGP es staff, no está entre los que jugaron eventos, y «le pico donde dice FORCE y no me lleva a nada»)
+  const kDe = (raw) => { const f = liga.fila(raw); return f ? f.k : ((L.ks || {})[raw] || ''); };
+  const miK = (window.DC && window.DC.clave) || (yo && yo.k) || '';
+  const esYo = (raw) => (!!yo && liga.esDe(raw, yo.k)) || (!!miK && kDe(raw) === miK);
   const nombre = (raw, cls) => {
-    const f = liga.fila(raw);
-    return f ? <a className={cls} href={'#/r/' + encodeURIComponent(f.k)}>{limpio(raw)}</a> : <span className={cls}>{limpio(raw)}</span>;
+    const k = kDe(raw);
+    return k ? <a className={cls} href={'#/r/' + encodeURIComponent(k)}>{limpio(raw)}</a> : <span className={cls}>{limpio(raw)}</span>;
   };
   const cara = (raw) => {
-    const f = liga.fila(raw);
-    return f ? <Cara liga={liga} k={f.k} nombre={f.n} cls="cara dv-cara" /> : <span className="cara dv-cara ini">{limpio(raw).slice(0, 1).toUpperCase()}</span>;
+    const k = kDe(raw);
+    return k ? <Cara liga={liga} k={k} nombre={raw} cls="cara dv-cara" /> : <span className="cara dv-cara ini">{limpio(raw).slice(0, 1).toUpperCase()}</span>;
   };
   return (
     <div className="dv lgs">

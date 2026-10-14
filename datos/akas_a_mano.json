@@ -138,7 +138,8 @@
   "   Dlx preguntó si eran dos —Dante y Delux—: es UNA cuenta, @delux.13 (729809358627536938, la de Delux en la",
   "   Lista), con nombre «dante» y apodo «Delux» en FFA y DRA y «Dante Delux» en Snake Rap; se anotó así y el bot",
   "   ya la había reconocido. NO es Deluxe 🇦🇷 (@.jeluxe, de SR) ni Dantemx 🇲🇽 (@danteshemc).",
-  "🆚 FVS, Dlx 12/10/2026 («3. A, b, b, b»): en FVS «Agustin» —«Agustin 51 🇨🇱🇵🇪» en su lista de FVS UNDER— es AGUSTÍN51K, no Agus; «Draax»/«Draxx 🇨🇱» es Drexx (no una persona nueva); «Joaco»/«Joacoflz» es Joaco Zeo; y «Force 🇲🇽» NO es ForceGP (`no_confundir`)."
+  "🆚 FVS, Dlx 12/10/2026 («3. A, b, b, b»): en FVS «Agustin» —«Agustin 51 🇨🇱🇵🇪» en su lista de FVS UNDER— es AGUSTÍN51K, no Agus; «Draax»/«Draxx 🇨🇱» es Drexx (no una persona nueva); «Joaco»/«Joacoflz» es Joaco Zeo; y «Force 🇲🇽» NO es ForceGP (`no_confundir`).",
+  "🏟️ URBF, 14/10/2026: en las ligas FMH de Urban «FORCE»/«FORCÉ»/«Force» es ForceGP 🇲🇽 (884190151180447744): él mismo («le pico donde dice FORCE y no me lleva a nada»), y Dlx pasó su ID («este es el ID de force»). Y «Agustín»/«AGUSTIN» es AGUSTÍN51K 🇨🇱, no Agus 🇦🇷: ForceGP («es el Agustin51… es uno chileno»), Dlx («hay 3 agustins»: el chileno, el uruguayo —EIDP— y el argentino), y en el mismo canal de FMH Carimex hay una batalla escrita «AGUSTIN51K vs BENJA» (30/08). ⚠️ Es POR SERVIDOR: en FVS el «Force 🇲🇽» sigue sin ser ForceGP (`no_confundir`). Ninguna llave de URBF de la T1 tiene esos nombres (la #464 dice «Agus»): hoy sólo mueve las ligas, que lo leen desde el 14/10 (`ligas.por_servidor()`)."
  ],
  "cuentas": {
   "Monet": [
@@ -388,6 +389,12 @@
    "Draxx": "Drexx",
    "Joaco": "Joaco Zeo",
    "Joacoflz": "Joaco Zeo"
+  },
+  "URBF": {
+   "Agustin": "AGUSTÍN51K",
+   "Agustin 51": "AGUSTÍN51K",
+   "AGUSTIN51K": "AGUSTÍN51K",
+   "FORCE": "ForceGP"
   }
  }
 }

@@ -679,7 +679,8 @@ def armar():
         'mis': _mis(),
         # 🏟️ LAS LIGAS DE LOS SERVIDORES (12/10/2026, Dlx: «2. Me gusta»): la tabla de cada una y sus últimos resultados.
         # Ver `bot/ligas.py`
-        'ligas': _ligas(),
+        # 🏟️ con el perfil de cada nombre: el de los que jugaron y el del staff (ForceGP, 14/10/2026)
+        'ligas': _ligas({**{x['raw']: x['k'] for x in _staff}, **{p['raw']: _clave(p) for p in todos if p.get('raw')}}),
         # 📅 QUIÉNES ORGANIZAN EN CADA SERVIDOR (12/10/2026, Dlx «5. A»: «uno donde diga cuándo cada sv organiza
         # usualmente y quiénes»). El cuándo ya lo saca la página del calendario; el quiénes, de acá. Ver `_agenda()`
         'agenda': _agenda(),
@@ -2791,11 +2792,12 @@ def _agenda():
         return None
 
 
-def _ligas():
-    """🏟️ Las ligas de los servidores (`bot/ligas.py`), o `None`. Nunca frena el lobby."""
+def _ligas(claves=None):
+    """🏟️ Las ligas de los servidores (`bot/ligas.py`), o `None`. Nunca frena el lobby. `claves`: nombre de la Lista →
+    clave de su perfil, para que cada nombre lleve al suyo (también el staff que no está en la tabla)."""
     try:
         import ligas as _L
-        return _L.para_web()
+        return _L.para_web(claves=claves)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ las ligas no entran al lobby: %s' % str(e)[:120])
         return None

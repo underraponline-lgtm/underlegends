@@ -471,6 +471,14 @@ button.btn{background:transparent;cursor:pointer}
 /* 📰 sus publicaciones, en el perfil (14/10/2026) */
 .pf-pubs .pub-dia{padding-top:4px}
 .pf-pubs-mas{justify-self:start;margin-top:10px}
+/* 🏟️ sus ligas, en el perfil (14/10/2026) */
+.pf-lg{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:8px}
+.pf-lg li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:baseline;padding:10px 12px;border:2px solid var(--linea);background:var(--caja)}
+.pf-lg li > b{font:900 16px/1.2 Archivo,sans-serif}
+.pf-lg li small{grid-column:1;font:700 13px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+.pf-lg-p{grid-column:2;grid-row:1;font:900 16px/1 Archivo,sans-serif}
+.pf-lg li > span:last-child{grid-column:2;grid-row:2;font:600 13px/1.2 Archivo,sans-serif;color:var(--gris);text-align:right}
+.pf-lg li > span:last-child b{color:var(--tinta)}
 /* 🔥 y al lado de tu cuenta, arriba */
 .yo-racha{font:800 13px/1 Archivo,sans-serif;white-space:nowrap}
 /* 🏟️ las divisiones de la semana (04/10/2026). Ver divisiones.jsx: verde sube, rojo baja */

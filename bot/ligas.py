@@ -489,11 +489,34 @@ def correr(aplicar=False):
     return d
 
 
-def para_web(d=None):
-    """Lo de la pestaña «Ligas»: `{t, ligas: [{id, n, sv, j, bat, pend, tabla, ult, link}]}`, o `None` sin nada.
+def por_servidor(ruta=None):
+    """`{sv: {clave del nombre: persona}}`: el nombre que EN ESE SERVIDOR es otra persona que la de la Lista
+    (`datos/akas_a_mano.json`, `por_servidor`), igual que `llaves_a_entrada.otro_en_servidor()` en las llaves.
 
-    `tabla`: `[[nombre, jugadas, ganadas, puntos]]` (los diez primeros); `ult`: las seis últimas con resultado,
-    `[a, b, ganador, directa|replica, jornada]`. Los nombres van por el padrón, así la página los lleva al perfil.
+    🔑 ForceGP, 14/10/2026, mirando FMH Carimex: *«le pico donde dice FORCE y no me lleva a nada»* y *«es un Agustín
+    chileno, no el arg»*. Las ligas resolvían cada nombre con el AKA de TODA la Liga, así que en Urban «Agustín» caía en
+    Agus 🇦🇷 —el AKA global— y no en AGUSTÍN51K 🇨🇱, que es el de ese servidor. `{}` si no hay archivo."""
+    try:
+        with io.open(ruta or os.path.join(BASE, 'datos', 'akas_a_mano.json'), encoding='utf-8') as f:
+            ps = (json.load(f) or {}).get('por_servidor') or {}
+    except (OSError, ValueError):
+        return {}
+    return {sv: {clave(a): p for a, p in (m or {}).items() if clave(a)} for sv, m in ps.items()}
+
+
+def _de_servidor(sv, r, ps):
+    """nombre -> la persona: primero la de ESE servidor (`por_servidor()`), después la de toda la Liga (`r`)."""
+    m = ps.get(sv) or {}
+    return lambda x: m.get(clave(x)) or r(x)
+
+
+def para_web(d=None, claves=None, ps=None):
+    """Lo de la pestaña «Ligas»: `{t, ligas: [{id, n, sv, j, bat, pend, tabla, ult, ks, link}]}`, o `None` sin nada.
+
+    `tabla`: `[[nombre, jugadas, ganadas, puntos]]` (hasta 30); `ult`: las seis últimas con resultado,
+    `[a, b, ganador, directa|replica, jornada]`. Los nombres van por el padrón —y por el AKA de ESE servidor—, así la
+    página los lleva al perfil. `ks`: `{nombre: clave del perfil}` de los que tienen perfil (`claves`: nombre de la
+    Lista → clave), también del staff que no está en la tabla del lobby: sin eso la página no los encontraba (ForceGP).
     ⚠️ Una liga sin batallas no va: ninguna sección se dibuja vacía."""
     d = d if d is not None else leer()
     ls = d.get('ligas') or {}
@@ -501,9 +524,11 @@ def para_web(d=None):
         return None
     try:
         import motor as _MO
-        r, _n = _MO._resolvedor()
+        r0, _n = _MO._resolvedor()
     except Exception:                                    # noqa: BLE001
-        r = lambda x: x                                  # noqa: E731
+        r0 = lambda x: x                                 # noqa: E731
+    ps = por_servidor() if ps is None else ps
+    claves = {clave(k): v for k, v in (claves or {}).items() if clave(k)}
     try:
         with io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8') as f:
             svs = json.load(f).get('servidores') or {}
@@ -516,20 +541,28 @@ def para_web(d=None):
         if not con:
             continue
         L = LIGAS.get(lid) or {}
+        r = _de_servidor(x.get('sv'), r0, ps)
         g = (svs.get(x.get('sv')) or {}).get('guild_id')
+        tb = tabla(bats, r)[:30]
+        ult = [[r(b[3]), r(b[4]), r(b[5]), b[6], b[2]] for b in con[-6:][::-1]]
+        nombres = {f[0] for f in tb} | {n for u in ult for n in u[:3] if n}
+        ks = {n: claves[clave(n)] for n in sorted(nombres) if claves.get(clave(n))}
         out.append({'id': lid, 'n': x.get('n'), 'sv': x.get('sv'), 'j': x.get('jornada'), 'bat': len(con),
                     'pend': len(bats) - len(con), 'ult_t': con[-1][1],
-                    'tabla': tabla(bats, r)[:10],
-                    'ult': [[r(b[3]), r(b[4]), r(b[5]), b[6], b[2]] for b in con[-6:][::-1]],
+                    'tabla': tb, 'ult': ult, 'ks': ks,
                     'link': 'https://discord.com/channels/%s/%s' % (g, L.get('tabla')) if g and L.get('tabla') else ''})
     out.sort(key=lambda x: x['ult_t'], reverse=True)
     return {'t': d.get('t'), 'ligas': out} if out else None
 
 
-def duelos(desde=None, ruta=None):
-    """Para `rankings.agregar()`: `[(instante, a, b, ganador)]` de todas las ligas, con resultado y desde `desde`."""
+def duelos(desde=None, ruta=None, ps=None):
+    """Para `rankings.agregar()`: `[(instante, a, b, ganador)]` de todas las ligas, con resultado y desde `desde`. Con
+    el nombre de ESE servidor (`por_servidor()`): el «FORCE» de Urban es ForceGP y cuenta en sus duelos."""
     out = []
+    ps = por_servidor() if ps is None else ps
     for x in (leer(ruta).get('ligas') or {}).values():
+        sv_m = ps.get(x.get('sv')) or {}
+        de = lambda n: sv_m.get(clave(n)) or n           # noqa: E731
         for _id, t, _j, a, b, gana, como, _ex in x.get('batallas') or []:
             if not gana or (desde and t < desde):
                 continue
@@ -537,7 +570,7 @@ def duelos(desde=None, ruta=None):
                 ti = dt.datetime.fromisoformat(t.replace('Z', '+00:00'))
             except ValueError:
                 continue
-            out.append((ti, a, b, gana))
+            out.append((ti, de(a), de(b), de(gana)))
     return out
 
 
