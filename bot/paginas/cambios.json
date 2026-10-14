@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.04",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T23:28:00-04:00",
+   "titulo": "El Inicio, más para ver",
+   "items": [
+    "🖼️ Las puertas de Eventos, Ranking y Pase ahora muestran algo: los servidores que juegan esta semana, el podio de la Temporada y tus Tareas de hoy."
+   ]
+  },
+  {
    "version": "3.03",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T23:10:00-04:00",
