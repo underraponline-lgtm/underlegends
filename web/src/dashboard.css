@@ -141,6 +141,22 @@
 .db-dec-sec ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .db-dec-sec li{display:grid;gap:6px;padding:10px 12px;border-left:4px solid var(--magenta);background:var(--caja)}
 .db-dec-sec li.db-dec-hecha{border-left-color:var(--verde)}
+/* 🏆 la llave al costado de cada evento (13/10/2026): a la derecha en la compu, debajo en el celular */
+.db-dec-cuerpo{display:grid;gap:10px;align-items:start}
+@media (min-width:1000px){.db-dec-cuerpo{grid-template-columns:minmax(0,1fr) 340px}.db-dec-llave{position:sticky;top:12px}}
+.db-dec-llave{display:grid;gap:8px;max-height:520px;overflow:auto;padding:10px 12px;border:1.5px solid var(--suave);background:var(--fondo);font-size:13px}
+.db-dec-llave h4{margin:0;font:700 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+.db-dec-llave .dl-r{display:grid;gap:4px}
+.db-dec-llave .dl-r>b{font:800 12px/1.2 Archivo,sans-serif;text-transform:uppercase}
+.db-dec-llave ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.db-dec-llave li{display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:4px 6px;border:0;border-left:2px solid var(--suave);background:var(--caja)}
+.db-dec-llave li i{font-style:normal;font-size:11px;color:var(--gris)}
+.db-dec-llave li em{margin-left:auto;font-style:normal;font-size:11px;color:var(--magenta-tx)}
+.dl-l{padding:1px 5px;border:1px solid transparent}
+.dl-l.dl-gano{font-weight:800;border-color:var(--verde)}
+.dl-l.dl-marca{background:var(--magenta);color:#fff}
+.db-dec-llave .dl-pie{margin:0;font-size:11.5px;color:var(--gris)}
+.db-dec-llave .dl-pie a{color:inherit}
 .db-dec-que{margin:0;font-weight:700;font-size:14px;overflow-wrap:anywhere}
 .db-dec-pistas{margin:0;font-size:13px;color:var(--gris);white-space:pre-line;overflow-wrap:anywhere}
 .db-dec .btn:disabled,.db-opc button:disabled{opacity:.45;cursor:not-allowed}

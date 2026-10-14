@@ -5,7 +5,7 @@
 // es y contesta 403 a cualquiera que no sea Dlx. Acá sólo se dibuja lo que el servidor manda. Sin cuenta, el botón de
 // entrar; con otra cuenta, «esta página es del dueño» y nada más. Los ajustes pasan por la misma puerta
 // (`/avisos/dueno/ajuste`), y el servidor valida cada valor antes de guardarlo.
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { hora, limpio, mult, num, siglaDe } from './liga.js';
 import { DosToques, Ico } from './piezas.jsx';
 import { urlFondo } from './fondos.js';
@@ -1453,6 +1453,66 @@ function Pregunta({ p, r, alListo }) {
   );
 }
 
+// ── 🏆 LA LLAVE AL COSTADO (Dlx, 13/10/2026: «quizás al costado puedas poner la evidencia o el soporte o algo visual?
+// por ejemplo la llave en sí que el bot no entiende»). Si el evento tiene número, la llave como la leyó el bot
+// (`/api/llaves`, lo mismo que la página de cada llave), con quién ganó cada batalla; si todavía no entró, lo que dice la
+// llave, armado de las pistas («Cuartos: A vs B vs C»). Los nombres de la pregunta van marcados ──
+const sinB = (s) => limpio(String(s || '')).toLowerCase().normalize('NFD').replace(/[^\p{L}\p{N}]/gu, '');
+//: los nombres que nombra una pregunta: «X» y los lados de «A 🆚 B»
+function nombresDe(p) {
+  const out = [];
+  for (const m of String(p.que || '').matchAll(/«([^»]+)»/g)) out.push(m[1]);
+  const vs = String(p.que || '').split('\n').find((l) => l.includes('🆚'));
+  if (vs) out.push(...vs.split('🆚').flatMap((x) => x.split(',')));
+  return out.map(sinB).filter(Boolean);
+}
+//: «Cuartos: a vs b vs c» de las pistas → rondas, para las llaves que todavía no entraron
+function rondasDePistas(ps) {
+  const rs = [];
+  for (const p of ps) {
+    for (const l of String(p.pistas || '').split('\n')) {
+      const m = l.match(/^\s*([^:]{3,30}):\s*(.+\svs\s.+)$/i);
+      if (!m) continue;
+      const r = m[1].trim(), lados = m[2].split(/\s+vs\s+/i).map((x) => x.trim()).filter(Boolean);
+      let ro = rs.find((x) => x.r === r);
+      if (!ro) { ro = { r, b: [] }; rs.push(ro); }
+      if (!ro.b.some((b) => b[0].join('|') === lados.join('|'))) ro.b.push([lados, '']);
+    }
+  }
+  return rs;
+}
+function LlaveAlCostado({ s }) {
+  const n = (String(s.sec || '').match(/#(\d+)/) || [])[1] || '';
+  const [ll, setLl] = useState(null);
+  useEffect(() => {
+    let vivo = true;
+    if (n) pedirLlaves().then((t) => { if (vivo && t) setLl(t[n] || null); });
+    return () => { vivo = false; };
+  }, [n]);
+  const marca = new Set(s.ps.flatMap(nombresDe));
+  const rondas = ll && (ll.rondas || []).length ? ll.rondas : rondasDePistas(s.ps);
+  if (!rondas.length) return null;
+  const lado = (x, gano, i) => {
+    const k = sinB(x);
+    return <span key={i} className={'dl-l' + (gano && k === sinB(gano) ? ' dl-gano' : '') + ([...marca].some((m) => m && (k === m || k.includes(m))) ? ' dl-marca' : '')}>{limpio(x)}</span>;
+  };
+  return (
+    <aside className="db-dec-llave" aria-label="La llave">
+      <h4>{ll ? 'La llave #' + n + ', como la leyó el bot' : 'Lo que dice la llave'}</h4>
+      {rondas.map((r) => (
+        <div key={r.r} className="dl-r"><b>{r.r}</b>
+          <ul>{(r.b || []).map((b, i) => (
+            <li key={i}>{(b[0] || []).map((x, j) => <Fragment key={j}>{j ? <i>vs</i> : null}{lado(x, b[1], j)}</Fragment>)}
+              {ll && !b[1] ? <em>sin ganador</em> : null}</li>
+          ))}</ul>
+        </div>
+      ))}
+      <p className="dl-pie"><span className="dl-l dl-gano">ganó</span> <span className="dl-l dl-marca">de la pregunta</span>
+        {ll && (ll.links || [])[0] ? <> · <a href={ll.links[0]} target="_blank" rel="noopener noreferrer">abrirla en Discord ↗</a></> : null}</p>
+    </aside>
+  );
+}
+
 function Decisiones({ dec, alCambiar, liga }) {
   const [f, setF, limpiar] = useFiltro('dec');
   const [x, setX0] = useState(dec || {});
@@ -1490,7 +1550,10 @@ function Decisiones({ dec, alCambiar, liga }) {
         return (
           <div key={s.sec} className="db-dec-sec">
             <h3>{s.sec}{link ? <> <a className="db-link" href={link} target="_blank" rel="noopener noreferrer">la llave en Discord ↗</a></> : null}</h3>
-            <ul>{s.ps.map((p) => <Pregunta key={p.id} p={p} r={rs[p.id]} alListo={setX} />)}</ul>
+            <div className="db-dec-cuerpo">
+              <ul>{s.ps.map((p) => <Pregunta key={p.id} p={p} r={rs[p.id]} alListo={setX} />)}</ul>
+              <LlaveAlCostado s={s} />
+            </div>
           </div>
         );
       })}
