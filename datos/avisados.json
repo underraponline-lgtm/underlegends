@@ -3790,7 +3790,7 @@
    "Xubaru": 3
   },
   "fecha": "08/10",
-  "firma": "d62f9d82f65a6852",
+  "firma": "8c2fd1d60d69d67c",
   "msg": "1557986840865411073",
   "nombre": "__ __ Cuentas Pendientes V.1 __ __",
   "num": 435,
@@ -4382,7 +4382,7 @@
    "Velatz": 28
   },
   "fecha": "09/10",
-  "firma": "c2a6b166e577cc05",
+  "firma": "8e71f4603a374a51",
   "msg": "1558266214659260507",
   "nombre": "COPA SOOLAR 4",
   "num": 437,
@@ -4622,7 +4622,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "c02ad1f49d386018",
+  "firma": "37ae4eb2d0ce7594",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -6726,7 +6726,7 @@
    "Verc": 2
   },
   "fecha": "11/10",
-  "firma": "f395fa21f4d88b92",
+  "firma": "cc305b027984a007",
   "msg": "1558907912582078525",
   "nombre": "__ HJKSLOWT V.1 __",
   "num": 449,
@@ -7964,7 +7964,7 @@
    "Walker": 4
   },
   "fecha": "12/10",
-  "firma": "44fca3e67333b654",
+  "firma": "ead8208210bd3a4a",
   "msg": "1559247607283454084",
   "nombre": "FMS UNDER",
   "num": 455,
@@ -9396,7 +9396,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "98e8051d7cad90ec",
+  "firma": "c906c6dc784855cd",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -11388,6 +11388,316 @@
     "Gocho",
     "Cuartos",
     833
+   ]
+  ],
+  "v": 2
+ },
+ "469": {
+  "antes": {
+   "Agente sombra": [
+    327,
+    296,
+    true
+   ],
+   "Agus": [
+    9,
+    10,
+    false
+   ],
+   "Cronox": [
+    18,
+    21,
+    false
+   ],
+   "Gocho": [
+    92,
+    150,
+    false
+   ],
+   "Jult": [
+    40,
+    51,
+    false
+   ],
+   "Leonart": [
+    205,
+    105,
+    true
+   ],
+   "Liberia": [
+    19,
+    22,
+    false
+   ],
+   "Lord Viruzz": [
+    35,
+    43,
+    false
+   ],
+   "MTZ": [
+    74,
+    103,
+    false
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "Nemi": [
+    47,
+    62,
+    false
+   ],
+   "PichulaMc": [
+    4,
+    5,
+    false
+   ],
+   "Provenza": [
+    12,
+    14,
+    false
+   ],
+   "SINTEXT": [
+    214,
+    122,
+    true
+   ],
+   "Soulb": [
+    84,
+    127,
+    false
+   ],
+   "Teo": [
+    67,
+    94,
+    false
+   ],
+   "Verc": [
+    10,
+    11,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Warap",
+    "Lrs el borrachin🇦🇷",
+    "Warap"
+   ],
+   [
+    "Warap",
+    "Teo",
+    "Warap"
+   ],
+   [
+    "PichulaMc",
+    "SINTEXT",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "MTZ",
+    "PichulaMc"
+   ],
+   [
+    "Liberia",
+    "Soulb",
+    "Liberia"
+   ],
+   [
+    "Liberia",
+    "Leonart",
+    "Liberia"
+   ],
+   [
+    "Liberia",
+    "Makmah",
+    "Liberia"
+   ],
+   [
+    "Gocho",
+    "Lord Viruzz",
+    "Gocho"
+   ],
+   [
+    "Gocho",
+    "Agente sombra",
+    "Gocho"
+   ],
+   [
+    "Gocho",
+    "Jult",
+    "Gocho"
+   ],
+   [
+    "Agus",
+    "Warap",
+    "Agus"
+   ],
+   [
+    "Liberia",
+    "Gocho",
+    "Liberia"
+   ],
+   [
+    "Nemi",
+    "Cronox",
+    "Nemi"
+   ],
+   [
+    "Nemi",
+    "Provenza",
+    "Nemi"
+   ],
+   [
+    "Verc",
+    "PichulaMc",
+    "Verc"
+   ],
+   [
+    "Agus",
+    "Liberia",
+    "Agus"
+   ],
+   [
+    "Verc",
+    "Nemi",
+    "Verc"
+   ],
+   [
+    "Verc",
+    "Agus",
+    "Verc"
+   ]
+  ],
+  "ev_antes": {
+   "Agente sombra": 1,
+   "Agus": 14,
+   "Cronox": 25,
+   "Gocho": 6,
+   "Jult": 10,
+   "Leonart": 7,
+   "Liberia": 9,
+   "Lord Viruzz": 13,
+   "MTZ": 4,
+   "Makmah": 42,
+   "Nemi": 7,
+   "PichulaMc": 31,
+   "Provenza": 23,
+   "SINTEXT": 5,
+   "Soulb": 6,
+   "Teo": 8,
+   "Verc": 10
+  },
+  "fecha": "13/10",
+  "firma": "1cdf56f85692b174",
+  "msg": "1559769924178804738",
+  "nombre": "PRITTY FREE",
+  "num": 469,
+  "participantes": 19,
+  "sello": {
+   "Verc": "0defd986887d:c26a4d08cfe2"
+  },
+  "sv": "FFA",
+  "t": "2026-10-14T03:54:12Z",
+  "tabla": [
+   [
+    "Verc",
+    "Campeón",
+    10000
+   ],
+   [
+    "Agus",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Nemi",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Warap",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Gocho",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Provenza",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lrs el borrachin🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "SINTEXT",
+    "Octavos",
+    1250
+   ],
+   [
+    "MTZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Octavos",
+    1250
+   ],
+   [
+    "Leonart",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lord Viruzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Agente sombra",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jult",
+    "Octavos",
+    1250
    ]
   ],
   "v": 2

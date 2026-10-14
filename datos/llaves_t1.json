@@ -22883,5 +22883,231 @@
     833
    ]
   ]
+ },
+ "469": {
+  "dia": "2026-10-13",
+  "escala": "16+",
+  "fecha": "13/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1559750006641135791"
+  ],
+  "n": 469,
+  "nombre": "PRITTY FREE",
+  "participantes": 19,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Warap",
+       "Lrs el borrachin🇦🇷",
+       "Teo"
+      ],
+      "Warap",
+      "triple (4 bandas, pasan 2)"
+     ],
+     [
+      [
+       "PichulaMc",
+       "SINTEXT",
+       "MTZ"
+      ],
+      "PichulaMc",
+      "triple (4 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Liberia",
+       "Soulb",
+       "Leonart",
+       "Makmah"
+      ],
+      "Liberia",
+      "triple (5 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Gocho",
+       "Lord Viruzz",
+       "Agente sombra",
+       "Jult"
+      ],
+      "Gocho",
+      "triple (6 bandas, pasan 3)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Agus",
+       "Warap"
+      ],
+      "Agus",
+      ""
+     ],
+     [
+      [
+       "Liberia",
+       "Gocho"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "Nemi",
+       "Cronox",
+       "Provenza"
+      ],
+      "Nemi",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Verc",
+       "PichulaMc"
+      ],
+      "Verc",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Agus",
+       "Liberia"
+      ],
+      "Agus",
+      ""
+     ],
+     [
+      [
+       "Verc",
+       "Nemi"
+      ],
+      "Verc",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc",
+       "Agus"
+      ],
+      "Verc",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Verc",
+    "Campeón",
+    10000
+   ],
+   [
+    "Agus",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Nemi",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Gocho",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Provenza",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Warap",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Agente sombra",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jult",
+    "Octavos",
+    1250
+   ],
+   [
+    "Leonart",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lord Viruzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lrs el borrachin🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "MTZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "SINTEXT",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

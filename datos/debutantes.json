@@ -133,6 +133,18 @@
    "vence": "2026-10-20T15:58:57+00:00",
    "vencido": false
   },
+  "Lrs el borrachin": {
+   "avisado": "2026-10-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-14T02:09:40+00:00",
+   "did": "",
+   "evento": "PRITTY FREE",
+   "n": 469,
+   "sv": "FFA",
+   "vence": "2026-10-21T02:09:40+00:00",
+   "vencido": false
+  },
   "Magic": {
    "avisado": "2026-10-12",
    "avisado_cumplido": "2026-10-12",
@@ -233,6 +245,18 @@
    "n": 460,
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
+   "vencido": false
+  },
+  "Warap": {
+   "avisado": "2026-10-13",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-14T02:09:40+00:00",
+   "did": "1525062106666369104",
+   "evento": "PRITTY FREE",
+   "n": 469,
+   "sv": "FFA",
+   "vence": "2026-10-21T02:09:40+00:00",
    "vencido": false
   },
   "🏳️‍⚧️ VEPG 🏳️‍⚧️": {
