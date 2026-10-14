@@ -221,6 +221,32 @@ def alta_sola(reg, nombres, alias, saltear, norm, pais):
     return nombre, cc, ''
 
 
+#: 🤖 R3 (13/10/2026): EL BOT NO ES NADIE A QUIEN DAR DE ALTA. Alguien le hizo `/card` al bot —«ULAYA»— y su cuenta
+#: llegó a ✅ Decidir como un alta. Es el mismo ID que `escuchar.BOT_ID` y que `APP_ID` de `bot/avisos.js`.
+_BOT = []
+
+
+def bot_id():
+    if not _BOT:
+        try:
+            sys.path.insert(0, os.path.join(BASE, 'bot'))
+            import escuchar as _E
+            _BOT.append(str(_E.BOT_ID))
+        except Exception:                                # noqa: BLE001
+            _BOT.append('')
+    return _BOT[0]
+
+
+#: 🔎 R3: LO QUE VA EN «Posible match» CUANDO A ESA CUENTA LA BUSCÓ OTRA PERSONA (`por: 'otro'` en `bot/worker.js`). Antes
+#: decía sólo «sv FFA», y ✅ Decidir lo contaba como «usó /card en FFA»: no lo usó, lo buscaron. `decidir._por_otro()` lo lee
+POR_OTRO = 'lo buscó otra persona con /card'
+
+
+def match_alta(reg):
+    """El «Posible match» de un alta que no se anotó sola: dónde, y que la buscó otra persona."""
+    return 'sv %s%s' % (reg.get('sv') or '?', '' if reg.get('por') == 'yo' else ' · ' + POR_OTRO)
+
+
 def _self_check():
     print('')
     print('  registrar_ids.py — las altas solas (#11), sin red')
@@ -264,6 +290,9 @@ def _self_check():
        '«#5 | Gus» sí: el #5 no es un nombre')
     ok(alta_sola({'id': '1', 'nick': 'ᏵᏫᎠᏃ'}, nombres, alias, set(), norm, con)[2]
        .startswith('el nombre tiene letras'), 'letras que no son latinas: a Pendientes')
+    ok(match_alta({'sv': 'FFA', 'por': 'otro'}) == 'sv FFA · ' + POR_OTRO and match_alta({'sv': 'FFA', 'por': 'yo'}) == 'sv FFA',
+       'R3: el alta que buscó otra persona lo dice («lo buscó otra persona con /card»), la propia no')
+    ok(bot_id() == '1550026808404217926', 'R3: el ID del bot sale de escuchar.BOT_ID')
     print('')
     print('   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
@@ -345,6 +374,10 @@ def main():
         if did in bajas:
             ya_estaba.append(k)
             continue
+        # 🤖 R3: el bot no se da de alta (le hicieron `/card` a ULAYA): se saca de la cola y listo
+        if did == bot_id():
+            ya_estaba.append(k)
+            continue
         etiqueta = reg.get('nick') or reg.get('glob') or reg.get('user') or did
         # ¿ese id ya está puesto en alguna fila?
         if did in id_en_uso:
@@ -371,8 +404,7 @@ def main():
         elif reg.get('por') == 'yo':
             altas.append((reg, k, etiqueta, did))
         else:
-            pendientes.append(('alta', '%s = %s' % (etiqueta, did),
-                               'sv %s' % (reg.get('sv') or '?'), k))
+            pendientes.append(('alta', '%s = %s' % (etiqueta, did), match_alta(reg), k))
 
     # 🔑 LAS ALTAS SOLAS (#11). Ver `alta_sola()`.
     nuevos = []       # (nombre, código, id, nota, reg_key)

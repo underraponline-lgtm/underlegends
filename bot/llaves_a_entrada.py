@@ -1564,6 +1564,139 @@ def para_organizador(g, nom, sv, fec, ds, ahora=None):
 _GANADO = re.compile(r'(?:ganad[oa]|ganador(?:a)?|gan[oó])\s*[#:]\s*(.+?)\s*(?:🆚|\bvs\.?(?:\s|$)|<a?:VSF?:\d+>)', re.I)
 
 
+#: 🏆 el otro finalista que nadie dijo (un «Bracket incompleto» al que Dlx le eligió el campeón): no cobra ni es duelo, y
+#: tampoco es un nombre desconocido. Va como «Sin integrantes», el mismo trato que un equipo que nadie sabe quiénes son
+OTRO_FINALISTA = 'el otro finalista'
+
+
+def con_campeon(limpias, d_grupo, cd, base):
+    """🏆 `(filas, d_grupo, calza)` con el CAMPEÓN QUE DLX ELIGIÓ en un «Bracket incompleto» (`decidir.campeon_decidido()`).
+
+    🔑 Dlx, 13/10/2026: *«¿cómo digo quién ganó ahí si no me deja seleccionar al ganador? mejorá ese aspecto»*. La
+    pregunta ofrecía «No cuenta» y «La completo en Discord»; ahora también «Ganó X» por cada lado de la ÚLTIMA ronda que
+    la llave trae. Lo más simple que paga bien, y nada inventado —lo mismo que dice la pregunta (`decidir.como_cobra()`)—:
+
+      · la batalla de esa ronda donde está X la ganó X: los otros cobran esa ronda y es duelo;
+      · las demás batallas de esa ronda sin ganador, «nadie siguió»: cada uno cobra esa ronda, sin duelo;
+      · si esa ronda es la FINAL, ya está: X campeón y el otro, subcampeón;
+      · si es la SEMIFINAL, se agrega la final: X contra el que ganó la otra semi, si la llave lo dice y es uno solo
+        (ése cobra subcampeón); si no, contra `OTRO_FINALISTA`, que no cobra —nadie sabe quién fue—;
+      · si es ANTES (cuartos, octavos…), los que ganaron OTRA batalla de esa ronda cobran esa ronda (`cobra:`), como los
+        que la perdieron —no se sabe hasta dónde siguieron—, y la final es contra `OTRO_FINALISTA`. 🔴 Antes no: el motor
+        paga al que pierde, así que CID y EVA, que ganaron su cuartos, cobraban 0 y DAN y FER, que perdieron, cuartos
+        (la revisión del 14/10/2026).
+
+    `cd`: `{'ganador', 'ronda', 'batallas': [[lados]]}`. `base`: evento, servidor, fecha y participantes de las filas.
+    Los lados se comparan CON BANDERA cuando la traen (`decidir.mismo_lado()`): «Volk 🇲🇽» no es «volk 🇨🇴».
+
+    `calza` es `False` si la decisión ya no es de esta llave —X no está en esas batallas, o la llave ya trae una ronda
+    POSTERIOR a la de la decisión (creció: «ganó ANA» en semis y ahora hay «final: ANA vs CID»)—: no se toca nada y la
+    pregunta vuelve a abrirse (`pendientes.reabrir_varios()`), porque la cola no la repite y el evento quedaba sin
+    contar y sin preguntar."""
+    import decidir as DEC
+    k, igual = DEC.clave_lado, DEC.mismo_lado
+    x_dec = cd.get('ganador')
+    ronda = DEC.ronda_canon(cd.get('ronda'))
+    orden = DEC.ORDEN_RONDAS
+    # ⚠️ la llave creció: trae una ronda DESPUÉS de la que Dlx contestó. La decisión era de otra llave
+    rs = ([DEC.ronda_canon(d[1]) for d in d_grupo if len(d) >= 5]
+          + [DEC.ronda_canon(f.get('ronda')) for f in limpias])
+    if ronda in orden and any(r in orden and orden.index(r) > orden.index(ronda) for r in rs):
+        return limpias, d_grupo, False
+    quiero = [{k(x) for x in lados} for lados in cd.get('batallas') or []]
+    usadas = [d for d in d_grupo if len(d) >= 5 and {k(x) for x in d[4]} in quiero]
+    en_ronda = [f for f in limpias if DEC.ronda_canon(f.get('ronda')) == ronda]
+    # 🔑 QUIÉN ES X EN ESTA RONDA: el lado con su MISMA bandera; si no hay, el único que calza sin ella. Si calzan
+    # varios («Volk» frente a «Volk 🇲🇽» y «volk 🇨🇴»), no se adivina: no se aplica y la pregunta vuelve (la tercera
+    # revisión, 14/10/2026: con «Ganó Volk» frente a «volk 🇨🇴», X calzaba con los dos lados y salía «Volk le ganó a Bea»)
+    lados_r, vistos = [], set()
+    for y in [y for d in usadas for y in d[4]] + [f.get(c) for f in en_ronda for c in ('ladoA', 'ladoB')]:
+        if y and (k(y), DEC.banderas_de(y)) not in vistos:
+            vistos.add((k(y), DEC.banderas_de(y)))
+            lados_r.append(y)
+    exactos = [y for y in lados_r if k(y) == k(x_dec) and DEC.banderas_de(y) == DEC.banderas_de(x_dec)]
+    sueltos = [y for y in lados_r if igual(y, x_dec)]
+    el_x = exactos[0] if len(exactos) == 1 else (sueltos[0] if not exactos and len(sueltos) == 1 else None)
+    if not k(x_dec) or el_x is None:
+        return limpias, d_grupo, False
+
+    def es_x(y):
+        return bool(y) and k(y) == k(el_x) and DEC.banderas_de(y) == DEC.banderas_de(el_x)
+    en_x = [d for d in usadas if any(es_x(y) for y in d[4])]
+    ya_gano = [f for f in en_ronda if es_x(f.get('ganador'))]
+    if not (en_x or ya_gano):
+        return limpias, d_grupo, False
+    filas = list(limpias)
+
+    def fila(r, a, c, g, nota):
+        return dict(base, ronda=r, ladoA=a, ladoB=c, ganador=g, notas=nota)
+    # los lados como los escribe la llave, sin el rótulo de ronda que se les pegó («⚔️ Semifinales: SNOW»)
+    lim = DEC.lado_limpio
+    txt_x = lim(el_x)
+    nota_x = 'campeón: ✅ Decidir (Dlx eligió a %s)' % txt_x
+    for d in en_x:
+        for o in [lim(y) for y in d[4] if not es_x(y)]:
+            filas.append(fila(ronda, txt_x, o, txt_x,
+                              ('triple (%d bandas); ' % len(d[4]) if len(d[4]) > 2 else '') + nota_x))
+    for d in usadas:
+        if d in en_x:
+            continue
+        lados = [lim(x) for x in d[4]]
+        for o in lados[1:]:
+            filas.append(fila(ronda, lados[0], o, '', '; '.join('cobra: %s' % x for x in lados)
+                              + '; nadie siguió: ✅ Decidir (Dlx eligió al campeón)'))
+    if ronda != 'final':
+        # los que ganaron OTRA batalla de esa ronda, según la llave
+        otros_g = collections.OrderedDict()
+        for f in en_ronda:
+            g = str(f.get('ganador') or '').strip()
+            if g and not es_x(g) and not any(es_x(c) for c in (f.get('ladoA'), f.get('ladoB'))):
+                otros_g.setdefault((k(g), DEC.banderas_de(g)), g)
+        if ronda == 'semifinal' and len(otros_g) == 1:
+            w = next(iter(otros_g.values()))
+            filas.append(fila('final', txt_x, w, txt_x,
+                              'final: ✅ Decidir (Dlx eligió a %s; el otro finalista lo dice la llave)' % txt_x))
+        else:
+            # 🔑 ganaron su batalla y no se sabe hasta dónde siguieron: cobran esa ronda, como los que la perdieron
+            for g in otros_g.values():
+                i = next((i for i, f in enumerate(filas) if DEC.ronda_canon(f.get('ronda')) == ronda
+                          and str(f.get('ganador') or '').strip() == g), None)
+                if i is not None:
+                    n0 = str(filas[i].get('notas') or '').strip()
+                    filas[i] = dict(filas[i], notas=(n0 + '; ' if n0 else '') + 'cobra: %s; ganó y no se sabe hasta '
+                                    'dónde siguió: ✅ Decidir (Dlx eligió al campeón)' % g)
+            filas.append(fila('final', txt_x, OTRO_FINALISTA, txt_x,
+                              'Sin integrantes: %s; final: ✅ Decidir (Dlx eligió a %s; el otro finalista no se sabe '
+                              'y no cobra)' % (OTRO_FINALISTA, txt_x)))
+    return filas, [d for d in d_grupo if d not in usadas], True
+
+
+def ultima_ronda_de(limpias, d_grupo):
+    """🏆 Las batallas de la ÚLTIMA ronda de una llave sin campeón, para la pregunta «Bracket incompleto»: las que no
+    tienen ganador como «ronda: A vs B», y las que sí como «ronda: A vs B · pasó A» (así Dlx también puede elegir al
+    campeón cuando su batalla de esa ronda sí estaba escrita). Primero ésas, después las demás sin ganador."""
+    import decidir as DEC
+    orden = DEC.ORDEN_RONDAS
+    rs = ([DEC.ronda_canon(d[1]) for d in d_grupo if len(d) >= 5]
+          + [DEC.ronda_canon(f.get('ronda')) for f in limpias])
+    rs = [r for r in rs if r in orden]
+    if not rs:
+        return ['%s: %s' % (d[1].lower(), d[2]) for d in d_grupo]
+    ult = max(rs, key=orden.index)
+    primero = ['%s: %s' % (d[1].lower(), d[2]) for d in d_grupo if len(d) >= 5 and DEC.ronda_canon(d[1]) == ult]
+    por_g = collections.OrderedDict()
+    for f in limpias:
+        g = str(f.get('ganador') or '').strip()
+        if g and DEC.ronda_canon(f.get('ronda')) == ult:
+            x = por_g.setdefault(DEC.clave_lado(g), [g, str(f.get('ronda') or ult).lower(), [g]])
+            for c in (f.get('ladoA'), f.get('ladoB')):
+                if c and DEC.clave_lado(c) not in {DEC.clave_lado(y) for y in x[2]}:
+                    x[2].append(c)
+    primero += ['%s: %s · pasó %s' % (r, ' vs '.join(ls), g) for g, r, ls in por_g.values()]
+    return primero + ['%s: %s' % (d[1].lower(), d[2]) for d in d_grupo
+                      if not (len(d) >= 5 and DEC.ronda_canon(d[1]) == ult)]
+
+
 def ganador_marcado(textos, lados):
     """El lado de `lados` que una línea de la llave marca como ganador («Ganado # 19 vs CHOP»), o `None`. Sólo si es
     uno y coincide exacto con un lado (sin banderas): una marca que no se entiende no elige a nadie."""
@@ -1742,6 +1875,37 @@ BROMA_DESDE = '2026-09-29T04:00:00'
 #: las huellas de quien ya publicó una llave que se cargó. Sólo la huella, no
 #: la cuenta: va al repo público y para esto alcanza con reconocerla.
 AUTORES = os.path.join(BASE, 'datos', 'autores_llaves.json')
+#: 🔑 R5 (Dlx, 13/10/2026, «Sí»): QUIEN TIENE ROL DE ORGANIZADOR, STAFF O HOST EN ESE SERVIDOR NO PUBLICA UNA LLAVE «DE
+#: BROMA». Medido ese día sobre las cinco retenidas que esperaban en ✅ Decidir: tres eran de organizadores de su propio
+#: servidor —gocho444 en FFA, ivandevil en la ACADEMIA, soy_rubick en Snake Rap— y ninguna era broma (dos ya estaban
+#: cargadas con otro nombre). ⚠️ EN ESE SERVIDOR: walker2706 es jurado de FFA y publicó en DDF; eso no lo respalda. Y el
+#: jurado no cuenta: juzga, no arma llaves. Los roles los junta `herramientas/servidores_de.py`.
+#: ⚠️ Y EL SOCIO (14/10/2026): el dueño de la ACADEMIA es socio sin rol de organizador, y anota y publica por su servidor.
+#: También frena a R2 en ✅ Decidir (`decidir.dos_nombres()`): el que anota a otros no es «otro nombre suyo».
+ROLES_RESPALDAN = ('organizador', 'staff', 'host', 'socio')
+ROLES_DISCORD = os.path.join(BASE, 'datos', 'roles_discord.json')
+_ROLES = []
+
+
+def con_rol(autor_id, sv, roles=None):
+    """¿La cuenta `autor_id` tiene rol de organizador, staff o host en el servidor `sv` (su sigla)? `roles` es
+    `datos/roles_discord.json` (`{rol: {discord_id: [siglas]}}`); sin él, se lee una vez."""
+    if roles is None:
+        if not _ROLES:
+            try:
+                with io.open(ROLES_DISCORD, encoding='utf-8') as f:
+                    _ROLES.append(json.load(f) or {})
+            except (OSError, ValueError):
+                _ROLES.append({})
+        roles = _ROLES[0]
+    did = str(autor_id or '').strip()
+    if not did or not sv:
+        return False
+    for r in ROLES_RESPALDAN:
+        d = roles.get(r)
+        if isinstance(d, dict) and sv in (d.get(did) or []):
+            return True
+    return False
 
 
 def huella_autor(h):
@@ -1944,11 +2108,12 @@ def identidad_de_grupo(g):
     return out
 
 
-def llave_de_broma(g, conocidos, anuncios, nom, sv, fec, inferido=None, por_hora=''):
+def llave_de_broma(g, conocidos, anuncios, nom, sv, fec, inferido=None, por_hora='', roles=None):
     """El motivo para retener una llave como de broma, o `None`.
 
     De broma = publicada desde `BROMA_DESDE`, por alguien que no está en
-    `conocidos` (ningún mensaje del grupo), y sin un anuncio de su servidor
+    `conocidos` (ningún mensaje del grupo), sin rol de organizador, staff o
+    host en ese servidor (`con_rol()`, R5) y sin un anuncio de su servidor
     que la respalde (`llaves_web.anunciado()`).
 
     🔑 SI EL NOMBRE LO PUSO EL ANUNCIO —una llave sin título, `inferido`: ver
@@ -1960,6 +2125,9 @@ def llave_de_broma(g, conocidos, anuncios, nom, sv, fec, inferido=None, por_hora
     if not hs or all(str(h.get('cuando') or '') < BROMA_DESDE for h in hs):
         return None
     if any(huella_autor(h) in conocidos for h in hs):
+        return None
+    # 🔑 R5: el organizador, el staff o el host de ESE servidor (`con_rol()`)
+    if any(con_rol(h.get('autor_id'), sv, roles) for h in hs):
         return None
     quien = ', '.join(sorted({str(h.get('autor') or '?') for h in hs}))
     if inferido is not None:
@@ -3435,6 +3603,83 @@ def _self_check():
                         [{'nombre': 'DENME MODERADOR LPM', 'servidor': 'URBF',
                           'cuando': '2026-09-29T20:00:00'}], 'DENME MODERADOR LPM', 'URBF',
                         '29/09') is None),
+        # 🏆 el campeón que Dlx eligió en un «Bracket incompleto» (13/10/2026): `con_campeon()` y `ultima_ronda_de()`
+        ('Bracket incompleto, «Ganó nacho» en una semifinal de tres sin final: nacho le gana a los otros dos (cobran '
+         'semifinal) y es campeón contra «el otro finalista», que no cobra ni es duelo',
+         (lambda r: [(f['ronda'], f['ladoA'], f['ladoB'], f['ganador']) for f in r[0]] == [
+             ('cuartos', 'cinefilo', 'nc', 'cinefilo'),
+             ('semifinal', 'nacho', 'los 3', 'nacho'), ('semifinal', 'nacho', 'baltrip', 'nacho'),
+             ('final', 'nacho', OTRO_FINALISTA, 'nacho')]
+          and r[1] == [] and 'Sin integrantes: ' + OTRO_FINALISTA in r[0][-1]['notas']
+          and 'triple (3 bandas)' in r[0][1]['notas'])(
+             con_campeon([{'ronda': 'cuartos', 'ladoA': 'cinefilo', 'ladoB': 'nc', 'ganador': 'cinefilo'}],
+                         [('X', 'SEMIFINALES', 'los 3 vs nacho vs baltrip', 'última ronda', ['los 3', 'nacho', 'baltrip'])],
+                         {'ganador': 'nacho', 'ronda': 'semifinal', 'batallas': [['los 3', 'nacho', 'baltrip']]}, {}))),
+        ('… con dos semis sin final (LA REDENCION VOL.3): la otra queda «nadie siguió» y cobran semifinal los dos',
+         (lambda r: [(f['ronda'], f['ladoA'], f['ladoB'], f['ganador']) for f in r[0]] == [
+             ('semifinal', 'SNOW', 'tam', 'SNOW'), ('semifinal', 'OASIS, LETRAO', 'Verc', ''),
+             ('final', 'SNOW', OTRO_FINALISTA, 'SNOW')]
+          and 'nadie siguió' in r[0][1]['notas'] and 'cobra: Verc' in r[0][1]['notas'])(
+             con_campeon([], [('X', 'CUARTOS', 'OASIS, LETRAO vs Verc', 'x', ['⚔️ Semifinales: OASIS, LETRAO', 'Verc']),
+                              ('X', 'SEMIFINALES', 'SNOW vs tam', 'x', ['⚔️ Semifinales: SNOW', 'tam'])],
+                         {'ganador': 'SNOW', 'ronda': 'semifinal',
+                          'batallas': [['OASIS, LETRAO', 'Verc'], ['SNOW', 'tam']]}, {}))),
+        ('… si la otra semi la llave sí la dice, ése es el otro finalista y cobra subcampeón; en la final, el otro',
+         (lambda r1, r2: r1[0][-1]['ladoB'] == 'CID' and 'Sin integrantes' not in r1[0][-1]['notas']
+          and [(f['ronda'], f['ladoB']) for f in r2[0]] == [('final', 'NOXVELL')])(
+             con_campeon([{'ronda': 'semifinales', 'ladoA': 'CID', 'ladoB': 'DAN', 'ganador': 'CID'}],
+                         [('X', 'SEMIFINALES', 'ANA vs BEA', 'x', ['ANA', 'BEA'])],
+                         {'ganador': 'ANA', 'ronda': 'semifinal', 'batallas': [['ANA', 'BEA']]}, {}),
+             con_campeon([], [('X', 'FINAL', 'WALKER SANITY vs NOXVELL', 'x', ['WALKER SANITY', 'NOXVELL'])],
+                         {'ganador': 'WALKER SANITY', 'ronda': 'final', 'batallas': [['WALKER SANITY', 'NOXVELL']]}, {}))),
+        ('… y si la decisión ya no calza con la llave, no toca nada y lo dice (la pregunta vuelve)',
+         (lambda r: r[1] == [('X', 'FINAL', 'A vs B', 'x', ['A', 'B'])] and r[2] is False)(
+             con_campeon([], [('X', 'FINAL', 'A vs B', 'x', ['A', 'B'])],
+                         {'ganador': 'Z', 'ronda': 'final', 'batallas': [['A', 'B']]}, {}))),
+        # 🔴 la revisión del 14/10/2026
+        ('… si la llave CRECIÓ («ganó ANA» en semis y ahora hay «final: ANA vs CID»), tampoco: no se inventa una final',
+         (lambda r: r[0] == [] and r[2] is False)(
+             con_campeon([], [('X', 'SEMIFINALES', 'ANA vs BEA', 'x', ['ANA', 'BEA']),
+                              ('X', 'FINAL', 'ANA vs CID', 'x', ['ANA', 'CID'])],
+                         {'ganador': 'ANA', 'ronda': 'semifinal', 'batallas': [['ANA', 'BEA']]}, {}))),
+        ('… con la última ronda en cuartos, los que ganaron OTRO cuartos cobran cuartos (`cobra:`), no 0; la final es '
+         'contra «el otro finalista»',
+         (lambda r: r[2] and 'cobra: CID' in r[0][0]['notas'] and 'cobra: EVA' in r[0][1]['notas']
+          and [(f['ronda'], f['ladoA'], f['ladoB'], f['ganador']) for f in r[0][2:]]
+          == [('cuartos', 'ANA', 'BEA', 'ANA'), ('final', 'ANA', OTRO_FINALISTA, 'ANA')])(
+             con_campeon([{'ronda': 'cuartos', 'ladoA': 'CID', 'ladoB': 'DAN', 'ganador': 'CID'},
+                          {'ronda': 'cuartos', 'ladoA': 'EVA', 'ladoB': 'FER', 'ganador': 'EVA'}],
+                         [('X', 'CUARTOS', 'ANA vs BEA', 'x', ['ANA', 'BEA'])],
+                         {'ganador': 'ANA', 'ronda': 'cuartos', 'batallas': [['ANA', 'BEA']]}, {}))),
+        # 🔴 la tercera revisión (14/10/2026): un homónimo SIN bandera
+        ('… «Ganó Volk» frente a «volk 🇨🇴»: Volk es el que no tiene bandera, y le gana a uno solo',
+         [(f['ladoA'], f['ladoB'], f['ganador']) for f in con_campeon(
+             [], [('X', 'FINAL', 'Volk vs volk 🇨🇴', 'x', ['Volk', 'volk 🇨🇴'])],
+             {'ganador': 'Volk', 'ronda': 'final', 'batallas': [['Volk', 'volk 🇨🇴']]}, {})[0]]
+         == [('Volk', 'volk 🇨🇴', 'Volk')]),
+        ('… y si sin bandera calza con dos («Volk» frente a «Volk 🇲🇽» y «volk 🇨🇴»), no se adivina: la pregunta vuelve',
+         con_campeon([], [('X', 'FINAL', 'Volk 🇲🇽 vs volk 🇨🇴', 'x', ['Volk 🇲🇽', 'volk 🇨🇴'])],
+                     {'ganador': 'Volk', 'ronda': 'final', 'batallas': [['Volk 🇲🇽', 'volk 🇨🇴']]}, {})[2] is False),
+        ('… y con bandera: «Ganó volk 🇨🇴» le gana a «Volk 🇲🇽», no al revés',
+         [(f['ladoA'], f['ladoB'], f['ganador']) for f in con_campeon(
+             [], [('X', 'FINAL', 'Volk 🇲🇽 vs volk 🇨🇴', 'x', ['Volk 🇲🇽', 'volk 🇨🇴'])],
+             {'ganador': 'volk 🇨🇴', 'ronda': 'final', 'batallas': [['Volk 🇲🇽', 'volk 🇨🇴']]}, {})[0]]
+         == [('volk 🇨🇴', 'Volk 🇲🇽', 'volk 🇨🇴')]),
+        ('la pregunta trae primero la última ronda, también lo que sí tiene ganador («· pasó X»)',
+         ultima_ronda_de([{'ronda': 'semifinales', 'ladoA': 'CID', 'ladoB': 'DAN', 'ganador': 'CID'},
+                          {'ronda': 'cuartos', 'ladoA': 'CID', 'ladoB': 'EVA', 'ganador': 'CID'}],
+                         [('X', 'CUARTOS', 'FER vs GUS', 'x', ['FER', 'GUS']),
+                          ('X', 'SEMIFINALES', 'ANA vs BEA', 'x', ['ANA', 'BEA'])])
+         == ['semifinales: ANA vs BEA', 'semifinales: CID vs DAN · pasó CID', 'cuartos: FER vs GUS']),
+        # 🔑 R5 (Dlx, 13/10/2026): el organizador, el staff o el host de ESE servidor no publica una de broma
+        ('R5: con rol de organizador, staff o host en ESE servidor no es de broma; en otro servidor, o jurado, sí',
+         llave_de_broma({'llaves': [_hb[2]]}, _con, [], 'DENME MODERADOR LPM', 'URBF', '29/09',
+                        roles={'staff': {'C3': ['URBF']}}) is None
+         and llave_de_broma({'llaves': [_hb[2]]}, _con, [], 'DENME MODERADOR LPM', 'URBF', '29/09',
+                            roles={'organizador': {'C3': ['FFA']}, 'jurado': {'C3': ['URBF']}}) is not None
+         and con_rol('C3', 'SR', {'host': {'C3': ['SR']}}) and not con_rol('', 'SR', {'host': {'': ['SR']}})
+         # y el socio (14/10/2026): el dueño de la ACADEMIA no tiene rol de organizador
+         and con_rol('C3', 'ACAD', {'socio': {'C3': ['ACAD']}})),
         ('ni de alguien que ya publicó una que se cargó, ni una de antes de la regla',
          llave_de_broma({'llaves': [dict(_hb[2], autor_id='B2')]}, _con, [], 'X', 'URBF', '29/09') is None
          and llave_de_broma({'llaves': [dict(_hb[2], cuando='2026-09-27T02:00:00+00:00')]}, _con, [],
@@ -3772,6 +4017,11 @@ def main():
     todas, dudas, sabidas = [], [], collections.Counter()
     ya_cargadas = []   # la que ya está en el ranking con otro nombre: ver `ya_cargada()`
     en_curso, incompletos, retenidos, descartados = [], [], [], []
+    # 🏆 los «Bracket incompleto» cuyo campeón elegido ya no calza: su pregunta se vuelve a abrir (`con_campeon()`)
+    campeon_viejo = set()
+    # ⚠️ y los que sí calzan: dos llaves «(sin titulo)» del mismo servidor y día comparten la fila (tipo, detalle), y si
+    # el campeón calza en una, la de la otra no se reabre (si no, se reabría en cada corrida)
+    campeon_bien = set()
     _recs = _recalculados()
     para_org = []   # 🏁 lo que no se entendió de cada llave, para preguntarle a quien la publicó (`bot/finales.py`)
     esperan, vidas_cargados, vidas_b = [], [], []   # los 5 vidas de #veredictos
@@ -4126,6 +4376,19 @@ def main():
                     'participantes': base.get('participantes') or len(g['plantel']),
                     'ronda': 'final', 'ladoA': fd['ganador'], 'ladoB': otro, 'ganador': fd['ganador'],
                     'notas': 'final: ✅ Decidir'})
+        # 🏆 Y EL CAMPEÓN QUE DLX ELIGIÓ EN UN «BRACKET INCOMPLETO» (13/10/2026): ver `con_campeon()`
+        cd = DEC.campeon_decidido(nom, ligas[0], fec) if ligas else None
+        if cd and not tiene_campeon(limpias):
+            limpias, d_grupo, _calza = con_campeon(limpias, d_grupo, cd, {
+                'evento': base.get('evento') or nom, 'servidor': base.get('servidor') or ligas[0],
+                'fecha': base.get('fecha') or fec, 'participantes': base.get('participantes') or len(g['plantel'])})
+            # ⚠️ y si ya no calza (la llave creció o cambió), la pregunta vuelve: ver `con_campeon()`
+            if not _calza:
+                print('   🏆 %s · %s · %s: el campeón que eligió Dlx (%s) ya no calza con la llave: la pregunta vuelve'
+                      % (nom[:30], ligas[0], fec, cd.get('ganador')))
+                campeon_viejo.add('%s · %s · %s' % (nom, ligas[0], fec))
+            else:
+                campeon_bien.add('%s · %s · %s' % (nom, ligas[0], fec))
         if ligas and not tiene_campeon(limpias):
             hq = horas_quieta(g)
             # 📢 o en pausa, si el organizador avisó que sigue otro día (`pausada()`; sólo se le pregunta al vigía
@@ -4133,9 +4396,8 @@ def main():
             if hq is not None and (hq < QUIETA_H or (hq < PAUSADA_H and pausada(g, ligas[0]))):
                 en_curso.append((nom, hq))
             else:
-                incompletos.append((nom, ligas[0], fec,
-                                    ['%s: %s' % (d[1].lower(), d[2])
-                                     for d in d_grupo]))
+                # 🏆 la última ronda primero, también lo que sí tiene ganador: de ahí salen los «Ganó X» (`ultima_ronda_de()`)
+                incompletos.append((nom, ligas[0], fec, ultima_ronda_de(limpias, d_grupo)))
             # 🏁 SIN CAMPEÓN: se le pregunta al organizador cuando la llave lleva una hora quieta, no doce
             if (hq is not None and hq >= _preguntar_h() and not pausada(g, ligas[0])
                     and any(str(d[1]).upper().replace(' ', '') in ('FINAL', 'GRANFINAL') for d in d_grupo)):
@@ -4487,7 +4749,7 @@ def main():
               ' | '.join(['sin campeón y sin tocar hace %d h o más: la '
                           'guía (Parte 1) lo descarta y NO se sumó nada. Si '
                           'cuenta, completá la final en la llave' % QUIETA_H]
-                         + cosas[:3]) + (' · %s' % link_de[(ev, sv_i, fec_i)]
+                         + cosas[:5]) + (' · %s' % link_de[(ev, sv_i, fec_i)]
                                          if link_de.get((ev, sv_i, fec_i)) else ''))
              for ev, sv_i, fec_i, cosas in incompletos]
     # ❤️ B: cada 5 vidas cargado solo, para que Dlx lo confirme o lo saque
@@ -4496,6 +4758,15 @@ def main():
         k = P.anotar_varios(lote)
         print('   ✅ %d nueva(s) en `Pendientes` (%d ya estaban)'
               % (k, len(lote) - k))
+    # 🏆 Y LA DEL CAMPEÓN QUE YA NO CALZA SE VUELVE A ABRIR, con las batallas de ahora: `anotar_varios()` no repite una
+    # (tipo, detalle) aunque esté resuelta, y el evento quedaba sin contar y sin preguntar (`con_campeon()`)
+    _reab = [x for x in lote if x[0] == 'Bracket incompleto' and x[2] in campeon_viejo - campeon_bien]
+    if _reab:
+        # ⚠️ EN TRY: todo lo de arriba ya se escribió; si esto falla, el lector no sale con 1 por eso
+        try:
+            print('   🏆 %d pregunta(s) de campeón vuelven a ✅ Decidir' % P.reabrir_varios(_reab))
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ no pude reabrir las preguntas de campeón (%s): quedan para la corrida siguiente' % str(e)[:80])
     # 🔴 ERA `todas_dudas`, QUE NO EXISTE — y la variable de verdad es
     # `dudas`. `NameError` en la ULTIMA linea del camino `--aplicar`, o
     # sea **despues** de escribir en `Entrada` y de anotar en

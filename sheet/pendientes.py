@@ -237,6 +237,46 @@ def anotar_varios(dudas, dry=False):
     return len(nuevas)
 
 
+def reabrir_varios(dudas, dry=False):
+    """🏆 Vuelve a abrir la pregunta de un «Bracket incompleto» cuyo campeón elegido ya no calza con la llave
+    (`llaves_a_entrada.con_campeon()`: la llave creció o cambió). Cuántas.
+
+    `anotar_varios()` no la repite —la cola no duplica (tipo, detalle), tampoco las resueltas— y el evento quedaba sin
+    contar y sin preguntar (la revisión del 14/10/2026). ⚠️ SÓLO LA QUE SE CERRÓ CON «ganó X», la respuesta de Dlx que
+    ya no calza; y el «Posible match» se cambia por el de ahora, que trae las batallas de esta llave. `dudas` es
+    `[(tipo, origen, detalle, match)]`, como en `anotar_varios()`."""
+    quiero = {(str(t).strip(), str(d).strip()): str(m).strip() for t, _o, d, m in dudas}
+    if not quiero:
+        return 0
+    datos = []
+    for n, f in _filas_con_n(_hoja()):
+        f = [str(x).strip() for x in list(f) + [''] * ANCHO]
+        if ((f[1], f[3]) in quiero and f[5].lower() == 'resuelto'
+                and f[6].lower().startswith('ganó ') and 'campeón' in f[6]):
+            datos.append({'range': '%s!E%d:H%d' % (HOJA, n, n),
+                          'values': [[quiero[(f[1], f[3])], 'Pendiente', '', '']]})
+    if dry:
+        for x in datos:
+            print('   [dry] se reabre %s' % x['range'])
+        return len(datos)
+    if datos:
+        _pedir('POST', '/values:batchUpdate', json={'valueInputOption': 'RAW', 'data': datos})
+    return len(datos)
+
+
+def _deshechas_filas():
+    """`{(fila, tipo)}` de lo que Dlx deshizo en el Dashboard («Lo que se resolvió solo» → Deshacer,
+    `decidir.deshacer()`): `barrer()` no lo vuelve a cerrar. ⚠️ SÓLO LAS QUE DESHACER REABRIÓ DE VERDAD
+    (`reabiertas`): las que no tocó —ya eran otra cosa— siguen como cualquiera. Sin el archivo, nada."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'decidir_solas.json'), encoding='utf-8') as f:
+            d = json.load(f) or {}
+    except (OSError, ValueError):
+        return set()
+    return {(int(n), str(x.get('tipo') or '')) for x in d.get('solas') or [] if x.get('deshecha')
+            for n in x.get('reabiertas') or [] if str(n).isdigit()}
+
+
 def _poner(desde, filas):
     """Escribe `filas` en A:H desde la fila `desde`. Si la grilla no alcanza,
     le agrega filas y vuelve a probar (un 400 «exceeds grid limits»)."""
@@ -559,9 +599,14 @@ def barrer(dry=True):
     # idea equivocada, y un lector lo tomaría por buena.
     h = _hoja()
     cierres = []
+    # ↩️ lo que Dlx deshizo en el Dashboard lo decide él: un alta deshecha cuyo Discord ya está en la Lista se volvía a
+    # cerrar acá en la corrida siguiente (la revisión del 14/10/2026)
+    no = _deshechas_filas()
     for n, f in _filas_con_n(h):
         f = list(f) + [''] * ANCHO
         d = {c: str(f[j]).strip() for j, c in enumerate(COLS)}
+        if (n, d['Tipo']) in no:
+            continue
         por = _resuelto_ya(d, resolver)
         if por:
             cierres.append((n, d['Tipo'], d['Detalle'], por))
@@ -698,6 +743,38 @@ def _self_check():
        'lo nuevo va debajo de la última fila con datos (la 8), aunque la columna A esté vacía')
     ok(not any(':append' in c for _m, c, _kw in pedidos),
        'y sin `append`: la API buscaba la tabla en la columna A, vacía, y escribía encima')
+
+    # 🏆 la pregunta del campeón que ya no calza se reabre, sólo si se cerró con «ganó X…campeón» (14/10/2026)
+    pedidos[:] = []
+    try:
+        _pedir = lambda metodo, cola, **kw: pedidos.append((metodo, cola, kw)) or {}   # noqa: E731
+        _hoja = lambda: _H()                                                           # noqa: E731
+        _filas_con_n = lambda h: [                                                     # noqa: E731
+            (4, ['', 'Bracket incompleto', 'llaves', 'X · FFA · 22/09', 'viejo', 'Resuelto',
+                 'ganó ANA: entra como campeón en la corrida siguiente', 'Dlx']),
+            (5, ['', 'Bracket incompleto', 'llaves', 'Y · FFA · 22/09', 'viejo', 'Resuelto', 'evento: no cuenta', 'Dlx'])]
+        n = reabrir_varios([('Bracket incompleto', 'llaves', 'X · FFA · 22/09', 'nuevo'),
+                            ('Bracket incompleto', 'llaves', 'Y · FFA · 22/09', 'nuevo')])
+    finally:
+        _pedir, _hoja, _filas_con_n = _p, _h, _f
+    ok(n == 1 and pedidos and pedidos[0][2]['json']['data'][0]['values'] == [['nuevo', 'Pendiente', '', '']],
+       'la pregunta del campeón que ya no calza vuelve, con las batallas de ahora; la que se cerró con otra cosa, no')
+    # ↩️ barrer saltea sólo las filas que deshacer reabrió de verdad
+    import shutil
+    import tempfile
+    _tmp, _base = tempfile.mkdtemp(), globals()['BASE']
+    try:
+        os.makedirs(os.path.join(_tmp, 'datos'))
+        with io.open(os.path.join(_tmp, 'datos', 'decidir_solas.json'), 'w', encoding='utf-8') as f:
+            json.dump({'solas': [{'id': 'a', 'tipo': 'alta', 'filas': [5, 6], 'reabiertas': [5], 'deshecha': 1},
+                                 {'id': 'b', 'tipo': 'alta', 'filas': [8], 'deshecha': 1},
+                                 {'id': 'c', 'tipo': 'alta', 'filas': [9], 'reabiertas': [9]}]}, f)
+        globals()['BASE'] = _tmp
+        ok(_deshechas_filas() == {(5, 'alta')},
+           'barrer saltea sólo lo que deshacer reabrió de verdad: las filas que no tocó siguen como cualquiera')
+    finally:
+        globals()['BASE'] = _base
+        shutil.rmtree(_tmp, ignore_errors=True)
 
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0

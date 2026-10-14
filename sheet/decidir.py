@@ -145,6 +145,122 @@ def _sin_bandera(s):
     return re.sub(r'\s+', ' ', _BANDERA.sub('', str(s or ''))).strip()
 
 
+def lado_limpio(x):
+    """Un lado como lo escribe una pregunta, sin el rótulo de ronda que se le pegó: «⚔️ Semifinales: OASIS, LETRAO» es
+    «OASIS, LETRAO» (LA REDENCION VOL.3, FFA, 10/10/2026). ⚠️ SÓLO UN RÓTULO DE RONDA: «tnr :Espana:» (FFA, 11/10)
+    trae dos puntos y es un nombre."""
+    t = str(x or '')
+    m = list(_RONDA_EN_TEXTO.finditer(t))
+    return (t[m[-1].end():] if m else t).strip()
+
+
+def clave_lado(x):
+    """La clave para comparar dos lados: sin rótulo, sin bandera, sólo letras y números."""
+    return norm(_sin_bandera(lado_limpio(x)))
+
+
+def banderas_de(x):
+    """Las banderas de un nombre, ordenadas: «Volk 🇲🇽» → «🇲🇽»; sin bandera, `''`."""
+    return ''.join(sorted(_BANDERA.findall(str(x or ''))))
+
+
+def mismo_lado(a, b):
+    """¿`a` y `b` son el mismo lado? La misma clave y, si los DOS traen bandera, la misma: «Volk 🇲🇽» no es «volk 🇨🇴»
+    —dos raperos—, y «Volk» sin bandera es cualquiera de los dos (lo decide quien tenga una sola opción)."""
+    if not clave_lado(a) or clave_lado(a) != clave_lado(b):
+        return False
+    fa, fb = banderas_de(a), banderas_de(b)
+    return not (fa and fb) or fa == fb
+
+
+#: las rondas de una llave, de la primera a la última (para «la última ronda»)
+ORDEN_RONDAS = ['filtros', 'r32', 'octavos', 'cuartos', 'semifinal', 'final']
+
+
+def ronda_canon(r):
+    """«SEMIFINALES», «Semi-final», «⚔️ Semifinales» → `semifinal`; «Gran final» → `final`; lo que no reconoce, como
+    venga (normalizado)."""
+    k = norm(r)
+    if 'semi' in k:
+        return 'semifinal'
+    if 'final' in k:
+        return 'final'
+    for pre, can in (('cuart', 'cuartos'), ('octav', 'octavos'), ('dieciseis', 'r32'), ('r32', 'r32'),
+                     ('filtro', 'filtros')):
+        if k.startswith(pre):
+            return can
+    return k
+
+
+_RONDA_EN_TEXTO = re.compile(r'(?i)(gran\s+final|semi\s*-?\s*finales?|final|cuartos(?:\s+de\s+final)?|'
+                             r'octavos(?:\s+de\s+final)?|dieciseisavos|filtros)\s*:')
+
+
+def segmentos_llave(match):
+    """`[(ronda, [lados], pasó)]` de las batallas que trae el «Posible match» de un «Bracket incompleto»
+    («… | cuartos: A vs B | semifinales: C vs D · pasó C»). Si el texto trae su propio rótulo de ronda («cuartos: ⚔️
+    Semifinales: OASIS, LETRAO vs Verc»), manda ése. `pasó`: el que ganó esa batalla según la llave, o `None`."""
+    out = []
+    for seg in [x.strip() for x in str(match or '').split(' | ')[1:] if x.strip()]:
+        seg = re.sub(r'\s*·\s*https?://\S+\s*$', '', seg)
+        m = re.match(r'([^:]+):\s*(.*)$', seg)
+        if not m:
+            continue
+        ronda, txt = m.group(1).strip(), m.group(2)
+        paso = None
+        mp = re.search(r'\s*·\s*pas[oó]\s+(.+)$', txt)
+        if mp:
+            paso, txt = mp.group(1).strip(), txt[:mp.start()]
+        emb = list(_RONDA_EN_TEXTO.finditer(txt))
+        if emb:
+            ronda = emb[-1].group(1)
+        lados = [lado_limpio(x) for x in re.split(r'\s+vs\.?\s+', txt, flags=re.I) if lado_limpio(x)]
+        if len(lados) >= 2:
+            out.append((ronda_canon(ronda), lados, paso))
+    return out
+
+
+def ultima_ronda(match):
+    """`(ronda, [(ronda, [lados], pasó)])`: la ÚLTIMA ronda que trae la pregunta y sus batallas, o `(None, [])`."""
+    segs = [x for x in segmentos_llave(match) if x[0] in ORDEN_RONDAS]
+    if not segs:
+        return None, []
+    ult = max((x[0] for x in segs), key=ORDEN_RONDAS.index)
+    return ult, [x for x in segs if x[0] == ult]
+
+
+def _candidatos_campeon(match):
+    """Quiénes pueden haber salido campeones, de la última ronda: todos los lados de las batallas sin ganador y, de las
+    que tienen, sólo el que pasó. Sin repetir, como los muestra la pregunta."""
+    _ult, bats = ultima_ronda(match)
+    out = []
+    # ⚠️ CON SU BANDERA: «volk 🇨🇴» y «Volk 🇲🇽» son dos opciones, no una (`mismo_lado()`)
+    for _r, lados, paso in bats:
+        for x in ([paso] if paso else lados):
+            if clave_lado(x) and not any(clave_lado(x) == clave_lado(y) and banderas_de(x) == banderas_de(y)
+                                         for y in out):
+                out.append(x)
+    return out
+
+
+#: cómo se dice cada ronda en la pregunta
+_RONDA_DICHA = {'final': 'la final', 'semifinal': 'las semifinales', 'cuartos': 'los cuartos',
+                'octavos': 'los octavos', 'r32': 'la primera ronda', 'filtros': 'los filtros'}
+
+
+def como_cobra(ult):
+    """🏆 Qué cobra cada uno si Dlx elige al campeón de un «Bracket incompleto» cuya última ronda es `ult`. Lo dicen la
+    pregunta y la nota de la decisión, y lo hace `llaves_a_entrada.con_campeon()`: ⚠️ LOS TRES DICEN LO MISMO."""
+    if ult == 'final':
+        return 'cobra campeón y el otro, subcampeón'
+    if ult == 'semifinal':
+        return ('cobra campeón; el que ganó la otra semifinal, si la llave lo dice, cobra subcampeón, y los demás de las '
+                'semifinales cobran esa ronda. Si la llave no dice quién llegó a la final del otro lado, ese lugar no lo '
+                'cobra nadie')
+    return ('cobra campeón, y todos los demás de %s cobran esa ronda, también los que ganaron su batalla (no se sabe '
+            'hasta dónde siguieron). Las rondas que faltan después no las cobra nadie' % _RONDA_DICHA.get(ult, ult))
+
+
 # ── la batalla sin ganador ──────────────────────────────────────────────
 # 🔑 Dlx, 28/09/2026, sobre MARRUECOS EN VENTA —ocho batallas de octavos que
 # el lector no pudo resolver—: «lo resuelvo yo… pero mejora esa página de
@@ -1007,8 +1123,9 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
                     _iso(b) for b in _BANDERA.findall(v))
     pares, nuevos, hechas = [], [], []
     padron_l = _datos('padron') or []
+    no = deshechas()
     for p in preguntas:
-        if p['tipo'] != 'Nombre desconocido' or p['id'] in respuestas:
+        if p['tipo'] != 'Nombre desconocido' or p['id'] in respuestas or p['id'] in no:
             continue
         det = p['detalle']
         k = norm(_sin_bandera(det))
@@ -1023,7 +1140,8 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
         real_c = _crecio_de(p, eventos, padron_l, akas)
         if real_c and not AK.son_distintos(det, real_c, akas):
             pares.append([_sin_bandera(det), real_c, ''.join(_BANDERA.findall(det))])
-            hechas.append((p, 'alias de %s: la llave lo escribe así de una ronda a otra' % real_c))
+            hechas.append((p, 'alias de %s: la llave lo escribe así de una ronda a otra' % real_c,
+                           ('Es %s' % real_c, {'alias': [_sin_bandera(det), real_c]})))
             continue
         # 🔑 LA CUENTA: la que se anotó con ese nombre en el servidor del
         # evento, o si no, la única de la Liga con ese apodo. Ver `_cuenta_de()`
@@ -1062,12 +1180,13 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
             if AK.son_distintos(det, real, akas):
                 continue
             pares.append([_sin_bandera(det), real, ''.join(_BANDERA.findall(det))])
-            hechas.append((p, 'alias de %s: %s' % (real, porque)))
+            hechas.append((p, 'alias de %s: %s' % (real, porque), ('Es %s' % real, {'alias': [_sin_bandera(det), real]})))
         elif real_i:
             if AK.son_distintos(det, real_i, akas):
                 continue
             pares.append([_sin_bandera(det), real_i, ''.join(_BANDERA.findall(det))])
-            hechas.append((p, 'alias de %s: %s, y esa cuenta se anotó como «%s»' % (real_i, porque, real_i)))
+            hechas.append((p, 'alias de %s: %s, y esa cuenta se anotó como «%s»' % (real_i, porque, real_i),
+                           ('Es %s' % real_i, {'alias': [_sin_bandera(det), real_i]})))
         elif fuente == 'llamada_parecido':
             # el parecido sólo hace alias de alguien de la Lista (ver `_cuenta_de()`): nunca da de alta
             continue
@@ -1100,32 +1219,46 @@ def por_discord(preguntas, respuestas, eventos, dry=True):
     for _p, n, cc, did, fu in nuevos:
         print('      nuevo: %s %s (Discord %s, por %s)' % (n, cc or '(sin bandera)', did, fu))
     if dry:
-        return {p['id'] for p, _r in hechas} | {p['id'] for p, *_ in nuevos}
+        for p, res, (r, esc) in hechas:
+            resolver_solo(p, r, 'Discord', res, por=POR_DISCORD, escribio=esc)
+        for p, n, cc, did, fu in nuevos:
+            resolver_solo(p, '%s: alta con su cuenta %s' % (NUEVO, did), 'Discord', 'entraría a la Lista con la cuenta '
+                          '%s (%s)' % (did, fu), por=POR_DISCORD, escribio={'alta': [n, did]})
+        return {p['id'] for p, *_ in hechas} | {p['id'] for p, *_ in nuevos}
     import lista_raperos as LR
-    entraron = LR.agregar_varios(
-        [(n, cc, did, 'alta automática · %s · %s' % ({'inscripción': 'se anotó así en inscripciones',
-                                                     'podio': 'el podio de la llave lo menciona',
-                                                     'llave': 'la llave lo escribe con su mención',
-                                                     'llamada': 'estaba en la llamada del evento con ese nombre'}
-                                                    .get(fu, 'su nombre en Discord'), _ahora_et()))
-         for _p, n, cc, did, fu in nuevos], aplicar=True) if nuevos else {}
+    # 📝 TODO ANOTADO ANTES DE ESCRIBIR AFUERA (`anotar_pendientes()`), y lo que no se pudo escribir se retira. La fila de
+    # `Pendientes` la cierra `flush_solas()` al final, con la regla y la prueba (Dlx, 13/10/2026)
+    for p, res, (r, esc) in hechas:
+        resolver_solo(p, r, 'Discord', res, por=POR_DISCORD, escribio=esc)
+    ids_alias = {p['id'] for p, *_ in hechas}
+    de_alta = {}
     for p, n, cc, did, fu in nuevos:
-        if did in entraron:
-            hechas.append((p, 'nuevo: entró a la Lista con %s (%s)' % (
+        if resolver_solo(p, '%s: alta con su cuenta %s' % (NUEVO, did), 'Discord', 'nuevo: entró a la Lista con %s (%s)' % (
                 {'inscripción': 'la cuenta con que se anotó', 'podio': 'la cuenta que menciona el podio',
                  'llave': 'la cuenta que la llave menciona con ese nombre',
                  'llamada': 'la cuenta que estaba en la llamada con ese nombre'}
-                .get(fu, 'su Discord'), did)))
+                .get(fu, 'su Discord'), did), por=POR_DISCORD, escribio={'alta': [n, did]}):
+            de_alta[p['id']] = did
+    anotar_pendientes(ids_alias | set(de_alta), dry=False)
+    try:
+        entraron = LR.agregar_varios(
+            [(n, cc, did, 'alta automática · %s · %s' % ({'inscripción': 'se anotó así en inscripciones',
+                                                         'podio': 'el podio de la llave lo menciona',
+                                                         'llave': 'la llave lo escribe con su mención',
+                                                         'llamada': 'estaba en la llamada del evento con ese nombre'}
+                                                        .get(fu, 'su nombre en Discord'), _ahora_et()))
+             for _p, n, cc, did, fu in nuevos], aplicar=True) if nuevos else {}
+    except Exception:
+        retirar_pendientes(ids_alias | set(de_alta), dry=False)
+        raise
+    retirar_pendientes({i for i, did in de_alta.items() if did not in (entraron or {})}, dry=False)
     if pares:
-        _agregar_akas(pares, [])
-    if hechas:
-        from escribir import _pedir
-        _pedir('POST', '/values:batchUpdate', json={
-            'valueInputOption': 'RAW',
-            'data': [{'range': 'Pendientes!F%d:H%d' % (n, n),
-                      'values': [['Resuelto', res, POR_DISCORD]]}
-                     for p, res in hechas for n in p['filas']]})
-    return {p['id'] for p, _r in hechas}
+        try:
+            poner_filas_aka(ids_alias, _agregar_akas(pares, []), dry=False)
+        except Exception:
+            retirar_pendientes(ids_alias, dry=False)
+            raise
+    return ids_alias | {i for i, did in de_alta.items() if did in (entraron or {})}
 
 
 # ── 👥 una cuenta, dos nombres ──────────────────────────────────────────
@@ -1151,7 +1284,8 @@ def _se_parecen(a, b):
 
 def dos_nombres(inscripciones, menciones, lista, con_puntos, juegan, real_de,
                 son_distintos=lambda a, b: False, fuera=(), en_la_liga=lambda did: True,
-                preguntados=(), liga=None, es_equipo=lambda n: False):
+                preguntados=(), liga=None, es_equipo=lambda n: False, con_rol=None, iso_de=None,
+                cuentas_con_nombre=lambda k: set()):
     """👥 UNA CUENTA, DOS NOMBRES: `{'unir': […], 'enganchar': […], 'preguntar': […]}`. Pura.
 
     🔑 Dlx, 06/10/2026, después de Velatz y Shisui (*«revisa que otros usuarios no tengan ese error»*), a «¿querés
@@ -1172,6 +1306,13 @@ def dos_nombres(inscripciones, menciones, lista, con_puntos, juegan, real_de,
     - **preguntar** («¿es la misma persona?» en ✅ Decidir): lo que sería unir pero no alcanza, con dos pruebas o con
       nombres que se parecen («Emi» y «EmiZor»). Una inscripción suelta con otro nombre es casi siempre alguien
       anotando a un amigo —Player a Steven— y no se pregunta.
+    - 🔑 **R2** (Dlx, 13/10/2026, «Sí», con `con_rol`): **une también si la cuenta usa VARIOS nombres** —BNA se anota
+      Ckl, Armando Faso, Hinjkybesuk, Trrr—, cuando hay `DOS_PRUEBAS` inscripciones de ese nombre con la bandera de su
+      dueño, la que usa sola (una inscripción que es sólo esa bandera) o ninguna; su dueño no jugó esos eventos con su
+      nombre; nadie más usa ese nombre —ni otra inscripción ni otra cuenta de Discord (`cuentas_con_nombre`)—; y el
+      dueño **no es organizador, staff, host ni socio** en esos servidores (el staff anota a otros: Player a Steven), y
+      el nombre tiene 3 letras o más. Y si el par ya estaba preguntado, lo contesta (`preguntado`). Va con `regla: 'R2'`
+      y `si_no`: lo que se hacía antes de R2, para cuando R2 no puede actuar (ver `una_cuenta_dos_nombres()`).
 
     🔴 LA REVISIÓN DE ESA NOCHE (dos revisores, 06/10/2026) encontró cuatro agujeros en la primera versión, y los
     cuatro unían o enganchaban de más:
@@ -1185,7 +1326,7 @@ def dos_nombres(inscripciones, menciones, lista, con_puntos, juegan, real_de,
         una bandera de la Liga (`liga`), como en `por_discord()`; si no, entra sin país y lo completa autoverificar.
     """
     fila_de = collections.defaultdict(set)        # cuenta -> nombres reales de su fila
-    cuenta_de, como_figura, sin_cuenta = {}, {}, set()
+    cuenta_de, como_figura, sin_cuenta, pais_de = {}, {}, set(), {}
     for r in lista or ():
         k = real_de(r.get('raw') or r.get('full') or '')
         if not k:
@@ -1195,8 +1336,16 @@ def dos_nombres(inscripciones, menciones, lista, con_puntos, juegan, real_de,
         if did:
             fila_de[did].add(k)
             cuenta_de.setdefault(k, did)
+            pais_de.setdefault(did, r.get('pais') or '')
         else:
             sin_cuenta.add(k)
+    # 🔑 R2: cada inscripción con su bandera, y la bandera que cada cuenta escribe SOLA (la suya)
+    flags_i = collections.defaultdict(list)                                  # (cuenta, nombre) -> [(sv, día, {iso})]
+    solas_b = collections.defaultdict(set)                                   # cuenta -> {iso}
+    for x in inscripciones or ():
+        did, t = str(x.get('discord_id') or ''), str(x.get('texto') or '').strip()
+        if did.isdigit() and _UNA_BANDERA.fullmatch(t):
+            solas_b[did].add(_iso(t))
     sin_cuenta -= set(cuenta_de)
     pruebas = collections.defaultdict(lambda: collections.defaultdict(set))   # cuenta -> nombre -> {(tipo, sv, día)}
     como = collections.defaultdict(lambda: collections.defaultdict(set))      # cuenta -> nombre -> {cómo lo escribió}
@@ -1213,6 +1362,8 @@ def dos_nombres(inscripciones, menciones, lista, con_puntos, juegan, real_de,
         if len(k) < 2:
             continue
         pruebas[did][k].add(('i', str(x.get('servidor') or ''), str(x.get('cuando') or '')[:10]))
+        flags_i[(did, k)].append((str(x.get('servidor') or ''), str(x.get('cuando') or '')[:10],
+                                  {_iso(b) for b in _BANDERA.findall(t)}))
         como[did][k].add(_sin_bandera(t).strip()[:40])
         usado[k].add(did)
         banderas[(did, k)].update(_iso(b) for b in _BANDERA.findall(t))
@@ -1225,7 +1376,8 @@ def dos_nombres(inscripciones, menciones, lista, con_puntos, juegan, real_de,
         pruebas[did][k].add(('m', partes[1] if len(partes) > 2 else '', partes[-1]))
         como[did][k].add(_sin_bandera(n).strip()[:40])
         usado[k].add(did)
-    ya = {frozenset((norm(_sin_bandera(a)), norm(_sin_bandera(b)))) for a, b in preguntados or ()}
+    # ⚠️ POR PERSONA: «¿Ckl es Hinjkybesuk?» ya pregunta «¿Ckl es BNA?» si Hinjkybesuk es BNA (14/10/2026)
+    ya = {frozenset((real_de(a), real_de(b))) for a, b in preguntados or ()}
     out = {'unir': [], 'enganchar': [], 'preguntar': []}
     for did in sorted(pruebas):
         por = pruebas[did]
@@ -1245,14 +1397,30 @@ def dos_nombres(inscripciones, menciones, lista, con_puntos, juegan, real_de,
                 b = como_figura.get(real, real)
                 if son_distintos(a, b) or any(juegan.get(k, set()) & juegan.get(r, set()) for r in propios):
                     continue                                 # marcados distintos, o jugaron el mismo evento
-                par = frozenset((norm(_sin_bandera(a)), norm(_sin_bandera(b))))
-                if par in ya:
-                    continue                                 # ya está preguntado: lo contesta Dlx
+                par = frozenset((real_de(a), real_de(b)))
                 juega = any(r in con_puntos or juegan.get(r) for r in propios)
                 x = {'alias': a, 'real': b, 'did': did, 'pruebas': n, 'como': visto}
+                # 🔑 R2: varios nombres, pero cada prueba firmada por su cuenta y con su bandera, y sin rol de staff
+                r2 = None
+                # ⚠️ 3 LETRAS O MÁS: «nadie más usa ese nombre» sale de los apodos de Discord, que sólo guardan de 3
+                # (`_apodos()`), así que con 2 daba siempre «nadie»
+                if con_rol is not None and not equipo and len(propios) == 1 and len(k) >= 3:
+                    deja = {(iso_de or (lambda _p: ''))(pais_de.get(did))} | solas_b.get(did, set())
+                    validas = {(sv_, d_) for sv_, d_, fl in flags_i.get((did, k), []) if fl <= deja}
+                    svs_v = sorted({sv_ for sv_, _d in validas})
+                    if (len(validas) >= DOS_PRUEBAS and not any(con_rol(did, sv_) for sv_ in svs_v)
+                            and not (set(cuentas_con_nombre(k) or ()) - {did})):
+                        r2 = dict(x, regla='R2', pruebas=len(validas), svs=svs_v, preguntado=par in ya)
+                if par in ya:
+                    if r2:
+                        out['unir'].append(r2)               # R2 contesta la pregunta que ya estaba
+                    continue                                 # ya está preguntado: lo contesta Dlx
                 if (n >= DOS_PRUEBAS and unico and not equipo and len(propios) == 1
                         and (juega or _se_parecen(a, b))):
                     out['unir'].append(x)
+                elif r2:
+                    # `si_no`: lo que se hacía antes de R2, si R2 no puede actuar (`una_cuenta_dos_nombres()`)
+                    out['unir'].append(dict(r2, si_no='preguntar' if n >= DOS_PRUEBAS or _se_parecen(a, b) else None))
                 elif n >= DOS_PRUEBAS or _se_parecen(a, b):
                     out['preguntar'].append(x)
             elif n >= DOS_PRUEBAS and unico and not equipo and en_la_liga(did):
@@ -1268,6 +1436,9 @@ def _dos_datos():
     import construir_akas as AK
     akas = AK.cargar() or {}
     alias = {norm(_sin_bandera(a)): norm(_sin_bandera(b)) for a, b in (akas.get('alias') or {}).items()}
+    # 🔑 y los que R2 unió en esta corrida: la hoja AKAs se rearma después, y sin esto «¿Ckl es Hinjkybesuk?» esperaba
+    # una corrida más aunque «Ckl» ya fuera BNA
+    alias.update(_ALIAS_EXTRA)
 
     def real_de(n):
         k, vistos = norm(_sin_bandera(n)), set()
@@ -1289,11 +1460,56 @@ def _dos_datos():
     return real_de, con_puntos, juegan, akas
 
 
-def una_cuenta_dos_nombres(dry=True, preguntas=()):
+def _persona_de(real_de):
+    """`f(nombre) -> la persona`, normalizada: `real_de` si lo hay; si no, el nombre normalizado."""
+    return (lambda n: real_de(n) or norm(_sin_bandera(n))) if real_de else (lambda n: norm(_sin_bandera(n)))
+
+
+def filtrar_r2(unir, preguntas, resp, no, no_pares, dlx_nombres, dlx_pares, real_de=None):
+    """🔑 R2: `(unir, de_vuelta, rel)`. Pura. De lo que `dos_nombres()` quiere unir, las de R2 se quedan sólo si tienen
+    alguna pregunta ABIERTA y SIN CONTESTAR que contestar (`rel[id(x)]`) y nada las frena: una respuesta de Dlx sin
+    aplicar (`resp`) a cualquier pregunta de ese nombre o ese par, una fila que él ya resolvió (`dlx_nombres`,
+    `dlx_pares`), una pregunta deshecha (`no`) o el par deshecho alguna vez (`no_pares`). Las que no, `de_vuelta` si
+    antes de R2 se preguntaban (`si_no`). Las que no son de R2 pasan tal cual.
+
+    🔴 POR PERSONA, NO POR NOMBRE (la tercera revisión, 14/10/2026): en el Sheet están «Ckl → BNA» y «Ckl →
+    Hinjkybesuk», y AKAs dice Hinjkybesuk → BNA. Un «Es otra persona» de Dlx a la de Hinjkybesuk es un «Ckl no es BNA»,
+    y comparando los nombres escritos R2 igual escribía Ckl → BNA. Los dos lados pasan por `real_de`."""
+    per = _persona_de(real_de)
+    no_per = {frozenset((per(a), per(b))) for a, b in no_pares or ()}
+    rel, sigue, de_vuelta = {}, [], []
+    for x in unir:
+        if x.get('regla') != 'R2':
+            sigue.append(x)
+            continue
+        ka, kr = norm(_sin_bandera(x['alias'])), norm(_sin_bandera(x['real']))
+        par = frozenset((per(x['alias']), per(x['real'])))
+        todas = _preguntas_de_alias(preguntas, x['alias'], x['real'], real_de)
+        frena = ((ka, kr) in no_pares or par in no_per or ka in dlx_nombres or per(x['alias']) in dlx_nombres
+                 or par in dlx_pares or any(q['id'] in no or q['id'] in resp for q in todas))
+        abiertas = [q for q in todas if q['id'] not in no and q['id'] not in resp]
+        if frena or not abiertas:
+            if x.get('si_no') == 'preguntar':
+                de_vuelta.append(x)
+            continue
+        rel[id(x)] = abiertas
+        sigue.append(x)
+    return sigue, de_vuelta, rel
+
+
+def una_cuenta_dos_nombres(dry=True, preguntas=(), respuestas=None, hechas=()):
     """👥 `dos_nombres()` con los datos de la corrida, y lo hace: los alias, las cuentas y las preguntas.
 
-    `preguntas` son las abiertas de ✅ Decidir: un par que ya está preguntado no se une solo aunque lleguen más
-    pruebas —la respuesta es de Dlx—."""
+    `preguntas` son las abiertas de ✅ Decidir, contestadas o no: un par que ya está preguntado no se une solo aunque
+    lleguen más pruebas —la respuesta es de Dlx—. `respuestas`: lo que Dlx contestó y todavía no se aplicó; `hechas`:
+    las filas de `Pendientes` que ya resolvió él (`_abiertas_de_pendientes()`).
+
+    🔑 R2 SÓLO CONTESTA PREGUNTAS ABIERTAS Y SIN CONTESTAR, siempre por `resolver_solo()` —se ve en el Dashboard y se
+    puede deshacer— y escribiendo el alias ANTES de cerrarlas. No actúa si Dlx ya dijo algo de ese nombre o ese par
+    (una respuesta sin aplicar, una fila que resolvió él) ni si deshizo esa unión alguna vez (`pares_deshechos()`, para
+    siempre). Sin pregunta abierta, o frenada, hace lo de antes de R2 (`si_no`: preguntar «¿X es Y?»), y esa pregunta la
+    contesta R2 en la corrida siguiente. (La revisión del 14/10/2026: R2 unía pisando un «Es otra persona» de Dlx sin
+    aplicar, y lo que unía sin pregunta no se veía ni se podía deshacer.)"""
     import construir_akas as AK
     real_de, con_puntos, juegan, akas = _dos_datos()
     ident = (_datos('identidad_llaves') or {}).get('eventos') or {}
@@ -1311,10 +1527,35 @@ def una_cuenta_dos_nombres(dry=True, preguntas=()):
         es_equipo = lambda n: False                      # noqa: E731
     preguntados = [_DOS_RE.match(p['detalle']).groups()[:2] for p in preguntas or ()
                    if p.get('tipo') == 'Alias posible' and _DOS_RE.match(p.get('detalle') or '')]
+    # 🔑 R2: el rol de staff (`llaves_a_entrada.con_rol()`, el mismo de las llaves de broma), el país de la Lista y las
+    # cuentas de Discord que se llaman así
+    try:
+        if os.path.join(BASE, 'bot') not in sys.path:
+            sys.path.append(os.path.join(BASE, 'bot'))
+        import llaves_a_entrada as _LAE
+        _rol = lambda did, sv: _LAE.con_rol(did, sv)    # noqa: E731
+    except Exception:                                    # noqa: BLE001
+        _rol = None
+    try:
+        from padron_t1 import PAIS_ISO as _PI
+    except Exception:                                    # noqa: BLE001
+        _PI = {}
+    # ⚠️ R2 (14/10/2026): SIN EL CACHÉ DE APODOS NO SE SABE SI OTRA CUENTA SE LLAMA ASÍ, y «nadie más usa ese nombre»
+    # daba siempre que no. Sin él, R2 no corre
+    r2_ok = _rol is not None and os.path.exists(APODOS)
+    # ⚠️ «otra persona» POR PERSONA (`_distintos_persona()`): «Ckl no es Hinjkybesuk» frena también Ckl → BNA
     r = dos_nombres((_datos('anuncios') or {}).get('inscripciones') or [], menciones, _datos('padron') or [],
-                    con_puntos, juegan, real_de, son_distintos=lambda a, b: AK.son_distintos(a, b, akas),
+                    con_puntos, juegan, real_de,
+                    son_distintos=lambda a, b: AK.son_distintos(a, b, akas) or _distintos_persona(a, b, akas, real_de),
                     fuera=no_rankear(), en_la_liga=lambda did: bool(_servidores_de(did, svs)),
-                    preguntados=preguntados, liga=liga or None, es_equipo=es_equipo)
+                    preguntados=preguntados, liga=liga or None, es_equipo=es_equipo,
+                    con_rol=_rol if r2_ok else None, iso_de=lambda pais: _PI.get(pais) or '',
+                    cuentas_con_nombre=lambda k: set(_apodos().get(k) or ()))
+    # 🔑 R2: QUÉ LA FRENA y a qué pregunta contesta. Lo que no puede contestar vuelve a lo de antes (`si_no`)
+    resp = respuestas or {}
+    r['unir'], de_vuelta, rel = filtrar_r2(r['unir'], preguntas, resp, deshechas(), pares_deshechos(),
+                                           *_lo_que_dlx_contesto(preguntas, resp, hechas, real_de), real_de=real_de)
+    r['preguntar'] = r['preguntar'] + de_vuelta
     # lo que pasa del tope no se hace solo: se pregunta
     unir, eng = r['unir'][:TOPE_DOS], r['enganchar'][:TOPE_DOS]
     preg = r['preguntar'] + r['unir'][TOPE_DOS:]
@@ -1323,16 +1564,55 @@ def una_cuenta_dos_nombres(dry=True, preguntas=()):
     print('\n   👥 una cuenta, dos nombres: %d se unen · %d con su cuenta · %d a ✅ Decidir'
           % (len(unir), len(eng), len(preg)))
     for x in unir:
-        print('      unir: %s -> %s (%d prueba(s))' % (x['alias'], x['real'], x['pruebas']))
+        print('      unir: %s -> %s (%d prueba(s))%s' % (x['alias'], x['real'], x['pruebas'],
+                                                        ' [R2]' if x.get('regla') == 'R2' else ''))
     for x in eng:
         print('      cuenta: %s <- %s (%d prueba(s)%s)' % (x['nombre'], x['did'], x['pruebas'],
                                                         '' if x['fila'] else ', fila nueva'))
     for x in preg:
         print('      pregunta: ¿%s es %s? (%d prueba(s))' % (x['alias'], x['real'], x['pruebas']))
+
+    r2s = [x for x in unir if x.get('regla') == 'R2' and rel.get(id(x))]
+
+    def contestar_r2():
+        # 🤖 R2: las preguntas que ya estaban («¿Ckl es BNA?», «¿quién es JB?») se contestan, con la prueba. ⚠️ TODAS
+        # llevan el alias que se escribió: «Deshacer» cualquiera de ellas lo saca y reabre las otras (`deshacer()`)
+        ids = set()
+        for x in r2s:
+            porque = ('«%s» se anotó %d vez/veces sola desde la cuenta de %s (%s, en %s) y %s no jugó esos eventos con '
+                      'su nombre; nadie más usa ese nombre y %s no es organizador, staff, host ni socio ahí'
+                      % (x['alias'], x['pruebas'], x['real'], ', '.join('«%s»' % c for c in x['como'][:3]),
+                         ', '.join(x.get('svs') or []), x['real'], x['real']))
+            for q in rel[id(x)]:
+                if resolver_solo(q, MISMA if q['tipo'] == 'Alias posible' else 'Es %s' % x['real'], 'R2', porque,
+                                 escribio={'alias': [x['alias'], x['real']]}):
+                    ids.add(q['id'])
+        return ids
+
+    def unidos(filas):
+        # recién con el alias escrito: el resto de la corrida ya lo ve (`_dos_datos()`), y lo que `cierres_solos()`
+        # cierre gracias a él queda atado a esta unión (`_UNION_DE`)
+        for x in r2s:
+            k = (norm(_sin_bandera(x['alias'])), norm(_sin_bandera(x['real'])))
+            _ALIAS_EXTRA[k[0]] = k[1]
+            _UNION_DE[k[0]] = dict({'alias': [x['alias'], x['real']]},
+                                   **({'filas': sorted(set(filas[k]))} if (filas or {}).get(k) else {}))
+    ids = contestar_r2()
     if dry:
+        unidos({})
         return r
+    # 🔴 PRIMERO SE ESCRIBE, DESPUÉS SE CIERRA (como `por_discord()` y `tipeos()`): si la hoja AKAs falla, las
+    # preguntas quedan abiertas en vez de cerradas sin alias. 📝 Y ANTES DE ESCRIBIR, ANOTADO (`anotar_pendientes()`)
+    anotar_pendientes(ids, dry=False)
+    filas = {}
     if unir:
-        _agregar_akas([[x['alias'], x['real'], ''] for x in unir], [])
+        try:
+            filas = _agregar_akas([[x['alias'], x['real'], ''] for x in unir], [])
+        except Exception:
+            retirar_pendientes(ids, dry=False)
+            raise
+        poner_filas_aka(ids, filas, dry=False)
+    unidos(filas)
     con_fila = [(x['nombre'], x['did']) for x in eng if x['fila']]
     if con_fila:
         for did, err in (_poner_ids(con_fila) or {}).items():
@@ -1521,13 +1801,26 @@ def _norm_lig(s):
 
 
 def _nombres_en_resultados():
-    """Los nombres (normalizados, sin bandera) que hoy tienen alguna fila en `Resultados`; `None` si no se pudo leer."""
+    """`{nombre normalizado sin bandera: {números de evento}}` de lo que hoy tiene alguna fila en `Resultados`; `None`
+    si no se pudo leer. Una lectura por corrida (la usan `cierres_solos()` y `reglas()`)."""
+    if 'resultados' in _DATOS:
+        return _DATOS['resultados']
     try:
         from escribir import Hoja
-        return {norm(_sin_bandera(str((list(f) + [''] * 5)[4]))) for f in Hoja('Resultados').filas()} - {''}
+        out, con_b = {}, set()
+        for f in Hoja('Resultados').filas():
+            f = [str(x).strip() for x in list(f) + [''] * 5]
+            k = norm(_sin_bandera(f[4]))
+            if k:
+                out.setdefault(k, set()).add(f[0])
+                con_b.add((k, ''.join(sorted(_BANDERA.findall(f[4])))))
+        _DATOS['resultados'] = out
+        # el nombre con sus banderas, como agrupa `armar()`: para R11 (`cierres_solos()`)
+        _DATOS['resultados_b'] = con_b
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude leer Resultados: %s' % str(e)[:60])
-        return None
+        _DATOS['resultados'] = None
+    return _DATOS['resultados']
 
 
 def cierres_solos(preguntas, dry=True):
@@ -1548,8 +1841,11 @@ def cierres_solos(preguntas, dry=True):
     svs = _datos('servidores_de') or {}
     _apodos()
     hay_donde = bool(_DATOS.get('donde'))
-    out, nombres, dos = {}, False, None
+    out, nombres, dos, regla_de, esc_de = {}, False, None, {}, {}
+    no = deshechas()
     for p in preguntas:
+        if p['id'] in no:
+            continue
         det = p['detalle']
         # 👥 «¿X es Y?» de `una_cuenta_dos_nombres()` que ya no hace falta: X ya es alias de Y (lo unió otro camino,
         # como `por_discord()` en la misma corrida), o X ya no suma aparte
@@ -1564,6 +1860,12 @@ def cierres_solos(preguntas, dry=True):
                 real_de, con_puntos = dos[0], dos[1]
                 if real_de(m.group(1)) == real_de(m.group(2)):
                     out[p['id']] = 'la misma persona: «%s» ya es alias de %s' % (m.group(1), m.group(2))
+                    # 🔗 si es gracias al alias que R2 escribió en esta corrida, va atada a esa unión: «Deshacer» la
+                    # unión la reabre también (`_UNION_DE`, `deshacer()`)
+                    u = next((_UNION_DE[norm(_sin_bandera(n))] for n in (m.group(1), m.group(2))
+                              if norm(_sin_bandera(n)) in _UNION_DE), None)
+                    if u:
+                        esc_de[p['id']] = dict(u)
                 elif real_de(m.group(1)) not in con_puntos:
                     out[p['id']] = 'ya no hace falta: «%s» ya no suma aparte en el ranking' % m.group(1)
             continue
@@ -1584,20 +1886,1100 @@ def cierres_solos(preguntas, dry=True):
         elif p['tipo'] == 'Nombre desconocido' and _nums(p):
             if nombres is False:
                 nombres = _nombres_en_resultados()
-            if nombres and not any(norm(_sin_bandera(v)) in nombres for v in p.get('variantes') or [det]):
+            ks = [norm(_sin_bandera(v)) for v in p.get('variantes') or [det]]
+            if nombres and not any(k in nombres for k in ks):
                 out[p['id']] = 'ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien'
+            # 🔑 R11 (13/10/2026): Y SI ESTÁ, QUE SEA EN SU EVENTO. G8 (#425) se preguntaba porque «g8» seguía en el #354 y
+            # el #381, pero en el #425 ya no estaba: ahí la cuenta de Gocho se había anotado «Akutagawa🇹🇼»
+            # ⚠️ Y QUE ESE MISMO NOMBRE, CON SUS BANDERAS, NO SIGA EN OTRO EVENTO: la fila de `Pendientes` es UNA por
+            # nombre —no se vuelve a anotar en el evento siguiente—, así que «Volk 🇲🇽» del #352 es también el que sigue
+            # sin resolver en el #353 y el #354. Cerrarla lo escondía
+            # 🔴 Y CON `Resultados` LEÍDO Y CON ALGO: `{}` es un dict, y con la hoja vacía (o recién borrada) cerraba todo
+            elif (nombres and isinstance(nombres, dict) and not any(nombres.get(k, set()) & set(_nums(p)) for k in ks)
+                  and not any((norm(_sin_bandera(v)), ''.join(sorted(_BANDERA.findall(v))))
+                              in (_DATOS.get('resultados_b') or set()) for v in p.get('variantes') or [det])):
+                out[p['id']] = ('ya no está en su evento (#%s): el lector lo lee distinto, o ya es alias de alguien'
+                                % ', #'.join(_nums(p)))
+                regla_de[p['id']] = 'R11'
     if out:
         print('\n   🧹 se cierran solas %d pregunta(s):' % len(out))
         for p in preguntas:
             if p['id'] in out:
                 print('      %s — %s' % (p['detalle'][:60], out[p['id']]))
-    if out and not dry:
+    # 🤖 la fila de `Pendientes` la cierra `flush_solas()`, con la regla y la prueba
+    for p in preguntas:
+        if p['id'] in out:
+            r = out[p['id']]
+            resolver_solo(p, MISMA if r.startswith('la misma persona') else
+                          OTRA if r.startswith(('otra persona', 'otra cuenta')) else YA_NO, regla_de.get(p['id'], 'cierre'), r,
+                          escribio=esc_de.get(p['id']))
+    return out
+
+
+# ── 🤖 lo que se resolvió solo ──────────────────────────────────────────
+# 🔑 Dlx, 13/10/2026: lo que el ciclo cierra o contesta solo tiene que verse en el Dashboard, con la regla, la prueba y
+# un «Deshacer». TODO pasa por `resolver_solo()`: las reglas viejas (`por_discord()`, `tipeos()`, `cierres_solos()`) y
+# las que Dlx aprobó ese día (`reglas()` y R2 en `una_cuenta_dos_nombres()`). `flush_solas()` cierra las filas de
+# `Pendientes` en UNA escritura y las anota en `SOLAS`, que viaja al Dashboard (`publicar_web()`, clave `solas`). Lo
+# que Dlx deshace vuelve a ✅ Decidir y la regla no se le aplica más (`deshacer()`, `deshechas()`).
+
+SOLAS = os.path.join(BASE, 'datos', 'decidir_solas.json')
+#: cuántos días se muestra (y se puede deshacer) lo resuelto solo
+SOLAS_DIAS = 14
+#: la respuesta de lo que sólo se cierra: no hay nada que decidir
+YA_NO = 'Ya no hace falta'
+#: qué hace cada regla, en palabras: va con cada pregunta que cerró o contestó
+REGLAS = {
+    'Discord': 'su cuenta de Discord: la inscripción, el podio, la llave o la llamada',
+    'tipeo': 'el nombre de alguien de la Lista con una letra de diferencia',
+    'cierre': 'ya no hacía falta preguntarlo',
+    'R1': 'lo que ya no existe: un evento sacado, un 5 vidas ya decidido, un duplicado ya sacado',
+    'R2': 'una cuenta de la Lista que se anota con otro nombre donde su dueño no jugó',
+    'R3': 'un alta que no hace falta: el bot, o una cuenta que buscó otro y no jugó',
+    'R4': 'una batalla que es copia de otra ya cargada',
+    'R5': 'una llave «de broma» que ya se cargó o que se borró',
+    'R6': '«nadie siguió», como contestaron todas las demás de esa ronda',
+    'R11': 'el nombre ya no está en su evento',
+    'R12': 'un bracket incompleto que es un pedazo de un evento ya cargado',
+    'R16': 'Dlx dijo que no es esa persona, y no hay otra cuenta con ese nombre',
+    'R19': 'la ronda que la escala 8-15 no tenía ahora paga 625',
+}
+#: lo resuelto solo en esta corrida, hasta `flush_solas()`
+_SOLAS = []
+_SOLAS_D = {}
+#: 🔑 los alias que R2 unió en esta corrida (`_dos_datos()` los suma): `{alias normalizado: real normalizado}`
+_ALIAS_EXTRA = {}
+#: 🔗 y lo que escribió cada unión, `{alias normalizado: {'alias': [a, b], 'filas': [n]}}`: lo que `cierres_solos()` cierra
+#: gracias a ese alias va atado a ella, y «Deshacer» la unión lo reabre también (la tercera revisión, 14/10/2026)
+_UNION_DE = {}
+
+
+def _solas_d():
+    """`{'solas': [...], 'deshechas': [ids]}` de `SOLAS`, leído una vez."""
+    if 'd' not in _SOLAS_D:
+        try:
+            with io.open(SOLAS, encoding='utf-8') as f:
+                d = json.load(f) or {}
+        except (OSError, ValueError):
+            d = {}
+        d.setdefault('solas', [])
+        d.setdefault('deshechas', [])
+        _SOLAS_D['d'] = d
+    return _SOLAS_D['d']
+
+
+def deshechas():
+    """Los ids que Dlx deshizo: ninguna regla los vuelve a cerrar ni a contestar."""
+    return set(_solas_d().get('deshechas') or [])
+
+
+def pares_deshechos():
+    """`{(alias, real)}` normalizados de las uniones que Dlx deshizo: R2 no las vuelve a hacer NUNCA, haya pregunta
+    abierta o no (la revisión del 14/10/2026: deshacer y después contestar «Es alguien nuevo» dejaba que R2 volviera
+    a unir en la corrida siguiente)."""
+    return {tuple(x) for x in _solas_d().get('pares_deshechos') or [] if len(x) == 2}
+
+
+def resolver_solo(p, respuesta, regla, porque, por='el ciclo', escribio=None):
+    """🤖 LA ÚNICA PUERTA de lo que el ciclo cierra o contesta solo. Anota la pregunta con la respuesta, la regla y la
+    prueba en una línea; la fila de `Pendientes` la cierra `flush_solas()`. `escribio`: lo que la regla escribió y
+    «Deshacer» tiene que sacar —`{'alias': [a, b]}`, `{'batalla': detalle}` o `{'alta': [nombre, id]}`—.
+
+    ⚠️ Lo que Dlx deshizo no pasa (`deshechas()`), y una pregunta se resuelve una vez por corrida. Devuelve si la anotó.
+    """
+    if p['id'] in deshechas() or any(x['p']['id'] == p['id'] for x in _SOLAS):
+        return False
+    _SOLAS.append({'p': p, 'r': str(respuesta), 'regla': regla, 'porque': str(porque), 'por': por,
+                   'escribio': escribio or {}})
+    return True
+
+
+def _ahora_ms():
+    """Ahora, en milisegundos desde 1970 (UTC): así lo lee el Dashboard (`Number(x.t)`, `bot/avisos.js`)."""
+    return int(datetime.datetime.now(datetime.timezone.utc).timestamp() * 1000)
+
+
+def _t_ms(t):
+    """`t` de una entrada de `SOLAS` en ms. Las primeras se guardaron como texto ISO: se convierten."""
+    if isinstance(t, (int, float)):
+        return int(t)
+    return _ms_iso(str(t or '').replace('Z', '')) or 0
+
+
+def _regla_dicha(regla):
+    return '%s · %s' % (regla, REGLAS[regla]) if regla in REGLAS else str(regla)
+
+
+def _guardar_solas(d):
+    """`SOLAS`, sin lo de más de `SOLAS_DIAS` días. Lo deshecho no se poda: sus filas, su alias y su id sirven para que
+    ninguna regla lo vuelva a tocar NUNCA (`deshechas()`, `pares_deshechos()`, `pendientes.barrer()`)."""
+    corte = _ahora_ms() - SOLAS_DIAS * 86400000
+    d['solas'] = [x for x in d.get('solas') or [] if x.get('deshecha') or _t_ms(x.get('t')) >= corte]
+    d['_leeme'] = ('Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, '
+                   'resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». '
+                   '«deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.')
+    with io.open(SOLAS, 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(d, f, ensure_ascii=False, indent=1)
+        f.write('\n')
+
+
+def flush_solas(dry=True):
+    """🤖 Cierra en `Pendientes`, en UNA escritura, todo lo anotado con `resolver_solo()`, y lo suma a `SOLAS`.
+    En seco sólo lo dice. Devuelve los ids."""
+    if not _SOLAS:
+        return set()
+    ids = {x['p']['id'] for x in _SOLAS}
+    print('\n   🤖 se resolvieron solas %d pregunta(s):' % len(_SOLAS))
+    for x in _SOLAS:
+        print('      [%s] %s → %s · %s' % (x['regla'], x['p']['detalle'][:48], x['r'][:40], x['porque'][:110]))
+    if dry:
+        _SOLAS[:] = []
+        return ids
+    from escribir import _pedir
+    _pedir('POST', '/values:batchUpdate', json={
+        'valueInputOption': 'RAW',
+        'data': [{'range': 'Pendientes!F%d:H%d' % (n, n),
+                  'values': [['Resuelto', ('%s — %s' % (x['r'], x['porque']))[:480],
+                              '%s (%s)' % (x['por'], x['regla'])]]}
+                 for x in _SOLAS for n in x['p']['filas']]})
+    d, t = _solas_d(), _ahora_ms()
+    # ✅ lo que estaba anotado como «pendiente» (`anotar_pendientes()`) se confirma: la entrada se reemplaza
+    d['solas'] = [y for y in d['solas'] if not (y.get('pendiente') and y.get('id') in ids)]
+    for x in _SOLAS:
+        d['solas'].append(_entrada_sola(x, t))
+    try:
+        _guardar_solas(d)
+    except OSError as e:
+        print('   ⚠️ no pude guardar lo resuelto solo (%s)' % str(e)[:60])
+    _SOLAS[:] = []
+    return ids
+
+
+def _entrada_sola(x, t, pendiente=False):
+    """La entrada de `SOLAS` de algo anotado con `resolver_solo()`. `rk`, `por` y `variantes`: con qué se escribió
+    cada fila, para que «Deshacer» reabra sólo si sigue así. `pendiente`: anotado ANTES de escribir afuera."""
+    q = x['p']
+    e = {'id': q['id'], 'tipo': q['tipo'], 'sec': str((q.get('seccion') or ('', ''))[1])[:120],
+         'que': str(q.get('que') or q['detalle'])[:400], 'r': x['r'][:160],
+         'regla': _regla_dicha(x['regla']), 'rk': x['regla'], 'por': x['por'],
+         'porque': x['porque'][:600], 't': t, 'filas': q['filas'],
+         'variantes': list(q.get('variantes') or [q['detalle']]), 'escribio': x['escribio']}
+    if pendiente:
+        e['pendiente'] = True
+    return e
+
+
+def anotar_pendientes(ids, dry=True):
+    """📝 LO QUE SE VA A ESCRIBIR AFUERA QUEDA ANOTADO ANTES (la tercera revisión, 14/10/2026). Un alias, una batalla o
+    un alta se escriben y la fila de `Pendientes` la cierra `flush_solas()` al final: si la corrida se caía entre las
+    dos cosas, lo escrito quedaba sin registro y no se podía deshacer. Ahora va a `SOLAS` como «pendiente» antes de
+    escribir; `flush_solas()` lo confirma, `retirar_pendientes()` lo saca si la escritura falla, y
+    `recuperar_pendientes()` lo termina en la corrida siguiente si quedó a medias. En seco no hace nada."""
+    if dry or not ids:
+        return
+    d, t = _solas_d(), _ahora_ms()
+    d['solas'] = [y for y in d['solas'] if not (y.get('pendiente') and y.get('id') in ids)]
+    d['solas'] += [_entrada_sola(x, t, pendiente=True) for x in _SOLAS if x['p']['id'] in ids]
+    _guardar_solas(d)
+
+
+def retirar_pendientes(ids, dry=True):
+    """Lo anotado como pendiente cuya escritura falló: sale de `SOLAS` y de lo que se cierra en esta corrida."""
+    if not ids:
+        return
+    _SOLAS[:] = [x for x in _SOLAS if x['p']['id'] not in ids]
+    if dry:
+        return
+    d = _solas_d()
+    d['solas'] = [y for y in d['solas'] if not (y.get('pendiente') and y.get('id') in ids)]
+    _guardar_solas(d)
+
+
+def poner_filas_aka(ids, filas, dry=True):
+    """Las filas de AKAs donde quedó cada alias (`_agregar_akas()`), en lo anotado: «Deshacer» borra ESAS filas y sólo
+    si siguen diciendo eso (`_sacar_akas()`). ⚠️ Y SE VUELVE A GUARDAR LO PENDIENTE APENAS SE CONOCEN (la cuarta
+    revisión, 14/10/2026): si no, lo anotado antes de escribir quedaba sin fila, y al recuperarlo se le podía atribuir
+    a la regla una fila que escribió otro."""
+    con = set()
+    for x in _SOLAS:
+        a = (x.get('escribio') or {}).get('alias')
+        if x['p']['id'] in ids and a and len(a) >= 2:
+            f = (filas or {}).get((norm(_sin_bandera(a[0])), norm(_sin_bandera(a[1]))))
+            if f:
+                x['escribio'] = dict(x['escribio'], filas=sorted(set(f)))
+                con.add(x['p']['id'])
+    anotar_pendientes(con, dry=dry)
+
+
+def filas_escritas(esc):
+    """Las filas de AKAs que escribió una regla, de su `escribio` (`filas`; `fila`, de antes)."""
+    esc = esc or {}
+    return list(esc.get('filas') or ([esc['fila']] if esc.get('fila') else []))
+
+
+def _escrito_existe(e, aka_filas):
+    """¿Lo que escribió una entrada pendiente está escrito de verdad? `aka_filas`: las filas A:C de AKAs."""
+    esc = e.get('escribio') or {}
+    if esc.get('alias'):
+        k = (norm(_sin_bandera(esc['alias'][0])), norm(_sin_bandera(esc['alias'][1])))
+        filas = [i for i, f in enumerate(aka_filas, 1)
+                 if len(f) >= 2 and (norm(_sin_bandera(f[0])), norm(_sin_bandera(f[1]))) == k]
+        # ⚠️ sin las filas que escribió la regla, NO SE ATRIBUYE: el par puede estar en una fila de otro (la cuarta
+        # revisión, 14/10/2026). Se retira sin cerrar
+        return bool(filas_escritas(esc)) and any(f in filas for f in filas_escritas(esc))
+    if esc.get('batalla'):
+        v = (_decisiones().get('batallas') or {}).get(clave_batalla(esc['batalla'])) or {}
+        return str(v.get('por') or '').startswith('el ciclo')
+    if esc.get('alta'):
+        return str(esc['alta'][1]) in _lista_por_id()
+    return True
+
+
+def recuperar_pendientes(preguntas, dry=True, respuestas=None, hechas=()):
+    """♻️ Lo que una corrida anotó como pendiente y no llegó a confirmar (`anotar_pendientes()`). Ids que se cierran.
+
+      · si lo escrito NO está (o no se sabe en qué fila: no se atribuye), la entrada se borra y la pregunta sigue abierta;
+      · si está y la pregunta ya no está abierta, queda confirmado (el registro sirve para «Deshacer»);
+      · si está y la pregunta sigue abierta, se vuelve a anotar y `flush_solas()` la cierra… SALVO QUE DLX HAYA DICHO OTRA
+        COSA (la cuarta revisión, 14/10/2026): una respuesta suya a esa pregunta (`respuestas`), o un freno de R2 sobre
+        ese alias —lo que contestó de ese nombre o ese par (`hechas`), lo que deshizo, un `no_confundir`, POR PERSONA—.
+        Entonces lo que escribió la regla es lo que Dlx no quiso: se saca (`retirar_lo_escrito()`) y la entrada se borra,
+        y su respuesta la aplica `aplicar()` en esta misma corrida. Lo que no se puede sacar solo —un alias sin fila
+        conocida, un alta en la Lista— queda en el Dashboard con un aviso, para que lo saque él.
+    """
+    d = _solas_d()
+    pend = [y for y in d.get('solas') or [] if y.get('pendiente') and not y.get('deshecha')]
+    if not pend:
+        return set()
+    aka = []
+    con_alias = any((y.get('escribio') or {}).get('alias') for y in pend)
+    if con_alias:
+        import requests
         from escribir import _pedir
+        aka = _pedir('GET', '/values/%s' % requests.utils.quote('AKAs!A1:C800')).get('values', [])
+    resp = respuestas or {}
+    # los frenos de R2, por persona: los datos de esta corrida (sin el alias pendiente, que justo es lo que se discute)
+    real_de, akas = None, {}
+    if con_alias:
+        try:
+            _rd, _cp, _jg, akas = _dos_datos()
+            # ⚠️ el alias pendiente YA ESTÁ en AKAs: con él, «Ckl» ya sería BNA y el par Ckl–BNA se volvía una sola
+            # persona. La persona de cada nombre se mira como si ese alias no estuviera
+            _pa = {norm(_sin_bandera((y.get('escribio') or {})['alias'][0])) for y in pend
+                   if (y.get('escribio') or {}).get('alias')}
+
+            def real_de(n, _rd=_rd, _pa=_pa):
+                k = norm(_sin_bandera(n))
+                return k if k in _pa else _rd(n)
+        except Exception:                                # noqa: BLE001
+            real_de, akas = None, {}
+    dlx_n, dlx_p = _lo_que_dlx_contesto(preguntas, resp, hechas, real_de)
+    per = _persona_de(real_de)
+    no_p = {frozenset((per(a), per(b))) for a, b in pares_deshechos()}
+    abiertas = {p['id']: p for p in preguntas or ()}
+    vuelven, sacar, contra = set(), set(), []
+    for y in pend:
+        esc = y.get('escribio') or {}
+        if not _escrito_existe(y, aka):
+            sacar.add(y['id'])
+            continue
+        if frena_pendiente(y, resp, dlx_n, dlx_p, no_p, akas, real_de):
+            contra.append(y)
+        elif y['id'] in abiertas:
+            _SOLAS.append({'p': abiertas[y['id']], 'r': y.get('r') or '', 'regla': y.get('rk') or '',
+                           'porque': y.get('porque') or '', 'por': y.get('por') or 'el ciclo', 'escribio': esc})
+            vuelven.add(y['id'])
+        else:
+            y.pop('pendiente', None)
+    print('\n   ♻️ lo que quedó a medias en otra corrida: %d se cierran ahora · %d sin lo escrito, se borran · %d con '
+          'otra respuesta de Dlx, se saca lo escrito' % (len(vuelven), len(sacar), len(contra)))
+    for y in contra:
+        print('      %s — Dlx dijo otra cosa: %s' % (str(y.get('que') or y.get('id'))[:60], y.get('escribio')))
+    if dry:
+        return vuelven
+    quedan = retirar_lo_escrito(contra, aka)
+    for y in contra:
+        if y['id'] in quedan:
+            # ⚠️ lo que no se pudo sacar solo queda a la vista, con el aviso: «Deshacer» lo intenta de nuevo
+            y.pop('pendiente', None)
+            y['r'] = '⚠️ Dlx contestó otra cosa'
+            y['porque'] = ('%s · ⚠️ Dlx contestó otra cosa antes de que se cerrara, y lo que escribió la regla (%s) no se '
+                           'pudo sacar solo: sacalo con «Deshacer»' % (y.get('porque') or '', quedan[y['id']]))[:600]
+        else:
+            sacar.add(y['id'])
+    d['solas'] = [y for y in d['solas'] if not (y.get('pendiente') and y.get('id') in sacar)]
+    _guardar_solas(d)
+    return vuelven
+
+
+def frena_pendiente(y, resp, dlx_n, dlx_p, no_p, akas, real_de=None):
+    """¿Dlx dijo otra cosa sobre lo que una entrada pendiente escribió? Pura. Una respuesta suya a esa pregunta
+    (`resp`), y si escribió un alias, los frenos de R2 POR PERSONA: lo que contestó de ese nombre o ese par
+    (`dlx_n`, `dlx_p`), una unión deshecha (`no_p`, pares de personas) o un `no_confundir` (`akas`)."""
+    if y.get('id') in (resp or {}):
+        return True
+    a = (y.get('escribio') or {}).get('alias')
+    if not a or len(a) < 2:
+        return False
+    per = _persona_de(real_de)
+    par = frozenset((per(a[0]), per(a[1])))
+    return bool(par in no_p or par in dlx_p or norm(_sin_bandera(a[0])) in dlx_n
+                or _distintos_persona(a[0], a[1], akas, real_de))
+
+
+def retirar_lo_escrito(entradas, aka):
+    """Saca lo que escribieron unas entradas de `SOLAS` a las que Dlx les contestó otra cosa: el alias, de las filas que
+    escribió la regla y si siguen diciendo eso (`filas_aka_a_sacar()`); la decisión de batalla, si es del ciclo.
+    `{id: qué quedó}`: lo que no se pudo sacar solo (un alias sin fila conocida, un alta en la Lista)."""
+    quedan, escritos = {}, []
+    for y in entradas:
+        esc = y.get('escribio') or {}
+        if esc.get('alias'):
+            fs = filas_escritas(esc)
+            if fs:
+                escritos += [(esc['alias'][0], esc['alias'][1], f) for f in fs]
+            else:
+                quedan[y['id']] = 'el alias «%s → %s»' % (esc['alias'][0], esc['alias'][1])
+        if esc.get('alta'):
+            quedan[y['id']] = 'el alta de %s con %s' % tuple(esc['alta'][:2])
+    if escritos:
+        import requests
+        from escribir import _pedir
+        filas, avisos = filas_aka_a_sacar(escritos, aka)
+        for x in avisos:
+            print('      ⚠️ %s' % x)
+        if filas:
+            _pedir('POST', '/values:batchUpdate', json={'valueInputOption': 'RAW', 'data': [
+                {'range': 'AKAs!A%d:C%d' % (i, i), 'values': [['', '', '']]} for i in filas]})
+    bats = [(y.get('escribio') or {}).get('batalla') for y in entradas if (y.get('escribio') or {}).get('batalla')]
+    if bats:
+        dd = _decisiones()
+        for det in bats:
+            v = (dd.get('batallas') or {}).get(clave_batalla(det))
+            if v and str(v.get('por') or '').startswith('el ciclo'):
+                dd['batallas'].pop(clave_batalla(det), None)
+        with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(dd, f, ensure_ascii=False, indent=1)
+            f.write('\n')
+    return quedan
+
+
+def solas_web():
+    """`[{id, tipo, sec, que, r, regla, porque, t}]`: lo resuelto solo en los últimos `SOLAS_DIAS` días y no deshecho,
+    lo más nuevo primero. Va al Dashboard en `publicar_web()`. `t` en milisegundos (un número)."""
+    corte = _ahora_ms() - SOLAS_DIAS * 86400000
+    out = [dict({k: x.get(k) for k in ('id', 'tipo', 'sec', 'que', 'r', 'regla', 'porque')}, t=_t_ms(x.get('t')))
+           for x in _solas_d().get('solas') or []
+           if not x.get('deshecha') and not x.get('pendiente') and _t_ms(x.get('t')) >= corte]
+    return sorted(out, key=lambda x: x['t'], reverse=True)[:300]
+
+
+def filas_aka_a_sacar(escritos, v):
+    """`(filas, avisos)`: las filas de AKAs que «Deshacer» borra. Pura. `escritos`: `[(alias, real, fila o None)]`;
+    `v`: las filas A:C de la hoja.
+
+    🔴 SÓLO LA QUE ESCRIBIÓ LA REGLA (la tercera revisión, 14/10/2026). «La última del par» no alcanzaba: si deshacer se
+    caía después de borrar, el reintento borraba la ANTERIOR, que podía ser de Dlx. Con la fila anotada
+    (`_agregar_akas()`), se borra ésa y sólo si sigue diciendo eso; sin fila (lo de antes de esto), sólo si el par está
+    UNA vez. Si no, no se toca y se avisa."""
+    filas, avisos = [], []
+    for a, b, fila in escritos:
+        k = (norm(_sin_bandera(a)), norm(_sin_bandera(b)))
+        hay = [i for i, f in enumerate(v, 1) if len(f) >= 2 and (norm(_sin_bandera(f[0])), norm(_sin_bandera(f[1]))) == k]
+        if fila:
+            if fila in hay:
+                filas.append(fila)
+            else:
+                avisos.append('la fila %d de AKAs ya no dice «%s → %s»: no se toca' % (fila, a, b))
+        elif len(hay) == 1:
+            filas.append(hay[0])
+        elif hay:
+            avisos.append('«%s → %s» está %d veces en AKAs y no sé cuál escribió la regla: no se toca' % (a, b, len(hay)))
+    return sorted(set(filas)), avisos
+
+
+def _sacar_akas(escritos):
+    """Borra de la hoja AKAs las filas `alias -> real` que escribió una regla (Deshacer): ver `filas_aka_a_sacar()`."""
+    import requests
+    from escribir import _pedir
+    v = _pedir('GET', '/values/%s' % requests.utils.quote('AKAs!A1:C800')).get('values', [])
+    filas, avisos = filas_aka_a_sacar(escritos, v)
+    for x in avisos:
+        print('      ⚠️ %s' % x)
+    datos = [{'range': 'AKAs!A%d:C%d' % (i, i), 'values': [['', '', '']]} for i in filas]
+    if datos:
+        _pedir('POST', '/values:batchUpdate', json={'valueInputOption': 'RAW', 'data': datos})
+    return len(datos)
+
+
+def _par_escrito(x):
+    """El alias que escribió una entrada de `SOLAS`, normalizado: `(alias, real)`, o `None`."""
+    a = (x.get('escribio') or {}).get('alias')
+    return (norm(_sin_bandera(a[0])), norm(_sin_bandera(a[1]))) if a and len(a) >= 2 else None
+
+
+def filas_a_reabrir(hay, filas):
+    """`(reabrir, no)`: las filas de `Pendientes` de lo deshecho que SIGUEN SIENDO las que cerró la regla —el mismo tipo,
+    el mismo nombre, `Resuelto` y con esa regla en «Resuelto por»— y las que no (se tocaron después: no se pisan). Pura:
+    `filas` es `{n: {columna: valor}}`.
+
+    ⚠️ Y LA QUE CERRÓ `pendientes.barrer()` («el ciclo» a secas, la cuarta revisión del 14/10/2026): lo recuperado de
+    una corrida a medias pudo cerrarse ahí —el nombre ya resolvía con el alias de la regla—, y Deshacer sacaba el alias
+    sin reabrir la pregunta: quedaba un nombre sin pregunta."""
+    si, no = [], []
+    for x in hay:
+        vs = {norm(_sin_bandera(v)) for v in x.get('variantes') or []}
+        por = '%s (%s)' % (x.get('por') or 'el ciclo', x['rk']) if x.get('rk') else None
+        for n in x.get('filas') or []:
+            f = filas.get(n) or {}
+            ok = (f.get('Tipo') == x.get('tipo') and str(f.get('Estado') or '').lower() == 'resuelto'
+                  and (not vs or norm(_sin_bandera(f.get('Detalle'))) in vs)
+                  and (f.get('Resuelto por') in (por, 'el ciclo') if por
+                       else str(f.get('Resuelto por') or '').startswith('el ciclo')))
+            (si if ok else no).append(n)
+    return si, no
+
+
+def deshacer(ids, dry=True):
+    """↩️ LO QUE DLX DESHIZO EN EL DASHBOARD («Lo que se resolvió solo» → Deshacer): vuelve a ✅ Decidir y la regla
+    no se le aplica más.
+
+    Saca lo que la regla escribió —el alias de la hoja AKAs, la batalla de `decisiones.json` (sólo si la escribió el
+    ciclo)— y reabre sus filas de `Pendientes`. ⚠️ UNA FILA NUEVA DE LA LISTA (un alta) NO SE BORRA SOLA: se avisa, y la
+    saca una persona —borrar a alguien de la Lista es identidad—. Devuelve los ids que deshizo."""
+    nuevas = set(ids or ()) - deshechas()
+    if not nuevas:
+        return []
+    d = _solas_d()
+    hay = [x for x in d.get('solas') or [] if x.get('id') in nuevas and not x.get('deshecha')]
+    # 🔑 UNA UNIÓN ES UNA: deshacer «¿quién es Ckl?» deshace también «¿Ckl es BNA?», que R2 cerró con el mismo alias.
+    # Si no, el alias se iba y la otra quedaba cerrada diciendo que eran la misma persona
+    pares = {_par_escrito(x) for x in hay} - {None}
+    hay += [x for x in d.get('solas') or [] if not x.get('deshecha') and x not in hay and _par_escrito(x) in pares]
+    nuevas |= {x['id'] for x in hay}
+    print('\n   ↩️ Dlx deshizo %d desde el Dashboard%s' % (len(nuevas), '' if hay else ' (ninguna la había cerrado una regla)'))
+    for x in hay:
+        print('      %s — %s · %s' % (x['id'], x.get('r'), (x.get('escribio') or {}) or 'no escribió nada'))
+    if dry:
+        return sorted(nuevas)
+    from escribir import _pedir
+    # ⚠️ TODAS las filas que la regla escribió para cada par (el mismo par dos veces en una corrida son dos filas); sin
+    # ninguna conocida, una entrada sin fila (`filas_aka_a_sacar()` decide)
+    akas, sin_fila = {}, {}
+    for x in hay:
+        if _par_escrito(x):
+            a = x['escribio']['alias']
+            fs = filas_escritas(x['escribio'])
+            if fs:
+                akas.setdefault(_par_escrito(x), set()).update((a[0], a[1], f) for f in fs)
+            else:
+                sin_fila.setdefault(_par_escrito(x), (a[0], a[1], None))
+    escritos = [t for v in akas.values() for t in sorted(v)] + [v for k, v in sin_fila.items() if k not in akas]
+    if escritos:
+        print('      alias que se sacan de AKAs: %d' % _sacar_akas(escritos))
+    bats = [x['escribio']['batalla'] for x in hay if (x.get('escribio') or {}).get('batalla')]
+    if bats:
+        dd = _decisiones()
+        for det in bats:
+            v = (dd.get('batallas') or {}).get(clave_batalla(det))
+            if v and str(v.get('por') or '').startswith('el ciclo'):
+                dd['batallas'].pop(clave_batalla(det), None)
+        with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(dd, f, ensure_ascii=False, indent=1)
+            f.write('\n')
+    for x in hay:
+        if (x.get('escribio') or {}).get('alta'):
+            print('      ⚠️ %s entró a la Lista con %s: esa fila queda (sacala a mano si no va)'
+                  % tuple(x['escribio']['alta']))
+    # ⚠️ SÓLO LA FILA QUE SIGUE SIENDO LA QUE SE CERRÓ: hasta 14 días después, alguien pudo haberla tocado
+    filas = []
+    if any(x.get('filas') for x in hay):
+        import pendientes as _PE
+        hoja = {n: {c: str((list(f) + [''] * _PE.ANCHO)[i]).strip() for i, c in enumerate(_PE.COLS)}
+                for n, f in _PE._filas_con_n(_PE._hoja())}
+        filas, otras = filas_a_reabrir(hay, hoja)
+        for n in otras:
+            print('      ⚠️ la fila %d de Pendientes ya no es la que cerró la regla: no se toca' % n)
+    if filas:
         _pedir('POST', '/values:batchUpdate', json={
             'valueInputOption': 'RAW',
-            'data': [{'range': 'Pendientes!F%d:H%d' % (n, n), 'values': [['Resuelto', out[p['id']], 'el ciclo']]}
-                     for p in preguntas if p['id'] in out for n in p['filas']]})
+            'data': [{'range': 'Pendientes!F%d:H%d' % (n, n), 'values': [['Pendiente', '', '']]} for n in filas]})
+    t = _ahora_ms()
+    for x in hay:
+        x['deshecha'] = t
+        # ↩️ las que de verdad se reabrieron: sólo ésas las saltea `pendientes.barrer()` (las que no se tocaron, no)
+        x['reabiertas'] = [n for n in x.get('filas') or [] if n in set(filas)]
+    d['deshechas'] = sorted(deshechas() | nuevas)
+    # 🔑 y el par, para siempre: R2 no lo vuelve a unir aunque no haya pregunta (`pares_deshechos()`)
+    d['pares_deshechos'] = sorted({tuple(x) for x in d.get('pares_deshechos') or [] if len(x) == 2}
+                                  | {_par_escrito(x) for x in hay if _par_escrito(x)})
+    _guardar_solas(d)
+    return sorted(nuevas)
+
+
+def _por_otro(match):
+    """¿Un alta que buscó OTRA persona con /card (`por: 'otro'`)? Lo dice `registrar_ids.match_alta()`; las filas de
+    antes sólo traían «sv FFA» —el camino propio siempre agrega el motivo—."""
+    m = str(match or '').strip()
+    return bool(re.match(r'^sv \S+$', m)) or 'lo buscó otra persona' in m
+
+
+_AKAS = []
+
+
+def _son_distintos_de(det, svs=()):
+    """`f(nombre) -> bool`: si ese nombre está marcado como OTRA persona que `det` en AKAs (`no_confundir`), con la
+    bandera y el servidor de esta pregunta (`distintos_aca()`): lo del Force 🇲🇽 de FVS no vale para el Force de URBF."""
+    try:
+        import construir_akas as AK
+        if not _AKAS:
+            _AKAS.append(AK.cargar() or {})
+        sig = _siglas()
+        return lambda y: distintos_aca(det, y, _AKAS[0], svs, sig)
+    except Exception:                                    # noqa: BLE001
+        return lambda y: False
+
+
+def _ms_iso(x):
+    """`'2026-10-12T20:14:31'` (UTC, como lo guarda `bot/anuncios.py`) → ms, o `None`."""
+    try:
+        t = datetime.datetime.fromisoformat(str(x or '').replace('Z', ''))
+        return int(t.replace(tzinfo=datetime.timezone.utc).timestamp() * 1000)
+    except ValueError:
+        return None
+
+
+def _cuentas_insc(p):
+    """🔎 R17: `[{id, usuario, nombre, sv, real}]` de las cuentas que se anotaron CON ESE NOMBRE para el evento de la
+    pregunta: en su servidor, desde 12 h antes de la llave hasta que terminó (`_ventana()`), sola o como la de la
+    pareja que lleva su usuario (`es_su_usuario()`). `real`: su nombre en la Lista, si está.
+
+    🔑 «TRRR 🇦🇷» (#462) lo escribió la cuenta de BNA a las 4:14 PM ET y la llave salió a las 8:26 PM; las opciones eran
+    Hassan, nuevo o troll. ⚠️ Es una opción, no una respuesta: el staff anota a otros (Player a Steven)."""
+    k = norm(_sin_bandera(p.get('detalle')))
+    if len(k) < 2 or p.get('tipo') != 'Nombre desconocido':
+        return []
+    ins = (_datos('anuncios') or {}).get('inscripciones') or []
+    por_id = _lista_por_id()
+    out, vistos = [], set()
+    for n in _nums(p):
+        try:
+            ev, desde, hasta = _ventana(n)
+        except Exception:                                # noqa: BLE001
+            continue
+        if not ev or desde is None:
+            continue
+        for x in ins:
+            did = str(x.get('discord_id') or '')
+            if x.get('servidor') != ev[1] or not did.isdigit() or did in vistos:
+                continue
+            t = _ms_iso(x.get('cuando'))
+            if t is None or not (desde - 12 * 3600000 <= t <= hasta):
+                continue
+            ns = _nombres_insc(x.get('texto'))
+            if not ((len(ns) == 1 and ns[0] == k) or (len(ns) > 1 and k in ns and es_su_usuario(k, x.get('quien')))):
+                continue
+            vistos.add(did)
+            out.append({'id': did, 'usuario': str(x.get('quien') or ''), 'nombre': str(x.get('texto') or '')[:40],
+                        'sv': [ev[1]], 'real': por_id.get(did), 'rol': _con_rol_en(did, ev[1])})
     return out
+
+
+def _con_rol_en(did, sv):
+    """¿Esa cuenta es organizadora, staff o host en ese servidor? (`llaves_a_entrada.con_rol()`). Sin saberlo, no."""
+    try:
+        if os.path.join(BASE, 'bot') not in sys.path:
+            sys.path.append(os.path.join(BASE, 'bot'))
+        import llaves_a_entrada as _LAE
+        return _LAE.con_rol(did, sv)
+    except Exception:                                    # noqa: BLE001
+        return False
+
+
+def _preguntas_de_alias(preguntas, alias, real, real_de=None):
+    """Las preguntas abiertas que contesta «`alias` es `real`»: el «¿es la misma persona?» de ese par —POR PERSONA:
+    «¿Ckl es Hinjkybesuk?» también, si Hinjkybesuk ya es BNA (`real_de`)— y el «¿quién es `alias`?». Para R2."""
+    per = _persona_de(real_de)
+    ka, quiero = norm(_sin_bandera(alias)), {per(alias), per(real)}
+    out = []
+    for q in preguntas or ():
+        m = _DOS_RE.match(q.get('detalle') or '') if q.get('tipo') == 'Alias posible' else None
+        if m and {per(m.group(1)), per(m.group(2))} == quiero:
+            out.append(q)
+        elif q.get('tipo') == 'Nombre desconocido' and norm(_sin_bandera(q.get('detalle'))) == ka:
+            out.append(q)
+    return out
+
+
+def _distintos_persona(a, b, akas, real_de=None):
+    """¿Un `no_confundir` de AKAs dice que `a` no es `b`? POR PERSONA (`real_de`): «Ckl no es Hinjkybesuk» es también
+    «Ckl no es BNA» si Hinjkybesuk ya es BNA. Para `dos_nombres()`, donde antes se comparaban los nombres escritos."""
+    per = _persona_de(real_de)
+    pa, pb = per(a), per(b)
+    na, nb = norm(_sin_bandera(a)), norm(_sin_bandera(b))
+    for x in (akas or {}).get('no_confundir') or []:
+        if len(x) < 2:
+            continue
+        if ({per(x[0]), per(x[1])} == {pa, pb}
+                or {norm(_sin_bandera(x[0])), norm(_sin_bandera(x[1]))} == {na, nb}):
+            return True
+    return False
+
+
+def _lo_que_dlx_contesto(preguntas, respuestas, hechas, real_de=None):
+    """`({nombres}, {frozenset(par)})` normalizados sobre los que Dlx ya dijo algo: lo contestado sin aplicar
+    (`respuestas`) y las filas de `Pendientes` que resolvió él (`hechas`). Frenan a R2. Los pares, POR PERSONA
+    (`real_de`): «¿Ckl es Hinjkybesuk?» contestado es también «¿Ckl es BNA?»."""
+    per = _persona_de(real_de)
+    nombres, pares = set(), set()
+
+    def sumar(tipo, det, variantes=()):
+        if tipo == 'Nombre desconocido':
+            nombres.update(norm(_sin_bandera(v)) for v in list(variantes or ()) + [det] if v)
+        m = (_DOS_RE.match(det or '') or _DOS_C_RE.match(det or '')) if tipo == 'Alias posible' else None
+        if m:
+            pares.add(frozenset((per(m.group(1)), per(m.group(2)))))
+    for p in preguntas or ():
+        if p['id'] in (respuestas or {}):
+            sumar(p['tipo'], p['detalle'], p.get('variantes'))
+    for _n, d in hechas or ():
+        sumar(str(d.get('Tipo') or ''), str(d.get('Detalle') or ''))
+    nombres.discard('')
+    return nombres, pares
+
+
+def _por_servidor(sv):
+    """`{nombre normalizado: real}` de lo que en ESE servidor es otra persona (`akas_a_mano.json`, `por_servidor`)."""
+    ps = ((_datos('akas_a_mano') or {}).get('por_servidor') or {}).get(sv) or {}
+    return {norm(_sin_bandera(a)): b for a, b in ps.items()}
+
+
+def _canon(real_de, sv):
+    """`f(lado) -> clave`: un lado como lo dice la Lista —el alias del servidor, después los AKAs—, normalizado."""
+    ps = _por_servidor(sv)
+
+    def f(x):
+        x0 = _sin_bandera(lado_limpio(x)).strip()
+        return real_de(ps.get(norm(x0), x0))
+    return f
+
+
+def _personas(lado):
+    """Los integrantes de un lado: «Oasis, Letrao🇨🇱» son dos."""
+    return [x for x in re.split(r'\s*(?:,|\+|&)\s*', str(lado or '')) if x.strip()]
+
+
+def _evento_llave(ev, sv, fecha, ll=None):
+    """`(número, llave)` del evento cargado con ese nombre, servidor y fecha (`datos/llaves_t1.json`), o `(None, None)`."""
+    for n, L in (ll if ll is not None else _llaves_t1()).items():
+        if (norm(_limpio(L.get('nombre'))) == norm(_limpio(ev)) and L.get('fecha') == fecha
+                and (not L.get('sv') or L.get('sv') == sv)):
+            return n, L
+    return None, None
+
+
+def copia_de(det, ll, canon):
+    """🔑 R4: `(número, [lados], ganador)` de la batalla YA RESUELTA de la que `det` (una «Batalla sin ganador») es copia
+    —el mismo evento, la misma ronda y los mismos lados por AKAs—, o `None`. Pura.
+
+    FVS UNDER (#461) se leyó de dos mensajes: el segundo, con las semis y la final vacías, volvió a meter los cuatro
+    cuartos con los nombres crudos («Rfran🇪🇸 vs Ricard🇪🇨»), y cada uno quedó «sin ganador» aunque el cuartos ya estaba
+    cargado (Refran–Richard, ganó Refran). Contestar «Ganó X» lo habría contado dos veces."""
+    x = partes_batalla(det)
+    if not x or len(x[4]) < 2:
+        return None
+    ev, sv, fecha, ronda, lados = x
+    n, L = _evento_llave(ev, sv, fecha, ll)
+    if not L:
+        return None
+    quiero = {canon(l) for l in lados}
+    for R in L.get('rondas') or []:
+        if ronda_canon(R.get('r')) != ronda_canon(ronda):
+            continue
+        for b in R.get('b') or []:
+            nota = str(b[2] if len(b) > 2 else '').lower()
+            if not b or not b[1] or 'sin ganador' in nota or 'nadie siguió' in nota:
+                continue
+            if {canon(l) for l in b[0]} == quiero:
+                return n, list(b[0]), b[1]
+    return None
+
+
+def pedazo_de(match, sv, fecha, ll, canon):
+    """🔑 R12: `(número, nombre)` del evento cargado que YA TIENE todas las batallas de un «Bracket incompleto» —el mismo
+    servidor, ±1 día, las mismas personas en cada batalla—, o `None`. Pura.
+
+    «LA REDENCION VOL.3» (FFA, 10/10/2026) traía «OASIS, LETRAO vs Verc» y «SNOW vs tam»: las semis del #447 LA
+    REDENCION, que ya contaba con Oasis y Letrao campeones.
+
+    🔴 (la revisión del 14/10/2026) CON UNA SOLA BATALLA NO ALCANZA: «final: WALKER SANITY vs NOXVELL» (11/10) se cerró
+    como pedazo de un evento del 10/10 donde esos dos se cruzaron en cuartos. Ahora pide DOS batallas o más, TODAS en
+    ese evento, y cada una en la MISMA ronda cuando la pregunta la dice."""
+    segs = segmentos_llave(match)
+    if len(segs) < 2:
+        return None
+
+    def dia(f):
+        m = re.match(r'^(\d{1,2})/(\d{1,2})$', str(f or ''))
+        return datetime.date(2026, int(m.group(2)), int(m.group(1))) if m else None
+    d0 = dia(fecha)
+    if not d0:
+        return None
+    for n, L in ll.items():
+        dl = dia(L.get('fecha'))
+        if L.get('sv') != sv or not dl or abs((dl - d0).days) > 1:
+            continue
+        # cada batalla de la llave como (ronda, el conjunto de su gente); una triple viene en filas con el mismo ganador
+        bats = []
+        for R in L.get('rondas') or []:
+            rc, por_g = ronda_canon(R.get('r')), {}
+            for b in R.get('b') or []:
+                gente = {canon(p) for lado in b[0] for p in _personas(lado)}
+                if b[1] and 'triple' in str(b[2] if len(b) > 2 else '').lower():
+                    por_g.setdefault(canon(b[1]), set()).update(gente)
+                else:
+                    bats.append((rc, gente))
+            bats += [(rc, g) for g in por_g.values()]
+
+        def esta(r, lados):
+            gente = {canon(p) for lado in lados for p in _personas(lado)}
+            return any(g == gente and (r not in ORDEN_RONDAS or rc == r) for rc, g in bats)
+        if all(esta(r, lados) for r, lados, _p in segs):
+            return n, L.get('nombre')
+    return None
+
+
+def nadie_como_las_demas(det, bat_dec, abiertas):
+    """🔑 R6: `[decisiones]` de las OTRAS batallas de esa misma ronda, si TODAS se contestaron «nadie siguió» —por el
+    organizador o por Dlx— y no queda otra sin contestar; si no, `None`. Pura.
+
+    DEM UZBEKISTAN FECHA 2 (FFA, 13/10/2026): el organizador contestó «nadie siguió» a los dos tríos de octavos que le
+    preguntó; el tercero no se lo preguntaron (el mensaje lleva cuatro batallas como mucho, `finales.MAX_PREGUNTAS`)."""
+    x = partes_batalla(det)
+    if not x:
+        return None
+    ev, sv, fecha, ronda, _l = x
+    pref = '|'.join([norm(ev), sv.upper(), fecha, norm(ronda)]) + '|'
+    yo = clave_batalla(det)
+    otras = [v for k, v in (bat_dec or {}).items() if k.startswith(pref) and k != yo]
+    if not otras or any((v or {}).get('ganador') != NADIE for v in otras):
+        return None
+    for q in abiertas or ():
+        y = partes_batalla(q.get('detalle')) if q.get('tipo') == 'Batalla sin ganador' else None
+        if y and clave_batalla(q['detalle']) != yo and '|'.join([norm(y[0]), y[1].upper(), y[2], norm(y[3])]) + '|' == pref:
+            return None
+    return otras
+
+
+def vidas_no_suma(det, eventos, ll, decision, sacar=()):
+    """🔑 R1: por qué un «Vidas cargado» ya no hace falta, o `''`. Pura: `decision` es `decision_evento()`; `sacar`, los
+    números sacados (`numeros_a_sacar()`).
+
+    «MAÑANA DE LLUVIA VOL 1» (FFA, 07/10/2026) se leyó como 5 vidas y se cargó dos veces (#420, #421); se sacaron por
+    número y el evento quedó como lo que era, una llave común (#419). ⚠️ SE CIERRA SIN DECISIÓN: un «No cuenta» va por
+    nombre y se llevaría el #419 (NOVEDADES 2.51).
+
+    ⚠️ (la revisión del 14/10/2026) MIRA TODOS LOS CARGADOS CON ESE NOMBRE, MENOS LOS SACADOS: con el primero que
+    apareciera, un #420 sacado podía tapar al #419. Y SI NO HAY NINGUNO, NO SE CIERRA: puede ser que `procesar_entrada`
+    no lo haya cargado TODAVÍA (falló esa corrida), y «no está cargado» la cerraba para siempre."""
+    partes = [x.strip() for x in str(det or '').split(' · ')]
+    if len(partes) != 3 or not eventos:
+        return ''
+    ev, sv, fecha = partes
+    if decision is not None:
+        return 'ya está decidido: «%s»' % decision
+    ns = [k for k, v in eventos.items() if len(v) > 2 and norm(_limpio(v[0])) == norm(_limpio(ev))
+          and v[1] == sv and v[2] == fecha and not (str(k).isdigit() and int(k) in set(sacar or ()))]
+    if not ns:
+        return ''
+    rondas = {}
+    for n in ns:
+        rs = [str(R.get('r') or '') for R in ((ll or {}).get(str(n)) or {}).get('rondas') or []]
+        if not rs or any(re.search(r'vidas?', r, re.I) for r in rs):
+            return ''                                   # éste sí puede ser el 5 vidas, o no se sabe
+        rondas[n] = rs
+    return ('%s con ese nombre %s una llave común (%s), no este 5 vidas: éste no suma por ningún lado'
+            % (', '.join('el #%s' % n for n in ns), 'es' if len(ns) == 1 else 'son',
+               ', '.join(rondas[ns[0]][:4])))
+
+
+_ESCALA_RE = re.compile(r'^ESCALA: la ronda «([^»]+)» no tiene valor en la escala (\S+)')
+
+
+def cobran_ronda(ll, nums, puesto):
+    """🔑 R19: `'#418: Badterne 625, …'` si en el evento cargado (`datos/llaves_t1.json`, la tabla con la que pagó el
+    motor) TODOS los de ese puesto ya cobran algo; `''` si alguno sigue en 0, si no hay nadie ahí o si no está. Pura."""
+    out = []
+    for n in nums or ():
+        tabla = ((ll or {}).get(str(n)) or {}).get('tabla') or []
+        ahi = [f for f in tabla if len(f) > 2 and norm(f[1]) == norm(puesto)]
+        if not ahi or any(not isinstance(f[2], (int, float)) or f[2] <= 0 for f in ahi):
+            return ''
+        out.append('#%s: %s' % (n, ', '.join('%s %s' % (f[0], f[2]) for f in ahi[:4])
+                                + (' y %d más' % (len(ahi) - 4) if len(ahi) > 4 else '')))
+    return '; '.join(out)
+
+
+def _siglas():
+    """Las siglas de los servidores de la Liga (las de las llaves cargadas y de `Eventos Procesados`)."""
+    out = {str(L.get('sv') or '') for L in _llaves_t1().values()}
+    out |= {str(v[1]) for v in (_DATOS.get('eventos') or {}).values() if len(v) > 1}
+    return {s for s in out if re.fullmatch(r'[A-Z]{2,5}', s)}
+
+
+def _bandera_en_nota(nombre, nota):
+    """La bandera que la nota de un `no_confundir` le pone a `nombre` («el Force 🇲🇽 de FVS» → «🇲🇽»), o `''`."""
+    m = re.search(r'(?i)(?<![\w])%s\s*((?:[\U0001F1E6-\U0001F1FF]{2})+)' % re.escape(str(nombre or '').strip()),
+                  str(nota or ''))
+    return banderas_de(m.group(1)) if m else ''
+
+
+def distintos_aca(det, otro, akas, svs=(), siglas=()):
+    """🔑 R16: ¿un `no_confundir` de AKAs dice que `det` NO es `otro`, Y VALE PARA ESTE `det`? Pura.
+
+    🔴 (la revisión del 14/10/2026) «Force» de URBF se cerró como «alguien nuevo» por lo que Dlx dijo del Force 🇲🇽 de
+    FVS («no es ForceGP»): la tabla compara sin banderas y sin servidor. Ahora no vale si las banderas no coinciden —la
+    de la celda o, si la celda no trae, la que la nota le pone a ese nombre— ni si la nota nombra servidores y
+    ninguno es de esta pregunta (`svs`)."""
+    kd, ko = norm(_sin_bandera(det)), norm(_sin_bandera(otro))
+    fd = banderas_de(det)
+    for x in (akas or {}).get('no_confundir') or []:
+        a, b, nota = (list(x) + ['', '', ''])[:3]
+        if {norm(_sin_bandera(a)), norm(_sin_bandera(b))} != {kd, ko}:
+            continue
+        lado = a if norm(_sin_bandera(a)) == kd else b
+        fl = banderas_de(lado) or _bandera_en_nota(_sin_bandera(lado), nota)
+        if fd and fl and fd != fl:
+            continue
+        nombra = {s for s in siglas or () if re.search(r'(?<![A-Za-z])%s(?![A-Za-z])' % re.escape(s), str(nota or ''))}
+        if nombra and not nombra & set(svs or ()):
+            continue
+        return True
+    return False
+
+
+def reglas(preguntas, eventos, dry=True, todas=None):
+    """🤖 LAS REGLAS QUE DLX APROBÓ EL 13/10/2026 —las que sólo cierran o evitan duplicados («sin pedirle nada») y las
+    que le pidieron su «Sí»—. Cada una pasa por `resolver_solo()` con su prueba. Devuelve los ids.
+
+      R1  lo que ya no existe: la pregunta de un evento sacado o que ya no está en `Eventos Procesados`; el 5 vidas ya
+          decidido o que no es el evento cargado con ese nombre (`vidas_no_suma()`); el duplicado ya sacado
+      R3  el alta del bot, y la de una cuenta que buscó otro (`_por_otro()`) y no jugó en la T1
+      R4  la batalla que es copia de otra ya resuelta (`copia_de()`): «No se jugó», escrito como del ciclo
+      R5  la llave «de broma» (sólo ésa: «nunca había publicado una llave») que ya se cargó (su mensaje es la llave de un
+          evento) o que se borró (`cancelados.json`)
+      R6  «nadie siguió» si el organizador o Dlx lo contestó a TODAS las demás de esa ronda (`nadie_como_las_demas()`)
+      R12 el bracket incompleto que es un pedazo de un evento cargado (`pedazo_de()`)
+      R16 el nombre cuya única cuenta es de alguien que Dlx dijo que NO es, con su bandera y su servidor
+          (`distintos_aca()`): «Es alguien nuevo». Sin el caché de apodos, no
+      R19 el aviso de ESCALA de una ronda que ahora paga (`motor.pago_fuera_de_escala()`) Y que en el evento cargado ya
+          cobra (`cobran_ronda()`)
+
+    ⚠️ R4 y R6 ESCRIBEN una decisión de batalla (`datos/decisiones.json`, `por: el ciclo (R4)`): así el lector no la
+    vuelve a dejar «sin ganador». «Deshacer» la saca. ⚠️ Y CIERRAN DESPUÉS DE ESCRIBIRLA: si la escritura falla, la
+    pregunta queda abierta. Las demás sólo cierran: no escriben nada.
+
+    `preguntas`: las abiertas SIN contestar; `todas`: también las contestadas, para R6 (una hermana con «Ganó X» sin
+    aplicar todavía cuenta como abierta)."""
+    no = deshechas()
+    ps = [p for p in preguntas if p['id'] not in no]
+    if not ps:
+        return set()
+    todas = list(todas) if todas is not None else ps
+    hechas = set()
+    ll = _llaves_t1()
+    sacar = numeros_a_sacar()
+    dec = _decisiones()
+    bat_dec = dec.get('batallas') or {}
+    nuevas_dec = {}
+    try:
+        import construir_akas as AK
+        akas = AK.cargar() or {}
+    except Exception:                                    # noqa: BLE001
+        AK, akas = None, {}
+    real_de = None
+    try:
+        import motor as MO
+    except Exception:                                    # noqa: BLE001
+        MO = None
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'cancelados.json'), encoding='utf-8') as f:
+            borradas = {str((v or {}).get('llave') or '') for v in ((json.load(f) or {}).get('eventos') or {}).values()}
+        borradas.discard('')
+    except (OSError, ValueError):
+        borradas = set()
+    try:
+        sys.path.append(os.path.join(BASE, 'bot'))
+        import escuchar as _E
+        bot = str(_E.BOT_ID)
+    except Exception:                                    # noqa: BLE001
+        bot = ''
+    por_id = _lista_por_id()
+    hay_apodos = os.path.exists(APODOS)
+    siglas = _siglas()
+    # R4 y R6: lo que se cierra recién cuando su decisión de batalla quedó escrita
+    con_dec = []
+
+    def sola(p, r, regla, porque, escribio=None):
+        if resolver_solo(p, r, regla, porque, escribio=escribio):
+            hechas.add(p['id'])
+
+    for p in ps:
+        t, det = p['tipo'], p['detalle']
+        nums = _nums(p) if re.match(r'evento\s*#', p.get('origen') or '', re.I) else []
+        # ── R1 · el evento de la pregunta ya no existe
+        if nums and eventos and t in ('Evento dudoso', 'Nombre desconocido'):
+            fuera = [n for n in nums if int(n) in sacar or n not in eventos]
+            if len(fuera) == len(nums):
+                n = fuera[0]
+                nota = ((dec.get('sacar') or {}).get(n) or {}).get('nota') or ''
+                sola(p, YA_NO, 'R1', ('el #%s se sacó%s' % (n, ': ' + nota.split(':')[0][:120] if nota else ''))
+                     if int(n) in sacar else 'el #%s ya no está en Eventos Procesados' % n)
+                continue
+        if t == 'Vidas cargado':
+            partes = [x.strip() for x in det.split(' · ')]
+            por = vidas_no_suma(det, eventos, ll, decision_evento(*partes) if len(partes) == 3 else None, sacar)
+            if por:
+                sola(p, YA_NO, 'R1', por)
+            continue
+        if t == 'Evento duplicado':
+            m = _DUP_RE.match(det)
+            if m and int(m.group(1)) in sacar:
+                sola(p, SACAR_DUP + m.group(1), 'R1', 'el #%s ya se sacó (%s)' % (
+                    m.group(1), ((dec.get('sacar') or {}).get(m.group(1)) or {}).get('por') or 'ya no está'))
+            # ⚠️ si ya no está, no se «sacó»: la respuesta no dice que lo sacamos
+            elif m and eventos and m.group(1) not in eventos:
+                sola(p, YA_NO, 'R1', 'el #%s ya no está en Eventos Procesados' % m.group(1))
+            continue
+        # ── R3 · el alta que no hace falta
+        if t == 'alta':
+            did = det.split(' = ')[-1].strip() if ' = ' in det else ''
+            if bot and did == bot:
+                sola(p, 'Ya está resuelto', 'R3', 'es el bot de la Liga (ULAYA): alguien le hizo /card')
+            elif did.isdigit() and _por_otro(p.get('match')) and not _jugo(did, det.split(' = ')[0]):
+                sola(p, 'Ya está resuelto', 'R3', 'no usó /card: lo buscó otra persona, y no jugó en la T1 (ni su '
+                     'nombre ni con lo que se anotó está en ningún resultado). Si se anota sola, entra como cualquiera')
+            continue
+        # ── R4 y R6 · la batalla sin ganador
+        if t == 'Batalla sin ganador':
+            x = partes_batalla(det)
+            if not x:
+                continue
+            if real_de is None:
+                real_de = _dos_datos()[0]
+            c = copia_de(det, ll, _canon(real_de, x[1]))
+            if c:
+                n, lados, g = c
+                porque = ('es la misma batalla que «%s» (ganó %s), ya cargada en el #%s: contestar «Ganó» la contaría dos '
+                          'veces' % (' vs '.join(lados), g, n))
+                nuevas_dec[clave_batalla(det)] = {'ganador': '', 'batalla': det, 'cuando': _ahora_et(),
+                                                  'por': 'el ciclo (R4)', 'nota': porque}
+                con_dec.append((p, NO_SE_JUGO, 'R4', porque, {'batalla': det}))
+                continue
+            if 'no aparece nadie' in (p.get('match') or ''):
+                # ⚠️ contra TODAS, también las contestadas sin aplicar: un «Ganó X» de una hermana no es «nadie»
+                otras = nadie_como_las_demas(det, bat_dec, [q for q in todas if q['id'] != p['id']])
+                if otras:
+                    quien = sorted({str(v.get('por') or '?') for v in otras})
+                    porque = ('en esa misma ronda contestaron «nadie siguió» a las otras %d (%s): %s'
+                              % (len(otras), ', '.join(quien)[:120],
+                                 '; '.join((v.get('batalla') or '').split(' · ')[-1] for v in otras)[:200]))
+                    nuevas_dec[clave_batalla(det)] = {'ganador': NADIE, 'batalla': det, 'cuando': _ahora_et(),
+                                                      'por': 'el ciclo (R6)', 'nota': porque}
+                    con_dec.append((p, NADIE_SIGUIO, 'R6', porque, {'batalla': det}))
+            continue
+        # ── R5 y R19 · el evento dudoso
+        if t == 'Evento dudoso':
+            if 'llaves' in (p.get('origen') or '').lower():
+                mid = str(p.get('link') or '').rstrip('/').rsplit('/', 1)[-1]
+                # ⚠️ SÓLO LA DE BROMA (`llaves_a_entrada.llave_de_broma()`): una retenida por Interserver o por una fase
+                # sin batallas espera el «Sí cuenta» de Dlx aunque su llave se haya cargado con otro nombre
+                if mid.isdigit() and 'nunca había publicado una llave' in (p.get('match') or ''):
+                    n = next((k for k, L in ll.items() if any(str(u).rstrip('/').rsplit('/', 1)[-1] == mid
+                                                             for u in L.get('links') or [])), None)
+                    if n:
+                        sola(p, YA_NO, 'R5', 'esa llave ya se cargó como el #%s «%s»: cuenta con ese nombre'
+                             % (n, _limpio((ll.get(n) or {}).get('nombre'))))
+                    elif mid in borradas:
+                        sola(p, YA_NO, 'R5', 'esa llave se borró y no hubo otra (`cancelados.json`): no suma')
+                continue
+            m = _ESCALA_RE.match(det)
+            if m and MO is not None:
+                puesto = dict(MO.CAIDA).get(MO.ronda_de(m.group(1)))
+                pago = MO.pago_fuera_de_escala(m.group(2), puesto) if puesto else 0
+                # ⚠️ (la revisión del 14/10/2026) Y QUE YA PAGUE DE VERDAD: el evento cargado tiene que haberse
+                # recalculado con la regla —los de esa ronda con puntos—. Hasta entonces el aviso sigue siendo cierto
+                ya = cobran_ronda(ll, _nums(p), puesto) if pago else ''
+                if ya:
+                    sola(p, 'Está bien así', 'R19', 'la ronda «%s» de la escala %s paga %d desde la regla de Dlx del '
+                         '13/10 («la ronda que la escala 8-15 no tiene paga 625»), y en el evento cargado ya cobran: %s'
+                         % (m.group(1), m.group(2), pago, ya))
+            continue
+        # ── R12 · el bracket incompleto que ya está cargado con otro nombre
+        if t == 'Bracket incompleto':
+            partes = [x.strip() for x in det.split(' · ')]
+            if len(partes) == 3:
+                if real_de is None:
+                    real_de = _dos_datos()[0]
+                pd = pedazo_de(p.get('match'), partes[1], partes[2], ll, _canon(real_de, partes[1]))
+                if pd:
+                    sola(p, YA_NO, 'R12', 'sus batallas ya están en el #%s «%s», que ya cuenta: es un pedazo de ese '
+                         'evento' % (pd[0], _limpio(pd[1])))
+            continue
+        # ── R16 · la única cuenta con ese nombre es de alguien que Dlx dijo que NO es
+        # ⚠️ sin el caché de apodos no se sabe si hay OTRA cuenta con ese nombre: no actúa
+        if t == 'Nombre desconocido' and AK is not None and hay_apodos:
+            k = norm(_sin_bandera(det))
+            ids = set(_apodos().get(k) or ()) if len(k) >= 3 else set()
+            ids |= {str(c.get('id')) for c in _cuentas_posibles(det) if c.get('id')}
+            quienes = [por_id.get(i) for i in ids]
+            svs_p = {(eventos.get(n) or ('', ''))[1] for n in _nums(p)} - {''}
+            if ids and all(quienes) and all(distintos_aca(det, q, akas, svs_p, siglas) for q in quienes):
+                sola(p, NUEVO, 'R16', 'Dlx dijo que «%s» no es %s, y no hay otra cuenta con ese nombre: queda con su '
+                     'nombre' % (_sin_bandera(det), ' ni '.join(sorted(set(quienes)))))
+    # 📝 R4 y R6: ANOTADO ANTES (`anotar_pendientes()`), DESPUÉS LA DECISIÓN, y el cierre al final (`flush_solas()`). Si
+    # la decisión no se pudo escribir, se retira: no cierran nada
+    ids_dec, dets = set(), set()
+    for p, r, regla, porque, esc in con_dec:
+        if resolver_solo(p, r, regla, porque, escribio=esc):
+            ids_dec.add(p['id'])
+            dets.add(esc['batalla'])
+            hechas.add(p['id'])
+    nuevas_dec = {k: v for k, v in nuevas_dec.items() if v.get('batalla') in dets}
+    if nuevas_dec and not dry:
+        anotar_pendientes(ids_dec, dry=False)
+        try:
+            d = _decisiones()
+            d.setdefault('batallas', {}).update(nuevas_dec)
+            with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
+                json.dump(d, f, ensure_ascii=False, indent=1)
+                f.write('\n')
+        except Exception:
+            retirar_pendientes(ids_dec, dry=False)
+            hechas.difference_update(ids_dec)
+            raise
+    return hechas
+
+
+def _jugo(did, nombre):
+    """¿Esa cuenta jugó en la T1? Con su nombre, con algo con que se anotó o con su apodo de Discord: si alguno está en
+    `Resultados` o en alguna llave cargada. `True` si no se puede saber (sin `Resultados` no se cierra nada)."""
+    res = _nombres_en_resultados()
+    if res is None:
+        return True
+    ns = {norm(_sin_bandera(_sin_decoracion(_reparar(nombre))))}
+    for x in (_datos('anuncios') or {}).get('inscripciones') or []:
+        if str(x.get('discord_id') or '') == str(did):
+            ns |= set(_nombres_insc(x.get('texto')))
+    try:
+        with io.open(APODOS, encoding='utf-8') as f:
+            ns |= {norm(_sin_bandera(n)) for n in ((json.load(f) or {}).get('nombres') or {}).get(str(did)) or []}
+    except (OSError, ValueError):
+        pass
+    ns = {n for n in ns if len(n) >= 2}
+    en_llaves = {norm(_sin_bandera(p)) for L in _llaves_t1().values() for R in L.get('rondas') or []
+                 for b in R.get('b') or [] for lado in (b[0] if b else []) for p in _personas(lado)}
+    return bool(ns & (set(res) | en_llaves))
 
 
 # ── 🔤 el tipeo: «Enkil» es Enkill ──────────────────────────────────────
@@ -1675,8 +3057,9 @@ def tipeos(preguntas, respuestas, eventos, dry=True):
     padron = _datos('padron') or []
     svs = _datos('servidores_de') or {}
     fuera = no_rankear()
+    no = deshechas()
     cand = [p for p in preguntas if p['tipo'] == 'Nombre desconocido' and p['id'] not in (respuestas or {})
-            and len(norm(_sin_bandera(p['detalle']))) >= TIPEO_MIN]
+            and p['id'] not in no and len(norm(_sin_bandera(p['detalle']))) >= TIPEO_MIN]
     if not cand:
         return set()
     try:
@@ -1714,14 +3097,18 @@ def tipeos(preguntas, respuestas, eventos, dry=True):
     print('\n   🔤 tipeos de alguien de la Lista: %d' % len(hechas))
     for p, res in hechas:
         print('      %s — %s' % (p['detalle'][:40], res))
+    # 🤖 la fila de `Pendientes` la cierra `flush_solas()`. 📝 Anotado antes de escribir (`anotar_pendientes()`)
+    for (p, res), (a, real, _f) in zip(hechas, pares):
+        resolver_solo(p, 'Es %s' % real, 'tipeo', res, por=TIPEO_POR, escribio={'alias': [a, real]})
+    ids = {p['id'] for p, _r in hechas}
     if not dry:
-        _agregar_akas(pares, [])
-        from escribir import _pedir
-        _pedir('POST', '/values:batchUpdate', json={
-            'valueInputOption': 'RAW',
-            'data': [{'range': 'Pendientes!F%d:H%d' % (n, n), 'values': [['Resuelto', res, TIPEO_POR]]}
-                     for p, res in hechas for n in p['filas']]})
-    return {p['id'] for p, _r in hechas}
+        anotar_pendientes(ids, dry=False)
+        try:
+            poner_filas_aka(ids, _agregar_akas(pares, []), dry=False)
+        except Exception:
+            retirar_pendientes(ids, dry=False)
+            raise
+    return ids
 
 
 #: cómo se dice cada motivo del lector
@@ -1735,6 +3122,11 @@ def _pistas(p):
     """La columna «Pistas»: lo que ayuda a contestar."""
     t, out = p['tipo'], []
     if t == 'Nombre desconocido':
+        # ✍️ R17: quién se anotó así para ese evento, firmado por su cuenta (`_cuentas_insc()`)
+        for c in p.get('_insc') or []:
+            out.append('✍️ Se anotó así desde la cuenta de %s%s' % (
+                c['real'] or '@' + c['usuario'],
+                ' (es organizador o staff de %s: suele anotar a otros)' % c['sv'][0] if c.get('rol') else ''))
         sug = [x for x in _sugerencias(p['match'])]
         if sug:
             out.append('¿Será %s?' % ' o '.join(sug))
@@ -1920,20 +3312,36 @@ def _pregunta(p):
               if norm(x) not in {norm(s) for s in dc + sug}]
         # 🔎 y las cuentas que se buscaron para ese nombre (Dlx, 04/10/2026, «4. Ok»): elegir una lo carga con ella
         cuentas = ['Es la cuenta @%s' % c['usuario'] for c in _cuentas_posibles(det) if c.get('usuario')]
+        # 🔑 R17 (13/10/2026): PRIMERO LA CUENTA QUE SE ANOTÓ ASÍ PARA ESE EVENTO. «TRRR» lo escribió la cuenta de BNA y
+        # las opciones eran Hassan, nuevo o troll: la respuesta correcta no se podía elegir. Si la cuenta está en la
+        # Lista, «Es <ella>»; si no, «Es la cuenta @usuario» (la carga con ella). Ver `_cuentas_insc()`
+        p['_insc'] = _cuentas_insc(p)
+        # ⚠️ la de alguien con rol en ese servidor va al final: el staff anota a otros (Player anotó a Steven en URBF)
+        de_insc = [c['real'] for c in p['_insc'] if c.get('real') and not c.get('rol')]
+        de_staff = [c['real'] for c in p['_insc'] if c.get('real') and c.get('rol')]
+        cuentas = ['Es la cuenta @%s' % c['usuario'] for c in p['_insc'] if not c.get('real') and c.get('usuario')] + cuentas
+        # 🔑 R16 (13/10/2026): Y NO SE OFRECE A QUIEN DLX DIJO QUE NO ES. «Force» ofrecía «Es ForceGP» después de que
+        # Dlx dijo «el Force 🇲🇽 de FVS no es ForceGP» (`no_confundir` de AKAs)
+        distinto = _son_distintos_de(det, {((_DATOS.get('eventos') or {}).get(n) or ('', ''))[1] for n in _nums(p)})
+        es = [x for x in dict.fromkeys(de_insc + dc + ll + sug + de_staff) if not distinto(x)]
         return ('¿Quién es «%s»?%s' % (det, tambien),
                 ', '.join(sug) if sug else '—',
-                ['Es %s' % s for s in dc + ll + sug] + cuentas + [NUEVO, TROLL])
+                ['Es %s' % x for x in es] + list(dict.fromkeys(cuentas)) + [NUEVO, TROLL])
     if t == 'alta':
         quien = _sin_decoracion(_reparar(det.split(' = ')[0].strip()))
         did = det.split(' = ')[-1].strip() if ' = ' in det else ''
         # ⚠️ «sv FFA» NO ES UNA SUGERENCIA: es dónde usó /card. Va dicho, y
         # la sugerencia pasa a ser lo que la palabra promete: nombres de la
         # Lista que se le parecen.
-        sv = match[3:].strip() if match.startswith('sv ') else ''
+        sv = match[3:].split(' · ')[0].strip() if match.startswith('sv ') else ''
         sug = _parecidos_padron(quien)
-        return ('«%s» usó /card%s y no está en la Lista de Raperos. Si ya '
+        # 🔑 R3 (13/10/2026): A QUIEN LO BUSCÓ OTRA PERSONA NO SE LE DICE QUE «USÓ /card». Así apareció «ULAYA», que es
+        # el bot: alguien le hizo /card. Ver `_por_otro()`
+        dice = ('a «%s» lo buscó otra persona con /card%s (no lo usó él)' % (quien, ' en %s' % sv if sv and sv != '?' else '')
+                if _por_otro(match) else '«%s» usó /card%s' % (quien, ' en %s' % sv if sv and sv != '?' else ''))
+        return ('%s y no está en la Lista de Raperos. Si ya '
                 'está con otro nombre, elegilo o escribilo: le pongo su '
-                'Discord.%s' % (quien, ' en %s' % sv if sv and sv != '?' else '',
+                'Discord.%s' % (dice[0].upper() + dice[1:],
                                 '\nSu cuenta: https://discord.com/users/%s' % did
                                 if did.isdigit() else ''),
                 ', '.join(sug) if sug else '—',
@@ -1971,9 +3379,17 @@ def _pregunta(p):
                 'los puntos ya están en el ranking. ¿Está bien?' % ev,
                 '—', ['Está bien así', 'No cuenta'])
     if t == 'Bracket incompleto':
-        return ('Esta llave no dice quién ganó y lleva más de 12 h sin '
-                'cambios, así que no sumó nada. ¿Cuenta?',
-                '—', ['No cuenta', 'La completo en Discord'])
+        # 🏆 Dlx, 13/10/2026: *«¿cómo digo quién ganó ahí si no me deja seleccionar al ganador?»*. «Ganó X» por cada
+        # lado de la ÚLTIMA ronda que trae la llave; lo aplica `llaves_a_entrada.con_campeon()`
+        ult, _b = ultima_ronda(match)
+        gan = _candidatos_campeon(match)
+        if not gan:
+            return ('Esta llave no dice quién ganó y lleva más de 12 h sin '
+                    'cambios, así que no sumó nada. ¿Cuenta?',
+                    '—', ['No cuenta', 'La completo en Discord'])
+        return ('Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabés quién '
+                'salió campeón, elegilo: %s. Si no, ¿cuenta?' % como_cobra(ult),
+                '—', ['Ganó %s' % x for x in gan] + ['No cuenta', 'La completo en Discord'])
     if t == 'Evento dudoso' and 'llaves' in p['origen'].lower():
         mot = re.sub(r'\.?\s*NO se sumó nada\.?\s*$', '', match).strip()
         return ('No sumó nada porque %s' % mot[0].lower() + mot[1:] if mot
@@ -2050,8 +3466,24 @@ def interpretar(p, respuesta):
     if m:
         if p['tipo'] != 'Nombre desconocido':
             return ('error', '«%s» no aplica a esta pregunta' % r)
-        c = next((c for c in _cuentas_posibles(p['detalle']) if c.get('usuario') == m.group(1)), None)
+        # 🔑 R17: también la cuenta que se anotó así para ese evento (`_cuentas_insc()`)
+        c = next((c for c in _cuentas_posibles(p['detalle']) + (p.get('_insc') or _cuentas_insc(p))
+                  if c.get('usuario') == m.group(1)), None)
         return ('cuenta', c) if c else ('error', '@%s no es una de las cuentas de «%s»' % (m.group(1), p['detalle']))
+    # 🏆 «Ganó X» en un «Bracket incompleto» (Dlx, 13/10/2026): X campeón. Ver `llaves_a_entrada.con_campeon()`
+    if p['tipo'] == 'Bracket incompleto':
+        m = re.match(r'gan[oó]\s+(.+)$', r, re.I)
+        if m:
+            ult, bats = ultima_ronda(p.get('match'))
+            # ⚠️ con bandera si la hay: «Ganó volk 🇨🇴» no es «Volk 🇲🇽». Y si sin bandera son dos, no se adivina
+            hit = [x for x in _candidatos_campeon(p.get('match')) if mismo_lado(x, m.group(1))]
+            if len(hit) > 1:
+                hit = [x for x in hit if banderas_de(x) == banderas_de(m.group(1))]
+            if len(hit) != 1:
+                return ('error', '«%s» no está en la última ronda de la llave: elegí de la lista' % m.group(1))
+            return ('campeon', {'ganador': hit[0], 'ronda': ult,
+                                'batallas': [lados for _r, lados, paso in bats if not paso],
+                                'pasaron': [paso for _r, _l, paso in bats if paso]})
     # ⚠️ ANTES QUE EL ALIAS: «Ganó X» no es «es X»
     if p['tipo'] == 'Batalla sin ganador':
         if r == NO_SE_JUGO:
@@ -2128,17 +3560,71 @@ def decision_evento(ev, sv, fecha):
 
 def _decision_de_evento(ev, sv, fecha):
     """La decisión entera de `ev · sv · fecha` (ver `decision_evento()`), o `None`."""
-    eventos = _decisiones().get('eventos') or {}
-    d = eventos.get('%s · %s · %s' % (ev, sv, fecha))
-    if d is None:
-        k = norm(ev)
-        for clave, v in eventos.items():
-            partes = [x.strip() for x in clave.split(' · ')]
-            if (len(partes) == 3 and k and norm(partes[0]) == k
-                    and partes[1] == sv and partes[2] in (fecha, '*')):
-                d = v
-                break
-    return d
+    return entrada_evento(_decisiones().get('eventos') or {}, '%s · %s · %s' % (ev, sv, fecha), (ev, sv, fecha))[1]
+
+
+def entrada_evento(eventos, det, partes=None):
+    """`(clave, decisión)` de un evento en `decisiones.json` (`eventos`), o `(None, None)`. Pura: la clave exacta y, si
+    no, el mismo nombre normalizado y servidor con esa fecha —primero— o con `*`. Es la búsqueda del lector
+    (`_decision_de_evento()`) y la de `poner_campeon()`: tienen que ser la misma. `partes`: `(evento, sv, fecha)`, si
+    ya se saben (un nombre con « · » adentro no se parte bien)."""
+    if det in eventos:
+        return det, eventos[det]
+    partes = [str(x).strip() for x in partes] if partes else [x.strip() for x in str(det or '').split(' · ')]
+    if len(partes) != 3 or not norm(partes[0]):
+        return None, None
+    mismo = estrella = None
+    for clave, v in eventos.items():
+        ps = [x.strip() for x in clave.split(' · ')]
+        if len(ps) == 3 and norm(ps[0]) == norm(partes[0]) and ps[1] == partes[1]:
+            if ps[2] == partes[2] and mismo is None:
+                mismo = (clave, v)
+            elif ps[2] == '*' and estrella is None:
+                estrella = (clave, v)
+    return mismo or estrella or (None, None)
+
+
+#: cómo empieza la nota del campeón elegido en un «Bracket incompleto» (`poner_campeon()`)
+_NOTA_CAMPEON = 'Dlx en ✅ Decidir, a «Bracket incompleto»'
+
+
+def _sin_nota_campeon(nota):
+    """La nota de un evento sin el tramo del campeón (se reescribe entero cada vez que Dlx elige otro)."""
+    return ' · '.join(x for x in str(nota or '').split(' · ') if x.strip() and not x.startswith(_NOTA_CAMPEON))
+
+
+def poner_campeon(eventos, det, c, cuando, por):
+    """🏆 Suma el campeón que Dlx eligió a la decisión del evento. Pura sobre `eventos` (la sección de `decisiones.json`).
+
+    ⚠️ SE SUMA, NO PISA (la tercera revisión, 14/10/2026): la entrada se busca como la busca el lector
+    (`entrada_evento()`) —otra grafía del nombre no perdía `paga` ni `final`— y la nota que tenía se conserva. Una entrada
+    con `*` vale para cualquier día, así que el campeón va en la clave de ESTE evento, con lo de la `*`. Y SIN
+    `decision: cuenta`: ésa va por nombre y destrabaría la retención de broma de OTRA llave «(sin titulo)» de ese
+    servidor y ese día."""
+    clave, v0 = entrada_evento(eventos, det)
+    destino = clave if clave and clave.split(' · ')[-1].strip() != '*' else det
+    v = dict(v0 or {})
+    nueva = ('%s: ganó %s. La llave no decía el campeón: %s %s (`llaves_a_entrada.con_campeon()`)'
+             % (_NOTA_CAMPEON, c['ganador'], c['ganador'], como_cobra(c['ronda'])))
+    vieja = _sin_nota_campeon(v.get('nota'))
+    v.update({'campeon': c, 'cuando': cuando, 'por': por, 'nota': (vieja + ' · ' if vieja else '') + nueva})
+    eventos[destino] = v
+    return destino
+
+
+def sacar_campeon(eventos, det, cuando, por):
+    """Le saca a la decisión del evento el campeón elegido (Dlx contestó otra cosa a la pregunta que volvió). Pura."""
+    clave, v = entrada_evento(eventos, det)
+    if not isinstance(v, dict) or v.pop('campeon', None) is None:
+        return
+    nota = _sin_nota_campeon(v.get('nota'))
+    if nota:
+        v['nota'] = nota
+    else:
+        v.pop('nota', None)
+    v.update({'cuando': cuando, 'por': por})
+    if not any(k for k in v if k not in ('cuando', 'por')):
+        eventos.pop(clave, None)
 
 
 def final_decidida(ev, sv, fecha):
@@ -2151,6 +3637,17 @@ def final_decidida(ev, sv, fecha):
     lados = [str(x).strip() for x in (f.get('lados') or []) if str(x).strip()]
     gana = str(f.get('ganador') or '').strip()
     return {'lados': lados, 'ganador': gana} if len(lados) == 2 and gana in lados else None
+
+
+def campeon_decidido(ev, sv, fecha):
+    """🏆 `{ganador, ronda, batallas, pasaron}` si Dlx eligió el campeón de un «Bracket incompleto» (`campeon` en la
+    decisión del evento), o `None`. Lo lee `llaves_a_entrada.con_campeon()`."""
+    c = (_decision_de_evento(ev, sv, fecha) or {}).get('campeon')
+    if not isinstance(c, dict) or not str(c.get('ganador') or '').strip():
+        return None
+    return {'ganador': str(c['ganador']).strip(), 'ronda': ronda_canon(c.get('ronda')),
+            'batallas': [[str(x) for x in b] for b in c.get('batallas') or [] if isinstance(b, list)],
+            'pasaron': [str(x) for x in c.get('pasaron') or []]}
 
 
 def integrantes_equipo(ev, sv, fecha, equipo):
@@ -2396,7 +3893,7 @@ def _respuestas():
 #: las líneas que escribe `_pistas()`, de esta versión y de las anteriores
 _PISTA_SISTEMA = re.compile(
     r'^(—|¿Será .*\?|Terminó .*\(.* pts\)|[^:]{1,40}: (le ganó a|perdió con) .*'
-    r'|(La que tiene|La otra|Su cuenta|Esa cuenta): .*|[^:]{1,40}: .+ vs .+|En Discord .*'
+    r'|(La que tiene|La otra|Su cuenta|Esa cuenta): .*|[^:]{1,40}: .+ vs .+|En Discord .*|✍️ Se anotó así .*'
     r'|Ninguno aparece en la ronda siguiente.*|Es la última ronda.*)$')
 
 
@@ -2426,19 +3923,23 @@ def _nota(p):
 
 
 def _agregar_akas(pares, distintos):
-    """Escribe los alias nuevos al final de la tabla de la hoja AKAs."""
+    """Escribe los alias nuevos al final de la tabla de la hoja AKAs. Devuelve `{(alias, real) normalizados: [filas]}`:
+    en qué filas quedó cada uno —TODAS: el mismo par escrito dos veces en una corrida son dos filas—, para que
+    «Deshacer» borre ésas y no otras (`_sacar_akas()`)."""
     import requests
     from escribir import _pedir
     if not pares and not distintos:
-        return
+        return {}
     v = _pedir('GET', '/values/%s' % requests.utils.quote('AKAs!A1:G800')
                ).get('values', [])
-    datos = []
+    datos, filas = [], {}
     if pares:
         ult = max([i for i, f in enumerate(v, 1) if f and str(f[0]).strip()]
                   or [1])
         datos.append({'range': 'AKAs!A%d:C%d' % (ult + 1, ult + len(pares)),
                       'values': pares})
+        for i, a in enumerate(pares):
+            filas.setdefault((norm(_sin_bandera(a[0])), norm(_sin_bandera(a[1]))), []).append(ult + 1 + i)
     if distintos:
         ult = max([i for i, f in enumerate(v, 1)
                    if len(f) > 4 and str(f[4]).strip()] or [2])
@@ -2446,6 +3947,7 @@ def _agregar_akas(pares, distintos):
                       'values': distintos})
     _pedir('POST', '/values:batchUpdate',
            json={'valueInputOption': 'RAW', 'data': datos})
+    return filas
 
 
 def _poner_ids(ids):
@@ -2511,6 +4013,8 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
     trolls = []
     # 👯 los números que Dlx dijo que son otro evento contado dos veces, y los pares que no
     sacar, no_dup = {}, []
+    # 🏆 el campeón que Dlx eligió en un «Bracket incompleto»: `{detalle: (dato, pregunta)}`; y los que ya no lo tienen
+    campeones, sin_campeon = {}, []
     fuera = no_rankear()
     for p in preguntas:
         r = respuestas.get(p['id'])
@@ -2533,6 +4037,10 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
             estados[p['id']] = '⚠️ ' + dato
         elif que == 'cerrar':
             cierres += [(n, dato) for n in p['filas']]
+            # 🏆 «La completo en Discord» a un bracket que ya tenía campeón elegido (la llave cambió y la pregunta volvió):
+            # el campeón de antes se olvida, o el lector la volvería a abrir en cada corrida
+            if p['tipo'] == 'Bracket incompleto':
+                sin_campeon.append(p['detalle'])
         elif que == 'evento':
             eventos[p['detalle']] = dato
             # 🔴 UN 5 VIDAS YA ESTÁ EN EL RANKING: «no cuenta» lo saca
@@ -2569,6 +4077,9 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
                 except Exception as e:                   # noqa: BLE001
                     print('   ⚠️ %s -> %s: no pude mover la cuenta (%s)' % (dato[0], dato[1], str(e)[:60]))
             cierres += [(n, 'otra cuenta de %s: es la misma persona' % dato[1]) for n in p['filas']]
+        elif que == 'campeon':
+            campeones[p['detalle']] = (dato, p)
+            cierres += [(n, 'ganó %s: entra como campeón en la corrida siguiente' % dato['ganador']) for n in p['filas']]
         elif que == 'sacar_num':
             dup, orig, nd, sv, fe = dato
             sacar[str(dup)] = {'es': orig, 'nombre': nd, 'sv': sv, 'fecha': fe}
@@ -2612,7 +4123,10 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
         print('      batalla: %s -> %s' % (det, g or 'no se jugó'))
     for _p, n, c in altas:
         print('      alta: %s con la cuenta @%s' % (n, c['usuario']))
-    aplicar.hubo = bool(cierres or pares or eventos or ids or trolls or batallas or altas or distintos)
+    for det, (c, _p) in campeones.items():
+        print('      campeón: %s -> %s' % (det, c['ganador']))
+    aplicar.hubo = bool(cierres or pares or eventos or ids or trolls or batallas or altas or distintos or campeones
+                        or sin_campeon)
     # ⚠️ LAS NOTAS DE LO QUE SE CIERRA NO SE PIERDEN: van a
     # `datos/decisiones.json` con la pregunta, para quien tenga que actuar.
     cerradas = {n for n, _d in cierres}
@@ -2656,6 +4170,16 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
         for ev, dec in eventos.items():
             d.setdefault('eventos', {})[ev] = {'decision': dec, 'cuando': ahora,
                                                'por': POR}
+        with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(d, f, ensure_ascii=False, indent=1)
+            f.write('\n')
+    if campeones or sin_campeon:
+        d = _decisiones()
+        ahora = _ahora_et()
+        for det, (c, _p) in campeones.items():
+            poner_campeon(d.setdefault('eventos', {}), det, c, ahora, POR)
+        for det in sin_campeon:
+            sacar_campeon(d.setdefault('eventos', {}), det, ahora, POR)
         with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(d, f, ensure_ascii=False, indent=1)
             f.write('\n')
@@ -2884,15 +4408,31 @@ def _objeto(metodo, ruta, cuerpo=None):
         return None
 
 
+_CICLO = {}
+
+
+def _decidir_ciclo():
+    """Lo que el objeto le guarda al ciclo (`/avisos/decidir-ciclo`), leído una vez por corrida. `{}` si no contesta."""
+    if 'd' not in _CICLO:
+        _CICLO['d'] = _objeto('GET', '/avisos/decidir-ciclo') or {}
+    return _CICLO['d']
+
+
 def _respuestas_web():
     """`{id: {r, nota}}`: lo contestado en el Dashboard. `{}` si el objeto no contesta."""
-    d = _objeto('GET', '/avisos/decidir-ciclo') or {}
+    d = _decidir_ciclo()
     return {str(k): v for k, v in (d.get('respuestas') or {}).items() if isinstance(v, dict)}
 
 
+def deshacer_web():
+    """↩️ Los ids que Dlx deshizo en «Lo que se resolvió solo» del Dashboard (`deshacer` de `/avisos/decidir-ciclo`)."""
+    return {str(x).strip() for x in (_decidir_ciclo().get('deshacer') or []) if str(x).strip()}
+
+
 def publicar_web(preguntas):
-    """Las preguntas abiertas, al Dashboard. El objeto borra lo contestado de las que ya no están (se aplicaron)."""
-    d = _objeto('POST', '/avisos/decidir-estados', {'preguntas': para_web(preguntas)})
+    """Las preguntas abiertas, al Dashboard, y lo que se resolvió solo en los últimos `SOLAS_DIAS` días (`solas`, con
+    la regla y la prueba, para «Deshacer»). El objeto borra lo contestado de las que ya no están (se aplicaron)."""
+    d = _objeto('POST', '/avisos/decidir-estados', {'preguntas': para_web(preguntas), 'solas': solas_web()})
     print('   🌐 %s' % ('%d pregunta(s) en el Dashboard' % len(para_web(preguntas)) if d else
                         '⚠️ el objeto no contestó: el Dashboard queda con las de antes'))
     return bool(d)
@@ -3287,6 +4827,31 @@ def correr(dry=True):
     print('\n══ ✅ DECIDIR ══\n')
     print('   %d pregunta(s) abierta(s) · %d fila(s) repetida(s) en '
           '`Pendientes`' % (len(preguntas), len(repetidas)))
+    # ↩️ LO QUE DLX DESHIZO EN EL DASHBOARD, ANTES QUE NADA: vuelve a ✅ Decidir y la regla no se le aplica más
+    try:
+        dsh = deshacer(deshacer_web(), dry=dry)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude deshacer lo pedido (%s)' % str(e)[:80])
+        dsh = []
+    if dsh and not dry:
+        abiertas, repetidas, hechas = _abiertas_de_pendientes()
+        preguntas = armar(abiertas, eventos)
+    # ♻️ Y LO QUE OTRA CORRIDA DEJÓ A MEDIAS (escrito afuera y sin cerrar): ver `recuperar_pendientes()`. ⚠️ Con lo que
+    # Dlx contestó: su respuesta manda sobre la de la regla
+    try:
+        rec = recuperar_pendientes(preguntas, dry=dry, respuestas=repartir(preguntas, respuestas), hechas=hechas)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude revisar lo que quedó a medias (%s)' % str(e)[:80])
+        rec = set()
+    # 🤖 LAS REGLAS QUE DLX APROBÓ EL 13/10/2026: ver `reglas()`. ⚠️ Ninguna toca lo que Dlx ya contestó, tampoco con
+    # «⚡ Todo el evento» (`repartir()`)
+    contestadas = repartir(preguntas, respuestas)
+    try:
+        rr = reglas([p for p in preguntas if p['id'] not in contestadas], eventos, dry=dry, todas=preguntas)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude correr las reglas (%s)' % str(e)[:80])
+        rr = set()
+    preguntas = [p for p in preguntas if p['id'] not in rr]
     # 🔑 PRIMERO LO QUE SE CONTESTA SOLO CON DISCORD: ver `por_discord()`
     try:
         solas = por_discord(preguntas, respuestas, eventos, dry=dry)
@@ -3306,7 +4871,7 @@ def correr(dry=True):
         solas = set(solas) | tip
     # 👥 Y LA CUENTA QUE JUEGA CON DOS NOMBRES: ver `una_cuenta_dos_nombres()`. Lo que pregunta aparece la próxima vez
     try:
-        una_cuenta_dos_nombres(dry=dry, preguntas=preguntas)
+        una_cuenta_dos_nombres(dry=dry, preguntas=preguntas, respuestas=contestadas, hechas=hechas)
     except Exception as e:                               # noqa: BLE001
         # ⚠️ NO FRENA ✅ DECIDIR, como `por_discord()`
         print('   ⚠️ no pude revisar las cuentas con dos nombres (%s)' % str(e)[:80])
@@ -3320,18 +4885,27 @@ def correr(dry=True):
         duplicados_corrida(dry=dry, preguntas=preguntas)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude revisar los eventos repetidos (%s)' % str(e)[:80])
-    # 🧹 Y LO QUE TIENE RESPUESTA SEGURA SIN PREGUNTAR: ver `cierres_solos()`
+    # 🧹 Y LO QUE TIENE RESPUESTA SEGURA SIN PREGUNTAR: ver `cierres_solos()`. Sin lo que ya contestó R2 en esta corrida
+    ya_solas = {x['p']['id'] for x in _SOLAS}
     try:
-        cerradas = cierres_solos([p for p in preguntas if p['id'] not in respuestas], dry=dry)
+        cerradas = cierres_solos([p for p in preguntas if p['id'] not in contestadas and p['id'] not in ya_solas],
+                                 dry=dry)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude cerrar lo seguro (%s)' % str(e)[:80])
         cerradas = {}
     if cerradas:
         preguntas = [p for p in preguntas if p['id'] not in cerradas]
+    # 🤖 Y TODO LO QUE SE RESOLVIÓ SOLO, EN UNA ESCRITURA: `Pendientes`, y la lista para el Dashboard (`flush_solas()`)
+    preguntas = [p for p in preguntas if p['id'] not in {x['p']['id'] for x in _SOLAS}]
+    try:
+        solas_n = flush_solas(dry=dry)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude cerrar lo resuelto solo (%s)' % str(e)[:80])
+        solas_n = set()
     # ⚡ lo que se contestó para el evento entero, a cada nombre sin respuesta
     respuestas = repartir(preguntas, respuestas)
     estados = aplicar(preguntas, respuestas, repetidas, dry=dry)
-    if (solas or cerradas) and not dry:
+    if (solas or cerradas or solas_n or rr or dsh or rec) and not dry:
         aplicar.hubo = True
     # lo que se acaba de cerrar ya no se pregunta. ⚠️ Y SI NO SE CERRÓ NADA
     # NO SE RELEE: dos lecturas menos en cada corrida, que es la mayoría.
@@ -3405,7 +4979,10 @@ def _self_check():
     ok(jahno['filas'] == [2, 3], 'y contestarla cierra las dos filas')
     ok('DESGRACIAS EN TOKYO VOL.10' in jahno['donde'],
        'el evento se dice por su nombre, no por el número')
-    ok(jahno['opciones'] == ['Es Juano', NUEVO, TROLL], 'la sugerencia es una opción')
+    # 🔑 R16: JAHNO y Juano son dos personas (Dlx, 24/09/2026, en `no_confundir`): la sugerencia no se ofrece
+    ok(jahno['opciones'][-2:] == [NUEVO, TROLL]
+       and ('Es Juano' in jahno['opciones']) != _son_distintos_de(jahno['detalle'])('Juano'),
+       'la sugerencia es una opción, salvo la que Dlx marcó como otra persona (R16: JAHNO no es Juano)')
     ok(interpretar(jahno, TROLL) == ('troll', jahno['detalle'].replace('🇦🇷', '').strip()),
        '«Es un troll» es troll')
     ok(interpretar(jahno, TROLL)[0] != 'alias',
@@ -3921,6 +5498,371 @@ def _self_check():
     ok([x['id'] for x in _w] == ['a3', 'a1'] and _w[1]['libre'] and not _w[0]['libre'] and _w[0]['link'] == ''
        and _w[1]['sec'] == 'COPA · FFA · 07/10',
        'las preguntas del Dashboard: en el orden de la hoja, sin los reportes, y sólo links de Discord')
+
+    # ── 🤖 lo que se resolvió solo y las reglas del 13/10/2026 ─────────────────────────────────────────────────────────
+    _guarda_d, _guarda_s = dict(_DATOS), dict(_SOLAS_D)
+    try:
+        _SOLAS[:] = []
+        _SOLAS_D['d'] = {'solas': [], 'deshechas': ['yaNo']}
+        _q = {'id': 'q1', 'tipo': 'Evento dudoso', 'detalle': 'x', 'filas': [3], 'seccion': ('', 'X · FFA · 01/10'),
+              'que': '¿?'}
+        ok(resolver_solo(_q, YA_NO, 'R1', 'porque sí') and not resolver_solo(_q, YA_NO, 'R1', 'otra vez')
+           and not resolver_solo(dict(_q, id='yaNo'), YA_NO, 'R1', 'p')
+           and flush_solas(dry=True) == {'q1'} and not _SOLAS,
+           'todo lo resuelto solo pasa por resolver_solo(): una vez por corrida, y nunca lo que Dlx deshizo')
+        ok(_regla_dicha('R2').startswith('R2 · una cuenta') and _regla_dicha('Discord').startswith('Discord · '),
+           'la regla va en palabras al Dashboard')
+        ok(deshacer(['yaNo'], dry=True) == [] and deshacer(['q9'], dry=True) == ['q9'],
+           'Deshacer: lo ya deshecho no se repite')
+        # 🏆 el «Bracket incompleto» con «Ganó X» (Dlx, 13/10/2026)
+        _m22 = ('sin campeón y sin tocar hace 12 h o más: la guía (Parte 1) lo descarta y NO se sumó nada. Si cuenta, '
+                'completá la final en la llave | cuartos: cinefilo vs solar vs marco polo | cuartos: nc vs mi sicario '
+                'vs regional (masino | semifinales: los 3 vs nacho vs baltrip')
+        _mr3 = ('sin campeón y sin tocar hace 12 h o más: x | cuartos: ⚔️ Semifinales: OASIS, LETRAO vs Verc | '
+                'semifinales: ⚔️ Semifinales: SNOW vs tam')
+        _m19 = 'sin campeón: x | final: WALKER SANITY vs NOXVELL'
+        _mp = 'sin campeón: x | semifinales: ANA vs BEA | semifinales: CID vs DAN · pasó CID'
+        ok(ultima_ronda(_m22)[0] == 'semifinal' and _candidatos_campeon(_m22) == ['los 3', 'nacho', 'baltrip'],
+           'la última ronda de la (sin titulo) del 22/09: la semifinal de tres, y cada uno puede ser el campeón')
+        ok(ultima_ronda(_mr3)[0] == 'semifinal' and _candidatos_campeon(_mr3) == ['OASIS, LETRAO', 'Verc', 'SNOW', 'tam'],
+           'LA REDENCION VOL.3: el rótulo que trae el texto manda («⚔️ Semifinales») y el equipo es un lado')
+        ok(_candidatos_campeon(_mp) == ['ANA', 'BEA', 'CID'], 'de una batalla con ganador, sólo el que pasó')
+        _b = {'id': 'b1', 'tipo': 'Bracket incompleto', 'detalle': '(sin titulo) · FFA · 22/09', 'match': _m22,
+              'origen': 'llaves de Discord', 'sug': '—'}
+        _pb = _pregunta(_b)
+        ok(_pb[2] == ['Ganó los 3', 'Ganó nacho', 'Ganó baltrip', 'No cuenta', 'La completo en Discord']
+           and 'las semifinales cobran esa ronda' in _pb[0],
+           'el bracket incompleto ofrece «Ganó X» por cada lado de la última ronda, y dice cómo paga')
+        ok('el otro, subcampeón' in _pregunta(dict(_b, match=_m19))[0], 'si la última ronda es la final, el otro es subcampeón')
+        ok(interpretar(_b, 'Ganó nacho') == ('campeon', {'ganador': 'nacho', 'ronda': 'semifinal',
+                                                           'batallas': [['los 3', 'nacho', 'baltrip']], 'pasaron': []})
+           and interpretar(_b, 'Ganó Konan')[0] == 'error' and interpretar(_b, 'No cuenta') == ('evento', 'no cuenta'),
+           '«Ganó X» es el campeón de esa llave; alguien que no está, error; «No cuenta» sigue igual')
+        ok(_pregunta(dict(_b, match='sin campeón: x'))[2] == ['No cuenta', 'La completo en Discord'],
+           'sin batallas que leer, las dos de siempre')
+        # R1 · lo que ya no existe
+        _ll = {'419': {'nombre': '__ MAÑANA DE LLUVIA VOL 1 __', 'sv': 'FFA', 'fecha': '07/10',
+                       'rondas': [{'r': 'Cuartos', 'b': []}, {'r': 'Final', 'b': []}]},
+               '365': {'nombre': 'SNAKE ARENA VOL. 2', 'sv': 'SR', 'fecha': '27/09', 'rondas': [{'r': '5 vidas', 'b': []}]}}
+        _evs = {'419': ('__ MAÑANA DE LLUVIA VOL 1 __', 'FFA', '07/10'), '365': ('SNAKE ARENA VOL. 2', 'SR', '27/09')}
+        ok('llave común' in vidas_no_suma('MAÑANA DE LLUVIA VOL 1 · FFA · 07/10', _evs, _ll, None)
+           and 'decidido' in vidas_no_suma('5 VIDAS 07:57 · FFA · 07/10', _evs, _ll, 'no cuenta')
+           and vidas_no_suma('SNAKE ARENA VOL. 2 · SR · 27/09', _evs, _ll, None) == '',
+           'R1: el 5 vidas que no es el evento cargado con ese nombre (MAÑANA DE LLUVIA) se cierra; uno de verdad, no')
+        # 🔴 la revisión del 14/10: «no está cargado» puede ser que procesar_entrada no lo cargó TODAVÍA; y un sacado
+        # con ese nombre no tapa a otro cargado que sí es el 5 vidas
+        _ll2 = dict(_ll, **{'420': {'nombre': '__ MAÑANA DE LLUVIA VOL 1 __', 'sv': 'FFA', 'fecha': '07/10',
+                                    'rondas': [{'r': '5 vidas', 'b': []}]}})
+        _evs2 = dict(_evs, **{'420': ('__ MAÑANA DE LLUVIA VOL 1 __', 'FFA', '07/10')})
+        ok(vidas_no_suma('OTRO · FFA · 07/10', _evs, _ll, None) == ''
+           and vidas_no_suma('MAÑANA DE LLUVIA VOL 1 · FFA · 07/10', _evs2, _ll2, None) == ''
+           and 'llave común' in vidas_no_suma('MAÑANA DE LLUVIA VOL 1 · FFA · 07/10', _evs2, _ll2, None, {420}),
+           'R1: uno que no está cargado queda abierto, y con dos con ese nombre manda el que no se sacó')
+        # R4 · la copia de una batalla ya resuelta (FVS UNDER, #461)
+        _l461 = {'461': {'nombre': 'FVS UNDER', 'sv': 'FVS', 'fecha': '26/09', 'rondas': [
+            {'r': 'Cuartos', 'b': [[['Refran', 'Richard'], 'Refran', ''], [['Drexx', 'Astral'], 'Drexx', ''],
+                                   [['Astral🇦🇷', 'Draxx🇨🇱'], '', 'sin ganador: espera en ✅ Decidir']]}]}}
+        _al = {'rfran': 'refran', 'ricard': 'richard', 'draxx': 'drexx'}
+        _cn = lambda x: _al.get(norm(_sin_bandera(lado_limpio(x))), norm(_sin_bandera(lado_limpio(x))))  # noqa: E731
+        ok(copia_de('FVS UNDER · FVS · 26/09 · cuartos · Rfran🇪🇸 🆚 Ricard🇪🇨', _l461, _cn) == ('461', ['Refran', 'Richard'], 'Refran')
+           and copia_de('FVS UNDER · FVS · 26/09 · cuartos · Astral🇦🇷 🆚 Draxx🇨🇱', _l461, _cn)[2] == 'Drexx'
+           and copia_de('FVS UNDER · FVS · 26/09 · semifinales · Rfran🇪🇸 🆚 Ricard🇪🇨', _l461, _cn) is None
+           and copia_de('FVS UNDER · FVS · 26/09 · cuartos · Rfran🇪🇸 🆚 Otro', _l461, _cn) is None,
+           'R4: la batalla que ya está resuelta con otros nombres es copia; otra ronda u otro rival, no')
+        # R12 · el bracket incompleto que es un pedazo de un evento cargado (LA REDENCION VOL.3 en el #447)
+        _l447 = {'447': {'nombre': 'LA REDENCION', 'sv': 'FFA', 'fecha': '10/10', 'rondas': [
+            {'r': 'Semifinales', 'b': [[['Oasis, Letrao🇨🇱', 'Verc'], 'Oasis, Letrao🇨🇱', ''], [['Snow', 'Tam'], 'Snow', '']]}]}}
+        ok(pedazo_de(_mr3, 'FFA', '10/10', _l447, _cn) == ('447', 'LA REDENCION')
+           and pedazo_de(_mr3, 'DDF', '10/10', _l447, _cn) is None and pedazo_de(_m22, 'FFA', '10/10', _l447, _cn) is None,
+           'R12: un bracket incompleto con las mismas batallas que un evento del mismo servidor y día es un pedazo')
+        # R6 · «nadie siguió» como contestaron todas las demás (DEM UZBEKISTAN FECHA 2)
+        _bd = {'demuzbekistanfecha2|FFA|13/10|octavos|chop|marto|sinlimites': {'ganador': NADIE, 'por': 'el organizador'},
+               'demuzbekistanfecha2|FFA|13/10|octavos|bna|vandu|yor': {'ganador': NADIE, 'por': 'el organizador'}}
+        _d6 = 'DEM UZBEKISTAN FECHA 2 · FFA · 13/10 · octavos · SAIK 🆚 Xubaru prime 🇧🇲 🆚 warap🇦🇷'
+        _otra = {'tipo': 'Batalla sin ganador', 'detalle': 'DEM UZBEKISTAN FECHA 2 · FFA · 13/10 · octavos · A 🆚 B'}
+        ok(len(nadie_como_las_demas(_d6, _bd, [{'tipo': 'Batalla sin ganador', 'detalle': _d6}]) or []) == 2
+           and nadie_como_las_demas(_d6, _bd, [_otra]) is None
+           and nadie_como_las_demas(_d6, dict(_bd, **{'demuzbekistanfecha2|FFA|13/10|octavos|x|y': {'ganador': 'X'}}), []) is None
+           and nadie_como_las_demas(_d6.replace('octavos', 'cuartos'), _bd, []) is None,
+           'R6: si todas las demás de esa ronda son «nadie siguió», ésta también; con otra abierta o un ganador, no')
+        # R3 · el alta que buscó otro, y el texto
+        _qa = {'id': 'a9', 'tipo': 'alta', 'detalle': 'Seba = 1382549511775191060', 'match': 'sv FFA', 'sug': '—'}
+        ok(_por_otro('sv FFA') and _por_otro('sv FFA · lo buscó otra persona con /card')
+           and not _por_otro('sv FFA · sin país (ni bandera en el apodo ni rol de país)')
+           and _pregunta(_qa)[0].startswith('A «Seba» lo buscó otra persona con /card en FFA (no lo usó él)')
+           and _pregunta(dict(_qa, match='sv DRA · ¿es Villa?'))[0].startswith('«Seba» usó /card en DRA'),
+           'R3: el alta que buscó otra persona no dice «usó /card»; la propia, sí')
+        # R2 · una cuenta que usa varios nombres, con la bandera de su dueño y sin rol de staff
+        _rd2 = lambda n: {'hinjkybesuk': 'bna'}.get(norm(_sin_bandera(n)), norm(_sin_bandera(n)))  # noqa: E731
+        _ins2 = [{'discord_id': '849', 'servidor': 'FFA', 'texto': 'Ckl', 'cuando': '2026-10-06T00:57:10'},
+                 {'discord_id': '849', 'servidor': 'DDF', 'texto': 'Ckl', 'cuando': '2026-10-11T17:01:04'},
+                 {'discord_id': '849', 'servidor': 'FFA', 'texto': 'Armando Faso 🇦🇫', 'cuando': '2026-10-07T22:45:08'},
+                 {'discord_id': '849', 'servidor': 'FFA', 'texto': 'Armando faso🇦🇷', 'cuando': '2026-10-11T02:15:44'},
+                 {'discord_id': '849', 'servidor': 'FFA', 'texto': '🇦🇫', 'cuando': '2026-10-11T16:47:13'},
+                 {'discord_id': '849', 'servidor': 'FFA', 'texto': 'Trrr🇦🇷', 'cuando': '2026-10-12T20:14:31'},
+                 {'discord_id': '849', 'servidor': 'FFA', 'texto': 'Bna', 'cuando': '2026-10-12T20:13:27'},
+                 {'discord_id': '1439', 'servidor': 'DDF', 'texto': 'Riley🇵🇪', 'cuando': '2026-10-11T16:59:52'},
+                 {'discord_id': '1439', 'servidor': 'DDF', 'texto': 'Riley🇵🇪', 'cuando': '2026-10-12T15:50:44'},
+                 {'discord_id': '1439', 'servidor': 'DDF', 'texto': 'Dm🇵🇪', 'cuando': '2026-10-07T01:32:12'}]
+        _ls2 = [{'raw': 'BNA', 'discord_id': '849', 'pais': 'Argentina'},
+                {'raw': 'Dominick', 'discord_id': '1439', 'pais': 'Perú'}]
+        _cp2 = {'ckl': 'Ckl', 'armandofaso': 'Armando Faso', 'trrr': 'TRRR 🇦🇷', 'riley': 'Riley🇵🇪', 'dm': 'Dm🇵🇪',
+                'bna': 'BNA', 'dominick': 'Dominick'}
+        _jg2 = {'ckl': {407}, 'armandofaso': {425}, 'trrr': {462}, 'bna': {449}, 'riley': {451}, 'dm': {415},
+                'dominick': {440}}
+        _iso2 = lambda pais: {'Argentina': 'ar', 'Perú': 'pe'}.get(pais, '')  # noqa: E731
+        _rol2 = lambda did, sv: did == '1439' and sv == 'DDF'  # noqa: E731
+        _r2 = dos_nombres(_ins2, [], _ls2, _cp2, _jg2, _rd2, con_rol=_rol2, iso_de=_iso2,
+                          preguntados=[('Ckl', 'BNA')])
+        _u2 = {(x['alias'], x['real']): x for x in _r2['unir']}
+        ok(('Ckl', 'BNA') in _u2 and _u2[('Ckl', 'BNA')].get('regla') == 'R2' and _u2[('Ckl', 'BNA')]['preguntado']
+           and ('Armando Faso', 'BNA') in _u2 and ('TRRR 🇦🇷', 'BNA') not in _u2,
+           'R2: Ckl y Armando Faso son BNA (2 pruebas cada uno, su bandera o la que usa sola); TRRR, con una, no')
+        ok(not any(x['alias'] == 'Riley🇵🇪' for x in _r2['unir']),
+           'R2: la cuenta de alguien con rol de staff ahí (Dominick en DDF) no se une sola: anota a otros')
+        ok(not any(x.get('regla') == 'R2' for x in dos_nombres(_ins2, [], _ls2, _cp2, _jg2, _rd2, con_rol=_rol2,
+                                                                iso_de=_iso2, cuentas_con_nombre=lambda k: {'7'})['unir']),
+           'R2: si otra cuenta de Discord se llama así, no')
+        ok(not any(x.get('regla') == 'R2' for x in dos_nombres(_ins2, [], _ls2, _cp2, dict(_jg2, ckl={449}, armandofaso={449}),
+                                                                _rd2, con_rol=_rol2, iso_de=_iso2)['unir']),
+           'R2: si jugaron el mismo evento, no: son dos')
+        # R11 · el nombre ya no está en SU evento
+        _gr = _nombres_en_resultados
+        try:
+            globals()['_nombres_en_resultados'] = lambda: {'g8': {'354', '381'}, 'papa': {'349'}, 'volk': {'353'}}
+            _DATOS['resultados_b'] = {('g8', '🇨🇴'), ('g8', '🇯🇴'), ('papa', ''), ('volk', '🇲🇽')}
+            _qs = armar([(201, {'Tipo': 'Nombre desconocido', 'Detalle': 'G8', 'Origen': 'evento #425'}),
+                         (202, {'Tipo': 'Nombre desconocido', 'Detalle': 'papa', 'Origen': 'evento #349'}),
+                         (203, {'Tipo': 'Nombre desconocido', 'Detalle': 'Volk 🇲🇽', 'Origen': 'evento #352'})],
+                        {'425': ('PRITTY FREE', 'FFA', '07/10'), '349': ('EL RAP FECHA 5', 'FFA', '22/09'),
+                         '352': ('DESGRACIAS CON TOKIO', 'FFA', '23/09')})
+            _c11 = cierres_solos(_qs, dry=True)
+            ok(_qs[0]['id'] in _c11 and _qs[1]['id'] not in _c11 and _qs[2]['id'] not in _c11
+               and any(x['regla'] == 'R11' for x in _SOLAS),
+               'R11: un nombre que ya no está en SU evento se cierra (G8 del #425); si sigue con su bandera en otro '
+               '(Volk 🇲🇽 en el #353), no: la fila es una por nombre')
+            # (6, la revisión del 14/10/2026) con `Resultados` vacío no se cierra nada: `{}` también es un dict
+            _SOLAS[:] = []
+            globals()['_nombres_en_resultados'] = lambda: {}
+            _DATOS['resultados_b'] = set()
+            ok(not cierres_solos(_qs, dry=True) and not _SOLAS, 'R11: con `Resultados` vacío no cierra nada')
+        finally:
+            globals()['_nombres_en_resultados'] = _gr
+            _SOLAS[:] = []
+        # R17 · la cuenta que se anotó así para ese evento, entre las opciones
+        _DATOS['anuncios'] = {'inscripciones': [
+            {'discord_id': '849', 'quien': 'benjaclink31', 'servidor': 'FFA', 'texto': 'Trrr🇦🇷', 'cuando': '2026-10-12T20:14:31'},
+            {'discord_id': '55', 'quien': 'nadie', 'servidor': 'FFA', 'texto': 'Trrr🇦🇷', 'cuando': '2026-10-01T20:14:31'},
+            {'discord_id': '66', 'quien': 'otro', 'servidor': 'URBF', 'texto': 'Trrr🇦🇷', 'cuando': '2026-10-12T20:14:31'}]}
+        _DATOS['padron'] = [{'raw': 'BNA', 'discord_id': '849', 'pais': 'Argentina'}]
+        _DATOS.pop('lista_por_id', None)
+        _DATOS['eventos'] = {'9462': ('COMPE POR 1.5 DOLARES', 'FFA', '12/10')}
+        _q17 = {'id': 't1', 'tipo': 'Nombre desconocido', 'detalle': 'TRRR 🇦🇷', 'origen': 'evento #9462',
+                'origenes': ['evento #9462'], 'match': 'Hassan', 'variantes': ['TRRR 🇦🇷'], 'sug': 'Hassan'}
+        _o17 = _pregunta(_q17)[2]
+        ok([c['id'] for c in _cuentas_insc(_q17)] == ['849'] and _o17[0] == 'Es BNA',
+           'R17: la cuenta que se anotó «Trrr» para ese evento es la primera opción («Es BNA»); otro día u otro '
+           'servidor, no')
+
+        # ── 🔴 la revisión del 14/10/2026 ──────────────────────────────────────────────────────────────────────────
+        # (1, 2) R2 no pisa a Dlx: lo contestado sin aplicar, una fila que resolvió él, lo deshecho; y sin pregunta
+        # abierta no une (vuelve a preguntar, como antes de R2)
+        _x2 = {'alias': 'Ckl', 'real': 'BNA', 'regla': 'R2', 'si_no': 'preguntar'}
+        _pq = [{'id': 'nd1', 'tipo': 'Nombre desconocido', 'detalle': 'Ckl'},
+               {'id': 'ap1', 'tipo': 'Alias posible', 'detalle': 'DOS NOMBRES: «Ckl» → «BNA» · cuenta 849'}]
+
+        def _f2(ps=_pq, resp=None, no=(), np=(), dn=(), dp=()):
+            return filtrar_r2([_x2, {'alias': 'A', 'real': 'B'}], ps, resp or {}, set(no), set(np), set(dn), set(dp))
+        _s0 = _f2()
+        ok(_s0[0] == [_x2, {'alias': 'A', 'real': 'B'}] and [q['id'] for q in _s0[2][id(_x2)]] == ['nd1', 'ap1']
+           and not _s0[1], 'R2 contesta las preguntas abiertas de ese par, y lo que no es de R2 pasa igual')
+        ok(all(_x2 not in s[0] and s[1] == [_x2] for s in (
+            _f2(resp={'ap1': (OTRA, '')}), _f2(no={'nd1'}), _f2(np={('ckl', 'bna')}), _f2(dn={'ckl'}),
+            _f2(dp={frozenset(('ckl', 'bna'))}), _f2(ps=[]))),
+           'R2 no une si Dlx contestó algo de ese nombre o ese par (sin aplicar o ya resuelto), si lo deshizo alguna '
+           'vez, ni sin una pregunta abierta: vuelve a preguntarse, como antes de R2')
+        _dn, _dp = _lo_que_dlx_contesto(_pq, {'nd1': (NUEVO, '')},
+                                        [(9, {'Tipo': 'Alias posible', 'Detalle': 'DOS NOMBRES: «Jb» → «JHEYSON» · cuenta 1'})])
+        ok(_dn == {'ckl'} and _dp == {frozenset(('jb', 'jheyson'))}, 'lo que Dlx contestó, por nombre y por par')
+        # (4) R2 pide 3 letras: «nadie más usa ese nombre» sale de apodos de 3 o más
+        _ins4 = _ins2 + [{'discord_id': '849', 'servidor': 'FFA', 'texto': 'Jb🇦🇷', 'cuando': '2026-10-02T01:00:00'},
+                         {'discord_id': '849', 'servidor': 'URBF', 'texto': 'Jb', 'cuando': '2026-10-03T01:00:00'}]
+        ok(not any(x['alias'] == 'JB' and x.get('regla') == 'R2' for x in dos_nombres(
+            _ins4, [], _ls2, dict(_cp2, jb='JB'), dict(_jg2, jb={300}), _rd2, con_rol=_rol2, iso_de=_iso2)['unir']),
+           'R2: un nombre de 2 letras no se une solo')
+        # (7) R12 con una sola batalla, o en otra ronda, no es un pedazo
+        _lw = {'1': {'nombre': 'COPA A', 'sv': 'FFA', 'fecha': '10/10', 'rondas': [
+            {'r': 'Cuartos', 'b': [[['WALKER SANITY', 'NOXVELL'], 'NOXVELL', ''], [['ANA', 'BEA'], 'ANA', '']]}]}}
+        ok(pedazo_de(_m19, 'FFA', '11/10', _lw, _cn) is None
+           and pedazo_de('x | final: WALKER SANITY vs NOXVELL | final: ANA vs BEA', 'FFA', '11/10', _lw, _cn) is None
+           and pedazo_de('x | cuartos: WALKER SANITY vs NOXVELL | cuartos: ANA vs BEA', 'FFA', '11/10', _lw, _cn)
+           == ('1', 'COPA A'),
+           'R12: una sola batalla no alcanza («final: WALKER vs NOXVELL» no es un pedazo de un cuartos), ni dos en otra '
+           'ronda; dos en la misma, sí')
+        # (8) «Ganó X» con su bandera
+        _bv = dict(_b, match='x | final: Volk 🇲🇽 vs volk 🇨🇴')
+        ok(_candidatos_campeon(_bv['match']) == ['Volk 🇲🇽', 'volk 🇨🇴']
+           and interpretar(_bv, 'Ganó volk 🇨🇴')[1]['ganador'] == 'volk 🇨🇴'
+           and interpretar(_bv, 'Ganó volk')[0] == 'error'
+           and mismo_lado('Volk', 'volk 🇨🇴') and not mismo_lado('Volk 🇲🇽', 'volk 🇨🇴'),
+           '«Ganó volk 🇨🇴» no es «Volk 🇲🇽»: son dos opciones, y sin bandera no se adivina')
+        # (10) lo que dice la pregunta es lo que paga `con_campeon()`
+        ok('también los que ganaron su batalla' in como_cobra('cuartos')
+           and 'la otra semifinal' in como_cobra('semifinal') and como_cobra('final').endswith('subcampeón'),
+           'la pregunta dice qué cobra cada uno según la última ronda: cuartos, semis o final')
+        # (11) R19 sólo si el evento cargado ya paga esa ronda
+        _l19 = {'418': {'tabla': [['Pomberito', 'Campeón', 7500], ['Badterne', 'Octavos', 625], ['Desio', 'Octavos', 625]]},
+                '422': {'tabla': [['EmiZor', 'Octavos', 0], ['Krish', 'Octavos', 625]]}}
+        ok(cobran_ronda(_l19, ['418'], 'octavos').startswith('#418: Badterne 625')
+           and cobran_ronda(_l19, ['422'], 'octavos') == '' and cobran_ronda(_l19, ['999'], 'octavos') == '',
+           'R19: el aviso de ESCALA se cierra sólo si en el evento cargado los de esa ronda ya cobran')
+        # (15) Deshacer: sólo la fila que sigue siendo la que se cerró, y la unión entera
+        _hay = [{'tipo': 'alta', 'rk': 'R3', 'por': 'el ciclo', 'variantes': ['Seba = 1'], 'filas': [5, 6, 7]}]
+        _hj = {5: {'Tipo': 'alta', 'Estado': 'Resuelto', 'Detalle': 'Seba = 1', 'Resuelto por': 'el ciclo (R3)'},
+               6: {'Tipo': 'alta', 'Estado': 'Resuelto', 'Detalle': 'Otro = 2', 'Resuelto por': 'el ciclo (R3)'},
+               7: {'Tipo': 'alta', 'Estado': 'Resuelto', 'Detalle': 'Seba = 1', 'Resuelto por': 'Dlx en ✅ Decidir'}}
+        ok(filas_a_reabrir(_hay, _hj) == ([5], [6, 7]), 'Deshacer reabre sólo la fila que sigue como la dejó la regla')
+        _SOLAS_D['d'] = {'solas': [{'id': 's1', 'escribio': {'alias': ['Ckl', 'BNA']}},
+                                   {'id': 's2', 'escribio': {'alias': ['ckl', 'BNA']}}, {'id': 's3'}],
+                         'deshechas': [], 'pares_deshechos': [['jb', 'jheyson']]}
+        ok(deshacer(['s1'], dry=True) == ['s1', 's2'] and ('jb', 'jheyson') in pares_deshechos(),
+           'Deshacer una pregunta de R2 deshace las otras que cerró con ese alias, y el par queda deshecho para siempre')
+        # (16) R16 con bandera y servidor: lo del Force 🇲🇽 de FVS no vale para el Force de URBF
+        _ak16 = {'no_confundir': [['Force', 'ForceGP', 'Dlx, 12/10/2026: el Force 🇲🇽 de FVS no es ForceGP 🇲🇽.'],
+                                  ['JAHNO', 'Juano', 'JAHNO es de Argentina y Juano de Espana']]}
+        _sg = {'FVS', 'URBF', 'FFA'}
+        ok(not distintos_aca('Force 🇦🇷', 'ForceGP', _ak16, {'FVS'}, _sg)
+           and not distintos_aca('Force', 'ForceGP', _ak16, {'URBF'}, _sg)
+           and distintos_aca('Force', 'ForceGP', _ak16, {'FVS'}, _sg)
+           and distintos_aca('JAHNO 🇦🇷', 'Juano', _ak16, {'FFA'}, _sg),
+           'R16: el «no es» de Dlx vale con su bandera y en su servidor; sin ninguno de los dos, en todos')
+        # (18) el Dashboard lee `t` como número
+        _SOLAS_D['d'] = {'solas': [{'id': 'z', 't': _ahora_ms()}, {'id': 'v', 't': '2020-01-01T00:00:00Z'}]}
+        _sw = solas_web()
+        ok([x['id'] for x in _sw] == ['z'] and isinstance(_sw[0]['t'], int)
+           and _t_ms('2026-10-14T04:00:00Z') == 1791950400000,
+           'lo resuelto solo va con `t` en milisegundos, y lo de más de 14 días no')
+        # (14) R5 sólo la llave de broma; (1) las reglas no tocan lo contestado
+        _lk1 = next(((L['links'][0], n) for n, L in _llaves_t1().items() if L.get('links')), None)
+        if _lk1:
+            _SOLAS[:] = []
+            _q5 = {'id': 'r5a', 'tipo': 'Evento dudoso', 'detalle': 'X · FFA · 01/10', 'origen': 'llaves de Discord',
+                   'link': _lk1[0], 'filas': [1], 'match': 'es una llave rumbo al Interserver: ¿cuenta?'}
+            _q5b = dict(_q5, id='r5b', match='la publicó @x, que nunca había publicado una llave, y ningún anuncio')
+            ok(reglas([_q5, _q5b], {_lk1[1]: ('x', 'FFA', '01/10')}, dry=True) == {'r5b'},
+               'R5: se cierra la llave de broma que ya se cargó; la retenida por Interserver espera a Dlx')
+            _SOLAS[:] = []
+
+        # ── 🔴 la tercera revisión (14/10/2026) ───────────────────────────────────────────────────────────────────────
+        # (A) R2 POR PERSONA: «Ckl → BNA» y «Ckl → Hinjkybesuk», con Hinjkybesuk → BNA en AKAs (`_rd2`)
+        _xa = {'alias': 'Ckl', 'real': 'BNA', 'regla': 'R2', 'si_no': 'preguntar'}
+        _pa = [{'id': 'ndc', 'tipo': 'Nombre desconocido', 'detalle': 'Ckl'},
+               {'id': 'apb', 'tipo': 'Alias posible', 'detalle': 'DOS NOMBRES: «Ckl» → «BNA» · cuenta 849'},
+               {'id': 'aph', 'tipo': 'Alias posible', 'detalle': 'DOS NOMBRES: «Ckl» → «Hinjkybesuk» · cuenta 849'}]
+        _sa = filtrar_r2([_xa], _pa, {}, set(), set(), set(), set(), real_de=_rd2)
+        ok([q['id'] for q in _sa[2][id(_xa)]] == ['ndc', 'apb', 'aph'],
+           'R2 por persona: «¿Ckl es Hinjkybesuk?» también es «¿Ckl es BNA?», y la contesta la misma unión')
+        _ro = {'aph': (OTRA, '')}
+        _hh = [(7, {'Tipo': 'Alias posible', 'Detalle': 'DOS NOMBRES: «Ckl» → «Hinjkybesuk» · cuenta 849'})]
+        _akn = {'no_confundir': [['Ckl', 'Hinjkybesuk', 'Dlx en ✅ Decidir: es otra persona']]}
+        ok(filtrar_r2([_xa], _pa, _ro, set(), set(), *_lo_que_dlx_contesto(_pa, _ro, [], _rd2), real_de=_rd2)[0] == []
+           and filtrar_r2([_xa], _pa[:2], {}, set(), set(), *_lo_que_dlx_contesto([], {}, _hh, _rd2),
+                          real_de=_rd2)[0] == []
+           and filtrar_r2([_xa], _pa[:2], {}, set(), {('ckl', 'hinjkybesuk')}, set(), set(), real_de=_rd2)[0] == []
+           and _distintos_persona('Ckl', 'BNA', _akn, _rd2) and not _distintos_persona('Armando Faso', 'BNA', _akn, _rd2)
+           and not any(x['alias'] == 'Ckl' for x in dos_nombres(
+               _ins2, [], _ls2, _cp2, _jg2, _rd2, son_distintos=lambda a, b: _distintos_persona(a, b, _akn, _rd2),
+               con_rol=_rol2, iso_de=_iso2)['unir']),
+           'R2 por persona: un «Es otra persona» a «¿Ckl es Hinjkybesuk?» —sin aplicar, aplicado o como no_confundir— o '
+           'esa unión deshecha frena Ckl → BNA')
+        # (C) lo que `cierres_solos()` cierra gracias al alias de R2 va atado a esa unión
+        _gd = _dos_datos
+        try:
+            globals()['_dos_datos'] = lambda: (lambda n: {'ckl': 'bna', 'hinjkybesuk': 'bna'}.get(
+                norm(_sin_bandera(n)), norm(_sin_bandera(n))), {}, {}, {})
+            _UNION_DE['ckl'] = {'alias': ['Ckl', 'BNA'], 'filas': [300]}
+            _SOLAS[:] = []
+            cierres_solos([_pa[2]], dry=True)
+            ok([x['escribio'] for x in _SOLAS] == [{'alias': ['Ckl', 'BNA'], 'filas': [300]}],
+               'lo que se cierra gracias al alias que R2 escribió lleva esa unión: «Deshacer» la reabre con ella')
+        finally:
+            globals()['_dos_datos'] = _gd
+            _UNION_DE.clear()
+            _SOLAS[:] = []
+        # (D) Deshacer borra la fila que escribió la regla, y sólo si sigue diciendo eso
+        _va = [['Ckl', 'BNA', ''], ['Otro', 'X', ''], ['Ckl', 'BNA', '']]
+        ok(filas_aka_a_sacar([('Ckl', 'BNA', 3)], _va) == ([3], [])
+           and filas_aka_a_sacar([('Ckl', 'BNA', 3)], _va[:2] + [['', '', '']])[0] == []
+           and filas_aka_a_sacar([('Ckl', 'BNA', None)], _va)[0] == []
+           and filas_aka_a_sacar([('Ckl', 'BNA', None)], _va[:2])[0] == [1],
+           'Deshacer: la fila anotada, si sigue igual; al reintentar no borra otra; sin fila, sólo si está una vez')
+        # (E) lo escrito afuera, anotado antes; lo que quedó a medias, se termina o se borra
+        _dpp = 'COPA · FFA · 01/10 · cuartos · A 🆚 B'
+        _SOLAS_D['d'] = {'solas': [
+            {'id': 'pp1', 'pendiente': True, 'escribio': {}, 'r': YA_NO, 'rk': 'R1', 'porque': 'x', 'por': 'el ciclo'},
+            {'id': 'pp2', 'pendiente': True, 'escribio': {'batalla': _dpp}, 'r': NO_SE_JUGO, 'rk': 'R4'},
+            {'id': 'pp3', 'pendiente': True, 'escribio': {}, 'r': YA_NO, 'rk': 'R1'}], 'deshechas': []}
+        _SOLAS[:] = []
+        _rp = recuperar_pendientes([{'id': 'pp1', 'tipo': 'Evento dudoso', 'detalle': 'x', 'filas': [4]},
+                                    {'id': 'pp2', 'tipo': 'Batalla sin ganador', 'detalle': _dpp, 'filas': [5]}], dry=True)
+        ok(_rp == {'pp1'} and [x['p']['id'] for x in _SOLAS] == ['pp1'] and solas_web() == []
+           and _escrito_existe({'escribio': {'alias': ['Ckl', 'BNA'], 'fila': 3}}, _va)
+           and not _escrito_existe({'escribio': {'alias': ['Ckl', 'BNA'], 'fila': 2}}, _va),
+           'lo pendiente: si lo escrito está y sigue abierta se vuelve a cerrar; si lo escrito no está, no; y no se '
+           'muestra hasta confirmarse')
+        retirar_pendientes({'pp1'}, dry=True)
+        ok(not _SOLAS, 'y si la escritura falla, se retira')
+        # (I) el campeón se suma a la decisión del evento como la busca el lector, y la nota se conserva
+        _ev = {'COPA X · FFA · 22/09': {'paga': {'octavos': 625}, 'nota': 'Dlx: octavos a 625'},
+               'COPA Y · FFA · *': {'final': {'lados': ['A', 'B'], 'ganador': 'A'}}}
+        _c1 = {'ganador': 'ANA', 'ronda': 'final', 'batallas': [['ANA', 'BEA']], 'pasaron': []}
+        ok(poner_campeon(_ev, 'Copa x · FFA · 22/09', _c1, 't', 'Dlx') == 'COPA X · FFA · 22/09'
+           and _ev['COPA X · FFA · 22/09']['paga'] == {'octavos': 625}
+           and _ev['COPA X · FFA · 22/09']['nota'].startswith('Dlx: octavos a 625 · Dlx en ✅ Decidir')
+           and 'decision' not in _ev['COPA X · FFA · 22/09']
+           and poner_campeon(_ev, 'COPA Y · FFA · 23/09', _c1, 't', 'Dlx') == 'COPA Y · FFA · 23/09'
+           and _ev['COPA Y · FFA · 23/09']['final']['ganador'] == 'A' and 'campeon' not in _ev['COPA Y · FFA · *'],
+           'el campeón se suma a la decisión del evento (otra grafía, sin perder paga ni la nota; una «*» no se toca)')
+        poner_campeon(_ev, 'COPA X · FFA · 22/09', dict(_c1, ganador='BEA'), 't', 'Dlx')
+        sacar_campeon(_ev, 'COPA X · FFA · 22/09', 't', 'Dlx')
+        ok(_ev['COPA X · FFA · 22/09'].get('nota') == 'Dlx: octavos a 625' and 'campeon' not in _ev['COPA X · FFA · 22/09'],
+           'elegir otro reemplaza el tramo del campeón; sacarlo deja la nota de antes')
+
+        # ── 🔴 la cuarta revisión (14/10/2026) ───────────────────────────────────────────────────────────────────────
+        # (1) lo que quedó a medias no pisa una respuesta de Dlx, ni pasa los frenos de R2 (por persona)
+        _SOLAS_D['d'] = {'solas': [{'id': 'pq', 'pendiente': True, 'escribio': {}, 'r': YA_NO, 'rk': 'R1'}],
+                         'deshechas': []}
+        _SOLAS[:] = []
+        ok(recuperar_pendientes([{'id': 'pq', 'tipo': 'Nombre desconocido', 'detalle': 'Ckl', 'filas': [4]}],
+                                dry=True, respuestas={'pq': ('Es Hassan', '')}) == set() and not _SOLAS,
+           'lo que quedó a medias no se cierra si Dlx ya contestó esa pregunta: su respuesta manda')
+        _yc = {'id': 'pc', 'escribio': {'alias': ['Ckl', 'BNA'], 'filas': [3]}}
+        _dn4, _dp4 = _lo_que_dlx_contesto([], {}, _hh, _rd2)
+        ok(frena_pendiente(_yc, {}, _dn4, _dp4, set(), {}, _rd2)
+           and frena_pendiente(_yc, {}, set(), set(), set(), _akn, _rd2)
+           and frena_pendiente(_yc, {}, set(), set(), {frozenset(('ckl', 'bna'))}, {}, _rd2)
+           and not frena_pendiente(_yc, {}, set(), set(), set(), {}, _rd2),
+           'y con un alias, los frenos de R2 por persona: «Ckl no es Hinjkybesuk» (contestado o no_confundir) o la '
+           'unión deshecha')
+        # (2) sin las filas que escribió la regla, no se le atribuye nada
+        ok(not _escrito_existe({'escribio': {'alias': ['Ckl', 'BNA']}}, _va)
+           and _escrito_existe({'escribio': {'alias': ['Ckl', 'BNA'], 'filas': [1, 3]}}, _va)
+           and filas_escritas({'fila': 7}) == [7] and filas_escritas({'filas': [1, 3]}) == [1, 3],
+           'lo pendiente sin la fila del alias no se atribuye: se retira sin cerrar')
+        # (3) Deshacer reabre también lo que `barrer()` cerró con «el ciclo»
+        _hj3 = dict(_hj)
+        _hj3[8] = {'Tipo': 'alta', 'Estado': 'Resuelto', 'Detalle': 'Seba = 1', 'Resuelto por': 'el ciclo'}
+        ok(filas_a_reabrir([dict(_hay[0], filas=[5, 8])], _hj3) == ([5, 8], []),
+           'Deshacer reabre también la fila que barrer() cerró («el ciclo»): no queda un nombre sin pregunta')
+        # (4) el mismo par escrito dos veces: Deshacer saca las dos filas
+        ok(filas_aka_a_sacar([('Ckl', 'BNA', 1), ('Ckl', 'BNA', 3)], _va) == ([1, 3], []),
+           'el mismo par escrito dos veces en una corrida: Deshacer saca las dos filas de la regla')
+    finally:
+        _DATOS.clear()
+        _DATOS.update(_guarda_d)
+        _SOLAS_D.clear()
+        _SOLAS_D.update(_guarda_s)
+        _SOLAS[:] = []
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 

@@ -81,6 +81,18 @@ ETIQUETA = {'campeon': 'Campeón', 'subcampeon': 'Subcampeón',
 # las rondas eliminatorias, de la mas honda a la menos, con su puesto
 CAIDA = [('cuartos', 'cuartos'), ('octavos', 'octavos'), ('r32', 'r32')]
 
+#: 🔑 R19 (Dlx, 13/10/2026, «Sí», PARA TODOS): LA RONDA QUE LA ESCALA 8-15 NO TIENE PAGA 625. Era una decisión por evento
+#: —FVS UNDER, 12/10, *«b»*, «como URBAN LEAGUE en la guía §3.6»— y quedaba cobrando 0 el resto: medido el 13/10, 16
+#: personas en cuatro eventos (#380, #398, #418 y #422), dos de ellas con «Nadie siguió (cobran la ronda)» que cobraban 0.
+#: ⚠️ SÓLO LO QUE LA ESCALA NO TIENE: lo que `Config` paga manda, y un `paga: N` de Dlx para un evento también. Y sólo la
+#: 8-15: la 4-7 no se decidió.
+FUERA_DE_ESCALA = {'8-15': {'octavos': 625, 'r32': 625}}
+
+
+def pago_fuera_de_escala(esc, puesto):
+    """Lo que paga `puesto` en la escala `esc` cuando `Config` no lo tiene (`FUERA_DE_ESCALA`, R19), o 0."""
+    return (FUERA_DE_ESCALA.get(esc) or {}).get(puesto, 0)
+
 #: la fase de eliminación de una NAVE DE FUNA: paga por lugar, con empate.
 #: Ver `procesar()` y `llaves_a_entrada.filas_funa()`.
 FUNA_R = 'fase de eliminacion'
@@ -242,10 +254,11 @@ def ronda_de(r):
 ORDEN_RONDAS = ['r32', 'octavos', 'cuartos', 'semifinal', 'final']
 
 
-def piso_equipos(batallas, tab):
+def piso_equipos(batallas, tab, esc=None):
     """🪜 `(piso, integrantes)`: lo que cobran los eliminados de la última ronda DE A UNO antes de que la llave pase a
     equipos, y los integrantes de los equipos de ahí en adelante. `(0, [])` si la llave no es así: toda de a uno,
-    toda por equipos, o con una ronda de a uno después de una por equipos. Ver el piso en `procesar()`."""
+    toda por equipos, o con una ronda de a uno después de una por equipos. Ver el piso en `procesar()`. Con `esc`, la
+    ronda que la escala no tiene paga lo de `FUERA_DE_ESCALA` (R19), como a los que cayeron ahí."""
     tipo = {}
     for b in batallas:
         r = ronda_de(b.get('ronda'))
@@ -257,7 +270,8 @@ def piso_equipos(batallas, tab):
     i = next((k for k, r in enumerate(rs) if tipo[r]), None)
     if not i or not all(tipo[r] for r in rs[i:]):
         return 0, []
-    piso = tab.get(dict(CAIDA, semifinal='semifinal').get(rs[i - 1], ''), 0)
+    _p = dict(CAIDA, semifinal='semifinal').get(rs[i - 1], '')
+    piso = tab.get(_p, 0) or pago_fuera_de_escala(esc, _p)
     gente = []
     for b in batallas:
         if ronda_de(b.get('ronda')) in rs[i:]:
@@ -691,6 +705,32 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
                                for c in ('ladoA', 'ladoB', 'ganador')}) for b in batallas]
         for x, e in cambio.items():
             avisos.append('JUNTOS: «%s» son %s (un equipo escrito sin «+»)' % (x, e))
+    # 🔑 R8 (Dlx, 13/10/2026, «Sí»): UNA BATALLA DE ALGUIEN CONTRA SÍ MISMO NO EXISTE: no paga ni es duelo. FVS UNDER
+    # (#461) escribe a Mathias con las dos banderas —`[🇻🇪Mathias🇪🇸]`— y su final traía, además de «Mathias 🇪🇸 vs Rfran
+    # 🇪🇸», una batalla «Mathias 🇪🇸 vs mathias 🇻🇪»: Mathhias contra Mathhias. Con ella no había campeón, Mathhias cobraba
+    # 12.500 como «Subcampeón» (campeón y subcampeón juntos), Refran —que perdió la final— no tenía ninguna fila, y `1v1`
+    # tenía un duelo de Mathhias contra sí mismo.
+    # ⚠️ ANTES ESTO SÓLO SE AVISABA, y el aviso iba a ✅ Decidir como «revisar ese alias» (guía de Dlx, parte 5, «el
+    # alias peligroso»). Acá el alias estaba bien: lo que sobraba era la batalla. El aviso sigue saliendo (`CONSIGO
+    # MISMO:`), por consola y por #registros, para que un alias equivocado se vea; ya no va a ✅ Decidir.
+    sobran = []
+    # ⚠️ el lado «sin integrantes» no es nadie: no se resuelve (sería un nombre desconocido que no existe)
+    _sin_int = {_clave_lado(x) for b in batallas
+                for x in re.findall(r'sin integrantes\s*:\s*([^;|]+)', str(b.get('notas') or ''), re.I)}
+    for b in batallas:
+        a, c = b.get('ladoA'), b.get('ladoB')
+        if _sin_int & {_clave_lado(a), _clave_lado(c)}:
+            continue
+        if a and c and len(equipo(a)) <= 1 and len(equipo(c)) <= 1:
+            ra = resolver(a)
+            if ra and ra == resolver(c):
+                sobran.append(b)
+                avisos.append('CONSIGO MISMO: «%s» y «%s» son la misma persona (%s): esa batalla no paga ni es duelo'
+                              % (a, c, ra))
+    if sobran:
+        batallas = [b for b in batallas if all(b is not x for x in sobran)]
+        if not batallas:
+            raise ValueError('todas las batallas eran de alguien contra sí mismo')
     # cada puesto que cobra cada uno, para el revivido (ver abajo)
     aportes = {}
     # 🔑 LOS REVIVIDOS SE CONOCEN ANTES DE REPARTIR: a ellos NO se
@@ -915,7 +955,9 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
                   - revividos - drafteados)
             if ya and len(ya) == len(equipo(p) or [p]):
                 continue
-            sumar(p, tab.get(puesto, 0) or _paga(b), puesto, salvo=ya, fuera=_pk(b))
+            # 🔑 R19: la ronda que la escala 8-15 no tiene paga 625 (`pago_fuera_de_escala()`)
+            sumar(p, tab.get(puesto, 0) or _paga(b) or pago_fuera_de_escala(esc, puesto), puesto,
+                  salvo=ya, fuera=_pk(b))
 
     # 🔑 EL QUE GANÓ SU RONDA Y NO SIGUIÓ, si Dlx dijo que la cobra (`cobra: X` en la nota de esa batalla; ver
     # `decidir.cobra_ronda()`). Se le paga la ronda como a quien la perdió, y sólo si no tiene ya un puesto: el motor
@@ -928,7 +970,8 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
             puesto = COBRA.get(ronda_de(b.get('ronda')))
             if not q or not puesto or q in res:
                 continue
-            sumar(x, tab.get(puesto, 0), puesto)
+            # 🔑 y «nadie siguió» en una ronda que la escala 8-15 no tiene cobra lo mismo (R19): cobraba 0
+            sumar(x, tab.get(puesto, 0) or _paga(b) or pago_fuera_de_escala(esc, puesto), puesto)
             if q in res:
                 # «nadie siguió» (`decidir.NADIE`, 07/10/2026): no se sabe quién ganó, así que no dice «ganó»
                 res[q]['notas'] += ('Nadie siguió ' if 'nadie siguió' in str(b.get('notas') or '').lower()
@@ -979,7 +1022,7 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
     # uno. Ver `piso_equipos()`. ⚠️ Sobre los PUNTOS, no sobre los aportes: el chequeo de SUMA de abajo sigue viendo
     # lo que el puesto reparte de verdad. Y nunca al revivido ni al drafteado, que ya cobran con su regla.
     if not (vidas or doble or fase):
-        piso, en_equipos = piso_equipos(batallas, tab)
+        piso, en_equipos = piso_equipos(batallas, tab, esc)
         for m in en_equipos:
             q = resolver(m)
             d = res.get(q)
@@ -1136,33 +1179,13 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
         # la que Dlx dijo cuánto paga (`paga: N`) ya no es una duda
         if puesto and all(_paga(b) for b in batallas if ronda_de(b.get('ronda')) == r):
             continue
-        if not puesto or not tab.get(puesto):
+        if not puesto or not (tab.get(puesto) or pago_fuera_de_escala(esc, puesto)):
             avisos.append('ESCALA: la ronda «%s» no tiene valor en la escala '
                           '%s y sus eliminados cobran 0 — revisar (guía §2 '
                           'y §3.6)' % (r, esc))
 
-    # 🔴 LA MISMA PERSONA A LOS DOS LADOS DE UNA BATALLA ES IMPOSIBLE, y
-    # cuando pasa es porque un alias fusionó a dos que no son uno. Es el
-    # error que la guía de formatos de Dlx (23/09/2026, parte 5) llama
-    # «el alias peligroso»: *«si un alias y su nombre real aparecen AMBOS
-    # en el mismo evento como personas distintas, NO los fusiones»* — con
-    # BNA y Hassan de rivales, la IA los juntó y dejó a Hassan en los dos
-    # equipos de la final.
-    #
-    # ⚠️ Pasó el 24/09/2026 con un alias que se declaró ese mismo día:
-    # `Fleivacheck -> fleivaman`, y en ELRAP FECHA 6 los dos pelean en la
-    # misma batalla de octavos. Se avisa acá porque el mapa de AKAs es
-    # global y la contradicción sólo se ve dentro de un evento.
-    for b in batallas:
-        a, c = b.get('ladoA'), b.get('ladoB')
-        if nadie and nadie & {_clave_lado(a), _clave_lado(c)}:
-            continue
-        if a and c and len(equipo(a)) <= 1 and len(equipo(c)) <= 1:
-            ra, rc = resolver(a), resolver(c)
-            if ra and ra == rc and _sin_anotaciones(a) != _sin_anotaciones(c):
-                avisos.append('«%s» y «%s» pelean en la misma batalla y el '
-                              'mapa de AKAs los hace la misma persona (%s): '
-                              'revisar ese alias' % (a, c, ra))
+    # 🔴 LA MISMA PERSONA A LOS DOS LADOS DE UNA BATALLA ES IMPOSIBLE: era el aviso de «el alias peligroso» (guía de
+    # Dlx, parte 5). Desde R8 esa batalla se saca al principio y se avisa como `CONSIGO MISMO:` (ver arriba).
 
     sin = sorted(set(getattr(resolver, 'fallo', ())) - antes - esperados)
     return {'num': num, 'fecha': fecha, 'servidor': servidor, 'escala': esc,
@@ -1683,6 +1706,68 @@ def _self_check():
            and any(x.startswith('JUNTOS:') for x in _jt['avisos']), '%s' % sorted(_jr))
     except ImportError:
         pass
+
+    # 🔑 R19 (Dlx, 13/10/2026): en la 8-15, la ronda que la escala no tiene paga 625 —también «nadie siguió»—; lo que
+    #    `Config` paga y un `paga: N` de Dlx mandan. Una llave de 9 con un octavo suelto, como POESÍA CRUDA (#380)
+    _l9 = [{'ronda': 'final', 'ladoA': 'Ana', 'ladoB': 'Fer', 'ganador': 'Ana'},
+           {'ronda': 'semifinal', 'ladoA': 'Ana', 'ladoB': 'Dan', 'ganador': 'Ana'},
+           {'ronda': 'semifinal', 'ladoA': 'Fer', 'ladoB': 'Gus', 'ganador': 'Fer'},
+           {'ronda': 'cuartos', 'ladoA': 'Ana', 'ladoB': 'Cid', 'ganador': 'Ana'},
+           {'ronda': 'cuartos', 'ladoA': 'Dan', 'ladoB': 'Eva', 'ganador': 'Dan'},
+           {'ronda': 'cuartos', 'ladoA': 'Fer', 'ladoB': 'Hal', 'ganador': 'Fer'},
+           {'ronda': 'cuartos', 'ladoA': 'Gus', 'ladoB': 'Ivo', 'ganador': 'Gus'},
+           {'ronda': 'octavos', 'ladoA': 'Ana', 'ladoB': 'Bea', 'ganador': 'Ana'}]
+    _e9 = procesar(_l9, num=1, fecha='01/10', servidor='URBF', participantes=9, tab=t815r, mods=mods, resolver=_yo)
+    _p9 = {r['rapero']: r['puntos'] for r in _e9['resultados']}
+    ok('R19: en la 8-15, quien cae en una ronda que la escala no tiene cobra 625, y no hay aviso de ESCALA',
+       _p9.get('Bea') == 625 and _p9.get('Cid') == 2000
+       and not any(a.startswith('ESCALA:') for a in _e9['avisos']), '%s · %s' % (_p9.get('Bea'), _e9['avisos']))
+    _e9b = procesar(_l9[:-1] + [dict(_l9[-1], notas='paga: 300')], num=1, fecha='01/10', servidor='URBF',
+                    participantes=9, tab=t815r, mods=mods, resolver=_yo)
+    _e9c = procesar(_l9[:-1] + [{'ronda': 'octavos', 'ladoA': 'Ana', 'ladoB': 'Bea', 'ganador': '',
+                                 'notas': 'cobra: Ana; cobra: Bea; nadie siguió: ✅ Decidir'}],
+                    num=1, fecha='01/10', servidor='URBF', participantes=9, tab=t815r, mods=mods, resolver=_yo)
+    _e9d = procesar(_l9, num=1, fecha='01/10', servidor='URBF', participantes=9,
+                    tab={'8-15': dict(t815r['8-15'], octavos=900)}, mods=mods, resolver=_yo)
+    ok('R19: un «paga: N» de Dlx y lo que Config paga mandan; «nadie siguió» en esa ronda también cobra 625',
+       {r['rapero']: r['puntos'] for r in _e9b['resultados']}.get('Bea') == 300
+       and {r['rapero']: r['puntos'] for r in _e9c['resultados']}.get('Bea') == 625
+       and {r['rapero']: r['puntos'] for r in _e9d['resultados']}.get('Bea') == 900
+       and pago_fuera_de_escala('16+', 'octavos') == 0 and pago_fuera_de_escala('4-7', 'octavos') == 0)
+
+    # 🔑 R8 (Dlx, 13/10/2026): una batalla de alguien contra sí mismo no existe. FVS UNDER (#461): «Mathias 🇪🇸» y
+    #    «mathias 🇻🇪» son Mathhias, y su final traía las dos batallas
+    _alias8 = {'mathias 🇪🇸': 'Mathhias', 'mathias 🇻🇪': 'Mathhias', 'rfran 🇪🇸': 'Refran'}
+
+    def _r8(x):
+        return _alias8.get(str(x or '').strip().lower(), str(x or '').strip())
+    _f8 = [{'ronda': 'final', 'ladoA': 'Mathias 🇪🇸', 'ladoB': 'mathias 🇻🇪', 'ganador': 'Mathias 🇪🇸'},
+           {'ronda': 'final', 'ladoA': 'Mathias 🇪🇸', 'ladoB': 'Rfran 🇪🇸', 'ganador': 'Mathias 🇪🇸'},
+           {'ronda': 'semifinal', 'ladoA': 'Mathias 🇪🇸', 'ladoB': 'Drexx', 'ganador': 'Mathias 🇪🇸'},
+           {'ronda': 'semifinal', 'ladoA': 'Rfran 🇪🇸', 'ladoB': 'Joaco', 'ganador': 'Rfran 🇪🇸'}]
+    _e8 = procesar(_f8, num=461, fecha='26/09', servidor='FVS', participantes=8, tab=t815r, mods=mods,
+                   resolver=_r8)
+    _p8 = {r['rapero']: (r['posicion'], r['puntos']) for r in _e8['resultados']}
+    ok('R8: la batalla de Mathhias contra sí mismo no paga ni es duelo: Mathhias campeón, Refran subcampeón',
+       _p8.get('Mathhias') == ('Campeón', 7500) and _p8.get('Refran') == ('Subcampeón', 5000)
+       and len(_e8['duelos']) == 3 and not any(d.get('a') == d.get('b') for d in _e8['duelos'])
+       and any(a.startswith('CONSIGO MISMO:') for a in _e8['avisos'])
+       and not any('pelean en la misma batalla' in a for a in _e8['avisos']), '%s · %s' % (_p8, _e8['avisos']))
+
+    # 🏆 el campeón que Dlx eligió en un «Bracket incompleto» (`llaves_a_entrada.con_campeon()`): la final contra «el
+    #    otro finalista», que nadie sabe quién fue, paga el campeón y nada más, y no es un nombre desconocido
+    _cf = procesar([{'ronda': 'final', 'ladoA': 'Ana', 'ladoB': 'el otro finalista', 'ganador': 'Ana',
+                     'notas': 'Sin integrantes: el otro finalista; final: ✅ Decidir'},
+                    {'ronda': 'semifinal', 'ladoA': 'Ana', 'ladoB': 'Bea', 'ganador': 'Ana'},
+                    {'ronda': 'semifinal', 'ladoA': 'Cid', 'ladoB': 'Dan', 'ganador': '',
+                     'notas': 'cobra: Cid; cobra: Dan; nadie siguió: ✅ Decidir'}],
+                   num=1, fecha='22/09', servidor='FFA', participantes=9, tab=t815r, mods=mods, resolver=_conocidos)
+    _pf = {r['rapero']: (r['posicion'], r['puntos']) for r in _cf['resultados']}
+    ok('el campeón elegido contra «el otro finalista»: Ana campeón; Bea, Cid y Dan, semifinal; nadie subcampeón',
+       _pf.get('Ana') == ('Campeón', 7500) and _pf.get('Bea', ('', 0))[0] == 'Semifinal'
+       and _pf.get('Cid', ('', 0))[0] == 'Semifinal' and not any(p == 'Subcampeón' for p, _x in _pf.values())
+       and not any('otro finalista' in k for k in _pf) and 'el otro finalista' not in _cf['sin_resolver'],
+       '%s · %s' % (_pf, _cf['sin_resolver']))
 
     mal = nonlocal_mal[0]
     print('')
