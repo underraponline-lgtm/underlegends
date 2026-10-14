@@ -11,6 +11,28 @@
  ],
  "cambios": [
   {
+   "version": "3.11",
+   "dia": "2026-10-14",
+   "cuando": "2026-10-14T01:18:00-04:00",
+   "titulo": "Divisiones, más clara",
+   "items": [
+    "🎯 Arriba, **tu semana**: tu división, tu puesto, si subís o bajás, cuánto te falta y cuándo cierra.",
+    "🪜 La escalera con las caras de los primeros de cada división y «VOS» en la tuya.",
+    "🏷️ La tabla en tres bloques: los que suben (y cobran 500), los que se quedan y los que bajan."
+   ]
+  },
+  {
+   "version": "3.10",
+   "dia": "2026-10-14",
+   "cuando": "2026-10-14T01:10:00-04:00",
+   "titulo": "Las ligas, con su gente",
+   "items": [
+    "🏟️ En las ligas, cada nombre lleva a su perfil, también el del staff.",
+    "👤 Tu perfil muestra **tus ligas**: tu puesto y tus ganadas.",
+    "✋ ¿Un nombre de una liga está mal? Avisá desde la liga y lo revisa la Liga."
+   ]
+  },
+  {
    "version": "3.09",
    "dia": "2026-10-14",
    "cuando": "2026-10-14T00:39:00-04:00",
