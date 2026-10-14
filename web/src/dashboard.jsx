@@ -9,6 +9,10 @@ import { useEffect, useState } from 'react';
 import { hora, limpio, mult, num, siglaDe } from './liga.js';
 import { DosToques, Ico } from './piezas.jsx';
 import { urlFondo } from './fondos.js';
+
+// 📸 la dirección de una foto de tarjeta, para el CSS: sólo del bucket de la Liga (las caras y las que esperan revisión)
+const urlFoto = (u) => (/^https:\/\/pub-[a-z0-9]+\.r2\.dev\/(fotos\/[a-z0-9-]+\/[\p{L}\p{N}_]+@[a-z]+|pendientes\/[a-f0-9]{24})\.(webp|jpg|png)$/u.test(String(u || ''))
+  ? 'url("' + u + '")' : '');
 // 🔒 su CSS viene con este pedazo y no con el paquete de todos (ver dashboard.css)
 import ESTILO from './dashboard.css?inline';
 
@@ -786,6 +790,8 @@ function atencion(d, liga, q) {
     ...(d.reportes || []).filter((x) => x.estado === 'no_pude').map((x) => ['⚠️', 'No se pudo corregir la llave #' + x.llave, x.resultado]),
     // 🖼️ y los fondos que esperan (13/10/2026)
     ...((d.fondos || []).length ? [['🖼️', (d.fondos.length === 1 ? 'Un fondo' : d.fondos.length + ' fondos') + ' para revisar', 'Abajo, en Lo que te llegó.']] : []),
+    // 📸 y las fotos de tarjeta que esperan (13/10/2026)
+    ...((d.fotos_carta || []).length ? [['📸', (d.fotos_carta.length === 1 ? 'Una foto de tarjeta' : d.fotos_carta.length + ' fotos de tarjeta') + ' para revisar', 'Abajo, en Lo que te llegó.']] : []),
     // ✅ y lo de ✅ Decidir sin contestar (13/10/2026)
     ...(sinContestar(d.decidir) ? [['✅', sinContestar(d.decidir) === 1 ? 'Una pregunta de ✅ Decidir sin contestar' : sinContestar(d.decidir) + ' preguntas de ✅ Decidir sin contestar', 'En la pestaña Decisiones.']] : []),
   ].filter(Boolean);
@@ -1267,18 +1273,20 @@ function Reportes({ rep, liga, alCambiar, corrige = true }) {
 // 🖼️ LOS FONDOS PARA REVISAR (13/10/2026): la imagen que alguien subió como fondo no se ve hasta que la aprobás (hay
 // menores en la Liga). Lo que no se aprueba le llega a su campana con el motivo. Ver `duenoFondo()` en avisos.js
 const MOTIVOS_FONDO = ['No es apropiada para la Liga', 'Es de otra persona', 'Tiene datos personales', 'No se ve bien'];
-function FondosRevisar({ fs, alCambiar, filtro, alFiltro }) {
+function FondosRevisar({ fs, alCambiar, filtro, alFiltro, fcs = [], alFotos }) {
   const [ocup, setOcup] = useState('');
   const [msg, setMsg] = useState('');
   const [motivo, setMotivo] = useState({});
   const decidir = async (f, si) => {
     setOcup(f.quien); setMsg('');
     try {
-      const r = await fetch('/api/avisos/dueno/fondo', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' },
+      // 📸 una foto de tarjeta va por su ruta (13/10/2026)
+      const r = await fetch(f.tipo === 'foto' ? '/api/avisos/dueno/foto-carta' : '/api/avisos/dueno/fondo', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ quien: f.quien, si, motivo: si ? '' : motivo[f.quien] || MOTIVOS_FONDO[0] }) });
       const j = await r.json().catch(() => ({}));
       if (!r.ok || j.error) throw new Error(j.error || String(r.status));
-      alCambiar(j.fondos || []);
+      if (j.fondos) alCambiar(j.fondos);
+      if (j.fotos_carta && alFotos) alFotos(j.fotos_carta);
       if (j.filtro && alFiltro) alFiltro(j.filtro);
     } catch (e) { setMsg('No se pudo: ' + e.message); }
     setOcup('');
@@ -1298,13 +1306,28 @@ function FondosRevisar({ fs, alCambiar, filtro, alFiltro }) {
           </div>
         </li>
       ))}</ul>
+      {/* 📸 las fotos de tarjeta que el filtro no supo decidir (13/10/2026) */}
+      {fcs.length ? <h3>Fotos de tarjeta para revisar <small>el filtro automático no estuvo seguro: no salen hasta que las aprobás</small></h3> : null}
+      <ul>{fcs.map((f) => (
+        <li key={'p' + f.quien}>
+          <div className="db-l1"><b>{f.k ? <a href={'#/r/' + f.k}>{f.k}</a> : 'una cuenta'}</b><small>{hace(f.t)} · para {(f.cartas || []).join(', ')}</small></div>
+          <div className="db-foto" style={{ backgroundImage: urlFoto(f.pend) || 'none' }} role="img" aria-label="La foto que subió" />
+          <div className="cu-btns">
+            <button type="button" className="btn verde chico" disabled={ocup === f.quien} onClick={() => decidir(Object.assign({ tipo: 'foto' }, f), true)}>Aprobar</button>
+            <select className="db-sel db-sel-corto" value={motivo[f.quien] || MOTIVOS_FONDO[0]} onChange={(e) => setMotivo(Object.assign({}, motivo, { [f.quien]: e.target.value }))}>
+              {MOTIVOS_FONDO.map((m) => <option key={m}>{m}</option>)}</select>
+            <button type="button" className="btn borde2 chico" disabled={ocup === f.quien} onClick={() => decidir(Object.assign({ tipo: 'foto' }, f), false)}>No</button>
+          </div>
+        </li>
+      ))}</ul>
       {/* 🛡️ lo que el filtro dejó ver estos días: si algo se le escapó, se quita acá (13/10/2026) */}
       {vivos.length ? <>
         <h3>Ya se ven <small>los aprobó el filtro automático · en 3 días: {[[c.ok, 'aprobado'], [c.no, 'frenado']].map(([n, t]) => (n || 0) + ' ' + t + ((n || 0) === 1 ? '' : 's')).join(', ')} y {c.revisar || 0} a revisar</small></h3>
         <ul>{vivos.map((f) => (
-          <li key={'v' + f.quien}>
-            <div className="db-l1"><b>{f.k ? <a href={'#/r/' + f.k}>{f.k}</a> : 'una cuenta'}</b><small>{hace(f.t)}</small></div>
-            <div className="db-fondo" style={{ backgroundImage: urlFondo(f.url) || 'none' }} role="img" aria-label="El fondo que se ve" />
+          <li key={'v' + (f.tipo || 'fondo') + f.quien}>
+            <div className="db-l1"><b>{f.k ? <a href={'#/r/' + f.k}>{f.k}</a> : 'una cuenta'}</b><small>{hace(f.t)}{f.tipo === 'foto' ? ' · foto de tarjeta: ' + (f.cartas || []).join(', ') : ' · fondo'}</small></div>
+            {f.tipo === 'foto' ? <div className="db-foto" style={{ backgroundImage: urlFoto(f.url) || 'none' }} role="img" aria-label="La foto que se ve" />
+              : <div className="db-fondo" style={{ backgroundImage: urlFondo(f.url) || 'none' }} role="img" aria-label="El fondo que se ve" />}
             <div className="cu-btns">
               <select className="db-sel db-sel-corto" value={motivo[f.quien] || MOTIVOS_FONDO[0]} onChange={(e) => setMotivo(Object.assign({}, motivo, { [f.quien]: e.target.value }))}>
                 {MOTIVOS_FONDO.map((m) => <option key={m}>{m}</option>)}</select>
@@ -1320,10 +1343,10 @@ function FondosRevisar({ fs, alCambiar, filtro, alFiltro }) {
 
 // 🤝 lo que también te llega: los videos y los fondos para revisar. Los reportes y ✅ Decidir tienen su pestaña desde el
 // 13/10/2026
-function Llego({ d, alFondos, alFiltro }) {
-  const vs = d.videos || [], fs = d.fondos || [], vivos = (d.filtro && d.filtro.vivos) || [];
-  if (!vs.length && !fs.length && !vivos.length) return <p className="pronto-p">Nada nuevo acá: los reportes de las llaves y lo de ✅ Decidir tienen su pestaña.</p>;
-  return <div className="db-llego">{fs.length || vivos.length ? <FondosRevisar fs={fs} alCambiar={alFondos} filtro={d.filtro} alFiltro={alFiltro} /> : null}{vs.length ? <VideosRevisar vs={vs} /> : null}</div>;
+function Llego({ d, alFondos, alFiltro, alFotos }) {
+  const vs = d.videos || [], fs = d.fondos || [], fcs = d.fotos_carta || [], vivos = (d.filtro && d.filtro.vivos) || [];
+  if (!vs.length && !fs.length && !fcs.length && !vivos.length) return <p className="pronto-p">Nada nuevo acá: los reportes de las llaves y lo de ✅ Decidir tienen su pestaña.</p>;
+  return <div className="db-llego">{fs.length || fcs.length || vivos.length ? <FondosRevisar fs={fs} alCambiar={alFondos} filtro={d.filtro} alFiltro={alFiltro} fcs={fcs} alFotos={alFotos} /> : null}{vs.length ? <VideosRevisar vs={vs} /> : null}</div>;
 }
 
 // ── ✅ DECIDIR, EN EL DASHBOARD (13/10/2026). Dlx: «estaba pensando en mover lo de decidir del sheet, aquí», y a la
@@ -1457,7 +1480,7 @@ export function Dashboard({ dc, liga }) {
           {sec('LO QUE PIDE ATENCIÓN', null, <Atencion xs={at} />)}
           {(d.vivo || []).length ? sec('EN VIVO AHORA', 'se actualiza al abrir el Dashboard',
             <EnVivo vivo={d.vivo} liga={liga} aj={d.ajustes || {}} chat={d.chat} />) : null}
-          {sec('LO QUE TE LLEGÓ', null, <Llego d={d} alFondos={(fs) => cambiarD({ fondos: fs })} alFiltro={(fl) => cambiarD({ filtro: fl })} />)}
+          {sec('LO QUE TE LLEGÓ', null, <Llego d={d} alFondos={(fs) => cambiarD({ fondos: fs })} alFiltro={(fl) => cambiarD({ filtro: fl })} alFotos={(x) => cambiarD({ fotos_carta: x })} />)}
           {ve('ajustes') ? sec('ATAJOS', null, <ul className="db-atajos">{ATAJOS.map(([t, h]) => (
             <li key={h}><a href={h} target={h[0] === '/' ? undefined : '_blank'} rel={h[0] === '/' ? undefined : 'noopener noreferrer'}>{t} ↗</a></li>
           ))}</ul>) : null}

@@ -2722,6 +2722,16 @@ a.rk-z:hover{border-color:var(--linea)}
 .cu-fondo-donde label{display:flex;align-items:center;gap:8px}
 .cu-fondo-arch{position:relative;overflow:hidden;cursor:pointer}
 .cu-fondo-arch input{position:absolute;inset:0;opacity:0;cursor:pointer}
+/* 📸 tu foto de tarjeta (13/10/2026): una fila por tarjeta, con la que tiene */
+.cu-fotos-carta{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.cu-fotos-carta li{display:grid;grid-template-columns:40px 1fr auto;align-items:center;column-gap:10px;font-size:14px}
+.cu-fotos-carta li small{grid-column:2;color:var(--gris)}
+.cu-fotos-carta li b{grid-column:2}
+.cu-fotos-carta li .cu-foto-mini{grid-row:1/span 2}
+.cu-fotos-carta li button{grid-column:3;grid-row:1/span 2}
+.cu-foto-mini{width:40px;height:40px;background:#030304 center/cover no-repeat;border:1.5px solid var(--suave)}
+.cu-foto-mini.vacia{background:repeating-linear-gradient(45deg,transparent 0 4px,var(--suave) 4px 5px)}
+.cu-foto-ver{width:160px;max-width:100%;aspect-ratio:1;background:#030304 center/cover no-repeat;border:1.5px solid var(--suave)}
 /* en el perfil: la imagen detrás de la cabecera, con un velo para que el nombre y los números se lean igual */
 .escena.pf-esc.con-fondo{background-image:linear-gradient(180deg,rgba(3,3,4,.66),rgba(3,3,4,.88)),var(--pf-fondo);background-size:cover;background-position:center}
 /* y de fondo de tu propia página: en las franjas oscuras (el escenario), con el mismo velo */

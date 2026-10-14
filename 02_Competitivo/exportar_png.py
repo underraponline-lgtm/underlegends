@@ -106,7 +106,7 @@ def armar_html(quien, D, callado=False):
                    '   a quién dibujarle. No es un fallo.' if not D
                    else '. Probá con uno de: ' + ', '.join(sorted(D)[:6])))
         _p = dict(D[quien])
-        _p['av'] = respaldo.avatar(_p.get('raw') or quien, _p.get('av') or '')
+        _p['av'] = respaldo.avatar(_p.get('raw') or quien, _p.get('av') or '', 'competitivo')
         json.dump([_p], open(_r('comp.json'),'w',encoding='utf-8'),
                   ensure_ascii=False, indent=1)
         # sys.executable y no 'python3': en Windows ese nombre es el stub de

@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.02",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T22:55:00-04:00",
+   "titulo": "Tu propia foto en tus tarjetas",
+   "items": [
+    "📸 Con el nivel 15 del Pase de rapero, tu propia foto en vez de la de Discord, en las tarjetas que elijas: una distinta en cada una si querés. Pasa por el filtro automático y cada tarjeta se cambia una vez por semana. En Mi cuenta → Mi perfil.",
+    "🗣️ Cuando el bot no entiende quién ganó en una llave, ahora le explica al organizador qué está haciendo y qué tiene que tocar."
+   ]
+  },
+  {
    "version": "3.00",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T22:30:00-04:00",

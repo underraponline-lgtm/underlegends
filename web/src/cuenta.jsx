@@ -202,24 +202,24 @@ function Caja({ t, children, d }) {
 // achica acá antes de mandarla: 1600×640 recortada al centro, en webp, bajo los 600 KB (ver `fondo()` en avisos.js) ──
 const FONDO_W = 1600, FONDO_H = 640, FONDO_TOPE = 600 * 1024;
 
-async function achicar(archivo) {
+async function achicar(archivo, AN = FONDO_W, AL = FONDO_H, TOPE = FONDO_TOPE) {
   const url = URL.createObjectURL(archivo);
   try {
     const img = await new Promise((ok, mal) => { const i = new Image(); i.onload = () => ok(i); i.onerror = mal; i.src = url; });
     const c = document.createElement('canvas');
-    c.width = FONDO_W; c.height = FONDO_H;
+    c.width = AN; c.height = AL;
     const x = c.getContext('2d');
     // «cover»: llena el cuadro y recorta lo que sobra, al centro
-    const e = Math.max(FONDO_W / img.naturalWidth, FONDO_H / img.naturalHeight);
+    const e = Math.max(AN / img.naturalWidth, AL / img.naturalHeight);
     const w = img.naturalWidth * e, h = img.naturalHeight * e;
-    x.drawImage(img, (FONDO_W - w) / 2, (FONDO_H - h) / 2, w, h);
+    x.drawImage(img, (AN - w) / 2, (AL - h) / 2, w, h);
     for (const q of [0.82, 0.7, 0.58, 0.45]) {
       const b = await new Promise((ok) => c.toBlob(ok, 'image/webp', q));
-      if (b && b.size <= FONDO_TOPE && b.type === 'image/webp') return b;
+      if (b && b.size <= TOPE && b.type === 'image/webp') return b;
     }
     // sin webp (Safari viejo): jpeg
     const j = await new Promise((ok) => c.toBlob(ok, 'image/jpeg', 0.7));
-    if (j && j.size <= FONDO_TOPE) return j;
+    if (j && j.size <= TOPE) return j;
     throw new Error('la imagen quedó muy pesada');
   } finally { URL.revokeObjectURL(url); }
 }
@@ -294,6 +294,103 @@ function FondoCaja({ dc }) {
           {archivo ? <button type="button" className="btn verde chico" disabled={ocup} onClick={subir}>{ocup ? 'Subiendo…' : 'Subir'}</button> : null}
           {f ? <button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => mandar({ borrar: true })}>Quitar mi fondo</button> : null}
         </div>
+      </> : null}
+      {msg ? <p className="cu-d" role="status">{msg}</p> : null}
+    </Caja>
+  );
+}
+
+// ── 📸 TU FOTO DE TARJETA (13/10/2026). Dlx: «la opción de foto personalizable de la tarjeta y quizás la opción de
+// cambiarla para cada tarjeta… agrega un filtro a eso también», y a las preguntas: «Nivel 15 gratis», «Una por
+// tarjeta», «Una por semana». Una imagen tuya en vez de la de Discord, en las tarjetas que elijas: pasa por el filtro
+// automático (`fotoCarta()` en avisos.js) y cada tarjeta se cambia una vez por semana. Se achica acá: 768×768 ──
+const FOTO_LADO = 768, FOTO_TOPE = 500 * 1024;
+const CARTAS_FOTO = [['temporada', 'Temporada'], ['competitivo', 'Competitiva'], ['servidor', 'Servidor'], ['pais', 'País']];
+const nombresCartas = (cs) => (cs || []).map((c) => (CARTAS_FOTO.find((x) => x[0] === c) || [c, c])[1]).join(', ');
+const fechaLarga = (ms) => (W.fmtFecha ? W.fmtFecha(new Date(ms).toISOString(), { weekday: 'long', day: 'numeric', month: 'long' })
+  : new Date(ms).toLocaleDateString());
+
+async function pedirFotoCarta(ruta, cuerpo) {
+  const r = await fetch('/api/avisos/' + ruta, { method: 'POST', credentials: 'same-origin',
+    headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo || {}) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || j.error) {
+    const e = { nivel: 'Se desbloquea con el nivel ' + (j.falta || 15) + ' del Pase de rapero.', tope: 'Ya probaste varias hoy: probá mañana.',
+      semana: 'La foto de ' + nombresCartas(j.cartas) + ' ya la cambiaste esta semana: se vuelve a abrir el ' + (j.desde ? fechaLarga(j.desde) : 'que viene') + '.',
+      sin_perfil: 'Primero necesitás tu tarjeta: verificate en la página.', 'elegí en qué tarjetas': 'Elegí en qué tarjetas va.',
+      'no es una imagen': 'Eso no es una imagen.', 'demasiado grande': 'La imagen es muy pesada.',
+      metadatos: 'La imagen trae datos escondidos (como dónde se sacó): elegila de nuevo desde acá y se limpian solos.',
+      filtro: 'Esa imagen no pasó el filtro automático' + (j.texto ? ': parece tener ' + j.texto : '') + '. Elegí otra.' }[j.error];
+    throw new Error(r.status === 401 ? 'Entrá con Discord de nuevo.' : e || j.error || String(r.status));
+  }
+  return j;
+}
+
+function FotoCartaCaja({ dc }) {
+  const [st, setSt] = useState(null);
+  const [vista, setVista] = useState('');
+  const [archivo, setArchivo] = useState(null);
+  const [sel, setSel] = useState(null);
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  useEffect(() => {
+    if (!dc || !dc.clave) return undefined;
+    let vivo = true;
+    pedirFotoCarta('mi-foto-carta').then((j) => { if (vivo) setSt(j); }).catch((e) => { if (vivo) setMsg(e.message); });
+    return () => { vivo = false; };
+  }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  const T = 'Tu foto de tarjeta';
+  if (!dc) return <Caja t={T} d="Entrá con Discord para poner tu propia foto en tus tarjetas." />;
+  if (!dc.clave) return <Caja t={T} d="Primero necesitás tu tarjeta: verificate en la página." />;
+  if (!st) return <Caja t={T}><p className="cu-d">{msg || 'Cargando…'}</p></Caja>;
+  const pu = st.puede || {}, cs = st.cartas || {}, ahora = Date.now();
+  const libre = (c) => !cs[c] || !cs[c].desde || cs[c].desde <= ahora;
+  const elegidas = sel || CARTAS_FOTO.map(([c]) => c).filter(libre);
+  const tocar = (c) => setSel(elegidas.includes(c) ? elegidas.filter((x) => x !== c) : elegidas.concat([c]));
+  const elegir = async (e) => {
+    const a = e.target.files && e.target.files[0];
+    if (!a) return;
+    setMsg('');
+    try { const b = await achicar(a, FOTO_LADO, FOTO_LADO, FOTO_TOPE); setArchivo(b); setVista(URL.createObjectURL(b)); } catch (er) { setMsg('No pude usar esa imagen: ' + er.message); }
+  };
+  const mandar = async (cuerpo) => {
+    setOcup(true); setMsg('');
+    try {
+      const j = await pedirFotoCarta('foto-carta', cuerpo);
+      setSt(j);
+      if (cuerpo.img) {
+        setArchivo(null); setVista(''); setSel(null);
+        setMsg(j.filtro === 'ok' ? 'Listo: sale en ' + nombresCartas(cuerpo.cartas) + ' en la próxima vuelta del ciclo (cada media hora; de 3 a 11 AM, hora del este, no corre).'
+          : 'El filtro automático no estuvo seguro: la mira la Liga y, cuando la apruebe, sale en tus tarjetas.');
+      } else setMsg('Listo: esa tarjeta vuelve a tu foto de Discord en la próxima vuelta del ciclo.');
+    } catch (er) { setMsg(er.message); }
+    setOcup(false);
+  };
+  const subir = async () => { if (archivo && elegidas.length) await mandar({ img: await aBase64(archivo), cartas: elegidas }); };
+  return (
+    <Caja t={T} d={pu.si ? 'Una imagen tuya en vez de la de Discord, en las tarjetas que elijas. Pasa por un filtro automático y cada tarjeta se cambia una vez por semana.'
+      : 'Una imagen tuya en vez de la de Discord, en cada tarjeta.'}>
+      {!pu.si ? <p className="cu-d">🔒 Se desbloquea con el <b>nivel {pu.falta || 15}</b> del <a href="#/pase">Pase de rapero</a>{pu.nivel != null ? ' (vas en el ' + pu.nivel + ')' : ''}.</p> : null}
+      <ul className="cu-fotos-carta">{CARTAS_FOTO.map(([c, n]) => {
+        const x = cs[c] || {};
+        const que = x.pend ? 'En revisión' : x.estado === 'ok' ? 'Tu foto' : 'La de Discord';
+        return (
+          <li key={c}>
+            {x.url && !x.pend ? <span className="cu-foto-mini" style={{ backgroundImage: 'url("' + x.url + '")' }} role="img" aria-label={'Tu foto en la ' + n} /> : <span className="cu-foto-mini vacia" aria-hidden="true" />}
+            <b>{n}</b><small>{que}{!libre(c) ? ' · se cambia desde el ' + fechaLarga(x.desde) : ''}</small>
+            {x.estado === 'ok' ? <button type="button" className="evp-lnk" disabled={ocup} onClick={() => mandar({ borrar: [c] })}>Volver a la de Discord</button> : null}
+          </li>);
+      })}</ul>
+      {pu.si ? <>
+        {vista ? <div className="cu-foto-ver" style={{ backgroundImage: 'url("' + vista + '")' }} aria-label="La que vas a subir" role="img" /> : null}
+        {archivo ? <div className="cu-fondo-donde">{CARTAS_FOTO.map(([c, n]) => (
+          <label key={c}><input type="checkbox" checked={elegidas.includes(c)} disabled={ocup || !libre(c)} onChange={() => tocar(c)} /> {n}</label>
+        ))}</div> : null}
+        <div className="cu-btns">
+          <label className="btn borde2 chico cu-fondo-arch">{archivo ? 'Elegir otra imagen' : 'Elegir una imagen'}<input type="file" accept="image/*" onChange={elegir} /></label>
+          {archivo ? <button type="button" className="btn verde chico" disabled={ocup || !elegidas.length} onClick={subir}>{ocup ? 'Revisando…' : 'Subir'}</button> : null}
+        </div>
+        <p className="cu-d">Si ocultaste tu foto, tus tarjetas siguen con la silueta.</p>
       </> : null}
       {msg ? <p className="cu-d" role="status">{msg}</p> : null}
     </Caja>
@@ -622,6 +719,7 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
     return (
       <>
         <FotoCaja liga={liga} dc={dc} />
+        <FotoCartaCaja dc={dc} />
         <RedesCaja dc={dc} />
         <VideosCaja dc={dc} />
         <ServidorCaja liga={liga} dc={dc} />

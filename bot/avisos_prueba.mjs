@@ -1049,6 +1049,48 @@ const ok = (cond, que, det) => {
       && quitado.ok && !tras && Object.keys(enR2).length === 0,
     'el filtro en el objeto: limpio se ve sin esperar, frenado no guarda nada, dudoso o sin IA a revisar, y lo que pasó se puede quitar',
     JSON.stringify([limpio, frenado, dudoso, sinIA, fd, enR2]));
+    // 📸 tu foto de tarjeta (13/10/2026): con el nivel, una por carta, una por semana, y con el filtro
+    const enR2f = {};
+    o.env.CARTAS = { put: async (k, b) => { enR2f[k] = b.length; }, delete: async (k) => { delete enR2f[k]; },
+      get: async (k) => (enR2f[k] ? { arrayBuffer: async () => new Uint8Array(Buffer.from(webp, 'base64')).buffer } : null) };
+    o.env.FOTOS_SAL = 'sal'; o.env.TEMPORADA = 't1';
+    let resp = linea({});
+    o.env.AI = { run: async () => ({ response: resp }) };
+    const sinNivelF = await o.fotoCarta({ quien: '100000051', de: 'nadie', img: webp, cartas: ['temporada'] });
+    const sinPerfil = await o.fotoCarta({ quien: '100000051', de: '', img: webp, cartas: ['temporada'] });
+    const P0 = o.puedeFotoCarta;
+    o.puedeFotoCarta = () => ({ si: true, nivel: 15, falta: 15 });
+    const f1 = await o.fotoCarta({ quien: '100000052', de: 'konan', img: webp, cartas: ['temporada', 'servidor'] });
+    const k1 = Object.keys(enR2f).sort();
+    const f2 = await o.fotoCarta({ quien: '100000052', de: 'konan', img: webp, cartas: ['servidor'] });
+    const f3 = await o.fotoCarta({ quien: '100000052', de: 'konan', borrar: ['servidor'] });
+    const k3 = Object.keys(enR2f).sort();
+    const f4 = await o.fotoCarta({ quien: '100000052', de: 'konan', img: webp, cartas: ['servidor'] });
+    resp = linea({ SEXUAL: 'maybe' });
+    const f5 = await o.fotoCarta({ quien: '100000052', de: 'konan', img: webp, cartas: ['pais'] });
+    const pendF = o.fotosCartaDueno();
+    const ap5 = await o.duenoFotoCarta({ quien: '100000052', si: true });
+    const k5 = Object.keys(enR2f).sort();
+    resp = linea({ GORE: 'yes' });
+    const f6 = await o.fotoCarta({ quien: '100000052', de: 'konan', img: webp, cartas: ['competitivo'] });
+    const vivosF = o.filtroDueno().vivos.filter((x) => x.tipo === 'foto');
+    const quitarF = await o.duenoFotoCarta({ quien: '100000052', si: false, motivo: 'No va' });
+    const k7 = Object.keys(enR2f);
+    o.puedeFotoCarta = P0;
+    delete o.env.AI;
+    ok(sinNivelF.error === 'nivel' && sinNivelF.falta === A.FOTO_CARTA_NIVEL && sinPerfil.error === 'sin_perfil' && f1.filtro === 'ok'
+      && JSON.stringify(k1) === JSON.stringify(['fotos/sal-t1/konan@servidor.webp', 'fotos/sal-t1/konan@temporada.webp'])
+      && f1.cartas.temporada.estado === 'ok' && f1.cartas.temporada.url.endsWith('/fotos/sal-t1/konan@temporada.webp')
+      && f2.error === 'semana' && f2.cartas[0] === 'servidor' && f3.cartas.servidor.estado === ''
+      && JSON.stringify(k3) === JSON.stringify(['fotos/sal-t1/konan@temporada.webp']) && f4.error === 'semana'
+      && f5.filtro === 'revisar' && f5.cartas.pais.pend.includes('/pendientes/') && !k3.includes('fotos/sal-t1/konan@pais.webp')
+      && pendF.length === 1 && pendF[0].cartas[0] === 'pais' && ap5.ok && k5.includes('fotos/sal-t1/konan@pais.webp')
+      && !k5.some((k) => k.startsWith('pendientes/')) && f6.error === 'filtro' && f6.cats[0] === 'GORE'
+      && vivosF.length === 1 && vivosF[0].cartas.length === 2 && quitarF.ok && k7.length === 0
+      && A.claveFoto({ FOTOS_SAL: 'x', TEMPORADA: 't1' }, 'konan') === 'fotos/x-t1/konan.webp'
+      && A.claveFoto({}, 'konan', 'pais') === 'fotos/t1/konan@pais.webp',
+    'tu foto de tarjeta: pide el nivel y tu perfil, va en las cartas que elegís, una por semana (también después de volver a la de Discord), la dudosa espera afuera de las caras, la frenada no entra, y se puede quitar',
+    JSON.stringify([sinNivelF, f1, f2, f3, f4, f5, pendF, ap5, k5, f6, vivosF, k7]));
     // 🛡️ anti-doxeo: una imagen con metadatos (la ubicación, la cámara) no entra (13/10/2026)
     const TM = A.tieneMetadatos;
     const riff = (chunks) => {

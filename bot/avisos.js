@@ -2185,6 +2185,8 @@ const RUTAS = {
   // 🖼️ tu fondo (13/10/2026): subirlo y elegir dónde se ve (con tu sesión), los aprobados (cualquiera) y revisarlos (Dlx).
   // Ver `fondo()`, `fondos()` y `duenoFondo()`
   '/avisos/fondo': 'POST', '/avisos/mi-fondo': 'POST', '/avisos/fondos': 'GET', '/avisos/dueno/fondo': 'POST',
+  // 📸 tu foto de tarjeta (13/10/2026). Ver `fotoCarta()`
+  '/avisos/foto-carta': 'POST', '/avisos/mi-foto-carta': 'POST', '/avisos/dueno/foto-carta': 'POST',
   // 📣 seguir a un organizador, con tu sesión. Ver `seguirOrg()`
   '/avisos/seguir-org': 'POST',
 };
@@ -2665,6 +2667,27 @@ export function tieneMetadatos(b) {
 const FONDO_POR_DIA = 5;
 //: cuántos días queda a la vista en el Dashboard lo que aprobó el filtro, con «Quitar»
 const FILTRO_VISTA_DIAS = 3;
+
+// 📸 TU FOTO DE TARJETA (13/10/2026). Dlx: «¿también podemos agregar la opción de foto personalizable de la tarjeta y
+// quizás la opción de cambiarla para cada tarjeta? … agrega un filtro a eso también», y a las tres preguntas: «Nivel 15
+// gratis», «Una por tarjeta» y «Una por semana». Una imagen propia en vez de la de Discord, en las cartas que elijas;
+// pasa por el mismo filtro que el fondo (`filtrarImagen()`), y cada carta se cambia como mucho una vez por semana
+export const FOTO_CARTA_NIVEL = 15;
+//: la página la achica a 768×768 en webp; esto es el tope que se acepta
+export const FOTO_CARTA_TOPE = 500 * 1024;
+export const FOTO_CARTA_SEMANA = 7 * 864e5;
+//: las cartas con cara, con los nombres del sello (`bot/que_cambio.TODAS`) y de R2 (`<clave>@<carta>.webp`)
+export const CARTAS_FOTO = ['temporada', 'competitivo', 'servidor', 'pais'];
+
+/**
+ * 🔑 LA CLAVE DE R2 DE UNA CARA: `fotos/<sal>-<temporada>/<clave>.webp`, y con `carta`, la propia de esa carta
+ * (`<clave>@<carta>.webp`). Vivía en worker.js; se mudó acá para que el objeto y el Worker escriban en el mismo lugar.
+ * ⚠️ El `@` va en la MISMA carpeta a propósito: el espejo del ciclo (`bot/fotos.espejo()`) y el sello
+ * (`fotos.etags()`) la ven sin cambiar nada, y `comun/respaldo.foto(nombre, carta)` la prefiere a la de Discord.
+ * ⚠️ El `|| ''` y el `|| 't1'` mantienen la ruta vieja si un despliegue no trae los bindings.
+ */
+export const claveFoto = (env, quien, carta = '') => `fotos/${(env && env.FOTOS_SAL) ? env.FOTOS_SAL + '-' : ''}`
+  + `${(env && env.TEMPORADA) || 't1'}/${quien}${carta ? '@' + carta : ''}.webp`;
 
 /**
  * 🛡️ EL FILTRO AUTOMÁTICO DE LOS FONDOS (Dlx, 13/10/2026: «que eso de fondos no necesite eso de pendientes… pero que
@@ -3851,6 +3874,45 @@ export async function rutaAvisos(req, env, ruta) {
       headers: { 'content-type': 'application/json' },
     });
   }
+  // 📸 TU FOTO DE TARJETA: subirla, volver a la de Discord y ver cómo está. Quién es lo dice la sesión, y de qué
+  // perfil, KV (`d:`): sin perfil no hay tarjetas
+  if (ruta === '/avisos/foto-carta' || ruta === '/avisos/mi-foto-carta') {
+    const crudo = await req.text();
+    if (crudo.length > (ruta === '/avisos/foto-carta' ? 750000 : 1024)) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    const lista = (x) => x === undefined || (Array.isArray(x) && x.length <= 4 && x.every((c) => CARTAS_FOTO.includes(c)));
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))
+        || (d.img !== undefined && (typeof d.img !== 'string' || !/^[A-Za-z0-9+/=]+$/.test(d.img)))
+        || !lista(d.cartas) || !lista(d.borrar)) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    let de = '';
+    try { de = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { de = ''; }
+    return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
+      method: 'POST', body: JSON.stringify({ quien: q.id, de: claveValida(de) ? de : '', img: d.img, cartas: d.cartas,
+        borrar: d.borrar }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
+  if (ruta === '/avisos/dueno/foto-carta') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))
+        || !/^\d{5,25}$/.test(String(d.quien || '')) || typeof d.si !== 'boolean') return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (!(await puede(q.id, 'fondos'))) {
+      console.warn('[seguridad] revisar una foto de tarjeta lo pidió alguien que no puede');
+      return json({ error: 'no' }, 403);
+    }
+    return elObjeto(env).fetch('https://avisos/dueno-foto-carta', {
+      method: 'POST', body: JSON.stringify({ quien: String(d.quien), si: d.si, motivo: String(d.motivo || '').slice(0, 120), por: q.id }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🖼️ Y REVISARLO: sólo Dlx
   if (ruta === '/avisos/dueno/fondo') {
     const crudo = await req.text();
@@ -4374,6 +4436,12 @@ export class Avisos {
       this.sql.exec("CREATE TABLE IF NOT EXISTS fondos (quien TEXT PRIMARY KEY, k TEXT NOT NULL DEFAULT '', estado TEXT NOT NULL, " +
         "url TEXT NOT NULL DEFAULT '', pend TEXT NOT NULL DEFAULT '', perfil INTEGER NOT NULL DEFAULT 1, pagina INTEGER NOT NULL DEFAULT 1, " +
         "motivo TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, subidas TEXT NOT NULL DEFAULT '')");
+      // 📸 la foto propia de cada carta (13/10/2026): `estado` 'ok' si se ve la propia ('' o 'no': la de Discord); `pend`,
+      // la que espera revisión, aparte —mientras tanto se sigue viendo la de antes—; `t`, cuándo se cambió, para la regla
+      // de una por semana. Ver `fotoCarta()`
+      this.sql.exec("CREATE TABLE IF NOT EXISTS fotos_carta (quien TEXT NOT NULL, carta TEXT NOT NULL, k TEXT NOT NULL DEFAULT '', " +
+        "estado TEXT NOT NULL DEFAULT '', pend TEXT NOT NULL DEFAULT '', motivo TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL DEFAULT 0, " +
+        'PRIMARY KEY (quien, carta))');
       // 🏷️ los roles que pone o saca Dlx (13/10/2026): `si` 1 lo pone, 0 lo saca aunque salga solo. Ver `duenoRol()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS roles_manual (quien TEXT NOT NULL, rol TEXT NOT NULL, si INTEGER NOT NULL, ' +
         't INTEGER NOT NULL, PRIMARY KEY (quien, rol))');
@@ -4611,6 +4679,9 @@ export class Avisos {
       if (ruta === '/fondo') return json(await this.fondo(d));
       if (ruta === '/mi-fondo') return json(this.fondoDe(String(d.quien || '')));
       if (ruta === '/dueno-fondo') return json(await this.duenoFondo(d));
+      if (ruta === '/foto-carta') return json(await this.fotoCarta(d));
+      if (ruta === '/mi-foto-carta') return json(this.fotoCartaDe(String(d.quien || '')));
+      if (ruta === '/dueno-foto-carta') return json(await this.duenoFotoCarta(d));
       if (ruta === '/dueno-rol') return json(this.duenoRol(d));
       if (ruta === '/dueno-decidir') return json(this.duenoDecidir(d));
       if (ruta === '/reportes-estados') return json(await this.reportesEstados(d));
@@ -7146,6 +7217,13 @@ export class Avisos {
       }
     }
     this.sql.exec('DELETE FROM fondos WHERE quien = ?', String(d.quien));
+    // 📸 y sus fotos de tarjeta, con las imágenes (13/10/2026)
+    for (const f of this.sql.exec('SELECT k, carta, pend FROM fotos_carta WHERE quien = ?', String(d.quien)).toArray()) {
+      try { if (f.k) await this.env.CARTAS.delete(claveFoto(this.env, f.k, f.carta)); } catch (e) { /* queda huérfano */ }
+      const kp = String(f.pend || '').split('.r2.dev/')[1];
+      if (kp && kp.startsWith('pendientes/')) { try { await this.env.CARTAS.delete(kp); } catch (e) { /* queda huérfano */ } }
+    }
+    this.sql.exec('DELETE FROM fotos_carta WHERE quien = ?', String(d.quien));
     // 🤝 y sus postulaciones de /sumate, y cuántas veces cambió algo hoy
     this.sql.exec('DELETE FROM postulaciones WHERE quien = ?', String(d.quien));
     // 📣 a quién seguís como organizador, y sus avisos (12/10/2026)
@@ -7425,12 +7503,181 @@ export class Avisos {
       .map((r) => ({ quien: r.quien, k: r.k, pend: r.pend, t: r.t }));
   }
 
+  // ── 📸 tu foto de tarjeta (13/10/2026) ──────────────────────────────
+  /** ¿Puede ponerse una foto propia? El nivel `FOTO_CARTA_NIVEL` del Pase; Dlx siempre (para probarlo). */
+  puedeFotoCarta(quien) {
+    if (quien === DUENO) return { si: true, nivel: null, falta: FOTO_CARTA_NIVEL };
+    const P = this.paseDatos();
+    const nivel = P.cfg ? this.paseNivel(quien, P.cfg) : 0;
+    return { si: nivel >= FOTO_CARTA_NIVEL, nivel, falta: FOTO_CARTA_NIVEL };
+  }
+
+  /** Cómo está cada carta de alguien, para su Mi cuenta: `{carta: {estado, url, pend, t, desde}}`. `desde`: cuándo se
+   *  puede volver a cambiar (0 si ya). */
+  fotoCartaDe(quien) {
+    if (!/^\d{5,25}$/.test(quien)) return { error: 'falta quién' };
+    const ahora = Date.now(), cartas = {};
+    for (const r of this.sql.exec('SELECT * FROM fotos_carta WHERE quien = ?', quien).toArray()) {
+      const desde = r.t && ahora - r.t < FOTO_CARTA_SEMANA ? r.t + FOTO_CARTA_SEMANA : 0;
+      cartas[r.carta] = { estado: r.estado, url: r.estado === 'ok' && r.k ? R2_PUB + '/' + claveFoto(this.env, r.k, r.carta) : '',
+        pend: r.pend, motivo: r.motivo, t: r.t, desde };
+    }
+    return { ok: true, puede: this.puedeFotoCarta(quien), cartas };
+  }
+
+  /**
+   * Subir una foto (`img`, base64) para `cartas`, o volver a la de Discord en `borrar`. La nueva pasa por el filtro:
+   * limpia se ve en la vuelta siguiente del ciclo; con algo que no va, no entra; dudosa espera revisión.
+   * ⚠️ UNA POR SEMANA POR CARTA (Dlx: «Una por semana»): cuenta desde que se puso, también si después se volvió a la
+   * de Discord —si no, poner y sacar sería cambiarla todos los días—. Lo que el filtro frena no cuenta para la semana,
+   * pero sí para el tope del día. Si alguna carta elegida todavía no se puede, no se toca ninguna y se dice cuál.
+   */
+  async fotoCarta(d) {
+    this._fondos = null;
+    const quien = String(d.quien || ''), k = String(d.de || '');
+    if (!/^\d{5,25}$/.test(quien)) return { error: 'falta quién' };
+    if (!k) return { error: 'sin_perfil' };
+    const ahora = Date.now();
+    const filas = {};
+    for (const r of this.sql.exec('SELECT * FROM fotos_carta WHERE quien = ?', quien).toArray()) filas[r.carta] = r;
+    const borrarPend = async (u) => {
+      const kp = String(u || '').split('.r2.dev/')[1];
+      if (kp && kp.startsWith('pendientes/')) { try { await this.env.CARTAS.delete(kp); } catch (e) { /* queda huérfano */ } }
+    };
+    const fila = (carta, estado, pend, t) => this.sql.exec('INSERT INTO fotos_carta (quien, carta, k, estado, pend, motivo, t) ' +
+      "VALUES (?, ?, ?, ?, ?, '', ?) ON CONFLICT(quien, carta) DO UPDATE SET k = excluded.k, estado = excluded.estado, " +
+      "pend = excluded.pend, motivo = '', t = excluded.t", quien, carta, k, estado, pend, t);
+    if (Array.isArray(d.borrar) && d.borrar.length) {
+      for (const carta of d.borrar.filter((c) => CARTAS_FOTO.includes(c))) {
+        const r = filas[carta];
+        if (!r) continue;
+        try { await this.env.CARTAS.delete(claveFoto(this.env, r.k || k, carta)); } catch (e) { /* queda huérfano */ }
+        await borrarPend(r.pend);
+        // ⚠️ `t` se queda: la semana sigue contando desde que se puso
+        this.sql.exec("UPDATE fotos_carta SET estado = '', pend = '' WHERE quien = ? AND carta = ?", quien, carta);
+      }
+      return this.fotoCartaDe(quien);
+    }
+    if (!d.img) return { error: 'faltan datos' };
+    const cartas = [...new Set((Array.isArray(d.cartas) ? d.cartas : []).filter((c) => CARTAS_FOTO.includes(c)))];
+    if (!cartas.length) return { error: 'elegí en qué tarjetas' };
+    const p = this.puedeFotoCarta(quien);
+    if (!p.si) return { error: 'nivel', nivel: p.nivel, falta: FOTO_CARTA_NIVEL };
+    const trabadas = quien === DUENO ? [] : cartas.filter((c) => filas[c] && filas[c].t && ahora - filas[c].t < FOTO_CARTA_SEMANA);
+    if (trabadas.length) {
+      return { error: 'semana', cartas: trabadas, desde: Math.max(...trabadas.map((c) => filas[c].t + FOTO_CARTA_SEMANA)) };
+    }
+    let b = null;
+    try { b = Uint8Array.from(atob(d.img), (c) => c.charCodeAt(0)); } catch (e) { b = null; }
+    const tipo = b ? tipoImagen(b) : '';
+    if (!tipo) return { error: 'no es una imagen' };
+    if (b.length > FOTO_CARTA_TOPE) return { error: 'demasiado grande' };
+    if (tieneMetadatos(b)) return { error: 'metadatos' };
+    if (!this.cuentaCambio(quien, 'foto_filtro', 10)) return { error: 'tope' };
+    let filtro = { v: 'revisar', si: [], quizas: [], crudo: '', error: 'sin IA' };
+    if (this.env.AI) {
+      try { filtro = await filtrarImagen(this.env, d.img, tipo); } catch (e) {
+        filtro = { v: 'revisar', si: [], quizas: [], crudo: '', error: String((e && e.message) || e).slice(0, 100) };
+      }
+    }
+    this.anotarFiltro(quien, k, Object.assign({ tipo: 'foto' }, filtro), ahora);
+    if (filtro.v === 'no') {
+      const cats = filtro.si.filter((x) => FILTRO_NO.includes(x));
+      return { error: 'filtro', cats, texto: cats.map((x) => FILTRO_TEXTO[x]).join(', ') };
+    }
+    const meta = { httpMetadata: { contentType: tipo, cacheControl: 'public, max-age=300' } };
+    if (filtro.v === 'ok') {
+      // ✅ limpia: una copia por carta, donde las lee el ciclo. Lo que esperaba revisión en esas cartas se descarta
+      for (const carta of cartas) {
+        try { await this.env.CARTAS.put(claveFoto(this.env, k, carta), b, meta); } catch (e) { return { error: 'no pude guardarla' }; }
+        if (filas[carta]) await borrarPend(filas[carta].pend);
+        fila(carta, 'ok', '', ahora);
+      }
+      return Object.assign(this.fotoCartaDe(quien), { filtro: 'ok' });
+    }
+    // 🤔 dudosa: queda afuera de la carpeta de las caras (si no, el espejo del ciclo la dibujaría) hasta que se apruebe,
+    // y mientras tanto la carta sigue con la que tenía
+    const azar = Array.from(crypto.getRandomValues(new Uint8Array(12)), (x) => x.toString(16).padStart(2, '0')).join('');
+    const kp = 'pendientes/' + azar + '.' + ({ 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' }[tipo]);
+    try { await this.env.CARTAS.put(kp, b, meta); } catch (e) { return { error: 'no pude guardarla' }; }
+    for (const carta of cartas) {
+      if (filas[carta]) await borrarPend(filas[carta].pend);
+      fila(carta, filas[carta] ? filas[carta].estado : '', R2_PUB + '/' + kp, ahora);
+    }
+    return Object.assign(this.fotoCartaDe(quien), { filtro: 'revisar' });
+  }
+
+  /** Dlx (o quien puede) aprueba (`si`) o no la foto que espera; sin nada esperando, `si: false` quita las que se ven. */
+  async duenoFotoCarta(d) {
+    this._fondos = null;
+    const quien = String(d.quien || ''), ahora = Date.now();
+    const filas = this.sql.exec('SELECT * FROM fotos_carta WHERE quien = ?', quien).toArray();
+    const pend = filas.filter((r) => r.pend);
+    const kp = pend.length ? String(pend[0].pend).split('.r2.dev/')[1] : '';
+    if (pend.length && d.si) {
+      let obj = null;
+      try { obj = await this.env.CARTAS.get(kp); } catch (e) { obj = null; }
+      if (!obj) return { error: 'no encontré la imagen' };
+      const b = new Uint8Array(await obj.arrayBuffer());
+      const tipo = tipoImagen(b) || 'image/webp';
+      for (const r of pend) {
+        await this.env.CARTAS.put(claveFoto(this.env, r.k, r.carta), b, { httpMetadata: { contentType: tipo, cacheControl: 'public, max-age=300' } });
+        this.sql.exec("UPDATE fotos_carta SET estado = 'ok', pend = '', motivo = '' WHERE quien = ? AND carta = ?", quien, r.carta);
+      }
+      try { await this.env.CARTAS.delete(kp); } catch (e) { /* queda huérfano */ }
+      this.aBandeja(quien, 'foto-carta', 'fondo', '📸 Tu foto de tarjeta, aprobada', 'Sale en tus tarjetas en la próxima vuelta del ciclo.',
+        HUB + '/cuenta/perfil', '', ahora);
+    } else if (pend.length) {
+      try { await this.env.CARTAS.delete(kp); } catch (e) { /* queda huérfano */ }
+      // ⚠️ `t` vuelve a 0: lo que no se aprobó no gasta la semana
+      // (y la carta sigue con la que tenía: `estado` no se toca)
+      for (const r of pend) {
+        this.sql.exec("UPDATE fotos_carta SET pend = '', motivo = ?, t = 0 WHERE quien = ? AND carta = ?",
+          String(d.motivo || ''), quien, r.carta);
+      }
+      this.aBandeja(quien, 'foto-carta', 'fondo', '📸 Tu foto de tarjeta no se aprobó', (d.motivo ? d.motivo + '. ' : '') +
+        'Podés subir otra desde Mi cuenta.', HUB + '/cuenta/perfil', '', ahora);
+    } else if (!d.si) {
+      const vivas = filas.filter((r) => r.estado === 'ok');
+      if (!vivas.length) return { error: 'no hay nada para revisar' };
+      for (const r of vivas) {
+        try { await this.env.CARTAS.delete(claveFoto(this.env, r.k, r.carta)); } catch (e) { /* queda huérfano */ }
+        this.sql.exec("UPDATE fotos_carta SET estado = 'no', motivo = ? WHERE quien = ? AND carta = ?", String(d.motivo || ''), quien, r.carta);
+      }
+      this.aBandeja(quien, 'foto-carta', 'fondo', '📸 Tu foto de tarjeta se quitó', (d.motivo ? d.motivo + '. ' : '') +
+        'Tus tarjetas vuelven a la foto de Discord.', HUB + '/cuenta/perfil', '', ahora);
+    } else {
+      return { error: 'no hay nada para revisar' };
+    }
+    return { ok: true, fotos_carta: this.fotosCartaDueno(), filtro: this.filtroDueno() };
+  }
+
+  /** Para el Dashboard: las fotos de tarjeta que esperan revisión, una fila por persona con sus cartas. */
+  fotosCartaDueno() {
+    const por = {};
+    for (const r of this.sql.exec("SELECT quien, k, carta, pend, t FROM fotos_carta WHERE pend != '' ORDER BY t")
+      .toArray()) {
+      if (!por[r.quien]) por[r.quien] = { quien: r.quien, k: r.k, pend: r.pend, t: r.t, cartas: [] };
+      por[r.quien].cartas.push(r.carta);
+    }
+    return Object.values(por);
+  }
+
   /** 🛡️ Para el Dashboard: los que el filtro dejó ver en los últimos `FILTRO_VISTA_DIAS` (con «Quitar») y cuántos
    *  aprobó, frenó y mandó a revisar. */
   filtroDueno() {
     const desde = Date.now() - FILTRO_VISTA_DIAS * 864e5;
     const vivos = this.sql.exec("SELECT quien, k, url, t FROM fondos WHERE url != '' AND pend = '' AND t > ? ORDER BY t DESC",
       desde).toArray().map((r) => ({ quien: r.quien, k: r.k, url: r.url, t: r.t }));
+    // 📸 y las fotos de tarjeta, una fila por persona con sus cartas (13/10/2026)
+    const fc = {};
+    for (const r of this.sql.exec("SELECT quien, k, carta, t FROM fotos_carta WHERE estado = 'ok' AND t > ? ORDER BY t DESC",
+      desde).toArray()) {
+      if (!fc[r.quien]) fc[r.quien] = { tipo: 'foto', quien: r.quien, k: r.k, url: R2_PUB + '/' + claveFoto(this.env, r.k, r.carta), t: r.t, cartas: [] };
+      fc[r.quien].cartas.push(r.carta);
+    }
+    vivos.push(...Object.values(fc));
+    vivos.sort((a, b) => b.t - a.t);
     const h = (this.leer('fondos_filtro') || []).filter((x) => x.t > desde);
     const cuenta = { ok: 0, no: 0, revisar: 0 };
     for (const x of h) cuenta[x.v] = (cuenta[x.v] || 0) + 1;
@@ -9157,7 +9404,8 @@ export class Avisos {
       return { limitado: true, permisos, mis_roles: roles, yo: this.nombrePor(d && d.quien),
         reportes: ve('reportes') || ve('reportes_cerrar') ? this.reportesDueno(ahora) : [],
         decidir: ve('decidir') ? this.decidirDueno() : {}, videos: ve('videos') ? (this.leer('videos_revisar') || []) : [],
-        fondos: ve('fondos') ? this.fondosDueno() : [], filtro: ve('fondos') ? this.filtroDueno() : null };
+        fondos: ve('fondos') ? this.fondosDueno() : [], filtro: ve('fondos') ? this.filtroDueno() : null,
+        fotos_carta: ve('fondos') ? this.fotosCartaDueno() : [] };
     }
     const dias = [];
     for (let i = 13; i >= 0; i--) {
@@ -9194,6 +9442,8 @@ export class Avisos {
       // 🖼️ los fondos que esperan revisión (13/10/2026), y lo que hizo el filtro
       fondos: this.fondosDueno(),
       filtro: this.filtroDueno(),
+      // 📸 las fotos de tarjeta que esperan revisión (13/10/2026)
+      fotos_carta: this.fotosCartaDueno(),
       dias,
       sesiones: this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM sesiones WHERE vence > ?', ahora).toArray()[0].n,
       sistema: {

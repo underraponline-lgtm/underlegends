@@ -2174,7 +2174,8 @@ def _con_foto():
         print('   ⚠️ sin datos/fotos_etag.json: nadie se filtra por foto')
         return None
     from comun import respaldo
-    return set(respaldo._norm(k) for k in d)
+    # 📸 las fotos propias de cada carta (`<clave>@<carta>`) son de la misma persona (13/10/2026)
+    return set(respaldo._norm(k.split('@', 1)[0]) for k in d)
 
 
 def _compactas(vers):

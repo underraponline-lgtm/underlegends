@@ -524,8 +524,10 @@ def huellas():
             crudo = []
             for k in campos:
                 crudo.append('%s=%r|%r' % (k, dos['c'].get(k), dos['t'].get(k)))
-            # ⚠️ La cara, en las cuatro. Ver el bloque de arriba.
-            crudo.append('cara=%s' % cara)
+            # ⚠️ La cara, en las cuatro. Ver el bloque de arriba. 📸 Y la propia de ESA carta, si se puso una
+            # (`<clave>@<carta>` en R2, 13/10/2026): cambiar la foto de la Servidor redibuja sólo la Servidor
+            propia = '' if cara == 'oculta' else caras.get(_CL(quien) + '@' + carta, '')
+            crudo.append('cara=%s' % cara + (' propia=%s' % propia if propia else ''))
             # y el OVR Nacional, en la de País: ver arriba
             if carta == 'pais':
                 crudo.append('nac=%r' % nac.get(quien))

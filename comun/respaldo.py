@@ -102,8 +102,22 @@ def oculta(nombre):
     return bool(nombre) and _norm(nombre) in _ocultas
 
 
-def foto(nombre):
+#: 📸 las cartas que aceptan una foto propia (`<clave>@<carta>.webp`, la sube cada uno desde Mi cuenta: ver `fotoCarta()`
+#: en bot/avisos.js). Los mismos nombres que el sello (`bot/que_cambio.TODAS`)
+CARTAS_FOTO = ('temporada', 'competitivo', 'servidor', 'pais')
+
+
+def ruta_temporada(n, carta=None):
+    """Dónde estaría en el espejo la cara de `n` (ya normalizado): la propia de `carta` si se pide, si no la de Discord."""
+    return os.path.join(_TEMPORADA_FOTOS(), n + ('@' + carta if carta else '') + '.webp')
+
+
+def foto(nombre, carta=None):
     """La foto de esa persona si está en disco, en base64. Si no, None.
+
+    📸 CON `carta`, PRIMERO LA PROPIA DE ESA CARTA (13/10/2026). Dlx: *«la opción de foto personalizable de la
+    tarjeta… y la opción de cambiarla para cada tarjeta»*. Quien se puso una (nivel 15 del Pase, una por semana, con
+    el filtro) la tiene en `<clave>@<carta>.webp`, al lado de la de Discord; si no, sigue todo como antes.
 
     🔴 PRIMERO LA FOTO DE LA TEMPORADA, Y ESO CAMBIA LA ESCALA DEL PROBLEMA.
     Hasta el 20/09/2026 acá había **nueve** fotos versionadas a mano, o sea
@@ -121,11 +135,15 @@ def foto(nombre):
     ⚠️ Y SI NO HAY ESPEJO, ESTO NO FALLA: sigue de largo a lo de antes. Un
     `--espejo` que no se corrió tiene que dar la carta de ayer, no un error.
     """
-    # 🙈 quien la ocultó no tiene foto para ninguna carta (ver `oculta()`)
+    # 🙈 quien la ocultó no tiene foto para ninguna carta (ver `oculta()`), tampoco la propia
     if oculta(nombre):
         return None
     n = _norm(nombre)
-    tem = os.path.join(_TEMPORADA_FOTOS(), n + '.webp')
+    if carta in CARTAS_FOTO:
+        propia = ruta_temporada(n, carta)
+        if os.path.exists(propia) and not plana(propia):
+            return _uri(propia)
+    tem = ruta_temporada(n)
     # ⚠️ una foto PLANA es «no tiene nada» (ver `plana()`), y no se busca otra más vieja: la de la temporada es la
     # que la persona tiene puesta hoy, y una cara de julio en su lugar sería otra persona eligiendo por ella
     if os.path.exists(tem):
@@ -190,8 +208,10 @@ def hay_foto(av):
     return av.startswith('http') or av.startswith('data:')
 
 
-def avatar(nombre, url=''):
-    """De dónde sale la cara de esa persona. **La copia del repo GANA.**
+def avatar(nombre, url='', carta=None):
+    """De dónde sale la cara de esa persona. **La copia del repo GANA.** Con `carta`, la propia de esa carta antes
+    que ninguna (ver `foto()`).
+
 
     🔴 ANTES ERA AL REVÉS Y ESO DEJABA SIN CARA A 82 DE 101. La Temporada y la
     Competitiva sólo preguntaban por el repo **para rescatar una URL rota**:
@@ -220,7 +240,7 @@ def avatar(nombre, url=''):
     # 🙈 ni la del repo ni la URL del pool: quien ocultó su foto va con la silueta (comun/sin_foto.py)
     if oculta(nombre):
         return ''
-    return foto(nombre) or (url if _url_suya(nombre, url) else '') or ''
+    return foto(nombre, carta) or (url if _url_suya(nombre, url) else '') or ''
 
 
 def _url_suya(nombre, url):

@@ -98,7 +98,7 @@ def armar_html(quien, pool):
     # SOLO cuando habia una URL rota dejaba sin cara a 82 de 101, porque la
     # gente nueva no tiene URL en el pool y esa rama no la alcanzaba.
     _antes = c.get('av', '')
-    c['av'] = respaldo.avatar(quien, _antes)
+    c['av'] = respaldo.avatar(quien, _antes, 'temporada')
     if not c['av'] and _antes:
         print('el avatar de %s no esta ni en el repo ni en el pool: va con iniciales'
               % quien)

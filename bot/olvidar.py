@@ -219,6 +219,8 @@ def inventario(s):
                 # una temporada anterior: no es de esta persona-hoy
                 continue
             nombre = k[len(pref):].rsplit('.', 1)[0]
+            # 📸 `konan@temporada` es la foto propia de una carta de konan (13/10/2026): es suya, no otra grafía
+            nombre = nombre.split('@', 1)[0]
             cual = 'fotos'
         else:
             nombre, _, resto = k.rpartition('/')
@@ -405,7 +407,8 @@ def sueltas(s):
     pref = carpeta_r2()
     out = []
     for g, d in sorted(inv.items()):
-        nombres = sorted({k[len(pref):].rsplit('.', 1)[0] for k in d['fotos']})
+        # 🔴 sin las fotos propias de cada carta (`<clave>@<carta>`): no son una grafía vieja, y esto las borraría
+        nombres = sorted({k[len(pref):].rsplit('.', 1)[0] for k in d['fotos'] if '@' not in k[len(pref):]})
         if len(nombres) < 2:
             continue
         # la viva es la que KV indexa; si ninguna lo esta, no se toca

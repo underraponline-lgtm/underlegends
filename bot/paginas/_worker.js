@@ -120,6 +120,8 @@ const AVISOS = {
   '/api/avisos/dueno/rol': 'POST',
   // 🖼️ tu fondo (13/10/2026): subirlo y verlo (con tu sesión), los aprobados (cualquiera) y revisarlos (sólo Dlx)
   '/api/avisos/fondo': 'POST', '/api/avisos/mi-fondo': 'POST', '/api/avisos/fondos': 'GET', '/api/avisos/dueno/fondo': 'POST',
+  // 📸 tu foto de tarjeta (13/10/2026): subirla y verla (con tu sesión) y revisarla (quien puede)
+  '/api/avisos/foto-carta': 'POST', '/api/avisos/mi-foto-carta': 'POST', '/api/avisos/dueno/foto-carta': 'POST',
   // 📣 seguir a un organizador (12/10/2026): con tu sesión. Ver `seguirOrg()` en bot/avisos.js
   '/api/avisos/seguir-org': 'POST',
 };
@@ -200,7 +202,8 @@ async function avisos(req, url) {
   if (metodo === 'POST') {
     const cuerpo = await req.text();
     // 🖼️ una imagen de fondo es más que 4 KB: sólo esa ruta, y con su propio tope (el Worker lo vuelve a medir)
-    if (cuerpo.length > (url.pathname === '/api/avisos/fondo' ? 900000 : 4096)) return new Response('demasiado grande', { status: 413 });
+    const grande = url.pathname === '/api/avisos/fondo' || url.pathname === '/api/avisos/foto-carta';
+    if (cuerpo.length > (grande ? 900000 : 4096)) return new Response('demasiado grande', { status: 413 });
     init.body = cuerpo;
     init.headers['content-type'] = 'application/json';
     if (sesion(req)) init.headers['x-lg-ses'] = sesion(req);

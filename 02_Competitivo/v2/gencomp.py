@@ -370,7 +370,8 @@ def card(c,i):
     # cae en la URL del pool solo si no hay copia, que es lo que ya hacen la
     # Temporada, la Servidor y la de Pais.
     from comun.respaldo import avatar as _avatar, hay_foto as _hay_foto
-    av = _avatar(c['raw'], (c.get('av') or '').replace('?size=128', '?size=512'))
+    # 📸 con `'competitivo'`: la foto propia de esta carta, si se puso una (ver `comun/respaldo.foto()`)
+    av = _avatar(c['raw'], (c.get('av') or '').replace('?size=128', '?size=512'), 'competitivo')
     # 🎤 SIN FOTO —no se puso o la ocultó— VA LA SILUETA, no la inicial (Dlx, 03/10/2026). Ver comun/sin_foto.py
     from comun import sin_foto as _SF
     foto = ('<img src="%s" onerror="%s">' % (av, _SF.onerror('sil', c['raw']))) if _hay_foto(av) else _SF.img('sil', c['raw'])

@@ -202,7 +202,7 @@ def cargar():
             # ⚠️ `avatar()` y no `foto()`: la misma regla que las otras
             # tres. Ver comun/respaldo.avatar() y el comentario de
             # 04_Pais/generar.py.
-            'foto': respaldo.avatar(c['raw'], c.get('av') or ''),
+            'foto': respaldo.avatar(c['raw'], c.get('av') or '', 'servidor'),
             'svs': _svs.get(_slug(c['raw'])) or ([c['sv']] if c['sv'] else []),
         })
     out += _los_de_cero({p['nombre'] for p in out})
@@ -295,7 +295,7 @@ def _los_de_cero(ya):
             'rango_pos': (0, 0),
             'ovr': 0, 'titulos': 0, 'podios': 0, 'eventos': 0,
             'racha': '0/0', 'duelos': '0/0',
-            'foto': respaldo.avatar(nom, ''),
+            'foto': respaldo.avatar(nom, '', 'servidor'),
             'svs': donde.get(str(p.get('discord_id') or '')) or [sv],
         })
     return out

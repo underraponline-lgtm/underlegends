@@ -37,7 +37,7 @@
 // Object— y porque Node los prueba sin levantar el Worker entero. Ver
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
-import { anotarUso, DUENO, NIVELES_CHAT, claveMedida } from './avisos.js';
+import { anotarUso, DUENO, NIVELES_CHAT, claveMedida, claveFoto } from './avisos.js';
 import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva,
   sesionFin, cookieSesion, SESION_DIAS } from './avisos.js';
 export { Avisos };
@@ -2226,9 +2226,8 @@ const urlAvatar = (id, hash) =>
 // ⚠️ EL `|| ''` MANTIENE LA RUTA VIEJA si el binding no está, igual que
 // `temporadaDe`. Un despliegue sin el valor escribe donde escribía antes en
 // vez de crear una carpeta nueva y perder las caras.
-const salFotos = (env) => (env && env.FOTOS_SAL) || '';
-const claveFoto = (env, quien) =>
-  `fotos/${salFotos(env) ? salFotos(env) + '-' : ''}${temporadaDe(env)}/${quien}.webp`;
+// 📸 `claveFoto(env, quien, carta)` vive en avisos.js desde el 13/10/2026: la foto propia de cada carta la escribe el
+// objeto, y la clave tiene que salir del mismo lugar para los dos
 const claveUso = (env, quien) => `foto:${temporadaDe(env)}:${quien}`;
 
 // El rol de DRA que deja cambiarla cuando quiera. Dlx, 20/09/2026.

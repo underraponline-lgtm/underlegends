@@ -333,7 +333,7 @@ def cargar():
             'rch': c.get('rch_max', 0),
             'duelos': ('%d/%d' % (c['duel_v'], c['duel_t'])
                        if c.get('duel_real') else ''),
-            'foto': foto(c['raw'], c.get('av') or ''),
+            'foto': foto(c['raw'], c.get('av') or '', 'pais'),
             'stats': stats_nacionales(c, t or c),
             # ⚠️ CERO Y CERO PARA LAS 138. Los dos trofeos son placeholders de
             # una competencia que arranca en T2, y con cero el casillero NO SE
