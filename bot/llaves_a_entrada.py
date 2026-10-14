@@ -2397,8 +2397,12 @@ REVIVIDO_R = re.compile(r'([^\s⌞⌝\[\]()+,&*]{2,}(?:[ \t]+[^\s⌞⌝\[\]()+,&
                         + E._BANDERA + r'{2}[ \t]+R(?=[ \t*_]*(?:[\]⌝+,&]|🆚|$))', re.M)
 
 
-def marcar_revividos(filas, textos=()):
+def marcar_revividos(filas, textos=(), formato=''):
     """Anota `Revivido: nombre` a quien pierde y vuelve a entrar.
+
+    `formato`: lo que dice el ANUNCIO del evento (su modalidad y su nombre, ver `formato_de()`). LA REDENCIÓN VOL.4 y
+    GENESIS BATTLES dicen «MODALIDAD: Pandillas» en el anuncio y nada en la llave: el formato sale de cualquiera de los
+    dos.
 
     🔴 EL FENOMENO MAS FRECUENTE DE LA GUIA, Y EL LECTOR NO LO VEIA. Dlx,
     23/09/2026, §3.7: *«aparece 33 veces en 78 eventos. Alguien pierde, y
@@ -2450,7 +2454,7 @@ def marcar_revividos(filas, textos=()):
     # un revivido (guía, Parte 2, §9.1 y §11.1): cobra su eliminación Y su
     # parte del equipo al 100 %. En la llave se ven igual, así que lo
     # decide que la llave diga que es un draft.
-    es_draft = any(E.DRAFT.search(t or '') for t in textos)
+    es_draft = any(E.DRAFT.search(t or '') for t in textos) or bool(E.DRAFT.search(formato or ''))
     drafteados = set()
     # 1. la notacion, en el texto crudo: `(R)`, `1R` y la «R» suelta después de la bandera
     for t in textos:
@@ -2527,6 +2531,28 @@ ANTES_MS, DESPUES_MS = 3600000, 5 * 3600000
 #: `anuncio_de_llave()`. Se guarda porque el anuncio se va del canal y la llave
 #: no: sin esto volvería a «(sin titulo)» —otro evento, otro número—.
 NOMBRES = os.path.join(BASE, 'datos', 'nombres_llaves.json')
+#: 🔑 el formato de cada evento según su anuncio, `evento|sv|fecha -> «modalidad · nombre del anuncio»`. Se guarda
+#: porque el anuncio se va de `datos/anuncios.json` (son los últimos de cada canal) y la llave se vuelve a leer: sin
+#: esto, un evento de pandillas volvería a tener «revividos» el día que su anuncio sale de la lista. Ver `formato_de()`
+FORMATOS = os.path.join(BASE, 'datos', 'formatos_llaves.json')
+
+
+def _formatos_guardados(ruta=None):
+    try:
+        with io.open(ruta or FORMATOS, encoding='utf-8') as f:
+            return (json.load(f) or {}).get('eventos') or {}
+    except (OSError, ValueError):
+        return {}
+
+
+def formato_de(anuncio):
+    """Lo que un anuncio dice del formato: su modalidad y su nombre («Pandillas · LA REDENCION VOL.4»), o ''.
+
+    🔑 Dlx, 14/10/2026 (LA BELLA ARTE DE LA DESGRACIA VOL 6 PANDILLAS): *«el formato de pandillas: si tú ganas, eliges a
+    quien quieres llevarte… no es revivido»*. El formato manda sobre cómo se lee quién vuelve, y muchas llaves no lo
+    escriben: LA REDENCIÓN VOL.4 y GENESIS BATTLES lo dicen sólo en el anuncio (`MODALIDAD: Pandillas`)."""
+    a = anuncio or {}
+    return ' · '.join(x for x in (str(a.get('modalidad') or '').strip(), str(a.get('nombre') or '').strip()) if x)
 #: 🔑 el título que no dice qué evento es: la llave lleva el nombre de su anuncio (ver el bucle de `main()`, 12/10/2026)
 TITULO_VACIO = re.compile(r'^\s*(?:el\s+|la\s+)?(?:bracket|brackets|llave|llaves|cuadro|fixture|torneo|compe|competencia|'
                           r'nombre de la compe(?:tencia)?)(?:\s+(?:del?|de la)\s+(?:torneo|evento|compe|competencia))?\s*$',
@@ -3317,6 +3343,12 @@ def _self_check():
     fd = marcar_revividos(filas_de(dr)[0], [dr['texto']])
     rv = dict(dr, texto=dr['texto'].replace('# DRAFT KINGS', '# COPA'))
     fr = marcar_revividos(filas_de(rv)[0], [rv['texto']])
+    # 🔑 las PANDILLAS son un draft (Dlx, 14/10/2026: «no es revivido, así es el formato pandillas»)
+    pd = dict(dr, texto=dr['texto'].replace('# DRAFT KINGS', '# LA BELLA ARTE DE LA DESGRACIA VOL 6 PANDILLAS'))
+    fpd = marcar_revividos(filas_de(pd)[0], [pd['texto']])
+    # y con el formato sólo en el ANUNCIO (LA REDENCIÓN VOL.4: la llave no dice «pandillas», el anuncio sí)
+    fpa = marcar_revividos(filas_de(rv)[0], [rv['texto']], formato=formato_de({'modalidad': 'Pandillas',
+                                                                             'nombre': 'LA REDENCION VOL.4'}))
     wk = ('`[ CUARTOS ]`\n⌞Ana⌝ 🆚 ⌞Beto⌝\n⌞Caro⌝ 🆚 ⌞Dani⌝\n`[ SEMIFINALES ]`\n'
           '⌞Ana⌝ 🆚 ⌞Konan⌝\n`[ FINAL ]`\n⌞Konan⌝ 🆚 ⌞Caro⌝\n'
           'INVITADO DE HONOR: Konan\n🥇 CAMPEÓN: Konan')
@@ -3580,6 +3612,12 @@ def _self_check():
          'Drafteado: Beto' in ' '.join(f['notas'] for f in fd)),
         ('sin draft, el mismo caso es revivido',
          'Revivido: Beto' in ' '.join(f['notas'] for f in fr)),
+        ('en PANDILLAS también: el que el ganador se lleva es drafteado, no revivido (Dlx, 14/10/2026)',
+         'Drafteado: Beto' in ' '.join(f['notas'] for f in fpd)
+         and 'Revivido' not in ' '.join(f['notas'] for f in fpd)),
+        ('y si «Pandillas» lo dice sólo el anuncio, también (LA REDENCIÓN VOL.4)',
+         'Drafteado: Beto' in ' '.join(f['notas'] for f in fpa) and 'Revivido' not in ' '.join(f['notas'] for f in fpa)
+         and formato_de({'modalidad': ' Pandillas ', 'nombre': 'X'}) == 'Pandillas · X' and formato_de(None) == ''),
         ('la «R» suelta después de la bandera es revivido; sin bandera, no (Dlx: «C»)',
          [m.group(1) for m in REVIVIDO_R.finditer(
              '▪️   [PICHULITA 🇦🇷 + SIX 🇦🇷 R] 🆚 [GOCHO 🇨🇴 R + ANA 🇦🇷]\n⌞RICKY FORT 🇦🇷 R⌝ 🆚 ⌞ROMEO R⌝\n'
@@ -4009,6 +4047,7 @@ def main():
     # se llevan el mismo.
     import llaves_web as LW
     guardados, nombres_nuevos, sin_titulo = _nombres_guardados(), {}, []
+    formatos_viejos, formatos_nuevos = _formatos_guardados(), {}
     tomados = {str(x.get('anuncio') or '') for x in guardados.values()}
     # 🔴 Y DE QUÉ ANUNCIO ES CADA NOMBRE YA GUARDADO: `(nombre, servidor, fecha) -> anuncio`. Ver «dos anuncios con el
     # mismo nombre el mismo día», abajo
@@ -4173,6 +4212,24 @@ def main():
             d_grupo += d
             sabidas.update(sab)
         _txt = [h.get('texto') or '' for h in g['llaves']]
+        # 🔑 EL FORMATO, TAMBIÉN DEL ANUNCIO (14/10/2026): por el nombre, o el anuncio que se le dio a la llave sin título;
+        # si ya no está en la lista, el que se guardó la vez anterior. Ver `formato_de()`
+        _sv_f = codigo_servidor((g['llaves'][0] if g['llaves'] else {}).get('guild'))[0]
+        _clf = '|'.join((nom, _sv_f, fec))
+        try:
+            _anf = LW.anuncio_de(nom, _sv_f, datetime.date.fromisoformat(LW.fecha_iso(fec)), anuncios_l)
+        except (ValueError, TypeError):
+            _anf = None
+        if _anf is None:
+            _yf = next((nombres_nuevos.get(str(h.get('msg_id'))) or guardados.get(str(h.get('msg_id')))
+                        for h in g['llaves'] if str(h.get('msg_id') or '') in nombres_nuevos
+                        or str(h.get('msg_id') or '') in guardados), None)
+            _anf = _por_id.get(str((_yf or {}).get('anuncio') or ''))
+        _fmt = formato_de(_anf)
+        if _fmt:
+            formatos_nuevos[_clf] = _fmt
+        else:
+            _fmt = formatos_viejos.get(_clf, '')
         # los nombres de cada mención de estas llaves, para los walk-ins
         _ids = {}
         for h in g['llaves']:
@@ -4191,7 +4248,7 @@ def main():
             marcar_pokemones(list(del_grupo), _txt) if _doble else marcar_revividos(
                 marcar_walkins(marcar_pokemones(sin_repetir(del_grupo), _txt), _txt, _ids, quien=_quien,
                                sv=codigo_servidor((g['llaves'][0] if g['llaves'] else {}).get('guild'))[0]),
-                _txt))
+                _txt, formato=_fmt))
         # 🔑 EL EQUIPO CON UN SOLO NOMBRE (TEAM VENECIA), AL FINAL: el revivido
         # y el walk-in se miran con la llave tal cual la escribieron. Ver
         # `marcar_equipos()`.
@@ -4570,6 +4627,21 @@ def main():
                 _f.write('\n')
         except OSError as e:
             print('   ⚠️ no pude guardar los nombres de las llaves sin título (%s)' % str(e)[:60])
+
+    # 🔑 el formato de cada evento según su anuncio: ver `formato_de()`. Sólo se agrega: lo ya guardado se queda
+    if formatos_nuevos and any(formatos_viejos.get(k) != v for k, v in formatos_nuevos.items()):
+        try:
+            with io.open(FORMATOS, 'w', encoding='utf-8', newline='\n') as _f:
+                json.dump({'_leeme': 'El formato de cada evento según su anuncio (modalidad · nombre del anuncio), por '
+                                     'evento|servidor|fecha. Se guarda porque el anuncio se va de datos/anuncios.json y '
+                                     'la llave se vuelve a leer: el formato decide cómo se lee quién vuelve (en '
+                                     'pandillas, el que el ganador se lleva es drafteado, no revivido). Lo escribe '
+                                     'formato_de() de bot/llaves_a_entrada.py. Dlx, 14/10/2026.',
+                           'eventos': dict(formatos_viejos, **formatos_nuevos)}, _f, ensure_ascii=False, indent=1,
+                          sort_keys=True)
+                _f.write('\n')
+        except OSError as e:
+            print('   ⚠️ no pude guardar los formatos de los eventos (%s)' % str(e)[:60])
 
     # y los equipos con un solo nombre, para que `Pendientes` no pregunte
     # quién es «TEAM VENECIA» como si fuera una persona

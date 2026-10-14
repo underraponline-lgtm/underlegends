@@ -265,7 +265,14 @@ POKEMON = re.compile(r'\(\s*(?:P|pok[eé]mon)\s*\)|\bpok[eé]mon\b', re.I)
 # revivido cobra la mitad de su puesto final (§3.7). En la llave se ven
 # igual —alguien que perdió y reaparece en un equipo—, así que lo único que
 # los separa es que la llave diga que el formato es de draft.
-DRAFT = re.compile(r'draft|reclut|absorbid', re.I)
+# 🔑 Y LAS PANDILLAS SON UN DRAFT (Dlx, 14/10/2026, con la LA BELLA ARTE DE LA
+# DESGRACIA VOL 6 PANDILLAS: «¿por qué hay revividos ahí? El formato de
+# pandillas: si tú ganas, eliges a quien quieres llevarte… no es revivido, así
+# es el formato»). La guía ya lo decía (§4.1, «drafteados de pandilla»), pero
+# esto no miraba la palabra: Oasis, Zignos, Mr Still Ballin y Six salían
+# «Revivido» y cobraban la mitad de su puesto. Sólo pesa dentro de un equipo
+# (`marcar_revividos()`): quien vuelve SOLO sigue siendo un revivido
+DRAFT = re.compile(r'draft|reclut|absorbid|pandilla', re.I)
 
 # ⚠️ EL INVITADO DE HONOR entra en ronda avanzada y cobra el 100 % (§9.2):
 # no es un walk-in.
