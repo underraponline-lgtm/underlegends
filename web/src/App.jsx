@@ -94,6 +94,7 @@ const PaginaCrew = lazy(() => import('./grupo.jsx').then((m) => ({ default: m.Pa
 const PaginaPais = lazy(() => import('./grupo.jsx').then((m) => ({ default: m.PaginaPais })));
 const Cargando = () => <div className="cargando">Cargando…</div>;
 import { VentanaVideo } from './video.jsx';
+import { claseTema, temaValido } from './temas.js';
 
 // ── el puente con app.js: cada vez que pinta, avisa ──────────────────────────────────────────────
 // ⚠️ Las funciones de app.js son globales (script clásico, sin módulo), y adentro se llaman por su nombre: si se
@@ -227,7 +228,8 @@ function fallaronLosDatos() {
 }
 
 function leerTema() {
-  try { return localStorage.getItem('lg:tema') === 'noche' ? 'noche' : 'clara'; } catch (e) { return 'clara'; }
+  // 🎨 también los de los servidores (13/10/2026): ver temas.js
+  try { return temaValido(localStorage.getItem('lg:tema')); } catch (e) { return 'clara'; }
 }
 
 // lo que las votaciones necesitan de app.js: los votos, el mío y el estado (guardando, error)
@@ -353,7 +355,8 @@ export default function App() {
   }, []);
 
   const elegirTema = useCallback((t) => { setTema(t); try { localStorage.setItem('lg:tema', t); } catch (e) { /* igual */ } }, []);
-  useEffect(() => { document.documentElement.classList.toggle('ini-noche', tema === 'noche'); }, [tema]);
+  // los de los servidores son oscuros: la página de afuera va de noche también
+  useEffect(() => { document.documentElement.classList.toggle('ini-noche', tema !== 'clara'); }, [tema]);
   const cerrarHistoria = useCallback(() => setHistoria(null), []);
   // ⚠️ CON TOPE: cada historia nueva es una clave; quedan las 600 más recientes (el muro trae 80)
   const guardarVistos = (n) => {
@@ -451,9 +454,9 @@ export default function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vistos, grupos]);
 
-  if (!liga) return <div className={'app ' + tema}><div className="barra-ul" /><div className="cargando">Cargando la Liga…</div></div>;
+  if (!liga) return <div className={'app ' + claseTema(tema)}><div className="barra-ul" /><div className="cargando">Cargando la Liga…</div></div>;
   return (
-    <div className={'app ' + tema} ref={raiz}>
+    <div className={'app ' + claseTema(tema)} ref={raiz}>
       {/* ♿ «saltar al contenido» (04/10/2026, de la lista de Dlx): no se ve hasta que se llega con el teclado, y salta
           el menú de arriba. Lleva el foco, no sólo la vista: si no, el próximo Tab volvía al menú */}
       <a className="saltar" href="#contenido" onClick={(e) => {

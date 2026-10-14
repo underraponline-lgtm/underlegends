@@ -2668,4 +2668,35 @@ a.rk-z:hover{border-color:var(--linea)}
 .lb-camp-b{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
 .lb-camp-no{background:none;border:0;padding:8px 2px;color:#C4C4BE;font:600 16px/1 "Barlow Condensed",sans-serif;
   text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-
+/* 🎨 LOS TEMAS DE LOS SERVIDORES (13/10/2026). Dlx: «ya tenemos Claro y oscuro, pero crea temas con los servidores
+   asociados». Cada uno es Noche (la app lleva «noche t-xxx») con las variables de su servidor encima: lo que ya está
+   resuelto para el oscuro vale igual. El color sale de datos/colores_sv_marca.json, aclarado u oscurecido para que
+   se lea: el botón principal (--verde) lleva texto negro y el acento (--magenta) texto blanco. Medido con WCAG antes
+   de escribirlo (scratchpad/temas.py): texto ≥ 17:1, gris ≥ 7:1, botón ≥ 7:1, acento ≥ 4.5:1. Van al final de este
+   archivo a propósito: pisan a .app, .clara y .noche de estilo.css, que tienen la misma especificidad */
+.t-dra{--fondo:#050A1C;--caja:#0C1430;--suave:#1D2652;--tinta:#F2F4FF;--linea:#E6E9FF;--gris:#A3AACB;--verde:#8C96FF;--magenta:#D0106A;--magenta-tx:#A9B0FF;
+  --escenario:#0A1128;--esc-tinta:#F2F4FF;--esc-gris:#A3AACB;--esc-linea:#1D2652;--oscura:#D0106A;--osc-tinta:#FFFFFF;--inv:#F2F4FF;--inv-tinta:#050A1C;color-scheme:dark}
+.t-ffa{--fondo:#0C0519;--caja:#170B2E;--suave:#2C1854;--tinta:#F6F2FF;--linea:#EDE5FF;--gris:#B1A4CC;--verde:#B794FF;--magenta:#6B2FD6;--magenta-tx:#C7ABFF;
+  --escenario:#130826;--esc-tinta:#F6F2FF;--esc-gris:#B1A4CC;--esc-linea:#2C1854;--oscura:#6B2FD6;--osc-tinta:#FFFFFF;--inv:#F6F2FF;--inv-tinta:#0C0519;color-scheme:dark}
+.t-sr{--fondo:#140A04;--caja:#22120A;--suave:#3E2415;--tinta:#FFF4EC;--linea:#FFE6D4;--gris:#C8AE9C;--verde:#FF9D52;--magenta:#B24A05;--magenta-tx:#FFAD70;
+  --escenario:#1C0F07;--esc-tinta:#FFF4EC;--esc-gris:#C8AE9C;--esc-linea:#3E2415;--oscura:#B24A05;--osc-tinta:#FFFFFF;--inv:#FFF4EC;--inv-tinta:#140A04;color-scheme:dark}
+.t-urbf{--fondo:#130F05;--caja:#211A0A;--suave:#3B3015;--tinta:#FFF8E8;--linea:#FFEFC9;--gris:#C7B894;--verde:#F2B33D;--magenta:#8A5A00;--magenta-tx:#F6C561;
+  --escenario:#1A1508;--esc-tinta:#FFF8E8;--esc-gris:#C7B894;--esc-linea:#3B3015;--oscura:#8A5A00;--osc-tinta:#FFFFFF;--inv:#FFF8E8;--inv-tinta:#130F05;color-scheme:dark}
+.t-ffs{--fondo:#0A091E;--caja:#131233;--suave:#26245A;--tinta:#F4F3FF;--linea:#E9E8FF;--gris:#ABA9D6;--verde:#A9B2FF;--magenta:#5A54D8;--magenta-tx:#B8BFFF;
+  --escenario:#100F2A;--esc-tinta:#F4F3FF;--esc-gris:#ABA9D6;--esc-linea:#26245A;--oscura:#5A54D8;--osc-tinta:#FFFFFF;--inv:#F4F3FF;--inv-tinta:#0A091E;color-scheme:dark}
+.t-ddf{--fondo:#03111A;--caja:#08202D;--suave:#133548;--tinta:#EEFAFF;--linea:#DDF6FF;--gris:#99BCCB;--verde:#3CC8FF;--magenta:#6A3FD9;--magenta-tx:#7FD9FF;
+  --escenario:#061923;--esc-tinta:#EEFAFF;--esc-gris:#99BCCB;--esc-linea:#133548;--oscura:#6A3FD9;--osc-tinta:#FFFFFF;--inv:#EEFAFF;--inv-tinta:#03111A;color-scheme:dark}
+.t-acad{--fondo:#0C0B03;--caja:#191706;--suave:#302C0E;--tinta:#FFFBE6;--linea:#FFF5C2;--gris:#C4BC8E;--verde:#EACB0C;--magenta:#7A6500;--magenta-tx:#F0D740;
+  --escenario:#141205;--esc-tinta:#FFFBE6;--esc-gris:#C4BC8E;--esc-linea:#302C0E;--oscura:#7A6500;--osc-tinta:#FFFFFF;--inv:#FFFBE6;--inv-tinta:#0C0B03;color-scheme:dark}
+.t-fvs{--fondo:#0A0A0B;--caja:#141416;--suave:#27272B;--tinta:#F5F6F8;--linea:#E9EBEF;--gris:#ABAFB8;--verde:#C9CDD4;--magenta:#585D69;--magenta-tx:#DCDFE5;
+  --escenario:#111113;--esc-tinta:#F5F6F8;--esc-gris:#ABAFB8;--esc-linea:#27272B;--oscura:#585D69;--osc-tinta:#FFFFFF;--inv:#F5F6F8;--inv-tinta:#0A0A0B;color-scheme:dark}
+/* la vista previa de cada tema en Apariencia: sus propias variables */
+.cu-tema.tsv .cu-mini{background:var(--fondo);border-color:var(--suave)}
+.cu-tema.tsv .cu-mini i{background:var(--tinta)}
+.cu-tema.tsv .cu-mini u{background:var(--suave)}
+.cu-tema.tsv .cu-mini s{background:var(--verde)}
+.cu-tema.tsv{background:var(--fondo);color:var(--tinta);border-color:var(--suave)}
+.cu-tema.tsv b{display:flex;align-items:center;gap:6px}
+.cu-tema.tsv b img{width:18px;height:18px;border-radius:50%;object-fit:cover}
+.cu-temas.sv{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));max-width:none}
+.cu-temas-t{margin:14px 0 8px;font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:var(--gris)}

@@ -12,6 +12,7 @@ import { DUENO, PAIS, hora, limpio, nuevaQue, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, DosToques, Ico, accion } from './piezas.jsx';
 import { CaraDc } from './arriba.jsx';
 import { useRacha } from './racha.js';
+import { TEMAS_SV, nombreTema } from './temas.js';
 import { seguirOrg, useOrgs } from './orgs.js';
 
 import { PasosInstalar } from './instalar.jsx';
@@ -117,7 +118,7 @@ function grupos(liga, dc, tema, cual) {
       ['avisos', 'campana', 'Avisos de eventos', avisos ? 'activados en este dispositivo' : 'apagados'],
     ]],
     ['LA APP', [
-      ['apariencia', 'tema', 'Apariencia', tema === 'noche' ? 'Noche' : 'Clara'],
+      ['apariencia', 'tema', 'Apariencia', nombreTema(tema)],
       ['hora', 'reloj', 'Hora y zona', f + ' · ' + z],
       ['accesibilidad', 'calma', 'Accesibilidad', aj.calma ? 'menos animaciones' : 'animaciones normales'],
       ['instalar', 'instalar', 'Instalar la app', 'en tu pantalla de inicio'],
@@ -565,6 +566,18 @@ function Parte({ id, liga, dc, tema, onTema }) {
             <button type="button" key={t} className={'cu-tema ' + t + (tema === t ? ' on' : '')} aria-pressed={tema === t} onClick={() => onTema(t)}>
               <span className="cu-mini" aria-hidden="true"><i /><u /><u /><s /></span><b>{n}</b></button>
           ))}
+        </div>
+        {/* 🎨 los de los servidores (13/10/2026, Dlx: «crea temas con los servidores asociados»): Noche con sus colores */}
+        <p className="cu-temas-t">Con los colores de un servidor de la Liga:</p>
+        <div className="cu-temas sv">
+          {TEMAS_SV.map(([sv, n]) => {
+            const t = 'sv:' + sv;
+            return (
+              <button type="button" key={t} className={'cu-tema tsv t-' + sv.toLowerCase() + (tema === t ? ' on' : '')} aria-pressed={tema === t} onClick={() => onTema(t)}>
+                <span className="cu-mini" aria-hidden="true"><i /><u /><u /><s /></span>
+                <b>{liga && liga.logo ? <img alt="" src={liga.logo(sv)} /> : null}{(liga && liga.svs && liga.svs[sv] && liga.svs[sv].nombre) || n}</b></button>
+            );
+          })}
         </div>
       </Caja>
     );

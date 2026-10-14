@@ -351,6 +351,9 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema }) {
               <button type="button" aria-pressed={tema === 'clara'} onClick={() => onTema('clara')}>Clara</button>
               <button type="button" aria-pressed={tema === 'noche'} onClick={() => onTema('noche')}>Noche</button>
             </div></div>
+          {/* 🎨 y los de los servidores (13/10/2026): están en Apariencia, con la vista previa de cada uno */}
+          <div className="x-fila"><span>Temas de los servidores<small>{String(tema).startsWith('sv:') ? 'Ahora: ' + String(tema).slice(3) + '. ' : ''}Los colores de cada servidor de la Liga.</small></span>
+            <a className="btn negro chico" href="#/ajustes/apariencia" onClick={onCerrar}>Elegir</a></div>
           <div className="x-fila"><span>Hora, zona y más<small>El formato de la hora, tu zona y menos animaciones.</small></span>
             <a className="btn negro chico" href="#/ajustes/hora" onClick={onCerrar}>Abrir</a></div>
           {cambios}

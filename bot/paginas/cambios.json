@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "2.96",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T21:00:00-04:00",
+   "titulo": "Tu rol en la Liga, y los temas de los servidores",
+   "items": [
+    "🏷️ En cada perfil, su rol en la Liga: Competidor, Organizador, Jurado, Host, Staff y Socio (el dueño de un servidor) salen solos del rol que tenés en cada servidor.",
+    "🎨 Temas nuevos: además de Clara y Noche, uno con los colores de cada servidor de la Liga. Se eligen en Ajustes → Apariencia o desde el menú."
+   ]
+  },
+  {
    "version": "2.95",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T20:15:00-04:00",

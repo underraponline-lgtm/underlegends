@@ -196,7 +196,7 @@ def script(nombres):
   if (!ini) { var p = rutaLG().split('?')[0].split('/')[0]; ini = !p || nueva(p); }
   var c = document.documentElement.classList;''' % (PREFIJO, raiz, mapa, prev)) + '''
   if (ini) c.add('ini-nuevo');
-  try { if (localStorage.getItem('lg:tema') === 'noche') c.add('ini-noche'); } catch (e) { /* sin guardar */ }
+  try { var tm = localStorage.getItem('lg:tema'); if (tm && tm !== 'clara') c.add('ini-noche'); } catch (e) { /* sin guardar */ }
   // la última versión del changelog que se vio, ANTES de que app.js la dé por vista (lo lee el Inicio nuevo)
   try { window.__cambiosVisto = JSON.parse(localStorage.getItem('lg:cambios') || '""') || ''; } catch (e) { /* sin guardar */ }
   // «Instalar» (01/10/2026): Chrome avisa que la página se puede instalar una sola vez y puede ser antes de que el
