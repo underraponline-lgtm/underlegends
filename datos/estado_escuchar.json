@@ -1,63 +1,63 @@
 {
  "v": 1,
- "cuando": "2026-10-14T05:58:16Z",
+ "cuando": "2026-10-14T06:29:08Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 296.5,
+ "dur_s": 352.5,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.8
+   "s": 0.6
   },
   {
    "n": "0c",
    "que": "lo corregido desde los reportes",
    "ok": true,
-   "s": 2.8
+   "s": 3.7
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 51.3
+   "s": 49.5
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 68.6
+   "s": 42.3
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.6
+   "s": 0.4
   },
   {
    "n": "1a2",
    "que": "el país y el Miembro de DRA, solos",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 30.6
+   "s": 35.7
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 2.0
+   "s": 1.6
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 5.6
+   "s": 5.9
   },
   {
    "n": "2b",
@@ -81,7 +81,7 @@
    "n": "2b3d",
    "que": "los paneles de DRA",
    "ok": true,
-   "s": 0.2
+   "s": 25.5
   },
   {
    "n": "2b3b",
@@ -93,118 +93,118 @@
    "n": "2b3c",
    "que": "el reto del debut",
    "ok": true,
-   "s": 1.2
+   "s": 0.9
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.4
+   "s": 1.2
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.8
+   "s": 0.4
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.3
+   "s": 3.6
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 28.4
+   "s": 92.7
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 4.0
+   "s": 4.4
   },
   {
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 2.9
+   "s": 2.3
   },
   {
    "n": "2b8b",
    "que": "la agenda",
    "ok": true,
-   "s": 0.4
+   "s": 0.2
   },
   {
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 12.6
+   "s": 11.7
   },
   {
    "n": "2b10",
    "que": "los roles de la página",
    "ok": true,
-   "s": 0.5
+   "s": 0.3
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 51.0
+   "s": 47.4
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 3.7
+   "s": 0.2
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 10.7
+   "s": 11.5
   },
   {
    "n": "2e",
    "que": "las tarjetas de quien se fue hace una semana",
    "ok": true,
-   "s": 0.2
+   "s": 0.1
   },
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.1
+   "s": 6.0
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 4.1
+   "s": 3.0
   }
  ],
  "fallas": [],
- "decidir": 139,
+ "decidir": 140,
  "ultimo_evento": {
-  "n": "469",
-  "nombre": "PRITTY FREE",
+  "n": "470",
+  "nombre": "Inserte Nombre de la Compe",
   "sv": "FFA",
-  "dia": "2026-10-13"
+  "dia": "2026-10-14"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-14T05:54:19Z",
+  "cuando": "2026-10-14T06:24:13Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 462,
-  "un_evento": 237,
+  "jugadores": 464,
+  "un_evento": 239,
   "diez_o_mas": 45,
   "cohortes": [
    {
     "semana": "2026-09-21",
-    "nuevos": 202,
+    "nuevos": 203,
     "volvieron": 140,
     "completa": true
    },
@@ -222,7 +222,7 @@
    },
    {
     "semana": "2026-10-12",
-    "nuevos": 25,
+    "nuevos": 26,
     "volvieron": 3,
     "completa": false
    }
@@ -230,25 +230,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 173,
-   "read": 24083
+   "write": 188,
+   "read": 25653
   },
   "objeto": {
-   "leidas": 1842778,
-   "escritas": 18123,
-   "pedidos": 5036
+   "leidas": 1977943,
+   "escritas": 19854,
+   "pedidos": 5370
   },
   "worker": {
-   "pedidos": 12188,
+   "pedidos": 12225,
    "errores": 1,
-   "sub": 13027,
-   "p50_ms": 1.23,
-   "p99_ms": 7.62
+   "sub": 13078,
+   "p50_ms": 1.22,
+   "p99_ms": 7.61
   },
   "r2": {
-   "objetos": 4023,
-   "gb": 0.447,
-   "ts": 1791916148
+   "objetos": 4001,
+   "gb": 0.442,
+   "ts": 1791959353
   }
  }
 }

@@ -124,7 +124,7 @@
   "msg": "1555412472016408587"
  },
  "380": {
-  "firma": "POESÍA CRUDA|01/10|9|7|1|0",
+  "firma": "POESÍA CRUDA|01/10|9|7|0|0",
   "msg": "1555616463891472456"
  },
  "381": {
@@ -196,7 +196,7 @@
   "msg": "1556522264164311072"
  },
  "398": {
-  "firma": "COMPE DE UDDI|22/09|12|7|1|0",
+  "firma": "COMPE DE UDDI|22/09|12|7|0|0",
   "msg": "1556552836395835533"
  },
  "399": {
@@ -4382,7 +4382,7 @@
    "Velatz": 28
   },
   "fecha": "09/10",
-  "firma": "c22b4fae9a4f53e3",
+  "firma": "064679d42db0f6f0",
   "msg": "1558266214659260507",
   "nombre": "COPA SOOLAR 4",
   "num": 437,
@@ -5056,7 +5056,7 @@
    "Xclusivo": 10
   },
   "fecha": "09/10",
-  "firma": "2adb02653f365f36",
+  "firma": "01dbb8aa3b168005",
   "msg": "1558334120172462091",
   "nombre": "PROYECTO X VOL.2",
   "num": 440,
@@ -11699,6 +11699,146 @@
     "Jult",
     "Octavos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "470": {
+  "antes": {
+   "Geoka": [
+    37,
+    45,
+    false
+   ],
+   "Kravitz": [
+    65,
+    89,
+    false
+   ],
+   "NC": [
+    17,
+    20,
+    false
+   ],
+   "Rodas": [
+    67,
+    94,
+    false
+   ],
+   "Sin Limites": [
+    27,
+    34,
+    false
+   ],
+   "Verc": [
+    6,
+    7,
+    false
+   ],
+   "Xubaru": [
+    80,
+    116,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Geoka",
+    "NC",
+    "Geoka"
+   ],
+   [
+    "Verc",
+    "CINEX",
+    "Verc"
+   ],
+   [
+    "Xubaru",
+    "Rodas",
+    "Xubaru"
+   ],
+   [
+    "Sin Limites",
+    "Kravitz",
+    "Sin Limites"
+   ],
+   [
+    "Verc",
+    "Geoka",
+    "Verc"
+   ],
+   [
+    "Xubaru",
+    "Sin Limites",
+    "Xubaru"
+   ],
+   [
+    "Xubaru",
+    "Verc",
+    "Xubaru"
+   ]
+  ],
+  "ev_antes": {
+   "Geoka": 14,
+   "Kravitz": 7,
+   "NC": 28,
+   "Rodas": 7,
+   "Sin Limites": 15,
+   "Verc": 11,
+   "Xubaru": 4
+  },
+  "fecha": "14/10",
+  "firma": "857c24a44f7c46c6",
+  "msg": "1559809185120518145",
+  "nombre": "__ Inserte Nombre de la Compe __",
+  "num": 470,
+  "participantes": 8,
+  "sello": {
+   "Xubaru": "5d1439d9342c:7e987c978e23"
+  },
+  "sv": "FFA",
+  "t": "2026-10-14T06:24:03Z",
+  "tabla": [
+   [
+    "Xubaru",
+    "Campeón",
+    7500
+   ],
+   [
+    "Verc",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Geoka",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Sin Limites",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2000
+   ],
+   [
+    "CINEX",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Rodas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Kravitz",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2

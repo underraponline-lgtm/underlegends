@@ -272,6 +272,9 @@
   "nemixdelux": "Delux",
   "lrselborrachin": "LRS",
   "ax": "Xubaru",
+  "cinex": "Cinexfilo",
+  "armandofaso": "BNA",
+  "ckl": "BNA",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1394,6 +1397,18 @@
   [
    "Ax",
    "Xubaru"
+  ],
+  [
+   "CINEX",
+   "Cinexfilo"
+  ],
+  [
+   "Armando Faso",
+   "BNA"
+  ],
+  [
+   "Ckl",
+   "BNA"
   ],
   [
    "Nexus",

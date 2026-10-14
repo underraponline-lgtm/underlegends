@@ -2358,35 +2358,39 @@
      [
       [
        "Hassan",
+       "Abyssus",
        "rayito"
       ],
-      "Hassan",
-      "triple (3 bandas, pasan 2)"
+      "Hassan, Abyssus",
+      "triple (3 bandas, pasan 2); también pasa: Abyssus"
      ],
      [
       [
        "Dynoco",
+       "Geoka",
        "BNA"
       ],
-      "Dynoco",
-      "triple (3 bandas, pasan 2)"
+      "Dynoco, Geoka",
+      "triple (3 bandas, pasan 2); también pasa: Geoka 🇦🇷"
      ],
      [
       [
        "Erian",
+       "Acry",
        "Luzzano"
       ],
-      "Erian",
-      "triple (3 bandas, pasan 2)"
+      "Erian, Acry",
+      "triple (3 bandas, pasan 2); también pasa: ACRY🇻🇪"
      ],
      [
       [
        "Fazer",
+       "Zeta",
        "NC",
        "Jult"
       ],
-      "Fazer",
-      "triple (4 bandas, pasan 2)"
+      "Fazer, Zeta",
+      "triple (4 bandas, pasan 2); también pasa: Zeta 🇨🇴"
      ]
     ],
     "r": "Cuartos"
@@ -2769,18 +2773,20 @@
      [
       [
        "Prosu",
+       "Dynoco",
        "Rodas"
       ],
-      "Prosu",
-      "triple (3 bandas, pasan 2)"
+      "Prosu, Dynoco",
+      "triple (3 bandas, pasan 2); también pasa: dynoco"
      ],
      [
       [
        "Juasmio",
+       "Zignos",
        "Humildad"
       ],
-      "Juasmio",
-      "triple (3 bandas, pasan 2)"
+      "Juasmio, Zignos",
+      "triple (3 bandas, pasan 2); también pasa: Zignos 🇩🇴"
      ],
      [
       [
@@ -2824,11 +2830,12 @@
      [
       [
        "Colesito",
+       "Juanpa",
        "Number",
        "SMAFF"
       ],
-      "Colesito",
-      "triple (4 bandas, pasan 2)"
+      "Colesito, Juanpa",
+      "triple (4 bandas, pasan 2); también pasa: juanpa 🇨🇴"
      ]
     ],
     "r": "Filtros"
@@ -5133,10 +5140,11 @@
      [
       [
        "Erian",
+       "MCO",
        "EMMY"
       ],
-      "Erian",
-      "triple (3 bandas, pasan 2)"
+      "Erian, MCO",
+      "triple (3 bandas, pasan 2); también pasa: MCO 🇦🇷"
      ],
      [
       [
@@ -6808,10 +6816,11 @@
      [
       [
        "Velatz",
+       "Cinexfilo",
        "El Hombre Eyau"
       ],
-      "Velatz",
-      "triple (3 bandas, pasan 2)"
+      "Velatz, Cinexfilo",
+      "triple (3 bandas, pasan 2); también pasa: Cinexfilo 🇻🇪"
      ]
     ],
     "r": "Filtros"
@@ -6933,7 +6942,7 @@
    [
     "El Hombre Eyau",
     "R32",
-    0
+    625
    ]
   ]
  },
@@ -9824,34 +9833,38 @@
      [
       [
        "Lord Viruzz",
+       "Trot",
        "Camila"
       ],
-      "Lord Viruzz",
-      "triple (3 bandas, pasan 2)"
+      "Lord Viruzz, Trot",
+      "triple (3 bandas, pasan 2); también pasa: Trot🇪🇸"
      ],
      [
       [
        "Bloody",
+       "Zetryko",
        "Leyenda"
       ],
-      "Bloody",
-      "triple (3 bandas, pasan 2)"
+      "Bloody, Zetryko",
+      "triple (3 bandas, pasan 2); también pasa: ZETRYKO🇨🇱"
      ],
      [
       [
        "Erian",
+       "Colesito",
        "Eclipsito"
       ],
-      "Erian",
-      "triple (3 bandas, pasan 2)"
+      "Erian, Colesito",
+      "triple (3 bandas, pasan 2); también pasa: colesito"
      ],
      [
       [
        "Sosa",
+       "Fin",
        "Infecte"
       ],
-      "Sosa",
-      "triple (3 bandas, pasan 2)"
+      "Sosa, Fin",
+      "triple (3 bandas, pasan 2); también pasa: FIN🇵🇪"
      ]
     ],
     "r": "Filtros"
@@ -9973,22 +9986,22 @@
    [
     "Camila",
     "R32",
-    0
+    625
    ],
    [
     "Eclipsito",
     "R32",
-    0
+    625
    ],
    [
     "Infecte",
     "R32",
-    0
+    625
    ],
    [
     "Leyenda",
     "R32",
-    0
+    625
    ]
   ]
  },
@@ -10039,6 +10052,10 @@
      [
       [
        "Eclipsito",
+       "SOL",
+       "MAWS🇻🇪",
+       "Miniboy",
+       "Corvo",
        "Number",
        "Bloody",
        "Lvel 🇻🇪",
@@ -10047,8 +10064,8 @@
        "DANCOLL 🇻🇪",
        "Yio"
       ],
-      "Eclipsito",
-      "triple (12 bandas, pasan 5)"
+      "Eclipsito, SOL, MAWS🇻🇪, Miniboy, Corvo",
+      "triple (12 bandas, pasan 5); también pasa: SOL🇵🇪 / MAWS🇻🇪 / miniboy / Corvo 🇧🇴"
      ],
      [
       [
@@ -10084,6 +10101,8 @@
      [
       [
        "Abyssus",
+       "MCO",
+       "SGB",
        "luisito 🏆",
        "Rayden",
        "Reyes",
@@ -10093,12 +10112,14 @@
        "Galileo",
        "Calíz"
       ],
-      "Abyssus",
-      "triple (11 bandas, pasan 3)"
+      "Abyssus, MCO, SGB",
+      "triple (11 bandas, pasan 3); también pasa: MCO 🇦🇷 / SGB 🇨🇴"
      ],
      [
       [
        "Noone",
+       "Heat",
+       "Zekha",
        "Ezias🥈✒️🧢🐍",
        "Jere",
        "ONZASS",
@@ -10106,12 +10127,14 @@
        "Nox",
        "ARDEAN"
       ],
-      "Noone",
-      "triple (9 bandas, pasan 3)"
+      "Noone, Heat, Zekha",
+      "triple (9 bandas, pasan 3); también pasa: HEAT 🇵🇷 / sekka"
      ],
      [
       [
        "Lord Viruzz",
+       "Zignos",
+       "Heat",
        "Hassan",
        "LAST",
        "Kochi",
@@ -10120,8 +10143,8 @@
        "G-MC",
        "Acry"
       ],
-      "Lord Viruzz",
-      "triple (10 bandas, pasan 3)"
+      "Lord Viruzz, Zignos, Heat",
+      "triple (10 bandas, pasan 3); también pasa: ZIGNOS 🇩🇴 / HEAT🇨🇺"
      ]
     ],
     "r": "Filtros"
@@ -10686,10 +10709,11 @@
      [
       [
        "Panchok",
+       "Abyssus",
        "Miniboy"
       ],
-      "Panchok",
-      "triple (3 bandas, pasan 2)"
+      "Panchok, Abyssus",
+      "triple (3 bandas, pasan 2); también pasa: Abyssus 🇨🇦"
      ],
      [
       [
@@ -14746,19 +14770,21 @@
      [
       [
        "Snow",
+       "Cronox, Xclusivo",
        "Erizo"
       ],
-      "Snow",
-      "triple (3 bandas, pasan 2)"
+      "Snow, Cronox, Xclusivo",
+      "triple (3 bandas, pasan 2); también pasa: Cronox + xclusivo 🇨🇱 🇻🇪"
      ],
      [
       [
        "Prodigy",
+       "Nemi, Presagio, Delux",
        "Akutagawa🇹🇼",
        "Enkil 🇦🇷"
       ],
-      "Prodigy",
-      "triple (4 bandas, pasan 2)"
+      "Prodigy, Nemi, Presagio, Delux",
+      "triple (4 bandas, pasan 2); también pasa: Nemi + presagio + dantedelux🇦🇷 🇦🇷 🇦🇷"
      ],
      [
       [
@@ -14773,11 +14799,12 @@
      [
       [
        "Oasis",
+       "Six, Polosport",
        "araya",
        "Elsoolar"
       ],
-      "Oasis",
-      "triple (4 bandas, pasan 2)"
+      "Oasis, Six, Polosport",
+      "triple (4 bandas, pasan 2); también pasa: six 🇦🇷 + Mailén 🇧🇻"
      ]
     ],
     "r": "Octavos"
@@ -15911,38 +15938,42 @@
      [
       [
        "MCO",
+       "Zeta",
        "SK8",
        "Erian"
       ],
-      "MCO",
-      "triple (4 bandas, pasan 2)"
+      "MCO, Zeta",
+      "triple (4 bandas, pasan 2); también pasa: Zeta 🇨🇴"
      ],
      [
       [
        "Makmah",
+       "Fazer",
        "NC",
        "Eclipsito"
       ],
-      "Makmah",
-      "triple (4 bandas, pasan 2)"
+      "Makmah, Fazer",
+      "triple (4 bandas, pasan 2); también pasa: fazer"
      ],
      [
       [
        "Six",
+       "Partim",
        "Colesito",
        "Nemi"
       ],
-      "Six",
-      "triple (4 bandas, pasan 2)"
+      "Six, Partim",
+      "triple (4 bandas, pasan 2); también pasa: Partim"
      ],
      [
       [
        "PichulaMc",
+       "Global Hustler",
        "Cronox",
        "Molt"
       ],
-      "PichulaMc",
-      "triple (4 bandas, pasan 2)"
+      "PichulaMc, Global Hustler",
+      "triple (4 bandas, pasan 2); también pasa: Global Hustler 🇦🇷"
      ]
     ],
     "r": "Octavos"
@@ -16742,35 +16773,39 @@
      [
       [
        "fleivaman, Provenza",
+       "Zignos, Presagio",
        "Bloody, Holden"
       ],
-      "fleivaman, Provenza",
-      "triple (3 bandas, pasan 2)"
+      "fleivaman, Provenza, Zignos, Presagio",
+      "triple (3 bandas, pasan 2); también pasa: Zignos 🇩🇴 + Presagio 🇦🇷"
      ],
      [
       [
        "Cronox, Xclusivo",
+       "Neo, Emily Family",
        "EGI, Santo Trinidad 🇨🇴"
       ],
-      "Cronox, Xclusivo",
-      "triple (3 bandas, pasan 2)"
+      "Cronox, Xclusivo, Neo, Emily Family",
+      "triple (3 bandas, pasan 2); también pasa: Neo Soul + Family🇵🇾"
      ],
      [
       [
        "Snow, rodrilp",
+       "Tam, Luzzano",
        "Nemi, Personality",
        "Jult, Alexi"
       ],
-      "Snow, rodrilp",
-      "triple (4 bandas, pasan 2)"
+      "Snow, rodrilp, Tam, Luzzano",
+      "triple (4 bandas, pasan 2); también pasa: tam + luzzano"
      ],
      [
       [
        "EIDP, LEWITO",
+       "Deuxs, EGI",
        "Mathhias, BastyRetro"
       ],
-      "EIDP, LEWITO",
-      "triple (3 bandas, pasan 2)"
+      "EIDP, LEWITO, Deuxs, EGI",
+      "triple (3 bandas, pasan 2); también pasa: deuxs+egi"
      ]
     ],
     "r": "Octavos"
@@ -17239,10 +17274,11 @@
      [
       [
        "Agus",
+       "Santi",
        "ikonoxx"
       ],
-      "Agus",
-      "triple (3 bandas, pasan 2); Revivido: IKONOX🇺🇾"
+      "Agus, Santi",
+      "triple (3 bandas, pasan 2); también pasa: santi🇦🇷; Revivido: IKONOX🇺🇾"
      ],
      [
       [
@@ -20096,12 +20132,13 @@
      [
       [
        "Erian",
+       "ONZASS",
        "OG",
        "Ariaxer",
        "ikonoxx"
       ],
-      "Erian",
-      "triple (5 bandas, pasan 2)"
+      "Erian, ONZASS",
+      "triple (5 bandas, pasan 2); también pasa: onzass"
      ]
     ],
     "r": "Octavos"
@@ -20586,66 +20623,74 @@
      [
       [
        "yinn",
+       "Verc",
        "OEP"
       ],
-      "yinn",
-      "triple (3 bandas, pasan 2)"
+      "yinn, Verc",
+      "triple (3 bandas, pasan 2); también pasa: Verc"
      ],
      [
       [
        "Snow",
+       "Teo",
        "Cajita"
       ],
-      "Snow",
-      "triple (3 bandas, pasan 2); Revivido: snow"
+      "Snow, Teo",
+      "triple (3 bandas, pasan 2); también pasa: Teo🇨🇴; Revivido: snow"
      ],
      [
       [
        "Benjixo",
+       "doble h",
        "AFR"
       ],
-      "Benjixo",
-      "triple (3 bandas, pasan 2); Revivido: BENJIXO🇦🇷"
+      "Benjixo, doble h",
+      "triple (3 bandas, pasan 2); también pasa: doble h🇨🇱; Revivido: BENJIXO🇦🇷"
      ],
      [
       [
        "JJ",
+       "ONZASS",
        "Lvel 🇻🇪"
       ],
-      "JJ",
-      "triple (3 bandas, pasan 2); Revivido: JJ 🇨🇴"
+      "JJ, ONZASS",
+      "triple (3 bandas, pasan 2); también pasa: onzas 🇻🇪; Revivido: JJ 🇨🇴"
      ],
      [
       [
        "Makmah",
+       "NC",
        "Keider"
       ],
-      "Makmah",
-      "triple (3 bandas, pasan 2)"
+      "Makmah, NC",
+      "triple (3 bandas, pasan 2); también pasa: Nc"
      ],
      [
       [
        "Guess",
+       "Efimero",
        "Ariaxer"
       ],
-      "Guess",
-      "triple (3 bandas, pasan 2); Revivido: Guess 🇦🇷"
+      "Guess, Efimero",
+      "triple (3 bandas, pasan 2); también pasa: Efimero 🇨🇱; Revivido: Guess 🇦🇷"
      ],
      [
       [
        "Xclusivo",
+       "OG",
        "Player"
       ],
-      "Xclusivo",
-      "triple (3 bandas, pasan 2)"
+      "Xclusivo, OG",
+      "triple (3 bandas, pasan 2); también pasa: OG🇻🇪"
      ],
      [
       [
        "Zignos",
+       "EmiZor",
        "DO-C"
       ],
-      "Zignos",
-      "triple (3 bandas, pasan 2)"
+      "Zignos, EmiZor",
+      "triple (3 bandas, pasan 2); también pasa: emi 🇲🇽"
      ]
     ],
     "r": "Octavos"
@@ -21413,34 +21458,38 @@
      [
       [
        "Refran",
+       "Drexx",
        "Force"
       ],
-      "Refran",
-      "triple (3 bandas, pasan 2); paga: 625"
+      "Refran, Drexx",
+      "triple (3 bandas, pasan 2); también pasa: Drexx; paga: 625"
      ],
      [
       [
        "Joaco Zeo",
+       "dxg",
        "Sosa"
       ],
-      "Joaco Zeo",
-      "triple (3 bandas, pasan 2); paga: 625"
+      "Joaco Zeo, dxg",
+      "triple (3 bandas, pasan 2); también pasa: Dxg; paga: 625"
      ],
      [
       [
        "Mathhias",
+       "TøKīØ🦠🧠",
        "AGUSTÍN51K"
       ],
-      "Mathhias",
-      "triple (3 bandas, pasan 2); paga: 625"
+      "Mathhias, TøKīØ🦠🧠",
+      "triple (3 bandas, pasan 2); también pasa: Tokio; paga: 625"
      ],
      [
       [
        "Astral",
+       "Richard",
        "Molusco"
       ],
-      "Astral",
-      "triple (3 bandas, pasan 2); paga: 625"
+      "Astral, Richard",
+      "triple (3 bandas, pasan 2); también pasa: Ricardflex; paga: 625"
      ]
     ],
     "r": "Octavos"
@@ -21540,14 +21589,6 @@
      [
       [
        "Mathhias",
-       "Mathhias"
-      ],
-      "Mathhias",
-      "ganador: ✅ Decidir"
-     ],
-     [
-      [
-       "Mathhias",
        "Refran"
       ],
       "Mathhias",
@@ -21561,8 +21602,13 @@
   "tabla": [
    [
     "Mathhias",
+    "Campeón",
+    7500
+   ],
+   [
+    "Refran",
     "Subcampeón",
-    12500
+    5000
    ],
    [
     "Drexx",
@@ -21924,35 +21970,39 @@
      [
       [
        "Guess",
+       "Nemi",
        "Rodas"
       ],
-      "Guess",
-      "triple (3 bandas, pasan 2)"
+      "Guess, Nemi",
+      "triple (3 bandas, pasan 2); también pasa: Nemi 🇦🇷"
      ],
      [
       [
        "Sosa",
+       "ONDADISKO",
        "JB🇦🇷"
       ],
-      "Sosa",
-      "triple (3 bandas, pasan 2)"
+      "Sosa, ONDADISKO",
+      "triple (3 bandas, pasan 2); también pasa: Ondadisko 🇨🇱"
      ],
      [
       [
        "AGUSTÍN51K",
+       "Presagio",
        "Korey"
       ],
-      "AGUSTÍN51K",
-      "triple (3 bandas, pasan 2)"
+      "AGUSTÍN51K, Presagio",
+      "triple (3 bandas, pasan 2); también pasa: presagio 🇦🇷"
      ],
      [
       [
        "Makmah",
+       "NC",
        "Cronox",
        "Tusicario"
       ],
-      "Makmah",
-      "triple (4 bandas, pasan 2)"
+      "Makmah, NC",
+      "triple (4 bandas, pasan 2); también pasa: Nc🇰🇷"
      ]
     ],
     "r": "Cuartos"
@@ -22624,10 +22674,11 @@
      [
       [
        "Tam",
+       "Velatz",
        "PichulaMc"
       ],
-      "Tam",
-      "triple (3 bandas, pasan 2)"
+      "Tam, Velatz",
+      "triple (3 bandas, pasan 2); también pasa: Velatz"
      ],
      [
       [
@@ -22900,40 +22951,45 @@
      [
       [
        "Warap",
+       "Verc",
        "LRS",
        "Teo"
       ],
-      "Warap",
-      "triple (4 bandas, pasan 2)"
+      "Warap, Verc",
+      "triple (4 bandas, pasan 2); también pasa: Verc"
      ],
      [
       [
        "PichulaMc",
+       "Agus",
        "SINTEXT",
        "MTZ"
       ],
-      "PichulaMc",
-      "triple (4 bandas, pasan 2)"
+      "PichulaMc, Agus",
+      "triple (4 bandas, pasan 2); también pasa: agus"
      ],
      [
       [
        "Liberia",
+       "Nemi",
        "Soulb",
        "Leonart",
        "Makmah"
       ],
-      "Liberia",
-      "triple (5 bandas, pasan 2)"
+      "Liberia, Nemi",
+      "triple (5 bandas, pasan 2); también pasa: Nemi 🇦🇷"
      ],
      [
       [
        "Gocho",
+       "Cronox",
+       "Provenza",
        "Lord Viruzz",
        "Agente sombra",
        "Jult"
       ],
-      "Gocho",
-      "triple (6 bandas, pasan 3)"
+      "Gocho, Cronox, Provenza",
+      "triple (6 bandas, pasan 3); también pasa: cronox 🇨🇱 / za"
      ]
     ],
     "r": "Octavos"
@@ -23107,6 +23163,133 @@
     "Teo",
     "Octavos",
     1250
+   ]
+  ]
+ },
+ "470": {
+  "dia": "2026-10-14",
+  "escala": "8-15",
+  "fecha": "14/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1559799289608151111"
+  ],
+  "n": 470,
+  "nombre": "Inserte Nombre de la Compe",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Geoka",
+       "NC"
+      ],
+      "Geoka",
+      ""
+     ],
+     [
+      [
+       "Verc",
+       "CINEX"
+      ],
+      "Verc",
+      ""
+     ],
+     [
+      [
+       "Xubaru",
+       "Rodas"
+      ],
+      "Xubaru",
+      ""
+     ],
+     [
+      [
+       "Sin Limites",
+       "Kravitz"
+      ],
+      "Sin Limites",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc",
+       "Geoka"
+      ],
+      "Verc",
+      ""
+     ],
+     [
+      [
+       "Xubaru",
+       "Sin Limites"
+      ],
+      "Xubaru",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Xubaru",
+       "Verc"
+      ],
+      "Xubaru",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Xubaru",
+    "Campeón",
+    7500
+   ],
+   [
+    "Verc",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Geoka",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Sin Limites",
+    "Semifinal",
+    3500
+   ],
+   [
+    "CINEX",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Kravitz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Rodas",
+    "Cuartos",
+    2000
    ]
   ]
  }

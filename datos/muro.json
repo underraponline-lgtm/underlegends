@@ -141,19 +141,19 @@
 "temporada"
 ]
 },
-"og": {
-"rg": "D",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "nc": {
 "rg": "D",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"og": {
+"rg": "D",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -247,10 +247,6 @@
 "temporada"
 ]
 },
-"bna": {
-"rg": "",
-"c": []
-},
 "sinlimites": {
 "rg": "D",
 "c": [
@@ -258,6 +254,10 @@
 "servidor",
 "temporada"
 ]
+},
+"bna": {
+"rg": "",
+"c": []
 },
 "nxuz": {
 "rg": "C",
@@ -287,6 +287,15 @@
 "rg": "D",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"geoka": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -326,14 +335,6 @@
 ]
 },
 "cinexfilo": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"geoka": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -532,9 +533,23 @@
 "temporada"
 ]
 },
+"kravitz": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "neo": {
 "rg": "",
 "c": []
+},
+"xubaru": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "zeta": {
 "rg": "",
@@ -551,6 +566,13 @@
 "rg": "",
 "c": [
 "servidor"
+]
+},
+"rodas": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
 ]
 },
 "ardean": {
@@ -602,13 +624,6 @@
 "temporada"
 ]
 },
-"kravitz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "fazer": {
 "rg": "",
 "c": []
@@ -626,13 +641,6 @@
 "efimero": {
 "rg": "",
 "c": []
-},
-"rodas": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "emizor": {
 "rg": "",
@@ -672,13 +680,6 @@
 "servidor"
 ]
 },
-"mathhias": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "mtz": {
 "rg": "",
 "c": [
@@ -698,6 +699,13 @@
 "c": [
 "competitivo",
 "servidor"
+]
+},
+"mathhias": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
 ]
 },
 "sintext": {
@@ -750,13 +758,6 @@
 "blitz": {
 "rg": "",
 "c": []
-},
-"xubaru": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "marto": {
 "rg": "",
@@ -1034,6 +1035,10 @@
 "rg": "",
 "c": []
 },
+"camila": {
+"rg": "",
+"c": []
+},
 "jimmy": {
 "rg": "",
 "c": []
@@ -1143,10 +1148,6 @@
 ]
 },
 "dm": {
-"rg": "",
-"c": []
-},
-"camila": {
 "rg": "",
 "c": []
 },
@@ -2313,14 +2314,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Velatz"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5592,6 +5585,14 @@
 "Liberia"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-14T06:28:44Z",
+"quien": [
+"Geoka"
+],
+"carta": "pais"
 }
 ]
 }
