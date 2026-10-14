@@ -959,6 +959,26 @@ const ok = (cond, que, det) => {
       && fin.find((x) => x.id === r1).estado === 'aplicado' && (await o.duenoReporte(V({ id: r1, accion: 'listo' }))).error,
     'un reporte: Dlx elige qué corregir, el ciclo dice que lo aplicó y a quien lo mandó le llega a su campana (sólo lo '
     + 'que se corrigió, y lo aplicado ya no se cambia)', JSON.stringify([d1.reportes, e1, band]));
+    // ✅ Decidir en el Dashboard (13/10/2026, «Sí, con Reportes»)
+    const PS = [{ id: 'n1', tipo: 'Nombre desconocido', sec: 'COPA · FFA · 07/10', que: '¿Quién es ZORRO?', pistas: '—',
+      opciones: ['Es alguien nuevo', 'Es un troll (no cuenta)'], link: 'javascript:x', libre: true },
+    { id: 'b1', tipo: 'Batalla sin ganador', sec: 'COPA', que: '¿Quién ganó?', pistas: '', opciones: ['Ganó A', 'Ganó B'], link: '' }];
+    const VR = A.validarRespuestaDecidir;
+    ok(VR({ id: 'n1', r: 'Es Zorrito' }, PS).r === 'Es Zorrito' && VR({ id: 'b1', r: 'Es Zorrito' }, PS).error
+      && VR({ id: 'b1', r: 'Ganó B', nota: 'lo dijo el org' }, PS).nota === 'lo dijo el org' && VR({ id: 'zz', r: 'Ganó B' }, PS).error
+      && VR({ id: 'b1', r: 'Ganó <b>' }, PS).error && VR({ id: 'n1', borrar: true }, PS).borrar,
+    '✅ Decidir: una de las opciones, o «Es <nombre>» sólo en las de nombre; sin HTML, y una pregunta que ya no está no se contesta');
+    const de1 = o.decidirEstados({ preguntas: PS });
+    const dd1 = o.duenoDecidir({ id: 'b1', r: 'Ganó A' });
+    const dd2 = o.duenoDecidir({ id: 'n1', r: 'Es Zorrito', nota: 'su cuenta es zorrito_' });
+    const ciclo1 = o.decidirCiclo();
+    o.decidirEstados({ preguntas: PS.slice(0, 1) });     // la b1 se aplicó: ya no está
+    const ciclo2 = o.decidirCiclo();
+    ok(de1.n === 2 && dd1.ok && dd2.decidir.preguntas[0].link === '' && ciclo1.respuestas.b1.r === 'Ganó A'
+      && ciclo1.respuestas.n1.nota === 'su cuenta es zorrito_' && !ciclo2.respuestas.b1 && ciclo2.respuestas.n1
+      && o.duenoDecidir({ id: 'b1', r: 'Ganó A' }).error,
+    '✅ Decidir: el ciclo publica, Dlx contesta, el ciclo lo lee, y lo de una pregunta que se cerró se va',
+    JSON.stringify([ciclo1, ciclo2]));
   }
 }
 

@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "2.95",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T20:15:00-04:00",
+   "titulo": "Lo que reportás de una llave, se corrige",
+   "items": [
+    "📣 Si ves mal tu batalla y la reportás desde la llave («Reportar un error»), ahora se corrige: quién era un nombre o quién ganó, sólo en ese evento. Cuando quede, te llega a la campana.",
+    "🔎 Para revisar un reporte, el bot mira las inscripciones de ese evento y quién estaba en la llamada. Esa información y el reporte se borran a los 14 días.",
+    "🔧 Corregidos los primeros: el «Agus» de tres llaves eran otras personas.",
+    "📊 Contamos las visitas de la página con Cloudflare Web Analytics: sin cookies y sin seguir a nadie (está en Privacidad)."
+   ]
+  },
+  {
    "version": "2.94",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T18:50:00-04:00",

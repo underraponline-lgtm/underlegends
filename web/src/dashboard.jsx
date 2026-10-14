@@ -746,7 +746,8 @@ function AjRitmo({ aj, hacer, ocup, chat }) {
 // otro; ahora cuatro pestañas —Hoy, Ajustes, Números, Sistema—, la de Hoy con lo que pide atención; los ajustes de cada
 // servidor juntos en su tarjeta; las flechas contra la semana anterior; y el historial de cambios con «Deshacer».
 // La pestaña elegida se recuerda en este navegador (`lg:db-tab`)
-const PESTANAS = [['hoy', 'Hoy'], ['ajustes', 'Ajustes'], ['numeros', 'Números'], ['sistema', 'Sistema']];
+// 📣✅ Reportes y Decisiones, desde el 13/10/2026 (Dlx: «agregar quizás reportes y una ventana de decisiones»)
+const PESTANAS = [['hoy', 'Hoy'], ['reportes', 'Reportes'], ['decisiones', 'Decisiones'], ['ajustes', 'Ajustes'], ['numeros', 'Números'], ['sistema', 'Sistema']];
 const TAB = 'lg:db-tab';
 const leerTab = () => { try { const t = localStorage.getItem(TAB); return PESTANAS.some(([k]) => k === t) ? t : 'hoy'; } catch (e) { return 'hoy'; } };
 const ponerTab = (t) => { try { localStorage.setItem(TAB, t); } catch (e) { /* sin almacenamiento */ } };
@@ -780,8 +781,10 @@ function atencion(d, liga, q) {
       ? ['⚠️', 'La última corrida del ciclo ' + String(FIN_CORRIDA[ult.fin] || ult.fin).replace(/^\S+\s/, ''), 'Mirá Sistema.'] : null,
     ...cuotasEnRojo(q).map(([, , t]) => ['⚠️', t + ' casi llenas hoy', 'Se renuevan a las 8 PM ET.']),
     // 📣 los reportes de las llaves sin mirar, y una corrección que no se pudo (13/10/2026)
-    ...(() => { const r = (d.reportes || []).filter((x) => x.estado === ''); return r.length ? [['📣', r.length === 1 ? 'Un reporte de una llave sin mirar' : r.length + ' reportes de llaves sin mirar', 'Abajo, en Lo que te llegó: corregilo o marcalo como listo.']] : []; })(),
+    ...(() => { const r = (d.reportes || []).filter((x) => x.estado === ''); return r.length ? [['📣', r.length === 1 ? 'Un reporte de una llave sin mirar' : r.length + ' reportes de llaves sin mirar', 'En la pestaña Reportes: corregilo o marcalo como listo.']] : []; })(),
     ...(d.reportes || []).filter((x) => x.estado === 'no_pude').map((x) => ['⚠️', 'No se pudo corregir la llave #' + x.llave, x.resultado]),
+    // ✅ y lo de ✅ Decidir sin contestar (13/10/2026)
+    ...(sinContestar(d.decidir) ? [['✅', sinContestar(d.decidir) === 1 ? 'Una pregunta de ✅ Decidir sin contestar' : sinContestar(d.decidir) + ' preguntas de ✅ Decidir sin contestar', 'En la pestaña Decisiones.']] : []),
   ].filter(Boolean);
 }
 function Atencion({ xs }) {
@@ -1113,9 +1116,11 @@ function Evidencia({ r, alListo }) {
   );
 }
 
-function Reportes({ rep, liga }) {
-  const [lista, setLista] = useState(rep);
-  useEffect(() => { setLista(rep); }, [rep]);
+function Reportes({ rep, liga, alCambiar }) {
+  const [lista, setLista0] = useState(rep);
+  useEffect(() => { setLista0(rep); }, [rep]);
+  // y el número de la pestaña, al día (ver `alCambiar` en el Dashboard)
+  const setLista = (l) => { setLista0(l); if (alCambiar) alCambiar(l); };
   const [abierto, setAbierto] = useState(null);
   const [msg, setMsg] = useState({});
   const cerrar = async (r, accion) => {
@@ -1175,15 +1180,87 @@ function Reportes({ rep, liga }) {
   );
 }
 
-// 🤝 lo que también te llega: los errores reportados en las llaves y los videos para revisar (lo de /sumate se fue con
-// la página, el 13/10/2026)
-function Llego({ d, liga }) {
-  const rep = d.reportes || [], vs = d.videos || [];
-  if (!rep.length && !vs.length) return <p className="pronto-p">Nada todavía: ni errores reportados en las llaves ni videos para revisar.</p>;
+// 🤝 lo que también te llega: los videos para revisar. Los reportes y ✅ Decidir tienen su pestaña desde el 13/10/2026
+function Llego({ d }) {
+  const vs = d.videos || [];
+  if (!vs.length) return <p className="pronto-p">Nada nuevo acá: los reportes de las llaves y lo de ✅ Decidir tienen su pestaña.</p>;
+  return <div className="db-llego"><VideosRevisar vs={vs} /></div>;
+}
+
+// ── ✅ DECIDIR, EN EL DASHBOARD (13/10/2026). Dlx: «estaba pensando en mover lo de decidir del sheet, aquí», y a la
+// propuesta, «Sí, con Reportes». Las MISMAS preguntas de la hoja —las publica el ciclo (`decidir.para_web()`)—, por
+// evento, con sus pistas y sus opciones. Contestar lo guarda el objeto y lo aplica el ciclo en su próxima corrida
+// como si estuviera escrito en la hoja (`decidir._respuestas()`). La hoja sigue una semana en paralelo ──
+async function contestarDecidir(cuerpo) {
+  const r = await fetch('/api/avisos/dueno/decidir', { method: 'POST', credentials: 'same-origin',
+    headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || j.error) throw new Error(r.status === 401 ? 'la sesión venció: entrá de nuevo' : j.error || String(r.status));
+  return j.decidir || {};
+}
+export const sinContestar = (dec) => ((dec && dec.preguntas) || []).filter((p) => !((dec.respuestas || {})[p.id])).length;
+
+function Pregunta({ p, r, alListo }) {
+  const [libre, setLibre] = useState('');
+  const [nota, setNota] = useState((r && r.nota) || '');
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  const mandar = async (cuerpo) => {
+    setOcup(true); setMsg('');
+    try { alListo(await contestarDecidir(Object.assign({ id: p.id }, cuerpo))); } catch (e) { setMsg('No se pudo: ' + e.message); }
+    setOcup(false);
+  };
   return (
-    <div className="db-llego">
-      {vs.length ? <VideosRevisar vs={vs} /> : null}
-      {rep.length ? <Reportes rep={rep} liga={liga} /> : null}
+    <li className={r ? 'db-dec-hecha' : ''}>
+      <div className="db-l1"><span className="db-chip">{p.tipo}</span></div>
+      <p className="db-dec-que">{p.que}</p>
+      {p.pistas && p.pistas !== '—' ? <p className="db-dec-pistas">{p.pistas}</p> : null}
+      {r ? (
+        <div className="cu-btns">
+          <small>✍️ <b>{r.r}</b>{r.nota ? ' · ' + r.nota : ''} · lo aplica el ciclo en su próxima corrida</small>
+          <button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => mandar({ borrar: true })}>Deshacer</button>
+        </div>
+      ) : <>
+        <div className="db-opc">{p.opciones.map((x) => <button key={x} type="button" disabled={ocup} onClick={() => mandar({ r: x, nota })}>{x}</button>)}</div>
+        {p.libre ? (
+          <div className="db-rep-q"><label>Es otro de la Lista:
+            <input type="text" value={libre} placeholder="su nombre como figura en la Lista" maxLength={56} onChange={(e) => setLibre(e.target.value)} />
+            <button type="button" className="btn verde chico" disabled={ocup || !libre.trim()} onClick={() => mandar({ r: 'Es ' + libre.trim(), nota })}>Es éste</button>
+          </label></div>) : null}
+        <div className="db-rep-q"><label>Nota (opcional):
+          <input type="text" value={nota} placeholder="queda en la hoja con la respuesta" maxLength={300} onChange={(e) => setNota(e.target.value)} /></label></div>
+      </>}
+      {msg ? <small role="status">{msg}</small> : null}
+    </li>
+  );
+}
+
+function Decisiones({ dec, alCambiar }) {
+  const [x, setX0] = useState(dec || {});
+  useEffect(() => { setX0(dec || {}); }, [dec]);
+  const setX = (y) => { setX0(y); if (alCambiar) alCambiar(y); };
+  const ps = x.preguntas || [], rs = x.respuestas || {};
+  if (!ps.length) {
+    return <p className="pronto-p">{x.t ? 'Nada para decidir: el ciclo no tiene preguntas abiertas.' : 'Las preguntas aparecen cuando el ciclo las publique, en su próxima corrida.'}</p>;
+  }
+  // por evento, en el orden en que vienen (el de la hoja: primero lo que mueve puntos)
+  const secs = [];
+  for (const p of ps) {
+    const s = secs.find((y) => y.sec === p.sec);
+    if (s) s.ps.push(p); else secs.push({ sec: p.sec, ps: [p] });
+  }
+  return (
+    <div className="db-dec">
+      <p className="db-rep-nota">{sinContestar(x)} sin contestar de {ps.length}{x.t ? ' · el ciclo las publicó ' + hace(x.t) : ''}. Lo que contestes acá vale igual que en la hoja.</p>
+      {secs.map((s) => {
+        const link = (s.ps.find((p) => p.link) || {}).link;
+        return (
+          <div key={s.sec} className="db-dec-sec">
+            <h3>{s.sec}{link ? <> <a className="db-link" href={link} target="_blank" rel="noopener noreferrer">la llave en Discord ↗</a></> : null}</h3>
+            <ul>{s.ps.map((p) => <Pregunta key={p.id} p={p} r={rs[p.id]} alListo={setX} />)}</ul>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -1204,6 +1281,8 @@ export function Dashboard({ dc, liga }) {
   // `ajustar()` devuelve los ajustes y el historial (ver `ajuste()` en avisos.js)
   const onAj = (r) => setSt((x) => (x.d ? { d: Object.assign({}, x.d, { ajustes: r.ajustes }, r.hist ? { ajustes_hist: r.hist } : {}) } : x));
   const { hacer, msg, ocup } = useHacer(onAj);
+  // lo que cambia una pestaña (un reporte, una respuesta) vuelve al panel: así el número de cada pestaña está al día
+  const cambiarD = (o) => setSt((x) => (x.d ? { d: Object.assign({}, x.d, o) } : x));
   const [tab, setTab] = useState(leerTab);
   const elegir = (t) => { setTab(t); ponerTab(t); };
   let cuerpo;
@@ -1217,23 +1296,30 @@ export function Dashboard({ dc, liga }) {
     const d = st.d || {};
     const u = d.uso || {};
     const at = atencion(d, liga, cuotas);
+    // el número de cada pestaña: lo que espera algo de vos
+    const cuenta = { hoy: at.length, reportes: (d.reportes || []).filter((x) => x.estado === '' || x.estado === 'no_pude').length,
+      decisiones: sinContestar(d.decidir) };
     const sec = (titulo, em, hijo) => <section className="act"><div className="mis-cab"><span>{titulo}</span>{em ? <em>{em}</em> : null}</div>{hijo}</section>;
     cuerpo = (
       <>
         <nav className="db-tabs" role="tablist" aria-label="El Dashboard">{PESTANAS.map(([k, n]) => (
           <button key={k} type="button" role="tab" aria-selected={tab === k} className={'db-tab' + (tab === k ? ' on' : '')} onClick={() => elegir(k)}>
-            {n}{k === 'hoy' && at.length ? <i aria-label={at.length === 1 ? 'una cosa' : at.length + ' cosas'}>{at.length}</i> : null}
+            {n}{cuenta[k] ? <i aria-label={cuenta[k] === 1 ? 'una cosa' : cuenta[k] + ' cosas'}>{cuenta[k]}</i> : null}
           </button>
         ))}</nav>
         {tab === 'hoy' ? <>
           {sec('LO QUE PIDE ATENCIÓN', null, <Atencion xs={at} />)}
           {(d.vivo || []).length ? sec('EN VIVO AHORA', 'se actualiza al abrir el Dashboard',
             <EnVivo vivo={d.vivo} liga={liga} aj={d.ajustes || {}} chat={d.chat} />) : null}
-          {sec('LO QUE TE LLEGÓ', null, <Llego d={d} liga={liga} />)}
+          {sec('LO QUE TE LLEGÓ', null, <Llego d={d} />)}
           {sec('ATAJOS', null, <ul className="db-atajos">{ATAJOS.map(([t, h]) => (
             <li key={h}><a href={h} target={h[0] === '/' ? undefined : '_blank'} rel={h[0] === '/' ? undefined : 'noopener noreferrer'}>{t} ↗</a></li>
           ))}</ul>)}
         </> : null}
+        {tab === 'reportes' ? sec('ERRORES REPORTADOS EN LAS LLAVES', 'se borran a los 14 días',
+          (d.reportes || []).length ? <div className="db-llego"><Reportes rep={d.reportes} liga={liga} alCambiar={(l) => cambiarD({ reportes: l })} /></div>
+            : <p className="pronto-p">Nadie reportó nada en los últimos 14 días.</p>) : null}
+        {tab === 'decisiones' ? sec('✅ DECIDIR', 'las mismas preguntas que la hoja', <Decisiones dec={d.decidir} alCambiar={(y) => cambiarD({ decidir: y })} />) : null}
         {tab === 'ajustes' ? sec('CONFIGURACIÓN · SÓLO VOS', null,
           <Ajustes liga={liga} aj={d.ajustes || {}} chat={d.chat} hist={d.ajustes_hist} hacer={hacer} msg={msg} ocup={ocup} />) : null}
         {tab === 'numeros' ? <>

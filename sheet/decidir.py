@@ -2369,6 +2369,12 @@ def _respuestas():
             _respuestas.notas[k] = str(f[i_nota]).strip()
         if i_sug is not None:
             _respuestas.sugerencias[k] = str(f[i_sug]).strip()
+    # 🌐 Y LO CONTESTADO EN EL DASHBOARD (13/10/2026, «Sí, con Reportes»): manda sobre la hoja, que es la vieja
+    for k, x in _respuestas_web().items():
+        if str(x.get('r') or '').strip():
+            out[k] = (str(x['r']).strip(), '')
+        if str(x.get('nota') or '').strip():
+            _respuestas.notas[k] = str(x['nota']).strip()
     return out
 
 
@@ -2820,6 +2826,61 @@ def secciones(preguntas):
     return out
 
 
+# ── 🌐 ✅ DECIDIR EN EL DASHBOARD ───────────────────────────────────────
+# 🔑 Dlx, 13/10/2026: *«estaba pensando en mover lo de decidir del sheet, aquí»*, y a la propuesta, *«Sí, con
+# Reportes»*: las MISMAS preguntas, en la pestaña «Decisiones» del Dashboard, con sus pistas y sus opciones. Lo que
+# se contesta ahí lo guarda el objeto y entra por `_respuestas()` como si estuviera escrito en la hoja, así que lo
+# aplica `aplicar()` de siempre y no hay una regla nueva en ningún lado. La hoja sigue una semana en paralelo.
+#: el Worker, para hablar con el objeto con la clave del ciclo
+WORKER = 'https://liga-global-bot.liga-global-ul.workers.dev'
+
+
+def para_web(preguntas):
+    """`[{id, tipo, sec, que, pistas, opciones, link, libre}]`: las preguntas como las ve Dlx en el Dashboard, por
+    evento y en el orden de la hoja. Sin los «Reporte»: ésos tienen su pestaña. `libre`: se puede escribir «Es <nombre>»."""
+    out = []
+    for tit, ps in secciones([p for p in preguntas if p['tipo'] != 'Reporte']):
+        for p in ps:
+            link = str(p.get('link') or '')
+            out.append({'id': p['id'], 'tipo': p['tipo'], 'sec': str(tit)[:120], 'que': str(p.get('que') or '')[:400],
+                        'pistas': str(p.get('pistas') or '')[:900], 'opciones': [str(x)[:80] for x in p.get('opciones') or []][:14],
+                        'link': link if link.startswith('https://discord.com/') else '',
+                        'libre': p['tipo'] == 'Nombre desconocido'})
+    return out[:150]
+
+
+def _objeto(metodo, ruta, cuerpo=None):
+    """El objeto, con la clave del ciclo. `None` si no contesta (no frena ✅ Decidir)."""
+    try:
+        import requests
+        sys.path.insert(0, os.path.join(BASE, 'bot'))
+        import fotos as F
+        import clave_ciclo as CC
+        tok = F.env('DISCORD_TOKEN', obligatorio=False)
+        if not tok:
+            return None
+        h = {'x-lg-ciclo': CC.clave(tok), 'content-type': 'application/json'}
+        r = (requests.get(WORKER + ruta, headers=h, timeout=30) if metodo == 'GET' else
+             requests.post(WORKER + ruta, data=json.dumps(cuerpo, ensure_ascii=False).encode('utf-8'), headers=h, timeout=30))
+        return r.json() if r.ok else None
+    except Exception:                                    # noqa: BLE001
+        return None
+
+
+def _respuestas_web():
+    """`{id: {r, nota}}`: lo contestado en el Dashboard. `{}` si el objeto no contesta."""
+    d = _objeto('GET', '/avisos/decidir-ciclo') or {}
+    return {str(k): v for k, v in (d.get('respuestas') or {}).items() if isinstance(v, dict)}
+
+
+def publicar_web(preguntas):
+    """Las preguntas abiertas, al Dashboard. El objeto borra lo contestado de las que ya no están (se aplicaron)."""
+    d = _objeto('POST', '/avisos/decidir-estados', {'preguntas': para_web(preguntas)})
+    print('   🌐 %s' % ('%d pregunta(s) en el Dashboard' % len(para_web(preguntas)) if d else
+                        '⚠️ el objeto no contestó: el Dashboard queda con las de antes'))
+    return bool(d)
+
+
 def _u16(texto):
     """El largo en unidades UTF-16, que es como cuenta la API de Sheets los
     índices de un tramo de texto: un emoji son dos."""
@@ -3265,6 +3326,9 @@ def correr(dry=True):
     preguntas = para_dlx(preguntas, eventos, respuestas)
     print('   🙈 %d de %d pregunta(s) se le muestran a Dlx: lo demás espera al organizador o no tiene a quién elegir'
           % (len(preguntas), antes))
+    # 🌐 y las mismas, al Dashboard (pestaña «Decisiones»): ver `para_web()`
+    if not dry:
+        publicar_web(preguntas)
     pintar(preguntas, estados, respuestas, hechas, dry=dry)
     return 0
 
@@ -3827,6 +3891,19 @@ def _self_check():
     ok(tipeo_de('Enkil', None, _pt, {'FFA'}, _je) is None
        and tipeo_de('Enkil', ['Enkil 🇦🇷', 'Enkil 🇨🇱'], _pt, {'FFA'}, _je) is None, 'sin bandera o con dos, no')
     ok(tipeo_de('Enkil 🇦🇷', None, _pt, {'FFA'}, _je, lambda a, b: True) is None, 'ni lo marcado distinto')
+    # 🌐 las preguntas para el Dashboard (13/10/2026): por evento, sin los reportes, y «Es <nombre>» libre sólo en nombres
+    _pw = [{'id': 'a1', 'tipo': 'Nombre desconocido', 'detalle': 'ZORRO', 'que': '¿Quién es ZORRO?', 'pistas': '—',
+            'opciones': ['Es alguien nuevo'], 'link': 'https://discord.com/channels/1/2/3', 'seccion': ('ev:x', 'COPA · FFA · 07/10'),
+            'grupo': (3, 'n'), 'filas': [5]},
+           {'id': 'a2', 'tipo': 'Reporte', 'detalle': 'x · #4', 'que': 'r', 'pistas': '', 'opciones': [],
+            'link': '', 'seccion': ('ev:x', 'COPA · FFA · 07/10'), 'grupo': (0, 'r'), 'filas': [6]},
+           {'id': 'a3', 'tipo': 'Batalla sin ganador', 'detalle': 'y', 'que': '¿Quién ganó?', 'pistas': 'p',
+            'opciones': ['Ganó A', 'Ganó B'], 'link': 'javascript:x', 'seccion': ('ev:x', 'COPA · FFA · 07/10'),
+            'grupo': (0, 'b'), 'filas': [2]}]
+    _w = para_web(_pw)
+    ok([x['id'] for x in _w] == ['a3', 'a1'] and _w[1]['libre'] and not _w[0]['libre'] and _w[0]['link'] == ''
+       and _w[1]['sec'] == 'COPA · FFA · 07/10',
+       'las preguntas del Dashboard: en el orden de la hoja, sin los reportes, y sólo links de Discord')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 

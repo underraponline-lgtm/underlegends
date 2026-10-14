@@ -2174,6 +2174,9 @@ const RUTAS = {
   // 📣 qué hacer con un reporte de una llave (13/10/2026, Dlx: «Sí, todas»): lo decide Dlx desde el Dashboard y el
   // ciclo, con su clave, avisa lo que aplicó. Ver `validarDecisionReporte()`, `duenoReporte()` y `reportesEstados()`
   '/avisos/dueno/reporte': 'POST', '/avisos/reportes-estados': 'POST',
+  // ✅ Decidir en el Dashboard (13/10/2026, Dlx: «Sí, con Reportes»): el ciclo publica las preguntas y lee lo
+  // contestado, con su clave; Dlx contesta. Ver `validarRespuestaDecidir()`, `decidirEstados()` y `duenoDecidir()`
+  '/avisos/decidir-ciclo': 'GET', '/avisos/decidir-estados': 'POST', '/avisos/dueno/decidir': 'POST',
   // 📣 seguir a un organizador, con tu sesión. Ver `seguirOrg()`
   '/avisos/seguir-org': 'POST',
 };
@@ -2572,6 +2575,23 @@ export function validarDecisionReporte(d) {
     return { id, accion, fix: { tipo: 'ganador', n, ronda, lados, ganador } };
   }
   return { error: 'no sé qué hacer' };
+}
+
+/**
+ * ✅ ¿VALE ESTA RESPUESTA A UNA PREGUNTA DE ✅ DECIDIR? `{id, r, nota}` (o `{id, borrar: true}`) si vale, `{error}` si
+ * no. La respuesta tiene que ser una de las opciones de esa pregunta, o «Es <nombre>» en una de nombre (`libre`):
+ * lo mismo que se elige o se escribe en la hoja. La interpreta el ciclo (`decidir.interpretar()`). Pura.
+ */
+export function validarRespuestaDecidir(d, preguntas) {
+  const id = String((d && d.id) || '');
+  const p = (preguntas || []).find((x) => x && x.id === id);
+  if (!p) return { error: 'esa pregunta ya no está' };
+  if (d.borrar === true) return { id, borrar: true };
+  const r = String(d.r == null ? '' : d.r).replace(/\s+/g, ' ').trim();
+  const nota = String(d.nota == null ? '' : d.nota).replace(/\s+/g, ' ').trim().slice(0, 300);
+  if (/[<>]/.test(r + nota)) return { error: 'sin < ni >' };
+  if (!(p.opciones || []).includes(r) && !(p.libre && /^Es \S.{0,58}$/.test(r))) return { error: 'esa respuesta no es una de las opciones' };
+  return { id, r, nota };
 }
 
 // ── el precio por cabeza ───────────────────────────────────────────────
@@ -3620,6 +3640,36 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify(v), headers: { 'content-type': 'application/json' },
     });
   }
+  // ✅ DECIDIR: las preguntas que publica el ciclo y lo contestado, con su clave
+  if (ruta === '/avisos/decidir-ciclo' || ruta === '/avisos/decidir-estados') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    if (ruta === '/avisos/decidir-ciclo') return elObjeto(env).fetch('https://avisos/decidir-ciclo');
+    const crudo = await req.text();
+    if (crudo.length > 400000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/decidir-estados', { method: 'POST', body: crudo,
+      headers: { 'content-type': 'application/json' } });
+  }
+  // ✅ Y CONTESTAR UNA: sólo Dlx, como los reportes
+  if (ruta === '/avisos/dueno/decidir') {
+    const crudo = await req.text();
+    if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (q.id !== DUENO) {
+      console.warn('[seguridad] contestar ✅ Decidir lo pidió alguien que no es el dueño');
+      return json({ error: 'no' }, 403);
+    }
+    return elObjeto(env).fetch('https://avisos/dueno-decidir', {
+      method: 'POST', body: JSON.stringify({ id: d.id, r: d.r, nota: d.nota, borrar: d.borrar === true }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
   // 📣 Y LO QUE EL CICLO APLICÓ DE CADA UNO: con su clave (el objeto le avisa a quien reportó)
   if (ruta === '/avisos/reportes-estados') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -4070,6 +4120,10 @@ export class Avisos {
       // 📣 y qué decidió Dlx de cada uno y qué hizo el ciclo (13/10/2026): ver `duenoReporte()` y `reportesEstados()`
       // 🔎 y `evid`: lo que encontró el bot de cada reporte (quién lo mandó, las inscripciones, la llamada), lo pone el
       // ciclo (`bot/reportes.py`, `evidencia()`) y se borra con el reporte
+      // ✅ lo contestado de ✅ Decidir desde el Dashboard (13/10/2026): ver `duenoDecidir()`. Se borra cuando la pregunta
+      // deja de estar abierta (`decidirEstados()`)
+      this.sql.exec("CREATE TABLE IF NOT EXISTS decidir_resp (id TEXT PRIMARY KEY, r TEXT NOT NULL, nota TEXT NOT NULL DEFAULT '', " +
+        't INTEGER NOT NULL)');
       for (const c of ["estado TEXT NOT NULL DEFAULT ''", "fix TEXT NOT NULL DEFAULT ''",
         "resultado TEXT NOT NULL DEFAULT ''", 't_estado INTEGER NOT NULL DEFAULT 0', "evid TEXT NOT NULL DEFAULT ''"]) {
         try { this.sql.exec('ALTER TABLE reportes ADD COLUMN ' + c); } catch (e) { /* ya estaba */ }
@@ -4271,6 +4325,7 @@ export class Avisos {
       if (ruta === '/vs-cola') return json(this.vsCola(new URL(req.url).searchParams.get('sv') || ''), 200, 0);
       // 🎬 los pedidos de videos, para el ciclo (`bot/videos_propios.py`), con su clave
       if (ruta === '/videos-ciclo') return json(this.videosCiclo(), 200, 0);
+      if (ruta === '/decidir-ciclo') return json(this.decidirCiclo(), 200, 0);
       // 📅 lo agendado con /agendar, para el ciclo (`bot/agenda.py`), con su clave
       if (ruta === '/agenda-ciclo') return json(this.agendaCiclo(), 200, 0);
       const d = await req.json().catch(() => null);
@@ -4288,6 +4343,8 @@ export class Avisos {
       if (ruta === '/videos-estados') return json(this.videosEstados(d));
       if (ruta === '/dueno-video') return json(this.duenoVideo(d));
       if (ruta === '/dueno-reporte') return json(await this.duenoReporte(d));
+      if (ruta === '/decidir-estados') return json(this.decidirEstados(d));
+      if (ruta === '/dueno-decidir') return json(this.duenoDecidir(d));
       if (ruta === '/reportes-estados') return json(await this.reportesEstados(d));
       if (ruta === '/alta') return await this.alta(d);
       if (ruta === '/baja') return this.baja(d);
@@ -6935,6 +6992,48 @@ export class Avisos {
     return { ok: true, n, evidencia: e };
   }
 
+  // ── ✅ Decidir en el Dashboard (13/10/2026) ──────────────────────────
+  /** Las preguntas abiertas que publica el ciclo (`decidir.para_web()`). Lo contestado de las que ya no están, se va. */
+  decidirEstados(d) {
+    const ps = (Array.isArray(d && d.preguntas) ? d.preguntas : []).slice(0, 150).filter((p) => p && typeof p.id === 'string'
+      && p.id.length <= 60).map((p) => ({ id: p.id, tipo: String(p.tipo || '').slice(0, 40), sec: String(p.sec || '').slice(0, 120),
+      que: String(p.que || '').slice(0, 400), pistas: String(p.pistas || '').slice(0, 900),
+      opciones: (Array.isArray(p.opciones) ? p.opciones : []).slice(0, 14).map((x) => String(x).slice(0, 80)),
+      link: /^https:\/\/discord\.com\//.test(String(p.link || '')) ? String(p.link) : '', libre: p.libre === true }));
+    this.guardar('decidir_preguntas', { t: Date.now(), preguntas: ps });
+    const ids = new Set(ps.map((p) => p.id));
+    let fuera = 0;
+    for (const r of this.sql.exec('SELECT id FROM decidir_resp').toArray()) {
+      if (!ids.has(r.id)) fuera += this.sql.exec('DELETE FROM decidir_resp WHERE id = ?', r.id).rowsWritten || 0;
+    }
+    return { ok: true, n: ps.length, fuera };
+  }
+
+  /** Para el ciclo: lo contestado en el Dashboard, `{respuestas: {id: {r, nota, t}}}`. */
+  decidirCiclo() {
+    const respuestas = {};
+    for (const r of this.sql.exec('SELECT id, r, nota, t FROM decidir_resp').toArray()) respuestas[r.id] = { r: r.r, nota: r.nota, t: r.t };
+    return { respuestas };
+  }
+
+  /** Dlx contesta (o se arrepiente: `borrar`). Lo aplica el ciclo en su próxima corrida. */
+  duenoDecidir(d) {
+    const ps = (this.leer('decidir_preguntas') || {}).preguntas || [];
+    const v = validarRespuestaDecidir(d, ps);
+    if (v.error) return v;
+    if (v.borrar) this.sql.exec('DELETE FROM decidir_resp WHERE id = ?', v.id);
+    else {
+      this.sql.exec('INSERT OR REPLACE INTO decidir_resp (id, r, nota, t) VALUES (?, ?, ?, ?)', v.id, v.r, v.nota, Date.now());
+    }
+    return { ok: true, decidir: this.decidirDueno() };
+  }
+
+  /** ✅ Decidir para el Dashboard: las preguntas, cuándo las publicó el ciclo y lo ya contestado. */
+  decidirDueno() {
+    const x = this.leer('decidir_preguntas') || {};
+    return { t: x.t || null, preguntas: x.preguntas || [], respuestas: this.decidirCiclo().respuestas };
+  }
+
   /** Los reportes para el Dashboard: los abiertos y los que esperan al ciclo, y lo decidido en los últimos 3 días. */
   reportesDueno(ahora) {
     return this.sql.exec('SELECT r.id, r.t, r.llave, r.que, r.texto, r.batalla, r.estado, r.fix, r.resultado, r.evid, i.k ' +
@@ -8534,6 +8633,8 @@ export class Avisos {
       // conoce. Las postulaciones de /sumate se fueron con la página (13/10/2026)
       // 📣 con qué decidió Dlx y qué hizo el ciclo (13/10/2026): ver `reportesDueno()`
       reportes: this.reportesDueno(ahora),
+      // ✅ las preguntas de ✅ Decidir y lo contestado desde el Dashboard (13/10/2026)
+      decidir: this.decidirDueno(),
       dias,
       sesiones: this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM sesiones WHERE vence > ?', ahora).toArray()[0].n,
       sistema: {

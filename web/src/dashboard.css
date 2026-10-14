@@ -107,6 +107,17 @@
 .db-rep-nota{margin:0;font-size:12.5px;color:var(--gris)}
 .db-rep-ya{margin:0;font-size:13px;font-weight:700;color:var(--magenta-tx)}
 .db-rep-herm{display:flex;align-items:center;gap:6px;font-size:13px}
+/* ✅ Decidir en el Dashboard (13/10/2026) */
+.db-dec{display:grid;gap:14px;padding:14px;border-top:2px solid var(--linea)}
+.db-dec-sec{display:grid;gap:8px}
+.db-dec-sec h3{margin:0;font:900 15px/1.3 Archivo,sans-serif;text-transform:uppercase;display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.db-dec-sec h3 .db-link{text-transform:none;font:600 13px/1.3 Archivo,sans-serif;color:inherit}
+.db-dec-sec ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.db-dec-sec li{display:grid;gap:6px;padding:10px 12px;border-left:4px solid var(--magenta);background:var(--caja)}
+.db-dec-sec li.db-dec-hecha{border-left-color:var(--verde)}
+.db-dec-que{margin:0;font-weight:700;font-size:14px;overflow-wrap:anywhere}
+.db-dec-pistas{margin:0;font-size:13px;color:var(--gris);white-space:pre-line;overflow-wrap:anywhere}
+.db-dec .btn:disabled,.db-opc button:disabled{opacity:.45;cursor:not-allowed}
 .db-llego .btn:disabled{opacity:.45;cursor:not-allowed}
 /* 🔎 lo que encontró el bot de un reporte */
 .db-evid{display:grid;gap:6px;padding:8px 10px;border-left:4px solid var(--suave);background:var(--caja)}
