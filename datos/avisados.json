@@ -12077,5 +12077,358 @@
    ]
   ],
   "v": 2
+ },
+ "472": {
+  "antes": {
+   "Abyssus": [
+    18,
+    21,
+    false
+   ],
+   "Bloody": [
+    25,
+    32,
+    false
+   ],
+   "Chop": [
+    193,
+    67,
+    true
+   ],
+   "Cinexfilo": [
+    37,
+    45,
+    false
+   ],
+   "Colesito": [
+    7,
+    8,
+    false
+   ],
+   "Delux": [
+    26,
+    33,
+    false
+   ],
+   "Gus": [
+    124,
+    232,
+    false
+   ],
+   "Luzzano": [
+    237,
+    157,
+    true
+   ],
+   "Majiztral": [
+    20,
+    25,
+    false
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "Mr Still Ballin": [
+    183,
+    30,
+    true
+   ],
+   "ONZASS": [
+    182,
+    26,
+    true
+   ],
+   "Oasis": [
+    1,
+    1,
+    false
+   ],
+   "PichulaMc": [
+    4,
+    5,
+    false
+   ],
+   "Six": [
+    12,
+    13,
+    false
+   ],
+   "Soulb": [
+    85,
+    125,
+    false
+   ],
+   "Tuca": [
+    199,
+    77,
+    true
+   ],
+   "Under": [
+    252,
+    178,
+    true
+   ],
+   "Vandu": [
+    15,
+    17,
+    false
+   ],
+   "Verc": [
+    6,
+    7,
+    false
+   ],
+   "Zignos": [
+    14,
+    16,
+    false
+   ],
+   "ikonoxx": [
+    215,
+    123,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Oasis",
+    "Gus",
+    "Oasis"
+   ],
+   [
+    "Colesito",
+    "ONZASS",
+    "Colesito"
+   ],
+   [
+    "Zignos",
+    "Zaik 🇪🇸",
+    "Zignos"
+   ],
+   [
+    "Makmah",
+    "Soulb",
+    "Makmah"
+   ],
+   [
+    "Mr Still Ballin",
+    "Chente 🇻🇪",
+    "Mr Still Ballin"
+   ],
+   [
+    "Abyssus",
+    "Bloody",
+    "Abyssus"
+   ],
+   [
+    "Luzzano",
+    "Cinexfilo",
+    "Luzzano"
+   ],
+   [
+    "Six",
+    "Chop",
+    "Six"
+   ],
+   [
+    "Colesito, PichulaMc",
+    "Oasis, Majiztral",
+    "Colesito, PichulaMc"
+   ],
+   [
+    "Tuca, Makmah",
+    "Zignos, ikonoxx",
+    "Tuca, Makmah"
+   ],
+   [
+    "Verc, Abyssus",
+    "Mr Still Ballin, Under",
+    "Verc, Abyssus"
+   ],
+   [
+    "Luzzano, Delux",
+    "Six, Vandu",
+    "Luzzano, Delux"
+   ],
+   [
+    "Oasis, Colesito, PichulaMc",
+    "Zignos, Tuca, Makmah",
+    "Oasis, Colesito, PichulaMc"
+   ],
+   [
+    "Verc, Abyssus, Mr Still Ballin",
+    "Luzzano, Delux, Six",
+    "Verc, Abyssus, Mr Still Ballin"
+   ],
+   [
+    "Oasis, Colesito, PichulaMc, Zignos",
+    "Mr Still Ballin, Verc, Abyssus, Six",
+    "Oasis, Colesito, PichulaMc, Zignos"
+   ]
+  ],
+  "ev_antes": {
+   "Abyssus": 15,
+   "Bloody": 16,
+   "Chop": 9,
+   "Cinexfilo": 13,
+   "Colesito": 27,
+   "Delux": 7,
+   "Gus": 4,
+   "Luzzano": 3,
+   "Majiztral": 17,
+   "Makmah": 44,
+   "Mr Still Ballin": 3,
+   "ONZASS": 10,
+   "Oasis": 23,
+   "PichulaMc": 32,
+   "Six": 18,
+   "Soulb": 7,
+   "Tuca": 6,
+   "Under": 2,
+   "Vandu": 21,
+   "Verc": 12,
+   "Zignos": 21,
+   "ikonoxx": 4
+  },
+  "fecha": "14/10",
+  "firma": "72e667bb10a3e5a8",
+  "msg": "1560063208642052097",
+  "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL 6 PANDILLAS __",
+  "num": 472,
+  "participantes": 24,
+  "sello": {
+   "Colesito": "103d5b54b3c9:7e987c978e23",
+   "Oasis": "2ea8ab5ecd8c:7e987c978e23",
+   "PichulaMc": "7274f1bf14e6:7e987c978e23",
+   "Zignos": "1b63dd60f29c:7e987c978e23"
+  },
+  "sv": "FFA",
+  "t": "2026-10-14T22:54:12Z",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    2500
+   ],
+   [
+    "Colesito",
+    "Campeón",
+    2500
+   ],
+   [
+    "PichulaMc",
+    "Campeón",
+    2500
+   ],
+   [
+    "Zignos",
+    "Campeón",
+    2500
+   ],
+   [
+    "Mr Still Ballin",
+    "Subcampeón",
+    2187
+   ],
+   [
+    "Six",
+    "Subcampeón",
+    2187
+   ],
+   [
+    "Verc",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Abyssus",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Tuca",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Luzzano",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Delux",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    1250
+   ],
+   [
+    "ikonoxx",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Under",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Gus",
+    "Octavos",
+    1250
+   ],
+   [
+    "ONZASS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chente 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Bloody",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cinexfilo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chop",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }
