@@ -1,53 +1,48 @@
 {
  "v": 1,
- "cuando": "2026-10-14T05:35:37Z",
+ "cuando": "2026-10-14T06:01:39Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 358.5,
+ "dur_s": 175.0,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.4
+   "s": 5.2
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 3.6
+   "s": 5.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 22.4
+   "s": 20.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 3 · 40 persona(s)",
+   "que": "tanda 1 de 1 · 27 persona(s)",
    "ok": true,
-   "s": 281.5
+   "s": 88.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 3.0
+   "s": 4.1
   },
   {
    "n": "6",
    "que": "refrescar KV",
-   "ok": false,
-   "s": 41.7
+   "ok": true,
+   "s": 50.7
   }
  ],
- "fallas": [
-  {
-   "paso": "6",
-   "que": "bot/subir_web.py --aplicar"
-  }
- ],
+ "fallas": [],
  "ultimo_evento": {
   "n": "469",
   "nombre": "PRITTY FREE",
@@ -56,25 +51,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 163,
-   "read": 23412
+   "write": 173,
+   "read": 24083
   },
   "objeto": {
-   "leidas": 1736040,
-   "escritas": 16506,
-   "pedidos": 4784
+   "leidas": 1861005,
+   "escritas": 18221,
+   "pedidos": 5083
   },
   "worker": {
-   "pedidos": 12135,
+   "pedidos": 12201,
    "errores": 1,
-   "sub": 12959,
+   "sub": 13043,
    "p50_ms": 1.23,
-   "p99_ms": 7.59
+   "p99_ms": 7.62
   },
   "r2": {
-   "objetos": 4020,
-   "gb": 0.446,
-   "ts": 1791913617
+   "objetos": 4001,
+   "gb": 0.442,
+   "ts": 1791957704
   }
  }
 }
