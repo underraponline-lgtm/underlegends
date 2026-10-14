@@ -520,6 +520,48 @@ button.btn{background:transparent;cursor:pointer}
 .dv-esc-p.on{background:var(--inv);color:var(--inv-tinta)}
 .dv-esc-p.on small{color:inherit;opacity:.8}
 .dv-vacia,.dv-tuyo{margin:0;font:700 14px/1.45 Archivo,sans-serif;max-width:70ch}
+/* 🪜 Divisiones rediseñada (14/10/2026): tu semana, la escalera con caras, las zonas como bandas y dos columnas */
+.dv2{grid-template-areas:"tu" "esc" "tab" "info";gap:16px}
+.dv2-tu{grid-area:tu;min-width:0}.dv2-esc{grid-area:esc;min-width:0;padding-top:16px}.dv2-tab{grid-area:tab;display:grid;gap:14px;min-width:0}.dv2-info{grid-area:info;display:grid;gap:10px;align-content:start;min-width:0}
+@media (min-width: 900px){.dv2{grid-template-columns:minmax(0,1.55fr) minmax(300px,1fr);grid-template-areas:"tu esc" "tab info";column-gap:24px}}
+.dv-tu{display:grid;gap:8px;padding:12px 14px;border:2px solid var(--linea);border-left:6px solid #29B298;background:var(--fondo)}
+.dv-tu-c{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.dv-tu-c b{font:900 22px/1.05 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.01em}
+.dv-tu-c small{font:700 16px/1 "Barlow Condensed",sans-serif;letter-spacing:.02em;color:var(--gris)}
+.dv-tu p{margin:0;font:600 15px/1.45 Archivo,sans-serif;max-width:62ch}
+.dv-tu p b{font-weight:900}
+.dv-tu p b.sube{color:#17735f}
+.dv-tu p b.baja{color:#b3262b}
+.dv-tu-barra{position:relative;display:block;height:10px;background:var(--caja);border:1px solid var(--linea)}
+.dv-tu-barra i{position:absolute;left:0;top:0;bottom:0;background:#29B298}
+.dv-tu-barra u{position:absolute;top:-5px;bottom:-5px;width:3px;margin-left:-1px;background:#F5C542;text-decoration:none}
+.dv-tu-chips{display:flex;flex-wrap:wrap;gap:6px}
+.dv-tu-chip{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.02em;padding:4px 8px;border:1.5px solid var(--linea);color:var(--tinta)}
+.dv-tu-chip.oro{border-color:#B8860B;color:#8a6508}
+.dv2 .dv-esc{max-width:none}
+.dv2 .dv-esc-p{position:relative;overflow:visible}
+.dv-esc-vos{position:absolute;left:-2px;right:-2px;bottom:100%;margin-bottom:4px;font:700 13px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.06em;text-align:center;color:#17735f}
+.dv-esc-caras{display:flex;align-items:center;font-style:normal}
+/* el nombre de cada escalón ya está en «Tu semana» y en el título de la tabla: en la escalera, «4ª», las caras y cuántos */
+.dv2 .dv-esc-p > span,.dv2 .dv-esc-p small em{display:none}
+/* ⚠️ las caras son `span` (`Cara`), y en el celular `.dv-esc-p span` las escondía */
+.dv2 .dv-esc-p .dv-esc-caras .cara{display:inline-grid}
+.dv-esc-cara{width:22px;height:22px;font:800 10px/1 Archivo,sans-serif;border:2px solid var(--fondo);margin-left:-6px}
+.dv-esc-caras > :first-child{margin-left:0}
+.dv-esc-p.on .dv-esc-cara{border-color:var(--inv)}
+.dv-tabla.dv-tabla2 li{grid-template-columns:28px 32px minmax(0,1fr) auto auto}
+.dv-tabla.dv-tabla2 li.dv-banda{display:block;padding:6px 10px;border-left:4px solid transparent;font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.dv-tabla.dv-tabla2 li.dv-banda.sube{color:#17735f;background:rgba(41,178,152,.12);border-left-color:#29B298}
+.dv-tabla.dv-tabla2 li.dv-banda.queda{color:var(--gris);background:var(--caja)}
+.dv-tabla.dv-tabla2 li.dv-banda.baja{color:#b3262b;background:rgba(229,72,77,.10);border-left-color:#E5484D}
+.dv-caja{display:grid;gap:6px;padding:10px 12px;border:2px solid var(--linea)}
+.dv-caja h4{margin:0;font:900 13px/1.1 Archivo,sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.dv-caja p{margin:0;font:600 13.5px/1.45 Archivo,sans-serif;color:var(--gris)}
+.dv-caja p b{color:var(--tinta)}
+.dv-caja-caras{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.dv-caja-caras .dv-esc-cara{margin-left:0;width:28px;height:28px}
+.dv-caja-caras small{font:700 14px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+@media (max-width: 520px){.dv-tabla.dv-tabla2 li{grid-template-columns:24px 28px minmax(0,1fr) auto}.dv-esc-cara{width:16px;height:16px;font-size:8px;margin-left:-5px;border-width:1.5px}.dv-tu-c b{font-size:19px}}
 /* 🏟️ las ligas de los servidores (12/10/2026): una pestaña por liga, su tabla y sus últimos resultados */
 .lg-tabs{display:flex;flex-wrap:wrap;gap:6px}
 .lg-tabs button{display:inline-flex;align-items:baseline;gap:6px;padding:7px 11px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);font:800 13px/1.1 Archivo,sans-serif;cursor:pointer}

@@ -114,25 +114,133 @@ function enCuanto(liga, iso) {
 
 // 🪜 LA ESCALERA (Dlx, 08/10/2026: «quiero que mejores la sección de divisiones»; a las cuatro ideas, «A»). Las seis
 // siempre a la vista, de Sexta —donde se entra— a Primera —la cima—, con cuántos juegan esta semana en cada una y cuál
-// es la tuya. Había un botón por división CON GENTE: se veían Cuarta, Quinta y Sexta y no a dónde se podía llegar
-function Escalera({ nombres, divs, sel, setSel, mia }) {
+// es la tuya. Había un botón por división CON GENTE: se veían Cuarta, Quinta y Sexta y no a dónde se podía llegar.
+// 🧑 Y DESDE EL 14/10/2026 CON CARAS Y «VOS» (Dlx, a la maqueta: «Escalera con caras y vos»): las caras de los primeros
+// tres de cada una, y la marca de la tuya ARRIBA del escalón —adentro se pisaba con el nombre: «CUARTA» encima de «7
+// jugando · la tuya» en la compu—
+function Escalera({ liga, nombres, divs, sel, setSel, mia }) {
   const orden = nombres.map((_n, i) => i).reverse();
   return (
     <div className="dv-esc" role="group" aria-label="Las divisiones, de Sexta a Primera">
       {orden.map((i, k) => {
         const n = (divs[i] || []).reduce((t, g) => t + g.length, 0);
+        const top = [].concat(...(divs[i] || []).map((g) => g.slice(0, 3))).sort((a, b) => b[1] - a[1]).slice(0, 3);
         return (
           <button type="button" key={i} aria-pressed={i === sel} onClick={() => setSel(i)}
+            aria-label={nombres[i] + ' División: ' + (n ? n + ' jugando' : 'nadie') + (i === mia ? ', la tuya' : '')}
             className={'dv-esc-p' + (i === sel ? ' on' : '') + (i === mia ? ' mia' : '') + (n ? '' : ' vacia')}
-            style={{ '--alto': (64 + k * 12) + 'px' }}>
+            style={{ '--alto': (78 + k * 12) + 'px' }} title={nombres[i] + ' División'}>
+            {i === mia ? <i className="dv-esc-vos" aria-hidden="true">VOS</i> : null}
             <b>{i + 1}ª</b>
             <span>{nombres[i]}</span>
-            {/* en el celular, sólo el número: «jugando» no entra en un escalón de 56 px (la tuya, la barra verde) */}
-            <small>{n ? <>{n}<em> jugando</em></> : 'nadie'}{i === mia ? <em> · la tuya</em> : null}</small>
+            {top.length ? (
+              <i className="dv-esc-caras" aria-hidden="true">{top.map(([raw]) => {
+                const f = liga.fila(raw);
+                return f ? <Cara key={raw} liga={liga} k={f.k} nombre={f.n} cls="cara dv-esc-cara" />
+                  : <span key={raw} className="cara dv-esc-cara ini">{limpio(raw).slice(0, 1).toUpperCase()}</span>;
+              })}</i>
+            ) : null}
+            <small>{n ? <>{n}<em> jugando</em></> : i === 0 ? 'la cima' : 'nadie'}</small>
           </button>
         );
       })}
     </div>
+  );
+}
+
+// 🎯 TU SEMANA (Dlx, 14/10/2026, a la maqueta: «Tu semana arriba»). Lo primero que importa —en qué división estás, qué
+// puesto, si subís o bajás y cuánto te falta— y el premio y el reloj a la vista. Antes era un párrafo largo arriba y una
+// línea chica abajo de la escalera
+function TuSemana({ liga, D, nombres, divs, esYo }) {
+  const cierra = enCuanto(liga, D.fin);
+  const ultima = nombres.length - 1;
+  let di = -1, gi = -1, pos = -1;
+  divs.forEach((gs, i) => (gs || []).forEach((g, j) => {
+    const p = g.findIndex((f) => esYo(f[0]));
+    if (di < 0 && p >= 0) { di = i; gi = j; pos = p; }
+  }));
+  const reloj = cierra ? <span className="dv-tu-chip oro">cierra {cierra}</span> : null;
+  if (di < 0) {
+    const yaEsta = liga.yo ? Object.keys(D.v || {}).find(esYo) : null;
+    return (
+      <section className="dv-tu" aria-label="Tu semana">
+        <div className="dv-tu-c"><b>{yaEsta != null ? nombres[D.v[yaEsta]] + ' División' : 'Sexta División'}</b><small>todavía no jugaste esta semana</small></div>
+        <p>Jugás un evento y entrás en la tabla de esta semana. Los primeros de cada grupo suben y cobran <b>{num(D.p)} Puntos de Tienda</b>.</p>
+        <div className="dv-tu-chips">{reloj}</div>
+      </section>
+    );
+  }
+  const g = (divs[di] || [])[gi] || [];
+  const z = zonaDe(g.length, D.z);
+  const subeZ = di > 0 ? z : 0;
+  const bajaZ = di < ultima ? z : 0;
+  const pts = g[pos][1];
+  const max = Math.max(1, g[0][1]);
+  let msg, chip = '';
+  if (subeZ && pos < subeZ) {
+    msg = <>Si la semana cierra así, <b className="sube">subís a {nombres[di - 1]}</b> y cobrás {num(D.p)} Puntos de Tienda.</>;
+    const atras = g[subeZ];
+    if (atras) chip = limpio(atras[0]) + ', ' + (subeZ + 1) + 'º, a ' + num(Math.max(0, pts - atras[1])) + ' pts';
+  } else if (bajaZ && pos >= g.length - bajaZ) {
+    const arriba = g[g.length - bajaZ - 1];
+    msg = <><b className="baja">Zona de descenso</b>: {arriba ? 'te faltan ' + num(Math.max(1, arriba[1] - pts + 1)) + ' pts para salir.' : 'si cierra así, bajás a ' + nombres[di + 1] + '.'}</>;
+    if (arriba) chip = 'para salir: pasar a ' + limpio(arriba[0]);
+  } else if (subeZ) {
+    const corte = g[subeZ - 1];
+    msg = <>Te faltan <b>{num(Math.max(1, corte[1] - pts + 1))} pts</b> para entrar en la zona de subida y cobrar {num(D.p)}.</>;
+    chip = 'el ' + subeZ + 'º: ' + limpio(corte[0]) + ' · ' + num(corte[1]);
+  } else if (di > 0 && !z) {
+    // un grupo de menos de 3: un tercio de 1 o 2 es cero, así que nadie sube (`divisiones.zona()`)
+    msg = <>Sos {g.length === 1 ? 'el único' : 'uno de los ' + g.length} en {nombres[di]} esta semana: para que alguien suba, el grupo necesita al menos 3.</>;
+  } else {
+    msg = di === 0 ? <>Estás en <b>Primera</b>: la cima.</> : <>Vas {pos + 1}º de {g.length}.</>;
+  }
+  const corteP = subeZ && g[subeZ - 1] ? g[subeZ - 1][1] : 0;
+  return (
+    <section className="dv-tu" aria-label="Tu semana">
+      <div className="dv-tu-c"><b>{nombres[di]} División</b><small>{(divs[di] || []).length > 1 ? 'grupo ' + (gi + 1) + ' · ' : ''}vas {pos + 1}º de {g.length}</small></div>
+      <p>{msg}</p>
+      {/* 📏 tus puntos contra los del primero, y la raya del último que sube */}
+      <span className="dv-tu-barra" role="progressbar" aria-label="Tus puntos contra los del primero" aria-valuemin={0} aria-valuemax={max} aria-valuenow={pts}>
+        <i style={{ width: Math.min(100, Math.round(100 * pts / max)) + '%' }} />
+        {corteP ? <u style={{ left: Math.min(100, Math.round(100 * corteP / max)) + '%' }} title={'el ' + subeZ + 'º: ' + num(corteP) + ' pts'} /> : null}
+      </span>
+      <div className="dv-tu-chips">{reloj}{chip ? <span className="dv-tu-chip">{chip}</span> : null}</div>
+    </section>
+  );
+}
+
+// 🏷️ las tres zonas de un grupo como bandas con su título (Dlx, 14/10/2026: «Zonas como bandas»): antes eran líneas
+// de corte entre filas, debajo de la zona; ahora el título va ARRIBA de cada bloque
+function Grupo({ liga, g, gi, gs, sel, nombres, D, esYo }) {
+  const ultima = nombres.length - 1;
+  const z = zonaDe(g.length, D.z);
+  const subeZ = sel > 0 ? z : 0;
+  const bajaZ = sel < ultima ? z : 0;
+  const desdeBaja = bajaZ ? Math.max(subeZ, g.length - bajaZ) : g.length;
+  const banda = (cls, txt) => <li key={'b-' + cls} className={'dv-banda ' + cls}>{txt}</li>;
+  const filas = [];
+  g.forEach(([raw, pts, ev], i) => {
+    if (i === 0 && subeZ) filas.push(banda('sube', '▲ Suben a ' + nombres[sel - 1] + ' · +' + num(D.p) + ' Puntos de Tienda'));
+    if (i === subeZ && i < desdeBaja && (subeZ || bajaZ)) filas.push(banda('queda', 'Se quedan en ' + nombres[sel]));
+    if (bajaZ && i === desdeBaja) filas.push(banda('baja', '▼ Bajan a ' + nombres[sel + 1]));
+    const f = liga.fila(raw);
+    const zona = i < subeZ ? 'sube' : i >= desdeBaja ? 'baja' : '';
+    filas.push(
+      <li key={raw} className={zona + (esYo(raw) ? ' yo' : '')}>
+        <span className="dv-i">{i + 1}</span>
+        {f ? <Cara liga={liga} k={f.k} nombre={f.n} cls="cara dv-cara" /> : <span className="cara dv-cara ini">{limpio(raw).slice(0, 1).toUpperCase()}</span>}
+        {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(raw)}</a> : <span className="dv-n">{limpio(raw)}</span>}
+        <span className="dv-ev">{ev} {ev === 1 ? 'evento' : 'eventos'}</span>
+        <b className="dv-p">{num(pts)}</b>
+      </li>,
+    );
+  });
+  return (
+    <section className="dv-g" aria-label={nombres[sel] + ' División' + (gs.length > 1 ? ', grupo ' + (gi + 1) : '')}>
+      <h3 className="dv-gt">{nombres[sel]} División{gs.length > 1 ? ' · grupo ' + (gi + 1) : ''}<small>{g.length} jugando</small></h3>
+      <ol className="dv-tabla dv-tabla2">{filas}</ol>
+    </section>
   );
 }
 
@@ -151,69 +259,46 @@ export function Divisiones({ liga }) {
   const ultYo = ult && yo ? (ult.sube.some(esYo) ? 'sube' : ult.baja.some(esYo) ? 'baja' : '') : '';
   const gs = divs[sel] || [];
   const ultima = nombres.length - 1;
-  const cierra = enCuanto(liga, D.fin);
+  const nadie = !divs.some((x) => (x || []).length);
+  // 🖥️ EN LA COMPU, A DOS COLUMNAS (Dlx, 14/10/2026: «Compu a dos columnas»): a la izquierda tu semana y la tabla; a la
+  // derecha la escalera, cómo funciona y la semana pasada. A ~1333 px la escalera ocupaba media pantalla y dejaba un
+  // hueco grande a la derecha. En el celular, una columna: tu semana, la escalera, la tabla y lo demás
   return (
-    <div className="dv">
-      <p className="dv-cab">Semana del {fechaCorta(D.sem)} · cierra {liga.dia(D.fin)}{cierra ? <b> ({cierra})</b> : null}.
-        {' '}Los {D.z} primeros de cada grupo suben y ganan <b>{num(D.p)} Puntos de Tienda</b>; los {D.z} últimos bajan.
-        {' '}En un grupo chico, un tercio.</p>
-      {ult ? <p className="dv-ult">{ultYo === 'sube' ? '⬆️ La semana pasada subiste de división. ' : ultYo === 'baja' ? '⬇️ La semana pasada bajaste de división. ' : ''}
-        La semana del {fechaCorta(ult.sem)} subieron {ult.sube.length} y bajaron {ult.baja.length}.</p> : null}
-      {!divs.some((x) => (x || []).length) ? <p className="dv-cab"><b>Semana nueva:</b> todavía nadie jugó. Las tablas arrancan con el primer evento de la semana.</p> : null}
-      <Escalera nombres={nombres} divs={divs} sel={sel} setSel={setSel} mia={mia} />
-      {!gs.length ? (
-        <p className="dv-vacia">{sel === 0 ? 'Nadie llegó todavía a Primera División: es la cima. ' : 'Esta semana nadie juega en ' + nombres[sel] + ' División. '}
-          {sel < ultima ? 'Se llega subiendo desde ' + nombres[sel + 1] + ': los ' + D.z + ' primeros de cada grupo suben.' : 'Se entra jugando un evento.'}</p>
-      ) : null}
-      {gs.map((g, gi) => {
-        const z = zonaDe(g.length, D.z);
-        const subeZ = sel > 0 ? z : 0;
-        const bajaZ = sel < ultima ? z : 0;
-        // 🎯 cuánto te falta: para entrar en la zona de subida, o para salir de la de descenso
-        const pos = g.findIndex((f) => esYo(f[0]));
-        let tuyo = '';
-        if (pos >= 0) {
-          const pts = g[pos][1];
-          if (bajaZ && pos >= g.length - bajaZ) {
-            const arriba = g[g.length - bajaZ - 1];
-            tuyo = '⬇️ Vas ' + (pos + 1) + 'º, en zona de descenso' + (arriba ? ': te faltan ' + num(Math.max(1, arriba[1] - pts + 1)) + ' pts para salir.' : '.');
-          } else if (subeZ && pos < subeZ) tuyo = '⬆️ Vas ' + (pos + 1) + 'º: si la semana cierra así, subís a ' + nombres[sel - 1] + '.';
-          else if (subeZ) tuyo = 'Vas ' + (pos + 1) + 'º: te faltan ' + num(Math.max(1, g[subeZ - 1][1] - pts + 1)) + ' pts para entrar en la zona de subida.';
-          else tuyo = 'Vas ' + (pos + 1) + 'º de ' + g.length + '.';
-        }
-        const corte = subeZ && g[subeZ - 1] ? 'para subir hoy: ' + num(g[subeZ - 1][1]) + ' pts' : '';
-        return (
-          <section className="dv-g" key={gi} aria-label={nombres[sel] + ' División' + (gs.length > 1 ? ', grupo ' + (gi + 1) : '')}>
-            <h3 className="dv-gt">{nombres[sel]} División{gs.length > 1 ? ' · grupo ' + (gi + 1) : ''}<small>{g.length} jugando{corte && pos < 0 ? ' · ' + corte : ''}</small></h3>
-            {tuyo ? <p className="dv-tuyo">{tuyo}</p> : null}
-            <ol className="dv-tabla">
-              {g.map(([raw, pts, ev], i) => {
-                const f = liga.fila(raw);
-                const sube = i < subeZ;
-                const baja = bajaZ && i >= g.length - bajaZ;
-                const cls = (sube ? 'sube' : baja ? 'baja' : '') + (esYo(raw) ? ' yo' : '');
-                const fila = (
-                  <li key={raw} className={cls}>
-                    <span className="dv-i">{i + 1}</span>
-                    {f ? <Cara liga={liga} k={f.k} nombre={f.n} cls="cara dv-cara" /> : <span className="cara dv-cara ini">{limpio(raw).slice(0, 1).toUpperCase()}</span>}
-                    {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(raw)}</a> : <span className="dv-n">{limpio(raw)}</span>}
-                    {/* ⚠️ sin etiqueta va un hueco y no `null`: cada fila es su propia grilla de seis columnas, y sin él
-                        los puntos y los eventos de esa fila quedaban corridos (revisión del 05/10/2026) */}
-                    {sube ? <i className="dv-z">SUBE</i> : baja ? <i className="dv-z">BAJA</i> : <span />}
-                    <span className="dv-ev">{ev} {ev === 1 ? 'evento' : 'eventos'}</span>
-                    <b className="dv-p">{num(pts)}</b>
-                  </li>
-                );
-                // ✂️ LAS LÍNEAS DE CORTE: dónde termina la zona de subida y dónde empieza la de descenso
-                const cortes = [];
-                if (subeZ && i === subeZ && i < g.length) cortes.push(<li key={'s' + i} className="dv-corte sube" aria-hidden="true">▲ hasta acá suben a {nombres[sel - 1]} y ganan {num(D.p)} Puntos de Tienda</li>);
-                if (bajaZ && i === g.length - bajaZ && i > subeZ) cortes.push(<li key={'b' + i} className="dv-corte baja" aria-hidden="true">▼ desde acá bajan a {nombres[sel + 1]}</li>);
-                return cortes.length ? [...cortes, fila] : fila;
-              })}
-            </ol>
+    <div className="dv dv2">
+      <div className="dv2-tu"><TuSemana liga={liga} D={D} nombres={nombres} divs={divs} esYo={esYo} /></div>
+      <div className="dv2-esc"><Escalera liga={liga} nombres={nombres} divs={divs} sel={sel} setSel={setSel} mia={mia} /></div>
+      <div className="dv2-tab">
+        {nadie ? <p className="dv-cab"><b>Semana nueva:</b> todavía nadie jugó. Las tablas arrancan con el primer evento de la semana.</p> : null}
+        {!gs.length && !nadie ? (
+          <p className="dv-vacia">{sel === 0 ? 'Nadie llegó todavía a Primera División: es la cima. ' : 'Esta semana nadie juega en ' + nombres[sel] + ' División. '}
+            {sel < ultima ? 'Se llega subiendo desde ' + nombres[sel + 1] + ': los ' + D.z + ' primeros de cada grupo suben.' : 'Se entra jugando un evento.'}</p>
+        ) : null}
+        {gs.map((g, gi) => <Grupo key={gi} liga={liga} g={g} gi={gi} gs={gs} sel={sel} nombres={nombres} D={D} esYo={esYo} />)}
+      </div>
+      <div className="dv2-info">
+        <section className="dv-caja">
+          <h4>Cómo funciona</h4>
+          <p>Semana del {fechaCorta(D.sem)} al {liga.dia(D.fin)}. Jugás un evento y entrás en Sexta; los grupos son de 30.
+            {' '}Al cierre, los {D.z} primeros de cada grupo suben y cobran <b>{num(D.p)} Puntos de Tienda</b>, y los {D.z} últimos bajan. En un grupo chico, un tercio.</p>
+        </section>
+        {ult ? (
+          <section className="dv-caja">
+            <h4>La semana pasada</h4>
+            <p>{ultYo === 'sube' ? '⬆️ Subiste de división. ' : ultYo === 'baja' ? '⬇️ Bajaste de división. ' : ''}
+              Del {fechaCorta(ult.sem)}: subieron {ult.sube.length} y bajaron {ult.baja.length}.</p>
+            {ult.sube.length ? (
+              <span className="dv-caja-caras" aria-label="Algunos de los que subieron">
+                {ult.sube.slice(0, 10).map((raw) => {
+                  const f = liga.fila(raw);
+                  return f ? <a key={raw} href={'#/r/' + encodeURIComponent(f.k)} title={limpio(raw)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara dv-esc-cara" /></a>
+                    : <span key={raw} className="cara dv-esc-cara ini" title={limpio(raw)}>{limpio(raw).slice(0, 1).toUpperCase()}</span>;
+                })}
+                {ult.sube.length > 10 ? <small>+{ult.sube.length - 10}</small> : null}
+              </span>
+            ) : null}
           </section>
-        );
-      })}
+        ) : null}
+      </div>
     </div>
   );
 }
