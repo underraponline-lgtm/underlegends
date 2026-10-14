@@ -271,6 +271,7 @@
   "iconox": "Cronox",
   "nemixdelux": "Delux",
   "lrselborrachin": "LRS",
+  "ax": "Xubaru",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1389,6 +1390,10 @@
   [
    "Lrs el borrachin",
    "LRS"
+  ],
+  [
+   "Ax",
+   "Xubaru"
   ],
   [
    "Nexus",

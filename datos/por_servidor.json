@@ -85,6 +85,15 @@
     "pod": 0,
     "pts": 625,
     "racha": "0/0"
+   },
+   "URBF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 48,
+    "pod": 1,
+    "pts": 7500,
+    "racha": "1/1"
    }
   },
   "AKARK": {
@@ -351,15 +360,6 @@
     "pod": 0,
     "pts": 1250,
     "racha": "0/0"
-   },
-   "URBF": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 1,
-    "ovr": 48,
-    "pod": 1,
-    "pts": 7500,
-    "racha": "1/1"
    }
   },
   "Aktybo": {

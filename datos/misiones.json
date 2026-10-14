@@ -1548,6 +1548,12 @@
      16,
      0
     ],
+    "AGUSTÍN51K": [
+     1,
+     1,
+     1,
+     0
+    ],
     "AKARK": [
      1,
      2,
@@ -1573,9 +1579,9 @@
      0
     ],
     "Agus": [
-     3,
-     1,
-     1,
+     2,
+     2,
+     2,
      0
     ],
     "Ariaxer": [
@@ -2198,11 +2204,12 @@
     ]
    },
    "pts": {
+    "AGUSTÍN51K": 1600,
     "AKARK": 600,
     "Abyssus": 600,
     "Abysuss": 1600,
     "Agente sombra": 300,
-    "Agus": 2900,
+    "Agus": 900,
     "Ariaxer": 300,
     "BNA": 2900,
     "Benjixo": 900,
@@ -2267,6 +2274,7 @@
   ".SosaATR": 300,
   "1200": 300,
   "19": 1600,
+  "AGUSTÍN51K": 1600,
   "AKARK": 600,
   "ALESS": 300,
   "ALTER 🇨🇱": 300,
@@ -2276,7 +2284,7 @@
   "Abyssus": 900,
   "Abysuss": 1600,
   "Agente sombra": 300,
-  "Agus": 5800,
+  "Agus": 3800,
   "Akutagawa🇹🇼": 300,
   "Aldre": 2900,
   "Alexi": 300,
