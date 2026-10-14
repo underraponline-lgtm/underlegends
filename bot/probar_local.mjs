@@ -2105,6 +2105,13 @@ console.log('\n🛡️ EL FRENO POR IP\n');
   ok('el Worker: lo que pide la página se cuenta por la IP de quien mira: el 241 de esa persona frena, otra no',
     cp.slice(0, 240).every((c) => c !== 429) && cp.slice(240).every((c) => c === 429) && otraP !== 429,
     JSON.stringify([cp.filter((c) => c === 429).length, otraP]));
+  // IPv6: se cuenta el bloque /64, así rotar direcciones adentro de él no esquiva el freno
+  const v6 = [];
+  for (let i = 0; i < 242; i++) {
+    v6.push((await worker.fetch(new Request('https://w/no-existe', { headers: { 'cf-connecting-ip': '2001:db8:aa:bb:' + (i % 50).toString(16) + '::1' } }), env, ctx)).status);
+  }
+  ok('IPv6 se cuenta por su bloque /64: rotar la dirección adentro no esquiva el freno',
+    v6.slice(0, 240).every((c) => c !== 429) && v6.slice(240).every((c) => c === 429), JSON.stringify(v6.filter((c) => c === 429).length));
   ok('con el binding de Cloudflare manda él', await (async () => {
     let n = 0;
     const env2 = Object.assign({}, env, { FRENO_IP: { limit: async () => ({ success: ++n <= 2 }) } });

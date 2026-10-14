@@ -249,6 +249,14 @@ async function avisos(req, url) {
 // ⚠️ Es por isolate (la memoria de esta copia del código en ese datacenter), no global: frena a una IP que manda
 // muchísimos, no a un ataque desde miles de IPs (eso lo frena Cloudflare). El techo deja de sobra a una página normal
 // (unos 10 pedidos al abrirla) y a muchos detrás de la misma IP (una escuela, un celular con CGNAT)
+/** La IP para contar: IPv4 entera; IPv6 por su bloque /64, que es lo que tiene una casa o un celular (adentro de él
+ * se cambia de dirección gratis, y contarlas sueltas dejaría pasar a quien las rota) */
+const bloqueIP = (ip) => {
+  const x = String(ip || '');
+  if (x.indexOf(':') < 0) return x;
+  const p = x.split(':');
+  return p.slice(0, 4).join(':') + '::/64';
+};
 const LIMITE_IP = { max: 300, ventana: 60000, tope: 5000 };
 const POR_IP = new Map();
 /** ¿Esa IP ya pasó su techo en este minuto? Cuenta este pedido */
@@ -368,7 +376,7 @@ export default {
     // (el ciclo, un navegador viejo) pasa como antes
     // 🛡️ el freno por IP: todo lo de la API y la vista previa de los perfiles (ver `demasiados()`)
     if ((url.pathname.indexOf('/api/') === 0 || url.pathname.indexOf('/freestyle-rap/r/') === 0)
-      && demasiados(req.headers.get('cf-connecting-ip'))) return muchos();
+      && demasiados(bloqueIP(req.headers.get('cf-connecting-ip')))) return muchos();
     if (req.method === 'POST' && url.pathname.indexOf('/api/') === 0) {
       const o = req.headers.get('origin');
       if (o !== null && o !== url.origin) return new Response('no', { status: 403, headers: SEGURO });

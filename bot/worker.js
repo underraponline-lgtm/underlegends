@@ -3786,6 +3786,14 @@ function kvMedido(env, ctx, ruta) {
 // ⚠️ Es por isolate (la memoria de esta copia del código en ese datacenter), no global: frena a una IP que manda
 // muchísimos, no a un ataque desde miles de IPs (eso lo frena Cloudflare). El techo deja de sobra a una página normal
 // (unos 10 pedidos al abrirla) y a muchos detrás de la misma IP (una escuela, un celular con CGNAT)
+/** La IP para contar: IPv4 entera; IPv6 por su bloque /64, que es lo que tiene una casa o un celular (adentro de él
+ * se cambia de dirección gratis, y contarlas sueltas dejaría pasar a quien las rota) */
+const bloqueIP = (ip) => {
+  const x = String(ip || '');
+  if (x.indexOf(':') < 0) return x;
+  const p = x.split(':');
+  return p.slice(0, 4).join(':') + '::/64';
+};
 const LIMITE_IP = { max: 240, ventana: 60000, tope: 5000 };
 const POR_IP = new Map();
 /** ¿Esa IP ya pasó su techo en este minuto? Cuenta este pedido */
@@ -3806,10 +3814,13 @@ function demasiados(ip, ahora = Date.now()) {
   return x.n > LIMITE_IP.max;
 }
 /**
- * 🛡️ ¿Esa clave (`ip:` o `pag:` + IP) pasó su techo? Con el binding de Cloudflare (`FRENO_IP`, 240 por minuto): un
- * contador del DATACENTER, compartido por todas las copias del código. El de memoria (`demasiados()`) queda de respaldo:
- * medido el 14/10/2026, sin el binding 400 pedidos seguidos no recibían un solo 429, porque Cloudflare los reparte entre
- * varias copias y cada una cuenta sola
+ * 🛡️ ¿Esa clave (`ip:` o `pag:` + IP) pasó su techo? Con el binding de Cloudflare (`FRENO_IP`, 240 por minuto) y, si
+ * falla, el de memoria (`demasiados()`).
+ * 🔴 MEDIDO EL 14/10/2026 EN PRODUCCIÓN, Y FRENA MENOS DE LO QUE PROMETE: el binding anda en el plan gratis (300 llamadas
+ * en un mismo pedido: 241 pasan y 59 no), pero su contador es de CADA MÁQUINA del datacenter y se sincroniza tarde. Una
+ * ráfaga de una sola IP (480 pedidos en 40 s, desde IAD) se repartió entre muchas máquinas y no recibió un solo 429. Sirve
+ * contra quien insiste desde una máquina; contra una inundación de verdad, lo que frena es la regla de límite de
+ * Cloudflare de un DOMINIO PROPIO, que corta antes de que el pedido llegue acá y cuente para los 100.000 del día
  */
 async function frenoIP(env, clave) {
   if (!clave) return false;
@@ -3962,8 +3973,8 @@ export default {
     // paginas/_worker.js) y se cuenta por ésa
     const ipQ = req.headers.get('cf-connecting-ip') || '';
     const ipPag = req.headers.get('x-lg-ip') || '';
-    const claveIP = ipPag ? 'pag:' + ipPag
-      : ipQ && !ipQ.startsWith('2a06:98c0:') && !req.headers.get('cf-worker') ? 'ip:' + ipQ : '';
+    const claveIP = ipPag ? 'pag:' + bloqueIP(ipPag)
+      : ipQ && !ipQ.startsWith('2a06:98c0:') && !req.headers.get('cf-worker') ? 'ip:' + bloqueIP(ipQ) : '';
     if (!(req.method === 'POST' && camino === '/') && !req.headers.get('x-lg-ciclo') && claveIP
       && await frenoIP(env0, claveIP)) return muchos();
     // 📏 cada lectura de KV, contada por ruta (ver `kvMedido()`)
