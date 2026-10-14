@@ -241,9 +241,91 @@ async function avisos(req, url) {
   });
 }
 
+// 🔗 LA VISTA PREVIA DE CADA PERFIL (Dlx, 13/10/2026: «quizás que el link de cada perfil tenga un fondo diferente? no sé
+// qué tanto ocupe eso»). Al pegar `/freestyle-rap/r/<clave>` en Discord, WhatsApp o X, la vista previa trae su nombre,
+// sus números y SU TARJETA de imagen, en vez del cartel de la Liga. ⚠️ SÓLO PARA LOS BOTS que arman la vista previa: a la
+// gente le llega el index.html de siempre, sin pedir nada más. Ocupa poco: dos lecturas cacheadas (el lobby, y los
+// perfiles sólo si no está entre los 200 de la tabla) por cada link pegado
+const BOTS_VISTA = /discordbot|twitterbot|facebookexternalhit|facebot|whatsapp|telegrambot|slackbot|linkedinbot|embedly|skypeuripreview|redditbot|pinterest|vkshare|iframely|mastodon|bluesky|cardyb|googlebot|bingbot|applebot/i;
+const R2_CARTAS = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev';
+const ORDEN_CARTA = ['temporada', 'servidor', 'competitivo', 'pais'];
+const banderaDe = (cc) => (/^[a-z]{2}$/i.test(String(cc || ''))
+  ? String.fromCodePoint(...[...String(cc).toUpperCase()].map((c) => 0x1F1E6 + c.charCodeAt(0) - 65)) : '');
+
+/** La fila de alguien para su vista previa: `{f, temp, cartas}` (la tabla del lobby, o su perfil si no entra), o `null` */
+async function fichaVista(k) {
+  const pedir = async (ruta) => {
+    const r = await fetch(ORIGEN + ruta, { headers: { accept: 'application/json' }, cf: { cacheTtl: 300, cacheEverything: true } });
+    return r.ok ? r.json() : null;
+  };
+  const L = await pedir('/lobby?json=1').catch(() => null);
+  let f = L && (L.tabla || []).find((x) => x && x.k === k);
+  if (!f) {
+    const P = await pedir('/perfiles').catch(() => null);
+    f = P && P.p && P.p[k] && P.p[k].f;
+  }
+  return f ? { f, temp: String((L && L.temporada) || 'T1').toUpperCase(), cartas: (L && L.cartas) || [] } : null;
+}
+
+/** Lo que dice la vista previa de alguien: `{titulo, desc, img, alt}`. Sin `img` queda el cartel de la Liga */
+function textoVista(f, k, temp, cartas) {
+  const nombre = String(f.n || k).trim();
+  const titulo = nombre + (f.cc && !/[\u{1F1E6}-\u{1F1FF}]/u.test(nombre) ? ' ' + banderaDe(f.cc) : '') + ' · Liga Global de Freestyle';
+  const partes = f.solo ? ['En la Liga Global por su rol'] : [f.pos ? '#' + f.pos + ' de la ' + temp : '', f.ovr ? 'OVR ' + f.ovr : '',
+    // ⚠️ sin el servidor: se muestra sólo si lo eligió (Dlx, 12/10/2026), y eso no viaja en la fila
+    f.rg ? 'Rango ' + f.rg : '', f.ev ? f.ev + (f.ev === 1 ? ' evento' : ' eventos') : ''].filter(Boolean);
+  const desc = (partes.length ? partes.join(' · ') + '. ' : '') + 'Su perfil, sus tarjetas y sus batallas en la Liga Global de Freestyle.';
+  const carta = ORDEN_CARTA.find((c) => (f.c || []).includes(c));
+  let img = '';
+  if (carta) {
+    const i = (cartas || []).indexOf(carta);
+    const v = typeof f.cv === 'string' && i >= 0 ? f.cv.split('.')[i] : '';
+    img = R2_CARTAS + '/' + encodeURIComponent(k) + '/' + carta + '.webp' + (v ? '?v=' + v : '');
+  }
+  return { titulo, desc, img, alt: 'La tarjeta de ' + nombre };
+}
+
+/** El index.html con la vista previa de esa persona; `null` si no se sabe quién es (queda la de la Liga) */
+async function vistaPerfil(req, env, k, url) {
+  const x = await fichaVista(k).catch(() => null);
+  if (!x) return null;
+  const { titulo, desc, img, alt } = textoVista(x.f, k, x.temp, x.cartas);
+  const pag = await env.ASSETS.fetch(new Request(url.origin + '/', { headers: req.headers }));
+  const poner = (atr, valor) => ({ element(el) { el.setAttribute(atr, valor); } });
+  const sacar = { element(el) { el.remove(); } };
+  let rw = new HTMLRewriter()
+    .on('title', { element(el) { el.setInnerContent(titulo); } })
+    .on('meta[property="og:title"]', poner('content', titulo))
+    .on('meta[property="og:description"]', poner('content', desc))
+    .on('meta[name="description"]', poner('content', desc))
+    .on('meta[property="og:type"]', poner('content', 'profile'))
+    .on('meta[property="og:url"]', poner('content', url.origin + url.pathname));
+  if (img) {
+    // la tarjeta es vertical: sin las medidas del cartel (1200×630), que la deformarían
+    rw = rw.on('meta[property="og:image"]', poner('content', img))
+      .on('meta[name="twitter:image"]', poner('content', img))
+      .on('meta[property="og:image:width"]', sacar)
+      .on('meta[property="og:image:height"]', sacar)
+      .on('meta[property="og:image:alt"]', poner('content', alt));
+  }
+  const r = rw.transform(pag);
+  const h = new Headers(r.headers);
+  h.set('cache-control', 'public, max-age=300');
+  return new Response(r.body, { status: 200, headers: h });
+}
+
 export default {
   async fetch(req, env) {
     const url = new URL(req.url);
+
+    // 🔗 la vista previa de cada perfil, sólo para los bots (ver `vistaPerfil()`)
+    const mPerfil = req.method === 'GET' && /^\/freestyle-rap\/r\/([^/?#]{1,80})\/?$/.exec(url.pathname);
+    if (mPerfil && BOTS_VISTA.test(req.headers.get('user-agent') || '')) {
+      let k = mPerfil[1];
+      try { k = decodeURIComponent(k); } catch (e) { /* tal cual */ }
+      const v = await vistaPerfil(req, env, k, url).catch(() => null);
+      if (v) return v;
+    }
 
     // 🛡️ UN POST TIENE QUE VENIR DE ESTA PÁGINA (04/10/2026, la lista de seguridad de Dlx: «CSRF»). La cookie de la
     // sesión es SameSite=Strict, pero un formulario de otra página podía mandar a `/api/cuenta` el permiso de OTRA

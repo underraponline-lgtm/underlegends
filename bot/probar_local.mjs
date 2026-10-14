@@ -2065,6 +2065,68 @@ console.log('\nVERIFICARSE DESDE LA PÁGINA, ENTRANDO A DRA\n');
   }
 }
 
+console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
+
+{
+  // 🔗 Dlx, 13/10/2026: «que el link de cada perfil tenga un fondo diferente». Al bot que arma la vista previa le llega su
+  // nombre, sus números y su tarjeta; a la gente, la página de siempre. HTMLRewriter no existe en Node: uno de mentira que
+  // anota qué se le hizo a cada selector
+  const antes = globalThis.fetch, antesRW = globalThis.HTMLRewriter;
+  globalThis.HTMLRewriter = class {
+    constructor() { this.hs = []; }
+    on(sel, h) { this.hs.push([sel, h]); return this; }
+    transform() {
+      const hecho = {};
+      for (const [sel, h] of this.hs) {
+        h.element({ setAttribute: (a, v) => { hecho[sel] = v; }, setInnerContent: (v) => { hecho[sel] = v; },
+          remove: () => { hecho[sel] = '(sacado)'; } });
+      }
+      return new Response(JSON.stringify(hecho), { status: 200, headers: { 'content-type': 'text/html' } });
+    }
+  };
+  const lobby = { temporada: 't1', cartas: ['temporada', 'competitivo', 'servidor', 'pais'],
+    tabla: [{ n: 'Oasis', k: 'oasis', cc: 'cl', pos: 1, ovr: 95, rg: 'SS', ev: 23, sv: 'FFA', c: ['servidor', 'temporada'], cv: 'aa.bb.cc.dd' }] };
+  const perfiles = { p: { lejos: { f: { n: 'Lejos 🇦🇷', k: 'lejos', pos: 250, ovr: 50, ev: 1, c: ['servidor'], cv: 'x.y.z.w' } } } };
+  const pedidos = [];
+  globalThis.fetch = async (u) => {
+    pedidos.push(String(u));
+    if (/\/lobby\?json=1$/.test(String(u))) return new Response(JSON.stringify(lobby), { status: 200 });
+    if (/\/perfiles$/.test(String(u))) return new Response(JSON.stringify(perfiles), { status: 200 });
+    return new Response('{}', { status: 404 });
+  };
+  const ASSETS = { fetch: async () => new Response('<html>la de siempre</html>', { status: 200 }) };
+  const { default: proxy } = await import('./paginas/_worker.js');
+  const ver = async (ruta, ua) => {
+    pedidos.length = 0;
+    const r = await proxy.fetch(new Request('https://underlegends.pages.dev' + ruta, { headers: { 'user-agent': ua } }), { ASSETS });
+    const t = await r.text();
+    let j = null;
+    try { j = JSON.parse(t); } catch (e) { j = null; }
+    return { t, j, pedidos: pedidos.slice() };
+  };
+  const DISCORD = 'Mozilla/5.0 (compatible; Discordbot/2.0; +https://discordapp.com)';
+  try {
+    let r = await ver('/freestyle-rap/r/oasis', DISCORD);
+    ok('Discord pega el link de Oasis: su nombre con bandera, sus números y su Temporada de imagen (con su versión)',
+      r.j && r.j.title === 'Oasis 🇨🇱 · Liga Global de Freestyle' && /#1 de la T1 · OVR 95 · Rango SS · 23 eventos\./.test(r.j['meta[property="og:description"]'])
+      && r.j['meta[property="og:image"]'] === 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/oasis/temporada.webp?v=aa'
+      && r.j['meta[property="og:image:width"]'] === '(sacado)' && r.j['meta[property="og:url"]'] === 'https://underlegends.pages.dev/freestyle-rap/r/oasis',
+    JSON.stringify(r.j));
+    ok('y sin el servidor: sale sólo si lo eligió (Dlx, 12/10/2026)', r.j && !/FFA/.test(r.j['meta[property="og:description"]']));
+    r = await ver('/freestyle-rap/r/lejos', 'WhatsApp/2.23');
+    ok('quien no está entre los 200: de los perfiles, con la carta que tiene (Servidor) y sin repetir la bandera',
+      r.j && r.j.title === 'Lejos 🇦🇷 · Liga Global de Freestyle' && /\/lejos\/servidor\.webp\?v=z$/.test(r.j['meta[property="og:image"]'])
+      && r.pedidos.some((u) => /\/perfiles$/.test(u)), JSON.stringify(r.j));
+    r = await ver('/freestyle-rap/r/oasis', 'Mozilla/5.0 (Linux; Android 14) Chrome/130');
+    ok('a la gente, la página de siempre y sin pedir nada', r.t === '<html>la de siempre</html>' && !r.pedidos.length, r.t.slice(0, 80));
+    r = await ver('/freestyle-rap/r/nadie', DISCORD);
+    ok('un perfil que no existe: la vista previa de la Liga, como antes', r.t === '<html>la de siempre</html>', r.t.slice(0, 80));
+  } finally {
+    globalThis.fetch = antes;
+    globalThis.HTMLRewriter = antesRW;
+  }
+}
+
 console.log('\nTU CARTA SIN TU FOTO\n');
 
 {
