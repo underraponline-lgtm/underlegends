@@ -8,6 +8,7 @@
 import { useEffect, useState } from 'react';
 import { hora, limpio, mult, num, siglaDe } from './liga.js';
 import { DosToques, Ico } from './piezas.jsx';
+import { urlFondo } from './fondos.js';
 // 🔒 su CSS viene con este pedazo y no con el paquete de todos (ver dashboard.css)
 import ESTILO from './dashboard.css?inline';
 
@@ -901,7 +902,7 @@ function Historial({ hist, hacer, ocup }) {
       return (
         <li key={x.t + x.cual}>
           <div><b>{NOMBRE_AJ[x.cual] || x.cual}</b>
-            <small>{hace(x.t)} · {x.despues === null ? 'volvió a lo de siempre' : x.antes === null ? 'pasó a tu gusto' : 'cambió'}</small></div>
+            <small>{hace(x.t)} · {x.despues === null ? 'volvió a lo de siempre' : x.antes === null ? 'pasó a tu gusto' : 'cambió'}{x.por && x.por !== 'Dlx' ? ' · lo cambió ' + x.por : ''}</small></div>
           {puede ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Tocá de nuevo: vuelve a como estaba"
             onClick={() => hacer(x.cual, x.antes, 'Deshecho: volvió a como estaba.')}>Deshacer</DosToques> : null}
         </li>
@@ -987,7 +988,7 @@ function Roles({ roles, alCambiar }) {
   );
 }
 
-function Ajustes({ liga, aj, chat, hist, hacer, msg, ocup, roles, alRoles }) {
+function Ajustes({ liga, aj, chat, hist, hacer, msg, ocup, roles, alRoles, conRoles = true }) {
   return (
     <>
       <h2 className="db-h">Cada servidor</h2>
@@ -1005,8 +1006,8 @@ function Ajustes({ liga, aj, chat, hist, hacer, msg, ocup, roles, alRoles }) {
       </div>
       <h2 className="db-h">Los últimos cambios</h2>
       <Historial hist={hist} hacer={hacer} ocup={ocup} />
-      <h2 className="db-h">Roles</h2>
-      <Roles roles={roles} alCambiar={alRoles} />
+      {conRoles ? <><h2 className="db-h">Roles</h2>
+        <Roles roles={roles} alCambiar={alRoles} /></> : null}
     </>
   );
 }
@@ -1171,7 +1172,7 @@ function Corregir({ r, liga, alListo, hermanos }) {
 // 🔎 LO QUE ENCONTRÓ EL BOT de un reporte (13/10/2026, Dlx: «para cada cosa necesitaremos evidencia… que el bot nos dé
 // evidencia»): una línea por prueba —las inscripciones con la cuenta que las escribió, la llamada, lo ya decidido— y,
 // si todo apunta a una persona, la corrección sugerida para aplicar con un toque. Es una pista: decide Dlx
-function Evidencia({ r, alListo }) {
+function Evidencia({ r, alListo, corrige }) {
   const [ocup, setOcup] = useState(false);
   const [msg, setMsg] = useState('');
   const s = r.evid.sugerencia;
@@ -1187,7 +1188,7 @@ function Evidencia({ r, alListo }) {
     <div className="db-evid">
       <span className="db-rep-p">🔎 Lo que encontró el bot</span>
       <ul>{r.evid.lineas.slice(1).map(([ic, t]) => <li key={t}><span aria-hidden="true">{ic}</span>{t}</li>)}</ul>
-      {s && abierto && /^\d+$/.test(r.llave) ? (
+      {s && abierto && corrige && /^\d+$/.test(r.llave) ? (
         <div className="cu-btns">
           <button type="button" className="btn verde chico" disabled={ocup} onClick={aplicar}>
             {ocup ? 'Guardando…' : 'Aplicar lo sugerido: «' + s.nombre + '» era ' + (s.reporta ? 'quien lo mandó' : s.es_txt || s.es)}</button>
@@ -1197,7 +1198,7 @@ function Evidencia({ r, alListo }) {
   );
 }
 
-function Reportes({ rep, liga, alCambiar }) {
+function Reportes({ rep, liga, alCambiar, corrige = true }) {
   const [lista, setLista0] = useState(rep);
   useEffect(() => { setLista0(rep); }, [rep]);
   // y el número de la pestaña, al día (ver `alCambiar` en el Dashboard)
@@ -1224,7 +1225,7 @@ function Reportes({ rep, liga, alCambiar }) {
   };
   return (
     <div><h3>Errores en las llaves <small>reportados</small></h3>
-      {sugeridos.length >= 2 ? <div className="cu-btns">
+      {corrige && sugeridos.length >= 2 ? <div className="cu-btns">
         <button type="button" className="btn verde chico" disabled={msg.todos === '…'} onClick={todos}>Aplicar todo lo sugerido ({sugeridos.length})</button>
         {msg.todos && msg.todos !== '…' ? <small role="status">{msg.todos}</small> : null}
       </div> : null}
@@ -1240,15 +1241,17 @@ function Reportes({ rep, liga, alCambiar }) {
             <small>{hace(r.t)}{r.batalla ? ' · ' + r.batalla : ''}{r.evid && r.evid.quien ? <> · lo mandó {r.de ? <a href={'#/r/' + r.de}>{r.evid.quien}</a> : r.evid.quien}</>
               : r.de ? <> · lo mandó <a href={'#/r/' + r.de}>{r.de}</a></> : <> · quién lo mandó: lo dice el ciclo en su próxima corrida</>}</small>
             {r.texto ? <p>{r.texto}</p> : null}
-            {r.evid && (r.evid.lineas || []).length > 1 ? <Evidencia r={r} alListo={setLista} /> : null}
+            {r.evid && (r.evid.lineas || []).length > 1 ? <Evidencia r={r} alListo={setLista} corrige={corrige} /> : null}
             {r.estado === 'corregir' && r.fix ? <small>{r.fix.tipo === 'ganador' ? 'Ganó ' + r.fix.ganador + ' (' + r.fix.ronda + ')'
               : '«' + r.fix.nombre + '» era ' + (r.fix.reporta ? 'quien lo reportó' : r.fix.es || r.fix.nuevo)}</small> : null}
             {r.resultado ? <small>{r.resultado}</small> : null}
+            {/* 🔐 quién lo decidió, si no fue Dlx (los permisos, 13/10/2026) */}
+            {r.por && r.por !== 'Dlx' && r.estado ? <small>Lo decidió {r.por}.</small> : null}
             {abiertoA || r.estado === 'corregir' ? (
               abierto === r.id ? <Corregir r={r} liga={liga} alListo={(l) => { setLista(l); setAbierto(null); }}
                 hermanos={lista.filter((x) => x.id !== r.id && x.llave === r.llave && (x.estado === '' || x.estado === 'no_pude'))} /> : (
                 <div className="cu-btns">
-                  {/^\d+$/.test(r.llave) ? <button type="button" className="btn verde chico" onClick={() => setAbierto(r.id)}>{r.estado === 'corregir' ? 'Cambiar la corrección' : 'Corregir'}</button> : null}
+                  {corrige && /^\d+$/.test(r.llave) ? <button type="button" className="btn verde chico" onClick={() => setAbierto(r.id)}>{r.estado === 'corregir' ? 'Cambiar la corrección' : 'Corregir'}</button> : null}
                   <button type="button" className="btn borde2 chico" disabled={msg[r.id] === '…'} onClick={() => cerrar(r, 'listo')}>Listo</button>
                   <button type="button" className="btn borde2 chico" disabled={msg[r.id] === '…'} onClick={() => cerrar(r, 'prueba')}>Era una prueba</button>
                   {msg[r.id] && msg[r.id] !== '…' ? <small role="status">{msg[r.id]}</small> : null}
@@ -1284,7 +1287,7 @@ function FondosRevisar({ fs, alCambiar }) {
       <ul>{fs.map((f) => (
         <li key={f.quien}>
           <div className="db-l1"><b>{f.k ? <a href={'#/r/' + f.k}>{f.k}</a> : 'una cuenta'}</b><small>{hace(f.t)}</small></div>
-          <div className="db-fondo" style={{ backgroundImage: 'url("' + f.pend + '")' }} role="img" aria-label="El fondo que subió" />
+          <div className="db-fondo" style={{ backgroundImage: urlFondo(f.pend) || 'none' }} role="img" aria-label="El fondo que subió" />
           <div className="cu-btns">
             <button type="button" className="btn verde chico" disabled={ocup === f.quien} onClick={() => decidir(f, true)}>Aprobar</button>
             <select className="db-sel db-sel-corto" value={motivo[f.quien] || MOTIVOS_FONDO[0]} onChange={(e) => setMotivo(Object.assign({}, motivo, { [f.quien]: e.target.value }))}>
@@ -1336,7 +1339,7 @@ function Pregunta({ p, r, alListo }) {
       {p.pistas && p.pistas !== '—' ? <p className="db-dec-pistas">{p.pistas}</p> : null}
       {r ? (
         <div className="cu-btns">
-          <small>✍️ <b>{r.r}</b>{r.nota ? ' · ' + r.nota : ''} · lo aplica el ciclo en su próxima corrida</small>
+          <small>✍️ <b>{r.r}</b>{r.nota ? ' · ' + r.nota : ''}{r.por && r.por !== 'Dlx' ? ' · contestó ' + r.por : ''} · lo aplica el ciclo en su próxima corrida</small>
           <button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => mandar({ borrar: true })}>Deshacer</button>
         </div>
       ) : <>
@@ -1414,6 +1417,12 @@ export function Dashboard({ dc, liga }) {
   else {
     const d = st.d || {};
     const u = d.uso || {};
+    // 🔐 QUÉ PUEDE QUIEN MIRA (13/10/2026): el objeto lo dice (`permisos`); sin eso es Dlx con todo (un Worker de antes)
+    const pm = d.permisos || ['panel', 'ajustes', 'ciclo', 'reportes', 'reportes_cerrar', 'decidir', 'videos', 'fondos', 'roles'];
+    const ve = (k) => pm.includes(k);
+    const verTab = { hoy: true, reportes: ve('reportes') || ve('reportes_cerrar'), decisiones: ve('decidir'), ajustes: ve('ajustes'),
+      numeros: ve('ajustes'), sistema: ve('ajustes') };
+    const tabV = verTab[tab] ? tab : 'hoy';
     const at = atencion(d, liga, cuotas);
     // el número de cada pestaña: lo que espera algo de vos
     const cuenta = { hoy: at.length, reportes: (d.reportes || []).filter((x) => x.estado === '' || x.estado === 'no_pude').length,
@@ -1421,28 +1430,29 @@ export function Dashboard({ dc, liga }) {
     const sec = (titulo, em, hijo) => <section className="act"><div className="mis-cab"><span>{titulo}</span>{em ? <em>{em}</em> : null}</div>{hijo}</section>;
     cuerpo = (
       <>
-        <nav className="db-tabs" role="tablist" aria-label="El Dashboard">{PESTANAS.map(([k, n]) => (
-          <button key={k} type="button" role="tab" aria-selected={tab === k} className={'db-tab' + (tab === k ? ' on' : '')} onClick={() => elegir(k)}>
+        {d.mis_roles && !d.mis_roles.includes('owner') ? <p className="db-rol">Entraste como <b>{(d.mis_roles || []).map((r) => ({ admin: 'Admin', asistente: 'Asistente', moderador: 'Moderador de la página' }[r] || r)).join(' y ')}</b>{d.yo ? ' (' + d.yo + ')' : ''}: ves {ve('ajustes') ? 'todo menos los roles' : [ve('reportes') ? 'los reportes' : ve('reportes_cerrar') ? 'los reportes (cerrarlos)' : '', ve('decidir') ? '✅ Decidir' : '', ve('fondos') ? 'los fondos y los videos' : ''].filter(Boolean).join(', ')}. Lo que hagas queda con tu nombre.</p> : null}
+        <nav className="db-tabs" role="tablist" aria-label="El Dashboard">{PESTANAS.filter(([k]) => verTab[k]).map(([k, n]) => (
+          <button key={k} type="button" role="tab" aria-selected={tabV === k} className={'db-tab' + (tabV === k ? ' on' : '')} onClick={() => elegir(k)}>
             {n}{cuenta[k] ? <i aria-label={cuenta[k] === 1 ? 'una cosa' : cuenta[k] + ' cosas'}>{cuenta[k]}</i> : null}
           </button>
         ))}</nav>
-        {tab === 'hoy' ? <>
+        {tabV === 'hoy' ? <>
           {sec('LO QUE PIDE ATENCIÓN', null, <Atencion xs={at} />)}
           {(d.vivo || []).length ? sec('EN VIVO AHORA', 'se actualiza al abrir el Dashboard',
             <EnVivo vivo={d.vivo} liga={liga} aj={d.ajustes || {}} chat={d.chat} />) : null}
           {sec('LO QUE TE LLEGÓ', null, <Llego d={d} alFondos={(fs) => cambiarD({ fondos: fs })} />)}
-          {sec('ATAJOS', null, <ul className="db-atajos">{ATAJOS.map(([t, h]) => (
+          {ve('ajustes') ? sec('ATAJOS', null, <ul className="db-atajos">{ATAJOS.map(([t, h]) => (
             <li key={h}><a href={h} target={h[0] === '/' ? undefined : '_blank'} rel={h[0] === '/' ? undefined : 'noopener noreferrer'}>{t} ↗</a></li>
-          ))}</ul>)}
+          ))}</ul>) : null}
         </> : null}
-        {tab === 'reportes' ? sec('ERRORES REPORTADOS EN LAS LLAVES', 'se borran a los 14 días',
-          (d.reportes || []).length ? <div className="db-llego"><Reportes rep={d.reportes} liga={liga} alCambiar={(l) => cambiarD({ reportes: l })} /></div>
+        {tabV === 'reportes' ? sec('ERRORES REPORTADOS EN LAS LLAVES', 'se borran a los 14 días',
+          (d.reportes || []).length ? <div className="db-llego"><Reportes rep={d.reportes} liga={liga} alCambiar={(l) => cambiarD({ reportes: l })} corrige={ve('reportes')} /></div>
             : <p className="pronto-p">Nadie reportó nada en los últimos 14 días.</p>) : null}
-        {tab === 'decisiones' ? sec('✅ DECIDIR', 'las mismas preguntas que la hoja', <Decisiones dec={d.decidir} alCambiar={(y) => cambiarD({ decidir: y })} />) : null}
-        {tab === 'ajustes' ? sec('CONFIGURACIÓN · SÓLO VOS', null,
+        {tabV === 'decisiones' ? sec('✅ DECIDIR', 'las mismas preguntas que la hoja', <Decisiones dec={d.decidir} alCambiar={(y) => cambiarD({ decidir: y })} />) : null}
+        {tabV === 'ajustes' ? sec(ve('roles') ? 'CONFIGURACIÓN · SÓLO VOS' : 'CONFIGURACIÓN', null,
           <Ajustes liga={liga} aj={d.ajustes || {}} chat={d.chat} hist={d.ajustes_hist} hacer={hacer} msg={msg} ocup={ocup}
-            roles={d.roles} alRoles={(y) => cambiarD({ roles: y })} />) : null}
-        {tab === 'numeros' ? <>
+            roles={d.roles} alRoles={(y) => cambiarD({ roles: y })} conRoles={ve('roles')} />) : null}
+        {tabV === 'numeros' ? <>
           {sec('EL BOT Y LA PÁGINA · 7 DÍAS', u.desde ? 'se cuenta desde el ' + corto(u.desde) : null, <Cajas u={u} />)}
           {(d.dias || []).length ? sec('DÍA POR DÍA · DOS SEMANAS', null, <Dias dias={d.dias} />) : null}
           {d.tutorial && Object.keys(d.tutorial.n || {}).length ? sec('EL TUTORIAL · DOS SEMANAS',
@@ -1454,7 +1464,7 @@ export function Dashboard({ dc, liga }) {
           {sec('¿EL LOBBY HACE VOLVER A LA GENTE?', 'la meta del research', <MetaLobby r={retencion} />)}
           {d.pase ? sec('EL PASE DE RAPERO', d.pase.semana ? 'la semana del ' + corto(d.pase.semana) : null, <PaseNumeros p={d.pase} liga={liga} />) : null}
         </> : null}
-        {tab === 'sistema' ? <>
+        {tabV === 'sistema' ? <>
           {sec('LO QUE GASTA CLOUDFLARE HOY', 'el plan gratis', <Cuotas q={cuotas} />)}
           {sec('CÓMO ANDA TODO', null, <><Corridas corridas={d.corridas} s={d.sistema || {}} github={d.github} /><Sistema s={d.sistema || {}} sesiones={d.sesiones} /></>)}
         </> : null}

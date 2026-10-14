@@ -2593,6 +2593,24 @@ export const ORDEN_ROLES = ['owner', 'admin', 'asistente', 'moderador', 'socio',
 //: los que Dlx puede poner o sacar a mano (todos menos owner)
 export const ROLES_A_MANO = ORDEN_ROLES.filter((r) => r !== 'owner');
 
+// 🔐 QUÉ PUEDE CADA ROL EN EL DASHBOARD (13/10/2026). Dlx, a la tabla de qué hace cada uno: Asistente *«directo, con
+// historial»*; Moderador, lo que no mueve puntos; Admin, todo el Dashboard menos los Roles; Owner (Dlx), todo. Cada acción
+// queda con quién la hizo (`por`). Staff y Organizador vienen después (su servidor; sugerencias de sus eventos)
+export const PERMISOS = {
+  panel: ['admin', 'asistente', 'moderador'],
+  ajustes: ['admin'], ciclo: ['admin'],
+  reportes: ['admin', 'asistente'],
+  reportes_cerrar: ['admin', 'asistente', 'moderador'],
+  decidir: ['admin', 'asistente'],
+  videos: ['admin', 'asistente', 'moderador'],
+  fondos: ['admin', 'asistente', 'moderador'],
+  roles: [],
+};
+//: ¿esos roles pueden hacer eso? Owner, todo
+export const puedeRol = (roles, que) => (roles || []).includes('owner') || (roles || []).some((r) => (PERMISOS[que] || []).includes(r));
+//: los roles que abren el Dashboard (los que pone Dlx)
+const ROLES_PANEL = ['admin', 'asistente', 'moderador'];
+
 // 🖼️ TU FONDO (13/10/2026). Dlx, a «una imagen propia para tu cuenta para el fondo»: «Sí, y mientras tanto con el Pase
 // gratis», y dónde se ve, «ambos pero que sea personalizable… que él decida, pero por default en ambos». Se desbloquea con
 // el nivel `FONDO_NIVEL` del Pase de rapero; se ve recién cuando lo aprueba Dlx (hay menores en la Liga); y cada uno elige
@@ -2600,6 +2618,50 @@ export const ROLES_A_MANO = ORDEN_ROLES.filter((r) => r !== 'owner');
 export const FONDO_NIVEL = 10;
 //: el tope de cada imagen (la página la achica a 1600×640 en webp antes de mandarla) y cuántas por día
 export const FONDO_TOPE = 600 * 1024;
+
+/**
+ * 🛡️ ¿TRAE METADATOS? (13/10/2026, la pasada de seguridad: «anti doxx»). Una foto del celular puede llevar adentro la
+ * UBICACIÓN de donde se sacó (EXIF con GPS), el modelo del teléfono o un nombre (XMP). La página la limpia al achicarla
+ * —el canvas no copia nada de eso—, pero alguien que le pegue directo a la API podría mandarla tal cual: por eso se
+ * mira acá, por la estructura de cada formato y no buscando texto suelto, y si trae algo, no entra. Pura.
+ */
+export function tieneMetadatos(b) {
+  if (!b || b.length < 12) return false;
+  const tag = (i, n) => String.fromCharCode(...b.subarray(i, i + n));
+  if (tag(0, 4) === 'RIFF' && tag(8, 4) === 'WEBP') {
+    // los trozos de un webp: cuatro letras y el largo; EXIF y XMP son los de los metadatos
+    for (let i = 12; i + 8 <= b.length;) {
+      const t = tag(i, 4);
+      if (t === 'EXIF' || t === 'XMP ') return true;
+      const n = b[i + 4] | (b[i + 5] << 8) | (b[i + 6] << 16) | (b[i + 7] << 24);
+      if (n < 0) return true;
+      i += 8 + n + (n & 1);
+    }
+    return false;
+  }
+  if (b[0] === 0x89 && tag(1, 3) === 'PNG') {
+    for (let i = 8; i + 8 <= b.length;) {
+      const n = ((b[i] << 24) | (b[i + 1] << 16) | (b[i + 2] << 8) | b[i + 3]) >>> 0;
+      const t = tag(i + 4, 4);
+      if (t === 'eXIf' || t === 'tEXt' || t === 'iTXt' || t === 'zTXt') return true;
+      if (t === 'IEND') return false;
+      i += 12 + n;
+    }
+    return false;
+  }
+  if (b[0] === 0xFF && b[1] === 0xD8) {
+    // los segmentos de un jpeg hasta los datos: APP1 (EXIF o XMP), APP13 (Photoshop) y COM (un comentario)
+    for (let i = 2; i + 4 <= b.length;) {
+      if (b[i] !== 0xFF) return false;
+      const m = b[i + 1];
+      if (m === 0xDA) return false;
+      if (m === 0xE1 || m === 0xED || m === 0xFE) return true;
+      i += 2 + ((b[i + 2] << 8) | b[i + 3]);
+    }
+    return false;
+  }
+  return false;
+}
 const FONDO_POR_DIA = 5;
 
 /** ¿Vale este cambio de rol? `{id, rol, si}` (`si`: true lo pone, false lo saca, null vuelve a lo automático). Pura. */
@@ -3236,6 +3298,16 @@ export async function rutaAvisos(req, env, ruta) {
     }
   }
   if (!env.AVISOS) return json({ error: 'los avisos todavía no están enchufados' }, 503);
+  // 🔐 los roles de quien pide (Dlx es `owner`; los demás, los que Dlx le puso en el objeto) y si le alcanzan para `que`
+  const rolesPanel = async (id) => {
+    if (id === DUENO) return ['owner'];
+    try {
+      const r = await elObjeto(env).fetch('https://avisos/rol-de', { method: 'POST', body: JSON.stringify({ quien: id }),
+        headers: { 'content-type': 'application/json' } });
+      return ((await r.json()) || {}).roles || [];
+    } catch (e) { return []; }
+  };
+  const puede = async (id, que) => puedeRol(await rolesPanel(id), que);
   // 🔒 EL DASHBOARD DEL DUEÑO (Dlx, 04/10/2026: «una página nueva creada sólo para el owner… la única manera de iniciar
   // sesión ahí es con mi cuenta»). Quién es lo dice Discord o la sesión —nunca la página—, y si no es Dlx no se
   // contesta nada: ni qué habría. El 403 queda en los registros
@@ -3250,14 +3322,14 @@ export async function rutaAvisos(req, env, ruta) {
     }
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
-    if (q.id !== DUENO) {
-      console.warn('[seguridad] un ajuste del Dashboard lo pidió alguien que no es el dueño');
+    if (!(await puede(q.id, 'ajustes'))) {
+      console.warn('[seguridad] un ajuste del Dashboard lo pidió alguien que no puede');
       return json({ error: 'no' }, 403);
     }
     const v = ajusteValido(String(d.cual || ''), d.valor);
     if (v === undefined) return json({ error: 'valor' }, 400);
     return elObjeto(env).fetch('https://avisos/ajuste', {
-      method: 'POST', body: JSON.stringify({ cual: d.cual, valor: v }), headers: { 'content-type': 'application/json' },
+      method: 'POST', body: JSON.stringify({ cual: d.cual, valor: v, por: q.id }), headers: { 'content-type': 'application/json' },
     });
   }
   // ▶️ CORRER EL CICLO AHORA: la misma puerta que el Dashboard (ver `cicloAMano()` del objeto)
@@ -3271,8 +3343,8 @@ export async function rutaAvisos(req, env, ruta) {
     }
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
-    if (q.id !== DUENO) {
-      console.warn('[seguridad] correr el ciclo lo pidió alguien que no es el dueño');
+    if (!(await puede(q.id, 'ciclo'))) {
+      console.warn('[seguridad] correr el ciclo lo pidió alguien que no puede');
       return json({ error: 'no' }, 403);
     }
     const r = await elObjeto(env).fetch('https://avisos/ciclo-mano', { method: 'POST', body: '{}',
@@ -3296,11 +3368,14 @@ export async function rutaAvisos(req, env, ruta) {
     }
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
-    if (q.id !== DUENO) {
-      console.warn('[seguridad] el Dashboard lo pidió alguien que no es el dueño');
+    const rs = await rolesPanel(q.id);
+    if (!puedeRol(rs, 'panel')) {
+      console.warn('[seguridad] el Dashboard lo pidió alguien que no puede');
       return json({ error: 'no' }, 403);
     }
-    return elObjeto(env).fetch('https://avisos/dueno', { method: 'POST', body: '{}', headers: { 'content-type': 'application/json' } });
+    // 🔐 con sus roles: el objeto le arma sólo lo que puede ver (ver `panelDueno()`)
+    return elObjeto(env).fetch('https://avisos/dueno', { method: 'POST', body: JSON.stringify({ quien: q.id, roles: rs }),
+      headers: { 'content-type': 'application/json' } });
   }
   // 🧭 lo del tutorial: sólo el nombre de lo que pasó, de una lista cerrada (`TUTO_EV`)
   if (ruta === '/avisos/tutorial') {
@@ -3646,8 +3721,8 @@ export async function rutaAvisos(req, env, ruta) {
         !/^\d{1,12}$/.test(String(d.id || '')) || typeof d.si !== 'boolean') return json({ error: 'faltan datos' }, 400);
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
-    if (q.id !== DUENO) {
-      console.warn('[seguridad] aprobar un video lo pidió alguien que no es el dueño');
+    if (!(await puede(q.id, 'videos'))) {
+      console.warn('[seguridad] aprobar un video lo pidió alguien que no puede');
       return json({ error: 'no' }, 403);
     }
     return elObjeto(env).fetch('https://avisos/dueno-video', {
@@ -3667,12 +3742,13 @@ export async function rutaAvisos(req, env, ruta) {
     if (v.error) return json(v, 400);
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
-    if (q.id !== DUENO) {
-      console.warn('[seguridad] decidir un reporte lo pidió alguien que no es el dueño');
+    // 🔐 cerrarlo (Listo, Era una prueba) lo puede un Moderador; corregirlo, Asistente para arriba
+    if (!(await puede(q.id, v.fix ? 'reportes' : 'reportes_cerrar'))) {
+      console.warn('[seguridad] decidir un reporte lo pidió alguien que no puede');
       return json({ error: 'no' }, 403);
     }
     return elObjeto(env).fetch('https://avisos/dueno-reporte', {
-      method: 'POST', body: JSON.stringify(v), headers: { 'content-type': 'application/json' },
+      method: 'POST', body: JSON.stringify(Object.assign({}, v, { por: q.id })), headers: { 'content-type': 'application/json' },
     });
   }
   // ✅ DECIDIR: las preguntas que publica el ciclo y lo contestado, con su clave
@@ -3713,12 +3789,12 @@ export async function rutaAvisos(req, env, ruta) {
         || !/^\d{5,25}$/.test(String(d.quien || '')) || typeof d.si !== 'boolean') return json({ error: 'faltan datos' }, 400);
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
-    if (q.id !== DUENO) {
-      console.warn('[seguridad] revisar un fondo lo pidió alguien que no es el dueño');
+    if (!(await puede(q.id, 'fondos'))) {
+      console.warn('[seguridad] revisar un fondo lo pidió alguien que no puede');
       return json({ error: 'no' }, 403);
     }
     return elObjeto(env).fetch('https://avisos/dueno-fondo', {
-      method: 'POST', body: JSON.stringify({ quien: String(d.quien), si: d.si, motivo: String(d.motivo || '').slice(0, 120) }),
+      method: 'POST', body: JSON.stringify({ quien: String(d.quien), si: d.si, motivo: String(d.motivo || '').slice(0, 120), por: q.id }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -3763,12 +3839,12 @@ export async function rutaAvisos(req, env, ruta) {
     }
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
-    if (q.id !== DUENO) {
-      console.warn('[seguridad] contestar ✅ Decidir lo pidió alguien que no es el dueño');
+    if (!(await puede(q.id, 'decidir'))) {
+      console.warn('[seguridad] contestar ✅ Decidir lo pidió alguien que no puede');
       return json({ error: 'no' }, 403);
     }
     return elObjeto(env).fetch('https://avisos/dueno-decidir', {
-      method: 'POST', body: JSON.stringify({ id: d.id, r: d.r, nota: d.nota, borrar: d.borrar === true }),
+      method: 'POST', body: JSON.stringify({ id: d.id, r: d.r, nota: d.nota, borrar: d.borrar === true, por: q.id }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -4233,8 +4309,11 @@ export class Avisos {
       // deja de estar abierta (`decidirEstados()`)
       this.sql.exec("CREATE TABLE IF NOT EXISTS decidir_resp (id TEXT PRIMARY KEY, r TEXT NOT NULL, nota TEXT NOT NULL DEFAULT '', " +
         't INTEGER NOT NULL)');
+      // 🔐 y quién la contestó (13/10/2026: los permisos)
+      try { this.sql.exec("ALTER TABLE decidir_resp ADD COLUMN por TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
       for (const c of ["estado TEXT NOT NULL DEFAULT ''", "fix TEXT NOT NULL DEFAULT ''",
-        "resultado TEXT NOT NULL DEFAULT ''", 't_estado INTEGER NOT NULL DEFAULT 0', "evid TEXT NOT NULL DEFAULT ''"]) {
+        "resultado TEXT NOT NULL DEFAULT ''", 't_estado INTEGER NOT NULL DEFAULT 0', "evid TEXT NOT NULL DEFAULT ''",
+        "por TEXT NOT NULL DEFAULT ''"]) {
         try { this.sql.exec('ALTER TABLE reportes ADD COLUMN ' + c); } catch (e) { /* ya estaba */ }
       }
       // 🔑 LOS EVENTOS CANCELADOS (01/10/2026): ver `cancelado()` y `cancelaciones()`
@@ -4456,6 +4535,7 @@ export class Avisos {
       if (ruta === '/dueno-reporte') return json(await this.duenoReporte(d));
       if (ruta === '/decidir-estados') return json(this.decidirEstados(d));
       if (ruta === '/roles-estados') return json(this.rolesEstados(d));
+      if (ruta === '/rol-de') return json({ roles: this.rolesPanelDe(String(d.quien || '')) });
       if (ruta === '/fondo') return json(await this.fondo(d));
       if (ruta === '/mi-fondo') return json(this.fondoDe(String(d.quien || '')));
       if (ruta === '/dueno-fondo') return json(await this.duenoFondo(d));
@@ -4517,7 +4597,9 @@ export class Avisos {
       if (ruta === '/tutorial') return this.tutorial(d);
       if (ruta === '/seccion') return this.seccion(d);
       if (ruta === '/dueno') {
-        const p = this.panelDueno();
+        const p = this.panelDueno(d);
+        // 🔐 Asistente y Moderador: sólo lo suyo, sin lo que cuesta (lo en vivo, GitHub, KV)
+        if (p.limitado) return json(p);
         // 🎤 y en qué servidores lo prendió su admin (`cfg:<guild>` en KV, `/settings`): una lectura por servidor
         for (const g of p.chat.generales) {
           try {
@@ -7065,8 +7147,9 @@ export class Avisos {
     const r = this.sql.exec('SELECT id, estado FROM reportes WHERE id = ?', Number(d.id)).toArray()[0];
     if (!r) return { error: 'ya no está' };
     if (r.estado === 'aplicado') return { error: 'ya está aplicado' };
-    this.sql.exec('UPDATE reportes SET estado = ?, fix = ?, resultado = ?, t_estado = ? WHERE id = ?',
-      d.fix ? 'corregir' : String(d.accion), d.fix ? JSON.stringify(d.fix) : '', '', ahora, Number(d.id));
+    const por = this.nombrePor(d.por);
+    this.sql.exec('UPDATE reportes SET estado = ?, fix = ?, resultado = ?, t_estado = ?, por = ? WHERE id = ?',
+      d.fix ? 'corregir' : String(d.accion), d.fix ? JSON.stringify(Object.assign({}, d.fix, { por })) : '', '', ahora, por, Number(d.id));
     await this.colaReportes(ahora);
     return { ok: true, reportes: this.reportesDueno(ahora) };
   }
@@ -7135,6 +7218,7 @@ export class Avisos {
 
   /** Subir (`img`, base64), cambiar dónde se ve (`perfil`, `pagina`) o quitarlo (`borrar`). Lo nuevo espera revisión. */
   async fondo(d) {
+    this._fondos = null;
     const quien = String(d.quien || '');
     if (!/^\d{5,25}$/.test(quien)) return { error: 'falta quién' };
     const ahora = Date.now();
@@ -7162,6 +7246,8 @@ export class Avisos {
       const tipo = b ? tipoImagen(b) : '';
       if (!tipo) return { error: 'no es una imagen' };
       if (b.length > FONDO_TOPE) return { error: 'demasiado grande' };
+      // 🛡️ con la ubicación o algún dato escondido, no (ver `tieneMetadatos()`)
+      if (tieneMetadatos(b)) return { error: 'metadatos' };
       const azar = Array.from(crypto.getRandomValues(new Uint8Array(12)), (x) => x.toString(16).padStart(2, '0')).join('');
       const clave = 'fondos/' + azar + '.' + ({ 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' }[tipo]);
       try {
@@ -7185,15 +7271,19 @@ export class Avisos {
 
   /** Los aprobados, para la página (público, por clave de perfil): `{t, f: {clave: [url, perfil, pagina]}}`. */
   fondos() {
+    // 🛡️ un minuto de memoria, como `roles()`: se olvida al aprobar, quitar o cambiar uno
+    if (this._fondos && Date.now() - this._fondos.t < 60000) return this._fondos;
     const f = {};
     for (const r of this.sql.exec("SELECT k, url, perfil, pagina FROM fondos WHERE url != '' AND k != ''").toArray()) {
       f[r.k] = [r.url, r.perfil ? 1 : 0, r.pagina ? 1 : 0];
     }
-    return { t: Date.now(), f };
+    this._fondos = { t: Date.now(), f };
+    return this._fondos;
   }
 
   /** Dlx aprueba (`si`) o no un fondo que espera. A quien lo subió le llega a su campana. */
   async duenoFondo(d) {
+    this._fondos = null;
     const r = this.sql.exec('SELECT * FROM fondos WHERE quien = ?', String(d.quien)).toArray()[0];
     if (!r || !r.pend) return { error: 'no hay nada para revisar' };
     const ahora = Date.now();
@@ -7224,6 +7314,22 @@ export class Avisos {
   }
 
   // ── 🏷️ los roles de la página (13/10/2026) ──────────────────────────
+  /** 🔐 Los roles de Dashboard de alguien: `['owner']` para Dlx; los que Dlx le puso (admin, asistente, moderador). */
+  rolesPanelDe(quien) {
+    if (quien === DUENO) return ['owner'];
+    if (!/^\d{5,25}$/.test(quien)) return [];
+    return this.sql.exec('SELECT rol FROM roles_manual WHERE quien = ? AND si = 1', quien).toArray()
+      .map((r) => r.rol).filter((r) => ROLES_PANEL.includes(r));
+  }
+
+  /** 🔐 El nombre de quien hizo algo, para el historial: Dlx, o el de la Lista (del directorio de los roles). */
+  nombrePor(id) {
+    if (!id) return '';
+    if (String(id) === DUENO) return 'Dlx';
+    const p = ((this.leer('roles_dir') || {}).dir || []).find((x) => x.id === String(id));
+    return p ? p.n : 'otra cuenta';
+  }
+
   /** El directorio del ciclo (`bot/roles.py`): cada persona de la Lista con Discord, su clave, su nombre y sus roles solos. */
   rolesEstados(d) {
     const dir = (Array.isArray(d && d.dir) ? d.dir : []).slice(0, 5000).filter((x) => x && /^\d{5,25}$/.test(String(x.id))
@@ -7235,6 +7341,7 @@ export class Avisos {
       return { k: x.k, n: String(x.n || '').slice(0, 60), id: String(x.id), a };
     });
     this.guardar('roles_dir', { t: Date.now(), dir });
+    this._roles = null;
     return { ok: true, n: dir.length };
   }
 
@@ -7256,8 +7363,16 @@ export class Avisos {
     return ORDEN_ROLES.filter((r) => a[r]).map((r) => (a[r].length ? [r, a[r]] : [r]));
   }
 
-  /** Para la página (público, por clave de perfil): `{t, r: {clave: [[rol, [servidores]]]}}`. */
+  /** Para la página (público, por clave de perfil): `{t, r: {clave: [[rol, [servidores]]]}}`. 🛡️ Con un minuto de memoria
+   *  (la pasada de seguridad, 13/10/2026): la página la pide con cinco minutos de borde, pero el Worker directo no tiene
+   *  borde, y así alguien que la martille no hace trabajar al objeto en cada pedido. Se olvida al cambiar un rol */
   roles() {
+    if (this._roles && Date.now() - this._roles.t < 60000) return this._roles;
+    this._roles = this.rolesSinMemoria();
+    return this._roles;
+  }
+
+  rolesSinMemoria() {
     const x = this.leer('roles_dir') || {};
     const man = this.rolesManual();
     const r = {};
@@ -7278,6 +7393,7 @@ export class Avisos {
       this.sql.exec('INSERT OR REPLACE INTO roles_manual (quien, rol, si, t) VALUES (?, ?, ?, ?)', v.id, v.rol, v.si ? 1 : 0, ahora);
     }
     const p = ((this.leer('roles_dir') || {}).dir || []).find((x) => x.id === v.id);
+    this._roles = null;
     const h = [{ id: v.id, n: p ? p.n : '', rol: v.rol, si: v.si, t: ahora }].concat(this.leer('roles_hist') || []).slice(0, 40);
     this.guardar('roles_hist', h);
     return { ok: true, roles: this.rolesDueno() };
@@ -7311,7 +7427,7 @@ export class Avisos {
   /** Para el ciclo: lo contestado en el Dashboard, `{respuestas: {id: {r, nota, t}}}`. */
   decidirCiclo() {
     const respuestas = {};
-    for (const r of this.sql.exec('SELECT id, r, nota, t FROM decidir_resp').toArray()) respuestas[r.id] = { r: r.r, nota: r.nota, t: r.t };
+    for (const r of this.sql.exec('SELECT id, r, nota, t, por FROM decidir_resp').toArray()) respuestas[r.id] = { r: r.r, nota: r.nota, t: r.t, por: r.por };
     return { respuestas };
   }
 
@@ -7322,7 +7438,8 @@ export class Avisos {
     if (v.error) return v;
     if (v.borrar) this.sql.exec('DELETE FROM decidir_resp WHERE id = ?', v.id);
     else {
-      this.sql.exec('INSERT OR REPLACE INTO decidir_resp (id, r, nota, t) VALUES (?, ?, ?, ?)', v.id, v.r, v.nota, Date.now());
+      this.sql.exec('INSERT OR REPLACE INTO decidir_resp (id, r, nota, t, por) VALUES (?, ?, ?, ?, ?)', v.id, v.r, v.nota, Date.now(),
+        this.nombrePor(d.por));
     }
     return { ok: true, decidir: this.decidirDueno() };
   }
@@ -7335,14 +7452,14 @@ export class Avisos {
 
   /** Los reportes para el Dashboard: los abiertos y los que esperan al ciclo, y lo decidido en los últimos 3 días. */
   reportesDueno(ahora) {
-    return this.sql.exec('SELECT r.id, r.t, r.llave, r.que, r.texto, r.batalla, r.estado, r.fix, r.resultado, r.evid, i.k ' +
+    return this.sql.exec('SELECT r.id, r.t, r.llave, r.que, r.texto, r.batalla, r.estado, r.fix, r.resultado, r.evid, r.por, i.k ' +
       "FROM reportes r LEFT JOIN idk i ON i.id = r.quien WHERE r.estado IN ('', 'corregir') OR r.t_estado > ? " +
       'ORDER BY r.t DESC LIMIT 30', ahora - 3 * DIA_MS).toArray().map((f) => {
       let fix = null, evid = null;
       try { fix = f.fix ? JSON.parse(f.fix) : null; } catch (e) { fix = null; }
       try { evid = f.evid ? JSON.parse(f.evid) : null; } catch (e) { evid = null; }
       return { id: f.id, t: f.t, llave: f.llave, que: f.que, texto: String(f.texto || '').slice(0, 300), batalla: f.batalla,
-        de: f.k || '', estado: f.estado || '', fix, resultado: f.resultado || '', evid };
+        de: f.k || '', estado: f.estado || '', fix, resultado: f.resultado || '', evid, por: f.por || '' };
     });
   }
 
@@ -8877,7 +8994,7 @@ export class Avisos {
     const despues = d.valor === null || d.valor === undefined ? null : d.valor;
     if (JSON.stringify(antes) !== JSON.stringify(despues)) {
       const h = this.leer('ajustes_hist') || [];
-      h.unshift({ cual: d.cual, antes, despues, t: Date.now() });
+      h.unshift({ cual: d.cual, antes, despues, t: Date.now(), por: this.nombrePor(d.por) });
       this.guardar('ajustes_hist', h.slice(0, 30));
     }
     if (d.valor === null || d.valor === undefined) delete a[d.cual];
@@ -8904,8 +9021,19 @@ export class Avisos {
    *  🔴 SE LLAMABA `dueno()` Y EL VIGÍA LO PISABA: `vigilar()` guarda en `this.dueno` el Discord ID de Dlx, así
    *  que desde la primera vuelta del vigía en esa instancia —cada minuto— el Dashboard daba «this.dueno is not a
    *  function». Lo mostró el estado del vigía el 04/10/2026; lo vigila `avisos_prueba.mjs` (ningún método pisado) */
-  panelDueno() {
+  panelDueno(d) {
     const ahora = Date.now();
+    // 🔐 QUIÉN LO PIDE Y QUÉ PUEDE (13/10/2026). Sin roles es Dlx (las pruebas y los llamados de siempre). Admin ve todo;
+    // Asistente y Moderador, sólo sus partes
+    const roles = d && Array.isArray(d.roles) ? d.roles : ['owner'];
+    const permisos = Object.keys(PERMISOS).filter((k) => puedeRol(roles, k));
+    if (!roles.includes('owner') && !roles.includes('admin')) {
+      const ve = (k) => permisos.includes(k);
+      return { limitado: true, permisos, mis_roles: roles, yo: this.nombrePor(d && d.quien),
+        reportes: ve('reportes') || ve('reportes_cerrar') ? this.reportesDueno(ahora) : [],
+        decidir: ve('decidir') ? this.decidirDueno() : {}, videos: ve('videos') ? (this.leer('videos_revisar') || []) : [],
+        fondos: ve('fondos') ? this.fondosDueno() : [] };
+    }
     const dias = [];
     for (let i = 13; i >= 0; i--) {
       const dia = diaET(ahora - i * DIA_MS);
@@ -8934,6 +9062,8 @@ export class Avisos {
       reportes: this.reportesDueno(ahora),
       // ✅ las preguntas de ✅ Decidir y lo contestado desde el Dashboard (13/10/2026)
       decidir: this.decidirDueno(),
+      // 🔐 qué puede quien lo pide (Admin: todo menos Roles)
+      permisos, mis_roles: roles, yo: this.nombrePor(d && d.quien),
       // 🏷️ los roles: el directorio, lo puesto a mano y el historial (13/10/2026)
       roles: this.rolesDueno(),
       // 🖼️ los fondos que esperan revisión (13/10/2026)

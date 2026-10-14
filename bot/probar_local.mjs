@@ -2901,7 +2901,8 @@ console.log('\n«LOS AJUSTES DEL DASHBOARD»\n');
   const alAjuste = () => alObjeto.filter(([u]) => u.endsWith('/ajuste')).map(([, b]) => b);
   let r = await pedirA(SES_D, { cual: 'campana_pausada', valor: true });
   ok('el dueño pausa la campana: llega al objeto ya validado', r.status === 200 &&
-     JSON.stringify(alAjuste()) === '[{"cual":"campana_pausada","valor":true}]');
+     // 🔐 con quién lo hizo (los permisos, 13/10/2026)
+     JSON.stringify(alAjuste()) === '[{"cual":"campana_pausada","valor":true,"por":"' + DUENO + '"}]');
   alObjeto.length = 0;
   r = await pedirA(SES_D, { cual: 'multiplicadores', valor: { semana: '2026-10-12', sv: { FFA: 9 } } });
   const r2 = await pedirA(SES_D, { cual: 'cualquiera', valor: 1 });

@@ -251,7 +251,7 @@ def corregir_nombre(r, fix, L, decis, resolver, padron, aplicar):
                  'llaves_a_entrada.otro_en_evento(); bot/reportes.py corrige además las filas ya escritas.')
     for txt in variantes.values():
         q['%s · %s · %s · %s' % (L['nombre'], L['sv'], L['fecha'], txt)] = {
-            'es': nuevo, 'antes': viejo, 'cuando': _et(int(time.time() * 1000)), 'por': 'Dlx (Dashboard)',
+            'es': nuevo, 'antes': viejo, 'cuando': _et(int(time.time() * 1000)), 'por': '%s (Dashboard)' % (fix.get('por') or 'Dlx'),
             'reporte': r.get('id'), 'nota': str(r.get('texto') or '')[:200]}
     celdas = RES.renombrar(fix['n'], viejo, nuevo, cc, dry=not aplicar)
     en_llave = renombrar_llave(L, set(variantes), nuevo)
@@ -330,7 +330,7 @@ def corregir_ganador(r, fix, L, decis, ahora_ms):
     previo = next((x for x in g.get(k) or [] if sorted(_norm(y) for y in x.get('lados') or []) == ks), None)
     desde = (previo or {}).get('desde_ms') or ahora_ms
     lista.append({'lados': fix['lados'], 'ganador': fix['ganador'], 'cuando': (previo or {}).get('cuando') or _et(ahora_ms),
-                  'desde_ms': desde, 'por': 'Dlx (Dashboard)', 'reporte': r.get('id')})
+                  'desde_ms': desde, 'por': '%s (Dashboard)' % (fix.get('por') or 'Dlx'), 'reporte': r.get('id')})
     g[k] = lista
     if ahora_ms - desde > ESPERA_GANADOR_MIN * 60000:
         return 'no_pude', ('la llave #%s ya no la relee el ciclo: hay que recalcularla '

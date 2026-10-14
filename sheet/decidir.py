@@ -2373,8 +2373,13 @@ def _respuestas():
     for k, x in _respuestas_web().items():
         if str(x.get('r') or '').strip():
             out[k] = (str(x['r']).strip(), '')
-        if str(x.get('nota') or '').strip():
-            _respuestas.notas[k] = str(x['nota']).strip()
+        # 🔐 y quién la contestó, si no fue Dlx (13/10/2026: los permisos del Dashboard): queda en la nota de la hoja
+        quien = str(x.get('por') or '').strip()
+        nota = str(x.get('nota') or '').strip()
+        if quien and quien != 'Dlx':
+            nota = (nota + ' · ' if nota else '') + 'lo contestó %s' % quien
+        if nota:
+            _respuestas.notas[k] = nota
     return out
 
 

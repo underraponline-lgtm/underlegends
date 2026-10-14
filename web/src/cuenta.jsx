@@ -13,6 +13,8 @@ import { Bandera, Cara, Carta, Chevron, DosToques, Ico, accion } from './piezas.
 import { CaraDc } from './arriba.jsx';
 import { useRacha } from './racha.js';
 import { TEMAS_SV, nombreTema } from './temas.js';
+import { useRoles } from './roles.js';
+import { urlFondo } from './fondos.js';
 import { seguirOrg, useOrgs } from './orgs.js';
 
 import { PasosInstalar } from './instalar.jsx';
@@ -229,7 +231,8 @@ async function pedirFondo(ruta, cuerpo) {
   const j = await r.json().catch(() => ({}));
   if (!r.ok || j.error) {
     const e = { nivel: 'Se desbloquea con el nivel ' + (j.falta || 10) + ' del Pase de rapero.', tope: 'Ya subiste varias hoy: probá mañana.',
-      'no es una imagen': 'Eso no es una imagen.', 'demasiado grande': 'La imagen es muy pesada.' }[j.error];
+      'no es una imagen': 'Eso no es una imagen.', 'demasiado grande': 'La imagen es muy pesada.',
+      metadatos: 'La imagen trae datos escondidos (como dónde se sacó): elegila de nuevo desde acá y se limpian solos.' }[j.error];
     throw new Error(r.status === 401 ? 'Entrá con Discord de nuevo.' : e || j.error || String(r.status));
   }
   return j;
@@ -267,7 +270,7 @@ function FondoCaja({ dc }) {
   return (
     <Caja t="Tu fondo" d={pu.si ? 'Tu propia imagen de fondo. La ven los demás cuando la aprueba la Liga.' : 'Tu propia imagen de fondo, en tu perfil y en tu página.'}>
       {!pu.si && !(f && f.url) ? <p className="cu-d">🔒 Se desbloquea con el <b>nivel {pu.falta || 10}</b> del <a href="#/pase">Pase de rapero</a>{pu.nivel != null ? ' (vas en el ' + pu.nivel + ')' : ''}.</p> : null}
-      {f && (f.url || f.pend) ? <div className="cu-fondo-ver" style={{ backgroundImage: 'url("' + (f.pend || f.url) + '")' }} aria-label="Tu fondo" role="img" /> : null}
+      {f && urlFondo(f.pend || f.url) ? <div className="cu-fondo-ver" style={{ backgroundImage: urlFondo(f.pend || f.url) }} aria-label="Tu fondo" role="img" /> : null}
       {estado ? <p className="cu-d">{estado}</p> : null}
       {f ? (
         <div className="cu-fondo-donde">
@@ -856,7 +859,9 @@ function tarjetasDe(gs) {
 export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, cual = 'cuenta' }) {
   const gs = grupos(liga, dc, tema, cual, temaSv);
   // 🔒 el acceso al Dashboard, a la vista sólo para el dueño. Es un atajo: la puerta de verdad está en el servidor
-  const dueno = cual === 'cuenta' && !!dc && String(dc.id) === DUENO;
+  // 🔐 el botón del Dashboard: Dlx, y quien tiene un rol que lo abre (Admin, Asistente, Moderador; 13/10/2026)
+  const misRoles = ((useRoles() || {})[liga.yo && liga.yo.k] || []).map((x) => x[0]);
+  const dueno = cual === 'cuenta' && !!dc && (String(dc.id) === DUENO || misRoles.some((r) => ['admin', 'asistente', 'moderador'].includes(r)));
   const todas = gs.flatMap((g) => g[1]);
   // verificarse no está en la lista: se llega desde la tarjeta de arriba (y desde el botón del bot)
   const extra = cual === 'cuenta' && parte === 'verificar' ? ['verificar', 'ok', 'Verificarme', ''] : null;

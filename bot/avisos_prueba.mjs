@@ -1015,6 +1015,44 @@ const ok = (cond, que, det) => {
       && borr.fondo === null && Object.keys(enR2).length === 0,
     'tu fondo: pide el nivel del Pase y que sea una imagen de verdad, se ve recién aprobado, elegís dónde, y quitarlo lo borra de R2',
     JSON.stringify([sinNivel, falsa, sub, despues, enR2]));
+    // 🛡️ anti-doxeo: una imagen con metadatos (la ubicación, la cámara) no entra (13/10/2026)
+    const TM = A.tieneMetadatos;
+    const riff = (chunks) => {
+      const cuerpo = Buffer.concat(chunks.map(([t, n]) => Buffer.concat([Buffer.from(t), Buffer.from([n, 0, 0, 0]), Buffer.alloc(n + (n & 1))])));
+      return new Uint8Array(Buffer.concat([Buffer.from('RIFF'), Buffer.from([0, 0, 0, 0]), Buffer.from('WEBP'), cuerpo]));
+    };
+    const jpg = (segs) => new Uint8Array(Buffer.concat([Buffer.from([0xFF, 0xD8]),
+      ...segs.map(([m, n]) => Buffer.concat([Buffer.from([0xFF, m, 0, n + 2]), Buffer.alloc(n)])), Buffer.from([0xFF, 0xDA, 0, 2])]));
+    const png = (chunks) => new Uint8Array(Buffer.concat([Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]),
+      ...chunks.map(([t, n]) => Buffer.concat([Buffer.from([0, 0, 0, n]), Buffer.from(t), Buffer.alloc(n + 4)]))]));
+    ok(!TM(riff([['VP8 ', 10]])) && TM(riff([['VP8X', 10], ['VP8 ', 10], ['EXIF', 6]])) && TM(riff([['VP8 ', 9], ['XMP ', 4]]))
+      && !TM(jpg([[0xE0, 14], [0xDB, 4]])) && TM(jpg([[0xE0, 14], [0xE1, 20]])) && TM(jpg([[0xFE, 5]]))
+      && !TM(png([['IHDR', 13], ['IDAT', 8], ['IEND', 0]])) && TM(png([['IHDR', 13], ['tEXt', 8], ['IEND', 0]])),
+    'anti-doxeo: un webp, un jpeg o un png con EXIF, XMP o texto adentro no entra; el limpio, sí');
+    // 🔐 los permisos del Dashboard (13/10/2026)
+    const PR = A.puedeRol;
+    ok(PR(['owner'], 'roles') && !PR(['admin'], 'roles') && PR(['admin'], 'ajustes') && PR(['asistente'], 'reportes')
+      && !PR(['moderador'], 'reportes') && PR(['moderador'], 'reportes_cerrar') && PR(['moderador'], 'fondos')
+      && !PR(['asistente'], 'ajustes') && !PR([], 'panel') && !PR(['competidor', 'staff'], 'panel'),
+    'qué puede cada rol: Owner todo, Admin todo menos Roles, Asistente corrige, Moderador sólo lo que no mueve puntos, los demás nada');
+    o.duenoRol({ id: '100000061', rol: 'moderador', si: true });
+    o.duenoRol({ id: '100000062', rol: 'asistente', si: true });
+    o.duenoRol({ id: '100000063', rol: 'staff', si: true });
+    o.rolesEstados({ dir: [{ k: 'mod', n: 'Mod Test', id: '100000061', a: {} }, { k: 'asis', n: 'Asis Test', id: '100000062', a: {} }] });
+    const pm = o.panelDueno({ quien: '100000061', roles: o.rolesPanelDe('100000061') });
+    const pa = o.panelDueno({ quien: '100000062', roles: o.rolesPanelDe('100000062') });
+    const pd = o.panelDueno();
+    o.sql.exec("INSERT INTO reportes (quien, llave, que, texto, t) VALUES ('100000071', '466', 'otro', 'x', ?)", martes);
+    const rid = o.sql.exec('SELECT MAX(id) AS id FROM reportes').toArray()[0].id;
+    const rp2 = await o.duenoReporte(Object.assign(V({ id: rid, accion: 'listo' }), { por: '100000061' }));
+    ok(JSON.stringify(o.rolesPanelDe('100000061')) === '["moderador"]' && o.rolesPanelDe('100000063').length === 0
+      && JSON.stringify(o.rolesPanelDe(A.DUENO)) === '["owner"]'
+      && pm.limitado && pm.permisos.includes('fondos') && !pm.permisos.includes('decidir') && pm.yo === 'Mod Test' && !pm.uso
+      && pa.limitado && pa.permisos.includes('decidir') && pa.decidir && !pa.ajustes
+      && !pd.limitado && pd.permisos.includes('roles') && pd.yo === ''
+      && rp2.reportes.find((x) => x.id === rid).por === 'Mod Test',
+    'el panel de cada rol: el Moderador y el Asistente ven sólo lo suyo, Dlx todo, y queda quién cerró cada reporte',
+    JSON.stringify([pm.permisos, pa.permisos]));
   }
 }
 
