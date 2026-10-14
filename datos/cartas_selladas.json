@@ -1140,10 +1140,10 @@
   },
   "ONZASS": {},
   "Oasis": {
-   "competitivo": "c86484172c27:40807e5de0f4",
-   "pais": "f6c3016138bc:ec920afad165",
-   "servidor": "d145c9021422:0261962bc3e6:980594",
-   "temporada": "34b6c42ec4d0:7e987c978e23"
+   "competitivo": "d82f5165b82a:40807e5de0f4",
+   "pais": "01a65cab1f98:ec920afad165",
+   "servidor": "7304dceeb926:0261962bc3e6:980594",
+   "temporada": "2ea8ab5ecd8c:7e987c978e23"
   },
   "Olaf": {
    "servidor": "8bb1506a5b1f:0261962bc3e6:055f77"
@@ -1761,5 +1761,5 @@
    "servidor": "7f8885a35a6d:0261962bc3e6:c9f1f2"
   }
  },
- "cuando": "2026-10-14T04:38:01+00:00"
+ "cuando": "2026-10-14T04:58:42+00:00"
 }
