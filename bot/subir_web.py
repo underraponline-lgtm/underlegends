@@ -3534,7 +3534,11 @@ def _self_check():
     # No fallaba: el campo existia y traia un numero.
     pool = _json('datos', 'temporada_pool.json') or []
     if pool and p['tabla']:
-        top = max((x.get('pts') or 0) for x in pool)
+        # 🔴 EL #1 ES EL DE `pos`, QUE VA POR OVR, NO EL QUE MÁS PUNTOS TIENE (13/10/2026): esto comparaba contra el
+        # máximo de puntos y andaba de casualidad mientras el primero en OVR era también el primero en puntos. A las
+        # 10:37 PM Oasis pasó a ser #1 (OVR 95, 262.869) con Snow #2 (OVR 92, 277.483) y CI quedó rojo con la página
+        # bien. Lo que se prueba sigue siendo lo mismo: que el campo son los PUNTOS de esa persona
+        top = (min(pool, key=lambda x: x.get('pos') or 10 ** 9).get('pts') or 0)
         ok(p['tabla'][0]['pts'] == top,
            'el #1 trae los puntos del #1 del pool  (%s vs %s)'
            % (p['tabla'][0]['pts'], top))
