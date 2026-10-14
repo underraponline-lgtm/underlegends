@@ -4115,7 +4115,7 @@ export default {
         try { perm = BigInt((i.member && i.member.permissions) || '0'); } catch (e) { perm = 0n; }
         const staff = (perm & 8n) !== 0n || (perm & 32n) !== 0n || (perm & 8192n) !== 0n;
         if (!did || (did !== extra && did !== DUENO && !staff)) {
-          return aviso(`Lo marca <@${extra}>, que publicó la llave, o el staff del servidor.`);
+          return aviso(`Esta pregunta es para <@${extra}>, que publicó la llave, o para el staff del servidor: ellos saben quién ganó.`);
         }
         const partes = id.split(':');
         const nro = String(partes[3] || ''), menu = i.data && i.data.component_type === 3;
@@ -4144,7 +4144,7 @@ export default {
           || (!menu && String(c.custom_id || '').startsWith(`dud:${quien}:${extra}:${nro}:`))));
         const linea = `✅ ${cual ? cual + ' → ' : ''}**${j.ya || nombre}** — lo marcó <@${j.quien || did}>.`;
         const texto = `${String((i.message && i.message.content) || '')}\n${linea}`
-          + (quedan.length ? '' : '\n¡Gracias! Con esto la llave entra al ranking.');
+          + (quedan.length ? '' : '\n¡Gracias! Ya está: en un rato los resultados entran al ranking de la Liga.');
         return new Response(JSON.stringify({
           type: RESPONDE.ACTUALIZAR,
           data: { content: texto.slice(0, 1990), components: quedan, allowed_mentions: { parse: [] } },

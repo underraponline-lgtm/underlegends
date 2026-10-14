@@ -72,21 +72,35 @@ def _cual(p):
     return '%s: %s' % (str(p['ronda']).capitalize(), ' vs '.join(str(x).strip() for x in p['lados']))
 
 
+#: 🗣️ LO PRIMERO QUE LEE EL ORGANIZADOR (Dlx, 13/10/2026: «que sea más fácil de entender eso de los organizadores
+#: cuando el bot pregunta y menciona al organizador que no entiende… hazlo más sencillo y explica qué cosa está
+#: haciendo»). La versión de antes arrancaba con el nombre del evento y «la llave no dice quién ganó»: quien no sabe
+#: qué es este bot no entendía por qué lo mencionaban ni qué tenía que hacer. Ahora, en este orden: quién es el bot,
+#: qué está haciendo con SU llave, qué le falta, y qué tocar
+SALUDO = ('🏁 <@%s> ¡hola! Soy el bot de la **Liga Global**: estoy pasando los resultados de **%s** al ranking de la '
+          'Liga.')
+PIE = ('-# Lo puede marcar quien publicó la llave o alguien del staff. Si nadie lo marca, esa batalla queda sin ganador '
+       'en el ranking.')
+
+
 def mensaje(f):
     """El mensaje: el texto, los componentes y a quién se menciona (sólo al organizador)."""
     ps = f['preguntas'][:MAX_PREGUNTAS]
     base = 'dud:%s:%s' % (f['llave'], f['autor'])
+    saludo = SALUDO % (f['autor'], f['evento'])
     if len(ps) == 1 and len(ps[0]['lados']) == 2:
         p = ps[0]
-        texto = ('🏁 **%s** — <@%s>, la llave no dice quién ganó %s: **%s** vs **%s**. ¿Quién ganó?'
-                 % (f['evento'], f['autor'], 'la final' if 'final' in str(p['ronda']).lower()
-                    else 'esta batalla (%s)' % str(p['ronda']).lower(), p['lados'][0], p['lados'][1]))
+        texto = (saludo + '\nEn tu llave no encontré quién ganó %s: **%s** vs **%s**.\n👉 **Tocá el nombre de quien '
+                 'ganó** y listo.' % ('la final' if 'final' in str(p['ronda']).lower()
+                                      else 'una batalla de %s' % str(p['ronda']).lower(), p['lados'][0], p['lados'][1]))
         filas = [{'type': 1, 'components': [
             {'type': 2, 'style': 1, 'label': str(p['lados'][j]).strip()[:80], 'custom_id': '%s:0:%s' % (base, LETRAS[j])}
             for j in range(2)]}]
     else:
-        texto = ('🏁 **%s** — <@%s>, no pude leer quién ganó %d batalla(s) de la llave. ¿Me ayudás?'
-                 % (f['evento'], f['autor'], len(ps)))
+        texto = (saludo + '\nEn tu llave no encontré quién ganó %s.\n👉 **Abrí cada menú de abajo y elegí quién ganó '
+                 'esa batalla.**%s' % ('una batalla' if len(ps) == 1 else '%d batallas' % len(ps),
+                                       '' if all('final' in str(p['ronda']).lower() for p in ps)
+                                       else ' Si alguien no se presentó o lo reemplazaron, elegí «Nadie siguió».'))
         filas = []
         for i, p in enumerate(ps):
             ops = [{'label': str(x).strip()[:100], 'value': LETRAS[j]} for j, x in enumerate(p['lados'][:24])]
@@ -95,7 +109,7 @@ def mensaje(f):
             filas.append({'type': 1, 'components': [{'type': 3, 'custom_id': '%s:%d' % (base, i),
                                                      'placeholder': _cual(p)[:150], 'options': ops}]})
     return {
-        'content': texto + '\n-# Lo marca quien publicó la llave o el staff. Con eso la llave entra al ranking de la Liga.',
+        'content': texto + '\n' + PIE,
         'components': filas,
         'message_reference': {'message_id': f['llave'], 'channel_id': f['canal'], 'fail_if_not_exists': False},
         'allowed_mentions': {'users': [f['autor']], 'replied_user': False},
@@ -230,6 +244,9 @@ def _self_check():
     m = mensaje(f)
     if m['allowed_mentions'] != {'users': ['832733202769641554'], 'replied_user': False}:
         malos.append('menciona a alguien más que al organizador')
+    if not (m['content'].startswith('🏁 <@832733202769641554>') and 'Soy el bot de la **Liga Global**' in m['content']
+            and 'la final: **Mathias 🇪🇸** vs **Rfran 🇪🇸**' in m['content'] and 'Tocá el nombre' in m['content']):
+        malos.append('el mensaje: la mención primero, quién es el bot, qué falta y qué tocar (%r)' % m['content'][:120])
     ids = [c['custom_id'] for c in m['components'][0]['components']]
     if ids != ['dud:1553507758240964609:832733202769641554:0:a', 'dud:1553507758240964609:832733202769641554:0:b']:
         malos.append('una sola final: dos botones (%s)' % ids)
@@ -237,6 +254,8 @@ def _self_check():
                             {'ronda': 'OCTAVOS', 'lados': ['F', 'G']}, {'ronda': 'OCTAVOS', 'lados': ['H', 'I']},
                             {'ronda': 'OCTAVOS', 'lados': ['J', 'K']}])
     m2 = mensaje(f2)
+    if 'quién ganó 4 batallas' not in m2['content'] or 'Nadie siguió' not in m2['content']:
+        malos.append('varias: cuántas y qué hacer con el menú (%r)' % m2['content'][:200])
     sel = [r['components'][0] for r in m2['components']]
     if len(sel) != MAX_PREGUNTAS or any(c['type'] != 3 for c in sel):
         malos.append('varias: un menú por batalla, como mucho %d' % MAX_PREGUNTAS)
