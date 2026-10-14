@@ -617,7 +617,7 @@ def armar():
     # 👤 de todos los que jugaron, no sólo de la tabla (13/10/2026: «Todos los que jugaron y los del staff»)
     _pf = _perfiles(todos, list(_comp.values()), regs)
     debutantes(tabla, _pf)
-    _perfiles_extra(_pf, filas_todas[TOPE:], _staff, _avs)
+    _perfiles_extra(_pf, filas_todas[TOPE:], _staff, _avs, _vd_de())
     return {
         'temporada': SELLO,
         'fase': {'arranca': _f[0], 'termina': _f[1]} if _f else None,
@@ -1560,7 +1560,7 @@ def _solo_rol(pool):
     return out
 
 
-def _perfiles_extra(pf, filas, staff, avs):
+def _perfiles_extra(pf, filas, staff, avs, vdf=None):
     """Las filas de quien no entra en la tabla del lobby, adentro de su perfil (`p[k].f`), y un perfil mínimo para el
     staff que no compite (`f.solo`: nombre, bandera y cara, sin números). La página las usa cuando la persona no está en
     `liga.T` (web/src/perfil.jsx)."""
@@ -1573,6 +1573,40 @@ def _perfiles_extra(pf, filas, staff, avs):
             continue
         pp[x['k']] = {'f': {'n': x['raw'], 'k': x['k'], 'cc': x['cc'], 'solo': 1,
                             'av': ('%s/%s' % (x['did'], avs[x['did']]) if avs.get(x['did']) else '')}}
+        # 📅 desde cuándo está verificado, también del staff que no compite
+        vd = vdf({'raw': x['raw'], 'discord_id': x['did']}) if vdf else ''
+        if vd:
+            pp[x['k']]['vd'] = vd
+
+
+def _vd_de():
+    """📅 `f(persona) -> 'AAAA-MM-DD' | 'pre' | ''`: desde cuándo está verificado, para su perfil. Vacío si hoy no pasa el
+    portón (`verificados.pasa()`) o no se sabe: una fecha de alguien que no está verificado sería mentira."""
+    try:
+        _sh = os.path.join(BASE, 'sheet')
+        if _sh not in sys.path:
+            sys.path.append(_sh)
+        import construir_padron as _PAD
+        import verificados as _VER
+        verif, _ = _VER.cargar()
+        des = _VER.desde()
+        if not verif or not des:
+            return lambda p: ''
+        pad = {}
+        for x in _PAD.cargar():
+            if x.get('raw'):
+                pad.setdefault(_PAD.norm(x['raw']), x)
+        olv = _VER._olvidados()
+
+        def f(p):
+            x = pad.get(_PAD.norm(p.get('raw') or '')) or {}
+            did = str(x.get('discord_id') or p.get('discord_id') or '')
+            if not did or did in olv or not _VER.pasa(x or p, verif):
+                return ''
+            return des.get(did, '')
+        return f
+    except Exception:                                    # noqa: BLE001
+        return lambda p: ''
 
 
 def _perfiles(gente, comp, regs):
@@ -1652,6 +1686,7 @@ def _perfiles(gente, comp, regs):
     _vids, _vpor = _vj.get('videos') or {}, _vj.get('por') or {}
     # 🎬 y las que sumó cada uno (`bot/videos_propios.py`, 12/10/2026): aparte, «de plazas y otras ligas»
     _vp = _json('datos', 'videos_propios.json') or {}
+    _vd = _vd_de()
     out = {}
     for q, p in por.items():
         cp = comp_raw.get(p.get('raw')) or (comp_de.get(norm(p.get('raw')))
@@ -1733,6 +1768,11 @@ def _perfiles(gente, comp, regs):
             vp = []
         if vp:
             x['vp'] = vp
+        # 📅 desde cuándo está verificado (Dlx, 13/10/2026): 'AAAA-MM-DD' o 'pre' (desde antes de la T1). Sólo de quien
+        # lo está hoy: el portón entero (`verificados.pasa()`), no sólo el rol
+        vd = _vd(p)
+        if vd:
+            x['vd'] = vd
         out[q] = x
     import time
     # el promedio de la Liga en cada dimensión, para comparar en el gráfico:
@@ -3672,6 +3712,15 @@ def main():
         ok6, n6 = _MR.publicar(p, subir)
         print('   %s' % ('✓ muro: igual (%d publicaciones)' % n6 if ok6 is None else
                          '✅ muro subido (%d publicaciones)' % n6 if ok6 else '🔴 no pude subir el muro'))
+        # 📰 Y LAS DE CADA UNO, EN SU PERFIL (Dlx, 13/10/2026: «no todas claramente pero con la opción de ver todas»):
+        # las de toda la temporada, adentro de los perfiles (`mu`), que ya se suben sólo si cambiaron
+        if perf.get('p'):
+            n7 = 0
+            for k, xs in _MR.de_cada_uno(p).items():
+                if k in perf['p']:
+                    perf['p'][k]['mu'] = xs
+                    n7 += 1
+            print('   ✓ publicaciones en %d perfiles' % n7)
     except Exception as e:                               # noqa: BLE001
         print('   🔴 el muro: %s' % str(e)[:80])
     # 🔑 LAS ENCUESTAS PARA EL WORKER, que valida cada voto contra esto: qué

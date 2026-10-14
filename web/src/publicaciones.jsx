@@ -25,7 +25,7 @@ function leerAplausos() {
   const A = window.APLAUSOS || {};
   return { cu: A.cu || {}, mios: A.mios || {}, va: A.va || {}, err: A.err || {} };
 }
-function useAplausos() {
+export function useAplausos() {
   const [a, setA] = useState(leerAplausos);
   useEffect(() => {
     const f = () => setA(leerAplausos());
@@ -59,7 +59,7 @@ function Felicitar({ liga, it, A }) {
 }
 
 // ── una publicación: lo que se ve, qué dice y qué se puede hacer ──────────────────────────────────────────────────
-function Pub({ liga, it, A }) {
+export function Pub({ liga, it, A }) {
   const q = (it.quien || []).map(limpio);
   const ks = Array.isArray(it.ks) ? it.ks : [];
   const nombres = q.map((n, i) => (ks[i] && liga.T[ks[i]] ? <a key={i} href={'#/r/' + encodeURIComponent(ks[i])}>{n}</a> : <b key={i}>{n}</b>))
@@ -85,7 +85,8 @@ function Pub({ liga, it, A }) {
   } else if (it.tipo === 'caza') {
     cat = 'MOST WANTED · CAZA';
     vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
-    txt = <>{nombres} cazó a <b>{limpio(it.a)}</b> ({it.cat}) y cobra <b>{num(it.pts)}</b></>;
+    // ⚠️ en equipo son varios: «JJ, Snow, Verc y yinn cazó» (14/10/2026)
+    txt = <>{nombres}{q.length > 1 ? ' cazaron a ' : ' cazó a '}<b>{limpio(it.a)}</b> ({it.cat}) y {q.length > 1 ? 'cobran' : 'cobra'} <b>{num(it.pts)}</b></>;
     det = it.ev ? limpio(it.ev) : '';
   } else if (it.tipo === 'sobrevivio') {
     cat = 'MOST WANTED · SOBREVIVIÓ';
@@ -144,7 +145,7 @@ function Pub({ liga, it, A }) {
 }
 
 // ── las cartas nuevas de un día, juntas: una fila de cartas en vez de un renglón por carta ─────────────────────────
-function Cartas({ liga, xs }) {
+export function Cartas({ liga, xs }) {
   const vistos = new Set();
   const us = xs.filter((it) => { const k = (it.ks || [])[0]; if (!k || vistos.has(k)) return false; vistos.add(k); return true; });
   const n = us.length;

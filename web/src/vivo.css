@@ -468,6 +468,9 @@ button.btn{background:transparent;cursor:pointer}
 .cu-xp li.si{border-left-color:#29B298}
 .cu-xp li.lleno{opacity:.7}
 .cu-xp p{margin:6px 0 0}
+/* 📰 sus publicaciones, en el perfil (14/10/2026) */
+.pf-pubs .pub-dia{padding-top:4px}
+.pf-pubs-mas{justify-self:start;margin-top:10px}
 /* 🔥 y al lado de tu cuenta, arriba */
 .yo-racha{font:800 13px/1 Archivo,sans-serif;white-space:nowrap}
 /* 🏟️ las divisiones de la semana (04/10/2026). Ver divisiones.jsx: verde sube, rojo baja */

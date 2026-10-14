@@ -82,6 +82,11 @@ except AttributeError:
 import requests                                          # noqa: E402
 
 SALIDA = os.path.join(BASE, 'datos', 'verificados.json')
+#: 📅 desde cuándo tiene cada uno el Miembro de DRA (Dlx, 13/10/2026: *«en mi perfil agrega la fecha en la cual se
+#: verificaron»*): `{pre, ids: {discord_id: 'AAAA-MM-DD' | 'pre'}}`, en hora del este. «pre» es quien ya lo tenía en la
+#: primera foto (22/09/2026, horas después del arranque de la T1): no se sabe desde cuándo, sólo que desde antes. Se armó
+#: una vez del historial de los dos repos y lo sigue `guardar()`: un ID nuevo entra con el día en que se lo vio
+DESDE = os.path.join(BASE, 'datos', 'verificados_desde.json')
 
 # 🔴 EL ROL «MIEMBRO» DE DRA, que es el que se da al verificarse. Dlx
 # lo paso el 19/09: *«tener el rol de 1101257512273055745 en DRA»*.
@@ -399,7 +404,44 @@ def guardar(ids, miembros=0):
                                            time.gmtime()),
                    'miembros': miembros or len(ids), 'ids': ids},
                   f, ensure_ascii=False, indent=1)
+    anotar_desde(ids)
     return set(ids)
+
+
+def anotar_desde(ids, hoy=None, ruta=None):
+    """📅 Los IDs que no estaban en `verificados_desde.json` entran con el día de hoy (hora del este). Sólo agrega:
+    quien pierde el rol y lo recupera conserva su primera fecha. Devuelve cuántos entraron.
+
+    ⚠️ Sin el archivo no hace nada: armarlo de cero con lo de hoy pondría la fecha de hoy a 2.600 personas."""
+    ruta = ruta or DESDE
+    try:
+        with io.open(ruta, encoding='utf-8') as f:
+            d = json.load(f)
+    except (OSError, ValueError):
+        return 0
+    if hoy is None:
+        import datetime as _dt
+        from zoneinfo import ZoneInfo
+        hoy = _dt.datetime.now(ZoneInfo('America/New_York')).strftime('%Y-%m-%d')
+    m = d.setdefault('ids', {})
+    nuevos = [i for i in ids if str(i) not in m]
+    if not nuevos:
+        return 0
+    for i in nuevos:
+        m[str(i)] = hoy
+    d['ids'] = dict(sorted(m.items()))
+    with io.open(ruta, 'w', encoding='utf-8') as f:
+        json.dump(d, f, ensure_ascii=False, indent=1)
+    return len(nuevos)
+
+
+def desde():
+    """📅 `{discord_id: 'AAAA-MM-DD' | 'pre'}`, o `{}` si no está el archivo."""
+    try:
+        with io.open(DESDE, encoding='utf-8') as f:
+            return (json.load(f) or {}).get('ids') or {}
+    except (OSError, ValueError):
+        return {}
 
 
 def refrescar(s=None):
@@ -416,6 +458,20 @@ def refrescar(s=None):
 def _self_check():
     """Que las tres condiciones sean tres, y que falte una alcance."""
     mal = 0
+    # 📅 la fecha de verificación: un ID nuevo entra con hoy, uno viejo no se pisa, y sin archivo no se inventa nada
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        r = os.path.join(tmp, 'vd.json')
+        sin = anotar_desde(['1'], '2026-10-14', r)
+        with io.open(r, 'w', encoding='utf-8') as f:
+            json.dump({'pre': '2026-09-22', 'ids': {'1': 'pre', '2': '2026-10-01'}}, f)
+        n = anotar_desde(['1', '2', '3'], '2026-10-14', r)
+        with io.open(r, encoding='utf-8') as f:
+            m = json.load(f)['ids']
+        ok = sin == 0 and n == 1 and m == {'1': 'pre', '2': '2026-10-01', '3': '2026-10-14'}
+        mal += not ok
+        print('   %s la fecha de verificación: entra el nuevo con hoy, no pisa a los de antes, sin archivo no inventa'
+              % ('✅' if ok else '🔴'))
     print('\n══ EL PORTON DE IDENTIDAD ══\n')
     ver = {'111', '222'}
     casos = [

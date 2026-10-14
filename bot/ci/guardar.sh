@@ -78,7 +78,7 @@ set -euo pipefail
 ARCHIVOS="datos/cartas_selladas.json datos/cartas_r2.json datos/dra_hub.json \
           datos/competitivo_pool.json datos/temporada_pool.json \
           datos/bloqueados.json datos/canales_llaves.json \
-          datos/padron.json datos/verificados.json \
+          datos/padron.json datos/verificados.json datos/verificados_desde.json \
           datos/servidores_de.json datos/fotos_etag.json \
           datos/anuncios.json datos/avisados.json \
           datos/akas.json datos/decisiones.json \
@@ -98,7 +98,7 @@ ARCHIVOS="datos/cartas_selladas.json datos/cartas_r2.json datos/dra_hub.json \
           datos/estado_escuchar.json datos/estado_dibujar.json \
           datos/por_servidor.json datos/cancelados.json datos/divisiones.json \
           datos/ocr_anuncios.json datos/ocr_llaves.json datos/misiones.json \
-          datos/pase_niveles.json datos/conservan.json datos/fases_llaves.json datos/debutantes.json datos/videos.json datos/ligas.json datos/videos_propios.json datos/agenda.json"
+          datos/pase_niveles.json datos/conservan.json datos/fases_llaves.json datos/debutantes.json datos/videos.json datos/ligas.json datos/videos_propios.json datos/agenda.json datos/decidir_solas.json"
 # 🔴 CADA PALABRA DE LA LISTA TIENE QUE SER UN `datos/*.json`, Y SE MIRA.
 # El 24/09/2026 a las 5:22 PM ET entró un `\n` literal —una edición con
 # heredoc se comió la barra— y `bash -n` dio bien, porque es sintaxis

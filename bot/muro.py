@@ -363,6 +363,80 @@ def con_claves(items, tabla):
     return out
 
 
+def _fuentes():
+    """De dónde sale lo que se vuelve a armar en cada corrida."""
+    import llaves_web as LW
+    regs = LW.leer()
+    return {'llaves': regs, 'instantes': LW.instantes(regs), 'mw': _j('datos', 'mw.json'),
+            'precios': _j('datos', 'precios.json'), 'mult': _j('datos', 'multiplicadores.json'),
+            'anuncios': _j('datos', 'anuncios.json'), 'pase': _j('datos', 'pase_niveles.json')}
+
+
+def _arranque(ahora):
+    """El arranque de la temporada en curso, si ya pasó; `None` si no."""
+    try:
+        from comun.temporada import arranque
+        a = arranque()
+        a = dt.datetime.fromisoformat(a) if a else None
+        return a if a and a <= ahora else None
+    except Exception:                                    # noqa: BLE001
+        return None
+
+
+#: 📰 en el perfil de cada uno, hasta cuántas publicaciones suyas viajan (las más nuevas)
+POR_PERSONA = 40
+
+
+def de_cada_uno(p, guardado=None, ahora=None, fuentes=None, tope=POR_PERSONA):
+    """📰 `{clave: [publicación, …]}`: las publicaciones de cada uno de TODA la temporada, la más nueva primero.
+
+    🔑 Dlx, 13/10/2026: *«pon ahí las publicaciones de cada uno que el bot publica… no todas claramente pero con la
+    opción de ver todas»*. El muro trae sólo las de los últimos `DIAS` días y `VIAJAN` en total; acá van todas las de
+    cada uno desde el arranque (hasta `tope`), con su `id` —se felicitan igual que en Publicaciones— y sus `ks`.
+    Viajan en los perfiles (`mu`, ver `bot/subir_web.py`): no hay otra clave de KV.
+
+    ⚠️ Lee lo que `publicar()` acaba de guardar: los cambios (rango, tarjeta) ya están anotados y no se repiten.
+    """
+    ahora = ahora or dt.datetime.now(dt.timezone.utc)
+    guardado = guardado if guardado is not None else (_j('datos', 'muro.json') or {})
+    fuentes = fuentes if fuentes is not None else _fuentes()
+    todo, _estado, _anotados = _todo(p, guardado, ahora, fuentes)
+    desde = _arranque(ahora)
+    visto, lista = set(), []
+    for x in todo:
+        if x.get('tipo') not in DE_ALGUIEN:
+            continue
+        t = _de_iso(x.get('t'))
+        if not t or (desde and t < desde) or t > ahora + dt.timedelta(hours=1):
+            continue
+        clave = json.dumps(x, sort_keys=True, ensure_ascii=False)
+        if clave in visto:
+            continue
+        visto.add(clave)
+        lista.append(x)
+    lista.sort(key=lambda x: x['t'], reverse=True)
+    out = {}
+    for x in con_claves(con_ids(lista), p.get('tabla')):
+        ks = x.get('ks')
+        ks = list(ks.values()) if isinstance(ks, dict) else (ks or [])
+        for k in dict.fromkeys(k for k in ks if k):
+            if len(out.setdefault(k, [])) < tope:
+                out[k].append(x)
+    return out
+
+
+def _todo(p, guardado, ahora, fuentes):
+    """`(todas las publicaciones sin filtrar, estado nuevo, cambios anotados)`."""
+    pubs, estado = cambios(guardado.get('estado'), p.get('tabla'), ahora)
+    anotados = (guardado.get('cambios') or []) + pubs
+    anotados = anotados[-GUARDA:]
+    todo = (anotados + campeones(fuentes.get('llaves'), fuentes.get('instantes'))
+            + most_wanted(fuentes.get('mw')) + precios_cobrados(fuentes.get('precios'))
+            + premios(fuentes.get('mult')) + anuncios(fuentes.get('anuncios'))
+            + pase(fuentes.get('pase'), p.get('tabla')) + novedades(p.get('novedades')))
+    return todo, estado, anotados
+
+
 def armar(p, guardado=None, ahora=None, fuentes=None):
     """`(muro para la página, lo que se guarda)` con el payload del lobby `p`.
 
@@ -371,28 +445,13 @@ def armar(p, guardado=None, ahora=None, fuentes=None):
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     guardado = guardado if guardado is not None else (_j('datos', 'muro.json') or {})
     if fuentes is None:
-        import llaves_web as LW
-        regs = LW.leer()
-        fuentes = {'llaves': regs, 'instantes': LW.instantes(regs), 'mw': _j('datos', 'mw.json'),
-                   'precios': _j('datos', 'precios.json'), 'mult': _j('datos', 'multiplicadores.json'),
-                   'anuncios': _j('datos', 'anuncios.json'), 'pase': _j('datos', 'pase_niveles.json')}
-    pubs, estado = cambios(guardado.get('estado'), p.get('tabla'), ahora)
-    anotados = (guardado.get('cambios') or []) + pubs
-    anotados = anotados[-GUARDA:]
-    todo = (anotados + campeones(fuentes.get('llaves'), fuentes.get('instantes'))
-            + most_wanted(fuentes.get('mw')) + precios_cobrados(fuentes.get('precios'))
-            + premios(fuentes.get('mult')) + anuncios(fuentes.get('anuncios'))
-            + pase(fuentes.get('pase'), p.get('tabla')) + novedades(p.get('novedades')))
+        fuentes = _fuentes()
+    todo, estado, anotados = _todo(p, guardado, ahora, fuentes)
     # desde cuándo: lo de los últimos días, y nunca lo de antes del arranque
     desde = ahora - dt.timedelta(days=DIAS)
-    try:
-        from comun.temporada import arranque
-        a = arranque()
-        a = dt.datetime.fromisoformat(a) if a else None
-        if a and a <= ahora and a > desde:
-            desde = a
-    except Exception:                                    # noqa: BLE001
-        pass
+    a = _arranque(ahora)
+    if a and a > desde:
+        desde = a
     visto, lista = set(), []
     for x in todo:
         t = _de_iso(x.get('t'))

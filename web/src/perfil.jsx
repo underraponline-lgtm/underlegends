@@ -9,7 +9,7 @@
 // lo que le falta, `ins` sus insignias, `mw` su cacería; `e` los eventos y `dmp` el promedio de la Liga). Las acciones
 // —seguir, el precio por cabeza, el visor de cartas y de llaves— son las de app.js.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
+import { MESES, diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, SinCarta, accion, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
@@ -18,11 +18,12 @@ import { ROL, textoRol, useRoles } from './roles.js';
 import { urlFondo, useFondos } from './fondos.js';
 import { svElegido, useElegidos } from './elegidos.js';
 import * as RQ from './requisitos.js';
+import { Cartas, Pub, useAplausos } from './publicaciones.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 
 // 🔑 UNA SOLA PÁGINA (Dlx, 07/10/2026: *«me gustaría que todo esté en una página, no que esté dividido en varias»*).
 // Las pestañas de antes siguen siendo links que circulan (`#/r/x/duelos`): ahora bajan hasta su sección
-const SECCIONES = ['eventos', 'duelos', 'insignias'];
+const SECCIONES = ['eventos', 'duelos', 'insignias', 'publicaciones'];
 const DIAS = ['domingos', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábados'];
 const DIA1 = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
@@ -106,6 +107,15 @@ function Precio({ liga, f, esYo, dc }) {
   );
 }
 
+// 📅 DESDE CUÁNDO ESTÁ VERIFICADO (Dlx, 13/10/2026: «en mi perfil agrega la fecha en la cual se verificaron»): `vd` del
+// perfil, 'AAAA-MM-DD' o 'pre' (ya lo estaba antes de la T1: no se sabe desde cuándo). Ver `verificados.desde()`
+export function textoVerificado(vd) {
+  if (vd === 'pre') return 'Verificado antes de la T1';
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(vd || ''));
+  if (!m) return '';
+  return 'Verificado el ' + Number(m[3]) + ' de ' + MESES[Number(m[2]) - 1].slice(0, 3) + (m[1] !== '2026' ? ' de ' + m[1] : '');
+}
+
 // ── arriba: quién es, sus números y su tarjeta (con sus cuatro para cambiar) ──
 function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
   const si = (liga.sigue || []).includes(k);
@@ -156,6 +166,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
             {svE ? <li><a href={'#/sv/' + siglaDe(svE)} title="Eligió este servidor"><img alt="" src={liga.logo(svE)} />{(sv && sv.nombre) || siglaDe(svE)}</a></li> : null}
             {crew ? <li><a href={'#/crew/' + encodeURIComponent(crew.clave || crew.crew)}>{limpio(crew.crew)}</a></li>
               : f.crew ? <li><span>{limpio(f.crew)}</span></li> : null}
+            {p && textoVerificado(p.vd) ? <li><span className="pf-con pf-vd" title="Tiene el rol de Miembro en Discord Rap Español"><Ico n="ok" t={15} />{textoVerificado(p.vd)}</span></li> : null}
             {nv ? <li><span className="pf-nivel" title="Sube jugando, entrando cada día y con lo que hace en la Liga">Nivel {nv[0]}</span></li> : null}
             {nv && nv[1] >= 2 ? <li><span className="pf-con" title={nv[1] + ' días seguidos en la Liga'}><Ico n="fuego" t={15} />{nv[1]} días</span></li> : null}
             {pa ? <li><a className="pf-pase" href="#/pase" title="Su nivel en el Pase de rapero de la temporada"><Ico n="pase" t={15} />Pase {pa.nivel}{pa.titulo ? ' · ' + pa.titulo : ''}</a></li> : null}
@@ -738,6 +749,28 @@ function Duelos({ liga, p, e }) {
 }
 
 // ── Insignias y su cacería ──
+// 📰 SUS PUBLICACIONES (Dlx, 13/10/2026: «pon ahí las publicaciones de cada uno que el bot publica también en alguna
+// parte, no todas claramente pero con la opción de ver todas»): las de toda la temporada (`mu`, `muro.de_cada_uno()`),
+// las tres más nuevas y «Ver todas». Las mismas piezas que Publicaciones, con 👏 Felicitar
+function SusPublicaciones({ liga, p, esYo }) {
+  const [todas, setTodas] = useState(false);
+  const A = useAplausos();
+  const xs = (p && p.mu) || [];
+  if (!xs.length) return null;
+  const ver = todas ? xs : xs.slice(0, 3);
+  return (
+    <section className="sec pf-sec pf-pubs">
+      <div className="sec-t"><h2>{esYo ? 'Tus publicaciones' : 'Sus publicaciones'}</h2><span className="tj-n">{xs.length}</span></div>
+      <div className="pub-dia">{ver.map((it) => (it.tipo === 'tarjeta'
+        ? <Cartas key={it.id} liga={liga} xs={[it]} /> : <Pub key={it.id} liga={liga} it={it} A={A} />))}</div>
+      {xs.length > 3 ? (
+        <button type="button" className="btn borde2 chico pf-pubs-mas" aria-expanded={todas} onClick={() => setTodas(!todas)}>
+          {todas ? 'Ver menos' : 'Ver todas (' + xs.length + ')'}</button>
+      ) : null}
+    </section>
+  );
+}
+
 function Insignias({ liga, p }) {
   const cat = liga.d.insignias || [];
   const tiene = new Map(((p && p.ins) || []).map((x) => [x[0], x[1]]));
@@ -851,6 +884,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
           <Numeros f={f} p={p} />
           {/* 🎬 arriba, debajo de sus números (Dlx, 12/10/2026: «que esto esté más arriba… debajo de sus números») */}
           <div id="pf-videos"><Videos liga={liga} p={p} k={k} esYo={esYo} dc={dc} /></div>
+          <div id="pf-publicaciones"><SusPublicaciones liga={liga} p={p} esYo={esYo} /></div>
           <Datos liga={liga} p={p} e={P.e} />
           <Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} />
           <div className="pf-dos">
