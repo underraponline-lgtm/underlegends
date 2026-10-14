@@ -238,6 +238,14 @@
 "temporada"
 ]
 },
+"delux": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "bna": {
 "rg": "",
 "c": []
@@ -262,14 +270,6 @@
 "rg": "C",
 "c": [
 "competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"delux": {
-"rg": "",
-"c": [
 "pais",
 "servidor",
 "temporada"
@@ -436,6 +436,13 @@
 "rg": "",
 "c": []
 },
+"nemi": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "aldre": {
 "rg": "",
 "c": [
@@ -479,6 +486,13 @@
 "rg": "",
 "c": []
 },
+"erik": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "juanpa": {
 "rg": "",
 "c": [
@@ -519,13 +533,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"nemi": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -633,13 +640,6 @@
 "pomberito": {
 "rg": "",
 "c": []
-},
-"erik": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "deluxe": {
 "rg": "",

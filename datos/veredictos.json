@@ -233,46 +233,6 @@
   }
  },
  "batallas": {
-  "1557224903663558738": {
-   "id": "1557224903663558738",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791341748873,
-   "a": "SIX ERIK",
-   "b": "PRODIGY",
-   "ganador": "SIX ERIK",
-   "votos": "1–0"
-  },
-  "1557227677889462293": {
-   "id": "1557227677889462293",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791342410300,
-   "a": "ZIGNOS WEI ERIAN",
-   "b": "JAWA",
-   "ganador": "ZIGNOS WEI ERIAN",
-   "votos": "1–0"
-  },
-  "1557228254312661023": {
-   "id": "1557228254312661023",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791342547730,
-   "a": "SOSA",
-   "b": "PAIN TAM",
-   "ganador": "PAIN TAM",
-   "votos": "1–0"
-  },
-  "1557231866875220009": {
-   "id": "1557231866875220009",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791343409032,
-   "a": "PAIN TAM",
-   "b": "ZIGNOS ERIAN WEI",
-   "ganador": "PAIN TAM",
-   "votos": "1–0"
-  },
   "1557237006248185897": {
    "id": "1557237006248185897",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1961,6 +1921,61 @@
    "a": "MAKMA",
    "b": "NEMI",
    "ganador": "NEMI",
+   "votos": "1–0"
+  },
+  "1559761347946749972": {
+   "id": "1559761347946749972",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1557583344638623754",
+   "pub": 1791946484315,
+   "a": "AGUS",
+   "b": "WARAP",
+   "ganador": "AGUS",
+   "votos": "1–0"
+  },
+  "1559761422957940820": {
+   "id": "1559761422957940820",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1557583344638623754",
+   "pub": 1791946502199,
+   "a": "LIBERIA",
+   "b": "GOCHO",
+   "ganador": "LIBERIA",
+   "votos": "1–0"
+  },
+  "1559764984412512267": {
+   "id": "1559764984412512267",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1557583344638623754",
+   "pub": 1791947351316,
+   "a": "VERC",
+   "b": "PICHULA",
+   "ganador": "VERC",
+   "votos": "1–0"
+  },
+  "1559766767600009297": {
+   "id": "1559766767600009297",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1557583344638623754",
+   "pub": 1791947776461,
+   "a": "AGUS",
+   "b": "SEBAS",
+   "ganador": "AGUS",
+   "votos": "1–0"
+  },
+  "1559768178467410012": {
+   "id": "1559768178467410012",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1557583344638623754",
+   "pub": 1791948112838,
+   "a": "VERC",
+   "b": "NEMI",
+   "ganador": "VERC",
    "votos": "1–0"
   }
  },
@@ -5556,6 +5571,78 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1559761199640612965": {
+   "id": "1559761199640612965",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1557583344638623754",
+   "pub": 1791946448956,
+   "ed": 1791948122212,
+   "texto": "`[ CUARTOS ]`\n⌞AGUS⌝ 🆚 ⌞WARAP⌝\n⌞LIBERIA⌝ 🆚 ⌞GOCHO⌝\n⌞ZA⌝ 🆚 ⌞CRONOX⌝ 🆚 ⌞NEMI⌝\n⌞VERC⌝ 🆚 ⌞PICHULA⌝\n`[ SEMIFINALES ]`\n⌞AGUS⌝ 🆚 ⌞SEBAS⌝\n⌞VERC⌝ 🆚 ⌞NEMI⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "AGUS",
+      "WARAP"
+     ],
+     "AGUS",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "LIBERIA",
+      "GOCHO"
+     ],
+     "LIBERIA",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "ZA",
+      "CRONOX",
+      "NEMI"
+     ],
+     "NEMI",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "VERC",
+      "PICHULA"
+     ],
+     "VERC",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "AGUS",
+      "SEBAS"
+     ],
+     "AGUS",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "VERC",
+      "NEMI"
+     ],
+     "VERC",
+     "veredicto",
      []
     ]
    ]
