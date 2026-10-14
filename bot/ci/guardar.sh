@@ -78,7 +78,7 @@ set -euo pipefail
 ARCHIVOS="datos/cartas_selladas.json datos/cartas_r2.json datos/dra_hub.json \
           datos/competitivo_pool.json datos/temporada_pool.json \
           datos/bloqueados.json datos/canales_llaves.json \
-          datos/padron.json datos/verificados.json datos/verificados_desde.json \
+          datos/padron.json datos/verificados.json datos/verificados_desde.json datos/akas_a_mano.json \
           datos/servidores_de.json datos/fotos_etag.json \
           datos/anuncios.json datos/avisados.json \
           datos/akas.json datos/decisiones.json \

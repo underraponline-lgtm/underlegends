@@ -2397,6 +2397,10 @@ console.log('\nLAS ENCUESTAS\n');
      rep({ llave: '../x', que: 'ganador' }).error === 'llave' && rep({ llave: '370', que: 'x' }).error === 'que' &&
      rep({ llave: '370', que: 'ganador', texto: 'x'.repeat(301) }).error === 'largo');
   ok('«otra cosa» sin decir qué, no', rep({ llave: '370', que: 'otro', texto: ' ' }).error === 'texto');
+  // 🏟️ un nombre de una liga (14/10/2026, Dlx: «Sí, a Reportes»): sólo «un nombre» u «otra cosa»
+  ok('un nombre de una liga vale; el ganador de una liga, no (eso lo dicen sus veredictos)',
+     !rep({ llave: 'liga:fmh-carimex', que: 'nombre', texto: 'FORCE soy yo', batalla: 'FORCE' }).error &&
+     rep({ llave: 'liga:fmh-carimex', que: 'ganador' }).error === 'que' && rep({ llave: 'liga:../x', que: 'nombre' }).error === 'llave');
   ok('y una cuenta de hace 5 días, no, como el voto',
      rep({ llave: '370', que: 'ganador' }, NUEVO).error === 'nueva');
 

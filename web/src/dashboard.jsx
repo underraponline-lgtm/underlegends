@@ -1080,6 +1080,54 @@ async function decidirReporte(cuerpo) {
   return j.reportes || [];
 }
 
+// 🏟️ CORREGIR UN NOMBRE DE UNA LIGA (14/10/2026, Dlx: «Sí, a Reportes»): era quien lo mandó u otro de la Lista. El ciclo
+// lo deja como el AKA de ese servidor (`por_servidor`, `reportes.corregir_liga()`): vale para la liga y para las llaves
+// de ese servidor. Alguien nuevo no: una liga no crea gente
+export const ligaDe = (liga, llave) => (((liga && liga.d && liga.d.ligas) || {}).ligas || []).find((x) => 'liga:' + x.id === String(llave)) || null;
+function CorregirLiga({ r, liga, alListo }) {
+  const L = ligaDe(liga, r.llave);
+  const nombres = [];
+  for (const f of (L && L.tabla) || []) if (f[0] && !nombres.includes(f[0])) nombres.push(f[0]);
+  for (const u of (L && L.ult) || []) for (const x of u.slice(0, 2)) if (x && !nombres.includes(x)) nombres.push(x);
+  if (r.batalla && !nombres.includes(r.batalla)) nombres.unshift(r.batalla);
+  const [nombre, setNombre] = useState(r.batalla || '');
+  const [quien, setQuien] = useState('');
+  const [es, setEs] = useState('');
+  const [msg, setMsg] = useState('');
+  const [ocup, setOcup] = useState(false);
+  const lista = ((liga && liga.d && liga.d.tabla) || []).map((x) => x.n);
+  const listo = !!nombre && (quien === 'reporta' || (quien === 'es' && !!es.trim()));
+  const aplicar = async () => {
+    setOcup(true); setMsg('');
+    try {
+      alListo(await decidirReporte(Object.assign({ id: r.id, accion: 'nombre', liga: String(r.llave).slice(5), nombre },
+        quien === 'reporta' ? { reporta: true } : { es: es.trim() })));
+    } catch (e) { setMsg('No se pudo: ' + e.message); setOcup(false); }
+  };
+  const id = 'repl' + r.id;
+  return (
+    <div className="db-rep-form">
+      <span className="db-rep-p">¿Qué nombre de {L ? L.n : 'la liga'} está mal?</span>
+      <div className="db-opc">{nombres.map((x) => <button key={x} type="button" className={nombre === x ? 'on' : ''} onClick={() => setNombre(x)}>{x}</button>)}</div>
+      {nombre ? <>
+        <span className="db-rep-p">«{nombre}» es…</span>
+        <div className="db-rep-q">
+          <label><input type="radio" name={id} checked={quien === 'reporta'} onChange={() => setQuien('reporta')} /> quien lo mandó{r.evid && r.evid.quien ? ' (' + r.evid.quien + ')' : r.de ? ' (' + r.de + ')' : ''}</label>
+          <label><input type="radio" name={id} checked={quien === 'es'} onChange={() => setQuien('es')} /> otro de la Lista:
+            <input type="text" list={id + 'l'} value={es} placeholder="su nombre" onFocus={() => setQuien('es')} onChange={(e) => setEs(e.target.value)} maxLength={60} /></label>
+          <datalist id={id + 'l'}>{lista.map((x) => <option key={x} value={x} />)}</datalist>
+        </div>
+      </> : null}
+      <p className="db-rep-nota">Queda como su nombre en {L ? L.sv : 'ese servidor'}: en la liga y en las llaves de ese servidor. Lo aplica el ciclo en su próxima corrida y a quien lo mandó le llega a la campana.</p>
+      <div className="cu-btns">
+        <button type="button" className="btn verde chico" disabled={!listo || ocup} onClick={aplicar}>{ocup ? 'Guardando…' : 'Aplicar'}</button>
+        {!listo ? <small>{!nombre ? 'Elegí el nombre.' : 'Elegí quién es.'}</small> : null}
+        {msg ? <small role="status">{msg}</small> : null}
+      </div>
+    </div>
+  );
+}
+
 // el formulario de «Corregir»: un nombre o el ganador, con lo que la llave de verdad trae
 function Corregir({ r, liga, alListo, hermanos }) {
   const [L, setL] = useState(undefined);
@@ -1312,7 +1360,8 @@ function Reportes({ rep, liga, alCambiar, corrige = true }) {
         const abiertoA = r.estado === '' || r.estado === 'no_pude';
         return (
           <li key={r.id}>
-            <div className="db-l1"><b>{/^\d+$/.test(r.llave) ? <a href={'#/llave/' + r.llave}>Llave #{r.llave}</a> : 'Llave en vivo'}</b>
+            <div className="db-l1"><b>{/^\d+$/.test(r.llave) ? <a href={'#/llave/' + r.llave}>Llave #{r.llave}</a>
+              : String(r.llave).startsWith('liga:') ? <a href="#/ranking/ligas">Liga {(ligaDe(liga, r.llave) || {}).n || String(r.llave).slice(5)}</a> : 'Llave en vivo'}</b>
               <span className="db-chip">{QUE_REP[r.que] || r.que}</span>{est ? <span className={'db-chip ' + est[1]}>{est[0]}</span> : null}</div>
             {/* 👤 quién lo mandó: el nombre de la Lista que pone el ciclo (`evid.quien`), aunque no tenga perfil en la página
                 (Dlx, 13/10/2026: «¿pero quién lo dice?») */}
@@ -1326,10 +1375,11 @@ function Reportes({ rep, liga, alCambiar, corrige = true }) {
             {/* 🔐 quién lo decidió, si no fue Dlx (los permisos, 13/10/2026) */}
             {r.por && r.por !== 'Dlx' && r.estado ? <small>Lo decidió {r.por}.</small> : null}
             {abiertoA || r.estado === 'corregir' ? (
-              abierto === r.id ? <Corregir r={r} liga={liga} alListo={(l) => { setLista(l); setAbierto(null); }}
-                hermanos={lista.filter((x) => x.id !== r.id && x.llave === r.llave && (x.estado === '' || x.estado === 'no_pude'))} /> : (
+              abierto === r.id ? (String(r.llave).startsWith('liga:') ? <CorregirLiga r={r} liga={liga} alListo={(l) => { setLista(l); setAbierto(null); }} />
+                : <Corregir r={r} liga={liga} alListo={(l) => { setLista(l); setAbierto(null); }}
+                  hermanos={lista.filter((x) => x.id !== r.id && x.llave === r.llave && (x.estado === '' || x.estado === 'no_pude'))} />) : (
                 <div className="cu-btns">
-                  {corrige && /^\d+$/.test(r.llave) ? <button type="button" className="btn verde chico" onClick={() => setAbierto(r.id)}>{r.estado === 'corregir' ? 'Cambiar la corrección' : 'Corregir'}</button> : null}
+                  {corrige && (/^\d+$/.test(r.llave) || String(r.llave).startsWith('liga:')) ? <button type="button" className="btn verde chico" onClick={() => setAbierto(r.id)}>{r.estado === 'corregir' ? 'Cambiar la corrección' : 'Corregir'}</button> : null}
                   <button type="button" className="btn borde2 chico" disabled={msg[r.id] === '…'} onClick={() => cerrar(r, 'listo')}>Listo</button>
                   <button type="button" className="btn borde2 chico" disabled={msg[r.id] === '…'} onClick={() => cerrar(r, 'prueba')}>Era una prueba</button>
                   {msg[r.id] && msg[r.id] !== '…' ? <small role="status">{msg[r.id]}</small> : null}

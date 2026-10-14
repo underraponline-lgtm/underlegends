@@ -91,7 +91,9 @@ def filas(cola, nombres):
         if not isinstance(r, dict) or not r.get('id') or r.get('estado'):
             continue
         llave = str(r.get('llave') or '')
-        origen = 'evento #%s' % llave if llave.isdigit() else 'llave en vivo'
+        # 🏟️ y las ligas (14/10/2026): «liga fmh-carimex»
+        origen = ('evento #%s' % llave if llave.isdigit() else 'liga %s' % llave[5:] if llave.startswith('liga:')
+                  else 'llave en vivo')
         texto = str(r.get('texto') or '').strip()
         bat = str(r.get('batalla') or '').strip()
         det = '%s%s%s · #%s' % (QUE.get(r.get('que'), QUE['otro']), (': ' + texto) if texto else '',
@@ -501,11 +503,53 @@ def _al_objeto(estados, evid=None):
     return r.ok
 
 
+def corregir_liga(r, fix, mano, resolver, padron, ligas=None):
+    """🏟️ Un nombre de una liga era otra persona (Dlx, 14/10/2026: «Sí, a Reportes»). Queda como el AKA de ESE servidor
+    (`mano['por_servidor'][sv]`, que leen `ligas.por_servidor()` y las llaves de ese servidor). `(estado, qué)`;
+    `ValueError` si no se puede. Sólo alguien de la Lista o quien lo reportó: una liga no crea gente."""
+    import ligas as LG
+    from comun.claves import clave
+    lid = str(fix.get('liga') or '')
+    meta = LG.LIGAS.get(lid)
+    if not meta:
+        raise ValueError('no conozco la liga «%s»' % lid)
+    sv = meta['sv']
+    viejo = str(fix.get('nombre') or '').strip()
+    d = ligas if ligas is not None else LG.leer()
+    bats = ((d.get('ligas') or {}).get(lid) or {}).get('batallas') or []
+    escritos = {LG.clave(x) for b in bats for x in (b[3], b[4]) if x}
+    ps = (mano.setdefault('por_servidor', {})).setdefault(sv, {})
+    ya = {LG.clave(k): v for k, v in ps.items()}
+    if fix.get('reporta') or fix.get('es'):
+        nuevo, _cc = destino(fix, r.get('quien'), resolver.padron, padron)
+    else:
+        raise ValueError('una liga no crea gente: elegí alguien de la Lista')
+    # ⚠️ el nombre puede venir resuelto (la tabla de la página dice «Agus» por «Agustín»): vale si alguna forma escrita
+    # en la liga se resuelve a él, y se anotan TODAS esas formas
+    formas = sorted({x for b in bats for x in (b[3], b[4]) if x and (LG.clave(x) == LG.clave(viejo)
+                                                                     or clave(resolver(x)) == clave(viejo))},
+                    key=lambda x: x.lower())
+    if not formas and LG.clave(viejo) not in escritos:
+        raise ValueError('«%s» no está en %s' % (viejo, meta['n']))
+    formas = formas or [viejo]
+    if all(clave(ya.get(LG.clave(x), '')) == clave(nuevo) for x in formas):
+        return 'aplicado', '«%s» en %s ya es %s' % (viejo, meta['n'], nuevo)
+    for x in formas:
+        ps[LG.limpio(x) or x] = nuevo
+    mano.setdefault('_leeme', [])
+    if isinstance(mano['_leeme'], list):
+        mano['_leeme'].append('🏟️ %s, %s: en %s «%s» es %s (reporte #%s, %s).'
+                              % (sv, _et(int(time.time() * 1000)), meta['n'], '», «'.join(formas), nuevo, r.get('id'),
+                                 '%s desde el Dashboard' % (fix.get('por') or 'Dlx')))
+    print('      %s «%s» → %s (por_servidor.%s)' % (meta['n'], '», «'.join(formas), nuevo, sv))
+    return 'aplicado', '«%s» en %s ahora es %s' % (viejo, meta['n'], nuevo)
+
+
 def corregir(cola, aplicar=False):
     """Lo que Dlx eligió corregir desde el Dashboard (`estado` = `corregir`), y la evidencia de cada reporte que todavía
     no se cerró (ver `evidencia()`). Cuántos se aplicaron."""
     pend = [(r, _fix(r)) for r in cola or [] if isinstance(r, dict) and r.get('estado') == 'corregir']
-    pend = [(r, f) for r, f in pend if f and str(f.get('n') or '').isdigit()]
+    pend = [(r, f) for r, f in pend if f and (str(f.get('n') or '').isdigit() or f.get('liga'))]
     abiertos = [r for r in cola or [] if isinstance(r, dict) and r.get('id')
                 and (r.get('estado') or '') in ('', 'corregir', 'no_pude')]
     print('   %d corrección(es) esperando · %d reporte(s) abiertos' % (len(pend), len(abiertos)))
@@ -527,7 +571,26 @@ def corregir(cola, aplicar=False):
     antes_de = json.dumps(decis, ensure_ascii=False, sort_keys=True)
     ahora = int(time.time() * 1000)
     estados = {}
+    # 🏟️ lo de las ligas va a `akas_a_mano.json` (`por_servidor`): se lee una vez y se escribe sólo si cambió
+    ruta_mano = os.path.join(BASE, 'datos', 'akas_a_mano.json')
+    try:
+        with io.open(ruta_mano, encoding='utf-8') as f:
+            mano_w = json.load(f) or {}
+    except (OSError, ValueError):
+        mano_w = None
+    antes_mano = json.dumps(mano_w, ensure_ascii=False, sort_keys=True)
     for r, fix in pend:
+        if fix.get('liga'):
+            try:
+                if mano_w is None:
+                    raise ValueError('no pude leer akas_a_mano.json')
+                est, que = corregir_liga(r, fix, mano_w, resolver, padron)
+            except ValueError as e:
+                est, que = 'no_pude', str(e)
+            print('   #%s  %s: %s' % (r.get('id'), est or 'esperando', que))
+            if est:
+                estados[str(r['id'])] = [est, que]
+            continue
         L = llaves.get(str(fix['n']))
         try:
             if not L:
@@ -577,6 +640,10 @@ def corregir(cola, aplicar=False):
     if json.dumps(llaves, ensure_ascii=False, sort_keys=True) != antes_ll:
         with io.open(LLAVES, 'w', encoding='utf-8', newline='') as f:
             json.dump(llaves, f, ensure_ascii=False, indent=1, sort_keys=True)
+    if mano_w is not None and json.dumps(mano_w, ensure_ascii=False, sort_keys=True) != antes_mano:
+        with io.open(ruta_mano, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(mano_w, f, ensure_ascii=False, indent=1)
+            f.write('\n')
     if (estados or evid) and not _al_objeto(estados, evid):
         print('   ⚠️ el objeto no contestó: se lo vuelvo a decir en la próxima corrida')
     return sum(1 for x in estados.values() if x[0] == 'aplicado')
@@ -645,6 +712,33 @@ def _self_check():
        and dec['ganador']['COPA · ACAD · 03/10 · final'][0]['ganador'] == 'Abyssus' and g3[0] == 'no_pude',
        'el ganador: si la llave ya lo dice, está; si no, queda la regla para el lector, y si no aparece a tiempo, la '
        'llave es vieja y se dice  %s' % ([g1, g2, g3],))
+    # 🏟️ un nombre de una liga (14/10/2026): queda como el AKA de ese servidor, sólo si está en la liga y es de la Lista
+    class _R:
+        padron = {'forcegp': 'ForceGP', 'agustin51k': 'AGUSTÍN51K', 'mco': 'MCO'}
+
+        def __call__(self, x):
+            return {'agustin': 'Agus'}.get(_norm(x), x)
+    lg = {'ligas': {'fmh-carimex': {'batallas': [['1', 't', None, 'FORCE', 'MCO', 'MCO', 'directa', ''],
+                                                   ['2', 't', None, 'Agustín', 'MCO', 'MCO', 'directa', '']]}}}
+    pad = [{'raw': 'ForceGP', 'discord_id': '884190151180447744'}]
+    mano = {'por_servidor': {}}
+    a1 = corregir_liga({'id': 1, 'quien': '884190151180447744'}, {'liga': 'fmh-carimex', 'nombre': 'FORCE', 'reporta': True},
+                       mano, _R(), pad, lg)
+    a2 = corregir_liga({'id': 2}, {'liga': 'fmh-carimex', 'nombre': 'Agus', 'es': 'AGUSTÍN51K'}, mano, _R(), pad, lg)
+    a3 = corregir_liga({'id': 3, 'quien': '884190151180447744'}, {'liga': 'fmh-carimex', 'nombre': 'FORCE', 'reporta': True},
+                       mano, _R(), pad, lg)
+    no = []
+    for f in ({'liga': 'fmh-carimex', 'nombre': 'Nadie', 'es': 'MCO'}, {'liga': 'otra', 'nombre': 'FORCE', 'es': 'MCO'},
+              {'liga': 'fmh-carimex', 'nombre': 'FORCE', 'nuevo': 'Force X'}):
+        try:
+            corregir_liga({'id': 4}, f, mano, _R(), pad, lg)
+        except ValueError as e:
+            no.append(str(e))
+    ok(a1[0] == a2[0] == 'aplicado' and mano['por_servidor']['URBF'].get('FORCE') == 'ForceGP'
+       and mano['por_servidor']['URBF'].get('Agustín') == 'AGUSTÍN51K' and 'ya es' in a3[1] and len(no) == 3
+       and filas([{'id': 5, 'quien': '9', 'llave': 'liga:fmh-carimex', 'que': 'nombre', 't': 1}], {})[0][1] == 'liga fmh-carimex',
+       'un nombre de una liga: el AKA de URBF, también si la página lo mostraba resuelto («Agus» por «Agustín»); repetirlo '
+       'no cambia nada; un nombre que no está, una liga que no existe o alguien nuevo, no  %s' % (no,))
     try:
         import pendientes as P
         ok('Reporte' in P.TIPOS, '«Reporte» es un tipo de `Pendientes`')

@@ -2582,9 +2582,11 @@ export const REPORTE_VIDA_DIAS = 14;
  */
 export function validarReporte(d, id, ahora) {
   const llave = String((d && d.llave) || '');
-  if (!/^(\d{1,6}|v:\d{15,22})$/.test(llave)) return { error: 'llave', estado: 400 };
+  // 🏟️ y `liga:<id>`, un nombre de una liga (14/10/2026, Dlx: «Sí, a Reportes»): sólo «un nombre» u «otra cosa»
+  if (!/^(\d{1,6}|v:\d{15,22}|liga:[a-z0-9-]{2,40})$/.test(llave)) return { error: 'llave', estado: 400 };
   const que = String((d && d.que) || '');
   if (!Object.prototype.hasOwnProperty.call(QUE_REPORTE, que)) return { error: 'que', estado: 400 };
+  if (llave.startsWith('liga:') && que !== 'nombre' && que !== 'otro') return { error: 'que', estado: 400 };
   const texto = String((d && d.texto) || '').replace(/\s+/g, ' ').trim();
   if (texto.length > 300) return { error: 'largo', estado: 413 };
   // «otra cosa» sin decir qué no se puede revisar
@@ -2612,13 +2614,26 @@ export function validarDecisionReporte(d) {
   if (!Number.isInteger(id) || id < 1) return { error: 'falta el reporte' };
   const accion = String((d && d.accion) || '');
   if (accion === 'listo' || accion === 'prueba') return { id, accion, fix: null };
-  const n = String((d && d.n) || '');
-  if (!/^\d{1,6}$/.test(n)) return { error: 'falta el evento' };
   // un texto corto, de una línea y sin `<>`: va a una hoja y a la campana de alguien
   const txt = (x, max) => {
     const t = String(x == null ? '' : x).replace(/\s+/g, ' ').trim();
     return t && t.length <= max && !/[<>]/.test(t) ? t : '';
   };
+  // 🏟️ UN NOMBRE DE UNA LIGA (14/10/2026): era alguien de la Lista o quien lo reportó. El ciclo lo vuelve el AKA de ESE
+  // servidor (`por_servidor` de akas_a_mano.json, `reportes.corregir_liga()`): alguien nuevo no, porque una liga no
+  // crea gente
+  const liga = String((d && d.liga) || '');
+  if (liga) {
+    if (!/^[a-z0-9-]{2,40}$/.test(liga) || accion !== 'nombre') return { error: 'falta la liga' };
+    const nombre = txt(d.nombre, 80);
+    if (!nombre) return { error: 'falta el nombre' };
+    if (d.reporta === true) return { id, accion, fix: { tipo: 'nombre', liga, nombre, reporta: true } };
+    const es = txt(d.es, 60);
+    if (!es) return { error: 'elegí de quién es' };
+    return { id, accion, fix: { tipo: 'nombre', liga, nombre, es } };
+  }
+  const n = String((d && d.n) || '');
+  if (!/^\d{1,6}$/.test(n)) return { error: 'falta el evento' };
   if (accion === 'nombre') {
     const nombre = txt(d.nombre, 80);
     if (!nombre) return { error: 'falta el nombre' };
@@ -7397,7 +7412,8 @@ export class Avisos {
       if (est === 'aplicado') {
         this.xpVio(r.quien, 'reporte', id, ahora);
         const num = /^\d+$/.test(r.llave) ? r.llave : '';
-        this.aBandeja(r.quien, 'reporte:' + id, 'reporte', num ? '✅ Corregimos la llave #' + num : '✅ Corregimos la llave',
+        const deLiga = String(r.llave).startsWith('liga:');
+        this.aBandeja(r.quien, 'reporte:' + id, 'reporte', num ? '✅ Corregimos la llave #' + num : deLiga ? '✅ Corregimos la liga' : '✅ Corregimos la llave',
           (msg ? msg + '. ' : '') + 'Gracias por avisar.', num ? HUB + '/freestyle-rap/llave/' + num : HUB + HUB_EVENTOS, '', ahora);
       }
       n++;

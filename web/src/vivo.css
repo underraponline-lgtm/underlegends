@@ -576,6 +576,7 @@ button.btn{background:transparent;cursor:pointer}
 .lg-ult .lg-p{color:inherit}
 .lg-ult small{margin-left:8px;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--gris);text-transform:uppercase}
 .lg-nota{margin:4px 0 0;font:600 12px/1.45 Archivo,sans-serif;color:var(--gris);max-width:70ch}
+.lg-avisar{justify-self:start}
 /* las líneas de corte: hasta dónde se sube y desde dónde se baja */
 .dv-tabla li.dv-corte{display:block;padding:5px 10px;border-left:4px solid transparent;font:700 15px/1.35 "Barlow Condensed",sans-serif;
   letter-spacing:0.02em}

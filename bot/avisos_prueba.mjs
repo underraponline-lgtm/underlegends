@@ -945,6 +945,14 @@ const ok = (cond, que, det) => {
       && V({ id: 0, accion: 'listo' }).error && V({ id: 2, accion: 'borrar' }).error,
     'lo que Dlx decide de un reporte se valida: una sola persona por nombre, el ganador es uno de los lados, sin HTML',
     JSON.stringify([vn, vg]));
+    // 🏟️ y de una liga (14/10/2026): quien lo mandó u otro de la Lista; alguien nuevo no (una liga no crea gente)
+    const vl = V({ id: 8, accion: 'nombre', liga: 'fmh-carimex', nombre: 'FORCE', reporta: true });
+    ok(vl.fix && vl.fix.liga === 'fmh-carimex' && vl.fix.reporta === true && !vl.fix.n
+      && V({ id: 8, accion: 'nombre', liga: 'fmh-carimex', nombre: 'Agustín', es: 'AGUSTÍN51K' }).fix.es === 'AGUSTÍN51K'
+      && V({ id: 8, accion: 'nombre', liga: 'fmh-carimex', nombre: 'Agustín', nuevo: 'Agustin X' }).error
+      && V({ id: 8, accion: 'ganador', liga: 'fmh-carimex', ronda: 'x', lados: ['A', 'B'], ganador: 'A' }).error
+      && V({ id: 8, accion: 'nombre', liga: '../x', nombre: 'A', es: 'B' }).error,
+    'un nombre de una liga: quien lo mandó u otro de la Lista; alguien nuevo o el ganador, no', JSON.stringify(vl));
     o.sql.exec("INSERT INTO reportes (quien, llave, que, texto, t) VALUES ('100000021', '464', 'nombre', 'soy yo', ?)", martes);
     o.sql.exec("INSERT INTO reportes (quien, llave, que, texto, t) VALUES ('100000022', '360', 'otro', 'probando', ?)", martes);
     const [r1, r2] = o.sql.exec('SELECT id FROM reportes ORDER BY id').toArray().map((x) => x.id);
