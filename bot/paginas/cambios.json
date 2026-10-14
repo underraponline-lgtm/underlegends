@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.12",
+   "dia": "2026-10-14",
+   "cuando": "2026-10-14T02:08:00-04:00",
+   "titulo": "Las llaves, más fieles",
+   "items": [
+    "🏆 En los grupos de 4 a 6 donde pasan dos o tres, la llave ahora muestra a todos los que pasaron.",
+    "🏟️ En las ligas, cada nombre aparece igual en la tabla y en los últimos resultados."
+   ]
+  },
+  {
    "version": "3.11",
    "dia": "2026-10-14",
    "cuando": "2026-10-14T01:18:00-04:00",
