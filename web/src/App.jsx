@@ -12,6 +12,7 @@ import { Lobby } from './lobby.jsx';
 // 🧭 el tutorial (Dlx, 12/10/2026, «A … B … C … D … E. Dale»): quién es nuevo se decide al cargar (primera.js, chico);
 // lo que se dibuja se baja sólo si hace falta
 import { pasosEnInicio, quiereTutorial } from './primera.js';
+import { AvisoVersion } from './novedad.jsx';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
 const SECC = new Set(['inicio', 'eventos', 'ranking', 'publicaciones', 'tarjetas', 'pase', 'tienda', 'socios', 'guia',
   'perfil', 'servidor', 'crew', 'pais', 'cuenta', 'cambios',
@@ -475,6 +476,8 @@ export default function App() {
       <div className="barra-ul" />
       <Aislada n="Cabecera"><Cabecera liga={liga} dc={yo.dc} pagina={paginaMenu} onMenu={() => setMenu(true)} /></Aislada>
       <Aislada n="AvisoWeb"><AvisoWeb aviso={aviso} /></Aislada>
+      {/* 🆕 «hay una actualización» (13/10/2026): ver web/src/novedad.jsx */}
+      <Aislada n="AvisoVersion"><AvisoVersion pagina={pagina} /></Aislada>
       {quiereTutorial() || repite ? <Aislada n="Tutorial"><Suspense fallback={null}><Tutorial liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv} repite={repite} /></Suspense></Aislada> : null}
       <span id="contenido" tabIndex={-1} />
       {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} /></Suspense></Aislada>

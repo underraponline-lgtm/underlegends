@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.03",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T23:10:00-04:00",
+   "titulo": "Un aviso cuando la página se actualiza",
+   "items": [
+    "🆕 Cuando la página tenga algo nuevo, te aparece un cuadro abajo con qué cambió. Se cierra con la ✕ y no vuelve hasta la próxima."
+   ]
+  },
+  {
    "version": "3.02",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T22:55:00-04:00",
