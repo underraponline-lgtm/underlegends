@@ -1190,7 +1190,7 @@
    "Xclusivo": 4
   },
   "fecha": "07/10",
-  "firma": "8e87562dbb44a494",
+  "firma": "b2bfb74adad36dba",
   "msg": "1557564144360890428",
   "nombre": "__ PRITTY FREE __",
   "num": 425,
@@ -1533,7 +1533,7 @@
    "setesfifi": 1
   },
   "fecha": "07/10",
-  "firma": "2f65783c62c54b2b",
+  "firma": "1239afb9a85d9243",
   "msg": "1557616971858579527",
   "nombre": "Doble Eliminación Vol. 2",
   "num": 426,
@@ -2511,7 +2511,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "50f8d10d2cccead4",
+  "firma": "8b0be9684f029de8",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -2833,7 +2833,7 @@
    "Zignos": 11
   },
   "fecha": "08/10",
-  "firma": "54a745abd9de96d0",
+  "firma": "7a5e1bbb51003a34",
   "msg": "1557926458221920299",
   "nombre": "__ LA REDENCIÓN VOL.1 __",
   "num": 431,
@@ -4382,7 +4382,7 @@
    "Velatz": 28
   },
   "fecha": "09/10",
-  "firma": "8e71f4603a374a51",
+  "firma": "8e962edea052d04b",
   "msg": "1558266214659260507",
   "nombre": "COPA SOOLAR 4",
   "num": 437,
@@ -4622,7 +4622,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "37ae4eb2d0ce7594",
+  "firma": "6285861b46c42869",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -5056,7 +5056,7 @@
    "Xclusivo": 10
   },
   "fecha": "09/10",
-  "firma": "bab1acf128690b80",
+  "firma": "697c5c96b4b0aaf8",
   "msg": "1558334120172462091",
   "nombre": "PROYECTO X VOL.2",
   "num": 440,
@@ -5537,7 +5537,7 @@
    "Xclusivo": 12
   },
   "fecha": "10/10",
-  "firma": "a15a30db79e8b53e",
+  "firma": "9e5ff0c48bc038c7",
   "msg": "1558545514931163258",
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
   "num": 442,
@@ -6092,7 +6092,7 @@
    "Spartan": 1
   },
   "fecha": "10/10",
-  "firma": "09e0e86fc00d3a0a",
+  "firma": "3c9115bfcd7567a4",
   "msg": "1558711595163590740",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
   "num": 446,
@@ -9396,7 +9396,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "c906c6dc784855cd",
+  "firma": "2177ccac46f298ec",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -10909,7 +10909,7 @@
    "Verc": 8
   },
   "fecha": "13/10",
-  "firma": "15f155216bc1221c",
+  "firma": "1b4fcf8e29ca708e",
   "msg": "1559705366705475605",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL5 __",
   "num": 467,
@@ -11243,7 +11243,7 @@
    "Zignos": 20
   },
   "fecha": "13/10",
-  "firma": "46e4eb651fa10ea1",
+  "firma": "69a209d694279634",
   "msg": "1559752028111114252",
   "nombre": "DEM UZBEKISTAN FECHA 2",
   "num": 468,
@@ -11393,6 +11393,7 @@
   "v": 2
  },
  "469": {
+  "al_dia": true,
   "antes": {
    "Agente sombra": [
     327,
@@ -11484,7 +11485,7 @@
   "duelos": [
    [
     "Warap",
-    "Lrs el borrachin🇦🇷",
+    "LRS",
     "Warap"
    ],
    [
@@ -11593,7 +11594,7 @@
    "Verc": 10
   },
   "fecha": "13/10",
-  "firma": "1cdf56f85692b174",
+  "firma": "5ca7907b231eea5b",
   "msg": "1559769924178804738",
   "nombre": "PRITTY FREE",
   "num": 469,
@@ -11650,7 +11651,7 @@
     2500
    ],
    [
-    "Lrs el borrachin🇦🇷",
+    "LRS",
     "Octavos",
     1250
    ],
