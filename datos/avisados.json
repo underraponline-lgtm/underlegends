@@ -4382,7 +4382,7 @@
    "Velatz": 28
   },
   "fecha": "09/10",
-  "firma": "da62df4499a6d75c",
+  "firma": "ce6925c29d063487",
   "msg": "1558266214659260507",
   "nombre": "COPA SOOLAR 4",
   "num": 437,
@@ -5056,7 +5056,7 @@
    "Xclusivo": 10
   },
   "fecha": "09/10",
-  "firma": "b586ea0c679c296f",
+  "firma": "e8cb2ff0cac7cd2f",
   "msg": "1558334120172462091",
   "nombre": "PROYECTO X VOL.2",
   "num": 440,
@@ -6092,7 +6092,7 @@
    "Spartan": 1
   },
   "fecha": "10/10",
-  "firma": "4f4d5ffad4ee2a7c",
+  "firma": "3c9115bfcd7567a4",
   "msg": "1558711595163590740",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
   "num": 446,
@@ -7763,7 +7763,7 @@
    "yinn": 15
   },
   "fecha": "12/10",
-  "firma": "92e819fa809182cd",
+  "firma": "68dd639d4de1b9b0",
   "msg": "1559247601923137630",
   "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
   "num": 454,
@@ -10809,7 +10809,7 @@
    ],
    [
     "OG",
-    "Ax🇻🇪",
+    "Xubaru",
     "OG"
    ],
    [
@@ -10909,7 +10909,7 @@
    "Verc": 8
   },
   "fecha": "13/10",
-  "firma": "1b4fcf8e29ca708e",
+  "firma": "daae41ae40348b0e",
   "msg": "1559705366705475605",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL5 __",
   "num": 467,
@@ -11001,7 +11001,7 @@
     1250
    ],
    [
-    "Ax🇻🇪",
+    "Xubaru",
     "Octavos",
     1250
    ],
@@ -11704,6 +11704,7 @@
   "v": 2
  },
  "470": {
+  "al_dia": true,
   "antes": {
    "Geoka": [
     37,
@@ -11844,6 +11845,7 @@
   "v": 2
  },
  "471": {
+  "al_dia": true,
   "antes": {
    "1200": [
     215,
@@ -11982,7 +11984,7 @@
    "Vandu": 20
   },
   "fecha": "14/10",
-  "firma": "3d2142c6ca94623b",
+  "firma": "a224e4dab52a2ec2",
   "msg": "1560019837609050254",
   "nombre": "DEM UZBEKISTAN FECHA 3",
   "num": 471,
