@@ -429,6 +429,22 @@
     });
   });
 
+  // 🔴 «ÚLTIMA VEZ HACE 54 MIN» CON EL VIGÍA ANDANDO (Dlx, 13/10/2026: «asegurate de que esto funcione»). El estado se
+  // pedía UNA vez, al abrir: con la pestaña abierta un rato —en el celular quedan abiertas horas— la hora del vigía se
+  // quedaba quieta y el «hace» crecía, así que la página decía que el vigía se había caído cuando corría cada minuto.
+  // Ahora se vuelve a pedir cada minuto mientras la página está a la vista, y en cuanto se vuelve a ella. El borde lo
+  // guarda 30 s (`_worker.js`), así que mucha gente mirando sigue siendo pocos pedidos al Worker
+  var ESTADO_CADA = 60 * 1000, estadoT = null;
+  function refrescarEstado() {
+    if (estadoT) return;
+    async function una() {
+      if (document.hidden) return;
+      try { EST = await pedir('estado'); pinta(); } catch (e) { /* se queda el de antes */ }
+    }
+    estadoT = setInterval(una, ESTADO_CADA);
+    document.addEventListener('visibilitychange', function () { if (!document.hidden) una(); });
+  }
+
   // ── arrancar ────────────────────────────────────────────────────────
   async function arrancar() {
     if (SOPORTA) {
@@ -440,6 +456,7 @@
     pinta();
     try { EST = await pedir('estado'); } catch (e) { EST = null; }
     pinta();
+    refrescarEstado();
     if (!SUB) return;
     aplicarPedido();
     try {

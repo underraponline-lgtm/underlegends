@@ -39,6 +39,18 @@ function formato(m) {
 }
 
 // ── la campana, con el estado de campana.js (`useCampana()` de piezas.jsx): los mismos pasos de siempre, con el estilo nuevo ──
+// 🔔 CUÁNDO MIRÓ EL VIGÍA, CONTRA EL RELOJ DE AHORA (13/10/2026). `liga.cuando()` mide contra `liga.ahora`, que es la
+// hora en que llegaron los datos de la página: con una hora del vigía más nueva que eso daba «hoy 22:19» en vez de
+// «recién», y con la pestaña abierta un rato, un «hace» que no era. La campana pide el estado cada minuto
+// (`refrescarEstado()` en campana.js) y esto se vuelve a dibujar con cada respuesta
+function haceVigia(liga, t) {
+  const s = (Date.now() - utc(t).getTime()) / 1000;
+  if (isNaN(s)) return '';
+  if (s < 60) return 'hace menos de un minuto';
+  if (s < 3600) return 'hace ' + Math.floor(s / 60) + ' min';
+  return liga.cuando(t);
+}
+
 function Campana({ liga }) {
   const e = useCampana();
   const C = window.Campana;
@@ -102,7 +114,7 @@ function Campana({ liga }) {
       {e.pausada ? <p className="evp-msg" role="status">⏸ La campana está en pausa por un rato. Los avisos vuelven solos.</p> : null}
       <p className="evp-nota">Desde Discord: escribí <b>/notify</b> en cualquier servidor de la Liga y el bot te trae acá con ese servidor ya elegido.</p>
       {e.vigia ? (
-        <p className="evp-vig">{e.vigia.ok ? '● ' : '⚠ '}Revisa los canales de eventos cada minuto · última vez {liga.cuando(e.vigia.t)}
+        <p className="evp-vig">{e.vigia.ok ? '● ' : '⚠ '}Revisa los canales de eventos cada minuto · última vez {haceVigia(liga, e.vigia.t)}
           {e.vigia.dispositivos ? ' · ' + e.vigia.dispositivos + ' dispositivos con la campana' : ''}</p>
       ) : null}
     </div>
