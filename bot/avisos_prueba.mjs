@@ -300,6 +300,15 @@ const ok = (cond, que, det) => {
       && !A.hayApuestas('DDF', 'full', c2, { apuestas: true }) && !A.hayApuestas('DDF', 'normal', c2, {}),
     'las apuestas: «No hay apuestas en» gana; prendidas a mano (Dashboard o /settings) van en cualquier nivel; si no, sólo «A full»');
     // 🗳️ «¿Quién gana?» (13/10/2026): el renglón, cómo cierra, y que se cambia SÓLO su renglón
+    // 🃏 «Conseguí tu tarjeta» (14/10/2026, Dlx: «Botón abajo de la imagen», «Sólo con silueta»)
+    const ct = 'https://pub-a.r2.dev/snow/temporada.webp', cs = 'https://pub-a.r2.dev/kochi/servidor.webp';
+    const ft = A.filaTarjeta({ a: { n: 'Ortiz', carta: '' }, b: { n: 'Trot', carta: ct } });
+    ok(ft.length === 1 && ft[0].components.length === 1 && ft[0].components[0].style === 5
+      && ft[0].components[0].url === 'https://underlegends.pages.dev/freestyle-rap/tarjetas' && /tarjeta/.test(ft[0].components[0].label)
+      && A.filaTarjeta({ a: { carta: ct }, b: { carta: cs } }).length === 0
+      && A.filaTarjeta({ a: { carta: '' }, b: { carta: '' } }).length === 1
+      && A.filaTarjeta(null).length === 0 && A.filaTarjeta({ a: { carta: '' } }).length === 0,
+    '«Conseguí tu tarjeta»: sale si alguno del vs va con la silueta; con sólo la Servidor (una tarjeta) no; sin vs, nada');
     const bv = A.botonesVoto('q1', 'Snow 🇨🇴', 'Makmah');
     ok(bv[0].components.map((x) => x.custom_id).join() === 'qg:q1:A,qg:q1:B' && bv[0].components[0].label === 'Snow'
       && /Votá abajo/.test(A.lineaVoto('A', 'B', 0, 0)) && /\*\*A\*\* 75 % · \*\*B\*\* 25 % \(4 votos\)/.test(A.lineaVoto('A', 'B', 3, 1))
@@ -1272,8 +1281,10 @@ const ok = (cond, que, det) => {
     const msg = pedidos[0] && pedidos[0].b;
     const ap = sql.exec('SELECT * FROM apuestas').toArray()[0];
     ok(pedidos.length === 1 && msg && /LA REVANCHA/.test(msg.content) && /Ana 🇦🇷\*\* vs \*\*Bea 🇨🇱/.test(msg.content)
-      && /🎲 \*\*Apuestas abiertas/.test(msg.content) && msg.components && msg.components.length === 2 && ap && ap.estado === 'abierta',
-    'A full: el cruce con su título, su apuesta y sus botones, en un solo mensaje', msg && msg.content);
+      && /🎲 \*\*Apuestas abiertas/.test(msg.content) && msg.components && msg.components.length === 3 && ap && ap.estado === 'abierta'
+      && msg.components[2].components[0].url === A.HUB_TARJETAS,
+    'A full: el cruce con su título, su apuesta y sus botones, en un solo mensaje; y como Ana y Bea no tienen tarjeta, debajo «Conseguí tu tarjeta»',
+    msg && msg.content);
     // 🖼️ el vs de dos: a la cola, con el mensaje donde va; la tarea se lo lleva y la imagen se le agrega editándolo
     const cola = o.vsCola('FFA', T + 1000).vs;
     ok(cola.length === 1 && cola[0].a.n === 'Ana' && cola[0].b.n === 'Bea' && cola[0].ronda === 'Cuartos'
@@ -1305,12 +1316,14 @@ const ok = (cond, que, det) => {
     await o.chatVivo(T + 4 * 60000);
     const cierre = pedidos.find((p) => p.m === 'PATCH');
     ok(cierre && /🔒 Apuestas cerradas · pozo de \*\*350\*\* entre 2/.test(cierre.b.content) && cierre.b.components[0].components.every((c) => c.disabled)
+      && cierre.b.components.length === 3 && cierre.b.components[2].components[0].url === A.HUB_TARJETAS
       && (await pedir({ quien: U3, ap: ap.id, lado: 'A', monto: 50 }, T + 4 * 60000)).error === 'cerrada', 'a los 3 minutos se cierra: botones grises, el pozo, y no se puede apostar');
     pedidos.length = 0;
     llave(CU + '`[ SEMIFINALES ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞⌝\n', T + 6 * 60000);
     await o.chatVivo(T + 6 * 60000);
     const pago = pedidos.find((p) => p.m === 'PATCH' && /🏆 Ganó/.test(p.b.content));
     ok(pago && /Ganó \*\*Ana\*\*: el pozo de \*\*350\*\* se repartió entre 1 que acertó/.test(pago.b.content)
+      && pago.b.components.length === 1 && pago.b.components[0].components[0].url === A.HUB_TARJETAS
       && o.saldo(U1, 0, 5000) === 5250 && o.saldo(U2, 0, 5000) === 4750 && sql.exec('SELECT estado FROM apuestas WHERE id = ?', ap.id).toArray()[0].estado === 'pagada',
     'gana Ana: U1 se lleva el pozo entero (350, puso 100), U2 pierde sus 250, y el mensaje lo dice', JSON.stringify({ ped: pedidos.map((x) => [x.m, String((x.b && x.b.content) || '').slice(0, 90)]), est: sql.exec('SELECT estado, ganador, ronda, a, b FROM apuestas').toArray(), s1: o.saldo(U1, 0, 5000), s2: o.saldo(U2, 0, 5000) }));
     // 📝 la fase de inscripciones: desde tres anotados de verdad, UN mensaje, que se edita cuando se suman más

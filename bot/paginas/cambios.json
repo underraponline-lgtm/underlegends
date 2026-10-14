@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.13",
+   "dia": "2026-10-14",
+   "cuando": "2026-10-14T19:10:00-04:00",
+   "titulo": "Conseguí tu tarjeta",
+   "items": [
+    "🃏 En los vs del chat en vivo, si alguno de los dos todavía no tiene tarjeta, abajo de la imagen aparece «Conseguí tu tarjeta»: te lleva a Tarjetas, donde «Las tuyas» te dice qué te falta."
+   ]
+  },
+  {
    "version": "3.12",
    "dia": "2026-10-14",
    "cuando": "2026-10-14T02:08:00-04:00",

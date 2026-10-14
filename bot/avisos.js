@@ -934,6 +934,23 @@ export function botonesVoto(id, a, b) {
     type: 2, style: 2, emoji: { name: '🗳️' }, label: corto(n), custom_id: 'qg:' + id + ':' + lado })) }];
 }
 
+// ═════════════════════════════════════════════════════════════════════
+// 🃏 «CONSEGUÍ TU TARJETA» DEBAJO DEL VS (Dlx, 14/10/2026: «xq algunos tienen una tarjeta diferente o sin tarjetas?
+// Quizás ahí deberíamos agregar botones como obtén tu tarjeta?», y a cómo: «Botón abajo de la imagen» y «Sólo con
+// silueta»). El vs muestra la mejor tarjeta de cada uno y quien no tiene ninguna sale con la silueta: es justo el
+// momento en que se ve la falta al lado de una tarjeta de verdad. Un link, el mismo para todos —Discord no deja
+// personalizarlo—, a Tarjetas, donde «Las tuyas» le dice a cada uno qué le falta. Con sólo la Servidor NO sale: esa
+// persona ya tiene tarjeta. ⚠️ Las ediciones que cambian botones (cerrar la apuesta, cerrar el voto) lo vuelven a
+// poner (`filaTarjetaDe()`): un PATCH con `components` reemplaza la lista entera
+// ═════════════════════════════════════════════════════════════════════
+export const HUB_TARJETAS = HUB + '/freestyle-rap/tarjetas';
+
+/** La fila del botón si a alguno de los dos lados del vs le falta tarjeta (`[]` si no, o si no es un vs). */
+export function filaTarjeta(vs) {
+  if (!vs || !vs.a || !vs.b || (vs.a.carta && vs.b.carta)) return [];
+  return [{ type: 1, components: [{ type: 2, style: 5, label: 'Conseguí tu tarjeta', emoji: { name: '🃏' }, url: HUB_TARJETAS }] }];
+}
+
 /** El renglón del voto: cómo va, o —con `ganador` ('A', 'B', o 'x' sin resultado)— si el público acertó. */
 export function lineaVoto(a, b, na, nb, ganador) {
   const n = (na || 0) + (nb || 0);
@@ -5590,6 +5607,9 @@ export class Avisos {
         // 🎲 la apuesta va en el mensaje que lleva su cruce, con sus botones
         const conAp = apuesta && p.tipo === 'mandar' && [].concat(p.m).includes(apuesta.m) ? apuesta : null;
         const conVoto = !conAp && voto && p.tipo === 'mandar' && [].concat(p.m).includes(voto.m) ? voto : null;
+        // 🃏 y debajo, «Conseguí tu tarjeta» si alguno sale con la silueta. Sólo al mandar: una edición sin `components`
+        // deja los botones que el mensaje ya tiene
+        const filaT = p.tipo === 'mandar' ? filaTarjeta(p.vs) : [];
         let r = null;
         try {
           r = await fetch(`${DC}/channels/${canal}/messages` + (p.tipo === 'editar' ? '/' + p.msg : ''), {
@@ -5600,8 +5620,8 @@ export class Avisos {
             // ⚠️ una EDICIÓN no manda `flags`: el mensaje se queda con las suyas (con `flags: 4` se escondía la imagen)
             body: JSON.stringify(Object.assign({ content: p.texto.slice(0, 1900), allowed_mentions: { parse: [] } },
               p.tipo === 'editar' ? {} : p.img ? { embeds: [{ image: { url: p.img }, color: 0xE41373 }] } : { flags: 4 },
-              conAp ? { components: botonesApuesta(conAp.id, conAp.a, conAp.b, false, apc.montos) }
-                : conVoto ? { components: botonesVoto(conVoto.id, conVoto.a, conVoto.b) } : {})),
+              conAp || conVoto || filaT.length ? { components: (conAp ? botonesApuesta(conAp.id, conAp.a, conAp.b, false, apc.montos)
+                : conVoto ? botonesVoto(conVoto.id, conVoto.a, conVoto.b) : []).concat(filaT) } : {})),
           });
         } catch (e) { r = null; }
         if (r && r.ok) {
@@ -5930,7 +5950,8 @@ export class Avisos {
         r = await fetch(`${DC}/channels/${q.canal}/messages/${q.msg}`, {
           method: 'PATCH',
           headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
-          body: JSON.stringify(Object.assign({ content: texto.slice(0, 1900), allowed_mentions: { parse: [] } }, g ? { components: [] } : {})),
+          body: JSON.stringify(Object.assign({ content: texto.slice(0, 1900), allowed_mentions: { parse: [] } },
+            g ? { components: this.filaTarjetaDe(q.canal, q.msg) } : {})),
         });
       } catch (e) { r = null; }
       if (r && r.ok) {
@@ -6021,7 +6042,8 @@ export class Avisos {
           method: 'PATCH',
           headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
           body: JSON.stringify({ content: texto.slice(0, 1900), allowed_mentions: { parse: [] },
-            components: estado === 'cerrada' ? botonesApuesta(ap.id, ap.a, ap.b, true, apuestasCfg(this.ajustes()).montos) : [] }),
+            components: (estado === 'cerrada' ? botonesApuesta(ap.id, ap.a, ap.b, true, apuestasCfg(this.ajustes()).montos) : [])
+              .concat(this.filaTarjetaDe(ap.canal, ap.msg)) }),
         });
         if (r.ok) this.sql.exec('UPDATE apuestas SET texto = ? WHERE id = ?', texto, ap.id);
       } catch (e) { /* el estado ya quedó anotado: el mensaje se corrige solo la próxima vez que cambie */ }
@@ -7035,6 +7057,16 @@ export class Avisos {
     this.sql.exec('INSERT INTO vs_cola (id, sv, canal, msg, datos, t) VALUES (?, ?, ?, ?, ?, ?)', id,
       String(d.sv || '').toUpperCase().slice(0, 6), String(d.canal), String(d.msg), JSON.stringify(datos), ahora);
     return { ok: true, id };
+  }
+
+  /** 🃏 La fila de «Conseguí tu tarjeta» de un mensaje ya mandado, para las ediciones que cambian sus botones: sale del
+   * vs de ese mensaje en `vs_cola` (que dura un día; la apuesta y el voto cierran mucho antes). Sin vs, nada. */
+  filaTarjetaDe(canal, msg) {
+    try {
+      const f = this.sql.exec('SELECT datos FROM vs_cola WHERE canal = ? AND msg = ? ORDER BY t DESC LIMIT 1',
+        String(canal || ''), String(msg || '')).toArray()[0];
+      return f ? filaTarjeta(JSON.parse(f.datos)) : [];
+    } catch (e) { return []; }
   }
 
   /** Prende la tarea de los servidores con vs esperando, como mucho una vez cada `VS_ENTRE` por servidor. */
