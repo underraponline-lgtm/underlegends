@@ -1,69 +1,69 @@
 {
  "v": 1,
- "cuando": "2026-10-14T06:01:39Z",
+ "cuando": "2026-10-14T06:41:24Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 175.0,
+ "dur_s": 700.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.2
+   "s": 5.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.2
+   "s": 5.4
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.8
+   "s": 24.2
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 27 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": true,
-   "s": 88.3
+   "s": 605.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 4.1
+   "s": 6.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 50.7
+   "s": 53.1
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "469",
-  "nombre": "PRITTY FREE",
+  "n": "470",
+  "nombre": "Inserte Nombre de la Compe",
   "sv": "FFA",
-  "dia": "2026-10-13"
+  "dia": "2026-10-14"
  },
  "cuotas": {
   "kv": {
-   "write": 173,
-   "read": 24083
+   "write": 197,
+   "read": 26554
   },
   "objeto": {
-   "leidas": 1861005,
-   "escritas": 18221,
-   "pedidos": 5083
+   "leidas": 2036999,
+   "escritas": 21419,
+   "pedidos": 5480
   },
   "worker": {
-   "pedidos": 12201,
+   "pedidos": 12233,
    "errores": 1,
-   "sub": 13043,
-   "p50_ms": 1.23,
+   "sub": 13074,
+   "p50_ms": 1.21,
    "p99_ms": 7.62
   },
   "r2": {
