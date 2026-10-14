@@ -12,7 +12,7 @@ import { DUENO, PAIS, hora, limpio, nuevaQue, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, DosToques, Ico, accion } from './piezas.jsx';
 import { CaraDc } from './arriba.jsx';
 import { useRacha } from './racha.js';
-import { TEMAS_SV, nombreTema } from './temas.js';
+import { TEMAS_SV, nivelTema, nombreTema } from './temas.js';
 import { useRoles } from './roles.js';
 import { urlFondo } from './fondos.js';
 import { seguirOrg, useOrgs } from './orgs.js';
@@ -683,6 +683,9 @@ function TeSiguen({ liga }) {
 }
 
 function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
+  // 🔓 tu nivel, para los colores de los servidores (ver `NIVEL_TEMA` en temas.js)
+  const Rn = useRacha(!!dc && id === 'apariencia');
+  const [temaMsg, setTemaMsg] = useState('');
   const yo = liga.yo;
   const { aj, zonas, z } = horaYZona();
   if (id === 'cuenta') {
@@ -777,15 +780,30 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
             asociados», y «agrega la opción ninguno… ninguno va combinado con el tema blanco»). La vista previa de cada uno
             va con el tema de base elegido */}
         <p className="cu-temas-t">Con los colores de un servidor de la Liga:</p>
+        {(() => {
+          const n = Rn && Rn.nivel ? Rn.nivel.n || 1 : 0;
+          return <p className="cu-d">{dc ? (n ? 'Vas en el nivel ' + n + '. ' : '') + 'Se abren con tu nivel: 3 en el nivel 2, 3 más en el 3 y los últimos en el 5. Subís entrando todos los días y jugando eventos.'
+            : 'Se abren con tu nivel: entrá con Discord y subís entrando todos los días y jugando eventos.'}</p>;
+        })()}
         <div className="cu-temas sv">
           <button type="button" className={'cu-tema tsv tsv-base ' + tema + (!temaSv ? ' on' : '')} aria-pressed={!temaSv} onClick={() => onTemaSv('')}>
             <span className="cu-mini" aria-hidden="true"><i /><u /><u /><s /></span><b>Ninguno</b></button>
-          {TEMAS_SV.map(([sv, n]) => (
-            <button type="button" key={sv} className={'cu-tema tsv ' + tema + ' t-' + sv.toLowerCase() + (temaSv === sv ? ' on' : '')} aria-pressed={temaSv === sv} onClick={() => onTemaSv(sv)}>
-              <span className="cu-mini" aria-hidden="true"><i /><u /><u /><s /></span>
-              <b>{liga && liga.logo ? <img alt="" src={liga.logo(sv)} /> : null}{(liga && liga.svs && liga.svs[sv] && liga.svs[sv].nombre) || n}</b></button>
-          ))}
+          {TEMAS_SV.map(([sv, n]) => {
+            const pide = nivelTema(sv), tengo = Rn && Rn.nivel ? Rn.nivel.n || 1 : 0;
+            // ⚠️ el que ya tenías puesto sigue abierto: no se te saca lo que elegiste antes de que hubiera niveles
+            const abierto = tengo >= pide || temaSv === sv;
+            const nom = (liga && liga.svs && liga.svs[sv] && liga.svs[sv].nombre) || n;
+            return (
+              <button type="button" key={sv} className={'cu-tema tsv ' + tema + ' t-' + sv.toLowerCase() + (temaSv === sv ? ' on' : '') + (abierto ? '' : ' cerrado')}
+                aria-pressed={temaSv === sv} aria-label={abierto ? nom : nom + ': se abre con el nivel ' + pide}
+                onClick={() => { if (abierto) { setTemaMsg(''); onTemaSv(sv); } else setTemaMsg('Los colores de ' + nom + ' se abren con el nivel ' + pide + (tengo ? ': vas en el ' + tengo + '.' : '. Entrá con Discord para subir de nivel.')); }}>
+                <span className="cu-mini" aria-hidden="true"><i /><u /><u /><s /></span>
+                <b>{liga && liga.logo ? <img alt="" src={liga.logo(sv)} /> : null}{nom}</b>
+                {abierto ? null : <span className="cu-tema-nivel"><Ico n="candado" t={14} />Nivel {pide}</span>}</button>
+            );
+          })}
         </div>
+        {temaMsg ? <p className="cu-d" role="status">{temaMsg}</p> : null}
       </Caja>
     );
   }

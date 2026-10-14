@@ -8,6 +8,13 @@ export const TEMAS_SV = [['DRA', 'Discord Rap Español'], ['FFA', 'FFA'], ['SR',
 
 const esSv = (s) => TEMAS_SV.some(([x]) => x === s);
 
+// 🔓 SE DESBLOQUEAN CON TU NIVEL (Dlx, 13/10/2026: «al nivel 2 o 3 o 5 —OJO, nivel de XP, no nivel de Pase— que
+// desbloquees las apariencias», «que esté por default desbloqueado Clara y Noche» y «quizás escalonado»). El nivel es el
+// de la racha (`nivelDeXp()` en bot/avisos.js: los días que entrás y los eventos que jugás), no el del Pase. Clara,
+// Noche y Ninguno, siempre. En el orden de `TEMAS_SV`: los socios más viejos, primero
+export const NIVEL_TEMA = { DRA: 2, FFA: 2, SR: 2, URBF: 3, FFS: 3, DDF: 3, ACAD: 5, FVS: 5 };
+export const nivelTema = (sv) => (sv ? NIVEL_TEMA[sv] || 5 : 1);
+
 // `{base, sv}` de lo guardado
 export function leerTemas() {
   try {
