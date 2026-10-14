@@ -544,7 +544,13 @@ def para_web(d=None, claves=None, ps=None):
         r = _de_servidor(x.get('sv'), r0, ps)
         g = (svs.get(x.get('sv')) or {}).get('guild_id')
         tb = tabla(bats, r)[:30]
-        ult = [[r(b[3]), r(b[4]), r(b[5]), b[6], b[2]] for b in con[-6:][::-1]]
+        # 🔤 y en los últimos resultados, el mismo nombre que la tabla (ForceGP, 14/10/2026: «está repetido»): quien no
+        # está en la Lista se escribe «Aluvion», «Aluvión» y «ALUVIÓN» según el jurado; la tabla ya era una fila
+        canon = {}
+        for f in tb:
+            canon.setdefault(clave(f[0]), f[0])
+        rc = lambda x: canon.get(clave(r(x)), r(x)) if x else x  # noqa: E731
+        ult = [[rc(b[3]), rc(b[4]), rc(b[5]), b[6], b[2]] for b in con[-6:][::-1]]
         nombres = {f[0] for f in tb} | {n for u in ult for n in u[:3] if n}
         ks = {n: claves[clave(n)] for n in sorted(nombres) if claves.get(clave(n))}
         out.append({'id': lid, 'n': x.get('n'), 'sv': x.get('sv'), 'j': x.get('jornada'), 'bat': len(con),
