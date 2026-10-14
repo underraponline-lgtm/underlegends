@@ -239,6 +239,7 @@ def puestos_en_rango(gente):
 # Dlx reporto el 17/09. Hoy le pasa a una sola persona y su url ademas esta
 # muerta, pero la asimetria es la que vuelve.
 from comun.respaldo import avatar as foto
+from comun import servidor_elegido as _SE   # noqa: E402
 
 
 # ══ ARMAR LA GENTE ══
@@ -309,15 +310,20 @@ def cargar():
         c.setdefault('cc', '')
         c.setdefault('ev', 0)
         t = temp.get(c['raw'], {})
+        # 🏠 EL SERVIDOR QUE ELEGISTE, NO DONDE MÁS JUGASTE (Dlx, 13/10/2026: «recuerda que quité eso de los
+        # servidores para todos a menos que se lo pongan manualmente en la tarjeta»). Sin elegir, el casillero no va
+        # (`maqueta.carta()` lo omite con `sv` vacío). El puesto es entre los que juegan en `c['sv']`: sólo si elegiste
+        # ese mismo, o al lado del escudo de otro servidor diría un puesto que no es de ahí
+        sve = _SE.de(c['raw'])
         out.append({
             'nombre': c['raw'],
             'cc': c['cc'],
             'rango': c['rango'],
-            'sv': c['sv'],
+            'sv': sve,
             'crew': de_crew.get(cnorm(c['raw'])),
             'pos_pais': c.get('pos_pais') or '',
             'pos_rg': en_rango.get(c['raw'], ''),
-            'pos_sv': c.get('pos_sv') or '',
+            'pos_sv': (c.get('pos_sv') or '') if sve and sve == c['sv'] else '',
             'ovr': nacional.get(c['raw']),
             'sem': t.get('sem', 0),
             'evt': t.get('ev', c['ev']),
@@ -546,7 +552,7 @@ def auditar(gente):
         ('el pais',                cuenta(lambda p: p['cc'])),
         ('la bandera en disco',    cuenta(lambda p: p['cc'] in banderas)),
         ('el rango',               cuenta(lambda p: p['rango'])),
-        ('el escudo del servidor', cuenta(lambda p: p['sv'].upper() in escudos)),
+        ('el servidor elegido',    cuenta(lambda p: p['sv'].upper() in escudos)),
         ('el OVR Nacional',        cuenta(lambda p: p['ovr'])),
         ('el puesto en el pais',   cuenta(lambda p: p['pos_pais'])),
         ('el puesto en el rango',  cuenta(lambda p: p['pos_rg'])),

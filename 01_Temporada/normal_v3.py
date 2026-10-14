@@ -161,6 +161,19 @@ def logo_de(sv):
     return escudo(sv), 'c-logo'
 
 
+# 🏠 EL SERVIDOR DE LA CARTA ES EL QUE ELEGISTE, NO DONDE MÁS JUGASTE (Dlx, 13/10/2026: «erian es de urban… recuerda
+# que quité eso de los servidores para todos a menos que se lo pongan manualmente en la tarjeta»). Era `c['sv']`, el
+# argmax del pool: Erian eligió Urban y su carta decía FFA. Sin elegir, no va ninguno. Ver `comun/servidor_elegido.py`
+from comun import servidor_elegido as _SE  # noqa: E402
+
+
+def chip_servidor(nombre):
+    """El <img> del escudo del servidor que eligió `nombre`, o nada: sin elegir no hay pieza (como la bandera)."""
+    sv = _SE.de(nombre)
+    src, clase = logo_de(sv) if sv else ('', '')
+    return '<img class="%s" src="%s">' % (clase, src) if src else ''
+
+
 def chip_bandera(cc):
     """El <img> de la bandera, o nada si no hay país.
 
@@ -315,7 +328,7 @@ def card(c):
       <div class="c-rank">%s</div>
       <div class="c-sep"></div>
       %s
-      <img class="%s" src="%s">
+      %s
     </div>
     <div class="c-name">%s</div>
     <div class="c-rule"></div>
@@ -326,7 +339,7 @@ def card(c):
   </div>
 """ % (' bright' if bright else '', tg[1], clase_nombre(c['raw']), g, foto, puesto(c), TEMPORADA, tg[1], tg[0], UL,
        '—' if c.get('sinjugar') else c['ovr'], rg,
-       chip_bandera(c['cc']), logo_de(c['sv'])[1], logo_de(c['sv'])[0], c['raw'].upper(), filas, rg, c['sv'])
+       chip_bandera(c['cc']), chip_servidor(c['raw']), c['raw'].upper(), filas, rg, _SE.de(c['raw']) or '—')
 
 
 

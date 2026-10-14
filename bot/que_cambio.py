@@ -504,6 +504,17 @@ def huellas():
     # servidor (`rankings.por_servidor()`, `datos/por_servidor.json`), que no es un campo de tu fila. Sin esto, jugar
     # en otro servidor no redibujaba esa camiseta. Sólo a quien tiene algo: los demás conservan su huella
     psv = (_j('datos', 'por_servidor.json') or {}).get('gente') or {}
+    # 🏠 Y EL SERVIDOR QUE ELEGISTE, en las tres personales (13/10/2026, Dlx: «erian es de urban… recuerda que quité
+    # eso de los servidores para todos a menos que se lo pongan manualmente en la tarjeta»). Lo dibujan en vez del `sv`
+    # del pool, y no es un campo de tu fila: sale de Mi cuenta (`comun/servidor_elegido.py`). `bajar()` deja además la
+    # copia que leen los generadores, por eso se pide acá, antes de dibujar. Sólo a quien eligió: los demás conservan
+    # su huella (el que no eligió pierde el escudo por el cambio de código, que espera a la madrugada)
+    try:
+        from comun import servidor_elegido as _SEL
+        elegidos = _SEL.bajar()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude leer los servidores elegidos (%s)' % str(e)[:60])
+        elegidos = {}
     out = {}
     for quien, dos in est.items():
         h = {}
@@ -526,6 +537,9 @@ def huellas():
             # y el puesto en la letra, en País y Servidor
             if carta in ('pais', 'servidor') and en_rango.get(quien):
                 crudo.append('rg=%r' % (en_rango[quien],))
+            # y el servidor que elegiste, en las tres personales: ver arriba
+            if carta in ('temporada', 'competitivo', 'pais') and elegidos.get(_CL(quien)):
+                crudo.append('sve=%s' % elegidos[_CL(quien)])
             # y lo de cada servidor, en la de Servidor: ver arriba
             if carta == 'servidor' and psv.get(quien):
                 crudo.append('psv=%r' % (sorted((k, tuple(sorted(v.items()))) for k, v in psv[quien].items()),))

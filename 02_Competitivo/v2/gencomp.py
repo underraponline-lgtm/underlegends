@@ -30,6 +30,7 @@ ACC = {
 # y tumbaba las 138 por 2 personas. Ver el docstring de ese modulo.
 sys.path.insert(0, _osruta.path.dirname(RAIZ))
 from comun.escudos import LOGO, escudo
+from comun import servidor_elegido as _SE
 DIMS = ['EFI','CON','DOM','RCH','DIV','EVT']   # RCH = Racha (rework A5: era TCH/Techo; el calculo no cambia)
 
 # ══ LA COLUMNA IZQUIERDA ══════════════════════════════════════════════
@@ -204,9 +205,17 @@ def fila_abajo(c):
     est = ESTILO_DE.get(k)
     if est and est in ESTILOS:
         p.append('<i class="ci" style="--m:url(%s)"></i>' % ESTILOS[est])
-    p.append('<span class="ar" style="--p:%d">'
-             '<img class="cl" src="%s">%s</span>'
-             % (c.get('arc_sv', 0), escudo(c['sv']), _num(c.get('pos_sv'))))
+    # 🏠 EL SERVIDOR QUE ELEGISTE, NO DONDE MÁS JUGASTE (Dlx, 13/10/2026: «recuerda que quité eso de los servidores
+    # para todos a menos que se lo pongan manualmente en la tarjeta»). Sin elegir, el círculo no va —como la bandera de
+    # quien no tiene país—. ⚠️ El aro y el número son tu puesto entre los que juegan en `c['sv']`: van sólo si elegiste
+    # ese mismo, porque al lado del escudo de otro servidor dirían un puesto que no es de ahí
+    sve = _SE.de(c['raw'])
+    esc = escudo(sve) if sve else ''
+    if esc:
+        mismo = sve == c.get('sv')
+        p.append('<span class="ar" style="--p:%d">'
+                 '<img class="cl" src="%s">%s</span>'
+                 % (c.get('arc_sv', 0) if mismo else 0, esc, _num(c.get('pos_sv')) if mismo else ''))
     # la crew va como IMAGEN llena, igual que la bandera y el servidor, con
     # su aro. Lleva numero solo si la crew tiene 3 o mas en el ranking: en una
     # de un solo integrante, ser primero no dice nada.

@@ -11,6 +11,24 @@
  ],
  "cambios": [
   {
+   "version": "2.99",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T22:30:00-04:00",
+   "titulo": "Tu servidor en la tarjeta, sólo si lo elegiste",
+   "items": [
+    "🏠 Las tarjetas de Temporada, Competitiva y País muestran el servidor que elegiste en Mi cuenta. Si no elegiste ninguno, no muestran ninguno. La de Servidor sigue igual."
+   ]
+  },
+  {
+   "version": "2.98",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T21:30:00-04:00",
+   "titulo": "Más cuidado con tus datos",
+   "items": [
+    "🛡️ Una imagen de fondo que traiga datos escondidos (como dónde se sacó la foto) no se acepta. Si la elegís desde Mi cuenta, se limpia sola."
+   ]
+  },
+  {
    "version": "2.97",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T22:00:00-04:00",
