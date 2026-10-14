@@ -364,6 +364,14 @@ function PedirCampana({ liga, dc }) {
   );
 }
 
+// 🖼️ LAS PUERTAS CON ALGO PARA VER, como el abanico de Tarjetas (Dlx, 13/10/2026: «me gustaría que cada botón, o sea
+// como Pase, Ranking y Eventos, tengan algo así visual»). Cada dibujo sale de un dato, no es adorno: los logos de los
+// servidores que juegan esta semana (el que está en vivo, marcado), las caras del podio con el color de su letra, y las
+// Tareas de hoy, hechas o no. Sin dato no hay dibujo
+//: el ícono de cada Tarea, por cómo empieza su id (`bot/pase.py`: DIARIAS y SEMANALES)
+const ICO_TAREA = [['entrar', 'yo'], ['dias', 'reloj'], ['felicitar', 'premio'], ['vivo', 'mira'], ['dra', 'micro'], ['precio', 'moneda']];
+const icoTarea = (id) => (ICO_TAREA.find(([p]) => String(id || '').startsWith(p)) || [0, 'pase'])[1];
+
 export function Lobby({ liga, dc }) {
   const P = usePase(!!dc);
   const R = useRacha(!!dc);
@@ -380,8 +388,18 @@ export function Lobby({ liga, dc }) {
   const teBuscan = !!(yo && liga.buscado(yo.k));
   // 📅 la semana: cuántos eventos (lunes a domingo, en tu hora) y si hay alguno en vivo
   const l0 = lunes(ahora);
-  const semana = (liga.d.calendario || []).filter((c) => !liga.canceladoCal(c) && utc(c.t) >= l0 && utc(c.t) < l0 + 7 * 86400000).length;
-  const enVivo = liga.vivo().length;
+  const evSemana = (liga.d.calendario || []).filter((c) => !liga.canceladoCal(c) && utc(c.t) >= l0 && utc(c.t) < l0 + 7 * 86400000);
+  const semana = evSemana.length;
+  const vivos = liga.vivo();
+  const enVivo = vivos.length;
+  // 🖼️ los servidores de la semana, de más eventos a menos; el que está en vivo, primero
+  const svVivo = new Set(vivos.map((e) => e.sv).filter(Boolean));
+  const porSv = {};
+  for (const c of evSemana) if (c.sv) porSv[c.sv] = (porSv[c.sv] || 0) + 1;
+  const logos = Object.entries(porSv).filter(([sv]) => liga.logo(sv))
+    .sort((x, y) => (svVivo.has(y[0]) - svVivo.has(x[0])) || y[1] - x[1]);
+  // 🖼️ el podio: #2, #1 y #3, con el color de su letra
+  const podio = [2, 1, 3].map((p) => (liga.d.tabla || []).find((f) => f.pos === p)).filter(Boolean);
   // 🏆 tu puesto y si cambió desde la última vez que miraste (el globito, sólo por algo tuyo)
   const pos = yo && yo.pos ? yo.pos : 0;
   const [vistoPos, setVistoPos] = useState(() => leer('lg:lb-pos'));
@@ -427,14 +445,25 @@ export function Lobby({ liga, dc }) {
         <a className="pu lb lb-ev" href="#/eventos">
           <span className="lb-t">EVENTOS</span>
           {enVivo ? <span className="lb-reloj vivo">EN VIVO</span> : null}
-          <span className="lb-nivel"><b>{semana}</b><small>{semana === 1 ? 'EVENTO' : 'EVENTOS'}</small></span>
+          <span className="lb-fila">
+            <span className="lb-nivel"><b>{semana}</b><small>{semana === 1 ? 'EVENTO' : 'EVENTOS'}</small></span>
+            {logos.length ? <span className="lb-vis lb-logos" aria-hidden="true">{logos.slice(0, 4).map(([sv, n]) => (
+              <span key={sv} className={'lb-logo' + (svVivo.has(sv) ? ' vivo' : '')}><img alt="" loading="lazy" src={liga.logo(sv)} /><i>{n}</i></span>
+            ))}{logos.length > 4 ? <span className="lb-mas">+{logos.length - 4}</span> : null}</span> : null}
+          </span>
           <small>esta semana en la Liga</small>
         </a>
         <a className="pu lb lb-rk" href="#/ranking" onClick={() => { if (pos) guardar('lg:lb-pos', pos); }}>
           <span className="lb-t">RANKING</span>
           {subio ? <span className="lb-glob" aria-label="cambió tu puesto">{subio > 0 ? '▲' : '▼'}</span> : null}
-          {pos ? <span className="lb-nivel"><b>#{pos}</b><small>{subio ? (subio > 0 ? 'SUBISTE ' + subio : 'BAJASTE ' + -subio) : 'TU PUESTO'}</small></span>
-            : <span className="lb-nivel"><b>#1</b><small>{uno ? limpio(uno.n).toUpperCase() : 'LA TEMPORADA'}</small></span>}
+          <span className="lb-fila">
+            {pos ? <span className="lb-nivel"><b>#{pos}</b><small>{subio ? (subio > 0 ? 'SUBISTE ' + subio : 'BAJASTE ' + -subio) : 'TU PUESTO'}</small></span>
+              : <span className="lb-nivel"><b>#1</b><small>{uno ? limpio(uno.n).toUpperCase() : 'LA TEMPORADA'}</small></span>}
+            {podio.length === 3 ? <span className="lb-vis lb-podio" aria-hidden="true">{podio.map((f) => (
+              <span key={f.k} className={'lb-pod p' + f.pos} style={{ '--rgc': f.rgc || '#F5C542' }}>
+                <Cara liga={liga} k={f.k} nombre={f.n} cls="lb-pod-c" /><b>{f.pos}</b></span>
+            ))}</span> : null}
+          </span>
           <small>{pos ? 'en la Temporada' : dc && !yo ? 'Jugá un evento y entrás a la tabla'
             : dc && (sinVerif || yo.fc) ? 'Verificate en DRA y entrás al ranking oficial' : 'Las tablas de la temporada'}</small>
         </a>
@@ -452,8 +481,14 @@ export function Lobby({ liga, dc }) {
         <a className="pu lb lb-pa" href="#/pase">
           <span className="lb-t">PASE</span>
           {a ? <span className="lb-reloj">VENCEN EN {falta(hastaMedianocheET(ahora))}</span> : null}
-          {a && hoy ? <span className="lb-nivel"><b>{hechas}/{hoy.length}</b><small>{hechas === hoy.length ? 'HECHAS HOY' : 'TAREAS DE HOY'}</small></span>
-            : <span className="lb-nivel"><b>30</b><small>NIVELES</small></span>}
+          <span className="lb-fila">
+            {a && hoy ? <span className="lb-nivel"><b>{hechas}/{hoy.length}</b><small>{hechas === hoy.length ? 'HECHAS HOY' : 'TAREAS DE HOY'}</small></span>
+              : <span className="lb-nivel"><b>30</b><small>NIVELES</small></span>}
+            {a && hoy ? <span className="lb-vis lb-tareas">{hoy.map((t) => (
+              <span key={t.id} className={'lb-tarea' + (t.hecha ? ' hecha' : '')} title={t.t + (t.hecha ? ' · hecha' : '')}>
+                <Ico n={icoTarea(t.id)} t={22} />{t.hecha ? <i aria-hidden="true">✓</i> : null}</span>
+            ))}</span> : <span className="lb-vis lb-ticket" aria-hidden="true"><Ico n="pase" t={34} /></span>}
+          </span>
           <i className="lb-barra"><u style={{ width: (a && hoy ? Math.round((100 * hechas) / hoy.length) : 0) + '%' }} /></i>
           <small>{a && hoy ? (hechas === hoy.length ? 'Mañana vienen otras' : 'Cada una te da XP')
             : sinVerif ? 'Es de los miembros de DRA: verificate para subir de nivel' : 'Tareas que dan premios'}</small>

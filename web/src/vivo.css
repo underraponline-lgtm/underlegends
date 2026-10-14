@@ -2579,6 +2579,30 @@ a.rk-z:hover{border-color:var(--linea)}
 .lb-abanico img:nth-child(3){transform:rotate(12deg) translateY(4px)}
 /* 🎟️ Pase: el nivel y la barra */
 .lb-nivel{display:flex;align-items:baseline;gap:6px}
+/* 🖼️ el número y su dibujo, uno al lado del otro; en una puerta angosta, el dibujo abajo (13/10/2026) */
+.lb{container-type:inline-size}
+.lb-fila{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.lb-vis{display:flex;align-items:flex-end;flex:none}
+@container (max-width: 230px){.lb-fila{flex-direction:column;align-items:flex-start;gap:8px}}
+.lb-logos{gap:0}
+.lb-logo{position:relative;width:40px;height:40px;margin-left:-2px;border-radius:50%;border:2px solid #0E0E11;background:#1A1A1E}
+.lb-logo:first-child{margin-left:0}
+.lb-logo img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.lb-logo i{position:absolute;right:-4px;bottom:-4px;min-width:17px;height:17px;padding:0 3px;border-radius:9px;background:#F5C542;color:#0E0E11;font:800 11px/17px Archivo,sans-serif;font-style:normal;text-align:center}
+.lb-logo.vivo{border-color:#E41373;box-shadow:0 0 0 2px #E41373}
+.lb-mas{align-self:center;margin-left:6px;font:700 13px/1 "Barlow Condensed",sans-serif;color:#A5A5A0}
+.lb-podio{gap:4px;align-items:flex-end}
+.lb-pod{position:relative;display:grid;justify-items:center}
+.lb-pod-c{display:block;width:36px;height:36px;border-radius:50%;overflow:hidden;border:2px solid var(--rgc);background:#1A1A1E;color:#F2F2EE;font:900 15px/32px Archivo,sans-serif;text-align:center}
+.lb-pod-c img{width:100%;height:100%;object-fit:cover;display:block}
+.lb-pod.p1 .lb-pod-c{width:48px;height:48px;line-height:44px;margin-bottom:8px}
+.lb-pod b{position:absolute;bottom:-7px;min-width:16px;height:16px;padding:0 3px;background:var(--rgc);color:#0E0E11;font:900 11px/16px Archivo,sans-serif;text-align:center}
+.lb-pod.p1 b{bottom:1px}
+.lb-tareas{gap:6px}
+.lb-tarea{position:relative;display:grid;place-items:center;width:38px;height:38px;border:2px solid #3A3A3E;color:#A5A5A0}
+.lb-tarea.hecha{border-color:#F5C542;color:#F5C542}
+.lb-tarea i{position:absolute;right:-6px;top:-6px;width:16px;height:16px;border-radius:50%;background:#2BB39A;color:#0E0E11;font:900 11px/16px Archivo,sans-serif;font-style:normal;text-align:center}
+.lb-ticket{color:#F5C542}
 .lb-nivel b{font:900 40px/1 Archivo,sans-serif;color:#F5C542}
 .lb-nivel small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#A5A5A0}
 /* 🛍️ Tienda: una franja a lo ancho */
