@@ -482,7 +482,8 @@ def evidencia(r, L, ins, padron, decis, mano, resolver=None, voz=None):
         if x[1] not in vistas:
             vistas.add(x[1])
             limpias.append(x)
-    return {'quien': quien, 'lineas': limpias[:9], 'sugerencia': sug}
+    # 🔎 `sv`: para el filtro por servidor del Dashboard (13/10/2026)
+    return {'quien': quien, 'lineas': limpias[:9], 'sugerencia': sug, 'sv': sv or ''}
 
 
 def _al_objeto(estados, evid=None):

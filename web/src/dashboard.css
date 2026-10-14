@@ -105,6 +105,17 @@
 .db-rep-q input[type=text]{flex:1 1 160px}
 .db-sel{width:100%}
 .db-rep-nota{margin:0;font-size:12.5px;color:var(--gris)}
+/* 🔎 los filtros de Reportes y Decisiones (13/10/2026) */
+.db-filtros{display:grid;gap:6px;margin:10px 0 14px;padding:10px 0;border-block:1px solid var(--suave)}
+.db-filtro{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.db-filtro>span{min-width:92px;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.db-fch{padding:4px 9px;border:1.5px solid var(--suave);background:none;color:var(--tinta);font-family:inherit;font-size:13px;font-weight:600;line-height:1.3;cursor:pointer}
+.db-fch small{margin-left:3px;color:var(--gris);font-size:11.5px}
+.db-fch.on{background:var(--tinta);border-color:var(--tinta);color:var(--fondo)}
+.db-fch.on small{color:inherit;opacity:.75}
+.db-fch:focus-visible{outline:2px solid var(--magenta);outline-offset:2px}
+.db-filtro-n{margin:2px 0 0;font-size:12.5px;color:var(--gris)}
+@media (max-width:560px){.db-filtro>span{min-width:100%}}
 .db-rep-ya{margin:0;font-size:13px;font-weight:700;color:var(--magenta-tx)}
 .db-rep-herm{display:flex;align-items:center;gap:6px;font-size:13px}
 /* 🔐 quien entra con un rol (13/10/2026) */

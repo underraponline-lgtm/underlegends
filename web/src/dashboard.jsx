@@ -1204,6 +1204,50 @@ function Evidencia({ r, alListo, corrige }) {
   );
 }
 
+// 🔎 LOS FILTROS DE REPORTES Y DECISIONES (Dlx, 13/10/2026: «¿puedes agregar filtros acá? tanto en reportes para ir por
+// servidores, decisiones, nivel de importancia, etc.»). Botones por grupo con cuántos hay de cada uno; un grupo con una
+// sola opción no se dibuja. Lo elegido queda en este navegador (`lg:db-f-<pestaña>`): al volver sigue igual
+const IMP = [['alta', 'Alta'], ['media', 'Media'], ['baja', 'Baja']];
+const IMP_DICE = 'Alta: los puntos de un evento entero · Media: una batalla o un nombre · Baja: quién es quién y el Most Wanted';
+function useFiltro(k) {
+  const [f, setF0] = useState(() => { try { return JSON.parse(localStorage.getItem('lg:db-f-' + k) || '{}') || {}; } catch (e) { return {}; } });
+  const poner = (n) => { setF0(n); try { localStorage.setItem('lg:db-f-' + k, JSON.stringify(n)); } catch (e) { /* sin guardar */ } };
+  return [f, (g, v) => { const n = Object.assign({}, f); if (v) n[g] = v; else delete n[g]; poner(n); }, () => poner({})];
+}
+//: `[[valor, etiqueta, cuántos]]` de un campo, en el orden de `fijo` (si se da) o de más a menos
+function opciones(xs, fn, fijo, etiqueta) {
+  const m = new Map();
+  for (const x of xs) { const v = fn(x); if (v) m.set(v, (m.get(v) || 0) + 1); }
+  const ks = fijo ? fijo.map((y) => y[0]).filter((v) => m.has(v)) : [...m.keys()].sort((a, b) => m.get(b) - m.get(a));
+  return ks.map((v) => [v, (fijo && (fijo.find((y) => y[0] === v) || [])[1]) || (etiqueta ? etiqueta(v) : v), m.get(v)]);
+}
+function Filtros({ grupos, f, setF, limpiar, n, total, nota }) {
+  // ⚠️ lo elegido se muestra aunque hoy no haya ninguno, así se puede sacar
+  const vis = grupos.map(([g, t, ops]) => [g, t, f[g] && !ops.some((o) => o[0] === f[g]) ? ops.concat([[f[g], f[g], 0]]) : ops])
+    .filter(([, , ops]) => ops.length > 1);
+  if (!vis.length) return null;
+  return (
+    <div className="db-filtros" role="group" aria-label="Filtros">
+      {vis.map(([g, t, ops]) => (
+        <div key={g} className="db-filtro"><span>{t}</span>
+          <button type="button" className={'db-fch' + (!f[g] ? ' on' : '')} aria-pressed={!f[g]} onClick={() => setF(g, '')}>Todos</button>
+          {ops.map(([v, e, c]) => (
+            <button key={v} type="button" className={'db-fch' + (f[g] === v ? ' on' : '')} aria-pressed={f[g] === v}
+              onClick={() => setF(g, f[g] === v ? '' : v)}>{e} <small>{c}</small></button>))}
+        </div>))}
+      {nota ? <p className="db-filtro-n">{nota}</p> : null}
+      {Object.keys(f).length ? <p className="db-filtro-n">Mostrando {n} de {total} · <button type="button" className="evp-lnk" onClick={limpiar}>sacar los filtros</button></p> : null}
+    </div>
+  );
+}
+//: el servidor de una pregunta, de su título («COPA · FFA · 12/10 · #380»): la parte que es una sigla de la Liga
+const svDeSec = (sec, liga) => {
+  const ps = String(sec || '').split(' · ');
+  return ps.find((x) => liga && liga.svs && liga.svs[x]) || ps.slice(1).find((x) => /^[A-Z]{2,5}$/.test(x)) || '';
+};
+const estadoRep = (r) => (r.estado === '' || r.estado === 'no_pude' ? 'abierto' : r.estado === 'corregir' ? 'en_curso' : 'cerrado');
+const impRep = (r) => (r.que === 'ganador' ? 'alta' : r.que === 'nombre' || r.que === 'gente' ? 'media' : 'baja');
+
 function Reportes({ rep, liga, alCambiar, corrige = true }) {
   const [lista, setLista0] = useState(rep);
   useEffect(() => { setLista0(rep); }, [rep]);
@@ -1215,9 +1259,14 @@ function Reportes({ rep, liga, alCambiar, corrige = true }) {
     setMsg((m) => Object.assign({}, m, { [r.id]: '…' }));
     try { setLista(await decidirReporte({ id: r.id, accion })); setMsg((m) => Object.assign({}, m, { [r.id]: '' })); } catch (e) { setMsg((m) => Object.assign({}, m, { [r.id]: 'No se pudo: ' + e.message })); }
   };
+  const [f, setF, limpiar] = useFiltro('rep');
   if (!lista.length) return null;
-  // 🧩 todo lo que el bot ya sabe cómo corregir, de una (Dlx: «hazlo sencillo de solucionar múltiples problemas»)
-  const sugeridos = lista.filter((x) => (x.estado === '' || x.estado === 'no_pude') && x.evid && x.evid.sugerencia && /^\d+$/.test(x.llave));
+  const pasa = (r) => (!f.sv || (r.evid && r.evid.sv) === f.sv) && (!f.estado || estadoRep(r) === f.estado)
+    && (!f.que || r.que === f.que) && (!f.imp || impRep(r) === f.imp);
+  const vista = lista.filter(pasa);
+  // 🧩 todo lo que el bot ya sabe cómo corregir, de una (Dlx: «hazlo sencillo de solucionar múltiples problemas»): de
+  // lo que se está mostrando, así se puede aplicar por servidor
+  const sugeridos = vista.filter((x) => (x.estado === '' || x.estado === 'no_pude') && x.evid && x.evid.sugerencia && /^\d+$/.test(x.llave));
   const todos = async () => {
     setMsg((m) => Object.assign({}, m, { todos: '…' }));
     try {
@@ -1231,11 +1280,18 @@ function Reportes({ rep, liga, alCambiar, corrige = true }) {
   };
   return (
     <div><h3>Errores en las llaves <small>reportados</small></h3>
+      <Filtros f={f} setF={setF} limpiar={limpiar} n={vista.length} total={lista.length} grupos={[
+        ['sv', 'Servidor', opciones(lista, (r) => r.evid && r.evid.sv)],
+        ['estado', 'Estado', opciones(lista, estadoRep, [['abierto', 'Sin mirar'], ['en_curso', 'Corrigiéndose'], ['cerrado', 'Cerrados']])],
+        ['que', 'Qué', opciones(lista, (r) => r.que, null, (v) => QUE_REP[v] || v)],
+        ['imp', 'Importancia', opciones(lista, impRep, IMP)],
+      ]} />
       {corrige && sugeridos.length >= 2 ? <div className="cu-btns">
         <button type="button" className="btn verde chico" disabled={msg.todos === '…'} onClick={todos}>Aplicar todo lo sugerido ({sugeridos.length})</button>
         {msg.todos && msg.todos !== '…' ? <small role="status">{msg.todos}</small> : null}
       </div> : null}
-      <ul>{lista.map((r) => {
+      {!vista.length ? <p className="pronto-p">Ninguno con estos filtros.</p> : null}
+      <ul>{vista.map((r) => {
         const est = ESTADO_REP[r.estado];
         const abiertoA = r.estado === '' || r.estado === 'no_pude';
         return (
@@ -1397,7 +1453,8 @@ function Pregunta({ p, r, alListo }) {
   );
 }
 
-function Decisiones({ dec, alCambiar }) {
+function Decisiones({ dec, alCambiar, liga }) {
+  const [f, setF, limpiar] = useFiltro('dec');
   const [x, setX0] = useState(dec || {});
   useEffect(() => { setX0(dec || {}); }, [dec]);
   const setX = (y) => { setX0(y); if (alCambiar) alCambiar(y); };
@@ -1405,15 +1462,29 @@ function Decisiones({ dec, alCambiar }) {
   if (!ps.length) {
     return <p className="pronto-p">{x.t ? 'Nada para decidir: el ciclo no tiene preguntas abiertas.' : 'Las preguntas aparecen cuando el ciclo las publique, en su próxima corrida.'}</p>;
   }
+  // 🔎 los filtros: servidor (del título), tipo, importancia (`imp` lo pone el ciclo: `decidir.IMPORTANCIA`) y respuesta
+  const sv = (p) => svDeSec(p.sec, liga);
+  const imp = (p) => p.imp || 'media';
+  const resp = (p) => (rs[p.id] ? 'si' : 'no');
+  const vista = ps.filter((p) => (!f.sv || sv(p) === f.sv) && (!f.tipo || (p.grupo || p.tipo) === f.tipo)
+    && (!f.imp || imp(p) === f.imp) && (!f.resp || resp(p) === f.resp));
   // por evento, en el orden en que vienen (el de la hoja: primero lo que mueve puntos)
   const secs = [];
-  for (const p of ps) {
+  for (const p of vista) {
     const s = secs.find((y) => y.sec === p.sec);
     if (s) s.ps.push(p); else secs.push({ sec: p.sec, ps: [p] });
   }
   return (
     <div className="db-dec">
       <p className="db-rep-nota">{sinContestar(x)} sin contestar de {ps.length}{x.t ? ' · el ciclo las publicó ' + hace(x.t) : ''}. Lo que contestes acá vale igual que en la hoja.</p>
+      <Filtros f={f} setF={setF} limpiar={limpiar} n={vista.length} total={ps.length}
+        nota={ps.some((p) => p.imp) ? IMP_DICE : ''} grupos={[
+          ['sv', 'Servidor', opciones(ps, sv)],
+          ['tipo', 'Tipo', opciones(ps, (p) => p.grupo || p.tipo)],
+          ['imp', 'Importancia', ps.some((p) => p.imp) ? opciones(ps, imp, IMP) : []],
+          ['resp', 'Respuesta', opciones(ps, resp, [['no', 'Sin contestar'], ['si', 'Contestadas']])],
+        ]} />
+      {!vista.length ? <p className="pronto-p">Ninguna con estos filtros.</p> : null}
       {secs.map((s) => {
         const link = (s.ps.find((p) => p.link) || {}).link;
         return (
@@ -1488,7 +1559,7 @@ export function Dashboard({ dc, liga }) {
         {tabV === 'reportes' ? sec('ERRORES REPORTADOS EN LAS LLAVES', 'se borran a los 14 días',
           (d.reportes || []).length ? <div className="db-llego"><Reportes rep={d.reportes} liga={liga} alCambiar={(l) => cambiarD({ reportes: l })} corrige={ve('reportes')} /></div>
             : <p className="pronto-p">Nadie reportó nada en los últimos 14 días.</p>) : null}
-        {tabV === 'decisiones' ? sec('✅ DECIDIR', 'las mismas preguntas que la hoja', <Decisiones dec={d.decidir} alCambiar={(y) => cambiarD({ decidir: y })} />) : null}
+        {tabV === 'decisiones' ? sec('✅ DECIDIR', 'las mismas preguntas que la hoja', <Decisiones dec={d.decidir} liga={liga} alCambiar={(y) => cambiarD({ decidir: y })} />) : null}
         {tabV === 'ajustes' ? sec(ve('roles') ? 'CONFIGURACIÓN · SÓLO VOS' : 'CONFIGURACIÓN', null,
           <Ajustes liga={liga} aj={d.ajustes || {}} chat={d.chat} hist={d.ajustes_hist} hacer={hacer} msg={msg} ocup={ocup}
             roles={d.roles} alRoles={(y) => cambiarD({ roles: y })} conRoles={ve('roles')} />) : null}

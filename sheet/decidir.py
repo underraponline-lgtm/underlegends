@@ -102,6 +102,16 @@ GRUPO = {
     'MW pendiente': (3, '🎯 MW'),
 }
 
+#: 🔎 CUÁNTO PESA CADA PREGUNTA, para el filtro del Dashboard (Dlx, 13/10/2026: «filtros… nivel de importancia»).
+#: alta: decide los puntos de un evento entero (si cuenta, si está dos veces, sin final, las vidas que ya suman);
+#: media: una batalla o un nombre; baja: quién es quién y el Most Wanted, que no cambian cuántos puntos hay
+IMPORTANCIA = {
+    'Vidas cargado': 'alta', 'Evento duplicado': 'alta', 'Bracket incompleto': 'alta', 'Evento dudoso': 'alta',
+    'Llave sin resolver': 'alta',
+    'Batalla sin ganador': 'media', 'Nombre desconocido': 'media',
+    'alta': 'baja', 'ambiguo': 'baja', 'conflicto': 'baja', 'Alias posible': 'baja', 'MW pendiente': 'baja',
+}
+
 NUEVO = 'Es alguien nuevo'
 #: la batalla que no se peleó (un walkover sin nadie que pase, una anulada)
 NO_SE_JUGO = 'No se jugó'
@@ -2841,8 +2851,9 @@ WORKER = 'https://liga-global-bot.liga-global-ul.workers.dev'
 
 
 def para_web(preguntas):
-    """`[{id, tipo, sec, que, pistas, opciones, link, libre}]`: las preguntas como las ve Dlx en el Dashboard, por
-    evento y en el orden de la hoja. Sin los «Reporte»: ésos tienen su pestaña. `libre`: se puede escribir «Es <nombre>»."""
+    """`[{id, tipo, sec, que, pistas, opciones, link, libre, grupo, imp}]`: las preguntas como las ve Dlx en el
+    Dashboard, por evento y en el orden de la hoja. Sin los «Reporte»: ésos tienen su pestaña. `libre`: se puede
+    escribir «Es <nombre>». `grupo` y `imp` son para los filtros (`GRUPO`, `IMPORTANCIA`)."""
     out = []
     for tit, ps in secciones([p for p in preguntas if p['tipo'] != 'Reporte']):
         for p in ps:
@@ -2850,7 +2861,8 @@ def para_web(preguntas):
             out.append({'id': p['id'], 'tipo': p['tipo'], 'sec': str(tit)[:120], 'que': str(p.get('que') or '')[:400],
                         'pistas': str(p.get('pistas') or '')[:900], 'opciones': [str(x)[:80] for x in p.get('opciones') or []][:14],
                         'link': link if link.startswith('https://discord.com/') else '',
-                        'libre': p['tipo'] == 'Nombre desconocido'})
+                        'libre': p['tipo'] == 'Nombre desconocido',
+                        'grupo': GRUPO.get(p['tipo'], (4, p['tipo']))[1], 'imp': IMPORTANCIA.get(p['tipo'], 'media')})
     return out[:150]
 
 
