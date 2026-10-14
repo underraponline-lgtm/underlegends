@@ -66,7 +66,7 @@
    "temporada": "37a0c947ddbc:7e987c978e23"
   },
   "Aktybo": {
-   "competitivo": "22749b0ea833:40807e5de0f4",
+   "competitivo": "4e1a100f8e67:40807e5de0f4",
    "pais": "cdc65989e044:ec920afad165",
    "servidor": "070582940074:0261962bc3e6:15af16"
   },
@@ -300,7 +300,7 @@
    "servidor": "5326ca7e9e57:0261962bc3e6:ce9c52"
   },
   "Dcet": {
-   "competitivo": "90b2e091b5c8:40807e5de0f4",
+   "competitivo": "f421d39b371b:40807e5de0f4",
    "pais": "22f3340277cf:ec920afad165",
    "servidor": "6d56a07de7d8:0261962bc3e6:6b534c"
   },
@@ -473,7 +473,7 @@
    "servidor": "236a93dc78bf:0261962bc3e6:055f77"
   },
   "GP": {
-   "competitivo": "fa9db83b4b0e:40807e5de0f4",
+   "competitivo": "513ae6845bf4:40807e5de0f4",
    "pais": "9de29fa1af4a:ec920afad165",
    "servidor": "c0c0bd3156aa:0261962bc3e6:000eb3"
   },
@@ -520,7 +520,7 @@
    "servidor": "20408aacfb30:0261962bc3e6:15af16"
   },
   "Gosu Z": {
-   "competitivo": "62e57fcd8361:40807e5de0f4",
+   "competitivo": "81cea19c3183:40807e5de0f4",
    "pais": "6173c8cf32f3:ec920afad165",
    "servidor": "40b0d730eb3c:0261962bc3e6:948362"
   },
@@ -573,7 +573,7 @@
    "servidor": "1edb9c563747:0261962bc3e6:4975e5"
   },
   "IFX": {
-   "competitivo": "a6d5830169d3:40807e5de0f4",
+   "competitivo": "02567f434d61:40807e5de0f4",
    "servidor": "178641d04e67:0261962bc3e6:15af16"
   },
   "ISAIAS": {},
@@ -621,7 +621,7 @@
    "servidor": "1b54240d32bf:0261962bc3e6:055f77"
   },
   "Jayden": {
-   "competitivo": "ac2c87d433d1:40807e5de0f4",
+   "competitivo": "1520688adfb5:40807e5de0f4",
    "pais": "72bc2d2d2ef8:ec920afad165",
    "servidor": "e1641c905aec:0261962bc3e6:a4a87a"
   },
@@ -1763,5 +1763,5 @@
    "servidor": "7f8885a35a6d:0261962bc3e6:c9f1f2"
   }
  },
- "cuando": "2026-10-14T06:58:52+00:00"
+ "cuando": "2026-10-14T18:59:35+00:00"
 }
