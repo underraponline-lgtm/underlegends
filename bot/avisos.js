@@ -1648,6 +1648,38 @@ export const BIENVENIDA = [[200, 'entrar', 'Entrá a la Liga'], [200, 'seguir', 
   [300, 'campana', 'Activá la campana de avisos'], [300, 'llave', 'Mirá una llave en vivo'], [400, 'verificar', 'Verificate'],
   [400, 'anotarse', 'Anotate a un evento'], [500, 'listo', 'Completá tu primera semana']];
 export const BIENVENIDA_DIAS = 14;
+// ⭐ LO QUE SUBE EL NIVEL, ADEMÁS DE JUGAR Y ENTRAR (Dlx, 14/10/2026: «haz que otras y muchas cosas más te hagan subir de
+// nivel acá… ojo, no me refiero a nivel de pase, eso es otra cosa»). El nivel es el de `nivelDeXp()`: el de tu perfil, el
+// que desbloquea los temas (`web/src/temas.js`). `[XP por vez, hasta cuántas veces, para qué]`. Cada cosa cuenta UNA vez
+// (`xp_log`: seguir a la misma persona dos veces es una) y con tope, así no se sube tocando un botón: jugar sigue siendo
+// lo que más da (10 por evento). Las de «una vez» se miran también en su tabla, así lo hecho antes de esto cuenta
+export const XP_FUENTES = {
+  fel: [1, 60, 'Felicitar una publicación'],
+  sigue: [2, 25, 'Seguir a un rapero'],
+  voto: [2, 30, 'Votar en una encuesta'],
+  qg: [1, 60, 'Votar en «¿Quién gana?»'],
+  apuesta: [2, 30, 'Apostar en una batalla en vivo'],
+  vivo: [3, 40, 'Mirar una llave en vivo'],
+  precio: [2, 25, 'Poner precio a una cabeza'],
+  reporte: [5, 20, 'Reportar un error que se corrigió'],
+  tarea: [1, 200, 'Cumplir una Tarea del Pase'],
+  campana: [10, 1, 'Activar la campana de avisos'],
+  redes: [5, 1, 'Mostrar tus redes en el perfil'],
+  fondo: [5, 1, 'Ponerle fondo a tu perfil'],
+  foto: [5, 1, 'Ponerle foto a una tarjeta'],
+};
+/** ⭐ La XP de lo que no es jugar ni entrar, con lo que lleva de cada fuente: `{xp, de: {que: [veces, xp]}}` */
+export function xpDeFuentes(cuentas) {
+  const de = {};
+  let xp = 0;
+  for (const [que, [vale, tope]] of Object.entries(XP_FUENTES)) {
+    const n = Math.min(Number(cuentas[que]) || 0, tope);
+    if (!n) continue;
+    de[que] = [n, n * vale];
+    xp += n * vale;
+  }
+  return { xp, de };
+}
 // 🎟️ lo que el Pase sabe contar: el «qué mide» de cada Tarea (`MIDE` en `bot/pase.py`). `dra` (eventos jugados en
 // DRA) y `caza` (buscados cazados) los manda el ciclo; los días (`activo`), las felicitaciones y las llaves en vivo
 // (`pase_log`) y los precios (`precios`) los ve pasar el objeto
@@ -4542,6 +4574,11 @@ export class Avisos {
         'ref TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, temp, que, ref)) WITHOUT ROWID');
       this.sql.exec('CREATE TABLE IF NOT EXISTS pase_hito (quien TEXT NOT NULL, temp TEXT NOT NULL, ' +
         'nivel INTEGER NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, temp, nivel))');
+      // ⭐ LO QUE SUBE EL NIVEL ADEMÁS DE JUGAR (14/10/2026): cada cosa hecha, una vez cada una (`que` de `XP_FUENTES`,
+      // `ref` qué fue). No se borra con el tiempo —los aplausos se van a los 30 días y la XP no tiene que bajar—: sólo
+      // con «olvidarme». Ver `xpVio()` y `xpDe()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS xp_log (quien TEXT NOT NULL, que TEXT NOT NULL, ref TEXT NOT NULL, ' +
+        't INTEGER NOT NULL, PRIMARY KEY (quien, que, ref)) WITHOUT ROWID');
       // 🧠 LOS DATOS DE CADA PERSONA PARA /card (`p:<clave>`), ACÁ DESDE EL 06/10/2026 Y NO EN KV. Eran casi todo
       // su cupo —unas 230 escrituras por corrida, porque los números del /versus se miden contra el pool y se mueven
       // con cada evento—, y KV da 1.000 por día: el 06/10 a las 7:57 PM iba en 909. Acá son filas, de 100.000 por día.
@@ -4727,6 +4764,11 @@ export class Avisos {
       if (ruta === '/semanal') {
         if (!/^[0-9]{5,25}$/.test(String(d.quien || ''))) return json({ error: 'falta quién' }, 400);
         return json(this.semanal(String(d.quien), d.cobrar === true));
+      }
+      // ⭐ algo que sube el nivel y pasó afuera del objeto (Mis redes, que vive en KV). Sólo lo llama el Worker
+      if (ruta === '/xp-vio') {
+        if (d.que !== 'redes') return json({ error: 'qué' }, 400);
+        return json({ ok: true, nuevo: this.xpVio(String(d.quien || ''), 'redes', '1') });
       }
       if (ruta === '/racha') {
         if (!/^[0-9]{5,25}$/.test(String(d.quien || ''))) return json({ error: 'falta quién' }, 400);
@@ -5836,6 +5878,7 @@ export class Avisos {
     if (q.estado !== 'abierta') return { error: 'cerrada' };
     const antes = this.sql.exec('SELECT lado FROM qg_voto WHERE id = ? AND quien = ?', q.id, quien).toArray()[0];
     this.sql.exec('INSERT OR REPLACE INTO qg_voto (id, quien, lado, t) VALUES (?, ?, ?, ?)', q.id, quien, lado, ahora);
+    this.xpVio(quien, 'qg', q.id, ahora);
     const c = this.sql.exec("SELECT SUM(CASE WHEN lado = 'A' THEN 1 ELSE 0 END) AS a, SUM(CASE WHEN lado = 'B' THEN 1 ELSE 0 END) AS b " +
       'FROM qg_voto WHERE id = ?', q.id).toArray()[0] || {};
     const na = Number(c.a) || 0, nb = Number(c.b) || 0;
@@ -5913,6 +5956,7 @@ export class Avisos {
     if (m > s) return json({ error: 'saldo', saldo: s }, 409);
     this.state.storage.transactionSync(() => {
       this.sql.exec('INSERT OR REPLACE INTO apostado (ap, quien, lado, monto, t) VALUES (?, ?, ?, ?, ?)', ap.id, quien, lado, antes + m, ahora);
+      this.xpVio(quien, 'apuesta', ap.id, ahora);
       this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', 'ap:' + ap.id + ':' + quien,
         quien, -(antes + m), ahora);
     });
@@ -7234,6 +7278,8 @@ export class Avisos {
     this.sql.exec('DELETE FROM pase_vivo WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM pase_log WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM pase_hito WHERE quien = ?', String(d.quien));
+    // ⭐ y lo que le sumaba nivel
+    this.sql.exec('DELETE FROM xp_log WHERE quien = ?', String(d.quien));
     // 📊 y los días que usó el bot o la página (el Dashboard): guardaban su Discord ID 35 días (revisión del 05/10/2026)
     this.sql.exec('DELETE FROM uso WHERE quien = ?', String(d.quien));
     // 🔔 y su bandeja
@@ -7349,6 +7395,7 @@ export class Avisos {
       if (!r || (r.estado !== 'corregir' && r.estado !== '')) continue;
       this.sql.exec('UPDATE reportes SET estado = ?, resultado = ?, t_estado = ? WHERE id = ?', est, msg, ahora, Number(id));
       if (est === 'aplicado') {
+        this.xpVio(r.quien, 'reporte', id, ahora);
         const num = /^\d+$/.test(r.llave) ? r.llave : '';
         this.aBandeja(r.quien, 'reporte:' + id, 'reporte', num ? '✅ Corregimos la llave #' + num : '✅ Corregimos la llave',
           (msg ? msg + '. ' : '') + 'Gracias por avisar.', num ? HUB + '/freestyle-rap/llave/' + num : HUB + HUB_EVENTOS, '', ahora);
@@ -8032,6 +8079,7 @@ export class Avisos {
         // `avisado` 0: a quien seguís le llega «alguien te sigue» (ver `avisarSeguidores()`)
         this.sql.exec('INSERT INTO sigue (quien, a, t, de, creada, avisado) VALUES (?, ?, ?, ?, ?, 0)',
           quien, a, ahora, de, creadaEn(quien));
+        this.xpVio(quien, 'sigue', a, ahora);
         lugar--;
       }
     }
@@ -8231,6 +8279,7 @@ export class Avisos {
     if (r.rowsWritten) {
       this.paseVio(quien, 'fel', p.id, ahora);
       this.paseRevisar(quien);
+      this.xpVio(quien, 'fel', p.id, ahora);
     }
     const n = this.sql.exec('SELECT COUNT(*) AS n FROM aplausos WHERE id = ?', p.id).toArray()[0].n;
     return json({ ok: true, id: p.id, n, ya: !r.rowsWritten, t: ahora });
@@ -8353,6 +8402,7 @@ export class Avisos {
     this.sql.exec('INSERT INTO votos (enc, quien, op, t) VALUES (?, ?, ?, ?) ' +
       'ON CONFLICT(enc, quien) DO UPDATE SET op = excluded.op, t = excluded.t',
     d.enc.slice(0, 40), String(d.quien), d.op.slice(0, 80), ahora);
+    this.xpVio(String(d.quien), 'voto', d.enc.slice(0, 40), ahora);
     // lo viejo se va: el ciclo lee el resultado cuando la encuesta cierra
     this.sql.exec('DELETE FROM votos WHERE t < ?', ahora - VOTOS_DIAS * DIA_MS);
     const cuenta = {};
@@ -8439,8 +8489,9 @@ export class Avisos {
     if (ya + m > tope) return json({ error: 'tope', queda: Math.max(0, tope - ya), total: ya }, 409);
     this.sql.exec('INSERT INTO precios (quien, cabeza, monto, t, fin) VALUES (?, ?, ?, ?, ?)',
       String(d.quien), d.cabeza.slice(0, 80), m, ahora, Number(d.fin));
-    // 🎟️ y la Tarea del Pase de poner un precio
+    // 🎟️ y la Tarea del Pase de poner un precio; ⭐ y el nivel, una vez por cabeza
     this.paseRevisar(String(d.quien));
+    this.xpVio(String(d.quien), 'precio', d.cabeza.slice(0, 80), ahora);
     return json({ ok: true, cabeza: d.cabeza, monto: m, saldo: s - m, total: ya + m, t: ahora });
   }
 
@@ -8860,9 +8911,61 @@ export class Avisos {
       return [d, monto, cobrado ? 1 : 0, d === hoy && si && !cobrado ? 1 : 0, cofre ? 1 : 0];
     });
     const sigHito = RACHA_HITOS.find(([n]) => n > r.actual) || null;
-    return { racha: r, eventos, nivel: nivelDeXp(eventos * c.xp_ev + r.total * c.xp_dia, c.paso),
+    // ⭐ y lo demás que suma (14/10/2026): `xp_de` es el desglose, para que la página diga de dónde sale cada punto
+    const extra = this.xpDe(quien);
+    const xp_de = Object.assign({ ev: [eventos, eventos * c.xp_ev], dia: [r.total, r.total * c.xp_dia] }, extra.de);
+    return { racha: r, eventos, nivel: nivelDeXp(eventos * c.xp_ev + r.total * c.xp_dia + extra.xp, c.paso),
       cada: c.cada, premio: c.premio, falta: c.cada - (r.actual % c.cada), xp_ev: c.xp_ev, xp_dia: c.xp_dia, hoy, semana,
-      premios, cofre_dias: COFRE_DIAS, hito: sigHito };
+      premios, cofre_dias: COFRE_DIAS, hito: sigHito, xp_de, xp_fuentes: XP_FUENTES };
+  }
+
+  /** ⭐ Anota algo que sube el nivel (`que` de `XP_FUENTES`), una vez por cosa. Devuelve si era nuevo */
+  xpVio(quien, que, ref, t = Date.now()) {
+    if (!/^[0-9]{5,25}$/.test(String(quien || '')) || !XP_FUENTES[que]) return false;
+    return !!this.sql.exec('INSERT OR IGNORE INTO xp_log (quien, que, ref, t) VALUES (?, ?, ?, ?)', String(quien), que,
+      String(ref).slice(0, 80), t).rowsWritten;
+  }
+
+  /**
+   * ⭐ Lo que alguien sumó fuera de jugar y entrar: `{xp, de}` (`xpDeFuentes()`). Las Tareas del Pase salen de
+   * `pase_hecho`, que no se borra; las de «una vez» se miran también en su tabla y quedan anotadas (así sacar el fondo
+   * no baja el nivel). La primera vez trae lo hecho antes de que existiera (`xpHeredar()`)
+   */
+  xpDe(quien) {
+    this.xpHeredar();
+    const hay = (sql, ...a) => !!this.sql.exec(sql, ...a).toArray()[0];
+    if (hay("SELECT 1 AS x FROM subs WHERE quien = ? LIMIT 1", quien)) this.xpVio(quien, 'campana', '1');
+    if (hay("SELECT 1 AS x FROM fondos WHERE quien = ? AND estado = 'ok' AND url != '' LIMIT 1", quien)) this.xpVio(quien, 'fondo', '1');
+    if (hay("SELECT 1 AS x FROM fotos_carta WHERE quien = ? AND estado = 'ok' LIMIT 1", quien)) this.xpVio(quien, 'foto', '1');
+    const cuentas = {};
+    for (const x of this.sql.exec('SELECT que, COUNT(*) AS n FROM xp_log WHERE quien = ? GROUP BY que', quien).toArray()) {
+      cuentas[x.que] = x.n;
+    }
+    cuentas.tarea = this.sql.exec('SELECT COUNT(*) AS n FROM pase_hecho WHERE quien = ?', quien).toArray()[0].n || 0;
+    return xpDeFuentes(cuentas);
+  }
+
+  /** ⭐ Lo hecho antes de `xp_log` (14/10/2026), una sola vez: lo que todavía está en cada tabla */
+  xpHeredar() {
+    if (this._xpHeredado || this.leer('xp_log:v1')) { this._xpHeredado = true; return; }
+    const ahora = Date.now();
+    const de = [
+      ["SELECT quien, 'fel' AS que, id AS ref, t FROM aplausos"],
+      ["SELECT quien, que, ref, t FROM pase_log WHERE que IN ('fel', 'vivo')"],
+      ["SELECT quien, 'sigue' AS que, a AS ref, t FROM sigue"],
+      ["SELECT quien, 'voto' AS que, enc AS ref, t FROM votos"],
+      ["SELECT quien, 'qg' AS que, id AS ref, t FROM qg_voto"],
+      ["SELECT quien, 'apuesta' AS que, ap AS ref, t FROM apostado"],
+      ["SELECT quien, 'precio' AS que, cabeza AS ref, MIN(t) AS t FROM precios WHERE quien != 'borrado' GROUP BY quien, cabeza"],
+      ["SELECT quien, 'reporte' AS que, CAST(id AS TEXT) AS ref, t FROM reportes WHERE estado = 'aplicado'"],
+    ];
+    for (const [sql] of de) {
+      try {
+        this.sql.exec('INSERT OR IGNORE INTO xp_log (quien, que, ref, t) SELECT quien, que, ref, t FROM (' + sql + ')');
+      } catch (e) { console.warn('[xp] no pude heredar: ' + String(e).slice(0, 120)); }
+    }
+    this.guardar('xp_log:v1', ahora);
+    this._xpHeredado = true;
   }
 
   /** 🔥 Cobrar el premio de hoy. Estar en la página ya es entrar: el día se anota primero */
@@ -8894,7 +8997,8 @@ export class Avisos {
     let hecha = true;
     if (clave === 'seguir') hecha = hay('SELECT 1 AS x FROM sigue WHERE quien = ? LIMIT 1', quien);
     else if (clave === 'campana') hecha = hay('SELECT 1 AS x FROM subs WHERE quien = ? LIMIT 1', quien);
-    else if (clave === 'llave') hecha = hay('SELECT 1 AS x FROM pase_vivo WHERE quien = ? LIMIT 1', quien);
+    // ⚠️ miraba `pase_vivo`, que ya nadie escribe: el paso no se podía cumplir. Ahora `xp_log`, que anota a todos
+    else if (clave === 'llave') hecha = hay("SELECT 1 AS x FROM xp_log WHERE quien = ? AND que = 'vivo' LIMIT 1", quien);
     else if (clave === 'anotarse') hecha = hay('SELECT 1 AS x FROM inscritos WHERE autor_id = ? LIMIT 1', quien);
     else if (clave === 'verificar') {
       try { hecha = !!(await this.env.KV.get('d:' + quien)); } catch (e) { hecha = false; }
@@ -9353,8 +9457,6 @@ export class Avisos {
   paseVivo(d) {
     const quien = String(d.quien || ''), llave = String(d.llave || '');
     if (!/^[0-9]{5,25}$/.test(quien) || !/^[A-Za-z0-9:_-]{1,60}$/.test(llave)) return { error: 'faltan datos' };
-    const P = this.paseDatos();
-    if (!P.cfg || !P.miembros.has(quien)) return { ok: true, cuenta: false };
     const desde = Date.now() - VIVO_HORAS * HORA;
     // 🔴 ESA llave, no cualquiera (revisión del 05/10/2026): con «algo en vivo» alcanzaba mandar cualquier id mientras
     // se jugaba cualquier evento y la Tarea se cumplía sin mirar nada. La de la página es la de `vivo` (su primer
@@ -9363,8 +9465,12 @@ export class Avisos {
       ? this.sql.exec('SELECT 1 FROM veredictos WHERE id = ? AND pub > ? LIMIT 1', llave.slice(4), desde).toArray().length
       : this.sql.exec('SELECT 1 FROM vivo WHERE id = ? AND ed > ? LIMIT 1', llave, desde).toArray().length;
     if (!hay) return { ok: true, cuenta: false };
+    // ⭐ sube el nivel de cualquiera (14/10/2026); el Pase, sólo de los miembros
+    const xp = this.xpVio(quien, 'vivo', llave);
+    const P = this.paseDatos();
+    if (!P.cfg || !P.miembros.has(quien)) return { ok: true, cuenta: false, xp };
     this.paseVio(quien, 'vivo', llave, Date.now());
-    return { ok: true, cuenta: true, nuevas: this.paseRevisar(quien) };
+    return { ok: true, cuenta: true, xp, nuevas: this.paseRevisar(quien) };
   }
 
   /** La clave del perfil de alguien: la de la temporada más nueva en que jugó, y si no, la de su cuenta (`idk`) */

@@ -72,6 +72,8 @@ const PALABRAS = [
   ['Crew', 'Tu equipo. Suma los puntos de su gente; para tener puesto necesita tres raperos en la temporada.'],
   ['Verificado', 'Tener el rol de Miembro en Discord Rap Español (DRA), con tu cuenta y tu país. Se hace una vez, en «Verificarme» (Mi cuenta): entrás con Discord, elegís tu país y el bot te mete al servidor y te da el rol. Sin verificarte no hay tarjetas: verificarte desbloquea tu Servidor, y con el nivel 1 del Pase, tu Temporada.'],
   ['Bloqueada', 'La tarjeta que todavía no te ganaste: dice cuánto te falta.'],
+  // ⭐ el nivel de cada uno, que no es el del Pase (14/10/2026)
+  ['Nivel', 'El tuyo, no el del Pase: dice qué tan activo sos en la Liga y abre los temas de la página (en el nivel 2, 3 y 5). Sube jugando eventos (+10 cada uno), cada día que entrás (+2) y con lo que hacés: mirar una llave en vivo, seguir raperos, votar, felicitar, apostar, poner precios, reportar un error que se corrigió, activar la campana, mostrar tus redes, ponerle fondo a tu perfil o foto a una tarjeta y las Tareas del Pase. Cada cosa cuenta una vez y con tope: en Mi cuenta, «Cómo subir de nivel».'],
   ['Felicitar', 'En Publicaciones, un toque en un logro (un campeón, un rango, el Most Wanted), uno por persona. Se ve cuántos felicitaron, nunca quiénes, y a quien felicitan le llega un aviso.'],
 ];
 const PREGUNTAS = [

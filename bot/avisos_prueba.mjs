@@ -1562,6 +1562,35 @@ const ok = (cond, que, det) => {
       && cb3.pasos[1][1] === 'seguir' && cb4.cobrado === 200 && cb4.paso === 2 && viejo === null,
     'la bienvenida: el día 1 se cobra, uno por día, el 2 pide seguir a alguien, y quien no es nuevo no la tiene',
     JSON.stringify([b0, cb1.cobrado, cb2.error, cb3.error, cb4 && cb4.paso, viejo]));
+    // ⭐ MÁS COSAS SUBEN EL NIVEL (14/10/2026, Dlx: «haz que otras y muchas cosas más te hagan subir de nivel… no me
+    // refiero a nivel de pase»): cada cosa una vez, con tope, y lo de «una vez» no se pierde al sacarlo
+    const xp0 = o.rachaDe(NUEVO).nivel.xp;
+    const s1 = o.xpVio(NUEVO, 'sigue', 'snow'), s2 = o.xpVio(NUEVO, 'sigue', 'snow');
+    o.xpVio(NUEVO, 'fel', 'aaaaaaaaaaaa');
+    const r1 = o.rachaDe(NUEVO);
+    ok(s1 && !s2 && r1.nivel.xp === xp0 + 3 && r1.xp_de.sigue.join() === '1,2' && r1.xp_de.fel.join() === '1,1'
+      && r1.xp_de.ev && r1.xp_de.dia && r1.xp_fuentes.vivo[0] === 3 && !o.xpVio(NUEVO, 'inventada', 'x'),
+    'seguir a alguien suma 2 una sola vez (seguirlo de nuevo no), felicitar 1, y el desglose dice de dónde sale',
+    JSON.stringify([xp0, r1.nivel.xp, r1.xp_de]));
+    for (let i = 0; i < 80; i++) o.xpVio(NUEVO, 'fel', 'f' + i);
+    const r2 = o.rachaDe(NUEVO);
+    ok(r2.xp_de.fel.join() === '60,60' && A.xpDeFuentes({ fel: 999, vivo: 2, nada: 5 }).xp === 60 + 6,
+      'felicitar tiene tope: 81 felicitaciones son 60 de XP, no 81', JSON.stringify(r2.xp_de.fel));
+    sql.exec("INSERT INTO subs (endpoint, p256dh, auth, alta, visto, quien) VALUES ('https://push/x', 'p', 'a', 1, 1, ?)", NUEVO);
+    const r3 = o.rachaDe(NUEVO);
+    sql.exec("UPDATE subs SET quien = '' WHERE endpoint = 'https://push/x'");
+    const r4 = o.rachaDe(NUEVO);
+    ok(r3.xp_de.campana.join() === '1,10' && r4.xp_de.campana.join() === '1,10',
+      'la campana suma 10 una vez, y desvincularla después no baja el nivel', JSON.stringify([r3.xp_de.campana, r4.xp_de.campana]));
+    // 🔴 la llave en vivo cuenta para el nivel de CUALQUIERA (el Pase, sólo de DRA), y es lo que cumple el paso de la
+    // bienvenida, que miraba `pase_vivo`, una tabla que ya nadie escribe
+    sql.exec("INSERT INTO vivo (id, canal, pub, ed, texto, visto) VALUES ('m111', 'c1', ?, ?, 'llave', ?)", Date.now(), Date.now(), Date.now());
+    const pv = o.paseVivo({ quien: NUEVO, llave: 'm111' });
+    const pvNo = o.paseVivo({ quien: NUEVO, llave: 'm999' });
+    const bLl = sql.exec("SELECT 1 AS x FROM xp_log WHERE quien = ? AND que = 'vivo'", NUEVO).toArray().length;
+    ok(pv.xp === true && pv.cuenta === false && pvNo.cuenta === false && !pvNo.xp && bLl === 1 && o.rachaDe(NUEVO).xp_de.vivo.join() === '1,3',
+      'mirar una llave en vivo suma 3 al nivel aunque no sea de DRA; una llave que no está en vivo no suma',
+      JSON.stringify([pv, pvNo]));
     // 🧠 LOS DATOS DE CADA PERSONA PARA /card, EN EL OBJETO (06/10/2026): se escribe sólo lo que cambió, se borra a
     // quien ya no está, y una lista que perdió más de la mitad no borra nada (es el ciclo, no la gente)
     const gente = Array.from({ length: 30 }, (_, i) => ['p:r' + i, JSON.stringify({ n: 'R' + i, ev: i })]);

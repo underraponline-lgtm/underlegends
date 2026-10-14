@@ -8,7 +8,7 @@
 // `cuentaRedes()`, `cuentaServidor()`, `cuentaSalir()`…) y esta página se entera de cada cambio por `lg:cuentaest`
 // (App.jsx envuelve `pintaPopCuenta()`). Su ventana vieja queda de respaldo, si esto no se monta.
 import { useEffect, useState } from 'react';
-import { DUENO, PAIS, hora, limpio, nuevaQue, siglaDe } from './liga.js';
+import { DUENO, PAIS, hora, limpio, nuevaQue, num, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, DosToques, Ico, accion } from './piezas.jsx';
 import { CaraDc } from './arriba.jsx';
 import { useRacha } from './racha.js';
@@ -135,11 +135,38 @@ function grupos(liga, dc, tema, cual, temaSv) {
   return cual === 'ajustes' ? g.slice(1) : g.slice(0, 1);
 }
 
+// ⭐ CÓMO SUBIR DE NIVEL (Dlx, 14/10/2026: «haz que otras y muchas cosas más te hagan subir de nivel… no me refiero a
+// nivel de pase»): cada cosa que suma, cuánto da y cuánto llevás, con su tope. Los números son del servidor (`XP_FUENTES`
+// y `xp_de` de `rachaDe()` en bot/avisos.js); acá sólo se muestran
+function ComoSubir({ R }) {
+  const de = R.xp_de || {};
+  const fuentes = R.xp_fuentes || {};
+  const filas = [['ev', 'Jugar un evento', R.xp_ev, 0], ['dia', 'Cada día que entrás o jugás', R.xp_dia, 0]]
+    .concat(Object.entries(fuentes).map(([k, [vale, tope, txt]]) => [k, txt, vale, tope]));
+  return (
+    <details className="cu-xp">
+      <summary>Cómo subir de nivel</summary>
+      <ul>{filas.map(([k, txt, vale, tope]) => {
+        const [n, xp] = de[k] || [0, 0];
+        const lleno = tope && n >= tope;
+        return (
+          <li key={k} className={(n ? 'si' : '') + (lleno ? ' lleno' : '')}>
+            <span>{txt}</span>
+            <b>+{vale}</b>
+            <small>{tope === 1 ? (n ? 'hecho' : 'una vez') : tope ? n + ' de ' + tope : n ? num(xp) + ' XP' : 'sin tope'}</small>
+          </li>
+        );
+      })}</ul>
+      <p>Cada cosa cuenta una vez (seguir a la misma persona dos veces es una) y las que tienen tope dejan de sumar al llegar. Jugar es lo que más da.</p>
+    </details>
+  );
+}
+
 // ── 🔥 tu racha diaria y tu nivel, debajo de quién sos (Dlx, 04/10/2026). La cuenta es del servidor ──────────────
 function RachaNivel({ dc }) {
   const R = useRacha(!!dc);
   if (!R) return null;
-  const { racha: r, nivel: n, falta, premio } = R;
+  const { racha: r, nivel: n } = R;
   const tramo = Math.max(1, n.sig - n.base);
   const pct = Math.max(0, Math.min(100, Math.round(100 * (n.xp - n.base) / tramo)));
   const dias = (x) => x + (x === 1 ? ' día' : ' días');
@@ -148,12 +175,13 @@ function RachaNivel({ dc }) {
       <div className="cu-rn-c">
         <b className="cu-con"><Ico n="fuego" t={18} />{r.actual ? dias(r.actual) + ' seguidos' : 'Sin racha todavía'}</b>
         <small>{r.actual ? (r.hoy ? 'Hoy ya contó. ' : 'Entrá o jugá hoy para no cortarla. ') : 'Cuenta cada día que usás el bot, entrás con tu cuenta o jugás un evento. '}
-          Faltan {dias(falta)} para <b>+{premio} Puntos de Tienda</b>.{r.maxima > r.actual ? ' Tu mejor racha: ' + dias(r.maxima) + '.' : ''}</small>
+          {R.hito ? <>A los {dias(R.hito[0])} seguidos: <b>+{num(R.hito[1])} Puntos de Tienda</b>. </> : null}El premio de cada día se cobra en el Inicio.{r.maxima > r.actual ? ' Tu mejor racha: ' + dias(r.maxima) + '.' : ''}</small>
       </div>
       <div className="cu-rn-c">
         <b>Nivel {n.n}</b>
         <span className="cu-rn-barra" role="progressbar" aria-label={'Nivel ' + n.n} aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct}><i style={{ width: pct + '%' }} /></span>
-        <small>{n.xp - n.base} de {tramo} para el nivel {n.n + 1}. Sube +{R.xp_ev} por evento jugado y +{R.xp_dia} por cada día que cuenta.</small>
+        <small>{n.xp - n.base} de {tramo} para el nivel {n.n + 1}. Sube jugando, entrando cada día y con lo que hacés en la Liga.</small>
+        <ComoSubir R={R} />
       </div>
     </div>
   );
@@ -782,8 +810,8 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
         <p className="cu-temas-t">Con los colores de un servidor de la Liga:</p>
         {(() => {
           const n = Rn && Rn.nivel ? Rn.nivel.n || 1 : 0;
-          return <p className="cu-d">{dc ? (n ? 'Vas en el nivel ' + n + '. ' : '') + 'Se abren con tu nivel: 3 en el nivel 2, 3 más en el 3 y los últimos en el 5. Subís entrando todos los días y jugando eventos.'
-            : 'Se abren con tu nivel: entrá con Discord y subís entrando todos los días y jugando eventos.'}</p>;
+          return <p className="cu-d">{dc ? (n ? 'Vas en el nivel ' + n + '. ' : '') + 'Se abren con tu nivel: 3 en el nivel 2, 3 más en el 3 y los últimos en el 5. Subís jugando, entrando cada día y con lo que hacés en la Liga (mirá «Cómo subir de nivel», arriba).'
+            : 'Se abren con tu nivel: entrá con Discord y subís jugando, entrando cada día y con lo que hacés en la Liga.'}</p>;
         })()}
         <div className="cu-temas sv">
           <button type="button" className={'cu-tema tsv tsv-base ' + tema + (!temaSv ? ' on' : '')} aria-pressed={!temaSv} onClick={() => onTemaSv('')}>

@@ -1655,6 +1655,13 @@ async function cuentaRedes(req, env) {
   } catch (e) {
     return new Response('{"error":"kv"}', { status: 503, headers: h });
   }
+  // ⭐ mostrar tus redes sube el nivel, una vez (14/10/2026, `XP_FUENTES`). Si el objeto no contesta, no pasa nada
+  if (elegidas.length && env.AVISOS) {
+    try {
+      await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/xp-vio', {
+        method: 'POST', body: JSON.stringify({ quien: u.id, que: 'redes' }), headers: { 'content-type': 'application/json' } });
+    } catch (e) { /* sin nivel esta vez */ }
+  }
   return new Response(JSON.stringify({ clave, publicas, guardadas: elegidas }), { headers: h });
 }
 

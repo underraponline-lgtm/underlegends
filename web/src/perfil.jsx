@@ -156,7 +156,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
             {svE ? <li><a href={'#/sv/' + siglaDe(svE)} title="Eligió este servidor"><img alt="" src={liga.logo(svE)} />{(sv && sv.nombre) || siglaDe(svE)}</a></li> : null}
             {crew ? <li><a href={'#/crew/' + encodeURIComponent(crew.clave || crew.crew)}>{limpio(crew.crew)}</a></li>
               : f.crew ? <li><span>{limpio(f.crew)}</span></li> : null}
-            {nv ? <li><span className="pf-nivel" title="Sube jugando eventos y entrando cada día">Nivel {nv[0]}</span></li> : null}
+            {nv ? <li><span className="pf-nivel" title="Sube jugando, entrando cada día y con lo que hace en la Liga">Nivel {nv[0]}</span></li> : null}
             {nv && nv[1] >= 2 ? <li><span className="pf-con" title={nv[1] + ' días seguidos en la Liga'}><Ico n="fuego" t={15} />{nv[1]} días</span></li> : null}
             {pa ? <li><a className="pf-pase" href="#/pase" title="Su nivel en el Pase de rapero de la temporada"><Ico n="pase" t={15} />Pase {pa.nivel}{pa.titulo ? ' · ' + pa.titulo : ''}</a></li> : null}
           </ul>
