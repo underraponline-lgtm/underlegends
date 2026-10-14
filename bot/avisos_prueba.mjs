@@ -1784,6 +1784,26 @@ const ok = (cond, que, det) => {
     const ban = (await (await o.bandeja({ quien: '700000000000000003' })).json());
     ok(n === 1 && JSON.stringify(ban).includes('Kravitz organiza DESGRACIAS'), 'su anuncio llega a la bandeja de quien lo sigue');
     ok(o.seguirOrg({ quien: '700000000000000003', nombre: 'Kravitz', si: false }).orgs.length === 0, 'y se deja de seguir');
+    // 👥 los organizadores de a uno (14/10/2026): los mismos casos que `anuncios.organizadores()` de Python
+    const _au = { id: '77', global_name: 'HERY' };
+    const og = [
+      A.organizadoresDe({ content: '- **ORGANIZADOR** FLENNZS <a:MEXICO:1> + LEWITO <a:ARGENTINA:2> + AX <a:VE:3> ', author: _au }),
+      A.organizadoresDe({ content: '💻  __`ORGANIZADOR:`__ <@55>🇨🇱', author: _au, mentions: [{ id: '55', global_name: 'Velatz' }] }),
+      A.organizadoresDe({ content: '💻  __`ORGANIZADOR:`__ Yo ', author: _au }),
+      A.organizadoresDe({ content: '# ➤ 𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑 :\n# 𐬺 yo\n', author: _au }),
+      A.organizadoresDe({ content: '3.▫️ 🎙️ Entra cuando los organizadores hagan el anuncio', author: _au }),
+      A.organizadoresDe({ content: '**ORGANIZADOR**: Kravitz y nachonc_', author: _au })];
+    ok(JSON.stringify(og) === JSON.stringify([['FLENNZS', 'LEWITO', 'AX'], ['Velatz'], ['HERY'], ['HERY'], [], ['Kravitz', 'nachonc_']]),
+      'los organizadores de a uno: «+» y banderas, la mención, «yo», FVS, y una regla que dice «organizadores» no es el campo',
+      JSON.stringify(og));
+    // y quien sigue a dos de ellos recibe UN aviso por anuncio
+    o.seguirOrg({ quien: '700000000000000004', nombre: 'Flennzs', si: true });
+    o.seguirOrg({ quien: '700000000000000004', nombre: 'Lewito', si: true });
+    const ya = new Set();
+    const n2 = o.colaOrg('FLENNZS', 'LA BELLA ARTE VOL 7', null, 'https://discord.com/y', 'FFA', '1001', Date.now(), ya)
+      + o.colaOrg('LEWITO', 'LA BELLA ARTE VOL 7', null, 'https://discord.com/y', 'FFA', '1001', Date.now(), ya);
+    const cola2 = o.sql.exec("SELECT COUNT(*) AS n FROM org_cola WHERE quien = '700000000000000004'").toArray()[0].n;
+    ok(n2 === 2 && cola2 === 1, 'seguir a Flennzs y a Lewito: su anuncio juntos llega una sola vez', JSON.stringify([n2, cola2]));
     // 📅 /agendar: hasta 20 por servidor, el mismo nombre lo corrige, y se borra
     const ini = Date.now() + 3 * 864e5;
     ok(o.agendar({ sv: 'SR', g: '1', quien: '700000000000000001', nombre: 'Copa X', ini, formato: '1vs1' }).ok

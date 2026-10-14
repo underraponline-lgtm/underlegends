@@ -1132,6 +1132,47 @@ export function claveOrg(nombre) {
     .replace(/[^a-z0-9]/g, '').slice(0, 40);
 }
 
+/**
+ * \ud83d\udc65 LOS ORGANIZADORES DE UN ANUNCIO, DE A UNO: `anuncios.organizadores()` de Python, para seguirlos (Dlx, 14/10/2026:
+ * \u00abque los organizadores tengan su foto y perfil\u00bb). \u00abFLENNZS \ud83c\uddf2\ud83c\uddfd + LEWITO \ud83c\udde6\ud83c\uddf7 + AX \ud83c\uddfb\ud83c\uddea\u00bb son tres: quien sigue a Flennzs
+ * no se enteraba, porque el aviso buscaba \u00abflennzslewitoax\u00bb. Las banderas y los emojis separan, la menci\u00f3n es el nombre
+ * que Discord manda en `mentions`, \u00abyo\u00bb es quien public\u00f3, y el valor puede venir en el rengl\u00f3n de abajo (FVS). Lo que no
+ * est\u00e1 separado no se parte. S\u00f3lo nombres: lo resuelve `claveOrg()`, como el \u2606 de la p\u00e1gina.
+ */
+export function organizadoresDe(m) {
+  const au = (m && m.author) || {};
+  const autor = String((m && m.member && m.member.nick) || au.global_name || au.username || '').trim();
+  const men = {};
+  for (const x of (m && m.mentions) || []) men[String(x.id)] = String(x.global_name || x.username || '');
+  const ls = String((m && m.content) || '').split('\n').map((l) => [...l].map((c) => {
+    const p = c.codePointAt(0);
+    return p >= 0x1D400 && p <= 0x1D7FF ? c.normalize('NFKC') : c;
+  }).join(''));
+  const ETQ = /ORGANIZ(?:ADOR(?:ES|A)?|ACI[O\u00d3]N|ADO(?:\s+POR)?|A)\b/i;
+  let linea = '';
+  for (let j = 0; j < ls.length; j++) {
+    const e = ETQ.exec(ls[j]);
+    // la etiqueta abre el rengl\u00f3n: \u00abEntra cuando los organizadores hagan el anuncio\u2026\u00bb es una regla
+    if (e && !/\p{L}/u.test(ls[j].slice(0, e.index))) {
+      linea = ls[j].slice(e.index + e[0].length);
+      if (!/[\p{L}\p{N}]/u.test(linea.replace(/<a?:\w+:\d+>/g, '')) && j + 1 < ls.length) linea = ls[j + 1];
+      break;
+    }
+  }
+  linea = linea.replace(/^[\s*_`~:|>\u21e2\u2192\u219d#\u27a4\u25b8\u25ba\u2514\u251c\u2570\u2508\ud802\udf3a-]+/u, '')
+    .replace(/<@!?(\d+)>/g, (_, id) => ' + ' + (men[id] || '') + ' + ')
+    .replace(/<a?:\w+:\d+>/g, ' + ').replace(/[\u{1F1E6}-\u{1F1FF}]{2}/gu, ' + ');
+  const out = [];
+  for (let p of linea.split(/\s+-\s+|\s*[,/|&+]\s*|\s+y\s+/)) {
+    p = p.replace(/[*`~]|__/g, '').replace(/^[\s.:!@\u00b7\u2022~#\u27a4\u25b8\u25ba\u2514\u251c\u2570\u2508\ud802\udf3a]+|[\s.:]+$/gu, '');
+    if (/^(?:capaz\s+)?@?yo\b/i.test(p)) p = autor;
+    p = p.replace(/[\p{So}\p{Sk}\p{Cf}]/gu, '').trim();
+    if (p && /[\p{L}\p{N}]/u.test(p) && p.length <= 32 && !/^(?:@?(?:everyone|here)|tod[oa]s?|-+|\?+)$/i.test(p)
+      && !out.some((x) => x.toLowerCase() === p.toLowerCase())) out.push(p);
+  }
+  return out.slice(0, 6);
+}
+
 //: 🌲 `escuchar.PARECIDAS`, la MISMA cadena (la compara el self-check de Python): las letras de otros alfabetos que
 //: imitan a las latinas. EL BOSQUE DE ARTEMISA (Snake Rap, 12/10/2026) escribió sus rondas `ᎾᏟᎢᎪᏙᎾᏚ`, en cheroqui, y
 //: ni `pareceLlave()` ni `intentoDeLlave()` la veían: ni se guardaba en vivo ni avisaba que no se podía leer
@@ -6725,8 +6766,18 @@ export class Avisos {
     // 📣 y a quienes siguen a su organizador —el «Organiza:» o, sin él, quien lo publicó—. Nunca frena
     try {
       const au = m.author || {};
-      this.colaOrg(a.organizador || (m.member && m.member.nick) || au.global_name || au.username || '', a.nombre, ini,
-        cuerpo.url, c.svn || c.sv, m.id, ahora);
+      // 👥 a cada organizador de a uno (`organizadoresDe()`, 14/10/2026) y al texto de siempre; quien sigue a dos de
+      // ellos recibe un solo aviso
+      const ns = organizadoresDe(m);
+      const base = a.organizador || (m.member && m.member.nick) || au.global_name || au.username || '';
+      const ya = new Set();
+      const claves = new Set();
+      for (const n of [...ns, base]) {
+        const k = claveOrg(n);
+        if (!k || claves.has(k)) continue;
+        claves.add(k);
+        this.colaOrg(n, a.nombre, ini, cuerpo.url, c.svn || c.sv, m.id, ahora, ya);
+      }
     } catch (e) { /* sigue */ }
     // y a la cola de `eventos-hoy`, salvo que el anuncio haya salido de ahí
     if (c.id !== CANAL_RED) {
@@ -7145,11 +7196,16 @@ export class Avisos {
   }
 
   /** Un anuncio nuevo de `nombre` (el organizador): a la bandeja de quienes lo siguen, y a la cola del push. */
-  colaOrg(nombre, evento, ini, url, svn, id, ahora) {
+  colaOrg(nombre, evento, ini, url, svn, id, ahora, ya = null) {
     const org = claveOrg(nombre);
     if (!org) return 0;
     const qs = this.sql.exec('SELECT quien, nombre FROM sigue_org WHERE org = ? LIMIT 200', org).toArray();
     for (const q of qs) {
+      // 👥 el mismo anuncio con varios organizadores: un aviso por persona, aunque siga a dos (`ya`)
+      if (ya) {
+        if (ya.has(q.quien)) continue;
+        ya.add(q.quien);
+      }
       const titulo = '📣 ' + q.nombre + ' organiza ' + String(evento || '').slice(0, 60);
       // ⚠️ sin la hora: el objeto no sabe en qué zona estás, y la página y Discord sí (el anuncio la muestra en la tuya)
       const cuerpo = String(svn || '') + ' · tocá para ver el anuncio';
