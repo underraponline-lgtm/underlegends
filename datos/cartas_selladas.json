@@ -191,10 +191,10 @@
    "servidor": "e4bfa0dcd6bd:0261962bc3e6:3580af"
   },
   "Carlosss": {
-   "competitivo": "367e438157db:40807e5de0f4",
+   "competitivo": "e066c0def634:40807e5de0f4",
    "pais": "eb953dcaff53:ec920afad165",
    "servidor": "55fc96ae44d2:0261962bc3e6:abdb4a",
-   "temporada": "dc0fb824c8bb:7e987c978e23"
+   "temporada": "68806ffc6c60:7e987c978e23"
   },
   "Catarsis": {
    "competitivo": "942d6b2b9988:40807e5de0f4",
@@ -350,10 +350,10 @@
    "servidor": "fd4581683589:0261962bc3e6:15af16"
   },
   "Dynoco": {
-   "competitivo": "f12020af4528:40807e5de0f4",
+   "competitivo": "4d8cdaa6bfd8:40807e5de0f4",
    "pais": "112c312e09dd:ec920afad165",
    "servidor": "a51f86f90076:0261962bc3e6:6ae78a",
-   "temporada": "5890cb37c626:7e987c978e23"
+   "temporada": "6694778c907f:7e987c978e23"
   },
   "Dyzz": {},
   "EIDP": {},
@@ -489,10 +489,10 @@
   },
   "Garxziiscity": {},
   "Geoka": {
-   "competitivo": "dbf6eff3103d:40807e5de0f4",
+   "competitivo": "05e7cf506d10:40807e5de0f4",
    "pais": "a789c8c9a529:ec920afad165",
    "servidor": "7ab794300ea9:0261962bc3e6:1e5c4c",
-   "temporada": "cb3b4256e141:7e987c978e23"
+   "temporada": "98e83c015529:7e987c978e23"
   },
   "Geremy": {
    "servidor": "4dd315c53988:0261962bc3e6:980594"
@@ -995,9 +995,9 @@
    "servidor": "5c1fe181d62f:0261962bc3e6:76f568"
   },
   "Miniboy": {
-   "competitivo": "1c5609ca264b:40807e5de0f4",
-   "pais": "d139aada8466:ec920afad165",
-   "servidor": "3744ca7d6928:0261962bc3e6:3580af"
+   "competitivo": "3d65957c7351:40807e5de0f4",
+   "pais": "e9ce00785072:ec920afad165",
+   "servidor": "4e7853820ebf:0261962bc3e6:3580af"
   },
   "Mito": {
    "competitivo": "68d298f38b35:40807e5de0f4",
@@ -1072,8 +1072,8 @@
    "servidor": "62285a56b056:0261962bc3e6:055f77"
   },
   "NXUZ": {
-   "competitivo": "24b8e200c64e:40807e5de0f4",
-   "pais": "dad40204da08:ec920afad165",
+   "competitivo": "181fe3aafefd:40807e5de0f4",
+   "pais": "141aa1266b99:ec920afad165",
    "servidor": "e2ef447d088e:0261962bc3e6:3580af",
    "temporada": "70408f1154a6:7e987c978e23"
   },
@@ -1763,5 +1763,5 @@
    "servidor": "7f8885a35a6d:0261962bc3e6:c9f1f2"
   }
  },
- "cuando": "2026-10-14T22:00:07+00:00"
+ "cuando": "2026-10-14T22:29:06+00:00"
 }
