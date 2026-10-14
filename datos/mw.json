@@ -32,10 +32,22 @@
     "nivel": "A",
     "base": 9500,
     "o": 17,
-    "estado": "suelto",
+    "estado": "cazado",
     "ev": 1,
     "fase": "Semifinal",
-    "valor": 11500
+    "valor": 9500,
+    "caza": {
+     "n": 468,
+     "evento": "DEM UZBEKISTAN FECHA 2",
+     "sv": "FFA",
+     "t": "2026-10-13T23:50:48Z",
+     "por": [
+      {
+       "n": "Delux",
+       "cobra": 16000
+      }
+     ]
+    }
    },
    {
     "n": "PichulaMc",

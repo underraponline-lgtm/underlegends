@@ -1,16 +1,16 @@
 {
 "_leeme": "El muro de Publicaciones: cómo estaba cada uno (rango y tarjetas) y los cambios que se anotaron. Lo escribe bot/muro.py; lo demás del muro se arma en cada corrida.",
 "estado": {
-"snow": {
-"rg": "B",
+"oasis": {
+"rg": "SS",
 "c": [
 "competitivo",
 "servidor",
 "temporada"
 ]
 },
-"oasis": {
-"rg": "SS",
+"snow": {
+"rg": "B",
 "c": [
 "competitivo",
 "servidor",
@@ -73,6 +73,15 @@
 "temporada"
 ]
 },
+"agus": {
+"rg": "A",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "verc": {
 "rg": "B",
 "c": [
@@ -83,15 +92,6 @@
 },
 "six": {
 "rg": "B",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"agus": {
-"rg": "A",
 "c": [
 "competitivo",
 "pais",
@@ -369,6 +369,14 @@
 "temporada"
 ]
 },
+"delux": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "soneto": {
 "rg": "E",
 "c": [
@@ -536,14 +544,6 @@
 "btrx": {
 "rg": "",
 "c": []
-},
-"delux": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
 },
 "ardean": {
 "rg": "",
@@ -1010,10 +1010,6 @@
 "rg": "",
 "c": []
 },
-"nemixdelux": {
-"rg": "",
-"c": []
-},
 "saz": {
 "rg": "",
 "c": []
@@ -1168,6 +1164,16 @@
 "rg": "",
 "c": []
 },
+"focox": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
+"nemixdelux": {
+"rg": "",
+"c": []
+},
 "mcnadie": {
 "rg": "",
 "c": [
@@ -1185,12 +1191,6 @@
 "fatn": {
 "rg": "",
 "c": []
-},
-"focox": {
-"rg": "",
-"c": [
-"servidor"
-]
 },
 "puppy": {
 "rg": "",

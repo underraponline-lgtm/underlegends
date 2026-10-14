@@ -1156,12 +1156,12 @@
    },
    "FFA": {
     "duelos": "2/5",
-    "ev": 14,
+    "ev": 15,
     "oro": 0,
-    "ovr": 63,
+    "ovr": 64,
     "pod": 1,
-    "pts": 63543,
-    "racha": "1/1"
+    "pts": 65418,
+    "racha": "0/1"
    },
    "SR": {
     "duelos": "",
@@ -1272,13 +1272,13 @@
   },
   "Delux": {
    "FFA": {
-    "duelos": "5/9",
-    "ev": 6,
+    "duelos": "6/11",
+    "ev": 7,
     "oro": 0,
-    "ovr": 53,
-    "pod": 0,
-    "pts": 46987,
-    "racha": "0/4"
+    "ovr": 57,
+    "pod": 1,
+    "pts": 58237,
+    "racha": "1/4"
    }
   },
   "Deluxe": {
@@ -1574,17 +1574,6 @@
     "pod": 1,
     "pts": 5000,
     "racha": "1/1"
-   }
-  },
-  "ERIK X NEMI X DELUX": {
-   "FFA": {
-    "duelos": "1/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
    }
   },
   "Eclipsito": {
@@ -2406,17 +2395,6 @@
     "ovr": 46,
     "pod": 0,
     "pts": 7375,
-    "racha": "0/0"
-   }
-  },
-  "ICONOX": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 1875,
     "racha": "0/0"
    }
   },
@@ -4175,17 +4153,6 @@
     "ovr": 48,
     "pod": 1,
     "pts": 9000,
-    "racha": "1/1"
-   }
-  },
-  "NEMI X DELUX": {
-   "FFA": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 48,
-    "pod": 1,
-    "pts": 11250,
     "racha": "1/1"
    }
   },
