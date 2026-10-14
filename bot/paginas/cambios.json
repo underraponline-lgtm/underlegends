@@ -11,6 +11,58 @@
  ],
  "cambios": [
   {
+   "version": "3.09",
+   "dia": "2026-10-14",
+   "cuando": "2026-10-14T00:39:00-04:00",
+   "titulo": "Tu perfil, más tuyo",
+   "items": [
+    "📅 Tu perfil dice desde cuándo estás verificado.",
+    "📰 **Tus publicaciones**: lo que la Liga publicó de vos en toda la temporada, las últimas tres y «Ver todas».",
+    "🔗 Al pegar el link de un perfil en Discord o WhatsApp, se ve su nombre, sus números y su tarjeta."
+   ]
+  },
+  {
+   "version": "3.08",
+   "dia": "2026-10-14",
+   "cuando": "2026-10-14T00:15:00-04:00",
+   "titulo": "Más formas de subir de nivel",
+   "items": [
+    "⭐ Tu nivel ahora sube también mirando llaves en vivo, siguiendo raperos, votando, felicitando, apostando, poniendo precios, reportando errores y con las Tareas del Pase. Cada cosa cuenta una vez y con tope: en Mi cuenta, «Cómo subir de nivel», ves cuánto llevás de cada una.",
+    "🌱 El paso «Mirá una llave en vivo» de tus primeros 7 días ya se puede cumplir."
+   ]
+  },
+  {
+   "version": "3.07",
+   "dia": "2026-10-14",
+   "cuando": "2026-10-14T00:00:00-04:00",
+   "titulo": "La racha paga cada día",
+   "items": [
+    "🔥 **La racha** tiene premio todos los días: tocá «Cobrar» en el Inicio. El domingo es un cofre si entraste 5 días de la semana, y a los 14 y 30 días seguidos hay premio extra.",
+    "🌱 **Tus primeros 7 días**: si sos nuevo, un paso por día con algo que hacer y su premio."
+   ]
+  },
+  {
+   "version": "3.06",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T23:53:00-04:00",
+   "titulo": "Tu rival, y los temas con tu nivel",
+   "items": [
+    "⚔️ En el Inicio, **tu rival**: el que tenés justo arriba en el Ranking y cuánto te lleva.",
+    "🎨 Los colores de los servidores se abren con tu nivel (2, 3 y 5). Clara y Noche, siempre."
+   ]
+  },
+  {
+   "version": "3.05",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T23:43:00-04:00",
+   "titulo": "Buscar a todos, y la app en Samsung",
+   "items": [
+    "🔎 El buscador encuentra a todos los que tienen perfil, también escribiendo el nombre sin espacios.",
+    "📲 Instalar la app: los pasos para Samsung Internet.",
+    "🏠 En el Inicio, la cuenta de la temporada pasó a la puerta del Ranking."
+   ]
+  },
+  {
    "version": "3.04",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T23:28:00-04:00",
