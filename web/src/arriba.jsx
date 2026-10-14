@@ -44,6 +44,17 @@ const ETIQUETA_TIPO = { rapero: 'rapero', servidor: 'servidor', pais: 'país', c
 const normAka = (s) => norm(s).replace(/[^\p{L}\p{N}]/gu, '');
 export function Buscar({ liga, onIr }) {
   const [q, setQ] = useState('');
+  // 🔴 TODOS LOS QUE TIENEN PERFIL, NO SÓLO LOS 200 DE LA TABLA (13/10/2026, Dlx: «a pesar de que existe Lil Drako no
+  // aparece en el buscador»). Desde la 2.97 tiene perfil todo el que jugó, pero los que no están en el top 200 viajan en
+  // `/api/perfiles` (`p[k].f`) y el buscador sólo miraba la tabla del lobby. Se piden la primera vez que se escribe
+  // (`window.perfiles()`, la misma copia que usan el perfil y Tarjetas): quien no busca no los baja
+  const [todos, setTodos] = useState(null);
+  useEffect(() => {
+    if (todos || q.trim().length < 2 || typeof window.perfiles !== 'function') return undefined;
+    let vivo = true;
+    Promise.resolve(window.perfiles()).then((d) => { if (vivo && d && d.p) setTodos(d.p); }).catch(() => {});
+    return () => { vivo = false; };
+  }, [q, todos]);
   const akas = useMemo(() => {
     const m = {};
     Object.entries(liga.d.alias || {}).forEach(([a, k]) => { (m[k] = m[k] || []).push(a); });
@@ -52,7 +63,15 @@ export function Buscar({ liga, onIr }) {
   const res = useMemo(() => {
     const t = norm(q).trim();
     if (!t) return [];
-    const nota = (...xs) => Math.min(...xs.map((x) => { const n = norm(x).trim(); return n === t ? 0 : (n.startsWith(t) ? 1 : (n.includes(t) ? 2 : 9)); }));
+    // 🔴 Y SIN ESPACIOS: «lildrako» no encontraba a «Lil Drako». Se compara también todo junto (`normAka`), con un
+    // poquito menos de puntaje que lo escrito igual
+    const tc = normAka(q);
+    const nota = (...xs) => Math.min(...xs.map((x) => {
+      const n = norm(x).trim(), c = normAka(x);
+      const a = n === t ? 0 : (n.startsWith(t) ? 1 : (n.includes(t) ? 2 : 9));
+      const b = tc.length < 2 ? 9 : c === tc ? 0.25 : (c.startsWith(tc) ? 1.25 : (c.includes(tc) ? 2.25 : 9));
+      return Math.min(a, b);
+    }));
     const ta = normAka(q);
     const porAka = (k) => {
       let mejor = [9, ''];
@@ -70,12 +89,22 @@ export function Buscar({ liga, onIr }) {
       todo.push({ tipo: 'rapero', id: 'r' + f.k, n: limpio(f.n), href: '#/r/' + encodeURIComponent(f.k), k: f.k,
         x: Math.min(x, xa), aka: xa < x ? a : '' });
     });
+    // los que tienen perfil y no están en la tabla (ver `todos`, arriba)
+    if (todos) {
+      const ya = new Set((liga.d.tabla || []).map((f) => f.k));
+      Object.entries(todos).forEach(([k, v]) => {
+        const f = v && v.f;
+        if (!f || !f.n || ya.has(k)) return;
+        const x = nota(f.n), [xa, a] = porAka(k);
+        todo.push({ tipo: 'rapero', id: 'r' + k, n: limpio(f.n), href: '#/r/' + encodeURIComponent(k), k, x: Math.min(x, xa), aka: xa < x ? a : '' });
+      });
+    }
     Object.values(liga.svs).forEach((s) => todo.push({ tipo: 'servidor', id: 's' + s.sv, n: limpio(s.nombre || siglaDe(s.sv)), sub: siglaDe(s.sv), href: '#/sv/' + siglaDe(s.sv), logo: liga.logo(s.sv),
       x: nota(s.sv, siglaDe(s.sv), s.nombre || '') }));
     (liga.d.paises || []).filter((p) => p.n).forEach((p) => todo.push({ tipo: 'pais', id: 'p' + p.cc, n: nombrePais(p.cc), href: '#/pais/' + p.cc, cc: p.cc, x: nota(nombrePais(p.cc)) }));
     (liga.d.crews || []).forEach((c) => todo.push({ tipo: 'crew', id: 'c' + (c.clave || c.crew), n: limpio(c.crew), href: '#/crew/' + encodeURIComponent(c.clave || c.crew), crew: c, x: nota(c.crew) }));
     return todo.filter((r) => r.x < 9).sort((a, b) => (a.x - b.x) || (TIPOS[a.tipo] - TIPOS[b.tipo]) || a.n.localeCompare(b.n)).slice(0, 8);
-  }, [q, liga]);
+  }, [q, liga, todos]);
   const ir = () => { setQ(''); if (onIr) onIr(); };
   // ⚠️ se cierra al tocar afuera y al cambiar de página: quedaba abierto encima de la siguiente (revisión del 03/10/2026)
   const caja = useRef(null);
