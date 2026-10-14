@@ -1,70 +1,70 @@
 {
  "v": 1,
- "cuando": "2026-10-14T20:01:28Z",
+ "cuando": "2026-10-14T20:36:30Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 175.9,
+ "dur_s": 383.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.0
+   "s": 10.2
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.0
+   "s": 4.0
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 96.9
+   "s": 20.3
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
+   "que": "tanda 1 de 3 · 40 persona(s)",
    "ok": true,
-   "s": 8.5
+   "s": 295.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 1.0
+   "s": 0.8
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 55.3
+   "s": 51.8
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "470",
-  "nombre": "Inserte Nombre de la Compe",
+  "n": "471",
+  "nombre": "DEM UZBEKISTAN FECHA 3",
   "sv": "FFA",
   "dia": "2026-10-14"
  },
  "cuotas": {
   "kv": {
-   "write": 261,
-   "read": 40432
+   "write": 275,
+   "read": 42080
   },
   "objeto": {
-   "leidas": 2579874,
-   "escritas": 26688,
-   "pedidos": 8180
+   "leidas": 2705538,
+   "escritas": 28614,
+   "pedidos": 8467
   },
   "worker": {
-   "pedidos": 12756,
+   "pedidos": 12657,
    "errores": 1,
-   "sub": 11233,
+   "sub": 11117,
    "p50_ms": 1.01,
-   "p99_ms": 7.49
+   "p99_ms": 7.58
   },
   "r2": {
    "objetos": 4002,
