@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-14T17:54:54+00:00",
+ "cuando": "2026-10-14T17:59:54+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -356,6 +356,28 @@
    "staff": {},
    "autor": "Geronimo",
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "DEM UZBEKISTAN FECHA 3",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1559988277426131017",
+   "cuando": "2026-10-14T17:56:28",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "HERYIETEERJOUKATEITHORER",
+   "autor_h": "8f502dc57bad1da2",
+   "cupos_texto": "INFINITOS",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "BRONCE",
+   "modalidad": "1 VS 1",
+   "horario": "15.30",
+   "fecha": "",
+   "premios": "700k dólares discordianos",
+   "staff": {},
+   "autor": "HERYIETEERJOUKATEITHORER",
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "FREESTYLE LEAGUE",
@@ -4301,6 +4323,78 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Neo🇦🇷",
+   "quien": "neosoulkid",
+   "discord_id": "520210394078248971",
+   "msg_id": "1559988911890243756",
+   "cuando": "2026-10-14T17:58:59"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Trot🇪🇸",
+   "quien": "eresmatrot",
+   "discord_id": "1347663033949880360",
+   "msg_id": "1559988902800924674",
+   "cuando": "2026-10-14T17:58:57"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1559988869821235361",
+   "cuando": "2026-10-14T17:58:49"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "agre🇦🇷",
+   "quien": "axel_2034",
+   "discord_id": "305098839868571651",
+   "msg_id": "1559988749801095229",
+   "cuando": "2026-10-14T17:58:21"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Cinexfilo 🇻🇪",
+   "quien": "cinexfilosanity",
+   "discord_id": "781971857519804417",
+   "msg_id": "1559988677067808891",
+   "cuando": "2026-10-14T17:58:03"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Teo 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1559988621430227025",
+   "cuando": "2026-10-14T17:57:50"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Majiztral 🇨🇴",
+   "quien": "majiztral",
+   "discord_id": "1492228152691396720",
+   "msg_id": "1559988601683574945",
+   "cuando": "2026-10-14T17:57:45"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "asuka la homosexual 🇪🇸",
+   "quien": "marcosq_14",
+   "discord_id": "1294600140815990858",
+   "msg_id": "1559988597791137873",
+   "cuando": "2026-10-14T17:57:44"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
