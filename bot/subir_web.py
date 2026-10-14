@@ -241,8 +241,11 @@ def armar():
     def _did(p):
         return str(p.get('discord_id') or '').strip() or _pid.get(_resp._norm(p.get('raw')), '')
     # 🏷️ y los del staff que no compiten, para su perfil (ver `_solo_rol()`)
-    _staff = _solo_rol(pool)
-    _avs = {k: v for k, v in (_avatares({_did(p) for p in pool if _did(p)} | {x['did'] for x in _staff}) or {}).items()
+    # ⚠️ NO SE LLAMA `_staff`: así se llama la función del jurado, el host y el DJ de cada anuncio (`**_staff(x)`, más
+    # abajo en esta misma función), y una variable local con ese nombre la tapaba en TODA la función: `TypeError: 'list'
+    # object is not callable` cada vez que había un evento anunciado, y la web no se subía (13/10 20:52 a 14/10 1:35 AM)
+    _staff_rol = _solo_rol(pool)
+    _avs = {k: v for k, v in (_avatares({_did(p) for p in pool if _did(p)} | {x['did'] for x in _staff_rol}) or {}).items()
             if str(k) not in _sin}
     _de = _quien(gente)
     _ult = _ultimos(_de)
@@ -617,7 +620,7 @@ def armar():
     # 👤 de todos los que jugaron, no sólo de la tabla (13/10/2026: «Todos los que jugaron y los del staff»)
     _pf = _perfiles(todos, list(_comp.values()), regs)
     debutantes(tabla, _pf)
-    _perfiles_extra(_pf, filas_todas[TOPE:], _staff, _avs, _vd_de())
+    _perfiles_extra(_pf, filas_todas[TOPE:], _staff_rol, _avs, _vd_de())
     return {
         'temporada': SELLO,
         'fase': {'arranca': _f[0], 'termina': _f[1]} if _f else None,
@@ -680,7 +683,7 @@ def armar():
         # 🏟️ LAS LIGAS DE LOS SERVIDORES (12/10/2026, Dlx: «2. Me gusta»): la tabla de cada una y sus últimos resultados.
         # Ver `bot/ligas.py`
         # 🏟️ con el perfil de cada nombre: el de los que jugaron y el del staff (ForceGP, 14/10/2026)
-        'ligas': _ligas({**{x['raw']: x['k'] for x in _staff}, **{p['raw']: _clave(p) for p in todos if p.get('raw')}}),
+        'ligas': _ligas({**{x['raw']: x['k'] for x in _staff_rol}, **{p['raw']: _clave(p) for p in todos if p.get('raw')}}),
         # 📅 QUIÉNES ORGANIZAN EN CADA SERVIDOR (12/10/2026, Dlx «5. A»: «uno donde diga cuándo cada sv organiza
         # usualmente y quiénes»). El cuándo ya lo saca la página del calendario; el quiénes, de acá. Ver `_agenda()`
         'agenda': _agenda(),
