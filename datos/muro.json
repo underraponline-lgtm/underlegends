@@ -175,6 +175,10 @@
 "temporada"
 ]
 },
+"bna": {
+"rg": "C",
+"c": []
+},
 "xclusivo": {
 "rg": "C",
 "c": []
@@ -254,10 +258,6 @@
 "servidor",
 "temporada"
 ]
-},
-"bna": {
-"rg": "",
-"c": []
 },
 "nxuz": {
 "rg": "C",
@@ -540,16 +540,16 @@
 "temporada"
 ]
 },
-"neo": {
-"rg": "",
-"c": []
-},
 "xubaru": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
+},
+"neo": {
+"rg": "",
+"c": []
 },
 "zeta": {
 "rg": "",
@@ -2314,14 +2314,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"PRAISERIZA"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5593,6 +5585,15 @@
 "Geoka"
 ],
 "carta": "pais"
+},
+{
+"tipo": "rango",
+"t": "2026-10-14T06:43:11Z",
+"quien": [
+"BNA"
+],
+"rg": "C",
+"primero": true
 }
 ]
 }

@@ -486,17 +486,6 @@
     "racha": "0/1"
    }
   },
-  "Armando Faso🇦🇫": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 1373,
-    "racha": "0/0"
-   }
-  },
   "Assuan": {
    "DDF": {
     "duelos": "2/3",
@@ -563,13 +552,13 @@
   },
   "BNA": {
    "FFA": {
-    "duelos": "3/4",
-    "ev": 6,
+    "duelos": "3/5",
+    "ev": 8,
     "oro": 1,
-    "ovr": 57,
+    "ovr": 58,
     "pod": 2,
-    "pts": 58375,
-    "racha": "0/2"
+    "pts": 63873,
+    "racha": "0/1"
    },
    "SR": {
     "duelos": "1/2",
@@ -832,17 +821,6 @@
     "racha": "0/0"
    }
   },
-  "CINEX": {
-   "FFA": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 3000,
-    "racha": "0/0"
-   }
-  },
   "CJ": {
    "FFA": {
     "duelos": "",
@@ -1013,12 +991,12 @@
   },
   "Cinexfilo": {
    "FFA": {
-    "duelos": "1/5",
-    "ev": 9,
+    "duelos": "1/6",
+    "ev": 10,
     "oro": 0,
-    "ovr": 54,
+    "ovr": 56,
     "pod": 1,
-    "pts": 23558,
+    "pts": 26558,
     "racha": "0/1"
    },
    "URBF": {
@@ -1029,17 +1007,6 @@
     "pod": 0,
     "pts": 15950,
     "racha": "2/2"
-   }
-  },
-  "Ckl": {
-   "FFA": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 4125,
-    "racha": "0/0"
    }
   },
   "Clitax": {
@@ -5192,6 +5159,17 @@
     "racha": "0/0"
    }
   },
+  "SAIK": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 1875,
+    "racha": "0/0"
+   }
+  },
   "SDK": {
    "ACAD": {
     "duelos": "",
@@ -6245,11 +6223,11 @@
   "Warap": {
    "FFA": {
     "duelos": "0/1",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 46,
     "pod": 0,
-    "pts": 3750,
+    "pts": 7500,
     "racha": "0/0"
    }
   },
@@ -6337,6 +6315,17 @@
     "pod": 3,
     "pts": 22975,
     "racha": "1/1"
+   }
+  },
+  "Xubaru prime 🇧🇲": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 1875,
+    "racha": "0/0"
    }
   },
   "YOUNG VLAD 🇨🇴": {

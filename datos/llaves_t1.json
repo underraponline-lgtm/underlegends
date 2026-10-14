@@ -14790,7 +14790,7 @@
       [
        "PichulaMc",
        "Colesito",
-       "Velatz, Armando Faso🇦🇫, Neo",
+       "Velatz, BNA, Neo",
        "LEWITO"
       ],
       "PichulaMc",
@@ -14981,7 +14981,7 @@
     1250
    ],
    [
-    "Armando Faso🇦🇫",
+    "BNA",
     "Octavos",
     416
    ]
@@ -21527,38 +21527,6 @@
       ],
       "Drexx",
       ""
-     ],
-     [
-      [
-       "Astral🇦🇷",
-       "Draxx🇨🇱"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "Joaco 🇨🇱",
-       "Tokio🇦🇷 🇺🇸"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "Rfran🇪🇸",
-       "Ricard🇪🇨"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "mathias 🇻🇪",
-       "DXG🇲🇽"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -22715,11 +22683,18 @@
      [
       [
        "SAIK",
-       "Xubaru prime 🇧🇲",
-       "warap🇦🇷"
+       "Xubaru prime 🇧🇲"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: SAIK; cobra: Xubaru prime 🇧🇲; cobra: warap🇦🇷; nadie siguió: ✅ Decidir"
+     ],
+     [
+      [
+       "SAIK",
+       "Warap"
+      ],
+      "",
+      "cobra: SAIK; cobra: Xubaru prime 🇧🇲; cobra: warap🇦🇷; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -22884,6 +22859,11 @@
     1250
    ],
    [
+    "SAIK",
+    "Octavos",
+    1250
+   ],
+   [
     "SINTEXT",
     "Octavos",
     1250
@@ -22905,6 +22885,16 @@
    ],
    [
     "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Warap",
+    "Octavos",
+    1250
+   ],
+   [
+    "Xubaru prime 🇧🇲",
     "Octavos",
     1250
    ],
@@ -23190,7 +23180,7 @@
      [
       [
        "Verc",
-       "CINEX"
+       "Cinexfilo"
       ],
       "Verc",
       ""
@@ -23272,7 +23262,7 @@
     3500
    ],
    [
-    "CINEX",
+    "Cinexfilo",
     "Cuartos",
     2000
    ],

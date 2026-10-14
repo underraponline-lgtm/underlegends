@@ -32,17 +32,6 @@
    "vence": "2026-10-20T00:26:10+00:00",
    "vencido": false
   },
-  "CINEX": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-14T05:25:30+00:00",
-   "did": "",
-   "evento": "Inserte Nombre de la Compe",
-   "n": 470,
-   "sv": "FFA",
-   "vence": "2026-10-21T05:25:30+00:00",
-   "vencido": false
-  },
   "Frifaier": {
    "avisado": "2026-10-13",
    "chat": "2026-10-13",
@@ -172,6 +161,18 @@
    "vence": "2026-10-20T15:58:57+00:00",
    "vencido": false
   },
+  "SAIK": {
+   "avisado": "2026-10-14",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-13T23:50:48+00:00",
+   "did": "",
+   "evento": "DEM UZBEKISTAN FECHA 2",
+   "n": 468,
+   "sv": "FFA",
+   "vence": "2026-10-20T23:50:48+00:00",
+   "vencido": false
+  },
   "SYEPORUTE": {
    "avisado": "2026-10-12",
    "chat": "2026-10-12",
@@ -239,15 +240,28 @@
   },
   "Warap": {
    "avisado": "2026-10-13",
+   "avisado_cumplido": "2026-10-14",
    "chat": "2026-10-14",
+   "con": 469,
+   "cumplido": "2026-10-14T02:09:40+00:00",
+   "debut": "2026-10-13T23:50:48+00:00",
+   "did": "1525062106666369104",
+   "evento": "DEM UZBEKISTAN FECHA 2",
+   "n": 468,
+   "sv": "FFA",
+   "vence": "2026-10-20T23:50:48+00:00",
+   "vencido": false
+  },
+  "Xubaru prime": {
+   "avisado": "2026-10-14",
    "con": null,
    "cumplido": "",
-   "debut": "2026-10-14T02:09:40+00:00",
-   "did": "1525062106666369104",
-   "evento": "PRITTY FREE",
-   "n": 469,
+   "debut": "2026-10-13T23:50:48+00:00",
+   "did": "",
+   "evento": "DEM UZBEKISTAN FECHA 2",
+   "n": 468,
    "sv": "FFA",
-   "vence": "2026-10-21T02:09:40+00:00",
+   "vence": "2026-10-20T23:50:48+00:00",
    "vencido": false
   },
   "🏳️‍⚧️ VEPG 🏳️‍⚧️": {

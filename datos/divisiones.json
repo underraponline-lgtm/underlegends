@@ -64,11 +64,6 @@
      6
     ],
     [
-     "BNA",
-     34375,
-     3
-    ],
-    [
      "NC",
      29500,
      7
@@ -100,8 +95,8 @@
     ],
     [
      "Cinexfilo",
-     16125,
-     3
+     19125,
+     4
     ],
     [
      "Delux",
@@ -214,6 +209,11 @@
      1
     ],
     [
+     "Erik",
+     2625,
+     1
+    ],
+    [
      "Tam",
      2625,
      1
@@ -227,6 +227,11 @@
   ],
   [
    [
+    [
+     "BNA",
+     34375,
+     3
+    ],
     [
      "EmiZor",
      13875,
@@ -289,11 +294,6 @@
     ],
     [
      "Under",
-     5625,
-     1
-    ],
-    [
-     "AKARK",
      5625,
      1
     ],
@@ -455,6 +455,11 @@
      1
     ],
     [
+     "AKARK",
+     5625,
+     1
+    ],
+    [
      "Abysuss",
      5000,
      1
@@ -477,11 +482,6 @@
     [
      "MauzzitoEmeces",
      3750,
-     1
-    ],
-    [
-     "Erik",
-     2625,
      1
     ],
     [
@@ -532,19 +532,14 @@
    ],
    [
     [
-     "Gocho",
-     5000,
+     "Warap",
+     7500,
      2
     ],
     [
-     "Warap",
-     3750,
-     1
-    ],
-    [
-     "CINEX",
-     3000,
-     1
+     "Gocho",
+     5000,
+     2
     ],
     [
      "Kravitz",
@@ -562,7 +557,17 @@
      1
     ],
     [
+     "SAIK",
+     1875,
+     1
+    ],
+    [
      "Snake",
+     1875,
+     1
+    ],
+    [
+     "Xubaru prime 🇧🇲",
      1875,
      1
     ],
@@ -618,13 +623,12 @@
   "Andres": 4,
   "Andy": 5,
   "Ariaxer": 4,
-  "Armando Faso🇦🇫": 5,
   "Assuan": 5,
   "Astral": 5,
   "Axinu": 5,
   "BLANKO 🇺🇸": 5,
   "BLITZ": 5,
-  "BNA": 4,
+  "BNA": 5,
   "BRAGEURITHER🇦🇪": 5,
   "BTRX": 5,
   "Badterne": 5,
@@ -651,7 +655,6 @@
   "Char": 5,
   "Chop": 4,
   "Cinexfilo": 4,
-  "Ckl": 5,
   "Clitax": 5,
   "Colesito": 4,
   "Corvo": 4,
@@ -699,7 +702,7 @@
   "Enkil 🇦🇷": 5,
   "Erian": 3,
   "EricRJ": 5,
-  "Erik": 5,
+  "Erik": 4,
   "Erizo": 5,
   "Eze": 5,
   "Ezias🥈✒️🧢🐍": 5,
@@ -1486,12 +1489,12 @@
   ],
   [
    "2026-10-05",
-   "BNA",
+   "Pomberito",
    4
   ],
   [
    "2026-10-05",
-   "Pomberito",
+   "Erik",
    4
   ],
   [
@@ -1664,7 +1667,6 @@
    "Agus",
    "Aldre",
    "Alexi",
-   "BNA",
    "BastyRetro",
    "Cajita",
    "Campoy",
@@ -1675,6 +1677,7 @@
    "Dominick",
    "Dynoco",
    "EIDP",
+   "Erik",
    "Geoka",
    "Guess",
    "HH",
