@@ -3023,6 +3023,12 @@ def _mult():
         if s.get(k):
             out[k] = s[k]
     semanas = _MU.leer().get('semanas') or []
+    # 📅 las semanas de antes, con su multiplicador de cada servidor: un evento jugado dice el de SU semana (Dlx,
+    # 14/10/2026, con «URB VA ×3 ESTA SEMANA» en un evento del 1/10: «¿en ese momento era ×3 o esta semana? haz que
+    # se entienda»). `[[inicio, fin, {sv: x}], …]`, sólo las de esta temporada
+    out['hist'] = [[x['inicio'], x['fin'], x['sv']] for x in semanas
+                   if x.get('sv') and x.get('inicio') and x.get('fin') and x.get('id') != s['id']
+                   and (x.get('temporada') or '') == (s.get('temporada') or '')]
     ids = [x.get('id') for x in semanas]
     if s['id'] in ids and ids.index(s['id']) > 0:
         ant = semanas[ids.index(s['id']) - 1]

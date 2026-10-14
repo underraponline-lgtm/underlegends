@@ -553,6 +553,17 @@ export class Liga {
     return c ? c.t : ll.dia + 'T23:00:00Z';
   }
   multSv(sv) { return ((this.d.mult || {}).sv || {})[sv]; }
+  // 📅 EL MULTIPLICADOR DE LA SEMANA EN QUE SE JUGÓ (Dlx, 14/10/2026: «¿en ese momento era ×3 o esta semana? haz que se
+  // entienda»): `{x, esta}` con el de ese servidor en la semana de `t` y si es la de ahora, o `null` si esa semana no se
+  // sabe (una que todavía no se sorteó). `x` 1 = sin multiplicador
+  multEn(sv, t) {
+    const M = this.d.mult || {};
+    const ms = utc(t);
+    if (!ms || !sv) return null;
+    if (M.ini && M.fin && ms >= utc(M.ini) && ms < utc(M.fin)) return { x: (M.sv || {})[sv] || 1, esta: true };
+    const h = (M.hist || []).find(([a, b]) => ms >= utc(a) && ms < utc(b));
+    return h ? { x: (h[2] || {})[sv] || 1, esta: false } : null;
+  }
   dorado() {
     const g = (this.d.mult || {}).dorado;
     if (!g) return null;

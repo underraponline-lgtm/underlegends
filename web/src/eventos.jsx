@@ -33,9 +33,15 @@ function formato(m) {
   const t = String(m || '').trim();
   // un número suelto no es un formato: el anuncio de la Dos Generaciones Vol 2 decía «11» (los cupos, o nada)
   if (/^\d+$/.test(t.replace(/\s+/g, ''))) return '';
-  // «1v1», «1 vs 1», «1x1» → «1VS1», y lo que sigue se queda: «1v1 sin replica» → «1VS1 sin réplica», al lado de los otros 1VS1
-  const x = /^(\d+)\s*(?:vs|v|x)\s*(\d+)\b\s*(.*)$/i.exec(t);
-  return x ? (x[1] + 'VS' + x[2] + (x[3] ? ' ' + x[3] : '')).replace(/\breplica\b/i, 'réplica') : t;
+  // 🔴 una ronda no es un formato: DDF escribe «CUARTOS:» u «OCTAVOS:» donde el lector espera la modalidad (14/10/2026)
+  const tn = t.normalize('NFKC');
+  if (/^(?:filtros?|octavos|cuartos|semis?|semifinal(?:es)?|final(?:es)?)\b/i.test(tn.replace(/[^\p{L}\s]/gu, '').trim())
+    || /octavos de final|cuartos de final/i.test(tn)) return '';
+  // «1v1», «1 vs 1», «1x1», «1 🆚 1», «⚔️ 1v1» → «1VS1», y lo que sigue se queda: «1v1 sin replica» → «1VS1 sin réplica».
+  // ⚠️ «4x4» no: en el rap son entradas de 4 compases («4x4 3E Libre», SNAKE INSIGNIA), no equipos de cuatro
+  const x = /^[^\p{L}\p{N}]*(\d+)\s*(vs|v|x|🆚️?)\s*(\d+)\b\s*(.*)$/iu.exec(t);
+  if (x && /^x$/i.test(x[2]) && x[1] === '4' && x[3] === '4') return t;
+  return x ? (x[1] + 'VS' + x[3] + (x[4] ? ' ' + x[4] : '')).replace(/\breplica\b/i, 'réplica') : t;
 }
 
 // ── la campana, con el estado de campana.js (`useCampana()` de piezas.jsx): los mismos pasos de siempre, con el estilo nuevo ──
@@ -326,9 +332,19 @@ function Evento({ liga, e, est, L, abierto, arriba, campVivo, sig }) {
   const inf = (ll && ll.info) || {};
   const x = e.px || {};
   const dor = liga.esDorado(e.n, e.sv);
-  const m = liga.multSv(e.sv);
+  // 📅 el multiplicador de SU semana, no el de hoy (Dlx, 14/10/2026: un evento del 1/10 decía «URB VA ×3 ESTA SEMANA»
+  // con el ×3 de esta semana). Jugado: «SUMÓ ×3 · URB ESA SEMANA»; por jugarse esta semana: «URB VA ×3 ESTA SEMANA»;
+  // de una semana que todavía no se sorteó, nada
+  const me = liga.multEn(e.sv, e.t);
+  const m = me && me.x !== 1 ? me.x : 0;
+  const multTx = !m ? '' : est === 'hecho' || est === 'vivo'
+    ? 'SUMÓ ×' + String(m).replace('.', ',') + ' · ' + siglaDe(e.sv) + (me.esta ? ' ESTA SEMANA' : ' ESA SEMANA')
+    : me.esta ? siglaDe(e.sv) + ' VA ×' + String(m).replace('.', ',') + ' ESTA SEMANA' : '';
   const det = [siglaDe(e.sv), formato(e.mod || inf.mod || x.modalidad), x.cupos ? 'cupos ' + String(x.cupos).toLowerCase() : '',
-    ll ? ll.participantes + ' raperos' : '', x.org || inf.org ? 'organiza ' + (x.org || inf.org) : ''].filter(Boolean).join(' · ');
+    ll ? ll.participantes + ' raperos' : '',
+    // 👥 de a uno y con su nombre de la Liga («HERYIETEERJOUK…» era Benjixo): `Liga.orgsDe()`
+    (() => { const os = liga.orgsDe(x.org || x.os ? x : inf); return os.length ? 'organiza ' + os.map((o) => limpio(o.f ? o.f.n : o.n)).join(', ') : ''; })()]
+    .filter(Boolean).join(' · ');
   const camp = ll ? liga.campeon(ll) : [];
   const mia = est === 'hecho' ? miFila(liga, ll) : null;
   // ⚠️ por `e.ll` y no por la llave del payload, que trae las 12 más nuevas: 21 de 33 decían «SIN LLAVE» al lado de
@@ -350,9 +366,9 @@ function Evento({ liga, e, est, L, abierto, arriba, campVivo, sig }) {
         </div>
         <span className="t-est">{etq}</span>
       </header>
-      {dor || m > 1 || x.premios || (e.ct && est !== 'hecho') ? (
+      {dor || multTx || x.premios || (e.ct && est !== 'hecho') ? (
         <div className="evp-xtra">
-          {dor ? <span className="evp-dor">EVENTO DORADO · VALE ×3</span> : m > 1 ? <span className="evp-mult">{siglaDe(e.sv)} VA ×{String(m).replace('.', ',')} ESTA SEMANA</span> : null}
+          {dor ? <span className="evp-dor">EVENTO DORADO · {est === 'hecho' ? 'VALIÓ' : 'VALE'} ×3</span> : multTx ? <span className="evp-mult">{multTx}</span> : null}
           {/* ⏰ anunciado con tiempo (Dlx, 12/10/2026, «5. C»): +10 % para quien lo juega (`multiplicadores.ANTICIPO_X`) */}
           {e.ct && est !== 'hecho' ? <span className="evp-mult">ANUNCIADO CON TIEMPO · +10 %</span> : null}
           {x.premios ? <span className="evp-premio">Premio: {recorte(x.premios, 90)}</span> : null}
