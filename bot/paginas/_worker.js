@@ -190,7 +190,7 @@ async function avisos(req, url) {
         'cache-control': 'no-store' } });
     }
     const r = await fetch(ORIGEN + (secc ? '/avisos/seccion' : '/avisos/tutorial'), { method: 'POST', headers: { 'content-type': 'application/json',
-      accept: 'application/json' }, body: JSON.stringify({ ev }) });
+      accept: 'application/json', 'x-lg-ip': ipDe(req) }, body: JSON.stringify({ ev }) });
     return new Response(r.body, { status: r.status, headers: { 'content-type': 'application/json; charset=utf-8', ...SEGURO,
       'cache-control': 'no-store' } });
   }
@@ -198,7 +198,7 @@ async function avisos(req, url) {
     return new Response('{"ok":true}', { headers: { 'content-type': 'application/json; charset=utf-8', ...SEGURO,
       'cache-control': 'no-store' } });
   }
-  const init = { method: metodo, headers: { accept: 'application/json' } };
+  const init = { method: metodo, headers: { accept: 'application/json', 'x-lg-ip': ipDe(req) } };
   if (metodo === 'POST') {
     const cuerpo = await req.text();
     // 🖼️ una imagen de fondo es más que 4 KB: sólo esa ruta, y con su propio tope (el Worker lo vuelve a medir)
@@ -240,6 +240,40 @@ async function avisos(req, url) {
     },
   });
 }
+
+// 🛡️ UN FRENO POR IP (Dlx, 14/10/2026: «Las dos», a «contra un DDoS que agote la cuota gratis»: este freno y, cuando
+// haya, un dominio propio con la regla de Cloudflare). Medido ese día desde afuera: 60 pedidos seguidos a la API pasaban
+// todos. ⚠️ LO QUE ARREGLA Y LO QUE NO: en el plan gratis un pedido que llega acá ya cuenta para los 100.000 del día
+// aunque se lo rechace; lo que este freno corta es lo de atrás —el Worker, el objeto y KV—, así que una IP que inunda
+// gasta la mitad y no toca los datos. Lo que frena ANTES de contar es la regla de Cloudflare de un dominio propio.
+// ⚠️ Es por isolate (la memoria de esta copia del código en ese datacenter), no global: frena a una IP que manda
+// muchísimos, no a un ataque desde miles de IPs (eso lo frena Cloudflare). El techo deja de sobra a una página normal
+// (unos 10 pedidos al abrirla) y a muchos detrás de la misma IP (una escuela, un celular con CGNAT)
+const LIMITE_IP = { max: 300, ventana: 60000, tope: 5000 };
+const POR_IP = new Map();
+/** ¿Esa IP ya pasó su techo en este minuto? Cuenta este pedido */
+function demasiados(ip, ahora = Date.now()) {
+  if (!ip) return false;
+  let x = POR_IP.get(ip);
+  if (!x || ahora - x.t0 >= LIMITE_IP.ventana) {
+    x = { t0: ahora, n: 0 };
+    POR_IP.set(ip, x);
+    // la memoria se poda: un isolate vive horas
+    if (POR_IP.size > LIMITE_IP.tope) {
+      for (const [k, v] of POR_IP) if (ahora - v.t0 >= LIMITE_IP.ventana) POR_IP.delete(k);
+      if (POR_IP.size > LIMITE_IP.tope) POR_IP.clear();
+    }
+  }
+  x.n++;
+  if (x.n === LIMITE_IP.max + 1) console.warn('[seguridad] freno por IP: más de ' + LIMITE_IP.max + ' pedidos en un minuto');
+  return x.n > LIMITE_IP.max;
+}
+// 🛡️ la IP de quien mira, para el Worker (`x-lg-ip`): un subpedido le llega con la IP de Cloudflare, y sin esto su freno
+// contaría a toda la página como una sola persona. Va en lo que no se cachea (lo que sí, casi no le llega)
+const ipDe = (req) => req.headers.get('cf-connecting-ip') || '';
+const muchos = () => new Response('{"error":"demasiados"}', { status: 429,
+  headers: { 'content-type': 'application/json; charset=utf-8', 'retry-after': '60', 'cache-control': 'no-store',
+    'x-content-type-options': 'nosniff' } });
 
 // 🔗 LA VISTA PREVIA DE CADA PERFIL (Dlx, 13/10/2026: «quizás que el link de cada perfil tenga un fondo diferente? no sé
 // qué tanto ocupe eso»). Al pegar `/freestyle-rap/r/<clave>` en Discord, WhatsApp o X, la vista previa trae su nombre,
@@ -332,6 +366,9 @@ export default {
     // persona —la de quien arma la trampa— y dejarle a la víctima esa sesión: votaba, seguía y gastaba Puntos como el
     // otro sin saberlo. Los navegadores mandan `Origin` en todo POST; si viene y no es éste, no pasa. Sin `Origin`
     // (el ciclo, un navegador viejo) pasa como antes
+    // 🛡️ el freno por IP: todo lo de la API y la vista previa de los perfiles (ver `demasiados()`)
+    if ((url.pathname.indexOf('/api/') === 0 || url.pathname.indexOf('/freestyle-rap/r/') === 0)
+      && demasiados(req.headers.get('cf-connecting-ip'))) return muchos();
     if (req.method === 'POST' && url.pathname.indexOf('/api/') === 0) {
       const o = req.headers.get('origin');
       if (o !== null && o !== url.origin) return new Response('no', { status: 403, headers: SEGURO });
@@ -391,7 +428,7 @@ export default {
       const cuerpo = await req.text();
       // las redes elegidas viajan en el cuerpo: 2 KB alcanzan de sobra
       if (cuerpo.length > 2048) return new Response('grande', { status: 413 });
-      const hs = { 'content-type': 'application/json' };
+      const hs = { 'content-type': 'application/json', 'x-lg-ip': ipDe(req) };
       if (sesion(req)) hs['x-lg-ses'] = sesion(req);
       const r = await fetch(ORIGEN + CUENTA[url.pathname], { method: 'POST', body: cuerpo, headers: hs });
       const vuelta = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...SEGURO };

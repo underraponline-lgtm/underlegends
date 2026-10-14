@@ -187,6 +187,9 @@ def main():
             # 🖼️ LA IA DE CLOUDFLARE, PARA LEER LOS ANUNCIOS QUE SON UNA IMAGEN (05/10/2026: `textoDeImagen()` en
             # avisos.js). Es un binding y no un token: no hay secreto nuevo. Entra en el plan gratis por día.
             {'type': 'ai', 'name': 'AI'},
+            # 🛡️ EL FRENO POR IP (14/10/2026, Dlx: «Las dos»): un contador por datacenter, compartido por todas las copias
+            # del Worker (`frenoIP()` en worker.js). El de memoria solo no frenaba: Cloudflare reparte los pedidos
+            {'type': 'ratelimit', 'name': 'FRENO_IP', 'namespace_id': '1001', 'simple': {'limit': 240, 'period': 60}},
         ],
     }
 

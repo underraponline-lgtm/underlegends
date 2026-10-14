@@ -2065,6 +2065,55 @@ console.log('\nVERIFICARSE DESDE LA PÁGINA, ENTRANDO A DRA\n');
   }
 }
 
+console.log('\n🛡️ EL FRENO POR IP\n');
+
+{
+  // 🛡️ Dlx, 14/10/2026: «Las dos», a «contra un DDoS que agote la cuota gratis». La página frena a una IP que pasa su
+  // techo; otra IP sigue pasando. Y el Worker no frena a Discord, a la página (cf-worker / IP de Cloudflare) ni al ciclo
+  const antes = globalThis.fetch;
+  globalThis.fetch = async () => new Response('{"ok":true}', { status: 200, headers: { 'content-type': 'application/json' } });
+  const { default: proxy } = await import('./paginas/_worker.js');
+  const ASSETS = { fetch: async () => new Response('<html>', { status: 200 }) };
+  const pedir = (ip) => proxy.fetch(new Request('https://underlegends.pages.dev/api/lobby', { headers: { 'cf-connecting-ip': ip } }), { ASSETS });
+  try {
+    const cods = [];
+    for (let i = 0; i < 305; i++) cods.push((await pedir('203.0.113.7')).status);
+    const otra = (await pedir('198.51.100.9')).status;
+    const r429 = await pedir('203.0.113.7');
+    ok('la página: 300 pedidos de una IP en un minuto pasan, el 301 en adelante recibe 429 con Retry-After, y otra IP sigue',
+      cods.slice(0, 300).every((c) => c === 200) && cods.slice(300).every((c) => c === 429) && otra === 200
+      && r429.status === 429 && r429.headers.get('retry-after') === '60', JSON.stringify([cods.filter((c) => c === 429).length, otra]));
+  } finally {
+    globalThis.fetch = antes;
+  }
+  // el Worker: 240 por minuto a quien lo llama directo, y nada a Discord, a la página ni al ciclo
+  const ip = '192.0.2.44';
+  const directo = () => worker.fetch(new Request('https://w/no-existe-' + Math.random(), { headers: { 'cf-connecting-ip': ip } }), env, ctx);
+  const desdePagina = () => worker.fetch(new Request('https://w/no-existe', { headers: { 'cf-connecting-ip': ip, 'cf-worker': 'underlegends.pages.dev' } }), env, ctx);
+  const deCloudflare = () => worker.fetch(new Request('https://w/no-existe', { headers: { 'cf-connecting-ip': '2a06:98c0:3600::103' } }), env, ctx);
+  const cw = [];
+  for (let i = 0; i < 245; i++) cw.push((await directo()).status);
+  const pag = (await desdePagina()).status, cfl = (await deCloudflare()).status;
+  ok('el Worker: el 241 de una IP directa recibe 429; lo que pide la página sin IP y las IP de Cloudflare, no',
+    cw.slice(0, 240).every((c) => c !== 429) && cw.slice(240).every((c) => c === 429) && pag !== 429 && cfl !== 429,
+    JSON.stringify([cw.filter((c) => c === 429).length, pag, cfl]));
+  // y lo que pide la página CON la IP de quien mira se cuenta por esa IP (`pag:`), aparte de la directa
+  const conIP = (x) => worker.fetch(new Request('https://w/no-existe', { headers: { 'cf-connecting-ip': '2a06:98c0:3600::103', 'x-lg-ip': x } }), env, ctx);
+  const cp = [];
+  for (let i = 0; i < 242; i++) cp.push((await conIP('203.0.113.50')).status);
+  const otraP = (await conIP('203.0.113.51')).status;
+  ok('el Worker: lo que pide la página se cuenta por la IP de quien mira: el 241 de esa persona frena, otra no',
+    cp.slice(0, 240).every((c) => c !== 429) && cp.slice(240).every((c) => c === 429) && otraP !== 429,
+    JSON.stringify([cp.filter((c) => c === 429).length, otraP]));
+  ok('con el binding de Cloudflare manda él', await (async () => {
+    let n = 0;
+    const env2 = Object.assign({}, env, { FRENO_IP: { limit: async () => ({ success: ++n <= 2 }) } });
+    const x = [];
+    for (let i = 0; i < 3; i++) x.push((await worker.fetch(new Request('https://w/no-existe', { headers: { 'cf-connecting-ip': '192.0.2.99' } }), env2, ctx)).status);
+    return x[0] !== 429 && x[1] !== 429 && x[2] === 429;
+  })());
+}
+
 console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
 
 {

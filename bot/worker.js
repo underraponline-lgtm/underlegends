@@ -3778,6 +3778,50 @@ function kvMedido(env, ctx, ruta) {
   return new Proxy(env, { get: (t, p) => (p === 'KV' ? medido : t[p]) });
 }
 
+// 🛡️ UN FRENO POR IP (Dlx, 14/10/2026: «Las dos», a «contra un DDoS que agote la cuota gratis»: este freno y, cuando
+// haya, un dominio propio con la regla de Cloudflare). Medido ese día desde afuera: 60 pedidos seguidos a la API pasaban
+// todos. ⚠️ LO QUE ARREGLA Y LO QUE NO: en el plan gratis un pedido que llega acá ya cuenta para los 100.000 del día
+// aunque se lo rechace; lo que este freno corta es lo de atrás —el Worker, el objeto y KV—, así que una IP que inunda
+// gasta la mitad y no toca los datos. Lo que frena ANTES de contar es la regla de Cloudflare de un dominio propio.
+// ⚠️ Es por isolate (la memoria de esta copia del código en ese datacenter), no global: frena a una IP que manda
+// muchísimos, no a un ataque desde miles de IPs (eso lo frena Cloudflare). El techo deja de sobra a una página normal
+// (unos 10 pedidos al abrirla) y a muchos detrás de la misma IP (una escuela, un celular con CGNAT)
+const LIMITE_IP = { max: 240, ventana: 60000, tope: 5000 };
+const POR_IP = new Map();
+/** ¿Esa IP ya pasó su techo en este minuto? Cuenta este pedido */
+function demasiados(ip, ahora = Date.now()) {
+  if (!ip) return false;
+  let x = POR_IP.get(ip);
+  if (!x || ahora - x.t0 >= LIMITE_IP.ventana) {
+    x = { t0: ahora, n: 0 };
+    POR_IP.set(ip, x);
+    // la memoria se poda: un isolate vive horas
+    if (POR_IP.size > LIMITE_IP.tope) {
+      for (const [k, v] of POR_IP) if (ahora - v.t0 >= LIMITE_IP.ventana) POR_IP.delete(k);
+      if (POR_IP.size > LIMITE_IP.tope) POR_IP.clear();
+    }
+  }
+  x.n++;
+  if (x.n === LIMITE_IP.max + 1) console.warn('[seguridad] freno por IP: más de ' + LIMITE_IP.max + ' pedidos en un minuto');
+  return x.n > LIMITE_IP.max;
+}
+/**
+ * 🛡️ ¿Esa clave (`ip:` o `pag:` + IP) pasó su techo? Con el binding de Cloudflare (`FRENO_IP`, 240 por minuto): un
+ * contador del DATACENTER, compartido por todas las copias del código. El de memoria (`demasiados()`) queda de respaldo:
+ * medido el 14/10/2026, sin el binding 400 pedidos seguidos no recibían un solo 429, porque Cloudflare los reparte entre
+ * varias copias y cada una cuenta sola
+ */
+async function frenoIP(env, clave) {
+  if (!clave) return false;
+  if (env && env.FRENO_IP) {
+    try { return !(await env.FRENO_IP.limit({ key: clave })).success; } catch (e) { /* el de memoria */ }
+  }
+  return demasiados(clave);
+}
+const muchos = () => new Response('{"error":"demasiados"}', { status: 429,
+  headers: { 'content-type': 'application/json; charset=utf-8', 'retry-after': '60', 'cache-control': 'no-store',
+    'x-content-type-options': 'nosniff' } });
+
 export default {
   // ══════════════════════════════════════════════════════════════════
   // 🔴 EL CRON DE GITHUB DISPARA 1 DE CADA 9 VECES, Y NO ES ARREGLABLE
@@ -3910,6 +3954,18 @@ export default {
     // son las interacciones de Discord y verifican firma; `/avisos/*` es
     // una lista cerrada de cinco rutas que nunca llega hasta ahí.
     const camino = new URL(req.url).pathname;
+    // 🛡️ EL FRENO POR IP (14/10/2026, ver `demasiados()`), para quien llama al Worker directo. No a las interacciones de
+    // Discord (`POST /`: vienen firmadas y desde Discord), ni a lo que pide la página (`cf-worker`: el subpedido de
+    // underlegends.pages.dev, que ya pasó por su propio freno), ni al ciclo (`x-lg-ciclo`, que se valida en cada ruta)
+    // ⚠️ y no a las IP de Cloudflare (`2a06:98c0:…`): un subpedido de un Worker sale con ésas, así que contarlas sería
+    // frenar a toda la página junta. Lo que pide la página trae la IP de quien mira (`x-lg-ip`, ver `ipDe()` en
+    // paginas/_worker.js) y se cuenta por ésa
+    const ipQ = req.headers.get('cf-connecting-ip') || '';
+    const ipPag = req.headers.get('x-lg-ip') || '';
+    const claveIP = ipPag ? 'pag:' + ipPag
+      : ipQ && !ipQ.startsWith('2a06:98c0:') && !req.headers.get('cf-worker') ? 'ip:' + ipQ : '';
+    if (!(req.method === 'POST' && camino === '/') && !req.headers.get('x-lg-ciclo') && claveIP
+      && await frenoIP(env0, claveIP)) return muchos();
     // 📏 cada lectura de KV, contada por ruta (ver `kvMedido()`)
     const env = kvMedido(env0, ctx, req.method === 'POST' && camino === '/' ? 'interaccion' : camino);
     if (camino.startsWith('/avisos/')) return rutaAvisos(req, env, camino);
