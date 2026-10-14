@@ -109,6 +109,25 @@ function TuBarra({ liga, dc, P, R, saldo }) {
 // todas»). La fecha es la de `comun/temporada.py` (`fase.termina` del payload): el último día entero, en hora del este
 // —en diciembre, EST—. El top 16 es el del torneo de cierre, contado igual que el Ranking (`clasificados()` de
 // ranking.jsx): los primeros 16 CON NÚMERO de la Temporada, por OVR. Sin número tuyo, sólo los días
+function cuentaT1(liga) {
+  const fin = (liga.d.fase || {}).termina;
+  const hoy = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date(liga.ahora));
+  const dias = fin ? Math.round((Date.parse(fin) - Date.parse(hoy)) / 86400000) : NaN;
+  if (!(dias >= 0)) return null;
+  const yo = liga.yo;
+  let top = '';
+  if (yo && yo.pos) {
+    const clas = (liga.d.tabla || []).filter((f) => f.pos).sort((a, b) => a.pos - b.pos).slice(0, 16);
+    if (clas.some((f) => f.k === yo.k)) top = 'Estás en el top 16: jugás el cierre';
+    else if (clas.length === 16) {
+      const d = (clas[15].ovr || 0) - (yo.ovr || 0);
+      top = d > 0 ? 'A ' + d + ' de OVR del top 16' : 'Pegado al top 16';
+    }
+  }
+  return { tag: (liga.temp || 'T1') + ' · ' + (dias === 0 ? 'TERMINA HOY' : dias === 1 ? 'FALTA 1 DÍA' : dias + ' DÍAS'), top };
+}
+
+// eslint-disable-next-line no-unused-vars
 function Temporada({ liga }) {
   const fin = (liga.d.fase || {}).termina;
   // días de calendario en el este: del 13/10 al 31/12 son 79, aunque queden horas de hoy; el 31/12 «termina hoy»
@@ -143,7 +162,31 @@ async function pedirSemanal(cobrar) {
   if (!r.ok || !j.ok) throw new Error(j.error || String(r.status));
   return j;
 }
-function PremioSemanal({ dc }) {
+// ── 🔥 LA RACHA, A LA VISTA (Dlx, 13/10/2026: «eso de cobrado, si está cobrado, no debería estar ahí… ahí debería ser
+// el DAILY STREAK que habíamos acordado»). La racha existe desde la 2.30 —entrar a la página, usar el bot o jugar— y
+// sólo se veía como un 🔥 chiquito en tu barra. Ahora, con el premio de la semana ya cobrado, ocupa su lugar: los siete
+// días de esta semana, cuántos llevás y cuánto falta para los próximos Puntos de Tienda (cada `cada` días, `premio`)
+const LETRAS_DIA = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+function Racha({ R }) {
+  const r = (R && R.racha) || {};
+  const sem = (R && R.semana) || [];
+  if (!sem.length) return null;
+  const actual = r.actual || 0;
+  return (
+    <a className="lb-racha" href="#/pase">
+      <span className="lb-racha-n"><Ico n="fuego" t={26} /><b>{actual}</b></span>
+      <span className="lb-racha-tx"><b>{actual === 1 ? '1 DÍA SEGUIDO' : actual + ' DÍAS SEGUIDOS'}</b>
+        <small>{R.premio && R.falta ? 'En ' + (R.falta === 1 ? '1 día' : R.falta + ' días') + ' cobrás ' + num(R.premio) + ' Puntos de Tienda'
+          : 'Entrá todos los días: la página, el bot o un evento'}{r.maxima > actual ? ' · tu mejor: ' + r.maxima : ''}</small></span>
+      <span className="lb-semana" aria-label="Esta semana">{sem.map(([d, si], i) => (
+        <i key={d} className={(si ? 'si' : '') + (d === R.hoy ? ' hoy' : '') + (d > R.hoy ? ' luego' : '')} title={d}>
+          {si ? <Ico n="fuego" t={14} /> : LETRAS_DIA[i]}</i>
+      ))}</span>
+    </a>
+  );
+}
+
+function PremioSemanal({ dc, R }) {
   const [st, setSt] = useState(null);
   const [ocup, setOcup] = useState(false);
   useEffect(() => {
@@ -162,13 +205,8 @@ function PremioSemanal({ dc }) {
     } catch (e) { setSt(Object.assign({}, st, { error: true })); }
     setOcup(false);
   };
-  if (st.cobrado) {
-    return (
-      <div className="lb-sem hecho"><Ico n="moneda" t={20} />
-        <span><b>PREMIO DE LA SEMANA, COBRADO</b><small>El próximo, el lunes {fechaCorta(st.proximo)}: 50 por cada día que entres hasta entonces.</small></span>
-      </div>
-    );
-  }
+  // cobrado, el lugar es de la racha (y el próximo premio lo dice la racha misma: cada día que entres suma)
+  if (st.cobrado) return <Racha R={R} />;
   return (
     <div className="lb-sem"><Ico n="moneda" t={24} />
       <span><b>PREMIO DE LA SEMANA · {num(st.monto)} PUNTOS</b>
@@ -207,8 +245,8 @@ function Seguidos({ liga }) {
   const l = [...out.values()].slice(0, 6);
   if (!l.length) return null;
   return (
-    <section className="lb-sig" aria-label="Tus seguidos hoy">
-      <span className="lb-sig-t">TUS SEGUIDOS HOY</span>
+    <section className={'lb-sig' + (l.length === 1 ? ' uno' : '')} aria-label="Tus seguidos hoy">
+      <span className="lb-sig-t">TUS SEGUIDOS<br />HOY</span>
       <ul>{l.map((x) => (
         <li key={x.k}><a href={'#/r/' + encodeURIComponent(x.k)}>
           <Cara liga={liga} k={x.k} nombre={x.n} cls="lb-sig-c" /><b>{limpio(x.n)}</b><small>{x.que}</small>
@@ -400,6 +438,9 @@ export function Lobby({ liga, dc }) {
     .sort((x, y) => (svVivo.has(y[0]) - svVivo.has(x[0])) || y[1] - x[1]);
   // 🖼️ el podio: #2, #1 y #3, con el color de su letra
   const podio = [2, 1, 3].map((p) => (liga.d.tabla || []).find((f) => f.pos === p)).filter(Boolean);
+  // ⏳ cuánto falta de la temporada: una etiqueta en la puerta del Ranking, como «VENCE EN» de Se busca (Dlx: «puede
+  // estar en cualquier otro lado así ocupa menos espacio»)
+  const t1 = cuentaT1(liga);
   // 🏆 tu puesto y si cambió desde la última vez que miraste (el globito, sólo por algo tuyo)
   const pos = yo && yo.pos ? yo.pos : 0;
   const [vistoPos, setVistoPos] = useState(() => leer('lg:lb-pos'));
@@ -425,8 +466,7 @@ export function Lobby({ liga, dc }) {
   return (
     <section className="lobby" aria-label="Tu lobby">
       <TuBarra liga={liga} dc={dc} P={P} R={R} saldo={saldo} />
-      <Temporada liga={liga} />
-      <PremioSemanal dc={dc} />
+      <PremioSemanal dc={dc} R={R} />
       <ElBoton liga={liga} />
       <PedirCampana liga={liga} dc={dc} />
       <Seguidos liga={liga} />
@@ -455,6 +495,7 @@ export function Lobby({ liga, dc }) {
         </a>
         <a className="pu lb lb-rk" href="#/ranking" onClick={() => { if (pos) guardar('lg:lb-pos', pos); }}>
           <span className="lb-t">RANKING</span>
+          {t1 ? <span className="lb-reloj">{t1.tag}</span> : null}
           {subio ? <span className="lb-glob" aria-label="cambió tu puesto">{subio > 0 ? '▲' : '▼'}</span> : null}
           <span className="lb-fila">
             {pos ? <span className="lb-nivel"><b>#{pos}</b><small>{subio ? (subio > 0 ? 'SUBISTE ' + subio : 'BAJASTE ' + -subio) : 'TU PUESTO'}</small></span>
@@ -464,7 +505,7 @@ export function Lobby({ liga, dc }) {
                 <Cara liga={liga} k={f.k} nombre={f.n} cls="lb-pod-c" /><b>{f.pos}</b></span>
             ))}</span> : null}
           </span>
-          <small>{pos ? 'en la Temporada' : dc && !yo ? 'Jugá un evento y entrás a la tabla'
+          <small>{pos ? (t1 && t1.top ? t1.top : 'en la Temporada') : dc && !yo ? 'Jugá un evento y entrás a la tabla'
             : dc && (sinVerif || yo.fc) ? 'Verificate en DRA y entrás al ranking oficial' : 'Las tablas de la temporada'}</small>
         </a>
         <a className="pu lb lb-tj" href="#/tarjetas" onClick={() => { if (tuya) guardar('lg:lb-carta', tuya); }}>

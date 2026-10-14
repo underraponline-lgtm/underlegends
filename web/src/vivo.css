@@ -2530,14 +2530,30 @@ a.rk-z:hover{border-color:var(--linea)}
 .lb-t1 b{font:900 15px/1.1 Archivo,sans-serif;font-stretch:112%;letter-spacing:.02em;color:#F5C542}
 .lb-t1 span{font:700 14px/1.15 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:#C4C4BE}
 .lb-t1:hover b,.lb-t1:focus-visible b{text-decoration:underline}
-.lb-sig{display:grid;gap:8px}
-.lb-sig-t{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:#A5A5A0}
-.lb-sig ul{list-style:none;margin:0;padding:0;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(118px,1fr);gap:10px;overflow-x:auto;scrollbar-width:thin}
-.lb-sig a{display:grid;justify-items:center;gap:4px;padding:10px 8px;border:2px solid #3A3A3E;background:#0E0E11;color:inherit;text-decoration:none;text-align:center;height:100%}
+/* 👀 tus seguidos hoy: una tira finita, a la izquierda (13/10/2026: «se me hace raro que ocupe mucho») */
+.lb-sig{display:flex;align-items:center;gap:12px;min-width:0}
+.lb-sig-t{flex:none;font:700 13px/1.05 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:#A5A5A0}
+.lb-sig ul{list-style:none;margin:0;padding:0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:thin;min-width:0}
+.lb-sig li{flex:none}
+.lb-sig a{display:grid;grid-template-columns:auto auto;grid-template-rows:auto auto;column-gap:8px;align-items:center;padding:5px 12px 5px 5px;border:2px solid #3A3A3E;background:#0E0E11;color:inherit;text-decoration:none;border-radius:999px}
 .lb-sig a:hover,.lb-sig a:focus-visible{border-color:#29B298}
-.lb-sig-c{width:48px;height:48px;border-radius:50%;overflow:hidden;border:2px solid #29B298}
-.lb-sig b{font:900 14px/1.1 Archivo,sans-serif;text-transform:uppercase;overflow-wrap:anywhere}
-.lb-sig small{font:600 13px/1.2 "Barlow Condensed",sans-serif;color:#C4C4BE}
+.lb-sig-c{grid-row:1/span 2;width:34px;height:34px;border-radius:50%;overflow:hidden;border:2px solid #29B298}
+.lb-sig-c img{width:100%;height:100%;object-fit:cover;display:block}
+.lb-sig b{font:900 13px/1.1 Archivo,sans-serif;text-transform:uppercase;white-space:nowrap}
+.lb-sig small{font:600 12.5px/1.15 "Barlow Condensed",sans-serif;color:#C4C4BE;white-space:nowrap;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+/* 🔥 la racha, en el lugar del premio ya cobrado (13/10/2026) */
+.lb-racha{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 12px;border:2px solid #E8742A;background:#0E0E11;color:#F6F6F6;text-decoration:none}
+.lb-racha-n{display:flex;align-items:center;gap:4px;color:#E8742A}
+.lb-racha-n b{font:900 30px/1 Archivo,sans-serif;color:#F5C542}
+.lb-racha-tx{display:grid;gap:3px;flex:1 1 180px;min-width:0}
+.lb-racha-tx b{font:900 15px/1.1 Archivo,sans-serif;font-stretch:112%;letter-spacing:.02em;color:#F5C542}
+.lb-racha-tx small{font:600 14px/1.25 "Barlow Condensed",sans-serif;color:#C4C4BE}
+.lb-semana{display:flex;gap:6px}
+.lb-semana i{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;border:2px solid #3A3A3E;font:800 12px/1 Archivo,sans-serif;font-style:normal;color:#A5A5A0}
+.lb-semana i.si{border-color:#E8742A;background:#E8742A;color:#0E0E11}
+.lb-semana i.hoy{box-shadow:0 0 0 2px #0E0E11,0 0 0 4px #F5C542}
+.lb-semana i.luego{opacity:.45}
+.lb-racha:hover .lb-racha-tx b,.lb-racha:focus-visible .lb-racha-tx b{text-decoration:underline}
 .lb-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .lb{position:relative;display:grid;align-content:start;gap:8px;min-height:150px;padding:12px;border:2px solid #3A3A3E;background:#0E0E11;
   color:#F6F6F6;text-decoration:none;overflow:hidden;transition:transform .12s,box-shadow .12s,border-color .12s}

@@ -8797,8 +8797,11 @@ export class Avisos {
     const j = this.sql.exec("SELECT COALESCE(SUM(eventos), 0) AS n FROM jugo_temp WHERE quien = ? AND (temp != 'prueba' OR ? = 0)",
       quien, Number(c.desde) || 0).toArray()[0];
     const eventos = j ? j.n : 0;
+    // 🔥 `semana`: los siete días de esta semana (lunes a domingo, en el este), entrados o no, para el Inicio (13/10/2026)
+    const hoy = diaET(), lun = lunesDe(hoy), set = new Set(dias);
+    const semana = [0, 1, 2, 3, 4, 5, 6].map((i) => { const d = masDias(lun, i); return [d, set.has(d) ? 1 : 0]; });
     return { racha: r, eventos, nivel: nivelDeXp(eventos * c.xp_ev + r.total * c.xp_dia, c.paso),
-      cada: c.cada, premio: c.premio, falta: c.cada - (r.actual % c.cada), xp_ev: c.xp_ev, xp_dia: c.xp_dia };
+      cada: c.cada, premio: c.premio, falta: c.cada - (r.actual % c.cada), xp_ev: c.xp_ev, xp_dia: c.xp_dia, hoy, semana };
   }
 
   /**
