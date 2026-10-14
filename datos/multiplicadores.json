@@ -432,13 +432,13 @@
    },
    "organizadores": [
     [
-     "𓂀",
-     28,
+     "HERYIETEERJOUKATEITHORER",
+     30,
      1
     ],
     [
-     "HERYIETEERJOUKATEITHORER",
-     27,
+     "𓂀",
+     28,
      1
     ],
     [
@@ -454,14 +454,14 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 9,
+     "FFA": 11,
      "URBF": 11,
      "SR": 4,
      "FVS": 1
     },
     "gente": {
      "DDF": 7,
-     "FFA": 89,
+     "FFA": 91,
      "SR": 21,
      "URBF": 13,
      "FVS": 5
@@ -472,7 +472,7 @@
     "ACAD": 0,
     "DDF": 7,
     "DRA": 0,
-    "FFA": 89,
+    "FFA": 91,
     "FFS": 0,
     "FVS": 5,
     "SR": 21,
