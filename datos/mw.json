@@ -33,9 +33,9 @@
     "base": 9500,
     "o": 17,
     "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 9500
+    "ev": 1,
+    "fase": "Semifinal",
+    "valor": 11500
    },
    {
     "n": "PichulaMc",
@@ -129,7 +129,7 @@
       },
       {
        "n": "Verc",
-       "cobra": 2750
+       "cobra": 2500
       },
       {
        "n": "yinn",
@@ -197,10 +197,22 @@
     "nivel": "D",
     "base": 4000,
     "o": 150,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 5000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Cuartos",
+    "valor": 5000,
+    "caza": {
+     "n": 468,
+     "evento": "DEM UZBEKISTAN FECHA 2",
+     "sv": "FFA",
+     "t": "2026-10-13T23:50:48Z",
+     "por": [
+      {
+       "n": "Oasis",
+       "cobra": 5000
+      }
+     ]
+    }
    },
    {
     "n": "TøKīØ🦠🧠",
@@ -236,7 +248,7 @@
     "base": 4000,
     "o": 36,
     "estado": "suelto",
-    "ev": 0,
+    "ev": 1,
     "fase": "",
     "valor": 5000
    }

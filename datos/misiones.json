@@ -1573,13 +1573,13 @@
      0
     ],
     "Agus": [
-     1,
+     2,
      1,
      1,
      0
     ],
     "Ariaxer": [
-     3,
+     4,
      16,
      16,
      0
@@ -1627,13 +1627,13 @@
      0
     ],
     "Cinexfilo": [
-     2,
+     3,
      2,
      2,
      0
     ],
     "Colesito": [
-     3,
+     4,
      1,
      1,
      0
@@ -1674,6 +1674,12 @@
      16,
      0
     ],
+    "ERIK X NEMI X DELUX": [
+     0,
+     99,
+     99,
+     0
+    ],
     "Efimero": [
      1,
      8,
@@ -1710,6 +1716,12 @@
      8,
      0
     ],
+    "Gocho": [
+     1,
+     8,
+     8,
+     0
+    ],
     "Guess": [
      6,
      2,
@@ -1720,6 +1732,12 @@
      1,
      8,
      8,
+     0
+    ],
+    "ICONOX": [
+     1,
+     16,
+     16,
      0
     ],
     "JB🇦🇷": [
@@ -1770,6 +1788,12 @@
      4,
      0
     ],
+    "Konan": [
+     1,
+     16,
+     16,
+     0
+    ],
     "Korey": [
      1,
      8,
@@ -1794,8 +1818,14 @@
      8,
      0
     ],
-    "Lord Viruzz": [
+    "Liberia": [
      1,
+     4,
+     4,
+     0
+    ],
+    "Lord Viruzz": [
+     2,
      8,
      8,
      0
@@ -1837,9 +1867,15 @@
      0
     ],
     "NC": [
-     5,
+     6,
      1,
      1,
+     0
+    ],
+    "NEMI X DELUX": [
+     1,
+     2,
+     2,
      0
     ],
     "Nemi": [
@@ -1885,13 +1921,13 @@
      0
     ],
     "Oasis": [
+     2,
      1,
-     2,
-     2,
+     1,
      0
     ],
     "PichulaMc": [
-     1,
+     2,
      16,
      16,
      0
@@ -1920,6 +1956,12 @@
      1,
      0
     ],
+    "Provenza": [
+     1,
+     8,
+     8,
+     0
+    ],
     "Raizer": [
      1,
      4,
@@ -1939,7 +1981,7 @@
      0
     ],
     "SINTEXT": [
-     2,
+     3,
      16,
      16,
      0
@@ -1969,6 +2011,12 @@
      0
     ],
     "Six": [
+     2,
+     16,
+     16,
+     0
+    ],
+    "Snake": [
      1,
      16,
      16,
@@ -2065,7 +2113,7 @@
      0
     ],
     "Verc": [
-     5,
+     6,
      1,
      1,
      0
@@ -2095,7 +2143,7 @@
      0
     ],
     "Zignos": [
-     2,
+     3,
      4,
      4,
      0
@@ -2129,7 +2177,7 @@
     "AKARK": 600,
     "Abyssus": 600,
     "Abysuss": 1600,
-    "Agus": 1600,
+    "Agus": 2900,
     "Ariaxer": 300,
     "BNA": 2900,
     "Benjixo": 900,
@@ -2147,16 +2195,20 @@
     "Keider": 900,
     "Kusoh": 600,
     "LRS": 300,
+    "Liberia": 600,
+    "Lord Viruzz": 300,
     "Lvel": 300,
     "Magic": 300,
     "Makmah": 900,
     "Molusco": 1600,
     "NC": 2900,
+    "NEMI X DELUX": 600,
     "Nemi": 900,
     "OG": 900,
     "ONDADISKO": 600,
     "ONZASS": 900,
-    "Oasis": 600,
+    "Oasis": 2900,
+    "PichulaMc": 300,
     "Player": 300,
     "Polosport": 600,
     "Presagio": 2900,
@@ -2165,6 +2217,7 @@
     "Rodas": 300,
     "SINTEXT": 300,
     "Sin Limites": 900,
+    "Six": 300,
     "Snow": 2900,
     "Sosa": 600,
     "Tam": 600,
@@ -2194,7 +2247,7 @@
   "ARDEAN": 300,
   "Abyssus": 900,
   "Abysuss": 1600,
-  "Agus": 4500,
+  "Agus": 5800,
   "Akutagawa🇹🇼": 300,
   "Aldre": 2900,
   "Alexi": 300,
@@ -2285,9 +2338,9 @@
   "Leonart": 300,
   "Letrao🇨🇱": 1300,
   "Liam": 300,
-  "Liberia": 2900,
+  "Liberia": 3500,
   "LitKunai": 300,
-  "Lord Viruzz": 300,
+  "Lord Viruzz": 600,
   "Luzzano": 300,
   "Lvel": 600,
   "MATICERNA": 300,
@@ -2309,6 +2362,7 @@
   "Musicdum": 300,
   "N1k": 300,
   "NC": 3800,
+  "NEMI X DELUX": 600,
   "NXUZ": 600,
   "NYCO": 300,
   "Nemi": 1200,
@@ -2320,14 +2374,14 @@
   "OG": 3800,
   "ONDADISKO": 600,
   "ONZASS": 1800,
-  "Oasis": 3500,
+  "Oasis": 5800,
   "PIERR🇵🇪": 300,
   "PRAISERIZA": 2900,
   "PROMETHEUS BIB 🇨🇴": 300,
   "Panchok": 2900,
   "Paria": 300,
   "Personality": 300,
-  "PichulaMc": 2900,
+  "PichulaMc": 3200,
   "Player": 3200,
   "Polosport": 1900,
   "Pomberito": 2900,
@@ -2357,7 +2411,7 @@
   "Scot": 300,
   "Selek": 300,
   "Sin Limites": 1200,
-  "Six": 2900,
+  "Six": 3200,
   "Snow": 5800,
   "Soneto": 300,
   "Sosa": 900,

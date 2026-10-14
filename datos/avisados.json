@@ -2833,7 +2833,7 @@
    "Zignos": 11
   },
   "fecha": "08/10",
-  "firma": "a7254f1636f826a3",
+  "firma": "f20681323178c4ee",
   "msg": "1557926458221920299",
   "nombre": "__ LA REDENCIÓN VOL.1 __",
   "num": 431,
@@ -10488,7 +10488,7 @@
    "Tenor": 3
   },
   "fecha": "13/10",
-  "firma": "bb4a2820e66e0856",
+  "firma": "c327424a9de746c5",
   "msg": "1559459229411057705",
   "nombre": "QCYO RAPEEN",
   "num": 465,
@@ -11038,6 +11038,284 @@
     "Magic",
     "Octavos",
     625
+   ]
+  ],
+  "v": 2
+ },
+ "468": {
+  "antes": {
+   "Agus": [
+    9,
+    10,
+    false
+   ],
+   "Ariaxer": [
+    53,
+    72,
+    false
+   ],
+   "Cinexfilo": [
+    36,
+    44,
+    false
+   ],
+   "Colesito": [
+    6,
+    7,
+    false
+   ],
+   "Gocho": [
+    100,
+    167,
+    false
+   ],
+   "Liberia": [
+    19,
+    22,
+    false
+   ],
+   "Lord Viruzz": [
+    35,
+    43,
+    false
+   ],
+   "NC": [
+    16,
+    19,
+    false
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "PichulaMc": [
+    4,
+    5,
+    false
+   ],
+   "Provenza": [
+    11,
+    13,
+    false
+   ],
+   "SINTEXT": [
+    222,
+    134,
+    true
+   ],
+   "Six": [
+    10,
+    11,
+    false
+   ],
+   "Verc": [
+    14,
+    17,
+    false
+   ],
+   "Zignos": [
+    12,
+    14,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Agus",
+    "Snake",
+    "Agus"
+   ],
+   [
+    "Agus",
+    "Konan",
+    "Agus"
+   ],
+   [
+    "Colesito",
+    "SINTEXT",
+    "Colesito"
+   ],
+   [
+    "Colesito",
+    "Six",
+    "Colesito"
+   ],
+   [
+    "Nemi",
+    "Cinexfilo",
+    "Nemi"
+   ],
+   [
+    "Nemi",
+    "Lord Viruzz",
+    "Nemi"
+   ],
+   [
+    "NC",
+    "Ariaxer",
+    "NC"
+   ],
+   [
+    "NC",
+    "ICONOX",
+    "NC"
+   ],
+   [
+    "Tam",
+    "PichulaMc",
+    "Tam"
+   ],
+   [
+    "Liberia",
+    "Colesito, Zignos",
+    "Liberia"
+   ],
+   [
+    "Oasis",
+    "NC, Provenza, Gocho",
+    "Oasis"
+   ],
+   [
+    "ERIK X NEMI X DELUX",
+    "Liberia",
+    "ERIK X NEMI X DELUX"
+   ],
+   [
+    "Oasis",
+    "Verc, Agus",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "NEMI X DELUX",
+    "Oasis"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 14,
+   "Ariaxer": 8,
+   "Cinexfilo": 10,
+   "Colesito": 25,
+   "Gocho": 5,
+   "Liberia": 8,
+   "Lord Viruzz": 12,
+   "NC": 27,
+   "Oasis": 22,
+   "PichulaMc": 30,
+   "Provenza": 22,
+   "SINTEXT": 4,
+   "Six": 17,
+   "Verc": 9,
+   "Zignos": 20
+  },
+  "fecha": "13/10",
+  "firma": "1870e1c4b33d1f98",
+  "msg": "1559752028111114252",
+  "nombre": "DEM UZBEKISTAN FECHA 2",
+  "num": 468,
+  "participantes": 36,
+  "sello": {
+   "Oasis": "57c484cc5d64:5f7648916ad1"
+  },
+  "sv": "FFA",
+  "t": "2026-10-14T02:23:46Z",
+  "tabla": [
+   [
+    "NEMI X DELUX",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    5000
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Verc",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Agus",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Zignos",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Snake",
+    "Octavos",
+    1250
+   ],
+   [
+    "Konan",
+    "Octavos",
+    1250
+   ],
+   [
+    "SINTEXT",
+    "Octavos",
+    1250
+   ],
+   [
+    "Six",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cinexfilo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lord Viruzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "ICONOX",
+    "Octavos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Cuartos",
+    833
+   ],
+   [
+    "Provenza",
+    "Cuartos",
+    833
+   ],
+   [
+    "Gocho",
+    "Cuartos",
+    833
    ]
   ],
   "v": 2

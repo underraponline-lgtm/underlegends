@@ -14383,7 +14383,7 @@
      [
       [
        "MATICERNA",
-       "Agus",
+       "EIDP",
        "Henry"
       ],
       "MATICERNA",
@@ -14527,7 +14527,7 @@
     1250
    ],
    [
-    "Agus",
+    "EIDP",
     "Octavos",
     1250
    ],
@@ -22569,6 +22569,264 @@
     "Magic",
     "Octavos",
     625
+   ]
+  ]
+ },
+ "468": {
+  "dia": "2026-10-13",
+  "escala": "16+",
+  "fecha": "13/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1559715059196760145"
+  ],
+  "n": 468,
+  "nombre": "DEM UZBEKISTAN FECHA 2",
+  "participantes": 36,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Agus",
+       "Snake",
+       "Konan"
+      ],
+      "Agus",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Colesito",
+       "SINTEXT",
+       "Six"
+      ],
+      "Colesito",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Nemi",
+       "Cinexfilo",
+       "Lord Viruzz"
+      ],
+      "Nemi",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "NC",
+       "Ariaxer",
+       "ICONOX"
+      ],
+      "NC",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Tam",
+       "PichulaMc"
+      ],
+      "Tam",
+      "triple (3 bandas, pasan 2)"
+     ],
+     [
+      [
+       "Marto 🇦🇷",
+       "Chop🇭🇳",
+       "Sin límites 🇵🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "SAIK",
+       "Xubaru prime 🇧🇲",
+       "warap🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "vandu🇨🇦",
+       "Yor 🇪🇸",
+       "Bna"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Liberia",
+       "Colesito, Zignos"
+      ],
+      "Liberia",
+      "Walk-in 1: Sebita🇱🇷"
+     ],
+     [
+      [
+       "Oasis",
+       "NC, Provenza, Gocho"
+      ],
+      "Oasis",
+      "Walk-in 1: PARK JING SUN"
+     ],
+     [
+      [
+       "Geoka 🇦🇷",
+       "NEMI + DELUX + ERIK"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Velatz",
+       "TAM + AGUS + VERC"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "ERIK X NEMI X DELUX",
+       "Liberia"
+      ],
+      "ERIK X NEMI X DELUX",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "Verc, Agus"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "NEMI X DELUX"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "NEMI X DELUX",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    5000
+   ],
+   [
+    "Agus",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Verc",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cinexfilo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    1250
+   ],
+   [
+    "ICONOX",
+    "Octavos",
+    1250
+   ],
+   [
+    "Konan",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lord Viruzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    1250
+   ],
+   [
+    "SINTEXT",
+    "Octavos",
+    1250
+   ],
+   [
+    "Six",
+    "Octavos",
+    1250
+   ],
+   [
+    "Snake",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zignos",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Gocho",
+    "Cuartos",
+    833
+   ],
+   [
+    "NC",
+    "Cuartos",
+    833
+   ],
+   [
+    "Provenza",
+    "Cuartos",
+    833
    ]
   ]
  }

@@ -348,5 +348,50 @@
   "sin_permiso": false,
   "sv": "URBF"
  },
+ "1559715059196760145": {
+  "autor": "1493317254581063680",
+  "canal": "1487207377601040516",
+  "cuando": "2026-10-13T23:50:48.217000+00:00",
+  "evento": "DEM UZBEKISTAN FECHA 2",
+  "fecha": "13/10",
+  "llave": "1559715059196760145",
+  "pregunta": "1559753441553944661",
+  "preguntada": "2026-10-13 10:23 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Geoka 🇦🇷",
+     "NEMI + DELUX + ERIK"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "Velatz",
+     "TAM + AGUS + VERC"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "Marto 🇦🇷",
+     "Chop🇭🇳",
+     "Sin límites 🇵🇪"
+    ],
+    "ronda": "OCTAVOS"
+   },
+   {
+    "lados": [
+     "vandu🇨🇦",
+     "Yor 🇪🇸",
+     "Bna"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
