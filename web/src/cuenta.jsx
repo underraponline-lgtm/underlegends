@@ -100,7 +100,7 @@ function ParteInstalar() {
 
 // las partes, en grupos, como Discord. Dlx, 01/10/2026: «creo que ajustes tendría su propia sección»: Mi cuenta es
 // lo tuyo y Ajustes lo de la página en este dispositivo
-function grupos(liga, dc, tema, cual) {
+function grupos(liga, dc, tema, cual, temaSv) {
   const yo = liga.yo;
   const { z, f, aj } = horaYZona();
   const C = W.CAMBIOS;
@@ -118,7 +118,7 @@ function grupos(liga, dc, tema, cual) {
       ['avisos', 'campana', 'Avisos de eventos', avisos ? 'activados en este dispositivo' : 'apagados'],
     ]],
     ['LA APP', [
-      ['apariencia', 'tema', 'Apariencia', nombreTema(tema)],
+      ['apariencia', 'tema', 'Apariencia', nombreTema(tema, temaSv)],
       ['hora', 'reloj', 'Hora y zona', f + ' · ' + z],
       ['accesibilidad', 'calma', 'Accesibilidad', aj.calma ? 'menos animaciones' : 'animaciones normales'],
       ['instalar', 'instalar', 'Instalar la app', 'en tu pantalla de inicio'],
@@ -478,7 +478,7 @@ function TeSiguen({ liga }) {
   );
 }
 
-function Parte({ id, liga, dc, tema, onTema }) {
+function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
   const yo = liga.yo;
   const { aj, zonas, z } = horaYZona();
   if (id === 'cuenta') {
@@ -567,17 +567,18 @@ function Parte({ id, liga, dc, tema, onTema }) {
               <span className="cu-mini" aria-hidden="true"><i /><u /><u /><s /></span><b>{n}</b></button>
           ))}
         </div>
-        {/* 🎨 los de los servidores (13/10/2026, Dlx: «crea temas con los servidores asociados»): Noche con sus colores */}
+        {/* 🎨 LOS COLORES DE UN SERVIDOR, encima de Clara o de Noche (13/10/2026, Dlx: «crea temas con los servidores
+            asociados», y «agrega la opción ninguno… ninguno va combinado con el tema blanco»). La vista previa de cada uno
+            va con el tema de base elegido */}
         <p className="cu-temas-t">Con los colores de un servidor de la Liga:</p>
         <div className="cu-temas sv">
-          {TEMAS_SV.map(([sv, n]) => {
-            const t = 'sv:' + sv;
-            return (
-              <button type="button" key={t} className={'cu-tema tsv t-' + sv.toLowerCase() + (tema === t ? ' on' : '')} aria-pressed={tema === t} onClick={() => onTema(t)}>
-                <span className="cu-mini" aria-hidden="true"><i /><u /><u /><s /></span>
-                <b>{liga && liga.logo ? <img alt="" src={liga.logo(sv)} /> : null}{(liga && liga.svs && liga.svs[sv] && liga.svs[sv].nombre) || n}</b></button>
-            );
-          })}
+          <button type="button" className={'cu-tema tsv tsv-base ' + tema + (!temaSv ? ' on' : '')} aria-pressed={!temaSv} onClick={() => onTemaSv('')}>
+            <span className="cu-mini" aria-hidden="true"><i /><u /><u /><s /></span><b>Ninguno</b></button>
+          {TEMAS_SV.map(([sv, n]) => (
+            <button type="button" key={sv} className={'cu-tema tsv ' + tema + ' t-' + sv.toLowerCase() + (temaSv === sv ? ' on' : '')} aria-pressed={temaSv === sv} onClick={() => onTemaSv(sv)}>
+              <span className="cu-mini" aria-hidden="true"><i /><u /><u /><s /></span>
+              <b>{liga && liga.logo ? <img alt="" src={liga.logo(sv)} /> : null}{(liga && liga.svs && liga.svs[sv] && liga.svs[sv].nombre) || n}</b></button>
+          ))}
         </div>
       </Caja>
     );
@@ -757,8 +758,8 @@ function tarjetasDe(gs) {
   return out;
 }
 
-export function Cuenta({ liga, dc, parte, tema, onTema, cual = 'cuenta' }) {
-  const gs = grupos(liga, dc, tema, cual);
+export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, cual = 'cuenta' }) {
+  const gs = grupos(liga, dc, tema, cual, temaSv);
   // 🔒 el acceso al Dashboard, a la vista sólo para el dueño. Es un atajo: la puerta de verdad está en el servidor
   const dueno = cual === 'cuenta' && !!dc && String(dc.id) === DUENO;
   const todas = gs.flatMap((g) => g[1]);
@@ -803,7 +804,7 @@ export function Cuenta({ liga, dc, parte, tema, onTema, cual = 'cuenta' }) {
           {cartas.map((c) => (
             <section key={c.id} id={'cu-' + c.id} className="cu-tj" aria-label={c.n}>
               <h2 className="cu-tjt"><Ico n={c.ico} t={22} />{c.n}</h2>
-              {c.partes.map((id) => <Parte key={id} id={id} liga={liga} dc={dc} tema={tema} onTema={onTema} />)}
+              {c.partes.map((id) => <Parte key={id} id={id} liga={liga} dc={dc} tema={tema} onTema={onTema} temaSv={temaSv} onTemaSv={onTemaSv} />)}
             </section>
           ))}
         </div>
@@ -823,7 +824,7 @@ export function Cuenta({ liga, dc, parte, tema, onTema, cual = 'cuenta' }) {
           <section className="cu-parte" aria-label={abierta[2]}>
             <a className="cu-volver" href={'#/' + cual}><Chevron />{cual === 'ajustes' ? 'Ajustes' : 'Mi cuenta'}</a>
             <h2 className="cu-pt"><Ico n={abierta[1]} t={24} />{abierta[2]}</h2>
-            <Parte id={abierta[0]} liga={liga} dc={dc} tema={tema} onTema={onTema} />
+            <Parte id={abierta[0]} liga={liga} dc={dc} tema={tema} onTema={onTema} temaSv={temaSv} onTemaSv={onTemaSv} />
           </section>
         ) : null}
       </div>

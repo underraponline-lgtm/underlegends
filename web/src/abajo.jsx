@@ -307,7 +307,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   );
 }
 
-export function Menu({ liga, abierto, onCerrar, tema, onTema }) {
+export function Menu({ liga, abierto, onCerrar, tema, onTema, temaSv }) {
   // ⚠️ el foco entra al abrirlo y vuelve al ☰ al cerrarlo: con el teclado se quedaba atrás, en la página tapada
   // (revisión del 03/10/2026). Aparte del efecto del Escape: `onCerrar` cambia en cada vuelta de App
   const cerrarB = useRef(null);
@@ -352,7 +352,7 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema }) {
               <button type="button" aria-pressed={tema === 'noche'} onClick={() => onTema('noche')}>Noche</button>
             </div></div>
           {/* 🎨 y los de los servidores (13/10/2026): están en Apariencia, con la vista previa de cada uno */}
-          <div className="x-fila"><span>Temas de los servidores<small>{String(tema).startsWith('sv:') ? 'Ahora: ' + String(tema).slice(3) + '. ' : ''}Los colores de cada servidor de la Liga.</small></span>
+          <div className="x-fila"><span>Colores de un servidor<small>{temaSv ? 'Ahora: ' + temaSv + '. ' : ''}Encima de Clara o de Noche, los colores de un servidor de la Liga.</small></span>
             <a className="btn negro chico" href="#/ajustes/apariencia" onClick={onCerrar}>Elegir</a></div>
           <div className="x-fila"><span>Hora, zona y más<small>El formato de la hora, tu zona y menos animaciones.</small></span>
             <a className="btn negro chico" href="#/ajustes/hora" onClick={onCerrar}>Abrir</a></div>

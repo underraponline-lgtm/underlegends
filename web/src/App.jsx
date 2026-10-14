@@ -94,7 +94,7 @@ const PaginaCrew = lazy(() => import('./grupo.jsx').then((m) => ({ default: m.Pa
 const PaginaPais = lazy(() => import('./grupo.jsx').then((m) => ({ default: m.PaginaPais })));
 const Cargando = () => <div className="cargando">Cargando…</div>;
 import { VentanaVideo } from './video.jsx';
-import { claseTema, temaValido } from './temas.js';
+import { claseTema, guardarTemas, leerTemas } from './temas.js';
 
 // ── el puente con app.js: cada vez que pinta, avisa ──────────────────────────────────────────────
 // ⚠️ Las funciones de app.js son globales (script clásico, sin módulo), y adentro se llaman por su nombre: si se
@@ -227,10 +227,6 @@ function fallaronLosDatos() {
   return !!(v && /No pude cargar los datos/.test(v.textContent || ''));
 }
 
-function leerTema() {
-  // 🎨 también los de los servidores (13/10/2026): ver temas.js
-  try { return temaValido(localStorage.getItem('lg:tema')); } catch (e) { return 'clara'; }
-}
 
 // lo que las votaciones necesitan de app.js: los votos, el mío y el estado (guardando, error)
 function estadoEnc() {
@@ -256,7 +252,9 @@ export default function App() {
   const [aviso, setAviso] = useState(avisoDe);
   const [enc, setEnc] = useState(estadoEnc);
   const [ahora, setAhora] = useState(() => new Date());
-  const [tema, setTema] = useState(leerTema);
+  // 🎨 el tema de base (Clara o Noche) y los colores de un servidor encima, o ninguno (13/10/2026): ver temas.js
+  const [tema, setTema] = useState(() => leerTemas().base);
+  const [temaSv, setTemaSv] = useState(() => leerTemas().sv);
   const [menu, setMenu] = useState(false);
   const [historia, setHistoria] = useState(null);
   // 🃏 la tarjeta abierta (la ventana nueva): la pide cualquier parte con `accion.carta()`, que avisa `lg:carta`
@@ -354,9 +352,12 @@ export default function App() {
     return () => { vivo = false; clearInterval(t); };
   }, []);
 
-  const elegirTema = useCallback((t) => { setTema(t); try { localStorage.setItem('lg:tema', t); } catch (e) { /* igual */ } }, []);
+  const elegirTema = useCallback((t) => setTema(t), []);
+  const elegirSv = useCallback((s) => setTemaSv(s || ''), []);
+  // se guardan juntos (y así el valor viejo `sv:FFA`, de la primera versión, queda como Noche + FFA)
+  useEffect(() => { guardarTemas(tema, temaSv); }, [tema, temaSv]);
   // los de los servidores son oscuros: la página de afuera va de noche también
-  useEffect(() => { document.documentElement.classList.toggle('ini-noche', tema !== 'clara'); }, [tema]);
+  useEffect(() => { document.documentElement.classList.toggle('ini-noche', tema === 'noche'); }, [tema]);
   const cerrarHistoria = useCallback(() => setHistoria(null), []);
   // ⚠️ CON TOPE: cada historia nueva es una clave; quedan las 600 más recientes (el muro trae 80)
   const guardarVistos = (n) => {
@@ -454,9 +455,9 @@ export default function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vistos, grupos]);
 
-  if (!liga) return <div className={'app ' + claseTema(tema)}><div className="barra-ul" /><div className="cargando">Cargando la Liga…</div></div>;
+  if (!liga) return <div className={'app ' + claseTema(tema, temaSv)}><div className="barra-ul" /><div className="cargando">Cargando la Liga…</div></div>;
   return (
-    <div className={'app ' + claseTema(tema)} ref={raiz}>
+    <div className={'app ' + claseTema(tema, temaSv)} ref={raiz}>
       {/* ♿ «saltar al contenido» (04/10/2026, de la lista de Dlx): no se ve hasta que se llega con el teclado, y salta
           el menú de arriba. Lleva el foco, no sólo la vista: si no, el próximo Tab volvía al menú */}
       <a className="saltar" href="#contenido" onClick={(e) => {
@@ -488,8 +489,8 @@ export default function App() {
         // verificarse desde la página (01/10/2026), y Mi cuenta entera desde el 02/10 (Dlx: «me gusta cómo lo propusiste»)
         : pagina === 'cuenta' && partes[1] === 'verificar' ? <Aislada key="Verificar" n="Verificar" pagina><Suspense fallback={<Cargando />}><PaginaVerificar liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'dashboard' ? <Aislada key="Dashboard" n="Dashboard" pagina><Suspense fallback={<Cargando />}><Dashboard dc={yo.dc} liga={liga} /></Suspense></Aislada>
-        : pagina === 'cuenta' ? <Aislada key="Cuenta" n="Cuenta" pagina><Suspense fallback={<Cargando />}><Cuenta cual="cuenta" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Suspense></Aislada>
-        : pagina === 'ajustes' ? <Aislada key="Ajustes" n="Ajustes" pagina><Suspense fallback={<Cargando />}><Cuenta cual="ajustes" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} /></Suspense></Aislada> : <>
+        : pagina === 'cuenta' ? <Aislada key="Cuenta" n="Cuenta" pagina><Suspense fallback={<Cargando />}><Cuenta cual="cuenta" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} temaSv={temaSv} onTemaSv={elegirSv} /></Suspense></Aislada>
+        : pagina === 'ajustes' ? <Aislada key="Ajustes" n="Ajustes" pagina><Suspense fallback={<Cargando />}><Cuenta cual="ajustes" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} temaSv={temaSv} onTemaSv={elegirSv} /></Suspense></Aislada> : <>
         {/* 🏠 el Dashboard, sólo para Dlx: si la cuenta del navegador no es la suya ni se baja (la puerta igual es el servidor) */}
         {yo.dc && String(yo.dc.id) === DUENO ? <Aislada n="PanelDueno"><Suspense fallback={null}><PanelDueno liga={liga} /></Suspense></Aislada> : null}
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos || {}} onAbrir={setHistoria} /></Aislada>
@@ -517,7 +518,7 @@ export default function App() {
       <Aislada n="Pie"><Pie liga={liga} /></Aislada>
       <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} pagina={paginaMenu} /></Aislada>
       {pagina && !sv ? <Aislada n="Subir"><Subir key={paginaMenu} /></Aislada> : null}
-      <Aislada n="Menu"><Menu liga={liga} abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} /></Aislada>
+      <Aislada n="Menu"><Menu liga={liga} abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} temaSv={temaSv} /></Aislada>
       {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={cerrarHistoria} onVisto={visto} vistos={vistos || {}} raiz={raiz} /></Aislada> : null}
       <Aislada n="Video"><VentanaVideo /></Aislada>
       {carta ? <Aislada key={'c' + carta} n="VisorCarta"><Suspense fallback={null}><VisorCarta liga={liga} dc={yo.dc} k={String(carta).split('|')[0]} inicial={String(carta).split('|')[1] || ''} onCerrar={cerrarCarta} /></Suspense></Aislada> : null}

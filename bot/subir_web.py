@@ -222,8 +222,12 @@ def armar():
     # miembro lleva un `pos` después de los miembros —para las cartas— y así
     # se iría al fondo en vez de quedar en su lugar. Sin `o` (un pool de
     # antes), manda `pos`, como siempre.
-    gente = sorted((p for p in pool if p.get('raw')),
-                   key=lambda p: p.get('o') or p.get('pos') or 9999)[:TOPE]
+    # 👤 TODOS, Y LA TABLA CON LOS PRIMEROS `TOPE` (13/10/2026). Dlx, a «sólo los 200 primeros tienen página de perfil»:
+    # *«Todos los que jugaron y los del staff»*. La fila de cada uno se arma para el pool entero; la tabla del lobby sigue
+    # con los primeros 200 (lo pide cada Inicio) y las demás viajan en `/api/perfiles` (`p[k].f`), que la página baja
+    # sólo al abrir un perfil. Ver `_perfiles_extra()`
+    todos = sorted((p for p in pool if p.get('raw')), key=lambda p: p.get('o') or p.get('pos') or 9999)
+    gente = todos[:TOPE]
 
     from comun import respaldo as _resp
     _foto = _con_foto()
@@ -236,7 +240,9 @@ def armar():
     _pid = _ids_del_padron(_resp._norm)
     def _did(p):
         return str(p.get('discord_id') or '').strip() or _pid.get(_resp._norm(p.get('raw')), '')
-    _avs = {k: v for k, v in (_avatares({_did(p) for p in pool if _did(p)}) or {}).items()
+    # 🏷️ y los del staff que no compiten, para su perfil (ver `_solo_rol()`)
+    _staff = _solo_rol(pool)
+    _avs = {k: v for k, v in (_avatares({_did(p) for p in pool if _did(p)} | {x['did'] for x in _staff}) or {}).items()
             if str(k) not in _sin}
     _de = _quien(gente)
     _ult = _ultimos(_de)
@@ -352,7 +358,9 @@ def armar():
         # 🔑 EL AVATAR DE DISCORD, `<id>/<hash>`, para el círculo del ranking.
         # Ver `_avatares()`: la foto de R2 NO, que su dirección es secreta.
         'av': ('%s/%s' % (_did(p), _avs[_did(p)]) if _avs.get(_did(p)) else ''),
-    } for p in gente]
+    } for p in todos]
+    # 👤 las filas de más allá de la tabla, para su perfil (`_perfiles_extra()`); la tabla, los primeros `TOPE`
+    filas_todas, tabla = tabla, tabla[:TOPE]
     # ▲▼ cuánto subió cada uno esta semana y quién debutó: contra la foto del lunes (ver `foto_semana()`)
     movimientos(tabla, gente, foto_semana(pool, escribir='--aplicar' in sys.argv))
     # 🧑 LAS CARAS DE QUIENES QUEDAN FUERA DE LA TABLA (corta en `TOPE`): las historias, «lo último» y las llaves los
@@ -365,14 +373,14 @@ def armar():
     # en el ranking (Dlx, 25/09/2026) y leían del pool, que no las tiene: la
     # cuenta vive en `datos/mw.json`. Ver `_mw_suma()`.
     _mws = _mw_suma()[0]
-    for p, f in zip(gente, tabla):
+    for p, f in zip(todos, filas_todas):
         m = _mws.get(p.get('raw'))
         if m:
             f.update(caz=m['caz'], czd=m['czd'], sob=m['sob'])
     # 🔑 «SIN VERIFICAR», sólo en quien le falta algo: ver `_sin_verificar()`
     _nv = _sin_verificar()
     if _nv:
-        for p, f in zip(gente, tabla):
+        for p, f in zip(todos, filas_todas):
             q = _nv(p)
             if q:
                 f['nv'] = q
@@ -606,8 +614,10 @@ def armar():
     from comun.temporada import ACTUAL, FECHAS
     _f = FECHAS.get(ACTUAL)
     # los perfiles se arman antes: de ahí sale quién debutó esta semana (el «NUEVO» del Ranking, `debutantes()`)
-    _pf = _perfiles(gente, list(_comp.values()), regs)
+    # 👤 de todos los que jugaron, no sólo de la tabla (13/10/2026: «Todos los que jugaron y los del staff»)
+    _pf = _perfiles(todos, list(_comp.values()), regs)
     debutantes(tabla, _pf)
+    _perfiles_extra(_pf, filas_todas[TOPE:], _staff, _avs)
     return {
         'temporada': SELLO,
         'fase': {'arranca': _f[0], 'termina': _f[1]} if _f else None,
@@ -1528,6 +1538,41 @@ def _replicas(de):
             else:
                 i += 1
     return out
+
+
+def _solo_rol(pool):
+    """`[{did, raw, full, cc, k}]`: la gente de la Lista con un rol en un servidor de la Liga (organizador, jurado, host,
+    staff o socio: `datos/roles_discord.json`) que NO está en el pool, o sea que no compite. Tienen perfil igual, sin
+    números (Dlx, 13/10/2026: *«Todos los que jugaron y los del staff»*)."""
+    dr = _json('datos', 'roles_discord.json') or {}
+    con_rol = set()
+    for t in ('organizador', 'jurado', 'host', 'staff', 'socio'):
+        con_rol |= set((dr.get(t) or {}).keys())
+    if not con_rol:
+        return []
+    en_pool = {str(p.get('discord_id') or '') for p in pool} | {str(p.get('raw') or '') for p in pool}
+    out = []
+    for x in _json('datos', 'padron.json') or []:
+        did, raw = str(x.get('discord_id') or ''), str(x.get('raw') or '').strip()
+        if did in con_rol and raw and did not in en_pool and raw not in en_pool:
+            cc = (_banderas(x.get('full') or '') or [''])[0]
+            out.append({'did': did, 'raw': raw, 'full': x.get('full') or raw, 'cc': cc, 'k': _clave({'raw': raw, 'cc': cc})})
+    return out
+
+
+def _perfiles_extra(pf, filas, staff, avs):
+    """Las filas de quien no entra en la tabla del lobby, adentro de su perfil (`p[k].f`), y un perfil mínimo para el
+    staff que no compite (`f.solo`: nombre, bandera y cara, sin números). La página las usa cuando la persona no está en
+    `liga.T` (web/src/perfil.jsx)."""
+    pp = pf.setdefault('p', {}) if isinstance(pf, dict) else {}
+    for f in filas:
+        if f.get('k'):
+            pp.setdefault(f['k'], {})['f'] = f
+    for x in staff:
+        if x['k'] in pp:
+            continue
+        pp[x['k']] = {'f': {'n': x['raw'], 'k': x['k'], 'cc': x['cc'], 'solo': 1,
+                            'av': ('%s/%s' % (x['did'], avs[x['did']]) if avs.get(x['did']) else '')}}
 
 
 def _perfiles(gente, comp, regs):
@@ -3499,10 +3544,13 @@ def _self_check():
                'y no son todos el mismo numero (%d valores distintos)'
                % distintos)
 
-    # 🔑 LOS PERFILES: uno por fila de la tabla, con sus requisitos
-    ok(set(perf.get('p') or {}) == {f['k'] for f in p['tabla']},
-       'un perfil por cada rapero de la tabla  (%d)' % len(perf.get('p') or {}))
-    ok(all(len(x['req'].get('pais') or []) == 3 for x in (perf.get('p') or {}).values()),
+    # 🔑 LOS PERFILES: uno por fila de la tabla, con sus requisitos, y desde el 13/10/2026 de TODOS los que jugaron (los de
+    # más allá de la tabla, con su fila adentro: `_perfiles_extra()`)
+    ok(set(perf.get('p') or {}) >= {f['k'] for f in p['tabla']} and len(perf.get('p') or {}) >= p['gente']
+       and all(x.get('f') for k, x in (perf.get('p') or {}).items() if k not in {f['k'] for f in p['tabla']}),
+       'un perfil por cada rapero que jugó, y el de afuera de la tabla con su fila  (%d de %d)'
+       % (len(perf.get('p') or {}), p['gente']))
+    ok(all(len(x['req'].get('pais') or []) == 3 for x in (perf.get('p') or {}).values() if 'req' in x),
        'y cada uno con las tres condiciones de País')
     _evs = {str(e[0]) for x in (perf.get('p') or {}).values() for e in x.get('ev') or []}
     ok(_evs <= set(perf.get('e') or {}), 'cada evento del historial tiene su nombre  (%d)'

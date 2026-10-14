@@ -141,7 +141,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
     <div className="escena pf-esc" style={{ '--mo-c': (sv && sv.color) || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298', ...silueta(sv && svE, sv && sv.color) }}>
       <section className={'rk-cab pf-cab' + (resumen ? '' : ' sin-carta')}>
         <div className="rk-tx pf-tx">
-          <span className="tag">{f.pos ? '#' + f.pos + ' DE LA TEMPORADA' : 'FUERA DE CONCURSO'} · {liga.temp}</span>
+          <span className="tag">{f.solo ? 'EN LA LIGA' : f.pos ? '#' + f.pos + ' DE LA TEMPORADA' : 'FUERA DE CONCURSO'} · {liga.temp}</span>
           <div className="pf-quien">
             <Cara liga={liga} k={k} nombre={f.n} cls="cara pf-cara" />
             <h1 className="hero-ev largo" style={pa && pa.color ? { color: pa.color } : undefined}>{limpio(f.n)}</h1>
@@ -166,14 +166,14 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
               {redes.filter((r) => https(r[1])).map((r) => <li key={r[1]}><a href={https(r[1])} target="_blank" rel="noopener noreferrer">{REDES[r[0]] || r[0]} ↗</a></li>)}
             </ul>
           ) : null}
-          <dl className="pf-num">
+          {f.solo ? null : <dl className="pf-num">
             <div><dt>OVR {q('ovr')}</dt><dd className="ovr">{f.ovr || '—'}</dd></div>
             <div><dt>RANGO {q('rango')}</dt><dd><Rango liga={liga} rg={f.rg} /></dd></div>
             {/* ⚠️ seis cifras («271.108») no entran a 26 px en un tercio de un celular de 375: se salían por la derecha */}
             <div><dt>PUNTOS {q('puntos')}</dt><dd className={num(f.pts || 0).length > 6 ? 'largo' : undefined}>{num(f.pts || 0)}</dd></div>
             <div><dt>EVENTOS {q('eventos')}</dt><dd>{f.ev || 0}</dd></div>
             <div><dt>WIN% {q('win')}</dt><dd title={f.wr ? undefined : 'El Win% aparece con 10 eventos'}>{f.wr ? String(f.wr).replace('.', ',') : '—'}</dd></div>
-          </dl>
+          </dl>}
           <QueEsTexto k={qe} />
           <div className="hero-acc pf-acc">
             {!esYo && typeof window.alternarSigo === 'function' ? <Seguir si={si} onSeguir={() => window.alternarSigo(k)} /> : null}
@@ -788,7 +788,9 @@ export function Perfil({ liga, dc, k: k0, tab }) {
   // un link viejo con otra forma de la clave (mayúsculas): el de la tabla, como `porK()` de app.js
   if (!liga.T[k]) { const kk = Object.keys(liga.T).find((x) => x.toLowerCase() === String(k).toLowerCase()); if (kk) k = kk; }
   const P = usePerfiles();
-  const f = liga.T[k] || filaDeCuenta(dc, k);
+  // 👤 y quien no entra en la tabla del lobby (corta en 200): su fila viaja en su perfil, y el staff que no compite trae
+  // una mínima (`f.solo`). Dlx, 13/10/2026: «Todos los que jugaron y los del staff». Ver `_perfiles_extra()` en subir_web.py
+  const f = liga.T[k] || (P && P.p && P.p[k] && P.p[k].f) || filaDeCuenta(dc, k);
   const esYo = !!((dc && dc.clave === k) || (liga.yo && liga.yo.k === k));
   const p = (P && P.p && P.p[k]) || null;
   const t = SECCIONES.includes(tab) ? tab : '';
@@ -813,11 +815,22 @@ export function Perfil({ liga, dc, k: k0, tab }) {
     return () => clearTimeout(r);
   }, [t, k, !!P]); // eslint-disable-line react-hooks/exhaustive-deps
   if (!f) {
+    // sin la tabla no se sabe todavía: puede venir en los perfiles, que bajan después
+    if (!P) return <div className="cargando">Cargando…</div>;
     return (
       <section className="sec pf-sec">
         <div className="sec-t"><h2>Todavía no jugó esta temporada</h2></div>
-        <p className="pronto-p">O está más abajo de los 200 que muestra la tabla. Buscalo en el <a className="te-link" href="#/ranking">Ranking</a>.</p>
+        <p className="pronto-p">Buscalo en el <a className="te-link" href="#/ranking">Ranking</a>.</p>
       </section>
+    );
+  }
+  // 🏷️ el staff que no compite: quién es y su rol, sin números ni tarjetas
+  if (f.solo) {
+    return (
+      <>
+        <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} resumen={false} />
+        <section className="sec pf-sec"><p className="pronto-p">No compite esta temporada: está en la Liga por su rol.</p></section>
+      </>
     );
   }
   // 🎨 BLANCO Y NEGRO, COMO EL INICIO (Dlx, 07/10/2026: *«no todos los lugares son blancos sino intercala con el
