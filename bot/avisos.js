@@ -2663,6 +2663,71 @@ export function tieneMetadatos(b) {
   return false;
 }
 const FONDO_POR_DIA = 5;
+//: cuántos días queda a la vista en el Dashboard lo que aprobó el filtro, con «Quitar»
+const FILTRO_VISTA_DIAS = 3;
+
+/**
+ * 🛡️ EL FILTRO AUTOMÁTICO DE LOS FONDOS (Dlx, 13/10/2026: «que eso de fondos no necesite eso de pendientes… pero que
+ * también tenga un filtro, como Facebook hace, para evitar que haya cosas gore o NSFW… un filtro automático»).
+ *
+ * Cada fondo pasa por la IA de Cloudflare (la misma de los afiches, `OCR_MODELO`) ANTES de guardarse. Contesta sí, no o
+ * «quizás» por categoría, y con eso:
+ *   - todo «no»                         → se ve al instante, sin esperar a nadie;
+ *   - un «sí» en algo que no va         → no entra, y se le dice por qué (no se guarda ni un byte);
+ *   - un «quizás», drogas, o la IA no contesta → queda para revisar en el Dashboard, como antes.
+ * O sea que los pendientes no desaparecen: quedan para lo que la IA no sabe, que es donde hace falta una persona.
+ *
+ * ⚠️ UNA IA SE EQUIVOCA PARA LOS DOS LADOS. Por eso: «quizás» va a revisar y no a aprobar; ante la duda en una categoría
+ * se le pide «maybe», no «no»; y lo que el filtro aprobó queda tres días a la vista en el Dashboard con «Quitar»
+ * (`fondosDueno()`), que es lo que hace Facebook también: filtro automático y gente mirando lo que se escapó.
+ */
+export const FILTRO_CATEGORIAS = ['SEXUAL', 'GORE', 'VIOLENCE', 'HATE', 'DRUGS', 'PERSONAL'];
+//: lo que con un «sí» no entra; las drogas van a revisar (la cultura del rap las muestra, y lo decide una persona)
+export const FILTRO_NO = ['SEXUAL', 'GORE', 'VIOLENCE', 'HATE', 'PERSONAL'];
+//: cómo se le dice a quien la subió (y en el Dashboard)
+export const FILTRO_TEXTO = { SEXUAL: 'contenido sexual o desnudos', GORE: 'sangre, heridas o muerte',
+  VIOLENCE: 'violencia', HATE: 'símbolos o mensajes de odio', DRUGS: 'drogas',
+  PERSONAL: 'datos personales a la vista (documentos, direcciones, teléfonos)' };
+export const FILTRO_PEDIDO = 'You moderate images for a website whose users include teenagers. A user wants this image '
+  + 'as the background of their public profile. For EACH category answer yes, no or maybe, on ONE line, exactly like '
+  + 'this:\nSEXUAL=no GORE=no VIOLENCE=no HATE=no DRUGS=no PERSONAL=no\n'
+  + 'SEXUAL: nudity, exposed breasts, genitals or buttocks, lingerie or underwear posing, sexual acts or sexually '
+  + 'suggestive poses, sexual drawings, hentai.\n'
+  + 'GORE: blood, open wounds, injuries, corpses, mutilation, self-harm.\n'
+  + 'VIOLENCE: real people being hurt, threatened or killed, torture, executions, terrorism. A drawn or posed weapon '
+  + 'alone is no.\n'
+  + 'HATE: nazi or other hate symbols, racist or hateful imagery or text.\n'
+  + 'DRUGS: drugs or drug use shown prominently.\n'
+  + 'PERSONAL: readable personal data: ID documents, home addresses, phone numbers, emails, license plates, bank cards.\n'
+  + 'If you are not sure about a category, answer maybe for it. Answer only that line.';
+
+/** Lo que contestó la IA → `{v: 'ok'|'no'|'revisar', si: [..], quizas: [..]}`. Pura. Sin las seis, a revisar. */
+export function leerFiltro(texto) {
+  const r = {};
+  for (const m of String(texto || '').matchAll(/\b(SEXUAL|GORE|VIOLENCE|HATE|DRUGS|PERSONAL)\s*[=:]\s*(yes|no|maybe)\b/gi)) {
+    const k = m[1].toUpperCase();
+    if (!(k in r)) r[k] = m[2].toLowerCase();
+  }
+  const si = FILTRO_CATEGORIAS.filter((k) => r[k] === 'yes');
+  const quizas = FILTRO_CATEGORIAS.filter((k) => r[k] === 'maybe');
+  const faltan = FILTRO_CATEGORIAS.filter((k) => !(k in r));
+  if (si.some((k) => FILTRO_NO.includes(k))) return { v: 'no', si, quizas };
+  if (si.length || quizas.length || faltan.length) return { v: 'revisar', si, quizas, faltan };
+  return { v: 'ok', si, quizas };
+}
+
+/** Pasa la imagen (`b64`, ya en base64) por la IA y devuelve el veredicto de `leerFiltro()`, con lo que contestó. */
+export async function filtrarImagen(env, b64, tipo) {
+  const sal = await env.AI.run(OCR_MODELO, {
+    messages: [{ role: 'user', content: [
+      { type: 'text', text: FILTRO_PEDIDO },
+      { type: 'image_url', image_url: { url: 'data:' + tipo + ';base64,' + b64 } },
+    ] }],
+    max_tokens: 40, temperature: 0,
+  });
+  const t = String((sal && (sal.response != null ? sal.response : (sal.result || {}).response)) || '').trim();
+  return Object.assign(leerFiltro(t), { crudo: t.slice(0, 200) });
+}
 
 /** ¿Vale este cambio de rol? `{id, rol, si}` (`si`: true lo pone, false lo saca, null vuelve a lo automático). Pura. */
 export function validarRol(d) {
@@ -3292,7 +3357,14 @@ export async function rutaAvisos(req, env, ruta) {
     if (buf.length > OCR_MAX) return json({ error: 'demasiado grande: mandala achicada' }, 413);
     if (!tipoImagen(buf)) return json({ error: 'no es una imagen' }, 400);
     try {
-      return json(await textoDeImagen(env, buf, new URL(req.url).searchParams.get('tipo') === 'llave' ? 'llave' : 'afiche'));
+      const cual = new URL(req.url).searchParams.get('tipo');
+      // 🛡️ y el filtro de los fondos, para probarlo con imágenes de verdad (`filtrarImagen()`)
+      if (cual === 'filtro') {
+        let bin = '';
+        for (let i = 0; i < buf.length; i += 0x8000) bin += String.fromCharCode.apply(null, buf.subarray(i, i + 0x8000));
+        return json(await filtrarImagen(env, btoa(bin), tipoImagen(buf)));
+      }
+      return json(await textoDeImagen(env, buf, cual === 'llave' ? 'llave' : 'afiche'));
     } catch (e) {
       return json({ error: String((e && e.message) || e).slice(0, 200) }, 502);
     }
@@ -7216,7 +7288,8 @@ export class Avisos {
       pagina: !!r.pagina, motivo: r.motivo, t: r.t } : null };
   }
 
-  /** Subir (`img`, base64), cambiar dónde se ve (`perfil`, `pagina`) o quitarlo (`borrar`). Lo nuevo espera revisión. */
+  /** Subir (`img`, base64), cambiar dónde se ve (`perfil`, `pagina`) o quitarlo (`borrar`). Lo nuevo pasa por el filtro
+   *  (`filtrarImagen()`): limpio se ve ya, con algo que no va no entra, y lo dudoso espera revisión. */
   async fondo(d) {
     this._fondos = null;
     const quien = String(d.quien || '');
@@ -7248,6 +7321,20 @@ export class Avisos {
       if (b.length > FONDO_TOPE) return { error: 'demasiado grande' };
       // 🛡️ con la ubicación o algún dato escondido, no (ver `tieneMetadatos()`)
       if (tieneMetadatos(b)) return { error: 'metadatos' };
+      // 🛡️ EL FILTRO, antes de guardar nada. Con tope propio: si no, alguien podría probar mil imágenes contra la IA
+      // hasta que una pase (cuentan también las que no entran, que no suman a `subidas`)
+      if (!this.cuentaCambio(quien, 'fondo_filtro', FONDO_POR_DIA * 2)) return { error: 'tope' };
+      let filtro = { v: 'revisar', si: [], quizas: [], crudo: '', error: 'sin IA' };
+      if (this.env.AI) {
+        try { filtro = await filtrarImagen(this.env, d.img, tipo); } catch (e) {
+          filtro = { v: 'revisar', si: [], quizas: [], crudo: '', error: String((e && e.message) || e).slice(0, 100) };
+        }
+      }
+      this.anotarFiltro(quien, String(d.de || ''), filtro, ahora);
+      if (filtro.v === 'no') {
+        const cats = filtro.si.filter((k) => FILTRO_NO.includes(k));
+        return { error: 'filtro', cats, texto: cats.map((k) => FILTRO_TEXTO[k]).join(', ') };
+      }
       const azar = Array.from(crypto.getRandomValues(new Uint8Array(12)), (x) => x.toString(16).padStart(2, '0')).join('');
       const clave = 'fondos/' + azar + '.' + ({ 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' }[tipo]);
       try {
@@ -7257,16 +7344,32 @@ export class Avisos {
       }
       if (r && r.pend) await borrarR2(r.pend);
       const url = R2_PUB + '/' + clave;
+      if (filtro.v === 'ok') {
+        // ✅ limpio: se ve ya. El anterior se borra de R2
+        if (r && r.url) await borrarR2(r.url);
+        this.sql.exec('INSERT INTO fondos (quien, k, estado, url, pend, perfil, pagina, motivo, t, subidas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+          "ON CONFLICT(quien) DO UPDATE SET k = excluded.k, estado = 'ok', url = excluded.url, pend = '', perfil = excluded.perfil, " +
+          "pagina = excluded.pagina, motivo = '', t = excluded.t, subidas = excluded.subidas",
+        quien, String(d.de || ''), 'ok', url, '', perfil, pagina, '', ahora, subidas.concat([hoy]).join(','));
+        return Object.assign(this.fondoDe(quien), { filtro: 'ok' });
+      }
       this.sql.exec('INSERT INTO fondos (quien, k, estado, url, pend, perfil, pagina, motivo, t, subidas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
         "ON CONFLICT(quien) DO UPDATE SET k = excluded.k, estado = 'revisar', pend = excluded.pend, perfil = excluded.perfil, " +
         "pagina = excluded.pagina, motivo = '', t = excluded.t, subidas = excluded.subidas",
       quien, String(d.de || ''), 'revisar', '', url, perfil, pagina, '', ahora, subidas.concat([hoy]).join(','));
-      return this.fondoDe(quien);
+      return Object.assign(this.fondoDe(quien), { filtro: 'revisar' });
     }
     if (!r) return { error: 'todavía no subiste un fondo' };
     this.sql.exec('UPDATE fondos SET perfil = ?, pagina = ?, k = CASE WHEN ? != \'\' THEN ? ELSE k END WHERE quien = ?',
       perfil, pagina, String(d.de || ''), String(d.de || ''), quien);
     return this.fondoDe(quien);
+  }
+
+  /** 🛡️ Lo que decidió el filtro, para el Dashboard: los últimos 60, sin la imagen (sólo quién, cuándo y qué vio). */
+  anotarFiltro(quien, k, filtro, t) {
+    const h = [{ quien, k, t, v: filtro.v, si: filtro.si || [], quizas: filtro.quizas || [], error: filtro.error || '' }]
+      .concat(this.leer('fondos_filtro') || []).slice(0, 60);
+    this.guardar('fondos_filtro', h);
   }
 
   /** Los aprobados, para la página (público, por clave de perfil): `{t, f: {clave: [url, perfil, pagina]}}`. */
@@ -7285,8 +7388,17 @@ export class Avisos {
   async duenoFondo(d) {
     this._fondos = null;
     const r = this.sql.exec('SELECT * FROM fondos WHERE quien = ?', String(d.quien)).toArray()[0];
-    if (!r || !r.pend) return { error: 'no hay nada para revisar' };
     const ahora = Date.now();
+    // 🛡️ QUITAR UNO QUE YA SE VE: lo que el filtro aprobó y no tenía que pasar (`si: false` sobre uno sin pendiente)
+    if (r && !r.pend && r.url && !d.si) {
+      const k = String(r.url).split('.r2.dev/')[1];
+      if (k && k.startsWith('fondos/')) { try { await this.env.CARTAS.delete(k); } catch (e) { /* queda huérfano */ } }
+      this.sql.exec("UPDATE fondos SET url = '', estado = 'no', motivo = ? WHERE quien = ?", String(d.motivo || ''), r.quien);
+      this.aBandeja(r.quien, 'fondo', 'fondo', '🖼️ Tu fondo se quitó', (d.motivo ? d.motivo + '. ' : '') +
+        'Podés subir otro desde Mi cuenta.', HUB + '/cuenta/fondo', '', ahora);
+      return { ok: true, fondos: this.fondosDueno(), filtro: this.filtroDueno() };
+    }
+    if (!r || !r.pend) return { error: 'no hay nada para revisar' };
     const borrarR2 = async (u) => {
       const k = String(u || '').split('.r2.dev/')[1];
       if (k && k.startsWith('fondos/')) { try { await this.env.CARTAS.delete(k); } catch (e) { /* queda huérfano */ } }
@@ -7304,13 +7416,26 @@ export class Avisos {
       this.aBandeja(r.quien, 'fondo', 'fondo', '🖼️ Tu fondo no se aprobó', (d.motivo ? d.motivo + '. ' : '') +
         'Podés subir otro desde Mi cuenta.', HUB + '/cuenta/fondo', '', ahora);
     }
-    return { ok: true, fondos: this.fondosDueno() };
+    return { ok: true, fondos: this.fondosDueno(), filtro: this.filtroDueno() };
   }
 
   /** Para el Dashboard: los que esperan revisión. */
   fondosDueno() {
     return this.sql.exec("SELECT quien, k, pend, t FROM fondos WHERE pend != '' ORDER BY t").toArray()
       .map((r) => ({ quien: r.quien, k: r.k, pend: r.pend, t: r.t }));
+  }
+
+  /** 🛡️ Para el Dashboard: los que el filtro dejó ver en los últimos `FILTRO_VISTA_DIAS` (con «Quitar») y cuántos
+   *  aprobó, frenó y mandó a revisar. */
+  filtroDueno() {
+    const desde = Date.now() - FILTRO_VISTA_DIAS * 864e5;
+    const vivos = this.sql.exec("SELECT quien, k, url, t FROM fondos WHERE url != '' AND pend = '' AND t > ? ORDER BY t DESC",
+      desde).toArray().map((r) => ({ quien: r.quien, k: r.k, url: r.url, t: r.t }));
+    const h = (this.leer('fondos_filtro') || []).filter((x) => x.t > desde);
+    const cuenta = { ok: 0, no: 0, revisar: 0 };
+    for (const x of h) cuenta[x.v] = (cuenta[x.v] || 0) + 1;
+    return { vivos, cuenta, frenados: h.filter((x) => x.v === 'no').slice(0, 10)
+      .map((x) => ({ k: x.k, t: x.t, si: x.si })) };
   }
 
   // ── 🏷️ los roles de la página (13/10/2026) ──────────────────────────
@@ -9032,7 +9157,7 @@ export class Avisos {
       return { limitado: true, permisos, mis_roles: roles, yo: this.nombrePor(d && d.quien),
         reportes: ve('reportes') || ve('reportes_cerrar') ? this.reportesDueno(ahora) : [],
         decidir: ve('decidir') ? this.decidirDueno() : {}, videos: ve('videos') ? (this.leer('videos_revisar') || []) : [],
-        fondos: ve('fondos') ? this.fondosDueno() : [] };
+        fondos: ve('fondos') ? this.fondosDueno() : [], filtro: ve('fondos') ? this.filtroDueno() : null };
     }
     const dias = [];
     for (let i = 13; i >= 0; i--) {
@@ -9066,8 +9191,9 @@ export class Avisos {
       permisos, mis_roles: roles, yo: this.nombrePor(d && d.quien),
       // 🏷️ los roles: el directorio, lo puesto a mano y el historial (13/10/2026)
       roles: this.rolesDueno(),
-      // 🖼️ los fondos que esperan revisión (13/10/2026)
+      // 🖼️ los fondos que esperan revisión (13/10/2026), y lo que hizo el filtro
       fondos: this.fondosDueno(),
+      filtro: this.filtroDueno(),
       dias,
       sesiones: this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM sesiones WHERE vence > ?', ahora).toArray()[0].n,
       sistema: {

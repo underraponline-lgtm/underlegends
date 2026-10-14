@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.00",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T22:30:00-04:00",
+   "titulo": "Tu fondo se ve al instante, con un filtro automático",
+   "items": [
+    "🖼️ Tu fondo ya no espera: pasa por un filtro automático y, si está limpio, se ve al instante. Sin desnudos, sangre, violencia, odio ni datos personales; si el filtro no está seguro, lo mira la Liga.",
+    "🔔 La campana muestra bien cuándo revisó los canales por última vez, aunque dejes la página abierta."
+   ]
+  },
+  {
    "version": "2.99",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T22:30:00-04:00",

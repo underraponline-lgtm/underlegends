@@ -1267,7 +1267,7 @@ function Reportes({ rep, liga, alCambiar, corrige = true }) {
 // 🖼️ LOS FONDOS PARA REVISAR (13/10/2026): la imagen que alguien subió como fondo no se ve hasta que la aprobás (hay
 // menores en la Liga). Lo que no se aprueba le llega a su campana con el motivo. Ver `duenoFondo()` en avisos.js
 const MOTIVOS_FONDO = ['No es apropiada para la Liga', 'Es de otra persona', 'Tiene datos personales', 'No se ve bien'];
-function FondosRevisar({ fs, alCambiar }) {
+function FondosRevisar({ fs, alCambiar, filtro, alFiltro }) {
   const [ocup, setOcup] = useState('');
   const [msg, setMsg] = useState('');
   const [motivo, setMotivo] = useState({});
@@ -1279,11 +1279,13 @@ function FondosRevisar({ fs, alCambiar }) {
       const j = await r.json().catch(() => ({}));
       if (!r.ok || j.error) throw new Error(j.error || String(r.status));
       alCambiar(j.fondos || []);
+      if (j.filtro && alFiltro) alFiltro(j.filtro);
     } catch (e) { setMsg('No se pudo: ' + e.message); }
     setOcup('');
   };
+  const fl = filtro || {}, c = fl.cuenta || {}, vivos = fl.vivos || [];
   return (
-    <div><h3>Fondos para revisar <small>no se ven hasta que los aprobás</small></h3>
+    <div>{fs.length ? <h3>Fondos para revisar <small>el filtro automático no estuvo seguro: no se ven hasta que los aprobás</small></h3> : null}
       <ul>{fs.map((f) => (
         <li key={f.quien}>
           <div className="db-l1"><b>{f.k ? <a href={'#/r/' + f.k}>{f.k}</a> : 'una cuenta'}</b><small>{hace(f.t)}</small></div>
@@ -1296,6 +1298,21 @@ function FondosRevisar({ fs, alCambiar }) {
           </div>
         </li>
       ))}</ul>
+      {/* 🛡️ lo que el filtro dejó ver estos días: si algo se le escapó, se quita acá (13/10/2026) */}
+      {vivos.length ? <>
+        <h3>Ya se ven <small>los aprobó el filtro automático · en 3 días: {[[c.ok, 'aprobado'], [c.no, 'frenado']].map(([n, t]) => (n || 0) + ' ' + t + ((n || 0) === 1 ? '' : 's')).join(', ')} y {c.revisar || 0} a revisar</small></h3>
+        <ul>{vivos.map((f) => (
+          <li key={'v' + f.quien}>
+            <div className="db-l1"><b>{f.k ? <a href={'#/r/' + f.k}>{f.k}</a> : 'una cuenta'}</b><small>{hace(f.t)}</small></div>
+            <div className="db-fondo" style={{ backgroundImage: urlFondo(f.url) || 'none' }} role="img" aria-label="El fondo que se ve" />
+            <div className="cu-btns">
+              <select className="db-sel db-sel-corto" value={motivo[f.quien] || MOTIVOS_FONDO[0]} onChange={(e) => setMotivo(Object.assign({}, motivo, { [f.quien]: e.target.value }))}>
+                {MOTIVOS_FONDO.map((m) => <option key={m}>{m}</option>)}</select>
+              <button type="button" className="btn borde2 chico" disabled={ocup === f.quien} onClick={() => decidir(f, false)}>Quitar</button>
+            </div>
+          </li>
+        ))}</ul>
+      </> : null}
       {msg ? <small role="status">{msg}</small> : null}
     </div>
   );
@@ -1303,10 +1320,10 @@ function FondosRevisar({ fs, alCambiar }) {
 
 // 🤝 lo que también te llega: los videos y los fondos para revisar. Los reportes y ✅ Decidir tienen su pestaña desde el
 // 13/10/2026
-function Llego({ d, alFondos }) {
-  const vs = d.videos || [], fs = d.fondos || [];
-  if (!vs.length && !fs.length) return <p className="pronto-p">Nada nuevo acá: los reportes de las llaves y lo de ✅ Decidir tienen su pestaña.</p>;
-  return <div className="db-llego">{fs.length ? <FondosRevisar fs={fs} alCambiar={alFondos} /> : null}{vs.length ? <VideosRevisar vs={vs} /> : null}</div>;
+function Llego({ d, alFondos, alFiltro }) {
+  const vs = d.videos || [], fs = d.fondos || [], vivos = (d.filtro && d.filtro.vivos) || [];
+  if (!vs.length && !fs.length && !vivos.length) return <p className="pronto-p">Nada nuevo acá: los reportes de las llaves y lo de ✅ Decidir tienen su pestaña.</p>;
+  return <div className="db-llego">{fs.length || vivos.length ? <FondosRevisar fs={fs} alCambiar={alFondos} filtro={d.filtro} alFiltro={alFiltro} /> : null}{vs.length ? <VideosRevisar vs={vs} /> : null}</div>;
 }
 
 // ── ✅ DECIDIR, EN EL DASHBOARD (13/10/2026). Dlx: «estaba pensando en mover lo de decidir del sheet, aquí», y a la
@@ -1440,7 +1457,7 @@ export function Dashboard({ dc, liga }) {
           {sec('LO QUE PIDE ATENCIÓN', null, <Atencion xs={at} />)}
           {(d.vivo || []).length ? sec('EN VIVO AHORA', 'se actualiza al abrir el Dashboard',
             <EnVivo vivo={d.vivo} liga={liga} aj={d.ajustes || {}} chat={d.chat} />) : null}
-          {sec('LO QUE TE LLEGÓ', null, <Llego d={d} alFondos={(fs) => cambiarD({ fondos: fs })} />)}
+          {sec('LO QUE TE LLEGÓ', null, <Llego d={d} alFondos={(fs) => cambiarD({ fondos: fs })} alFiltro={(fl) => cambiarD({ filtro: fl })} />)}
           {ve('ajustes') ? sec('ATAJOS', null, <ul className="db-atajos">{ATAJOS.map(([t, h]) => (
             <li key={h}><a href={h} target={h[0] === '/' ? undefined : '_blank'} rel={h[0] === '/' ? undefined : 'noopener noreferrer'}>{t} ↗</a></li>
           ))}</ul>) : null}

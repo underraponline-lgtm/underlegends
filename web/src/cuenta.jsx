@@ -232,7 +232,9 @@ async function pedirFondo(ruta, cuerpo) {
   if (!r.ok || j.error) {
     const e = { nivel: 'Se desbloquea con el nivel ' + (j.falta || 10) + ' del Pase de rapero.', tope: 'Ya subiste varias hoy: probá mañana.',
       'no es una imagen': 'Eso no es una imagen.', 'demasiado grande': 'La imagen es muy pesada.',
-      metadatos: 'La imagen trae datos escondidos (como dónde se sacó): elegila de nuevo desde acá y se limpian solos.' }[j.error];
+      metadatos: 'La imagen trae datos escondidos (como dónde se sacó): elegila de nuevo desde acá y se limpian solos.',
+      // 🛡️ el filtro automático (13/10/2026): no entra, y se dice por qué
+      filtro: 'Esa imagen no pasó el filtro automático' + (j.texto ? ': parece tener ' + j.texto : '') + '. Elegí otra.' }[j.error];
     throw new Error(r.status === 401 ? 'Entrá con Discord de nuevo.' : e || j.error || String(r.status));
   }
   return j;
@@ -262,13 +264,21 @@ function FondoCaja({ dc }) {
   };
   const mandar = async (cuerpo) => {
     setOcup(true); setMsg('');
-    try { setSt(await pedirFondo('fondo', cuerpo)); if (cuerpo.img) { setArchivo(null); setVista(''); setMsg('Listo: la ve la Liga y, cuando la apruebe, se ve.'); } } catch (er) { setMsg(er.message); }
+    try {
+      const j = await pedirFondo('fondo', cuerpo);
+      setSt(j);
+      if (cuerpo.img) {
+        setArchivo(null); setVista('');
+        // 🛡️ limpia se ve ya; si el filtro no estuvo seguro, la mira la Liga
+        setMsg(j.filtro === 'ok' ? 'Listo: ya se ve.' : 'El filtro automático no estuvo seguro: la mira la Liga y, cuando la apruebe, se ve.');
+      }
+    } catch (er) { setMsg(er.message); }
     setOcup(false);
   };
   const subir = async () => { if (archivo) await mandar({ img: await aBase64(archivo), perfil, pagina }); };
-  const estado = !f ? '' : f.pend ? 'En revisión: la Liga la mira antes de que se vea.' : f.estado === 'no' ? 'No se aprobó' + (f.motivo ? ': ' + f.motivo : '') + '. Podés subir otra.' : 'Aprobada.';
+  const estado = !f ? '' : f.pend ? 'En revisión: el filtro automático no estuvo seguro y la mira la Liga.' : f.estado === 'no' ? 'No se aprobó' + (f.motivo ? ': ' + f.motivo : '') + '. Podés subir otra.' : 'Ya se ve.';
   return (
-    <Caja t="Tu fondo" d={pu.si ? 'Tu propia imagen de fondo. La ven los demás cuando la aprueba la Liga.' : 'Tu propia imagen de fondo, en tu perfil y en tu página.'}>
+    <Caja t="Tu fondo" d={pu.si ? 'Tu propia imagen de fondo. Pasa por un filtro automático: sin desnudos, sangre, violencia, odio ni datos personales.' : 'Tu propia imagen de fondo, en tu perfil y en tu página.'}>
       {!pu.si && !(f && f.url) ? <p className="cu-d">🔒 Se desbloquea con el <b>nivel {pu.falta || 10}</b> del <a href="#/pase">Pase de rapero</a>{pu.nivel != null ? ' (vas en el ' + pu.nivel + ')' : ''}.</p> : null}
       {f && urlFondo(f.pend || f.url) ? <div className="cu-fondo-ver" style={{ backgroundImage: urlFondo(f.pend || f.url) }} aria-label="Tu fondo" role="img" /> : null}
       {estado ? <p className="cu-d">{estado}</p> : null}

@@ -1015,6 +1015,40 @@ const ok = (cond, que, det) => {
       && borr.fondo === null && Object.keys(enR2).length === 0,
     'tu fondo: pide el nivel del Pase y que sea una imagen de verdad, se ve recién aprobado, elegís dónde, y quitarlo lo borra de R2',
     JSON.stringify([sinNivel, falsa, sub, despues, enR2]));
+    // 🛡️ el filtro automático (13/10/2026): limpio se ve ya, con algo que no va no entra, y lo dudoso espera revisión
+    const LF = A.leerFiltro;
+    const linea = (o2) => A.FILTRO_CATEGORIAS.map((k) => k + '=' + (o2[k] || 'no')).join(' ');
+    ok(LF(linea({})).v === 'ok' && LF(linea({ SEXUAL: 'yes' })).v === 'no' && LF(linea({ GORE: 'yes' })).si[0] === 'GORE'
+      && LF(linea({ HATE: 'maybe' })).v === 'revisar' && LF(linea({ DRUGS: 'yes' })).v === 'revisar'
+      && LF('I cannot help with that').v === 'revisar' && LF('SEXUAL=no GORE=no').v === 'revisar'
+      && LF('SEXUAL: No, GORE: no, VIOLENCE=no HATE=no DRUGS=no PERSONAL=YES').v === 'no',
+    'el filtro: todo «no» pasa, un «sí» en lo que no va frena, «quizás» o drogas a revisar, y sin las seis respuestas, a revisar');
+    let contesta = linea({});
+    o.env.AI = { run: async () => { if (contesta === null) throw new Error('la IA no anda'); return { response: contesta }; } };
+    const limpio = await o.fondo({ quien: A.DUENO, de: 'dlx', img: webp });
+    const yaSeVe = o.fondos().f.dlx;
+    contesta = linea({ SEXUAL: 'yes' });
+    const frenado = await o.fondo({ quien: A.DUENO, de: 'dlx', img: webp });
+    const r2Frenado = Object.keys(enR2).length;
+    contesta = linea({ GORE: 'maybe' });
+    const dudoso = await o.fondo({ quien: A.DUENO, de: 'dlx', img: webp });
+    await o.duenoFondo({ quien: A.DUENO, si: false });
+    contesta = null;
+    const sinIA = await o.fondo({ quien: A.DUENO, de: 'dlx', img: webp });
+    await o.duenoFondo({ quien: A.DUENO, si: false });
+    const fd = o.filtroDueno();
+    const quitado = await o.duenoFondo({ quien: A.DUENO, si: false, motivo: 'No va' });
+    const tras = o.fondos().f.dlx;
+    delete o.env.AI;
+    await o.fondo({ quien: A.DUENO, borrar: true });
+    ok(limpio.filtro === 'ok' && limpio.fondo.estado === 'ok' && !limpio.fondo.pend && yaSeVe && yaSeVe[0] === limpio.fondo.url
+      && frenado.error === 'filtro' && frenado.cats[0] === 'SEXUAL' && r2Frenado === 1
+      && dudoso.filtro === 'revisar' && dudoso.fondo.pend && dudoso.fondo.url === limpio.fondo.url
+      && sinIA.filtro === 'revisar' && fd.cuenta.ok === 1 && fd.cuenta.no === 1 && fd.cuenta.revisar === 3
+      && fd.vivos.length === 1 && fd.frenados[0].si[0] === 'SEXUAL'
+      && quitado.ok && !tras && Object.keys(enR2).length === 0,
+    'el filtro en el objeto: limpio se ve sin esperar, frenado no guarda nada, dudoso o sin IA a revisar, y lo que pasó se puede quitar',
+    JSON.stringify([limpio, frenado, dudoso, sinIA, fd, enR2]));
     // 🛡️ anti-doxeo: una imagen con metadatos (la ubicación, la cámara) no entra (13/10/2026)
     const TM = A.tieneMetadatos;
     const riff = (chunks) => {
