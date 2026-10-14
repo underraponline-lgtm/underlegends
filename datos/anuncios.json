@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-14T01:54:26+00:00",
+ "cuando": "2026-10-14T02:00:22+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -3559,6 +3559,28 @@
    "categoria_id": "1309234419525222477"
   },
   {
+   "nombre": "COMPE CHILL",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1551643910953246751",
+   "cuando": "2026-09-21T17:18:56",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "autor_h": "8f502dc57bad1da2",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1V1",
+   "horario": "APENAS SE LLENEN LOS CUPOS",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "HERYIETEERJOUKATEITHORER",
+   "categoria_id": "1309234419525222477"
+  },
+  {
    "nombre": "👀👀👀",
    "servidor": "FVS",
    "canal": "「📢」Anuncios",
@@ -4378,6 +4400,69 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Pichulamc 🇦🇷",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1559746957570867307",
+   "cuando": "2026-10-14T01:57:33"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lrs el borrachin🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1559746710392012901",
+   "cuando": "2026-10-14T01:56:34"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "verc 🇨🇱",
+   "quien": "jovenvesta",
+   "discord_id": "913652602208649226",
+   "msg_id": "1559746666196639755",
+   "cuando": "2026-10-14T01:56:23"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Makmah 🇻🇪 (antes de la última)",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1559746498403504202",
+   "cuando": "2026-10-14T01:55:43"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "dante🇹🇹  (primera)",
+   "quien": "delux.13",
+   "discord_id": "729809358627536938",
+   "msg_id": "1559746309517479940",
+   "cuando": "2026-10-14T01:54:58"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "agus",
+   "quien": "agusdcab",
+   "discord_id": "494965289042182164",
+   "msg_id": "1559746292828217367",
+   "cuando": "2026-10-14T01:54:54"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "nacioenmilan 🇮🇹",
+   "quien": "yatusabe_eldeuxss",
+   "discord_id": "1338567692239765617",
+   "msg_id": "1559746168819421309",
+   "cuando": "2026-10-14T01:54:25"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
