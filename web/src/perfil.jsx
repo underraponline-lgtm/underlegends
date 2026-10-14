@@ -15,6 +15,7 @@ import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
 import { usePaseDe } from './pase.js';
 import { ROL, textoRol, useRoles } from './roles.js';
+import { urlFondo, useFondos } from './fondos.js';
 import { svElegido, useElegidos } from './elegidos.js';
 import * as RQ from './requisitos.js';
 import { Miniatura, abrirVideo } from './video.jsx';
@@ -133,12 +134,15 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
   const pa = usePaseDe(k);
   // 🏷️ y sus roles en la Liga (13/10/2026): los que pone Dlx primero, después los que salen solos de Discord
   const rls = (useRoles() || {})[k] || [];
+  // 🖼️ y su fondo, si lo puso en su perfil y está aprobado (13/10/2026)
+  const fo = (useFondos() || {})[k];
+  const fondoPf = fo && fo[1] ? urlFondo(fo[0]) : '';
   // ❔ cuál de sus números está explicado abajo (uno a la vez)
   const [qe, setQe] = useState('');
   useEffect(() => { setQe(''); }, [k]);
   const q = (id) => <QueEsBoton k={id} abierto={qe === id} onToggle={() => setQe(qe === id ? '' : id)} />;
   return (
-    <div className="escena pf-esc" style={{ '--mo-c': (sv && sv.color) || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298', ...silueta(sv && svE, sv && sv.color) }}>
+    <div className={'escena pf-esc' + (fondoPf ? ' con-fondo' : '')} style={{ '--mo-c': (sv && sv.color) || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298', ...silueta(sv && svE, sv && sv.color), ...(fondoPf ? { '--pf-fondo': fondoPf } : {}) }}>
       <section className={'rk-cab pf-cab' + (resumen ? '' : ' sin-carta')}>
         <div className="rk-tx pf-tx">
           <span className="tag">{f.solo ? 'EN LA LIGA' : f.pos ? '#' + f.pos + ' DE LA TEMPORADA' : 'FUERA DE CONCURSO'} · {liga.temp}</span>

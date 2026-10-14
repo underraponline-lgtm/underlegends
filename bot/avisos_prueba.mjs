@@ -997,6 +997,24 @@ const ok = (cond, que, det) => {
       && rr.dlx[0][0] === 'owner' && rd.roles.hist.length === 3 && rd.roles.hist[0].n === 'Catarsis 🇦🇷'
       && JSON.stringify(o.roles().r.catarsis) === JSON.stringify([['socio', ['URBF']], ['staff', ['URBF']], ['competidor']]),
     'los roles: los que salen solos, lo que pone o saca Dlx encima, Owner sólo Dlx, y el historial', JSON.stringify(rr));
+    // 🖼️ tu fondo (13/10/2026): con el nivel del Pase, se ve recién aprobado, y elegís dónde
+    const enR2 = {};
+    o.env.CARTAS = { put: async (k, b) => { enR2[k] = b.length; }, delete: async (k) => { delete enR2[k]; } };
+    const webp = Buffer.from([0x52, 0x49, 0x46, 0x46, 1, 0, 0, 0, 0x57, 0x45, 0x42, 0x50, 0, 0, 0, 0]).toString('base64');
+    const sinNivel = await o.fondo({ quien: '100000051', de: 'nadie', img: webp });
+    const falsa = await o.fondo({ quien: A.DUENO, de: 'dlx', img: Buffer.from('hola mundo, no soy imagen').toString('base64') });
+    const sub = await o.fondo({ quien: A.DUENO, de: 'dlx', img: webp, pagina: false });
+    const antes = o.fondos().f;
+    const ap = await o.duenoFondo({ quien: A.DUENO, si: true });
+    const despues = o.fondos().f;
+    const aj = await o.fondo({ quien: A.DUENO, de: 'dlx', perfil: false, pagina: true });
+    const borr = await o.fondo({ quien: A.DUENO, borrar: true });
+    ok(sinNivel.error === 'nivel' && sinNivel.falta === A.FONDO_NIVEL && falsa.error === 'no es una imagen'
+      && sub.fondo.estado === 'revisar' && sub.fondo.pend.includes('/fondos/') && !sub.fondo.pagina && !antes.dlx
+      && ap.ok && despues.dlx && despues.dlx[1] === 1 && despues.dlx[2] === 0 && aj.fondo.perfil === false && aj.fondo.pagina === true
+      && borr.fondo === null && Object.keys(enR2).length === 0,
+    'tu fondo: pide el nivel del Pase y que sea una imagen de verdad, se ve recién aprobado, elegís dónde, y quitarlo lo borra de R2',
+    JSON.stringify([sinNivel, falsa, sub, despues, enR2]));
   }
 }
 

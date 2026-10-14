@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "2.97",
+   "dia": "2026-10-13",
+   "cuando": "2026-10-13T22:00:00-04:00",
+   "titulo": "Tu fondo, y los colores de un servidor también en Clara",
+   "items": [
+    "🖼️ Con el nivel 10 del Pase de rapero, tu propia imagen de fondo: en tu perfil, de fondo de tu página, o las dos. La revisa la Liga antes de que se vea. En Mi cuenta → Tu fondo.",
+    "🎨 Los colores de un servidor ahora van con Clara o con Noche, y está la opción Ninguno.",
+    "👤 Todos los que jugaron en la T1 tienen su perfil (antes, sólo los 200 primeros), y el staff de los servidores también, con su rol."
+   ]
+  },
+  {
    "version": "2.96",
    "dia": "2026-10-13",
    "cuando": "2026-10-13T21:00:00-04:00",

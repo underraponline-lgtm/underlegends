@@ -95,6 +95,7 @@ const PaginaPais = lazy(() => import('./grupo.jsx').then((m) => ({ default: m.Pa
 const Cargando = () => <div className="cargando">Cargando…</div>;
 import { VentanaVideo } from './video.jsx';
 import { claseTema, guardarTemas, leerTemas } from './temas.js';
+import { urlFondo, useFondos } from './fondos.js';
 
 // ── el puente con app.js: cada vez que pinta, avisa ──────────────────────────────────────────────
 // ⚠️ Las funciones de app.js son globales (script clásico, sin módulo), y adentro se llaman por su nombre: si se
@@ -455,9 +456,14 @@ export default function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vistos, grupos]);
 
+  // 🖼️ tu fondo, de fondo de tu propia página, si lo elegiste y está aprobado (13/10/2026). Antes del `return` de abajo:
+  // un hook después de un return condicional cambia la cuenta de hooks
+  const fondosAp = useFondos();
+  const fYo = liga && liga.yo && fondosAp ? fondosAp[liga.yo.k] : null;
+  const miFondo = fYo && fYo[2] ? urlFondo(fYo[0]) : '';
   if (!liga) return <div className={'app ' + claseTema(tema, temaSv)}><div className="barra-ul" /><div className="cargando">Cargando la Liga…</div></div>;
   return (
-    <div className={'app ' + claseTema(tema, temaSv)} ref={raiz}>
+    <div className={'app ' + claseTema(tema, temaSv) + (miFondo ? ' con-fondo' : '')} ref={raiz} style={miFondo ? { '--mi-fondo': miFondo } : undefined}>
       {/* ♿ «saltar al contenido» (04/10/2026, de la lista de Dlx): no se ve hasta que se llega con el teclado, y salta
           el menú de arriba. Lleva el foco, no sólo la vista: si no, el próximo Tab volvía al menú */}
       <a className="saltar" href="#contenido" onClick={(e) => {

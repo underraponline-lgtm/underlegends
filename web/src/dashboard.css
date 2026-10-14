@@ -107,6 +107,9 @@
 .db-rep-nota{margin:0;font-size:12.5px;color:var(--gris)}
 .db-rep-ya{margin:0;font-size:13px;font-weight:700;color:var(--magenta-tx)}
 .db-rep-herm{display:flex;align-items:center;gap:6px;font-size:13px}
+/* 🖼️ los fondos para revisar (13/10/2026) */
+.db-fondo{width:100%;aspect-ratio:5/2;background:#030304 center/cover no-repeat;border:1.5px solid var(--suave)}
+.db-sel-corto{width:auto;max-width:100%}
 /* 🏷️ los roles (13/10/2026) */
 .db-roles{display:grid;gap:10px;padding:14px;border-top:2px solid var(--linea)}
 .db-roles-l{list-style:none;margin:0;padding:0;display:grid;gap:6px}

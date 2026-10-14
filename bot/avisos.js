@@ -49,6 +49,8 @@
 export const CRON_VIGIA = '* * * * *';
 
 const HUB = 'https://underlegends.pages.dev';
+//: 🖼️ el bucket público de R2 (el de las cartas): ahí van los fondos (13/10/2026)
+const R2_PUB = 'https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev';
 const DC = 'https://discord.com/api/v10';
 // Discord pide este formato de User-Agent; sin él puede contestar 400.
 const UA = 'DiscordBot (https://underlegends.pages.dev, 1)';
@@ -2180,6 +2182,9 @@ const RUTAS = {
   // 🏷️ los roles de cada uno en la página (13/10/2026): los ve cualquiera; el ciclo manda los que salen solos, con su
   // clave, y Dlx pone o saca. Ver `roles()`, `rolesEstados()` y `duenoRol()`
   '/avisos/roles': 'GET', '/avisos/roles-estados': 'POST', '/avisos/dueno/rol': 'POST',
+  // 🖼️ tu fondo (13/10/2026): subirlo y elegir dónde se ve (con tu sesión), los aprobados (cualquiera) y revisarlos (Dlx).
+  // Ver `fondo()`, `fondos()` y `duenoFondo()`
+  '/avisos/fondo': 'POST', '/avisos/mi-fondo': 'POST', '/avisos/fondos': 'GET', '/avisos/dueno/fondo': 'POST',
   // 📣 seguir a un organizador, con tu sesión. Ver `seguirOrg()`
   '/avisos/seguir-org': 'POST',
 };
@@ -2587,6 +2592,15 @@ export function validarDecisionReporte(d) {
 export const ORDEN_ROLES = ['owner', 'admin', 'asistente', 'moderador', 'socio', 'staff', 'organizador', 'jurado', 'host', 'competidor'];
 //: los que Dlx puede poner o sacar a mano (todos menos owner)
 export const ROLES_A_MANO = ORDEN_ROLES.filter((r) => r !== 'owner');
+
+// 🖼️ TU FONDO (13/10/2026). Dlx, a «una imagen propia para tu cuenta para el fondo»: «Sí, y mientras tanto con el Pase
+// gratis», y dónde se ve, «ambos pero que sea personalizable… que él decida, pero por default en ambos». Se desbloquea con
+// el nivel `FONDO_NIVEL` del Pase de rapero; se ve recién cuando lo aprueba Dlx (hay menores en la Liga); y cada uno elige
+// si va en su perfil, de fondo de su propia página, o los dos
+export const FONDO_NIVEL = 10;
+//: el tope de cada imagen (la página la achica a 1600×640 en webp antes de mandarla) y cuántas por día
+export const FONDO_TOPE = 600 * 1024;
+const FONDO_POR_DIA = 5;
 
 /** ¿Vale este cambio de rol? `{id, rol, si}` (`si`: true lo pone, false lo saca, null vuelve a lo automático). Pura. */
 export function validarRol(d) {
@@ -3671,6 +3685,43 @@ export async function rutaAvisos(req, env, ruta) {
     return elObjeto(env).fetch('https://avisos/decidir-estados', { method: 'POST', body: crudo,
       headers: { 'content-type': 'application/json' } });
   }
+  // 🖼️ TU FONDO: subirlo, cambiar dónde se ve o quitarlo, y ver cómo está. Quién es lo dice la sesión
+  if (ruta === '/avisos/fondo' || ruta === '/avisos/mi-fondo') {
+    const crudo = await req.text();
+    if (crudo.length > (ruta === '/avisos/fondo' ? 900000 : 1024)) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))
+        || (d.img !== undefined && (typeof d.img !== 'string' || !/^[A-Za-z0-9+/=]+$/.test(d.img)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    let de = '';
+    try { de = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { de = ''; }
+    return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
+      method: 'POST', body: JSON.stringify({ quien: q.id, de: claveValida(de) ? de : '', img: d.img, borrar: d.borrar === true,
+        perfil: d.perfil, pagina: d.pagina }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 🖼️ Y REVISARLO: sólo Dlx
+  if (ruta === '/avisos/dueno/fondo') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))
+        || !/^\d{5,25}$/.test(String(d.quien || '')) || typeof d.si !== 'boolean') return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (q.id !== DUENO) {
+      console.warn('[seguridad] revisar un fondo lo pidió alguien que no es el dueño');
+      return json({ error: 'no' }, 403);
+    }
+    return elObjeto(env).fetch('https://avisos/dueno-fondo', {
+      method: 'POST', body: JSON.stringify({ quien: String(d.quien), si: d.si, motivo: String(d.motivo || '').slice(0, 120) }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🏷️ LOS ROLES QUE SALEN SOLOS: del ciclo, con su clave
   if (ruta === '/avisos/roles-estados') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -4171,6 +4222,10 @@ export class Avisos {
       // 📣 y qué decidió Dlx de cada uno y qué hizo el ciclo (13/10/2026): ver `duenoReporte()` y `reportesEstados()`
       // 🔎 y `evid`: lo que encontró el bot de cada reporte (quién lo mandó, las inscripciones, la llamada), lo pone el
       // ciclo (`bot/reportes.py`, `evidencia()`) y se borra con el reporte
+      // 🖼️ el fondo de cada uno (13/10/2026): el aprobado (`url`) y el que espera revisión (`pend`). Ver `fondo()`
+      this.sql.exec("CREATE TABLE IF NOT EXISTS fondos (quien TEXT PRIMARY KEY, k TEXT NOT NULL DEFAULT '', estado TEXT NOT NULL, " +
+        "url TEXT NOT NULL DEFAULT '', pend TEXT NOT NULL DEFAULT '', perfil INTEGER NOT NULL DEFAULT 1, pagina INTEGER NOT NULL DEFAULT 1, " +
+        "motivo TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, subidas TEXT NOT NULL DEFAULT '')");
       // 🏷️ los roles que pone o saca Dlx (13/10/2026): `si` 1 lo pone, 0 lo saca aunque salga solo. Ver `duenoRol()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS roles_manual (quien TEXT NOT NULL, rol TEXT NOT NULL, si INTEGER NOT NULL, ' +
         't INTEGER NOT NULL, PRIMARY KEY (quien, rol))');
@@ -4360,6 +4415,7 @@ export class Avisos {
       if (ruta === '/niveles') return json(this.niveles(), 200, 300);
       if (ruta === '/pases') return json(this.pases(), 200, 300);
       if (ruta === '/roles') return json(this.roles(), 200, 300);
+      if (ruta === '/fondos') return json(this.fondos(), 200, 300);
       if (ruta === '/pase-niveles') return json(this.paseNiveles());
       if (ruta === '/chat-canales') return json(await this.canalesChat());
       if (ruta === '/cierre-vivo') {
@@ -4400,6 +4456,9 @@ export class Avisos {
       if (ruta === '/dueno-reporte') return json(await this.duenoReporte(d));
       if (ruta === '/decidir-estados') return json(this.decidirEstados(d));
       if (ruta === '/roles-estados') return json(this.rolesEstados(d));
+      if (ruta === '/fondo') return json(await this.fondo(d));
+      if (ruta === '/mi-fondo') return json(this.fondoDe(String(d.quien || '')));
+      if (ruta === '/dueno-fondo') return json(await this.duenoFondo(d));
       if (ruta === '/dueno-rol') return json(this.duenoRol(d));
       if (ruta === '/dueno-decidir') return json(this.duenoDecidir(d));
       if (ruta === '/reportes-estados') return json(await this.reportesEstados(d));
@@ -6925,6 +6984,14 @@ export class Avisos {
     this.sql.exec('DELETE FROM uso WHERE quien = ?', String(d.quien));
     // 🔔 y su bandeja
     this.sql.exec('DELETE FROM bandeja WHERE quien = ?', String(d.quien));
+    // 🖼️ y su fondo, con las imágenes (13/10/2026)
+    for (const f of this.sql.exec('SELECT url, pend FROM fondos WHERE quien = ?', String(d.quien)).toArray()) {
+      for (const u of [f.url, f.pend]) {
+        const k = String(u || '').split('.r2.dev/')[1];
+        if (k && k.startsWith('fondos/')) { try { await this.env.CARTAS.delete(k); } catch (e) { /* queda huérfano */ } }
+      }
+    }
+    this.sql.exec('DELETE FROM fondos WHERE quien = ?', String(d.quien));
     // 🤝 y sus postulaciones de /sumate, y cuántas veces cambió algo hoy
     this.sql.exec('DELETE FROM postulaciones WHERE quien = ?', String(d.quien));
     // 📣 a quién seguís como organizador, y sus avisos (12/10/2026)
@@ -7047,6 +7114,113 @@ export class Avisos {
     }
     if (n) await this.colaReportes(ahora);
     return { ok: true, n, evidencia: e };
+  }
+
+  // ── 🖼️ tu fondo (13/10/2026) ──────────────────────────────────────────
+  /** ¿Puede subir un fondo? El nivel `FONDO_NIVEL` del Pase; Dlx siempre (para probarlo). */
+  puedeFondo(quien) {
+    if (quien === DUENO) return { si: true, nivel: null, falta: FONDO_NIVEL };
+    const P = this.paseDatos();
+    const nivel = P.cfg ? this.paseNivel(quien, P.cfg) : 0;
+    return { si: nivel >= FONDO_NIVEL, nivel, falta: FONDO_NIVEL };
+  }
+
+  /** Cómo está el fondo de alguien, para su Mi cuenta. */
+  fondoDe(quien) {
+    if (!/^\d{5,25}$/.test(quien)) return { error: 'falta quién' };
+    const r = this.sql.exec('SELECT estado, url, pend, perfil, pagina, motivo, t FROM fondos WHERE quien = ?', quien).toArray()[0];
+    return { ok: true, puede: this.puedeFondo(quien), fondo: r ? { estado: r.estado, url: r.url, pend: r.pend, perfil: !!r.perfil,
+      pagina: !!r.pagina, motivo: r.motivo, t: r.t } : null };
+  }
+
+  /** Subir (`img`, base64), cambiar dónde se ve (`perfil`, `pagina`) o quitarlo (`borrar`). Lo nuevo espera revisión. */
+  async fondo(d) {
+    const quien = String(d.quien || '');
+    if (!/^\d{5,25}$/.test(quien)) return { error: 'falta quién' };
+    const ahora = Date.now();
+    const r = this.sql.exec('SELECT * FROM fondos WHERE quien = ?', quien).toArray()[0];
+    const borrarR2 = async (u) => {
+      const k = String(u || '').split('.r2.dev/')[1];
+      if (k && k.startsWith('fondos/')) { try { await this.env.CARTAS.delete(k); } catch (e) { /* queda huérfano */ } }
+    };
+    if (d.borrar) {
+      if (r) { await borrarR2(r.url); await borrarR2(r.pend); }
+      this.sql.exec('DELETE FROM fondos WHERE quien = ?', quien);
+      return this.fondoDe(quien);
+    }
+    const perfil = d.perfil === undefined ? (r ? r.perfil : 1) : (d.perfil ? 1 : 0);
+    const pagina = d.pagina === undefined ? (r ? r.pagina : 1) : (d.pagina ? 1 : 0);
+    if (d.img) {
+      const p = this.puedeFondo(quien);
+      if (!p.si) return { error: 'nivel', nivel: p.nivel, falta: FONDO_NIVEL };
+      const hoy = new Date(ahora).toISOString().slice(0, 10);
+      const subidas = String((r && r.subidas) || '').split(',').filter((x) => x === hoy);
+      if (subidas.length >= FONDO_POR_DIA) return { error: 'tope' };
+      let b = null;
+      try { b = Uint8Array.from(atob(d.img), (c) => c.charCodeAt(0)); } catch (e) { b = null; }
+      // por los primeros bytes, no por lo que dice el pedido (`tipoImagen()`, la misma de los afiches)
+      const tipo = b ? tipoImagen(b) : '';
+      if (!tipo) return { error: 'no es una imagen' };
+      if (b.length > FONDO_TOPE) return { error: 'demasiado grande' };
+      const azar = Array.from(crypto.getRandomValues(new Uint8Array(12)), (x) => x.toString(16).padStart(2, '0')).join('');
+      const clave = 'fondos/' + azar + '.' + ({ 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' }[tipo]);
+      try {
+        await this.env.CARTAS.put(clave, b, { httpMetadata: { contentType: tipo, cacheControl: 'public, max-age=31536000' } });
+      } catch (e) {
+        return { error: 'no pude guardarla' };
+      }
+      if (r && r.pend) await borrarR2(r.pend);
+      const url = R2_PUB + '/' + clave;
+      this.sql.exec('INSERT INTO fondos (quien, k, estado, url, pend, perfil, pagina, motivo, t, subidas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+        "ON CONFLICT(quien) DO UPDATE SET k = excluded.k, estado = 'revisar', pend = excluded.pend, perfil = excluded.perfil, " +
+        "pagina = excluded.pagina, motivo = '', t = excluded.t, subidas = excluded.subidas",
+      quien, String(d.de || ''), 'revisar', '', url, perfil, pagina, '', ahora, subidas.concat([hoy]).join(','));
+      return this.fondoDe(quien);
+    }
+    if (!r) return { error: 'todavía no subiste un fondo' };
+    this.sql.exec('UPDATE fondos SET perfil = ?, pagina = ?, k = CASE WHEN ? != \'\' THEN ? ELSE k END WHERE quien = ?',
+      perfil, pagina, String(d.de || ''), String(d.de || ''), quien);
+    return this.fondoDe(quien);
+  }
+
+  /** Los aprobados, para la página (público, por clave de perfil): `{t, f: {clave: [url, perfil, pagina]}}`. */
+  fondos() {
+    const f = {};
+    for (const r of this.sql.exec("SELECT k, url, perfil, pagina FROM fondos WHERE url != '' AND k != ''").toArray()) {
+      f[r.k] = [r.url, r.perfil ? 1 : 0, r.pagina ? 1 : 0];
+    }
+    return { t: Date.now(), f };
+  }
+
+  /** Dlx aprueba (`si`) o no un fondo que espera. A quien lo subió le llega a su campana. */
+  async duenoFondo(d) {
+    const r = this.sql.exec('SELECT * FROM fondos WHERE quien = ?', String(d.quien)).toArray()[0];
+    if (!r || !r.pend) return { error: 'no hay nada para revisar' };
+    const ahora = Date.now();
+    const borrarR2 = async (u) => {
+      const k = String(u || '').split('.r2.dev/')[1];
+      if (k && k.startsWith('fondos/')) { try { await this.env.CARTAS.delete(k); } catch (e) { /* queda huérfano */ } }
+    };
+    if (d.si) {
+      await borrarR2(r.url);
+      this.sql.exec("UPDATE fondos SET url = pend, pend = '', estado = 'ok', motivo = '' WHERE quien = ?", r.quien);
+      this.aBandeja(r.quien, 'fondo', 'fondo', '🖼️ Tu fondo ya se ve', 'Lo aprobamos: ya está ' +
+        (r.perfil && r.pagina ? 'en tu perfil y de fondo de tu página' : r.perfil ? 'en tu perfil' : 'de fondo de tu página') + '.',
+      HUB + '/cuenta/fondo', '', ahora);
+    } else {
+      await borrarR2(r.pend);
+      this.sql.exec("UPDATE fondos SET pend = '', estado = CASE WHEN url != '' THEN 'ok' ELSE 'no' END, motivo = ? WHERE quien = ?",
+        String(d.motivo || ''), r.quien);
+      this.aBandeja(r.quien, 'fondo', 'fondo', '🖼️ Tu fondo no se aprobó', (d.motivo ? d.motivo + '. ' : '') +
+        'Podés subir otro desde Mi cuenta.', HUB + '/cuenta/fondo', '', ahora);
+    }
+    return { ok: true, fondos: this.fondosDueno() };
+  }
+
+  /** Para el Dashboard: los que esperan revisión. */
+  fondosDueno() {
+    return this.sql.exec("SELECT quien, k, pend, t FROM fondos WHERE pend != '' ORDER BY t").toArray()
+      .map((r) => ({ quien: r.quien, k: r.k, pend: r.pend, t: r.t }));
   }
 
   // ── 🏷️ los roles de la página (13/10/2026) ──────────────────────────
@@ -8762,6 +8936,8 @@ export class Avisos {
       decidir: this.decidirDueno(),
       // 🏷️ los roles: el directorio, lo puesto a mano y el historial (13/10/2026)
       roles: this.rolesDueno(),
+      // 🖼️ los fondos que esperan revisión (13/10/2026)
+      fondos: this.fondosDueno(),
       dias,
       sesiones: this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM sesiones WHERE vence > ?', ahora).toArray()[0].n,
       sistema: {

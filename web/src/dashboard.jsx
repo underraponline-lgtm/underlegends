@@ -783,6 +783,8 @@ function atencion(d, liga, q) {
     // 📣 los reportes de las llaves sin mirar, y una corrección que no se pudo (13/10/2026)
     ...(() => { const r = (d.reportes || []).filter((x) => x.estado === ''); return r.length ? [['📣', r.length === 1 ? 'Un reporte de una llave sin mirar' : r.length + ' reportes de llaves sin mirar', 'En la pestaña Reportes: corregilo o marcalo como listo.']] : []; })(),
     ...(d.reportes || []).filter((x) => x.estado === 'no_pude').map((x) => ['⚠️', 'No se pudo corregir la llave #' + x.llave, x.resultado]),
+    // 🖼️ y los fondos que esperan (13/10/2026)
+    ...((d.fondos || []).length ? [['🖼️', (d.fondos.length === 1 ? 'Un fondo' : d.fondos.length + ' fondos') + ' para revisar', 'Abajo, en Lo que te llegó.']] : []),
     // ✅ y lo de ✅ Decidir sin contestar (13/10/2026)
     ...(sinContestar(d.decidir) ? [['✅', sinContestar(d.decidir) === 1 ? 'Una pregunta de ✅ Decidir sin contestar' : sinContestar(d.decidir) + ' preguntas de ✅ Decidir sin contestar', 'En la pestaña Decisiones.']] : []),
   ].filter(Boolean);
@@ -1259,11 +1261,49 @@ function Reportes({ rep, liga, alCambiar }) {
   );
 }
 
-// 🤝 lo que también te llega: los videos para revisar. Los reportes y ✅ Decidir tienen su pestaña desde el 13/10/2026
-function Llego({ d }) {
-  const vs = d.videos || [];
-  if (!vs.length) return <p className="pronto-p">Nada nuevo acá: los reportes de las llaves y lo de ✅ Decidir tienen su pestaña.</p>;
-  return <div className="db-llego"><VideosRevisar vs={vs} /></div>;
+// 🖼️ LOS FONDOS PARA REVISAR (13/10/2026): la imagen que alguien subió como fondo no se ve hasta que la aprobás (hay
+// menores en la Liga). Lo que no se aprueba le llega a su campana con el motivo. Ver `duenoFondo()` en avisos.js
+const MOTIVOS_FONDO = ['No es apropiada para la Liga', 'Es de otra persona', 'Tiene datos personales', 'No se ve bien'];
+function FondosRevisar({ fs, alCambiar }) {
+  const [ocup, setOcup] = useState('');
+  const [msg, setMsg] = useState('');
+  const [motivo, setMotivo] = useState({});
+  const decidir = async (f, si) => {
+    setOcup(f.quien); setMsg('');
+    try {
+      const r = await fetch('/api/avisos/dueno/fondo', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ quien: f.quien, si, motivo: si ? '' : motivo[f.quien] || MOTIVOS_FONDO[0] }) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || j.error) throw new Error(j.error || String(r.status));
+      alCambiar(j.fondos || []);
+    } catch (e) { setMsg('No se pudo: ' + e.message); }
+    setOcup('');
+  };
+  return (
+    <div><h3>Fondos para revisar <small>no se ven hasta que los aprobás</small></h3>
+      <ul>{fs.map((f) => (
+        <li key={f.quien}>
+          <div className="db-l1"><b>{f.k ? <a href={'#/r/' + f.k}>{f.k}</a> : 'una cuenta'}</b><small>{hace(f.t)}</small></div>
+          <div className="db-fondo" style={{ backgroundImage: 'url("' + f.pend + '")' }} role="img" aria-label="El fondo que subió" />
+          <div className="cu-btns">
+            <button type="button" className="btn verde chico" disabled={ocup === f.quien} onClick={() => decidir(f, true)}>Aprobar</button>
+            <select className="db-sel db-sel-corto" value={motivo[f.quien] || MOTIVOS_FONDO[0]} onChange={(e) => setMotivo(Object.assign({}, motivo, { [f.quien]: e.target.value }))}>
+              {MOTIVOS_FONDO.map((m) => <option key={m}>{m}</option>)}</select>
+            <button type="button" className="btn borde2 chico" disabled={ocup === f.quien} onClick={() => decidir(f, false)}>No</button>
+          </div>
+        </li>
+      ))}</ul>
+      {msg ? <small role="status">{msg}</small> : null}
+    </div>
+  );
+}
+
+// 🤝 lo que también te llega: los videos y los fondos para revisar. Los reportes y ✅ Decidir tienen su pestaña desde el
+// 13/10/2026
+function Llego({ d, alFondos }) {
+  const vs = d.videos || [], fs = d.fondos || [];
+  if (!vs.length && !fs.length) return <p className="pronto-p">Nada nuevo acá: los reportes de las llaves y lo de ✅ Decidir tienen su pestaña.</p>;
+  return <div className="db-llego">{fs.length ? <FondosRevisar fs={fs} alCambiar={alFondos} /> : null}{vs.length ? <VideosRevisar vs={vs} /> : null}</div>;
 }
 
 // ── ✅ DECIDIR, EN EL DASHBOARD (13/10/2026). Dlx: «estaba pensando en mover lo de decidir del sheet, aquí», y a la
@@ -1390,7 +1430,7 @@ export function Dashboard({ dc, liga }) {
           {sec('LO QUE PIDE ATENCIÓN', null, <Atencion xs={at} />)}
           {(d.vivo || []).length ? sec('EN VIVO AHORA', 'se actualiza al abrir el Dashboard',
             <EnVivo vivo={d.vivo} liga={liga} aj={d.ajustes || {}} chat={d.chat} />) : null}
-          {sec('LO QUE TE LLEGÓ', null, <Llego d={d} />)}
+          {sec('LO QUE TE LLEGÓ', null, <Llego d={d} alFondos={(fs) => cambiarD({ fondos: fs })} />)}
           {sec('ATAJOS', null, <ul className="db-atajos">{ATAJOS.map(([t, h]) => (
             <li key={h}><a href={h} target={h[0] === '/' ? undefined : '_blank'} rel={h[0] === '/' ? undefined : 'noopener noreferrer'}>{t} ↗</a></li>
           ))}</ul>)}

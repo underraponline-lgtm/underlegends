@@ -111,6 +111,7 @@ function grupos(liga, dc, tema, cual, temaSv) {
     ['TU CUENTA', [
       ['cuenta', 'yo', 'Mi cuenta', dc ? 'Discord · ' + limpio(dc.n) : 'Entrar con Discord'],
       ['perfil', 'perfil', 'Mi perfil', yo ? 'tu foto, tus redes y tu servidor' : 'lo que los demás ven de vos'],
+      ['fondo', 'tema', 'Tu fondo', 'tu imagen, con el nivel 10 del Pase'],
       ['siguiendo', 'seguir', 'Siguiendo', liga.sigue.length ? liga.sigue.length + (liga.sigue.length === 1 ? ' rapero' : ' raperos') : 'todavía nadie'],
       ['privacidad', 'candado', 'Privacidad', 'tu foto, tus datos y este dispositivo'],
     ]],
@@ -191,6 +192,99 @@ function Quien({ liga, dc }) {
 // ── cada parte ───────────────────────────────────────────────────────────────────────────────────
 function Caja({ t, children, d }) {
   return <section className="cu-caja"><h3>{t}</h3>{d ? <p className="cu-d">{d}</p> : null}{children}</section>;
+}
+
+// ── 🖼️ TU FONDO (13/10/2026). Dlx, a «una imagen propia para tu cuenta para el fondo»: «Sí, y mientras tanto con el Pase
+// gratis», y dónde, «que él decida, pero por default en ambos». Con el nivel 10 del Pase subís una imagen; la ven los
+// demás recién cuando la aprueba la Liga, y elegís si va en tu perfil, de fondo de tu página, o los dos. La imagen se
+// achica acá antes de mandarla: 1600×640 recortada al centro, en webp, bajo los 600 KB (ver `fondo()` en avisos.js) ──
+const FONDO_W = 1600, FONDO_H = 640, FONDO_TOPE = 600 * 1024;
+
+async function achicar(archivo) {
+  const url = URL.createObjectURL(archivo);
+  try {
+    const img = await new Promise((ok, mal) => { const i = new Image(); i.onload = () => ok(i); i.onerror = mal; i.src = url; });
+    const c = document.createElement('canvas');
+    c.width = FONDO_W; c.height = FONDO_H;
+    const x = c.getContext('2d');
+    // «cover»: llena el cuadro y recorta lo que sobra, al centro
+    const e = Math.max(FONDO_W / img.naturalWidth, FONDO_H / img.naturalHeight);
+    const w = img.naturalWidth * e, h = img.naturalHeight * e;
+    x.drawImage(img, (FONDO_W - w) / 2, (FONDO_H - h) / 2, w, h);
+    for (const q of [0.82, 0.7, 0.58, 0.45]) {
+      const b = await new Promise((ok) => c.toBlob(ok, 'image/webp', q));
+      if (b && b.size <= FONDO_TOPE && b.type === 'image/webp') return b;
+    }
+    // sin webp (Safari viejo): jpeg
+    const j = await new Promise((ok) => c.toBlob(ok, 'image/jpeg', 0.7));
+    if (j && j.size <= FONDO_TOPE) return j;
+    throw new Error('la imagen quedó muy pesada');
+  } finally { URL.revokeObjectURL(url); }
+}
+const aBase64 = (b) => new Promise((ok, mal) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(',')[1] || ''); r.onerror = mal; r.readAsDataURL(b); });
+
+async function pedirFondo(ruta, cuerpo) {
+  const r = await fetch('/api/avisos/' + ruta, { method: 'POST', credentials: 'same-origin',
+    headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo || {}) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || j.error) {
+    const e = { nivel: 'Se desbloquea con el nivel ' + (j.falta || 10) + ' del Pase de rapero.', tope: 'Ya subiste varias hoy: probá mañana.',
+      'no es una imagen': 'Eso no es una imagen.', 'demasiado grande': 'La imagen es muy pesada.' }[j.error];
+    throw new Error(r.status === 401 ? 'Entrá con Discord de nuevo.' : e || j.error || String(r.status));
+  }
+  return j;
+}
+
+function FondoCaja({ dc }) {
+  const [st, setSt] = useState(null);
+  const [vista, setVista] = useState('');
+  const [archivo, setArchivo] = useState(null);
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  useEffect(() => {
+    if (!dc) return undefined;
+    let vivo = true;
+    pedirFondo('mi-fondo').then((j) => { if (vivo) setSt(j); }).catch((e) => { if (vivo) setMsg(e.message); });
+    return () => { vivo = false; };
+  }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  if (!dc) return <Caja t="Tu fondo" d="Entrá con Discord para poner tu propia imagen de fondo." />;
+  if (!st) return <Caja t="Tu fondo"><p className="cu-d">{msg || 'Cargando…'}</p></Caja>;
+  const f = st.fondo, pu = st.puede || {};
+  const perfil = f ? f.perfil : true, pagina = f ? f.pagina : true;
+  const elegir = async (e) => {
+    const a = e.target.files && e.target.files[0];
+    if (!a) return;
+    setMsg('');
+    try { const b = await achicar(a); setArchivo(b); setVista(URL.createObjectURL(b)); } catch (er) { setMsg('No pude usar esa imagen: ' + er.message); }
+  };
+  const mandar = async (cuerpo) => {
+    setOcup(true); setMsg('');
+    try { setSt(await pedirFondo('fondo', cuerpo)); if (cuerpo.img) { setArchivo(null); setVista(''); setMsg('Listo: la ve la Liga y, cuando la apruebe, se ve.'); } } catch (er) { setMsg(er.message); }
+    setOcup(false);
+  };
+  const subir = async () => { if (archivo) await mandar({ img: await aBase64(archivo), perfil, pagina }); };
+  const estado = !f ? '' : f.pend ? 'En revisión: la Liga la mira antes de que se vea.' : f.estado === 'no' ? 'No se aprobó' + (f.motivo ? ': ' + f.motivo : '') + '. Podés subir otra.' : 'Aprobada.';
+  return (
+    <Caja t="Tu fondo" d={pu.si ? 'Tu propia imagen de fondo. La ven los demás cuando la aprueba la Liga.' : 'Tu propia imagen de fondo, en tu perfil y en tu página.'}>
+      {!pu.si && !(f && f.url) ? <p className="cu-d">🔒 Se desbloquea con el <b>nivel {pu.falta || 10}</b> del <a href="#/pase">Pase de rapero</a>{pu.nivel != null ? ' (vas en el ' + pu.nivel + ')' : ''}.</p> : null}
+      {f && (f.url || f.pend) ? <div className="cu-fondo-ver" style={{ backgroundImage: 'url("' + (f.pend || f.url) + '")' }} aria-label="Tu fondo" role="img" /> : null}
+      {estado ? <p className="cu-d">{estado}</p> : null}
+      {f ? (
+        <div className="cu-fondo-donde">
+          <label><input type="checkbox" checked={perfil} disabled={ocup} onChange={(e) => mandar({ perfil: e.target.checked, pagina })} /> En mi perfil (lo ven todos)</label>
+          <label><input type="checkbox" checked={pagina} disabled={ocup} onChange={(e) => mandar({ perfil, pagina: e.target.checked })} /> De fondo de mi página (lo veo yo)</label>
+        </div>) : null}
+      {pu.si ? <>
+        {vista ? <div className="cu-fondo-ver" style={{ backgroundImage: 'url("' + vista + '")' }} aria-label="La que vas a subir" role="img" /> : null}
+        <div className="cu-btns">
+          <label className="btn borde2 chico cu-fondo-arch">{f ? 'Elegir otra imagen' : 'Elegir una imagen'}<input type="file" accept="image/*" onChange={elegir} /></label>
+          {archivo ? <button type="button" className="btn verde chico" disabled={ocup} onClick={subir}>{ocup ? 'Subiendo…' : 'Subir'}</button> : null}
+          {f ? <button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => mandar({ borrar: true })}>Quitar mi fondo</button> : null}
+        </div>
+      </> : null}
+      {msg ? <p className="cu-d" role="status">{msg}</p> : null}
+    </Caja>
+  );
 }
 
 // ── Mi perfil: la foto, las redes y tu servidor. Los mismos estados que la ventana de app.js (`secFoto()`,
@@ -510,6 +604,7 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
       </>
     );
   }
+  if (id === 'fondo') return <FondoCaja dc={dc} />;
   if (id === 'perfil') {
     return (
       <>

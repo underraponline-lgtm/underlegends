@@ -118,6 +118,8 @@ const AVISOS = {
   // 🏷️ los roles de cada perfil (cualquiera) y ponerlos (sólo Dlx), 13/10/2026. ⚠️ `roles-estados` NO va acá
   '/api/avisos/roles': 'GET',
   '/api/avisos/dueno/rol': 'POST',
+  // 🖼️ tu fondo (13/10/2026): subirlo y verlo (con tu sesión), los aprobados (cualquiera) y revisarlos (sólo Dlx)
+  '/api/avisos/fondo': 'POST', '/api/avisos/mi-fondo': 'POST', '/api/avisos/fondos': 'GET', '/api/avisos/dueno/fondo': 'POST',
   // 📣 seguir a un organizador (12/10/2026): con tu sesión. Ver `seguirOrg()` en bot/avisos.js
   '/api/avisos/seguir-org': 'POST',
 };
@@ -197,7 +199,8 @@ async function avisos(req, url) {
   const init = { method: metodo, headers: { accept: 'application/json' } };
   if (metodo === 'POST') {
     const cuerpo = await req.text();
-    if (cuerpo.length > 4096) return new Response('demasiado grande', { status: 413 });
+    // 🖼️ una imagen de fondo es más que 4 KB: sólo esa ruta, y con su propio tope (el Worker lo vuelve a medir)
+    if (cuerpo.length > (url.pathname === '/api/avisos/fondo' ? 900000 : 4096)) return new Response('demasiado grande', { status: 413 });
     init.body = cuerpo;
     init.headers['content-type'] = 'application/json';
     if (sesion(req)) init.headers['x-lg-ses'] = sesion(req);
@@ -217,7 +220,8 @@ async function avisos(req, url) {
     // cuántos siguen a cada uno: se mira al abrir un perfil, y un minuto
     // de atraso no le cambia nada a nadie
     init.cf = { cacheTtl: 60, cacheEverything: true };
-  } else if (url.pathname.endsWith('/pases') || url.pathname.endsWith('/niveles') || url.pathname.endsWith('/avisos/roles')) {
+  } else if (url.pathname.endsWith('/pases') || url.pathname.endsWith('/niveles') || url.pathname.endsWith('/avisos/roles')
+    || url.pathname.endsWith('/avisos/fondos')) {
     // 🎟️ el nivel del Pase y el de la racha de cada perfil (revisión del 05/10/2026): los pide CADA Inicio y CADA
     // perfil, y en el objeto son tablas enteras —el Pase, una persona por persona—. Con la Liga creciendo eran
     // millones de filas leídas por día (techo: 5 millones). Cinco minutos en el borde: un nivel nuevo se ve un rato
