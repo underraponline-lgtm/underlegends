@@ -175,11 +175,11 @@
 "temporada"
 ]
 },
-"xclusivo": {
+"bna": {
 "rg": "C",
 "c": []
 },
-"bna": {
+"xclusivo": {
 "rg": "C",
 "c": []
 },
@@ -276,6 +276,13 @@
 "temporada"
 ]
 },
+"miniboy": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor"
+]
+},
 "carlosss": {
 "rg": "",
 "c": [
@@ -298,13 +305,6 @@
 "pais",
 "servidor",
 "temporada"
-]
-},
-"miniboy": {
-"rg": "D",
-"c": [
-"competitivo",
-"servidor"
 ]
 },
 "presagio": {

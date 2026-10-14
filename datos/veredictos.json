@@ -1796,6 +1796,61 @@
    "b": "ABYSSUS🇵🇦",
    "ganador": "ABYSSUS🇵🇦",
    "votos": "1–0"
+  },
+  "1560047366801981441": {
+   "id": "1560047366801981441",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1792014676524,
+   "a": "Kochi🇨🇱",
+   "b": "Vacile🇪🇸",
+   "ganador": "Vacile🇪🇸",
+   "votos": "1–0"
+  },
+  "1560048659716898948": {
+   "id": "1560048659716898948",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1792014984779,
+   "a": "Ortiz🇪🇸",
+   "b": "Makmah🇻🇪",
+   "ganador": "Ortiz🇪🇸",
+   "votos": "1–0"
+  },
+  "1560050530431270963": {
+   "id": "1560050530431270963",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1792015430792,
+   "a": "Shadow🇨🇴",
+   "b": "TROT🇪🇸",
+   "ganador": "TROT🇪🇸",
+   "votos": "1–0"
+  },
+  "1560051614860189768": {
+   "id": "1560051614860189768",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1792015689340,
+   "a": "Vargas🇨🇴",
+   "b": "Motera🇪🇸",
+   "ganador": "Motera🇪🇸",
+   "votos": "1–0"
+  },
+  "1560052945092091955": {
+   "id": "1560052945092091955",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1792016006492,
+   "a": "Vacile🇪🇸",
+   "b": "Ortiz🇪🇸",
+   "ganador": "Vacile🇪🇸",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5472,14 +5527,64 @@
    "g": "1467763447117778989",
    "canal": "1540223675146707045",
    "pub": 1792014676524,
-   "ed": 1792014676524,
-   "texto": "`[ CUARTOS ]`\n⌞Kochi🇨🇱⌝ 🆚 ⌞Vacile🇪🇸⌝",
+   "ed": 1792016314295,
+   "texto": "`[ CUARTOS ]`\n⌞Kochi🇨🇱⌝ 🆚 ⌞Vacile🇪🇸⌝\n⌞Ortiz🇪🇸⌝ 🆚 ⌞Makmah🇻🇪⌝\n⌞Shadow🇨🇴⌝ 🆚 ⌞TROT🇪🇸⌝\n⌞Vargas🇨🇴⌝ 🆚 ⌞Motera🇪🇸⌝\n`[ SEMIFINALES ]`\n⌞Vacile🇪🇸⌝ 🆚 ⌞Ortiz🇪🇸⌝\n⌞TROT🇪🇸⌝ 🆚 ⌞Motera🇪🇸⌝",
    "batallas": [
     [
      "CUARTOS",
      [
       "Kochi🇨🇱",
       "Vacile🇪🇸"
+     ],
+     "Vacile🇪🇸",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Ortiz🇪🇸",
+      "Makmah🇻🇪"
+     ],
+     "Ortiz🇪🇸",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Shadow🇨🇴",
+      "TROT🇪🇸"
+     ],
+     "TROT🇪🇸",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Vargas🇨🇴",
+      "Motera🇪🇸"
+     ],
+     "Motera🇪🇸",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Vacile🇪🇸",
+      "Ortiz🇪🇸"
+     ],
+     "Vacile🇪🇸",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "TROT🇪🇸",
+      "Motera🇪🇸"
      ],
      null,
      "última ronda y no dice campeón",
