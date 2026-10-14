@@ -979,6 +979,24 @@ const ok = (cond, que, det) => {
       && o.duenoDecidir({ id: 'b1', r: 'Ganó A' }).error,
     '✅ Decidir: el ciclo publica, Dlx contesta, el ciclo lo lee, y lo de una pregunta que se cerró se va',
     JSON.stringify([ciclo1, ciclo2]));
+    // 🏷️ los roles de la página (13/10/2026)
+    const VRol = A.validarRol;
+    ok(VRol({ id: '100000031', rol: 'asistente', si: true }).rol === 'asistente' && VRol({ id: '100000031', rol: 'owner', si: true }).error
+      && VRol({ id: 'x', rol: 'admin', si: true }).error && VRol({ id: '100000031', rol: 'admin' }).error
+      && VRol({ id: '100000031', rol: 'staff', si: null }).si === null,
+    'los roles a mano: cualquiera menos Owner, y con sí, no o «como sale solo»');
+    o.rolesEstados({ dir: [{ k: 'konan', n: 'Konan 🇦🇷', id: '100000031', a: { competidor: [] } },
+      { k: 'catarsis', n: 'Catarsis 🇦🇷', id: '100000032', a: { socio: ['URBF'], staff: ['URBF'], competidor: [] } },
+      { k: 'dlx', n: 'DLX 🇺🇸', id: A.DUENO, a: { socio: ['DRA', 'FFA'] } }] });
+    o.duenoRol({ id: '100000031', rol: 'asistente', si: true });
+    o.duenoRol({ id: '100000032', rol: 'staff', si: false });
+    const rr = o.roles().r;
+    const rd = o.duenoRol({ id: '100000032', rol: 'staff', si: null });
+    ok(JSON.stringify(rr.konan) === JSON.stringify([['asistente'], ['competidor']])
+      && JSON.stringify(rr.catarsis) === JSON.stringify([['socio', ['URBF']], ['competidor']])
+      && rr.dlx[0][0] === 'owner' && rd.roles.hist.length === 3 && rd.roles.hist[0].n === 'Catarsis 🇦🇷'
+      && JSON.stringify(o.roles().r.catarsis) === JSON.stringify([['socio', ['URBF']], ['staff', ['URBF']], ['competidor']]),
+    'los roles: los que salen solos, lo que pone o saca Dlx encima, Owner sólo Dlx, y el historial', JSON.stringify(rr));
   }
 }
 

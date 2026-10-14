@@ -1244,6 +1244,14 @@ def _lo_barato(correr):
         paso('2b9', 'las ligas')
         if not corre(['bot/ligas.py', '--aplicar'], callado=False):
             print('      ⚠️ las ligas fallaron: queda lo de la corrida anterior')
+    # ── 2b10 · los roles de la página ─────────────────────────────────
+    # 🔑 Dlx, 13/10/2026: «en cada perfil aparezca el rol de cada uno». Los que salen solos —Competidor, del pool;
+    # Socio, Staff, Organizador, Jurado y Host, de Discord (`datos/roles_discord.json`, paso 1b)— al objeto, que les
+    # suma los que pone Dlx. Ver `bot/roles.py`. ⚠️ NO FRENA: sin esto quedan los de la corrida anterior
+    if correr:
+        paso('2b10', 'los roles de la página')
+        if not corre(['bot/roles.py', '--aplicar'], callado=False):
+            print('      ⚠️ los roles fallaron: quedan los de la corrida anterior')
     if correr:
         paso('2c', 'la web')
         corre(['bot/subir_web.py', '--aplicar'], callado=False)

@@ -1799,6 +1799,12 @@ a.rk-z:hover{border-color:var(--linea)}
 @media (hover: hover) and (pointer: fine){.pf-chips a:hover{border-color:var(--esc-tinta)}}
 /* 🎟️ el Pase de rapero en el perfil: su borde es el dorado del Pase */
 .pf-chips a.pf-pase{border-color:#F5C542}
+/* 🏷️ los roles en la Liga (13/10/2026): chicos y en fila; los que pone Dlx, con el magenta de la marca; el socio, con el verde */
+.pf-roles{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.pf-roles li{display:inline-flex;align-items:center;min-height:26px;padding:0 8px;border:1px solid var(--esc-linea);color:var(--esc-tinta);
+  font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;opacity:.9}
+.pf-roles li.mano{border-color:#E41373;background:#E41373;color:#FFFFFF;opacity:1}
+.pf-roles li.socio{border-color:#29B298;opacity:1}
 .pf-num{margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 18px}
 .pf-num div{display:grid;gap:4px;align-content:start}
 .pf-num dt{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:var(--esc-gris)}

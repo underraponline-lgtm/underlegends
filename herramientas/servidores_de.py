@@ -32,6 +32,7 @@ llamada por persona por servidor.
 import io
 import json
 import os
+import re
 import sys
 import time
 
@@ -84,6 +85,74 @@ SALIDA = os.path.join(BASE, 'datos', 'servidores_de.json')
 #: el runner —lo escribe el paso 1b y lo lee el 2d, en el mismo trabajo—.
 APODOS = os.path.join(BASE, '.cache', 'apodos_discord.json')
 _NOMBRES = {}                # discord_id -> [nombres]
+_ROLES_DE = {}               # guild_id -> {discord_id: [ids de rol]}
+
+# 🏷️ LOS ROLES DE LA PÁGINA (Dlx, 13/10/2026: «en cada perfil aparezca el rol de cada uno… competidor, organizador,
+# staff», y «agrega el título de socio para los owners de los servidores asociados»). STAFF es quien tiene, en un
+# servidor de la Liga, un rol con permiso de staff (administrar, gestionar el servidor o gestionar mensajes) o que lo
+# diga en el nombre: la MISMA regla que `esStaff()` de `bot/worker.js` usa para /agendar, para que el bot y la página
+# digan lo mismo. SOCIO es el dueño del servidor. Lo escribe `datos/roles_discord.json` (sólo gente de la Lista: el
+# repo es público y las listas de otro servidor no son nuestras) y lo junta `bot/roles.py`.
+ROLES_STAFF = re.compile(r'staff|organiz|moderad|\bmods?\b|admin|host|jurad|evento', re.I)
+#: administrar · gestionar el servidor · gestionar mensajes (lo mismo que `esStaff()`)
+PERM_STAFF = 8 | 32 | 8192
+SALIDA_ROLES = os.path.join(BASE, 'datos', 'roles_discord.json')
+
+
+#: 🔎 MEDIDO EL 13/10/2026 sobre los 8: «staff» con la regla de /agendar daba 102 personas sólo en FFA y la ACADEMIA,
+#: porque mete a los jurados y a los hosts. Los servidores ya los separan con su propio rol, así que se separan acá
+#: también, por el NOMBRE del rol (sin el adorno: NFKD), en este orden.
+TIPOS_ROL = (('organizador', re.compile(r'organiz', re.I)),
+             ('jurado', re.compile(r'jurad', re.I)),
+             ('host', re.compile(r'\bhost', re.I)),
+             ('staff', re.compile(r'staff|moderad|\bmods?\b|admin|supervis|manager|directiva|l[ií]deres|co-?(owner|due[ñn]o|fund)', re.I)))
+
+
+def tipo_de_rol(nombre, perm, de_bot=False):
+    """Qué rol de la página da un rol de Discord: 'organizador', 'jurado', 'host', 'staff' o None. Un rol de bot, nada;
+    uno con permiso de administración, staff aunque el nombre no lo diga."""
+    import unicodedata
+    if de_bot:
+        return None
+    n = unicodedata.normalize('NFKD', str(nombre or ''))
+    for t, rx in TIPOS_ROL:
+        if rx.search(n):
+            return t
+    return 'staff' if perm & PERM_STAFF else None
+
+
+def roles_por_servidor(s):
+    """`{tipo: {did: [svs]}}` con 'organizador', 'jurado', 'host', 'staff' y 'socio' (el dueño), de los servidores de
+    `GUILDS`. Un servidor que no contesta queda afuera (no frena nada)."""
+    out = {t: {} for t in ('organizador', 'jurado', 'host', 'staff', 'socio')}
+    for sv, gid in GUILDS:
+        try:
+            g = s.get('%s/guilds/%s' % (API, gid), timeout=30)
+            roles = s.get('%s/guilds/%s/roles' % (API, gid), timeout=30)
+        except requests.RequestException:
+            continue
+        if g.status_code == 200 and g.json().get('owner_id'):
+            out['socio'].setdefault(str(g.json()['owner_id']), []).append(sv)
+        if roles.status_code != 200:
+            continue
+        tipo = {}
+        for r in roles.json() or []:
+            if str(r.get('id')) == gid:                  # @everyone
+                continue
+            try:
+                perm = int(r.get('permissions') or 0)
+            except ValueError:
+                perm = 0
+            t = tipo_de_rol(r.get('name'), perm, de_bot=bool(r.get('managed') or (r.get('tags') or {}).get('bot_id')))
+            if t:
+                tipo[str(r.get('id'))] = t
+        for did, rs in (_ROLES_DE.get(gid) or {}).items():
+            for t in {tipo[x] for x in map(str, rs) if x in tipo}:
+                lst = out[t].setdefault(did, [])
+                if sv not in lst:
+                    lst.append(sv)
+        time.sleep(0.2)
+    return out
 
 
 def env(clave):
@@ -111,6 +180,8 @@ def miembros(s, gid):
             # los bots no son gente: ni tienen carta ni cuentan en la comunidad
             if u.get('id') and not u.get('bot'):
                 out.add(u['id'])
+                # 🏷️ y sus roles, para saber quién es staff (ver `staff_y_socios()`)
+                _ROLES_DE.setdefault(gid, {})[u['id']] = list(m.get('roles') or [])
                 ns = _NOMBRES.setdefault(u['id'], [])
                 for x in (m.get('nick'), u.get('global_name'), u.get('username')):
                     if x and x.strip() and x.strip() not in ns:
@@ -231,6 +302,20 @@ def main():
         json.dump(bot_en, io.open(p2, 'w', encoding='utf-8', newline='\n'),
                   ensure_ascii=False)
         print('-> %s   (%d ids)' % (os.path.relpath(SALIDA, BASE), len(mapa)))
+        # 🏷️ staff y socios (ver `staff_y_socios()`): de la Lista, el staff; los socios, todos (son los dueños)
+        try:
+            rp = roles_por_servidor(s)
+            dump = {'_leeme': 'Los roles de Discord que da cada servidor de la Liga, por el nombre del rol '
+                              '(organizador, jurado, host, staff; ver tipo_de_rol()) y socio = el dueño. Lo escribe '
+                              'herramientas/servidores_de.py; lo junta bot/roles.py. Sólo gente de la Lista, salvo los '
+                              'socios (son los dueños de los servidores).'}
+            for t, m in rp.items():
+                dump[t] = {d: v for d, v in sorted(m.items()) if t == 'socio' or d in ids_padron}
+            json.dump(dump, io.open(SALIDA_ROLES, 'w', encoding='utf-8', newline='\n'), ensure_ascii=False, indent=0)
+            print('-> %s   (%s)' % (os.path.relpath(SALIDA_ROLES, BASE),
+                                    ' · '.join('%d %s' % (len(dump[t]), t) for t in rp)))
+        except Exception as e:                           # noqa: BLE001
+            print('⚠️ no pude sacar los roles de los servidores (%s)' % str(e)[:80])
         print('-> %s   %s' % (os.path.relpath(p2, BASE), bot_en))
         # los nombres, fuera de git: ver `APODOS`
         try:

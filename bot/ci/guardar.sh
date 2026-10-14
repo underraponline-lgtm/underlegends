@@ -86,7 +86,7 @@ ARCHIVOS="datos/cartas_selladas.json datos/cartas_r2.json datos/dra_hub.json \
           datos/bot_en.json datos/alertas.json \
           datos/llaves_t1.json datos/llaves_links.json \
           datos/autoverificar.json datos/escala.json \
-          datos/iconos_sv.json datos/comunidad.json \
+          datos/iconos_sv.json datos/comunidad.json datos/roles_discord.json \
           datos/avisos_personales.json datos/arranque.json \
           datos/fuera_desde.json datos/mw.json \
           datos/multiplicadores.json datos/vistos.json \

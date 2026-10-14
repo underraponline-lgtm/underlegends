@@ -908,7 +908,84 @@ function Historial({ hist, hacer, ocup }) {
   );
 }
 
-function Ajustes({ liga, aj, chat, hist, hacer, msg, ocup }) {
+// ── 🏷️ LOS ROLES DE LA PÁGINA (13/10/2026). Dlx: «roles superiores ÚNICAMENTE decididos por mí: Moderador de la página
+// web, asistente, Admin y owner únicamente yo». Los que salen solos (Competidor, Socio, Staff, Organizador, Jurado,
+// Host) los arma el ciclo desde Discord; acá se ponen los de Dlx y se corrige cualquiera. Owner es sólo Dlx ──
+const ROLES_MANO = [['admin', 'Admin'], ['asistente', 'Asistente'], ['moderador', 'Moderador de la página'], ['socio', 'Socio'],
+  ['staff', 'Staff'], ['organizador', 'Organizador'], ['jurado', 'Jurado'], ['host', 'Host'], ['competidor', 'Competidor']];
+const nombreRol = (r) => ((ROLES_MANO.find((x) => x[0] === r) || [r, r === 'owner' ? 'Owner' : r])[1]);
+const normN = (s) => String(s || '').normalize('NFKD').replace(/[^\p{L}\p{N}]/gu, '').toLowerCase();
+
+async function ponerRol(cuerpo) {
+  const r = await fetch('/api/avisos/dueno/rol', { method: 'POST', credentials: 'same-origin',
+    headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || j.error) throw new Error(r.status === 401 ? 'la sesión venció: entrá de nuevo' : j.error || String(r.status));
+  return j.roles || {};
+}
+
+function Roles({ roles, alCambiar }) {
+  const [x, setX0] = useState(roles || {});
+  useEffect(() => { setX0(roles || {}); }, [roles]);
+  const setX = (y) => { setX0(y); if (alCambiar) alCambiar(y); };
+  const [busca, setBusca] = useState('');
+  const [sel, setSel] = useState(null);
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  const dir = x.dir || [], man = x.manual || {};
+  if (!dir.length) return <p className="pronto-p">El ciclo todavía no mandó la lista de la gente: aparece en su próxima corrida.</p>;
+  const q = normN(busca);
+  const hallados = q.length >= 2 ? dir.filter((p) => normN(p[1]).includes(q)).slice(0, 8) : [];
+  const p = sel && dir.find((y) => y[2] === sel);
+  const conMano = dir.filter((y) => man[y[2]] && Object.keys(man[y[2]]).length);
+  const cambiar = async (rol, si) => {
+    setOcup(true); setMsg('');
+    try { setX(await ponerRol({ id: p[2], rol, si })); } catch (e) { setMsg('No se pudo: ' + e.message); }
+    setOcup(false);
+  };
+  const chips = (l) => (l || []).map((r) => <span key={r[0]} className="db-chip">{nombreRol(r[0])}{r[1] ? ' · ' + r[1].join(', ') : ''}</span>);
+  return (
+    <div className="db-roles">
+      <label className="db-campo"><span>Buscar a alguien de la Lista</span>
+        <input type="search" className="db-sel" value={busca} placeholder="su nombre" onChange={(e) => setBusca(e.target.value)} /></label>
+      {hallados.length ? <div className="db-opc">{hallados.map((y) => (
+        <button key={y[2]} type="button" className={sel === y[2] ? 'on' : ''} onClick={() => setSel(y[2])}>{y[1]}</button>))}</div> : null}
+      {p ? (
+        <div className="db-rep-form">
+          <span className="db-rep-p">{p[1]}{p[0] ? <> · <a href={'#/r/' + p[0]}>su perfil</a></> : null}</span>
+          <div className="db-l1">{p[3].length ? chips(p[3]) : <small>Sin roles.</small>}</div>
+          {p[2] === '739338101603696681' ? <small>Owner: sólo vos, siempre.</small> : null}
+          <ul className="db-roles-l">{ROLES_MANO.map(([rol, n]) => {
+            const m = (man[p[2]] || {})[rol];
+            const solo = p[4] && p[4][rol];
+            return (
+              <li key={rol}>
+                <b>{n}</b>
+                <small>{solo ? 'sale solo' + (solo.length ? ' (' + solo.join(', ') + ')' : '') : ['admin', 'asistente', 'moderador'].includes(rol) ? '' : 'no sale solo'}</small>
+                <select className="db-sel" disabled={ocup} value={m === 1 ? 'si' : m === 0 ? 'no' : 'auto'}
+                  onChange={(e) => cambiar(rol, e.target.value === 'si' ? true : e.target.value === 'no' ? false : null)}>
+                  <option value="auto">{['admin', 'asistente', 'moderador'].includes(rol) ? 'No' : 'Como sale solo'}</option>
+                  <option value="si">Sí</option>
+                  {['admin', 'asistente', 'moderador'].includes(rol) ? null : <option value="no">No, aunque salga solo</option>}
+                </select>
+              </li>
+            );
+          })}</ul>
+          {msg ? <small role="status">{msg}</small> : null}
+        </div>
+      ) : null}
+      {conMano.length ? <><span className="db-rep-p">Con roles puestos a mano</span>
+        <ul className="db-roles-c">{conMano.map((y) => (
+          <li key={y[2]}><button type="button" className="db-link" onClick={() => setSel(y[2])}>{y[1]}</button>
+            {Object.entries(man[y[2]]).map(([r, si]) => <span key={r} className="db-chip">{si ? '' : 'sin '}{nombreRol(r)}</span>)}</li>))}</ul></> : null}
+      {(x.hist || []).length ? <><span className="db-rep-p">Los últimos cambios</span>
+        <ul className="db-roles-c">{x.hist.slice(0, 8).map((h) => (
+          <li key={h.t + h.rol}><small>{hace(h.t)}</small> {h.n || h.id}: {h.si === null ? 'como sale solo' : h.si ? 'sí' : 'no'} {nombreRol(h.rol)}</li>))}</ul></> : null}
+    </div>
+  );
+}
+
+function Ajustes({ liga, aj, chat, hist, hacer, msg, ocup, roles, alRoles }) {
   return (
     <>
       <h2 className="db-h">Cada servidor</h2>
@@ -926,6 +1003,8 @@ function Ajustes({ liga, aj, chat, hist, hacer, msg, ocup }) {
       </div>
       <h2 className="db-h">Los últimos cambios</h2>
       <Historial hist={hist} hacer={hacer} ocup={ocup} />
+      <h2 className="db-h">Roles</h2>
+      <Roles roles={roles} alCambiar={alRoles} />
     </>
   );
 }
@@ -1321,7 +1400,8 @@ export function Dashboard({ dc, liga }) {
             : <p className="pronto-p">Nadie reportó nada en los últimos 14 días.</p>) : null}
         {tab === 'decisiones' ? sec('✅ DECIDIR', 'las mismas preguntas que la hoja', <Decisiones dec={d.decidir} alCambiar={(y) => cambiarD({ decidir: y })} />) : null}
         {tab === 'ajustes' ? sec('CONFIGURACIÓN · SÓLO VOS', null,
-          <Ajustes liga={liga} aj={d.ajustes || {}} chat={d.chat} hist={d.ajustes_hist} hacer={hacer} msg={msg} ocup={ocup} />) : null}
+          <Ajustes liga={liga} aj={d.ajustes || {}} chat={d.chat} hist={d.ajustes_hist} hacer={hacer} msg={msg} ocup={ocup}
+            roles={d.roles} alRoles={(y) => cambiarD({ roles: y })} />) : null}
         {tab === 'numeros' ? <>
           {sec('EL BOT Y LA PÁGINA · 7 DÍAS', u.desde ? 'se cuenta desde el ' + corto(u.desde) : null, <Cajas u={u} />)}
           {(d.dias || []).length ? sec('DÍA POR DÍA · DOS SEMANAS', null, <Dias dias={d.dias} />) : null}

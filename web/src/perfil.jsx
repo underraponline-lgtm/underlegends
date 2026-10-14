@@ -14,6 +14,7 @@ import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, Ico, Medalla, P
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
 import { usePaseDe } from './pase.js';
+import { ROL, textoRol, useRoles } from './roles.js';
 import { svElegido, useElegidos } from './elegidos.js';
 import * as RQ from './requisitos.js';
 import { Miniatura, abrirVideo } from './video.jsx';
@@ -130,6 +131,8 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
   const nv = nvs && nvs[k];
   // 🎟️ y su Pase de rapero (05/10/2026): el nivel, el título y el color de su nombre, por la clave del perfil
   const pa = usePaseDe(k);
+  // 🏷️ y sus roles en la Liga (13/10/2026): los que pone Dlx primero, después los que salen solos de Discord
+  const rls = (useRoles() || {})[k] || [];
   // ❔ cuál de sus números está explicado abajo (uno a la vez)
   const [qe, setQe] = useState('');
   useEffect(() => { setQe(''); }, [k]);
@@ -153,6 +156,11 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
             {nv && nv[1] >= 2 ? <li><span className="pf-con" title={nv[1] + ' días seguidos en la Liga'}><Ico n="fuego" t={15} />{nv[1]} días</span></li> : null}
             {pa ? <li><a className="pf-pase" href="#/pase" title="Su nivel en el Pase de rapero de la temporada"><Ico n="pase" t={15} />Pase {pa.nivel}{pa.titulo ? ' · ' + pa.titulo : ''}</a></li> : null}
           </ul>
+          {rls.length ? (
+            <ul className="pf-roles" aria-label="Sus roles en la Liga">
+              {rls.map((x) => <li key={x[0]} className={(ROL[x[0]] || [])[1] ? 'mano' : x[0] === 'socio' ? 'socio' : ''}>{textoRol(x)}</li>)}
+            </ul>
+          ) : null}
           {redes.length ? (
             <ul className="pf-redes" aria-label="Sus redes">
               {redes.filter((r) => https(r[1])).map((r) => <li key={r[1]}><a href={https(r[1])} target="_blank" rel="noopener noreferrer">{REDES[r[0]] || r[0]} ↗</a></li>)}

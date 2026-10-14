@@ -2177,6 +2177,9 @@ const RUTAS = {
   // ✅ Decidir en el Dashboard (13/10/2026, Dlx: «Sí, con Reportes»): el ciclo publica las preguntas y lee lo
   // contestado, con su clave; Dlx contesta. Ver `validarRespuestaDecidir()`, `decidirEstados()` y `duenoDecidir()`
   '/avisos/decidir-ciclo': 'GET', '/avisos/decidir-estados': 'POST', '/avisos/dueno/decidir': 'POST',
+  // 🏷️ los roles de cada uno en la página (13/10/2026): los ve cualquiera; el ciclo manda los que salen solos, con su
+  // clave, y Dlx pone o saca. Ver `roles()`, `rolesEstados()` y `duenoRol()`
+  '/avisos/roles': 'GET', '/avisos/roles-estados': 'POST', '/avisos/dueno/rol': 'POST',
   // 📣 seguir a un organizador, con tu sesión. Ver `seguirOrg()`
   '/avisos/seguir-org': 'POST',
 };
@@ -2575,6 +2578,24 @@ export function validarDecisionReporte(d) {
     return { id, accion, fix: { tipo: 'ganador', n, ronda, lados, ganador } };
   }
   return { error: 'no sé qué hacer' };
+}
+
+// 🏷️ LOS ROLES DE LA PÁGINA (13/10/2026). Dlx: «en cada perfil aparezca el rol de cada uno… competidor, organizador,
+// staff, o roles superiores ÚNICAMENTE decididos por mí: Moderador de la página web, asistente, Admin y owner únicamente
+// yo», y «el título de socio para los owners de los servidores asociados». En el orden en que se muestran: primero los
+// que pone Dlx, después los que salen solos (`bot/roles.py`). Owner es sólo Dlx: no se pone ni se saca
+export const ORDEN_ROLES = ['owner', 'admin', 'asistente', 'moderador', 'socio', 'staff', 'organizador', 'jurado', 'host', 'competidor'];
+//: los que Dlx puede poner o sacar a mano (todos menos owner)
+export const ROLES_A_MANO = ORDEN_ROLES.filter((r) => r !== 'owner');
+
+/** ¿Vale este cambio de rol? `{id, rol, si}` (`si`: true lo pone, false lo saca, null vuelve a lo automático). Pura. */
+export function validarRol(d) {
+  const id = String((d && d.id) || '');
+  if (!/^\d{5,25}$/.test(id)) return { error: 'falta la persona' };
+  const rol = String((d && d.rol) || '');
+  if (!ROLES_A_MANO.includes(rol)) return { error: 'ese rol no se pone a mano' };
+  if (d.si !== true && d.si !== false && d.si !== null) return { error: 'falta si va o no' };
+  return { id, rol, si: d.si };
 }
 
 /**
@@ -3650,6 +3671,36 @@ export async function rutaAvisos(req, env, ruta) {
     return elObjeto(env).fetch('https://avisos/decidir-estados', { method: 'POST', body: crudo,
       headers: { 'content-type': 'application/json' } });
   }
+  // 🏷️ LOS ROLES QUE SALEN SOLOS: del ciclo, con su clave
+  if (ruta === '/avisos/roles-estados') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 600000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/roles-estados', { method: 'POST', body: crudo,
+      headers: { 'content-type': 'application/json' } });
+  }
+  // 🏷️ Y PONER O SACAR UNO: sólo Dlx
+  if (ruta === '/avisos/dueno/rol') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const v = validarRol(d);
+    if (v.error) return json(v, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (q.id !== DUENO) {
+      console.warn('[seguridad] poner un rol lo pidió alguien que no es el dueño');
+      return json({ error: 'no' }, 403);
+    }
+    return elObjeto(env).fetch('https://avisos/dueno-rol', {
+      method: 'POST', body: JSON.stringify(v), headers: { 'content-type': 'application/json' },
+    });
+  }
   // ✅ Y CONTESTAR UNA: sólo Dlx, como los reportes
   if (ruta === '/avisos/dueno/decidir') {
     const crudo = await req.text();
@@ -4120,6 +4171,9 @@ export class Avisos {
       // 📣 y qué decidió Dlx de cada uno y qué hizo el ciclo (13/10/2026): ver `duenoReporte()` y `reportesEstados()`
       // 🔎 y `evid`: lo que encontró el bot de cada reporte (quién lo mandó, las inscripciones, la llamada), lo pone el
       // ciclo (`bot/reportes.py`, `evidencia()`) y se borra con el reporte
+      // 🏷️ los roles que pone o saca Dlx (13/10/2026): `si` 1 lo pone, 0 lo saca aunque salga solo. Ver `duenoRol()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS roles_manual (quien TEXT NOT NULL, rol TEXT NOT NULL, si INTEGER NOT NULL, ' +
+        't INTEGER NOT NULL, PRIMARY KEY (quien, rol))');
       // ✅ lo contestado de ✅ Decidir desde el Dashboard (13/10/2026): ver `duenoDecidir()`. Se borra cuando la pregunta
       // deja de estar abierta (`decidirEstados()`)
       this.sql.exec("CREATE TABLE IF NOT EXISTS decidir_resp (id TEXT PRIMARY KEY, r TEXT NOT NULL, nota TEXT NOT NULL DEFAULT '', " +
@@ -4305,6 +4359,7 @@ export class Avisos {
       if (ruta === '/aplausos') return json(this.aplausosCuenta(), 200, 20);
       if (ruta === '/niveles') return json(this.niveles(), 200, 300);
       if (ruta === '/pases') return json(this.pases(), 200, 300);
+      if (ruta === '/roles') return json(this.roles(), 200, 300);
       if (ruta === '/pase-niveles') return json(this.paseNiveles());
       if (ruta === '/chat-canales') return json(await this.canalesChat());
       if (ruta === '/cierre-vivo') {
@@ -4344,6 +4399,8 @@ export class Avisos {
       if (ruta === '/dueno-video') return json(this.duenoVideo(d));
       if (ruta === '/dueno-reporte') return json(await this.duenoReporte(d));
       if (ruta === '/decidir-estados') return json(this.decidirEstados(d));
+      if (ruta === '/roles-estados') return json(this.rolesEstados(d));
+      if (ruta === '/dueno-rol') return json(this.duenoRol(d));
       if (ruta === '/dueno-decidir') return json(this.duenoDecidir(d));
       if (ruta === '/reportes-estados') return json(await this.reportesEstados(d));
       if (ruta === '/alta') return await this.alta(d);
@@ -6992,6 +7049,74 @@ export class Avisos {
     return { ok: true, n, evidencia: e };
   }
 
+  // ── 🏷️ los roles de la página (13/10/2026) ──────────────────────────
+  /** El directorio del ciclo (`bot/roles.py`): cada persona de la Lista con Discord, su clave, su nombre y sus roles solos. */
+  rolesEstados(d) {
+    const dir = (Array.isArray(d && d.dir) ? d.dir : []).slice(0, 5000).filter((x) => x && /^\d{5,25}$/.test(String(x.id))
+      && typeof x.k === 'string' && x.k.length <= 60).map((x) => {
+      const a = {};
+      for (const [r, svs] of Object.entries(x.a || {})) {
+        if (ORDEN_ROLES.includes(r)) a[r] = (Array.isArray(svs) ? svs : []).slice(0, 10).map((s) => String(s).slice(0, 8));
+      }
+      return { k: x.k, n: String(x.n || '').slice(0, 60), id: String(x.id), a };
+    });
+    this.guardar('roles_dir', { t: Date.now(), dir });
+    return { ok: true, n: dir.length };
+  }
+
+  /** `{id: {rol: 1|0}}`: lo que puso o sacó Dlx. */
+  rolesManual() {
+    const m = {};
+    for (const r of this.sql.exec('SELECT quien, rol, si FROM roles_manual').toArray()) (m[r.quien] = m[r.quien] || {})[r.rol] = r.si;
+    return m;
+  }
+
+  /** Los roles de una persona del directorio, con lo de Dlx encima: `[[rol, [servidores]], …]` en `ORDEN_ROLES`. */
+  rolesDe(x, man) {
+    const a = Object.assign({}, x.a || {});
+    for (const [rol, si] of Object.entries(man[x.id] || {})) {
+      if (si) a[rol] = a[rol] || [];
+      else delete a[rol];
+    }
+    if (x.id === DUENO) a.owner = []; else delete a.owner;
+    return ORDEN_ROLES.filter((r) => a[r]).map((r) => (a[r].length ? [r, a[r]] : [r]));
+  }
+
+  /** Para la página (público, por clave de perfil): `{t, r: {clave: [[rol, [servidores]]]}}`. */
+  roles() {
+    const x = this.leer('roles_dir') || {};
+    const man = this.rolesManual();
+    const r = {};
+    for (const p of x.dir || []) {
+      const l = this.rolesDe(p, man);
+      if (l.length) r[p.k] = l;
+    }
+    return { t: x.t || null, r };
+  }
+
+  /** Dlx pone (`si` true), saca (false) o vuelve a lo automático (null) un rol. Queda en el historial. */
+  duenoRol(d) {
+    const v = validarRol(d);
+    if (v.error) return v;
+    const ahora = Date.now();
+    if (v.si === null) this.sql.exec('DELETE FROM roles_manual WHERE quien = ? AND rol = ?', v.id, v.rol);
+    else {
+      this.sql.exec('INSERT OR REPLACE INTO roles_manual (quien, rol, si, t) VALUES (?, ?, ?, ?)', v.id, v.rol, v.si ? 1 : 0, ahora);
+    }
+    const p = ((this.leer('roles_dir') || {}).dir || []).find((x) => x.id === v.id);
+    const h = [{ id: v.id, n: p ? p.n : '', rol: v.rol, si: v.si, t: ahora }].concat(this.leer('roles_hist') || []).slice(0, 40);
+    this.guardar('roles_hist', h);
+    return { ok: true, roles: this.rolesDueno() };
+  }
+
+  /** Para el Dashboard: el directorio (`[k, n, id, roles]`), lo puesto a mano y el historial. */
+  rolesDueno() {
+    const x = this.leer('roles_dir') || {};
+    const man = this.rolesManual();
+    return { t: x.t || null, dir: (x.dir || []).map((p) => [p.k, p.n, p.id, this.rolesDe(p, man), p.a]),
+      manual: man, hist: this.leer('roles_hist') || [] };
+  }
+
   // ── ✅ Decidir en el Dashboard (13/10/2026) ──────────────────────────
   /** Las preguntas abiertas que publica el ciclo (`decidir.para_web()`). Lo contestado de las que ya no están, se va. */
   decidirEstados(d) {
@@ -8635,6 +8760,8 @@ export class Avisos {
       reportes: this.reportesDueno(ahora),
       // ✅ las preguntas de ✅ Decidir y lo contestado desde el Dashboard (13/10/2026)
       decidir: this.decidirDueno(),
+      // 🏷️ los roles: el directorio, lo puesto a mano y el historial (13/10/2026)
+      roles: this.rolesDueno(),
       dias,
       sesiones: this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM sesiones WHERE vence > ?', ahora).toArray()[0].n,
       sistema: {

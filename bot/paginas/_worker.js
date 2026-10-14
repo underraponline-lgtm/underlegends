@@ -115,6 +115,9 @@ const AVISOS = {
   '/api/avisos/dueno/reporte': 'POST',
   // ✅ contestar ✅ Decidir desde el Dashboard (13/10/2026, sólo Dlx). ⚠️ `decidir-ciclo` y `decidir-estados` NO van acá
   '/api/avisos/dueno/decidir': 'POST',
+  // 🏷️ los roles de cada perfil (cualquiera) y ponerlos (sólo Dlx), 13/10/2026. ⚠️ `roles-estados` NO va acá
+  '/api/avisos/roles': 'GET',
+  '/api/avisos/dueno/rol': 'POST',
   // 📣 seguir a un organizador (12/10/2026): con tu sesión. Ver `seguirOrg()` en bot/avisos.js
   '/api/avisos/seguir-org': 'POST',
 };
@@ -214,7 +217,7 @@ async function avisos(req, url) {
     // cuántos siguen a cada uno: se mira al abrir un perfil, y un minuto
     // de atraso no le cambia nada a nadie
     init.cf = { cacheTtl: 60, cacheEverything: true };
-  } else if (url.pathname.endsWith('/pases') || url.pathname.endsWith('/niveles')) {
+  } else if (url.pathname.endsWith('/pases') || url.pathname.endsWith('/niveles') || url.pathname.endsWith('/avisos/roles')) {
     // 🎟️ el nivel del Pase y el de la racha de cada perfil (revisión del 05/10/2026): los pide CADA Inicio y CADA
     // perfil, y en el objeto son tablas enteras —el Pase, una persona por persona—. Con la Liga creciendo eran
     // millones de filas leídas por día (techo: 5 millones). Cinco minutos en el borde: un nivel nuevo se ve un rato
