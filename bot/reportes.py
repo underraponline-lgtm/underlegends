@@ -260,6 +260,47 @@ def corregir_nombre(r, fix, L, decis, resolver, padron, aplicar):
     return 'aplicado', '«%s» en la #%s ahora es %s' % (_sin_bandera(viejo_txt), fix['n'], nuevo)
 
 
+def reafirmar(decis, llaves, aplicar):
+    """🔁 TODAS LAS REGLAS `quien`, OTRA VEZ SOBRE LO ESCRITO, en cada corrida. Cuántas celdas volvió a poner.
+
+    13/10/2026, 7:52 PM: el ciclo aplicó las tres de Agus y la corrida GEMELA que esperaba en la cola —sale con el
+    código del momento en que se creó, de antes de que la primera guardara la regla— releyó las llaves sin la regla y
+    volvió a escribir «Agus». El lector las respeta desde la corrida siguiente, pero sólo en las llaves que todavía
+    relee (los últimos 25 mensajes de cada canal). Esto las vuelve a poner en `Resultados`, `1v1` y la llave de la
+    página, sea cual sea la edad del evento. Idempotente: con todo en su lugar, no escribe nada."""
+    import resultados as RES
+    cambios, en_llave = [], 0
+    paises = None
+    for k, v in (decis.get('quien') or {}).items():
+        if k.startswith('_') or not isinstance(v, dict) or not v.get('es') or not v.get('antes'):
+            continue
+        p = [x.strip() for x in k.split(' · ')]
+        if len(p) != 4:
+            continue
+        n = next((num for num, L in llaves.items() if _norm(L.get('nombre')) == _norm(p[0])
+                  and L.get('sv') == p[1] and L.get('fecha') == p[2]), None)
+        if not n:
+            continue
+        en_llave += renombrar_llave(llaves[n], {_norm(p[3]), _norm(v['antes'])}, v['es'])
+        if paises is None:
+            from comun.claves import clave
+            paises = {k2: c for k2, c in RES._pais_de()[0].items()}
+        from comun.claves import clave
+        cambios.append((n, v['antes'], v['es'], paises.get(clave(v['es']), _cc_de(v.get('es')))))
+    if not cambios:
+        return 0
+    try:
+        celdas = RES.renombrar_varios(sorted(set(cambios)), dry=not aplicar)
+    except ValueError as e:
+        print('   ⚠️ no pude reafirmar las reglas: %s' % e)
+        return 0
+    n = sum(celdas.values()) + en_llave
+    if n:
+        print('   🔁 %d regla(s) vueltas a poner: %s en la llave de la página%s' % (
+            len(set(cambios)), en_llave, ''.join(' · %s %d' % kv for kv in celdas.items())))
+    return n
+
+
 def _batalla(L, ronda, lados):
     """La batalla de la llave de la página con esa ronda y esos lados, o None."""
     ks = sorted(_norm(x) for x in lados)
@@ -467,7 +508,8 @@ def corregir(cola, aplicar=False):
     abiertos = [r for r in cola or [] if isinstance(r, dict) and r.get('id')
                 and (r.get('estado') or '') in ('', 'corregir', 'no_pude')]
     print('   %d corrección(es) esperando · %d reporte(s) abiertos' % (len(pend), len(abiertos)))
-    if not pend and not abiertos:
+    import decidir as DEC
+    if not pend and not abiertos and not [k for k in (DEC._decisiones().get('quien') or {}) if not k.startswith('_')]:
         return 0
     import motor
     import decidir as DEC
@@ -500,6 +542,8 @@ def corregir(cola, aplicar=False):
         print('   #%s  %s: %s' % (r.get('id'), est or 'esperando', que))
         if est:
             estados[str(r['id'])] = [est, que]
+    # 🔁 y todas las reglas otra vez sobre lo escrito: lo que una corrida vieja haya pisado (ver `reafirmar()`)
+    reafirmar(decis, llaves, aplicar)
     # 🔎 la evidencia de cada reporte abierto, con lo que quedó después de corregir
     evid = {}
     try:

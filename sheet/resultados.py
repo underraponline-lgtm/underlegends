@@ -246,27 +246,46 @@ def renombrar(num, viejo, nuevo, cc='', dry=True):
     ⚠️ Si el evento ya tiene a «nuevo» en `Resultados`, no se toca nada (`ValueError`): serían dos personas en una.
     ⚠️ Idempotente: con el nombre ya cambiado, cambia 0 celdas y no escribe.
     """
+    return renombrar_varios([(num, viejo, nuevo, cc)], dry=dry)
+
+
+def renombrar_varios(cambios, dry=True):
+    """`renombrar()` de varios a la vez, `[(num, viejo, nuevo, cc)]`: UNA lectura y a lo sumo UNA escritura por hoja.
+
+    🔁 Lo usa también `bot/reportes.reafirmar()`, que en cada corrida vuelve a aplicar las reglas `quien` sobre lo ya
+    escrito: una corrida del ciclo que salió con el código de antes de la regla (la gemela que espera en la cola) la
+    pisa al releer la llave, y esto la vuelve a poner (13/10/2026, la #423, la #429 y la #464 a las 7:52 PM). Un cambio
+    que choca —el evento ya tiene a los dos— se saltea y se dice, sin frenar los otros."""
     import requests
     from comun.claves import clave
-    kv, kn = clave(viejo), clave(nuevo)
-    if not kv or not kn or kv == kn:
-        raise ValueError('nombres vacíos o iguales: «%s» → «%s»' % (viejo, nuevo))
-    planes = []
+    cs = []
+    for num, viejo, nuevo, cc in cambios:
+        kv, kn = clave(viejo), clave(nuevo)
+        if not kv or not kn or kv == kn:
+            raise ValueError('nombres vacíos o iguales: «%s» → «%s»' % (viejo, nuevo))
+        cs.append((str(num).strip(), kv, kn, nuevo, cc))
+    planes, choques = [], []
     for hoja, cols in (('Resultados', (4,)), ('1v1', (4, 5, 6, 7))):
         h = Hoja(hoja)
         filas = [list(f) + [''] * (h.ancho - len(f)) for f in _filas_crudas(h)]
-        del_ev = [f for f in filas if str(f[0]).strip() == str(num).strip()]
-        if hoja == 'Resultados' and any(clave(f[4]) == kn for f in del_ev) and any(clave(f[4]) == kv for f in del_ev):
-            raise ValueError('el #%s ya tiene a «%s» y a «%s»: no los junto' % (num, viejo, nuevo))
         n = 0
-        for f in del_ev:
-            for c in cols:
-                if clave(f[c]) == kv:
-                    f[c] = nuevo
-                    n += 1
-                    if hoja == 'Resultados':
-                        f[5] = cc or ''
+        for num, kv, kn, nuevo, cc in cs:
+            del_ev = [f for f in filas if str(f[0]).strip() == num]
+            if hoja == 'Resultados' and any(clave(f[4]) == kn for f in del_ev) and any(clave(f[4]) == kv for f in del_ev):
+                choques.append('el #%s ya tiene a «%s» y a «%s»: no los junto' % (num, nuevo, kv))
+                continue
+            for f in del_ev:
+                for c in cols:
+                    if clave(f[c]) == kv:
+                        f[c] = nuevo
+                        n += 1
+                        if hoja == 'Resultados':
+                            f[5] = cc or ''
         planes.append((h, filas, n))
+    if choques and len(cs) == 1:
+        raise ValueError(choques[0])
+    for c in choques:
+        print('      ⚠️ %s' % c)
     if not dry:
         for h, filas, n in planes:
             if not n:
