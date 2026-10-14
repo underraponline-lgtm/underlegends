@@ -151,6 +151,8 @@ export class Liga {
     // 🧑 las caras de quienes jugaron y quedan fuera de la tabla (`avs` del payload, ver `subir_web.py`): por nombre
     this.A = {};
     (D.avs || []).forEach(([n, av]) => { if (n && av) this.A[limpio(n).toLowerCase()] = av; });
+    // 👥 y las de quienes organizan sin estar en la tabla (`orgp`, 14/10/2026): ver `orgsDe()`
+    Object.values(D.orgp || {}).forEach(([n, av]) => { if (n && av) this.A[limpio(n).toLowerCase()] = av; });
     this.svs = {};
     (D.svs || []).forEach((s) => { this.svs[s.sv] = s; });
     SIGLAS = {};
@@ -231,6 +233,20 @@ export class Liga {
     // app.js: una llave en vivo con «Park-Ji Sung» muestra a Oasis
     const k = (this.d.alias || {})[normNombre(nombre)] || (W.kVivo ? W.kVivo(nombre) : '');
     return (k && this.T[k]) || null;
+  }
+  // 👥 LOS ORGANIZADORES DE UN EVENTO, DE A UNO Y CON SU PERFIL (Dlx, 14/10/2026: «asegurate que los organizadores
+  // tengan su foto y perfil»): `[{n, f}]`, con `f` la fila de su perfil o `null`. `inf.os` los trae partidos
+  // («FLENNZS + LEWITO + AX» son tres, `subir_web._os()`); `d.orgs`, el perfil de cada uno —por su cuenta cuando el
+  // anuncio la dice—. Sin perfil queda el nombre, en texto
+  orgsDe(inf) {
+    const i = inf || {};
+    const ns = (i.os && i.os.length ? i.os : i.org ? [i.org] : []).filter(Boolean);
+    // sin fila en la tabla (staff que no compite, o fuera de las 200): su perfil y su nombre de la Lista (`orgp`)
+    return ns.map((n) => {
+      const k = (this.d.orgs || {})[n];
+      const p = k && (this.d.orgp || {})[k];
+      return { n, f: this.T[k] || this.fila(n) || (p ? { k, n: p[0] } : null) };
+    });
   }
   esDe(nombre, k) {
     const f = this.T[k];

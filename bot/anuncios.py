@@ -597,6 +597,72 @@ def staff_de(m):
     return out, autor
 
 
+#: la etiqueta del organizador en su renglón: «ORGANIZADOR», «ORGANIZADORES», «ORGANIZA», «ORGANIZADO POR»
+ORG_ETIQUETA = re.compile(r'ORGANIZ(?:ADOR(?:ES|A)?|ACI[OÓ]N|ADO(?:\s+POR)?|A)\b', re.I)
+
+
+def organizadores(m):
+    """👥 `[{'n': nombre, 'id': cuenta o ''}]`: quiénes organizan, DE A UNO y con su cuenta cuando se sabe.
+
+    🔑 Dlx, 14/10/2026 (con «Cómo se juega»): *«asegurate que los organizadores tengan su foto y perfil»*. El
+    `organizador` de `parsear()` es un texto, y fallaba de tres maneras, las tres medidas ese día:
+
+        LA BELLA ARTE … VOL 6   «FLENNZS 🇲🇽 + LEWITO 🇦🇷 + AX 🇻🇪»   →  «FLENNZS LEWITO AX», UNA persona
+        LA REDENCIÓN VOL.4      «__`ORGANIZADOR:`__ <@…>🇨🇱»        →  vacío (la «`» después de los dos puntos)
+        DEM UZBEKISTAN          «ORGANIZADOR: Yo»                    →  el nombre de Discord de quien publicó
+
+    Acá se lee el RENGLÓN CRUDO: las banderas y los emojis separan como un «+», la mención es la cuenta (Discord la
+    manda resuelta en `mentions`) y «yo» es quien publicó, con SU cuenta. ⚠️ Lo que no está separado no se parte:
+    «MR STILL BALLIN» es una persona, y adivinar dónde termina un nombre es interpretar identidades.
+    """
+    au = m.get('author') or {}
+    autor = (_nombre_visible(au.get('global_name') or au.get('username')), str(au.get('id') or ''))
+    men = {str(x.get('id')): _nombre_visible(x.get('global_name') or x.get('username'))
+           for x in (m.get('mentions') or [])}
+    linea = ''
+    # las letras de fantasía (𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑, FVS) pasadas a comunes, como `_nombre_visible()`
+    ls = [''.join(unicodedata.normalize('NFKC', c) if 0x1D400 <= ord(c) <= 0x1D7FF else c for c in l)
+          for l in str(m.get('content') or '').splitlines()]
+    for j, l in enumerate(ls):
+        e = ORG_ETIQUETA.search(l)
+        # ⚠️ la etiqueta abre el renglón (antes, sólo viñetas, emojis o formato): «Entra cuando los organizadores
+        # hagan el anuncio…» es una regla, no el campo
+        if e and not re.search(r'[^\W\d_]', l[:e.start()]):
+            linea = l[e.end():]
+            # y el valor en el renglón de abajo (FVS: «# ➤ 𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑 :» y abajo «# 𐬺 yo»)
+            if not re.search(r'\w', re.sub(r'<a?:\w+:\d+>', '', linea)) and j + 1 < len(ls):
+                linea = ls[j + 1]
+            break
+    # lo de adelante de la etiqueta: los dos puntos, el formato y la viñeta («:`__ », «** », «⇢ », «# 𐬺 »)
+    linea = re.sub(r'^[\s*_`~:|>⇢→↝#➤▸►└├╰┈𐬺\-]+', '', linea)
+    fichas = []
+
+    def ficha(mm):
+        fichas.append(mm.group(1))
+        return ' + QQM%dQQ + ' % (len(fichas) - 1)
+    linea = re.sub(r'<@!?(\d+)>', ficha, linea)
+    # las banderas y los emojis del servidor separan: «FLENNZS <a:MEXICO:…> + LEWITO»
+    linea = re.sub(r'<a?:\w+:\d+>', ' + ', linea)
+    linea = re.sub('[\U0001F1E6-\U0001F1FF]{2}', ' + ', linea)
+    out = []
+    for p in re.split(r'\s+-\s+|\s*[,/|&+]\s*|\s+y\s+', linea):
+        p = re.sub(r'[*`~]|__', '', p).strip(' .:')
+        mf = re.fullmatch(r'QQM(\d+)QQ', p)
+        if mf:
+            did = fichas[int(mf.group(1))]
+            n, i = men.get(did, ''), did
+        elif YO.match(p):
+            n, i = autor
+        else:
+            # sin los emojis sueltos de adelante o de atrás («💻 Lewis»), que no son parte del nombre
+            n = ''.join(c for c in _nombre_visible(p) if unicodedata.category(c) not in ('So', 'Sk', 'Cf')).strip()
+            i = ''
+        if n and re.search(r'\w', n) and not NO_PERSONA.match(n) and '???' not in n and len(n) <= 32 \
+                and all(x['n'].lower() != n.lower() for x in out):
+            out.append({'n': n, 'id': i})
+    return out[:6]
+
+
 def _nombre_visible(s):
     """El nombre como se lee: sin el guion o el signo de adelante («- 𝘾𝙍𝙊𝙉𝙊𝙓 🇨🇱», «! DSM-5») y con las letras de
     fantasía (U+1D400…) pasadas a comunes, como `escuchar.plano()`."""
@@ -685,6 +751,8 @@ def parsear(m, servidor, canal, guild=''):
         # se puede armar nada.
         'canal_id': m.get('channel_id') or '', 'guild_id': guild or '',
         'organizador': org,
+        # 👥 y DE A UNO, con su cuenta cuando se sabe (14/10/2026): ver `organizadores()`
+        'orgs': organizadores(m),
         # 🔑 QUIÉN LO PUBLICÓ, como huella: una llave sin título se reconoce
         # por la hora y, si hay dos anuncios a esa hora, por quién publicó
         # los dos (Dlx, 03/10/2026). Ver `llaves_a_entrada.anuncio_de_llave()`
@@ -1432,6 +1500,23 @@ def _self_check():
     ok = st == {'jurado': ['Flennzs | ⛩️', 'kravitz'], 'dj': ['CRONOX 🇨🇱']} and au == 'CRONOX 🇨🇱'
     mal += not ok
     print('   %s jurado, host y DJ del anuncio: las menciones, «yo» y lo que no es nadie  %s' % ('✅' if ok else '🔴', st))
+    # 👥 los organizadores de a uno y con su cuenta (Dlx, 14/10/2026: «que los organizadores tengan su foto y perfil»):
+    # los tres casos de ese día, la plantilla de FVS y una regla que dice «organizadores» y no es el campo
+    _au = {'id': '77', 'global_name': 'HERY'}
+    _o = [organizadores({'content': '- **ORGANIZADOR** FLENNZS <a:MEXICO:1> + LEWITO <a:ARGENTINA:2> + AX <a:VE:3> ',
+                         'author': _au}),
+          organizadores({'content': '💻  __`ORGANIZADOR:`__ <@55>🇨🇱', 'author': _au,
+                         'mentions': [{'id': '55', 'global_name': 'Velatz'}]}),
+          organizadores({'content': '💻  __`ORGANIZADOR:`__ Yo ', 'author': _au}),
+          organizadores({'content': '# ➤ 𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑 :\n# 𐬺 yo\n', 'author': _au}),
+          organizadores({'content': '3.▫️ 🎙️ Entra cuando los organizadores hagan el anuncio', 'author': _au}),
+          organizadores({'content': '**ORGANIZADOR**: Kravitz y nachonc_', 'author': _au})]
+    ok = (_o[0] == [{'n': 'FLENNZS', 'id': ''}, {'n': 'LEWITO', 'id': ''}, {'n': 'AX', 'id': ''}]
+          and _o[1] == [{'n': 'Velatz', 'id': '55'}] and _o[2] == [{'n': 'HERY', 'id': '77'}] and _o[3] == _o[2]
+          and _o[4] == [] and [x['n'] for x in _o[5]] == ['Kravitz', 'nachonc_'])
+    mal += not ok
+    print('   %s los organizadores de a uno, con su cuenta: «+» y banderas, la mención, «yo», FVS  %s'
+          % ('✅' if ok else '🔴', '' if ok else _o))
     # 🆚 la plantilla de FVS: el título de puros emojis, «BENEFICIOS» y abajo su valor, «# 𐬺 yo» y «DJ Y HOST»
     fvs = parsear({'content': '┏━━━━✰( )✰━━━━┓\n# 👀👀👀 #\n┗━━━━✰( )✰━━━━┛\n\n# RANGO D\n\n# 𝐁𝐄𝐍𝐄𝐅𝐈𝐂𝐈𝐎𝐒\n'
                               'puntos de ascenso\n\n⚔️ ••• 𝐌𝐎𝐃𝐀𝐋𝐈𝐃𝐀𝐃 ••• ⚔️ \n1v1 \n\n# ➤ 𝐎𝐑𝐆𝐀𝐍𝐈𝐙𝐀𝐃𝐎𝐑 :\n# 𐬺 yo\n\n'

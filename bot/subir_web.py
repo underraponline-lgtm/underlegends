@@ -26,6 +26,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 from collections import Counter, defaultdict
 
 SCR = os.path.dirname(os.path.abspath(__file__))
@@ -476,6 +477,7 @@ def armar():
         'premios': (x.get('premios') or '')[:60],
         # quién organiza: la página marca el evento de la Copa de la Liga
         'org': _org(x.get('organizador')),
+        **_os(x),
         # ⚖️ jurado, host y DJ, y quien lo publicó: ver `_staff()`
         **_staff(x),
         # 📣 anunciado con tiempo (ver `_con_tiempo()`)
@@ -527,7 +529,7 @@ def armar():
             'nombre': _nom(x['nombre']),
             'sv': x.get('servidor') or '',
             # Dlx, 25/09/2026: «quizás nombrar al organizador también»
-            'org': _org(x.get('organizador')),
+            'org': _org(x.get('organizador')), **_os(x),
             # Dlx, 25/09/2026: «poner el rango de esta misma» — el nivel del
             # evento cuando el anuncio lo dice (DRA: TIER 1, 2, 3, MIX)
             'rango': _rango_ev(x.get('rango'), x.get('servidor')),
@@ -621,6 +623,16 @@ def armar():
     _pf = _perfiles(todos, list(_comp.values()), regs)
     debutantes(tabla, _pf)
     _perfiles_extra(_pf, filas_todas[TOPE:], _staff_rol, _avs, _vd_de())
+    # 👥 quién organiza, con su perfil —también el staff que no compite y los de fuera de la tabla— (14/10/2026)
+    _orgs_pago = _orgs(ann, tabla, pool, staff=_staff_rol, perfiles=set(_pf or {}))
+    _en_t = {f.get('k') for f in tabla}
+    _pid_k = {_clave(p): (p.get('raw'), _did(p)) for p in pool if p.get('raw')}
+    _pid_k.update({x['k']: (x.get('full') or x.get('raw'), x.get('did')) for x in _staff_rol if x.get('k')})
+    _orgp = {}
+    for _k in set(_orgs_pago.values()) - _en_t:
+        _nm, _dd = _pid_k.get(_k) or ('', '')
+        if _nm:
+            _orgp[_k] = [_nm, ('%s/%s' % (_dd, _avs[_dd])) if _dd and _avs.get(_dd) else '']
     return {
         'temporada': SELLO,
         'fase': {'arranca': _f[0], 'termina': _f[1]} if _f else None,
@@ -640,7 +652,12 @@ def armar():
         'calendario': calendario,
         # 🔑 QUIÉN ORGANIZA, CON SU PERFIL: la página los dibuja con su cara
         # (Dlx, 28/09/2026). Ver `_orgs()`.
-        'orgs': _orgs(ann, tabla, pool),
+        'orgs': _orgs_pago,
+        # 👥 y el nombre y la cara de los que organizan sin estar en la tabla (staff, o fuera de las 200): `{clave:
+        # [nombre, cara]}`, la cara como en `avs` (`Liga.orgsDe()`)
+        'orgp': _orgp,
+        # 📋 los formatos de TODA la temporada, con un nombre por formato (Dlx, 14/10/2026). Ver `formato_evento()`
+        'formatos': _formatos(regs),
         # 🔴 LOS EVENTOS DE LA TEMPORADA, NO LAS PARTICIPACIONES. El Inicio
         # sumaba `ev` de cada persona y decía «134 eventos» con siete
         # jugados (auditoría del 25/09/2026).
@@ -752,6 +769,21 @@ def _org(s):
     return re.sub(r'^[@!\s]+', '', str(s or '')).strip()
 
 
+def _os(x):
+    """👥 `{'os': [nombres]}` si los organizadores de a uno (`anuncios.organizadores()`) dicen otra cosa que `org`, o `{}`.
+
+    🔑 Dlx, 14/10/2026: *«que los organizadores tengan su foto y perfil»*. «FLENNZS + LEWITO + AX» llegaba como UN
+    organizador llamado «FLENNZS LEWITO AX», LA REDENCIÓN VOL.4 (con la mención) sin ninguno, y el «yo» de DEM UZBEKISTAN
+    con el nombre de Discord de quien publicó. La página dibuja cada uno con su cara y su perfil (`Liga.orgsDe()`); sólo
+    viaja cuando cambia algo, así el payload no repite el nombre."""
+    ns = []
+    for o in x.get('orgs') or []:
+        n = _org((o or {}).get('n'))
+        if n and n not in ns:
+            ns.append(n)
+    return {'os': ns} if ns and ns != [_org(x.get('organizador'))] else {}
+
+
 #: los nombres de cada cuenta de los servidores (apodo, nombre visible y
 #: usuario): lo escribe `herramientas/servidores_de.py` en el paso 1b y vive
 #: lo que dura el runner. Ver `APODOS` allá.
@@ -765,7 +797,63 @@ def _norm_id(s):
     return ''.join(c for c in s if c.isalnum()).lower()
 
 
-def _orgs(ann, tabla, pool, apodos=None):
+def formato_evento(v, anuncio=''):
+    """📋 El formato de un evento de `datos/llaves_t1.json`, con UN nombre por formato.
+
+    🔑 Dlx, 14/10/2026, a «Cómo se juega» (salían «1VS1» 3, «1 🆚 1» 1, y nada de naves ni de 5 vidas): *«arregla esto y
+    asegurate que sea correcto, porque sé que han habido otros eventos, por ejemplo nave de funa, 5 vidas…»*. La página
+    contaba la modalidad del ANUNCIO de las 12 llaves que trae; un 5 vidas o una nave casi nunca la escriben. Primero lo
+    que dice la FORMA de la llave (la fase de una nave, la ronda de vidas, las llaves de ganadores y perdedores), después
+    lo que dicen el anuncio (`anuncio`: su modalidad, de `datos/formatos_llaves.json`) y el título, y si nada dice nada,
+    si se jugó por equipos o de a uno."""
+    nom = str(v.get('nombre') or '')
+    t = _norm_id(' '.join((str(anuncio or ''), nom)))
+    rs = [str(r.get('r') or '').lower() for r in v.get('rondas') or []]
+    if v.get('funa') or 'nave' in _norm_id(nom):
+        return 'Nave de funa'
+    if any('vidas' in r for r in rs) or '5vidas' in t:
+        return '5 vidas'
+    if any('ganadores' in r or 'perdedores' in r for r in rs) or 'dobleeliminacion' in t:
+        return 'Doble eliminación'
+    for clave, nombre in (('pandill', 'Pandillas'), ('survivalmultiverse', 'Survival multiverse'),
+                          ('multiverse', 'Multiverse'), ('royalrumble', 'Royal rumble'), ('traicion', 'Dupla traicionera'),
+                          ('cypher', 'Cypher'), ('chypher', 'Cypher'), ('draft', 'Draft')):
+        if clave in t:
+            return nombre
+    u = ' ' + re.sub(r'[^0-9A-Za-z]+', ' ', unicodedata.normalize('NFKD', ' '.join((str(anuncio or ''), nom)))
+                     .encode('ascii', 'ignore').decode()).upper() + ' '
+    m = re.search(r' ([1-8]) ?(?:VS|V|X) ?([1-8]) ', u)
+    if m and m.group(1) != m.group(2) and m.group(1) != '4':
+        return '%s vs %s' % (m.group(1), m.group(2))
+    if m and m.group(1) == m.group(2) and m.group(1) in '23':
+        return '%s vs %s' % (m.group(1), m.group(1))
+    if re.search(r' DUPLAS? ', u):
+        return '2 vs 2'
+    if re.search(r' TRIOS? ', u):
+        return '3 vs 3'
+    # sin nada escrito: la primera ronda dice si fue por equipos
+    r0 = (v.get('rondas') or [{}])[0].get('b') or []
+    if any(any(re.search(r'[,+]', str(l)) for l in (b[0] if b else [])) for b in r0):
+        return 'Por equipos'
+    return '1 vs 1'
+
+
+def _formatos(regs):
+    """📋 `[[formato, eventos], …]` de toda la temporada, del que más se juega al que menos (ver `formato_evento()`)."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'formatos_llaves.json'), encoding='utf-8') as f:
+            an = (json.load(f) or {}).get('eventos') or {}
+    except (OSError, ValueError):
+        an = {}
+    from collections import Counter
+    c = Counter()
+    for v in (regs or {}).values():
+        if isinstance(v, dict) and v.get('nombre'):
+            c[formato_evento(v, an.get('|'.join((v.get('nombre') or '', v.get('sv') or '', v.get('fecha') or ''))))] += 1
+    return [[k, n] for k, n in sorted(c.items(), key=lambda x: (-x[1], x[0]))]
+
+
+def _orgs(ann, tabla, pool, apodos=None, staff=None, perfiles=None):
     """`{organizador: clave de su perfil}`, de los que organizan y además tienen perfil.
 
     🔑 Dlx, 28/09/2026: *«¿puedes hacer que los organizadores se muestren sus
@@ -793,19 +881,30 @@ def _orgs(ann, tabla, pool, apodos=None):
             if len(k) >= 3:
                 idx.setdefault(k, set()).add(str(did))
     por_did = {str(p.get('discord_id')): p for p in pool or [] if p.get('discord_id')}
-    claves = {f.get('k') for f in tabla or []}
+    # 👥 y el staff que no compite (`_solo_rol()`): también tiene perfil (Dlx, 14/10/2026: «que los organizadores tengan
+    # su foto y perfil» — Flennzs organiza y juzga, y no tiene fila en la tabla)
+    for x in staff or []:
+        if x.get('did') and x['did'] not in por_did:
+            por_did[x['did']] = {'raw': x.get('raw'), 'cc': x.get('cc'), 'discord_id': x['did'], '_k': x.get('k')}
+    claves = {f.get('k') for f in tabla or []} | set(perfiles or ()) | {x.get('k') for x in staff or [] if x.get('k')}
     out = {}
     for x in ann or []:
-        o = _org(x.get('organizador'))
-        if not o or o in out or len(_norm_id(o)) < 3:
-            continue
-        k = _MU.k_de(o, tabla)
-        if not k:
-            ids = idx.get(_norm_id(o)) or set()
-            p = por_did.get(next(iter(ids))) if len(ids) == 1 else None
-            k = _clave(p) if p else ''
-        if k and k in claves:
-            out[o] = k
+        # 👥 cada organizador de a uno, con su cuenta cuando el anuncio la dice (mención o «yo»: ver
+        # `anuncios.organizadores()`), y además el texto de siempre
+        pares = [(_org((y or {}).get('n')), str((y or {}).get('id') or '')) for y in x.get('orgs') or []]
+        pares.append((_org(x.get('organizador')), (pares[0][1] if len(pares) == 1 else '')))
+        for o, did in pares:
+            if not o or o in out or len(_norm_id(o)) < 2:
+                continue
+            # la cuenta primero: el nombre de Discord («HERYIETEERJOUKATEITHORER») no es el de la Lista
+            p = por_did.get(did) if did else None
+            k = (p.get('_k') or _clave(p)) if p else _MU.k_de(o, tabla)
+            if not k and len(_norm_id(o)) >= 3:
+                ids = idx.get(_norm_id(o)) or set()
+                p = por_did.get(next(iter(ids))) if len(ids) == 1 else None
+                k = (p.get('_k') or _clave(p)) if p else ''
+            if k and k in claves:
+                out[o] = k
     return out
 
 
@@ -1865,7 +1964,7 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
                       'cuando': ini or pub, 'sh': 0 if ini else 1,
                       'link': link(x), 'rg': _rango_ev(x.get('rango'), x.get('servidor')),
                       'mod': (x.get('modalidad') or '')[:40],
-                      'org': _org(x.get('organizador')),
+                      'org': _org(x.get('organizador')), **_os(x),
                       'pre': (x.get('premios') or '')[:60],
                       'ct': 1 if ini and _con_tiempo(ini, pub) else 0, **_staff(x)})
     LW.cruzar(items, regs)
@@ -1879,7 +1978,8 @@ def _calendario(ann, regs, llaves, LW, CU, ahora, info=None):
     if info is not None:
         for i in items:
             if i.get('llave'):
-                ficha = {k: i[k] for k in ('mod', 'rg', 'org', 'pre', 'st', 'aut') if i.get(k)}
+                # 👥 `os`: los organizadores de a uno (`_os()`), para su cara y su perfil en la llave y en «Cómo se juega»
+                ficha = {k: i[k] for k in ('mod', 'rg', 'org', 'os', 'pre', 'st', 'aut') if i.get(k)}
                 if i.get('link'):
                     ficha['anuncio'] = i['link']
                 if ficha:
@@ -2786,9 +2886,11 @@ def _agenda():
         for x in an:
             if desde and str(x.get('cuando') or '') < desde:
                 continue
-            o = re.sub(r'^\d+\s*\|\s*', '', _org(x.get('organizador') or x.get('autor') or ''))
-            if o and x.get('servidor'):
-                por.setdefault(x['servidor'], Counter())[o] += 1
+            # 👥 de a uno (14/10/2026): «FLENNZS + LEWITO + AX» son tres, cada uno con su evento
+            for o in (_os(x).get('os') or [x.get('organizador') or x.get('autor') or '']):
+                o = re.sub(r'^\d+\s*\|\s*', '', _org(o))
+                if o and x.get('servidor'):
+                    por.setdefault(x['servidor'], Counter())[o] += 1
         return {sv: [[o, n] for o, n in c.most_common(3)] for sv, c in por.items()} or None
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ la agenda no entra al lobby: %s' % str(e)[:120])
@@ -3647,6 +3749,27 @@ def _self_check():
     ok(_limpio_md('# 🏆 HOLA <:CorazonLleno:152933862521543> @everyone\n▬▬▬\n**chau**')
        == ['🏆 HOLA', 'chau'], 'el texto de Discord sale sin su formato')
     ok(_org('@!    MMC.') == 'MMC.', 'y el organizador sin la arroba')
+    # 👥 los organizadores de a uno (14/10/2026): viajan sólo si dicen otra cosa que `org`
+    ok(_os({'organizador': 'FLENNZS LEWITO AX', 'orgs': [{'n': 'FLENNZS'}, {'n': 'LEWITO'}, {'n': 'AX'}]})
+       == {'os': ['FLENNZS', 'LEWITO', 'AX']}
+       and _os({'organizador': 'Kravitz', 'orgs': [{'n': 'Kravitz', 'id': '1'}]}) == {}
+       and _os({'organizador': '', 'orgs': [{'n': 'Velatz', 'id': '5'}]}) == {'os': ['Velatz']} and _os({}) == {},
+       'los organizadores de a uno: «FLENNZS + LEWITO + AX» son tres, y si es uno solo no se repite')
+    # 📋 un nombre por formato, de la forma de la llave antes que del texto (Dlx, 14/10/2026)
+    _b1 = {'r': 'Cuartos', 'b': [[['Ana', 'Beto'], 'Ana', '']]}
+    _be = {'r': 'Cuartos', 'b': [[['Ana, Cami', 'Beto, Dani'], 'Ana, Cami', '']]}
+    ok(formato_evento({'nombre': 'NAVE DE EXTERMINACION 1', 'rondas': [_b1]}) == 'Nave de funa'
+       and formato_evento({'nombre': 'SNAKE ARENA', 'rondas': [{'r': '5 vidas', 'b': []}]}) == '5 vidas'
+       and formato_evento({'nombre': 'X', 'rondas': [{'r': 'Llave de ganadores', 'b': []}]}) == 'Doble eliminación'
+       and formato_evento({'nombre': 'LA REDENCIÓN', 'rondas': [_be]}, 'Pandillas · LA REDENCION VOL.4') == 'Pandillas'
+       and formato_evento({'nombre': 'DESGRACIAS EN TOKYO VOL 18 2VS2', 'rondas': [_be]}) == '2 vs 2'
+       and formato_evento({'nombre': 'COPA', 'rondas': [_b1]}, '1 🆚 1 · COPA') == '1 vs 1'
+       and formato_evento({'nombre': 'COPA', 'rondas': [_b1]}, '⚔️  1v1 · COPA') == '1 vs 1'
+       and formato_evento({'nombre': 'SNAKE INSIGNIA', 'rondas': [_b1]}, '4x4 3E Libre') == '1 vs 1'
+       and formato_evento({'nombre': 'COPA', 'rondas': [_be]}) == 'Por equipos'
+       and formato_evento({'nombre': 'COPA', 'rondas': [_b1]}, 'SURVIVAL  MULTIVERSE · X') == 'Survival multiverse',
+       'los formatos: la nave, el 5 vidas y la doble eliminación por su forma; pandillas por su anuncio; «1 🆚 1» y '
+       '«1v1» son el mismo, y «4x4» no es de equipos')
     # 🔑 LAS ENCUESTAS: qué se vota y hasta cuándo, SIN Discord IDs (esos van
     # sólo a KV, para el Worker: ver `main()` y `bot/encuestas.py`)
     _en = p.get('enc') or []

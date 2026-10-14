@@ -811,7 +811,9 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   // ⚖️ y la en vivo, del anuncio que le toca (`liga.anuncioDeLlave()`). Sin «Organiza:» escrito, quien lo publicó
   const evV = L.vivo && !inf.org ? liga.anuncioDeLlave(L) : null;
   const org = inf.org || (pas && pas.org) || (evV && evV.org) || inf.aut || (evV && evV.aut) || '';
-  const fOrg = org ? liga.fila(org) : null;
+  // 👥 de a uno, con su cara y su perfil (Dlx, 14/10/2026): de lo mismo que dio `org`, con sus `os` si los trae
+  const deOrg = [inf, pas, evV].find((x) => x && ((x.os && x.os.length) || x.org)) || { org };
+  const orgsL = org ? liga.orgsDe(deOrg) : [];
   const st = inf.st || (evV && evV.st) || {};
   // en UN span: el `gap` del renglón separaba la coma del nombre
   const gente = (xs) => <span>{(xs || []).map((x, i) => {
@@ -859,7 +861,10 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
             {mod ? <li><Ico n="micro" t={16} />{mod}</li> : null}
             {rgo ? <li title={asc ? 'Puntos de ascenso en ' + (sv.nombre || L.sv) + ' (no en la Liga): ' + asc : undefined}>{rgo}{asc ? <small> · {asc}</small> : null}</li> : null}
             {L.participantes ? <li>{L.participantes} raperos</li> : null}
-            {org ? <li>{L.vivo && !L.terminada ? 'organiza' : 'organizó'} {fOrg ? <a href={'#/r/' + encodeURIComponent(fOrg.k)}>{limpio(fOrg.n)}</a> : <b>{limpio(org)}</b>}</li> : null}
+            {orgsL.length ? <li className="lk-orgs">{L.vivo && !L.terminada ? 'organiza' : 'organizó'}{' '}
+              {orgsL.map(({ n: on, f }, i) => [i ? ', ' : '', f
+                ? <a key={on} href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara lk-oc" />{limpio(f.n)}</a>
+                : <b key={on}>{limpio(on)}</b>])}</li> : null}
             {st.j ? <li><Ico n="jurado" t={16} />jurado {gente(st.j)}</li> : null}
             {st.h ? <li><Ico n="micro" t={16} />host {gente(st.h)}</li> : null}
             {st.d ? <li><Ico n="auris" t={16} />DJ {gente(st.d)}</li> : null}

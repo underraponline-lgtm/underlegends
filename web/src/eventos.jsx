@@ -513,12 +513,22 @@ function CuandoJuega({ liga, cal, dia, color, et }) {
             <b className="evp-cj-h">{horaDe(s.ref, s.desde)} a {horaDe(s.ref, s.hasta)}</b>
             {(ag[s.sv] || []).length ? (
               <small className="evp-cj-org">organiza{ag[s.sv].length > 1 ? 'n' : ''}{' '}
-                {ag[s.sv].map(([o], j) => (
-                  <span key={o}>{j ? ' · ' : ''}{dc ? (
-                    <button type="button" className={'evp-org' + (sigo.has(claveOrg(o)) ? ' si' : '')} onClick={() => alternar(o)}
-                      title={sigo.has(claveOrg(o)) ? 'Dejar de seguir' : 'Avisame cuando organice'}>{sigo.has(claveOrg(o)) ? '★' : '☆'} {limpio(o)}</button>
-                  ) : limpio(o)}</span>
-                ))}
+                {ag[s.sv].map(([o], j) => {
+                  // 👥 con su cara y su perfil (Dlx, 14/10/2026: «que los organizadores tengan su foto y perfil»); el ☆
+                  // para seguirlo va al lado, ya no es el nombre entero
+                  const { f } = liga.orgsDe({ org: o })[0] || {};
+                  return (
+                    <span key={o} className="evp-cj-o">{j ? ' · ' : ''}
+                      {f ? <a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara evp-oc" />{limpio(f.n)}</a>
+                        : <span><Cara liga={liga} nombre={o} cls="cara evp-oc" />{limpio(o)}</span>}
+                      {dc ? (
+                        <button type="button" className={'evp-org' + (sigo.has(claveOrg(o)) ? ' si' : '')} onClick={() => alternar(o)}
+                          aria-label={(sigo.has(claveOrg(o)) ? 'Dejar de seguir a ' : 'Avisame cuando organice ') + limpio(o)}
+                          title={sigo.has(claveOrg(o)) ? 'Dejar de seguir' : 'Avisame cuando organice'}>{sigo.has(claveOrg(o)) ? '★' : '☆'}</button>
+                      ) : null}
+                    </span>
+                  );
+                })}
               </small>
             ) : null}
           </li>
@@ -542,10 +552,16 @@ function ComoSeJuega({ liga, cal, color }) {
     // ✅ «1VS1» y «1VS1 sin réplica», una sola barra (Dlx, 03/10/2026: «5. A»): acá cuenta el formato, no el detalle
     const kb = (/^\d+VS\d+\b/.exec(k) || [k])[0];
     if (kb) fmt[kb] = (fmt[kb] || 0) + 1;
-    if (inf.org) { const kk = (liga.d.orgs || {})[inf.org] || 'n:' + inf.org.toLowerCase(); org[kk] = org[kk] || [inf.org, 0]; org[kk][1] += 1; }
+    // 👥 de a uno y por su perfil (14/10/2026): «FLENNZS + LEWITO + AX» suma uno a cada uno, y «FLENNZS LEWITO» con
+    // «FLENNZS LEWITO AX» ya no son dos organizadores distintos
+    liga.orgsDe(inf).forEach(({ n, f }) => { const kk = f ? f.k : 'n:' + n.toLowerCase(); org[kk] = org[kk] || [n, 0]; org[kk][1] += 1; });
     gente += ll.participantes || 0;
   });
-  const fs = Object.entries(fmt).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  // 📋 los formatos de TODA la temporada, con un nombre por formato (Dlx, 14/10/2026: «sé que han habido otros eventos,
+  // por ejemplo nave de funa, 5 vidas…»): `subir_web.formato_evento()`. Sin ese dato, como antes: las llaves de acá
+  const fsT = (liga.d.formatos || []).filter((x) => x && x[0] && x[1]);
+  const fs = fsT.length ? fsT.slice(0, 9) : Object.entries(fmt).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const totF = fsT.reduce((s, x) => s + x[1], 0);
   const os = Object.entries(org).sort((a, b) => b[1][1] - a[1][1]).slice(0, 6);
   const hay = patrones(liga, cal).svs.length > 0;
   if (!fs.length && !os.length && !hay) return null;
@@ -565,14 +581,14 @@ function ComoSeJuega({ liga, cal, color }) {
             {os.map(([kk, [n, c]]) => {
               const f = !kk.startsWith('n:') ? liga.T[kk] : null;
               return (
-                <li key={kk}>{f ? <a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara evp-oc" />{limpio(f.n)}</a> : <span>{n}</span>}<em>{c}</em></li>
+                <li key={kk}>{f ? <a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara evp-oc" />{limpio(f.n)}</a> : <span><Cara liga={liga} nombre={n} cls="cara evp-oc" />{limpio(n)}</span>}<em>{c}</em></li>
               );
             })}
           </ul>
         </div>
       ) : null}
       {hay ? <CuandoJuega liga={liga} cal={cal} color={color} et="CUÁNDO SUELE JUGAR CADA SERVIDOR" /> : null}
-      <p className="evp-nota">Sobre las {ls.length} llaves más nuevas{ls.length ? ': ' + Math.round(gente / ls.length) + ' raperos por llave, en promedio' : ''}.</p>
+      <p className="evp-nota">{totF ? 'Formatos: los ' + totF + ' eventos de la temporada. ' : ''}{totF ? 'Quién organiza: las' : 'Sobre las'} {ls.length} llaves más nuevas{ls.length ? ', con ' + Math.round(gente / ls.length) + ' raperos por llave en promedio' : ''}.</p>
     </div>
   );
 }
