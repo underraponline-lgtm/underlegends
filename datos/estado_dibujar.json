@@ -1,70 +1,70 @@
 {
  "v": 1,
- "cuando": "2026-10-14T23:11:05Z",
+ "cuando": "2026-10-14T23:39:05Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 650.7,
+ "dur_s": 544.1,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 9.6
+   "s": 8.0
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.0
+   "s": 4.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 19.4
+   "s": 35.8
   },
   {
    "n": "5",
    "que": "tanda 1 de 4 · 40 persona(s)",
    "ok": true,
-   "s": 549.4
+   "s": 409.5
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.7
+   "s": 4.4
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 59.3
+   "s": 80.7
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "472",
-  "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 6 PANDILLAS",
-  "sv": "FFA",
+  "n": "473",
+  "nombre": "FF Freestyle Clasico",
+  "sv": "URBF",
   "dia": "2026-10-14"
  },
  "cuotas": {
   "kv": {
-   "write": 356,
-   "read": 50559
+   "write": 379,
+   "read": 52111
   },
   "objeto": {
-   "leidas": 3385203,
-   "escritas": 38981,
-   "pedidos": 9926
+   "leidas": 3497520,
+   "escritas": 40670,
+   "pedidos": 10144
   },
   "worker": {
-   "pedidos": 12130,
+   "pedidos": 12013,
    "errores": 1,
-   "sub": 10713,
+   "sub": 10570,
    "p50_ms": 1.0,
-   "p99_ms": 7.87
+   "p99_ms": 7.91
   },
   "r2": {
    "objetos": 4002,
