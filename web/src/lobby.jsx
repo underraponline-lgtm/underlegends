@@ -221,6 +221,7 @@ function PremioSemanal({ dc, R }) {
 // ── 👀 TUS SEGUIDOS HOY (Dlx, 13/10/2026, la misma tanda): de la gente que seguís, quién juega hoy —anotado en un evento en
 // vivo o de las próximas 18 horas, lo que junta el vigía de los canales de inscripción (`anotados()`)— y quién ganó en
 // las últimas 36. Sin nada, no se dibuja: «sin dato no hay pieza»
+// eslint-disable-next-line no-unused-vars
 function Seguidos({ liga }) {
   const sig = new Set(liga.sigue || []);
   if (!sig.size) return null;
@@ -253,6 +254,55 @@ function Seguidos({ liga }) {
         </a></li>
       ))}</ul>
     </section>
+  );
+}
+
+// ── 🎯 TU RIVAL (Dlx, 13/10/2026: «tus seguidos hoy está arriba, estamos repitiendo algo», y a la propuesta, «Sí, tu
+// rival»). Lo que hacía «Tus seguidos hoy» ya lo dice la fila de arriba (los campeones y los que juegan). Esto es tuyo y
+// no se repite: quién está justo arriba tuyo en la Temporada, cuántos puntos te faltan para pasarlo y su próximo evento
+// (si está anotado). El primero ve al segundo, que lo persigue. Sin puesto, cómo conseguir uno; sin cuenta, nada
+function Rival({ liga, dc }) {
+  const yo = liga.yo;
+  if (!dc) return null;
+  const tabla = (liga.d.tabla || []).filter((f) => f.pos);
+  if (!yo || !yo.pos) {
+    return (
+      <a className="lb-rival vacio" href="#/eventos">
+        <span className="lb-rival-tx"><b>TU RIVAL</b><small>Jugá un evento: entrás al ranking y te ponemos a alguien para pasar.</small></span>
+        <Ico n="flecha" t={18} />
+      </a>
+    );
+  }
+  const yoF = tabla.find((f) => f.k === yo.k) || yo;
+  const arriba = yo.pos > 1;
+  const otro = tabla.find((f) => f.pos === (arriba ? yo.pos - 1 : yo.pos + 1));
+  if (!otro) return null;
+  // ⚠️ POR OVR, NO POR PUNTOS: el ranking se ordena por OVR (Oasis es #1 con menos puntos que Snow), así que «te faltan
+  // N puntos» podía decir algo que no te pasa de puesto
+  const dif = Math.abs((otro.ovr || 0) - (yoF.ovr || 0));
+  // su próximo evento: en vivo o de las próximas 24 h, si está anotado (lo que junta el vigía: `anotados()`)
+  let prox = '';
+  const vivos = liga.vivo();
+  const hasta = liga.ahora + 24 * 3600000;
+  for (const e of vivos.concat(liga.luego().filter((x) => utc(liga.cuandoDe(x)) <= hasta))) {
+    if (liga.anotados(e).some((x) => x.f && x.f.k === otro.k)) {
+      prox = (vivos.includes(e) ? 'juega ahora ' : 'juega ' + liga.dia(liga.cuandoDe(e)) + ' ') + '· ' + limpio(e.nombre);
+      break;
+    }
+  }
+  const pct = arriba && (otro.ovr || 0) > 0 ? Math.max(4, Math.min(100, Math.round((100 * (yoF.ovr || 0)) / otro.ovr))) : 100;
+  const falta = !dif ? (arriba ? 'Empatados en OVR: un evento más y lo pasás' : 'Empatados en OVR: no aflojes')
+    : arriba ? 'Te faltan ' + dif + ' de OVR para pasarlo' : 'Le llevás ' + dif + ' de OVR';
+  return (
+    <a className="lb-rival" href={'#/r/' + encodeURIComponent(otro.k)}>
+      <span className="lb-rival-p"><Cara liga={liga} k={yo.k} nombre={yo.n} cls="lb-rival-c" /><b>#{yo.pos}</b></span>
+      <span className="lb-rival-tx">
+        <b>{arriba ? 'TU RIVAL: ' + limpio(otro.n).toUpperCase() : 'TE PERSIGUE ' + limpio(otro.n).toUpperCase()}</b>
+        <small>{falta}{prox ? ' · ' + prox : ''}</small>
+        <i className="lb-rival-barra"><u style={{ width: pct + '%' }} /></i>
+      </span>
+      <span className="lb-rival-p"><Cara liga={liga} k={otro.k} nombre={otro.n} cls="lb-rival-c otro" /><b>#{otro.pos}</b></span>
+    </a>
   );
 }
 
@@ -469,7 +519,7 @@ export function Lobby({ liga, dc }) {
       <PremioSemanal dc={dc} R={R} />
       <ElBoton liga={liga} />
       <PedirCampana liga={liga} dc={dc} />
-      <Seguidos liga={liga} />
+      <Rival liga={liga} dc={dc} />
       <div className="lb-grid">
         {bus.length ? (
           <a className="pu lb lb-mw" href="#/ranking/mw">

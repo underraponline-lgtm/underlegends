@@ -1526,7 +1526,7 @@ function LlaveAlCostado({ s }) {
           ))}</ul>
         </div>
       ))}
-      <p className="dl-pie"><span className="dl-l dl-gano">ganó</span> <span className="dl-l dl-marca">de la pregunta</span>
+      <p className="dl-pie">{ll ? <><span className="dl-l dl-gano">ganó</span> </> : null}<span className="dl-l dl-marca">de la pregunta</span>
         {ll && (ll.links || [])[0] ? <> · <a href={ll.links[0]} target="_blank" rel="noopener noreferrer">abrirla en Discord ↗</a></> : null}</p>
     </aside>
   );
