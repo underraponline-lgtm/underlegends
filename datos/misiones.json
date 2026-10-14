@@ -1680,7 +1680,7 @@
      16,
      0
     ],
-    "Chente 🇻🇪": [
+    "Chente": [
      1,
      16,
      16,
@@ -1854,6 +1854,12 @@
      4,
      0
     ],
+    "Kochi": [
+     1,
+     8,
+     8,
+     0
+    ],
     "Konan": [
      1,
      16,
@@ -1939,7 +1945,7 @@
      0
     ],
     "Makmah": [
-     9,
+     10,
      2,
      2,
      0
@@ -1963,6 +1969,12 @@
      0
     ],
     "Molusco": [
+     1,
+     1,
+     1,
+     0
+    ],
+    "Motera": [
      1,
      1,
      1,
@@ -2032,6 +2044,12 @@
      3,
      1,
      1,
+     0
+    ],
+    "Ortiz": [
+     1,
+     4,
+     4,
      0
     ],
     "PichulaMc": [
@@ -2118,6 +2136,12 @@
      8,
      0
     ],
+    "Shadow": [
+     1,
+     8,
+     8,
+     0
+    ],
     "Sin Limites": [
      4,
      4,
@@ -2185,9 +2209,9 @@
      0
     ],
     "Trot": [
-     1,
-     16,
-     16,
+     2,
+     4,
+     4,
      0
     ],
     "Tuca": [
@@ -2214,6 +2238,12 @@
      8,
      0
     ],
+    "Vacile🇪🇸": [
+     1,
+     2,
+     2,
+     0
+    ],
     "Valdoza": [
      1,
      16,
@@ -2227,9 +2257,9 @@
      0
     ],
     "Vargas": [
-     1,
-     16,
-     16,
+     2,
+     8,
+     8,
      0
     ],
     "Velatz": [
@@ -2367,6 +2397,7 @@
     "Majiztral": 300,
     "Makmah": 900,
     "Molusco": 1600,
+    "Motera": 1600,
     "Mr Still Ballin": 600,
     "NC": 2900,
     "Nemi": 900,
@@ -2374,6 +2405,7 @@
     "ONDADISKO": 600,
     "ONZASS": 900,
     "Oasis": 2900,
+    "Ortiz": 600,
     "PichulaMc": 2900,
     "Player": 300,
     "Polosport": 600,
@@ -2391,10 +2423,13 @@
     "Tam": 600,
     "Tenor": 600,
     "Teo": 300,
+    "Trot": 900,
     "Tuca": 900,
     "TøKīØ🦠🧠": 600,
     "Under": 300,
+    "Vacile🇪🇸": 600,
     "Vandu": 900,
+    "Vargas": 300,
     "Velatz": 900,
     "Verc": 2900,
     "Walker": 1600,
@@ -2530,7 +2565,7 @@
   "Miniboy": 300,
   "Mito": 300,
   "Molusco": 1900,
-  "Motera": 1000,
+  "Motera": 2600,
   "Mr Still Ballin": 3500,
   "Musicdum": 300,
   "N1k": 300,
@@ -2547,6 +2582,7 @@
   "ONDADISKO": 600,
   "ONZASS": 1800,
   "Oasis": 5800,
+  "Ortiz": 600,
   "PIERR🇵🇪": 300,
   "PRAISERIZA": 2900,
   "PROMETHEUS BIB 🇨🇴": 300,
@@ -2592,14 +2628,16 @@
   "Tenor": 900,
   "Teo": 600,
   "Tier": 300,
-  "Trot": 300,
+  "Trot": 1200,
   "Tuca": 1200,
   "Tusicario": 300,
   "TøKīØ🦠🧠": 3500,
   "Under": 600,
   "VIXOVERSO": 300,
+  "Vacile🇪🇸": 600,
   "Valdoza": 300,
   "Vandu": 3800,
+  "Vargas": 300,
   "Velatz": 3800,
   "Verc": 5800,
   "Walker": 4500,

@@ -233,16 +233,6 @@
   }
  },
  "batallas": {
-  "1557532816718430320": {
-   "id": "1557532816718430320",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791415161066,
-   "a": "G8",
-   "b": "PRODIGY",
-   "ganador": "PRODIGY",
-   "votos": "1–0"
-  },
   "1557541190654623765": {
    "id": "1557541190654623765",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1872,6 +1862,17 @@
    "a": "Ortiz🇪🇸",
    "b": "TROT🇪🇸",
    "ganador": "Ortiz🇪🇸",
+   "votos": "1–0"
+  },
+  "1560057381734322300": {
+   "id": "1560057381734322300",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1792017064270,
+   "a": "Vacile🇪🇸",
+   "b": "Motera🇪🇸",
+   "ganador": "Motera🇪🇸",
    "votos": "1–0"
   }
  },
@@ -5549,7 +5550,7 @@
    "g": "1467763447117778989",
    "canal": "1540223675146707045",
    "pub": 1792014676524,
-   "ed": 1792017064270,
+   "ed": 1792018753932,
    "texto": "`[ CUARTOS ]`\n⌞Kochi🇨🇱⌝ 🆚 ⌞Vacile🇪🇸⌝\n⌞Ortiz🇪🇸⌝ 🆚 ⌞Makmah🇻🇪⌝\n⌞Shadow🇨🇴⌝ 🆚 ⌞TROT🇪🇸⌝\n⌞Vargas🇨🇴⌝ 🆚 ⌞Motera🇪🇸⌝\n`[ SEMIFINALES ]`\n⌞Vacile🇪🇸⌝ 🆚 ⌞Ortiz🇪🇸⌝\n⌞TROT🇪🇸⌝ 🆚 ⌞Motera🇪🇸⌝\n⌞Ortiz🇪🇸⌝ 🆚 ⌞TROT🇪🇸⌝\n`[ FINAL ]`\n⌞Vacile🇪🇸⌝ 🆚 ⌞Motera🇪🇸⌝",
    "batallas": [
     [
@@ -5628,8 +5629,8 @@
       "Vacile🇪🇸",
       "Motera🇪🇸"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "Motera🇪🇸",
+     "veredicto",
      []
     ]
    ]

@@ -2511,7 +2511,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "8b0be9684f029de8",
+  "firma": "553620f3de555b27",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -2833,7 +2833,7 @@
    "Zignos": 11
   },
   "fecha": "08/10",
-  "firma": "7a5e1bbb51003a34",
+  "firma": "be90bfb9a41587db",
   "msg": "1557926458221920299",
   "nombre": "__ LA REDENCIÓN VOL.1 __",
   "num": 431,
@@ -3790,7 +3790,7 @@
    "Xubaru": 3
   },
   "fecha": "08/10",
-  "firma": "c312f77d2a80fbd8",
+  "firma": "5a5dd2525d60f322",
   "msg": "1557986840865411073",
   "nombre": "__ __ Cuentas Pendientes V.1 __ __",
   "num": 435,
@@ -4622,7 +4622,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "61cc6c905dfb2bd7",
+  "firma": "66ec72d0928eae5e",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -5537,7 +5537,7 @@
    "Xclusivo": 12
   },
   "fecha": "10/10",
-  "firma": "cacf15bad6ee0208",
+  "firma": "81fbacd162ef88ab",
   "msg": "1558545514931163258",
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
   "num": 442,
@@ -5786,7 +5786,7 @@
    "PichulaMc": 27
   },
   "fecha": "10/10",
-  "firma": "d0e1f8153dbb89b2",
+  "firma": "877e385066c64ecf",
   "msg": "1558643633110917121",
   "nombre": "(sin titulo)",
   "num": 444,
@@ -7964,7 +7964,7 @@
    "Walker": 4
   },
   "fecha": "12/10",
-  "firma": "7618a2d8fe4df26b",
+  "firma": "0c120a5740124ad4",
   "msg": "1559247607283454084",
   "nombre": "FMS UNDER",
   "num": 455,
@@ -9396,7 +9396,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "d95f651b7ea062ec",
+  "firma": "db3dcd553b43854f",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -10909,7 +10909,7 @@
    "Verc": 8
   },
   "fecha": "13/10",
-  "firma": "daae41ae40348b0e",
+  "firma": "40b27e1e2559db17",
   "msg": "1559705366705475605",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL5 __",
   "num": 467,
@@ -11215,6 +11215,16 @@
     ""
    ],
    [
+    "SAIK",
+    "Xubaru prime 🇧🇲",
+    ""
+   ],
+   [
+    "SAIK",
+    "Warap",
+    ""
+   ],
+   [
     "Nemi, Delux, Erik",
     "Geoka",
     "Nemi, Delux, Erik"
@@ -11243,7 +11253,7 @@
    "Zignos": 20
   },
   "fecha": "13/10",
-  "firma": "b7bd730f28538998",
+  "firma": "93d1685891f35e21",
   "msg": "1559752028111114252",
   "nombre": "DEM UZBEKISTAN FECHA 2",
   "num": 468,
@@ -11371,6 +11381,21 @@
    ],
    [
     "BNA",
+    "Octavos",
+    1250
+   ],
+   [
+    "SAIK",
+    "Octavos",
+    1250
+   ],
+   [
+    "Xubaru prime 🇧🇲",
+    "Octavos",
+    1250
+   ],
+   [
+    "Warap",
     "Octavos",
     1250
    ],
@@ -11790,7 +11815,7 @@
    "Xubaru": 4
   },
   "fecha": "14/10",
-  "firma": "d850ac3a493c9955",
+  "firma": "b3ea863424ffeee4",
   "msg": "1559809185120518145",
   "nombre": "__ Inserte Nombre de la Compe __",
   "num": 470,
@@ -12079,6 +12104,7 @@
   "v": 2
  },
  "472": {
+  "al_dia": true,
   "antes": {
    "Abyssus": [
     18,
@@ -12427,6 +12453,152 @@
     "Chop",
     "Octavos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "473": {
+  "al_dia": true,
+  "antes": {
+   "Kochi": [
+    64,
+    88,
+    false
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "Motera": [
+    42,
+    55,
+    false
+   ],
+   "Ortiz": [
+    271,
+    211,
+    true
+   ],
+   "Shadow": [
+    100,
+    164,
+    false
+   ],
+   "Trot": [
+    24,
+    31,
+    false
+   ],
+   "Vargas": [
+    415,
+    406,
+    true
+   ]
+  },
+  "canal": "1511962554547703960",
+  "duelos": [
+   [
+    "Vacile🇪🇸",
+    "Kochi",
+    "Vacile🇪🇸"
+   ],
+   [
+    "Ortiz",
+    "Makmah",
+    "Ortiz"
+   ],
+   [
+    "Trot",
+    "Shadow",
+    "Trot"
+   ],
+   [
+    "Motera",
+    "Vargas",
+    "Motera"
+   ],
+   [
+    "Vacile🇪🇸",
+    "Ortiz",
+    "Vacile🇪🇸"
+   ],
+   [
+    "Motera",
+    "Trot",
+    "Motera"
+   ],
+   [
+    "Ortiz",
+    "Trot",
+    "Ortiz"
+   ],
+   [
+    "Motera",
+    "Vacile🇪🇸",
+    "Motera"
+   ]
+  ],
+  "ev_antes": {
+   "Kochi": 5,
+   "Makmah": 45,
+   "Motera": 3,
+   "Ortiz": 1,
+   "Shadow": 5,
+   "Trot": 16,
+   "Vargas": 1
+  },
+  "fecha": "14/10",
+  "firma": "e9b1d73cea0c6638",
+  "msg": "1560070688113688601",
+  "nombre": "FF Freestyle Clasico",
+  "num": 473,
+  "participantes": 8,
+  "sello": {
+   "Motera": ""
+  },
+  "sv": "URBF",
+  "t": "2026-10-14T23:23:55Z",
+  "tabla": [
+   [
+    "Motera",
+    "Campeón",
+    7500
+   ],
+   [
+    "Trot",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Vacile🇪🇸",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Kochi",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vargas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Ortiz",
+    "Semifinal",
+    1750
    ]
   ],
   "v": 2

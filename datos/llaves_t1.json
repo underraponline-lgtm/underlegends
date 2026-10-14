@@ -23572,7 +23572,7 @@
       [
        "Mr Still Ballin",
        "Under",
-       "Chente 🇻🇪"
+       "Chente"
       ],
       "Mr Still Ballin, Under",
       "triple (3 bandas, pasan 2); también pasa: Under🇨🇴; Revivido: mr still ballin 🇳🇴"
@@ -23747,7 +23747,7 @@
     1250
    ],
    [
-    "Chente 🇻🇪",
+    "Chente",
     "Octavos",
     1250
    ],
@@ -23800,6 +23800,141 @@
     "ikonoxx",
     "Cuartos",
     1250
+   ]
+  ]
+ },
+ "473": {
+  "dia": "2026-10-14",
+  "escala": "8-15",
+  "fecha": "14/10",
+  "links": [
+   "https://discord.com/channels/1467763447117778989/1540223675146707045/1560047366801981441"
+  ],
+  "n": 473,
+  "nombre": "FF Freestyle Clasico",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Vacile🇪🇸",
+       "Kochi"
+      ],
+      "Vacile🇪🇸",
+      ""
+     ],
+     [
+      [
+       "Ortiz",
+       "Makmah"
+      ],
+      "Ortiz",
+      "Revivido: Ortiz🇪🇸"
+     ],
+     [
+      [
+       "Trot",
+       "Shadow"
+      ],
+      "Trot",
+      "Revivido: Trot🇪🇸"
+     ],
+     [
+      [
+       "Motera",
+       "Vargas"
+      ],
+      "Motera",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Vacile🇪🇸",
+       "Ortiz"
+      ],
+      "Vacile🇪🇸",
+      ""
+     ],
+     [
+      [
+       "Motera",
+       "Trot"
+      ],
+      "Motera",
+      ""
+     ],
+     [
+      [
+       "Ortiz",
+       "Trot"
+      ],
+      "Ortiz",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Motera",
+       "Vacile🇪🇸"
+      ],
+      "Motera",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "URBF",
+  "tabla": [
+   [
+    "Motera",
+    "Campeón",
+    7500
+   ],
+   [
+    "Trot",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Vacile🇪🇸",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Kochi",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vargas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Ortiz",
+    "Semifinal",
+    1750
    ]
   ]
  }

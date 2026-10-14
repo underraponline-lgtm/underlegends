@@ -447,6 +447,11 @@
      1
     ],
     [
+     "FLENNZS LEWITO AX",
+     24,
+     1
+    ],
+    [
      "nachonc_",
      11,
      1
@@ -454,14 +459,14 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 16,
+     "FFA": 17,
      "URBF": 11,
      "SR": 4,
      "FVS": 1
     },
     "gente": {
      "DDF": 7,
-     "FFA": 100,
+     "FFA": 106,
      "SR": 21,
      "URBF": 13,
      "FVS": 5
@@ -472,7 +477,7 @@
     "ACAD": 0,
     "DDF": 7,
     "DRA": 0,
-    "FFA": 100,
+    "FFA": 106,
     "FFS": 0,
     "FVS": 5,
     "SR": 21,

@@ -7,6 +7,7 @@
  },
  "retos": {
   "01` asuka la homosexual  - Marcos": {
+   "avisado": "2026-10-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-14T19:38:23+00:00",
@@ -18,6 +19,7 @@
    "vencido": false
   },
   "06` Trot  - Trot": {
+   "avisado": "2026-10-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-14T19:38:23+00:00",
@@ -29,6 +31,7 @@
    "vencido": false
   },
   "09` erian  - Erian": {
+   "avisado": "2026-10-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-14T19:38:23+00:00",
@@ -40,6 +43,7 @@
    "vencido": false
   },
   "12` Krish  - Krish": {
+   "avisado": "2026-10-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-14T19:38:23+00:00",
@@ -51,6 +55,7 @@
    "vencido": false
   },
   "14` Geoka  - Geoka": {
+   "avisado": "2026-10-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-14T19:38:23+00:00",
@@ -88,10 +93,11 @@
    "vencido": false
   },
   "Chente": {
+   "avisado": "2026-10-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-14T20:32:37+00:00",
-   "did": "",
+   "did": "1485505764452728874",
    "evento": "LA BELLA ARTE DE LA DESGRACIA VOL 6 PANDILLAS",
    "n": 472,
    "sv": "FFA",
@@ -291,11 +297,24 @@
    "vence": "2026-10-20T00:26:10+00:00",
    "vencido": false
   },
-  "Vargas": {
-   "avisado": "2026-10-12",
-   "chat": "2026-10-12",
+  "Vacile": {
+   "avisado": "2026-10-14",
    "con": null,
    "cumplido": "",
+   "debut": "2026-10-14T21:51:16+00:00",
+   "did": "",
+   "evento": "FF Freestyle Clasico",
+   "n": 473,
+   "sv": "URBF",
+   "vence": "2026-10-21T21:51:16+00:00",
+   "vencido": false
+  },
+  "Vargas": {
+   "avisado": "2026-10-12",
+   "avisado_cumplido": "2026-10-14",
+   "chat": "2026-10-12",
+   "con": 473,
+   "cumplido": "2026-10-14T21:51:16+00:00",
    "debut": "2026-10-12T22:01:43+00:00",
    "did": "1371970161023778927",
    "evento": "GODZ",
