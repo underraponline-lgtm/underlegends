@@ -432,6 +432,42 @@ def _juntar(bs):
     return out
 
 
+#: 🏆 la parte de la nota con los demás que pasan de un grupo (`llaves_a_entrada.TAMBIEN_PASA`)
+_TAMBIEN = re.compile(r'también pasa\s*:\s*([^;|]+)')
+_RESOLVER = []
+
+
+def _con_los_que_pasan(bs, resolver=None):
+    """🏆 Un grupo donde pasan varios, con TODOS los que pasan (Dlx, 14/10/2026, con la PRITTY FREE: «la llave no fue
+    detectada correctamente que digamos»). El lector anota a los demás en la nota (`también pasa: A / B`), con el nombre
+    como lo leyó: acá pasan por el motor, como los de las filas («za» es Provenza), entran al grupo después del primero
+    y el ganador dice todos los que pasaron —la página los marca a todos, `gana()` de llave.jsx—. Sin esa parte de la
+    nota (las llaves de antes), queda como estaba."""
+    for b in bs:
+        m = _TAMBIEN.search(str(b[2] or ''))
+        if not m or not b[1]:
+            continue
+        if resolver is None:
+            if not _RESOLVER:
+                try:
+                    import motor
+                    _RESOLVER.append(motor._resolvedor()[0])
+                except Exception:                        # noqa: BLE001
+                    _RESOLVER.append(lambda x: x)
+            resolver = _RESOLVER[0]
+        # un equipo («tam + luzzano») se resuelve integrante por integrante y queda como los de las filas: «A, B»
+        extra = [', '.join(resolver(p) for p in re.split(r'\s*[,+&]\s*', x.strip()) if p)
+                 for x in m.group(1).split(' / ') if x.strip()]
+        extra = [x for x in extra if clave_nombre(x) and clave_nombre(x) != clave_nombre(b[1])]
+        ya = {clave_nombre(x) for x in b[0]}
+        for i, x in enumerate(extra):
+            if clave_nombre(x) not in ya:
+                b[0].insert(1 + i, x)
+        if extra:
+            b[1] = ', '.join([b[1]] + extra)
+    return bs
+
+
 #: las batallas que esperan en ✅ Decidir, de `datos/batallas_sin_ganador.json`
 SIN_GANADOR = os.path.join(BASE, 'datos', 'batallas_sin_ganador.json')
 #: cómo se dibuja una batalla que espera en ✅ Decidir
@@ -498,7 +534,7 @@ def armar(ev, links=(), pendientes=None):
         g, nota = d.get('ganador') or '', str(d.get('notas') or '').strip()
         rondas[donde[etq]]['b'].append([[a, b], g, nota])
     for R in rondas:
-        R['b'] = _juntar(R['b'])
+        R['b'] = _con_los_que_pasan(_juntar(R['b']))
     # 🔑 Y LAS BATALLAS QUE ESPERAN EN ✅ DECIDIR, CON SU GENTE (02/10/2026). Una batalla sin ganador no da filas, así
     # que la llave guardada no la traía y el cuadro dibujaba ese lugar «por jugarse» en un evento ya terminado: en la
     # DOS GENERACIONES VOL 2, Korey, Eyou y Tayo —que estaban en la llave— no aparecían. Va con su nota, sin ganador.
@@ -962,6 +998,23 @@ def _self_check():
        % r['rondas'][1]['b'][1][0])
     ok(_bandas('triple (4 bandas, pasan 2)') == (4, 2) and _bandas('') == (0, 0),
        'lee las bandas de la nota')
+    # 🏆 los demás que pasan, de la nota (14/10/2026, la PRITTY FREE): todos en su grupo, y el ganador dice los dos
+    nota_tp = 'triple (4 bandas, pasan 2); también pasa: verc'
+    g_tp = _con_los_que_pasan(_juntar([[['Warap', 'LRS'], 'Warap', nota_tp], [['Warap', 'Teo'], 'Warap', nota_tp]]),
+                              resolver=lambda x: {'verc': 'Verc', 'za': 'Provenza'}.get(x, x))
+    g_tp2 = _con_los_que_pasan([[['Gocho', 'Lord'], 'Gocho', 'triple (6 bandas, pasan 3); también pasa: cronox / za']],
+                               resolver=lambda x: {'za': 'Provenza'}.get(x, x))
+    g_eq = _con_los_que_pasan([[['Snow, Rodri LP', 'Nemi, Personality'], 'Snow, Rodri LP',
+                                'triple (4 bandas, pasan 2); también pasa: tam + luzzano']],
+                              resolver=lambda x: {'tam': 'Tam', 'luzzano': 'Luzzano'}.get(x, x))
+    ok(g_eq[0][0] == ['Snow, Rodri LP', 'Tam, Luzzano', 'Nemi, Personality'],
+       'y de equipos: el que pasa, integrante por integrante como los demás lados  %s' % (g_eq,))
+    ok(g_tp[0][0] == ['Warap', 'Verc', 'LRS', 'Teo'] and g_tp[0][1] == 'Warap, Verc'
+       and g_tp2[0][0] == ['Gocho', 'cronox', 'Provenza', 'Lord'] and g_tp2[0][1] == 'Gocho, cronox, Provenza'
+       and _bandas(nota_tp) == (4, 2)
+       and _con_los_que_pasan([[['A', 'B'], 'A', 'triple (4 bandas, pasan 2)']]) == [[['A', 'B'], 'A', 'triple (4 bandas, pasan 2)']],
+       'un grupo donde pasan varios: los demás de la nota entran al grupo, con su nombre de la Lista, y el ganador dice '
+       'todos; sin esa parte de la nota, queda como estaba  %s' % ([g_tp, g_tp2],))
     ok(r['nombre'] == 'PRUEBA VOL.2', 'el nombre sin el subrayado de Discord')
     ok(r['tabla'][0][:2] == ['Ana', 'Campeón'], 'la tabla, de más puntos a menos')
     ok(r['dia'] == '2026-09-24', 'la fecha con año  (%s)' % r['dia'])

@@ -1224,14 +1224,20 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
             continue
         if ganador is None and 'pasan' in razon and pasan:
             caen = [l for l in lados if l not in pasan]
+            # 🏆 Y LOS DEMÁS QUE PASAN, EN LA NOTA (Dlx, 14/10/2026, con la PRITTY FREE: «la llave no fue detectada
+            # correctamente que digamos»). Cada fila es «el primero que pasó contra uno que cayó», así que al segundo
+            # que pasa no lo anotaba nadie: verc, agus, Nemi, cronox y za no salían en los octavos de su grupo. No
+            # cambia ningún pago (el motor sólo mira quién cayó); la llave de la página lo dibuja (`llaves_web.armar()`)
+            nota = 'triple (%d bandas, pasan %d)' % (len(lados), len(pasan))
+            if len(pasan) > 1:
+                nota += '; ' + TAMBIEN_PASA + ' ' + ' / '.join(_v(x) for x in pasan[1:])
             for p in caen:
                 filas.append({'evento': ev, 'servidor': sv, 'fecha': fecha,
                               'participantes': n_part,
                               'ronda': ronda.lower(),
                               'ladoA': _v(pasan[0]), 'ladoB': _v(p),
                               'ganador': _v(pasan[0]),
-                              'notas': 'triple (%d bandas, pasan %d)'
-                                       % (len(lados), len(pasan))})
+                              'notas': nota})
             sabidas['batalla de %d donde pasan %d -> %d fila(s), sin duelo'
                     % (len(lados), len(pasan), len(caen))] += 1
             continue
@@ -1333,6 +1339,10 @@ def _otros_por_servidor():
     return {sv: {E.norm(a): r for a, r in (m or {}).items() if E.norm(a)} for sv, m in ps.items()}
 
 
+#: 🏆 en la nota de un grupo donde pasan varios, los demás que pasan: «…; también pasa: A / B»
+TAMBIEN_PASA = 'también pasa:'
+
+
 def otro_en_servidor(filas, sv, mapa=None):
     """Las filas de un evento de `sv` con los nombres que EN ESE SERVIDOR son otra persona que la de la Lista.
 
@@ -1358,6 +1368,11 @@ def otro_en_servidor(filas, sv, mapa=None):
         if 'cobra' in str(f.get('notas') or '').lower():
             f['notas'] = re.sub(r'(cobra\s*:\s*)([^;|]+)', lambda q: q.group(1) + cambia(q.group(2)),
                                 f['notas'], flags=re.I)
+        # 🏆 y los demás que pasan de un grupo (14/10/2026): son nombres de ese servidor como los de los lados
+        if TAMBIEN_PASA in str(f.get('notas') or ''):
+            f['notas'] = re.sub(r'(también pasa\s*:\s*)([^;|]+)',
+                                lambda q: q.group(1) + ' / '.join(cambia(x.strip()) for x in q.group(2).split(' / ')),
+                                f['notas'])
     return filas
 
 
