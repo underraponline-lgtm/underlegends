@@ -1,9 +1,9 @@
 {
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
-  "FFA": "2026-10-13",
+  "FFA": "2026-10-14",
   "SR": "2026-10-12",
-  "URBF": "2026-10-13"
+  "URBF": "2026-10-14"
  },
  "retos": {
   "AKARK": {
@@ -34,6 +34,7 @@
   },
   "Ax": {
    "avisado": "2026-10-13",
+   "chat": "2026-10-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-13T21:09:07+00:00",
@@ -111,6 +112,7 @@
   },
   "Konan": {
    "avisado": "2026-10-13",
+   "chat": "2026-10-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-13T23:50:48+00:00",
@@ -133,18 +135,6 @@
    "vence": "2026-10-20T15:58:57+00:00",
    "vencido": false
   },
-  "Lrs el borrachin": {
-   "avisado": "2026-10-13",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-14T02:09:40+00:00",
-   "did": "",
-   "evento": "PRITTY FREE",
-   "n": 469,
-   "sv": "FFA",
-   "vence": "2026-10-21T02:09:40+00:00",
-   "vencido": false
-  },
   "Magic": {
    "avisado": "2026-10-12",
    "avisado_cumplido": "2026-10-12",
@@ -161,6 +151,7 @@
   },
   "ONDADISKO": {
    "avisado": "2026-10-13",
+   "chat": "2026-10-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-13T01:56:58+00:00",
@@ -211,6 +202,7 @@
   },
   "Snake": {
    "avisado": "2026-10-13",
+   "chat": "2026-10-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-13T23:50:48+00:00",
@@ -249,6 +241,7 @@
   },
   "Warap": {
    "avisado": "2026-10-13",
+   "chat": "2026-10-14",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-14T02:09:40+00:00",
