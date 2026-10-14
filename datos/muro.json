@@ -238,6 +238,10 @@
 "temporada"
 ]
 },
+"bna": {
+"rg": "",
+"c": []
+},
 "sinlimites": {
 "rg": "D",
 "c": [
@@ -263,9 +267,13 @@
 "temporada"
 ]
 },
-"bna": {
+"delux": {
 "rg": "",
-"c": []
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
 },
 "carlosss": {
 "rg": "",
@@ -324,18 +332,18 @@
 "temporada"
 ]
 },
-"polosport": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "geoka": {
 "rg": "E",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"polosport": {
+"rg": "",
+"c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -365,14 +373,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"delux": {
-"rg": "",
-"c": [
-"pais",
 "servidor",
 "temporada"
 ]
@@ -464,6 +464,10 @@
 "rg": "",
 "c": []
 },
+"chop": {
+"rg": "",
+"c": []
+},
 "ariaxer": {
 "rg": "",
 "c": [
@@ -503,10 +507,6 @@
 "servidor",
 "temporada"
 ]
-},
-"chop": {
-"rg": "",
-"c": []
 },
 "juasmio": {
 "rg": "",
@@ -750,6 +750,10 @@
 "rg": "",
 "c": []
 },
+"marto": {
+"rg": "",
+"c": []
+},
 "hh": {
 "rg": "",
 "c": [
@@ -837,10 +841,6 @@
 "servidor",
 "temporada"
 ]
-},
-"marto": {
-"rg": "",
-"c": []
 },
 "cajita": {
 "rg": "",

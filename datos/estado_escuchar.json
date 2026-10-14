@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-14T02:37:20Z",
+ "cuando": "2026-10-14T02:59:21Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 323.5,
+ "dur_s": 363.5,
  "pasos": [
   {
    "n": "0b",
@@ -15,19 +15,19 @@
    "n": "0c",
    "que": "lo corregido desde los reportes",
    "ok": true,
-   "s": 2.8
+   "s": 3.2
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 58.1
+   "s": 56.1
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 47.7
+   "s": 42.1
   },
   {
    "n": "1a",
@@ -45,7 +45,7 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 31.4
+   "s": 30.1
   },
   {
    "n": "1b2",
@@ -57,7 +57,7 @@
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 5.3
+   "s": 5.6
   },
   {
    "n": "2b",
@@ -75,13 +75,13 @@
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.4
+   "s": 0.1
   },
   {
    "n": "2b3d",
    "que": "los paneles de DRA",
    "ok": true,
-   "s": 41.3
+   "s": 29.4
   },
   {
    "n": "2b3b",
@@ -93,55 +93,55 @@
    "n": "2b3c",
    "que": "el reto del debut",
    "ok": true,
-   "s": 1.7
+   "s": 1.4
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.7
+   "s": 1.3
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 1.1
+   "s": 0.9
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.0
+   "s": 5.9
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 31.3
+   "s": 89.1
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 3.8
+   "s": 3.7
   },
   {
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 2.4
+   "s": 2.5
   },
   {
    "n": "2b8b",
    "que": "la agenda",
    "ok": true,
-   "s": 0.3
+   "s": 0.4
   },
   {
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 11.8
+   "s": 11.3
   },
   {
    "n": "2b10",
@@ -153,19 +153,19 @@
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 47.2
+   "s": 49.9
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 3.9
+   "s": 1.1
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 11.1
+   "s": 11.8
   },
   {
    "n": "2e",
@@ -177,17 +177,17 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.9
+   "s": 6.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 4.5
+   "s": 4.2
   }
  ],
  "fallas": [],
- "decidir": 141,
+ "decidir": 137,
  "ultimo_evento": {
   "n": "468",
   "nombre": "DEM UZBEKISTAN FECHA 2",
@@ -196,7 +196,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-14T02:33:03Z",
+  "cuando": "2026-10-14T02:54:23Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 462,
   "un_evento": 238,
@@ -211,7 +211,7 @@
    {
     "semana": "2026-09-28",
     "nuevos": 127,
-    "volvieron": 44,
+    "volvieron": 45,
     "completa": false
    },
    {
@@ -230,20 +230,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 68,
-   "read": 12907
+   "write": 93,
+   "read": 14780
   },
   "objeto": {
-   "leidas": 800472,
-   "escritas": 7829,
-   "pedidos": 1957
+   "leidas": 880064,
+   "escritas": 8518,
+   "pedidos": 2209
   },
   "worker": {
-   "pedidos": 11714,
+   "pedidos": 11706,
    "errores": 1,
-   "sub": 12515,
+   "sub": 12517,
    "p50_ms": 1.25,
-   "p99_ms": 7.46
+   "p99_ms": 7.41
   },
   "r2": {
    "objetos": 4023,

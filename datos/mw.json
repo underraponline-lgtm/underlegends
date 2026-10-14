@@ -44,7 +44,7 @@
      "por": [
       {
        "n": "Delux",
-       "cobra": 16000
+       "cobra": 13000
       }
      ]
     }
@@ -183,7 +183,7 @@
      "por": [
       {
        "n": "BNA",
-       "cobra": 11500
+       "cobra": 11000
       }
      ]
     }
@@ -259,10 +259,30 @@
     "nivel": "D",
     "base": 4000,
     "o": 36,
-    "estado": "suelto",
+    "estado": "cazado",
     "ev": 1,
-    "fase": "",
-    "valor": 5000
+    "fase": "Cuartos",
+    "valor": 5000,
+    "caza": {
+     "n": 468,
+     "evento": "DEM UZBEKISTAN FECHA 2",
+     "sv": "FFA",
+     "t": "2026-10-13T23:50:48Z",
+     "por": [
+      {
+       "n": "Delux",
+       "cobra": 1750
+      },
+      {
+       "n": "Erik",
+       "cobra": 3250
+      },
+      {
+       "n": "Nemi",
+       "cobra": 3000
+      }
+     ]
+    }
    }
   ],
   "snap": {

@@ -389,7 +389,12 @@
     "ronda": "OCTAVOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "NEMI + DELUX + ERIK",
+   "1": "TAM + AGUS + VERC",
+   "2": "(nadie siguió)",
+   "3": "(nadie siguió)"
+  },
   "sin_permiso": false,
   "sv": "FFA"
  },

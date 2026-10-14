@@ -1533,7 +1533,7 @@
    "setesfifi": 1
   },
   "fecha": "07/10",
-  "firma": "8d08ef27ead43d3a",
+  "firma": "4fa33f90e9686522",
   "msg": "1557616971858579527",
   "nombre": "Doble Eliminación Vol. 2",
   "num": 426,
@@ -2511,7 +2511,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "149f545685bf1866",
+  "firma": "50f8d10d2cccead4",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -2833,7 +2833,7 @@
    "Zignos": 11
   },
   "fecha": "08/10",
-  "firma": "f20681323178c4ee",
+  "firma": "36e7baed691482b7",
   "msg": "1557926458221920299",
   "nombre": "__ LA REDENCIÓN VOL.1 __",
   "num": 431,
@@ -4382,7 +4382,7 @@
    "Velatz": 28
   },
   "fecha": "09/10",
-  "firma": "dcb7941e30750b28",
+  "firma": "c2a6b166e577cc05",
   "msg": "1558266214659260507",
   "nombre": "COPA SOOLAR 4",
   "num": 437,
@@ -4622,7 +4622,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "00e3f3b90f9aacd3",
+  "firma": "75760288b7ab8d28",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -5056,7 +5056,7 @@
    "Xclusivo": 10
   },
   "fecha": "09/10",
-  "firma": "0fdaafc2d97b271d",
+  "firma": "d87a20c0983c92f4",
   "msg": "1558334120172462091",
   "nombre": "PROYECTO X VOL.2",
   "num": 440,
@@ -5786,7 +5786,7 @@
    "PichulaMc": 27
   },
   "fecha": "10/10",
-  "firma": "585f490d744c33d5",
+  "firma": "48e51c5af67cafcc",
   "msg": "1558643633110917121",
   "nombre": "(sin titulo)",
   "num": 444,
@@ -6726,7 +6726,7 @@
    "Verc": 2
   },
   "fecha": "11/10",
-  "firma": "22730cb83d6c2cd4",
+  "firma": "f395fa21f4d88b92",
   "msg": "1558907912582078525",
   "nombre": "__ HJKSLOWT V.1 __",
   "num": 449,
@@ -10488,7 +10488,7 @@
    "Tenor": 3
   },
   "fecha": "13/10",
-  "firma": "c327424a9de746c5",
+  "firma": "dcacbc9e7939c1df",
   "msg": "1559459229411057705",
   "nombre": "QCYO RAPEEN",
   "num": 465,
@@ -10642,6 +10642,7 @@
   "v": 2
  },
  "467": {
+  "al_dia": true,
   "antes": {
    "Ariaxer": [
     53,
@@ -10908,7 +10909,7 @@
    "Verc": 8
   },
   "fecha": "13/10",
-  "firma": "1807fd0d000fbd8c",
+  "firma": "15f155216bc1221c",
   "msg": "1559705366705475605",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL5 __",
   "num": 467,
@@ -11043,6 +11044,7 @@
   "v": 2
  },
  "468": {
+  "al_dia": true,
   "antes": {
    "Agus": [
     9,
@@ -11191,6 +11193,36 @@
     "Oasis",
     "Delux",
     "Oasis"
+   ],
+   [
+    "Marto",
+    "Chop",
+    ""
+   ],
+   [
+    "Marto",
+    "Sin Limites",
+    ""
+   ],
+   [
+    "Vandu",
+    "Yor",
+    ""
+   ],
+   [
+    "Vandu",
+    "BNA",
+    ""
+   ],
+   [
+    "Nemi, Delux, Erik",
+    "Geoka",
+    "Nemi, Delux, Erik"
+   ],
+   [
+    "Tam, Agus, Verc",
+    "Velatz",
+    "Tam, Agus, Verc"
    ]
   ],
   "ev_antes": {
@@ -11211,7 +11243,7 @@
    "Zignos": 20
   },
   "fecha": "13/10",
-  "firma": "321189e2ebaa7def",
+  "firma": "57ca97d46162204f",
   "msg": "1559752028111114252",
   "nombre": "DEM UZBEKISTAN FECHA 2",
   "num": 468,
@@ -11248,12 +11280,22 @@
     2625
    ],
    [
+    "Velatz",
+    "Cuartos",
+    2500
+   ],
+   [
     "Colesito",
     "Cuartos",
     1250
    ],
    [
     "Zignos",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Geoka",
     "Cuartos",
     1250
    ],
@@ -11299,6 +11341,36 @@
    ],
    [
     "PichulaMc",
+    "Octavos",
+    1250
+   ],
+   [
+    "Marto",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chop",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Yor",
+    "Octavos",
+    1250
+   ],
+   [
+    "BNA",
     "Octavos",
     1250
    ],

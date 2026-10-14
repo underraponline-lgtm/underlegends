@@ -22631,27 +22631,41 @@
      ],
      [
       [
-       "Marto 🇦🇷",
-       "Chop🇭🇳",
-       "Sin límites 🇵🇪"
+       "Marto",
+       "Chop"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: Marto 🇦🇷; cobra: Chop🇭🇳; cobra: Sin límites 🇵🇪; nadie siguió: ✅ Decidir"
+     ],
+     [
+      [
+       "Marto",
+       "Sin Limites"
+      ],
+      "",
+      "cobra: Marto 🇦🇷; cobra: Chop🇭🇳; cobra: Sin límites 🇵🇪; nadie siguió: ✅ Decidir"
+     ],
+     [
+      [
+       "Vandu",
+       "Yor"
+      ],
+      "",
+      "cobra: vandu🇨🇦; cobra: Yor 🇪🇸; cobra: Bna; nadie siguió: ✅ Decidir"
+     ],
+     [
+      [
+       "Vandu",
+       "BNA"
+      ],
+      "",
+      "cobra: vandu🇨🇦; cobra: Yor 🇪🇸; cobra: Bna; nadie siguió: ✅ Decidir"
      ],
      [
       [
        "SAIK",
        "Xubaru prime 🇧🇲",
        "warap🇦🇷"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "vandu🇨🇦",
-       "Yor 🇪🇸",
-       "Bna"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -22679,19 +22693,19 @@
      ],
      [
       [
-       "Geoka 🇦🇷",
-       "NEMI + DELUX + ERIK"
+       "Nemi, Delux, Erik",
+       "Geoka"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Nemi, Delux, Erik",
+      "ganador: ✅ Decidir; Walk-in 1: Geoka 🇦🇷"
      ],
      [
       [
-       "Velatz",
-       "TAM + AGUS + VERC"
+       "Tam, Agus, Verc",
+       "Velatz"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Tam, Agus, Verc",
+      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -22759,7 +22773,22 @@
     2625
    ],
    [
+    "Velatz",
+    "Cuartos",
+    2500
+   ],
+   [
     "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "BNA",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chop",
     "Octavos",
     1250
    ],
@@ -22779,12 +22808,22 @@
     1250
    ],
    [
+    "Geoka",
+    "Cuartos",
+    1250
+   ],
+   [
     "Konan",
     "Octavos",
     1250
    ],
    [
     "Lord Viruzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Marto",
     "Octavos",
     1250
    ],
@@ -22799,12 +22838,27 @@
     1250
    ],
    [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
     "Six",
     "Octavos",
     1250
    ],
    [
     "Snake",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Yor",
     "Octavos",
     1250
    ],
