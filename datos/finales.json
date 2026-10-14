@@ -398,5 +398,27 @@
   "sin_permiso": false,
   "sv": "FFA"
  },
+ "1560013926148739105": {
+  "autor": "1493317254581063680",
+  "canal": "1487207377601040516",
+  "cuando": "2026-10-14T19:38:23.651000+00:00",
+  "evento": "DEM UZBEKISTAN FECHA 3",
+  "fecha": "14/10",
+  "llave": "1560013926148739105",
+  "pregunta": "1560025353295241387",
+  "preguntada": "2026-10-14 4:23 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "01` asuka la homosexual 🇪🇸 - Marcos",
+     "16` agre 🇦🇷 - Benjixo"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

@@ -677,6 +677,101 @@
     "G8"
    ],
    "escribio": {}
+  },
+  {
+   "id": "1079a17e1a",
+   "tipo": "Nombre desconocido",
+   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
+   "que": "¿Quién es «05` Lrs 🇦🇷 - LRS»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792009759279,
+   "filas": [
+    697
+   ],
+   "variantes": [
+    "05` Lrs 🇦🇷 - LRS"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "6c53909ec9",
+   "tipo": "Nombre desconocido",
+   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
+   "que": "¿Quién es «07` Neo 🇦🇷 - Neo»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792009759279,
+   "filas": [
+    699
+   ],
+   "variantes": [
+    "07` Neo 🇦🇷 - Neo"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "c4b3d4ff7b",
+   "tipo": "Nombre desconocido",
+   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
+   "que": "¿Quién es «08` Tuca 🇦🇷 - Tuca»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792009759279,
+   "filas": [
+    700
+   ],
+   "variantes": [
+    "08` Tuca 🇦🇷 - Tuca"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "6adefc4a81",
+   "tipo": "Nombre desconocido",
+   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
+   "que": "¿Quién es «11` agus 🇦🇷 - Agus»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792009759279,
+   "filas": [
+    702
+   ],
+   "variantes": [
+    "11` agus 🇦🇷 - Agus"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "59825e16c7",
+   "tipo": "Nombre desconocido",
+   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
+   "que": "¿Quién es «13` vandu 🇨🇦 - Vandu»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792009759279,
+   "filas": [
+    704
+   ],
+   "variantes": [
+    "13` vandu 🇨🇦 - Vandu"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

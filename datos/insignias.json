@@ -7,9 +7,37 @@
 "prueba"
 ]
 },
+"06` Trot  - Trot": {
+"debut": [
+"2026-10-14T20:25:49Z",
+"prueba"
+]
+},
+"09` erian  - Erian": {
+"debut": [
+"2026-10-14T20:25:49Z",
+"prueba"
+]
+},
 "1200": {
 "debut": [
 "2026-09-27T17:50:55Z",
+"prueba"
+],
+"podio": [
+"2026-10-14T20:25:49Z",
+"prueba"
+]
+},
+"12` Krish  - Krish": {
+"debut": [
+"2026-10-14T20:25:49Z",
+"prueba"
+]
+},
+"14` Geoka  - Geoka": {
+"debut": [
+"2026-10-14T20:25:49Z",
 "prueba"
 ]
 },
@@ -5130,6 +5158,10 @@
 ],
 "racha": [
 "2026-10-13T23:24:55Z",
+"prueba"
+],
+"duelista": [
+"2026-10-14T20:25:49Z",
 "prueba"
 ]
 },

@@ -11842,5 +11842,228 @@
    ]
   ],
   "v": 2
+ },
+ "471": {
+  "antes": {
+   "1200": [
+    215,
+    123,
+    true
+   ],
+   "Agus": [
+    11,
+    12,
+    false
+   ],
+   "Cinexfilo": [
+    37,
+    45,
+    false
+   ],
+   "Colesito": [
+    7,
+    8,
+    false
+   ],
+   "LRS": [
+    39,
+    50,
+    false
+   ],
+   "Majiztral": [
+    22,
+    28,
+    false
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "Neo": [
+    197,
+    79,
+    true
+   ],
+   "Tuca": [
+    206,
+    101,
+    true
+   ],
+   "Vandu": [
+    15,
+    18,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Majiztral",
+    "14` Geoka 🇦🇷 - Geoka",
+    "Majiztral"
+   ],
+   [
+    "13` vandu 🇨🇦 - Vandu",
+    "Cinexfilo",
+    "13` vandu 🇨🇦 - Vandu"
+   ],
+   [
+    "05` Lrs 🇦🇷 - LRS",
+    "12` Krish 🇪🇸 - Krish",
+    "05` Lrs 🇦🇷 - LRS"
+   ],
+   [
+    "11` agus 🇦🇷 - Agus",
+    "06` Trot 🇪🇸 - Trot",
+    "11` agus 🇦🇷 - Agus"
+   ],
+   [
+    "07` Neo 🇦🇷 - Neo",
+    "Makmah",
+    "07` Neo 🇦🇷 - Neo"
+   ],
+   [
+    "08` Tuca 🇦🇷 - Tuca",
+    "09` erian 🇦🇷 - Erian",
+    "08` Tuca 🇦🇷 - Tuca"
+   ],
+   [
+    "1200",
+    "Majiztral",
+    "1200"
+   ],
+   [
+    "Vandu",
+    "LRS",
+    "Vandu"
+   ],
+   [
+    "Agus",
+    "Neo",
+    "Agus"
+   ],
+   [
+    "Tuca",
+    "Colesito",
+    "Tuca"
+   ],
+   [
+    "Vandu",
+    "1200",
+    "Vandu"
+   ],
+   [
+    "Agus",
+    "Tuca",
+    "Agus"
+   ],
+   [
+    "Agus",
+    "Vandu",
+    "Agus"
+   ],
+   [
+    "1200",
+    "Tuca",
+    "1200"
+   ]
+  ],
+  "ev_antes": {
+   "1200": 6,
+   "Agus": 14,
+   "Cinexfilo": 12,
+   "Colesito": 26,
+   "LRS": 12,
+   "Majiztral": 16,
+   "Makmah": 43,
+   "Neo": 5,
+   "Tuca": 5,
+   "Vandu": 20
+  },
+  "fecha": "14/10",
+  "firma": "e070852f29096d05",
+  "msg": "1560019837609050254",
+  "nombre": "DEM UZBEKISTAN FECHA 3",
+  "num": 471,
+  "participantes": 24,
+  "sello": {
+   "Agus": "37a0c947ddbc:7e987c978e23"
+  },
+  "sv": "FFA",
+  "t": "2026-10-14T20:24:14Z",
+  "tabla": [
+   [
+    "Agus",
+    "Campeón",
+    10000
+   ],
+   [
+    "Vandu",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "1200",
+    "Tercero",
+    6000
+   ],
+   [
+    "Tuca",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2500
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Neo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    1250
+   ],
+   [
+    "14` Geoka 🇦🇷 - Geoka",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cinexfilo",
+    "Octavos",
+    1250
+   ],
+   [
+    "12` Krish 🇪🇸 - Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "06` Trot 🇪🇸 - Trot",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "09` erian 🇦🇷 - Erian",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }
