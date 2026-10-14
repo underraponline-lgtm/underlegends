@@ -73,15 +73,6 @@
 "temporada"
 ]
 },
-"agus": {
-"rg": "A",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "liberia": {
 "rg": "S",
 "c": [
@@ -95,6 +86,15 @@
 "rg": "C",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"agus": {
+"rg": "B",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -429,6 +429,15 @@
 "rg": "",
 "c": []
 },
+"numberve": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "rt": {
 "rg": "",
 "c": [
@@ -455,15 +464,6 @@
 "rg": "D",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"numberve": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -751,6 +751,13 @@
 "rg": "",
 "c": []
 },
+"xubaru": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "marto": {
 "rg": "",
 "c": []
@@ -833,6 +840,13 @@
 "rg": "",
 "c": []
 },
+"agustin51k": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "betelguese": {
 "rg": "",
 "c": []
@@ -841,13 +855,6 @@
 "rg": "",
 "c": [
 "servidor"
-]
-},
-"xubaru": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
 ]
 },
 "cajita": {
@@ -1526,13 +1533,6 @@
 "c": []
 },
 "sexo": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"agustin51k": {
 "rg": "",
 "c": [
 "servidor",

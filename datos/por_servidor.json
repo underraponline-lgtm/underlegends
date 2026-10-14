@@ -539,17 +539,6 @@
     "racha": "0/0"
    }
   },
-  "Ax🇻🇪": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 1875,
-    "racha": "0/0"
-   }
-  },
   "BLANKO 🇺🇸": {
    "FFA": {
     "duelos": "1/2",
@@ -6331,12 +6320,12 @@
   "Xubaru": {
    "FFA": {
     "duelos": "3/6",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
-    "ovr": 50,
+    "ovr": 51,
     "pod": 2,
-    "pts": 9850,
-    "racha": "1/1"
+    "pts": 11725,
+    "racha": "0/1"
    }
   },
   "YOUNG VLAD 🇨🇴": {
