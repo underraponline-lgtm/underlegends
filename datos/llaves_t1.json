@@ -2403,7 +2403,7 @@
        "Dynoco, Geoka"
       ],
       "Hassan, Abyssus",
-      "Revivido: GEOKA🇦🇷"
+      "Drafteado: GEOKA🇦🇷"
      ],
      [
       [
@@ -2411,7 +2411,7 @@
        "Erian, Acry"
       ],
       "Zeta, Fazer",
-      "Revivido: ACRY🇻🇪"
+      "Drafteado: ACRY🇻🇪"
      ]
     ],
     "r": "Semifinales"
@@ -2435,12 +2435,12 @@
    [
     "Geoka",
     "Campeón",
-    3000
+    4250
    ],
    [
     "Acry",
     "Subcampeón",
-    2583
+    3416
    ],
    [
     "Abyssus",
@@ -20636,7 +20636,7 @@
        "Cajita"
       ],
       "Snow, Teo",
-      "triple (3 bandas, pasan 2); también pasa: Teo🇨🇴; Revivido: snow"
+      "triple (3 bandas, pasan 2); también pasa: Teo🇨🇴; Drafteado: snow"
      ],
      [
       [
@@ -20645,7 +20645,7 @@
        "AFR"
       ],
       "Benjixo, doble h",
-      "triple (3 bandas, pasan 2); también pasa: doble h🇨🇱; Revivido: BENJIXO🇦🇷"
+      "triple (3 bandas, pasan 2); también pasa: doble h🇨🇱; Drafteado: BENJIXO🇦🇷"
      ],
      [
       [
@@ -20654,7 +20654,7 @@
        "Lvel 🇻🇪"
       ],
       "JJ, ONZASS",
-      "triple (3 bandas, pasan 2); también pasa: onzas 🇻🇪; Revivido: JJ 🇨🇴"
+      "triple (3 bandas, pasan 2); también pasa: onzas 🇻🇪; Drafteado: JJ 🇨🇴"
      ],
      [
       [
@@ -20672,7 +20672,7 @@
        "Ariaxer"
       ],
       "Guess, Efimero",
-      "triple (3 bandas, pasan 2); también pasa: Efimero 🇨🇱; Revivido: Guess 🇦🇷"
+      "triple (3 bandas, pasan 2); también pasa: Efimero 🇨🇱; Drafteado: Guess 🇦🇷"
      ],
      [
       [
@@ -20727,7 +20727,7 @@
        "Zignos, EmiZor"
       ],
       "Xclusivo, OG",
-      "Revivido: OG🇻🇪; Revivido: EMI🇲🇽"
+      "Drafteado: OG🇻🇪; Drafteado: EMI🇲🇽"
      ]
     ],
     "r": "Cuartos"
@@ -20772,17 +20772,32 @@
    [
     "JJ",
     "Campeón",
-    3000
-   ],
-   [
-    "OG",
-    "Subcampeón",
-    2687
+    4250
    ],
    [
     "Snow",
     "Campeón",
-    2500
+    3750
+   ],
+   [
+    "OG",
+    "Subcampeón",
+    3625
+   ],
+   [
+    "Guess",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Benjixo",
+    "Semifinal",
+    3000
+   ],
+   [
+    "EmiZor",
+    "Semifinal",
+    3000
    ],
    [
     "Verc",
@@ -20793,21 +20808,6 @@
     "yinn",
     "Campeón",
     2500
-   ],
-   [
-    "Guess",
-    "Subcampeón",
-    2187
-   ],
-   [
-    "Benjixo",
-    "Semifinal",
-    2125
-   ],
-   [
-    "EmiZor",
-    "Semifinal",
-    2125
    ],
    [
     "Makmah",
@@ -23539,7 +23539,7 @@
        "Gus"
       ],
       "Oasis, Majiztral",
-      "triple (3 bandas, pasan 2); también pasa: Majiztral 🇨🇴; Revivido: Park-Ji Sung🇰🇷"
+      "triple (3 bandas, pasan 2); también pasa: Majiztral 🇨🇴; Drafteado: Park-Ji Sung🇰🇷"
      ],
      [
       [
@@ -23557,7 +23557,7 @@
        "Zaik 🇪🇸"
       ],
       "Zignos, ikonoxx",
-      "triple (3 bandas, pasan 2); también pasa: IKONOX 🇺🇾; Revivido: Zignos"
+      "triple (3 bandas, pasan 2); también pasa: IKONOX 🇺🇾; Drafteado: Zignos"
      ],
      [
       [
@@ -23575,7 +23575,7 @@
        "Chente"
       ],
       "Mr Still Ballin, Under",
-      "triple (3 bandas, pasan 2); también pasa: Under🇨🇴; Revivido: mr still ballin 🇳🇴"
+      "triple (3 bandas, pasan 2); también pasa: Under🇨🇴; Drafteado: mr still ballin 🇳🇴"
      ],
      [
       [
@@ -23602,7 +23602,7 @@
        "Chop"
       ],
       "Six, Vandu",
-      "triple (3 bandas, pasan 2); también pasa: vandu🇨🇦; Revivido: six"
+      "triple (3 bandas, pasan 2); también pasa: vandu🇨🇦; Drafteado: six"
      ]
     ],
     "r": "Octavos"
@@ -23682,12 +23682,27 @@
   "sv": "FFA",
   "tabla": [
    [
-    "Colesito",
+    "Zignos",
     "Campeón",
-    2500
+    5500
+   ],
+   [
+    "Six",
+    "Subcampeón",
+    4875
    ],
    [
     "Oasis",
+    "Campeón",
+    3750
+   ],
+   [
+    "Mr Still Ballin",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Colesito",
     "Campeón",
     2500
    ],
@@ -23695,21 +23710,6 @@
     "PichulaMc",
     "Campeón",
     2500
-   ],
-   [
-    "Zignos",
-    "Campeón",
-    2500
-   ],
-   [
-    "Mr Still Ballin",
-    "Subcampeón",
-    2187
-   ],
-   [
-    "Six",
-    "Subcampeón",
-    2187
    ],
    [
     "Abyssus",

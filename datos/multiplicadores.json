@@ -460,7 +460,7 @@
    "semillero": {
     "nuevos": {
      "FFA": 17,
-     "URBF": 11,
+     "URBF": 12,
      "SR": 4,
      "FVS": 1
     },
@@ -468,7 +468,7 @@
      "DDF": 7,
      "FFA": 106,
      "SR": 21,
-     "URBF": 13,
+     "URBF": 20,
      "FVS": 5
     },
     "gana": "URBF"
@@ -481,7 +481,7 @@
     "FFS": 0,
     "FVS": 5,
     "SR": 21,
-    "URBF": 13
+    "URBF": 20
    },
    "sv_sorteo": {
     "DRA": 3,

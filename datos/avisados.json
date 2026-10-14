@@ -2511,7 +2511,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "553620f3de555b27",
+  "firma": "07219020decdf5f5",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -2833,7 +2833,7 @@
    "Zignos": 11
   },
   "fecha": "08/10",
-  "firma": "be90bfb9a41587db",
+  "firma": "6a7e3bb10568adab",
   "msg": "1557926458221920299",
   "nombre": "__ LA REDENCIÓN VOL.1 __",
   "num": 431,
@@ -3790,7 +3790,7 @@
    "Xubaru": 3
   },
   "fecha": "08/10",
-  "firma": "5a5dd2525d60f322",
+  "firma": "87f53c8b2844e43e",
   "msg": "1557986840865411073",
   "nombre": "__ __ Cuentas Pendientes V.1 __ __",
   "num": 435,
@@ -4382,7 +4382,7 @@
    "Velatz": 28
   },
   "fecha": "09/10",
-  "firma": "6b018ee94df46453",
+  "firma": "383e4587f5881dff",
   "msg": "1558266214659260507",
   "nombre": "COPA SOOLAR 4",
   "num": 437,
@@ -5056,7 +5056,7 @@
    "Xclusivo": 10
   },
   "fecha": "09/10",
-  "firma": "aa28e766d8f96208",
+  "firma": "11bd0695dce7349c",
   "msg": "1558334120172462091",
   "nombre": "PROYECTO X VOL.2",
   "num": 440,
@@ -5537,7 +5537,7 @@
    "Xclusivo": 12
   },
   "fecha": "10/10",
-  "firma": "81fbacd162ef88ab",
+  "firma": "4ea6c9198b76cdf9",
   "msg": "1558545514931163258",
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
   "num": 442,
@@ -6092,7 +6092,7 @@
    "Spartan": 1
   },
   "fecha": "10/10",
-  "firma": "4f4d5ffad4ee2a7c",
+  "firma": "3c9115bfcd7567a4",
   "msg": "1558711595163590740",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
   "num": 446,
@@ -9396,7 +9396,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "db3dcd553b43854f",
+  "firma": "9d9fc99340130d05",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -11619,7 +11619,7 @@
    "Verc": 10
   },
   "fecha": "13/10",
-  "firma": "9bd6150654dd0bab",
+  "firma": "24d795a0a4e0b1fc",
   "msg": "1559769924178804738",
   "nombre": "PRITTY FREE",
   "num": 469,
@@ -11815,7 +11815,7 @@
    "Xubaru": 4
   },
   "fecha": "14/10",
-  "firma": "b3ea863424ffeee4",
+  "firma": "8955836c60a27443",
   "msg": "1559809185120518145",
   "nombre": "__ Inserte Nombre de la Compe __",
   "num": 470,
@@ -12014,7 +12014,7 @@
    "Vandu": 20
   },
   "fecha": "14/10",
-  "firma": "929d43a8e1c2b4b9",
+  "firma": "da7d5f3e91bccb3d",
   "msg": "1560019837609050254",
   "nombre": "DEM UZBEKISTAN FECHA 3",
   "num": 471,
@@ -12241,7 +12241,7 @@
    ],
    [
     "Mr Still Ballin",
-    "Chente 🇻🇪",
+    "Chente",
     "Mr Still Ballin"
    ],
    [
@@ -12320,7 +12320,7 @@
    "ikonoxx": 4
   },
   "fecha": "14/10",
-  "firma": "72e667bb10a3e5a8",
+  "firma": "9f4bd969c6babb82",
   "msg": "1560063208642052097",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL 6 PANDILLAS __",
   "num": 472,
@@ -12335,9 +12335,24 @@
   "t": "2026-10-14T22:54:12Z",
   "tabla": [
    [
+    "Zignos",
+    "Campeón",
+    5500
+   ],
+   [
+    "Six",
+    "Subcampeón",
+    4875
+   ],
+   [
     "Oasis",
     "Campeón",
-    2500
+    3750
+   ],
+   [
+    "Mr Still Ballin",
+    "Subcampeón",
+    3125
    ],
    [
     "Colesito",
@@ -12348,21 +12363,6 @@
     "PichulaMc",
     "Campeón",
     2500
-   ],
-   [
-    "Zignos",
-    "Campeón",
-    2500
-   ],
-   [
-    "Mr Still Ballin",
-    "Subcampeón",
-    2187
-   ],
-   [
-    "Six",
-    "Subcampeón",
-    2187
    ],
    [
     "Verc",
@@ -12435,7 +12435,7 @@
     1250
    ],
    [
-    "Chente 🇻🇪",
+    "Chente",
     "Octavos",
     1250
    ],

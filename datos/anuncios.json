@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-14T23:24:51+00:00",
+ "cuando": "2026-10-14T23:54:42+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -10,6 +10,7 @@
    "canal_id": "1366968782416904202",
    "guild_id": "841017460341604382",
    "organizador": "",
+   "orgs": [],
    "autor_h": "797ecd0ceee716c6",
    "cupos_texto": "",
    "inscriptos": null,
@@ -32,6 +33,7 @@
    "canal_id": "1501086026729521202",
    "guild_id": "841017460341604382",
    "organizador": "",
+   "orgs": [],
    "autor_h": "ab84ec002bc2ec18",
    "cupos_texto": "",
    "inscriptos": null,
@@ -54,6 +56,7 @@
    "canal_id": "1501086026729521202",
    "guild_id": "841017460341604382",
    "organizador": "",
+   "orgs": [],
    "autor_h": "ab84ec002bc2ec18",
    "cupos_texto": "",
    "inscriptos": null,
@@ -76,6 +79,7 @@
    "canal_id": "1501086026729521202",
    "guild_id": "841017460341604382",
    "organizador": "",
+   "orgs": [],
    "autor_h": "ab84ec002bc2ec18",
    "cupos_texto": "",
    "inscriptos": null,
@@ -98,6 +102,7 @@
    "canal_id": "1501086026729521202",
    "guild_id": "841017460341604382",
    "organizador": "",
+   "orgs": [],
    "autor_h": "797ecd0ceee716c6",
    "cupos_texto": "INFINITOS SI QUERES COMPETIR ESTE ES TU MOMENTO",
    "inscriptos": null,
@@ -120,6 +125,7 @@
    "canal_id": "1501086026729521202",
    "guild_id": "841017460341604382",
    "organizador": "@TROT",
+   "orgs": [],
    "autor_h": "4f7ee0154e897daf",
    "cupos_texto": "8-12",
    "inscriptos": 8,
@@ -142,6 +148,7 @@
    "canal_id": "1501086026729521202",
    "guild_id": "841017460341604382",
    "organizador": "@mm777.co",
+   "orgs": [],
    "autor_h": "ab84ec002bc2ec18",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -164,6 +171,7 @@
    "canal_id": "1501086026729521202",
    "guild_id": "841017460341604382",
    "organizador": "",
+   "orgs": [],
    "autor_h": "ab84ec002bc2ec18",
    "cupos_texto": "",
    "inscriptos": null,
@@ -186,6 +194,7 @@
    "canal_id": "1501086026729521202",
    "guild_id": "841017460341604382",
    "organizador": "Micro Nico",
+   "orgs": [],
    "autor_h": "cbea6cc9415e8e3a",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -208,6 +217,7 @@
    "canal_id": "1501086026729521202",
    "guild_id": "841017460341604382",
    "organizador": "@!    MMC.",
+   "orgs": [],
    "autor_h": "ab84ec002bc2ec18",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -230,6 +240,7 @@
    "canal_id": "1501086026729521202",
    "guild_id": "841017460341604382",
    "organizador": "@!    MMC.",
+   "orgs": [],
    "autor_h": "ab84ec002bc2ec18",
    "cupos_texto": "8 - 16",
    "inscriptos": 8,
@@ -252,6 +263,12 @@
    "canal_id": "1501086026729521202",
    "guild_id": "841017460341604382",
    "organizador": "@LIL DRAKO RAP",
+   "orgs": [
+    {
+     "n": "LIL DRAKO RAP",
+     "id": "1462602972197556237"
+    }
+   ],
    "autor_h": "e5b61fe603dd63a6",
    "cupos_texto": "",
    "inscriptos": null,
@@ -278,6 +295,7 @@
    "canal_id": "1501086026729521202",
    "guild_id": "841017460341604382",
    "organizador": "",
+   "orgs": [],
    "autor_h": "ab84ec002bc2ec18",
    "cupos_texto": "",
    "inscriptos": null,
@@ -300,6 +318,7 @@
    "canal_id": "1501086026729521202",
    "guild_id": "841017460341604382",
    "organizador": "",
+   "orgs": [],
    "autor_h": "ab84ec002bc2ec18",
    "cupos_texto": "",
    "inscriptos": null,
@@ -322,6 +341,7 @@
    "canal_id": "1501086026729521202",
    "guild_id": "841017460341604382",
    "organizador": "@!    MMC.",
+   "orgs": [],
    "autor_h": "ab84ec002bc2ec18",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -344,6 +364,12 @@
    "canal_id": "1468478722884501709",
    "guild_id": "1468472442925092958",
    "organizador": "@nachonc_",
+   "orgs": [
+    {
+     "n": "nachonc_",
+     "id": ""
+    }
+   ],
    "autor_h": "9dbbad01fab207c3",
    "cupos_texto": "",
    "inscriptos": null,
@@ -366,6 +392,20 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "FLENNZS LEWITO AX",
+   "orgs": [
+    {
+     "n": "FLENNZS",
+     "id": ""
+    },
+    {
+     "n": "LEWITO",
+     "id": ""
+    },
+    {
+     "n": "AX",
+     "id": ""
+    }
+   ],
    "autor_h": "211322958af20ae2",
    "cupos_texto": "",
    "inscriptos": null,
@@ -398,6 +438,12 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "HERYIETEERJOUKATEITHORER",
+   "orgs": [
+    {
+     "n": "HERYIETEERJOUKATEITHORER",
+     "id": "1493317254581063680"
+    }
+   ],
    "autor_h": "8f502dc57bad1da2",
    "cupos_texto": "INFINITOS",
    "inscriptos": null,
@@ -420,6 +466,12 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "LRS",
+   "orgs": [
+    {
+     "n": "LRS",
+     "id": ""
+    }
+   ],
    "autor_h": "275527176611c43b",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -442,6 +494,12 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "@nachonc_",
+   "orgs": [
+    {
+     "n": "nachonc_",
+     "id": ""
+    }
+   ],
    "autor_h": "d83234c3da26ac85",
    "cupos_texto": "∞",
    "inscriptos": null,
@@ -464,6 +522,12 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "HERYIETEERJOUKATEITHORER",
+   "orgs": [
+    {
+     "n": "HERYIETEERJOUKATEITHORER",
+     "id": "1493317254581063680"
+    }
+   ],
    "autor_h": "8f502dc57bad1da2",
    "cupos_texto": "INFINITOS",
    "inscriptos": null,
@@ -486,6 +550,16 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "FLENNZS LEWITO",
+   "orgs": [
+    {
+     "n": "FLENNZS",
+     "id": ""
+    },
+    {
+     "n": "LEWITO",
+     "id": ""
+    }
+   ],
    "autor_h": "211322958af20ae2",
    "cupos_texto": "",
    "inscriptos": null,
@@ -518,6 +592,12 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "@nachonc_",
+   "orgs": [
+    {
+     "n": "nachonc_",
+     "id": ""
+    }
+   ],
    "autor_h": "d83234c3da26ac85",
    "cupos_texto": "8/12/16",
    "inscriptos": null,
@@ -540,6 +620,12 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "𓂀",
+   "orgs": [
+    {
+     "n": "𓂀",
+     "id": "1071185986366742630"
+    }
+   ],
    "autor_h": "335e29b6c78f88b1",
    "cupos_texto": "lo q sean",
    "inscriptos": null,
@@ -562,6 +648,12 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "Flennzs | ⛩️",
+     "id": "1414431452346581052"
+    }
+   ],
    "autor_h": "211322958af20ae2",
    "cupos_texto": "",
    "inscriptos": null,
@@ -594,6 +686,12 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "Velatz",
+     "id": "1426686911908675628"
+    }
+   ],
    "autor_h": "c36f9caea613c5c9",
    "cupos_texto": "",
    "inscriptos": null,
@@ -626,6 +724,12 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "CRONOX 🇨🇱",
+     "id": "1487658663148785734"
+    }
+   ],
    "autor_h": "6b35a4d4e6f57111",
    "cupos_texto": "12/14/16",
    "inscriptos": null,
@@ -658,6 +762,12 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "Kravitz",
+     "id": "1345962362615894027"
+    }
+   ],
    "autor_h": "7cc3316a3e5f345f",
    "cupos_texto": "0/16",
    "inscriptos": 0,
@@ -695,6 +805,12 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "Colesito",
+   "orgs": [
+    {
+     "n": "Colesito",
+     "id": "790016013680771102"
+    }
+   ],
    "autor_h": "fa8f09cab11e2bb2",
    "cupos_texto": "8/12/16",
    "inscriptos": null,
@@ -727,6 +843,12 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "Guess",
+     "id": "1515482513106272366"
+    }
+   ],
    "autor_h": "5421b7c087910f79",
    "cupos_texto": "",
    "inscriptos": null,
@@ -759,6 +881,12 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "Velatz",
+     "id": "1426686911908675628"
+    }
+   ],
    "autor_h": "c36f9caea613c5c9",
    "cupos_texto": "",
    "inscriptos": null,
@@ -791,6 +919,7 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "",
+   "orgs": [],
    "autor_h": "7cc3316a3e5f345f",
    "cupos_texto": "",
    "inscriptos": null,
@@ -823,6 +952,20 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "@l3wito   @elsoolar",
+   "orgs": [
+    {
+     "n": "Velatz",
+     "id": "1426686911908675628"
+    },
+    {
+     "n": "l3wito",
+     "id": ""
+    },
+    {
+     "n": "elsoolar",
+     "id": ""
+    }
+   ],
    "autor_h": "211322958af20ae2",
    "cupos_texto": "",
    "inscriptos": null,
@@ -857,6 +1000,12 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "Elsoolar",
+   "orgs": [
+    {
+     "n": "Elsoolar",
+     "id": ""
+    }
+   ],
    "autor_h": "9ac50a6f3726be04",
    "cupos_texto": "16",
    "inscriptos": null,
@@ -886,6 +1035,12 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "Flennzs | ⛩️",
+     "id": "1414431452346581052"
+    }
+   ],
    "autor_h": "211322958af20ae2",
    "cupos_texto": "",
    "inscriptos": null,
@@ -920,6 +1075,16 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "Kravitz",
+     "id": "1345962362615894027"
+    },
+    {
+     "n": ">   CUPOS: 16",
+     "id": ""
+    }
+   ],
    "autor_h": "7cc3316a3e5f345f",
    "cupos_texto": "16",
    "inscriptos": null,
@@ -952,6 +1117,12 @@
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "@nachonc_",
+   "orgs": [
+    {
+     "n": "nachonc_",
+     "id": ""
+    }
+   ],
    "autor_h": "d83234c3da26ac85",
    "cupos_texto": "∞",
    "inscriptos": null,
@@ -974,6 +1145,7 @@
    "canal_id": "863208009503997952",
    "guild_id": "492346406976356374",
    "organizador": "",
+   "orgs": [],
    "autor_h": "d83234c3da26ac85",
    "cupos_texto": "",
    "inscriptos": null,
@@ -996,6 +1168,7 @@
    "canal_id": "863208009503997952",
    "guild_id": "492346406976356374",
    "organizador": "",
+   "orgs": [],
    "autor_h": "d83234c3da26ac85",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1018,6 +1191,7 @@
    "canal_id": "863208009503997952",
    "guild_id": "492346406976356374",
    "organizador": "",
+   "orgs": [],
    "autor_h": "8247cb1fc50596ee",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1040,6 +1214,7 @@
    "canal_id": "863208009503997952",
    "guild_id": "492346406976356374",
    "organizador": "",
+   "orgs": [],
    "autor_h": "60e38ff03c62af68",
    "cupos_texto": "6 pre-inscritos máximo.",
    "inscriptos": null,
@@ -1062,6 +1237,7 @@
    "canal_id": "863208009503997952",
    "guild_id": "492346406976356374",
    "organizador": "",
+   "orgs": [],
    "autor_h": "8247cb1fc50596ee",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1084,6 +1260,12 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "gxbrrlaljndrr",
+     "id": "847124099243180042"
+    }
+   ],
    "autor_h": "f8abf54d3900e8f9",
    "cupos_texto": "Ilimitados",
    "inscriptos": null,
@@ -1106,6 +1288,16 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "@CANTU",
+   "orgs": [
+    {
+     "n": "1130121095618502738> ORGANIZADOR",
+     "id": ""
+    },
+    {
+     "n": "CANTU",
+     "id": "776271601221763103"
+    }
+   ],
    "autor_h": "d38ce51b292fbc64",
    "cupos_texto": "Ilimitados**  ( Clasis por puntos )",
    "inscriptos": null,
@@ -1128,6 +1320,12 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "@Rubik",
+   "orgs": [
+    {
+     "n": "Rubik",
+     "id": "1070553144964173906"
+    }
+   ],
    "autor_h": "b5da7a43ced391c4",
    "cupos_texto": "ILIMITADOS",
    "inscriptos": null,
@@ -1150,6 +1348,7 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "@ignac.07",
+   "orgs": [],
    "autor_h": "70f678176a53acf5",
    "cupos_texto": "Ilimitados**  ( Clasis por puntos )",
    "inscriptos": null,
@@ -1172,6 +1371,12 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "@Rubik",
+   "orgs": [
+    {
+     "n": "Rubik",
+     "id": "1070553144964173906"
+    }
+   ],
    "autor_h": "b5da7a43ced391c4",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1206,6 +1411,16 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "POR",
+     "id": ""
+    },
+    {
+     "n": "Velatz",
+     "id": "1426686911908675628"
+    }
+   ],
    "autor_h": "c36f9caea613c5c9",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1228,6 +1443,12 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "@Rubik",
+   "orgs": [
+    {
+     "n": "Rubik",
+     "id": "1070553144964173906"
+    }
+   ],
    "autor_h": "b5da7a43ced391c4",
    "cupos_texto": "ILIMITADOS",
    "inscriptos": null,
@@ -1250,6 +1471,7 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "@eseefe_",
+   "orgs": [],
    "autor_h": "60e38ff03c62af68",
    "cupos_texto": "Ilimitados",
    "inscriptos": null,
@@ -1272,6 +1494,12 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "Lewito",
+     "id": "1086485696572817418"
+    }
+   ],
    "autor_h": "211322958af20ae2",
    "cupos_texto": "24 / 16 / 12",
    "inscriptos": null,
@@ -1294,6 +1522,16 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "POR",
+     "id": ""
+    },
+    {
+     "n": "Velatz",
+     "id": "1426686911908675628"
+    }
+   ],
    "autor_h": "c36f9caea613c5c9",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1316,6 +1554,12 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "gxbrrlaljndrr",
+     "id": "847124099243180042"
+    }
+   ],
    "autor_h": "f8abf54d3900e8f9",
    "cupos_texto": "16",
    "inscriptos": null,
@@ -1338,6 +1582,16 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "@Rubik",
+   "orgs": [
+    {
+     "n": "1130121095618502738> ORGANIZADOR",
+     "id": ""
+    },
+    {
+     "n": "Rubik",
+     "id": "1070553144964173906"
+    }
+   ],
    "autor_h": "b5da7a43ced391c4",
    "cupos_texto": "Ilimitados",
    "inscriptos": null,
@@ -1360,6 +1614,7 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "@nachonc_",
+   "orgs": [],
    "autor_h": "d83234c3da26ac85",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1382,6 +1637,7 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "@nachonc_",
+   "orgs": [],
    "autor_h": "d83234c3da26ac85",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1404,6 +1660,7 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "@nachonc_",
+   "orgs": [],
    "autor_h": "d83234c3da26ac85",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1426,6 +1683,16 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "Velatz 🇨🇱",
+   "orgs": [
+    {
+     "n": "1130121095618502738>",
+     "id": ""
+    },
+    {
+     "n": "ORGANIZADOR",
+     "id": ""
+    }
+   ],
    "autor_h": "c36f9caea613c5c9",
    "cupos_texto": "12/16",
    "inscriptos": 12,
@@ -1448,6 +1715,7 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "@nachonc_",
+   "orgs": [],
    "autor_h": "d83234c3da26ac85",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1470,6 +1738,16 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "POR",
+     "id": ""
+    },
+    {
+     "n": "Velatz",
+     "id": "1426686911908675628"
+    }
+   ],
    "autor_h": "c36f9caea613c5c9",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1492,6 +1770,7 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "@nachonc_",
+   "orgs": [],
    "autor_h": "d83234c3da26ac85",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1514,6 +1793,16 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "POR",
+     "id": ""
+    },
+    {
+     "n": "Velatz",
+     "id": "1426686911908675628"
+    }
+   ],
    "autor_h": "c36f9caea613c5c9",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1536,6 +1825,12 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "@CANTU",
+   "orgs": [
+    {
+     "n": "CANTU",
+     "id": "776271601221763103"
+    }
+   ],
    "autor_h": "d38ce51b292fbc64",
    "cupos_texto": "ILIMITADOS ♾️",
    "inscriptos": null,
@@ -1564,6 +1859,7 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "@nachonc_",
+   "orgs": [],
    "autor_h": "d83234c3da26ac85",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1586,6 +1882,7 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "@nachonc_",
+   "orgs": [],
    "autor_h": "d83234c3da26ac85",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1608,6 +1905,7 @@
    "canal_id": "863208020900184084",
    "guild_id": "492346406976356374",
    "organizador": "@nachonc_",
+   "orgs": [],
    "autor_h": "d83234c3da26ac85",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1630,11 +1928,17 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧",
+     "id": "1344825963669749804"
+    }
+   ],
    "autor_h": "6a4dfd082a18bc77",
    "cupos_texto": "8",
    "inscriptos": null,
    "cupo_total": null,
-   "rango": "",
+   "rango": "Hierro",
    "modalidad": "1v1",
    "horario": "Cuando se llenen los cupos",
    "fecha": "",
@@ -1661,6 +1965,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "Erian 恵理久",
+   "orgs": [
+    {
+     "n": "Erian 恵理久",
+     "id": "1055474244089286706"
+    }
+   ],
    "autor_h": "78a9632c77e88d80",
    "cupos_texto": "4/8/12 (si llegamos a +12 hago pandillas)",
    "inscriptos": null,
@@ -1695,6 +2005,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "DSM-5 (MTZ)",
+     "id": "794733304729436212"
+    }
+   ],
    "autor_h": "907d1e98c22eda23",
    "cupos_texto": "",
    "inscriptos": null,
@@ -1729,6 +2045,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "@FASOO",
+   "orgs": [
+    {
+     "n": "FASOO",
+     "id": "1071915431696277504"
+    }
+   ],
    "autor_h": "86326b67ad6d9a94",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -1763,6 +2085,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "@Carlos",
+   "orgs": [
+    {
+     "n": "Carlos",
+     "id": "734172184737480745"
+    }
+   ],
    "autor_h": "608cfa4b650ba173",
    "cupos_texto": "4(si me dan ganas y se llena maybe de 8/16)",
    "inscriptos": null,
@@ -1797,6 +2125,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "Player",
+   "orgs": [
+    {
+     "n": ": Player",
+     "id": ""
+    }
+   ],
    "autor_h": "0ed040919881f966",
    "cupos_texto": "8-16",
    "inscriptos": 8,
@@ -1831,6 +2165,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "@Guty",
+   "orgs": [
+    {
+     "n": "Guty",
+     "id": "766366997117141022"
+    }
+   ],
    "autor_h": "39e7b5d06eab058a",
    "cupos_texto": "4, si hay mas gente 8",
    "inscriptos": 4,
@@ -1865,6 +2205,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "@Carlos",
+   "orgs": [
+    {
+     "n": "Carlos",
+     "id": "734172184737480745"
+    }
+   ],
    "autor_h": "608cfa4b650ba173",
    "cupos_texto": "4(si me dan ganas y se llena maybe de 8/16)",
    "inscriptos": null,
@@ -1899,6 +2245,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "@Guty",
+   "orgs": [
+    {
+     "n": "Guty",
+     "id": "766366997117141022"
+    }
+   ],
    "autor_h": "39e7b5d06eab058a",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -1933,6 +2285,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "@Carlos",
+   "orgs": [
+    {
+     "n": "Carlos",
+     "id": "734172184737480745"
+    }
+   ],
    "autor_h": "608cfa4b650ba173",
    "cupos_texto": "4(si me dan ganas y se llena maybe de 8/16)",
    "inscriptos": null,
@@ -1967,6 +2325,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "@Carlos",
+   "orgs": [
+    {
+     "n": "Carlos",
+     "id": "734172184737480745"
+    }
+   ],
    "autor_h": "608cfa4b650ba173",
    "cupos_texto": "4(si me dan ganas y se llena maybe de 8/16)",
    "inscriptos": null,
@@ -2001,6 +2365,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "@Guty",
+   "orgs": [
+    {
+     "n": "Guty",
+     "id": "766366997117141022"
+    }
+   ],
    "autor_h": "39e7b5d06eab058a",
    "cupos_texto": "4, si hay mas gente 8",
    "inscriptos": 4,
@@ -2035,6 +2405,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "@Carlos",
+   "orgs": [
+    {
+     "n": "Carlos",
+     "id": "734172184737480745"
+    }
+   ],
    "autor_h": "608cfa4b650ba173",
    "cupos_texto": "4(si me dan ganas y se llena maybe de 8/16)",
    "inscriptos": null,
@@ -2069,6 +2445,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "@carlos",
+   "orgs": [
+    {
+     "n": "carlos",
+     "id": "1494461737041399899"
+    }
+   ],
    "autor_h": "608cfa4b650ba173",
    "cupos_texto": "4(si me dan ganas y se llena maybe de 8/16)",
    "inscriptos": null,
@@ -2103,6 +2485,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "Erian 恵理久",
+   "orgs": [
+    {
+     "n": "Erian 恵理久",
+     "id": "1055474244089286706"
+    }
+   ],
    "autor_h": "78a9632c77e88d80",
    "cupos_texto": "4/8",
    "inscriptos": 4,
@@ -2137,6 +2525,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "Erian 恵理久",
+   "orgs": [
+    {
+     "n": "Erian 恵理久",
+     "id": "1055474244089286706"
+    }
+   ],
    "autor_h": "78a9632c77e88d80",
    "cupos_texto": "4/8",
    "inscriptos": 4,
@@ -2171,6 +2565,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "Erian 恵理久",
+   "orgs": [
+    {
+     "n": "Erian 恵理久",
+     "id": "1055474244089286706"
+    }
+   ],
    "autor_h": "78a9632c77e88d80",
    "cupos_texto": "4/8",
    "inscriptos": 4,
@@ -2205,6 +2605,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "@Carlos",
+   "orgs": [
+    {
+     "n": "Carlos",
+     "id": "734172184737480745"
+    }
+   ],
    "autor_h": "608cfa4b650ba173",
    "cupos_texto": "4/8(si me dan ganas y se llena maybe de 16)",
    "inscriptos": null,
@@ -2239,6 +2645,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "@Carlos",
+   "orgs": [
+    {
+     "n": "Carlos",
+     "id": "734172184737480745"
+    }
+   ],
    "autor_h": "608cfa4b650ba173",
    "cupos_texto": "4/8(si me dan ganas y se llena maybe de 16)",
    "inscriptos": null,
@@ -2273,6 +2685,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "💗ValenAdoratesJuan💗",
+     "id": "554330098812059679"
+    }
+   ],
    "autor_h": "423b9d3a10944056",
    "cupos_texto": "12",
    "inscriptos": null,
@@ -2307,6 +2725,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "@Carlos",
+   "orgs": [
+    {
+     "n": "Carlos",
+     "id": "734172184737480745"
+    }
+   ],
    "autor_h": "608cfa4b650ba173",
    "cupos_texto": "4/8(si me dan ganas y se llena maybe de 16)",
    "inscriptos": null,
@@ -2341,6 +2765,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "@Carlos",
+   "orgs": [
+    {
+     "n": "Carlos",
+     "id": "734172184737480745"
+    }
+   ],
    "autor_h": "608cfa4b650ba173",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -2375,6 +2805,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "@Carlos",
+   "orgs": [
+    {
+     "n": "Carlos",
+     "id": "734172184737480745"
+    }
+   ],
    "autor_h": "608cfa4b650ba173",
    "cupos_texto": "4/8(si me dan ganas y se llena maybe de 16)",
    "inscriptos": null,
@@ -2409,6 +2845,12 @@
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧",
+     "id": "1344825963669749804"
+    }
+   ],
    "autor_h": "6a4dfd082a18bc77",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -2443,6 +2885,7 @@
    "canal_id": "1511968314992365729",
    "guild_id": "1467763447117778989",
    "organizador": "",
+   "orgs": [],
    "autor_h": "0ed040919881f966",
    "cupos_texto": "8 y/o 16, 12 desde filtros.",
    "inscriptos": null,
@@ -2467,6 +2910,7 @@
    "canal_id": "1511968314992365729",
    "guild_id": "1467763447117778989",
    "organizador": "",
+   "orgs": [],
    "autor_h": "95af2d0a8a6b7330",
    "cupos_texto": "",
    "inscriptos": null,
@@ -2491,6 +2935,7 @@
    "canal_id": "1511968314992365729",
    "guild_id": "1467763447117778989",
    "organizador": "",
+   "orgs": [],
    "autor_h": "95af2d0a8a6b7330",
    "cupos_texto": "",
    "inscriptos": null,
@@ -2515,6 +2960,7 @@
    "canal_id": "1511968314992365729",
    "guild_id": "1467763447117778989",
    "organizador": "",
+   "orgs": [],
    "autor_h": "d78e14906a1810bb",
    "cupos_texto": "8 y/o 16, 12 desde filtros.",
    "inscriptos": null,
@@ -2539,6 +2985,7 @@
    "canal_id": "1511968314992365729",
    "guild_id": "1467763447117778989",
    "organizador": "",
+   "orgs": [],
    "autor_h": "d78e14906a1810bb",
    "cupos_texto": "8 y/o 16, 12 desde filtros.",
    "inscriptos": null,
@@ -2563,6 +3010,7 @@
    "canal_id": "1512133105954328727",
    "guild_id": "1467763447117778989",
    "organizador": "",
+   "orgs": [],
    "autor_h": "b30426e2616f0d12",
    "cupos_texto": "",
    "inscriptos": null,
@@ -2587,6 +3035,7 @@
    "canal_id": "1512133105954328727",
    "guild_id": "1467763447117778989",
    "organizador": "",
+   "orgs": [],
    "autor_h": "b30426e2616f0d12",
    "cupos_texto": "",
    "inscriptos": null,
@@ -2611,6 +3060,12 @@
    "canal_id": "1518401777026728007",
    "guild_id": "1467763447117778989",
    "organizador": "- 4 Clasificatorias 12-16 Cupos",
+   "orgs": [
+    {
+     "n": "💗ValenAdoratesJuan💗",
+     "id": "554330098812059679"
+    }
+   ],
    "autor_h": "423b9d3a10944056",
    "cupos_texto": "",
    "inscriptos": null,
@@ -2635,6 +3090,7 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "",
+   "orgs": [],
    "autor_h": "0ed040919881f966",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -2664,6 +3120,7 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "",
+   "orgs": [],
    "autor_h": "0ed040919881f966",
    "cupos_texto": "0/Ilimitado (desde filtros)",
    "inscriptos": null,
@@ -2686,6 +3143,7 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "",
+   "orgs": [],
    "autor_h": "0ed040919881f966",
    "cupos_texto": "ILIMITADO",
    "inscriptos": null,
@@ -2715,6 +3173,7 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "",
+   "orgs": [],
    "autor_h": "0ed040919881f966",
    "cupos_texto": "ILIMITADO",
    "inscriptos": null,
@@ -2744,6 +3203,7 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "",
+   "orgs": [],
    "autor_h": "0ed040919881f966",
    "cupos_texto": "ILIMITADO",
    "inscriptos": null,
@@ -2773,6 +3233,7 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "",
+   "orgs": [],
    "autor_h": "0ed040919881f966",
    "cupos_texto": "0/Ilimitado (desde filtros)",
    "inscriptos": null,
@@ -2795,6 +3256,7 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "",
+   "orgs": [],
    "autor_h": "0ed040919881f966",
    "cupos_texto": "4",
    "inscriptos": null,
@@ -2817,6 +3279,7 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "",
+   "orgs": [],
    "autor_h": "0ed040919881f966",
    "cupos_texto": "9/12/",
    "inscriptos": 9,
@@ -2839,6 +3302,7 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "",
+   "orgs": [],
    "autor_h": "37b94e49fd764312",
    "cupos_texto": "8/12/16",
    "inscriptos": null,
@@ -2861,6 +3325,7 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "",
+   "orgs": [],
    "autor_h": "37b94e49fd764312",
    "cupos_texto": "8/12/16",
    "inscriptos": null,
@@ -2883,6 +3348,7 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "",
+   "orgs": [],
    "autor_h": "e046f1512375cad7",
    "cupos_texto": "4/8",
    "inscriptos": 4,
@@ -2905,6 +3371,12 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "@Bootrax Humilde 🇸🇪",
+   "orgs": [
+    {
+     "n": "Bootrax Humilde 🇸🇪",
+     "id": "1122273746099638354"
+    }
+   ],
    "autor_h": "8388f8384ed60e3e",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -2927,6 +3399,12 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "@konan",
+   "orgs": [
+    {
+     "n": "konan",
+     "id": "680268290962227243"
+    }
+   ],
    "autor_h": "0560094902c636fb",
    "cupos_texto": "4/6/8",
    "inscriptos": null,
@@ -2949,6 +3427,7 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "",
+   "orgs": [],
    "autor_h": "e046f1512375cad7",
    "cupos_texto": "4/8",
    "inscriptos": 4,
@@ -2971,6 +3450,7 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "",
+   "orgs": [],
    "autor_h": "8388f8384ed60e3e",
    "cupos_texto": "0/8/16",
    "inscriptos": null,
@@ -3000,6 +3480,7 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "",
+   "orgs": [],
    "autor_h": "59834abfeca32523",
    "cupos_texto": "4/ 8",
    "inscriptos": 4,
@@ -3029,6 +3510,7 @@
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
    "organizador": "",
+   "orgs": [],
    "autor_h": "76d2fcc202e79d4d",
    "cupos_texto": "4/ 8",
    "inscriptos": 4,
@@ -3058,6 +3540,12 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "SHADOW",
+   "orgs": [
+    {
+     "n": "️: SHADOW",
+     "id": ""
+    }
+   ],
    "autor_h": "9b8ac3f3f3f2d8e5",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -3080,6 +3568,12 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "WALKER",
+   "orgs": [
+    {
+     "n": "️: WALKER",
+     "id": ""
+    }
+   ],
    "autor_h": "72b70a3bfeed0fad",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -3102,6 +3596,12 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "1 | Adriagner",
+     "id": "1316490165836972104"
+    }
+   ],
    "autor_h": "0f624d80ff313923",
    "cupos_texto": "16",
    "inscriptos": null,
@@ -3134,6 +3634,7 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "LA NOCHE NUNCA PERDONA🇬🇵",
+   "orgs": [],
    "autor_h": "e0acf3adfb0d85f0",
    "cupos_texto": "16",
    "inscriptos": null,
@@ -3156,6 +3657,7 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "LA NOCHE NUNCA PERDONA🇬🇵",
+   "orgs": [],
    "autor_h": "e0acf3adfb0d85f0",
    "cupos_texto": "16",
    "inscriptos": null,
@@ -3178,6 +3680,12 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "1 | Adriagner",
+     "id": "1316490165836972104"
+    }
+   ],
    "autor_h": "0f624d80ff313923",
    "cupos_texto": "8 16",
    "inscriptos": 8,
@@ -3210,6 +3718,12 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "@Pipas",
+   "orgs": [
+    {
+     "n": "Pipas",
+     "id": ""
+    }
+   ],
    "autor_h": "656c27885fd775f7",
    "cupos_texto": "",
    "inscriptos": null,
@@ -3239,6 +3753,12 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "1 | Adriagner",
+     "id": "1316490165836972104"
+    }
+   ],
    "autor_h": "0f624d80ff313923",
    "cupos_texto": "8 16",
    "inscriptos": 8,
@@ -3271,6 +3791,12 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "19",
+   "orgs": [
+    {
+     "n": "️: 19",
+     "id": ""
+    }
+   ],
    "autor_h": "b360fced798207fd",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -3293,6 +3819,7 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "SER O NO SER 🇬🇵",
+   "orgs": [],
    "autor_h": "e0acf3adfb0d85f0",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -3315,6 +3842,12 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "1 | Adriagner",
+     "id": "1316490165836972104"
+    }
+   ],
    "autor_h": "0f624d80ff313923",
    "cupos_texto": "8 16",
    "inscriptos": 8,
@@ -3347,6 +3880,12 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "",
+   "orgs": [
+    {
+     "n": "1 | Adriagner",
+     "id": "1316490165836972104"
+    }
+   ],
    "autor_h": "0f624d80ff313923",
    "cupos_texto": "8 16",
    "inscriptos": 8,
@@ -3379,6 +3918,12 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "MINIBOY 🇨🇱",
+   "orgs": [
+    {
+     "n": "️: MINIBOY",
+     "id": ""
+    }
+   ],
    "autor_h": "94e00e4c825499db",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -3401,6 +3946,12 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "Dominick🇵🇪",
+   "orgs": [
+    {
+     "n": "️: Dominick",
+     "id": ""
+    }
+   ],
    "autor_h": "eea228719690cf75",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -3427,6 +3978,12 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "DREXX🇳🇱",
+   "orgs": [
+    {
+     "n": "️: DREXX",
+     "id": ""
+    }
+   ],
    "autor_h": "e0acf3adfb0d85f0",
    "cupos_texto": "8/12/16",
    "inscriptos": null,
@@ -3453,6 +4010,12 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "ZJ:flag_pe:",
+   "orgs": [
+    {
+     "n": "️:ZJ:flag_pe",
+     "id": ""
+    }
+   ],
    "autor_h": "02b015b2f285a2e1",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -3479,6 +4042,12 @@
    "canal_id": "1470097121284980736",
    "guild_id": "1469009547971526659",
    "organizador": "Dominick🇵🇪",
+   "orgs": [
+    {
+     "n": "️: Dominick",
+     "id": ""
+    }
+   ],
    "autor_h": "eea228719690cf75",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -3505,6 +4074,7 @@
    "canal_id": "922299202904653844",
    "guild_id": "765045834647339038",
    "organizador": "",
+   "orgs": [],
    "autor_h": "e45a56d4d9bc3622",
    "cupos_texto": "",
    "inscriptos": null,
@@ -3527,6 +4097,7 @@
    "canal_id": "1309243940448243856",
    "guild_id": "765045834647339038",
    "organizador": "",
+   "orgs": [],
    "autor_h": "e45a56d4d9bc3622",
    "cupos_texto": "",
    "inscriptos": null,
@@ -3549,6 +4120,7 @@
    "canal_id": "1309243940448243856",
    "guild_id": "765045834647339038",
    "organizador": "",
+   "orgs": [],
    "autor_h": "e45a56d4d9bc3622",
    "cupos_texto": "",
    "inscriptos": null,
@@ -3571,6 +4143,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "Mathhias",
+   "orgs": [
+    {
+     "n": "Mathhias",
+     "id": "1177916322122833933"
+    }
+   ],
    "autor_h": "c8f035765c7a24b7",
    "cupos_texto": "A COMPE IMPORTANTE HECHA POR MI TAMBIEN",
    "inscriptos": null,
@@ -3603,6 +4181,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "Mathhias",
+   "orgs": [
+    {
+     "n": "Mathhias",
+     "id": "1177916322122833933"
+    }
+   ],
    "autor_h": "c8f035765c7a24b7",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -3635,6 +4219,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "RFran",
+   "orgs": [
+    {
+     "n": "RFran",
+     "id": "1251917252664623165"
+    }
+   ],
    "autor_h": "c9f7e6c5b0cf0004",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -3667,6 +4257,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "KZAONE",
+   "orgs": [
+    {
+     "n": "KZAONE",
+     "id": ""
+    }
+   ],
    "autor_h": "82005ff102d82b1d",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -3699,6 +4295,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "MC_Glock",
+   "orgs": [
+    {
+     "n": "MC_Glock",
+     "id": "1520281483309224017"
+    }
+   ],
    "autor_h": "317bd50868cfdc21",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -3731,6 +4333,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "MC_Glock",
+   "orgs": [
+    {
+     "n": "MC_Glock",
+     "id": "1520281483309224017"
+    }
+   ],
    "autor_h": "317bd50868cfdc21",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -3763,6 +4371,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "¢RAIZER¥",
+   "orgs": [
+    {
+     "n": "¢RAIZER¥",
+     "id": "1455038503304827103"
+    }
+   ],
    "autor_h": "f2d792a69fc01a5f",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -3795,6 +4409,7 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "",
+   "orgs": [],
    "autor_h": "31b78813447e01ef",
    "cupos_texto": "16 O MENOS",
    "inscriptos": null,
@@ -3827,6 +4442,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "¢RAIZER¥",
+   "orgs": [
+    {
+     "n": "¢RAIZER¥",
+     "id": "1455038503304827103"
+    }
+   ],
    "autor_h": "f2d792a69fc01a5f",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -3859,6 +4480,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "Bloody",
+   "orgs": [
+    {
+     "n": "Bloody",
+     "id": ""
+    }
+   ],
    "autor_h": "745aa43302deb894",
    "cupos_texto": "12",
    "inscriptos": null,
@@ -3891,6 +4518,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "Bloody",
+   "orgs": [
+    {
+     "n": "Bloody",
+     "id": ""
+    }
+   ],
    "autor_h": "745aa43302deb894",
    "cupos_texto": "8/12",
    "inscriptos": 8,
@@ -3923,6 +4556,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "¢RAIZER¥",
+   "orgs": [
+    {
+     "n": "¢RAIZER¥",
+     "id": "1455038503304827103"
+    }
+   ],
    "autor_h": "f2d792a69fc01a5f",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -3955,6 +4594,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "Bloody",
+   "orgs": [
+    {
+     "n": "Bloody",
+     "id": ""
+    }
+   ],
    "autor_h": "745aa43302deb894",
    "cupos_texto": "8/12/16",
    "inscriptos": null,
@@ -3987,6 +4632,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "MC Glock",
+   "orgs": [
+    {
+     "n": "MC Glock",
+     "id": ""
+    }
+   ],
    "autor_h": "317bd50868cfdc21",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -4019,6 +4670,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "RFran",
+   "orgs": [
+    {
+     "n": "RFran",
+     "id": ""
+    }
+   ],
    "autor_h": "c9f7e6c5b0cf0004",
    "cupos_texto": "8/16",
    "inscriptos": 8,
@@ -4045,6 +4702,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "Bloody",
+   "orgs": [
+    {
+     "n": "Bloody",
+     "id": ""
+    }
+   ],
    "autor_h": "745aa43302deb894",
    "cupos_texto": "12/24",
    "inscriptos": 12,
@@ -4077,6 +4740,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "MC Glock",
+   "orgs": [
+    {
+     "n": "MC Glock",
+     "id": ""
+    }
+   ],
    "autor_h": "317bd50868cfdc21",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -4109,6 +4778,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "Bloody",
+   "orgs": [
+    {
+     "n": "Bloody",
+     "id": ""
+    }
+   ],
    "autor_h": "745aa43302deb894",
    "cupos_texto": "8/12",
    "inscriptos": 8,
@@ -4141,6 +4816,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "MC Glock",
+   "orgs": [
+    {
+     "n": "MC Glock",
+     "id": ""
+    }
+   ],
    "autor_h": "317bd50868cfdc21",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -4173,6 +4854,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "KZAONE",
+   "orgs": [
+    {
+     "n": "KZAONE",
+     "id": ""
+    }
+   ],
    "autor_h": "82005ff102d82b1d",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -4205,6 +4892,7 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "",
+   "orgs": [],
    "autor_h": "f2d792a69fc01a5f",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -4237,6 +4925,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "MC Glock",
+   "orgs": [
+    {
+     "n": "MC Glock",
+     "id": ""
+    }
+   ],
    "autor_h": "317bd50868cfdc21",
    "cupos_texto": "8",
    "inscriptos": null,
@@ -4269,6 +4963,12 @@
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
    "organizador": "Xervœ",
+   "orgs": [
+    {
+     "n": "Xervœ",
+     "id": ""
+    }
+   ],
    "autor_h": "098b1ad2c38fd8b4",
    "cupos_texto": "A VOTACION",
    "inscriptos": null,
@@ -4301,6 +5001,7 @@
    "canal_id": "1342508350788603935",
    "guild_id": "1283205153624952975",
    "organizador": "",
+   "orgs": [],
    "autor_h": "098b1ad2c38fd8b4",
    "cupos_texto": "Zamo 🇨🇱",
    "inscriptos": null,
@@ -4323,6 +5024,7 @@
    "canal_id": "1342508350788603935",
    "guild_id": "1283205153624952975",
    "organizador": "",
+   "orgs": [],
    "autor_h": "098b1ad2c38fd8b4",
    "cupos_texto": "Zamo 🇨🇱",
    "inscriptos": null,
@@ -4345,6 +5047,7 @@
    "canal_id": "1342508350788603935",
    "guild_id": "1283205153624952975",
    "organizador": "",
+   "orgs": [],
    "autor_h": "098b1ad2c38fd8b4",
    "cupos_texto": "||Zamo 🇨🇱||",
    "inscriptos": null,
@@ -4367,6 +5070,7 @@
    "canal_id": "1342508350788603935",
    "guild_id": "1283205153624952975",
    "organizador": "",
+   "orgs": [],
    "autor_h": "098b1ad2c38fd8b4",
    "cupos_texto": "",
    "inscriptos": null,

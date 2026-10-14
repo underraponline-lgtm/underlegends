@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no).",
- "t": "2026-10-14T23:28:09Z",
+ "t": "2026-10-14T23:57:59Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -415,6 +415,16 @@
      "ZETRYCO",
      "replica",
      ""
+    ],
+    [
+     "1560074286515884075",
+     "2026-10-14T23:38:14Z",
+     3,
+     "PANCHOK",
+     "MAKMA",
+     "PANCHOK",
+     "replica",
+     ""
     ]
    ],
    "tabla": [
@@ -443,6 +453,12 @@
      4
     ],
     [
+     "MAKMA",
+     3,
+     1,
+     4
+    ],
+    [
      "BASTY",
      1,
      1,
@@ -461,16 +477,10 @@
      3
     ],
     [
-     "MAKMA",
-     2,
+     "PANCHOK",
+     3,
      1,
      3
-    ],
-    [
-     "PANCHOK",
-     2,
-     0,
-     1
     ],
     [
      "BENJAMVP",
@@ -2642,6 +2652,16 @@
      1,
      "LEONAR T",
      "ADRIAGNER",
+     "",
+     "",
+     ""
+    ],
+    [
+     "1560074292903940108",
+     "2026-10-14T23:38:16Z",
+     1,
+     "CÁLIZ",
+     "MAJIZTRAL",
      "",
      "",
      ""
