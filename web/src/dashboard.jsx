@@ -1616,6 +1616,41 @@ function Lote({ ps, sel, setSel, alListo, visibles }) {
   );
 }
 
+// ── 🤖 LO QUE SE RESOLVIÓ SOLO (Dlx, 13/10/2026, de las ideas del Dashboard; y «si resolvés algunas cosas asegurate de
+// que el bot y la página puedan resolverlo también»). Lo que una regla del ciclo cerró o contestó en los últimos 14 días,
+// con la regla, la respuesta y su prueba. «Deshacer» la devuelve a ✅ Decidir en la próxima corrida y esa regla no la
+// vuelve a tocar (`deshacer` de `/avisos/decidir-ciclo`) ──
+function Solas({ x, alListo }) {
+  const [ocup, setOcup] = useState('');
+  const [abierto, setAbierto] = useState(false);
+  const solas = x.solas || [];
+  if (!solas.length) return null;
+  const des = new Set(x.deshacer || []);
+  const porRegla = {};
+  for (const s of solas) porRegla[s.regla || 'otra'] = (porRegla[s.regla || 'otra'] || 0) + 1;
+  const deshacer = async (s) => {
+    setOcup(s.id);
+    try { alListo(await contestarDecidir({ id: s.id, deshacer: true })); } catch (e) { /* queda como estaba */ }
+    setOcup('');
+  };
+  const ver = abierto ? solas : solas.slice(0, 5);
+  return (
+    <div className="db-solas">
+      <h3>🤖 Lo que se resolvió solo <small>{solas.length} en 14 días · {Object.entries(porRegla).map(([r, n]) => r + ' ' + n).join(' · ')}</small></h3>
+      <ul>{ver.map((s) => (
+        <li key={s.id} className={des.has(s.id) ? 'deshecha' : ''}>
+          <div className="db-l1"><span className="db-chip">{s.regla}</span><span className="db-chip">{s.tipo}</span><small>{hace(s.t)}</small></div>
+          <p className="db-dec-que">{s.que}{s.sec ? <small> · {s.sec}</small> : null}</p>
+          <p className="db-solas-r">→ <b>{s.r}</b>{s.porque ? <span> · {s.porque}</span> : null}</p>
+          {des.has(s.id) ? <small>Deshecha: vuelve a ✅ Decidir en la próxima corrida.</small>
+            : <button type="button" className="btn borde2 chico" disabled={ocup === s.id} onClick={() => deshacer(s)}>Deshacer</button>}
+        </li>
+      ))}</ul>
+      {solas.length > 5 ? <button type="button" className="evp-lnk" onClick={() => setAbierto(!abierto)}>{abierto ? 'Ver menos' : 'Ver las ' + solas.length}</button> : null}
+    </div>
+  );
+}
+
 function Decisiones({ dec, alCambiar, liga }) {
   const [f, setF, limpiar] = useFiltro('dec');
   const [q, setQ] = useState('');
@@ -1626,7 +1661,8 @@ function Decisiones({ dec, alCambiar, liga }) {
   const setX = (y) => { setX0(y); if (alCambiar) alCambiar(y); };
   const ps = x.preguntas || [], rs = x.respuestas || {};
   if (!ps.length) {
-    return <p className="pronto-p">{x.t ? 'Nada para decidir: el ciclo no tiene preguntas abiertas.' : 'Las preguntas aparecen cuando el ciclo las publique, en su próxima corrida.'}</p>;
+    return <>{(x.solas || []).length ? <Solas x={x} alListo={setX} /> : null}
+      <p className="pronto-p">{x.t ? 'Nada para decidir: el ciclo no tiene preguntas abiertas.' : 'Las preguntas aparecen cuando el ciclo las publique, en su próxima corrida.'}</p></>;
   }
   // 🔎 los filtros: servidor (del título), tipo, importancia (`imp` lo pone el ciclo: `decidir.IMPORTANCIA`) y respuesta
   const sv = (p) => svDeSec(p.sec, liga);
@@ -1644,6 +1680,7 @@ function Decisiones({ dec, alCambiar, liga }) {
   return (
     <div className="db-dec">
       <p className="db-rep-nota">{sinContestar(x)} sin contestar de {ps.length}{x.t ? ' · el ciclo las publicó ' + hace(x.t) : ''}. Lo que contestes acá vale igual que en la hoja.</p>
+      <Solas x={x} alListo={setX} />
       <Buscar q={q} setQ={setQ} que="un nombre, un evento o una llave" />
       <Filtros f={f} setF={setF} limpiar={limpiar} n={vista.length} total={ps.length}
         nota={ps.some((p) => p.imp) ? IMP_DICE : ''} grupos={[

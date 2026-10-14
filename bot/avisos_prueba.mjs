@@ -980,6 +980,17 @@ const ok = (cond, que, det) => {
       && o.duenoDecidir({ id: 'b1', r: 'Ganó A' }).error,
     '✅ Decidir: el ciclo publica, Dlx contesta, el ciclo lo lee, y lo de una pregunta que se cerró se va',
     JSON.stringify([ciclo1, ciclo2]));
+    // 🔎 el grupo y la importancia llegan al Dashboard, y 🤖 lo que se resolvió solo se puede deshacer (13/10/2026)
+    o.decidirEstados({ preguntas: [Object.assign({ grupo: '🏆 Evento', imp: 'alta' }, PS[0]), Object.assign({ imp: 'urgente' }, PS[1])],
+      solas: [{ id: 's1', tipo: 'Evento dudoso', sec: '#463', que: 'ESCALA', r: 'Está bien así', regla: 'R1', porque: 'el #463 se sacó', t: 5 }] });
+    const dsh = o.decidirDueno();
+    const malo = o.duenoDecidir({ id: 'zz', deshacer: true });
+    const bien = o.duenoDecidir({ id: 's1', deshacer: true });
+    ok(dsh.preguntas[0].grupo === '🏆 Evento' && dsh.preguntas[0].imp === 'alta' && dsh.preguntas[1].imp === ''
+      && dsh.solas.length === 1 && dsh.solas[0].regla === 'R1' && malo.error && bien.ok
+      && o.decidirCiclo().deshacer.includes('s1') && bien.decidir.deshacer.includes('s1'),
+    '✅ Decidir: el grupo y la importancia pasan (sólo alta, media o baja), y lo que una regla resolvió se deshace y el ciclo se entera',
+    JSON.stringify([dsh.preguntas, malo, o.decidirCiclo()]));
     // 🏷️ los roles de la página (13/10/2026)
     const VRol = A.validarRol;
     ok(VRol({ id: '100000031', rol: 'asistente', si: true }).rol === 'asistente' && VRol({ id: '100000031', rol: 'owner', si: true }).error

@@ -2784,8 +2784,12 @@ export function validarRol(d) {
  * no. La respuesta tiene que ser una de las opciones de esa pregunta, o «Es <nombre>» en una de nombre (`libre`):
  * lo mismo que se elige o se escribe en la hoja. La interpreta el ciclo (`decidir.interpretar()`). Pura.
  */
-export function validarRespuestaDecidir(d, preguntas) {
+export function validarRespuestaDecidir(d, preguntas, solas) {
   const id = String((d && d.id) || '');
+  // 🤖 deshacer lo que una regla resolvió sola: tiene que ser una de las que el ciclo dijo que resolvió
+  if (d && d.deshacer === true) {
+    return (solas || []).some((x) => x && x.id === id) ? { id, deshacer: true } : { error: 'eso no lo resolvió una regla' };
+  }
   const p = (preguntas || []).find((x) => x && x.id === id);
   if (!p) return { error: 'esa pregunta ya no está' };
   if (d.borrar === true) return { id, borrar: true };
@@ -3996,7 +4000,7 @@ export async function rutaAvisos(req, env, ruta) {
       return json({ error: 'no' }, 403);
     }
     return elObjeto(env).fetch('https://avisos/dueno-decidir', {
-      method: 'POST', body: JSON.stringify({ id: d.id, r: d.r, nota: d.nota, borrar: d.borrar === true, por: q.id }),
+      method: 'POST', body: JSON.stringify({ id: d.id, r: d.r, nota: d.nota, borrar: d.borrar === true, deshacer: d.deshacer === true, por: q.id }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -7811,8 +7815,20 @@ export class Avisos {
       && p.id.length <= 60).map((p) => ({ id: p.id, tipo: String(p.tipo || '').slice(0, 40), sec: String(p.sec || '').slice(0, 120),
       que: String(p.que || '').slice(0, 400), pistas: String(p.pistas || '').slice(0, 900),
       opciones: (Array.isArray(p.opciones) ? p.opciones : []).slice(0, 14).map((x) => String(x).slice(0, 80)),
-      link: /^https:\/\/discord\.com\//.test(String(p.link || '')) ? String(p.link) : '', libre: p.libre === true }));
+      link: /^https:\/\/discord\.com\//.test(String(p.link || '')) ? String(p.link) : '', libre: p.libre === true,
+      // 🔎 para los filtros (13/10/2026): el grupo y la importancia (`decidir.GRUPO`, `decidir.IMPORTANCIA`). ⚠️ Esto se
+      // los comía, así que el filtro de importancia nunca tenía con qué
+      grupo: String(p.grupo || '').slice(0, 40), imp: ['alta', 'media', 'baja'].includes(p.imp) ? p.imp : '' }));
     this.guardar('decidir_preguntas', { t: Date.now(), preguntas: ps });
+    // 🤖 LO QUE SE RESOLVIÓ SOLO (13/10/2026): lo que una regla del ciclo cerró o contestó, con su prueba. Lo manda el
+    // ciclo entero (los últimos 14 días) cada vez: se reemplaza
+    if (Array.isArray(d && d.solas)) {
+      const solas = d.solas.slice(0, 300).filter((x) => x && typeof x.id === 'string' && x.id.length <= 60).map((x) => ({
+        id: x.id, tipo: String(x.tipo || '').slice(0, 40), sec: String(x.sec || '').slice(0, 120), que: String(x.que || '').slice(0, 300),
+        r: String(x.r || '').slice(0, 120), regla: String(x.regla || '').slice(0, 60), porque: String(x.porque || '').slice(0, 400),
+        t: Number(x.t) || 0 }));
+      this.guardar('decidir_solas', { t: Date.now(), solas });
+    }
     const ids = new Set(ps.map((p) => p.id));
     let fuera = 0;
     for (const r of this.sql.exec('SELECT id FROM decidir_resp').toArray()) {
@@ -7821,19 +7837,26 @@ export class Avisos {
     return { ok: true, n: ps.length, fuera };
   }
 
-  /** Para el ciclo: lo contestado en el Dashboard, `{respuestas: {id: {r, nota, t}}}`. */
+  /** Para el ciclo: lo contestado en el Dashboard, `{respuestas: {id: {r, nota, t}}, deshacer: [ids]}`. */
   decidirCiclo() {
     const respuestas = {};
     for (const r of this.sql.exec('SELECT id, r, nota, t, por FROM decidir_resp').toArray()) respuestas[r.id] = { r: r.r, nota: r.nota, t: r.t, por: r.por };
-    return { respuestas };
+    // 🤖 lo que Dlx deshizo de lo que una regla resolvió: la regla no se vuelve a aplicar y la pregunta vuelve
+    return { respuestas, deshacer: (this.leer('decidir_deshacer') || []).map((x) => x.id) };
   }
 
   /** Dlx contesta (o se arrepiente: `borrar`). Lo aplica el ciclo en su próxima corrida. */
   duenoDecidir(d) {
     const ps = (this.leer('decidir_preguntas') || {}).preguntas || [];
-    const v = validarRespuestaDecidir(d, ps);
+    const v = validarRespuestaDecidir(d, ps, (this.leer('decidir_solas') || {}).solas || []);
     if (v.error) return v;
-    if (v.borrar) this.sql.exec('DELETE FROM decidir_resp WHERE id = ?', v.id);
+    if (v.deshacer) {
+      // 🤖 queda anotado 30 días: lo lee el ciclo (`decidirCiclo()`) y no la vuelve a resolver
+      const corte = Date.now() - 30 * 864e5;
+      const des = (this.leer('decidir_deshacer') || []).filter((x) => x.t > corte && x.id !== v.id);
+      des.push({ id: v.id, t: Date.now(), por: this.nombrePor(d.por) });
+      this.guardar('decidir_deshacer', des.slice(-300));
+    } else if (v.borrar) this.sql.exec('DELETE FROM decidir_resp WHERE id = ?', v.id);
     else {
       this.sql.exec('INSERT OR REPLACE INTO decidir_resp (id, r, nota, t, por) VALUES (?, ?, ?, ?, ?)', v.id, v.r, v.nota, Date.now(),
         this.nombrePor(d.por));
@@ -7844,7 +7867,9 @@ export class Avisos {
   /** ✅ Decidir para el Dashboard: las preguntas, cuándo las publicó el ciclo y lo ya contestado. */
   decidirDueno() {
     const x = this.leer('decidir_preguntas') || {};
-    return { t: x.t || null, preguntas: x.preguntas || [], respuestas: this.decidirCiclo().respuestas };
+    const c = this.decidirCiclo();
+    return { t: x.t || null, preguntas: x.preguntas || [], respuestas: c.respuestas,
+      solas: (this.leer('decidir_solas') || {}).solas || [], deshacer: c.deshacer };
   }
 
   /** Los reportes para el Dashboard: los abiertos y los que esperan al ciclo, y lo decidido en los últimos 3 días. */
