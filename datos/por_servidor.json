@@ -443,12 +443,12 @@
     "racha": "0/1"
    },
    "FFA": {
-    "duelos": "13/18",
-    "ev": 11,
+    "duelos": "12/16",
+    "ev": 10,
     "oro": 2,
-    "ovr": 72,
+    "ovr": 71,
     "pod": 5,
-    "pts": 118550,
+    "pts": 101225,
     "racha": "4/4"
    },
    "SR": {
@@ -1589,13 +1589,13 @@
     "racha": "0/1"
    },
    "FFA": {
-    "duelos": "",
-    "ev": 3,
+    "duelos": "1/2",
+    "ev": 4,
     "oro": 0,
-    "ovr": 48,
+    "ovr": 51,
     "pod": 0,
-    "pts": 12375,
-    "racha": "0/0"
+    "pts": 29700,
+    "racha": "0/1"
    }
   },
   "ELPIBEOSIRIS": {

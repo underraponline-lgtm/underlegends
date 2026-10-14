@@ -64,8 +64,8 @@
 "temporada"
 ]
 },
-"agus": {
-"rg": "A",
+"panchok": {
+"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -73,8 +73,8 @@
 "temporada"
 ]
 },
-"panchok": {
-"rg": "S",
+"agus": {
+"rg": "A",
 "c": [
 "competitivo",
 "pais",
@@ -175,11 +175,11 @@
 "temporada"
 ]
 },
-"xclusivo": {
+"bna": {
 "rg": "C",
 "c": []
 },
-"bna": {
+"xclusivo": {
 "rg": "C",
 "c": []
 },
@@ -397,6 +397,10 @@
 "servidor"
 ]
 },
+"eidp": {
+"rg": "",
+"c": []
+},
 "tøkiø": {
 "rg": "",
 "c": [
@@ -507,11 +511,11 @@
 "temporada"
 ]
 },
-"eidp": {
+"dyzz": {
 "rg": "",
 "c": []
 },
-"dyzz": {
+"1200": {
 "rg": "",
 "c": []
 },
@@ -521,10 +525,6 @@
 "servidor",
 "temporada"
 ]
-},
-"1200": {
-"rg": "",
-"c": []
 },
 "tuca": {
 "rg": "",
