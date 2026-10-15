@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-15T00:56:31+00:00",
+ "cuando": "2026-10-15T01:24:43+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1920,6 +1920,873 @@
    "categoria_id": "863207988739309600"
   },
   {
+   "nombre": "FMS PERU",
+   "servidor": "FRZ",
+   "canal": "➣「📩」anuncios",
+   "msg_id": "1550692245554991145",
+   "cuando": "2026-09-19T02:17:21",
+   "canal_id": "850777668386291712",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "🇦🇷🇧🇷 — 12:10 a.m.",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "ajoel",
+   "categoria_id": "1076324234588082206"
+  },
+  {
+   "nombre": "FMS MEXICO",
+   "servidor": "FRZ",
+   "canal": "➣「📩」anuncios",
+   "msg_id": "1548453059993010239",
+   "cuando": "2026-09-12T21:59:38",
+   "canal_id": "850777668386291712",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "🇦🇷🇧🇷 — 9:30 p.m.",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "ajoel",
+   "categoria_id": "1076324234588082206"
+  },
+  {
+   "nombre": "BDM GOLD ARGENTINA",
+   "servidor": "FRZ",
+   "canal": "➣「📩」anuncios",
+   "msg_id": "1522023208084312065",
+   "cuando": "2026-07-01T23:36:50",
+   "canal_id": "850777668386291712",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "🇦🇷🇧🇷 — 8:40 p.m.",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "ajoel",
+   "categoria_id": "1076324234588082206"
+  },
+  {
+   "nombre": "BDM GOLD MEXICO",
+   "servidor": "FRZ",
+   "canal": "➣「📩」anuncios",
+   "msg_id": "1520485503282184295",
+   "cuando": "2026-06-27T17:46:33",
+   "canal_id": "850777668386291712",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "🇦🇷🇧🇷 — 3:00 p.m.",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "ajoel",
+   "categoria_id": "1076324234588082206"
+  },
+  {
+   "nombre": "POR ULTIMO SE DEFINEN LOS ULTIMOS 2 CUPOS PARA LA COPA FEDERACION",
+   "servidor": "FRZ",
+   "canal": "➣「📩」anuncios",
+   "msg_id": "1519846164625756341",
+   "cuando": "2026-06-25T23:26:03",
+   "canal_id": "850777668386291712",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "62134e35e5b6d209",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "🇦🇷🇧🇷 — 9:00 p.m.",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "B.M",
+   "categoria_id": "1076324234588082206"
+  },
+  {
+   "nombre": "POR ULTIMO SE DEFINEN LOS ULTIMOS 2 CUPOS PARA LA COPA FEDERACION",
+   "servidor": "FRZ",
+   "canal": "➣「📩」anuncios",
+   "msg_id": "1519209095607881739",
+   "cuando": "2026-06-24T05:14:33",
+   "canal_id": "850777668386291712",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "62134e35e5b6d209",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "🇦🇷🇧🇷 — 9:00 p.m.",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "B.M",
+   "categoria_id": "1076324234588082206"
+  },
+  {
+   "nombre": "7 jul 2026",
+   "servidor": "FRZ",
+   "canal": "➣「📩」anuncios",
+   "msg_id": "1519207200336252949",
+   "cuando": "2026-06-24T05:07:02",
+   "canal_id": "850777668386291712",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "62134e35e5b6d209",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "CONFIRMADA PARA LA PRIMERA JORNADA DE FMS",
+   "premios": "",
+   "staff": {},
+   "autor": "B.M",
+   "categoria_id": "1076324234588082206"
+  },
+  {
+   "nombre": "FMS CHILE",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1555369408472293559",
+   "cuando": "2026-10-02T00:02:44",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/16",
+   "inscriptos": 8,
+   "cupo_total": 16,
+   "rango": "",
+   "modalidad": "",
+   "horario": "EN 10 MINUTOS",
+   "fecha": "18 DE SEPTIEMBRE",
+   "premios": "",
+   "staff": {},
+   "autor": "ajoel",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "FMS PERU",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1550703170890506371",
+   "cuando": "2026-09-19T03:00:46",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/16",
+   "inscriptos": 8,
+   "cupo_total": 16,
+   "rango": "",
+   "modalidad": "",
+   "horario": "EN 30 MINUTOS",
+   "fecha": "18 DE SEPTIEMBRE",
+   "premios": "",
+   "staff": {},
+   "autor": "ajoel",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "FMS MEXICO",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1548483750394855466",
+   "cuando": "2026-09-13T00:01:35",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/16",
+   "inscriptos": 8,
+   "cupo_total": 16,
+   "rango": "",
+   "modalidad": "",
+   "horario": "EN 30 MINUTOS",
+   "fecha": "12 DE SEPTIEMBRE",
+   "premios": "",
+   "staff": {},
+   "autor": "ajoel",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "THE IMPACT",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1535047998352916533",
+   "cuando": "2026-08-06T22:12:42",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/16",
+   "inscriptos": 8,
+   "cupo_total": 16,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "06 DE AGOSTO",
+   "premios": "",
+   "staff": {},
+   "autor": "ajoel",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "RAP SIN GROSERIAS",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1524904776859389992",
+   "cuando": "2026-07-09T22:27:10",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "@za0r7",
+   "orgs": [
+    {
+     "n": "za0r7",
+     "id": "1398483999680237628"
+    }
+   ],
+   "autor_h": "dba44aa1a7b59e8e",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "za0r7"
+    ]
+   },
+   "autor": "za0r7",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "BDM GOLD MEXICO",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1520485820241281254",
+   "cuando": "2026-06-27T17:47:48",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/16",
+   "inscriptos": 8,
+   "cupo_total": 16,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "27 DE JUNIO",
+   "premios": "",
+   "staff": {},
+   "autor": "ajoel",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "RED BULL BATALLA: TORNEO DE PLAZAS",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1517300897464455198",
+   "cuando": "2026-06-18T22:52:04",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "18 DE JUNIO",
+   "premios": "",
+   "staff": {},
+   "autor": "ajoel",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "FINAL NACIONAL ESTADOS UNIDOS",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1516986348853133482",
+   "cuando": "2026-06-18T02:02:09",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "17 DE JUNIO",
+   "premios": "",
+   "staff": {},
+   "autor": "ajoel",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "RED BULL BATALLA CLASIFICATORIA #1",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1512999747290398881",
+   "cuando": "2026-06-07T02:00:49",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "6 DE JUNIO",
+   "premios": "",
+   "staff": {},
+   "autor": "ajoel",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "RAP SIN GROSERIAS",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1511840780220633128",
+   "cuando": "2026-06-03T21:15:30",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "@za0r7",
+   "orgs": [
+    {
+     "n": "za0r7",
+     "id": "1398483999680237628"
+    }
+   ],
+   "autor_h": "dba44aa1a7b59e8e",
+   "cupos_texto": "8/12",
+   "inscriptos": 8,
+   "cupo_total": 12,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "za0r7"
+    ]
+   },
+   "autor": "za0r7",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "FINAL SUDAMÉRICA",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1510819945511125155",
+   "cuando": "2026-06-01T01:39:04",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "31 DE MAYO",
+   "premios": "",
+   "staff": {},
+   "autor": "ajoel",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "FINAL NACIONAL ARGENTINA",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1510070983971700928",
+   "cuando": "2026-05-30T00:02:58",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "29 DE MAYO",
+   "premios": "",
+   "staff": {},
+   "autor": "ajoel",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "RAP SIN GROSERIAS",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1508985404634955836",
+   "cuando": "2026-05-27T00:09:16",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "@za0r7",
+   "orgs": [
+    {
+     "n": "za0r7",
+     "id": "1398483999680237628"
+    }
+   ],
+   "autor_h": "dba44aa1a7b59e8e",
+   "cupos_texto": "8/12",
+   "inscriptos": 8,
+   "cupo_total": 12,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "za0r7"
+    ]
+   },
+   "autor": "za0r7",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "FINAL CENTROAMÉRICA",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1508288508991635466",
+   "cuando": "2026-05-25T02:00:03",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "Ajoel",
+   "orgs": [
+    {
+     "n": "Ajoel",
+     "id": ""
+    }
+   ],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "24 DE MAYO",
+   "premios": "- Los finalistas clasifican a la FINAL INTERNACIONAL 2026.",
+   "staff": {
+    "jurado": [
+     "Ceko . Ceim . Ajoel"
+    ]
+   },
+   "autor": "ajoel",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "GLADIADORES DEL PUERTO",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1506742011351535646",
+   "cuando": "2026-05-20T19:34:49",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "@ajoel",
+   "orgs": [
+    {
+     "n": "ajoel",
+     "id": "563072268830244864"
+    }
+   ],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "ajoel"
+    ]
+   },
+   "autor": "ajoel",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "RAP SIN GROSERIAS",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1505336520649740438",
+   "cuando": "2026-05-16T22:29:54",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "@za0r7",
+   "orgs": [
+    {
+     "n": "za0r7",
+     "id": "1398483999680237628"
+    }
+   ],
+   "autor_h": "dba44aa1a7b59e8e",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "za0r7"
+    ]
+   },
+   "autor": "za0r7",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "GOLD BATTLE INTERNACIONAL",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1501325229526482964",
+   "cuando": "2026-05-05T20:50:27",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "@ajoel",
+   "orgs": [
+    {
+     "n": "ajoel",
+     "id": "563072268830244864"
+    }
+   ],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "za0r7"
+    ]
+   },
+   "autor": "ajoel",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "RAP SIN GROSERIAS",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1500189551224684564",
+   "cuando": "2026-05-02T17:37:41",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "@za0r7",
+   "orgs": [
+    {
+     "n": "za0r7",
+     "id": "1398483999680237628"
+    }
+   ],
+   "autor_h": "dba44aa1a7b59e8e",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "za0r7"
+    ]
+   },
+   "autor": "za0r7",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "RAP SIN GROSERIAS",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1499190503403552869",
+   "cuando": "2026-04-29T23:27:49",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "@za0r7",
+   "orgs": [
+    {
+     "n": "za0r7",
+     "id": "1398483999680237628"
+    }
+   ],
+   "autor_h": "dba44aa1a7b59e8e",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "za0r7"
+    ]
+   },
+   "autor": "za0r7",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "RAP SIN GROSERIAS",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1499174353722671144",
+   "cuando": "2026-04-29T22:23:39",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "@za0r7",
+   "orgs": [
+    {
+     "n": "za0r7",
+     "id": "1398483999680237628"
+    }
+   ],
+   "autor_h": "dba44aa1a7b59e8e",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "za0r7"
+    ]
+   },
+   "autor": "za0r7",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "RAP SIN GROSERIAS",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1496611030388707439",
+   "cuando": "2026-04-22T20:37:55",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "@za0r7",
+   "orgs": [
+    {
+     "n": "za0r7",
+     "id": "1398483999680237628"
+    }
+   ],
+   "autor_h": "dba44aa1a7b59e8e",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "za0r7"
+    ]
+   },
+   "autor": "za0r7",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "Plaza de Reyes",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1495985088029130764",
+   "cuando": "2026-04-21T03:10:39",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "@ajoel",
+   "orgs": [
+    {
+     "n": "ajoel",
+     "id": "563072268830244864"
+    }
+   ],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "Ceko"
+    ]
+   },
+   "autor": "ajoel",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "HALABALUZA PANDILLAS",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1495971132715696330",
+   "cuando": "2026-04-21T02:15:11",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "@B.M",
+   "orgs": [
+    {
+     "n": "B.M",
+     "id": "746054794178986028"
+    }
+   ],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "ajoel",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "RAP SIN GROSERIAS",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1495097003514794237",
+   "cuando": "2026-04-18T16:21:43",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "@za0r7",
+   "orgs": [
+    {
+     "n": "za0r7",
+     "id": "1398483999680237628"
+    }
+   ],
+   "autor_h": "dba44aa1a7b59e8e",
+   "cupos_texto": "8/12",
+   "inscriptos": 8,
+   "cupo_total": 12,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "za0r7"
+    ]
+   },
+   "autor": "za0r7",
+   "categoria_id": "867553625508282369"
+  },
+  {
+   "nombre": "RAP SIN GROSERIAS",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1494114506081701959",
+   "cuando": "2026-04-15T23:17:37",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "@za0r7",
+   "orgs": [
+    {
+     "n": "za0r7",
+     "id": "1398483999680237628"
+    }
+   ],
+   "autor_h": "dba44aa1a7b59e8e",
+   "cupos_texto": "8/12/16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "za0r7"
+    ]
+   },
+   "autor": "za0r7",
+   "categoria_id": "867553625508282369"
+  },
+  {
    "nombre": "FF Freestyle Clasico VOL. 1",
    "servidor": "URBF",
    "canal": "⋆🏆│Eventos",
@@ -3556,7 +4423,7 @@
    "fecha": "",
    "premios": "CUPO A FMS WORLD SERIES",
    "staff": {},
-   "autor": "DJ 🐉 (SHADOW)",
+   "autor": "DJ 🐉 (MUFFIN)",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -16247,6 +17114,15 @@
    "cuando": "2026-10-06T16:30:46"
   },
   {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "N1k🇵🇪",
+   "quien": "n1khznnn10",
+   "discord_id": "1505432009491615864",
+   "msg_id": "1556907094924464253",
+   "cuando": "2026-10-06T05:52:57"
+  },
+  {
    "servidor": "FFS",
    "canal": "「👑」INSCRIPCIONES",
    "texto": "N1k🇵🇪",
@@ -21141,6 +22017,141 @@
    "discord_id": "1507190475746967614",
    "msg_id": "1555373287486259234",
    "cuando": "2026-10-02T00:18:09"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Raezer 🇻🇪",
+   "quien": "raezer9",
+   "discord_id": "400161083798716416",
+   "msg_id": "1555372114112937997",
+   "cuando": "2026-10-02T00:13:29"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Soul B 🇨🇱",
+   "quien": "sj.2008_",
+   "discord_id": "645308964141137952",
+   "msg_id": "1555371877721968673",
+   "cuando": "2026-10-02T00:12:33"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Kude 🇦🇷",
+   "quien": "mr.kude",
+   "discord_id": "832626921538846790",
+   "msg_id": "1555371345850794138",
+   "cuando": "2026-10-02T00:10:26"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "kodigo 🇦🇷🇨🇱",
+   "quien": "cekohh",
+   "discord_id": "1162896927017414788",
+   "msg_id": "1555371071027286048",
+   "cuando": "2026-10-02T00:09:20"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1555370798493991003",
+   "cuando": "2026-10-02T00:08:15"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "CONTEXT🇦🇷",
+   "quien": "freeleywtd4535",
+   "discord_id": "950072072397291580",
+   "msg_id": "1555369786291130420",
+   "cuando": "2026-10-02T00:04:14"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Pipe🇨🇱",
+   "quien": "x.pipe.x2.09590",
+   "discord_id": "732777259244453938",
+   "msg_id": "1555369747535896588",
+   "cuando": "2026-10-02T00:04:05"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Snx🇻🇪",
+   "quien": "ismel_0555",
+   "discord_id": "1458603256292053037",
+   "msg_id": "1555369734285824093",
+   "cuando": "2026-10-02T00:04:02"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "david po wn🇦🇹",
+   "quien": "davidcm0886",
+   "discord_id": "1463349708553584691",
+   "msg_id": "1555369709921370225",
+   "cuando": "2026-10-02T00:03:56"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Mosquitrap 🦟🇦🇷",
+   "quien": "3decopas.",
+   "discord_id": "1494178897908990136",
+   "msg_id": "1555369577804726304",
+   "cuando": "2026-10-02T00:03:24"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Dibu martinez aka BM 🇦🇷",
+   "quien": "moralito3674",
+   "discord_id": "746054794178986028",
+   "msg_id": "1555369501103628359",
+   "cuando": "2026-10-02T00:03:06"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Dyzz🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1555369492924731423",
+   "cuando": "2026-10-02T00:03:04"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "<@877285342158397500> 🇨🇱",
+   "quien": "ajoel.pax",
+   "discord_id": "563072268830244864",
+   "msg_id": "1555369484200579193",
+   "cuando": "2026-10-02T00:03:02"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "bm la bombonera 🇦🇷",
+   "quien": "cekohh",
+   "discord_id": "1162896927017414788",
+   "msg_id": "1555366958986428589",
+   "cuando": "2026-10-01T23:53:00"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Dibu martinez aka BM 🇦🇷",
+   "quien": "moralito3674",
+   "discord_id": "746054794178986028",
+   "msg_id": "1555366799795560519",
+   "cuando": "2026-10-01T23:52:22"
   },
   {
    "servidor": "FFA",
