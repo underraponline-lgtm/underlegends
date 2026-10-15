@@ -205,19 +205,73 @@ def puntos_k(pts):
 def tag(c):
     """Devuelve (texto, tier). El tier define el efecto visual del TAG.
        t1 dorado = legendario · t2 púrpura = épico · t3 azul = raro · t4 gris = común
-       El orden ES la prioridad: gana el primero que cumple."""
-    if c['oro'] >= 20:      return ('👑 DINASTÍA', 't1')
-    if c['pts'] >= 200000:  return ('💯 LEYENDA', 't1')
-    if c['racha'] >= 7:     return ('🔥 RACHA DE %d' % c['racha'], 't1')
-    if c['oro'] >= 10:      return ('⭐ DECACAMPEÓN', 't2')
-    if c['pts'] >= 100000:  return ('💯 CENTENARIO', 't2')
-    if c['racha'] >= 5:     return ('🔥 RACHA DE %d' % c['racha'], 't2')
-    if c['oro'] >= 5:       return ('⭐ PENTACAMPEÓN', 't2')
-    if c.get('caz',0) >= 3: return ('🎯 CAZADOR', 't2')
-    if c['srv'] >= 5:       return ('🌍 TROTAMUNDOS', 't3')
-    if c['ev'] >= 20:       return ('🎖️ VETERANO', 't3')
-    if c['oro'] >= 1:       return ('👑 CAMPEÓN x%d' % c['oro'], 't3')
-    if c['ev'] >= 10:       return ('🔟 DOBLE DÍGITO', 't4')
+       El orden ES la prioridad: gana el primero que cumple.
+
+    🏷️ LA CASCADA DEL 14/10/2026 (Dlx: «crear más tags… crea muchísimos más y combinaciones para cada tarjeta ahora que
+    tenemos más información»). De 11 textos a 37, y el piso (🎤 COMPETIDOR) deja de llevarse a casi la mitad. El terreno
+    de esta carta es la ACTIVIDAD de la temporada: el Most Wanted, las misiones, el precio por cabeza, las divisiones,
+    los trofeos y la constancia. Los duelos y las finales son de la Competitiva; lo de un servidor, de la Servidor.
+
+    ⚠️ LO QUE NO ESTÁ EN LA FILA VIENE EN `tg_t`, que arma el builder (`sheet/hechos_tags.temporada()`): el Most Wanted,
+    las misiones, las llaves, el lunes. Si se sacara acá de `mw.json`, el sello no lo vería y la carta quedaría vieja
+    (CLAUDE.md: «y tampoco ve lo que depende de otros»). Un pool sin `tg_t` dibuja igual, sin los TAGs nuevos.
+
+    ⚠️ NO REPITE UN CASILLERO DE LA MISMA CARTA. Con RCH y MW abajo, «🔥 RACHA DE 7» y «🎯 CAZADOR (3)» decían el mismo
+    número dos veces: se van, y quedan 🔥 EN LLAMAS (sin el número) y los TAGs del Most Wanted que el casillero no
+    cuenta —a quién cazaste, si te escapaste—.
+
+    ⚠️ Y NO REPITE EL DE LA SERVIDOR: si la tuya ya dice 🏆 CAMPEÓN o 🔥 EN LLAMAS (`svtag`), ésta cae al siguiente.
+    Cada hecho en una sola carta, la más angosta (catálogo, 3.4).
+
+    ⚠️ «LEYENDA» Y «VETERANO» SON TÍTULOS (la escalera de la Servidor): el TAG de los 200.000 pasa a 💯 BICENTENARIO y
+    el de los 20 eventos a 🎖️ CURTIDO, para que un título y un TAG no digan la misma palabra.
+    """
+    h = c.get('tg_t') or {}
+    oro, pts, ev, pod = c.get('oro', 0), c.get('pts', 0), c.get('ev', 0), c.get('pod', 0)
+    caz, czd, srv = c.get('caz', 0), c.get('czd', 0), c.get('srv', 0)
+    sv = h.get('svtag', '')
+    # ── t1 · lo que casi nadie tiene ────────────────────────────────────
+    if oro >= 20:                           return ('👑 DINASTÍA', 't1')
+    if h.get('rey'):                        return ('💀 REGICIDA', 't1')          # cazó a El Rey del MW
+    if c.get('sob', 0) >= 1:                return ('🛡️ INTOCABLE', 't1')         # buscado y sobrevivió
+    if h.get('svc', 0) >= 2:                return ('🗺️ CONQUISTADOR', 't1')      # campeón en 2+ servidores
+    if pts >= 200000:                       return ('💯 BICENTENARIO', 't1')
+    if oro >= 10:                           return ('⭐ DECACAMPEÓN', 't1')
+    # ⚠️ la combinación antes que sus partes: cazar y que te cacen es más raro que cualquiera de las dos
+    if caz >= 1 and czd >= 1:               return ('🎯 CAZADOR CAZADO', 't1')
+    if c.get('racha_act', 0) >= 7 and sv != 'llamas':
+        return ('🔥 EN LLAMAS', 't1')                                             # la ACTUAL, sin el número: va en RCH
+    if h.get('perf', 0) >= 2:               return ('📋 SEMANA PERFECTA x%d' % h['perf'], 't1')
+    # ── t2 · lo que distingue ───────────────────────────────────────────
+    if caz + h.get('cobro', 0) >= 2:        return ('🎯 CAZARRECOMPENSAS', 't2')  # cazas + precios cobrados
+    if h.get('busc', 0) >= 2 and czd == 0:  return ('🏃 FUGITIVO', 't2')          # buscado 2+ veces, nunca cazado
+    if h.get('suelto'):                     return ('📜 SE BUSCA', 't2')          # suelto en el MW de esta semana
+    if h.get('cab', 0) >= 1:                return ('💰 CABEZA CON PRECIO', 't2')
+    if h.get('solo', 0) >= 1:               return ('🐺 LOBO SOLITARIO', 't2')    # cazó sin ayuda
+    if pts >= 100000:                       return ('💯 CENTENARIO', 't2')
+    if oro >= 5:                            return ('⭐ PENTACAMPEÓN', 't2')
+    if h.get('dcor'):                       return ('🚪 DEBUT CON CORONA', 't2')  # ganó su primer evento
+    if h.get('fenix', 0) >= 1:              return ('🐦‍🔥 FÉNIX', 't2')            # revivido y llegó a la final
+    if c.get('seg', 0) >= 3 and oro <= 1:   return ('🥈 SIEMPRE EN LA FINAL', 't2')
+    if h.get('podsem'):                     return ('📆 PODIO CADA SEMANA', 't2')
+    if h.get('cohete'):                     return ('🚀 COHETE', 't2')            # 20+ puestos desde el lunes
+    if h.get('dobles', 0) >= 5:             return ('⚡ MARATONISTA', 't2')       # 2+ eventos el mismo día, 5 días
+    if h.get('trios', 0) >= 5:              return ('🔺 REY DE LOS TRÍOS', 't2')
+    if c.get('sem', 0) >= 5:                return ('🏁 SEMIFINALISTA SERIAL', 't2')
+    if h.get('reciente') and pod >= 1:      return ('🌱 PROMESA', 't2')           # debutó hace 14 días y ya hizo podio
+    if h.get('perf', 0) >= 1:               return ('📋 SEMANA PERFECTA', 't2')
+    # ── t3 · lo que se ve ───────────────────────────────────────────────
+    if srv >= 4:                            return ('🌍 TROTAMUNDOS', 't3')
+    if h.get('rev', 0) >= 1:                return ('🧟 RESUCITADO', 't3')        # revivido en una llave
+    if oro >= 1 and sv != 'campeon':        return ('👑 CAMPEÓN x%d' % oro, 't3')
+    if h.get('sube'):                       return ('📈 EN ASCENSO', 't3')        # subió de división
+    if ev >= 20:                            return ('🎖️ CURTIDO', 't3')
+    if h.get('infalt'):                     return ('📅 INFALTABLE', 't3')        # jugó todas las semanas
+    if srv >= 3:                            return ('🧳 VIAJERO', 't3')
+    if pod >= 1:                            return ('🥉 AL PODIO', 't3')
+    # ── t4 · el piso ────────────────────────────────────────────────────
+    if ev >= 10:                            return ('🔟 DOBLE DÍGITO', 't4')
+    if h.get('reciente'):                   return ('🆕 DEBUTANTE', 't4')
     return ('🎤 COMPETIDOR', 't4')
 
 def clase_nombre(n):
@@ -286,6 +340,11 @@ def card(c):
     rg = '—' if c.get('sinjugar') else letra_rango(c)
     g, bright = GRAD_SIN_JUGAR if c.get('sinjugar') else GRAD[tier_color(c['ovr'])]   # el COLOR sale del OVR de temporada
     tg = ('🎟️ PRIMER EVENTO PENDIENTE', 't4') if c.get('sinjugar') else tag(c)
+    # 📏 EL TAG LARGO APRIETA LAS LETRAS, NO LA FILA (14/10/2026). La pastilla vive entre la temporada y el UL en una
+    # fila flex: medido, «🏁 SEMIFINALISTA SERIAL» dejaba 3.7 px de cada lado y «🎟️ PRIMER EVENTO PENDIENTE» 0 —se
+    # tocaban—. Desde 21 caracteres va con menos espaciado (`.c-band.largo`), desde 25 con casi nada (`.muylargo`), y
+    # los cortos quedan como estaban
+    banda = tg[1] + (' muylargo' if len(tg[0]) >= 25 else ' largo' if len(tg[0]) >= 21 else '')
     av  = c['av'].replace('?size=128', '?size=512')
     # 🎤 SIN FOTO —no se puso o la ocultó— VA LA SILUETA, no la inicial (Dlx, 03/10/2026). Ver comun/sin_foto.py
     from comun import sin_foto as SF
@@ -339,7 +398,7 @@ def card(c):
   </div>
   <div class="tag">Rango %s · %s</div>
   </div>
-""" % (' bright' if bright else '', tg[1], clase_nombre(c['raw']), g, foto, puesto(c), TEMPORADA, tg[1], tg[0], UL,
+""" % (' bright' if bright else '', tg[1], clase_nombre(c['raw']), g, foto, puesto(c), TEMPORADA, banda, tg[0], UL,
        '—' if c.get('sinjugar') else c['ovr'], rg,
        chip_bandera(c['cc']), chip_servidor(c['raw']), c['raw'].upper(), filas, rg, _SE.de(c['raw']) or '—')
 

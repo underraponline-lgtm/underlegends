@@ -2456,7 +2456,17 @@ def escribir_todas(dry=True):
     # las vitrinas: si falla, la carta sigue con lo que había
     if not dry:
         try:
-            if escribir_por_servidor(por_servidor(res, uno, ag=ag)):
+            ps = por_servidor(res, uno, ag=ag)
+            # 🏷️ Y LOS HECHOS DEL TAG DE CADA SERVIDOR, en el mismo archivo (14/10/2026): finales ahí, si jugó el
+            # primer evento, si le ganó al dueño… (`sheet/hechos_tags.servidor()`). En el mismo archivo y no en otro
+            # porque el sello de la Servidor ya hashea entero lo de cada servidor (`que_cambio.huellas()`, `psv=`).
+            # Sin ellos la carta sale con la cascada de la fila: no frena nada
+            try:
+                import hechos_tags as _HT
+                ps = _HT.con_hechos(ps)
+            except Exception as e:                       # noqa: BLE001
+                print('   ⚠️ sin los hechos de los TAG de la Servidor (%s)' % str(e)[:80])
+            if escribir_por_servidor(ps):
                 print('   ✓ datos/por_servidor.json: lo de cada uno en cada servidor')
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ no pude calcular lo de cada servidor (%s)' % str(e)[:80])

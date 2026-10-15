@@ -251,6 +251,28 @@ def misiones_cumplidas(d=None):
     return out
 
 
+def hechos_tags(pool, D=None, hoy=None):
+    """🏷️ Le pone a cada fila su `tg_t` (los hechos del TAG que no son de esta hoja). Pura: no lee el Sheet, así que
+    se prueba sin credenciales con `python sheet/hechos_tags.py`. Devuelve cuántas filas tienen alguno.
+
+    ⚠️ NUNCA FRENA EL POOL: si algo falla, la fila sale sin `tg_t` y la carta dibuja la cascada de lo que tiene."""
+    try:
+        import hechos_tags as _HT
+        ht = _HT.temporada(pool, D, hoy)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude calcular los hechos de los TAG (%s): la Temporada sale con los de la fila' % str(e)[:80])
+        return 0
+    n = 0
+    for d in pool:
+        d.pop('tg_t', None)
+        h = ht.get(norm(d.get('raw')))
+        if h:
+            d['tg_t'] = h
+            n += 1
+    print('   🏷️ hechos de los TAG: %d de %d con alguno' % (n, len(pool)))
+    return n
+
+
 def avatares_conocidos():
     """Los avatares no estan en el Sheet: se rescatan de los JSON existentes.
 
@@ -637,6 +659,12 @@ def main():
     for d in pool:
         d.pop('_n', None)
         d.pop('_f', None)
+
+    # 🏷️ LOS HECHOS DE LOS TAG, como un campo de la fila (Dlx, 14/10/2026: «crear más tags… crea muchísimos más»).
+    # Lo que el TAG de la Temporada mira y no es de esta hoja —el Most Wanted, las misiones, las llaves, el lunes— va
+    # en `tg_t`, así el sello lo ve (CLAUDE.md: «y tampoco ve lo que depende de otros»). Después de `pos`: el 🚀 COHETE
+    # se mide contra el puesto de hoy. Ver `sheet/hechos_tags.py`; sin esto la carta sale con los TAG de la fila
+    hechos_tags(pool)
 
     salida = os.path.join(RAIZ, 'datos', 'temporada_pool.json')
     os.makedirs(os.path.dirname(salida), exist_ok=True)

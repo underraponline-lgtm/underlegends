@@ -336,8 +336,22 @@ def panel_pie(pts):
 # en 51-62, asi que los escalones se abren ahi. En 70-90 estarian vacios.
 #
 # ⚠️ LOS NOMBRES SON DE RELLENO. Los elige Dlx, no la medicion.
-ESCALERA = [(85, 'LEYENDA'), (72, 'MAESTRO'), (62, 'VETERANO'),
-            (52, 'HABITUAL'), (0, 'NOVATO')]
+#
+# 🪜 LA ESCALERA LARGA, DESDE EL 14/10/2026 (Dlx: «los títulos de arriba como novato, leyenda etc… crea muchísimos
+# más»). Diez escalones con los nombres de `escalera_larga.py` y los cortes puestos DONDE ESTÁ LA GENTE: el OVR del
+# servidor se amontona en 42–52, así que ahí van cuatro escalones, y arriba de 72 casi no hay nadie. Con la de cinco,
+# 120 de 176 eran NOVATO; con ésta, ningún escalón pasa de 34.
+#
+# ⚠️ SIGUE COLGANDO DEL NÚMERO, Y SÓLO DE ÉL: el título es el nivel (sube si el número sube) y el TAG sobre el UL
+# es qué clase de jugador sos (`comun/titulos.py`). «LEYENDA» y «VETERANO» son de acá: por eso los TAG de la
+# Temporada se llaman 💯 BICENTENARIO y 🎖️ CURTIDO.
+#
+# ⚠️ Y SIN EVENTOS AHÍ NO HAY ESCALÓN: «SIN DEBUT» (ver `escalon()`). Un NOVATO es alguien que jugó poco; quien
+# no jugó nunca en ese servidor no es novato de nada — es la camiseta de un servidor donde todavía no entró.
+ESCALERA = [(90, 'MITO'), (82, 'LEYENDA'), (72, 'ÉLITE'), (63, 'MAESTRO'),
+            (56, 'REFERENTE'), (51, 'VETERANO'), (48, 'CONSTANTE'),
+            (46, 'HABITUAL'), (44, 'APRENDIZ'), (0, 'NOVATO')]
+SIN_DEBUT = 'SIN DEBUT'
 
 # ── DE QUE LADO VA LA COLUMNA ────────────────────────────────────────────
 # Dlx: "quizas tambien probar a ver como se ve en el lado izquierdo todo eso".
@@ -597,6 +611,10 @@ PUESTO_RANGO = {0: (9, 17), 1: (2, 6), 2: (3, 8), 3: (5, 11), 4: (1, 4),
 # con {indice: total del pais}. Se hace asi y no cambiando carta() porque esa
 # funcion desarma una tupla de catorce campos que usan diez lugares distintos.
 TOTALES_PAIS = None
+# 🏷️ Y LAS DOS DEL TAG, por la misma puerta (14/10/2026): {indice: hechos de ese servidor} y {indice: es la carta
+# de su propio servidor}. En la hoja valen None: sin hechos y todas propias, la cascada de `comun/titulos.py`
+HECHOS = None
+CASA = None
 
 
 def estilo_img(k):
@@ -762,7 +780,10 @@ def defs_divisor(propio, acento, sufijo, pts=None):
             f'<stop offset="1" stop-color="{der}"/></linearGradient>')
 
 
-def escalon(ovr):
+def escalon(ovr, evt=None):
+    """El título: el escalón del OVR de ese servidor, o «SIN DEBUT» si no jugó ahí (`evt` == 0)."""
+    if evt is not None and not evt:
+        return SIN_DEBUT
     for lim, nom in ESCALERA:
         if ovr >= lim:
             return nom
@@ -1097,14 +1118,15 @@ def carta(i, sufijo):
   </svg>
   <div class="ovr">{f'<b>{ovr}</b>' if ovr else '<b class="nd">—</b>'}</div>
   <div class="escp" style="background:{MK.claro(A)};color:{MK.tinta(A)};
-       border:1.2px solid {MK.oscuro(A)}">{escalon(ovr)}</div>
+       border:1.2px solid {MK.oscuro(A)}">{escalon(ovr, evt)}</div>
   {pieza('campeonatos', val(tit, sin_datos), 0, tit == 0)}{pieza('podios', val(pod, sin_datos), 1, pod == 0)}
   {pieza('racha', val(rch, sin_datos), 2, rch == '0/0')}{pieza('duelos', val(duel, sin_datos), 3, duel == '0/0')}
   {pieza('eventos', val(evt, sin_datos), 4, evt == 0)}
   <div class="nom" style="font-size:{NOM.rem(nom, 1.5)}rem">{nom}</div>
   {pst}{tmp}
   {TIT.div(dict(pos_sv=p, total_sv=tot, titulos=tit, podios=pod,
-                racha=rch, duelos=duel, eventos=evt), A, B,
+                racha=rch, duelos=duel, eventos=evt,
+                hechos=(HECHOS or {}).get(i, {}), casa=(CASA or {}).get(i, True)), A, B,
            y=y(PIE.tag_centrado(d, cuelga, Y_FILA)))}
   <div class="t1">{TEMPORADA}</div>
   <img class="ul" src="{UL}">

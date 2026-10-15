@@ -299,14 +299,58 @@ UL = open(_r('ul_b64.txt'), encoding='utf-8').read().strip()   # logo Under Lege
 VAR = '2'   # 1 sin tag · 2 tag abajo · 3 tag en la corona
 
 # TAGs del COMPETITIVO: hablan del nivel, no del volumen.
+#
+# 🏷️ LA CASCADA DEL 14/10/2026 (Dlx: «crear más tags… crea muchísimos más y combinaciones para cada tarjeta»). El
+# terreno de esta carta son los DUELOS, las FINALES y los RIVALES, y el perfil de sus cinco dimensiones. De 5 textos
+# a 20:
+#   · se van ◆ TOP 25 y ◇ TOP 50: repetían el chip `#pos` y, con 40 en el ranking, TOP 50 se llevaba a todos del 26
+#     para abajo —ESPECIALISTA, COMPLETO y CLASIFICADO no los veía nadie—. Y ⚡ ESPECIALISTA (una dimensión ≥ 85, 0
+#     personas) lo reemplazan los arquetipos de t3: tu MEJOR dimensión dice qué clase de competidor sos.
+#   · ⚠️ los arquetipos no tocan la regla del 100: el 100 sigue siendo lo único resaltado en la fila de abajo.
+#   · lo que no está en la fila —las finales de las llaves, los duelos uno por uno— viene en `tg_c`, que arma el
+#     builder (`sheet/hechos_tags.competitivo()`): calculado acá, el sello no lo vería.
+#   · ⚔️ DUELISTA no se repite si tu Servidor ya lo dice (`svtag`): cada hecho en una sola carta.
+DIMS_TAG = (('C', 50, '🧭 REGULAR'), ('E', 40, '⚡ EFICIENTE'), ('V', 40, '🌐 TODOTERRENO'),
+            ('Dm', 40, '👊 DOMINADOR'), ('T', 40, '🔥 RACHERO'))
+
+
+def _mejor_dim(c):
+    """La dimensión más alta, en el orden EFI CON DOM RCH DIV (el empate lo gana la primera)."""
+    return max(('E', 'C', 'Dm', 'T', 'V'), key=lambda d: c.get(d, 0))
+
+
 def TAG(c):
-    if c['pos'] == 1:   return ('🏆 #1 COMPETITIVO','t1')
-    if c['pos'] <= 3:   return ('🥇 TOP 3','t1')
-    if c['pos'] <= 10:  return ('⭐ TOP 10','t1')
-    if c['pos'] <= 25:  return ('◆ TOP 25','t2')
-    if max(c['E'],c['C'],c['Dm'],c['T'],c['V']) >= 85: return ('⚡ ESPECIALISTA','t2')
-    if c['pos'] <= 50:  return ('◇ TOP 50','t3')
-    if min(c['E'],c['C'],c['Dm'],c['T'],c['V']) >= 30: return ('🎯 COMPLETO','t3')
+    h = c.get('tg_c') or {}
+    pos = c.get('pos') or 10 ** 6
+    fg, fp = h.get('fg', 0), h.get('fp', 0)
+    try:
+        wr = float(str(c.get('wr') or '').replace('%', ''))
+    except ValueError:
+        wr = 0.0
+    dims = [c.get(d, 0) for d in ('E', 'C', 'Dm', 'T', 'V')]
+    # ── t1 · lo que casi nadie tiene ──
+    if pos == 1:   return ('🏆 #1 COMPETITIVO','t1')
+    if pos <= 3:   return ('🥇 TOP 3','t1')
+    if fg >= 3 and fg >= 3 * fp:                        return ('🧊 SANGRE FRÍA', 't1')   # 3+ finales, 75 %+ ganadas
+    if pos <= 10:  return ('⭐ TOP 10','t1')
+    # ── t2 · lo que distingue ──
+    if h.get('mata', 0) >= 1:                           return ('🗡️ MATAGIGANTES', 't2')  # a alguien 2 tramos arriba
+    if wr >= 65 and c.get('duel_t', 0) >= 15:           return ('🎯 FRANCOTIRADOR', 't2')
+    if h.get('bestia', 0) >= 3:                         return ('😈 BESTIA NEGRA', 't2')  # 3+ a uno, sin perder
+    if h.get('vengo', 0) >= 2:                          return ('🔁 VENGADOR', 't2')      # perdió con X y le ganó
+    if h.get('clasico', 0) >= 4:                        return ('🤜 CLÁSICO', 't2')       # 4+ cruces con el mismo
+    if fp >= 3 and fg <= 1:                             return ('🥈 A UN PASO', 't2')
+    if (h.get('dg', 0) >= 10 and h.get('venc', 0) >= 8
+            and h.get('svtag') != 'duelista'):          return ('⚔️ DUELISTA', 't2')
+    if min(dims) >= 20:                                 return ('🎯 COMPLETO', 't2')      # las cinco ≥ 20
+    # ── t3 · el arquetipo: tu mejor dimensión ──
+    mejor = _mejor_dim(c)
+    for d, umbral, texto in DIMS_TAG:
+        if mejor == d and c.get(d, 0) >= umbral:
+            return (texto, 't3')
+    if h.get('riv', 0) >= 14:                           return ('🤝 SIN MIEDO', 't3')     # 14+ rivales distintos
+    # ── t4 · el piso ──
+    if c.get('ev', 0) <= 11:                            return ('🎟️ RECIÉN CLASIFICADO', 't4')
     return ('🎤 CLASIFICADO','t4')
 
 # El número grande de ESTA carta es el SCORE, no el OVR mapeado.
