@@ -1347,6 +1347,14 @@ const VOCAB = [
   [['DIA', 'Y', 'HORA'], 'horario', 2],
   [['ORGANIZADO', 'POR'], 'organizador', 9],
   [['FORMATO', 'DE', 'COMPETENCIA'], 'modalidad', 9],
+  // 🌀 FREESTYLE ZONE (FRZ, 14/10/2026): «⏳ | **EL TORNEO COMIENZA EN 10 MINUTOS**», sin dos puntos y con dos palabras
+  // delante: como en `VOCAB` de bot/anuncios.py
+  [['EL', 'TORNEO', 'COMIENZA'], 'horario', 2],
+  [['EL', 'TORNEO', 'EMPIEZA'], 'horario', 2],
+  [['EL', 'TORNEO', 'ARRANCA'], 'horario', 2],
+  [['EL', 'EVENTO', 'COMIENZA'], 'horario', 2],
+  [['EL', 'EVENTO', 'EMPIEZA'], 'horario', 2],
+  [['EL', 'EVENTO', 'ARRANCA'], 'horario', 2],
   [['INICIO'], 'horario', 1],
   [['HORARIOS'], 'horario', 2],
   [['HORARIO'], 'horario', 2],

@@ -312,8 +312,9 @@ console.log('\nLA CARTA\n');
   ok('lista todos los servidores de la Liga, más el que se está mostrando',
      opts.length === deLaLiga.length + 1 && opts.some((o) => o.value === 'TWR' && o.default),
      `${opts.length} de ${deLaLiga.length} + TWR`);
-  ok('y no los que no son de la Liga (TFC, EFA, FTN, FRZ)',
-     !opts.some((o) => ['TFC', 'EFA', 'FTN', 'FRZ'].includes(o.value)));
+  // 🌀 FRZ entró a la Liga el 14/10/2026 (Dlx: «asegurate que sea bien integrado a la Liga Global»): ahora sí sale
+  ok('y no los que no son de la Liga (TFC, EFA, FTN); FRZ sí, desde el 14/10',
+     !opts.some((o) => ['TFC', 'EFA', 'FTN'].includes(o.value)) && opts.some((o) => o.value === 'FRZ'));
   // ⚠️ EL «BLOQUEADA» VOLVIÓ, PERO SIGNIFICA OTRA COSA. El del 16/09 era un
   // requisito de eventos y se saco porque mentia. El de ahora (Dlx, 19/09)
   // dice simplemente que ESA PERSONA no tiene carta de ese servidor — que es

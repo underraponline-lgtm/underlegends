@@ -270,9 +270,26 @@
   "FRZ": {
    "nombre": "Freestyle Zone",
    "guild_id": "838593179187544064",
-   "invitacion": "https://discord.gg/D3JZKM96zc",
+   "invitacion": "https://discord.gg/T8bPfa8Vr8",
    "en_el_sheet": true,
-   "en_la_liga": false
+   "nota": "14/10/2026: el bot entró (Dlx: «El bot ha sido agregado a FREESTYLE ZONE, FRZ… asegurate que sea bien integrado a la Liga Global»). En Discord «Freestyle Zone» (~1.490 miembros). Ya era de la pre-temporada: logo, escudo, color #26B3A6 y su carta de Servidor (dos cortes con filos encendidos, `los_nueve.defs()`). Sus torneos en «🔰 EVENTOS»: llaves, veredictos, eventos (los anuncios con CUPOS/FECHA/«EL TORNEO COMIENZA EN 10 MINUTOS»), inscripciones y llamados; las FMS Nacionales (Chile, Perú, México) clasifican a la FMS Internacional. La FZ LEAGUE (jornadas) y la FMS INTERNACIONAL (heats de 6 y Grand Finals) quedan afuera del lector de eventos hasta que Dlx diga cómo cuentan.",
+   "confirmado": true,
+   "sigla": "FRZ",
+   "categorias_fuera": {
+    "_por_que": "La FZ LEAGUE es una liga con jornadas y la FMS INTERNACIONAL una fase de grupos (heats) y Grand Finals: no son llaves. Afuera del lector de eventos hasta que Dlx decida (14/10/2026), como la Primera División de FVS.",
+    "ids": [
+     "845071829579989043",
+     "1074227272908820510"
+    ],
+    "_ids": "las categorías «🔱 FZ LEAGUE» y «⚜ FMS INTERNACIONAL»"
+   },
+   "invitacion_antes": "https://discord.gg/D3JZKM96zc",
+   "invitacion_liga": {
+    "codigo": "T8bPfa8Vr8",
+    "canal": "➣「👋」bienvenido",
+    "canal_id": "841119822704279593",
+    "creada": "2026-10-15"
+   }
   },
   "URBF": {
    "nombre": "Urban Freestyle",

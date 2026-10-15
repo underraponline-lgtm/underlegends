@@ -1175,6 +1175,18 @@
     "horario": "LLENEN INSCRIPCIONES",
     "ini": null
    }
+  },
+  {
+   "sv": "FRZ",
+   "id": "frz1",
+   "timestamp": "2026-10-02T00:02:44.346000+00:00",
+   "content": "# ——————————————————\n# <:FMSChile:1502578041103319130> FMS CHILE <:FMSChile:1502578041103319130>\n# ——————————————————\n\n👥 | **CUPOS DISPONIBLES: 8/16**\n\n📆 | **FECHA: 18 DE SEPTIEMBRE**\n\n⏳ | **EL TORNEO COMIENZA EN 10 MINUTOS**\n\n✍️ | **CANAL DE INSCRIPCION:** <#1>\n—\n🔊 | https://discord.gg/54bRD4pYw\n—\n||@everyone||",
+   "espera": {
+    "es": true,
+    "nombre": "FMS CHILE",
+    "horario": "EN 10 MINUTOS",
+    "ini": "2026-10-02T00:12:44"
+   }
   }
  ]
 }

@@ -182,7 +182,9 @@ export const SERVIDORES = [
   // ⚠️ AL FINAL del objeto: `bot/desplegar.py` lee `sv`, `nombre` y `guild` en ese orden y los compara con el json
   { sv: 'SR', nombre: 'Snake Rap', guild: '492346406976356374', invita: 'https://discord.gg/EME4p3RhAp', sigla: 'SNK' },
   { sv: 'FTN', nombre: 'Fontana', guild: '1331924080835694655', invita: 'https://discord.gg/U5q5C8XnD9', fuera: true },
-  { sv: 'FRZ', nombre: 'Freestyle Zone', guild: '838593179187544064', invita: 'https://discord.gg/D3JZKM96zc', fuera: true },
+  // 🌀 FREESTYLE ZONE (14/10/2026): de la Liga (Dlx: «asegurate que sea bien integrado a la Liga Global»). Ya tenía su
+  // carta de la pre-temporada
+  { sv: 'FRZ', nombre: 'Freestyle Zone', guild: '838593179187544064', invita: 'https://discord.gg/T8bPfa8Vr8', sigla: 'FRZ' },
   { sv: 'URBF', nombre: 'Urban Freestyle', guild: '1467763447117778989', invita: 'https://discord.gg/WSXBZDumBb', sigla: 'URB' },
   { sv: 'EFA', nombre: 'EFA', guild: '1222746296377675867', invita: 'https://discord.gg/DDc3SqE8ax', fuera: true },
   // 🟣 FFS (28/09/2026): de la Liga (Dlx: «A · sí, como los otros cuatro»). Sin invitación
