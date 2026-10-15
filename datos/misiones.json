@@ -334,11 +334,6 @@
      0,
      1
     ],
-    "Eliot🇲🇽 - Respawm🇭🇳": [
-     0,
-     1,
-     99
-    ],
     "Elsoolar": [
      1,
      0,
@@ -644,6 +639,11 @@
      1,
      8
     ],
+    "MAU KC 🇨🇴": [
+     1,
+     0,
+     4
+    ],
     "MCO": [
      1,
      4,
@@ -693,11 +693,6 @@
      1,
      0,
      8
-    ],
-    "Mau Kc 🇨🇴": [
-     1,
-     0,
-     4
     ],
     "Medster": [
      0,
@@ -1389,6 +1384,7 @@
     "Luzzano": 300,
     "Lvel": 300,
     "MATICERNA": 300,
+    "MAU KC 🇨🇴": 300,
     "MCO": 2900,
     "MHS": 300,
     "MTZ": 300,
@@ -1397,7 +1393,6 @@
     "Malva": 300,
     "Marto": 300,
     "Mathhias": 300,
-    "Mau Kc 🇨🇴": 300,
     "Miniboy": 300,
     "Mito": 300,
     "Molusco": 300,
@@ -1521,11 +1516,11 @@
     ],
     [
      "caza",
-     "Ganale un duelo a Oasis",
+     "Ganale un duelo a Colesito",
      "caza",
      1,
      800,
-     "Oasis"
+     "Colesito"
     ]
    ],
    "prog": {
@@ -1593,7 +1588,7 @@
      3,
      1,
      1,
-     0
+     1
     ],
     "Benjixo": [
      2,
@@ -2157,7 +2152,7 @@
      2,
      4,
      4,
-     0
+     1
     ],
     "Tusicario": [
      1,
@@ -2313,7 +2308,7 @@
     "Agente sombra": 300,
     "Agus": 2900,
     "Ariaxer": 300,
-    "BNA": 2900,
+    "BNA": 3700,
     "Benjixo": 900,
     "Bloody": 300,
     "Chop": 300,
@@ -2370,7 +2365,7 @@
     "Tenor": 600,
     "Teo": 300,
     "Trot": 900,
-    "Tuca": 900,
+    "Tuca": 1700,
     "TøKīØ🦠🧠": 600,
     "Under": 300,
     "Vacile🇪🇸": 600,
@@ -2414,7 +2409,7 @@
   "Assuan": 1300,
   "Axinu": 300,
   "BLITZ": 300,
-  "BNA": 4200,
+  "BNA": 5000,
   "BTRX": 300,
   "Badterne": 300,
   "BastyRetro": 2900,
@@ -2500,6 +2495,7 @@
   "Luzzano": 900,
   "Lvel": 600,
   "MATICERNA": 300,
+  "MAU KC 🇨🇴": 300,
   "MCO": 2900,
   "MHS": 300,
   "MTZ": 300,
@@ -2509,7 +2505,6 @@
   "Malva": 300,
   "Marto": 300,
   "Mathhias": 300,
-  "Mau Kc 🇨🇴": 300,
   "Miniboy": 300,
   "Mito": 300,
   "Molusco": 1900,
@@ -2577,7 +2572,7 @@
   "Teo": 600,
   "Tier": 300,
   "Trot": 1200,
-  "Tuca": 1200,
+  "Tuca": 2000,
   "Tusicario": 300,
   "TøKīØ🦠🧠": 3500,
   "Under": 600,
