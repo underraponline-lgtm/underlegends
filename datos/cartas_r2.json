@@ -3146,7 +3146,8 @@
  },
  "olaf": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/olaf/servidor.webp",
-  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/olaf/sv-dra.webp"
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/olaf/sv-dra.webp",
+  "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/olaf/sv-frz.webp"
  },
  "omega": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/omega/servidor.webp",
