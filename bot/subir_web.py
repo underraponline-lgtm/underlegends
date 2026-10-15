@@ -3824,7 +3824,10 @@ def _self_check():
     # cambiara nada para quien abre la página. Se mide con gzip (algo peor que brotli: el tope queda del lado seguro)
     import gzip
     comp = len(gzip.compress(crudo, 9))
-    ok(comp < 45000, 'y pesa poco: %.1f KB comprimido (%.1f KB de JSON)' % (comp / 1024.0, tam / 1024.0))
+    # ⚠️ 45.000 HASTA EL 14/10/2026, Y SE PASÓ POR 56 BYTES esa noche (44,0 KB): Ligas, el Writing y las misiones nuevas
+    # entraron juntas, más los eventos de ese día. Se sube a 50.000, que es 1 KB más por visita. Si vuelve a pasarse, lo
+    # que se muda primero es `ligas` (3,3 KB): ya tiene su ruta (`/api/ligas`, la KV `web:ligas`)
+    ok(comp < 50000, 'y pesa poco: %.1f KB comprimido (%.1f KB de JSON)' % (comp / 1024.0, tam / 1024.0))
     ok(_compactas({'temporada': 'a1', 'pais': 'd4'}) == 'a1...d4' and _compactas({}) == '',
        'las versiones de las cartas viajan compactas, en el orden de `CARTAS`')
 

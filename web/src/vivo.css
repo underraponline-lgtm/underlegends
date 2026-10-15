@@ -3000,6 +3000,11 @@ a.rk-z:hover{border-color:var(--linea)}
   --escenario:#111113;--esc-tinta:#F5F6F8;--esc-gris:#ABAFB8;--esc-linea:#27272B;--oscura:#585D69;--osc-tinta:#FFFFFF;--inv:#F5F6F8;--inv-tinta:#0A0A0B;color-scheme:dark}
 .clara.t-fvs{--fondo:#F7F8FA;--caja:#EDEFF2;--suave:#D5D8DE;--tinta:#0A0A0B;--linea:#0A0A0B;--gris:#4C5059;--verde:#AEB4BF;--magenta:#585D69;--magenta-tx:#3F434C;
   --escenario:#0A0A0B;--esc-tinta:#F5F6F8;--esc-gris:#ABAFB8;--esc-linea:#27272B;--oscura:#0A0A0B;--osc-tinta:#F5F6F8;--inv:#0A0A0B;--inv-tinta:#F7F8FA}
+/* 🔱 FRZ (14/10/2026): su verde azulado (#26B3A6, `datos/colores_sv_marca.json`) sobre un negro verdoso, como DDF con su celeste */
+.noche.t-frz{--fondo:#03130F;--caja:#08241F;--suave:#133D35;--tinta:#ECFFFB;--linea:#D8FBF4;--gris:#94C2B9;--verde:#26B3A6;--magenta:#0B7A70;--magenta-tx:#5FE3D5;
+  --escenario:#061B16;--esc-tinta:#ECFFFB;--esc-gris:#94C2B9;--esc-linea:#133D35;--oscura:#0B7A70;--osc-tinta:#FFFFFF;--inv:#ECFFFB;--inv-tinta:#03130F;color-scheme:dark}
+.clara.t-frz{--fondo:#F1FCFA;--caja:#E1F7F3;--suave:#C2E9E2;--tinta:#03130F;--linea:#03130F;--gris:#3A5F58;--verde:#26B3A6;--magenta:#0B7A70;--magenta-tx:#00675E;
+  --escenario:#03130F;--esc-tinta:#ECFFFB;--esc-gris:#94C2B9;--esc-linea:#133D35;--oscura:#03130F;--osc-tinta:#ECFFFB;--inv:#03130F;--inv-tinta:#F1FCFA}
 /* la vista previa de cada uno en Apariencia, con sus propias variables (y «Ninguno», con las del tema de base) */
 .cu-tema.tsv .cu-mini{background:var(--fondo);border-color:var(--suave)}
 .cu-tema.tsv .cu-mini i{background:var(--tinta)}

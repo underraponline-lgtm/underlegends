@@ -275,6 +275,7 @@
    "nota": "14/10/2026: el bot entró (Dlx: «El bot ha sido agregado a FREESTYLE ZONE, FRZ… asegurate que sea bien integrado a la Liga Global»). En Discord «Freestyle Zone» (~1.490 miembros). Ya era de la pre-temporada: logo, escudo, color #26B3A6 y su carta de Servidor (dos cortes con filos encendidos, `los_nueve.defs()`). Sus torneos en «🔰 EVENTOS»: llaves, veredictos, eventos (los anuncios con CUPOS/FECHA/«EL TORNEO COMIENZA EN 10 MINUTOS»), inscripciones y llamados; las FMS Nacionales (Chile, Perú, México) clasifican a la FMS Internacional. La FZ LEAGUE (jornadas) y la FMS INTERNACIONAL (heats de 6 y Grand Finals) quedan afuera del lector de eventos hasta que Dlx diga cómo cuentan.",
    "confirmado": true,
    "sigla": "FRZ",
+   "tag": "HISTORIA",
    "categorias_fuera": {
     "_por_que": "La FZ LEAGUE es una liga con jornadas y la FMS INTERNACIONAL una fase de grupos (heats) y Grand Finals: no son llaves. Afuera del lector de eventos hasta que Dlx decida (14/10/2026), como la Primera División de FVS.",
     "ids": [
@@ -599,7 +600,7 @@
   }
  },
  "_confirmado_leeme": "Dlx, 25/09/2026: «los únicos servidores confirmados son Snake Rap, Discord Rap y FFA... los demás no están confirmados todavía». El hub («Mundo») muestra sólo los que tienen \"confirmado\": true; las cartas y el menú del bot siguen con los nueve.",
- "_tag_leeme": "Dlx, 25/09/2026: «generar tags para los servidores... Freestyle For All lo considero COMUNIDAD, Snake Rap TALENTOS, DRA ENTRENAMIENTO». El hub los muestra en «Mundo». Y Urban Freestyle, «NUEVA GENERACIÓN» (Dlx, 25/09/2026). Y FFS League, «EVOLUCIÓN» (Dlx, 29/09/2026). Y Dimensión del Freestyle, «ESPECTÁCULO» (Dlx, 03/10/2026: «1. D»). Y la Academia de Rap, «ACADEMIA» (Dlx, 04/10/2026: «Tag ponle ACADEMIA»). Y Freestyle Versus, «COMPETITIVO» (Dlx, 12/10/2026: «1. A»).",
+ "_tag_leeme": "Dlx, 25/09/2026: «generar tags para los servidores... Freestyle For All lo considero COMUNIDAD, Snake Rap TALENTOS, DRA ENTRENAMIENTO». El hub los muestra en «Mundo». Y Urban Freestyle, «NUEVA GENERACIÓN» (Dlx, 25/09/2026). Y FFS League, «EVOLUCIÓN» (Dlx, 29/09/2026). Y Dimensión del Freestyle, «ESPECTÁCULO» (Dlx, 03/10/2026: «1. D»). Y la Academia de Rap, «ACADEMIA» (Dlx, 04/10/2026: «Tag ponle ACADEMIA»). Y Freestyle Versus, «COMPETITIVO» (Dlx, 12/10/2026: «1. A»). Y Freestyle Zone, «HISTORIA» (Dlx, 14/10/2026: «Ponle Historia»).",
  "_redes_leeme": "Las redes de cada servidor, sin parámetros de rastreo (igsh, utm, si). Snake Rap: su mensaje «Nuestras redes sociales», que pegó Dlx el 25/09/2026. FFA: su canal ✦🌐︱redes. DRA: las de Under Legends, que son las de la Liga — DRA es su lobby principal. FFS: su canal 「📱」redes (29/09/2026), que enlaza publicaciones de @freestylefutureseries en Instagram y videos de @FreestyleFutureSeries en YouTube.",
  "_novedades_leeme": "canales.DRA.novedades es 〢🌍〉rankings-liga-global: donde Dlx publica lo de la Liga. El Inicio muestra sus 3 últimos mensajes.",
  "_youtube_leeme": "youtube_id: el canal de cada servidor, para los videos del feed del Inicio (el RSS público de YouTube, sin clave). DRA es Under Legends Rap. Sacados el 25/09/2026 de la página de cada @canal.",
