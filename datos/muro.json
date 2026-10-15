@@ -185,7 +185,7 @@
 ]
 },
 "bna": {
-"rg": "C",
+"rg": "D",
 "c": []
 },
 "guess": {
@@ -258,6 +258,10 @@
 "servidor",
 "temporada"
 ]
+},
+"criszj": {
+"rg": "C",
+"c": []
 },
 "nxuz": {
 "rg": "C",
@@ -387,10 +391,6 @@
 "rg": "",
 "c": []
 },
-"criszj": {
-"rg": "",
-"c": []
-},
 "alexi": {
 "rg": "",
 "c": []
@@ -401,6 +401,10 @@
 "servidor",
 "temporada"
 ]
+},
+"dominick": {
+"rg": "E",
+"c": []
 },
 "benjixo": {
 "rg": "",
@@ -502,6 +506,13 @@
 "temporada"
 ]
 },
+"tenor": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "zetryko": {
 "rg": "",
 "c": [
@@ -538,11 +549,14 @@
 "temporada"
 ]
 },
-"dominick": {
-"rg": "",
-"c": []
-},
 "erik": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"xubaru": {
 "rg": "",
 "c": [
 "servidor",
@@ -557,13 +571,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"xubaru": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -624,6 +631,13 @@
 "rg": "",
 "c": []
 },
+"gocho": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "carlosmo": {
 "rg": "",
 "c": [
@@ -653,19 +667,16 @@
 "temporada"
 ]
 },
-"tenor": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "deluxe": {
 "rg": "",
 "c": [
 "pais",
 "servidor"
 ]
+},
+"zaik": {
+"rg": "E",
+"c": []
 },
 "zekha": {
 "rg": "",
@@ -701,10 +712,6 @@
 "c": [
 "servidor"
 ]
-},
-"zaik": {
-"rg": "",
-"c": []
 },
 "dxg": {
 "rg": "",
@@ -792,16 +799,16 @@
 "temporada"
 ]
 },
-"korey": {
-"rg": "",
-"c": []
-},
 "shadow": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
+},
+"korey": {
+"rg": "",
+"c": []
 },
 "fleivaman": {
 "rg": "",
@@ -889,13 +896,6 @@
 "vacile": {
 "rg": "",
 "c": []
-},
-"gocho": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "krtman": {
 "rg": "",
@@ -1088,6 +1088,10 @@
 ]
 },
 "denik": {
+"rg": "",
+"c": []
+},
+"jheyson": {
 "rg": "",
 "c": []
 },
@@ -2354,30 +2358,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Neo"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"JIMMY"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"JIMMY"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5642,6 +5622,33 @@
 "Medster"
 ],
 "carta": "servidor"
+},
+{
+"tipo": "rango",
+"t": "2026-10-15T15:59:25Z",
+"quien": [
+"CrisZJ"
+],
+"rg": "C",
+"primero": true
+},
+{
+"tipo": "rango",
+"t": "2026-10-15T15:59:25Z",
+"quien": [
+"Dominick"
+],
+"rg": "E",
+"primero": true
+},
+{
+"tipo": "rango",
+"t": "2026-10-15T15:59:25Z",
+"quien": [
+"Zaik"
+],
+"rg": "E",
+"primero": true
 }
 ]
 }

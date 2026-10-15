@@ -17180,7 +17180,7 @@
        "Makmah"
       ],
       "Colesito",
-      "Walk-in 2: colesito; Revivido: colesito"
+      "Revivido: colesito; Walk-in 2: colesito"
      ],
      [
       [
@@ -17192,11 +17192,11 @@
      ],
      [
       [
-       "PROVENZA COLESITO XUBARU",
-       "ALDRE MAKMA RODA"
+       "Aldre, Makmah, Rodas",
+       "Provenza, Colesito, Xubaru"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Aldre, Makmah, Rodas",
+      "ganador: ✅ Decidir; Walk-in 2: PROVENZA COLESITO XUBARU"
      ],
      [
       [
@@ -17862,10 +17862,10 @@
      [
       [
        "ALVA 🇲🇽",
-       "SHADOW 🇨🇴"
+       "Shadow"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "ALVA 🇲🇽",
+      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -18001,6 +18001,11 @@
    ],
    [
     "Geoka",
+    "Octavos",
+    1250
+   ],
+   [
+    "Shadow",
     "Octavos",
     1250
    ],
@@ -20002,7 +20007,7 @@
      [
       [
        "Chop",
-       "Riley🇵🇪"
+       "Dominick"
       ],
       "Chop",
       ""
@@ -20025,11 +20030,11 @@
      ],
      [
       [
-       "Btrece🇺🇾",
+       "Btrece",
        "Evangeline"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: Btrece🇺🇾; cobra: Evangeline; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -20087,12 +20092,22 @@
     3500
    ],
    [
-    "Leonart",
+    "Btrece",
     "Cuartos",
     2000
    ],
    [
-    "Riley🇵🇪",
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Evangeline",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Leonart",
     "Cuartos",
     2000
    ],
@@ -21746,7 +21761,7 @@
      [
       [
        "Delux, Erik, Tam",
-       "TRRR 🇦🇷, NC"
+       "BNA, NC"
       ],
       "Delux, Erik, Tam",
       "Revivido: 🇦🇷 NC 🇦🇷 (R) 🇦🇷"
@@ -21957,7 +21972,7 @@
     1250
    ],
    [
-    "TRRR 🇦🇷",
+    "BNA",
     "Octavos",
     625
    ],
@@ -22004,7 +22019,7 @@
       [
        "Sosa",
        "ONDADISKO",
-       "JB🇦🇷"
+       "JHEYSON"
       ],
       "Sosa, ONDADISKO",
       "triple (3 bandas, pasan 2); también pasa: Ondadisko 🇨🇱"
@@ -22099,7 +22114,7 @@
     2000
    ],
    [
-    "JB🇦🇷",
+    "JHEYSON",
     "Cuartos",
     2000
    ],
@@ -22160,7 +22175,7 @@
      [
       [
        "francis 🇨🇷",
-       "Frifaier 🇨🇱",
+       "Cronox",
        "LRS"
       ],
       "francis 🇨🇷",
@@ -22237,12 +22252,12 @@
     3500
    ],
    [
-    "DarnBless",
+    "Cronox",
     "Cuartos",
     2000
    ],
    [
-    "Frifaier 🇨🇱",
+    "DarnBless",
     "Cuartos",
     2000
    ],
@@ -22743,15 +22758,15 @@
      ],
      [
       [
-       "SAIK",
-       "Xubaru prime 🇧🇲"
+       "Zaik 🇪🇸",
+       "Xubaru"
       ],
       "",
       "cobra: SAIK; cobra: Xubaru prime 🇧🇲; cobra: warap🇦🇷; nadie siguió: ✅ Decidir"
      ],
      [
       [
-       "SAIK",
+       "Zaik 🇪🇸",
        "Warap"
       ],
       "",
@@ -22920,11 +22935,6 @@
     1250
    ],
    [
-    "SAIK",
-    "Octavos",
-    1250
-   ],
-   [
     "SINTEXT",
     "Octavos",
     1250
@@ -22955,12 +22965,17 @@
     1250
    ],
    [
-    "Xubaru prime 🇧🇲",
+    "Xubaru",
     "Octavos",
     1250
    ],
    [
     "Yor",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
     "Octavos",
     1250
    ],

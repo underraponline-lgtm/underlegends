@@ -980,6 +980,44 @@
      "1527545754946769026"
     ]
    }
+  },
+  {
+   "id": "2adb1e7f81",
+   "tipo": "Nombre desconocido",
+   "sec": "Cuentas Pendientes V.1 · FFA · 08/10 · #435",
+   "que": "¿Quién es «PROVENZA COLESITO XUBARU»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792079983217,
+   "filas": [
+    721
+   ],
+   "variantes": [
+    "PROVENZA COLESITO XUBARU"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "a86ea8c98b",
+   "tipo": "Nombre desconocido",
+   "sec": "FAT BATTLES PALOOZA T.3 FECHA 6 · ACAD · 09/10 · #438",
+   "que": "¿Quién es «ALVA 🇲🇽»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792079983217,
+   "filas": [
+    722
+   ],
+   "variantes": [
+    "ALVA 🇲🇽"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []
