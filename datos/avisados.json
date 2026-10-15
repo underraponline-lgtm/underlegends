@@ -4392,7 +4392,7 @@
    "Velatz": 28
   },
   "fecha": "09/10",
-  "firma": "ddf4a881c0b0ddc2",
+  "firma": "ffdc4e4b96127614",
   "msg": "1558266214659260507",
   "nombre": "COPA SOOLAR 4",
   "num": 437,
@@ -5066,7 +5066,7 @@
    "Xclusivo": 10
   },
   "fecha": "09/10",
-  "firma": "33f629d572c76450",
+  "firma": "6634ca4bd5354029",
   "msg": "1558334120172462091",
   "nombre": "PROYECTO X VOL.2",
   "num": 440,
@@ -5796,7 +5796,7 @@
    "PichulaMc": 27
   },
   "fecha": "10/10",
-  "firma": "43a7d396de484bbe",
+  "firma": "8f19860a5a41b397",
   "msg": "1558643633110917121",
   "nombre": "(sin titulo)",
   "num": 444,
@@ -6102,7 +6102,7 @@
    "Spartan": 1
   },
   "fecha": "10/10",
-  "firma": "b30785ff76ab4cd6",
+  "firma": "0adb53dc03e22b23",
   "msg": "1558711595163590740",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
   "num": 446,
@@ -6736,7 +6736,7 @@
    "Verc": 2
   },
   "fecha": "11/10",
-  "firma": "a7f82a99d10d917b",
+  "firma": "95345c640e7a1c96",
   "msg": "1558907912582078525",
   "nombre": "__ HJKSLOWT V.1 __",
   "num": 449,
@@ -7674,9 +7674,9 @@
     "yinn, Provenza"
    ],
    [
-    "ONZASS",
     "VIXOVERSO",
-    "ONZASS"
+    "ONZASS",
+    "VIXOVERSO"
    ],
    [
     "Majiztral",
@@ -7773,7 +7773,7 @@
    "yinn": 15
   },
   "fecha": "12/10",
-  "firma": "077aee59197577e4",
+  "firma": "f76057b18f777ea3",
   "msg": "1559247601923137630",
   "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
   "num": 454,
@@ -7790,6 +7790,11 @@
     10000
    ],
    [
+    "ONZASS",
+    "Semifinal",
+    3875
+   ],
+   [
     "yinn",
     "Subcampeón",
     3750
@@ -7798,11 +7803,6 @@
     "Provenza",
     "Subcampeón",
     3750
-   ],
-   [
-    "ONZASS",
-    "Semifinal",
-    2625
    ],
    [
     "Mau KC 🇨🇴",
@@ -7846,11 +7846,6 @@
    ],
    [
     "Krish",
-    "Octavos",
-    1250
-   ],
-   [
-    "VIXOVERSO",
     "Octavos",
     1250
    ],
@@ -12039,7 +12034,7 @@
    "Vandu": 20
   },
   "fecha": "14/10",
-  "firma": "84da961bddc75841",
+  "firma": "4bd31555cbc5adb4",
   "msg": "1560019837609050254",
   "nombre": "DEM UZBEKISTAN FECHA 3",
   "num": 471,

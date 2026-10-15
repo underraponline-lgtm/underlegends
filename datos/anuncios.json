@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-15T02:54:56+00:00",
+ "cuando": "2026-10-15T03:24:46+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -382,36 +382,6 @@
    "staff": {},
    "autor": "Geronimo",
    "categoria_id": "1497457390637809837",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-15T02:39:47"
-  },
-  {
-   "nombre": "PRITTY FREE",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1560111715142733895",
-   "cuando": "2026-10-15T02:06:58",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@nachonc_",
-   "orgs": [
-    {
-     "n": "nachonc_",
-     "id": ""
-    }
-   ],
-   "autor_h": "d83234c3da26ac85",
-   "cupos_texto": "∞",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Bronce",
-   "modalidad": "MULTIVERSE 1-4",
-   "horario": "en 30",
-   "fecha": "",
-   "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
-   "staff": {},
-   "autor": "Nc",
-   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-15T02:39:47"
   },
@@ -1176,6 +1146,36 @@
     ]
    },
    "autor": "Kravitz",
+   "categoria_id": "1468478330826260500",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-15T02:39:47"
+  },
+  {
+   "nombre": "PRITTY FREE",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1557928516266500159",
+   "cuando": "2026-10-09T01:31:43",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "@nachonc_",
+   "orgs": [
+    {
+     "n": "nachonc_",
+     "id": ""
+    }
+   ],
+   "autor_h": "d83234c3da26ac85",
+   "cupos_texto": "∞",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Bronce",
+   "modalidad": "2v2",
+   "horario": "en 20",
+   "fecha": "",
+   "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
+   "staff": {},
+   "autor": "Nc",
    "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-15T02:39:47"
@@ -6026,6 +6026,15 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
+   "texto": "🇺🇸",
+   "quien": "provenzaaznevorp",
+   "discord_id": "711076230857752627",
+   "msg_id": "1560127099325653113",
+   "cuando": "2026-10-15T03:08:06"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
    "texto": "ikonoxx 🇺🇾",
    "quien": "_.the.goat",
    "discord_id": "1470870791351570630",
@@ -6080,7 +6089,7 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "you know ma steez 🇨🇳 + nmb 🇨🇱",
+   "texto": "you know ma steez 🇨🇳 + nmb 🇨🇱 + eliot 🇲🇽",
    "quien": "youknowmasteez",
    "discord_id": "1076566237364109412",
    "msg_id": "1560115764504174613",
@@ -6144,7 +6153,7 @@
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
    "texto": "AntonioKast🇨🇱🇦🇷",
-   "quien": "nomiresmuxo",
+   "quien": "yatusabee_2",
    "discord_id": "1535790068395024454",
    "msg_id": "1560113619327385664",
    "cuando": "2026-10-15T02:14:32"
