@@ -274,7 +274,8 @@
   },
   "Damian": {},
   "Dan": {
-   "servidor": "ddf9ce6d885f:f7bc857dd9f6:3d792e"
+   "servidor": "ddf9ce6d885f:f7bc857dd9f6:3d792e",
+   "temporada": "ab424d001965:906ce275eeb8"
   },
   "Danixz": {
    "servidor": "994b927ba7b7:f7bc857dd9f6:43d041"
@@ -694,7 +695,7 @@
    "servidor": "cabf9440ce5b:f7bc857dd9f6:980594"
   },
   "KZAONE": {
-   "servidor": "0b8f290796e0:f7bc857dd9f6:e141ae"
+   "servidor": "607c0c18ce55:f7bc857dd9f6:e141ae"
   },
   "Kako": {
    "servidor": "f5a4dd6ab7bc:f7bc857dd9f6:055f77"
@@ -1508,8 +1509,8 @@
    "servidor": "f86491c8d056:f7bc857dd9f6:e87867"
   },
   "Trot": {
-   "competitivo": "7aa06096963f:aa2fab0a1b31",
-   "pais": "e683d5ad57a7:631b7a4c93c4",
+   "competitivo": "d61878036602:aa2fab0a1b31",
+   "pais": "2836bf7d5f81:631b7a4c93c4",
    "servidor": "7030b2c9e44e:f7bc857dd9f6:4975e5",
    "temporada": "fdf4749136ec:906ce275eeb8"
   },
@@ -1788,5 +1789,5 @@
    "servidor": "7f8885a35a6d:f7bc857dd9f6:55e9bc"
   }
  },
- "cuando": "2026-10-15T17:29:11+00:00"
+ "cuando": "2026-10-15T17:59:27+00:00"
 }
