@@ -3,6 +3,7 @@
 
     python herramientas/recalcular_t1.py             # mide: quién sube, quién baja, qué evento entra o sale
     python herramientas/recalcular_t1.py --json X    # y deja el detalle en X
+    python herramientas/recalcular_t1.py --informe X --aplicar --sin 405   # aplica todo menos el #405
 
 Dlx, 08/10/2026: *«recalcula todo con el sistema actual… antes había problemas porque el sistema antiguo aún
 estaba»*. A «¿recalculo los 72 eventos con las reglas de hoy?», *«A»*: primero medirlo y mostrar quién cambia.
@@ -243,6 +244,12 @@ def _informe(d, detalle=None):
                    if e['pts'].get(q, 0) != h['pts'].get(q, 0)}
             ev_cambian.append((k, e, mas))
     entran = [(k, e) for k, e in nuevos.items() if k.startswith('nuevo:')]
+    # 🚫 `--sin 405,423`: los que NO se aplican. Hace falta acá y no editando el JSON: este informe vuelve a calcular la
+    # lista, y el 15/10/2026 un #405 sacado a mano del archivo entró igual (cargó el nombre de un equipo como persona)
+    sin = set(sys.argv[sys.argv.index('--sin') + 1].split(',')) if '--sin' in sys.argv else set()
+    if sin:
+        ev_cambian = [x for x in ev_cambian if x[0] not in sin]
+        print('   (sin %s, como se pidió)' % ', '.join('#' + x for x in sorted(sin)))
     d['_cambian'] = [k for k, _e, _m in ev_cambian]
     print('   %d persona(s) cambian · %d evento(s) cambian · %d entran · %d duplicado(s) · %d no se pudieron volver '
           'a leer\n' % (len(cambios), len(ev_cambian), len(entran), len(dups), len(no_leidos)))
