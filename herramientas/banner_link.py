@@ -64,14 +64,8 @@ def pagina_sv(sv):
     """La página chiquita de un servidor, `(sigla, nombre, color, logo)`: su vista previa, y a la Liga."""
     s, nom, col = sv[0].lower(), _esc(sv[1]), _esc(sv[2])
     desc = 'Sus eventos, su gente y sus tarjetas, en el ranking mundial del freestyle online.'
-    # 🏟️ Y LLEVA A LA PÁGINA DE ESE SERVIDOR, no a la portada (Dlx, 14/10/2026, con FRZ: «asegurate que FRZ tenga su
-    # link propio… con su thumbnail personalizado»): `/freestyle-rap/sv/<SIGLA>`, que también tiene esta vista previa
-    # (`vistaServidor()` de bot/paginas/_worker.js)
-    import json
-    _x = (json.load(io.open(os.path.join(BASE, 'datos', 'servidores.json'), encoding='utf-8'))['servidores'].get(sv[0])
-          or {})
-    # ⚠️ sólo los de la Liga tienen página: los demás (TWR, TFC, FTN, EFA) siguen yendo a la portada
-    LIGA = ('/freestyle-rap/sv/' + str(_x.get('sigla') or sv[0]).upper()) if _x.get('confirmado') else '/freestyle-rap/'
+    # 🔑 Y LLEVA A LA PORTADA, a propósito (Dlx, 14/10/2026: «each link should redirect you to the home… but each
+    # server has its own link with its own personalized thumbnail»): lo propio de cada servidor es el link y su imagen
     return ('<!doctype html><html lang="es"><head><meta charset="utf-8">\n'
             '<meta name="viewport" content="width=device-width,initial-scale=1">\n'
             '<title>%(nom)s · Liga Global de Freestyle</title>\n'
