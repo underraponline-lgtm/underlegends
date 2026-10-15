@@ -693,6 +693,9 @@
   "KMS": {
    "servidor": "cabf9440ce5b:f7bc857dd9f6:980594"
   },
+  "KZAONE": {
+   "servidor": "0b8f290796e0:f7bc857dd9f6:e141ae"
+  },
   "Kako": {
    "servidor": "f5a4dd6ab7bc:f7bc857dd9f6:055f77"
   },
@@ -1785,5 +1788,5 @@
    "servidor": "7f8885a35a6d:f7bc857dd9f6:55e9bc"
   }
  },
- "cuando": "2026-10-15T16:39:11+00:00"
+ "cuando": "2026-10-15T17:29:11+00:00"
 }

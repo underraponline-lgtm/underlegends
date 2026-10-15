@@ -2239,6 +2239,11 @@
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kyss/sv-sr.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kyss/temporada.webp"
  },
+ "kzaone": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kzaone/servidor.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kzaone/sv-dra.webp",
+  "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kzaone/sv-fvs.webp"
+ },
  "lagca": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lagca/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lagca/sv-dra.webp",
