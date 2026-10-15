@@ -60,7 +60,7 @@
   },
   "Agre": {},
   "Agus": {
-   "competitivo": "e8100dcbf48b:aa2fab0a1b31",
+   "competitivo": "3eb0f91f6921:aa2fab0a1b31",
    "pais": "17a60b944a23:631b7a4c93c4",
    "servidor": "8b425d511463:f7bc857dd9f6:3580af",
    "temporada": "a598fb02d837:906ce275eeb8"
@@ -1171,7 +1171,7 @@
   "PUBLIC ENEMY": {},
   "Panchok": {
    "competitivo": "5cf22c767caa:aa2fab0a1b31",
-   "pais": "986042d92e11:631b7a4c93c4",
+   "pais": "44cede02bebb:631b7a4c93c4",
    "servidor": "d9acf62913f4:f7bc857dd9f6:3580af",
    "temporada": "5229099a6e32:906ce275eeb8"
   },
@@ -1662,8 +1662,8 @@
    "servidor": "f7db99f48cc8:0261962bc3e6:15af16"
   },
   "ajoel08": {
-   "servidor": "d1a4faaa1509:f7bc857dd9f6:980594",
-   "temporada": "9bf823148c97:906ce275eeb8"
+   "servidor": "f5d8b897c1c2:f7bc857dd9f6:67201a",
+   "temporada": "92eb3f3e316d:906ce275eeb8"
   },
   "androide": {
    "servidor": "d83342c293c7:0261962bc3e6:055f77"
@@ -1772,5 +1772,5 @@
    "servidor": "7f8885a35a6d:0261962bc3e6:c9f1f2"
   }
  },
- "cuando": "2026-10-15T03:01:09+00:00"
+ "cuando": "2026-10-15T03:29:09+00:00"
 }
