@@ -164,12 +164,22 @@ html.ini-nuevo{scroll-padding-top:0}
     e.preventDefault(); window.__instalar = e; window.dispatchEvent(new Event('lg:instalar'));
   });
   window.addEventListener('appinstalled', function () { window.__instalar = null; window.dispatchEvent(new Event('lg:instalar')); });
-  // si la app no llegó a montarse (red lenta, un navegador viejo), vuelve el Inicio de hoy
-  setTimeout(function () {
+  // si la app no llegó a montarse (un navegador viejo, o se rompió), vuelve el Inicio de hoy
+  function planB() {
     var el = document.getElementById('inicio-nuevo');
     // y lo viejo se dibuja recién ahora: mientras mandaba la página nueva, app.js no lo dibujó (`mandaLoNuevo()`)
     if (!el || !el.shadowRoot) { window.__inicioSinDatos = true; c.remove('ini-nuevo'); if (window.__pintarViejo) window.__pintarViejo(); }
-  }, 8000);
+  }
+  // ⚠️ LOS 8 SEGUNDOS CUENTAN DESDE QUE BAJÓ TODO (`load`), NO DESDE QUE SE ABRIÓ LA PÁGINA. Dlx, 15/10/2026: «a Juan
+  // no le carga la página a veces, y a mí me pasa lo mismo». Medido con un celular modesto y 3G lento: la app termina
+  // de bajar a los ~7 s y se arma a los 7,1; un poco peor y el plan B se adelantaba, dejaba el Inicio viejo —que ya
+  // casi no tiene nada— y la app, aunque llegara un segundo después, no volvía. Si su archivo NO baja, va al toque
+  if (document.readyState === 'complete') setTimeout(planB, 8000);
+  else window.addEventListener('load', function () { setTimeout(planB, 8000); });
+  window.addEventListener('error', function (e) {
+    var t = e && e.target;
+    if (t && t.tagName === 'SCRIPT' && /\/inicio\/inicio\.js/.test(t.src || '')) planB();
+  }, true);
 })();
 </script>
 </head>
