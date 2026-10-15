@@ -1251,9 +1251,10 @@ def sumar_writing(ag, suma=None):
     `bot/writing.py`, donde viven las reglas y los números). ⚠️ NUNCA AL COMPETITIVO NI COMO DUELO, y una corrida
     atrás, como las misiones: lee el `datos/writing.json` de la anterior, sólo las fechas de esta temporada.
 
-    ⚠️ SÓLO A QUIEN YA TIENE FILA: quien hizo el Writing y nunca jugó un evento de la Liga no aparece en la vitrina por
-    esto; lo suyo queda guardado y entra el día que juegue (se recalcula entero en cada corrida). Sin archivo, `None` y
-    no suma nada. Devuelve a cuántos les sumó."""
+    🔑 Y QUIEN SÓLO ESCRIBIÓ TIENE SU FILA (Dlx, 15/10/2026: *«en sí hemos participado en la temporada en este evento,
+    entonces sí cuenta por el Writing Challenge»*). Hasta ese día sumaba sólo a quien ya tenía fila; ahora quien hizo el
+    Writing y nunca jugó un evento entra a la vitrina con esos puntos y 0 eventos. Sin archivo, `None` y no suma nada.
+    Devuelve a cuántos les sumó."""
     if suma is None:
         try:
             _b = os.path.join(BASE, 'bot')
@@ -1265,12 +1266,17 @@ def sumar_writing(ag, suma=None):
             print('   ⚠️ no pude leer el Writing Challenge (%s): la vitrina no lo suma' % str(e)[:80])
             return None
     por = {_como_pool(n): pts for n, pts in (suma or {}).items() if pts}
+    nombres = {_como_pool(n): n for n, pts in (suma or {}).items() if pts}
     tocadas = 0
     for quien, v in ag.items():
-        pts = por.get(_como_pool(quien)) or 0
+        pts = por.pop(_como_pool(quien), 0)
         if pts:
             v['Puntos'] = v.get('Puntos', 0) + pts
             tocadas += 1
+    # ✍️ los que sólo escribieron: su fila, con lo del Writing y 0 eventos
+    for k, pts in por.items():
+        ag[nombres[k]] = {'Puntos': pts, 'Ev': 0}
+        tocadas += 1
     return tocadas
 
 
@@ -3006,12 +3012,15 @@ def _self_check():
     ok = n_pr == 1 and agp['MTZ 🇲🇽']['Puntos'] == 4000 and agp['Hassan']['Puntos'] == 2000
     mal += not ok
     print('   %s el precio por cabeza cobrado suma a los Puntos (y nada más)' % ('✅' if ok else '🔴'))
-    # ✍️ el Writing Challenge de FFA (Dlx, 14/10/2026): a los Puntos de quien tiene fila; quien no jugó, todavía no
+    # ✍️ el Writing Challenge de FFA (Dlx, 14/10/2026): a los Puntos de quien tiene fila, y desde el 15/10 (Dlx: «sí
+    # cuenta») quien sólo escribió tiene la suya, con 0 eventos
     agw = {'Lvel 🇻🇪': {'Puntos': 1000}, 'Hassan': {'Puntos': 2000}}
     n_wr = sumar_writing(agw, {'Lvel': 1600, 'Adrianex': 300})
-    ok = n_wr == 1 and agw['Lvel 🇻🇪']['Puntos'] == 2600 and agw['Hassan']['Puntos'] == 2000 and 'Adrianex' not in agw
+    ok = (n_wr == 2 and agw['Lvel 🇻🇪']['Puntos'] == 2600 and agw['Hassan']['Puntos'] == 2000
+          and agw.get('Adrianex') == {'Puntos': 300, 'Ev': 0} and 'Lvel' not in agw)
     mal += not ok
-    print('   %s el Writing Challenge suma a los Puntos de quien tiene fila (y no crea filas)' % ('✅' if ok else '🔴'))
+    print('   %s el Writing Challenge suma a los Puntos de quien tiene fila, y quien sólo escribió tiene la suya'
+          % ('✅' if ok else '🔴'))
     # 🔑 el multiplicador: sólo con `factor`, por servidor y por semana
     resm = [[1, '27/09', 'SR', '16+', 'Ana', 'ar', 'Campeón', 10000, '', 0, ''],
             [2, '27/09', 'FFA', '16+', 'Ana', 'ar', 'Subcampeón', 7500, '', 0, '']]

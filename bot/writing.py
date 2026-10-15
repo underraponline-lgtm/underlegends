@@ -307,7 +307,7 @@ def _juntar(viejas, nuevas):
 
 
 # ── quién es quién ───────────────────────────────────────────────────────
-def indice(padron=None, pool=None):
+def indice(padron=None, pool=None, cuentas=None):
     """Lo que hace falta para resolver: `{'pad': {clave: [filas]}, 'did': {discord: fila}, 'pool': {clave: [raw]},
     'pool_did': {discord: raw}}`, de `datos/padron.json` y `datos/temporada_pool.json` si no vienen."""
     from comun.claves import clave
@@ -335,6 +335,19 @@ def indice(padron=None, pool=None):
             d = str(p.get('discord_id') or '').strip()
             if d.isdigit():
                 ix['pool_did'].setdefault(d, raw)
+    # 🔑 LAS CUENTAS QUE DLX DIJO DE QUIÉN SON (`cuentas` de `datos/akas_a_mano.json`), también de quien no está en la
+    # Lista: «mony rap es mony» (15/10/2026) y la rima la publicó @monyrocha, que no estaba en ningún lado
+    if cuentas is None:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'akas_a_mano.json'), encoding='utf-8') as f:
+                cuentas = (json.load(f) or {}).get('cuentas') or {}
+        except (OSError, ValueError):
+            cuentas = {}
+    for raw, ids in (cuentas or {}).items():
+        for d in ids or []:
+            d = str(d).strip()
+            if d.isdigit() and d not in ix['did']:
+                ix['did'][d] = {'raw': raw, 'discord_id': d}
     return ix
 
 
@@ -363,6 +376,12 @@ def por_nombre(nombre, bs, ix, canon=None):
         ps = ix['pool'].get(_k(v)) or ix['pool'].get(_k(canon(v))) or []
         if len(set(ps)) == 1:
             return ps[0], None
+    # 🔑 UN AKA QUE DIJO DLX VALE AUNQUE LA PERSONA NO ESTÉ EN LA LISTA («mony rap es mony», 15/10/2026): la cadena de
+    # AKAs lo lleva a otro nombre, y ése es el suyo
+    for v in candidatos(nombre):
+        c = canon(v)
+        if c and _k(c) != _k(v):
+            return c, None
     return None, None
 
 
