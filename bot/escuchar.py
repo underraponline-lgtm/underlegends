@@ -523,6 +523,9 @@ def _equipo_de_banderas(s):
     # persona en octavos —y un duelo de «Eliot - Respawm» contra Krinkross—. Con espacios a los dos lados: un guion
     # pegado es parte del nombre (`Agustín-51`)
     s = re.sub('(?<=' + _BANDERA + r')(' + _MD + r')[ \t]+[-–—][ \t]+(?=' + _MD + r'\w)', r'\1 + ', s)
+    # 🔑 Y LA BANDERA PEGADA ENTRE DOS NOMBRES, SIN ESPACIO: `tam🇧🇫baggio🇮🇹` (PRITTY FREE, FFA, 05/10/2026) era UNA
+    # persona campeona con 10.000 (auditoría del 14/10). Sólo con una letra justo después de la bandera
+    s = re.sub('(?<=[^\\W\\d_]' + _BANDERA + '{2})(?=[^\\W\\d_])', ' + ', s)
     return re.sub('(?<=' + _BANDERA + r')(' + _MD + r')[ \t]+(?=' + _MD + r'\w)', r'\1 + ', s)
 
 
@@ -2283,6 +2286,7 @@ def resolver(texto, conocidos=None, ids=None, quien=None):
     # filtro de abajo: un grupo que la negrita resuelve no es «pasan 0».
     if '**' in texto:
         try:
+            _texto_negr[0] = texto
             out = _por_negrita(out, rs, _negritas(texto))
         except Exception:                                # noqa: BLE001
             pass
@@ -2405,6 +2409,13 @@ def _crecio(b, sig, bats, rs=()):
     return hallados[0]
 
 
+#: la marca de revivido en el texto de la llave: «(R)», «(r)», «[rebibido]», «1R» (como `llaves_a_entrada.REVIVIDO_MARCA`)
+_REVIVIDO_TXT = re.compile(r'([^\s⌞\[\]()]{2,}[^⌞\[\]()]*?)\s*(?:\(\s*R\s*\)|\b[123]\s*R\b|[\[(]\s*re[bv]i[bv]id[oa]\s*[\])])',
+                           re.I)
+#: el texto de la llave que está resolviendo `resolver()`, para `_por_negrita()`
+_texto_negr = ['']
+
+
 def _por_negrita(out, rs, negr):
     """Las batallas que nadie más resolvió, con el lado que la llave puso en
     negrita —si en ESTA llave la negrita ya dijo la verdad—.
@@ -2435,17 +2446,29 @@ def _por_negrita(out, rs, negr):
             return None
         return lados[fl.index(True)]
 
+    # 🔑 LA RONDA SIGUIENTE MANDA, SALVO QUE EL QUE «SIGUE» VUELVA COMO REVIVIDO (Dlx, 14/10/2026, a «si la negrita marca
+    # a un ganador y en la ronda siguiente aparece el otro, ¿quién manda?»: *«ambos, depende del contexto, pero más la
+    # ronda siguiente»*). El contexto que se lee: ME QUISIERA MORIR (#454) marca **VixoVerso** y en la ronda siguiente
+    # está «onzas.s🇻🇪(r)» —perdió y volvió—, así que esa aparición no dice que ganó: dice que lo revivieron. Ahí, y
+    # sólo ahí, gana la negrita
+    rev = {norm(HISTORIA.sub('', m.group(1))) for m in _REVIVIDO_TXT.finditer(_texto_negr[0] or '')} - {''}
     bien = mal = 0
+    contra_rev = []
     for idx in range(len(plano_)):
         g, n = out[idx][2], _cual(idx)
         if g is None or n is None:
             continue
         if norm(HISTORIA.sub('', n)) == norm(HISTORIA.sub('', g)):
             bien += 1
+        elif norm(HISTORIA.sub('', g)) in rev:
+            contra_rev.append((idx, n))
         else:
             mal += 1
     if bien < 3 or mal:
         return out
+    for idx, n in contra_rev:
+        r, b, _g, _z = out[idx]
+        out[idx] = (r, b, n, 'la negrita: el que sigue volvió como revivido')
     for idx in range(len(plano_)):
         r, b, g, z = out[idx]
         if g is not None or z not in ('no aparece nadie después',
@@ -4440,6 +4463,12 @@ def _self_check():
          resolver(negra)[3][2] == 'D4🇺🇾'),
         ('con dos aciertos no alcanza',
          resolver(negra.replace('[**A3🇦🇷**]', '[A3🇦🇷]'))[3][2] is None),
+        # 🔑 Dlx, 14/10/2026: «ambos, depende del contexto, pero más la ronda siguiente»
+        ('la ronda siguiente manda… salvo que el que sigue vuelva con «(r)»: ahí gana la negrita (ME QUISIERA MORIR)',
+         resolver(negra.replace('[C4🇦🇷] 🆚 [**D4🇺🇾**]', '[**C4🇦🇷**] 🆚 [D4🇺🇾]')
+                  .replace('[A3🇦🇷] 🆚 [OTRO🇦🇷]', '[A3🇦🇷] 🆚 [D4🇺🇾(r)]'))[3][2] == 'C4🇦🇷'
+         and resolver(negra.replace('[C4🇦🇷] 🆚 [**D4🇺🇾**]', '[**C4🇦🇷**] 🆚 [D4🇺🇾]')
+                      .replace('[A3🇦🇷] 🆚 [OTRO🇦🇷]', '[A3🇦🇷] 🆚 [D4🇺🇾]'))[3][2] != 'C4🇦🇷'),
         ('medio lado en negrita no es negrita (GENESIS BATTLES)',
          not _es_negrita('⌞DYNOCO🇦🇷 + **GEOKA🇦🇷⌝') and _es_negrita('[**MATI🇦🇷**]')
          and _es_negrita('**[<@458519920330670086>🇺🇾]**')),
