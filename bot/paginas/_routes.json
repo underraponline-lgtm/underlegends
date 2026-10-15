@@ -1,6 +1,13 @@
 {
   "version": 1,
-  "description": "Sólo la API pasa por _worker.js; los archivos los sirve Pages directo (04/10/2026). Ver bot/paginas_subir.py. Y los perfiles (14/10/2026), para la vista previa de cada link: ver vistaPerfil() en _worker.js",
-  "include": ["/api/*", "/calendario.ics", "/lobby", "/lobby/", "/freestyle-rap/r/*"],
+  "description": "Sólo la API pasa por _worker.js; los archivos los sirve Pages directo (04/10/2026). Ver bot/paginas_subir.py. Y los perfiles (14/10/2026), para la vista previa de cada link: ver vistaPerfil() en _worker.js Y los servidores (14/10/2026): vistaServidor().",
+  "include": [
+    "/api/*",
+    "/calendario.ics",
+    "/lobby",
+    "/lobby/",
+    "/freestyle-rap/r/*",
+    "/freestyle-rap/sv/*"
+  ],
   "exclude": []
 }

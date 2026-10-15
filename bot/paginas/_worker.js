@@ -356,9 +356,52 @@ async function vistaPerfil(req, env, k, url) {
   return new Response(r.body, { status: 200, headers: h });
 }
 
+// 🏟️ Y LA DE CADA SERVIDOR (Dlx, 14/10/2026, con FRZ: «asegurate que FRZ tenga su link propio… o sea con su thumbnail
+// personalizado»). `/freestyle-rap/sv/<SIGLA>` es la página de cada servidor, y pegada en Discord salía con el cartel de
+// la Liga. La imagen ya existía —la de cada servidor, con su logo y su color (`/og/<sv>.png`, de
+// `herramientas/banner_link.py`)—, sólo faltaba que su página la dijera. Igual que el perfil: sólo para los bots, con el
+// lobby cacheado. Sin ese servidor en el lobby queda la de la Liga
+async function vistaServidor(req, env, x, url) {
+  const r = await fetch(ORIGEN + '/lobby?json=1', { headers: { accept: 'application/json' }, cf: { cacheTtl: 300, cacheEverything: true } })
+    .catch(() => null);
+  const L = r && r.ok ? await r.json().catch(() => null) : null;
+  const X = String(x || '').toUpperCase();
+  const s = L && (L.svs || []).find((y) => y && (y.sv === X || String(y.sigla || '').toUpperCase() === X));
+  if (!s || !/^[A-Z]{2,5}$/.test(String(s.sv || ''))) return null;
+  const nombre = String(s.nombre || s.sv).trim();
+  const titulo = nombre + ' en la Liga Global de Freestyle';
+  const desc = (s.tag ? String(s.tag).charAt(0) + String(s.tag).slice(1).toLowerCase() + '. ' : '')
+    + 'Sus eventos, su gente y sus tarjetas, en el ranking mundial del freestyle online.';
+  const img = url.origin + '/og/' + s.sv.toLowerCase() + '.png';
+  const pag = await env.ASSETS.fetch(new Request(url.origin + '/', { headers: req.headers }));
+  const poner = (atr, valor) => ({ element(el) { el.setAttribute(atr, valor); } });
+  const rw = new HTMLRewriter()
+    .on('title', { element(el) { el.setInnerContent(nombre + ' · Liga Global de Freestyle'); } })
+    .on('meta[property="og:title"]', poner('content', titulo))
+    .on('meta[property="og:description"]', poner('content', desc))
+    .on('meta[name="description"]', poner('content', desc))
+    .on('meta[property="og:url"]', poner('content', url.origin + url.pathname))
+    .on('meta[property="og:image"]', poner('content', img))
+    .on('meta[name="twitter:image"]', poner('content', img))
+    .on('meta[property="og:image:alt"]', poner('content', titulo))
+    // la barrita de color de Discord, la del servidor
+    .on('meta[name="theme-color"]', poner('content', /^#[0-9a-f]{6}$/i.test(String(s.color || '')) ? s.color : '#29B298'));
+  const out = rw.transform(pag);
+  const h = new Headers(out.headers);
+  h.set('cache-control', 'public, max-age=300');
+  return new Response(out.body, { status: 200, headers: h });
+}
+
 export default {
   async fetch(req, env) {
     const url = new URL(req.url);
+
+    // 🏟️ la vista previa de cada servidor, sólo para los bots (ver `vistaServidor()`)
+    const mSv = req.method === 'GET' && /^\/freestyle-rap\/sv\/([A-Za-z]{2,5})\/?$/.exec(url.pathname);
+    if (mSv && BOTS_VISTA.test(req.headers.get('user-agent') || '')) {
+      const v = await vistaServidor(req, env, mSv[1], url).catch(() => null);
+      if (v) return v;
+    }
 
     // 🔗 la vista previa de cada perfil, sólo para los bots (ver `vistaPerfil()`)
     const mPerfil = req.method === 'GET' && /^\/freestyle-rap\/r\/([^/?#]{1,80})\/?$/.exec(url.pathname);
@@ -375,7 +418,8 @@ export default {
     // otro sin saberlo. Los navegadores mandan `Origin` en todo POST; si viene y no es éste, no pasa. Sin `Origin`
     // (el ciclo, un navegador viejo) pasa como antes
     // 🛡️ el freno por IP: todo lo de la API y la vista previa de los perfiles (ver `demasiados()`)
-    if ((url.pathname.indexOf('/api/') === 0 || url.pathname.indexOf('/freestyle-rap/r/') === 0)
+    if ((url.pathname.indexOf('/api/') === 0 || url.pathname.indexOf('/freestyle-rap/r/') === 0
+      || url.pathname.indexOf('/freestyle-rap/sv/') === 0)
       && demasiados(bloqueIP(req.headers.get('cf-connecting-ip')))) return muchos();
     if (req.method === 'POST' && url.pathname.indexOf('/api/') === 0) {
       const o = req.headers.get('origin');

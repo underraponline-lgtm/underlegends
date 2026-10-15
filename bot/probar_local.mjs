@@ -2178,6 +2178,22 @@ console.log('\n🔗 LA VISTA PREVIA DE CADA PERFIL\n');
     ok('a la gente, la página de siempre y sin pedir nada', r.t === '<html>la de siempre</html>' && !r.pedidos.length, r.t.slice(0, 80));
     r = await ver('/freestyle-rap/r/nadie', DISCORD);
     ok('un perfil que no existe: la vista previa de la Liga, como antes', r.t === '<html>la de siempre</html>', r.t.slice(0, 80));
+    // 🏟️ y la de cada servidor (Dlx, 14/10/2026: «que FRZ tenga su link propio… con su thumbnail personalizado»)
+    lobby.svs = [{ sv: 'FRZ', sigla: 'FRZ', nombre: 'Freestyle Zone', color: '#26B3A6' },
+      { sv: 'SR', sigla: 'SNK', nombre: 'Snake Rap', color: '#E0670B', tag: 'TALENTOS' }];
+    r = await ver('/freestyle-rap/sv/FRZ', DISCORD);
+    ok('Discord pega el link de FRZ: su nombre, su imagen (/og/frz.png) y su color en la barrita',
+      r.j && r.j.title === 'Freestyle Zone · Liga Global de Freestyle'
+      && r.j['meta[property="og:image"]'] === 'https://underlegends.pages.dev/og/frz.png'
+      && r.j['meta[name="theme-color"]'] === '#26B3A6' && r.j['meta[property="og:url"]'] === 'https://underlegends.pages.dev/freestyle-rap/sv/FRZ',
+    JSON.stringify(r.j));
+    r = await ver('/freestyle-rap/sv/snk', DISCORD);
+    ok('por la sigla también (SNK es Snake Rap), con su tag', r.j && r.j['meta[property="og:image"]'] === 'https://underlegends.pages.dev/og/sr.png'
+      && /^Talentos\./.test(r.j['meta[property="og:description"]']), JSON.stringify(r.j));
+    r = await ver('/freestyle-rap/sv/FRZ', 'Mozilla/5.0 (Linux; Android 14) Chrome/130');
+    ok('a la gente, la página de siempre', r.t === '<html>la de siempre</html>' && !r.pedidos.length, r.t.slice(0, 80));
+    r = await ver('/freestyle-rap/sv/TWR', DISCORD);
+    ok('un servidor que no es de la Liga: la vista previa de la Liga', r.t === '<html>la de siempre</html>', r.t.slice(0, 80));
   } finally {
     globalThis.fetch = antes;
     globalThis.HTMLRewriter = antesRW;
