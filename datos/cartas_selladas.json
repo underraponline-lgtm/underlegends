@@ -198,7 +198,8 @@
   },
   "Catarsis": {
    "competitivo": "0acad7efff0f:aa2fab0a1b31",
-   "servidor": "6035bb7ffe45:f7bc857dd9f6:6a5f1a"
+   "servidor": "6035bb7ffe45:f7bc857dd9f6:6a5f1a",
+   "temporada": "23e10bb2081e:906ce275eeb8"
   },
   "Char": {},
   "Charro": {
@@ -309,7 +310,7 @@
    "competitivo": "1ea99df94c42:aa2fab0a1b31",
    "pais": "2fc787ef243a:631b7a4c93c4",
    "servidor": "e3aed0a107f5:f7bc857dd9f6:6a5f1a",
-   "temporada": "00958f23b956:906ce275eeb8"
+   "temporada": "689a2254637c:906ce275eeb8"
   },
   "Deluxe": {
    "competitivo": "08cfb54e9580:aa2fab0a1b31",
@@ -1767,5 +1768,5 @@
    "servidor": "7f8885a35a6d:0261962bc3e6:c9f1f2"
   }
  },
- "cuando": "2026-10-15T02:21:41+00:00"
+ "cuando": "2026-10-15T02:28:55+00:00"
 }
