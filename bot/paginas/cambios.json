@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "3.14",
+   "dia": "2026-10-14",
+   "cuando": "2026-10-14T21:00:00-04:00",
+   "titulo": "Organizadores, formatos, tarjetas y llaves",
+   "items": [
+    "👥 Los organizadores salen de a uno, con su foto y su perfil, en Eventos y en cada llave. Y seguir a uno te avisa aunque organice con otros.",
+    "📋 «Cómo se juega» cuenta los formatos de toda la temporada: 1 vs 1, por equipos, multiverse, 2 vs 2, pandillas, 5 vidas, doble eliminación y nave de funa.",
+    "📅 Cada evento dice el multiplicador de su semana: «Sumó ×3 · URB esa semana».",
+    "🃏 Tarjeta de Temporada: MIS (misiones cumplidas), RCH (tu racha de eventos) y MW (a cuántos cazaste / cuántas veces te cazaron). En la Competitiva, los eventos arriba y el win rate abajo.",
+    "🏆 Las llaves se leen mejor: en pandillas, al que se lleva el ganador ya no se lo toma como revivido; y se reconocen el tercer puesto, los play-in y los nombres con número de semilla."
+   ]
+  },
+  {
    "version": "3.13",
    "dia": "2026-10-14",
    "cuando": "2026-10-14T19:10:00-04:00",
