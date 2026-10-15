@@ -4187,7 +4187,7 @@
     "racha": "0/0"
    }
   },
-  "METORITO 🇲🇽": {
+  "METORITO": {
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -7370,14 +7370,14 @@
     "racha": "0/0"
    }
   },
-  "Volk 🇲🇽": {
+  "Volk": {
    "FFA": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
-    "pts": 2625,
+    "pts": 3875,
     "racha": "0/0"
    }
   },
@@ -8158,17 +8158,6 @@
     "ovr": 45,
     "pod": 0,
     "pts": 3188,
-    "racha": "0/0"
-   }
-  },
-  "volk 🇨🇴": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 1250,
     "racha": "0/0"
    }
   },

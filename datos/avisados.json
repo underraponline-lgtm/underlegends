@@ -3780,6 +3780,11 @@
     "Aldre",
     "Colesito",
     "Aldre"
+   ],
+   [
+    "Aldre, Makmah, Rodas",
+    "Provenza, Colesito, Xubaru",
+    "Aldre, Makmah, Rodas"
    ]
   ],
   "ev_antes": {
@@ -3795,7 +3800,7 @@
    "Xubaru": 3
   },
   "fecha": "08/10",
-  "firma": "bf68272246f25fb7",
+  "firma": "06f405c3894be1ff",
   "msg": "1557986840865411073",
   "nombre": "__ __ Cuentas Pendientes V.1 __ __",
   "num": 435,
@@ -4615,6 +4620,11 @@
     "Zetryko",
     "Eclipsito",
     "Zetryko"
+   ],
+   [
+    "ALVA 🇲🇽",
+    "Shadow",
+    "ALVA 🇲🇽"
    ]
   ],
   "ev_antes": {
@@ -4632,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "1e49a322e26d1157",
+  "firma": "864185d4dca0ab71",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -4710,6 +4720,11 @@
    ],
    [
     "Calíz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Shadow",
     "Octavos",
     1250
    ]
@@ -5547,7 +5562,7 @@
    "Xclusivo": 12
   },
   "fecha": "10/10",
-  "firma": "d72cfa2dc8feafc2",
+  "firma": "48feb27165f01619",
   "msg": "1558545514931163258",
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
   "num": 442,
@@ -7969,7 +7984,7 @@
    "Walker": 4
   },
   "fecha": "12/10",
-  "firma": "85acc9400a94fdc6",
+  "firma": "26af734c2e8ba3fc",
   "msg": "1559247607283454084",
   "nombre": "FMS UNDER",
   "num": 455,
@@ -9406,7 +9421,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "4d4cbe3a8d7f1d12",
+  "firma": "69b050cfa8f67a0b",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -11835,7 +11850,7 @@
    "Xubaru": 4
   },
   "fecha": "14/10",
-  "firma": "f34db3192ba0e984",
+  "firma": "d5b2b3f337974dcf",
   "msg": "1559809185120518145",
   "nombre": "__ Inserte Nombre de la Compe __",
   "num": 470,
@@ -12559,7 +12574,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "1cbda29b370e65b9",
+  "firma": "3a950405624d8085",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
