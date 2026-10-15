@@ -1,21 +1,21 @@
 {
  "v": 1,
- "cuando": "2026-10-15T04:45:26Z",
+ "cuando": "2026-10-15T05:42:20Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 109.0,
+ "dur_s": 819.4,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.6
+   "s": 5.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.4
+   "s": 4.3
   },
   {
    "n": "4",
@@ -25,46 +25,46 @@
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": true,
-   "s": 22.2
+   "s": 733.2
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 1.0
+   "s": 4.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 52.9
+   "s": 50.9
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "473",
-  "nombre": "FF Freestyle Clasico",
-  "sv": "URBF",
-  "dia": "2026-10-14"
+  "n": "474",
+  "nombre": "- FMS CHILE -",
+  "sv": "FRZ",
+  "dia": "2026-10-01"
  },
  "cuotas": {
   "kv": {
-   "write": 167,
-   "read": 15413
+   "write": 199,
+   "read": 18817
   },
   "objeto": {
-   "leidas": 1652308,
-   "escritas": 13233,
-   "pedidos": 5036
+   "leidas": 1837419,
+   "escritas": 17162,
+   "pedidos": 5469
   },
   "worker": {
-   "pedidos": 13172,
+   "pedidos": 12872,
    "errores": 0,
-   "sub": 11641,
+   "sub": 11240,
    "p50_ms": 0.95,
-   "p99_ms": 8.08
+   "p99_ms": 8.16
   },
   "r2": {
    "objetos": 4002,
