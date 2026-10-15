@@ -2,6 +2,8 @@
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
   "FFA": "2026-10-15",
+  "FRZ": "2026-10-15",
+  "FVS": "2026-10-15",
   "SR": "2026-10-12",
   "URBF": "2026-10-15"
  },
@@ -21,6 +23,7 @@
   },
   "Abraham": {
    "avisado": "2026-10-15",
+   "chat": "2026-10-15",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-15T01:41:57+00:00",
@@ -111,6 +114,7 @@
   },
   "Kusoh": {
    "avisado": "2026-10-13",
+   "chat": "2026-10-15",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-13T15:58:57+00:00",
@@ -137,6 +141,7 @@
   },
   "Milo": {
    "avisado": "2026-10-15",
+   "chat": "2026-10-15",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-15T01:41:57+00:00",
@@ -162,6 +167,7 @@
   },
   "Raizer": {
    "avisado": "2026-10-13",
+   "chat": "2026-10-15",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-13T15:58:57+00:00",
