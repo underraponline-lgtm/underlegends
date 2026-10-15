@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "3.16",
+   "dia": "2026-10-15",
+   "cuando": "2026-10-15T16:35:00-04:00",
+   "titulo": "La página en celulares lentos, y los paneles de DRA",
+   "items": [
+    "📱 La página ya no se rinde en un celular lento o con mala señal: espera a que termine de bajar antes de dar el Inicio por perdido.",
+    "🖼️ Los paneles de DRA (el ranking, Most Wanted y la semana) muestran la imagen más grande.",
+    "🔱 FMS CHILE y la gente de Freestyle Zone, con su nombre correcto."
+   ]
+  },
+  {
    "version": "3.15",
    "dia": "2026-10-15",
    "cuando": "2026-10-15T00:30:00-04:00",
