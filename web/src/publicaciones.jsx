@@ -12,7 +12,8 @@ import { ksDe, limpio, num, siglaDe } from './liga.js';
 import { Cara, Carta, Ico, accion, useCampana } from './piezas.jsx';
 import { Elegido, X2 } from './encuestas.jsx';
 
-const ANUNCIOS = { anuncio: 1, liga: 1 };
+// 🖼️ el flyer de una liga es un anuncio (14/10/2026): lo publica su servidor, no es un logro de nadie
+const ANUNCIOS = { anuncio: 1, liga: 1, flyer: 1 };
 // los logros: lo que se puede felicitar (una carta nueva le toca a todo el que juega una vez: no es un logro)
 const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1 };
 const CARTA = { pais: 'de País', temporada: 'de Temporada', servidor: 'de Servidor', competitivo: 'Competitiva' };
@@ -122,6 +123,17 @@ export function Pub({ liga, it, A }) {
     det = [it.mod, it.org ? 'organiza ' + it.org : '', it.pre ? 'premio: ' + it.pre : ''].filter(Boolean).join(' · ');
     acc = <>{it.link ? <a className="pub-a" href={it.link} target="_blank" rel="noopener noreferrer">Ver en Discord ↗</a> : null}
       <a className="pub-a" href="#/eventos">Eventos</a></>;
+  } else if (it.tipo === 'flyer') {
+    // 🖼️ EL FLYER DE UNA LIGA (Dlx, 14/10/2026: «Flyers en Publicaciones e Historias»): el afiche que publicó su
+    // servidor, re-alojado (bot/ligas.py `subir_flyer()`), y a su liga en Ligas. Grande: la imagen ES la publicación
+    const ir = '#/ranking/ligas/' + encodeURIComponent(it.liga || '');
+    cat = 'LIGA · ' + siglaDe(it.sv);
+    vis = <a className="pub-flyer" href={ir} aria-label={'Ver ' + limpio(it.ln)}>
+      <img alt={'El flyer de ' + limpio(it.ln) + (it.tit ? ': ' + limpio(it.tit) : '')} src={it.img} loading="lazy"
+        width={it.w || undefined} height={it.h || undefined} /></a>;
+    txt = <><b>{limpio(it.ln)}</b>{it.tit ? <> publicó su flyer: {limpio(it.tit)}</> : ' publicó su flyer'}</>;
+    acc = <><a className="pub-a" href={ir}>Ver la liga</a>
+      {it.link ? <a className="pub-a" href={it.link} target="_blank" rel="noopener noreferrer">Ver en Discord ↗</a> : null}</>;
   } else if (it.tipo === 'liga') {
     cat = 'LA LIGA';
     vis = <img className="pub-logo" alt="" src="/ul.png" />;

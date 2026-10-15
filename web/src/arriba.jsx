@@ -374,6 +374,12 @@ function slidesDe(liga, items) {
       out.push(Slide('ANUNCIÓ · ' + siglaDe(it.sv), <><img className="st-logo" alt="" src={liga.logo(it.sv)} /><h3 className="st-h">{limpio(it.ev)}</h3>
         {liga.esDorado(it.ev, it.sv) ? <span className="st-dor">EVENTO DORADO ×3</span> : null}<small className="st-s">{cu || c}</small></>,
         c, 'Quiero aviso', { ruta: '#/avisos' }));
+    } else if (it.tipo === 'flyer') {
+      // 🖼️ el flyer de una liga de ese servidor (Dlx, 14/10/2026: «Flyers en Publicaciones e Historias»): el afiche
+      // entero, y a su liga
+      out.push(Slide('LIGA · ' + siglaDe(it.sv), <><img className="st-flyer" alt="" src={it.img} /><h3 className="st-h">{limpio(it.ln)}</h3>
+        {it.tit ? <small className="st-s">{limpio(it.tit)}</small> : null}</>,
+      c, 'Ver la liga', { ruta: '#/ranking/ligas/' + encodeURIComponent(it.liga || '') }));
     }
     // la identidad de la historia es la de su publicación (`id` del muro, ver bot/muro.py); las cartas juntas, la de todas
     const id = 'm:' + g.map((o) => o.id || o.tipo + (o.t || '') + (o.quien || []).join(',')).join('+');
@@ -410,10 +416,18 @@ function historiasLiga(liga, mm) {
   const semana = String(mm.ini || '');
   // 📅 lo que se juega hoy y todavía no empezó
   const hoyEv = liga.luego().filter((e) => liga.diaClave(e.cuando) === hoy);
-  if (hoyEv.length) {
-    out.push(Slide('HOY SE JUEGA', <><h3 className="st-h">{hoyEv.length === 1 ? 'Un evento hoy' : hoyEv.length + ' eventos hoy'}</h3>
-      <ul className="st-l">{hoyEv.slice(0, 5).map((e, i) => <li key={i}><b>{liga.dia(e.cuando).replace(/^hoy /, '')} · {siglaDe(e.sv)}</b>{limpio(e.nombre)}</li>)}</ul></>,
-    'hoy', 'Ver Eventos', { ruta: '#/eventos' }, 'hoy:' + hoy + ':' + hoyEv.length));
+  // 🏟️ y la fecha de hoy de cada liga de los servidores (Dlx, 14/10/2026: «Ligas en el Inicio», como un evento más)
+  const hoyLg = liga.fechasHoy();
+  if (hoyEv.length || hoyLg.length) {
+    const n = hoyEv.length + hoyLg.length;
+    const cuantos = n === 1 ? (hoyEv.length ? 'Un evento hoy' : 'Una liga hoy')
+      : n + (!hoyLg.length ? ' eventos hoy' : !hoyEv.length ? ' ligas hoy' : ' fechas hoy');
+    out.push(Slide('HOY SE JUEGA', <><h3 className="st-h">{cuantos}</h3>
+      <ul className="st-l">{hoyEv.slice(0, 5).map((e, i) => <li key={i}><b>{liga.dia(e.cuando).replace(/^hoy /, '')} · {siglaDe(e.sv)}</b>{limpio(e.nombre)}</li>)}
+        {hoyLg.slice(0, Math.max(0, 6 - Math.min(hoyEv.length, 5))).map((x) => <li key={x.L.id}><b>{x.t ? liga.dia(x.t).replace(/^hoy /, '') + ' · ' : ''}{siglaDe(x.L.sv)} · LIGA</b>
+          {x.L.n}{x.j ? ', jornada ' + x.j : ''}</li>)}</ul></>,
+    'hoy', hoyEv.length ? 'Ver Eventos' : 'Ver las ligas', { ruta: hoyEv.length ? '#/eventos' : '#/ranking/ligas' },
+    'hoy:' + hoy + ':' + hoyEv.length + ':' + hoyLg.length));
   }
   // 🎯 los buscados del Most Wanted que siguen sueltos
   const mw = liga.d.mw || {};
@@ -486,7 +500,8 @@ export function CrewCirculo({ c, cls = 'h-c' }) {
 const firma = (items, resto = '') => items.reduce((m, it) => (String(it.t) > m ? String(it.t) : m), '') || resto;
 
 export function gruposHistorias(liga) {
-  const muro = liga.muroLimpio().filter((it) => ['campeon', 'anuncio', 'caza', 'tarjeta', 'rango'].includes(it.tipo));
+  // 🖼️ y los flyers de las ligas (14/10/2026): van al círculo de su servidor (`svDe()`: el flyer trae su `sv`)
+  const muro = liga.muroLimpio().filter((it) => ['campeon', 'anuncio', 'caza', 'tarjeta', 'rango', 'flyer'].includes(it.tipo));
   const grupos = [];
   liga.vivo().forEach((e) => {
     const m = liga.multSv(e.sv);
@@ -1192,6 +1207,30 @@ function momentos(liga, vivoL) {
           <a className={'btn ' + (ins ? 'borde' : 'verde')} href="#/avisos"><Ico n="campana" t={18} />Quiero aviso</a>
           {ins ? null : <a className="btn borde" href={gcal(e)} target="_blank" rel="noopener noreferrer">+ Calendario</a>}</div></>,
       vis: <div className="mo-logo"><img alt="" src={liga.logo(e.sv, true)} />{dor ? <span className="mo-sello">DORADO ×3</span> : null}</div>,
+    });
+  });
+  // 🏟️ LA FECHA DE HOY DE CADA LIGA, COMO UN EVENTO MÁS (Dlx, 14/10/2026: «Ligas en el Inicio»). Hoy es lo que la liga
+  // anunció para hoy o una jornada con veredictos de hoy (`fechasHoy()` de liga.js). Con su flyer, si lo tiene; la cuenta
+  // atrás sólo si el anuncio dijo la hora (sin dato no hay pieza). Hasta dos, para no tapar los eventos
+  liga.fechasHoy().slice(0, 2).forEach((x) => {
+    const L = x.L;
+    const fl = L.fl;
+    const ir = '#/ranking/ligas/' + encodeURIComponent(L.id);
+    const futuro = !!(x.t && utc(x.t) > liga.ahora);
+    const n = limpio(L.n);
+    const ya = x.juega ? (x.n === 1 ? 'Una batalla ya tiene veredicto' : x.n + ' batallas ya tienen veredicto')
+      + (x.j ? ' en la jornada ' + x.j + '. ' : '. ') : 'La liga anunció su fecha para hoy. ';
+    out.push({
+      tipo: 'ligahoy', clave: 'ligahoy-' + L.id, et: 'Liga · ' + siglaDe(L.sv), sv: L.sv,
+      txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(L.sv)} /><span className="tag tg-prox">{futuro ? 'HOY · ' + liga.dia(x.t).replace(/^hoy /, '').toUpperCase() : 'HOY SE JUEGA'}</span>
+        <span className="hero-meta">LIGA · {siglaDe(L.sv)}{x.j ? ' · JORNADA ' + x.j : ''}</span></div>
+        <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
+        <p className="hero-p">{ya}Sus batallas suman a tus duelos.</p>
+        {futuro ? <div className="mo-cuenta"><small>EMPIEZA EN</small><b>{liga.falta(x.t)}</b></div> : null}
+        <div className="hero-acc"><a className="btn verde" href={ir}>Ver la liga</a>
+          {x.link ? <a className="btn borde" href={x.link} target="_blank" rel="noopener noreferrer">El anuncio ↗</a> : null}</div></>,
+      vis: fl ? <a className="mo-flyer" href={ir} aria-label={'Ver ' + n}><img alt={'El flyer de ' + n} src={fl} /></a>
+        : <div className="mo-logo"><img alt="" src={liga.logo(L.sv, true)} /></div>,
     });
   });
   const ll = liga.llavesPorFecha()[0];

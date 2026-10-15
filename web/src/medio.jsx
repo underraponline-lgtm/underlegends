@@ -112,6 +112,8 @@ function Vis({ liga, v, cls = 'n-vis' }) {
   if (v[0] === 'cara') return <Cara liga={liga} k={v[1]} nombre={v[2]} cls={cls + ' n-cara'} />;
   if (v[0] === 'sv') return <img className={cls} alt="" src={liga.logo(v[1])} />;
   if (v[0] === 'enc') return <span className={cls + ' n-enc'}>{v[1]}</span>;
+  // 🖼️ el flyer de una liga (14/10/2026): la imagen, recortada al cuadro
+  if (v[0] === 'img') return <img className={cls + ' n-img'} alt="" src={v[1]} loading="lazy" />;
   return <img className={cls} alt="" src="/ul.png" />;
 }
 // una encuesta abierta, como novedad: lleva a Encuestas (Dlx, 30/09: «¿por qué no lo ponemos en la sección de lo
