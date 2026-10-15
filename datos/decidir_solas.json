@@ -1018,6 +1018,25 @@
     "ALVA 🇲🇽"
    ],
    "escribio": {}
+  },
+  {
+   "id": "863eff1a80",
+   "tipo": "alta",
+   "sec": "🪪 Identidad",
+   "que": "A «BETELGEUSE» lo buscó otra persona con /card en URBF (no lo usó él) y no está en la Lista de Raperos. Si ya está con otro nombre, elegilo o escribilo: le pongo su Discord.\nSu cuenta: https://discord.com/users/1386059494056005655",
+   "r": "Ya está resuelto",
+   "regla": "R3 · un alta que no hace falta: el bot, o una cuenta que buscó otro y no jugó",
+   "rk": "R3",
+   "por": "el ciclo",
+   "porque": "no usó /card: lo buscó otra persona, y no jugó en la T1 (ni su nombre ni con lo que se anotó está en ningún resultado). Si se anota sola, entra como cualquiera",
+   "t": 1792108653903,
+   "filas": [
+    725
+   ],
+   "variantes": [
+    "BETELGEUSE = 1386059494056005655"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []
