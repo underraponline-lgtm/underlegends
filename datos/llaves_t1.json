@@ -1217,11 +1217,11 @@
     "b": [
      [
       [
-       "Mau Kc 🇨🇴, Denik",
+       "Mau KC 🇨🇴, Denik",
        "NC, g8🇯🇴"
       ],
-      "Mau Kc 🇨🇴, Denik",
-      "Revivido: nc🇯🇴"
+      "Mau KC 🇨🇴, Denik",
+      ""
      ],
      [
       [
@@ -1256,7 +1256,7 @@
      [
       [
        "CJ, Zignos",
-       "Mau Kc 🇨🇴, Denik"
+       "Mau KC 🇨🇴, Denik"
       ],
       "CJ, Zignos",
       ""
@@ -1306,7 +1306,7 @@
    [
     "NC",
     "Subcampeón",
-    3125
+    3750
    ],
    [
     "Bloody",
@@ -1319,7 +1319,7 @@
     2625
    ],
    [
-    "Mau Kc 🇨🇴",
+    "Mau KC 🇨🇴",
     "Semifinal",
     2625
    ],
@@ -1391,38 +1391,42 @@
      [
       [
        "Snow",
+       "Velatz",
        "Miniboy",
        "Gus"
       ],
-      "Snow",
-      "triple (4 bandas, pasan 2); Revivido: snow"
+      "Snow, Velatz",
+      "triple (4 bandas, pasan 2); también pasa: Velatz"
      ],
      [
       [
        "Six",
+       "Hassan",
        "Camila",
        "Marto"
       ],
-      "Six",
-      "triple (4 bandas, pasan 2)"
+      "Six, Hassan",
+      "triple (4 bandas, pasan 2); también pasa: Prr🇦🇴"
      ],
      [
       [
        "Colesito",
+       "Majiztral",
        "Chop",
        "PichulaMc"
       ],
-      "Colesito",
-      "triple (4 bandas, pasan 2); Revivido: colesito"
+      "Colesito, Majiztral",
+      "triple (4 bandas, pasan 2); también pasa: Majiztral 🇨🇴; Drafteado: colesito"
      ],
      [
       [
        "Makmah",
+       "Bloody",
        "Saito",
        "7"
       ],
-      "Makmah",
-      "triple (4 bandas, pasan 2)"
+      "Makmah, Bloody",
+      "triple (4 bandas, pasan 2); también pasa: Bloody"
      ]
     ],
     "r": "Cuartos"
@@ -1466,13 +1470,13 @@
   "tabla": [
    [
     "Snow",
-    "Campeón",
-    4291
+    "Semifinal",
+    5958
    ],
    [
     "Colesito",
     "Subcampeón",
-    3875
+    5125
    ],
    [
     "Hassan",
@@ -1908,7 +1912,7 @@
      [
       [
        "MetriOdin",
-       "Perrin🇨🇱"
+       "Perrin"
       ],
       "MetriOdin",
       ""
@@ -2067,7 +2071,7 @@
     1250
    ],
    [
-    "Perrin🇨🇱",
+    "Perrin",
     "Octavos",
     1250
    ],
@@ -7023,11 +7027,11 @@
      ],
      [
       [
-       "G8🇨🇴",
+       "g8🇹🇼",
        "Partim",
        "Colesito"
       ],
-      "G8🇨🇴",
+      "g8🇹🇼",
       "triple (3 bandas)"
      ]
     ],
@@ -7045,10 +7049,10 @@
      ],
      [
       [
-       "g8🇨🇴",
+       "g8🇹🇼",
        "Provenza"
       ],
-      "g8🇨🇴",
+      "g8🇹🇼",
       ""
      ],
      [
@@ -7074,10 +7078,10 @@
     "b": [
      [
       [
-       "g8🇨🇴",
+       "g8🇹🇼",
        "Number"
       ],
-      "g8🇨🇴",
+      "g8🇹🇼",
       ""
      ],
      [
@@ -7096,7 +7100,7 @@
      [
       [
        "Hassan",
-       "g8🇨🇴"
+       "g8🇹🇼"
       ],
       "Hassan",
       ""
@@ -7113,7 +7117,7 @@
     10000
    ],
    [
-    "g8🇨🇴",
+    "g8🇹🇼",
     "Subcampeón",
     7500
    ],
@@ -7254,24 +7258,6 @@
       ],
       "Snow",
       "triple (3 bandas)"
-     ],
-     [
-      [
-       "# Zaik 🇪🇸",
-       "tormen 🇳🇮",
-       "vandu🇨🇦"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "Trot🇪🇸",
-       "Bootrax🇵🇪",
-       "Pichula"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -7285,14 +7271,6 @@
       ],
       "Snow",
       "Walk-in 1: colesito"
-     ],
-     [
-      [
-       "Verc",
-       "Provenza"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Semifinales"
@@ -7337,6 +7315,11 @@
     "Teo",
     "Cuartos",
     2000
+   ],
+   [
+    "Colesito",
+    "Semifinal",
+    1750
    ],
    [
     "yinn",
@@ -10832,25 +10815,26 @@
  },
  "402": {
   "dia": "2026-10-05",
-  "escala": "16+",
+  "escala": "8-15",
   "fecha": "05/10",
   "links": [
    "https://discord.com/channels/1468472442925092958/1487207377601040516/1556536286074900573"
   ],
   "n": 402,
   "nombre": "PRITTY FREE",
-  "participantes": 17,
+  "participantes": 15,
   "rondas": [
    {
     "b": [
      [
       [
        "Provenza",
+       "Alexi",
        "Focox",
        "Crk"
       ],
-      "Provenza",
-      "triple (4 bandas, pasan 2)"
+      "Provenza, Alexi",
+      "triple (4 bandas, pasan 2); también pasa: Alexiz"
      ],
      [
       [
@@ -10864,20 +10848,21 @@
      ],
      [
       [
-       "Baggio 🇮🇹",
        "Tam",
+       "Baggio 🇮🇹",
        "Ivaynex"
       ],
-      "Baggio 🇮🇹",
-      "triple (3 bandas)"
+      "Tam, Baggio 🇮🇹",
+      "triple (3 bandas, pasan 2); también pasa: Baggio 🇮🇹"
      ],
      [
       [
        "Skratch",
+       "Andres",
        "Garxzii"
       ],
-      "Skratch",
-      "triple (3 bandas, pasan 2)"
+      "Skratch, Andres",
+      "triple (3 bandas, pasan 2); también pasa: nhp 🇨🇱"
      ]
     ],
     "r": "Cuartos"
@@ -10894,10 +10879,10 @@
      ],
      [
       [
-       "tam🇧🇫baggio🇮🇹",
+       "Tam, baggio🇮🇹",
        "Andres, Skratch"
       ],
-      "tam🇧🇫baggio🇮🇹",
+      "Tam, baggio🇮🇹",
       ""
      ]
     ],
@@ -10907,10 +10892,10 @@
     "b": [
      [
       [
-       "tam🇧🇫baggio🇮🇹",
+       "Tam, baggio🇮🇹",
        "Hassan, Benju"
       ],
-      "tam🇧🇫baggio🇮🇹",
+      "Tam, baggio🇮🇹",
       ""
      ]
     ],
@@ -10920,79 +10905,79 @@
   "sv": "FFA",
   "tabla": [
    [
-    "tam🇧🇫baggio🇮🇹",
+    "Tam",
     "Campeón",
-    10000
+    3750
+   ],
+   [
+    "baggio🇮🇹",
+    "Campeón",
+    3750
    ],
    [
     "Benju",
     "Subcampeón",
-    3750
+    2500
    ],
    [
     "Hassan",
     "Subcampeón",
-    3750
+    2500
    ],
    [
     "Alexi",
     "Semifinal",
-    2625
+    2000
    ],
    [
     "Andres",
     "Semifinal",
-    2625
-   ],
-   [
-    "Provenza",
-    "Semifinal",
-    2625
-   ],
-   [
-    "Skratch",
-    "Semifinal",
-    2625
+    2000
    ],
    [
     "Crk",
     "Cuartos",
-    2500
+    2000
    ],
    [
     "Focox",
     "Cuartos",
-    2500
+    2000
    ],
    [
     "Garxzii",
     "Cuartos",
-    2500
+    2000
    ],
    [
     "Ivaynex",
     "Cuartos",
-    2500
+    2000
    ],
    [
     "MZK",
     "Cuartos",
-    2500
+    2000
    ],
    [
     "Oni 🇦🇷",
     "Cuartos",
-    2500
+    2000
    ],
    [
-    "Tam",
-    "Cuartos",
-    2500
+    "Provenza",
+    "Semifinal",
+    2000
+   ],
+   [
+    "Skratch",
+    "Semifinal",
+    2000
    ],
    [
     "benjadsantis🇦🇷",
     "Cuartos",
-    2500
+    2000
    ]
   ]
  },
@@ -11309,35 +11294,39 @@
      [
       [
        "NC",
+       "Provenza",
        "BLITZ"
       ],
-      "NC",
-      "triple (3 bandas, pasan 2); Revivido: Blitz"
+      "NC, Provenza",
+      "triple (3 bandas, pasan 2); también pasa: za; Drafteado: Blitz"
      ],
      [
       [
        "Drexx",
+       "Alexi",
        "Garxzii"
       ],
-      "Drexx",
-      "triple (3 bandas, pasan 2)"
+      "Drexx, Alexi",
+      "triple (3 bandas, pasan 2); también pasa: Alexis🇦🇷"
      ],
      [
       [
        "Oasis",
+       "Velatz",
        "CHOCLITO"
       ],
-      "Oasis",
-      "triple (3 bandas, pasan 2)"
+      "Oasis, Velatz",
+      "triple (3 bandas, pasan 2); también pasa: Shishui 🇯🇵"
      ],
      [
       [
        "CFM",
+       "Freestyle4AllmyNiggaz 🌏🌏",
        "Sosa",
        "Dyzz"
       ],
-      "CFM",
-      "triple (4 bandas, pasan 2); Revivido: C F M 🇻🇪"
+      "CFM, Freestyle4AllmyNiggaz 🌏🌏",
+      "triple (4 bandas, pasan 2); también pasa: Freestyle4AllmyNiggaz 🇵🇪🌏🌏; Drafteado: C F M 🇻🇪"
      ]
     ],
     "r": "Cuartos"
@@ -11382,12 +11371,12 @@
    [
     "CFM",
     "Campeón",
-    3000
+    4250
    ],
    [
     "BLITZ",
     "Subcampeón",
-    2833
+    3666
    ],
    [
     "Oasis",
@@ -11400,8 +11389,18 @@
     2500
    ],
    [
+    "Alexi",
+    "Subcampeón",
+    2000
+   ],
+   [
     "CHOCLITO",
     "Cuartos",
+    2000
+   ],
+   [
+    "Drexx",
+    "Subcampeón",
     2000
    ],
    [
@@ -11410,39 +11409,29 @@
     2000
    ],
    [
+    "Freestyle4AllmyNiggaz 🌏🌏",
+    "Semifinal",
+    2000
+   ],
+   [
     "Garxzii",
     "Cuartos",
+    2000
+   ],
+   [
+    "NC",
+    "Semifinal",
+    2000
+   ],
+   [
+    "Provenza",
+    "Semifinal",
     2000
    ],
    [
     "Sosa",
     "Cuartos",
     2000
-   ],
-   [
-    "Freestyle4AllmyNiggaz 🌏🌏",
-    "Semifinal",
-    1750
-   ],
-   [
-    "NC",
-    "Semifinal",
-    1750
-   ],
-   [
-    "Provenza",
-    "Semifinal",
-    1750
-   ],
-   [
-    "Alexi",
-    "Subcampeón",
-    1666
-   ],
-   [
-    "Drexx",
-    "Subcampeón",
-    1666
    ]
   ]
  },
@@ -11517,11 +11506,11 @@
      ],
      [
       [
-       "ABYSUSS🇮🇱 + PARK-JI SUNG🇮🇱",
+       "Abysuss, Oasis",
        "LOS DUEÑOS DE TU BURRA 🇦🇷"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Abysuss, Oasis",
+      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -11651,6 +11640,11 @@
    [
     "JJ",
     "Cuartos",
+    1250
+   ],
+   [
+    "LOS DUEÑOS DE TU BURRA 🇦🇷",
+    "Octavos",
     1250
    ],
    [
@@ -12526,14 +12520,19 @@
   "sv": "FFA",
   "tabla": [
    [
-    "Zaza",
-    "Semifinal",
+    "JOSHU",
+    "Campeón",
     5250
    ],
    [
-    "JOSHU",
-    "Campeón",
-    5000
+    "Snow",
+    "Subcampeón",
+    5250
+   ],
+   [
+    "Zaza",
+    "Semifinal",
+    5250
    ],
    [
     "Provenza",
@@ -12541,18 +12540,13 @@
     4500
    ],
    [
-    "Snow",
-    "Subcampeón",
-    3750
+    "Panchok",
+    "Campeón",
+    2625
    ],
    [
     "Ezias🥈✒️🧢🐍",
     "Cuartos",
-    2500
-   ],
-   [
-    "Panchok",
-    "Campeón",
     2500
    ],
    [
@@ -13133,58 +13127,65 @@
      [
       [
        "Eclipsito",
+       "Soulb",
        "Valdoza"
       ],
-      "Eclipsito",
-      "triple (3 bandas, pasan 2); Revivido: Eclipse🇨🇱"
+      "Eclipsito, Soulb",
+      "triple (3 bandas, pasan 2); también pasa: Soul B 🇨🇱; Drafteado: Eclipse🇨🇱"
      ],
      [
       [
        "Miniboy",
+       "Makmah",
        "NC"
       ],
-      "Miniboy",
-      "triple (3 bandas, pasan 2)"
+      "Miniboy, Makmah",
+      "triple (3 bandas, pasan 2); también pasa: makma 🇻🇪"
      ],
      [
       [
        "ALTER 🇨🇱",
+       "Benjixo",
        "dxg"
       ],
-      "ALTER 🇨🇱",
-      "triple (3 bandas, pasan 2)"
+      "ALTER 🇨🇱, Benjixo",
+      "triple (3 bandas, pasan 2); también pasa: BENJIXO🇦🇷"
      ],
      [
       [
        "Riolu",
+       "YOUNG VLAD 🇨🇴",
        "Cronox"
       ],
-      "Riolu",
-      "triple (3 bandas, pasan 2)"
+      "Riolu, YOUNG VLAD 🇨🇴",
+      "triple (3 bandas, pasan 2); también pasa: YOUNG VLAD 🇨🇴"
      ],
      [
       [
        "Snow",
+       "BNA",
        "LKS 🇨🇱"
       ],
-      "Snow",
-      "triple (3 bandas, pasan 2); Revivido: Pain🇯🇵"
+      "Snow, BNA",
+      "triple (3 bandas, pasan 2); también pasa: Bna; Drafteado: Pain🇯🇵"
      ],
      [
       [
        "PichulaMc",
+       "Velatz",
        ".SosaATR"
       ],
-      "PichulaMc",
-      "triple (3 bandas, pasan 2)"
+      "PichulaMc, Velatz",
+      "triple (3 bandas, pasan 2); también pasa: Shisui 🇯🇵"
      ],
      [
       [
        "Oasis",
+       "Six",
        "Andres"
       ],
-      "Oasis",
-      "triple (3 bandas, pasan 2)"
+      "Oasis, Six",
+      "triple (3 bandas, pasan 2); también pasa: six"
      ],
      [
       [
@@ -13214,7 +13215,7 @@
        "PichulaMc, Velatz"
       ],
       "Makmah, Miniboy",
-      "Revivido: SHISUI 🇨🇱"
+      "Drafteado: SHISUI 🇨🇱"
      ],
      [
       [
@@ -13222,7 +13223,7 @@
        "Benjixo, ALTER 🇨🇱"
       ],
       "Oasis, Six",
-      "Revivido: BENJIXO 🇦🇷"
+      "Drafteado: BENJIXO 🇦🇷"
      ],
      [
       [
@@ -13230,7 +13231,7 @@
        "Riolu, YOUNG VLAD 🇨🇴"
       ],
       "Erian",
-      "Revivido: YOUNG VLAD 🇨🇴"
+      "Drafteado: YOUNG VLAD 🇨🇴"
      ]
     ],
     "r": "Cuartos"
@@ -13273,14 +13274,29 @@
   "sv": "FFA",
   "tabla": [
    [
+    "Velatz",
+    "Subcampeón",
+    5500
+   ],
+   [
     "Snow",
     "Campeón",
-    3000
+    4250
    ],
    [
     "Benjixo",
     "Campeón",
-    2500
+    3750
+   ],
+   [
+    "YOUNG VLAD 🇨🇴",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Eclipsito",
+    "Semifinal",
+    3000
    ],
    [
     "Erian",
@@ -13296,21 +13312,6 @@
     "Six",
     "Campeón",
     2500
-   ],
-   [
-    "Velatz",
-    "Subcampeón",
-    2500
-   ],
-   [
-    "YOUNG VLAD 🇨🇴",
-    "Subcampeón",
-    2500
-   ],
-   [
-    "Eclipsito",
-    "Semifinal",
-    2125
    ],
    [
     "BNA",
@@ -13963,27 +13964,27 @@
    [
     "Badterne",
     "Octavos",
-    0
+    625
    ],
    [
     "Desio",
     "Octavos",
-    0
+    625
    ],
    [
     "Kminant",
     "Octavos",
-    0
+    625
    ],
    [
     "Molusco",
     "Octavos",
-    0
+    625
    ],
    [
     "Zignos",
     "Octavos",
-    0
+    625
    ]
   ]
  },
@@ -14308,32 +14309,32 @@
    [
     "EmiZor",
     "Octavos",
-    0
+    625
    ],
    [
     "Krish",
     "Octavos",
-    0
+    625
    ],
    [
     "MHS",
     "Octavos",
-    0
+    625
    ],
    [
     "Majiztral",
     "Octavos",
-    0
+    625
    ],
    [
     "Malva",
     "Octavos",
-    0
+    625
    ],
    [
     "RT",
     "Octavos",
-    0
+    625
    ]
   ]
  },
@@ -14488,6 +14489,19 @@
     "b": [
      [
       [
+       "Oasis",
+       "Panchok"
+      ],
+      "Oasis",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
        "PRAISERIZA",
        "Liberia"
       ],
@@ -14512,13 +14526,13 @@
    ],
    [
     "Oasis",
-    "Semifinal",
-    5250
+    "Tercero",
+    6000
    ],
    [
     "Panchok",
-    "Semifinal",
-    5250
+    "Cuarto",
+    4500
    ],
    [
     "MATICERNA",
@@ -14551,11 +14565,6 @@
     1250
    ],
    [
-    "EIDP",
-    "Octavos",
-    1250
-   ],
-   [
     "Chop",
     "Octavos",
     1250
@@ -14567,6 +14576,11 @@
    ],
    [
     "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "EIDP",
     "Octavos",
     1250
    ],
@@ -15501,31 +15515,34 @@
      [
       [
        "NXUZ",
+       "Andres",
        "Silence"
       ],
-      "NXUZ",
-      "triple (3 bandas, pasan 2)"
+      "NXUZ, Andres",
+      "triple (3 bandas, pasan 2); también pasa: ANDRES🇨🇱"
      ],
      [
       [
        "Leonart",
+       "Cronox",
        "Dm🇵🇪"
       ],
-      "Leonart",
-      "triple (3 bandas, pasan 2)"
+      "Leonart, Cronox",
+      "triple (3 bandas, pasan 2); también pasa: Cronox 🇨🇱"
      ],
      [
       [
        "Richard",
+       "MR. LABURO🇨🇴",
        "CrisZJ"
       ],
-      "Richard",
-      "triple (3 bandas, pasan 2)"
+      "Richard, MR. LABURO🇨🇴",
+      "triple (3 bandas, pasan 2); también pasa: MR. LABURO🇨🇴"
      ],
      [
       [
        "MCO",
-       "SNX🇻🇪",
+       "Rbk",
        "EmiZor"
       ],
       "MCO",
@@ -15542,7 +15559,7 @@
        "Andres, NXUZ"
       ],
       "Cronox, Leonart",
-      "Revivido: ANDRES🇨🇱"
+      "Drafteado: ANDRES🇨🇱"
      ],
      [
       [
@@ -15550,7 +15567,7 @@
        "MR.LABURO🇨🇴, Richard"
       ],
       "MCO, Miniboy",
-      "Revivido: MR.LABURO🇨🇴"
+      "Drafteado: MR.LABURO🇨🇴"
      ]
     ],
     "r": "Semifinales"
@@ -15574,12 +15591,12 @@
    [
     "Andres",
     "Campeón",
-    3000
+    4250
    ],
    [
     "MR.LABURO🇨🇴",
     "Subcampeón",
-    2583
+    3416
    ],
    [
     "Cronox",
@@ -15607,34 +15624,34 @@
     2000
    ],
    [
-    "SNX🇻🇪",
+    "MCO",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    2000
+   ],
+   [
+    "Rbk",
     "Cuartos",
+    2000
+   ],
+   [
+    "Richard",
+    "Semifinal",
     2000
    ],
    [
     "Silence",
     "Cuartos",
     2000
-   ],
-   [
-    "NXUZ",
-    "Semifinal",
-    1750
-   ],
-   [
-    "Richard",
-    "Semifinal",
-    1750
-   ],
-   [
-    "MCO",
-    "Subcampeón",
-    1666
-   ],
-   [
-    "Miniboy",
-    "Subcampeón",
-    1666
    ]
   ]
  },
@@ -19735,16 +19752,16 @@
      ],
      [
       [
-       "Eze, Gocho, Hasan🇦🇷",
+       "Eze, Gocho, Hassan",
        "Dynoco, MCO"
       ],
-      "Eze, Gocho, Hasan🇦🇷",
+      "Eze, Gocho, Hassan",
       ""
      ],
      [
       [
        "Colesito",
-       "Xclusivo, Launnok🇨🇱"
+       "Xclusivo, Launok"
       ],
       "Colesito",
       ""
@@ -19759,10 +19776,10 @@
      ],
      [
       [
-       "Eliot🇲🇽 - Respawm🇭🇳",
+       "Eliot, Respawm🇭🇳",
        "Krinkross🇪🇸"
       ],
-      "Eliot🇲🇽 - Respawm🇭🇳",
+      "Eliot, Respawm🇭🇳",
       ""
      ]
     ],
@@ -19788,18 +19805,18 @@
      ],
      [
       [
-       "Eze, Hasan🇦🇷, Gocho",
+       "Eze, Hassan, Gocho",
        "Colesito, Bloody, Axinu"
       ],
-      "Eze, Hasan🇦🇷, Gocho",
+      "Eze, Hassan, Gocho",
       ""
      ],
      [
       [
-       "Eliot🇲🇽, Respawn",
+       "Eliot, Respawn",
        "CJ, Saiko, Zignos"
       ],
-      "Eliot🇲🇽, Respawn",
+      "Eliot, Respawn",
       ""
      ]
     ],
@@ -19817,10 +19834,10 @@
      ],
      [
       [
-       "Respawn, Eliot 🇲🇽",
-       "Eze, Gocho, Hasan🇦🇷"
+       "Respawn, Eliot",
+       "Eze, Gocho, Hassan"
       ],
-      "Respawn, Eliot 🇲🇽",
+      "Respawn, Eliot",
       ""
      ]
     ],
@@ -19830,10 +19847,10 @@
     "b": [
      [
       [
-       "Respawn, Eliot🇲🇽",
+       "Respawn, Eliot",
        "PRAISERIZA, Oasis"
       ],
-      "Respawn, Eliot🇲🇽",
+      "Respawn, Eliot",
       ""
      ]
     ],
@@ -19848,7 +19865,7 @@
     5250
    ],
    [
-    "Eliot🇲🇽",
+    "Eliot",
     "Campeón",
     5000
    ],
@@ -19883,7 +19900,7 @@
     1750
    ],
    [
-    "Hasan🇦🇷",
+    "Hassan",
     "Semifinal",
     1750
    ],
@@ -19948,7 +19965,7 @@
     625
    ],
    [
-    "Launnok🇨🇱",
+    "Launok",
     "Octavos",
     625
    ],
@@ -24019,6 +24036,144 @@
    ],
    [
     "Vargas",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "474": {
+  "dia": "2026-10-01",
+  "escala": "8-15",
+  "fecha": "01/10",
+  "links": [],
+  "n": 474,
+  "nombre": "- FMS CHILE -",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Ragnar",
+       "David CM"
+      ],
+      "Ragnar",
+      ""
+     ],
+     [
+      [
+       "Pipe",
+       "BM"
+      ],
+      "Pipe",
+      ""
+     ],
+     [
+      [
+       "Rbk",
+       "Dyzz"
+      ],
+      "Rbk",
+      ""
+     ],
+     [
+      [
+       "Mosquitrap 🦟",
+       "Soulb"
+      ],
+      "Mosquitrap 🦟",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Ragnar",
+       "Pipe"
+      ],
+      "Ragnar",
+      ""
+     ],
+     [
+      [
+       "Mosquitrap 🦟",
+       "Rbk"
+      ],
+      "Mosquitrap 🦟",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Rbk",
+       "Pipe"
+      ],
+      "Rbk",
+      ""
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Ragnar",
+       "Mosquitrap 🦟"
+      ],
+      "Ragnar",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FRZ",
+  "tabla": [
+   [
+    "Ragnar",
+    "Campeón",
+    7500
+   ],
+   [
+    "Mosquitrap 🦟",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Rbk",
+    "Tercero",
+    4000
+   ],
+   [
+    "Pipe",
+    "Cuarto",
+    3000
+   ],
+   [
+    "BM",
+    "Cuartos",
+    2000
+   ],
+   [
+    "David CM",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dyzz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Soulb",
     "Cuartos",
     2000
    ]

@@ -32,7 +32,7 @@
   "msg": "1553175999737237537"
  },
  "357": {
-  "firma": "__ DESGRACIAS EN TOKYO VOL.14 __|25/09|16|15|1|0",
+  "firma": "__ DESGRACIAS EN TOKYO VOL.14 __|25/09|16|15|0|0",
   "msg": "1553200107053129749"
  },
  "358": {
@@ -128,11 +128,11 @@
   "msg": "1555616463891472456"
  },
  "381": {
-  "firma": "PRITTY FREE|03/10|23|10|2|0",
+  "firma": "PRITTY FREE|03/10|23|10|1|0",
   "msg": "1555820034302021713"
  },
  "382": {
-  "firma": "KISS OF SHINIGAMI|02/10|6|2|0|0",
+  "firma": "KISS OF SHINIGAMI|02/10|7|2|0|0",
   "msg": "1555970962824896575"
  },
  "383": {
@@ -212,7 +212,7 @@
   "msg": "1556560094844559372"
  },
  "402": {
-  "firma": "PRITTY FREE|05/10|15|0|4|3",
+  "firma": "PRITTY FREE|05/10|15|0|3|4",
   "msg": "1556560098229489725"
  },
  "403": {
@@ -1843,7 +1843,7 @@
    ],
    [
     "MCO",
-    "SNX🇻🇪",
+    "Rbk",
     "MCO"
    ],
    [
@@ -1879,7 +1879,7 @@
    "Richard": 10
   },
   "fecha": "27/09",
-  "firma": "64d76e203f417814",
+  "firma": "723d706964845166",
   "msg": "1557823138497036310",
   "nombre": "CIUDAD GOTICA",
   "num": 428,
@@ -1895,12 +1895,12 @@
    [
     "Andres",
     "Campeón",
-    3000
+    4250
    ],
    [
     "MR.LABURO🇨🇴",
     "Subcampeón",
-    2583
+    3416
    ],
    [
     "Leonart",
@@ -1911,6 +1911,26 @@
     "Cronox",
     "Campeón",
     2500
+   ],
+   [
+    "MCO",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    2000
+   ],
+   [
+    "Richard",
+    "Semifinal",
+    2000
    ],
    [
     "Silence",
@@ -1928,7 +1948,7 @@
     2000
    ],
    [
-    "SNX🇻🇪",
+    "Rbk",
     "Cuartos",
     2000
    ],
@@ -1936,26 +1956,6 @@
     "EmiZor",
     "Cuartos",
     2000
-   ],
-   [
-    "NXUZ",
-    "Semifinal",
-    1750
-   ],
-   [
-    "Richard",
-    "Semifinal",
-    1750
-   ],
-   [
-    "MCO",
-    "Subcampeón",
-    1666
-   ],
-   [
-    "Miniboy",
-    "Subcampeón",
-    1666
    ]
   ],
   "v": 2
@@ -2101,14 +2101,14 @@
     "Snow"
    ],
    [
-    "Agus",
+    "EIDP",
     "LRS",
-    "Agus"
+    "EIDP"
    ],
    [
-    "Agus",
+    "EIDP",
     "1200",
-    "Agus"
+    "EIDP"
    ],
    [
     "Erian",
@@ -2166,9 +2166,9 @@
     "Zignos"
    ],
    [
-    "Agus",
+    "EIDP",
     "Panchok",
-    "Agus"
+    "EIDP"
    ],
    [
     "Zignos",
@@ -2177,7 +2177,7 @@
    ],
    [
     "Mr Still Ballin",
-    "Agus",
+    "EIDP",
     "Mr Still Ballin"
    ],
    [
@@ -2186,9 +2186,9 @@
     "Mr Still Ballin"
    ],
    [
-    "Agus",
+    "EIDP",
     "Alexi",
-    "Agus"
+    "EIDP"
    ]
   ],
   "ev_antes": {
@@ -2215,7 +2215,7 @@
    "Zignos": 10
   },
   "fecha": "08/10",
-  "firma": "963725121ba5444c",
+  "firma": "9a2d1d4bc643157b",
   "msg": "1557873584389488832",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL2 __",
   "num": 429,
@@ -2237,7 +2237,7 @@
     7500
    ],
    [
-    "Agus",
+    "EIDP",
     "Tercero",
     6000
    ],
@@ -6932,13 +6932,13 @@
     "NewCharacter🇦🇷"
    ],
    [
-    "Eze, Gocho, Hasan🇦🇷",
+    "Eze, Gocho, Hassan",
     "Dynoco, MCO",
-    "Eze, Gocho, Hasan🇦🇷"
+    "Eze, Gocho, Hassan"
    ],
    [
     "Colesito",
-    "Xclusivo, Launnok🇨🇱",
+    "Xclusivo, Launok",
     "Colesito"
    ],
    [
@@ -6947,9 +6947,9 @@
     "Saiko, Zignos, CJ"
    ],
    [
-    "Eliot🇲🇽 - Respawm🇭🇳",
+    "Eliot, Respawm🇭🇳",
     "Krinkross🇪🇸",
-    "Eliot🇲🇽 - Respawm🇭🇳"
+    "Eliot, Respawm🇭🇳"
    ],
    [
     "Oasis, PRAISERIZA",
@@ -6962,14 +6962,14 @@
     "NewCharacter🇦🇷"
    ],
    [
-    "Eze, Hasan🇦🇷, Gocho",
+    "Eze, Hassan, Gocho",
     "Colesito, Bloody, Axinu",
-    "Eze, Hasan🇦🇷, Gocho"
+    "Eze, Hassan, Gocho"
    ],
    [
-    "Eliot🇲🇽, Respawn",
+    "Eliot, Respawn",
     "CJ, Saiko, Zignos",
-    "Eliot🇲🇽, Respawn"
+    "Eliot, Respawn"
    ],
    [
     "Oasis, PRAISERIZA",
@@ -6977,14 +6977,14 @@
     "Oasis, PRAISERIZA"
    ],
    [
-    "Respawn, Eliot 🇲🇽",
-    "Eze, Gocho, Hasan🇦🇷",
-    "Respawn, Eliot 🇲🇽"
+    "Respawn, Eliot",
+    "Eze, Gocho, Hassan",
+    "Respawn, Eliot"
    ],
    [
-    "Respawn, Eliot🇲🇽",
+    "Respawn, Eliot",
     "PRAISERIZA, Oasis",
-    "Respawn, Eliot🇲🇽"
+    "Respawn, Eliot"
    ]
   ],
   "ev_antes": {
@@ -7004,7 +7004,7 @@
    "Zignos": 15
   },
   "fecha": "08/10",
-  "firma": "b7d28cebd2b20114",
+  "firma": "25fb6b77e9f6cb21",
   "msg": "1559092380379127900",
   "nombre": "__ MULTIVERSE __",
   "num": 450,
@@ -7027,7 +7027,7 @@
     5000
    ],
    [
-    "Eliot🇲🇽",
+    "Eliot",
     "Campeón",
     5000
    ],
@@ -7057,7 +7057,7 @@
     1750
    ],
    [
-    "Hasan🇦🇷",
+    "Hassan",
     "Semifinal",
     1750
    ],
@@ -7137,7 +7137,7 @@
     625
    ],
    [
-    "Launnok🇨🇱",
+    "Launok",
     "Octavos",
     625
    ]
@@ -12607,6 +12607,131 @@
    ],
    [
     "Vargas",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "474": {
+  "antes": {
+   "Dyzz": [
+    197,
+    74,
+    true
+   ],
+   "Mosquitrap 🦟": [
+    430,
+    424,
+    true
+   ],
+   "Rbk": [
+    152,
+    343,
+    false
+   ],
+   "Soulb": [
+    76,
+    109,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Ragnar",
+    "David CM",
+    "Ragnar"
+   ],
+   [
+    "Pipe",
+    "BM",
+    "Pipe"
+   ],
+   [
+    "Rbk",
+    "Dyzz",
+    "Rbk"
+   ],
+   [
+    "Mosquitrap 🦟",
+    "Soulb",
+    "Mosquitrap 🦟"
+   ],
+   [
+    "Ragnar",
+    "Pipe",
+    "Ragnar"
+   ],
+   [
+    "Mosquitrap 🦟",
+    "Rbk",
+    "Mosquitrap 🦟"
+   ],
+   [
+    "Rbk",
+    "Pipe",
+    "Rbk"
+   ],
+   [
+    "Ragnar",
+    "Mosquitrap 🦟",
+    "Ragnar"
+   ]
+  ],
+  "ev_antes": {
+   "Dyzz": 7,
+   "Mosquitrap 🦟": 1,
+   "Rbk": 1,
+   "Soulb": 8
+  },
+  "fecha": "01/10",
+  "nombre": "- FMS CHILE -",
+  "num": 474,
+  "participantes": 8,
+  "sello": {
+   "Ragnar": ""
+  },
+  "sv": "FRZ",
+  "t": "2026-10-15T04:59:47Z",
+  "tabla": [
+   [
+    "Ragnar",
+    "Campeón",
+    7500
+   ],
+   [
+    "Mosquitrap 🦟",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Rbk",
+    "Tercero",
+    4000
+   ],
+   [
+    "Pipe",
+    "Cuarto",
+    3000
+   ],
+   [
+    "David CM",
+    "Cuartos",
+    2000
+   ],
+   [
+    "BM",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dyzz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Soulb",
     "Cuartos",
     2000
    ]

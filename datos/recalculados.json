@@ -1,10 +1,106 @@
 {
  "_leeme": "Los eventos que corrigió herramientas/recalcular_t1.py --aplicar, con cuándo: el ciclo no los vuelve a escribir mientras su llave no se edite después (llaves_a_entrada.corregido_por_recalculo). Dlx, 12/10/2026.",
  "eventos": {
+  "354": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "23/09",
+   "nombre": "__ CARABOBO NO SE RINDE VOL.1 __",
+   "sv": "FFA"
+  },
+  "355": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "23/09",
+   "nombre": "__ DESGRACIAS EN TOKYO VOL.12 __",
+   "sv": "FFA"
+  },
+  "357": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "25/09",
+   "nombre": "__ DESGRACIAS EN TOKYO VOL.14 __",
+   "sv": "FFA"
+  },
+  "381": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "03/10",
+   "nombre": "PRITTY FREE",
+   "sv": "FFA"
+  },
+  "382": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "02/10",
+   "nombre": "KISS OF SHINIGAMI",
+   "sv": "FFA"
+  },
+  "402": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "05/10",
+   "nombre": "PRITTY FREE",
+   "sv": "FFA"
+  },
+  "404": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "04/10",
+   "nombre": "__ DESGRACIAS EN TOKYO VOL 22 pandillas __",
+   "sv": "FFA"
+  },
+  "405": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "05/10",
+   "nombre": "__ DESGRACIAS EN TOKYO VOL 24 __",
+   "sv": "FFA"
+  },
+  "411": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "06/10",
+   "nombre": "DEM UZBEKISTAN FECHA 1",
+   "sv": "FFA"
+  },
   "412": {
    "cuando": "2026-10-12T19:33:45+00:00",
    "fecha": "05/10",
    "nombre": "PRITTY FREE CLASIFICATORIA 3",
+   "sv": "FFA"
+  },
+  "414": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "06/10",
+   "nombre": "__ DESGRACIAS EN TOKYO VOL 26 PANDILLAS __",
+   "sv": "FFA"
+  },
+  "418": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "07/10",
+   "nombre": "WETTSIDDEE",
+   "sv": "FFA"
+  },
+  "422": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "07/10",
+   "nombre": "WETTSIDDEE 2",
+   "sv": "FFA"
+  },
+  "423": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "07/10",
+   "nombre": "__ DESGRACIAS EN BELLAS ARTES VOL1 __",
+   "sv": "FFA"
+  },
+  "428": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "27/09",
+   "nombre": "CIUDAD GOTICA",
+   "sv": "DDF"
+  },
+  "429": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "08/10",
+   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL2 __",
+   "sv": "FFA"
+  },
+  "450": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "08/10",
+   "nombre": "__ MULTIVERSE __",
    "sv": "FFA"
   },
   "456": {
@@ -12,6 +108,12 @@
    "fecha": "11/10",
    "nombre": "Fecha Rempalago Vol. 64 compe express por plata",
    "sv": "FFA"
+  },
+  "nuevo:- FMS CHILE -|FRZ|01/10": {
+   "cuando": "2026-10-15T05:00:11+00:00",
+   "fecha": "01/10",
+   "nombre": "- FMS CHILE -",
+   "sv": "FRZ"
   }
  }
 }
