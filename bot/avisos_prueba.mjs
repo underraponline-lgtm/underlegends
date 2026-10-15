@@ -881,6 +881,29 @@ const ok = (cond, que, det) => {
     const cv = await (await o.fetch(new Request('https://avisos/cierre-vivo', { method: 'POST',
       body: JSON.stringify({ canal: CANAL, ids: ['1', '9'] }), headers: { 'content-type': 'application/json' } }))).json();
     ok(cv.msg === '777', 'y el ciclo lo encuentra como el cierre (por fetch); anotar otro no lo pisa', JSON.stringify(cv));
+    // 🏆 Y CON OTRO MENSAJE DE LA MISMA LLAVE (14/10/2026, FF Freestyle Clasico de Urban: el bot en vivo anota la llave con
+    // el título suelto de arriba y el ciclo con la primera batalla, y el campeón salió dos veces)
+    const sf = (t) => String(BigInt(t - 1420070400000) << 22n);
+    const S = Date.parse('2026-10-14T21:51:00Z');
+    const idV = sf(S), idC = sf(S + 40000), lejos = sf(S + 3 * 3600000);
+    sql.exec('DELETE FROM chat_vivo');
+    sql.exec("INSERT INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, 'campeon', 'm55', '🏆 Motera', ?)", idV, CANAL, T);
+    ok(o.cierreVivo({ canal: CANAL, ids: [idC] }).msg === 'm55' && !o.cierreVivo({ canal: CANAL, ids: [lejos] }).msg,
+      'el ciclo encuentra el cierre anotado con otro mensaje de la llave (40 s antes), y no el de una llave de 3 h después');
+    sql.exec('DELETE FROM chat_vivo');
+    sql.exec("DELETE FROM vivo WHERE id = '9'");
+    o.cierreVivo({ canal: CANAL, ids: [idC], msg: '999' });
+    sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto, men) ' +
+      "VALUES (?, '2', 'FFA', '111', 'x', ?, ?, ?, ?, '[]')", idV, T + 99 * 60000, T + 100 * 60000,
+    FI + '\nCAMPEÓN: Dora 🇲🇽\n', T + 100 * 60000);
+    const a100 = pedidos.length;
+    await o.chatVivo(T + 100 * 60000);
+    await o.chatVivo(T + 120 * 60000);
+    const ed2 = pedidos.slice(a100).filter((x) => /\/channels\/555/.test(x.u));
+    ok(ed2.length >= 1 && ed2.every((x) => x.m === 'PATCH' && x.u.endsWith('/messages/999'))
+      && ed2.some((x) => /🏆 \*\*Dora 🇲🇽\*\* es el campeón/.test(x.b.content || '')),
+    'y si el ciclo salió primero, el cierre se le suma aunque cada uno anotara la llave con otro mensaje',
+    JSON.stringify(ed2.map((x) => x.m + ' ' + x.u)));
     // 📏 y lo medido (05/10/2026): las lecturas de KV de cada persona van juntas, y nunca dicen de quién
     const md = o.medidasVer();
     ok(md.kv['cfg:*'] > 0 && !Object.keys(md.kv).some((k) => /111/.test(k)),

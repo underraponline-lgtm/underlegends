@@ -605,6 +605,36 @@ export function cierreDelCiclo(x, h) {
   return !!(x && x.m === 'campeon' && h && h.msg && !h.texto);
 }
 
+/** hasta cuánto pueden distar el mensaje con el que el bot en vivo anota una llave y el que anota el ciclo */
+export const CIERRE_CERCA_MS = 60 * 60000;
+
+/**
+ * 🏆 EL «CAMPEON» DE LA LLAVE, AUNQUE CADA LADO LA ANOTE CON OTRO MENSAJE (14/10/2026, Dlx, con el campeón dos veces en el
+ * chat de Urban: «arreglá esto»). Urban escribe la llave de a una batalla por mensaje, con un título suelto arriba
+ * («=== FF Freestyle Clasico VOL. 1 ==="): el bot en vivo la anota con ESE mensaje (`L.id`, el primero de la tanda) y
+ * el ciclo con el de la primera batalla (`datos/llaves_links.json`). Eran dos números y el cruce por igualdad no los
+ * juntó nunca: el aviso salió aparte 23 minutos después del cierre. De `filas` (`{llave, msg, texto}` del canal), la del
+ * mismo mensaje, y si no hay, la más cercana en el tiempo (el ID de Discord lo dice) a menos de `CIERRE_CERCA_MS`.
+ * ⚠️ Una sola hora de margen: dos eventos del mismo servidor que ARRANCAN con menos de una hora de diferencia y terminan
+ * los dos son raros, y aun así gana el más cercano.
+ */
+export function campeonCerca(filas, ids, ventana = CIERRE_CERCA_MS) {
+  const ts = [].concat(ids || []).map(String).filter(Boolean);
+  const fs = (filas || []).filter((f) => f && f.llave);
+  const exacto = fs.find((f) => ts.includes(String(f.llave)));
+  if (exacto) return exacto;
+  // por cercanía, sólo entre IDs de Discord de verdad
+  const snow = (x) => /^\d{15,25}$/.test(String(x));
+  const tl = ts.filter(snow).map(creadaEn);
+  let mejor = null, dmin = Infinity;
+  for (const f of fs.filter((x) => snow(x.llave))) {
+    const t = creadaEn(f.llave);
+    const d = tl.length ? Math.min(...tl.map((x) => Math.abs(x - t))) : Infinity;
+    if (d <= ventana && d < dmin) { mejor = f; dmin = d; }
+  }
+  return mejor;
+}
+
 function planChatTodo(ms, hechos, ultimo, ahora, fresca, entre = CHAT_ENTRE_TODO) {
   const h = hechos || {};
   // 🏆 el cierre, en el mensaje que ya mandó el ciclo (ver `cierreDelCiclo()`)
@@ -5453,6 +5483,19 @@ export class Avisos {
         }
         ms = momentosChat(L, nombre, favoritosDe(L, lobby.tabla || []), nivel, opc);
       }
+      // 🏆 EL AVISO DEL CICLO, ANOTADO CON OTRO MENSAJE DE ESTA LLAVE (`campeonCerca()`): se lo queda ésta, así el cierre se
+      // le suma en vez de salir aparte. Se pasa a su clave y se borra la del ciclo, para que no la tome otra llave
+      if (!hechos.campeon && ms.some((x) => x.m === 'campeon')) {
+        const idsL = [L.id].concat((L.links || []).map((l) => String(l).replace(/\/+$/, '').split('/').pop()));
+        const c = campeonCerca(this.sql.exec("SELECT llave, msg, texto FROM chat_vivo WHERE canal = ? AND m = 'campeon' " +
+          "AND msg != '' AND texto = ''", canal).toArray(), idsL);
+        if (c) {
+          this.sql.exec("DELETE FROM chat_vivo WHERE canal = ? AND m = 'campeon' AND msg = ? AND texto = ''", canal, c.msg);
+          this.sql.exec("INSERT OR REPLACE INTO chat_vivo (llave, canal, m, msg, texto, t) VALUES (?, ?, 'campeon', ?, '', ?)",
+            L.id, canal, String(c.msg), ahora);
+          hechos.campeon = { m: 'campeon', msg: String(c.msg), texto: '' };
+        }
+      }
       // 🔁 LO QUE YA SE DIJO, CON OTRA CLAVE, TAMPOCO SE REPITE (13/10/2026): la clave de «pasa» lleva el lugar de la
       // batalla en la ronda y quién es, y si el organizador corre las batallas o un nombre se reconoce más tarde, cambia.
       // Una línea que ya está, igual, en un mensaje de esta llave queda dicha
@@ -6134,8 +6177,9 @@ export class Avisos {
       }
       return { ok: true };
     }
-    const r = this.sql.exec("SELECT msg FROM chat_vivo WHERE canal = ? AND m = 'campeon' AND msg != '' AND texto != '' " +
-      'AND llave IN (' + ids.map(() => '?').join(', ') + ')', canal, ...ids).toArray()[0];
+    // 🏆 el del mismo mensaje, o el más cercano (`campeonCerca()`): cada lado puede anotar la llave con otro mensaje
+    const r = campeonCerca(this.sql.exec("SELECT llave, msg, texto FROM chat_vivo WHERE canal = ? AND m = 'campeon' " +
+      "AND msg != '' AND texto != ''", canal).toArray(), ids);
     return r ? { msg: String(r.msg) } : {};
   }
 

@@ -300,6 +300,10 @@ def evento(ev, n_res, n_duelos, dudas=(), equipos=0):
         # este embed abajo, en un mensaje. Si no está, sale el aviso y queda anotado para que el cierre se le sume
         ids = _ids_llave(ev)
         cierre = _cierre_vivo(canal, ids)
+        # ⚠️ el cierre se busca también por cercanía (`campeonCerca()` de avisos.js, 14/10/2026): uno que ya lleva el aviso
+        # de OTRO evento no se pisa
+        if cierre and any(isinstance(v, dict) and str(v.get('msg') or '') == cierre for k, v in ya.items() if k != num):
+            cierre = None
     e = AE.armar(reg, AE.nivel())
     f = AE.firma(e)
     if antes and antes.get('firma') == f:
