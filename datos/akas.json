@@ -310,7 +310,9 @@
   "riferianumacryu": "Erian",
   "malasia": "Liberia",
   "malasiafighter": "Liberia",
-  "dantedelux": "Delux"
+  "dantedelux": "Delux",
+  "monyrap": "Mony",
+  "perfumechakal": "Cronox"
  },
  "pares": [
   [
@@ -1556,6 +1558,14 @@
   [
    "dantedelux",
    "Delux"
+  ],
+  [
+   "MONY RAP",
+   "Mony"
+  ],
+  [
+   "PERFUME CHAKAL",
+   "Cronox"
   ]
  ],
  "no_confundir": [

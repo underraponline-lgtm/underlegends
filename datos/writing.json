@@ -2,7 +2,7 @@
  "_leeme": "El Writing Challenge de FFA: cada fecha, quién quedó dónde y de qué cuenta. Lo arma bot/writing.py en el ciclo (paso 2b0); las reglas y los números viven ahí. Sin las rimas: el repo es público. `res`: p puesto, n nombre como lo escribió el organizador, b banderas, pts, persona (vacío: sin resolver), did (para la Tienda), como (de dónde salió), rima/cuenta (el mensaje y la cuenta que lo publicó), x (tenía ❌). Una fecha por número: la más nueva gana.",
  "canal": "1551050637280673792",
  "sv": "FFA",
- "t": "2026-10-15T01:09:07Z",
+ "t": "2026-10-15T04:55:35Z",
  "fechas": {
   "1": {
    "fecha": "1 REPRISE",
@@ -243,7 +243,8 @@
      "rima": "1557438413508968451",
      "cuenta": "771930273482014731",
      "cn": false,
-     "como": ""
+     "como": "",
+     "pista": "Mony"
     },
     {
      "p": 11,
@@ -320,7 +321,7 @@
   [
    "2",
    "MONY RAP",
-   "no está en la Lista, y su cuenta tampoco"
+   "no está en la Lista; la rima la publicó la cuenta de Mony"
   ],
   [
    "2",
