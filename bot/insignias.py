@@ -60,6 +60,9 @@ CATALOGO = (
     # 🏟️ las divisiones (04/10/2026, Dlx: «2. C»): subir da Puntos de Tienda y estas. Ver `bot/divisiones.py`
     ('ascenso', '⬆️', 'Ascenso', 'Subió de división al cerrar una semana'),
     ('primera', '🏟️', 'Primera División', 'Llegó a la Primera División'),
+    # ✍️ el Writing Challenge de FFA (14/10/2026, Dlx: «cuenta para la Liga… y insignia»). Ver `bot/writing.py`
+    ('pluma_oro', '✍️', 'Pluma de oro', 'Ganó una fecha del Writing Challenge'),
+    ('pluma', '🖋️', 'Pluma', 'Sumó en 3 fechas del Writing Challenge'),
 )
 IDS = [c[0] for c in CATALOGO]
 
@@ -72,14 +75,19 @@ def _n(x):
 
 
 def cumple(pool, mw=None, reyes=None, duelos_g=None, clasicos_g=None, figuras=None, revelaciones=None,
-           subieron=None, primera=None):
+           subieron=None, primera=None, plumas_oro=None, plumas=None):
     """`{raw: {ids}}`: lo que cada uno cumple HOY con los datos de la temporada.
 
     `mw` es `{raw: {'caz', 'czd', 'sob'}}` (`most_wanted.suma()`), `reyes` el
     conjunto de quienes cazaron a El Rey, y `duelos_g` y `clasicos_g`
     `{raw: cuántos ganó}`. `subieron` y `primera`, de las divisiones: quién
     subió alguna vez y quién llegó a Primera. Todo por el nombre del pool (`raw`).
+
+    ✍️ `plumas_oro` (quién ganó una fecha del Writing Challenge) y `plumas` (`{raw: en cuántas fechas sumó}`), de
+    `writing.plumas()`. ⚠️ ESTAS DOS NO PIDEN ESTAR EN EL POOL: el Writing no es un evento, y quien escribe y nunca
+    jugó también se la gana (con su nombre de la Lista).
     """
+    plumas_oro, plumas = plumas_oro or set(), plumas or {}
     subieron, primera = subieron or set(), primera or set()
     mw, reyes = mw or {}, reyes or set()
     figuras, revelaciones = figuras or set(), revelaciones or set()
@@ -104,6 +112,12 @@ def cumple(pool, mw=None, reyes=None, duelos_g=None, clasicos_g=None, figuras=No
         ya = {k for k, v in reglas.items() if v}
         if ya:
             out[raw] = ya
+    from writing import PLUMA_FECHAS
+    for raw in set(plumas_oro) | set(plumas):
+        ya = ({'pluma_oro'} if raw in plumas_oro else set()) | (
+            {'pluma'} if plumas.get(raw, 0) >= PLUMA_FECHAS else set())
+        if raw and ya:
+            out.setdefault(raw, set()).update(ya)
     return out
 
 
@@ -186,7 +200,15 @@ def _datos():
             subieron.add(r)
             if div == 0:
                 primera.add(r)
-    return pool, mw, reyes, duelos_g, clasicos_g, figuras, revelaciones, subieron, primera
+    # ✍️ el Writing Challenge (`bot/writing.py`): por el nombre del pool si está; si no, el de la Lista
+    import writing as WR
+    oro_w, cuenta_w = WR.plumas()
+    plumas_oro = {raw_de(q) or q for q in oro_w}
+    plumas = {}
+    for q, n in cuenta_w.items():
+        r = raw_de(q) or q
+        plumas[r] = plumas.get(r, 0) + n
+    return pool, mw, reyes, duelos_g, clasicos_g, figuras, revelaciones, subieron, primera, plumas_oro, plumas
 
 
 #: 🧹 LOS QUE NO SON PERSONAS (07/10/2026): equipos que una llave mal leída cargó como uno solo —el #425, PRITTY FREE,
@@ -244,6 +266,11 @@ def _self_check():
     ok(len(v_prueba['Ana']) == 9 and 'Ana' not in v_t1 and v_t1.get('Dan') == [['debut', '2026-09-27T18:00:00Z']],
        'las de la prueba se ven durante la prueba; desde la T1, sólo las de la T1')
     ok(len(IDS) == len(set(IDS)) and all(len(x) == 4 for x in CATALOGO), 'el catálogo: ids únicos, cuatro campos')
+    # ✍️ el Writing Challenge: la pluma de oro por ganar una fecha, la pluma por sumar en 3; sin pedir estar en el pool
+    cw = cumple(pool, plumas_oro={'Ana', 'Dlx'}, plumas={'Ana': 3, 'Bea': 2, 'Dlx': 1})
+    ok({'pluma_oro', 'pluma'} <= cw['Ana'] and not ({'pluma_oro', 'pluma'} & cw['Bea'])
+       and cw.get('Dlx') == {'pluma_oro'},
+       'la Pluma de oro a quien ganó una fecha, la Pluma con 3 fechas; quien no está en el pool también (Dlx)')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 

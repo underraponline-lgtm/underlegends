@@ -239,7 +239,7 @@ def tienda_mw(mw, dids):
     return out
 
 
-def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None):
+def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None, wr=None):
     """Lo que lee el objeto: `{v, r: {id: {e, t, por: [[discord_id, parte]]}}, mw: {…}, jugo, rcfg}`.
 
     Sólo lo resuelto (cazado o devuelto). Quien cazó sin Discord conocido no
@@ -263,7 +263,8 @@ def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None):
         elif x['e'] == 'devuelto':
             r[str(x['id'])] = {'e': 'devuelto', 'por': []}
     m = tienda_mw(mw, dids) if mw is not None else {}
-    v = hashlib.sha1(json.dumps([r, m, jugo, rcfg, div] + ([deb] if deb is not None else []), sort_keys=True,
+    v = hashlib.sha1(json.dumps([r, m, jugo, rcfg, div] + ([deb] if deb is not None else [])
+                                + ([wr] if wr is not None else []), sort_keys=True,
                                 ensure_ascii=False).encode()).hexdigest()[:16]
     out = {'v': v, 'r': r, 'mw': m}
     if jugo is not None:
@@ -275,6 +276,10 @@ def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None):
     # 🎤 y lo que paga el reto del debut (`bot/debutantes.py`): entero en cada corrida, como las divisiones
     if deb is not None:
         out['deb'] = deb
+    # ✍️ y lo que paga el Writing Challenge de FFA (`bot/writing.py`, Dlx 14/10/2026): una clave por fecha y persona,
+    # entero en cada corrida y el objeto lo REEMPLAZA (`wr:`), como el debut
+    if wr is not None:
+        out['wr'] = wr
     return out
 
 
@@ -336,12 +341,19 @@ def correr(ahora=None, aplicar=False, precios=None, datos=None):
         import racha as RA
         import divisiones as DV
         import debutantes as DB
+        import writing as WR
         dids = discords(pool)
         import multiplicadores as MU
         o = RA.origen(ahora)
+        # ✍️ el Writing Challenge: sin su archivo, `None` y no viaja (el objeto deja lo que tenía)
+        try:
+            wr = WR.tienda(None, MU.temporada_actual(ahora)) if WR.leer() else None
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ el Writing Challenge no viaja esta vez: %s' % str(e)[:80])
+            wr = None
         _subir(para_objeto(res, dids, MW.leer(), RA.jugo(evs, dids, o), RA.config(o, MU.temporada_actual(ahora)),
-                           DV.tienda(DV.leer(), dids), DB.tienda(DB._leer())),
-               CLAVE_RES, 'lo cazado, lo devuelto, el MW, los días jugados, las divisiones y los debuts')
+                           DV.tienda(DV.leer(), dids), DB.tienda(DB._leer()), wr),
+               CLAVE_RES, 'lo cazado, lo devuelto, el MW, los días jugados, las divisiones, los debuts y el Writing')
     return out
 
 
@@ -424,6 +436,11 @@ def _self_check():
     po2 = para_objeto([], {'Dan': D1, 'Fer': D2}, mwd)
     ok(po2['mw'] == tm and po2['v'] != para_objeto([], {'Dan': D1, 'Fer': D2})['v'],
        'y viaja con lo de los precios, cambiando la huella')
+    # ✍️ el Writing Challenge también paga Tienda (Dlx, 14/10/2026), por el mismo viaje
+    wr = {'prueba:f2:' + D1: [D1, 500, _ms(h(3))]}
+    po3, po4 = para_objeto([], {}, wr=wr), para_objeto([], {})
+    ok(po3['wr'] == wr and 'wr' not in po4 and po3['v'] != po4['v'] and para_objeto([], {}, wr={})['v'] != po4['v'],
+       'el Writing viaja en `wr` y cambia la huella; sin archivo no viaja, y vacío (otra temporada) sí: el objeto lo borra')
     pool = [{'raw': 'Ana', 'discord_id': '123456789012345678'}, {'raw': 'Bea', 'fc': True},
             {'raw': 'Cid', 'discord_id': ''}]
     ok(cabezas(pool) == ['Ana', 'Cid'] and discords(pool) == {'Ana': '123456789012345678'},

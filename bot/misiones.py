@@ -80,6 +80,15 @@ CAZA_TOP, CAZA_DIAS = 8, 14
 #: juega—, va aparte del bono como la cacería, y arranca la semana del lunes 19/10: ésta ya estaba sorteada
 DORADO_DESDE = '2026-10-19'
 PUNTOS_DORADO = 600
+#: ✍️ EL WRITING CHALLENGE DE FFA, OTRA MISIÓN MÁS (Dlx, 14/10/2026: *«cuenta para la Liga»… «y quizás misión de la
+#: semana también»*). «Participá del Writing Challenge», SÓLO las semanas en que FFA anuncia una fecha (la semana del
+#: anuncio: `writing.semanas()`), y se cumple sumando en esa fecha (con 0 puntos, la rima con ❌, no). Va aparte del
+#: bono, como la cacería y el dorado, y NO toca el sorteo: `elegir()` sigue sorteando las tres de siempre con la misma
+#: semilla, y ésta se agrega después. Desde la semana del lunes 19/10 (la del 12 ya estaba sorteada); `None` la apaga
+WRITING_DESDE = '2026-10-19'
+PUNTOS_WRITING = 300
+#: las que van aparte del bono (el bono es por las tres sorteadas)
+APARTE = ('caza', 'dorado', 'writing')
 #: hasta qué ronda llegó cada puesto de `Resultados` (como `rankings.LLEGO`)
 LLEGO = {'campeon': 1, 'subcampeon': 2, 'tercero': 4, 'cuarto': 4, 'semifinal': 4, 'cuartos': 8,
          'octavos': 16, 'r32': 32, 'dieciseisavos': 32, 'r64': 64}
@@ -221,9 +230,10 @@ def filas_de(res, uno, instantes=None, canon=None, es_troll=None):
     return evs, dus
 
 
-def calcular(evs, dus, ahora, desde=None, mult=None):
+def calcular(evs, dus, ahora, desde=None, mult=None, writing=None):
     """Semana por semana desde `DESDE` (y desde `desde`, el arranque de la temporada): las misiones, quién cumplió
     qué y cuánto suma cada uno. `mult` es `multiplicadores.leer()` (para «el servidor con el multiplicador más alto»).
+    `writing` es `writing.semanas()`: `[(instante del anuncio, fecha, {quiénes sumaron})]`.
     """
     import multiplicadores as MU
     sem_hoy, ini_hoy, fin_hoy = MU.periodo(ahora)
@@ -236,6 +246,17 @@ def calcular(evs, dus, ahora, desde=None, mult=None):
             semanas.setdefault(sid, (ini, fin))
     if sem_hoy >= DESDE:
         semanas.setdefault(sem_hoy, (ini_hoy, fin_hoy))
+    # ✍️ las semanas con una fecha del Writing: `{semana: ([fechas], {quiénes sumaron})}`
+    wr_sem = {}
+    for t, n, quienes in writing or []:
+        if t is None or (desde and t < desde) or not WRITING_DESDE:
+            continue
+        sid, ini, fin = MU.periodo(t)
+        if sid >= WRITING_DESDE and sid >= DESDE:
+            semanas.setdefault(sid, (ini, fin))
+            w = wr_sem.setdefault(sid, ([], set()))
+            w[0].append(n)
+            w[1].update(quienes or ())
     # 🔴 EL SERVIDOR DEL MULTIPLICADOR MÁS ALTO EN EL MOMENTO DE CADA EVENTO (revisión del 05/10/2026), no el de la
     # semana entera: con un cambio a mano desde el Dashboard a mitad de semana (`tramos`), los eventos de antes se
     # volvían a medir contra el nuevo y alguien ganaba o perdía la misión —y sus puntos— para atrás. Es lo mismo que
@@ -278,6 +299,10 @@ def calcular(evs, dus, ahora, desde=None, mult=None):
             sv_d, n_d = dorados[sid]
             lista.append(['dorado', 'Jugá el evento dorado de %s' % _nombre_sv(sv_d), 'dorado', 1, PUNTOS_DORADO,
                           n_d])
+        wr_f, wr_q = wr_sem.get(sid) or ([], set())
+        if wr_f:
+            lista.append(['writing', 'Participá del Writing Challenge de FFA', 'writing', 1, PUNTOS_WRITING,
+                          sorted(wr_f)])
         ev_s, svs_antes = {}, {}
         for e in evs:
             if e[2] is None or (desde and e[2] < desde):
@@ -294,15 +319,17 @@ def calcular(evs, dus, ahora, desde=None, mult=None):
                     contra.setdefault(d[2], set()).add(d[3])
         top = tops.get(sid, set())
         prog, pts = {}, {}
-        for quien in sorted(set(ev_s) | set(du_s)):
+        # ✍️ quien sólo escribió esa semana también tiene su fila: la misión del Writing no pide jugar un evento
+        for quien in sorted(set(ev_s) | set(du_s) | (wr_q if wr_f else set())):
             vs = [int(x[5] in contra.get(quien, set())) if x[0] == 'caza'
                   else int(x[5] is not None and any(e[0] == x[5] for e in ev_s.get(quien, []))) if x[0] == 'dorado'
+                  else int(quien in wr_q) if x[0] == 'writing'
                   else valor(x[0], ev_s.get(quien, []), du_s.get(quien, 0), svs_antes.get(quien, set()), top)
                   for x in lista]
             hechas = [cumplida(x[0], v, x[3]) for x, v in zip(lista, vs)]
-            # ⚠️ el bono es por las tres de siempre: la cacería y el dorado van aparte
+            # ⚠️ el bono es por las tres de siempre: la cacería, el dorado y el Writing van aparte
             p = sum(x[4] for x, h in zip(lista, hechas) if h) + (
-                BONO if all(h for x, h in zip(lista, hechas) if x[0] not in ('caza', 'dorado')) else 0)
+                BONO if all(h for x, h in zip(lista, hechas) if x[0] not in APARTE) else 0)
             prog[quien] = vs
             if p:
                 pts[quien] = p
@@ -326,7 +353,15 @@ def correr(res=None, uno=None, ahora=None, aplicar=False):
     if desde and desde > ahora:
         desde = None
     evs, dus = filas_de(res, uno, canon=RK.canon, es_troll=RK._trolls())
-    c = calcular(evs, dus, ahora, desde, MU.leer())
+    # ✍️ las fechas del Writing Challenge (`bot/writing.py`), con los nombres canónicos como las llaves. Sin archivo,
+    # no hay misión del Writing esa vez: nunca frena las demás
+    try:
+        import writing as WR
+        wr = WR.semanas(canon=RK.canon, es_troll=RK._trolls())
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ el Writing Challenge no entra a las misiones: %s' % str(e)[:80])
+        wr = None
+    c = calcular(evs, dus, ahora, desde, MU.leer(), wr)
     out = {'_leeme': 'Las misiones de la semana: las arma bot/misiones.py en el paso 1c, enteras en cada corrida. '
                      'Las reglas y los números viven en ese archivo. `suma` es lo que cada uno lleva sumado a la '
                      'Temporada; `semanas`, qué tocó cada semana y quién cumplió.',
@@ -437,6 +472,21 @@ def _self_check():
        'el dorado es misión desde la semana del 19/10 (la del 12 ya estaba sorteada)')
     ok(s3['prog']['Cid'][-1] == 1 and s3['prog']['Bea'][-1] == 0 and (s3['pts'].get('Cid') or 0) >= PUNTOS_DORADO,
        'Cid jugó el dorado (#50) y la cumple; Bea ganó otro evento y no')
+    # ✍️ el Writing Challenge: una misión más SÓLO la semana de una fecha, sin tocar el sorteo ni el bono
+    tw = dt.datetime(2026, 10, 20, 19, 0, tzinfo=U)       # martes 20/10: FFA anuncia la fecha 3
+    wr = [(dt.datetime(2026, 10, 14, 19, 0, tzinfo=U), 2, {'Ana'}), (tw, 3, {'Cid', 'Dan'})]
+    r4 = calcular(evs3, dus2, dt.datetime(2026, 10, 22, 12, 0, tzinfo=U), None, m3, wr)
+    s4, s4b = r4['semanas'].get('2026-10-19') or {}, r4['semanas'].get('2026-10-12') or {}
+    w4 = [x for x in s4.get('lista') or [] if x[0] == 'writing']
+    ok(len(w4) == 1 and w4[0][5] == [3] and not [x for x in s4b.get('lista') or [] if x[0] == 'writing']
+       and s4['lista'][:3] == s3['lista'][:3] and s4b['lista'] == r3['semanas']['2026-10-12']['lista'],
+       'el Writing es misión la semana de su fecha (19/10) y no antes de WRITING_DESDE; el sorteo queda igual')
+    ok(s4['prog']['Cid'][-1] == 1 and s4['prog']['Bea'][-1] == 0 and s4['pts'].get('Dan') == PUNTOS_WRITING
+       and s4['pts'].get('Cid', 0) - (s3['pts'].get('Cid') or 0) == PUNTOS_WRITING,
+       'Cid sumó en la fecha y la cumple (+%d, aparte del bono); Dan sólo escribió y también; Bea no  %s'
+       % (PUNTOS_WRITING, s4.get('pts')))
+    ok(calcular(evs3, dus2, dt.datetime(2026, 10, 22, 12, 0, tzinfo=U), None, m3, [])['semanas'] == r3['semanas'],
+       'sin fechas del Writing, todo como antes')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 

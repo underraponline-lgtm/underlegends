@@ -8778,6 +8778,17 @@ export class Avisos {
         cambios++;
       }
     }
+    // ✍️ EL WRITING CHALLENGE DE FFA TAMBIÉN PAGA TIENDA (`bot/writing.py`, Dlx 14/10/2026): una clave por fecha y
+    // persona (`<temporada>:f<N>:<discord>`), entero y se REEMPLAZA, como el debut: releer el canal no paga dos veces
+    if (r.wr && typeof r.wr === 'object') {
+      this.sql.exec("DELETE FROM tienda WHERE id LIKE 'wr:%'");
+      for (const [id, x] of Object.entries(r.wr)) {
+        if (!Array.isArray(x) || !/^[0-9]{5,25}$/.test(String(x[0])) || !Number.isInteger(x[1]) || x[1] <= 0) continue;
+        this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
+          'wr:' + String(id).slice(0, 160), String(x[0]), x[1], Number(x[2]) || ahora);
+        cambios++;
+      }
+    }
     // 🔥 LA RACHA: los números y quién jugó qué días (`bot/racha.py`). Lo de la temporada en curso llega ENTERO y se
     // reemplaza (sólo esa temporada); los días se suman, y uno que ya contó no se borra
     if (r.rcfg && typeof r.rcfg === 'object') this.guardar('racha_cfg', r.rcfg);
