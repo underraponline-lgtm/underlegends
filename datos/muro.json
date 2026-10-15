@@ -64,15 +64,6 @@
 "temporada"
 ]
 },
-"agus": {
-"rg": "A",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "panchok": {
 "rg": "S",
 "c": [
@@ -95,6 +86,15 @@
 "rg": "C",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"agus": {
+"rg": "A",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -391,6 +391,10 @@
 "temporada"
 ]
 },
+"eidp": {
+"rg": "",
+"c": []
+},
 "nemi": {
 "rg": "",
 "c": [
@@ -498,10 +502,6 @@
 ]
 },
 "tuca": {
-"rg": "",
-"c": []
-},
-"eidp": {
 "rg": "",
 "c": []
 },
