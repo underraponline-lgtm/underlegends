@@ -222,6 +222,35 @@ def racha_actual(s):
     return int(num(p[0])) if len(p) > 1 else 0
 
 
+def misiones_cumplidas(d=None):
+    """🎯 `{clave del nombre: misiones cumplidas en la temporada}`, de `datos/misiones.json`.
+
+    Dlx, 14/10/2026: *«en la tarjeta de temporada quiero que quites el SEM y pongas ahí MIS, que dirá cuántas misiones
+    ha hecho»*. Cuenta cada misión de cada semana que esa persona cumplió (`misiones.cumplida()`: la fácil, la media, la
+    difícil y la cacería), con el nombre como lo guarda `misiones` —canónico— y la clave de siempre (`comun.claves`).
+    ⚠️ Va una corrida atrás, como el Most Wanted: las misiones se calculan en el mismo ciclo, después del pool."""
+    try:
+        sys.path.insert(0, os.path.join(RAIZ, 'bot'))
+        import misiones as _M
+        if d is None:
+            with open(os.path.join(RAIZ, 'datos', 'misiones.json'), encoding='utf-8') as f:
+                d = json.load(f)
+    except Exception:                                    # noqa: BLE001
+        return {}
+    out = {}
+    for s in ((d or {}).get('semanas') or {}).values():
+        lista = s.get('lista') or []
+        for quien, vs in (s.get('prog') or {}).items():
+            k = norm(quien)
+            if not k:
+                continue
+            n = sum(1 for i, m in enumerate(lista) if i < len(vs or []) and len(m) > 3
+                    and _M.cumplida(m[0], vs[i], m[3]))
+            if n:
+                out[k] = out.get(k, 0) + n
+    return out
+
+
 def avatares_conocidos():
     """Los avatares no estan en el Sheet: se rescatan de los JSON existentes.
 
@@ -409,6 +438,8 @@ def main():
     svs_h = [s for s in SERVIDORES if s in H]
 
     AV = avatares_conocidos()
+    # 🎯 las misiones cumplidas de cada uno, para el MIS de la carta (Dlx, 14/10/2026)
+    MIS = misiones_cumplidas()
 
     # 🔴 LA IDENTIDAD SALE DEL PADRON. Ver `sheet/padron.py`: `Lista de
     # Raperos` del Operativo tiene `Nombre`, `País` (ISO) y `Crew` en
@@ -527,6 +558,8 @@ def main():
             'seg': int(num(r[col('🥈')])), 'ter': int(num(r[col('🥉')])),
             'caz': int(num(r[col('🎯')])), 'czd': int(num(r[col('💀')])),
             'sob': int(num(r[col('🛡️')])),
+            # 🎯 cuántas misiones cumplió en la temporada: el MIS de la carta (Dlx, 14/10/2026). Ver `misiones_cumplidas()`
+            'mis': MIS.get(norm(nom), 0) or MIS.get(norm(r[col('Rapero')]), 0),
             'srv': sum(1 for s in svs_h if num(r[col(s)]) > 0),
             'racha': racha_maxima(r[col('🔥')]),
             # ⚠️ LAS DOS: la tarjeta y «Racha más larga» usan la máxima, y

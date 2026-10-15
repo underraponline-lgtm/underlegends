@@ -281,7 +281,8 @@ def card(c):
     # la recibe con «—» — «3. A»—, y se llena con su primer evento). Sin OVR no hay color de rango ni número que mostrar:
     # la carta va neutra y todo lo que mide la temporada dice «—». Es la regla de siempre: sin dato no hay pieza.
     if c.get('sinjugar'):
-        c = dict(c, ovr=0, pts=0, ev=0, pod=0, sem=0, caz=0, sob=0, czd=0, oro=0, racha=0, srv=0, pos=0)
+        c = dict(c, ovr=0, pts=0, ev=0, pod=0, sem=0, mis=0, caz=0, sob=0, czd=0, oro=0, racha=0, racha_act=0, srv=0,
+                 pos=0)
     rg = '—' if c.get('sinjugar') else letra_rango(c)
     g, bright = GRAD_SIN_JUGAR if c.get('sinjugar') else GRAD[tier_color(c['ovr'])]   # el COLOR sale del OVR de temporada
     tg = ('🎟️ PRIMER EVENTO PENDIENTE', 't4') if c.get('sinjugar') else tag(c)
@@ -291,21 +292,22 @@ def card(c):
     _quien = c.get('raw') or c.get('n') or ''
     foto = ('<img src="%s" onerror="%s">' % (av, SF.onerror('c-sil', _quien))) if _hay_foto(av) else SF.img('c-sil', _quien)
     pts = puntos_k(c['pts'])
-    # SET B — las seis se leen por tema, de a pares por fila:
-    #   volumen (PTS EVT) · logro (POD SEM) · most wanted (CAZ MW)
-    # Fuera WR% y SRV. WR% NO se pierde: sigue pesando 16% dentro del OVR,
-    # solo deja de ocupar casilla. Entran SEM (semis, 81% de cobertura) y MW.
-    #
-    # MW = sobrevivio / veces que fue objetivo del Most Wanted. Va como par
-    # y no como dos casillas porque 🛡️ solo lo tienen 6 personas en todo el
-    # Sheet: en casillas separadas, 133 de 138 cartas mostrarian dos ceros.
-    # El formato 'a/b' es el que ya usa la columna 🔥, que guarda 'actual/maxima'.
-    mw  = '%d/%d' % (c.get('sob',0), c.get('sob',0) + c.get('czd',0))
+    # SET C — las seis se leen por tema, de a pares por fila (Dlx, 14/10/2026: «en la tarjeta de temporada quiero que
+    # quites el SEM y pongas ahí MIS, que dirá cuántas misiones ha hecho… lo de MW podría ser así CAZADOS/CUÁNTOS FUE
+    # CAZADO y poner donde dice CAZ la racha de uno»; y a qué racha, «Racha de eventos»):
+    #   volumen (PTS EVT) · logro (POD MIS) · constancia y Most Wanted (RCH MW)
+    # MIS = misiones cumplidas en la temporada (`construir_pool_temporada.misiones_cumplidas()`).
+    # RCH = racha de eventos, actual/máxima: la de 🔥 del ranking (el formato 'a/b' de esa columna).
+    # MW  = a cuántos cazó / cuántas veces lo cazaron. Antes era sobrevivió/veces que fue objetivo; «sobrevivió» lo
+    #       tienen 3 personas, y cazar es lo que se hace.
+    # Fuera SEM: las semis siguen adentro de POD y del OVR.
+    mw  = '%d/%d' % (c.get('caz', 0), c.get('czd', 0))
+    rch = '%d/%d' % (c.get('racha_act', 0), c.get('racha', 0))
     if c.get('sinjugar'):
-        pts = mw = '—'
+        pts = mw = rch = '—'
     st  = [(pts,'PTS'),                 (str(c['ev']),'EVT'),
-           (str(c['pod']),'POD'),       (str(c.get('sem',0)),'SEM'),
-           (str(c.get('caz',0)),'CAZ'), (mw,'MW')]
+           (str(c['pod']),'POD'),       (str(c.get('mis',0)),'MIS'),
+           (rch,'RCH'),                 (mw,'MW')]
     if c.get('sinjugar'):
         st = [('—', l) for _v, l in st]
     filas = ''.join('<div class="c-stat" style="grid-column:%d"><span class="c-val">%s</span>'

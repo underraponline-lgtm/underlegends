@@ -31,7 +31,9 @@ ACC = {
 sys.path.insert(0, _osruta.path.dirname(RAIZ))
 from comun.escudos import LOGO, escudo
 from comun import servidor_elegido as _SE
-DIMS = ['EFI','CON','DOM','RCH','DIV','EVT']   # RCH = Racha (rework A5: era TCH/Techo; el calculo no cambia)
+DIMS = ['EFI','CON','DOM','RCH','DIV','WR']    # RCH = Racha (rework A5: era TCH/Techo; el calculo no cambia)
+# 🔁 WR abajo y EV arriba (Dlx, 14/10/2026: «en la tarjeta competitivo intercambiar lugares el # eventos y el # de
+# winrate… simplemente cambiar los lugares esos labels»). Ver `_wr()` y `BLOQUE_TR()`
 
 # ══ LA COLUMNA IZQUIERDA ══════════════════════════════════════════════
 # Solo eventos. El estilo y la crew se mudaron a la fila de abajo.
@@ -325,6 +327,14 @@ def BLOQUE_TL(c):
     return ('<div class="ovr">%d</div><div class="rkbox">RANGO %s</div>'
             % (round(c['score']), subrango(c['score'])))
 
+def _wr(c):
+    """El win rate para la fila de abajo, redondeado como los otros cinco, o `—` sin duelos (ver `BLOQUE_TR()`)."""
+    try:
+        return '%d' % int(round(float(str(c.get('wr') or '').replace('%', ''))))
+    except ValueError:
+        return '—'
+
+
 def BLOQUE_TR(c):
     # el chip del Score ya no hace falta: pasa a estar arriba
     #
@@ -342,12 +352,11 @@ def BLOQUE_TR(c):
     # ⚠️ Se dibuja `—`, que es lo que esta carta ya hace con las otras
     # piezas que no se pueden llenar. Un `0.0` diria que peleo y perdio
     # todos.
-    try:
-        wr = '%.1f' % float(str(c.get('wr') or '').replace('%', ''))
-    except ValueError:
-        wr = '—'
-    return ('<span class="chip on">#%d</span><span class="chip cf">%s<u>WR</u></span>'
-            % (c['pos'], wr))
+    #
+    # 🔁 Y DESDE EL 14/10/2026 EL CHIP ES DE EVENTOS: el WR bajó a la fila de abajo (Dlx), y el `—` sin duelos va allá
+    # (`_wr()`)
+    return ('<span class="chip on">#%d</span><span class="chip cf">%d<u>EV</u></span>'
+            % (c['pos'], int(c.get('ev') or 0)))
 
 
 def card(c,i):
@@ -377,11 +386,11 @@ def card(c,i):
     foto = ('<img src="%s" onerror="%s">' % (av, _SF.onerror('sil', c['raw']))) if _hay_foto(av) else _SF.img('sil', c['raw'])
     stops = ''.join('<stop offset="%s" stop-color="%s"/>' % (o,c_)
                     for o,c_ in zip(['0','0.20','0.42','0.60','0.80','1'], met))
-    vals = [c['E'],c['C'],c['Dm'],c['T'],c['V'],c['ev']]
+    vals = [c['E'],c['C'],c['Dm'],c['T'],c['V'],_wr(c)]
     lbls = ''.join('<span>%s</span>' % d for d in DIMS)
     # un 100 en una dimension = lidera esa dimension en todo el pool -> .top
-    # los primeros 5 son dimensiones normalizadas; el 6to (ev) es conteo crudo
-    nums = ''.join('<span%s>%d</span>' % (' class="top"' if (j < 5 and v == 100) else '', v)
+    # los primeros 5 son dimensiones normalizadas; el 6to (WR) es un porcentaje, o `—`: el 100 resalta sólo dimensiones
+    nums = ''.join('<span%s>%s</span>' % (' class="top"' if (j < 5 and v == 100) else '', v)
                    for j, v in enumerate(vals))
     rb   = rombos(c)
     return """
@@ -451,10 +460,10 @@ CSS = open(_osruta.path.join(CARD, 'card.css'), encoding='utf-8').read().replace
 html = """<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
 <title>Tarjeta Competitiva</title><style>%s</style></head><body>
 <h1>Tarjeta COMPETITIVA</h1>
-<p class="sub">Sin TAG · con duelos · el nombre recupera tamaño · el número grande es el <b>Score</b> · el rango en pastilla · a la derecha puesto y win rate</p>
+<p class="sub">Sin TAG · con duelos · el nombre recupera tamaño · el número grande es el <b>Score</b> · el rango en pastilla · a la derecha puesto y eventos</p>
 <div class="rack">%s</div>
 <div class="ley"><b>EFI</b> eficiencia · <b>CON</b> consistencia · <b>DOM</b> dominancia ·
-<b>RCH</b> racha · <b>DIV</b> diversidad · <b>EVT</b> eventos<br>
+<b>RCH</b> racha · <b>DIV</b> diversidad · <b>WR</b> win rate de duelos<br>
 Derecha: puesto competitivo · Score &nbsp;|&nbsp; R de racha · actual/máxima<br>
 Abajo: bandera · temporada · servidor</div>
 </body></html>""" % (CSS, cards)

@@ -19,9 +19,6 @@
    "arc_pais": [
     "opcional"
    ],
-   "arc_sv": [
-    "opcional"
-   ],
    "av": [
     "opcional"
    ],
@@ -36,15 +33,12 @@
     "dura"
    ],
    "ev": [
-    "dura"
+    "opcional"
    ],
    "pos": [
     "dura"
    ],
    "pos_pais": [
-    "opcional"
-   ],
-   "pos_sv": [
     "opcional"
    ],
    "raw": [
@@ -60,30 +54,19 @@
     "dura"
    ],
    "sv": [
-    "dura"
+    "opcional"
    ],
    "total": [
     "dura"
    ],
    "wr": [
-    "dura"
+    "opcional"
    ]
   },
   "Pais": {
-   "av": [
-    "opcional"
-   ],
    "cc": [
-    "dura"
-   ],
-   "duel_real": [
+    "dura",
     "opcional"
-   ],
-   "duel_t": [
-    "dura"
-   ],
-   "duel_v": [
-    "dura"
    ],
    "ev": [
     "dura",
@@ -95,23 +78,16 @@
    "pod": [
     "opcional"
    ],
-   "pos_pais": [
-    "opcional"
-   ],
-   "pos_sv": [
-    "opcional"
-   ],
    "rango": [
-    "dura"
+    "dura",
+    "opcional"
    ],
    "raw": [
     "dura"
    ],
-   "rch_max": [
-    "opcional"
-   ],
    "score": [
-    "dura"
+    "dura",
+    "opcional"
    ],
    "seg": [
     "dura",
@@ -120,14 +96,8 @@
    "sem": [
     "opcional"
    ],
-   "sv": [
-    "dura"
-   ],
    "ter": [
     "dura",
-    "opcional"
-   ],
-   "wr": [
     "opcional"
    ]
   },
@@ -167,7 +137,8 @@
     "opcional"
    ],
    "rango": [
-    "dura"
+    "dura",
+    "opcional"
    ],
    "raw": [
     "dura"
@@ -201,6 +172,12 @@
    "ev": [
     "dura"
    ],
+   "fc": [
+    "opcional"
+   ],
+   "mis": [
+    "opcional"
+   ],
    "oro": [
     "dura"
    ],
@@ -211,40 +188,37 @@
     "dura"
    ],
    "pos": [
+    "dura",
     "opcional"
    ],
    "pts": [
     "dura"
    ],
    "racha": [
-    "dura"
-   ],
-   "raw": [
-    "dura"
-   ],
-   "score": [
-    "dura"
-   ],
-   "sem": [
+    "dura",
     "opcional"
    ],
-   "sob": [
+   "racha_act": [
+    "opcional"
+   ],
+   "raw": [
+    "dura",
+    "opcional"
+   ],
+   "sinjugar": [
     "opcional"
    ],
    "srv": [
-    "dura"
-   ],
-   "sv": [
     "dura"
    ]
   }
  },
  "codigo": {
-  "competitivo": "cb38bd8bb76b",
-  "pais": "09d4ec219e6b",
-  "servidor": "b0a23b2c870d",
-  "temporada": "a1cf70cd75a3"
+  "competitivo": "320717d554b6",
+  "pais": "ec920afad165",
+  "servidor": "0261962bc3e6",
+  "temporada": "1d88539419a4"
  },
  "como": "herramientas/que_pide_cada_carta.py",
- "medido": "2026-09-21"
+ "medido": "2026-10-14"
 }
