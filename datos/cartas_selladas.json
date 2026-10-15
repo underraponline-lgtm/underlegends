@@ -352,7 +352,7 @@
    "servidor": "fd4581683589:f7bc857dd9f6:15af16"
   },
   "Dynoco": {
-   "competitivo": "0a849790f027:aa2fab0a1b31",
+   "competitivo": "201341db9573:aa2fab0a1b31",
    "pais": "f6a43986cd45:631b7a4c93c4",
    "servidor": "43e47876854c:f7bc857dd9f6:05b79d",
    "temporada": "746734d8e376:906ce275eeb8"
@@ -398,7 +398,7 @@
    "temporada": "3cc5150d0f1c:906ce275eeb8"
   },
   "Erian": {
-   "competitivo": "7b4a20585ee7:aa2fab0a1b31",
+   "competitivo": "8c94103acf1a:aa2fab0a1b31",
    "pais": "218ef919f262:631b7a4c93c4",
    "servidor": "4aa9c884dbdf:f7bc857dd9f6:25c183",
    "temporada": "78876c272783:906ce275eeb8"
@@ -663,9 +663,10 @@
    "servidor": "4ec1fe9f33ad:f7bc857dd9f6:3580af"
   },
   "Juasmio": {
-   "competitivo": "b55b90df3325:aa2fab0a1b31",
-   "pais": "876665a7aee2:631b7a4c93c4",
-   "servidor": "5553dc4de927:f7bc857dd9f6:25c183"
+   "competitivo": "608899492f67:aa2fab0a1b31",
+   "pais": "db3c15bb780a:631b7a4c93c4",
+   "servidor": "5553dc4de927:f7bc857dd9f6:25c183",
+   "temporada": "f28a76f4f39e:906ce275eeb8"
   },
   "Jult": {
    "competitivo": "d74e2a0f0c53:aa2fab0a1b31",
@@ -1357,9 +1358,10 @@
   "Saz": {},
   "Scot": {},
   "Scritura": {
-   "competitivo": "939f99d34eee:aa2fab0a1b31",
-   "pais": "5d66963d900e:631b7a4c93c4",
-   "servidor": "ea36c3abcd27:f7bc857dd9f6:972ec9"
+   "competitivo": "c3b42c48eabc:aa2fab0a1b31",
+   "pais": "e2fe302a23af:631b7a4c93c4",
+   "servidor": "ea36c3abcd27:f7bc857dd9f6:972ec9",
+   "temporada": "641b2e91ec05:906ce275eeb8"
   },
   "Selek": {
    "competitivo": "e9058d5a1140:aa2fab0a1b31",
@@ -1380,7 +1382,7 @@
    "servidor": "a7f2c6559975:f7bc857dd9f6:874d2d"
   },
   "Sin Limites": {
-   "competitivo": "fef35c272936:aa2fab0a1b31",
+   "competitivo": "6ce79d2e2091:aa2fab0a1b31",
    "pais": "304c9be19626:631b7a4c93c4",
    "servidor": "c14276793666:f7bc857dd9f6:25c183",
    "temporada": "9f69836e348f:906ce275eeb8"
@@ -1431,10 +1433,10 @@
    "temporada": "f2a08e6d722b:906ce275eeb8"
   },
   "Soulb": {
-   "competitivo": "f0b6492d6d37:aa2fab0a1b31",
-   "pais": "35cf796807f3:631b7a4c93c4",
+   "competitivo": "67f71ed592fd:aa2fab0a1b31",
+   "pais": "8408c8861099:631b7a4c93c4",
    "servidor": "234824dfa861:f7bc857dd9f6:55e9bc",
-   "temporada": "27290c7c3db9:906ce275eeb8"
+   "temporada": "429546436535:906ce275eeb8"
   },
   "Steven": {},
   "Surxf": {
@@ -1774,5 +1776,5 @@
    "servidor": "7f8885a35a6d:f7bc857dd9f6:55e9bc"
   }
  },
- "cuando": "2026-10-15T05:52:14+00:00"
+ "cuando": "2026-10-15T05:59:04+00:00"
 }
