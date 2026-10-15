@@ -15788,6 +15788,19 @@
     "b": [
      [
       [
+       "Agus",
+       "Alexi"
+      ],
+      "Agus",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
        "Mr Still Ballin",
        "Zignos"
       ],
@@ -15812,13 +15825,13 @@
    ],
    [
     "Agus",
-    "Semifinal",
-    5250
+    "Tercero",
+    6000
    ],
    [
     "Alexi",
-    "Semifinal",
-    5250
+    "Cuarto",
+    4500
    ],
    [
     "Erian",
@@ -17399,6 +17412,19 @@
     "b": [
      [
       [
+       "Snow",
+       "HH"
+      ],
+      "Snow",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
        "Mr Still Ballin",
        "OG"
       ],
@@ -17422,14 +17448,14 @@
     7500
    ],
    [
-    "HH",
-    "Semifinal",
-    5250
+    "Snow",
+    "Tercero",
+    6000
    ],
    [
-    "Snow",
-    "Semifinal",
-    5250
+    "HH",
+    "Cuarto",
+    4500
    ],
    [
     "Agus",
@@ -18931,7 +18957,7 @@
        "RT"
       ],
       "NXUZ",
-      "triple (3 bandas)"
+      "triple (3 bandas); Revivido: Majiztral 🇨🇴"
      ],
      [
       [
@@ -19012,6 +19038,11 @@
     3500
    ],
    [
+    "Majiztral",
+    "Cuartos",
+    3000
+   ],
+   [
     "Dios",
     "Cuartos",
     2000
@@ -19023,11 +19054,6 @@
    ],
    [
     "Keider",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Majiztral",
     "Cuartos",
     2000
    ],
@@ -20087,7 +20113,7 @@
        "VIXOVERSO"
       ],
       "ONZASS",
-      ""
+      "Revivido: onzass"
      ],
      [
       [
@@ -20223,11 +20249,6 @@
     10000
    ],
    [
-    "ONZASS",
-    "Semifinal",
-    5250
-   ],
-   [
     "Provenza",
     "Subcampeón",
     3750
@@ -20244,6 +20265,11 @@
    ],
    [
     "Mau KC 🇨🇴",
+    "Semifinal",
+    2625
+   ],
+   [
+    "ONZASS",
     "Semifinal",
     2625
    ],
@@ -21041,6 +21067,19 @@
     "b": [
      [
       [
+       "Guess",
+       "Velatz"
+      ],
+      "Guess",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
        "BNA",
        "Verc"
       ],
@@ -21065,13 +21104,13 @@
    ],
    [
     "Guess",
-    "Semifinal",
-    5250
+    "Tercero",
+    6000
    ],
    [
     "Velatz",
-    "Semifinal",
-    5250
+    "Cuarto",
+    4500
    ],
    [
     "Colesito",
@@ -21991,7 +22030,7 @@
        "NC, Makmah"
       ],
       "Presagio, AGUSTÍN51K",
-      "Revivido: NC"
+      "Drafteado: NC"
      ]
     ],
     "r": "Semifinales"
@@ -22013,14 +22052,14 @@
   "sv": "URBF",
   "tabla": [
    [
+    "NC",
+    "Campeón",
+    4250
+   ],
+   [
     "ONDADISKO",
     "Semifinal",
     3416
-   ],
-   [
-    "NC",
-    "Campeón",
-    3000
    ],
    [
     "AGUSTÍN51K",
@@ -22168,6 +22207,11 @@
    [
     "Cinexfilo",
     "Subcampeón",
+    3500
+   ],
+   [
+    "EGI",
+    "Semifinal",
     3500
    ],
    [
@@ -23229,6 +23273,19 @@
     "b": [
      [
       [
+       "Sin Limites",
+       "Geoka"
+      ],
+      "Sin Limites",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
        "Xubaru",
        "Verc"
       ],
@@ -23252,14 +23309,14 @@
     5000
    ],
    [
-    "Geoka",
-    "Semifinal",
-    3500
+    "Sin Limites",
+    "Tercero",
+    4000
    ],
    [
-    "Sin Limites",
-    "Semifinal",
-    3500
+    "Geoka",
+    "Cuarto",
+    3000
    ],
    [
     "Cinexfilo",
@@ -23292,65 +23349,94 @@
   ],
   "n": 471,
   "nombre": "DEM UZBEKISTAN FECHA 3",
-  "participantes": 24,
+  "participantes": 20,
   "rondas": [
    {
     "b": [
      [
       [
+       "Colesito 🇻🇪",
+       "Malva 🇨🇱"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Soulb 🇧🇦",
+       "Molusco 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "ikonoxx 🇦🇷",
+       "Panchok 🇨🇱"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Filtros"
+   },
+   {
+    "b": [
+     [
+      [
        "Majiztral",
-       "14` Geoka 🇦🇷 - Geoka"
+       "Geoka"
       ],
       "Majiztral",
       ""
      ],
      [
       [
-       "13` vandu 🇨🇦 - Vandu",
+       "Vandu",
        "Cinexfilo"
       ],
-      "13` vandu 🇨🇦 - Vandu",
+      "Vandu",
       ""
      ],
      [
       [
-       "05` Lrs 🇦🇷 - LRS",
-       "12` Krish 🇪🇸 - Krish"
+       "LRS",
+       "Krish"
       ],
-      "05` Lrs 🇦🇷 - LRS",
+      "LRS",
       ""
      ],
      [
       [
-       "11` agus 🇦🇷 - Agus",
-       "06` Trot 🇪🇸 - Trot"
+       "Agus",
+       "Trot"
       ],
-      "11` agus 🇦🇷 - Agus",
+      "Agus",
       ""
      ],
      [
       [
-       "07` Neo 🇦🇷 - Neo",
+       "Neo",
        "Makmah"
       ],
-      "07` Neo 🇦🇷 - Neo",
+      "Neo",
       ""
      ],
      [
       [
-       "08` Tuca 🇦🇷 - Tuca",
-       "09` erian 🇦🇷 - Erian"
+       "Tuca",
+       "Erian"
       ],
-      "08` Tuca 🇦🇷 - Tuca",
+      "Tuca",
       ""
      ],
      [
       [
-       "16` agre 🇦🇷 - Benjixo",
-       "01` asuka la homosexual 🇪🇸 - Marcos"
+       "Marcos 🇪🇸",
+       "Benjixo 🇦🇷"
       ],
-      "16` agre 🇦🇷 - Benjixo",
-      "ganador: ✅ Decidir"
+      "",
+      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -23387,7 +23473,7 @@
        "Colesito"
       ],
       "Tuca",
-      "Walk-in 1: colesito"
+      ""
      ]
     ],
     "r": "Cuartos"
@@ -23463,6 +23549,11 @@
     4500
    ],
    [
+    "Colesito",
+    "Cuartos",
+    2500
+   ],
+   [
     "LRS",
     "Cuartos",
     2500
@@ -23478,42 +23569,32 @@
     2500
    ],
    [
-    "01` asuka la homosexual 🇪🇸 - Marcos",
-    "Octavos",
-    1250
-   ],
-   [
-    "06` Trot 🇪🇸 - Trot",
-    "Octavos",
-    1250
-   ],
-   [
-    "09` erian 🇦🇷 - Erian",
-    "Octavos",
-    1250
-   ],
-   [
-    "12` Krish 🇪🇸 - Krish",
-    "Octavos",
-    1250
-   ],
-   [
-    "14` Geoka 🇦🇷 - Geoka",
-    "Octavos",
-    1250
-   ],
-   [
     "Cinexfilo",
     "Octavos",
     1250
    ],
    [
-    "Colesito",
-    "Cuartos",
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
     1250
    ],
    [
     "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
     "Octavos",
     1250
    ]
@@ -23830,7 +23911,7 @@
        "Makmah"
       ],
       "Ortiz",
-      "Revivido: Ortiz🇪🇸"
+      ""
      ],
      [
       [
@@ -23838,7 +23919,7 @@
        "Shadow"
       ],
       "Trot",
-      "Revivido: Trot🇪🇸"
+      ""
      ],
      [
       [
@@ -23868,7 +23949,12 @@
       ],
       "Motera",
       ""
-     ],
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
      [
       [
        "Ortiz",
@@ -23878,7 +23964,7 @@
       ""
      ]
     ],
-    "r": "Semifinales"
+    "r": "Tercer puesto"
    },
    {
     "b": [
@@ -23902,14 +23988,19 @@
     7500
    ],
    [
-    "Trot",
-    "Semifinal",
-    5250
-   ],
-   [
     "Vacile🇪🇸",
     "Subcampeón",
     5000
+   ],
+   [
+    "Ortiz",
+    "Tercero",
+    4000
+   ],
+   [
+    "Trot",
+    "Cuarto",
+    3000
    ],
    [
     "Kochi",
@@ -23930,11 +24021,6 @@
     "Vargas",
     "Cuartos",
     2000
-   ],
-   [
-    "Ortiz",
-    "Semifinal",
-    1750
    ]
   ]
  }

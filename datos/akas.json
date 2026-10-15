@@ -247,7 +247,6 @@
   "melgar": "EmiZor",
   "fleivagner": "Adriagner",
   "agustinlareliquia": "EIDP",
-  "egipto": "EGI",
   "family": "Emily Family",
   "neosoul": "Neo",
   "belleza": "Provenza",
@@ -266,7 +265,6 @@
   "doce": "DO-C",
   "hinjkybesuk": "BNA",
   "parkjingsun": "Oasis",
-  "francis": "EGI",
   "erikxnemixdelux": "Delux",
   "iconox": "Cronox",
   "nemixdelux": "Delux",
@@ -1299,10 +1297,6 @@
    "EIDP"
   ],
   [
-   "Egipto",
-   "EGI"
-  ],
-  [
    "Family",
    "Emily Family"
   ],
@@ -1373,10 +1367,6 @@
   [
    "PARKJINGSUN",
    "Oasis"
-  ],
-  [
-   "francis",
-   "EGI"
   ],
   [
    "ERIK X NEMI X DELUX",
@@ -1758,6 +1748,16 @@
    "Force",
    "ForceGP",
    "Dlx, 12/10/2026 («3. A, b, b, b»): el Force 🇲🇽 de FVS no es ForceGP 🇲🇽."
+  ],
+  [
+   "Egipto",
+   "EGI",
+   "Dlx, 14/10/2026, a «en #434 juegan en el mismo octavo Egipto🇨🇷 y EGI»: «Egipto/francis es otro (CR)». La hoja AKAs los juntaba con EGI 🇵🇦; en la llave se enfrentan."
+  ],
+  [
+   "francis",
+   "EGI",
+   "Dlx, 14/10/2026, a «en #434 juegan en el mismo octavo Egipto🇨🇷 y EGI»: «Egipto/francis es otro (CR)». La hoja AKAs los juntaba con EGI 🇵🇦; en la llave se enfrentan."
   ]
  ]
 }

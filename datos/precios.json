@@ -379,7 +379,19 @@
    "monto": 1000,
    "t": "2026-10-13T18:14:02Z",
    "fin": "2026-10-19T15:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "Tuca",
+     1000
+    ]
+   ],
+   "ev": {
+    "n": 471,
+    "nombre": "DEM UZBEKISTAN FECHA 3",
+    "sv": "FFA",
+    "t": "2026-10-14T19:38:23Z"
+   }
   }
  ],
  "suma": {
@@ -393,6 +405,7 @@
   "Velatz": 250,
   "PRAISERIZA": 14500,
   "Six": 5000,
-  "PIERR": 5000
+  "PIERR": 5000,
+  "Tuca": 1000
  }
 }

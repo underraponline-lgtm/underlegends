@@ -292,7 +292,7 @@
 ]
 },
 "geoka": {
-"rg": "D",
+"rg": "E",
 "c": [
 "competitivo",
 "pais",
@@ -655,7 +655,7 @@
 ]
 },
 "krish": {
-"rg": "",
+"rg": "E",
 "c": [
 "servidor",
 "temporada"
@@ -2327,14 +2327,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Fazer"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5611,6 +5603,15 @@
 "Motera"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-10-15T01:00:24Z",
+"quien": [
+"Krish"
+],
+"rg": "E",
+"primero": true
 }
 ]
 }

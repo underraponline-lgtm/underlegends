@@ -233,36 +233,6 @@
   }
  },
  "batallas": {
-  "1557550529826005134": {
-   "id": "1557550529826005134",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791419384200,
-   "a": "park ji sung🇰🇷",
-   "b": "NEMI",
-   "ganador": "park ji sung🇰🇷",
-   "votos": "1–0"
-  },
-  "1557555719832735795": {
-   "id": "1557555719832735795",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791420621594,
-   "a": "park ji sung🇰🇷",
-   "b": "RIZAS",
-   "ganador": "park ji sung🇰🇷",
-   "votos": "1–0"
-  },
-  "1557556736397938760": {
-   "id": "1557556736397938760",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791420863962,
-   "a": "park ji sung🇰🇷",
-   "b": "NEO",
-   "ganador": "park ji sung🇰🇷",
-   "votos": "1–0"
-  },
   "1557559262174118022": {
    "id": "1557559262174118022",
    "sv": "[FFA] Freestyle For All 👾",
@@ -3705,7 +3675,7 @@
      []
     ],
     [
-     "SEMIFINALES",
+     "TERCER LUGAR",
      [
       "RAYO 🇵🇪",
       "ALDRE 🇦🇷"
@@ -5574,7 +5544,7 @@
      []
     ],
     [
-     "SEMIFINALES",
+     "TERCER LUGAR",
      [
       "Ortiz🇪🇸",
       "TROT🇪🇸"

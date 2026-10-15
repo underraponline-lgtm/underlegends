@@ -2184,6 +2184,11 @@
     "Mr Still Ballin",
     "Zignos",
     "Mr Still Ballin"
+   ],
+   [
+    "Agus",
+    "Alexi",
+    "Agus"
    ]
   ],
   "ev_antes": {
@@ -2210,7 +2215,7 @@
    "Zignos": 10
   },
   "fecha": "08/10",
-  "firma": "acd6f895062a4242",
+  "firma": "963725121ba5444c",
   "msg": "1557873584389488832",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL2 __",
   "num": 429,
@@ -2232,14 +2237,14 @@
     7500
    ],
    [
-    "Alexi",
-    "Semifinal",
-    5250
+    "Agus",
+    "Tercero",
+    6000
    ],
    [
-    "Agus",
-    "Semifinal",
-    5250
+    "Alexi",
+    "Cuarto",
+    4500
    ],
    [
     "Erian",
@@ -4073,6 +4078,11 @@
     "Mr Still Ballin",
     "OG",
     "Mr Still Ballin"
+   ],
+   [
+    "Snow",
+    "HH",
+    "Snow"
    ]
   ],
   "ev_antes": {
@@ -4095,7 +4105,7 @@
    "Xclusivo": 9
   },
   "fecha": "09/10",
-  "firma": "ded3bcb0870c564e",
+  "firma": "40d80c1565caf726",
   "msg": "1558235947840180255",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL3 __",
   "num": 436,
@@ -4117,14 +4127,14 @@
     7500
    ],
    [
-    "HH",
-    "Semifinal",
-    5250
+    "Snow",
+    "Tercero",
+    6000
    ],
    [
-    "Snow",
-    "Semifinal",
-    5250
+    "HH",
+    "Cuarto",
+    4500
    ],
    [
     "Erian",
@@ -4622,7 +4632,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "66ec72d0928eae5e",
+  "firma": "4f5e85e332cd4952",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -8943,7 +8953,7 @@
    ],
    [
     "Verc",
-    "Agente sombra 🇵🇪",
+    "Agente sombra",
     "Verc"
    ],
    [
@@ -9030,6 +9040,11 @@
     "BNA",
     "Verc",
     "BNA"
+   ],
+   [
+    "Guess",
+    "Velatz",
+    "Guess"
    ]
   ],
   "ev_antes": {
@@ -9056,7 +9071,7 @@
    "yinn": 17
   },
   "fecha": "12/10",
-  "firma": "68ac66e9f7951045",
+  "firma": "6815e4e7568ecb75",
   "msg": "1559330803119427585",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL4 __",
   "num": 459,
@@ -9079,13 +9094,13 @@
    ],
    [
     "Guess",
-    "Semifinal",
-    5250
+    "Tercero",
+    6000
    ],
    [
     "Velatz",
-    "Semifinal",
-    5250
+    "Cuarto",
+    4500
    ],
    [
     "Snow",
@@ -9133,7 +9148,7 @@
     1250
    ],
    [
-    "Agente sombra 🇵🇪",
+    "Agente sombra",
     "Octavos",
     1250
    ],
@@ -10293,7 +10308,7 @@
    "Tusicario": 6
   },
   "fecha": "12/10",
-  "firma": "28a534fb921f963a",
+  "firma": "17bc6e43497c2e88",
   "msg": "1559414143948431441",
   "nombre": "IDS V.2",
   "num": 464,
@@ -10307,14 +10322,14 @@
   "t": "2026-10-13T03:55:03Z",
   "tabla": [
    [
+    "NC",
+    "Campeón",
+    4250
+   ],
+   [
     "ONDADISKO",
     "Semifinal",
     3416
-   ],
-   [
-    "NC",
-    "Campeón",
-    3000
    ],
    [
     "Presagio",
@@ -11803,6 +11818,11 @@
     "Xubaru",
     "Verc",
     "Xubaru"
+   ],
+   [
+    "Sin Limites",
+    "Geoka",
+    "Sin Limites"
    ]
   ],
   "ev_antes": {
@@ -11815,7 +11835,7 @@
    "Xubaru": 4
   },
   "fecha": "14/10",
-  "firma": "8955836c60a27443",
+  "firma": "40fff235b2258f71",
   "msg": "1559809185120518145",
   "nombre": "__ Inserte Nombre de la Compe __",
   "num": 470,
@@ -11837,14 +11857,14 @@
     5000
    ],
    [
-    "Geoka",
-    "Semifinal",
-    3500
+    "Sin Limites",
+    "Tercero",
+    4000
    ],
    [
-    "Sin Limites",
-    "Semifinal",
-    3500
+    "Geoka",
+    "Cuarto",
+    3000
    ],
    [
     "NC",
@@ -12549,7 +12569,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "f4660777a59e88cc",
+  "firma": "e0da1dcd5e126e2a",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -12566,14 +12586,19 @@
     7500
    ],
    [
-    "Trot",
-    "Semifinal",
-    5250
-   ],
-   [
     "Vacile🇪🇸",
     "Subcampeón",
     5000
+   ],
+   [
+    "Ortiz",
+    "Tercero",
+    4000
+   ],
+   [
+    "Trot",
+    "Cuarto",
+    3000
    ],
    [
     "Kochi",
@@ -12594,11 +12619,6 @@
     "Vargas",
     "Cuartos",
     2000
-   ],
-   [
-    "Ortiz",
-    "Semifinal",
-    1750
    ]
   ],
   "v": 2
