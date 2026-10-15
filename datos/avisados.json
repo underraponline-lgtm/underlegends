@@ -11835,7 +11835,7 @@
    "Xubaru": 4
   },
   "fecha": "14/10",
-  "firma": "5f04cf5ca85be92a",
+  "firma": "346816acfdd4313a",
   "msg": "1559809185120518145",
   "nombre": "__ Inserte Nombre de la Compe __",
   "num": 470,
@@ -11947,33 +11947,33 @@
   "duelos": [
    [
     "Majiztral",
-    "14` Geoka 🇦🇷 - Geoka",
+    "Geoka",
     "Majiztral"
    ],
    [
-    "13` vandu 🇨🇦 - Vandu",
+    "Vandu",
     "Cinexfilo",
-    "13` vandu 🇨🇦 - Vandu"
+    "Vandu"
    ],
    [
-    "05` Lrs 🇦🇷 - LRS",
-    "12` Krish 🇪🇸 - Krish",
-    "05` Lrs 🇦🇷 - LRS"
+    "LRS",
+    "Krish",
+    "LRS"
    ],
    [
-    "11` agus 🇦🇷 - Agus",
-    "06` Trot 🇪🇸 - Trot",
-    "11` agus 🇦🇷 - Agus"
+    "Agus",
+    "Trot",
+    "Agus"
    ],
    [
-    "07` Neo 🇦🇷 - Neo",
+    "Neo",
     "Makmah",
-    "07` Neo 🇦🇷 - Neo"
+    "Neo"
    ],
    [
-    "08` Tuca 🇦🇷 - Tuca",
-    "09` erian 🇦🇷 - Erian",
-    "08` Tuca 🇦🇷 - Tuca"
+    "Tuca",
+    "Erian",
+    "Tuca"
    ],
    [
     "1200",
@@ -12014,11 +12014,6 @@
     "1200",
     "Tuca",
     "1200"
-   ],
-   [
-    "16` agre 🇦🇷 - Benjixo",
-    "01` asuka la homosexual 🇪🇸 - Marcos",
-    "16` agre 🇦🇷 - Benjixo"
    ]
   ],
   "ev_antes": {
@@ -12034,11 +12029,11 @@
    "Vandu": 20
   },
   "fecha": "14/10",
-  "firma": "4bd31555cbc5adb4",
+  "firma": "f7db373972ec0790",
   "msg": "1560019837609050254",
   "nombre": "DEM UZBEKISTAN FECHA 3",
   "num": 471,
-  "participantes": 24,
+  "participantes": 20,
   "sello": {
    "Agus": "37a0c947ddbc:7e987c978e23"
   },
@@ -12083,10 +12078,10 @@
    [
     "Colesito",
     "Cuartos",
-    1250
+    2500
    ],
    [
-    "14` Geoka 🇦🇷 - Geoka",
+    "Geoka",
     "Octavos",
     1250
    ],
@@ -12096,12 +12091,12 @@
     1250
    ],
    [
-    "12` Krish 🇪🇸 - Krish",
+    "Krish",
     "Octavos",
     1250
    ],
    [
-    "06` Trot 🇪🇸 - Trot",
+    "Trot",
     "Octavos",
     1250
    ],
@@ -12111,12 +12106,7 @@
     1250
    ],
    [
-    "09` erian 🇦🇷 - Erian",
-    "Octavos",
-    1250
-   ],
-   [
-    "01` asuka la homosexual 🇪🇸 - Marcos",
+    "Erian",
     "Octavos",
     1250
    ]

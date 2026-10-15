@@ -1201,10 +1201,6 @@
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emilyfamily/temporada.webp"
  },
  "emizor": {
-  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emizor/bloq-competitivo.webp",
-  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emizor/bloq-pais.webp",
-  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emizor/competitivo.webp",
-  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emizor/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emizor/servidor.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emizor/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/emizor/sv-dra.webp",
@@ -2963,11 +2959,6 @@
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nairda/sv-acad.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nairda/sv-ffa.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nairda/temporada.webp"
- },
- "nashei": {
-  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nashei/servidor.webp",
-  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nashei/sv-dra.webp",
-  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/nashei/sv-ffa.webp"
  },
  "naw": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/naw/servidor.webp",

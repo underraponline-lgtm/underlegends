@@ -1,9 +1,9 @@
 {
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
-  "FFA": "2026-10-14",
+  "FFA": "2026-10-15",
   "SR": "2026-10-12",
-  "URBF": "2026-10-14"
+  "URBF": "2026-10-15"
  },
  "retos": {
   "AKARK": {
@@ -34,6 +34,7 @@
   },
   "Chente": {
    "avisado": "2026-10-14",
+   "chat": "2026-10-15",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-14T20:32:37+00:00",
@@ -175,6 +176,7 @@
   },
   "SAIK": {
    "avisado": "2026-10-14",
+   "chat": "2026-10-15",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-13T23:50:48+00:00",
@@ -239,6 +241,7 @@
   },
   "Vacile": {
    "avisado": "2026-10-14",
+   "chat": "2026-10-15",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-14T21:51:16+00:00",
@@ -279,6 +282,7 @@
   },
   "Xubaru prime": {
    "avisado": "2026-10-14",
+   "chat": "2026-10-15",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-13T23:50:48+00:00",
@@ -290,6 +294,7 @@
    "vencido": false
   },
   "francis": {
+   "chat": "2026-10-15",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-13T15:18:36+00:00",

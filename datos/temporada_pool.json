@@ -4811,10 +4811,7 @@
   "pos": 219,
   "fc": true,
   "total": 176,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Noxvell",
@@ -6099,8 +6096,7 @@
   "total": 176,
   "rango": "E",
   "tg_t": {
-   "dobles": 1,
-   "reciente": true
+   "dobles": 1
   }
  },
  {
@@ -6654,10 +6650,7 @@
   "o": 180,
   "pos": 104,
   "total": 176,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Aby",
@@ -9649,7 +9642,6 @@
   "total": 176,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
    "trios": 2
   }
  },
@@ -10647,10 +10639,7 @@
   "pos": 331,
   "fc": true,
   "total": 176,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "AFR",
@@ -12949,10 +12938,7 @@
   "pos": 382,
   "fc": true,
   "total": 176,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "SONIC_DORADITO",
@@ -13019,10 +13005,7 @@
   "pos": 384,
   "fc": true,
   "total": 176,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "benjadsantis🇦🇷",
@@ -14357,10 +14340,7 @@
   "o": 408,
   "pos": 169,
   "total": 176,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Freestyle4AllmyNiggaz 🌏🌏",
@@ -14761,10 +14741,7 @@
   "pos": 426,
   "fc": true,
   "total": 176,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "MD",
@@ -16123,10 +16100,7 @@
   "pos": 461,
   "fc": true,
   "total": 176,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "KRNAN 🇨🇱",
@@ -16158,10 +16132,7 @@
   "pos": 462,
   "fc": true,
   "total": 176,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "LOLOELGAUCHO 🇦🇷",
@@ -16193,10 +16164,7 @@
   "pos": 463,
   "fc": true,
   "total": 176,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "QUEEN",
@@ -16227,10 +16195,7 @@
   "o": 463,
   "pos": 176,
   "total": 176,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Desio",
@@ -16334,7 +16299,6 @@
   "total": 176,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
    "rev": 1
   }
  }
