@@ -5786,7 +5786,7 @@
    "PichulaMc": 27
   },
   "fecha": "10/10",
-  "firma": "877e385066c64ecf",
+  "firma": "d13d96bb46e062b7",
   "msg": "1558643633110917121",
   "nombre": "(sin titulo)",
   "num": 444,
@@ -7964,7 +7964,7 @@
    "Walker": 4
   },
   "fecha": "12/10",
-  "firma": "0c120a5740124ad4",
+  "firma": "b91e32ed2296cff2",
   "msg": "1559247607283454084",
   "nombre": "FMS UNDER",
   "num": 455,
@@ -8668,7 +8668,7 @@
    "yinn": 16
   },
   "fecha": "12/10",
-  "firma": "7c5a75d3b13159e1",
+  "firma": "26b79e5aa6bf33b4",
   "msg": "1559308035636334683",
   "nombre": "LA REDENCIÓN",
   "num": 458,
@@ -8685,12 +8685,32 @@
    [
     "JJ",
     "Campeón",
-    3000
+    4250
+   ],
+   [
+    "Snow",
+    "Campeón",
+    3750
    ],
    [
     "OG",
     "Subcampeón",
-    2687
+    3625
+   ],
+   [
+    "Guess",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Benjixo",
+    "Semifinal",
+    3000
+   ],
+   [
+    "EmiZor",
+    "Semifinal",
+    3000
    ],
    [
     "Verc",
@@ -8701,26 +8721,6 @@
     "yinn",
     "Campeón",
     2500
-   ],
-   [
-    "Snow",
-    "Campeón",
-    2500
-   ],
-   [
-    "Guess",
-    "Subcampeón",
-    2187
-   ],
-   [
-    "Benjixo",
-    "Semifinal",
-    2125
-   ],
-   [
-    "EmiZor",
-    "Semifinal",
-    2125
    ],
    [
     "Makmah",
