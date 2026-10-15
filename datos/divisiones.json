@@ -164,6 +164,11 @@
      2
     ],
     [
+     "ONZASS",
+     10000,
+     3
+    ],
+    [
      "Lord Viruzz",
      9750,
      3
@@ -192,11 +197,6 @@
      "Kochi",
      6000,
      1
-    ],
-    [
-     "Majiztral",
-     5625,
-     2
     ],
     [
      "Xclusivo",
@@ -286,11 +286,6 @@
      "Vargas",
      10250,
      2
-    ],
-    [
-     "ONZASS",
-     10000,
-     3
     ],
     [
      "Prosu",
@@ -388,6 +383,11 @@
      1
     ],
     [
+     "7",
+     1875,
+     1
+    ],
+    [
      "SYEPORUTE🇿🇲",
      1250,
      1
@@ -423,6 +423,11 @@
      "Raizer",
      13125,
      1
+    ],
+    [
+     "Trot",
+     12750,
+     3
     ],
     [
      "Tenor",
@@ -520,11 +525,6 @@
      1
     ],
     [
-     "7",
-     1875,
-     1
-    ],
-    [
      "🏳️‍⚧️ VEPG 🏳️‍⚧️",
      1875,
      1
@@ -567,11 +567,6 @@
      2
     ],
     [
-     "Trot",
-     12750,
-     3
-    ],
-    [
      "Tuca",
      9375,
      2
@@ -590,6 +585,11 @@
      "Shadow",
      6000,
      1
+    ],
+    [
+     "Majiztral",
+     5625,
+     2
     ],
     [
      "Gocho",
@@ -903,7 +903,7 @@
   "MZK": 5,
   "MaYeuTyK": 5,
   "Mail O": 5,
-  "Majiztral": 4,
+  "Majiztral": 5,
   "Makmah": 3,
   "Malva": 5,
   "Marcos": 5,
@@ -944,7 +944,7 @@
   "OEP": 5,
   "OG": 4,
   "OKAM": 5,
-  "ONZASS": 5,
+  "ONZASS": 4,
   "Oasis": 2,
   "Ola🇲🇽": 5,
   "Oni 🇦🇷": 5,
@@ -979,6 +979,7 @@
   "Ram": 5,
   "Rayden": 5,
   "Rayo": 5,
+  "Rbk": 5,
   "Redstonita": 5,
   "Refran": 5,
   "Respawn": 5,
@@ -1000,7 +1001,6 @@
   "SINTEXT": 5,
   "SK8": 5,
   "SMAFF": 5,
-  "SNX🇻🇪": 5,
   "SOL": 4,
   "SONIC_DORADITO": 5,
   "SUDAKA🇦🇷": 5,
@@ -1043,7 +1043,6 @@
   "UDDIZIM": 5,
   "Under": 5,
   "V-zir 🇻🇪": 5,
-  "VIXOVERSO": 5,
   "VR": 5,
   "Valdoza": 5,
   "Vandu": 4,
@@ -1515,12 +1514,12 @@
   ],
   [
    "2026-10-05",
-   "NC",
+   "ONZASS",
    4
   ],
   [
    "2026-10-05",
-   "Majiztral",
+   "NC",
    4
   ],
   [
@@ -1758,7 +1757,6 @@
    "Guess",
    "HH",
    "Liberia",
-   "Majiztral",
    "Makmah",
    "Medster",
    "Motera",
@@ -1767,6 +1765,7 @@
    "NXUZ",
    "Nemi",
    "OG",
+   "ONZASS",
    "Oasis",
    "Ortiz",
    "PRAISERIZA",

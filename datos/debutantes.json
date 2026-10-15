@@ -289,6 +289,17 @@
    "vence": "2026-10-20T23:50:48+00:00",
    "vencido": false
   },
+  "francis": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-13T15:18:36+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN",
+   "n": 465,
+   "sv": "FFA",
+   "vence": "2026-10-20T15:18:36+00:00",
+   "vencido": false
+  },
   "🏳️‍⚧️ VEPG 🏳️‍⚧️": {
    "avisado": "2026-10-12",
    "chat": "2026-10-12",

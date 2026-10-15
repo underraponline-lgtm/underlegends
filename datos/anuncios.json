@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-15T01:24:43+00:00",
+ "cuando": "2026-10-15T01:54:33+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1137,6 +1137,30 @@
    "categoria_id": "1468478330826260500"
   },
   {
+   "nombre": "LOS QUE MANDAN 95",
+   "servidor": "FFA",
+   "canal": "✦⚡—novedades",
+   "msg_id": "1560102246736470056",
+   "cuando": "2026-10-15T01:29:20",
+   "canal_id": "1531832189187264543",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "797ecd0ceee716c6",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "11/11",
+   "premios": "",
+   "staff": {},
+   "autor": "Dlxmouche",
+   "de_imagen": true,
+   "categoria_id": "1468472443843776657"
+  },
+  {
    "nombre": "FLEIVA FREE",
    "servidor": "SR",
    "canal": "[📢]anuncios",
@@ -2081,6 +2105,38 @@
    "categoria_id": "1076324234588082206"
   },
   {
+   "nombre": "IRLANDA FREESTYLE",
+   "servidor": "FRZ",
+   "canal": "➣「🏆」eventos",
+   "msg_id": "1560104376981520447",
+   "cuando": "2026-10-15T01:37:48",
+   "canal_id": "1466158091279007754",
+   "guild_id": "838593179187544064",
+   "organizador": "@ajoel",
+   "orgs": [
+    {
+     "n": "ajoel",
+     "id": "563072268830244864"
+    }
+   ],
+   "autor_h": "3f20c1c4a774043d",
+   "cupos_texto": "8/16",
+   "inscriptos": 8,
+   "cupo_total": 16,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "Ceko"
+    ]
+   },
+   "autor": "ajoel",
+   "categoria_id": "867553625508282369"
+  },
+  {
    "nombre": "FMS CHILE",
    "servidor": "FRZ",
    "canal": "➣「🏆」eventos",
@@ -2741,38 +2797,6 @@
    "cupos_texto": "8/12",
    "inscriptos": 8,
    "cupo_total": 12,
-   "rango": "",
-   "modalidad": "",
-   "horario": "",
-   "fecha": "",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "za0r7"
-    ]
-   },
-   "autor": "za0r7",
-   "categoria_id": "867553625508282369"
-  },
-  {
-   "nombre": "RAP SIN GROSERIAS",
-   "servidor": "FRZ",
-   "canal": "➣「🏆」eventos",
-   "msg_id": "1494114506081701959",
-   "cuando": "2026-04-15T23:17:37",
-   "canal_id": "1466158091279007754",
-   "guild_id": "838593179187544064",
-   "organizador": "@za0r7",
-   "orgs": [
-    {
-     "n": "za0r7",
-     "id": "1398483999680237628"
-    }
-   ],
-   "autor_h": "dba44aa1a7b59e8e",
-   "cupos_texto": "8/12/16",
-   "inscriptos": null,
-   "cupo_total": null,
    "rango": "",
    "modalidad": "",
    "horario": "",
@@ -5953,6 +5977,69 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "nc🇲🇾",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1560107076561150136",
+   "cuando": "2026-10-15T01:48:32"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Scritura",
+   "quien": "scritura",
+   "discord_id": "1559007314126704653",
+   "msg_id": "1560105630063263756",
+   "cuando": "2026-10-15T01:42:47"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Erian 🇨🇴",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1560104703474536449",
+   "cuando": "2026-10-15T01:39:06"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Nico 🇵🇪",
+   "quien": "lokero_13",
+   "discord_id": "558443582202052608",
+   "msg_id": "1560104683945857146",
+   "cuando": "2026-10-15T01:39:01"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "Elviolavaginas🇧🇦",
+   "quien": "sj.2008_",
+   "discord_id": "645308964141137952",
+   "msg_id": "1560104672013062227",
+   "cuando": "2026-10-15T01:38:59"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "sin limites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1560104566719127647",
+   "cuando": "2026-10-15T01:38:34"
+  },
+  {
+   "servidor": "FRZ",
+   "canal": "➣「📝」inscripciones",
+   "texto": "juasmio",
+   "quien": "jmiopa",
+   "discord_id": "729439360545587291",
+   "msg_id": "1560104489414037507",
+   "cuando": "2026-10-15T01:38:15"
+  },
   {
    "servidor": "URBF",
    "canal": "《📑》Inscripciones",

@@ -1,65 +1,5 @@
 [
  {
-  "raw": "05` Lrs  - LRS",
-  "cc": "ar",
-  "sv": "",
-  "crew": "",
-  "discord_id": "",
-  "ev": 0.0,
-  "pts": 0,
-  "av": ""
- },
- {
-  "raw": "07` Neo  - Neo",
-  "cc": "ar",
-  "sv": "",
-  "crew": "",
-  "discord_id": "",
-  "ev": 0.0,
-  "pts": 0,
-  "av": ""
- },
- {
-  "raw": "08` Tuca  - Tuca",
-  "cc": "ar",
-  "sv": "",
-  "crew": "",
-  "discord_id": "",
-  "ev": 0.0,
-  "pts": 0,
-  "av": ""
- },
- {
-  "raw": "11` agus  - Agus",
-  "cc": "ar",
-  "sv": "",
-  "crew": "",
-  "discord_id": "",
-  "ev": 0.0,
-  "pts": 0,
-  "av": ""
- },
- {
-  "raw": "13` vandu  - Vandu",
-  "cc": "",
-  "sv": "",
-  "crew": "",
-  "discord_id": "",
-  "ev": 0.0,
-  "pts": 0,
-  "av": ""
- },
- {
-  "raw": "16` agre  - Benjixo",
-  "cc": "ar",
-  "sv": "",
-  "crew": "",
-  "discord_id": "",
-  "ev": 0.0,
-  "pts": 0,
-  "av": ""
- },
- {
   "raw": "Eliot - Respawm",
   "cc": "mx",
   "sv": "",
@@ -87,6 +27,16 @@
   "discord_id": "",
   "ev": 0.0,
   "pts": 0,
+  "av": ""
+ },
+ {
+  "raw": "VIXOVERSO",
+  "cc": "cl",
+  "sv": "",
+  "crew": "",
+  "discord_id": "908553096895012895",
+  "ev": 0.0,
+  "pts": 300,
   "av": ""
  }
 ]
