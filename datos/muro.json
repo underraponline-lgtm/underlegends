@@ -485,13 +485,6 @@
 "temporada"
 ]
 },
-"erik": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "neo": {
 "rg": "",
 "c": []
@@ -542,6 +535,13 @@
 "c": [
 "pais",
 "servidor"
+]
+},
+"erik": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
 ]
 },
 "teito": {
