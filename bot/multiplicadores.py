@@ -956,7 +956,10 @@ def a_mano(cur, aj, ahora):
     piso = max([_de_iso(cur['inicio'])] + [_de_iso(t['desde']) for t in tramos])
     if man.get('semana') == cur.get('id'):
         nuevo = dict(base)
-        nuevo.update({k: v for k, v in (man.get('sv') or {}).items() if k in base})
+        # 🔑 TAMBIÉN UN SERVIDOR DE LA LIGA QUE NO ESTABA EN EL SORTEO (15/10/2026, Dlx: «¿por qué no me deja poner el
+        # multiplicador de la semana?», con FRZ, que entró el miércoles y el sorteo fue el lunes). Uno que no es de la
+        # Liga sigue afuera
+        nuevo.update({k: v for k, v in (man.get('sv') or {}).items() if k in base or k in SERVIDORES})
         if cur.get('manual') and nuevo == cur.get('sv'):
             return False
         try:
@@ -1379,10 +1382,12 @@ def _self_check():
     # ⚙️ el multiplicador a mano: desde que se elige, sólo esa semana, y sacarlo vuelve al sorteo
     sem = {'id': '2026-10-12', 'inicio': _iso(en(10, 12, 11)), 'fin': _iso(en(10, 19, 11)),
            'sv': {'FFA': 1.5, 'SR': 1}}
-    aj = {'multiplicadores': {'semana': '2026-10-12', 'sv': {'FFA': 3, 'XX': 5}, 't': _iso(en(10, 15, 20))}}
-    ok(a_mano(sem, aj, en(10, 15, 20, 22)) and sem['sv'] == {'FFA': 3, 'SR': 1} and sem['manual']
+    aj = {'multiplicadores': {'semana': '2026-10-12', 'sv': {'FFA': 3, 'XX': 5, 'FRZ': 2}, 't': _iso(en(10, 15, 20))}}
+    ok(a_mano(sem, aj, en(10, 15, 20, 22)) and sem['sv'] == {'FFA': 3, 'SR': 1, 'FRZ': 2} and sem['manual']
        and sem['sv_sorteo'] == {'FFA': 1.5, 'SR': 1} and sem['tramos'][0]['desde'] == _iso(en(10, 15, 20)),
-       'a mano: FFA ×3 desde el jueves a las 8 PM, sin servidores que no juegan esa semana')
+       'a mano: FFA ×3 desde el jueves a las 8 PM, y FRZ ×2 aunque entró después del sorteo; uno que no es de la Liga, no')
+    ok(factor_de({'semanas': [sem]}, [], rivales=[])('FRZ', en(10, 16, 20)) == 2,
+       'y los eventos de FRZ de ahí en adelante suman ×2')
     ok(not a_mano(sem, aj, en(10, 15, 20, 52)), 'la corrida siguiente no lo vuelve a anotar')
     f4 = factor_de({'semanas': [sem]}, [], rivales=[])
     ok(f4('FFA', en(10, 13, 20)) == 1.5 and f4('FFA', en(10, 16, 20)) == 3 and f4('SR', en(10, 16, 20)) == 1,

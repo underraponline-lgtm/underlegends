@@ -849,7 +849,10 @@ function AjServidores({ liga, aj, hacer, ocup, chat }) {
         </div>
       ) : null}
       <div className="db-svs">{svs.map((sv) => {
-        const ops = base[sv] == null ? [] : FACTORES.indexOf(ref[sv]) < 0 ? [...FACTORES, ref[sv]].sort((a, b) => a - b) : FACTORES;
+        // 🔑 TAMBIÉN EL QUE NO ESTABA EN EL SORTEO (15/10/2026: FRZ entró el miércoles y el sorteo fue el lunes): sin
+        // sortear vale ×1, y se puede elegir a mano igual (`a_mano()` de bot/multiplicadores.py lo acepta)
+        const vm = ref[sv] == null ? 1 : ref[sv];
+        const ops = FACTORES.indexOf(vm) < 0 ? [...FACTORES, vm].sort((a, b) => a - b) : FACTORES;
         return (
           <section key={sv} className="db-svc" aria-label={'Ajustes de ' + siglaDe(sv)}>
             <header><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b>
@@ -879,9 +882,9 @@ function AjServidores({ liga, aj, hacer, ocup, chat }) {
                 <option value="chat">En su chat general, siempre</option>
                 <option value="no">Apagado</option>
               </select></label>
-            {ops.length ? (
+            {m.id ? (
               <label><span>Multiplicador de la semana</span>
-                <select value={String(ref[sv])} disabled={ocup} onChange={(e) => cambiarMult(sv, Number(e.target.value))}>
+                <select value={String(vm)} disabled={ocup} onChange={(e) => cambiarMult(sv, Number(e.target.value))}>
                   {ops.map((x) => <option key={x} value={String(x)}>{mult(x)}</option>)}
                 </select></label>
             ) : null}
