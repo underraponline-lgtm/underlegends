@@ -5796,7 +5796,7 @@
     "racha": "0/0"
    }
   },
-  "Ragnar": {
+  "Ragna": {
    "FRZ": {
     "duelos": "3/3",
     "ev": 1,
@@ -5804,11 +5804,7 @@
     "ovr": 47,
     "pod": 1,
     "pts": 7500,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1,
-     "fund": true
-    }
+    "racha": "1/1"
    }
   },
   "Raizer": {

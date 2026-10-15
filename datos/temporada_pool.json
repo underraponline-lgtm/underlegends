@@ -6935,9 +6935,9 @@
   }
  },
  {
-  "full": "Ragnar",
-  "raw": "Ragnar",
-  "cc": "cl",
+  "full": "Ragna",
+  "raw": "Ragna",
+  "cc": "",
   "sv": "FRZ",
   "crew": "",
   "discord_id": "",
@@ -6964,12 +6964,7 @@
   "pos": 262,
   "fc": true,
   "total": 180,
-  "rango": "E",
-  "tg_t": {
-   "dcor": true,
-   "reciente": true,
-   "svc": 1
-  }
+  "rango": "E"
  },
  {
   "full": "JIMMY",
