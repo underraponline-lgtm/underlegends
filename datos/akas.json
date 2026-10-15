@@ -273,6 +273,7 @@
   "cinex": "Cinexfilo",
   "armandofaso": "BNA",
   "ckl": "BNA",
+  "snx": "Rbk",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1399,6 +1400,10 @@
   [
    "Ckl",
    "BNA"
+  ],
+  [
+   "SNX",
+   "Rbk"
   ],
   [
    "Nexus",

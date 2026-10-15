@@ -319,6 +319,11 @@
      0,
      8
     ],
+    "Egipto 🇨🇷": [
+     1,
+     0,
+     16
+    ],
     "Elbesaabuelas": [
      0,
      0,
@@ -1331,6 +1336,7 @@
     "EIDP": 2900,
     "Eclipsito": 2900,
     "Efimero": 300,
+    "Egipto 🇨🇷": 300,
     "Eliot": 1300,
     "Elsoolar": 300,
     "EmiZor": 300,
@@ -1672,12 +1678,6 @@
      2,
      16,
      16,
-     0
-    ],
-    "EGI": [
-     1,
-     4,
-     4,
      0
     ],
     "Efimero": [
@@ -2274,6 +2274,12 @@
      8,
      0
     ],
+    "francis 🇨🇷": [
+     1,
+     4,
+     4,
+     0
+    ],
     "ikonoxx": [
      1,
      8,
@@ -2318,7 +2324,6 @@
     "DO-C": 300,
     "Delux": 900,
     "Dynoco": 300,
-    "EGI": 600,
     "EmiZor": 900,
     "Erian": 2900,
     "Erik": 600,
@@ -2380,6 +2385,7 @@
     "Xubaru": 2900,
     "Zaik": 300,
     "Zignos": 2900,
+    "francis 🇨🇷": 600,
     "rodrilp": 600,
     "yinn": 2900
    }
@@ -2437,10 +2443,11 @@
   "Drezz🇵🇪": 300,
   "Dynoco": 1600,
   "Dyzz": 900,
-  "EGI": 900,
+  "EGI": 300,
   "EIDP": 2900,
   "Eclipsito": 2900,
   "Efimero": 300,
+  "Egipto 🇨🇷": 300,
   "Eliot": 1300,
   "Elsoolar": 300,
   "EmiZor": 1200,
@@ -2598,6 +2605,7 @@
   "doble h": 300,
   "dxg": 300,
   "fleivaman": 1300,
+  "francis 🇨🇷": 600,
   "ikonoxx": 300,
   "kerkoide": 300,
   "melomaniaco": 300,
