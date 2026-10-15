@@ -562,7 +562,7 @@ def _y(cosas):
     return ' y '.join(cosas) if len(cosas) <= 2 else '%s y %s' % (', '.join(cosas[:-1]), cosas[-1])
 
 
-def _cuenta(did):
+def _cuenta(did, tambien=()):
     """Lo que se sabe de una cuenta de Discord, en una línea: «en DRA y FFA ·
     Miembro de DRA · en la Lista como Shadow · 3 eventos en la T1».
 
@@ -575,8 +575,15 @@ def _cuenta(did):
     did = str(did or '').strip()
     if not did.isdigit():
         return ''
-    svs = (_datos('servidores_de') or {}).get(did) or []
+    # 🔴 CON EL CACHÉ DE APODOS: `servidores_de.json` guarda sólo a quien ya está en la Lista, así que un alta de /card
+    # decía «no está en ningún servidor de la Liga» de alguien que acababa de usar /card en FRZ (15/10/2026)
+    svs = _servidores_de(did, _datos('servidores_de') or {})
+    # `tambien`: donde se sabe que está aunque el caché no lo diga todavía —el servidor donde acaba de usar /card—
+    svs = list(dict.fromkeys(list(svs) + [x for x in tambien or () if x and x != '?']))
     out = ['en %s' % _y(svs) if svs else 'no está en ningún servidor de la Liga']
+    ns = _nombres_de(did)
+    if ns:
+        out.append('en Discord: %s' % ', '.join('«%s»' % n for n in ns))
     if 'dra' not in _DATOS:
         _DATOS['dra'] = set((_datos('verificados') or {}).get('ids') or [])
     if did in _DATOS['dra']:
@@ -604,6 +611,7 @@ def _apodos():
             with io.open(APODOS, encoding='utf-8') as f:
                 crudo = json.load(f) or {}
             for did, ns in (crudo.get('nombres') or {}).items():
+                _DATOS.setdefault('nombres_de', {})[str(did)] = [x for x in ns or [] if str(x).strip()]
                 for n in ns or []:
                     k = norm(_sin_bandera(n))
                     if len(k) >= 3:
@@ -614,6 +622,34 @@ def _apodos():
         _DATOS['apodos'] = idx
         _DATOS['donde'] = donde
     return _DATOS['apodos']
+
+
+def _nombres_de(did):
+    """Cómo se llama esa cuenta en Discord (su nombre y sus apodos de servidor), del caché de apodos: hasta dos."""
+    _apodos()
+    vistos, out = set(), []
+    for n in (_DATOS.get('nombres_de') or {}).get(str(did)) or []:
+        k = norm(_sin_bandera(n))
+        if k and k not in vistos:
+            vistos.add(k)
+            out.append(str(n).strip())
+    return out[:2]
+
+
+def cuenta_dicha(usuario, did='', real=None):
+    """🪪 UNA CUENTA, DICHA SIEMPRE IGUAL: «@usuario («su nombre en Discord») · en la Lista: X».
+
+    Dlx, 15/10/2026: *«hay mucha confusión: a veces mencionas el discord name, el username, el aka… asegurate de que
+    todo se entienda… la cosa es que toda la info esté ahí de todos los lados»*. La misma cuenta aparecía como
+    «@enkil2403» en una pista, como «Enkil» en otra y como el nombre de la Lista en las opciones."""
+    u = str(usuario or '').strip().lstrip('@')
+    partes = ['@' + u] if u else []
+    ns = [n for n in _nombres_de(did) if norm(_sin_bandera(n)) not in {norm(u), norm(_sin_bandera(real or ''))}]
+    if ns:
+        partes.append('(en Discord: %s)' % ', '.join('«%s»' % n for n in ns))
+    if real:
+        partes.append('· en la Lista: %s' % real)
+    return ' '.join(partes) or ('la cuenta %s' % did)
 
 
 def _servidores_de(did, svs):
@@ -940,8 +976,15 @@ def _cuentas_posibles(nombre):
     return next((v for n, v in _DATOS['posibles'].items() if norm(n) == k), [])
 
 
-#: 🔎 la respuesta que elige una de esas cuentas: «Es la cuenta @usuario»
-CUENTA_RE = re.compile(r'^Es la cuenta @(\S+)$')
+#: 🔎 la respuesta que elige una de esas cuentas: «Es la cuenta @usuario», con su nombre en Discord entre paréntesis
+#: desde el 15/10/2026 (`_op_cuenta()`)
+CUENTA_RE = re.compile(r'^Es la cuenta @(\S+)(?:\s+\(.*\))?$')
+
+
+def _op_cuenta(c):
+    """La opción «Es la cuenta @usuario («Su nombre»)»: con cómo se llama en Discord, si se sabe y no es igual."""
+    ns = [n for n in _nombres_de(c.get('id')) if norm(_sin_bandera(n)) != norm(c.get('usuario'))]
+    return ('Es la cuenta @%s' % c['usuario'] + (' («%s»)' % ns[0] if ns else ''))[:80]
 
 
 def _posibles(nombre):
@@ -1943,6 +1986,7 @@ REGLAS = {
     'R12': 'un bracket incompleto que es un pedazo de un evento ya cargado',
     'R16': 'Dlx dijo que no es esa persona, y no hay otra cuenta con ese nombre',
     'R19': 'la ronda que la escala 8-15 no tenía ahora paga 625',
+    'R21': 'la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre',
 }
 #: lo resuelto solo en esta corrida, hasta `flush_solas()`
 _SOLAS = []
@@ -2387,6 +2431,16 @@ def deshacer(ids, dry=True):
         with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(dd, f, ensure_ascii=False, indent=1)
             f.write('\n')
+    qs = [x['escribio']['quien'] for x in hay if (x.get('escribio') or {}).get('quien')]
+    if qs:
+        dd = _decisiones()
+        for k in qs:
+            v = (dd.get('quien') or {}).get(k)
+            if v and str(v.get('por') or '').startswith('el ciclo'):
+                dd['quien'].pop(k, None)
+        with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(dd, f, ensure_ascii=False, indent=1)
+            f.write('\n')
     for x in hay:
         if (x.get('escribio') or {}).get('alta'):
             print('      ⚠️ %s entró a la Lista con %s: esa fila queda (sacala a mano si no va)'
@@ -2758,6 +2812,68 @@ def distintos_aca(det, otro, akas, svs=(), siglas=()):
     return False
 
 
+def _iso_de_real(real):
+    """El país (iso) de alguien de la Lista, por su nombre; `''` si no se sabe."""
+    try:
+        from padron_t1 import PAIS_ISO
+    except Exception:                                    # noqa: BLE001
+        return ''
+    k = norm(_sin_bandera(real))
+    fila = next((r for r in _datos('padron') or [] if norm(_sin_bandera(r.get('raw') or '')) == k), None)
+    return PAIS_ISO.get(str((fila or {}).get('pais') or '').strip(), '')
+
+
+def _nombres_de_llave(L):
+    """Todos los nombres de una llave guardada (`datos/llaves_t1.json`): los lados de cada batalla y la tabla."""
+    out = set()
+    for R in (L or {}).get('rondas') or []:
+        for b in R.get('b') or []:
+            for lado in (b[0] if b else []) or []:
+                for x in re.split(r'\s*\+\s*', str(lado or '')):
+                    if norm(_sin_bandera(x)):
+                        out.add(norm(_sin_bandera(x)))
+    for f in (L or {}).get('tabla') or []:
+        if f and norm(_sin_bandera(f[0])):
+            out.add(norm(_sin_bandera(f[0])))
+    return out
+
+
+def r21(det, cs, L, iso_real=lambda real: '', distinto=lambda real: False):
+    """🤖 R21: `(persona, prueba)` si «¿quién es `det`?» lo contesta la cuenta que se anotó así para ESE evento, o
+    `None`. Pura.
+
+    🔑 Dlx, 15/10/2026: *«a veces el bot en decisiones me pregunta que no sabe quién es MC 1 pero sabe que la persona
+    llamada CRONOX es MC 1… está bien preguntar eso, porque a veces hay personas que inscriben a sus amigos… pero creo
+    que a veces podrías automatizar eso»*. Se contesta solo cuando todo apunta a la misma persona:
+
+      · UNA sola cuenta se anotó con ese nombre para ese evento (`_cuentas_insc()`), y es de alguien de la Lista;
+      · se anotó con ESE nombre solo, no con una pareja;
+      · no es organizador, staff ni host de ese servidor: ésos anotan a otros (Player anotó a Steven);
+      · esa persona NO jugó ese evento con su nombre: si estaba en la llave, «MC 1» es otro —el amigo que anotó—;
+      · si el nombre de la llave trae bandera, es la de su país;
+      · Dlx no dijo que no es esa persona (`no_confundir`).
+
+    ⚠️ VALE PARA ESE EVENTO Y NADA MÁS: va a `quien` de `datos/decisiones.json`, no a la hoja AKAs. «MC 1» puede ser
+    otra persona la semana que viene. Y queda en «Lo que se resolvió solo», con «Deshacer»."""
+    if len(cs or ()) != 1 or not L:
+        return None
+    c = cs[0]
+    real = c.get('real')
+    if not real or c.get('rol') or len(_nombres_insc(c.get('nombre'))) != 1:
+        return None
+    if norm(_sin_bandera(real)) in _nombres_de_llave(L):
+        return None
+    bs = {_iso(b) for b in _BANDERA.findall(str(det or ''))}
+    iso = iso_real(real)
+    if bs and iso and iso not in bs:
+        return None
+    if distinto(real):
+        return None
+    return real, ('la cuenta %s se anotó como «%s» para ese evento, no es staff de %s y esa noche no jugó con su '
+                  'nombre' % (cuenta_dicha(c.get('usuario'), c.get('id'), real), _sin_bandera(det).strip(),
+                              (c.get('sv') or ['ese servidor'])[0]))
+
+
 def reglas(preguntas, eventos, dry=True, todas=None):
     """🤖 LAS REGLAS QUE DLX APROBÓ EL 13/10/2026 —las que sólo cierran o evitan duplicados («sin pedirle nada») y las
     que le pidieron su «Sí»—. Cada una pasa por `resolver_solo()` con su prueba. Devuelve los ids.
@@ -2774,6 +2890,8 @@ def reglas(preguntas, eventos, dry=True, todas=None):
           (`distintos_aca()`): «Es alguien nuevo». Sin el caché de apodos, no
       R19 el aviso de ESCALA de una ronda que ahora paga (`motor.pago_fuera_de_escala()`) Y que en el evento cargado ya
           cobra (`cobran_ronda()`)
+      R21 el nombre que se anotó desde la cuenta de alguien de la Lista que esa noche no jugó con su nombre (`r21()`):
+          es él, EN ESE EVENTO (`quien` de `datos/decisiones.json`)
 
     ⚠️ R4 y R6 ESCRIBEN una decisión de batalla (`datos/decisiones.json`, `por: el ciclo (R4)`): así el lector no la
     vuelve a dejar «sin ganador». «Deshacer» la saca. ⚠️ Y CIERRAN DESPUÉS DE ESCRIBIRLA: si la escritura falla, la
@@ -2819,6 +2937,8 @@ def reglas(preguntas, eventos, dry=True, todas=None):
     siglas = _siglas()
     # R4 y R6: lo que se cierra recién cuando su decisión de batalla quedó escrita
     con_dec = []
+    # R21: ídem, con su regla `quien`
+    con_quien = []
 
     def sola(p, r, regla, porque, escribio=None):
         if resolver_solo(p, r, regla, porque, escribio=escribio):
@@ -2937,6 +3057,17 @@ def reglas(preguntas, eventos, dry=True, todas=None):
             if ids and all(quienes) and all(distintos_aca(det, q, akas, svs_p, siglas) for q in quienes):
                 sola(p, NUEVO, 'R16', 'Dlx dijo que «%s» no es %s, y no hay otra cuenta con ese nombre: queda con su '
                      'nombre' % (_sin_bandera(det), ' ni '.join(sorted(set(quienes)))))
+                continue
+        # ── R21 · la cuenta que se anotó así es de alguien de la Lista que esa noche no jugó con su nombre
+        if t == 'Nombre desconocido' and len(_nums(p)) == 1 and p['id'] not in hechas:
+            n = str(_nums(p)[0])
+            L = ll.get(n)
+            ev = eventos.get(n) or ('', '', '')
+            distinto = _son_distintos_de(det, {ev[1]} - {''})
+            x = r21(det, p.get('_insc') or _cuentas_insc(p), L, _iso_de_real, distinto) if L else None
+            if x:
+                clave_q = '%s · %s · %s · %s' % (L.get('nombre'), L.get('sv'), L.get('fecha'), det)
+                con_quien.append((p, x[0], x[1], clave_q))
     # 📝 R4 y R6: ANOTADO ANTES (`anotar_pendientes()`), DESPUÉS LA DECISIÓN, y el cierre al final (`flush_solas()`). Si
     # la decisión no se pudo escribir, se retira: no cierran nada
     ids_dec, dets = set(), set()
@@ -2946,6 +3077,28 @@ def reglas(preguntas, eventos, dry=True, todas=None):
             dets.add(esc['batalla'])
             hechas.add(p['id'])
     nuevas_dec = {k: v for k, v in nuevas_dec.items() if v.get('batalla') in dets}
+    # 🤖 R21: la regla `quien` de ese evento, y la pregunta cerrada como «Es X (en este evento)»
+    nuevas_q, ids_q = {}, set()
+    for p, real, porque, clave_q in con_quien:
+        if resolver_solo(p, 'Es %s (en este evento)' % real, 'R21', porque, escribio={'quien': clave_q}):
+            ids_q.add(p['id'])
+            hechas.add(p['id'])
+            nuevas_q[clave_q] = {'es': real, 'antes': _sin_bandera(p['detalle']).strip(), 'cuando': _ahora_et(),
+                                 'por': 'el ciclo (R21)', 'nota': porque[:200]}
+    if nuevas_q and not dry:
+        anotar_pendientes(ids_q, dry=False)
+        try:
+            d = _decisiones()
+            q = d.setdefault('quien', {})
+            for k, v in nuevas_q.items():
+                q.setdefault(k, v)
+            with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
+                json.dump(d, f, ensure_ascii=False, indent=1)
+                f.write('\n')
+        except Exception:
+            retirar_pendientes(ids_q, dry=False)
+            hechas.difference_update(ids_q)
+            raise
     if nuevas_dec and not dry:
         anotar_pendientes(ids_dec, dry=False)
         try:
@@ -3124,8 +3277,8 @@ def _pistas(p):
     if t == 'Nombre desconocido':
         # ✍️ R17: quién se anotó así para ese evento, firmado por su cuenta (`_cuentas_insc()`)
         for c in p.get('_insc') or []:
-            out.append('✍️ Se anotó así desde la cuenta de %s%s' % (
-                c['real'] or '@' + c['usuario'],
+            out.append('✍️ Se anotó así desde la cuenta %s%s' % (
+                cuenta_dicha(c.get('usuario'), c.get('id'), c.get('real')),
                 ' (es organizador o staff de %s: suele anotar a otros)' % c['sv'][0] if c.get('rol') else ''))
         sug = [x for x in _sugerencias(p['match'])]
         if sug:
@@ -3142,7 +3295,9 @@ def _pistas(p):
         if p['sug'] and p['sug'] != '—':
             out.append('¿Será %s?' % p['sug'].replace(', ', ' o '))
         did = p['detalle'].split(' = ')[-1].strip() if ' = ' in p['detalle'] else ''
-        out.append(('Su cuenta: ' + _cuenta(did)) if _cuenta(did) else '')
+        m_ = str(p.get('match') or '')
+        sv_ = m_[3:].split(' · ')[0].strip() if m_.startswith('sv ') and not _por_otro(m_) else ''
+        out.append(('Su cuenta: ' + _cuenta(did, [sv_])) if _cuenta(did, [sv_]) else '')
     elif t == 'Alias posible':
         m = re.search(r"ya tiene ID (\d+), el log trae (\d+)", p['detalle'])
         m2 = re.search(r"^ID (\d+) ya pertenece", p['detalle'])
@@ -3311,7 +3466,7 @@ def _pregunta(p):
         ll = [x for x in _en_llamada(det, _num_evento(p))[1]
               if norm(x) not in {norm(s) for s in dc + sug}]
         # 🔎 y las cuentas que se buscaron para ese nombre (Dlx, 04/10/2026, «4. Ok»): elegir una lo carga con ella
-        cuentas = ['Es la cuenta @%s' % c['usuario'] for c in _cuentas_posibles(det) if c.get('usuario')]
+        cuentas = [_op_cuenta(c) for c in _cuentas_posibles(det) if c.get('usuario')]
         # 🔑 R17 (13/10/2026): PRIMERO LA CUENTA QUE SE ANOTÓ ASÍ PARA ESE EVENTO. «TRRR» lo escribió la cuenta de BNA y
         # las opciones eran Hassan, nuevo o troll: la respuesta correcta no se podía elegir. Si la cuenta está en la
         # Lista, «Es <ella>»; si no, «Es la cuenta @usuario» (la carga con ella). Ver `_cuentas_insc()`
@@ -3319,7 +3474,7 @@ def _pregunta(p):
         # ⚠️ la de alguien con rol en ese servidor va al final: el staff anota a otros (Player anotó a Steven en URBF)
         de_insc = [c['real'] for c in p['_insc'] if c.get('real') and not c.get('rol')]
         de_staff = [c['real'] for c in p['_insc'] if c.get('real') and c.get('rol')]
-        cuentas = ['Es la cuenta @%s' % c['usuario'] for c in p['_insc'] if not c.get('real') and c.get('usuario')] + cuentas
+        cuentas = [_op_cuenta(c) for c in p['_insc'] if not c.get('real') and c.get('usuario')] + cuentas
         # 🔑 R16 (13/10/2026): Y NO SE OFRECE A QUIEN DLX DIJO QUE NO ES. «Force» ofrecía «Es ForceGP» después de que
         # Dlx dijo «el Force 🇲🇽 de FVS no es ForceGP» (`no_confundir` de AKAs)
         distinto = _son_distintos_de(det, {((_DATOS.get('eventos') or {}).get(n) or ('', ''))[1] for n in _nums(p)})
@@ -5663,6 +5818,25 @@ def _self_check():
         ok([c['id'] for c in _cuentas_insc(_q17)] == ['849'] and _o17[0] == 'Es BNA',
            'R17: la cuenta que se anotó «Trrr» para ese evento es la primera opción («Es BNA»); otro día u otro '
            'servidor, no')
+        # R21 (15/10/2026, Dlx: «creo que a veces podrías automatizar eso»): la cuenta que se anotó así, sola y sin rol,
+        # es de alguien que esa noche no jugó con su nombre → es él, en ese evento. Si jugó, si es staff, si anotó una
+        # pareja o si la bandera es de otro país, se pregunta como antes
+        _c21 = [{'id': '849', 'usuario': 'benjaclink31', 'nombre': 'MC 1🇦🇷', 'sv': ['FFA'], 'real': 'BNA', 'rol': False}]
+        _L21 = {'rondas': [{'b': [[['MC 1🇦🇷', 'Hassan'], 'Hassan', '']]}], 'tabla': [['Hassan'], ['MC 1']]}
+        _r = r21('MC 1🇦🇷', _c21, _L21, lambda _r: 'ar')
+        ok(_r and _r[0] == 'BNA' and '@benjaclink31' in _r[1]
+           and r21('MC 1🇦🇷', _c21, dict(_L21, tabla=[['BNA'], ['MC 1']]), lambda _r: 'ar') is None
+           and r21('MC 1🇦🇷', [dict(_c21[0], rol=True)], _L21, lambda _r: 'ar') is None
+           and r21('MC 1🇦🇷', [dict(_c21[0], nombre='MC 1 + Pepe')], _L21, lambda _r: 'ar') is None
+           and r21('MC 1🇨🇱', _c21, _L21, lambda _r: 'ar') is None
+           and r21('MC 1🇦🇷', _c21 * 2, _L21, lambda _r: 'ar') is None
+           and r21('MC 1🇦🇷', _c21, _L21, lambda _r: 'ar', distinto=lambda _r: True) is None,
+           'R21: la cuenta de BNA anotó «MC 1» y BNA no jugó esa noche → es BNA en ese evento; si jugó, si es staff, '
+           'si anotó una pareja, si la bandera es de otro país, si son dos cuentas o si Dlx dijo que no, se pregunta')
+        ok(CUENTA_RE.match('Es la cuenta @enkil2403 («Enkil»)').group(1) == 'enkil2403'
+           and cuenta_dicha('enkil2403', '', 'Enkill') == '@enkil2403 · en la Lista: Enkill',
+           'una cuenta se dice siempre igual —@usuario, su nombre en Discord y el de la Lista— y la opción con su nombre '
+           'sigue siendo «Es la cuenta @usuario»')
 
         # ── 🔴 la revisión del 14/10/2026 ──────────────────────────────────────────────────────────────────────────
         # (1, 2) R2 no pisa a Dlx: lo contestado sin aplicar, una fila que resolvió él, lo deshecho; y sin pregunta
