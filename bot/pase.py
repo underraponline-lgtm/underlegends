@@ -22,6 +22,10 @@ LAS REGLAS (los números, acá arriba: van con el rebalanceo del final)
 - **Las Tareas no son las Misiones** (Dlx, 06/10: *«hay TAREAS y misiones que son diferentes»*): las Misiones —jugar,
   ganar duelos, llegar lejos— son para todos y suman a la Temporada; las Tareas son de la Liga y de la página, y de
   DRA queda una sola, jugar ahí.
+- 🆕 **Desde la semana del 19/10 (`TAREAS_DESDE`)**, Dlx, 14/10/2026 (*«mejorá las misiones del pase»*): una diaria
+  más en el turno («Seguí a un rapero»: las mismas dos por día) y dos de temporada («Votá en 5 encuestas», «Poné
+  precio a 5 cabezas»), todas de cosas que el objeto ya cuenta; y los textos dicen cómo se cumple cada una (los 20
+  segundos de una llave en vivo, con qué se pone un precio). **Las semanales no cambian**: ver `config()`.
 - **Una cumplida no se pierde**: el objeto la anota (`pase_hecho`), así que una llave corregida no te baja de nivel.
 - **Cada nivel cuesta `XP_NIVEL`** (los primeros `XP_PRIMEROS`) **y paga `TIENDA_NIVEL` Puntos de Tienda**; algunos
   dan algo para tu perfil (`ESPECIALES`): la tarjeta de Temporada, dos insignias, dos títulos y el nombre dorado.
@@ -72,18 +76,34 @@ MIDE = ('activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'si
 #: las Tareas: `(id, texto, cómo se cumple, qué mide, meta, xp)`, en el orden en que se muestran
 DIARIAS = (
     ('entrar', 'Entrá hoy', 'Con tu cuenta en la página, usando el bot o jugando un evento.', 'activo', 1, 150),
-    ('felicitar1', 'Felicitá a alguien', 'Con 👏 en Publicaciones.', 'fel', 1, 150),
-    ('vivo1', 'Mirá una llave en vivo', 'Abrí la llave de un evento mientras se juega, con tu cuenta.', 'vivo', 1, 150),
+    ('felicitar1', 'Felicitá a alguien', 'Con 👏 en una publicación de Publicaciones.', 'fel', 1, 150),
+    ('vivo1', 'Mirá una llave en vivo', 'Abrí con tu cuenta la llave de un evento mientras se juega, y dejala abierta 20 '
+     'segundos.', 'vivo', 1, 150),
+)
+#: 🆕 LAS TAREAS NUEVAS (Dlx, 14/10/2026: «mejorá las misiones del pase»), desde la semana del lunes 19/10, con las
+#: Misiones nuevas: lo de esta semana no cambia a mitad de camino
+TAREAS_DESDE = '2026-10-19'
+#: 🆕 las diarias desde `TAREAS_DESDE`: una más en el turno, «Seguí a un rapero» —la única que se puede hacer cualquier
+#: día: mirar una llave en vivo pide que haya un evento—. Las mismas dos por día (`POR_DIA`), así que la XP de un día
+#: no cambia. ⚠️ EN ESTE ORDEN A PROPÓSITO: con él, el 18/10 y el 19/10 dan la misma Tarea que con la lista de antes
+#: (el objeto revisa hoy y ayer cuando le llega la lista nueva: otro orden le cambiaba la Tarea a un día ya empezado)
+DIARIAS_NUEVAS = (
+    DIARIAS[0],
+    DIARIAS[2],
+    ('sigue1', 'Seguí a un rapero', 'Desde su perfil, con ⭐ Seguir.', 'sigue', 1, 150),
+    DIARIAS[1],
 )
 #: cuántas diarias hay cada día: la primera siempre, y las demás se turnan día por día
 POR_DIA = 2
 SEMANALES = (
     ('dias', 'Entrá 3 días', 'Tres días cualesquiera de la semana: la página con tu cuenta, el bot o un evento.',
      'activo', 3, 500),
-    ('felicitar', 'Felicitá a 3 personas', 'Con 👏 en Publicaciones.', 'fel', 3, 500),
+    ('felicitar', 'Felicitá a 3 personas', 'Con 👏 en Publicaciones: tres publicaciones distintas.', 'fel', 3, 500),
     ('dra', 'Jugá un evento en DRA', 'Cualquier evento de DRA de esta semana.', 'dra', 1, 500),
-    ('vivo', 'Mirá 2 llaves en vivo', 'Dos llaves distintas mientras se juegan, con tu cuenta.', 'vivo', 2, 500),
-    ('precio', 'Poné precio a una cabeza', 'En la Tienda, a cualquiera de los buscados.', 'precio', 1, 500),
+    ('vivo', 'Mirá 2 llaves en vivo', 'Dos llaves distintas mientras se juegan, con tu cuenta: 20 segundos cada una.',
+     'vivo', 2, 500),
+    ('precio', 'Poné precio a una cabeza', 'En la Tienda, con tus Puntos de Tienda: a cualquiera de los buscados.',
+     'precio', 1, 500),
 )
 TEMPORADA = (
     ('fel10', 'Felicitá a 10 personas', 'En toda la temporada, con 👏 en Publicaciones.', 'fel', 10, 1500),
@@ -96,6 +116,15 @@ TEMPORADA = (
     ('dra5', 'Jugá 5 eventos en DRA', 'En toda la temporada.', 'dra', 5, 3000),
     ('dias30', 'Entrá 30 días', 'En toda la temporada: la página con tu cuenta, el bot o un evento.', 'activo', 30,
      3000),
+)
+#: 🆕 dos de temporada más desde `TAREAS_DESDE`, de cosas de la página que el objeto ya cuenta y ninguna Tarea pedía
+#: con DRA organizando: votar las encuestas (dos por semana: El Elegido y el ×2) y el precio por cabeza de la Tienda.
+#: Como toda Tarea de temporada, cuentan desde el arranque del Pase: quien ya votó 5 veces la cumple al aparecer
+TEMPORADA_NUEVAS = (
+    ('voto5', 'Votá en 5 encuestas', 'En toda la temporada: El Elegido del Most Wanted y el ×2 de cada semana, en la '
+     'página.', 'voto', 5, 1500),
+    ('precio5', 'Poné precio a 5 cabezas', 'En toda la temporada, en la Tienda: cinco precios, a los buscados que '
+     'quieras.', 'precio', 5, 2000),
 )
 #: 🏠 MIENTRAS DRA NO ORGANICE, SUS TRES TAREAS SE CAMBIAN POR ESTAS (Dlx, 12/10/2026, «6. B»). DRA no había hecho
 #: ningún evento en la T1, así que «Jugá un evento en DRA» y las dos de temporada no las podía cumplir nadie: eran 5.500
@@ -149,15 +178,18 @@ def premios():
     return out
 
 
-def diarias_de(dia):
-    """Las diarias de un día `AAAA-MM-DD` (hora del este): la primera siempre, y las demás se turnan.
+def diarias_de(dia, lista=None):
+    """Las diarias de un día `AAAA-MM-DD` (hora del este): la primera siempre, y las demás se turnan. `lista`, las
+    diarias de donde salen; sin ella, las de ese día (`DIARIAS_NUEVAS` desde `TAREAS_DESDE`).
 
     ⚠️ LA MISMA CUENTA QUE `paseDelDia()` DE `bot/avisos.js`: el día como número (días desde 1970) elige."""
+    if lista is None:
+        lista = DIARIAS_NUEVAS if dia >= TAREAS_DESDE else DIARIAS
     n = (dt.date.fromisoformat(dia) - dt.date(1970, 1, 1)).days
-    resto = DIARIAS[1:]
+    resto = lista[1:]
     if not resto:
-        return list(DIARIAS[:1])
-    return [DIARIAS[0]] + [resto[(n + j) % len(resto)] for j in range(min(POR_DIA - 1, len(resto)))]
+        return list(lista[:1])
+    return [lista[0]] + [resto[(n + j) % len(resto)] for j in range(min(POR_DIA - 1, len(resto)))]
 
 
 def dra_activo(evs, ahora):
@@ -166,13 +198,19 @@ def dra_activo(evs, ahora):
     return any(ev.get('sv') == 'DRA' and ev.get('t') and desde <= ev['t'] <= ahora for ev in evs or [])
 
 
-def config(temp, dra=True):
+def config(temp, dra=True, nuevas=True):
     """Lo que lee el objeto: los números y los textos. La temporada (`temp`) separa un Pase del siguiente. Sin `dra`
-    (DRA no está organizando), sus Tareas van cambiadas por las de `SIN_DRA`."""
+    (DRA no está organizando), sus Tareas van cambiadas por las de `SIN_DRA`. Sin `nuevas` (antes de `TAREAS_DESDE`),
+    las diarias y las de temporada de antes.
+
+    ⚠️ LAS SEMANALES NO CAMBIAN, y es a propósito: el objeto revisa TODAS las semanas del Pase con la misma lista
+    (`paseRevisar()`), así que una semanal nueva se pagaría también en las semanas que ya pasaron. Para sumar una sin
+    eso, el objeto tiene que saber desde qué semana vale cada una: es un cambio del Worker, y se despliega aparte."""
     lista = lambda xs: [list(SIN_DRA[t[0]]) if not dra and t[0] in SIN_DRA else list(t) for t in xs]
     out = {'temp': temp or 'prueba', 'niveles': NIVELES, 'umbrales': umbrales(), 'cola': list(COLA),
-           'diarias': lista(DIARIAS), 'por_dia': POR_DIA, 'semanales': lista(SEMANALES),
-           'temporada': lista(TEMPORADA), 'premios': premios(), 'publicar': list(PUBLICAR)}
+           'diarias': lista(DIARIAS_NUEVAS if nuevas else DIARIAS), 'por_dia': POR_DIA, 'semanales': lista(SEMANALES),
+           'temporada': lista(TEMPORADA + (TEMPORADA_NUEVAS if nuevas else ())), 'premios': premios(),
+           'publicar': list(PUBLICAR)}
     # ⚠️ LA SEMANA DE PRUEBA TENÍA «Completá tus misiones», que ya no es una Tarea: lo que se cumplió sigue valiendo lo
     # que vale una semanal (si no, a quien sólo tenía ésa se le iba el nivel 1, y con él la tarjeta de Temporada)
     if out['temp'] == 'prueba':
@@ -278,8 +316,10 @@ def armar(ahora=None):
     sems = semanas(ahora)
     miembros = sorted(ids)
     h = hechas(sems, evs, _cazas(MW.leer()), buscador(PR.discords(pool)), set(miembros))
-    out = {'cfg': config(MU.temporada_actual(ahora), dra=dra_activo(evs, ahora)), 'sem': sems, 'miembros': miembros,
-           'hechas': h}
+    # 🆕 las Tareas nuevas entran con la semana del 19/10 (`TAREAS_DESDE`), no a mitad de ésta
+    nuevas = MU.periodo(ahora)[0] >= TAREAS_DESDE
+    out = {'cfg': config(MU.temporada_actual(ahora), dra=dra_activo(evs, ahora), nuevas=nuevas), 'sem': sems,
+           'miembros': miembros, 'hechas': h}
     out['v'] = hashlib.sha256(json.dumps(out, sort_keys=True, ensure_ascii=False).encode('utf-8')).hexdigest()[:16]
     return out
 
@@ -400,7 +440,7 @@ def _self_check():
     ok(ps[-1][2] == 'insignia' and all(p[1] > 0 for p in ps), 'todos pagan Tienda y el último es una insignia')
     ok({p[2] for p in ps if p[2]} == {'tarjeta', 'insignia', 'titulo', 'color'} and ps[0][2] == 'tarjeta',
        'el nivel 1 es la tarjeta de Temporada; los demás premios: insignias, títulos y color')
-    todas = DIARIAS + SEMANALES + TEMPORADA
+    todas = DIARIAS_NUEVAS + SEMANALES + TEMPORADA + TEMPORADA_NUEVAS
     ids = [t[0] for t in todas]
     ok(len(ids) == len(set(ids)) and all(t[3] in MIDE and t[4] >= 1 and t[5] > 0 for t in todas),
        'cada Tarea tiene un id único, mide algo que el objeto sabe contar, y da XP')
@@ -413,7 +453,8 @@ def _self_check():
     ids_sd = [t[0] for t in sd['semanales'] + sd['temporada']]
     ok(not any(t[3] == 'dra' for t in sd['semanales'] + sd['temporada'])
        and {'voto', 'apuesta3', 'sigue5'} <= set(ids_sd) and len(ids_sd) == len(set(ids_sd))
-       and sum(t[5] for t in sd['semanales'] + sd['temporada']) == sum(t[5] for t in SEMANALES + TEMPORADA)
+       and sum(t[5] for t in sd['semanales'] + sd['temporada'])
+       == sum(t[5] for t in config('t1')['semanales'] + config('t1')['temporada'])
        and all(t[3] in MIDE for t in sd['semanales'] + sd['temporada']),
        'sin DRA organizando, sus tres Tareas cambian por otras que valen lo mismo')
     _ah = dt.datetime(2026, 10, 12, 23, tzinfo=dt.timezone.utc)
@@ -435,6 +476,28 @@ def _self_check():
     ok(c['temp'] == 't1' and c['umbrales'] == u and c['cola'] == [1000, 300] and c['publicar'] == [10, 30]
        and all(len(t) == 6 for t in c['diarias'] + c['semanales'] + c['temporada']),
        'lo que va al objeto: umbrales, cola, las tres listas de Tareas y qué se publica')
+    # 🆕 las Tareas nuevas (14/10/2026), desde la semana del 19/10
+    viejo = config('t1', nuevas=False)
+    ok(viejo['diarias'] == [list(t) for t in DIARIAS] and viejo['temporada'] == [list(t) for t in TEMPORADA]
+       and viejo['semanales'] == c['semanales'],
+       'antes del %s, las Tareas de siempre; y las semanales no cambian nunca (el objeto las pagaría para atrás)'
+       % TAREAS_DESDE)
+    _d = lambda dia, lst: [x[0] for x in diarias_de(dia, lst)]                          # noqa: E731
+    ok(all(_d(dia, DIARIAS) == _d(dia, DIARIAS_NUEVAS) for dia in ('2026-10-18', '2026-10-19'))
+       and diarias_de('2026-10-18') == diarias_de('2026-10-18', DIARIAS)
+       and {_d('2026-10-%d' % k, None)[1] for k in (20, 21, 22)} == {'vivo1', 'sigue1', 'felicitar1'},
+       'las diarias: el 18 y el 19 dan lo mismo con la lista vieja y la nueva (no cambia un día empezado), y desde '
+       'el 20 se turnan las tres')
+    ok(all(sum(t[5] for t in diarias_de('2026-10-%d' % k)) == 300 for k in range(12, 31)),
+       'la XP de un día no cambia: dos diarias de 150')
+    ids_n = [t[0] for x in (config('t1'), config('t1', dra=False)) for t in x['diarias'] + x['semanales'] + x['temporada']]
+    ok({'sigue1', 'voto5', 'precio5'} <= set(ids_n)
+       and all(len(set(i)) == len(i) for i in ([t[0] for t in x['diarias'] + x['semanales'] + x['temporada']]
+                                                for x in (config('t1'), config('t1', dra=False))))
+       and all(t[3] in MIDE for x in (config('t1'), config('t1', dra=False))
+               for t in x['diarias'] + x['semanales'] + x['temporada']),
+       'las nuevas miden cosas que el objeto ya cuenta, y ningún id se repite (con DRA y sin DRA): el objeto rechaza '
+       'un Pase con una Tarea repetida')
     # 🔴 los frenos de los niveles (revisión del 05/10/2026): sobre una copia, nunca sobre el archivo de verdad
     global NIVELES_ARCHIVO
     import tempfile
