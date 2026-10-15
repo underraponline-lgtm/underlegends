@@ -112,7 +112,7 @@ ANCHO_FLYER, CALIDAD_FLYER = 720, 82
 #: cuántos mensajes del canal de anuncios se leen por corrida (uno solo pedido: el flyer y la fecha están arriba)
 ANUNCIOS_LEER = 50
 #: cuántas fechas (jornadas) de cada liga viajan a la página, las más nuevas
-FECHAS_WEB = 8
+FECHAS_WEB = 10
 #: los puntos de la tabla: directa 3 y 0; réplica 2 y 1 (así puntúan las FMH y Snake: «+3 directo; en réplica +2 el
 #: ganador y +1 el perdedor»)
 PUNTOS = {'directa': (3, 0), 'replica': (2, 1)}
@@ -947,6 +947,34 @@ def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None):
     return {'t': d.get('t'), 'ligas': out} if out else None
 
 
+#: la clave de KV del detalle de cada liga (las fechas y el flyer entero), que la página pide al abrir Ligas (`/api/ligas`)
+CLAVE_WEB = 'web:ligas'
+
+
+def separar(web):
+    """`(lo del lobby, el detalle)`: el lobby viaja en CADA visita y ya está al tope de lo que pesa (el self-check de
+    `subir_web.py`: 45 KB comprimido), así que las fechas —todas las batallas— y el flyer entero van aparte, a
+    `CLAVE_WEB`, y la página los pide al abrir Ligas (como el muro y las llaves viejas). En el lobby queda lo que el
+    Inicio necesita: la tabla (para votar), `fl` (la imagen del flyer, para el escenario), `prox`, `vota` y `f0`, el
+    resumen de la última fecha (`{j, t, n}`: su jornada, cuándo se cerró la última batalla y cuántas tienen veredicto).
+    `ks` del lobby: sólo los nombres de la tabla y de `ult`; el detalle trae los de todas las fechas."""
+    if not web:
+        return None, None
+    lobby, det = [], {}
+    for L in web.get('ligas') or []:
+        y = {k: v for k, v in L.items() if k not in ('fechas', 'flyer', 'ks')}
+        nombres = {f[0] for f in L.get('tabla') or []} | {n for u in L.get('ult') or [] for n in u[:3] if n}
+        y['ks'] = {n: k for n, k in (L.get('ks') or {}).items() if n in nombres}
+        if L.get('flyer'):
+            y['fl'] = L['flyer']['u']
+        f0 = (L.get('fechas') or [None])[0]
+        if f0:
+            y['f0'] = {'j': f0['j'], 't': f0['t'], 'n': sum(1 for b in f0['b'] if b[2])}
+        lobby.append(y)
+        det[L['id']] = {k: L[k] for k in ('fechas', 'flyer', 'ks') if L.get(k)}
+    return {'t': web.get('t'), 'ligas': lobby}, {'t': web.get('t'), 'ligas': det}
+
+
 def para_kv(web):
     """🗳️ Lo que lee el Worker para validar un voto de «¿quién gana la liga?» (`validarVotoLiga()` en bot/avisos.js):
     `{lista: [{id, hasta, op}]}` con las mismas opciones que la página (la tabla de `para_web()`). Va también lo cerrado,
@@ -1130,6 +1158,13 @@ def _self_check():
     ok(kv['lista'][0] == {'id': 'fms-peru', 'hasta': '2026-11-08T23:59:59Z', 'op': [f[0] for f in lp['tabla']]}
        and kv['lista'][0]['op'] == ['SOL', 'LSD', 'PIPAS', 'NEXUS'] and len(kv['lista']) == 2,
        'lo que valida el Worker: las mismas opciones que la tabla de la página', str(kv))
+    lob, det = separar(w)
+    lo = {x['id']: x for x in lob['ligas']}
+    ok('fechas' not in lo['fms-peru'] and 'flyer' not in lo['fmh-andes'] and lo['fmh-andes']['fl'] == 'https://r2/ligas/x.webp'
+       and lo['fms-peru']['f0'] == {'j': None, 't': '2026-10-14T03:00:00Z', 'n': 1} and lo['fms-peru']['vota']
+       and det['ligas']['fms-peru']['fechas'] == lp['fechas'] and det['ligas']['fmh-andes']['flyer'] == la['flyer']
+       and para_kv(lob) == kv,
+       'el lobby lleva lo del Inicio (la tabla, `fl`, `f0`, `vota`); las fechas y el flyer entero van aparte', str(lo['fms-peru']))
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 

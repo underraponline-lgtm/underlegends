@@ -2574,6 +2574,14 @@ console.log('\n🗳️ ¿QUIÉN GANA LA LIGA?\n');
   alObjeto.length = 0;
   r = await worker.fetch(new Request('https://x/avisos/ligas-votos'), env, ctx);
   ok('/avisos/ligas-votos le pregunta al objeto', r.status === 200 && alObjeto.length === 1 && alObjeto[0][0].endsWith('/ligas-votos'));
+  // 🏟️ el detalle de las ligas (las fechas y el flyer), aparte del lobby: una lectura de KV, tal cual
+  PUESTO['web:ligas'] = JSON.stringify({ t: 'x', ligas: { 'fmh-espana': { fechas: [{ j: 6, d: '2026-10-14', t: 'x', b: [] }] } } });
+  r = await worker.fetch(new Request('https://x/ligas'), env, ctx);
+  const det = r.status === 200 ? JSON.parse(await r.text()) : null;
+  ok('/ligas devuelve el detalle de las ligas tal cual está en KV (web:ligas)', det && det.ligas['fmh-espana'].fechas[0].j === 6);
+  delete PUESTO['web:ligas'];
+  r = await worker.fetch(new Request('https://x/ligas'), env, ctx);
+  ok('y sin detalle todavía, 404 (la página sigue con la tabla)', r.status === 404);
   // y el proxy de Pages las deja pasar (una lista cerrada: sin esto, la página pide y recibe 404)
   const { default: proxy } = await import('./paginas/_worker.js');
   let fue = null;
@@ -2585,6 +2593,9 @@ console.log('\n🗳️ ¿QUIÉN GANA LA LIGA?\n');
   await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/ligas-votos'), envP);
   ok('el proxy de Pages deja pasar votar (POST) y los votos (GET)', ida && ida.u.endsWith('/avisos/liga-votar') && ida.m === 'POST' &&
      fue && fue.u.endsWith('/avisos/ligas-votos'), JSON.stringify([ida, fue]));
+  fue = null;
+  await proxy.fetch(new Request('https://underlegends.pages.dev/api/ligas'), envP);
+  ok('y el detalle de las ligas (/api/ligas → /ligas del Worker)', fue && fue.u.endsWith('.workers.dev/ligas'), JSON.stringify(fue));
   globalThis.fetch = antesF;
   env.AVISOS = antesA;
   delete PUESTO['ligas:votar'];

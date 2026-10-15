@@ -224,7 +224,8 @@ def flyers(lg, svs=None):
     out = []
     for lid, x in ((lg or {}).get('ligas') or {}).items():
         fl = x.get('flyer') or {}
-        if not fl.get('url') or not _de_iso(fl.get('t')):
+        # ⚠️ y sólo de una liga que ya está en Ligas (con una batalla cerrada): «Ver la liga» tiene que llevar a algún lado
+        if not fl.get('url') or not _de_iso(fl.get('t')) or not any(len(b) > 5 and b[5] for b in x.get('batallas') or []):
             continue
         L = LG.LIGAS.get(lid) or {}
         sv = x.get('sv') or L.get('sv') or ''
@@ -562,8 +563,13 @@ def _self_check():
         # 🖼️ el flyer de una liga: sólo el que está en R2
         'ligas': {'ligas': {'fmh-espana': {'n': 'FMH España', 'sv': 'URBF', 'flyer': {
             'id': '55', 't': '2026-10-14T13:47:43Z', 'tit': 'MTZ vs ORTIZ', 'url': 'https://r2/ligas/fmh-espana/55.webp',
-            'w': 720, 'h': 900}},
-            'fms-peru': {'n': 'FMS Perú', 'sv': 'DDF', 'flyer': {'id': '56', 't': '2026-10-14T12:00:00Z'}}}},
+            'w': 720, 'h': 900}, 'batallas': [['1', '2026-10-13T20:00:00Z', 6, 'MTZ', 'ORTIZ', 'ORTIZ', 'directa', '']]},
+            'fms-peru': {'n': 'FMS Perú', 'sv': 'DDF', 'flyer': {'id': '56', 't': '2026-10-14T12:00:00Z'},
+                         'batallas': [['2', '2026-10-13T20:00:00Z', 1, 'A', 'B', 'A', 'directa', '']]},
+            # una liga con afiche y sin ninguna batalla cerrada todavía no está en Ligas: su flyer no va
+            'fms-world-series': {'n': 'FMS World Series', 'sv': 'DDF', 'flyer': {
+                'id': '57', 't': '2026-10-14T12:00:00Z', 'url': 'https://r2/ligas/ws/57.webp'},
+                'batallas': [['3', '2026-10-13T20:00:00Z', 1, 'A', 'B', '', '', '']]}}},
         'svs': {'URBF': {'guild_id': '9'}}}
     muro, guardar = armar({'tabla': tabla, 'novedades': [{'t': '2026-10-14T13:00:00Z', 'tit': 'Hola',
                                                           'tx': 'la Liga', 'link': 'x'}]},

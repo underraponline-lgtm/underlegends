@@ -633,6 +633,9 @@ def armar():
         _nm, _dd = _pid_k.get(_k) or ('', '')
         if _nm:
             _orgp[_k] = [_nm, ('%s/%s' % (_dd, _avs[_dd])) if _dd and _avs.get(_dd) else '']
+    # 🏟️ las ligas: lo del Inicio va en el lobby y el detalle (las fechas, el flyer entero) aparte (`ligas.separar()`)
+    # 🏟️ con el perfil de cada nombre: el de los que jugaron y el del staff (ForceGP, 14/10/2026)
+    _lg_lobby, _lg_det = _ligas({**{x['raw']: x['k'] for x in _staff_rol}, **{p['raw']: _clave(p) for p in todos if p.get('raw')}})
     return {
         'temporada': SELLO,
         'fase': {'arranca': _f[0], 'termina': _f[1]} if _f else None,
@@ -699,8 +702,9 @@ def armar():
         'mis': _mis(),
         # 🏟️ LAS LIGAS DE LOS SERVIDORES (12/10/2026, Dlx: «2. Me gusta»): la tabla de cada una y sus últimos resultados.
         # Ver `bot/ligas.py`
-        # 🏟️ con el perfil de cada nombre: el de los que jugaron y el del staff (ForceGP, 14/10/2026)
-        'ligas': _ligas({**{x['raw']: x['k'] for x in _staff_rol}, **{p['raw']: _clave(p) for p in todos if p.get('raw')}}),
+        'ligas': _lg_lobby,
+        # ⚠️ EL DETALLE DE CADA LIGA NO VIAJA EN EL LOBBY: `main()` lo sube aparte, a `ligas.CLAVE_WEB` (`/api/ligas`)
+        '_ligas': _lg_det,
         # 📅 QUIÉNES ORGANIZAN EN CADA SERVIDOR (12/10/2026, Dlx «5. A»: «uno donde diga cuándo cada sv organiza
         # usualmente y quiénes»). El cuándo ya lo saca la página del calendario; el quiénes, de acá. Ver `_agenda()`
         'agenda': _agenda(),
@@ -2898,14 +2902,16 @@ def _agenda():
 
 
 def _ligas(claves=None):
-    """🏟️ Las ligas de los servidores (`bot/ligas.py`), o `None`. Nunca frena el lobby. `claves`: nombre de la Lista →
-    clave de su perfil, para que cada nombre lleve al suyo (también el staff que no está en la tabla)."""
+    """🏟️ Las ligas de los servidores (`bot/ligas.py`): `(lo del lobby, el detalle)`, o `(None, None)`. Nunca frena el
+    lobby. `claves`: nombre de la Lista → clave de su perfil, para que cada nombre lleve al suyo (también el staff que
+    no está en la tabla). El detalle —las fechas y el flyer entero— va a `ligas.CLAVE_WEB` (14/10/2026: el lobby ya
+    estaba al tope de lo que pesa)."""
     try:
         import ligas as _L
-        return _L.para_web(claves=claves)
+        return _L.separar(_L.para_web(claves=claves))
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ las ligas no entran al lobby: %s' % str(e)[:120])
-        return None
+        return None, None
 
 
 _MIS = {}
@@ -3529,6 +3535,11 @@ def _self_check():
     p = armar()
     perf = p.pop('_perfiles', None) or {}
     todas = p.pop('_llaves', None)
+    # 🏟️ el detalle de las ligas tampoco viaja en el lobby (14/10/2026): las fechas van a `ligas.CLAVE_WEB`
+    _lgd = p.pop('_ligas', None)
+    ok(not any('fechas' in x for x in ((p.get('ligas') or {}).get('ligas') or []))
+       and (_lgd is None) == (p.get('ligas') is None),
+       'las fechas de cada liga no viajan en el lobby: van aparte, a `web:ligas`')
     ok(isinstance(p.get('tabla'), list), 'arma la tabla  (%d)'
        % len(p.get('tabla') or []))
     # ▲▼ y «NUEVO» contra la foto del lunes (Dlx, 02/10/2026: «1. me gusta · 3. me gusta»)
@@ -3813,6 +3824,7 @@ def main():
     p = armar()
     perf = p.pop('_perfiles', None) or {}
     todas = p.pop('_llaves', None) or {}
+    ligas_det = p.pop('_ligas', None)
     redes_ok = _con_redes(perf) is not None
     print('\n══ LO QUE VA A LA WEB ══\n')
     print('   temporada %s · %d en el padrón del pool' % (p['temporada'],
@@ -3877,8 +3889,13 @@ def main():
         ok8 = subir(_LG.para_kv(p.get('ligas')), solo_si_cambio='--siempre' not in sys.argv, clave=_LG.CLAVE_KV)
         print('   %s' % ('✓ quién gana las ligas: igual' if ok8 is None else '✅ quién gana las ligas, subido'
                          if ok8 else '🔴 no pude subir quién gana las ligas'))
+        # 🏟️ Y EL DETALLE DE CADA LIGA (las fechas y el flyer), aparte del lobby: lo pide la página al abrir Ligas
+        if ligas_det:
+            ok9 = subir(ligas_det, solo_si_cambio='--siempre' not in sys.argv, clave=_LG.CLAVE_WEB)
+            print('   %s' % ('✓ el detalle de las ligas: igual' if ok9 is None else '✅ el detalle de las ligas, subido'
+                             if ok9 else '🔴 no pude subir el detalle de las ligas'))
     except Exception as e:                               # noqa: BLE001
-        print('   🔴 quién gana las ligas: %s' % str(e)[:80])
+        print('   🔴 las ligas: %s' % str(e)[:80])
     # 🔑 LOS PERFILES, CON EL MISMO DIFF-WRITER: cambian cuando entra una
     # llave, no en cada corrida. Si fallan, el lobby ya está arriba.
     ok2 = None

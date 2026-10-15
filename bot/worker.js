@@ -4014,9 +4014,11 @@ export default {
       // `#/llave/<n>` apunta a una que ya no viaja en el lobby
       // 🔑 Y EL MURO DE PUBLICACIONES (28/09/2026), igual: se pide al abrir la
       // vista, así no viaja en cada visita. Lo arma `bot/muro.py`
-      if (ruta === '/perfiles' || ruta === '/llaves' || ruta === '/muro') {
+      // 🏟️ Y EL DETALLE DE LAS LIGAS (14/10/2026), igual: las fechas y el flyer de cada una, al abrir Ligas
+      // (`ligas.separar()` en bot/ligas.py: el lobby ya estaba al tope de lo que pesa)
+      if (ruta === '/perfiles' || ruta === '/llaves' || ruta === '/muro' || ruta === '/ligas') {
         const crudo = await env.KV.get(ruta === '/llaves' ? 'web:llaves' : ruta === '/muro' ? 'web:muro'
-          : 'web:perfiles');
+          : ruta === '/ligas' ? 'web:ligas' : 'web:perfiles');
         return new Response(crudo || '{}', {
           status: crudo ? 200 : 404,
           headers: {
