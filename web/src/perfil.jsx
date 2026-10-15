@@ -765,7 +765,7 @@ export function SusLigas({ liga, k, esYo }) {
       <div className="sec-t"><h2>{esYo ? 'Tus ligas' : 'Sus ligas'}</h2><a href="#/ranking/ligas">Ligas <Ico n="flecha" t={16} /></a></div>
       <ul className="pf-lg">{mias.map(([L, i, [, pj, pg, pts]]) => (
         <li key={L.id}>
-          <b>{L.n}</b><small>{siglaDe(L.sv)}</small>
+          <b><a href={'#/ranking/ligas/' + encodeURIComponent(L.id)}>{L.n}</a></b><small>{siglaDe(L.sv)}</small>
           <span className="pf-lg-p">{i + 1}º de {L.tabla.length}</span>
           <span>{pg} de {pj} {pj === 1 ? 'ganada' : 'ganadas'} · <b>{pts}</b> pts</span>
         </li>

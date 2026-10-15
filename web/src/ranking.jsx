@@ -252,7 +252,8 @@ const SUBS = {
   ligas: {
     et: 'Ligas', propia: Ligas, filas: () => [], orden: () => 0, hay: (L) => !!(L.d.ligas && (L.d.ligas.ligas || []).length),
     siNo: <><b>Ligas</b>: las ligas de los servidores, con su tabla y sus resultados. Aparecen con su primera batalla.</>,
-    baj: <>Las ligas de los servidores de la Liga: la tabla de cada una y sus últimos resultados. Sus batallas suman a tus <b>duelos</b>.</>,
+    // 🏆 cada una como un torneo (14/10/2026): la tabla, las fechas, la próxima y su flyer, y quién gana
+    baj: <>Las ligas de los servidores, como torneos: la tabla, los resultados de cada fecha, la próxima y su flyer. Votá quién gana cada una. Sus batallas suman a tus <b>duelos</b>.</>,
   },
   // 🏟️ las divisiones de la semana (04/10/2026): su propia vista (`Divisiones`), no la tabla de los demás
   divisiones: {
@@ -547,7 +548,8 @@ function BotonHistoria({ liga, cfg, f, n }) {
 
 const VER = 50;
 
-export function Ranking({ liga, sub: subRuta, dc, raiz }) {
+// `ver`: lo que va después del ranking en la dirección (`#/ranking/ligas/<liga>`, 14/10/2026): qué abre su vista propia
+export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const [sub, setSub] = useState(SUBS[subRuta] ? subRuta : 'temporada');
   useEffect(() => { setSub(SUBS[subRuta] ? subRuta : 'temporada'); }, [subRuta]);
   const [orden, setOrden] = useState(null);
@@ -805,7 +807,7 @@ export function Ranking({ liga, sub: subRuta, dc, raiz }) {
           <div className="rk-pronto"><span className="tag-pronto">{cfg.cuando ? 'TEMPORADA 2' : 'PRÓXIMAMENTE'}</span><p>{pronto}</p>
             {cfg.ejemplos ? <ul className="rk-ej" aria-label="Por ejemplo">{cfg.ejemplos.map(([ic, t]) => <li key={t}><Ico n={ic} t={22} /><b>{t}</b><small>suma a tu Temporada</small></li>)}</ul> : null}
           </div>
-        ) : cfg.propia ? <cfg.propia liga={liga} /> : (
+        ) : cfg.propia ? <cfg.propia liga={liga} ver={abre} /> : (
           <>
             {/* con el ranking vacío (el día que arranca la temporada) no hay qué buscar ni qué filtrar */}
             {base.length ? <div className="rk-fil">

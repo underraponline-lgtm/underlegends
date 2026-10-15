@@ -669,7 +669,33 @@ export class Liga {
       return ['EVENTO · ' + siglaDe(it.sv), siglaDe(it.sv) + ' anunció ' + limpio(it.ev), ['sv', it.sv], c, { ruta: '#/eventos' }];
     }
     if (it.tipo === 'liga') return ['LA LIGA', limpio(it.tit), ['ul'], c, { link: it.link }];
+    // 🖼️ el flyer de una liga de los servidores (bot/muro.py `flyers()`, Dlx 14/10/2026: «Flyers en Publicaciones e
+    // Historias»): la imagen y a la liga
+    if (it.tipo === 'flyer') {
+      return ['LIGA · ' + siglaDe(it.sv), limpio(it.ln) + (it.tit ? ': ' + limpio(it.tit) : ''), ['img', it.img], c,
+        { ruta: '#/ranking/ligas/' + encodeURIComponent(it.liga || '') }];
+    }
     return null;
+  }
+  // 🏟️ LAS LIGAS DE LOS SERVIDORES (`ligas` del payload, bot/ligas.py `para_web()`)
+  ligas() { return ((this.d.ligas || {}).ligas) || []; }
+  // 🗓️ LA FECHA DE HOY DE CADA LIGA (Dlx, 14/10/2026: «Ligas en el Inicio»: la fecha de hoy, como un evento más). Hoy
+  // es lo que la liga ANUNCIÓ para hoy (`prox`) o una jornada con veredictos de hoy (se está jugando). `[{L, j, t, n,
+  // juega}]`: `t` el instante si lo dijo, `n` cuántas batallas de esa jornada ya tienen veredicto, `juega` si hay de hoy
+  // `f0` es el resumen de su última fecha (`ligas.separar()`: las fechas enteras no viajan en el lobby)
+  fechasHoy() {
+    const hoy = this.diaClave(this.ahora);
+    const out = [];
+    this.ligas().forEach((L) => {
+      const p = L.prox;
+      const pHoy = !!(p && (p.t ? this.diaClave(p.t) === hoy : p.d === hoy));
+      const f = L.f0;
+      const fHoy = !!(f && f.t && this.diaClave(f.t) === hoy);
+      if (!pHoy && !fHoy) return;
+      const j = (pHoy && p.j) || (fHoy && f.j) || null;
+      out.push({ L, j, t: pHoy && p.t ? p.t : '', n: fHoy ? f.n || 0 : 0, juega: fHoy, link: pHoy ? p.link || '' : '' });
+    });
+    return out;
   }
   // lo último sin repetir: la primera de cada clase, y después el resto
   variados(n) {

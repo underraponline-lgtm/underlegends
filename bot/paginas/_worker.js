@@ -59,6 +59,10 @@ const AVISOS = {
   // `validarVoto()` en bot/avisos.js: quién vota lo dice Discord, no la página
   '/api/avisos/encuestas': 'GET',
   '/api/avisos/votar': 'POST',
+  // 🗳️ «¿quién gana la liga?» (14/10/2026): cuántos votos lleva cada uno, y votar. Ver `validarVotoLiga()` en
+  // bot/avisos.js: quién vota lo dice la sesión; qué liga y entre quiénes, el ciclo
+  '/api/avisos/ligas-votos': 'GET',
+  '/api/avisos/liga-votar': 'POST',
   // un error en una llave (28/09/2026): con la sesión, como el voto
   '/api/avisos/reportar': 'POST',
   // 🔑 el precio por cabeza (28/09/2026): cuánto vale cada cabeza, poner un
@@ -210,7 +214,7 @@ async function avisos(req, url) {
   } else if (url.pathname.endsWith('/clave')) {
     // la clave pública no cambia: una hora en el borde
     init.cf = { cacheTtl: 3600, cacheEverything: true };
-  } else if (url.pathname.endsWith('/vivo') || url.pathname.endsWith('/encuestas') ||
+  } else if (url.pathname.endsWith('/vivo') || url.pathname.endsWith('/encuestas') || url.pathname.endsWith('/ligas-votos') ||
              url.pathname.endsWith('/precios') || url.pathname.endsWith('/aplausos') ||
              url.pathname.endsWith('/estado')) {
     // ⚡ `/estado` también (revisión del 04/10/2026): la campana lo pide en cada visita, es público —cuántos,
@@ -490,7 +494,9 @@ export default {
     }
     // 🔑 las llaves viejas, a pedido: ver `llaveVieja()` en app.js. Y el muro
     // de Publicaciones (28/09/2026): ver `pedirMuro()`
-    if (url.pathname === '/api/perfiles' || url.pathname === '/api/llaves' || url.pathname === '/api/muro') {
+    // 🏟️ y el detalle de las ligas (14/10/2026): las fechas y el flyer de cada una, al abrir Ligas
+    if (url.pathname === '/api/perfiles' || url.pathname === '/api/llaves' || url.pathname === '/api/muro' ||
+        url.pathname === '/api/ligas') {
       if (req.method !== 'GET') return new Response('no', { status: 405 });
       const r = await fetch(ORIGEN + url.pathname.slice(4), {
         method: 'GET',

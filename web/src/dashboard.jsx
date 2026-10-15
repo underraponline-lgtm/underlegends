@@ -1361,7 +1361,7 @@ function Reportes({ rep, liga, alCambiar, corrige = true }) {
         return (
           <li key={r.id}>
             <div className="db-l1"><b>{/^\d+$/.test(r.llave) ? <a href={'#/llave/' + r.llave}>Llave #{r.llave}</a>
-              : String(r.llave).startsWith('liga:') ? <a href="#/ranking/ligas">Liga {(ligaDe(liga, r.llave) || {}).n || String(r.llave).slice(5)}</a> : 'Llave en vivo'}</b>
+              : String(r.llave).startsWith('liga:') ? <a href={'#/ranking/ligas/' + encodeURIComponent(String(r.llave).slice(5))}>Liga {(ligaDe(liga, r.llave) || {}).n || String(r.llave).slice(5)}</a> : 'Llave en vivo'}</b>
               <span className="db-chip">{QUE_REP[r.que] || r.que}</span>{est ? <span className={'db-chip ' + est[1]}>{est[0]}</span> : null}</div>
             {/* 👤 quién lo mandó: el nombre de la Lista que pone el ciclo (`evid.quien`), aunque no tenga perfil en la página
                 (Dlx, 13/10/2026: «¿pero quién lo dice?») */}

@@ -948,6 +948,28 @@ const ok = (cond, que, det) => {
       && v4.error === 'cerrada' && o.qgVotar({ quien: 'x', id: 'q1', lado: 'A' }).error === 'datos'
       && o.qgVotar({ quien: '100000004', id: 'nada', lado: 'A' }).error === 'no existe',
     '«¿Quién gana?» en el objeto: un voto por persona que se puede cambiar, y cerrado no se vota', JSON.stringify([v1, v3, v4]));
+    // 🗳️ «¿quién gana la liga?» (14/10/2026): uno por persona y liga, se cambia; afuera se ve cuántos; los de una liga
+    // que cerró hace más de 30 días se borran, y los de una que sigue no (su cierre se corre con cada voto)
+    {
+      const ah = Date.UTC(2026, 9, 14, 23, 0);
+      const DIA = 86400000;
+      const abierta = ah + 9 * DIA;
+      const cierran = { 'fmh-espana': abierta, 'fms-peru': ah + 20 * DIA };
+      o.sql.exec('INSERT INTO liga_voto (liga, quien, op, t, cierra) VALUES (?, ?, ?, ?, ?)', 'fzl', '100000020', 'CEKO', ah - 90 * DIA, ah - 40 * DIA);
+      o.sql.exec('INSERT INTO liga_voto (liga, quien, op, t, cierra) VALUES (?, ?, ?, ?, ?)', 'fms-peru', '100000021', 'SOL', ah - 60 * DIA, ah - 35 * DIA);
+      const l1 = o.ligaVotar({ quien: '100000011', liga: 'fmh-espana', op: 'ORTIZ', cierra: abierta, cierran }, ah);
+      const l2 = o.ligaVotar({ quien: '100000012', liga: 'fmh-espana', op: 'ORTIZ', cierra: abierta, cierran }, ah);
+      const l3 = o.ligaVotar({ quien: '100000012', liga: 'fmh-espana', op: 'STORMED', cierra: abierta, cierran }, ah);
+      const lv = o.ligasVotos();
+      const quedan = o.sql.exec('SELECT liga, quien FROM liga_voto ORDER BY liga, quien').toArray().map((x) => x.liga + ':' + x.quien);
+      ok(l1.ok && !l1.cambio && l2.cuenta.ORTIZ === 2 && l3.cambio && l3.cuenta.ORTIZ === 1 && l3.cuenta.STORMED === 1
+        && lv.votos['fmh-espana'].ORTIZ === 1 && !JSON.stringify(lv).includes('10000001')
+        && o.ligaVotar({ quien: 'x', liga: 'fmh-espana', op: 'A', cierra: abierta }).error === 'datos'
+        && o.ligaVotar({ quien: '100000013', liga: '../x', op: 'A', cierra: abierta }).error === 'datos',
+      '«¿quién gana la liga?» en el objeto: uno por persona y liga, se cambia, y afuera se ve cuántos y nunca quién', JSON.stringify([l3, lv]));
+      ok(!quedan.includes('fzl:100000020') && quedan.includes('fms-peru:100000021'),
+        'los votos de una liga que cerró hace más de 30 días se borran; los de una que sigue, no (su cierre se corrió)', JSON.stringify(quedan));
+    }
     // 🎁 el premio de la semana: 50 + 50 por día entrado la semana pasada, una vez por semana (13/10/2026)
     const martes = Date.UTC(2026, 9, 13, 18, 0);
     for (const dia of ['2026-10-05', '2026-10-06', '2026-10-06', '2026-10-09', '2026-10-12']) {

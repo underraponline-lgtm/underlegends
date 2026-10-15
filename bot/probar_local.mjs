@@ -2516,6 +2516,91 @@ console.log('\nLAS ENCUESTAS\n');
   delete PUESTO.encuestas;
 }
 
+console.log('\n🗳️ ¿QUIÉN GANA LA LIGA?\n');
+
+{
+  // 🔑 Dlx, 14/10/2026: «Encuesta ¿quién gana la liga?»: uno por persona, se cambia, con «Entrar con Discord», y cierra
+  // cuando la liga termina. Qué se vota lo deja el ciclo en KV (`ligas:votar`, bot/ligas.py `para_kv()`)
+  const A = await import('./avisos.js');
+  const idDe = (ms, n = 5) => String((BigInt(ms - 1420070400000) << 22n) + BigInt(n));
+  const VIEJO = idDe(Date.parse('2020-02-01T00:00:00Z'));
+  const NUEVO = idDe(RELOJ - 3 * 86400000);
+  const defs = { lista: [
+    { id: 'fmh-espana', hasta: new Date(RELOJ + 9 * 86400000).toISOString(), op: ['ORTIZ', 'CARLOSMO', 'STORMED'] },
+    { id: 'fzl', hasta: new Date(RELOJ - 60000).toISOString(), op: ['CEKO', 'JUASMIO'] },
+  ] };
+  const v = (liga, op, id) => A.validarVotoLiga(defs, { liga, op }, id || VIEJO, RELOJ);
+  const bueno = v('fmh-espana', 'ORTIZ');
+  ok('un voto bueno vale, y lleva hasta cuándo va cada liga abierta (para borrar sus votos después)',
+     bueno.liga === 'fmh-espana' && bueno.op === 'ORTIZ' && bueno.cierra === Date.parse(defs.lista[0].hasta) &&
+     bueno.cierran['fmh-espana'] === bueno.cierra && bueno.cierran.fzl === Date.parse(defs.lista[1].hasta), JSON.stringify(bueno));
+  ok('una liga que terminó, no', v('fzl', 'CEKO').error === 'cerrada');
+  ok('alguien que no está en su tabla, o una liga que no existe, no',
+     v('fmh-espana', 'NADIE').error === 'opcion' && v('otra', 'ORTIZ').error === 'no_existe');
+  ok('una cuenta de hace 3 días, no (como en las encuestas)', v('fmh-espana', 'ORTIZ', NUEVO).error === 'nueva');
+  ok('sin lo que dejó el ciclo en KV, nada vale', A.validarVotoLiga(null, { liga: 'fmh-espana', op: 'ORTIZ' }, VIEJO, RELOJ).error === 'no_existe');
+
+  // la ruta entera: la sesión, KV y el objeto
+  const SES = 'c'.repeat(43);
+  const antesF = globalThis.fetch, antesA = env.AVISOS;
+  const alObjeto = [];
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => { if (/\/(uso|medir)$/.test(String(url))) return new Response('{"ok":true}');
+    const u = String(url), b = opc && opc.body ? JSON.parse(opc.body) : null;
+    alObjeto.push([u, b]);
+    if (u.endsWith('/sesion/quien')) return b && b.ses === SES ? new Response(JSON.stringify({ quien: VIEJO }), { status: 200 })
+      : new Response('{"error":"no"}', { status: 404 });
+    return new Response('{"ok":true,"cuenta":{"ORTIZ":1},"t":1}', { status: 200 });
+  } }) };
+  PUESTO['ligas:votar'] = JSON.stringify(defs);
+  globalThis.fetch = async () => new Response('{}', { status: 404 });
+  const votarL = async (cuerpo, ses) => {
+    const r = await worker.fetch(new Request('https://x/avisos/liga-votar', { method: 'POST', body: JSON.stringify(cuerpo),
+      headers: ses ? { 'x-lg-ses': ses } : {} }), env, ctx);
+    return { status: r.status, json: JSON.parse(await r.text()) };
+  };
+  let r = await votarL({ liga: 'fmh-espana', op: 'ORTIZ' });
+  ok('sin sesión: 401 «sin_sesion», y no llega al objeto', r.status === 401 && r.json.error === 'sin_sesion' &&
+     !alObjeto.some(([u]) => u.endsWith('/liga-votar')), JSON.stringify(r.json));
+  r = await votarL({ liga: 'fmh-espana', op: 'ORTIZ', quien: '111111111111111111' }, SES);
+  const al = alObjeto.find(([u]) => u.endsWith('/liga-votar'));
+  ok('con la sesión llega al objeto con el ID de la sesión (no el que mandó la página) y el cierre de cada liga',
+     r.status === 200 && al && al[1].quien === VIEJO && al[1].op === 'ORTIZ' && al[1].cierran.fzl > 0, JSON.stringify(al));
+  alObjeto.length = 0;
+  r = await votarL({ liga: 'fzl', op: 'CEKO' }, SES);
+  ok('una liga cerrada: 409, y no llega al objeto', r.status === 409 && r.json.error === 'cerrada' &&
+     !alObjeto.some(([u]) => u.endsWith('/liga-votar')));
+  r = await votarL({ liga: 'x'.repeat(41), op: 'CEKO' }, SES);
+  ok('lo que no tiene forma de liga, 400', r.status === 400);
+  alObjeto.length = 0;
+  r = await worker.fetch(new Request('https://x/avisos/ligas-votos'), env, ctx);
+  ok('/avisos/ligas-votos le pregunta al objeto', r.status === 200 && alObjeto.length === 1 && alObjeto[0][0].endsWith('/ligas-votos'));
+  // 🏟️ el detalle de las ligas (las fechas y el flyer), aparte del lobby: una lectura de KV, tal cual
+  PUESTO['web:ligas'] = JSON.stringify({ t: 'x', ligas: { 'fmh-espana': { fechas: [{ j: 6, d: '2026-10-14', t: 'x', b: [] }] } } });
+  r = await worker.fetch(new Request('https://x/ligas'), env, ctx);
+  const det = r.status === 200 ? JSON.parse(await r.text()) : null;
+  ok('/ligas devuelve el detalle de las ligas tal cual está en KV (web:ligas)', det && det.ligas['fmh-espana'].fechas[0].j === 6);
+  delete PUESTO['web:ligas'];
+  r = await worker.fetch(new Request('https://x/ligas'), env, ctx);
+  ok('y sin detalle todavía, 404 (la página sigue con la tabla)', r.status === 404);
+  // y el proxy de Pages las deja pasar (una lista cerrada: sin esto, la página pide y recibe 404)
+  const { default: proxy } = await import('./paginas/_worker.js');
+  let fue = null;
+  globalThis.fetch = async (u, opc) => { fue = { u: String(u), m: (opc && opc.method) || 'GET' }; return new Response('{"ok":true}', { status: 200 }); };
+  const envP = { ASSETS: { fetch: async () => new Response('<html>', { status: 200 }) } };
+  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/liga-votar', { method: 'POST', body: '{}' }), envP);
+  const ida = fue;
+  fue = null;
+  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/ligas-votos'), envP);
+  ok('el proxy de Pages deja pasar votar (POST) y los votos (GET)', ida && ida.u.endsWith('/avisos/liga-votar') && ida.m === 'POST' &&
+     fue && fue.u.endsWith('/avisos/ligas-votos'), JSON.stringify([ida, fue]));
+  fue = null;
+  await proxy.fetch(new Request('https://underlegends.pages.dev/api/ligas'), envP);
+  ok('y el detalle de las ligas (/api/ligas → /ligas del Worker)', fue && fue.u.endsWith('.workers.dev/ligas'), JSON.stringify(fue));
+  globalThis.fetch = antesF;
+  env.AVISOS = antesA;
+  delete PUESTO['ligas:votar'];
+}
+
 console.log('\nLA SESIÓN: ENTRAR CON DISCORD UNA VEZ\n');
 
 {
