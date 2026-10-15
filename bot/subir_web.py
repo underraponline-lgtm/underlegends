@@ -301,6 +301,9 @@ def armar():
         'oro': p.get('oro') or 0,
         # 🎯 lo que sumó con las misiones de la semana en la temporada (`bot/misiones.py`)
         'mis': _mis_de(p.get('raw')),
+        # ✍️ y con el Writing Challenge de FFA (`bot/writing.py`): la columna «Writing» del ranking. Sólo si sumó
+        # algo, como `fc`: son pocos y el lobby ya pasó dos veces los 120 KB
+        **({'wch': _wch_de(p.get('raw'))} if _wch_de(p.get('raw')) else {}),
         'seg': p.get('seg') or 0,
         'ter': p.get('ter') or 0,
         'sem': p.get('sem') or 0,
@@ -2926,6 +2929,22 @@ def _norm_mis(s):
     import unicodedata
     s = unicodedata.normalize('NFKD', str(s or '').lower())
     return ''.join(c for c in s if c.isalnum())
+
+
+_WCH = {}
+
+
+def _wch_de(raw):
+    """✍️ Lo que esa persona sumó a la Temporada con el Writing Challenge de FFA, o 0 (la columna «Writing» del
+    ranking). Lo mismo que suma la vitrina (`rankings.sumar_writing()`): esta temporada, con el nombre canónico."""
+    if '_' not in _WCH:
+        try:
+            import writing as _W
+            import rankings as _RK
+            _WCH['_'] = {_norm_mis(k): v for k, v in _W.suma(canon=_RK.canon, es_troll=_RK._trolls()).items()}
+        except Exception:                                # noqa: BLE001
+            _WCH['_'] = {}
+    return _WCH['_'].get(_norm_mis(raw)) or 0
 
 
 def _div():

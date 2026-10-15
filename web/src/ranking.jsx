@@ -144,6 +144,8 @@ const COL = {
   czd: { t: 'Cazado', tit: 'Most Wanted: cuántas veces lo cazaron', s: (f) => f.czd || 0, v: (f, x) => (x.mw ? f.czd || 0 : NADA) },
   sob: { t: 'Sobrevivió', tit: 'Most Wanted: cuántas veces sobrevivió', s: (f) => f.sob || 0, v: (f, x) => (x.mw ? f.sob || 0 : NADA) },
   mis: { t: 'Misiones', tit: 'Lo sumado con las misiones de la semana en la temporada', s: (f) => f.mis || 0, v: (f) => (f.mis ? num(f.mis) : NADA) },
+  // ✍️ el Writing Challenge de FFA (Dlx, 14/10/2026: «cuenta para la Liga»): lo sumado por sus fechas, `bot/writing.py`
+  wch: { t: 'Writing', tit: 'Lo sumado en el Writing Challenge de FFA en la temporada', s: (f) => f.wch || 0, v: (f) => (f.wch ? num(f.wch) : NADA) },
   mwp: { t: 'Cobró', tit: 'Puntos cobrados en Most Wanted', s: (f) => f.pts || 0, v: (f) => (f.pts ? num(f.pts) : NADA) },
   mwc: { t: 'Cazó', tit: 'A cuántos buscados cazó', s: (f) => f.caz || 0, v: (f) => f.caz || NADA },
   mwz: { t: 'Cazado', tit: 'Cuántas veces lo cazaron', s: (f) => f.czd || 0, v: (f) => f.czd || NADA },
@@ -171,7 +173,7 @@ const SUBS = {
   temporada: {
     et: 'Temporada', filas: (L) => L.d.tabla || [], orden: 'pos',
     // 🔑 LAS COLUMNAS DEL RANKING OFICIAL (Dlx, 25/09/2026: racha, último evento, cazó, cazado, sobrevivió y misiones)
-    cols: ['pos', 'n', 'ovr', 'rg', 'pts', 'ev', 'racha', 'ult', 'caz', 'czd', 'sob', 'mis'], movil: ['pos', 'n', 'ovr', 'pts'],
+    cols: ['pos', 'n', 'ovr', 'rg', 'pts', 'ev', 'racha', 'ult', 'caz', 'czd', 'sob', 'mis', 'wch'], movil: ['pos', 'n', 'ovr', 'pts'],
     baj: <>El orden sale del <b>OVR</b>, el mismo número que lleva la carta de Temporada. Las flechas, cuántos puestos subió o bajó cada uno desde el lunes.</>,
     // ⚠️ SIN `dato`: los puntos ya están en la carta (Dlx, 02/10/2026: «quitar eso de puntos porque la tarjeta ya
     // lo dice»). El escalón lleva sólo el número
