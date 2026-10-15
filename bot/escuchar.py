@@ -786,6 +786,27 @@ def norm(s):
     return re.sub(r'[^a-z0-9]', '', s)
 
 
+#: la semilla adelante del nombre: «`05` **Lrs**» (DEM UZBEKISTAN FECHA 3, FFA, 13/10/2026)
+SEMILLA = re.compile(r'^\s*`\s*\d{1,3}\s*`\s*')
+#: el nombre escrito y su cuenta al lado: «**Lrs** 🇦🇷 - <@1385…>»
+NOMBRE_Y_MENCION = re.compile(r'^(.*?\S)\s+[-–—]\s+(<@!?\d+>)\s*$')
+
+
+def _semilla_mencion(x):
+    """🔑 `` `05` **Lrs** 🇦🇷 - <@1385…> `` -> `<@1385…>🇦🇷`: sin la semilla, y por la CUENTA.
+
+    DEM UZBEKISTAN FECHA 3 (FFA, 13/10/2026) escribe cada lado así, y el nombre salía «05\\` Lrs 🇦🇷 - LRS»: no era el
+    «LRS» de cuartos, y la tabla tuvo cinco personas que no existen («01\\` asuka la homosexual 🇪🇸 - Marcos», «06\\` Trot
+    🇪🇸 - Trot»…). La mención es quién es —«asuka la homosexual» es el apodo de Marcos esa noche—, así que queda la
+    forma que el lector ya sabe leer (`[<@…>🇪🇨]`, la de MARRUECOS EN VENTA), con su bandera."""
+    s = SEMILLA.sub('', x or '')
+    m = NOMBRE_Y_MENCION.match(s)
+    if m and norm(m.group(1)):
+        b = re.findall('[\U0001F1E6-\U0001F1FF]{2}', m.group(1))
+        return m.group(2) + (b[0] if b else '')
+    return s
+
+
 def nombres_de_linea(l):
     """Los competidores de una linea, en orden. [] si no es una batalla.
 
@@ -855,7 +876,7 @@ def nombres_de_linea(l):
         lados = [x for x in lados if norm(x) not in VACIO]
         if len(lados) >= 2:
             # 🔑 sin el refuerzo ni la «R» suelta: ver `sin_refuerzos()`
-            return [sin_refuerzos(_sin_marcas(x)) for x in lados]
+            return [sin_refuerzos(_sin_marcas(_semilla_mencion(x))) for x in lados]
         if len(lados) < n_lados:
             return []
         # 🔑 UN LADO Y EL OTRO VACÍO A LA VISTA (`⌞Geoka 🇦🇷⌝ 🆚 ⌞⌝`): un cruce
@@ -864,7 +885,7 @@ def nombres_de_linea(l):
         # quedaba sin ganador. No es una fila —`filas_de()` pide dos lados— y
         # sin ganador tampoco es una duda: no hay a quién preguntar
         if len(lados) == 1 and VACIO_MARCO.search(l):
-            return [sin_refuerzos(_sin_marcas(lados[0]))]
+            return [sin_refuerzos(_sin_marcas(_semilla_mencion(lados[0])))]
     # ⚠️ SIN NOMBRE NO HAY LADO: el hueco `⌞ + ⌝` o `［ ］` de la plantilla daba
     # lados «+» o vacíos, una batalla que nadie ganó —y la página creía que
     # se jugaba la final mientras iban los cuartos—. 🔴 Pero una MENCIÓN sí es
@@ -874,7 +895,7 @@ def nombres_de_linea(l):
         hay = [x.strip() for x in d.findall(l)
                if (norm(x) or MENCION.search(x)) and norm(x) not in VACIO]
         if len(hay) >= 2:
-            return [sin_refuerzos(_sin_marcas(x)) for x in hay]
+            return [sin_refuerzos(_sin_marcas(_semilla_mencion(x))) for x in hay]
     return []
 
 
@@ -1018,6 +1039,10 @@ def _sin_numeracion(rs):
     return out
 
 
+#: la ronda previa que se nombra en el texto y no como título: «Los 3 ganadores de Play-In avanzan a OCTAVOS»
+PLAY_IN = re.compile(r'\bplay[\s-]?in\b|\bpreliminar(?:es)?\b|\bprevias?\b', re.I)
+
+
 def _rondas_crudas(texto):
     """Lo de `rondas_de()` con la LÍNEA de cada batalla al lado:
     `[(ronda, [(competidores, línea), …])]`, antes de partir los equipos con
@@ -1080,6 +1105,12 @@ def _rondas_crudas(texto):
         primera = {norm(HISTORIA.sub('', m)) for ns, _l in out[0][1] for x in ns for m in re.split(r'[+&]', x)}
         if len((antes & primera) - {''}) >= 2:
             out.insert(0, (RONDA_ANTERIOR[out[0][0]], previas))
+        # 🔑 Y EL PLAY-IN SIN TÍTULO ES LA PREVIA (DEM UZBEKISTAN FECHA 3, FFA, 13/10/2026): tres batallas arriba de
+        # `[ OCTAVOS ]` y abajo «Los 3 ganadores de Play-In avanzan a OCTAVOS». Sus ganadores no siguen en octavos sino
+        # en cuartos, así que la regla de arriba no los veía: seis personas afuera y Colesito «walk-in». Si la llave
+        # dice que es un play-in, una previa o una preliminar, es la previa (`FILTROS`), que no hace walk-in a nadie
+        elif PLAY_IN.search(texto):
+            out.insert(0, ('FILTROS', previas))
     return out
 
 
@@ -2429,8 +2460,10 @@ def _por_negrita(out, rs, negr):
 #: `3ER PUESTO:` / `TERCER LUGAR:` del podio (y el typo `TECER`)
 #: ⚠️ con la aclaración entre paréntesis: `3ER LUGAR (3ER PUESTO):` y el nombre abajo (19 CUP, DDF, 10/10/2026);
 #: sin esto el «nombre» del tercero era `(3ER PUESTO):`
+#: 🔴 y con guion: `🥉 𝄆 TERCER-PUESTO: Ortiz🇪🇸` (FF FREESTYLE CLÁSICO, URBF, 14/10/2026) no se leía, y la batalla por
+#: el tercero quedaba sin ganador y afuera
 TERCERO = re.compile(
-    r'(?:\b3\s*(?:ER|RO)|TERC?ER)\s*(?:PUESTO|LUGAR)(?:\s*\([^)\n]*\))?\s*:?\s*[*_`~|]*\s*'
+    r'(?:\b3\s*(?:ER|RO)|TERC?ER)[\s\-]*(?:PUESTO|LUGAR)(?:\s*\([^)\n]*\))?\s*:?\s*[*_`~|]*\s*'
     r'([^\n]{1,80})', re.I)
 
 
@@ -3557,6 +3590,24 @@ def batallas_veredicto(rows):
     return out
 
 
+def tercero_sin_encabezado(batallas):
+    """🥉 Las batallas `[ronda, [lados], ganador, …]` con la del TERCER PUESTO nombrada así, aunque se votó sin encabezado.
+
+    FF FREESTYLE CLÁSICO (URBF, 14/10/2026): el canal votó las dos semis y después «Ortiz vs TROT» debajo del mismo
+    `SEMIFINALES`, así que era una tercera semi, y como cada uno aparecía dos veces en la ronda los dos salían «Revivido»
+    (Ortiz 1.750 en vez del tercero). Una batalla de las semis entre DOS que ya perdieron una semi de esa misma ronda es
+    la del tercero. Sirve también para las llaves ya guardadas (`_memoria_llaves_v()`): FFA vacía #votaciones después de
+    cada evento y la copia vieja no se vuelve a leer."""
+    for i, b in enumerate(batallas or []):
+        if b[0] != 'SEMIFINALES' or len(b[1]) != 2:
+            continue
+        previas = [bb for bb in batallas[:i] if bb[0] == 'SEMIFINALES' and bb[2] and len(bb[1]) == 2]
+        perd = {norm(x) for bb in previas for x in bb[1] if norm(x) != norm(bb[2])}
+        if len(previas) >= 2 and all(norm(x) in perd for x in b[1]):
+            b[0] = 'TERCER LUGAR'
+    return batallas
+
+
 def llaves_de_veredictos(rows):
     """`[{id, sv, g, canal, pub, ed, texto, batallas}]`: cada evento jugado en un canal de veredictos, COMO SE JUGÓ.
 
@@ -3606,7 +3657,8 @@ def llaves_de_veredictos(rows):
                               else 'no aparece nadie después')
         out.append({'id': cur['id'], 'sv': cur['sv'], 'g': cur['g'], 'canal': cur['canal'], 'pub': cur['pub'],
                     'ed': cur['ed'], 'texto': '\n'.join(cur['lineas']),
-                    'batallas': [[b['r'], b['lados'], b['gan'], b['razon'], b['pasan']] for b in bats]})
+                    'batallas': tercero_sin_encabezado(
+                        [[b['r'], b['lados'], b['gan'], b['razon'], b['pasan']] for b in bats])})
 
     for c, ms in por_canal.items():
         cur, ult = None, 0
@@ -3918,7 +3970,7 @@ def vidas(s, mem, guilds, completo):
     # 🔑 Y CADA LLAVE TAL COMO SE JUGÓ (02/10/2026): ver `llaves_de_veredictos()`. Se guardan `VER_DIAS`: FFA vacía
     # #votaciones después de cada evento, y sin la copia la llave verdadera se pierde con el evento siguiente. La que se
     # vuelve a leer reemplaza a la guardada (puede haberse completado)
-    lls = {x['id']: x for x in _memoria_llaves_v()}
+    lls = {x['id']: dict(x, batallas=tercero_sin_encabezado(x.get('batallas') or [])) for x in _memoria_llaves_v()}
     for x in llaves_de_veredictos(filas):
         lls[x['id']] = x
     lls = {k: x for k, x in lls.items() if ahora_ms - int(x.get('pub') or 0) <= VER_DIAS * 86400000
@@ -4779,6 +4831,15 @@ def _check_llave_veredictos():
          and not veredicto_de(L, ['Ana', 'Beto', 'Caro', 'Dani'], '77', t0 - 3600000, t0 + 3600000)),
         ('sin encabezado de ronda no es una llave: un 5 vidas sigue por `veredictos()`',
          not llaves_de_veredictos([fila(0, '# 🇦🇷 DELUXE 🆚 FAZER 🇦🇷'), fila(10, 'FAZER')])),
+        # 🥉 el tercer puesto votado debajo de SEMIFINALES (FF FREESTYLE CLÁSICO, URBF, 14/10/2026)
+        ('la batalla de las semis entre los dos que perdieron su semi es la del TERCERO, no una tercera semi',
+         [(b[0], b[2]) for b in (llaves_de_veredictos([
+             fila(0, '# [ SEMIFINAL ]'), fila(10, '⌞Vacile🇪🇸⌝' + vs + '⌞Ortiz🇪🇸⌝'), fila(20, 'Vacile🇪🇸'),
+             fila(30, '⌞TROT🇪🇸⌝' + vs + '⌞Motera🇪🇸⌝'), fila(40, 'Motera🇪🇸'),
+             fila(50, '⌞Ortiz🇪🇸⌝' + vs + '⌞TROT🇪🇸⌝'), fila(60, 'Ortiz🇪🇸'),
+             fila(70, '# [ FINAL ]'), fila(80, '⌞Vacile🇪🇸⌝' + vs + '⌞Motera🇪🇸⌝'), fila(90, 'Motera🇪🇸')]) or [{}])[0]
+          .get('batallas') or []] == [('SEMIFINALES', 'Vacile🇪🇸'), ('SEMIFINALES', 'Motera🇪🇸'),
+                                       ('TERCER LUGAR', 'Ortiz🇪🇸'), ('FINAL', 'Motera🇪🇸')]),
     ]:
         print('   %s %s' % ('✅' if ok else '❌', que))
         mal += 0 if ok else 1

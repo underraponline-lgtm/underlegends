@@ -875,7 +875,9 @@ def procesar(batallas, num, fecha, servidor, participantes=None,
     # afuera: ya cobra por dónde cae (`puesto_doble()`). Pagarla acá le sumaba 5.250 más al 5.º y al 6.º
     elif not doble:
         semis = por('semifinal')
-        if len(semis) >= 2:
+        # 🔴 UNA SOLA TAMBIÉN (auditoría del 14/10/2026): era `len(semis) >= 2`, y en QCYO (#465) la otra semi se juntó
+        # para la final y francis, que perdió la suya, cobraba 0
+        if semis:
             # ⚠️ EL VALOR DECLARADO MANDA, Y SE COMPRUEBA. Ver el docstring.
             prom = (tab.get('tercero', 0) + tab.get('cuarto', 0)) // 2
             sf = tab.get('semifinal', prom)
@@ -1442,6 +1444,13 @@ def _self_check():
     ok('y queda con el puesto más alto',
        dr.get('Beto', {}).get('posicion') == ETIQUETA['campeon'],
        '%s' % dr.get('Beto', {}).get('posicion'))
+    # 🔴 UNA SEMI SOLA TAMBIÉN PAGA A SU PERDEDOR (auditoría del 14/10/2026, QCYO #465: «Erian vs francis» resuelta y la
+    # otra semi se juntó para la final; francis cobraba 0 por el `len(semis) >= 2`)
+    s1, _e1 = _pp([{'ronda': 'semifinales', 'ladoA': 'Ana', 'ladoB': 'Beto', 'ganador': 'Ana'},
+                   {'ronda': 'final', 'ladoA': 'Ana', 'ladoB': 'Caro', 'ganador': 'Ana'}])
+    ok('una semi sola paga la semifinal a quien la perdió',
+       s1.get('Beto', {}).get('puntos') == t16['16+'].get('semifinal', (t16['16+']['tercero'] + t16['16+']['cuarto']) // 2)
+       and s1.get('Beto', {}).get('posicion') == ETIQUETA['semifinal'], '%s' % s1.get('Beto'))
     # el que ya entra revivido (la «R» suelta, VOL 18 2VS2): aparece una vez y
     # cobra la mitad de ese puesto (Dlx, 01/10/2026: «C»)
     rr, _ = _pp(semis + [{'ronda': 'final', 'ladoA': 'Ana', 'ladoB': 'Caro', 'ganador': 'Ana',

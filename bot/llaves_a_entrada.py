@@ -2387,7 +2387,10 @@ def marcar_walkins(filas, textos=(), ids=None, quien=None, sv=None):
 
 
 #: la notacion de revivido de la guia (§3.7): `Mco (R)`, `1R`, `2R`
-REVIVIDO_MARCA = re.compile(r'([^\s⌞\[\]()]{2,}[^⌞\[\]()]*?)\s*(?:\(\s*R\s*\)|\b[123]\s*R\b)')
+#: 🔴 y sin mayúsculas, y con la palabra (auditoría del 14/10/2026): «onzas.s🇻🇪(r)» (#454) y «Majiztral[rebibido]»
+#: (#446) no se veían, y cobraban su puesto entero
+REVIVIDO_MARCA = re.compile(r'([^\s⌞\[\]()]{2,}[^⌞\[\]()]*?)\s*(?:\(\s*R\s*\)|\b[123]\s*R\b|'
+                            r'[\[(]\s*re[bv]i[bv]id[oa]\s*[\])])', re.I)
 #: 🔑 Y LA «R» SUELTA DESPUÉS DE LA BANDERA: `SIX 🇦🇷 R`, `GOCHO 🇨🇴 R` (VOL 18 2VS2).
 #: Dlx, 01/10/2026: es revivido y cobra como revivido («C»: la mitad de su
 #: puesto final, §3.7). El nombre ya llega sin la R (`escuchar.sin_refuerzos()`);
@@ -2469,6 +2472,7 @@ def marcar_revividos(filas, textos=(), formato=''):
     for i, f in enumerate(validas):
         g = f.get('ganador') or ''
         perdedor = f.get('ladoB') if g == f.get('ladoA') else f.get('ladoA')
+        gan_m = set(_miembros(g))
         for m in _miembros(perdedor):
             for j, h in enumerate(validas):
                 if j == i or _r(h) < _r(f):
@@ -2485,8 +2489,15 @@ def marcar_revividos(filas, textos=(), formato=''):
                     # ⚠️ las filas de una amenaza partida comparten al que
                     # PASO, no al que perdio: el perdedor de una fila de
                     # «triple» no reaparece en otra de la misma batalla
-                    en_equipo = len(ma if m in ma else mb) > 1
-                    if es_draft and en_equipo and m not in revividos:
+                    lado_m = ma if m in ma else mb
+                    en_equipo = len(lado_m) > 1
+                    # 🔑 EL ABSORBIDO, POR LA FORMA (Dlx, 14/10/2026, a «el equipo que gana suma a alguien que le
+                    # perdió, y la llave no dice pandillas»: *«Sí, drafteado»*). Vuelve en una ronda posterior adentro
+                    # del equipo de quien le ganó: el ganador se lo llevó. TOKYO VOL.12 (#355), CIUDAD GÓTICA (#428) e
+                    # IDS V.2 (#464) no lo decían en ningún lado, y en IDS V.2 NC salía revivido y Ondadisko —lo mismo
+                    # del otro lado— no
+                    absorbido = en_equipo and _r(h) > _r(f) and bool(gan_m & set(lado_m))
+                    if ((es_draft and en_equipo) or absorbido) and m not in revividos:
                         drafteados.add(m)
                     else:
                         revividos.setdefault(m, m)
@@ -3342,8 +3353,13 @@ def _self_check():
                         '🥇 CAMPEÓN: Ana + Fer + Beto'))
     fd = marcar_revividos(filas_de(dr)[0], [dr['texto']])
     rv = dict(dr, texto=dr['texto'].replace('# DRAFT KINGS', '# COPA'))
-    fr = marcar_revividos(filas_de(rv)[0], [rv['texto']])
     # 🔑 las PANDILLAS son un draft (Dlx, 14/10/2026: «no es revivido, así es el formato pandillas»)
+    # el absorbido sin ninguna palabra: Beto pierde cuartos con Ana y vuelve en la final CON Ana (la COPA de arriba)
+    fab = marcar_revividos(filas_de(rv)[0], [rv['texto']])
+    # … y si vuelve en el equipo de OTRO (Beto pierde con Ana y aparece con Caro), sigue siendo revivido
+    nr = dict(dr, texto=('# COPA\n`[ CUARTOS ]`\n⌞Ana⌝ ⌞Fer⌝ 🆚 ⌞Beto⌝ ⌞Gus⌝\n⌞Caro⌝ ⌞Hugo⌝ 🆚 ⌞Dani⌝ ⌞Ivan⌝\n'
+                         '`[ FINAL ]`\n⌞Ana⌝ ⌞Fer⌝ 🆚 ⌞Caro⌝ ⌞Hugo⌝ ⌞Beto⌝\n🥇 CAMPEÓN: Ana + Fer'))
+    fno = marcar_revividos(filas_de(nr)[0], [nr['texto']])
     pd = dict(dr, texto=dr['texto'].replace('# DRAFT KINGS', '# LA BELLA ARTE DE LA DESGRACIA VOL 6 PANDILLAS'))
     fpd = marcar_revividos(filas_de(pd)[0], [pd['texto']])
     # y con el formato sólo en el ANUNCIO (LA REDENCIÓN VOL.4: la llave no dice «pandillas», el anuncio sí)
@@ -3610,8 +3626,13 @@ def _self_check():
                  '⌞SAITO⌝ 🆚 ⌞Ana⌝') == {'saito', 'bloody', 'ana'}),
         ('en un draft, el que vuelve en un equipo es drafteado',
          'Drafteado: Beto' in ' '.join(f['notas'] for f in fd)),
-        ('sin draft, el mismo caso es revivido',
-         'Revivido: Beto' in ' '.join(f['notas'] for f in fr)),
+        ('el ABSORBIDO es drafteado aunque la llave no diga pandillas ni draft (Dlx, 14/10/2026: «Sí, drafteado»)',
+         'Drafteado: Beto' in ' '.join(f['notas'] for f in fab) and 'Revivido' not in ' '.join(f['notas'] for f in fab)),
+        ('… y quien vuelve con OTRO equipo, no el de quien le ganó, sigue siendo revivido',
+         'Revivido: Beto' in ' '.join(f['notas'] for f in fno)),
+        ('la marca de revivido sin mayúsculas y con la palabra: «(r)», «[rebibido]» (auditoría del 14/10/2026)',
+         [m.group(1).strip() for m in REVIVIDO_MARCA.finditer('⌞onzas.s🇻🇪(r)⌝ 🆚 ⌞X⌝\n⌞Majiztral[rebibido]⌝ 🆚 ⌞Y⌝')]
+         == ['onzas.s🇻🇪', 'Majiztral']),
         ('en PANDILLAS también: el que el ganador se lleva es drafteado, no revivido (Dlx, 14/10/2026)',
          'Drafteado: Beto' in ' '.join(f['notas'] for f in fpd)
          and 'Revivido' not in ' '.join(f['notas'] for f in fpd)),
