@@ -1,6 +1,8 @@
 {
  "_leeme": "El formato de cada evento según su anuncio (modalidad · nombre del anuncio), por evento|servidor|fecha. Se guarda porque el anuncio se va de datos/anuncios.json y la llave se vuelve a leer: el formato decide cómo se lee quién vuelve (en pandillas, el que el ganador se lleva es drafteado, no revivido). Lo escribe formato_de() de bot/llaves_a_entrada.py. Dlx, 14/10/2026.",
  "eventos": {
+  "- FMS CHILE -|FRZ|01/10": "FMS CHILE",
+  "- IRLANDA FREESTYLE -|FRZ|14/10": "IRLANDA FREESTYLE",
   "CCFF V.3|URBF|28/09": "1vs1 · CCFF V.3",
   "COMPE CHILL DE FASO|URBF|30/09": "1v1 · COMPE CHILL DE FASO",
   "COMPE DEL VACILE 1|URBF|28/09": "1vs1 · COMPE DEL VACILE T2 #1",

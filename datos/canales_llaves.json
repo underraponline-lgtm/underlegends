@@ -120,6 +120,11 @@
    "guild": "1468472442925092958",
    "servidor": "[FFA] Freestyle For All 👾"
   },
+  "838595860275003402": {
+   "canal": "➣「🔑」llaves",
+   "guild": "838593179187544064",
+   "servidor": "Freestyle Zone"
+  },
   "863208023857823785": {
    "canal": "［🔑］llaves",
    "guild": "492346406976356374",
@@ -141,7 +146,7 @@
   "838593179187544064": "Freestyle Zone",
   "841017460341604382": "[DRA] Discord Rap En Español | Freestyle • Batallas Online • Cypher 24/7 • Ligas • Aprende"
  },
- "ultimo_completo": "2026-10-15T00:55:12+00:00",
+ "ultimo_completo": "2026-10-15T05:31:42+00:00",
  "veredictos": {
   "1309238412976590908": {
    "canal": "✅┇votaciones",
@@ -282,6 +287,16 @@
    "canal": "✦🗳️—votaciones-2",
    "guild": "1468472442925092958",
    "servidor": "[FFA] Freestyle For All 👾"
+  },
+  "838749975621533757": {
+   "canal": "➣「📝」veredictos",
+   "guild": "838593179187544064",
+   "servidor": "Freestyle Zone"
+  },
+  "859163492774969374": {
+   "canal": "resultados-fmsdiscord",
+   "guild": "838593179187544064",
+   "servidor": "Freestyle Zone"
   },
   "863208026508623883": {
    "canal": "[👨‍⚖️]veredictos",

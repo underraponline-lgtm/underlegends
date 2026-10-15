@@ -222,10 +222,6 @@
 "temporada"
 ]
 },
-"onzass": {
-"rg": "E",
-"c": []
-},
 "sinlimites": {
 "rg": "D",
 "c": [
@@ -233,6 +229,10 @@
 "servidor",
 "temporada"
 ]
+},
+"onzass": {
+"rg": "E",
+"c": []
 },
 "trot": {
 "rg": "D",
@@ -283,6 +283,14 @@
 "temporada"
 ]
 },
+"dynoco": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "geoka": {
 "rg": "E",
 "c": [
@@ -309,14 +317,6 @@
 "jj": {
 "rg": "",
 "c": []
-},
-"dynoco": {
-"rg": "D",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "cinexfilo": {
 "rg": "E",
@@ -471,6 +471,13 @@
 "rg": "",
 "c": []
 },
+"juasmio": {
+"rg": "",
+"c": [
+"pais",
+"servidor"
+]
+},
 "paria": {
 "rg": "",
 "c": []
@@ -478,6 +485,14 @@
 "dyzz": {
 "rg": "",
 "c": []
+},
+"soulb": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "aldre": {
 "rg": "",
@@ -583,13 +598,6 @@
 "rg": "",
 "c": []
 },
-"juasmio": {
-"rg": "",
-"c": [
-"pais",
-"servidor"
-]
-},
 "kravitz": {
 "rg": "",
 "c": [
@@ -686,13 +694,6 @@
 "ortiz": {
 "rg": "",
 "c": []
-},
-"soulb": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "bastyretro": {
 "rg": "",
@@ -955,6 +956,10 @@
 "rg": "",
 "c": []
 },
+"maukc": {
+"rg": "",
+"c": []
+},
 "doc": {
 "rg": "",
 "c": []
@@ -965,10 +970,6 @@
 "servidor",
 "temporada"
 ]
-},
-"maukc": {
-"rg": "",
-"c": []
 },
 "sosaatr": {
 "rg": "",
@@ -2350,30 +2351,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Geoka"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Geoka"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Betelguese"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5636,6 +5613,32 @@
 ],
 "rg": "C",
 "primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-15T05:39:01Z",
+"quien": [
+"Dynoco"
+],
+"rg": "C",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-15T05:39:01Z",
+"quien": [
+"Soulb"
+],
+"rg": "E",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-15T05:39:01Z",
+"quien": [
+"Soulb"
+],
+"carta": "competitivo"
 }
 ]
 }

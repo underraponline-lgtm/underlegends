@@ -12737,5 +12737,153 @@
    ]
   ],
   "v": 2
+ },
+ "475": {
+  "antes": {
+   "Dynoco": [
+    34,
+    42,
+    false
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Juasmio": [
+    62,
+    86,
+    false
+   ],
+   "NC": [
+    16,
+    19,
+    false
+   ],
+   "Scritura": [
+    151,
+    325,
+    false
+   ],
+   "Sin Limites": [
+    24,
+    31,
+    false
+   ],
+   "Soulb": [
+    73,
+    104,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Soulb",
+    "Sin Limites",
+    "Soulb"
+   ],
+   [
+    "Juasmio",
+    "Dynoco",
+    "Juasmio"
+   ],
+   [
+    "Erian",
+    "Abraham 🇻🇪",
+    "Erian"
+   ],
+   [
+    "Scritura",
+    "Milo 🇨🇱",
+    "Scritura"
+   ],
+   [
+    "Scritura",
+    "NC",
+    "Scritura"
+   ],
+   [
+    "Juasmio",
+    "Soulb",
+    "Juasmio"
+   ],
+   [
+    "Erian",
+    "Scritura",
+    "Erian"
+   ],
+   [
+    "Juasmio",
+    "Erian",
+    "Juasmio"
+   ]
+  ],
+  "ev_antes": {
+   "Dynoco": 13,
+   "Erian": 32,
+   "Juasmio": 4,
+   "NC": 29,
+   "Scritura": 1,
+   "Sin Limites": 16,
+   "Soulb": 9
+  },
+  "fecha": "14/10",
+  "nombre": "- IRLANDA FREESTYLE -",
+  "num": 475,
+  "participantes": 9,
+  "sello": {
+   "Juasmio": ""
+  },
+  "sv": "FRZ",
+  "t": "2026-10-15T05:32:23Z",
+  "tabla": [
+   [
+    "Juasmio",
+    "Campeón",
+    7500
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Scritura",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dynoco",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Abraham 🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Milo 🇨🇱",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

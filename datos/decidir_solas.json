@@ -956,6 +956,30 @@
     "Respawm🇭🇳"
    ],
    "escribio": {}
+  },
+  {
+   "id": "28e8346551",
+   "tipo": "Nombre desconocido",
+   "sec": "- IRLANDA FREESTYLE - · FRZ · 14/10 · #475",
+   "que": "¿Quién es «Milo 🇨🇱»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1527545754946769026",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (1527545754946769026)",
+   "t": 1792042755477,
+   "filas": [
+    720
+   ],
+   "variantes": [
+    "Milo 🇨🇱"
+   ],
+   "escribio": {
+    "alta": [
+     "Milo",
+     "1527545754946769026"
+    ]
+   }
   }
  ],
  "deshechas": []

@@ -24178,5 +24178,138 @@
     2000
    ]
   ]
+ },
+ "475": {
+  "dia": "2026-10-14",
+  "escala": "8-15",
+  "fecha": "14/10",
+  "links": [
+   "https://discord.com/channels/838593179187544064/838595860275003402/1560105420406661215"
+  ],
+  "n": 475,
+  "nombre": "- IRLANDA FREESTYLE -",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Soulb",
+       "Sin Limites"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "Juasmio",
+       "Dynoco"
+      ],
+      "Juasmio",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "Abraham 🇻🇪"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "Scritura",
+       "Milo 🇨🇱",
+       "NC"
+      ],
+      "Scritura",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Juasmio",
+       "Soulb"
+      ],
+      "Juasmio",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "Scritura"
+      ],
+      "Erian",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Juasmio",
+       "Erian"
+      ],
+      "Juasmio",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FRZ",
+  "tabla": [
+   [
+    "Juasmio",
+    "Campeón",
+    7500
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Scritura",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Abraham 🇻🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dynoco",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Milo 🇨🇱",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

@@ -19,6 +19,18 @@
    "vence": "2026-10-20T00:26:10+00:00",
    "vencido": false
   },
+  "Abraham": {
+   "avisado": "2026-10-15",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-15T01:41:57+00:00",
+   "did": "",
+   "evento": "- IRLANDA FREESTYLE -",
+   "n": 475,
+   "sv": "FRZ",
+   "vence": "2026-10-22T01:41:57+00:00",
+   "vencido": false
+  },
   "Abysuss": {
    "avisado": "2026-10-12",
    "chat": "2026-10-12",
@@ -149,6 +161,18 @@
    "vence": "2026-10-19T22:01:43+00:00",
    "vencido": false
   },
+  "Milo": {
+   "avisado": "2026-10-15",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-15T01:41:57+00:00",
+   "did": "",
+   "evento": "- IRLANDA FREESTYLE -",
+   "n": 475,
+   "sv": "FRZ",
+   "vence": "2026-10-22T01:41:57+00:00",
+   "vencido": false
+  },
   "ONDADISKO": {
    "avisado": "2026-10-13",
    "chat": "2026-10-14",
@@ -202,9 +226,10 @@
   },
   "Scritura": {
    "avisado": "2026-10-12",
+   "avisado_cumplido": "2026-10-15",
    "chat": "2026-10-12",
-   "con": null,
-   "cumplido": "",
+   "con": 475,
+   "cumplido": "2026-10-15T01:41:57+00:00",
    "debut": "2026-10-12T22:01:43+00:00",
    "did": "1559007314126704653",
    "evento": "GODZ",
@@ -294,6 +319,7 @@
    "vencido": false
   },
   "francis": {
+   "avisado": "2026-10-15",
    "chat": "2026-10-15",
    "con": null,
    "cumplido": "",
