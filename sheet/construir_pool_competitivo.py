@@ -216,6 +216,35 @@ def clasificar_duelos(filas, pais_de):
     return ({k: (gan.get(k, 0), n) for k, n in jug.items()}, nac, inter)
 
 
+def hechos_tags(pool, D=None, temp=None):
+    """🏷️ Le pone a cada fila su `tg_c` (Competitiva) y su `tg_p` (País). Pura: no lee el Sheet —la temporada sale de
+    `datos/temporada_pool.json`, que este ciclo ya escribió— y se prueba con `python sheet/hechos_tags.py`.
+
+    ⚠️ NUNCA FRENA EL POOL: si algo falla, las filas salen sin los hechos y las cartas dibujan con lo que tienen."""
+    try:
+        import hechos_tags as _HT
+        D = D or _HT.cargar()
+        if temp is None:
+            with open(os.path.join(RAIZ, 'datos', 'temporada_pool.json'), encoding='utf-8') as f:
+                temp = json.load(f)
+        hc, hp = _HT.competitivo(pool, D), _HT.pais(pool, temp, D)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude calcular los hechos de los TAG (%s): salen con los de la fila' % str(e)[:80])
+        return 0
+    n = 0
+    for d in pool:
+        d.pop('tg_c', None)
+        d.pop('tg_p', None)
+        k = norm(d.get('raw'))
+        if hc.get(k):
+            d['tg_c'] = hc[k]
+        if hp.get(k):
+            d['tg_p'] = hp[k]
+        n += bool(hc.get(k) or hp.get(k))
+    print('   🏷️ hechos de los TAG: %d de %d con alguno' % (n, len(pool)))
+    return n
+
+
 def _self_check():
     """Que el corte nacional/internacional parta lo que dice partir."""
     mal = 0
@@ -292,6 +321,22 @@ def _self_check():
     mal += not ok
     print('   %s fuera de concurso: el miembro es #1 de 1 aunque otro tenga más Score  %s'
           % ('✅' if ok else '🔴', pos))
+    # 🏷️ los hechos de los TAG llegan a la fila (y lo que no vale nada no se escribe)
+    D = {'llaves': {'1': {'n': 1, 'dia': '2026-09-22', 'sv': 'FFA',
+                          'tabla': [['Ana', 'Campeón', 1], ['Bea', 'Subcampeón', 1], ['Cyn', 'Tercero', 1]],
+                          'rondas': [{'r': 'Final', 'b': [[['Ana', 'Bea'], 'Ana', '']]}]}},
+         'rivales': [[1, '2026-09-22T20:00:00Z', 'Ana', 'Bea', 'Ana', 'prueba']],
+         'mw': {}, 'precios': [], 'misiones': {}, 'divisiones': {}, 'semana': {}, 'ps': {}}
+    filas = [{'raw': 'Ana', 'cc': 'ar', 'rango': 'B'}, {'raw': 'Bea', 'cc': 'ar', 'rango': 'B'},
+             {'raw': 'Cyn', 'cc': 'ar', 'rango': ''}]
+    n = hechos_tags(filas, D, temp=[])
+    a = filas[0]
+    ok = (n == 3 and a.get('tg_c', {}).get('fg') == 1 and a.get('tg_p', {}).get('primer')
+          and filas[1].get('tg_c', {}).get('fp') == 1 and 'tg_c' not in filas[2]
+          and filas[2].get('tg_p', {}).get('pionero'))
+    mal += not ok
+    print('   %s los hechos del TAG van a la fila: Ana ganó la final y fue la primera campeona; Cyn, sin duelos, no '
+          'tiene `tg_c` pero sí es pionera (`tg_p`)' % ('✅' if ok else '🔴'))
     print('')
     return mal
 
@@ -540,6 +585,12 @@ def main():
         v.sort(key=lambda x: -x['score'])
         for i, d in enumerate(v):
             d['pos_crew'] = '%d/%d' % (i + 1, len(v)) if len(v) >= MIN_GRUPO else ''
+
+    # 🏷️ LOS HECHOS DE LOS TAG de la Competitiva (`tg_c`) y de la de País (`tg_p`), como campos de la fila (Dlx,
+    # 14/10/2026: «crear más tags»). Las finales, los duelos uno por uno, los países de los rivales: nada de eso es de
+    # esta hoja, y calculado en la carta el sello no lo vería. Después de los puestos: 🗡️ MATAGIGANTES mira las letras
+    # de hoy y ⚔️ DUELISTA la Servidor de cada uno. Ver `hechos_tags()` y `sheet/hechos_tags.py`
+    hechos_tags(pool)
 
     salida = os.path.join(RAIZ, 'datos', 'competitivo_pool.json')
     os.makedirs(os.path.dirname(salida), exist_ok=True)

@@ -166,9 +166,13 @@ def del_servidor(p, sv, ps=None):
     q = dict(p)
     if x:
         q.update(ovr=x.get('ovr', 0), titulos=x.get('oro', 0), podios=x.get('pod', 0), eventos=x.get('ev', 0),
-                 racha=x.get('racha') or '0/0', duelos=x.get('duelos') or '0/0')
+                 racha=x.get('racha') or '0/0', duelos=x.get('duelos') or '0/0',
+                 # 🏷️ los hechos del TAG en ESE servidor (14/10/2026): finales, si jugó el primer evento, si le ganó
+                 # al dueño… Los deja el ciclo en el mismo archivo (`sheet/hechos_tags.con_hechos()`), así el sello
+                 # los ve junto con lo demás de ese servidor. Ver `comun/titulos.elegir()`
+                 hechos=x.get('tg') or {})
     else:
-        q.update(ovr=0, titulos=0, podios=0, eventos=0, racha='0/0', duelos='0/0')
+        q.update(ovr=0, titulos=0, podios=0, eventos=0, racha='0/0', duelos='0/0', hechos={})
     return q
 
 
@@ -342,6 +346,9 @@ def montar(gente):
     TS.GENTE = [fila(p) for p in gente]
     TS.TOTALES_PAIS = {i: p['tot_pais'] for i, p in enumerate(gente)}
     TS.PUESTO_RANGO = {i: p['rango_pos'] for i, p in enumerate(gente)}
+    # 🏷️ el TAG: los hechos de ese servidor y si es la propia o una camiseta (ver `con_camiseta()`)
+    TS.HECHOS = {i: p.get('hechos') or {} for i, p in enumerate(gente)}
+    TS.CASA = {i: p.get('casa', True) for i, p in enumerate(gente)}
     TS.avatares = _Fotos(gente)
 
 
@@ -447,6 +454,9 @@ def _slug(n):
 def con_camiseta(p, sv):
     # 🔑 y desde el 03/10/2026, con lo que hizo EN ESE servidor (`del_servidor()`): ya no son los cuatro prestados
     q = del_servidor(dict(p), sv)
+    # 🧳 la camiseta de OTRO servidor lleva su propio TAG (🧳 VISITANTE ILUSTRE / 🎟️ DE VISITA, 14/10/2026): un
+    # «DE LA CASA» o un «FUNDADOR» en la casa de otro dirían algo falso. La de tu propio servidor sigue siendo tuya
+    q['casa'] = (sv == p.get('sv'))
     q['sv'] = sv
     q['pos_sv'], q['tot_sv'] = 0, 0
     return q

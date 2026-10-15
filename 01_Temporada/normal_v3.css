@@ -276,6 +276,10 @@ h1{font-size:1.15rem;font-weight:800}
          display:flex; align-items:center; justify-content:space-between; }
 .c-fila > *{ position:static; top:auto; left:auto; right:auto; bottom:auto;
              transform:none; margin:0; }
+/* el TAG de 21 caracteres o más (normal_v3.card(), 14/10/2026): medido, «SEMIFINALISTA SERIAL» quedaba a 3.7 px de
+   la temporada y del UL y «PRIMER EVENTO PENDIENTE» los tocaba. Se aprieta el espaciado, no la letra */
+.c-band.largo{ letter-spacing:.7px; padding-left:10px; padding-right:10px; }
+.c-band.muylargo{ letter-spacing:.2px; padding-left:8px; padding-right:8px; }
 
 /* ── el nombre, con sombra ───────────────────────────────────────────
    La Competitiva ya la tenia y la Temporada no. Con 138 avatares distintos

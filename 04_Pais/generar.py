@@ -303,7 +303,12 @@ def cargar():
     porcomp = {x['raw']: x for x in comp}
     orden = list(comp) + [temp[n] for n in temp if n not in porcomp]
     for base in orden:
-        c = dict(base)
+        # 🔴 `type(base)(base)` Y NO `dict(base)` (14/10/2026). `herramientas/que_pide_cada_carta.py` mide qué campos
+        # pide esta carta envolviendo cada fila en un dict que anota lo que le piden —y `dict(base)` lo desenvolvía:
+        # todo lo que se leía de `c` (los duelos nacionales, `pos_pais`, el WR, los hechos del TAG) no quedaba anotado,
+        # así que el sello de la de País no lo miraba y una carta con un duelo nacional más no se redibujaba. Con la
+        # fila de verdad (un dict) esto es exactamente lo mismo que antes
+        c = type(base)(base)
         c.setdefault('rango', '')
         c.setdefault('sv', '')
         c.setdefault('score', 0)
@@ -342,6 +347,9 @@ def cargar():
             'tro_nac': 0,
             'tro_mun': 0,
             'score': c['score'],
+            # 🏷️ lo que el TAG mira y no está en la fila (14/10/2026): `tg_p` lo deja el builder
+            # (`sheet/hechos_tags.pais()`), y los servidores jugados salen de la Temporada. Ver `maqueta.tag()`
+            'tagp': dict(c.get('tg_p') or {}, srv=(t or {}).get('srv', 0)),
         })
     return out
 
@@ -366,6 +374,7 @@ def montar(gente, cols=0):
     MQ.GENTE = [fila(p) for p in gente]
     MQ.NAC = {p['nombre'].upper(): p['stats'] for p in gente}
     MQ.FOTOS = [p['foto'] for p in gente]
+    MQ.TAGP = {p['nombre'].upper(): p.get('tagp') or {} for p in gente}
     # ⚠️ TODO SALE DE MQ.PRESET, NADA ESCRITO A MANO. Antes esta llamada
     # repetia los trece valores elegidos, o sea que eran DOS copias de la
     # misma decision. En la Servidor esa forma ya costo una carta mal

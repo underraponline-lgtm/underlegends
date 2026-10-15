@@ -33,29 +33,48 @@ blanco. Aca el fondo del TAG es oscuro propio y el texto va BLANCO, que pasa
 siempre; el acento queda en el borde, donde decora y no sostiene la lectura.
 
 
-⚠️ NINGUNO DE ESTOS DATOS EXISTE TODAVIA
-----------------------------------------
-Partido por servidor el Sheet tiene UN numero: los puntos (ver
-03_Servidor/disenos/ovr_que_mide.py). Titulos, podios, racha, duelos y
-eventos POR SERVIDOR no se pueden derivar de ahi, los tiene que traer el bot.
+✅ LOS DATOS YA EXISTEN, desde el 03/10/2026: `datos/por_servidor.json`
+(`sheet/rankings.por_servidor()`) trae lo de cada uno EN CADA servidor, y
+desde el 14/10/2026 también sus hechos (`tg`, `sheet/hechos_tags.py`): las
+finales ahí, si jugó el primer evento, a quién le ganó. Los umbrales se
+midieron contra eso (el catálogo de Dlx, 14/10/2026) y van a quedar cortos
+en diciembre: se re-miden con `python sheet/hechos_tags.py --contar`.
 
-Los umbrales de abajo estan puestos contra el reparto GLOBAL, que es la cota
-optimista: por servidor cada numero es un pedazo de ese, asi que cuando
-lleguen los datos reales hay que volver a mirarlos o casi todos van a caer en
-el piso de la cascada.
+
+LA CASCADA DEL 14/10/2026
+-------------------------
+Dlx: *«crear más tags… crea muchísimos más y combinaciones para cada
+tarjeta»*. De 7 textos a 17, y el piso (🎤 DE LA CASA) pasa de llevarse 3 de
+cada 4 a uno de cada tres. Cuatro cosas cambiaron además de sumar:
+
+- 🏰 FORTALEZA en vez del 🏆 CAMPEÓN de t1: eran el MISMO texto en dos
+  niveles y se veian iguales salvo el borde.
+- 🎖️ INAMOVIBLE (10 podios ahí) se va: no lo tenía nadie; lo cubre
+  🏟️ FINALISTA DE CASA.
+- los umbrales de EN LLAMAS (5 → 3), DUELISTA (70 → 65 %), PILAR (20 → 15)
+  y PODIOS (3 → 2) se bajaron: con los de antes no los tenía nadie.
+- ⚠️ LA CARTA DE OTRO SERVIDOR (la «camiseta») tiene su propia cascada, de
+  dos: 🧳 VISITANTE ILUSTRE si hizo podio ahí y 🎟️ DE VISITA si no. Un
+  «DE LA CASA» o un «FUNDADOR» en la casa de otro dirían algo falso.
 """
 
 # (condicion, texto, nivel) — se evalua EN ORDEN y gana la primera
 # ⚠️ EL ORDEN ES LA REGLA. Un campeon del servidor que ademas tiene racha
 # muestra CAMPEON, no EN LLAMAS: primero lo que costo mas.
-NIVELES = ('t1', 't2', 't3')
+NIVELES = ('t1', 't2', 't3', 't4')
 
 
-def cascada(d):
-    """d: dict con pos_sv, total_sv, titulos, podios, racha, duelos, eventos.
+def elegir(d):
+    """`(id, texto, nivel)` del TAG. `d`: pos_sv, total_sv, titulos, podios,
+    racha, duelos, eventos, `hechos` (el `tg` de ese servidor en
+    `datos/por_servidor.json`) y `casa` (False en la carta de otro servidor).
 
     ⚠️ racha y duelos vienen como texto "actual/maxima" y "ganados/jugados",
     igual que en el resto del proyecto. Leerlos como numero los borra.
+
+    ⚠️ EL `id` ES LO QUE MIRAN LAS OTRAS CARTAS (`hechos_tags.svtag()`): si
+    esta dice 🏆 CAMPEÓN, la Temporada no repite su 👑 CAMPEÓN ×N. Cambiar un
+    texto no rompe nada; cambiar un `id` hay que buscarlo allá.
     """
     pos = d.get('pos_sv') or 0
     tot = d.get('total_sv') or 0
@@ -64,28 +83,59 @@ def cascada(d):
     evt = d.get('eventos') or 0
     rch = _par(d.get('racha'))[0]
     dg, dj = _par(d.get('duelos'))
+    h = d.get('hechos') or {}
 
+    # 🧳 LA CAMISETA: la carta de un servidor que no es el tuyo
+    if d.get('casa') is False:
+        if pod >= 1:
+            return ('visitante', '\U0001F9F3 VISITANTE ILUSTRE', 't3')
+        return ('visita', '\U0001F39F️ DE VISITA', 't4')
+
+    # ── t1 · lo que casi nadie tiene ────────────────────────────────────
     # ⚠️ el umbral de 3 vale igual que en los puestos: ser "1 de 2" no es
     # ser dueño de casa. Es la misma regla que deja pos_sv vacio.
     if pos == 1 and tot >= 3:
-        return ('\U0001F451 DUEÑO DE CASA', 't1')
+        return ('dueno', '\U0001F451 DUEÑO DE CASA', 't1')
     if tit >= 3:
-        return ('\U0001F3C6 CAMPEÓN', 't1')
+        return ('fortaleza', '\U0001F3F0 FORTALEZA', 't1')
     if pos and tot >= 3 and pos <= max(3, tot * 0.1):
-        return ('⭐ TOP DEL SERVIDOR', 't1')
-    if rch >= 5:
-        return ('\U0001F525 EN LLAMAS', 't2')
-    if dj >= 8 and dg / dj >= 0.7:
-        return ('⚔️ DUELISTA', 't2')
-    if pod >= 10:
-        return ('\U0001F396️ INAMOVIBLE', 't2')
-    if evt >= 20:
-        return ('\U0001F3DB️ PILAR', 't2')
+        return ('top', '⭐ TOP DEL SERVIDOR', 't1')
+    if h.get('dv'):
+        return ('verdugo', '\U0001FA93 VERDUGO DEL DUEÑO', 't1')
+    if dj >= 3 and dg == dj:
+        return ('invicto', '\U0001F6E1️ INVICTO EN CASA', 't1')
+    # ── t2 · lo que distingue ───────────────────────────────────────────
+    if rch >= 3:
+        return ('llamas', '\U0001F525 EN LLAMAS', 't2')
+    if (h.get('fin') or 0) >= 3:
+        return ('finalista', '\U0001F3DF️ FINALISTA DE CASA', 't2')
+    if dj >= 8 and dg / dj >= 0.65:
+        return ('duelista', '⚔️ DUELISTA', 't2')
+    if evt >= 15:
+        return ('pilar', '\U0001F3DB️ PILAR', 't2')
+    if h.get('llave'):
+        return ('llave', '\U0001F511 LLAVE DE LA CASA', 't2')
+    if h.get('bcasa'):
+        return ('buscado', '\U0001F4DC BUSCADO EN CASA', 't2')
     if tit >= 1:
-        return ('\U0001F3C6 CAMPEÓN', 't2')
-    if pod >= 3:
-        return ('\U0001F3C5 PODIOS', 't3')
-    return ('\U0001F3A4 DE LA CASA', 't3')
+        return ('campeon', '\U0001F3C6 CAMPEÓN', 't2')
+    # ── t3 · lo que se ve ───────────────────────────────────────────────
+    if h.get('fund'):
+        return ('fundador', '\U0001F9F1 FUNDADOR', 't3')
+    if pod >= 2:
+        return ('podios', '\U0001F3C5 PODIOS', 't3')
+    if evt >= 5:
+        return ('habitue', '\U0001F4C6 HABITUÉ', 't3')
+    # ── t4 · el piso ────────────────────────────────────────────────────
+    if h.get('nuevo'):
+        return ('nuevo', '\U0001F331 RECIÉN LLEGADO', 't4')
+    return ('casa', '\U0001F3A4 DE LA CASA', 't4')
+
+
+def cascada(d):
+    """`(texto, nivel)` del TAG: `elegir()` sin el id."""
+    _i, t, k = elegir(d)
+    return (t, k)
 
 
 def _par(v):
@@ -138,10 +188,13 @@ def div(d, propio, acento, y=None):
     """
     from comun.emblema import tono
     t, k = cascada(d)
+    # ⚠️ t4, el piso, más apagado que t3: un nivel que se ve igual que otro
+    # es el mismo TAG con otras palabras (ver `.tag.t1` de la de País)
     borde = {'t1': f'1.4px solid {acento}',
              't2': f'1px solid {acento}',
-             't3': '1px solid rgba(255,255,255,.22)'}[k]
-    op = {'t1': 1, 't2': .96, 't3': .92}[k]
+             't3': '1px solid rgba(255,255,255,.22)',
+             't4': '1px solid rgba(255,255,255,.12)'}[k]
+    op = {'t1': 1, 't2': .96, 't3': .92, 't4': .84}[k]
     # ⚠️ EL `top` VIENE POR ESTILO EN LINEA CUANDO LO MANDAN, y no es capricho:
     # la regla .tagb del CSS es UNA SOLA para todas las cartas de la hoja, y
     # la Servidor necesita que el TAG se acomode a cuantos circulos tenga cada
@@ -157,23 +210,42 @@ if __name__ == '__main__':
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     except Exception:
         pass
+    # (que, d, el id que tiene que salir)
     pruebas = [
-        ('el 1 de un servidor grande', dict(pos_sv=1, total_sv=79)),
-        ('el 1 de uno de 2', dict(pos_sv=1, total_sv=2)),
-        ('4 titulos', dict(pos_sv=12, total_sv=79, titulos=4)),
-        ('top 10%', dict(pos_sv=5, total_sv=79)),
-        ('racha 6', dict(pos_sv=30, total_sv=79, racha='6/9')),
-        ('duelos 9/12', dict(pos_sv=30, total_sv=79, duelos='9/12')),
-        ('11 podios', dict(pos_sv=30, total_sv=79, podios=11)),
-        ('24 eventos', dict(pos_sv=30, total_sv=79, eventos=24)),
-        ('1 titulo', dict(pos_sv=40, total_sv=79, titulos=1)),
-        ('4 podios', dict(pos_sv=60, total_sv=79, podios=4)),
-        ('nada', dict(pos_sv=70, total_sv=79)),
+        ('el 1 de un servidor grande', dict(pos_sv=1, total_sv=79), 'dueno'),
+        ('el 1 de uno de 2', dict(pos_sv=1, total_sv=2), 'casa'),
+        ('4 titulos', dict(pos_sv=12, total_sv=79, titulos=4), 'fortaleza'),
+        ('top 10%', dict(pos_sv=5, total_sv=79), 'top'),
+        ('le ganó al dueño', dict(pos_sv=30, total_sv=79, hechos={'dv': 1}), 'verdugo'),
+        ('duelos 4/4', dict(pos_sv=30, total_sv=79, duelos='4/4'), 'invicto'),
+        ('racha 3', dict(pos_sv=30, total_sv=79, racha='3/9'), 'llamas'),
+        ('3 finales', dict(pos_sv=30, total_sv=79, hechos={'fin': 3}), 'finalista'),
+        ('duelos 9/12', dict(pos_sv=30, total_sv=79, duelos='9/12'), 'duelista'),
+        ('duelos 5/12', dict(pos_sv=30, total_sv=79, duelos='5/12'), 'casa'),
+        ('16 eventos', dict(pos_sv=30, total_sv=79, eventos=16), 'pilar'),
+        ('la mitad de los eventos', dict(pos_sv=30, total_sv=79, eventos=4, hechos={'llave': 1}), 'llave'),
+        ('Dueño de Casa del MW', dict(pos_sv=30, total_sv=79, hechos={'bcasa': 1}), 'buscado'),
+        ('1 titulo', dict(pos_sv=40, total_sv=79, titulos=1), 'campeon'),
+        ('el primer evento', dict(pos_sv=40, total_sv=79, hechos={'fund': 1}), 'fundador'),
+        ('2 podios', dict(pos_sv=60, total_sv=79, podios=2), 'podios'),
+        ('6 eventos', dict(pos_sv=60, total_sv=79, eventos=6), 'habitue'),
+        ('llegó esta semana', dict(pos_sv=70, total_sv=79, eventos=1, hechos={'nuevo': 1}), 'nuevo'),
+        ('nada', dict(pos_sv=70, total_sv=79), 'casa'),
+        ('camiseta con podio', dict(titulos=3, podios=4, casa=False), 'visitante'),
+        ('camiseta sin podio', dict(eventos=9, casa=False), 'visita'),
     ]
     print('LA CASCADA DEL TAG, en orden\n')
-    for q, d in pruebas:
-        t, k = cascada(d)
-        print('   %-28s %-22s %s' % (q, t, k))
-    print('\n⚠️ ninguno de estos datos existe todavia por servidor: los trae'
-          '\n   el bot. Los umbrales estan contra el reparto GLOBAL, que es la'
-          '\n   cota optimista.')
+    mal = 0
+    for q, d, esp in pruebas:
+        i, t, k = elegir(d)
+        mal += i != esp
+        print('   %s %-26s %-24s %s' % ('✅' if i == esp else '🔴 (%s)' % esp, q, t, k))
+    textos = {}
+    for _q, d, _e in pruebas:
+        i, t, k = elegir(d)
+        textos.setdefault(t, set()).add(k)
+    dobles = [t for t, ks in textos.items() if len(ks) > 1]
+    mal += bool(dobles)
+    print('\n   %s ningún texto en dos niveles%s' % ('🔴' if dobles else '✅', (': %s' % dobles) if dobles else ''))
+    print('\n   cuántos ven cada uno, sobre datos/: python sheet/hechos_tags.py --contar')
+    sys.exit(1 if mal else 0)

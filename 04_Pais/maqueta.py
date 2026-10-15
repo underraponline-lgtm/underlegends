@@ -330,6 +330,9 @@ DEMO_NAC = {
 #   FOTOS  [dataURI o None, por carta]         en vez de la rotacion de prueba
 NAC = None
 FOTOS = None
+#   TAGP   {nombre: hechos del TAG}               lo de afuera de la fila (`tg_p` + `srv`, ver `tag()`); None en
+#                                                 las hojas, que dibujan la cascada de antes
+TAGP = None
 
 # ⚠️ DNI: DUELOS GANADOS CONTRA COMPATRIOTAS / CONTRA EXTRANJEROS. Dlx:
 # "cuantos duelos del mismo pais gano e internacional con el /". Es la unica
@@ -1207,8 +1210,21 @@ def crew_img(nombre):
     return '<span class="ini">%s</span>' % nombre[:2].upper()
 
 
-def tag(pos, nac=0, mun=0, evt=0, pod=0, win='0%', rch=0, dna='', din=''):
+def tag(pos, nac=0, mun=0, evt=0, pod=0, win='0%', rch=0, dna='', din='', h=None):
     """El TAG nacional: una cascada, no un solo texto.
+
+    🏷️ Y DESDE EL 14/10/2026 CON LO NACIONAL DE VERDAD (Dlx: «crea muchísimos más y combinaciones para cada
+    tarjeta ahora que tenemos más información»). La cascada de abajo se queda y se le suman ocho, todos de
+    «nacional contra internacional», que es el terreno de esta carta: ORGULLO NACIONAL, PRIMER CAMPEÓN, INVICTO
+    NACIONAL, REY DEL DERBI, CONQUISTA AFUERA, SIN FRONTERAS, EMBAJADOR y PIONERO. SELECCIONABLE baja a t3 y el piso
+    (REPRESENTANTE, SIN RANKING) a t4.
+
+    ⚠️ `h` SON LOS HECHOS DE AFUERA DE LA FILA (`tg_p` del pool competitivo, `sheet/hechos_tags.pais()`, más `srv`
+    de la Temporada): quién debutó primero en su país, quién ganó primero, contra cuántos países peleó. Calculados
+    acá, el sello no los vería. Sin `h`, la cascada es la de antes.
+
+    ⚠️ SIN EMOJI, COMO LOS DIECISIETE DE ANTES: todos los TAG de esta carta son sólo texto, y uno con dibujo al lado
+    de los otros se leería como de otra carta.
 
     Dlx: "crea mas tags".
 
@@ -1249,6 +1265,17 @@ def tag(pos, nac=0, mun=0, evt=0, pod=0, win='0%', rch=0, dna='', din=''):
             return None
 
     ca, fu = _pct(dna), _pct(din)
+    h = h or {}
+
+    def _vt(x):
+        try:
+            a, b = str(x).split('/')
+            return int(a), int(b)
+        except Exception:
+            return 0, 0
+
+    na_v, na_t = _vt(dna)
+    in_v, _in_t = _vt(din)
     # ── t1 · lo que casi nadie tiene ────────────────────────────────────
     if mun >= 3:
         return ('INMORTAL', 't1')
@@ -1272,23 +1299,42 @@ def tag(pos, nac=0, mun=0, evt=0, pod=0, win='0%', rch=0, dna='', din=''):
         return ('CAMPEÓN NACIONAL', 't1')
     if p == 1 and t >= 20:
         return ('EL MEJOR DE %d' % t, 't1')
+    # el ÚNICO de su país que salió campeón en la temporada (país con 3 o más)
+    if h.get('unico'):
+        return ('ORGULLO NACIONAL', 't1')
+    # el primero de su país en salir campeón en la temporada
+    if h.get('primer'):
+        return ('PRIMER CAMPEÓN', 't1')
     if p == 1 and w >= 70:
         return ('INTRATABLE', 't1')
     if p == 1:
         return ('Nº1 DEL PAÍS', 't1')
+    # 3 o más duelos contra compatriotas, todos ganados
+    if na_t >= 3 and na_v == na_t:
+        return ('INVICTO NACIONAL', 't1')
     # ── t2 · lo que distingue ───────────────────────────────────────────
     if (p == 2 or p == 3) and w >= 65:
         return ('PODIO Y PUNTERÍA', 't2')
     if p == 2 or p == 3:
         return ('PODIO NACIONAL', 't2')
+    if na_v >= 5:
+        return ('REY DEL DERBI', 't2')
+    if in_v >= 15:
+        return ('CONQUISTA AFUERA', 't2')
+    # rivales de 7 países o más
+    if h.get('paises', 0) >= 7:
+        return ('SIN FRONTERAS', 't2')
+    if h.get('srv', 0) >= 4:
+        return ('EMBAJADOR', 't2')
+    # el primero de su país en debutar en la temporada
+    if h.get('pionero'):
+        return ('PIONERO', 't2')
     if ca is not None and fu is not None and fu - ca >= 10:
         return ('MEJOR AFUERA', 't2')
     if ca is not None and fu is not None and ca - fu >= 10:
         return ('FUERTE EN CASA', 't2')
     if p and t and p <= max(5, t * .25) and w >= 60:
         return ('TITULAR FIJO', 't2')
-    if p and t and p <= max(5, t * .25):
-        return ('SELECCIONABLE', 't2')
     if w >= 65 and evt >= 25:
         return ('GANA AFUERA', 't2')
     if pod >= 20:
@@ -1297,14 +1343,17 @@ def tag(pos, nac=0, mun=0, evt=0, pod=0, win='0%', rch=0, dna='', din=''):
         return ('EN RACHA', 't2')
     if evt >= 40:
         return ('KILÓMETROS', 't2')
-    # ── t3 · el piso ────────────────────────────────────────────────────
+    # ── t3 · lo que se ve ───────────────────────────────────────────────
+    if p and t and p <= max(5, t * .25):
+        return ('SELECCIONABLE', 't3')
     if p and t and p <= t * .5:
         return ('MEDIA TABLA', 't3')
     if evt >= 12:
         return ('DA LA CARA', 't3')
+    # ── t4 · el piso ────────────────────────────────────────────────────
     if not p:
-        return ('SIN RANKING', 't3')
-    return ('REPRESENTANTE', 't3')
+        return ('SIN RANKING', 't4')
+    return ('REPRESENTANTE', 't4')
 
 
 UL = b64(os.path.join(BASE, '01_Temporada', 'ul_blanco.png'))
@@ -1874,7 +1923,7 @@ def carta(i, LW, marco, tag_centro=True, acorta=0, remate='punta',
     # sea que va de 102 a 198, y el panel termina en 68.
     TAGCLS = '' if tag_centro else ' der'
     TAGTXT, TAGN = tag(pos, _tro[0][2], _tro[1][2], evt, pod, win, rch,
-                       VAL.get('DNA', ''), VAL.get('DIN', ''))
+                       VAL.get('DNA', ''), VAL.get('DIN', ''), (TAGP or {}).get(nom))
     TAGN = TAGN[1]
 
     # ⚠️ LOS CHIPS VAN AFUERA DEL RECORTE, en un envoltorio. .card tiene
@@ -2429,6 +2478,8 @@ body{{margin:0;background:#0B0B12;padding:26px;font-family:Archivo,'LigaEmoji',s
 .tag.t1{{border-width:1.6px;opacity:1}}
 .tag.t2{{border-width:1px;opacity:.96}}
 .tag.t3{{border-color:rgba(255,255,255,.24) !important;opacity:.9}}
+/* t4, el piso (14/10/2026): más apagado que t3, o el piso y lo que se ve serían el mismo TAG */
+.tag.t4{{border-color:rgba(255,255,255,.14) !important;opacity:.82}}
 /* la version vieja, centrada en el contenido, para poder comparar */
 .tag.der{{left:auto;right:0;transform:none;margin:0 auto}}
 

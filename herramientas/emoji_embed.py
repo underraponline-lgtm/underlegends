@@ -138,6 +138,11 @@ def del_proyecto():
                 for c in n.value:
                     if es_emoji(c):
                         vistos.setdefault(c, set()).add(rel)
+                # 🐦‍🔥 UNA SECUENCIA CON ZWJ (U+200D) NECESITA EL ZWJ EN EL RECORTE (14/10/2026: el FÉNIX de la
+                # Temporada). Sin él la fuente no tiene con qué unir los dos glifos y la carta dibuja 🐦 y 🔥 sueltos;
+                # `es_emoji()` no lo cuenta porque solo no se ve.
+                if '‍' in n.value and any(es_emoji(c) for c in n.value):
+                    vistos.setdefault('‍', set()).add(rel)
     return vistos
 
 
