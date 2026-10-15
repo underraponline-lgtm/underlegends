@@ -594,29 +594,98 @@ button.btn{background:transparent;cursor:pointer}
 .dvp-sub li{display:grid;grid-template-columns:32px minmax(0,1fr) auto;align-items:center;gap:8px;padding:6px 8px;border:1.5px solid var(--suave);border-left:4px solid #29B298}
 .dvp-sub .dv-z{color:#29B298}
 .dvp-sub li.dvp-mas{display:flex;justify-content:center;border-left-color:var(--suave);font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
-/* 🎯 las misiones de la semana (`misiones.jsx`): tres tarjetas, una por nivel, y dos tablas */
-.mi{display:grid;gap:14px}
-.mi-lista{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
-.mi-m{display:grid;align-content:start;gap:6px;padding:12px 12px 14px;border:2px solid var(--linea);border-top-width:6px;background:var(--fondo)}
-.mi-facil{border-top-color:#29B298}
-.mi-media{border-top-color:#E8A93B}
-.mi-dificil{border-top-color:#E41373}
+/* 🎯 las misiones de la semana (`misiones.jsx`). 🎮 Desde el 14/10/2026, como un juego: TUS misiones arriba —cada
+   una con su barra y lo que falta en palabras— con la cuenta atrás al lunes; la cacería con su presa y la Semana
+   perfecta lado a lado en la compu; y las dos tablas de siempre abajo, en columnas para no dejar huecos */
+.mi{display:grid;gap:22px}
+.mi-tus{display:grid;gap:12px}
+.mi-tus-cab{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
+.mi-tus-tx{display:grid;gap:6px;min-width:0;flex:1 1 320px}
+.mi-tus-tx h2{margin:0;font:900 28px/1.05 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase}
+.mi-eti{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:0.08em;color:var(--gris);text-transform:uppercase}
+.mi-intro,.mi-reglas{margin:0;font:600 14px/1.45 Archivo,sans-serif;max-width:76ch}
+.mi-reglas{color:var(--gris)}
+.mi-intro .btn{margin-left:4px;vertical-align:middle}
+.mi-reglas b{color:var(--tinta)}
+/* las tres del bono, como vidas de un juego */
+.mi-bono{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font:600 14px/1.35 Archivo,sans-serif}
+.mi-bono-m{display:inline-flex;gap:4px}
+.mi-bono-m i{width:24px;height:12px;border:2px solid var(--linea)}
+.mi-bono-m i.si{background:#29B298;border-color:#29B298}
+.mi-bono-m i.si.mi-media{background:#E8A93B;border-color:#E8A93B}
+.mi-bono-m i.si.mi-dificil{background:#E41373;border-color:#E41373}
+/* ⏳ la cuenta atrás al lunes a las 11 AM ET */
+.mi-reloj{display:grid;justify-items:end;gap:4px;padding:9px 12px;background:var(--inv);color:var(--inv-tinta);border:2px solid var(--linea)}
+.mi-reloj small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:0.08em;text-transform:uppercase;opacity:.82}
+.mi-reloj b{font:900 28px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+/* las misiones, una carta cada una: el color de su nivel arriba y en la barra */
+.mi-lista{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.mi-m{--mi-c:var(--tinta);display:grid;align-content:start;gap:8px;padding:11px 12px 12px;border:2px solid var(--linea);border-top-width:6px;background:var(--fondo)}
+.mi-facil{border-top-color:#29B298;--mi-c:#29B298}
+.mi-media{border-top-color:#E8A93B;--mi-c:#E8A93B}
+.mi-dificil{border-top-color:#E41373;--mi-c:#E41373}
 /* la cacería (08/10/2026): ganale un duelo a la presa de la semana; negro, como el Most Wanted */
-.mi-caza{border-top-color:var(--tinta)}
+.mi-caza{border-top-color:var(--tinta);--mi-c:var(--tinta)}
 /* ✨ la misión del evento dorado, con el dorado de los eventos dorados (`.evp-ev.dorado`) */
-.mi-dorado{border-top-color:#E7B622}
+.mi-dorado{border-top-color:#E7B622;--mi-c:#E7B622}
 .mi-m.ok{background:var(--caja)}
+.mi-arr{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
 .mi-niv{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:var(--gris)}
-.mi-t{font:900 17px/1.2 Archivo,sans-serif;text-wrap:balance}
-.mi-p{font:900 24px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
-.mi-yo{font:800 13px/1.2 Archivo,sans-serif}
+.mi-p{font:900 22px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mi-cuerpo{display:flex;align-items:center;gap:10px;min-width:0}
+.mi-sv{width:36px;height:36px;flex:none;border-radius:50%;object-fit:cover;border:2px solid var(--linea);background:var(--caja)}
+.mi-cara{width:36px;height:36px}
+.mi-t{font:900 17px/1.2 Archivo,sans-serif;text-wrap:balance;min-width:0}
+.mi-t a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.mi-m .mi-barra{height:12px}
+.mi-m .mi-barra i{background:var(--mi-c)}
+.mi-m.ok .mi-barra i{background:#29B298}
+.mi-yo{font:800 14px/1.3 Archivo,sans-serif}
+.mi-yo small{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--gris)}
 .mi-m.ok .mi-yo{color:#29B298}
+.mi-acl{font:600 12px/1.35 Archivo,sans-serif;color:var(--gris)}
 .mi-c{font:600 12px/1.2 Archivo,sans-serif;color:var(--gris)}
+/* la cacería y la Semana perfecta: lado a lado en la compu */
+.mi-dos{display:grid;gap:22px;align-items:start}
+.mi-presa{display:grid;grid-template-columns:132px minmax(0,1fr);gap:14px;align-items:start;padding:12px;border:2px solid var(--linea);border-top-width:6px;background:var(--fondo)}
+.mi-presa-c .ci{width:100%}
+.mi-presa-tx{display:grid;gap:8px;min-width:0}
+.mi-presa-tx p{margin:0;font:600 14px/1.45 Archivo,sans-serif}
+.mi-presa-n{display:flex;align-items:center;gap:10px;min-width:0}
+.mi-presa-n .dv-n{font:900 22px/1.1 Archivo,sans-serif;font-stretch:110%}
+.mi-presa-cara{width:42px;height:42px}
+.mi-presa-c .mi-presa-cara{width:100%;height:auto;aspect-ratio:1}
+.mi-presa-yo{font:800 14px/1.2 Archivo,sans-serif}
+.mi-presa-yo.si{color:#29B298}
+.mi-caras{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.mi-caras a{display:block;color:inherit}
+.mi-cc{width:34px;height:34px}
+.mi-caras li.yo .mi-cc{outline:3px solid var(--magenta);outline-offset:1px}
+.mi-mas{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris);padding:0 4px}
+.mi-nada{margin:0;font:600 13px/1.45 Archivo,sans-serif;color:var(--gris)}
+.dv-tabla.mi-perf-l li{grid-template-columns:32px minmax(0,1fr) auto auto}
+.mi-bono-s{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:0.06em;background:#29B298;color:#030304;padding:4px 6px;white-space:nowrap}
 .dv-tabla.mi-tabla li{grid-template-columns:32px minmax(0,1fr) auto auto}
 .dv-tabla.mi-tabla.con-i li{grid-template-columns:28px 32px minmax(0,1fr) auto}
 .mi-marcas{display:inline-flex;gap:4px}
 .mi-marcas i{width:11px;height:11px;border:1.5px solid var(--linea)}
 .mi-marcas i.si{background:#29B298;border-color:#29B298}
+@media (min-width: 900px){
+  .mi-dos{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+  .mi-dos>:only-child{grid-column:1/-1}
+  /* las tablas largas, en columnas: 93 filas de una no dejaban nada al costado */
+  .dv-tabla.mi-cols{column-width:300px;column-gap:0;column-rule:1px solid var(--suave)}
+  .dv-tabla.mi-cols li{break-inside:avoid}
+}
+@media (max-width: 640px){
+  .mi-m{gap:6px;padding:9px 11px 10px}
+  .mi-t{font-size:16px}
+  .mi-tus-tx h2{font-size:24px}
+  .mi-reloj{flex:1 1 100%;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+  .mi-reloj b{font-size:24px}
+  .mi-presa{grid-template-columns:108px minmax(0,1fr);gap:10px;padding:10px}
+  .mi-presa-n .dv-n{font-size:19px}
+}
 
 .cu-quien.anon{grid-template-columns:auto minmax(0,1fr);align-items:center;row-gap:14px;padding:16px 14px}
 .cu-quien.anon .cu-av{margin:0;width:56px;height:56px;border:2px solid var(--linea)}

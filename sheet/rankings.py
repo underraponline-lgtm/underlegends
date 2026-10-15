@@ -1043,36 +1043,48 @@ def rangos_de(res):
     ⚠️ NO LEVANTA. Es un adorno de la vitrina, no su contenido: si el
     cálculo falla, la tabla se escribe igual con el rango en blanco. Lo
     que no puede pasar es que una columna nueva tumbe la escritura.
+    Quien necesite distinguir «nadie tiene letra» de «falló», usa
+    `rangos_estricto()`: la misma cuenta, sin el `except`.
     """
     try:
-        from competitivo import calcular
-        from comun.rangos import de_score
-        from comun.requisitos import minimo
-        # 🔴 EL RANGO ES EL DEL COMPETITIVO, Y EL COMPETITIVO PIDE 10.
-        # Quien no entra a esa hoja todavía no tiene letra.
-        #
-        # Dlx, 23/09/2026: *«el ranking competitivo no aparece nadie
-        # hasta q tenga 10 eventos. Mira los requisitos de las
-        # tarjetas»*. La respuesta estaba en `comun/requisitos.py` desde
-        # siempre; lo que faltaba era aplicarla.
-        #
-        # ⚠️ ESTO YA ESTUVO PUESTO Y LO SAQUÉ, apoyado en la línea de
-        # `CLAUDE.md` que dice *«el requisito bloquea la carta, no el
-        # dato»* y que los que caen *«tienen derecho a ver su rango en
-        # su Temporada»*. Esa línea se escribió cuando el corte sacaba
-        # gente **del pool** —ahí sí perdían todo— y no describe esto:
-        # acá el pool no se toca, sólo no se les inventa una letra que
-        # todavía no ganaron. La decisión de Dlx manda sobre mi lectura.
-        #
-        # ⚠️ Y ASÍ LAS TRES PANTALLAS DICEN LO MISMO: el Sheet, la
-        # página pública (`MIN_EV_RANGO`, que ya gateaba en 10) y la
-        # carta. Era la única incoherencia que quedaba del rango.
-        piso = minimo('competitivo', 'ev')
-        return {q: de_score(v['score'])
-                for q, v in calcular(res).items()
-                if (v.get('ev') or 0) >= piso}
+        return rangos_estricto(res)
     except Exception:                                    # noqa: BLE001
         return {}
+
+
+def rangos_estricto(res):
+    """`rangos_de()` SIN EL `except`: la misma cuenta, y si falla, levanta.
+
+    🆕 La pide «Ganale a alguien más fuerte» (`bot/misiones.py`, 14/10/2026):
+    allá un `{}` por un error se leería como «nadie tiene letra», sacaría la
+    misión del sorteo y cambiaría las misiones de toda la semana.
+    """
+    from competitivo import calcular
+    from comun.rangos import de_score
+    from comun.requisitos import minimo
+    # 🔴 EL RANGO ES EL DEL COMPETITIVO, Y EL COMPETITIVO PIDE 10.
+    # Quien no entra a esa hoja todavía no tiene letra.
+    #
+    # Dlx, 23/09/2026: *«el ranking competitivo no aparece nadie
+    # hasta q tenga 10 eventos. Mira los requisitos de las
+    # tarjetas»*. La respuesta estaba en `comun/requisitos.py` desde
+    # siempre; lo que faltaba era aplicarla.
+    #
+    # ⚠️ ESTO YA ESTUVO PUESTO Y LO SAQUÉ, apoyado en la línea de
+    # `CLAUDE.md` que dice *«el requisito bloquea la carta, no el
+    # dato»* y que los que caen *«tienen derecho a ver su rango en
+    # su Temporada»*. Esa línea se escribió cuando el corte sacaba
+    # gente **del pool** —ahí sí perdían todo— y no describe esto:
+    # acá el pool no se toca, sólo no se les inventa una letra que
+    # todavía no ganaron. La decisión de Dlx manda sobre mi lectura.
+    #
+    # ⚠️ Y ASÍ LAS TRES PANTALLAS DICEN LO MISMO: el Sheet, la
+    # página pública (`MIN_EV_RANGO`, que ya gateaba en 10) y la
+    # carta. Era la única incoherencia que quedaba del rango.
+    piso = minimo('competitivo', 'ev')
+    return {q: de_score(v['score'])
+            for q, v in calcular(res).items()
+            if (v.get('ev') or 0) >= piso}
 
 
 def _desempate(v, quien):
