@@ -280,6 +280,13 @@
 "temporada"
 ]
 },
+"miniboy": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor"
+]
+},
 "carlosss": {
 "rg": "",
 "c": [
@@ -302,13 +309,6 @@
 "pais",
 "servidor",
 "temporada"
-]
-},
-"miniboy": {
-"rg": "D",
-"c": [
-"competitivo",
-"servidor"
 ]
 },
 "presagio": {
