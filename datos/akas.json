@@ -92,8 +92,8 @@
   "choko": "Choka",
   "colesitodebogota": "Colesito",
   "coxisjusticiero": "Coxis",
-  "ck": "Crack and Krank",
-  "cyk": "Crack and Krank",
+  "ck": "Pcyka",
+  "cyk": "Pcyka",
   "creazzy": "Crazzy",
   "criezj": "CrisZJ",
   "kronox": "Cronox",
@@ -274,6 +274,18 @@
   "armandofaso": "BNA",
   "ckl": "BNA",
   "snx": "Rbk",
+  "ola": "Garxzii",
+  "pipas": "CrisZJ",
+  "tnr": "Tenor",
+  "trrr": "BNA",
+  "jb": "JHEYSON",
+  "frifaier": "Cronox",
+  "saik": "Zaik",
+  "xubaruprime": "Xubaru",
+  "crackandkrank": "Pcyka",
+  "ger9": "Gero",
+  "riley": "Dominick",
+  "g8": "Gocho",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1406,6 +1418,58 @@
   [
    "SNX",
    "Rbk"
+  ],
+  [
+   "Ola",
+   "Garxzii"
+  ],
+  [
+   "Pipas",
+   "CrisZJ"
+  ],
+  [
+   "tnr",
+   "Tenor"
+  ],
+  [
+   "TRRR",
+   "BNA"
+  ],
+  [
+   "JB",
+   "JHEYSON"
+  ],
+  [
+   "Frifaier",
+   "Cronox"
+  ],
+  [
+   "SAIK",
+   "Zaik"
+  ],
+  [
+   "Xubaru prime",
+   "Xubaru"
+  ],
+  [
+   "Crack and Krank",
+   "Pcyka"
+  ],
+  [
+   "Ger9",
+   "Gero"
+  ],
+  [
+   "Riley",
+   "Dominick"
+  ],
+  [
+   "JB",
+   "JHEYSON"
+  ],
+  [
+   "g8",
+   "Gocho"
   ],
   [
    "Nexus",

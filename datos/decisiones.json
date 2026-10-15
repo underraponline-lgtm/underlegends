@@ -99,6 +99,27 @@
    "decision": "no cuenta",
    "cuando": "2026-10-14 10:27 PM ET",
    "por": "Dlx (✅ Decidir)"
+  },
+  "Nombre de la compe · DDF · 01/10": {
+   "decision": "cuenta",
+   "cuando": "2026-10-15 11:30 AM ET",
+   "por": "Dlx (✅ Decidir)"
+  },
+  "19 CUP VOL 2 EDICION FIFA · DDF · 23/09": {
+   "campeon": {
+    "ganador": "WALKER SANITY",
+    "ronda": "final",
+    "batallas": [
+     [
+      "WALKER SANITY",
+      "NOXVELL"
+     ]
+    ],
+    "pasaron": []
+   },
+   "cuando": "2026-10-15 11:30 AM ET",
+   "por": "Dlx (✅ Decidir)",
+   "nota": "Dlx en ✅ Decidir, a «Bracket incompleto»: ganó WALKER SANITY. La llave no decía el campeón: WALKER SANITY cobra campeón y el otro, subcampeón (`llaves_a_entrada.con_campeon()`)"
   }
  },
  "no_rankear": {
@@ -143,6 +164,41 @@
    "pregunta": "__ DESGRACIAS EN TOKYO VOL.13 __ · FFA · 25/09 · semifinales · MAKMA 🇻🇪 + SNOW 🇨🇴 🆚 NEO 🇦🇷 + ENEK 🇪🇸",
    "nota": "Gano neo y enek porque ellos avanzaron ala final no?",
    "cuando": "2026-09-29 12:55 PM ET"
+  },
+  "d7c7ceffaf": {
+   "pregunta": "__ __ Cuentas Pendientes V.1 __ __ · FFA · 08/10 · final · PROVENZA COLESITO XUBARU 🆚 ALDRE MAKMA RODA",
+   "nota": "Ganó Aldre, pero los () son Pokémon acuerdate",
+   "cuando": "2026-10-15 11:30 AM ET"
+  },
+  "8d82782481": {
+   "pregunta": "FAT BATTLES PALOOZA T.3 FECHA 6 · ACAD · 09/10 · octavos · ALVA 🇲🇽 🆚 SHADOW 🇨🇴",
+   "nota": "Ahí dice en cuartos EMILIO ALVA de México… entonces creo eso lo delata.",
+   "cuando": "2026-10-15 11:30 AM ET"
+  },
+  "c09d1c3b3f": {
+   "pregunta": "Ola🇲🇽",
+   "nota": "🎙️ En la llamada de FFA, mientras se jugaba, había alguien parecido: «Elsoolar» (en la Lista: Elsoolar) · 🎙️ En la llamada de FFA, mientras se jugaba, había 2 parecidos: «Elsoolar» (en la Lista: Elsoolar) y «Soulb» (en la Lista: Soulb) · 🎙️ En la llamada de FFA, mientras se jugaba, había alguien parecido: «Soulb» (en la Lista: Soulb)",
+   "cuando": "2026-10-15 11:30 AM ET"
+  },
+  "0ad79d6ccd": {
+   "pregunta": "Pipas🇵🇪",
+   "nota": "🎙️ En la llamada de DDF, mientras se jugaba, había alguien parecido: «pipi94» · 🎙️ En la llamada de DDF, mientras se jugaba, había 2 parecidos: «ChalonZJ» (en la Lista: CrisZJ) y «pipi94»",
+   "cuando": "2026-10-15 11:30 AM ET"
+  },
+  "fe405c9bcf": {
+   "pregunta": "V-zir 🇻🇪",
+   "nota": "🎙️ En la llamada de DDF, mientras se jugaba, estaba «V-ZIR🌐»",
+   "cuando": "2026-10-15 11:30 AM ET"
+  },
+  "be40ea2eed": {
+   "pregunta": "ANTONIO🇵🇾",
+   "nota": "🎙️ En la llamada de FFA, mientras se jugaba, había alguien parecido: «Antonioukast»",
+   "cuando": "2026-10-15 11:30 AM ET"
+  },
+  "abef515a53": {
+   "pregunta": "Abraham 🇻🇪",
+   "nota": "Es el que juega en FFA tambien",
+   "cuando": "2026-10-15 11:30 AM ET"
   }
  },
  "batallas": {
@@ -361,6 +417,24 @@
    "cuando": "2026-10-14 5:53 PM ET",
    "por": "el organizador, con el botón (<@1345962362615894027>)",
    "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
+  },
+  "cuentaspendientesv1|FFA|08/10|final|aldremakmaroda|provenzacolesitoxubaru": {
+   "ganador": "ALDRE MAKMA RODA",
+   "batalla": "__ __ Cuentas Pendientes V.1 __ __ · FFA · 08/10 · final · PROVENZA COLESITO XUBARU 🆚 ALDRE MAKMA RODA",
+   "cuando": "2026-10-15 11:30 AM ET",
+   "por": "Dlx (✅ Decidir)"
+  },
+  "fatbattlespaloozat3fecha6|ACAD|09/10|octavos|alva|shadow": {
+   "ganador": "ALVA 🇲🇽",
+   "batalla": "FAT BATTLES PALOOZA T.3 FECHA 6 · ACAD · 09/10 · octavos · ALVA 🇲🇽 🆚 SHADOW 🇨🇴",
+   "cuando": "2026-10-15 11:30 AM ET",
+   "por": "Dlx (✅ Decidir)"
+  },
+  "mortalkombatmapachecup|DDF|11/10|cuartos|btrece|evangeline": {
+   "ganador": "(nadie siguió)",
+   "batalla": "MORTAL KOMBAT MAPACHE CUP · DDF · 11/10 · cuartos · Btrece🇺🇾 🆚 Evangeline",
+   "cuando": "2026-10-15 11:30 AM ET",
+   "por": "Dlx (✅ Decidir)"
   }
  },
  "anuncios_fuera": {
