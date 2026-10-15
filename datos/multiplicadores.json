@@ -455,6 +455,11 @@
      "nachonc_",
      12,
      1
+    ],
+    [
+     "ajoel",
+     9,
+     1
     ]
    ],
    "semillero": {
@@ -462,14 +467,16 @@
      "FFA": 18,
      "URBF": 12,
      "SR": 4,
-     "FVS": 1
+     "FVS": 1,
+     "FRZ": 2
     },
     "gente": {
      "DDF": 7,
      "FFA": 102,
      "SR": 21,
      "URBF": 20,
-     "FVS": 5
+     "FVS": 5,
+     "FRZ": 9
     },
     "gana": "URBF"
    },
