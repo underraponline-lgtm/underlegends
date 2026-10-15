@@ -24,7 +24,9 @@ LO QUE ENTRA
   completa (Dlx, 06/10/2026: «5. c»), de `datos/pase_niveles.json`;
 - 🥇 los premios de la semana;
 - 📢 los anuncios de eventos de todos los servidores (`datos/anuncios.json`),
-  y 📰 las novedades de la Liga en DRA.
+  y 📰 las novedades de la Liga en DRA;
+- 🖼️ el último flyer de cada liga de los servidores (`bot/ligas.py`), si ya
+  está en R2 (Dlx, 14/10/2026: «Flyers en Publicaciones e Historias»).
 
 ⚠️ SUBIR DE RANGO Y DESBLOQUEAR NO SE PUEDEN RECALCULAR: son un cambio entre
 dos corridas. Por eso se anotan en `datos/muro.json` (con cómo estaba cada uno)
@@ -210,6 +212,33 @@ def anuncios(an):
     return out
 
 
+def flyers(lg, svs=None):
+    """🖼️ el último afiche de cada liga de los servidores (`bot/ligas.py`, Dlx 14/10/2026: «Flyers en Publicaciones e
+    Historias»). SÓLO el que está en R2 (`url`): el link de Discord vence, y un afiche roto es peor que ninguno.
+
+    Uno por liga —el más nuevo—: las FMH publican uno por batalla (cinco por jornada), y cinco afiches de la misma liga
+    seguidos tapaban el resto del muro (Dlx: «no sobrecargar»). `svs`: `{sigla: {guild_id}}`, para el link."""
+    import ligas as LG
+    if svs is None:
+        svs = (_j('datos', 'servidores.json') or {}).get('servidores') or {}
+    out = []
+    for lid, x in ((lg or {}).get('ligas') or {}).items():
+        fl = x.get('flyer') or {}
+        if not fl.get('url') or not _de_iso(fl.get('t')):
+            continue
+        L = LG.LIGAS.get(lid) or {}
+        sv = x.get('sv') or L.get('sv') or ''
+        y = {'tipo': 'flyer', 't': _iso(_de_iso(fl['t'])), 'liga': lid, 'ln': x.get('n') or L.get('n') or lid, 'sv': sv,
+             'img': fl['url'], 'w': fl.get('w') or 0, 'h': fl.get('h') or 0}
+        if fl.get('tit'):
+            y['tit'] = str(fl['tit'])[:90]
+        g = (svs.get(sv) or {}).get('guild_id')
+        if g and L.get('an') and fl.get('id'):
+            y['link'] = 'https://discord.com/channels/%s/%s/%s' % (g, L['an'], fl['id'])
+        out.append(y)
+    return out
+
+
 def _org(s):
     try:
         import multiplicadores as MU
@@ -268,8 +297,11 @@ def id_de(x):
         partes = [tipo, str(x['ll'])]
     elif tipo in ('caza', 'precio'):
         partes = [tipo, x.get('a') or '', x.get('t') or '']
-    elif tipo in ('anuncio', 'liga') and x.get('link'):
+    elif tipo in ('anuncio', 'liga', 'flyer') and x.get('link'):
         partes = [tipo, x['link']]
+    elif tipo == 'flyer':
+        # 🖼️ sin link (el servidor sin guild): la liga y la imagen, que lleva el id del mensaje
+        partes = [tipo, x.get('liga') or '', x.get('img') or '']
     elif tipo == 'pase':
         # 🎟️ de quién (su perfil), de qué temporada y qué nivel: llega una sola vez
         partes = [tipo, x.get('temp') or '', str(x.get('nivel') or ''), (x.get('ks') or [''])[0] or '|'.join(x.get('quien') or [])]
@@ -369,7 +401,8 @@ def _fuentes():
     regs = LW.leer()
     return {'llaves': regs, 'instantes': LW.instantes(regs), 'mw': _j('datos', 'mw.json'),
             'precios': _j('datos', 'precios.json'), 'mult': _j('datos', 'multiplicadores.json'),
-            'anuncios': _j('datos', 'anuncios.json'), 'pase': _j('datos', 'pase_niveles.json')}
+            'anuncios': _j('datos', 'anuncios.json'), 'pase': _j('datos', 'pase_niveles.json'),
+            'ligas': _j('datos', 'ligas.json')}
 
 
 def _arranque(ahora):
@@ -433,7 +466,8 @@ def _todo(p, guardado, ahora, fuentes):
     todo = (anotados + campeones(fuentes.get('llaves'), fuentes.get('instantes'))
             + most_wanted(fuentes.get('mw')) + precios_cobrados(fuentes.get('precios'))
             + premios(fuentes.get('mult')) + anuncios(fuentes.get('anuncios'))
-            + pase(fuentes.get('pase'), p.get('tabla')) + novedades(p.get('novedades')))
+            + pase(fuentes.get('pase'), p.get('tabla')) + novedades(p.get('novedades'))
+            + flyers(fuentes.get('ligas'), fuentes.get('svs')))
     return todo, estado, anotados
 
 
@@ -524,14 +558,26 @@ def _self_check():
         'anuncios': {'anuncios': [{'nombre': 'SNAKE ARENA', 'servidor': 'SR', 'cuando': '2026-10-14T12:00:00',
                                    'guild_id': '1', 'canal_id': '2', 'msg_id': '3', 'organizador': 'Nacho'}]},
         'pase': {'temp': 't1', 'hitos': [['111', 10, ms(13, 20), 'ana'], ['222', 30, ms(13, 21), 'nadie'],
-                                         ['333', 10, ms(13, 22), '']]}}
+                                         ['333', 10, ms(13, 22), '']]},
+        # 🖼️ el flyer de una liga: sólo el que está en R2
+        'ligas': {'ligas': {'fmh-espana': {'n': 'FMH España', 'sv': 'URBF', 'flyer': {
+            'id': '55', 't': '2026-10-14T13:47:43Z', 'tit': 'MTZ vs ORTIZ', 'url': 'https://r2/ligas/fmh-espana/55.webp',
+            'w': 720, 'h': 900}},
+            'fms-peru': {'n': 'FMS Perú', 'sv': 'DDF', 'flyer': {'id': '56', 't': '2026-10-14T12:00:00Z'}}}},
+        'svs': {'URBF': {'guild_id': '9'}}}
     muro, guardar = armar({'tabla': tabla, 'novedades': [{'t': '2026-10-14T13:00:00Z', 'tit': 'Hola',
                                                           'tx': 'la Liga', 'link': 'x'}]},
                           guardado={'estado': antes, 'cambios': []}, ahora=ahora, fuentes=fuentes)
     ts = [x['tipo'] for x in muro['items']]
-    ok(set(ts) == {'rango', 'tarjeta', 'campeon', 'caza', 'elegido', 'precio', 'premios', 'anuncio', 'liga', 'pase'},
-       'entra todo: rango, tarjeta, campeón, caza, El Elegido, precio, premios, anuncio, novedades y el Pase  %s'
+    ok(set(ts) == {'rango', 'tarjeta', 'campeon', 'caza', 'elegido', 'precio', 'premios', 'anuncio', 'liga', 'pase',
+                   'flyer'},
+       'entra todo: rango, tarjeta, campeón, caza, El Elegido, precio, premios, anuncio, novedades, el Pase y los flyers  %s'
        % sorted(set(ts)))
+    fy = [x for x in muro['items'] if x['tipo'] == 'flyer']
+    ok(len(fy) == 1 and fy[0]['img'] == 'https://r2/ligas/fmh-espana/55.webp' and fy[0]['ln'] == 'FMH España'
+       and fy[0]['link'] == 'https://discord.com/channels/9/1512167830919839844/55' and fy[0]['tit'] == 'MTZ vs ORTIZ'
+       and 'ks' not in fy[0] and fy[0]['id'] == id_de(dict(fy[0], tit='otro', t='x')),
+       '🖼️ el flyer de una liga: sólo el que está en R2, con el link a su mensaje, de nadie, y su id es el del mensaje  %s' % fy)
     pa = [x for x in muro['items'] if x['tipo'] == 'pase']
     ok(len(pa) == 1 and pa[0]['quien'] == ['Ana'] and pa[0]['ks'] == ['ana'] and pa[0]['nivel'] == 10
        and pa[0]['premio'] == 'De la casa' and pa[0]['completo'] is False and pa[0]['t'] == '2026-10-13T20:00:00Z',

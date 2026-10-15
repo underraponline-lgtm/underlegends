@@ -3869,6 +3869,16 @@ def main():
                          % len(p.get('enc') or []) if ok5 else '🔴 no pude subir las encuestas'))
     except Exception as e:                               # noqa: BLE001
         print('   🔴 las encuestas: %s' % str(e)[:80])
+    # 🗳️ «¿QUIÉN GANA LA LIGA?» PARA EL WORKER (Dlx, 14/10/2026): qué ligas se votan, entre quiénes (su tabla) y hasta
+    # cuándo. Sale de la misma `ligas` del payload, así la página y el Worker ven las mismas opciones. Sólo si cambió:
+    # cambia cuando entra una batalla. Ver `ligas.para_kv()` y `validarVotoLiga()` en bot/avisos.js
+    try:
+        import ligas as _LG
+        ok8 = subir(_LG.para_kv(p.get('ligas')), solo_si_cambio='--siempre' not in sys.argv, clave=_LG.CLAVE_KV)
+        print('   %s' % ('✓ quién gana las ligas: igual' if ok8 is None else '✅ quién gana las ligas, subido'
+                         if ok8 else '🔴 no pude subir quién gana las ligas'))
+    except Exception as e:                               # noqa: BLE001
+        print('   🔴 quién gana las ligas: %s' % str(e)[:80])
     # 🔑 LOS PERFILES, CON EL MISMO DIFF-WRITER: cambian cuando entra una
     # llave, no en cada corrida. Si fallan, el lobby ya está arriba.
     ok2 = None

@@ -2260,6 +2260,8 @@ const RUTAS = {
   '/avisos/vincular': 'POST', '/avisos/desvincular': 'POST',
   // 🔑 las encuestas de la página: ver `validarVoto()` y `votar()` del objeto
   '/avisos/encuestas': 'GET', '/avisos/votar': 'POST',
+  // 🗳️ «¿quién gana la liga?» (14/10/2026): cuántos votos lleva cada uno, y votar. Ver `validarVotoLiga()` y `ligaVotar()`
+  '/avisos/ligas-votos': 'GET', '/avisos/liga-votar': 'POST',
   // 🔑 un error en una llave (Dlx, 28/09/2026: «ok»): ver `validarReporte()` y `reportar()`
   '/avisos/reportar': 'POST',
   // 🔑 el precio por cabeza: ver `validarPrecio()`, `precio()` y `billetera()`
@@ -2650,6 +2652,39 @@ export function validarVoto(defs, d, id, ahora) {
   // (el que más jugó); ahora «tu servidor» lo elige cada uno y no frena el voto.
   if (e.tipo === 'elegido' && ((defs.yo || {})[id] || '') === d.op) return { error: 'vos', estado: 403 };
   return { enc: e.id, op: d.op };
+}
+
+// ── 🗳️ «¿QUIÉN GANA LA LIGA?» ──────────────────────────────────────────
+// 🔑 Dlx, 14/10/2026: «Encuesta ¿quién gana la liga?»: se vota en la página (uno por persona, se cambia), con los
+// porcentajes al lado de la tabla, y cierra cuando la liga termina. Qué se vota —las ligas, sus tablas y hasta cuándo— lo
+// deja el ciclo en KV (`ligas:votar`, `ligas.para_kv()` en bot/ligas.py); quién vota lo dice Discord (la sesión), como en
+// las encuestas; el objeto guarda uno por persona y liga (tabla `liga_voto`). ⚠️ Afuera se ve cuántos, nunca quién.
+//: los votos de una liga se borran a los tantos días de que cierra su encuesta (lo dice la página de privacidad)
+export const LIGA_VOTOS_DIAS = 30;
+
+/**
+ * ¿Vale este voto de «¿quién gana la liga?»? `{liga, op, cierra, cierran}` si vale, `{error, estado}` si no. `defs` es
+ * lo que dejó el ciclo en KV (`{lista: [{id, hasta, op}]}`), `d` lo que mandó la página (`{liga, op}`) y `id` el Discord
+ * ID que dio la sesión. `cierran`: hasta cuándo va cada liga abierta, para que el objeto sepa cuándo borrar sus votos.
+ * Pura, sin red: la prueba `bot/probar_local.mjs`.
+ */
+export function validarVotoLiga(defs, d, id, ahora) {
+  const lista = (defs && Array.isArray(defs.lista)) ? defs.lista : [];
+  const e = lista.find((x) => x && x.id === (d && d.liga));
+  if (!e) return { error: 'no_existe', estado: 404 };
+  const hasta = Date.parse(e.hasta);
+  if (!(ahora < hasta)) return { error: 'cerrada', estado: 409 };
+  if (!Array.isArray(e.op) || typeof d.op !== 'string' || e.op.indexOf(d.op) < 0) return { error: 'opcion', estado: 400 };
+  const creada = creadaEn(id);
+  if (!creada || ahora - creada < EDAD_MIN_DIAS * DIA_MS) {
+    return { error: 'nueva', estado: 403, desde: new Date(creada + EDAD_MIN_DIAS * DIA_MS).toISOString() };
+  }
+  const cierran = {};
+  for (const x of lista) {
+    const h = x && typeof x.id === 'string' ? Date.parse(x.hasta) : NaN;
+    if (Number.isFinite(h) && /^[a-z0-9-]{2,40}$/.test(x.id)) cierran[x.id] = h;
+  }
+  return { liga: e.id, op: d.op, cierra: hasta, cierran };
 }
 
 // ── un error en una llave ──────────────────────────────────────────────
@@ -3711,6 +3746,28 @@ export async function rutaAvisos(req, env, ruta) {
       headers: { 'content-type': 'application/json' },
     });
   }
+  // 🗳️ UN VOTO DE «¿QUIÉN GANA LA LIGA?»: quién es lo dice Discord (la sesión); qué vale, el ciclo (KV `ligas:votar`)
+  if (ruta === '/avisos/liga-votar') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo); } catch (e) { d = null; }
+    const t = String((d && d.token) || '');
+    if (!d || typeof d.liga !== 'string' || typeof d.op !== 'string' || d.liga.length > 40 ||
+        d.op.length > 80 || (t && !/^[A-Za-z0-9._-]{10,300}$/.test(t))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    let defs = null;
+    try { defs = JSON.parse((await env.KV.get('ligas:votar', { cacheTtl: 60 })) || 'null'); } catch (e) { defs = null; }
+    const v = validarVotoLiga(defs, d, q.id, Date.now());
+    if (v.error) return json(v, v.estado);
+    return elObjeto(env).fetch('https://avisos/liga-votar', {
+      method: 'POST', body: JSON.stringify(Object.assign({ quien: q.id }, v)),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🔑 UN ERROR EN UNA LLAVE: quién lo dice Discord; qué, la persona
   if (ruta === '/avisos/reportar') {
     const crudo = await req.text();
@@ -4506,6 +4563,10 @@ export class Avisos {
       // que se cambia hasta que cierra. Ver `validarVoto()` y `votar()`.
       this.sql.exec('CREATE TABLE IF NOT EXISTS votos (enc TEXT NOT NULL, quien TEXT NOT NULL, ' +
         'op TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (enc, quien))');
+      // 🗳️ «¿QUIÉN GANA LA LIGA?» (14/10/2026): un voto por Discord ID y por liga, que se cambia hasta que cierra.
+      // `cierra`: hasta cuándo va esa liga (se corre con cada voto); se borra `LIGA_VOTOS_DIAS` después. Ver `ligaVotar()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS liga_voto (liga TEXT NOT NULL, quien TEXT NOT NULL, op TEXT NOT NULL, ' +
+        't INTEGER NOT NULL, cierra INTEGER NOT NULL, PRIMARY KEY (liga, quien))');
       // 🔑 EL PRECIO POR CABEZA (28/09/2026): lo que cada uno puso (`precios`)
       // y lo que cobró cazando (`tienda`). El saldo sale de las dos: ver
       // `saldo()`. Quién cazó lo resuelve el ciclo (`bot/precios.py`).
@@ -4797,6 +4858,7 @@ export class Avisos {
         return json(r, 200, 20);
       }
       if (ruta === '/encuestas') return json(this.encuestas(), 200, 20);
+      if (ruta === '/ligas-votos') return json(this.ligasVotos(), 200, 20);
       if (ruta === '/precios') return json(this.precios(), 200, 20);
       if (ruta === '/seguidores') return json(this.seguidores(), 200, 60);
       if (ruta === '/servidores') return json(this.servidoresElegidos(), 200, 60);
@@ -4864,6 +4926,7 @@ export class Avisos {
       if (ruta === '/olvidar') return await this.olvidar(d);
       if (ruta === '/reportar') return await this.reportar(d);
       if (ruta === '/votar') return this.votar(d);
+      if (ruta === '/liga-votar') return json(this.ligaVotar(d));
       if (ruta === '/seguir') return this.seguir(d);
       if (ruta === '/sigo') return this.sigo(d);
       if (ruta === '/aplaudir') return this.aplaudir(d);
@@ -7409,6 +7472,8 @@ export class Avisos {
     // 🔑 Y SUS VOTOS: van con su Discord ID, así que son un dato suyo. Lo que
     // ya se aplicó (un Elegido, un ×2) quedó en el ciclo y no cambia.
     const v = this.sql.exec('DELETE FROM votos WHERE quien = ?', String(d.quien));
+    // 🗳️ y los de «¿quién gana la liga?» (14/10/2026): también llevan su Discord ID
+    this.sql.exec('DELETE FROM liga_voto WHERE quien = ?', String(d.quien));
     // 🔑 Y SU BILLETERA: lo cobrado se borra; lo que puso queda SIN NOMBRE —si
     // se borrara, al que cazó ese precio se le irían sus puntos de Temporada
     const b = this.sql.exec('DELETE FROM tienda WHERE quien = ?', String(d.quien));
@@ -8566,6 +8631,47 @@ export class Avisos {
       .toArray()) cuenta[r.op] = r.n;
     // `t`: la página compara contra la de `/avisos/encuestas`, que puede venir de la caché
     return json({ ok: true, enc: d.enc, op: d.op, cuenta, t: ahora });
+  }
+
+  /**
+   * 🗳️ Un voto de «¿quién gana la liga?», nuevo o cambiado. Sólo lo llama `rutaAvisos`, ya validado
+   * (`validarVotoLiga()`) y con el ID de Discord. Corre el cierre de cada liga abierta (`cierran`, de KV) y borra los
+   * votos de las que cerraron hace más de `LIGA_VOTOS_DIAS`. Devuelve cómo va esa liga, para quien votó.
+   */
+  ligaVotar(d, ahora = Date.now()) {
+    const quien = String(d.quien || '');
+    const liga = String(d.liga || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !/^[a-z0-9-]{2,40}$/.test(liga) || typeof d.op !== 'string' || !d.op ||
+        !Number.isFinite(Number(d.cierra))) {
+      return { error: 'datos' };
+    }
+    const antes = this.sql.exec('SELECT op FROM liga_voto WHERE liga = ? AND quien = ?', liga, quien).toArray()[0];
+    this.sql.exec('INSERT INTO liga_voto (liga, quien, op, t, cierra) VALUES (?, ?, ?, ?, ?) ' +
+      'ON CONFLICT(liga, quien) DO UPDATE SET op = excluded.op, t = excluded.t, cierra = excluded.cierra',
+    liga, quien, d.op.slice(0, 80), ahora, Number(d.cierra));
+    // una liga que sigue corre su cierre: sus votos viejos no se borran mientras se juega
+    for (const [l, h] of Object.entries(d.cierran || {})) {
+      if (/^[a-z0-9-]{2,40}$/.test(l) && Number.isFinite(Number(h))) {
+        this.sql.exec('UPDATE liga_voto SET cierra = ? WHERE liga = ? AND cierra < ?', Number(h), l, Number(h));
+      }
+    }
+    this.sql.exec('DELETE FROM liga_voto WHERE cierra < ?', ahora - LIGA_VOTOS_DIAS * DIA_MS);
+    this.xpVio(quien, 'voto', 'liga:' + liga, ahora);
+    const cuenta = {};
+    for (const r of this.sql.exec('SELECT op, COUNT(*) AS n FROM liga_voto WHERE liga = ? GROUP BY op', liga).toArray()) {
+      cuenta[r.op] = r.n;
+    }
+    // `t`: la página compara contra la de `/avisos/ligas-votos`, que puede venir de la caché del borde
+    return { ok: true, liga, op: d.op, cambio: !!(antes && antes.op !== d.op), cuenta, t: ahora };
+  }
+
+  /** Para `/avisos/ligas-votos`: cuántos votos lleva cada uno en cada liga. ⚠️ Nunca quién. */
+  ligasVotos() {
+    const votos = {};
+    for (const r of this.sql.exec('SELECT liga, op, COUNT(*) AS n FROM liga_voto GROUP BY liga, op').toArray()) {
+      (votos[r.liga] = votos[r.liga] || {})[r.op] = r.n;
+    }
+    return { t: Date.now(), votos };
   }
 
   /** Para `/avisos/encuestas`: cuántos votos lleva cada opción. ⚠️ Nunca quién. */
