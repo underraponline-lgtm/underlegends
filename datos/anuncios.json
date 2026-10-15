@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-15T01:54:33+00:00",
+ "cuando": "2026-10-15T02:24:24+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -382,6 +382,34 @@
    "staff": {},
    "autor": "Geronimo",
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "PRITTY FREE",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1560111715142733895",
+   "cuando": "2026-10-15T02:06:58",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "@nachonc_",
+   "orgs": [
+    {
+     "n": "nachonc_",
+     "id": ""
+    }
+   ],
+   "autor_h": "d83234c3da26ac85",
+   "cupos_texto": "∞",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Bronce",
+   "modalidad": "MULTIVERSE 1-4",
+   "horario": "en 30",
+   "fecha": "",
+   "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
+   "staff": {},
+   "autor": "Nc",
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 6",
@@ -1106,34 +1134,6 @@
     ]
    },
    "autor": "Kravitz",
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "PRITTY FREE",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1557928516266500159",
-   "cuando": "2026-10-09T01:31:43",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@nachonc_",
-   "orgs": [
-    {
-     "n": "nachonc_",
-     "id": ""
-    }
-   ],
-   "autor_h": "d83234c3da26ac85",
-   "cupos_texto": "∞",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Bronce",
-   "modalidad": "2v2",
-   "horario": "en 20",
-   "fecha": "",
-   "premios": "CUPO A LA GRAN FINAL DE PRITTY FREE+PTS PARA EL ASCENSO",
-   "staff": {},
-   "autor": "Nc",
    "categoria_id": "1468478330826260500"
   },
   {
@@ -4489,7 +4489,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "1 | Adriagner",
+     "n": "Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4504,16 +4504,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "host": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "dj": [
-     "1 | Adriagner"
+     "Adriagner"
     ]
    },
-   "autor": "1 | Adriagner",
+   "autor": "Adriagner",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -4573,7 +4573,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "1 | Adriagner",
+     "n": "Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4588,16 +4588,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "host": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "dj": [
-     "1 | Adriagner"
+     "Adriagner"
     ]
    },
-   "autor": "1 | Adriagner",
+   "autor": "Adriagner",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -4646,7 +4646,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "1 | Adriagner",
+     "n": "Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4661,16 +4661,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "host": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "dj": [
-     "1 | Adriagner"
+     "Adriagner"
     ]
    },
-   "autor": "1 | Adriagner",
+   "autor": "Adriagner",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -4735,7 +4735,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "1 | Adriagner",
+     "n": "Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4750,16 +4750,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "host": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "dj": [
-     "1 | Adriagner"
+     "Adriagner"
     ]
    },
-   "autor": "1 | Adriagner",
+   "autor": "Adriagner",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -4773,7 +4773,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "1 | Adriagner",
+     "n": "Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4788,16 +4788,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "host": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "dj": [
-     "1 | Adriagner"
+     "Adriagner"
     ]
    },
-   "autor": "1 | Adriagner",
+   "autor": "Adriagner",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -5977,6 +5977,177 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "you know ma steez 🇨🇳 + nmb 🇨🇱",
+   "quien": "youknowmasteez",
+   "discord_id": "1076566237364109412",
+   "msg_id": "1560115764504174613",
+   "cuando": "2026-10-15T02:23:03"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Mail O🇵🇪",
+   "quien": "mailo_04.",
+   "discord_id": "1416183706133069895",
+   "msg_id": "1560114913907580939",
+   "cuando": "2026-10-15T02:19:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Verc🇨🇱 & Park-Ji Sung🇰🇷",
+   "quien": "fullylo4ded",
+   "discord_id": "979878316846768139",
+   "msg_id": "1560114242391248998",
+   "cuando": "2026-10-15T02:17:00"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "pichula mc 🇦🇷",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1560114063755837481",
+   "cuando": "2026-10-15T02:16:18"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "kurl 🇦🇷",
+   "quien": "kulrw",
+   "discord_id": "1445635276478353468",
+   "msg_id": "1560113835619131393",
+   "cuando": "2026-10-15T02:15:23"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Number 🇻🇪",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1560113830430777448",
+   "cuando": "2026-10-15T02:15:22"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Dynoco 🇦🇷",
+   "quien": "dynoco.",
+   "discord_id": "588547235621371936",
+   "msg_id": "1560113678714404907",
+   "cuando": "2026-10-15T02:14:46"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "AntonioKast🇨🇱🇦🇷",
+   "quien": "nomiresmuxo",
+   "discord_id": "1535790068395024454",
+   "msg_id": "1560113619327385664",
+   "cuando": "2026-10-15T02:14:32"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Kravitz 🇨🇷  Zaik 🇪🇸",
+   "quien": "thekravitz777",
+   "discord_id": "1345962362615894027",
+   "msg_id": "1560113607415562261",
+   "cuando": "2026-10-15T02:14:29"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Checa checa 🇱🇷",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1560113564419629090",
+   "cuando": "2026-10-15T02:14:19"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "kurl",
+   "quien": "kulrw",
+   "discord_id": "1445635276478353468",
+   "msg_id": "1560113563681689701",
+   "cuando": "2026-10-15T02:14:19"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "makmah 🇻🇪  Tenor 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1560113302779068438",
+   "cuando": "2026-10-15T02:13:16"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Sentpa 🇦🇷",
+   "quien": "sentpa",
+   "discord_id": "429348374379233280",
+   "msg_id": "1560113211691376693",
+   "cuando": "2026-10-15T02:12:55"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1560112848905048107",
+   "cuando": "2026-10-15T02:11:28"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Nxuz 🇵🇪",
+   "quien": "elinzano1009",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1560112848632418307",
+   "cuando": "2026-10-15T02:11:28"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Tuca 🇦🇷",
+   "quien": "tuquitta",
+   "discord_id": "458702447913861130",
+   "msg_id": "1560112817464410145",
+   "cuando": "2026-10-15T02:11:21"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Dynoco 🇦🇷",
+   "quien": "dynoco.",
+   "discord_id": "588547235621371936",
+   "msg_id": "1560112812062146613",
+   "cuando": "2026-10-15T02:11:19"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "sin limites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1560112795297779775",
+   "cuando": "2026-10-15T02:11:15"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "g8🇹🇼",
+   "quien": "gocho444.",
+   "discord_id": "1324178951119175711",
+   "msg_id": "1560112789211713608",
+   "cuando": "2026-10-15T02:11:14"
+  },
   {
    "servidor": "FRZ",
    "canal": "➣「📝」inscripciones",

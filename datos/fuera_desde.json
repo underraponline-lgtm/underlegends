@@ -181,9 +181,6 @@
    "sv-urbf": "2026-10-12",
    "temporada": "2026-10-12"
   },
-  "catarsis": {
-   "temporada": "2026-10-12"
-  },
   "char": {
    "servidor": "2026-10-12",
    "sv-ddf": "2026-10-12",
@@ -1171,7 +1168,7 @@
   }
  },
  "pasaban": 384,
- "cuando": "2026-10-15T01:57:57Z",
+ "cuando": "2026-10-15T02:27:34Z",
  "borradas": [
   [
    "izaya",

@@ -902,7 +902,8 @@
 "catarsis": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "doc": {
@@ -2328,14 +2329,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"MTZ"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5613,6 +5606,14 @@
 "Krish"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-15T02:27:18Z",
+"quien": [
+"Catarsis"
+],
+"carta": "temporada"
 }
 ]
 }
