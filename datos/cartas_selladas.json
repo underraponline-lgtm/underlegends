@@ -259,7 +259,8 @@
    "servidor": "162dd1d020cb:0261962bc3e6:e141ae"
   },
   "DJ CALAMBRE (Mister)": {
-   "servidor": "bbfdc9c8c20f:0261962bc3e6:baabdf"
+   "servidor": "bbfdc9c8c20f:0261962bc3e6:baabdf",
+   "temporada": "c18a45b887af:7e987c978e23"
   },
   "DKT": {
    "servidor": "0e8f51b25221:0261962bc3e6:055f77"
@@ -403,10 +404,10 @@
   },
   "EricRJ": {},
   "Erik": {
-   "competitivo": "052e67dcbe18:40807e5de0f4",
+   "competitivo": "0b24c6bf625b:40807e5de0f4",
    "pais": "b25b636f081f:ec920afad165",
-   "servidor": "58bfc08a370e:0261962bc3e6:c09f56",
-   "temporada": "6aecb490a5ff:7e987c978e23"
+   "servidor": "dfc9b757884e:0261962bc3e6:c09f56",
+   "temporada": "c096e62fba8a:7e987c978e23"
   },
   "Espectro": {
    "servidor": "439ddb5429bc:0261962bc3e6:27d4a9"
@@ -661,7 +662,7 @@
    "servidor": "a3fa778319b8:0261962bc3e6:3580af"
   },
   "Juasmio": {
-   "competitivo": "190aa033548f:40807e5de0f4",
+   "competitivo": "86d2233aa288:40807e5de0f4",
    "pais": "322618799ee3:ec920afad165",
    "servidor": "1fbb7b963507:0261962bc3e6:3580af"
   },
@@ -719,7 +720,7 @@
    "servidor": "fee8c99af02f:0261962bc3e6:980594"
   },
   "Kochi": {
-   "competitivo": "566222ecbbbe:40807e5de0f4",
+   "competitivo": "a6bbf96c55ee:40807e5de0f4",
    "pais": "471b41230ce1:ec920afad165",
    "servidor": "d81012395a86:0261962bc3e6:3ce074"
   },
@@ -1114,10 +1115,10 @@
   "Nox": {},
   "Noxvell": {},
   "Number": {
-   "competitivo": "acbc02513235:40807e5de0f4",
+   "competitivo": "670351283749:40807e5de0f4",
    "pais": "891cfd57a9fd:ec920afad165",
    "servidor": "da5d5fb22735:0261962bc3e6:1e5c4c",
-   "temporada": "f10f3990870f:7e987c978e23"
+   "temporada": "d7f8d7243bae:7e987c978e23"
   },
   "Number VE": {
    "competitivo": "f89161876122:40807e5de0f4",
@@ -1640,10 +1641,10 @@
    "temporada": "1709516fbdeb:7e987c978e23"
   },
   "Zetryko": {
-   "competitivo": "797782ccaa24:40807e5de0f4",
+   "competitivo": "3f2759e1db1d:40807e5de0f4",
    "pais": "5e3d54ea058d:ec920afad165",
    "servidor": "6ed683aa8df6:0261962bc3e6:956ce7",
-   "temporada": "5f566e19e8a0:7e987c978e23"
+   "temporada": "4ced8bbb8484:7e987c978e23"
   },
   "ZiarKI": {},
   "Ziggy": {
@@ -1765,5 +1766,5 @@
    "servidor": "7f8885a35a6d:0261962bc3e6:c9f1f2"
   }
  },
- "cuando": "2026-10-15T00:10:23+00:00"
+ "cuando": "2026-10-15T00:29:11+00:00"
 }
