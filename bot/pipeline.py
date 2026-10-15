@@ -1131,6 +1131,14 @@ def _lo_barato(correr):
     # ⚠️ NUNCA FRENA EL CICLO: si falla, la web sigue con el `mw.json` de la
     # corrida anterior y el aviso queda en el log.
     if correr:
+        # ── 2b0 · ✍️ el Writing Challenge de FFA (`bot/writing.py`, Dlx 14/10/2026: «cuenta para la Liga») ─────────
+        # Lee el canal (una página), guarda cada fecha en `datos/writing.json` —una vez por número— y resuelve quién es
+        # quién. Va DESPUÉS del padrón (paso 2), que es con lo que resuelve, y ANTES de las insignias (2b2) y de la
+        # Tienda (2b4), que lo leen en esta misma corrida; la Temporada y las misiones (1c) lo suman en la siguiente.
+        # Nunca frena el ciclo
+        paso('2b0', 'el Writing Challenge de FFA')
+        if not corre(['bot/writing.py', '--aplicar'], callado=True, mostrar=('✍️', '⚠️')):
+            print('      ⚠️ el Writing Challenge falló: queda lo de la corrida anterior')
         paso('2b', 'Most Wanted')
         if not corre(['bot/most_wanted.py', '--aplicar'], callado=False):
             print('      ⚠️ Most Wanted falló: queda el de la corrida anterior')

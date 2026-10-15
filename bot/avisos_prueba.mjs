@@ -1893,6 +1893,67 @@ const ok = (cond, que, det) => {
   }
 }
 
+// ✍️ EL WRITING CHALLENGE DE FFA PAGA TIENDA, sobre el objeto (14/10/2026, Dlx: «cuenta para la Liga»): una clave por
+// fecha y persona, lo del ciclo se REEMPLAZA entero (releer no paga dos veces) y no toca lo que pagan los demás
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    console.log('\n✍️ el Writing Challenge en la Tienda\n');
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [], rowsWritten: 0 }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        const r = st.run(...ps);
+        return { toArray: () => [], rowsWritten: r.changes };
+      },
+    };
+    let kv = null;
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
+      { DISCORD_TOKEN: 'x', KV: { get: async (k) => (k === 'precios:resolucion' ? kv : null) } });
+    await new Promise((r) => setTimeout(r, 5));
+    const LVEL = '800000000000000001', MELO = '800000000000000002', KRISH = '800000000000000003';
+    const t1 = Date.parse('2026-10-03T00:46:44Z'), t2 = Date.parse('2026-10-08T16:25:42Z');
+    const wr = {
+      ['prueba:f1:' + LVEL]: [LVEL, 500, t1], ['prueba:f1:' + KRISH]: [KRISH, 50, t1],
+      ['prueba:f2:' + MELO]: [MELO, 500, t2], ['prueba:f2:' + LVEL]: [LVEL, 300, t2], ['prueba:f2:' + KRISH]: [KRISH, 50, t2],
+      'prueba:f2:mal': ['no-es-un-id', 50, t2], ['prueba:f2:cero']: [KRISH, 0, t2],
+    };
+    const cobrado = (q) => sql.exec('SELECT COALESCE(SUM(monto), 0) AS n FROM tienda WHERE quien = ?', q).toArray()[0].n;
+    const filas = () => sql.exec("SELECT id FROM tienda WHERE id LIKE 'wr:%' ORDER BY id").toArray().map((x) => x.id);
+    sql.exec("INSERT INTO tienda (id, ref, quien, monto, t) VALUES ('deb:2026-10-01:' || ?, 0, ?, 1000, 1)", LVEL, LVEL);
+    kv = JSON.stringify({ v: 'a1', r: {}, wr });
+    await o.resolverPrecios(t2);
+    const f1 = filas();
+    ok(f1.length === 5 && cobrado(LVEL) === 500 + 300 + 1000 && cobrado(MELO) === 500 && cobrado(KRISH) === 100,
+      'cada fecha paga una vez a cada uno (Lvel 500 + 300, más su debut, que no se toca); sin Discord o en 0, nada', JSON.stringify(f1));
+    // la misma corrida otra vez (misma huella) y la relectura del canal (otra huella, lo mismo adentro): igual
+    await o.resolverPrecios(t2 + 1);
+    kv = JSON.stringify({ v: 'a2', r: {}, wr });
+    await o.resolverPrecios(t2 + 2);
+    ok(filas().length === 5 && cobrado(LVEL) === 1800 && cobrado(KRISH) === 100,
+      'releer el canal (otra huella, lo mismo adentro) no paga dos veces', JSON.stringify(filas()));
+    // un resultado corregido: Krish pasa a 3.º en la fecha 2 y Lvel queda fuera de la 1; se reemplaza entero
+    const wr2 = { ['prueba:f1:' + KRISH]: [KRISH, 50, t1], ['prueba:f2:' + MELO]: [MELO, 500, t2],
+      ['prueba:f2:' + LVEL]: [LVEL, 300, t2], ['prueba:f2:' + KRISH]: [KRISH, 200, t2] };
+    kv = JSON.stringify({ v: 'a3', r: {}, wr: wr2 });
+    await o.resolverPrecios(t2 + 3);
+    ok(filas().length === 4 && cobrado(LVEL) === 300 + 1000 && cobrado(KRISH) === 250,
+      'un resultado corregido reemplaza lo pagado (no se suma encima)', JSON.stringify([cobrado(LVEL), cobrado(KRISH)]));
+    // sin `wr` (sin archivo) no se toca; vacío (otra temporada) se borra
+    kv = JSON.stringify({ v: 'a4', r: {} });
+    await o.resolverPrecios(t2 + 4);
+    const sigue = filas().length;
+    kv = JSON.stringify({ v: 'a5', r: {}, wr: {} });
+    await o.resolverPrecios(t2 + 5);
+    ok(sigue === 4 && filas().length === 0 && cobrado(LVEL) === 1000,
+      'sin `wr` queda lo que había; vacío (otra temporada) se borra, y el debut sigue', JSON.stringify([sigue, filas()]));
+  }
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);

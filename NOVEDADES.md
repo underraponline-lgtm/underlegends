@@ -39,6 +39,7 @@ Son las que no se pueden volver a preguntar ni olvidar.
 | **RAP EXHIBITION 1/8** (Snake Rap, 22/09) **cuenta** | *«no sé por qué no cuenta si sus llaves están en #llaves de Snake Rap»* (27/09). El 24/09 se había decidido que no creyendo que su llave no estaba en ningún canal | `datos/decisiones.json` |
 | El Ranking Mundial son **países**, no selecciones | *«ese evento fifa ya no se está haciendo»* (22/09) | `sheet/rankings.py` |
 | **Avisos fuera de Discord**: 1º Web Push, después Telegram. El ping de rol de Discord **no se reemplaza**. El permiso se pide donde ya están: debajo de `/card` y en el hub | *«así la gente se va a encadenar más»* (21/09) · construido el 24/09 | `bot/avisos.js` · `#/avisos` |
+| **El FFA Writing Challenge cuenta para la Liga** (14/10): por fecha, Temporada 1.º 1.000 · 2.º 600 · 3.º 400 · el resto 150, y Tienda 500 · 300 · 200 · 50; con 0 puntos (la rima con ❌) no cobra. Insignias ✍️ Pluma de oro (ganar una fecha) y 🖋️ Pluma (3 fechas). Misión «Participá del Writing» las semanas con fecha, desde el 19/10. **Nunca al Competitivo ni como duelo.** Quien no se puede identificar queda como está escrito y se informa | *«cuenta para la Liga… puntos de Temporada y puntos de Tienda y insignia y quizás misión de la semana también»* (14/10) | `bot/writing.py` (paso 2b0) · `rankings.sumar_writing()` · `wr` en `precios:resolucion` · `datos/writing.json` |
 
 ### Personas
 

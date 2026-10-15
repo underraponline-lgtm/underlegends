@@ -1232,6 +1232,36 @@ def sumar_misiones(ag, suma=None):
     return tocadas
 
 
+def sumar_writing(ag, suma=None):
+    """✍️ El Writing Challenge de FFA en la Temporada: lo que cada uno sumó por su puesto en cada fecha, a `Puntos`.
+
+    Dlx, 14/10/2026: *«cuenta para la Liga»*, con puntos de Temporada (y de Tienda, insignia y misión: ver
+    `bot/writing.py`, donde viven las reglas y los números). ⚠️ NUNCA AL COMPETITIVO NI COMO DUELO, y una corrida
+    atrás, como las misiones: lee el `datos/writing.json` de la anterior, sólo las fechas de esta temporada.
+
+    ⚠️ SÓLO A QUIEN YA TIENE FILA: quien hizo el Writing y nunca jugó un evento de la Liga no aparece en la vitrina por
+    esto; lo suyo queda guardado y entra el día que juegue (se recalcula entero en cada corrida). Sin archivo, `None` y
+    no suma nada. Devuelve a cuántos les sumó."""
+    if suma is None:
+        try:
+            _b = os.path.join(BASE, 'bot')
+            if _b not in sys.path:
+                sys.path.insert(0, _b)
+            import writing as _WR
+            suma = _WR.suma(canon=canon, es_troll=_trolls())
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ no pude leer el Writing Challenge (%s): la vitrina no lo suma' % str(e)[:80])
+            return None
+    por = {_como_pool(n): pts for n, pts in (suma or {}).items() if pts}
+    tocadas = 0
+    for quien, v in ag.items():
+        pts = por.get(_como_pool(quien)) or 0
+        if pts:
+            v['Puntos'] = v.get('Puntos', 0) + pts
+            tocadas += 1
+    return tocadas
+
+
 def agregar_temporada(filas_res, filas_uno, instantes=None):
     """La Temporada: `agregar()` con los multiplicadores de la semana y el Most Wanted.
 
@@ -1263,6 +1293,8 @@ def agregar_temporada(filas_res, filas_uno, instantes=None):
     sumar_precios(ag)
     # 🎯 Y LAS MISIONES DE LA SEMANA (Dlx, 04/10: «3. A»)
     sumar_misiones(ag)
+    # ✍️ Y EL WRITING CHALLENGE DE FFA (Dlx, 14/10: «cuenta para la Liga»)
+    sumar_writing(ag)
     return ag
 
 
@@ -2952,6 +2984,12 @@ def _self_check():
     ok = n_pr == 1 and agp['MTZ 🇲🇽']['Puntos'] == 4000 and agp['Hassan']['Puntos'] == 2000
     mal += not ok
     print('   %s el precio por cabeza cobrado suma a los Puntos (y nada más)' % ('✅' if ok else '🔴'))
+    # ✍️ el Writing Challenge de FFA (Dlx, 14/10/2026): a los Puntos de quien tiene fila; quien no jugó, todavía no
+    agw = {'Lvel 🇻🇪': {'Puntos': 1000}, 'Hassan': {'Puntos': 2000}}
+    n_wr = sumar_writing(agw, {'Lvel': 1600, 'Adrianex': 300})
+    ok = n_wr == 1 and agw['Lvel 🇻🇪']['Puntos'] == 2600 and agw['Hassan']['Puntos'] == 2000 and 'Adrianex' not in agw
+    mal += not ok
+    print('   %s el Writing Challenge suma a los Puntos de quien tiene fila (y no crea filas)' % ('✅' if ok else '🔴'))
     # 🔑 el multiplicador: sólo con `factor`, por servidor y por semana
     resm = [[1, '27/09', 'SR', '16+', 'Ana', 'ar', 'Campeón', 10000, '', 0, ''],
             [2, '27/09', 'FFA', '16+', 'Ana', 'ar', 'Subcampeón', 7500, '', 0, '']]
