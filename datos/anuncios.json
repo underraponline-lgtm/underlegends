@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-15T22:24:32+00:00",
+ "cuando": "2026-10-15T22:54:21+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -4971,6 +4971,44 @@
    "categoria_id": "1309234419525222477"
   },
   {
+   "nombre": "ASTRAL NO SIRVES PARA NADA CUP",
+   "servidor": "FVS",
+   "canal": "「📢」Anuncios",
+   "msg_id": "1560419676486635581",
+   "cuando": "2026-10-15T22:30:42",
+   "canal_id": "1337126096373809284",
+   "guild_id": "1283205153624952975",
+   "organizador": "Mathhias",
+   "orgs": [
+    {
+     "n": "Mathhias",
+     "id": "1177916322122833933"
+    }
+   ],
+   "autor_h": "c8f035765c7a24b7",
+   "cupos_texto": "A COMPE IMPORTANTE HECHA POR MI TAMBIEN",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "C",
+   "modalidad": "1v1",
+   "horario": "LLENEN INSCRIPCIONES",
+   "fecha": "",
+   "premios": "puntos de ascenso",
+   "staff": {
+    "jurado": [
+     "Mathhias"
+    ],
+    "dj": [
+     "Mathhias"
+    ],
+    "host": [
+     "Mathhias"
+    ]
+   },
+   "autor": "Mathhias",
+   "categoria_id": "1337125417018200166"
+  },
+  {
    "nombre": "👀👀👀",
    "servidor": "FVS",
    "canal": "「📢」Anuncios",
@@ -5750,82 +5788,6 @@
     ]
    },
    "autor": "¢RAIZER¥",
-   "categoria_id": "1337125417018200166"
-  },
-  {
-   "nombre": "Copa God Battels",
-   "servidor": "FVS",
-   "canal": "「📢」Anuncios",
-   "msg_id": "1531065066374303825",
-   "cuando": "2026-07-26T22:25:57",
-   "canal_id": "1337126096373809284",
-   "guild_id": "1283205153624952975",
-   "organizador": "MC Glock",
-   "orgs": [
-    {
-     "n": "MC Glock",
-     "id": ""
-    }
-   ],
-   "autor_h": "317bd50868cfdc21",
-   "cupos_texto": "8",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "F",
-   "modalidad": "1v1",
-   "horario": "",
-   "fecha": "En 15 minutos",
-   "premios": "puntos de ascenso",
-   "staff": {
-    "jurado": [
-     "MC Glock"
-    ],
-    "dj": [
-     "MC Glock"
-    ],
-    "host": [
-     "MC Glock"
-    ]
-   },
-   "autor": "MC_Glock",
-   "categoria_id": "1337125417018200166"
-  },
-  {
-   "nombre": "RED BULL - FINAL NACIONAL MÉXICO T11",
-   "servidor": "FVS",
-   "canal": "「📢」Anuncios",
-   "msg_id": "1530690647252537484",
-   "cuando": "2026-07-25T21:38:09",
-   "canal_id": "1337126096373809284",
-   "guild_id": "1283205153624952975",
-   "organizador": "Xervœ",
-   "orgs": [
-    {
-     "n": "Xervœ",
-     "id": ""
-    }
-   ],
-   "autor_h": "098b1ad2c38fd8b4",
-   "cupos_texto": "A VOTACION",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "S",
-   "modalidad": "1v1",
-   "horario": "",
-   "fecha": "en 20 minutos",
-   "premios": "Clasificacion a la Inter",
-   "staff": {
-    "jurado": [
-     "Xervœ"
-    ],
-    "dj": [
-     "Qerveats"
-    ],
-    "host": [
-     "Qerveats"
-    ]
-   },
-   "autor": "thedinamite",
    "categoria_id": "1337125417018200166"
   },
   {
