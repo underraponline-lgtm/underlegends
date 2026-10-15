@@ -366,9 +366,23 @@ def madrugada():
     return 3 <= h < 11
 
 
+#: 🖼️ cómo sale la imagen. Dlx, 15/10/2026: *«quitar las imágenes del embed de los mensajes de DRA, esos del ranking»*:
+#: como el vs (2.94), la imagen va como ADJUNTO y no adentro de un embed —el embed la mete en su tarjeta, con el borde de
+#: color y márgenes, y se ve más chica—. Entra a la firma: cambiarla vuelve a mandar los tres paneles una vez
+FORMA = 'adjunto'
+
+
+def cuerpo_panel(clave, botones):
+    """El mensaje de un panel, sin la imagen (va como adjunto, `files[0]`): sin texto, SIN EMBED y con sus botones.
+    `embeds: []` saca el embed de un mensaje que ya lo tenía, y `attachments` deja sólo la imagen nueva."""
+    return {'content': '', 'embeds': [], 'attachments': [{'id': 0, 'filename': clave + '.png'}],
+            'allowed_mentions': {'parse': []},
+            'components': [{'type': 1, 'components': [{'type': 2, 'style': 5, 'label': t[:80], 'url': u}
+                                                      for t, u in botones[:5]]}]}
+
+
 def aplicar():
-    """Sube cada imagen a R2 y la pone en su canal: edita su mensaje si está, o manda uno. Sólo si cambió."""
-    import kit
+    """Pone cada imagen en su canal, como adjunto: edita su mensaje si está, o manda uno. Sólo si cambió."""
     import requests
     import avisar as AV
     hub = _json('datos', 'dra_hub.json') or {}
@@ -391,25 +405,28 @@ def aplicar():
         if not canal:
             print('  %-10s sin canal (correr herramientas/dra_hub.py --aplicar antes)' % clave)
             continue
-        firma = hashlib.sha256(htm.encode('utf-8')).hexdigest()[:16]
+        # ⚠️ CON LA FORMA EN LA FIRMA: los que salieron en un embed tienen que volver a mandarse como adjunto aunque la
+        # imagen sea la misma (`FORMA`)
+        firma = hashlib.sha256((FORMA + htm).encode('utf-8')).hexdigest()[:16]
         antes = estado.get(clave) or {}
         if antes.get('firma') == firma and antes.get('msg'):
             print('  %-10s igual: no se toca' % clave)
             continue
         ruta = foto(htm, os.path.join(d, clave + '.png'))
-        url = kit.subir(ruta, 'paneles/dra/%s.png' % clave) + '?v=' + firma
-        cuerpo = {'content': '', 'embeds': [{'image': {'url': url}, 'color': 0xE41373}], 'allowed_mentions': {'parse': []},
-                  'components': [{'type': 1, 'components': [{'type': 2, 'style': 5, 'label': t[:80], 'url': u}
-                                                            for t, u in botones[:5]]}]}
+        cuerpo = cuerpo_panel(clave, botones)
+        hm = {'Authorization': h['Authorization']}
+
+        def _con_imagen(metodo, url_api):
+            with open(ruta, 'rb') as fh:
+                return metodo(url_api, headers=hm, data={'payload_json': json.dumps(cuerpo)},
+                              files={'files[0]': (clave + '.png', fh, 'image/png')}, timeout=60)
         r = None
         if antes.get('msg') and antes.get('canal') == canal:
-            r = requests.patch('https://discord.com/api/v10/channels/%s/messages/%s' % (canal, antes['msg']), headers=h,
-                               data=json.dumps(cuerpo), timeout=30)
+            r = _con_imagen(requests.patch, 'https://discord.com/api/v10/channels/%s/messages/%s' % (canal, antes['msg']))
             if r.status_code == 404:
                 r = None
         if r is None:
-            r = requests.post('https://discord.com/api/v10/channels/%s/messages' % canal, headers=h, data=json.dumps(cuerpo),
-                              timeout=30)
+            r = _con_imagen(requests.post, 'https://discord.com/api/v10/channels/%s/messages' % canal)
         if r.status_code in (200, 201):
             estado[clave] = {'canal': canal, 'msg': r.json().get('id') or antes.get('msg'), 'firma': firma,
                              't': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}
@@ -441,6 +458,9 @@ def _self_check():
     ok(_num(273733) == '274K' and _num(9500) == '9.500' and _num(None) == '0', 'los números como en la página')
     ok('<script' not in ''.join(p[2] for p in ps).lower(), 'el HTML no lleva scripts')
     ok(all(CUANDO in p[2] for p in ps), 'la hora va aparte: la firma no cambia sólo porque pasó el tiempo')
+    c = cuerpo_panel('temporada', ps[0][3])
+    ok(c['embeds'] == [] and c['attachments'] == [{'id': 0, 'filename': 'temporada.png'}] and c['components'][0]['components'],
+       'la imagen va como adjunto y sin embed, con sus botones (Dlx, 15/10: «quitar las imágenes del embed»)')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 
