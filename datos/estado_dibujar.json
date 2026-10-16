@@ -1,70 +1,70 @@
 {
  "v": 1,
- "cuando": "2026-10-16T17:02:16Z",
+ "cuando": "2026-10-16T19:06:12Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 123.3,
+ "dur_s": 725.1,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 9.4
+   "s": 13.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.3
+   "s": 4.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 24.6
+   "s": 22.4
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 8 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": true,
-   "s": 27.0
+   "s": 616.2
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 1.0
+   "s": 5.9
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 55.1
+   "s": 61.6
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "476",
-  "nombre": "LA REDENCIÓN",
+  "n": "477",
+  "nombre": "DESGRACIAS EN TOKYO VOL27",
   "sv": "FFA",
-  "dia": "2026-10-15"
+  "dia": "2026-10-16"
  },
  "cuotas": {
   "kv": {
-   "write": 161,
-   "read": 23874
+   "write": 214,
+   "read": 29580
   },
   "objeto": {
-   "leidas": 1081366,
-   "escritas": 10363,
-   "pedidos": 4894
+   "leidas": 1391367,
+   "escritas": 14031,
+   "pedidos": 5900
   },
   "worker": {
-   "pedidos": 7507,
+   "pedidos": 7591,
    "errores": 0,
-   "sub": 8027,
-   "p50_ms": 1.15,
-   "p99_ms": 9.13
+   "sub": 8118,
+   "p50_ms": 1.21,
+   "p99_ms": 9.2
   },
   "r2": {
    "objetos": 4216,
