@@ -629,7 +629,8 @@ function LigasInicio({ liga, falta = '' }) {
 //
 // ⚠️ LOS 16 SE CUENTAN IGUAL QUE EL RANKING (`clasificados()` de ranking.jsx): los primeros CON NÚMERO —sin los que
 // juegan fuera de concurso—, la Temporada por su puesto y el Competitivo por Score entre los que tienen rango.
-// ⚠️ LOS PREMIOS SE DICEN SIN NOMBRAR EL PLAN PAGO: el repo es público y la economía del Pase es privada.
+// 🎟️ LOS PASES SON EL PREMIUM DE LA T2, y se dice (Dlx, 16/10/2026: «acuérdate: el pase rapero premium de la temporada
+// 2, no simplemente pase rapero»). El precio sigue siendo privado.
 const CIERRE = 16;
 function topCierre(liga, cual) {
   const t = liga.d.tabla || [];
@@ -691,15 +692,15 @@ function Premios({ items }) {
 }
 
 const PREMIOS_SUPER = [
-  ['El campeón', 'Una insignia especial al costado de su carta Competitiva y en su tarjeta de la Superliga, y el Pase de rapero de la Temporada 2.'],
-  ['2º y 3º', 'El Pase de rapero de la Temporada 2.'],
+  ['El campeón', 'Una insignia especial al costado de su carta Competitiva y en su tarjeta de la Superliga, y el Pase de rapero premium de la Temporada 2.'],
+  ['2º y 3º', 'El Pase de rapero premium de la Temporada 2.'],
   ['Los 10 de la Superliga', 'Su tarjeta especial de integrante de la Superliga.'],
   ['Los 6 que caen en el duelo a muerte', 'Su tarjeta especial, su reconocimiento y premios.'],
-  ['El #1 del Competitivo', 'El que cierra primero el ranking gana el Pase de rapero de la Temporada 2.'],
+  ['El #1 del Competitivo', 'El que cierra primero el ranking gana el Pase de rapero premium de la Temporada 2.'],
 ];
 const PREMIOS_CLAUSURA = [
-  ['Campeón, 2º y 3º', 'El Pase de rapero de la Temporada 2, sus emblemas y más premios.'],
-  ['El #1 de la Temporada', 'El que cierra primero el ranking gana el Pase de rapero de la Temporada 2.'],
+  ['Campeón, 2º y 3º', 'El Pase de rapero premium de la Temporada 2, sus emblemas y más premios.'],
+  ['El #1 de la Temporada', 'El que cierra primero el ranking gana el Pase de rapero premium de la Temporada 2.'],
   ['Los 16', 'Todo queda guardado: quién jugó, hasta dónde llegó y su emblema. Esta no tiene tarjeta especial.'],
 ];
 
