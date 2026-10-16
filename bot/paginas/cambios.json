@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.21",
+   "dia": "2026-10-16",
+   "cuando": "2026-10-16T08:15:00-04:00",
+   "titulo": "El Salón de la fama",
+   "items": [
+    "🏛️ El Salón de la fama, en el menú: los campeones de cada temporada, los récords, las insignias más difíciles y quién las tiene.",
+    "🏆 Y todos los salones juntos: los campeones de las ligas, el Salón del Pase y las figuras y revelaciones de cada semana."
+   ]
+  },
+  {
    "version": "3.20",
    "dia": "2026-10-16",
    "cuando": "2026-10-16T07:55:00-04:00",
@@ -24,7 +34,7 @@
   {
    "version": "3.19",
    "dia": "2026-10-16",
-   "cuando": "2026-10-16T07:45:00-04:00",
+   "cuando": "2026-10-16T07:30:00-04:00",
    "titulo": "La Superliga y la Clausura",
    "items": [
     "🏆 La Superliga: al cierre de la Temporada 1, los 16 primeros del Competitivo. Los 4 primeros entran directo; del 5º al 16º, un duelo a muerte por 6 lugares; y 10 en la liga, todos contra todos.",

@@ -8,12 +8,13 @@ import { useRacha } from './racha.js';
 
 export const MENU = [
   ['Inicio', '#/'], ['Eventos', '#/eventos'], ['Ranking', '#/ranking'], ['Pase rapero', '#/pase'],
-  ['Ligas', '#/ligas'], ['Tarjetas', '#/tarjetas'], ['Publicaciones', '#/publicaciones'], ['Tienda', '#/tienda'], ['Socios', '#/socios'], ['Guía', '#/guia'],
+  ['Ligas', '#/ligas'], ['Tarjetas', '#/tarjetas'], ['Salón de la fama', '#/salon'], ['Publicaciones', '#/publicaciones'], ['Tienda', '#/tienda'], ['Socios', '#/socios'], ['Guía', '#/guia'],
 ];
 // «Socios» es lo que era «Mundo» (Dlx, 03/10/2026: «1. A»); `#/mundo` sigue abriéndolo (App.jsx). «Ligas», al lado de
 // Tarjetas desde el 16/10/2026 (Dlx: «que ligas tenga su propio espacio aparte de ranking… al costado de tarjetas»)
 // Y «Pase rapero» y «Publicaciones», intercambiados el mismo día (Dlx: «intercambiá eso»), y Ligas a la IZQUIERDA de
-// Tarjetas (Dlx: «Ligas tiene que estar al lado izquierdo de tarjetas»)
+// Tarjetas (Dlx: «Ligas tiene que estar al lado izquierdo de tarjetas»). Y el Salón de la fama, una sección más (Dlx, el
+// mismo día, a «¿dónde va?»: «en el menú, como sección»)
 // 🗣️ QUÉ ES CADA UNA, en palabras comunes (Dlx, 12/10/2026, el research «página sencilla»: «hacé todo menos los dos
 // puntos que chocan»). Los nombres se quedan —«Pase rapero» y «Socios» son de la Liga— y llevan al lado lo que son: en
 // el menú ☰ debajo del nombre, y arriba en la compu al pasar el mouse
@@ -21,6 +22,7 @@ export const QUE_ES = {
   '#/': 'Lo que pasa ahora en la Liga', '#/eventos': 'Cuándo se juega, y la campana para enterarte',
   '#/ranking': 'Las tablas de la temporada', '#/publicaciones': 'Campeones, rangos nuevos y anuncios',
   '#/tarjetas': 'Las tarjetas de cada rapero', '#/ligas': 'Las ligas de los servidores, con su tabla',
+  '#/salon': 'Los campeones, los récords y lo más difícil de la Liga',
   '#/pase': 'Premios por participar en la temporada',
   '#/tienda': 'Tus Puntos de Tienda, y el precio por cabeza', '#/socios': 'Los servidores que forman la Liga',
   '#/guia': 'Cómo funciona todo',
