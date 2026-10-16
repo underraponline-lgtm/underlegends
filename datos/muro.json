@@ -1118,7 +1118,8 @@
 "joshema": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "aby": {
@@ -2395,14 +2396,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Camila"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5689,6 +5682,14 @@
 "t": "2026-10-16T22:58:02Z",
 "quien": [
 "Calíz"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-16T23:17:21Z",
+"quien": [
+"Joshema"
 ],
 "carta": "temporada"
 }
