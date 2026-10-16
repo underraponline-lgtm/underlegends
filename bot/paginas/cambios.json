@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "3.18",
+   "dia": "2026-10-16",
+   "cuando": "2026-10-16T07:10:00-04:00",
+   "titulo": "Ligas, con su propia sección",
+   "items": [
+    "🏟️ Ligas tiene su lugar en el menú, al lado de Tarjetas: todas las ligas de los servidores, con su flyer, cómo va cada una y quién lidera.",
+    "📋 Cada liga tiene su página: el podio, la tabla, las fechas, la próxima, su flyer y quién gana según los votos.",
+    "🙋 Si jugás en alguna, arriba ves tu puesto en cada una."
+   ]
+  },
+  {
    "version": "3.17",
    "dia": "2026-10-16",
    "cuando": "2026-10-16T06:40:00-04:00",

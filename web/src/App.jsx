@@ -14,7 +14,7 @@ import { Lobby } from './lobby.jsx';
 import { pasosEnInicio, quiereTutorial } from './primera.js';
 import { AvisoVersion } from './novedad.jsx';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
-const SECC = new Set(['inicio', 'eventos', 'ranking', 'publicaciones', 'tarjetas', 'pase', 'tienda', 'socios', 'guia',
+const SECC = new Set(['inicio', 'eventos', 'ranking', 'publicaciones', 'tarjetas', 'ligas', 'pase', 'tienda', 'socios', 'guia',
   'perfil', 'servidor', 'crew', 'pais', 'cuenta', 'cambios',
   'i-historias', 'i-envivo', 'i-semana', 'i-ira', 'i-fechas', 'i-sebusca', 'i-noticias', 'i-encuestas', 'i-raperos',
   'i-panel', 'i-merch', 'i-numeros', 'p-eventos', 'p-ranking', 'p-mw', 'p-tarjetas', 'p-pase', 'p-tienda']);
@@ -112,6 +112,8 @@ const Llave = lazy(() => import('./llave.jsx').then((m) => ({ default: m.Llave }
 const VisorCarta = lazy(() => import('./visor.jsx').then((m) => ({ default: m.VisorCarta })));
 const Tienda = lazy(() => import('./tienda.jsx').then((m) => ({ default: m.Tienda })));
 const Pase = lazy(() => import('./pase.jsx').then((m) => ({ default: m.Pase })));
+// 🏟️ las Ligas, su propia sección desde el 16/10/2026 (eran una pestaña del Ranking): ver ligas.jsx
+const LigasPagina = lazy(() => import('./ligas.jsx').then((m) => ({ default: m.LigasPagina })));
 // ⚡ lo que no hace falta para abrir el Inicio va aparte (la pasada del 04/10/2026: el paquete principal pasaba de los
 // 130 KB comprimidos que se puso el remake): Mi cuenta, el changelog y la página de cada servidor
 const Cuenta = lazy(() => import('./cuenta.jsx').then((m) => ({ default: m.Cuenta })));
@@ -433,15 +435,26 @@ export default function App() {
   // 🔤 `/sv/SNK` es Snake Rap: la sigla que se lee abre el mismo perfil que el código (`Liga.codigo()`)
   if (sv && liga) sv = liga.codigo(sv);
   useEffect(() => { if (sv) window.scrollTo(0, 0); }, [sv]);
-  const enRanking = /^#\/(ranking|duelos|eventos|publicaciones|socios|mundo|guia|tarjetas)(\/|$|\?)/.test(hash || '');
+  const enRanking = /^#\/(ranking|duelos|eventos|publicaciones|socios|mundo|guia|tarjetas|ligas)(\/|$|\?)/.test(hash || '');
   useEffect(() => { if (enRanking) window.scrollTo(0, 0); }, [enRanking]);
   // qué página: '' es el Inicio; `cambios` (01/10/2026) la primera que el Inicio nuevo le sacó a la de hoy
   const partes = (hash || '').replace(/^#\/?/, '').split('?')[0].split('/');
+  // 🏟️ `#/ranking/ligas[/<id>]` es el link de antes del 16/10/2026 (Publicaciones, las historias, lo compartido): abre
+  // la sección nueva, y la dirección pasa a ser la de ahora
+  const ligasVieja = partes[0] === 'ranking' && partes[1] === 'ligas';
+  if (ligasVieja) partes.splice(0, 2, 'ligas');
+  useEffect(() => {
+    if (!ligasVieja) return;
+    const r = '#/' + partes.join('/');
+    try { history.replaceState(history.state, '', window.urlLG ? window.urlLG(r) : r); } catch (e) { /* queda la dirección */ }
+  }, [ligasVieja]); // eslint-disable-line react-hooks/exhaustive-deps
   const pagina = /^(access_token|error)=/.test(partes[0] || '') ? '' : (partes[0] || '');
   // la crew de `#/crew/<clave>`, decodificada una vez y con try, como el servidor: un `%` suelto en un link compartido
   // tiraba URIError en el render del App y toda la página nueva caía a la de respaldo (revisión del 04/10/2026)
   let crewId = '';
   if (pagina === 'crew') { const r = partes.slice(1).join('/'); try { crewId = decodeURIComponent(r); } catch (e) { crewId = r; } }
+  let ligaId = '';
+  if (pagina === 'ligas' && partes[1]) { try { ligaId = decodeURIComponent(partes[1]); } catch (e) { ligaId = partes[1]; } }
   // la del menú: `#/duelos` es el Ranking, y `#/mundo` es Socios
   const paginaMenu = pagina === 'duelos' ? 'ranking' : pagina === 'avisos' ? 'eventos' : pagina === 'mundo' ? 'socios' : pagina;
   // 📊 QUÉ SECCIONES SE ABREN (Dlx, 12/10/2026, el research «página sencilla»: medir antes de mover la tira). Cada
@@ -481,6 +494,7 @@ export default function App() {
     const crewT = pagina === 'crew' && liga ? (liga.d.crews || []).find((c) => (c.clave || c.crew) === crewId) : null;
     const t = sv ? nombreSv : pagina === 'socios' || pagina === 'mundo' ? 'Socios'
       : pagina === 'tarjetas' ? 'Tarjetas'
+      : pagina === 'ligas' ? ((ligaId && liga && (liga.ligas().find((x) => x.id === ligaId) || {}).n) || 'Ligas')
       : crewT ? limpio(crewT.crew)
       : pagina === 'pais' && liga && (liga.d.tabla || []).some((f) => String(f.cc).toLowerCase() === String(partes[1]).toLowerCase())
         ? nombrePais(String(partes[1]).toLowerCase())
@@ -549,6 +563,7 @@ export default function App() {
         : pagina === 'crew' && partes[1] ? <Aislada key={'Crew' + partes[1]} n="Crew" pagina><Suspense fallback={<Cargando />}><PaginaCrew liga={liga} id={crewId} /></Suspense></Aislada>
         : pagina === 'pais' && partes[1] ? <Aislada key={'Pais' + partes[1]} n="Pais" pagina><Suspense fallback={<Cargando />}><PaginaPais liga={liga} cc={partes[1]} /></Suspense></Aislada>
         : pagina === 'r' && partes[1] ? <Aislada key="Perfil" n="Perfil" pagina><Suspense fallback={<Cargando />}><Perfil liga={liga} dc={yo.dc} k={partes[1]} tab={partes[2] || ''} /></Suspense></Aislada>
+        : pagina === 'ligas' ? <Aislada key="Ligas" n="Ligas" pagina><Suspense fallback={<Cargando />}><LigasPagina liga={liga} id={ligaId} /></Suspense></Aislada>
         : pagina === 'tarjetas' ? <Aislada key="Tarjetas" n="Tarjetas" pagina><Suspense fallback={<Cargando />}><Tarjetas liga={liga} dc={yo.dc} tipo={partes[1] || ''} q={(hash || '').split('?')[1] || ''} /></Suspense></Aislada>
         : pagina === 'guia' ? <Aislada key="Guia" n="Guia" pagina><Suspense fallback={<Cargando />}><Guia liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'publicaciones' ? <Aislada key="Publicaciones" n="Publicaciones" pagina><Suspense fallback={<Cargando />}><Publicaciones liga={liga} enc={enc} /></Suspense></Aislada>

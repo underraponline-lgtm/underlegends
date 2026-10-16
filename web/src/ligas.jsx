@@ -7,11 +7,16 @@
 // «¿quién gana la liga?» (Dlx, el mismo día): el % de cada uno al lado de la tabla, se vota tocándolo (uno por cuenta,
 // se cambia, con «Entrar con Discord») y cierra cuando la liga termina (`vota`, ver `ligas.vota()`).
 //
+// 🏟️ Y DESDE EL 16/10/2026 SON UNA SECCIÓN, NO UNA PESTAÑA DEL RANKING (Dlx: «que cada liga tenga su propio perfil y
+// que ligas tenga su propio espacio aparte de ranking… al costado de tarjetas… y que esté bonito y tenga todo lo
+// necesario»). `#/ligas` es la portada —todas, con su flyer, cómo van y quién lidera— y `#/ligas/<id>` el perfil de cada
+// una. `#/ranking/ligas[/<id>]`, el link que ya circula en Publicaciones y las historias, lleva acá (App.jsx).
+//
 // ⚠️ LA TABLA ES LA QUE SALE DE LOS VEREDICTOS QUE SE PUDIERON LEER: directa 3 y 0, réplica 2 y 1, sin los ExtraPlayers.
 // La oficial de cada liga puede tener sanciones o defaults que acá no están; por eso va el link a la suya.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DIAS, MESES, limpio, num, siglaDe, utc } from './liga.js';
-import { Cara, accion } from './piezas.jsx';
+import { Cara, Compartir, Ico, Sec, accion, enlace, silueta } from './piezas.jsx';
 
 // 🏟️ ¿UN NOMBRE ESTÁ MAL? (Dlx, 14/10/2026: «Sí, a Reportes», a ForceGP: «¿no hay manera de que uno pueda corregir
 // eso?»). Elegís el nombre, contás quién es, y le llega a la Liga en Reportes del Dashboard con tu cuenta; lo decide la
@@ -229,44 +234,38 @@ function Fechas({ liga, L, nombre }) {
   );
 }
 
-export function Ligas({ liga, ver }) {
-  const D = liga.d.ligas;
-  const ls = (D && D.ligas) || [];
-  const desdeRuta = Math.max(0, ls.findIndex((x) => x.id === ver));
-  const [sel, setSel] = useState(desdeRuta);
-  // `#/ranking/ligas/<id>` (el Inicio, Publicaciones y las historias llevan a una liga): cambia la elegida
-  useEffect(() => { if (ver) setSel(Math.max(0, ls.findIndex((x) => x.id === ver))); }, [ver]); // eslint-disable-line react-hooks/exhaustive-deps
-  const V = useVotos();
-  const det = useDetalle(D ? D.t : null);
-  const [mios, setMios] = useState(leerMios);
-  const [va, setVa] = useState('');
-  const [err, setErr] = useState('');
-  const L0 = ls.length ? ls[Math.min(sel, ls.length - 1)] : null;
-  // la del lobby y su detalle (`fechas`, `flyer` y los perfiles de los nombres que sólo están en las fechas)
-  const dL = (L0 && det[L0.id]) || {};
-  const L = L0 ? Object.assign({}, L0, dL, { ks: Object.assign({}, L0.ks || {}, dL.ks || {}) }) : null;
-  const tabs = useRef(null);
-  useEffect(() => {
-    setErr('');
-    // en el teléfono las pestañas son una tira que se desliza: la elegida, a la vista (sin mover la página)
-    const t = tabs.current;
-    const on = t && t.querySelector('button.on');
-    if (on && t.scrollWidth > t.clientWidth) t.scrollLeft = on.offsetLeft - t.offsetLeft - (t.clientWidth - on.offsetWidth) / 2;
-  }, [sel]);
-  // el voto que se tocó antes de entrar con Discord: sale solo al volver a la liga
-  useEffect(() => {
-    let p = null;
-    try { p = JSON.parse(sessionStorage.getItem('lg:ligavoto-pend') || 'null'); } catch (e) { p = null; }
-    if (!p || !L || p.liga !== L.id || !window.conCuenta) return;
-    try { sessionStorage.removeItem('lg:ligavoto-pend'); } catch (e) { /* igual */ }
-    votar(p.op, true);
-  }, [L && L.id]); // eslint-disable-line react-hooks/exhaustive-deps
-  const cuenta = L ? cuentaDe(L.id) : {};
-  const tot = useMemo(() => (L ? (L.tabla || []).reduce((s, f) => s + (Number(cuenta[f[0]]) || 0), 0) : 0), [L, cuenta, V.t]); // eslint-disable-line react-hooks/exhaustive-deps
-  if (!L) return null;
+// ── 🚦 CÓMO VA CADA LIGA: la próxima fecha, en juego o sin batallas ────────────────────────────────────────────────────
+// «Sin batallas» es lo mismo que cierra la encuesta (`ligas.vota()`: tres semanas sin batallas y sin una fecha anunciada).
+// No se dice «terminó»: eso lo dice su servidor, y una liga puede volver después de un parón. ⚠️ En las clases va como
+// `lgx-<c>`: `.prox` ya existe en estilo.css (las fechas del Inicio) y le redondeaba el flyer a la tarjeta
+function diaCorto(d) {
+  const [y, m, dd] = String(d || '').split('-').map(Number);
+  if (!y || !m || !dd) return '';
+  return DIAS[new Date(Date.UTC(y, m - 1, dd)).getUTCDay()].slice(0, 3).toUpperCase() + ' ' + dd;
+}
+function estadoLiga(liga, L) {
+  const P = L.prox;
+  if (P && P.d) {
+    const hoy = liga.diaClave(liga.ahora);
+    const dia = P.t ? liga.diaClave(P.t) : P.d;
+    const faltan = Math.round((Date.parse(dia) - Date.parse(hoy)) / 86400000);
+    if (faltan >= 0) {
+      return {
+        c: 'prox', t: (faltan === 0 ? 'SE JUEGA HOY' : 'PRÓXIMA · ' + (faltan === 1 ? 'MAÑANA' : diaCorto(dia))) + (P.j ? ' · J' + P.j : ''),
+        largo: (faltan === 0 ? 'Se juega hoy' : faltan === 1 ? 'Se juega mañana' : 'Se juega el ' + diaDe(dia)) + (P.j ? ', jornada ' + P.j : ''),
+      };
+    }
+  }
+  const viva = L.vota ? utc(L.vota) > liga.ahora : !!(L.ult_t && liga.ahora - utc(L.ult_t) < 21 * 86400000);
+  if (viva) return { c: 'juego', t: 'EN JUEGO' + (L.j ? ' · J' + L.j : ''), largo: 'En juego' + (L.j ? ', va por la jornada ' + L.j : '') };
+  const sem = Math.max(3, Math.floor((liga.ahora - utc(L.ult_t)) / (7 * 86400000)));
+  return { c: 'quieta', t: 'SIN BATALLAS · ' + sem + ' SEM', largo: 'Sin batallas desde el ' + diaDe(liga.diaClave(L.ult_t)).replace(/^\S+ /, '') };
+}
+
+// 🔑 el perfil de cada nombre y quién sos vos: el de la tabla del lobby, y si no está ahí, el que manda el ciclo (`ks`,
+// 14/10/2026: ForceGP es staff, no está entre los que jugaron eventos, y «le pico donde dice FORCE y no me lleva a nada»)
+function herramientas(liga, L) {
   const yo = liga.yo;
-  // 🔑 el perfil de cada nombre: el de la tabla del lobby, y si no está ahí, el que manda el ciclo (`ks`, 14/10/2026:
-  // ForceGP es staff, no está entre los que jugaron eventos, y «le pico donde dice FORCE y no me lleva a nada»)
   const kDe = (raw) => { const f = liga.fila(raw); return f ? f.k : ((L.ks || {})[raw] || ''); };
   const miK = (window.DC && window.DC.clave) || (yo && yo.k) || '';
   const esYo = (raw) => (!!yo && liga.esDe(raw, yo.k)) || (!!miK && kDe(raw) === miK);
@@ -274,10 +273,37 @@ export function Ligas({ liga, ver }) {
     const k = kDe(raw);
     return k ? <a className={cls} href={'#/r/' + encodeURIComponent(k)}>{limpio(raw)}</a> : <span className={cls}>{limpio(raw)}</span>;
   };
-  const cara = (raw) => {
+  const cara = (raw, cls = 'cara dv-cara') => {
     const k = kDe(raw);
-    return k ? <Cara liga={liga} k={k} nombre={raw} cls="cara dv-cara" /> : <span className="cara dv-cara ini">{limpio(raw).slice(0, 1).toUpperCase()}</span>;
+    return k ? <Cara liga={liga} k={k} nombre={raw} cls={cls} /> : <span className={cls + ' ini'}>{(limpio(raw).slice(0, 1) || '?').toUpperCase()}</span>;
   };
+  return { kDe, esYo, nombre, cara, miK };
+}
+// la del lobby y su detalle (`fechas`, `flyer` y los perfiles de los nombres que sólo están en las fechas)
+function conDetalle(L0, det) {
+  if (!L0) return null;
+  const dL = det[L0.id] || {};
+  return Object.assign({}, L0, dL, { ks: Object.assign({}, L0.ks || {}, dL.ks || {}) });
+}
+const aLiga = (L) => '#/ligas/' + encodeURIComponent(L.id);
+
+// ── 🏆 EL TORNEO: la encuesta, la tabla y las fechas; al costado, el flyer y la próxima ────────────────────────────────
+function Torneo({ liga, L, h }) {
+  const V = useVotos();
+  const [mios, setMios] = useState(leerMios);
+  const [va, setVa] = useState('');
+  const [err, setErr] = useState('');
+  useEffect(() => { setErr(''); }, [L.id]);
+  // el voto que se tocó antes de entrar con Discord: sale solo al volver a la liga
+  useEffect(() => {
+    let p = null;
+    try { p = JSON.parse(sessionStorage.getItem('lg:ligavoto-pend') || 'null'); } catch (e) { p = null; }
+    if (!p || p.liga !== L.id || !window.conCuenta) return;
+    try { sessionStorage.removeItem('lg:ligavoto-pend'); } catch (e) { /* igual */ }
+    votar(p.op, true);
+  }, [L.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  const cuenta = cuentaDe(L.id);
+  const tot = useMemo(() => (L.tabla || []).reduce((s, f) => s + (Number(cuenta[f[0]]) || 0), 0), [L, cuenta, V.t]); // eslint-disable-line react-hooks/exhaustive-deps
   const abierta = !!(L.vota && utc(L.vota) > liga.ahora);
   const mio = mios[L.id] || '';
   function votar(op, solo) {
@@ -309,72 +335,288 @@ export function Ligas({ liga, ver }) {
   const top = (L.tabla || []).map((f) => [f[0], Number(cuenta[f[0]]) || 0]).filter((x) => x[1] > 0).sort((a, b) => b[1] - a[1])[0];
   const lado = L.flyer || L.prox;
   return (
-    <div className="dv lgs">
-      <p className="dv-cab">Las ligas de los servidores, con sus jornadas: cada una arranca y termina cuando la organiza su servidor.
-        {' '}Sus batallas suman a tus <b>duelos</b> (el Ranking Duelos y el Win%); al Score, no.</p>
-      <div className="lg-tabs" role="tablist" aria-label="Las ligas" ref={tabs}>
-        {ls.map((x, i) => (
-          <button key={x.id} type="button" role="tab" aria-selected={i === sel} className={i === sel ? 'on' : ''} onClick={() => setSel(i)}>
-            {x.n}<small>{siglaDe(x.sv)}</small>
-          </button>
-        ))}
-      </div>
-      <section className={'lgt' + (lado ? ' con-lado' : '')} aria-label={L.n}>
-        <header className="lgt-cab">
-          <img className="lgt-logo" alt="" src={liga.logo(L.sv)} />
-          <div>
-            <h3 className="dv-gt">{L.n}</h3>
-            <small>{siglaDe(L.sv)}{L.j ? ' · jornada ' + L.j : ''} · {num(L.bat)} {L.bat === 1 ? 'batalla' : 'batallas'}{L.pend ? ' · ' + L.pend + ' sin cierre todavía' : ''}</small>
+    <div className={'lgt sin-cab' + (lado ? ' con-lado' : '')}>
+      {lado ? (
+        <aside className="lgt-lado">
+          {L.flyer ? <Flyer liga={liga} L={L} /> : null}
+          {L.prox ? <Proxima liga={liga} P={L.prox} /> : null}
+        </aside>
+      ) : null}
+      <div className="lgt-main">
+        {L.vota ? (
+          <div className={'lgt-enc' + (abierta ? '' : ' cerrada')}>
+            <p className="lgt-enc-t"><b>🗳️ ¿Quién gana {L.n}?</b>
+              {abierta ? <> Tocá el % de quien creés que gana: un voto por cuenta de Discord, y lo podés cambiar hasta que la liga termine.</>
+                : <> La encuesta cerró: la liga lleva tres semanas sin batallas.</>}</p>
+            <small>{tot ? num(tot) + (tot === 1 ? ' voto' : ' votos') + (top ? ' · va ganando ' + limpio(top[0]) : '') : abierta ? 'Todavía nadie votó: ¿sos el primero?' : 'Nadie votó.'}
+              {abierta ? ' · cierra el ' + diaDe(liga.diaClave(L.vota)).replace(/^\S+ /, '') + ' si no hay más batallas' : ''}</small>
+            {err === 'entrar' ? (
+              <p className="lgt-enc-e">Para votar, entrá con Discord. <button type="button" className="btn verde chico" onClick={() => accion.entrar()}>Entrar con Discord</button>
+                <small>Tu voto queda guardado: sale solo cuando vuelvas a esta liga.</small></p>
+            ) : err ? <p className="lgt-enc-e" role="status">{err}</p> : null}
           </div>
-        </header>
-        {lado ? (
-          <aside className="lgt-lado">
-            {L.flyer ? <Flyer liga={liga} L={L} /> : null}
-            {L.prox ? <Proxima liga={liga} P={L.prox} /> : null}
-          </aside>
         ) : null}
-        <div className="lgt-main">
-          {L.vota ? (
-            <div className={'lgt-enc' + (abierta ? '' : ' cerrada')}>
-              <p className="lgt-enc-t"><b>🗳️ ¿Quién gana {L.n}?</b>
-                {abierta ? <> Tocá el % de quien creés que gana: un voto por cuenta de Discord, y lo podés cambiar hasta que la liga termine.</>
-                  : <> La encuesta cerró: la liga lleva tres semanas sin batallas.</>}</p>
-              <small>{tot ? num(tot) + (tot === 1 ? ' voto' : ' votos') + (top ? ' · va ganando ' + limpio(top[0]) : '') : abierta ? 'Todavía nadie votó: ¿sos el primero?' : 'Nadie votó.'}
-                {abierta ? ' · cierra el ' + diaDe(liga.diaClave(L.vota)).replace(/^\S+ /, '') + ' si no hay más batallas' : ''}</small>
-              {err === 'entrar' ? (
-                <p className="lgt-enc-e">Para votar, entrá con Discord. <button type="button" className="btn verde chico" onClick={() => accion.entrar()}>Entrar con Discord</button>
-                  <small>Tu voto queda guardado: sale solo cuando vuelvas a esta liga.</small></p>
-              ) : err ? <p className="lgt-enc-e" role="status">{err}</p> : null}
-            </div>
-          ) : null}
-          <ol className={'dv-tabla lg-tabla lgt-tabla' + (L.vota ? ' con-voto' : '')}>
-            {L.tabla.map(([raw, pj, pg, pts], i) => {
-              const n = Number(cuenta[raw]) || 0;
-              const p = pct(n, tot);
-              const esMio = mio === raw;
-              return (
-                <li key={raw} className={esYo(raw) ? 'yo' : ''}>
-                  <span className="dv-i">{i + 1}</span>
-                  {cara(raw)}
-                  {nombre(raw, 'dv-n')}
-                  <span className="lg-pj" title="ganadas de jugadas">{pg}/{pj}</span>
-                  <b className="dv-p">{pts}</b>
-                  {L.vota ? (abierta ? (
-                    <button type="button" className={'lgt-v' + (esMio ? ' mio' : '') + (va === raw ? ' va' : '')} aria-pressed={esMio}
-                      disabled={!!va} onClick={() => votar(raw)} style={{ '--p': p + '%' }}
-                      aria-label={(esMio ? 'Tu voto: ' : 'Votar a ') + limpio(raw) + ' para ganar ' + L.n + ' · ' + p + '% de los votos'}>
-                      <i aria-hidden="true" />{esMio ? '✓ ' : ''}{p}%</button>
-                  ) : <span className="lgt-v cerrada" style={{ '--p': p + '%' }} aria-label={p + '% de los votos'}><i aria-hidden="true" />{p}%</span>) : null}
-                </li>
-              );
-            })}
-          </ol>
-          <Fechas liga={liga} L={L} nombre={nombre} />
-          <p className="lg-nota">La tabla sale de los veredictos que se pudieron leer: directa 3 puntos, réplica 2 y 1, sin los invitados.
-            {L.link ? <> La oficial, con sanciones y defaults, está en <a className="te-link" href={L.link} target="_blank" rel="noopener noreferrer">su Discord</a>.</> : null}</p>
-          <AvisarLiga key={L.id} L={L} />
-        </div>
-      </section>
+        {/* 🗣️ qué es cada número (lo que no se entiende no se usa): «5/6» solo no dice que son ganadas de jugadas */}
+        <p className="lgt-ley"><span><b>G/J</b> ganadas de jugadas</span><span><b>PTS</b> puntos</span>{L.vota ? <span><b>%</b> quién gana, según los votos</span> : null}</p>
+        <ol className={'dv-tabla lg-tabla lgt-tabla' + (L.vota ? ' con-voto' : '')}>
+          {(L.tabla || []).map(([raw, pj, pg, pts], i) => {
+            const n = Number(cuenta[raw]) || 0;
+            const p = pct(n, tot);
+            const esMio = mio === raw;
+            return (
+              <li key={raw} className={h.esYo(raw) ? 'yo' : ''}>
+                <span className="dv-i">{i + 1}</span>
+                {h.cara(raw)}
+                {h.nombre(raw, 'dv-n')}
+                <span className="lg-pj" title="ganadas de jugadas">{pg}/{pj}</span>
+                <b className="dv-p">{pts}</b>
+                {L.vota ? (abierta ? (
+                  <button type="button" className={'lgt-v' + (esMio ? ' mio' : '') + (va === raw ? ' va' : '')} aria-pressed={esMio}
+                    disabled={!!va} onClick={() => votar(raw)} style={{ '--p': p + '%' }}
+                    aria-label={(esMio ? 'Tu voto: ' : 'Votar a ') + limpio(raw) + ' para ganar ' + L.n + ' · ' + p + '% de los votos'}>
+                    <i aria-hidden="true" />{esMio ? '✓ ' : ''}{p}%</button>
+                ) : <span className="lgt-v cerrada" style={{ '--p': p + '%' }} aria-label={p + '% de los votos'}><i aria-hidden="true" />{p}%</span>) : null}
+              </li>
+            );
+          })}
+        </ol>
+        <Fechas liga={liga} L={L} nombre={h.nombre} />
+        <p className="lg-nota">La tabla sale de los veredictos que se pudieron leer: directa 3 puntos, réplica 2 y 1, sin los invitados.
+          {L.link ? <> La oficial, con sanciones y defaults, está en <a className="te-link" href={L.link} target="_blank" rel="noopener noreferrer">su Discord</a>.</> : null}</p>
+        <AvisarLiga key={L.id} L={L} />
+      </div>
     </div>
   );
+}
+
+// 🥇 los tres de arriba, como el podio del Ranking pero con la cara: muchos de los que juegan ligas no tienen carta
+function Podio3({ L, h }) {
+  const top = (L.tabla || []).slice(0, 3);
+  if (top.length < 2) return null;
+  return (
+    <ol className="lgp-podio" aria-label={'Los primeros de ' + L.n}>
+      {top.map(([raw, pj, pg, pts], i) => (
+        <li key={raw} className={'lgp-p p' + (i + 1) + (h.esYo(raw) ? ' yo' : '')}>
+          {h.cara(raw, 'lgp-cara')}
+          <span className="lgp-pn">{i + 1}º</span>
+          {h.nombre(raw, 'lgp-nom')}
+          <small>{pts} PTS · {pg}/{pj}</small>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+// ── 🏟️ EL PERFIL DE CADA LIGA (`#/ligas/<id>`): su servidor, cómo va, el podio, el torneo y las otras ──────────────────
+function LigaPerfil({ liga, id }) {
+  const D = liga.d.ligas;
+  const det = useDetalle(D ? D.t : null);
+  useEffect(() => { window.scrollTo(0, 0); }, [id]);
+  const ls = liga.ligas();
+  const L = conDetalle(ls.find((x) => x.id === id), det);
+  if (!L) return <LigasInicio liga={liga} falta={id} />;
+  const h = herramientas(liga, L);
+  const s = liga.svs[L.sv] || {};
+  const sig = siglaDe(L.sv);
+  const color = s.color || '#E41373';
+  const est = estadoLiga(liga, L);
+  const ultima = L.ult_t ? diaDe(liga.diaClave(L.ult_t)).replace(/^\S+ (\d+) de (\S+)$/, (m, d, mes) => d + '/' + String(MESES.indexOf(mes) + 1).padStart(2, '0')) : '';
+  // las de su servidor primero
+  const otras = ls.filter((x) => x.id !== L.id).sort((a, b) => (b.sv === L.sv) - (a.sv === L.sv));
+  return (
+    <>
+      <div className={'escena lgp-esc lgx-' + est.c} style={{ '--mo-c': color, '--mo-o': 0.9, ...silueta(L.sv, color) }}>
+        <nav className="lgp-miga" aria-label="Volver"><a href="#/ligas"><Ico n="flecha" t={16} />Todas las ligas</a></nav>
+        <section className="svp lgp-cab">
+          <img className="svp-logo" alt="" src={liga.logo(L.sv, true)} />
+          <div className="svp-tx">
+            <span className="tag">LIGA · {sig}</span>
+            <h1 className="hero-ev largo">{L.n}</h1>
+            <p className="hero-p lgp-p0"><span className={'lgp-est lgx-' + est.c}>{est.largo}</span> · de <a href={'#/sv/' + sig}>{s.nombre || sig}</a></p>
+            <div className="hero-acc">
+              {L.link ? <a className="btn verde" href={L.link} target="_blank" rel="noopener noreferrer">Su tabla en Discord ↗</a> : null}
+              <Compartir cls="btn borde" url={enlace(aLiga(L))} texto={'La tabla de ' + L.n + ' en la Liga Global'} />
+            </div>
+          </div>
+          <dl className="svp-num lgp-num">
+            {L.j ? <div><dt>JORNADA</dt><dd>{L.j}</dd></div> : <div><dt>ÚLTIMA</dt><dd>{ultima || '—'}</dd></div>}
+            <div><dt>BATALLAS</dt><dd>{num(L.bat)}</dd></div>
+            <div><dt>RAPEROS</dt><dd>{num((L.tabla || []).length)}</dd></div>
+          </dl>
+        </section>
+        <Podio3 L={L} h={h} />
+      </div>
+      <Sec id="lgp-tabla" titulo="La tabla" extra="lgp-sec"><Torneo liga={liga} L={L} h={h} /></Sec>
+      {otras.length ? (
+        <Sec id="lgp-otras" titulo="Las otras ligas" enlace="Todas" href="#/ligas">
+          <nav className="lgp-otras" aria-label="Las otras ligas">
+            {otras.map((x) => (
+              <a key={x.id} href={aLiga(x)} style={{ '--c': (liga.svs[x.sv] || {}).color || '#E41373' }}>
+                <img alt="" src={liga.logo(x.sv)} /><b>{x.n}</b><small>{siglaDe(x.sv)}</small>
+              </a>
+            ))}
+          </nav>
+        </Sec>
+      ) : null}
+    </>
+  );
+}
+
+// 🃏 cada liga en la portada: su flyer (o el escudo de su servidor si no publicó ninguno), cómo va y quién lidera. La
+// tarjeta entera es el link: adentro no va otro (por eso el nombre del primero es texto)
+function TarjetaLiga({ liga, L, est }) {
+  const s = liga.svs[L.sv] || {};
+  const h = herramientas(liga, L);
+  const lider = (L.tabla || [])[0];
+  return (
+    <a className={'lgh-c lgx-' + est.c} href={aLiga(L)} style={{ '--c': s.color || '#E41373' }}>
+      <span className="lgh-img">
+        {L.fl ? <img alt="" src={L.fl} loading="lazy" decoding="async" />
+          : <span className="lgh-sin"><img alt="" src={liga.logo(L.sv, true)} loading="lazy" decoding="async" /></span>}
+      </span>
+      <span className="lgh-tx">
+        <span className={'lgh-est lgx-' + est.c}>{est.t}</span>
+        <b className="lgh-n">{L.n}</b>
+        <span className="lgh-sv"><img alt="" src={liga.logo(L.sv)} />{siglaDe(L.sv)} · {num(L.bat)} {L.bat === 1 ? 'batalla' : 'batallas'} · {(L.tabla || []).length} raperos</span>
+        {lider ? (
+          <span className="lgh-lider">{h.cara(lider[0], 'lgh-cara')}<small>1º</small><b>{limpio(lider[0])}</b><i>{lider[3]} PTS</i></span>
+        ) : null}
+      </span>
+    </a>
+  );
+}
+
+// ── 🏟️ LA PORTADA (`#/ligas`): todas, cómo va cada una, las tuyas, las próximas fechas y lo último que pasó ─────────────
+function LigasInicio({ liga, falta = '' }) {
+  const ls = liga.ligas();
+  const [sv, setSv] = useState('');
+  const svs = useMemo(() => {
+    const c = {};
+    ls.forEach((L) => { c[L.sv] = (c[L.sv] || 0) + 1; });
+    return Object.keys(c).sort((a, b) => c[b] - c[a] || siglaDe(a).localeCompare(siglaDe(b)));
+  }, [ls]);
+  const est = {};
+  ls.forEach((L) => { est[L.id] = estadoLiga(liga, L); });
+  const hs = {};
+  ls.forEach((L) => { hs[L.id] = herramientas(liga, L); });
+  const enJuego = ls.filter((L) => est[L.id].c !== 'quieta').length;
+  const bat = ls.reduce((n, L) => n + (L.bat || 0), 0);
+  const gente = new Set();
+  ls.forEach((L) => (L.tabla || []).forEach(([raw]) => gente.add(hs[L.id].kDe(raw) || limpio(raw).toLowerCase())));
+  // 🙋 las tuyas, con tu puesto: lo primero que se busca al entrar
+  const mias = [];
+  ls.forEach((L) => {
+    const i = (L.tabla || []).findIndex(([raw]) => hs[L.id].esYo(raw));
+    if (i >= 0) mias.push([L, i, L.tabla[i]]);
+  });
+  const prox = ls.filter((L) => est[L.id].c === 'prox').sort((a, b) => String(a.prox.t || a.prox.d).localeCompare(String(b.prox.t || b.prox.d)));
+  // lo último que pasó: el último veredicto de cada liga (ya vienen de la más nueva a la más vieja: `para_web()`)
+  const ultimos = ls.filter((L) => (L.ult || []).length && est[L.id].c !== 'quieta').slice(0, 6);
+  const ver = sv ? ls.filter((L) => L.sv === sv) : ls;
+  const fls = ls.filter((L) => L.fl).slice(0, 3);
+  return (
+    <>
+      <div className="escena lgh-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.9, '--mo-c2': '#29B298' }}>
+        <section className="rk-cab lgh-cab">
+          <div className="rk-tx">
+            <span className="tag">LIGAS · {liga.temp}</span>
+            <h1 className="hero-ev largo">Ligas</h1>
+            <p className="hero-p">Las ligas de los servidores, como torneos: cada una con su tabla, sus jornadas y su flyer. Arrancan y terminan cuando
+              las organiza su servidor, y sus batallas suman a tus <b>duelos</b>.</p>
+            {ls.length ? (
+              <dl className="svp-num lgh-num">
+                <div><dt>EN JUEGO</dt><dd>{enJuego}</dd></div>
+                <div><dt>BATALLAS</dt><dd>{num(bat)}</dd></div>
+                <div><dt>RAPEROS</dt><dd>{num(gente.size)}</dd></div>
+                <div><dt>SERVIDORES</dt><dd>{svs.length}</dd></div>
+              </dl>
+            ) : null}
+          </div>
+          {fls.length >= 3 ? (
+            <ol className="lgh-abanico" aria-label="Los últimos flyers">
+              {[fls[1], fls[0], fls[2]].map((L, i) => (
+                <li key={L.id} className={['izq', 'centro', 'der'][i]}><a href={aLiga(L)} aria-label={'Ver ' + L.n}><img alt="" src={L.fl} /></a></li>
+              ))}
+            </ol>
+          ) : null}
+        </section>
+      </div>
+      {falta ? <p className="sec lgh-falta" role="status">Esa liga no está: puede que todavía no tenga batallas, o que haya cambiado de nombre. Acá están todas.</p> : null}
+      {!ls.length ? (
+        <Sec id="lgh-todas" titulo="Todas las ligas"><p className="pronto-p">Todavía ninguna liga tiene batallas: aparecen solas con la primera.</p></Sec>
+      ) : null}
+      {mias.length ? (
+        <Sec id="lgh-mias" titulo="Tus ligas">
+          <ul className="lgh-mias">{mias.map(([L, i, [, pj, pg, pts]]) => (
+            <li key={L.id}><a href={aLiga(L)} style={{ '--c': (liga.svs[L.sv] || {}).color || '#E41373' }}>
+              <span className="lgh-pos">{i + 1}º<small>de {L.tabla.length}</small></span>
+              <span className="lgh-mt"><b>{L.n}</b><small>{pg} de {pj} {pj === 1 ? 'ganada' : 'ganadas'} · {pts} PTS · {est[L.id].t}</small></span>
+              <Ico n="flecha" t={18} />
+            </a></li>
+          ))}</ul>
+        </Sec>
+      ) : null}
+      {ls.length ? (
+        <Sec id="lgh-todas" titulo="Todas las ligas">
+          {svs.length > 1 ? (
+            <div className="rk-chips lgh-fil" role="group" aria-label="Filtrar por servidor">
+              <button type="button" className={!sv ? 'on' : ''} aria-pressed={!sv} onClick={() => setSv('')}>Todas · {ls.length}</button>
+              {svs.map((x) => (
+                <button type="button" key={x} className={sv === x ? 'on' : ''} aria-pressed={sv === x} onClick={() => setSv(sv === x ? '' : x)}>
+                  <img alt="" src={liga.logo(x)} />{siglaDe(x)}
+                </button>
+              ))}
+            </div>
+          ) : null}
+          <ul className="lgh-grid">{ver.map((L) => <li key={L.id}><TarjetaLiga liga={liga} L={L} est={est[L.id]} /></li>)}</ul>
+        </Sec>
+      ) : null}
+      {/* 🗓️ lo que viene y lo que pasó, en una fila en la compu: una sola fecha por delante dejaba media pantalla vacía */}
+      {prox.length || ultimos.length ? (
+        <div className={'lgh-fila' + (prox.length && ultimos.length ? ' dos' : '')}>
+          {prox.length ? (
+            <Sec id="lgh-prox" titulo="Las próximas fechas">
+              <div className="lgh-proxs">{prox.map((L) => (
+                <div key={L.id} className="lgh-px">
+                  {L.fl ? <a className="lgh-px-fl" href={aLiga(L)} tabIndex={-1} aria-hidden="true"><img alt="" src={L.fl} loading="lazy" decoding="async" /></a> : null}
+                  <div className="lgh-px-d">
+                    <a className="lgh-px-n" href={aLiga(L)}><img alt="" src={liga.logo(L.sv)} /><b>{L.n}</b></a>
+                    <Proxima liga={liga} P={L.prox} />
+                  </div>
+                </div>
+              ))}</div>
+            </Sec>
+          ) : null}
+          {ultimos.length ? (
+            <Sec id="lgh-ult" titulo="Lo último que pasó">
+              <ul className="lgh-res">{ultimos.slice(0, prox.length ? 4 : 6).map((L) => {
+                const [a, b, g, como, j] = L.ult[0];
+                const h = hs[L.id];
+                return (
+                  <li key={L.id}>
+                    <a className="lgh-res-l" href={aLiga(L)}><img alt="" src={liga.logo(L.sv)} /><b>{L.n}</b></a>
+                    <span className="lgh-res-t">{h.nombre(g, 'lg-g')} le ganó a {h.nombre(g === a ? b : a, 'lg-p')}</span>
+                    <small>{como === 'replica' ? 'en réplica' : 'directo'}{j ? ' · jornada ' + j : ''} · {liga.cuando(L.ult_t)}</small>
+                  </li>
+                );
+              })}</ul>
+            </Sec>
+          ) : null}
+        </div>
+      ) : null}
+      <Sec id="lgh-como" titulo="Cómo funcionan">
+        <ul className="lgh-como">
+          <li><b>Cada servidor arma la suya</b><span>Con sus jornadas, su tabla y sus reglas. Arranca y termina cuando la organiza su servidor.</span></li>
+          <li><b>Los puntos</b><span>Ganar directo da 3 puntos; en réplica, 2 al que gana y 1 al que pierde. La tabla sale de los veredictos que leyó el bot: la oficial, con sanciones, está en el Discord de cada liga.</span></li>
+          <li><b>Qué te suman</b><span>Cada batalla cuenta para tus <b>duelos</b>: el Ranking Duelos y tu Win%. Al Score competitivo, no.</span></li>
+          <li><b>¿Quién gana?</b><span>En cada liga se vota quién la gana: un voto por cuenta de Discord, y se cierra cuando lleva tres semanas sin batallas.</span></li>
+        </ul>
+      </Sec>
+    </>
+  );
+}
+
+// `#/ligas` es la portada y `#/ligas/<id>` el perfil de esa liga
+export function LigasPagina({ liga, id = '' }) {
+  return id ? <LigaPerfil liga={liga} id={id} /> : <LigasInicio liga={liga} />;
 }

@@ -673,7 +673,7 @@ export class Liga {
     // Historias»): la imagen y a la liga
     if (it.tipo === 'flyer') {
       return ['LIGA · ' + siglaDe(it.sv), limpio(it.ln) + (it.tit ? ': ' + limpio(it.tit) : ''), ['img', it.img], c,
-        { ruta: '#/ranking/ligas/' + encodeURIComponent(it.liga || '') }];
+        { ruta: '#/ligas/' + encodeURIComponent(it.liga || '') }];
     }
     return null;
   }

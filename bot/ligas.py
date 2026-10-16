@@ -872,7 +872,8 @@ def _fechas(bats, rc, z, tope=FECHAS_WEB):
 
 
 def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None):
-    """Lo de la pestaña «Ligas»: `{t, ligas: [{id, n, sv, j, bat, pend, tabla, ult, fechas, ks, link, flyer, prox,
+    """Lo de la sección Ligas de la web (`#/ligas` y el perfil de cada una, `#/ligas/<id>`; hasta el 16/10/2026 una
+    pestaña del Ranking): `{t, ligas: [{id, n, sv, j, bat, pend, tabla, ult, fechas, ks, link, flyer, prox,
     vota}]}`, o `None` sin nada.
 
     `tabla`: `[[nombre, jugadas, ganadas, puntos]]` (hasta 30); `ult`: las seis últimas con resultado,

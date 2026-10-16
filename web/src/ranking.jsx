@@ -22,7 +22,6 @@ import { SeBusca } from './abajo.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 import { Divisiones } from './divisiones.jsx';
 import { Misiones } from './misiones.jsx';
-import { Ligas } from './ligas.jsx';
 import { svElegido, useElegidos } from './elegidos.js';
 
 const pct = (x) => parseFloat(String(x == null ? '' : x).replace(',', '.')) || 0;
@@ -248,13 +247,6 @@ const SUBS = {
     siNo: <><b>Misiones</b>: tres por semana, las mismas para todos, que se cumplen jugando y suman a tu Temporada. Las primeras arrancan el lunes a las 11 AM.</>,
     baj: <>Tres por semana, las mismas para todos: se cumplen <b>jugando</b> y cada una suma a tu <b>Temporada</b>. Las tres juntas dan un bono.</>,
   },
-  // 🏟️ las ligas de los servidores (12/10/2026, Dlx: «2. Me gusta»): su propia vista (`Ligas`), una tabla por liga
-  ligas: {
-    et: 'Ligas', propia: Ligas, filas: () => [], orden: () => 0, hay: (L) => !!(L.d.ligas && (L.d.ligas.ligas || []).length),
-    siNo: <><b>Ligas</b>: las ligas de los servidores, con su tabla y sus resultados. Aparecen con su primera batalla.</>,
-    // 🏆 cada una como un torneo (14/10/2026): la tabla, las fechas, la próxima y su flyer, y quién gana
-    baj: <>Las ligas de los servidores, como torneos: la tabla, los resultados de cada fecha, la próxima y su flyer. Votá quién gana cada una. Sus batallas suman a tus <b>duelos</b>.</>,
-  },
   // 🏟️ las divisiones de la semana (04/10/2026): su propia vista (`Divisiones`), no la tabla de los demás
   divisiones: {
     // ⚠️ `orden` tiene que estar aunque no haya tabla: `armar()` busca su columna en `COL` y sin él revienta
@@ -263,7 +255,7 @@ const SUBS = {
     baj: <>Una tabla por semana, de a 30: jugás un evento y entrás. Los <b>primeros</b> de cada grupo suben de división y ganan <b>Puntos de Tienda</b>; los últimos bajan.</>,
   },
 };
-export const RANKINGS = ['temporada', 'divisiones', 'competitivo', 'duelos', 'podios', 'rachas', 'eventos', 'paises', 'crews', 'mw', 'misiones', 'ligas'];
+export const RANKINGS = ['temporada', 'divisiones', 'competitivo', 'duelos', 'podios', 'rachas', 'eventos', 'paises', 'crews', 'mw', 'misiones'];
 
 function req(L, id) {
   const q = (L.d.requisitos || []).find((x) => x.id === id);
@@ -548,7 +540,8 @@ function BotonHistoria({ liga, cfg, f, n }) {
 
 const VER = 50;
 
-// `ver`: lo que va después del ranking en la dirección (`#/ranking/ligas/<liga>`, 14/10/2026): qué abre su vista propia
+// `ver`: lo que va después del ranking en la dirección: qué abre su vista propia (lo usaban las Ligas, que desde el
+// 16/10/2026 son su propia sección: `#/ranking/ligas` lleva a `#/ligas`, en App.jsx)
 export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const [sub, setSub] = useState(SUBS[subRuta] ? subRuta : 'temporada');
   useEffect(() => { setSub(SUBS[subRuta] ? subRuta : 'temporada'); }, [subRuta]);

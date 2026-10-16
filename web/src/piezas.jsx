@@ -27,6 +27,8 @@ const TRAZOS = {
   instalar: <><rect x="6.5" y="2.5" width="11" height="19" rx="1.5" /><path d="M12 7v7M9 11.5l3 3 3-3M10.5 18.5h3" /></>,
   novedades: <><path d="M5 3.5h10l4 4v13H5z" /><path d="M15 3.5v4h4M8.5 12h7M8.5 16h5" /></>,
   guia: <><path d="M4 5.5A2.5 2.5 0 016.5 3H20v15H6.5A2.5 2.5 0 004 20.5z" /><path d="M4 20.5A2.5 2.5 0 016.5 18H20v3H6.5" /></>,
+  // 🏟️ Ligas (16/10/2026): una tabla con su encabezado, el puesto y el nombre
+  ligas: <><rect x="3.5" y="4" width="17" height="16" rx="1" /><path d="M3.5 9h17M3.5 14h17M8.5 9v11" /></>,
   // los que faltaban para la tira de abajo del celular (02/10/2026): el pase es una entrada, la tienda una bolsa
   pase: <><path d="M3 7h18v3.2a1.8 1.8 0 000 3.6V17H3v-3.2a1.8 1.8 0 000-3.6z" /><path d="M15 7.5v1.5M15 11.2v1.6M15 15v1.5" /></>,
   tienda: <><path d="M5 8.5h14l-1.2 12H6.2z" /><path d="M9 8.5V7a3 3 0 016 0v1.5" /></>,

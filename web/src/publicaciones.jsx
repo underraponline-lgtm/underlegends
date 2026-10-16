@@ -126,7 +126,7 @@ export function Pub({ liga, it, A }) {
   } else if (it.tipo === 'flyer') {
     // 🖼️ EL FLYER DE UNA LIGA (Dlx, 14/10/2026: «Flyers en Publicaciones e Historias»): el afiche que publicó su
     // servidor, re-alojado (bot/ligas.py `subir_flyer()`), y a su liga en Ligas. Grande: la imagen ES la publicación
-    const ir = '#/ranking/ligas/' + encodeURIComponent(it.liga || '');
+    const ir = '#/ligas/' + encodeURIComponent(it.liga || '');
     cat = 'LIGA · ' + siglaDe(it.sv);
     vis = <a className="pub-flyer" href={ir} aria-label={'Ver ' + limpio(it.ln)}>
       <img alt={'El flyer de ' + limpio(it.ln) + (it.tit ? ': ' + limpio(it.tit) : '')} src={it.img} loading="lazy"

@@ -8,16 +8,18 @@ import { useRacha } from './racha.js';
 
 export const MENU = [
   ['Inicio', '#/'], ['Eventos', '#/eventos'], ['Ranking', '#/ranking'], ['Publicaciones', '#/publicaciones'],
-  ['Tarjetas', '#/tarjetas'], ['Pase rapero', '#/pase'], ['Tienda', '#/tienda'], ['Socios', '#/socios'], ['Guía', '#/guia'],
+  ['Tarjetas', '#/tarjetas'], ['Ligas', '#/ligas'], ['Pase rapero', '#/pase'], ['Tienda', '#/tienda'], ['Socios', '#/socios'], ['Guía', '#/guia'],
 ];
-// «Socios» es lo que era «Mundo» (Dlx, 03/10/2026: «1. A»); `#/mundo` sigue abriéndolo (App.jsx)
+// «Socios» es lo que era «Mundo» (Dlx, 03/10/2026: «1. A»); `#/mundo` sigue abriéndolo (App.jsx). «Ligas», al lado de
+// Tarjetas desde el 16/10/2026 (Dlx: «que ligas tenga su propio espacio aparte de ranking… al costado de tarjetas»)
 // 🗣️ QUÉ ES CADA UNA, en palabras comunes (Dlx, 12/10/2026, el research «página sencilla»: «hacé todo menos los dos
 // puntos que chocan»). Los nombres se quedan —«Pase rapero» y «Socios» son de la Liga— y llevan al lado lo que son: en
 // el menú ☰ debajo del nombre, y arriba en la compu al pasar el mouse
 export const QUE_ES = {
   '#/': 'Lo que pasa ahora en la Liga', '#/eventos': 'Cuándo se juega, y la campana para enterarte',
   '#/ranking': 'Las tablas de la temporada', '#/publicaciones': 'Campeones, rangos nuevos y anuncios',
-  '#/tarjetas': 'Las tarjetas de cada rapero', '#/pase': 'Premios por participar en la temporada',
+  '#/tarjetas': 'Las tarjetas de cada rapero', '#/ligas': 'Las ligas de los servidores, con su tabla',
+  '#/pase': 'Premios por participar en la temporada',
   '#/tienda': 'Tus Puntos de Tienda, y el precio por cabeza', '#/socios': 'Los servidores que forman la Liga',
   '#/guia': 'Cómo funciona todo',
 };
@@ -403,7 +405,7 @@ function slidesDe(liga, items) {
       // entero, y a su liga
       out.push(Slide('LIGA · ' + siglaDe(it.sv), <><img className="st-flyer" alt="" src={it.img} /><h3 className="st-h">{limpio(it.ln)}</h3>
         {it.tit ? <small className="st-s">{limpio(it.tit)}</small> : null}</>,
-      c, 'Ver la liga', { ruta: '#/ranking/ligas/' + encodeURIComponent(it.liga || '') }));
+      c, 'Ver la liga', { ruta: '#/ligas/' + encodeURIComponent(it.liga || '') }));
     }
     // la identidad de la historia es la de su publicación (`id` del muro, ver bot/muro.py); las cartas juntas, la de todas
     const id = 'm:' + g.map((o) => o.id || o.tipo + (o.t || '') + (o.quien || []).join(',')).join('+');
@@ -450,7 +452,7 @@ function historiasLiga(liga, mm) {
       <ul className="st-l">{hoyEv.slice(0, 5).map((e, i) => <li key={i}><b>{liga.dia(e.cuando).replace(/^hoy /, '')} · {siglaDe(e.sv)}</b>{limpio(e.nombre)}</li>)}
         {hoyLg.slice(0, Math.max(0, 6 - Math.min(hoyEv.length, 5))).map((x) => <li key={x.L.id}><b>{x.t ? liga.dia(x.t).replace(/^hoy /, '') + ' · ' : ''}{siglaDe(x.L.sv)} · LIGA</b>
           {x.L.n}{x.j ? ', jornada ' + x.j : ''}</li>)}</ul></>,
-    'hoy', hoyEv.length ? 'Ver Eventos' : 'Ver las ligas', { ruta: hoyEv.length ? '#/eventos' : '#/ranking/ligas' },
+    'hoy', hoyEv.length ? 'Ver Eventos' : 'Ver las ligas', { ruta: hoyEv.length ? '#/eventos' : '#/ligas' },
     'hoy:' + hoy + ':' + hoyEv.length + ':' + hoyLg.length));
   }
   // 🎯 los buscados del Most Wanted que siguen sueltos
@@ -1239,7 +1241,7 @@ function momentos(liga, vivoL) {
   liga.fechasHoy().slice(0, 2).forEach((x) => {
     const L = x.L;
     const fl = L.fl;
-    const ir = '#/ranking/ligas/' + encodeURIComponent(L.id);
+    const ir = '#/ligas/' + encodeURIComponent(L.id);
     const futuro = !!(x.t && utc(x.t) > liga.ahora);
     const n = limpio(L.n);
     const ya = x.juega ? (x.n === 1 ? 'Una batalla ya tiene veredicto' : x.n + ' batallas ya tienen veredicto')

@@ -1149,7 +1149,7 @@ export const TUTO_EV = new Set(['tour', 'tour_fin', 'salta0', 'salta1', 'salta2'
  * (web/src/App.jsx, `lg:secc`) y acá sólo se suma un número por sección y por día: nunca quién. Es lo que hace falta
  * para ordenar la tira de abajo por uso de verdad y no por intuición
  */
-export const SECC_EV = new Set(['inicio', 'eventos', 'ranking', 'publicaciones', 'tarjetas', 'pase', 'tienda', 'socios',
+export const SECC_EV = new Set(['inicio', 'eventos', 'ranking', 'publicaciones', 'tarjetas', 'ligas', 'pase', 'tienda', 'socios',
   'guia', 'perfil', 'servidor', 'crew', 'pais', 'cuenta', 'cambios',
   // 👆 y QUÉ SE TOCA EN EL INICIO (Dlx, 13/10/2026: «añadir eso de saber qué clickea la gente, y después tomar
   // decisiones así de drásticas»): `i-` cada bloque, `p-` cada puerta. Mismo trato: una vez por navegador y por día

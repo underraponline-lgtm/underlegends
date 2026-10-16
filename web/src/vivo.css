@@ -584,12 +584,7 @@ button.btn{background:transparent;cursor:pointer}
 .dv-caja-caras .dv-esc-cara{margin-left:0;width:28px;height:28px}
 .dv-caja-caras small{font:700 14px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
 @media (max-width: 520px){.dv-tabla.dv-tabla2 li{grid-template-columns:24px 28px minmax(0,1fr) auto}.dv-esc-cara{width:16px;height:16px;font-size:8px;margin-left:-5px;border-width:1.5px}.dv-tu-c b{font-size:19px}}
-/* 🏟️ las ligas de los servidores (12/10/2026): una pestaña por liga, su tabla y sus últimos resultados */
-.lg-tabs{display:flex;flex-wrap:wrap;gap:6px}
-.lg-tabs button{display:inline-flex;align-items:baseline;gap:6px;padding:7px 11px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);font:800 13px/1.1 Archivo,sans-serif;cursor:pointer}
-.lg-tabs button small{font:700 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;color:var(--gris)}
-.lg-tabs button.on{background:var(--tinta);color:var(--fondo)}
-.lg-tabs button.on small{color:var(--fondo)}
+/* 🏟️ las ligas de los servidores (12/10/2026): su tabla y sus últimos resultados */
 .lg-pj{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris);font-variant-numeric:tabular-nums}
 .lg-st{margin:10px 0 0;font:900 14px/1.1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.02em}
 .lg-ult{list-style:none;margin:0;padding:0;display:grid;gap:6px}
@@ -603,10 +598,6 @@ button.btn{background:transparent;cursor:pointer}
    próxima fecha (sólo si hay), y la tabla con el % de «¿quién gana?», las fechas y la nota. En el teléfono el costado va
    arriba, el flyer chico al lado de la cuenta atrás. `lgt-` (liga torneo): ninguna clase de estilo.css empieza así */
 .lgt{display:grid;gap:14px;grid-template-areas:"cab" "lado" "main"}
-.lgt-cab{grid-area:cab;display:flex;align-items:center;gap:12px;min-width:0}
-.lgt-cab .dv-gt{margin:0}
-.lgt-cab small{font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.02em;color:var(--gris)}
-.lgt-logo{width:44px;height:44px;flex:none;border-radius:50%;border:2px solid var(--linea);object-fit:cover}
 .lgt-lado{grid-area:lado;display:grid;grid-template-columns:minmax(0,132px) minmax(0,1fr);gap:12px;align-items:start;align-content:start;align-self:start;min-width:0}
 .lgt-lado > :only-child{grid-column:1 / -1}
 .lgt-main{grid-area:main;display:grid;gap:10px;min-width:0}
@@ -657,16 +648,148 @@ button.btn{background:transparent;cursor:pointer}
   .lgt-tabla.con-voto li{grid-template-columns:22px 28px minmax(0,1fr) auto 26px 60px;gap:7px}
   .lgt-tabla.con-voto .dv-p{min-width:0}
   .lgt-v{min-width:60px;padding:0 4px;font-size:12px}
-  /* en el teléfono las ligas van en una tira que se desliza: eran seis renglones de pestañas antes de la tabla */
-  .lgs .lg-tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 16px}
-  .lgs .lg-tabs::-webkit-scrollbar{display:none}
-  .lgs .lg-tabs button{flex:none}
 }
 @media (min-width: 900px){
   .app .lgt.con-lado{grid-template-columns:minmax(0,1fr) 300px;grid-template-areas:"cab cab" "main lado";column-gap:28px}
   .app .lgt-lado{grid-template-columns:minmax(0,1fr);position:sticky;top:70px}
   .app .lgt-prox b{font-size:32px}
 }
+/* 🏟️ LIGAS, SU PROPIA SECCIÓN (Dlx, 16/10/2026: «que cada liga tenga su propio perfil y que ligas tenga su propio
+   espacio aparte de ranking… y que esté bonito»). `lgh-` es la portada (`#/ligas`) y `lgp-` el perfil de cada liga
+   (`#/ligas/<id>`): ninguna clase de estilo.css empieza así. El torneo de adentro sigue siendo `lgt-`, sin su cabecera
+   (`sin-cab`): la cabecera ahora es el escenario */
+.lgt.sin-cab{grid-template-areas:"lado" "main"}
+.lgt-ley{margin:2px 0 0;display:flex;flex-wrap:wrap;gap:4px 14px;font:600 14px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.02em;color:var(--gris)}
+.lgt-ley b{font-weight:800;color:var(--tinta);margin-right:3px}
+/* la portada: los números de arriba, el abanico de flyers (sólo en la compu, como el de Tarjetas) */
+.lgh-num{width:100%;max-width:560px;margin-top:4px}
+.lgh-abanico{display:none}
+.lgh-falta{margin:0;font:700 16px/1.35 "Barlow Condensed",sans-serif;color:var(--magenta-tx)}
+.lgh-fil{margin-bottom:14px}
+/* cada liga: el flyer a sangre a la izquierda (o el escudo de su servidor sobre su color), y a la derecha cómo va, el
+   nombre, de dónde es y quién lidera. La tarjeta entera es el link; la sombra es el color de su servidor */
+.lgh-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.lgh-grid li{display:grid;min-width:0}
+.lgh-c{display:grid;grid-template-columns:100px minmax(0,1fr);gap:12px;border:2px solid var(--tinta);background:var(--fondo);color:var(--tinta);
+  text-decoration:none;box-shadow:4px 4px 0 var(--c);transition:transform .15s,box-shadow .15s;min-width:0}
+.lgh-c:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--c)}
+.lgh-c:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
+.lgh-img{display:block;position:relative;min-height:125px;overflow:hidden;background:var(--c);border-right:2px solid var(--tinta)}
+.lgh-img > img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+.lgh-sin{position:absolute;inset:0;display:grid;place-items:center}
+.lgh-sin img{width:64%;aspect-ratio:1;border-radius:50%;border:3px solid #F6F6F6;object-fit:cover;background:#030304}
+.lgh-tx{display:grid;align-content:start;gap:6px;padding:10px 12px 10px 0;min-width:0}
+.lgh-est{justify-self:start;padding:4px 6px 3px;border:1.5px solid var(--tinta);font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;white-space:nowrap}
+.lgh-est.lgx-prox{background:var(--magenta);border-color:var(--magenta);color:#FFFFFF}
+.lgh-est.lgx-juego{background:#29B298;border-color:#29B298;color:#030304}
+.lgh-est.lgx-quieta{border-style:dashed;border-color:var(--gris);color:var(--gris)}
+.lgh-n{font:900 17px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;overflow-wrap:anywhere;text-wrap:balance}
+.lgh-sv{display:flex;align-items:center;gap:6px;font:700 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:var(--gris)}
+.lgh-sv img{width:18px;height:18px;border-radius:50%;flex:none;object-fit:cover}
+.lgh-lider{display:flex;align-items:center;gap:7px;margin-top:2px;padding-top:8px;border-top:1.5px solid var(--linea);min-width:0}
+.lgh-cara{display:grid;place-items:center;width:26px;height:26px;flex:none;border-radius:50%;overflow:hidden;background:var(--caja)}
+.lgh-cara img{display:block;width:100%;height:100%;object-fit:cover}
+.lgh-cara.ini{font:900 12px/1 Archivo,sans-serif}
+.lgh-lider small{font:800 14px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+.lgh-lider b{flex:1;min-width:0;font:800 14px/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lgh-lider i{font:900 13px/1 Archivo,sans-serif;font-style:normal;white-space:nowrap;font-variant-numeric:tabular-nums}
+.lgh-c.lgx-quieta .lgh-img > img{filter:grayscale(.85)}
+/* tus ligas: tu puesto grande, con el color de su servidor al costado */
+.lgh-mias{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.lgh-mias a{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;padding:10px 12px;border:2px solid var(--tinta);
+  border-left:8px solid var(--c);background:var(--caja);color:var(--tinta);text-decoration:none}
+.lgh-pos{display:grid;justify-items:center;min-width:44px;font:900 26px/1 Archivo,sans-serif;font-stretch:115%}
+.lgh-pos small{font:700 13px/1.1 "Barlow Condensed",sans-serif;color:var(--gris)}
+.lgh-mt{display:grid;gap:3px;min-width:0}
+.lgh-mt b{font:900 16px/1.1 Archivo,sans-serif;text-transform:uppercase;overflow-wrap:anywhere}
+.lgh-mt small{font:700 14px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.02em;color:var(--gris)}
+/* las próximas fechas, cada una con su cuenta atrás */
+.lgh-proxs{display:grid;gap:14px}
+.lgh-px{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;min-width:0}
+.lgh-px > :only-child{grid-column:1 / -1}
+.lgh-px-fl{display:block;width:92px;border:2px solid var(--tinta)}
+.lgh-px-fl img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
+.lgh-px-d{display:grid;gap:8px;align-content:start;min-width:0}
+.lgh-px-n{display:flex;align-items:center;gap:8px;font:900 15px/1.1 Archivo,sans-serif;text-transform:uppercase;color:var(--tinta);text-decoration:none}
+.lgh-px-n img{width:26px;height:26px;flex:none;border-radius:50%}
+/* lo último que pasó: un veredicto por liga */
+.lgh-res{list-style:none;margin:0;padding:0;display:grid;border-top:2px solid var(--linea)}
+.lgh-res li{display:grid;gap:4px;padding:10px 2px;border-bottom:2px solid var(--linea);min-width:0}
+.lgh-res-l{justify-self:start;display:inline-flex;align-items:center;gap:6px;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--gris);text-decoration:none}
+.lgh-res-l img{width:18px;height:18px;flex:none;border-radius:50%}
+.lgh-res-t{font:600 15px/1.35 Archivo,sans-serif;overflow-wrap:anywhere}
+.lgh-res-t a,.lgh-res-t span{color:inherit}
+.lgh-res-t .lg-g{font-weight:900}
+.lgh-res small{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--gris)}
+/* cómo funcionan */
+.lgh-como{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.lgh-como li{display:grid;gap:5px;align-content:start;padding:12px 14px;border:2px solid var(--linea);background:var(--caja)}
+.lgh-como li > b{font:900 15px/1.1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+.lgh-como span{font:500 14px/1.45 Archivo,sans-serif;max-width:60ch}
+/* el perfil de cada liga: volver a todas, la cabecera del servidor (la de su perfil, `svp`) y el podio con las caras */
+.lgp-miga{padding:14px 16px 0}
+.lgp-miga a{display:inline-flex;align-items:center;gap:6px;min-height:32px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--esc-gris);text-decoration:none}
+.lgp-miga a:hover{color:var(--esc-tinta)}
+.lgp-miga .ico{transform:rotate(180deg)}
+.svp.lgp-cab{padding-top:12px}
+.lgp-p0{font-size:15px}
+.lgp-p0 a{color:inherit;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+.lgp-est{color:var(--esc-tinta);font-weight:700}
+.lgp-num{grid-template-columns:repeat(3,minmax(0,1fr));width:100%}
+.lgp-podio{list-style:none;margin:0;padding:0 16px 24px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:10px}
+.lgp-p{display:grid;justify-items:center;gap:6px;min-width:0;padding:12px 6px;text-align:center;border:2px solid #F6F6F6;background:rgba(3,3,4,.72);color:#F6F6F6}
+.lgp-p.p1{order:2;padding-block:18px 14px;box-shadow:5px 5px 0 var(--mo-c,var(--magenta))}
+.lgp-p.p2{order:1}
+.lgp-p.p3{order:3}
+.lgp-p.yo{outline:3px solid #29B298;outline-offset:2px}
+.lgp-cara{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;overflow:hidden;border:2px solid #F6F6F6;background:#2A2A2C;color:#F6F6F6}
+.lgp-cara.ini{font:900 20px/1 Archivo,sans-serif}
+.lgp-p.p1 .lgp-cara{width:68px;height:68px}
+.lgp-cara img{display:block;width:100%;height:100%;object-fit:cover}
+.lgp-pn{font:900 20px/1 Archivo,sans-serif;font-stretch:120%}
+.lgp-p.p1 .lgp-pn{font-size:26px}
+.lgp-nom{max-width:100%;font:800 14px/1.15 Archivo,sans-serif;color:inherit;overflow-wrap:anywhere;text-decoration:none}
+a.lgp-nom:hover{text-decoration:underline}
+.lgp-p small{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:#A5A5A0}
+/* las otras ligas, las de su servidor primero */
+.lgp-otras{display:flex;flex-wrap:wrap;gap:10px}
+.lgp-otras a{display:flex;align-items:center;gap:8px;min-width:0;padding:8px 12px;border:2px solid var(--linea);box-shadow:4px 4px 0 var(--c);color:var(--tinta);text-decoration:none}
+.lgp-otras img{width:28px;height:28px;flex:none;border-radius:50%}
+.lgp-otras b{font:900 14px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.lgp-otras small{font:700 14px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+@media (min-width: 640px){
+  .lgh-grid,.lgh-mias,.lgh-como{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .lgh-proxs{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+}
+@media (min-width: 900px){
+  .app .lgt.sin-cab.con-lado{grid-template-areas:"main lado"}
+  .app .lgh-num{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .app .lgh-abanico{display:flex;align-items:flex-end;list-style:none;margin:0;padding:0 18px 6px}
+  .app .lgh-abanico li{flex:none;width:170px;position:relative;filter:drop-shadow(0 14px 22px rgba(0,0,0,.6))}
+  .app .lgh-abanico li.izq{transform:rotate(-7deg) translate(30px,14px);z-index:1}
+  .app .lgh-abanico li.centro{width:200px;z-index:2}
+  .app .lgh-abanico li.der{transform:rotate(7deg) translate(-30px,14px);z-index:1}
+  .app .lgh-abanico li:hover{z-index:3}
+  .app .lgh-abanico a{display:block;border:3px solid #F6F6F6;background:#030304}
+  .app .lgh-abanico img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}
+  .app .lgh-c{grid-template-columns:112px minmax(0,1fr)}
+  .app .lgh-img{min-height:140px}
+  .app .lgh-res{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px}
+  .app .lgh-fila.dos{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:28px;padding:0 var(--gut)}
+  .app .lgh-fila.dos > .sec{padding-inline:0}
+  .app .lgh-fila.dos .lgh-res,.app .lgh-fila.dos .lgh-proxs{grid-template-columns:minmax(0,1fr)}
+  .app .lgh-px-fl{width:120px}
+  .app .lgp-miga{padding:22px var(--gut) 0}
+  .app .svp.lgp-cab{padding-top:14px}
+  .app .lgp-num{grid-template-columns:repeat(3,minmax(0,110px))}
+  .app .lgp-podio{grid-template-columns:repeat(3,minmax(0,210px));justify-content:start;gap:14px;padding:0 var(--gut) 34px}
+  .app .lgp-cara{width:64px;height:64px}
+  .app .lgp-p.p1 .lgp-cara{width:84px;height:84px}
+}
+@media (min-width: 1100px){.app .lgh-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (prefers-reduced-motion: reduce){.lgh-c{transition:none}.lgh-c:hover{transform:none}}
 /* 🖼️ el flyer de una liga en Publicaciones, en las historias y en el escenario del Inicio (14/10/2026) */
 .app .pub.flyer{grid-template-columns:108px minmax(0,1fr)}
 .pub-flyer{display:block;width:100%;border:2px solid var(--linea)}

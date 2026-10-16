@@ -685,7 +685,8 @@ la planilla.
 
 Nueve vistas con menú lateral en escritorio y barra de abajo en teléfono
 —que **se desliza de costado**: Dlx, 28/09/2026—, en `/freestyle-rap/…` (ver abajo):
-Inicio, Ranking, Tarjetas, **Pase** (próximamente), **Tienda** (los Puntos de
+Inicio, Ranking, Tarjetas, **Ligas** (las de los servidores, cada una con su perfil en `#/ligas/<id>`;
+hasta el 16/10/2026 eran una pestaña del Ranking, y `#/ranking/ligas` lleva ahí), **Pase** (próximamente), **Tienda** (los Puntos de
 Tienda y el precio por cabeza), **Eventos** (el calendario y la campana;
 `#/avisos` es un alias que baja hasta ella), **Publicaciones** (el muro
 de la Liga y los anuncios de todos los servidores, `bot/muro.py`), **Socios**
