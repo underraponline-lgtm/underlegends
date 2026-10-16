@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-16T16:25:04+00:00",
+ "cuando": "2026-10-16T16:55:03+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -408,7 +408,7 @@
    "cupo_total": 24,
    "rango": "PLATA 3",
    "modalidad": "1v1",
-   "horario": "EN 30 MINUTOS",
+   "horario": "EN 1HORA",
    "fecha": "",
    "premios": "Respeto",
    "staff": {
@@ -421,7 +421,7 @@
      "l3wito"
     ],
     "dj": [
-     "l3wito"
+     "zaik0009"
     ]
    },
    "autor": "Flennzs | ⛩️",
@@ -2834,10 +2834,10 @@
    "cuando": "2026-10-13T01:42:03",
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
-   "organizador": "Mohammed El-Erian",
+   "organizador": "Erian 恵理久",
    "orgs": [
     {
-     "n": "Mohammed El-Erian",
+     "n": "Erian 恵理久",
      "id": "1055474244089286706"
     }
    ],
@@ -2852,16 +2852,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "Mohammed El-Erian"
+     "Erian 恵理久"
     ],
     "host": [
-     "Mohammed El-Erian"
+     "Erian 恵理久"
     ],
     "dj": [
-     "Mohammed El-Erian"
+     "Erian 恵理久"
     ]
    },
-   "autor": "Mohammed El-Erian",
+   "autor": "Erian 恵理久",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -3328,10 +3328,10 @@
    "cuando": "2026-09-09T01:19:39",
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
-   "organizador": "Mohammed El-Erian",
+   "organizador": "Erian 恵理久",
    "orgs": [
     {
-     "n": "Mohammed El-Erian",
+     "n": "Erian 恵理久",
      "id": "1055474244089286706"
     }
    ],
@@ -3346,16 +3346,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "Mohammed El-Erian"
+     "Erian 恵理久"
     ],
     "host": [
-     "Mohammed El-Erian"
+     "Erian 恵理久"
     ],
     "dj": [
-     "Mohammed El-Erian"
+     "Erian 恵理久"
     ]
    },
-   "autor": "Mohammed El-Erian",
+   "autor": "Erian 恵理久",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -3366,10 +3366,10 @@
    "cuando": "2026-09-08T19:39:12",
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
-   "organizador": "Mohammed El-Erian",
+   "organizador": "Erian 恵理久",
    "orgs": [
     {
-     "n": "Mohammed El-Erian",
+     "n": "Erian 恵理久",
      "id": "1055474244089286706"
     }
    ],
@@ -3384,16 +3384,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "Mohammed El-Erian"
+     "Erian 恵理久"
     ],
     "host": [
-     "Mohammed El-Erian"
+     "Erian 恵理久"
     ],
     "dj": [
-     "Mohammed El-Erian"
+     "Erian 恵理久"
     ]
    },
-   "autor": "Mohammed El-Erian",
+   "autor": "Erian 恵理久",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -3404,10 +3404,10 @@
    "cuando": "2026-09-08T04:31:16",
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
-   "organizador": "Mohammed El-Erian",
+   "organizador": "Erian 恵理久",
    "orgs": [
     {
-     "n": "Mohammed El-Erian",
+     "n": "Erian 恵理久",
      "id": "1055474244089286706"
     }
    ],
@@ -3422,16 +3422,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "Mohammed El-Erian"
+     "Erian 恵理久"
     ],
     "host": [
-     "Mohammed El-Erian"
+     "Erian 恵理久"
     ],
     "dj": [
-     "Mohammed El-Erian"
+     "Erian 恵理久"
     ]
    },
-   "autor": "Mohammed El-Erian",
+   "autor": "Erian 恵理久",
    "categoria_id": "1511963280128868504"
   },
   {
@@ -5856,6 +5856,123 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "agus🇦🇷",
+   "quien": "agusdcab",
+   "discord_id": "494965289042182164",
+   "msg_id": "1560695418868998225",
+   "cuando": "2026-10-16T16:46:24"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "andy🇵🇪",
+   "quien": "andy._.2321",
+   "discord_id": "853130894663745549",
+   "msg_id": "1560693245388783677",
+   "cuando": "2026-10-16T16:37:45"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Under🇨🇴",
+   "quien": "ander074883",
+   "discord_id": "1026746712779395113",
+   "msg_id": "1560693197242634442",
+   "cuando": "2026-10-16T16:37:34"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lvel 🇻🇪",
+   "quien": "soycoma__42587",
+   "discord_id": "1241407042195816459",
+   "msg_id": "1560692731875950754",
+   "cuando": "2026-10-16T16:35:43"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Trot🇪🇸",
+   "quien": "eresmatrot",
+   "discord_id": "1347663033949880360",
+   "msg_id": "1560692481639587991",
+   "cuando": "2026-10-16T16:34:43"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lvel 🇻🇪",
+   "quien": "soycoma__42587",
+   "discord_id": "1241407042195816459",
+   "msg_id": "1560692459883724871",
+   "cuando": "2026-10-16T16:34:38"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1560692447137374249",
+   "cuando": "2026-10-16T16:34:35"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Nemi🇦🇷",
+   "quien": "nemmii_as_26264",
+   "discord_id": "1458311513667276830",
+   "msg_id": "1560691802254872629",
+   "cuando": "2026-10-16T16:32:01"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Assuan 🇨🇱",
+   "quien": ".assuan._08335",
+   "discord_id": "1266557884058046507",
+   "msg_id": "1560691492765438025",
+   "cuando": "2026-10-16T16:30:48"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "1200 🇰🇷",
+   "quien": "dreamero",
+   "discord_id": "1395903355909570633",
+   "msg_id": "1560690540713091243",
+   "cuando": "2026-10-16T16:27:01"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Shisui 🇯🇵",
+   "quien": "funhorlavild",
+   "discord_id": "1426686911908675628",
+   "msg_id": "1560690466587148330",
+   "cuando": "2026-10-16T16:26:43"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "gus 🇺🇾  (primera)",
+   "quien": "agusdema",
+   "discord_id": "989640104765177956",
+   "msg_id": "1560690147845079071",
+   "cuando": "2026-10-16T16:25:27"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "erian 🇹🇩",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1560690123228844338",
+   "cuando": "2026-10-16T16:25:21"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
