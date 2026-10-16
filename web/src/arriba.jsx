@@ -148,8 +148,30 @@ export function CaraDc({ dc, cls = 'cara' }) {
   return <span className={cls + ' ini'}>{(limpio(dc && dc.n).slice(0, 1) || '?').toUpperCase()}</span>;
 }
 
+// 🔎 EL BUSCADOR EN EL CELULAR, CON SU LUPA ARRIBA (Dlx, 16/10/2026: «agrega el ícono de búsqueda para celulares»): hasta
+// ahora vivía sólo adentro del menú ☰. La lupa abre el mismo buscador solo, con el teclado listo
+function BuscarCelu({ liga, onCerrar }) {
+  const caja = useRef(null);
+  useEffect(() => {
+    const t = setTimeout(() => { const i = caja.current && caja.current.querySelector('input'); if (i) i.focus(); }, 30);
+    const esc = (e) => { if (e.key === 'Escape') onCerrar(); };
+    window.addEventListener('keydown', esc);
+    return () => { clearTimeout(t); window.removeEventListener('keydown', esc); };
+  }, [onCerrar]);
+  return (
+    <div className="x-menu x-busca-celu" onClick={(e) => { if (e.target === e.currentTarget) onCerrar(); }}>
+      <div className="x-caja" role="dialog" aria-modal="true" aria-label="Buscar" ref={caja}>
+        <div className="x-caja-cab"><b>BUSCAR</b>
+          <button className="btn-ico x-cerrar" type="button" aria-label="Cerrar el buscador" onClick={onCerrar}><Ico n="cerrar" t={22} /></button></div>
+        <div className="x-busca"><Buscar liga={liga} onIr={onCerrar} /></div>
+      </div>
+    </div>
+  );
+}
+
 export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
   const yo = liga.yo;
+  const [busca, setBusca] = useState(false);
   const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} /> : (dc ? <CaraDc dc={dc} /> : null);
   const nombre = yo ? limpio(yo.n) : (dc ? limpio(dc.n) : '');
   // 🔥 tu racha diaria, al lado de tu cuenta (sólo si entraste con Discord: pedirla cuenta el día)
@@ -163,6 +185,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
       </nav>
       <div className="cab-der">
         <Buscar liga={liga} />
+        <button className="btn-ico lupa-b" type="button" aria-label="Buscar" onClick={() => setBusca(true)}><Ico n="buscar" t={20} /></button>
         <Campanita liga={liga} />
         {/* Ajustes, con su engranaje (Dlx, 01/10/2026: «al costado de la campanita y la cuenta»). Y en el celular, en
             el lugar de tu cuenta, que vuelve abajo como «Yo» (Dlx, 02/10/2026: «el engranaje en vez de la cuenta. En
@@ -176,6 +199,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
         )}
         <button className="btn-ico hamb" type="button" aria-label="Menú" onClick={onMenu}><Ico n="menu" t={22} /></button>
       </div>
+      {busca ? <BuscarCelu liga={liga} onCerrar={() => setBusca(false)} /> : null}
     </header>
   );
 }

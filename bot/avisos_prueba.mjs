@@ -911,6 +911,13 @@ const ok = (cond, que, det) => {
     ok(A.claveMedida('redes:konan') === 'redes:*' && A.claveMedida('pnick:123:456') === 'pnick:*'
       && A.claveMedida('web:lobby') === 'web:lobby' && A.claveMedida('meta') === 'meta' && A.claveMedida('cualquier-cosa') === 'otra',
     'una clave de alguien, aunque sea nueva, sale sólo por su prefijo (revisión del 05/10: `redes:` y `pnick:` se colaban)');
+    // 👆 los toques de toda la página (16/10/2026): se suman por día, y lo que no tiene la forma no entra
+    o.clics({ c: { 'ranking:→ perfil': 3, 'inicio:ver llave': 1, 'x:<b>': 5 } });
+    o.clics({ c: { 'ranking:→ perfil': 2, 'tienda:comprar': 999 } });
+    const cr = o.clicsResumen();
+    ok(cr.n['ranking:→ perfil'][0] === 5 && cr.n['inicio:ver llave'][0] === 1 && !cr.n['x:<b>'] && !cr.n['tienda:comprar']
+      && A.claveClic('Ranking:x') === '' && A.claveClic('eventos:inscribite ya') === 'eventos:inscribite ya',
+    'los toques se suman por sección y etiqueta; una etiqueta rara o una cantidad imposible no entra', JSON.stringify(cr.n));
     o.medidasGuardar(Date.now(), true);
     ok((o.leer('medidas') || {}).kv && o.medidasVer().kv['cfg:*'] === md.kv['cfg:*'],
       'guardar lo medido no lo cuenta dos veces');

@@ -104,6 +104,8 @@ const AVISOS = {
   '/api/avisos/tutorial': 'POST',
   // 📊 qué secciones se abren (12/10/2026): una por navegador y por día. Ver `seccion()` en bot/avisos.js
   '/api/avisos/seccion': 'POST',
+  // 👆 qué se toca en toda la página (16/10/2026), de a tandas. Ver `clics()` en bot/avisos.js
+  '/api/avisos/clics': 'POST',
   // 🔒 el Dashboard del dueño: el Worker comprueba que es Dlx (ver `/avisos/dueno` en bot/avisos.js)
   '/api/avisos/dueno': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx)

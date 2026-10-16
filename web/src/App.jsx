@@ -32,6 +32,56 @@ function queToco(el) {
   if (s) return 'i-' + s.id;
   return el.closest('.escena') ? 'i-envivo' : '';
 }
+// 👆 QUÉ SE TOCA EN TODA LA PÁGINA (Dlx, 16/10/2026: «asegurate que todo esté trackeado, así vemos qué cosas se
+// presionan más»). Cada toque de un botón o un link, en cualquier sección, como «sección:etiqueta»: el texto del botón
+// sin números ni emojis, o adónde lleva el link. Se juntan y salen de a tandas (cada 15 s o al irse), así un toque no
+// es un pedido. Nunca quién: el Worker sólo suma (`clics()` en bot/avisos.js)
+const IR_A = { r: 'perfil', sv: 'servidor', crew: 'crew', pais: 'país', llave: 'llave', evento: 'evento' };
+export function etiquetaClic(el) {
+  if (!el || !el.getAttribute) return '';
+  const dc = el.getAttribute('data-clic');
+  if (dc) return dc.slice(0, 40);
+  const href = el.getAttribute('href') || '';
+  if (href && el.tagName === 'A') {
+    if (/^https?:\/\//i.test(href) && !/underlegends\.pages\.dev/i.test(href)) {
+      try { return '→ ' + new URL(href).hostname.replace(/^www\./, '').slice(0, 30); } catch (e) { return '→ afuera'; }
+    }
+    const seg = href.replace(/^https?:\/\/[^/]+/, '').replace(/^\/?#?\/?(freestyle-rap\/)?/, '').split(/[/?#]/)[0];
+    return '→ ' + (IR_A[seg] || seg || 'inicio').slice(0, 30);
+  }
+  const t = String(el.getAttribute('aria-label') || el.textContent || '').replace(/\d+([.,]\d+)*/g, '#')
+    .replace(/[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\uFE0F\u200D]/gu, '').replace(/\s+/g, ' ').trim().toLowerCase();
+  const limpio = t.replace(/[^\p{L}\p{N} #·.,¿?¡!'()/&+_→«»-]/gu, '').trim().slice(0, 40);
+  if (limpio && /\p{L}/u.test(limpio)) return limpio;
+  const cl = String(el.getAttribute('class') || '').split(/\s+/)[0];
+  return cl ? '.' + cl.replace(/[^a-z0-9-]/gi, '').slice(0, 30) : '';
+}
+const _CLICS = { c: {}, t: null };
+function mandarClics() {
+  if (_CLICS.t) { clearTimeout(_CLICS.t); _CLICS.t = null; }
+  const c = _CLICS.c;
+  _CLICS.c = {};
+  if (!Object.keys(c).length) return;
+  const cuerpo = JSON.stringify({ c });
+  try {
+    if (navigator.sendBeacon && navigator.sendBeacon('/api/avisos/clics', new Blob([cuerpo], { type: 'application/json' }))) return;
+  } catch (e) { /* sin beacon, con fetch */ }
+  fetch('/api/avisos/clics', { method: 'POST', headers: { 'content-type': 'application/json' }, body: cuerpo, keepalive: true })
+    .catch(() => {});
+}
+export function contarClic(seccion, el) {
+  const e = etiquetaClic(el);
+  const s = String(seccion || 'otra').replace(/[^a-z0-9-]/gi, '').toLowerCase().slice(0, 20) || 'otra';
+  if (!e) return;
+  const k = s + ':' + e;
+  if (!_CLICS.c[k] && Object.keys(_CLICS.c).length >= 40) mandarClics();
+  _CLICS.c[k] = Math.min(200, (_CLICS.c[k] || 0) + 1);
+  if (!_CLICS.t) _CLICS.t = setTimeout(mandarClics, 15000);
+}
+if (typeof window !== 'undefined') {
+  window.addEventListener('pagehide', mandarClics);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') mandarClics(); });
+}
 /** Anota una vez por día y por navegador (`lg:secc`, como las secciones). Lo que no está en `SECC` no se manda */
 function anotarUnaVez(k) {
   if (!SECC.has(k)) return;
@@ -399,6 +449,16 @@ export default function App() {
   // número: nunca quién. La lista cerrada es `SECC_EV` de bot/avisos.js; lo que no está ahí no se manda
   const seccion = sv ? 'servidor' : pagina === '' ? 'inicio' : pagina === 'r' ? 'perfil' : paginaMenu;
   useEffect(() => { anotarUnaVez(seccion); }, [seccion]);
+  // 👆 Y TODO LO QUE SE TOCA, EN CUALQUIER SECCIÓN (16/10/2026): ver `contarClic()`
+  useEffect(() => {
+    const f = (e) => {
+      const t = e.composedPath ? e.composedPath()[0] : e.target;
+      const el = t && t.closest ? t.closest('a, button, [role="button"], [role="tab"], summary, select') : null;
+      if (el) contarClic(seccion, el);
+    };
+    window.addEventListener('click', f, true);
+    return () => window.removeEventListener('click', f, true);
+  }, [seccion]);
   // 👆 los toques del Inicio: sólo lo que se toca (un link, un botón, una burbuja), y sólo en el Inicio
   // ⚠️ en la ventana y no en `raiz`: al montar, el Inicio todavía no está dibujado (espera los datos) y el efecto no
   // vuelve a correr. El toque llega del shadow root, así que lo tocado es `composedPath()[0]`, no `e.target`

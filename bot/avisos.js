@@ -1156,6 +1156,19 @@ export const SECC_EV = new Set(['inicio', 'eventos', 'ranking', 'publicaciones',
   'i-historias', 'i-envivo', 'i-semana', 'i-ira', 'i-fechas', 'i-sebusca', 'i-noticias', 'i-encuestas', 'i-raperos',
   'i-panel', 'i-merch', 'i-numeros', 'p-eventos', 'p-ranking', 'p-mw', 'p-tarjetas', 'p-pase', 'p-tienda']);
 
+/**
+ * 👆 QUÉ SE TOCA EN TODA LA PÁGINA (Dlx, 16/10/2026: «asegurate que todo esté trackeado, así vemos qué cosas se
+ * presionan más»). Cada toque de un botón o un link llega como «sección:etiqueta» —`ranking:ver llave`,
+ * `inicio:→ perfil`— y acá se suma por día, nunca quién. La etiqueta la arma la página (`etiquetaClic()` de
+ * web/src/App.jsx): el texto del botón sin números ni emojis, o adónde lleva el link. Esto valida la forma.
+ */
+export function claveClic(k) {
+  const s = String(k || '');
+  return s.length <= 64 && /^[a-z0-9-]{1,20}:[\p{L}\p{N} #·.,¿?¡!'()\/&+_→«»-]{1,40}$/u.test(s) ? s : '';
+}
+/** cuántas etiquetas distintas por día, como mucho: más que eso es ruido o alguien jugando con la ruta */
+export const CLICS_MAX_K = 1500;
+
 /** 📣 La clave de un organizador: sin la arroba, en minúsculas y sólo letras y números (`latino()` para las de fantasía). */
 export function claveOrg(nombre) {
   return latino(String(nombre || '').replace(/^[@!\s]+/, '')).toLowerCase().replace(/[\u0300-\u036f]/g, '')
@@ -2276,6 +2289,8 @@ const RUTAS = {
   '/avisos/tutorial': 'POST',
   // 📊 qué secciones se abren (12/10/2026): una por navegador y por día, sin nada de nadie. Ver `seccion()` del objeto
   '/avisos/seccion': 'POST',
+  // 👆 qué se toca en toda la página (16/10/2026): la sección y el nombre del botón, sumados, sin nada de nadie
+  '/avisos/clics': 'POST',
   // 🔒 el Dashboard del dueño (04/10/2026): ver `/avisos/dueno` en `rutaAvisos()`
   '/avisos/dueno': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx) y los ajustes para el ciclo (con su clave)
@@ -3691,6 +3706,20 @@ export async function rutaAvisos(req, env, ruta) {
     return elObjeto(env).fetch('https://avisos/seccion', { method: 'POST', body: JSON.stringify({ ev }),
       headers: { 'content-type': 'application/json' } });
   }
+  // 👆 los toques de un rato de un navegador: `{c: {"sección:etiqueta": veces}}`, de a tandas. Sólo números
+  if (ruta === '/avisos/clics') {
+    const crudo = await req.text();
+    let d = null;
+    try { d = crudo.length <= 4000 ? JSON.parse(crudo) : null; } catch (e) { d = null; }
+    const c = {};
+    for (const [k, v] of Object.entries((d && d.c) || {}).slice(0, 40)) {
+      const kk = claveClic(k);
+      if (kk && Number.isInteger(v) && v >= 1 && v <= 200) c[kk] = v;
+    }
+    if (!Object.keys(c).length) return json({ error: 'faltan datos' }, 400);
+    return elObjeto(env).fetch('https://avisos/clics', { method: 'POST', body: JSON.stringify({ c }),
+      headers: { 'content-type': 'application/json' } });
+  }
   // 📊 una visita sin cuenta: no lleva nada de nadie, sólo suma (ver `visita()` del objeto)
   if (ruta === '/avisos/visita') return elObjeto(env).fetch('https://avisos/visita', { method: 'POST', body: '{}', 
     headers: { 'content-type': 'application/json' } });
@@ -4589,6 +4618,9 @@ export class Avisos {
       // 📊 y qué secciones se abren (12/10/2026): cuántos navegadores abrieron cada una, por día. Sólo números
       this.sql.exec('CREATE TABLE IF NOT EXISTS secciones (dia TEXT NOT NULL, s TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
         'PRIMARY KEY (dia, s)) WITHOUT ROWID');
+      // 👆 y qué se toca en toda la página (16/10/2026): la sección y la etiqueta del botón, sumadas por día
+      this.sql.exec('CREATE TABLE IF NOT EXISTS clics (dia TEXT NOT NULL, k TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
+        'PRIMARY KEY (dia, k)) WITHOUT ROWID');
       // 🔥 LA RACHA DIARIA Y LOS NIVELES (04/10/2026): qué días contó cada uno (`activo`: el bot, la página con su
       // cuenta o un evento jugado; el día, nunca la hora) y, de los que jugaron, su perfil y cuántos eventos
       // (`jugo_temp`, por temporada, que manda el ciclo). Ver `diaActivo()`, `rachaDe()` y `bot/racha.py`
@@ -4984,6 +5016,7 @@ export class Avisos {
       // directo y no pasaban por acá; ahora `avisos_prueba.mjs` entra por `fetch()`, como la página
       if (ruta === '/tutorial') return this.tutorial(d);
       if (ruta === '/seccion') return this.seccion(d);
+      if (ruta === '/clics') return this.clics(d);
       if (ruta === '/dueno') {
         const p = this.panelDueno(d);
         // 🔐 Asistente y Moderador: sólo lo suyo, sin lo que cuesta (lo en vivo, GitHub, KV)
@@ -5307,6 +5340,7 @@ export class Avisos {
       this.sql.exec('DELETE FROM visitas WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM tutorial WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM secciones WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
+      this.sql.exec('DELETE FROM clics WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       // 🔴 y los dispositivos que nunca recibieron nada y fallaron cinco veces (revisión del 03/10/2026): sólo 404 y
       // 410 borran al momento (ver `MUERTA`), así que uno inventado con un servicio que no resuelve quedaba para
       // siempre ocupando lugar en el tope y recibiendo cada evento. Uno de verdad recibe la de prueba al anotarse
@@ -9833,6 +9867,35 @@ export class Avisos {
     return json({ ok: true });
   }
 
+  /** 👆 Los toques de un navegador (ver `claveClic()`): se suman por día; una etiqueta nueva entra sólo si el día
+   *  todavía no tiene `CLICS_MAX_K` distintas */
+  clics(d) {
+    const dia = diaET();
+    let distintas = (this.sql.exec('SELECT COUNT(*) AS n FROM clics WHERE dia = ?', dia).toArray()[0] || {}).n || 0;
+    for (const [k, v] of Object.entries((d && d.c) || {}).slice(0, 40)) {
+      const kk = claveClic(k);
+      if (!kk || !Number.isInteger(v) || v < 1 || v > 200) continue;
+      const ya = this.sql.exec('SELECT n FROM clics WHERE dia = ? AND k = ?', dia, kk).toArray()[0];
+      if (!ya && distintas >= CLICS_MAX_K) continue;
+      if (!ya) distintas++;
+      this.sql.exec('INSERT INTO clics (dia, k, n) VALUES (?, ?, ?) ON CONFLICT(dia, k) DO UPDATE SET n = n + excluded.n ' +
+        'WHERE n < 1000000', dia, kk, v);
+    }
+    return json({ ok: true });
+  }
+
+  /** 👆 Lo más tocado de los últimos 7 días, con los 7 anteriores al lado: `{k: [estos7, anteriores7]}` (las 80 más) */
+  clicsResumen() {
+    const desde = (n) => diaET(Date.now() - n * DIA_MS);
+    const out = {};
+    for (const [i, a, b] of [[0, 7, 0], [1, 14, 7]]) {
+      for (const f of this.sql.exec('SELECT k, SUM(n) AS n FROM clics WHERE dia > ? AND dia <= ? GROUP BY k',
+        desde(a), desde(b)).toArray()) (out[f.k] = out[f.k] || [0, 0])[i] = f.n;
+    }
+    const top = Object.entries(out).sort((x, y) => y[1][0] - x[1][0] || y[1][1] - x[1][1]).slice(0, 80);
+    return { n: Object.fromEntries(top), desde: (this.sql.exec('SELECT MIN(dia) AS d FROM clics').toArray()[0] || {}).d || null };
+  }
+
   /** 📊 Las secciones de los últimos 7 días y de los 7 anteriores, sumadas: `{s: [estos7, anteriores7]}`, y desde
    *  cuándo se cuenta */
   seccionesResumen() {
@@ -9931,6 +9994,7 @@ export class Avisos {
       uso: this.usoResumen(),
       tutorial: this.tutorialResumen(),
       secciones: this.seccionesResumen(),
+      clics: this.clicsResumen(),
       ajustes: this.ajustes(),
       // 🕓 los últimos cambios de ajustes, con lo que había antes (ver `ajuste()`)
       ajustes_hist: this.leer('ajustes_hist') || [],

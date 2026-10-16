@@ -222,6 +222,20 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 /* la cabecera del celular con tu cuenta: tres botones de 40 y el nombre en dos renglones, no en cuatro */
 @media (max-width: 899.98px){.app .cab{gap:10px}.app .cab-der{gap:6px}.app .cab .btn-ico{width:40px;height:40px}.app .marca .lockup b{white-space:nowrap}}
 @media (max-width: 420px){.app .marca{font-size:15px;gap:8px}.app .marca img{width:36px;height:36px}}
+/* 🔎 la lupa del celular (16/10/2026): sólo donde el buscador de arriba no entra. Y la marca de la izquierda, más chica
+   en el celular (Dlx: «hacer más pequeño en celulares eso de la izquierda de Discord Rap en Español… para que quede
+   bien»): con la lupa son cuatro íconos a la derecha, y a 360 px el nombre se montaba sobre ellos */
+.cab .lupa-b{display:none}
+@media (max-width: 899.98px){.app .cab .lupa-b{display:inline-flex}}
+@media (max-width: 599.98px){
+  .app .cab{gap:8px}.app .cab-der{gap:2px}.app .cab .btn-ico{width:36px;height:36px}
+  .app .marca{font-size:12.5px;gap:7px;min-width:0}.app .marca img{width:30px;height:30px}
+  .app .marca small{font-size:12px;margin-top:3px}
+}
+@media (max-width: 359.98px){.app .marca .lockup{display:none}}
+.x-busca-celu .x-caja{width:min(420px,100%);border-left:0}
+/* ⚠️ vive adentro de la cabecera, donde `.cab .buscar-w` está escondido en el celular */
+.app .cab .x-busca-celu .buscar-w{display:block}
 /* en la computadora grande «todo se ve muy chico» (Dlx, 30/09/2026: «C»): la página entera, más grande, con la
    misma escala para todo —letras, cartas, la llave, los botones—. Con zoom y no letra por letra: agrandar sólo las
    letras rompía cajas medidas en px (la llave, las fichas de la Tira). Los cortes miran el ancho de la pantalla */
@@ -958,8 +972,14 @@ button.mo-yt{display:block;width:100%;padding:0;cursor:pointer;font:inherit;colo
 button.mo-yt:hover .mo-play,button.mo-yt:focus-visible .mo-play{background:#F6F6F6;color:#0D0D0F}
 button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .vid-fondo{position:fixed;inset:0;z-index:1000;background:rgba(6,6,8,.88);display:grid;place-items:center;
+  /* ⚠️ LA COLUMNA NO CRECE CON EL CONTENIDO (16/10/2026, Dlx: «arreglá el reproductor de videos en el celular, no
+     alcanza el tamaño»): con una sola columna automática, el título en una línea la estiraba al largo del texto, y a
+     360 px la ventana medía 731 —el video cortado y la ✕ afuera de la pantalla— */
+  grid-template-columns:minmax(0,1fr);
   padding:max(16px,env(safe-area-inset-top,0px)) 16px max(16px,env(safe-area-inset-bottom,0px))}
-.vid-caja{width:min(1100px,100%);display:grid;gap:10px}
+/* y con el celu acostado, el video entra de alto: el ancho sale del alto que queda (el título y los bordes, ~110 px) */
+.vid-caja{width:min(1100px,100%,calc((100dvh - 110px) * 16 / 9));min-width:0;justify-self:center;display:grid;
+  grid-template-columns:minmax(0,1fr);gap:10px}
 .vid-cab{display:flex;align-items:center;gap:12px;color:#F6F6F6}
 .vid-t{flex:1;min-width:0;font:900 clamp(15px,2vw,20px)/1.15 Archivo,sans-serif;text-transform:uppercase;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

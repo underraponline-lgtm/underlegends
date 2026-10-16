@@ -365,6 +365,29 @@ function SeccionesNumeros({ s, toques }) {
   );
 }
 
+// 👆 QUÉ SE TOCA EN TODA LA PÁGINA (16/10/2026, `clics()` en bot/avisos.js): cada botón o link, por sección
+const NOMBRE_SECC_C = Object.assign({}, NOMBRE_SECC, { otra: 'Otra', dashboard: 'Dashboard', ajustes: 'Ajustes',
+  misiones: 'Misiones', ligas: 'Ligas' });
+function ClicsNumeros({ c }) {
+  const filas = Object.entries((c && c.n) || {}).map(([k, v]) => [k, v[0] || 0, v[1] || 0]).filter((f) => f[1] || f[2]);
+  if (!filas.length) return <p className="pronto-p">Todavía no se tocó nada desde que se cuenta.</p>;
+  const tope = Math.max(1, ...filas.map((f) => f[1]));
+  return (
+    <div className="db-aj">
+      <div className="db-q">{filas.slice(0, 50).map(([k, n, ant]) => {
+        const i = k.indexOf(':');
+        const sec = k.slice(0, i), et = k.slice(i + 1);
+        return (
+          <div key={k} className="db-q-f"><span><small>{NOMBRE_SECC_C[sec] || sec}</small> {et}</span>
+            <i><u style={{ width: ((100 * n) / tope).toFixed(1) + '%' }} /></i>
+            <b>{num(n)} <small>{ant ? 'antes ' + num(ant) : 'esta semana'}</small></b></div>
+        );
+      })}</div>
+      <p className="db-tx">Cuántas veces se tocó cada botón o link en los últimos 7 días, en cada sección, y la semana anterior al lado. «→ perfil» es un link que lleva a un perfil; lo demás es el texto del botón. Nunca dice quién.</p>
+    </div>
+  );
+}
+
 function PaseNumeros({ p, liga }) {
   const dist = Object.entries(p.dist || {}).map(([n, k]) => [Number(n), k]).sort((a, b) => a[0] - b[0]);
   const tope = Math.max(1, ...dist.map((x) => x[1]));
@@ -1834,6 +1857,8 @@ export function Dashboard({ dc, liga }) {
             d.secciones.desde ? 'se cuenta desde el ' + corto(d.secciones.desde) : null, <SeccionesNumeros s={d.secciones} />) : null}
           {d.secciones && Object.keys(d.secciones.n || {}).some((k) => /^[ip]-/.test(k)) ? sec('QUÉ SE TOCA EN EL INICIO · 7 DÍAS', null,
             <SeccionesNumeros s={d.secciones} toques />) : null}
+          {d.clics ? sec('QUÉ SE TOCA EN TODA LA PÁGINA · 7 DÍAS', d.clics.desde ? 'se cuenta desde el ' + corto(d.clics.desde) : null,
+            <ClicsNumeros c={d.clics} />) : null}
           {sec('¿EL LOBBY HACE VOLVER A LA GENTE?', 'la meta del research', <MetaLobby r={retencion} />)}
           {d.pase ? sec('EL PASE DE RAPERO', d.pase.semana ? 'la semana del ' + corto(d.pase.semana) : null, <PaseNumeros p={d.pase} liga={liga} />) : null}
         </> : null}
