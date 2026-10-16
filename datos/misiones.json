@@ -97,7 +97,7 @@
     "Aldre": [
      1,
      5,
-     1
+     4
     ],
     "Alexi": [
      1,
@@ -1164,6 +1164,11 @@
      0,
      16
     ],
+    "Xubaru": [
+     1,
+     0,
+     2
+    ],
     "YOUNG VLAD 🇨🇴": [
      1,
      0,
@@ -1292,7 +1297,7 @@
     "Abyssus": 300,
     "Agus": 2900,
     "Akutagawa🇹🇼": 300,
-    "Aldre": 2900,
+    "Aldre": 900,
     "Alexi": 300,
     "Andres": 1300,
     "Andy": 300,
@@ -1468,6 +1473,7 @@
     "Walker": 2900,
     "Xclusivo": 2900,
     "Xplicit": 300,
+    "Xubaru": 1300,
     "YOUNG VLAD 🇨🇴": 1300,
     "Zaik": 300,
     "Zaza": 300,
@@ -2410,7 +2416,7 @@
   "Agente sombra": 300,
   "Agus": 5800,
   "Akutagawa🇹🇼": 300,
-  "Aldre": 2900,
+  "Aldre": 900,
   "Alexi": 300,
   "Andres": 1300,
   "Andy": 300,
@@ -2598,7 +2604,7 @@
   "Warap": 300,
   "Xclusivo": 3500,
   "Xplicit": 300,
-  "Xubaru": 2900,
+  "Xubaru": 4200,
   "YOUNG VLAD 🇨🇴": 1300,
   "Zaik": 600,
   "Zaza": 300,

@@ -234,6 +234,11 @@
      1
     ],
     [
+     "Erik",
+     2625,
+     1
+    ],
+    [
      "Tam",
      2625,
      1
@@ -525,11 +530,6 @@
      1
     ],
     [
-     "Erik",
-     2625,
-     1
-    ],
-    [
      "7",
      1875,
      1
@@ -551,6 +551,11 @@
     ],
     [
      "Sami",
+     1875,
+     1
+    ],
+    [
+     "Konan",
      1875,
      1
     ],
@@ -619,11 +624,6 @@
     [
      "Milo",
      2000,
-     1
-    ],
-    [
-     "Konan",
-     1875,
      1
     ],
     [
@@ -697,7 +697,7 @@
   "Agus": 4,
   "Aktybo": 5,
   "Akutagawa🇹🇼": 5,
-  "Aldre": 4,
+  "Aldre": 5,
   "Alexi": 4,
   "Alonso": 5,
   "Andres": 4,
@@ -728,7 +728,7 @@
   "Cajita": 4,
   "Calíz": 5,
   "Camila": 5,
-  "Campoy": 5,
+  "Campoy": 4,
   "Carlos": 5,
   "Carlosmo": 4,
   "Carlosss": 4,
@@ -784,7 +784,7 @@
   "Enkil 🇦🇷": 5,
   "Erian": 3,
   "EricRJ": 5,
-  "Erik": 5,
+  "Erik": 4,
   "Erizo": 5,
   "Evangeline": 5,
   "Eze": 5,
@@ -1063,7 +1063,7 @@
   "Warriorvid": 5,
   "Xclusivo": 4,
   "Xervoe": 5,
-  "Xowee": 4,
+  "Xowee": 5,
   "Xplicit": 5,
   "Xubaru": 5,
   "YOUNG VLAD 🇨🇴": 5,
@@ -1551,11 +1551,6 @@
   ],
   [
    "2026-10-05",
-   "Aldre",
-   4
-  ],
-  [
-   "2026-10-05",
    "Prodigy",
    4
   ],
@@ -1572,6 +1567,11 @@
   [
    "2026-10-05",
    "Pomberito",
+   4
+  ],
+  [
+   "2026-10-05",
+   "Erik",
    4
   ],
   [
@@ -1666,12 +1666,12 @@
   ],
   [
    "2026-10-05",
-   "Ortiz",
+   "Campoy",
    4
   ],
   [
    "2026-10-05",
-   "Xowee",
+   "Ortiz",
    4
   ],
   [
@@ -1686,12 +1686,12 @@
   ],
   [
    "2026-10-05",
-   "Provenza",
+   "PRAISERIZA",
    3
   ],
   [
    "2026-10-05",
-   "PRAISERIZA",
+   "Provenza",
    3
   ],
   [
@@ -1742,10 +1742,10 @@
   "sube": [
    "19",
    "Agus",
-   "Aldre",
    "Alexi",
    "BastyRetro",
    "Cajita",
+   "Campoy",
    "Carlosmo",
    "Chop",
    "Cronox",
@@ -1753,6 +1753,7 @@
    "Dominick",
    "Dynoco",
    "EIDP",
+   "Erik",
    "Geoka",
    "Guess",
    "HH",
@@ -1783,7 +1784,6 @@
    "Verc",
    "Walker",
    "Xclusivo",
-   "Xowee",
    "ikonoxx"
   ]
  },

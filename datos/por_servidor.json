@@ -473,15 +473,12 @@
   "Aldre": {
    "FFA": {
     "duelos": "5/6",
-    "ev": 2,
-    "oro": 1,
-    "ovr": 54,
-    "pod": 1,
-    "pts": 59900,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1
-    }
+    "ev": 1,
+    "oro": 0,
+    "ovr": 46,
+    "pod": 0,
+    "pts": 9900,
+    "racha": "0/0"
    }
   },
   "Alexi": {
@@ -4358,15 +4355,15 @@
    "FFA": {
     "duelos": "20/40",
     "ev": 37,
-    "oro": 2,
-    "ovr": 79,
-    "pod": 9,
-    "pts": 188287,
+    "oro": 3,
+    "ovr": 80,
+    "pod": 10,
+    "pts": 213450,
     "racha": "1/3",
     "tg": {
      "bcasa": true,
      "dv": true,
-     "fin": 9,
+     "fin": 10,
      "fund": true,
      "llave": true
     }
@@ -5643,14 +5640,14 @@
   "Provenza": {
    "FFA": {
     "duelos": "11/22",
-    "ev": 24,
+    "ev": 23,
     "oro": 2,
-    "ovr": 74,
-    "pod": 5,
-    "pts": 151365,
+    "ovr": 72,
+    "pod": 4,
+    "pts": 126615,
     "racha": "0/2",
     "tg": {
-     "fin": 5
+     "fin": 4
     }
    }
   },
@@ -7433,14 +7430,14 @@
   "Xubaru": {
    "FFA": {
     "duelos": "6/9",
-    "ev": 6,
+    "ev": 7,
     "oro": 1,
-    "ovr": 54,
-    "pod": 3,
-    "pts": 24850,
-    "racha": "1/1",
+    "ovr": 56,
+    "pod": 4,
+    "pts": 31038,
+    "racha": "1/2",
     "tg": {
-     "fin": 2
+     "fin": 3
     }
    }
   },

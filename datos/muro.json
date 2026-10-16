@@ -120,19 +120,19 @@
 "rg": "A",
 "c": []
 },
+"vandu": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "provenza": {
 "rg": "C",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"vandu": {
-"rg": "D",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -442,6 +442,13 @@
 "rg": "",
 "c": []
 },
+"xubaru": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "soneto": {
 "rg": "E",
 "c": [
@@ -511,13 +518,6 @@
 "temporada"
 ]
 },
-"aldre": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "kochi": {
 "rg": "",
 "c": [
@@ -559,13 +559,6 @@
 ]
 },
 "erik": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"xubaru": {
 "rg": "",
 "c": [
 "servidor",
@@ -1185,15 +1178,22 @@
 "servidor"
 ]
 },
-"ragnar": {
-"rg": "",
-"c": []
-},
 "acry": {
 "rg": "",
 "c": [
 "servidor"
 ]
+},
+"aldre": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"ragnar": {
+"rg": "",
+"c": []
 },
 "tambaggio": {
 "rg": "",
