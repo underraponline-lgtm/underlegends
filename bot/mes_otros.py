@@ -24,7 +24,10 @@ DE DÓNDE SALE CADA UNA (todo en hora del este, del mes que se mide)
     medido en veces: ganarle al #3 desde el #30 es más que al #10 desde el #40. Uno por persona: su mejor batacazo.
   · IMPARABLE: los duelos ganados seguidos, sin perder en el medio.
   · EVENTO: el que más gente juntó. El premio es de quien lo organizó.
-  · PROMO: la que más gente abrió en la página (`/avisos/promos-vistas`). El premio es de quien la comparte.
+  · PROMO: entre TODAS las del mes —las compartidas en los canales de promoción y lo que sube cada uno (sus plazas,
+    su YouTube), no sólo las que están en la página esa semana: Dlx, *«hay promociones que puedes usar»*—, la que más
+    gente abrió en la página (`/avisos/promos-vistas`); a igual, la más nueva. El premio es de quien la comparte. Las
+    batallas de los socios no: ésas son la Batalla del mes.
   · PUBLICACIÓN: la más felicitada del muro (`/avisos/aplausos`). El premio es de quien es la publicación.
     ⚠️ Las dos últimas se cuentan DE A POCO (`vistas()`, en cada corrida): el objeto borra lo de hace más de 30 días, y
     el día 1 ya se habría ido lo de los primeros días del mes.
@@ -197,16 +200,20 @@ def numeros(ini, fin, D, raperos=()):
     vs = D.get('vistas') or {}
     pr = []
     for pid, v in (vs.get('promo') or {}).items():
-        if v[0] and en(_de_iso(v[5] if len(v) > 5 else '')):
+        tp = _de_iso(v[5] if len(v) > 5 else '')
+        if en(tp):
             qs = [q for q in v[1] if q]
+            dia = tp.astimezone(dt.timezone(dt.timedelta(hours=-4))).strftime('%d/%m')
             x = {'op': pid[:80], 'n': (v[2] or 'su promo')[:80], 'q': qs[0] if qs else '', 'quien': qs[:2], '_v': v[0],
-                 'd': '%s · %s' % (' y '.join(qs[:2]), _plural(v[0], 'la abrió', 'la abrieron').replace('1 la abrió', '1 persona la abrió'))}
+                 '_t': v[5], 'd': '%s · %s' % (' y '.join(qs[:2]) or 'alguien', (
+                     _plural(v[0], 'persona la abrió', 'la abrieron') if v[0] else 'la compartió el ' + dia))}
             if len(v) > 3 and v[3]:
                 x['vid'] = v[3]
             elif len(v) > 4 and v[4]:
                 x['img'] = v[4]
             pr.append(x)
-    out['promo'] = sorted(pr, key=lambda x: (-x['_v'], x['op']))
+    pr.sort(key=lambda x: x['_t'], reverse=True)
+    out['promo'] = sorted(pr, key=lambda x: -x['_v'])
     pu = []
     for iid, v in (vs.get('pub') or {}).items():
         if v[0] and en(_de_iso(v[3] if len(v) > 3 else '')):
@@ -250,18 +257,29 @@ def numeros(ini, fin, D, raperos=()):
 
 
 # ── lo contado de a poco: las promos abiertas y las publicaciones felicitadas ──────────────────────────────────────
-def vistas(viejas, ahora, mes_de, traer=None):
+def vistas(viejas, ahora, mes_de, traer=None, promos=None):
     """`{mes: {'promo': {pid: [abiertas, quien, título, vid, img, t]}, 'pub': {id: [aplausos, quien, qué, t]}}}`, con lo
     de esta corrida sumado a lo de antes (se queda el máximo: el objeto borra lo de hace más de 30 días). Sólo lo
-    publicado este mes y el anterior. `traer()` devuelve `(muro, promos abiertas, aplausos)` o `None` sin red."""
+    publicado este mes y el anterior. `traer()` devuelve `(muro, promos abiertas, aplausos)` o `None` sin red; `promos`
+    es `datos/promos.json` (`bot/promos.py`): TODAS las del mes entran, aunque nadie las haya abierto todavía."""
     out = {m: {'promo': dict((v or {}).get('promo') or {}), 'pub': dict((v or {}).get('pub') or {})}
            for m, v in (viejas or {}).items()}
-    t = traer() if traer else _traer()
-    if not t:
-        return out
-    muro, abiertas, aplausos = t
     este = mes_de(ahora)
     deje = {este, mes_de(ahora - dt.timedelta(days=32))}
+    t = traer() if traer else _traer()
+    muro, abiertas, aplausos = t if t else ([], {}, {})
+    # 📣 las promos del mes, todas (Dlx: «hay promociones que puedes usar»): las de los canales y lo que sube cada uno;
+    # no las batallas de los socios, que son la Batalla del mes
+    for x in _promos(promos):
+        ti = _de_iso(x.get('t'))
+        if not ti or mes_de(ti) not in deje:
+            continue
+        m, pid = mes_de(ti), str(x['id'])
+        ya = out.setdefault(m, {'promo': {}, 'pub': {}})['promo'].get(pid)
+        n = int(abiertas.get(pid) or 0)
+        q = x.get('quien')
+        out[m]['promo'][pid] = [max(n, ya[0] if ya else 0), ([q] if isinstance(q, str) else list(q or []))[:4],
+                                str(x.get('tit') or '')[:80], x.get('vid') or '', x.get('img') or '', x.get('t')]
     for it in muro or []:
         ti = _de_iso(it.get('t'))
         if not ti:
@@ -270,18 +288,23 @@ def vistas(viejas, ahora, mes_de, traer=None):
         if m not in deje:
             continue
         quien = [q for q in it.get('quien') or [] if q][:4]
-        if it.get('tipo') == 'promo':
-            pid = str(it.get('pid') or it.get('id'))
-            n = int(abiertas.get(pid) or 0)
-            ya = out.setdefault(m, {'promo': {}, 'pub': {}})['promo'].get(pid)
-            if n or ya:
-                out[m]['promo'][pid] = [max(n, ya[0] if ya else 0), quien, str(it.get('tit') or '')[:80],
-                                        it.get('vid') or '', it.get('img') or '', it.get('t')]
         n = int(aplausos.get(str(it.get('id'))) or 0)
         ya = out.setdefault(m, {'promo': {}, 'pub': {}})['pub'].get(str(it.get('id')))
         if n or ya:
             out[m]['pub'][str(it['id'])] = [max(n, ya[0] if ya else 0), quien, que_es(it), it.get('t')]
     return {m: v for m, v in out.items() if m in deje or m >= min(deje)}
+
+
+def _promos(promos=None):
+    """Las promos guardadas (`datos/promos.json`): las de los canales y las de la Liga que son de cada uno (su YouTube,
+    lo que sumó a su perfil), sin las batallas de los socios."""
+    if promos is None:
+        try:
+            import promos as PR
+            promos = PR.leer()
+        except Exception:                                # noqa: BLE001
+            promos = {}
+    return list((promos or {}).get('items') or []) + [x for x in (promos or {}).get('liga') or [] if x.get('por') != 'socio']
 
 
 def que_es(it):
@@ -439,6 +462,7 @@ def _self_check():
         'nombre': lambda kq: kq.capitalize(),
         'cazas': [(t(6), ['Bea']), (t(7), ['Bea', 'Cid']), (dt.datetime(2026, 9, 1, tzinfo=utc), ['Cid'])],
         'vistas': {'promo': {'p1': [7, ['Ana'], 'mi tema', 'aaaaaaaaaaa', '', '2026-10-03T00:00:00Z'],
+                             'p3': [0, ['Cid'], 'otro tema', '', '', '2026-10-12T00:00:00Z'],
                              'p2': [9, ['Bea'], 'viejo', '', '', '2026-09-03T00:00:00Z']},
                    'pub': {'x1': [4, ['Cid'], 'Cid, campeón de COPA', '2026-10-05T00:00:00Z']}},
         'crew': {'ana': 'LOS DE ARRIBA', 'bea': 'LOS DE ARRIBA', 'cid': 'OTRA'},
@@ -466,9 +490,10 @@ def _self_check():
        'imparable: la racha más larga sin perder en el medio (la de Ana se corta con Dan)', str(nums['imparable']))
     ok([(x['op'], x['d']) for x in nums['cazador']] == [('Bea', '2 cabezas cazadas'), ('Cid', '1 cabeza cazada')],
        'cazador: las cabezas del mes (la de septiembre no)')
-    ok([x['op'] for x in nums['promo']] == ['p1'] and nums['promo'][0]['vid'] == 'aaaaaaaaaaa'
-       and [x['op'] for x in nums['publicacion']] == ['x1'],
-       'promo y publicación: lo publicado ese mes, con lo contado de a poco')
+    ok([x['op'] for x in nums['promo']] == ['p1', 'p3'] and nums['promo'][0]['vid'] == 'aaaaaaaaaaa'
+       and nums['promo'][1]['d'] == 'Cid · la compartió el 11/10' and [x['op'] for x in nums['publicacion']] == ['x1'],
+       'promo y publicación: lo publicado ese mes —toda promo, aunque nadie la haya abierto—, con lo contado de a poco',
+       str(nums['promo']))
     ok([(x['n'], x['d']) for x in nums['crew']] == [('OTRA', '900 pts · 1 jugó'), ('LOS DE ARRIBA', '800 pts · 2 jugaron')]
        and [(x['n'], x['cc']) for x in nums['pais']] == [('Chile', 'cl'), ('Perú', 'pe')],
        'crew y país: los puntos del mes de su gente', str(nums['crew']))
@@ -479,11 +504,17 @@ def _self_check():
     mes_de = lambda tt: tt.strftime('%Y-%m')  # noqa: E731
     muro = [{'id': 'x1', 'tipo': 'campeon', 'quien': ['Cid'], 'ev': 'COPA', 't': '2026-10-05T00:00:00Z'},
             {'id': 'x2', 'tipo': 'promo', 'pid': 'p9', 'quien': ['Ana'], 'tit': 'tema', 't': '2026-10-06T00:00:00Z'}]
+    pj = {'items': [{'id': 'p9', 'quien': 'Ana', 'tit': 'tema', 't': '2026-10-06T00:00:00Z'},
+                    {'id': 'p8', 'quien': 'Bea', 'tit': 'nadie', 't': '2026-10-07T00:00:00Z'}],
+          'liga': [{'id': 'v-a', 'quien': ['Cid'], 'por': 'perfil', 't': '2026-10-08T00:00:00Z'},
+                   {'id': 'v-b', 'quien': ['Dan', 'Eva'], 'por': 'socio', 't': '2026-10-08T00:00:00Z'}]}
     v = vistas({'2026-10': {'pub': {'x1': [6, ['Cid'], 'c', '2026-10-05T00:00:00Z']}}}, t(20), mes_de,
-               lambda: (muro, {'p9': 3}, {'x1': 2, 'x2': 1}))
+               lambda: (muro, {'p9': 3}, {'x1': 2, 'x2': 1}), pj)
     ok(v['2026-10']['pub']['x1'][0] == 6 and v['2026-10']['promo']['p9'][0] == 3 and v['2026-10']['pub']['x2'][0] == 1,
        'lo contado de a poco se queda con el máximo (el objeto borra lo de hace 30 días)', str(v))
-    ok(vistas({'2026-10': {}}, t(20), mes_de, lambda: None) == {'2026-10': {'promo': {}, 'pub': {}}},
+    ok(sorted(v['2026-10']['promo']) == ['p8', 'p9', 'v-a'],
+       'toda promo del mes entra, abierta o no; la batalla de un socio no (es la Batalla del mes)', str(v['2026-10']['promo']))
+    ok(vistas({'2026-10': {}}, t(20), mes_de, lambda: None, {}) == {'2026-10': {'promo': {}, 'pub': {}}},
        'sin red, queda lo de antes')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
