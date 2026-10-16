@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-16T03:54:42+00:00",
+ "cuando": "2026-10-16T04:24:43+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1102,48 +1102,6 @@
     ]
    },
    "autor": "Lewito",
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "Cuentas Pendientes V.1",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1557960064952828065",
-   "cuando": "2026-10-09T03:37:04",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Kravitz",
-     "id": "1345962362615894027"
-    },
-    {
-     "n": ">   CUPOS: 16",
-     "id": ""
-    }
-   ],
-   "autor_h": "7cc3316a3e5f345f",
-   "cupos_texto": "16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "bronce ɪɪɪ🥉",
-   "modalidad": "1 vs 1",
-   "horario": "Cuando se llenen los cupos",
-   "fecha": "",
-   "premios": "Puntos de ascenso y rol de campeón",
-   "staff": {
-    "jurado": [
-     "Kravitz"
-    ],
-    "host": [
-     "Kravitz"
-    ],
-    "dj": [
-     "Kravitz"
-    ]
-   },
-   "autor": "Kravitz",
    "categoria_id": "1468478330826260500"
   },
   {
@@ -5894,6 +5852,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "crew (🇦🇷 )",
+   "quien": "cpn3427",
+   "discord_id": "1510160191398613108",
+   "msg_id": "1560504948356292621",
+   "cuando": "2026-10-16T04:09:32"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Fokox🇨🇱",
+   "quien": "esometilin",
+   "discord_id": "881358841319682079",
+   "msg_id": "1560501801739100203",
+   "cuando": "2026-10-16T03:57:02"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",

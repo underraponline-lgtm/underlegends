@@ -12900,5 +12900,321 @@
    ]
   ],
   "v": 2
+ },
+ "476": {
+  "antes": {
+   "BTRX": [
+    205,
+    92,
+    true
+   ],
+   "DO-C": [
+    243,
+    157,
+    true
+   ],
+   "Gocho": [
+    68,
+    93,
+    false
+   ],
+   "Kochi": [
+    55,
+    76,
+    false
+   ],
+   "LRS": [
+    40,
+    51,
+    false
+   ],
+   "Liberia": [
+    12,
+    13,
+    false
+   ],
+   "NC": [
+    16,
+    19,
+    false
+   ],
+   "Nemi": [
+    42,
+    56,
+    false
+   ],
+   "Oasis": [
+    1,
+    1,
+    false
+   ],
+   "Paria": [
+    199,
+    69,
+    true
+   ],
+   "PichulaMc": [
+    4,
+    5,
+    false
+   ],
+   "Sin Limites": [
+    24,
+    30,
+    false
+   ],
+   "Six": [
+    11,
+    12,
+    false
+   ],
+   "Sosa": [
+    47,
+    64,
+    false
+   ],
+   "Tuca": [
+    201,
+    75,
+    true
+   ],
+   "Under": [
+    241,
+    155,
+    true
+   ],
+   "Verc": [
+    6,
+    7,
+    false
+   ],
+   "Zignos": [
+    14,
+    16,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Liberia",
+    "DO-C",
+    "Liberia"
+   ],
+   [
+    "Liberia",
+    "NC",
+    "Liberia"
+   ],
+   [
+    "Kochi",
+    "BTRX",
+    "Kochi"
+   ],
+   [
+    "Oasis",
+    "Under",
+    "Oasis"
+   ],
+   [
+    "Nemi",
+    "Gocho",
+    "Nemi"
+   ],
+   [
+    "PichulaMc",
+    "PETER🇵🇪",
+    "PichulaMc"
+   ],
+   [
+    "Zignos",
+    "Sin Limites",
+    "Zignos"
+   ],
+   [
+    "Zignos",
+    "Sosa",
+    "Zignos"
+   ],
+   [
+    "Verc",
+    "LRS",
+    "Verc"
+   ],
+   [
+    "Verc",
+    "Tuca",
+    "Verc"
+   ],
+   [
+    "Six",
+    "Paria",
+    "Six"
+   ],
+   [
+    "Liberia",
+    "Kochi",
+    "Liberia"
+   ],
+   [
+    "Oasis",
+    "Nemi",
+    "Oasis"
+   ],
+   [
+    "Zignos",
+    "PichulaMc",
+    "Zignos"
+   ],
+   [
+    "Verc",
+    "Six",
+    "Verc"
+   ],
+   [
+    "Oasis",
+    "Liberia",
+    "Oasis"
+   ],
+   [
+    "Verc",
+    "Zignos",
+    "Verc"
+   ],
+   [
+    "Oasis",
+    "Verc",
+    "Oasis"
+   ]
+  ],
+  "ev_antes": {
+   "BTRX": 6,
+   "DO-C": 4,
+   "Gocho": 9,
+   "Kochi": 6,
+   "LRS": 13,
+   "Liberia": 10,
+   "NC": 30,
+   "Nemi": 8,
+   "Oasis": 24,
+   "Paria": 8,
+   "PichulaMc": 33,
+   "Sin Limites": 17,
+   "Six": 19,
+   "Sosa": 13,
+   "Tuca": 7,
+   "Under": 3,
+   "Verc": 13,
+   "Zignos": 22
+  },
+  "fecha": "15/10",
+  "firma": "88cf6d5c28408cd0",
+  "msg": "1560502933315915857",
+  "nombre": "LA REDENCIÓN",
+  "num": 476,
+  "participantes": 20,
+  "sello": {
+   "Oasis": "a57cd51efaed:906ce275eeb8"
+  },
+  "sv": "FFA",
+  "t": "2026-10-16T04:23:42Z",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
+    "Verc",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Zignos",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Kochi",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Nemi",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Six",
+    "Cuartos",
+    2500
+   ],
+   [
+    "DO-C",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "BTRX",
+    "Octavos",
+    1250
+   ],
+   [
+    "Under",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gocho",
+    "Octavos",
+    1250
+   ],
+   [
+    "PETER🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tuca",
+    "Octavos",
+    1250
+   ],
+   [
+    "Paria",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

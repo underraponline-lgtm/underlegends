@@ -24326,5 +24326,259 @@
     2000
    ]
   ]
+ },
+ "476": {
+  "dia": "2026-10-15",
+  "escala": "16+",
+  "fecha": "15/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1560481354314023023"
+  ],
+  "n": 476,
+  "nombre": "LA REDENCIÓN",
+  "participantes": 20,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Liberia",
+       "DO-C",
+       "NC"
+      ],
+      "Liberia",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Kochi",
+       "BTRX"
+      ],
+      "Kochi",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "Under"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Nemi",
+       "Gocho"
+      ],
+      "Nemi",
+      ""
+     ],
+     [
+      [
+       "PichulaMc",
+       "PETER🇵🇪"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "Zignos",
+       "Sin Limites",
+       "Sosa"
+      ],
+      "Zignos",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Verc",
+       "LRS",
+       "Tuca"
+      ],
+      "Verc",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Six",
+       "Paria"
+      ],
+      "Six",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Liberia",
+       "Kochi"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "Nemi"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Zignos",
+       "PichulaMc"
+      ],
+      "Zignos",
+      ""
+     ],
+     [
+      [
+       "Verc",
+       "Six"
+      ],
+      "Verc",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Liberia"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Verc",
+       "Zignos"
+      ],
+      "Verc",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Verc"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
+    "Verc",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Zignos",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Kochi",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Nemi",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Six",
+    "Cuartos",
+    2500
+   ],
+   [
+    "BTRX",
+    "Octavos",
+    1250
+   ],
+   [
+    "DO-C",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gocho",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "PETER🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Paria",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tuca",
+    "Octavos",
+    1250
+   ],
+   [
+    "Under",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

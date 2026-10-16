@@ -1,7 +1,7 @@
 {
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
-  "FFA": "2026-10-15",
+  "FFA": "2026-10-16",
   "FRZ": "2026-10-15",
   "FVS": "2026-10-15",
   "SR": "2026-10-12",
@@ -163,6 +163,18 @@
    "n": 464,
    "sv": "URBF",
    "vence": "2026-10-20T01:56:58+00:00",
+   "vencido": false
+  },
+  "PETER": {
+   "chat": "2026-10-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-16T02:35:47+00:00",
+   "did": "",
+   "evento": "LA REDENCIÓN",
+   "n": 476,
+   "sv": "FFA",
+   "vence": "2026-10-23T02:35:47+00:00",
    "vencido": false
   },
   "Raizer": {
