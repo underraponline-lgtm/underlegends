@@ -267,6 +267,14 @@
 "rg": "C",
 "c": []
 },
+"nxuz": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "nemi": {
 "rg": "D",
 "c": [
@@ -288,14 +296,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"nxuz": {
-"rg": "C",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
