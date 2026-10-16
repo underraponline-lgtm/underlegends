@@ -449,6 +449,13 @@
 "temporada"
 ]
 },
+"catarsis": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "sosa": {
 "rg": "D",
 "c": [
@@ -507,13 +514,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"catarsis": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
