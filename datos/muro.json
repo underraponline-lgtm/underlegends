@@ -379,6 +379,10 @@
 "temporada"
 ]
 },
+"dominick": {
+"rg": "E",
+"c": []
+},
 "jult": {
 "rg": "E",
 "c": [
@@ -401,10 +405,6 @@
 "servidor",
 "temporada"
 ]
-},
-"dominick": {
-"rg": "E",
-"c": []
 },
 "benjixo": {
 "rg": "",
