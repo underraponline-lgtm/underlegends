@@ -1,5 +1,5 @@
 {
- "_leeme": "Los MES AWARDS: los nominados, los votos al cierre y los ganadores de cada mes. Los escribe bot/mes_awards.py (paso 2b8d); los votos los guarda el objeto (bot/avisos.js).",
+ "_leeme": "Los MES AWARDS: los nominados, los votos al cierre y los ganadores de cada mes. Los escribe bot/mes_awards.py (paso 2b8d); los votos los guarda el objeto (bot/avisos.js). `vistas`: las promos abiertas y las felicitaciones, contadas de a poco (bot/mes_otros.py).",
  "meses": {},
  "vivo": {
   "mes": "2026-10",
@@ -130,7 +130,582 @@
      "gente": 31,
      "ev": 2
     }
+   ],
+   "organizador": [
+    {
+     "op": "Flennzs",
+     "n": "Flennzs",
+     "q": "Flennzs",
+     "quien": [
+      "Flennzs"
+     ],
+     "d": "4 eventos · 92 raperos"
+    },
+    {
+     "op": "Velatz",
+     "n": "Velatz",
+     "q": "Velatz",
+     "quien": [
+      "Velatz"
+     ],
+     "d": "4 eventos · 76 raperos"
+    },
+    {
+     "op": "LEWITO",
+     "n": "LEWITO",
+     "q": "LEWITO",
+     "quien": [
+      "LEWITO"
+     ],
+     "d": "2 eventos · 48 raperos"
+    },
+    {
+     "op": "Benjixo",
+     "n": "Benjixo",
+     "q": "Benjixo",
+     "quien": [
+      "Benjixo"
+     ],
+     "d": "2 eventos · 44 raperos"
+    },
+    {
+     "op": "Adriagner",
+     "n": "Adriagner",
+     "q": "Adriagner",
+     "quien": [
+      "Adriagner"
+     ],
+     "d": "5 eventos · 43 raperos"
+    }
+   ],
+   "staff": [
+    {
+     "op": "Adriagner",
+     "n": "Adriagner",
+     "q": "Adriagner",
+     "quien": [
+      "Adriagner"
+     ],
+     "d": "5 eventos de jurado, host o DJ"
+    },
+    {
+     "op": "Flennzs",
+     "n": "Flennzs",
+     "q": "Flennzs",
+     "quien": [
+      "Flennzs"
+     ],
+     "d": "5 eventos de jurado, host o DJ"
+    },
+    {
+     "op": "LEWITO",
+     "n": "LEWITO",
+     "q": "LEWITO",
+     "quien": [
+      "LEWITO"
+     ],
+     "d": "4 eventos de jurado, host o DJ"
+    },
+    {
+     "op": "Velatz",
+     "n": "Velatz",
+     "q": "Velatz",
+     "quien": [
+      "Velatz"
+     ],
+     "d": "4 eventos de jurado, host o DJ"
+    },
+    {
+     "op": "Kravitz",
+     "n": "Kravitz",
+     "q": "Kravitz",
+     "quien": [
+      "Kravitz"
+     ],
+     "d": "2 eventos de jurado, host o DJ"
+    }
+   ],
+   "duelista": [
+    {
+     "op": "PichulaMc",
+     "n": "PichulaMc",
+     "q": "PichulaMc",
+     "quien": [
+      "PichulaMc"
+     ],
+     "d": "23 de 37 duelos ganados"
+    },
+    {
+     "op": "Agus",
+     "n": "Agus",
+     "q": "Agus",
+     "quien": [
+      "Agus"
+     ],
+     "d": "19 de 25 duelos ganados"
+    },
+    {
+     "op": "Makmah",
+     "n": "Makmah",
+     "q": "Makmah",
+     "quien": [
+      "Makmah"
+     ],
+     "d": "17 de 33 duelos ganados"
+    },
+    {
+     "op": "Oasis",
+     "n": "Oasis",
+     "q": "Oasis",
+     "quien": [
+      "Oasis"
+     ],
+     "d": "15 de 18 duelos ganados"
+    },
+    {
+     "op": "Carlosss",
+     "n": "Carlosss",
+     "q": "Carlosss",
+     "quien": [
+      "Carlosss"
+     ],
+     "d": "14 de 16 duelos ganados"
+    }
+   ],
+   "cazador": [
+    {
+     "op": "Oasis",
+     "n": "Oasis",
+     "q": "Oasis",
+     "quien": [
+      "Oasis"
+     ],
+     "d": "3 cabezas cazadas"
+    },
+    {
+     "op": "Abyssus",
+     "n": "Abyssus",
+     "q": "Abyssus",
+     "quien": [
+      "Abyssus"
+     ],
+     "d": "2 cabezas cazadas"
+    },
+    {
+     "op": "Delux",
+     "n": "Delux",
+     "q": "Delux",
+     "quien": [
+      "Delux"
+     ],
+     "d": "2 cabezas cazadas"
+    },
+    {
+     "op": "PichulaMc",
+     "n": "PichulaMc",
+     "q": "PichulaMc",
+     "quien": [
+      "PichulaMc"
+     ],
+     "d": "2 cabezas cazadas"
+    },
+    {
+     "op": "Six",
+     "n": "Six",
+     "q": "Six",
+     "quien": [
+      "Six"
+     ],
+     "d": "2 cabezas cazadas"
+    }
+   ],
+   "batacazo": [
+    {
+     "op": "435:Aldre",
+     "n": "Aldre",
+     "q": "Aldre",
+     "quien": [
+      "Aldre"
+     ],
+     "d": "le ganó a Erian (#5) siendo #116 · Cuentas Pendientes V.1"
+    },
+    {
+     "op": "389:Catarsis",
+     "n": "Catarsis",
+     "q": "Catarsis",
+     "quien": [
+      "Catarsis"
+     ],
+     "d": "le ganó a PichulaMc (#4) siendo #89 · RED BULL NACIONAL ALBICELESTE"
+    },
+    {
+     "op": "436:HH",
+     "n": "HH",
+     "q": "HH",
+     "quien": [
+      "HH"
+     ],
+     "d": "le ganó a Erian (#5) siendo #87 · LA BELLA ARTE DE LA DESGRACIA VOL3"
+    },
+    {
+     "op": "431:Six",
+     "n": "Six",
+     "q": "Six",
+     "quien": [
+      "Six"
+     ],
+     "d": "le ganó a Oasis (#1) siendo #11 · LA REDENCIÓN VOL.1"
+    },
+    {
+     "op": "383:Marcos",
+     "n": "Marcos",
+     "q": "Marcos",
+     "quien": [
+      "Marcos"
+     ],
+     "d": "le ganó a Velatz (#12) siendo #130 · DESGRACIAS EN TOKYO VOL 21 1v1"
+    }
+   ],
+   "imparable": [
+    {
+     "op": "Carlosss",
+     "n": "Carlosss",
+     "q": "Carlosss",
+     "quien": [
+      "Carlosss"
+     ],
+     "d": "10 duelos ganados seguidos"
+    },
+    {
+     "op": "Liberia",
+     "n": "Liberia",
+     "q": "Liberia",
+     "quien": [
+      "Liberia"
+     ],
+     "d": "6 duelos ganados seguidos"
+    },
+    {
+     "op": "Panchok",
+     "n": "Panchok",
+     "q": "Panchok",
+     "quien": [
+      "Panchok"
+     ],
+     "d": "6 duelos ganados seguidos"
+    },
+    {
+     "op": "PichulaMc",
+     "n": "PichulaMc",
+     "q": "PichulaMc",
+     "quien": [
+      "PichulaMc"
+     ],
+     "d": "6 duelos ganados seguidos"
+    },
+    {
+     "op": "Walker",
+     "n": "Walker",
+     "q": "Walker",
+     "quien": [
+      "Walker"
+     ],
+     "d": "6 duelos ganados seguidos"
+    }
+   ],
+   "evento": [
+    {
+     "op": "400",
+     "n": "VALHALLA VOL1",
+     "sv": "ACAD",
+     "d": "78 raperos · ACAD",
+     "quien": []
+    },
+    {
+     "op": "468",
+     "n": "DEM UZBEKISTAN FECHA 2",
+     "sv": "FFA",
+     "d": "30 raperos · FFA · organiza Benjixo",
+     "quien": [
+      "Benjixo"
+     ]
+    },
+    {
+     "op": "405",
+     "n": "DESGRACIAS EN TOKYO VOL 24",
+     "sv": "FFA",
+     "d": "29 raperos · FFA",
+     "quien": []
+    },
+    {
+     "op": "462",
+     "n": "COMPE POR 1.5 DOLARES",
+     "sv": "FFA",
+     "d": "28 raperos · FFA · organiza Zignos",
+     "quien": [
+      "Zignos"
+     ]
+    },
+    {
+     "op": "434",
+     "n": "PRITTY FREE",
+     "sv": "FFA",
+     "d": "26 raperos · FFA",
+     "quien": []
+    }
+   ],
+   "promo": [],
+   "publicacion": [
+    {
+     "op": "129e25edf2b1",
+     "n": "Liberia subió a S",
+     "q": "Liberia",
+     "quien": [
+      "Liberia"
+     ],
+     "d": "3 felicitaciones"
+    },
+    {
+     "op": "fc78df2c9d31",
+     "n": "Verc subió a A",
+     "q": "Verc",
+     "quien": [
+      "Verc"
+     ],
+     "d": "2 felicitaciones"
+    },
+    {
+     "op": "1257e01f1589",
+     "n": "BNA subió a C",
+     "q": "BNA",
+     "quien": [
+      "BNA"
+     ],
+     "d": "1 felicitación"
+    },
+    {
+     "op": "4e9604cc3219",
+     "n": "Krish subió a E",
+     "q": "Krish",
+     "quien": [
+      "Krish"
+     ],
+     "d": "1 felicitación"
+    },
+    {
+     "op": "651294d276da",
+     "n": "Xubaru, campeón de Inserte Nombre de la Compe",
+     "q": "Xubaru",
+     "quien": [
+      "Xubaru"
+     ],
+     "d": "1 felicitación"
+    }
+   ],
+   "crew": [
+    {
+     "op": "Follombia",
+     "n": "Follombia",
+     "quien": [],
+     "d": "432.951 pts · 7 jugaron"
+    },
+    {
+     "op": "Fuera de Rango",
+     "n": "Fuera de Rango",
+     "quien": [],
+     "d": "306.300 pts · 2 jugaron"
+    },
+    {
+     "op": "Fontana",
+     "n": "Fontana",
+     "quien": [],
+     "d": "275.013 pts · 4 jugaron"
+    },
+    {
+     "op": "Lighting Force",
+     "n": "Lighting Force",
+     "quien": [],
+     "d": "213.700 pts · 3 jugaron"
+    },
+    {
+     "op": "Arte del Chakalaje",
+     "n": "Arte del Chakalaje",
+     "quien": [],
+     "d": "183.422 pts · 1 jugó"
+    }
+   ],
+   "pais": [
+    {
+     "op": "Argentina",
+     "n": "Argentina",
+     "cc": "ar",
+     "quien": [],
+     "d": "1.480.813 pts · 36 jugaron"
+    },
+    {
+     "op": "Chile",
+     "n": "Chile",
+     "cc": "cl",
+     "quien": [],
+     "d": "909.180 pts · 28 jugaron"
+    },
+    {
+     "op": "Colombia",
+     "n": "Colombia",
+     "cc": "co",
+     "quien": [],
+     "d": "787.259 pts · 19 jugaron"
+    },
+    {
+     "op": "Venezuela",
+     "n": "Venezuela",
+     "cc": "ar",
+     "quien": [],
+     "d": "562.322 pts · 16 jugaron"
+    },
+    {
+     "op": "España",
+     "n": "España",
+     "cc": "es",
+     "quien": [],
+     "d": "219.418 pts · 10 jugaron"
+    }
+   ],
+   "liga": [
+    {
+     "op": "fms-peru",
+     "n": "FMS Perú",
+     "sv": "DDF",
+     "d": "35 batallas · 14 raperos"
+    },
+    {
+     "op": "fms-titans",
+     "n": "FMS Titans",
+     "sv": "DDF",
+     "d": "26 batallas · 16 raperos"
+    },
+    {
+     "op": "fmh-andes",
+     "n": "FMH Andes",
+     "sv": "URBF",
+     "d": "9 batallas · 11 raperos"
+    },
+    {
+     "op": "fmh-espana",
+     "n": "FMH España",
+     "sv": "URBF",
+     "d": "8 batallas · 11 raperos"
+    },
+    {
+     "op": "fmh-carimex",
+     "n": "FMH Carimex",
+     "sv": "URBF",
+     "d": "7 batallas · 10 raperos"
+    }
    ]
+  }
+ },
+ "vistas": {
+  "2026-10": {
+   "promo": {},
+   "pub": {
+    "4e9604cc3219": [
+     1,
+     [
+      "Krish"
+     ],
+     "Krish subió a E",
+     "2026-10-15T01:00:24Z"
+    ],
+    "ab5f12696272": [
+     1,
+     [
+      "Geoka"
+     ],
+     "Geoka subió a D",
+     "2026-10-14T23:58:43Z"
+    ],
+    "9246fb5d4ca3": [
+     1,
+     [
+      "Colesito"
+     ],
+     "Colesito subió a B",
+     "2026-10-14T22:59:11Z"
+    ],
+    "a7f0aeeff0ac": [
+     1,
+     [
+      "Chop"
+     ],
+     "Chop subió a E",
+     "2026-10-14T22:59:11Z"
+    ],
+    "9902ffb2c972": [
+     1,
+     [
+      "Motera"
+     ],
+     "Motera, campeón de FF Freestyle Clasico",
+     "2026-10-14T21:51:16Z"
+    ],
+    "684d718f6442": [
+     1,
+     [
+      "Agus"
+     ],
+     "Agus subió a A",
+     "2026-10-14T20:29:05Z"
+    ],
+    "910f12d94719": [
+     1,
+     [
+      "Agus"
+     ],
+     "Agus, campeón de DEM UZBEKISTAN FECHA 3",
+     "2026-10-14T19:38:23Z"
+    ],
+    "1257e01f1589": [
+     1,
+     [
+      "BNA"
+     ],
+     "BNA subió a C",
+     "2026-10-14T06:43:11Z"
+    ],
+    "651294d276da": [
+     1,
+     [
+      "Xubaru"
+     ],
+     "Xubaru, campeón de Inserte Nombre de la Compe",
+     "2026-10-14T05:25:30Z"
+    ],
+    "fc78df2c9d31": [
+     2,
+     [
+      "Verc"
+     ],
+     "Verc subió a A",
+     "2026-10-14T04:01:43Z"
+    ],
+    "129e25edf2b1": [
+     3,
+     [
+      "Liberia"
+     ],
+     "Liberia subió a S",
+     "2026-10-14T04:01:43Z"
+    ],
+    "7f5577844c65": [
+     1,
+     [
+      "Oasis"
+     ],
+     "Oasis, campeón de DEM UZBEKISTAN FECHA 2",
+     "2026-10-13T23:50:48Z"
+    ]
+   }
   }
  }
 }
