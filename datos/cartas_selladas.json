@@ -228,7 +228,7 @@
   },
   "Clitax": {},
   "Colesito": {
-   "competitivo": "ae9898dde5cd:aa2fab0a1b31",
+   "competitivo": "1ede145cab05:aa2fab0a1b31",
    "pais": "c6f722d8d4f2:631b7a4c93c4",
    "servidor": "b2eb92a3d93a:f7bc857dd9f6:25c183",
    "temporada": "1d12978ccc0e:906ce275eeb8"
@@ -1041,7 +1041,7 @@
    "competitivo": "e66f37935806:aa2fab0a1b31",
    "pais": "191baabdccf1:631b7a4c93c4",
    "servidor": "f54ac5bf50cb:f7bc857dd9f6:ca38c9",
-   "temporada": "2c09830f64f3:906ce275eeb8"
+   "temporada": "9821612e441a:906ce275eeb8"
   },
   "Monet": {},
   "Monzon": {
@@ -1614,8 +1614,8 @@
    "servidor": "435094019c29:f7bc857dd9f6:f1c33e"
   },
   "Xubaru": {
-   "competitivo": "6de1accde626:aa2fab0a1b31",
-   "pais": "67612a656587:631b7a4c93c4",
+   "competitivo": "33cf5afd5268:aa2fab0a1b31",
+   "pais": "c3099784bf5f:631b7a4c93c4",
    "servidor": "fbced5732937:f7bc857dd9f6:a29fa0",
    "temporada": "af7ffb13b9a8:906ce275eeb8"
   },
@@ -1795,5 +1795,5 @@
    "servidor": "7f8885a35a6d:f7bc857dd9f6:55e9bc"
   }
  },
- "cuando": "2026-10-16T16:05:00+00:00"
+ "cuando": "2026-10-16T16:29:35+00:00"
 }
