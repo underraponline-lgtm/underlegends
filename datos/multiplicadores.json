@@ -373,7 +373,9 @@
    },
    "dorado": {
     "sv": "ACAD",
-    "desde": "2026-10-14T04:00:00Z"
+    "desde": "2026-10-14T04:00:00Z",
+    "n": 479,
+    "nombre": "PRADERAP VOL.1"
    },
    "guerra": {
     "pares": [
@@ -458,6 +460,11 @@
      1
     ],
     [
+     "ARDEAN 🇵🇪",
+     16,
+     1
+    ],
+    [
      "nachonc_",
      12,
      1
@@ -474,7 +481,8 @@
      "FRZ": 2,
      "URBF": 12,
      "SR": 4,
-     "FVS": 1
+     "FVS": 1,
+     "ACAD": 2
     },
     "gente": {
      "DDF": 7,
@@ -482,12 +490,13 @@
      "SR": 33,
      "URBF": 20,
      "FVS": 5,
-     "FRZ": 9
+     "FRZ": 9,
+     "ACAD": 16
     },
     "gana": "URBF"
    },
    "meta_va": {
-    "ACAD": 0,
+    "ACAD": 16,
     "DDF": 7,
     "DRA": 0,
     "FFA": 108,

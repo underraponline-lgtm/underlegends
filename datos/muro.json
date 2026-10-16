@@ -242,6 +242,10 @@
 "rg": "E",
 "c": []
 },
+"chop": {
+"rg": "D",
+"c": []
+},
 "trot": {
 "rg": "D",
 "c": [
@@ -250,10 +254,6 @@
 "servidor",
 "temporada"
 ]
-},
-"chop": {
-"rg": "D",
-"c": []
 },
 "delux": {
 "rg": "",
@@ -975,7 +975,8 @@
 "caliz": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "maukc": {
@@ -1114,15 +1115,15 @@
 "rg": "",
 "c": []
 },
-"aby": {
-"rg": "",
-"c": []
-},
 "joshema": {
 "rg": "",
 "c": [
 "servidor"
 ]
+},
+"aby": {
+"rg": "",
+"c": []
 },
 "saz": {
 "rg": "",
@@ -2394,14 +2395,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"OKAM"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5690,6 +5683,14 @@
 ],
 "rg": "D",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-16T22:58:02Z",
+"quien": [
+"Calíz"
+],
+"carta": "temporada"
 }
 ]
 }

@@ -1,39 +1,39 @@
 {
  "v": 1,
- "cuando": "2026-10-16T22:30:51Z",
+ "cuando": "2026-10-16T22:58:31Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 449.0,
+ "dur_s": 311.3,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.8
+   "s": 0.6
   },
   {
    "n": "0c",
    "que": "lo corregido desde los reportes",
    "ok": true,
-   "s": 2.7
+   "s": 3.7
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 54.5
+   "s": 49.5
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 37.3
+   "s": 40.2
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.5
+   "s": 2.0
   },
   {
    "n": "1a2",
@@ -45,19 +45,19 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 35.3
+   "s": 31.3
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 2.2
+   "s": 1.6
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.9
+   "s": 6.7
   },
   {
    "n": "2b0",
@@ -75,19 +75,19 @@
    "n": "2b2",
    "que": "las insignias",
    "ok": true,
-   "s": 1.0
+   "s": 1.3
   },
   {
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.1
+   "s": 0.4
   },
   {
    "n": "2b3d",
    "que": "los paneles de DRA",
    "ok": true,
-   "s": 32.7
+   "s": 24.0
   },
   {
    "n": "2b3b",
@@ -99,49 +99,49 @@
    "n": "2b3c",
    "que": "el reto del debut",
    "ok": true,
-   "s": 2.4
+   "s": 0.1
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.0
+   "s": 1.6
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.4
+   "s": 0.5
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.2
+   "s": 3.1
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 151.9
+   "s": 31.5
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 4.0
+   "s": 6.2
   },
   {
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 3.3
+   "s": 2.9
   },
   {
    "n": "2b8c",
    "que": "las promociones",
    "ok": true,
-   "s": 2.8
+   "s": 2.3
   },
   {
    "n": "2b8d",
@@ -159,19 +159,19 @@
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 21.9
+   "s": 22.5
   },
   {
    "n": "2b10",
    "que": "los roles de la página",
    "ok": true,
-   "s": 0.3
+   "s": 0.4
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 51.1
+   "s": 50.5
   },
   {
    "n": "2c2",
@@ -183,7 +183,7 @@
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 15.6
+   "s": 11.8
   },
   {
    "n": "2e",
@@ -195,7 +195,7 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.2
+   "s": 6.5
   },
   {
    "n": "3",
@@ -205,7 +205,7 @@
   }
  ],
  "fallas": [],
- "decidir": 72,
+ "decidir": 71,
  "ultimo_evento": {
   "n": "479",
   "nombre": "PRADERAP VOL.1",
@@ -214,7 +214,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-16T22:24:24Z",
+  "cuando": "2026-10-16T22:54:18Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 467,
   "un_evento": 230,
@@ -248,20 +248,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 358,
-   "read": 41938
+   "write": 377,
+   "read": 43562
   },
   "objeto": {
-   "leidas": 2155547,
-   "escritas": 19211,
-   "pedidos": 8104
+   "leidas": 2314462,
+   "escritas": 21262,
+   "pedidos": 8502
   },
   "worker": {
-   "pedidos": 8311,
+   "pedidos": 8486,
    "errores": 0,
-   "sub": 8927,
+   "sub": 9148,
    "p50_ms": 1.23,
-   "p99_ms": 9.21
+   "p99_ms": 9.29
   },
   "r2": {
    "objetos": 4212,
