@@ -21,6 +21,7 @@ export const PLATAFORMA = { yt: 'YouTube', sp: 'Spotify', sc: 'SoundCloud', ig: 
 const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, ligahito: 1, mesaward: 1 };
 // 🏆 las categorías de los MES AWARDS (bot/mes_awards.py)
 const MES_CAT = { rapero: 'el Rapero del mes', revelacion: 'la Revelación del mes', batalla: 'la Batalla del mes', servidor: 'el Servidor del mes' };
+// 🏆 las de «Ver las demás nominaciones», en una sola publicación por mes (`cat: 'otras'`, `lista: [[cat, nombre, ganador]]`)
 const CARTA = { pais: 'de País', temporada: 'de Temporada', servidor: 'de Servidor', competitivo: 'Competitiva' };
 
 // los perfiles de una publicación, siempre en lista: `ksDe()` de liga.js (en los premios `ks` es un objeto)
@@ -125,14 +126,17 @@ export function Pub({ liga, it, A }) {
     // 🏆 un ganador de los MES AWARDS (bot/mes_awards.py, 16/10/2026)
     const mes = MESES[Number(String(it.mes || '').slice(5, 7)) - 1] || '';
     cat = 'MES AWARDS · ' + mes.toUpperCase();
-    vis = it.cat === 'batalla' && it.vid ? (
+    vis = it.cat === 'otras' ? <span className="pub-logo pub-mes" aria-hidden="true"><Ico n="copa" t={30} /></span>
+      : it.cat === 'batalla' && it.vid ? (
       <button type="button" className="pub-promo-v" onClick={() => abrirVideo({ vid: it.vid, tit: limpio(it.n || ''), link: 'https://www.youtube.com/watch?v=' + it.vid })}
         aria-label={'Mirar ' + limpio(it.n || 'la batalla')}><Miniatura vid={it.vid} cls="pub-promo-img" /><span aria-hidden="true">▶</span></button>
     ) : it.cat === 'servidor' ? <img className="pub-logo" alt="" src={liga.logo(it.sv)} /> : <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
-    txt = it.cat === 'batalla' ? <><b>{limpio(it.n)}</b> es la Batalla del mes de {mes}</>
+    txt = it.cat === 'otras' ? <>Los demás ganadores de <b>{mes}</b>:{' '}
+      {(it.lista || []).map((y, i) => <span key={y[0]}>{i ? ' · ' : ''}{y[1]}: <b>{limpio(y[2])}</b></span>)}</>
+      : it.cat === 'batalla' ? <><b>{limpio(it.n)}</b> es la Batalla del mes de {mes}</>
       : it.cat === 'servidor' ? <><b>{limpio(it.n)}</b> es el Servidor del mes de {mes}</>
         : <>{nombres} es {MES_CAT[it.cat] || 'ganador'} de <b>{mes}</b></>;
-    det = it.por === 'votos' ? num(it.votos) + (it.votos === 1 ? ' voto' : ' votos') : 'por los números del mes';
+    det = it.cat === 'otras' ? '' : it.por === 'votos' ? num(it.votos) + (it.votos === 1 ? ' voto' : ' votos') : 'por los números del mes';
     acc = <a className="pub-a" href="#/salon">El Salón de la fama</a>;
   } else if (it.tipo === 'promo') {
     // 📣 lo que un rapero compartió en el canal de promoción de su servidor (bot/promos.py, 16/10/2026): el video se mira

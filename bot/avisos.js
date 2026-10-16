@@ -2306,6 +2306,8 @@ const RUTAS = {
   '/avisos/promo-vio': 'POST',
   // 📣 una semana más de tu promo, desde la Tienda (`validarExtender()`, `promoExtender()`); y hasta cuándo va cada una
   '/avisos/promo-extender': 'POST', '/avisos/promos-extra': 'GET',
+  // 🏆 cuánta gente abrió cada promo, para la Promo del mes (`bot/mes_otros.py`). Nunca quién
+  '/avisos/promos-vistas': 'GET',
   // 🔔 el panel de la campana: lo que se te avisó, con tu sesión. Ver `bandeja()`
   '/avisos/bandeja': 'POST',
   // 🔥 tu racha diaria y tu nivel, con tu sesión; y el nivel y la racha de cada perfil. Ver `rachaDe()` y `niveles()`
@@ -2559,7 +2561,12 @@ export function paraSeguidores(items, ahora) {
 export const APLAUDIBLES = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, ligahito: 1, mesaward: 1 };
 //: 🏆 las categorías de los MES AWARDS, como las dice un aviso (`bot/mes_awards.py`)
 export const MES_CAT = { rapero: 'el Rapero del mes', revelacion: 'la Revelación del mes', batalla: 'la Batalla del mes',
-  servidor: 'el Servidor del mes' };
+  servidor: 'el Servidor del mes',
+  // 🏆 las de «Ver las demás nominaciones» (`bot/mes_otros.py`); sus ganadores salen juntos (`cat: 'otras'`)
+  organizador: 'el Organizador del mes', staff: 'el Staff del mes', duelista: 'el Duelista del mes',
+  cazador: 'el Cazador del mes', batacazo: 'el Batacazo del mes', imparable: 'el Imparable del mes',
+  evento: 'el Evento del mes', promo: 'la Promo del mes', publicacion: 'la Publicación del mes', crew: 'la Crew del mes',
+  pais: 'el País del mes', liga: 'la Liga del mes' };
 //: cuánto se guarda un aplauso (el muro trae lo de los últimos 21 días)
 export const APLAUSOS_DIAS = 30;
 //: cuándo vuelve a sonar: la primera vez, y cuando llega a cada uno de éstos
@@ -3138,7 +3145,7 @@ export function ajusteValido(cual, valor) {
     const q = [];
     for (const x of valor.quitar) {
       const s = String(x || '');
-      if (!/^(rapero|revelacion|batalla|servidor):.{1,80}$/.test(s)) return undefined;
+      if (!/^([a-z]{3,12}):.{1,80}$/.test(s) || !MES_CAT[s.split(':')[0]]) return undefined;
       if (!q.includes(s)) q.push(s);
     }
     return { mes: valor.mes, quitar: q };
@@ -5040,6 +5047,7 @@ export class Avisos {
       if (ruta === '/servidores') return json(this.servidoresElegidos(), 200, 60);
       if (ruta === '/aplausos') return json(this.aplausosCuenta(), 200, 20);
       if (ruta === '/promos-extra') return json(this.promosExtra(), 200, 60);
+      if (ruta === '/promos-vistas') return json(this.promosVistas(), 200, 60);
       if (ruta === '/niveles') return json(this.niveles(), 200, 300);
       if (ruta === '/pases') return json(this.pases(), 200, 300);
       if (ruta === '/roles') return json(this.roles(), 200, 300);
@@ -8712,6 +8720,13 @@ export class Avisos {
     const out = {};
     for (const r of this.sql.exec('SELECT pid, hasta FROM promo_extra WHERE hasta > ?', ahora).toArray()) out[r.pid] = r.hasta;
     return { t: ahora, extra: out };
+  }
+
+  /** Lo público, para la Promo del mes (`/avisos/promos-vistas`): cuántos abrieron cada una. ⚠️ Nunca quién. */
+  promosVistas() {
+    const n = {};
+    for (const r of this.sql.exec('SELECT pid, COUNT(*) AS c FROM promo_visto GROUP BY pid').toArray()) n[r.pid] = r.c;
+    return { t: Date.now(), n };
   }
 
   promoVio(d) {

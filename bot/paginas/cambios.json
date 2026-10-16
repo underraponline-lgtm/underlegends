@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "3.26",
+   "dia": "2026-10-16",
+   "cuando": "2026-10-16T11:08:00-04:00",
+   "titulo": "MES AWARDS: doce premios más",
+   "items": [
+    "🏆 En el Salón de la fama, «Ver las demás nominaciones»: Organizador, Staff, Duelista, Cazador, Batacazo, Imparable, Evento, Promo, Publicación, Crew, País y Liga del mes.",
+    "🗳️ Se votan igual que las cuatro principales, del 1 al 4 de cada mes.",
+    "🎖️ Quien gana una se lleva su insignia y 1.000 Puntos de Tienda; las crews, los países y las ligas, su lugar en el Salón."
+   ]
+  },
+  {
    "version": "3.25",
    "dia": "2026-10-16",
    "cuando": "2026-10-16T10:49:00-04:00",

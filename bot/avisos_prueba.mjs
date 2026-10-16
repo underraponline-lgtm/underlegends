@@ -2039,6 +2039,10 @@ const ok = (cond, que, det) => {
   ok(A.validarExtender(ps, { id: 'aaaaaaaaaaa1' }, ['bea'], ahora).error === 'no_es_tuya', 'la de otro no');
   ok(A.validarExtender(ps, { id: 'ccccccccccc3' }, ['ana'], ahora).error === 'vencida', 'la vencida no');
   ok(A.PROMO_SEMANA_PAGA === 2500 && A.PROMO_SEMANA_MS === 7 * 864e5, 'una semana, 2.500 Puntos de Tienda');
+  // 🏆 MES AWARDS: Dlx saca nominados de las dieciséis, y de nada más
+  const ms = A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['rapero:Ana', 'organizador:Velatz', 'liga:fmsperu'] });
+  ok(ms && ms.quitar.length === 3 && A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['otra:x'] }) === undefined
+    && Object.keys(A.MES_CAT).length === 16, 'sacar un nominado vale en las dieciséis categorías, y en otra no');
 }
 
 if (fallas) {

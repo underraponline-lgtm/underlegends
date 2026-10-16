@@ -208,6 +208,17 @@ const capM = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 
 // cada nominado: su cara (o la miniatura de la batalla, o el escudo del servidor), su nombre y su número del mes
 function Nominado({ liga, cat, x }) {
+  // 🏆 las de «Ver las demás nominaciones» (bot/mes_otros.py) traen su línea hecha (`d`) y qué se ve: un video, una
+  // imagen, el escudo del servidor, la bandera o la cara de `q`
+  if (x.d !== undefined) {
+    const fq = x.q ? liga.fila(x.q) : null;
+    const vis = x.vid ? <img className="ma-vid" alt="" src={'https://i.ytimg.com/vi/' + x.vid + '/mqdefault.jpg'} loading="lazy" />
+      : x.img ? <img className="ma-vid" alt="" src={x.img} loading="lazy" />
+        : x.cc ? <img className="ma-cara ma-flag" alt="" src={'/banderas/g/' + x.cc + '.webp'} />
+          : x.sv && !x.q ? <img className="ma-cara" alt="" src={liga.logo(x.sv)} />
+            : <Cara liga={liga} k={fq ? fq.k : ''} nombre={x.q || x.n} cls="ma-cara" />;
+    return <>{vis}<span className="ma-t"><b>{limpio(x.n)}</b><small>{x.d}</small></span></>;
+  }
   const f = (cat === 'rapero' || cat === 'revelacion') ? liga.fila(x.op) : null;
   const vis = cat === 'batalla' ? <img className="ma-vid" alt="" src={'https://i.ytimg.com/vi/' + x.op + '/mqdefault.jpg'} loading="lazy" />
     : cat === 'servidor' ? <img className="ma-cara" alt="" src={liga.logo(x.op)} />
@@ -249,8 +260,16 @@ function Categoria({ liga, enc, cat, nombre, de, nom, encId, gana }) {
 
 function MesAwards({ liga, enc }) {
   const S = useSalon();
+  // 🏆 las cuatro a la vista y las doce detrás del botón (Dlx, 16/10/2026: «tampoco rellenar todo de eso, sino como el
+  // botón que dirá ver las demás nominaciones»)
+  const [todas, setTodas] = useState(false);
   if (!S) return null;
-  const cats = S.cats || [];
+  const cats = (S.cats || []).filter((c) => todas || !c[3]);
+  const nOtras = (S.cats || []).filter((c) => c[3]).length;
+  const boton = nOtras ? (
+    <button type="button" className="btn borde2 chico ma-mas" aria-expanded={todas} onClick={() => setTodas((v) => !v)}>
+      {todas ? 'Ver sólo las principales' : 'Ver las demás nominaciones (' + nOtras + ')'}</button>
+  ) : null;
   const ab = S.abierto;
   const viv = S.vivo;
   const hist = S.hist || [];
@@ -264,7 +283,7 @@ function MesAwards({ liga, enc }) {
         const nom = ((ab.cats || {})[c] || {}).nom || [];
         if (!nom.length) return null;
         return <Categoria key={c} liga={liga} enc={enc} cat={c} nombre={n} de={de} nom={nom} encId={votando && nom.length >= 2 ? 'mes:' + ab.mes + ':' + c : ''} />;
-      })}</div>
+      })}{boton}</div>
     );
   } else if (viv) {
     cab = <>Así va <b>{viv.nombre}</b>: si el mes terminara hoy, éstos serían los nominados. Se vota {liga.dia(viv.vota)}.</>;
@@ -272,14 +291,15 @@ function MesAwards({ liga, enc }) {
       <div className="ma-cats">{cats.map(([c, n, de]) => {
         const nom = (viv.cats || {})[c] || [];
         return nom.length ? <Categoria key={c} liga={liga} cat={c} nombre={n} de={de} nom={nom} /> : null;
-      })}</div>
+      })}{boton}</div>
     );
   }
   return (
     <Sec id="sf-mes" titulo="MES AWARDS" extra="negra sf-mes">
       <p className="ma-cab">{cab || <>Cada mes, lo mejor de la Liga, votado por la gente.</>}</p>
       <p className="ma-como">Los nominados salen solos de los números del mes; vota cualquiera con Discord, una vez por categoría, y se puede cambiar
-        hasta que cierra. El ganador se lleva su insignia{S.premio ? ', Puntos de Tienda' : ''} y su lugar en este Salón.</p>
+        hasta que cierra. El ganador se lleva su insignia{S.premio ? ', Puntos de Tienda' : ''} y su lugar en este Salón.
+        {nOtras ? ' Los de crew, país, liga y servidor se llevan el Salón y la publicación.' : ''}</p>
       {cuerpo}
       {hist.length ? (
         <div className="ma-hist">

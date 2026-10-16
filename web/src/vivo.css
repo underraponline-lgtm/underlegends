@@ -1619,6 +1619,10 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 /* 🏆 la línea de los 16 que clasifican al torneo de cierre de la T1 (sólo con `?prev=fin` hasta que Dlx lo anuncie) */
 .rk-t tr.rk-corte td{padding:0;border:0;background:none}
 .rk-corte.directo a{border-top:2px solid #E5B800;color:var(--tinta)}
+/* 🏆 MES AWARDS: el botón de las demás nominaciones y la bandera de un país nominado */
+.ma-mas{grid-column:1 / -1;justify-self:start;margin-top:4px}
+.ma-flag{object-fit:cover;border-radius:50%}
+.pub-mes{display:grid;place-items:center;background:#030304;color:#E5B800}
 .rk-corte span,.rk-corte a{display:block;text-decoration:none;margin:2px 0;padding:6px 10px;border-top:2px dashed var(--magenta);color:var(--magenta-tx);
   font:700 15px/1.35 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;white-space:normal}
 .rk-final{margin:10px 0 0;padding:8px 10px;border:2px solid var(--magenta);background:var(--caja);font-size:14px}
