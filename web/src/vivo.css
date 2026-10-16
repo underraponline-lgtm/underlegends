@@ -234,6 +234,14 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 }
 @media (max-width: 359.98px){.app .marca .lockup{display:none}}
 .x-busca-celu .x-caja{width:min(420px,100%);border-left:0}
+/* 🎬 «contanos cómo aparecés» (16/10/2026), debajo del pedido de video */
+.cu-contanos{display:grid;gap:8px;margin-top:8px;padding:10px;border:2px solid var(--linea)}
+.cu-contanos p{margin:0;font:600 14px/1.35 Archivo,sans-serif}
+.cu-contanos label{display:grid;gap:4px}
+.cu-contanos label span{font:700 15px/1.1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;color:var(--gris)}
+.cu-contanos input{min-width:0;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);padding:9px 10px;
+  font:600 15px/1.2 Archivo,sans-serif}
+.cu-contanos .btn{justify-self:start}
 /* ⚠️ vive adentro de la cabecera, donde `.cab .buscar-w` está escondido en el celular */
 .app .cab .x-busca-celu .buscar-w{display:block}
 /* en la computadora grande «todo se ve muy chico» (Dlx, 30/09/2026: «C»): la página entera, más grande, con la

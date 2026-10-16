@@ -564,8 +564,38 @@ const VID_ERR = {
   espera: 'Tenés diez esperando: esperá a que se revisen.',
   ya: 'Ese ya lo mandaste.',
   sin_sesion: 'Tu sesión venció: entrá con Discord de nuevo.',
+  respuestas: 'Completá las tres cosas: tu nombre en el video, cómo te reconocemos y el minuto (por ejemplo 4:35).',
+  pedido: 'Ese pedido ya no espera respuesta.',
 };
-const VID_EST = { espera: 'En cola · se revisa en la próxima media hora', ok: '✓', no: '✗', revisar: 'Lo revisa Dlx' };
+const VID_EST = { espera: 'En cola · se revisa en la próxima media hora', ok: '✓', no: '✗', revisar: 'Lo revisa Dlx',
+  preguntar: '❓' };
+// 🎬 «CONTANOS CÓMO APARECÉS» (Dlx, 16/10/2026): cuando tu nombre no está en el título —en las plazas te dicen de
+// otra forma, o es un video de equipos—, estas tres cosas le alcanzan a Dlx para verificar que sos vos
+function Contanos({ p, pedir, setMsg }) {
+  const [f, setF] = useState({ nombre: '', como: '', minuto: '' });
+  const [va, setVa] = useState(false);
+  const ok = f.nombre.trim().length >= 2 && f.como.trim().length >= 4 && /^(?:\d{1,2}:)?\d{1,2}:\d{2}$/.test(f.minuto.trim());
+  const mandar = async (e) => {
+    e.preventDefault();
+    if (!ok || va) return;
+    setVa(true);
+    const err = await pedir({ accion: 'responder', id: p.id, nombre: f.nombre.trim(), como: f.como.trim(), minuto: f.minuto.trim() });
+    setVa(false);
+    setMsg(err || 'Gracias: lo revisa Dlx con lo que contaste y, si sos vos, sale en tu perfil.');
+  };
+  const campo = (k, t, ph, max) => (
+    <label><span>{t}</span><input value={f[k]} maxLength={max} placeholder={ph} onChange={(e) => setF(Object.assign({}, f, { [k]: e.target.value }))} /></label>
+  );
+  return (
+    <form className="cu-contanos" onSubmit={mandar}>
+      <p>No encontramos tu nombre en el título. Contanos cómo aparecés y lo revisa Dlx:</p>
+      {campo('nombre', '¿Con qué nombre aparecés en el video?', 'Ej.: SEBA', 60)}
+      {campo('como', '¿Cómo te reconocemos?', 'Ej.: lentes, buzo negro, el de la izquierda', 160)}
+      {campo('minuto', '¿En qué minuto aparecés?', 'Ej.: 4:35', 8)}
+      <button type="submit" className="btn verde chico" disabled={!ok || va}>{va ? 'Mandando…' : 'Mandar'}</button>
+    </form>
+  );
+}
 function VideosCaja({ dc }) {
   const [ps, setPs] = useState(null);
   const [url, setUrl] = useState('');
@@ -593,7 +623,7 @@ function VideosCaja({ dc }) {
     if (!err) setUrl('');
   };
   return (
-    <Caja t="Mis batallas en video" d="Pegá el link de una batalla tuya en YouTube, o el de un canal donde estén tus batallas (una liga, una plaza). Entra si el título es una batalla («A vs B») y dice tu nombre de la Liga o un apodo tuyo; si trae bandera, la de tu país. Un canal grande o un nombre famoso lo revisa Dlx.">
+    <Caja t="Mis batallas en video" d="Pegá el link de una batalla tuya en YouTube, o el de un canal donde estén tus batallas (una liga, una plaza). Entra si el título es una batalla («A vs B») y dice tu nombre de la Liga o un apodo tuyo; si trae bandera, la de tu país. Si en el video te dicen de otra forma, te preguntamos cómo aparecés y lo revisa Dlx; un canal grande o un nombre famoso, también.">
       <form className="cu-vid" onSubmit={mandar}>
         <input type="url" maxLength={300} value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://youtube.com/…" aria-label="Link de YouTube" />
         <button type="submit" className="btn verde chico" disabled={va}>{va ? 'Mandando…' : 'Sumar'}</button>
@@ -602,7 +632,8 @@ function VideosCaja({ dc }) {
       {ps && ps.length ? (
         <ul className="cu-lista cu-vids">{ps.map((p) => (
           <li key={p.id}><span className={'cu-vid-e ' + p.estado}>{VID_EST[p.estado] || p.estado}{p.motivo && p.estado !== 'espera' ? ' ' + p.motivo : ''}</span>
-            <a href={p.url} target="_blank" rel="noopener noreferrer">{p.tipo === 'canal' ? 'Canal · ' : ''}{p.url.replace(/^https?:\/\/(www\.)?/, '')}</a></li>
+            <a href={p.url} target="_blank" rel="noopener noreferrer">{p.tipo === 'canal' ? 'Canal · ' : ''}{p.url.replace(/^https?:\/\/(www\.)?/, '')}</a>
+            {p.estado === 'preguntar' ? <Contanos p={p} pedir={pedir} setMsg={setMsg} /> : null}</li>
         ))}</ul>
       ) : null}
     </Caja>

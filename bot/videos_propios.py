@@ -26,6 +26,10 @@ LAS RESTRICCIONES, UNA POR CADA FORMA DE COLAR UN VIDEO
   7. Y LO QUE YA ENTRÓ SE PUEDE SACAR: cada uno los suyos, y con `REPORTES` reportes distintos («esto no es suyo») se
      oculta y va a revisión.
   «Revisión» es el Dashboard de Dlx: aprobar o no. Es lo raro; lo normal entra solo.
+  8. 🎬 SI TU NOMBRE NO ESTÁ EN EL TÍTULO, SE TE PREGUNTA (Dlx, 16/10/2026, con Liberia: en las plazas es «SEBA», y en
+     los videos de equipos su nombre ni aparece): el pedido queda en `preguntar` y la página le pide con qué nombre
+     aparece, cómo se lo reconoce y en qué minuto. Con eso va a revisión, con el link en ese minuto: Dlx lo mira y
+     decide. Nunca entra solo —es justo lo que no se puede verificar desde el título—.
 
 DE UN CANAL ENTERO se suman sólo los videos donde ÉL es uno de los lados, con las mismas reglas: un canal no le da a
 nadie los videos de otro que se llame parecido. Y se vuelve a mirar una vez por semana, por si subieron más.
@@ -145,6 +149,36 @@ def canal(url):
 
 
 # ── la regla ──────────────────────────────────────────────────────────────
+#: el motivo de «no está tu nombre», que dispara las preguntas (regla 8)
+NO_NOMBRE = 'tu nombre no está en el título'
+#: lo que ve quien pidió el video mientras no contestó
+PREGUNTA = 'tu nombre no está en el título: contanos cómo aparecés y lo revisa Dlx'
+
+
+def respuestas(p):
+    """Lo que contestó quien pidió el video (`resp` del objeto): `{nombre, como, minuto}`, o `None`."""
+    try:
+        r = json.loads(p.get('resp') or '{}') or {}
+    except (TypeError, ValueError):
+        return None
+    if not isinstance(r, dict) or not r.get('nombre') or not r.get('como') or not r.get('minuto'):
+        return None
+    return {'nombre': str(r['nombre'])[:60], 'como': str(r['como'])[:160], 'minuto': str(r['minuto'])[:10]}
+
+
+def en_minuto(url, minuto):
+    """El link del video, abriendo en ese minuto («4:35» → `t=275`)."""
+    try:
+        partes = [int(x) for x in str(minuto).split(':')]
+    except ValueError:
+        return url
+    seg = 0
+    for x in partes:
+        seg = seg * 60 + x
+    vid = id_video(url)
+    return 'https://www.youtube.com/watch?v=%s&t=%d' % (vid, seg) if vid else url
+
+
 def decidir(titulo, raw, iso, nombres, homonimos, subs):
     """`(estado, motivo)` para un video de `raw`: `ok`, `revisar` o `no`. Ver el docstring del módulo.
 
@@ -162,7 +196,7 @@ def decidir(titulo, raw, iso, nombres, homonimos, subs):
         if suyo:
             break
     if not suyo:
-        return 'no', 'tu nombre no está en el título'
+        return 'no', NO_NOMBRE
     nom, fl = suyo
     if fl and iso and fl != iso:
         return 'no', 'la bandera del título no es la de tu país'
@@ -289,6 +323,17 @@ def correr(aplicar=False):
                 c = canal(curl) if curl else None
                 subs = c[2] if c else None
                 est, mot = decidir(tit, raw, iso, nombres, hom, subs)
+                # 🎬 sin su nombre en el título: se le pregunta, y con lo que contestó, lo revisa Dlx (regla 8)
+                if est == 'no' and mot == NO_NOMBRE:
+                    resp = respuestas(p)
+                    if not resp:
+                        estados[str(p['id'])] = ['preguntar', PREGUNTA]
+                        continue
+                    est, mot = 'revisar', 'su nombre no está en el título: contestó cómo aparece'
+                    revisar[str(p['id'])] = {'id': p['id'], 'raw': raw, 'tipo': 'link', 'url': en_minuto(url, resp['minuto']),
+                                             'vid': vid, 'tit': tit, 'cn': cn, 'subs': subs, 'motivo': mot, 'resp': resp}
+                    estados[str(p['id'])] = [est, 'lo revisa Dlx con lo que contaste']
+                    continue
                 if est == 'ok':
                     suma(raw, vid, tit, cn, 'link')
                 elif est == 'revisar':
@@ -351,7 +396,8 @@ def correr(aplicar=False):
             json.dump(out, f, ensure_ascii=False, indent=1, sort_keys=True)
             f.write('\n')
         _objeto('POST', {'estados': estados, 'revisar': [[x['id'], x['raw'], x.get('tit') or x.get('cn') or '',
-                                                          x.get('url'), x.get('motivo')] for x in revisar.values()]})
+                                                          x.get('url'), x.get('motivo'), x.get('resp') or None]
+                                                         for x in revisar.values()]})
     return 0
 
 
@@ -374,6 +420,13 @@ def _self_check():
     hom = {_k('Makmah'): 1, _k('Sol'): 2}
     ok(decidir('MAKMA VS CHETOS - BDM PANDILLAS COLIMA - OCTAVOS', 'Makmah', 've', noms, hom, 476) == ('ok', ''),
        'su batalla de plaza, con su alias, en un canal chico: entra sola')
+    # 🎬 regla 8 (16/10/2026): sin su nombre en el título se le pregunta, y con lo que contestó, lo revisa Dlx
+    ok(decidir('BUITRES MEDUSA vs EL COMBO LOCO - Octavos | 5vs5', 'Liberia', 'ar', {_k('Liberia')}, {}, 900) == ('no', NO_NOMBRE)
+       and respuestas({'resp': '{"nombre": "SEBA", "como": "lentes", "minuto": "4:35"}'})['nombre'] == 'SEBA'
+       and respuestas({'resp': ''}) is None and respuestas({'resp': '{"nombre": "SEBA"}'}) is None
+       and en_minuto('https://youtu.be/hR4EH1DvwKA?si=x', '4:35') == 'https://www.youtube.com/watch?v=hR4EH1DvwKA&t=275'
+       and en_minuto('https://youtu.be/hR4EH1DvwKA', '1:02:03').endswith('&t=3723'),
+       'sin su nombre en el título: se le pregunta (no entra solo); lo que contestó abre el video en ese minuto')
     ok(decidir('Makma 🇲🇽 vs Pepe | Final', 'Makmah', 've', noms, hom, 500)[0] == 'no',
        'con la bandera de otro país: no')
     ok(decidir('Chetos vs Kuzko | Octavos', 'Makmah', 've', noms, hom, 500)[0] == 'no', 'si no está él: no')

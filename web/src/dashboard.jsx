@@ -1058,10 +1058,12 @@ function VideosRevisar({ vs }) {
   };
   return (
     <div><h3>Videos para revisar <small>los que no entraron solos</small></h3>
-      <ul>{vs.map(([id, raw, tit, url, motivo]) => (
+      <ul>{vs.map(([id, raw, tit, url, motivo, resp]) => (
         <li key={id}>
           <div className="db-l1"><b>{limpio(raw)}</b><span className="db-chip ojo">{motivo}</span></div>
           <a className="db-link" href={url} target="_blank" rel="noopener noreferrer">{tit || url}</a>
+          {/* 🎬 lo que contestó (16/10/2026): el link de arriba ya abre en ese minuto */}
+          {resp ? <p className="db-tx">Dice que aparece como <b>«{limpio(resp.nombre)}»</b>, en el <b>{resp.minuto}</b>. Cómo reconocerlo: {limpio(resp.como)}</p> : null}
           {hecho[id] && hecho[id] !== 'falló' ? <small>{hecho[id] === '…' ? 'mandando…' : hecho[id] === 'aprobado' ? '✓ aprobado: entra en la próxima corrida' : '✗ no entra'}</small> : (
             <div className="cu-btns">
               <button type="button" className="btn verde chico" onClick={() => decidir(id, true)}>Aprobar</button>

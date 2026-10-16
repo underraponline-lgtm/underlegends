@@ -1829,6 +1829,19 @@ const ok = (cond, que, det) => {
     o.duenoVideo({ id: c.pedidos[1].id, si: true });
     ok(o.panelDueno().videos.length === 0 && o.videosCiclo().decididos[c.pedidos[1].id] === true,
       'Dlx lo aprueba: sale del Dashboard y el ciclo lo recibe');
+    // 🎬 «contanos cómo aparecés» (16/10/2026): sólo sobre un pedido tuyo que el ciclo dejó en `preguntar`, con las
+    // tres cosas; vuelve a la cola con lo que contestaste
+    const pq = o.videosCiclo().pedidos[0].id;
+    o.videosEstados({ estados: { [pq]: ['preguntar', 'tu nombre no está en el título: contanos cómo aparecés'] } });
+    const resp = (x) => o.misVideos(Object.assign({ quien: '700000000000000001', de: 'ana', accion: 'responder', id: pq }, x));
+    const mal1 = await (await resp({ nombre: 'SEBA', como: 'lentes', minuto: 'ayer' })).json();
+    const ajeno = await (await o.misVideos({ quien: '700000000000000002', de: 'bea', accion: 'responder', id: pq,
+      nombre: 'SEBA', como: 'lentes', minuto: '4:35' })).json();
+    const bien = await (await resp({ nombre: 'SEBA', como: 'lentes, buzo negro', minuto: '4:35' })).json();
+    const vuelve = o.videosCiclo().pedidos.find((p) => p.id === pq);
+    ok(mal1.error === 'respuestas' && ajeno.error === 'pedido' && bien.ok && vuelve && JSON.parse(vuelve.resp).minuto === '4:35',
+      'contestar: sin las tres cosas no; el pedido de otro no; con todo, vuelve a la cola con lo que contó',
+      JSON.stringify([mal1, ajeno, bien]));
     // 📣 seguir a un organizador: el anuncio nuevo va a su bandeja y a la cola del push
     const so = o.seguirOrg({ quien: '700000000000000003', nombre: '@Kravitz', si: true });
     ok(so.ok && so.orgs[0].org === 'kravitz' && A.claveOrg('𝐊𝐫𝐚𝐯𝐢𝐭𝐳') === 'kravitz', 'seguir a «@Kravitz»: su clave, también con letras de fantasía');

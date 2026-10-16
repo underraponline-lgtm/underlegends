@@ -4020,7 +4020,10 @@ export async function rutaAvisos(req, env, ruta) {
     if (!claveValida(de)) return json({ error: 'sin_verificar' }, 403);
     return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
       method: 'POST', body: JSON.stringify({ quien: q.id, de, accion: String(d.accion || '').slice(0, 10),
-        url: String(d.url || '').slice(0, 300), vid: String(d.vid || '').slice(0, 20), clave: String(d.clave || '').slice(0, 80) }),
+        url: String(d.url || '').slice(0, 300), vid: String(d.vid || '').slice(0, 20), clave: String(d.clave || '').slice(0, 80),
+        // 🎬 «contanos cómo aparecés» (16/10/2026): el pedido y lo que contestó, cada cosa con tope
+        id: Number.isInteger(d.id) ? d.id : 0, nombre: String(d.nombre || '').slice(0, 60),
+        como: String(d.como || '').slice(0, 160), minuto: String(d.minuto || '').slice(0, 10) }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -4645,6 +4648,8 @@ export class Avisos {
         "clave TEXT NOT NULL, tipo TEXT NOT NULL, url TEXT NOT NULL, t INTEGER NOT NULL, estado TEXT NOT NULL DEFAULT 'espera', " +
         "motivo TEXT NOT NULL DEFAULT '')");
       this.sql.exec('CREATE INDEX IF NOT EXISTS videos_pedidos_q ON videos_pedidos (quien, t)');
+      // 🎬 lo que contestó quien pidió un video sin su nombre en el título (16/10/2026, ver `misVideos()`)
+      try { this.sql.exec("ALTER TABLE videos_pedidos ADD COLUMN resp TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
       this.sql.exec('CREATE TABLE IF NOT EXISTS videos_reportes (vid TEXT NOT NULL, clave TEXT NOT NULL, quien TEXT NOT NULL, ' +
         't INTEGER NOT NULL, PRIMARY KEY (vid, quien))');
       this.sql.exec('CREATE TABLE IF NOT EXISTS videos_quitados (clave TEXT NOT NULL, vid TEXT NOT NULL, t INTEGER NOT NULL, ' +
@@ -7426,6 +7431,23 @@ export class Avisos {
     const lista = () => this.sql.exec('SELECT id, tipo, url, t, estado, motivo FROM videos_pedidos WHERE quien = ? ' +
       'ORDER BY t DESC LIMIT 30', quien).toArray();
     if (d.accion === 'ver') return json({ ok: true, pedidos: lista() });
+    // 🎬 «CONTANOS CÓMO APARECÉS» (Dlx, 16/10/2026, con Liberia —en las plazas es «SEBA»— y videos de equipos que no
+    // dicen su nombre: «que la persona que suba obtenga preguntas en caso de que su aka no esté reconocido… ¿cómo
+    // eres, cuándo apareces en el video, cómo luces, en qué minuto? para verificar que no estemos poniendo a alguien
+    // que no es en tu perfil»). Sólo sobre un pedido SUYO que el ciclo dejó en `preguntar`; vuelve a la cola con lo
+    // que contestó y el ciclo se lo pasa a Dlx (`bot/videos_propios.py`)
+    if (d.accion === 'responder') {
+      const nombre = String(d.nombre || '').trim(), como = String(d.como || '').trim(), minuto = String(d.minuto || '').trim();
+      if (!Number.isInteger(d.id) || nombre.length < 2 || como.length < 4 || !/^(?:\d{1,2}:)?\d{1,2}:\d{2}$/.test(minuto)) {
+        return json({ error: 'respuestas' }, 400);
+      }
+      const p = this.sql.exec("SELECT id FROM videos_pedidos WHERE id = ? AND quien = ? AND estado = 'preguntar'", d.id, quien)
+        .toArray()[0];
+      if (!p) return json({ error: 'pedido' }, 404);
+      this.sql.exec("UPDATE videos_pedidos SET estado = 'espera', motivo = '', resp = ? WHERE id = ?",
+        JSON.stringify({ nombre: nombre.slice(0, 60), como: como.slice(0, 160), minuto }), d.id);
+      return json({ ok: true, pedidos: lista() });
+    }
     if (d.accion === 'quitar') {
       if (!/^[\w-]{11}$/.test(String(d.vid || ''))) return json({ error: 'video' }, 400);
       this.sql.exec('INSERT OR REPLACE INTO videos_quitados (clave, vid, t) VALUES (?, ?, ?)', de, String(d.vid), ahora);
@@ -7470,7 +7492,7 @@ export class Avisos {
     const decididos = {};
     for (const r of this.sql.exec('SELECT id, si FROM videos_decididos').toArray()) decididos[r.id] = r.si === 1;
     return {
-      pedidos: this.sql.exec("SELECT id, clave, tipo, url FROM videos_pedidos WHERE estado = 'espera' ORDER BY t LIMIT 60").toArray(),
+      pedidos: this.sql.exec("SELECT id, clave, tipo, url, resp FROM videos_pedidos WHERE estado = 'espera' ORDER BY t LIMIT 60").toArray(),
       reportes, decididos,
       quitados: this.sql.exec('SELECT clave, vid FROM videos_quitados').toArray(),
     };
@@ -7481,7 +7503,7 @@ export class Avisos {
     let n = 0;
     for (const [id, x] of Object.entries((d && d.estados) || {})) {
       if (!/^\d{1,12}$/.test(id) || !Array.isArray(x)) continue;
-      const est = ['ok', 'no', 'revisar'].includes(x[0]) ? x[0] : 'no';
+      const est = ['ok', 'no', 'revisar', 'preguntar'].includes(x[0]) ? x[0] : 'no';
       this.sql.exec('UPDATE videos_pedidos SET estado = ?, motivo = ? WHERE id = ?', est, String(x[1] || '').slice(0, 120), Number(id));
       if (est !== 'revisar') this.sql.exec('DELETE FROM videos_decididos WHERE id = ?', Number(id));
       n++;
