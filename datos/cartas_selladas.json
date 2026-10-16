@@ -359,10 +359,10 @@
    "servidor": "fd4581683589:f7bc857dd9f6:15af16"
   },
   "Dynoco": {
-   "competitivo": "1f8fc4806226:aa2fab0a1b31",
+   "competitivo": "f9dc5afe23e3:aa2fab0a1b31",
    "pais": "b2407d625ce2:631b7a4c93c4",
    "servidor": "442eacf020cc:f7bc857dd9f6:05b79d",
-   "temporada": "fa94bd8e5890:906ce275eeb8"
+   "temporada": "f434673ef1d9:906ce275eeb8"
   },
   "Dyzz": {},
   "EIDP": {},
@@ -874,10 +874,10 @@
    "servidor": "c1078f7aec71:f7bc857dd9f6:948362"
   },
   "Lord Viruzz": {
-   "competitivo": "ba586e306676:aa2fab0a1b31",
+   "competitivo": "fa6101b471b2:aa2fab0a1b31",
    "pais": "ca1a0de4db96:631b7a4c93c4",
    "servidor": "5737e2d8d895:f7bc857dd9f6:531696",
-   "temporada": "20eaa26df5af:906ce275eeb8"
+   "temporada": "0ed18e2792ae:906ce275eeb8"
   },
   "Luck": {
    "servidor": "6d26c0c55f45:f7bc857dd9f6:055f77"
@@ -941,9 +941,9 @@
    "servidor": "48245ff4e8ab:f7bc857dd9f6:980594"
   },
   "MaYeuTyK": {
-   "competitivo": "8322e1115c00:aa2fab0a1b31",
-   "pais": "0dcf22b76831:631b7a4c93c4",
-   "servidor": "a1537c9e1fe0:f7bc857dd9f6:be5547"
+   "competitivo": "dedc03a6ec18:aa2fab0a1b31",
+   "pais": "9bbe8ba7efb5:631b7a4c93c4",
+   "servidor": "e2ca126b1b6b:f7bc857dd9f6:be5547"
   },
   "Magic": {
    "competitivo": "2be891e7b6c0:aa2fab0a1b31",
@@ -1107,20 +1107,20 @@
    "servidor": "62285a56b056:f7bc857dd9f6:055f77"
   },
   "NXUZ": {
-   "competitivo": "a777c0f90681:aa2fab0a1b31",
-   "pais": "212b72a08876:631b7a4c93c4",
-   "servidor": "1a6443ff6934:f7bc857dd9f6:25c183",
-   "temporada": "fb86ccef1927:906ce275eeb8"
+   "competitivo": "a19a59f37f69:aa2fab0a1b31",
+   "pais": "2b74537f7df3:631b7a4c93c4",
+   "servidor": "5da3843064f5:f7bc857dd9f6:25c183",
+   "temporada": "bad701a5f9b9:906ce275eeb8"
   },
   "Nahu": {
    "servidor": "4a1ff1fe7a60:f7bc857dd9f6:15af16"
   },
   "Nairda": {},
   "Nemi": {
-   "competitivo": "3af0123be5f4:aa2fab0a1b31",
+   "competitivo": "e27b5bec4e47:aa2fab0a1b31",
    "pais": "4c4e790d2bc3:631b7a4c93c4",
    "servidor": "6f9c1e2ea96d:f7bc857dd9f6:8a6226",
-   "temporada": "62fba7190cb7:906ce275eeb8"
+   "temporada": "a75b4f0b9f88:906ce275eeb8"
   },
   "Neo": {},
   "Ness": {
@@ -1808,5 +1808,5 @@
    "servidor": "7f8885a35a6d:f7bc857dd9f6:55e9bc"
   }
  },
- "cuando": "2026-10-16T23:16:28+00:00"
+ "cuando": "2026-10-16T23:29:35+00:00"
 }
