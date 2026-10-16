@@ -138,13 +138,16 @@ export function Pub({ liga, it, A }) {
     // 📣 lo que un rapero compartió en el canal de promoción de su servidor (bot/promos.py, 16/10/2026): el video se mira
     // acá; lo demás abre en su plataforma. El título es el de la plataforma, no el texto del mensaje
     const plat = PLATAFORMA[it.plat] || 'su link';
-    cat = 'PROMO · ' + siglaDe(it.sv);
+    // 📣 la Liga también promociona: los videos de nuestros participantes (`o: 'liga'`, bot/promos.py `de_la_liga()`)
+    const deLiga = it.o === 'liga';
+    cat = deLiga ? 'LA LIGA PROMOCIONA' : 'PROMO · ' + siglaDe(it.sv);
     vis = it.vid ? (
       <button type="button" className="pub-promo-v" onClick={() => { promoAbierta(it.id); abrirVideo({ vid: it.vid, tit: limpio(it.tit || ''), link: it.url }); }}
         aria-label={'Mirar ' + (it.tit ? limpio(it.tit) : 'el video')}><Miniatura vid={it.vid} cls="pub-promo-img" /><span aria-hidden="true">▶</span></button>
     ) : it.img ? <a className="pub-promo-v" href={it.url} target="_blank" rel="noopener noreferrer" aria-label={'Abrir en ' + plat} onClick={() => promoAbierta(it.id)}><img className="pub-promo-img" alt="" src={it.img} loading="lazy" /></a>
       : <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
-    txt = it.tit ? <>{nombres} comparte <b>{limpio(it.tit)}</b></> : <>{nombres} comparte algo en <b>{plat}</b></>;
+    txt = deLiga ? <>{nombres} en <b>{limpio(it.tit || plat)}</b></>
+      : it.tit ? <>{nombres} comparte <b>{limpio(it.tit)}</b></> : <>{nombres} comparte algo en <b>{plat}</b></>;
     det = plat + (it.de && it.de !== it.tit ? ' · ' + it.de : '');
     acc = <a className="pub-a" href={it.url} target="_blank" rel="noopener noreferrer" onClick={() => promoAbierta(it.id)}>{it.plat === 'sp' || it.plat === 'sc' ? 'Escuchar' : 'Ver'} en {plat} ↗</a>;
   } else if (it.tipo === 'ligahito') {
@@ -396,8 +399,9 @@ export function Publicaciones({ liga, enc }) {
             <Avisame />
             {sigo.length ? <section className="pub-bloque"><h2 className="evp-h2">A quién seguís</h2><Sigo liga={liga} sigo={sigo} onVer={() => { setFil('sigo'); setVer(40); }} /></section> : null}
           </div>
-        {fil === 'promos' ? <p className="pub-promo-paga">Lo que comparten los raperos en el canal de promoción de su servidor. Abrí las promos con tu
-          cuenta de Discord: cada una te da <b>50 Puntos de Tienda</b> (hasta 3 por día) y suma a tu Pase.</p> : null}
+        {fil === 'promos' ? <p className="pub-promo-paga">Lo que comparten los raperos en el canal de promoción de su servidor, y los videos de
+          nuestros participantes que promociona la Liga. Cada promo está una semana (la tuya la podés alargar en la <a href="#/tienda">Tienda</a>).
+          Abrilas con tu cuenta de Discord: cada una te da <b>50 Puntos de Tienda</b> (hasta 3 por día) y suma a tu Pase.</p> : null}
         </aside>
       </div>
     </>

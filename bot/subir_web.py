@@ -1422,37 +1422,33 @@ def _hoy_este():
         return dt.datetime.now(dt.timezone.utc).date()
 
 
-def _con_redes(perf):
-    """Suma a cada perfil las redes que esa persona eligió mostrar.
+def redes_kv():
+    """`{clave: [[tipo, url, nombre], …]}`: las redes que cada uno eligió mostrar en «Mis redes», de KV.
 
-    🔑 Las guarda el Worker en `redes:<clave>` cuando la persona toca
-    «Guardar» en «Mis redes» (ver `cuentaRedes()` en `bot/worker.js`). Acá
-    sólo se leen —`keys` con prefijo y `bulk/get`, dos pedidos— y viajan
-    dentro de `web:perfiles`, que ya se escribe sólo si cambió.
+    🔑 Las guarda el Worker en `redes:<clave>` cuando la persona toca «Guardar» en «Mis redes» (ver `cuentaRedes()` en
+    `bot/worker.js`). Acá sólo se leen —`keys` con prefijo y `bulk/get`, dos pedidos—. Las usan los perfiles
+    (`_con_redes()`) y las promos de la Liga (`bot/promos.py`: lo que sube cada uno a su YouTube).
 
-    ⚠️ SI KV NO CONTESTA, LOS PERFILES SALEN SIN REDES Y NO SIN PERFIL: es
-    un agregado, no puede tumbar lo demás.
+    ⚠️ `None` SI NO SE PUDO LEER, `{}` SI NO HAY NADA: «no pude leer» no es «nadie tiene redes».
     """
-    ps = (perf or {}).get('p') or {}
-    if not ps or _SIN_RED[0]:
-        return 0
+    if _SIN_RED[0]:
+        return {}
+    # 🔴 `time` NO ESTÁ ARRIBA DE ESTE ARCHIVO: sin esto, el primer valor con el formato nuevo tiraba NameError y el
+    # `except` de abajo lo convertía en «sin redes» para todos, callado.
+    import time
+    import requests
+    import subir_datos as SD
+    tok = _token()
+    if not tok:
+        return {}
     try:
-        # 🔴 `time` NO ESTÁ ARRIBA DE ESTE ARCHIVO: sin esto, el primer valor
-        # con el formato nuevo tiraba NameError y el `except` de abajo lo
-        # convertía en «sin redes» para todos, callado.
-        import time
-        import requests
-        import subir_datos as SD
-        tok = _token()
-        if not tok:
-            return 0
         s = requests.Session()
         s.headers['Authorization'] = 'Bearer ' + tok
         r = s.get('%s/keys' % SD.API, params={'prefix': 'redes:', 'limit': 1000}, timeout=30).json()
         if not r.get('success', True):
             raise RuntimeError('keys: %s' % str(r.get('errors'))[:60])
         ks = [k['name'] for k in (r.get('result') or [])]
-        n = 0
+        out = {}
         for i in range(0, len(ks), 100):
             rb = s.post('%s/bulk/get' % SD.API, json={'keys': ks[i:i + 100]}, timeout=30).json()
             if not rb.get('success', True):
@@ -1473,20 +1469,42 @@ def _con_redes(perf):
                     if time.time() * 1000 - (rs.get('t') or 0) > 120 * 864e5:
                         continue
                     rs = rs.get('redes') or []
-                if cl in ps and isinstance(rs, list) and rs:
-                    ps[cl]['redes'] = [[r.get('t'), r.get('u'), r.get('n')] for r in rs
-                                       if isinstance(r, dict) and r.get('t') and r.get('u')][:8]
-                    n += 1
-        if n:
-            print('   🔗 redes en %d perfil(es)' % n)
-        return n
+                if isinstance(rs, list) and rs:
+                    rr = [[r.get('t'), r.get('u'), r.get('n')] for r in rs
+                          if isinstance(r, dict) and r.get('t') and r.get('u')][:8]
+                    if rr:
+                        out[cl] = rr
+        return out
     except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude leer las redes (%s)' % str(e)[:60])
+        return None
+
+
+def _con_redes(perf):
+    """Suma a cada perfil las redes que esa persona eligió mostrar (`redes_kv()`): viajan dentro de `web:perfiles`, que
+    ya se escribe sólo si cambió.
+
+    ⚠️ SI KV NO CONTESTA, LOS PERFILES SALEN SIN REDES Y NO SIN PERFIL: es
+    un agregado, no puede tumbar lo demás.
+    """
+    ps = (perf or {}).get('p') or {}
+    if not ps or _SIN_RED[0]:
+        return 0
+    rs = redes_kv()
+    if rs is None:
         # ⚠️ `None` Y NO 0: «no pude leer» no es «nadie tiene redes». Con 0 se
         # subían los perfiles sin las redes de nadie, y volvían en la corrida
         # siguiente: dos escrituras de KV y un rato con los perfiles pelados.
-        print('   ⚠️ no pude leer las redes (%s): los perfiles esperan a la '
-              'próxima corrida' % str(e)[:60])
+        print('   ⚠️ los perfiles esperan a la próxima corrida para sus redes')
         return None
+    n = 0
+    for cl, rr in rs.items():
+        if cl in ps:
+            ps[cl]['redes'] = rr
+            n += 1
+    if n:
+        print('   🔗 redes en %d perfil(es)' % n)
+    return n
 
 
 def _comunidad():

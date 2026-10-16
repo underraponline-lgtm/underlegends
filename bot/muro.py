@@ -509,7 +509,7 @@ def promos_muro(d, ahora, por=None):
         return []
     try:
         import promos as PR
-        return PR.para_muro(d, ahora, por or PR.POR_PERSONA, PR.GUARDA if por else PR.AL_MURO)
+        return PR.para_muro(d, ahora, por or PR.POR_PERSONA, PR.GUARDA if por else PR.AL_MURO, respaldo=not por)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ el muro sin las promos (%s)' % str(e)[:80])
         return []
@@ -544,9 +544,12 @@ def armar(p, guardado=None, ahora=None, fuentes=None):
     if a and a > desde:
         desde = a
     visto, lista = set(), []
+    # 📣 una promo está hasta su `hasta` (la semana, lo alargado en la Tienda o el respaldo del círculo: `bot/promos.py`),
+    # aunque sea de antes de `desde`
+    sigue = lambda x: x.get('tipo') == 'promo' and (_de_iso(x.get('hasta')) or ahora) > ahora  # noqa: E731
     for x in todo:
         t = _de_iso(x.get('t'))
-        if not t or t < desde or t > ahora + dt.timedelta(hours=1):
+        if not t or (t < desde and not sigue(x)) or t > ahora + dt.timedelta(hours=1):
             continue
         clave = json.dumps(x, sort_keys=True, ensure_ascii=False)
         if clave in visto:
@@ -555,7 +558,8 @@ def armar(p, guardado=None, ahora=None, fuentes=None):
         lista.append(x)
     lista.sort(key=lambda x: x['t'], reverse=True)
     muro = {'_leeme': 'El muro de Publicaciones: lo arma bot/muro.py desde bot/subir_web.py (paso 2c).',
-            'items': con_claves(con_ids(lista)[:VIAJAN], p.get('tabla'))}
+            # 📣 y las promos que siguen viajan aunque pasen de `VIAJAN`: una alargada en la Tienda es vieja y pagó
+            'items': con_claves([x for i, x in enumerate(con_ids(lista)) if i < VIAJAN or sigue(x)], p.get('tabla'))}
     guardar = {'_leeme': 'El muro de Publicaciones: cómo estaba cada uno (rango y tarjetas) y los cambios '
                          'que se anotaron. Lo escribe bot/muro.py; lo demás del muro se arma en cada corrida.',
                'estado': estado, 'cambios': anotados}

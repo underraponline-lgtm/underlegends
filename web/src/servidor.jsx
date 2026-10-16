@@ -149,7 +149,7 @@ export function PerfilSv({ liga, sv }) {
 // del muro. Las cuatro más nuevas; sin ninguna, no se dibuja
 function PromosSv({ liga, sv }) {
   const A = useAplausos();
-  const xs = (liga.muro || []).filter((it) => it.tipo === 'promo' && it.sv === sv).slice(0, 4);
+  const xs = (liga.muro || []).filter((it) => it.tipo === 'promo' && it.sv === sv && it.o !== 'liga').slice(0, 4);
   if (!xs.length) return null;
   return (
     <Sec id="sv-promos" titulo={'Se promociona en ' + siglaDe(sv)} enlace="Todas las promos" href="#/publicaciones">

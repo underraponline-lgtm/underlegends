@@ -2304,6 +2304,8 @@ const RUTAS = {
   '/avisos/felicitar': 'POST', '/avisos/aplausos': 'GET',
   // 📣 abrir una promo paga Tienda y XP: ver `validarPromo()` y `promoVio()`
   '/avisos/promo-vio': 'POST',
+  // 📣 una semana más de tu promo, desde la Tienda (`validarExtender()`, `promoExtender()`); y hasta cuándo va cada una
+  '/avisos/promo-extender': 'POST', '/avisos/promos-extra': 'GET',
   // 🔔 el panel de la campana: lo que se te avisó, con tu sesión. Ver `bandeja()`
   '/avisos/bandeja': 'POST',
   // 🔥 tu racha diaria y tu nivel, con tu sesión; y el nivel y la racha de cada perfil. Ver `rachaDe()` y `niveles()`
@@ -2630,6 +2632,28 @@ export function validarPromo(items, d, id, mios, ahora) {
   const ks = Array.isArray(x.ks) ? x.ks.map((k) => (claveValida(k) ? k : '')) : [];
   if ((mios || []).some((k) => k && ks.indexOf(k) >= 0)) return { error: 'vos', estado: 403 };
   return { id: x.id, pid: String(x.pid || x.id).slice(0, 60) };
+}
+
+// ── 📣 UNA SEMANA MÁS DE TU PROMO (Dlx, 16/10/2026: «las promociones en la página web duran una semana, a menos que sea
+// solicitado manualmente en la tienda», y a la pregunta, «1 semana más: 2.500 PdT»). Sólo la tuya —la que comparte tu
+// perfil—, sólo mientras está en la página, y se puede volver a pagar cuando vuelva a vencer. El ciclo lee hasta cuándo
+// va cada una (`/avisos/promos-extra`) y la deja en el muro (`bot/promos.py`)
+//: lo que cuesta, y cuánto suma
+export const PROMO_SEMANA_PAGA = 2500;
+export const PROMO_SEMANA_MS = 7 * DIA_MS;
+
+/**
+ * ¿Puede alargar esta promo? `{pid, base}` si sí —`base`, cuándo vence hoy—, `{error, estado}` si no. `items` es el muro
+ * de KV y `mios` las claves de sus perfiles (`d:` y `dn:`): tiene que ser una de las que comparte él. Pura, sin red.
+ */
+export function validarExtender(items, d, mios, ahora) {
+  const x = (Array.isArray(items) ? items : []).find((it) => it && it.id === (d && d.id) && it.tipo === 'promo');
+  if (!x) return { error: 'no_existe', estado: 404 };
+  const ks = Array.isArray(x.ks) ? x.ks.map((k) => (claveValida(k) ? k : '')) : [];
+  if (!(mios || []).some((k) => k && ks.indexOf(k) >= 0)) return { error: 'no_es_tuya', estado: 403 };
+  const base = Date.parse(x.hasta || '') || (Date.parse(x.t || '') + PROMO_SEMANA_MS) || 0;
+  if (!base || base <= ahora) return { error: 'vencida', estado: 409 };
+  return { pid: String(x.pid || x.id).slice(0, 60), base };
 }
 
 /** El hito más alto que ya alcanzó `n` (0 si ninguno). */
@@ -4014,6 +4038,36 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ quien: q.id, pid: v.pid }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 📣 UNA SEMANA MÁS DE TU PROMO: quién lo dice Discord (o la sesión); qué promo y si es tuya, el muro
+  // (`validarExtender()`); la plata la cuenta el objeto, como el precio por cabeza
+  if (ruta === '/avisos/promo-extender') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || !/^[0-9a-f]{12}$/.test(String(d.id || '')) ||
+        (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    let cfg = null;
+    try { cfg = JSON.parse((await env.KV.get('precios', { cacheTtl: 60 })) || 'null'); } catch (e) { cfg = null; }
+    if (!cfg || !Number.isInteger(cfg.inicial)) return json({ error: 'todavia' }, 503);
+    let items = [];
+    try { items = (JSON.parse((await env.KV.get('web:muro', { cacheTtl: 60 })) || '{}').items) || []; } catch (e) { items = []; }
+    const mios = [];
+    for (const p of ['d:', 'dn:']) {
+      try {
+        const k = await env.KV.get(p + q.id);
+        if (claveValida(k)) mios.push(k);
+      } catch (e) { /* sin KV no se sabe de quién es: no se cobra */ }
+    }
+    const v = validarExtender(items, d, mios, Date.now());
+    if (v.error) return json(v, v.estado);
+    return elObjeto(env).fetch('https://avisos/promo-extender', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ quien: q.id, pid: v.pid, base: v.base, desde: Date.parse(cfg.desde || '') || 0, inicial: cfg.inicial }),
+    });
+  }
   // 🔔 LA BANDEJA: lo tuyo, con tu sesión (o un permiso recién traído). ⚠️ La página nunca manda a Discord por esto:
   // sin sesión, el panel invita a entrar
   if (ruta === '/avisos/bandeja') {
@@ -4867,6 +4921,10 @@ export class Avisos {
         't INTEGER NOT NULL, PRIMARY KEY (quien, que, ref)) WITHOUT ROWID');
       // 📣 LAS PROMOS QUE ABRIÓ CADA UNO (16/10/2026): una vez por promo, para pagar `PROMO_PAGA` hasta `PROMO_TOPE_DIA`
       // por día (`dia`, en hora del este). Se borran a los `PROMO_DIAS` días (lo que pagó queda en la Tienda)
+      // 📣 LAS PROMOS ALARGADAS EN LA TIENDA (16/10/2026): hasta cuándo va cada una y quién pagó (lo pagado queda en
+      // `tienda`). Se borran a los `PROMO_DIAS` días de vencidas
+      this.sql.exec('CREATE TABLE IF NOT EXISTS promo_extra (pid TEXT PRIMARY KEY, quien TEXT NOT NULL, hasta INTEGER NOT NULL, ' +
+        't INTEGER NOT NULL)');
       this.sql.exec('CREATE TABLE IF NOT EXISTS promo_visto (quien TEXT NOT NULL, pid TEXT NOT NULL, dia TEXT NOT NULL, ' +
         'pago INTEGER NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, pid)) WITHOUT ROWID');
       // 🧠 LOS DATOS DE CADA PERSONA PARA /card (`p:<clave>`), ACÁ DESDE EL 06/10/2026 Y NO EN KV. Eran casi todo
@@ -4981,6 +5039,7 @@ export class Avisos {
       if (ruta === '/seguidores') return json(this.seguidores(), 200, 60);
       if (ruta === '/servidores') return json(this.servidoresElegidos(), 200, 60);
       if (ruta === '/aplausos') return json(this.aplausosCuenta(), 200, 20);
+      if (ruta === '/promos-extra') return json(this.promosExtra(), 200, 60);
       if (ruta === '/niveles') return json(this.niveles(), 200, 300);
       if (ruta === '/pases') return json(this.pases(), 200, 300);
       if (ruta === '/roles') return json(this.roles(), 200, 300);
@@ -5049,6 +5108,7 @@ export class Avisos {
       if (ruta === '/sigo') return this.sigo(d);
       if (ruta === '/aplaudir') return this.aplaudir(d);
       if (ruta === '/promo-vio') return this.promoVio(d);
+      if (ruta === '/promo-extender') return this.promoExtender(d);
       if (ruta === '/bandeja') return this.bandeja(d);
       if (ruta === '/mi-servidor') return this.miServidor(d);
       if (ruta === '/mi-foto') return await this.miFoto(d);
@@ -7638,8 +7698,9 @@ export class Avisos {
     this.sql.exec('DELETE FROM pase_hito WHERE quien = ?', String(d.quien));
     // ⭐ y lo que le sumaba nivel
     this.sql.exec('DELETE FROM xp_log WHERE quien = ?', String(d.quien));
-    // 📣 y las promos que abrió
+    // 📣 y las promos que abrió y las que alargó
     this.sql.exec('DELETE FROM promo_visto WHERE quien = ?', String(d.quien));
+    this.sql.exec('DELETE FROM promo_extra WHERE quien = ?', String(d.quien));
     // 📊 y los días que usó el bot o la página (el Dashboard): guardaban su Discord ID 35 días (revisión del 05/10/2026)
     this.sql.exec('DELETE FROM uso WHERE quien = ?', String(d.quien));
     // 🔔 y su bandeja
@@ -8624,6 +8685,35 @@ export class Avisos {
    * publicación ya buscada en el muro (`validarAplauso()`). Uno por persona:
    * el segundo toque no suma (`ya`). Devuelve cuántos lleva.
    */
+  /** 📣 Una semana más de una promo suya: cobra `PROMO_SEMANA_PAGA` y suma `PROMO_SEMANA_MS` a lo que le quedaba. */
+  promoExtender(d) {
+    const quien = String(d.quien || ''), pid = String(d.pid || ''), ini = Number(d.inicial), base = Number(d.base);
+    if (!/^[0-9]{5,25}$/.test(quien) || !pid || pid.length > 60 || !Number.isInteger(ini) || !(base > 0)) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const ahora = Date.now();
+    // ⚠️ EL SALDO SE MIRA ACÁ, como en `precio()`: el objeto es uno solo y dos pedidos no gastan la misma plata
+    const s = this.saldo(quien, Number(d.desde) || 0, ini);
+    if (PROMO_SEMANA_PAGA > s) return json({ error: 'saldo', saldo: s, precio: PROMO_SEMANA_PAGA }, 409);
+    const ya = this.sql.exec('SELECT hasta FROM promo_extra WHERE pid = ?', pid).toArray()[0];
+    const hasta = Math.max(base, ya ? ya.hasta : 0, ahora) + PROMO_SEMANA_MS;
+    this.state.storage.transactionSync(() => {
+      this.sql.exec('INSERT OR REPLACE INTO promo_extra (pid, quien, hasta, t) VALUES (?, ?, ?, ?)', pid, quien, hasta, ahora);
+      this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
+        'promox:' + quien + ':' + pid + ':' + ahora, quien, -PROMO_SEMANA_PAGA, ahora);
+    });
+    return json({ ok: true, hasta, saldo: s - PROMO_SEMANA_PAGA, precio: PROMO_SEMANA_PAGA });
+  }
+
+  /** Lo público, para el ciclo (`/avisos/promos-extra`): hasta cuándo va cada promo alargada. ⚠️ Nunca quién pagó. */
+  promosExtra() {
+    const ahora = Date.now();
+    this.sql.exec('DELETE FROM promo_extra WHERE hasta < ?', ahora - PROMO_DIAS * DIA_MS);
+    const out = {};
+    for (const r of this.sql.exec('SELECT pid, hasta FROM promo_extra WHERE hasta > ?', ahora).toArray()) out[r.pid] = r.hasta;
+    return { t: ahora, extra: out };
+  }
+
   promoVio(d) {
     const quien = String(d.quien || ''), pid = String(d.pid || '');
     if (!/^[0-9]{5,25}$/.test(quien) || !pid || pid.length > 60) return json({ error: 'faltan datos' }, 400);

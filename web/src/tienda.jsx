@@ -6,7 +6,7 @@
 // que algo de eso cambia, `pintaPrecios()` avisa `lg:precios` (App.jsx) y esto se redibuja. Los números son de
 // `D.tienda` (bot/precios.py): ninguno se escribe acá. Afuera se ve cuánto vale cada cabeza, nunca quién puso.
 import { useEffect, useState } from 'react';
-import { limpio, norm, num } from './liga.js';
+import { limpio, norm, num, utc } from './liga.js';
 import { Bandera, Cara, DosToques } from './piezas.jsx';
 import { Merch } from './abajo.jsx';
 
@@ -115,6 +115,58 @@ function Panel({ liga, n, dc }) {
   );
 }
 
+// ── 📣 UNA SEMANA MÁS DE TU PROMO (Dlx, 16/10/2026: «las promociones en la página web duran una semana, a menos que sea
+// solicitado manualmente en la tienda», y a la pregunta, «1 semana más: 2.500 PdT»). Las tuyas que están en la página
+// (el muro: `ks` trae tu clave); lo cobra el objeto (`promoExtender()` en bot/avisos.js) y el precio lo dice él ──
+const PROMO_SEMANA = 2500;
+function TuPromo({ liga, dc }) {
+  const [est, setEst] = useState({});
+  const yo = liga.yo && liga.yo.k;
+  const xs = yo ? (liga.muro || []).filter((it) => it.tipo === 'promo' && (it.ks || []).includes(yo) && it.hasta && utc(it.hasta) > liga.ahora) : [];
+  const saldo = window.BILL && window.BILL.ok ? window.BILL.saldo : null;
+  const alargar = (it) => {
+    if (!window.conCuenta) return;
+    setEst((e) => ({ ...e, [it.id]: { va: true } }));
+    window.conCuenta('/api/avisos/promo-extender', { id: it.id }).then((j) => {
+      setEst((e) => ({ ...e, [it.id]: j && j.ok ? { ok: j.hasta } : { error: (j && j.error) || 'error', saldo: j && j.saldo } }));
+      if (j && j.ok && typeof window.pedirBilletera === 'function') window.pedirBilletera(false);
+    }).catch(() => setEst((e) => ({ ...e, [it.id]: { error: 'error' } })));
+  };
+  const msg = (e) => (e.va ? 'Alargando…' : e.ok ? '✓ Sigue en la página hasta el ' + liga.dia(new Date(e.ok).toISOString()) + '.'
+    : e.error === 'saldo' ? 'Te faltan Puntos de Tienda' + (e.saldo != null ? ': tenés ' + num(e.saldo) + '.' : '.')
+      : e.error === 'vencida' ? 'Ya salió de la página.' : e.error === 'no_es_tuya' ? 'Esta promo no es tuya.'
+        : e.error === 'todavia' ? 'La tienda todavía no está lista: probá en un rato.' : e.error ? 'No pude alargarla. Probá de nuevo.' : '');
+  return (
+    <section className="sec ti-sec">
+      <div className="sec-t"><h2>Tu promo, una semana más</h2></div>
+      <p className="ti-nota">Cada promo está <b>una semana</b> en la página —en Publicaciones, tu perfil y el círculo de las historias—.
+        Si es tuya, la alargás <b>una semana más por {num(PROMO_SEMANA)} Puntos de Tienda</b>, y de nuevo cuando vuelva a vencer.</p>
+      {!dc ? <p className="ti-nota">Entrá con Discord para ver las tuyas.</p>
+        : !xs.length ? <p className="ti-nota">Ahora no tenés ninguna en la página. Compartí tu tema o tu video en el canal de promoción de tu servidor y aparece acá.</p>
+          : (
+            <ul className="ti-promos">
+              {xs.map((it) => {
+                const e = est[it.id] || {};
+                const img = it.vid ? 'https://i.ytimg.com/vi/' + it.vid + '/mqdefault.jpg' : it.img || '';
+                return (
+                  <li key={it.id}>
+                    {img ? <img alt="" src={img} loading="lazy" /> : <span className="ti-promo-sin" aria-hidden="true">▶</span>}
+                    <div>
+                      <b>{limpio(it.tit || it.url)}</b>
+                      <small>{it.alargada ? 'Alargada · ' : ''}sale de la página {liga.dia(it.hasta)}</small>
+                      <p className={'ti-msg' + (e.error ? ' mal' : '')} aria-live="polite">{msg(e)}</p>
+                    </div>
+                    <DosToques className="btn borde2 chico" disabled={!!e.va || (saldo != null && saldo < PROMO_SEMANA)}
+                      confirmar={'¿' + num(PROMO_SEMANA) + '? Tocá de nuevo'} onClick={() => alargar(it)}>+1 semana · {num(PROMO_SEMANA)}</DosToques>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+    </section>
+  );
+}
+
 export function Tienda({ liga, dc }) {
   usePrecios();
   const T = liga.d.tienda;
@@ -195,6 +247,8 @@ export function Tienda({ liga, dc }) {
         ) : null}
         </div></div>
       </section>
+
+      <TuPromo liga={liga} dc={dc} />
 
       <section className="sec ti-sec">
         <div className="ti-pronto">

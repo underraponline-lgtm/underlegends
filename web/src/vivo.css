@@ -921,6 +921,27 @@ a.pub-promo-v .pub-promo-img{aspect-ratio:1}
 .app .pub.promo{grid-template-columns:150px minmax(0,1fr)}
 .sv-promos{display:grid;gap:10px}
 .h.promos .h-c img{object-fit:cover}
+/* 🔵 el orbe de las promos (arriba.jsx `Orbe`): el único degradé de la página, a propósito (Dlx, 16/10). Sin blur: las manchas ya son suaves */
+.h.promos .h-c{background:#05040c;padding:3px}
+.orbe{position:relative;display:block;width:100%;height:100%;border-radius:50%;overflow:hidden;background:#05040c;isolation:isolate}
+.orbe::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0.6em 0.15em rgba(0,0,0,.7)}
+.orbe i{position:absolute;inset:-25%;border-radius:50%;mix-blend-mode:screen;will-change:transform;animation:orbe-g 7s linear infinite}
+.orbe i:nth-child(1){background:radial-gradient(circle at 36% 36%,rgba(228,19,115,.95) 0,rgba(228,19,115,0) 40%)}
+.orbe i:nth-child(2){background:radial-gradient(circle at 66% 42%,rgba(34,184,240,.9) 0,rgba(34,184,240,0) 38%);animation-duration:10s;animation-direction:reverse}
+.orbe i:nth-child(3){background:radial-gradient(circle at 48% 68%,rgba(123,47,247,.95) 0,rgba(123,47,247,0) 42%);animation-duration:13s}
+.orbe i:nth-child(4){inset:0;background:radial-gradient(circle,#fff 0 5%,rgba(255,255,255,.45) 11%,rgba(255,255,255,0) 30%),
+  conic-gradient(from 0deg,rgba(255,255,255,0),rgba(255,255,255,.2) 15%,rgba(255,255,255,0) 35%,rgba(229,184,0,.28) 60%,rgba(255,255,255,0) 80%);
+  -webkit-mask:radial-gradient(circle,#000 30%,transparent 72%);mask:radial-gradient(circle,#000 30%,transparent 72%);animation-duration:5s}
+@keyframes orbe-g{to{transform:rotate(1turn)}}
+@media (prefers-reduced-motion: reduce){.orbe i{animation:none}}
+/* 🛒 la Tienda: tu promo, una semana más */
+.ti-promos{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:10px}
+.ti-promos li{display:grid;grid-template-columns:96px 1fr auto;gap:12px;align-items:center;padding:10px;border:2px solid var(--linea, #2a2a33)}
+.ti-promos img,.ti-promo-sin{width:96px;aspect-ratio:16/9;object-fit:cover;display:grid;place-items:center;background:#030304;color:#F6F6F6}
+.ti-promos b{display:block;font:700 14px/1.3 Archivo,sans-serif;overflow-wrap:anywhere}
+.ti-promos small{display:block;margin-top:2px;color:var(--esc-gris)}
+.ti-promos .ti-msg{margin:4px 0 0}
+@media (max-width: 599.98px){.ti-promos li{grid-template-columns:72px 1fr}.ti-promos img,.ti-promo-sin{width:72px}.ti-promos li > :last-child{grid-column:1 / -1}}
 .pub-promo-paga{margin:12px 0 0;font:500 14px/1.45 Archivo,sans-serif;color:var(--esc-gris);max-width:70ch}
 .pub-promo-paga b{color:#E5B800}
 .promo-pago{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);z-index:90;

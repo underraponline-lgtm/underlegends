@@ -2030,6 +2030,15 @@ const ok = (cond, que, det) => {
   ok(A.validarPromo(items, { id: 'aaaaaaaaaaa1' }, vieja, ['ana'], Date.now()).error === 'vos', 'la promo propia no paga');
   ok(A.PROMO_PAGA === 50 && A.PROMO_TOPE_DIA === 3 && A.PASE_MIDE.includes('promo') && A.XP_FUENTES.promo,
     '50 Puntos por promo, hasta 3 por día, y cuenta para el Pase y el nivel');
+  // 📣 una semana más, desde la Tienda: sólo la tuya y mientras está en la página
+  const ahora = Date.parse('2026-10-16T12:00:00Z');
+  const ps = [{ id: 'aaaaaaaaaaa1', tipo: 'promo', pid: '9-0', ks: ['ana'], t: '2026-10-14T00:00:00Z', hasta: '2026-10-21T00:00:00Z' },
+    { id: 'ccccccccccc3', tipo: 'promo', pid: '8-0', ks: ['ana'], t: '2026-10-01T00:00:00Z', hasta: '2026-10-08T00:00:00Z' }];
+  const e = A.validarExtender(ps, { id: 'aaaaaaaaaaa1' }, ['ana'], ahora);
+  ok(e.pid === '9-0' && e.base === Date.parse('2026-10-21T00:00:00Z'), 'tu promo se alarga desde cuando vence', JSON.stringify(e));
+  ok(A.validarExtender(ps, { id: 'aaaaaaaaaaa1' }, ['bea'], ahora).error === 'no_es_tuya', 'la de otro no');
+  ok(A.validarExtender(ps, { id: 'ccccccccccc3' }, ['ana'], ahora).error === 'vencida', 'la vencida no');
+  ok(A.PROMO_SEMANA_PAGA === 2500 && A.PROMO_SEMANA_MS === 7 * 864e5, 'una semana, 2.500 Puntos de Tienda');
 }
 
 if (fallas) {

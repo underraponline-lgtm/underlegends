@@ -556,25 +556,29 @@ export function gruposHistorias(liga) {
     grupos.push({ id: 'liga', tipo: 'liga', nombre: 'La Liga', nom: 'La Liga', nuevo: true, firma: 'liga', slides: ligaS });
   }
   // 📣 «PROMOS»: lo que los raperos compartieron en el canal de promoción de su servidor (Dlx, 16/10/2026: «podríamos
-  // hacer una historia, o sea un círculo para promociones»). Las de la última semana, hasta diez; el video se mira acá
+  // hacer una historia, o sea un círculo para promociones») y los videos de nuestros participantes que promociona la
+  // Liga (`o: 'liga'`: «nosotros promocionar los videos de nuestros participantes»). Cada una está hasta su `hasta` —una
+  // semana, o más si se alargó en la Tienda—, y el círculo está SIEMPRE (*«que siempre esté ahí»*: si en la semana no
+  // hubo, el ciclo deja las más nuevas, `bot/promos.py`). Hasta doce; el video se mira acá
   const PL = { yt: 'YouTube', sp: 'Spotify', sc: 'SoundCloud', ig: 'Instagram', tt: 'TikTok' };
-  const proms = (liga.muro || []).filter((it) => it.tipo === 'promo' && liga.ahora - utc(it.t) < 7 * 86400000).slice(0, 10);
+  const proms = (liga.muro || []).filter((it) => it.tipo === 'promo' && (it.hasta ? utc(it.hasta) > liga.ahora : liga.ahora - utc(it.t) < 7 * 86400000)).slice(0, 12);
   if (proms.length) {
     const slides = proms.map((it) => {
-      const q = limpio((it.quien || [])[0] || '');
+      const qs = (it.quien || []).map(limpio).filter(Boolean);
+      const q = qs[0] || '';
       const vis = it.vid ? <img className="st-promo" alt="" src={'https://i.ytimg.com/vi/' + it.vid + '/hqdefault.jpg'} />
         : it.img ? <img className="st-promo" alt="" src={it.img} /> : <Cara liga={liga} k={ksDe(it)[0] || ''} nombre={q} cls="st-cara" />;
-      return Slide('PROMO · ' + siglaDe(it.sv), <>{vis}<h3 className="st-h">{it.tit ? limpio(it.tit) : q + ' en ' + (PL[it.plat] || 'su link')}</h3>
-        <small className="st-s">Lo comparte {q} · {PL[it.plat] || ''}</small></>,
+      const deLiga = it.o === 'liga';
+      return Slide(deLiga ? 'LA LIGA PROMOCIONA' : 'PROMO · ' + siglaDe(it.sv), <>{vis}<h3 className="st-h">{it.tit ? limpio(it.tit) : q + ' en ' + (PL[it.plat] || 'su link')}</h3>
+        <small className="st-s">{deLiga ? <>{qs.join(' y ')}{it.de ? ' · ' + limpio(it.de) : ''}</> : <>Lo comparte {q} · {PL[it.plat] || ''}</>}</small></>,
       liga.cuando(it.t), it.vid ? 'Mirar el video' : (it.plat === 'sp' || it.plat === 'sc' ? 'Escuchar en ' : 'Ver en ') + (PL[it.plat] || 'su link'),
       it.vid ? { video: { vid: it.vid, tit: limpio(it.tit || ''), link: it.url }, promo: it.id } : { link: it.url, promo: it.id },
       'promo:' + (it.pid || it.url), String(it.t || ''));
     });
     slides.sort(masViejo);
-    // el círculo lleva la tapa de la más nueva, como el aro de una historia de Instagram
-    const p0 = proms[0];
-    const img = p0.vid ? 'https://i.ytimg.com/vi/' + p0.vid + '/mqdefault.jpg' : p0.img || '/ul.png';
-    grupos.push({ id: 'promos', tipo: 'promos', nombre: 'Promos', nom: 'Promos', logo: img, nuevo: true, firma: firma(proms), slides });
+    // el círculo es un orbe que gira (`Orbe`), no la tapa de la más nueva: Dlx, «que el icono sea como ese círculo de
+    // Siri, algo como una galaxia o un vórtice»
+    grupos.push({ id: 'promos', tipo: 'promos', nombre: 'Promos', nom: 'Promos', nuevo: true, firma: firma(proms), slides });
   }
   // 🎮 tu servidor primero (13/10/2026, el research de los lobbies: «las historias por cercanía»), y después por tamaño
   const miSv = liga.yo ? liga.yo.sv : '';
@@ -679,6 +683,14 @@ export function CaraH({ liga, k, nombre, cc, cls = 'h-c' }) {
   );
 }
 
+// 🔵 EL ORBE DE LAS PROMOS (Dlx, 16/10/2026: «que el icono del círculo sea como ese círculo de Siri, o sea algo como una
+// galaxia o un ícono de vórtice», y a la pregunta, «gira despacio»). Tres capas que giran a distinto ritmo sobre un fondo
+// casi negro, un remolino y un centro de luz. ⚠️ Es el ÚNICO lugar de la página con degradé, a propósito: el remake los
+// prohíbe en todo lo demás. Quieto para quien apagó las animaciones (`prefers-reduced-motion`, en vivo.css)
+export function Orbe() {
+  return <span className="orbe" aria-hidden="true"><i /><i /><i /><i /></span>;
+}
+
 export function Historias({ liga, grupos, vistos, onAbrir }) {
   const partes = [];
   let antes = null;
@@ -698,7 +710,7 @@ export function Historias({ liga, grupos, vistos, onAbrir }) {
     } else if (g.tipo === 'liga') {
       partes.push(<button type="button" key={g.id} className={'h liga nuevo' + visto} onClick={abrir}><span className="h-c"><img alt="" src="/ul.png" /></span><small>La Liga</small></button>);
     } else if (g.tipo === 'promos') {
-      partes.push(<button type="button" key={g.id} className={'h promos nuevo' + visto} onClick={abrir}><span className="h-c"><img alt="" src={g.logo} /></span><small>Promos</small></button>);
+      partes.push(<button type="button" key={g.id} className={'h promos nuevo' + visto} onClick={abrir}><span className="h-c"><Orbe /></span><small>Promos</small></button>);
     } else if (g.tipo === 'sv') {
       partes.push(<button type="button" key={g.id} className={'h sv' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir}><span className="h-c"><img alt="" src={g.logo} /></span><small>{g.nom}</small></button>);
     } else if (g.tipo === 'pais') {

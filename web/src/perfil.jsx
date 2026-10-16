@@ -802,7 +802,7 @@ function SusPublicaciones({ liga, p, esYo }) {
 // servidores (bot/promos.py), música y video, las más nuevas primero. Sin ninguna, no se dibuja
 function SusPromos({ liga, p, esYo }) {
   const A = useAplausos();
-  const xs = ((p && p.mu) || []).filter((it) => it.tipo === 'promo');
+  const xs = ((p && p.mu) || []).filter((it) => it.tipo === 'promo' && it.o !== 'liga');
   if (!xs.length) return null;
   return (
     <section className="sec pf-sec pf-pubs">

@@ -19,8 +19,18 @@ LAS REGLAS
      otros Discord, ni links sueltos.
   4. DEL MENSAJE SE GUARDA EL LINK, NO EL TEXTO: el título y la imagen salen de la plataforma (su oEmbed público), no de
      lo que escribió la persona. Instagram no tiene oEmbed abierto: va el link solo.
-  5. LO DE LOS ÚLTIMOS `DIAS` DÍAS, y como mucho `POR_PERSONA` por persona en el muro: el que publica diez veces por
-     semana no tapa al resto.
+  5. UNA SEMANA EN LA PÁGINA (`SEMANA`), y como mucho `POR_PERSONA` por persona en el muro: el que publica diez veces
+     por semana no tapa al resto. Dlx, 16/10/2026: *«las promociones en la página web duran una semana, a menos que sea
+     solicitado manualmente en la tienda»* —y a la pregunta, *«1 semana más: 2.500 PdT»*—: la alargada la cobra el
+     objeto (`promoExtender()` en bot/avisos.js) y acá se lee hasta cuándo va (`extras()`). Se guardan `DIAS` días.
+
+📣 Y LA LIGA TAMBIÉN PROMOCIONA (Dlx, 16/10/2026: *«cuando hayan promociones ahí, nosotros promocionar los videos de
+nuestros participantes de Discord, o donde rapean en plazas»*, y de dónde: las batallas de los socios, lo que cada uno
+sumó a su perfil —las plazas de Makma, las de Liberia—, su YouTube de «Mis redes» y los canales de plazas). Ver
+`de_la_liga()`: van con `o: 'liga'` y las mismas reglas de la semana.
+
+🔵 EL CÍRCULO DE LAS HISTORIAS ESTÁ SIEMPRE (*«que siempre esté ahí, con las promociones recientes que han habido»*): si
+en la semana hay menos de `MIN_CIRCULO`, entran las más nuevas que haya, por `RESPALDO_H` horas.
 
 Lo lee el muro (`bot/muro.py`, tipo `promo`): de ahí a Publicaciones, a cada perfil, a cada servidor y a las historias.
 """
@@ -44,8 +54,13 @@ API = 'https://discord.com/api/v10'
 CANAL = re.compile(r'promo', re.I)
 #: nunca uno de una categoría de staff (la misma regla que los anuncios)
 STAFF = re.compile(r'staff|moderat|admin|organiz', re.I)
-#: cuánto vive una promo, cuántas se guardan y cuántas de cada uno van al muro
+#: cuánto se guarda una promo, cuántas se guardan y cuántas de cada uno van al muro
 DIAS, GUARDA, POR_PERSONA, AL_MURO = 30, 400, 2, 24
+#: cuántos días está en la página (Dlx: «duran una semana»); las de la Liga que van al muro; el mínimo del círculo y por
+#: cuántas horas entran las de respaldo
+SEMANA, LIGA_TOPE, MIN_CIRCULO, RESPALDO_H = 7, 12, 4, 12
+WORKER = 'https://liga-global-bot.liga-global-ul.workers.dev'
+YT_CANAL = re.compile(r'youtube\.com/channel/(UC[A-Za-z0-9_-]{22})')
 #: cada cuánto se vuelven a buscar los canales (un servidor puede crear o renombrar el suyo)
 HORAS_CANALES = 24
 #: las plataformas: (clave, nombre, dominios)
@@ -190,6 +205,103 @@ def oembed(s, x, cache):
     return res
 
 
+def _iso(t):
+    return t.astimezone(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+
+
+def _de_iso(s):
+    try:
+        t = dt.datetime.fromisoformat(str(s).replace('Z', '+00:00'))
+    except ValueError:
+        return None
+    return t if t.tzinfo else t.replace(tzinfo=dt.timezone.utc)
+
+
+def extras():
+    """`{pid: 'AAAA-MM-DDTHH:MM:SSZ'}`: hasta cuándo va cada promo alargada en la Tienda (`/avisos/promos-extra`, que
+    nunca dice quién pagó). `None` si el Worker no contesta: se queda lo de la corrida anterior."""
+    import requests
+    try:
+        r = requests.get(WORKER + '/avisos/promos-extra', timeout=20)
+        if r.status_code != 200:
+            return None
+        ex = (r.json() or {}).get('extra') or {}
+        return {str(k): _iso(dt.datetime.fromtimestamp(int(v) / 1000, dt.timezone.utc)) for k, v in ex.items()
+                if str(v).isdigit()}
+    except Exception:                                    # noqa: BLE001
+        return None
+
+
+def _yt(vid, t, quien, tit, de, sv, por):
+    return {'id': 'v-' + vid, 'o': 'liga', 'por': por, 't': t, 'sv': sv or '', 'quien': [q for q in quien if q],
+            'url': 'https://www.youtube.com/watch?v=' + vid, 'plat': 'yt', 'vid': vid, 'tit': str(tit or '')[:120],
+            'de': str(de or '')[:60], 'img': 'https://i.ytimg.com/vi/%s/hqdefault.jpg' % vid}
+
+
+def de_la_liga(ahora, videos=None, propios=None, redes=None, nombres=None, yt=None):
+    """📣 Los videos de nuestros participantes que promociona la Liga, de los últimos `DIAS` días, el más nuevo primero:
+
+      · `socio`: las batallas de los canales de los socios con alguien de la Lista (`datos/videos.json`, `bot/videos.py`),
+        por su fecha de publicación;
+      · `perfil`: lo que cada uno sumó a su perfil —plazas y otras ligas— (`datos/videos_propios.json`), desde que entró;
+      · `canal`: lo que sube cada uno a su YouTube de «Mis redes» (`redes`, `{clave: [[tipo, url, n]]}`; `nombres`,
+        `{clave: nombre de la Lista}`; `yt(canal)`, sus últimos videos). Es SU canal: Discord lo conectó, no lo escribió.
+    Un video, una vez (gana el primero de esa lista)."""
+    desde = _iso(ahora - dt.timedelta(days=DIAS))
+    out, ya = [], set()
+
+    def sumar(x):
+        if x['vid'] not in ya and x['t'] >= desde and x['quien']:
+            ya.add(x['vid'])
+            out.append(x)
+    vj = videos or {}
+    meta = vj.get('meta') or {}
+    for vid, x in (vj.get('videos') or {}).items():
+        m = meta.get(vid)
+        if m and len(x) > 2 and x[2]:
+            sumar(_yt(vid, str(m[0]), list(x[2]), x[0], '', x[1], 'socio'))
+    pj = propios or {}
+    ocultos = set(pj.get('ocultos') or [])
+    for raw, vs in (pj.get('por') or {}).items():
+        for v in vs or []:
+            if len(v) > 3 and v[0] not in ocultos:
+                sumar(_yt(v[0], str(v[3]), [raw], v[1], v[2], '', 'perfil'))
+    for cl, rr in (redes or {}).items():
+        raw = (nombres or {}).get(cl)
+        if not raw or not yt:
+            continue
+        for tipo, url, _n in rr or []:
+            m = YT_CANAL.search(str(url or '')) if tipo == 'youtube' else None
+            if not m:
+                continue
+            for v in yt(m.group(1)) or []:
+                sumar(_yt(v['vid'], v['t'], [raw], v.get('tit'), v.get('canal'), '', 'canal'))
+    out.sort(key=lambda x: x['t'], reverse=True)
+    return out
+
+
+def _liga_fuentes():
+    """Lo que pide `de_la_liga()`, de `datos/` y de KV (las redes). Sin red, sin las redes."""
+    def j(n):
+        try:
+            with io.open(os.path.join(BASE, 'datos', n), encoding='utf-8') as f:
+                return json.load(f) or {}
+        except (OSError, ValueError):
+            return {}
+    redes, nombres, yt = {}, {}, None
+    try:
+        import subir_web as SW
+        redes = SW.redes_kv() or {}
+        if redes:
+            for x in j('padron.json') or []:
+                if x.get('raw'):
+                    nombres.setdefault(SW._clave(x), x['raw'])
+            yt = lambda c: SW._youtube(c, tope=5)  # noqa: E731
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ promos de la Liga sin «Mis redes» (%s)' % str(e)[:60])
+    return j('videos.json'), j('videos_propios.json'), redes, nombres, yt
+
+
 def correr(aplicar=False, ahora=None):
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     viejo = leer()
@@ -220,43 +332,90 @@ def correr(aplicar=False, ahora=None):
                         x.update(oembed(s, x, cache))
                         items[x['id']] = x
                         nuevas += 1
+    # 💳 hasta cuándo va cada promo alargada en la Tienda (si el Worker no contesta, lo de la corrida anterior)
+    ex = extras()
+    extra = ex if ex is not None else dict(viejo.get('extra') or {})
+    ahora_s = _iso(ahora)
+    vale = lambda x: x['t'] >= desde or (extra.get(x['id']) or '') > ahora_s  # noqa: E731
     desde = (ahora - dt.timedelta(days=DIAS)).strftime('%Y-%m-%dT%H:%M:%S')
-    lista = sorted((x for x in items.values() if x['t'] >= desde), key=lambda x: x['t'], reverse=True)[:GUARDA]
+    lista = sorted((x for x in items.values() if vale(x)), key=lambda x: x['t'], reverse=True)[:GUARDA]
     usados = {x['url'] for x in lista}
     cache = {u: v for u, v in cache.items() if u in usados}
-    print('   📣 promos: %d canal(es) de %d servidor(es) · %d nueva(s) · %d guardada(s)'
-          % (sum(len(v) for v in canales.values()), len(canales), nuevas, len(lista)))
+    # 📣 y lo que promociona la Liga: los videos de nuestros participantes. Lo alargado se queda aunque sea viejo
+    liga = de_la_liga(ahora, *_liga_fuentes())
+    ya = {x['id'] for x in liga}
+    liga += [x for x in viejo.get('liga') or [] if x['id'] not in ya and (extra.get(x['id']) or '') > ahora_s]
+    liga = liga[:GUARDA]
+    print('   📣 promos: %d canal(es) de %d servidor(es) · %d nueva(s) · %d guardada(s) · %d de la Liga · %d alargada(s)'
+          % (sum(len(v) for v in canales.values()), len(canales), nuevas, len(lista), len(liga),
+             sum(1 for v in extra.values() if v > ahora_s)))
     if aplicar:
         with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
             json.dump({'_leeme': 'Las promociones de los canales de promoción de cada servidor: el link y de quién es, '
-                                 'nunca el texto. Lo escribe bot/promos.py (paso 2b8c); lo lee bot/muro.py.',
-                       'canales': canales, 'canales_t': t_can, 'ult': ult, 'items': lista, 'oembed': cache},
+                                 'nunca el texto; los videos de nuestros participantes que promociona la Liga (`liga`), '
+                                 'y hasta cuándo va cada una alargada en la Tienda (`extra`). Lo escribe bot/promos.py '
+                                 '(paso 2b8c); lo lee bot/muro.py.',
+                       'canales': canales, 'canales_t': t_can, 'ult': ult, 'items': lista, 'liga': liga, 'extra': extra,
+                       'oembed': cache},
                       f, ensure_ascii=False, indent=0)
     return lista
 
 
-def para_muro(d, ahora=None, por_persona=POR_PERSONA, tope=AL_MURO):
-    """🧱 Las promos que van al muro: las de los últimos `DIAS` días, como mucho `por_persona` por persona y `tope`
-    en total, la más nueva primero: `[{tipo: 'promo', t, sv, quien, url, plat, vid?, tit?, de?, img?}]`. El perfil de
-    cada uno pide más por persona (`muro.de_cada_uno()`)."""
+def para_muro(d, ahora=None, por_persona=POR_PERSONA, tope=AL_MURO, respaldo=True):
+    """🧱 Las promos que van al muro: las de la última semana (`SEMANA`) y las alargadas en la Tienda, como mucho
+    `por_persona` por persona —en las de los servidores y las de la Liga juntas— y `tope` de los servidores más
+    `LIGA_TOPE` de la Liga, la alargada y la más nueva primero:
+    `[{tipo: 'promo', t, hasta, sv, quien, url, plat, pid, o?, vid?, tit?, de?, img?}]`. `hasta` es cuándo sale de la
+    página. Con `respaldo`, si quedan menos de `MIN_CIRCULO`, entran las más nuevas que haya por `RESPALDO_H` horas (el
+    círculo de las historias está siempre). El perfil de cada uno pide más por persona y sin respaldo
+    (`muro.de_cada_uno()`)."""
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
-    desde = (ahora - dt.timedelta(days=DIAS)).strftime('%Y-%m-%dT%H:%M:%S')
-    por, out = {}, []
-    for x in sorted((d or {}).get('items') or [], key=lambda x: x.get('t') or '', reverse=True):
-        if (x.get('t') or '') < desde:
-            continue
-        q = x.get('quien') or ''
-        if por.get(q, 0) >= por_persona:
-            continue
-        por[q] = por.get(q, 0) + 1
-        y = {'tipo': 'promo', 't': x['t'], 'sv': x.get('sv') or '', 'quien': [q], 'url': x['url'], 'plat': x['plat'],
-             'pid': x['id']}
-        for k in ('vid', 'tit', 'de', 'img'):
+    d = d or {}
+    extra = d.get('extra') or {}
+    todas = [dict(x, quien=[x.get('quien') or ''] if isinstance(x.get('quien'), str) else list(x.get('quien') or []))
+             for x in (d.get('items') or []) + (d.get('liga') or [])]
+
+    def vence(x):
+        t = _de_iso(x.get('t'))
+        v = (t + dt.timedelta(days=SEMANA)) if t else None
+        e = _de_iso(extra.get(x['id'])) if extra.get(x['id']) else None
+        return max([y for y in (v, e) if y] or [ahora])
+    por, out, n_sv, n_lg = {}, [], 0, 0
+
+    def poner(x, hasta):
+        y = {'tipo': 'promo', 't': x['t'], 'hasta': _iso(hasta), 'sv': x.get('sv') or '', 'quien': x['quien'],
+             'url': x['url'], 'plat': x['plat'], 'pid': x['id']}
+        for k in ('o', 'vid', 'tit', 'de', 'img'):
             if x.get(k):
                 y[k] = x[k]
+        if extra.get(x['id']) and _de_iso(extra[x['id']]) and _de_iso(extra[x['id']]) > ahora:
+            y['alargada'] = True
         out.append(y)
-        if len(out) >= tope:
-            break
+        for q in x['quien']:
+            por[q] = por.get(q, 0) + 1
+    activas = [(x, vence(x)) for x in todas if vence(x) > ahora]
+    # la alargada primero (pagó por estar), después la más nueva
+    activas.sort(key=lambda p: p[0].get('t') or '', reverse=True)
+    activas.sort(key=lambda p: not (extra.get(p[0]['id']) or '') > _iso(ahora))
+    for x, hasta in activas:
+        pago = (extra.get(x['id']) or '') > _iso(ahora)
+        es_liga = x.get('o') == 'liga'
+        if not pago:
+            if any(por.get(q, 0) >= por_persona for q in x['quien']):
+                continue
+            if (n_lg >= LIGA_TOPE and respaldo) if es_liga else n_sv >= tope:
+                continue
+        poner(x, hasta)
+        n_lg += es_liga
+        n_sv += not es_liga
+    if respaldo and len(out) < MIN_CIRCULO:
+        ya = {y['pid'] for y in out}
+        for x in sorted(todas, key=lambda x: x.get('t') or '', reverse=True):
+            if len(out) >= MIN_CIRCULO:
+                break
+            if x['id'] not in ya:
+                poner(x, ahora + dt.timedelta(hours=RESPALDO_H))
+    out.sort(key=lambda y: y['t'], reverse=True)
     return out
 
 
@@ -298,8 +457,36 @@ def _self_check():
                     'url': 'https://youtu.be/%011d' % i, 'plat': 'yt'} for i in range(6)]
          + [{'id': 'v', 't': '2026-08-01T10:00:00Z', 'sv': 'SR', 'quien': 'Cid', 'url': 'https://youtu.be/x', 'plat': 'yt'}]}
     pm = para_muro(d, t0)
-    ok([x['quien'][0] for x in pm] == ['Ana', 'Ana', 'Bea', 'Bea'] and all(x['tipo'] == 'promo' for x in pm),
-       'al muro: las del último mes, dos por persona como mucho (la que publica diez no tapa al resto)', str(pm))
+    ok([x['quien'][0] for x in pm] == ['Ana', 'Ana', 'Bea', 'Bea'] and all(x['tipo'] == 'promo' for x in pm)
+       and pm[0]['hasta'] == '2026-10-22T10:00:00Z',
+       'al muro: las de la semana, dos por persona como mucho (la que publica diez no tapa al resto), con cuándo vence',
+       str(pm))
+    # 💳 una semana más: la de Cid, de agosto, alargada en la Tienda hasta el 20/10, entra primero y sin contar tope
+    d2 = dict(d, extra={'v': '2026-10-20T00:00:00Z'})
+    pm2 = para_muro(d2, t0)
+    ok(pm2[-1]['quien'] == ['Cid'] and pm2[-1].get('alargada') and pm2[-1]['hasta'] == '2026-10-20T00:00:00Z'
+       and len(pm2) == 5, 'la alargada en la Tienda sigue en la página hasta cuando pagó', str(pm2[-1]))
+    # 🔵 el círculo, siempre: sin nada en la semana, las más nuevas por unas horas
+    t9 = dt.datetime(2026, 11, 30, 12, tzinfo=dt.timezone.utc)
+    pm3 = para_muro(d, t9)
+    ok(len(pm3) == MIN_CIRCULO and pm3[0]['hasta'] == '2026-12-01T00:00:00Z' and not para_muro(d, t9, respaldo=False),
+       'sin promos en la semana, el círculo sigue con las más nuevas (por %d horas); el perfil, no' % RESPALDO_H)
+    # 📣 lo que promociona la Liga: los videos de nuestros participantes, una vez cada uno
+    vj = {'videos': {'aaaaaaaaaaa': ['ANA vs BEA | Octavos', 'SR', ['Ana', 'Bea']], 'bbbbbbbbbbb': ['sin gente', 'SR', []]},
+          'meta': {'aaaaaaaaaaa': ['2026-10-15T00:00:00Z', 9], 'bbbbbbbbbbb': ['2026-10-15T00:00:00Z', 9]}}
+    pj = {'por': {'Cid': [['ccccccccccc', 'CID VS X | plaza', 'Plaza Norte', '2026-10-14T00:00:00Z', 'canal'],
+                          ['aaaaaaaaaaa', 'ANA vs BEA', 'x', '2026-10-14T00:00:00Z', 'dlx']]}, 'ocultos': []}
+    lg = de_la_liga(t0, vj, pj, {'dan': [['youtube', 'https://www.youtube.com/channel/UC' + 'x' * 22, 'Dan']]},
+                    {'dan': 'Dan'}, lambda c: [{'vid': 'ddddddddddd', 't': '2026-10-16T01:00:00Z', 'tit': 'mi tema',
+                                                'canal': 'Dan TV'}])
+    ok([(x['vid'][0], x['por'], x['quien']) for x in lg] == [('d', 'canal', ['Dan']), ('a', 'socio', ['Ana', 'Bea']),
+                                                             ('c', 'perfil', ['Cid'])]
+       and all(x['o'] == 'liga' for x in lg),
+       'la Liga promociona: su YouTube de «Mis redes», las batallas de los socios y lo que sumó cada uno (una vez cada video)',
+       str([(x['vid'], x['por']) for x in lg]))
+    pm4 = para_muro({'items': [], 'liga': lg}, t0)
+    ok([x['quien'] for x in pm4] == [['Dan'], ['Ana', 'Bea'], ['Cid']] and pm4[0]['o'] == 'liga',
+       'y van al muro como cualquier promo, con `o: liga`')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 
