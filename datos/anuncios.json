@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-16T01:25:01+00:00",
+ "cuando": "2026-10-16T01:56:46+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -382,6 +382,44 @@
    "staff": {},
    "autor": "Geronimo",
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "LA REDENCION VOL.5",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1560470094562467852",
+   "cuando": "2026-10-16T01:51:02",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "orgs": [
+    {
+     "n": "Velatz",
+     "id": "1426686911908675628"
+    }
+   ],
+   "autor_h": "c36f9caea613c5c9",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Plata II 🥈",
+   "modalidad": "Multiverse",
+   "horario": "11:00",
+   "fecha": "",
+   "premios": "Clasificación + Campeonato 🏆",
+   "staff": {
+    "jurado": [
+     "Velatz"
+    ],
+    "host": [
+     "Velatz"
+    ],
+    "dj": [
+     "Velatz"
+    ]
+   },
+   "autor": "Velatz",
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 6",
@@ -5856,6 +5894,132 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "seko boy🇨🇴",
+   "quien": "snowzzzzzzzz",
+   "discord_id": "1097714486795849748",
+   "msg_id": "1560471273946218527",
+   "cuando": "2026-10-16T01:55:43"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Sebita🇱🇷",
+   "quien": "malasiafighter",
+   "discord_id": "1357796427191029932",
+   "msg_id": "1560471095037923442",
+   "cuando": "2026-10-16T01:55:01"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Paria🇦🇷",
+   "quien": "elconocimientoeslibertad",
+   "discord_id": "1286348537499488299",
+   "msg_id": "1560471027903889489",
+   "cuando": "2026-10-16T01:54:45"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1560470720558141484",
+   "cuando": "2026-10-16T01:53:31"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Valravn 🇨🇴",
+   "quien": "pipe0727",
+   "discord_id": "655442580296957967",
+   "msg_id": "1560470543122038815",
+   "cuando": "2026-10-16T01:52:49"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Geoka 🇦🇷",
+   "quien": "goksito_8",
+   "discord_id": "1325042155819106324",
+   "msg_id": "1560470495055319111",
+   "cuando": "2026-10-16T01:52:38"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Nc🇹🇼+ gocho🇯🇵",
+   "quien": "gocho444.",
+   "discord_id": "1324178951119175711",
+   "msg_id": "1560470488843817072",
+   "cuando": "2026-10-16T01:52:36"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "sin limites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1560470484091412504",
+   "cuando": "2026-10-16T01:52:35"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "sosa 🇺🇾",
+   "quien": "sosaatrz",
+   "discord_id": "1471153954254622774",
+   "msg_id": "1560470459974295627",
+   "cuando": "2026-10-16T01:52:29"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "kyss 🇦🇱",
+   "quien": "ominouspoetry",
+   "discord_id": "1190746928774922311",
+   "msg_id": "1560470446959370251",
+   "cuando": "2026-10-16T01:52:26"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Nemi 🇦🇷",
+   "quien": "nemmii_as_26264",
+   "discord_id": "1458311513667276830",
+   "msg_id": "1560470446728806413",
+   "cuando": "2026-10-16T01:52:26"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "delux🇦🇷",
+   "quien": "delux.13",
+   "discord_id": "729809358627536938",
+   "msg_id": "1560470437526376549",
+   "cuando": "2026-10-16T01:52:24"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Dyzz🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1560470434032390145",
+   "cuando": "2026-10-16T01:52:23"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "gocho🇹🇼",
+   "quien": "gocho444.",
+   "discord_id": "1324178951119175711",
+   "msg_id": "1560468394363322469",
+   "cuando": "2026-10-16T01:44:17"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
