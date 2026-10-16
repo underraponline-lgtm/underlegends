@@ -8,7 +8,7 @@
 // ⚠️ NO SOBRECARGAR (Dlx, 02/10: «la cosa no es sobrecargar las cosas»): las cartas nuevas de un mismo día van en UNA
 // publicación —eran 46 de 80 renglones—, y Felicitar va sólo en los logros de verdad (campeón, rango, Most Wanted).
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import { ksDe, limpio, num, siglaDe } from './liga.js';
+import { MESES, ksDe, limpio, num, siglaDe } from './liga.js';
 import { Cara, Carta, Ico, accion, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { Elegido, X2 } from './encuestas.jsx';
@@ -18,7 +18,9 @@ const ANUNCIOS = { anuncio: 1, liga: 1, flyer: 1 };
 // 📣 las promociones de los servidores (bot/promos.py, 16/10/2026): su pestaña, y no van en «En la Liga»
 export const PLATAFORMA = { yt: 'YouTube', sp: 'Spotify', sc: 'SoundCloud', ig: 'Instagram', tt: 'TikTok' };
 // los logros: lo que se puede felicitar (una carta nueva le toca a todo el que juega una vez: no es un logro)
-const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, ligahito: 1 };
+const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, ligahito: 1, mesaward: 1 };
+// 🏆 las categorías de los MES AWARDS (bot/mes_awards.py)
+const MES_CAT = { rapero: 'el Rapero del mes', revelacion: 'la Revelación del mes', batalla: 'la Batalla del mes', servidor: 'el Servidor del mes' };
 const CARTA = { pais: 'de País', temporada: 'de Temporada', servidor: 'de Servidor', competitivo: 'Competitiva' };
 
 // los perfiles de una publicación, siempre en lista: `ksDe()` de liga.js (en los premios `ks` es un objeto)
@@ -119,6 +121,19 @@ export function Pub({ liga, it, A }) {
     vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
     txt = <>La gente eligió a {nombres} como El Elegido del Most Wanted</>;
     det = it.de ? it.votos + ' de ' + it.de + ' votos' : '';
+  } else if (it.tipo === 'mesaward') {
+    // 🏆 un ganador de los MES AWARDS (bot/mes_awards.py, 16/10/2026)
+    const mes = MESES[Number(String(it.mes || '').slice(5, 7)) - 1] || '';
+    cat = 'MES AWARDS · ' + mes.toUpperCase();
+    vis = it.cat === 'batalla' && it.vid ? (
+      <button type="button" className="pub-promo-v" onClick={() => abrirVideo({ vid: it.vid, tit: limpio(it.n || ''), link: 'https://www.youtube.com/watch?v=' + it.vid })}
+        aria-label={'Mirar ' + limpio(it.n || 'la batalla')}><Miniatura vid={it.vid} cls="pub-promo-img" /><span aria-hidden="true">▶</span></button>
+    ) : it.cat === 'servidor' ? <img className="pub-logo" alt="" src={liga.logo(it.sv)} /> : <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
+    txt = it.cat === 'batalla' ? <><b>{limpio(it.n)}</b> es la Batalla del mes de {mes}</>
+      : it.cat === 'servidor' ? <><b>{limpio(it.n)}</b> es el Servidor del mes de {mes}</>
+        : <>{nombres} es {MES_CAT[it.cat] || 'ganador'} de <b>{mes}</b></>;
+    det = it.por === 'votos' ? num(it.votos) + (it.votos === 1 ? ' voto' : ' votos') : 'por los números del mes';
+    acc = <a className="pub-a" href="#/salon">El Salón de la fama</a>;
   } else if (it.tipo === 'promo') {
     // 📣 lo que un rapero compartió en el canal de promoción de su servidor (bot/promos.py, 16/10/2026): el video se mira
     // acá; lo demás abre en su plataforma. El título es el de la plataforma, no el texto del mensaje

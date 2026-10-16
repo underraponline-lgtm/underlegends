@@ -1245,6 +1245,12 @@ def _lo_barato(correr):
         paso('2b8c', 'las promociones')
         if not corre(['bot/promos.py', '--aplicar'], callado=True, mostrar=('📣', '⚠️')):
             print('      ⚠️ las promociones fallaron: quedan las de la corrida anterior')
+    # ── 2b8d · 🏆 los MES AWARDS (`bot/mes_awards.py`, Dlx 16/10/2026): cómo va el mes, los nominados el día 1 y el
+    # cierre. Antes de la web, que lleva sus encuestas. Nunca frena el ciclo
+    if correr:
+        paso('2b8d', 'los MES AWARDS')
+        if not corre(['bot/mes_awards.py', '--aplicar'], callado=True, mostrar=('🏆', '⚠️', '✅')):
+            print('      ⚠️ los MES AWARDS fallaron: queda lo de la corrida anterior')
     # ── 2b9 · 🏟️ las ligas de los servidores (`bot/ligas.py`, Dlx 12/10/2026: «1. A», «2. Me gusta»): cada batalla con
     # su resultado, para la pestaña «Ligas» de la web y como duelos (Ranking Duelos y Win%: los toma el paso 1c de la
     # corrida siguiente, como las misiones). Nunca frena el ciclo

@@ -122,11 +122,23 @@ def canal(cid, maximo=1500):
     return list(dict.fromkeys(out))
 
 
+#: 🏆 cuándo se publicó cada video y cuántas vistas tenía, de la lista pública: `{video: (iso, vistas)}`. Lo llena
+#: `nuevos()` y lo guarda `correr()` en `meta`, para la Batalla del mes de los MES AWARDS (`bot/mes_awards.py`)
+_META = {}
+
+
 def nuevos(cid):
-    """`[(video_id, título)]`: los 15 más nuevos del canal, de su lista pública (una sola pregunta)."""
+    """`[(video_id, título)]`: los 15 más nuevos del canal, de su lista pública (una sola pregunta). De paso anota en
+    `_META` cuándo se publicó cada uno y sus vistas (la lista pública las trae; la pestaña «Videos» no)."""
     import html
     import requests
     r = requests.get('https://www.youtube.com/feeds/videos.xml?channel_id=' + cid, headers=H, timeout=20)
+    for e in re.findall(r'<entry>(.*?)</entry>', r.text, re.S):
+        v = re.search(r'<yt:videoId>([\w-]{11})</yt:videoId>', e)
+        p = re.search(r'<published>([^<]+)</published>', e)
+        n = re.search(r'views="(\d+)"', e)
+        if v and p:
+            _META[v.group(1)] = (p.group(1)[:19] + 'Z', int(n.group(1)) if n else 0)
     return [(v, html.unescape(t)) for v, t in
             re.findall(r'<yt:videoId>([\w-]{11})</yt:videoId>.*?<title>(.*?)</title>', r.text, re.S)]
 
@@ -255,6 +267,9 @@ def correr(aplicar=False):
     for c in cfg.get('canales') or []:
         try:
             vs = canal(c['id']) if entero else nuevos(c['id'])
+            # 🏆 la lectura entera no trae la fecha ni las vistas: la lista pública sí, y es una pregunta más
+            if entero:
+                nuevos(c['id'])
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ %s (%s): no pude leerlo (%s)' % (c.get('nombre'), c['sv'], str(e)[:60]))
             continue
@@ -279,7 +294,9 @@ def correr(aplicar=False):
                'visto': ahora.isoformat(timespec='seconds'),
                'todo': (ahora if entero else todo_t).isoformat(timespec='seconds'),
                'videos': hallados, 'por': {q: vs[:POR_PERSONA] for q, vs in por.items()},
-               'crudos': {c: [list(x) for x in vs] for c, vs in crudos.items()}}
+               'crudos': {c: [list(x) for x in vs] for c, vs in crudos.items()},
+               # 🏆 cuándo se publicó y cuántas vistas: lo de antes se queda, las vistas se actualizan
+               'meta': dict(prev.get('meta') or {}, **{v: list(x) for v, x in _META.items()})}
         with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(out, f, ensure_ascii=False, indent=1, sort_keys=True)
             f.write('\n')

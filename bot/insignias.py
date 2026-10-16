@@ -69,6 +69,10 @@ CATALOGO = (
     ('invicto', '💎', 'Invicto', 'Llegó a 5 ganadas sin perder ninguna en una liga'),
     ('liga_podio', '🎖️', 'Podio de liga', 'Terminó entre los tres primeros de una liga'),
     ('liga_campeon', '🏅', 'Campeón de liga', 'Ganó una liga de los servidores'),
+    # 🏆 los MES AWARDS (16/10/2026, Dlx: «como el Balón de Oro pero cada mes»). Ver `bot/mes_awards.py`
+    ('mes_rapero', '🏆', 'Rapero del mes', 'Ganó el Rapero del mes de los MES AWARDS'),
+    ('mes_revelacion', '🌠', 'Revelación del mes', 'Ganó la Revelación del mes de los MES AWARDS'),
+    ('mes_batalla', '🎬', 'Batalla del mes', 'Su batalla ganó la Batalla del mes de los MES AWARDS'),
 )
 IDS = [c[0] for c in CATALOGO]
 
@@ -128,7 +132,7 @@ def cumple(pool, mw=None, reyes=None, duelos_g=None, clasicos_g=None, figuras=No
         if raw and ya:
             out.setdefault(raw, set()).update(ya)
     for raw, ya in (ligas or {}).items():
-        ya = set(ya) & {'liga', 'invicto', 'liga_podio', 'liga_campeon'}
+        ya = set(ya) & {'liga', 'invicto', 'liga_podio', 'liga_campeon', 'mes_rapero', 'mes_revelacion', 'mes_batalla'}
         if raw and ya:
             out.setdefault(raw, set()).update(ya)
     return out
@@ -250,6 +254,13 @@ def _ligas(raw_de):
                     poner(n, 'liga_podio')
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ sin las insignias de liga (%s)' % str(e)[:80])
+    # 🏆 y las de los MES AWARDS (`bot/mes_awards.py`): los ganadores, por el mismo camino (no piden el pool)
+    try:
+        import mes_awards as MA
+        for n, ids in MA.insignias().items():
+            out.setdefault(raw_de(n) or n, set()).update(ids)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ sin las insignias de los MES AWARDS (%s)' % str(e)[:80])
     return out
 
 

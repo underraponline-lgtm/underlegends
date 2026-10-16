@@ -498,7 +498,7 @@ export default {
     // de Publicaciones (28/09/2026): ver `pedirMuro()`
     // 🏟️ y el detalle de las ligas (14/10/2026): las fechas y el flyer de cada una, al abrir Ligas
     if (url.pathname === '/api/perfiles' || url.pathname === '/api/llaves' || url.pathname === '/api/muro' ||
-        url.pathname === '/api/ligas') {
+        url.pathname === '/api/ligas' || url.pathname === '/api/salon') {
       if (req.method !== 'GET') return new Response('no', { status: 405 });
       const r = await fetch(ORIGEN + url.pathname.slice(4), {
         method: 'GET',

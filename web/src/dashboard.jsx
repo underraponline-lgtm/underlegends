@@ -780,6 +780,46 @@ const TAB = 'lg:db-tab';
 const leerTab = () => { try { const t = localStorage.getItem(TAB); return PESTANAS.some(([k]) => k === t) ? t : 'hoy'; } catch (e) { return 'hoy'; } };
 const ponerTab = (t) => { try { localStorage.setItem(TAB, t); } catch (e) { /* sin almacenamiento */ } };
 
+// 🏆 LOS MES AWARDS (16/10/2026, Dlx a «¿de dónde salen los nominados?»: «solos, de los números», y vos podés sacar
+// alguno antes de que abra la votación). Los nominados salen el día 1 a las 11 AM ET y la votación abre a las 6 PM: en
+// ese rato, sacar a uno guarda `mes_sacar` y en la vuelta siguiente del ciclo entra el que sigue (`bot/mes_awards.py`)
+function MesAwardsDueno({ aj, hacer, ocup }) {
+  const [S, setS] = useState(null);
+  useEffect(() => {
+    fetch('/api/salon', { headers: { accept: 'application/json' } }).then((r) => (r.ok ? r.json() : null)).then((d) => setS(d || {})).catch(() => setS({}));
+  }, []);
+  if (!S) return <p className="pronto-p">Cargando…</p>;
+  const ab = S.abierto;
+  if (!ab) {
+    const v = S.vivo;
+    return <p className="pronto-p">{v ? 'Así va ' + v.nombre + ': los nominados salen el día 1 a las 11 AM, y desde ahí hasta las 6 PM podés sacar a alguno acá.' : 'Todavía no hay MES AWARDS.'}</p>;
+  }
+  if (ab.votando) return <p className="pronto-p">Se está votando {ab.nombre}: los nominados ya no se cambian. Cierra el {corto(ab.cierra)}.</p>;
+  const ya = ((aj.mes_sacar || {}).mes === ab.mes ? (aj.mes_sacar.quitar || []) : []);
+  const alternar = (k) => {
+    const q = ya.includes(k) ? ya.filter((x) => x !== k) : ya.concat([k]);
+    hacer('mes_sacar', q.length ? { mes: ab.mes, quitar: q } : null, ya.includes(k) ? 'Vuelve a estar nominado.' : 'Sacado: en la próxima vuelta del ciclo entra el que sigue.');
+  };
+  return (
+    <div className="db-mes">
+      <p className="pronto-p">Los nominados de <b>{ab.nombre}</b>. La votación abre el {corto(ab.abre)}: hasta entonces podés sacar a alguno.</p>
+      {(S.cats || []).map(([c, n]) => {
+        const nom = ((ab.cats || {})[c] || {}).nom || [];
+        const fuera = ya.filter((k) => k.startsWith(c + ':')).map((k) => k.slice(c.length + 1));
+        return nom.length || fuera.length ? (
+          <div key={c} className="db-mes-c"><b>{n}</b>
+            <ul>{nom.map((x) => (
+              <li key={x.op}><span>{x.n}</span><button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => alternar(c + ':' + x.op)}>Sacar</button></li>
+            ))}{fuera.map((op) => (
+              <li key={'f' + op} className="fuera"><span>{op} · sacado</span><button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => alternar(c + ':' + op)}>Volver a poner</button></li>
+            ))}</ul>
+          </div>
+        ) : null;
+      })}
+    </div>
+  );
+}
+
 // el `hacer` de los ajustes: guarda, avisa y dice si salió. Lo comparten los ajustes y el historial
 function useHacer(onAj) {
   const [msg, setMsg] = useState('');
@@ -1839,6 +1879,7 @@ export function Dashboard({ dc, liga }) {
         ))}</nav>
         {tabV === 'hoy' ? <>
           {sec('LO QUE PIDE ATENCIÓN', null, <Atencion xs={at} />)}
+          {ve('ajustes') ? sec('MES AWARDS', 'los nominados del mes', <MesAwardsDueno aj={d.ajustes || {}} hacer={hacer} ocup={ocup} />) : null}
           {(d.vivo || []).length ? sec('EN VIVO AHORA', 'se actualiza al abrir el Dashboard',
             <EnVivo vivo={d.vivo} liga={liga} aj={d.ajustes || {}} chat={d.chat} />) : null}
           {sec('LO QUE TE LLEGÓ', null, <Llego d={d} alFondos={(fs) => cambiarD({ fondos: fs })} alFiltro={(fl) => cambiarD({ filtro: fl })} alFotos={(x) => cambiarD({ fotos_carta: x })} />)}

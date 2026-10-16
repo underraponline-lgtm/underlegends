@@ -130,6 +130,12 @@ def abiertas(ahora=None, datos=None):
             e = None
         if e:
             out.append(e)
+    # 🏆 y las de los MES AWARDS (`bot/mes_awards.py`, Dlx 16/10/2026): una por categoría mientras se vota el mes
+    try:
+        import mes_awards as MA
+        out += MA.encuestas(ahora)
+    except Exception as ex:                              # noqa: BLE001
+        print('   ⚠️ las encuestas de los MES AWARDS no se pudieron armar (%s)' % str(ex)[:80])
     return out
 
 

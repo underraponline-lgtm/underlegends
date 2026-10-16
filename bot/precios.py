@@ -239,7 +239,7 @@ def tienda_mw(mw, dids):
     return out
 
 
-def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None, wr=None):
+def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None, wr=None, mes=None):
     """Lo que lee el objeto: `{v, r: {id: {e, t, por: [[discord_id, parte]]}}, mw: {…}, jugo, rcfg}`.
 
     Sólo lo resuelto (cazado o devuelto). Quien cazó sin Discord conocido no
@@ -264,7 +264,7 @@ def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None, wr
             r[str(x['id'])] = {'e': 'devuelto', 'por': []}
     m = tienda_mw(mw, dids) if mw is not None else {}
     v = hashlib.sha1(json.dumps([r, m, jugo, rcfg, div] + ([deb] if deb is not None else [])
-                                + ([wr] if wr is not None else []), sort_keys=True,
+                                + ([wr] if wr is not None else []) + ([mes] if mes else []), sort_keys=True,
                                 ensure_ascii=False).encode()).hexdigest()[:16]
     out = {'v': v, 'r': r, 'mw': m}
     if jugo is not None:
@@ -280,6 +280,10 @@ def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None, wr
     # entero en cada corrida y el objeto lo REEMPLAZA (`wr:`), como el debut
     if wr is not None:
         out['wr'] = wr
+    # 🏆 y lo que pagan los MES AWARDS (`bot/mes_awards.py`): una clave por mes, categoría y persona, entero y se
+    # REEMPLAZA (`mes:`), como el Writing
+    if mes is not None:
+        out['mes'] = mes
     return out
 
 
@@ -351,8 +355,15 @@ def correr(ahora=None, aplicar=False, precios=None, datos=None):
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ el Writing Challenge no viaja esta vez: %s' % str(e)[:80])
             wr = None
+        # 🏆 los MES AWARDS: sin su archivo, `None` y no viaja
+        try:
+            import mes_awards as MA
+            mes = MA.tienda(None, dids) if MA.leer() else None
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ los MES AWARDS no viajan esta vez: %s' % str(e)[:80])
+            mes = None
         _subir(para_objeto(res, dids, MW.leer(), RA.jugo(evs, dids, o), RA.config(o, MU.temporada_actual(ahora)),
-                           DV.tienda(DV.leer(), dids), DB.tienda(DB._leer()), wr),
+                           DV.tienda(DV.leer(), dids), DB.tienda(DB._leer()), wr, mes),
                CLAVE_RES, 'lo cazado, lo devuelto, el MW, los días jugados, las divisiones, los debuts y el Writing')
     return out
 

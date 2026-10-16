@@ -4016,9 +4016,11 @@ export default {
       // vista, así no viaja en cada visita. Lo arma `bot/muro.py`
       // 🏟️ Y EL DETALLE DE LAS LIGAS (14/10/2026), igual: las fechas y el flyer de cada una, al abrir Ligas
       // (`ligas.separar()` en bot/ligas.py: el lobby ya estaba al tope de lo que pesa)
-      if (ruta === '/perfiles' || ruta === '/llaves' || ruta === '/muro' || ruta === '/ligas') {
+      // 🏛️ Y EL SALÓN DE LA FAMA (16/10/2026): los MES AWARDS —qué se vota, cómo va el mes y los ganadores—, al abrir
+      // el Salón (`bot/mes_awards.py`)
+      if (ruta === '/perfiles' || ruta === '/llaves' || ruta === '/muro' || ruta === '/ligas' || ruta === '/salon') {
         const crudo = await env.KV.get(ruta === '/llaves' ? 'web:llaves' : ruta === '/muro' ? 'web:muro'
-          : ruta === '/ligas' ? 'web:ligas' : 'web:perfiles');
+          : ruta === '/ligas' ? 'web:ligas' : ruta === '/salon' ? 'web:salon' : 'web:perfiles');
         return new Response(crudo || '{}', {
           status: crudo ? 200 : 404,
           headers: {

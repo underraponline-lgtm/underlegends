@@ -308,6 +308,9 @@ def id_de(x):
     elif tipo == 'flyer':
         # 🖼️ sin link (el servidor sin guild): la liga y la imagen, que lleva el id del mensaje
         partes = [tipo, x.get('liga') or '', x.get('img') or '']
+    elif tipo == 'mesaward':
+        # 🏆 qué mes y qué categoría: uno por cada una
+        partes = [tipo, x.get('mes') or '', x.get('cat') or '']
     elif tipo == 'promo':
         # 📣 el mensaje y el link: la misma promo es la misma publicación en cada corrida
         partes = [tipo, x.get('pid') or x.get('url') or '']
@@ -338,7 +341,7 @@ def con_ids(items):
 # ── de quién es cada publicación: para los seguidores ────────────────────
 #: las publicaciones que son de alguien. Los anuncios y las novedades no son de nadie
 DE_ALGUIEN = ('campeon', 'rango', 'tarjeta', 'caza', 'sobrevivio', 'elegido', 'precio', 'premios', 'pase', 'ligahito',
-              'promo')
+              'promo', 'mesaward')
 #: los premios de la semana que son de una persona (el de servidor no)
 PREMIOS = ('figura', 'revelacion', 'cazador')
 
@@ -486,8 +489,18 @@ def _todo(p, guardado, ahora, fuentes, promos_por=None):
             + premios(fuentes.get('mult')) + anuncios(fuentes.get('anuncios'))
             + pase(fuentes.get('pase'), p.get('tabla')) + novedades(p.get('novedades'))
             + flyers(fuentes.get('ligas'), fuentes.get('svs')) + ligas_hitos(fuentes.get('ligas'))
-            + promos_muro(fuentes.get('promos'), ahora, promos_por))
+            + promos_muro(fuentes.get('promos'), ahora, promos_por) + mes_muro())
     return todo, estado, anotados
+
+
+def mes_muro():
+    """🏆 Los ganadores de los MES AWARDS (`bot/mes_awards.py`). Si algo falla, ninguno: nunca frena el muro."""
+    try:
+        import mes_awards as MA
+        return MA.muro()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ el muro sin los MES AWARDS (%s)' % str(e)[:80])
+        return []
 
 
 def promos_muro(d, ahora, por=None):

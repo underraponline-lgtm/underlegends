@@ -1,0 +1,136 @@
+{
+ "_leeme": "Los MES AWARDS: los nominados, los votos al cierre y los ganadores de cada mes. Los escribe bot/mes_awards.py (paso 2b8d); los votos los guarda el objeto (bot/avisos.js).",
+ "meses": {},
+ "vivo": {
+  "mes": "2026-10",
+  "cats": {
+   "rapero": [
+    {
+     "op": "Snow",
+     "n": "Snow",
+     "pts": 241612,
+     "oro": 4,
+     "ev": 26
+    },
+    {
+     "op": "Makmah",
+     "n": "Makmah",
+     "pts": 215562,
+     "oro": 2,
+     "ev": 29
+    },
+    {
+     "op": "Oasis",
+     "n": "Oasis",
+     "pts": 206650,
+     "oro": 10,
+     "ev": 17
+    },
+    {
+     "op": "PichulaMc",
+     "n": "PichulaMc",
+     "pts": 183422,
+     "oro": 3,
+     "ev": 23
+    },
+    {
+     "op": "Verc",
+     "n": "Verc",
+     "pts": 151862,
+     "oro": 4,
+     "ev": 14
+    }
+   ],
+   "revelacion": [
+    {
+     "op": "RT",
+     "n": "RT",
+     "pts": 38775,
+     "oro": 0,
+     "ev": 9
+    },
+    {
+     "op": "Teo",
+     "n": "Teo",
+     "pts": 34025,
+     "oro": 0,
+     "ev": 9
+    },
+    {
+     "op": "Ariaxer",
+     "n": "Ariaxer",
+     "pts": 30438,
+     "oro": 0,
+     "ev": 9
+    },
+    {
+     "op": "Lvel 🇻🇪",
+     "n": "Lvel 🇻🇪",
+     "pts": 29231,
+     "oro": 0,
+     "ev": 9
+    },
+    {
+     "op": "Medster",
+     "n": "Medster",
+     "pts": 17500,
+     "oro": 0,
+     "ev": 1
+    }
+   ],
+   "batalla": [
+    {
+     "op": "0uk1CE5A3Ic",
+     "n": "ZETA 🆚 RUBIK || FINAL MATANZA DE DIOSES - C16",
+     "sv": "SR",
+     "gente": [
+      "Zeta",
+      "Rubik"
+     ],
+     "vistas": 71
+    },
+    {
+     "op": "kaD74Qr7ky8",
+     "n": "RUBIK 🆚 SCORPIO | FINAL MATANZA DE DIOSES - C15",
+     "sv": "SR",
+     "gente": [
+      "Rubik"
+     ],
+     "vistas": 44
+    }
+   ],
+   "servidor": [
+    {
+     "op": "FFA",
+     "n": "Freestyle For All",
+     "gente": 263,
+     "ev": 49
+    },
+    {
+     "op": "ACAD",
+     "n": "Academia de Rap",
+     "gente": 97,
+     "ev": 4
+    },
+    {
+     "op": "DDF",
+     "n": "Dimensión del Freestyle",
+     "gente": 68,
+     "ev": 16
+    },
+    {
+     "op": "URBF",
+     "n": "Urban Freestyle",
+     "gente": 37,
+     "ev": 5
+    },
+    {
+     "op": "SR",
+     "n": "Snake Rap",
+     "gente": 31,
+     "ev": 2
+    }
+   ]
+  }
+ }
+}

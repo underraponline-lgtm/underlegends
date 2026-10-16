@@ -7,9 +7,9 @@
 // bot/subir_web.py), las insignias de cada uno de los perfiles (`/api/perfiles`, `ins`), los campeones de liga del
 // lobby (`ligas.salon`) y el Salón del Pase del objeto (`/api/avisos/pases`). Ninguna sección se dibuja vacía, salvo la
 // de los campeones de cada temporada, que dice cuándo se llena.
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { DIAS, MESES, limpio, num, siglaDe } from './liga.js';
-import { Cara, Ico, Sec, usePerfiles } from './piezas.jsx';
+import { Cara, Ico, Sec, accion, usePerfiles } from './piezas.jsx';
 import { usePases } from './pase.js';
 
 // las insignias «difíciles»: las que tienen como mucho tantos; de la más rara a la menos. Las que nadie tiene no van
@@ -181,7 +181,126 @@ function Figuras({ liga, perf }) {
   );
 }
 
-export function SalonFama({ liga }) {
+// ── 🏆 LOS MES AWARDS (Dlx, 16/10/2026: «como el Balón de Oro pero cada mes»): lo que se vota, cómo va el mes y los
+// ganadores. Lo arma el ciclo (`bot/mes_awards.py`) y se pide al abrir el Salón (`/api/salon`): no viaja en el lobby.
+// Se vota con las mismas reglas que El Elegido y el ×2 (`accion.votar`, `enc` de App.jsx): un voto por cuenta y por
+// categoría, se cambia hasta que cierra, y afuera se ve cuántos, nunca quién
+const SAL = { d: null, pedido: 0, oyentes: new Set() };
+function pedirSalon() {
+  if (Date.now() - SAL.pedido < 120000) return;
+  SAL.pedido = Date.now();
+  fetch('/api/salon', { headers: { accept: 'application/json' } })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => { if (d && d.cats) { SAL.d = d; SAL.oyentes.forEach((f) => f()); } })
+    .catch(() => { /* sin esto, el Salón sigue sin los MES AWARDS */ });
+}
+export function useSalon() {
+  const [, setN] = useState(0);
+  useEffect(() => {
+    const f = () => setN((n) => n + 1);
+    SAL.oyentes.add(f);
+    pedirSalon();
+    return () => { SAL.oyentes.delete(f); };
+  }, []);
+  return SAL.d;
+}
+const capM = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
+
+// cada nominado: su cara (o la miniatura de la batalla, o el escudo del servidor), su nombre y su número del mes
+function Nominado({ liga, cat, x }) {
+  const f = (cat === 'rapero' || cat === 'revelacion') ? liga.fila(x.op) : null;
+  const vis = cat === 'batalla' ? <img className="ma-vid" alt="" src={'https://i.ytimg.com/vi/' + x.op + '/mqdefault.jpg'} loading="lazy" />
+    : cat === 'servidor' ? <img className="ma-cara" alt="" src={liga.logo(x.op)} />
+      : <Cara liga={liga} k={f ? f.k : ''} nombre={x.n} cls="ma-cara" />;
+  const dato = cat === 'batalla' ? siglaDe(x.sv) + ' · ' + num(x.vistas) + ' vistas'
+    : cat === 'servidor' ? num(x.gente) + ' raperos · ' + num(x.ev) + ' eventos'
+      : num(x.pts) + ' pts' + (x.oro ? ' · ' + x.oro + (x.oro === 1 ? ' título' : ' títulos') : '') + ' · ' + x.ev + (x.ev === 1 ? ' evento' : ' eventos');
+  return <>{vis}<span className="ma-t"><b>{cat === 'batalla' ? limpio(x.n) : f ? limpio(f.n) : limpio(x.n)}</b><small>{dato}</small></span></>;
+}
+
+function Categoria({ liga, enc, cat, nombre, de, nom, encId, gana }) {
+  const E = encId ? ((liga.d.enc || []).find((e) => e.id === encId) || null) : null;
+  const cu = E && enc ? enc.cuenta(E.id) : {};
+  const tot = Object.values(cu).reduce((s, n) => s + (Number(n) || 0), 0);
+  const mio = E && enc ? enc.mio[E.id] : '';
+  const est = (E && enc && enc.est[E.id]) || {};
+  return (
+    <article className="ma-cat">
+      <header><b>{nombre}</b><small>Por {de}</small></header>
+      <ol className="ma-noms">{nom.map((x, i) => {
+        const n = Number(cu[x.op] || 0);
+        const p = tot ? Math.round((100 * n) / tot) : 0;
+        const cuerpo = <><span className="ma-i">{gana ? (x.op === gana ? '🏆' : '') : i + 1}</span><Nominado liga={liga} cat={cat} x={x} /></>;
+        return (
+          <li key={x.op} className={(gana && x.op === gana ? 'gana ' : '') + (mio === x.op ? 'mio' : '')}>
+            {E ? (
+              <button type="button" className={'ma-op' + (est.va === x.op ? ' va' : '')} onClick={() => accion.votar(E.id, x.op)}
+                aria-pressed={mio === x.op} aria-label={'Votar a ' + limpio(x.n) + ' · ' + p + '% de los votos'}>
+                <i className="ma-bar" style={{ width: p + '%' }} />{cuerpo}<em>{mio === x.op ? '✓ ' : ''}{p}%</em>
+              </button>
+            ) : <div className="ma-op">{cuerpo}</div>}
+          </li>
+        );
+      })}</ol>
+      {E && enc ? <p className="ma-pie" aria-live="polite">{enc.pie(E, (op) => limpio((nom.find((x) => x.op === op) || {}).n || op))}</p> : null}
+    </article>
+  );
+}
+
+function MesAwards({ liga, enc }) {
+  const S = useSalon();
+  if (!S) return null;
+  const cats = S.cats || [];
+  const ab = S.abierto;
+  const viv = S.vivo;
+  const hist = S.hist || [];
+  let cab;
+  let cuerpo = null;
+  if (ab) {
+    const votando = ab.votando;
+    cab = votando ? <>Votá lo mejor de <b>{ab.nombre}</b>: cierra {liga.dia(ab.cierra)}.</> : <>Los nominados de <b>{ab.nombre}</b>: la votación abre {liga.dia(ab.abre)}.</>;
+    cuerpo = (
+      <div className="ma-cats">{cats.map(([c, n, de]) => {
+        const nom = ((ab.cats || {})[c] || {}).nom || [];
+        if (!nom.length) return null;
+        return <Categoria key={c} liga={liga} enc={enc} cat={c} nombre={n} de={de} nom={nom} encId={votando && nom.length >= 2 ? 'mes:' + ab.mes + ':' + c : ''} />;
+      })}</div>
+    );
+  } else if (viv) {
+    cab = <>Así va <b>{viv.nombre}</b>: si el mes terminara hoy, éstos serían los nominados. Se vota {liga.dia(viv.vota)}.</>;
+    cuerpo = (
+      <div className="ma-cats">{cats.map(([c, n, de]) => {
+        const nom = (viv.cats || {})[c] || [];
+        return nom.length ? <Categoria key={c} liga={liga} cat={c} nombre={n} de={de} nom={nom} /> : null;
+      })}</div>
+    );
+  }
+  return (
+    <Sec id="sf-mes" titulo="MES AWARDS" extra="negra sf-mes">
+      <p className="ma-cab">{cab || <>Cada mes, lo mejor de la Liga, votado por la gente.</>}</p>
+      <p className="ma-como">Los nominados salen solos de los números del mes; vota cualquiera con Discord, una vez por categoría, y se puede cambiar
+        hasta que cierra. El ganador se lleva su insignia{S.premio ? ', Puntos de Tienda' : ''} y su lugar en este Salón.</p>
+      {cuerpo}
+      {hist.length ? (
+        <div className="ma-hist">
+          <h3 className="lgf-st">Los ganadores</h3>
+          {hist.map((m) => (
+            <div key={m.mes} className="ma-hm">
+              <small>{capM(m.nombre)} {m.mes.slice(0, 4)}</small>
+              <ul>{cats.map(([c, n]) => {
+                const x = (m.cats || {})[c] || {};
+                const fila = (x.nom || []).find((y) => y.op === x.gana);
+                return fila ? <li key={c}><Nominado liga={liga} cat={c} x={fila} /><em>{n}</em></li> : null;
+              })}</ul>
+            </div>
+          ))}
+        </div>
+      ) : null}
+    </Sec>
+  );
+}
+
+export function SalonFama({ liga, enc }) {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   const perf = usePerfiles();
   const ins = (liga.d.insignias || []).length;
@@ -203,6 +322,7 @@ export function SalonFama({ liga }) {
           <div className="sf-copa" aria-hidden="true"><Ico n="copa" t={150} /></div>
         </section>
       </div>
+      <MesAwards liga={liga} enc={enc} />
       <Temporadas liga={liga} />
       <Records liga={liga} />
       <Insignias liga={liga} perf={perf} />

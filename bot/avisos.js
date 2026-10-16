@@ -2499,6 +2499,7 @@ export function tituloSeguido(x, n, rol) {
               : x.tipo === 'precio' ? `💰 ${n} cobró el precio por la cabeza de ${x.a}`
                 : x.tipo === 'pase' ? (x.completo ? `🎟️ ${n} completó el Pase de rapero`
                   : `🎟️ ${n} llegó al nivel ${x.nivel} del Pase de rapero`)
+                : x.tipo === 'mesaward' ? (MES_CAT[x.cat] && x.cat !== 'servidor' ? `🏆 ${n} ganó ${MES_CAT[x.cat]}` : '')
                 : x.tipo === 'ligahito' ? (x.que === 'campeon' ? `🏅 ${n} es campeón de ${String(x.ln || '').slice(0, 50)}`
                   : x.que === 'invicto' ? `💎 ${n} lleva ${x.pg || 5} ganadas sin perder en ${String(x.ln || '').slice(0, 50)}`
                     : x.que === 'punta' ? `🔝 ${n} tomó la punta de ${String(x.ln || '').slice(0, 50)}` : '')
@@ -2550,7 +2551,10 @@ export function paraSeguidores(items, ahora) {
 // ante la duda no se avisa, porque «te felicitaron» a otro es peor que nada.
 
 //: lo que se puede felicitar. Una carta nueva le toca a todo el que juega una vez: no es un logro
-export const APLAUDIBLES = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, ligahito: 1 };
+export const APLAUDIBLES = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, ligahito: 1, mesaward: 1 };
+//: 🏆 las categorías de los MES AWARDS, como las dice un aviso (`bot/mes_awards.py`)
+export const MES_CAT = { rapero: 'el Rapero del mes', revelacion: 'la Revelación del mes', batalla: 'la Batalla del mes',
+  servidor: 'el Servidor del mes' };
 //: cuánto se guarda un aplauso (el muro trae lo de los últimos 21 días)
 export const APLAUSOS_DIAS = 30;
 //: cuándo vuelve a sonar: la primera vez, y cuando llega a cada uno de éstos
@@ -2574,6 +2578,7 @@ export function motivoAplauso(x) {
           : x.tipo === 'pase' ? (x.completo ? 'completar el Pase de rapero'
             : `llegar al nivel ${x.nivel} del Pase${x.premio ? ': «' + String(x.premio).slice(0, 40) + '»' : ''}`)
             // 🏟️ lo de las ligas de los servidores (`bot/ligas.py`, 16/10/2026)
+            : x.tipo === 'mesaward' ? `ganar ${MES_CAT[x.cat] || 'los MES AWARDS'}`
             : x.tipo === 'ligahito' ? (x.que === 'campeon' ? `ganar ${String(x.ln || 'una liga').slice(0, 50)}`
               : x.que === 'invicto' ? `llegar invicto a ${x.pg || 5} en ${String(x.ln || 'su liga').slice(0, 50)}`
                 : x.que === 'punta' ? `tomar la punta de ${String(x.ln || 'su liga').slice(0, 50)}` : '') : '';
@@ -3074,6 +3079,19 @@ export const NIVELES_AVISO = {
 };
 export function ajusteValido(cual, valor) {
   if (cual === 'campana_pausada') return typeof valor === 'boolean' ? valor : undefined;
+  // 🏆 los nominados que Dlx saca de los MES AWARDS antes de que abra la votación (`bot/mes_awards.py`): `{mes, quitar}`
+  if (cual === 'mes_sacar') {
+    if (valor === null) return null;
+    if (!valor || typeof valor !== 'object' || !/^\d{4}-\d{2}$/.test(String(valor.mes || '')) || !Array.isArray(valor.quitar)
+      || valor.quitar.length > 30) return undefined;
+    const q = [];
+    for (const x of valor.quitar) {
+      const s = String(x || '');
+      if (!/^(rapero|revelacion|batalla|servidor):.{1,80}$/.test(s)) return undefined;
+      if (!q.includes(s)) q.push(s);
+    }
+    return { mes: valor.mes, quitar: q };
+  }
   if (cual === 'multiplicadores') {
     if (valor === null) return null;
     if (!valor || typeof valor !== 'object' || !/^\d{4}-\d{2}-\d{2}$/.test(String(valor.semana || ''))) return undefined;
@@ -8955,6 +8973,17 @@ export class Avisos {
         if (!Array.isArray(x) || !/^[0-9]{5,25}$/.test(String(x[0])) || !Number.isInteger(x[1]) || x[1] <= 0) continue;
         this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
           'wr:' + String(id).slice(0, 160), String(x[0]), x[1], Number(x[2]) || ahora);
+        cambios++;
+      }
+    }
+    // 🏆 LOS MES AWARDS TAMBIÉN PAGAN TIENDA (`bot/mes_awards.py`, Dlx 16/10/2026): una clave por mes, categoría y persona,
+    // entero y se REEMPLAZA, como el Writing
+    if (r.mes && typeof r.mes === 'object') {
+      this.sql.exec("DELETE FROM tienda WHERE id LIKE 'mes:%'");
+      for (const [id, x] of Object.entries(r.mes)) {
+        if (!Array.isArray(x) || !/^[0-9]{5,25}$/.test(String(x[0])) || !Number.isInteger(x[1]) || x[1] <= 0) continue;
+        this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
+          'mes:' + String(id).slice(0, 160), String(x[0]), x[1], Number(x[2]) || ahora);
         cambios++;
       }
     }
