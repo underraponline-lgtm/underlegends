@@ -7,11 +7,12 @@ import { Miniatura, abrirVideo } from './video.jsx';
 import { useRacha } from './racha.js';
 
 export const MENU = [
-  ['Inicio', '#/'], ['Eventos', '#/eventos'], ['Ranking', '#/ranking'], ['Publicaciones', '#/publicaciones'],
-  ['Tarjetas', '#/tarjetas'], ['Ligas', '#/ligas'], ['Pase rapero', '#/pase'], ['Tienda', '#/tienda'], ['Socios', '#/socios'], ['Guía', '#/guia'],
+  ['Inicio', '#/'], ['Eventos', '#/eventos'], ['Ranking', '#/ranking'], ['Pase rapero', '#/pase'],
+  ['Tarjetas', '#/tarjetas'], ['Ligas', '#/ligas'], ['Publicaciones', '#/publicaciones'], ['Tienda', '#/tienda'], ['Socios', '#/socios'], ['Guía', '#/guia'],
 ];
 // «Socios» es lo que era «Mundo» (Dlx, 03/10/2026: «1. A»); `#/mundo` sigue abriéndolo (App.jsx). «Ligas», al lado de
 // Tarjetas desde el 16/10/2026 (Dlx: «que ligas tenga su propio espacio aparte de ranking… al costado de tarjetas»)
+// Y «Pase rapero» y «Publicaciones», intercambiados el mismo día (Dlx: «intercambiá eso»)
 // 🗣️ QUÉ ES CADA UNA, en palabras comunes (Dlx, 12/10/2026, el research «página sencilla»: «hacé todo menos los dos
 // puntos que chocan»). Los nombres se quedan —«Pase rapero» y «Socios» son de la Liga— y llevan al lado lo que son: en
 // el menú ☰ debajo del nombre, y arriba en la compu al pasar el mouse
