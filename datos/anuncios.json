@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-16T21:25:12+00:00",
+ "cuando": "2026-10-16T21:54:54+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1109,41 +1109,6 @@
     ]
    },
    "autor": "Lewito",
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "COPA SOOLAR 4",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1558235994107682892",
-   "cuando": "2026-10-09T21:53:31",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "Elsoolar",
-   "orgs": [
-    {
-     "n": "Elsoolar",
-     "id": ""
-    }
-   ],
-   "autor_h": "9ac50a6f3726be04",
-   "cupos_texto": "16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Bronce",
-   "modalidad": "1v1",
-   "horario": "EN 15",
-   "fecha": "",
-   "premios": "Respeto",
-   "staff": {
-    "host": [
-     "Elsoolar"
-    ],
-    "dj": [
-     "Elsoolar"
-    ]
-   },
-   "autor": "Elsoolar",
    "categoria_id": "1468478330826260500"
   },
   {
@@ -5937,6 +5902,60 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Dyzz",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1560767854255673364",
+   "cuando": "2026-10-16T21:34:14"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Seko Boy🇨🇴",
+   "quien": "snowzzzzzzzz",
+   "discord_id": "1097714486795849748",
+   "msg_id": "1560767105043791884",
+   "cuando": "2026-10-16T21:31:15"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "U.S.A🇺🇸",
+   "quien": "provenzaaznevorp",
+   "discord_id": "711076230857752627",
+   "msg_id": "1560766718174040116",
+   "cuando": "2026-10-16T21:29:43"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Park-Ji Sung🇰🇷",
+   "quien": "fullylo4ded",
+   "discord_id": "979878316846768139",
+   "msg_id": "1560766530625470465",
+   "cuando": "2026-10-16T21:28:58"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Molusco 🇦🇷",
+   "quien": "moluscoanvriento_79058",
+   "discord_id": "1363285354442133778",
+   "msg_id": "1560766129138438196",
+   "cuando": "2026-10-16T21:27:22"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Bloody 🇨🇴",
+   "quien": "bloodypintor",
+   "discord_id": "692881329573986317",
+   "msg_id": "1560765678905196545",
+   "cuando": "2026-10-16T21:25:35"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
