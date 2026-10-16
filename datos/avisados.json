@@ -2516,7 +2516,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "b57db8e0b1fdf554",
+  "firma": "46324a97dd666f7a",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -3785,6 +3785,11 @@
     "Aldre, Makmah, Rodas",
     "Provenza, Colesito, Xubaru",
     "Aldre, Makmah, Rodas"
+   ],
+   [
+    "Greyfitsh🇵🇦",
+    "Xubaru",
+    "Greyfitsh🇵🇦"
    ]
   ],
   "ev_antes": {
@@ -3800,7 +3805,7 @@
    "Xubaru": 3
   },
   "fecha": "08/10",
-  "firma": "43f906b18e695d33",
+  "firma": "eaf47c69377588cd",
   "msg": "1557986840865411073",
   "nombre": "__ __ Cuentas Pendientes V.1 __ __",
   "num": 435,
@@ -4392,7 +4397,7 @@
    "Velatz": 28
   },
   "fecha": "09/10",
-  "firma": "1c0ce3a6668f758d",
+  "firma": "cf8f9aff2aa6f78a",
   "msg": "1558266214659260507",
   "nombre": "COPA SOOLAR 4",
   "num": 437,
@@ -4637,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "852b5523ed954fcb",
+  "firma": "770ad90630194648",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -5076,7 +5081,7 @@
    "Xclusivo": 10
   },
   "fecha": "09/10",
-  "firma": "df8d291eb5dde8e7",
+  "firma": "df08f6f3c33ae50c",
   "msg": "1558334120172462091",
   "nombre": "PROYECTO X VOL.2",
   "num": 440,
@@ -5557,7 +5562,7 @@
    "Xclusivo": 12
   },
   "fecha": "10/10",
-  "firma": "a527b2fa9cf59763",
+  "firma": "7a25b83e06dc578a",
   "msg": "1558545514931163258",
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
   "num": 442,
@@ -6112,7 +6117,7 @@
    "Spartan": 1
   },
   "fecha": "10/10",
-  "firma": "4cb241072419fa98",
+  "firma": "3253ba649a766427",
   "msg": "1558711595163590740",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
   "num": 446,
@@ -6746,7 +6751,7 @@
    "Verc": 2
   },
   "fecha": "11/10",
-  "firma": "90822cc96846c07a",
+  "firma": "804685387b1704ce",
   "msg": "1558907912582078525",
   "nombre": "__ HJKSLOWT V.1 __",
   "num": 449,
@@ -9416,7 +9421,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "352ee4cdfabb5a5d",
+  "firma": "9005224c866eabe1",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -10457,7 +10462,7 @@
    ],
    [
     "francis 🇨🇷",
-    "Frifaier 🇨🇱",
+    "Cronox",
     "francis 🇨🇷"
    ],
    [
@@ -10508,7 +10513,7 @@
    "Tenor": 3
   },
   "fecha": "13/10",
-  "firma": "e3ecc1127fc9624f",
+  "firma": "19f9b5b1bf17197a",
   "msg": "1559459229411057705",
   "nombre": "QCYO RAPEEN",
   "num": 465,
@@ -10550,7 +10555,7 @@
     2000
    ],
    [
-    "Frifaier 🇨🇱",
+    "Cronox",
     "Cuartos",
     2000
    ],
@@ -12569,7 +12574,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "f20e18a631a7a1a5",
+  "firma": "91bceae92090e98b",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -12897,6 +12902,7 @@
   "v": 2
  },
  "476": {
+  "al_dia": true,
   "antes": {
    "BTRX": [
     205,
@@ -13103,7 +13109,7 @@
    "Zignos": 22
   },
   "fecha": "15/10",
-  "firma": "32ddb13b931a050f",
+  "firma": "83e94dc44102e615",
   "msg": "1560502933315915857",
   "nombre": "LA REDENCIÓN",
   "num": 476,
@@ -13213,6 +13219,7 @@
   "v": 2
  },
  "477": {
+  "al_dia": true,
   "antes": {
    "1200": [
     203,
@@ -13384,7 +13391,7 @@
    "Xubaru": 7
   },
   "fecha": "16/10",
-  "firma": "8959577b66040196",
+  "firma": "97c7cf5cf69027f4",
   "msg": "1560725555203014688",
   "nombre": "__ DESGRACIAS EN TOKYO VOL27 __",
   "num": 477,

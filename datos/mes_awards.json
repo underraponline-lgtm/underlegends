@@ -456,6 +456,26 @@
    ],
    "promo": [
     {
+     "op": "v-CQ7hta4T-c8",
+     "n": "Grizzlee vs Makma/3er y 4to lugar/Liga del volcán Regional ChessBattles Colima 2",
+     "q": "Makmah",
+     "quien": [
+      "Makmah"
+     ],
+     "d": "Makmah · la compartió el 16/10",
+     "vid": "CQ7hta4T-c8"
+    },
+    {
+     "op": "v-eD6swgNiR4I",
+     "n": "Makma vs Trust/Semifinal/Liga del volcán Regional ChessBattles Colima 2026",
+     "q": "Makmah",
+     "quien": [
+      "Makmah"
+     ],
+     "d": "Makmah · la compartió el 16/10",
+     "vid": "eD6swgNiR4I"
+    },
+    {
      "op": "v-nQYg6TOcbz8",
      "n": "SEBA + LUZZANO VS SERGIO + TOBI | SEMIFINAL | FECHA 2",
      "q": "Liberia",
@@ -484,26 +504,6 @@
      ],
      "d": "Liberia · la compartió el 16/10",
      "vid": "bZh59YIbQcw"
-    },
-    {
-     "op": "v-aAyruSUWGoU",
-     "n": "OTRO DIA MAS SEBA VS SATUR CACHUM | 4TOS | PALERMO FREE X EL SPOT DEL SUR X ELSU",
-     "q": "Liberia",
-     "quien": [
-      "Liberia"
-     ],
-     "d": "Liberia · la compartió el 16/10",
-     "vid": "aAyruSUWGoU"
-    },
-    {
-     "op": "v-29B_Ocly5dU",
-     "n": "MELIO vs SEBA vs NEXUS vs BILLY - OCTAVOS - CIRCUITO LINEAL FECHA 1",
-     "q": "Liberia",
-     "quien": [
-      "Liberia"
-     ],
-     "d": "Liberia · la compartió el 16/10",
-     "vid": "29B_Ocly5dU"
     }
    ],
    "publicacion": [
@@ -1170,6 +1170,26 @@
      "2VfbdJy_VqY",
      "https://i.ytimg.com/vi/2VfbdJy_VqY/hqdefault.jpg",
      "2026-10-13T01:29:25Z"
+    ],
+    "v-CQ7hta4T-c8": [
+     0,
+     [
+      "Makmah"
+     ],
+     "Grizzlee vs Makma/3er y 4to lugar/Liga del volcán Regional ChessBattles Colima 2",
+     "CQ7hta4T-c8",
+     "https://i.ytimg.com/vi/CQ7hta4T-c8/hqdefault.jpg",
+     "2026-10-16T19:26:45Z"
+    ],
+    "v-eD6swgNiR4I": [
+     0,
+     [
+      "Makmah"
+     ],
+     "Makma vs Trust/Semifinal/Liga del volcán Regional ChessBattles Colima 2026",
+     "eD6swgNiR4I",
+     "https://i.ytimg.com/vi/eD6swgNiR4I/hqdefault.jpg",
+     "2026-10-16T19:26:45Z"
     ]
    },
    "pub": {

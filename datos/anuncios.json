@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-16T18:55:41+00:00",
+ "cuando": "2026-10-16T19:25:05+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -5856,6 +5856,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "magic🇲🇽",
+   "quien": "soul011294",
+   "discord_id": "915051512575717457",
+   "msg_id": "1560732247051472897",
+   "cuando": "2026-10-16T19:12:44"
+  },
   {
    "servidor": "SR",
    "canal": "[📝]inscripciones",
