@@ -88,15 +88,16 @@
   "pos_crew": "1/4",
   "tg_c": {
    "bestia": 2,
-   "clasico": 2,
-   "dg": 23,
+   "clasico": 3,
+   "dg": 26,
    "fg": 4,
    "fp": 4,
-   "riv": 25,
-   "venc": 21
+   "riv": 28,
+   "venc": 23,
+   "vengo": 1
   },
   "tg_p": {
-   "paises": 9
+   "paises": 10
   }
  },
  {
@@ -139,11 +140,11 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 3,
-   "dg": 21,
+   "dg": 23,
    "fg": 3,
    "fp": 2,
-   "riv": 24,
-   "venc": 19
+   "riv": 26,
+   "venc": 20
   },
   "tg_p": {
    "paises": 9
@@ -391,12 +392,12 @@
   "pos_crew": "2/4",
   "tg_c": {
    "bestia": 2,
-   "clasico": 2,
-   "dg": 21,
+   "clasico": 3,
+   "dg": 23,
    "fg": 3,
    "fp": 2,
-   "riv": 25,
-   "venc": 20,
+   "riv": 27,
+   "venc": 22,
    "vengo": 1
   },
   "tg_p": {
@@ -798,7 +799,7 @@
    "dg": 19,
    "fg": 3,
    "fp": 1,
-   "riv": 34,
+   "riv": 35,
    "venc": 18,
    "vengo": 1
   },
@@ -1100,7 +1101,7 @@
    "fg": 2,
    "fp": 6,
    "mata": 1,
-   "riv": 43,
+   "riv": 44,
    "venc": 23,
    "vengo": 2
   },
@@ -1351,7 +1352,7 @@
    "clasico": 2,
    "dg": 11,
    "fp": 3,
-   "riv": 23,
+   "riv": 24,
    "venc": 9
   },
   "tg_p": {
@@ -1547,11 +1548,12 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 3,
-   "dg": 7,
+   "dg": 11,
    "fg": 1,
    "fp": 2,
-   "riv": 10,
-   "venc": 7,
+   "mata": 2,
+   "riv": 14,
+   "venc": 11,
    "vengo": 1
   },
   "tg_p": {
@@ -1838,12 +1840,12 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 3,
-   "riv": 6,
-   "venc": 3
+   "dg": 4,
+   "riv": 8,
+   "venc": 4
   },
   "tg_p": {
-   "paises": 4
+   "paises": 5
   }
  },
  {
@@ -1986,11 +1988,11 @@
    "dg": 6,
    "fg": 1,
    "fp": 3,
-   "riv": 9,
+   "riv": 10,
    "venc": 6
   },
   "tg_p": {
-   "paises": 6
+   "paises": 7
   }
  },
  {
@@ -2278,7 +2280,7 @@
    "dg": 9,
    "fg": 1,
    "mata": 1,
-   "riv": 14,
+   "riv": 15,
    "venc": 7
   },
   "tg_p": {
@@ -4073,12 +4075,12 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 1,
-   "riv": 4,
-   "venc": 1
+   "dg": 2,
+   "riv": 6,
+   "venc": 2
   },
   "tg_p": {
-   "paises": 3
+   "paises": 4
   }
  },
  {
@@ -8417,11 +8419,11 @@
    "bestia": 1,
    "clasico": 1,
    "dg": 1,
-   "riv": 2,
+   "riv": 3,
    "venc": 1
   },
   "tg_p": {
-   "paises": 1
+   "paises": 2
   }
  },
  {
@@ -9428,7 +9430,7 @@
   "arc_sv": 39,
   "tg_c": {
    "clasico": 1,
-   "riv": 1
+   "riv": 2
   },
   "tg_p": {
    "paises": 1
@@ -13842,7 +13844,17 @@
   "arc_pais": 0,
   "pos_sv": "",
   "arc_sv": 0,
-  "pos_crew": ""
+  "pos_crew": "",
+  "tg_c": {
+   "bestia": 1,
+   "clasico": 1,
+   "dg": 1,
+   "riv": 2,
+   "venc": 1
+  },
+  "tg_p": {
+   "paises": 2
+  }
  },
  {
   "full": "TYPHLOSION",

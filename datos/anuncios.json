@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-16T18:46:54+00:00",
+ "cuando": "2026-10-16T18:55:41+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -5856,6 +5856,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Kain",
+   "quien": "sombra7312",
+   "discord_id": "778332138930962432",
+   "msg_id": "1560726975436300382",
+   "cuando": "2026-10-16T18:51:47"
+  },
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Sombra",
+   "quien": "sombra7312",
+   "discord_id": "778332138930962432",
+   "msg_id": "1560725757452488785",
+   "cuando": "2026-10-16T18:46:57"
+  },
   {
    "servidor": "SR",
    "canal": "[📝]inscripciones",
