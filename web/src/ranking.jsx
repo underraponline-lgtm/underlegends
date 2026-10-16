@@ -370,7 +370,8 @@ function Vecino({ x, cfg, f, rol, txt }) {
   );
 }
 // 🏆 LA GRAN FINAL DE LA T1 (Dlx, 12/10/2026): clasifican los 16 primeros CON NÚMERO de Temporada y de Competitivo,
-// dos torneos, y quien está en los dos juega los dos. Fecha y nombre los anuncia Dlx: hasta entonces, sólo con la
+// dos torneos, y quien está en los dos juega los dos. Desde el 16/10/2026 tienen nombre: la del Competitivo es la
+// SUPERLIGA y la de la Temporada la CLAUSURA, cada una con su página en Ligas (ligas.jsx, `topCierre()` los cuenta igual). Fecha y nombre los anuncia Dlx: hasta entonces, sólo con la
 // vista previa `?prev=fin` (`lg:prev-fin`).
 // ✅ PARA TODOS DESDE EL 13/10/2026 (Dlx, a «¿la muestro a todos?»: «mostrarla ya a todos»)
 function verFinal() {
@@ -411,8 +412,8 @@ function Cerca({ x, cfg, base, i, sub, clas }) {
         <Vecino x={x} cfg={cfg} f={abajo} rol="abajo" txt={tB} />
       </div>
       {clas && numero(cfg, yo) ? (
-        <p className="rk-final">{dentro ? <>Si la temporada terminara hoy, <b>jugás el torneo de cierre</b>.</>
-          : falta ? <>Te faltan <b>{falta}</b> para entrar al torneo de cierre: clasifican los {cfg.final} primeros.</>
+        <p className="rk-final">{dentro ? <>Si la temporada terminara hoy, <b>{sub === 'competitivo' ? 'entrás a la Superliga' : 'jugás la Clausura'}</b>.</>
+          : falta ? <>Te faltan <b>{falta}</b> para entrar a {sub === 'competitivo' ? 'la Superliga' : 'la Clausura'}: clasifican los {cfg.final} primeros.</>
             : null}</p>
       ) : null}
     </section>
@@ -881,7 +882,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
                               <tr className="rk-det"><td colSpan={cols.length}><Detalle x={x} cfg={cfg} f={f} perf={perf} /></td></tr>
                             ) : null}
                             {esCorte ? (
-                              <tr className="rk-corte"><td colSpan={cols.length}><span><Ico n="copa" t={14} /> Hasta acá clasifican al torneo de cierre de la T1</span></td></tr>
+                              <tr className="rk-corte"><td colSpan={cols.length}><a href={'#/ligas/' + (sub === 'competitivo' ? 'superliga' : 'clausura')}><Ico n="copa" t={14} /> Hasta acá clasifican a la {sub === 'competitivo' ? 'Superliga' : 'Clausura'} de la {liga.temp || 'T1'}</a></td></tr>
                             ) : null}
                           </Fragment>
                         );

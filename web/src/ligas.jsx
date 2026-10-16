@@ -541,6 +541,8 @@ function LigasInicio({ liga, falta = '' }) {
           ) : null}
         </section>
       </div>
+      {/* 🏆 las dos de la Liga Global, arriba de las de los servidores */}
+      <section className="sec lgf-dsec" aria-label="Las de la Liga Global"><Destacadas liga={liga} /></section>
       {falta ? <p className="sec lgh-falta" role="status">Esa liga no está: puede que todavía no tenga batallas, o que haya cambiado de nombre. Acá están todas.</p> : null}
       {!ls.length ? (
         <Sec id="lgh-todas" titulo="Todas las ligas"><p className="pronto-p">Todavía ninguna liga tiene batallas: aparecen solas con la primera.</p></Sec>
@@ -571,6 +573,7 @@ function LigasInicio({ liga, falta = '' }) {
           <ul className="lgh-grid">{ver.map((L) => <li key={L.id}><TarjetaLiga liga={liga} L={L} est={est[L.id]} /></li>)}</ul>
         </Sec>
       ) : null}
+      {ls.length ? <LoMejor liga={liga} ls={ls} hs={hs} /> : null}
       {/* 🗓️ lo que viene y lo que pasó, en una fila en la compu: una sola fecha por delante dejaba media pantalla vacía */}
       {prox.length || ultimos.length ? (
         <div className={'lgh-fila' + (prox.length && ultimos.length ? ' dos' : '')}>
@@ -616,7 +619,251 @@ function LigasInicio({ liga, falta = '' }) {
   );
 }
 
-// `#/ligas` es la portada y `#/ligas/<id>` el perfil de esa liga
+// ── 🏆 LA SUPERLIGA Y LA CLAUSURA: el cierre de la temporada, de la Liga Global ─────────────────────────────────────────
+// Dlx, 16/10/2026: *«crear una superliga, agregar ahí un espacio de la Liga Global donde participará el top 16 del
+// competitivo. El top 4 clasifica directo… los 12 se hacen un duelo a muerte aleatoriamente… pasarían 6, una liga de
+// 10»* y *«para el evento de clausura del ranking de temporada, el top 16 simplemente se hará un torneo de 8vos»*. Y a
+// las preguntas: mostrarlas ya con «si terminara hoy», la liga de 10 todos contra todos a una vuelta, y la insignia
+// del campeón es del campeón de la Superliga. Las dos viven acá como dos ligas más (`#/ligas/superliga` y
+// `#/ligas/clausura`): la portada de Ligas lleva una tarjeta de cada una.
+//
+// ⚠️ LOS 16 SE CUENTAN IGUAL QUE EL RANKING (`clasificados()` de ranking.jsx): los primeros CON NÚMERO —sin los que
+// juegan fuera de concurso—, la Temporada por su puesto y el Competitivo por Score entre los que tienen rango.
+// ⚠️ LOS PREMIOS SE DICEN SIN NOMBRAR EL PLAN PAGO: el repo es público y la economía del Pase es privada.
+const CIERRE = 16;
+function topCierre(liga, cual) {
+  const t = liga.d.tabla || [];
+  if (cual === 'competitivo') return t.filter((f) => f.rg && !f.fc).sort((a, b) => (b.sc || 0) - (a.sc || 0)).slice(0, CIERRE);
+  return t.filter((f) => f.pos && !f.fc).sort((a, b) => a.pos - b.pos).slice(0, CIERRE);
+}
+const coma = (x) => String(x == null ? '' : x).replace('.', ',');
+// el último día de la temporada (`fase.termina`, de comun/temporada.py) y cuántos días faltan, en hora del este
+function cierreDe(liga) {
+  const fin = (liga.d.fase || {}).termina;
+  if (!fin) return { fin: '', dias: NaN };
+  const hoy = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date(liga.ahora));
+  return { fin, dias: Math.round((Date.parse(fin) - Date.parse(hoy)) / 86400000) };
+}
+const diaSin = (d) => diaDe(d).replace(/^\S+ /, '');
+
+// una persona de las que entrarían: su número, su cara y su dato (rango y Score, o el OVR)
+function Clasificado({ liga, f, n, cual, grande = false }) {
+  const yo = liga.yo && f.k === liga.yo.k;
+  const dato = cual === 'competitivo' ? (f.rg ? f.rg + ' · ' : '') + coma(f.sc) : 'OVR ' + (f.ovr || '—');
+  return (
+    <li className={'lgf-p' + (grande ? ' grande' : '') + (yo ? ' yo' : '')}>
+      <a href={'#/r/' + encodeURIComponent(f.k)}>
+        <span className="lgf-n">{n}</span>
+        <Cara liga={liga} k={f.k} nombre={f.n} cls="lgf-cara" />
+        <b>{yo ? 'Vos' : limpio(f.n)}</b>
+        <small>{dato}</small>
+      </a>
+    </li>
+  );
+}
+
+// dónde estás vos contra el corte: adentro, cuánto te falta, o qué te falta para estar en la tabla
+function TuLugar({ liga, top, cual }) {
+  const yo = liga.yo;
+  if (!yo) return null;
+  const i = top.findIndex((f) => f.k === yo.k);
+  const que = cual === 'competitivo' ? 'la Superliga' : 'la Clausura';
+  let txt;
+  if (i >= 0) {
+    txt = cual === 'competitivo' ? (i < 4 ? <>Si la temporada terminara hoy, <b>entrás directo a la Superliga</b>.</> : <>Si la temporada terminara hoy, <b>vas al duelo a muerte</b> por un lugar en la Superliga.</>)
+      : <>Si la temporada terminara hoy, <b>jugás la Clausura</b> como {i + 1}º.</>;
+  } else if (cual === 'competitivo' && !yo.rg) {
+    const pide = 10;
+    txt = <>Para entrar al Competitivo hacen falta <b>{pide} eventos</b> en la temporada: llevás {yo.ev || 0}.</>;
+  } else if (top.length === CIERRE) {
+    const c = top[CIERRE - 1];
+    const d = cual === 'competitivo' ? Math.round(((c.sc || 0) - (yo.sc || 0)) * 10) / 10 : (c.ovr || 0) - (yo.ovr || 0);
+    txt = d > 0 ? <>Te faltan <b>{cual === 'competitivo' ? coma(d) + ' de Score' : d + ' de OVR'}</b> para entrar a {que}: el 16º es {limpio(c.n)}.</>
+      : <>Estás pegado al 16º para entrar a {que}.</>;
+  }
+  return txt ? <p className="lgf-tu" role="note">{txt}</p> : null;
+}
+
+function Premios({ items }) {
+  return (
+    <ul className="lgf-premios">{items.map(([q, d]) => <li key={q}><b>{q}</b><span>{d}</span></li>)}</ul>
+  );
+}
+
+const PREMIOS_SUPER = [
+  ['El campeón', 'Una insignia especial al costado de su carta Competitiva y en su tarjeta de la Superliga, y el Pase de rapero de la Temporada 2.'],
+  ['2º y 3º', 'El Pase de rapero de la Temporada 2.'],
+  ['Los 10 de la Superliga', 'Su tarjeta especial de integrante de la Superliga.'],
+  ['Los 6 que caen en el duelo a muerte', 'Su tarjeta especial, su reconocimiento y premios.'],
+  ['El #1 del Competitivo', 'El que cierra primero el ranking gana el Pase de rapero de la Temporada 2.'],
+];
+const PREMIOS_CLAUSURA = [
+  ['Campeón, 2º y 3º', 'El Pase de rapero de la Temporada 2, sus emblemas y más premios.'],
+  ['El #1 de la Temporada', 'El que cierra primero el ranking gana el Pase de rapero de la Temporada 2.'],
+  ['Los 16', 'Todo queda guardado: quién jugó, hasta dónde llegó y su emblema. Esta no tiene tarjeta especial.'],
+];
+
+// la cabecera de las dos: la misma del perfil de cada liga, con el logo de la Liga en vez del de un servidor
+function CabFinal({ liga, tag, titulo, bajada, nums, id }) {
+  return (
+    <div className="escena lgp-esc lgf-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.9, '--mo-c2': '#29B298' }}>
+      <nav className="lgp-miga" aria-label="Volver"><a href="#/ligas"><Ico n="flecha" t={16} />Todas las ligas</a></nav>
+      <section className="svp lgp-cab">
+        <img className="svp-logo" alt="" src="/ul.png" />
+        <div className="svp-tx">
+          <span className="tag">{tag}</span>
+          <h1 className="hero-ev largo">{titulo}</h1>
+          <p className="hero-p lgp-p0">{bajada}</p>
+          <div className="hero-acc"><Compartir cls="btn borde" url={enlace('#/ligas/' + id)} texto={'La ' + titulo + ' de la Liga Global'} /></div>
+        </div>
+        <dl className="svp-num lgf-num">{nums.map(([t, v]) => <div key={t}><dt>{t}</dt><dd>{v}</dd></div>)}</dl>
+      </section>
+    </div>
+  );
+}
+
+function Superliga({ liga }) {
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+  const top = topCierre(liga, 'competitivo');
+  const { fin, dias } = cierreDe(liga);
+  return (
+    <>
+      <CabFinal liga={liga} id="superliga" tag={'LIGA GLOBAL · AL CIERRE DE LA ' + (liga.temp || 'T1')} titulo="Superliga"
+        bajada={<>Los 16 primeros del <a href="#/ranking/competitivo">Competitivo</a>{fin ? <> al cierre de la temporada, el {diaSin(fin)}</> : null}. La Temporada 2 arranca cuando termina.</>}
+        nums={[[dias === 0 ? 'CIERRA' : 'DÍAS AL CIERRE', dias > 0 ? dias : dias === 0 ? 'HOY' : '—'], ['CLASIFICAN', CIERRE], ['DIRECTOS', 4], ['FECHAS', 9]]} />
+      <Sec id="lgf-como" titulo="Cómo se juega">
+        <ol className="lgf-pasos">
+          <li><span className="lgf-pn">1</span><b>Del 1º al 4º</b><span>Entran directo a la Superliga.</span></li>
+          <li><span className="lgf-pn">2</span><b>Del 5º al 16º: duelo a muerte</b><span>Se sortean 6 duelos —puede tocar el 5º contra el 16º— y pasan los 6 que ganan.</span></li>
+          <li><span className="lgf-pn">3</span><b>La Superliga</b><span>10 raperos, todos contra todos a una vuelta: 9 fechas. Directo da 3 puntos; réplica, 2 y 1. Gana el que más puntos hace.</span></li>
+        </ol>
+      </Sec>
+      {top.length ? (
+        <Sec id="lgf-hoy" titulo="Si terminara hoy" enlace="El Competitivo" href="#/ranking/competitivo">
+          <TuLugar liga={liga} top={top} cual="competitivo" />
+          <h3 className="lgf-st">Directo a la Superliga</h3>
+          <ol className="lgf-lista directos">{top.slice(0, 4).map((f, i) => <Clasificado key={f.k} liga={liga} f={f} n={i + 1} cual="competitivo" grande />)}</ol>
+          {top.length > 4 ? <>
+            <h3 className="lgf-st">Al duelo a muerte <small>los cruces se sortean al cierre</small></h3>
+            <ol className="lgf-lista" start={5}>{top.slice(4).map((f, i) => <Clasificado key={f.k} liga={liga} f={f} n={i + 5} cual="competitivo" />)}</ol>
+          </> : null}
+        </Sec>
+      ) : null}
+      <Sec id="lgf-premios" titulo="Los premios"><Premios items={PREMIOS_SUPER} /></Sec>
+      <Sec id="lgf-otra" titulo="Y la Clausura">
+        <p className="lgf-p0">Los 16 primeros de la <b>Temporada</b> juegan su propia llave para cerrarla. Quien está en las dos, juega las dos.</p>
+        <a className="btn borde2 chico" href="#/ligas/clausura">Ver la Clausura</a>
+      </Sec>
+    </>
+  );
+}
+
+function Clausura({ liga }) {
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+  const top = topCierre(liga, 'temporada');
+  const { fin, dias } = cierreDe(liga);
+  return (
+    <>
+      <CabFinal liga={liga} id="clausura" tag={'LIGA GLOBAL · AL CIERRE DE LA ' + (liga.temp || 'T1')} titulo="Clausura"
+        bajada={<>Los 16 primeros de la <a href="#/ranking/temporada">Temporada</a>{fin ? <> al {diaSin(fin)}</> : null} juegan una llave desde octavos para cerrarla.</>}
+        nums={[[dias === 0 ? 'CIERRA' : 'DÍAS AL CIERRE', dias > 0 ? dias : dias === 0 ? 'HOY' : '—'], ['CLASIFICAN', CIERRE], ['RONDAS', 4], ['PODIO', 3]]} />
+      <Sec id="lgf-como" titulo="Cómo se juega">
+        <ol className="lgf-pasos">
+          <li><span className="lgf-pn">1</span><b>Los 16 primeros</b><span>Los de la Temporada al cierre, por su puesto: el que juega fuera de concurso no cuenta.</span></li>
+          <li><span className="lgf-pn">2</span><b>Una llave desde octavos</b><span>Octavos, cuartos, semifinal y final.</span></li>
+          <li><span className="lgf-pn">3</span><b>El podio</b><span>Campeón, 2º y 3º se llevan sus premios. Todo queda guardado.</span></li>
+        </ol>
+      </Sec>
+      {top.length ? (
+        <Sec id="lgf-hoy" titulo="Si terminara hoy" enlace="La Temporada" href="#/ranking/temporada">
+          <TuLugar liga={liga} top={top} cual="temporada" />
+          <ol className="lgf-lista">{top.map((f) => <Clasificado key={f.k} liga={liga} f={f} n={f.pos} cual="temporada" />)}</ol>
+        </Sec>
+      ) : null}
+      <Sec id="lgf-premios" titulo="Los premios"><Premios items={PREMIOS_CLAUSURA} /></Sec>
+      <Sec id="lgf-otra" titulo="Y la Superliga">
+        <p className="lgf-p0">Los 16 primeros del <b>Competitivo</b> juegan la Superliga: los 4 primeros directo y los otros 12, un duelo a muerte por 6 lugares.</p>
+        <a className="btn borde2 chico" href="#/ligas/superliga">Ver la Superliga</a>
+      </Sec>
+    </>
+  );
+}
+
+// 🃏 las dos en la portada de Ligas: lo que son en una línea, cuántos días faltan y las caras de los que estarían
+function Destacadas({ liga }) {
+  const { dias } = cierreDe(liga);
+  const falta = dias >= 0 ? (dias === 0 ? 'CIERRA HOY' : 'CIERRA EN ' + dias + (dias === 1 ? ' DÍA' : ' DÍAS')) : '';
+  const caras = (fs) => (
+    <span className="lgf-caras" aria-hidden="true">{fs.map((f) => <Cara key={f.k} liga={liga} k={f.k} nombre={f.n} cls="lgf-cc" />)}</span>
+  );
+  const sup = topCierre(liga, 'competitivo');
+  const cla = topCierre(liga, 'temporada');
+  return (
+    <div className="lgf-dest">
+      <a className="lgf-d sup" href="#/ligas/superliga">
+        <span className="lgf-d-tag">LIGA GLOBAL{falta ? ' · ' + falta : ''}</span>
+        <b>Superliga</b>
+        <span>Los 16 del Competitivo: los 4 primeros directo, los otros 12 a un duelo a muerte, y 10 en la liga.</span>
+        {sup.length ? <span className="lgf-d-hoy">{caras(sup.slice(0, 4))}<small>Hoy entrarían directo {sup.slice(0, 4).map((f) => limpio(f.n)).join(', ')}</small></span> : null}
+        <i>Ver la Superliga <Ico n="flecha" t={16} /></i>
+      </a>
+      <a className="lgf-d cla" href="#/ligas/clausura">
+        <span className="lgf-d-tag">LIGA GLOBAL{falta ? ' · ' + falta : ''}</span>
+        <b>Clausura</b>
+        <span>Los 16 de la Temporada, en una llave desde octavos.</span>
+        {cla.length ? <span className="lgf-d-hoy">{caras(cla.slice(0, 4))}<small>Hoy arriba de todo: {cla.slice(0, 4).map((f) => limpio(f.n)).join(', ')}</small></span> : null}
+        <i>Ver la Clausura <Ico n="flecha" t={16} /></i>
+      </a>
+    </div>
+  );
+}
+
+// ── 🏅 LO MEJOR DE LAS LIGAS (Dlx, 16/10/2026: «reconocimiento a estos participantes de las ligas»): cruza todas, por
+// persona. Victorias, jugadas y el porcentaje; e invictos: 5 o más ganadas sin perder ninguna en una liga ────────────
+const INVICTO = 5;
+function LoMejor({ liga, ls, hs }) {
+  const por = {};
+  const invictos = [];
+  ls.forEach((L) => (L.tabla || []).forEach(([raw, pj, pg]) => {
+    const k = hs[L.id].kDe(raw);
+    const id = k || 'n:' + limpio(raw).toLowerCase();
+    const p = por[id] || (por[id] = { k, raw, pj: 0, pg: 0, ls: [] });
+    p.pj += pj || 0;
+    p.pg += pg || 0;
+    p.ls.push(L.n);
+    if (pg >= INVICTO && pg === pj) invictos.push({ k, raw, pg, L });
+  }));
+  const xs = Object.values(por).filter((p) => p.pg > 0)
+    .sort((a, b) => b.pg - a.pg || b.pg / b.pj - a.pg / a.pj || a.pj - b.pj).slice(0, 10);
+  if (!xs.length) return null;
+  invictos.sort((a, b) => b.pg - a.pg);
+  const nombre = (p) => (p.k ? <a href={'#/r/' + encodeURIComponent(p.k)}>{limpio(p.raw)}</a> : <span>{limpio(p.raw)}</span>);
+  const cara = (p) => (p.k ? <Cara liga={liga} k={p.k} nombre={p.raw} cls="lgh-cara" /> : <span className="lgh-cara ini">{(limpio(p.raw).slice(0, 1) || '?').toUpperCase()}</span>);
+  return (
+    <Sec id="lgh-mejor" titulo="Lo mejor de las ligas" bajada="Todas las ligas juntas: quién ganó más batallas, sumando cada una en la que juega.">
+      {invictos.length ? (
+        <div className="lgh-inv">
+          <h3 className="lgf-st">Invictos <small>{INVICTO} o más ganadas sin perder ninguna</small></h3>
+          <ul>{invictos.map((p) => (
+            <li key={p.L.id + p.raw}>{cara(p)}<span><b>{nombre(p)}</b><small>{p.pg} de {p.pg} en <a href={aLiga(p.L)}>{p.L.n}</a></small></span></li>
+          ))}</ul>
+        </div>
+      ) : null}
+      <ol className="lgh-top">{xs.map((p, i) => (
+        <li key={p.k || p.raw} className={liga.yo && p.k === liga.yo.k ? 'yo' : ''}>
+          <span className="lgh-top-i">{i + 1}</span>{cara(p)}
+          <span className="lgh-top-n"><b>{nombre(p)}</b><small>{p.ls.length === 1 ? p.ls[0] : p.ls.length + ' ligas'}</small></span>
+          <span className="lgh-top-v"><b>{p.pg}</b><small>de {p.pj}</small></span>
+          <span className="lgh-top-p">{Math.round((100 * p.pg) / p.pj)}%</span>
+        </li>
+      ))}</ol>
+    </Sec>
+  );
+}
+
+// `#/ligas` es la portada y `#/ligas/<id>` el perfil de esa liga; la Superliga y la Clausura, las dos de la Liga Global
 export function LigasPagina({ liga, id = '' }) {
+  if (id === 'superliga') return <Superliga liga={liga} />;
+  if (id === 'clausura') return <Clausura liga={liga} />;
   return id ? <LigaPerfil liga={liga} id={id} /> : <LigasInicio liga={liga} />;
 }

@@ -494,7 +494,7 @@ export default function App() {
     const crewT = pagina === 'crew' && liga ? (liga.d.crews || []).find((c) => (c.clave || c.crew) === crewId) : null;
     const t = sv ? nombreSv : pagina === 'socios' || pagina === 'mundo' ? 'Socios'
       : pagina === 'tarjetas' ? 'Tarjetas'
-      : pagina === 'ligas' ? ((ligaId && liga && (liga.ligas().find((x) => x.id === ligaId) || {}).n) || 'Ligas')
+      : pagina === 'ligas' ? ({ superliga: 'Superliga', clausura: 'Clausura' }[ligaId] || (ligaId && liga && (liga.ligas().find((x) => x.id === ligaId) || {}).n) || 'Ligas')
       : crewT ? limpio(crewT.crew)
       : pagina === 'pais' && liga && (liga.d.tabla || []).some((f) => String(f.cc).toLowerCase() === String(partes[1]).toLowerCase())
         ? nombrePais(String(partes[1]).toLowerCase())

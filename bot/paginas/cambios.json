@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "3.19",
+   "dia": "2026-10-16",
+   "cuando": "2026-10-16T07:45:00-04:00",
+   "titulo": "La Superliga y la Clausura",
+   "items": [
+    "🏆 La Superliga: al cierre de la Temporada 1, los 16 primeros del Competitivo. Los 4 primeros entran directo; del 5º al 16º, un duelo a muerte por 6 lugares; y 10 en la liga, todos contra todos.",
+    "🔒 La Clausura: los 16 primeros de la Temporada, en una llave desde octavos.",
+    "👀 Las dos tienen su página en Ligas, con quién entraría si la temporada terminara hoy, dónde estás vos y los premios.",
+    "🏅 En Ligas, lo mejor de todas las ligas juntas y sus invictos.",
+    "📅 La Temporada 2 arranca cuando termina la Superliga."
+   ]
+  },
+  {
    "version": "3.18",
    "dia": "2026-10-16",
    "cuando": "2026-10-16T07:10:00-04:00",

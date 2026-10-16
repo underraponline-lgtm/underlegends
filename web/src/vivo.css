@@ -789,6 +789,106 @@ a.lgp-nom:hover{text-decoration:underline}
   .app .lgp-p.p1 .lgp-cara{width:84px;height:84px}
 }
 @media (min-width: 1100px){.app .lgh-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* 🏆 LA SUPERLIGA Y LA CLAUSURA (Dlx, 16/10/2026): `lgf-` (liga final). Las dos tarjetas de la portada y sus páginas */
+.lgf-dsec{padding-bottom:0}
+.lgf-dest{display:grid;gap:14px}
+.lgf-d{display:grid;gap:8px;align-content:start;padding:16px;border:2px solid #030304;color:#F6F6F6;text-decoration:none;
+  transition:transform .15s,box-shadow .15s;min-width:0}
+.lgf-d.sup{background:#030304;box-shadow:5px 5px 0 #E41373}
+.lgf-d.cla{background:#14141A;box-shadow:5px 5px 0 #29B298}
+.lgf-d:hover{transform:translate(-2px,-2px)}
+.lgf-d.sup:hover{box-shadow:7px 7px 0 #E41373}
+.lgf-d.cla:hover{box-shadow:7px 7px 0 #29B298}
+.lgf-d:focus-visible{outline:3px solid #29B298;outline-offset:2px}
+.lgf-d-tag{justify-self:start;padding:5px 7px 4px;background:#E41373;color:#FFFFFF;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em}
+.lgf-d.cla .lgf-d-tag{background:#29B298;color:#030304}
+.lgf-d > b{font:900 30px/.95 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
+.lgf-d > span{font:500 14px/1.45 Archivo,sans-serif;color:#D6D6D2;max-width:46ch}
+.lgf-d-hoy{display:flex;align-items:center;gap:10px;margin-top:2px;min-width:0}
+.lgf-d-hoy small{font:700 14px/1.25 "Barlow Condensed",sans-serif;letter-spacing:.02em;color:#A5A5A0;min-width:0}
+.lgf-caras{display:flex;flex:none}
+.lgf-cc{display:grid;place-items:center;width:32px;height:32px;margin-left:-8px;border-radius:50%;overflow:hidden;border:2px solid #030304;background:#2A2A2C;color:#F6F6F6}
+.lgf-cc:first-child{margin-left:0}
+.lgf-cc img{display:block;width:100%;height:100%;object-fit:cover}
+.lgf-cc.ini{font:900 13px/1 Archivo,sans-serif}
+.lgf-d > i{justify-self:start;display:inline-flex;align-items:center;gap:6px;margin-top:4px;font:800 14px/1 Archivo,sans-serif;font-style:normal;text-transform:uppercase;letter-spacing:.03em}
+.lgf-num{grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+.lgf-st{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:16px 0 10px;font:900 15px/1.1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+.lgf-st small{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:var(--gris);text-transform:none}
+.lgf-p0{margin:0 0 12px;font:500 15px/1.5 Archivo,sans-serif;max-width:62ch}
+.lgf-tu{margin:0 0 4px;padding:9px 12px;border:2px solid var(--magenta);background:var(--caja);font:500 15px/1.4 Archivo,sans-serif}
+/* cómo se juega: tres pasos numerados */
+.lgf-pasos{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.lgf-pasos li{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:12px;row-gap:3px;align-items:baseline;padding:12px 14px;border:2px solid var(--linea);background:var(--caja)}
+.lgf-pn{grid-row:span 2;display:grid;place-items:center;width:34px;height:34px;background:var(--inv);color:var(--inv-tinta);font:900 18px/1 Archivo,sans-serif}
+.lgf-pasos b{font:900 15px/1.15 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+.lgf-pasos li > span:last-child{font:500 14px/1.45 Archivo,sans-serif}
+/* los que entrarían: número, cara, nombre y su dato; los cuatro directos más grandes */
+.lgf-lista{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.lgf-p{min-width:0}
+.lgf-p a{display:grid;grid-template-columns:auto auto minmax(0,1fr);grid-template-rows:auto auto;column-gap:8px;align-items:center;height:100%;
+  padding:8px 10px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);text-decoration:none}
+.lgf-p a:hover{border-color:var(--tinta)}
+.lgf-n{grid-row:span 2;min-width:22px;font:900 15px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;color:var(--gris)}
+.lgf-cara{grid-row:span 2;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;overflow:hidden;background:var(--caja)}
+.lgf-cara img{display:block;width:100%;height:100%;object-fit:cover}
+.lgf-cara.ini{font:900 14px/1 Archivo,sans-serif}
+.lgf-p b{font:800 14px/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lgf-p small{font:700 13px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:var(--gris)}
+.lgf-p.yo a{border-color:#29B298;box-shadow:inset 0 0 0 1px #29B298}
+.lgf-lista.directos{grid-template-columns:repeat(2,minmax(0,1fr))}
+.lgf-p.grande a{grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto auto;justify-items:center;text-align:center;row-gap:6px;padding:14px 10px;
+  border-color:var(--tinta);box-shadow:4px 4px 0 var(--magenta)}
+.lgf-p.grande .lgf-n{grid-row:auto;grid-column:1 / -1;color:var(--magenta-tx)}
+.lgf-p.grande .lgf-cara{grid-row:auto;grid-column:1 / -1;width:58px;height:58px}
+.lgf-p.grande b,.lgf-p.grande small{grid-column:1 / -1;max-width:100%}
+/* los premios */
+.lgf-premios{list-style:none;margin:0;padding:0;display:grid;border-top:2px solid var(--linea)}
+.lgf-premios li{display:grid;gap:3px;padding:11px 2px;border-bottom:2px solid var(--linea)}
+.lgf-premios b{font:900 15px/1.15 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+.lgf-premios span{font:500 14px/1.45 Archivo,sans-serif;max-width:62ch}
+/* lo mejor de las ligas: los invictos arriba, la tabla abajo */
+.lgh-inv{margin-bottom:14px}
+.lgh-inv .lgf-st{margin-top:0}
+.lgh-inv ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.lgh-inv li{display:flex;align-items:center;gap:8px;padding:7px 12px 7px 8px;border:2px solid var(--tinta);box-shadow:3px 3px 0 #29B298;min-width:0}
+.lgh-inv li > span{display:grid;gap:2px;min-width:0}
+.lgh-inv b{font:800 14px/1.1 Archivo,sans-serif}
+.lgh-inv b a{color:inherit;text-decoration:none}
+.lgh-inv small{font:700 13px/1.1 "Barlow Condensed",sans-serif;color:var(--gris)}
+.lgh-inv small a{color:inherit}
+.lgh-top{list-style:none;margin:0;padding:0;border:2px solid var(--linea)}
+.lgh-top li{display:grid;grid-template-columns:22px 26px minmax(0,1fr) auto 46px;align-items:center;gap:10px;padding:7px 10px;border-top:1.5px solid var(--linea)}
+.lgh-top li:first-child{border-top:0}
+.lgh-top li.yo{background:var(--caja)}
+.lgh-top-i{font:900 14px/1 Archivo,sans-serif;color:var(--gris);font-variant-numeric:tabular-nums}
+.lgh-top-n{display:grid;gap:2px;min-width:0}
+.lgh-top-n b{font:800 14px/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lgh-top-n b a{color:inherit;text-decoration:none}
+.lgh-top-n small{font:700 13px/1.1 "Barlow Condensed",sans-serif;color:var(--gris);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lgh-top-v{display:grid;justify-items:end;gap:1px}
+.lgh-top-v b{font:900 17px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.lgh-top-v small{font:700 12.5px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+.lgh-top-p{justify-self:end;font:800 14px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+@media (min-width: 640px){
+  .lgf-dest{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .lgf-lista{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .lgf-lista.directos{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .lgf-pasos{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .lgf-pasos li{grid-template-columns:minmax(0,1fr);align-content:start}
+  .lgf-pn{grid-row:auto;margin-bottom:6px}
+}
+@media (min-width: 900px){
+  .app .lgf-num{grid-template-columns:repeat(4,minmax(0,110px))}
+  .app .lgf-lista{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .app .lgf-d{padding:20px 22px}
+  .app .lgf-d > b{font-size:38px}
+  /* los 10 de «Lo mejor», en dos columnas: del 1 al 5 y del 6 al 10 (a lo ancho, el número quedaba lejos del nombre) */
+  .app .lgh-top{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(5,auto);grid-auto-flow:column}
+  .app .lgh-top li:nth-child(6){border-top:0}
+  .app .lgh-top li:nth-child(n+6){border-left:1.5px solid var(--linea)}
+}
+@media (prefers-reduced-motion: reduce){.lgf-d{transition:none}.lgf-d:hover{transform:none}}
 @media (prefers-reduced-motion: reduce){.lgh-c{transition:none}.lgh-c:hover{transform:none}}
 /* 🖼️ el flyer de una liga en Publicaciones, en las historias y en el escenario del Inicio (14/10/2026) */
 .app .pub.flyer{grid-template-columns:108px minmax(0,1fr)}
@@ -1347,7 +1447,7 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .rk-chips button.rk-chip-nuevo:not(.on){border-color:#29B298;box-shadow:inset 0 0 0 1px #29B298}
 /* 🏆 la línea de los 16 que clasifican al torneo de cierre de la T1 (sólo con `?prev=fin` hasta que Dlx lo anuncie) */
 .rk-t tr.rk-corte td{padding:0;border:0;background:none}
-.rk-corte span{display:block;margin:2px 0;padding:6px 10px;border-top:2px dashed var(--magenta);color:var(--magenta-tx);
+.rk-corte span,.rk-corte a{display:block;text-decoration:none;margin:2px 0;padding:6px 10px;border-top:2px dashed var(--magenta);color:var(--magenta-tx);
   font:700 15px/1.35 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;white-space:normal}
 .rk-final{margin:10px 0 0;padding:8px 10px;border:2px solid var(--magenta);background:var(--caja);font-size:14px}
 /* 2 · los que tenés cerca */

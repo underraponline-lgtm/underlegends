@@ -118,7 +118,7 @@ function cuentaT1(liga) {
   let top = '';
   if (yo && yo.pos) {
     const clas = (liga.d.tabla || []).filter((f) => f.pos).sort((a, b) => a.pos - b.pos).slice(0, 16);
-    if (clas.some((f) => f.k === yo.k)) top = 'Estás en el top 16: jugás el cierre';
+    if (clas.some((f) => f.k === yo.k)) top = 'Estás en el top 16: jugás la Clausura';
     else if (clas.length === 16) {
       const d = (clas[15].ovr || 0) - (yo.ovr || 0);
       top = d > 0 ? 'A ' + d + ' de OVR del top 16' : 'Pegado al top 16';
@@ -138,7 +138,7 @@ function Temporada({ liga }) {
   let top = '';
   if (yo && yo.pos) {
     const clas = (liga.d.tabla || []).filter((f) => f.pos).sort((a, b) => a.pos - b.pos).slice(0, 16);
-    if (clas.some((f) => f.k === yo.k)) top = 'ESTÁS EN EL TOP 16: JUGÁS EL CIERRE';
+    if (clas.some((f) => f.k === yo.k)) top = 'ESTÁS EN EL TOP 16: JUGÁS LA CLAUSURA';
     else if (clas.length === 16) {
       const d = (clas[15].ovr || 0) - (yo.ovr || 0);
       top = d > 0 ? 'A ' + d + ' DE OVR DEL TOP 16' : 'PEGADO AL TOP 16';

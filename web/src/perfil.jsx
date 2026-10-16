@@ -501,8 +501,8 @@ function ProximaMeta({ liga, f, esYo }) {
   else if (ovr(arriba) > ovr(f)) t = (esYo ? 'Te faltan ' : 'Le faltan ') + D_OVR(ovr(arriba) - ovr(f)) + ' para pasar a ' + n(arriba)
     + ' y subir al #' + arriba.pos;
   else t = (esYo ? 'Estás pegado a ' : 'Está pegado a ') + n(arriba) + ', el #' + arriba.pos + ': el próximo evento los separa';
-  const sub = corte ? (ovr(corte) > ovr(f) ? 'Y ' + D_OVR(ovr(corte) - ovr(f)) + ' para entrar a los 16 del torneo de cierre' : '')
-    : (esYo ? 'Si la temporada terminara hoy, jugás el torneo de cierre' : 'Si la temporada terminara hoy, juega el torneo de cierre');
+  const sub = corte ? (ovr(corte) > ovr(f) ? 'Y ' + D_OVR(ovr(corte) - ovr(f)) + ' para entrar a los 16 de la Clausura' : '')
+    : (esYo ? 'Si la temporada terminara hoy, jugás la Clausura' : 'Si la temporada terminara hoy, juega la Clausura');
   return (
     <section className="sec pf-sec pf-meta-sec">
       <a className="pf-meta" href="#/ranking/temporada">
