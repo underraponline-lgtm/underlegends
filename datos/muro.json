@@ -450,17 +450,17 @@
 "temporada"
 ]
 },
-"tøkiø": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "sosa": {
 "rg": "D",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"tøkiø": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -518,17 +518,18 @@
 "temporada"
 ]
 },
-"tenor": {
+"kochi": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"kochi": {
+"tenor": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "zetryko": {
@@ -2363,14 +2364,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Noone"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5655,6 +5648,14 @@
 "Gocho"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-16T04:57:40Z",
+"quien": [
+"Kochi"
+],
+"carta": "temporada"
 }
 ]
 }
