@@ -15,9 +15,9 @@
     {
      "op": "Makmah",
      "n": "Makmah",
-     "pts": 224625,
+     "pts": 230875,
      "oro": 2,
-     "ev": 31
+     "ev": 32
     },
     {
      "op": "Oasis",
@@ -34,20 +34,20 @@
      "ev": 23
     },
     {
-     "op": "Agus",
-     "n": "Agus",
-     "pts": 161800,
-     "oro": 3,
-     "ev": 14
+     "op": "Panchok",
+     "n": "Panchok",
+     "pts": 175825,
+     "oro": 4,
+     "ev": 12
     }
    ],
    "revelacion": [
     {
      "op": "Catarsis",
      "n": "Catarsis",
-     "pts": 54000,
+     "pts": 60250,
      "oro": 1,
-     "ev": 2
+     "ev": 3
     },
     {
      "op": "RT",
@@ -109,8 +109,8 @@
     {
      "op": "ACAD",
      "n": "Academia de Rap",
-     "gente": 97,
-     "ev": 4
+     "gente": 106,
+     "ev": 5
     },
     {
      "op": "DDF",
@@ -245,6 +245,15 @@
      "d": "23 de 37 duelos ganados"
     },
     {
+     "op": "Panchok",
+     "n": "Panchok",
+     "q": "Panchok",
+     "quien": [
+      "Panchok"
+     ],
+     "d": "18 de 25 duelos ganados"
+    },
+    {
      "op": "Liberia",
      "n": "Liberia",
      "q": "Liberia",
@@ -260,16 +269,7 @@
      "quien": [
       "Makmah"
      ],
-     "d": "17 de 35 duelos ganados"
-    },
-    {
-     "op": "Oasis",
-     "n": "Oasis",
-     "q": "Oasis",
-     "quien": [
-      "Oasis"
-     ],
-     "d": "15 de 18 duelos ganados"
+     "d": "17 de 36 duelos ganados"
     }
    ],
    "cazador": [
@@ -327,7 +327,7 @@
      "quien": [
       "Aldre"
      ],
-     "d": "le ganó a Erian (#5) siendo #118 · Cuentas Pendientes V.1"
+     "d": "le ganó a Erian (#5) siendo #120 · Cuentas Pendientes V.1"
     },
     {
      "op": "436:HH",
@@ -339,15 +339,6 @@
      "d": "le ganó a Erian (#5) siendo #88 · LA BELLA ARTE DE LA DESGRACIA VOL3"
     },
     {
-     "op": "389:Catarsis",
-     "n": "Catarsis",
-     "q": "Catarsis",
-     "quien": [
-      "Catarsis"
-     ],
-     "d": "le ganó a PichulaMc (#4) siendo #47 · RED BULL NACIONAL ALBICELESTE"
-    },
-    {
      "op": "431:Six",
      "n": "Six",
      "q": "Six",
@@ -355,6 +346,15 @@
       "Six"
      ],
      "d": "le ganó a Oasis (#1) siendo #11 · LA REDENCIÓN VOL.1"
+    },
+    {
+     "op": "389:Catarsis",
+     "n": "Catarsis",
+     "q": "Catarsis",
+     "quien": [
+      "Catarsis"
+     ],
+     "d": "le ganó a PichulaMc (#4) siendo #44 · RED BULL NACIONAL ALBICELESTE"
     },
     {
      "op": "475:Juasmio",
@@ -572,7 +572,7 @@
       "Flennzs"
      ],
      "did": "1414431452346581052",
-     "d": "25 puntos de participación en la página"
+     "d": "28 puntos de participación en la página"
     },
     {
      "op": "PichulaMc",
@@ -582,7 +582,7 @@
       "PichulaMc"
      ],
      "did": "578697503130779649",
-     "d": "25 puntos de participación en la página"
+     "d": "26 puntos de participación en la página"
     },
     {
      "op": "ARDEAN",
@@ -720,7 +720,7 @@
      "op": "Follombia",
      "n": "Follombia",
      "quien": [],
-     "d": "476.075 pts · 7 jugaron"
+     "d": "488.575 pts · 7 jugaron"
     },
     {
      "op": "Fontana",
@@ -732,13 +732,13 @@
      "op": "Fuera de Rango",
      "n": "Fuera de Rango",
      "quien": [],
-     "d": "315.363 pts · 2 jugaron"
+     "d": "321.613 pts · 2 jugaron"
     },
     {
      "op": "Lighting Force",
      "n": "Lighting Force",
      "quien": [],
-     "d": "243.763 pts · 3 jugaron"
+     "d": "293.763 pts · 3 jugaron"
     },
     {
      "op": "Arte del Chakalaje",
@@ -753,28 +753,28 @@
      "n": "Argentina",
      "cc": "ar",
      "quien": [],
-     "d": "1.592.126 pts · 37 jugaron"
+     "d": "1.624.626 pts · 37 jugaron"
     },
     {
      "op": "Chile",
      "n": "Chile",
      "cc": "cl",
      "quien": [],
-     "d": "927.056 pts · 28 jugaron"
+     "d": "977.056 pts · 28 jugaron"
     },
     {
      "op": "Colombia",
      "n": "Colombia",
      "cc": "co",
      "quien": [],
-     "d": "822.259 pts · 19 jugaron"
+     "d": "866.009 pts · 19 jugaron"
     },
     {
      "op": "Venezuela",
      "n": "Venezuela",
      "cc": "ar",
      "quien": [],
-     "d": "591.072 pts · 16 jugaron"
+     "d": "597.322 pts · 16 jugaron"
     },
     {
      "op": "España",

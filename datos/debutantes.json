@@ -1,6 +1,7 @@
 {
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
+  "ACAD": "2026-10-16",
   "FFA": "2026-10-16",
   "FRZ": "2026-10-15",
   "FVS": "2026-10-15",
@@ -86,6 +87,19 @@
    "vence": "2026-10-20T00:26:10+00:00",
    "vencido": false
   },
+  "Hotaru Adeyemi 🏳️‍⚧️": {
+   "avisado": "2026-10-16",
+   "chat": "2026-10-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-16T20:31:59+00:00",
+   "did": "",
+   "evento": "PRADERAP VOL.1",
+   "n": 479,
+   "sv": "ACAD",
+   "vence": "2026-10-23T20:31:59+00:00",
+   "vencido": false
+  },
   "Joaquín La Profecia 👨🏻‍🍳": {
    "avisado": "2026-10-12",
    "chat": "2026-10-12",
@@ -101,9 +115,10 @@
   },
   "Joshema": {
    "avisado": "2026-10-13",
+   "avisado_cumplido": "2026-10-16",
    "chat": "2026-10-13",
-   "con": null,
-   "cumplido": "",
+   "con": 479,
+   "cumplido": "2026-10-16T20:31:59+00:00",
    "debut": "2026-10-13T15:18:36+00:00",
    "did": "1342989767184486401",
    "evento": "QCYO RAPEEN",
@@ -281,6 +296,19 @@
    "n": 468,
    "sv": "FFA",
    "vence": "2026-10-20T23:50:48+00:00",
+   "vencido": false
+  },
+  "VECA": {
+   "avisado": "2026-10-16",
+   "chat": "2026-10-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-16T20:31:59+00:00",
+   "did": "",
+   "evento": "PRADERAP VOL.1",
+   "n": 479,
+   "sv": "ACAD",
+   "vence": "2026-10-23T20:31:59+00:00",
    "vencido": false
   },
   "Vacile": {

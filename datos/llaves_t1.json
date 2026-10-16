@@ -25101,5 +25101,241 @@
     1250
    ]
   ]
+ },
+ "479": {
+  "dia": "2026-10-16",
+  "escala": "16+",
+  "fecha": "16/10",
+  "links": [
+   "https://discord.com/channels/765045834647339038/1309234583023124531/1560752190266548245"
+  ],
+  "n": 479,
+  "nombre": "PRADERAP VOL.1",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Lord Viruzz",
+       "DarnBless"
+      ],
+      "Lord Viruzz",
+      ""
+     ],
+     [
+      [
+       "Chop",
+       "Erian"
+      ],
+      "Chop",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "Mr Still Ballin"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "VECA 🇧🇱",
+       "Vandu"
+      ],
+      "VECA 🇧🇱",
+      ""
+     ],
+     [
+      [
+       "Hotaru Adeyemi 🏳️‍⚧️🇦🇷",
+       "Makmah"
+      ],
+      "Hotaru Adeyemi 🏳️‍⚧️🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Shadow",
+       "Joshema"
+      ],
+      "Shadow",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "Catarsis"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "Calíz",
+       "Teito"
+      ],
+      "Calíz",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Chop",
+       "Lord Viruzz"
+      ],
+      "Chop",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "VECA 🇧🇱"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "Hotaru Adeyemi 🏳️‍⚧️🇦🇷",
+       "Shadow"
+      ],
+      "Hotaru Adeyemi 🏳️‍⚧️🇦🇷",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "Calíz"
+      ],
+      "MCO",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "Chop"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "Hotaru Adeyemi 🏳️‍⚧️🇦🇷",
+       "MCO"
+      ],
+      "Hotaru Adeyemi 🏳️‍⚧️🇦🇷",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "Hotaru Adeyemi 🏳️‍⚧️🇦🇷"
+      ],
+      "Panchok",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "ACAD",
+  "tabla": [
+   [
+    "Panchok",
+    "Campeón",
+    10000
+   ],
+   [
+    "Hotaru Adeyemi 🏳️‍⚧️🇦🇷",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Chop",
+    "Semifinal",
+    5250
+   ],
+   [
+    "MCO",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lord Viruzz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2500
+   ],
+   [
+    "VECA 🇧🇱",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Catarsis",
+    "Octavos",
+    1250
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Joshema",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mr Still Ballin",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

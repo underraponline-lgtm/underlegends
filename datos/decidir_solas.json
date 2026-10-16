@@ -1058,6 +1058,30 @@
    "escribio": {
     "quien": "SNAKE INSIGNIA 5 8 · SR · 16/10 · Natsuki 🇦🇷"
    }
+  },
+  {
+   "id": "926218a268",
+   "tipo": "Nombre desconocido",
+   "sec": "PRADERAP VOL.1 · ACAD · 16/10 · #479",
+   "que": "¿Quién es «Hotaru Adeyemi 🏳️‍⚧️🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1282772759902162954",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1282772759902162954)",
+   "t": 1792189833600,
+   "filas": [
+    728
+   ],
+   "variantes": [
+    "Hotaru Adeyemi 🏳️‍⚧️🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Hotaru Adeyemi 🏳️‍⚧️",
+     "1282772759902162954"
+    ]
+   }
   }
  ],
  "deshechas": []

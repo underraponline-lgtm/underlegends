@@ -13794,5 +13794,267 @@
    ]
   ],
   "v": 2
+ },
+ "479": {
+  "antes": {
+   "Calíz": [
+    141,
+    275,
+    false
+   ],
+   "Catarsis": [
+    47,
+    64,
+    false
+   ],
+   "Chop": [
+    192,
+    46,
+    true
+   ],
+   "DarnBless": [
+    95,
+    156,
+    false
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Joshema": [
+    133,
+    255,
+    false
+   ],
+   "Lord Viruzz": [
+    38,
+    48,
+    false
+   ],
+   "MCO": [
+    24,
+    30,
+    false
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "Mr Still Ballin": [
+    188,
+    28,
+    true
+   ],
+   "Panchok": [
+    10,
+    11,
+    false
+   ],
+   "Shadow": [
+    86,
+    124,
+    false
+   ],
+   "Teito": [
+    61,
+    84,
+    false
+   ],
+   "Vandu": [
+    14,
+    16,
+    false
+   ]
+  },
+  "canal": "925213294703300649",
+  "duelos": [
+   [
+    "Lord Viruzz",
+    "DarnBless",
+    "Lord Viruzz"
+   ],
+   [
+    "Chop",
+    "Erian",
+    "Chop"
+   ],
+   [
+    "Panchok",
+    "Mr Still Ballin",
+    "Panchok"
+   ],
+   [
+    "VECA 🇧🇱",
+    "Vandu",
+    "VECA 🇧🇱"
+   ],
+   [
+    "Hotaru Adeyemi 🏳️‍⚧️🇦🇷",
+    "Makmah",
+    "Hotaru Adeyemi 🏳️‍⚧️🇦🇷"
+   ],
+   [
+    "Shadow",
+    "Joshema",
+    "Shadow"
+   ],
+   [
+    "MCO",
+    "Catarsis",
+    "MCO"
+   ],
+   [
+    "Calíz",
+    "Teito",
+    "Calíz"
+   ],
+   [
+    "Chop",
+    "Lord Viruzz",
+    "Chop"
+   ],
+   [
+    "Panchok",
+    "VECA 🇧🇱",
+    "Panchok"
+   ],
+   [
+    "Hotaru Adeyemi 🏳️‍⚧️🇦🇷",
+    "Shadow",
+    "Hotaru Adeyemi 🏳️‍⚧️🇦🇷"
+   ],
+   [
+    "MCO",
+    "Calíz",
+    "MCO"
+   ],
+   [
+    "Panchok",
+    "Chop",
+    "Panchok"
+   ],
+   [
+    "Hotaru Adeyemi 🏳️‍⚧️🇦🇷",
+    "MCO",
+    "Hotaru Adeyemi 🏳️‍⚧️🇦🇷"
+   ],
+   [
+    "Panchok",
+    "Hotaru Adeyemi 🏳️‍⚧️🇦🇷",
+    "Panchok"
+   ]
+  ],
+  "ev_antes": {
+   "Calíz": 3,
+   "Catarsis": 2,
+   "Chop": 11,
+   "DarnBless": 3,
+   "Erian": 35,
+   "Joshema": 1,
+   "Lord Viruzz": 14,
+   "MCO": 14,
+   "Makmah": 48,
+   "Mr Still Ballin": 4,
+   "Panchok": 14,
+   "Shadow": 7,
+   "Teito": 12,
+   "Vandu": 22
+  },
+  "fecha": "16/10",
+  "firma": "737e3a2885ff98a1",
+  "msg": "1560779869497983097",
+  "nombre": "PRADERAP VOL.1",
+  "num": 479,
+  "participantes": 16,
+  "sello": {
+   "Panchok": "4124f9bb02b2:906ce275eeb8"
+  },
+  "sv": "ACAD",
+  "t": "2026-10-16T22:24:16Z",
+  "tabla": [
+   [
+    "Panchok",
+    "Campeón",
+    10000
+   ],
+   [
+    "Hotaru Adeyemi 🏳️‍⚧️🇦🇷",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Chop",
+    "Semifinal",
+    5250
+   ],
+   [
+    "MCO",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Lord Viruzz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "VECA 🇧🇱",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mr Still Ballin",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Joshema",
+    "Octavos",
+    1250
+   ],
+   [
+    "Catarsis",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teito",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

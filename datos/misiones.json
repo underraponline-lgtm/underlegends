@@ -1631,8 +1631,14 @@
      16,
      0
     ],
-    "Catarsis": [
+    "Calíz": [
      1,
+     8,
+     8,
+     0
+    ],
+    "Catarsis": [
+     2,
      2,
      2,
      1
@@ -1650,9 +1656,9 @@
      0
     ],
     "Chop": [
+     5,
      4,
-     16,
-     16,
+     4,
      0
     ],
     "Cinexfilo": [
@@ -1680,7 +1686,7 @@
      0
     ],
     "DarnBless": [
-     1,
+     2,
      8,
      8,
      0
@@ -1728,7 +1734,7 @@
      0
     ],
     "Erian": [
-     8,
+     9,
      1,
      1,
      0
@@ -1769,6 +1775,12 @@
      8,
      0
     ],
+    "Hotaru Adeyemi 🏳️‍⚧️🇦🇷": [
+     1,
+     2,
+     2,
+     0
+    ],
     "JHEYSON": [
      2,
      8,
@@ -1788,7 +1800,7 @@
      0
     ],
     "Joshema": [
-     1,
+     2,
      8,
      8,
      0
@@ -1890,7 +1902,7 @@
      0
     ],
     "Lord Viruzz": [
-     3,
+     4,
      8,
      8,
      0
@@ -1905,6 +1917,12 @@
      3,
      16,
      16,
+     0
+    ],
+    "MCO": [
+     1,
+     4,
+     4,
      0
     ],
     "MTZ": [
@@ -1926,7 +1944,7 @@
      0
     ],
     "Makmah": [
-     12,
+     13,
      2,
      2,
      0
@@ -1980,7 +1998,7 @@
      0
     ],
     "Mr Still Ballin": [
-     1,
+     2,
      2,
      2,
      0
@@ -2064,9 +2082,9 @@
      0
     ],
     "Panchok": [
-     3,
      4,
-     4,
+     1,
+     1,
      0
     ],
     "Paria": [
@@ -2160,7 +2178,7 @@
      0
     ],
     "Shadow": [
-     1,
+     2,
      8,
      8,
      0
@@ -2214,7 +2232,7 @@
      0
     ],
     "Teito": [
-     1,
+     2,
      8,
      8,
      0
@@ -2261,6 +2279,12 @@
      8,
      0
     ],
+    "VECA 🇧🇱": [
+     1,
+     8,
+     8,
+     0
+    ],
     "Vacile🇪🇸": [
      1,
      2,
@@ -2274,7 +2298,7 @@
      0
     ],
     "Vandu": [
-     5,
+     6,
      2,
      2,
      0
@@ -2394,12 +2418,13 @@
     "BNA": 3700,
     "Benjixo": 900,
     "Bloody": 900,
-    "Catarsis": 1400,
-    "Chop": 300,
+    "Catarsis": 1700,
+    "Chop": 900,
     "Cinexfilo": 900,
     "Colesito": 2900,
     "Cronox": 300,
     "DO-C": 300,
+    "DarnBless": 300,
     "Delux": 900,
     "Dynoco": 300,
     "EmiZor": 900,
@@ -2408,8 +2433,10 @@
     "Geoka": 900,
     "Gocho": 300,
     "Guess": 900,
+    "Hotaru Adeyemi 🏳️‍⚧️🇦🇷": 600,
     "JHEYSON": 300,
     "JJ": 1600,
+    "Joshema": 300,
     "Juasmio": 1600,
     "Jult": 300,
     "Keider": 900,
@@ -2421,12 +2448,13 @@
     "Lord Viruzz": 300,
     "Luzzano": 600,
     "Lvel": 300,
+    "MCO": 600,
     "Magic": 300,
     "Majiztral": 300,
     "Makmah": 900,
     "Molusco": 2900,
     "Motera": 1600,
-    "Mr Still Ballin": 600,
+    "Mr Still Ballin": 900,
     "NC": 2900,
     "Nemi": 900,
     "OG": 2900,
@@ -2435,7 +2463,7 @@
     "Oasis": 2900,
     "Ortiz": 600,
     "Over": 1600,
-    "Panchok": 900,
+    "Panchok": 2900,
     "PichulaMc": 2900,
     "Player": 300,
     "Polosport": 600,
@@ -2446,12 +2474,14 @@
     "Rodas": 300,
     "SINTEXT": 300,
     "Scritura": 900,
+    "Shadow": 300,
     "Sin Limites": 900,
     "Six": 900,
     "Snow": 2900,
     "Sosa": 900,
     "Soulb": 900,
     "Tam": 600,
+    "Teito": 300,
     "Tenor": 600,
     "Teo": 300,
     "Trot": 900,
@@ -2511,8 +2541,8 @@
   "Cajita": 300,
   "Carlosmo": 1600,
   "Carlosss": 1600,
-  "Catarsis": 1400,
-  "Chop": 1600,
+  "Catarsis": 1700,
+  "Chop": 2200,
   "Cinexfilo": 900,
   "Colesito": 3800,
   "CrisZJ": 1600,
@@ -2520,7 +2550,7 @@
   "Cronox": 1600,
   "DAVIJUAN": 300,
   "DO-C": 600,
-  "DarnBless": 300,
+  "DarnBless": 600,
   "Delux": 1800,
   "Denik": 300,
   "Desio": 300,
@@ -2559,11 +2589,13 @@
   "Hassan": 300,
   "Henry": 300,
   "Holden": 300,
+  "Hotaru Adeyemi 🏳️‍⚧️🇦🇷": 600,
   "ISAIAS": 300,
   "Iguana": 300,
   "JHEYSON": 300,
   "JJ": 2900,
   "JOSHU": 2900,
+  "Joshema": 300,
   "Juasmio": 1900,
   "Jult": 600,
   "Jupiter": 1300,
@@ -2591,7 +2623,7 @@
   "Lvel": 600,
   "MATICERNA": 300,
   "MAU KC 🇨🇴": 300,
-  "MCO": 2900,
+  "MCO": 3500,
   "MHS": 300,
   "MTZ": 300,
   "Magic": 300,
@@ -2604,7 +2636,7 @@
   "Mito": 300,
   "Molusco": 3200,
   "Motera": 2600,
-  "Mr Still Ballin": 3500,
+  "Mr Still Ballin": 3800,
   "Musicdum": 300,
   "N1k": 300,
   "NC": 3800,
@@ -2625,7 +2657,7 @@
   "PIERR🇵🇪": 300,
   "PRAISERIZA": 2900,
   "PROMETHEUS BIB 🇨🇴": 300,
-  "Panchok": 3800,
+  "Panchok": 5800,
   "Paria": 300,
   "Personality": 300,
   "PichulaMc": 5800,
@@ -2658,6 +2690,7 @@
   "Scot": 300,
   "Scritura": 900,
   "Selek": 300,
+  "Shadow": 300,
   "Sin Limites": 1200,
   "Six": 3800,
   "Snow": 5800,
@@ -2665,6 +2698,7 @@
   "Sosa": 1200,
   "Soulb": 1200,
   "Tam": 1900,
+  "Teito": 300,
   "Tenor": 900,
   "Teo": 600,
   "Tier": 300,
