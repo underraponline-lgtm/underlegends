@@ -1,5 +1,5 @@
 {
-"_leeme": "Las promociones de los canales de promoción de cada servidor: el link y de quién es, nunca el texto. Lo escribe bot/promos.py (paso 2b8c); lo lee bot/muro.py.",
+"_leeme": "Las promociones de los canales de promoción de cada servidor: el link y de quién es, nunca el texto; los videos de nuestros participantes que promociona la Liga (`liga`), y hasta cuándo va cada una alargada en la Tienda (`extra`). Lo escribe bot/promos.py (paso 2b8c); lo lee bot/muro.py.",
 "canales": {
 "DRA": [
 "1498327465251045418"
@@ -23,7 +23,7 @@
 "937392432276992010": "1560157739794178188",
 "1511963131880931338": "1540204032679743619",
 "1445948805710352514": "1530074145402912861",
-"1375099464183713823": "1560472984874131479"
+"1375099464183713823": "1560674203357683764"
 },
 "items": [
 {
@@ -119,6 +119,538 @@
 "plat": "yt"
 }
 ],
+"liga": [
+{
+"id": "v-nQYg6TOcbz8",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-16T10:10:08Z",
+"sv": "",
+"quien": [
+"Liberia"
+],
+"url": "https://www.youtube.com/watch?v=nQYg6TOcbz8",
+"plat": "yt",
+"vid": "nQYg6TOcbz8",
+"tit": "SEBA + LUZZANO VS SERGIO + TOBI | SEMIFINAL | FECHA 2",
+"de": "Fontana",
+"img": "https://i.ytimg.com/vi/nQYg6TOcbz8/hqdefault.jpg"
+},
+{
+"id": "v-hR4EH1DvwKA",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-16T10:10:08Z",
+"sv": "",
+"quien": [
+"Liberia"
+],
+"url": "https://www.youtube.com/watch?v=hR4EH1DvwKA",
+"plat": "yt",
+"vid": "hR4EH1DvwKA",
+"tit": "BUITRES MEDUSA vs EL COMBO LOCO - Octavos | 5vs5 | El Potrero",
+"de": "El Potrero",
+"img": "https://i.ytimg.com/vi/hR4EH1DvwKA/hqdefault.jpg"
+},
+{
+"id": "v-bZh59YIbQcw",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-16T10:10:08Z",
+"sv": "",
+"quien": [
+"Liberia"
+],
+"url": "https://www.youtube.com/watch?v=bZh59YIbQcw",
+"plat": "yt",
+"vid": "bZh59YIbQcw",
+"tit": "Gitano team - Deko x Rodri lp - Seba x Alexander Pato vs  8vos // Tlof x Ebreos x Lfl free",
+"de": "The Last Of Freestyle",
+"img": "https://i.ytimg.com/vi/bZh59YIbQcw/hqdefault.jpg"
+},
+{
+"id": "v-aAyruSUWGoU",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-16T10:10:08Z",
+"sv": "",
+"quien": [
+"Liberia"
+],
+"url": "https://www.youtube.com/watch?v=aAyruSUWGoU",
+"plat": "yt",
+"vid": "aAyruSUWGoU",
+"tit": "OTRO DIA MAS SEBA VS SATUR CACHUM | 4TOS | PALERMO FREE X EL SPOT DEL SUR X ELSURSIDE 01/06",
+"de": "Rimas Del Balbo",
+"img": "https://i.ytimg.com/vi/aAyruSUWGoU/hqdefault.jpg"
+},
+{
+"id": "v-29B_Ocly5dU",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-16T10:10:08Z",
+"sv": "",
+"quien": [
+"Liberia"
+],
+"url": "https://www.youtube.com/watch?v=29B_Ocly5dU",
+"plat": "yt",
+"vid": "29B_Ocly5dU",
+"tit": "MELIO vs SEBA vs NEXUS vs BILLY - OCTAVOS - CIRCUITO LINEAL FECHA 1",
+"de": "Circuito Lineal",
+"img": "https://i.ytimg.com/vi/29B_Ocly5dU/hqdefault.jpg"
+},
+{
+"id": "v-hHqE7FYxLwU",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-16T10:10:08Z",
+"sv": "",
+"quien": [
+"Liberia"
+],
+"url": "https://www.youtube.com/watch?v=hHqE7FYxLwU",
+"plat": "yt",
+"vid": "hHqE7FYxLwU",
+"tit": "CTZ PARKER ONE NIGHT 133 vs. FZK: Octavos DEM Argentina 🇦🇷 Civil War",
+"de": "DEM Argentina 🇦🇷",
+"img": "https://i.ytimg.com/vi/hHqE7FYxLwU/hqdefault.jpg"
+},
+{
+"id": "v-_3iW47LwLFc",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-16T10:10:08Z",
+"sv": "",
+"quien": [
+"Liberia"
+],
+"url": "https://www.youtube.com/watch?v=_3iW47LwLFc",
+"plat": "yt",
+"vid": "_3iW47LwLFc",
+"tit": "1vs1 ENMA  vs SEBA vs FACU vs NYU 8TVS DINASTÍA FT LA ISLA FT EBREOS FREE",
+"de": "Dinastia Freestyle",
+"img": "https://i.ytimg.com/vi/_3iW47LwLFc/hqdefault.jpg"
+},
+{
+"id": "v-mbUvyR3_z0A",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-16T10:10:08Z",
+"sv": "",
+"quien": [
+"Liberia"
+],
+"url": "https://www.youtube.com/watch?v=mbUvyR3_z0A",
+"plat": "yt",
+"vid": "mbUvyR3_z0A",
+"tit": "DALE COLOR VS NGO-JIM VS ZARK VS ZAZA VS EROS-PAL PISO | OCTAVOS | JURASSIC RAPZ X FORNER",
+"de": "JURASSIC RAPZ",
+"img": "https://i.ytimg.com/vi/mbUvyR3_z0A/hqdefault.jpg"
+},
+{
+"id": "v-IectN1oRiEc",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=IectN1oRiEc",
+"plat": "yt",
+"vid": "IectN1oRiEc",
+"tit": "MAKMA VS TRX || OCTAVOS DE FINAL \"FALCON LEAGUE EN LA PIEDRA LISA\"",
+"de": "Falcon Music Colima",
+"img": "https://i.ytimg.com/vi/IectN1oRiEc/hqdefault.jpg"
+},
+{
+"id": "v-TUNkvRngLa0",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=TUNkvRngLa0",
+"plat": "yt",
+"vid": "TUNkvRngLa0",
+"tit": "MAKMA VS FICTYCIO || CUARTOS DE FINAL \"FALCON LEAGUE EN LA PIEDRA LISA\"",
+"de": "Falcon Music Colima",
+"img": "https://i.ytimg.com/vi/TUNkvRngLa0/hqdefault.jpg"
+},
+{
+"id": "v-PPgytfnf4RQ",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=PPgytfnf4RQ",
+"plat": "yt",
+"vid": "PPgytfnf4RQ",
+"tit": "MAKMA VS MIKE || OCTAVOS DE FINAL \"FALCON LEAGUE EN VILLA IZCALLI\"",
+"de": "Falcon Music Colima",
+"img": "https://i.ytimg.com/vi/PPgytfnf4RQ/hqdefault.jpg"
+},
+{
+"id": "v-oVewDmvNipY",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=oVewDmvNipY",
+"plat": "yt",
+"vid": "oVewDmvNipY",
+"tit": "MAKMA Y CD RANDÁL VS TRX Y XGATUSSO || OCTAVOS DE FINAL \"FALCON LEAGUE DUPLAS\"",
+"de": "Falcon Music Colima",
+"img": "https://i.ytimg.com/vi/oVewDmvNipY/hqdefault.jpg"
+},
+{
+"id": "v-w7azt0IJiz0",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=w7azt0IJiz0",
+"plat": "yt",
+"vid": "w7azt0IJiz0",
+"tit": "MAKMA Y CD RRANDAL VS SEINTRIX Y TNT || CUARTOS DE FINAL \"FALCON LEAGUE DUPLAS\"",
+"de": "Falcon Music Colima",
+"img": "https://i.ytimg.com/vi/w7azt0IJiz0/hqdefault.jpg"
+},
+{
+"id": "v-jeNQXJ55Rrc",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=jeNQXJ55Rrc",
+"plat": "yt",
+"vid": "jeNQXJ55Rrc",
+"tit": "KUZKO MÁSTER VS MAKMA || OCTAVOS DE FINAL \"FUNKO BATTLES SUBSEDE COLIMA #2\"",
+"de": "Falcon Music Colima",
+"img": "https://i.ytimg.com/vi/jeNQXJ55Rrc/hqdefault.jpg"
+},
+{
+"id": "v-BxJ0kX4TKWM",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=BxJ0kX4TKWM",
+"plat": "yt",
+"vid": "BxJ0kX4TKWM",
+"tit": "MIKE R VS MAKMA || CUARTOS DE FINAL \"FUNKO BATTLES SUBSEDE COLIMA #2\"",
+"de": "Falcon Music Colima",
+"img": "https://i.ytimg.com/vi/BxJ0kX4TKWM/hqdefault.jpg"
+},
+{
+"id": "v-cbdYjL8REgA",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=cbdYjL8REgA",
+"plat": "yt",
+"vid": "cbdYjL8REgA",
+"tit": "CD RANDÁL VS MAKMA || OCTAVOS DE FINAL \"FALCON LEAGUE EN EL SKATE PARK\"",
+"de": "Falcon Music Colima",
+"img": "https://i.ytimg.com/vi/cbdYjL8REgA/hqdefault.jpg"
+},
+{
+"id": "v-lfk_yLIEHLs",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=lfk_yLIEHLs",
+"plat": "yt",
+"vid": "lfk_yLIEHLs",
+"tit": "MIKE R VS MAKMA - OCTAVOS - FREESTYLE COLIMA FALCON LEGUE",
+"de": "Falcon Music Colima",
+"img": "https://i.ytimg.com/vi/lfk_yLIEHLs/hqdefault.jpg"
+},
+{
+"id": "v-bLumkNYrTuk",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=bLumkNYrTuk",
+"plat": "yt",
+"vid": "bLumkNYrTuk",
+"tit": "MAKMA VS CHETOS - BDM PANDILLAS COLIMA SUBSEDE #1 - OCTAVOS - FREESTYLE COLIMA FALCON LEGUE",
+"de": "Falcon Music Colima",
+"img": "https://i.ytimg.com/vi/bLumkNYrTuk/hqdefault.jpg"
+},
+{
+"id": "v-lz6h2hujj98",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=lz6h2hujj98",
+"plat": "yt",
+"vid": "lz6h2hujj98",
+"tit": "ZIZU VS MAKMA - BDM PANDILLAS COLIMA SUBSEDE #1 - CUARTOS - FREESTYLE COLIMA FALCON LEGUE",
+"de": "Falcon Music Colima",
+"img": "https://i.ytimg.com/vi/lz6h2hujj98/hqdefault.jpg"
+},
+{
+"id": "v-C0CJPJHBEjs",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=C0CJPJHBEjs",
+"plat": "yt",
+"vid": "C0CJPJHBEjs",
+"tit": "KINGTERO VS MAKMA - BDM PANDILLAS COLIMA REGIONAL - OCTAVOS DE FINAL - FREESTYLE COLIMA FALCON LEGUE",
+"de": "Falcon Music Colima",
+"img": "https://i.ytimg.com/vi/C0CJPJHBEjs/hqdefault.jpg"
+},
+{
+"id": "v--P6-pJpGYbQ",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=-P6-pJpGYbQ",
+"plat": "yt",
+"vid": "-P6-pJpGYbQ",
+"tit": "MAKMA VS AMORAD - OCTAVOS DE FINAL | SUPREMACÍA MC COLIMA 2026",
+"de": "Falcon Music Colima",
+"img": "https://i.ytimg.com/vi/-P6-pJpGYbQ/hqdefault.jpg"
+},
+{
+"id": "v-kOPxp6hK6CQ",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=kOPxp6hK6CQ",
+"plat": "yt",
+"vid": "kOPxp6hK6CQ",
+"tit": "CRETINO VS MAKMA - CUARTOS DE FINAL | SUPREMACÍA MC COLIMA 2026",
+"de": "Falcon Music Colima",
+"img": "https://i.ytimg.com/vi/kOPxp6hK6CQ/hqdefault.jpg"
+},
+{
+"id": "v-g7qwgfOzdSE",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=g7qwgfOzdSE",
+"plat": "yt",
+"vid": "g7qwgfOzdSE",
+"tit": "Makma vs Zizu vs Ulises - Octavos | Liga del volcán segundo aniversario",
+"de": "Liga del volcán",
+"img": "https://i.ytimg.com/vi/g7qwgfOzdSE/hqdefault.jpg"
+},
+{
+"id": "v--ZfGCla5gaM",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=-ZfGCla5gaM",
+"plat": "yt",
+"vid": "-ZfGCla5gaM",
+"tit": "Kingtero vs Makma - Cuartos | Liga del volcán 1era subsede rumbo a ChessBattles Regional Colima",
+"de": "Liga del volcán",
+"img": "https://i.ytimg.com/vi/-ZfGCla5gaM/hqdefault.jpg"
+},
+{
+"id": "v-RY6pNI6lQdE",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=RY6pNI6lQdE",
+"plat": "yt",
+"vid": "RY6pNI6lQdE",
+"tit": "Makma vs Randal - Repechaje | Liga del volcán 1era subsede rumbo a ChessBattles Regional Colima",
+"de": "Liga del volcán",
+"img": "https://i.ytimg.com/vi/RY6pNI6lQdE/hqdefault.jpg"
+},
+{
+"id": "v-52EHZOLFeoQ",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=52EHZOLFeoQ",
+"plat": "yt",
+"vid": "52EHZOLFeoQ",
+"tit": "Makma vs El Inge - Cuartos | Liga del volcán 1era subsede rumbo a ChessBattles Regional Colima",
+"de": "Liga del volcán",
+"img": "https://i.ytimg.com/vi/52EHZOLFeoQ/hqdefault.jpg"
+},
+{
+"id": "v-MAA25ofyx1c",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=MAA25ofyx1c",
+"plat": "yt",
+"vid": "MAA25ofyx1c",
+"tit": "Makma vs Pandacano - Semifinal | Liga del volcán 1era subsede rumbo a ChessBattles Regional Colima",
+"de": "Liga del volcán",
+"img": "https://i.ytimg.com/vi/MAA25ofyx1c/hqdefault.jpg"
+},
+{
+"id": "v-xbd97RB2CAI",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=xbd97RB2CAI",
+"plat": "yt",
+"vid": "xbd97RB2CAI",
+"tit": "Makma vs Kingtero - Final | Liga del volcán 1era subsede rumbo a ChessBattles Regional Colima",
+"de": "Liga del volcán",
+"img": "https://i.ytimg.com/vi/xbd97RB2CAI/hqdefault.jpg"
+},
+{
+"id": "v-NfCGcHSU_DY",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=NfCGcHSU_DY",
+"plat": "yt",
+"vid": "NfCGcHSU_DY",
+"tit": "Manu vs Makma/Liga del volcán Face To Face",
+"de": "Liga del volcán",
+"img": "https://i.ytimg.com/vi/NfCGcHSU_DY/hqdefault.jpg"
+},
+{
+"id": "v-boeN5U7QczI",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=boeN5U7QczI",
+"plat": "yt",
+"vid": "boeN5U7QczI",
+"tit": "Makma vs Kid Fury/Octavos/Liga del volcán Regional ChessBattles Colima 2026 ",
+"de": "Liga del volcán",
+"img": "https://i.ytimg.com/vi/boeN5U7QczI/hqdefault.jpg"
+},
+{
+"id": "v-2VfbdJy_VqY",
+"o": "liga",
+"por": "perfil",
+"t": "2026-10-13T01:29:25Z",
+"sv": "",
+"quien": [
+"Makmah"
+],
+"url": "https://www.youtube.com/watch?v=2VfbdJy_VqY",
+"plat": "yt",
+"vid": "2VfbdJy_VqY",
+"tit": "Makma vs Moosby/Cuartos/Liga del volcán Regional ChessBattles Colima 2026",
+"de": "Liga del volcán",
+"img": "https://i.ytimg.com/vi/2VfbdJy_VqY/hqdefault.jpg"
+},
+{
+"id": "v-0uk1CE5A3Ic",
+"o": "liga",
+"por": "socio",
+"t": "2026-10-12T19:55:17Z",
+"sv": "SR",
+"quien": [
+"Zeta",
+"Rubik"
+],
+"url": "https://www.youtube.com/watch?v=0uk1CE5A3Ic",
+"plat": "yt",
+"vid": "0uk1CE5A3Ic",
+"tit": "ZETA 🆚 RUBIK || FINAL MATANZA DE DIOSES - C16",
+"de": "",
+"img": "https://i.ytimg.com/vi/0uk1CE5A3Ic/hqdefault.jpg"
+},
+{
+"id": "v-kaD74Qr7ky8",
+"o": "liga",
+"por": "socio",
+"t": "2026-10-09T17:00:34Z",
+"sv": "SR",
+"quien": [
+"Rubik"
+],
+"url": "https://www.youtube.com/watch?v=kaD74Qr7ky8",
+"plat": "yt",
+"vid": "kaD74Qr7ky8",
+"tit": "RUBIK 🆚 SCORPIO | FINAL MATANZA DE DIOSES - C15",
+"de": "",
+"img": "https://i.ytimg.com/vi/kaD74Qr7ky8/hqdefault.jpg"
+}
+],
+"extra": {},
 "oembed": {
 "https://youtu.be/S8GMC522rII?si=HQmtmqzdbdVYM-S7": {
 "tit": "EL NIVEL de las Red Bulls este AÑO es NEFASTO",

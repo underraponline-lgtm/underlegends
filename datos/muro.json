@@ -685,7 +685,9 @@
 },
 "leonart": {
 "rg": "",
-"c": []
+"c": [
+"servidor"
+]
 },
 "pomberito": {
 "rg": "",
@@ -2364,14 +2366,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Noone"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5656,6 +5650,14 @@
 "Kochi"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-16T15:28:50Z",
+"quien": [
+"Leonart"
+],
+"carta": "servidor"
 }
 ]
 }

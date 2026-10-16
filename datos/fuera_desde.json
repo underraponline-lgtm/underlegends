@@ -605,11 +605,6 @@
    "temporada": "2026-10-12"
   },
   "leonart": {
-   "servidor": "2026-10-12",
-   "sv-acad": "2026-10-12",
-   "sv-ddf": "2026-10-12",
-   "sv-ffa": "2026-10-12",
-   "sv-sr": "2026-10-12",
    "temporada": "2026-10-12"
   },
   "leteletras": {
@@ -1155,8 +1150,8 @@
    "temporada": "2026-10-12"
   }
  },
- "pasaban": 388,
- "cuando": "2026-10-16T06:57:23Z",
+ "pasaban": 389,
+ "cuando": "2026-10-16T15:29:23Z",
  "borradas": [
   [
    "jj",
