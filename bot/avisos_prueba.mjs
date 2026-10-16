@@ -1649,6 +1649,11 @@ const ok = (cond, que, det) => {
     const r2 = o.rachaDe(NUEVO);
     ok(r2.xp_de.fel.join() === '60,60' && A.xpDeFuentes({ fel: 999, vivo: 2, nada: 5 }).xp === 60 + 6,
       'felicitar tiene tope: 81 felicitaciones son 60 de XP, no 81', JSON.stringify(r2.xp_de.fel));
+    // 🏆 el Hincha del mes: la misma XP, por mes y con los mismos topes
+    const hi = o.hinchas();
+    const yo = ((hi.meses[A.diaET().slice(0, 7)] || []).find((x) => x[0] === NUEVO) || [])[1];
+    ok(yo === 2 + 60, 'el Hincha del mes cuenta la XP de la página del mes, con sus topes (seguir 2 + felicitar 60)',
+      JSON.stringify(hi));
     sql.exec("INSERT INTO subs (endpoint, p256dh, auth, alta, visto, quien) VALUES ('https://push/x', 'p', 'a', 1, 1, ?)", NUEVO);
     const r3 = o.rachaDe(NUEVO);
     sql.exec("UPDATE subs SET quien = '' WHERE endpoint = 'https://push/x'");
@@ -2042,7 +2047,7 @@ const ok = (cond, que, det) => {
   // 🏆 MES AWARDS: Dlx saca nominados de las dieciséis, y de nada más
   const ms = A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['rapero:Ana', 'organizador:Velatz', 'liga:fmsperu'] });
   ok(ms && ms.quitar.length === 3 && A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['otra:x'] }) === undefined
-    && Object.keys(A.MES_CAT).length === 16, 'sacar un nominado vale en las dieciséis categorías, y en otra no');
+    && Object.keys(A.MES_CAT).length === 20, 'sacar un nominado vale en las veinte categorías, y en otra no');
 }
 
 if (fallas) {

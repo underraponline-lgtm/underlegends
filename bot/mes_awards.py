@@ -32,12 +32,13 @@ LAS CATEGORÍAS (los números del mes, en hora del este)
 ⚠️ Quien juega FUERA DE CONCURSO no se nomina, como en la Superliga y la Clausura: no tiene número en los rankings.
 ⚠️ El primero es OCTUBRE de 2026 (`DESDE`): se vota del 1 al 4 de noviembre.
 
-🏆 Y DOCE MÁS, DETRÁS DE «VER LAS DEMÁS NOMINACIONES» (Dlx, 16/10/2026: *«más nominaciones… pero tampoco rellenar todo
+🏆 Y DIECISÉIS MÁS, DETRÁS DE «VER LAS DEMÁS NOMINACIONES» (Dlx, 16/10/2026: *«más nominaciones… pero tampoco rellenar todo
 de eso, sino como el botón que dirá ver las demás nominaciones»*): organizador, staff, duelista, cazador, batacazo,
-imparable, evento, promo, publicación, crew, país y liga. Sus números salen de `bot/mes_otros.py`; lo demás —nominar,
+imparable, evento, promo, publicación, crew, país y liga, y las cuatro de «Y más» —hincha, clásico, sobreviviente y
+constante—. Sus números salen de `bot/mes_otros.py`; lo demás —nominar,
 sacar, votar, cerrar— es igual. El ganador se lleva su insignia y `mes_otros.PREMIO_OTRA` Puntos de Tienda (*«Insignia
 + 1.000 PdT»*); los de grupos —crew, país y liga—, el Salón y la publicación, como el Servidor del mes. Sus ganadores
-salen en UNA publicación por mes, no doce (`muro()`).
+salen en UNA publicación por mes, no dieciséis (`muro()`).
 """
 import datetime as dt
 import io
@@ -67,7 +68,7 @@ CATS = (('rapero', 'Rapero del mes', 'los puntos de Temporada del mes'),
         ('servidor', 'Servidor del mes', 'cuánta gente movió en el mes'))
 #: los Puntos de Tienda de cada ganador (la batalla, a cada lado). El servidor no cobra: no es una persona
 PREMIO = {'rapero': 3000, 'revelacion': 2000, 'batalla': 1500}
-#: 🏆 las doce de «Ver las demás nominaciones» (`bot/mes_otros.py`), y las dieciséis juntas
+#: 🏆 las dieciséis de «Ver las demás nominaciones» (`bot/mes_otros.py`), y las veinte juntas
 import mes_otros as MO  # noqa: E402
 OTRAS = tuple((c, n, de) for c, n, de, _t in MO.OTRAS)
 TODAS = CATS + OTRAS
@@ -386,7 +387,8 @@ def tienda(d, dids):
         t = _de_iso(((d.get('meses') or {}).get(mes) or {}).get('cerrado'))
         paga = PREMIO.get(cat) or (MO.PREMIO_OTRA if cat in dict((c, 1) for c, _n, _d in OTRAS) else 0)
         for q in personas(cat, fila):
-            did = dd.get(q)
+            # 🙌 el Hincha puede no estar en la Lista: trae su Discord
+            did = dd.get(q) or (fila.get('did') if q == fila.get('n') else None)
             if did and paga and t:
                 out['%s:%s:%s' % (mes, cat, q)] = [did, paga, int(t.timestamp() * 1000)]
     return out
@@ -434,6 +436,12 @@ def muro(d=None):
     return out
 
 
+def _sin_did(m):
+    """El mes sin los Discord IDs de los nominados (los del Hincha): a la página no van."""
+    return dict(m, cats={c: dict(x, nom=[{a: b for a, b in y.items() if a != 'did'} for y in x.get('nom') or []])
+                         for c, x in (m.get('cats') or {}).items()})
+
+
 def para_web(d=None, ahora=None):
     """Lo que lee la página en el Salón de la fama (`/api/salon`): las categorías, el mes que se vota o se nomina, cómo
     va el mes en curso y los ganadores de antes."""
@@ -443,11 +451,12 @@ def para_web(d=None, ahora=None):
     abierto = None
     for mes, m in sorted(meses.items()):
         if not m.get('cerrado'):
-            abierto = dict(m, mes=mes, nombre=nombre_mes(mes), votando=bool(_de_iso(m['abre']) and _de_iso(m['abre']) <= ahora))
-    hist = [dict(m, mes=mes, nombre=nombre_mes(mes)) for mes, m in sorted(meses.items(), reverse=True) if m.get('cerrado')]
+            abierto = dict(_sin_did(m), mes=mes, nombre=nombre_mes(mes), votando=bool(_de_iso(m['abre']) and _de_iso(m['abre']) <= ahora))
+    hist = [dict(_sin_did(m), mes=mes, nombre=nombre_mes(mes)) for mes, m in sorted(meses.items(), reverse=True) if m.get('cerrado')]
     viv = d.get('vivo')
     if viv:
-        viv = dict(viv, nombre=nombre_mes(viv['mes']), vota=_iso(en_et(siguiente(viv['mes']), 1, ABRE_H)))
+        viv = dict(viv, cats={c: [{a: b for a, b in x.items() if a != 'did'} for x in xs] for c, xs in (viv.get('cats') or {}).items()},
+                   nombre=nombre_mes(viv['mes']), vota=_iso(en_et(siguiente(viv['mes']), 1, ABRE_H)))
     # `cats`: [clave, nombre, de qué, 1 si es de «Ver las demás nominaciones»]
     return {'t': _iso(ahora), 'cats': [list(c) + [0] for c in CATS] + [list(c) + [1] for c in OTRAS],
             'premio': dict(PREMIO, otra=MO.PREMIO_OTRA), 'abierto': abierto, 'vivo': viv, 'hist': hist[:24]}
@@ -519,8 +528,8 @@ def _self_check():
            and len(tt) == 3, 'la Tienda: cada premio una vez, a quien tiene su Discord', str(tt))
         w = para_web(r, t3)
         ok(not w['abierto'] and w['hist'][0]['mes'] == '2026-10' and len(muro(r)) == 4, 'cerrado: va al historial y al muro')
-        ok(len(w['cats']) == 16 and w['cats'][4][3] == 1 and w['cats'][0][3] == 0 and w['premio']['otra'] == 1000,
-           'la página recibe las dieciséis, con cuáles van detrás del botón')
+        ok(len(w['cats']) == 4 + len(OTRAS) == 20 and w['cats'][4][3] == 1 and w['cats'][0][3] == 0 and w['premio']['otra'] == 1000,
+           'la página recibe las veinte, con cuáles van detrás del botón')
         # 🏆 una de las doce: el organizador gana, cobra 1.000 y sale en UNA publicación con las demás
         r2 = dict(r)
         r2['meses'] = {'2026-10': dict(r['meses']['2026-10'])}

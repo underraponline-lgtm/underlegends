@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""🏆 LAS DEMÁS NOMINACIONES DE LOS MES AWARDS: doce categorías más, detrás de «Ver las demás nominaciones».
+"""🏆 LAS DEMÁS NOMINACIONES DE LOS MES AWARDS: dieciséis categorías más, detrás de «Ver las demás nominaciones».
 
     python bot/mes_otros.py           cómo va el mes en las doce, sin escribir nada
     python bot/mes_otros.py --auto    el self-check, sin red ni archivos
@@ -31,10 +31,16 @@ DE DÓNDE SALE CADA UNA (todo en hora del este, del mes que se mide)
   · PUBLICACIÓN: la más felicitada del muro (`/avisos/aplausos`). El premio es de quien es la publicación.
     ⚠️ Las dos últimas se cuentan DE A POCO (`vistas()`, en cada corrida): el objeto borra lo de hace más de 30 días, y
     el día 1 ya se habría ido lo de los primeros días del mes.
+  · HINCHA: quien más participó en la página —votar, felicitar, mirar en vivo, abrir promos—, con la misma XP del nivel
+    y sus topes (`/avisos/hinchas`, con la clave del ciclo: trae Discord IDs). Cualquiera con Discord, compita o no;
+    Dlx no (`verificados.DUENO`: prueba todo).
+  · CLÁSICO: los dos que más veces se cruzaron en duelos (dos o más). El premio, para los dos.
+  · SOBREVIVIENTE: las veces que sobrevivió al Most Wanted sin que lo cazaran.
+  · CONSTANTE: los podios del mes —campeón, subcampeón y tercero, los de `rankings.POS`—, y a igual los títulos.
   · CREW, PAÍS: los puntos de Temporada del mes de su gente (los mismos que el Rapero del mes).
   · LIGA: las batallas que jugó en el mes y la gente que movió (`datos/ligas.json`).
-⚠️ Quien juega fuera de concurso no se nomina en lo que mide jugar (duelista, cazador, batacazo, imparable): como en las
-cuatro.
+⚠️ Quien juega fuera de concurso no se nomina en lo que mide jugar (duelista, cazador, batacazo, imparable, clásico,
+sobreviviente, constante): como en las cuatro.
 """
 import datetime as dt
 import io
@@ -62,6 +68,11 @@ OTRAS = (
     ('evento', 'Evento del mes', 'la gente que juntó (el premio es de quien lo organizó)', 'persona'),
     ('promo', 'Promo del mes', 'cuánta gente la abrió en la página', 'persona'),
     ('publicacion', 'Publicación del mes', 'las felicitaciones que recibió', 'persona'),
+    # 🏆 «Y más» (Dlx, 16/10/2026, a las cuatro que le propuse: las cuatro)
+    ('hincha', 'Hincha del mes', 'lo que participó en la página: votar, felicitar, mirar en vivo, abrir promos', 'persona'),
+    ('clasico', 'Clásico del mes', 'las veces que se cruzaron en duelos (el premio, para los dos)', 'persona'),
+    ('sobreviviente', 'Sobreviviente del mes', 'las veces que sobrevivió al Most Wanted', 'persona'),
+    ('constante', 'Constante del mes', 'los podios del mes', 'persona'),
     ('crew', 'Crew del mes', 'los puntos de Temporada de su gente', 'grupo'),
     ('pais', 'País del mes', 'los puntos de Temporada de su gente', 'grupo'),
     ('liga', 'Liga del mes', 'las batallas que jugó y la gente que movió', 'grupo'),
@@ -174,6 +185,23 @@ def numeros(ini, fin, D, raperos=()):
             bata[kg] = {'op': ('%s:%s' % (n, g))[:80], 'n': g, 'q': g, 'quien': [g], '_dif': dif, '_pl': pos[kp],
                         'd': 'le ganó a %s (#%d) siendo #%d · %s' % (perd, pos[kp], pos[kg], ev or '#%s' % n)}
     nom = D.get('nombre') or (lambda kq: kq)
+    # 🤝 CLÁSICO: los dos que más se cruzaron en duelos ese mes
+    par = {}
+    for t, n, a, b, g, ev in D.get('duelos') or []:
+        ka, kb = k(a), k(b)
+        if not en(t) or not g or ka in fuera or kb in fuera or ka == kb:
+            continue
+        x = par.setdefault(tuple(sorted((ka, kb))), {'_n': 0, '_g': {}})
+        x['_n'] += 1
+        x['_g'][k(g)] = x['_g'].get(k(g), 0) + 1
+    cl = []
+    for (ka, kb), x in par.items():
+        if x['_n'] >= 2:
+            na, nb = nom(ka), nom(kb)
+            cl.append({'op': ('%s vs %s' % (na, nb))[:80], 'n': '%s vs %s' % (na, nb), 'q': na, 'quien': [na, nb],
+                       '_n': x['_n'], 'd': '%d duelos · %s %d, %s %d' % (x['_n'], na, x['_g'].get(ka, 0), nb,
+                                                                       x['_g'].get(kb, 0))})
+    out['clasico'] = sorted(cl, key=lambda x: (-x['_n'], x['n'].lower()))
     out['duelista'] = sorted(({'op': nom(kq), 'n': nom(kq), 'q': nom(kq), 'quien': [nom(kq)], '_g': g, '_j': jug[kq],
                                'd': '%d de %s ganados' % (g, _plural(jug[kq], 'duelo', 'duelos'))}
                               for kq, g in gan.items()), key=lambda x: (-x['_g'], -x['_g'] / x['_j'], x['n'].lower()))
@@ -195,6 +223,46 @@ def numeros(ini, fin, D, raperos=()):
     for x in caz.values():
         x['d'] = _plural(x['_c'], 'cabeza cazada', 'cabezas cazadas')
     out['cazador'] = sorted(caz.values(), key=lambda x: (-x['_c'], x['n'].lower()))
+
+    # 🪖 SOBREVIVIENTE: las veces que el Most Wanted no lo cazó
+    sob = {}
+    for t, q in D.get('sobrevivio') or []:
+        if not en(t) or k(q) in fuera:
+            continue
+        x = sob.setdefault(k(q), {'op': q, 'n': q, 'q': q, 'quien': [q], '_s': 0})
+        x['_s'] += 1
+    for x in sob.values():
+        x['d'] = 'sobrevivió ' + _plural(x['_s'], 'vez', 'veces')
+    out['sobreviviente'] = sorted(sob.values(), key=lambda x: (-x['_s'], x['n'].lower()))
+
+    # 📈 CONSTANTE: los podios del mes
+    podio = {'campeón': 0, 'subcampeón': 1, 'tercero': 2}
+    con = {}
+    for n, sv, t, tabla, nombre in D.get('eventos') or []:
+        if not en(t):
+            continue
+        for f in tabla or []:
+            if not f or len(f) < 2 or k(f[0]) in fuera:
+                continue
+            i = podio.get(str(f[1]).strip().lower())
+            if i is None:
+                continue
+            x = con.setdefault(k(f[0]), {'op': f[0], 'n': f[0], 'q': f[0], 'quien': [f[0]], '_m': [0, 0, 0]})
+            x['_m'][i] += 1
+    for x in con.values():
+        x['d'] = '%s · %s' % (_plural(sum(x['_m']), 'podio', 'podios'),
+                              ' '.join('%s%d' % (e, c) for e, c in zip(('🥇', '🥈', '🥉'), x['_m']) if c))
+    out['constante'] = sorted(con.values(), key=lambda x: (-sum(x['_m']), -x['_m'][0], -x['_m'][1], x['n'].lower()))
+
+    # 🙌 HINCHA: quien más participó en la página (la XP del nivel, del objeto)
+    mes = (ini + dt.timedelta(hours=12)).strftime('%Y-%m')
+    hi = []
+    for did, xp in (D.get('hinchas') or {}).get(mes) or []:
+        q = (D.get('nombre_did') or {}).get(str(did))
+        if q and str(did) != str(D.get('dueno') or ''):
+            hi.append({'op': q[:80], 'n': q, 'q': q, 'quien': [q], 'did': str(did), '_x': xp,
+                       'd': '%s de participación en la página' % _plural(int(xp), 'punto', 'puntos')})
+    out['hincha'] = sorted(hi, key=lambda x: (-x['_x'], x['n'].lower()))
 
     # 📣 PROMO y 👏 PUBLICACIÓN: lo contado de a poco (`vistas()`), de lo publicado ese mes
     vs = D.get('vistas') or {}
@@ -400,6 +468,24 @@ def datos(vistas_guardadas=None):
     for x in (j('datos', 'precios.json') or {}).get('precios') or []:
         if x.get('e') == 'cazado' and x.get('ev'):
             cazas.append((_de_iso((x['ev'] or {}).get('t') or x.get('t')), [y[0] for y in x.get('por') or [] if y]))
+    # 🪖 los que sobrevivieron al Most Wanted
+    sobrevivio = []
+    for per in MW.periodos(MW.leer()):
+        for b in per.get('buscados') or []:
+            if b.get('estado') == 'sobrevivio' and per.get('fin') and b.get('n'):
+                sobrevivio.append((_de_iso(per['fin']), b['n']))
+    # 🙌 los hinchas: del objeto, con la clave del ciclo; el nombre, el de la Lista o el de su Discord
+    hinchas, nombre_did, dueno = _hinchas(), {}, ''
+    try:
+        import verificados as VE
+        dueno = VE.DUENO
+    except Exception:                                    # noqa: BLE001
+        dueno = ''
+    ids = {str(x[0]) for v in (hinchas or {}).values() for x in v[:10]}
+    for did in ids:
+        if did in did_raw:
+            nombre_did[did] = did_raw[did]
+    nombre_did.update(_nombres_discord(ids - set(nombre_did)))
     # 📋 el anuncio de cada llave: el mismo cruce de «Lo que pasó»
     anuncio_de = {}
     try:
@@ -419,8 +505,47 @@ def datos(vistas_guardadas=None):
     except Exception:                                    # noqa: BLE001
         crew = {}
     return {'eventos': evs, 'duelos': duelos, 'pos': pos, 'fuera': fuera, 'cazas': cazas, 'anuncio_de': anuncio_de,
+            'sobrevivio': sobrevivio, 'hinchas': hinchas or {}, 'nombre_did': nombre_did, 'dueno': dueno,
             'clave': k, 'raw': raw, 'nombre': lambda kq: canon.get(kq, kq), 'pais': pais, 'crew': crew,
             'ligas': (j('datos', 'ligas.json') or {}).get('ligas') or {}, 'vistas': plano(vistas_guardadas)}
+
+
+def _hinchas():
+    """`{mes: [[discord_id, xp], …]}` del objeto (`/avisos/hinchas`, con la clave del ciclo), o `{}`."""
+    import requests
+    try:
+        import clave_ciclo as CC
+        import fotos as F
+        tok = F.env('DISCORD_TOKEN', obligatorio=False)
+        if not tok:
+            return {}
+        r = requests.get(WORKER + '/avisos/hinchas', headers={'x-lg-ciclo': CC.clave(tok)}, timeout=25)
+        return (r.json() or {}).get('meses') or {} if r.ok else {}
+    except Exception:                                    # noqa: BLE001
+        return {}
+
+
+def _nombres_discord(ids):
+    """`{discord_id: nombre}` de quien no está en la Lista: el que muestra Discord (el bot lo puede leer)."""
+    out = {}
+    if not ids:
+        return out
+    try:
+        import requests
+        import fotos as F
+        tok = F.env('DISCORD_TOKEN', obligatorio=False)
+        if not tok:
+            return out
+        for did in sorted(ids)[:20]:
+            r = requests.get('https://discord.com/api/v10/users/%s' % did, headers={'Authorization': 'Bot ' + tok}, timeout=15)
+            if r.ok:
+                u = r.json() or {}
+                n = (u.get('global_name') or u.get('username') or '').strip()
+                if n:
+                    out[did] = n[:40]
+    except Exception:                                    # noqa: BLE001
+        pass
+    return out
 
 
 def plano(vs):
@@ -467,12 +592,29 @@ def _self_check():
                    'pub': {'x1': [4, ['Cid'], 'Cid, campeón de COPA', '2026-10-05T00:00:00Z']}},
         'crew': {'ana': 'LOS DE ARRIBA', 'bea': 'LOS DE ARRIBA', 'cid': 'OTRA'},
         'pais': {'ana': ('Chile', 'cl'), 'bea': ('Perú', 'pe'), 'cid': ('Chile', 'cl')},
+        'sobrevivio': [(t(12), 'Bea'), (t(19), 'Bea'), (t(19), 'Ana'), (dt.datetime(2026, 9, 2, tzinfo=utc), 'Ana')],
+        'hinchas': {'2026-10': [['111', 300], ['999', 900], ['222', 40]], '2026-09': [['222', 5000]]},
+        'nombre_did': {'111': 'Hugo', '222': 'Ana', '999': 'Dlx'}, 'dueno': '999',
         'ligas': {'l1': {'n': 'LIGA UNO', 'sv': 'URBF', 'batallas': [['1', '2026-10-02T00:00:00Z', None, 'A', 'B', 'A'],
                                                                       ['2', '2026-10-03T00:00:00Z', None, 'C', 'D', ''],
                                                                       ['3', '2026-09-03T00:00:00Z', None, 'C', 'D', 'C']]}},
     }
     nums = numeros(ini, fin, D, [{'op': 'Ana', 'pts': 500}, {'op': 'Bea', 'pts': 300}, {'op': 'Cid', 'pts': 900}])
-    ok(set(nums) == {c for c, _n, _d, _t in OTRAS}, 'las doce categorías')
+    ok(set(nums) == {c for c, _n, _d, _t in OTRAS} and len(OTRAS) == 16, 'las dieciséis categorías (las doce y las de «Y más»)')
+    ok([(x['n'], x['did']) for x in nums['hincha']] == [('Hugo', '111'), ('Ana', '222')],
+       'hincha: la participación del mes (la de septiembre no), con su Discord para cobrar; Dlx no', str(nums['hincha']))
+    ok([(x['n'], x['d']) for x in nums['clasico']] == [('Ana vs Bea', '2 duelos · Ana 2, Bea 0')],
+       'clásico: los dos que más se cruzaron (dos o más), con cómo quedaron', str(nums['clasico']))
+    ok([(x['n'], x['d']) for x in nums['sobreviviente']] == [('Bea', 'sobrevivió 2 veces'), ('Ana', 'sobrevivió 1 vez')],
+       'sobreviviente: las veces del mes', str(nums['sobreviviente']))
+    D2 = dict(D, eventos=[(5, 'FFA', t(3), [['Ana', 'Campeón', 1], ['Bea', 'Subcampeón', 1], ['Cid', 'Tercero', 1],
+                                             ['Dan', 'Semifinal', 1]], 'A'),
+                          (6, 'FFA', t(4), [['Bea', 'Campeón', 1], ['Ana', 'Subcampeón', 1]], 'B'),
+                          (7, 'FFA', t(5), [['Cid', 'Campeón', 1], ['Fu', 'Subcampeón', 1]], 'C')])
+    cs = numeros(ini, fin, D2)['constante']
+    ok([(x['n'], x['d']) for x in cs] == [('Ana', '2 podios · 🥇1 🥈1'), ('Bea', '2 podios · 🥇1 🥈1'), ('Cid', '2 podios · 🥇1 🥉1')]
+       and not numeros(ini, fin, D)['constante'],
+       'constante: campeón, subcampeón y tercero (la semifinal no es podio); a igual, más títulos', str(cs))
     o = nums['organizador']
     ok([x['op'] for x in o] == ['Velatz'] and o[0]['d'] == '1 evento · 8 raperos' and o[0]['quien'] == ['Velatz'],
        'organizador: sólo los eventos de %d o más del mes (la de 5 y la de septiembre no)' % MIN_GENTE, str(o))

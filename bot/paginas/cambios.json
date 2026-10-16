@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "3.27",
+   "dia": "2026-10-16",
+   "cuando": "2026-10-16T11:53:00-04:00",
+   "titulo": "MES AWARDS: cuatro premios más",
+   "items": [
+    "🙌 Hincha del mes: quien más participa en la página —votar, felicitar, mirar en vivo, abrir promos—, compita o no.",
+    "🤝 Clásico del mes, 🪖 Sobreviviente del mes y 📈 Constante del mes.",
+    "📣 La Promo del mes elige entre todas las promos del mes, no sólo las que están en la página."
+   ]
+  },
+  {
    "version": "3.26",
    "dia": "2026-10-16",
    "cuando": "2026-10-16T11:08:00-04:00",

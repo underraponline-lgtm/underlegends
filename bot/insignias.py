@@ -74,15 +74,20 @@ CATALOGO = (
     ('mes_revelacion', '🌠', 'Revelación del mes', 'Ganó la Revelación del mes de los MES AWARDS'),
     ('mes_batalla', '🎬', 'Batalla del mes', 'Su batalla ganó la Batalla del mes de los MES AWARDS'),
     # 🏆 y las de «Ver las demás nominaciones» (16/10/2026, `bot/mes_otros.py`). Las de grupos —crew, país, liga— no tienen
-    ('mes_organizador', '🎤', 'Organizador del mes', 'Ganó el Organizador del mes de los MES AWARDS'),
+    ('mes_organizador', '🎙️', 'Organizador del mes', 'Ganó el Organizador del mes de los MES AWARDS'),
     ('mes_staff', '🎧', 'Staff del mes', 'Ganó el Staff del mes de los MES AWARDS: jurado, host o DJ'),
-    ('mes_duelista', '⚔️', 'Duelista del mes', 'Ganó el Duelista del mes de los MES AWARDS'),
-    ('mes_cazador', '🎯', 'Cazador del mes', 'Ganó el Cazador del mes de los MES AWARDS'),
+    ('mes_duelista', '🗡️', 'Duelista del mes', 'Ganó el Duelista del mes de los MES AWARDS'),
+    ('mes_cazador', '🏹', 'Cazador del mes', 'Ganó el Cazador del mes de los MES AWARDS'),
     ('mes_batacazo', '💥', 'Batacazo del mes', 'Su victoria fue el Batacazo del mes de los MES AWARDS'),
-    ('mes_imparable', '🔥', 'Imparable del mes', 'Ganó el Imparable del mes de los MES AWARDS'),
+    ('mes_imparable', '⚡', 'Imparable del mes', 'Ganó el Imparable del mes de los MES AWARDS'),
     ('mes_evento', '🎪', 'Evento del mes', 'Organizó el Evento del mes de los MES AWARDS'),
     ('mes_promo', '📣', 'Promo del mes', 'Su promo fue la Promo del mes de los MES AWARDS'),
     ('mes_publicacion', '👏', 'Publicación del mes', 'Su publicación fue la Publicación del mes de los MES AWARDS'),
+    # 🏆 y las de «Y más» (16/10/2026)
+    ('mes_hincha', '🙌', 'Hincha del mes', 'Fue quien más participó en la página en un mes: el Hincha del mes'),
+    ('mes_clasico', '🤝', 'Clásico del mes', 'Su rivalidad fue el Clásico del mes de los MES AWARDS'),
+    ('mes_sobreviviente', '🪖', 'Sobreviviente del mes', 'Ganó el Sobreviviente del mes: el que más aguantó el Most Wanted'),
+    ('mes_constante', '📈', 'Constante del mes', 'Ganó el Constante del mes: el que más podios hizo'),
 )
 IDS = [c[0] for c in CATALOGO]
 

@@ -2342,6 +2342,8 @@ const RUTAS = {
   '/avisos/videos-ciclo': 'GET', '/avisos/videos-estados': 'POST', '/avisos/dueno/video': 'POST',
   // 📅 lo agendado con /agendar, para el ciclo: con su clave. Ver `agendar()`
   '/avisos/agenda-ciclo': 'GET',
+  // 🏆 el Hincha del mes (`bot/mes_otros.py`): quién más participó en la página, para el ciclo y con su clave
+  '/avisos/hinchas': 'GET',
   // 📣 qué hacer con un reporte de una llave (13/10/2026, Dlx: «Sí, todas»): lo decide Dlx desde el Dashboard y el
   // ciclo, con su clave, avisa lo que aplicó. Ver `validarDecisionReporte()`, `duenoReporte()` y `reportesEstados()`
   '/avisos/dueno/reporte': 'POST', '/avisos/reportes-estados': 'POST',
@@ -2566,7 +2568,10 @@ export const MES_CAT = { rapero: 'el Rapero del mes', revelacion: 'la Revelació
   organizador: 'el Organizador del mes', staff: 'el Staff del mes', duelista: 'el Duelista del mes',
   cazador: 'el Cazador del mes', batacazo: 'el Batacazo del mes', imparable: 'el Imparable del mes',
   evento: 'el Evento del mes', promo: 'la Promo del mes', publicacion: 'la Publicación del mes', crew: 'la Crew del mes',
-  pais: 'el País del mes', liga: 'la Liga del mes' };
+  pais: 'el País del mes', liga: 'la Liga del mes',
+  // «Y más»
+  hincha: 'el Hincha del mes', clasico: 'el Clásico del mes', sobreviviente: 'el Sobreviviente del mes',
+  constante: 'el Constante del mes' };
 //: cuánto se guarda un aplauso (el muro trae lo de los últimos 21 días)
 export const APLAUSOS_DIAS = 30;
 //: cuándo vuelve a sonar: la primera vez, y cuando llega a cada uno de éstos
@@ -3145,7 +3150,7 @@ export function ajusteValido(cual, valor) {
     const q = [];
     for (const x of valor.quitar) {
       const s = String(x || '');
-      if (!/^([a-z]{3,12}):.{1,80}$/.test(s) || !MES_CAT[s.split(':')[0]]) return undefined;
+      if (!/^([a-z]{3,14}):.{1,80}$/.test(s) || !MES_CAT[s.split(':')[0]]) return undefined;
       if (!q.includes(s)) q.push(s);
     }
     return { mes: valor.mes, quitar: q };
@@ -4182,6 +4187,12 @@ export async function rutaAvisos(req, env, ruta) {
         si: d.si !== false }),
     });
   }
+  // 🏆 EL HINCHA DEL MES, PARA EL CICLO: con su clave (trae Discord IDs). Ver `hinchas()`
+  if (ruta === '/avisos/hinchas') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    return elObjeto(env).fetch('https://avisos/hinchas');
+  }
   // 📅 LO AGENDADO CON /agendar, PARA EL CICLO: con su clave (trae quién lo agendó)
   if (ruta === '/avisos/agenda-ciclo') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -5075,6 +5086,7 @@ export class Avisos {
       if (ruta === '/decidir-ciclo') return json(this.decidirCiclo(), 200, 0);
       // 📅 lo agendado con /agendar, para el ciclo (`bot/agenda.py`), con su clave
       if (ruta === '/agenda-ciclo') return json(this.agendaCiclo(), 200, 0);
+      if (ruta === '/hinchas') return json(this.hinchas(), 200, 0);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
       if (ruta === '/final') return json(this.finalElegir(d));
@@ -8693,6 +8705,28 @@ export class Avisos {
    * publicación ya buscada en el muro (`validarAplauso()`). Uno por persona:
    * el segundo toque no suma (`ya`). Devuelve cuántos lleva.
    */
+  /**
+   * 🏆 EL HINCHA DEL MES (Dlx, 16/10/2026, a «Y más»): quién más participó en la página cada mes —votar, felicitar, mirar
+   * en vivo, abrir promos…—, con la misma XP del nivel (`XP_FUENTES` y sus topes, `xpDeFuentes()`), contada por mes en
+   * hora del este. Los 30 primeros de este mes y del anterior: `{t, meses: {'2026-10': [[discord_id, xp], …]}}`. Sólo
+   * para el ciclo (trae Discord IDs).
+   */
+  hinchas() {
+    const ahora = Date.now();
+    const por = {};
+    for (const r of this.sql.exec('SELECT quien, que, t FROM xp_log WHERE t > ?', ahora - 65 * DIA_MS).toArray()) {
+      const m = diaET(r.t).slice(0, 7);
+      const q = ((por[m] = por[m] || {})[r.quien] = por[m][r.quien] || {});
+      q[r.que] = (q[r.que] || 0) + 1;
+    }
+    const meses = {};
+    for (const [m, qs] of Object.entries(por)) {
+      meses[m] = Object.entries(qs).map(([q, c]) => [q, xpDeFuentes(c).xp]).filter((x) => x[1] > 0)
+        .sort((a, b) => b[1] - a[1]).slice(0, 30);
+    }
+    return { t: ahora, meses };
+  }
+
   /** 📣 Una semana más de una promo suya: cobra `PROMO_SEMANA_PAGA` y suma `PROMO_SEMANA_MS` a lo que le quedaba. */
   promoExtender(d) {
     const quien = String(d.quien || ''), pid = String(d.pid || ''), ini = Number(d.inicial), base = Number(d.base);
