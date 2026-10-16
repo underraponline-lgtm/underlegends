@@ -483,7 +483,7 @@
    "temporada": "42c75adc4c52:906ce275eeb8"
   },
   "Galileo": {
-   "competitivo": "a130edfe3ae3:aa2fab0a1b31",
+   "competitivo": "e4a96d3cb8b2:aa2fab0a1b31",
    "pais": "9320426b7925:631b7a4c93c4",
    "servidor": "59ad841fc91c:f7bc857dd9f6:c914f9"
   },
@@ -744,7 +744,7 @@
   },
   "Korey": {},
   "Kourier": {
-   "competitivo": "809a3a75ace3:aa2fab0a1b31",
+   "competitivo": "e8461b968a16:aa2fab0a1b31",
    "pais": "00705319baa9:631b7a4c93c4",
    "servidor": "51d8494d1435:f7bc857dd9f6:531696"
   },
@@ -1097,8 +1097,8 @@
    "servidor": "62285a56b056:f7bc857dd9f6:055f77"
   },
   "NXUZ": {
-   "competitivo": "3105c8310bee:aa2fab0a1b31",
-   "pais": "9c4d4456b3c1:631b7a4c93c4",
+   "competitivo": "2acc90f8fe2c:aa2fab0a1b31",
+   "pais": "212b72a08876:631b7a4c93c4",
    "servidor": "5da3843064f5:f7bc857dd9f6:25c183",
    "temporada": "bad701a5f9b9:906ce275eeb8"
   },
@@ -1582,7 +1582,7 @@
    "servidor": "f878da4ea385:f7bc857dd9f6:ba481e"
   },
   "Vlade": {
-   "competitivo": "30132f6f3cbb:aa2fab0a1b31",
+   "competitivo": "5e3355c94fc0:aa2fab0a1b31",
    "pais": "f94fa20722ba:631b7a4c93c4",
    "servidor": "936b196f6818:f7bc857dd9f6:552866"
   },
@@ -1626,7 +1626,7 @@
    "servidor": "8dc17afd358c:f7bc857dd9f6:980594"
   },
   "Yeyox": {
-   "competitivo": "2cab5c71da50:aa2fab0a1b31",
+   "competitivo": "8e34d9c7bbef:aa2fab0a1b31",
    "pais": "4f6a6bf86851:631b7a4c93c4",
    "servidor": "c685cda4ae6c:f7bc857dd9f6:93ed66"
   },
@@ -1649,7 +1649,7 @@
    "servidor": "b1642589051e:f7bc857dd9f6:403ba8"
   },
   "Zafka": {
-   "competitivo": "9fe6c05a4f07:aa2fab0a1b31",
+   "competitivo": "eaada67a215a:aa2fab0a1b31",
    "pais": "98308e9b5aa2:631b7a4c93c4",
    "servidor": "b560189e14f5:f7bc857dd9f6:2a03f7"
   },
@@ -1798,5 +1798,5 @@
    "servidor": "7f8885a35a6d:f7bc857dd9f6:55e9bc"
   }
  },
- "cuando": "2026-10-16T21:30:17+00:00"
+ "cuando": "2026-10-16T21:59:35+00:00"
 }
