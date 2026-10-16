@@ -781,7 +781,8 @@ export function SusLigas({ liga, k, esYo }) {
 function SusPublicaciones({ liga, p, esYo }) {
   const [todas, setTodas] = useState(false);
   const A = useAplausos();
-  const xs = (p && p.mu) || [];
+  // 📣 las promos van en su propia sección (`SusPromos`)
+  const xs = ((p && p.mu) || []).filter((it) => it.tipo !== 'promo');
   if (!xs.length) return null;
   const ver = todas ? xs : xs.slice(0, 3);
   return (
@@ -793,6 +794,20 @@ function SusPublicaciones({ liga, p, esYo }) {
         <button type="button" className="btn borde2 chico pf-pubs-mas" aria-expanded={todas} onClick={() => setTodas(!todas)}>
           {todas ? 'Ver menos' : 'Ver todas (' + xs.length + ')'}</button>
       ) : null}
+    </section>
+  );
+}
+
+// 📣 SUS PROMOS (Dlx, 16/10/2026: «en el perfil de cada uno»): lo que compartió en el canal de promoción de los
+// servidores (bot/promos.py), música y video, las más nuevas primero. Sin ninguna, no se dibuja
+function SusPromos({ liga, p, esYo }) {
+  const A = useAplausos();
+  const xs = ((p && p.mu) || []).filter((it) => it.tipo === 'promo');
+  if (!xs.length) return null;
+  return (
+    <section className="sec pf-sec pf-pubs">
+      <div className="sec-t"><h2>{esYo ? 'Tus promos' : 'Sus promos'}</h2><a href="#/publicaciones">Promos <Ico n="flecha" t={16} /></a></div>
+      <div className="pub-dia">{xs.map((it) => <Pub key={it.id} liga={liga} it={it} A={A} />)}</div>
     </section>
   );
 }
@@ -912,6 +927,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
           {/* 🎬 arriba, debajo de sus números (Dlx, 12/10/2026: «que esto esté más arriba… debajo de sus números») */}
           <div id="pf-videos"><Videos liga={liga} p={p} k={k} esYo={esYo} dc={dc} /></div>
           <div id="pf-publicaciones"><SusPublicaciones liga={liga} p={p} esYo={esYo} /></div>
+          <SusPromos liga={liga} p={p} esYo={esYo} />
           <SusLigas liga={liga} k={k} esYo={esYo} />
           <Datos liga={liga} p={p} e={P.e} />
           <Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} />

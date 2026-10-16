@@ -6,6 +6,7 @@ import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { limpio, nuevaQue, num } from './liga.js';
 import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, subirSiEsta } from './piezas.jsx';
 import { Buscar, CaraDc, CaraH, MENU, QUE_ES } from './arriba.jsx';
+import { abrirVideo } from './video.jsx';
 
 
 // ── Se busca ──────────────────────────────────────────────────────────────────────────────────────
@@ -447,6 +448,7 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
     else if (d.perfil) accion.perfil(d.perfil);
     else if (d.llave) accion.llave(d.llave);
     else if (d.ruta) location.hash = d.ruta;
+    else if (d.video) abrirVideo(d.video);
     else if (d.link) window.open(d.link, '_blank', 'noopener');
     else if (d.ancla) accion.ir(d.ancla);
   }, [onCerrar, raiz]);

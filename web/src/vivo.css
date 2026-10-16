@@ -913,6 +913,16 @@ a.lgp-nom:hover{text-decoration:underline}
   .app .lgh-top li:nth-child(n+6){border-left:1.5px solid var(--linea)}
 }
 @media (prefers-reduced-motion: reduce){.lgf-d{transition:none}.lgf-d:hover{transform:none}}
+/* 📣 LAS PROMOS (Dlx, 16/10/2026): la miniatura del video o la tapa del tema, y el ▶ encima */
+.pub-promo-v{position:relative;display:block;width:100%;padding:0;border:2px solid var(--linea);background:#030304;cursor:pointer}
+.pub-promo-img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+a.pub-promo-v .pub-promo-img{aspect-ratio:1}
+.pub-promo-v span{position:absolute;inset:0;display:grid;place-items:center;color:#F6F6F6;font-size:26px;text-shadow:0 2px 8px rgba(0,0,0,.7)}
+.app .pub.promo{grid-template-columns:150px minmax(0,1fr)}
+.sv-promos{display:grid;gap:10px}
+.h.promos .h-c img{object-fit:cover}
+.st-promo{display:block;width:100%;max-width:300px;aspect-ratio:16/9;object-fit:cover;border:2px solid #F6F6F6;margin:0 auto 12px}
+@media (max-width: 520px){.app .pub.promo{grid-template-columns:110px minmax(0,1fr)}}
 /* 🏛️ EL SALÓN DE LA FAMA (Dlx, 16/10/2026): `sf-` (salón de la fama). Dorado de las medallas, sin brillo */
 .sf-num{width:100%;max-width:560px;margin-top:4px}
 .sf-copa{display:none}

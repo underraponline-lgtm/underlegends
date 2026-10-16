@@ -1,0 +1,160 @@
+{
+"_leeme": "Las promociones de los canales de promoción de cada servidor: el link y de quién es, nunca el texto. Lo escribe bot/promos.py (paso 2b8c); lo lee bot/muro.py.",
+"canales": {
+"DRA": [
+"1498327465251045418"
+],
+"SR": [
+"937392432276992010"
+],
+"URBF": [
+"1511963131880931338"
+],
+"FFS": [
+"1445948805710352514"
+],
+"FVS": [
+"1375099464183713823"
+]
+},
+"canales_t": "2026-10-16T12:19:42Z",
+"ult": {
+"1498327465251045418": "1558224497599840337",
+"937392432276992010": "1560157739794178188",
+"1511963131880931338": "1540204032679743619",
+"1445948805710352514": "1530074145402912861",
+"1375099464183713823": "1560472984874131479"
+},
+"items": [
+{
+"id": "1560157739794178188-0",
+"t": "2026-10-15T05:09:51Z",
+"sv": "SR",
+"quien": "GP",
+"url": "https://youtu.be/BgPckuiHByg",
+"plat": "yt",
+"vid": "BgPckuiHByg",
+"tit": "Estaba Dicho.  (EP)",
+"de": "Geekto",
+"img": "https://i.ytimg.com/vi/BgPckuiHByg/hqdefault.jpg"
+},
+{
+"id": "1557912856299569223-0",
+"t": "2026-10-09T00:29:29Z",
+"sv": "DRA",
+"quien": "arusuza",
+"url": "https://youtu.be/S8GMC522rII?si=HQmtmqzdbdVYM-S7",
+"plat": "yt",
+"vid": "S8GMC522rII",
+"tit": "EL NIVEL de las Red Bulls este AÑO es NEFASTO",
+"de": "Arusuza",
+"img": "https://i.ytimg.com/vi/S8GMC522rII/hqdefault.jpg"
+},
+{
+"id": "1556775913943859341-0",
+"t": "2026-10-05T21:11:41Z",
+"sv": "DRA",
+"quien": "Mosaic",
+"url": "https://youtu.be/RtqiHlyazSM?si=4vahm_hrbfXp6hB9",
+"plat": "yt",
+"vid": "RtqiHlyazSM",
+"tit": "Frageelato - Wonderful bird",
+"de": "Frageelato",
+"img": "https://i.ytimg.com/vi/RtqiHlyazSM/hqdefault.jpg"
+},
+{
+"id": "1556696721478914180-0",
+"t": "2026-10-05T15:57:00Z",
+"sv": "DRA",
+"quien": "IFX",
+"url": "https://youtu.be/74DiqwHkaX8?si=ckR8SJy0PcYCrxio",
+"plat": "yt",
+"vid": "74DiqwHkaX8",
+"tit": "INFLOX - OTRA ERA",
+"de": "Inflox",
+"img": "https://i.ytimg.com/vi/74DiqwHkaX8/hqdefault.jpg"
+},
+{
+"id": "1553577094414475407-0",
+"t": "2026-09-27T01:20:43Z",
+"sv": "FVS",
+"quien": "Saiko",
+"url": "https://youtu.be/zCsDJAXh9T4?si=7WTKtA_0QxaH7YbV",
+"plat": "yt",
+"vid": "zCsDJAXh9T4",
+"tit": "SAIKO VS LAIN | EXHIBICION RETRO | LMF CHILE T4 - J2",
+"de": "LMF TV",
+"img": "https://i.ytimg.com/vi/zCsDJAXh9T4/hqdefault.jpg"
+},
+{
+"id": "1552813755312767096-0",
+"t": "2026-09-24T22:47:29Z",
+"sv": "DRA",
+"quien": "IFX",
+"url": "https://youtu.be/yRPM1_VJnpA?si=67BNXwAAhUiCUtkC",
+"plat": "yt",
+"vid": "yRPM1_VJnpA",
+"tit": "MR FLOWS - INFLOX",
+"de": "Inflox",
+"img": "https://i.ytimg.com/vi/yRPM1_VJnpA/hqdefault.jpg"
+},
+{
+"id": "1550987634321657876-0",
+"t": "2026-09-19T21:51:07Z",
+"sv": "SR",
+"quien": "Jothaze",
+"url": "https://www.youtube.com/watch?v=ghQJq1uOlBY",
+"plat": "yt",
+"vid": "ghQJq1uOlBY",
+"tit": "PARADOJAS MAL DESCRITAS | DLOSCORIA",
+"de": "DloScoria",
+"img": "https://i.ytimg.com/vi/ghQJq1uOlBY/hqdefault.jpg"
+},
+{
+"id": "1549865323761770686-0",
+"t": "2026-09-16T19:31:28Z",
+"sv": "DRA",
+"quien": "MILICA 👑",
+"url": "https://www.youtube.com/@LALIGAFORALL",
+"plat": "yt"
+}
+],
+"oembed": {
+"https://youtu.be/S8GMC522rII?si=HQmtmqzdbdVYM-S7": {
+"tit": "EL NIVEL de las Red Bulls este AÑO es NEFASTO",
+"de": "Arusuza",
+"img": "https://i.ytimg.com/vi/S8GMC522rII/hqdefault.jpg"
+},
+"https://youtu.be/RtqiHlyazSM?si=4vahm_hrbfXp6hB9": {
+"tit": "Frageelato - Wonderful bird",
+"de": "Frageelato",
+"img": "https://i.ytimg.com/vi/RtqiHlyazSM/hqdefault.jpg"
+},
+"https://youtu.be/74DiqwHkaX8?si=ckR8SJy0PcYCrxio": {
+"tit": "INFLOX - OTRA ERA",
+"de": "Inflox",
+"img": "https://i.ytimg.com/vi/74DiqwHkaX8/hqdefault.jpg"
+},
+"https://youtu.be/yRPM1_VJnpA?si=67BNXwAAhUiCUtkC": {
+"tit": "MR FLOWS - INFLOX",
+"de": "Inflox",
+"img": "https://i.ytimg.com/vi/yRPM1_VJnpA/hqdefault.jpg"
+},
+"https://www.youtube.com/@LALIGAFORALL": {},
+"https://youtu.be/BgPckuiHByg": {
+"tit": "Estaba Dicho.  (EP)",
+"de": "Geekto",
+"img": "https://i.ytimg.com/vi/BgPckuiHByg/hqdefault.jpg"
+},
+"https://www.youtube.com/watch?v=ghQJq1uOlBY": {
+"tit": "PARADOJAS MAL DESCRITAS | DLOSCORIA",
+"de": "DloScoria",
+"img": "https://i.ytimg.com/vi/ghQJq1uOlBY/hqdefault.jpg"
+},
+"https://youtu.be/zCsDJAXh9T4?si=7WTKtA_0QxaH7YbV": {
+"tit": "SAIKO VS LAIN | EXHIBICION RETRO | LMF CHILE T4 - J2",
+"de": "LMF TV",
+"img": "https://i.ytimg.com/vi/zCsDJAXh9T4/hqdefault.jpg"
+}
+}
+}

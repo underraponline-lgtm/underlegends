@@ -10,10 +10,13 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { ksDe, limpio, num, siglaDe } from './liga.js';
 import { Cara, Carta, Ico, accion, useCampana } from './piezas.jsx';
+import { Miniatura, abrirVideo } from './video.jsx';
 import { Elegido, X2 } from './encuestas.jsx';
 
 // 🖼️ el flyer de una liga es un anuncio (14/10/2026): lo publica su servidor, no es un logro de nadie
 const ANUNCIOS = { anuncio: 1, liga: 1, flyer: 1 };
+// 📣 las promociones de los servidores (bot/promos.py, 16/10/2026): su pestaña, y no van en «En la Liga»
+export const PLATAFORMA = { yt: 'YouTube', sp: 'Spotify', sc: 'SoundCloud', ig: 'Instagram', tt: 'TikTok' };
 // los logros: lo que se puede felicitar (una carta nueva le toca a todo el que juega una vez: no es un logro)
 const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, ligahito: 1 };
 const CARTA = { pais: 'de País', temporada: 'de Temporada', servidor: 'de Servidor', competitivo: 'Competitiva' };
@@ -116,6 +119,19 @@ export function Pub({ liga, it, A }) {
     vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
     txt = <>La gente eligió a {nombres} como El Elegido del Most Wanted</>;
     det = it.de ? it.votos + ' de ' + it.de + ' votos' : '';
+  } else if (it.tipo === 'promo') {
+    // 📣 lo que un rapero compartió en el canal de promoción de su servidor (bot/promos.py, 16/10/2026): el video se mira
+    // acá; lo demás abre en su plataforma. El título es el de la plataforma, no el texto del mensaje
+    const plat = PLATAFORMA[it.plat] || 'su link';
+    cat = 'PROMO · ' + siglaDe(it.sv);
+    vis = it.vid ? (
+      <button type="button" className="pub-promo-v" onClick={() => abrirVideo({ vid: it.vid, tit: limpio(it.tit || ''), link: it.url })}
+        aria-label={'Mirar ' + (it.tit ? limpio(it.tit) : 'el video')}><Miniatura vid={it.vid} cls="pub-promo-img" /><span aria-hidden="true">▶</span></button>
+    ) : it.img ? <a className="pub-promo-v" href={it.url} target="_blank" rel="noopener noreferrer" aria-label={'Abrir en ' + plat}><img className="pub-promo-img" alt="" src={it.img} loading="lazy" /></a>
+      : <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
+    txt = it.tit ? <>{nombres} comparte <b>{limpio(it.tit)}</b></> : <>{nombres} comparte algo en <b>{plat}</b></>;
+    det = plat + (it.de && it.de !== it.tit ? ' · ' + it.de : '');
+    acc = <a className="pub-a" href={it.url} target="_blank" rel="noopener noreferrer">{it.plat === 'sp' || it.plat === 'sc' ? 'Escuchar' : 'Ver'} en {plat} ↗</a>;
   } else if (it.tipo === 'ligahito') {
     // 🏟️ lo que pasa en las ligas de los servidores (bot/ligas.py `hitos()`, 16/10/2026): invicto, la punta y el campeón
     const ir = '#/ligas/' + encodeURIComponent(it.liga || '');
@@ -297,8 +313,9 @@ export function Publicaciones({ liga, enc }) {
   const todos = liga.muro || [];
   const pubs = useMemo(() => todos.filter((it) => {
     if (fil === 'sigo') return ksDe(it).some((k) => sigo.includes(k));
-    if (fil === 'liga') return !ANUNCIOS[it.tipo];
+    if (fil === 'liga') return !ANUNCIOS[it.tipo] && it.tipo !== 'promo';
     if (fil === 'anuncios') return !!ANUNCIOS[it.tipo];
+    if (fil === 'promos') return it.tipo === 'promo';
     return true;
   }), [todos, fil, sigo]);
   // por día, y en cada día las cartas nuevas juntas en el lugar de la primera
@@ -333,7 +350,7 @@ export function Publicaciones({ liga, enc }) {
         </section>
       </div>
       <nav className="pub-fil" aria-label="Qué ver">
-        {[['', 'Todo'], ['liga', 'En la Liga'], ['anuncios', 'Anuncios']].concat(sigo.length ? [['sigo', '★ A quien sigo']] : []).map(([v, t]) => (
+        {[['', 'Todo'], ['liga', 'En la Liga'], ['anuncios', 'Anuncios'], ['promos', 'Promos']].concat(sigo.length ? [['sigo', '★ A quien sigo']] : []).map(([v, t]) => (
           <button type="button" key={v || 'todo'} className={fil === v ? 'on' : ''} aria-pressed={fil === v} onClick={() => { setFil(v); setVer(40); }}>{t}</button>
         ))}
       </nav>

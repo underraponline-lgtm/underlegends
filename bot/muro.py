@@ -29,7 +29,9 @@ LO QUE ENTRA
   está en R2 (Dlx, 14/10/2026: «Flyers en Publicaciones e Historias»);
 - 🏟️ lo que pasa en esas ligas (Dlx, 16/10/2026, «publicaciones solas»): quién
   llega invicto a 5, quién toma la punta y quién sale campeón (`ligas.hitos()`
-  y el Salón de campeones), con 👏 Felicitar.
+  y el Salón de campeones), con 👏 Felicitar;
+- 📣 las promociones de los raperos de la Lista en el canal de promoción de
+  cada socio (`bot/promos.py`, Dlx 16/10/2026): música y video, dos por persona.
 
 ⚠️ SUBIR DE RANGO Y DESBLOQUEAR NO SE PUEDEN RECALCULAR: son un cambio entre
 dos corridas. Por eso se anotan en `datos/muro.json` (con cómo estaba cada uno)
@@ -306,6 +308,9 @@ def id_de(x):
     elif tipo == 'flyer':
         # 🖼️ sin link (el servidor sin guild): la liga y la imagen, que lleva el id del mensaje
         partes = [tipo, x.get('liga') or '', x.get('img') or '']
+    elif tipo == 'promo':
+        # 📣 el mensaje y el link: la misma promo es la misma publicación en cada corrida
+        partes = [tipo, x.get('pid') or x.get('url') or '']
     elif tipo == 'ligahito':
         # 🏟️ qué pasó, en qué liga, quién y cuándo: el mismo hito sale igual en cada corrida
         partes = [tipo, x.get('que') or '', x.get('liga') or '', '|'.join(x.get('quien') or []), x.get('t') or '']
@@ -332,7 +337,8 @@ def con_ids(items):
 
 # ── de quién es cada publicación: para los seguidores ────────────────────
 #: las publicaciones que son de alguien. Los anuncios y las novedades no son de nadie
-DE_ALGUIEN = ('campeon', 'rango', 'tarjeta', 'caza', 'sobrevivio', 'elegido', 'precio', 'premios', 'pase', 'ligahito')
+DE_ALGUIEN = ('campeon', 'rango', 'tarjeta', 'caza', 'sobrevivio', 'elegido', 'precio', 'premios', 'pase', 'ligahito',
+              'promo')
 #: los premios de la semana que son de una persona (el de servidor no)
 PREMIOS = ('figura', 'revelacion', 'cazador')
 
@@ -409,7 +415,7 @@ def _fuentes():
     return {'llaves': regs, 'instantes': LW.instantes(regs), 'mw': _j('datos', 'mw.json'),
             'precios': _j('datos', 'precios.json'), 'mult': _j('datos', 'multiplicadores.json'),
             'anuncios': _j('datos', 'anuncios.json'), 'pase': _j('datos', 'pase_niveles.json'),
-            'ligas': _j('datos', 'ligas.json')}
+            'ligas': _j('datos', 'ligas.json'), 'promos': _j('datos', 'promos.json')}
 
 
 def _arranque(ahora):
@@ -440,7 +446,8 @@ def de_cada_uno(p, guardado=None, ahora=None, fuentes=None, tope=POR_PERSONA):
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     guardado = guardado if guardado is not None else (_j('datos', 'muro.json') or {})
     fuentes = fuentes if fuentes is not None else _fuentes()
-    todo, _estado, _anotados = _todo(p, guardado, ahora, fuentes)
+    # 📣 en el perfil, más promos de cada uno que en el muro (`PROMOS_PERFIL`)
+    todo, _estado, _anotados = _todo(p, guardado, ahora, fuentes, promos_por=PROMOS_PERFIL)
     desde = _arranque(ahora)
     visto, lista = set(), []
     for x in todo:
@@ -465,7 +472,11 @@ def de_cada_uno(p, guardado=None, ahora=None, fuentes=None, tope=POR_PERSONA):
     return out
 
 
-def _todo(p, guardado, ahora, fuentes):
+#: 📣 cuántas promos de cada uno van a su perfil (en el muro, `promos.POR_PERSONA`)
+PROMOS_PERFIL = 8
+
+
+def _todo(p, guardado, ahora, fuentes, promos_por=None):
     """`(todas las publicaciones sin filtrar, estado nuevo, cambios anotados)`."""
     pubs, estado = cambios(guardado.get('estado'), p.get('tabla'), ahora)
     anotados = (guardado.get('cambios') or []) + pubs
@@ -474,8 +485,21 @@ def _todo(p, guardado, ahora, fuentes):
             + most_wanted(fuentes.get('mw')) + precios_cobrados(fuentes.get('precios'))
             + premios(fuentes.get('mult')) + anuncios(fuentes.get('anuncios'))
             + pase(fuentes.get('pase'), p.get('tabla')) + novedades(p.get('novedades'))
-            + flyers(fuentes.get('ligas'), fuentes.get('svs')) + ligas_hitos(fuentes.get('ligas')))
+            + flyers(fuentes.get('ligas'), fuentes.get('svs')) + ligas_hitos(fuentes.get('ligas'))
+            + promos_muro(fuentes.get('promos'), ahora, promos_por))
     return todo, estado, anotados
+
+
+def promos_muro(d, ahora, por=None):
+    """📣 Las promociones de los servidores (`bot/promos.py`). Si algo falla, ninguna: nunca frena el muro."""
+    if not d:
+        return []
+    try:
+        import promos as PR
+        return PR.para_muro(d, ahora, por or PR.POR_PERSONA, PR.GUARDA if por else PR.AL_MURO)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ el muro sin las promos (%s)' % str(e)[:80])
+        return []
 
 
 def ligas_hitos(lg):

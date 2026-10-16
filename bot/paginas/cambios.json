@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.22",
+   "dia": "2026-10-16",
+   "cuando": "2026-10-16T08:40:00-04:00",
+   "titulo": "Las promos de los servidores",
+   "items": [
+    "📣 Lo que compartís en el canal de promoción de tu servidor —tus temas y tus videos— ahora también lo promociona la Liga.",
+    "👀 Están en Publicaciones (pestaña Promos), en tu perfil, en la página de cada servidor y en un círculo de las historias. Los videos se miran ahí mismo."
+   ]
+  },
+  {
    "version": "3.21",
    "dia": "2026-10-16",
    "cuando": "2026-10-16T08:15:00-04:00",

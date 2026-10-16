@@ -5,6 +5,7 @@
 import { limpio, mult, num, siglaDe, utc } from './liga.js';
 import { Cara, Carta, Compartir, Poster, Sec, aDiscord, accion, enlace, silueta } from './piezas.jsx';
 import { McPersona } from './medio.jsx';
+import { Pub, useAplausos } from './publicaciones.jsx';
 
 export const REDES = { instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', twitch: 'Twitch', x: 'X', twitter: 'X', kick: 'Kick' };
 
@@ -126,6 +127,8 @@ export function PerfilSv({ liga, sv }) {
           <ul className="notas">{notas.map((n, i) => <Nota key={i} liga={liga} x={n} />)}</ul>
         </Sec>
       ) : null}
+      {/* 📣 lo que se promociona en su canal (Dlx, 16/10/2026: «no en Socios sino en la de cada servidor») */}
+      <PromosSv liga={liga} sv={sv} />
       {buscados.length ? (
         <Sec id="sv-buscados" titulo={'Se busca en ' + siglaDe(sv)} enlace="Most Wanted" href="#/ranking/mw" extra="negra">
           <div className="mw-rail">{buscados.map((b) => <Poster key={b.k} liga={liga} b={b} />)}</div>
@@ -139,5 +142,18 @@ export function PerfilSv({ liga, sv }) {
         </nav>
       </Sec>
     </>
+  );
+}
+
+// 📣 LAS PROMOS DE ESTE SERVIDOR: lo que los raperos de la Lista compartieron en su canal de promoción (bot/promos.py),
+// del muro. Las cuatro más nuevas; sin ninguna, no se dibuja
+function PromosSv({ liga, sv }) {
+  const A = useAplausos();
+  const xs = (liga.muro || []).filter((it) => it.tipo === 'promo' && it.sv === sv).slice(0, 4);
+  if (!xs.length) return null;
+  return (
+    <Sec id="sv-promos" titulo={'Se promociona en ' + siglaDe(sv)} enlace="Todas las promos" href="#/publicaciones">
+      <div className="pub-dia sv-promos">{xs.map((it) => <Pub key={it.id} liga={liga} it={it} A={A} />)}</div>
+    </Sec>
   );
 }

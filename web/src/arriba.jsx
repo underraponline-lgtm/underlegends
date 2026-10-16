@@ -555,6 +555,26 @@ export function gruposHistorias(liga) {
   if (ligaS.length) {
     grupos.push({ id: 'liga', tipo: 'liga', nombre: 'La Liga', nom: 'La Liga', nuevo: true, firma: 'liga', slides: ligaS });
   }
+  // 📣 «PROMOS»: lo que los raperos compartieron en el canal de promoción de su servidor (Dlx, 16/10/2026: «podríamos
+  // hacer una historia, o sea un círculo para promociones»). Las de la última semana, hasta diez; el video se mira acá
+  const PL = { yt: 'YouTube', sp: 'Spotify', sc: 'SoundCloud', ig: 'Instagram', tt: 'TikTok' };
+  const proms = (liga.muro || []).filter((it) => it.tipo === 'promo' && liga.ahora - utc(it.t) < 7 * 86400000).slice(0, 10);
+  if (proms.length) {
+    const slides = proms.map((it) => {
+      const q = limpio((it.quien || [])[0] || '');
+      const vis = it.vid ? <img className="st-promo" alt="" src={'https://i.ytimg.com/vi/' + it.vid + '/hqdefault.jpg'} />
+        : it.img ? <img className="st-promo" alt="" src={it.img} /> : <Cara liga={liga} k={ksDe(it)[0] || ''} nombre={q} cls="st-cara" />;
+      return Slide('PROMO · ' + siglaDe(it.sv), <>{vis}<h3 className="st-h">{it.tit ? limpio(it.tit) : q + ' en ' + (PL[it.plat] || 'su link')}</h3>
+        <small className="st-s">Lo comparte {q} · {PL[it.plat] || ''}</small></>,
+      liga.cuando(it.t), it.vid ? 'Mirar el video' : (it.plat === 'sp' || it.plat === 'sc' ? 'Escuchar en ' : 'Ver en ') + (PL[it.plat] || 'su link'),
+      it.vid ? { video: { vid: it.vid, tit: limpio(it.tit || ''), link: it.url } } : { link: it.url }, 'promo:' + (it.pid || it.url), String(it.t || ''));
+    });
+    slides.sort(masViejo);
+    // el círculo lleva la tapa de la más nueva, como el aro de una historia de Instagram
+    const p0 = proms[0];
+    const img = p0.vid ? 'https://i.ytimg.com/vi/' + p0.vid + '/mqdefault.jpg' : p0.img || '/ul.png';
+    grupos.push({ id: 'promos', tipo: 'promos', nombre: 'Promos', nom: 'Promos', logo: img, nuevo: true, firma: firma(proms), slides });
+  }
   // 🎮 tu servidor primero (13/10/2026, el research de los lobbies: «las historias por cercanía»), y después por tamaño
   const miSv = liga.yo ? liga.yo.sv : '';
   Object.values(liga.svs).sort((a, b) => (Number(b.sv === miSv) - Number(a.sv === miSv)) || b.n - a.n).forEach((s) => {
@@ -676,6 +696,8 @@ export function Historias({ liga, grupos, vistos, onAbrir }) {
         <span className="h-badge">EN VIVO</span></span><small>{g.nom}</small></button>);
     } else if (g.tipo === 'liga') {
       partes.push(<button type="button" key={g.id} className={'h liga nuevo' + visto} onClick={abrir}><span className="h-c"><img alt="" src="/ul.png" /></span><small>La Liga</small></button>);
+    } else if (g.tipo === 'promos') {
+      partes.push(<button type="button" key={g.id} className={'h promos nuevo' + visto} onClick={abrir}><span className="h-c"><img alt="" src={g.logo} /></span><small>Promos</small></button>);
     } else if (g.tipo === 'sv') {
       partes.push(<button type="button" key={g.id} className={'h sv' + (g.nuevo ? ' nuevo' : '') + visto} onClick={abrir}><span className="h-c"><img alt="" src={g.logo} /></span><small>{g.nom}</small></button>);
     } else if (g.tipo === 'pais') {
