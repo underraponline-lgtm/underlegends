@@ -1543,6 +1543,63 @@ def junta_sin_mas(textos):
     return False
 
 
+def marcar_releer(g, nom, sv, fec, releer, ahora=None):
+    """🔁 Anota la llave de `g` para releerla (`escuchar.RELEER`) y dice si YA se releyó lo suficiente para preguntar.
+
+    Dlx, 16/10/2026: *«creo que la solución es hacer que chequee las llaves en las próximas 3 corridas, y si no
+    consigue pues lo pasa acá o le pregunta al organizador mencionándolo»*. La primera vez que una llave queda sin
+    campeón, sin subcampeón o con batallas sin ganador, se anota con `vistas` 0; cada corrida que sigue incompleta
+    suma una, y `escuchar.barrer()` la vuelve a pedir a Discord aunque ya no esté entre los últimos mensajes. Con
+    `RELEER_VECES` relecturas sin resolverse, ahí se le pregunta al organizador (`bot/finales.py`). Lo que se resuelve
+    deja de estar incompleto y sale de la cola al guardarla (`guardar_releer()`). Devuelve si ya se puede preguntar."""
+    h = g['llaves'][-1] if g.get('llaves') else {}
+    k = str(h.get('msg_id') or '')
+    if not k.isdigit():
+        return True
+    x = releer.get(k)
+    if x is None:
+        x = releer[k] = {'canal': str(h.get('canal_id') or ''), 'evento': nom, 'sv': sv, 'fecha': fec, 'vistas': 0,
+                         'desde': (ahora or datetime.datetime.now(datetime.timezone.utc)).isoformat(timespec='seconds')}
+    x['_hoy'] = True
+    return int(x.get('vistas') or 0) >= E.RELEER_VECES
+
+
+def guardar_releer(releer, aplicar=True):
+    """La cola de `escuchar.RELEER` para la corrida siguiente: sólo las que esta corrida vio incompletas, con una
+    relectura más. Las que se resolvieron —o se cargaron completas— salen solas."""
+    out = {}
+    for k, v in (releer or {}).items():
+        if not v.get('_hoy'):
+            continue
+        v = {kk: vv for kk, vv in v.items() if kk != '_hoy'}
+        v['vistas'] = int(v.get('vistas') or 0) + 1
+        out[k] = v
+    if aplicar:
+        with io.open(E.RELEER, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump({'_leeme': 'Las llaves incompletas (sin campeón, sin subcampeón o con batallas sin ganador) que '
+                                 'el ciclo vuelve a pedir a Discord en las corridas siguientes, aunque ya no estén entre '
+                                 'los últimos mensajes de su canal; recién después de 3 relecturas se le pregunta al '
+                                 'organizador. Lo escribe bot/llaves_a_entrada.py (marcar_releer) y lo lee '
+                                 'bot/escuchar.py (a_releer). Dlx, 16/10/2026.',
+                       'llaves': out}, f, ensure_ascii=False, indent=1, sort_keys=True)
+            f.write('\n')
+    return out
+
+
+def _prueba_releer():
+    g = {'llaves': [{'msg_id': '500', 'canal_id': '9'}]}
+    rl = {}
+    vistos = []
+    for _ in range(4):
+        vistos.append(marcar_releer(g, 'X', 'FFA', '12/10', rl))
+        rl = guardar_releer(rl, aplicar=False)
+    sale = guardar_releer({'7': {'canal': '9', 'vistas': 1}}, aplicar=False)
+    return (vistos == [False, False, False, True] and rl['500']['vistas'] == 4 and sale == {}
+            and E.a_releer('9', [{'id': '900'}], {'500': {'canal': '9', 'vistas': 1}}) == ['500']
+            and E.a_releer('9', [{'id': '400'}], {'500': {'canal': '9', 'vistas': 1}}) == []
+            and E.a_releer('9', [{'id': '900'}], {'500': {'canal': '9', 'vistas': 3}}) == [])
+
+
 def para_organizador(g, nom, sv, fec, ds, ahora=None):
     """🏁 Lo que se le pregunta a quien publicó la llave (`bot/finales.py`), o `None`: las batallas sin ganador de dos
     a cinco lados —no las de «pasan 2», que no tienen UN ganador—, la final primero. Ver el docstring de `finales`.
@@ -3966,6 +4023,9 @@ def _self_check():
          junta_sin_mas([_rem]) and junta_sin_mas([_den])),
         ('una llave normal, con nombres de dos palabras y equipos con «+»: no', not junta_sin_mas([_bien])),
         ('a la normal y fresca se le pregunta', bool(para_organizador(_g, 'X', 'FFA', '12/10', _ds, ahora=_ahora))),
+        # 🔁 antes de preguntar, tres relecturas (16/10/2026): la primera vez se anota, cada corrida suma una, y lo
+        # que se resolvió sale de la cola
+        ('una llave incompleta se relee 3 corridas antes de preguntar', _prueba_releer()),
         ('a la que junta sin «+», nada', para_organizador(_gr, 'X', 'FFA', '12/10', _ds, ahora=_ahora) is None),
         ('ni a una de hace dos semanas', para_organizador(_gv, 'X', 'FFA', '12/10', _ds, ahora=_ahora) is None),
         # 👯 el #457 (12/10/2026): el mismo evento por equipos, con los equipos escritos de otra manera
@@ -4099,6 +4159,7 @@ def main():
     campeon_bien = set()
     _recs = _recalculados()
     para_org = []   # 🏁 lo que no se entendió de cada llave, para preguntarle a quien la publicó (`bot/finales.py`)
+    _releer = E.releer_pendientes()   # 🔁 las llaves incompletas que se releen antes de preguntar (`marcar_releer()`)
     esperan, vidas_cargados, vidas_b = [], [], []   # los 5 vidas de #veredictos
     de_veredictos = []                                # las llaves que se cargaron como se jugaron, de #veredictos
     links_llaves = {}                   # 'evento|servidor|fecha' -> [links]
@@ -4494,9 +4555,11 @@ def main():
             # 🏁 SIN CAMPEÓN: se le pregunta al organizador cuando la llave lleva una hora quieta, no doce
             if (hq is not None and hq >= _preguntar_h() and not pausada(g, ligas[0])
                     and any(str(d[1]).upper().replace(' ', '') in ('FINAL', 'GRANFINAL') for d in d_grupo)):
-                _org = para_organizador(g, nom, ligas[0], fec, d_grupo)
-                if _org:
-                    para_org.append(_org)
+                # 🔁 antes, releerla `RELEER_VECES` corridas (`marcar_releer()`): el campeón suele estar en Discord
+                if marcar_releer(g, nom, ligas[0], fec, _releer):
+                    _org = para_organizador(g, nom, ligas[0], fec, d_grupo)
+                    if _org:
+                        para_org.append(_org)
             continue
         # 🔴 y la que ya está cargada con otro nombre no se suma otra vez (el FFA WORLD CUP, #366 y #409: ver `ya_cargada()`)
         ya = ya_cargada(nom, ligas[0], fec, limpias) if ligas else None
@@ -4511,7 +4574,7 @@ def main():
             continue
         dudas += d_grupo
         # 🏁 CON CAMPEÓN Y BATALLAS SIN GANADOR: el evento terminó, se le pregunta ya (`bot/finales.py`)
-        if ligas and d_grupo:
+        if ligas and d_grupo and marcar_releer(g, nom, ligas[0], fec, _releer):
             _org = para_organizador(g, nom, ligas[0], fec, d_grupo)
             if _org:
                 para_org.append(_org)
@@ -4626,6 +4689,13 @@ def main():
         print('\n   (simulacro: no escribí nada — corré con --aplicar)\n')
         return 0
 
+    # 🔁 la cola de las llaves incompletas, para releerlas en la corrida siguiente (`marcar_releer()`)
+    try:
+        _cola = guardar_releer(_releer)
+        if _cola:
+            print('   🔁 %d llave(s) incompleta(s) en la cola para releer' % len(_cola))
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude guardar la cola de llaves para releer (%s)' % str(e)[:80])
     # 🏁 y la final sin ganador, al que publicó la llave: dos botones (`bot/finales.py`)
     try:
         import finales as FIN

@@ -3042,6 +3042,36 @@ def fase_de_llave(h, fases, guardadas):
 BOT_ID = '1550026808404217926'
 
 
+#: 🔁 LAS LLAVES QUE QUEDARON INCOMPLETAS, PARA RELEER (Dlx, 16/10/2026: «vi que algunas llaves no se ve campeón o
+#: subcampeón o a veces no se sabe quién ganó… las veces que revisé la llave en Discord, sí lo decía… la solución es
+#: que chequee las llaves en las próximas 3 corridas, y si no consigue lo pasa acá o le pregunta al organizador»).
+#: El barrido dirigido mira los últimos `por_canal` mensajes de cada canal, y en un canal movido como el de FFA una
+#: llave sale de esa ventana en horas: si el organizador la edita después —o pone el campeón en otro mensaje—, el
+#: lector no se enteraba. Las anota `llaves_a_entrada` (`{msg_id: {canal, evento, vistas}}`) y acá se vuelven a pedir,
+#: con los mensajes que vinieron después, mientras `vistas` < `RELEER_VECES`
+RELEER = os.path.join(BASE, 'datos', 'releer_llaves.json')
+RELEER_VECES = 3
+
+
+def releer_pendientes():
+    """`{msg_id: {canal, evento, sv, fecha, vistas, desde}}` de `RELEER`, o `{}`."""
+    try:
+        with io.open(RELEER, encoding='utf-8') as f:
+            return (json.load(f) or {}).get('llaves') or {}
+    except (OSError, ValueError):
+        return {}
+
+
+def a_releer(cid, ms, pendientes):
+    """Las llaves de `pendientes` de este canal que quedaron FUERA de los mensajes que ya se trajeron (más viejas que
+    el más viejo de `ms`) y todavía no se releyeron `RELEER_VECES` veces. Pura."""
+    ids = [int(m['id']) for m in ms or () if str(m.get('id', '')).isdigit()]
+    viejo = min(ids) if ids else None
+    return sorted(k for k, v in (pendientes or {}).items()
+                  if str((v or {}).get('canal')) == str(cid) and str(k).isdigit()
+                  and int((v or {}).get('vistas') or 0) < RELEER_VECES and (viejo is None or int(k) < viejo))
+
+
 def barrer(s, por_canal=25, solo=None, guilds=None):
     """Mira los ultimos mensajes de cada canal y devuelve las llaves.
 
@@ -3068,6 +3098,7 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
     canales, no menos mensajes de cada canal.
     """
     out, n_ch, n_msg = [], 0, 0
+    pendientes, releidas = releer_pendientes(), []
     guardadas = fases_guardadas()
     antes = json.dumps(guardadas, sort_keys=True)
     for cid, canal, servidor, guild in _canales(s, solo, guilds):
@@ -3077,6 +3108,15 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
         if rr.status_code != 200:
             continue              # sin permiso de leer: se salta, no falla
         ms = rr.json()
+        # 🔁 Y LAS LLAVES INCOMPLETAS QUE YA SALIERON DE LA VENTANA (`RELEER`): la llave como está hoy y los mensajes
+        # que vinieron después —el campeón que se puso aparte—. Un pedido por llave, a lo sumo `RELEER_VECES` corridas
+        for k in a_releer(cid, ms, pendientes):
+            r2 = s.get('https://discord.com/api/v10/channels/%s/messages' % cid,
+                       params={'limit': 100, 'after': str(int(k) - 1)}, timeout=30)
+            if r2.status_code == 200:
+                ya = {m.get('id') for m in ms}
+                ms = ms + [m for m in r2.json() if m.get('id') not in ya]
+                releidas.append(k)
         n_msg += len(ms)
         # 🏰 las fases previas de este canal, para la llave que venga después (ver `con_fase_previa()`)
         fases, desde = [], len(out)
@@ -3140,6 +3180,8 @@ def barrer(s, por_canal=25, solo=None, guilds=None):
         except OSError as e:
             print('   ⚠️ no pude guardar las fases de las llaves: %s' % str(e)[:80])
     _guardar_ocr_llaves()
+    if releidas:
+        print('   🔁 releí %d llave(s) incompleta(s) que ya no estaban entre los últimos mensajes de su canal' % len(releidas))
     return out, n_ch, n_msg
 
 
