@@ -71,10 +71,10 @@
    "servidor": "070582940074:f7bc857dd9f6:15af16"
   },
   "Aldre": {
-   "competitivo": "8e882dbe8600:aa2fab0a1b31",
+   "competitivo": "7dc350984175:aa2fab0a1b31",
    "pais": "c263a7d391d1:631b7a4c93c4",
    "servidor": "08686fc94884:f7bc857dd9f6:980594",
-   "temporada": "5fbe9ec728bc:906ce275eeb8"
+   "temporada": "6185e9b255b0:906ce275eeb8"
   },
   "Ale": {
    "servidor": "b2f52f8f6382:f7bc857dd9f6:055f77"
@@ -1612,7 +1612,7 @@
    "competitivo": "488058df6c87:aa2fab0a1b31",
    "pais": "20b8a34ac777:631b7a4c93c4",
    "servidor": "4ac7776e52eb:f7bc857dd9f6:c9f1f2",
-   "temporada": "a9374af5c0d3:906ce275eeb8"
+   "temporada": "af7ffb13b9a8:906ce275eeb8"
   },
   "YACO": {
    "servidor": "8dc17afd358c:f7bc857dd9f6:980594"
@@ -1699,7 +1699,7 @@
    "servidor": "03cada35e488:f7bc857dd9f6:980594"
   },
   "crakero": {
-   "competitivo": "2996e48d8d49:aa2fab0a1b31",
+   "competitivo": "8836a939ceae:aa2fab0a1b31",
    "pais": "d6a7b4cff2bb:631b7a4c93c4",
    "servidor": "5569c16c123c:f7bc857dd9f6:be5547"
   },
@@ -1790,5 +1790,5 @@
    "servidor": "7f8885a35a6d:f7bc857dd9f6:55e9bc"
   }
  },
- "cuando": "2026-10-16T06:09:06+00:00"
+ "cuando": "2026-10-16T06:28:51+00:00"
 }
