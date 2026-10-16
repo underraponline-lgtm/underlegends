@@ -133,15 +133,6 @@
    ],
    "organizador": [
     {
-     "op": "Flennzs",
-     "n": "Flennzs",
-     "q": "Flennzs",
-     "quien": [
-      "Flennzs"
-     ],
-     "d": "4 eventos · 92 raperos"
-    },
-    {
      "op": "Velatz",
      "n": "Velatz",
      "q": "Velatz",
@@ -149,6 +140,15 @@
       "Velatz"
      ],
      "d": "4 eventos · 76 raperos"
+    },
+    {
+     "op": "Flennzs",
+     "n": "Flennzs",
+     "q": "Flennzs",
+     "quien": [
+      "Flennzs"
+     ],
+     "d": "3 eventos · 72 raperos"
     },
     {
      "op": "Benjixo",
@@ -195,7 +195,7 @@
      "quien": [
       "Flennzs"
      ],
-     "d": "5 eventos de jurado, host o DJ"
+     "d": "4 eventos de jurado, host o DJ"
     },
     {
      "op": "LEWITO",
@@ -551,6 +551,168 @@
       "Xubaru"
      ],
      "d": "1 felicitación"
+    }
+   ],
+   "hincha": [
+    {
+     "op": "Majiztral",
+     "n": "Majiztral",
+     "q": "Majiztral",
+     "quien": [
+      "Majiztral"
+     ],
+     "did": "1492228152691396720",
+     "d": "34 puntos de participación en la página"
+    },
+    {
+     "op": "PichulaMc",
+     "n": "PichulaMc",
+     "q": "PichulaMc",
+     "quien": [
+      "PichulaMc"
+     ],
+     "did": "578697503130779649",
+     "d": "25 puntos de participación en la página"
+    },
+    {
+     "op": "ARDEAN",
+     "n": "ARDEAN",
+     "q": "ARDEAN",
+     "quien": [
+      "ARDEAN"
+     ],
+     "did": "879849220352393266",
+     "d": "23 puntos de participación en la página"
+    },
+    {
+     "op": "Flennzs",
+     "n": "Flennzs",
+     "q": "Flennzs",
+     "quien": [
+      "Flennzs"
+     ],
+     "did": "1414431452346581052",
+     "d": "22 puntos de participación en la página"
+    },
+    {
+     "op": "ForceGP",
+     "n": "ForceGP",
+     "q": "ForceGP",
+     "quien": [
+      "ForceGP"
+     ],
+     "did": "884190151180447744",
+     "d": "22 puntos de participación en la página"
+    }
+   ],
+   "clasico": [
+    {
+     "op": "OG vs Snow",
+     "n": "OG vs Snow",
+     "q": "OG",
+     "quien": [
+      "OG",
+      "Snow"
+     ],
+     "d": "3 duelos · OG 1, Snow 2"
+    },
+    {
+     "op": "Snow vs Zignos",
+     "n": "Snow vs Zignos",
+     "q": "Snow",
+     "quien": [
+      "Snow",
+      "Zignos"
+     ],
+     "d": "3 duelos · Snow 2, Zignos 1"
+    },
+    {
+     "op": "Agus vs Liberia",
+     "n": "Agus vs Liberia",
+     "q": "Agus",
+     "quien": [
+      "Agus",
+      "Liberia"
+     ],
+     "d": "2 duelos · Agus 1, Liberia 1"
+    },
+    {
+     "op": "Agus vs Makmah",
+     "n": "Agus vs Makmah",
+     "q": "Agus",
+     "quien": [
+      "Agus",
+      "Makmah"
+     ],
+     "d": "2 duelos · Agus 2, Makmah 0"
+    },
+    {
+     "op": "Aldre vs Provenza",
+     "n": "Aldre vs Provenza",
+     "q": "Aldre",
+     "quien": [
+      "Aldre",
+      "Provenza"
+     ],
+     "d": "2 duelos · Aldre 1, Provenza 1"
+    }
+   ],
+   "sobreviviente": [
+    {
+     "op": "Panchok",
+     "n": "Panchok",
+     "q": "Panchok",
+     "quien": [
+      "Panchok"
+     ],
+     "d": "sobrevivió 1 vez"
+    }
+   ],
+   "constante": [
+    {
+     "op": "Oasis",
+     "n": "Oasis",
+     "q": "Oasis",
+     "quien": [
+      "Oasis"
+     ],
+     "d": "14 podios · 🥇10 🥈3 🥉1"
+    },
+    {
+     "op": "Snow",
+     "n": "Snow",
+     "q": "Snow",
+     "quien": [
+      "Snow"
+     ],
+     "d": "13 podios · 🥇4 🥈8 🥉1"
+    },
+    {
+     "op": "Verc",
+     "n": "Verc",
+     "q": "Verc",
+     "quien": [
+      "Verc"
+     ],
+     "d": "10 podios · 🥇4 🥈6"
+    },
+    {
+     "op": "PichulaMc",
+     "n": "PichulaMc",
+     "q": "PichulaMc",
+     "quien": [
+      "PichulaMc"
+     ],
+     "d": "7 podios · 🥇3 🥈4"
+    },
+    {
+     "op": "Velatz",
+     "n": "Velatz",
+     "q": "Velatz",
+     "quien": [
+      "Velatz"
+     ],
+     "d": "7 podios · 🥇1 🥈6"
     }
    ],
    "crew": [
