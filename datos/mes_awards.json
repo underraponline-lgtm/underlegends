@@ -15,9 +15,9 @@
     {
      "op": "Makmah",
      "n": "Makmah",
-     "pts": 218375,
+     "pts": 224625,
      "oro": 2,
-     "ev": 30
+     "ev": 31
     },
     {
      "op": "Oasis",
@@ -34,10 +34,10 @@
      "ev": 23
     },
     {
-     "op": "Verc",
-     "n": "Verc",
-     "pts": 151862,
-     "oro": 4,
+     "op": "Agus",
+     "n": "Agus",
+     "pts": 161800,
+     "oro": 3,
      "ev": 14
     }
    ],
@@ -119,16 +119,16 @@
      "ev": 16
     },
     {
+     "op": "SR",
+     "n": "Snake Rap",
+     "gente": 43,
+     "ev": 3
+    },
+    {
      "op": "URBF",
      "n": "Urban Freestyle",
      "gente": 37,
      "ev": 5
-    },
-    {
-     "op": "SR",
-     "n": "Snake Rap",
-     "gente": 31,
-     "ev": 2
     }
    ],
    "organizador": [
@@ -227,6 +227,15 @@
    ],
    "duelista": [
     {
+     "op": "Agus",
+     "n": "Agus",
+     "q": "Agus",
+     "quien": [
+      "Agus"
+     ],
+     "d": "24 de 32 duelos ganados"
+    },
+    {
      "op": "PichulaMc",
      "n": "PichulaMc",
      "q": "PichulaMc",
@@ -234,15 +243,6 @@
       "PichulaMc"
      ],
      "d": "23 de 37 duelos ganados"
-    },
-    {
-     "op": "Agus",
-     "n": "Agus",
-     "q": "Agus",
-     "quien": [
-      "Agus"
-     ],
-     "d": "21 de 28 duelos ganados"
     },
     {
      "op": "Liberia",
@@ -260,7 +260,7 @@
      "quien": [
       "Makmah"
      ],
-     "d": "17 de 34 duelos ganados"
+     "d": "17 de 35 duelos ganados"
     },
     {
      "op": "Oasis",
@@ -327,7 +327,7 @@
      "quien": [
       "Aldre"
      ],
-     "d": "le ganó a Erian (#5) siendo #117 · Cuentas Pendientes V.1"
+     "d": "le ganó a Erian (#5) siendo #118 · Cuentas Pendientes V.1"
     },
     {
      "op": "389:Catarsis",
@@ -336,7 +336,7 @@
      "quien": [
       "Catarsis"
      ],
-     "d": "le ganó a PichulaMc (#4) siendo #89 · RED BULL NACIONAL ALBICELESTE"
+     "d": "le ganó a PichulaMc (#4) siendo #90 · RED BULL NACIONAL ALBICELESTE"
     },
     {
      "op": "436:HH",
@@ -720,25 +720,25 @@
      "op": "Follombia",
      "n": "Follombia",
      "quien": [],
-     "d": "434.825 pts · 7 jugaron"
-    },
-    {
-     "op": "Fuera de Rango",
-     "n": "Fuera de Rango",
-     "quien": [],
-     "d": "309.113 pts · 2 jugaron"
+     "d": "476.075 pts · 7 jugaron"
     },
     {
      "op": "Fontana",
      "n": "Fontana",
      "quien": [],
-     "d": "294.138 pts · 4 jugaron"
+     "d": "324.138 pts · 4 jugaron"
+    },
+    {
+     "op": "Fuera de Rango",
+     "n": "Fuera de Rango",
+     "quien": [],
+     "d": "315.363 pts · 2 jugaron"
     },
     {
      "op": "Lighting Force",
      "n": "Lighting Force",
      "quien": [],
-     "d": "237.513 pts · 3 jugaron"
+     "d": "243.763 pts · 3 jugaron"
     },
     {
      "op": "Arte del Chakalaje",
@@ -753,28 +753,28 @@
      "n": "Argentina",
      "cc": "ar",
      "quien": [],
-     "d": "1.512.126 pts · 36 jugaron"
+     "d": "1.554.626 pts · 37 jugaron"
     },
     {
      "op": "Chile",
      "n": "Chile",
      "cc": "cl",
      "quien": [],
-     "d": "920.806 pts · 28 jugaron"
+     "d": "927.056 pts · 28 jugaron"
     },
     {
      "op": "Colombia",
      "n": "Colombia",
      "cc": "co",
      "quien": [],
-     "d": "787.259 pts · 19 jugaron"
+     "d": "822.259 pts · 19 jugaron"
     },
     {
      "op": "Venezuela",
      "n": "Venezuela",
      "cc": "ar",
      "quien": [],
-     "d": "584.822 pts · 16 jugaron"
+     "d": "591.072 pts · 16 jugaron"
     },
     {
      "op": "España",

@@ -1037,6 +1037,27 @@
     "BETELGEUSE = 1386059494056005655"
    ],
    "escribio": {}
+  },
+  {
+   "id": "308f8030d4",
+   "tipo": "Nombre desconocido",
+   "sec": "SNAKE INSIGNIA 5 8 · SR · 16/10 · #478",
+   "que": "¿Quién es «Natsuki 🇦🇷»?",
+   "r": "Es Catarsis (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @im_a_tsundere (en Discord: «!💗ValenAdoratesJuan💗») · en la Lista: Catarsis se anotó como «Natsuki» para ese evento, no es staff de SR y esa noche no jugó con su nombre",
+   "t": 1792182652996,
+   "filas": [
+    727
+   ],
+   "variantes": [
+    "Natsuki 🇦🇷"
+   ],
+   "escribio": {
+    "quien": "SNAKE INSIGNIA 5 8 · SR · 16/10 · Natsuki 🇦🇷"
+   }
   }
  ],
  "deshechas": []

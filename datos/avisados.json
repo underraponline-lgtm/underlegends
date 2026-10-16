@@ -12029,6 +12029,26 @@
     "1200",
     "Tuca",
     "1200"
+   ],
+   [
+    "ikonoxx",
+    "Panchok",
+    ""
+   ],
+   [
+    "Colesito",
+    "Malva",
+    "Colesito"
+   ],
+   [
+    "Soulb",
+    "Molusco",
+    ""
+   ],
+   [
+    "Marcos",
+    "Benjixo",
+    ""
    ]
   ],
   "ev_antes": {
@@ -12044,7 +12064,7 @@
    "Vandu": 20
   },
   "fecha": "14/10",
-  "firma": "23497fe74af2a9a7",
+  "firma": "dbd59172a316c5be",
   "msg": "1560019837609050254",
   "nombre": "DEM UZBEKISTAN FECHA 3",
   "num": 471,
@@ -12124,6 +12144,41 @@
     "Erian",
     "Octavos",
     1250
+   ],
+   [
+    "Marcos",
+    "Octavos",
+    1250
+   ],
+   [
+    "Benjixo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Malva",
+    "R32",
+    625
+   ],
+   [
+    "ikonoxx",
+    "R32",
+    625
+   ],
+   [
+    "Panchok",
+    "R32",
+    625
+   ],
+   [
+    "Soulb",
+    "R32",
+    625
+   ],
+   [
+    "Molusco",
+    "R32",
+    625
    ]
   ],
   "v": 2
@@ -13469,6 +13524,271 @@
    ],
    [
     "Velatz",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "478": {
+  "antes": {
+   "Agus": [
+    10,
+    11,
+    false
+   ],
+   "Bloody": [
+    26,
+    33,
+    false
+   ],
+   "Chop": [
+    191,
+    46,
+    true
+   ],
+   "Colesito": [
+    7,
+    8,
+    false
+   ],
+   "Deluxe": [
+    74,
+    105,
+    false
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Kyss": [
+    111,
+    196,
+    false
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "Panchok": [
+    9,
+    10,
+    false
+   ],
+   "Prosu": [
+    66,
+    91,
+    false
+   ],
+   "Sombra": [
+    178,
+    446,
+    false
+   ],
+   "Valdoza": [
+    230,
+    136,
+    true
+   ]
+  },
+  "canal": "863207986264932372",
+  "duelos": [
+   [
+    "Road",
+    "Prosu",
+    "Road"
+   ],
+   [
+    "Bloody",
+    "Panchok",
+    "Bloody"
+   ],
+   [
+    "Kyss",
+    "Erian",
+    "Kyss"
+   ],
+   [
+    "Kyss",
+    "Choka",
+    "Kyss"
+   ],
+   [
+    "Natsuki 🇦🇷",
+    "Colesito",
+    "Natsuki 🇦🇷"
+   ],
+   [
+    "Sombra",
+    "Kain",
+    "Sombra"
+   ],
+   [
+    "Agus",
+    "Chop",
+    "Agus"
+   ],
+   [
+    "Deluxe",
+    "Valdoza",
+    "Deluxe"
+   ],
+   [
+    "Over",
+    "Makmah",
+    "Over"
+   ],
+   [
+    "Bloody",
+    "Road",
+    "Bloody"
+   ],
+   [
+    "Natsuki 🇦🇷",
+    "Kyss",
+    "Natsuki 🇦🇷"
+   ],
+   [
+    "Agus",
+    "Sombra",
+    "Agus"
+   ],
+   [
+    "Over",
+    "Deluxe",
+    "Over"
+   ],
+   [
+    "Natsuki 🇦🇷",
+    "Bloody",
+    "Natsuki 🇦🇷"
+   ],
+   [
+    "Over",
+    "Agus",
+    "Over"
+   ],
+   [
+    "Agus",
+    "Bloody",
+    "Agus"
+   ],
+   [
+    "Over",
+    "Natsuki 🇦🇷",
+    "Over"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 15,
+   "Bloody": 17,
+   "Chop": 10,
+   "Colesito": 29,
+   "Deluxe": 3,
+   "Erian": 34,
+   "Kyss": 5,
+   "Makmah": 47,
+   "Panchok": 13,
+   "Prosu": 4,
+   "Sombra": 1,
+   "Valdoza": 5
+  },
+  "fecha": "16/10",
+  "firma": "e94910e5d41c0a57",
+  "msg": "1560750305312903372",
+  "nombre": "SNAKE INSIGNIA 5 8",
+  "num": 478,
+  "participantes": 17,
+  "sello": {
+   "Over": ""
+  },
+  "sv": "SR",
+  "t": "2026-10-16T20:24:28Z",
+  "tabla": [
+   [
+    "Over",
+    "Campeón",
+    10000
+   ],
+   [
+    "Natsuki 🇦🇷",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Agus",
+    "Tercero",
+    6000
+   ],
+   [
+    "Bloody",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Road",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kyss",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sombra",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Deluxe",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Prosu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Panchok",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Choka",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kain",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chop",
+    "Octavos",
+    1250
+   ],
+   [
+    "Valdoza",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
     "Octavos",
     1250
    ]

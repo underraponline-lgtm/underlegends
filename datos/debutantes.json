@@ -4,7 +4,7 @@
   "FFA": "2026-10-16",
   "FRZ": "2026-10-15",
   "FVS": "2026-10-15",
-  "SR": "2026-10-12",
+  "SR": "2026-10-16",
   "URBF": "2026-10-15"
  },
  "retos": {
@@ -60,6 +60,19 @@
    "vence": "2026-10-21T20:32:37+00:00",
    "vencido": false
   },
+  "Choka": {
+   "avisado": "2026-10-16",
+   "chat": "2026-10-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-16T17:34:15+00:00",
+   "did": "695417841012179085",
+   "evento": "SNAKE INSIGNIA 5 8",
+   "n": 478,
+   "sv": "SR",
+   "vence": "2026-10-23T17:34:15+00:00",
+   "vencido": false
+  },
   "Guty": {
    "avisado": "2026-10-12",
    "chat": "2026-10-12",
@@ -97,6 +110,19 @@
    "n": 465,
    "sv": "FFA",
    "vence": "2026-10-20T15:18:36+00:00",
+   "vencido": false
+  },
+  "Kain": {
+   "avisado": "2026-10-16",
+   "chat": "2026-10-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-16T17:34:15+00:00",
+   "did": "",
+   "evento": "SNAKE INSIGNIA 5 8",
+   "n": 478,
+   "sv": "SR",
+   "vence": "2026-10-23T17:34:15+00:00",
    "vencido": false
   },
   "Konan": {
@@ -152,6 +178,19 @@
    "vence": "2026-10-22T01:41:57+00:00",
    "vencido": false
   },
+  "Natsuki": {
+   "avisado": "2026-10-16",
+   "chat": "2026-10-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-16T17:34:15+00:00",
+   "did": "",
+   "evento": "SNAKE INSIGNIA 5 8",
+   "n": 478,
+   "sv": "SR",
+   "vence": "2026-10-23T17:34:15+00:00",
+   "vencido": false
+  },
   "ONDADISKO": {
    "avisado": "2026-10-13",
    "chat": "2026-10-14",
@@ -165,7 +204,21 @@
    "vence": "2026-10-20T01:56:58+00:00",
    "vencido": false
   },
+  "Over": {
+   "avisado": "2026-10-16",
+   "chat": "2026-10-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-16T17:34:15+00:00",
+   "did": "",
+   "evento": "SNAKE INSIGNIA 5 8",
+   "n": 478,
+   "sv": "SR",
+   "vence": "2026-10-23T17:34:15+00:00",
+   "vencido": false
+  },
   "PETER": {
+   "avisado": "2026-10-16",
    "chat": "2026-10-16",
    "con": null,
    "cumplido": "",
@@ -188,6 +241,19 @@
    "n": 466,
    "sv": "FVS",
    "vence": "2026-10-20T15:58:57+00:00",
+   "vencido": false
+  },
+  "Road": {
+   "avisado": "2026-10-16",
+   "chat": "2026-10-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-16T17:34:15+00:00",
+   "did": "777912333611434004",
+   "evento": "SNAKE INSIGNIA 5 8",
+   "n": 478,
+   "sv": "SR",
+   "vence": "2026-10-23T17:34:15+00:00",
    "vencido": false
   },
   "SYEPORUTE": {

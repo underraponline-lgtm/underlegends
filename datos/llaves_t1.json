@@ -24846,5 +24846,260 @@
     1250
    ]
   ]
+ },
+ "478": {
+  "dia": "2026-10-16",
+  "escala": "16+",
+  "fecha": "16/10",
+  "links": [
+   "https://discord.com/channels/492346406976356374/863208023857823785/1560707461361705151"
+  ],
+  "n": 478,
+  "nombre": "SNAKE INSIGNIA 5 8",
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Road",
+       "Prosu"
+      ],
+      "Road",
+      ""
+     ],
+     [
+      [
+       "Bloody",
+       "Panchok"
+      ],
+      "Bloody",
+      ""
+     ],
+     [
+      [
+       "Kyss",
+       "Erian",
+       "Choka"
+      ],
+      "Kyss",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Natsuki 🇦🇷",
+       "Colesito"
+      ],
+      "Natsuki 🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Sombra",
+       "Kain"
+      ],
+      "Sombra",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "Chop"
+      ],
+      "Agus",
+      ""
+     ],
+     [
+      [
+       "Deluxe",
+       "Valdoza"
+      ],
+      "Deluxe",
+      ""
+     ],
+     [
+      [
+       "Over",
+       "Makmah"
+      ],
+      "Over",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Bloody",
+       "Road"
+      ],
+      "Bloody",
+      ""
+     ],
+     [
+      [
+       "Natsuki 🇦🇷",
+       "Kyss"
+      ],
+      "Natsuki 🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "Sombra"
+      ],
+      "Agus",
+      ""
+     ],
+     [
+      [
+       "Over",
+       "Deluxe"
+      ],
+      "Over",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Natsuki 🇦🇷",
+       "Bloody"
+      ],
+      "Natsuki 🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Over",
+       "Agus"
+      ],
+      "Over",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Agus",
+       "Bloody"
+      ],
+      "Agus",
+      ""
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Over",
+       "Natsuki 🇦🇷"
+      ],
+      "Over",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "SR",
+  "tabla": [
+   [
+    "Over",
+    "Campeón",
+    10000
+   ],
+   [
+    "Natsuki 🇦🇷",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Agus",
+    "Tercero",
+    6000
+   ],
+   [
+    "Bloody",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Deluxe",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kyss",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Road",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sombra",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Choka",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chop",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kain",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Panchok",
+    "Octavos",
+    1250
+   ],
+   [
+    "Prosu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Valdoza",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }
