@@ -13211,5 +13211,261 @@
    ]
   ],
   "v": 2
+ },
+ "477": {
+  "antes": {
+   "1200": [
+    203,
+    78,
+    true
+   ],
+   "Agus": [
+    10,
+    11,
+    false
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Guess": [
+    21,
+    25,
+    false
+   ],
+   "Kminant": [
+    354,
+    329,
+    true
+   ],
+   "Liberia": [
+    8,
+    9,
+    false
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "Molusco": [
+    22,
+    28,
+    false
+   ],
+   "Nemi": [
+    41,
+    52,
+    false
+   ],
+   "OG": [
+    18,
+    21,
+    false
+   ],
+   "Panchok": [
+    9,
+    10,
+    false
+   ],
+   "Velatz": [
+    12,
+    13,
+    false
+   ],
+   "Xubaru": [
+    46,
+    63,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Guess",
+    "Xubaru",
+    "Guess"
+   ],
+   [
+    "Nemi",
+    "Makmah",
+    "Nemi"
+   ],
+   [
+    "Kminant",
+    "Erian",
+    "Kminant"
+   ],
+   [
+    "Panchok",
+    "Molusco",
+    "Panchok"
+   ],
+   [
+    "Liberia",
+    "1200",
+    "Liberia"
+   ],
+   [
+    "OG",
+    "Lvel 🇻🇪",
+    "OG"
+   ],
+   [
+    "Agus",
+    "Velatz",
+    "Agus"
+   ],
+   [
+    "Molusco",
+    "1200",
+    "Molusco"
+   ],
+   [
+    "Molusco",
+    "Makmah",
+    "Molusco"
+   ],
+   [
+    "Molusco",
+    "Xubaru",
+    "Molusco"
+   ],
+   [
+    "Panchok",
+    "Molusco",
+    "Panchok"
+   ],
+   [
+    "Liberia",
+    "Guess",
+    "Liberia"
+   ],
+   [
+    "OG",
+    "Nemi",
+    "OG"
+   ],
+   [
+    "Agus",
+    "Kminant",
+    "Agus"
+   ],
+   [
+    "OG",
+    "Panchok",
+    "OG"
+   ],
+   [
+    "Liberia",
+    "Agus",
+    "Liberia"
+   ],
+   [
+    "OG",
+    "Liberia",
+    "OG"
+   ]
+  ],
+  "ev_antes": {
+   "1200": 7,
+   "Agus": 14,
+   "Erian": 33,
+   "Guess": 12,
+   "Kminant": 1,
+   "Liberia": 11,
+   "Makmah": 46,
+   "Molusco": 13,
+   "Nemi": 9,
+   "OG": 11,
+   "Panchok": 12,
+   "Velatz": 34,
+   "Xubaru": 7
+  },
+  "fecha": "16/10",
+  "firma": "8959577b66040196",
+  "msg": "1560725555203014688",
+  "nombre": "__ DESGRACIAS EN TOKYO VOL27 __",
+  "num": 477,
+  "participantes": 18,
+  "sello": {
+   "OG": "6f49de3f4835:906ce275eeb8"
+  },
+  "sv": "FFA",
+  "t": "2026-10-16T18:46:07Z",
+  "tabla": [
+   [
+    "OG",
+    "Campeón",
+    10000
+   ],
+   [
+    "Liberia",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Panchok",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Agus",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Molusco",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Guess",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Nemi",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kminant",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Xubaru",
+    "Octavos",
+    1875
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1875
+   ],
+   [
+    "1200",
+    "Octavos",
+    1875
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Velatz",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

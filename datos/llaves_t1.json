@@ -24618,5 +24618,233 @@
     1250
    ]
   ]
+ },
+ "477": {
+  "dia": "2026-10-16",
+  "escala": "16+",
+  "fecha": "16/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1560696547237437551"
+  ],
+  "n": 477,
+  "nombre": "DESGRACIAS EN TOKYO VOL27",
+  "participantes": 18,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Guess",
+       "Xubaru"
+      ],
+      "Guess",
+      "Revivido: Ax🇻🇪"
+     ],
+     [
+      [
+       "Nemi",
+       "Makmah"
+      ],
+      "Nemi",
+      "Revivido: makma 🇻🇪"
+     ],
+     [
+      [
+       "Kminant",
+       "Erian"
+      ],
+      "Kminant",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "Molusco"
+      ],
+      "Panchok",
+      "Revivido: Molusco"
+     ],
+     [
+      [
+       "Liberia",
+       "1200"
+      ],
+      "Liberia",
+      "Revivido: 1200 🇰🇷"
+     ],
+     [
+      [
+       "OG",
+       "Lvel 🇻🇪"
+      ],
+      "OG",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "Velatz"
+      ],
+      "Agus",
+      ""
+     ],
+     [
+      [
+       "Molusco",
+       "1200",
+       "Makmah",
+       "Xubaru"
+      ],
+      "Molusco",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "Molusco"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "Liberia",
+       "Guess"
+      ],
+      "Liberia",
+      ""
+     ],
+     [
+      [
+       "OG",
+       "Nemi"
+      ],
+      "OG",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "Kminant"
+      ],
+      "Agus",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "OG",
+       "Panchok"
+      ],
+      "OG",
+      ""
+     ],
+     [
+      [
+       "Liberia",
+       "Agus"
+      ],
+      "Liberia",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "OG",
+       "Liberia"
+      ],
+      "OG",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "OG",
+    "Campeón",
+    10000
+   ],
+   [
+    "Liberia",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Agus",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Panchok",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Guess",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kminant",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Molusco",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Nemi",
+    "Cuartos",
+    2500
+   ],
+   [
+    "1200",
+    "Octavos",
+    1875
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1875
+   ],
+   [
+    "Xubaru",
+    "Octavos",
+    1875
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Velatz",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

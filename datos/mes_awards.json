@@ -15,9 +15,9 @@
     {
      "op": "Makmah",
      "n": "Makmah",
-     "pts": 215562,
+     "pts": 218375,
      "oro": 2,
-     "ev": 29
+     "ev": 30
     },
     {
      "op": "Oasis",
@@ -57,16 +57,16 @@
      "ev": 9
     },
     {
+     "op": "Lvel 🇻🇪",
+     "n": "Lvel 🇻🇪",
+     "pts": 31106,
+     "oro": 0,
+     "ev": 10
+    },
+    {
      "op": "Ariaxer",
      "n": "Ariaxer",
      "pts": 30438,
-     "oro": 0,
-     "ev": 9
-    },
-    {
-     "op": "Lvel 🇻🇪",
-     "n": "Lvel 🇻🇪",
-     "pts": 29231,
      "oro": 0,
      "ev": 9
     },
@@ -104,7 +104,7 @@
      "op": "FFA",
      "n": "Freestyle For All",
      "gente": 263,
-     "ev": 49
+     "ev": 50
     },
     {
      "op": "ACAD",
@@ -133,6 +133,15 @@
    ],
    "organizador": [
     {
+     "op": "Flennzs",
+     "n": "Flennzs",
+     "q": "Flennzs",
+     "quien": [
+      "Flennzs"
+     ],
+     "d": "4 eventos · 86 raperos"
+    },
+    {
      "op": "Velatz",
      "n": "Velatz",
      "q": "Velatz",
@@ -142,13 +151,13 @@
      "d": "4 eventos · 76 raperos"
     },
     {
-     "op": "Flennzs",
-     "n": "Flennzs",
-     "q": "Flennzs",
+     "op": "LEWITO",
+     "n": "LEWITO",
+     "q": "LEWITO",
      "quien": [
-      "Flennzs"
+      "LEWITO"
      ],
-     "d": "3 eventos · 72 raperos"
+     "d": "3 eventos · 62 raperos"
     },
     {
      "op": "Benjixo",
@@ -158,15 +167,6 @@
       "Benjixo"
      ],
      "d": "2 eventos · 51 raperos"
-    },
-    {
-     "op": "LEWITO",
-     "n": "LEWITO",
-     "q": "LEWITO",
-     "quien": [
-      "LEWITO"
-     ],
-     "d": "2 eventos · 48 raperos"
     },
     {
      "op": "Adriagner",
@@ -195,7 +195,7 @@
      "quien": [
       "Flennzs"
      ],
-     "d": "4 eventos de jurado, host o DJ"
+     "d": "5 eventos de jurado, host o DJ"
     },
     {
      "op": "LEWITO",
@@ -242,7 +242,16 @@
      "quien": [
       "Agus"
      ],
-     "d": "19 de 25 duelos ganados"
+     "d": "21 de 28 duelos ganados"
+    },
+    {
+     "op": "Liberia",
+     "n": "Liberia",
+     "q": "Liberia",
+     "quien": [
+      "Liberia"
+     ],
+     "d": "17 de 24 duelos ganados"
     },
     {
      "op": "Makmah",
@@ -251,7 +260,7 @@
      "quien": [
       "Makmah"
      ],
-     "d": "17 de 33 duelos ganados"
+     "d": "17 de 34 duelos ganados"
     },
     {
      "op": "Oasis",
@@ -261,15 +270,6 @@
       "Oasis"
      ],
      "d": "15 de 18 duelos ganados"
-    },
-    {
-     "op": "Carlosss",
-     "n": "Carlosss",
-     "q": "Carlosss",
-     "quien": [
-      "Carlosss"
-     ],
-     "d": "14 de 16 duelos ganados"
     }
    ],
    "cazador": [
@@ -357,13 +357,13 @@
      "d": "le ganó a Oasis (#1) siendo #11 · LA REDENCIÓN VOL.1"
     },
     {
-     "op": "459:Guess",
-     "n": "Guess",
-     "q": "Guess",
+     "op": "475:Juasmio",
+     "n": "Juasmio",
+     "q": "Juasmio",
      "quien": [
-      "Guess"
+      "Juasmio"
      ],
-     "d": "le ganó a Snow (#2) siendo #21 · LA BELLA ARTE DE LA DESGRACIA VOL4"
+     "d": "le ganó a Erian (#5) siendo #52 · - IRLANDA FREESTYLE -"
     }
    ],
    "imparable": [
@@ -375,6 +375,15 @@
       "Carlosss"
      ],
      "d": "10 duelos ganados seguidos"
+    },
+    {
+     "op": "Agus",
+     "n": "Agus",
+     "q": "Agus",
+     "quien": [
+      "Agus"
+     ],
+     "d": "6 duelos ganados seguidos"
     },
     {
      "op": "Liberia",
@@ -400,15 +409,6 @@
      "q": "PichulaMc",
      "quien": [
       "PichulaMc"
-     ],
-     "d": "6 duelos ganados seguidos"
-    },
-    {
-     "op": "Walker",
-     "n": "Walker",
-     "q": "Walker",
-     "quien": [
-      "Walker"
      ],
      "d": "6 duelos ganados seguidos"
     }
@@ -607,6 +607,16 @@
    ],
    "clasico": [
     {
+     "op": "Agus vs Liberia",
+     "n": "Agus vs Liberia",
+     "q": "Agus",
+     "quien": [
+      "Agus",
+      "Liberia"
+     ],
+     "d": "3 duelos · Agus 1, Liberia 2"
+    },
+    {
      "op": "OG vs Snow",
      "n": "OG vs Snow",
      "q": "OG",
@@ -625,16 +635,6 @@
       "Zignos"
      ],
      "d": "3 duelos · Snow 2, Zignos 1"
-    },
-    {
-     "op": "Agus vs Liberia",
-     "n": "Agus vs Liberia",
-     "q": "Agus",
-     "quien": [
-      "Agus",
-      "Liberia"
-     ],
-     "d": "2 duelos · Agus 1, Liberia 1"
     },
     {
      "op": "Agus vs Makmah",
@@ -720,25 +720,25 @@
      "op": "Follombia",
      "n": "Follombia",
      "quien": [],
-     "d": "432.951 pts · 7 jugaron"
+     "d": "434.825 pts · 7 jugaron"
     },
     {
      "op": "Fuera de Rango",
      "n": "Fuera de Rango",
      "quien": [],
-     "d": "306.300 pts · 2 jugaron"
+     "d": "309.113 pts · 2 jugaron"
     },
     {
      "op": "Fontana",
      "n": "Fontana",
      "quien": [],
-     "d": "275.013 pts · 4 jugaron"
+     "d": "294.138 pts · 4 jugaron"
     },
     {
      "op": "Lighting Force",
      "n": "Lighting Force",
      "quien": [],
-     "d": "214.638 pts · 3 jugaron"
+     "d": "237.513 pts · 3 jugaron"
     },
     {
      "op": "Arte del Chakalaje",
@@ -753,14 +753,14 @@
      "n": "Argentina",
      "cc": "ar",
      "quien": [],
-     "d": "1.481.751 pts · 36 jugaron"
+     "d": "1.512.126 pts · 36 jugaron"
     },
     {
      "op": "Chile",
      "n": "Chile",
      "cc": "cl",
      "quien": [],
-     "d": "911.056 pts · 28 jugaron"
+     "d": "920.806 pts · 28 jugaron"
     },
     {
      "op": "Colombia",
@@ -774,7 +774,7 @@
      "n": "Venezuela",
      "cc": "ar",
      "quien": [],
-     "d": "562.322 pts · 16 jugaron"
+     "d": "584.822 pts · 16 jugaron"
     },
     {
      "op": "España",
