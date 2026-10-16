@@ -398,6 +398,10 @@
 "temporada"
 ]
 },
+"benjixo": {
+"rg": "",
+"c": []
+},
 "eidp": {
 "rg": "",
 "c": []
@@ -413,10 +417,6 @@
 "servidor",
 "temporada"
 ]
-},
-"benjixo": {
-"rg": "",
-"c": []
 },
 "jupiter": {
 "rg": "",
@@ -770,11 +770,11 @@
 "temporada"
 ]
 },
-"sintext": {
+"ikonoxx": {
 "rg": "",
 "c": []
 },
-"ikonoxx": {
+"sintext": {
 "rg": "",
 "c": []
 },
@@ -902,6 +902,10 @@
 "rg": "",
 "c": []
 },
+"malva": {
+"rg": "",
+"c": []
+},
 "krtman": {
 "rg": "",
 "c": [
@@ -996,10 +1000,6 @@
 ]
 },
 "youngvlad": {
-"rg": "",
-"c": []
-},
-"malva": {
 "rg": "",
 "c": []
 },
@@ -1161,6 +1161,13 @@
 "rg": "",
 "c": [
 "servidor"
+]
+},
+"marcos": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
 ]
 },
 "enek": {
@@ -1330,12 +1337,6 @@
 "c": []
 },
 "last": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
-"marcos": {
 "rg": "",
 "c": [
 "servidor"
@@ -2366,14 +2367,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Miniboy"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5658,6 +5651,14 @@
 "Leonart"
 ],
 "carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-16T15:59:19Z",
+"quien": [
+"Marcos"
+],
+"carta": "temporada"
 }
 ]
 }

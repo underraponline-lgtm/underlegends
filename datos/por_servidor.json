@@ -800,11 +800,11 @@
   "Benjixo": {
    "FFA": {
     "duelos": "1/3",
-    "ev": 5,
+    "ev": 6,
     "oro": 1,
-    "ovr": 55,
+    "ovr": 56,
     "pod": 1,
-    "pts": 55875,
+    "pts": 57750,
     "racha": "0/2",
     "tg": {
      "fin": 1
@@ -1278,13 +1278,13 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "10/20",
+    "duelos": "11/21",
     "ev": 24,
     "oro": 2,
     "ovr": 72,
     "pod": 4,
     "pts": 130251,
-    "racha": "1/3",
+    "racha": "2/3",
     "tg": {
      "fin": 3
     }
@@ -2600,7 +2600,7 @@
   },
   "Greyfitsh🇵🇦": {
    "FFA": {
-    "duelos": "1/2",
+    "duelos": "2/3",
     "ev": 1,
     "oro": 0,
     "ovr": 47,
@@ -3680,7 +3680,7 @@
     "ovr": 58,
     "pod": 0,
     "pts": 29160,
-    "racha": "0/0"
+    "racha": "0/1"
    }
   },
   "LRS LA MARIHUANA🇵🇰": {
@@ -4396,24 +4396,24 @@
   },
   "Malva": {
    "FFA": {
-    "duelos": "0/1",
-    "ev": 4,
+    "duelos": "0/2",
+    "ev": 5,
     "oro": 0,
-    "ovr": 48,
+    "ovr": 49,
     "pod": 0,
-    "pts": 13125,
+    "pts": 14063,
     "racha": "0/0"
    }
   },
   "Marcos": {
    "FFA": {
     "duelos": "1/2",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 47,
     "pod": 1,
-    "pts": 3300,
-    "racha": "1/1"
+    "pts": 5175,
+    "racha": "0/1"
    }
   },
   "Marto": {
@@ -4637,11 +4637,11 @@
    },
    "FFA": {
     "duelos": "6/13",
-    "ev": 9,
+    "ev": 10,
     "oro": 0,
-    "ovr": 54,
+    "ovr": 59,
     "pod": 0,
-    "pts": 52903,
+    "pts": 53841,
     "racha": "0/2"
    },
    "FVS": {
@@ -4921,7 +4921,7 @@
     "ovr": 54,
     "pod": 3,
     "pts": 24798,
-    "racha": "0/2",
+    "racha": "1/2",
     "tg": {
      "fin": 3,
      "fund": true
@@ -5315,11 +5315,11 @@
    },
    "FFA": {
     "duelos": "8/11",
-    "ev": 5,
+    "ev": 6,
     "oro": 2,
     "ovr": 59,
     "pod": 3,
-    "pts": 87950,
+    "pts": 88888,
     "racha": "0/4",
     "tg": {
      "fin": 3
@@ -6671,11 +6671,11 @@
    },
    "FFA": {
     "duelos": "",
-    "ev": 7,
+    "ev": 8,
     "oro": 0,
     "ovr": 50,
     "pod": 0,
-    "pts": 17747,
+    "pts": 18685,
     "racha": "0/0"
    },
    "FRZ": {
@@ -7429,7 +7429,7 @@
   },
   "Xubaru": {
    "FFA": {
-    "duelos": "6/9",
+    "duelos": "6/10",
     "ev": 7,
     "oro": 1,
     "ovr": 56,
@@ -7846,11 +7846,11 @@
   "ikonoxx": {
    "FFA": {
     "duelos": "0/2",
-    "ev": 5,
+    "ev": 6,
     "oro": 0,
     "ovr": 50,
     "pod": 0,
-    "pts": 22501,
+    "pts": 23439,
     "racha": "0/0",
     "tg": {
      "nuevo": true

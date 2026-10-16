@@ -456,7 +456,7 @@
     ],
     "Greyfitsh🇵🇦": [
      1,
-     1,
+     2,
      4
     ],
     "Guess": [
@@ -1608,7 +1608,7 @@
      0
     ],
     "Benjixo": [
-     2,
+     3,
      4,
      4,
      0
@@ -1895,6 +1895,18 @@
      2,
      0
     ],
+    "Malva": [
+     1,
+     32,
+     32,
+     0
+    ],
+    "Marcos": [
+     1,
+     16,
+     16,
+     0
+    ],
     "Marto": [
      1,
      16,
@@ -1920,7 +1932,7 @@
      0
     ],
     "Molusco": [
-     1,
+     2,
      1,
      1,
      0
@@ -2007,6 +2019,12 @@
      1,
      16,
      16,
+     0
+    ],
+    "Panchok": [
+     1,
+     32,
+     32,
      0
     ],
     "Paria": [
@@ -2130,7 +2148,7 @@
      0
     ],
     "Soulb": [
-     3,
+     4,
      4,
      4,
      0
@@ -2286,7 +2304,7 @@
      0
     ],
     "ikonoxx": [
-     1,
+     2,
      8,
      8,
      0
@@ -2351,7 +2369,7 @@
     "Magic": 300,
     "Majiztral": 300,
     "Makmah": 900,
-    "Molusco": 1600,
+    "Molusco": 2900,
     "Motera": 1600,
     "Mr Still Ballin": 600,
     "NC": 2900,
@@ -2395,6 +2413,7 @@
     "Zaik": 300,
     "Zignos": 2900,
     "francis 🇨🇷": 600,
+    "ikonoxx": 300,
     "rodrilp": 600,
     "yinn": 2900
    }
@@ -2524,7 +2543,7 @@
   "Mathhias": 300,
   "Miniboy": 300,
   "Mito": 300,
-  "Molusco": 1900,
+  "Molusco": 3200,
   "Motera": 2600,
   "Mr Still Ballin": 3500,
   "Musicdum": 300,
@@ -2617,7 +2636,7 @@
   "dxg": 300,
   "fleivaman": 1300,
   "francis 🇨🇷": 600,
-  "ikonoxx": 300,
+  "ikonoxx": 600,
   "kerkoide": 300,
   "melomaniaco": 300,
   "nebu": 300,

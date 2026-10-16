@@ -17200,11 +17200,11 @@
      ],
      [
       [
-       "Xubaru🇻🇪",
-       "Greyfitsh🇵🇦"
+       "Greyfitsh🇵🇦",
+       "Xubaru"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Greyfitsh🇵🇦",
+      "ganador: ✅ Decidir"
      ],
      [
       [
@@ -23390,27 +23390,27 @@
     "b": [
      [
       [
-       "Colesito 🇻🇪",
-       "Malva 🇨🇱"
+       "ikonoxx",
+       "Panchok"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: ikonoxx 🇦🇷; cobra: Panchok 🇨🇱; nadie siguió: ✅ Decidir"
      ],
      [
       [
-       "Soulb 🇧🇦",
-       "Molusco 🇦🇷"
+       "Colesito",
+       "Malva"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Colesito",
+      "ganador: ✅ Decidir"
      ],
      [
       [
-       "ikonoxx 🇦🇷",
-       "Panchok 🇨🇱"
+       "Soulb",
+       "Molusco"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: Soulb 🇧🇦; cobra: Molusco 🇦🇷; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Filtros"
@@ -23467,11 +23467,11 @@
      ],
      [
       [
-       "Marcos 🇪🇸",
-       "Benjixo 🇦🇷"
+       "Marcos",
+       "Benjixo"
       ],
       "",
-      "sin ganador: espera en ✅ Decidir"
+      "cobra: Marcos 🇪🇸; cobra: Benjixo 🇦🇷; nadie siguió: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -23604,6 +23604,11 @@
     2500
    ],
    [
+    "Benjixo",
+    "Octavos",
+    1250
+   ],
+   [
     "Cinexfilo",
     "Octavos",
     1250
@@ -23629,9 +23634,39 @@
     1250
    ],
    [
+    "Marcos",
+    "Octavos",
+    1250
+   ],
+   [
     "Trot",
     "Octavos",
     1250
+   ],
+   [
+    "Malva",
+    "R32",
+    625
+   ],
+   [
+    "Molusco",
+    "R32",
+    625
+   ],
+   [
+    "Panchok",
+    "R32",
+    625
+   ],
+   [
+    "Soulb",
+    "R32",
+    625
+   ],
+   [
+    "ikonoxx",
+    "R32",
+    625
    ]
   ]
  },

@@ -1,17 +1,6 @@
 {
- "batallas_avisadas": [
-  "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · filtros · Colesito 🇻🇪 🆚 Malva 🇨🇱",
-  "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · filtros · Soulb 🇧🇦 🆚 Molusco 🇦🇷",
-  "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · filtros · ikonoxx 🇦🇷 🆚 Panchok 🇨🇱",
-  "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · octavos · Marcos 🇪🇸 🆚 Benjixo 🇦🇷",
-  "__ __ Cuentas Pendientes V.1 __ __ · FFA · 08/10 · final · Xubaru🇻🇪 🆚 Greyfitsh🇵🇦"
- ],
+ "batallas_avisadas": [],
  "batallas_desde": {
-  "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · filtros · Colesito 🇻🇪 🆚 Malva 🇨🇱": "2026-10-15T01:00:56.282091+00:00",
-  "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · filtros · Soulb 🇧🇦 🆚 Molusco 🇦🇷": "2026-10-15T01:00:56.282091+00:00",
-  "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · filtros · ikonoxx 🇦🇷 🆚 Panchok 🇨🇱": "2026-10-15T01:00:56.282091+00:00",
-  "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · octavos · Marcos 🇪🇸 🆚 Benjixo 🇦🇷": "2026-10-15T01:00:56.282091+00:00",
-  "__ __ Cuentas Pendientes V.1 __ __ · FFA · 08/10 · final · Xubaru🇻🇪 🆚 Greyfitsh🇵🇦": "2026-10-09T05:27:35.744588+00:00",
   "__ __ Cuentas Pendientes V.1 __ __ · FFA · 08/10 · final · za 🆚 Aldre 🇦🇷": "2026-10-16T05:59:54.105680+00:00"
  },
  "ciclo:cola": {
