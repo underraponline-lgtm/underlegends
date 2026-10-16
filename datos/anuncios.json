@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-16T19:25:05+00:00",
+ "cuando": "2026-10-16T19:54:59+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -4894,7 +4894,46 @@
    "premios": "",
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
-   "categoria_id": "868218509975498805"
+   "categoria_id": "868218509975498805",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-16T19:45:18"
+  },
+  {
+   "nombre": "PRADE RAP VOL.1 | LACREW",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1560740273250898044",
+   "cuando": "2026-10-16T19:44:38",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "ARDEAN 🇵🇪",
+   "orgs": [
+    {
+     "n": "ARDEAN",
+     "id": ""
+    }
+   ],
+   "autor_h": "b22c1dbd1c95eb1c",
+   "cupos_texto": "16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "EN 45 MINUTOS",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "ARDEAN 🇵🇪"
+    ],
+    "dj": [
+     "ARDEAN 🇵🇪"
+    ]
+   },
+   "autor": "Ardean",
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-16T19:45:18"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 5",
@@ -4917,7 +4956,9 @@
    "premios": "",
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-16T19:45:18"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - HOY )",
@@ -4940,7 +4981,9 @@
    "premios": "",
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-16T19:45:18"
   },
   {
    "nombre": "ASTRAL NO SIRVES PARA NADA CUP",
@@ -5856,6 +5899,132 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Zaamei 🇦🇷",
+   "quien": "lucianoman0730",
+   "discord_id": "1481019991481516253",
+   "msg_id": "1560742348449779916",
+   "cuando": "2026-10-16T19:52:53"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "erian",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1560741673003393129",
+   "cuando": "2026-10-16T19:50:12"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Zaik 🇪🇸",
+   "quien": "zaik0009",
+   "discord_id": "1555067257376346122",
+   "msg_id": "1560741635716022283",
+   "cuando": "2026-10-16T19:50:03"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Mr still ballin 🇳🇴",
+   "quien": "imstillplayin",
+   "discord_id": "794200141023412244",
+   "msg_id": "1560741110752481392",
+   "cuando": "2026-10-16T19:47:57"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1560741074501238916",
+   "cuando": "2026-10-16T19:47:49"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Dyzz🇨🇱🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1560740523910766704",
+   "cuando": "2026-10-16T19:45:38"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "marto 🇦🇷",
+   "quien": "legski2",
+   "discord_id": "1164262480067952772",
+   "msg_id": "1560740512426889340",
+   "cuando": "2026-10-16T19:45:35"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "KRISH🇪🇸",
+   "quien": "krishsss11111",
+   "discord_id": "1513620494199558295",
+   "msg_id": "1560740493871022133",
+   "cuando": "2026-10-16T19:45:30"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Hotaru Adeyemi 🏳️‍⚧️🇦🇷",
+   "quien": "hotaruadeyemi",
+   "discord_id": "1282772759902162954",
+   "msg_id": "1560740485901975614",
+   "cuando": "2026-10-16T19:45:28"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "joshema🇵🇪",
+   "quien": "joshema0712",
+   "discord_id": "1342989767184486401",
+   "msg_id": "1560740475772862536",
+   "cuando": "2026-10-16T19:45:26"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "SHADOW 🇨🇴",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1560740467954552964",
+   "cuando": "2026-10-16T19:45:24"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1560740467719667753",
+   "cuando": "2026-10-16T19:45:24"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Teo 🇨🇴(última xfa)",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1560740465622388817",
+   "cuando": "2026-10-16T19:45:24"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Victor Emilio Casique Alvarez 🇧🇱",
+   "quien": "emilioalvauwu",
+   "discord_id": "705827090708168714",
+   "msg_id": "1560740459356360725",
+   "cuando": "2026-10-16T19:45:22"
+  },
   {
    "servidor": "SR",
    "canal": "[📝]inscripciones",
