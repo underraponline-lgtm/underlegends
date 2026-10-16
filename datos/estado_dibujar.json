@@ -1,69 +1,74 @@
 {
  "v": 1,
- "cuando": "2026-10-16T22:18:56Z",
+ "cuando": "2026-10-16T22:44:51Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 637.1,
+ "dur_s": 813.3,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.6
+   "s": 7.3
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 4.5
+   "s": 5.4
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 23.1
+   "s": 21.5
   },
   {
    "n": "5",
    "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": true,
-   "s": 540.6
+   "s": 724.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
-   "ok": true,
-   "s": 4.3
+   "ok": false,
+   "s": 0.3
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 57.8
+   "s": 53.1
   }
  ],
- "fallas": [],
+ "fallas": [
+  {
+   "paso": "5b",
+   "que": "bot/bloqueadas.py --generar"
+  }
+ ],
  "ultimo_evento": {
-  "n": "478",
-  "nombre": "SNAKE INSIGNIA 5 8",
-  "sv": "SR",
+  "n": "479",
+  "nombre": "PRADERAP VOL.1",
+  "sv": "ACAD",
   "dia": "2026-10-16"
  },
  "cuotas": {
   "kv": {
-   "write": 324,
-   "read": 38997
+   "write": 365,
+   "read": 42891
   },
   "objeto": {
-   "leidas": 2118809,
-   "escritas": 18995,
-   "pedidos": 7960
+   "leidas": 2260664,
+   "escritas": 20947,
+   "pedidos": 8292
   },
   "worker": {
-   "pedidos": 8290,
+   "pedidos": 8438,
    "errores": 0,
-   "sub": 8897,
-   "p50_ms": 1.23,
+   "sub": 9075,
+   "p50_ms": 1.24,
    "p99_ms": 9.21
   },
   "r2": {
