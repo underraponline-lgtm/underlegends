@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "3.17",
+   "dia": "2026-10-16",
+   "cuando": "2026-10-16T06:40:00-04:00",
+   "titulo": "La lupa en el celular, el reproductor y tus videos de plaza",
+   "items": [
+    "🔎 En el celular, la lupa arriba abre el buscador al toque.",
+    "🎬 El reproductor de videos entra entero en el celular, también acostado.",
+    "🎥 Si en un video tuyo te dicen de otra forma, Mi cuenta te pregunta cómo aparecés y lo revisamos para sumarlo a tu perfil.",
+    "🏆 El bot vuelve a mirar las llaves que quedaron sin campeón antes de preguntarle al organizador."
+   ]
+  },
+  {
    "version": "3.16",
    "dia": "2026-10-15",
    "cuando": "2026-10-15T16:35:00-04:00",
