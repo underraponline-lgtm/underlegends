@@ -657,6 +657,13 @@ export class Liga {
       const vis = f && (f.c || []).includes('competitivo') ? ['carta', ks[0], 'competitivo'] : ['rango', it.rg];
       return ['RANGO', (it.primero ? q[0] + ' consigue su primera letra: ' : q[0] + ' pasa a rango ') + it.rg, vis, c, { perfil: ks[0] }];
     }
+    // 🏟️ lo que pasa en las ligas (16/10/2026): a su liga
+    if (it.tipo === 'ligahito') {
+      const que = it.que === 'campeon' ? ' es el campeón de ' : it.que === 'invicto' ? ' lleva ' + (it.pg || 5) + ' ganadas sin perder en '
+        : ' tomó la punta de ';
+      return [(it.que === 'campeon' ? 'CAMPEÓN DE LIGA · ' : 'LIGA · ') + siglaDe(it.sv), q[0] + que + limpio(it.ln),
+        ['cara', ks[0] || '', q[0]], c, { ruta: '#/ligas/' + encodeURIComponent(it.liga || '') }];
+    }
     if (it.tipo === 'campeon') {
       return ['CAMPEÓN · ' + siglaDe(it.sv), q.join(' y ') + (q.length > 1 ? ' se quedan con ' : ' se queda con ') + limpio(it.ev),
         ['cara', ks[0] || '', q[0]], c, { llave: it.ll }];

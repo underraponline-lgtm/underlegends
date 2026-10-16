@@ -1526,6 +1526,7 @@ const QUE_ES = {
   'Vidas cargado': 'El bot cargó solo un 5 vidas desde #veredictos. Confirmá que está bien o sacalo.',
   'Evento duplicado': 'El mismo evento quedó cargado dos veces. Si es el mismo, se saca el repetido.',
   'Llave sin resolver': 'El bot no pudo leer esta llave.',
+  'Liga terminada': 'Una liga de los servidores lleva tres semanas sin batallas. Si terminó, elegí quién la ganó: entra al Salón de campeones con su insignia.',
 };
 const HACE = [
   [/^No cuenta$/, 'la llave no suma nada, para nadie.'],
@@ -1543,6 +1544,8 @@ const HACE = [
   [/^Es alguien nuevo$/, 'lo cuenta como una persona nueva.'],
   [/^Es un troll/, 'ese nombre no suma nada.'],
   [/^Es la cuenta /, 'ese nombre es de esa cuenta de Discord: suma a su persona.'],
+  [/^Terminó: la ganó /, 'ése es el campeón de la liga: entra al Salón, con el 2º y el 3º de la tabla, y se publica.'],
+  [/^Todavía no terminó$/, 'no se vuelve a preguntar hasta que juegue y pare otra vez.'],
   [/^Es /, 'ese nombre es de esa persona de la Lista.'],
   [/^(Ya está resuelto|Ya lo revisé)$/, 'sólo cierra la pregunta.'],
   [/^Sí, es el mismo/, 'se saca el repetido y queda uno solo.'],

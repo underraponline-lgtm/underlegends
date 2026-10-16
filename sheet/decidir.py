@@ -100,6 +100,9 @@ GRUPO = {
     'conflicto': (2, '🪪 Identidad'),
     'Alias posible': (2, '🪪 Identidad'),
     'MW pendiente': (3, '🎯 MW'),
+    # 🏆 una liga de los servidores que paró: ¿terminó, y quién la ganó? (Dlx, 16/10/2026: el Salón de campeones). Ver
+    # `ligas_terminadas()`
+    'Liga terminada': (3, '🏆 Ligas'),
 }
 
 #: 🔎 CUÁNTO PESA CADA PREGUNTA, para el filtro del Dashboard (Dlx, 13/10/2026: «filtros… nivel de importancia»).
@@ -110,7 +113,13 @@ IMPORTANCIA = {
     'Llave sin resolver': 'alta',
     'Batalla sin ganador': 'media', 'Nombre desconocido': 'media',
     'alta': 'baja', 'ambiguo': 'baja', 'conflicto': 'baja', 'Alias posible': 'baja', 'MW pendiente': 'baja',
+    'Liga terminada': 'baja',
 }
+
+#: 🏆 «LIGA TERMINADA: fzl · FZ League · sin batallas desde el 2026-09-10»: la liga, su nombre y el día que paró
+LIGA_FIN_RE = re.compile(r'^LIGA TERMINADA: (\S+) · (.+) · sin batallas desde el (\d{4}-\d{2}-\d{2})$')
+#: la respuesta de «sigue»: no se vuelve a preguntar hasta que juegue y pare otra vez
+LIGA_SIGUE = 'Todavía no terminó'
 
 NUEVO = 'Es alguien nuevo'
 #: la batalla que no se peleó (un walkover sin nadie que pase, una anulada)
@@ -1802,6 +1811,65 @@ def duplicados_corrida(dry=True, preguntas=()):
     return nuevos
 
 
+def ligas_terminadas(dry=True, preguntas=()):
+    """🏆 LAS LIGAS QUE PARARON, A ✅ DECIDIR (Dlx, 16/10/2026: el Salón de campeones). Nunca da a nadie por campeón
+    solo: una liga puede volver después de un parón, y el campeón puede salir de una final que no es la tabla. Pregunta
+    una vez por cada parada (`ligas.terminadas()`), con los tres primeros de la tabla como respuestas y el link a su
+    tabla oficial."""
+    if os.path.join(BASE, 'bot') not in sys.path:
+        sys.path.append(os.path.join(BASE, 'bot'))
+    import ligas as LG
+    ya = {p.get('detalle') for p in preguntas or () if p.get('tipo') == 'Liga terminada'}
+    filas = []
+    for L, ult in LG.terminadas(LG.para_web(), _decisiones()):
+        det = 'LIGA TERMINADA: %s · %s · sin batallas desde el %s' % (L['id'], L.get('n') or L['id'], ult)
+        if det in ya:
+            continue
+        tops = [f[0] for f in (L.get('tabla') or [])[:3]]
+        print('      🏆 pregunta: ¿terminó %s? (sin batallas desde el %s; 1º %s)' % (L.get('n'), ult, tops[0] if tops else '—'))
+        filas.append(('Liga terminada', 'liga ' + (L.get('n') or L['id']), det,
+                      ' · '.join(tops + ([L['link']] if L.get('link') else []))))
+    if filas and not dry:
+        import pendientes as PE
+        PE.anotar_varios(filas)
+    return filas
+
+
+def _guardar_ligas(ligas_fin, ligas_sigue, estados, dry=True):
+    """Lo contestado de las ligas que pararon, a `datos/decisiones.json`: el campeón y el podio al Salón
+    (`ligas.FIN`), o que sigue (`ligas.SIGUE`). Devuelve las filas a cerrar. El campeón tiene que estar en SU tabla: si
+    no está, la pregunta queda abierta y se dice por qué."""
+    if os.path.join(BASE, 'bot') not in sys.path:
+        sys.path.append(os.path.join(BASE, 'bot'))
+    import ligas as LG
+    import multiplicadores as MU
+    tablas = LG.tablas()
+    d = _decisiones()
+    ahora = _ahora_et()
+    t = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+    cierres = []
+    for p, (lid, n, ult, quien) in ligas_fin:
+        nombres = tablas.get(lid) or []
+        c = next((x for x in nombres if LG.clave(x) == LG.clave(quien)), None)
+        if not c:
+            estados[p['id']] = '⚠️ «%s» no está en la tabla de %s: elegí de la lista' % (quien, n)
+            continue
+        d.setdefault(LG.FIN, [])
+        d[LG.FIN] = [x for x in d[LG.FIN] if not (x.get('liga') == lid and x.get('ult') == ult)]
+        d[LG.FIN].append({'liga': lid, 'n': n, 'sv': (LG.LIGAS.get(lid) or {}).get('sv') or '', 'ult': ult,
+                          'temporada': MU.temporada_actual(), 'campeon': c, 'podio': LG.podio(nombres, c),
+                          'cuando': ahora, 't': t, 'por': POR})
+        cierres += [(f, 'campeón de %s: %s · entra al Salón' % (n, c)) for f in p['filas']]
+        print('      🏆 %s terminó: campeón %s' % (n, c))
+    for lid, ult in ligas_sigue:
+        d.setdefault(LG.SIGUE, {})[lid] = {'ult': ult, 'cuando': ahora, 'por': POR}
+    if not dry:
+        with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(d, f, ensure_ascii=False, indent=1)
+            f.write('\n')
+    return cierres
+
+
 def _agregar_cuenta(real, did):
     """La cuenta `did` como OTRA cuenta de `real` (`cuentas` de `datos/akas_a_mano.json`: abre sus cartas)."""
     p = os.path.join(BASE, 'datos', 'akas_a_mano.json')
@@ -3447,6 +3515,14 @@ def _sugerencias(match):
 def _pregunta(p):
     """(qué, sugerencia, opciones) de una pregunta, en palabras."""
     t, det, match = p['tipo'], p['detalle'], p['match']
+    if t == 'Liga terminada':
+        # 🏆 `match`: los tres primeros de su tabla, «Ceko · Juasmio · Mr.Kude» (el link a su tabla ya salió aparte)
+        m = LIGA_FIN_RE.match(det)
+        tops = [x.strip() for x in str(match or '').split(' · ') if x.strip()]
+        return ('¿Terminó %s? Lleva tres semanas sin batallas y sin una fecha anunciada. Si terminó, ¿quién la ganó? '
+                'El campeón entra al Salón de campeones, con su insignia' % (m.group(2) if m else det),
+                ', '.join('%dº %s' % (i + 1, x) for i, x in enumerate(tops)) or '—',
+                ['Terminó: la ganó %s' % x for x in tops] + [LIGA_SIGUE])
     if t == 'Reporte':
         # `detalle` es «<qué>: <texto> · #<id>» y `match`, quién lo mandó
         que = re.sub(r'\s*·\s*#\d+$', '', det)
@@ -3605,6 +3681,16 @@ def interpretar(p, respuesta):
             return ('sacar_num', (int(dup), int(orig), nd, sv, fe))
         if r == NO_DUP:
             return ('no_duplicado', (int(dup), int(orig)))
+    # 🏆 una liga que paró: «Terminó: la ganó X» la manda al Salón; «Todavía no terminó», que espere a parar otra vez
+    if p['tipo'] == 'Liga terminada':
+        m = LIGA_FIN_RE.match(p['detalle'])
+        if not m:
+            return ('error', 'no entiendo esta pregunta de liga')
+        if r == LIGA_SIGUE:
+            return ('liga_sigue', (m.group(1), m.group(3)))
+        g = re.match(r'termin[oó]\s*:?\s*(?:la\s+)?gan[oó]\s+(.+)$', r, re.I)
+        if g:
+            return ('liga_fin', (m.group(1), m.group(2), m.group(3), g.group(1).strip()))
     if r in CIERRAN:
         return ('cerrar', r)
     # ⚠️ ANTES QUE EL ALIAS: «Es un troll» empieza con «es », y la rama de
@@ -4170,6 +4256,8 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
     sacar, no_dup = {}, []
     # 🏆 el campeón que Dlx eligió en un «Bracket incompleto»: `{detalle: (dato, pregunta)}`; y los que ya no lo tienen
     campeones, sin_campeon = {}, []
+    # 🏆 las ligas que terminaron (al Salón) y las que siguen: ver `ligas_terminadas()`
+    ligas_fin, ligas_sigue = [], []
     fuera = no_rankear()
     for p in preguntas:
         r = respuestas.get(p['id'])
@@ -4232,6 +4320,11 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
                 except Exception as e:                   # noqa: BLE001
                     print('   ⚠️ %s -> %s: no pude mover la cuenta (%s)' % (dato[0], dato[1], str(e)[:60]))
             cierres += [(n, 'otra cuenta de %s: es la misma persona' % dato[1]) for n in p['filas']]
+        elif que == 'liga_fin':
+            ligas_fin.append((p, dato))
+        elif que == 'liga_sigue':
+            ligas_sigue.append(dato)
+            cierres += [(n, 'sigue: se vuelve a preguntar si juega y para otra vez') for n in p['filas']]
         elif que == 'campeon':
             campeones[p['detalle']] = (dato, p)
             cierres += [(n, 'ganó %s: entra como campeón en la corrida siguiente' % dato['ganador']) for n in p['filas']]
@@ -4338,6 +4431,8 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
         with io.open(DECISIONES, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(d, f, ensure_ascii=False, indent=1)
             f.write('\n')
+    if ligas_fin or ligas_sigue:
+        cierres += _guardar_ligas(ligas_fin, ligas_sigue, estados, dry=dry)
     if sacar or no_dup:
         d = _decisiones()
         ahora = _ahora_et()
@@ -5040,6 +5135,11 @@ def correr(dry=True):
         duplicados_corrida(dry=dry, preguntas=preguntas)
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude revisar los eventos repetidos (%s)' % str(e)[:80])
+    # 🏆 Y LAS LIGAS QUE PARARON: ver `ligas_terminadas()`. Sólo pregunta
+    try:
+        ligas_terminadas(dry=dry, preguntas=preguntas)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude revisar las ligas que pararon (%s)' % str(e)[:80])
     # 🧹 Y LO QUE TIENE RESPUESTA SEGURA SIN PREGUNTAR: ver `cierres_solos()`. Sin lo que ya contestó R2 en esta corrida
     ya_solas = {x['p']['id'] for x in _SOLAS}
     try:
@@ -5237,6 +5337,17 @@ def _self_check():
     ok(interpretar(jahno, NUEVO)[0] == 'cerrar', '«Es alguien nuevo» cierra')
     ok(interpretar(jahno, 'Sí cuenta')[0] == 'error',
        '«Sí cuenta» no aplica a un nombre: se dice, no se adivina')
+    # 🏆 una liga que paró (16/10/2026): la pregunta, sus respuestas y lo que hace cada una
+    lg = {'id': 'lg1', 'tipo': 'Liga terminada', 'detalle': 'LIGA TERMINADA: fzl · FZ League · sin batallas desde el 2026-09-10',
+          'match': 'Ceko · Juasmio · Mr.Kude', 'filas': [9]}
+    q_, s_, o_ = _pregunta(lg)
+    ok('FZ League' in q_ and o_ == ['Terminó: la ganó Ceko', 'Terminó: la ganó Juasmio', 'Terminó: la ganó Mr.Kude', LIGA_SIGUE]
+       and s_.startswith('1º Ceko'),
+       'liga que paró: «¿terminó FZ League?», con los tres primeros de su tabla y «todavía no»')
+    ok(interpretar(lg, 'Terminó: la ganó Juasmio') == ('liga_fin', ('fzl', 'FZ League', '2026-09-10', 'Juasmio'))
+       and interpretar(lg, 'termino la gano Ceko')[1][3] == 'Ceko'
+       and interpretar(lg, LIGA_SIGUE) == ('liga_sigue', ('fzl', '2026-09-10')),
+       '«Terminó: la ganó X» va al Salón (también escrito a mano); «todavía no» espera a que pare otra vez')
     inc = next(p for p in ps if p['tipo'] == 'Bracket incompleto')
     ok(interpretar(inc, 'No cuenta') == ('evento', 'no cuenta'),
        '«No cuenta» queda como decisión del evento')

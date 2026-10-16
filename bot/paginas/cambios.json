@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "3.20",
+   "dia": "2026-10-16",
+   "cuando": "2026-10-16T08:55:00-04:00",
+   "titulo": "Las ligas, reconocidas",
+   "items": [
+    "🏅 Cuatro insignias nuevas: De liga, Invicto (5 ganadas sin perder), Podio de liga y Campeón de liga.",
+    "📣 Publicaciones solas de las ligas: quién llega invicto, quién toma la punta y quién sale campeón. Se pueden felicitar.",
+    "🏆 El Salón de campeones en Ligas: cada liga que termina, con su campeón y su podio."
+   ]
+  },
+  {
    "version": "3.19",
    "dia": "2026-10-16",
    "cuando": "2026-10-16T07:45:00-04:00",

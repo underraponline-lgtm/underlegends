@@ -15,7 +15,7 @@ import { Elegido, X2 } from './encuestas.jsx';
 // 🖼️ el flyer de una liga es un anuncio (14/10/2026): lo publica su servidor, no es un logro de nadie
 const ANUNCIOS = { anuncio: 1, liga: 1, flyer: 1 };
 // los logros: lo que se puede felicitar (una carta nueva le toca a todo el que juega una vez: no es un logro)
-const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1 };
+const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, ligahito: 1 };
 const CARTA = { pais: 'de País', temporada: 'de Temporada', servidor: 'de Servidor', competitivo: 'Competitiva' };
 
 // los perfiles de una publicación, siempre en lista: `ksDe()` de liga.js (en los premios `ks` es un objeto)
@@ -116,6 +116,16 @@ export function Pub({ liga, it, A }) {
     vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
     txt = <>La gente eligió a {nombres} como El Elegido del Most Wanted</>;
     det = it.de ? it.votos + ' de ' + it.de + ' votos' : '';
+  } else if (it.tipo === 'ligahito') {
+    // 🏟️ lo que pasa en las ligas de los servidores (bot/ligas.py `hitos()`, 16/10/2026): invicto, la punta y el campeón
+    const ir = '#/ligas/' + encodeURIComponent(it.liga || '');
+    cat = (it.que === 'campeon' ? 'CAMPEÓN DE LIGA' : it.que === 'invicto' ? 'LIGA · INVICTO' : 'LIGA · LA PUNTA') + ' · ' + siglaDe(it.sv);
+    vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
+    txt = it.que === 'campeon' ? <>{nombres} es el campeón de <b>{limpio(it.ln)}</b></>
+      : it.que === 'invicto' ? <>{nombres} lleva <b>{it.pg || 5} ganadas sin perder</b> en {limpio(it.ln)}</>
+        : <>{nombres} tomó la punta de <b>{limpio(it.ln)}</b>{it.pts ? <> con {it.pts} puntos</> : null}</>;
+    det = it.que === 'campeon' && (it.podio || []).length > 1 ? 'Podio: ' + it.podio.map(limpio).join(' · ') : '';
+    acc = <a className="pub-a" href={ir}>Ver la liga</a>;
   } else if (it.tipo === 'anuncio') {
     cat = 'EVENTO · ' + siglaDe(it.sv);
     vis = <img className="pub-logo" alt="" src={liga.logo(it.sv)} />;
@@ -208,7 +218,7 @@ function MasFelicitado({ liga, pubs, A }) {
         const k = ksDe(it)[0];
         const quien = (it.quien || []).map(limpio).join(' y ');
         const que = it.tipo === 'campeon' ? limpio(it.ev) : it.tipo === 'rango' ? 'rango ' + it.rg
-          : it.tipo === 'pase' ? 'Pase de rapero' : 'Most Wanted';
+          : it.tipo === 'pase' ? 'Pase de rapero' : it.tipo === 'ligahito' ? limpio(it.ln) : 'Most Wanted';
         return (
           <li key={it.id}><Cara liga={liga} k={k || ''} nombre={quien} cls="cara pub-top-cara" />
             <span><b>{quien}</b><small>{que}</small></span><em>👏 {num(cu(it))}</em></li>

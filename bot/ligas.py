@@ -871,7 +871,200 @@ def _fechas(bats, rc, z, tope=FECHAS_WEB):
     return grupos[:tope]
 
 
-def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None):
+# ── 🏅 EL RECONOCIMIENTO DE LAS LIGAS (Dlx, 16/10/2026) ───────────────────────────────────────────────────────────────
+# *«asegúrate de incluir todo lo que podamos exprimir de ligas… reconocimiento a estos participantes»*, y de las cuatro
+# formas, las cuatro: las insignias (`bot/insignias.py`), las publicaciones solas (`bot/muro.py`), lo mejor de las ligas
+# (la página) y el SALÓN DE CAMPEONES. Lo que sale de las batallas se recalcula en cada corrida —no hay estado que se
+# pierda—; lo único que no se puede calcular es quién GANÓ una liga, y eso lo dice Dlx en ✅ Decidir.
+#: 5 ganadas sin perder ninguna: la insignia «Invicto» y su publicación
+INVICTO = 5
+#: «tomó la punta» recién cuando el primero ya jugó tantas: en la primera fecha la punta cambia en cada batalla
+PUNTA_DESDE = 3
+#: la sección de `datos/decisiones.json` con cada liga terminada, y la de las que Dlx dijo que siguen
+FIN, SIGUE = 'ligas_fin', 'ligas_sigue'
+
+
+def _desde():
+    """⚠️ LO DE ANTES DE LA TEMPORADA NO SE RECONOCE: el arranque de la T1 (`comun/temporada.py`, el 22/09), en ISO
+    para comparar. FZ League jugó su temporada 16 del 1 al 10 de septiembre, antes de la T1 y antes de que FRZ entrara a
+    la Liga: su tabla se ve en Ligas, pero no da insignias, ni publicaciones, ni entra al Salón. `''` si no se sabe."""
+    try:
+        from comun.temporada import INICIO
+        return str(INICIO or '')[:19]
+    except Exception:                                    # noqa: BLE001
+        return ''
+
+
+def ultima(bats):
+    """El día (AAAA-MM-DD, UTC) de la última batalla con resultado: identifica CADA VEZ que una liga para. Si después
+    juega otra temporada y vuelve a parar, es otro día y se vuelve a preguntar."""
+    con = [b[1] for b in bats or () if len(b) > 5 and b[5] and b[1]]
+    return max(con)[:10] if con else ''
+
+
+def _decis(decis=None):
+    if decis is not None:
+        return decis
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'decisiones.json'), encoding='utf-8') as f:
+            return json.load(f) or {}
+    except (OSError, ValueError):
+        return {}
+
+
+def fin_de(decis, lid, ult):
+    """Lo que Dlx decidió de esa liga cuando paró ese día (`{campeon, podio, …}`), o `None`."""
+    for x in (decis or {}).get(FIN) or []:
+        if x.get('liga') == lid and x.get('ult') == ult:
+            return x
+    return None
+
+
+def sigue_de(decis, lid, ult):
+    """¿Dlx dijo que esa liga, parada desde ese día, todavía no terminó?"""
+    return ((decis or {}).get(SIGUE) or {}).get(lid, {}).get('ult') == ult
+
+
+def podio(nombres, campeon):
+    """El podio de una liga terminada: el campeón y los dos primeros de la tabla que no son él. Si el campeón salió de
+    una final (una liga con playoffs), el 2º y el 3º son los que siguen en la tabla."""
+    return [campeon] + [n for n in nombres if clave(n) != clave(campeon)][:2]
+
+
+def terminadas(web, decis=None, ahora=None, desde=None):
+    """Las ligas que PARARON y de las que nadie dijo todavía si terminaron: `[(liga de para_web(), día)]`.
+
+    «Paró» es lo mismo que cierra la encuesta (`vota()`: `CIERRA_DIAS` sin batallas ni una fecha anunciada). No se da
+    por terminada sola: una liga puede volver después de un parón, y el campeón puede salir de una final que no es la
+    tabla. Por eso es una pregunta (`decidir.ligas_terminadas()`)."""
+    decis = _decis(decis)
+    ahora = ahora or dt.datetime.now(dt.timezone.utc)
+    desde = _desde() if desde is None else desde
+    out = []
+    for L in (web or {}).get('ligas') or []:
+        v = _instante(L.get('vota')) if L.get('vota') else None
+        if not v or v > ahora or L.get('prox'):
+            continue
+        ult = str(L.get('ult_t') or '')[:10]
+        # una liga que paró antes de que arrancara la temporada no es de esta temporada (`_desde()`)
+        if desde and str(L.get('ult_t') or '')[:19] < desde:
+            continue
+        if ult and not fin_de(decis, L['id'], ult) and not sigue_de(decis, L['id'], ult):
+            out.append((L, ult))
+    return out
+
+
+def salon(decis=None, claves=None):
+    """🏆 EL SALÓN DE CAMPEONES, para la página: `[{id, n, sv, temp, ult, c, p, ks}]`, el más nuevo primero. `p`: el
+    podio entero (el campeón primero); `ks`: el perfil de cada nombre que lo tiene."""
+    claves = {clave(k): v for k, v in (claves or {}).items() if clave(k)}
+    out = []
+    for x in (_decis(decis).get(FIN) or []):
+        if not x.get('campeon'):
+            continue
+        p = x.get('podio') or [x['campeon']]
+        out.append({'id': x.get('liga'), 'n': x.get('n') or x.get('liga'), 'sv': x.get('sv') or '',
+                    'temp': x.get('temporada') or '', 'ult': x.get('ult') or '', 'c': x['campeon'], 'p': p,
+                    'ks': {n: claves[clave(n)] for n in p if claves.get(clave(n))}})
+    out.sort(key=lambda x: x['ult'], reverse=True)
+    return out
+
+
+def _resolvedor_de(resolver=None):
+    if resolver is not None:
+        return resolver
+    try:
+        import motor as _MO
+        return _MO._resolvedor()[0]
+    except Exception:                                    # noqa: BLE001
+        return lambda x: x
+
+
+def hitos(d=None, resolver=None, ps=None, desde=None):
+    """📣 Lo que el muro publica solo de cada liga, rehaciendo sus batallas EN ORDEN: `[{tipo, que, t, quien, liga, ln,
+    sv, …}]`.
+
+    · `invicto`: la batalla en que alguien llega a `INVICTO` ganadas sin perder ninguna (una vez por liga).
+    · `punta`: quién queda primero al cerrar cada día de batallas, solo —sin empate en puntos— y con `PUNTA_DESDE`
+      jugadas; se publica cuando cambia. En la primera fecha la punta cambia en cada batalla: por eso las dos reglas.
+    Los nombres, los de la tabla (`para_web()`): el del padrón, y el de ESE servidor si ahí es otra persona.
+    ⚠️ La tabla se rehace con TODAS las batallas —la punta tiene que ser la de la tabla que se ve—, pero sólo sale lo
+    que pasó desde el arranque de la temporada (`_desde()`)."""
+    d = d if d is not None else leer()
+    desde = _desde() if desde is None else desde
+    r0 = _resolvedor_de(resolver)
+    ps = por_servidor() if ps is None else ps
+    out = []
+    for lid, x in (d.get('ligas') or {}).items():
+        bats = sorted((b for b in x.get('batallas') or [] if len(b) > 6 and b[5] and b[6] in PUNTOS and b[1]),
+                      key=lambda b: b[1])
+        if not bats:
+            continue
+        r = _de_servidor(x.get('sv'), r0, ps)
+        canon = {}
+        for f in tabla(bats, r):
+            canon.setdefault(clave(f[0]), f[0])
+        rc = lambda n: canon.get(clave(r(n)), r(n))  # noqa: E731
+        base = {'tipo': 'ligahito', 'liga': lid, 'ln': x.get('n') or (LIGAS.get(lid) or {}).get('n') or lid,
+                'sv': x.get('sv') or (LIGAS.get(lid) or {}).get('sv') or ''}
+        st, invictos, dias = {}, set(), []
+        for b in bats:
+            a, bb, g = rc(b[3]), rc(b[4]), rc(b[5])
+            pg, pp = PUNTOS[b[6]]
+            for lado, nom in (('a', a), ('b', bb)):
+                if lado in (b[7] if len(b) > 7 else ''):
+                    continue
+                s = st.setdefault(clave(nom), [nom, 0, 0, 0, 0])
+                s[1] += 1
+                if clave(nom) == clave(g):
+                    s[2] += 1
+                    s[3] += pg
+                else:
+                    s[3] += pp
+                    s[4] += 1
+                if clave(nom) == clave(g) and s[2] == INVICTO and not s[4] and clave(nom) not in invictos:
+                    invictos.add(clave(nom))
+                    out.append(dict(base, que='invicto', t=b[1], quien=[nom], pg=INVICTO))
+            orden = sorted(st.values(), key=lambda s: (-s[3], -s[2], s[1]))
+            solo = orden[0] if orden and (len(orden) == 1 or orden[0][3] > orden[1][3]) and orden[0][1] >= PUNTA_DESDE else None
+            dia = b[1][:10]
+            if dias and dias[-1][0] == dia:
+                dias[-1] = (dia, solo and (clave(solo[0]), solo[0], solo[3]), b[1])
+            else:
+                dias.append((dia, solo and (clave(solo[0]), solo[0], solo[3]), b[1]))
+        antes = None
+        for _dia, lider, t in dias:
+            if lider and lider[0] != antes:
+                out.append(dict(base, que='punta', t=t, quien=[lider[1]], pts=lider[2]))
+            if lider:
+                antes = lider[0]
+    return [h for h in out if not desde or str(h.get('t') or '')[:19] >= desde]
+
+
+def tablas(d=None, resolver=None, ps=None, desde=''):
+    """`{liga: [nombre, …]}`: la tabla ENTERA de cada liga (`para_web()` la corta en 30), con los nombres como ahí.
+    Para el podio de la que terminó (`decidir.aplicar()`) y para la insignia «De liga» (`bot/insignias.py`).
+    `desde`: sólo las batallas desde ese instante (ISO): la insignia es de lo jugado en la temporada."""
+    d = d if d is not None else leer()
+    r0 = _resolvedor_de(resolver)
+    ps = por_servidor() if ps is None else ps
+    return {lid: [f[0] for f in tabla([b for b in x.get('batallas') or [] if not desde or str(b[1] or '')[:19] >= desde],
+                                     _de_servidor(x.get('sv'), r0, ps))]
+            for lid, x in (d.get('ligas') or {}).items()}
+
+
+def campeones_hitos(decis=None):
+    """📣 Y el campeón de cada liga terminada, cuando Dlx lo confirmó: la publicación del Salón."""
+    out = []
+    for x in (_decis(decis).get(FIN) or []):
+        if x.get('campeon') and x.get('t'):
+            out.append({'tipo': 'ligahito', 'que': 'campeon', 't': x['t'], 'quien': [x['campeon']],
+                        'liga': x.get('liga'), 'ln': x.get('n') or x.get('liga'), 'sv': x.get('sv') or '',
+                        'podio': x.get('podio') or [x['campeon']]})
+    return out
+
+
+def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None, decis=None):
     """Lo de la sección Ligas de la web (`#/ligas` y el perfil de cada una, `#/ligas/<id>`; hasta el 16/10/2026 una
     pestaña del Ranking): `{t, ligas: [{id, n, sv, j, bat, pend, tabla, ult, fechas, ks, link, flyer, prox,
     vota}]}`, o `None` sin nada.
@@ -883,6 +1076,8 @@ def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None):
     lobby: sin eso la página no los encontraba (ForceGP).
     🏟️ Y desde el 14/10/2026: `flyer` `{u, w, h, t, tit, link}` (sólo el que está en R2), `prox` `{d, t, j, link}` (sólo
     si no pasó) y `vota` (hasta cuándo se vota quién gana; `''` si no hay tabla para votar).
+    🏆 Y desde el 16/10/2026: `fin` `{c, p}` si Dlx dijo quién la ganó cuando paró (el campeón y el podio), y arriba de
+    todo `salon`, el Salón de campeones (`salon()`). `decis`: `datos/decisiones.json`, para el self-check.
     ⚠️ Una liga sin batallas no va: ninguna sección se dibuja vacía."""
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     d = d if d is not None else leer()
@@ -904,6 +1099,7 @@ def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None):
     except (OSError, ValueError):
         svs = {}
     out = []
+    decis = _decis(decis)
     for lid, x in ls.items():
         bats = x.get('batallas') or []
         con = [b for b in bats if b[5]]
@@ -943,9 +1139,19 @@ def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None):
                          if g and L.get('an') and pr.get('id') else ''}
         # 🗳️ hasta cuándo se vota quién gana: hace falta una tabla de dos o más para elegir
         y['vota'] = vota(bats, pr if pr.get('d') else None) if len(tb) >= 2 else ''
+        # 🏆 terminó y Dlx dijo quién la ganó (en esta parada: si después vuelve a jugar, es otra)
+        fn = fin_de(decis, lid, ultima(bats))
+        if fn:
+            y['fin'] = {'c': fn['campeon'], 'p': fn.get('podio') or [fn['campeon']]}
         out.append(y)
     out.sort(key=lambda x: x['ult_t'], reverse=True)
-    return {'t': d.get('t'), 'ligas': out} if out else None
+    if not out:
+        return None
+    res = {'t': d.get('t'), 'ligas': out}
+    sl = salon(decis, claves)
+    if sl:
+        res['salon'] = sl
+    return res
 
 
 #: la clave de KV del detalle de cada liga (las fechas y el flyer entero), que la página pide al abrir Ligas (`/api/ligas`)
@@ -973,7 +1179,11 @@ def separar(web):
             y['f0'] = {'j': f0['j'], 't': f0['t'], 'n': sum(1 for b in f0['b'] if b[2])}
         lobby.append(y)
         det[L['id']] = {k: L[k] for k in ('fechas', 'flyer', 'ks') if L.get(k)}
-    return {'t': web.get('t'), 'ligas': lobby}, {'t': web.get('t'), 'ligas': det}
+    lob = {'t': web.get('t'), 'ligas': lobby}
+    # 🏆 el Salón de campeones viaja en el lobby: es corto (una fila por liga terminada) y la portada lo muestra al abrir
+    if web.get('salon'):
+        lob['salon'] = web['salon']
+    return lob, {'t': web.get('t'), 'ligas': det}
 
 
 def para_kv(web):
@@ -1166,6 +1376,39 @@ def _self_check():
        and det['ligas']['fms-peru']['fechas'] == lp['fechas'] and det['ligas']['fmh-andes']['flyer'] == la['flyer']
        and para_kv(lob) == kv,
        'el lobby lleva lo del Inicio (la tabla, `fl`, `f0`, `vota`); las fechas y el flyer entero van aparte', str(lo['fms-peru']))
+
+    # 🏆 el Salón de campeones y lo que publica el muro (16/10/2026)
+    t9 = dt.datetime(2026, 10, 16, 12, tzinfo=dt.timezone.utc)
+    dz = {'ligas': {'fzl': {'n': 'FZ League', 'sv': 'FRZ', 'batallas': [
+        ['%d' % i, '2026-09-%02dT20:00:00Z' % (1 + i), i, 'CEKO', 'R%d' % i, 'CEKO', 'directa', ''] for i in range(1, 6)] + [
+        ['9', '2026-09-08T20:00:00Z', 6, 'JUAS', 'R9', 'JUAS', 'replica', '']]}}}
+    wz = para_web(dz, claves={'CEKO': 'ceko'}, ps={}, ahora=t9, resolver=lambda x: x, decis={})
+    ok(ultima(dz['ligas']['fzl']['batallas']) == '2026-09-08'
+       and [(L['id'], u) for L, u in terminadas(wz, {}, t9, desde='')] == [('fzl', '2026-09-08')]
+       and not terminadas(wz, {}, t9, desde='2026-09-22T00:00:00'),
+       'una liga parada hace más de tres semanas, sin fecha anunciada, se pregunta (una vez por cada parada); si paró '
+       'antes del arranque de la temporada, no')
+    dfin = {FIN: [{'liga': 'fzl', 'n': 'FZ League', 'sv': 'FRZ', 'ult': '2026-09-08', 'temporada': 'prueba',
+                   'campeon': 'CEKO', 'podio': podio(['CEKO', 'JUAS', 'R1'], 'CEKO'), 't': '2026-10-16T12:00:00Z'}]}
+    wf = para_web(dz, claves={'CEKO': 'ceko'}, ps={}, ahora=t9, resolver=lambda x: x, decis=dfin)
+    ok(not terminadas(wf, dfin, t9, desde='') and wf['ligas'][0]['fin'] == {'c': 'CEKO', 'p': ['CEKO', 'JUAS', 'R1']}
+       and wf['salon'][0]['c'] == 'CEKO' and wf['salon'][0]['ks'] == {'CEKO': 'ceko'}
+       and separar(wf)[0]['salon'] == wf['salon'],
+       'con el campeón confirmado: no se vuelve a preguntar, la liga lo lleva (`fin`) y entra al Salón, que viaja en el lobby')
+    ok(not terminadas(wz, {SIGUE: {'fzl': {'ult': '2026-09-08'}}}, t9, desde=''),
+       '«todavía no terminó» no se vuelve a preguntar mientras no juegue y pare otra vez')
+    ok(podio(['A', 'B', 'C', 'D'], 'C') == ['C', 'A', 'B'], 'el podio: el campeón y los dos primeros de la tabla que no son él')
+    hz = hitos(dz, resolver=lambda x: x, ps={}, desde='')
+    ok(not hitos(dz, resolver=lambda x: x, ps={}, desde='2026-09-22T00:00:00'),
+       'lo que pasó antes del arranque de la temporada no se publica')
+    inv = [h for h in hz if h['que'] == 'invicto']
+    pun = [h for h in hz if h['que'] == 'punta']
+    ok(len(inv) == 1 and inv[0]['quien'] == ['CEKO'] and inv[0]['t'] == '2026-09-06T20:00:00Z',
+       'invicto: una vez, en la batalla de su quinta ganada sin perder', str(inv))
+    ok([(h['quien'], h['t'][:10]) for h in pun] == [(['CEKO'], '2026-09-04')],
+       'la punta: recién con 3 jugadas, sola, y se publica cuando cambia (no en cada fecha)', str(pun))
+    ok(campeones_hitos(dfin)[0]['que'] == 'campeon' and campeones_hitos({}) == [],
+       'el campeón confirmado también se publica')
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
 

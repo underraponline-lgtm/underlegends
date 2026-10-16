@@ -63,6 +63,12 @@ CATALOGO = (
     # ✍️ el Writing Challenge de FFA (14/10/2026, Dlx: «cuenta para la Liga… y insignia»). Ver `bot/writing.py`
     ('pluma_oro', '✍️', 'Pluma de oro', 'Ganó una fecha del Writing Challenge'),
     ('pluma', '🖋️', 'Pluma', 'Sumó en 3 fechas del Writing Challenge'),
+    # 🏟️ las ligas de los servidores (16/10/2026, Dlx: «reconocimiento a estos participantes de las ligas»). Ver
+    # `bot/ligas.py`: el invicto sale de rehacer sus batallas en orden; el podio y el campeón, del Salón (✅ Decidir)
+    ('liga', '📋', 'De liga', 'Jugó una liga de los servidores'),
+    ('invicto', '💎', 'Invicto', 'Llegó a 5 ganadas sin perder ninguna en una liga'),
+    ('liga_podio', '🎖️', 'Podio de liga', 'Terminó entre los tres primeros de una liga'),
+    ('liga_campeon', '🏅', 'Campeón de liga', 'Ganó una liga de los servidores'),
 )
 IDS = [c[0] for c in CATALOGO]
 
@@ -75,7 +81,7 @@ def _n(x):
 
 
 def cumple(pool, mw=None, reyes=None, duelos_g=None, clasicos_g=None, figuras=None, revelaciones=None,
-           subieron=None, primera=None, plumas_oro=None, plumas=None):
+           subieron=None, primera=None, plumas_oro=None, plumas=None, ligas=None):
     """`{raw: {ids}}`: lo que cada uno cumple HOY con los datos de la temporada.
 
     `mw` es `{raw: {'caz', 'czd', 'sob'}}` (`most_wanted.suma()`), `reyes` el
@@ -86,6 +92,9 @@ def cumple(pool, mw=None, reyes=None, duelos_g=None, clasicos_g=None, figuras=No
     ✍️ `plumas_oro` (quién ganó una fecha del Writing Challenge) y `plumas` (`{raw: en cuántas fechas sumó}`), de
     `writing.plumas()`. ⚠️ ESTAS DOS NO PIDEN ESTAR EN EL POOL: el Writing no es un evento, y quien escribe y nunca
     jugó también se la gana (con su nombre de la Lista).
+
+    🏟️ `ligas`: `{raw: {ids}}` de las cuatro de liga (`_ligas()`). Tampoco piden el pool: hay quien juega ligas y no
+    eventos (el staff, ForceGP).
     """
     plumas_oro, plumas = plumas_oro or set(), plumas or {}
     subieron, primera = subieron or set(), primera or set()
@@ -116,6 +125,10 @@ def cumple(pool, mw=None, reyes=None, duelos_g=None, clasicos_g=None, figuras=No
     for raw in set(plumas_oro) | set(plumas):
         ya = ({'pluma_oro'} if raw in plumas_oro else set()) | (
             {'pluma'} if plumas.get(raw, 0) >= PLUMA_FECHAS else set())
+        if raw and ya:
+            out.setdefault(raw, set()).update(ya)
+    for raw, ya in (ligas or {}).items():
+        ya = set(ya) & {'liga', 'invicto', 'liga_podio', 'liga_campeon'}
         if raw and ya:
             out.setdefault(raw, set()).update(ya)
     return out
@@ -208,7 +221,36 @@ def _datos():
     for q, n in cuenta_w.items():
         r = raw_de(q) or q
         plumas[r] = plumas.get(r, 0) + n
-    return pool, mw, reyes, duelos_g, clasicos_g, figuras, revelaciones, subieron, primera, plumas_oro, plumas
+    return (pool, mw, reyes, duelos_g, clasicos_g, figuras, revelaciones, subieron, primera, plumas_oro, plumas,
+            _ligas(raw_de))
+
+
+def _ligas(raw_de):
+    """🏟️ `{raw: {ids}}` de las insignias de liga: quién jugó alguna, quién llegó invicto a 5 (`ligas.hitos()`) y el
+    podio y el campeón de las que terminaron (el Salón, `datos/decisiones.json`). Por el nombre del pool si está; si no,
+    el de la Lista. Si algo falla, ninguna: nunca frena a las demás."""
+    out = {}
+    try:
+        import ligas as LG
+        d = LG.leer()
+
+        def poner(n, i):
+            if n:
+                out.setdefault(raw_de(n) or n, set()).add(i)
+        for nombres in LG.tablas(d, desde=LG._desde()).values():
+            for n in nombres:
+                poner(n, 'liga')
+        for h in LG.hitos(d):
+            if h.get('que') == 'invicto':
+                poner((h.get('quien') or [''])[0], 'invicto')
+        for x in (LG._decis().get(LG.FIN) or []):
+            for i, n in enumerate(x.get('podio') or []):
+                poner(n, 'liga_campeon' if i == 0 else 'liga_podio')
+                if i == 0:
+                    poner(n, 'liga_podio')
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ sin las insignias de liga (%s)' % str(e)[:80])
+    return out
 
 
 #: 🧹 LOS QUE NO SON PERSONAS (07/10/2026): equipos que una llave mal leída cargó como uno solo —el #425, PRITTY FREE,
@@ -271,6 +313,10 @@ def _self_check():
     ok({'pluma_oro', 'pluma'} <= cw['Ana'] and not ({'pluma_oro', 'pluma'} & cw['Bea'])
        and cw.get('Dlx') == {'pluma_oro'},
        'la Pluma de oro a quien ganó una fecha, la Pluma con 3 fechas; quien no está en el pool también (Dlx)')
+    # 🏟️ las de liga: sin pedir el pool, y sólo las cuatro suyas
+    cl = cumple(pool, ligas={'Ana': {'liga', 'invicto'}, 'Staff': {'liga', 'liga_podio', 'liga_campeon', 'ev25'}})
+    ok({'liga', 'invicto'} <= cl['Ana'] and cl.get('Staff') == {'liga', 'liga_podio', 'liga_campeon'},
+       'las de liga: también a quien no juega eventos (el staff), y de ahí no entra otra insignia')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 

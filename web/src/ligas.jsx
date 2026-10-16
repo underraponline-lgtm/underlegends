@@ -244,6 +244,8 @@ function diaCorto(d) {
   return DIAS[new Date(Date.UTC(y, m - 1, dd)).getUTCDay()].slice(0, 3).toUpperCase() + ' ' + dd;
 }
 function estadoLiga(liga, L) {
+  // 🏆 terminó y se sabe quién la ganó (✅ Decidir, `fin`): eso manda sobre «sin batallas»
+  if (L.fin && L.fin.c) return { c: 'fin', t: 'TERMINÓ · CAMPEÓN ' + limpio(L.fin.c).toUpperCase(), largo: 'Terminó: la ganó ' + limpio(L.fin.c) };
   const P = L.prox;
   if (P && P.d) {
     const hoy = liga.diaClave(liga.ahora);
@@ -444,6 +446,7 @@ function LigaPerfil({ liga, id }) {
             <div><dt>RAPEROS</dt><dd>{num((L.tabla || []).length)}</dd></div>
           </dl>
         </section>
+        {L.fin && L.fin.c ? <p className="lgp-campeon"><Ico n="copa" t={18} /> Campeón: {h.nombre(L.fin.c, 'lgp-campeon-n')}</p> : null}
         <Podio3 L={L} h={h} />
       </div>
       <Sec id="lgp-tabla" titulo="La tabla" extra="lgp-sec"><Torneo liga={liga} L={L} h={h} /></Sec>
@@ -574,6 +577,7 @@ function LigasInicio({ liga, falta = '' }) {
         </Sec>
       ) : null}
       {ls.length ? <LoMejor liga={liga} ls={ls} hs={hs} /> : null}
+      <Salon liga={liga} />
       {/* 🗓️ lo que viene y lo que pasó, en una fila en la compu: una sola fecha por delante dejaba media pantalla vacía */}
       {prox.length || ultimos.length ? (
         <div className={'lgh-fila' + (prox.length && ultimos.length ? ' dos' : '')}>
@@ -858,6 +862,41 @@ function LoMejor({ liga, ls, hs }) {
           <span className="lgh-top-p">{Math.round((100 * p.pg) / p.pj)}%</span>
         </li>
       ))}</ol>
+    </Sec>
+  );
+}
+
+// ── 🏆 EL SALÓN DE CAMPEONES (Dlx, 16/10/2026): cada liga que terminó, con su campeón y su podio, por temporada.
+// El campeón lo confirma Dlx en ✅ Decidir (`decidir.ligas_terminadas()`): el bot no sabe cuándo termina una liga.
+// Viaja en el lobby (`ligas.salon`). Sin ninguna todavía, la sección dice cómo se entra: es lo que se quiere ver ───
+function Salon({ liga }) {
+  const xs = ((liga.d.ligas || {}).salon) || [];
+  const nombre = (x, n) => {
+    const k = (x.ks || {})[n] || (liga.fila(n) || {}).k;
+    return k ? <a href={'#/r/' + encodeURIComponent(k)}>{limpio(n)}</a> : <span>{limpio(n)}</span>;
+  };
+  const cara = (x, n) => {
+    const k = (x.ks || {})[n] || (liga.fila(n) || {}).k;
+    return k ? <Cara liga={liga} k={k} nombre={n} cls="lgh-sc-cara" /> : <span className="lgh-sc-cara ini">{(limpio(n).slice(0, 1) || '?').toUpperCase()}</span>;
+  };
+  return (
+    <Sec id="lgh-salon" titulo="Salón de campeones" extra="negra">
+      {xs.length ? (
+        <ul className="lgh-salon">{xs.map((x) => (
+          <li key={x.id + x.ult}>
+            {cara(x, x.c)}
+            <span className="lgh-sc-t">
+              <small><img alt="" src={liga.logo(x.sv)} />{x.n} · {siglaDe(x.sv)}{x.temp ? ' · ' + (x.temp === 'prueba' ? 'T1' : String(x.temp).toUpperCase()) : ''}</small>
+              <b>{nombre(x, x.c)}</b>
+              {(x.p || []).length > 1 ? <span>2º {nombre(x, x.p[1])}{x.p[2] ? <> · 3º {nombre(x, x.p[2])}</> : null}</span> : null}
+            </span>
+            <a className="lgh-sc-ir" href={'#/ligas/' + encodeURIComponent(x.id)} aria-label={'Ver ' + x.n}><Ico n="flecha" t={18} /></a>
+          </li>
+        ))}</ul>
+      ) : (
+        <p className="lgh-sc-vacio">Cuando una liga termina, su campeón entra acá con su podio, y se lleva la insignia de <b>Campeón de liga</b>.
+          {' '}Todavía no terminó ninguna en esta temporada.</p>
+      )}
     </Sec>
   );
 }

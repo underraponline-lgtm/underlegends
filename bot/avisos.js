@@ -2499,6 +2499,9 @@ export function tituloSeguido(x, n, rol) {
               : x.tipo === 'precio' ? `💰 ${n} cobró el precio por la cabeza de ${x.a}`
                 : x.tipo === 'pase' ? (x.completo ? `🎟️ ${n} completó el Pase de rapero`
                   : `🎟️ ${n} llegó al nivel ${x.nivel} del Pase de rapero`)
+                : x.tipo === 'ligahito' ? (x.que === 'campeon' ? `🏅 ${n} es campeón de ${String(x.ln || '').slice(0, 50)}`
+                  : x.que === 'invicto' ? `💎 ${n} lleva ${x.pg || 5} ganadas sin perder en ${String(x.ln || '').slice(0, 50)}`
+                    : x.que === 'punta' ? `🔝 ${n} tomó la punta de ${String(x.ln || '').slice(0, 50)}` : '')
                 : x.tipo === 'premios' ? ({ figura: `🥇 ${n} es la figura de la semana`,
                   revelacion: `🌟 ${n} es la revelación de la semana`,
                   cazador: `🎯 ${n} es el cazador de la semana` })[rol] || '' : '';
@@ -2547,7 +2550,7 @@ export function paraSeguidores(items, ahora) {
 // ante la duda no se avisa, porque «te felicitaron» a otro es peor que nada.
 
 //: lo que se puede felicitar. Una carta nueva le toca a todo el que juega una vez: no es un logro
-export const APLAUDIBLES = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1 };
+export const APLAUDIBLES = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, ligahito: 1 };
 //: cuánto se guarda un aplauso (el muro trae lo de los últimos 21 días)
 export const APLAUSOS_DIAS = 30;
 //: cuándo vuelve a sonar: la primera vez, y cuando llega a cada uno de éstos
@@ -2569,7 +2572,11 @@ export function motivoAplauso(x) {
       : x.tipo === 'caza' ? `cazar a ${x.a}${ev ? ' en ' + ev : ''}`
         : x.tipo === 'sobrevivio' ? 'sobrevivir al Most Wanted'
           : x.tipo === 'pase' ? (x.completo ? 'completar el Pase de rapero'
-            : `llegar al nivel ${x.nivel} del Pase${x.premio ? ': «' + String(x.premio).slice(0, 40) + '»' : ''}`) : '';
+            : `llegar al nivel ${x.nivel} del Pase${x.premio ? ': «' + String(x.premio).slice(0, 40) + '»' : ''}`)
+            // 🏟️ lo de las ligas de los servidores (`bot/ligas.py`, 16/10/2026)
+            : x.tipo === 'ligahito' ? (x.que === 'campeon' ? `ganar ${String(x.ln || 'una liga').slice(0, 50)}`
+              : x.que === 'invicto' ? `llegar invicto a ${x.pg || 5} en ${String(x.ln || 'su liga').slice(0, 50)}`
+                : x.que === 'punta' ? `tomar la punta de ${String(x.ln || 'su liga').slice(0, 50)}` : '') : '';
   return t.slice(0, 100);
 }
 

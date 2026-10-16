@@ -26,7 +26,10 @@ LO QUE ENTRA
 - 📢 los anuncios de eventos de todos los servidores (`datos/anuncios.json`),
   y 📰 las novedades de la Liga en DRA;
 - 🖼️ el último flyer de cada liga de los servidores (`bot/ligas.py`), si ya
-  está en R2 (Dlx, 14/10/2026: «Flyers en Publicaciones e Historias»).
+  está en R2 (Dlx, 14/10/2026: «Flyers en Publicaciones e Historias»);
+- 🏟️ lo que pasa en esas ligas (Dlx, 16/10/2026, «publicaciones solas»): quién
+  llega invicto a 5, quién toma la punta y quién sale campeón (`ligas.hitos()`
+  y el Salón de campeones), con 👏 Felicitar.
 
 ⚠️ SUBIR DE RANGO Y DESBLOQUEAR NO SE PUEDEN RECALCULAR: son un cambio entre
 dos corridas. Por eso se anotan en `datos/muro.json` (con cómo estaba cada uno)
@@ -303,6 +306,9 @@ def id_de(x):
     elif tipo == 'flyer':
         # 🖼️ sin link (el servidor sin guild): la liga y la imagen, que lleva el id del mensaje
         partes = [tipo, x.get('liga') or '', x.get('img') or '']
+    elif tipo == 'ligahito':
+        # 🏟️ qué pasó, en qué liga, quién y cuándo: el mismo hito sale igual en cada corrida
+        partes = [tipo, x.get('que') or '', x.get('liga') or '', '|'.join(x.get('quien') or []), x.get('t') or '']
     elif tipo == 'pase':
         # 🎟️ de quién (su perfil), de qué temporada y qué nivel: llega una sola vez
         partes = [tipo, x.get('temp') or '', str(x.get('nivel') or ''), (x.get('ks') or [''])[0] or '|'.join(x.get('quien') or [])]
@@ -326,7 +332,7 @@ def con_ids(items):
 
 # ── de quién es cada publicación: para los seguidores ────────────────────
 #: las publicaciones que son de alguien. Los anuncios y las novedades no son de nadie
-DE_ALGUIEN = ('campeon', 'rango', 'tarjeta', 'caza', 'sobrevivio', 'elegido', 'precio', 'premios', 'pase')
+DE_ALGUIEN = ('campeon', 'rango', 'tarjeta', 'caza', 'sobrevivio', 'elegido', 'precio', 'premios', 'pase', 'ligahito')
 #: los premios de la semana que son de una persona (el de servidor no)
 PREMIOS = ('figura', 'revelacion', 'cazador')
 
@@ -468,8 +474,21 @@ def _todo(p, guardado, ahora, fuentes):
             + most_wanted(fuentes.get('mw')) + precios_cobrados(fuentes.get('precios'))
             + premios(fuentes.get('mult')) + anuncios(fuentes.get('anuncios'))
             + pase(fuentes.get('pase'), p.get('tabla')) + novedades(p.get('novedades'))
-            + flyers(fuentes.get('ligas'), fuentes.get('svs')))
+            + flyers(fuentes.get('ligas'), fuentes.get('svs')) + ligas_hitos(fuentes.get('ligas')))
     return todo, estado, anotados
+
+
+def ligas_hitos(lg):
+    """🏟️ Lo que pasa en las ligas de los servidores: invicto, la punta y el campeón (`bot/ligas.py`). Si algo falla,
+    nada: nunca frena el muro."""
+    if not lg:
+        return []
+    try:
+        import ligas as LG
+        return LG.hitos(lg) + LG.campeones_hitos()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ el muro sin las ligas (%s)' % str(e)[:80])
+        return []
 
 
 def armar(p, guardado=None, ahora=None, fuentes=None):
