@@ -511,6 +511,13 @@
 "temporada"
 ]
 },
+"catarsis": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "tuca": {
 "rg": "",
 "c": []
@@ -538,6 +545,13 @@
 "rg": "",
 "c": []
 },
+"prosu": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "ariaxer": {
 "rg": "",
 "c": [
@@ -546,13 +560,6 @@
 ]
 },
 "number": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"prosu": {
 "rg": "",
 "c": [
 "servidor",
@@ -703,10 +710,6 @@
 "temporada"
 ]
 },
-"natsuki": {
-"rg": "",
-"c": []
-},
 "pomberito": {
 "rg": "",
 "c": []
@@ -770,6 +773,10 @@
 "rg": "",
 "c": []
 },
+"valdoza": {
+"rg": "",
+"c": []
+},
 "keider": {
 "rg": "",
 "c": [
@@ -778,10 +785,6 @@
 ]
 },
 "ikonoxx": {
-"rg": "",
-"c": []
-},
-"valdoza": {
 "rg": "",
 "c": []
 },
@@ -885,7 +888,8 @@
 "kyss": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "chekialo": {
@@ -907,13 +911,6 @@
 "sami": {
 "rg": "",
 "c": []
-},
-"catarsis": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "vacile": {
 "rg": "",
@@ -1187,16 +1184,20 @@
 "rg": "",
 "c": []
 },
-"emilioalva": {
-"rg": "",
-"c": []
-},
 "refran": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
+},
+"natsuki": {
+"rg": "",
+"c": []
+},
+"emilioalva": {
+"rg": "",
+"c": []
 },
 "mcnadie": {
 "rg": "",
@@ -2384,14 +2385,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Nhp"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5677,6 +5670,14 @@
 "t": "2026-10-16T18:58:57Z",
 "quien": [
 "Leonart"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-16T20:57:59Z",
+"quien": [
+"Kyss"
 ],
 "carta": "temporada"
 }

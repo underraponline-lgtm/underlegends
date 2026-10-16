@@ -1150,6 +1150,19 @@
    }
   },
   "Catarsis": {
+   "SR": {
+    "duelos": "3/4",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 51,
+    "pod": 1,
+    "pts": 37500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   },
    "URBF": {
     "duelos": "3/3",
     "ev": 1,
@@ -3129,6 +3142,7 @@
     "racha": "2/2",
     "tg": {
      "bcasa": true,
+     "dv": true,
      "fin": 1,
      "fund": true
     }
@@ -3164,10 +3178,7 @@
     "ovr": 47,
     "pod": 1,
     "pts": 6000,
-    "racha": "1/1",
-    "tg": {
-     "dv": true
-    }
+    "racha": "1/1"
    },
    "URBF": {
     "duelos": "4/4",
@@ -3896,7 +3907,6 @@
     "pts": 45000,
     "racha": "1/1",
     "tg": {
-     "dv": true,
      "fin": 1
     }
    },
@@ -4922,21 +4932,6 @@
     "racha": "0/0"
    }
   },
-  "Natsuki 🇦🇷": {
-   "SR": {
-    "duelos": "3/4",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 51,
-    "pod": 1,
-    "pts": 37500,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1,
-     "nuevo": true
-    }
-   }
-  },
   "Nemi": {
    "FFA": {
     "duelos": "2/6",
@@ -5638,7 +5633,6 @@
     "pts": 6000,
     "racha": "1/1",
     "tg": {
-     "dv": true,
      "fund": true
     }
    }
@@ -6044,6 +6038,7 @@
     "pts": 12500,
     "racha": "0/0",
     "tg": {
+     "dv": true,
      "nuevo": true
     }
    }
@@ -7794,7 +7789,6 @@
     "pts": 12750,
     "racha": "2/2",
     "tg": {
-     "dv": true,
      "fin": 1
     }
    }

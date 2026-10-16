@@ -1,39 +1,39 @@
 {
  "v": 1,
- "cuando": "2026-10-16T20:31:09Z",
+ "cuando": "2026-10-16T20:58:25Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 465.1,
+ "dur_s": 304.4,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.7
+   "s": 0.6
   },
   {
    "n": "0c",
    "que": "lo corregido desde los reportes",
    "ok": true,
-   "s": 3.5
+   "s": 4.3
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 68.2
+   "s": 54.9
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 47.7
+   "s": 44.8
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.7
+   "s": 0.4
   },
   {
    "n": "1a2",
@@ -45,25 +45,25 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 37.4
+   "s": 39.4
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 2.3
+   "s": 2.6
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.9
+   "s": 6.5
   },
   {
    "n": "2b0",
    "que": "el Writing Challenge de FFA",
    "ok": true,
-   "s": 0.6
+   "s": 0.5
   },
   {
    "n": "2b",
@@ -75,19 +75,19 @@
    "n": "2b2",
    "que": "las insignias",
    "ok": true,
-   "s": 1.1
+   "s": 1.0
   },
   {
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.1
+   "s": 0.4
   },
   {
    "n": "2b3d",
    "que": "los paneles de DRA",
    "ok": true,
-   "s": 24.6
+   "s": 0.2
   },
   {
    "n": "2b3b",
@@ -99,55 +99,55 @@
    "n": "2b3c",
    "que": "el reto del debut",
    "ok": true,
-   "s": 2.4
+   "s": 0.1
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 1.7
+   "s": 0.8
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.6
+   "s": 0.5
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.9
+   "s": 3.8
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 143.8
+   "s": 35.6
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 4.0
+   "s": 3.8
   },
   {
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 3.5
+   "s": 3.3
   },
   {
    "n": "2b8c",
    "que": "las promociones",
    "ok": true,
-   "s": 3.3
+   "s": 2.6
   },
   {
    "n": "2b8d",
    "que": "los MES AWARDS",
    "ok": true,
-   "s": 2.4
+   "s": 1.9
   },
   {
    "n": "2b8b",
@@ -159,19 +159,19 @@
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 25.1
+   "s": 23.8
   },
   {
    "n": "2b10",
    "que": "los roles de la página",
    "ok": true,
-   "s": 0.5
+   "s": 0.4
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 51.5
+   "s": 48.9
   },
   {
    "n": "2c2",
@@ -183,7 +183,7 @@
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 13.7
+   "s": 10.9
   },
   {
    "n": "2e",
@@ -195,17 +195,17 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.1
+   "s": 6.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.5
+   "s": 4.2
   }
  ],
  "fallas": [],
- "decidir": 71,
+ "decidir": 70,
  "ultimo_evento": {
   "n": "478",
   "nombre": "SNAKE INSIGNIA 5 8",
@@ -214,10 +214,10 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-16T20:24:42Z",
+  "cuando": "2026-10-16T20:54:25Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 466,
-  "un_evento": 231,
+  "jugadores": 465,
+  "un_evento": 229,
   "diez_o_mas": 55,
   "cohortes": [
    {
@@ -229,7 +229,7 @@
    {
     "semana": "2026-09-28",
     "nuevos": 129,
-    "volvieron": 49,
+    "volvieron": 50,
     "completa": false
    },
    {
@@ -240,7 +240,7 @@
    },
    {
     "semana": "2026-10-12",
-    "nuevos": 32,
+    "nuevos": 31,
     "volvieron": 5,
     "completa": false
    }
@@ -248,20 +248,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 264,
-   "read": 33989
+   "write": 285,
+   "read": 35628
   },
   "objeto": {
-   "leidas": 1651036,
-   "escritas": 15344,
-   "pedidos": 6704
+   "leidas": 1798708,
+   "escritas": 17518,
+   "pedidos": 6977
   },
   "worker": {
-   "pedidos": 7824,
+   "pedidos": 7940,
    "errores": 0,
-   "sub": 8370,
+   "sub": 8494,
    "p50_ms": 1.22,
-   "p99_ms": 9.21
+   "p99_ms": 9.31
   },
   "r2": {
    "objetos": 4212,

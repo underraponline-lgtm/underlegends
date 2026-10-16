@@ -43,6 +43,13 @@
    ],
    "revelacion": [
     {
+     "op": "Catarsis",
+     "n": "Catarsis",
+     "pts": 54000,
+     "oro": 1,
+     "ev": 2
+    },
+    {
      "op": "RT",
      "n": "RT",
      "pts": 38775,
@@ -69,13 +76,6 @@
      "pts": 30438,
      "oro": 0,
      "ev": 9
-    },
-    {
-     "op": "Medster",
-     "n": "Medster",
-     "pts": 17500,
-     "oro": 0,
-     "ev": 1
     }
    ],
    "batalla": [
@@ -330,22 +330,22 @@
      "d": "le ganó a Erian (#5) siendo #118 · Cuentas Pendientes V.1"
     },
     {
-     "op": "389:Catarsis",
-     "n": "Catarsis",
-     "q": "Catarsis",
-     "quien": [
-      "Catarsis"
-     ],
-     "d": "le ganó a PichulaMc (#4) siendo #90 · RED BULL NACIONAL ALBICELESTE"
-    },
-    {
      "op": "436:HH",
      "n": "HH",
      "q": "HH",
      "quien": [
       "HH"
      ],
-     "d": "le ganó a Erian (#5) siendo #87 · LA BELLA ARTE DE LA DESGRACIA VOL3"
+     "d": "le ganó a Erian (#5) siendo #88 · LA BELLA ARTE DE LA DESGRACIA VOL3"
+    },
+    {
+     "op": "389:Catarsis",
+     "n": "Catarsis",
+     "q": "Catarsis",
+     "quien": [
+      "Catarsis"
+     ],
+     "d": "le ganó a PichulaMc (#4) siendo #54 · RED BULL NACIONAL ALBICELESTE"
     },
     {
      "op": "431:Six",
@@ -386,6 +386,15 @@
      "d": "6 duelos ganados seguidos"
     },
     {
+     "op": "Catarsis",
+     "n": "Catarsis",
+     "q": "Catarsis",
+     "quien": [
+      "Catarsis"
+     ],
+     "d": "6 duelos ganados seguidos"
+    },
+    {
      "op": "Liberia",
      "n": "Liberia",
      "q": "Liberia",
@@ -400,15 +409,6 @@
      "q": "Panchok",
      "quien": [
       "Panchok"
-     ],
-     "d": "6 duelos ganados seguidos"
-    },
-    {
-     "op": "PichulaMc",
-     "n": "PichulaMc",
-     "q": "PichulaMc",
-     "quien": [
-      "PichulaMc"
      ],
      "d": "6 duelos ganados seguidos"
     }
@@ -753,7 +753,7 @@
      "n": "Argentina",
      "cc": "ar",
      "quien": [],
-     "d": "1.554.626 pts · 37 jugaron"
+     "d": "1.592.126 pts · 37 jugaron"
     },
     {
      "op": "Chile",

@@ -592,9 +592,6 @@
    "sv-urbf": "2026-10-12",
    "temporada": "2026-10-12"
   },
-  "kyss": {
-   "temporada": "2026-10-12"
-  },
   "lambroggini": {
    "servidor": "2026-10-12",
    "sv-ffa": "2026-10-12",
@@ -1148,7 +1145,7 @@
   }
  },
  "pasaban": 389,
- "cuando": "2026-10-16T20:30:57Z",
+ "cuando": "2026-10-16T20:58:14Z",
  "borradas": [
   [
    "jj",

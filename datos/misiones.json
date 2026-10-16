@@ -1631,6 +1631,12 @@
      16,
      0
     ],
+    "Catarsis": [
+     1,
+     2,
+     2,
+     1
+    ],
     "Chente": [
      1,
      16,
@@ -1984,12 +1990,6 @@
      1,
      1,
      0
-    ],
-    "Natsuki 🇦🇷": [
-     1,
-     2,
-     2,
-     1
     ],
     "Nemi": [
      5,
@@ -2394,6 +2394,7 @@
     "BNA": 3700,
     "Benjixo": 900,
     "Bloody": 900,
+    "Catarsis": 1400,
     "Chop": 300,
     "Cinexfilo": 900,
     "Colesito": 2900,
@@ -2427,7 +2428,6 @@
     "Motera": 1600,
     "Mr Still Ballin": 600,
     "NC": 2900,
-    "Natsuki 🇦🇷": 1400,
     "Nemi": 900,
     "OG": 2900,
     "ONDADISKO": 600,
@@ -2511,6 +2511,7 @@
   "Cajita": 300,
   "Carlosmo": 1600,
   "Carlosss": 1600,
+  "Catarsis": 1400,
   "Chop": 1600,
   "Cinexfilo": 900,
   "Colesito": 3800,
@@ -2609,7 +2610,6 @@
   "NC": 3800,
   "NXUZ": 600,
   "NYCO": 300,
-  "Natsuki 🇦🇷": 1400,
   "Nemi": 1200,
   "Neo": 1300,
   "NewCharacter🇦🇷": 300,
