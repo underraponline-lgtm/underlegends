@@ -580,6 +580,9 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   // 🏆 los que clasifican al torneo de cierre (ver `clasificados()`), y la fila después de la cual va la línea
   const clas = useMemo(() => clasificados(cfg, base), [base, sub]); // eslint-disable-line react-hooks/exhaustive-deps
   const corteK = clas && clas.length === cfg.final ? clave(clas[clas.length - 1]) : null;
+  // 🏆 Y EN EL COMPETITIVO, DESPUÉS DEL 4º, LOS QUE VAN DIRECTO A LA SUPERLIGA (Dlx, 16/10/2026: «crear una línea donde
+  // dice clasifica directo a la superliga… después del top 4»): del 5º al 16º van al duelo a muerte
+  const directoK = sub === 'competitivo' && clas && clas.length > 4 ? clave(clas[3]) : null;
 
   // al cambiar de ranking: orden, búsqueda y «ver más» vuelven a cero (los filtros de servidor y país se quedan:
   // quien mira «sólo FFA» quiere seguir viendo FFA en Duelos)
@@ -867,7 +870,9 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
                     <tbody>
                       {vis.map((f) => {
                         const k = clave(f);
-                        const esCorte = corteK === k && !orden && !q && !sv && !cc && !soloSigo && !soloNuevos;
+                        const sinFiltro = !orden && !q && !sv && !cc && !soloSigo && !soloNuevos;
+                        const esCorte = corteK === k && sinFiltro;
+                        const esDirecto = directoK === k && sinFiltro;
                         const ab = abierta === k;
                         const cl = [k === miFila ? 'yo' : '', f.fc ? 'fc' : '', cfg.sinPuesto && cfg.sinPuesto(f) ? 'chica' : '', ab ? 'abierta' : ''].filter(Boolean).join(' ');
                         const puede = cfg.grupo || f.k;
@@ -880,6 +885,9 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
                             </tr>
                             {ab ? (
                               <tr className="rk-det"><td colSpan={cols.length}><Detalle x={x} cfg={cfg} f={f} perf={perf} /></td></tr>
+                            ) : null}
+                            {esDirecto ? (
+                              <tr className="rk-corte directo"><td colSpan={cols.length}><a href="#/ligas/superliga"><Ico n="copa" t={14} /> Hasta acá clasifican directo a la Superliga · del 5º al 16º, al duelo a muerte</a></td></tr>
                             ) : null}
                             {esCorte ? (
                               <tr className="rk-corte"><td colSpan={cols.length}><a href={'#/ligas/' + (sub === 'competitivo' ? 'superliga' : 'clausura')}><Ico n="copa" t={14} /> Hasta acá clasifican a la {sub === 'competitivo' ? 'Superliga' : 'Clausura'} de la {liga.temp || 'T1'}</a></td></tr>

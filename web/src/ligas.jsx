@@ -734,7 +734,7 @@ function Superliga({ liga }) {
   return (
     <>
       <CabFinal liga={liga} id="superliga" tag={'LIGA GLOBAL · AL CIERRE DE LA ' + (liga.temp || 'T1')} titulo="Superliga"
-        bajada={<>Los 16 primeros del <a href="#/ranking/competitivo">Competitivo</a>{fin ? <> al cierre de la temporada, el {diaSin(fin)}</> : null}. La Temporada 2 arranca cuando termina.</>}
+        bajada={<>Los 16 primeros del <a href="#/ranking/competitivo">Competitivo</a>{fin ? <> al cierre de la temporada, el {diaSin(fin)}</> : null}. Se juega después de la Clausura y es parte de la T1: la Temporada 2 arranca cuando termina.</>}
         nums={[[dias === 0 ? 'CIERRA' : 'DÍAS AL CIERRE', dias > 0 ? dias : dias === 0 ? 'HOY' : '—'], ['CLASIFICAN', CIERRE], ['DIRECTOS', 4], ['FECHAS', 9]]} />
       <Sec id="lgf-como" titulo="Cómo se juega">
         <ol className="lgf-pasos">
@@ -755,8 +755,9 @@ function Superliga({ liga }) {
         </Sec>
       ) : null}
       <Sec id="lgf-premios" titulo="Los premios"><Premios items={PREMIOS_SUPER} /></Sec>
-      <Sec id="lgf-otra" titulo="Y la Clausura">
-        <p className="lgf-p0">Los 16 primeros de la <b>Temporada</b> juegan su propia llave para cerrarla. Quien está en las dos, juega las dos.</p>
+      <Sec id="lgf-otra" titulo="Antes, la Clausura">
+        <p className="lgf-p0">El orden: cierra la temporada, primero se juega la <b>Clausura</b> —los 16 primeros de la Temporada, en una llave— y
+          después la Superliga. Quien está en las dos, juega las dos. Lo que se juegue en los servidores mientras tanto ya cuenta para la pre-temporada 2.</p>
         <a className="btn borde2 chico" href="#/ligas/clausura">Ver la Clausura</a>
       </Sec>
     </>
@@ -770,7 +771,7 @@ function Clausura({ liga }) {
   return (
     <>
       <CabFinal liga={liga} id="clausura" tag={'LIGA GLOBAL · AL CIERRE DE LA ' + (liga.temp || 'T1')} titulo="Clausura"
-        bajada={<>Los 16 primeros de la <a href="#/ranking/temporada">Temporada</a>{fin ? <> al {diaSin(fin)}</> : null} juegan una llave desde octavos para cerrarla.</>}
+        bajada={<>Los 16 primeros de la <a href="#/ranking/temporada">Temporada</a>{fin ? <> al {diaSin(fin)}</> : null} juegan una llave desde octavos para cerrarla. Es lo primero después del cierre: después viene la Superliga.</>}
         nums={[[dias === 0 ? 'CIERRA' : 'DÍAS AL CIERRE', dias > 0 ? dias : dias === 0 ? 'HOY' : '—'], ['CLASIFICAN', CIERRE], ['RONDAS', 4], ['PODIO', 3]]} />
       <Sec id="lgf-como" titulo="Cómo se juega">
         <ol className="lgf-pasos">
@@ -786,8 +787,9 @@ function Clausura({ liga }) {
         </Sec>
       ) : null}
       <Sec id="lgf-premios" titulo="Los premios"><Premios items={PREMIOS_CLAUSURA} /></Sec>
-      <Sec id="lgf-otra" titulo="Y la Superliga">
-        <p className="lgf-p0">Los 16 primeros del <b>Competitivo</b> juegan la Superliga: los 4 primeros directo y los otros 12, un duelo a muerte por 6 lugares.</p>
+      <Sec id="lgf-otra" titulo="Después, la Superliga">
+        <p className="lgf-p0">Cuando termina la Clausura, los 16 primeros del <b>Competitivo</b> juegan la Superliga: los 4 primeros directo y los otros
+          12, un duelo a muerte por 6 lugares. Es parte de la T1, y la Temporada 2 arranca cuando termina.</p>
         <a className="btn borde2 chico" href="#/ligas/superliga">Ver la Superliga</a>
       </Sec>
     </>
@@ -805,19 +807,19 @@ function Destacadas({ liga }) {
   const cla = topCierre(liga, 'temporada');
   return (
     <div className="lgf-dest">
-      <a className="lgf-d sup" href="#/ligas/superliga">
-        <span className="lgf-d-tag">LIGA GLOBAL{falta ? ' · ' + falta : ''}</span>
-        <b>Superliga</b>
-        <span>Los 16 del Competitivo: los 4 primeros directo, los otros 12 a un duelo a muerte, y 10 en la liga.</span>
-        {sup.length ? <span className="lgf-d-hoy">{caras(sup.slice(0, 4))}<small>Hoy entrarían directo {sup.slice(0, 4).map((f) => limpio(f.n)).join(', ')}</small></span> : null}
-        <i>Ver la Superliga <Ico n="flecha" t={16} /></i>
-      </a>
       <a className="lgf-d cla" href="#/ligas/clausura">
         <span className="lgf-d-tag">LIGA GLOBAL{falta ? ' · ' + falta : ''}</span>
         <b>Clausura</b>
-        <span>Los 16 de la Temporada, en una llave desde octavos.</span>
+        <span>Primero, al cierre: los 16 de la Temporada, en una llave desde octavos.</span>
         {cla.length ? <span className="lgf-d-hoy">{caras(cla.slice(0, 4))}<small>Hoy arriba de todo: {cla.slice(0, 4).map((f) => limpio(f.n)).join(', ')}</small></span> : null}
         <i>Ver la Clausura <Ico n="flecha" t={16} /></i>
+      </a>
+      <a className="lgf-d sup" href="#/ligas/superliga">
+        <span className="lgf-d-tag">LIGA GLOBAL{falta ? ' · ' + falta : ''}</span>
+        <b>Superliga</b>
+        <span>Después de la Clausura: los 16 del Competitivo, los 4 primeros directo, los otros 12 a un duelo a muerte, y 10 en la liga.</span>
+        {sup.length ? <span className="lgf-d-hoy">{caras(sup.slice(0, 4))}<small>Hoy entrarían directo {sup.slice(0, 4).map((f) => limpio(f.n)).join(', ')}</small></span> : null}
+        <i>Ver la Superliga <Ico n="flecha" t={16} /></i>
       </a>
     </div>
   );

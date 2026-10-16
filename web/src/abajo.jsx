@@ -4,7 +4,7 @@
 // estando abajo es algo tonto porque ya están arriba»), y El Elegido se mudó a Encuestas.
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { limpio, nuevaQue, num } from './liga.js';
-import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, subirSiEsta } from './piezas.jsx';
+import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, promoAbierta, subirSiEsta } from './piezas.jsx';
 import { Buscar, CaraDc, CaraH, MENU, QUE_ES } from './arriba.jsx';
 import { abrirVideo } from './video.jsx';
 
@@ -444,6 +444,8 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   const ir = useMemo(() => (d) => {
     if (!d) return;
     onCerrar();
+    // 📣 abrir una promo desde su historia también paga (ver `promoAbierta()`)
+    if (d.promo) promoAbierta(d.promo);
     if (d.carta) accion.carta(d.carta, d.cual);
     else if (d.perfil) accion.perfil(d.perfil);
     else if (d.llave) accion.llave(d.llave);

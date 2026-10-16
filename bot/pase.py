@@ -72,7 +72,7 @@ COLA = (1000, 300)
 #: lo que el objeto sabe contar. `activo`: días de la racha · `fel`: felicitaciones · `vivo`: llaves en vivo
 #: distintas · `precio`: precios por cabeza · `dra`: eventos jugados en DRA · `caza`: buscados cazados (estos dos, del
 #: ciclo). Si se agrega uno, también en `PASE_MIDE` de `bot/avisos.js`
-MIDE = ('activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'sigue')
+MIDE = ('activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'sigue', 'promo')
 #: las Tareas: `(id, texto, cómo se cumple, qué mide, meta, xp)`, en el orden en que se muestran
 DIARIAS = (
     ('entrar', 'Entrá hoy', 'Con tu cuenta en la página, usando el bot o jugando un evento.', 'activo', 1, 150),
@@ -125,6 +125,9 @@ TEMPORADA_NUEVAS = (
      'página.', 'voto', 5, 1500),
     ('precio5', 'Poné precio a 5 cabezas', 'En toda la temporada, en la Tienda: cinco precios, a los buscados que '
      'quieras.', 'precio', 5, 2000),
+    # 📣 (Dlx, 16/10/2026): abrir lo que promocionan los raperos de los servidores. Ver `promoVio()` en bot/avisos.js
+    ('promo10', 'Abrí 10 promos', 'En toda la temporada: el video o el link de algo que promociona un rapero, desde '
+     'Publicaciones, un perfil, un servidor o las historias.', 'promo', 10, 1500),
 )
 #: 🏠 MIENTRAS DRA NO ORGANICE, SUS TRES TAREAS SE CAMBIAN POR ESTAS (Dlx, 12/10/2026, «6. B»). DRA no había hecho
 #: ningún evento en la T1, así que «Jugá un evento en DRA» y las dos de temporada no las podía cumplir nadie: eran 5.500

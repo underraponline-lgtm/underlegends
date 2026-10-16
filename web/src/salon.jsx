@@ -59,8 +59,8 @@ function Temporadas({ liga }) {
         <ul className="sf-temp-l">
           {fila('#1 DE LA TEMPORADA · VA PRIMERO', tem, tem ? 'OVR ' + (tem.ovr || '—') : '', '#/ranking/temporada')}
           {fila('#1 DEL COMPETITIVO · VA PRIMERO', comp, comp ? (comp.rg || '') + ' · ' + String(comp.sc || '').replace('.', ',') : '', '#/ranking/competitivo')}
-          {fila('CAMPEÓN DE LA SUPERLIGA', null, '', '#/ligas/superliga')}
           {fila('CAMPEÓN DE LA CLAUSURA', null, '', '#/ligas/clausura')}
+          {fila('CAMPEÓN DE LA SUPERLIGA', null, '', '#/ligas/superliga')}
         </ul>
       </article>
     </Sec>

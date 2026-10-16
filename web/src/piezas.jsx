@@ -430,3 +430,36 @@ export function FaltaLista({ q, tu }) {
     </ul>
   );
 }
+
+// ── 📣 ABRIR UNA PROMO PAGA (Dlx, 16/10/2026: «detectá cuando da click en ir al enlace de la promo», 50 Puntos de Tienda
+// y XP del Pase, hasta 3 por día). Se avisa al abrir el video o el link —desde Publicaciones, un perfil, un servidor o las
+// historias—; quién lo dice la sesión de Discord y qué promo, el muro (`validarPromo()` en bot/avisos.js). Sin cuenta no
+// pasa nada: `conCuenta` sin modo nunca saca de la página ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+export function promoAbierta(id) {
+  if (!id || !window.conCuenta || !window.DC) return;
+  window.conCuenta('/api/avisos/promo-vio', { id }).then((j) => {
+    if (j && j.ok && j.nuevo) window.dispatchEvent(new CustomEvent('lg:promo', { detail: j }));
+  }).catch(() => { /* sin premio esta vez: la promo igual se abre */ });
+}
+// el aviso de lo que pagó, unos segundos abajo de todo
+export function AvisoPromo() {
+  const [x, setX] = useState(null);
+  useEffect(() => {
+    const f = (e) => setX(e.detail || null);
+    window.addEventListener('lg:promo', f);
+    return () => window.removeEventListener('lg:promo', f);
+  }, []);
+  useEffect(() => {
+    if (!x) return undefined;
+    const t = setTimeout(() => setX(null), 4500);
+    return () => clearTimeout(t);
+  }, [x]);
+  if (!x) return null;
+  const quedan = Math.max(0, (x.tope || 3) - (x.hoy || 0));
+  return (
+    <div className="promo-pago" role="status">
+      {x.pago ? <><b>+{x.pago} Puntos de Tienda</b> por abrir una promo{quedan ? ' · ' + quedan + ' más hoy' : ' · listo por hoy'}</>
+        : <>Ya abriste {x.tope || 3} promos hoy: mañana vuelven a pagar</>}
+    </div>
+  );
+}

@@ -9,7 +9,7 @@
 // publicación —eran 46 de 80 renglones—, y Felicitar va sólo en los logros de verdad (campeón, rango, Most Wanted).
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { MESES, ksDe, limpio, num, siglaDe } from './liga.js';
-import { Cara, Carta, Ico, accion, useCampana } from './piezas.jsx';
+import { Cara, Carta, Ico, accion, promoAbierta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { Elegido, X2 } from './encuestas.jsx';
 
@@ -140,13 +140,13 @@ export function Pub({ liga, it, A }) {
     const plat = PLATAFORMA[it.plat] || 'su link';
     cat = 'PROMO · ' + siglaDe(it.sv);
     vis = it.vid ? (
-      <button type="button" className="pub-promo-v" onClick={() => abrirVideo({ vid: it.vid, tit: limpio(it.tit || ''), link: it.url })}
+      <button type="button" className="pub-promo-v" onClick={() => { promoAbierta(it.id); abrirVideo({ vid: it.vid, tit: limpio(it.tit || ''), link: it.url }); }}
         aria-label={'Mirar ' + (it.tit ? limpio(it.tit) : 'el video')}><Miniatura vid={it.vid} cls="pub-promo-img" /><span aria-hidden="true">▶</span></button>
-    ) : it.img ? <a className="pub-promo-v" href={it.url} target="_blank" rel="noopener noreferrer" aria-label={'Abrir en ' + plat}><img className="pub-promo-img" alt="" src={it.img} loading="lazy" /></a>
+    ) : it.img ? <a className="pub-promo-v" href={it.url} target="_blank" rel="noopener noreferrer" aria-label={'Abrir en ' + plat} onClick={() => promoAbierta(it.id)}><img className="pub-promo-img" alt="" src={it.img} loading="lazy" /></a>
       : <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
     txt = it.tit ? <>{nombres} comparte <b>{limpio(it.tit)}</b></> : <>{nombres} comparte algo en <b>{plat}</b></>;
     det = plat + (it.de && it.de !== it.tit ? ' · ' + it.de : '');
-    acc = <a className="pub-a" href={it.url} target="_blank" rel="noopener noreferrer">{it.plat === 'sp' || it.plat === 'sc' ? 'Escuchar' : 'Ver'} en {plat} ↗</a>;
+    acc = <a className="pub-a" href={it.url} target="_blank" rel="noopener noreferrer" onClick={() => promoAbierta(it.id)}>{it.plat === 'sp' || it.plat === 'sc' ? 'Escuchar' : 'Ver'} en {plat} ↗</a>;
   } else if (it.tipo === 'ligahito') {
     // 🏟️ lo que pasa en las ligas de los servidores (bot/ligas.py `hitos()`, 16/10/2026): invicto, la punta y el campeón
     const ir = '#/ligas/' + encodeURIComponent(it.liga || '');
@@ -396,6 +396,8 @@ export function Publicaciones({ liga, enc }) {
             <Avisame />
             {sigo.length ? <section className="pub-bloque"><h2 className="evp-h2">A quién seguís</h2><Sigo liga={liga} sigo={sigo} onVer={() => { setFil('sigo'); setVer(40); }} /></section> : null}
           </div>
+        {fil === 'promos' ? <p className="pub-promo-paga">Lo que comparten los raperos en el canal de promoción de su servidor. Abrí las promos con tu
+          cuenta de Discord: cada una te da <b>50 Puntos de Tienda</b> (hasta 3 por día) y suma a tu Pase.</p> : null}
         </aside>
       </div>
     </>

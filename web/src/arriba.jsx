@@ -567,7 +567,8 @@ export function gruposHistorias(liga) {
       return Slide('PROMO · ' + siglaDe(it.sv), <>{vis}<h3 className="st-h">{it.tit ? limpio(it.tit) : q + ' en ' + (PL[it.plat] || 'su link')}</h3>
         <small className="st-s">Lo comparte {q} · {PL[it.plat] || ''}</small></>,
       liga.cuando(it.t), it.vid ? 'Mirar el video' : (it.plat === 'sp' || it.plat === 'sc' ? 'Escuchar en ' : 'Ver en ') + (PL[it.plat] || 'su link'),
-      it.vid ? { video: { vid: it.vid, tit: limpio(it.tit || ''), link: it.url } } : { link: it.url }, 'promo:' + (it.pid || it.url), String(it.t || ''));
+      it.vid ? { video: { vid: it.vid, tit: limpio(it.tit || ''), link: it.url }, promo: it.id } : { link: it.url, promo: it.id },
+      'promo:' + (it.pid || it.url), String(it.t || ''));
     });
     slides.sort(masViejo);
     // el círculo lleva la tapa de la más nueva, como el aro de una historia de Instagram

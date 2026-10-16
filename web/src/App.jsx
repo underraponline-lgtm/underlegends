@@ -3,7 +3,7 @@
 // pide a ella (ver `accion` en piezas.jsx); lo que el Inicio muestra lo lee de sus mismos datos.
 import { Component, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DUENO, Liga, aQuienSigo, limpio, quienMira } from './liga.js';
-import { nombrePais } from './piezas.jsx';
+import { AvisoPromo, nombrePais } from './piezas.jsx';
 import { Cabecera, Hero, Historias, Instalar, IrA, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
 import { LosQueMandan, Noticias } from './medio.jsx';
 import { Menu, Merch, Pie, Subir, Tabbar, Visor } from './abajo.jsx';
@@ -609,6 +609,7 @@ export default function App() {
       <Aislada n="Menu"><Menu liga={liga} abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} temaSv={temaSv} /></Aislada>
       {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={cerrarHistoria} onVisto={visto} vistos={vistos || {}} raiz={raiz} /></Aislada> : null}
       <Aislada n="Video"><VentanaVideo /></Aislada>
+      <Aislada n="AvisoPromo"><AvisoPromo /></Aislada>
       {carta ? <Aislada key={'c' + carta} n="VisorCarta"><Suspense fallback={null}><VisorCarta liga={liga} dc={yo.dc} k={String(carta).split('|')[0]} inicial={String(carta).split('|')[1] || ''} onCerrar={cerrarCarta} /></Suspense></Aislada> : null}
     </div>
   );

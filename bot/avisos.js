@@ -1764,6 +1764,7 @@ export const BIENVENIDA_DIAS = 14;
 // lo que más da (10 por evento). Las de «una vez» se miran también en su tabla, así lo hecho antes de esto cuenta
 export const XP_FUENTES = {
   fel: [1, 60, 'Felicitar una publicación'],
+  promo: [2, 60, 'Abrir una promo'],
   sigue: [2, 25, 'Seguir a un rapero'],
   voto: [2, 30, 'Votar en una encuesta'],
   qg: [1, 60, 'Votar en «¿Quién gana?»'],
@@ -1793,7 +1794,7 @@ export function xpDeFuentes(cuentas) {
 // DRA) y `caza` (buscados cazados) los manda el ciclo; los días (`activo`), las felicitaciones y las llaves en vivo
 // (`pase_log`) y los precios (`precios`) los ve pasar el objeto
 //: 🏠 `voto`, `apuesta` y `sigue`: las Tareas que reemplazan a las de DRA mientras DRA no organice (`pase.SIN_DRA`)
-export const PASE_MIDE = ['activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'sigue'];
+export const PASE_MIDE = ['activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'sigue', 'promo'];
 const diaNum = (s) => Math.round(Date.UTC(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10)) / DIA_MS);
 //: «hasta el final de la temporada», para las cuentas de temporada (un número y no `Infinity`: va a SQLite)
 const SIEMPRE = Number.MAX_SAFE_INTEGER;
@@ -2301,6 +2302,8 @@ const RUTAS = {
   '/avisos/mi-foto': 'POST',
   // 👏 felicitar un logro de Publicaciones, y cuántos lleva cada uno: ver `validarAplauso()` y `aplaudir()`
   '/avisos/felicitar': 'POST', '/avisos/aplausos': 'GET',
+  // 📣 abrir una promo paga Tienda y XP: ver `validarPromo()` y `promoVio()`
+  '/avisos/promo-vio': 'POST',
   // 🔔 el panel de la campana: lo que se te avisó, con tu sesión. Ver `bandeja()`
   '/avisos/bandeja': 'POST',
   // 🔥 tu racha diaria y tu nivel, con tu sesión; y el nivel y la racha de cada perfil. Ver `rachaDe()` y `niveles()`
@@ -2603,6 +2606,30 @@ export function validarAplauso(items, d, id, mios, ahora) {
   if ((mios || []).some((k) => k && ks.indexOf(k) >= 0)) return { error: 'vos', estado: 403 };
   return { id: x.id, tipo: x.tipo, quien: (x.quien || []).slice(0, 8).map((n) => String(n).slice(0, 60)),
     ks: ks.slice(0, 8), motivo: motivoAplauso(x), t: String(x.t || '').slice(0, 30) };
+}
+
+// ── 📣 ABRIR UNA PROMO PAGA (Dlx, 16/10/2026: «dar puntos y puntos de tienda a aquellos que… dan click», y a las
+// preguntas: «mirá la historia y detectá cuando da click en ir al enlace de la promo», XP del Pase y Puntos de Tienda,
+// «50 por promo, hasta 3 por día»). Una vez por promo y por persona, con su Discord, y nunca la propia. ⚠️ Se paga ABRIR
+// la promo —el link o el video—, nunca un like ni una suscripción: eso es lo que YouTube castiga. Qué promo, el muro que
+// dejó el ciclo (`web:muro`, tipo `promo`), nunca la página
+//: cuántos Puntos de Tienda paga abrir una promo, cuántas pagan por día y cuánto se guarda qué abrió cada uno
+export const PROMO_PAGA = 50;
+export const PROMO_TOPE_DIA = 3;
+export const PROMO_DIAS = 30;
+
+/**
+ * ¿Vale abrir esta promo? `{id, pid, sv}` si vale, `{error, estado}` si no. `items` es el muro de KV, `id` el Discord ID
+ * y `mios` sus perfiles (`d:` y `dn:`): la promo propia no paga. Pura, sin red: la prueba `bot/avisos_prueba.mjs`.
+ */
+export function validarPromo(items, d, id, mios, ahora) {
+  const x = (Array.isArray(items) ? items : []).find((it) => it && it.id === (d && d.id) && it.tipo === 'promo');
+  if (!x) return { error: 'no_existe', estado: 404 };
+  const creada = creadaEn(id);
+  if (!creada || ahora - creada < EDAD_MIN_DIAS * DIA_MS) return { error: 'nueva', estado: 403 };
+  const ks = Array.isArray(x.ks) ? x.ks.map((k) => (claveValida(k) ? k : '')) : [];
+  if ((mios || []).some((k) => k && ks.indexOf(k) >= 0)) return { error: 'vos', estado: 403 };
+  return { id: x.id, pid: String(x.pid || x.id).slice(0, 60) };
 }
 
 /** El hito más alto que ya alcanzó `n` (0 si ninguno). */
@@ -3962,6 +3989,31 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ quien: q.id, pub: v }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 📣 ABRIR UNA PROMO: quién lo dice Discord (o la sesión); qué promo, el muro (`validarPromo()`). Paga el objeto
+  if (ruta === '/avisos/promo-vio') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || !/^[0-9a-f]{12}$/.test(String(d.id || '')) ||
+        (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    let items = [];
+    try { items = (JSON.parse((await env.KV.get('web:muro', { cacheTtl: 60 })) || '{}').items) || []; } catch (e) { items = []; }
+    const mios = [];
+    for (const p of ['d:', 'dn:']) {
+      try {
+        const k = await env.KV.get(p + q.id);
+        if (claveValida(k)) mios.push(k);
+      } catch (e) { /* sin KV, la promo igual dice de quién es */ }
+    }
+    const v = validarPromo(items, d, q.id, mios, Date.now());
+    if (v.error) return json(v, v.estado);
+    return elObjeto(env).fetch('https://avisos/promo-vio', {
+      method: 'POST', body: JSON.stringify({ quien: q.id, pid: v.pid }), headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🔔 LA BANDEJA: lo tuyo, con tu sesión (o un permiso recién traído). ⚠️ La página nunca manda a Discord por esto:
   // sin sesión, el panel invita a entrar
   if (ruta === '/avisos/bandeja') {
@@ -4813,6 +4865,10 @@ export class Avisos {
       // con «olvidarme». Ver `xpVio()` y `xpDe()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS xp_log (quien TEXT NOT NULL, que TEXT NOT NULL, ref TEXT NOT NULL, ' +
         't INTEGER NOT NULL, PRIMARY KEY (quien, que, ref)) WITHOUT ROWID');
+      // 📣 LAS PROMOS QUE ABRIÓ CADA UNO (16/10/2026): una vez por promo, para pagar `PROMO_PAGA` hasta `PROMO_TOPE_DIA`
+      // por día (`dia`, en hora del este). Se borran a los `PROMO_DIAS` días (lo que pagó queda en la Tienda)
+      this.sql.exec('CREATE TABLE IF NOT EXISTS promo_visto (quien TEXT NOT NULL, pid TEXT NOT NULL, dia TEXT NOT NULL, ' +
+        'pago INTEGER NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, pid)) WITHOUT ROWID');
       // 🧠 LOS DATOS DE CADA PERSONA PARA /card (`p:<clave>`), ACÁ DESDE EL 06/10/2026 Y NO EN KV. Eran casi todo
       // su cupo —unas 230 escrituras por corrida, porque los números del /versus se miden contra el pool y se mueven
       // con cada evento—, y KV da 1.000 por día: el 06/10 a las 7:57 PM iba en 909. Acá son filas, de 100.000 por día.
@@ -4992,6 +5048,7 @@ export class Avisos {
       if (ruta === '/seguir') return this.seguir(d);
       if (ruta === '/sigo') return this.sigo(d);
       if (ruta === '/aplaudir') return this.aplaudir(d);
+      if (ruta === '/promo-vio') return this.promoVio(d);
       if (ruta === '/bandeja') return this.bandeja(d);
       if (ruta === '/mi-servidor') return this.miServidor(d);
       if (ruta === '/mi-foto') return await this.miFoto(d);
@@ -7581,6 +7638,8 @@ export class Avisos {
     this.sql.exec('DELETE FROM pase_hito WHERE quien = ?', String(d.quien));
     // ⭐ y lo que le sumaba nivel
     this.sql.exec('DELETE FROM xp_log WHERE quien = ?', String(d.quien));
+    // 📣 y las promos que abrió
+    this.sql.exec('DELETE FROM promo_visto WHERE quien = ?', String(d.quien));
     // 📊 y los días que usó el bot o la página (el Dashboard): guardaban su Discord ID 35 días (revisión del 05/10/2026)
     this.sql.exec('DELETE FROM uso WHERE quien = ?', String(d.quien));
     // 🔔 y su bandeja
@@ -8565,6 +8624,27 @@ export class Avisos {
    * publicación ya buscada en el muro (`validarAplauso()`). Uno por persona:
    * el segundo toque no suma (`ya`). Devuelve cuántos lleva.
    */
+  promoVio(d) {
+    const quien = String(d.quien || ''), pid = String(d.pid || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !pid || pid.length > 60) return json({ error: 'faltan datos' }, 400);
+    const ahora = Date.now(), dia = diaET(ahora);
+    this.sql.exec('DELETE FROM promo_visto WHERE t < ?', ahora - PROMO_DIAS * DIA_MS);
+    const ya = this.sql.exec('SELECT pago FROM promo_visto WHERE quien = ? AND pid = ?', quien, pid).toArray()[0];
+    const hoy = () => this.sql.exec('SELECT COUNT(*) AS n FROM promo_visto WHERE quien = ? AND dia = ? AND pago > 0', quien, dia)
+      .toArray()[0].n;
+    if (ya) return json({ ok: true, nuevo: false, pago: 0, hoy: hoy(), tope: PROMO_TOPE_DIA });
+    const paga = hoy() < PROMO_TOPE_DIA ? PROMO_PAGA : 0;
+    this.sql.exec('INSERT OR IGNORE INTO promo_visto (quien, pid, dia, pago, t) VALUES (?, ?, ?, ?, ?)', quien, pid, dia, paga, ahora);
+    if (paga) {
+      this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
+        'promo:' + quien + ':' + pid, quien, paga, ahora);
+    }
+    // ⭐ y la XP: la del nivel (todos) y la del Pase (sus Tareas cuentan las promos abiertas)
+    this.xpVio(quien, 'promo', pid, ahora);
+    if (this.paseVio(quien, 'promo', pid, ahora)) this.paseRevisar(quien);
+    return json({ ok: true, nuevo: true, pago: paga, hoy: hoy(), tope: PROMO_TOPE_DIA });
+  }
+
   aplaudir(d) {
     const quien = String(d.quien || ''), p = d.pub || {};
     if (!/^[0-9]{5,25}$/.test(quien) || !/^[0-9a-f]{12}$/.test(String(p.id || '')) || !APLAUDIBLES[p.tipo]) {
@@ -9622,7 +9702,7 @@ export class Avisos {
         return t >= ini && t < fin;
       }).length;
     }
-    if (mide === 'fel' || mide === 'vivo') {
+    if (mide === 'fel' || mide === 'vivo' || mide === 'promo') {
       return this.sql.exec('SELECT COUNT(*) AS n FROM pase_log WHERE quien = ? AND temp = ? AND que = ? AND t >= ? AND t < ?',
         quien, P.cfg.temp, mide, ini, fin).toArray()[0].n;
     }

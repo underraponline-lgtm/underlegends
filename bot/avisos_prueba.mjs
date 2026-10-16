@@ -2019,6 +2019,19 @@ const ok = (cond, que, det) => {
   }
 }
 
+// ── 📣 abrir una promo paga (16/10/2026): sólo una promo del muro, nunca la propia, y no una cuenta recién hecha ──
+{
+  const items = [{ id: 'aaaaaaaaaaa1', tipo: 'promo', pid: '9-0', ks: ['ana'] }, { id: 'bbbbbbbbbbb2', tipo: 'campeon', ks: ['bea'] }];
+  const vieja = '100000000000000000';  // un Discord ID de 2015: la cuenta tiene años
+  const r = A.validarPromo(items, { id: 'aaaaaaaaaaa1' }, vieja, ['cid'], Date.now());
+  ok(r.pid === '9-0' && !r.error, 'una promo del muro vale', JSON.stringify(r));
+  ok(A.validarPromo(items, { id: 'bbbbbbbbbbb2' }, vieja, [], Date.now()).error === 'no_existe',
+    'lo que no es una promo no paga');
+  ok(A.validarPromo(items, { id: 'aaaaaaaaaaa1' }, vieja, ['ana'], Date.now()).error === 'vos', 'la promo propia no paga');
+  ok(A.PROMO_PAGA === 50 && A.PROMO_TOPE_DIA === 3 && A.PASE_MIDE.includes('promo') && A.XP_FUENTES.promo,
+    '50 Puntos por promo, hasta 3 por día, y cuenta para el Pase y el nivel');
+}
+
 if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) fallaron`);
   process.exit(1);
