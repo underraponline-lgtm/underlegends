@@ -1620,6 +1620,17 @@
    "b": "PANCHOK 🇨🇱",
    "ganador": "PANCHOK 🇨🇱",
    "votos": "1–0"
+  },
+  "1560839811705733221": {
+   "id": "1560839811705733221",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792203610112,
+   "a": "XCLUSIVO",
+   "b": "DOMINIK",
+   "ganador": "XCLUSIVO",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5412,6 +5423,37 @@
      ],
      "SENTPA",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1560839777929142414": {
+   "id": "1560839777929142414",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792203602059,
+   "ed": 1792203771080,
+   "texto": "`[ OCTAVOS ]`\n⌞XCLUSIVO⌝ 🆚 ⌞DOMINIK⌝\n⌞FOTOSÍNTESIS⌝ 🆚 ⌞NEXUZ⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "XCLUSIVO",
+      "DOMINIK"
+     ],
+     "XCLUSIVO",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "FOTOSÍNTESIS",
+      "NEXUZ"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
