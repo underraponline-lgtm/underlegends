@@ -2830,8 +2830,12 @@
  },
  "milica": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/milica/servidor.webp",
+  "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/milica/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/milica/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/milica/sv-ffa.webp",
+  "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/milica/sv-ffs.webp",
+  "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/milica/sv-frz.webp",
+  "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/milica/sv-fvs.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/milica/sv-sr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/milica/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/milica/temporada.webp"
@@ -3379,6 +3383,7 @@
  },
  "pipo": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/pipo/servidor.webp",
+  "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/pipo/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/pipo/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/pipo/sv-ffa.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/pipo/sv-frz.webp",

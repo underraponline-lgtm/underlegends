@@ -1,33 +1,33 @@
 {
  "v": 1,
- "cuando": "2026-10-17T03:31:14Z",
+ "cuando": "2026-10-17T04:09:52Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 113.3,
+ "dur_s": 489.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.9
+   "s": 8.0
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.2
+   "s": 5.8
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.1
+   "s": 28.0
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
+   "que": "tanda 1 de 3 · 40 persona(s)",
    "ok": true,
-   "s": 24.6
+   "s": 394.3
   },
   {
    "n": "5b",
@@ -39,7 +39,7 @@
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 55.0
+   "s": 52.3
   }
  ],
  "fallas": [
@@ -49,25 +49,25 @@
   }
  ],
  "ultimo_evento": {
-  "n": "480",
-  "nombre": "DESGRACIAS EN TOKYO VOL 28 PANDILLAS",
-  "sv": "FFA",
+  "n": "481",
+  "nombre": "PROYECTO X VOL.3",
+  "sv": "DDF",
   "dia": "2026-10-16"
  },
  "cuotas": {
   "kv": {
-   "write": 89,
-   "read": 10908
+   "write": 107,
+   "read": 12998
   },
   "objeto": {
-   "leidas": 700728,
-   "escritas": 4599,
-   "pedidos": 2209
+   "leidas": 799060,
+   "escritas": 6611,
+   "pedidos": 2411
   },
   "worker": {
-   "pedidos": 9354,
+   "pedidos": 9372,
    "errores": 0,
-   "sub": 10103,
+   "sub": 10121,
    "p50_ms": 1.26,
    "p99_ms": 9.26
   },
