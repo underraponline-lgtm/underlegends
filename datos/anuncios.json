@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-17T01:24:44+00:00",
+ "cuando": "2026-10-17T01:54:47+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -4343,6 +4343,29 @@
    "categoria_id": "1373343272482902127"
   },
   {
+   "nombre": "PROYECTO X VOL.3",
+   "servidor": "DDF",
+   "canal": "『📢』Eventos",
+   "msg_id": "1560833366511718532",
+   "cuando": "2026-10-17T01:54:33",
+   "canal_id": "1470097121284980736",
+   "guild_id": "1469009547971526659",
+   "organizador": "LA NOCHE NUNCA PERDONA🇬🇵",
+   "orgs": [],
+   "autor_h": "e0acf3adfb0d85f0",
+   "cupos_texto": "16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1 vs 1",
+   "horario": "25 Minutos",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "Drexx💭",
+   "categoria_id": "1469944166137073857"
+  },
+  {
    "nombre": "UNDER FMS WORLD SERIES",
    "servidor": "DDF",
    "canal": "『📢』Eventos",
@@ -4842,38 +4865,6 @@
     ]
    },
    "autor": "CrisZ",
-   "categoria_id": "1469944166137073857"
-  },
-  {
-   "nombre": "JH DE LA CRUZ CUP",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1554625889906593864",
-   "cuando": "2026-09-29T22:48:15",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "Dominick🇵🇪",
-   "orgs": [
-    {
-     "n": "️: Dominick",
-     "id": ""
-    }
-   ],
-   "autor_h": "eea228719690cf75",
-   "cupos_texto": "8",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": ": Rango C",
-   "modalidad": "1vs1",
-   "horario": "YAYAYA",
-   "fecha": "",
-   "premios": "RESPETO - TITULO DE CAMPEÓN",
-   "staff": {
-    "jurado": [
-     "Dominick 🇵🇪"
-    ]
-   },
-   "autor": "DOMINICK",
    "categoria_id": "1469944166137073857"
   },
   {
