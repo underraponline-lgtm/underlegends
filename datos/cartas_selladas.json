@@ -185,7 +185,7 @@
   },
   "CJ": {},
   "Calíz": {
-   "competitivo": "871b6620e0df:aa2fab0a1b31",
+   "competitivo": "b7990df53d22:aa2fab0a1b31",
    "pais": "93c3ec5b2943:631b7a4c93c4",
    "servidor": "b7cc9e2e417c:f7bc857dd9f6:b94adf",
    "temporada": "ad079f9c8262:906ce275eeb8"
@@ -703,7 +703,8 @@
    "servidor": "cabf9440ce5b:f7bc857dd9f6:980594"
   },
   "KZAONE": {
-   "servidor": "607c0c18ce55:f7bc857dd9f6:e141ae"
+   "servidor": "607c0c18ce55:f7bc857dd9f6:e141ae",
+   "temporada": "18a1d93ea716:906ce275eeb8"
   },
   "Kako": {
    "servidor": "f5a4dd6ab7bc:f7bc857dd9f6:055f77"
@@ -1407,8 +1408,8 @@
   },
   "Sexo": {},
   "Shadow": {
-   "competitivo": "05f494139a56:aa2fab0a1b31",
-   "pais": "9fe3e3e169e7:631b7a4c93c4",
+   "competitivo": "4a6be31dd462:aa2fab0a1b31",
+   "pais": "7d8e7188f9a5:631b7a4c93c4",
    "servidor": "3f86b4ca72da:f7bc857dd9f6:4975e5",
    "temporada": "513205a57250:906ce275eeb8"
   },
@@ -1810,5 +1811,5 @@
    "servidor": "7f8885a35a6d:f7bc857dd9f6:55e9bc"
   }
  },
- "cuando": "2026-10-17T06:59:15+00:00"
+ "cuando": "2026-10-17T15:32:13+00:00"
 }

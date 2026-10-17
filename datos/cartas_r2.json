@@ -2244,7 +2244,8 @@
  "kzaone": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kzaone/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kzaone/sv-dra.webp",
-  "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kzaone/sv-fvs.webp"
+  "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kzaone/sv-fvs.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kzaone/temporada.webp"
  },
  "lagca": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lagca/servidor.webp",
