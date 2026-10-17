@@ -1,39 +1,39 @@
 {
  "v": 1,
- "cuando": "2026-10-17T02:58:45Z",
+ "cuando": "2026-10-17T03:28:51Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 315.9,
+ "dur_s": 328.4,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.8
+   "s": 0.7
   },
   {
    "n": "0c",
    "que": "lo corregido desde los reportes",
    "ok": true,
-   "s": 3.2
+   "s": 5.1
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 58.1
+   "s": 58.9
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 43.5
+   "s": 45.8
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.7
+   "s": 0.6
   },
   {
    "n": "1a2",
@@ -45,25 +45,25 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 38.1
+   "s": 36.8
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 2.0
+   "s": 1.9
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.7
+   "s": 8.6
   },
   {
    "n": "2b0",
    "que": "el Writing Challenge de FFA",
    "ok": true,
-   "s": 0.5
+   "s": 0.8
   },
   {
    "n": "2b",
@@ -75,7 +75,7 @@
    "n": "2b2",
    "que": "las insignias",
    "ok": true,
-   "s": 0.9
+   "s": 1.4
   },
   {
    "n": "2b3",
@@ -87,7 +87,7 @@
    "n": "2b3d",
    "que": "los paneles de DRA",
    "ok": true,
-   "s": 0.2
+   "s": 0.3
   },
   {
    "n": "2b3b",
@@ -105,49 +105,49 @@
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.7
+   "s": 0.8
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.6
+   "s": 0.5
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 4.0
+   "s": 4.9
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 33.9
+   "s": 34.9
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 5.8
+   "s": 6.6
   },
   {
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 3.2
+   "s": 3.7
   },
   {
    "n": "2b8c",
    "que": "las promociones",
    "ok": true,
-   "s": 2.6
+   "s": 2.9
   },
   {
    "n": "2b8d",
    "que": "los MES AWARDS",
    "ok": true,
-   "s": 1.9
+   "s": 2.3
   },
   {
    "n": "2b8b",
@@ -159,7 +159,7 @@
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 25.8
+   "s": 25.0
   },
   {
    "n": "2b10",
@@ -171,7 +171,7 @@
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 51.7
+   "s": 55.4
   },
   {
    "n": "2c2",
@@ -183,7 +183,7 @@
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 12.3
+   "s": 14.6
   },
   {
    "n": "2e",
@@ -195,27 +195,16 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.7
+   "s": 6.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 4.8
-  },
-  {
-   "n": "5b",
-   "que": "las Bloqueadas",
-   "ok": false,
-   "s": 3.5
+   "s": 5.8
   }
  ],
- "fallas": [
-  {
-   "paso": "5b",
-   "que": "bot/bloqueadas.py --generar"
-  }
- ],
+ "fallas": [],
  "decidir": 72,
  "ultimo_evento": {
   "n": "480",
@@ -225,7 +214,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-17T02:54:37Z",
+  "cuando": "2026-10-17T03:24:34Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 467,
   "un_evento": 230,
@@ -259,20 +248,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 74,
-   "read": 9396
+   "write": 86,
+   "read": 10574
   },
   "objeto": {
-   "leidas": 550620,
-   "escritas": 4158,
-   "pedidos": 1602
+   "leidas": 695726,
+   "escritas": 4575,
+   "pedidos": 2193
   },
   "worker": {
-   "pedidos": 8985,
+   "pedidos": 9344,
    "errores": 0,
-   "sub": 9653,
+   "sub": 10093,
    "p50_ms": 1.26,
-   "p99_ms": 9.34
+   "p99_ms": 9.26
   },
   "r2": {
    "objetos": 4212,

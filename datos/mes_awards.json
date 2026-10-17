@@ -456,6 +456,16 @@
    ],
    "promo": [
     {
+     "op": "1560157739794178188-0",
+     "n": "Estaba Dicho.  (EP)",
+     "q": "GP",
+     "quien": [
+      "GP"
+     ],
+     "d": "GP · 1 persona la abrió",
+     "vid": "BgPckuiHByg"
+    },
+    {
      "op": "v-CQ7hta4T-c8",
      "n": "Grizzlee vs Makma/3er y 4to lugar/Liga del volcán Regional ChessBattles Colima 2",
      "q": "Makmah",
@@ -494,16 +504,6 @@
      ],
      "d": "Liberia · la compartió el 16/10",
      "vid": "hR4EH1DvwKA"
-    },
-    {
-     "op": "v-bZh59YIbQcw",
-     "n": "Gitano team - Deko x Rodri lp - Seba x Alexander Pato vs  8vos // Tlof x Ebreos ",
-     "q": "Liberia",
-     "quien": [
-      "Liberia"
-     ],
-     "d": "Liberia · la compartió el 16/10",
-     "vid": "bZh59YIbQcw"
     }
    ],
    "publicacion": [
@@ -822,7 +822,7 @@
   "2026-10": {
    "promo": {
     "1560157739794178188-0": [
-     0,
+     1,
      [
       "GP"
      ],

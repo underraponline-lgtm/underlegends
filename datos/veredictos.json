@@ -233,76 +233,6 @@
   }
  },
  "batallas": {
-  "1558311626803773481": {
-   "id": "1558311626803773481",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "pub": 1791600843860,
-   "a": "NEXUZ🇵🇪",
-   "b": "DOMINIK🇵🇪",
-   "ganador": "NEXUZ🇵🇪",
-   "votos": "1–0"
-  },
-  "1558312593179807867": {
-   "id": "1558312593179807867",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "pub": 1791601074262,
-   "a": "MCO🇦🇷",
-   "b": "MAKMA🇻🇪",
-   "ganador": "MAKMA🇻🇪",
-   "votos": "1–0"
-  },
-  "1558314250294796349": {
-   "id": "1558314250294796349",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "pub": 1791601469349,
-   "a": "MASINO🇨🇱",
-   "b": "RODA🇵🇦",
-   "ganador": "MASINO🇨🇱",
-   "votos": "1–0"
-  },
-  "1558315411127279718": {
-   "id": "1558315411127279718",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "pub": 1791601746113,
-   "a": "WALKER🇨🇴",
-   "b": "ELVIOLAGINA🇧🇦",
-   "ganador": "WALKER🇨🇴",
-   "votos": "1–0"
-  },
-  "1558316229364551691": {
-   "id": "1558316229364551691",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "pub": 1791601941196,
-   "a": "AGUSTIN🇺🇾",
-   "b": "DYNOCO🇦🇷",
-   "ganador": "AGUSTIN🇺🇾",
-   "votos": "1–0"
-  },
-  "1558317407729229947": {
-   "id": "1558317407729229947",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "pub": 1791602222140,
-   "a": "AGUS🇦🇷",
-   "b": "MARTYNEZ🇺🇾",
-   "ganador": "AGUS🇦🇷",
-   "votos": "1–0"
-  },
-  "1558318494368407565": {
-   "id": "1558318494368407565",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "pub": 1791602481215,
-   "a": "TUCA🇦🇷",
-   "b": "SPARTAN🇺🇾",
-   "ganador": "TUCA🇦🇷",
-   "votos": "1–0"
-  },
   "1558319352539779136": {
    "id": "1558319352539779136",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -1718,6 +1648,50 @@
    "a": "NEXUZ",
    "b": "COLESITO",
    "ganador": "COLESITO",
+   "votos": "1–0"
+  },
+  "1560848731455361035": {
+   "id": "1560848731455361035",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792205736746,
+   "a": "MCO",
+   "b": "SIN LÍMITES",
+   "ganador": "MCO",
+   "votos": "1–0"
+  },
+  "1560850645345370234": {
+   "id": "1560850645345370234",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792206193053,
+   "a": "BLOODY",
+   "b": "CALIZ",
+   "ganador": "BLOODY",
+   "votos": "1–0"
+  },
+  "1560852039289012275": {
+   "id": "1560852039289012275",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792206525395,
+   "a": "CALIZ",
+   "b": "COLESITO",
+   "ganador": "COLESITO",
+   "votos": "1–0"
+  },
+  "1560854274844663921": {
+   "id": "1560854274844663921",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792207058393,
+   "a": "MCO",
+   "b": "BLOODY",
+   "ganador": "MCO",
    "votos": "1–0"
   }
  },
@@ -5521,8 +5495,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1792203602059,
-   "ed": 1792205632159,
-   "texto": "`[ OCTAVOS ]`\n⌞XCLUSIVO⌝ 🆚 ⌞DOMINIK⌝\n⌞FOTOSÍNTESIS⌝ 🆚 ⌞NEXUZ⌝\n⌞COLESITO⌝ 🆚 ⌞SHADOW⌝\n⌞SOLAR⌝ 🆚 ⌞JEIXDER⌝\n⌞SIN LÍMITES⌝ 🆚 ⌞MARTYNEZ⌝\n⌞MCO⌝ 🆚 ⌞EVANGELINE⌝\n⌞ERIAN⌝ 🆚 ⌞CALIZ⌝\n⌞BLOODY⌝ 🆚 ⌞MINIBOY⌝\n`[ CUARTOS ]`\n⌞NEXUZ🇵🇪⌝ 🆚 ⌞COLESITO🇨🇴⌝",
+   "ed": 1792207339559,
+   "texto": "`[ OCTAVOS ]`\n⌞XCLUSIVO⌝ 🆚 ⌞DOMINIK⌝\n⌞FOTOSÍNTESIS⌝ 🆚 ⌞NEXUZ⌝\n⌞COLESITO⌝ 🆚 ⌞SHADOW⌝\n⌞SOLAR⌝ 🆚 ⌞JEIXDER⌝\n⌞SIN LÍMITES⌝ 🆚 ⌞MARTYNEZ⌝\n⌞MCO⌝ 🆚 ⌞EVANGELINE⌝\n⌞ERIAN⌝ 🆚 ⌞CALIZ⌝\n⌞BLOODY⌝ 🆚 ⌞MINIBOY⌝\n`[ CUARTOS ]`\n⌞NEXUZ🇵🇪⌝ 🆚 ⌞COLESITO🇨🇴⌝\n⌞MCO🇦🇷⌝ 🆚 ⌞SIN LÍMITES🇵🇪⌝\n⌞BLOODY🇨🇴⌝ 🆚 ⌞CALIZ🇲🇽⌝\n⌞CALIZ🇲🇽 (1ER SUPLENTE)⌝ 🆚 ⌞SHADOW🇨🇴 (SEGUNDO SUPLENTE)⌝\n`[ SEMIFINALES ]`\n⌞CALIZ🇲🇽⌝ 🆚 ⌞COLESITO🇨🇴⌝\n⌞MCO🇦🇷⌝ 🆚 ⌞BLOODY🇨🇴⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5611,6 +5585,56 @@
       "COLESITO🇨🇴"
      ],
      "COLESITO🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MCO🇦🇷",
+      "SIN LÍMITES🇵🇪"
+     ],
+     "MCO🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "BLOODY🇨🇴",
+      "CALIZ🇲🇽"
+     ],
+     "BLOODY🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "CALIZ🇲🇽 (1ER SUPLENTE)",
+      "SHADOW🇨🇴 (SEGUNDO SUPLENTE)"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "CALIZ🇲🇽",
+      "COLESITO🇨🇴"
+     ],
+     "COLESITO🇨🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "MCO🇦🇷",
+      "BLOODY🇨🇴"
+     ],
+     "MCO🇦🇷",
      "veredicto",
      []
     ]
