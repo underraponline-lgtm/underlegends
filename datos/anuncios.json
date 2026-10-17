@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-17T15:54:30+00:00",
+ "cuando": "2026-10-17T16:25:13+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -382,6 +382,44 @@
    "staff": {},
    "autor": "Geronimo",
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "HJKSLOWT V.2",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1561050862736900248",
+   "cuando": "2026-10-17T16:18:48",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "orgs": [
+    {
+     "n": "Guess",
+     "id": "1515482513106272366"
+    }
+   ],
+   "autor_h": "5421b7c087910f79",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Plata II 🥈",
+   "modalidad": "1 vs 1",
+   "horario": "Ahora",
+   "fecha": "",
+   "premios": "Clasificación + Campeonato 🏆",
+   "staff": {
+    "jurado": [
+     "Guess"
+    ],
+    "host": [
+     "Guess"
+    ],
+    "dj": [
+     "Guess"
+    ]
+   },
+   "autor": "Guess",
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 28 PANDILLAS",
@@ -1061,54 +1099,6 @@
     ]
    },
    "autor": "Kravitz",
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "DESGRACIAS EN TOKIO X LA REDENCIÓN X COPA SOLAR VOL.1",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1558301822584750161",
-   "cuando": "2026-10-10T02:15:06",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@l3wito   @elsoolar",
-   "orgs": [
-    {
-     "n": "Velatz",
-     "id": "1426686911908675628"
-    },
-    {
-     "n": "l3wito",
-     "id": ""
-    },
-    {
-     "n": "elsoolar",
-     "id": ""
-    }
-   ],
-   "autor_h": "211322958af20ae2",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Plata II 🥈",
-   "modalidad": "2v2",
-   "horario": "EN 30 MINUTOS",
-   "fecha": "",
-   "premios": "Clasificación + Campeonato 🏆",
-   "staff": {
-    "jurado": [
-     "Velatz",
-     "l3wito",
-     "Perry el orrincotorni"
-    ],
-    "host": [
-     "LEWITO"
-    ],
-    "dj": [
-     "LEWITO"
-    ]
-   },
-   "autor": "Lewito",
    "categoria_id": "1468478330826260500"
   },
   {
@@ -4438,7 +4428,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "1 | Adriagner",
+     "n": "Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4453,16 +4443,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "host": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "dj": [
-     "1 | Adriagner"
+     "Adriagner"
     ]
    },
-   "autor": "1 | Adriagner",
+   "autor": "Adriagner",
    "categoria_id": "1469944166137073857",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-17T02:08:31"
@@ -4528,7 +4518,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "1 | Adriagner",
+     "n": "Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4543,16 +4533,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "host": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "dj": [
-     "1 | Adriagner"
+     "Adriagner"
     ]
    },
-   "autor": "1 | Adriagner",
+   "autor": "Adriagner",
    "categoria_id": "1469944166137073857",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-17T02:08:31"
@@ -4605,7 +4595,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "1 | Adriagner",
+     "n": "Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4620,16 +4610,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "host": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "dj": [
-     "1 | Adriagner"
+     "Adriagner"
     ]
    },
-   "autor": "1 | Adriagner",
+   "autor": "Adriagner",
    "categoria_id": "1469944166137073857",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-17T02:08:31"
@@ -4700,7 +4690,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "1 | Adriagner",
+     "n": "Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4715,16 +4705,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "host": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "dj": [
-     "1 | Adriagner"
+     "Adriagner"
     ]
    },
-   "autor": "1 | Adriagner",
+   "autor": "Adriagner",
    "categoria_id": "1469944166137073857",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-17T02:08:31"
@@ -4740,7 +4730,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "1 | Adriagner",
+     "n": "Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4755,16 +4745,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "host": [
-     "1 | Adriagner"
+     "Adriagner"
     ],
     "dj": [
-     "1 | Adriagner"
+     "Adriagner"
     ]
    },
-   "autor": "1 | Adriagner",
+   "autor": "Adriagner",
    "categoria_id": "1469944166137073857",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-17T02:08:31"
@@ -5927,6 +5917,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Ariaxer🇦🇷",
+   "quien": "ariaxer",
+   "discord_id": "659687894587277322",
+   "msg_id": "1561052309214203978",
+   "cuando": "2026-10-17T16:24:33"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Tesurtoapiñas🇦🇫",
+   "quien": "benjaclink31",
+   "discord_id": "849765868819972166",
+   "msg_id": "1561051498732068905",
+   "cuando": "2026-10-17T16:21:20"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1561051323569283105",
+   "cuando": "2026-10-17T16:20:38"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
