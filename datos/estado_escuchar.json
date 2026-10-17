@@ -1,33 +1,33 @@
 {
  "v": 1,
- "cuando": "2026-10-17T17:28:21Z",
+ "cuando": "2026-10-17T17:58:07Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 304.3,
+ "dur_s": 284.1,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.7
+   "s": 0.5
   },
   {
    "n": "0c",
    "que": "lo corregido desde los reportes",
    "ok": true,
-   "s": 3.3
+   "s": 3.0
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 43.3
+   "s": 51.0
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 59.8
+   "s": 34.2
   },
   {
    "n": "1a",
@@ -45,7 +45,7 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 35.6
+   "s": 33.9
   },
   {
    "n": "1b2",
@@ -57,13 +57,13 @@
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.7
+   "s": 5.4
   },
   {
    "n": "2b0",
    "que": "el Writing Challenge de FFA",
    "ok": true,
-   "s": 0.6
+   "s": 0.5
   },
   {
    "n": "2b",
@@ -75,7 +75,7 @@
    "n": "2b2",
    "que": "las insignias",
    "ok": true,
-   "s": 1.0
+   "s": 0.9
   },
   {
    "n": "2b3",
@@ -87,7 +87,7 @@
    "n": "2b3d",
    "que": "los paneles de DRA",
    "ok": true,
-   "s": 0.2
+   "s": 0.3
   },
   {
    "n": "2b3b",
@@ -105,7 +105,7 @@
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.9
+   "s": 0.7
   },
   {
    "n": "2b4b",
@@ -117,37 +117,37 @@
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.8
+   "s": 4.0
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 35.5
+   "s": 32.4
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 3.9
+   "s": 4.7
   },
   {
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 3.0
+   "s": 2.8
   },
   {
    "n": "2b8c",
    "que": "las promociones",
    "ok": true,
-   "s": 2.8
+   "s": 2.6
   },
   {
    "n": "2b8d",
    "que": "los MES AWARDS",
    "ok": true,
-   "s": 1.8
+   "s": 1.7
   },
   {
    "n": "2b8b",
@@ -159,19 +159,19 @@
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 23.7
+   "s": 23.6
   },
   {
    "n": "2b10",
    "que": "los roles de la página",
    "ok": true,
-   "s": 0.4
+   "s": 0.3
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 49.2
+   "s": 48.4
   },
   {
    "n": "2c2",
@@ -183,7 +183,7 @@
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 9.7
+   "s": 11.3
   },
   {
    "n": "2e",
@@ -195,19 +195,19 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.0
+   "s": 9.2
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 3.3
+   "s": 4.7
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": false,
-   "s": 3.8
+   "s": 3.7
   }
  ],
  "fallas": [
@@ -225,7 +225,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-17T17:24:09Z",
+  "cuando": "2026-10-17T17:54:21Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 468,
   "un_evento": 230,
@@ -259,20 +259,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 187,
-   "read": 27961
+   "write": 191,
+   "read": 28876
   },
   "objeto": {
-   "leidas": 1336932,
-   "escritas": 11609,
-   "pedidos": 5031
+   "leidas": 1369361,
+   "escritas": 11854,
+   "pedidos": 5190
   },
   "worker": {
-   "pedidos": 8454,
+   "pedidos": 8400,
    "errores": 0,
-   "sub": 9139,
-   "p50_ms": 1.3,
-   "p99_ms": 9.07
+   "sub": 9074,
+   "p50_ms": 1.29,
+   "p99_ms": 8.89
   },
   "r2": {
    "objetos": 4246,
