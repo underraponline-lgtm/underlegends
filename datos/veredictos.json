@@ -233,66 +233,6 @@
   }
  },
  "batallas": {
-  "1558319352539779136": {
-   "id": "1558319352539779136",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "pub": 1791602685819,
-   "a": "SHADOW🇨🇴",
-   "b": "XCLUSIVO🇻🇪",
-   "ganador": "XCLUSIVO🇻🇪",
-   "votos": "1–0"
-  },
-  "1558320337362493581": {
-   "id": "1558320337362493581",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "pub": 1791602920619,
-   "a": "NEXUZ🇵🇪",
-   "b": "RODA🇵🇦",
-   "ganador": "NEXUZ🇵🇪",
-   "votos": "1–0"
-  },
-  "1558321419811823643": {
-   "id": "1558321419811823643",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "pub": 1791603178695,
-   "a": "AGUS🇦🇷",
-   "b": "AGUSTIN LA RELIQUIA🇺🇾",
-   "ganador": "AGUS🇦🇷",
-   "votos": "1–0"
-  },
-  "1558322498620227615": {
-   "id": "1558322498620227615",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "pub": 1791603435903,
-   "a": "MAKMA🇻🇪",
-   "b": "WALKER🇨🇴",
-   "ganador": "MAKMA🇻🇪",
-   "votos": "1–0"
-  },
-  "1558323794492391576": {
-   "id": "1558323794492391576",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "pub": 1791603744863,
-   "a": "XCLUSIVO🇻🇪",
-   "b": "TUCA🇦🇷",
-   "ganador": "XCLUSIVO🇻🇪",
-   "votos": "1–0"
-  },
-  "1558325003165110395": {
-   "id": "1558325003165110395",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791604033033,
-   "a": "XCLUSIVO🇻🇪",
-   "b": "COLESITO🇨🇴",
-   "ganador": "COLESITO🇨🇴",
-   "votos": "1–0"
-  },
   "1558326900324302909": {
    "id": "1558326900324302909",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -1691,6 +1631,17 @@
    "pub": 1792207058393,
    "a": "MCO",
    "b": "BLOODY",
+   "ganador": "MCO",
+   "votos": "1–0"
+  },
+  "1560857266658353165": {
+   "id": "1560857266658353165",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792207771697,
+   "a": "MCO",
+   "b": "COLESITO",
    "ganador": "MCO",
    "votos": "1–0"
   }
@@ -5495,8 +5446,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1792203602059,
-   "ed": 1792207339559,
-   "texto": "`[ OCTAVOS ]`\n⌞XCLUSIVO⌝ 🆚 ⌞DOMINIK⌝\n⌞FOTOSÍNTESIS⌝ 🆚 ⌞NEXUZ⌝\n⌞COLESITO⌝ 🆚 ⌞SHADOW⌝\n⌞SOLAR⌝ 🆚 ⌞JEIXDER⌝\n⌞SIN LÍMITES⌝ 🆚 ⌞MARTYNEZ⌝\n⌞MCO⌝ 🆚 ⌞EVANGELINE⌝\n⌞ERIAN⌝ 🆚 ⌞CALIZ⌝\n⌞BLOODY⌝ 🆚 ⌞MINIBOY⌝\n`[ CUARTOS ]`\n⌞NEXUZ🇵🇪⌝ 🆚 ⌞COLESITO🇨🇴⌝\n⌞MCO🇦🇷⌝ 🆚 ⌞SIN LÍMITES🇵🇪⌝\n⌞BLOODY🇨🇴⌝ 🆚 ⌞CALIZ🇲🇽⌝\n⌞CALIZ🇲🇽 (1ER SUPLENTE)⌝ 🆚 ⌞SHADOW🇨🇴 (SEGUNDO SUPLENTE)⌝\n`[ SEMIFINALES ]`\n⌞CALIZ🇲🇽⌝ 🆚 ⌞COLESITO🇨🇴⌝\n⌞MCO🇦🇷⌝ 🆚 ⌞BLOODY🇨🇴⌝",
+   "ed": 1792208031980,
+   "texto": "`[ OCTAVOS ]`\n⌞XCLUSIVO⌝ 🆚 ⌞DOMINIK⌝\n⌞FOTOSÍNTESIS⌝ 🆚 ⌞NEXUZ⌝\n⌞COLESITO⌝ 🆚 ⌞SHADOW⌝\n⌞SOLAR⌝ 🆚 ⌞JEIXDER⌝\n⌞SIN LÍMITES⌝ 🆚 ⌞MARTYNEZ⌝\n⌞MCO⌝ 🆚 ⌞EVANGELINE⌝\n⌞ERIAN⌝ 🆚 ⌞CALIZ⌝\n⌞BLOODY⌝ 🆚 ⌞MINIBOY⌝\n`[ CUARTOS ]`\n⌞NEXUZ🇵🇪⌝ 🆚 ⌞COLESITO🇨🇴⌝\n⌞MCO🇦🇷⌝ 🆚 ⌞SIN LÍMITES🇵🇪⌝\n⌞BLOODY🇨🇴⌝ 🆚 ⌞CALIZ🇲🇽⌝\n⌞CALIZ🇲🇽 (1ER SUPLENTE)⌝ 🆚 ⌞SHADOW🇨🇴 (SEGUNDO SUPLENTE)⌝\n`[ SEMIFINALES ]`\n⌞CALIZ🇲🇽⌝ 🆚 ⌞COLESITO🇨🇴⌝\n⌞MCO🇦🇷⌝ 🆚 ⌞BLOODY🇨🇴⌝\n`[ FINAL ]`\n⌞MCO🇦🇷⌝ 🆚 ⌞COLESITO🇨🇴⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5633,6 +5584,16 @@
      [
       "MCO🇦🇷",
       "BLOODY🇨🇴"
+     ],
+     "MCO🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MCO🇦🇷",
+      "COLESITO🇨🇴"
      ],
      "MCO🇦🇷",
      "veredicto",

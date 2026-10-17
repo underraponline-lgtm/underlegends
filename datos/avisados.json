@@ -14413,5 +14413,229 @@
    ]
   ],
   "v": 2
+ },
+ "481": {
+  "antes": {
+   "Bloody": [
+    23,
+    28,
+    false
+   ],
+   "Calíz": [
+    96,
+    158,
+    false
+   ],
+   "Colesito": [
+    8,
+    9,
+    false
+   ],
+   "Dominick": [
+    199,
+    57,
+    true
+   ],
+   "Erian": [
+    4,
+    5,
+    false
+   ],
+   "JEIXDER": [
+    102,
+    171,
+    false
+   ],
+   "MCO": [
+    21,
+    24,
+    false
+   ],
+   "Miniboy": [
+    32,
+    41,
+    false
+   ],
+   "NXUZ": [
+    28,
+    37,
+    false
+   ],
+   "Shadow": [
+    71,
+    99,
+    false
+   ],
+   "Sin Limites": [
+    27,
+    33,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Xclusivo",
+    "Dominick",
+    "Xclusivo"
+   ],
+   [
+    "NXUZ",
+    "FOTOSÍNTESIS🇵🇪",
+    "NXUZ"
+   ],
+   [
+    "Colesito",
+    "Shadow",
+    "Colesito"
+   ],
+   [
+    "Solar",
+    "JEIXDER",
+    "Solar"
+   ],
+   [
+    "MARTYNEZ",
+    "Sin Limites",
+    "MARTYNEZ"
+   ],
+   [
+    "MCO",
+    "Evangeline🇵🇪",
+    "MCO"
+   ],
+   [
+    "Calíz",
+    "Erian",
+    "Calíz"
+   ],
+   [
+    "Bloody",
+    "Miniboy",
+    "Bloody"
+   ],
+   [
+    "Colesito",
+    "NXUZ",
+    "Colesito"
+   ],
+   [
+    "MCO",
+    "Sin Limites",
+    "MCO"
+   ],
+   [
+    "Bloody",
+    "Calíz",
+    "Bloody"
+   ],
+   [
+    "Colesito",
+    "Calíz",
+    "Colesito"
+   ],
+   [
+    "MCO",
+    "Bloody",
+    "MCO"
+   ],
+   [
+    "MCO",
+    "Colesito",
+    "MCO"
+   ]
+  ],
+  "ev_antes": {
+   "Bloody": 19,
+   "Calíz": 4,
+   "Colesito": 31,
+   "Dominick": 10,
+   "Erian": 37,
+   "JEIXDER": 4,
+   "MCO": 15,
+   "Miniboy": 14,
+   "NXUZ": 12,
+   "Shadow": 8,
+   "Sin Limites": 18
+  },
+  "fecha": "16/10",
+  "firma": "7636202aa9ea7892",
+  "msg": "1560858617589272627",
+  "nombre": "PROYECTO X VOL.3",
+  "num": 481,
+  "participantes": 16,
+  "sello": {
+   "MCO": "b85264f37692:906ce275eeb8"
+  },
+  "sv": "DDF",
+  "t": "2026-10-17T03:54:17Z",
+  "tabla": [
+   [
+    "MCO",
+    "Campeón",
+    10000
+   ],
+   [
+    "Colesito",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Bloody",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Calíz",
+    "Semifinal",
+    5125
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "FOTOSÍNTESIS🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    1250
+   ],
+   [
+    "JEIXDER",
+    "Octavos",
+    1250
+   ],
+   [
+    "Evangeline🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

@@ -2,6 +2,7 @@
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
   "ACAD": "2026-10-16",
+  "DDF": "2026-10-16",
   "FFA": "2026-10-16",
   "FRZ": "2026-10-15",
   "FVS": "2026-10-15",
@@ -72,6 +73,18 @@
    "n": 478,
    "sv": "SR",
    "vence": "2026-10-23T17:34:15+00:00",
+   "vencido": false
+  },
+  "FOTOSÍNTESIS": {
+   "chat": "2026-10-16",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-17T02:20:02+00:00",
+   "did": "",
+   "evento": "PROYECTO X VOL.3",
+   "n": 481,
+   "sv": "DDF",
+   "vence": "2026-10-24T02:20:02+00:00",
    "vencido": false
   },
   "Guty": {

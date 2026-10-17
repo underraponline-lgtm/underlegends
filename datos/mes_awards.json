@@ -115,8 +115,8 @@
     {
      "op": "DDF",
      "n": "Dimensión del Freestyle",
-     "gente": 68,
-     "ev": 16
+     "gente": 71,
+     "ev": 17
     },
     {
      "op": "SR",
@@ -292,6 +292,15 @@
      "d": "2 cabezas cazadas"
     },
     {
+     "op": "Colesito",
+     "n": "Colesito",
+     "q": "Colesito",
+     "quien": [
+      "Colesito"
+     ],
+     "d": "2 cabezas cazadas"
+    },
+    {
      "op": "Delux",
      "n": "Delux",
      "q": "Delux",
@@ -306,15 +315,6 @@
      "q": "PichulaMc",
      "quien": [
       "PichulaMc"
-     ],
-     "d": "2 cabezas cazadas"
-    },
-    {
-     "op": "Six",
-     "n": "Six",
-     "q": "Six",
-     "quien": [
-      "Six"
      ],
      "d": "2 cabezas cazadas"
     }
@@ -336,7 +336,16 @@
      "quien": [
       "HH"
      ],
-     "d": "le ganó a Erian (#4) siendo #88 · LA BELLA ARTE DE LA DESGRACIA VOL3"
+     "d": "le ganó a Erian (#4) siendo #89 · LA BELLA ARTE DE LA DESGRACIA VOL3"
+    },
+    {
+     "op": "481:Calíz",
+     "n": "Calíz",
+     "q": "Calíz",
+     "quien": [
+      "Calíz"
+     ],
+     "d": "le ganó a Erian (#4) siendo #77 · PROYECTO X VOL.3"
     },
     {
      "op": "475:Juasmio",
@@ -355,15 +364,6 @@
       "Six"
      ],
      "d": "le ganó a Oasis (#1) siendo #11 · LA REDENCIÓN VOL.1"
-    },
-    {
-     "op": "381:Soneto",
-     "n": "Soneto",
-     "q": "Soneto",
-     "quien": [
-      "Soneto"
-     ],
-     "d": "le ganó a Erian (#4) siendo #44 · PRITTY FREE"
     }
    ],
    "imparable": [
@@ -720,7 +720,7 @@
      "op": "Follombia",
      "n": "Follombia",
      "quien": [],
-     "d": "496.826 pts · 7 jugaron"
+     "d": "538.826 pts · 7 jugaron"
     },
     {
      "op": "Fuera de Rango",
@@ -753,21 +753,21 @@
      "n": "Argentina",
      "cc": "ar",
      "quien": [],
-     "d": "1.642.813 pts · 37 jugaron"
+     "d": "1.672.813 pts · 37 jugaron"
     },
     {
      "op": "Chile",
      "n": "Chile",
      "cc": "cl",
      "quien": [],
-     "d": "985.493 pts · 28 jugaron"
+     "d": "989.243 pts · 28 jugaron"
     },
     {
      "op": "Colombia",
      "n": "Colombia",
      "cc": "co",
      "quien": [],
-     "d": "876.135 pts · 19 jugaron"
+     "d": "918.135 pts · 19 jugaron"
     },
     {
      "op": "Venezuela",
@@ -777,11 +777,11 @@
      "d": "603.697 pts · 16 jugaron"
     },
     {
-     "op": "España",
-     "n": "España",
-     "cc": "es",
+     "op": "Perú",
+     "n": "Perú",
+     "cc": "pe",
      "quien": [],
-     "d": "224.106 pts · 10 jugaron"
+     "d": "234.580 pts · 15 jugaron"
     }
    ],
    "liga": [

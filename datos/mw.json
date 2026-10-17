@@ -69,7 +69,7 @@
      "por": [
       {
        "n": "Colesito",
-       "cobra": 13250
+       "cobra": 12500
       }
      ]
     }
@@ -95,10 +95,22 @@
     "nivel": "B",
     "base": 7250,
     "o": 27,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 7250
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Cuartos",
+    "valor": 7250,
+    "caza": {
+     "n": 481,
+     "evento": "PROYECTO X VOL.3",
+     "sv": "DDF",
+     "t": "2026-10-17T02:20:02Z",
+     "por": [
+      {
+       "n": "Colesito",
+       "cobra": 7250
+      }
+     ]
+    }
    },
    {
     "n": "Zetryko",
@@ -183,7 +195,7 @@
      "por": [
       {
        "n": "BNA",
-       "cobra": 10000
+       "cobra": 10250
       }
      ]
     }

@@ -38,6 +38,15 @@
 "temporada"
 ]
 },
+"colesito": {
+"rg": "B",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "verc": {
 "rg": "A",
 "c": [
@@ -56,15 +65,6 @@
 ]
 },
 "pichulamc": {
-"rg": "B",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"colesito": {
 "rg": "B",
 "c": [
 "competitivo",
@@ -149,6 +149,15 @@
 "rg": "C",
 "c": []
 },
+"mco": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "nc": {
 "rg": "D",
 "c": [
@@ -175,6 +184,14 @@
 "temporada"
 ]
 },
+"bloody": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "guess": {
 "rg": "C",
 "c": [
@@ -183,21 +200,12 @@
 "temporada"
 ]
 },
-"mco": {
+"xclusivo": {
 "rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
+"c": []
 },
 "bna": {
 "rg": "D",
-"c": []
-},
-"xclusivo": {
-"rg": "C",
 "c": []
 },
 "majiztral": {
@@ -205,14 +213,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"bloody": {
-"rg": "C",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -391,6 +391,10 @@
 "temporada"
 ]
 },
+"dominick": {
+"rg": "E",
+"c": []
+},
 "benjixo": {
 "rg": "",
 "c": []
@@ -401,10 +405,6 @@
 },
 "alexi": {
 "rg": "",
-"c": []
-},
-"dominick": {
-"rg": "E",
 "c": []
 },
 "jult": {
@@ -602,6 +602,13 @@
 "servidor"
 ]
 },
+"shadow": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "ardean": {
 "rg": "",
 "c": [
@@ -669,13 +676,6 @@
 "rg": "",
 "c": []
 },
-"shadow": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "krish": {
 "rg": "E",
 "c": [
@@ -721,6 +721,13 @@
 "hotaruadeyemi": {
 "rg": "",
 "c": []
+},
+"caliz": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "pomberito": {
 "rg": "",
@@ -920,6 +927,13 @@
 "rg": "",
 "c": []
 },
+"jeixder": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "krtman": {
 "rg": "",
 "c": [
@@ -973,13 +987,6 @@
 "setesfifi": {
 "rg": "",
 "c": []
-},
-"caliz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "maukc": {
 "rg": "",
@@ -1041,13 +1048,6 @@
 "noone": {
 "rg": "",
 "c": []
-},
-"jeixder": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "mhs": {
 "rg": "",

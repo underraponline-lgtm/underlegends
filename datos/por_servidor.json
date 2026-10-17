@@ -896,6 +896,18 @@
      "fund": true
     }
    },
+   "DDF": {
+    "duelos": "2/3",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 47,
+    "pod": 0,
+    "pts": 15750,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "1/3",
     "ev": 14,
@@ -1046,6 +1058,18 @@
     "racha": "0/0",
     "tg": {
      "llave": true
+    }
+   },
+   "DDF": {
+    "duelos": "1/3",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 46,
+    "pod": 0,
+    "pts": 15375,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
     }
    }
   },
@@ -1335,13 +1359,16 @@
     }
    },
    "DDF": {
-    "duelos": "1/2",
-    "ev": 1,
+    "duelos": "4/6",
+    "ev": 2,
     "oro": 0,
-    "ovr": 45,
-    "pod": 0,
-    "pts": 5775,
-    "racha": "0/0"
+    "ovr": 51,
+    "pod": 1,
+    "pts": 28275,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
    },
    "FFA": {
     "duelos": "11/21",
@@ -1682,12 +1709,12 @@
   },
   "Dominick": {
    "DDF": {
-    "duelos": "2/6",
-    "ev": 4,
+    "duelos": "2/7",
+    "ev": 5,
     "oro": 0,
-    "ovr": 50,
+    "ovr": 51,
     "pod": 1,
-    "pts": 15612,
+    "pts": 19362,
     "racha": "0/1",
     "tg": {
      "fin": 1
@@ -2166,12 +2193,12 @@
     }
    },
    "DDF": {
-    "duelos": "3/7",
-    "ev": 5,
+    "duelos": "3/8",
+    "ev": 6,
     "oro": 1,
-    "ovr": 52,
+    "ovr": 53,
     "pod": 1,
-    "pts": 26287,
+    "pts": 30037,
     "racha": "0/1",
     "tg": {
      "dv": true,
@@ -2267,12 +2294,12 @@
   },
   "Evangeline🇵🇪": {
    "DDF": {
-    "duelos": "",
-    "ev": 1,
+    "duelos": "0/1",
+    "ev": 2,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 46,
     "pod": 0,
-    "pts": 3300,
+    "pts": 8925,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -2340,6 +2367,20 @@
     "ovr": 44,
     "pod": 0,
     "pts": 4125,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
+  "FOTOSÍNTESIS🇵🇪": {
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 3750,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -2991,12 +3032,12 @@
     "racha": "0/0"
    },
    "DDF": {
-    "duelos": "1/4",
-    "ev": 2,
+    "duelos": "1/5",
+    "ev": 3,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 47,
     "pod": 0,
-    "pts": 9075,
+    "pts": 12825,
     "racha": "0/0"
    },
    "FFA": {
@@ -4121,6 +4162,20 @@
     "racha": "0/0"
    }
   },
+  "MARTYNEZ": {
+   "DDF": {
+    "duelos": "1/1",
+    "ev": 0,
+    "oro": 0,
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "MARTYNEZ🇺🇾": {
    "DDF": {
     "duelos": "0/1",
@@ -4207,15 +4262,15 @@
     "racha": "2/2"
    },
    "DDF": {
-    "duelos": "0/1",
-    "ev": 3,
-    "oro": 0,
-    "ovr": 48,
-    "pod": 1,
-    "pts": 6062,
-    "racha": "0/1",
+    "duelos": "4/5",
+    "ev": 4,
+    "oro": 1,
+    "ovr": 54,
+    "pod": 2,
+    "pts": 36062,
+    "racha": "1/1",
     "tg": {
-     "fin": 1,
+     "fin": 2,
      "fund": true
     }
    },
@@ -4710,12 +4765,12 @@
     "racha": "0/0"
    },
    "DDF": {
-    "duelos": "3/6",
-    "ev": 5,
+    "duelos": "3/7",
+    "ev": 6,
     "oro": 0,
-    "ovr": 51,
+    "ovr": 52,
     "pod": 2,
-    "pts": 15800,
+    "pts": 19550,
     "racha": "0/2",
     "tg": {
      "fin": 2
@@ -4988,12 +5043,12 @@
     "racha": "0/0"
    },
    "DDF": {
-    "duelos": "8/16",
-    "ev": 9,
+    "duelos": "9/18",
+    "ev": 10,
     "oro": 0,
-    "ovr": 55,
+    "ovr": 62,
     "pod": 1,
-    "pts": 44912,
+    "pts": 52412,
     "racha": "0/1",
     "tg": {
      "bcasa": true,
@@ -6554,12 +6609,12 @@
     }
    },
    "DDF": {
-    "duelos": "0/2",
-    "ev": 4,
+    "duelos": "0/3",
+    "ev": 5,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 48,
     "pod": 0,
-    "pts": 10424,
+    "pts": 14174,
     "racha": "0/0"
    },
    "FFA": {
@@ -6597,12 +6652,12 @@
   },
   "Sin Limites": {
    "DDF": {
-    "duelos": "1/3",
-    "ev": 2,
+    "duelos": "1/5",
+    "ev": 3,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 48,
     "pod": 0,
-    "pts": 6800,
+    "pts": 14300,
     "racha": "0/0"
    },
    "FFA": {
@@ -6744,6 +6799,17 @@
     "ovr": 43,
     "pod": 0,
     "pts": 625,
+    "racha": "0/0"
+   }
+  },
+  "Solar": {
+   "DDF": {
+    "duelos": "1/1",
+    "ev": 0,
+    "oro": 0,
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
     "racha": "0/0"
    }
   },
@@ -7571,7 +7637,7 @@
   },
   "Xclusivo": {
    "DDF": {
-    "duelos": "8/15",
+    "duelos": "9/16",
     "ev": 6,
     "oro": 0,
     "ovr": 54,

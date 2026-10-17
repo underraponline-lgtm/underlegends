@@ -25616,5 +25616,226 @@
     1250
    ]
   ]
+ },
+ "481": {
+  "dia": "2026-10-16",
+  "escala": "16+",
+  "fecha": "16/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1498009509036163173/1560839777929142414"
+  ],
+  "n": 481,
+  "nombre": "PROYECTO X VOL.3",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Xclusivo",
+       "Dominick"
+      ],
+      "Xclusivo",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "FOTOSÍNTESIS🇵🇪"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Colesito",
+       "Shadow"
+      ],
+      "Colesito",
+      ""
+     ],
+     [
+      [
+       "Solar",
+       "JEIXDER"
+      ],
+      "Solar",
+      ""
+     ],
+     [
+      [
+       "MARTYNEZ",
+       "Sin Limites"
+      ],
+      "MARTYNEZ",
+      "Revivido: Sin límites 🇵🇪"
+     ],
+     [
+      [
+       "MCO",
+       "Evangeline🇵🇪"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "Calíz",
+       "Erian"
+      ],
+      "Calíz",
+      "Revivido: Calíz 🇲🇽"
+     ],
+     [
+      [
+       "Bloody",
+       "Miniboy"
+      ],
+      "Bloody",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Colesito",
+       "NXUZ"
+      ],
+      "Colesito",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "Sin Limites"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "Bloody",
+       "Calíz"
+      ],
+      "Bloody",
+      ""
+     ],
+     [
+      [
+       "Calíz 🇲🇽",
+       "SHADOW 🇨🇴"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Colesito",
+       "Calíz"
+      ],
+      "Colesito",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "Bloody"
+      ],
+      "MCO",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "MCO",
+       "Colesito"
+      ],
+      "MCO",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "MCO",
+    "Campeón",
+    10000
+   ],
+   [
+    "Colesito",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Bloody",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Calíz",
+    "Semifinal",
+    5125
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Evangeline🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "FOTOSÍNTESIS🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "JEIXDER",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

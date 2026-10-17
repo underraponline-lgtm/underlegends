@@ -1082,6 +1082,49 @@
      "1282772759902162954"
     ]
    }
+  },
+  {
+   "id": "26736df03b",
+   "tipo": "Nombre desconocido",
+   "sec": "PROYECTO X VOL.3 · DDF · 16/10 · #481",
+   "que": "¿Quién es «FOTOSÍNTESIS🇵🇪»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1374835757390237717",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1374835757390237717)",
+   "t": 1792209650702,
+   "filas": [
+    732
+   ],
+   "variantes": [
+    "FOTOSÍNTESIS🇵🇪"
+   ],
+   "escribio": {
+    "alta": [
+     "FOTOSÍNTESIS",
+     "1374835757390237717"
+    ]
+   }
+  },
+  {
+   "id": "3348bca8f6",
+   "tipo": "Nombre desconocido",
+   "sec": "PROYECTO X VOL.3 · DDF · 16/10 · #481",
+   "que": "¿Quién es «MARTYNEZ»?",
+   "r": "Ya no hace falta",
+   "regla": "R11 · el nombre ya no está en su evento",
+   "rk": "R11",
+   "por": "el ciclo",
+   "porque": "ya no está en su evento (#481): el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792209650702,
+   "filas": [
+    733
+   ],
+   "variantes": [
+    "MARTYNEZ"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

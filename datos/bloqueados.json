@@ -40,6 +40,16 @@
   "av": ""
  },
  {
+  "raw": "MARTYNEZ",
+  "cc": "",
+  "sv": "",
+  "crew": "",
+  "discord_id": "",
+  "ev": 0.0,
+  "pts": 0,
+  "av": ""
+ },
+ {
   "raw": "Mony",
   "cc": "",
   "sv": "",
@@ -47,6 +57,16 @@
   "discord_id": "",
   "ev": 0.0,
   "pts": 150,
+  "av": ""
+ },
+ {
+  "raw": "Solar",
+  "cc": "cl",
+  "sv": "",
+  "crew": "",
+  "discord_id": "1155972121848201256",
+  "ev": 0.0,
+  "pts": 0,
   "av": ""
  },
  {
