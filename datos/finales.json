@@ -422,5 +422,27 @@
   "sin_permiso": false,
   "sv": "FFA"
  },
+ "1560839777929142414": {
+  "autor": "1150099153238630410",
+  "canal": "1498009509036163173",
+  "cuando": "2026-10-17T02:20:02+00:00",
+  "evento": "PROYECTO X VOL.3",
+  "fecha": "16/10",
+  "llave": "1560839777929142414",
+  "pregunta": "1560879947625529409",
+  "preguntada": "2026-10-17 12:59 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Calíz 🇲🇽",
+     "SHADOW 🇨🇴"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "DDF"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
