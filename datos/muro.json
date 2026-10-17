@@ -940,7 +940,8 @@
 "saiko": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "cj": {
@@ -2397,14 +2398,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"fleivaman"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5695,6 +5688,14 @@
 "Teo"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-17T00:58:17Z",
+"quien": [
+"Saiko"
+],
+"carta": "temporada"
 }
 ]
 }
