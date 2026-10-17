@@ -3162,7 +3162,7 @@
   "sv": "ACAD",
   "crew": "",
   "discord_id": "1440039366654165212",
-  "verificado": false,
+  "verificado": true,
   "ev": 8,
   "score": 21.0,
   "conf": 0.8,
@@ -5949,11 +5949,11 @@
    "bestia": 1,
    "clasico": 1,
    "dg": 1,
-   "riv": 7,
+   "riv": 8,
    "venc": 1
   },
   "tg_p": {
-   "paises": 5
+   "paises": 6
   }
  },
  {
@@ -6314,7 +6314,7 @@
   "sv": "ACAD",
   "crew": "",
   "discord_id": "1546111597343146044",
-  "verificado": false,
+  "verificado": true,
   "ev": 5,
   "score": 12.4,
   "conf": 0.59,
@@ -6346,9 +6346,9 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 2,
-   "riv": 7,
-   "venc": 2
+   "dg": 3,
+   "riv": 8,
+   "venc": 3
   },
   "tg_p": {
    "paises": 4
@@ -9504,7 +9504,7 @@
   "sv": "FFA",
   "crew": "",
   "discord_id": "756958777126682674",
-  "verificado": false,
+  "verificado": true,
   "ev": 3,
   "score": 6.0,
   "conf": 0.44,
