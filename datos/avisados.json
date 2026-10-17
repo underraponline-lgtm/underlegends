@@ -12064,7 +12064,7 @@
    "Vandu": 20
   },
   "fecha": "14/10",
-  "firma": "5323d9c483f062cc",
+  "firma": "f103f943707d0a74",
   "msg": "1560019837609050254",
   "nombre": "DEM UZBEKISTAN FECHA 3",
   "num": 471,
@@ -14051,6 +14051,360 @@
    ],
    [
     "Teito",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "480": {
+  "antes": {
+   "Bloody": [
+    23,
+    28,
+    false
+   ],
+   "Colesito": [
+    9,
+    10,
+    false
+   ],
+   "Delux": [
+    27,
+    35,
+    false
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Joshema": [
+    110,
+    185,
+    false
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "Molusco": [
+    24,
+    30,
+    false
+   ],
+   "Mr Still Ballin": [
+    189,
+    29,
+    true
+   ],
+   "Nemi": [
+    29,
+    38,
+    false
+   ],
+   "Neo": [
+    206,
+    84,
+    true
+   ],
+   "OG": [
+    16,
+    18,
+    false
+   ],
+   "Oasis": [
+    1,
+    1,
+    false
+   ],
+   "Paria": [
+    199,
+    61,
+    true
+   ],
+   "Provenza": [
+    15,
+    17,
+    false
+   ],
+   "Six": [
+    11,
+    12,
+    false
+   ],
+   "Snow": [
+    2,
+    2,
+    false
+   ],
+   "Teo": [
+    70,
+    96,
+    false
+   ],
+   "Trot": [
+    26,
+    34,
+    false
+   ],
+   "Valdoza": [
+    219,
+    119,
+    true
+   ],
+   "Verc": [
+    7,
+    8,
+    false
+   ],
+   "Xclusivo": [
+    188,
+    27,
+    true
+   ],
+   "Zignos": [
+    13,
+    14,
+    false
+   ],
+   "yinn": [
+    186,
+    19,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "yinn",
+    "Molusco",
+    "yinn"
+   ],
+   [
+    "Snow",
+    "Teo",
+    "Snow"
+   ],
+   [
+    "Mr Still Ballin",
+    "Paria",
+    "Mr Still Ballin"
+   ],
+   [
+    "Zignos",
+    "Joshema",
+    "Zignos"
+   ],
+   [
+    "Bloody",
+    "Xclusivo",
+    "Bloody"
+   ],
+   [
+    "OG",
+    "Paria",
+    "OG"
+   ],
+   [
+    "Oasis",
+    "Valdoza",
+    "Oasis"
+   ],
+   [
+    "Erian",
+    "Nemi",
+    "Erian"
+   ],
+   [
+    "Makmah, Bloody",
+    "yinn, Delux",
+    "Makmah, Bloody"
+   ],
+   [
+    "Colesito, OG",
+    "Snow, Verc",
+    "Colesito, OG"
+   ],
+   [
+    "Oasis, Trot",
+    "Neo, Mr Still Ballin",
+    "Oasis, Trot"
+   ],
+   [
+    "Zignos, Provenza",
+    "Erian, Six",
+    "Zignos, Provenza"
+   ],
+   [
+    "Trot, Oasis, Neo",
+    "Makmah, Bloody, Delux",
+    "Trot, Oasis, Neo"
+   ],
+   [
+    "Colesito, OG, Verc",
+    "Zignos, Six, Provenza",
+    "Colesito, OG, Verc"
+   ],
+   [
+    "Verc, OG, Colesito, Zignos",
+    "Oasis, Trot, Neo, Delux",
+    "Verc, OG, Colesito, Zignos"
+   ]
+  ],
+  "ev_antes": {
+   "Bloody": 18,
+   "Colesito": 30,
+   "Delux": 8,
+   "Erian": 36,
+   "Joshema": 2,
+   "Makmah": 49,
+   "Molusco": 14,
+   "Mr Still Ballin": 5,
+   "Nemi": 10,
+   "Neo": 6,
+   "OG": 12,
+   "Oasis": 25,
+   "Paria": 9,
+   "Provenza": 23,
+   "Six": 20,
+   "Snow": 36,
+   "Teo": 9,
+   "Trot": 18,
+   "Valdoza": 6,
+   "Verc": 14,
+   "Xclusivo": 16,
+   "Zignos": 23,
+   "yinn": 18
+  },
+  "fecha": "16/10",
+  "firma": "e6d91e56b8fba7e7",
+  "msg": "1560798220110532669",
+  "nombre": "__ DESGRACIAS EN TOKYO VOL 28 PANDILLAS __",
+  "num": 480,
+  "participantes": 24,
+  "sello": {
+   "Colesito": "e752f18b6401:906ce275eeb8",
+   "OG": "2fb9b3d4a07c:906ce275eeb8",
+   "Verc": "f0f78889e297:906ce275eeb8",
+   "Zignos": "2c830da5480e:906ce275eeb8"
+  },
+  "sv": "FFA",
+  "t": "2026-10-16T23:54:11Z",
+  "tabla": [
+   [
+    "Delux",
+    "Subcampeón",
+    4875
+   ],
+   [
+    "Zignos",
+    "Campeón",
+    4250
+   ],
+   [
+    "Verc",
+    "Campeón",
+    3750
+   ],
+   [
+    "Neo",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Six",
+    "Semifinal",
+    3000
+   ],
+   [
+    "OG",
+    "Campeón",
+    2500
+   ],
+   [
+    "Colesito",
+    "Campeón",
+    2500
+   ],
+   [
+    "Oasis",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Trot",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Paria",
+    "Octavos",
+    1875
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Bloody",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1750
+   ],
+   [
+    "yinn",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Mr Still Ballin",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Molusco",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Joshema",
+    "Octavos",
+    1250
+   ],
+   [
+    "Xclusivo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Valdoza",
+    "Octavos",
+    1250
+   ],
+   [
+    "Nemi",
     "Octavos",
     1250
    ]

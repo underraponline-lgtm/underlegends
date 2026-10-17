@@ -25337,5 +25337,284 @@
     1250
    ]
   ]
+ },
+ "480": {
+  "dia": "2026-10-16",
+  "escala": "16+",
+  "fecha": "16/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1560765979238076427"
+  ],
+  "n": 480,
+  "nombre": "DESGRACIAS EN TOKYO VOL 28 PANDILLAS",
+  "participantes": 24,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "Delux",
+       "Molusco"
+      ],
+      "yinn, Delux",
+      "triple (3 bandas, pasan 2); también pasa: delux🇦🇷"
+     ],
+     [
+      [
+       "Snow",
+       "Verc",
+       "Teo"
+      ],
+      "Snow, Verc",
+      "triple (3 bandas, pasan 2); también pasa: Verc"
+     ],
+     [
+      [
+       "Mr Still Ballin",
+       "Neo",
+       "Paria"
+      ],
+      "Mr Still Ballin, Neo",
+      "triple (3 bandas, pasan 2); también pasa: Neo🇦🇷; Revivido: Paria🇦🇷"
+     ],
+     [
+      [
+       "Zignos",
+       "Provenza",
+       "Joshema"
+      ],
+      "Zignos, Provenza",
+      "triple (3 bandas, pasan 2); también pasa: za; Drafteado: Zignos"
+     ],
+     [
+      [
+       "Bloody",
+       "Makmah",
+       "Xclusivo"
+      ],
+      "Bloody, Makmah",
+      "triple (3 bandas, pasan 2); también pasa: makma 🇻🇪"
+     ],
+     [
+      [
+       "OG",
+       "Colesito",
+       "Paria"
+      ],
+      "OG, Colesito",
+      "triple (3 bandas, pasan 2); también pasa: colesito"
+     ],
+     [
+      [
+       "Oasis",
+       "Trot",
+       "Valdoza"
+      ],
+      "Oasis, Trot",
+      "triple (3 bandas, pasan 2); también pasa: Trot🇪🇸"
+     ],
+     [
+      [
+       "Erian",
+       "Six",
+       "Nemi"
+      ],
+      "Erian, Six",
+      "triple (3 bandas, pasan 2); también pasa: six"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Makmah, Bloody",
+       "yinn, Delux"
+      ],
+      "Makmah, Bloody",
+      "Drafteado: DELUX 🇦🇷"
+     ],
+     [
+      [
+       "Colesito, OG",
+       "Snow, Verc"
+      ],
+      "Colesito, OG",
+      "Drafteado: VERC 🇨🇱"
+     ],
+     [
+      [
+       "Oasis, Trot",
+       "Neo, Mr Still Ballin"
+      ],
+      "Oasis, Trot",
+      "Drafteado: NEO 🇦🇷"
+     ],
+     [
+      [
+       "Zignos, Provenza",
+       "Erian, Six"
+      ],
+      "Zignos, Provenza",
+      "Drafteado: SIX 🇦🇷"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Trot, Oasis, Neo",
+       "Makmah, Bloody, Delux"
+      ],
+      "Trot, Oasis, Neo",
+      ""
+     ],
+     [
+      [
+       "Colesito, OG, Verc",
+       "Zignos, Six, Provenza"
+      ],
+      "Colesito, OG, Verc",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc, OG, Colesito, Zignos",
+       "Oasis, Trot, Neo, Delux"
+      ],
+      "Verc, OG, Colesito, Zignos",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Delux",
+    "Subcampeón",
+    4875
+   ],
+   [
+    "Zignos",
+    "Campeón",
+    4250
+   ],
+   [
+    "Verc",
+    "Campeón",
+    3750
+   ],
+   [
+    "Neo",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Six",
+    "Semifinal",
+    3000
+   ],
+   [
+    "Colesito",
+    "Campeón",
+    2500
+   ],
+   [
+    "OG",
+    "Campeón",
+    2500
+   ],
+   [
+    "Oasis",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Paria",
+    "Octavos",
+    1875
+   ],
+   [
+    "Trot",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Bloody",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Joshema",
+    "Octavos",
+    1250
+   ],
+   [
+    "Molusco",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mr Still Ballin",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Nemi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Valdoza",
+    "Octavos",
+    1250
+   ],
+   [
+    "Xclusivo",
+    "Octavos",
+    1250
+   ],
+   [
+    "yinn",
+    "Cuartos",
+    1250
+   ]
+  ]
  }
 }

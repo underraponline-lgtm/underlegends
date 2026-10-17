@@ -8,23 +8,23 @@
     {
      "op": "Snow",
      "n": "Snow",
-     "pts": 241612,
+     "pts": 243488,
      "oro": 4,
-     "ev": 26
+     "ev": 27
     },
     {
      "op": "Makmah",
      "n": "Makmah",
-     "pts": 230875,
+     "pts": 233500,
      "oro": 2,
-     "ev": 32
+     "ev": 33
     },
     {
      "op": "Oasis",
      "n": "Oasis",
-     "pts": 206650,
+     "pts": 209462,
      "oro": 10,
-     "ev": 17
+     "ev": 18
     },
     {
      "op": "PichulaMc",
@@ -59,9 +59,9 @@
     {
      "op": "Teo",
      "n": "Teo",
-     "pts": 34025,
+     "pts": 35900,
      "oro": 0,
-     "ev": 9
+     "ev": 10
     },
     {
      "op": "Lvel 🇻🇪",
@@ -104,7 +104,7 @@
      "op": "FFA",
      "n": "Freestyle For All",
      "gente": 263,
-     "ev": 50
+     "ev": 51
     },
     {
      "op": "ACAD",
@@ -142,6 +142,15 @@
      "d": "4 eventos · 86 raperos"
     },
     {
+     "op": "LEWITO",
+     "n": "LEWITO",
+     "q": "LEWITO",
+     "quien": [
+      "LEWITO"
+     ],
+     "d": "4 eventos · 85 raperos"
+    },
+    {
      "op": "Velatz",
      "n": "Velatz",
      "q": "Velatz",
@@ -149,15 +158,6 @@
       "Velatz"
      ],
      "d": "4 eventos · 76 raperos"
-    },
-    {
-     "op": "LEWITO",
-     "n": "LEWITO",
-     "q": "LEWITO",
-     "quien": [
-      "LEWITO"
-     ],
-     "d": "3 eventos · 62 raperos"
     },
     {
      "op": "Benjixo",
@@ -204,7 +204,7 @@
      "quien": [
       "LEWITO"
      ],
-     "d": "4 eventos de jurado, host o DJ"
+     "d": "5 eventos de jurado, host o DJ"
     },
     {
      "op": "Velatz",
@@ -216,13 +216,13 @@
      "d": "4 eventos de jurado, host o DJ"
     },
     {
-     "op": "Kravitz",
-     "n": "Kravitz",
-     "q": "Kravitz",
+     "op": "Zaik",
+     "n": "Zaik",
+     "q": "Zaik",
      "quien": [
-      "Kravitz"
+      "Zaik"
      ],
-     "d": "2 eventos de jurado, host o DJ"
+     "d": "3 eventos de jurado, host o DJ"
     }
    ],
    "duelista": [
@@ -327,7 +327,7 @@
      "quien": [
       "Aldre"
      ],
-     "d": "le ganó a Erian (#5) siendo #120 · Cuentas Pendientes V.1"
+     "d": "le ganó a Erian (#4) siendo #119 · Cuentas Pendientes V.1"
     },
     {
      "op": "436:HH",
@@ -336,7 +336,16 @@
      "quien": [
       "HH"
      ],
-     "d": "le ganó a Erian (#5) siendo #88 · LA BELLA ARTE DE LA DESGRACIA VOL3"
+     "d": "le ganó a Erian (#4) siendo #88 · LA BELLA ARTE DE LA DESGRACIA VOL3"
+    },
+    {
+     "op": "475:Juasmio",
+     "n": "Juasmio",
+     "q": "Juasmio",
+     "quien": [
+      "Juasmio"
+     ],
+     "d": "le ganó a Erian (#4) siendo #53 · - IRLANDA FREESTYLE -"
     },
     {
      "op": "431:Six",
@@ -348,22 +357,13 @@
      "d": "le ganó a Oasis (#1) siendo #11 · LA REDENCIÓN VOL.1"
     },
     {
-     "op": "389:Catarsis",
-     "n": "Catarsis",
-     "q": "Catarsis",
+     "op": "381:Soneto",
+     "n": "Soneto",
+     "q": "Soneto",
      "quien": [
-      "Catarsis"
+      "Soneto"
      ],
-     "d": "le ganó a PichulaMc (#4) siendo #44 · RED BULL NACIONAL ALBICELESTE"
-    },
-    {
-     "op": "475:Juasmio",
-     "n": "Juasmio",
-     "q": "Juasmio",
-     "quien": [
-      "Juasmio"
-     ],
-     "d": "le ganó a Erian (#5) siendo #53 · - IRLANDA FREESTYLE -"
+     "d": "le ganó a Erian (#4) siendo #44 · PRITTY FREE"
     }
    ],
    "imparable": [
@@ -676,7 +676,7 @@
      "quien": [
       "Oasis"
      ],
-     "d": "14 podios · 🥇10 🥈3 🥉1"
+     "d": "15 podios · 🥇10 🥈4 🥉1"
     },
     {
      "op": "Snow",
@@ -694,7 +694,7 @@
      "quien": [
       "Verc"
      ],
-     "d": "10 podios · 🥇4 🥈6"
+     "d": "11 podios · 🥇5 🥈6"
     },
     {
      "op": "PichulaMc",
@@ -720,7 +720,13 @@
      "op": "Follombia",
      "n": "Follombia",
      "quien": [],
-     "d": "488.575 pts · 7 jugaron"
+     "d": "496.826 pts · 7 jugaron"
+    },
+    {
+     "op": "Fuera de Rango",
+     "n": "Fuera de Rango",
+     "quien": [],
+     "d": "324.238 pts · 2 jugaron"
     },
     {
      "op": "Fontana",
@@ -729,22 +735,16 @@
      "d": "324.138 pts · 4 jugaron"
     },
     {
-     "op": "Fuera de Rango",
-     "n": "Fuera de Rango",
-     "quien": [],
-     "d": "321.613 pts · 2 jugaron"
-    },
-    {
      "op": "Lighting Force",
      "n": "Lighting Force",
      "quien": [],
-     "d": "293.763 pts · 3 jugaron"
+     "d": "297.513 pts · 3 jugaron"
     },
     {
-     "op": "Arte del Chakalaje",
-     "n": "Arte del Chakalaje",
+     "op": "KS",
+     "n": "KS",
      "quien": [],
-     "d": "183.422 pts · 1 jugó"
+     "d": "184.380 pts · 3 jugaron"
     }
    ],
    "pais": [
@@ -753,35 +753,35 @@
      "n": "Argentina",
      "cc": "ar",
      "quien": [],
-     "d": "1.624.626 pts · 37 jugaron"
+     "d": "1.642.813 pts · 37 jugaron"
     },
     {
      "op": "Chile",
      "n": "Chile",
      "cc": "cl",
      "quien": [],
-     "d": "977.056 pts · 28 jugaron"
+     "d": "985.493 pts · 28 jugaron"
     },
     {
      "op": "Colombia",
      "n": "Colombia",
      "cc": "co",
      "quien": [],
-     "d": "866.009 pts · 19 jugaron"
+     "d": "876.135 pts · 19 jugaron"
     },
     {
      "op": "Venezuela",
      "n": "Venezuela",
      "cc": "ar",
      "quien": [],
-     "d": "597.322 pts · 16 jugaron"
+     "d": "603.697 pts · 16 jugaron"
     },
     {
      "op": "España",
      "n": "España",
      "cc": "es",
      "quien": [],
-     "d": "221.293 pts · 10 jugaron"
+     "d": "224.106 pts · 10 jugaron"
     }
    ],
    "liga": [
