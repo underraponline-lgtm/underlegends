@@ -14637,5 +14637,87 @@
    ]
   ],
   "v": 2
+ },
+ "482": {
+  "antes": {
+   "Emilio Alva": [
+    284,
+    224,
+    true
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Jupiter": [
+    49,
+    65,
+    false
+   ],
+   "Panchok": [
+    7,
+    8,
+    false
+   ]
+  },
+  "canal": "925213294703300649",
+  "duelos": [
+   [
+    "Emilio Alva",
+    "Jupiter",
+    "Emilio Alva"
+   ],
+   [
+    "Panchok",
+    "Erian",
+    "Panchok"
+   ],
+   [
+    "Panchok",
+    "Emilio Alva",
+    "Panchok"
+   ]
+  ],
+  "ev_antes": {
+   "Emilio Alva": 3,
+   "Erian": 38,
+   "Jupiter": 9,
+   "Panchok": 15
+  },
+  "fecha": "17/10",
+  "firma": "cac5527a79b5b633",
+  "msg": "1561153562665558208",
+  "nombre": "Grupo 1",
+  "num": 482,
+  "participantes": 4,
+  "sello": {
+   "Panchok": "4c0c8e8062f3:906ce275eeb8"
+  },
+  "sv": "ACAD",
+  "t": "2026-10-17T23:24:18Z",
+  "tabla": [
+   [
+    "Panchok",
+    "Campeón",
+    5000
+   ],
+   [
+    "Emilio Alva",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Jupiter",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    2625
+   ]
+  ],
+  "v": 2
  }
 }

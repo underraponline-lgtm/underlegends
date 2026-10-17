@@ -25837,5 +25837,75 @@
     1250
    ]
   ]
+ },
+ "482": {
+  "dia": "2026-10-17",
+  "escala": "4-7",
+  "fecha": "17/10",
+  "links": [
+   "https://discord.com/channels/765045834647339038/1309234583023124531/1561137515174559755"
+  ],
+  "n": 482,
+  "nombre": "Grupo 1",
+  "participantes": 4,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Emilio Alva",
+       "Jupiter"
+      ],
+      "Emilio Alva",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "Erian"
+      ],
+      "Panchok",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "Emilio Alva"
+      ],
+      "Panchok",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "ACAD",
+  "tabla": [
+   [
+    "Panchok",
+    "Campeón",
+    5000
+   ],
+   [
+    "Emilio Alva",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Jupiter",
+    "Semifinal",
+    2625
+   ]
+  ]
  }
 }

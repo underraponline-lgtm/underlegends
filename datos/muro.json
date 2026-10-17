@@ -39,6 +39,15 @@
 "temporada"
 ]
 },
+"panchok": {
+"rg": "S",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "erian": {
 "rg": "B",
 "c": [
@@ -51,15 +60,6 @@
 "rg": "A",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"panchok": {
-"rg": "S",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -276,6 +276,14 @@
 "temporada"
 ]
 },
+"jupiter": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "nemi": {
 "rg": "D",
 "c": [
@@ -456,13 +464,6 @@
 ]
 },
 "tøkiø": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"jupiter": {
 "rg": "",
 "c": [
 "servidor",
@@ -847,6 +848,10 @@
 "rg": "",
 "c": []
 },
+"emilioalva": {
+"rg": "",
+"c": []
+},
 "noa": {
 "rg": "",
 "c": []
@@ -1214,10 +1219,6 @@
 ]
 },
 "natsuki": {
-"rg": "",
-"c": []
-},
-"emilioalva": {
 "rg": "",
 "c": []
 },
@@ -2400,22 +2401,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Lhyon"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Marto"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5698,6 +5683,23 @@
 "Miniboy"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-10-17T23:31:15Z",
+"quien": [
+"Jupiter"
+],
+"rg": "D",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-17T23:31:15Z",
+"quien": [
+"Jupiter"
+],
+"carta": "competitivo"
 }
 ]
 }

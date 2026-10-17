@@ -27,18 +27,18 @@
      "ev": 18
     },
     {
+     "op": "Panchok",
+     "n": "Panchok",
+     "pts": 185825,
+     "oro": 5,
+     "ev": 13
+    },
+    {
      "op": "PichulaMc",
      "n": "PichulaMc",
      "pts": 183422,
      "oro": 3,
      "ev": 23
-    },
-    {
-     "op": "Panchok",
-     "n": "Panchok",
-     "pts": 175825,
-     "oro": 4,
-     "ev": 12
     }
    ],
    "revelacion": [
@@ -109,8 +109,8 @@
     {
      "op": "ACAD",
      "n": "Academia de Rap",
-     "gente": 106,
-     "ev": 5
+     "gente": 107,
+     "ev": 6
     },
     {
      "op": "DDF",
@@ -251,7 +251,7 @@
      "quien": [
       "Panchok"
      ],
-     "d": "18 de 25 duelos ganados"
+     "d": "20 de 27 duelos ganados"
     },
     {
      "op": "Liberia",
@@ -336,7 +336,7 @@
      "quien": [
       "HH"
      ],
-     "d": "le ganó a Erian (#5) siendo #89 · LA BELLA ARTE DE LA DESGRACIA VOL3"
+     "d": "le ganó a Erian (#6) siendo #89 · LA BELLA ARTE DE LA DESGRACIA VOL3"
     },
     {
      "op": "481:Calíz",
@@ -345,7 +345,7 @@
      "quien": [
       "Calíz"
      ],
-     "d": "le ganó a Erian (#5) siendo #77 · PROYECTO X VOL.3"
+     "d": "le ganó a Erian (#6) siendo #77 · PROYECTO X VOL.3"
     },
     {
      "op": "478:Catarsis",
@@ -354,16 +354,16 @@
      "quien": [
       "Catarsis"
      ],
-     "d": "le ganó a Colesito (#4) siendo #46 · SNAKE INSIGNIA 5 8"
+     "d": "le ganó a Colesito (#4) siendo #47 · SNAKE INSIGNIA 5 8"
     },
     {
-     "op": "431:Six",
-     "n": "Six",
-     "q": "Six",
+     "op": "401:Zetryko",
+     "n": "Zetryko",
+     "q": "Zetryko",
      "quien": [
-      "Six"
+      "Zetryko"
      ],
-     "d": "le ganó a Oasis (#1) siendo #11 · LA REDENCIÓN VOL.1"
+     "d": "le ganó a Panchok (#5) siendo #56 · COPA DE GRUPOS LCW"
     }
    ],
    "imparable": [
@@ -720,7 +720,7 @@
      "op": "Follombia",
      "n": "Follombia",
      "quien": [],
-     "d": "538.826 pts · 7 jugaron"
+     "d": "544.076 pts · 7 jugaron"
     },
     {
      "op": "Fuera de Rango",
@@ -738,7 +738,7 @@
      "op": "Lighting Force",
      "n": "Lighting Force",
      "quien": [],
-     "d": "297.513 pts · 3 jugaron"
+     "d": "307.513 pts · 3 jugaron"
     },
     {
      "op": "KS",
@@ -760,7 +760,7 @@
      "n": "Chile",
      "cc": "cl",
      "quien": [],
-     "d": "989.243 pts · 28 jugaron"
+     "d": "999.243 pts · 28 jugaron"
     },
     {
      "op": "Colombia",

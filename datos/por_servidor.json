@@ -1051,10 +1051,7 @@
     "ovr": 48,
     "pod": 0,
     "pts": 16250,
-    "racha": "0/0",
-    "tg": {
-     "llave": true
-    }
+    "racha": "0/0"
    },
    "DDF": {
     "duelos": "2/4",
@@ -1980,8 +1977,7 @@
     "racha": "1/1",
     "tg": {
      "fin": 1,
-     "fund": true,
-     "llave": true
+     "fund": true
     }
    },
    "DDF": {
@@ -2134,13 +2130,16 @@
   },
   "Emilio Alva": {
    "ACAD": {
-    "duelos": "0/2",
-    "ev": 3,
+    "duelos": "1/4",
+    "ev": 4,
     "oro": 0,
-    "ovr": 46,
-    "pod": 0,
-    "pts": 8188,
-    "racha": "0/0"
+    "ovr": 50,
+    "pod": 1,
+    "pts": 15688,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
    }
   },
   "Emily Family": {
@@ -2167,12 +2166,12 @@
   },
   "Erian": {
    "ACAD": {
-    "duelos": "4/6",
-    "ev": 3,
+    "duelos": "4/7",
+    "ev": 4,
     "oro": 1,
-    "ovr": 50,
+    "ovr": 51,
     "pod": 1,
-    "pts": 16250,
+    "pts": 21500,
     "racha": "0/1",
     "tg": {
      "fin": 1,
@@ -2449,10 +2448,7 @@
     "ovr": 48,
     "pod": 0,
     "pts": 12750,
-    "racha": "1/1",
-    "tg": {
-     "llave": true
-    }
+    "racha": "1/1"
    }
   },
   "Fleivacheck": {
@@ -3316,12 +3312,12 @@
   },
   "Jupiter": {
    "ACAD": {
-    "duelos": "0/1",
-    "ev": 1,
+    "duelos": "0/2",
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 46,
     "pod": 0,
-    "pts": 1250,
+    "pts": 6500,
     "racha": "0/0"
    },
    "FFA": {
@@ -3502,8 +3498,7 @@
     "pts": 19750,
     "racha": "0/2",
     "tg": {
-     "fin": 1,
-     "llave": true
+     "fin": 1
     }
    },
    "FFA": {
@@ -4060,8 +4055,7 @@
     "pts": 19500,
     "racha": "0/1",
     "tg": {
-     "fund": true,
-     "llave": true
+     "fund": true
     }
    },
    "FFA": {
@@ -5470,15 +5464,15 @@
   },
   "Panchok": {
    "ACAD": {
-    "duelos": "12/15",
-    "ev": 5,
-    "oro": 2,
-    "ovr": 57,
-    "pod": 2,
-    "pts": 76625,
-    "racha": "3/3",
+    "duelos": "14/17",
+    "ev": 6,
+    "oro": 3,
+    "ovr": 59,
+    "pod": 3,
+    "pts": 86625,
+    "racha": "4/4",
     "tg": {
-     "fin": 2,
+     "fin": 3,
      "llave": true
     }
    },
