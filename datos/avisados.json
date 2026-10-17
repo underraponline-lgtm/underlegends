@@ -4397,7 +4397,7 @@
    "Velatz": 28
   },
   "fecha": "09/10",
-  "firma": "de752028b534896b",
+  "firma": "88a6d208ad832e5f",
   "msg": "1558266214659260507",
   "nombre": "COPA SOOLAR 4",
   "num": 437,
@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "02e4322879c55c06",
+  "firma": "80c94d85194a3612",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -5081,7 +5081,7 @@
    "Xclusivo": 10
   },
   "fecha": "09/10",
-  "firma": "905dfddb50af9d00",
+  "firma": "7ed9006fc78f7ca3",
   "msg": "1558334120172462091",
   "nombre": "PROYECTO X VOL.2",
   "num": 440,
@@ -5562,7 +5562,7 @@
    "Xclusivo": 12
   },
   "fecha": "10/10",
-  "firma": "213ca839183e609d",
+  "firma": "12edc883cafff5c2",
   "msg": "1558545514931163258",
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
   "num": 442,
@@ -5811,7 +5811,7 @@
    "PichulaMc": 27
   },
   "fecha": "10/10",
-  "firma": "495d197b71aeb6d6",
+  "firma": "a6c1dfd747dd35d0",
   "msg": "1558643633110917121",
   "nombre": "(sin titulo)",
   "num": 444,
@@ -6751,7 +6751,7 @@
    "Verc": 2
   },
   "fecha": "11/10",
-  "firma": "b5f8c909d7d99442",
+  "firma": "15beaefbbf4e5d16",
   "msg": "1558907912582078525",
   "nombre": "__ HJKSLOWT V.1 __",
   "num": 449,
@@ -9421,7 +9421,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "d18a6a03bbea0b85",
+  "firma": "d6bb478801a6e30b",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -10513,7 +10513,7 @@
    "Tenor": 3
   },
   "fecha": "13/10",
-  "firma": "d11b57395f940fc0",
+  "firma": "f250e406320a8e4d",
   "msg": "1559459229411057705",
   "nombre": "QCYO RAPEEN",
   "num": 465,
@@ -12064,7 +12064,7 @@
    "Vandu": 20
   },
   "fecha": "14/10",
-  "firma": "f103f943707d0a74",
+  "firma": "da20ff0ae376449d",
   "msg": "1560019837609050254",
   "nombre": "DEM UZBEKISTAN FECHA 3",
   "num": 471,
@@ -12629,7 +12629,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "91bceae92090e98b",
+  "firma": "ce90a4fb1d0bd78a",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -13446,7 +13446,7 @@
    "Xubaru": 7
   },
   "fecha": "16/10",
-  "firma": "97c7cf5cf69027f4",
+  "firma": "b317af29eb8591f1",
   "msg": "1560725555203014688",
   "nombre": "__ DESGRACIAS EN TOKYO VOL27 __",
   "num": 477,
@@ -13531,6 +13531,7 @@
   "v": 2
  },
  "478": {
+  "al_dia": true,
   "antes": {
    "Agus": [
     10,
@@ -13796,6 +13797,7 @@
   "v": 2
  },
  "479": {
+  "al_dia": true,
   "antes": {
    "Calíz": [
     141,
@@ -14058,6 +14060,7 @@
   "v": 2
  },
  "480": {
+  "al_dia": true,
   "antes": {
    "Bloody": [
     23,
