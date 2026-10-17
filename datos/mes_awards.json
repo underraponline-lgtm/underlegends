@@ -535,20 +535,20 @@
      "d": "1 felicitación"
     },
     {
-     "op": "4e9604cc3219",
-     "n": "Krish subió a E",
-     "q": "Krish",
+     "op": "22ec13a1831f",
+     "n": "Lvel subió a E",
+     "q": "Lvel",
      "quien": [
-      "Krish"
+      "Lvel"
      ],
      "d": "1 felicitación"
     },
     {
-     "op": "651294d276da",
-     "n": "Xubaru, campeón de Inserte Nombre de la Compe",
-     "q": "Xubaru",
+     "op": "2d7e17254a5a",
+     "n": "Over, campeón de SNAKE INSIGNIA 5 8",
+     "q": "Over",
      "quien": [
-      "Xubaru"
+      "Over"
      ],
      "d": "1 felicitación"
     }
@@ -1296,6 +1296,41 @@
      ],
      "Chop subió a D",
      "2026-10-16T22:30:18Z"
+    ],
+    "22ec13a1831f": [
+     1,
+     [
+      "Lvel"
+     ],
+     "Lvel subió a E",
+     "2026-10-16T18:53:08Z"
+    ],
+    "2d7e17254a5a": [
+     1,
+     [
+      "Over"
+     ],
+     "Over, campeón de SNAKE INSIGNIA 5 8",
+     "2026-10-16T17:34:15Z"
+    ],
+    "8552ad37a633": [
+     1,
+     [
+      "Oasis"
+     ],
+     "Oasis, campeón de LA REDENCIÓN",
+     "2026-10-16T02:35:47Z"
+    ],
+    "826de802085a": [
+     1,
+     [
+      "Zignos",
+      "Oasis",
+      "Colesito",
+      "PichulaMc"
+     ],
+     "Zignos y Oasis, campeón de LA BELLA ARTE DE LA DESGRACIA VOL 6 PANDILLAS",
+     "2026-10-14T20:32:37Z"
     ]
    }
   },
