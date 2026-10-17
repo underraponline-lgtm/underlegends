@@ -99,10 +99,10 @@
   },
   "Andres": {},
   "Andy": {
-   "competitivo": "a631bc9373da:aa2fab0a1b31",
+   "competitivo": "be414fb8ad1c:aa2fab0a1b31",
    "pais": "a0f3562759cb:631b7a4c93c4",
    "servidor": "384d81ba3ce4:f7bc857dd9f6:b11e87",
-   "temporada": "b1599df31cc7:906ce275eeb8"
+   "temporada": "2933925def9c:906ce275eeb8"
   },
   "Ariaxer": {
    "competitivo": "2b4b7bc68787:aa2fab0a1b31",
@@ -185,9 +185,9 @@
   },
   "CJ": {},
   "Calíz": {
-   "competitivo": "91a639ef1fe5:aa2fab0a1b31",
-   "pais": "30fa21e4f1e9:631b7a4c93c4",
-   "servidor": "0b01532b7e0b:f7bc857dd9f6:b94adf",
+   "competitivo": "871b6620e0df:aa2fab0a1b31",
+   "pais": "93c3ec5b2943:631b7a4c93c4",
+   "servidor": "b7cc9e2e417c:f7bc857dd9f6:b94adf",
    "temporada": "ad079f9c8262:906ce275eeb8"
   },
   "Camila": {},
@@ -320,7 +320,7 @@
    "temporada": "494ded1ee2f1:906ce275eeb8"
   },
   "Deluxe": {
-   "competitivo": "e035cd24fa5a:aa2fab0a1b31",
+   "competitivo": "fe98c3d166b9:aa2fab0a1b31",
    "pais": "6597fa74bcc5:631b7a4c93c4",
    "servidor": "4b5f7be5561a:f7bc857dd9f6:2fa902"
   },
@@ -668,7 +668,7 @@
    "servidor": "727592bfe378:f7bc857dd9f6:67201a"
   },
   "Juanpa": {
-   "competitivo": "5263ea7bd6e9:aa2fab0a1b31",
+   "competitivo": "c4e04f0808f1:aa2fab0a1b31",
    "pais": "4f321677bcdf:631b7a4c93c4",
    "servidor": "baf2a6913640:f7bc857dd9f6:3580af"
   },
@@ -1338,10 +1338,10 @@
    "temporada": "f7c1d73b555f:906ce275eeb8"
   },
   "Rodas": {
-   "competitivo": "f22a940f988e:aa2fab0a1b31",
+   "competitivo": "3506a1a69f9f:aa2fab0a1b31",
    "pais": "cbc0965f7cb4:631b7a4c93c4",
    "servidor": "c76ed1b2ef3a:f7bc857dd9f6:0a3db8",
-   "temporada": "3e80989bae37:906ce275eeb8"
+   "temporada": "eaf0908779d9:906ce275eeb8"
   },
   "Ronin": {
    "servidor": "44872cc3122e:f7bc857dd9f6:055f77"
@@ -1407,10 +1407,10 @@
   },
   "Sexo": {},
   "Shadow": {
-   "competitivo": "97019ed138e8:aa2fab0a1b31",
-   "pais": "ccd22043f404:631b7a4c93c4",
-   "servidor": "75b3149963c1:f7bc857dd9f6:4975e5",
-   "temporada": "981fe8a1070c:906ce275eeb8"
+   "competitivo": "05f494139a56:aa2fab0a1b31",
+   "pais": "9fe3e3e169e7:631b7a4c93c4",
+   "servidor": "3f86b4ca72da:f7bc857dd9f6:4975e5",
+   "temporada": "513205a57250:906ce275eeb8"
   },
   "Simon": {
    "servidor": "a7f2c6559975:f7bc857dd9f6:874d2d"
@@ -1810,5 +1810,5 @@
    "servidor": "7f8885a35a6d:f7bc857dd9f6:55e9bc"
   }
  },
- "cuando": "2026-10-17T04:59:53+00:00"
+ "cuando": "2026-10-17T06:59:15+00:00"
 }
