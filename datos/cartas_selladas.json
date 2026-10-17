@@ -237,7 +237,7 @@
    "competitivo": "9d40cddc6c15:aa2fab0a1b31",
    "pais": "6b0a653aebda:631b7a4c93c4",
    "servidor": "602c4423b67b:f7bc857dd9f6:25c183",
-   "temporada": "e2a7cff88a49:906ce275eeb8"
+   "temporada": "cf9962964fde:906ce275eeb8"
   },
   "CrisZJ": {},
   "Crk": {
@@ -317,7 +317,7 @@
    "competitivo": "67888e3c3482:aa2fab0a1b31",
    "pais": "33e528845613:631b7a4c93c4",
    "servidor": "cad6f83f86c3:f7bc857dd9f6:6a5f1a",
-   "temporada": "aff26fb2ba28:906ce275eeb8"
+   "temporada": "494ded1ee2f1:906ce275eeb8"
   },
   "Deluxe": {
    "competitivo": "e035cd24fa5a:aa2fab0a1b31",
@@ -1266,7 +1266,7 @@
    "competitivo": "3601fb91dbb2:aa2fab0a1b31",
    "pais": "1eb66906c7dd:631b7a4c93c4",
    "servidor": "d18b23b091f6:f7bc857dd9f6:980594",
-   "temporada": "709eff9391f2:906ce275eeb8"
+   "temporada": "85ce2d78e1e7:906ce275eeb8"
   },
   "Pwpwo": {
    "servidor": "c61e3e877a42:f7bc857dd9f6:a672ab"
@@ -1581,7 +1581,7 @@
    "competitivo": "b7432e2390a9:aa2fab0a1b31",
    "pais": "7218610708a4:631b7a4c93c4",
    "servidor": "2ec41ddce155:f7bc857dd9f6:c43f56",
-   "temporada": "196df247f456:906ce275eeb8"
+   "temporada": "8a7c15e4c021:906ce275eeb8"
   },
   "Vilca": {
    "competitivo": "38ba2926ea4c:aa2fab0a1b31",
@@ -1808,5 +1808,5 @@
    "servidor": "7f8885a35a6d:f7bc857dd9f6:55e9bc"
   }
  },
- "cuando": "2026-10-17T00:14:20+00:00"
+ "cuando": "2026-10-17T00:25:21+00:00"
 }
