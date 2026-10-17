@@ -591,6 +591,13 @@
 "rg": "",
 "c": []
 },
+"shadow": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "juanpa": {
 "rg": "",
 "c": [
@@ -602,13 +609,6 @@
 "c": [
 "pais",
 "servidor"
-]
-},
-"shadow": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
 ]
 },
 "ardean": {

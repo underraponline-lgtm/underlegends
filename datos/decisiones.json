@@ -470,6 +470,13 @@
    "batalla": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · octavos · Marcos 🇪🇸 🆚 Benjixo 🇦🇷",
    "cuando": "2026-10-16 11:29 AM ET",
    "por": "Dlx (✅ Decidir)"
+  },
+  "proyectoxvol3|DDF|16/10|cuartos|caliz|shadow": {
+   "ganador": "Calíz 🇲🇽",
+   "batalla": "PROYECTO X VOL.3 · DDF · 16/10 · cuartos · Calíz 🇲🇽 🆚 SHADOW 🇨🇴",
+   "cuando": "2026-10-17 2:53 AM ET",
+   "por": "el organizador, con el botón (<@958103803616444528>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   }
  },
  "anuncios_fuera": {

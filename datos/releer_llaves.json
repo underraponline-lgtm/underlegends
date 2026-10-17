@@ -1,13 +1,4 @@
 {
  "_leeme": "Las llaves incompletas (sin campeón, sin subcampeón o con batallas sin ganador) que el ciclo vuelve a pedir a Discord en las corridas siguientes, aunque ya no estén entre los últimos mensajes de su canal; recién después de 3 relecturas se le pregunta al organizador. Lo escribe bot/llaves_a_entrada.py (marcar_releer) y lo lee bot/escuchar.py (a_releer). Dlx, 16/10/2026.",
- "llaves": {
-  "1560839777929142414": {
-   "canal": "1498009509036163173",
-   "desde": "2026-10-17T03:53:49+00:00",
-   "evento": "PROYECTO X VOL.3",
-   "fecha": "16/10",
-   "sv": "DDF",
-   "vistas": 7
-  }
- }
+ "llaves": {}
 }

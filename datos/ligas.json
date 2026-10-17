@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo).",
- "t": "2026-10-17T06:27:22Z",
+ "t": "2026-10-17T06:56:33Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -2945,12 +2945,12 @@
    ],
    "tabla": [],
    "flyer": {
-    "id": "1559570304009768983",
-    "t": "2026-10-13T14:15:35Z",
-    "tit": "ONCEAVA BATALLA CONFIRMADA 🇻🇪 VS 🇦🇷",
-    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fms-world-series/1559570304009768983.webp",
+    "id": "1560908384306470982",
+    "t": "2026-10-17T06:52:39Z",
+    "tit": "SEGUNDA BATALLA vs min_g16m",
+    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fms-world-series/1560908384306470982.webp",
     "w": 720,
-    "h": 1038
+    "h": 1096
    }
   },
   "snake-generations": {

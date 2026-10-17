@@ -25725,11 +25725,11 @@
      ],
      [
       [
-       "Calíz 🇲🇽",
-       "SHADOW 🇨🇴"
+       "Calíz",
+       "Shadow"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Calíz",
+      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -25797,6 +25797,11 @@
     2500
    ],
    [
+    "Shadow",
+    "Cuartos",
+    2500
+   ],
+   [
     "Sin Limites",
     "Cuartos",
     2500
@@ -25828,11 +25833,6 @@
    ],
    [
     "Miniboy",
-    "Octavos",
-    1250
-   ],
-   [
-    "Shadow",
     "Octavos",
     1250
    ]
