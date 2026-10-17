@@ -1631,6 +1631,94 @@
    "b": "DOMINIK",
    "ganador": "XCLUSIVO",
    "votos": "1–0"
+  },
+  "1560840486854463539": {
+   "id": "1560840486854463539",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792203771080,
+   "a": "FOTOSÍNTESIS",
+   "b": "NEXUZ",
+   "ganador": "NEXUZ",
+   "votos": "1–0"
+  },
+  "1560842759345148047": {
+   "id": "1560842759345148047",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792204312884,
+   "a": "COLESITO",
+   "b": "SHADOW",
+   "ganador": "COLESITO",
+   "votos": "1–0"
+  },
+  "1560842819269165058": {
+   "id": "1560842819269165058",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792204327171,
+   "a": "SOLAR",
+   "b": "JEIXDER",
+   "ganador": "SOLAR",
+   "votos": "1–0"
+  },
+  "1560843895972040766": {
+   "id": "1560843895972040766",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792204583877,
+   "a": "SIN LÍMITES",
+   "b": "MARTYNEZ",
+   "ganador": "MARTYNEZ",
+   "votos": "1–0"
+  },
+  "1560844672610471961": {
+   "id": "1560844672610471961",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792204769042,
+   "a": "MCO",
+   "b": "EVANGELINE",
+   "ganador": "MCO",
+   "votos": "1–0"
+  },
+  "1560845714051960873": {
+   "id": "1560845714051960873",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792205017341,
+   "a": "ERIAN",
+   "b": "CALIZ",
+   "ganador": "CALIZ",
+   "votos": "1–0"
+  },
+  "1560846217775153183": {
+   "id": "1560846217775153183",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792205137438,
+   "a": "BLOODY",
+   "b": "MINIBOY",
+   "ganador": "BLOODY",
+   "votos": "1–0"
+  },
+  "1560848001893802127": {
+   "id": "1560848001893802127",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792205562805,
+   "a": "NEXUZ",
+   "b": "COLESITO",
+   "ganador": "COLESITO",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5433,8 +5521,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1792203602059,
-   "ed": 1792203771080,
-   "texto": "`[ OCTAVOS ]`\n⌞XCLUSIVO⌝ 🆚 ⌞DOMINIK⌝\n⌞FOTOSÍNTESIS⌝ 🆚 ⌞NEXUZ⌝",
+   "ed": 1792205632159,
+   "texto": "`[ OCTAVOS ]`\n⌞XCLUSIVO⌝ 🆚 ⌞DOMINIK⌝\n⌞FOTOSÍNTESIS⌝ 🆚 ⌞NEXUZ⌝\n⌞COLESITO⌝ 🆚 ⌞SHADOW⌝\n⌞SOLAR⌝ 🆚 ⌞JEIXDER⌝\n⌞SIN LÍMITES⌝ 🆚 ⌞MARTYNEZ⌝\n⌞MCO⌝ 🆚 ⌞EVANGELINE⌝\n⌞ERIAN⌝ 🆚 ⌞CALIZ⌝\n⌞BLOODY⌝ 🆚 ⌞MINIBOY⌝\n`[ CUARTOS ]`\n⌞NEXUZ🇵🇪⌝ 🆚 ⌞COLESITO🇨🇴⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5452,8 +5540,78 @@
       "FOTOSÍNTESIS",
       "NEXUZ"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "NEXUZ",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "COLESITO",
+      "SHADOW"
+     ],
+     "COLESITO",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "SOLAR",
+      "JEIXDER"
+     ],
+     "SOLAR",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "SIN LÍMITES",
+      "MARTYNEZ"
+     ],
+     "MARTYNEZ",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "MCO",
+      "EVANGELINE"
+     ],
+     "MCO",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ERIAN",
+      "CALIZ"
+     ],
+     "CALIZ",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "BLOODY",
+      "MINIBOY"
+     ],
+     "BLOODY",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "NEXUZ🇵🇪",
+      "COLESITO🇨🇴"
+     ],
+     "COLESITO🇨🇴",
+     "veredicto",
      []
     ]
    ]

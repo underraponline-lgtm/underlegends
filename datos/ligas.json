@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo).",
- "t": "2026-10-17T02:26:44Z",
+ "t": "2026-10-17T02:57:25Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -933,10 +933,10 @@
     ]
    ],
    "flyer": {
-    "id": "1560694638090780692",
-    "t": "2026-10-16T16:43:18Z",
-    "tit": "UN GRAN BATALLÓN DONDE SE JUEGAN LA CLASIFICACIÓN O RIESGO DE DESCENSO",
-    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-carimex/1560694638090780692.webp",
+    "id": "1560848561036329061",
+    "t": "2026-10-17T02:54:56Z",
+    "tit": "CALVIN KLEIN GONZALES vs ALUGOAT",
+    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-carimex/1560848561036329061.webp",
     "w": 720,
     "h": 901
    }

@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-17T02:24:40+00:00",
+ "cuando": "2026-10-17T02:55:15+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -382,44 +382,6 @@
    "staff": {},
    "autor": "Geronimo",
    "categoria_id": "1497457390637809837"
-  },
-  {
-   "nombre": "LA REDENCION VOL.6",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1560839089958297662",
-   "cuando": "2026-10-17T02:17:18",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Velatz",
-     "id": "1426686911908675628"
-    }
-   ],
-   "autor_h": "c36f9caea613c5c9",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Plata II 🥈",
-   "modalidad": "Cypher",
-   "horario": "11:30",
-   "fecha": "",
-   "premios": "Clasificación + Campeonato 🏆",
-   "staff": {
-    "jurado": [
-     "Velatz"
-    ],
-    "host": [
-     "Velatz"
-    ],
-    "dj": [
-     "Velatz"
-    ]
-   },
-   "autor": "Velatz",
-   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 28 PANDILLAS",
@@ -1099,6 +1061,54 @@
     ]
    },
    "autor": "Kravitz",
+   "categoria_id": "1468478330826260500"
+  },
+  {
+   "nombre": "DESGRACIAS EN TOKIO X LA REDENCIÓN X COPA SOLAR VOL.1",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1558301822584750161",
+   "cuando": "2026-10-10T02:15:06",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "@l3wito   @elsoolar",
+   "orgs": [
+    {
+     "n": "Velatz",
+     "id": "1426686911908675628"
+    },
+    {
+     "n": "l3wito",
+     "id": ""
+    },
+    {
+     "n": "elsoolar",
+     "id": ""
+    }
+   ],
+   "autor_h": "211322958af20ae2",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Plata II 🥈",
+   "modalidad": "2v2",
+   "horario": "EN 30 MINUTOS",
+   "fecha": "",
+   "premios": "Clasificación + Campeonato 🏆",
+   "staff": {
+    "jurado": [
+     "Velatz",
+     "l3wito",
+     "Perry el orrincotorni"
+    ],
+    "host": [
+     "LEWITO"
+    ],
+    "dj": [
+     "LEWITO"
+    ]
+   },
+   "autor": "Lewito",
    "categoria_id": "1468478330826260500"
   },
   {
@@ -5918,13 +5928,31 @@
  ],
  "inscripciones": [
   {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Calíz 🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1560845153072062496",
+   "cuando": "2026-10-17T02:41:23"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1560843959603830947",
+   "cuando": "2026-10-17T02:36:39"
+  },
+  {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "HJT 🇺🇾",
-   "quien": "andreslpz007",
-   "discord_id": "1517375729946333292",
-   "msg_id": "1560840651468312667",
-   "cuando": "2026-10-17T02:23:30"
+   "texto": "Carlos muerto 🇲🇽",
+   "quien": "carlosmuertox_31663",
+   "discord_id": "1310144167673987114",
+   "msg_id": "1560841019908554855",
+   "cuando": "2026-10-17T02:24:58"
   },
   {
    "servidor": "FFA",
@@ -5933,6 +5961,15 @@
    "quien": "franciscoegipto",
    "discord_id": "1517014246087589923",
    "msg_id": "1560840650818064485",
+   "cuando": "2026-10-17T02:23:30"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "HJT 🇺🇾",
+   "quien": "andreslpz007",
+   "discord_id": "1517375729946333292",
+   "msg_id": "1560840651468312667",
    "cuando": "2026-10-17T02:23:30"
   },
   {
