@@ -30,19 +30,19 @@
 "temporada"
 ]
 },
-"erian": {
-"rg": "B",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "colesito": {
 "rg": "B",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"erian": {
+"rg": "B",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -271,6 +271,7 @@
 "rg": "C",
 "c": [
 "competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -305,7 +306,8 @@
 "rg": "D",
 "c": [
 "competitivo",
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "carlosss": {
@@ -2398,22 +2400,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"fleivaman"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Lhyon"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5694,6 +5680,22 @@
 "t": "2026-10-17T00:58:17Z",
 "quien": [
 "Saiko"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-17T04:28:38Z",
+"quien": [
+"NXUZ"
+],
+"carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-17T04:28:38Z",
+"quien": [
+"Miniboy"
 ],
 "carta": "temporada"
 }

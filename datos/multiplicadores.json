@@ -465,6 +465,11 @@
      1
     ],
     [
+     "LA NOCHE NUNCA PERDONA🇬🇵",
+     13,
+     1
+    ],
+    [
      "nachonc_",
      12,
      1
@@ -482,10 +487,11 @@
      "URBF": 12,
      "ACAD": 2,
      "SR": 4,
-     "FVS": 1
+     "FVS": 1,
+     "DDF": 1
     },
     "gente": {
-     "DDF": 7,
+     "DDF": 19,
      "FFA": 109,
      "SR": 33,
      "URBF": 20,
@@ -497,7 +503,7 @@
    },
    "meta_va": {
     "ACAD": 16,
-    "DDF": 7,
+    "DDF": 19,
     "DRA": 0,
     "FFA": 109,
     "FFS": 0,

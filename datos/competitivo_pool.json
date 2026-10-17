@@ -845,15 +845,15 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
-   "dg": 17,
+   "dg": 20,
    "fg": 3,
    "fp": 3,
-   "riv": 28,
-   "venc": 17,
+   "riv": 32,
+   "venc": 20,
    "vengo": 1
   },
   "tg_p": {
-   "paises": 9
+   "paises": 11
   }
  },
  {
@@ -997,7 +997,7 @@
    "dg": 19,
    "fg": 3,
    "fp": 1,
-   "riv": 36,
+   "riv": 37,
    "venc": 18,
    "vengo": 1
   },
@@ -1148,10 +1148,10 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 9,
+   "dg": 13,
    "fg": 2,
-   "riv": 20,
-   "venc": 9
+   "riv": 24,
+   "venc": 13
   },
   "tg_p": {
    "paises": 10
@@ -1299,14 +1299,14 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 6,
+   "dg": 8,
    "fp": 1,
    "mata": 1,
-   "riv": 12,
-   "venc": 6
+   "riv": 15,
+   "venc": 8
   },
   "tg_p": {
-   "paises": 6
+   "paises": 7
   }
  },
  {
@@ -1921,8 +1921,8 @@
   "duel_v": 10,
   "duel_t": 21,
   "duel_real": true,
-  "dna_v": 1,
-  "dna_t": 2,
+  "dna_v": 2,
+  "dna_t": 3,
   "din_v": 8,
   "din_t": 18,
   "pos": 19,
@@ -1938,10 +1938,10 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 3,
-   "dg": 9,
+   "dg": 10,
    "fp": 1,
-   "riv": 17,
-   "venc": 9,
+   "riv": 19,
+   "venc": 10,
    "vengo": 1
   },
   "tg_p": {
@@ -2327,10 +2327,10 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 3,
-   "dg": 8,
+   "dg": 9,
    "fp": 2,
-   "riv": 16,
-   "venc": 8
+   "riv": 17,
+   "venc": 9
   },
   "tg_p": {
    "paises": 7
@@ -2625,11 +2625,11 @@
    "bestia": 1,
    "clasico": 1,
    "dg": 4,
-   "riv": 10,
+   "riv": 12,
    "venc": 4
   },
   "tg_p": {
-   "paises": 6,
+   "paises": 7,
    "pionero": true
   }
  },
@@ -2821,7 +2821,7 @@
    "clasico": 1,
    "dg": 3,
    "fp": 1,
-   "riv": 9,
+   "riv": 10,
    "venc": 3
   },
   "tg_p": {
@@ -4879,11 +4879,11 @@
    "dg": 2,
    "fp": 1,
    "mata": 1,
-   "riv": 5,
+   "riv": 6,
    "venc": 2
   },
   "tg_p": {
-   "paises": 5
+   "paises": 6
   }
  },
  {
@@ -6215,11 +6215,11 @@
    "bestia": 1,
    "clasico": 1,
    "dg": 1,
-   "riv": 6,
+   "riv": 7,
    "venc": 1
   },
   "tg_p": {
-   "paises": 4
+   "paises": 5
   }
  },
  {
@@ -6346,12 +6346,12 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 1,
-   "riv": 4,
-   "venc": 1
+   "dg": 2,
+   "riv": 7,
+   "venc": 2
   },
   "tg_p": {
-   "paises": 3
+   "paises": 4
   }
  },
  {
@@ -6394,7 +6394,7 @@
    "bestia": 1,
    "clasico": 1,
    "dg": 1,
-   "riv": 4,
+   "riv": 5,
    "venc": 1
   },
   "tg_p": {
@@ -13989,7 +13989,14 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  }
  },
  {
   "full": "Abraham 🇻🇪",
@@ -17836,11 +17843,14 @@
   "pos_sv": "",
   "arc_sv": 0,
   "tg_c": {
+   "bestia": 1,
    "clasico": 1,
-   "riv": 1
+   "dg": 1,
+   "riv": 2,
+   "venc": 1
   },
   "tg_p": {
-   "paises": 1
+   "paises": 2
   }
  },
  {
@@ -18230,12 +18240,12 @@
   }
  },
  {
-  "full": "FOTOSÍNTESIS🇵🇪",
+  "full": "FOTOSÍNTESIS",
   "raw": "FOTOSÍNTESIS",
   "cc": "pe",
   "sv": "DDF",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1374835757390237717",
   "verificado": false,
   "ev": 1,
   "score": 1.6,
@@ -18252,7 +18262,7 @@
   "duel_t": 1,
   "duel_real": true,
   "dna_v": 0,
-  "dna_t": 0,
+  "dna_t": 1,
   "din_v": 0,
   "din_t": 0,
   "pos": 418,
@@ -18264,7 +18274,14 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  }
  },
  {
   "full": "ISAIAS",

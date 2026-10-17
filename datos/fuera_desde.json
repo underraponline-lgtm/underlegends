@@ -700,9 +700,6 @@
    "sv-urbf": "2026-10-12",
    "temporada": "2026-10-12"
   },
-  "miniboy": {
-   "temporada": "2026-10-12"
-  },
   "monet": {
    "servidor": "2026-10-12",
    "sv-acad": "2026-10-12",
@@ -1124,7 +1121,7 @@
   }
  },
  "pasaban": 391,
- "cuando": "2026-10-17T04:00:58Z",
+ "cuando": "2026-10-17T04:28:56Z",
  "borradas": [
   [
    "jotap",

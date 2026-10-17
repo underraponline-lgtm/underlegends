@@ -76,11 +76,12 @@
    "vencido": false
   },
   "FOTOSÍNTESIS": {
+   "avisado": "2026-10-17",
    "chat": "2026-10-16",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-17T02:20:02+00:00",
-   "did": "",
+   "did": "1374835757390237717",
    "evento": "PROYECTO X VOL.3",
    "n": 481,
    "sv": "DDF",
