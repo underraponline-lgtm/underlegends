@@ -1376,7 +1376,8 @@
   "Saiko": {
    "competitivo": "86937bf7f329:aa2fab0a1b31",
    "pais": "4ae0896271bb:631b7a4c93c4",
-   "servidor": "579c00767ae9:f7bc857dd9f6:5f639c"
+   "servidor": "579c00767ae9:f7bc857dd9f6:5f639c",
+   "temporada": "d12c39b3e4c1:906ce275eeb8"
   },
   "Saito": {},
   "Sami": {},
@@ -1808,5 +1809,5 @@
    "servidor": "7f8885a35a6d:f7bc857dd9f6:55e9bc"
   }
  },
- "cuando": "2026-10-17T00:25:21+00:00"
+ "cuando": "2026-10-17T00:59:53+00:00"
 }
