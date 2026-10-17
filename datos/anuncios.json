@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-17T20:54:58+00:00",
+ "cuando": "2026-10-17T21:25:06+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -4969,6 +4969,29 @@
    "premios": "",
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
+   "categoria_id": "1309234419525222477"
+  },
+  {
+   "nombre": "COMPE CHILL",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1551643910953246751",
+   "cuando": "2026-09-21T17:18:56",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "8f502dc57bad1da2",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1V1",
+   "horario": "APENAS SE LLENEN LOS CUPOS",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "HERYIETEERJOUKATEITHORER",
    "categoria_id": "1309234419525222477"
   },
   {
