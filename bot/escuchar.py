@@ -1316,6 +1316,50 @@ def _funa(texto):
     return None
 
 
+#: ⚽ LA FASE DE GRUPOS: el encabezado de cada grupo («### 🏆 Grupo 1», «GRUPO A») y la marca de quien pasa
+GRUPO_CAB = re.compile(r'^[\W_]*grupo\s*([a-z0-9]{1,2})[\W_]*$', re.I)
+PASA_GRUPO = ('⚽', '✅', '✔', '➡', '⭐', '🔝')
+
+
+def grupos_de(texto):
+    """⚽ La FASE DE GRUPOS de una llave: `[(grupo, nombre, pasa)]`, o None.
+
+    🔑 Nace con el MUNDIALITO de LCW (17/10/2026), que Dlx vio raro: *«chequeá las últimas llaves de LCW, siento que
+    hay algo raro»*. La llave abre con «### 🏆 Grupo 1» y cuatro renglones `* PANCHOK 🇨🇱 ⚽️`, cuatro grupos, y después
+    semis y final. Nadie leía los grupos: entraban los 4 de semis y final, la escala salía de «4 a 7» y los otros 9
+    no existían —y el evento se llamaba «Grupo 1»—. Es la forma de la NAVE DE FUNA (`funa_de()`) con la marca al revés:
+    ⚽ (o ✅) dice quién PASA, y los demás cayeron en su grupo, sin orden entre ellos (empatan, como en la funa).
+
+    ⚠️ Desde dos grupos y seis nombres: un «Grupo 1» suelto con dos nombres no es una fase. Se corta en la primera
+    ronda (SEMIS, FINAL…), batalla o podio. Un nombre repetido en dos grupos (pasa, el organizador reusa a quien
+    sobra) se cuenta una vez: lo hace quien lo lee.
+    """
+    out, g = [], None
+    for l in plano(texto or '').splitlines():
+        s = re.sub(r'<a?:\w+:\d+>', ' ', l).strip()
+        if not s:
+            continue
+        m = GRUPO_CAB.match(s)
+        if m:
+            g = m.group(1).upper()
+            continue
+        if g is None:
+            continue
+        if nombres_de_linea(l) or RONDA.search(l) or PODIO.search(l) or any(x in l for x in MEDALLA):
+            break
+        u = uno_de_renglon(l)
+        if not u:
+            continue
+        pasa = any(x in l for x in PASA_GRUPO)
+        n = u[0]
+        for x in PASA_GRUPO:
+            n = n.replace(x, ' ')
+        n = re.sub(r'\s+', ' ', n.replace('\ufe0f', ' ')).strip(' *-•·')
+        if norm(n):
+            out.append((g, n, pasa))
+    return out if len({x[0] for x in out}) >= 2 and len(out) >= 6 else None
+
+
 def _quien_sigue(n, despues):
     """`Shisui (VELATZ)` -> `VELATZ` si VELATZ está en las rondas que siguen y Shisui no; si no, `n`."""
     m = _PAREN.match(n)

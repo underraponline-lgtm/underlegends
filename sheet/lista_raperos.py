@@ -5,6 +5,7 @@
     python sheet/lista_raperos.py --fusionar --aplicar       lo hace
     python sheet/lista_raperos.py --agregar NOMBRE CC ID ["nota"] [--aplicar]
     python sheet/lista_raperos.py --id NOMBRE ID [--aplicar]
+    python sheet/lista_raperos.py --cuenta-nueva NOMBRE ID "por qué" [--aplicar]
     python sheet/lista_raperos.py --renombrar VIEJO NUEVO ["por qué"] [--aplicar]
     python sheet/lista_raperos.py --pais NOMBRE CC ["por qué"] [--aplicar]
     python sheet/lista_raperos.py --sacar-no-confundir A B [--aplicar]
@@ -257,6 +258,47 @@ def poner_id(nombre, did, aplicar=False):
     return True
 
 
+# ── la cuenta nueva ─────────────────────────────────────────────────────
+def cuenta_nueva(nombre, did, motivo, aplicar=False):
+    """🔑 ALGUIEN PERDIÓ SU CUENTA DE DISCORD Y TIENE OTRA: la fila pasa a la cuenta nueva.
+
+    Nace con Lvel, 17/10/2026 (Dlx: *«esta es la nueva cuenta de lven 1241407042195816459»*). `--id` no pisa un ID que
+    ya está —eso lo decide Dlx—, y esto es justamente cuando Dlx lo decidió: por eso pide el motivo, que va a las Notas
+    con la cuenta vieja. ⚠️ LA CUENTA VIEJA NO SE PIERDE: queda escrita en las Notas («cuenta anterior …»), para saber
+    de quién eran lo que hizo con ella —su Tienda, su Pase— y para pasárselo a la nueva.
+    """
+    if not str(did).isdigit() or not motivo:
+        print('   ⚠️ hace falta el ID nuevo (sólo números) y el motivo')
+        return False
+    v = leer()
+    i, col = mapa(v)
+    fs = filas_de(v, nombre)
+    if len(fs) != 1:
+        print('   ⚠️ «%s» está %d veces en la Lista: no sé a cuál' % (nombre, len(fs)))
+        return False
+    n, f = fs[0]
+    ya = _celda(f, col['Discord ID'])
+    if ya == did:
+        print('   ya tenía esa cuenta')
+        return True
+    otro = _id_usado(v, did, salvo=n)
+    if otro:
+        print('   ⚠️ la cuenta %s ya es de «%s» (fila %d): eso lo decide Dlx' % (did, otro[1], otro[0]))
+        return False
+    nota = ('%s · cuenta anterior %s (%s)' % (_celda(f, col.get('Notas')), ya or 'ninguna',
+                                             motivo)).lstrip(' ·')
+    cambios = [('Discord ID', did), ('Notas', nota)]
+    for c, x in cambios:
+        print('   fila %d  %-10s %s  ->  %s' % (n, c, _celda(f, col.get(c)) or '—', x))
+    if not aplicar:
+        return True
+    respaldar(v, 'cuenta')
+    for c, x in cambios:
+        _E().poner(_rango(HOJA, '%s%d' % (chr(ord('A') + col[c]), n)), [[x]])
+    print('   ✅ la fila es de la cuenta nueva')
+    return True
+
+
 # ── renombrar ──────────────────────────────────────────────────────────
 def renombrar(viejo, nuevo, motivo='', aplicar=False):
     """Le cambia el nombre a una fila: `Rapero` (con su bandera) y `Nombre`.
@@ -488,6 +530,8 @@ def main():
         agregar(args[1], args[2], args[3], args[4] if len(args) > 4 else '', aplicar)
     elif args[0] == '--id' and len(args) == 3:
         poner_id(args[1], args[2], aplicar)
+    elif args[0] == '--cuenta-nueva' and len(args) == 4:
+        cuenta_nueva(args[1], args[2], args[3], aplicar)
     elif args[0] == '--renombrar' and len(args) >= 3:
         renombrar(args[1], args[2], args[3] if len(args) > 3 else '', aplicar)
     elif args[0] == '--pais' and len(args) >= 3:

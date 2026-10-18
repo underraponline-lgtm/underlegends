@@ -703,6 +703,11 @@ def plantel(texto, ids=None):
         k = E.norm(n)
         if k and not _ya(k):
             out.add(k)
+    # ⚽ y la de una FASE DE GRUPOS, igual (ver `escuchar.grupos_de()`)
+    for _g, n, _pasa in E.grupos_de(texto) or ():
+        k = E.norm(n)
+        if k and not _ya(k):
+            out.add(k)
     return out
 
 
@@ -1019,12 +1024,20 @@ def parecido(a, b):
 
 
 #: el encabezado que dice qué es el mensaje y no cómo se llama el evento (`titulo()`; igual en `llave_vivo.js`)
-TITULO_GENERICO = re.compile(r'(?:llaves?|brackets?|llaves? oficial(?:es)?|cruces|enfrentamientos|emparejamientos)',
+TITULO_GENERICO = re.compile(r'(?:llaves?|brackets?|llaves? oficial(?:es)?|cruces|enfrentamientos|emparejamientos'
+                             # ⚽ y un grupo no es el nombre de nada («Grupo 1», el MUNDIALITO de LCW, 17/10/2026)
+                             r'|(?:fase de )?grupos?(?:\s+[a-z0-9]{1,2})?)',
                              re.I)
 
 
 def titulo(texto):
     """Como se llama el evento. Solo para NOMBRARLO, nunca como clave."""
+    # ⚽ con fase de grupos, el título está ANTES del primer grupo: lo de adentro son nombres («* TROT 🇪🇸»), no títulos
+    if E.grupos_de(texto):
+        ls = (texto or '').splitlines()
+        corte = next((i for i, l in enumerate(ls)
+                      if E.GRUPO_CAB.match(re.sub(r'<a?:\w+:\d+>', ' ', E.plano(l)).strip())), len(ls))
+        texto = '\n'.join(ls[:corte])
     for l in (texto or '').splitlines()[:6]:
         limpio = re.sub(r'<a?:\w+:\d+>|<@[&!]?\d+>', ' ', l)
         # 🔴 EL `__` DEL SUBRAYADO DE DISCORD SE QUEDA, Y NO ES DESCUIDO: es
@@ -1326,6 +1339,23 @@ def filas_de(hallazgo, nombre=None, fecha=None, gente_grupo=None):
         if resuelta:
             dudas = [d for d in dudas if str(d[1]).upper() != 'FINAL']
         sabidas['nave de funa: %d en la fase' % len(fu)] += 1
+    # ⚽ LA FASE DE GRUPOS (el MUNDIALITO de LCW, 17/10/2026): quien cayó en su grupo, una fila como la de la funa —el lado
+    # que pasa vacío, y el motor los paga juntos—. Ver `escuchar.grupos_de()`
+    gr = None if fu else E.grupos_de(txt)
+    if gr:
+        k = lambda x: E.norm(E.HISTORIA.sub('', x or ''))  # noqa: E731
+        arriba = {k(x) for f in filas for x in (f.get('ladoA'), f.get('ladoB'), f.get('ganador')) if x}
+        por_g = collections.Counter(g for g, _n, _p in gr)
+        vistos, caen = set(), 0
+        base = {'evento': ev, 'servidor': sv, 'fecha': fecha, 'participantes': n_part}
+        for g, n, pasa in gr:
+            if not k(n) or k(n) in arriba or k(n) in vistos:
+                continue
+            vistos.add(k(n))
+            caen += 1
+            filas.append(dict(base, ronda='fase de eliminación', ladoA='', ladoB=n, ganador='',
+                              notas='fase de grupos: cayó en el grupo %s (%d en el grupo)' % (g, por_g[g])))
+        sabidas['fase de grupos: %d grupos, %d cayeron' % (len(por_g), caen)] += 1
     return filas, dudas, sabidas
 
 
@@ -3899,6 +3929,21 @@ def _self_check():
         ('filtros CON batallas: cuenta',
          fase_sin_batallas('FILTROS\nAna vs Beto\nCaro vs Dani\n'
                            'FINAL\nAna vs Caro') is None),
+        # ⚽ la FASE DE GRUPOS del MUNDIALITO de LCW (17/10/2026): ⚽ dice quién pasa; los demás cayeron en su grupo, se
+        # cuentan para la escala, el que está en dos grupos va una vez y «Grupo 1» no es el nombre del evento
+        ('fase de grupos: los que cayeron entran, una vez cada uno, y «Grupo 1» no es un título',
+         [(f['ronda'], f['ladoB']) for f in filas_de(
+             {'texto': '### 🏆 Grupo 1\n* TROT\n* PANCHOK ⚽️\n* DREXX\n### 🏆 Grupo 2\n* LVEL\n* ERIAN ⚽️\n* MAKMAH\n'
+                       '### 🏆 Grupo 3\n* LVEL\n* JUPITER ⚽\n* CALIZ\n### SEMIS\nPANCHOK vs ERIAN\n### FINAL\n'
+                       'PANCHOK vs JUPITER\n# 🏆: PANCHOK', 'guild': '', 'servidor': 'x'}, 'MUNDIALITO', '17/10')[0]
+          if f['ronda'] == 'fase de eliminación'] == []  # sin servidor conocido no deja filas: se mira la fase sola
+         and [(g, n, p) for g, n, p in E.grupos_de('### Grupo A\n* a ⚽\n* b\n* c\n### Grupo B\n* d\n* e ✅\n* f\n'
+                                                   '# FINAL\na vs e')] == [('A', 'a', True), ('A', 'b', False),
+                                                                           ('A', 'c', False), ('B', 'd', False),
+                                                                           ('B', 'e', True), ('B', 'f', False)]
+         and E.grupos_de('### Grupo 1\n* a\n* b\n# FINAL\na vs b') is None
+         and titulo('### 🏆 Grupo 1\n* TROT\n* PANCHOK ⚽️\n* DREXX\n### 🏆 Grupo 2\n* A ⚽\n* B\n* C\n# FINAL\nA vs PANCHOK')
+         is None and TITULO_GENERICO.fullmatch('Grupo 1') and not TITULO_GENERICO.fullmatch('COPA DE GRUPOS LCW')),
         ('una fase cypher con gente: se descarta',
          fase_sin_batallas('FASE CYPHER\n<@1> <@2> <@3>\nFINAL\nAna vs Beto')
          == 'CYPHER'),
