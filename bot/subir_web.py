@@ -805,7 +805,13 @@ APODOS = os.path.join(BASE, '.cache', 'apodos_discord.json')
 
 
 def _norm_id(s):
-    """La misma clave que `decidir.norm()`: letras y números, sin tildes ni banderas."""
+    """La clave de un nombre: la de todo el sistema (`nombres.clave()`, 18/10/2026: «ø», letras de fantasía)."""
+    import nombres as NB
+    return NB.clave(s)
+
+
+def _norm_id_viejo(s):
+    """La de antes: letras y números, sin tildes ni banderas (queda para comparar)."""
     import unicodedata
     s = unicodedata.normalize('NFKD', re.sub('[\U0001F1E6-\U0001F1FF]', '', str(s or '')))
     return ''.join(c for c in s if c.isalnum()).lower()
@@ -917,6 +923,13 @@ def _orgs(ann, tabla, pool, apodos=None, staff=None, perfiles=None):
                 ids = idx.get(_norm_id(o)) or set()
                 p = por_did.get(next(iter(ids))) if len(ids) == 1 else None
                 k = (p.get('_k') or _clave(p)) if p else ''
+            # 🔤 y si no, el reconocimiento de todo el sistema (`nombres.py`): el alias con cualquier letra, los números
+            # como letras («l3wito» es LEWITO). Del nombre de la Lista, su perfil
+            if not k:
+                import nombres as NB
+                q = NB.reconocer().quien(o, did)[0]
+                if q:
+                    k = _MU.k_de(q, tabla) or next((p.get('_k') or _clave(p) for p in por_did.values() if p.get('raw') == q), '')
             if k and k in claves:
                 out[o] = k
     return out

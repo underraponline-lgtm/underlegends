@@ -308,6 +308,15 @@ CALCULADAS = ('Rango',)
 ESCALA_COL = {'4-7': '4️⃣', '8-15': '8️⃣', '16+': '➕'}
 
 
+def _kk(s):
+    """🔑 LA CLAVE DE UNA PERSONA ES LA DE TODO EL SISTEMA: `nombres.clave()` (18/10/2026, Dlx: «¿por qué no en
+    general?»). Era `NFKD` + letras y números, que no pliega la «ø» ni las letras de fantasía: «TöKīØ» y «TøKīØ🦠🧠» eran
+    dos claves. ⚠️ Es la identidad del ranking: se cambió midiendo `canon()` sobre los 1.512 nombres reales (las llaves,
+    el padrón, los alias y los organizadores) antes y después."""
+    import nombres as _NB
+    return _NB.clave(s)
+
+
 def _norm(s):
     import unicodedata
     s = unicodedata.normalize('NFD', str(s or '').lower())
@@ -347,7 +356,7 @@ def canon(quien):
         try:
             p = os.path.join(BASE, 'datos', 'akas.json')
             with io.open(p, encoding='utf-8') as f:
-                _ALIAS = (json.load(f) or {}).get('alias') or {}
+                _ALIAS = {_kk(k): v for k, v in ((json.load(f) or {}).get('alias') or {}).items() if _kk(k)}
         except (OSError, ValueError):
             # ⚠️ SIN MAPA SE SIGUE, con los nombres crudos. Quedarse sin
             # vitrinas porque falta un json es peor que no fusionar.
@@ -369,8 +378,7 @@ def canon(quien):
     # solo porque se compara la clave normalizada, no el texto.
     vis, act = set(), quien or ''
     for _ in range(8):
-        k = ''.join(c for c in unicodedata.normalize('NFKD', act)
-                    if c.isalnum()).lower()
+        k = _kk(act)
         if k in vis:
             break
         vis.add(k)
@@ -455,9 +463,7 @@ def _grafia(nombre, declarado=False):
                          encoding='utf-8') as f:
                 for x in (json.load(f) or {}).get('no_confundir') or []:
                     if len(x) >= 2:
-                        a, b = (''.join(c for c in unicodedata.normalize(
-                            'NFKD', str(v)) if c.isalnum()).lower()
-                            for v in x[:2])
+                        a, b = (_kk(str(v)) for v in x[:2])
                         if a and a == b:
                             _POR_BANDERA.add(a)
         except (OSError, ValueError):
@@ -467,15 +473,13 @@ def _grafia(nombre, declarado=False):
                          encoding='utf-8') as f:
                 for x in json.load(f) or []:
                     r = str(x.get('raw') or '').strip()
-                    kk = ''.join(c for c in unicodedata.normalize('NFKD', r)
-                                 if c.isalnum()).lower()
+                    kk = _kk(r)
                     if kk and kk not in _GRAFIA:
                         _GRAFIA[kk] = r
         except (OSError, ValueError):
             # sin padrón se sigue: quedan las grafías de la primera vez
             pass
-    kk = ''.join(c for c in unicodedata.normalize('NFKD', nombre or '')
-                 if c.isalnum()).lower()
+    kk = _kk(nombre or '')
     if not kk:
         return nombre
     # 🔴 SALVO QUE ESE NOMBRE ESTÉ DECLARADO COMO DOS PERSONAS QUE SÓLO

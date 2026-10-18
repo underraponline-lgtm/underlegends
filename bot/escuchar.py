@@ -287,62 +287,10 @@ def _sin_pokemon(lado):
                       if x.strip() and not POKEMON.search(x))
 
 
-#: 🌲 LAS LETRAS PARECIDAS DE OTROS ALFABETOS, pasadas a las latinas que imitan: pares «rara → latina» en una sola
-#: cadena. ⚠️ LA MISMA CADENA vive en `bot/paginas/llave_vivo.js` y en `bot/avisos.js` (`PARECIDAS`), y el self-check
-#: se pone rojo si alguna difiere. Ver `plano()`.
-PARECIDAS = 'ᎠDᎡRᎢTᎥiᎩYᎪAᎫJᎬEᎯAᎳWᎶGᎷMᎸFᎻHᎾOᏀGᏁNᏂhᏃZᏆIᏌUᏏbᏒRᏔWᏕSᏙVᏚSᏞLᏟCᏢPᏦKᏫOᏳGᏴBᏵGᴀAʙBᴄCᴅDᴇEꜰFɢGʜHɪIᴊJᴋKʟLᴍMɴNᴏOᴘPǫQʀRꜱSᴛTᴜUᴠVᴡWʏYᴢZᗩAᗅAᗷBᑕCᗪDᗞDᗴEᖴFᕼHᒍJᒪLᗰMᑎNᑭPᑫQᖇRᔕSᑌUᐯVᗯW᙭XᘔZꓐBꓑPꓓDꓔTꓖGꓗKꓙJꓚCꓜZꓝFꓟMꓠNꓡLꓢSꓣRꓦVꓧHꓪWꓫXꓬYꓮAꓰEꓲIꓳOꓴUАAВBСCЕEЁEНHІIЈJКKМMОOРPЅSТTХXУYҮYИNЯRШWДAЭEаaеeоoрpсcуyхxіiјjѕsԁdԛqԝwӄkиnяrΑAΒBΕEΖZΗHΙIΚKΜMΝNΟOΡPΤTΥYΧXΛAΔAΣEΞEΘOϴOοoνvαaιiκkτtυuϲcϳjβBεeηnρpωwօoսuռnցgզqքpաwհhոnՈUՕOԼLƈcɖdɛeʄfɠgɦhɨiʝjʍmʊuʋvʐzȶt'
-_PARECIDAS = {PARECIDAS[i]: PARECIDAS[i + 1] for i in range(0, len(PARECIDAS), 2)}
-#: las letras «negativas» (🅾🅲🆃) de a DOS o más: una sola es un emoji (🅰️, 🅱️)
-_NEGATIVAS = re.compile('[\U0001F150-\U0001F169\U0001F170-\U0001F189](?:\ufe0f?[\U0001F150-\U0001F169\U0001F170-\U0001F189])+')
-#: el tachado, el subrayado y la barra que se le pegan a cada letra («O̶C̶T̶A̶V̶O̶S̶»)
-_ADORNOS = re.compile('[\u0305\u0332-\u0338\u033f]')
-
-
-def _negativas(m):
-    return ''.join(chr(0x41 + ord(c) - (0x1F170 if ord(c) >= 0x1F170 else 0x1F150))
-                   for c in m.group(0) if c != '\ufe0f')
-
-
-def _letra(c):
-    o = ord(c)
-    if 0x1D400 <= o <= 0x1D7FF or 0xFF01 <= o <= 0xFF5E or 0x1F130 <= o <= 0x1F149 or 0x24B6 <= o <= 0x24E9:
-        return unicodedata.normalize('NFKD', c)
-    if 0xAB70 <= o <= 0xABBF or 0x13F8 <= o <= 0x13FD:
-        c = c.upper()
-    return _PARECIDAS.get(c, c)
-
-
-def plano(texto):
-    """El texto con las letras «de fantasía» pasadas a letras comunes.
-
-    🔴 `𝐕𝐒` NO ES `VS` PARA UNA REGEX. Los organizadores decoran con el
-    bloque de símbolos alfanuméricos matemáticos (U+1D400…U+1D7FF) —el
-    ejemplo de la propia guía, §9.4, trae `𝐕𝐒`— y con letras de ancho
-    completo. Sin esto una llave escrita así no tiene separadores ni
-    encabezados: no se detecta, y no falla nada.
-
-    ⚠️ SÓLO ESOS BLOQUES. NFKD sobre todo el texto también desarmaría
-    tildes y banderas, que el resto del lector sabe leer tal como vienen.
-    Es la misma trampa que los roles `𝐑𝐚𝐧𝐠𝐨 𝐒𝐒𝐒` de Discord (ver CLAUDE.md).
-
-    🏛️ Y LAS LETRAS EN CUADRADITOS Y EN CIRCULITOS (la ACADEMIA, 04/10/2026): la RED
-    BULL CREW CHILE escribe sus rondas `🄾🄲🅃🄰🅅🄾🅂` (U+1F130…U+1F149) y sin esto la
-    llave no tenía ni una ronda. Los «negativos» (`🅰`, `🅾`) sólo de a dos o más (`🅾🅲🆃`): uno solo es un emoji.
-
-    🌲 Y LAS LETRAS PARECIDAS DE OTROS ALFABETOS (EL BOSQUE DE ARTEMISA, Snake Rap, 12/10/2026). GP escribió sus
-    rondas en letras CHEROQUI —`ᎾᏟᎢᎪᏙᎾᏚ`, `ᏟᏌᎪᎡᎢᎾᏚ`, `ᏚᎬᎷᏆᎸᏆᏁᎪᏞ`, `ᎸᏆᏁᎪᏞ`—, que NFKD no toca porque no son
-    variantes de las latinas: son otro alfabeto que se les parece. La llave no tenía ninguna ronda, así que no era
-    una llave: ni la página en vivo, ni el ciclo, ni el aviso de «no pude leer una llave» la vieron, con 25 anotados
-    jugando. Dlx: *«asegurate de prevenir este tipo de cosas para el futuro»*. Por eso no es sólo el cheroqui:
-    `PARECIDAS` trae los alfabetos que usan los generadores de letras de fantasía —cheroqui, versalitas (`ᴏᴄᴛᴀᴠᴏs`),
-    sílabas canadienses (`ᗩᗷᑕᗪ`), lisu, y el cirílico, el griego y el armenio que se usan como latinos (`ΛИЯ`)—, y
-    el tachado o subrayado que se le pega a cada letra se va. ⚠️ Sólo letras que IMITAN una latina: las que no se
-    parecen a ninguna quedan como vinieron. Y la segunda red, por si mañana es otra cosa: `_rondas_por_forma()`.
-    """
-    if not texto:
-        return texto or ''
-    texto = _ADORNOS.sub('', _NEGATIVAS.sub(_negativas, texto))
-    return ''.join(_letra(c) for c in texto)
+#: 🔤 LAS LETRAS DE FANTASÍA Y DE OTROS ALFABETOS viven en `bot/nombres.py` desde el 18/10/2026: son el escalón 1 del
+#: reconocimiento de nombres de TODO el sistema, no sólo de las llaves (Dlx: «¿por qué no en general?»). Acá se
+#: importan con los mismos nombres, así que todo lo que usaba `escuchar.plano()` sigue igual
+from nombres import PARECIDAS, _ADORNOS, _NEGATIVAS, _PARECIDAS, _letra, _negativas, plano  # noqa: E402,F401
 
 
 # ── los dialectos de los otros servidores ─────────────────────────────

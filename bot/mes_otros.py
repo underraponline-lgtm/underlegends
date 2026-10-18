@@ -156,30 +156,22 @@ NO_ES_STAFF = frozenset(('ustedes', 'todos', 'todas', 'publico', 'el publico', '
 
 
 def nombre_staff(s):
-    """Un nombre de staff como se lee: sin banderas ni emojis ni adornos («l3wito🇦🇷» → «l3wito», «💿 LEWITO» → «LEWITO»,
-    «Flennzs | ⛩️» → «Flennzs»). `''` si no queda nada que se lea —un nombre que es sólo «⛩️»—."""
-    import unicodedata
-    s = ''.join(unicodedata.normalize('NFKC', c) if 0x1D400 <= ord(c) <= 0x1D7FF else c for c in str(s or ''))
-    # lo de entre corchetes es el tema del apodo («Natsuki [Uma Cryu]»), y el número de adelante la plantilla («17 | X»)
-    while '[' in s and ']' in s.split('[', 1)[1]:
-        a, b = s.split('[', 1)
-        s = a + ' ' + b.split(']', 1)[1]
-    # sólo letras latinas y números: las de otros alfabetos son adorno («ཐ NeisMCཋ»)
-    out = ''.join(c if ((c.isalnum() and (c.isascii() or unicodedata.name(c, '').startswith('LATIN')))
-                        or c in " .'_-") else ' ' for c in s)
-    out = ' '.join(out.split()).strip(' .-_')
-    p = out.split(' ', 1)
-    if len(p) == 2 and p[0].isdigit() and len(p[0]) <= 3:
-        out = p[1]
-    out = '' if out.lower() in NO_ES_STAFF else out
-    return out if sum(c.isalnum() for c in out) >= 2 else ''
+    """Un nombre de staff como se lee: `nombres.limpio()` (18/10/2026: el reconocimiento de nombres es uno para todo el
+    sistema). «l3wito🇦🇷» → «l3wito», «💿 LEWITO» → «LEWITO», «Flennzs | ⛩️» → «Flennzs»."""
+    import nombres as NB
+    out = NB.limpio(s)
+    return '' if out.lower() in NO_ES_STAFF else out
 
 
 def _partir(s):
-    """Los nombres de un renglón del staff del anuncio. Cuando se escriben varios con su bandera —«LEWITO 🇨🇱 FLENNZS 🇨🇱»—,
-    al sacar las banderas quedan pegados con doble espacio, y «LEWITO  FLENNZS» salía nominado a Host como si fuera uno
-    (18/10/2026). Se parte también por coma, barra y «&»."""
-    return [x.strip() for x in re.split(r'\s{2,}|\s*[,/|&]\s*', str(s or '')) if x.strip()]
+    """Los nombres de un renglón del staff, de a uno: `nombres.partir()` («LEWITO 🇨🇱 FLENNZS 🇨🇱» son dos, 18/10/2026)."""
+    import nombres as NB
+    return NB.partir(s)
+
+
+def _NB():
+    import nombres
+    return nombres
 
 
 def _plural(n, uno, varios):
@@ -760,7 +752,10 @@ def datos(vistas_guardadas=None):
         # sin la numeración de la plantilla: «1 | Adriagner», «2- Velatz»
         x = re.sub(r'^\s*\d{1,2}\s*[|\-–.)]\s*', '', MU._org(nombre)).strip()
         # 👤 y por su nombre de Discord (usuario, visible o apodo): «zaik0009» es Zaik (`_nombres_lista()`)
-        return canon.get(k(x)) or nombres_dc.get(k(x)) or nombres_dc.get(k(nombre_staff(x))) or (x if len(x) >= 2 else '')
+        # 🔤 y si nada de eso, el reconocimiento de todo el sistema (`nombres.py`): el alias con cualquier letra, el
+        # nombre de Discord del paso 1b, los números como letras («l3wito»)
+        return (canon.get(k(x)) or nombres_dc.get(k(x)) or nombres_dc.get(k(nombre_staff(x)))
+                or _NB().reconocer().quien(x, did)[0] or (x if len(x) >= 2 else ''))
     fuera = {k(p.get('raw')) for p in pool if p.get('fc') and p.get('raw')}
     pos = {k(p['raw']): int(p['pos']) for p in pool if p.get('raw') and str(p.get('pos') or '').isdigit() and not p.get('fc')}
     # 🎯 las cazas: Most Wanted y precio por cabeza

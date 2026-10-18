@@ -334,9 +334,9 @@ def _num(x):
 
 
 def _gente(n):
-    import unicodedata
-    n = unicodedata.normalize('NFKD', str(n or ''))
-    return ''.join(c for c in n if c.isalnum()).lower()
+    """La clave de un nombre: la de todo el sistema (`nombres.clave()`, 18/10/2026)."""
+    import nombres as NB
+    return NB.clave(n)
 
 
 def resultado_guerra(semana, eventos):
@@ -438,6 +438,21 @@ def _clave_org(s):
     return _gente(_org(s))
 
 
+def _lista(v):
+    """Los organizadores de una llave como lista: `organizados()` da listas; los de antes (y las pruebas), un texto."""
+    return [x for x in v if x] if isinstance(v, (list, tuple)) else ([v] if v else [])
+
+
+def _orgs_de(a, R=None):
+    """👥 LOS ORGANIZADORES DE UN ANUNCIO, DE A UNO Y CON SU NOMBRE DE LA LISTA (Dlx, 18/10/2026: «sí, la gente se
+    reparte»). El «organizador» era el texto tal cual, y el organizador de la semana —el que decide la Copa— contaba mal
+    tres cosas, medidas ese día: «Lewis/Kravitz/TöKīØ» como UNA persona, «l3wito @elsoolar» aparte de LEWITO (y de
+    «Lewis», que también es él), y «y» o «19» como organizadores. Lo resuelve el reconocimiento de nombres de todo el
+    sistema (`bot/nombres.py`): la cuenta, la Lista, el alias, el nombre de Discord."""
+    import nombres as NB
+    return (R or NB.reconocer()).de_anuncio(a)
+
+
 def organizados(regs=None, anuncios=None):
     """`{n: organizador}`: quién organizó cada llave, por el «Organiza: X» del anuncio.
 
@@ -455,9 +470,11 @@ def organizados(regs=None, anuncios=None):
         except (OSError, ValueError):
             anuncios = []
     pas = [{'nombre': x.get('nombre'), 'sv': x.get('servidor') or '',
-            'cuando': CU.momento(x) or x.get('cuando'), 'org': _org(x.get('organizador'))}
-           for x in anuncios if x.get('nombre') and _org(x.get('organizador'))]
+            'cuando': CU.momento(x) or x.get('cuando'), 'org': _orgs_de(x)}
+           for x in anuncios if x.get('nombre')]
+    pas = [p for p in pas if p['org']]
     LW.cruzar(pas, regs)
+    # `{n: [organizador, …]}`: de a uno (ver `_orgs_de()`)
     return {int(p['llave']): p['org'] for p in pas if str(p.get('llave') or '').isdigit()}
 
 
@@ -505,16 +522,20 @@ def ranking_org(ini, fin, eventos, org_de, anticipados=()):
     por = {}
     for e in eventos:
         n, t, tabla = e[0], e[2], e[3]
-        org = org_de.get(n)
-        if not org or not t or not (ini <= t < fin):
+        orgs = _lista(org_de.get(n))
+        if not orgs or not t or not (ini <= t < fin):
             continue
         gente = len({_gente(f[0]) for f in tabla or [] if f})
         if gente < MIN_ORG:
             continue
-        x = por.setdefault(_clave_org(org), [org, 0, 0])
-        x[1] += gente * (2 if n in anticipados and t >= desde_a else 1)
-        x[2] += 1
-    return sorted(por.values(), key=lambda x: (-x[1], -x[2], x[0].lower()))
+        # 🤝 organizado entre varios, la gente se reparte (Dlx, 18/10/2026: «sí, la gente se reparte»)
+        parte = gente * (2 if n in anticipados and t >= desde_a else 1) / len(orgs)
+        for org in orgs:
+            x = por.setdefault(_clave_org(org), [org, 0, 0])
+            x[1] += parte
+            x[2] += 1
+    orden = sorted(por.values(), key=lambda x: (-x[1], -x[2], x[0].lower()))
+    return [[x[0], int(round(x[1])), x[2]] for x in orden]
 
 
 def copa_n(semana, eventos, org_de):
@@ -526,7 +547,7 @@ def copa_n(semana, eventos, org_de):
         return c['n']
     ini, fin = _de_iso(semana['inicio']), _de_iso(semana['fin'])
     cands = sorted((e[2], e[0]) for e in eventos
-                   if e[2] and ini <= e[2] < fin and _clave_org(org_de.get(e[0])) == c['clave'])
+                   if e[2] and ini <= e[2] < fin and c['clave'] in {_clave_org(o) for o in _lista(org_de.get(e[0]))})
     return cands[0][1] if cands else None
 
 
@@ -1271,6 +1292,18 @@ def _self_check():
        'y quienes lo juegan suman ×1,1, desde el 13/10 (lo de antes no cambia)')
     ok([r[:3] for r in rk] == [['@nachonc_', 22, 2], ['Carlos', 9, 1]],
        'suma la gente de sus eventos de 8 o más (el de 5 no cuenta)  %s' % rk)
+    # 👥 de a uno, y repartido (Dlx, 18/10/2026)
+    import nombres as NB
+    _R = NB.Reconocer(padron=[{'raw': 'Drexx', 'discord_id': '77'}, {'raw': 'LEWITO'}, {'raw': 'TøKīØ🦠🧠'}],
+                      alias={'lewis': 'LEWITO', 'tokio': 'TøKīØ🦠🧠'})
+    _oa = lambda txt, ev='EVENTO', orgs=None: _orgs_de({'organizador': txt, 'nombre': ev, 'orgs': orgs or []}, _R)  # noqa: E731
+    ok(_oa('Lewis/Kravitz/TöKīØ') == ['LEWITO', 'Kravitz', 'TøKīØ🦠🧠'] and _oa('Elsoolar y tokio') == ['Elsoolar', 'TøKīØ🦠🧠']
+       and _oa('y') == [] and _oa('19') == [] and _oa('CUPOS: 16') == []
+       and _oa('LA COPA DE ORO', 'LA COPA DE ORO VOL 2') == [] and _oa('', orgs=[{'n': 'yo', 'id': '77'}]) == ['Drexx'],
+       'los organizadores de a uno: «/» y « y » parten, el alias es la persona, y «y», «19», «CUPOS: 16» no son nadie')
+    rk3 = ranking_org(en(10, 12, 11), en(10, 19, 11), evo, {21: ['Ana', 'Bea'], 22: 'Bea', 24: ['Bea']})
+    ok([r[:3] for r in rk3] == [['Bea', 25, 3], ['Ana', 6, 1]],
+       'organizado entre dos, la gente se reparte (12 → 6 y 6); Bea suma lo suyo entero  %s' % rk3)
     dc = {'semanas': [{'id': '2026-10-12', 'inicio': _iso(en(10, 12, 11)), 'fin': _iso(en(10, 19, 11)),
                        'temporada': 't1', 'sv': {'FFA': 1, 'SR': 1}}]}
     evc = evo + [(31, 'SR', en(10, 20, 20), [['t%d' % i, 'x', 1] for i in range(8)], 'otro'),

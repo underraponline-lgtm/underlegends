@@ -52,7 +52,12 @@ export function resultado(r, corto = false) {
 }
 export const num = (n) => String(Math.trunc(Number(n) || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 export const mult = (x) => '×' + String(x || 1).replace('.', ',');
-export const norm = (s) => String(s || '').normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase();
+// 🔤 y las letras que NFKD no desarma (ø, đ, ł, ß, æ, œ…): las mismas que `nombres.plegar()` del Python (18/10/2026,
+// Dlx: «¿por qué no en general?»). Buscar «tokio» encuentra a «TøKīØ»
+const PLEGAR = { ø: 'o', Ø: 'O', đ: 'd', Đ: 'D', ł: 'l', Ł: 'L', ß: 'ss', ẞ: 'SS', æ: 'ae', Æ: 'AE', œ: 'oe', Œ: 'OE', ı: 'i',
+  þ: 'th', Þ: 'TH', ð: 'd', Ð: 'D', ħ: 'h', Ħ: 'H', ŧ: 't', Ŧ: 'T', ŀ: 'l', Ŀ: 'L', ĸ: 'k', ƒ: 'f' };
+export const norm = (s) => String(s || '').replace(/[øØđĐłŁßẞæÆœŒıþÞðÐħĦŧŦŀĿĸƒ]/g, (c) => PLEGAR[c]).normalize('NFKD')
+  .replace(/[̀-ͯ]/g, '').toLowerCase();
 
 // las fechas del payload: con Z o sin zona (y entonces son UTC, como en el Python)
 export function utc(s) {
