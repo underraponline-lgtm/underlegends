@@ -270,7 +270,8 @@ export function Pie({ liga }) {
 export function Subir() {
   const [ver, setVer] = useState(false);
   useEffect(() => {
-    const mirar = () => setVer(window.scrollY > window.innerHeight * 1.5);
+    // ⬆️ apenas bajaste una pantalla y media no: a 0,6 de pantalla (Dlx, 18/10/2026: «que aparezca más antes»)
+    const mirar = () => setVer(window.scrollY > window.innerHeight * 0.6);
     window.addEventListener('scroll', mirar, { passive: true });
     mirar();
     return () => window.removeEventListener('scroll', mirar);
@@ -282,7 +283,7 @@ export function Subir() {
   };
   return (
     <button type="button" className={'subir' + (ver ? ' ver' : '')} aria-label="Volver arriba de todo" title="Volver arriba"
-      tabIndex={ver ? 0 : -1} aria-hidden={!ver} onClick={subir}><Ico n="flecha" t={22} /></button>
+      tabIndex={ver ? 0 : -1} aria-hidden={!ver} onClick={subir}><Ico n="flecha" t={30} /></button>
   );
 }
 

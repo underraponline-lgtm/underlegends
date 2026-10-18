@@ -1008,11 +1008,16 @@ a.lgp-nom:hover{text-decoration:underline}
 .lgp-p.p2 .lgp-paso{height:68px}
 .svp-tx .lgp-dc{display:inline-block;margin-top:2px;font-size:14px;color:#F6F6F6;text-decoration-color:rgba(246,246,246,.5)}
 /* las otras ligas, las de su servidor primero */
-.lgp-otras{display:flex;flex-wrap:wrap;gap:10px}
-.lgp-otras a{display:flex;align-items:center;gap:8px;min-width:0;padding:8px 12px;border:2px solid var(--linea);box-shadow:4px 4px 0 var(--c);color:var(--tinta);text-decoration:none}
-.lgp-otras img{width:28px;height:28px;flex:none;border-radius:50%}
-.lgp-otras b{font:900 14px/1.1 Archivo,sans-serif;text-transform:uppercase}
-.lgp-otras small{font:700 14px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+/* 📐 EN GRILLA, TODAS DEL MISMO ANCHO (Dlx, 18/10/2026, con una captura: «arreglá este desplazamiento raro y desperdicio de
+   espacio»). En fila que se parte, cada una medía lo que su nombre: una por renglón, cada una de otro largo y con la
+   sombra en otro lugar, y la mitad derecha vacía. Ahora dos por fila en el celular (más en la compu), el nombre se parte
+   en dos renglones si hace falta y la sigla va debajo */
+.lgp-otras{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px 14px}
+.lgp-otras a{display:grid;grid-template-columns:30px minmax(0,1fr);column-gap:10px;row-gap:2px;align-items:center;align-content:center;
+  min-width:0;min-height:62px;padding:9px 12px;border:2px solid var(--linea);box-shadow:4px 4px 0 var(--c);color:var(--tinta);text-decoration:none}
+.lgp-otras img{grid-row:1 / span 2;width:30px;height:30px;border-radius:50%}
+.lgp-otras b{font:900 12px/1.12 Archivo,sans-serif;text-transform:uppercase;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word}
+.lgp-otras small{grid-column:2;font:700 13px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
 @media (min-width: 640px){
   .lgh-grid,.lgh-mias,.lgh-como{grid-template-columns:repeat(2,minmax(0,1fr))}
   .lgh-proxs{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
@@ -3351,15 +3356,16 @@ a.rk-z:hover{border-color:var(--linea)}
 
 /* ⬆️ la flecha para subir (13/10/2026): negra, abajo a la derecha. En el celular, arriba de la barra de abajo (~62 px);
    el borde claro es para que se vea también sobre lo negro */
-.subir{position:fixed;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 76px);z-index:25;width:48px;height:48px;
+/* y más grande (Dlx, 18/10/2026: «hacé la flecha de ir para arriba más grande»): 58 en el celular, 64 en la compu */
+.subir{position:fixed;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 78px);z-index:25;width:58px;height:58px;
   display:grid;place-items:center;padding:0;cursor:pointer;background:#030304;color:#F6F6F6;border:2px solid #F6F6F6;
-  border-radius:0;box-shadow:3px 3px 0 #29B298;opacity:0;transform:translateY(8px);pointer-events:none;
+  border-radius:0;box-shadow:4px 4px 0 #29B298;opacity:0;transform:translateY(8px);pointer-events:none;
   transition:opacity .18s,transform .18s}
 .subir.ver{opacity:1;transform:none;pointer-events:auto}
 .subir svg{transform:rotate(-90deg)}
 .subir:hover{background:#29B298;border-color:#29B298;color:#030304}
 .subir:focus-visible{outline:3px solid #29B298;outline-offset:2px}
-@media (min-width: 900px){.subir{right:24px;bottom:24px;width:52px;height:52px}}
+@media (min-width: 900px){.subir{right:24px;bottom:24px;width:64px;height:64px}}
 @media (prefers-reduced-motion: reduce){.subir{transition:none}}
 
 /* 🥇 la medalla de las cartas (13/10/2026, en vez de 🥇🥈🥉): un punto macizo con su anillo, sin brillo */
