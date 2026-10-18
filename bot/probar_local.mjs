@@ -1474,6 +1474,27 @@ console.log('\nLOS CANALES DONDE SE PUEDE PEDIR LA CARTA\n');
   ok('y vaciándolo se apaga', /El bot en vivo\*\* · \*\*apagado\*\*/.test(texto(r2))
      && JSON.parse((await env.KV.get('cfg:' + G.FFA)) || '{}').vivo === '');
 }
+{
+  // 📈 el ascenso de sus ligas (17/10/2026): su propio panel, apagado de entrada; sin reglas cargadas, lo dice
+  const r0 = await pedir(clickCfg(G.FFA, ADMIN, 'cfg:asc'));
+  ok('el botón Ascenso abre su panel, que dice si tenemos sus reglas', /El ascenso de sus ligas/.test(texto(r0))
+     && /Todavía no tenemos las reglas/.test(texto(r0)) && /\*\*apagado\*\*/.test(texto(r0))
+     && JSON.stringify(r0.json).includes('cfg:asc_canal') && r0.json?.type === 7);
+  META.asc = { FFA: ['Liga de Prueba', 'liga-prueba'] };
+  const r1 = await pedir(clickCfg(G.FFA, ADMIN, 'cfg:asc_canal', ['999333']));
+  ok('con reglas: elegir el canal lo guarda, y el panel dice a qué liga y dónde está en la página',
+     /<#999333>/.test(texto(r1)) && /Liga de Prueba/.test(texto(r1)) && /ligas\/liga-prueba/.test(texto(r1))
+     && JSON.parse((await env.KV.get('cfg:' + G.FFA)) || '{}').ascenso === '999333');
+  const r2 = await pedir(clickCfg(G.FFA, ADMIN, 'cfg:volver'));
+  ok('«Volver» vuelve a los ajustes, con el canal del ascenso a la vista',
+     /Ajustes de la Liga/.test(texto(r2)) && /El ascenso de sus ligas\*\* · <#999333>/.test(texto(r2)));
+  ok('el panel de ajustes, con la línea del ascenso, entra en un mensaje (2.000)', texto(r2).length <= 2000,
+     texto(r2).length);
+  const r3 = await pedir(clickCfg(G.FFA, ADMIN, 'cfg:asc_canal', []));
+  ok('y vaciándolo se apaga', /\*\*Canal\*\* · \*\*apagado\*\*/.test(texto(r3))
+     && JSON.parse((await env.KV.get('cfg:' + G.FFA)) || '{}').ascenso === '');
+  delete META.asc;
+}
 
 console.log('\nEL DISPARADOR DEL CICLO: LAS MARCAS VAN AL OBJETO, NO A KV\n');
 

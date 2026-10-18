@@ -563,6 +563,27 @@ button.btn{background:transparent;cursor:pointer}
 .pf-pubs-mas{justify-self:start;margin-top:10px}
 /* 🏟️ sus ligas, en el perfil (14/10/2026) */
 .pf-lg{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:8px}
+/* 📈 el ascenso de cada servidor, al día (17/10/2026): en el perfil de la liga y una fila en «Sus ligas» */
+.asc{display:grid;gap:10px}
+.asc-p{margin:0;font-size:14px;line-height:1.5;color:var(--gris)}
+.asc-p b{color:var(--tinta)}
+.asc-t{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.asc-t li{display:grid;grid-template-columns:2.2em minmax(0,1fr) auto 5.5em;align-items:center;gap:10px;padding:8px 10px;
+  border:2px solid var(--suave);background:var(--fondo);font-variant-numeric:tabular-nums}
+.asc-t li.sube{border-color:#1F9E6E;box-shadow:inset 4px 0 0 #1F9E6E}
+.asc-t li.po{border-color:#E5B800;box-shadow:inset 4px 0 0 #E5B800}
+.asc-t li.yo{background:var(--caja)}
+.asc-i{font:900 16px/1 Archivo,sans-serif;text-align:right}
+.asc-n{display:flex;align-items:center;gap:8px;min-width:0;font:800 15px/1.2 Archivo,sans-serif}
+.asc-n a,.asc-n span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.asc-pts{font:900 16px/1 Archivo,sans-serif;text-align:right}
+.asc-mas{font:800 13px/1 Archivo,sans-serif;font-style:normal;color:#1F9E6E;white-space:nowrap}
+.asc-ley{margin:0;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:13px;color:var(--gris)}
+.asc-c{display:inline-flex;align-items:center;gap:6px;font-weight:800;color:var(--tinta)}
+.asc-c::before{content:'';width:12px;height:12px;border:2px solid currentColor}
+.asc-c.sube::before{border-color:#1F9E6E;background:#1F9E6E}
+.asc-c.po::before{border-color:#E5B800;background:#E5B800}
+@media (max-width: 599.98px){.asc-t li{grid-template-columns:1.8em minmax(0,1fr) auto 4.6em;gap:8px;padding:8px}}
 .pf-lg li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:baseline;padding:10px 12px;border:2px solid var(--linea);background:var(--caja)}
 .pf-lg li > b{font:900 16px/1.2 Archivo,sans-serif}
 .pf-lg li small{grid-column:1;font:700 13px/1 "Barlow Condensed",sans-serif;color:var(--gris)}

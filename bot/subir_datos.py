@@ -788,6 +788,9 @@ def armar():
         # `return` de esta función.
         'gente': len(gente),
         'con_id': con_id,
+        # 📈 los servidores que tienen ranking de ascenso con sus reglas cargadas (`datos/ascenso_reglas.json`): lo lee
+        # `/settings` para decir si ahí se puede prender (17/10/2026). `{sv: [a qué liga se asciende, su id en la página]}`
+        'asc': _ascensos(),
         # 🔴 QUIEN YA ESTA CARGADO EN EL PADRON Y AUN ASI NO TIENE CARTA.
         # Son los que tienen Discord ID en el padron y no entran a KV —hoy
         # 184: 156 que no se verificaron en DRA y 28 sin bandera—. El
@@ -1003,6 +1006,15 @@ def _llave(s):
     import unicodedata
     s = unicodedata.normalize('NFKD', str(s or ''))
     return ''.join(c for c in s if c.isalnum()).lower()
+
+
+def _ascensos():
+    """`{sv: [nombre de la liga, su id]}` de los servidores con ascenso (`bot/ascenso.py`), o `{}`."""
+    try:
+        import ascenso as _AS
+        return {sv: [R.get('n', ''), R.get('destino', '')] for sv, R in _AS.reglas().items()}
+    except Exception:                                    # noqa: BLE001
+        return {}
 
 
 def _cc_de(pais):

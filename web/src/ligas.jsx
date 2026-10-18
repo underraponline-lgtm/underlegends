@@ -16,7 +16,7 @@
 // La oficial de cada liga puede tener sanciones o defaults que acá no están; por eso va el link a la suya.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DIAS, MESES, limpio, num, siglaDe, utc } from './liga.js';
-import { Cara, Compartir, Ico, Sec, accion, enlace, silueta } from './piezas.jsx';
+import { Bandera, Cara, Compartir, Ico, Sec, accion, enlace, silueta } from './piezas.jsx';
 
 // 🏟️ ¿UN NOMBRE ESTÁ MAL? (Dlx, 14/10/2026: «Sí, a Reportes», a ForceGP: «¿no hay manera de que uno pueda corregir
 // eso?»). Elegís el nombre, contás quién es, y le llega a la Liga en Reportes del Dashboard con tu cuenta; lo decide la
@@ -450,6 +450,9 @@ function LigaPerfil({ liga, id }) {
         <Podio3 L={L} h={h} />
       </div>
       <Sec id="lgp-tabla" titulo="La tabla" extra="lgp-sec"><Torneo liga={liga} L={L} h={h} /></Sec>
+      {L.asc && (L.asc.filas || []).length ? (
+        <Sec id="lgp-asc" titulo={'Ascenso a la ' + L.asc.n} extra="lgp-sec"><Ascenso A={L.asc} h={h} /></Sec>
+      ) : null}
       {otras.length ? (
         <Sec id="lgp-otras" titulo="Las otras ligas" enlace="Todas" href="#/ligas">
           <nav className="lgp-otras" aria-label="Las otras ligas">
@@ -462,6 +465,38 @@ function LigaPerfil({ liga, id }) {
         </Sec>
       ) : null}
     </>
+  );
+}
+
+// 📈 EL ASCENSO, AL DÍA (Dlx, 17/10/2026: «crear un ascenso actualizado para cada servidor para sus ligas», «y también
+// que esté en la página, obvio»; y a «¿mostramos sólo la oficial o también la calculada?», «Va»). Lo arma el ciclo
+// (`bot/ascenso.py`): SU tabla oficial más lo que vino después, con SUS reglas, y lo que no se sabe no suma y se dice.
+// Lo oficial lo decide su staff: la página lo aclara arriba. Los que suben y el play-off, marcados; `+N`, lo sumado
+const dm = (d) => (d ? String(d).slice(8, 10) + '/' + String(d).slice(5, 7) : '');
+function Ascenso({ A, h }) {
+  const [todo, setTodo] = useState(false);
+  const filas = A.filas || [];
+  const ver = todo ? filas : filas.slice(0, 12);
+  const suben = A.suben || 0, po = A.po || 0;
+  return (
+    <div className="asc">
+      <p className="asc-p">La tabla oficial de {siglaDe(A.sv)}{A.of ? ' (la del ' + dm(A.of) + ')' : ''} más lo que se jugó después,
+        con sus mismas reglas. <b>Lo oficial lo decide su staff.</b></p>
+      <ol className="asc-t">
+        {ver.map(([n, cc, pts, suma, k], i) => (
+          <li key={i + n} className={(i < suben ? 'sube' : i < suben + po ? 'po' : '') + (k && k === h.miK ? ' yo' : '')}>
+            <span className="asc-i">{i + 1}</span>
+            <span className="asc-n">{cc ? <Bandera cc={cc} /> : null}{k ? <a href={'#/r/' + encodeURIComponent(k)}>{limpio(n)}</a> : <span>{limpio(n)}</span>}</span>
+            {suma ? <em className="asc-mas">+{num(suma)}</em> : <span />}
+            <b className="asc-pts">{num(pts)}</b>
+          </li>
+        ))}
+      </ol>
+      {filas.length > 12 ? <button type="button" className="btn borde2 chico" onClick={() => setTodo(!todo)}>{todo ? 'Ver menos' : 'Ver los ' + filas.length}</button> : null}
+      <p className="asc-ley"><span className="asc-c sube">Sube</span>{po ? <span className="asc-c po">Play-off</span> : null}<em className="asc-mas">+N</em> lo que se sumó a la oficial</p>
+      {(A.sum || []).length ? <p className="asc-p">🆕 Se sumó: {A.sum.map(([e, d, r]) => limpio(e) + ' (' + dm(d) + ', rango ' + String(r).toUpperCase() + ')').join(' · ')}.</p> : null}
+      {(A.pend || []).length ? <p className="asc-p">⏳ Todavía no suma: {A.pend.map(([e, d, q]) => limpio(e) + ' (' + dm(d) + '): ' + (q === 'rango' ? 'falta saber su rango' : q)).join(' · ')}</p> : null}
+    </div>
   );
 }
 

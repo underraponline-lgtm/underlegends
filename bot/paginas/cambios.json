@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "3.31",
+   "dia": "2026-10-17",
+   "cuando": "2026-10-17T23:10:00-04:00",
+   "titulo": "El ascenso de cada servidor, al día",
+   "items": [
+    "📈 La Snake League y la FMH Under muestran su ranking de ascenso al día: la tabla oficial de su servidor más lo que se jugó después, con sus mismas reglas.",
+    "👤 Si estás en un ascenso, tu perfil dice tu puesto y a cuántos puntos estás de subir.",
+    "⚙️ Los servidores pueden prender en /settings → Ascenso que el bot mantenga esa tabla al día en un canal suyo."
+   ]
+  },
+  {
    "version": "3.30",
    "dia": "2026-10-17",
    "cuando": "2026-10-17T21:50:00-04:00",

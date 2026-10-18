@@ -1,0 +1,51 @@
+{
+ "_leeme": "📈 Las reglas del ranking de ascenso de cada servidor, COPIADAS de lo que cada uno publicó (17/10/2026, ver bot/ascenso.py). `tabla`: dónde está su tabla oficial (canal y mensaje; se edita en el lugar). `fuera`: las ligas cuyos jugadores no suman, porque su regla es no estar en ninguna. `compes`: de dónde salen las compes que cuentan — `llaves` (las nuestras de ese servidor, con el rango escrito en la llave) o `podios` (sólo las que publicaron su podio en ese canal; el rango sale de `rangos`). `escala`: los puntos de cada instancia, por rango, con los nombres de instancia de nuestras llaves. Una instancia que no está en la escala no suma; una que está en `dudas` no suma y se pregunta. Lo que no se sabe NO se inventa: va a la lista de preguntas de Dlx.",
+ "SR": {
+  "n": "Snake League",
+  "destino": "snake-generations",
+  "fuera": ["snake-generations"],
+  "tabla": {"canal": "863208038859800606", "msg": "1547334838921732177", "formato": "sr"},
+  "compes": "llaves",
+  "escala": {
+   "insignia": {"Campeón": 15000, "Subcampeón": 10000, "Tercero": 7000, "Cuarto": 4000},
+   "1": {"Campeón": 10000, "Subcampeón": 7500, "Tercero": 5000, "Cuarto": 2500},
+   "2": {"Campeón": 6000, "Subcampeón": 4500, "Tercero": 3000},
+   "3": {"Campeón": 3000, "Subcampeón": 2250, "Tercero": 1500},
+   "4": {"Campeón": 1000, "Subcampeón": 750, "Tercero": 500}
+  },
+  "dudas": {"Semifinal": "no hubo partido por el 3º: ¿los dos semifinalistas suman como 3º, o ninguno?"},
+  "suben": 2,
+  "playoff": 1,
+  "fuente": "#ascenso de Snake Rap; la escala, del mensaje «RANGOS Y PUNTAJES EN EL RANKING DE ASCENSO» (22/08/2026)"
+ },
+ "URBF": {
+  "n": "FMH Under",
+  "destino": "fmh-under",
+  "fuera": ["fmh-albiceleste", "fmh-andes", "fmh-carimex", "fmh-tricolor", "fmh-espana", "fmh-under"],
+  "tabla": {"canal": "1511964393548677271", "msg": "1539546347429167134", "formato": "urbf"},
+  "compes": "podios",
+  "podios": "1511964749301158029",
+  "rangos": {
+   "ff freestyle clasico": "plata",
+   "ff classic": "plata",
+   "ff express": "oro",
+   "ff deluxe": "plata",
+   "ff campeones": "diamante",
+   "el quinto hongo": "plata"
+  },
+  "escala": {
+   "radiante": {"Campeón": 10000, "Subcampeón": 6000, "Tercero": 4000, "Cuarto": 2000, "Semifinal": 2000, "Cuartos": 1500, "Octavos": 1000, "R32": 1000},
+   "inmortal": {"Campeón": 9000, "Subcampeón": 5750, "Tercero": 3000, "Cuarto": 1250, "Semifinal": 1250, "Cuartos": 1000, "Octavos": 500, "R32": 500},
+   "ascendente": {"Campeón": 7000, "Subcampeón": 4500, "Tercero": 2000, "Cuarto": 1000, "Semifinal": 1000, "Cuartos": 500},
+   "diamante": {"Campeón": 5000, "Subcampeón": 3500, "Tercero": 1500, "Cuarto": 500, "Semifinal": 500, "Cuartos": 200},
+   "platino": {"Campeón": 4000, "Subcampeón": 2500, "Tercero": 1000, "Cuarto": 500, "Semifinal": 500},
+   "oro": {"Campeón": 3000, "Subcampeón": 2000, "Tercero": 1000, "Cuarto": 500, "Semifinal": 500},
+   "plata": {"Campeón": 2000, "Subcampeón": 1000, "Tercero": 500, "Cuarto": 250, "Semifinal": 250},
+   "bronce": {"Campeón": 1000, "Subcampeón": 500, "Tercero": 250},
+   "hierro": {}
+  },
+  "suben": 2,
+  "playoff": 0,
+  "fuente": "«Ascenso⋅Cuarta⋅Temp» de Urban Freestyle; la escala, de «Rangos⋅Compes» (19/08/2026). «Semis» = llegó a semifinales sin ser 3º"
+ }
+}

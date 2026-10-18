@@ -1271,6 +1271,14 @@ def _lo_barato(correr):
         paso('2b9', 'las ligas')
         if not corre(['bot/ligas.py', '--aplicar'], callado=False):
             print('      ⚠️ las ligas fallaron: queda lo de la corrida anterior')
+    # ── 2b9b · 📈 el ascenso de cada servidor, al día (`bot/ascenso.py`, Dlx 17/10/2026: «crear un ascenso actualizado
+    # para cada servidor para sus ligas… que sea opción y se ponga en /settings», «y también que esté en la página»): su
+    # tabla oficial más lo que vino después, con sus reglas. Después de las ligas (quién juega cada una no suma) y antes
+    # de la web. Publica sólo donde lo prendieron en /settings. Nunca frena el ciclo
+    if correr:
+        paso('2b9b', 'el ascenso de cada servidor')
+        if not corre(['bot/ascenso.py', '--aplicar'], callado=True, mostrar=('📈', '⏳', '⚠️')):
+            print('      ⚠️ el ascenso falló: queda lo de la corrida anterior')
     # ── 2b10 · los roles de la página ─────────────────────────────────
     # 🔑 Dlx, 13/10/2026: «en cada perfil aparezca el rol de cada uno». Los que salen solos —Competidor, del pool;
     # Socio, Staff, Organizador, Jurado y Host, de Discord (`datos/roles_discord.json`, paso 1b)— al objeto, que les

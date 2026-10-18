@@ -1,0 +1,700 @@
+{
+ "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
+ "t": "2026-10-18T03:01:35Z",
+ "sv": {
+  "SR": {
+   "filas": [
+    [
+     "ABYSSUS",
+     "pa",
+     9350,
+     2250,
+     "Abyssus"
+    ],
+    [
+     "OVER",
+     "uy",
+     9000,
+     6000,
+     "Over"
+    ],
+    [
+     "JUASMIO",
+     "co",
+     7500,
+     0,
+     "Juasmio"
+    ],
+    [
+     "ZIGNOS",
+     "do",
+     7100,
+     0,
+     "Zignos"
+    ],
+    [
+     "SNOW",
+     "co",
+     6600,
+     0,
+     "Snow"
+    ],
+    [
+     "COLESITO",
+     "co",
+     6000,
+     0,
+     "Colesito"
+    ],
+    [
+     "HASSAN",
+     "ar",
+     4500,
+     0,
+     "Hassan"
+    ],
+    [
+     "POLLO SPORT",
+     "ar",
+     4500,
+     0,
+     "Polosport"
+    ],
+    [
+     "JUANPA",
+     "co",
+     4500,
+     0,
+     "Juanpa"
+    ],
+    [
+     "AGUS",
+     "ar",
+     4500,
+     3000,
+     "Agus"
+    ],
+    [
+     "GLOBAL HUSTLER",
+     "ar",
+     4500,
+     4500,
+     "Global Hustler"
+    ],
+    [
+     "CATARSIS",
+     "ar",
+     4500,
+     4500,
+     "Catarsis"
+    ],
+    [
+     "KISHNAMURTI",
+     "ar",
+     3000,
+     0,
+     ""
+    ],
+    [
+     "PROSU",
+     "co",
+     3000,
+     3000,
+     "Prosu"
+    ],
+    [
+     "ERIAN",
+     "pa",
+     2750,
+     0,
+     "Erian"
+    ],
+    [
+     "VLADEINK",
+     "co",
+     2250,
+     0,
+     ""
+    ],
+    [
+     "IMAGY",
+     "pe",
+     2000,
+     0,
+     "Imagy"
+    ],
+    [
+     "FULLYLO4DED",
+     "cl",
+     1750,
+     0,
+     ""
+    ],
+    [
+     "TAM",
+     "ve",
+     1750,
+     0,
+     "Tam"
+    ],
+    [
+     "GIAN",
+     "ar",
+     1500,
+     0,
+     "Gian"
+    ],
+    [
+     "7",
+     "co",
+     1350,
+     0,
+     "7"
+    ],
+    [
+     "SAMSARA",
+     "re",
+     1350,
+     0,
+     ""
+    ],
+    [
+     "GUESS",
+     "ar",
+     1250,
+     0,
+     "Guess"
+    ],
+    [
+     "ERIKDANIEL",
+     "ar",
+     1000,
+     0,
+     "Erik"
+    ],
+    [
+     "KMINANTE",
+     "ar",
+     1000,
+     0,
+     ""
+    ],
+    [
+     "LHYON",
+     "pe",
+     1000,
+     0,
+     "Lhyon"
+    ],
+    [
+     "CYK",
+     "ar",
+     1000,
+     0,
+     "Pcyka"
+    ],
+    [
+     "GEOKA",
+     "ar",
+     1000,
+     0,
+     "Geoka"
+    ],
+    [
+     "BNA",
+     "ar",
+     1000,
+     0,
+     "BNA"
+    ],
+    [
+     "NEO",
+     "ar",
+     750,
+     0,
+     "Neo"
+    ],
+    [
+     "NC",
+     "ar",
+     750,
+     0,
+     "NC"
+    ],
+    [
+     "DELAYEZZY",
+     "cl",
+     750,
+     0,
+     ""
+    ],
+    [
+     "PICHULITA",
+     "ar",
+     750,
+     0,
+     "PichulaMc"
+    ],
+    [
+     "HEAT",
+     "do",
+     750,
+     0,
+     "Heat"
+    ],
+    [
+     "HENRY",
+     "bo",
+     750,
+     0,
+     "Henry"
+    ],
+    [
+     "PANCHOK",
+     "cl",
+     750,
+     0,
+     "Panchok"
+    ],
+    [
+     "AGRE",
+     "ar",
+     750,
+     0,
+     "Agre"
+    ],
+    [
+     "ELPITYDESPUES",
+     "jo",
+     750,
+     0,
+     ""
+    ],
+    [
+     "VELATZ",
+     "cl",
+     750,
+     0,
+     "Velatz"
+    ],
+    [
+     "MASINO",
+     "cl",
+     750,
+     0,
+     "Masino"
+    ],
+    [
+     "ACRY",
+     "ve",
+     750,
+     0,
+     "Acry"
+    ],
+    [
+     "PRODIGY",
+     "ar",
+     500,
+     0,
+     "Prodigy"
+    ],
+    [
+     "DYNOCO",
+     "ar",
+     500,
+     0,
+     "Dynoco"
+    ],
+    [
+     "OG",
+     "ve",
+     500,
+     0,
+     "OG"
+    ],
+    [
+     "KLK",
+     "iq",
+     500,
+     0,
+     ""
+    ],
+    [
+     "STICKI",
+     "",
+     500,
+     0,
+     ""
+    ],
+    [
+     "PROVENZA",
+     "ar",
+     450,
+     0,
+     "Provenza"
+    ],
+    [
+     "DEUXS",
+     "cl",
+     350,
+     0,
+     "Deuxs"
+    ],
+    [
+     "XERVOE",
+     "cl",
+     350,
+     0,
+     "Xervoe"
+    ],
+    [
+     "RENEGADE",
+     "hn",
+     350,
+     0,
+     "Renegade"
+    ],
+    [
+     "WARAP",
+     "ar",
+     350,
+     0,
+     "Warap"
+    ],
+    [
+     "RIZAS",
+     "ve",
+     250,
+     0,
+     "PRAISERIZA"
+    ],
+    [
+     "SLAUGHTER",
+     "ar",
+     250,
+     0,
+     ""
+    ],
+    [
+     "ASSUAN",
+     "cl",
+     250,
+     0,
+     "Assuan"
+    ],
+    [
+     "XCLUSIVO",
+     "ve",
+     250,
+     0,
+     "Xclusivo"
+    ],
+    [
+     "KALU",
+     "cl",
+     250,
+     0,
+     ""
+    ],
+    [
+     "GEEKTO",
+     "ar",
+     250,
+     0,
+     "Presagio"
+    ],
+    [
+     "YINN",
+     "ma",
+     250,
+     0,
+     "yinn"
+    ],
+    [
+     "DITTO",
+     "",
+     250,
+     0,
+     ""
+    ]
+   ],
+   "sumado": [
+    {
+     "n": 430,
+     "evento": "SNAKE INSIGNIA 4 8",
+     "dia": "2026-10-08",
+     "rango": "2",
+     "puntos": [
+      [
+       "Global Hustler",
+       "Subcampeón",
+       4500
+      ]
+     ],
+     "fuera": [
+      "MCO",
+      "Fazer"
+     ]
+    },
+    {
+     "n": 460,
+     "evento": "GODZ",
+     "dia": "2026-10-12",
+     "rango": "3",
+     "puntos": [
+      [
+       "Prosu",
+       "Campeón",
+       3000
+      ],
+      [
+       "Abyssus",
+       "Subcampeón",
+       2250
+      ]
+     ],
+     "fuera": []
+    },
+    {
+     "n": 478,
+     "evento": "SNAKE INSIGNIA 5 8",
+     "dia": "2026-10-16",
+     "rango": "2",
+     "puntos": [
+      [
+       "Over",
+       "Campeón",
+       6000
+      ],
+      [
+       "Catarsis",
+       "Subcampeón",
+       4500
+      ],
+      [
+       "Agus",
+       "Tercero",
+       3000
+      ]
+     ],
+     "fuera": []
+    }
+   ],
+   "pendiente": [
+    {
+     "que": "duda",
+     "evento": "GODZ",
+     "dia": "2026-10-12",
+     "gente": [
+      "Velatz",
+      "Zignos"
+     ],
+     "detalle": "no hubo partido por el 3º: ¿los dos semifinalistas suman como 3º, o ninguno?"
+    }
+   ],
+   "oficial": {
+    "dia": "2026-10-01",
+    "nota": "ASCENSO ACTUALIZADO 29/09/2026 TRAS RAP EXHIBITION 2/8",
+    "filas": 56
+   },
+   "n": "Snake League",
+   "destino": "snake-generations",
+   "suben": 2,
+   "playoff": 1
+  },
+  "URBF": {
+   "filas": [
+    [
+     "Hassan",
+     "ar",
+     6000,
+     0,
+     "Hassan"
+    ],
+    [
+     "Liberia",
+     "ar",
+     6000,
+     0,
+     "Liberia"
+    ],
+    [
+     "yinn",
+     "mx",
+     4000,
+     0,
+     "yinn"
+    ],
+    [
+     "Polosport",
+     "ar",
+     3000,
+     0,
+     "Polosport"
+    ],
+    [
+     "Makmah",
+     "ve",
+     2000,
+     0,
+     "Makmah"
+    ],
+    [
+     "SCazulo",
+     "pe",
+     2000,
+     0,
+     ""
+    ],
+    [
+     "Agre",
+     "ar",
+     2000,
+     0,
+     "Agre"
+    ],
+    [
+     "DXG",
+     "mx",
+     2000,
+     0,
+     "dxg"
+    ],
+    [
+     "Valen",
+     "ar",
+     2000,
+     0,
+     "Valen"
+    ],
+    [
+     "BenjuDios",
+     "co",
+     2000,
+     0,
+     ""
+    ],
+    [
+     "Carlosss",
+     "ec",
+     2000,
+     0,
+     "Carlosss"
+    ],
+    [
+     "FrankyOne",
+     "us",
+     1500,
+     0,
+     ""
+    ],
+    [
+     "Leokirbyy2225",
+     "mx",
+     1000,
+     0,
+     ""
+    ],
+    [
+     "NC",
+     "ar",
+     1000,
+     0,
+     "NC"
+    ],
+    [
+     "SNE",
+     "ec",
+     1000,
+     0,
+     "SNE"
+    ],
+    [
+     "LitKunai",
+     "co",
+     1000,
+     0,
+     "LitKunai"
+    ],
+    [
+     "Mateo",
+     "mx",
+     1000,
+     0,
+     ""
+    ],
+    [
+     "DIOS",
+     "mx",
+     1000,
+     0,
+     "Dios"
+    ],
+    [
+     "Vacile",
+     "es",
+     1000,
+     1000,
+     ""
+    ],
+    [
+     "una cuenta de Discord",
+     "ve",
+     500,
+     0,
+     ""
+    ]
+   ],
+   "sumado": [
+    {
+     "n": 473,
+     "evento": "FF Freestyle: Clasico VOL.1",
+     "dia": "2026-10-14",
+     "rango": "plata",
+     "puntos": [
+      [
+       "Vacile",
+       "Subcampeón",
+       1000
+      ]
+     ],
+     "fuera": [
+      "Motera",
+      "Ortiz",
+      "Trot"
+     ]
+    }
+   ],
+   "pendiente": [
+    {
+     "que": "rango",
+     "compe": "ccff",
+     "evento": "CCFF V.2",
+     "dia": "2026-09-28"
+    }
+   ],
+   "oficial": {
+    "dia": "2026-09-21",
+    "nota": "",
+    "filas": 19
+   },
+   "n": "FMH Under",
+   "destino": "fmh-under",
+   "suben": 2,
+   "playoff": 0
+  }
+ },
+ "rangos_llave": {
+  "430": "2",
+  "460": "3",
+  "478": "2"
+ },
+ "nombres": {
+  "1476311763912757420": "SCazulo",
+  "585582594142371841": "BenjuDios",
+  "1113438566303924244": "FrankyOne",
+  "883188801411878932": "Leokirbyy2225",
+  "826494792556871751": "Mateo",
+  "456226577798135808": ""
+ }
+}

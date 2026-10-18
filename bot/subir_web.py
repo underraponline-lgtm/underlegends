@@ -638,7 +638,10 @@ def armar():
             _orgp[_k] = [_nm, ('%s/%s' % (_dd, _avs[_dd])) if _dd and _avs.get(_dd) else '']
     # 🏟️ las ligas: lo del Inicio va en el lobby y el detalle (las fechas, el flyer entero) aparte (`ligas.separar()`)
     # 🏟️ con el perfil de cada nombre: el de los que jugaron y el del staff (ForceGP, 14/10/2026)
-    _lg_lobby, _lg_det = _ligas({**{x['raw']: x['k'] for x in _staff_rol}, **{p['raw']: _clave(p) for p in todos if p.get('raw')}})
+    _cl_lg = {**{x['raw']: x['k'] for x in _staff_rol}, **{p['raw']: _clave(p) for p in todos if p.get('raw')}}
+    _lg_lobby, _lg_det = _ligas(_cl_lg)
+    # 📈 y el ascenso de cada servidor, al día, en la liga a la que se asciende (`bot/ascenso.py`, 17/10/2026)
+    _lg_det = _con_ascenso(_lg_det, _cl_lg)
     return {
         'temporada': SELLO,
         'fase': {'arranca': _f[0], 'termina': _f[1]} if _f else None,
@@ -1890,6 +1893,10 @@ def _perfiles(gente, comp, regs):
                for v in (_vpor.get(p.get('raw')) or []) if v in _vids and (q, v) not in _quit]
         if vid:
             x['vid'] = vid
+        # 📈 su puesto en el ascenso de algún servidor (`bot/ascenso.py`, 17/10/2026)
+        _asc = _asc_de(p.get('raw'))
+        if _asc:
+            x['asc'] = _asc
         # 🎬 las que sumó él: [id, título, canal], sin las que ya están arriba ni las ocultas por reportes
         try:
             import videos_propios as _VP
@@ -2935,6 +2942,59 @@ def _ligas(claves=None):
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ las ligas no entran al lobby: %s' % str(e)[:120])
         return None, None
+
+
+_ASC = {}
+
+
+def _asc_json():
+    if '_' not in _ASC:
+        _ASC['_'] = _json('datos', 'ascenso.json') or {}
+    return _ASC['_']
+
+
+def _con_ascenso(det, claves):
+    """📈 El ranking de ascenso de cada servidor, al día (`bot/ascenso.py`, Dlx 17/10/2026: «y también que esté en la
+    página, obvio»), en el detalle de la liga a la que se asciende (`destino`): viaja con `/api/ligas`, no en el lobby.
+    Filas `[nombre, cc, pts, lo sumado, clave del perfil]`. Nunca frena el lobby."""
+    try:
+        A = _asc_json()
+        L = (det or {}).get('ligas')
+        if L is None or not A.get('sv'):
+            return det
+        for sv, X in A['sv'].items():
+            lid = X.get('destino')
+            if lid not in L:
+                continue
+            L[lid]['asc'] = {
+                'sv': sv, 'n': X.get('n'), 'suben': X.get('suben', 0), 'po': X.get('playoff', 0),
+                'of': (X.get('oficial') or {}).get('dia', ''),
+                'filas': [[f[0], f[1], f[2], f[3], (claves or {}).get(f[4], '') if f[4] else ''] for f in X.get('filas') or []],
+                'sum': [[c['evento'], c['dia'], c['rango']] for c in X.get('sumado') or []],
+                'pend': [[p['evento'], p['dia'], 'rango' if p['que'] == 'rango' else (p.get('detalle') or '')]
+                         for p in X.get('pendiente') or []],
+            }
+        return det
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ el ascenso no entra a las ligas: %s' % str(e)[:120])
+        return det
+
+
+def _asc_de(raw):
+    """📈 Dónde está esa persona en el ascenso de algún servidor: `[sv, liga, puesto, pts, a cuánto de subir, id de la
+    liga, ¿sube hoy?]`, o `None`. «A cuánto»: los puntos del último que sube menos los suyos (0 si empata)."""
+    if 'raw' not in _ASC:
+        idx = {}
+        for sv, X in (_asc_json().get('sv') or {}).items():
+            filas = X.get('filas') or []
+            suben = int(X.get('suben') or 0)
+            corte = filas[suben - 1][2] if suben and len(filas) >= suben else 0
+            for i, f in enumerate(filas):
+                if f[4] and f[4] not in idx:
+                    idx[f[4]] = [sv, X.get('n'), i + 1, f[2], 0 if i < suben else max(0, corte - f[2]), X.get('destino'),
+                                 i < suben]
+        _ASC['raw'] = idx
+    return _ASC['raw'].get(raw)
 
 
 _MIS = {}

@@ -1799,7 +1799,8 @@ const claveCfg = (gid) => `cfg:${gid}`;
 // 🎤 `vivo`: el canal donde el bot cuenta en vivo los eventos de la Liga (05/10/2026). Vacío = apagado: nunca escribe
 // en un servidor que no lo pidió (ver `chatVivo()` en avisos.js). 🔊 `vivo_nivel`: cuánto habla ahí
 // (`NIVELES_CHAT`, 05/10/2026); sin elegir, «normal», lo de siempre
-const CFG_BASE = { nick: true, canales: [], avisos: '', vivo: '', vivo_nivel: 'normal' };
+// 📈 `ascenso`: el canal donde el bot mantiene su ranking de ascenso al día (17/10/2026). Vacío = apagado, como `vivo`
+const CFG_BASE = { nick: true, canales: [], avisos: '', vivo: '', vivo_nivel: 'normal', ascenso: '' };
 
 async function ajustes(env, gid) {
   if (!gid) return { ...CFG_BASE };
@@ -1865,6 +1866,9 @@ function panelAjustes(sv, cfg) {
     '> Con el bot en vivo, antes de cada batalla se puede apostar con Puntos de Tienda desde unos botones en el chat, ' +
     'y el pozo se reparte entre los que aciertan. En «A full» van siempre; prendidas, van en cualquier nivel. ' +
     'Desde la Liga se pueden apagar para un servidor, y eso gana.',
+    '',
+    `**📈 El ascenso de sus ligas** · ${cfg.ascenso ? `<#${cfg.ascenso}>` : '**apagado**'}`,
+    '> El bot mantiene su ranking de ascenso al día en ese canal. Se elige con el botón **Ascenso**.',
   ].join('\n');
 
   return {
@@ -1883,6 +1887,13 @@ function panelAjustes(sv, cfg) {
         style: cfg.apuestas === true ? ESTILO.SECUNDARIO : ESTILO.PRIMARIO,
         label: cfg.apuestas === true ? 'Apagar las apuestas' : 'Prender las apuestas',
         custom_id: 'cfg:apuestas',
+      },
+      // 📈 el ascenso tiene su propio panel: las cinco filas ya están usadas (17/10/2026)
+      {
+        type: COMP.BOTON,
+        style: ESTILO.SECUNDARIO,
+        label: '📈 Ascenso',
+        custom_id: 'cfg:asc',
       }] },
       { type: COMP.FILA, components: [{
         type: 8,                       // CHANNEL_SELECT
@@ -1917,6 +1928,48 @@ function panelAjustes(sv, cfg) {
         min_values: 1, max_values: 1,
         options: Object.entries(NIVELES_CHAT).map(([v, [label, description]]) =>
           ({ label, value: v, description, default: v === nivel })),
+      }] },
+    ],
+  };
+}
+
+// ── 📈 EL ASCENSO DE SUS LIGAS (Dlx, 17/10/2026: «crear un ascenso actualizado para cada servidor para sus ligas. Que
+// sea opción y se ponga en /settings») ──────────────────────────────────────────────────────────────────────────────
+// Lo hace el ciclo (`bot/ascenso.py`): su tabla oficial más lo que vino después, con SUS reglas. Acá sólo se elige el
+// canal. Qué servidores tienen las reglas cargadas lo dice `meta.asc` (`{sv: [liga, id en la página]}`, del ciclo):
+// sin reglas se puede elegir igual, pero el panel lo dice —no promete algo que todavía no hace—
+async function panelAscenso(env, gid, cfg) {
+  const sv = aquiEs(gid);
+  let asc = {};
+  try { asc = (JSON.parse((await env.KV.get('meta', { cacheTtl: 300 })) || '{}') || {}).asc || {}; } catch (e) { asc = {}; }
+  const [liga, destino] = (sv && asc[sv]) || [];
+  const nombre = (SERVIDORES.find((s) => s.sv === sv) || {}).nombre || 'este servidor';
+  const texto = [
+    '## 📈 El ascenso de sus ligas, al día',
+    '',
+    liga
+      ? `Ya tenemos las reglas de **${nombre}**: el ascenso a la **${liga}**.`
+      : 'Todavía no tenemos las reglas del ascenso de este servidor: pasale su tabla y sus rangos a **@itsdlx**.',
+    '',
+    'El bot parte de **su tabla oficial** y le suma lo que vino después —las compes con su rango, con **sus** ' +
+    'puntos—. Mantiene **un solo mensaje** en el canal que elijan: lo edita cuando cambia algo y nunca menciona a ' +
+    'nadie. Lo que no sabe (una compe sin rango publicado) no suma y lo dice. La tabla oficial sigue siendo la de ustedes.',
+    '',
+    `**Canal** · ${cfg.ascenso ? `<#${cfg.ascenso}>` : '**apagado**'}`,
+    liga && destino ? `> También está en la página: ${HUB_URL}/freestyle-rap/ligas/${destino}` : '',
+  ].filter((x, k, a) => x || a[k - 1]).join('\n');
+  return {
+    content: texto,
+    components: [
+      { type: COMP.FILA, components: [{
+        type: 8,                       // CHANNEL_SELECT
+        custom_id: 'cfg:asc_canal',
+        placeholder: 'Canal del ascenso (vacío = apagado)',
+        min_values: 0, max_values: 1,
+        channel_types: [0],
+      }] },
+      { type: COMP.FILA, components: [{
+        type: COMP.BOTON, style: ESTILO.SECUNDARIO, label: '‹ Volver a los ajustes', custom_id: 'cfg:volver',
       }] },
     ],
   };
@@ -4246,12 +4299,18 @@ export default {
         const cfg = await ajustes(env, i.guild_id);
         const antesCfg = JSON.stringify(cfg);
         const vals = (i.data && i.data.values) || [];
+        // 📈 abrir el panel del ascenso, o volver: no cambian nada
+        if (quien === 'asc') return responderPanel(RESPONDE.ACTUALIZAR, await panelAscenso(env, i.guild_id, cfg));
+        if (quien === 'volver') {
+          return responderPanel(RESPONDE.ACTUALIZAR, panelAjustes(aquiEs(i.guild_id) || 'este servidor', cfg));
+        }
         if (quien === 'nick') cfg.nick = !cfg.nick;
         else if (quien === 'apuestas') cfg.apuestas = cfg.apuestas !== true;
         else if (quien === 'canales') cfg.canales = vals.slice(0, 10);
         else if (quien === 'avisos') cfg.avisos = vals[0] || '';
         else if (quien === 'vivo') cfg.vivo = vals[0] || '';
         else if (quien === 'nivel' && NIVELES_CHAT[vals[0]]) cfg.vivo_nivel = vals[0];
+        else if (quien === 'asc_canal') cfg.ascenso = vals[0] || '';
         else return aviso('No sé qué ajuste es ése.');
         // ⚠️ Mismo motivo que en `/numeral`: sin `try`, un día sin cupo
         // de KV es «la aplicación no respondió» y el admin no sabe si quedó.
@@ -4266,6 +4325,7 @@ export default {
         // panel que deja un mensaje por click convierte tres ajustes en tres
         // paneles contradictorios, y el último no es necesariamente el que
         // está abajo.
+        if (quien === 'asc_canal') return responderPanel(RESPONDE.ACTUALIZAR, await panelAscenso(env, i.guild_id, cfg));
         return responderPanel(RESPONDE.ACTUALIZAR,
           panelAjustes(aquiEs(i.guild_id) || 'este servidor', cfg));
       }

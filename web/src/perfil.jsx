@@ -752,14 +752,16 @@ function Duelos({ liga, p, e }) {
 // 🏟️ SUS LIGAS (ForceGP, 14/10/2026, por Dlx: «no sale mis partes»): las ligas de los servidores donde juega, con su
 // puesto y su récord. Sale de lo que ya viaja en el lobby (`ligas`, con el perfil de cada nombre en `ks`): sirve también
 // para el staff que no juega eventos y sí ligas
-export function SusLigas({ liga, k, esYo }) {
+export function SusLigas({ liga, k, esYo, p }) {
   const ls = ((liga.d.ligas || {}).ligas) || [];
   const mias = [];
   for (const L of ls) {
     const i = (L.tabla || []).findIndex(([raw]) => ((L.ks || {})[raw] || (liga.fila(raw) || {}).k) === k);
     if (i >= 0) mias.push([L, i, L.tabla[i]]);
   }
-  if (!mias.length) return null;
+  // 📈 y dónde está en el ascenso de algún servidor (17/10/2026): `[sv, liga, puesto, pts, a cuánto, id, ¿sube?]`
+  const asc = p && p.asc;
+  if (!mias.length && !asc) return null;
   return (
     <section className="sec pf-sec pf-ligas">
       <div className="sec-t"><h2>{esYo ? 'Tus ligas' : 'Sus ligas'}</h2><a href="#/ligas">Ligas <Ico n="flecha" t={16} /></a></div>
@@ -769,8 +771,15 @@ export function SusLigas({ liga, k, esYo }) {
           <span className="pf-lg-p">{i + 1}º de {L.tabla.length}</span>
           <span>{pg} de {pj} {pj === 1 ? 'ganada' : 'ganadas'} · <b>{pts}</b> pts</span>
         </li>
-      ))}</ul>
-      <p className="pronto-p">Las batallas de liga suman a {esYo ? 'tus' : 'sus'} duelos (el Ranking Duelos y el Win%); al Score, no.</p>
+      ))}
+      {asc ? (
+        <li key="asc" className="pf-lg-asc">
+          <b><a href={'#/ligas/' + encodeURIComponent(asc[5])}>Ascenso a la {asc[1]}</a></b><small>{siglaDe(asc[0])}</small>
+          <span className="pf-lg-p">{asc[2]}º</span>
+          <span>{asc[6] ? 'hoy sube' : asc[4] ? 'a ' + num(asc[4]) + ' pts de subir' : 'empatado con el último que sube'} · <b>{num(asc[3])}</b> pts</span>
+        </li>
+      ) : null}</ul>
+      {mias.length ? <p className="pronto-p">Las batallas de liga suman a {esYo ? 'tus' : 'sus'} duelos (el Ranking Duelos y el Win%); al Score, no.</p> : null}
     </section>
   );
 }
@@ -908,7 +917,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
       <>
         <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} resumen={false} />
         <section className="sec pf-sec"><p className="pronto-p">{esYo ? 'No jugaste eventos esta temporada: estás en la Liga por tu rol.' : 'No jugó eventos esta temporada: está en la Liga por su rol.'}</p></section>
-        <SusLigas liga={liga} k={k} esYo={esYo} />
+        <SusLigas liga={liga} k={k} esYo={esYo} p={p} />
       </>
     );
   }
@@ -928,7 +937,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
           <div id="pf-videos"><Videos liga={liga} p={p} k={k} esYo={esYo} dc={dc} /></div>
           <div id="pf-publicaciones"><SusPublicaciones liga={liga} p={p} esYo={esYo} /></div>
           <SusPromos liga={liga} p={p} esYo={esYo} />
-          <SusLigas liga={liga} k={k} esYo={esYo} />
+          <SusLigas liga={liga} k={k} esYo={esYo} p={p} />
           <Datos liga={liga} p={p} e={P.e} />
           <Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} />
           <div className="pf-dos">
