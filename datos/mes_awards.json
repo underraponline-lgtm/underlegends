@@ -186,7 +186,7 @@
      "quien": [
       "Flennzs"
      ],
-     "d": "5 eventos de jurado, host o DJ"
+     "d": "6 eventos de jurado, host o DJ"
     },
     {
      "op": "John pork",
@@ -204,7 +204,7 @@
      "quien": [
       "LEWITO"
      ],
-     "d": "4 eventos de jurado, host o DJ"
+     "d": "5 eventos de jurado, host o DJ"
     },
     {
      "op": "Velatz",
@@ -814,6 +814,147 @@
      "n": "FMH España",
      "sv": "URBF",
      "d": "8 batallas · 11 raperos"
+    }
+   ],
+   "jurado": [
+    {
+     "op": "Flennzs",
+     "n": "Flennzs",
+     "q": "Flennzs",
+     "quien": [
+      "Flennzs"
+     ],
+     "d": "6 eventos de jurado"
+    },
+    {
+     "op": "John pork",
+     "n": "John pork",
+     "q": "John pork",
+     "quien": [
+      "John pork"
+     ],
+     "d": "5 eventos de jurado"
+    },
+    {
+     "op": "Velatz",
+     "n": "Velatz",
+     "q": "Velatz",
+     "quien": [
+      "Velatz"
+     ],
+     "d": "4 eventos de jurado"
+    },
+    {
+     "op": "Kravitz",
+     "n": "Kravitz",
+     "q": "Kravitz",
+     "quien": [
+      "Kravitz"
+     ],
+     "d": "2 eventos de jurado"
+    },
+    {
+     "op": "LEWITO",
+     "n": "LEWITO",
+     "q": "LEWITO",
+     "quien": [
+      "LEWITO"
+     ],
+     "d": "2 eventos de jurado"
+    }
+   ],
+   "host": [
+    {
+     "op": "John pork",
+     "n": "John pork",
+     "q": "John pork",
+     "quien": [
+      "John pork"
+     ],
+     "d": "5 eventos de host"
+    },
+    {
+     "op": "LEWITO",
+     "n": "LEWITO",
+     "q": "LEWITO",
+     "quien": [
+      "LEWITO"
+     ],
+     "d": "4 eventos de host"
+    },
+    {
+     "op": "Velatz",
+     "n": "Velatz",
+     "q": "Velatz",
+     "quien": [
+      "Velatz"
+     ],
+     "d": "4 eventos de host"
+    },
+    {
+     "op": "Flennzs",
+     "n": "Flennzs",
+     "q": "Flennzs",
+     "quien": [
+      "Flennzs"
+     ],
+     "d": "2 eventos de host"
+    },
+    {
+     "op": "Kravitz",
+     "n": "Kravitz",
+     "q": "Kravitz",
+     "quien": [
+      "Kravitz"
+     ],
+     "d": "2 eventos de host"
+    }
+   ],
+   "dj": [
+    {
+     "op": "John pork",
+     "n": "John pork",
+     "q": "John pork",
+     "quien": [
+      "John pork"
+     ],
+     "d": "5 eventos de DJ"
+    },
+    {
+     "op": "Velatz",
+     "n": "Velatz",
+     "q": "Velatz",
+     "quien": [
+      "Velatz"
+     ],
+     "d": "4 eventos de DJ"
+    },
+    {
+     "op": "Zaik",
+     "n": "Zaik",
+     "q": "Zaik",
+     "quien": [
+      "Zaik"
+     ],
+     "d": "3 eventos de DJ"
+    },
+    {
+     "op": "Kravitz",
+     "n": "Kravitz",
+     "q": "Kravitz",
+     "quien": [
+      "Kravitz"
+     ],
+     "d": "2 eventos de DJ"
+    },
+    {
+     "op": "ARDEAN",
+     "n": "ARDEAN",
+     "q": "ARDEAN",
+     "quien": [
+      "ARDEAN"
+     ],
+     "d": "1 evento de DJ"
     }
    ]
   }
