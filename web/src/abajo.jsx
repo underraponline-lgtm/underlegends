@@ -2,7 +2,7 @@
 // historias. Nació de docs/remake/reales.py y del prototipo (prototipo.js). El 30/09/2026 se fueron de acá la Tienda
 // y los servidores (Dlx: «la TIENDA no debería estar ahí, debería estar merchandising» y «los servidores de la liga
 // estando abajo es algo tonto porque ya están arriba»), y El Elegido se mudó a Encuestas.
-import { useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { limpio, nuevaQue, num } from './liga.js';
 import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, promoAbierta, subirSiEsta } from './piezas.jsx';
 import { Buscar, CaraDc, CaraH, MENU, Orbe, QUE_ES } from './arriba.jsx';
@@ -301,6 +301,29 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   // izquierda, y Dlx, el mismo 17/10: «no me gustaría que tenga esa línea ni la flecha, se ve feo estéticamente». Ya
   // lo había dicho el 03/10 de la raya entre la tira y «Yo» (ver `.tb-yo` en vivo.css)
   const tira = useRef(null);
+  // 📏 CUATRO Y MEDIA EN CUALQUIER CELULAR (18/10/2026, Dlx: «asegúrate que todo esté posicionado bien»). La regla era
+  // que se vean cuatro secciones y media —la media dice que hay más—, pero con un relleno fijo eso pasaba sólo a 414 px:
+  // medido, a 360 no asomaba nada, a 390 sólo la «L» de Ligas (23 de 68 px) y a 430 la quinta casi entera. Ahora el
+  // relleno se calcula con lo que mide cada etiqueta para que de la quinta se vea la mitad, con su ícono
+  useLayoutEffect(() => {
+    const t = tira.current;
+    if (!t) return undefined;
+    const ajustar = () => {
+      const as = [...t.children];
+      const W = t.clientWidth;
+      if (as.length < 6 || !W) return;
+      const base = as.map((a) => Math.max(((a.querySelector('span') || {}).scrollWidth) || 0, 24));
+      const s4 = base[0] + base[1] + base[2] + base[3];
+      // 4·(etiqueta + 2p) + (etiqueta5 + 2p)/2 = W
+      const p = Math.max(6, Math.min(22, (W - s4 - base[4] / 2) / 9));
+      t.style.setProperty('--tb-p', p.toFixed(1) + 'px');
+    };
+    ajustar();
+    window.addEventListener('resize', ajustar);
+    // la fuente llega después y cambia lo que mide cada etiqueta
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(ajustar).catch(() => {});
+    return () => window.removeEventListener('resize', ajustar);
+  }, []);
   const [aprende, setAprende] = useState(() => { try { return !localStorage.getItem('lg:tira-ok'); } catch (e) { return false; } });
   const asomando = useRef(false);
   const aprendio = () => {

@@ -119,7 +119,7 @@ button.destacada{width:100%;font:inherit;color:inherit;text-align:left;cursor:po
 @keyframes tb-mano{0%,100%{transform:translateX(6px) rotate(90deg)}50%{transform:translateX(-10px) rotate(90deg)}}
 @keyframes tb-aparece{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion: reduce){.tb-mano,.tb-globo{animation:none}}
-.tabbar .tb-tira a{flex:0 0 auto;min-width:68px;padding-inline:10px;scroll-snap-align:start}
+.tabbar .tb-tira a{flex:0 0 auto;min-width:0;padding-inline:var(--tb-p,10px);scroll-snap-align:start}
 .tabbar .tb-tira a span{white-space:nowrap}
 /* sin la raya negra que la separaba de la tira (Dlx, 03/10/2026: «eliminá la línea negra que hay en los íconos de abajo
    y la cuenta») */
