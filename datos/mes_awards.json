@@ -87,7 +87,7 @@
       "Zeta",
       "Rubik"
      ],
-     "vistas": 74
+     "vistas": 76
     },
     {
      "op": "kaD74Qr7ky8",
@@ -96,7 +96,7 @@
      "gente": [
       "Rubik"
      ],
-     "vistas": 44
+     "vistas": 46
     }
    ],
    "servidor": [
@@ -133,13 +133,13 @@
    ],
    "organizador": [
     {
-     "op": "Lewis",
-     "n": "Lewis",
-     "q": "Lewis",
+     "op": "LEWITO",
+     "n": "LEWITO",
+     "q": "LEWITO",
      "quien": [
-      "Lewis"
+      "LEWITO"
      ],
-     "d": "8 eventos · 171 raperos"
+     "d": "14 eventos · 284 raperos"
     },
     {
      "op": "Flennzs",
@@ -149,15 +149,6 @@
       "Flennzs"
      ],
      "d": "7 eventos · 155 raperos"
-    },
-    {
-     "op": "LEWITO",
-     "n": "LEWITO",
-     "q": "LEWITO",
-     "quien": [
-      "LEWITO"
-     ],
-     "d": "6 eventos · 113 raperos"
     },
     {
      "op": "Velatz",
@@ -176,6 +167,15 @@
       "Elsoolar"
      ],
      "d": "6 eventos · 98 raperos"
+    },
+    {
+     "op": "NC",
+     "n": "NC",
+     "q": "NC",
+     "quien": [
+      "NC"
+     ],
+     "d": "4 eventos · 83 raperos"
     }
    ],
    "staff": [
@@ -434,9 +434,9 @@
      "op": "405",
      "n": "DESGRACIAS EN TOKYO VOL 24",
      "sv": "FFA",
-     "d": "29 raperos · FFA · organiza Lewis",
+     "d": "29 raperos · FFA · organiza LEWITO",
      "quien": [
-      "Lewis"
+      "LEWITO"
      ]
     },
     {
@@ -521,6 +521,15 @@
      "d": "3 felicitaciones"
     },
     {
+     "op": "684d718f6442",
+     "n": "Agus subió a A",
+     "q": "Agus",
+     "quien": [
+      "Agus"
+     ],
+     "d": "2 felicitaciones"
+    },
+    {
      "op": "fc78df2c9d31",
      "n": "Verc subió a A",
      "q": "Verc",
@@ -544,15 +553,6 @@
      "q": "Lvel",
      "quien": [
       "Lvel"
-     ],
-     "d": "1 felicitación"
-    },
-    {
-     "op": "2d7e17254a5a",
-     "n": "Over, campeón de SNAKE INSIGNIA 5 8",
-     "q": "Over",
-     "quien": [
-      "Over"
      ],
      "d": "1 felicitación"
     }
@@ -717,6 +717,152 @@
       "Velatz"
      ],
      "d": "7 podios · 🥇1 🥈6"
+    }
+   ],
+   "villano": [
+    {
+     "op": "Emily Family",
+     "n": "Emily Family",
+     "q": "Emily Family",
+     "quien": [
+      "Emily Family"
+     ],
+     "d": "al azar entre los que compitieron este mes"
+    },
+    {
+     "op": "RT",
+     "n": "RT",
+     "q": "RT",
+     "quien": [
+      "RT"
+     ],
+     "d": "al azar entre los que compitieron este mes"
+    },
+    {
+     "op": "Gus",
+     "n": "Gus",
+     "q": "Gus",
+     "quien": [
+      "Gus"
+     ],
+     "d": "al azar entre los que compitieron este mes"
+    },
+    {
+     "op": "PichulaMc",
+     "n": "PichulaMc",
+     "q": "PichulaMc",
+     "quien": [
+      "PichulaMc"
+     ],
+     "d": "al azar entre los que compitieron este mes"
+    },
+    {
+     "op": "Dynoco",
+     "n": "Dynoco",
+     "q": "Dynoco",
+     "quien": [
+      "Dynoco"
+     ],
+     "d": "al azar entre los que compitieron este mes"
+    }
+   ],
+   "showman": [
+    {
+     "op": "Mito",
+     "n": "Mito",
+     "q": "Mito",
+     "quien": [
+      "Mito"
+     ],
+     "d": "al azar entre los que compitieron este mes"
+    },
+    {
+     "op": "Crk",
+     "n": "Crk",
+     "q": "Crk",
+     "quien": [
+      "Crk"
+     ],
+     "d": "al azar entre los que compitieron este mes"
+    },
+    {
+     "op": "Motera",
+     "n": "Motera",
+     "q": "Motera",
+     "quien": [
+      "Motera"
+     ],
+     "d": "al azar entre los que compitieron este mes"
+    },
+    {
+     "op": "Jayden",
+     "n": "Jayden",
+     "q": "Jayden",
+     "quien": [
+      "Jayden"
+     ],
+     "d": "al azar entre los que compitieron este mes"
+    },
+    {
+     "op": "Iguana",
+     "n": "Iguana",
+     "q": "Iguana",
+     "quien": [
+      "Iguana"
+     ],
+     "d": "al azar entre los que compitieron este mes"
+    }
+   ],
+   "momento": [
+    {
+     "op": "440:Agus vs Makmah",
+     "n": "Agus vs Makmah",
+     "q": "Agus",
+     "quien": [
+      "Agus",
+      "Makmah"
+     ],
+     "d": "PROYECTO X VOL.2 · ganó Agus · al azar"
+    },
+    {
+     "op": "383:Marcos vs Velatz",
+     "n": "Marcos vs Velatz",
+     "q": "Marcos",
+     "quien": [
+      "Marcos",
+      "Velatz"
+     ],
+     "d": "DESGRACIAS EN TOKYO VOL 21 1v1 · ganó Marcos · al azar"
+    },
+    {
+     "op": "477:Panchok vs Molusco",
+     "n": "Panchok vs Molusco",
+     "q": "Panchok",
+     "quien": [
+      "Panchok",
+      "Molusco"
+     ],
+     "d": "DESGRACIAS EN TOKYO VOL27 · ganó Panchok · al azar"
+    },
+    {
+     "op": "468:Delux vs Liberia",
+     "n": "Delux vs Liberia",
+     "q": "Delux",
+     "quien": [
+      "Delux",
+      "Liberia"
+     ],
+     "d": "DEM UZBEKISTAN FECHA 2 · ganó Delux · al azar"
+    },
+    {
+     "op": "477:OG vs Nemi",
+     "n": "OG vs Nemi",
+     "q": "OG",
+     "quien": [
+      "OG",
+      "Nemi"
+     ],
+     "d": "DESGRACIAS EN TOKYO VOL27 · ganó OG · al azar"
     }
    ],
    "crew": [
@@ -1379,7 +1525,7 @@
      "2026-10-14T21:51:16Z"
     ],
     "684d718f6442": [
-     1,
+     2,
      [
       "Agus"
      ],
@@ -1484,6 +1630,14 @@
      ],
      "Ariaxer subió a E",
      "2026-10-18T00:59:54Z"
+    ],
+    "999d4383bef1": [
+     1,
+     [
+      "Jupiter"
+     ],
+     "Jupiter subió a D",
+     "2026-10-17T23:31:15Z"
     ]
    },
    "an": {

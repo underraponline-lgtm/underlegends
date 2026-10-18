@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-18T06:54:44+00:00",
+ "cuando": "2026-10-18T15:25:19+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -5384,10 +5384,10 @@
    "cuando": "2026-08-29T17:39:23",
    "canal_id": "1337126096373809284",
    "guild_id": "1283205153624952975",
-   "organizador": "RFran",
+   "organizador": "Fran 🌹🇪🇸",
    "orgs": [
     {
-     "n": "RFran",
+     "n": "Fran 🌹🇪🇸",
      "id": "1251917252664623165"
     }
    ],
@@ -5402,18 +5402,18 @@
    "premios": "Mi pija",
    "staff": {
     "jurado": [
-     "RFran"
+     "Fran 🌹🇪🇸"
     ],
     "dj": [
-     "RFran"
+     "Fran 🌹🇪🇸"
     ],
     "host": [
-     "RFran"
+     "Fran 🌹🇪🇸"
     ]
    },
-   "autor": "RFran",
+   "autor": "Fran 🌹🇪🇸",
    "staff_cuentas": {
-    "RFran": "1251917252664623165"
+    "Fran 🌹🇪🇸": "1251917252664623165"
    },
    "categoria_id": "1337125417018200166"
   },
@@ -5886,10 +5886,8 @@
      "RFran"
     ]
    },
-   "autor": "RFran",
-   "staff_cuentas": {
-    "RFran": "1251917252664623165"
-   },
+   "autor": "Fran 🌹🇪🇸",
+   "staff_cuentas": {},
    "categoria_id": "1337125417018200166"
   },
   {
