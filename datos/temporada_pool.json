@@ -2026,7 +2026,7 @@
   "crew": "",
   "discord_id": "1385452830684614697",
   "verificado": true,
-  "pts": 41185,
+  "pts": 41785,
   "ev": 15,
   "wr": "44.4%",
   "pod": 0,
@@ -2236,7 +2236,6 @@
   "rango": "C",
   "tg_t": {
    "dobles": 2,
-   "reciente": true,
    "svc": 1,
    "svtag": "campeon",
    "trios": 2
@@ -2351,7 +2350,6 @@
   "rango": "C",
   "tg_t": {
    "dobles": 2,
-   "reciente": true,
    "solo": 1,
    "sube": true,
    "trios": 1
@@ -2542,7 +2540,6 @@
    "cohete": true,
    "dcor": true,
    "dobles": 1,
-   "reciente": true,
    "svc": 1
   }
  },
@@ -3672,7 +3669,6 @@
   "rango": "D",
   "tg_t": {
    "dobles": 1,
-   "reciente": true,
    "trios": 2
   }
  },
@@ -3851,8 +3847,7 @@
   "total": 184,
   "rango": "D",
   "tg_t": {
-   "dobles": 2,
-   "reciente": true
+   "dobles": 2
   }
  },
  {
@@ -3863,7 +3858,7 @@
   "crew": "",
   "discord_id": "794733304729436212",
   "verificado": true,
-  "pts": 24862,
+  "pts": 25162,
   "ev": 6,
   "wr": "",
   "pod": 1,
@@ -4242,8 +4237,7 @@
   "total": 184,
   "rango": "E",
   "tg_t": {
-   "cobro": 1,
-   "reciente": true
+   "cobro": 1
   }
  },
  {
@@ -7423,7 +7417,6 @@
   "total": 184,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
    "trios": 1
   }
  },
@@ -8659,10 +8652,7 @@
   "o": 239,
   "pos": 131,
   "total": 184,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "ENEK 🇪🇸",
@@ -9669,10 +9659,7 @@
   "pos": 313,
   "fc": true,
   "total": 184,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Dios",
@@ -10161,8 +10148,7 @@
   "total": 184,
   "rango": "E",
   "tg_t": {
-   "dobles": 1,
-   "reciente": true
+   "dobles": 1
   }
  },
  {
@@ -11028,10 +11014,7 @@
   "pos": 341,
   "fc": true,
   "total": 184,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Indígena",
@@ -11723,10 +11706,7 @@
   "pos": 354,
   "fc": true,
   "total": 184,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Joaquín La Profecia 👨🏻‍🍳",
@@ -11864,10 +11844,7 @@
   "pos": 358,
   "fc": true,
   "total": 184,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "SHULIOT",
@@ -12411,10 +12388,7 @@
   "pos": 371,
   "fc": true,
   "total": 184,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Redstonita",
@@ -12446,10 +12420,7 @@
   "pos": 372,
   "fc": true,
   "total": 184,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "UDDIZIM",
@@ -12481,10 +12452,7 @@
   "pos": 373,
   "fc": true,
   "total": 184,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "tito calderon",
@@ -14776,10 +14744,7 @@
   "o": 422,
   "pos": 180,
   "total": 184,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Mc Glock",
@@ -14811,10 +14776,7 @@
   "pos": 427,
   "fc": true,
   "total": 184,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "BRAGEURITHER🇦🇪",
@@ -14846,10 +14808,7 @@
   "pos": 428,
   "fc": true,
   "total": 184,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Char",
@@ -14913,10 +14872,7 @@
   "pos": 430,
   "fc": true,
   "total": 184,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "ELSOLAR 🇨🇴",
@@ -15015,10 +14971,7 @@
   "pos": 433,
   "fc": true,
   "total": 184,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Jotap",
@@ -15114,10 +15067,7 @@
   "pos": 436,
   "fc": true,
   "total": 184,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "METORITO",
@@ -15245,10 +15195,7 @@
   "pos": 440,
   "fc": true,
   "total": 184,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Slasher",
@@ -15344,10 +15291,7 @@
   "pos": 443,
   "fc": true,
   "total": 184,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "cardozo",

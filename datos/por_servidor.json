@@ -1694,10 +1694,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 3300,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Dm🇵🇪": {
@@ -2649,10 +2646,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 3300,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Gian": {
@@ -3449,10 +3443,7 @@
     "ovr": 47,
     "pod": 0,
     "pts": 13875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "",
@@ -3932,8 +3923,7 @@
     "pts": 16500,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -5436,10 +5426,7 @@
     "ovr": 45,
     "pod": 0,
     "pts": 8250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "PLA PLA": {
@@ -5518,8 +5505,7 @@
     "pts": 12375,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    },
    "FFA": {
@@ -7522,10 +7508,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 3300,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Vlade": {
@@ -8119,10 +8102,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 4125,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "leteletras": {
