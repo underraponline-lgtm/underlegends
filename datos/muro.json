@@ -466,6 +466,7 @@
 "catarsis": {
 "rg": "",
 "c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -2406,14 +2407,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"ARDEAN"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5706,6 +5699,14 @@
 "Ariaxer"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-18T05:04:45Z",
+"quien": [
+"Catarsis"
+],
+"carta": "pais"
 }
 ]
 }
