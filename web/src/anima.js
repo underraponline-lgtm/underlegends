@@ -39,6 +39,29 @@ export function useNumero(v, ms = 700) {
   return x;
 }
 
+// ↔️ LAS PESTAÑAS SE DESLIZAN HACIA DONDE FUISTE (Dlx, 18/10/2026: «ya se nota un poco más el tema de animaciones,
+// pero creo que podrías hacerlo mejor, ¿no?»). `const ref = useDesliza(tab, ORDEN)` en lo que cambia con la pestaña:
+// entra desde la derecha si elegiste una de más a la derecha, y al revés. Con 'carta', la tarjeta se da vuelta (como al
+// abrir un sobre). ⚠️ SIN VOLVER A MONTAR NADA —la Web Animations API sobre el mismo elemento—: lo elegido adentro de
+// la pestaña no se pierde, y sin `fill` no queda ningún `transform` puesto (lo `fixed` de adentro sigue en su lugar)
+export function useDesliza(i, orden, como = 'lado') {
+  const ref = useRef(null);
+  const antes = useRef(i);
+  useEffect(() => {
+    const a = antes.current;
+    antes.current = i;
+    const el = ref.current;
+    if (a === i || !el || !el.animate || quieto()) return;
+    const pos = (x) => (orden ? orden.indexOf(x) : x);
+    const d = typeof pos(i) === 'number' && typeof pos(a) === 'number' && pos(i) < pos(a) ? -1 : 1;
+    const marcos = como === 'carta'
+      ? [{ opacity: 0, rotate: 'y ' + d * 75 + 'deg', scale: '0.92' }, { opacity: 1, offset: 0.6 }, { opacity: 1, rotate: 'y 0deg', scale: '1' }]
+      : [{ opacity: 0, transform: 'translateX(' + d * 32 + 'px)' }, { opacity: 1, transform: 'none' }];
+    try { el.animate(marcos, { duration: como === 'carta' ? 480 : 320, easing: 'cubic-bezier(.2,.8,.2,1)' }); } catch (e) { /* sin animar */ }
+  }, [i]); // eslint-disable-line react-hooks/exhaustive-deps
+  return ref;
+}
+
 // el mismo número, como pieza: `<Numero v={1234} f={num} />`
 export function Numero({ v, f }) {
   const x = useNumero(v);

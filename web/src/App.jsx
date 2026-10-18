@@ -4,7 +4,7 @@
 import { Component, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DUENO, Liga, aQuienSigo, limpio, quienMira } from './liga.js';
 import { AvisoPromo, nombrePais } from './piezas.jsx';
-import { Cabecera, Hero, Historias, Instalar, IrA, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
+import { Cabecera, Hero, Historias, Instalar, IrA, MENU, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
 import { LosQueMandan, Noticias } from './medio.jsx';
 import { Menu, Merch, Pie, Subir, Tabbar, Visor } from './abajo.jsx';
 import { Encuestas } from './encuestas.jsx';
@@ -253,15 +253,27 @@ function marcarRuta() {
 
 // 🔴 CADA SECCIÓN, AISLADA — la regla de `pintaDatos()` de app.js: una que falla (un dato con otra forma) queda
 // sin dibujar y el resto del Inicio sale igual. El error queda en la consola con el nombre de la sección.
+// ➡️ hacia dónde entra la página que se está montando ('der', 'izq' o '' la primera vez): lo calcula el App en cada
+// dibujo (`vaHacia()`) y cada página lo toma UNA vez, al montarse —si lo leyera en cada dibujo, cambiar de pestaña
+// adentro de la página le cambiaría la animación y la volvería a correr—
+let vaPagina = '';
+function vaHacia(previo, clave, i, hondo) {
+  if (!previo || previo.k === clave) return previo ? previo.va : '';
+  // al menú de más a la derecha, desde la derecha; a algo de adentro (un perfil, una liga), también; al volver, al revés
+  if (previo.i === i) return hondo > previo.hondo ? 'der' : hondo < previo.hondo ? 'izq' : 'der';
+  if (previo.i < 0 || i < 0) return i < 0 ? 'der' : 'izq';
+  return i > previo.i ? 'der' : 'izq';
+}
+
 class Aislada extends Component {
-  constructor(p) { super(p); this.state = { roto: false }; }
+  constructor(p) { super(p); this.state = { roto: false }; this.va = vaPagina; }
   static getDerivedStateFromError() { return { roto: true }; }
   componentDidCatch(e) { console.error('[inicio:' + this.props.n + ']', e); }
   render() {
     // 🎞️ una PÁGINA entra con su transición (`.pg-entra`, vivo.css): como va con `key` por página, cambiar de sección la
     // vuelve a montar y la animación corre de nuevo (Dlx, 17/10/2026: «mejores transiciones, animaciones… tampoco tan
     // exagerado, pero hasta ahora no he visto animaciones»)
-    if (!this.state.roto) return this.props.pagina ? <div className="pg-entra">{this.props.children}</div> : this.props.children;
+    if (!this.state.roto) return this.props.pagina ? <div className={'pg-entra' + (this.va ? ' va-' + this.va : '')}>{this.props.children}</div> : this.props.children;
     // ⚠️ una PÁGINA rota no queda en blanco: dice qué pasó y deja recargar (un pedazo chico, en cambio, se apaga)
     return this.props.pagina ? <section className="sec"><p className="pronto-p">No pude cargar esta parte de la página.{' '}
       <button type="button" className="btn borde2 chico" onClick={() => location.reload()}>Recargar</button></p></section> : null;
@@ -341,6 +353,7 @@ export default function App() {
     return () => window.removeEventListener('lg:tour', f);
   }, []);
   const raiz = useRef(null);
+  const paso = useRef(null);
 
   useEffect(() => {
     const datos = () => { setD(window.D || null); setAhora(new Date()); setYo(quienMira()); setEnc(estadoEnc()); marcarRuta(); };
@@ -548,6 +561,13 @@ export default function App() {
   const miFondo = fYo && fYo[2] ? urlFondo(fYo[0]) : '';
   // 🧘 «Menos animaciones», a la raíz: el CSS de la página vive acá adentro y no ve la clase de <html> (anima.js)
   const calma = (useCalma() ? ' calma' : '') + (useTapado() ? ' tapado' : '');
+  // ➡️ de dónde a dónde: el orden del menú, y «más hondo» si es algo de adentro (`#/ligas/<id>`, `#/r/<clave>`)
+  const iMenu = MENU.findIndex(([, h2]) => h2 === '#/' + paginaMenu);
+  const hondo = paginaMenu === 'ranking' ? 0 : partes.slice(1).filter(Boolean).length;
+  const claveVa = paginaMenu + (hondo ? '/' + partes.slice(1).join('/') : '');
+  const va = vaHacia(paso.current, claveVa, iMenu, hondo);
+  if (!paso.current || paso.current.k !== claveVa) paso.current = { k: claveVa, i: iMenu, hondo, va };
+  vaPagina = va;
   if (!liga) return <div className={'app ' + claseTema(tema, temaSv) + calma}><div className="barra-ul" /><div className="cargando">Cargando la Liga…</div></div>;
   return (
     <div className={'app ' + claseTema(tema, temaSv) + calma + (miFondo ? ' con-fondo' : '')} ref={raiz} style={miFondo ? { '--mi-fondo': miFondo } : undefined}>
@@ -587,7 +607,7 @@ export default function App() {
         : pagina === 'cuenta' && partes[1] === 'verificar' ? <Aislada key="Verificar" n="Verificar" pagina><Suspense fallback={<Cargando />}><PaginaVerificar liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'dashboard' ? <Aislada key="Dashboard" n="Dashboard" pagina><Suspense fallback={<Cargando />}><Dashboard dc={yo.dc} liga={liga} /></Suspense></Aislada>
         : pagina === 'cuenta' ? <Aislada key="Cuenta" n="Cuenta" pagina><Suspense fallback={<Cargando />}><Cuenta cual="cuenta" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} temaSv={temaSv} onTemaSv={elegirSv} /></Suspense></Aislada>
-        : pagina === 'ajustes' ? <Aislada key="Ajustes" n="Ajustes" pagina><Suspense fallback={<Cargando />}><Cuenta cual="ajustes" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} temaSv={temaSv} onTemaSv={elegirSv} /></Suspense></Aislada> : <div className="pg-entra" key="inicio">
+        : pagina === 'ajustes' ? <Aislada key="Ajustes" n="Ajustes" pagina><Suspense fallback={<Cargando />}><Cuenta cual="ajustes" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} temaSv={temaSv} onTemaSv={elegirSv} /></Suspense></Aislada> : <div className={'pg-entra' + (va ? ' va-' + va : '')} key="inicio">
         {/* 🏠 el Dashboard, sólo para Dlx: si la cuenta del navegador no es la suya ni se baja (la puerta igual es el servidor) */}
         {yo.dc && String(yo.dc.id) === DUENO ? <Aislada n="PanelDueno"><Suspense fallback={null}><PanelDueno liga={liga} /></Suspense></Aislada> : null}
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos || {}} onAbrir={setHistoria} /></Aislada>

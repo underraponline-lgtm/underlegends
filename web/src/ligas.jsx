@@ -17,6 +17,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DIAS, MESES, limpio, num, siglaDe, utc } from './liga.js';
 import { Bandera, Cara, Compartir, Ico, Sec, accion, enlace, silueta } from './piezas.jsx';
+import { Numero, useDesliza } from './anima.js';
 import { Miniatura, abrirVideo } from './video.jsx';
 
 // 🏟️ ¿UN NOMBRE ESTÁ MAL? (Dlx, 14/10/2026: «Sí, a Reportes», a ForceGP: «¿no hay manera de que uno pueda corregir
@@ -436,7 +437,7 @@ function Podio3({ L, h }) {
           <span className="lgp-quien">
             {h.cara(raw, 'lgp-cara')}
             {h.nombre(raw, 'lgp-nom')}
-            <small><b>{pts}</b> PTS · {pg} de {pj}</small>
+            <small><b>{typeof pts === 'number' ? <Numero v={pts} /> : pts}</b> PTS · {pg} de {pj}</small>
           </span>
           <span className="lgp-paso">{i + 1}º</span>
         </li>
@@ -690,6 +691,7 @@ function LigaPerfil({ liga, id }) {
   // 🗂️ la pestaña, ANTES de cualquier `return`: un hook después de uno se rompe cuando la liga todavía no llegó
   const [tab, setTab] = useState('tabla');
   useEffect(() => { setTab('tabla'); }, [id]);
+  const desliza = useDesliza(tab, PEST.map(([k]) => k));
   const ls = liga.ligas();
   const L = conDetalle(ls.find((x) => x.id === id), det);
   if (!L) return <LigasInicio liga={liga} falta={id} />;
@@ -736,6 +738,7 @@ function LigaPerfil({ liga, id }) {
           ))}
         </nav>
       ) : null}
+      <div className="lpg-pest" ref={desliza}>
       {tv === 'tabla' ? (
         <>
           <Sec id="lgp-tabla" titulo="La tabla" extra="lgp-sec"><Torneo liga={liga} L={L} h={h} /></Sec>
@@ -750,6 +753,7 @@ function LigaPerfil({ liga, id }) {
       {tv === 'flyers' ? <Sec id="lgp-flyers" titulo="Los flyers" extra="lgp-sec"><Flyers liga={liga} L={L} /></Sec> : null}
       {tv === 'videos' ? <Sec id="lgp-videos" titulo="Los videos" extra="lgp-sec"><Videos L={L} /></Sec> : null}
       {tv === 'como' ? <Sec id="lgp-como" titulo="Cómo funciona" extra="lgp-sec"><Como L={L} h={h} /></Sec> : null}
+      </div>
       {otras.length ? (
         <Sec id="lgp-otras" titulo="Las otras ligas" enlace="Todas" href="#/ligas">
           <nav className="lgp-otras" aria-label="Las otras ligas">

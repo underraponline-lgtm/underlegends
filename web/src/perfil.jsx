@@ -10,6 +10,7 @@
 // —seguir, el precio por cabeza, el visor de cartas y de llaves— son las de app.js.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
+import { useDesliza } from './anima.js';
 import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, SinCarta, accion, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
@@ -132,6 +133,8 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
   const [otroSv, setOtroSv] = useState('');
   const propio = String(f.sv || '').toLowerCase();
   const svc = ((p && p.svc) || []).filter((x) => x !== propio);
+  // 🃏 cambiar de tarjeta la da vuelta, hacia el lado de la pestaña (anima.js)
+  const vuelta = useDesliza(cs.indexOf(cual) * 50 + [''].concat(svc).indexOf(otroSv), null, 'carta');
   // 🏠 de dónde es, sólo si lo eligió (Dlx, 12/10/2026: «quitá de dónde son todos… a menos que lo hayan elegido»): ni
   // el chip ni el color de arriba salen del servidor donde más jugó. Ver elegidos.js
   const svE = svElegido(liga, useElegidos(), k);
@@ -216,7 +219,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
               ))}
             </div>
           ) : null}
-          <div className={'pf-carta-c tj-' + cual}>
+          <div className={'pf-carta-c tj-' + cual} ref={vuelta}>
             {cs.length && cual === 'servidor' && otroSv ? (
               <button type="button" className="sin-boton" onClick={() => accion.carta(k)} aria-label={'Ver las cartas de ' + f.n}>
                 <img className="tj-c" alt={'Carta de Servidor de ' + f.n + ' en ' + siglaDe(otroSv.toUpperCase())}

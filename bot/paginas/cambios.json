@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.46",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T03:15:00-04:00",
+   "titulo": "Animaciones con dirección",
+   "items": [
+    "➡️ Las páginas entran desde el lado hacia donde vas, y las pestañas se deslizan hacia la que elegiste.",
+    "🃏 Las tarjetas se dan vuelta al aparecer, como al abrir un sobre."
+   ]
+  },
+  {
    "version": "3.45",
    "dia": "2026-10-18",
    "cuando": "2026-10-18T03:05:00-04:00",

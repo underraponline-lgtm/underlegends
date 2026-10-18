@@ -18,6 +18,7 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, limpio, norm, num, resultado, siglaDe, utc } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
+import { useDesliza } from './anima.js';
 import { SeBusca } from './abajo.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 import { Divisiones } from './divisiones.jsx';
@@ -587,6 +588,7 @@ const VER = 50;
 // 16/10/2026 son su propia sección: `#/ranking/ligas` lleva a `#/ligas`, en App.jsx)
 export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const [sub, setSub] = useState(SUBS[subRuta] ? subRuta : 'temporada');
+  const deslizaRk = useDesliza(sub, RANKINGS);
   useEffect(() => { setSub(SUBS[subRuta] ? subRuta : 'temporada'); }, [subRuta]);
   const [orden, setOrden] = useState(null);
   const [q, setQ] = useState('');
@@ -828,7 +830,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
           <a className="mo-fl izq rk-flecha" href={'#/ranking/' + antes} aria-label={'Ranking anterior: ' + SUBS[antes].et} title={SUBS[antes].et}><Chevron /></a>
           <a className="mo-fl der rk-flecha" href={'#/ranking/' + despues} aria-label={'Ranking siguiente: ' + SUBS[despues].et} title={SUBS[despues].et}><Chevron /></a>
         </> : null}
-        <section className="rk-cab" id="rk-cab">
+        <section className="rk-cab" id="rk-cab" ref={deslizaRk}>
           <div className="rk-tx">
             <span className="tag">RANKING · {liga.temp}</span>
             <h1 className="hero-ev largo">{cfg.et}</h1>

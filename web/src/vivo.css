@@ -3724,6 +3724,24 @@ a.rk-z:hover{border-color:var(--linea)}
 .app .historias .h:nth-child(6){animation-delay:.25s}.app .historias .h:nth-child(n+7){animation-delay:.3s}
 .app .hero-t,.app .hero-ev,.app .hero-p,.app .hero-acc{animation:an-sube .55s cubic-bezier(.2,.8,.2,1) both}
 .app .hero-ev{animation-delay:.08s}.app .hero-p{animation-delay:.16s}.app .hero-acc{animation-delay:.24s}
+/* ➡️ LA PÁGINA ENTRA DESDE DONDE IBAS (Dlx, 18/10/2026: «ya se nota un poco más… podrías hacerlo mejor»): a una sección
+   de más a la derecha en el menú, o a algo de adentro (un perfil, una liga), desde la derecha; al volver, desde la
+   izquierda (`vaHacia()` de App.jsx). La primera vez, la de siempre: sube */
+@keyframes pg-der{from{opacity:0;transform:translateX(44px)}to{opacity:1;transform:none}}
+@keyframes pg-izq{from{opacity:0;transform:translateX(-44px)}to{opacity:1;transform:none}}
+.pg-entra.va-der{animation-name:pg-der;animation-duration:.4s}
+.pg-entra.va-izq{animation-name:pg-izq;animation-duration:.4s}
+/* 🃏 LAS TARJETAS SE DAN VUELTA AL APARECER, como al abrir un sobre: en el visor (cada pestaña es otra imagen, así que
+   cada cambio la vuelve a dar vuelta) y en la grilla de Tarjetas al llegar con el scroll. ⚠️ Con `rotate` y `scale`
+   sueltos y NO con `transform`: una animación con `both` deja su `transform` puesto y le pisaba el «levantarse» al pasar
+   el mouse (`.tj-grilla .sin-boton:hover .tj-c`) */
+@keyframes an-voltea{from{opacity:0;rotate:y 75deg;scale:.92}60%{opacity:1}to{opacity:1;rotate:y 0deg;scale:1}}
+.app .vc-img .tj-c{animation:an-voltea .55s cubic-bezier(.2,.8,.2,1) both;animation-delay:.1s}
+@supports (animation-timeline: view()){
+  .app .tj-grilla .tj-c{animation:an-voltea linear both;animation-timeline:view();animation-range:entry 0% entry 45%}
+  .app.calma .tj-grilla .tj-c{animation:none !important}
+  @media (prefers-reduced-motion: reduce){.app .tj-grilla .tj-c{animation:none !important}}
+}
 /* 🧘 QUIETO: «Menos animaciones» o la opción del celular. Lo que entra aparece ya en su lugar, y lo que late se queda */
 .app.calma *,.app.calma *::before,.app.calma *::after{animation-duration:.01ms !important;animation-delay:0s !important;
   animation-iteration-count:1 !important;transition-duration:.01ms !important;transition-delay:0s !important;scroll-behavior:auto !important}
