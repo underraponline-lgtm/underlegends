@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-10-18T04:22:28Z",
+ "t": "2026-10-18T04:28:36Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -398,6 +398,33 @@
      "t": "2026-09-12T20:22:22Z",
      "tit": "FASO vs SOL",
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-albiceleste/1548428581879808020.webp",
+     "w": 708,
+     "h": 880
+    },
+    {
+     "id": "1548122620271001630",
+     "msg": "1548122620271001630",
+     "t": "2026-09-12T00:06:35Z",
+     "tit": "EPIK vs INDIGENA",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-albiceleste/1548122620271001630.webp",
+     "w": 708,
+     "h": 880
+    },
+    {
+     "id": "1548119513315414026",
+     "msg": "1548119513315414026",
+     "t": "2026-09-11T23:54:14Z",
+     "tit": "BENJIXO vs ZIGNOS",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-albiceleste/1548119513315414026.webp",
+     "w": 708,
+     "h": 880
+    },
+    {
+     "id": "1548114197731217448",
+     "msg": "1548114197731217448",
+     "t": "2026-09-11T23:33:07Z",
+     "tit": "BNA vs JAHNO",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-albiceleste/1548114197731217448.webp",
      "w": 708,
      "h": 880
     }
@@ -896,6 +923,33 @@
      "t": "2026-10-11T00:04:55Z",
      "tit": "MAXIRAP vs BASTYRETRO",
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-andes/1558631448414654574.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1556453287354695710",
+     "msg": "1556453287354695710",
+     "t": "2026-10-04T23:49:41Z",
+     "tit": "PANCHOK vs BASTYRETRO",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-andes/1556453287354695710.webp",
+     "w": 720,
+     "h": 823
+    },
+    {
+     "id": "1556450642695032886",
+     "msg": "1556450642695032886",
+     "t": "2026-10-04T23:39:10Z",
+     "tit": "PANCHOK 🇨🇱",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-andes/1556450642695032886.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1556449503471468627",
+     "msg": "1556449503471468627",
+     "t": "2026-10-04T23:34:39Z",
+     "tit": "BASTYRETRO 🇨🇱",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-andes/1556449503471468627.webp",
      "w": 720,
      "h": 900
     }
@@ -1609,6 +1663,33 @@
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-carimex/1557931324126404741.webp",
      "w": 720,
      "h": 901
+    },
+    {
+     "id": "1557925660742131795",
+     "msg": "1557925660742131795",
+     "t": "2026-10-09T01:20:22Z",
+     "tit": "CAMPOY VS GRANOS GRANOS PUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUS",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-carimex/1557925660742131795.webp",
+     "w": 720,
+     "h": 901
+    },
+    {
+     "id": "1557545411835727945",
+     "msg": "1557545411835727945",
+     "t": "2026-10-08T00:09:23Z",
+     "tit": "X favor hagan la batalla 🫂🫂",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-carimex/1557545411835727945.webp",
+     "w": 720,
+     "h": 901
+    },
+    {
+     "id": "1557241725658079345",
+     "msg": "1557241725658079345",
+     "t": "2026-10-07T04:02:39Z",
+     "tit": "Y NOS IREMOS A MAZATLA PARA Q EL CHAPO NOS PRESTE EL MAZATLÁN INTERNATIONAL CENTER PARA HA",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-carimex/1557241725658079345.webp",
+     "w": 720,
+     "h": 901
     }
    ],
    "staff": [
@@ -2086,6 +2167,33 @@
      "t": "2026-09-23T13:28:19Z",
      "tit": "PLAYER vs PROSU",
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-tricolor/1552310650775277589.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1552088548335943730",
+     "msg": "1552088548335943730",
+     "t": "2026-09-22T22:45:46Z",
+     "tit": "BLOODY vs NATSUKI",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-tricolor/1552088548335943730.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1548844665107775579",
+     "msg": "1548844665107775579",
+     "t": "2026-09-13T23:55:44Z",
+     "tit": "ULTIMA BATALLA DE LA JORNADA",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-tricolor/1548844665107775579.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1548844315529453608",
+     "msg": "1548844315529453608",
+     "t": "2026-09-13T23:54:20Z",
+     "tit": "EXTRAPLAYER CONFIRMADO",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-tricolor/1548844315529453608.webp",
      "w": 720,
      "h": 900
     }
@@ -2609,6 +2717,33 @@
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-under/1557782207274160220.webp",
      "w": 720,
      "h": 1023
+    },
+    {
+     "id": "1557779016318984246",
+     "msg": "1557779016318984246",
+     "t": "2026-10-08T15:37:39Z",
+     "tit": "CUERNAVACA; POTENCIA MUNDIAL DEL FREESTYLE 🇲🇽",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-under/1557779016318984246.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1551762274987941948",
+     "msg": "1551762274987941948",
+     "t": "2026-09-22T01:09:16Z",
+     "tit": "3 BATALLAS, 3 GANADORES 💯",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-under/1551762274987941948.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1551762274987941948-1",
+     "msg": "1551762274987941948",
+     "t": "2026-09-22T01:09:16Z",
+     "tit": "3 BATALLAS, 3 GANADORES 💯",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-under/1551762274987941948-1.webp",
+     "w": 720,
+     "h": 900
     }
    ],
    "staff": [
@@ -3260,6 +3395,33 @@
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-espana/1555297101339164732.webp",
      "w": 720,
      "h": 823
+    },
+    {
+     "id": "1555250912757293106",
+     "msg": "1555250912757293106",
+     "t": "2026-10-01T16:11:52Z",
+     "tit": "EFE vs CARLOSMO",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-espana/1555250912757293106.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1554885536169336973",
+     "msg": "1554885536169336973",
+     "t": "2026-09-30T16:00:00Z",
+     "tit": "TROT vs DIEGO",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-espana/1554885536169336973.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1554630412704292974",
+     "msg": "1554630412704292974",
+     "t": "2026-09-29T23:06:14Z",
+     "tit": "EXTRAPLAYER 🎮",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-espana/1554630412704292974.webp",
+     "w": 720,
+     "h": 900
     }
    ],
    "staff": [
@@ -4751,6 +4913,33 @@
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fms-peru/1557753051216093244.webp",
      "w": 720,
      "h": 720
+    },
+    {
+     "id": "1557658508810518629",
+     "msg": "1557658508810518629",
+     "t": "2026-10-08T07:38:48Z",
+     "tit": "DOMINICK vs BOOTRAX",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fms-peru/1557658508810518629.webp",
+     "w": 720,
+     "h": 720
+    },
+    {
+     "id": "1557658214110203914",
+     "msg": "1557658214110203914",
+     "t": "2026-10-08T07:37:38Z",
+     "tit": "DREXX vs LSD",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fms-peru/1557658214110203914.webp",
+     "w": 720,
+     "h": 720
+    },
+    {
+     "id": "1557657854679318528",
+     "msg": "1557657854679318528",
+     "t": "2026-10-08T07:36:12Z",
+     "tit": "S1LENCE vs NEXUS",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fms-peru/1557657854679318528.webp",
+     "w": 720,
+     "h": 720
     }
    ],
    "staff": [
@@ -5018,6 +5207,33 @@
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fms-world-series/1560909636045897860.webp",
      "w": 720,
      "h": 1034
+    },
+    {
+     "id": "1560908384306470982",
+     "msg": "1560908384306470982",
+     "t": "2026-10-17T06:52:39Z",
+     "tit": "SEGUNDA BATALLA vs min_g16m",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fms-world-series/1560908384306470982.webp",
+     "w": 720,
+     "h": 1096
+    },
+    {
+     "id": "1560906766227611658",
+     "msg": "1560906766227611658",
+     "t": "2026-10-17T06:46:13Z",
+     "tit": "PRIMERA BATALLA 🇺🇾 VS 🇻🇪",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fms-world-series/1560906766227611658.webp",
+     "w": 720,
+     "h": 1019
+    },
+    {
+     "id": "1559570304009768983",
+     "msg": "1559570304009768983",
+     "t": "2026-10-13T14:15:35Z",
+     "tit": "ONCEAVA BATALLA CONFIRMADA 🇻🇪 VS 🇦🇷",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fms-world-series/1559570304009768983.webp",
+     "w": 720,
+     "h": 1038
     }
    ],
    "staff": [
@@ -5486,6 +5702,33 @@
      "t": "2026-09-30T04:23:01Z",
      "tit": "SNAKE LEAGUE GENERATIONS",
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/snake-generations/1554710134117244928.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1554709680922558554",
+     "msg": "1554709680922558554",
+     "t": "2026-09-30T04:21:13Z",
+     "tit": "SNAKE LEAGUE GENERATIONS",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/snake-generations/1554709680922558554.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1551388524865917018",
+     "msg": "1551388524865917018",
+     "t": "2026-09-21T00:24:07Z",
+     "tit": "SNAKE LEAGUE GENERATIONS",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/snake-generations/1551388524865917018.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1551388077769891871",
+     "msg": "1551388077769891871",
+     "t": "2026-09-21T00:22:21Z",
+     "tit": "SNAKE LEAGUE GENERATIONS",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/snake-generations/1551388077769891871.webp",
      "w": 720,
      "h": 900
     }
@@ -6441,6 +6684,33 @@
      "t": "2026-09-16T03:01:30Z",
      "tit": "FZL Conference League - Campeones Históricos",
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1549616193026129931.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1549606083025305640",
+     "msg": "1549606083025305640",
+     "t": "2026-09-16T02:21:20Z",
+     "tit": "FREESTYLE ZONE LEAGUE TEMPORADA 16",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1549606083025305640.webp",
+     "w": 720,
+     "h": 870
+    },
+    {
+     "id": "1549601161240125470",
+     "msg": "1549601161240125470",
+     "t": "2026-09-16T02:01:47Z",
+     "tit": "FZ LEAGUE - ÚLTIMAS DOS TEMPORADAS",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1549601161240125470.webp",
+     "w": 720,
+     "h": 899
+    },
+    {
+     "id": "1549471941839028284",
+     "msg": "1549471941839028284",
+     "t": "2026-09-15T17:28:18Z",
+     "tit": "FZ LEAGUE TEMPORADA 16 - STATS",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fzl/1549471941839028284.webp",
      "w": 720,
      "h": 900
     }
