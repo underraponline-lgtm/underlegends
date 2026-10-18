@@ -264,6 +264,9 @@ def cerrar(mes, m, votos, ahora):
         if nom:
             ops = [y['op'] for y in nom]
             g = EN.ganador((votos or {}).get('mes:%s:%s' % (mes, cat)) or {}, validas=ops, semilla='mes:%s:%s' % (mes, cat))
+            # 📊 los votos de cada nominado, para publicar los porcentajes (Dlx, 18/10/2026: «me gusta lo de porcentajes»)
+            vv = (votos or {}).get('mes:%s:%s' % (mes, cat)) or {}
+            x['cuenta'] = {op: int(vv[op]) for op in ops if str(vv.get(op) or '').isdigit() and int(vv[op]) > 0}
             if g:
                 x['gana'], x['votos'], x['total'], x['por'] = g[0], g[1], g[2], 'votos'
             else:
@@ -404,6 +407,12 @@ def _dids_padron():
         return {}
 
 
+def _pct(x):
+    """El porcentaje de votos del ganador de una categoría cerrada, o 0 si se decidió por los números."""
+    tot = sum((x.get('cuenta') or {}).values()) or int(x.get('total') or 0)
+    return round(100.0 * int(x.get('votos') or 0) / tot) if tot and x.get('por') == 'votos' else 0
+
+
 def muro(d=None):
     """📣 Las publicaciones: un ganador por categoría, cuando cerró: `{tipo: 'mesaward', t, mes, cat, quien, …}`."""
     d = leer() if d is None else d
@@ -416,14 +425,14 @@ def muro(d=None):
         if cat in otras:
             j = juntas.setdefault(mes, {'tipo': 'mesaward', 't': ((d.get('meses') or {}).get(mes) or {}).get('cerrado'),
                                         'mes': mes, 'cat': 'otras', 'quien': [], 'lista': []})
-            j['lista'].append([cat, otras[cat], fila.get('n') or op])
+            j['lista'].append([cat, otras[cat], fila.get('n') or op, _pct(x)])
             for q in personas(cat, fila):
                 if q not in j['quien']:
                     j['quien'].append(q)
             continue
         y = {'tipo': 'mesaward', 't': ((d.get('meses') or {}).get(mes) or {}).get('cerrado'), 'mes': mes, 'cat': cat,
              'quien': personas(cat, fila) or [fila.get('n') or op], 'n': fila.get('n') or op, 'votos': x.get('votos') or 0,
-             'por': x.get('por') or ''}
+             'por': x.get('por') or '', 'pct': _pct(x), 'total': x.get('total') or 0}
         if cat == 'servidor':
             y['sv'] = op
         if cat == 'batalla':
@@ -521,6 +530,8 @@ def _self_check():
         ok(c['rapero']['gana'] == 'Ana' and c['rapero']['por'] == 'votos' and c['batalla']['gana'] == 'v2'
            and c['batalla']['por'] == 'numeros',
            'al cierre gana el más votado; con menos de 3 votos, el primero de los números')
+        ok(c['rapero'].get('cuenta') == {'Ana': 5, 'Bea': 2} and _pct(c['rapero']) == 71 and _pct(c['batalla']) == 0,
+           'al cierre se guardan los votos de cada nominado: el ganador con su porcentaje (5 de 7 = 71 %)', str(c['rapero']))
         ok(insignias(r) == {'Ana': {'mes_rapero'}, 'Cid': {'mes_revelacion', 'mes_batalla'}},
            'las insignias: el rapero, la revelación y los dos lados de la batalla (el servidor no)', str(insignias(r)))
         tt = tienda(r, {'Ana': '111', 'Cid': '222'})

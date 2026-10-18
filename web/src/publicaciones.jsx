@@ -132,11 +132,14 @@ export function Pub({ liga, it, A }) {
         aria-label={'Mirar ' + limpio(it.n || 'la batalla')}><Miniatura vid={it.vid} cls="pub-promo-img" /><span aria-hidden="true">▶</span></button>
     ) : it.cat === 'servidor' ? <img className="pub-logo" alt="" src={liga.logo(it.sv)} /> : <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
     txt = it.cat === 'otras' ? <>Los demás ganadores de <b>{mes}</b>:{' '}
-      {(it.lista || []).map((y, i) => <span key={y[0]}>{i ? ' · ' : ''}{y[1]}: <b>{limpio(y[2])}</b></span>)}</>
+      {(it.lista || []).map((y, i) => <span key={y[0]}>{i ? ' · ' : ''}{y[1]}: <b>{limpio(y[2])}</b>{y[3] ? ' (' + y[3] + '%)' : ''}</span>)}</>
       : it.cat === 'batalla' ? <><b>{limpio(it.n)}</b> es la Batalla del mes de {mes}</>
       : it.cat === 'servidor' ? <><b>{limpio(it.n)}</b> es el Servidor del mes de {mes}</>
         : <>{nombres} es {MES_CAT[it.cat] || 'ganador'} de <b>{mes}</b></>;
-    det = it.cat === 'otras' ? '' : it.por === 'votos' ? num(it.votos) + (it.votos === 1 ? ' voto' : ' votos') : 'por los números del mes';
+    // 📊 con su porcentaje (Dlx, 18/10/2026: «me gusta lo de porcentajes»)
+    det = it.cat === 'otras' ? '' : it.por === 'votos'
+      ? (it.pct ? it.pct + '% de los votos · ' : '') + num(it.votos) + (it.votos === 1 ? ' voto' : ' votos') + (it.total ? ' de ' + num(it.total) : '')
+      : 'por los números del mes';
     acc = <a className="pub-a" href="#/salon">El Salón de la fama</a>;
   } else if (it.tipo === 'promo') {
     // 📣 lo que un rapero compartió en el canal de promoción de su servidor (bot/promos.py, 16/10/2026): el video se mira

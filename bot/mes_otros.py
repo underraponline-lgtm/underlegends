@@ -18,7 +18,13 @@ le toca el premio—.
 DE DÓNDE SALE CADA UNA (todo en hora del este, del mes que se mide)
   · ORGANIZADOR: los eventos jugados que organizó (el anuncio, cruzado con su llave: `llaves_web.cruzar()`) y la gente
     que juntaron, de `MIN_GENTE` o más, como el organizador de la semana (`multiplicadores.ranking_org()`).
-  · STAFF: los eventos jugados en que fue jurado, host o DJ (el anuncio: `anuncios.staff_de()`).
+  · STAFF: las fechas en que fue jurado, host o DJ de un evento jugado (el anuncio: `anuncios.staff_de()`) o publicó los
+    veredictos de su servidor (con un rol de staff ahí). Dlx, 18/10/2026: *«detecta bien todos, porque la mayoría es
+    staff de FFA… intenta identificar otros staff»*. Medido ese día sobre octubre: de los anuncios sólo se contaban los
+    que seguían en `datos/anuncios.json` —los últimos ~20 por canal: de FFA, 20 para 52 eventos— y SR, la Academia, FRZ
+    y FVS casi no escriben el staff en el anuncio; quien publica sus veredictos, sí es su staff (y casi todos tienen a la
+    vez rol de jurado, host y DJ, así que de ahí no sale QUÉ hizo: sólo cuenta para el Staff general). Por eso las dos
+    cosas se cuentan DE A POCO (`vistas()`: `an` y `ver`), como las promos.
   · JURADO, HOST, DJ: lo mismo, por rol (`STAFF`). Dlx, 18/10/2026: *«en nominaciones agrega staff por separado y también
     en general, o sea como está ahora»*: el Staff del mes se queda entre las demás, y las tres van en su bloque, detrás de
     su botón. Son las tres que los FMS AWARDS premian todos los años (host, DJ y jurado). Un evento cuenta una vez por
@@ -65,7 +71,7 @@ MURO = 'https://underlegends.pages.dev/api/muro'
 #: (clave, nombre, de qué, 'persona' o 'grupo'), en el orden de la página
 OTRAS = (
     ('organizador', 'Organizador del mes', 'los eventos que organizó y la gente que juntaron', 'persona'),
-    ('staff', 'Staff del mes', 'los eventos en que fue jurado, host o DJ', 'persona'),
+    ('staff', 'Staff del mes', 'las fechas en que fue jurado, host o DJ, o publicó los veredictos', 'persona'),
     ('duelista', 'Duelista del mes', 'los duelos 1v1 que ganó', 'persona'),
     ('cazador', 'Cazador del mes', 'las cabezas que cazó (Most Wanted y precio por cabeza)', 'persona'),
     ('batacazo', 'Batacazo del mes', 'la victoria contra alguien más arriba en el ranking', 'persona'),
@@ -108,6 +114,60 @@ def _iso(t):
     return t.astimezone(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 
 
+def _nombres_staff(ver, ann, did_raw, canon, k):
+    """`({discord_id: nombre}, {clave de cualquiera de sus nombres: nombre})` de quien publicó veredictos. Gana el de la
+    Lista si su cuenta está; si no, de sus tres nombres —apodo del servidor, nombre visible, usuario— el que ya aparece
+    como staff u organizador en algún anuncio o en la Lista; si ninguno, el visible. Y los tres apuntan al elegido: así
+    el anuncio que lo menciona con su nombre de Discord suma a la misma persona."""
+    conocidos = set(canon)
+    for a in ann or []:
+        for ns in list((a.get('staff') or {}).values()) + [[o.get('n') for o in a.get('orgs') or []], [a.get('organizador')]]:
+            for x in ns or []:
+                for y in _partir(x):
+                    if nombre_staff(y):
+                        conocidos.add(k(nombre_staff(y)))
+    cands = {}
+    for ps in (ver or {}).values():
+        for uid, ns in (ps or {}).items():
+            ns = ns if isinstance(ns, list) else [ns]
+            cands.setdefault(uid, [nombre_staff(x) for x in (list(ns) + ['', '', ''])[:3]])
+    elegido, alias = {}, {}
+    for uid, (nick, vis, usu) in cands.items():
+        e = did_raw.get(uid) or next((x for x in (nick, vis, usu) if x and k(x) in conocidos), '') or vis or nick or usu
+        if not e:
+            continue
+        elegido[uid] = e
+        for x in (nick, vis, usu):
+            if x and k(x) != k(e):
+                alias.setdefault(k(x), e)
+    return elegido, alias
+
+
+#: lo que el anuncio pone en el lugar del staff y no es nadie: el público que vota, «todos», «a confirmar»
+NO_ES_STAFF = frozenset(('ustedes', 'todos', 'todas', 'publico', 'el publico', 'chat', 'el chat', 'votacion', 'la gente',
+                         'nadie', 'tbd', 'por confirmar', 'a confirmar', 'invitados', 'everyone', 'here'))
+
+
+def nombre_staff(s):
+    """Un nombre de staff como se lee: sin banderas ni emojis ni adornos («l3wito🇦🇷» → «l3wito», «💿 LEWITO» → «LEWITO»,
+    «Flennzs | ⛩️» → «Flennzs»). `''` si no queda nada que se lea —un nombre que es sólo «⛩️»—."""
+    import unicodedata
+    s = ''.join(unicodedata.normalize('NFKC', c) if 0x1D400 <= ord(c) <= 0x1D7FF else c for c in str(s or ''))
+    # lo de entre corchetes es el tema del apodo («Natsuki [Uma Cryu]»), y el número de adelante la plantilla («17 | X»)
+    while '[' in s and ']' in s.split('[', 1)[1]:
+        a, b = s.split('[', 1)
+        s = a + ' ' + b.split(']', 1)[1]
+    # sólo letras latinas y números: las de otros alfabetos son adorno («ཐ NeisMCཋ»)
+    out = ''.join(c if ((c.isalnum() and (c.isascii() or unicodedata.name(c, '').startswith('LATIN')))
+                        or c in " .'_-") else ' ' for c in s)
+    out = ' '.join(out.split()).strip(' .-_')
+    p = out.split(' ', 1)
+    if len(p) == 2 and p[0].isdigit() and len(p[0]) <= 3:
+        out = p[1]
+    out = '' if out.lower() in NO_ES_STAFF else out
+    return out if sum(c.isalnum() for c in out) >= 2 else ''
+
+
 def _partir(s):
     """Los nombres de un renglón del staff del anuncio. Cuando se escriben varios con su bandera —«LEWITO 🇨🇱 FLENNZS 🇨🇱»—,
     al sacar las banderas quedan pegados con doble espacio, y «LEWITO  FLENNZS» salía nominado a Host como si fuera uno
@@ -137,6 +197,14 @@ def numeros(ini, fin, D, raperos=()):
     # 🎤 ORGANIZADOR y 🎪 EVENTO, 🎧 STAFF: los eventos jugados del mes, con su anuncio
     org, staff, evs = {}, {}, []
     por_rol = {r: {} for r in STAFF}
+    al_st = D.get('alias_staff') or {}
+
+    def quien_staff(s):
+        """El nombre de alguien del staff: el de la Lista si está, sin banderas ni emojis, y el apodo del servidor
+        en vez de su nombre de Discord (`alias_staff`)."""
+        r = raw(s, '') or ''
+        r = r if k(r) in (D.get('canon') or ()) else (nombre_staff(r) or '')
+        return al_st.get(k(r), r) if r and r.lower() not in NO_ES_STAFF else ''
     for n, sv, t, tabla, nombre in D.get('eventos') or []:
         if not en(t):
             continue
@@ -164,7 +232,7 @@ def numeros(ini, fin, D, raperos=()):
         for _rol, ns in (a.get('staff') or {}).items():
             en_rol = []
             for s in [y for x in ns or [] for y in _partir(x)]:
-                r = raw(s, '')
+                r = quien_staff(s)
                 if r and r not in en_staff:
                     en_staff.append(r)
                 if r and r not in en_rol:
@@ -173,13 +241,26 @@ def numeros(ini, fin, D, raperos=()):
                 x = por_rol[_rol].setdefault(k(r), {'op': r, 'n': r, 'q': r, 'quien': [r], '_ev': 0})
                 x['_ev'] += 1
         for r in en_staff:
-            x = staff.setdefault(k(r), {'op': r, 'n': r, 'q': r, 'quien': [r], '_ev': 0})
-            x['_ev'] += 1
+            x = staff.setdefault(k(r), {'op': r, 'n': r, 'q': r, 'quien': [r], '_f': set()})
+            x['_f'].add((sv, _fecha_et(t)))
     for x in org.values():
         x['d'] = '%s · %s' % (_plural(x['_ev'], 'evento', 'eventos'), _plural(x['_g'], 'rapero', 'raperos'))
     out['organizador'] = sorted(org.values(), key=lambda x: (-x['_g'], -x['_ev'], x['n'].lower()))
+    # 🎧 y quién publicó los veredictos (con rol de staff en ese servidor): una fecha por servidor y día, la misma que
+    # si el anuncio lo hubiera dicho
+    d0, d1 = _fecha_et(ini), _fecha_et(fin)
+    for kd, ns in (D.get('ver') or {}).items():
+        sv, _, dia = kd.partition('|')
+        if not (d0 <= dia < d1):
+            continue
+        for s in ns or []:
+            r = quien_staff(s)
+            if r:
+                x = staff.setdefault(k(r), {'op': r, 'n': r, 'q': r, 'quien': [r], '_f': set()})
+                x['_f'].add((sv, dia))
     for x in staff.values():
-        x['d'] = _plural(x['_ev'], 'evento', 'eventos') + ' de jurado, host o DJ'
+        x['_ev'] = len(x.pop('_f'))
+        x['d'] = _plural(x['_ev'], 'fecha', 'fechas') + ' de staff'
     out['staff'] = sorted(staff.values(), key=lambda x: (-x['_ev'], x['n'].lower()))
     for rol, xs in por_rol.items():
         for x in xs.values():
@@ -355,15 +436,35 @@ def numeros(ini, fin, D, raperos=()):
 
 
 # ── lo contado de a poco: las promos abiertas y las publicaciones felicitadas ──────────────────────────────────────
-def vistas(viejas, ahora, mes_de, traer=None, promos=None):
+def vistas(viejas, ahora, mes_de, traer=None, promos=None, staff=None):
     """`{mes: {'promo': {pid: [abiertas, quien, título, vid, img, t]}, 'pub': {id: [aplausos, quien, qué, t]}}}`, con lo
     de esta corrida sumado a lo de antes (se queda el máximo: el objeto borra lo de hace más de 30 días). Sólo lo
     publicado este mes y el anterior. `traer()` devuelve `(muro, promos abiertas, aplausos)` o `None` sin red; `promos`
     es `datos/promos.json` (`bot/promos.py`): TODAS las del mes entran, aunque nadie las haya abierto todavía."""
-    out = {m: {'promo': dict((v or {}).get('promo') or {}), 'pub': dict((v or {}).get('pub') or {})}
+    out = {m: {'promo': dict((v or {}).get('promo') or {}), 'pub': dict((v or {}).get('pub') or {}),
+               'an': dict((v or {}).get('an') or {}), 'ver': {k2: dict(x) for k2, x in ((v or {}).get('ver') or {}).items()}}
            for m, v in (viejas or {}).items()}
     este = mes_de(ahora)
     deje = {este, mes_de(ahora - dt.timedelta(days=32))}
+    # 🎧 el staff, de a poco: los anuncios que lo dicen (rotan en `datos/anuncios.json`) y quién publicó los veredictos.
+    # Sólo en la corrida de verdad (`traer` lo pasa el self-check)
+    st = staff() if staff else (None if traer else _traer_staff(min(deje) + '-01T00:00:00'))
+    for a in (st or ([], []))[0] or []:
+        mo = a.get('_mo') or _momento(a)
+        ti = _de_iso(mo)
+        mid = str(a.get('msg_id') or '')
+        if not ti or not mid or mes_de(ti) not in deje or not (a.get('staff') or a.get('orgs') or a.get('organizador')):
+            continue
+        out.setdefault(mes_de(ti), {'promo': {}, 'pub': {}, 'an': {}, 'ver': {}}).setdefault('an', {})[mid] = {
+            'sv': a.get('servidor') or a.get('sv') or '', 'nombre': str(a.get('nombre') or '')[:80], 'mo': _iso(ti),
+            'staff': a.get('staff') or {}, 'orgs': a.get('orgs') or [], 'organizador': a.get('organizador') or ''}
+    for sv, ts, uid, nom in (st or ([], []))[1] or []:
+        ti = _de_iso(ts)
+        if not ti or mes_de(ti) not in deje or not uid:
+            continue
+        clave_dia = '%s|%s' % (sv, _fecha_et(ti))
+        out.setdefault(mes_de(ti), {'promo': {}, 'pub': {}, 'an': {}, 'ver': {}}).setdefault('ver', {}) \
+            .setdefault(clave_dia, {})[str(uid)] = [str(x or '')[:40] for x in (nom if isinstance(nom, list) else [nom])]
     t = traer() if traer else _traer()
     muro, abiertas, aplausos = t if t else ([], {}, {})
     # 📣 las promos del mes, todas (Dlx: «hay promociones que puedes usar»): las de los canales y lo que sube cada uno;
@@ -373,7 +474,7 @@ def vistas(viejas, ahora, mes_de, traer=None, promos=None):
         if not ti or mes_de(ti) not in deje:
             continue
         m, pid = mes_de(ti), str(x['id'])
-        ya = out.setdefault(m, {'promo': {}, 'pub': {}})['promo'].get(pid)
+        ya = out.setdefault(m, {'promo': {}, 'pub': {}, 'an': {}, 'ver': {}})['promo'].get(pid)
         n = int(abiertas.get(pid) or 0)
         q = x.get('quien')
         out[m]['promo'][pid] = [max(n, ya[0] if ya else 0), ([q] if isinstance(q, str) else list(q or []))[:4],
@@ -387,7 +488,7 @@ def vistas(viejas, ahora, mes_de, traer=None, promos=None):
             continue
         quien = [q for q in it.get('quien') or [] if q][:4]
         n = int(aplausos.get(str(it.get('id'))) or 0)
-        ya = out.setdefault(m, {'promo': {}, 'pub': {}})['pub'].get(str(it.get('id')))
+        ya = out.setdefault(m, {'promo': {}, 'pub': {}, 'an': {}, 'ver': {}})['pub'].get(str(it.get('id')))
         if n or ya:
             out[m]['pub'][str(it['id'])] = [max(n, ya[0] if ya else 0), quien, que_es(it), it.get('t')]
     return {m: v for m, v in out.items() if m in deje or m >= min(deje)}
@@ -435,6 +536,101 @@ def _traer():
         return (m.json() or {}).get('items') or [], (a.json() or {}).get('n') or {}, (p.json() or {}).get('n') or {}
     except Exception:                                    # noqa: BLE001
         return None
+
+
+def _fecha_et(t):
+    """El día, en hora del este, de un instante UTC."""
+    import zoneinfo
+    return t.astimezone(zoneinfo.ZoneInfo('America/New_York')).strftime('%Y-%m-%d')
+
+
+def _momento(a):
+    """Cuándo arranca un anuncio (`cuando.momento()`), o cuándo se publicó."""
+    try:
+        import cuando as CU
+        return CU.momento(a) or a.get('cuando')
+    except Exception:                                    # noqa: BLE001
+        return a.get('cuando')
+
+
+#: los roles que dicen «staff» en un servidor: jurado, host, DJ, organización y administración (no los «MEJOR …» de premio)
+_ROL_STAFF = ('jurad', 'juez', 'jueces', 'host', 'presentad', 'dj', 'staff', 'organiz', 'admin', 'moderad')
+#: las páginas de cada canal de veredictos que se miran por corrida (100 mensajes cada una)
+VER_PAGINAS = 6
+
+
+def _traer_staff(desde):
+    """`(anuncios, publicaciones)`: los anuncios de `datos/anuncios.json` y quién publicó en cada canal de veredictos
+    desde `desde` —`(sv, cuándo, discord_id, nombre)`, sólo quien tiene un rol de staff en ese servidor—. `None` sin red."""
+    import unicodedata
+
+    def j(*p):
+        try:
+            with io.open(os.path.join(BASE, *p), encoding='utf-8') as f:
+                return json.load(f)
+        except (OSError, ValueError):
+            return None
+    ann = (j('datos', 'anuncios.json') or {}).get('anuncios') or []
+    try:
+        import anuncios as AN
+        s = AN._sesion()
+    except (Exception, SystemExit):                      # noqa: BLE001 — sin token, `fotos.env()` hace sys.exit
+        return ann, []
+    sv_de = {str(x.get('guild_id')): c for c, x in ((j('datos', 'servidores.json') or {}).get('servidores') or {}).items()
+             if x.get('guild_id')}
+    canales = {}
+    for x in ((j('datos', 'veredictos.json') or {}).get('batallas') or {}).values():
+        if x.get('canal') and str(x.get('g') or '') in sv_de:
+            canales[str(x['canal'])] = str(x['g'])
+    API = 'https://discord.com/api/v10'
+    roles, miembros, posts = {}, {}, []
+
+    def es_staff(gid, uid):
+        if gid not in roles:
+            r = s.get('%s/guilds/%s/roles' % (API, gid), timeout=20)
+            roles[gid] = {y['id'] for y in (r.json() if r.status_code == 200 else [])
+                          if any(p in unicodedata.normalize('NFKD', y.get('name') or '').lower() for p in _ROL_STAFF)
+                          and 'mejor' not in unicodedata.normalize('NFKD', y.get('name') or '').lower()}
+        if (gid, uid) not in miembros:
+            r = s.get('%s/guilds/%s/members/%s' % (API, gid, uid), timeout=20)
+            mm = (r.json() or {}) if r.status_code == 200 else {}
+            miembros[(gid, uid)] = (bool(set(mm.get('roles') or []) & roles[gid]), mm.get('nick') or '')
+        return miembros[(gid, uid)]
+    try:
+        for cid, gid in canales.items():
+            antes = None
+            for _pag in range(VER_PAGINAS):
+                pa = {'limit': 100}
+                if antes:
+                    pa['before'] = antes
+                r = s.get('%s/channels/%s/messages' % (API, cid), params=pa, timeout=20)
+                if r.status_code != 200:
+                    break
+                lote = r.json() or []
+                viejo = False
+                for m in lote:
+                    ts = (m.get('timestamp') or '')[:19]
+                    if ts < desde:
+                        viejo = True
+                        break
+                    u = m.get('author') or {}
+                    if u.get('bot') or not u.get('id'):
+                        continue
+                    es, nick = es_staff(gid, u['id'])
+                    if not es:
+                        continue
+                    # 🔑 LOS TRES NOMBRES DE LA CUENTA —su apodo en ese servidor, su nombre visible y su usuario—: cuál
+                    # se usa lo decide `datos()`, que sabe cómo lo escriben los anuncios. Con uno solo, la misma
+                    # persona salía dos o tres veces («LEWITO», «l3wito»), y en URBF el apodo es del tema del
+                    # servidor («Fuji Kiseki [Uma Cryu]»), no el de rapero
+                    posts.append((sv_de[gid], ts, u['id'], [nick or '', u.get('global_name') or '', u.get('username') or '']))
+                if viejo or len(lote) < 100:
+                    break
+                antes = lote[-1].get('id')
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ MES AWARDS: no pude leer los veredictos (%s)' % str(e)[:60])
+        return ann, None
+    return ann, posts
 
 
 # ── los datos ───────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -518,15 +714,22 @@ def datos(vistas_guardadas=None):
     nombre_did.update(_nombres_discord(ids - set(nombre_did)))
     # 📋 el anuncio de cada llave: el mismo cruce de «Lo que pasó»
     anuncio_de = {}
+    pl = plano(vistas_guardadas)
     try:
         import cuando as CU
         ann = (j('datos', 'anuncios.json') or {}).get('anuncios') or []
-        pas = [{'nombre': x.get('nombre'), 'sv': x.get('servidor') or '', 'cuando': CU.momento(x) or x.get('cuando'), '_a': x}
+        # 🎧 y los que ya rotaron de `anuncios.json`, contados de a poco (`vistas()`): sin ellos, de FFA quedaban 20 de 52
+        ya = {str(x.get('msg_id') or '') for x in ann}
+        ann = list(ann) + [dict(v, servidor=v.get('sv'), _mo=v.get('mo')) for mid, v in (pl.get('an') or {}).items()
+                           if mid not in ya]
+        pas = [{'nombre': x.get('nombre'), 'sv': x.get('servidor') or '',
+                'cuando': x.get('_mo') or CU.momento(x) or x.get('cuando'), '_a': x}
                for x in ann if x.get('nombre')]
         LW.cruzar(pas, regs)
         anuncio_de = {int(p['llave']): p['_a'] for p in pas if str(p.get('llave') or '').isdigit()}
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ MES AWARDS sin los anuncios (%s)' % str(e)[:60])
+    elegido, alias_staff = _nombres_staff(pl.get('ver') or {}, ann, did_raw, set(canon), k)
     try:
         from comun.crews import DE_CADA_UNO, norm as crew_norm
         crew = {k(n): c for n, c in ((m, c) for c, ms in __import__('comun.crews', fromlist=['CREWS']).CREWS.items()
@@ -536,8 +739,11 @@ def datos(vistas_guardadas=None):
         crew = {}
     return {'eventos': evs, 'duelos': duelos, 'pos': pos, 'fuera': fuera, 'cazas': cazas, 'anuncio_de': anuncio_de,
             'sobrevivio': sobrevivio, 'hinchas': hinchas or {}, 'nombre_did': nombre_did, 'dueno': dueno,
-            'clave': k, 'raw': raw, 'nombre': lambda kq: canon.get(kq, kq), 'pais': pais, 'crew': crew,
-            'ligas': (j('datos', 'ligas.json') or {}).get('ligas') or {}, 'vistas': plano(vistas_guardadas)}
+            'clave': k, 'raw': raw, 'nombre': lambda kq: canon.get(kq, kq), 'canon': set(canon), 'pais': pais, 'crew': crew,
+            'ligas': (j('datos', 'ligas.json') or {}).get('ligas') or {}, 'vistas': pl,
+            # 🎧 quién publicó los veredictos cada día, con UN nombre por cuenta (`_nombres_staff()`)
+            'ver': {kd: sorted({elegido[uid] for uid in ps if elegido.get(uid)}) for kd, ps in (pl.get('ver') or {}).items()},
+            'alias_staff': alias_staff}
 
 
 def _hinchas():
@@ -581,10 +787,12 @@ def _nombres_discord(ids):
 def plano(vs):
     """`{'promo': {…}, 'pub': {…}}` de lo contado de todos los meses (`vistas()` lo guarda por mes; `numeros()` ya
     filtra por la fecha de cada publicación)."""
-    out = {'promo': {}, 'pub': {}}
+    out = {'promo': {}, 'pub': {}, 'an': {}, 'ver': {}}
     for v in (vs or {}).values():
-        for c in out:
+        for c in ('promo', 'pub', 'an'):
             out[c].update((v or {}).get(c) or {})
+        for kd, ps in ((v or {}).get('ver') or {}).items():
+            out['ver'].setdefault(kd, {}).update(ps or {})
     return out
 
 
@@ -625,6 +833,7 @@ def _self_check():
         'sobrevivio': [(t(12), 'Bea'), (t(19), 'Bea'), (t(19), 'Ana'), (dt.datetime(2026, 9, 2, tzinfo=utc), 'Ana')],
         'hinchas': {'2026-10': [['111', 300], ['999', 900], ['222', 40]], '2026-09': [['222', 5000]]},
         'nombre_did': {'111': 'Hugo', '222': 'Ana', '999': 'Dlx'}, 'dueno': '999',
+        'ver': {'SR|2026-10-09': ['Jota', 'Zed'], 'SR|2026-09-20': ['Viejo']},
         'ligas': {'l1': {'n': 'LIGA UNO', 'sv': 'URBF', 'batallas': [['1', '2026-10-02T00:00:00Z', None, 'A', 'B', 'A'],
                                                                       ['2', '2026-10-03T00:00:00Z', None, 'C', 'D', ''],
                                                                       ['3', '2026-09-03T00:00:00Z', None, 'C', 'D', 'C']]}},
@@ -638,6 +847,24 @@ def _self_check():
        'jurado, host y DJ por separado: cada rol cuenta sus eventos (Jota suma en los tres)',
        str({r: nums[r] for r in STAFF}))
     ok(set(STAFF) <= {c for c, _n, _d, _t in OTRAS}, 'las del bloque del staff son de las demás (premio, insignia, publicación)')
+    ok(nombre_staff('l3wito🇦🇷') == 'l3wito' and nombre_staff('💿 LEWITO') == 'LEWITO' and nombre_staff('⛩️') == ''
+       and nombre_staff('Flennzs | ⛩️') == 'Flennzs' and nombre_staff('𝐉𝐨𝐭𝐚') == 'Jota' and nombre_staff('John pork') == 'John pork',
+       'el nombre del staff, sin banderas, emojis ni letras de fantasía; un emoji solo no es un nombre')
+    ok(nombre_staff('Natsuki [Uma Cryu]') == 'Natsuki' and nombre_staff('17 | Velatz') == 'Velatz'
+       and nombre_staff('Ustedes') == '' and nombre_staff('DSM-5 (MTZ)') == 'DSM-5 MTZ',
+       'sin lo de entre corchetes (el tema del apodo) ni el número de la plantilla; «Ustedes» no es nadie')
+    el, al = _nombres_staff({'SR|2026-10-09': {'1': ['Fuji Kiseki [Uma Cryu]', 'ཐ NeisMCཋ', 'portano12'],
+                                               '2': ['LEWITO', 'l3wito🇦🇷', 'l3wito'], '3': ['x', 'Ana', 'ana99']}},
+                            [{'staff': {'jurado': ['NeisMC'], 'host': ['LEWITO']}}], {'3': 'Ana Lista'}, {'ana lista'},
+                            lambda n: n.lower())
+    ok(el == {'1': 'NeisMC', '2': 'LEWITO', '3': 'Ana Lista'} and al.get('l3wito') == 'LEWITO'
+       and al.get('portano12') == 'NeisMC',
+       'el nombre de cada cuenta: la Lista primero; si no, el que ya usan los anuncios; si no, el visible', str((el, al)))
+    nu = numeros(ini, fin, dict(D, anuncio_de={1: {'staff': {'host': ['l3wito🇦🇷'], 'dj': ['💿 LEWITO']}}},
+                               ver={'SR|2026-10-09': ['LEWITO']}, alias_staff={'l3wito': 'LEWITO'}))
+    ok([(x['op'], x['d']) for x in nu['staff']] == [('LEWITO', '2 fechas de staff')]
+       and [x['op'] for x in nu['host']] == ['LEWITO'] and [x['op'] for x in nu['dj']] == ['LEWITO'],
+       'la misma persona con su nombre de Discord y su apodo del servidor es UNA (l3wito = LEWITO)', str(nu['staff']))
     ok(_partir('LEWITO  FLENNZS') == ['LEWITO', 'FLENNZS'] and _partir('Ana, Bea / Cid') == ['Ana', 'Bea', 'Cid']
        and _partir('John pork') == ['John pork'],
        'un renglón del staff con varios (sin sus banderas quedan con doble espacio) se parte; un nombre con espacio, no')
@@ -658,9 +885,10 @@ def _self_check():
     o = nums['organizador']
     ok([x['op'] for x in o] == ['Velatz'] and o[0]['d'] == '1 evento · 8 raperos' and o[0]['quien'] == ['Velatz'],
        'organizador: sólo los eventos de %d o más del mes (la de 5 y la de septiembre no)' % MIN_GENTE, str(o))
-    ok([(x['op'], x['d']) for x in nums['staff']][:2] == [('Jota', '2 eventos de jurado, host o DJ'),
-                                                         ('Velatz', '1 evento de jurado, host o DJ')],
-       'staff: un evento cuenta una vez aunque haga dos cosas (Jota, jurado y DJ en el mismo)', str(nums['staff']))
+    ok([(x['op'], x['d']) for x in nums['staff']] == [('Jota', '2 fechas de staff'), ('Velatz', '1 fecha de staff'),
+                                                      ('Zed', '1 fecha de staff')],
+       'staff: una fecha por servidor y día —Jota, jurado y DJ el 5 y veredictos el 9 en SR, son 2—, y quien sólo publicó '
+       'veredictos (Zed) también; los de septiembre no', str(nums['staff']))
     ok([x['op'] for x in nums['evento']] == ['1'] and nums['evento'][0]['quien'] == ['Velatz'],
        'evento: el que más gente juntó, con el premio para quien lo organizó')
     ok([(x['op'], x['d']) for x in nums['duelista']][:1] == [('Ana', '3 de 4 duelos ganados')]
@@ -696,8 +924,19 @@ def _self_check():
        'lo contado de a poco se queda con el máximo (el objeto borra lo de hace 30 días)', str(v))
     ok(sorted(v['2026-10']['promo']) == ['p8', 'p9', 'v-a'],
        'toda promo del mes entra, abierta o no; la batalla de un socio no (es la Batalla del mes)', str(v['2026-10']['promo']))
-    ok(vistas({'2026-10': {}}, t(20), mes_de, lambda: None, {}) == {'2026-10': {'promo': {}, 'pub': {}}},
+    ok(vistas({'2026-10': {}}, t(20), mes_de, lambda: None, {}) == {'2026-10': {'promo': {}, 'pub': {}, 'an': {}, 'ver': {}}},
        'sin red, queda lo de antes')
+    # 🎧 el staff de a poco: el anuncio queda aunque rote, y quién publicó veredictos, por servidor y día (hora del este)
+    an = [{'msg_id': 'm1', 'servidor': 'FFA', 'nombre': 'COPA', '_mo': '2026-10-05T23:00:00Z',
+           'staff': {'jurado': ['Jota']}, 'orgs': [{'n': 'Velatz', 'id': ''}]},
+          {'msg_id': 'm0', 'servidor': 'FFA', 'nombre': 'VIEJA', '_mo': '2026-08-05T23:00:00Z', 'staff': {'host': ['X']}},
+          {'msg_id': 'm2', 'servidor': 'FFA', 'nombre': 'SIN STAFF', '_mo': '2026-10-06T23:00:00Z'}]
+    vs = [('SR', '2026-10-10T02:30:00', '42', 'gx'), ('SR', '2026-10-10T05:00:00', '43', 'je')]
+    v2 = vistas({'2026-10': {'an': {'mx': {'sv': 'DDF'}}}}, t(20), mes_de, lambda: None, {}, staff=lambda: (an, vs))
+    ok(sorted(v2['2026-10']['an']) == ['m1', 'mx'] and v2['2026-10']['an']['m1']['staff'] == {'jurado': ['Jota']}
+       and v2['2026-10']['ver'] == {'SR|2026-10-09': {'42': ['gx']}, 'SR|2026-10-10': {'43': ['je']}},
+       'el staff de a poco: queda lo de antes, entra el anuncio que lo dice (no el de agosto ni el que no dice nada), y '
+       'los veredictos por día en hora del este (las 2:30 UTC del 10 son el 9)', str(v2['2026-10']))
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 

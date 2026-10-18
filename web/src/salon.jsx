@@ -258,6 +258,21 @@ function Categoria({ liga, enc, cat, nombre, de, nom, encId, gana }) {
   );
 }
 
+// 📊 los porcentajes del cierre (Dlx, 18/10/2026: «me gusta lo de porcentajes»): el ganador y los que le siguen, como
+// publican los FMS AWARDS. Sólo si se decidió por votos: si fue por los números, no hay reparto que mostrar
+function reparto(x) {
+  const cu = x.cuenta || {};
+  const tot = Object.values(cu).reduce((s, n) => s + (Number(n) || 0), 0);
+  if (x.por !== 'votos' || !tot) return null;
+  const nom = (op) => limpio(((x.nom || []).find((y) => y.op === op) || {}).n || op);
+  const orden = Object.keys(cu).sort((a, b) => cu[b] - cu[a]).slice(0, 4);
+  return (
+    <small className="ma-pct">{orden.map((op, i) => (
+      <span key={op}>{i ? ' · ' : ''}{op === x.gana ? <b>{nom(op)} {Math.round((100 * cu[op]) / tot)}%</b> : nom(op) + ' ' + Math.round((100 * cu[op]) / tot) + '%'}</span>
+    ))}{' · ' + tot + (tot === 1 ? ' voto' : ' votos')}</small>
+  );
+}
+
 function MesAwards({ liga, enc }) {
   const S = useSalon();
   // 🏆 las cuatro a la vista y las doce detrás del botón (Dlx, 16/10/2026: «tampoco rellenar todo de eso, sino como el
@@ -321,7 +336,7 @@ function MesAwards({ liga, enc }) {
               <ul>{cats.concat(catsStaff).map(([c, n]) => {
                 const x = (m.cats || {})[c] || {};
                 const fila = (x.nom || []).find((y) => y.op === x.gana);
-                return fila ? <li key={c}><Nominado liga={liga} cat={c} x={fila} /><em>{n}</em></li> : null;
+                return fila ? <li key={c}><Nominado liga={liga} cat={c} x={fila} /><em>{n}</em>{reparto(x)}</li> : null;
               })}</ul>
             </div>
           ))}
