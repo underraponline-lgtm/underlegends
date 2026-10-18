@@ -427,11 +427,20 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   // la lista de cada círculo se fija al abrirlo: marcar como vista la que estás mirando no la saca de abajo del dedo
   const [abre, setAbre] = useState(() => ({ gid: (grupos[abierto] || {}).id, ids: lista(grupos[abierto]) }));
   const [si, setSi] = useState(() => inicio(grupos[abierto]));
-  const [avance, setAvance] = useState(0);
   const pausa = useRef(false);
   const cerrarB = useRef(null);
+  // ⚡ la barra de la historia que corre se mueve DIRECTO, sin pasar por React: antes el reloj hacía `setAvance` en
+  // cada cuadro y el visor entero se redibujaba 60 veces por segundo (revisión del 18/10/2026)
+  const barra = useRef(null);
+  const barras = useRef(null);
+  // 🖼️ el reloj espera a que la imagen de la historia cargue (hasta 2,5 s): con 3G, la historia se iba sin verse
+  const cargando = useRef(false);
+  const cuerpoR = useRef(null);
+  // ✋ el gesto: dónde y cuándo empezó, y si el click que viene detrás se ignora (mantener o deslizar no es tocar)
+  const gesto = useRef(null);
+  const tragar = useRef(false);
   const DUR = 5000;
-  const a = (i) => { setAbre({ gid: grupos[i].id, ids: lista(grupos[i]) }); setSi(inicio(grupos[i])); setAvance(0); };
+  const a = (i) => { setAbre({ gid: grupos[i].id, ids: lista(grupos[i]) }); setSi(inicio(grupos[i])); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { if (grupos[abierto]) a(abierto); }, [abierto]);
   const gid = abre.gid;
@@ -441,6 +450,14 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   const ids = g ? abre.ids.filter((id) => g.slides.some((s) => s.id === id)) : [];
   const hay = !!g && ids.length > 0;
   const idAct = ids[Math.min(si, ids.length - 1)];
+  // si un refresco dejó la historia de más allá del final (se fue una), vuelve a la última que queda
+  useEffect(() => { if (ids.length && si > ids.length - 1) setSi(ids.length - 1); }, [ids.length, si]);
+  // 🔒 la página de atrás no se mueve mientras mirás (como el visor de tarjetas)
+  useEffect(() => {
+    const b = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = b; };
+  }, []);
   // vista apenas se muestra
   useEffect(() => { if (idAct) onVisto(idAct); }, [idAct, onVisto]);
   // si su grupo desaparece (el evento en vivo terminó), el visor se cierra en vez de quedar abierto y vacío
@@ -449,14 +466,19 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   useEffect(() => { if (cerrarB.current) cerrarB.current.focus({ preventScroll: true }); }, []);
   const siguiente = () => {
     if (!g) return;
-    if (si < ids.length - 1) { setSi(si + 1); setAvance(0); return; }
+    if (si < ids.length - 1) { setSi(si + 1); return; }
     // el próximo círculo con algo sin ver; si no queda ninguno, se cierra
     const j = grupos.findIndex((x, k) => k > gi && pend(x).length);
     if (j >= 0) a(j); else onCerrar();
   };
   const anterior = () => {
     if (!g) return;
-    if (si > 0) { setSi(si - 1); setAvance(0); } else if (gi > 0) a(gi - 1);
+    if (si > 0) setSi(si - 1); else if (gi > 0) a(gi - 1);
+  };
+  // ↔️ deslizar: al círculo siguiente o al anterior, como Instagram
+  const saltar = (paso) => {
+    if (paso > 0) { const j = grupos.findIndex((x, k) => k > gi && x.slides.length); if (j >= 0) a(j); else onCerrar(); }
+    else if (gi > 0) a(gi - 1);
   };
   // el reloj de cada historia: un solo requestAnimationFrame por historia, y la que sigue la pide la última versión
   // de `siguiente` (un ref), no la de cuando arrancó el reloj
@@ -467,15 +489,30 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   useEffect(() => {
     if (!g) return undefined;
     let raf = 0; let antes = performance.now(); let acum = 0;
+    // las barras de esta historia en adelante, vacías: al volver con «anterior», la que dejaste quedaba a medio llenar
+    if (barras.current) barras.current.querySelectorAll('b').forEach((x, n) => { if (n >= si) x.style.width = '0'; });
+    // 🖼️ ¿hay imágenes sin cargar en la historia? El reloj espera, hasta 2,5 s
+    cargando.current = false;
+    const imgs = cuerpoR.current ? [...cuerpoR.current.querySelectorAll('img')].filter((im) => !im.complete) : [];
+    let espera = 0;
+    if (imgs.length) {
+      cargando.current = true;
+      let faltan = imgs.length;
+      const listo = () => { faltan -= 1; if (faltan <= 0) cargando.current = false; };
+      imgs.forEach((im) => { im.addEventListener('load', listo, { once: true }); im.addEventListener('error', listo, { once: true }); });
+      espera = setTimeout(() => { cargando.current = false; }, 2500);
+    }
     const tick = (t) => {
-      if (!pausa.current) acum += t - antes;
+      // ⏱️ con tope: al volver de otra pestaña o de la pantalla bloqueada, `t - antes` eran minutos y la historia se
+      // salteaba de golpe. Y con la pestaña oculta, quieta
+      if (!pausa.current && !cargando.current && !document.hidden) acum += Math.min(100, t - antes);
       antes = t;
-      setAvance(acum);
+      if (barra.current) barra.current.style.width = Math.min(100, (acum / DUR) * 100) + '%';
       if (acum >= DUR) { sig.current(); return; }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => { cancelAnimationFrame(raf); clearTimeout(espera); };
   }, [gid, si, hay]);
   useEffect(() => {
     if (!hay) return undefined;
@@ -498,6 +535,28 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   }, [onCerrar, raiz]);
   if (!hay) return null;
   const s = g.slides.find((x) => x.id === idAct) || g.slides[0];
+  // ⏭️ la que sigue —en este círculo o la primera sin ver del próximo—, escondida: sus imágenes bajan antes de llegar
+  const proxima = (() => {
+    const k = ids.indexOf(idAct);
+    if (k >= 0 && k < ids.length - 1) return g.slides.find((x) => x.id === ids[k + 1]);
+    const j = grupos.findIndex((x, n) => n > gi && pend(x).length);
+    return j >= 0 ? grupos[j].slides.find((x) => !vistos[x.id]) : null;
+  })();
+  // ✋ tocar, mantener o deslizar: mantener pausa (y al soltar no pasa de historia); deslizar abajo cierra y al costado
+  // cambia de círculo
+  const empieza = (e) => { pausa.current = true; gesto.current = { x: e.clientX, y: e.clientY, t: performance.now() }; };
+  const suelta = (e) => {
+    pausa.current = false;
+    const g0 = gesto.current;
+    gesto.current = null;
+    if (!g0) return;
+    const dx = e.clientX - g0.x, dy = e.clientY - g0.y;
+    if (dy > 90 && dy > Math.abs(dx)) { tragar.current = true; onCerrar(); return; }
+    if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy)) { tragar.current = true; saltar(dx < 0 ? 1 : -1); return; }
+    if (performance.now() - g0.t > 280) tragar.current = true;
+  };
+  const corta = () => { pausa.current = false; gesto.current = null; };
+  const zona = (f) => () => { if (tragar.current) { tragar.current = false; return; } f(); };
   // lo que se comparte de una historia: la carta (la imagen), la llave o el perfil al que lleva
   const d = s.ir || {};
   const compartir = d.carta ? liga.cartaUrl(d.carta, d.cual || 'temporada') || enlace('#/r/' + encodeURIComponent(d.carta))
@@ -514,16 +573,18 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   return (
     <div className="hv-ov" onClick={(e) => { if (e.target === e.currentTarget) onCerrar(); }}>
       <div className="hv-box" role="dialog" aria-modal="true" aria-label="Historias"
-        onPointerDown={() => { pausa.current = true; }} onPointerUp={() => { pausa.current = false; }} onPointerLeave={() => { pausa.current = false; }}>
-        <div className="hv-bars">{ids.map((id, i) => <i key={id} className={i < si ? 'hecho' : ''}><b style={{ width: (i === si ? Math.min(100, avance / DUR * 100) : 0) + '%' }} /></i>)}</div>
+        onPointerDown={empieza} onPointerUp={suelta} onPointerCancel={corta} onPointerLeave={corta}>
+        <div className="hv-bars" ref={barras}>{ids.map((id, i) => <i key={id} className={i < si ? 'hecho' : ''}><b ref={i === si ? barra : null} style={{ width: 0 }} /></i>)}</div>
         <div className="hv-cab">
           <a className="hv-quien" href={perfil} onClick={onCerrar} aria-label={'Ir al perfil de ' + g.nombre}>{circulo}<span><b>{g.nombre}</b><small>{s.cuando || ''}</small></span></a>
           {compartir ? <Compartir cls="hv-comp" url={compartir} texto={'En la Liga Global: ' + g.nombre} etiqueta="" /> : null}
           <button type="button" className="hv-x" aria-label="Cerrar las historias" onClick={onCerrar} ref={cerrarB}><Ico n="cerrar" t={22} /></button></div>
-        <div className="hv-cuerpo"><div className="st"><span className="st-tag">{s.tag}</span>{s.cuerpo}</div></div>
+        <div className="hv-cuerpo" ref={cuerpoR}><div className="st" key={s.id}><span className="st-tag">{s.tag}</span>{s.cuerpo}</div></div>
+        {proxima ? <div className="hv-sig" aria-hidden="true" ref={(el) => { if (el) el.setAttribute('inert', ''); }}>
+          <div className="st"><span className="st-tag">{proxima.tag}</span>{proxima.cuerpo}</div></div> : null}
         {s.cta && s.ir && Object.values(s.ir).some(Boolean) ? <button type="button" className="btn verde hv-cta" onClick={() => ir(s.ir)}>{s.cta}</button> : null}
-        <button type="button" className="hv-zona izq" aria-label="Anterior" onClick={anterior} />
-        <button type="button" className="hv-zona der" aria-label="Siguiente" onClick={siguiente} />
+        <button type="button" className="hv-zona izq" aria-label="Anterior" onClick={zona(anterior)} />
+        <button type="button" className="hv-zona der" aria-label="Siguiente" onClick={zona(siguiente)} />
       </div>
       <button type="button" className="hv-fl izq" aria-label="Historia anterior" onClick={anterior}><Chevron /></button>
       <button type="button" className="hv-fl der" aria-label="Historia siguiente" onClick={siguiente}><Chevron /></button>

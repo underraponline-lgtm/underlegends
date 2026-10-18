@@ -651,7 +651,8 @@ export function gruposHistorias(liga) {
   const sig = liga.sigue.map((k) => {
     const f = liga.T[k];
     const propios = muro.filter((it) => ksDe(it).includes(k));
-    let slides = slidesDe(liga, propios).slice(0, 4);
+    // las cuatro más nuevas, y en el círculo de la más vieja a la más nueva como los demás (el muro viene al revés)
+    let slides = slidesDe(liga, propios).slice(0, 4).sort(masViejo);
     // alguien que seguís y no hizo nada nuevo igual tiene su círculo: su carta y cómo va (una vez por semana)
     if (!slides.length) {
       slides = [Slide('SEGUÍS A', <><Carta liga={liga} k={k} cual="temporada" cls="st-carta" abre={false} /><h3 className="st-h">{limpio(f.n)}</h3>

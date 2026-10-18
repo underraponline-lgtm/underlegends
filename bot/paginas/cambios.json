@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.41",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T01:55:00-04:00",
+   "titulo": "Historias más fluidas",
+   "items": [
+    "📸 Las historias: deslizá abajo para cerrar y al costado para cambiar de círculo; mantener apretado pausa.",
+    "⚡ Cargan antes y no se saltean al volver de otra app."
+   ]
+  },
+  {
    "version": "3.40",
    "dia": "2026-10-18",
    "cuando": "2026-10-18T01:47:00-04:00",
