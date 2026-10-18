@@ -295,12 +295,12 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   const yo = liga && liga.yo;
   const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="tb-cara" /> : (dc ? <CaraDc dc={dc} cls="tb-cara" /> : null);
   // 👉 QUE SE NOTE QUE SE DESLIZA (Dlx, 17/10/2026: «mejorar un poco el tutorial, específicamente para lo del celular:
-  // enseñar que hay una barra abajo que se puede deslizar»). Dos cosas: la flecha «›» a la derecha mientras haya más
-  // secciones para ese lado (siempre: es lo que dice que hay más), y la primera vez un globito «Deslizá» con la tira
-  // asomándose sola un poco y volviendo. Las dos cosas se van solas en cuanto la persona la desliza una vez
-  // (`lg:tira-ok`); el asomarse, nunca para quien apagó las animaciones
+  // enseñar que hay una barra abajo que se puede deslizar»): la primera vez, un globito «Deslizá» con la tira
+  // asomándose sola un poco y volviendo; se va en cuanto la persona la desliza una vez (`lg:tira-ok`), y el asomarse,
+  // nunca para quien apagó las animaciones. ⚠️ SIN FLECHA NI LÍNEA: la 3.28 le puso una «›» con un borde negro a la
+  // izquierda, y Dlx, el mismo 17/10: «no me gustaría que tenga esa línea ni la flecha, se ve feo estéticamente». Ya
+  // lo había dicho el 03/10 de la raya entre la tira y «Yo» (ver `.tb-yo` en vivo.css)
   const tira = useRef(null);
-  const [mas, setMas] = useState(false);
   const [aprende, setAprende] = useState(() => { try { return !localStorage.getItem('lg:tira-ok'); } catch (e) { return false; } });
   const asomando = useRef(false);
   const aprendio = () => {
@@ -310,14 +310,8 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   const mirar = () => {
     const t = tira.current;
     if (!t) return;
-    setMas(t.scrollLeft + t.clientWidth < t.scrollWidth - 8);
     if (!asomando.current && t.scrollLeft > 24 && aprende) aprendio();
   };
-  useEffect(() => {
-    mirar();
-    window.addEventListener('resize', mirar);
-    return () => window.removeEventListener('resize', mirar);
-  }, []);
   useEffect(() => {
     if (!aprende || (window.innerWidth || 0) >= 900) return undefined;
     let quieto = false;
@@ -336,10 +330,6 @@ export function Tabbar({ liga, dc, pagina = '' }) {
     const t3 = setTimeout(() => { asomando.current = false; }, 3600);
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, [aprende]);
-  const correr = () => {
-    const t = tira.current;
-    if (t) t.scrollBy({ left: Math.round(t.clientWidth * 0.7), behavior: 'smooth' });
-  };
   return (
     <nav className="tabbar" aria-label="Secciones">
       {aprende ? (
@@ -348,7 +338,6 @@ export function Tabbar({ liga, dc, pagina = '' }) {
           <button type="button" aria-label="Entendido" onClick={aprendio}>✕</button>
         </div>
       ) : null}
-      {mas ? <button type="button" className="tb-mas" aria-label="Ver más secciones" onClick={correr}>›</button> : null}
       <div className="tb-tira" ref={tira} onScroll={mirar}>
         {MENU.map(([n, r]) => {
           const k = r.replace(/^#\/?/, '') || 'inicio';

@@ -6,7 +6,7 @@
 // entrar; con otra cuenta, «esta página es del dueño» y nada más. Los ajustes pasan por la misma puerta
 // (`/avisos/dueno/ajuste`), y el servidor valida cada valor antes de guardarlo.
 import { Fragment, useEffect, useState } from 'react';
-import { hora, limpio, mult, num, siglaDe } from './liga.js';
+import { diaISO, hora, limpio, mult, num, siglaDe } from './liga.js';
 import { DosToques, Ico } from './piezas.jsx';
 import { urlFondo } from './fondos.js';
 
@@ -881,6 +881,20 @@ function Logs({ l }) {
 // resolvés vos y quedan hechos— y «No» lo cierra. Lo pueden contestar vos y los Moderadores
 const PED_TIPO = { cuenta: 'Perdí mi cuenta de Discord', identidad: 'Ese no soy yo / mi nombre está mal', pais: 'Mi país está mal', video: 'Un video que no es mío' };
 const PED_EST = { '': 'esperando', si: '✅ aprobado · lo aplica el ciclo', hecho: '✅ hecho', no: '⛔ no', no_pude: '⚠️ no se pudo aplicar' };
+// lo que hace el «Sí» de cada uno: el de cuenta y el de país los aplica el ciclo; el video se saca solo; el de identidad
+// lo arreglás vos, así que el botón es para cuando ya está hecho
+const PED_SI = { cuenta: 'Sí, es su cuenta', pais: 'Sí, cambiarlo', video: 'Sí, sacar el video', identidad: 'Ya lo arreglé' };
+// 🔎 la cuenta VIEJA (la que hoy tiene ese perfil en la Lista), que averigua el ciclo: si sigue en DRA, ojo
+function Vieja({ v }) {
+  if (!v) return <p className="db-ped-pr">La cuenta vieja: la mira el ciclo en su próxima vuelta.</p>;
+  if (v.sin_cuenta) return <p className="db-ped-pr">La cuenta vieja: ese perfil no tenía cuenta en la Lista.</p>;
+  const quien = v.usuario ? '@' + v.usuario : 'sin nombre';
+  if (v.en_dra) {
+    return <p className="db-ped-pr db-ped-ojo">⚠️ La cuenta vieja (<b>{quien}</b>{v.creada ? ', creada el ' + v.creada : ''}) <b>sigue en DRA</b>
+      {v.apodo_dra ? ' como «' + v.apodo_dra + '»' : ''}{v.miembro ? ', con el Miembro' : ''}. Preguntale por ahí antes de aprobar.</p>;
+  }
+  return <p className="db-ped-pr">La cuenta vieja: <b>{quien}</b>{v.creada ? ', creada el ' + v.creada : ''} · {v.en_dra === false ? 'ya no está en DRA' : 'no se pudo ver si sigue en DRA'}.</p>;
+}
 function Pedidos({ ps, liga, alCambiar }) {
   const [va, setVa] = useState(0);
   const [msg, setMsg] = useState('');
@@ -901,15 +915,17 @@ function Pedidos({ ps, liga, alCambiar }) {
         return (
           <li key={p.id} className={p.estado === '' ? 'abierto' : ''}>
             <div>
-              <b>{PED_TIPO[p.tipo] || p.tipo}{f ? ' · ' + limpio(f.n) : p.k ? ' · ' + p.k : ''}{p.cc ? ' · ' + p.cc.toUpperCase() : ''}</b>
-              <small>{corto(new Date(p.t).toISOString())} · {PED_EST[p.estado] || p.estado}{p.por ? ' (' + p.por + ')' : ''}{p.nota ? ' · ' + p.nota : ''}</small>
+              <b className="db-ped-t">{PED_TIPO[p.tipo] || p.tipo}{f ? ' · ' + limpio(f.n) : p.k ? ' · ' + p.k : ''}{p.cc ? ' · ' + p.cc.toUpperCase() : ''}</b>
+              <small>{corto(diaISO(new Date(p.t)))} · {PED_EST[p.estado] || p.estado}{p.por ? ' (' + p.por + ')' : ''}{p.nota ? ' · ' + p.nota : ''}</small>
               {p.texto ? <p className="db-ped-tx">«{p.texto}»</p> : null}
+              {p.k && f ? <p className="db-ped-pr"><a href={'#/r/' + p.k}>Ver el perfil de {limpio(f.n)} ↗</a></p> : null}
+              {p.tipo === 'cuenta' ? <Vieja v={pr.vieja} /> : null}
               {p.tipo === 'cuenta' ? <p className="db-ped-pr">La cuenta que pide: <b>{pr.usuario ? '@' + pr.usuario : 'sin nombre'}</b>{pr.nombre ? ' («' + pr.nombre + '»)' : ''}
                 {pr.creada ? ' · creada el ' + pr.creada : ''} · en DRA: {pr.en_dra === false ? 'no está' : (pr.apodo_dra ? '«' + pr.apodo_dra + '»' : 'sin apodo') + (pr.miembro ? ', Miembro' : ', sin el rol Miembro') + (pr.en_dra_desde ? ', desde el ' + pr.en_dra_desde : '')}</p> : null}
               {p.vid ? <p className="db-ped-pr"><a href={'https://youtu.be/' + p.vid} target="_blank" rel="noopener noreferrer">El video ↗</a></p> : null}
             </div>
             {p.estado === '' ? <div className="db-ped-b">
-              <button type="button" className="btn verde chico" disabled={va === p.id} onClick={() => resolver(p, true)}>{p.tipo === 'cuenta' ? 'Sí, es él' : 'Sí'}</button>
+              <button type="button" className="btn verde chico" disabled={va === p.id} onClick={() => resolver(p, true)}>{PED_SI[p.tipo] || 'Sí'}</button>
               <button type="button" className="btn borde2 chico" disabled={va === p.id} onClick={() => resolver(p, false)}>No</button>
             </div> : null}
           </li>

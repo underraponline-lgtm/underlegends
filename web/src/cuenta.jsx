@@ -751,15 +751,24 @@ const PEDIDOS = [
   ['cuenta', 'Perdí mi cuenta de Discord', 'Entraste con una cuenta nueva y querés recuperar tu perfil: tus tarjetas, tus Puntos de Tienda, tu Pase y a quién seguís.'],
   ['identidad', 'Ese no soy yo / mi nombre está mal', 'Una llave te puso el resultado de otro, o tu nombre en la Liga está mal escrito.'],
   ['pais', 'Mi país o mi bandera están mal', 'Tu bandera en la Liga no es la tuya.'],
-  ['video', 'Un video que no es mío', 'En tu perfil aparece una batalla que no es tuya.'],
+  ['video', 'Un video que no es mío', 'En un perfil aparece una batalla que no es de esa persona.'],
 ];
+// 💡 lo que ya se puede hacer al instante, sin esperar a nadie: se dice antes de pedir (17/10/2026: la llave tiene su
+// «¿Algo está mal en esta llave?», que se corrige y se aplica solo, y los videos que subiste vos tienen «Quitar»)
+const ATAJO_PED = {
+  identidad: '¿Es el resultado de una llave? Lo más rápido es abrir esa llave y tocar «¿Algo está mal en esta llave?»: '
+    + 'se corrige y se aplica solo. Acá, mejor lo que no es de una llave, como tu nombre mal escrito.',
+  video: 'Si es un video que sumaste vos, en tu perfil tiene «Quitar» y se va al instante. Acá van los demás: las batallas '
+    + 'de los canales de los socios, que se suman solas por el nombre.',
+};
 const ESTADO_PED = { '': 'esperando que lo mire alguien', si: 'aprobado: se aplica en la próxima vuelta (menos de una hora)',
-  hecho: 'hecho', no: 'no se aprobó', no_pude: 'aprobado, pero no se pudo aplicar: lo mira Dlx' };
+  hecho: 'listo ✓', no: 'no se aprobó', no_pude: 'aprobado, pero falta un paso: lo termina Dlx' };
 function Pedidos({ liga, dc }) {
   const [tipo, setTipo] = useState('');
   const [q, setQ] = useState('');
   const [k, setK] = useState('');
   const [texto, setTexto] = useState('');
+  const yoK = liga.yo ? liga.yo.k : '';
   const [cc, setCc] = useState('');
   const [vid, setVid] = useState('');
   const [est, setEst] = useState({});
@@ -785,7 +794,7 @@ function Pedidos({ liga, dc }) {
       else setEst({ error: (j && j.error) || 'error' });
     }).catch(() => setEst({ error: 'red' }));
   };
-  const falta = !tipo ? 'Elegí qué está mal.' : (tipo === 'cuenta' || tipo === 'identidad') && !k ? 'Buscá tu perfil.'
+  const falta = !tipo ? 'Elegí qué está mal.' : (tipo === 'cuenta' || tipo === 'identidad' || tipo === 'video') && !k ? 'Buscá el perfil.'
     : tipo === 'pais' && !cc ? 'Elegí tu país.' : tipo === 'video' && !vid.trim() ? 'Pegá el link del video.'
       : tipo !== 'pais' && texto.trim().length < 3 ? 'Contanos un poco más.' : '';
   const errorTxt = { tope: 'Ya tenés tres pedidos esperando: cuando se resuelvan podés mandar otro.', perfil: 'Elegí tu perfil de la lista.',
@@ -794,12 +803,13 @@ function Pedidos({ liga, dc }) {
     <>
       <Caja t="¿Qué está mal?" d="Lo mira Dlx o un Moderador. Si es tu cuenta, también ve lo que el bot sabe de la cuenta con la que entraste (tu apodo en DRA y desde cuándo estás), así que pedilo desde la cuenta nueva.">
         <div className="pd-tipos" role="radiogroup" aria-label="Qué está mal">{PEDIDOS.map(([t, n, d]) => (
-          <button key={t} type="button" role="radio" aria-checked={tipo === t} className={'pd-tipo' + (tipo === t ? ' on' : '')} onClick={() => { setTipo(t); setEst({}); }}>
+          <button key={t} type="button" role="radio" aria-checked={tipo === t} className={'pd-tipo' + (tipo === t ? ' on' : '')} onClick={() => { setTipo(t); setEst({}); if (t === 'video' && !k && yoK) setK(yoK); }}>
             <b>{n}</b><small>{d}</small></button>
         ))}</div>
-        {tipo === 'cuenta' || tipo === 'identidad' ? (
+        {ATAJO_PED[tipo] ? <p className="pd-atajo">💡 {ATAJO_PED[tipo]}</p> : null}
+        {tipo === 'cuenta' || tipo === 'identidad' || tipo === 'video' ? (
           <div className="pd-campo">
-            <label htmlFor="pd-q">{tipo === 'cuenta' ? '¿Cuál era tu perfil?' : '¿Qué perfil está mal?'}</label>
+            <label htmlFor="pd-q">{tipo === 'cuenta' ? '¿Cuál era tu perfil?' : tipo === 'video' ? '¿En qué perfil aparece?' : '¿Qué perfil está mal?'}</label>
             {elegido ? <p className="pd-elegido"><b>{limpio(elegido.n)}</b> <button type="button" className="btn borde2 chico" onClick={() => setK('')}>Cambiar</button></p> : (
               <>
                 <input id="pd-q" type="search" className="ti-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Tu nombre en la Liga" />
@@ -823,7 +833,7 @@ function Pedidos({ liga, dc }) {
         ) : null}
         {tipo ? <div className="cu-btns"><button type="button" className="btn verde chico" disabled={!!falta || est.va} onClick={mandar}>{est.va ? 'Mandando…' : 'Mandar el pedido'}</button>
           {falta ? <small className="pd-falta">{falta}</small> : null}</div> : null}
-        {est.ok ? <p className="cu-d" role="status">✓ Listo: lo vas a ver abajo, y cuando lo resuelvan cambia solo.</p> : null}
+        {est.ok ? <p className="cu-d" role="status">✓ Listo: lo vas a ver abajo, y cuando lo resuelvan te avisamos en la campana.</p> : null}
         {est.error ? <p className="cu-d" role="alert">{errorTxt[est.error] || (W.errorCuenta && W.errorCuenta(est.error)) || 'No pude mandarlo. Probá de nuevo.'}</p> : null}
       </Caja>
       {mios && mios.length ? (

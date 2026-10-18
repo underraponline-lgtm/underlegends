@@ -388,7 +388,10 @@ def correr(aplicar=False):
             c[2] = hoy
     out = {'_leeme': 'Las batallas que sumó cada uno (bot/videos_propios.py): `por` {raw: [[video, título, canal, '
                      'cuándo, link|canal]]}, los canales que sugirió, lo que espera a Dlx y lo oculto por reportes.',
-           't': hoy, 'por': por_raw, 'canales': canales, 'revisar': list(revisar.values()), 'ocultos': sorted(ocultos)}
+           't': hoy, 'por': por_raw, 'canales': canales, 'revisar': list(revisar.values()), 'ocultos': sorted(ocultos),
+           # 🙋 y lo quitado, para las batallas de los socios también (`subir_web`): un «video que no es mío» aprobado
+           # en el Dashboard va a la misma lista que el «Quitar» del perfil (17/10/2026)
+           'quitados': sorted([list(q) for q in quitados])}
     print('   🎬 %d pedido(s) · %d persona(s) con videos · %d para revisar · %d oculto(s)'
           % (len(d.get('pedidos') or []), sum(1 for v in por_raw.values() if v), len(revisar), len(ocultos)))
     if aplicar:

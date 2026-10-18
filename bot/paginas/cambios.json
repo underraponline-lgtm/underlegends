@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "3.30",
+   "dia": "2026-10-17",
+   "cuando": "2026-10-17T21:50:00-04:00",
+   "titulo": "Te avisamos cuando se resuelve tu pedido",
+   "items": [
+    "🔔 Cuando se resuelve lo que pediste en «Algo está mal», te llega a la campana.",
+    "🎬 Si en tu perfil aparece una batalla de un canal de los socios que no es tuya, ahora se puede pedir que la saquen.",
+    "💡 Antes de pedir, la página te dice si hay un camino más rápido: el reporte de la llave o el «Quitar» de tus videos.",
+    "👇 La barra de abajo del celular, más limpia: sin la flecha."
+   ]
+  },
+  {
    "version": "3.29",
    "dia": "2026-10-17",
    "cuando": "2026-10-17T21:10:00-04:00",

@@ -2354,6 +2354,8 @@ const RUTAS = {
   '/avisos/pedido': 'POST', '/avisos/mis-pedidos': 'POST', '/avisos/dueno-pedido': 'POST',
   // y para el ciclo, con su clave: lo aprobado que hay que aplicar, cómo salió, y pasar lo de una cuenta a otra
   '/avisos/pedidos-ciclo': 'GET', '/avisos/pedidos-estados': 'POST', '/avisos/mudar-cuenta': 'POST',
+  // y lo que el ciclo averiguó de la cuenta VIEJA de un «perdí mi cuenta» (`pedidosPrueba()`)
+  '/avisos/pedidos-prueba': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx) y los ajustes para el ciclo (con su clave)
   '/avisos/dueno/ajuste': 'POST', '/avisos/ajustes': 'GET',
   // ▶️ correr el ciclo ahora, desde el Dashboard (sólo Dlx): ver `cicloAMano()`
@@ -3872,6 +3874,13 @@ export async function rutaAvisos(req, env, ruta) {
     }
     const v = validarPedido(d);
     if (v.error) return json(v, 400);
+    // el de país es SOBRE quien pide (y el video, si no dijo de qué perfil): su perfil sale de KV, para que el Dashboard
+    // sepa de quién es y lleve a su perfil
+    if (!v.k && (v.tipo === 'pais' || v.tipo === 'video')) {
+      let de = '';
+      try { de = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { de = ''; }
+      if (claveValida(de)) v.k = de;
+    }
     const prueba = {};
     if (v.tipo === 'cuenta' && env.DISCORD_TOKEN) {
       try {
@@ -3911,7 +3920,8 @@ export async function rutaAvisos(req, env, ruta) {
       body: JSON.stringify({ id: d.id, si: d.si, nota: String(d.nota || '').slice(0, 200), por: q.id }) });
   }
   // 🙋 PARA EL CICLO, CON SU CLAVE (traen Discord IDs): lo aprobado, cómo salió, y pasar lo de una cuenta a otra
-  if (ruta === '/avisos/pedidos-ciclo' || ruta === '/avisos/pedidos-estados' || ruta === '/avisos/mudar-cuenta') {
+  if (ruta === '/avisos/pedidos-ciclo' || ruta === '/avisos/pedidos-estados' || ruta === '/avisos/mudar-cuenta'
+      || ruta === '/avisos/pedidos-prueba') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     if (ruta === '/avisos/pedidos-ciclo') return elObjeto(env).fetch('https://avisos/pedidos-ciclo');
@@ -5287,6 +5297,7 @@ export class Avisos {
       if (ruta === '/dueno-pedido') return json(this.duenoPedido(d));
       if (ruta === '/pedidos-estados') return json(this.pedidosEstados(d));
       if (ruta === '/mudar-cuenta') return json(await this.mudarCuenta(d));
+      if (ruta === '/pedidos-prueba') return json(this.pedidosPrueba(d));
       if (ruta === '/bandeja') return this.bandeja(d);
       if (ruta === '/mi-servidor') return this.miServidor(d);
       if (ruta === '/mi-foto') return await this.miFoto(d);
@@ -8895,8 +8906,8 @@ export class Avisos {
     if (!/^[0-9]{5,25}$/.test(quien) || v.error) return json({ error: v.error || 'faltan datos' }, 400);
     const ahora = Date.now();
     this.sql.exec('DELETE FROM pedidos WHERE resuelto > 0 AND resuelto < ?', ahora - PEDIDO_DIAS * DIA_MS);
-    const abiertos = this.sql.exec("SELECT id, tipo, k FROM pedidos WHERE quien = ? AND estado IN ('', 'si')", quien).toArray();
-    const igual = abiertos.find((x) => x.tipo === v.tipo && x.k === v.k);
+    const abiertos = this.sql.exec("SELECT id, tipo, k, vid FROM pedidos WHERE quien = ? AND estado IN ('', 'si')", quien).toArray();
+    const igual = abiertos.find((x) => x.tipo === v.tipo && x.k === v.k && x.vid === v.vid);
     if (igual) return json({ ok: true, id: igual.id, ya: true });
     if (abiertos.length >= PEDIDO_TOPE) return json({ error: 'tope', tope: PEDIDO_TOPE }, 429);
     const prueba = d.prueba && typeof d.prueba === 'object' ? JSON.stringify(d.prueba).slice(0, 1500) : '';
@@ -8929,29 +8940,84 @@ export class Avisos {
   /** Sí o no. Los de identidad y de video, al aprobarlos ya quedan hechos (los resuelve Dlx a mano); los de cuenta y
    *  país esperan al ciclo, que los aplica (`bot/pedidos.py`). */
   duenoPedido(d) {
-    const p = this.sql.exec('SELECT id, tipo, estado FROM pedidos WHERE id = ?', Number(d.id)).toArray()[0];
+    const p = this.sql.exec('SELECT id, tipo, quien, k, vid, estado FROM pedidos WHERE id = ?', Number(d.id)).toArray()[0];
     if (!p) return { error: 'no existe' };
     if (p.estado !== '') return { error: 'ya', estado: p.estado };
     const manual = p.tipo === 'identidad' || p.tipo === 'video';
     const est = !d.si ? 'no' : manual ? 'hecho' : 'si';
+    const ahora = Date.now();
+    // 🎬 «UN VIDEO QUE NO ES MÍO», APROBADO, SE SACA DE VERDAD (17/10/2026): va a `videos_quitados`, la misma lista del
+    // «Quitar» del perfil, y el ciclo lo saca también de las batallas de los socios (`subir_web`, con
+    // `videos_propios.json`). Antes quedaba «hecho» sin que nada pasara
+    if (est === 'hecho' && p.tipo === 'video' && claveValida(p.k) && /^[\w-]{11}$/.test(String(p.vid || ''))) {
+      this.sql.exec('INSERT OR REPLACE INTO videos_quitados (clave, vid, t) VALUES (?, ?, ?)', p.k, p.vid, ahora);
+    }
     this.sql.exec('UPDATE pedidos SET estado = ?, por = ?, resuelto = ?, nota = ? WHERE id = ?', est,
-      String(d.por || ''), Date.now(), String(d.nota || '').slice(0, 200), p.id);
+      String(d.por || ''), ahora, String(d.nota || '').slice(0, 200), p.id);
+    if (est !== 'si') this.avisarPedido(p, est, String(d.nota || ''), ahora);
     return { ok: true, estado: est, pedidos: this.pedidosDueno() };
+  }
+
+  /** 🔔 A quien pidió, cuando se resuelve: a su campana (la bandeja), como los reportes y los fondos. Nunca por DM. */
+  avisarPedido(p, est, nota, ahora) {
+    const T = {
+      cuenta: ['✅ Tu cuenta nueva ya es la de tu perfil', 'Pasó todo: tus tarjetas, tus Puntos de Tienda, tu Pase y a quién seguís.'],
+      pais: ['✅ Tu país ya está corregido', 'Se ve en tu perfil y en tus tarjetas en la próxima actualización.'],
+      identidad: ['✅ Arreglamos lo que pediste', 'Gracias por avisar.'],
+      video: ['✅ Sacamos el video de tu perfil', 'Se va en la próxima actualización.'],
+    };
+    const [titulo, cuerpo] = est === 'hecho' ? (T[p.tipo] || T.identidad)
+      : est === 'no_pude' ? ['⚠️ Tu pedido está aprobado, pero falta un paso', 'Lo termina Dlx a mano.']
+        : ['Tu pedido no se aprobó', nota ? nota.slice(0, 160) : 'Si creés que es un error, escribile a un Moderador.'];
+    this.aBandeja(p.quien, 'pedido:' + p.id, 'pedido', titulo, cuerpo, HUB + '/cuenta/algo-mal', '', ahora);
   }
 
   /** Para el ciclo: lo aprobado de cuenta y país, con quién lo pidió. */
   pedidosCiclo() {
+    const sinVieja = this.sql.exec("SELECT id, quien, k, prueba FROM pedidos WHERE estado = '' AND tipo = 'cuenta'").toArray()
+      .filter((x) => !String(x.prueba || '').includes('"vieja"')).map((x) => ({ id: x.id, quien: x.quien, k: x.k }));
     return { t: Date.now(), pedidos: this.sql.exec("SELECT id, tipo, quien, k, cc, texto FROM pedidos WHERE estado = 'si' " +
-      "AND tipo IN ('cuenta', 'pais')").toArray() };
+      "AND tipo IN ('cuenta', 'pais')").toArray(), sin_vieja: sinVieja };
   }
 
   /** Lo que hizo el ciclo: `{estados: {id: {ok, nota}}}`. */
   pedidosEstados(d) {
     let n = 0;
+    const ahora = Date.now();
     for (const [id, x] of Object.entries((d && d.estados) || {})) {
-      const r = this.sql.exec("UPDATE pedidos SET estado = ?, nota = ? WHERE id = ? AND estado = 'si'", x && x.ok ? 'hecho' : 'no_pude',
+      const est = x && x.ok ? 'hecho' : 'no_pude';
+      const r = this.sql.exec("UPDATE pedidos SET estado = ?, nota = ? WHERE id = ? AND estado = 'si'", est,
         String((x && x.nota) || '').slice(0, 200), Number(id));
+      if (r.rowsWritten) {
+        const p = this.sql.exec('SELECT id, tipo, quien FROM pedidos WHERE id = ?', Number(id)).toArray()[0];
+        if (p) this.avisarPedido(p, est, '', ahora);
+      }
       n += r.rowsWritten || 0;
+    }
+    return { ok: true, n };
+  }
+
+  /**
+   * 🔎 LA CUENTA VIEJA DE UN «PERDÍ MI CUENTA» (17/10/2026). La prueba que junta el Worker es de la cuenta NUEVA; la
+   * vieja la conoce sólo el ciclo (la Lista), y es la mitad que más dice: si la vieja sigue en DRA, alguien puede estar
+   * pidiendo un perfil ajeno. `{pruebas: {id: {...}}}` se guarda como `prueba.vieja`, sólo en los sin contestar.
+   */
+  pedidosPrueba(d) {
+    let n = 0;
+    for (const [id, x] of Object.entries((d && d.pruebas) || {})) {
+      if (!/^\d{1,12}$/.test(id) || !x || typeof x !== 'object') continue;
+      const p = this.sql.exec("SELECT prueba FROM pedidos WHERE id = ? AND tipo = 'cuenta' AND estado = ''", Number(id)).toArray()[0];
+      if (!p) continue;
+      let pr = {};
+      try { pr = p.prueba ? JSON.parse(p.prueba) : {}; } catch (e) { pr = {}; }
+      const v = {};
+      for (const c of ['usuario', 'nombre', 'creada', 'apodo_dra', 'en_dra_desde', 'id']) {
+        if (x[c] !== undefined) v[c] = String(x[c]).slice(0, 40);
+      }
+      for (const c of ['en_dra', 'miembro', 'sin_cuenta']) if (x[c] !== undefined) v[c] = !!x[c];
+      pr.vieja = v;
+      this.sql.exec('UPDATE pedidos SET prueba = ? WHERE id = ?', JSON.stringify(pr).slice(0, 2000), Number(id));
+      n++;
     }
     return { ok: true, n };
   }

@@ -254,10 +254,11 @@
 .db-ped{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .db-ped li{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;padding:10px 12px;border:2px solid var(--suave)}
 .db-ped li.abierto{border-color:var(--magenta-tx)}
-.db-ped b{display:block;font:800 14px/1.3 Archivo,sans-serif}
+.db-ped .db-ped-t{display:block;font:800 14px/1.3 Archivo,sans-serif}
 .db-ped small{display:block;margin-top:2px;color:var(--gris)}
 .db-ped-tx,.db-ped-pr{margin:6px 0 0;font-size:13px;overflow-wrap:anywhere}
 .db-ped-b{display:flex;gap:6px;flex:none}
+.db-ped-ojo{padding:6px 8px;border-left:4px solid #E41373;background:var(--caja)}
 @media (max-width: 599.98px){.db-ped li{flex-direction:column}}
 /* 🔴 lo que avisó Logs (17/10/2026) */
 .db-logs{list-style:none;margin:0;padding:0;display:grid;gap:8px}

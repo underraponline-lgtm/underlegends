@@ -18,6 +18,11 @@ bot/avisos.js), el Dashboard lo muestra y alguien con permiso dice sí o no. Lo 
 
 ⚠️ NUNCA ADIVINA UNA FILA: si el perfil está dos veces en la Lista, o la cuenta nueva ya es de otra fila, no hace nada y
 lo dice («no_pude», con por qué). Lo decide Dlx.
+
+🔎 Y ANTES DE QUE NADIE CONTESTE, LA CUENTA VIEJA (17/10/2026). La prueba que junta el Worker es de la cuenta NUEVA; la
+vieja sólo la sabe la Lista, y es la mitad que más dice: si la vieja sigue en DRA, puede ser alguien pidiendo un perfil
+ajeno. Cada vuelta mira los «perdí mi cuenta» sin contestar que no la tienen (`sin_vieja`) y la deja en el objeto
+(`/avisos/pedidos-prueba`) para el Dashboard: su usuario, si sigue en DRA y con qué apodo (`prueba_vieja()`).
 ⚠️ La cuenta vieja no se pierde: queda en las Notas de la fila, con el número del pedido.
 """
 import io
@@ -32,6 +37,9 @@ for _p in (SCR, BASE, os.path.join(BASE, 'sheet')):
         sys.path.insert(0, _p)
 
 WORKER = 'https://liga-global-bot.liga-global-ul.workers.dev'
+DISCORD = 'https://discord.com/api/v10'
+#: el día 0 de los IDs de Discord (ms): de un ID sale cuándo se creó la cuenta
+EPOCA_DISCORD = 1420070400000
 
 
 def plan(pedidos, padron, clave):
@@ -73,6 +81,66 @@ def plan(pedidos, padron, clave):
     return out
 
 
+def fila_de(k, padron, clave):
+    """La fila de la Lista de ese perfil, o `None` si no está o está dos veces (no se adivina)."""
+    fs = [x for x in padron or [] if x.get('raw') and clave(x['raw']) == k]
+    return fs[0] if len(fs) == 1 else None
+
+
+def prueba_vieja(did, usuario, miembro, rol_miembro):
+    """Lo que se sabe de la cuenta VIEJA, para el Dashboard. Pura.
+
+    `usuario`: lo que Discord dice de `/users/<id>` (o `None`); `miembro`: su ficha en DRA, o `False` si Discord dijo que
+    no está, o `None` si no se pudo preguntar."""
+    if not did:
+        return {'sin_cuenta': True}
+    out = {'id': str(did)}
+    try:
+        import datetime as dt
+        ms = (int(did) >> 22) + EPOCA_DISCORD
+        out['creada'] = dt.datetime.fromtimestamp(ms / 1000, dt.timezone.utc).strftime('%Y-%m-%d')
+    except (ValueError, OverflowError, OSError):
+        pass
+    if usuario:
+        out['usuario'] = str(usuario.get('username') or '')[:40]
+        if usuario.get('global_name'):
+            out['nombre'] = str(usuario['global_name'])[:40]
+    if miembro is False:
+        out['en_dra'] = False
+    elif miembro:
+        out['en_dra'] = True
+        out['apodo_dra'] = str(miembro.get('nick') or '')[:40]
+        out['miembro'] = rol_miembro in (miembro.get('roles') or [])
+        out['en_dra_desde'] = str(miembro.get('joined_at') or '')[:10]
+    return out
+
+
+def _viejas(sin_vieja, padron, clave, tok):
+    """`{id: prueba}` de los «perdí mi cuenta» sin contestar: la cuenta que hoy tiene ese perfil en la Lista."""
+    import requests
+    import verificados as V
+    h = {'authorization': 'Bot ' + tok}
+    out = {}
+    for x in sin_vieja or []:
+        f = fila_de(x.get('k') or '', padron, clave)
+        if f is None:
+            continue
+        did = str(f.get('discord_id') or '')
+        if did and did == str(x.get('quien') or ''):
+            continue
+        usuario, miembro = None, None
+        if did:
+            try:
+                ru = requests.get('%s/users/%s' % (DISCORD, did), headers=h, timeout=15)
+                usuario = ru.json() if ru.ok else None
+                rm = requests.get('%s/guilds/%s/members/%s' % (DISCORD, V.GUILD_DRA, did), headers=h, timeout=15)
+                miembro = rm.json() if rm.ok else (False if rm.status_code == 404 else None)
+            except (OSError, ValueError):
+                pass
+        out[str(x['id'])] = prueba_vieja(did, usuario, miembro, V.ROL_MIEMBRO)
+    return out
+
+
 def _clave_ciclo():
     import clave_ciclo as CC
     import fotos as F
@@ -88,19 +156,33 @@ def correr(aplicar=False):
         return 0
     try:
         r = requests.get(WORKER + '/avisos/pedidos-ciclo', headers={'x-lg-ciclo': k}, timeout=25)
-        pedidos = (r.json() or {}).get('pedidos') if r.ok else None
+        cuerpo = (r.json() or {}) if r.ok else {}
+        pedidos = cuerpo.get('pedidos') if r.ok else None
     except (OSError, ValueError) as e:
         print('   ⚠️ los pedidos no contestaron (%s)' % str(e)[:60])
         return 0
     if pedidos is None:
         print('   ⚠️ los pedidos no contestaron (%s)' % r.status_code)
         return 0
-    if not pedidos:
-        print('   🙋 pedidos: nada aprobado para aplicar')
-        return 0
     with io.open(os.path.join(BASE, 'datos', 'padron.json'), encoding='utf-8') as f:
         padron = json.load(f) or []
     from comun.claves import clave
+    # 🔎 la cuenta vieja de los «perdí mi cuenta» que esperan respuesta: para el Dashboard
+    sv = cuerpo.get('sin_vieja') or []
+    if sv:
+        import fotos as F
+        pr = _viejas(sv, padron, clave, F.env('DISCORD_TOKEN', obligatorio=False) or '')
+        for i, x in pr.items():
+            print('   🔎 #%s: la cuenta vieja %s' % (i, 'no existe en la Lista' if x.get('sin_cuenta') else
+                  ('sigue en DRA' if x.get('en_dra') else 'ya no está en DRA' if x.get('en_dra') is False else 'sin datos')))
+        if aplicar and pr:
+            try:
+                requests.post(WORKER + '/avisos/pedidos-prueba', headers={'x-lg-ciclo': k}, timeout=25, json={'pruebas': pr})
+            except OSError as e:
+                print('   ⚠️ no pude guardar la prueba de la cuenta vieja (%s): se reintenta' % str(e)[:60])
+    if not pedidos:
+        print('   🙋 pedidos: nada aprobado para aplicar')
+        return 0
     import lista_raperos as LR
     estados = {}
     for i, acc, x in plan(pedidos, padron, clave):
@@ -170,6 +252,16 @@ def _self_check():
     ok(acc[4][0] == 'no_pude', 'el perfil dos veces en la Lista: no se adivina')
     ok(acc[5] == ('pais', {'raw': 'Bea', 'cc': 'cl'}) and acc[6][0] == 'no_pude', 'mi país: la fila de quien lo pidió, por su cuenta')
     ok(acc[7][0] == 'nada', 'ya tenía esa cuenta: no hay nada que hacer')
+    ok(fila_de('lvel', padron, cl)['discord_id'] == '111' and fila_de('dos', padron, cl) is None and fila_de('zz', padron, cl) is None,
+       'la fila de un perfil: una sola, o ninguna (dos iguales no se adivinan)')
+    pv = prueba_vieja('1526612644642160721', {'username': 'lvel_viejo', 'global_name': 'Lvel'},
+                      {'nick': 'Lvel 🇨🇴', 'roles': ['R'], 'joined_at': '2026-09-01T10:00:00+00:00'}, 'R')
+    ok(pv['usuario'] == 'lvel_viejo' and pv['en_dra'] and pv['miembro'] and pv['en_dra_desde'] == '2026-09-01'
+       and pv['creada'] == '2026-07-14' and pv['apodo_dra'] == 'Lvel 🇨🇴',
+       'la cuenta vieja sigue en DRA: se ve con su apodo, el Miembro y desde cuándo (y cuándo se creó, del ID)', str(pv))
+    ok(prueba_vieja('1526612644642160721', None, False, 'R')['en_dra'] is False and prueba_vieja('', None, None, 'R') == {'sin_cuenta': True}
+       and 'en_dra' not in prueba_vieja('1526612644642160721', None, None, 'R'),
+       'ya no está en DRA, el perfil no tenía cuenta, y «no se pudo preguntar» no se confunde con «no está»')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal
 

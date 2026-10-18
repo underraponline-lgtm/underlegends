@@ -1814,6 +1814,8 @@ def _perfiles(gente, comp, regs):
     _vids, _vpor = _vj.get('videos') or {}, _vj.get('por') or {}
     # 🎬 y las que sumó cada uno (`bot/videos_propios.py`, 12/10/2026): aparte, «de plazas y otras ligas»
     _vp = _json('datos', 'videos_propios.json') or {}
+    # 🙋 lo quitado de un perfil —su «Quitar», o un «video que no es mío» aprobado—, también de las batallas de los socios
+    _quit = {(str(a), str(b)) for a, b in (_vp.get('quitados') or [])}
     _vd = _vd_de()
     out = {}
     for q, p in por.items():
@@ -1885,7 +1887,7 @@ def _perfiles(gente, comp, regs):
             x['ins'] = ins
         # 🎬 sus batallas en video, de los canales de los socios (`bot/videos.py`): [id, título, servidor]
         vid = [[v, (_vids.get(v) or ['', ''])[0], (_vids.get(v) or ['', ''])[1]]
-               for v in (_vpor.get(p.get('raw')) or []) if v in _vids]
+               for v in (_vpor.get(p.get('raw')) or []) if v in _vids and (q, v) not in _quit]
         if vid:
             x['vid'] = vid
         # 🎬 las que sumó él: [id, título, canal], sin las que ya están arriba ni las ocultas por reportes

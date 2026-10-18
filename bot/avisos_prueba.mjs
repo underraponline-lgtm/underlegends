@@ -1674,6 +1674,29 @@ const ok = (cond, que, det) => {
       && de('sigue', NUEVA) >= 1 && de('sesiones', VIEJA) === 0 && o.pedidosEstados({ estados: { [p1.id]: { ok: true } } }).n === 1,
     'pasar la cuenta: la Tienda, la XP y a quién sigue van a la nueva (sin repetir lo que ya tenía), la vieja ya no entra',
     JSON.stringify(mu));
+    const band = (q, c) => sql.exec('SELECT titulo FROM bandeja WHERE quien = ? AND clave = ?', q, c).toArray()[0];
+    ok(/cuenta nueva ya es la de tu perfil/.test((band(NUEVA, 'pedido:' + p1.id) || {}).titulo || ''),
+      'cuando el ciclo lo aplica, a quien pidió le llega a la campana', JSON.stringify(band(NUEVA, 'pedido:' + p1.id)));
+    // 🔎 la cuenta VIEJA: el ciclo la mira y la deja como prueba, sólo en los sin contestar
+    const OTRA = '1111111111111111111';
+    const p3 = await (await o.pedir({ quien: OTRA, tipo: 'cuenta', k: 'konan', texto: 'soy konan, perdí la cuenta' })).json();
+    const sv1 = o.pedidosCiclo().sin_vieja;
+    const pp = o.pedidosPrueba({ pruebas: { [p3.id]: { usuario: 'konan_real', en_dra: true, miembro: true, raro: 'x' } } });
+    const vista = o.pedidosDueno().find((x) => x.id === p3.id);
+    ok(sv1.some((x) => x.id === p3.id && x.k === 'konan') && pp.n === 1 && !o.pedidosCiclo().sin_vieja.some((x) => x.id === p3.id)
+      && vista.prueba.vieja.usuario === 'konan_real' && vista.prueba.vieja.en_dra === true && vista.prueba.vieja.raro === undefined,
+    'perdí mi cuenta: el ciclo averigua la cuenta vieja una vez, y el Dashboard la ve (sólo los campos que se esperan)',
+    JSON.stringify([sv1, pp, vista && vista.prueba]));
+    const dn = o.duenoPedido({ id: p3.id, si: false, nota: 'la cuenta vieja sigue activa' });
+    ok(dn.estado === 'no' && /no se aprobó/.test((band(OTRA, 'pedido:' + p3.id) || {}).titulo || ''),
+      'un no también le llega a la campana', JSON.stringify(dn));
+    // 🎬 un video que no es suyo, aprobado: se saca de verdad (la lista del «Quitar»)
+    const p4 = await (await o.pedir({ quien: OTRA, tipo: 'video', k: 'konan', vid: 'abcdefghijk', texto: 'esa batalla no es mía' })).json();
+    const p5 = await (await o.pedir({ quien: OTRA, tipo: 'video', k: 'konan', vid: 'zyxwvutsrqp', texto: 'esta tampoco' })).json();
+    const dv = o.duenoPedido({ id: p4.id, si: true, por: '739338101603696681' });
+    const quit = sql.exec("SELECT 1 AS x FROM videos_quitados WHERE clave = 'konan' AND vid = 'abcdefghijk'").toArray().length;
+    ok(p5.id !== p4.id && !p5.ya && dv.estado === 'hecho' && quit === 1 && /Sacamos el video/.test((band(OTRA, 'pedido:' + p4.id) || {}).titulo || ''),
+      'un video aprobado va a los quitados y se avisa; dos videos distintos son dos pedidos', JSON.stringify([p4, p5, dv, quit]));
     sql.exec("INSERT INTO subs (endpoint, p256dh, auth, alta, visto, quien) VALUES ('https://push/x', 'p', 'a', 1, 1, ?)", NUEVO);
     const r3 = o.rachaDe(NUEVO);
     sql.exec("UPDATE subs SET quien = '' WHERE endpoint = 'https://push/x'");
