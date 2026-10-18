@@ -146,6 +146,7 @@ const COMANDOS = [
           { name: '/foto', value: 'foto' },
           { name: '/numeral', value: 'numeral' },
           { name: '/settings', value: 'settings' },
+          { name: '/antiraid', value: 'antiraid' },
           { name: '/afiche', value: 'afiche' },
           { name: '/llave', value: 'llave' },
           { name: '/agendar', value: 'agendar' },
@@ -315,6 +316,16 @@ const COMANDOS = [
     // mandar igual contra el endpoint. El que decide es `puedeAjustar()`.
     // '268435464' = ADMINISTRATOR (8) | MANAGE_ROLES (1<<28).
     default_member_permissions: '268435464',
+  },
+  {
+    name: 'antiraid',
+    type: 1,
+    description: 'el anti-raid de este servidor (sólo el dueño del servidor)',
+    ...SOLO_EN_SERVIDOR,
+    // 🛡️ Dlx, 18/10/2026, después del raid a DDF: «un comando de setup solo
+    // para el propietario del servidor». '8' = ADMINISTRATOR sólo lo ESCONDE;
+    // el Worker le pregunta a Discord quién es el dueño (`antiraid.esDueno()`).
+    default_member_permissions: '8',
   },
   {
     name: 'foto',

@@ -40,6 +40,8 @@
 import { anotarUso, DUENO, NIVELES_CHAT, claveMedida, claveFoto } from './avisos.js';
 import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva,
   sesionFin, cookieSesion, SESION_DIAS } from './avisos.js';
+// 🛡️ el anti-raid (18/10/2026): `/antiraid` y sus botones. La vuelta de cada minuto vive en el objeto (avisos.js)
+import * as AR from './antiraid.js';
 export { Avisos };
 
 // ── Tipos de Discord, con nombre para que se lea ──────────────────────────
@@ -1975,6 +1977,14 @@ async function panelAscenso(env, gid, cfg) {
   };
 }
 
+// 🛡️ lo que `bot/antiraid.js` toma del Worker: cómo diferir, quién tocó, el nombre del servidor y las invitaciones de la
+// Liga (el escudo las deja pasar: un anuncio de un servidor aliado no es spam)
+const ayudaAR = (i) => ({
+  luego, idDe, aviso,
+  nombre: (SERVIDORES.find((s) => s.guild && s.guild === i.guild_id) || {}).nombre || 'este servidor',
+  pasan: SERVIDORES.map((s) => String(s.invita || '').replace(/^https?:\/\//, '')).filter(Boolean),
+});
+
 const responderPanel = (tipo, p) => new Response(JSON.stringify({
   type: tipo,
   data: { flags: EFIMERO, content: p.content, components: p.components },
@@ -2166,6 +2176,18 @@ const AYUDA = {
     'Vacío es apagado; no menciona a nadie.',
   ].join('\n'),
 
+  antiraid: () => [
+    '## `/antiraid` — el anti-raid del servidor',
+    'Sólo para **el dueño del servidor**. Todo es opcional y **nunca actúa solo**: avisa en el canal que elijas, con ' +
+    'botones, y decide el staff.',
+    '',
+    '· **Escudo de Discord** — reglas de AutoMod: menciones masivas, spam, insultos de odio y links de invitación ajenos ' +
+    '(los de la Liga pasan).',
+    '· **Alarma de oleada** — si entran muchas cuentas de golpe.',
+    '· **Vigilancia del staff** — expulsiones, baneos o borrados en masa, y un rol peligroso para una cuenta que no es un bot.',
+    '· **Botón de pánico** — pausa las invitaciones y los mensajes directos y sube la verificación; «abrir» lo deja como estaba.',
+  ].join('\n'),
+
   notify: () => [
     '## `/notify` — los avisos de eventos en tu celular o compu',
     'Te da el link para activar los avisos en ese dispositivo, con el servidor ' +
@@ -2218,6 +2240,7 @@ const AYUDA_INDICE = [
   '*(una por temporada, libre hasta que arranque)*',
   '· **`/numeral`** — mostrá u ocultá tu `#N` en tu apodo *(en un servidor)*',
   '· **`/settings`** — los ajustes del servidor *(admins)*',
+  '· **`/antiraid`** — el anti-raid del servidor *(el dueño)*',
   '· **`/afiche`** y **`/llave`** — la imagen del último anuncio y de la última llave *(staff y organizadores)*',
   '· **`/agendar`** — un evento en el calendario de la Liga, con tiempo *(staff y organizadores)*',
   '· **`/borrar-mis-datos`** — borrá tu perfil, tus tarjetas y tu foto de la Liga',
@@ -3396,6 +3419,11 @@ const COMANDOS = {
       panelAjustes(aquiEs(gid) || 'este servidor', cfg));
   },
 
+  // 🛡️ /antiraid — sólo el dueño del servidor (Dlx, 18/10/2026). Todo en `bot/antiraid.js`
+  antiraid(i, env, ctx) {
+    return AR.comando(i, env, ctx, ayudaAR(i));
+  },
+
   async numeral(i, env, ctx) {
     const gid = i.guild_id;
     const uid = idDe(i);
@@ -4281,6 +4309,13 @@ export default {
           type: RESPONDE.ACTUALIZAR,
           data: { content: texto.slice(0, 1990), components: quedan, allowed_mentions: { parse: [] } },
         }), { headers: { 'content-type': 'application/json' } });
+      }
+
+      // ── 🛡️ el anti-raid: el panel (sólo el dueño) y los botones de cada aviso (dueño o admin) ─────────────────────
+      if (que === 'ar') {
+        const esperarAR = frenado(idDe(i), 'ajuste');
+        if (esperarAR) return espera(esperarAR);
+        return AR.componente(i, env, ctx, ayudaAR(i));
       }
 
       // ── El panel de ajustes ────────────────────────────────────────────

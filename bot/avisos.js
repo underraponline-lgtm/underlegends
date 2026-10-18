@@ -46,6 +46,9 @@
  * `bot/avisos_prueba.mjs`— antes de mandarle nada a nadie.
  */
 
+// 🛡️ el anti-raid (18/10/2026): su lógica y lo que contesta el Worker viven en `bot/antiraid.js`; acá, la vuelta de cada minuto
+import * as AR from './antiraid.js';
+
 export const CRON_VIGIA = '* * * * *';
 
 const HUB = 'https://underlegends.pages.dev';
@@ -5138,6 +5141,11 @@ export class Avisos {
       // con «olvidarme». Ver `xpVio()` y `xpDe()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS xp_log (quien TEXT NOT NULL, que TEXT NOT NULL, ref TEXT NOT NULL, ' +
         't INTEGER NOT NULL, PRIMARY KEY (quien, que, ref)) WITHOUT ROWID');
+      // 🛡️ EL ANTI-RAID (18/10/2026): lo que eligió el dueño de cada servidor (`cfg`) y lo que la vuelta de cada minuto
+      // recuerda (`est`: los miembros de los últimos minutos, hasta dónde leyó el registro de auditoría, los roles
+      // peligrosos y qué ya avisó). Ver `antiraidVuelta()` y `bot/antiraid.js`
+      this.sql.exec("CREATE TABLE IF NOT EXISTS antiraid (gid TEXT PRIMARY KEY, cfg TEXT NOT NULL, est TEXT NOT NULL DEFAULT '{}', " +
+        't INTEGER NOT NULL)');
       // 📣 LAS PROMOS QUE ABRIÓ CADA UNO (16/10/2026): una vez por promo, para pagar `PROMO_PAGA` hasta `PROMO_TOPE_DIA`
       // por día (`dia`, en hora del este). Se borran a los `PROMO_DIAS` días (lo que pagó queda en la Tienda)
       // 🙋 LOS PEDIDOS DE LA GENTE (17/10/2026): `estado` '' espera, 'si'/'no' lo decidió `por`, 'hecho'/'no_pude' lo
@@ -5236,6 +5244,124 @@ export class Avisos {
     this.guardar('finales', f);
     return { ok: true };
   }
+
+  // ── 🛡️ EL ANTI-RAID (18/10/2026) ─────────────────────────────────────────────────────────────────────────────────────
+  // Lo elige el dueño de cada servidor con `/antiraid` (bot/antiraid.js); acá vive lo elegido y la vuelta de cada minuto.
+  antiraidCfg(gid) {
+    if (!/^\d{5,25}$/.test(String(gid || ''))) return { ...AR.AR_BASE };
+    const f = this.sql.exec('SELECT cfg FROM antiraid WHERE gid = ?', String(gid)).toArray()[0];
+    try { return { ...AR.AR_BASE, ...JSON.parse((f && f.cfg) || '{}') }; } catch (e) { return { ...AR.AR_BASE }; }
+  }
+
+  /** Guarda lo elegido, validado campo por campo: lo manda el Worker, pero el objeto no confía en nadie. */
+  antiraidGuardar(d) {
+    const gid = String((d && d.gid) || '');
+    if (!/^\d{5,25}$/.test(gid) || !d.cfg || typeof d.cfg !== 'object') return { error: 'datos' };
+    const c = d.cfg;
+    const id = (x) => (/^\d{5,25}$/.test(String(x || '')) ? String(x) : '');
+    const cerrado = c.cerrado && !Number.isNaN(Date.parse(c.cerrado.hasta || ''))
+      ? { hasta: new Date(Date.parse(c.cerrado.hasta)).toISOString(), nivel: Math.max(0, Math.min(4, Number(c.cerrado.nivel) || 0)) } : null;
+    const cfg = {
+      canal: id(c.canal), escudo: (Array.isArray(c.escudo) ? c.escudo : []).map(id).filter(Boolean).slice(0, 6),
+      oleada: c.oleada === true, staff: c.staff === true, cerrado,
+    };
+    this.sql.exec("INSERT INTO antiraid (gid, cfg, est, t) VALUES (?, ?, '{}', ?) " +
+      'ON CONFLICT(gid) DO UPDATE SET cfg = excluded.cfg, t = excluded.t', gid, JSON.stringify(cfg), Date.now());
+    return { ok: true, cfg };
+  }
+
+  /**
+   * La vuelta de cada minuto, servidor por servidor (uno roto no frena a los demás):
+   *  · el cierre de pánico vencido se abre solo (Discord vuelve a abrir las invitaciones, pero la verificación no);
+   *  · la OLEADA: cuántos miembros hay (`with_counts`) contra los de hace 2 a 4 minutos;
+   *  · el STAFF: lo nuevo del registro de auditoría desde la última vuelta, más las expulsiones y borrados de los
+   *    últimos minutos para contar «en masa» entre vueltas.
+   * Cada aviso se manda una vez cada `REPETIR_MS` (por tipo, quién y a quién).
+   */
+  async antiraidVuelta(ahora) {
+    const filas = this.sql.exec('SELECT gid, cfg, est FROM antiraid').toArray();
+    for (const f of filas) {
+      try { await this.antiraidUno(f, ahora); } catch (e) { this.medir('antiraid', 'error', 1); }
+    }
+  }
+
+  async antiraidUno(f, ahora) {
+    const env = this.env;
+    const gid = String(f.gid);
+    let cfg, est;
+    try { cfg = { ...AR.AR_BASE, ...JSON.parse(f.cfg || '{}') }; } catch (e) { cfg = { ...AR.AR_BASE }; }
+    try { est = JSON.parse(f.est || '{}') || {}; } catch (e) { est = {}; }
+    if (!cfg.oleada && !cfg.staff && !cfg.cerrado) return;
+    const avisos = [];
+    let usuarios = {};
+    let cambioCfg = false;
+    // ⏲️ el pánico vencido
+    if (cfg.cerrado && Date.parse(cfg.cerrado.hasta || '') <= ahora) {
+      await AR.abrir(env, gid, cfg.cerrado.nivel);
+      cfg.cerrado = null;
+      cambioCfg = true;
+      if (cfg.canal) {
+        await AR.mandar(env, cfg.canal, { content: '🛡️ Pasó el tiempo del cierre: el servidor volvió a abrirse (invitaciones, ' +
+          'mensajes directos y verificación como estaban).' });
+      }
+    }
+    // 🌊 la oleada
+    if (cfg.oleada && cfg.canal) {
+      const r = await AR.pedir(env, `/guilds/${gid}?with_counts=true`);
+      if (r.ok) {
+        const g = await r.json();
+        const n = Number(g.approximate_member_count) || 0;
+        if (n) est.m = [...(est.m || []).filter(([t]) => ahora - t <= 6 * 60 * 1000), [ahora, n]];
+        const o = AR.oleada(est.m, ahora);
+        if (o) avisos.push({ tipo: 'oleada', ...o });
+      }
+    }
+    // 🕵️ el staff
+    if (cfg.staff && cfg.canal) {
+      if (!est.roles || ahora - (est.roles.t || 0) > 10 * 60 * 1000) {
+        const r = await AR.pedir(env, `/guilds/${gid}/roles`);
+        if (r.ok) {
+          const roles = (await r.json()) || [];
+          est.roles = { t: ahora, ids: roles.filter((x) => AR.tieneP(x.permissions, AR.PELIGROSOS)).map((x) => String(x.id)) };
+        }
+      }
+      // la primera vuelta marca desde dónde: lo de antes de prenderlo no se avisa
+      if (!est.ult) est.ult = AR.snowflakeDe(ahora);
+      else {
+        const r = await AR.pedir(env, `/guilds/${gid}/audit-logs?limit=100&after=${est.ult}`);
+        if (r.ok) {
+          const j = await r.json();
+          const nuevas = (j.audit_log_entries || []).filter((e) => e && e.id)
+            .sort((a, b) => (BigInt(a.id) < BigInt(b.id) ? -1 : 1));
+          for (const u of j.users || []) usuarios[String(u.id)] = { bot: !!u.bot, username: u.username || '', global_name: u.global_name || '' };
+          const ventana = (est.w || []).filter((e) => ahora - AR.instante(e.id) <= AR.VENTANA_MS);
+          const yo = this.yo || ((this.leer('canales') || {}).yo) || '';
+          for (const r2 of AR.riesgos([...ventana, ...nuevas], usuarios, new Set((est.roles || {}).ids || []), yo)) avisos.push(r2);
+          est.w = [...ventana, ...nuevas.filter((e) => [20, 22, 12, 32].includes(e.action_type))
+            .map((e) => ({ id: e.id, user_id: e.user_id, action_type: e.action_type }))].slice(-300);
+          if (nuevas.length) est.ult = nuevas[nuevas.length - 1].id;
+          // los nombres de quien se nombra, para el próximo aviso que lo cuente entre vueltas
+          est.u = { ...(est.u || {}), ...usuarios };
+          const vivos = new Set(est.w.map((e) => String(e.user_id)));
+          for (const k of Object.keys(est.u)) if (!vivos.has(k) && !usuarios[k]) delete est.u[k];
+          usuarios = est.u;
+        } else if (r.status === 403) est.error = 'auditoria';
+      }
+    }
+    // 📣 los avisos, una vez cada uno
+    est.av = Object.fromEntries(Object.entries(est.av || {}).filter(([, t]) => ahora - t < AR.REPETIR_MS));
+    for (const a of avisos) {
+      const k = AR.claveAviso(a);
+      if (est.av[k]) continue;
+      const r = await AR.mandar(env, cfg.canal, AR.aviso(gid, a, usuarios));
+      est.av[k] = ahora;
+      this.medir('antiraid', a.tipo, 1);
+      if (!r.ok) est.error = 'canal';
+    }
+    this.sql.exec('UPDATE antiraid SET est = ?' + (cambioCfg ? ', cfg = ?' : '') + ' WHERE gid = ?',
+      ...(cambioCfg ? [JSON.stringify(est), JSON.stringify(cfg), gid] : [JSON.stringify(est), gid]));
+  }
+
 
   async fetch(req) {
     const ruta = new URL(req.url).pathname;
@@ -5345,6 +5471,9 @@ export class Avisos {
       if (ruta === '/pedidos-estados') return json(this.pedidosEstados(d));
       if (ruta === '/mudar-cuenta') return json(await this.mudarCuenta(d));
       if (ruta === '/pedidos-prueba') return json(this.pedidosPrueba(d));
+      // 🛡️ el anti-raid: lo lee y lo guarda el Worker (`/antiraid` y sus botones). No están en `RUTAS`: no se llega de afuera
+      if (ruta === '/antiraid-leer') return json({ cfg: this.antiraidCfg(d && d.gid) });
+      if (ruta === '/antiraid-guardar') return json(this.antiraidGuardar(d));
       // 🤝 el puntaje de los servidores: sólo lo guarda, tal cual, para el Dashboard (nunca sale a la página)
       if (ruta === '/tiers-ciclo') {
         if (!d || !Array.isArray(d.servidores) || d.servidores.length > 60) return json({ error: 'datos' }, 400);
@@ -5584,6 +5713,9 @@ export class Avisos {
     // horas se avisa si su evento todavía no empezó —`anotar()` descarta
     // lo que llega tarde—. Lo que ya estaba programado antes de las 3 (un
     // recordatorio) sale igual por su alarma.
+    // 🛡️ EL ANTI-RAID NO DUERME (Dlx, 18/10/2026: «sí, sólo el anti-raid»): el raid a DDF fue a las 22:49 y pudo ser a
+    // las 4 AM. Sólo mira los servidores cuyo dueño lo prendió; sin ninguno, es una consulta vacía
+    try { await this.antiraidVuelta(ahora); } catch (e) { this.medir('antiraid', 'error', 1); }
     if (d && d.dormido) {
       this.guardar('vigia', { t: ahora, dormido: true, canales: previo.canales, limpio: previo.limpio });
       return { ok: true, dormido: true };
