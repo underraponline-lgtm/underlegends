@@ -756,7 +756,8 @@ function LigaPerfil({ liga, id }) {
       </div>
       {otras.length ? (
         <Sec id="lgp-otras" titulo="Las otras ligas" enlace="Todas" href="#/ligas">
-          <nav className="lgp-otras" aria-label="Las otras ligas">
+          {/* filas parejas en la compu (18/10/2026): diez en dos de cinco, no siete y tres con un hueco al lado */}
+          <nav className="lgp-otras" aria-label="Las otras ligas" style={{ '--cols': Math.ceil(otras.length / Math.ceil(otras.length / 6)) }}>
             {otras.map((x) => (
               <a key={x.id} href={aLiga(x)} style={{ '--c': (liga.svs[x.sv] || {}).color || '#E41373' }}>
                 <img alt="" src={liga.logo(x.sv)} /><b>{x.n}</b><small>{siglaDe(x.sv)}</small>

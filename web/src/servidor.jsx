@@ -135,7 +135,8 @@ export function PerfilSv({ liga, sv, enc }) {
       <PromosSv liga={liga} sv={sv} />
       {buscados.length ? (
         <Sec id="sv-buscados" titulo={'Se busca en ' + siglaDe(sv)} enlace="Most Wanted" href="#/ranking/mw" extra="negra">
-          <div className="mw-rail">{buscados.map((b) => <Poster key={b.k} liga={liga} b={b} />)}</div>
+          {/* filas parejas en la compu (18/10/2026): ocho en dos de cuatro, no seis y dos con media fila vacía */}
+          <div className="mw-rail" style={{ '--cols': Math.ceil(buscados.length / Math.ceil(buscados.length / 6)) }}>{buscados.map((b) => <Poster key={b.k} liga={liga} b={b} />)}</div>
         </Sec>
       ) : null}
       <Sec id="sv-mas" titulo="Los otros servidores">

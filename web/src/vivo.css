@@ -2200,7 +2200,9 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .fechas2{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
   /* el perfil de un servidor: los buscados se estiran (hasta 320) en vez de dejar media fila negra */
   .app #sv-buscados .mw-rail{grid-auto-flow:row;grid-template-columns:repeat(auto-fit,minmax(184px,320px));overflow:visible}
-  .app #sv-buscados .mw-rail:has(> :nth-child(3)){grid-template-columns:repeat(auto-fit,minmax(184px,1fr))}
+  .app #sv-buscados .mw-rail:has(> :nth-child(3)){grid-template-columns:repeat(var(--cols,6),minmax(0,1fr))}
+  /* 🧹 filas parejas (18/10/2026, Dlx: «que no haya cosas que ocupen espacio tontamente»): el JSX dice cuántas por fila */
+  .app .lgp-otras{grid-template-columns:repeat(var(--cols,6),minmax(0,1fr))}
   .app #sv-buscados .mw-rail .poster{width:auto}
   .app .evp-como .evp-nota{grid-column:1 / -1}
 }

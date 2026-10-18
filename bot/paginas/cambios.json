@@ -11,6 +11,27 @@
  ],
  "cambios": [
   {
+   "version": "3.58",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T15:19:00-04:00",
+   "titulo": "La llave con los colores de su servidor",
+   "items": [
+    "🎨 La llave se ve con los colores de su servidor (o con tu tema, si elegiste uno), y las cartas van sueltas, sin caja.",
+    "🧹 Las otras ligas, Se busca y los títulos de sección ya no dejan huecos ni se parten en tres renglones.",
+    "🔤 Los organizadores de Eventos aparecen con su nombre de la Liga."
+   ]
+  },
+  {
+   "version": "3.57",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T15:19:00-04:00",
+   "titulo": "Anti-raid AUTOMÁTICO",
+   "items": [
+    "🤖 El anti-raid tiene una opción experimental, AUTOMÁTICO: si nadie responde un aviso en 2 minutos, el bot hace lo más seguro (cierra el servidor o le saca los roles a quien hace daño) y deja un botón para deshacerlo.",
+    "🛡️ Nunca expulsa ni banea, y la prende sólo el dueño del servidor con /antiraid."
+   ]
+  },
+  {
    "version": "3.56",
    "dia": "2026-10-18",
    "cuando": "2026-10-18T14:56:00-04:00",

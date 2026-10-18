@@ -2960,6 +2960,16 @@ def _agenda():
             # 👥 de a uno (14/10/2026): «FLENNZS + LEWITO + AX» son tres, cada uno con su evento
             for o in (_os(x).get('os') or [x.get('organizador') or x.get('autor') or '']):
                 o = re.sub(r'^\d+\s*\|\s*', '', _org(o))
+                # 🔤 QUIÉN ES, CON EL RECONOCIMIENTO DE NOMBRES DE TODO EL SISTEMA (18/10/2026, `bot/nombres.py`): «LA NOCHE
+                # NUNCA PERDONA» es Drexx, «John pork» es Adriagner, «gxbrrlaljndrr» es GP; si no es nadie de la Lista, el
+                # nombre limpio. Y una mención rota («<@1130…738> ORGANIZADOR») se busca por la cuenta; si no está, afuera
+                try:
+                    import nombres as NB
+                    roto = re.search(r'\d{15,}|[<>]|ORGANIZ', o, re.I)
+                    did = (re.search(r'\d{15,22}', o) or [''])[0] if roto else ''
+                    o = NB.reconocer().quien('' if roto else o, did)[0] or ('' if roto else NB.limpio(o))
+                except Exception:                        # noqa: BLE001
+                    pass
                 if o and x.get('servidor'):
                     por.setdefault(x['servidor'], Counter())[o] += 1
         return {sv: [[o, n] for o, n in c.most_common(3)] for sv, c in por.items()} or None

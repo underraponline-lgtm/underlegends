@@ -45,7 +45,7 @@ h1,h2,h3,p{margin:0}
 .ir-a a{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;border:1.5px solid var(--linea);padding:9px 10px;flex:none}
 .ir-t{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.06em;color:var(--gris);align-self:center;margin-right:4px}
 .sec{padding:22px 16px 6px}
-.sec-t{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-top:2px solid var(--linea);padding-top:12px;margin-bottom:14px}
+.sec-t{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px;border-top:2px solid var(--linea);padding-top:12px;margin-bottom:14px}
 .sec-t h2{font:900 22px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
 .sec-t a{display:inline-flex;align-items:center;gap:6px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;white-space:nowrap}
 .rail{display:grid;grid-auto-flow:column;grid-auto-columns:150px;gap:10px;overflow:hidden}
