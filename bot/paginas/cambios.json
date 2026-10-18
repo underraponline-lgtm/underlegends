@@ -13,7 +13,7 @@
   {
    "version": "3.34",
    "dia": "2026-10-18",
-   "cuando": "2026-10-18T00:50:00-04:00",
+   "cuando": "2026-10-18T00:35:00-04:00",
    "titulo": "El podio de cada liga",
    "items": [
     "🥇 El top 3 de cada liga es un podio: cada uno en su escalón, con el color de su medalla.",
@@ -23,7 +23,7 @@
   {
    "version": "3.33",
    "dia": "2026-10-18",
-   "cuando": "2026-10-18T00:25:00-04:00",
+   "cuando": "2026-10-18T00:16:00-04:00",
    "titulo": "Ascensos, en cada liga y en el Ranking",
    "items": [
     "📈 Cada liga de un servidor con ascenso tiene su pestaña «Ascenso», con la tabla al día.",
