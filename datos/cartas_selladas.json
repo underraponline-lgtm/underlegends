@@ -67,7 +67,7 @@
    "temporada": "e7a555b308b0:906ce275eeb8"
   },
   "Aktybo": {
-   "competitivo": "0ee308948dc3:aa2fab0a1b31",
+   "competitivo": "46eb8e6853d4:aa2fab0a1b31",
    "pais": "7c22c1ffa658:631b7a4c93c4",
    "servidor": "1a26e5ceb04a:f7bc857dd9f6:15af16"
   },
@@ -312,7 +312,7 @@
    "servidor": "5326ca7e9e57:f7bc857dd9f6:ce9c52"
   },
   "Dcet": {
-   "competitivo": "f393350a7927:aa2fab0a1b31",
+   "competitivo": "72a86b1745e6:aa2fab0a1b31",
    "pais": "eb6188a7f613:631b7a4c93c4",
    "servidor": "1ab1e4af70fb:f7bc857dd9f6:be5547"
   },
@@ -486,10 +486,10 @@
    "servidor": "236a93dc78bf:f7bc857dd9f6:055f77"
   },
   "GP": {
-   "competitivo": "b5d3b230e981:aa2fab0a1b31",
+   "competitivo": "74dd4e0e1f95:aa2fab0a1b31",
    "pais": "9debd3454d6b:631b7a4c93c4",
    "servidor": "f0e3954727b8:f7bc857dd9f6:331c1e",
-   "temporada": "81943b83d17e:906ce275eeb8"
+   "temporada": "6c0402b9f890:906ce275eeb8"
   },
   "Galileo": {
    "competitivo": "dc1d0f3861bb:aa2fab0a1b31",
@@ -589,7 +589,7 @@
    "servidor": "6a769c039672:f7bc857dd9f6:6a5f1a"
   },
   "IFX": {
-   "competitivo": "034a464d78db:aa2fab0a1b31",
+   "competitivo": "b242f8b102b6:aa2fab0a1b31",
    "servidor": "3b90a9a852d3:f7bc857dd9f6:15af16"
   },
   "ISAIAS": {},
@@ -637,7 +637,7 @@
    "servidor": "1b54240d32bf:f7bc857dd9f6:055f77"
   },
   "Jayden": {
-   "competitivo": "cd19a67567ba:aa2fab0a1b31",
+   "competitivo": "13288c316795:aa2fab0a1b31",
    "pais": "e410f0c9289c:631b7a4c93c4",
    "servidor": "ee3634292b86:f7bc857dd9f6:0ab0a0"
   },
@@ -1052,7 +1052,7 @@
    "servidor": "c84e1b99747c:f7bc857dd9f6:be5547"
   },
   "Molt": {
-   "competitivo": "2027e5185774:aa2fab0a1b31",
+   "competitivo": "1f02484d444a:aa2fab0a1b31",
    "pais": "bc6a3eebce0e:631b7a4c93c4",
    "servidor": "fe591357dae9:f7bc857dd9f6:2ac9f1"
   },
@@ -1362,7 +1362,7 @@
   "SGB": {},
   "SHULIOT": {},
   "SK8": {
-   "competitivo": "a540e587e261:aa2fab0a1b31",
+   "competitivo": "7dd42385a091:aa2fab0a1b31",
    "pais": "5c9638c7131f:631b7a4c93c4",
    "servidor": "d209c53f01a1:f7bc857dd9f6:972ec9"
   },
@@ -1816,5 +1816,5 @@
    "servidor": "7f8885a35a6d:f7bc857dd9f6:93a344"
   }
  },
- "cuando": "2026-10-18T18:30:48+00:00"
+ "cuando": "2026-10-18T19:30:13+00:00"
 }
