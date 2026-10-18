@@ -395,10 +395,10 @@ function slidesDe(liga, items) {
       const pieza = (z, i) => {
         if (!z) return null;
         const kz = kDe(z);
-        const fz = liga.T[kz];
+        const cz = kz ? liga.cartaDe(kz, { sv: it.sv }) : null;
         return (
           <li key={i} className={'p' + (i + 1)}>
-            {fz && (fz.c || []).includes('temporada') ? <Carta liga={liga} k={kz} cual="temporada" cls="st-p3-c" abre={false} />
+            {cz ? <Carta liga={liga} k={kz} cual={cz} cls="st-p3-c" abre={false} />
               : <Cara liga={liga} k={kz} nombre={z[0]} cls="st-p3-cara" />}
             <b>{i + 1}º</b><span>{limpio(z[0])}</span>
           </li>

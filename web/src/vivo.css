@@ -3004,6 +3004,14 @@ a.rk-z:hover{border-color:var(--linea)}
 .lk-cara img{width:100%;height:100%;object-fit:cover;display:block}
 .lk-l.g .lk-cara.ini{background:var(--inv-tinta);color:var(--inv)}
 .lk-l.copa .lk-cara.ini{background:#030304;color:#F6F6F6}
+/* 🃏 la carta chica en la llave (18/10/2026): 28 × 41, la proporción de las cartas (300 × 438). Quien perdió, apagada
+   como la cara. ✨ Desde el nivel 8 del Pase, con borde y brillo dorados que laten (se apaga con «Menos animaciones») */
+.lk-carta{width:28px;height:41px;flex:none;display:block;overflow:hidden;border-radius:2px;background:var(--suave)}
+.lk-carta img{width:100%;height:100%;object-fit:cover;display:block}
+.lk-arbol .lk-carta{width:24px;height:35px}
+.lk-l.x .lk-carta{filter:grayscale(1);opacity:.6}
+.lk-carta.brilla{box-shadow:0 0 0 1.5px #E5B800,0 0 9px rgba(229,184,0,.7);animation:lk-brilla 2.6s ease-in-out infinite}
+@keyframes lk-brilla{50%{box-shadow:0 0 0 1.5px #F5D04A,0 0 16px rgba(245,208,74,.95)}}
 .lk-caras{display:flex;flex:none}
 .lk-caras .lk-cara+.lk-cara{margin-left:-8px}
 .lk-ok{flex:none;font:900 14px/1 Archivo,sans-serif}

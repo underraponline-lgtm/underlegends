@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "3.54",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T05:53:00-04:00",
+   "titulo": "Tu carta en la llave",
+   "items": [
+    "🃏 En las llaves, cada uno aparece con su carta en miniatura.",
+    "✨ Nuevo premio del Pase: desde el nivel 8, tu carta brilla en las llaves.",
+    "🏟️ En lo de cada servidor (su página, sus eventos, sus llaves) se ve la carta de Servidor de ese servidor."
+   ]
+  },
+  {
    "version": "3.53",
    "dia": "2026-10-18",
    "cuando": "2026-10-18T05:47:00-04:00",

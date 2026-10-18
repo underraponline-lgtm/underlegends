@@ -669,6 +669,8 @@ def armar():
         # 👥 y el nombre y la cara de los que organizan sin estar en la tabla (staff, o fuera de las 200): `{clave:
         # [nombre, cara]}`, la cara como en `avs` (`Liga.orgsDe()`)
         'orgp': _orgp,
+        # ✨ los que llegaron al nivel del Pase que hace brillar su carta en las llaves (`pase.NIVEL_BRILLO`, 18/10/2026)
+        'brillan': _brillan(tabla, _pid_k),
         # 📋 los formatos de TODA la temporada, con un nombre por formato (Dlx, 14/10/2026). Ver `formato_evento()`
         'formatos': _formatos(regs),
         # 🔴 LOS EVENTOS DE LA TEMPORADA, NO LAS PARTICIPACIONES. El Inicio
@@ -776,6 +778,24 @@ def _staff(x):
     if not _org(x.get('organizador')) and x.get('autor'):
         out['aut'] = x['autor']
     return out
+
+
+def _brillan(tabla, pid_k):
+    """✨ Las claves de la tabla con el nivel del Pase que hace brillar su carta en las llaves (Dlx, 18/10/2026: «carta
+    chica + Pase»). Del nivel de cada cuenta (`datos/pase_niveles.json`, que deja el Pase) y su clave."""
+    try:
+        import pase as PA
+        with io.open(os.path.join(BASE, 'datos', 'pase_niveles.json'), encoding='utf-8') as f:
+            niv = (json.load(f) or {}).get('niveles') or {}
+    except (OSError, ValueError, ImportError):
+        return []
+    tope = getattr(PA, 'NIVEL_BRILLO', 8)
+    out = []
+    for f in tabla or []:
+        did = str((pid_k.get(f.get('k')) or ('', ''))[1] or '')
+        if did and int(niv.get(did) or 0) >= tope:
+            out.append(f['k'])
+    return sorted(out)
 
 
 def _org(s):

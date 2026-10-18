@@ -97,11 +97,23 @@ function Persona({ ctx, x, conCara = true, perdio = false }) {
   const on = ctx.sigo === id;
   return (
     <button type="button" className={'lk-p' + (on ? ' on' : '')} aria-pressed={on} onClick={() => ctx.seguir(id)}>
-      {conCara ? <Cara liga={ctx.liga} k={f ? f.k : ''} nombre={f ? f.n : sinBanderas(x).txt} cls="lk-cara" /> : null}
+      {conCara ? <Mini ctx={ctx} f={f} nombre={f ? f.n : sinBanderas(x).txt} /> : null}
       <Nombre x={x} f={f} />
       {ctx.marca(x, f, perdio)}
     </button>
   );
+}
+
+// 🃏 LA CARTA EN VEZ DEL CIRCULITO (Dlx, 18/10/2026: «en vez del cuadrado, la tarjeta del participante… y los que no
+// están verificados, simplemente su cuadrado», y a la pregunta: «carta chica + Pase»). Quien tiene carta lleva la suya
+// en miniatura —la de Servidor si es de ESE servidor, si no la de Temporada (`liga.cartaDe()`)—; quien no, su cara. Y
+// desde el nivel 8 del Pase, brilla
+function Mini({ ctx, f, nombre }) {
+  const liga = ctx.liga;
+  const cual = f ? liga.cartaDe(f.k, { sv: ctx.L && ctx.L.sv }) : null;
+  const url = cual ? liga.cartaUrl(f.k, cual) : null;
+  if (!url) return <Cara liga={liga} k={f ? f.k : ''} nombre={nombre} cls="lk-cara" />;
+  return <span className={'lk-carta' + (liga.brilla(f.k) ? ' brilla' : '')}><img alt="" src={url} loading="lazy" /></span>;
 }
 
 // ── un lado de una batalla: una persona o un equipo (las caras juntas, adelante) ──

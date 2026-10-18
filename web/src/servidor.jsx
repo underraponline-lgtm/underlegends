@@ -106,7 +106,8 @@ export function PerfilSv({ liga, sv }) {
       </div>
       {gente.length ? (
         <Sec id="sv-gente" titulo={'Los que mandan en ' + siglaDe(sv)} enlace="Todos los raperos" href="#/ranking" extra="negra">
-          <div className="rail mcs2">{gente.map((f) => <McPersona key={f.k} liga={liga} f={f} />)}</div>
+          {/* 🃏 la carta según dónde (18/10/2026): acá, la de Servidor de este servidor si la tiene */}
+          <div className="rail mcs2">{gente.map((f) => <McPersona key={f.k} liga={liga} f={f} cual={liga.cartaDe(f.k, { sv }) || 'temporada'} />)}</div>
         </Sec>
       ) : null}
       {fechas.length ? (

@@ -96,14 +96,15 @@ export function vivoPendiente() {
   return xs.find((t) => /^vivo/.test(String(t.id || '')) && !t.hecha) || null;
 }
 
-const TIPO = { tarjeta: 'Tu tarjeta de', insignia: 'Insignia', titulo: 'Título', color: 'Color de nombre' };
+const TIPO = { tarjeta: 'Tu tarjeta de', insignia: 'Insignia', titulo: 'Título', color: 'Color de nombre', llave: '' };
 
 /** Lo que da un nivel, en palabras cortas: «+200» o «+500 · Insignia Pase Bronce» */
 export function premioTexto(p, largo) {
   if (!p) return '';
-  const extra = p[2] === 'color' ? 'tu nombre en dorado' : p[2] ? TIPO[p[2]] + ' ' + (p[2] === 'titulo' ? '«' + p[3] + '»' : p[3]) : '';
+  const extra = p[2] === 'color' ? 'tu nombre en dorado' : p[2] === 'llave' ? 'tu carta brilla en las llaves'
+    : p[2] ? TIPO[p[2]] + ' ' + (p[2] === 'titulo' ? '«' + p[3] + '»' : p[3]) : '';
   if (!largo) return extra || '+' + num(p[1]);
-  return '+' + num(p[1]) + ' Puntos de Tienda' + (extra ? ' y ' + (p[2] === 'color' ? extra : extra.charAt(0).toLowerCase() + extra.slice(1)) : '');
+  return '+' + num(p[1]) + ' Puntos de Tienda' + (extra ? ' y ' + (p[2] === 'color' || p[2] === 'llave' ? extra : extra.charAt(0).toLowerCase() + extra.slice(1)) : '');
 }
 
 /**

@@ -28,7 +28,8 @@ LAS REGLAS (los números, acá arriba: van con el rebalanceo del final)
   segundos de una llave en vivo, con qué se pone un precio). **Las semanales no cambian**: ver `config()`.
 - **Una cumplida no se pierde**: el objeto la anota (`pase_hecho`), así que una llave corregida no te baja de nivel.
 - **Cada nivel cuesta `XP_NIVEL`** (los primeros `XP_PRIMEROS`) **y paga `TIENDA_NIVEL` Puntos de Tienda**; algunos
-  dan algo para tu perfil (`ESPECIALES`): la tarjeta de Temporada, dos insignias, dos títulos y el nombre dorado.
+  dan algo para tu perfil (`ESPECIALES`): la tarjeta de Temporada, dos insignias, dos títulos, el nombre dorado y,
+  desde el 18/10/2026, tu carta con brillo en las llaves (el 8).
   **El último deja la insignia de la temporada, que queda para siempre, y te pone en el Salón del Pase.**
 - **Después del último nivel sigue la cola** (`COLA`): cada tanto de XP, más Puntos de Tienda (Dlx, 06/10: *«2. B»*,
   poco en cada nivel y el resto después del 30).
@@ -150,12 +151,16 @@ ESPECIALES = {
     # 🎟️ la Temporada es la recompensa del nivel 1 (Dlx, 05/10/2026: «C», «nivel 1»): la desbloquea `verificados.puede()`
     1: ('tarjeta', 'Temporada'),
     5: ('insignia', 'Pase Bronce'),
+    # ✨ tu carta brilla en las llaves (Dlx, 18/10/2026: «carta chica + Pase»): la página la dibuja con brillo dorado
+    8: ('llave', 'Tu carta brilla en las llaves'),
     10: ('titulo', 'De la casa'),
     15: ('insignia', 'Pase Plata'),
     20: ('color', COLOR),
     25: ('titulo', 'Pilar de DRA'),
     30: ('insignia', 'Pase Oro'),
 }
+#: ✨ desde qué nivel brilla tu carta en las llaves (lo lee `subir_web.py` para la página)
+NIVEL_BRILLO = 8
 #: los niveles que salen en Publicaciones para que te feliciten (Dlx, 06/10/2026: «5. c»). El último, además, es el
 #: Salón del Pase (Dlx, 06/10: «4. B»)
 PUBLICAR = (10, 30)
@@ -441,8 +446,9 @@ def _self_check():
     ok(u[:4] == [300, 600, 900, 1900] and all(b > a for a, b in zip(u, u[1:])),
        'los tres primeros cuestan 300 y después 1.000: la XP pedida sólo crece  %s' % u[:5])
     ok(ps[-1][2] == 'insignia' and all(p[1] > 0 for p in ps), 'todos pagan Tienda y el último es una insignia')
-    ok({p[2] for p in ps if p[2]} == {'tarjeta', 'insignia', 'titulo', 'color'} and ps[0][2] == 'tarjeta',
-       'el nivel 1 es la tarjeta de Temporada; los demás premios: insignias, títulos y color')
+    ok({p[2] for p in ps if p[2]} == {'tarjeta', 'insignia', 'titulo', 'color', 'llave'} and ps[0][2] == 'tarjeta'
+       and ps[NIVEL_BRILLO - 1][2] == 'llave',
+       'el nivel 1 es la tarjeta de Temporada; los demás premios: insignias, títulos, color y el brillo en las llaves (el 8)')
     todas = DIARIAS_NUEVAS + SEMANALES + TEMPORADA + TEMPORADA_NUEVAS
     ids = [t[0] for t in todas]
     ok(len(ids) == len(set(ids)) and all(t[3] in MIDE and t[4] >= 1 and t[5] > 0 for t in todas),

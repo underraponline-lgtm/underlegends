@@ -179,6 +179,19 @@ export class Liga {
     const v = typeof f.cv === 'string' && i >= 0 ? f.cv.split('.')[i] : '';
     return this.d.r2 + '/' + k + '/' + cual + '.webp' + (v ? '?v=' + v : '');
   }
+  // 🃏 QUÉ CARTA REPRESENTA A CADA UNO, SEGÚN DÓNDE (Dlx, 18/10/2026: «según dónde»). En algo de un servidor —su llave,
+  // su página, sus eventos— la de Servidor, si es la de ESE servidor; en lo competitivo (`comp`), la Competitiva; en lo
+  // demás, la de Temporada. Si no tiene la que toca, la de Temporada; si tampoco, la que tenga; sin ninguna, `null`
+  cartaDe(k, donde = {}) {
+    const f = this.T[k];
+    const c = (f && f.c) || [];
+    if (!c.length) return null;
+    if (donde.sv && c.includes('servidor') && String(f.sv || '').toUpperCase() === String(donde.sv).toUpperCase()) return 'servidor';
+    if (donde.comp && c.includes('competitivo')) return 'competitivo';
+    return c.includes('temporada') ? 'temporada' : c[0];
+  }
+  // ✨ ¿su carta brilla en las llaves? (el nivel 8 del Pase: `brillan` del payload)
+  brilla(k) { return !!k && (this.d.brillan || []).includes(k); }
   // ¿la imagen de esa carta es de antes de los números de ahora? Lo mide el ciclo (`_versiones()` de subir_web.py,
   // `vj`); es el `vieja()` de app.js. Dlx, 01/10/2026: Makmah #3 en su carta y cuarto en Los que mandan — la carta se
   // estaba redibujando y no lo decía

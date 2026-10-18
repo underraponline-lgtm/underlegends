@@ -432,7 +432,7 @@ function Campeones({ liga }) {
         const f = r[3] ? liga.T[r[3]] : liga.fila(r[0] || g[0]);
         return (
           <button type="button" key={ll.n} className="evp-cp" onClick={() => accion.llave(ll.n)}>
-            {f && (f.c || []).includes('temporada') ? <Carta liga={liga} k={f.k} cual="temporada" cls="evp-cp-ci" abre={false} />
+            {f && liga.cartaDe(f.k, { sv: ll.sv }) ? <Carta liga={liga} k={f.k} cual={liga.cartaDe(f.k, { sv: ll.sv })} cls="evp-cp-ci" abre={false} />
               : <span className="evp-cp-sin"><Cara liga={liga} k={f ? f.k : ''} nombre={g[0] || '?'} cls="cara evp-cp-cara" /></span>}
             <small><img alt="" src={liga.logo(ll.sv)} />{siglaDe(ll.sv)} · {liga.cuando(liga.fechaLlave(ll))}</small>
             <b>{g.join(' y ')}</b>
@@ -771,7 +771,7 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
     momento = (
       <div className={'evp-mo ult' + (f ? '' : ' sin-carta')}>
         <span className="tag">ÚLTIMO CAMPEÓN · {liga.cuando(liga.fechaLlave(ultima)).toUpperCase()}</span>
-        {f ? <div className="evp-mo-carta"><Carta liga={liga} k={f.k} cual="temporada" cls="evp-mo-ci" /></div> : null}
+        {f ? <div className="evp-mo-carta"><Carta liga={liga} k={f.k} cual={liga.cartaDe(f.k, { sv: ultima.sv }) || 'temporada'} cls="evp-mo-ci" /></div> : null}
         <div className="evp-mo-txt">
           <div className="evp-mo-n"><img alt="" src={liga.logo(ultima.sv)} /><b>{g.join(' y ')}</b></div>
           <small className="evp-mo-s">{limpio(ultima.nombre)} · {siglaDe(ultima.sv)} · {ultima.participantes} raperos</small>
