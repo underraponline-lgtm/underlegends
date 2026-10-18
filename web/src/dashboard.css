@@ -250,6 +250,15 @@
 .db-at b{display:block;font:800 15px/1.2 Archivo,sans-serif}
 .db-at small{display:block;margin-top:2px;color:var(--gris)}
 .db-ok{margin:0;padding:10px 12px;border:2px solid var(--verde);font-weight:700}
+/* 🙋 los pedidos de la gente (17/10/2026) */
+.db-ped{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.db-ped li{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;padding:10px 12px;border:2px solid var(--suave)}
+.db-ped li.abierto{border-color:var(--magenta-tx)}
+.db-ped b{display:block;font:800 14px/1.3 Archivo,sans-serif}
+.db-ped small{display:block;margin-top:2px;color:var(--gris)}
+.db-ped-tx,.db-ped-pr{margin:6px 0 0;font-size:13px;overflow-wrap:anywhere}
+.db-ped-b{display:flex;gap:6px;flex:none}
+@media (max-width: 599.98px){.db-ped li{flex-direction:column}}
 /* 🔴 lo que avisó Logs (17/10/2026) */
 .db-logs{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .db-log{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;padding:10px 12px;border:2px solid var(--suave);border-left-width:6px}

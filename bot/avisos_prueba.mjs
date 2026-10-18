@@ -1654,6 +1654,26 @@ const ok = (cond, que, det) => {
     const yo = ((hi.meses[A.diaET().slice(0, 7)] || []).find((x) => x[0] === NUEVO) || [])[1];
     ok(yo === 2 + 60, 'el Hincha del mes cuenta la XP de la página del mes, con sus topes (seguir 2 + felicitar 60)',
       JSON.stringify(hi));
+    // 🙋 los pedidos de la gente y pasar todo de una cuenta a otra (17/10/2026: Lvel, «Todo»)
+    const VIEJA = '1526612644642160721', NUEVA = '1241407042195816459';
+    const p1 = await (await o.pedir({ quien: NUEVA, tipo: 'cuenta', k: 'lvel', texto: 'perdí mi cuenta vieja', prueba: { apodo_dra: '👤 | Lvel' } })).json();
+    const p2 = await (await o.pedir({ quien: NUEVA, tipo: 'cuenta', k: 'lvel', texto: 'otra vez' })).json();
+    const d1 = o.duenoPedido({ id: p1.id, si: true, por: '739338101603696681' });
+    const pcl = o.pedidosCiclo().pedidos;
+    ok(p1.ok && p2.ya && p2.id === p1.id && d1.estado === 'si' && pcl.length === 1 && pcl[0].quien === NUEVA && pcl[0].k === 'lvel'
+      && o.duenoPedido({ id: p1.id, si: false }).error === 'ya',
+    'un pedido de cuenta: el mismo dos veces es uno, se aprueba una vez y el ciclo lo ve para aplicarlo', JSON.stringify([p1, p2, d1, pcl]));
+    sql.exec('INSERT INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, 777, ?)', 'x:viejo', VIEJA, Date.now());
+    o.xpVio(VIEJA, 'sigue', 'konan');
+    o.xpVio(NUEVA, 'sigue', 'konan');
+    sql.exec('INSERT INTO sigue (quien, a, t) VALUES (?, ?, ?)', VIEJA, 'oasis', Date.now());
+    sql.exec("INSERT INTO sesiones (h, quien, t, vence) VALUES ('hv', ?, ?, ?)", VIEJA, Date.now(), Date.now() + 864e5);
+    const mu = await o.mudarCuenta({ viejo: VIEJA, nuevo: NUEVA });
+    const de = (t, q) => sql.exec(`SELECT COUNT(*) AS n FROM ${t} WHERE quien = ?`, q).toArray()[0].n;
+    ok(mu.ok && de('tienda', VIEJA) === 0 && de('tienda', NUEVA) >= 1 && de('xp_log', VIEJA) === 0 && de('xp_log', NUEVA) >= 1
+      && de('sigue', NUEVA) >= 1 && de('sesiones', VIEJA) === 0 && o.pedidosEstados({ estados: { [p1.id]: { ok: true } } }).n === 1,
+    'pasar la cuenta: la Tienda, la XP y a quién sigue van a la nueva (sin repetir lo que ya tenía), la vieja ya no entra',
+    JSON.stringify(mu));
     sql.exec("INSERT INTO subs (endpoint, p256dh, auth, alta, visto, quien) VALUES ('https://push/x', 'p', 'a', 1, 1, ?)", NUEVO);
     const r3 = o.rachaDe(NUEVO);
     sql.exec("UPDATE subs SET quien = '' WHERE endpoint = 'https://push/x'");
@@ -2055,6 +2075,13 @@ const ok = (cond, que, det) => {
   ok(lg.map((x) => x.id + x.nivel).join() === '1rojo,2amarillo,5rojo' && lg[0].tit === '🔴 nicks se freno: iba a cambiar 182 apodos.'
     && lg[0].mas[0] === 'No escribio nada.' && lg[2].tit === 'Auditoría',
     'Logs en el Dashboard: sólo rojos y amarillos de los últimos 3 días, sin el formato de Discord', JSON.stringify(lg));
+  // 🙋 un pedido vale con su tipo, el perfil donde hace falta, un texto, el país o el video
+  ok(A.validarPedido({ tipo: 'cuenta', k: 'lvel', texto: 'perdí la cuenta' }).tipo === 'cuenta'
+    && A.validarPedido({ tipo: 'cuenta', texto: 'sin perfil' }).error === 'perfil'
+    && A.validarPedido({ tipo: 'pais', cc: 'CL' }).cc === 'cl' && A.validarPedido({ tipo: 'pais', cc: 'chile' }).error === 'pais'
+    && A.validarPedido({ tipo: 'video', vid: 'abcdefghijk', texto: 'no soy yo' }).vid === 'abcdefghijk'
+    && A.validarPedido({ tipo: 'otro', texto: 'x' }).error === 'tipo',
+  'los pedidos: tipo conocido, perfil para cuenta e identidad, país de dos letras, video de YouTube');
   // 🏆 MES AWARDS: Dlx saca nominados de las dieciséis, y de nada más
   const ms = A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['rapero:Ana', 'organizador:Velatz', 'liga:fmsperu'] });
   ok(ms && ms.quitar.length === 3 && A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['otra:x'] }) === undefined

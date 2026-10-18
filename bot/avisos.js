@@ -1130,6 +1130,34 @@ export const CANAL_RED = '1500690475089399858';
 export const CANAL_LOGS = '1504110449535483924';
 //: 🔴 el servidor del canal de Logs (DRA), para el link a cada aviso desde el Dashboard
 export const GUILD_LOGS = '841017460341604382';
+
+// ── 🙋 LOS PEDIDOS DE LA GENTE (Dlx, 17/10/2026: «deberíamos hacer un sistema de reportes… ¿qué pasa si alguien pierde
+// acceso a su cuenta de Discord y tiene una nueva?»; a las preguntas: aprueba «Vos o un Moderador», al aprobar pasa
+// «Todo» —Puntos de Tienda, XP, Pase, seguidores, foto, fondo, servidor, redes— y se puede pedir también «ese no soy yo /
+// mi nombre está mal», «mi país o mi bandera están mal» y «un video que no es mío»). Lo pide la persona desde Mi cuenta
+// con SU Discord; el Dashboard lo muestra con las pruebas; lo aprobado de cuenta y de país lo aplica el ciclo
+// (`bot/pedidos.py`: la Lista, y `mudarCuenta()` acá)
+//: los tipos, como los dice la página
+export const PEDIDO_TIPOS = { cuenta: 'Perdí mi cuenta de Discord', identidad: 'Ese no soy yo / mi nombre está mal',
+  pais: 'Mi país o mi bandera están mal', video: 'Un video que no es mío' };
+//: cuántos sin resolver puede tener cada uno, y cuánto se guarda lo resuelto
+export const PEDIDO_TOPE = 3;
+export const PEDIDO_DIAS = 30;
+
+/** ¿Vale este pedido? `{tipo, k, texto, cc, vid}` limpio, o `{error}`. Pura: la prueba `bot/avisos_prueba.mjs`. */
+export function validarPedido(d) {
+  if (!d || typeof d !== 'object' || !PEDIDO_TIPOS[d.tipo]) return { error: 'tipo' };
+  const k = String(d.k || '');
+  if (k && !claveValida(k)) return { error: 'perfil' };
+  if ((d.tipo === 'cuenta' || d.tipo === 'identidad') && !k) return { error: 'perfil' };
+  const texto = String(d.texto || '').replace(/[\u0000-\u001f]+/g, ' ').trim().slice(0, 400);
+  if (texto.length < 3 && d.tipo !== 'pais') return { error: 'texto' };
+  const cc = String(d.cc || '').toLowerCase();
+  if (d.tipo === 'pais' && !/^[a-z]{2}$/.test(cc)) return { error: 'pais' };
+  const vid = String(d.vid || '');
+  if (d.tipo === 'video' && !/^[A-Za-z0-9_-]{11}$/.test(vid)) return { error: 'video' };
+  return { tipo: d.tipo, k, texto, cc: d.tipo === 'pais' ? cc : '', vid: d.tipo === 'video' ? vid : '' };
+}
 //: cuántos días de Logs mira el Dashboard
 export const LOGS_DIAS = 3;
 
@@ -2322,6 +2350,10 @@ const RUTAS = {
   '/avisos/dueno': 'POST',
   // 🔴 lo que avisó el canal de Logs, para el Dashboard (`logsRojos()`)
   '/avisos/dueno-logs': 'POST',
+  // 🙋 LOS PEDIDOS DE LA GENTE (17/10/2026): perdí mi cuenta, ese no soy yo, mi país, un video que no es mío. Ver `pedir()`
+  '/avisos/pedido': 'POST', '/avisos/mis-pedidos': 'POST', '/avisos/dueno-pedido': 'POST',
+  // y para el ciclo, con su clave: lo aprobado que hay que aplicar, cómo salió, y pasar lo de una cuenta a otra
+  '/avisos/pedidos-ciclo': 'GET', '/avisos/pedidos-estados': 'POST', '/avisos/mudar-cuenta': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx) y los ajustes para el ciclo (con su clave)
   '/avisos/dueno/ajuste': 'POST', '/avisos/ajustes': 'GET',
   // ▶️ correr el ciclo ahora, desde el Dashboard (sólo Dlx): ver `cicloAMano()`
@@ -3822,6 +3854,72 @@ export async function rutaAvisos(req, env, ruta) {
     if (!r.ok) return json({ error: 'discord', estado: r.status }, 502);
     return json({ t: Date.now(), canal: CANAL_LOGS, guild: GUILD_LOGS, xs: logsRojos(await r.json(), Date.now()) });
   }
+  // 🙋 UN PEDIDO, Y LOS TUYOS: quién lo pide lo dice Discord (o la sesión). Para «perdí mi cuenta» se suman las pruebas que
+  // ve el bot de la cuenta NUEVA en DRA —su apodo, si es Miembro y desde cuándo está—: es lo que Dlx miró con Lvel
+  if (ruta === '/avisos/pedido' || ruta === '/avisos/mis-pedidos') {
+    const crudo = await req.text();
+    if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (ruta === '/avisos/mis-pedidos') {
+      return elObjeto(env).fetch('https://avisos/mis-pedidos', { method: 'POST', body: JSON.stringify({ quien: q.id }),
+        headers: { 'content-type': 'application/json' } });
+    }
+    const v = validarPedido(d);
+    if (v.error) return json(v, 400);
+    const prueba = {};
+    if (v.tipo === 'cuenta' && env.DISCORD_TOKEN) {
+      try {
+        const mm = JSON.parse((await env.KV.get('meta')) || 'null');
+        const P = mm && mm.porton;
+        const h = { headers: { authorization: 'Bot ' + env.DISCORD_TOKEN } };
+        const [ru, rm] = await Promise.all([fetch(`https://discord.com/api/v10/users/${q.id}`, h),
+          P && P.guild ? fetch(`https://discord.com/api/v10/guilds/${P.guild}/members/${q.id}`, h) : null]);
+        if (ru && ru.ok) {
+          const u = await ru.json();
+          prueba.usuario = String(u.username || '').slice(0, 40);
+          prueba.nombre = String(u.global_name || '').slice(0, 40);
+          prueba.creada = new Date(creadaEn(q.id) || 0).toISOString().slice(0, 10);
+        }
+        if (rm && rm.ok) {
+          const m = await rm.json();
+          prueba.apodo_dra = String(m.nick || '').slice(0, 40);
+          prueba.miembro = !!(P.rol && (m.roles || []).includes(P.rol));
+          prueba.en_dra_desde = String(m.joined_at || '').slice(0, 10);
+        } else if (rm) prueba.en_dra = false;
+      } catch (e) { /* sin pruebas: lo mira Dlx igual */ }
+    }
+    return elObjeto(env).fetch('https://avisos/pedir', { method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(Object.assign({ quien: q.id, prueba }, v)) });
+  }
+  // 🙋 RESOLVER UN PEDIDO (Dlx: «Vos o un Moderador»): sí o no, con una nota
+  if (ruta === '/avisos/dueno-pedido') {
+    const crudo = await req.text();
+    let d = null;
+    try { d = crudo.length <= 2048 ? JSON.parse(crudo || '{}') : null; } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || !Number.isInteger(d.id) || typeof d.si !== 'boolean'
+        || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (!(await puede(q.id, 'reportes_cerrar'))) return json({ error: 'no' }, 403);
+    return elObjeto(env).fetch('https://avisos/dueno-pedido', { method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ id: d.id, si: d.si, nota: String(d.nota || '').slice(0, 200), por: q.id }) });
+  }
+  // 🙋 PARA EL CICLO, CON SU CLAVE (traen Discord IDs): lo aprobado, cómo salió, y pasar lo de una cuenta a otra
+  if (ruta === '/avisos/pedidos-ciclo' || ruta === '/avisos/pedidos-estados' || ruta === '/avisos/mudar-cuenta') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    if (ruta === '/avisos/pedidos-ciclo') return elObjeto(env).fetch('https://avisos/pedidos-ciclo');
+    const crudo = await req.text();
+    if (crudo.length > 20000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), { method: 'POST', body: crudo,
+      headers: { 'content-type': 'application/json' } });
+  }
   // 🧭 lo del tutorial: sólo el nombre de lo que pasó, de una lista cerrada (`TUTO_EV`)
   if (ruta === '/avisos/tutorial') {
     const crudo = await req.text();
@@ -4987,6 +5085,12 @@ export class Avisos {
         't INTEGER NOT NULL, PRIMARY KEY (quien, que, ref)) WITHOUT ROWID');
       // 📣 LAS PROMOS QUE ABRIÓ CADA UNO (16/10/2026): una vez por promo, para pagar `PROMO_PAGA` hasta `PROMO_TOPE_DIA`
       // por día (`dia`, en hora del este). Se borran a los `PROMO_DIAS` días (lo que pagó queda en la Tienda)
+      // 🙋 LOS PEDIDOS DE LA GENTE (17/10/2026): `estado` '' espera, 'si'/'no' lo decidió `por`, 'hecho'/'no_pude' lo
+      // aplicó el ciclo. `prueba`, en JSON: lo que vio el bot de la cuenta que pide. Se borran a los `PEDIDO_DIAS`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS pedidos (id INTEGER PRIMARY KEY AUTOINCREMENT, tipo TEXT NOT NULL, ' +
+        "quien TEXT NOT NULL, k TEXT NOT NULL DEFAULT '', texto TEXT NOT NULL DEFAULT '', cc TEXT NOT NULL DEFAULT '', " +
+        "vid TEXT NOT NULL DEFAULT '', prueba TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL, estado TEXT NOT NULL DEFAULT '', " +
+        "por TEXT NOT NULL DEFAULT '', resuelto INTEGER NOT NULL DEFAULT 0, nota TEXT NOT NULL DEFAULT '')");
       // 📣 LAS PROMOS ALARGADAS EN LA TIENDA (16/10/2026): hasta cuándo va cada una y quién pagó (lo pagado queda en
       // `tienda`). Se borran a los `PROMO_DIAS` días de vencidas
       this.sql.exec('CREATE TABLE IF NOT EXISTS promo_extra (pid TEXT PRIMARY KEY, quien TEXT NOT NULL, hasta INTEGER NOT NULL, ' +
@@ -5135,6 +5239,7 @@ export class Avisos {
       // 📅 lo agendado con /agendar, para el ciclo (`bot/agenda.py`), con su clave
       if (ruta === '/agenda-ciclo') return json(this.agendaCiclo(), 200, 0);
       if (ruta === '/hinchas') return json(this.hinchas(), 200, 0);
+      if (ruta === '/pedidos-ciclo') return json(this.pedidosCiclo(), 200, 0);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
       if (ruta === '/final') return json(this.finalElegir(d));
@@ -5177,6 +5282,11 @@ export class Avisos {
       if (ruta === '/aplaudir') return this.aplaudir(d);
       if (ruta === '/promo-vio') return this.promoVio(d);
       if (ruta === '/promo-extender') return this.promoExtender(d);
+      if (ruta === '/pedir') return this.pedir(d);
+      if (ruta === '/mis-pedidos') return json(this.misPedidos(d));
+      if (ruta === '/dueno-pedido') return json(this.duenoPedido(d));
+      if (ruta === '/pedidos-estados') return json(this.pedidosEstados(d));
+      if (ruta === '/mudar-cuenta') return json(await this.mudarCuenta(d));
       if (ruta === '/bandeja') return this.bandeja(d);
       if (ruta === '/mi-servidor') return this.miServidor(d);
       if (ruta === '/mi-foto') return await this.miFoto(d);
@@ -7766,6 +7876,8 @@ export class Avisos {
     this.sql.exec('DELETE FROM pase_hito WHERE quien = ?', String(d.quien));
     // ⭐ y lo que le sumaba nivel
     this.sql.exec('DELETE FROM xp_log WHERE quien = ?', String(d.quien));
+    // 🙋 y sus pedidos
+    this.sql.exec('DELETE FROM pedidos WHERE quien = ?', String(d.quien));
     // 📣 y las promos que abrió y las que alargó
     this.sql.exec('DELETE FROM promo_visto WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM promo_extra WHERE quien = ?', String(d.quien));
@@ -8773,6 +8885,104 @@ export class Avisos {
         .sort((a, b) => b[1] - a[1]).slice(0, 30);
     }
     return { t: ahora, meses };
+  }
+
+  // ── 🙋 los pedidos de la gente ───────────────────────────────────────────────────────────────────────────────
+  /** Uno nuevo. ⚠️ Con tope (`PEDIDO_TOPE` sin resolver por persona) y el mismo pedido dos veces es uno. */
+  pedir(d) {
+    const quien = String(d.quien || '');
+    const v = validarPedido(d);
+    if (!/^[0-9]{5,25}$/.test(quien) || v.error) return json({ error: v.error || 'faltan datos' }, 400);
+    const ahora = Date.now();
+    this.sql.exec('DELETE FROM pedidos WHERE resuelto > 0 AND resuelto < ?', ahora - PEDIDO_DIAS * DIA_MS);
+    const abiertos = this.sql.exec("SELECT id, tipo, k FROM pedidos WHERE quien = ? AND estado IN ('', 'si')", quien).toArray();
+    const igual = abiertos.find((x) => x.tipo === v.tipo && x.k === v.k);
+    if (igual) return json({ ok: true, id: igual.id, ya: true });
+    if (abiertos.length >= PEDIDO_TOPE) return json({ error: 'tope', tope: PEDIDO_TOPE }, 429);
+    const prueba = d.prueba && typeof d.prueba === 'object' ? JSON.stringify(d.prueba).slice(0, 1500) : '';
+    this.sql.exec('INSERT INTO pedidos (tipo, quien, k, texto, cc, vid, prueba, t) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+      v.tipo, quien, v.k, v.texto, v.cc, v.vid, prueba, ahora);
+    const id = this.sql.exec('SELECT last_insert_rowid() AS id').toArray()[0].id;
+    return json({ ok: true, id });
+  }
+
+  /** Los de una persona, para Mi cuenta: sin pruebas ni quién lo resolvió. */
+  misPedidos(d) {
+    const quien = String(d.quien || '');
+    if (!/^[0-9]{5,25}$/.test(quien)) return { error: 'faltan datos' };
+    return { ok: true, pedidos: this.sql.exec('SELECT id, tipo, k, texto, cc, vid, t, estado, resuelto, nota FROM pedidos ' +
+      'WHERE quien = ? ORDER BY id DESC LIMIT 10', quien).toArray() };
+  }
+
+  /** Para el Dashboard: los sin resolver primero, y lo de los últimos días. */
+  pedidosDueno() {
+    const ahora = Date.now();
+    return this.sql.exec("SELECT id, tipo, quien, k, texto, cc, vid, prueba, t, estado, por, resuelto, nota FROM pedidos " +
+      "WHERE estado IN ('', 'si') OR resuelto > ? ORDER BY (estado = '') DESC, id DESC LIMIT 40", ahora - 7 * DIA_MS)
+      .toArray().map((x) => {
+        let p = {};
+        try { p = x.prueba ? JSON.parse(x.prueba) : {}; } catch (e) { p = {}; }
+        return Object.assign({}, x, { prueba: p, por: x.por ? this.nombrePor(x.por) : '' });
+      });
+  }
+
+  /** Sí o no. Los de identidad y de video, al aprobarlos ya quedan hechos (los resuelve Dlx a mano); los de cuenta y
+   *  país esperan al ciclo, que los aplica (`bot/pedidos.py`). */
+  duenoPedido(d) {
+    const p = this.sql.exec('SELECT id, tipo, estado FROM pedidos WHERE id = ?', Number(d.id)).toArray()[0];
+    if (!p) return { error: 'no existe' };
+    if (p.estado !== '') return { error: 'ya', estado: p.estado };
+    const manual = p.tipo === 'identidad' || p.tipo === 'video';
+    const est = !d.si ? 'no' : manual ? 'hecho' : 'si';
+    this.sql.exec('UPDATE pedidos SET estado = ?, por = ?, resuelto = ?, nota = ? WHERE id = ?', est,
+      String(d.por || ''), Date.now(), String(d.nota || '').slice(0, 200), p.id);
+    return { ok: true, estado: est, pedidos: this.pedidosDueno() };
+  }
+
+  /** Para el ciclo: lo aprobado de cuenta y país, con quién lo pidió. */
+  pedidosCiclo() {
+    return { t: Date.now(), pedidos: this.sql.exec("SELECT id, tipo, quien, k, cc, texto FROM pedidos WHERE estado = 'si' " +
+      "AND tipo IN ('cuenta', 'pais')").toArray() };
+  }
+
+  /** Lo que hizo el ciclo: `{estados: {id: {ok, nota}}}`. */
+  pedidosEstados(d) {
+    let n = 0;
+    for (const [id, x] of Object.entries((d && d.estados) || {})) {
+      const r = this.sql.exec("UPDATE pedidos SET estado = ?, nota = ? WHERE id = ? AND estado = 'si'", x && x.ok ? 'hecho' : 'no_pude',
+        String((x && x.nota) || '').slice(0, 200), Number(id));
+      n += r.rowsWritten || 0;
+    }
+    return { ok: true, n };
+  }
+
+  /**
+   * 🔁 PASAR TODO DE UNA CUENTA A OTRA (Dlx, 17/10/2026, «Todo»: perdió su cuenta de Discord y tiene una nueva). Las mismas
+   * tablas que borra «olvidarme» (`olvidar()`), pero en vez de borrar se mudan: si la nueva ya tiene lo mismo (votó la
+   * misma encuesta, sigue al mismo), queda lo de la nueva. Las sesiones de la vieja se cierran: ya no entra como él.
+   * Lo llama el ciclo con su clave, después de pasar la fila de la Lista (`bot/pedidos.py`).
+   */
+  async mudarCuenta(d) {
+    const viejo = String((d && d.viejo) || ''), nuevo = String((d && d.nuevo) || '');
+    if (!/^[0-9]{5,25}$/.test(viejo) || !/^[0-9]{5,25}$/.test(nuevo) || viejo === nuevo) return { error: 'faltan datos' };
+    const tablas = ['subs', 'votos', 'liga_voto', 'tienda', 'precios', 'sigue', 'servidor', 'activo', 'jugo_temp', 'foto_oculta',
+      'reportes', 'aplausos', 'pase_hecho', 'pase_vivo', 'pase_log', 'pase_hito', 'xp_log', 'promo_visto', 'promo_extra',
+      'uso', 'bandeja', 'fondos', 'fotos_carta', 'postulaciones', 'sigue_org', 'org_cola', 'videos_pedidos',
+      'videos_reportes', 'agenda', 'cambios_dia', 'apostado', 'qg_voto', 'roles_manual'];
+    const movidas = {}, fallas = [];
+    for (const t of tablas) {
+      try {
+        const r = this.sql.exec(`UPDATE OR IGNORE ${t} SET quien = ? WHERE quien = ?`, nuevo, viejo);
+        this.sql.exec(`DELETE FROM ${t} WHERE quien = ?`, viejo);
+        if (r.rowsWritten) movidas[t] = r.rowsWritten;
+      } catch (e) { fallas.push(t); }
+    }
+    try { this.sql.exec('UPDATE OR IGNORE idk SET id = ? WHERE id = ?', nuevo, viejo); } catch (e) { fallas.push('idk'); }
+    try { this.sql.exec('UPDATE inscritos SET autor_id = ? WHERE autor_id = ?', nuevo, viejo); } catch (e) { fallas.push('inscritos'); }
+    this.sql.exec('DELETE FROM sesiones WHERE quien = ?', viejo);
+    if (movidas.foto_oculta) await this.espejarOcultas();
+    if (movidas.reportes) await this.colaReportes(Date.now());
+    return { ok: !fallas.length, movidas, fallas };
   }
 
   /** 📣 Una semana más de una promo suya: cobra `PROMO_SEMANA_PAGA` y suma `PROMO_SEMANA_MS` a lo que le quedaba. */
@@ -10305,7 +10515,8 @@ export class Avisos {
         reportes: ve('reportes') || ve('reportes_cerrar') ? this.reportesDueno(ahora) : [],
         decidir: ve('decidir') ? this.decidirDueno() : {}, videos: ve('videos') ? (this.leer('videos_revisar') || []) : [],
         fondos: ve('fondos') ? this.fondosDueno() : [], filtro: ve('fondos') ? this.filtroDueno() : null,
-        fotos_carta: ve('fondos') ? this.fotosCartaDueno() : [] };
+        fotos_carta: ve('fondos') ? this.fotosCartaDueno() : [],
+        pedidos: ve('reportes') || ve('reportes_cerrar') ? this.pedidosDueno() : [] };
     }
     const dias = [];
     for (let i = 13; i >= 0; i--) {
@@ -10345,6 +10556,8 @@ export class Avisos {
       filtro: this.filtroDueno(),
       // 📸 las fotos de tarjeta que esperan revisión (13/10/2026)
       fotos_carta: this.fotosCartaDueno(),
+      // 🙋 los pedidos de la gente (17/10/2026)
+      pedidos: this.pedidosDueno(),
       dias,
       sesiones: this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM sesiones WHERE vence > ?', ahora).toArray()[0].n,
       sistema: {

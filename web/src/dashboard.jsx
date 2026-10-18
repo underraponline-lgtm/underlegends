@@ -876,6 +876,49 @@ function Logs({ l }) {
   );
 }
 
+// ── 🙋 LOS PEDIDOS DE LA GENTE (17/10/2026): perdí mi cuenta, ese no soy yo, mi país, un video que no es mío. Con lo que
+// el bot vio de la cuenta que pide; «Sí» lo aprueba —el de cuenta y el de país los aplica el ciclo; los otros dos los
+// resolvés vos y quedan hechos— y «No» lo cierra. Lo pueden contestar vos y los Moderadores
+const PED_TIPO = { cuenta: 'Perdí mi cuenta de Discord', identidad: 'Ese no soy yo / mi nombre está mal', pais: 'Mi país está mal', video: 'Un video que no es mío' };
+const PED_EST = { '': 'esperando', si: '✅ aprobado · lo aplica el ciclo', hecho: '✅ hecho', no: '⛔ no', no_pude: '⚠️ no se pudo aplicar' };
+function Pedidos({ ps, liga, alCambiar }) {
+  const [va, setVa] = useState(0);
+  const [msg, setMsg] = useState('');
+  const resolver = (p, si) => {
+    setVa(p.id); setMsg('');
+    fetch('/api/avisos/dueno-pedido', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: p.id, si }) })
+      .then(async (r) => ({ r, j: await r.json().catch(() => ({})) }))
+      .then(({ r, j }) => { setVa(0); if (r.ok && j.pedidos) alCambiar(j.pedidos); else setMsg(j.error === 'no' ? 'No tenés permiso.' : 'No pude: ' + (j.error || r.status)); })
+      .catch(() => { setVa(0); setMsg('No pude: la red.'); });
+  };
+  if (!ps.length) return <p className="pronto-p">Nadie pidió nada en los últimos días.</p>;
+  return (
+    <>
+      {msg ? <p className="pronto-p" role="alert">{msg}</p> : null}
+      <ul className="db-ped">{ps.map((p) => {
+        const f = p.k ? liga.T[p.k] : null;
+        const pr = p.prueba || {};
+        return (
+          <li key={p.id} className={p.estado === '' ? 'abierto' : ''}>
+            <div>
+              <b>{PED_TIPO[p.tipo] || p.tipo}{f ? ' · ' + limpio(f.n) : p.k ? ' · ' + p.k : ''}{p.cc ? ' · ' + p.cc.toUpperCase() : ''}</b>
+              <small>{corto(new Date(p.t).toISOString())} · {PED_EST[p.estado] || p.estado}{p.por ? ' (' + p.por + ')' : ''}{p.nota ? ' · ' + p.nota : ''}</small>
+              {p.texto ? <p className="db-ped-tx">«{p.texto}»</p> : null}
+              {p.tipo === 'cuenta' ? <p className="db-ped-pr">La cuenta que pide: <b>{pr.usuario ? '@' + pr.usuario : 'sin nombre'}</b>{pr.nombre ? ' («' + pr.nombre + '»)' : ''}
+                {pr.creada ? ' · creada el ' + pr.creada : ''} · en DRA: {pr.en_dra === false ? 'no está' : (pr.apodo_dra ? '«' + pr.apodo_dra + '»' : 'sin apodo') + (pr.miembro ? ', Miembro' : ', sin el rol Miembro') + (pr.en_dra_desde ? ', desde el ' + pr.en_dra_desde : '')}</p> : null}
+              {p.vid ? <p className="db-ped-pr"><a href={'https://youtu.be/' + p.vid} target="_blank" rel="noopener noreferrer">El video ↗</a></p> : null}
+            </div>
+            {p.estado === '' ? <div className="db-ped-b">
+              <button type="button" className="btn verde chico" disabled={va === p.id} onClick={() => resolver(p, true)}>{p.tipo === 'cuenta' ? 'Sí, es él' : 'Sí'}</button>
+              <button type="button" className="btn borde2 chico" disabled={va === p.id} onClick={() => resolver(p, false)}>No</button>
+            </div> : null}
+          </li>
+        );
+      })}</ul>
+    </>
+  );
+}
+
 function atencion(d, liga, q, logs) {
   const aj = d.ajustes || {};
   const m = liga.d.mult || {};
@@ -898,6 +941,8 @@ function atencion(d, liga, q, logs) {
     ...((d.fotos_carta || []).length ? [['📸', (d.fotos_carta.length === 1 ? 'Una foto de tarjeta' : d.fotos_carta.length + ' fotos de tarjeta') + ' para revisar', 'Abajo, en Lo que te llegó.']] : []),
     // ✅ y lo de ✅ Decidir sin contestar (13/10/2026)
     ...(sinContestar(d.decidir) ? [['✅', sinContestar(d.decidir) === 1 ? 'Una pregunta de ✅ Decidir sin contestar' : sinContestar(d.decidir) + ' preguntas de ✅ Decidir sin contestar', 'En la pestaña Decisiones.']] : []),
+    // 🙋 y los pedidos de la gente sin contestar (17/10/2026)
+    ...(() => { const n = (d.pedidos || []).filter((x) => x.estado === '').length; return n ? [['🙋', n === 1 ? 'Un pedido de la gente sin contestar' : n + ' pedidos de la gente sin contestar', 'En la pestaña Reportes.']] : []; })(),
     // 🔴 y lo que Logs avisó en rojo y todavía no viste (17/10/2026)
     ...(() => {
       const v = logsVistos();
@@ -1915,7 +1960,8 @@ export function Dashboard({ dc, liga }) {
     const tabV = verTab[tab] ? tab : 'hoy';
     const at = atencion(d, liga, cuotas, logs);
     // el número de cada pestaña: lo que espera algo de vos
-    const cuenta = { hoy: at.length, reportes: (d.reportes || []).filter((x) => x.estado === '' || x.estado === 'no_pude').length,
+    const cuenta = { hoy: at.length, reportes: (d.reportes || []).filter((x) => x.estado === '' || x.estado === 'no_pude').length
+      + (d.pedidos || []).filter((x) => x.estado === '').length,
       decisiones: sinContestar(d.decidir) };
     const sec = (titulo, em, hijo) => <section className="act"><div className="mis-cab"><span>{titulo}</span>{em ? <em>{em}</em> : null}</div>{hijo}</section>;
     cuerpo = (
@@ -1937,6 +1983,8 @@ export function Dashboard({ dc, liga }) {
             <li key={h}><a href={h} target={h[0] === '/' ? undefined : '_blank'} rel={h[0] === '/' ? undefined : 'noopener noreferrer'}>{t} ↗</a></li>
           ))}</ul>) : null}
         </> : null}
+        {tabV === 'reportes' ? sec('PEDIDOS DE LA GENTE', 'perdí mi cuenta, mi país, un video…',
+          <Pedidos ps={d.pedidos || []} liga={liga} alCambiar={(y) => cambiarD({ pedidos: y })} />) : null}
         {tabV === 'reportes' ? sec('ERRORES REPORTADOS EN LAS LLAVES', 'se borran a los 14 días',
           (d.reportes || []).length ? <div className="db-llego"><Reportes rep={d.reportes} liga={liga} alCambiar={(l) => cambiarD({ reportes: l })} corrige={ve('reportes')} /></div>
             : <p className="pronto-p">Nadie reportó nada en los últimos 14 días.</p>) : null}

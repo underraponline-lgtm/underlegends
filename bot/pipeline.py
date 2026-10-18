@@ -1195,6 +1195,13 @@ def _lo_barato(correr):
         paso('2b5', 'las invitaciones de la Liga')
         if not corre(['bot/invitaciones.py', '--contar', '--aplicar'], callado=False):
             print('      ⚠️ no pude contar las invitaciones: queda la cuenta de antes')
+        # ── 2b5b · 🙋 los pedidos de la gente que se aprobaron (17/10/2026) ──
+        # Dlx: «¿qué pasa si alguien pierde acceso a su cuenta de Discord y tiene una nueva?». Lo aprobado en el Dashboard
+        # de «perdí mi cuenta» y «mi país está mal»: la Lista y, para la cuenta, todo lo de la vieja a la nueva. Casi
+        # siempre no hay nada; nunca frena el ciclo. Ver `bot/pedidos.py`
+        paso('2b5b', 'los pedidos de la gente')
+        if not corre(['bot/pedidos.py', '--aplicar'], callado=True, mostrar=('🙋', '⚠️')):
+            print('      ⚠️ no pude aplicar los pedidos: se reintenta en la próxima')
         # ── 2b6 · el «#N» del apodo, sólo de quien está en el Competitivo ──
         # 🔑 Dlx, 29/09/2026: «el nombre automáticamente debería cambiar…
         # ÚNICAMENTE a las personas que están en el competitivo… en toda la

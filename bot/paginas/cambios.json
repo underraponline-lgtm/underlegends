@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "3.29",
+   "dia": "2026-10-17",
+   "cuando": "2026-10-17T21:10:00-04:00",
+   "titulo": "«Algo está mal»: pedí que lo arreglemos",
+   "items": [
+    "🙋 En Mi cuenta hay una sección nueva, «Algo está mal»: si perdiste tu cuenta de Discord, si una llave te puso el resultado de otro, si tu país está mal o si un video de tu perfil no es tuyo, lo pedís ahí.",
+    "🔁 ¿Perdiste tu cuenta? Entrá con la nueva y pedilo: cuando lo aprueben, pasa todo a la nueva —tus tarjetas, tus Puntos de Tienda, tu Pase y a quién seguís—.",
+    "📋 Abajo ves tus pedidos y en qué quedó cada uno."
+   ]
+  },
+  {
    "version": "3.28",
    "dia": "2026-10-17",
    "cuando": "2026-10-17T20:49:00-04:00",

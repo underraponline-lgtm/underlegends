@@ -3,6 +3,25 @@
 /* con una página corta, la app mide la pantalla y su blanco seguía abajo del pie. El negro del pie se estira hasta el
    final con una sombra que arranca en su borde de arriba: no mueve nada ni tapa lo de arriba (Dlx, 02/10/2026) */
 .app .pie.negra{box-shadow:0 100vh 0 100vh #030304}
+/* 🙋 «Algo está mal», en Mi cuenta (17/10/2026) */
+.pd-tipos{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:4px}
+.pd-tipo{display:grid;gap:4px;text-align:left;padding:12px;border:2px solid var(--suave);background:none;color:inherit;cursor:pointer;font:inherit}
+.pd-tipo b{font:800 14px/1.25 Archivo,sans-serif}
+.pd-tipo small{color:var(--gris);font-size:13px;line-height:1.35}
+.pd-tipo.on{border-color:#E41373;box-shadow:3px 3px 0 #E41373}
+.pd-campo{display:grid;gap:6px;margin-top:14px}
+.pd-campo label{font:800 13px/1.2 Archivo,sans-serif}
+.pd-campo .ti-busca{max-width:none;margin:0}
+.cu-caja > .pd-tipos,.cu-caja > .pd-campo,.cu-caja > .pd-mios{justify-self:stretch}
+.pd-campo textarea,.pd-campo select{width:100%;padding:10px;border:2px solid var(--suave);background:var(--fondo);color:var(--tinta);font:15px/1.4 Archivo,sans-serif}
+.pd-res{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.pd-res button{width:100%;text-align:left;padding:8px 10px;border:1px solid var(--suave);background:none;color:inherit;font:700 14px/1.2 Archivo,sans-serif;cursor:pointer}
+.pd-elegido{margin:0;display:flex;align-items:center;gap:10px}
+.pd-falta{color:var(--gris);align-self:center}
+.pd-mios{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.pd-mios li{padding:8px 0;border-bottom:1px solid var(--suave)}
+.pd-mios b{display:block;font:800 14px/1.2 Archivo,sans-serif}
+.pd-mios small{color:var(--gris)}
 .cargando{padding:80px 16px;font:700 16px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;color:var(--gris);text-align:center;
   display:grid;justify-items:center;gap:12px}
 /* ⏳ la barrita de «Cargando…», como la de la pantalla de carga del HTML (17/10/2026) */

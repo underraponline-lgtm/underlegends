@@ -116,6 +116,8 @@ function grupos(liga, dc, tema, cual, temaSv) {
       ['fondo', 'tema', 'Tu fondo', 'tu imagen, con el nivel 10 del Pase'],
       ['siguiendo', 'seguir', 'Siguiendo', liga.sigue.length ? liga.sigue.length + (liga.sigue.length === 1 ? ' rapero' : ' raperos') : 'todavía nadie'],
       ['privacidad', 'candado', 'Privacidad', 'tu foto, tus datos y este dispositivo'],
+      // 🙋 los pedidos (17/10/2026): perdí mi cuenta, ese no soy yo, mi país, un video que no es mío
+      ['algo-mal', 'aviso', 'Algo está mal', 'perdí mi cuenta, mi país, un video…'],
     ]],
     ['AVISOS', [
       ['avisos', 'campana', 'Avisos de eventos', avisos ? 'activados en este dispositivo' : 'apagados'],
@@ -741,6 +743,101 @@ function TeSiguen({ liga }) {
   );
 }
 
+// ── 🙋 ALGO ESTÁ MAL (Dlx, 17/10/2026: «deberíamos hacer un sistema de reportes… ¿qué pasa si alguien pierde acceso a su
+// cuenta de Discord y tiene una nueva?»; a las preguntas: lo aprueba él o un Moderador, al aprobar pasa todo, y también
+// «ese no soy yo», «mi país» y «un video que no es mío»). Se pide con tu Discord —el de ahora—; lo que el bot ve de tu
+// cuenta va de prueba solo (`pedir()` en bot/avisos.js). Lo aprobado de cuenta y país lo aplica el ciclo (bot/pedidos.py)
+const PEDIDOS = [
+  ['cuenta', 'Perdí mi cuenta de Discord', 'Entraste con una cuenta nueva y querés recuperar tu perfil: tus tarjetas, tus Puntos de Tienda, tu Pase y a quién seguís.'],
+  ['identidad', 'Ese no soy yo / mi nombre está mal', 'Una llave te puso el resultado de otro, o tu nombre en la Liga está mal escrito.'],
+  ['pais', 'Mi país o mi bandera están mal', 'Tu bandera en la Liga no es la tuya.'],
+  ['video', 'Un video que no es mío', 'En tu perfil aparece una batalla que no es tuya.'],
+];
+const ESTADO_PED = { '': 'esperando que lo mire alguien', si: 'aprobado: se aplica en la próxima vuelta (menos de una hora)',
+  hecho: 'hecho', no: 'no se aprobó', no_pude: 'aprobado, pero no se pudo aplicar: lo mira Dlx' };
+function Pedidos({ liga, dc }) {
+  const [tipo, setTipo] = useState('');
+  const [q, setQ] = useState('');
+  const [k, setK] = useState('');
+  const [texto, setTexto] = useState('');
+  const [cc, setCc] = useState('');
+  const [vid, setVid] = useState('');
+  const [est, setEst] = useState({});
+  const [mios, setMios] = useState(null);
+  const pedirMios = () => {
+    if (!dc || !W.conCuenta) return;
+    W.conCuenta('/api/avisos/mis-pedidos', {}).then((j) => setMios((j && j.pedidos) || [])).catch(() => setMios([]));
+  };
+  useEffect(pedirMios, [dc && dc.id]);
+  if (!dc) {
+    return <Caja t="Algo está mal" d="Entrá con Discord —con la cuenta que usás ahora— para pedir que lo arreglemos."><button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button></Caja>;
+  }
+  const res = q.trim().length >= 2 ? (liga.d.tabla || []).filter((f) => limpio(f.n).toLowerCase().includes(q.trim().toLowerCase())).slice(0, 6) : [];
+  const elegido = k ? liga.T[k] : null;
+  // Emiratos y Brasil no cuentan como países de la Liga (Dlx, 22/09/2026)
+  const paises = Object.entries(PAIS).filter(([c]) => c !== 'ae' && c !== 'br').sort((a, b) => a[1].localeCompare(b[1]));
+  const mandar = () => {
+    setEst({ va: true });
+    const v = (vid.match(/(?:youtu\.be\/|v=|shorts\/)([A-Za-z0-9_-]{11})/) || [])[1] || vid.trim();
+    W.conCuenta('/api/avisos/pedido', { tipo, k, texto, cc, vid: v }, 's').then((j) => {
+      if (j === null) return; // se fue a Discord a confirmar quién sos
+      if (j && j.ok) { setEst({ ok: true }); setTipo(''); setTexto(''); setK(''); setQ(''); pedirMios(); }
+      else setEst({ error: (j && j.error) || 'error' });
+    }).catch(() => setEst({ error: 'red' }));
+  };
+  const falta = !tipo ? 'Elegí qué está mal.' : (tipo === 'cuenta' || tipo === 'identidad') && !k ? 'Buscá tu perfil.'
+    : tipo === 'pais' && !cc ? 'Elegí tu país.' : tipo === 'video' && !vid.trim() ? 'Pegá el link del video.'
+      : tipo !== 'pais' && texto.trim().length < 3 ? 'Contanos un poco más.' : '';
+  const errorTxt = { tope: 'Ya tenés tres pedidos esperando: cuando se resuelvan podés mandar otro.', perfil: 'Elegí tu perfil de la lista.',
+    texto: 'Contanos un poco más.', pais: 'Elegí tu país.', video: 'Ese link no es de un video de YouTube.' };
+  return (
+    <>
+      <Caja t="¿Qué está mal?" d="Lo mira Dlx o un Moderador. Si es tu cuenta, también ve lo que el bot sabe de la cuenta con la que entraste (tu apodo en DRA y desde cuándo estás), así que pedilo desde la cuenta nueva.">
+        <div className="pd-tipos" role="radiogroup" aria-label="Qué está mal">{PEDIDOS.map(([t, n, d]) => (
+          <button key={t} type="button" role="radio" aria-checked={tipo === t} className={'pd-tipo' + (tipo === t ? ' on' : '')} onClick={() => { setTipo(t); setEst({}); }}>
+            <b>{n}</b><small>{d}</small></button>
+        ))}</div>
+        {tipo === 'cuenta' || tipo === 'identidad' ? (
+          <div className="pd-campo">
+            <label htmlFor="pd-q">{tipo === 'cuenta' ? '¿Cuál era tu perfil?' : '¿Qué perfil está mal?'}</label>
+            {elegido ? <p className="pd-elegido"><b>{limpio(elegido.n)}</b> <button type="button" className="btn borde2 chico" onClick={() => setK('')}>Cambiar</button></p> : (
+              <>
+                <input id="pd-q" type="search" className="ti-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Tu nombre en la Liga" />
+                {res.length ? <ul className="pd-res">{res.map((f) => <li key={f.k}><button type="button" onClick={() => { setK(f.k); setQ(''); }}>{limpio(f.n)}</button></li>)}</ul> : null}
+              </>
+            )}
+          </div>
+        ) : null}
+        {tipo === 'pais' ? (
+          <div className="pd-campo"><label htmlFor="pd-cc">Tu país</label>
+            <select id="pd-cc" value={cc} onChange={(e) => setCc(e.target.value)}><option value="">Elegí…</option>
+              {paises.map(([c, n]) => <option key={c} value={c}>{n}</option>)}</select></div>
+        ) : null}
+        {tipo === 'video' ? (
+          <div className="pd-campo"><label htmlFor="pd-vid">El link del video</label>
+            <input id="pd-vid" type="url" className="ti-busca" value={vid} onChange={(e) => setVid(e.target.value)} placeholder="https://youtu.be/…" /></div>
+        ) : null}
+        {tipo ? (
+          <div className="pd-campo"><label htmlFor="pd-tx">{tipo === 'cuenta' ? '¿Cómo lo comprobamos? (tu cuenta vieja, quién te conoce…)' : 'Contanos qué pasa'}{tipo === 'pais' ? ' (si querés)' : ''}</label>
+            <textarea id="pd-tx" rows={3} maxLength={400} value={texto} onChange={(e) => setTexto(e.target.value)} /></div>
+        ) : null}
+        {tipo ? <div className="cu-btns"><button type="button" className="btn verde chico" disabled={!!falta || est.va} onClick={mandar}>{est.va ? 'Mandando…' : 'Mandar el pedido'}</button>
+          {falta ? <small className="pd-falta">{falta}</small> : null}</div> : null}
+        {est.ok ? <p className="cu-d" role="status">✓ Listo: lo vas a ver abajo, y cuando lo resuelvan cambia solo.</p> : null}
+        {est.error ? <p className="cu-d" role="alert">{errorTxt[est.error] || (W.errorCuenta && W.errorCuenta(est.error)) || 'No pude mandarlo. Probá de nuevo.'}</p> : null}
+      </Caja>
+      {mios && mios.length ? (
+        <Caja t="Tus pedidos" d="Los últimos que mandaste.">
+          <ul className="pd-mios">{mios.map((p) => (
+            <li key={p.id}><b>{(PEDIDOS.find((x) => x[0] === p.tipo) || [])[1] || p.tipo}</b>
+              <small>{ESTADO_PED[p.estado] || p.estado}{p.nota ? ' · ' + p.nota : ''}</small></li>
+          ))}</ul>
+        </Caja>
+      ) : null}
+    </>
+  );
+}
+
 function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
   // 🔓 tu nivel, para los colores de los servidores (ver `NIVEL_TEMA` en temas.js)
   const Rn = useRacha(!!dc && id === 'apariencia');
@@ -777,6 +874,7 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
     );
   }
   if (id === 'fondo') return <FondoCaja dc={dc} />;
+  if (id === 'algo-mal') return <Pedidos liga={liga} dc={dc} />;
   if (id === 'perfil') {
     return (
       <>
