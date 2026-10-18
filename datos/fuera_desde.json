@@ -959,6 +959,12 @@
    "sv-sr": "2026-10-12",
    "temporada": "2026-10-12"
   },
+  "softdrink": {
+   "servidor": "2026-10-18",
+   "sv-dra": "2026-10-18",
+   "sv-ffa": "2026-10-18",
+   "sv-sr": "2026-10-18"
+  },
   "sombra": {
    "temporada": "2026-10-12"
   },
@@ -1105,8 +1111,8 @@
    "temporada": "2026-10-12"
   }
  },
- "pasaban": 391,
- "cuando": "2026-10-18T20:28:41Z",
+ "pasaban": 390,
+ "cuando": "2026-10-18T20:59:04Z",
  "borradas": [
   [
    "keller",

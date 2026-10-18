@@ -586,7 +586,17 @@
       "Flennzs"
      ],
      "did": "1414431452346581052",
-     "d": "29 puntos de participación en la página"
+     "d": "32 puntos de participación en la página"
+    },
+    {
+     "op": "ForceGP",
+     "n": "ForceGP",
+     "q": "ForceGP",
+     "quien": [
+      "ForceGP"
+     ],
+     "did": "884190151180447744",
+     "d": "27 puntos de participación en la página"
     },
     {
      "op": "PichulaMc",
@@ -597,16 +607,6 @@
      ],
      "did": "578697503130779649",
      "d": "26 puntos de participación en la página"
-    },
-    {
-     "op": "ForceGP",
-     "n": "ForceGP",
-     "q": "ForceGP",
-     "quien": [
-      "ForceGP"
-     ],
-     "did": "884190151180447744",
-     "d": "22 puntos de participación en la página"
     }
    ],
    "clasico": [
@@ -3424,27 +3424,25 @@
      "mo": "2026-10-18T20:23:16Z",
      "staff": {
       "jurado": [
-       "ZAIK 🇪🇸"
+       "KRAVITZ 🇨🇷"
       ],
       "host": [
        "KRAVITZ 🇨🇷"
       ],
       "dj": [
-       "💿 ZAIK 🇪🇸"
+       "DJ Bootrax Humilde 🇸🇪"
       ]
      },
      "orgs": [
       {
        "n": "KRAVITZ",
        "id": ""
-      },
-      {
-       "n": "ZAIK",
-       "id": ""
       }
      ],
-     "organizador": "KRAVITZ ZAIK",
-     "cuentas": {}
+     "organizador": "KRAVITZ",
+     "cuentas": {
+      "DJ Bootrax Humilde 🇸🇪": "1122273746099638354"
+     }
     },
     "1561466643031396444": {
      "sv": "FFA",
