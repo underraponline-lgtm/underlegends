@@ -327,7 +327,9 @@
   "dantedelux": "Delux",
   "monyrap": "Mony",
   "perfumechakal": "Cronox",
-  "over": "Mr Still Ballin"
+  "over": "Mr Still Ballin",
+  "lewis": "LEWITO",
+  "johnpork": "Adriagner"
  },
  "pares": [
   [
@@ -1645,6 +1647,14 @@
   [
    "Over",
    "Mr Still Ballin"
+  ],
+  [
+   "Lewis",
+   "LEWITO"
+  ],
+  [
+   "John pork",
+   "Adriagner"
   ]
  ],
  "no_confundir": [

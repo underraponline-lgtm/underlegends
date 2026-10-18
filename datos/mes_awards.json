@@ -151,6 +151,15 @@
      "d": "7 eventos · 155 raperos"
     },
     {
+     "op": "LEWITO",
+     "n": "LEWITO",
+     "q": "LEWITO",
+     "quien": [
+      "LEWITO"
+     ],
+     "d": "6 eventos · 113 raperos"
+    },
+    {
      "op": "Velatz",
      "n": "Velatz",
      "q": "Velatz",
@@ -167,15 +176,6 @@
       "Elsoolar"
      ],
      "d": "6 eventos · 98 raperos"
-    },
-    {
-     "op": "LEWITO",
-     "n": "LEWITO",
-     "q": "LEWITO",
-     "quien": [
-      "LEWITO"
-     ],
-     "d": "5 eventos · 98 raperos"
     }
    ],
    "staff": [
@@ -452,9 +452,9 @@
      "op": "434",
      "n": "PRITTY FREE",
      "sv": "FFA",
-     "d": "26 raperos · FFA · organiza nachonc_",
+     "d": "26 raperos · FFA · organiza NC",
      "quien": [
-      "nachonc_"
+      "NC"
      ]
     }
    ],
@@ -849,11 +849,11 @@
      "d": "6 eventos de jurado"
     },
     {
-     "op": "John pork",
-     "n": "John pork",
-     "q": "John pork",
+     "op": "Adriagner",
+     "n": "Adriagner",
+     "q": "Adriagner",
      "quien": [
-      "John pork"
+      "Adriagner"
      ],
      "d": "5 eventos de jurado"
     },
@@ -878,20 +878,20 @@
      "d": "16 eventos de host"
     },
     {
+     "op": "Adriagner",
+     "n": "Adriagner",
+     "q": "Adriagner",
+     "quien": [
+      "Adriagner"
+     ],
+     "d": "5 eventos de host"
+    },
+    {
      "op": "Elsoolar",
      "n": "Elsoolar",
      "q": "Elsoolar",
      "quien": [
       "Elsoolar"
-     ],
-     "d": "5 eventos de host"
-    },
-    {
-     "op": "John pork",
-     "n": "John pork",
-     "q": "John pork",
-     "quien": [
-      "John pork"
      ],
      "d": "5 eventos de host"
     },
@@ -925,11 +925,11 @@
      "d": "7 eventos de DJ"
     },
     {
-     "op": "John pork",
-     "n": "John pork",
-     "q": "John pork",
+     "op": "Adriagner",
+     "n": "Adriagner",
+     "q": "Adriagner",
      "quien": [
-      "John pork"
+      "Adriagner"
      ],
      "d": "5 eventos de DJ"
     },
@@ -952,13 +952,13 @@
      "d": "4 eventos de DJ"
     },
     {
-     "op": "Elsoolar",
-     "n": "Elsoolar",
-     "q": "Elsoolar",
+     "op": "Zaik",
+     "n": "Zaik",
+     "q": "Zaik",
      "quien": [
-      "Elsoolar"
+      "Zaik"
      ],
-     "d": "3 eventos de DJ"
+     "d": "4 eventos de DJ"
     }
    ]
   }
@@ -3794,7 +3794,11 @@
       }
      ],
      "organizador": "@Rubik",
-     "cuentas": {}
+     "cuentas": {
+      "Rubik": "1070553144964173906",
+      "LunaticoYG": "1459764124979433654",
+      "El Pibe  | Los Culeanizadores": "535579351710957568"
+     }
     },
     "1553208802965323837": {
      "sv": "SR",
@@ -3977,7 +3981,9 @@
       }
      ],
      "organizador": "@Guty",
-     "cuentas": {}
+     "cuentas": {
+      "Guty": "766366997117141022"
+     }
     },
     "1550270124219695205": {
      "sv": "URBF",
@@ -4001,7 +4007,9 @@
       }
      ],
      "organizador": "@Carlos",
-     "cuentas": {}
+     "cuentas": {
+      "Carlos": "734172184737480745"
+     }
     },
     "1549925070585995336": {
      "sv": "URBF",
@@ -4025,7 +4033,9 @@
       }
      ],
      "organizador": "@Guty",
-     "cuentas": {}
+     "cuentas": {
+      "Guty": "766366997117141022"
+     }
     },
     "1549569419900883037": {
      "sv": "URBF",
@@ -4049,7 +4059,9 @@
       }
      ],
      "organizador": "@Carlos",
-     "cuentas": {}
+     "cuentas": {
+      "Carlos": "734172184737480745"
+     }
     },
     "1548457711337734245": {
      "sv": "URBF",
@@ -4073,7 +4085,9 @@
       }
      ],
      "organizador": "@Carlos",
-     "cuentas": {}
+     "cuentas": {
+      "Carlos": "734172184737480745"
+     }
     },
     "1547817925870755883": {
      "sv": "URBF",
@@ -4097,7 +4111,9 @@
       }
      ],
      "organizador": "@Guty",
-     "cuentas": {}
+     "cuentas": {
+      "Guty": "766366997117141022"
+     }
     },
     "1547761422493294696": {
      "sv": "URBF",
@@ -4121,7 +4137,9 @@
       }
      ],
      "organizador": "@Carlos",
-     "cuentas": {}
+     "cuentas": {
+      "Carlos": "734172184737480745"
+     }
     },
     "1547373617619148860": {
      "sv": "URBF",
@@ -4145,7 +4163,9 @@
       }
      ],
      "organizador": "@carlos",
-     "cuentas": {}
+     "cuentas": {
+      "Carlos": "734172184737480745"
+     }
     },
     "1547053844570185728": {
      "sv": "URBF",
@@ -4169,7 +4189,9 @@
       }
      ],
      "organizador": "Erian 恵理久",
-     "cuentas": {}
+     "cuentas": {
+      "Erian 恵理久": "1055474244089286706"
+     }
     },
     "1546968169724518511": {
      "sv": "URBF",
@@ -4193,7 +4215,9 @@
       }
      ],
      "organizador": "Erian 恵理久",
-     "cuentas": {}
+     "cuentas": {
+      "Erian 恵理久": "1055474244089286706"
+     }
     },
     "1546739677074169937": {
      "sv": "URBF",
@@ -4217,7 +4241,9 @@
       }
      ],
      "organizador": "Erian 恵理久",
-     "cuentas": {}
+     "cuentas": {
+      "Erian 恵理久": "1055474244089286706"
+     }
     },
     "1546638379414978591": {
      "sv": "URBF",
@@ -4241,7 +4267,9 @@
       }
      ],
      "organizador": "@Carlos",
-     "cuentas": {}
+     "cuentas": {
+      "Carlos": "734172184737480745"
+     }
     },
     "1545189983164301332": {
      "sv": "URBF",
@@ -4265,7 +4293,9 @@
       }
      ],
      "organizador": "@Carlos",
-     "cuentas": {}
+     "cuentas": {
+      "Carlos": "734172184737480745"
+     }
     },
     "1544484702642114590": {
      "sv": "URBF",
@@ -4289,7 +4319,10 @@
       }
      ],
      "organizador": "",
-     "cuentas": {}
+     "cuentas": {
+      "💗ValenAdoratesJuan💗": "554330098812059679",
+      "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧": "1344825963669749804"
+     }
     },
     "1544469575133827144": {
      "sv": "URBF",
@@ -4313,7 +4346,9 @@
       }
      ],
      "organizador": "@Carlos",
-     "cuentas": {}
+     "cuentas": {
+      "Carlos": "734172184737480745"
+     }
     },
     "1548763144048873527": {
      "sv": "FVS",
@@ -4337,7 +4372,9 @@
       }
      ],
      "organizador": "Mathhias",
-     "cuentas": {}
+     "cuentas": {
+      "Mathhias": "1177916322122833933"
+     }
     }
    },
    "ver": {
