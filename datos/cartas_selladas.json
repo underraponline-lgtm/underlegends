@@ -405,7 +405,7 @@
    "temporada": "d30ee73e59ac:906ce275eeb8"
   },
   "Erian": {
-   "competitivo": "0f3383759618:aa2fab0a1b31",
+   "competitivo": "017e02d980e9:aa2fab0a1b31",
    "pais": "1c18f0c41983:631b7a4c93c4",
    "servidor": "c43e5babfeb3:f7bc857dd9f6:25c183",
    "temporada": "ee63b868121a:906ce275eeb8"
@@ -688,10 +688,10 @@
    "servidor": "50464851ca5b:f7bc857dd9f6:055f77"
   },
   "Jupiter": {
-   "competitivo": "58e79be879e6:aa2fab0a1b31",
-   "pais": "2bf3d1c88bbf:631b7a4c93c4",
+   "competitivo": "4c1cd8d338a2:aa2fab0a1b31",
+   "pais": "5e9222651da2:631b7a4c93c4",
    "servidor": "669dace7830b:f7bc857dd9f6:3580af",
-   "temporada": "475b9c630ec6:906ce275eeb8"
+   "temporada": "7cc6e2042cdc:906ce275eeb8"
   },
   "KB": {
    "servidor": "125c04ec3323:f7bc857dd9f6:055f77"
@@ -1202,7 +1202,7 @@
   "PRAISERIZA": {},
   "PUBLIC ENEMY": {},
   "Panchok": {
-   "competitivo": "0f5852978552:aa2fab0a1b31",
+   "competitivo": "7a37f8d64a4e:aa2fab0a1b31",
    "pais": "e4d04c4b3f2b:631b7a4c93c4",
    "servidor": "97857c8860db:f7bc857dd9f6:3580af",
    "temporada": "86398608d8b4:906ce275eeb8"
@@ -1584,7 +1584,7 @@
    "competitivo": "1b108c5fe860:aa2fab0a1b31",
    "pais": "6f2a12ff473b:631b7a4c93c4",
    "servidor": "601d411731be:f7bc857dd9f6:c43f56",
-   "temporada": "75b14759bd4c:906ce275eeb8"
+   "temporada": "4e75e7701101:906ce275eeb8"
   },
   "Vilca": {
    "competitivo": "5eb6ae9c01d9:aa2fab0a1b31",
@@ -1811,5 +1811,5 @@
    "servidor": "7f8885a35a6d:f7bc857dd9f6:55e9bc"
   }
  },
- "cuando": "2026-10-17T23:40:47+00:00"
+ "cuando": "2026-10-17T23:59:38+00:00"
 }
