@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.33",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T00:25:00-04:00",
+   "titulo": "Ascensos, en cada liga y en el Ranking",
+   "items": [
+    "📈 Cada liga de un servidor con ascenso tiene su pestaña «Ascenso», con la tabla al día.",
+    "🏆 En el Ranking hay una pestaña nueva, «Ascensos»: el ranking de ascenso de cada servidor."
+   ]
+  },
+  {
    "version": "3.32",
    "dia": "2026-10-17",
    "cuando": "2026-10-17T23:50:00-04:00",

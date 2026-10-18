@@ -642,6 +642,10 @@ def armar():
     _lg_lobby, _lg_det = _ligas(_cl_lg)
     # 📈 y el ascenso de cada servidor, al día, en la liga a la que se asciende (`bot/ascenso.py`, 17/10/2026)
     _lg_det = _con_ascenso(_lg_det, _cl_lg)
+    # 📈 y en el lobby, sólo QUÉ servidores tienen ascenso y a qué liga (`{sv: [liga, id]}`): con eso el Ranking sabe si
+    # mostrar «Ascensos»; las tablas las pide al abrirlo, con el detalle de las ligas
+    if _lg_lobby is not None and (_asc_json().get('sv')):
+        _lg_lobby['asc'] = {sv: [X.get('n'), X.get('destino')] for sv, X in _asc_json()['sv'].items()}
     return {
         'temporada': SELLO,
         'fase': {'arranca': _f[0], 'termina': _f[1]} if _f else None,
@@ -2955,25 +2959,28 @@ def _asc_json():
 
 def _con_ascenso(det, claves):
     """📈 El ranking de ascenso de cada servidor, al día (`bot/ascenso.py`, Dlx 17/10/2026: «y también que esté en la
-    página, obvio»), en el detalle de la liga a la que se asciende (`destino`): viaja con `/api/ligas`, no en el lobby.
-    Filas `[nombre, cc, pts, lo sumado, clave del perfil]`. Nunca frena el lobby."""
+    página, obvio»), en el detalle de TODAS las ligas de ese servidor —Dlx, el mismo día: «el ranking de ascenso de
+    cada liga en su respectiva página»—: en la liga a la que se asciende (`dest`) es su entrada, y en las otras es el
+    camino de abajo. Viaja con `/api/ligas`, no en el lobby. Filas `[nombre, cc, pts, lo sumado, clave del perfil]`.
+    Nunca frena el lobby."""
     try:
         A = _asc_json()
         L = (det or {}).get('ligas')
         if L is None or not A.get('sv'):
             return det
+        import ligas as _LGx
         for sv, X in A['sv'].items():
-            lid = X.get('destino')
-            if lid not in L:
-                continue
-            L[lid]['asc'] = {
-                'sv': sv, 'n': X.get('n'), 'suben': X.get('suben', 0), 'po': X.get('playoff', 0),
+            a = {
+                'sv': sv, 'n': X.get('n'), 'dest': X.get('destino'), 'suben': X.get('suben', 0), 'po': X.get('playoff', 0),
                 'of': (X.get('oficial') or {}).get('dia', ''),
                 'filas': [[f[0], f[1], f[2], f[3], (claves or {}).get(f[4], '') if f[4] else ''] for f in X.get('filas') or []],
                 'sum': [[c['evento'], c['dia'], c['rango']] for c in X.get('sumado') or []],
                 'pend': [[p['evento'], p['dia'], 'rango' if p['que'] == 'rango' else (p.get('detalle') or '')]
                          for p in X.get('pendiente') or []],
             }
+            for lid in L:
+                if (_LGx.LIGAS.get(lid) or {}).get('sv') == sv:
+                    L[lid]['asc'] = a
         return det
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ el ascenso no entra a las ligas: %s' % str(e)[:120])

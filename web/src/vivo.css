@@ -565,6 +565,10 @@ button.btn{background:transparent;cursor:pointer}
 .pf-lg{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:8px}
 /* 📈 el ascenso de cada servidor, al día (17/10/2026): en el perfil de la liga y una fila en «Sus ligas» */
 .asc{display:grid;gap:10px}
+.asc-camino{padding:10px 12px;border-left:4px solid #E41373;background:var(--caja);color:var(--tinta)}
+.rk-asc{display:grid;gap:12px}
+.rk-asc-t{margin:4px 0 0;font:900 20px/1.15 Archivo,sans-serif;text-transform:uppercase}
+.rk-asc-l{margin:0}
 .asc-p{margin:0;font-size:14px;line-height:1.5;color:var(--gris)}
 .asc-p b{color:var(--tinta)}
 .asc-t{list-style:none;margin:0;padding:0;display:grid;gap:4px}

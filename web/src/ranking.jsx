@@ -23,6 +23,7 @@ import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 import { Divisiones } from './divisiones.jsx';
 import { Misiones } from './misiones.jsx';
 import { svElegido, useElegidos } from './elegidos.js';
+import { Ascenso, useDetalle } from './ligas.jsx';
 
 const pct = (x) => parseFloat(String(x == null ? '' : x).replace(',', '.')) || 0;
 const coma = (x, d = 1) => Number(x || 0).toFixed(d).replace('.', ',');
@@ -168,6 +169,39 @@ const COL = {
 // 🔑 CADA RANKING DICE SUS FILAS, SU ORDEN Y SUS COLUMNAS (el `SUBS` de app.js). `movil` son las que entran en un
 // celular; `valor` es con qué se mide la distancia al de arriba en «tu lugar»; `dato`, lo que dice el podio debajo de
 // la carta (lo que la carta NO dice: Dlx, 01/10/2026, «la tarjeta ya tiene esa info»)
+// 📈 LOS ASCENSOS: un servidor por vez (sus chips), con la tabla del perfil de su liga (`Ascenso`, ligas.jsx). Las tablas
+// viajan en el detalle de las ligas (`/api/ligas`), que se pide al abrir esta vista; el lobby sólo dice cuáles hay
+function Ascensos({ liga }) {
+  const mapa = (liga.d.ligas && liga.d.ligas.asc) || {};
+  const svs = Object.keys(mapa);
+  const [sv, setSv] = useState(svs[0] || '');
+  const det = useDetalle(liga.d.ligas ? liga.d.ligas.t : null);
+  const elegido = mapa[sv] ? sv : svs[0];
+  const dest = (mapa[elegido] || [])[1];
+  const A = dest && det[dest] && det[dest].asc;
+  const miK = (window.DC && window.DC.clave) || (liga.yo && liga.yo.k) || '';
+  return (
+    <div className="rk-asc">
+      {svs.length > 1 ? (
+        <div className="rk-chips" role="group" aria-label="El servidor">
+          {svs.map((s) => (
+            <button key={s} type="button" className={s === elegido ? 'on' : ''} aria-pressed={s === elegido} onClick={() => setSv(s)}>
+              <img alt="" src={liga.logo(s)} />{siglaDe(s)} · {mapa[s][0]}
+            </button>
+          ))}
+        </div>
+      ) : null}
+      {A ? (
+        <>
+          <h3 className="rk-asc-t">Ascenso a la {A.n}</h3>
+          <Ascenso A={A} h={{ miK }} />
+          <p className="rk-asc-l"><a className="te-link" href={'#/ligas/' + encodeURIComponent(dest)}>Ver la {A.n} →</a></p>
+        </>
+      ) : <div className="cargando">Cargando…</div>}
+    </div>
+  );
+}
+
 const SUBS = {
   temporada: {
     et: 'Temporada', filas: (L) => L.d.tabla || [], orden: 'pos',
@@ -247,6 +281,14 @@ const SUBS = {
     siNo: <><b>Misiones</b>: tres por semana, las mismas para todos, que se cumplen jugando y suman a tu Temporada. Las primeras arrancan el lunes a las 11 AM.</>,
     baj: <>Tres por semana, las mismas para todos: se cumplen <b>jugando</b> y cada una suma a tu <b>Temporada</b>. Las tres juntas dan un bono.</>,
   },
+  // 📈 LOS ASCENSOS (Dlx, 17/10/2026: «quizás crear uno que diga RANKING ASCENSOS en la página de rankings»): el
+  // ranking de ascenso de cada servidor, al día (`bot/ascenso.py`). Su propia vista (`Ascensos`): un servidor por vez
+  ascensos: {
+    et: 'Ascensos', propia: Ascensos, filas: () => [], orden: () => 0,
+    hay: (L) => !!(L.d.ligas && L.d.ligas.asc && Object.keys(L.d.ligas.asc).length),
+    siNo: <><b>Ascensos</b>: el ranking de ascenso de cada servidor que tiene ligas, al día.</>,
+    baj: <>El ranking de <b>ascenso</b> de cada servidor, al día: su tabla oficial más lo que se jugó después, con <b>sus</b> reglas. Lo oficial lo decide su staff.</>,
+  },
   // 🏟️ las divisiones de la semana (04/10/2026): su propia vista (`Divisiones`), no la tabla de los demás
   divisiones: {
     // ⚠️ `orden` tiene que estar aunque no haya tabla: `armar()` busca su columna en `COL` y sin él revienta
@@ -255,7 +297,7 @@ const SUBS = {
     baj: <>Una tabla por semana, de a 30: jugás un evento y entrás. Los <b>primeros</b> de cada grupo suben de división y ganan <b>Puntos de Tienda</b>; los últimos bajan.</>,
   },
 };
-export const RANKINGS = ['temporada', 'divisiones', 'competitivo', 'duelos', 'podios', 'rachas', 'eventos', 'paises', 'crews', 'mw', 'misiones'];
+export const RANKINGS = ['temporada', 'divisiones', 'competitivo', 'duelos', 'podios', 'rachas', 'eventos', 'paises', 'crews', 'ascensos', 'mw', 'misiones'];
 
 function req(L, id) {
   const q = (L.d.requisitos || []).find((x) => x.id === id);

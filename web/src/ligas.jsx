@@ -84,7 +84,7 @@ function pedirDetalle(t) {
     })
     .catch(() => { /* sin el detalle se ve la tabla */ });
 }
-function useDetalle(t) {
+export function useDetalle(t) {
   const [, setN] = useState(0);
   useEffect(() => {
     const f = () => setN((n) => n + 1);
@@ -670,10 +670,10 @@ function SeguirLiga({ L }) {
 
 // ── 🗂️ LAS PESTAÑAS DE CADA LIGA (Dlx, 17/10/2026, a «¿qué le sumamos?»: las ocho). Una sola página larga con todo
 // sería demasiado: van en pestañas, y cada una sólo si tiene con qué ────────────────────────────────────────────────────
-const PEST = [['tabla', 'La tabla'], ['fechas', 'Fechas'], ['numeros', 'Números'], ['staff', 'Staff'], ['flyers', 'Flyers'],
+const PEST = [['tabla', 'La tabla'], ['ascenso', 'Ascenso'], ['fechas', 'Fechas'], ['numeros', 'Números'], ['staff', 'Staff'], ['flyers', 'Flyers'],
   ['videos', 'Videos'], ['como', 'Cómo funciona']];
 function hay(L, k) {
-  return k === 'tabla' ? true : k === 'fechas' ? (L.fechas || []).length > 0 : k === 'numeros' ? (L.fechas || []).some((f) => f.b.some((b) => b[2]))
+  return k === 'tabla' ? true : k === 'ascenso' ? !!(L.asc && (L.asc.filas || []).length) : k === 'fechas' ? (L.fechas || []).length > 0 : k === 'numeros' ? (L.fechas || []).some((f) => f.b.some((b) => b[2]))
     : k === 'staff' ? (L.staff || []).some((x) => x[2] >= 2 || x[3] >= 3) : k === 'flyers' ? (L.flyers || []).length > 0
       : k === 'videos' ? (L.vids || []).length > 0 : k === 'como' ? !!(L.info || (L.fin && L.fin.c)) : false;
 }
@@ -734,10 +734,10 @@ function LigaPerfil({ liga, id }) {
       {tv === 'tabla' ? (
         <>
           <Sec id="lgp-tabla" titulo="La tabla" extra="lgp-sec"><Torneo liga={liga} L={L} h={h} /></Sec>
-          {L.asc && (L.asc.filas || []).length ? (
-            <Sec id="lgp-asc" titulo={'Ascenso a la ' + L.asc.n} extra="lgp-sec"><Ascenso A={L.asc} h={h} /></Sec>
-          ) : null}
         </>
+      ) : null}
+      {tv === 'ascenso' ? (
+        <Sec id="lgp-asc" titulo={'Ascenso a la ' + L.asc.n} extra="lgp-sec"><Ascenso A={L.asc} h={h} desde={L.id} /></Sec>
       ) : null}
       {tv === 'fechas' ? <Sec id="lgp-fechas" titulo="Las fechas" extra="lgp-sec"><Fechas liga={liga} L={L} h={h} /></Sec> : null}
       {tv === 'numeros' ? <Sec id="lgp-numeros" titulo="Los números" extra="lgp-sec"><Numeros L={L} h={h} /></Sec> : null}
@@ -765,13 +765,17 @@ function LigaPerfil({ liga, id }) {
 // (`bot/ascenso.py`): SU tabla oficial más lo que vino después, con SUS reglas, y lo que no se sabe no suma y se dice.
 // Lo oficial lo decide su staff: la página lo aclara arriba. Los que suben y el play-off, marcados; `+N`, lo sumado
 const dm = (d) => (d ? String(d).slice(8, 10) + '/' + String(d).slice(5, 7) : '');
-function Ascenso({ A, h }) {
+export function Ascenso({ A, h, desde = '' }) {
   const [todo, setTodo] = useState(false);
   const filas = A.filas || [];
   const ver = todo ? filas : filas.slice(0, 12);
   const suben = A.suben || 0, po = A.po || 0;
   return (
     <div className="asc">
+      {/* en las otras ligas del servidor, el ascenso es el camino de abajo: se dice adónde lleva */}
+      {desde && A.dest && desde !== A.dest ? (
+        <p className="asc-p asc-camino">En {siglaDe(A.sv)}, a la <b>{A.n}</b> se sube con este ranking. <a className="te-link" href={'#/ligas/' + encodeURIComponent(A.dest)}>Ver la {A.n} →</a></p>
+      ) : null}
       <p className="asc-p">La tabla oficial de {siglaDe(A.sv)}{A.of ? ' (la del ' + dm(A.of) + ')' : ''} más lo que se jugó después,
         con sus mismas reglas. <b>Lo oficial lo decide su staff.</b></p>
       <ol className="asc-t">
