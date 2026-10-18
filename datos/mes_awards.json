@@ -186,7 +186,7 @@
      "quien": [
       "LEWITO"
      ],
-     "d": "11 fechas de staff"
+     "d": "12 fechas de staff"
     },
     {
      "op": "Flennzs",
@@ -3417,6 +3417,62 @@
      ],
      "organizador": "FLENNZS LEWITO",
      "cuentas": {}
+    },
+    "1561467222793265256": {
+     "sv": "FFA",
+     "nombre": "LA ISLA DE OKINAWA V.1",
+     "mo": "2026-10-18T20:23:16Z",
+     "staff": {
+      "jurado": [
+       "ZAIK 🇪🇸"
+      ],
+      "host": [
+       "KRAVITZ 🇨🇷"
+      ],
+      "dj": [
+       "💿 ZAIK 🇪🇸"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "KRAVITZ",
+       "id": ""
+      },
+      {
+       "n": "ZAIK",
+       "id": ""
+      }
+     ],
+     "organizador": "KRAVITZ ZAIK",
+     "cuentas": {}
+    },
+    "1561466643031396444": {
+     "sv": "FFA",
+     "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 7",
+     "mo": "2026-10-18T20:50:58Z",
+     "staff": {
+      "jurado": [
+       "FLENNZS"
+      ],
+      "host": [
+       "LEWITO"
+      ],
+      "dj": [
+       "💿 KRISH"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "FLENNZS",
+       "id": ""
+      },
+      {
+       "n": "LEWITO",
+       "id": ""
+      }
+     ],
+     "organizador": "FLENNZS LEWITO",
+     "cuentas": {}
     }
    },
    "ver": {
@@ -3637,6 +3693,13 @@
       "",
       "Ardean",
       "ardean_rap373"
+     ]
+    },
+    "FFA|2026-10-18": {
+     "1086485696572817418": [
+      "",
+      "Lewito",
+      "l3wito"
      ]
     }
    }

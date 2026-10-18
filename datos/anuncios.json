@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-18T19:30:31+00:00",
+ "cuando": "2026-10-18T19:54:54+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -400,6 +400,92 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "LA ISLA DE OKINAWA V.1",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1561467222793265256",
+   "cuando": "2026-10-18T19:53:16",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "KRAVITZ ZAIK",
+   "orgs": [
+    {
+     "n": "KRAVITZ",
+     "id": ""
+    },
+    {
+     "n": "ZAIK",
+     "id": ""
+    }
+   ],
+   "autor_h": "7cc3316a3e5f345f",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "PLATA III",
+   "modalidad": "",
+   "horario": "EN MEDIA HORA",
+   "fecha": "HOY",
+   "premios": "ROL CAMPEON Y PUNTOS RANKING",
+   "staff": {
+    "jurado": [
+     "ZAIK 🇪🇸"
+    ],
+    "host": [
+     "KRAVITZ 🇨🇷"
+    ],
+    "dj": [
+     "💿 ZAIK 🇪🇸"
+    ]
+   },
+   "autor": "Kravitz",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
+  },
+  {
+   "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 7",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1561466643031396444",
+   "cuando": "2026-10-18T19:50:58",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "FLENNZS LEWITO",
+   "orgs": [
+    {
+     "n": "FLENNZS",
+     "id": ""
+    },
+    {
+     "n": "LEWITO",
+     "id": ""
+    }
+   ],
+   "autor_h": "211322958af20ae2",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "PLATA III",
+   "modalidad": "",
+   "horario": "EN 1 HORA",
+   "fecha": "HOY",
+   "premios": "ROL CAMPEÓN +  CUPO PARA COMPE POR PLATA RANGO ORO II",
+   "staff": {
+    "jurado": [
+     "FLENNZS"
+    ],
+    "host": [
+     "LEWITO"
+    ],
+    "dj": [
+     "💿 KRISH"
+    ]
+   },
+   "autor": "Lewito",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 7",
@@ -1085,124 +1171,6 @@
    },
    "autor": "Colesito",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "HJKSLOWT V.1",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1558883493679730752",
-   "cuando": "2026-10-11T16:46:27",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Guess",
-     "id": "1515482513106272366"
-    }
-   ],
-   "autor_h": "5421b7c087910f79",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Plata II 🥈",
-   "modalidad": "1 vs 1",
-   "horario": "Ahora",
-   "fecha": "",
-   "premios": "Clasificación + Campeonato 🏆",
-   "staff": {
-    "jurado": [
-     "Guess"
-    ],
-    "host": [
-     "Guess"
-    ],
-    "dj": [
-     "Guess"
-    ]
-   },
-   "autor": "Guess",
-   "staff_cuentas": {
-    "Guess": "1515482513106272366"
-   },
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "LA REDENCION VOL.3",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1558663727446888519",
-   "cuando": "2026-10-11T02:13:11",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Velatz",
-     "id": "1426686911908675628"
-    }
-   ],
-   "autor_h": "c36f9caea613c5c9",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Plata II 🥈",
-   "modalidad": "Multiverse",
-   "horario": "11:30",
-   "fecha": "",
-   "premios": "Clasificación + Campeonato 🏆",
-   "staff": {
-    "jurado": [
-     "Velatz"
-    ],
-    "host": [
-     "Velatz"
-    ],
-    "dj": [
-     "Velatz"
-    ]
-   },
-   "autor": "Velatz",
-   "staff_cuentas": {
-    "Velatz": "1426686911908675628"
-   },
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "COMPE SACABRONCA",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1558320857443602483",
-   "cuando": "2026-10-10T03:30:44",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "7cc3316a3e5f345f",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "BRONCE 3",
-   "modalidad": "⚔️  1v1",
-   "horario": "22:45 CENTROAMÉRICA",
-   "fecha": "Viernes 09 de Octubre",
-   "premios": "PUNTOS DE ASCENSO Y ROL DE CAMPEÓN",
-   "staff": {
-    "jurado": [
-     "Kravitz"
-    ],
-    "host": [
-     "Kravitz"
-    ],
-    "dj": [
-     "Kravitz"
-    ]
-   },
-   "autor": "Kravitz",
-   "staff_cuentas": {
-    "Kravitz": "1345962362615894027"
-   },
    "categoria_id": "1468478330826260500"
   },
   {
@@ -6264,6 +6232,51 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Francis 🇨🇷",
+   "quien": "franciscoegipto",
+   "discord_id": "1517014246087589923",
+   "msg_id": "1561466010626949151",
+   "cuando": "2026-10-18T19:48:27"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "six 🇦🇨",
+   "quien": "ivanjajaa",
+   "discord_id": "639232575461654538",
+   "msg_id": "1561465975973355612",
+   "cuando": "2026-10-18T19:48:19"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tam🇻🇪",
+   "quien": "tuabuelamuerta12",
+   "discord_id": "505444041719021569",
+   "msg_id": "1561465795274477701",
+   "cuando": "2026-10-18T19:47:36"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Molusco 🇦🇷",
+   "quien": "moluscoanvriento_79058",
+   "discord_id": "1363285354442133778",
+   "msg_id": "1561465774319738891",
+   "cuando": "2026-10-18T19:47:31"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "1200 🇰🇷",
+   "quien": "dreamero",
+   "discord_id": "1395903355909570633",
+   "msg_id": "1561461995650158794",
+   "cuando": "2026-10-18T19:32:30"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
