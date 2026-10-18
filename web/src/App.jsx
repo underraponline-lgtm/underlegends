@@ -539,6 +539,20 @@ export default function App() {
   const [vistosFila, setVistosFila] = useState(vistos);
   useEffect(() => { if (historia === null) setVistosFila(vistos); }, [historia, vistos]);
   const grupos = useMemo(() => ordenHistorias(gruposBase, vistosFila || {}), [gruposBase, vistosFila]);
+  // 🔗 UNA HISTORIA POR SU LINK (`/freestyle-rap/?h=<id>`, el «Compartir» del visor; Dlx, 18/10/2026, a las ideas de
+  // historias: «todas»): abre el visor en esa historia, una sola vez, y saca el `?h=` de la dirección (recargar no la
+  // vuelve a abrir). Si ya no está, queda el Inicio
+  const hLink = (() => { try { return new URLSearchParams((hash || '').split('?')[1] || '').get('h') || ''; } catch (e) { return ''; } })();
+  const hUsado = useRef('');
+  const [desde, setDesde] = useState('');
+  useEffect(() => {
+    if (!hLink || hUsado.current === hLink || !grupos.length) return;
+    hUsado.current = hLink;
+    try { history.replaceState(history.state, '', window.urlLG ? window.urlLG('#/' + partes.join('/')) : '#/' + partes.join('/')); } catch (e) { /* queda */ }
+    const i = grupos.findIndex((g) => g.slides.some((s) => s.id === hLink));
+    if (i >= 0) { setDesde(hLink); setHistoria(i); }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hLink, grupos.length]);
   // lo que ya habías visto con la marca vieja (una por círculo) pasa una vez a la nueva, así nadie vuelve a ver todo
   useEffect(() => {
     if (vistos !== null || !grupos.length) return;
@@ -636,7 +650,7 @@ export default function App() {
       <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} pagina={paginaMenu} /></Aislada>
       {pagina && !sv ? <Aislada n="Subir"><Subir key={paginaMenu} /></Aislada> : null}
       <Aislada n="Menu"><Menu liga={liga} abierto={menu} onCerrar={() => setMenu(false)} tema={tema} onTema={elegirTema} temaSv={temaSv} /></Aislada>
-      {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={cerrarHistoria} onVisto={visto} vistos={vistos || {}} raiz={raiz} /></Aislada> : null}
+      {historia !== null ? <Aislada n="Visor"><Visor liga={liga} grupos={grupos} abierto={historia} onCerrar={() => { setDesde(''); cerrarHistoria(); }} onVisto={visto} vistos={vistos || {}} raiz={raiz} desde={desde} /></Aislada> : null}
       <Aislada n="Video"><VentanaVideo /></Aislada>
       <Aislada n="AvisoPromo"><AvisoPromo /></Aislada>
       {carta ? <Aislada key={'c' + carta} n="VisorCarta"><Suspense fallback={null}><VisorCarta liga={liga} dc={yo.dc} k={String(carta).split('|')[0]} inicial={String(carta).split('|')[1] || ''} onCerrar={cerrarCarta} /></Suspense></Aislada> : null}

@@ -7,7 +7,7 @@
 //
 // ⚠️ NO SOBRECARGAR (Dlx, 02/10: «la cosa no es sobrecargar las cosas»): las cartas nuevas de un mismo día van en UNA
 // publicación —eran 46 de 80 renglones—, y Felicitar va sólo en los logros de verdad (campeón, rango, Most Wanted).
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import { MESES, ksDe, limpio, num, siglaDe } from './liga.js';
 import { Cara, Carta, Ico, accion, promoAbierta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
@@ -26,25 +26,8 @@ const CARTA = { pais: 'de País', temporada: 'de Temporada', servidor: 'de Servi
 
 // los perfiles de una publicación, siempre en lista: `ksDe()` de liga.js (en los premios `ks` es un objeto)
 
-// el estado de los aplausos lo tiene app.js (`APLAUSOS`, `felicitar()`), como el de las encuestas: acá se dibuja.
-// ⚠️ Cada publicación trae su `id` del muro (`id_de()` en bot/muro.py): es lo que se felicita, y el Worker lo busca ahí
-function leerAplausos() {
-  const A = window.APLAUSOS || {};
-  return { cu: A.cu || {}, mios: A.mios || {}, va: A.va || {}, err: A.err || {} };
-}
-export function useAplausos() {
-  const [a, setA] = useState(leerAplausos);
-  useEffect(() => {
-    const f = () => setA(leerAplausos());
-    const pedir = () => { if (window.pedirAplausos) window.pedirAplausos(); };
-    window.addEventListener('lg:aplausos', f);
-    pedir();
-    // los de los demás, cada dos minutos mientras se mira (el borde guarda 30 s)
-    const t = setInterval(pedir, 120000);
-    return () => { window.removeEventListener('lg:aplausos', f); clearInterval(t); };
-  }, []);
-  return a;
-}
+// 👏 los aplausos viven en aplausos.js (también los usan las historias): acá se re-exportan para perfil y servidor
+export { useAplausos } from './aplausos.js';
 
 function Felicitar({ liga, it, A }) {
   const id = it.id;

@@ -51,6 +51,8 @@ const TRAZOS = {
   mira: <><circle cx="12" cy="12" r="7.5" /><circle cx="12" cy="12" r="2.5" /><path d="M12 2v4M12 18v4M2 12h4M18 12h4" /></>,
   micro: <><path d="M9 3h6v10H9z" /><path d="M5.5 11a6.5 6.5 0 0013 0M12 17.5V21M8 21h8" /></>,
   jurado: <path d="M12 4v16M7 20h10M4 7h16M6.5 7L4 13.5h5zM17.5 7L15 13.5h5z" />,
+  // 🖼️ guardar una historia como imagen (18/10/2026)
+  imagen: <><path d="M4 5h16v14H4z" /><path d="M4 16l5-5 4 4 3-3 4 4" /><circle cx="9" cy="9.5" r="1.5" /></>,
   auris: <><path d="M4 15v-3a8 8 0 0116 0v3" /><path d="M4 14h4v6H4zM16 14h4v6h-4z" /></>,
   premio: <><circle cx="12" cy="9" r="5" /><path d="M9 13.2L7.5 21l4.5-2.5 4.5 2.5-1.5-7.8" /></>,
   escudo: <path d="M12 3l8 3v6c0 4.6-3.3 7.9-8 9-4.7-1.1-8-4.4-8-9V6z" />,

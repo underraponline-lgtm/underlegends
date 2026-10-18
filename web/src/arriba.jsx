@@ -350,6 +350,8 @@ function Tit({ c, children }) {
 }
 // `id`: lo que se marca como visto, historia por historia (ver `Visor`); `t`: la hora de lo que cuenta, para el orden
 function Slide(tag, cuerpo, cuando, cta, ir, id, t) { return { tag, cuerpo, cuando, cta, ir, id, t: t || '' }; }
+// los logros que se felicitan (los de `LOGROS` de publicaciones.jsx que tienen historia)
+const FELICITABLE = { campeon: 1, rango: 1, caza: 1 };
 
 function slidesDe(liga, items) {
   const grupos = [];
@@ -386,10 +388,26 @@ function slidesDe(liga, items) {
       const ll = (liga.d.llaves || {})[String(it.ll)] || {};
       const k = ks[0] || '';
       const f = liga.T[k];
-      const vis = f && (f.c || []).includes('temporada') ? <Carta liga={liga} k={k} cual="temporada" cls="st-carta" abre={false} /> : <Cara liga={liga} k={k} nombre={q[0]} cls="st-cara" />;
-      out.push(Slide('CAMPEÓN · ' + siglaDe(it.sv), <><h3 className="st-h">{limpio(it.ev)}</h3>{vis}<b className="st-nom">{q.join(' y ')}</b>
-        <small className="st-s">{it.part || 0} raperos</small>
-        <ol className="st-podio">{(ll.tabla || []).slice(0, 3).map((z, i) => <li key={i}><b>{i + 1}</b>{limpio(z[0])}</li>)}</ol></>, c, 'Ver la llave', { llave: it.ll }));
+      // 🏆 EL RESUMEN DEL EVENTO: EL PODIO CON LAS TRES CARTAS (Dlx, 18/10/2026, a las ideas de historias: «todas»). El 1º
+      // al medio y más alto; sin carta, la cara. Sin llave cargada queda la carta del campeón sola, como antes
+      const top = (ll.tabla || []).slice(0, 3);
+      const kDe = (z) => z[3] || (liga.fila(z[0]) || {}).k || '';
+      const pieza = (z, i) => {
+        if (!z) return null;
+        const kz = kDe(z);
+        const fz = liga.T[kz];
+        return (
+          <li key={i} className={'p' + (i + 1)}>
+            {fz && (fz.c || []).includes('temporada') ? <Carta liga={liga} k={kz} cual="temporada" cls="st-p3-c" abre={false} />
+              : <Cara liga={liga} k={kz} nombre={z[0]} cls="st-p3-cara" />}
+            <b>{i + 1}º</b><span>{limpio(z[0])}</span>
+          </li>
+        );
+      };
+      const vis = top.length >= 2 ? <ol className="st-podio3" aria-label="El podio">{[pieza(top[1], 1), pieza(top[0], 0), pieza(top[2], 2)]}</ol>
+        : f && (f.c || []).includes('temporada') ? <Carta liga={liga} k={k} cual="temporada" cls="st-carta" abre={false} /> : <Cara liga={liga} k={k} nombre={q[0]} cls="st-cara" />;
+      out.push(Slide('CAMPEÓN · ' + siglaDe(it.sv), <><h3 className="st-h">{limpio(it.ev)}</h3>{vis}
+        <small className="st-s">{top.length >= 2 ? 'Campeón: ' + q.join(' y ') + ' · ' : ''}{it.part || 0} raperos</small></>, c, 'Ver la llave', { llave: it.ll }));
     } else if (it.tipo === 'caza') {
       const a = liga.fila(it.a);
       out.push(Slide('SE BUSCA · CAZADO', <><div className="st-caza"><Cara liga={liga} k={a ? a.k : ''} nombre={it.a} cls="st-cara" /><span className="sello">CAZADO</span></div>
@@ -413,7 +431,13 @@ function slidesDe(liga, items) {
     }
     // la identidad de la historia es la de su publicación (`id` del muro, ver bot/muro.py); las cartas juntas, la de todas
     const id = 'm:' + g.map((o) => o.id || o.tipo + (o.t || '') + (o.quien || []).join(',')).join('+');
-    for (let i = n0; i < out.length; i++) { out[i].t = String(it.t || ''); out[i].id = id; }
+    for (let i = n0; i < out.length; i++) {
+      out[i].t = String(it.t || '');
+      out[i].id = id;
+      // 👏 los logros se felicitan desde la historia (Dlx, 18/10/2026: «reaccionar desde la historia y que le llegue a la
+      // persona, como Felicitar»): los mismos que en Publicaciones (`LOGROS`), por el id de su publicación del muro
+      if (g.length === 1 && it.id && FELICITABLE[it.tipo]) out[i].fel = { id: it.id, ks };
+    }
   });
   return out;
 }
@@ -437,6 +461,36 @@ export function ordenHistorias(grupos, vistos) {
 const Gente = ({ liga, fs, txt }) => (
   <ul className="st-gente">{fs.map((f) => <li key={f.k}><Cara liga={liga} k={f.k} nombre={f.n} cls="st-mini" /><span>{txt(f)}</span></li>)}</ul>
 );
+
+/** Las historias de «Tu semana»: lo que jugaste desde el lunes y tu próximo evento. Ver `gruposHistorias`. */
+function historiasTuyas(liga, mm) {
+  const yo = liga.yo;
+  if (!yo) return [];
+  const desde = utc(mm.ini || '');
+  const mios = liga.semanaDe(yo.k).filter(([ll]) => !isNaN(desde) && utc(liga.fechaLlave(ll)) >= desde);
+  mios.sort((a, b) => utc(liga.fechaLlave(a[0])) - utc(liga.fechaLlave(b[0])));
+  const pts = mios.reduce((t, x) => t + (Number(x[2]) || 0), 0);
+  const mv = yo.mv || 0;
+  const mueve = mv > 0 ? '▲ subiste ' + mv + (mv === 1 ? ' puesto' : ' puestos') : mv < 0 ? '▼ bajaste ' + (-mv) + (mv === -1 ? ' puesto' : ' puestos') : '';
+  const out = [];
+  const ultimo = mios.length ? liga.fechaLlave(mios[mios.length - 1][0]) : String(mm.ini || '');
+  out.push(Slide('TU SEMANA', <><Cara liga={liga} k={yo.k} nombre={yo.n} cls="st-cara" />
+    <h3 className="st-h">{mios.length ? 'Jugaste ' + mios.length + (mios.length === 1 ? ' evento' : ' eventos') : 'Esta semana todavía no jugaste'}</h3>
+    {mios.length ? <ul className="st-l">{mios.slice(-5).map(([ll, p, n], i) => <li key={i}><b>{limpio(String(p || ''))}</b>{limpio(ll.nombre)} · {num(Number(n) || 0)} pts</li>)}</ul> : null}
+    <small className="st-s">{[yo.pos ? '#' + yo.pos + ' en el Ranking' : '', mueve ? mueve + ' desde el lunes' : '', mios.length ? num(pts) + ' pts esta semana' : 'Jugá uno y sumás para tu Temporada'].filter(Boolean).join(' · ')}</small></>,
+  'esta semana', 'Ver tu perfil', { perfil: yo.k }, 'yo:sem:' + (mm.ini || '') + ':' + mios.length, ultimo));
+  // tu próximo evento: el primero de un servidor donde jugaste; si no, el primero que viene
+  const svs = new Set(liga.semanaDe(yo.k).map(([ll]) => ll.sv));
+  const prox = liga.luego();
+  const e = prox.find((x) => svs.has(x.sv)) || prox[0];
+  if (e) {
+    const m = liga.multSv(e.sv);
+    out.push(Slide('TU PRÓXIMO EVENTO', <><img className="st-logo" alt="" src={liga.logo(e.sv)} /><h3 className="st-h">{limpio(e.nombre)}</h3>
+      <small className="st-s">{liga.dia(liga.cuandoDe(e))} · {siglaDe(e.sv)}{m ? ' · ' + mult(m) + ' esta semana' : ''}</small></>,
+    'lo que viene', 'Quiero aviso', { ruta: '#/avisos' }, 'yo:prox:' + e.sv + ':' + limpio(e.nombre) + ':' + liga.cuandoDe(e), ultimo));
+  }
+  return out;
+}
 
 /** Las historias del círculo «La Liga», en este orden. Ver `gruposHistorias`. */
 function historiasLiga(liga, mm) {
@@ -539,15 +593,35 @@ export function gruposHistorias(liga) {
     // 🎮 un toque a la llave, cuando ya está (13/10/2026, el research de los lobbies: «en vivo primero, y un toque te
     // lleva a la llave», como el aro de Instagram o de Twitch); si todavía no, a Discord como antes
     const L = llaveEnVivo(e, typeof window !== 'undefined' ? window.VIVO_L : null);
+    // 🔴 EN VIVO DE VERDAD (Dlx, 18/10/2026, a las ideas de historias: «todas»): con la llave ya cargada, la ronda que
+    // se juega, quién acaba de pasar y quién sigue (`momentosLlave()`, lo mismo que la llave corta)
+    let mo = null;
+    try { mo = L ? momentosLlave(L) : null; } catch (err) { mo = null; }
+    const sinB = (x) => String(x || '').replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').trim();
+    const enVivo = mo && mo.ahora ? (
+      <div className="st-vivo">
+        <p className="ahora"><b>AHORA · {String(mo.ahora.r).toUpperCase()}</b>{mo.ahora.lados.map(sinB).join(' vs ')}</p>
+        {mo.antes && mo.antes.pasan.length ? <p><b>PASÓ</b>{mo.antes.pasan.map(sinB).join(' y ')}</p> : null}
+        {mo.sigue ? <p><b>SIGUE</b>{mo.sigue.lados.map(sinB).join(' vs ')}</p> : null}
+        <small>{mo.jugados} de {mo.total} batallas</small>
+      </div>
+    ) : null;
     grupos.push({
       id: 'vivo-' + e.sv + '-' + limpio(e.nombre).toLowerCase(), tipo: 'vivo', nombre: 'En vivo · ' + siglaDe(e.sv), logo: liga.logo(e.sv), nom: limpio(e.nombre), firma: 'vivo:' + e.nombre + e.cuando,
-      slides: [Slide('EN VIVO AHORA · ' + siglaDe(e.sv), <><img className="st-logo grande" alt="" src={liga.logo(e.sv, true)} /><h3 className="st-h grande">{limpio(e.nombre)}</h3>
-        <small className="st-s">Empezó a las {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' esta semana' : ''}. La llave aparece acá apenas la carguen.</small></>,
+      slides: [Slide('EN VIVO AHORA · ' + siglaDe(e.sv), <><img className={'st-logo' + (enVivo ? '' : ' grande')} alt="" src={liga.logo(e.sv, true)} /><h3 className={'st-h' + (enVivo ? '' : ' grande')}>{limpio(e.nombre)}</h3>
+        {enVivo || <small className="st-s">Empezó a las {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' esta semana' : ''}.{L ? (L.enJuego ? ' ' + L.enJuego + ' en juego.' : '') : ' La llave aparece acá apenas la carguen.'}</small>}</>,
       'ahora', L ? 'Ver la llave' : dd ? dd.txt : 'Mirar en Discord', L ? { llave: 'v:' + L.id } : { link: dd ? dd.url : e.link },
       'vivo:' + e.sv + ':' + limpio(e.nombre) + ':' + e.cuando)],
     });
   });
   const mm = liga.d.mult || {};
+  // 🙋 «TU SEMANA» (Dlx, 18/10/2026, a las ideas de historias: «todas»): un círculo tuyo, primero después de lo en vivo,
+  // con lo que jugaste desde el lunes, cómo te movió el Ranking y tu próximo evento. Sólo con tu cuenta y si estás en la
+  // tabla; cambia cuando jugás (su id lleva cuántos eventos van)
+  const yoS = historiasTuyas(liga, mm);
+  if (yoS.length) {
+    grupos.push({ id: 'yo', tipo: 'yo', nombre: 'Tu semana', k: liga.yo.k, cc: liga.yo.cc, nom: 'Tu semana', nuevo: true, firma: 'yo', slides: yoS });
+  }
   // 🔑 «LA LIGA»: lo de toda la Liga en un círculo propio, el primero después de lo en vivo. Dlx, 02/10/2026, a «más
   // variedad en las historias»: «sí» (y a los rumores del chat general, «C»: nada). Todo sale de lo que el payload ya
   // trae; cada historia se ve una vez (por día, por semana o hasta que cambie lo que cuenta) y sin dato no hay historia
@@ -713,6 +787,8 @@ export function Historias({ liga, grupos, vistos, onAbrir }) {
         <span className="h-badge">EN VIVO</span></span><small>{g.nom}</small></button>);
     } else if (g.tipo === 'liga') {
       partes.push(<button type="button" key={g.id} className={'h liga nuevo' + visto} onClick={abrir}><span className="h-c"><img alt="" src="/ul.png" /></span><small>La Liga</small></button>);
+    } else if (g.tipo === 'yo') {
+      partes.push(<button type="button" key={g.id} className={'h yo nuevo' + visto} onClick={abrir}><CaraH liga={liga} k={g.k} nombre={liga.yo ? liga.yo.n : ''} cc={g.cc} /><small>Tu semana</small></button>);
     } else if (g.tipo === 'promos') {
       partes.push(<button type="button" key={g.id} className={'h promos nuevo' + visto} onClick={abrir}><span className="h-c"><Orbe /></span><small>Promos</small></button>);
     } else if (g.tipo === 'sv') {

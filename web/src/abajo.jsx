@@ -7,6 +7,7 @@ import { limpio, nuevaQue, num } from './liga.js';
 import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, promoAbierta, subirSiEsta } from './piezas.jsx';
 import { Buscar, CaraDc, CaraH, MENU, Orbe, QUE_ES } from './arriba.jsx';
 import { abrirVideo } from './video.jsx';
+import { useAplausos } from './aplausos.js';
 
 
 // ── Se busca ──────────────────────────────────────────────────────────────────────────────────────
@@ -432,7 +433,7 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema, temaSv }) {
 }
 
 // ── el visor de historias, como las de Instagram ──────────────────────────────────────────────────
-export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, raiz }) {
+export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, raiz, desde = '' }) {
   // 🔴 el grupo abierto se sigue por su ID, no por su lugar en la fila: los datos se rehacen cada minuto y, si
   // empezaba un evento en vivo con el visor abierto, su círculo entraba primero y corría a todos un lugar (saltabas a
   // otra historia a mitad). Y el reloj de cada historia volvía a cero en cada refresco (revisión del 01/10/2026)
@@ -446,7 +447,15 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   // en la primera que no viste. Lo visto no se vuelve a pasar solo, pero se puede volver con «anterior»
   const pend = (g) => g.slides.filter((s) => !vistos[s.id]).map((s) => s.id);
   const lista = (g) => (g ? g.slides.map((s) => s.id) : []);
-  const inicio = (g) => { if (!g) return 0; const k = g.slides.findIndex((s) => !vistos[s.id]); return k < 0 ? 0 : k; };
+  // 🔗 abierta por su link (`?h=<id>`, ver App.jsx): arranca en esa historia; si no, en la primera que no viste
+  const desdeR = useRef(desde);
+  const inicio = (g) => {
+    if (!g) return 0;
+    const j = desdeR.current ? g.slides.findIndex((s) => s.id === desdeR.current) : -1;
+    if (j >= 0) return j;
+    const k = g.slides.findIndex((s) => !vistos[s.id]);
+    return k < 0 ? 0 : k;
+  };
   // la lista de cada círculo se fija al abrirlo: marcar como vista la que estás mirando no la saca de abajo del dedo
   const [abre, setAbre] = useState(() => ({ gid: (grupos[abierto] || {}).id, ids: lista(grupos[abierto]) }));
   const [si, setSi] = useState(() => inicio(grupos[abierto]));
@@ -462,10 +471,38 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   // ✋ el gesto: dónde y cuándo empezó, y si el click que viene detrás se ignora (mantener o deslizar no es tocar)
   const gesto = useRef(null);
   const tragar = useRef(false);
-  const DUR = 5000;
   const a = (i) => { setAbre({ gid: grupos[i].id, ids: lista(grupos[i]) }); setSi(inicio(grupos[i])); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { if (grupos[abierto]) a(abierto); }, [abierto]);
+  // el link vale una vez: después, cada círculo abre donde corresponde (este efecto corre DESPUÉS del de arriba)
+  useEffect(() => { desdeR.current = ''; }, []);
+  // ⬅️ EL «ATRÁS» DEL CELULAR CIERRA EL VISOR, como Instagram (Dlx, 18/10/2026, a las ideas de historias: «todas»). Al
+  // abrir se suma un paso al historial —la misma dirección— y «Atrás» lo saca. Si se cierra de otra forma (la X, deslizar,
+  // terminar), el paso se saca acá. ⚠️ Yendo a otro lado desde una historia (`ir`) el paso se queda y se le borra la
+  // marca: un `history.back()` en ese momento haría que app.js vuelva a enrutar y cerraría lo que se acaba de abrir
+  const cerrarR = useRef(onCerrar);
+  cerrarR.current = onCerrar;
+  const paso = useRef(false);
+  useEffect(() => {
+    try { history.pushState(Object.assign({}, history.state || {}, { lgHv: 1 }), ''); paso.current = true; } catch (e) { paso.current = false; }
+    const pop = () => { if (paso.current) { paso.current = false; cerrarR.current(); } };
+    window.addEventListener('popstate', pop);
+    return () => {
+      window.removeEventListener('popstate', pop);
+      if (paso.current && history.state && history.state.lgHv) {
+        paso.current = false;
+        try { history.back(); } catch (e) { /* queda un paso de más: «Atrás» vuelve a la misma página */ }
+      }
+    };
+  }, []);
+  const soltarPaso = () => {
+    if (!paso.current) return;
+    paso.current = false;
+    try { const st = Object.assign({}, history.state || {}); delete st.lgHv; history.replaceState(st, ''); } catch (e) { /* sin historial */ }
+  };
+  // 👏 los aplausos (Felicitar, como en Publicaciones) y la imagen para historias
+  const A = useAplausos();
+  const [img, setImg] = useState('');
   const gid = abre.gid;
   const gi = grupos.findIndex((x) => x.id === gid);
   const g = gi >= 0 ? grupos[gi] : null;
@@ -525,13 +562,21 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
       imgs.forEach((im) => { im.addEventListener('load', listo, { once: true }); im.addEventListener('error', listo, { once: true }); });
       espera = setTimeout(() => { cargando.current = false; }, 2500);
     }
+    // ⏱️ CUÁNTO DURA, SEGÚN LO QUE MUESTRA (Dlx, 18/10/2026, a las ideas de historias: «todas»): una carta sola, poco;
+    // una lista, más. Se cuenta lo que hay para leer —letras y renglones— y queda entre 4,5 y 12 segundos
+    let dur = 5000;
+    if (cuerpoR.current) {
+      const letras = (cuerpoR.current.textContent || '').length;
+      const filas = cuerpoR.current.querySelectorAll('li').length;
+      dur = Math.max(4500, Math.min(12000, 3500 + letras * 30 + filas * 400));
+    }
     const tick = (t) => {
       // ⏱️ con tope: al volver de otra pestaña o de la pantalla bloqueada, `t - antes` eran minutos y la historia se
       // salteaba de golpe. Y con la pestaña oculta, quieta
       if (!pausa.current && !cargando.current && !document.hidden) acum += Math.min(100, t - antes);
       antes = t;
-      if (barra.current) barra.current.style.width = Math.min(100, (acum / DUR) * 100) + '%';
-      if (acum >= DUR) { sig.current(); return; }
+      if (barra.current) barra.current.style.width = Math.min(100, (acum / dur) * 100) + '%';
+      if (acum >= dur) { sig.current(); return; }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
@@ -545,6 +590,7 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   }, [hay, onCerrar]);
   const ir = useMemo(() => (d) => {
     if (!d) return;
+    soltarPaso();
     onCerrar();
     // 📣 abrir una promo desde su historia también paga (ver `promoAbierta()`)
     if (d.promo) promoAbierta(d.promo);
@@ -580,15 +626,42 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   };
   const corta = () => { pausa.current = false; gesto.current = null; };
   const zona = (f) => () => { if (tragar.current) { tragar.current = false; return; } f(); };
-  // lo que se comparte de una historia: la carta (la imagen), la llave o el perfil al que lleva
-  const d = s.ir || {};
-  const compartir = d.carta ? liga.cartaUrl(d.carta, d.cual || 'temporada') || enlace('#/r/' + encodeURIComponent(d.carta))
-    : d.llave ? enlace('#/llave/' + d.llave) : d.perfil ? enlace('#/r/' + encodeURIComponent(d.perfil)) : null;
+  // 🔗 CADA HISTORIA TIENE SU LINK (Dlx, 18/10/2026, a las ideas: «todas»): abre la página en esa misma historia
+  // (`?h=<id>`, App.jsx). Si ya no está —las historias se van con los días—, abre el Inicio
+  const compartir = enlace('#/?h=' + encodeURIComponent(s.id));
+  // 📸 y como imagen, para Instagram o WhatsApp, con el link en el texto (historia.js, que baja recién al tocar)
+  const imagen = async () => {
+    pausa.current = true;
+    try {
+      const H = await import('./historia.js');
+      await H.armarYCompartir(() => H.imagenHistoria(liga, cuerpoR.current, s), 'liga-global-historia.png',
+        'En la Liga Global: ' + compartir, setImg, 'historia');
+    } catch (e) { setImg('error'); } finally { pausa.current = false; }
+  };
+  // 👏 Felicitar desde la historia: le llega a la persona, como desde Publicaciones (`window.felicitar`, app.js)
+  const fel = s.fel || null;
+  let felB = null;
+  if (fel) {
+    const n = Number(A.cu[fel.id] || 0);
+    const mio = !!A.mios[fel.id];
+    const err = A.err[fel.id] && window.errorAplauso ? window.errorAplauso(A.err[fel.id]) : '';
+    felB = liga.yo && (fel.ks || []).includes(liga.yo.k)
+      ? (n ? <span className="hv-fel tuyo" title="Te felicitaron">👏 {num(n)}</span> : null)
+      : (<>
+        <button type="button" className={'hv-fel' + (mio ? ' on' : '')} aria-pressed={mio} disabled={mio || !!A.va[fel.id]}
+          onClick={() => { if (window.felicitar) window.felicitar(fel.id); }}>
+          <span aria-hidden="true">👏</span>{mio ? 'Felicitaste' : 'Felicitar'}{n ? <em>{num(n)}</em> : null}
+        </button>
+        {err ? <small className="hv-fel-err" role="status">{err}</small> : null}
+      </>);
+  }
+  const ctaB = s.cta && s.ir && Object.values(s.ir).some(Boolean) ? <button type="button" className="btn verde hv-cta" onClick={() => ir(s.ir)}>{s.cta}</button> : null;
   const perfil = g.tipo === 'gente' ? '#/r/' + encodeURIComponent(g.k)
     : g.tipo === 'pais' ? '#/pais/' + g.cc
       : g.tipo === 'crew' ? '#/crew/' + encodeURIComponent(g.crew.clave || g.crew.crew)
-        : g.tipo === 'sv' ? '#/sv/' + encodeURIComponent(g.nom) : g.tipo === 'liga' ? '#/ranking' : '#/eventos';
-  const circulo = g.tipo === 'gente' ? <CaraH liga={liga} k={g.k} nombre={g.nom} cc={g.cc} />
+        : g.tipo === 'sv' ? '#/sv/' + encodeURIComponent(g.nom) : g.tipo === 'liga' ? '#/ranking'
+          : g.tipo === 'yo' ? '#/r/' + encodeURIComponent(g.k) : '#/eventos';
+  const circulo = g.tipo === 'gente' || g.tipo === 'yo' ? <CaraH liga={liga} k={g.k} nombre={g.nom} cc={g.cc} />
     : g.tipo === 'liga' ? <span className="h-c"><img alt="" src="/ul.png" /></span>
     : g.tipo === 'promos' ? <span className="h-c"><Orbe /></span>
     : g.tipo === 'pais' ? <span className="h-c bandera"><img alt="" src={'/banderas/g/' + g.cc + '.webp'} /></span>
@@ -601,12 +674,16 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
         <div className="hv-bars" ref={barras}>{ids.map((id, i) => <i key={id} className={i < si ? 'hecho' : ''}><b ref={i === si ? barra : null} style={{ width: 0 }} /></i>)}</div>
         <div className="hv-cab">
           <a className="hv-quien" href={perfil} onClick={onCerrar} aria-label={'Ir al perfil de ' + g.nombre}>{circulo}<span><b>{g.nombre}</b><small>{s.cuando || ''}</small></span></a>
-          {compartir ? <Compartir cls="hv-comp" url={compartir} texto={'En la Liga Global: ' + g.nombre} etiqueta="" /> : null}
+          <Compartir cls="hv-comp" url={compartir} texto={'En la Liga Global: ' + g.nombre} etiqueta="" />
+          <button type="button" className={'hv-comp hv-img' + (img ? ' ' + img : '')} aria-label="Guardar como imagen para tus historias"
+            title="Como imagen, para tus historias" disabled={img === 'armando'} onClick={imagen}><Ico n="imagen" t={22} /></button>
           <button type="button" className="hv-x" aria-label="Cerrar las historias" onClick={onCerrar} ref={cerrarB}><Ico n="cerrar" t={22} /></button></div>
         <div className="hv-cuerpo" ref={cuerpoR}><div className="st" key={s.id}><span className="st-tag">{s.tag}</span>{s.cuerpo}</div></div>
         {proxima ? <div className="hv-sig" aria-hidden="true" ref={(el) => { if (el) el.setAttribute('inert', ''); }}>
           <div className="st"><span className="st-tag">{proxima.tag}</span>{proxima.cuerpo}</div></div> : null}
-        {s.cta && s.ir && Object.values(s.ir).some(Boolean) ? <button type="button" className="btn verde hv-cta" onClick={() => ir(s.ir)}>{s.cta}</button> : null}
+        {img === 'armando' || img === 'bajada' || img === 'error' ? <p className="hv-est" role="status">{img === 'armando' ? 'Armando la imagen…'
+          : img === 'bajada' ? 'Imagen guardada' : 'No pude armar la imagen'}</p> : null}
+        {felB || ctaB ? <div className={'hv-pie' + (felB && ctaB ? ' dos' : '')}>{felB}{ctaB}</div> : null}
         <button type="button" className="hv-zona izq" aria-label="Anterior" onClick={zona(anterior)} />
         <button type="button" className="hv-zona der" aria-label="Siguiente" onClick={zona(siguiente)} />
       </div>

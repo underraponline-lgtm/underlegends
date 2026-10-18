@@ -294,6 +294,41 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 .hv-cuerpo .st>*,.hv-sig .st>*{max-width:100%;min-width:0}
 .st-h{overflow-wrap:anywhere}
 .st-h.largo{font-size:19px;line-height:1.08}
+/* 📖 LAS IDEAS DE HISTORIAS (Dlx, 18/10/2026: «todas») ─────────────────────────────────────────────────────────────── */
+/* 🏆 el podio con las tres cartas: el 1º al medio y más alto. Cada columna, un tercio del ancho de la historia */
+.st-podio3{list-style:none;margin:0;padding:0;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:end}
+.st-podio3 li{display:grid;justify-items:center;gap:4px;min-width:0}
+.st-podio3 li.p1{padding-bottom:16px}
+.st-p3-c{width:100%;max-width:120px;height:auto;display:block}
+.st-podio3 li.p1 .st-p3-c{max-width:140px}
+.st-p3-cara{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:#2A2A2E;color:#F6F6F6;overflow:hidden;
+  font:900 24px/1 Archivo,sans-serif}
+.st-p3-cara img{width:100%;height:100%;object-fit:cover}
+.st-podio3 li.p1 .st-p3-cara{width:84px;height:84px}
+.st-podio3 b{display:grid;place-items:center;min-width:26px;height:22px;padding:0 4px;background:#F6F6F6;color:#030304;font:700 15px/1 "Barlow Condensed",sans-serif}
+.st-podio3 li.p1 b{background:var(--verde)}
+.st-podio3 span{max-width:100%;font:800 13px/1.15 Archivo,sans-serif;text-align:center;overflow-wrap:anywhere}
+/* 🔴 el en vivo: la ronda que se juega, quién pasó y quién sigue */
+.st-vivo{display:grid;gap:8px;width:100%;text-align:left}
+.st-vivo p{margin:0;padding:8px 10px;border-left:3px solid #6E6E78;font:700 15px/1.3 Archivo,sans-serif;overflow-wrap:anywhere}
+.st-vivo p.ahora{border-left-color:var(--magenta);background:rgba(228,19,115,.14)}
+.st-vivo b{display:block;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:0.06em;color:#A5A5A0;margin-bottom:4px}
+.st-vivo p.ahora b{color:var(--magenta)}
+.st-vivo small{font:700 14px/1 "Barlow Condensed",sans-serif;color:#A5A5A0;text-align:center}
+/* 👏 Felicitar al lado de lo que lleva la historia, y el aviso de la imagen */
+.hv-pie{position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+.hv-pie .hv-cta{flex:1 1 160px;width:auto}
+.hv-fel{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:48px;padding:0 14px;border:2px solid #F6F6F6;
+  background:transparent;color:#F6F6F6;font:800 14px/1 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase;cursor:pointer}
+.hv-pie:not(.dos) .hv-fel{flex:1}
+.hv-fel em{font:700 15px/1 "Barlow Condensed",sans-serif;font-style:normal;padding-left:8px;border-left:1.5px solid rgba(246,246,246,.4)}
+.hv-fel.on{background:var(--verde);border-color:var(--verde);color:#030304}
+.hv-fel:disabled{cursor:default}
+.hv-fel.tuyo{border-color:rgba(246,246,246,.35);cursor:default}
+.hv-fel-err{flex-basis:100%;font:700 14px/1.2 "Barlow Condensed",sans-serif;color:#E5B800}
+.hv-comp+.hv-comp{margin-left:0}
+.hv-img.armando{opacity:.5}
+.hv-est{position:relative;z-index:2;margin:0 0 8px;font:700 15px/1 "Barlow Condensed",sans-serif;color:#A5A5A0;text-align:center}
 /* Misiones y Tus eventos ya no van con pestañas: sus tarjetas perdían el `.pz .tu{margin:0}` y quedaban corridas */
 .pz-2 .tu,.pz-2 .mis,.pz-2 .te{margin:0}
 /* la cabecera del celular con tu cuenta: tres botones de 40 y el nombre en dos renglones, no en cuatro */

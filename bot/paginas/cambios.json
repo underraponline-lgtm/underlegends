@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "3.49",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T04:27:00-04:00",
+   "titulo": "Historias nuevas",
+   "items": [
+    "🙋 «Tu semana»: con tu cuenta, un círculo con lo que jugaste desde el lunes y tu próximo evento.",
+    "🏆 El podio de cada evento con las tres cartas, y 👏 Felicitar desde la historia.",
+    "🖼️ Guardá cualquier historia como imagen para Instagram o WhatsApp, y compartí su link.",
+    "🔴 Lo en vivo muestra la ronda que se juega y quién va pasando.",
+    "⬅️ El botón Atrás del celular cierra las historias, y cada una dura según lo que muestra."
+   ]
+  },
+  {
    "version": "3.48",
    "dia": "2026-10-18",
    "cuando": "2026-10-18T04:12:00-04:00",
