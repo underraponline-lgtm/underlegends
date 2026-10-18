@@ -147,7 +147,8 @@ const Cambios = lazy(() => import('./cambios.jsx').then((m) => ({ default: m.Cam
 const PerfilSv = lazy(() => import('./servidor.jsx').then((m) => ({ default: m.PerfilSv })));
 const PaginaCrew = lazy(() => import('./grupo.jsx').then((m) => ({ default: m.PaginaCrew })));
 const PaginaPais = lazy(() => import('./grupo.jsx').then((m) => ({ default: m.PaginaPais })));
-const Cargando = () => <div className="cargando">Cargando…</div>;
+// ⏳ mientras baja una página: la misma barrita que la pantalla de carga (`#lg-carga`), en chico
+const Cargando = () => <div className="cargando" role="status"><span>Cargando…</span><i className="cargando-b" aria-hidden="true"><i /></i></div>;
 import { VentanaVideo } from './video.jsx';
 import { claseTema, guardarTemas, leerTemas } from './temas.js';
 import { urlFondo, useFondos } from './fondos.js';
@@ -256,7 +257,10 @@ class Aislada extends Component {
   static getDerivedStateFromError() { return { roto: true }; }
   componentDidCatch(e) { console.error('[inicio:' + this.props.n + ']', e); }
   render() {
-    if (!this.state.roto) return this.props.children;
+    // 🎞️ una PÁGINA entra con su transición (`.pg-entra`, vivo.css): como va con `key` por página, cambiar de sección la
+    // vuelve a montar y la animación corre de nuevo (Dlx, 17/10/2026: «mejores transiciones, animaciones… tampoco tan
+    // exagerado, pero hasta ahora no he visto animaciones»)
+    if (!this.state.roto) return this.props.pagina ? <div className="pg-entra">{this.props.children}</div> : this.props.children;
     // ⚠️ una PÁGINA rota no queda en blanco: dice qué pasó y deja recargar (un pedazo chico, en cambio, se apaga)
     return this.props.pagina ? <section className="sec"><p className="pronto-p">No pude cargar esta parte de la página.{' '}
       <button type="button" className="btn borde2 chico" onClick={() => location.reload()}>Recargar</button></p></section> : null;
@@ -429,6 +433,8 @@ export default function App() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const liga = useMemo(() => (D ? new Liga(D, muro, ahora, yo.k, aQuienSigo()) : null), [D, muro, ahora, yo, sigoV]);
+  // ⏳ con los datos, se va la pantalla de carga del HTML (`#lg-carga`, web/montar.py)
+  useEffect(() => { if (liga) document.documentElement.classList.add('lg-listo'); }, [!!liga]);
   // el perfil de un servidor (#/sv/<SIGLA>): app.js no conoce la ruta y la deja en el Inicio, y acá se dibuja el perfil
   const mSv = /^#\/sv\/([^/?#]+)/i.exec(hash || '');
   let sv = null;
@@ -578,7 +584,7 @@ export default function App() {
         : pagina === 'cuenta' && partes[1] === 'verificar' ? <Aislada key="Verificar" n="Verificar" pagina><Suspense fallback={<Cargando />}><PaginaVerificar liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'dashboard' ? <Aislada key="Dashboard" n="Dashboard" pagina><Suspense fallback={<Cargando />}><Dashboard dc={yo.dc} liga={liga} /></Suspense></Aislada>
         : pagina === 'cuenta' ? <Aislada key="Cuenta" n="Cuenta" pagina><Suspense fallback={<Cargando />}><Cuenta cual="cuenta" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} temaSv={temaSv} onTemaSv={elegirSv} /></Suspense></Aislada>
-        : pagina === 'ajustes' ? <Aislada key="Ajustes" n="Ajustes" pagina><Suspense fallback={<Cargando />}><Cuenta cual="ajustes" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} temaSv={temaSv} onTemaSv={elegirSv} /></Suspense></Aislada> : <>
+        : pagina === 'ajustes' ? <Aislada key="Ajustes" n="Ajustes" pagina><Suspense fallback={<Cargando />}><Cuenta cual="ajustes" liga={liga} dc={yo.dc} parte={partes[1] || null} tema={tema} onTema={elegirTema} temaSv={temaSv} onTemaSv={elegirSv} /></Suspense></Aislada> : <div className="pg-entra" key="inicio">
         {/* 🏠 el Dashboard, sólo para Dlx: si la cuenta del navegador no es la suya ni se baja (la puerta igual es el servidor) */}
         {yo.dc && String(yo.dc.id) === DUENO ? <Aislada n="PanelDueno"><Suspense fallback={null}><PanelDueno liga={liga} /></Suspense></Aislada> : null}
         <Aislada n="Historias"><Historias liga={liga} grupos={grupos} vistos={vistos || {}} onAbrir={setHistoria} /></Aislada>
@@ -602,7 +608,7 @@ export default function App() {
         <Aislada n="Merch"><Merch liga={liga} /></Aislada>
         {/* 📊 La Liga en números ya no va en el Inicio (Dlx, 13/10/2026: «QUITA LA liga en numeros de inicio»): vive en
             Socios, que es donde estaba desde la 2.87 además de acá */}
-      </>}
+      </div>}
       <Aislada n="Pie"><Pie liga={liga} /></Aislada>
       <Aislada n="Tabbar"><Tabbar liga={liga} dc={yo.dc} pagina={paginaMenu} /></Aislada>
       {pagina && !sv ? <Aislada n="Subir"><Subir key={paginaMenu} /></Aislada> : null}

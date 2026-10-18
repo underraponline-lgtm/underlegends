@@ -6,6 +6,7 @@
     python sheet/lista_raperos.py --agregar NOMBRE CC ID ["nota"] [--aplicar]
     python sheet/lista_raperos.py --id NOMBRE ID [--aplicar]
     python sheet/lista_raperos.py --cuenta-nueva NOMBRE ID "por qué" [--aplicar]
+    python sheet/lista_raperos.py --quitar-id NOMBRE "por qué" [--aplicar]
     python sheet/lista_raperos.py --renombrar VIEJO NUEVO ["por qué"] [--aplicar]
     python sheet/lista_raperos.py --pais NOMBRE CC ["por qué"] [--aplicar]
     python sheet/lista_raperos.py --sacar-no-confundir A B [--aplicar]
@@ -299,6 +300,40 @@ def cuenta_nueva(nombre, did, motivo, aplicar=False):
     return True
 
 
+def quitar_id(nombre, motivo, aplicar=False):
+    """🔑 LA CUENTA NO ERA DE ESA FILA: se le saca, y queda escrita en las Notas con el motivo.
+
+    Nace con EGI 🇵🇦, 17/10/2026: su fila tenía la cuenta @franciscoegipto, que se anota como «francis 🇨🇷», «Egipto
+    🇨🇷» y «Egi 🇨🇷», y Dlx: *«son dos; la cuenta es de francis»*. Para dársela a otro hay que sacarla primero —una
+    cuenta es de una sola fila (`_id_usado()`)—.
+    """
+    if not motivo:
+        print('   ⚠️ hace falta el motivo')
+        return False
+    v = leer()
+    i, col = mapa(v)
+    fs = filas_de(v, nombre)
+    if len(fs) != 1:
+        print('   ⚠️ «%s» está %d veces en la Lista: no sé a cuál' % (nombre, len(fs)))
+        return False
+    n, f = fs[0]
+    ya = _celda(f, col['Discord ID'])
+    if not ya:
+        print('   no tenía cuenta')
+        return True
+    nota = ('%s · sin la cuenta %s (%s)' % (_celda(f, col.get('Notas')), ya, motivo)).lstrip(' ·')
+    cambios = [('Discord ID', ''), ('Notas', nota)]
+    for c, x in cambios:
+        print('   fila %d  %-10s %s  ->  %s' % (n, c, _celda(f, col.get(c)) or '—', x or '—'))
+    if not aplicar:
+        return True
+    respaldar(v, 'quitar_id')
+    for c, x in cambios:
+        _E().poner(_rango(HOJA, '%s%d' % (chr(ord('A') + col[c]), n)), [[x]])
+    print('   ✅ sin cuenta')
+    return True
+
+
 # ── renombrar ──────────────────────────────────────────────────────────
 def renombrar(viejo, nuevo, motivo='', aplicar=False):
     """Le cambia el nombre a una fila: `Rapero` (con su bandera) y `Nombre`.
@@ -532,6 +567,8 @@ def main():
         poner_id(args[1], args[2], aplicar)
     elif args[0] == '--cuenta-nueva' and len(args) == 4:
         cuenta_nueva(args[1], args[2], args[3], aplicar)
+    elif args[0] == '--quitar-id' and len(args) == 3:
+        quitar_id(args[1], args[2], aplicar)
     elif args[0] == '--renombrar' and len(args) >= 3:
         renombrar(args[1], args[2], args[3] if len(args) > 3 else '', aplicar)
     elif args[0] == '--pais' and len(args) >= 3:

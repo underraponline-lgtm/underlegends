@@ -141,7 +141,8 @@
   "🆚 FVS, Dlx 12/10/2026 («3. A, b, b, b»): en FVS «Agustin» —«Agustin 51 🇨🇱🇵🇪» en su lista de FVS UNDER— es AGUSTÍN51K, no Agus; «Draax»/«Draxx 🇨🇱» es Drexx (no una persona nueva); «Joaco»/«Joacoflz» es Joaco Zeo; y «Force 🇲🇽» NO es ForceGP (`no_confundir`).",
   "🏟️ URBF, 14/10/2026: en las ligas FMH de Urban «FORCE»/«FORCÉ»/«Force» es ForceGP 🇲🇽 (884190151180447744): él mismo («le pico donde dice FORCE y no me lleva a nada»), y Dlx pasó su ID («este es el ID de force»). Y «Agustín»/«AGUSTIN» es AGUSTÍN51K 🇨🇱, no Agus 🇦🇷: ForceGP («es el Agustin51… es uno chileno»), Dlx («hay 3 agustins»: el chileno, el uruguayo —EIDP— y el argentino), y en el mismo canal de FMH Carimex hay una batalla escrita «AGUSTIN51K vs BENJA» (30/08). ⚠️ Es POR SERVIDOR: en FVS el «Force 🇲🇽» sigue sin ser ForceGP (`no_confundir`). Ninguna llave de URBF de la T1 tiene esos nombres (la #464 dice «Agus»): hoy sólo mueve las ligas, que lo leen desde el 14/10 (`ligas.por_servidor()`).",
   "🔑 Rodas 🇵🇷 y Roda son la misma persona (Dlx, 14/10/2026: «La misma persona»). En 7 eventos (#362, #412, #427, #440, #441, #464 y #465) sumaba «Rodas», la cuenta de la Lista (1428556720510079168, que nunca se anotó), y el que se anotaba esos días era @rodaaa_mc (1492592375812587551: «Roda 🇵🇦», «RoDaaa MCC»). Va en `cuentas`: abre las cartas de Rodas con /card. ⚠️ Esa cuenta también se anotó como «Flitcher», «Flicher» y «Fitcher» (FFA, 12/10): no se juntó acá; lo decide ✅ Decidir con su prueba.",
-  "«Over» es Mr Still Ballin 🇺🇾 (Dlx, 17/10/2026: «over es mr still ballin… asegurate de tener ese aka puesto»). En la Lista había una fila «Over 🇺🇾» sin cuenta; la de Mr Still Ballin tiene la suya."
+  "«Over» es Mr Still Ballin 🇺🇾 (Dlx, 17/10/2026: «over es mr still ballin… asegurate de tener ese aka puesto»). En la Lista había una fila «Over 🇺🇾» sin cuenta; la de Mr Still Ballin tiene la suya.",
+  "«Egipto» es francis 🇨🇷, y la cuenta @franciscoegipto (1517014246087589923) es suya: se anota como «francis», «Egipto» y «Egi» 🇨🇷. Estaba en la fila «EGI 🇵🇦», que nació de un /card de esa cuenta en FFA. Dlx, 17/10/2026: «son dos; la cuenta es de francis». EGI 🇵🇦 sigue siendo otro (`no_confundir`) y quedó sin cuenta; en la hoja AKAs, Egipto pasó a francis y se borró «francis → EGI»."
  ],
  "cuentas": {
   "Monet": [
@@ -329,6 +330,10 @@
   [
    "Over",
    "Mr Still Ballin"
+  ],
+  [
+   "Egipto",
+   "francis"
   ]
  ],
  "no_confundir": [

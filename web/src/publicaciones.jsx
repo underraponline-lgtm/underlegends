@@ -380,7 +380,7 @@ export function Publicaciones({ liga, enc }) {
         <main className="pub-feed">
           {dias.length ? dias.map((d, n) => (
             <Fragment key={d.k}>
-              <section className="pub-dia" aria-label={tituloDia(d.k)}>
+              <section className="pub-dia aparece" aria-label={tituloDia(d.k)}>
                 <h2 className="pub-dh">{tituloDia(d.k)}</h2>
                 {d.xs.map((it, i) => (it.tipo === 'tarjetas' ? <Cartas key={'c' + i} liga={liga} xs={it.xs} />
                   : <Pub key={it.id || it.tipo + it.t + i} liga={liga} it={it} A={A} />))}

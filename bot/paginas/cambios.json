@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "3.28",
+   "dia": "2026-10-17",
+   "cuando": "2026-10-17T20:49:00-04:00",
+   "titulo": "Pantalla de carga, animaciones y la barra que se desliza",
+   "items": [
+    "⏳ Al abrir la página aparece una pantalla de carga con el logo, en vez de una pantalla negra.",
+    "🎞️ Las secciones entran con una animación suave, y las listas grandes aparecen de a poco.",
+    "👉 En el celular, la barra de abajo te avisa que se desliza: hay más secciones a la derecha.",
+    "⚽ Las fases de grupos de las llaves ahora cuentan: todos los que jugaron suman."
+   ]
+  },
+  {
    "version": "3.27",
    "dia": "2026-10-16",
    "cuando": "2026-10-16T11:53:00-04:00",

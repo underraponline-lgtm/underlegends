@@ -573,7 +573,7 @@ function LigasInicio({ liga, falta = '' }) {
               ))}
             </div>
           ) : null}
-          <ul className="lgh-grid">{ver.map((L) => <li key={L.id}><TarjetaLiga liga={liga} L={L} est={est[L.id]} /></li>)}</ul>
+          <ul className="lgh-grid aparece">{ver.map((L) => <li key={L.id}><TarjetaLiga liga={liga} L={L} est={est[L.id]} /></li>)}</ul>
         </Sec>
       ) : null}
       {ls.length ? <LoMejor liga={liga} ls={ls} hs={hs} /> : null}
@@ -856,7 +856,7 @@ function LoMejor({ liga, ls, hs }) {
           ))}</ul>
         </div>
       ) : null}
-      <ol className="lgh-top">{xs.map((p, i) => (
+      <ol className="lgh-top aparece">{xs.map((p, i) => (
         <li key={p.k || p.raw} className={liga.yo && p.k === liga.yo.k ? 'yo' : ''}>
           <span className="lgh-top-i">{i + 1}</span>{cara(p)}
           <span className="lgh-top-n"><b>{nombre(p)}</b><small>{p.ls.length === 1 ? p.ls[0] : p.ls.length + ' ligas'}</small></span>

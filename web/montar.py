@@ -64,7 +64,29 @@ html.ini-nuevo .barra > :not(.pop){visibility:hidden}
 html.ini-nuevo .barra .pop{top:64px;right:12px}
 html.ini-nuevo body{background:#030304}
 html.ini-nuevo.ini-noche body{background:#030304}
-html.ini-nuevo{scroll-padding-top:0}'''
+html.ini-nuevo{scroll-padding-top:0}
+#lg-carga{display:none}
+html.ini-nuevo #lg-carga{display:grid;position:fixed;inset:0;z-index:1000;place-items:center;background:#030304;color:#F6F6F6;
+  transition:opacity .35s ease,visibility 0s linear .35s}
+html.ini-nuevo.lg-listo #lg-carga{opacity:0;visibility:hidden}
+#lg-carga .lg-c{display:grid;justify-items:center;gap:10px;font:900 20px/1 Archivo,system-ui,sans-serif;letter-spacing:.06em}
+#lg-carga img{width:84px;height:84px;animation:lg-late 1.6s ease-in-out infinite}
+#lg-carga small{font:700 13px/1 "Barlow Condensed",system-ui,sans-serif;letter-spacing:.2em;color:#29B298}
+#lg-carga .lg-barra{position:relative;display:block;width:160px;height:4px;margin-top:8px;background:#1d1d24;overflow:hidden}
+#lg-carga .lg-barra i{position:absolute;top:0;bottom:0;width:40%;background:#E41373;animation:lg-va 1.1s ease-in-out infinite}
+@keyframes lg-va{from{left:-40%}to{left:100%}}
+@keyframes lg-late{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@media (prefers-reduced-motion: reduce){#lg-carga img,#lg-carga .lg-barra i{animation:none}#lg-carga .lg-barra i{left:30%}}'''
+
+
+#: ⏳ LA PANTALLA DE CARGA (Dlx, 17/10/2026: «¿y si hacemos una pestaña de carga?»): lo primero del <body>
+HTML_CARGA = """<body>
+<!-- ⏳ LA PANTALLA DE CARGA (Dlx, 17/10/2026: «¿y si hacemos una pestaña de carga?»). Va en el HTML y no en la app: se ve
+     al instante, también con 3G lento (la app tarda ~7 s en bajar; ver el plan B de arriba). Se va sola cuando la app
+     tiene los datos (`lg-listo`, App.jsx) o cuando vuelve la página de antes (el plan B saca `ini-nuevo`). La pone
+     web/montar.py. -->
+<div id="lg-carga" aria-hidden="true"><div class="lg-c"><img src="/ul.png" alt="" width="84" height="84"><b>LIGA GLOBAL</b><small>DE FREESTYLE</small><i class="lg-barra"><i></i></i></div></div>
+"""
 
 
 def vistas(html, appjs):
@@ -244,6 +266,8 @@ def montar(html, appjs):
                         '  <div id="inicio-nuevo"></div>\n\n  <div class="barra">')
     html = html.replace('<script src="app.js"></script>',
                         '<script src="app.js"></script>\n<script type="module" src="/inicio/inicio.js"></script>')
+    # ⏳ la pantalla de carga, lo primero del <body> (17/10/2026)
+    html = html.replace('<body>\n', HTML_CARGA, 1)
     return html
 
 

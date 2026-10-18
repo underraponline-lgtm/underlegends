@@ -250,6 +250,18 @@
 .db-at b{display:block;font:800 15px/1.2 Archivo,sans-serif}
 .db-at small{display:block;margin-top:2px;color:var(--gris)}
 .db-ok{margin:0;padding:10px 12px;border:2px solid var(--verde);font-weight:700}
+/* 🔴 lo que avisó Logs (17/10/2026) */
+.db-logs{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.db-log{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;padding:10px 12px;border:2px solid var(--suave);border-left-width:6px}
+.db-log.rojo{border-left-color:#E5322D}
+.db-log.amarillo{border-left-color:#E5B800}
+.db-log b{display:block;font:800 14px/1.3 Archivo,sans-serif;overflow-wrap:anywhere}
+.db-log small{display:block;margin-top:2px;color:var(--gris)}
+.db-log details{margin-top:6px}
+.db-log summary{cursor:pointer;font-weight:700;font-size:13px}
+.db-log details ul{margin:6px 0 0;padding-left:18px;font-size:13px;overflow-wrap:anywhere}
+.db-log>button{flex:none}
+@media (max-width: 599.98px){.db-log{flex-direction:column}}
 .db-hist{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid var(--suave)}
 .db-hist li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--suave)}
 .db-hist b{display:block;font:800 14px/1.2 Archivo,sans-serif}

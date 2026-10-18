@@ -867,7 +867,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
                         })}
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="aparece">
                       {vis.map((f) => {
                         const k = clave(f);
                         const sinFiltro = !orden && !q && !sv && !cc && !soloSigo && !soloNuevos;

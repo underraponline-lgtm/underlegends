@@ -3,7 +3,40 @@
 /* con una página corta, la app mide la pantalla y su blanco seguía abajo del pie. El negro del pie se estira hasta el
    final con una sombra que arranca en su borde de arriba: no mueve nada ni tapa lo de arriba (Dlx, 02/10/2026) */
 .app .pie.negra{box-shadow:0 100vh 0 100vh #030304}
-.cargando{padding:80px 16px;font:700 16px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;color:var(--gris);text-align:center}
+.cargando{padding:80px 16px;font:700 16px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;color:var(--gris);text-align:center;
+  display:grid;justify-items:center;gap:12px}
+/* ⏳ la barrita de «Cargando…», como la de la pantalla de carga del HTML (17/10/2026) */
+.cargando-b{position:relative;display:block;width:120px;height:3px;background:var(--suave);overflow:hidden}
+.cargando-b i{position:absolute;top:0;bottom:0;width:40%;background:#E41373;animation:lg-va2 1.1s ease-in-out infinite}
+@keyframes lg-va2{from{left:-40%}to{left:100%}}
+/* 🎞️ LAS ANIMACIONES (Dlx, 17/10/2026: «mejores transiciones, animaciones… tampoco tan exagerado, pero hasta ahora no
+   he visto animaciones»). Sólo CSS —el remake no usa librerías de movimiento— y nada para quien las apagó:
+   · cada página entra con un fundido y un paso hacia arriba (`.pg-entra`, App.jsx);
+   · las listas y grillas grandes entran escalonadas, las doce primeras (`.aparece`);
+   · los botones se hunden al tocarlos, y las tarjetas y puertas se levantan un poco al pasar el mouse.
+   ⚠️ La transición deja `transform` en NADA al terminar (sin `fill-mode`): un `transform` que queda puesto hace que lo
+   `position:fixed` de adentro se ubique contra la página y no contra la pantalla */
+.pg-entra{animation:pg-entra .28s cubic-bezier(.2,.7,.2,1)}
+@keyframes pg-entra{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.aparece>*{animation:ap-entra .32s cubic-bezier(.2,.7,.2,1) both}
+.aparece>*:nth-child(2){animation-delay:.03s}.aparece>*:nth-child(3){animation-delay:.06s}.aparece>*:nth-child(4){animation-delay:.09s}
+.aparece>*:nth-child(5){animation-delay:.12s}.aparece>*:nth-child(6){animation-delay:.15s}.aparece>*:nth-child(7){animation-delay:.18s}
+.aparece>*:nth-child(8){animation-delay:.21s}.aparece>*:nth-child(9){animation-delay:.24s}.aparece>*:nth-child(10){animation-delay:.27s}
+.aparece>*:nth-child(11){animation-delay:.3s}.aparece>*:nth-child(12){animation-delay:.33s}
+@keyframes ap-entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.app .btn{transition:transform .12s ease,background-color .15s ease,color .15s ease,box-shadow .15s ease}
+.app .btn:active:not(:disabled){transform:translateY(2px)}
+/* 👆 en el celular no hay «pasar el mouse» (por eso Dlx no veía ninguna: las de las puertas y las ligas son de hover):
+   lo que se toca se hunde un poco */
+.app .pu:active,.app .lb:active,.app .lgh-c:active{transform:translate(1px,1px)}
+@media (hover: hover){
+  .app .alza{transition:transform .18s ease,box-shadow .18s ease}
+  .app .alza:hover{transform:translateY(-3px)}
+}
+@media (prefers-reduced-motion: reduce){
+  .pg-entra,.aparece>*,.cargando-b i{animation:none}
+  .app .btn:active:not(:disabled),.app .alza:hover,.app .pu:active,.app .lb:active,.app .lgh-c:active{transform:none}
+}
 a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #E41373;outline-offset:2px}
 #envivo,.sec[id],#semana{scroll-margin-top:58px}
 
@@ -55,6 +88,19 @@ button.destacada{width:100%;font:inherit;color:inherit;text-align:left;cursor:po
 .tb-tira{display:flex;flex:1;min-width:0;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;
   scrollbar-width:none}
 .tb-tira::-webkit-scrollbar{display:none}
+/* 👉 que se note que se desliza (17/10/2026): la flecha mientras haya más a la derecha, y el globito de la primera vez */
+.tabbar{position:sticky}
+.tb-mas{position:absolute;right:64px;top:0;bottom:env(safe-area-inset-bottom,0px);width:26px;display:grid;place-items:center;
+  border:0;border-left:2px solid var(--linea);background:var(--fondo);color:var(--tinta);font:900 22px/1 Archivo,sans-serif;
+  cursor:pointer;z-index:2}
+.tb-globo{position:absolute;left:12px;right:12px;bottom:calc(100% + 10px);display:flex;align-items:center;gap:8px;padding:10px 12px;
+  background:#030304;color:#F6F6F6;border:2px solid #E5B800;box-shadow:4px 4px 0 #E5B800;font:700 14px/1.3 Archivo,sans-serif;
+  animation:tb-aparece .35s ease-out both}
+.tb-globo button{margin-left:auto;border:0;background:none;color:inherit;font:900 16px/1 Archivo,sans-serif;cursor:pointer;padding:4px}
+.tb-mano{display:inline-block;animation:tb-mano 1.6s ease-in-out infinite}
+@keyframes tb-mano{0%,100%{transform:translateX(6px) rotate(90deg)}50%{transform:translateX(-10px) rotate(90deg)}}
+@keyframes tb-aparece{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.tb-mano,.tb-globo{animation:none}}
 .tabbar .tb-tira a{flex:0 0 auto;min-width:68px;padding-inline:10px;scroll-snap-align:start}
 .tabbar .tb-tira a span{white-space:nowrap}
 /* sin la raya negra que la separaba de la tira (Dlx, 03/10/2026: «eliminá la línea negra que hay en los íconos de abajo

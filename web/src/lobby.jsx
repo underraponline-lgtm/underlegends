@@ -581,7 +581,7 @@ export function Lobby({ liga, dc }) {
       <ElBoton liga={liga} />
       <PedirCampana liga={liga} dc={dc} />
       <Rival liga={liga} dc={dc} />
-      <div className="lb-grid">
+      <div className="lb-grid aparece">
         {bus.length ? (
           <a className="pu lb lb-mw" href="#/ranking/mw">
             <span className="lb-t">{teBuscan ? 'TE BUSCAN' : 'SE BUSCA'}</span>

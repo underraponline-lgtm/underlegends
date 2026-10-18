@@ -125,7 +125,9 @@ function Recorrido({ liga, dc, onCerrar }) {
             <div className="rc-cab"><span className="tag">BIENVENIDO</span></div>
             <h2 id="rc-h">Esto es la Liga Global de Freestyle</h2>
             <p>{c.personas && c.servidores ? <>{num(c.personas)} raperos de {num(c.servidores)} servidores de Discord compiten en un mismo ranking. </>
-              : <>Raperos de muchos servidores de Discord compiten en un mismo ranking. </>}Te muestro cómo funciona en cuatro pasos.</p>
+              : <>Raperos de muchos servidores de Discord compiten en un mismo ranking. </>}Te muestro cómo funciona en cuatro pasos.
+              {/* 👉 en el celular, que sepa dónde está todo (17/10/2026: «enseñar que hay una barra abajo que se puede deslizar») */}
+              {(W.innerWidth || 0) < 900 ? <> Todo está en la <b>barra de abajo</b>, que se desliza de costado.</> : null}</p>
             <div className="rc-acc">
               <button type="button" className="btn verde chico" ref={sig} onClick={() => setI(1)}>Mostrame</button>
               <button type="button" className="btn borde2 chico" onClick={() => onCerrar('salto', 0)}>Ahora no</button>

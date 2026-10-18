@@ -86,6 +86,7 @@ const AVISOS = {
   '/api/avisos/felicitar': 'POST',
   '/api/avisos/promo-vio': 'POST',
   '/api/avisos/promo-extender': 'POST',
+  '/api/avisos/dueno-logs': 'POST',
   '/api/avisos/aplausos': 'GET',
   // 🔔 el panel de la campana (02/10/2026): lo que se te avisó, con tu sesión. Ver `bandeja()` en bot/avisos.js
   '/api/avisos/bandeja': 'POST',

@@ -1128,6 +1128,32 @@ export const CANAL_RED = '1500690475089399858';
 //: 🧩 el canal de Logs —«LIGA GLOBAL» en DRA—, el mismo que `avisar.CANAL` de Python: lo de rutina que tiene que ver
 //: Dlx. `alertar.py --auto` comprueba que los dos digan lo mismo
 export const CANAL_LOGS = '1504110449535483924';
+//: 🔴 el servidor del canal de Logs (DRA), para el link a cada aviso desde el Dashboard
+export const GUILD_LOGS = '841017460341604382';
+//: cuántos días de Logs mira el Dashboard
+export const LOGS_DIAS = 3;
+
+/**
+ * 🔴 Los avisos en rojo y en amarillo de los mensajes de Logs: `[{id, t, nivel, tit, mas}]`, del más nuevo al más
+ * viejo, de los últimos `LOGS_DIAS` días. `tit` es su primer renglón y `mas` los que siguen (hasta siete). Pura, sin
+ * red: la prueba `bot/avisos_prueba.mjs`.
+ */
+export function logsRojos(ms, ahora) {
+  const out = [];
+  for (const m of Array.isArray(ms) ? ms : []) {
+    const t = Date.parse((m && m.timestamp) || '');
+    if (!(ahora - t < LOGS_DIAS * DIA_MS)) continue;
+    let txt = String(m.content || '');
+    for (const e of m.embeds || []) {
+      txt += '\n' + (e.title || '') + '\n' + (e.description || '') + (e.fields || []).map((f) => '\n' + f.name + ': ' + f.value).join('');
+    }
+    const nivel = txt.includes('🔴') ? 'rojo' : txt.includes('⚠️') || txt.includes('⚠') ? 'amarillo' : '';
+    if (!nivel) continue;
+    const ls = txt.split('\n').map((s) => s.replace(/\*\*|__|`/g, '').trim()).filter(Boolean);
+    out.push({ id: String(m.id), t: m.timestamp, nivel, tit: ls[0].slice(0, 200), mas: ls.slice(1, 8).map((s) => s.slice(0, 200)) });
+  }
+  return out.slice(0, 25);
+}
 
 /**
  * 🧩 ¿ESTO QUISO SER UNA LLAVE? (Dlx, 07/10/2026, las mejoras: «dale, haz todo»). La de Snake Rap de esa tarde —`(< A >)
@@ -2294,6 +2320,8 @@ const RUTAS = {
   '/avisos/clics': 'POST',
   // 🔒 el Dashboard del dueño (04/10/2026): ver `/avisos/dueno` en `rutaAvisos()`
   '/avisos/dueno': 'POST',
+  // 🔴 lo que avisó el canal de Logs, para el Dashboard (`logsRojos()`)
+  '/avisos/dueno-logs': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx) y los ajustes para el ciclo (con su clave)
   '/avisos/dueno/ajuste': 'POST', '/avisos/ajustes': 'GET',
   // ▶️ correr el ciclo ahora, desde el Dashboard (sólo Dlx): ver `cicloAMano()`
@@ -3773,6 +3801,26 @@ export async function rutaAvisos(req, env, ruta) {
     // 🔐 con sus roles: el objeto le arma sólo lo que puede ver (ver `panelDueno()`)
     return elObjeto(env).fetch('https://avisos/dueno', { method: 'POST', body: JSON.stringify({ quien: q.id, roles: rs }),
       headers: { 'content-type': 'application/json' } });
+  }
+  // 🔴 LO QUE AVISÓ EL CANAL DE LOGS, EN EL DASHBOARD (Dlx, 17/10/2026: «en el canal de registros aparecen cosas que
+  // están malas, en 🔴: ¿deberíamos arreglarlas, o aparecer en el dashboard quizás?»). Se le pregunta a Discord al
+  // abrir el Dashboard —una vez, 60 mensajes— y se quedan los 🔴 y ⚠️ de los últimos días (`logsRojos()`). Sólo quien
+  // puede los ajustes: el canal es del staff
+  if (ruta === '/avisos/dueno-logs') {
+    const crudo = await req.text();
+    let d = null;
+    try { d = crudo.length <= 1024 ? JSON.parse(crudo || '{}') : null; } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (!puedeRol(await rolesPanel(q.id), 'ajustes')) return json({ error: 'no' }, 403);
+    if (!env.DISCORD_TOKEN) return json({ error: 'sin token' }, 503);
+    const r = await fetch(`https://discord.com/api/v10/channels/${CANAL_LOGS}/messages?limit=60`,
+      { headers: { authorization: 'Bot ' + env.DISCORD_TOKEN } });
+    if (!r.ok) return json({ error: 'discord', estado: r.status }, 502);
+    return json({ t: Date.now(), canal: CANAL_LOGS, guild: GUILD_LOGS, xs: logsRojos(await r.json(), Date.now()) });
   }
   // 🧭 lo del tutorial: sólo el nombre de lo que pasó, de una lista cerrada (`TUTO_EV`)
   if (ruta === '/avisos/tutorial') {

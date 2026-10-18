@@ -2044,6 +2044,17 @@ const ok = (cond, que, det) => {
   ok(A.validarExtender(ps, { id: 'aaaaaaaaaaa1' }, ['bea'], ahora).error === 'no_es_tuya', 'la de otro no');
   ok(A.validarExtender(ps, { id: 'ccccccccccc3' }, ['ana'], ahora).error === 'vencida', 'la vencida no');
   ok(A.PROMO_SEMANA_PAGA === 2500 && A.PROMO_SEMANA_MS === 7 * 864e5, 'una semana, 2.500 Puntos de Tienda');
+  // 🔴 Logs en el Dashboard: los rojos y amarillos de los últimos días, con su primer renglón de título
+  const lg = A.logsRojos([
+    { id: '1', timestamp: '2026-10-17T11:58:00Z', content: '**🔴 `nicks` se freno: iba a cambiar 182 apodos.**\nNo escribio nada.' },
+    { id: '2', timestamp: '2026-10-17T11:57:00Z', content: '**⚠️ 1 con rol de rango**\n👤 | Samuel' },
+    { id: '3', timestamp: '2026-10-17T11:56:00Z', content: '✅ todo bien' },
+    { id: '4', timestamp: '2026-10-01T11:56:00Z', content: '🔴 viejo' },
+    { id: '5', timestamp: '2026-10-17T10:00:00Z', content: '', embeds: [{ title: 'Auditoría', description: '🔴 Alias rotos — 2' }] },
+  ], Date.parse('2026-10-17T20:00:00Z'));
+  ok(lg.map((x) => x.id + x.nivel).join() === '1rojo,2amarillo,5rojo' && lg[0].tit === '🔴 nicks se freno: iba a cambiar 182 apodos.'
+    && lg[0].mas[0] === 'No escribio nada.' && lg[2].tit === 'Auditoría',
+    'Logs en el Dashboard: sólo rojos y amarillos de los últimos 3 días, sin el formato de Discord', JSON.stringify(lg));
   // 🏆 MES AWARDS: Dlx saca nominados de las dieciséis, y de nada más
   const ms = A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['rapero:Ana', 'organizador:Velatz', 'liga:fmsperu'] });
   ok(ms && ms.quitar.length === 3 && A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['otra:x'] }) === undefined

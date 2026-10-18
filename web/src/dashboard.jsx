@@ -835,7 +835,48 @@ function useHacer(onAj) {
 }
 
 // 🔔 lo que pide atención: lo mismo que marca el panel del Inicio, y la última corrida del ciclo si salió mal
-function atencion(d, liga, q) {
+// 🔴 LO QUE AVISÓ EL CANAL DE LOGS (Dlx, 17/10/2026: «en el canal de registros aparecen cosas que están malas, en 🔴…
+// ¿o aparecer en el dashboard quizás?»): los 🔴 y ⚠️ de los últimos días, del Worker (`/avisos/dueno-logs`). «Ya lo vi»
+// los esconde en este navegador; un aviso que vuelve al día siguiente es otro mensaje y aparece de nuevo
+const LOGS_VISTO = 'lg:db-logs';
+function logsVistos() { try { return JSON.parse(localStorage.getItem(LOGS_VISTO) || '[]') || []; } catch (e) { return []; } }
+function useLogs(activo) {
+  const [l, setL] = useState(null);
+  useEffect(() => {
+    if (!activo) return undefined;
+    let vivo = true;
+    fetch('/api/avisos/dueno-logs', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })
+      .then(async (r) => (r.ok ? r.json() : { error: r.status }))
+      .then((j) => { if (vivo) setL(j || { error: 'vacío' }); })
+      .catch(() => { if (vivo) setL({ error: 'red' }); });
+    return () => { vivo = false; };
+  }, [activo]);
+  return l;
+}
+function Logs({ l }) {
+  const [vistos, setVistos] = useState(logsVistos);
+  if (!l) return <p className="pronto-p">Leyendo Logs…</p>;
+  if (l.error) return <p className="pronto-p">No pude leer Logs ({String(l.error)}).</p>;
+  const xs = (l.xs || []).filter((x) => !vistos.includes(x.id));
+  const ver = (id) => {
+    const v = vistos.concat([id]).slice(-200);
+    setVistos(v);
+    try { localStorage.setItem(LOGS_VISTO, JSON.stringify(v)); } catch (e) { /* sin guardar: vuelve al recargar */ }
+  };
+  if (!xs.length) return <p className="db-ok">✅ Nada en rojo ni en amarillo en Logs en los últimos días.</p>;
+  return (
+    <ul className="db-logs">{xs.map((x) => (
+      <li key={x.id} className={'db-log ' + x.nivel}>
+        <div><b>{x.tit}</b><small>{corto(x.t)}{' · '}<a href={'https://discord.com/channels/' + l.guild + '/' + l.canal + '/' + x.id} target="_blank" rel="noopener noreferrer">en Discord ↗</a></small>
+          {x.mas.length ? <details><summary>Ver el detalle</summary><ul>{x.mas.map((m, i) => <li key={i}>{m}</li>)}</ul></details> : null}
+        </div>
+        <button type="button" className="btn borde2 chico" onClick={() => ver(x.id)}>Ya lo vi</button>
+      </li>
+    ))}</ul>
+  );
+}
+
+function atencion(d, liga, q, logs) {
   const aj = d.ajustes || {};
   const m = liga.d.mult || {};
   const ult = (d.corridas || [])[0];
@@ -857,6 +898,12 @@ function atencion(d, liga, q) {
     ...((d.fotos_carta || []).length ? [['📸', (d.fotos_carta.length === 1 ? 'Una foto de tarjeta' : d.fotos_carta.length + ' fotos de tarjeta') + ' para revisar', 'Abajo, en Lo que te llegó.']] : []),
     // ✅ y lo de ✅ Decidir sin contestar (13/10/2026)
     ...(sinContestar(d.decidir) ? [['✅', sinContestar(d.decidir) === 1 ? 'Una pregunta de ✅ Decidir sin contestar' : sinContestar(d.decidir) + ' preguntas de ✅ Decidir sin contestar', 'En la pestaña Decisiones.']] : []),
+    // 🔴 y lo que Logs avisó en rojo y todavía no viste (17/10/2026)
+    ...(() => {
+      const v = logsVistos();
+      const n = ((logs && logs.xs) || []).filter((x) => x.nivel === 'rojo' && !v.includes(x.id)).length;
+      return n ? [['🔴', n === 1 ? 'Un aviso en rojo en Logs' : n + ' avisos en rojo en Logs', 'Abajo, en Lo que avisó Logs.']] : [];
+    })(),
   ].filter(Boolean);
 }
 function Atencion({ xs }) {
@@ -1840,6 +1887,8 @@ export function Dashboard({ dc, liga }) {
   }, [dc && dc.id]);
   useEffect(() => { W.scrollTo && W.scrollTo(0, 0); }, []);
   const cuotas = useCuotas(!!st.d);
+  // 🔴 lo de Logs, sólo para quien puede los ajustes (el Worker también lo pide)
+  const logs = useLogs(!!st.d && (!(st.d.permisos) || st.d.permisos.includes('ajustes')));
   const retencion = useRetencion(!!st.d);
   // `ajustar()` devuelve los ajustes y el historial (ver `ajuste()` en avisos.js)
   const onAj = (r) => setSt((x) => (x.d ? { d: Object.assign({}, x.d, { ajustes: r.ajustes }, r.hist ? { ajustes_hist: r.hist } : {}) } : x));
@@ -1864,7 +1913,7 @@ export function Dashboard({ dc, liga }) {
     const verTab = { hoy: true, reportes: ve('reportes') || ve('reportes_cerrar'), decisiones: ve('decidir'), ajustes: ve('ajustes'),
       numeros: ve('ajustes'), sistema: ve('ajustes') };
     const tabV = verTab[tab] ? tab : 'hoy';
-    const at = atencion(d, liga, cuotas);
+    const at = atencion(d, liga, cuotas, logs);
     // el número de cada pestaña: lo que espera algo de vos
     const cuenta = { hoy: at.length, reportes: (d.reportes || []).filter((x) => x.estado === '' || x.estado === 'no_pude').length,
       decisiones: sinContestar(d.decidir) };
@@ -1879,6 +1928,7 @@ export function Dashboard({ dc, liga }) {
         ))}</nav>
         {tabV === 'hoy' ? <>
           {sec('LO QUE PIDE ATENCIÓN', null, <Atencion xs={at} />)}
+          {ve('ajustes') ? sec('LO QUE AVISÓ LOGS', 'los 🔴 y ⚠️ de los últimos 3 días', <Logs l={logs} />) : null}
           {ve('ajustes') ? sec('MES AWARDS', 'los nominados del mes', <MesAwardsDueno aj={d.ajustes || {}} hacer={hacer} ocup={ocup} />) : null}
           {(d.vivo || []).length ? sec('EN VIVO AHORA', 'se actualiza al abrir el Dashboard',
             <EnVivo vivo={d.vivo} liga={liga} aj={d.ajustes || {}} chat={d.chat} />) : null}

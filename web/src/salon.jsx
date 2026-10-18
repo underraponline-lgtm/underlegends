@@ -73,7 +73,7 @@ function Records({ liga }) {
   if (!rs.length) return null;
   return (
     <Sec id="sf-records" titulo="Los récords" bajada={'De la ' + nombreTemp(liga.temp) + ', y se mueven con cada evento.'}>
-      <ul className="sf-rec">{rs.map((r) => {
+      <ul className="sf-rec aparece">{rs.map((r) => {
         const cuerpo = <>
           {r.k ? <Persona liga={liga} k={r.k} n={r.n} /> : <span className="sf-cara sf-rec-ic" aria-hidden="true"><Ico n="copa" t={20} /></span>}
           <span className="sf-rec-t"><small>{r.que}</small><b>{r.k ? nomDe(liga, r.k, r.n) : limpio(r.n)}</b>{r.x ? <em>{limpio(r.x)}</em> : null}</span>
@@ -98,7 +98,7 @@ function Insignias({ liga, perf }) {
   if (!xs.length) return null;
   return (
     <Sec id="sf-insignias" titulo="Las insignias más difíciles" bajada="Las que tienen pocos, de la más rara a la menos. Quedan para siempre.">
-      <ul className="sf-ins">{xs.map((x) => (
+      <ul className="sf-ins aparece">{xs.map((x) => (
         <li key={x.id}>
           <span className="sf-ins-ic" aria-hidden="true">{x.ic}</span>
           <span className="sf-ins-t"><b>{x.n}</b><small>{x.desc}</small></span>

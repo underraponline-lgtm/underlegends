@@ -294,9 +294,62 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   // vez de la cuenta»), como el «Tú» de Discord
   const yo = liga && liga.yo;
   const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="tb-cara" /> : (dc ? <CaraDc dc={dc} cls="tb-cara" /> : null);
+  // 👉 QUE SE NOTE QUE SE DESLIZA (Dlx, 17/10/2026: «mejorar un poco el tutorial, específicamente para lo del celular:
+  // enseñar que hay una barra abajo que se puede deslizar»). Dos cosas: la flecha «›» a la derecha mientras haya más
+  // secciones para ese lado (siempre: es lo que dice que hay más), y la primera vez un globito «Deslizá» con la tira
+  // asomándose sola un poco y volviendo. Las dos cosas se van solas en cuanto la persona la desliza una vez
+  // (`lg:tira-ok`); el asomarse, nunca para quien apagó las animaciones
+  const tira = useRef(null);
+  const [mas, setMas] = useState(false);
+  const [aprende, setAprende] = useState(() => { try { return !localStorage.getItem('lg:tira-ok'); } catch (e) { return false; } });
+  const asomando = useRef(false);
+  const aprendio = () => {
+    setAprende(false);
+    try { localStorage.setItem('lg:tira-ok', '1'); } catch (e) { /* sin guardar: vuelve a aparecer */ }
+  };
+  const mirar = () => {
+    const t = tira.current;
+    if (!t) return;
+    setMas(t.scrollLeft + t.clientWidth < t.scrollWidth - 8);
+    if (!asomando.current && t.scrollLeft > 24 && aprende) aprendio();
+  };
+  useEffect(() => {
+    mirar();
+    window.addEventListener('resize', mirar);
+    return () => window.removeEventListener('resize', mirar);
+  }, []);
+  useEffect(() => {
+    if (!aprende || (window.innerWidth || 0) >= 900) return undefined;
+    let quieto = false;
+    try { quieto = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) { quieto = false; }
+    if (quieto) return undefined;
+    const t1 = setTimeout(() => {
+      const t = tira.current;
+      if (!t || t.scrollLeft > 0) return;
+      asomando.current = true;
+      t.scrollTo({ left: Math.min(140, t.scrollWidth - t.clientWidth), behavior: 'smooth' });
+    }, 1600);
+    const t2 = setTimeout(() => {
+      const t = tira.current;
+      if (t) t.scrollTo({ left: 0, behavior: 'smooth' });
+    }, 2700);
+    const t3 = setTimeout(() => { asomando.current = false; }, 3600);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
+  }, [aprende]);
+  const correr = () => {
+    const t = tira.current;
+    if (t) t.scrollBy({ left: Math.round(t.clientWidth * 0.7), behavior: 'smooth' });
+  };
   return (
     <nav className="tabbar" aria-label="Secciones">
-      <div className="tb-tira">
+      {aprende ? (
+        <div className="tb-globo" role="note">
+          <span className="tb-mano" aria-hidden="true">👆</span> Deslizá la barra de costado: hay más secciones
+          <button type="button" aria-label="Entendido" onClick={aprendio}>✕</button>
+        </div>
+      ) : null}
+      {mas ? <button type="button" className="tb-mas" aria-label="Ver más secciones" onClick={correr}>›</button> : null}
+      <div className="tb-tira" ref={tira} onScroll={mirar}>
         {MENU.map(([n, r]) => {
           const k = r.replace(/^#\/?/, '') || 'inicio';
           // la de la página que se ve: el Inicio sin ruta, y las que dibuja el Inicio nuevo por su nombre (el Ranking)

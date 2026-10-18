@@ -236,7 +236,7 @@ function Galeria({ liga, t, lista }) {
       {!lista.length ? <p className="rk-vacio">Todavía nadie tiene la de {NOMBRE[t]}. La primera aparece acá apenas alguien la desbloquee.</p>
         : !fs.length ? <p className="rk-vacio">Nadie con {qn ? 'ese nombre' : 'ese filtro'}. <button type="button" className="rk-lnk" onClick={sacar}>{qn && !filtra ? 'Borrar la búsqueda' : 'Sacar los filtros'}</button></p>
           : (
-            <ul className={'tj-grilla tj-' + t}>
+            <ul className={'tj-grilla aparece tj-' + t}>
               {vis.map((f) => (
                 <li key={f.k}>
                   <Carta liga={liga} k={f.k} cual={t} cls="tj-c" />
