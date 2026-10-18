@@ -285,3 +285,53 @@
 .db-hist{margin:0 14px 14px}
 .db-at,.db-ok{margin:12px}
 @media (max-width:560px){.db-tabs{gap:2px}.db-tab{padding:10px 9px;font-size:13.5px}.db-tab i{margin-left:4px}}
+
+/* 📊 COMPARAR SEMANAS (18/10/2026, Dlx: «comparar actividad, gente y mejoras de gente o peores… con otras semanas») */
+.cs{display:grid;gap:14px;padding:14px}
+.cs-elige{display:flex;flex-wrap:wrap;align-items:end;gap:10px}
+.cs-elige label{display:grid;gap:4px}
+.cs-elige label > span{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--gris)}
+.cs-elige select{font:600 15px/1.3 Archivo,sans-serif;color:var(--tinta);background:var(--fondo);border:1.5px solid var(--linea);border-radius:0;padding:8px 10px;min-height:44px}
+.cs-elige select:focus-visible{outline:2px solid var(--verde);outline-offset:1px}
+.cs-elige .cs-igual{display:flex;align-items:center;gap:8px;min-height:44px}
+.cs-elige .cs-igual > span{font:600 14px/1.3 Archivo,sans-serif;letter-spacing:0;text-transform:none;color:var(--tinta)}
+.cs-t{margin:6px 0 0;font:900 15px/1.1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+/* tantas columnas como entren, y las cajas se reparten el ancho: con cinco o seis no queda una sola con un hueco al lado */
+.cs-cajas{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border-top:2px solid var(--linea)}
+.cs-caja{display:grid;gap:4px;align-content:start;padding:10px 14px 12px;border-right:1px solid var(--suave);border-bottom:1px solid var(--suave);
+  animation:cs-entra .45s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0) * 45ms)}
+.cs-caja > span{font:700 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:var(--gris)}
+.cs-caja > b{font:900 26px/1 Archivo,sans-serif;font-stretch:125%;font-variant-numeric:tabular-nums}
+.cs-caja small{font:600 13px/1.3 Archivo,sans-serif;color:var(--gris)}
+.cs-caja small em{font-style:normal;font-weight:400;opacity:.85}
+.cs-grilla{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.cs-gente,.cs-mov{display:grid;gap:6px;align-content:start;padding:12px;border:1.5px solid var(--linea)}
+.cs-gente h4,.cs-mov h4{margin:0;font:800 15px/1.2 Archivo,sans-serif;text-transform:uppercase}
+.cs-gente h4 b{font-variant-numeric:tabular-nums}
+.cs-gente h4 em{font-style:normal;font-weight:600;color:var(--gris);font-size:13px;text-transform:none}
+.cs-nombres{margin:0;font:600 14px/1.55 Archivo,sans-serif}
+.cs-nombres a,.cs-mov a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.cs-mas{border:0;background:none;padding:0;font:700 14px/1.5 Archivo,sans-serif;color:var(--verde);cursor:pointer;text-decoration:underline}
+.cs-mov ol{margin:0;padding:0;list-style:none;display:grid;gap:5px}
+.cs-mov li{display:flex;justify-content:space-between;gap:10px;font:600 14px/1.35 Archivo,sans-serif;
+  animation:cs-entra .4s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0) * 40ms)}
+.cs-mov li em{font-style:normal;font-variant-numeric:tabular-nums;color:var(--gris);white-space:nowrap}
+/* la temporada en barras: la elegida en magenta, la otra en verde; un toque elige la semana */
+.cs-temp{display:grid;gap:8px}
+.cs-serie{display:grid;grid-template-columns:80px minmax(0,1fr);gap:10px;align-items:end}
+.cs-barras{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;height:84px;align-items:end}
+.cs-b{position:relative;height:100%;display:flex;align-items:flex-end;padding:0;border:0;background:rgba(127,127,127,.12);cursor:pointer}
+.cs-b u{display:block;width:100%;min-height:2px;background:#A5A5A0;transform-origin:bottom;
+  animation:cs-crece .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--i,0) * 60ms)}
+.cs-b.a u{background:var(--magenta)}
+.cs-b.b u{background:var(--verde)}
+.cs-b.curso u{opacity:.7}
+.cs-b small{position:absolute;left:0;right:0;top:4px;text-align:center;font:700 12px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+.cs-b:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+.cs-fechas{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);gap:6px;padding-left:90px;font:600 12px/1.2 "Barlow Condensed",sans-serif;color:var(--gris);text-align:center}
+@media (max-width:560px){.cs-serie{grid-template-columns:60px minmax(0,1fr)}.cs-fechas{padding-left:70px}}
+@keyframes cs-entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes cs-crece{from{transform:scaleY(0)}to{transform:none}}
+/* quieto con «Menos animaciones» (`.app.calma`) o con la opción del celular */
+@media (prefers-reduced-motion: reduce){.cs-caja,.cs-mov li,.cs-b u{animation:none}}
+.app.calma .cs-caja,.app.calma .cs-mov li,.app.calma .cs-b u{animation:none}

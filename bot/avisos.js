@@ -2641,7 +2641,9 @@ export const MES_CAT = { rapero: 'el Rapero del mes', revelacion: 'la Revelació
   pais: 'el País del mes', liga: 'la Liga del mes',
   // «Y más»
   hincha: 'el Hincha del mes', clasico: 'el Clásico del mes', sobreviviente: 'el Sobreviviente del mes',
-  constante: 'el Constante del mes' };
+  constante: 'el Constante del mes',
+  // 🎧 el staff por rol (18/10/2026, Dlx: «agrega staff por separado»), en su bloque del Salón
+  jurado: 'el Jurado del mes', host: 'el Host del mes', dj: 'el DJ del mes' };
 //: cuánto se guarda un aplauso (el muro trae lo de los últimos 21 días)
 export const APLAUSOS_DIAS = 30;
 //: cuándo vuelve a sonar: la primera vez, y cuando llega a cada uno de éstos
@@ -10635,6 +10637,35 @@ export class Avisos {
     };
   }
 
+  /** 📊 El uso por semana —de lunes a domingo, en hora del este— para comparar semanas en el Dashboard (Dlx, 18/10/2026:
+   *  «comparar actividad, gente… con otras semanas»): `[{lunes, personas, bot, web, visitas, dias, k}]`, de la más vieja
+   *  a la de ahora. `k` es lo mismo en los primeros días de esa semana —tantos como lleva la de ahora—, para comparar
+   *  «a igual día» una semana que va por la mitad. Las personas se guardan `USO_DIAS` días: de una semana más vieja que
+   *  eso quedan sólo las visitas (`personas: null`) */
+  usoSemanas(ahora = Date.now()) {
+    const hoy = diaET(ahora);
+    const d0 = Date.parse(hoy + 'T12:00:00Z');
+    const dow = (new Date(d0).getUTCDay() + 6) % 7;            // 0 = lunes
+    const lunes0 = d0 - dow * DIA_MS;
+    const ymd = (t) => new Date(t).toISOString().slice(0, 10);
+    const corte = diaET(ahora - USO_DIAS * DIA_MS);
+    const cuenta = (a, b) => {
+      const v = this.sql.exec('SELECT COALESCE(SUM(n), 0) AS n, COUNT(*) AS d FROM visitas WHERE dia >= ? AND dia < ?', a, b).toArray()[0];
+      const c = (por) => this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM uso WHERE dia >= ? AND dia < ?' + (por ? ' AND por = ?' : ''),
+        ...[a, b].concat(por ? [por] : [])).toArray()[0].n;
+      const entera = a >= corte;
+      return { personas: entera ? c('') : null, bot: entera ? c('bot') : null, web: entera ? c('web') : null, visitas: v.n, dias: v.d };
+    };
+    const out = [];
+    for (let i = 11; i >= 0; i--) {
+      const ini = lunes0 - i * 7 * DIA_MS;
+      const x = cuenta(ymd(ini), ymd(ini + 7 * DIA_MS));
+      if (!x.dias && !x.personas) continue;
+      out.push(Object.assign({ lunes: ymd(ini) }, x, { k: cuenta(ymd(ini), ymd(ini + (dow + 1) * DIA_MS)) }));
+    }
+    return out;
+  }
+
   /** ⚙️ Los ajustes del dueño, como están (ver `ajusteValido()`) */
   ajustes() {
     return this.leer('ajustes_dueno') || {};
@@ -10702,6 +10733,8 @@ export class Avisos {
     const e = this.estado();
     return {
       uso: this.usoResumen(),
+      // 📊 por semana, para «Comparar semanas» (Números)
+      uso_semanas: this.usoSemanas(ahora),
       tutorial: this.tutorialResumen(),
       secciones: this.seccionesResumen(),
       clics: this.clicsResumen(),

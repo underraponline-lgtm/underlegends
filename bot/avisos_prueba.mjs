@@ -925,6 +925,41 @@ const ok = (cond, que, det) => {
   }
 }
 
+// 📊 EL USO POR SEMANA (18/10/2026, «Comparar semanas» del Dashboard): de lunes a domingo, y «a igual día» (`k`)
+{
+  let DatabaseSync = null;
+  try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }
+  if (DatabaseSync) {
+    const db = new DatabaseSync(':memory:');
+    const sql = {
+      exec(q, ...ps) {
+        const t = String(q).trim();
+        if (!ps.length && /;\s*\S/.test(t)) { db.exec(t); return { toArray: () => [] }; }
+        const st = db.prepare(t);
+        if (/^\s*(SELECT|WITH|PRAGMA)/i.test(t)) { const rows = st.all(...ps); return { toArray: () => rows }; }
+        st.run(...ps);
+        return { toArray: () => [] };
+      },
+    };
+    const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; } }, blockConcurrencyWhile: async (f) => f() },
+      { DISCORD_TOKEN: 'x', KV: { get: async () => null } });
+    await new Promise((r) => setTimeout(r, 0));
+    for (const [d, q, p] of [['2026-10-12', 'a', 'web'], ['2026-10-13', 'b', 'bot'], ['2026-10-15', 'a', 'web'],
+      ['2026-10-06', 'c', 'web'], ['2026-10-09', 'd', 'bot'], ['2026-10-11', 'e', 'web']]) {
+      o.sql.exec('INSERT INTO uso (dia, quien, por) VALUES (?, ?, ?)', d, q, p);
+    }
+    for (const [d, n] of [['2026-10-12', 10], ['2026-10-14', 5], ['2026-10-06', 7], ['2026-10-10', 3]]) {
+      o.sql.exec('INSERT INTO visitas (dia, n) VALUES (?, ?)', d, n);
+    }
+    // un jueves: la semana de ahora lleva 4 días, y la anterior se mide entera y en sus 4 primeros
+    const ss = o.usoSemanas(Date.parse('2026-10-15T16:00:00Z'));
+    const [a, b] = ss.slice(-2);
+    ok(ss.length === 2 && b.lunes === '2026-10-12' && b.personas === 2 && b.bot === 1 && b.web === 1 && b.visitas === 15
+      && a.lunes === '2026-10-05' && a.personas === 3 && a.visitas === 10 && a.k.personas === 1 && a.k.visitas === 7,
+    'el uso por semana: personas, bot, cuenta y visitas de lunes a domingo, y la anterior también a igual día', JSON.stringify(ss));
+  }
+}
+
 // 🗳️ «¿QUIÉN GANA?» SOBRE EL OBJETO DE VERDAD (13/10/2026): un voto por persona, que se cambia, y cerrado no se vota
 {
   let DatabaseSync = null;
@@ -2132,10 +2167,10 @@ const ok = (cond, que, det) => {
     && A.validarPedido({ tipo: 'video', vid: 'abcdefghijk', texto: 'no soy yo' }).vid === 'abcdefghijk'
     && A.validarPedido({ tipo: 'otro', texto: 'x' }).error === 'tipo',
   'los pedidos: tipo conocido, perfil para cuenta e identidad, país de dos letras, video de YouTube');
-  // 🏆 MES AWARDS: Dlx saca nominados de las dieciséis, y de nada más
-  const ms = A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['rapero:Ana', 'organizador:Velatz', 'liga:fmsperu'] });
-  ok(ms && ms.quitar.length === 3 && A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['otra:x'] }) === undefined
-    && Object.keys(A.MES_CAT).length === 20, 'sacar un nominado vale en las veinte categorías, y en otra no');
+  // 🏆 MES AWARDS: Dlx saca nominados de las veintitrés —también del staff por rol—, y de nada más
+  const ms = A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['rapero:Ana', 'organizador:Velatz', 'liga:fmsperu', 'jurado:Flennzs'] });
+  ok(ms && ms.quitar.length === 4 && A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['otra:x'] }) === undefined
+    && Object.keys(A.MES_CAT).length === 23, 'sacar un nominado vale en las veintitrés categorías (Jurado, Host y DJ también), y en otra no');
 }
 
 if (fallas) {

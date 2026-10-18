@@ -9,6 +9,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { diaISO, hora, limpio, mult, num, siglaDe } from './liga.js';
 import { DosToques, Ico } from './piezas.jsx';
 import { urlFondo } from './fondos.js';
+import { useNumero } from './anima.js';
 
 // 📸 la dirección de una foto de tarjeta, para el CSS: sólo del bucket de la Liga (las caras y las que esperan revisión)
 const urlFoto = (u) => (/^https:\/\/pub-[a-z0-9]+\.r2\.dev\/(fotos\/[a-z0-9-]+\/[\p{L}\p{N}_]+@[a-z]+|pendientes\/[a-f0-9]{24})\.(webp|jpg|png)$/u.test(String(u || ''))
@@ -245,6 +246,210 @@ function MetaLobby({ r }) {
         : 'Antes: ' + Math.round(a) + ' %. '}{d == null ? 'Con el lobby: se sabe el ' + corto(fin.toISOString().slice(0, 10)) + '.'
         : 'Con el lobby: ' + Math.round(d) + ' %. ' + (d - a >= META_LOBBY.puntos ? '✅ Se cumplió la meta.' : '❌ No llegó a la meta (' + (d >= a ? '+' : '') + Math.round(d - a) + ' puntos).')}</p>
       {META_LOBBY.ojo.map((x) => <p key={x} className="db-tx">⚠️ {x}.</p>)}
+    </div>
+  );
+}
+
+// ── 📊 COMPARAR SEMANAS (Dlx, 18/10/2026: «para tener la opción de comparar actividad, gente y mejoras de gente o peores,
+// para comparar con otras semanas»). La competencia y el ranking salen de `datos/semanas.json` (bot/semanas.py: todo
+// público, las llaves y el ranking); el uso de la página y del bot, del objeto (`uso_semanas`, sólo acá) ──────────────
+let semanasP = null;
+const pedirSemanas = () => (semanasP = semanasP || fetch(RAW + 'semanas.json', { cache: 'no-store' })
+  .then((r) => (r.ok ? r.json() : null)).catch(() => null));
+function useSemanas(activo) {
+  const [s, setS] = useState(null);
+  useEffect(() => {
+    if (!activo) return undefined;
+    let vivo = true;
+    pedirSemanas().then((x) => { if (vivo) setS(x || false); });
+    return () => { vivo = false; };
+  }, [activo]);
+  return s;
+}
+const MES_C = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const masDias = (dia, n) => new Date(Date.parse(dia + 'T12:00:00Z') + n * 864e5).toISOString().slice(0, 10);
+// «12–18 oct», «28 sep–4 oct»
+const rangoSem = (lunes) => {
+  const a = new Date(lunes + 'T12:00:00Z'), b = new Date(a.getTime() + 6 * 864e5);
+  return a.getUTCDate() + (a.getUTCMonth() === b.getUTCMonth() ? '' : ' ' + MES_C[a.getUTCMonth()]) + '–' + b.getUTCDate() + ' ' + MES_C[b.getUTCMonth()];
+};
+// el día de hoy en hora del este: las semanas de la Liga van de lunes a domingo en esa hora
+const hoyET = () => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+
+// los números de la semana `i`; con `k`, sólo sus primeros `k` días (para comparar «a igual día»)
+function medirSemana(ss, i, k) {
+  const w = ss[i];
+  if (!w) return null;
+  if (!k) {
+    return { eventos: w.eventos, raperos: w.raperos, part: w.part, debut: w.debut.length, volvieron: w.volvieron,
+      batallas: w.batallas, fuera: w.completa ? w.fuera.length : null };
+  }
+  const antes = new Set();
+  ss.slice(0, i).forEach((x) => x.dias.forEach((d) => d[3].forEach((n) => antes.add(n))));
+  const tope = masDias(w.lunes, k);
+  const ds = w.dias.filter((d) => d[0] < tope);
+  const gente = new Set();
+  ds.forEach((d) => d[3].forEach((n) => gente.add(n)));
+  let debut = 0, volvieron = 0;
+  gente.forEach((n) => { if (antes.has(n)) volvieron += 1; else debut += 1; });
+  return { eventos: ds.reduce((t, d) => t + d[1], 0), raperos: gente.size, part: ds.reduce((t, d) => t + d[2], 0),
+    debut, volvieron, batallas: null, fuera: null };
+}
+
+// quién sumó, subió y bajó en la semana `i`: la foto del ranking al empezarla contra la del lunes siguiente (o la de ahora)
+function movimientos(S, i) {
+  const ss = S.semanas, w = ss[i];
+  const ini = (S.fotos || {})[w.lunes] || {};
+  const sig = ss[i + 1];
+  const fin = sig ? (S.fotos || {})[sig.lunes] : (S.ultima || {}).foto;
+  if (!fin) return null;
+  const filas = Object.entries(fin).map(([n, [pos, pts]]) => {
+    const a = ini[n] || [0, 0];
+    return { n, pos, pts, dPts: pts - a[1], dPos: a[0] && pos ? a[0] - pos : null };
+  });
+  return {
+    sumaron: filas.filter((f) => f.dPts > 0).sort((a, b) => b.dPts - a.dPts).slice(0, 8),
+    subieron: filas.filter((f) => f.dPos > 0).sort((a, b) => b.dPos - a.dPos || a.pos - b.pos).slice(0, 8),
+    bajaron: filas.filter((f) => f.dPos < 0).sort((a, b) => a.dPos - b.dPos || a.pos - b.pos).slice(0, 8),
+  };
+}
+
+// una caja: el número de la semana, cuánto cambió contra la otra (▲▼ y %), y el de la otra. `menos`: bajar es mejor
+function CajaSem({ t, a, b, menos, i }) {
+  const x = useNumero(a == null ? null : a);
+  if (a == null) return null;
+  const d = b == null ? null : a - b;
+  const pct = d != null && b ? Math.round((100 * d) / b) : null;
+  const bien = d == null || d === 0 ? '' : (d > 0) !== !!menos ? 'db-sube' : 'db-baja';
+  return (
+    <div className="cs-caja" style={{ '--i': i }}>
+      <span>{t}</span><b>{num(x || 0)}</b>
+      {d == null ? <small>sin dato de la otra semana</small> : (
+        <small className={bien}>{d > 0 ? '▲ ' : d < 0 ? '▼ ' : '= '}{num(Math.abs(d))}{pct != null && d ? ' · ' + (pct > 0 ? '+' : '') + pct + ' %' : ''}
+          <em> · antes {num(b)}</em></small>
+      )}
+    </div>
+  );
+}
+
+// un nombre con link a su perfil, si es de la Liga
+function Quien({ liga, n }) {
+  const f = liga && liga.fila ? liga.fila(n) : null;
+  return f ? <a href={'#/r/' + encodeURIComponent(f.k)}>{limpio(n)}</a> : <span>{limpio(n)}</span>;
+}
+
+// una lista de gente: los primeros a la vista y el resto detrás de «y N más»
+function Gente({ liga, t, xs, d, vs }) {
+  const [todo, setTodo] = useState(false);
+  if (!xs) return null;
+  const ver = todo ? xs : xs.slice(0, 10);
+  return (
+    <div className="cs-gente">
+      <h4>{t} <b>{num(xs.length)}</b>{vs != null ? <em> · antes {num(vs)}</em> : null}</h4>
+      {d ? <p className="db-tx">{d}</p> : null}
+      {xs.length ? <p className="cs-nombres">{ver.map((n, j) => <Fragment key={n}>{j ? ' · ' : ''}<Quien liga={liga} n={n} /></Fragment>)}
+        {xs.length > 10 ? <>{' '}<button type="button" className="cs-mas" onClick={() => setTodo((v) => !v)}>{todo ? 'menos' : 'y ' + (xs.length - 10) + ' más'}</button></> : null}</p>
+        : <p className="db-tx">Nadie.</p>}
+    </div>
+  );
+}
+
+function Movidos({ liga, t, xs, f }) {
+  if (!xs || !xs.length) return null;
+  return (
+    <div className="cs-mov">
+      <h4>{t}</h4>
+      <ol>{xs.map((x, j) => <li key={x.n} style={{ '--i': j }}><Quien liga={liga} n={x.n} /><em>{f(x)}</em></li>)}</ol>
+    </div>
+  );
+}
+
+// la temporada en barras, semana por semana: la elegida en magenta y la otra en verde
+function Temporada({ ss, a, b, setA }) {
+  const series = [['raperos', 'Raperos'], ['eventos', 'Eventos']];
+  return (
+    <div className="cs-temp">{series.map(([k, t]) => {
+      const tope = Math.max(1, ...ss.map((w) => w[k] || 0));
+      return (
+        <div key={k} className="cs-serie">
+          <span className="db-t">{t}</span>
+          <div className="cs-barras">{ss.map((w, j) => (
+            <button key={w.lunes} type="button" className={'cs-b' + (j === a ? ' a' : j === b ? ' b' : '') + (w.completa ? '' : ' curso')}
+              onClick={() => setA(j)} title={rangoSem(w.lunes) + ' · ' + num(w[k] || 0)} aria-label={t + ' de la semana del ' + rangoSem(w.lunes) + ': ' + num(w[k] || 0)}>
+              <u style={{ height: (100 * (w[k] || 0) / tope).toFixed(1) + '%', '--i': j }} /><small>{num(w[k] || 0)}</small>
+            </button>
+          ))}</div>
+        </div>
+      );
+    })}
+    <div className="cs-fechas">{ss.map((w) => <span key={w.lunes}>{rangoSem(w.lunes)}</span>)}</div>
+    </div>
+  );
+}
+
+function CompararSemanas({ S, uso, liga }) {
+  const ss = (S && S.semanas) || [];
+  const [a, setA0] = useState(Math.max(0, ss.length - 1));
+  const [b, setB] = useState(Math.max(0, ss.length - 2));
+  const [igual, setIgual] = useState(true);
+  if (S === null) return <p className="pronto-p">Midiendo…</p>;
+  if (!ss.length) return <p className="pronto-p">Todavía no hay semanas para comparar.</p>;
+  const setA = (j) => { setA0(j); if (j === b) setB(j > 0 ? j - 1 : Math.min(ss.length - 1, j + 1)); };
+  const wa = ss[a], wb = ss[b];
+  // 📅 «a igual día»: si la semana elegida va por la mitad, la otra se mide en los mismos días
+  const enCurso = !wa.completa;
+  const k0 = enCurso && igual ? Math.max(1, Math.round((Date.parse(hoyET() + 'T12:00:00Z') - Date.parse(wa.lunes + 'T12:00:00Z')) / 864e5) + 1) : 0;
+  // el domingo «a igual día» ya es la semana entera: así se ven también las batallas
+  const k = k0 >= 7 ? 0 : k0;
+  const ma = medirSemana(ss, a, k), mb = medirSemana(ss, b, k);
+  const ua = (uso || []).find((x) => x.lunes === wa.lunes), ub = (uso || []).find((x) => x.lunes === wb.lunes);
+  const u = (x) => (x ? (k ? x.k || x : x) : null);
+  const UA = u(ua), UB = u(ub);
+  const comp = [
+    ['EVENTOS JUGADOS', ma.eventos, mb.eventos], ['RAPEROS DISTINTOS', ma.raperos, mb.raperos],
+    ['PARTICIPACIONES', ma.part, mb.part], ['DEBUTARON', ma.debut, mb.debut],
+    ['YA HABÍAN JUGADO', ma.volvieron, mb.volvieron], ['BATALLAS', ma.batallas, mb.batallas],
+    ['SE FUERON', ma.fuera, mb.fuera, true],
+  ];
+  const pag = UA ? [
+    ['PERSONAS (BOT O PÁGINA)', UA.personas, UB && UB.personas], ['ENTRARON CON DISCORD', UA.web, UB && UB.web],
+    ['USARON EL BOT', UA.bot, UB && UB.bot], ['VISITAS A LA PÁGINA', UA.visitas, UB && UB.visitas],
+  ] : [];
+  const mv = movimientos(S, a), mvb = movimientos(S, b);
+  const opciones = ss.map((w, j) => <option key={w.lunes} value={j}>{rangoSem(w.lunes)}{w.completa ? '' : ' (en curso)'}</option>);
+  return (
+    <div className="cs">
+      <div className="cs-elige">
+        <label><span>La semana</span><select value={a} onChange={(e) => setA(Number(e.target.value))}>{opciones}</select></label>
+        <button type="button" className="btn borde2 chico" onClick={() => { setA0(b); setB(a); }} aria-label="Dar vuelta las dos semanas">⇄</button>
+        <label><span>contra</span><select value={b} onChange={(e) => setB(Number(e.target.value))}>{opciones.filter((_, j) => j !== a)}</select></label>
+        {enCurso ? <label className="cs-igual"><input type="checkbox" checked={igual} onChange={(e) => setIgual(e.target.checked)} />
+          <span>A igual día{k ? ' (los primeros ' + k + ' días de cada una)' : ''}</span></label> : null}
+      </div>
+      <Temporada ss={ss} a={a} b={b} setA={setA} />
+      <h3 className="cs-t">La competencia</h3>
+      <div className="cs-cajas" key={'c' + a + ':' + b + ':' + k}>{comp.map(([t, x, y, menos], j) => <CajaSem key={t} t={t} a={x} b={y} menos={menos} i={j} />)}</div>
+      {enCurso && !k ? <p className="db-tx">⚠️ La semana del {rangoSem(wa.lunes)} todavía no terminó: contra una entera, casi todo va a dar menos.</p> : null}
+      {pag.length ? <>
+        <h3 className="cs-t">La página y el bot</h3>
+        <div className="cs-cajas" key={'p' + a + ':' + b + ':' + k}>{pag.map(([t, x, y], j) => <CajaSem key={t} t={t} a={x} b={y} i={j} />)}</div>
+      </> : <p className="db-tx">El uso de la página y del bot de esa semana ya no está guardado (se cuenta 35 días por persona).</p>}
+      <h3 className="cs-t">La gente</h3>
+      <div className="cs-grilla">
+        <Gente liga={liga} t="Debutaron" xs={wa.debut} vs={wb.debut.length} />
+        <Gente liga={liga} t="Volvieron después de faltar" xs={wa.regreso} vs={wb.regreso.length} d="Habían jugado antes, pero no la semana anterior." />
+        {wa.completa ? <Gente liga={liga} t="Se fueron" xs={wa.fuera} vs={wb.completa ? wb.fuera.length : null} d="Jugaron la semana anterior y ésta no." /> : null}
+      </div>
+      {mv ? <>
+        <h3 className="cs-t">Mejoraron y empeoraron</h3>
+        <p className="db-tx">El ranking de Temporada al empezar la semana contra el de {a === ss.length - 1 ? 'ahora' : 'al terminarla'}.
+          {mvb && mvb.sumaron.length ? <> La del {rangoSem(wb.lunes)}, el que más sumó fue <Quien liga={liga} n={mvb.sumaron[0].n} /> (+{num(mvb.sumaron[0].dPts)} pts).</> : null}</p>
+        <div className="cs-grilla">
+          <Movidos liga={liga} t="Sumaron más puntos" xs={mv.sumaron} f={(x) => '+' + num(x.dPts) + ' pts'} />
+          <Movidos liga={liga} t="Subieron más puestos" xs={mv.subieron} f={(x) => '▲ ' + x.dPos + ' · #' + x.pos} />
+          <Movidos liga={liga} t="Bajaron más puestos" xs={mv.bajaron} f={(x) => '▼ ' + Math.abs(x.dPos) + ' · #' + x.pos} />
+        </div>
+      </> : null}
     </div>
   );
 }
@@ -1951,6 +2156,8 @@ export function Dashboard({ dc, liga }) {
   // 🔴 lo de Logs, sólo para quien puede los ajustes (el Worker también lo pide)
   const logs = useLogs(!!st.d && (!(st.d.permisos) || st.d.permisos.includes('ajustes')));
   const retencion = useRetencion(!!st.d);
+  // 📊 las semanas, para «Comparar semanas» (Números)
+  const semanas = useSemanas(!!st.d);
   // `ajustar()` devuelve los ajustes y el historial (ver `ajuste()` en avisos.js)
   const onAj = (r) => setSt((x) => (x.d ? { d: Object.assign({}, x.d, { ajustes: r.ajustes }, r.hist ? { ajustes_hist: r.hist } : {}) } : x));
   const { hacer, msg, ocup } = useHacer(onAj);
@@ -2009,6 +2216,7 @@ export function Dashboard({ dc, liga }) {
           <Ajustes liga={liga} aj={d.ajustes || {}} chat={d.chat} hist={d.ajustes_hist} hacer={hacer} msg={msg} ocup={ocup}
             roles={d.roles} alRoles={(y) => cambiarD({ roles: y })} conRoles={ve('roles')} />) : null}
         {tabV === 'numeros' ? <>
+          {sec('COMPARAR SEMANAS', 'de lunes a domingo, en hora del este', <CompararSemanas S={semanas} uso={d.uso_semanas} liga={liga} />)}
           {sec('EL BOT Y LA PÁGINA · 7 DÍAS', u.desde ? 'se cuenta desde el ' + corto(u.desde) : null, <Cajas u={u} />)}
           {(d.dias || []).length ? sec('DÍA POR DÍA · DOS SEMANAS', null, <Dias dias={d.dias} />) : null}
           {d.tutorial && Object.keys(d.tutorial.n || {}).length ? sec('EL TUTORIAL · DOS SEMANAS',
