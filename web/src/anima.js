@@ -44,3 +44,30 @@ export function Numero({ v, f }) {
   const x = useNumero(v);
   return f ? f(x) : x;
 }
+
+// 🧘 «Menos animaciones» de Mi cuenta (`lg:ajustes`.calma, que app.js también pone como `html.calma`): App.jsx se lo
+// pasa a la raíz de la página (`.app.calma`), porque el CSS de acá vive en un shadow root y la clase de <html> no le
+// llega. Se entera al momento: el evento `lg:ajustes` y la clase de <html>
+function calmaAhora() {
+  try {
+    if (document.documentElement.classList.contains('calma')) return true;
+    const aj = JSON.parse(localStorage.getItem('lg:ajustes') || 'null');
+    return !!(aj && aj.calma);
+  } catch (e) {
+    return false;
+  }
+}
+export function useCalma() {
+  const [c, setC] = useState(calmaAhora);
+  useEffect(() => {
+    const mirar = () => setC(calmaAhora());
+    window.addEventListener('lg:ajustes', mirar);
+    let ob = null;
+    try {
+      ob = new MutationObserver(mirar);
+      ob.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    } catch (e) { /* sin observador: queda el evento */ }
+    return () => { window.removeEventListener('lg:ajustes', mirar); if (ob) ob.disconnect(); };
+  }, []);
+  return c;
+}

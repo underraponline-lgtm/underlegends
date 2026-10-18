@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.40",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T01:47:00-04:00",
+   "titulo": "Más movimiento",
+   "items": [
+    "🎞️ El ranking, los podios, las publicaciones y la barra de abajo se mueven un poco más.",
+    "🧘 «Menos animaciones» (Mi cuenta → Accesibilidad) ahora apaga todo, también la pantalla de carga."
+   ]
+  },
+  {
    "version": "3.38",
    "dia": "2026-10-18",
    "cuando": "2026-10-18T01:33:00-04:00",

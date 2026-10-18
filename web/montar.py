@@ -110,7 +110,9 @@ html.lg-sale #lg-carga .lg-capa.v{animation-delay:.28s}
 @media (prefers-reduced-motion: reduce){
   #lg-carga *{animation:none!important}
   html.lg-sale #lg-carga{opacity:0;transition:opacity .25s ease}
-}'''
+}
+html.calma #lg-carga *{animation:none!important}
+html.calma.lg-sale #lg-carga{opacity:0;transition:opacity .25s ease}'''
 
 
 #: ⏳ LA PANTALLA DE CARGA (Dlx, 17/10/2026: «¿y si hacemos una pestaña de carga?»): lo primero del <body>
@@ -133,6 +135,8 @@ HTML_CARGA = """<body>
   h.classList.add('lg-carga-js');
   var t0 = Date.now(), quieto = false, primera = true;
   try { quieto = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+  // 🧘 y «Menos animaciones» de Mi cuenta, que app.js pone recién al llegar: acá se lee del navegador
+  try { if ((JSON.parse(localStorage.getItem('lg:ajustes') || 'null') || {}).calma) { quieto = true; h.classList.add('calma'); } } catch (e) {}
   try { primera = !sessionStorage.getItem('lg:intro'); sessionStorage.setItem('lg:intro', '1'); } catch (e) {}
   var MIN = quieto ? 0 : (primera ? 1050 : 0);
   var segs = el.querySelectorAll('.lg-seg i'), tip = el.querySelector('.lg-tip');

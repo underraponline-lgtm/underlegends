@@ -152,6 +152,7 @@ const Cargando = () => <div className="cargando" role="status"><span>Cargando…
 import { VentanaVideo } from './video.jsx';
 import { claseTema, guardarTemas, leerTemas } from './temas.js';
 import { urlFondo, useFondos } from './fondos.js';
+import { useCalma } from './anima.js';
 
 // ── el puente con app.js: cada vez que pinta, avisa ──────────────────────────────────────────────
 // ⚠️ Las funciones de app.js son globales (script clásico, sin módulo), y adentro se llaman por su nombre: si se
@@ -545,9 +546,11 @@ export default function App() {
   const fondosAp = useFondos();
   const fYo = liga && liga.yo && fondosAp ? fondosAp[liga.yo.k] : null;
   const miFondo = fYo && fYo[2] ? urlFondo(fYo[0]) : '';
-  if (!liga) return <div className={'app ' + claseTema(tema, temaSv)}><div className="barra-ul" /><div className="cargando">Cargando la Liga…</div></div>;
+  // 🧘 «Menos animaciones», a la raíz: el CSS de la página vive acá adentro y no ve la clase de <html> (anima.js)
+  const calma = useCalma() ? ' calma' : '';
+  if (!liga) return <div className={'app ' + claseTema(tema, temaSv) + calma}><div className="barra-ul" /><div className="cargando">Cargando la Liga…</div></div>;
   return (
-    <div className={'app ' + claseTema(tema, temaSv) + (miFondo ? ' con-fondo' : '')} ref={raiz} style={miFondo ? { '--mi-fondo': miFondo } : undefined}>
+    <div className={'app ' + claseTema(tema, temaSv) + calma + (miFondo ? ' con-fondo' : '')} ref={raiz} style={miFondo ? { '--mi-fondo': miFondo } : undefined}>
       {/* ♿ «saltar al contenido» (04/10/2026, de la lista de Dlx): no se ve hasta que se llega con el teclado, y salta
           el menú de arriba. Lleva el foco, no sólo la vista: si no, el próximo Tab volvía al menú */}
       <a className="saltar" href="#contenido" onClick={(e) => {

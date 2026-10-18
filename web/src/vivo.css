@@ -3676,3 +3676,50 @@ a.rk-z:hover{border-color:var(--linea)}
 .aviso-version .av-x{margin-left:auto;padding:6px 8px;border:0;background:none;color:var(--gris);font-size:16px;cursor:pointer}
 @media (min-width: 900px){.aviso-version{bottom:20px;left:auto;right:20px}}
 @media (prefers-reduced-motion: no-preference){.aviso-version{animation:av-entra .25s ease-out}@keyframes av-entra{from{transform:translateY(12px);opacity:0}}}
+
+/* 🎞️ MÁS MOVIMIENTO (Dlx, 18/10/2026: «asegúrate que haya más animaciones para que el ajuste de accesibilidad "menos
+   animaciones" tenga sentido»). Todo corto (≤ .6 s) y sólo con transform y opacity, que el celular mueve sin repintar la
+   página. Y TODO se apaga junto, abajo: con «Menos animaciones» (`.app.calma`, que pone App.jsx) o con la opción del
+   celular (`prefers-reduced-motion`). Antes «Menos animaciones» sólo frenaba el escenario del Inicio: el CSS de esta
+   página vive en un shadow root, y la clase `calma` de <html> no le llegaba */
+@keyframes an-sube{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes an-crece{from{transform:scaleY(0)}to{transform:none}}
+@keyframes an-pop{0%{transform:scale(.7)}60%{transform:scale(1.12)}100%{transform:none}}
+@keyframes an-abre{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
+@keyframes an-fondo{from{opacity:0}to{opacity:1}}
+/* las filas del ranking entran escalonadas (las quince primeras; las de más abajo, juntas) */
+.app .rk-t tbody tr{animation:an-sube .34s cubic-bezier(.2,.8,.2,1) both;animation-delay:.36s}
+.app .rk-t tbody tr:nth-child(1){animation-delay:0s}.app .rk-t tbody tr:nth-child(2){animation-delay:0.03s}.app .rk-t tbody tr:nth-child(3){animation-delay:0.05s}.app .rk-t tbody tr:nth-child(4){animation-delay:0.08s}
+.app .rk-t tbody tr:nth-child(5){animation-delay:0.10s}.app .rk-t tbody tr:nth-child(6){animation-delay:0.12s}.app .rk-t tbody tr:nth-child(7){animation-delay:0.15s}.app .rk-t tbody tr:nth-child(8){animation-delay:0.18s}
+.app .rk-t tbody tr:nth-child(9){animation-delay:0.20s}.app .rk-t tbody tr:nth-child(10){animation-delay:0.23s}.app .rk-t tbody tr:nth-child(11){animation-delay:0.25s}.app .rk-t tbody tr:nth-child(12){animation-delay:0.28s}
+.app .rk-t tbody tr:nth-child(13){animation-delay:0.30s}.app .rk-t tbody tr:nth-child(14){animation-delay:0.33s}.app .rk-t tbody tr:nth-child(15){animation-delay:0.35s}
+/* los podios: los escalones suben —el segundo, el primero, el tercero— y cada uno aparece arriba del suyo */
+.app .lgp-paso{transform-origin:bottom;animation:an-crece .5s cubic-bezier(.2,.8,.2,1) both}
+.app .lgp-p.p2 .lgp-paso{animation-delay:.05s}.app .lgp-p.p1 .lgp-paso{animation-delay:.15s}.app .lgp-p.p3 .lgp-paso{animation-delay:.25s}
+.app .lgp-quien{animation:an-sube .4s cubic-bezier(.2,.8,.2,1) both;animation-delay:.35s}
+.app .lgp-p.p1 .lgp-quien{animation-delay:.45s}
+.app .rk-p{animation:an-sube .45s cubic-bezier(.2,.8,.2,1) both}
+.app .rk-p.p2{animation-delay:.05s}.app .rk-p.p1{animation-delay:.15s}.app .rk-p.p3{animation-delay:.25s}
+/* lo que está más abajo aparece al llegar con el scroll (Chrome y Android; donde no se puede, está quieto y a la vista) */
+@supports (animation-timeline: view()){
+  .app .pub,.app .lgh-c,.app .pu,.app .cs-gente,.app .cs-mov{animation:an-sube linear both;animation-timeline:view();animation-range:entry 0% entry 35%}
+}
+/* la barra de abajo: la sección elegida hace «pop» */
+.app .tabbar a.on svg,.app .tabbar a.on .tb-cara{animation:an-pop .38s cubic-bezier(.2,.8,.2,1)}
+/* el visor de tarjetas abre desde abajo, con su fondo */
+.app .vc{animation:an-fondo .2s ease-out both}
+.app .vc-caja{animation:an-abre .32s cubic-bezier(.2,.8,.2,1) both}
+/* las pestañas cambian de a poco */
+.app .lpg-tabs button,.app .rk-subs button,.app .rk-subs a{transition:color .2s ease,background-color .2s ease,border-color .2s ease}
+
+/* 🧘 QUIETO: «Menos animaciones» o la opción del celular. Lo que entra aparece ya en su lugar, y lo que late se queda */
+.app.calma *,.app.calma *::before,.app.calma *::after{animation-duration:.01ms !important;animation-delay:0s !important;
+  animation-iteration-count:1 !important;transition-duration:.01ms !important;transition-delay:0s !important;scroll-behavior:auto !important}
+@media (prefers-reduced-motion: reduce){
+  .app *,.app *::before,.app *::after{animation-duration:.01ms !important;animation-delay:0s !important;
+    animation-iteration-count:1 !important;transition-duration:.01ms !important;transition-delay:0s !important;scroll-behavior:auto !important}
+}
+@supports (animation-timeline: view()){
+  .app.calma .pub,.app.calma .lgh-c,.app.calma .pu,.app.calma .cs-gente,.app.calma .cs-mov{animation:none !important}
+  @media (prefers-reduced-motion: reduce){.app .pub,.app .lgh-c,.app .pu,.app .cs-gente,.app .cs-mov{animation:none !important}}
+}
