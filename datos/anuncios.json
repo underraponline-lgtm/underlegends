@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-18T01:54:55+00:00",
+ "cuando": "2026-10-18T02:24:55+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -382,6 +382,44 @@
    "staff": {},
    "autor": "Geronimo",
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "TRIBIA",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1561200563578736691",
+   "cuando": "2026-10-18T02:13:40",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "orgs": [
+    {
+     "n": "Velatz",
+     "id": "1426686911908675628"
+    }
+   ],
+   "autor_h": "c36f9caea613c5c9",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Plata I 🥈",
+   "modalidad": "1v1",
+   "horario": "11:30",
+   "fecha": "",
+   "premios": "1 Campeonato 🏆",
+   "staff": {
+    "jurado": [
+     "Velatz"
+    ],
+    "host": [
+     "Velatz"
+    ],
+    "dj": [
+     "Velatz"
+    ]
+   },
+   "autor": "Velatz",
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 28 PANDILLAS",
@@ -1061,54 +1099,6 @@
     ]
    },
    "autor": "Kravitz",
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "DESGRACIAS EN TOKIO X LA REDENCIÓN X COPA SOLAR VOL.1",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1558301822584750161",
-   "cuando": "2026-10-10T02:15:06",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@l3wito   @elsoolar",
-   "orgs": [
-    {
-     "n": "Velatz",
-     "id": "1426686911908675628"
-    },
-    {
-     "n": "l3wito",
-     "id": ""
-    },
-    {
-     "n": "elsoolar",
-     "id": ""
-    }
-   ],
-   "autor_h": "211322958af20ae2",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Plata II 🥈",
-   "modalidad": "2v2",
-   "horario": "EN 30 MINUTOS",
-   "fecha": "",
-   "premios": "Clasificación + Campeonato 🏆",
-   "staff": {
-    "jurado": [
-     "Velatz",
-     "l3wito",
-     "Perry el orrincotorni"
-    ],
-    "host": [
-     "LEWITO"
-    ],
-    "dj": [
-     "LEWITO"
-    ]
-   },
-   "autor": "Lewito",
    "categoria_id": "1468478330826260500"
   },
   {
@@ -5884,6 +5874,87 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Player 🇻🇪",
+   "quien": "jesuslgamer31",
+   "discord_id": "817387658656874536",
+   "msg_id": "1561203310604722299",
+   "cuando": "2026-10-18T02:24:35"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Gosu 🇵🇷",
+   "quien": "lilgosuz",
+   "discord_id": "328677463624515605",
+   "msg_id": "1561202505709523129",
+   "cuando": "2026-10-18T02:21:23"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Jupiter 🇲🇽",
+   "quien": "jupiter2417tj",
+   "discord_id": "1413305434881658960",
+   "msg_id": "1561202316143501375",
+   "cuando": "2026-10-18T02:20:37"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "1234 🇦🇩",
+   "quien": "ivanjajaa",
+   "discord_id": "639232575461654538",
+   "msg_id": "1561201989285847121",
+   "cuando": "2026-10-18T02:19:19"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Erian 🇻🇨",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1561201936513106023",
+   "cuando": "2026-10-18T02:19:07"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Garzi 🇲🇽",
+   "quien": "funhorlavild",
+   "discord_id": "1426686911908675628",
+   "msg_id": "1561201456105918580",
+   "cuando": "2026-10-18T02:17:12"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Nacioenmilan 🇮🇹",
+   "quien": "yatusabe_eldeuxss",
+   "discord_id": "1338567692239765617",
+   "msg_id": "1561201259736993914",
+   "cuando": "2026-10-18T02:16:26"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "El J 🇨🇱",
+   "quien": "tantayo8718",
+   "discord_id": "861726949466308628",
+   "msg_id": "1561201067688067153",
+   "cuando": "2026-10-18T02:15:40"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1561201043419828327",
+   "cuando": "2026-10-18T02:15:34"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
