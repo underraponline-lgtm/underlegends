@@ -13,7 +13,7 @@
   {
    "version": "3.36",
    "dia": "2026-10-18",
-   "cuando": "2026-10-18T01:15:00-04:00",
+   "cuando": "2026-10-18T01:00:00-04:00",
    "titulo": "La pantalla de carga, nueva",
    "items": [
     "✂️ La pantalla de carga entra con el logo como un sello y se abre con un corte en diagonal."
@@ -22,7 +22,7 @@
   {
    "version": "3.35",
    "dia": "2026-10-18",
-   "cuando": "2026-10-18T00:55:00-04:00",
+   "cuando": "2026-10-18T00:47:00-04:00",
    "titulo": "Banderas que faltaban",
    "items": [
     "🏳️ Quien tiene un nombre distinto en la Lista de Raperos ya no sale sin bandera en el Ranking."
