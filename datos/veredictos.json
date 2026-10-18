@@ -233,16 +233,6 @@
   }
  },
  "batallas": {
-  "1558685177134190603": {
-   "id": "1558685177134190603",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791689905199,
-   "a": "VERC🇨🇱",
-   "b": "NUMBER🇺🇾",
-   "ganador": "VERC🇨🇱",
-   "votos": "1–0"
-  },
   "1558702273004044341": {
    "id": "1558702273004044341",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1561,9 +1551,9 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1792293672658,
-   "a": "SIX🇦🇷",
-   "b": "SNOW🇨🇴",
-   "ganador": "SNOW🇨🇴",
+   "a": "ZA🇦🇷 + VANDU🇨🇴 + GUESS🇦🇷",
+   "b": "VERC🇨🇱 + ERIAN🇵🇦 + PICHULITA🇦🇷",
+   "ganador": "VERC🇨🇱 + ERIAN🇵🇦 + PICHULITA🇦🇷",
    "votos": "1–0"
   }
  },

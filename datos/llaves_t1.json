@@ -26173,5 +26173,161 @@
     888
    ]
   ]
+ },
+ "483": {
+  "dia": "2026-10-17",
+  "escala": "8-15",
+  "fecha": "17/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1561203767251046451"
+  ],
+  "n": 483,
+  "nombre": "TRIBIA",
+  "participantes": 12,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Jupiter",
+       "Guess",
+       "lil, Gosu Z"
+      ],
+      "Jupiter, Guess",
+      "triple (3 bandas, pasan 2); también pasa: Guess 🇦🇷"
+     ],
+     [
+      [
+       "PichulaMc",
+       "LRS",
+       "Jult"
+      ],
+      "PichulaMc, LRS",
+      "triple (3 bandas, pasan 2); también pasa: Lrs🇦🇷; Drafteado: PICHULITA🇦🇷"
+     ],
+     [
+      [
+       "Provenza",
+       "Vandu",
+       "MTZ"
+      ],
+      "Provenza, Vandu",
+      "triple (3 bandas, pasan 2); también pasa: vandu🇨🇦"
+     ],
+     [
+      [
+       "Erian",
+       "Verc",
+       "Player"
+      ],
+      "Erian, Verc",
+      "triple (3 bandas, pasan 2); también pasa: Verc"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Provenza, Vandu",
+       "Guess, Jupiter"
+      ],
+      "Provenza, Vandu",
+      "Drafteado: GUESS🇦🇷"
+     ],
+     [
+      [
+       "Verc, Erian",
+       "PichulaMc, LRS"
+      ],
+      "Verc, Erian",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc, Erian, PichulaMc",
+       "Provenza, Vandu, Guess"
+      ],
+      "Verc, Erian, PichulaMc",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "PichulaMc",
+    "Campeón",
+    4250
+   ],
+   [
+    "Guess",
+    "Subcampeón",
+    3416
+   ],
+   [
+    "Erian",
+    "Campeón",
+    2500
+   ],
+   [
+    "Verc",
+    "Campeón",
+    2500
+   ],
+   [
+    "Jult",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MTZ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Player",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jupiter",
+    "Semifinal",
+    1750
+   ],
+   [
+    "LRS",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Provenza",
+    "Subcampeón",
+    1666
+   ],
+   [
+    "Vandu",
+    "Subcampeón",
+    1666
+   ],
+   [
+    "Gosu Z",
+    "Cuartos",
+    1000
+   ],
+   [
+    "lil",
+    "Cuartos",
+    1000
+   ]
+  ]
  }
 }

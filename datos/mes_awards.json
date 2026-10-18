@@ -36,9 +36,9 @@
     {
      "op": "PichulaMc",
      "n": "PichulaMc",
-     "pts": 183422,
-     "oro": 3,
-     "ev": 23
+     "pts": 189797,
+     "oro": 4,
+     "ev": 24
     }
    ],
    "revelacion": [
@@ -103,8 +103,8 @@
     {
      "op": "FFA",
      "n": "Freestyle For All",
-     "gente": 262,
-     "ev": 51
+     "gente": 264,
+     "ev": 52
     },
     {
      "op": "ACAD",
@@ -157,7 +157,7 @@
      "quien": [
       "Velatz"
      ],
-     "d": "3 eventos · 61 raperos"
+     "d": "4 eventos · 74 raperos"
     },
     {
      "op": "Benjixo",
@@ -213,7 +213,7 @@
      "quien": [
       "Velatz"
      ],
-     "d": "3 eventos de jurado, host o DJ"
+     "d": "4 eventos de jurado, host o DJ"
     },
     {
      "op": "Zaik",
@@ -336,16 +336,7 @@
      "quien": [
       "HH"
      ],
-     "d": "le ganó a Erian (#6) siendo #89 · LA BELLA ARTE DE LA DESGRACIA VOL3"
-    },
-    {
-     "op": "478:Catarsis",
-     "n": "Catarsis",
-     "q": "Catarsis",
-     "quien": [
-      "Catarsis"
-     ],
-     "d": "le ganó a Colesito (#4) siendo #48 · SNAKE INSIGNIA 5 8"
+     "d": "le ganó a Erian (#5) siendo #89 · LA BELLA ARTE DE LA DESGRACIA VOL3"
     },
     {
      "op": "481:Calíz",
@@ -354,16 +345,25 @@
      "quien": [
       "Calíz"
      ],
-     "d": "le ganó a Erian (#6) siendo #72 · PROYECTO X VOL.3"
+     "d": "le ganó a Erian (#5) siendo #72 · PROYECTO X VOL.3"
     },
     {
-     "op": "401:Zetryko",
-     "n": "Zetryko",
-     "q": "Zetryko",
+     "op": "478:Catarsis",
+     "n": "Catarsis",
+     "q": "Catarsis",
      "quien": [
-      "Zetryko"
+      "Catarsis"
      ],
-     "d": "le ganó a Panchok (#5) siendo #56 · COPA DE GRUPOS LCW"
+     "d": "le ganó a Colesito (#4) siendo #49 · SNAKE INSIGNIA 5 8"
+    },
+    {
+     "op": "431:Six",
+     "n": "Six",
+     "q": "Six",
+     "quien": [
+      "Six"
+     ],
+     "d": "le ganó a Oasis (#1) siendo #11 · LA REDENCIÓN VOL.1"
     }
    ],
    "imparable": [
@@ -694,7 +694,7 @@
      "quien": [
       "Verc"
      ],
-     "d": "11 podios · 🥇5 🥈6"
+     "d": "12 podios · 🥇6 🥈6"
     },
     {
      "op": "PichulaMc",
@@ -703,7 +703,7 @@
      "quien": [
       "PichulaMc"
      ],
-     "d": "7 podios · 🥇3 🥈4"
+     "d": "8 podios · 🥇4 🥈4"
     },
     {
      "op": "Velatz",
@@ -720,7 +720,7 @@
      "op": "Follombia",
      "n": "Follombia",
      "quien": [],
-     "d": "545.826 pts · 7 jugaron"
+     "d": "552.074 pts · 7 jugaron"
     },
     {
      "op": "Fuera de Rango",
@@ -741,10 +741,10 @@
      "d": "314.263 pts · 3 jugaron"
     },
     {
-     "op": "KS",
-     "n": "KS",
+     "op": "Arte del Chakalaje",
+     "n": "Arte del Chakalaje",
      "quien": [],
-     "d": "186.880 pts · 3 jugaron"
+     "d": "189.797 pts · 1 jugó"
     }
    ],
    "pais": [
@@ -753,28 +753,28 @@
      "n": "Argentina",
      "cc": "ar",
      "quien": [],
-     "d": "1.675.406 pts · 37 jugaron"
+     "d": "1.695.029 pts · 37 jugaron"
     },
     {
      "op": "Chile",
      "n": "Chile",
      "cc": "cl",
      "quien": [],
-     "d": "1.010.310 pts · 29 jugaron"
+     "d": "1.014.060 pts · 29 jugaron"
     },
     {
      "op": "Colombia",
      "n": "Colombia",
      "cc": "co",
      "quien": [],
-     "d": "924.478 pts · 19 jugaron"
+     "d": "926.976 pts · 19 jugaron"
     },
     {
      "op": "Venezuela",
      "n": "Venezuela",
      "cc": "ar",
      "quien": [],
-     "d": "608.066 pts · 16 jugaron"
+     "d": "611.066 pts · 16 jugaron"
     },
     {
      "op": "Perú",

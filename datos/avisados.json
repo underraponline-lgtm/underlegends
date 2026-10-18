@@ -14764,5 +14764,202 @@
    ]
   ],
   "v": 2
+ },
+ "483": {
+  "antes": {
+   "Erian": [
+    6,
+    7,
+    false
+   ],
+   "Gosu Z": [
+    171,
+    388,
+    false
+   ],
+   "Guess": [
+    21,
+    25,
+    false
+   ],
+   "Jult": [
+    44,
+    60,
+    false
+   ],
+   "Jupiter": [
+    29,
+    38,
+    false
+   ],
+   "LRS": [
+    41,
+    52,
+    false
+   ],
+   "MTZ": [
+    79,
+    113,
+    false
+   ],
+   "PichulaMc": [
+    7,
+    8,
+    false
+   ],
+   "Player": [
+    51,
+    67,
+    false
+   ],
+   "Provenza": [
+    15,
+    17,
+    false
+   ],
+   "Vandu": [
+    14,
+    16,
+    false
+   ],
+   "Verc": [
+    8,
+    9,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Jupiter",
+    "lil, Gosu Z",
+    "Jupiter"
+   ],
+   [
+    "PichulaMc",
+    "Jult",
+    "PichulaMc"
+   ],
+   [
+    "Provenza",
+    "MTZ",
+    "Provenza"
+   ],
+   [
+    "Erian",
+    "Player",
+    "Erian"
+   ],
+   [
+    "Provenza, Vandu",
+    "Guess, Jupiter",
+    "Provenza, Vandu"
+   ],
+   [
+    "Verc, Erian",
+    "PichulaMc, LRS",
+    "Verc, Erian"
+   ],
+   [
+    "Verc, Erian, PichulaMc",
+    "Provenza, Vandu, Guess",
+    "Verc, Erian, PichulaMc"
+   ]
+  ],
+  "ev_antes": {
+   "Erian": 39,
+   "Gosu Z": 1,
+   "Guess": 13,
+   "Jult": 11,
+   "Jupiter": 10,
+   "LRS": 14,
+   "MTZ": 5,
+   "PichulaMc": 34,
+   "Player": 8,
+   "Provenza": 24,
+   "Vandu": 23,
+   "Verc": 15
+  },
+  "fecha": "17/10",
+  "firma": "af286e5b34c1e428",
+  "msg": "1561222774670753895",
+  "nombre": "TRIBIA",
+  "num": 483,
+  "participantes": 12,
+  "sello": {
+   "Erian": "87cb9ae036ce:906ce275eeb8",
+   "PichulaMc": "0b7825855997:906ce275eeb8",
+   "Verc": "c63007ffda39:906ce275eeb8"
+  },
+  "sv": "FFA",
+  "t": "2026-10-18T03:54:08Z",
+  "tabla": [
+   [
+    "PichulaMc",
+    "Campeón",
+    4250
+   ],
+   [
+    "Guess",
+    "Subcampeón",
+    3416
+   ],
+   [
+    "Verc",
+    "Campeón",
+    2500
+   ],
+   [
+    "Erian",
+    "Campeón",
+    2500
+   ],
+   [
+    "Jult",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MTZ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Player",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jupiter",
+    "Semifinal",
+    1750
+   ],
+   [
+    "LRS",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Provenza",
+    "Subcampeón",
+    1666
+   ],
+   [
+    "Vandu",
+    "Subcampeón",
+    1666
+   ],
+   [
+    "lil",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Gosu Z",
+    "Cuartos",
+    1000
+   ]
+  ],
+  "v": 2
  }
 }

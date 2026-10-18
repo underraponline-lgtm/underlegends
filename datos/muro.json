@@ -39,19 +39,19 @@
 "temporada"
 ]
 },
+"erian": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "panchok": {
 "rg": "S",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"erian": {
-"rg": "B",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -263,6 +263,14 @@
 "rg": "D",
 "c": []
 },
+"jupiter": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "criszj": {
 "rg": "C",
 "c": []
@@ -272,14 +280,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"jupiter": {
-"rg": "D",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -405,6 +405,14 @@
 "rg": "E",
 "c": []
 },
+"jult": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "benjixo": {
 "rg": "",
 "c": []
@@ -425,10 +433,9 @@
 "rg": "",
 "c": []
 },
-"jult": {
-"rg": "E",
+"player": {
+"rg": "",
 "c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -472,13 +479,6 @@
 ]
 },
 "tøkiø": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"player": {
 "rg": "",
 "c": [
 "servidor",
@@ -695,6 +695,13 @@
 "rg": "E",
 "c": []
 },
+"mtz": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "zekha": {
 "rg": "",
 "c": [
@@ -748,13 +755,6 @@
 "rg": "",
 "c": [
 "servidor"
-]
-},
-"mtz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
 ]
 },
 "andy": {
