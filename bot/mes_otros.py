@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-"""🏆 LAS DEMÁS NOMINACIONES DE LOS MES AWARDS: dieciséis categorías más, detrás de «Ver las demás nominaciones».
+"""🏆 LAS DEMÁS NOMINACIONES DE LOS MES AWARDS: diecinueve categorías más, detrás de «Ver las demás nominaciones» y de
+«Ver las del staff».
 
     python bot/mes_otros.py           cómo va el mes en las doce, sin escribir nada
     python bot/mes_otros.py --auto    el self-check, sin red ni archivos
@@ -18,6 +19,10 @@ DE DÓNDE SALE CADA UNA (todo en hora del este, del mes que se mide)
   · ORGANIZADOR: los eventos jugados que organizó (el anuncio, cruzado con su llave: `llaves_web.cruzar()`) y la gente
     que juntaron, de `MIN_GENTE` o más, como el organizador de la semana (`multiplicadores.ranking_org()`).
   · STAFF: los eventos jugados en que fue jurado, host o DJ (el anuncio: `anuncios.staff_de()`).
+  · JURADO, HOST, DJ: lo mismo, por rol (`STAFF`). Dlx, 18/10/2026: *«en nominaciones agrega staff por separado y también
+    en general, o sea como está ahora»*: el Staff del mes se queda entre las demás, y las tres van en su bloque, detrás de
+    su botón. Son las tres que los FMS AWARDS premian todos los años (host, DJ y jurado). Un evento cuenta una vez por
+    rol: quien es jurado y DJ en el mismo suma en los dos.
   · DUELISTA: los duelos 1v1 que ganó (`llaves_web.duelos()`, la regla de la hoja `1v1`).
   · CAZADOR: las cabezas que cazó: el Most Wanted y el precio por cabeza.
   · BATACAZO: el duelo ganado contra quien estaba más arriba en el ranking de Temporada (el puesto de hoy de los dos),
@@ -76,8 +81,15 @@ OTRAS = (
     ('crew', 'Crew del mes', 'los puntos de Temporada de su gente', 'grupo'),
     ('pais', 'País del mes', 'los puntos de Temporada de su gente', 'grupo'),
     ('liga', 'Liga del mes', 'las batallas que jugó y la gente que movió', 'grupo'),
+    # 🎧 el staff por rol (Dlx, 18/10/2026: «agrega staff por separado»): su bloque en la página (`STAFF`)
+    ('jurado', 'Jurado del mes', 'los eventos en que fue jurado', 'persona'),
+    ('host', 'Host del mes', 'los eventos que presentó', 'persona'),
+    ('dj', 'DJ del mes', 'los eventos en que puso la música', 'persona'),
 )
 GRUPOS = frozenset(c for c, _n, _d, t in OTRAS if t == 'grupo')
+#: las que van en el bloque del staff, detrás de su propio botón: el rol tal como lo dice el anuncio (`anuncios.staff_de()`)
+STAFF = ('jurado', 'host', 'dj')
+_DE_ROL = {'jurado': 'de jurado', 'host': 'de host', 'dj': 'de DJ'}
 #: los Puntos de Tienda del ganador de una de éstas (Dlx: «Insignia + 1.000 PdT»), a cada persona del premio
 PREMIO_OTRA = 1000
 #: un evento cuenta para el organizador desde esta gente (la del organizador de la semana)
@@ -94,6 +106,13 @@ def _de_iso(s):
 
 def _iso(t):
     return t.astimezone(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+
+
+def _partir(s):
+    """Los nombres de un renglón del staff del anuncio. Cuando se escriben varios con su bandera —«LEWITO 🇨🇱 FLENNZS 🇨🇱»—,
+    al sacar las banderas quedan pegados con doble espacio, y «LEWITO  FLENNZS» salía nominado a Host como si fuera uno
+    (18/10/2026). Se parte también por coma, barra y «&»."""
+    return [x.strip() for x in re.split(r'\s{2,}|\s*[,/|&]\s*', str(s or '')) if x.strip()]
 
 
 def _plural(n, uno, varios):
@@ -117,6 +136,7 @@ def numeros(ini, fin, D, raperos=()):
 
     # 🎤 ORGANIZADOR y 🎪 EVENTO, 🎧 STAFF: los eventos jugados del mes, con su anuncio
     org, staff, evs = {}, {}, []
+    por_rol = {r: {} for r in STAFF}
     for n, sv, t, tabla, nombre in D.get('eventos') or []:
         if not en(t):
             continue
@@ -142,10 +162,16 @@ def numeros(ini, fin, D, raperos=()):
                 x['_g'] += gente
         en_staff = []
         for _rol, ns in (a.get('staff') or {}).items():
-            for s in ns or []:
+            en_rol = []
+            for s in [y for x in ns or [] for y in _partir(x)]:
                 r = raw(s, '')
                 if r and r not in en_staff:
                     en_staff.append(r)
+                if r and r not in en_rol:
+                    en_rol.append(r)
+            for r in en_rol if _rol in por_rol else ():
+                x = por_rol[_rol].setdefault(k(r), {'op': r, 'n': r, 'q': r, 'quien': [r], '_ev': 0})
+                x['_ev'] += 1
         for r in en_staff:
             x = staff.setdefault(k(r), {'op': r, 'n': r, 'q': r, 'quien': [r], '_ev': 0})
             x['_ev'] += 1
@@ -155,6 +181,10 @@ def numeros(ini, fin, D, raperos=()):
     for x in staff.values():
         x['d'] = _plural(x['_ev'], 'evento', 'eventos') + ' de jurado, host o DJ'
     out['staff'] = sorted(staff.values(), key=lambda x: (-x['_ev'], x['n'].lower()))
+    for rol, xs in por_rol.items():
+        for x in xs.values():
+            x['d'] = _plural(x['_ev'], 'evento', 'eventos') + ' ' + _DE_ROL[rol]
+        out[rol] = sorted(xs.values(), key=lambda x: (-x['_ev'], x['n'].lower()))
     out['evento'] = sorted(evs, key=lambda x: (-x['_g'], x['_t']))
 
     # ⚔️ DUELISTA, 💥 BATACAZO, 🔥 IMPARABLE: los duelos del mes, del más viejo al más nuevo
@@ -600,7 +630,17 @@ def _self_check():
                                                                       ['3', '2026-09-03T00:00:00Z', None, 'C', 'D', 'C']]}},
     }
     nums = numeros(ini, fin, D, [{'op': 'Ana', 'pts': 500}, {'op': 'Bea', 'pts': 300}, {'op': 'Cid', 'pts': 900}])
-    ok(set(nums) == {c for c, _n, _d, _t in OTRAS} and len(OTRAS) == 16, 'las dieciséis categorías (las doce y las de «Y más»)')
+    ok(set(nums) == {c for c, _n, _d, _t in OTRAS} and len(OTRAS) == 19,
+       'las diecinueve categorías (las doce, las de «Y más» y las tres del staff)')
+    ok([(x['op'], x['d']) for x in nums['jurado']] == [('Jota', '1 evento de jurado'), ('Velatz', '1 evento de jurado')]
+       and [(x['op'], x['d']) for x in nums['host']] == [('Jota', '1 evento de host')]
+       and [(x['op'], x['d']) for x in nums['dj']] == [('Jota', '1 evento de DJ')],
+       'jurado, host y DJ por separado: cada rol cuenta sus eventos (Jota suma en los tres)',
+       str({r: nums[r] for r in STAFF}))
+    ok(set(STAFF) <= {c for c, _n, _d, _t in OTRAS}, 'las del bloque del staff son de las demás (premio, insignia, publicación)')
+    ok(_partir('LEWITO  FLENNZS') == ['LEWITO', 'FLENNZS'] and _partir('Ana, Bea / Cid') == ['Ana', 'Bea', 'Cid']
+       and _partir('John pork') == ['John pork'],
+       'un renglón del staff con varios (sin sus banderas quedan con doble espacio) se parte; un nombre con espacio, no')
     ok([(x['n'], x['did']) for x in nums['hincha']] == [('Hugo', '111'), ('Ana', '222')],
        'hincha: la participación del mes (la de septiembre no), con su Discord para cobrar; Dlx no', str(nums['hincha']))
     ok([(x['n'], x['d']) for x in nums['clasico']] == [('Ana vs Bea', '2 duelos · Ana 2, Bea 0')],

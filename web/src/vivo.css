@@ -1812,6 +1812,13 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .rk-corte.directo a{border-top:2px solid #E5B800;color:var(--tinta)}
 /* 🏆 MES AWARDS: el botón de las demás nominaciones y la bandera de un país nominado */
 .ma-mas{grid-column:1 / -1;justify-self:start;margin-top:4px}
+/* 🎧 los dos botones (las demás y las del staff) y el título del bloque del staff, a lo ancho de la grilla */
+.ma-botones{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:8px}
+.ma-botones .ma-mas{margin-top:4px}
+.ma-staff{grid-column:1 / -1;margin:10px 0 0;padding-top:14px;border-top:2px solid #2A2A2C}
+.ma-staff-g{grid-column:1 / -1;display:grid;gap:14px;align-items:start}
+@media (min-width: 640px){.ma-staff-g{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width: 1000px){.ma-staff-g{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .ma-flag{object-fit:cover;border-radius:50%}
 .pub-mes{display:grid;place-items:center;background:#030304;color:#E5B800}
 .rk-corte span,.rk-corte a{display:block;text-decoration:none;margin:2px 0;padding:6px 10px;border-top:2px dashed var(--magenta);color:var(--magenta-tx);

@@ -88,6 +88,10 @@ CATALOGO = (
     ('mes_clasico', '🤝', 'Clásico del mes', 'Su rivalidad fue el Clásico del mes de los MES AWARDS'),
     ('mes_sobreviviente', '🪖', 'Sobreviviente del mes', 'Ganó el Sobreviviente del mes: el que más aguantó el Most Wanted'),
     ('mes_constante', '📈', 'Constante del mes', 'Ganó el Constante del mes: el que más podios hizo'),
+    # 🎧 el staff por rol (18/10/2026, Dlx: «agrega staff por separado»)
+    ('mes_jurado', '⚖️', 'Jurado del mes', 'Ganó el Jurado del mes de los MES AWARDS'),
+    ('mes_host', '🎤', 'Host del mes', 'Ganó el Host del mes de los MES AWARDS'),
+    ('mes_dj', '💿', 'DJ del mes', 'Ganó el DJ del mes de los MES AWARDS'),
 )
 IDS = [c[0] for c in CATALOGO]
 

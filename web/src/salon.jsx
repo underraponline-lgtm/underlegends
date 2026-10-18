@@ -263,13 +263,26 @@ function MesAwards({ liga, enc }) {
   // 🏆 las cuatro a la vista y las doce detrás del botón (Dlx, 16/10/2026: «tampoco rellenar todo de eso, sino como el
   // botón que dirá ver las demás nominaciones»)
   const [todas, setTodas] = useState(false);
+  // 🎧 y el staff por rol, en su bloque y detrás de su botón (Dlx, 18/10/2026: «agrega staff por separado y también en
+  // general, o sea como está ahora»): el Staff del mes sigue entre las demás
+  const [staff, setStaff] = useState(false);
   if (!S) return null;
-  const cats = (S.cats || []).filter((c) => todas || !c[3]);
-  const nOtras = (S.cats || []).filter((c) => c[3]).length;
-  const boton = nOtras ? (
-    <button type="button" className="btn borde2 chico ma-mas" aria-expanded={todas} onClick={() => setTodas((v) => !v)}>
-      {todas ? 'Ver sólo las principales' : 'Ver las demás nominaciones (' + nOtras + ')'}</button>
+  const cats = (S.cats || []).filter((c) => !c[3] || (todas && c[3] === 1));
+  const catsStaff = staff ? (S.cats || []).filter((c) => c[3] === 2) : [];
+  const nOtras = (S.cats || []).filter((c) => c[3] === 1).length;
+  const nStaff = (S.cats || []).filter((c) => c[3] === 2).length;
+  const boton = nOtras || nStaff ? (
+    <div className="ma-botones">
+      {nOtras ? <button type="button" className="btn borde2 chico ma-mas" aria-expanded={todas} onClick={() => setTodas((v) => !v)}>
+        {todas ? 'Ver sólo las principales' : 'Ver las demás nominaciones (' + nOtras + ')'}</button> : null}
+      {nStaff ? <button type="button" className="btn borde2 chico ma-mas" aria-expanded={staff} onClick={() => setStaff((v) => !v)}>
+        {staff ? 'Esconder las del staff' : 'Ver las del staff (' + nStaff + ')'}</button> : null}
+    </div>
   ) : null;
+  // el bloque del staff: su título y sus categorías, después de las otras
+  // (en su propia grilla: tres a lo ancho, para que el DJ no quede solo con un hueco al lado)
+  const bloque = (lista) => (lista.some(Boolean) ? [<h3 key="ma-st" className="lgf-st ma-staff">El staff · jurado, host y DJ</h3>,
+    <div key="ma-sg" className="ma-staff-g">{lista}</div>] : []);
   const ab = S.abierto;
   const viv = S.vivo;
   const hist = S.hist || [];
@@ -278,21 +291,19 @@ function MesAwards({ liga, enc }) {
   if (ab) {
     const votando = ab.votando;
     cab = votando ? <>Votá lo mejor de <b>{ab.nombre}</b>: cierra {liga.dia(ab.cierra)}.</> : <>Los nominados de <b>{ab.nombre}</b>: la votación abre {liga.dia(ab.abre)}.</>;
-    cuerpo = (
-      <div className="ma-cats">{cats.map(([c, n, de]) => {
-        const nom = ((ab.cats || {})[c] || {}).nom || [];
-        if (!nom.length) return null;
-        return <Categoria key={c} liga={liga} enc={enc} cat={c} nombre={n} de={de} nom={nom} encId={votando && nom.length >= 2 ? 'mes:' + ab.mes + ':' + c : ''} />;
-      })}{boton}</div>
-    );
+    const una = ([c, n, de]) => {
+      const nom = ((ab.cats || {})[c] || {}).nom || [];
+      if (!nom.length) return null;
+      return <Categoria key={c} liga={liga} enc={enc} cat={c} nombre={n} de={de} nom={nom} encId={votando && nom.length >= 2 ? 'mes:' + ab.mes + ':' + c : ''} />;
+    };
+    cuerpo = <div className="ma-cats">{cats.map(una)}{bloque(catsStaff.map(una))}{boton}</div>;
   } else if (viv) {
     cab = <>Así va <b>{viv.nombre}</b>: si el mes terminara hoy, éstos serían los nominados. Se vota {liga.dia(viv.vota)}.</>;
-    cuerpo = (
-      <div className="ma-cats">{cats.map(([c, n, de]) => {
-        const nom = (viv.cats || {})[c] || [];
-        return nom.length ? <Categoria key={c} liga={liga} cat={c} nombre={n} de={de} nom={nom} /> : null;
-      })}{boton}</div>
-    );
+    const una = ([c, n, de]) => {
+      const nom = (viv.cats || {})[c] || [];
+      return nom.length ? <Categoria key={c} liga={liga} cat={c} nombre={n} de={de} nom={nom} /> : null;
+    };
+    cuerpo = <div className="ma-cats">{cats.map(una)}{bloque(catsStaff.map(una))}{boton}</div>;
   }
   return (
     <Sec id="sf-mes" titulo="MES AWARDS" extra="negra sf-mes">
@@ -307,7 +318,7 @@ function MesAwards({ liga, enc }) {
           {hist.map((m) => (
             <div key={m.mes} className="ma-hm">
               <small>{capM(m.nombre)} {m.mes.slice(0, 4)}</small>
-              <ul>{cats.map(([c, n]) => {
+              <ul>{cats.concat(catsStaff).map(([c, n]) => {
                 const x = (m.cats || {})[c] || {};
                 const fila = (x.nom || []).find((y) => y.op === x.gana);
                 return fila ? <li key={c}><Nominado liga={liga} cat={c} x={fila} /><em>{n}</em></li> : null;

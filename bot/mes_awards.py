@@ -68,7 +68,7 @@ CATS = (('rapero', 'Rapero del mes', 'los puntos de Temporada del mes'),
         ('servidor', 'Servidor del mes', 'cuánta gente movió en el mes'))
 #: los Puntos de Tienda de cada ganador (la batalla, a cada lado). El servidor no cobra: no es una persona
 PREMIO = {'rapero': 3000, 'revelacion': 2000, 'batalla': 1500}
-#: 🏆 las dieciséis de «Ver las demás nominaciones» (`bot/mes_otros.py`), y las veinte juntas
+#: 🏆 las diecinueve de «Ver las demás nominaciones» y del staff (`bot/mes_otros.py`), y las veintitrés juntas
 import mes_otros as MO  # noqa: E402
 OTRAS = tuple((c, n, de) for c, n, de, _t in MO.OTRAS)
 TODAS = CATS + OTRAS
@@ -457,8 +457,8 @@ def para_web(d=None, ahora=None):
     if viv:
         viv = dict(viv, cats={c: [{a: b for a, b in x.items() if a != 'did'} for x in xs] for c, xs in (viv.get('cats') or {}).items()},
                    nombre=nombre_mes(viv['mes']), vota=_iso(en_et(siguiente(viv['mes']), 1, ABRE_H)))
-    # `cats`: [clave, nombre, de qué, 1 si es de «Ver las demás nominaciones»]
-    return {'t': _iso(ahora), 'cats': [list(c) + [0] for c in CATS] + [list(c) + [1] for c in OTRAS],
+    # `cats`: [clave, nombre, de qué, 0 a la vista · 1 detrás de «Ver las demás nominaciones» · 2 en el bloque del staff]
+    return {'t': _iso(ahora), 'cats': [list(c) + [0] for c in CATS] + [list(c) + [2 if c[0] in MO.STAFF else 1] for c in OTRAS],
             'premio': dict(PREMIO, otra=MO.PREMIO_OTRA), 'abierto': abierto, 'vivo': viv, 'hist': hist[:24]}
 
 
@@ -528,8 +528,9 @@ def _self_check():
            and len(tt) == 3, 'la Tienda: cada premio una vez, a quien tiene su Discord', str(tt))
         w = para_web(r, t3)
         ok(not w['abierto'] and w['hist'][0]['mes'] == '2026-10' and len(muro(r)) == 4, 'cerrado: va al historial y al muro')
-        ok(len(w['cats']) == 4 + len(OTRAS) == 20 and w['cats'][4][3] == 1 and w['cats'][0][3] == 0 and w['premio']['otra'] == 1000,
-           'la página recibe las veinte, con cuáles van detrás del botón')
+        ok(len(w['cats']) == 4 + len(OTRAS) == 23 and w['cats'][4][3] == 1 and w['cats'][0][3] == 0 and w['premio']['otra'] == 1000
+           and [c[0] for c in w['cats'] if c[3] == 2] == ['jurado', 'host', 'dj'],
+           'la página recibe las veintitrés: cuáles van detrás del botón y cuáles en el bloque del staff')
         # 🏆 una de las doce: el organizador gana, cobra 1.000 y sale en UNA publicación con las demás
         r2 = dict(r)
         r2['meses'] = {'2026-10': dict(r['meses']['2026-10'])}

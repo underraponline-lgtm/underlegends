@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.37",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T01:05:00-04:00",
+   "titulo": "MES AWARDS: el staff",
+   "items": [
+    "🎧 Los MES AWARDS suman Jurado, Host y DJ del mes, en su propio bloque del Salón."
+   ]
+  },
+  {
    "version": "3.36",
    "dia": "2026-10-18",
    "cuando": "2026-10-18T01:00:00-04:00",
