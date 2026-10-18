@@ -727,11 +727,17 @@ button.btn{background:transparent;cursor:pointer}
 .lgt-v.cerrada{cursor:default;border-style:dashed}
 /* 🗂️ LA PÁGINA DE CADA LIGA, COMPLETA (17/10/2026): las pestañas y lo de cada una. `lpg-` (liga, página): ninguna clase
    de estilo.css empieza así (las del prototipo son globales adentro del shadow root) */
-.lpg-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:18px 0 0;padding:0 0 2px}
+/* las pestañas, como la barra del Ranking (`.rk-subs`, Dlx 13/10: «más grandes, que se note»): una franja oscura que sigue
+   al encabezado —el podio apoya ahí—, con el margen de la página y la elegida marcada. Eran botones sueltos pegados al
+   borde (Dlx, 18/10/2026: «siento que está muy pegado») */
+.lpg-tabs{position:sticky;top:0;z-index:20;display:flex;overflow-x:auto;scrollbar-width:none;margin:0;padding:0 6px;
+  background:#030304;border-top:2px solid #2A2A2C;border-bottom:2px solid #2A2A2C}
 .lpg-tabs::-webkit-scrollbar{display:none}
-.lpg-tabs button{flex:0 0 auto;min-height:40px;padding:0 14px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);
-  font:800 14px/1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.02em;cursor:pointer}
-.lpg-tabs button.on{background:var(--tinta);color:var(--fondo)}
+.lpg-tabs button{flex:none;padding:18px 12px 15px;margin-bottom:-2px;border:0;border-bottom:4px solid transparent;background:none;
+  color:#C4C4BE;font:700 17.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.025em;text-transform:uppercase;white-space:nowrap;cursor:pointer}
+.lpg-tabs button:hover{color:#F6F6F6;background:rgba(246,246,246,.06)}
+.lpg-tabs button.on{color:#F6F6F6;border-bottom-color:#29B298;background:rgba(41,178,152,.16)}
+@media (min-width: 900px){.app .lpg-tabs{padding:0 calc(var(--gut) - 10px)}.app .lpg-tabs button{padding-inline:10px;letter-spacing:.03em}}
 .lpg-seguir{display:inline-grid;gap:4px;max-width:340px}
 .lpg-seguir small{font-size:12px;line-height:1.35;color:var(--esc-gris,var(--gris))}
 .lpg-fechas{display:grid;gap:0}
@@ -935,21 +941,28 @@ button.btn{background:transparent;cursor:pointer}
 .lgp-p0 a{color:inherit;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
 .lgp-est{color:var(--esc-tinta);font-weight:700}
 .lgp-num{grid-template-columns:repeat(3,minmax(0,1fr));width:100%}
-.lgp-podio{list-style:none;margin:0;padding:0 16px 24px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:10px}
-.lgp-p{display:grid;justify-items:center;gap:6px;min-width:0;padding:12px 6px;text-align:center;border:2px solid #F6F6F6;background:rgba(3,3,4,.72);color:#F6F6F6}
-.lgp-p.p1{order:2;padding-block:18px 14px;box-shadow:5px 5px 0 var(--mo-c,var(--magenta))}
-.lgp-p.p2{order:1}
+/* 🥇 EL PODIO (18/10/2026, Dlx: «el top 3 podría ser mejor»): cada uno arriba de su escalón, con el color de su medalla,
+   y los escalones apoyados en el piso del encabezado. Sin degradés ni sombras de color: el color es la medalla */
+.lgp-podio{list-style:none;margin:8px 0 0;padding:0 16px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:end;gap:8px}
+.lgp-p{--med:#C77B3A;display:grid;justify-items:center;align-content:end;gap:12px;min-width:0;text-align:center;color:#F6F6F6}
+.lgp-p.p1{--med:#E5B800;order:2}
+.lgp-p.p2{--med:#C9CDD4;order:1}
 .lgp-p.p3{order:3}
-.lgp-p.yo{outline:3px solid #29B298;outline-offset:2px}
-.lgp-cara{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;overflow:hidden;border:2px solid #F6F6F6;background:#2A2A2C;color:#F6F6F6}
+.lgp-quien{display:grid;justify-items:center;gap:6px;min-width:0;max-width:100%}
+.lgp-cara{display:grid;place-items:center;width:56px;height:56px;border-radius:50%;overflow:hidden;border:3px solid var(--med);background:#2A2A2C;color:#F6F6F6}
 .lgp-cara.ini{font:900 20px/1 Archivo,sans-serif}
-.lgp-p.p1 .lgp-cara{width:68px;height:68px}
+.lgp-p.p1 .lgp-cara{width:76px;height:76px}
 .lgp-cara img{display:block;width:100%;height:100%;object-fit:cover}
-.lgp-pn{font:900 20px/1 Archivo,sans-serif;font-stretch:120%}
-.lgp-p.p1 .lgp-pn{font-size:26px}
-.lgp-nom{max-width:100%;font:800 14px/1.15 Archivo,sans-serif;color:inherit;overflow-wrap:anywhere;text-decoration:none}
+.lgp-p.yo .lgp-cara{outline:3px solid #29B298;outline-offset:3px}
+.lgp-nom{max-width:100%;font:900 15px/1.15 Archivo,sans-serif;text-transform:uppercase;color:inherit;overflow-wrap:anywhere;text-decoration:none}
+.lgp-p.p1 .lgp-nom{font-size:18px}
 a.lgp-nom:hover{text-decoration:underline}
-.lgp-p small{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:#A5A5A0}
+.lgp-p small{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:#C4C4BE}
+.lgp-p small b{font-weight:800;color:#F6F6F6}
+.lgp-paso{display:grid;place-items:start center;width:100%;height:48px;padding-top:10px;background:var(--med);color:#030304;font:900 26px/1 Archivo,sans-serif;font-stretch:120%}
+.lgp-p.p1 .lgp-paso{height:92px;font-size:38px}
+.lgp-p.p2 .lgp-paso{height:68px}
+.svp-tx .lgp-dc{display:inline-block;margin-top:2px;font-size:14px;color:#F6F6F6;text-decoration-color:rgba(246,246,246,.5)}
 /* las otras ligas, las de su servidor primero */
 .lgp-otras{display:flex;flex-wrap:wrap;gap:10px}
 .lgp-otras a{display:flex;align-items:center;gap:8px;min-width:0;padding:8px 12px;border:2px solid var(--linea);box-shadow:4px 4px 0 var(--c);color:var(--tinta);text-decoration:none}
@@ -983,9 +996,12 @@ a.lgp-nom:hover{text-decoration:underline}
   .app .lgh-salon{grid-template-columns:repeat(2,minmax(0,1fr))}
   .app .svp.lgp-cab{padding-top:14px}
   .app .lgp-num{grid-template-columns:repeat(3,minmax(0,110px))}
-  .app .lgp-podio{grid-template-columns:repeat(3,minmax(0,210px));justify-content:start;gap:14px;padding:0 var(--gut) 34px}
-  .app .lgp-cara{width:64px;height:64px}
-  .app .lgp-p.p1 .lgp-cara{width:84px;height:84px}
+  .app .lgp-podio{grid-template-columns:repeat(3,minmax(0,220px));justify-content:start;gap:12px;padding:6px var(--gut) 0}
+  .app .lgp-cara{width:68px;height:68px}
+  .app .lgp-p.p1 .lgp-cara{width:96px;height:96px}
+  .app .lgp-p.p1 .lgp-paso{height:112px;font-size:44px}
+  .app .lgp-p.p2 .lgp-paso{height:80px}
+  .app .lgp-p .lgp-paso{height:56px}
 }
 @media (min-width: 1100px){.app .lgh-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 /* 🏆 LA SUPERLIGA Y LA CLAUSURA (Dlx, 16/10/2026): `lgf-` (liga final). Las dos tarjetas de la portada y sus páginas */

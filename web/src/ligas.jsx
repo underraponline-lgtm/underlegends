@@ -423,7 +423,9 @@ function Torneo({ liga, L, h }) {
   );
 }
 
-// 🥇 los tres de arriba, como el podio del Ranking pero con la cara: muchos de los que juegan ligas no tienen carta
+// 🥇 LOS TRES DE ARRIBA, COMO UN PODIO DE VERDAD (Dlx, 18/10/2026: «el top 3 podría ser mejor»): cada uno arriba de su
+// escalón —el primero en el más alto, al medio—, con el color de su medalla, y los escalones apoyados en el piso del
+// encabezado. Con la cara: muchos de los que juegan ligas no tienen carta
 function Podio3({ L, h }) {
   const top = (L.tabla || []).slice(0, 3);
   if (top.length < 2) return null;
@@ -431,10 +433,12 @@ function Podio3({ L, h }) {
     <ol className="lgp-podio" aria-label={'Los primeros de ' + L.n}>
       {top.map(([raw, pj, pg, pts], i) => (
         <li key={raw} className={'lgp-p p' + (i + 1) + (h.esYo(raw) ? ' yo' : '')}>
-          {h.cara(raw, 'lgp-cara')}
-          <span className="lgp-pn">{i + 1}º</span>
-          {h.nombre(raw, 'lgp-nom')}
-          <small>{pts} PTS · {pg}/{pj}</small>
+          <span className="lgp-quien">
+            {h.cara(raw, 'lgp-cara')}
+            {h.nombre(raw, 'lgp-nom')}
+            <small><b>{pts}</b> PTS · {pg} de {pj}</small>
+          </span>
+          <span className="lgp-paso">{i + 1}º</span>
         </li>
       ))}
     </ol>
@@ -711,9 +715,10 @@ function LigaPerfil({ liga, id }) {
             <p className="hero-p lgp-p0"><span className={'lgp-est lgx-' + est.c}>{est.largo}</span> · de <a href={'#/sv/' + sig}>{s.nombre || sig}</a></p>
             <div className="hero-acc">
               <SeguirLiga key={L.id} L={L} />
-              {L.link ? <a className="btn borde" href={L.link} target="_blank" rel="noopener noreferrer">Su tabla en Discord ↗</a> : null}
               <Compartir cls="btn borde" url={enlace(aLiga(L))} texto={'La tabla de ' + L.n + ' en la Liga Global'} />
             </div>
+            {/* la suya, como link: tres botones se apilaban en dos renglones (Dlx, 18/10/2026: «está muy pegado») */}
+            {L.link ? <a className="te-link lgp-dc" href={L.link} target="_blank" rel="noopener noreferrer">Su tabla en Discord ↗</a> : null}
           </div>
           <dl className="svp-num lgp-num">
             {L.j ? <div><dt>JORNADA</dt><dd>{L.j}</dd></div> : <div><dt>ÚLTIMA</dt><dd>{ultima || '—'}</dd></div>}
