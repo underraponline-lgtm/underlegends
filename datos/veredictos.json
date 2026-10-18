@@ -1168,6 +1168,17 @@
    "b": "GUESS 🇦🇷",
    "ganador": "GUESS 🇦🇷",
    "votos": "1–0"
+  },
+  "1561501903190237377": {
+   "id": "1561501903190237377",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1557583344638623754",
+   "pub": 1792361465023,
+   "a": "TAM🇻🇪",
+   "b": "MAILEN🇳🇴",
+   "ganador": "TAM🇻🇪",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5152,8 +5163,8 @@
    "g": "1468472442925092958",
    "canal": "1557583344638623754",
    "pub": 1792357298616,
-   "ed": 1792362125879,
-   "texto": "`[ FILTROS ]`\n⌞PANCHOK🇨🇱⌝ 🆚 ⌞LVEL🇻🇪⌝ 🆚 ⌞JOBA🇨🇱⌝ 🆚 ⌞AX🇻🇪⌝ 🆚 ⌞1200🇰🇷⌝\n⌞SEBITA🇱🇷⌝ 🆚 ⌞IMAGY🇵🇪⌝ 🆚 ⌞TAM🇻🇪⌝ 🆚 ⌞MILLONARI-O(MC MILLO)🇵🇾⌝ 🆚 ⌞ONZAS.S🇻🇪⌝\n⌞JOBA🇨🇱R⌝ 🆚 ⌞MAILÉN🇳🇴⌝ 🆚 ⌞PARK-JI SUNG🇰🇷⌝ 🆚 ⌞VANDU🇨🇦⌝ 🆚 ⌞WARAP🇦🇷⌝ 🆚 ⌞CAZAFLA ANTI CAZANOVA🇭🇹⌝\n`[ SEMIFINALES ]`\n⌞TAM🇻🇪+SEBITA🇱🇷⌝ 🆚 ⌞ANDRES🇨🇱+CHOP🇭🇳⌝",
+   "ed": 1792363534488,
+   "texto": "`[ FILTROS ]`\n⌞PANCHOK🇨🇱⌝ 🆚 ⌞LVEL🇻🇪⌝ 🆚 ⌞JOBA🇨🇱⌝ 🆚 ⌞AX🇻🇪⌝ 🆚 ⌞1200🇰🇷⌝\n⌞SEBITA🇱🇷⌝ 🆚 ⌞IMAGY🇵🇪⌝ 🆚 ⌞TAM🇻🇪⌝ 🆚 ⌞MILLONARI-O(MC MILLO)🇵🇾⌝ 🆚 ⌞ONZAS.S🇻🇪⌝\n⌞JOBA🇨🇱R⌝ 🆚 ⌞MAILÉN🇳🇴⌝ 🆚 ⌞PARK-JI SUNG🇰🇷⌝ 🆚 ⌞VANDU🇨🇦⌝ 🆚 ⌞WARAP🇦🇷⌝ 🆚 ⌞CAZAFLA ANTI CAZANOVA🇭🇹⌝\n`[ FINAL ]`\n⌞WARAP🇦🇷✖️+MAILÉN🇳🇴+PANCHOK🇨🇱✖️⌝ 🆚 ⌞TAM🇻🇪+SEBITA🇱🇷✖️+ANDRES🇨🇱✖️⌝",
    "batallas": [
     [
      "FILTROS",
@@ -5196,10 +5207,10 @@
      []
     ],
     [
-     "SEMIFINALES",
+     "FINAL",
      [
-      "TAM🇻🇪+SEBITA🇱🇷",
-      "ANDRES🇨🇱+CHOP🇭🇳"
+      "WARAP🇦🇷✖️+MAILÉN🇳🇴+PANCHOK🇨🇱✖️",
+      "TAM🇻🇪+SEBITA🇱🇷✖️+ANDRES🇨🇱✖️"
      ],
      null,
      "última ronda y no dice campeón",

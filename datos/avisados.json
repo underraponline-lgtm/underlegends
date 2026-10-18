@@ -2516,7 +2516,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "05e231261942df4d",
+  "firma": "288765efc1acd9de",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "821b763a302d3244",
+  "firma": "783a94a19ae56799",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -5562,7 +5562,7 @@
    "Xclusivo": 12
   },
   "fecha": "10/10",
-  "firma": "f178a26fe3b1d213",
+  "firma": "733b8dd760111bef",
   "msg": "1558545514931163258",
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
   "num": 442,
@@ -5811,7 +5811,7 @@
    "PichulaMc": 27
   },
   "fecha": "10/10",
-  "firma": "5ff0d29e5b5420e3",
+  "firma": "68c461b57b093799",
   "msg": "1558643633110917121",
   "nombre": "(sin titulo)",
   "num": 444,
@@ -6117,7 +6117,7 @@
    "Spartan": 1
   },
   "fecha": "10/10",
-  "firma": "edf8b7a72787b23d",
+  "firma": "a5f4d93c25cdb6f0",
   "msg": "1558711595163590740",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
   "num": 446,
@@ -6751,7 +6751,7 @@
    "Verc": 2
   },
   "fecha": "11/10",
-  "firma": "15beaefbbf4e5d16",
+  "firma": "594ba05b45768b2c",
   "msg": "1558907912582078525",
   "nombre": "__ HJKSLOWT V.1 __",
   "num": 449,
@@ -7788,7 +7788,7 @@
    "yinn": 15
   },
   "fecha": "12/10",
-  "firma": "71893965b9cbdc1b",
+  "firma": "372fdfecc2838f87",
   "msg": "1559247601923137630",
   "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
   "num": 454,
@@ -9421,7 +9421,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "acdf25260f388276",
+  "firma": "a918bb3fb2e1c973",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -10513,7 +10513,7 @@
    "Tenor": 3
   },
   "fecha": "13/10",
-  "firma": "fefb1314a833e14a",
+  "firma": "04e57f38fc1e52d0",
   "msg": "1559459229411057705",
   "nombre": "QCYO RAPEEN",
   "num": 465,
@@ -12629,7 +12629,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "48aa45f037be435f",
+  "firma": "68e83acdf49d4791",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -13446,7 +13446,7 @@
    "Xubaru": 7
   },
   "fecha": "16/10",
-  "firma": "b317af29eb8591f1",
+  "firma": "1f2647c98d252377",
   "msg": "1560725555203014688",
   "nombre": "__ DESGRACIAS EN TOKYO VOL27 __",
   "num": 477,
@@ -13965,7 +13965,7 @@
    "Vandu": 22
   },
   "fecha": "16/10",
-  "firma": "50e9367c66cbb316",
+  "firma": "01a5abcfcff25093",
   "msg": "1560779869497983097",
   "nombre": "PRADERAP VOL.1",
   "num": 479,
@@ -14543,6 +14543,11 @@
     "MCO",
     "Colesito",
     "MCO"
+   ],
+   [
+    "Calíz",
+    "Shadow",
+    "Calíz"
    ]
   ],
   "ev_antes": {
@@ -14559,7 +14564,7 @@
    "Sin Limites": 18
   },
   "fecha": "16/10",
-  "firma": "a24ddffb6545da21",
+  "firma": "1f490d37fcd89b26",
   "msg": "1560858617589272627",
   "nombre": "PROYECTO X VOL.3",
   "num": 481,
@@ -14601,17 +14606,17 @@
     2500
    ],
    [
+    "Shadow",
+    "Cuartos",
+    2500
+   ],
+   [
     "Dominick",
     "Octavos",
     1250
    ],
    [
     "FOTOSÍNTESIS",
-    "Octavos",
-    1250
-   ],
-   [
-    "Shadow",
     "Octavos",
     1250
    ],
@@ -14686,7 +14691,7 @@
    "Panchok": 15
   },
   "fecha": "17/10",
-  "firma": "e4a1478abff73502",
+  "firma": "e68aa645fafdce1d",
   "msg": "1561153562665558208",
   "nombre": "MUNDIALITO",
   "num": 482,
@@ -15059,7 +15064,7 @@
   "duelos": [
    [
     "Velatz",
-    "DarkoMC🇲🇽",
+    "DarkoMC",
     "Velatz"
    ],
    [
@@ -15194,7 +15199,7 @@
    "Xubaru": 8
   },
   "fecha": "18/10",
-  "firma": "f459bda056a6a7ca",
+  "firma": "87b3ed24f0a1b128",
   "msg": "1561498207572205609",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL7 __",
   "num": 484,
@@ -15246,7 +15251,7 @@
     2500
    ],
    [
-    "DarkoMC🇲🇽",
+    "DarkoMC",
     "Octavos",
     1250
    ],

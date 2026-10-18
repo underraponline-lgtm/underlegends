@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-18T22:25:26+00:00",
+ "cuando": "2026-10-18T22:55:19+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -400,6 +400,42 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-18T20:52:04"
+  },
+  {
+   "nombre": "DESGRACIAS EN TOKYO VOL 29 2 VS 2",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1561506773272240188",
+   "cuando": "2026-10-18T22:30:26",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "LEWITO",
+   "orgs": [],
+   "autor_h": "211322958af20ae2",
+   "cupos_texto": "16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "PLATA 3",
+   "modalidad": "",
+   "horario": "EN 1 HORA",
+   "fecha": "",
+   "premios": "RESPETO",
+   "staff": {
+    "jurado": [
+     "LEWITO"
+    ],
+    "host": [
+     "LEWITO"
+    ],
+    "dj": [
+     "LEWITO"
+    ]
+   },
+   "autor": "Lewito",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-18T20:52:04"
   },
@@ -1170,47 +1206,6 @@
     "Flennzs | ⛩️": "1414431452346581052",
     "PolloSport": "716016310202400848"
    },
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-18T20:52:04"
-  },
-  {
-   "nombre": "Competencia Rango Bronce",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1558961371675230249",
-   "cuando": "2026-10-11T21:55:55",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "Colesito",
-   "orgs": [
-    {
-     "n": "Colesito",
-     "id": "790016013680771102"
-    }
-   ],
-   "autor_h": "fa8f09cab11e2bb2",
-   "cupos_texto": "8/12/16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "",
-   "fecha": "REMPALAGO VOL 64 COMPE EXPRESS POR PLATA",
-   "premios": "campeonato y el respeto de un rapero muy prestigioso y una sorpresa muy especial y 0.30 dolares por paypal",
-   "staff": {
-    "jurado": [
-     "Wos Duki Papo Trueno Valles-T"
-    ],
-    "host": [
-     "Misionero"
-    ],
-    "dj": [
-     "Zone"
-    ]
-   },
-   "autor": "Colesito",
-   "staff_cuentas": {},
    "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-18T20:52:04"
@@ -6274,6 +6269,105 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tam🇻🇪 + snow🇨🇴",
+   "quien": "tuabuelamuerta12",
+   "discord_id": "505444041719021569",
+   "msg_id": "1561512554306609265",
+   "cuando": "2026-10-18T22:53:24"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Bna 🇦🇷 + Neo 🇦🇷",
+   "quien": "l3wito",
+   "discord_id": "1086485696572817418",
+   "msg_id": "1561511956429676585",
+   "cuando": "2026-10-18T22:51:01"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "ZAIK🇪🇸+KRAVITZ🇨🇷",
+   "quien": "thekravitz777",
+   "discord_id": "1345962362615894027",
+   "msg_id": "1561511888838463510",
+   "cuando": "2026-10-18T22:50:45"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "<@1555067257376346122>🇪🇸+KRAVITZ🇨🇷",
+   "quien": "thekravitz777",
+   "discord_id": "1345962362615894027",
+   "msg_id": "1561511694319099955",
+   "cuando": "2026-10-18T22:49:59"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "MCO 🇦🇷 + Millonari-O(mc millo)🇵🇾",
+   "quien": "pelotadel_10_68491",
+   "discord_id": "1373340031413911624",
+   "msg_id": "1561511147763400705",
+   "cuando": "2026-10-18T22:47:49"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1561509715744137217",
+   "cuando": "2026-10-18T22:42:07"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Bootrax humilde🇵🇪   + Vandu 🇨🇦",
+   "quien": "gianfraxruizescor11",
+   "discord_id": "1122273746099638354",
+   "msg_id": "1561508932126507061",
+   "cuando": "2026-10-18T22:39:00"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Park-Ji Sung🇰🇷 + Sebita🇱🇷",
+   "quien": "malasiafighter",
+   "discord_id": "1357796427191029932",
+   "msg_id": "1561508771807895663",
+   "cuando": "2026-10-18T22:38:22"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Leonar-T 🇲🇽 + Luz 🇨🇿",
+   "quien": "leonart95.",
+   "discord_id": "1440039366654165212",
+   "msg_id": "1561507670610018407",
+   "cuando": "2026-10-18T22:34:00"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Dyzz 🇨🇱 + 🇦🇷 molusco",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1561507399460978772",
+   "cuando": "2026-10-18T22:32:55"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Leonar-T 🇲🇽 + Luz 🇨🇿",
+   "quien": "leonart95.",
+   "discord_id": "1440039366654165212",
+   "msg_id": "1561507187266814135",
+   "cuando": "2026-10-18T22:32:04"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones-2",
