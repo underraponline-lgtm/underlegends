@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-18T02:24:55+00:00",
+ "cuando": "2026-10-18T02:54:51+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -402,8 +402,8 @@
    "cupos_texto": "",
    "inscriptos": null,
    "cupo_total": null,
-   "rango": "Plata I 🥈",
-   "modalidad": "1v1",
+   "rango": "Bronce III 🥉",
+   "modalidad": "Pandillas",
    "horario": "11:30",
    "fecha": "",
    "premios": "1 Campeonato 🏆",
@@ -5874,6 +5874,60 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1561206616303345774",
+   "cuando": "2026-10-18T02:37:43"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "ANTONIOKAST🇨🇱",
+   "quien": "yatusabee_2",
+   "discord_id": "1535790068395024454",
+   "msg_id": "1561206001795989625",
+   "cuando": "2026-10-18T02:35:16"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Verc",
+   "quien": "jovenvesta",
+   "discord_id": "913652602208649226",
+   "msg_id": "1561205903766720514",
+   "cuando": "2026-10-18T02:34:53"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Guess 🇦🇷",
+   "quien": "sinergiabreak",
+   "discord_id": "1515482513106272366",
+   "msg_id": "1561204907569057823",
+   "cuando": "2026-10-18T02:30:55"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Pichulamc🇦🇷",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1561204704229466113",
+   "cuando": "2026-10-18T02:30:07"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "MTZ 🇲🇽",
+   "quien": "diego__mtz",
+   "discord_id": "794733304729436212",
+   "msg_id": "1561203712188354659",
+   "cuando": "2026-10-18T02:26:10"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
