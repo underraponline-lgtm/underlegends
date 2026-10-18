@@ -796,9 +796,9 @@
   },
   "L": {},
   "LAST": {
-   "competitivo": "617d03c7471a:aa2fab0a1b31",
-   "pais": "137d4cf2b70b:631b7a4c93c4",
-   "servidor": "99ad06167ed5:f7bc857dd9f6:88f477"
+   "competitivo": "a83a39a11ad8:aa2fab0a1b31",
+   "pais": "028f54f6baac:631b7a4c93c4",
+   "servidor": "8de694ecdb71:f7bc857dd9f6:88f477"
   },
   "LEWITO": {
    "competitivo": "131e023af500:aa2fab0a1b31",
@@ -906,9 +906,9 @@
   },
   "Luzzano": {},
   "Lvel": {
-   "competitivo": "492dfe4c3045:aa2fab0a1b31",
+   "competitivo": "af0aadfbfccc:aa2fab0a1b31",
    "servidor": "f084608311fe:f7bc857dd9f6:039304",
-   "temporada": "7d95aa870ff4:906ce275eeb8"
+   "temporada": "23643167d955:906ce275eeb8"
   },
   "MATICERNA": {},
   "MAXIMILIANO CALVO": {},
@@ -1816,5 +1816,5 @@
    "servidor": "7f8885a35a6d:f7bc857dd9f6:93a344"
   }
  },
- "cuando": "2026-10-18T05:03:43+00:00"
+ "cuando": "2026-10-18T15:34:01+00:00"
 }
