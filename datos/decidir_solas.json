@@ -1168,6 +1168,51 @@
      "1375578701302857738"
     ]
    }
+  },
+  {
+   "id": "83ff28c5f1",
+   "tipo": "Nombre desconocido",
+   "sec": "LA ISLA DE OKINAWA V.1 · FFA · 18/10 · #485",
+   "que": "¿Quién es «Joba 🇨🇱»?",
+   "r": "Es Jobaking (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @jobains (en Discord: «𝐉𝐨𝐛𝐚𝐤𝟏𝐧𝐠 :v») · en la Lista: Jobaking se anotó como «Joba» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1792366401327,
+   "filas": [
+    742
+   ],
+   "variantes": [
+    "Joba 🇨🇱"
+   ],
+   "escribio": {
+    "quien": "LA ISLA DE OKINAWA V.1 · FFA · 18/10 · Joba 🇨🇱"
+   }
+  },
+  {
+   "id": "9bfbfe67e7",
+   "tipo": "Nombre desconocido",
+   "sec": "LA ISLA DE OKINAWA V.1 · FFA · 18/10 · #485",
+   "que": "¿Quién es «Millonari-O🇵🇾»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1373340031413911624",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1373340031413911624)",
+   "t": 1792366401327,
+   "filas": [
+    743
+   ],
+   "variantes": [
+    "Millonari-O🇵🇾"
+   ],
+   "escribio": {
+    "alta": [
+     "Millonari-O",
+     "1373340031413911624"
+    ]
+   }
   }
  ],
  "deshechas": []

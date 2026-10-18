@@ -62,6 +62,18 @@
    "vence": "2026-10-25T20:57:26+00:00",
    "vencido": false
   },
+  "Cazafla anti cazanova": {
+   "avisado": "2026-10-18",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-18T21:01:38+00:00",
+   "did": "",
+   "evento": "LA ISLA DE OKINAWA V.1",
+   "n": 485,
+   "sv": "FFA",
+   "vence": "2026-10-25T21:01:38+00:00",
+   "vencido": false
+  },
   "Chente": {
    "avisado": "2026-10-14",
    "chat": "2026-10-15",
@@ -129,9 +141,10 @@
   },
   "Hotaru Adeyemi 🏳️‍⚧️": {
    "avisado": "2026-10-16",
+   "avisado_cumplido": "2026-10-18",
    "chat": "2026-10-16",
-   "con": null,
-   "cumplido": "",
+   "con": 485,
+   "cumplido": "2026-10-18T21:01:38+00:00",
    "debut": "2026-10-16T20:31:59+00:00",
    "did": "1282772759902162954",
    "evento": "PRADERAP VOL.1",
@@ -142,9 +155,10 @@
   },
   "Imagy": {
    "avisado": "2026-10-18",
+   "avisado_cumplido": "2026-10-18",
    "chat": "2026-10-18",
-   "con": null,
-   "cumplido": "",
+   "con": 485,
+   "cumplido": "2026-10-18T21:01:38+00:00",
    "debut": "2026-10-18T20:57:26+00:00",
    "did": "1203061395814350918",
    "evento": "LA BELLA ARTE DE LA DESGRACIA VOL7",
@@ -164,6 +178,18 @@
    "n": 460,
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
+   "vencido": false
+  },
+  "Joba": {
+   "avisado": "2026-10-18",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-18T21:01:38+00:00",
+   "did": "",
+   "evento": "LA ISLA DE OKINAWA V.1",
+   "n": 485,
+   "sv": "FFA",
+   "vence": "2026-10-25T21:01:38+00:00",
    "vencido": false
   },
   "Jobaking": {
@@ -244,6 +270,18 @@
    "n": 460,
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
+   "vencido": false
+  },
+  "Millonari-O": {
+   "avisado": "2026-10-18",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-18T21:01:38+00:00",
+   "did": "",
+   "evento": "LA ISLA DE OKINAWA V.1",
+   "n": 485,
+   "sv": "FFA",
+   "vence": "2026-10-25T21:01:38+00:00",
    "vencido": false
   },
   "Milo": {

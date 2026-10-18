@@ -1530,7 +1530,7 @@
    ],
    "prog": {
     "1200": [
-     3,
+     4,
      4,
      4,
      0
@@ -1585,6 +1585,12 @@
     ],
     "Agus": [
      5,
+     1,
+     1,
+     0
+    ],
+    "Andres": [
+     1,
      1,
      1,
      0
@@ -1649,6 +1655,12 @@
      2,
      1
     ],
+    "Cazafla anti cazanova🇭🇹": [
+     1,
+     32,
+     32,
+     0
+    ],
     "Chente": [
      1,
      16,
@@ -1662,7 +1674,7 @@
      0
     ],
     "Chop": [
-     6,
+     7,
      4,
      4,
      0
@@ -1704,7 +1716,7 @@
      0
     ],
     "DarnBless": [
-     2,
+     3,
      8,
      8,
      0
@@ -1728,7 +1740,7 @@
      0
     ],
     "Drexx": [
-     3,
+     4,
      8,
      8,
      0
@@ -1824,13 +1836,13 @@
      0
     ],
     "Hotaru Adeyemi 🏳️‍⚧️": [
-     1,
+     2,
      2,
      2,
      0
     ],
     "Imagy": [
-     1,
+     2,
      16,
      16,
      0
@@ -1857,6 +1869,12 @@
      1,
      8,
      8,
+     0
+    ],
+    "Joba 🇨🇱": [
+     1,
+     32,
+     32,
      0
     ],
     "Jobaking": [
@@ -1974,9 +1992,9 @@
      0
     ],
     "Liberia": [
-     5,
-     2,
-     2,
+     6,
+     1,
+     1,
      0
     ],
     "Lord Viruzz": [
@@ -1992,7 +2010,7 @@
      0
     ],
     "Lvel": [
-     5,
+     6,
      16,
      16,
      0
@@ -2061,6 +2079,12 @@
      1,
      8,
      8,
+     0
+    ],
+    "Millonari-O🇵🇾": [
+     1,
+     32,
+     32,
      0
     ],
     "Milo": [
@@ -2148,13 +2172,13 @@
      0
     ],
     "ONZASS": [
-     3,
+     4,
      4,
      4,
      0
     ],
     "Oasis": [
-     6,
+     7,
      1,
      1,
      0
@@ -2172,7 +2196,7 @@
      0
     ],
     "Panchok": [
-     5,
+     6,
      1,
      1,
      0
@@ -2196,9 +2220,9 @@
      0
     ],
     "Polosport": [
-     1,
-     4,
-     4,
+     2,
+     2,
+     2,
      0
     ],
     "Presagio": [
@@ -2322,9 +2346,9 @@
      0
     ],
     "Tam": [
+     2,
      1,
-     4,
-     4,
+     1,
      0
     ],
     "Teito": [
@@ -2394,7 +2418,7 @@
      0
     ],
     "Vandu": [
-     7,
+     8,
      2,
      2,
      0
@@ -2424,9 +2448,9 @@
      0
     ],
     "Warap": [
+     3,
      2,
-     8,
-     8,
+     2,
      0
     ],
     "Xclusivo": [
@@ -2436,7 +2460,7 @@
      0
     ],
     "Xubaru": [
-     5,
+     6,
      1,
      1,
      0
@@ -2516,6 +2540,7 @@
     "Abysuss": 1600,
     "Agente sombra": 300,
     "Agus": 2900,
+    "Andres": 1600,
     "Ariaxer": 300,
     "BNA": 3700,
     "Benjixo": 900,
@@ -2538,7 +2563,8 @@
     "Geoka": 900,
     "Gocho": 300,
     "Guess": 2900,
-    "Hotaru Adeyemi 🏳️‍⚧️": 600,
+    "Hotaru Adeyemi 🏳️‍⚧️": 900,
+    "Imagy": 300,
     "JHEYSON": 300,
     "JJ": 1600,
     "Joshema": 300,
@@ -2550,7 +2576,7 @@
     "Krish": 300,
     "Kusoh": 600,
     "LRS": 900,
-    "Liberia": 900,
+    "Liberia": 2900,
     "Lord Viruzz": 300,
     "Luzzano": 600,
     "Lvel": 300,
@@ -2574,7 +2600,7 @@
     "Paria": 300,
     "PichulaMc": 2900,
     "Player": 300,
-    "Polosport": 600,
+    "Polosport": 900,
     "Presagio": 2900,
     "Prosu": 2900,
     "Provenza": 900,
@@ -2588,7 +2614,7 @@
     "Snow": 2900,
     "Sosa": 900,
     "Soulb": 900,
-    "Tam": 600,
+    "Tam": 2900,
     "Teito": 300,
     "Tenor": 600,
     "Teo": 300,
@@ -2603,7 +2629,7 @@
     "Velatz": 900,
     "Verc": 2900,
     "Walker": 1600,
-    "Warap": 300,
+    "Warap": 900,
     "Xclusivo": 900,
     "Xubaru": 2900,
     "Zaik": 300,
@@ -2633,7 +2659,7 @@
   "Akutagawa🇹🇼": 300,
   "Aldre": 900,
   "Alexi": 300,
-  "Andres": 1300,
+  "Andres": 2900,
   "Andy": 300,
   "Ariaxer": 600,
   "Assuan": 1300,
@@ -2698,9 +2724,10 @@
   "Hassan": 300,
   "Henry": 300,
   "Holden": 300,
-  "Hotaru Adeyemi 🏳️‍⚧️": 600,
+  "Hotaru Adeyemi 🏳️‍⚧️": 900,
   "ISAIAS": 300,
   "Iguana": 300,
+  "Imagy": 300,
   "JHEYSON": 300,
   "JJ": 2900,
   "JOSHU": 2900,
@@ -2725,7 +2752,7 @@
   "Leonart": 300,
   "Letrao🇨🇱": 1300,
   "Liam": 300,
-  "Liberia": 3800,
+  "Liberia": 5800,
   "LitKunai": 300,
   "Lord Viruzz": 600,
   "Luzzano": 900,
@@ -2770,7 +2797,7 @@
   "Personality": 300,
   "PichulaMc": 5800,
   "Player": 3200,
-  "Polosport": 1900,
+  "Polosport": 2200,
   "Pomberito": 2900,
   "Presagio": 4200,
   "Prodigy": 300,
@@ -2805,7 +2832,7 @@
   "Soneto": 300,
   "Sosa": 1200,
   "Soulb": 1200,
-  "Tam": 1900,
+  "Tam": 4200,
   "Teito": 300,
   "Tenor": 900,
   "Teo": 600,
@@ -2822,7 +2849,7 @@
   "Velatz": 3800,
   "Verc": 5800,
   "Walker": 4500,
-  "Warap": 300,
+  "Warap": 900,
   "Xclusivo": 3800,
   "Xplicit": 300,
   "Xubaru": 4200,

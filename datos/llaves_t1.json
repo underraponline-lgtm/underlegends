@@ -26621,5 +26621,214 @@
     1250
    ]
   ]
+ },
+ "485": {
+  "dia": "2026-10-18",
+  "escala": "16+",
+  "fecha": "18/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1557583344638623754/1561484428012818537",
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1561499073217830963"
+  ],
+  "n": 485,
+  "nombre": "LA ISLA DE OKINAWA V.1",
+  "participantes": 22,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "1200",
+       "Lvel 🇻🇪",
+       "Joba 🇨🇱",
+       "Xubaru"
+      ],
+      "Panchok, 1200",
+      "triple (5 bandas, pasan 2); también pasa: 1200 🇰🇷; Drafteado: Panchok 🇨🇱"
+     ],
+     [
+      [
+       "Liberia",
+       "Tam",
+       "Imagy",
+       "Millonari-O🇵🇾",
+       "ONZASS"
+      ],
+      "Liberia, Tam",
+      "triple (5 bandas, pasan 2); también pasa: tam"
+     ],
+     [
+      [
+       "Polosport",
+       "Warap",
+       "Joba 🇨🇱",
+       "Oasis",
+       "Vandu",
+       "Cazafla anti cazanova🇭🇹"
+      ],
+      "Polosport, Warap",
+      "triple (6 bandas, pasan 2); también pasa: warap🇦🇷"
+     ],
+     [
+      [
+       "Chop",
+       "Andres",
+       "Hotaru Adeyemi 🏳️‍⚧️",
+       "Drexx",
+       "DarnBless"
+      ],
+      "Chop, Andres",
+      "triple (5 bandas, pasan 2); también pasa: andres 🇨🇱"
+     ]
+    ],
+    "r": "Filtros"
+   },
+   {
+    "b": [
+     [
+      [
+       "Warap, Polosport",
+       "Panchok, 1200"
+      ],
+      "Warap, Polosport",
+      ""
+     ],
+     [
+      [
+       "Tam, Liberia",
+       "Andres, Chop"
+      ],
+      "Tam, Liberia",
+      "Drafteado: ANDRES🇨🇱"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Tam, Liberia, Andres",
+       "Warap, Polosport, Panchok"
+      ],
+      "Tam, Liberia, Andres",
+      ""
+     ],
+     [
+      [
+       "WARAP🇦🇷✖️+MAILÉN🇳🇴+PANCHOK🇨🇱✖️",
+       "TAM🇻🇪+SEBITA🇱🇷✖️+ANDRES🇨🇱✖️"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Andres",
+    "Campeón",
+    5958
+   ],
+   [
+    "Panchok",
+    "Subcampeón",
+    5125
+   ],
+   [
+    "Liberia",
+    "Campeón",
+    3333
+   ],
+   [
+    "Tam",
+    "Campeón",
+    3333
+   ],
+   [
+    "1200",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Chop",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Polosport",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Warap",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Joba 🇨🇱",
+    "R32",
+    937
+   ],
+   [
+    "Cazafla anti cazanova🇭🇹",
+    "R32",
+    625
+   ],
+   [
+    "DarnBless",
+    "R32",
+    625
+   ],
+   [
+    "Drexx",
+    "R32",
+    625
+   ],
+   [
+    "Hotaru Adeyemi 🏳️‍⚧️",
+    "R32",
+    625
+   ],
+   [
+    "Imagy",
+    "R32",
+    625
+   ],
+   [
+    "Lvel 🇻🇪",
+    "R32",
+    625
+   ],
+   [
+    "Millonari-O🇵🇾",
+    "R32",
+    625
+   ],
+   [
+    "ONZASS",
+    "R32",
+    625
+   ],
+   [
+    "Oasis",
+    "R32",
+    625
+   ],
+   [
+    "Vandu",
+    "R32",
+    625
+   ],
+   [
+    "Xubaru",
+    "R32",
+    625
+   ]
+  ]
  }
 }

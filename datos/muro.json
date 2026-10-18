@@ -39,6 +39,15 @@
 "temporada"
 ]
 },
+"panchok": {
+"rg": "SS",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "erian": {
 "rg": "B",
 "c": [
@@ -51,15 +60,6 @@
 "rg": "A",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"panchok": {
-"rg": "S",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -230,6 +230,10 @@
 "rg": "C",
 "c": []
 },
+"tam": {
+"rg": "C",
+"c": []
+},
 "trot": {
 "rg": "D",
 "c": [
@@ -263,6 +267,15 @@
 "rg": "E",
 "c": []
 },
+"polosport": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "jupiter": {
 "rg": "D",
 "c": [
@@ -275,7 +288,7 @@
 "rg": "C",
 "c": []
 },
-"nxuz": {
+"drexx": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -284,7 +297,15 @@
 "temporada"
 ]
 },
-"drexx": {
+"xubaru": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
+"nxuz": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -300,6 +321,10 @@
 "servidor",
 "temporada"
 ]
+},
+"andres": {
+"rg": "C",
+"c": []
 },
 "lordviruzz": {
 "rg": "D",
@@ -405,8 +430,8 @@
 "temporada"
 ]
 },
-"tam": {
-"rg": "",
+"1200": {
+"rg": "E",
 "c": []
 },
 "dominick": {
@@ -428,21 +453,6 @@
 "eidp": {
 "rg": "",
 "c": []
-},
-"polosport": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
-"xubaru": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "alexi": {
 "rg": "",
@@ -491,10 +501,6 @@
 "temporada"
 ]
 },
-"1200": {
-"rg": "",
-"c": []
-},
 "19": {
 "rg": "",
 "c": []
@@ -526,10 +532,6 @@
 "servidor",
 "temporada"
 ]
-},
-"andres": {
-"rg": "",
-"c": []
 },
 "soulb": {
 "rg": "E",
@@ -667,6 +669,10 @@
 "temporada"
 ]
 },
+"hotaruadeyemi": {
+"rg": "",
+"c": []
+},
 "rodas": {
 "rg": "",
 "c": [
@@ -726,10 +732,6 @@
 "c": [
 "servidor"
 ]
-},
-"hotaruadeyemi": {
-"rg": "",
-"c": []
 },
 "pomberito": {
 "rg": "",
@@ -793,6 +795,13 @@
 ]
 },
 "mathhias": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"darnbless": {
 "rg": "",
 "c": [
 "servidor",
@@ -874,13 +883,6 @@
 "temporada"
 ]
 },
-"darnbless": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "joshu": {
 "rg": "",
 "c": []
@@ -955,6 +957,10 @@
 ]
 },
 "betelguese": {
+"rg": "",
+"c": []
+},
+"warap": {
 "rg": "",
 "c": []
 },
@@ -2409,70 +2415,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Chop"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"MHS"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"MHS"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Scot"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Scot"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Tam"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Tam"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Pomberito"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5712,6 +5654,76 @@
 "Crk"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "rango",
+"t": "2026-10-18T23:33:09Z",
+"quien": [
+"Panchok"
+],
+"rg": "SS",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-18T23:33:09Z",
+"quien": [
+"Tam"
+],
+"rg": "C",
+"primero": true
+},
+{
+"tipo": "rango",
+"t": "2026-10-18T23:33:09Z",
+"quien": [
+"Polosport"
+],
+"rg": "C",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-18T23:33:09Z",
+"quien": [
+"Polosport"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "rango",
+"t": "2026-10-18T23:33:09Z",
+"quien": [
+"Xubaru"
+],
+"rg": "D",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-18T23:33:09Z",
+"quien": [
+"Xubaru"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "rango",
+"t": "2026-10-18T23:33:09Z",
+"quien": [
+"Andres"
+],
+"rg": "C",
+"primero": true
+},
+{
+"tipo": "rango",
+"t": "2026-10-18T23:33:09Z",
+"quien": [
+"1200"
+],
+"rg": "E",
+"primero": true
 }
 ]
 }
