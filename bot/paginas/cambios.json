@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.38",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T01:33:00-04:00",
+   "titulo": "MES AWARDS: más staff y porcentajes",
+   "items": [
+    "🔎 El staff de todos los servidores cuenta para los MES AWARDS, también el que publica los veredictos.",
+    "📊 Al cerrar cada mes, el Salón muestra el porcentaje de votos de cada nominado."
+   ]
+  },
+  {
    "version": "3.37",
    "dia": "2026-10-18",
    "cuando": "2026-10-18T01:05:00-04:00",
