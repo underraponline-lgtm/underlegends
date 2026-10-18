@@ -211,13 +211,15 @@ def numeros(ini, fin, D, raperos=()):
         gente = len({k(f[0]) for f in tabla or [] if f and f[0]})
         a = (D.get('anuncio_de') or {}).get(n) or {}
         orgs = []
-        for o in a.get('orgs') or []:
-            r = raw(o.get('n'), o.get('id'))
+        for o in (a.get('orgs') or []) or ([{'n': a['organizador'], 'id': ''}] if a.get('organizador') else []):
+            # 🧹 lo que no es una persona sino un pedazo del anuncio: «CUPOS: 16», «<@…> ORGANIZADOR», el nombre del
+            # evento («LA NOCHE NUNCA PERDONA», 18/10/2026)
+            crudo = str(o.get('n') or '')
+            if ':' in crudo or '>' in crudo or 'ORGANIZ' in crudo.upper() \
+                    or (nombre and k(crudo) and (k(crudo) == k(nombre) or (len(k(crudo)) >= 8 and k(crudo) in k(nombre)))):
+                continue
+            r = quien_staff(crudo, o.get('id') or '')
             if r and r not in orgs:
-                orgs.append(r)
-        if not orgs and a.get('organizador'):
-            r = raw(a['organizador'], '')
-            if r:
                 orgs.append(r)
         if gente >= MIN_GENTE:
             evs.append({'op': str(n), 'n': nombre or ('#%d' % n), 'sv': sv,
@@ -563,6 +565,40 @@ _ROL_STAFF = ('jurad', 'juez', 'jueces', 'host', 'presentad', 'dj', 'staff', 'or
 VER_PAGINAS = 6
 
 
+def _nombres_lista(s, guilds):
+    """`{clave: nombre de la Lista}` con los nombres de Discord de cada uno —usuario, visible y apodo en cada servidor de
+    la Liga—. Un anuncio que escribe «zaik0009» o «l3wito» a mano, sin mencionar, es Zaik y LEWITO (Dlx, 18/10/2026:
+    «asegurate que tengas los nombres de todos bien»). ⚠️ SÓLO EN MEMORIA: no va al repo, que es público."""
+    import time
+    import multiplicadores as MU
+    with io.open(os.path.join(BASE, 'datos', 'padron.json'), encoding='utf-8') as f:
+        did_raw = {str(p['discord_id']): p['raw'] for p in json.load(f) or [] if p.get('raw') and p.get('discord_id')}
+    out = {}
+    for gid in sorted(guilds):
+        after = '0'
+        for _pag in range(12):
+            r = s.get('https://discord.com/api/v10/guilds/%s/members' % gid, params={'limit': 1000, 'after': after}, timeout=40)
+            if r.status_code == 429:
+                time.sleep(float(r.json().get('retry_after', 1)) + .3)
+                continue
+            if r.status_code != 200:
+                break
+            lote = r.json() or []
+            for m in lote:
+                u = m.get('user') or {}
+                real = did_raw.get(str(u.get('id') or ''))
+                if not real:
+                    continue
+                for x in (u.get('username'), u.get('global_name'), m.get('nick')):
+                    c = nombre_staff(x)
+                    if c:
+                        out.setdefault(MU._clave_persona(c), real)
+            if len(lote) < 1000:
+                break
+            after = max((str((m.get('user') or {}).get('id', '0')) for m in lote), key=int)
+    return out
+
+
 def _traer_staff(desde):
     """`(anuncios, publicaciones)`: los anuncios de `datos/anuncios.json` y quién publicó en cada canal de veredictos
     desde `desde` —`(sv, cuándo, discord_id, nombre)`, sólo quien tiene un rol de staff en ese servidor—. `None` sin red."""
@@ -588,6 +624,10 @@ def _traer_staff(desde):
             canales[str(x['canal'])] = str(x['g'])
     API = 'https://discord.com/api/v10'
     roles, miembros, posts = {}, {}, []
+    try:
+        _traer_staff.nombres = _nombres_lista(s, set(sv_de))
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ MES AWARDS: no leí los nombres de Discord de la Lista (%s)' % str(e)[:60])
 
     def es_staff(gid, uid):
         if gid not in roles:
@@ -679,13 +719,16 @@ def datos(vistas_guardadas=None):
         if p.get('raw'):
             canon[k(p['raw'])] = p['raw']
 
+    nombres_dc = getattr(_traer_staff, 'nombres', None) or {}
+
     def raw(nombre, did=''):
         """El nombre de la Lista de alguien del anuncio: por su cuenta si la dice, si no por su nombre."""
         if did and str(did) in did_raw:
             return did_raw[str(did)]
         # sin la numeración de la plantilla: «1 | Adriagner», «2- Velatz»
         x = re.sub(r'^\s*\d{1,2}\s*[|\-–.)]\s*', '', MU._org(nombre)).strip()
-        return canon.get(k(x)) or (x if len(x) >= 2 else '')
+        # 👤 y por su nombre de Discord (usuario, visible o apodo): «zaik0009» es Zaik (`_nombres_lista()`)
+        return canon.get(k(x)) or nombres_dc.get(k(x)) or nombres_dc.get(k(nombre_staff(x))) or (x if len(x) >= 2 else '')
     fuera = {k(p.get('raw')) for p in pool if p.get('fc') and p.get('raw')}
     pos = {k(p['raw']): int(p['pos']) for p in pool if p.get('raw') and str(p.get('pos') or '').isdigit() and not p.get('fc')}
     # 🎯 las cazas: Most Wanted y precio por cabeza
@@ -877,6 +920,10 @@ def _self_check():
                                raw=lambda n, did='': 'Adriagner' if did == '77' else str(n or ''), canon={'adriagner'}))
     ok([x['op'] for x in nc['host']] == ['Adriagner'],
        'con la cuenta del anuncio, «John pork» es Adriagner (el nombre de la Lista)', str(nc['host']))
+    no = numeros(ini, fin, dict(D, anuncio_de={1: {'orgs': [{'n': 'CUPOS: 16', 'id': ''}, {'n': '<@1> ORGANIZADOR', 'id': ''},
+                                                            {'n': 'COPA', 'id': ''}, {'n': 'Velatz', 'id': ''}]}}))
+    ok([x['op'] for x in no['organizador']] == ['Velatz'],
+       'organizador: «CUPOS: 16», una mención rota y el nombre del evento no son personas', str(no['organizador']))
     ok(_partir('LEWITO  FLENNZS') == ['LEWITO', 'FLENNZS'] and _partir('Ana, Bea / Cid') == ['Ana', 'Bea', 'Cid']
        and _partir('John pork') == ['John pork'],
        'un renglón del staff con varios (sin sus banderas quedan con doble espacio) se parte; un nombre con espacio, no')
