@@ -14,6 +14,7 @@ import { PAIS, capital, limpio, norm, num } from './liga.js';
 import { Bandera, Cara, Compartir, Ico, Medalla, PUESTO_MEDALLA, enlace, silueta } from './piezas.jsx';
 import { completar, enOrden, esArbol, esDoble, jugado, partirDoble } from './arriba.jsx';
 import { vioVivo, vivoPendiente } from './pase.js';
+import { TEMAS_SV, leerTemas } from './temas.js';
 
 const MEDALLA = PUESTO_MEDALLA;
 const ORD_P = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos', 'Dieciseisavos', 'R32'];
@@ -68,6 +69,12 @@ function pedirTodas() {
       .catch(() => { TODAS = null; return null; });
   }
   return TODAS;
+}
+
+// 🏟️ las clases del tema de la llave: las de su servidor si quien mira no eligió uno (y si ese servidor tiene tema)
+function temaLlave(sv) {
+  const s = String(sv || '').toUpperCase();
+  return !leerTemas().sv && TEMAS_SV.some(([x]) => x === s) ? ' lk-tsv t-' + s.toLowerCase() : '';
 }
 
 // ── el ancho de la pantalla: en la compu el cuadro entero, en el celular de a una ronda ──
@@ -1003,7 +1010,10 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
       {/* 🎨 LA LLAVE, SOBRE LA PIEL (Dlx, 03/10/2026). En blanco: «es muy blanco eso de las llaves página»; en negro:
           «ahora está muy negro… todo». El escenario negro arriba y el cuadro sobre la piel (`--caja`, el color de lo ya
           jugado, que a Dlx le gusta), con las casillas en blanco encima */}
-      <section className="sec lk-sec piel">
+      {/* 🏟️ SU FONDO, EL DE SU SERVIDOR (Dlx, 18/10/2026: «el fondo debería ser según el tema elegido, pero por default según
+          el tema del servidor»): quien eligió un tema de servidor lo ve con el suyo; quien no, con los colores del servidor
+          de esta llave, sobre su Clara o su Noche (`.lk-tsv.t-xxx`, en vivo.css junto a los temas) */}
+      <section className={'sec lk-sec piel' + temaLlave(L.sv)}>
         <div className="sec-t"><h2>{N ? N + ' vidas' : base.dob ? 'Doble eliminación' : 'La llave'}</h2>{L.participantes ? <span className="lk-sub">{L.participantes} raperos</span> : null}</div>
         {hayR || (L.funa || []).length ? <p className="lk-ayuda">{N ? 'Cada batalla le saca una vida al que pierde y el que gana se queda. Con ' + N + ' derrotas quedás afuera.' : base.dob ? 'Nadie queda afuera a la primera: quien pierde en la llave de ganadores sigue en la de perdedores. '
             + 'Tocá un nombre y se marca su camino.' : 'Tocá un nombre y se marca su camino.'}</p> : null}
