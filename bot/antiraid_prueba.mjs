@@ -70,6 +70,10 @@ const pn = AR.panel('DDF', { canal: '', oleada: false }, '0');
 const botonesPn = pn.components.flatMap((f) => f.components);
 ok(/sólo el dueño|\*\*el dueño del servidor\*\*/.test(pn.content) && botonesPn.find((b) => b.custom_id === 'ar:oleada').disabled
   && /Gestionar servidor/.test(pn.content), 'el panel: sin canal no se prende la alarma, y dice qué permiso le falta al bot');
+const pnA = AR.panel('DDF', { canal: '555', staff: true, auto: true }, '8');
+ok(botonesPn.find((b) => b.custom_id === 'ar:auto').disabled && /AUTOMÁTICO/.test(pnA.content) && /Nunca expulsa ni banea/.test(pnA.content) && pnA.content.length < 1800
+  && pnA.components[0].components.find((b) => b.custom_id === 'ar:auto').label === 'Apagar AUTOMÁTICO',
+'AUTOMÁTICO en el panel: sin canal ni avisos prendidos no se prende, y dice que nunca expulsa ni banea');
 ok(AR.faltan('8').length === 0 && AR.faltan(String((1n << 28n) | 128n | 32n)).length === 0, 'con Administrador o los tres permisos, no falta nada');
 ok(AR.puedeResponder({ member: { permissions: '8' } }) && !AR.puedeResponder({ member: { permissions: String(1n << 28n) } }),
   'los botones de un aviso: sólo un admin (o el dueño, que tiene todo)');
@@ -152,6 +156,74 @@ if (!DatabaseSync) {
   await o.vigilar({ servidores: [], dueno: '', dormido: true });
   ok(pedidos.slice(n4).some((p) => p.u.includes('with_counts')), 'de madrugada el vigía duerme, pero el anti-raid mira igual');
 
+  // ── 🤖 AUTOMÁTICO (Dlx, 18/10/2026: «el bot toma decisiones si nadie está») ──
+  const msgs = {};
+  let nM = 0;
+  const p2 = [];
+  const miembroRoles = { 9: ['77', '55'] };
+  globalThis.fetch = async (u, op = {}) => {
+    const url = String(u);
+    const m = op.method || 'GET';
+    const b = op.body ? JSON.parse(op.body) : null;
+    p2.push({ u: url, m, b });
+    if (url.endsWith('/roles')) return new Response(JSON.stringify([{ id: '77', permissions: '6' }]));
+    if (url.includes('/audit-logs')) {
+      const desde = BigInt(new URL(url).searchParams.get('after') || '0');
+      return new Response(JSON.stringify({ audit_log_entries: registro.filter((e) => BigInt(e.id) > desde),
+        users: Object.entries(U).map(([id, x]) => ({ id, ...x })) }));
+    }
+    if (url.endsWith('/channels/' + CANAL + '/messages') && m === 'POST') { const id = String(700 + (++nM)); msgs[id] = b; return new Response(JSON.stringify({ id })); }
+    const mm = /\/channels\/\d+\/messages\/(\d+)$/.exec(url);
+    if (mm) {
+      if (m === 'PATCH') msgs[mm[1]] = { ...msgs[mm[1]], ...b };
+      return msgs[mm[1]] ? new Response(JSON.stringify(msgs[mm[1]])) : new Response('{}', { status: 404 });
+    }
+    if (/\/guilds\/\d+$/.test(url)) return new Response(JSON.stringify({ owner_id: '1', verification_level: 1 }));
+    const mb = /\/members\/(\d+)$/.exec(url);
+    if (mb && m === 'GET') return new Response(JSON.stringify({ roles: miembroRoles[mb[1]] || [] }));
+    return new Response('{}');
+  };
+  o.antiraidGuardar({ gid: G, cfg: { canal: CANAL, staff: true, auto: true } });
+  ok(o.antiraidCfg(G).auto === true, 'AUTOMÁTICO se guarda');
+  const T2 = T + 40 * 60e3;
+  registro = [dar(T2 - 30e3, '8', '9', '77')];
+  await o.antiraidVuelta(T2);
+  const avAuto = Object.entries(msgs).find(([, x]) => x.embeds && /rol peligroso/.test(x.embeds[0].title));
+  ok(!!avAuto && /actúa AUTOMÁTICO/.test(avAuto[1].embeds[0].footer.text), 'con AUTOMÁTICO el aviso lo dice al pie');
+  const q0 = p2.length;
+  await o.antiraidVuelta(T2 + 60e3);
+  ok(!p2.slice(q0).some((p) => p.m === 'PATCH' && p.u.includes('/members/')), 'al minuto todavía espera al staff');
+  await o.antiraidVuelta(T2 + 2 * 60e3);
+  const sacada = p2.slice(q0).find((p) => p.m === 'PATCH' && p.u.endsWith('/members/9'));
+  const avDespues = msgs[avAuto[0]];
+  const bsDespues = avDespues.components[0].components.map((b) => b.custom_id);
+  ok(!!sacada && sacada.b.roles.length === 0 && /AUTOMÁTICO/.test(avDespues.embeds[0].description)
+    && bsDespues[0] === 'ar:x:devolver:' + G + ':9' && !bsDespues.some((x) => x.startsWith('ar:x:roles:')),
+  'a los dos minutos sin respuesta le saca los roles a la cuenta falsa, lo dice en el aviso y deja «Devolver los roles»', bsDespues.join());
+  // (el ID de prueba es corto: `antiraidDevolver()` sólo acepta IDs de verdad, así que se mira lo guardado)
+  ok(JSON.stringify(JSON.parse(sql.exec('SELECT est FROM antiraid WHERE gid = ?', G).toArray()[0].est).dev['9'].roles) === '["77","55"]'
+    && o.antiraidDevolver({ gid: G, uid: '9' }).error === 'datos', 'y guarda los roles que tenía (y no se los da a un ID que no es de Discord)');
+  // si alguien respondió (el aviso ya no tiene todos sus botones), no hace nada
+  registro.push(dar(T2 + 3 * 60e3, '8', '9', '77'), { ...dar(T2 + 3 * 60e3 + 1, '8', '6', '77'), id: sf(T2 + 3 * 60e3 + 500) });
+  U[6] = { bot: false, username: 'otro' };
+  await o.antiraidVuelta(T2 + 4 * 60e3);
+  const av2 = Object.entries(msgs).filter(([, x]) => x.embeds && /rol peligroso/.test(x.embeds[0].title) && /otro/.test(x.embeds[0].description));
+  ok(av2.length === 1, 'otro aviso, por otra cuenta', Object.keys(msgs).join());
+  msgs[av2[0][0]].components = [{ type: 1, components: [msgs[av2[0][0]].components[0].components[1]] }];
+  const q1 = p2.length;
+  await o.antiraidVuelta(T2 + 7 * 60e3);
+  ok(!p2.slice(q1).some((p) => p.m === 'PATCH' && p.u.endsWith('/members/6')), 'si alguien tocó un botón, AUTOMÁTICO no hace nada');
+  // sin AUTOMÁTICO, nunca
+  o.antiraidGuardar({ gid: G, cfg: { canal: CANAL, staff: true } });
+  registro.push({ ...dar(T2 + 8 * 60e3, '8', '7', '77'), id: sf(T2 + 8 * 60e3) });
+  U[7] = { bot: false, username: 'tercero' };
+  const q2 = p2.length;
+  await o.antiraidVuelta(T2 + 9 * 60e3);
+  await o.antiraidVuelta(T2 + 12 * 60e3);
+  ok(!p2.slice(q2).some((p) => p.m === 'PATCH' && p.u.includes('/members/')), 'apagado, avisa y espera al staff para siempre');
+  ok(AR.accionAuto({ tipo: 'bot', quien: '8', objetivo: '5' }) === null && AR.accionAuto({ tipo: 'oleada' }).que === 'cerrar',
+    'un bot agregado no lo toca; una oleada, cierra');
+
   // ── el comando y los botones, de punta a punta ──
   const DUENO_G = '800000000000000001', OTRO = '800000000000000002';
   const env = { DISCORD_TOKEN: 'x', AVISOS: { idFromName: () => 'liga', get: () => ({ fetch: (u, op) => o.fetch(new Request(u, op)) }) } };
@@ -197,4 +269,4 @@ if (fallas) {
   console.log(`\n❌ ${fallas} prueba(s) del anti-raid fallaron`);
   process.exit(1);
 }
-console.log('\n✅ el anti-raid avisa lo de DDF, una vez, y nunca actúa solo');
+console.log('\n✅ el anti-raid avisa lo de DDF, una vez, y sólo actúa solo con AUTOMÁTICO');

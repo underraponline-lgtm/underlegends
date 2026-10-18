@@ -5274,7 +5274,7 @@ export class Avisos {
       ? { hasta: new Date(Date.parse(c.cerrado.hasta)).toISOString(), nivel: Math.max(0, Math.min(4, Number(c.cerrado.nivel) || 0)) } : null;
     const cfg = {
       canal: id(c.canal), escudo: (Array.isArray(c.escudo) ? c.escudo : []).map(id).filter(Boolean).slice(0, 6),
-      oleada: c.oleada === true, staff: c.staff === true, cerrado,
+      oleada: c.oleada === true, staff: c.staff === true, cerrado, auto: c.auto === true,
     };
     this.sql.exec("INSERT INTO antiraid (gid, cfg, est, t) VALUES (?, ?, '{}', ?) " +
       'ON CONFLICT(gid) DO UPDATE SET cfg = excluded.cfg, t = excluded.t', gid, JSON.stringify(cfg), Date.now());
@@ -5289,6 +5289,17 @@ export class Avisos {
    *    últimos minutos para contar «en masa» entre vueltas.
    * Cada aviso se manda una vez cada `REPETIR_MS` (por tipo, quién y a quién).
    */
+  /** 🤖 Los roles que AUTOMÁTICO le sacó a alguien, para «Devolver los roles» (lo pide el Worker desde el botón). */
+  antiraidDevolver(d) {
+    const gid = String((d && d.gid) || ''), uid = String((d && d.uid) || '');
+    if (!/^\d{5,25}$/.test(gid) || !/^\d{5,25}$/.test(uid)) return { error: 'datos' };
+    const f = this.sql.exec('SELECT est FROM antiraid WHERE gid = ?', gid).toArray()[0];
+    let est = {};
+    try { est = JSON.parse((f && f.est) || '{}') || {}; } catch (e) { est = {}; }
+    const x = (est.dev || {})[uid];
+    return { roles: x && Array.isArray(x.roles) ? x.roles : null };
+  }
+
   async antiraidVuelta(ahora) {
     const filas = this.sql.exec('SELECT gid, cfg, est FROM antiraid').toArray();
     for (const f of filas) {
@@ -5359,15 +5370,43 @@ export class Avisos {
         } else if (r.status === 403) est.error = 'auditoria';
       }
     }
+    // 🤖 AUTOMÁTICO: los avisos que nadie respondió en `ESPERA_AUTO_MS`. «Respondió» = el aviso ya no tiene todos sus
+    // botones (cada botón usado se va, y «Ya lo vimos» los saca todos); borrado, también cuenta como respondido
+    est.dev = Object.fromEntries(Object.entries(est.dev || {}).filter(([, x]) => x && ahora - (x.t || 0) < AR.DEVOLVER_MS));
+    for (const [mid, p] of Object.entries(est.pend || {})) {
+      if (!cfg.auto || !cfg.canal || ahora - p.t > AR.AUTO_TOPE_MS) { delete est.pend[mid]; continue; }
+      if (ahora - p.t < AR.ESPERA_AUTO_MS) continue;
+      const rm = await AR.pedir(env, `/channels/${cfg.canal}/messages/${mid}`);
+      if (rm.status === 404) { delete est.pend[mid]; continue; }
+      if (!rm.ok) continue;
+      const m = await rm.json();
+      if (AR.botonesDe(m) < p.nb) { delete est.pend[mid]; continue; }
+      delete est.pend[mid];
+      const x = await AR.actuar(env, gid, p.a);
+      if (x.cerrado) {
+        cfg.cerrado = { hasta: x.cerrado.hasta, nivel: (cfg.cerrado && cfg.cerrado.nivel) ?? x.cerrado.nivel };
+        cambioCfg = true;
+      }
+      if (x.dev) est.dev[x.dev.uid] = { roles: x.dev.roles, t: ahora };
+      await AR.pedir(env, `/channels/${cfg.canal}/messages/${mid}`, { method: 'PATCH', body: JSON.stringify(AR.tras(m, p.a, x)) });
+      this.medir('antiraid', x.ok ? 'auto' : 'auto-no', 1);
+    }
     // 📣 los avisos, una vez cada uno
     est.av = Object.fromEntries(Object.entries(est.av || {}).filter(([, t]) => ahora - t < AR.REPETIR_MS));
     for (const a of avisos) {
       const k = AR.claveAviso(a);
       if (est.av[k]) continue;
-      const r = await AR.mandar(env, cfg.canal, AR.aviso(gid, a, usuarios));
+      const cuerpo = AR.aviso(gid, a, usuarios, cfg.auto);
+      const r = await AR.mandar(env, cfg.canal, cuerpo);
       est.av[k] = ahora;
       this.medir('antiraid', a.tipo, 1);
       if (!r.ok) est.error = 'canal';
+      // 🤖 con AUTOMÁTICO, queda esperando a ver si alguien lo responde
+      const acc = cfg.auto && r.ok ? AR.accionAuto(a) : null;
+      if (acc) {
+        const j = await r.json().catch(() => ({}));
+        if (j && j.id) est.pend = { ...(est.pend || {}), [String(j.id)]: { t: ahora, a: acc, nb: AR.botonesDe(cuerpo) } };
+      }
     }
     this.sql.exec('UPDATE antiraid SET est = ?' + (cambioCfg ? ', cfg = ?' : '') + ' WHERE gid = ?',
       ...(cambioCfg ? [JSON.stringify(est), JSON.stringify(cfg), gid] : [JSON.stringify(est), gid]));
@@ -5485,6 +5524,7 @@ export class Avisos {
       // 🛡️ el anti-raid: lo lee y lo guarda el Worker (`/antiraid` y sus botones). No están en `RUTAS`: no se llega de afuera
       if (ruta === '/antiraid-leer') return json({ cfg: this.antiraidCfg(d && d.gid) });
       if (ruta === '/antiraid-guardar') return json(this.antiraidGuardar(d));
+      if (ruta === '/antiraid-devolver') return json(this.antiraidDevolver(d));
       // 🤝 el puntaje de los servidores: sólo lo guarda, tal cual, para el Dashboard (nunca sale a la página)
       if (ruta === '/tiers-ciclo') {
         if (!d || !Array.isArray(d.servidores) || d.servidores.length > 60) return json({ error: 'datos' }, 400);

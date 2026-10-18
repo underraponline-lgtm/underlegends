@@ -17,10 +17,16 @@
 //   4. PÁNICO: pausa las invitaciones y los mensajes directos del servidor (lo trae Discord, hasta 24 h) y pone la
 //      verificación al máximo; «abrir» lo deja como estaba.
 // ⚠️ NUNCA ACTÚA SOLO: los avisos traen botones («Cerrar el servidor», «Sacarle los roles») y decide el staff.
+//   5. 🤖 AUTOMÁTICO, EXPERIMENTAL (Dlx, 18/10/2026: «necesita una opción experimental llamada AUTOMÁTICO, el bot toma
+//      decisiones si nadie está»). La única excepción a lo de arriba, y sólo si el dueño la prende: si NADIE toca un
+//      botón de un aviso en `ESPERA_AUTO_MS`, el bot hace lo más seguro y reversible (`accionAuto()`): con una oleada
+//      cierra el servidor; con un rol peligroso a una cuenta que no es un bot, se lo saca; con expulsiones, baneos o
+//      borrados en masa o permisos peligrosos, le saca los roles a quien lo hace —y los guarda para devolverlos con un
+//      botón—. Nunca expulsa ni banea, y no toca al dueño. «Alguien respondió» = el aviso ya no tiene todos sus botones.
 // ⚠️ NUNCA POR MENSAJE DIRECTO (el bot no manda DMs): al canal que elige el dueño.
 
 export const API = 'https://discord.com/api/v10';
-export const AR_BASE = { canal: '', escudo: [], oleada: false, staff: false, cerrado: null };
+export const AR_BASE = { canal: '', escudo: [], oleada: false, staff: false, cerrado: null, auto: false };
 
 // 🔐 los permisos, en BigInt (el bitfield pasa de 2^53)
 export const P = {
@@ -39,6 +45,12 @@ export const OLEADA_MIN = 10;
 export const REPETIR_MS = 20 * 60 * 1000;
 //: el pánico dura esto si no se abre antes (Discord deja hasta 24 h)
 export const PANICO_H = 6;
+//: 🤖 AUTOMÁTICO: cuánto espera a que alguien toque un botón del aviso antes de actuar, y hasta cuándo lo sigue
+//: intentando si Discord no contesta (después lo deja: ya pasó el momento)
+export const ESPERA_AUTO_MS = 2 * 60 * 1000;
+export const AUTO_TOPE_MS = 15 * 60 * 1000;
+//: los roles que AUTOMÁTICO sacó se guardan esto, para «Devolver los roles»
+export const DEVOLVER_MS = 7 * 24 * 3600e3;
 
 const dc = (env, ruta, op = {}) => fetch(API + ruta, {
   ...op,
@@ -84,8 +96,8 @@ export function panel(nombre, cfg, appPerms) {
   const falta = faltan(appPerms);
   const texto = [
     `## 🛡️ Anti-raid de ${nombre}`,
-    'Sólo lo ve y lo cambia **el dueño del servidor**. Todo es opcional, y **nunca actúa solo**: los avisos traen ' +
-    'botones y decide el staff. Nada va por mensaje directo.',
+    'Sólo lo ve y lo cambia **el dueño del servidor**. Todo es opcional y, salvo con AUTOMÁTICO, **nunca actúa solo**: ' +
+    'los avisos traen botones y decide el staff. Nada va por mensaje directo.',
     '',
     `**1 · Escudo de Discord** · ${ON(c.escudo && c.escudo.length)}`,
     '> Reglas de AutoMod que corre Discord, **al instante**: bloquea menciones masivas (5 o más), spam, insultos de odio ' +
@@ -99,6 +111,9 @@ export function panel(nombre, cfg, appPerms) {
     `**4 · Botón de pánico** · ${cerrado ? `🚨 **cerrado** hasta <t:${Math.floor(Date.parse(c.cerrado.hasta) / 1000)}:t>` : 'abierto'}`,
     `> Pausa las invitaciones y los mensajes directos del servidor (hasta ${PANICO_H} h) y pone la verificación al ` +
     'máximo. **Abrir** lo deja como estaba.',
+    `**5 · AUTOMÁTICO** _(experimental)_ · ${ON(c.auto)}`,
+    `> Si **nadie responde** un aviso en ${ESPERA_AUTO_MS / 60000} minutos, actúa: con una oleada cierra el servidor; si no, ` +
+    'le saca los roles a la cuenta en peligro o a quien hace el daño (se devuelven con un botón). **Nunca expulsa ni banea**.',
     '',
     `**Canal de los avisos** · ${c.canal ? `<#${c.canal}>` : '**elegí uno abajo** (sin canal, la 2 y la 3 no pueden avisar)'}`,
     falta.length ? '\n⚠️ Al bot le falta: ' + falta.join(' · ') + '.' : '',
@@ -111,6 +126,7 @@ export function panel(nombre, cfg, appPerms) {
         btn('ar:escudo', c.escudo && c.escudo.length ? 'Apagar el escudo' : 'Prender el escudo', c.escudo && c.escudo.length),
         btn('ar:oleada', c.oleada ? 'Apagar la alarma' : 'Prender la alarma de oleada', c.oleada, { disabled: sinCanal && !c.oleada }),
         btn('ar:staff', c.staff ? 'Apagar la vigilancia' : 'Prender la vigilancia del staff', c.staff, { disabled: sinCanal && !c.staff }),
+        btn('ar:auto', c.auto ? 'Apagar AUTOMÁTICO' : 'Prender AUTOMÁTICO', c.auto, { disabled: !c.auto && (sinCanal || !(c.oleada || c.staff)) }),
       ] },
       { type: 1, components: [{
         type: 8, custom_id: 'ar:canal', placeholder: 'El canal de los avisos (uno que vea el staff)',
@@ -236,7 +252,7 @@ export function riesgos(entradas, usuarios, peligrosos, yo, ventana = VENTANA_MS
 }
 
 /** El aviso, con sus botones. `gid` va en el botón: el aviso se contesta sólo desde su custom_id. */
-export function aviso(gid, r, usuarios = {}) {
+export function aviso(gid, r, usuarios = {}, auto = false) {
   const nom = (id) => { const u = usuarios[id] || {}; return (u.global_name || u.username || 'alguien') + (u.username ? ` (@${u.username})` : '') + ` · <@${id}>`; };
   const cerrar = { type: 2, style: 4, label: '🚨 Cerrar el servidor', custom_id: `ar:x:cerrar:${gid}` };
   const listo = { type: 2, style: 2, label: 'Ya lo vimos', custom_id: `ar:x:ok:${gid}` };
@@ -270,10 +286,61 @@ export function aviso(gid, r, usuarios = {}) {
   }
   return {
     embeds: [{ title: titulo, description: texto, color: r.tipo === 'bot' ? 0xE5B800 : 0xE41373,
-      footer: { text: 'Anti-raid de la Liga Global · decide el staff' } }],
+      footer: { text: 'Anti-raid de la Liga Global · ' + (auto && accionAuto(r)
+        ? `decide el staff; si nadie responde en ${ESPERA_AUTO_MS / 60000} minutos, actúa AUTOMÁTICO` : 'decide el staff') } }],
     components: [{ type: 1, components: botones }],
     allowed_mentions: { parse: [] },
   };
+}
+
+// ── 5 · 🤖 AUTOMÁTICO ────────────────────────────────────────────────────────────────────────────────────────────────
+/** Qué hace AUTOMÁTICO con un aviso que nadie respondió: lo más seguro y reversible, o `null` (un bot agregado, nada). */
+export function accionAuto(r) {
+  if (!r) return null;
+  if (r.tipo === 'oleada') return { que: 'cerrar' };
+  if (r.tipo === 'rol' && r.objetivo) return { que: 'roles', uid: String(r.objetivo) };
+  if (['masivo', 'borra', 'permiso'].includes(r.tipo) && r.quien) return { que: 'roles', uid: String(r.quien) };
+  return null;
+}
+
+/** Cuántos botones tiene un mensaje: si el aviso tiene menos que al mandarlo, alguien ya lo respondió. */
+export const botonesDe = (m) => ((m && m.components) || []).reduce((n, f) => n + ((f && f.components) || []).length, 0);
+
+/**
+ * AUTOMÁTICO actúa. Devuelve `{ok, linea, botones, cerrado?, dev?}`: la línea que se agrega al aviso, los botones para
+ * deshacer («Abrir el servidor», «Devolver los roles») y lo que hay que guardar.
+ */
+export async function actuar(env, gid, acc) {
+  const min = ESPERA_AUTO_MS / 60000;
+  if (acc.que === 'cerrar') {
+    const c = await cerrar(env, gid);
+    return c.ok ? { ok: true, cerrado: { hasta: c.hasta, nivel: c.nivel },
+      linea: `🤖 **AUTOMÁTICO**: nadie respondió en ${min} minutos y cerré el servidor hasta <t:${Math.floor(Date.parse(c.hasta) / 1000)}:t>.`,
+      botones: [{ type: 2, style: 3, label: 'Abrir el servidor', custom_id: `ar:x:abrir:${gid}` }] }
+      : { ok: false, linea: '🤖 AUTOMÁTICO quiso cerrar el servidor y no pudo: el bot necesita **Gestionar servidor**.', botones: [] };
+  }
+  const g = await (await dc(env, `/guilds/${gid}`)).json().catch(() => ({}));
+  if (String(g.owner_id || '') === acc.uid) return { ok: false, linea: '🤖 AUTOMÁTICO no toca al dueño del servidor.', botones: [] };
+  const m = await dc(env, `/guilds/${gid}/members/${acc.uid}`);
+  const roles = m.ok ? ((((await m.json().catch(() => ({}))) || {}).roles) || []).map(String) : [];
+  const s = await sacarRoles(env, gid, acc.uid);
+  if (!s.ok) {
+    return { ok: false, botones: [], linea: `🤖 AUTOMÁTICO quiso sacarle los roles a <@${acc.uid}> y no pudo: ` +
+      (s.estado === 403 ? 'su rol está más arriba que el del bot, o el bot no tiene **Gestionar roles**.' : 'Discord no lo dejó.') };
+  }
+  return { ok: true, dev: { uid: acc.uid, roles },
+    linea: `🤖 **AUTOMÁTICO**: nadie respondió en ${min} minutos y le saqué los roles a <@${acc.uid}>` +
+      (roles.length ? ` (${roles.length}). Si fue un error, «Devolver los roles».` : '.'),
+    botones: roles.length ? [{ type: 2, style: 2, label: 'Devolver los roles', custom_id: `ar:x:devolver:${gid}:${acc.uid}` }] : [] };
+}
+
+/** El aviso después de que AUTOMÁTICO actuó: su línea abajo, sin el botón de lo que ya hizo y con el de deshacer. */
+export function tras(m, acc, x) {
+  const hecho = acc.que === 'cerrar' ? 'ar:x:cerrar:' : 'ar:x:roles:';
+  const emb = ((m && m.embeds) || []).map((e, k) => (k ? e : { ...e, description: String(e.description || '') + '\n\n' + x.linea }));
+  const viejos = ((((m && m.components) || [])[0] || {}).components || []).filter((b) => !x.ok || !String(b.custom_id || '').startsWith(hecho));
+  const bs = [...x.botones, ...viejos].slice(0, 5);
+  return { embeds: emb, components: bs.length ? [{ type: 1, components: bs }] : [], allowed_mentions: { parse: [] } };
 }
 
 // el objeto lo usa para pedir a Discord con el mismo encabezado
@@ -380,6 +447,14 @@ function delPanel(i, env, ctx, h, que) {
         if (!cfg.staff && !tieneP(ap, P.ADMIN) && !tieneP(ap, P.AUDITORIA)) {
           nota.push('⚠️ Para vigilar al staff el bot necesita **Ver el registro de auditoría**.');
         } else cfg.staff = !cfg.staff && !!cfg.canal;
+      } else if (que === 'auto') {
+        if (!cfg.auto && (!cfg.canal || !(cfg.oleada || cfg.staff))) {
+          nota.push('🤖 AUTOMÁTICO actúa sobre los avisos: primero prendé la alarma de oleada o la vigilancia del staff.');
+        } else {
+          cfg.auto = !cfg.auto;
+          nota.push(cfg.auto ? '🤖 AUTOMÁTICO prendido (experimental): si nadie responde un aviso en ' + (ESPERA_AUTO_MS / 60000) +
+            ' minutos, el bot hace lo más seguro.' : 'AUTOMÁTICO apagado: los avisos vuelven a esperar al staff.');
+        }
       } else if (que === 'canal') {
         const nuevo = String(vals[0] || '');
         if (nuevo && nuevo !== cfg.canal) {
@@ -399,6 +474,7 @@ function delPanel(i, env, ctx, h, que) {
           cfg.canal = '';
           cfg.oleada = false;
           cfg.staff = false;
+          cfg.auto = false;
         }
       } else if (que === 'cerrar') {
         const c = await cerrar(env, gid);
@@ -449,6 +525,29 @@ function deAviso(i, env, ctx, h, p) {
         linea = ok ? `🧹 <@${quien}> le sacó los roles a <@${uid}>.`
           : `⚠️ No pude sacarle los roles a <@${uid}>: ${s.estado === 403
             ? 'su rol está más arriba que el del bot, o el bot no tiene **Gestionar roles**' : 'Discord no me dejó'}.`;
+      } else if (que === 'abrir') {
+        const cfg = await leerCfg(env, gid);
+        const a = await abrir(env, gid, cfg.cerrado && cfg.cerrado.nivel);
+        ok = a.ok;
+        if (ok) {
+          cfg.cerrado = null;
+          await guardarCfg(env, gid, cfg);
+          linea = `🔓 <@${quien}> abrió el servidor otra vez.`;
+        } else linea = '⚠️ No pude abrir: el bot necesita **Gestionar servidor**.';
+      } else if (que === 'devolver' && /^\d{5,25}$/.test(uid || '')) {
+        // 🤖 los roles que sacó AUTOMÁTICO: los guardó el objeto
+        const r = await objeto(env).fetch('https://avisos/antiraid-devolver', {
+          method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ gid, uid }) });
+        const roles = (((await r.json().catch(() => ({}))) || {}).roles || []).map(String).filter((x) => /^\d{5,25}$/.test(x) && x !== gid);
+        if (!roles.length) {
+          ok = false;
+          linea = `⚠️ No tengo guardados los roles de <@${uid}>: hay que devolvérselos a mano.`;
+        } else {
+          const s = await dc(env, `/guilds/${gid}/members/${uid}`, { method: 'PATCH', body: JSON.stringify({ roles }) });
+          ok = s.ok;
+          linea = ok ? `↩️ <@${quien}> le devolvió los roles a <@${uid}>.`
+            : `⚠️ No pude devolverle los roles a <@${uid}>: ${s.status === 403 ? 'alguno está más arriba que el del bot' : 'Discord no me dejó'}.`;
+        }
       } else if (que === 'ok') {
         linea = `✅ <@${quien}> lo vio.`;
       } else return aparte(i, 'No sé qué botón es ése.');
