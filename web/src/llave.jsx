@@ -143,7 +143,7 @@ const colsVs = (n) => (n === 3 || n >= 5 ? 3 : 2);
 const VS_GAP = 6;
 const ET_H = 26;
 
-function Ficha({ ctx, b, s, copa, pasa }) {
+function Ficha({ ctx, b, s, copa, pasa, llega }) {
   const f = ctx.fila(s);
   const url = urlCarta(ctx, f);
   const g = gana(b, s) || pasa;
@@ -152,7 +152,8 @@ function Ficha({ ctx, b, s, copa, pasa }) {
   const on = ctx.sigo === id;
   const sb = sinBanderas(s);
   const nombre = f ? capital(limpio(f.n)) : capital(sb.txt || s);
-  const cls = 'lk-fc' + (g ? (copa ? ' copa' : ' g') : (b[1] ? ' x' : '')) + (on ? ' on' : '') + (url && ctx.liga.brilla(f.k) ? ' brilla' : '');
+  const cls = 'lk-fc' + (g ? (copa ? ' copa' : ' g') : (b[1] ? ' x' : '')) + (on ? ' on' : '') + (url && ctx.liga.brilla(f.k) ? ' brilla' : '')
+    + (llega ? ' llega' : '');
   return (
     <button type="button" className={cls} aria-pressed={on} title={nombre} onClick={() => ctx.seguir(id)}
       aria-label={nombre + (g ? (copa ? ', campeón' : ', pasó') : perdio ? ', quedó afuera' : '')}>
@@ -164,6 +165,56 @@ function Ficha({ ctx, b, s, copa, pasa }) {
         </span>}
       {ctx.marca(s, f, perdio)}
     </button>
+  );
+}
+
+// 🎤 UN LADO EN GRANDE (lo de AHORA y el campeón): su carta, o su cara y su nombre; un equipo, las caras y los nombres
+function Grande({ ctx, b, s, cls = 'lk-gr' }) {
+  if (partes(s).length === 1) return <div className={cls}><Ficha ctx={ctx} b={b} s={s} copa={false} pasa={false} /></div>;
+  return (
+    <div className={cls + ' lk-gr-eq'}>
+      <span className="lk-fc-sin">
+        <span className="lk-caras">{partes(s).map((m, i) => { const f = ctx.fila(m); return <Cara key={i} liga={ctx.liga} k={f ? f.k : ''} nombre={f ? f.n : sinBanderas(m).txt} cls="lk-cara" />; })}</span>
+        <span className="lk-n">{partes(s).map((m) => { const f = ctx.fila(m); return f ? capital(limpio(f.n)) : capital(sinBanderas(m).txt); }).join(' · ')}</span>
+      </span>
+    </div>
+  );
+}
+
+// ⚔️ LA BATALLA DE AHORA, ARRIBA Y EN GRANDE (Dlx, 18/10/2026: «all of them»): las dos cartas enfrentadas y la que sigue
+function AhoraVs({ ctx }) {
+  const k = (ctx.pend || [])[0];
+  if (!k) return null;
+  const [i, j] = k.split(':').map(Number);
+  const R = ctx.prin[i];
+  const b = R && R.b[j];
+  if (!b || b[0].length < 2) return null;
+  const sig = (ctx.pend || [])[1] ? ctx.pend[1].split(':').map(Number) : null;
+  const bs = sig && ctx.prin[sig[0]] ? ctx.prin[sig[0]].b[sig[1]] : null;
+  const nom = (s) => partes(s).map((m) => { const f = ctx.fila(m); return f ? limpio(f.n) : sinBanderas(m).txt; }).join(' y ');
+  return (
+    <section className="lk-ahora" aria-label={'Se juega ahora: ' + b[0].map(nom).join(' contra ')}>
+      <span className="lk-ahora-t"><b>● AHORA</b> · {R.r}</span>
+      <div className="lk-ahora-vs">
+        {b[0].map((s, x) => [x ? <span key={'v' + x} className="lk-ahora-x" aria-hidden="true">VS</span> : null, <Grande key={x} ctx={ctx} b={b} s={s} />])}
+      </div>
+      {bs && bs[0].length >= 2 ? <p className="lk-ahora-sig">Después: {bs[0].map(nom).join(' vs ')}</p> : null}
+    </section>
+  );
+}
+
+// 🏆 EL CAMPEÓN, EN GRANDE (Dlx, 18/10/2026: «all of them»): su carta —o la de cada uno, si fue un equipo—, la copa y lo
+// que cobró
+function CampeonG({ ctx }) {
+  const fin = ctx.final;
+  if (!fin || !fin[1]) return null;
+  const quien = partes(fin[1]);
+  return (
+    <section className="lk-camp" aria-label={'Campeón: ' + quien.join(', ')}>
+      <span className="lk-camp-t"><Ico n="copa" t={18} />{quien.length > 1 ? 'Campeones' : 'Campeón'}</span>
+      <div className="lk-camp-cs">{quien.map((m, i) => <Grande key={i} ctx={ctx} b={fin} s={m} cls="lk-gr lk-camp-c" />)}</div>
+      {ctx.ptsCamp ? <small className="lk-camp-p">+{ctx.ptsCamp} pts{quien.length > 1 ? ' cada uno' : ''}</small> : null}
+    </section>
   );
 }
 
@@ -206,23 +257,28 @@ function etiquetas(ctx, b, est, copa) {
 }
 
 // ── una batalla: sus lados, quién pasó y sus etiquetas ──
-function Batalla({ ctx, b, est, copa, style, altos, pasan }) {
+// 🎬 EN VIVO, LO QUE SE ACABA DE DECIDIR SE VE PASAR (Dlx, 18/10/2026, a «la carta del que pierde se apaga en vivo y la
+// del que pasa salta a la ronda siguiente»: «all of them»). `pos` es el lugar de la batalla (`ronda:batalla`) y `ctx.anim`
+// lo que cambió en la última vuelta: la batalla que se decidió (`recien`) y quien acaba de llegar a otra (`llega`)
+function Batalla({ ctx, b, est, copa, style, altos, pasan, pos }) {
   const ls = b[0];
   const et = etiquetas(ctx, b, est, copa);
   const sigue = !!ctx.sigo && ls.some((s) => partes(s).some((m) => ctx.idDe(m) === ctx.sigo));
+  const an = ctx.anim && pos != null ? ctx.anim : null;
+  const recien = !!an && an.b.has(pos);
   if (enCartas(ctx, ls)) {
     return (
-      <div className={'lk-b cartas' + (est ? ' ' + est : '') + (sigue ? ' sigue' : '') + (copa ? ' fin' : '')} style={style} title={b[2] || undefined}>
+      <div className={'lk-b cartas' + (est ? ' ' + est : '') + (sigue ? ' sigue' : '') + (copa ? ' fin' : '') + (recien ? ' recien' : '')} style={style} title={b[2] || undefined}>
         {et.length ? <div className="lk-et">{et.map((x, i) => <span key={i} className={x[1]} title={x[2]}>{x[0]}</span>)}</div> : null}
         <div className={'lk-vs' + (colsVs(ls.length) === 3 ? ' lk-vs3' : '')}>
-          {ls.map((s, i) => <Ficha key={i} ctx={ctx} b={b} s={s} copa={copa} pasa={!!pasan && pasan(s)} />)}
+          {ls.map((s, i) => <Ficha key={i} ctx={ctx} b={b} s={s} copa={copa} pasa={!!pasan && pasan(s)} llega={!!an && an.s.has(pos + ':' + clave(s))} />)}
           {ls.length === 1 ? <div className="lk-fc vac"><em>{b[1] ? 'pasa directo' : 'por definir'}</em></div> : null}
         </div>
       </div>
     );
   }
   return (
-    <div className={'lk-b' + (est ? ' ' + est : '') + (sigue ? ' sigue' : '') + (ls.length ? '' : ' vacio') + (copa ? ' fin' : '')}
+    <div className={'lk-b' + (est ? ' ' + est : '') + (sigue ? ' sigue' : '') + (ls.length ? '' : ' vacio') + (copa ? ' fin' : '') + (recien ? ' recien' : '')}
       style={style} title={b[2] || undefined}>
       {et.length ? <div className="lk-et">{et.map((x, i) => <span key={i} className={x[1]} title={x[2]}>{x[0]}</span>)}</div> : null}
       {ls.map((s, i) => <Lado key={i} ctx={ctx} b={b} s={s} copa={copa} alto={altos ? altos[i] : 0} pasa={!!pasan && pasan(s)} />)}
@@ -305,7 +361,7 @@ function Pista({ ctx, rondas, ter, inicial, vale, copaUlt = true }) {
       <div className={'lk-pista' + (ctx.sigo ? ' siguiendo' : '')} ref={pista} style={alto ? { height: alto } : undefined}>
         {rondas.map((R, i) => (
           <div key={i} className="lk-col" ref={(el) => { cols.current[i] = el; }} role="tabpanel" aria-label={R.r}>
-            {R.b.map((b, j) => <Batalla key={j} ctx={ctx} b={b} est={ctx.est(i, j)} copa={copaUlt && i === ult && R.b.length === 1} pasan={ctx.pasan(i)} />)}
+            {R.b.map((b, j) => <Batalla key={j} ctx={ctx} b={b} est={ctx.est(i, j)} copa={copaUlt && i === ult && R.b.length === 1} pasan={ctx.pasan(i)} pos={i + ':' + j} />)}
             {i === ult && ter ? (
               <>
                 <h4 className="lk-ter">Tercer puesto</h4>
@@ -422,7 +478,7 @@ function Arbol({ ctx, rondas: rs, ter, vale, plano = false, oro, copaUlt = true 
     const b = rs[p.r].b[p.i];
     const copa = copaUlt && p.r === n - 1 && rs[n - 1].b.length === 1;
     const h = alto(b, p.r, p.i);
-    cajas.push(<Batalla key={k} ctx={ctx} b={b} est={ctx.est(p.r, p.i)} copa={copa} altos={altos(b)} pasan={ctx.pasan(p.r)}
+    cajas.push(<Batalla key={k} ctx={ctx} b={b} est={ctx.est(p.r, p.i)} copa={copa} altos={altos(b)} pasan={ctx.pasan(p.r)} pos={p.r + ':' + p.i}
       style={{ position: 'absolute', left: X(p), top: Math.round(TOPE + p.y - h / 2), width: W, height: h }} />);
     hijos(p.r, p.i).forEach((j) => {
       const c = pos[(p.r - 1) + ':' + j];
@@ -477,7 +533,7 @@ function Doble({ ctx, d, compu }) {
   return (
     <div className="lk-doble">
       {secs.map(([k, t, sub, rs, vale, ini]) => {
-        const c = Object.assign({}, ctx, { est: singan(rs), pasan: () => null });
+        const c = Object.assign({}, ctx, { est: singan(rs), pasan: () => null, anim: null });
         return (
           <div key={k} className={'lk-db ' + k}>
             <h3 className="lk-h">{t}<small>{sub}</small></h3>
@@ -864,8 +920,36 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
       if (!nombres[id]) nombres[id] = sinBanderas(m).txt;
     }))));
     (L.funa || []).forEach((x) => { const id = idDe(x[0]); if (!nombres[id]) nombres[id] = sinBanderas(x[0]).txt; });
-    return { fila, idDe, nombres, esSin, pts, marca, cazas, aca, clasico, prin, ter, cerrada, vale, pasanDe, est, inicial, final, dob };
+    return { fila, idDe, nombres, esSin, pts, marca, cazas, aca, clasico, prin, ter, cerrada, vale, pasanDe, est, inicial, final, dob,
+      pend, ptsCamp };
   }, [L, liga, n]);
+
+  // 🧭 TU CAMINO, ENCENDIDO DESDE QUE ABRÍS (Dlx, 18/10/2026: «all of them»): si jugás en esta llave, arranca marcado
+  const mioId = liga.yo && liga.yo.k ? 'k:' + liga.yo.k : '';
+  const juegoAca = !!(base && mioId && base.nombres[mioId]);
+  useEffect(() => { if (juegoAca) setSigo((s) => s || mioId); }, [juegoAca, mioId, n]);
+  // 🎬 lo que cambió desde la vuelta anterior (la llave en vivo se actualiza sola cada minuto): las batallas que se
+  // decidieron y quién llegó a una batalla nueva. La primera vez no se anima nada
+  const [anim, setAnim] = useState(null);
+  const antes = useRef(null);
+  useEffect(() => {
+    if (!base) return undefined;
+    const g = {};
+    const ss = new Set();
+    base.prin.forEach((R, i) => R.b.forEach((b, j) => {
+      if (b[1]) g[i + ':' + j] = b[1];
+      b[0].forEach((s) => { if (s) ss.add(i + ':' + j + ':' + clave(s)); });
+    }));
+    const prev = antes.current;
+    antes.current = { g, ss, n };
+    if (!prev || prev.n !== n) return undefined;
+    const nb = new Set(Object.keys(g).filter((k) => !prev.g[k]));
+    const ns = new Set([...ss].filter((k) => !prev.ss.has(k)));
+    if (!nb.size && !ns.size) return undefined;
+    setAnim({ b: nb, s: ns });
+    const t = setTimeout(() => setAnim(null), 2600);
+    return () => clearTimeout(t);
+  }, [base, n]);
 
   if (!L) {
     if (!enVivo && vieja === undefined) return <div className="cargando">Buscando la llave…</div>;
@@ -878,7 +962,7 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
     );
   }
   const ctx = Object.assign({}, base, {
-    liga, L, n, sigo, seguir,
+    liga, L, n, sigo, seguir, anim,
     pasan: (i) => base.pasanDe[i] || null,
     // una rama es del camino de quien se sigue si esa persona pasó de la batalla de abajo
     sigoPasa: (b) => !!b[1] && partes(b[1]).some((m) => base.idDe(m) === sigo),
@@ -925,6 +1009,8 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
   const orden = [];
   (L.tabla || []).forEach((r) => { if (!grupos[r[1]]) { grupos[r[1]] = []; orden.push(r[1]); } grupos[r[1]].push(r); });
   orden.sort((a, b) => { const x = ORD_P.indexOf(a); const y = ORD_P.indexOf(b); return (x < 0 ? 99 : x) - (y < 0 ? 99 : y); });
+  // con el campeón en grande arriba, el podio sigue con los demás
+  const podioSin = base.final && base.final[1] ? podio.filter((x) => x.m !== 1) : podio;
   const N = vidasDe(L);
   const hayR = base.prin.length > 0;
   const fechaEv = cal ? '#/eventos/' + liga.diaClave(cal.t) : dia ? '#/eventos/' + dia : '#/eventos';
@@ -969,9 +1055,12 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
             <Reporte n={n} />
           </div>
         </section>
-        {podio.length ? (
-          <ol className={'lk-podio n' + podio.length} aria-label="El podio">
-            {podio.map((x) => (
+        {/* ⚔️ lo que se juega ahora, en grande; y al final, el campeón */}
+        {!base.cerrada ? <AhoraVs ctx={ctx} /> : null}
+        <CampeonG ctx={ctx} />
+        {podioSin.length ? (
+          <ol className={'lk-podio n' + podioSin.length + (podioSin !== podio ? ' sin1' : '')} aria-label="El podio">
+            {podioSin.map((x) => (
               <li key={x.p} className={'lk-pd ' + x.c}>
                 <span className="lk-pd-caras">{x.rs.map((r, i) => { const f = base.fila(r[0]); return <Cara key={i} liga={liga} k={f ? f.k : ''} nombre={f ? f.n : sinBanderas(r[0]).txt} cls="lk-pd-cara" />; })}</span>
                 <span className="lk-pd-ns">{x.rs.map((r, i) => <Persona key={i} ctx={ctx} x={r[0]} conCara={false} />)}</span>

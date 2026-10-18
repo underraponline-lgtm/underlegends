@@ -170,7 +170,7 @@ function MesSv({ liga, sv, enc }) {
       {ab ? <p className="ma-cab">{votando ? <>Votá lo mejor de <b>{ab.nombre}</b> en {siglaDe(sv)}: cierra {liga.dia(ab.cierra)}.</>
         : <>Los nominados de <b>{ab.nombre}</b> en {siglaDe(sv)}: la votación abre {liga.dia(ab.abre)}.</>}</p> : null}
       <p className="ma-como">Los nominados salen de lo que se jugó en {siglaDe(sv)} ese mes, y votan los que jugaron acá: una vez por categoría,
-        y se puede cambiar hasta que cierra. El ganador se lleva su insignia y su lugar en esta página.</p>
+        y se puede cambiar hasta que cierra. El ganador se lleva su insignia{(S.premio_sv || {}).rapero ? ', ' + num(S.premio_sv.rapero) + ' Puntos de Tienda' : ''} y su lugar en esta página.</p>
       {s ? (
         // de a tres cuando son tres: en la compu, el Staff quedaba solo con un hueco al lado
         <div className={'ma-cats' + (S.cats_sv.filter(([c]) => (((s.cats || {})[c] || {}).nom || []).length).length === 3 ? ' ma-tres' : '')}>{S.cats_sv.map(([c, n, de]) => {

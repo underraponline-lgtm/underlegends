@@ -990,6 +990,20 @@ const ok = (cond, que, det) => {
       && v4.error === 'cerrada' && o.qgVotar({ quien: 'x', id: 'q1', lado: 'A' }).error === 'datos'
       && o.qgVotar({ quien: '100000004', id: 'nada', lado: 'A' }).error === 'no existe',
     '«¿Quién gana?» en el objeto: un voto por persona que se puede cambiar, y cerrado no se vota', JSON.stringify([v1, v3, v4]));
+    // 📖 las historias que viste, en tu cuenta (18/10/2026, Dlx: «yes»): se suman, no se repiten, quedan las 600 más nuevas
+    {
+      const hv = async (d) => (await o.historiasVistas(d).json());
+      const r1 = await hv({ quien: '100000030', ids: ['m:abc', 'hoy:2026-10-18:2:0'] });
+      const r2 = await hv({ quien: '100000030', ids: ['m:abc', 'sem:FFA:2026-10-12'] });
+      const r3 = await hv({ quien: '100000030' });
+      const otro = await hv({ quien: '100000031' });
+      const muchas = Array.from({ length: 120 }, (_, k) => 'x' + k);
+      for (let k = 0; k < 6; k += 1) await hv({ quien: '100000032', ids: muchas.map((x) => x + '-' + k) });
+      const n32 = o.sql.exec("SELECT COUNT(*) AS n FROM hvistas WHERE quien = '100000032'").toArray()[0].n;
+      ok(r1.vistas.length === 2 && r2.vistas.length === 3 && r3.vistas.map((x) => x[0]).sort().join() === 'hoy:2026-10-18:2:0,m:abc,sem:FFA:2026-10-12'
+        && otro.vistas.length === 0 && n32 === A.HISTORIAS_TOPE && (await o.historiasVistas({ quien: 'x' }).json()).error,
+      'las historias vistas en tu cuenta: se suman sin repetir, cada uno las suyas, hasta 600', JSON.stringify([r2, n32]));
+    }
     // 🗳️ «¿quién gana la liga?» (14/10/2026): uno por persona y liga, se cambia; afuera se ve cuántos; los de una liga
     // que cerró hace más de 30 días se borran, y los de una que sigue no (su cierre se corre con cada voto)
     {

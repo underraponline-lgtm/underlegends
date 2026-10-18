@@ -2341,6 +2341,8 @@ const RUTAS = {
   '/avisos/precios': 'GET', '/avisos/precio': 'POST', '/avisos/billetera': 'POST',
   // 🔑 seguir raperos: ver `seguir()`, `sigo()`, `seguidores()` y `seguidos()`
   '/avisos/seguir': 'POST', '/avisos/sigo': 'POST', '/avisos/seguidores': 'GET',
+  // 📖 las historias que viste, en tu cuenta (18/10/2026): ver `historiasVistas()` del objeto
+  '/avisos/historias': 'POST',
   // 🔑 «tu servidor»: elegirlo en Mi cuenta, y cuál eligió cada perfil. Ver `miServidor()`
   '/avisos/mi-servidor': 'POST', '/avisos/servidores': 'GET',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026). Ver `visita()` del objeto
@@ -2674,7 +2676,8 @@ export function motivoAplauso(x) {
           : x.tipo === 'pase' ? (x.completo ? 'completar el Pase de rapero'
             : `llegar al nivel ${x.nivel} del Pase${x.premio ? ': «' + String(x.premio).slice(0, 40) + '»' : ''}`)
             // 🏟️ lo de las ligas de los servidores (`bot/ligas.py`, 16/10/2026)
-            : x.tipo === 'mesaward' ? `ganar ${MES_CAT[x.cat] || 'los MES AWARDS'}`
+            : x.tipo === 'mesaward' ? (String(x.cat || '').startsWith('sv:') ? `ganar los MES AWARDS de ${String(x.cat).slice(3, 9)}`
+              : `ganar ${MES_CAT[x.cat] || 'los MES AWARDS'}`)
             : x.tipo === 'ligahito' ? (x.que === 'campeon' ? `ganar ${String(x.ln || 'una liga').slice(0, 50)}`
               : x.que === 'invicto' ? `llegar invicto a ${x.pg || 5} en ${String(x.ln || 'su liga').slice(0, 50)}`
                 : x.que === 'punta' ? `tomar la punta de ${String(x.ln || 'su liga').slice(0, 50)}` : '') : '';
@@ -2835,6 +2838,10 @@ export function validarVoto(defs, d, id, ahora) {
 // porcentajes al lado de la tabla, y cierra cuando la liga termina. Qué se vota —las ligas, sus tablas y hasta cuándo— lo
 // deja el ciclo en KV (`ligas:votar`, `ligas.para_kv()` en bot/ligas.py); quién vota lo dice Discord (la sesión), como en
 // las encuestas; el objeto guarda uno por persona y liga (tabla `liga_voto`). ⚠️ Afuera se ve cuántos, nunca quién.
+//: 📖 las historias que vio cada uno: cuántas se guardan, cuántos días y cuántas se mandan de una vez
+export const HISTORIAS_TOPE = 600;
+export const HISTORIAS_DIAS = 30;
+export const HISTORIAS_LOTE = 120;
 //: los votos de una liga se borran a los tantos días de que cierra su encuesta (lo dice la página de privacidad)
 export const LIGA_VOTOS_DIAS = 30;
 
@@ -4170,6 +4177,23 @@ export async function rutaAvisos(req, env, ruta) {
       headers: { 'content-type': 'application/json' },
     });
   }
+  // 📖 LAS HISTORIAS QUE VISTE, EN TU CUENTA (Dlx, 18/10/2026: «tengo mi cuenta en muchos dispositivos», y a «¿lo visto
+  // sigue a tu cuenta?»: «yes»). Sin `ids` devuelve lo tuyo; con `ids`, lo suma. Sólo con «Entrar con Discord»
+  if (ruta === '/avisos/historias') {
+    const crudo = await req.text();
+    if (crudo.length > 24576) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    const ids = d && Array.isArray(d.ids) ? d.ids : [];
+    if (!d || typeof d !== 'object' || ids.length > HISTORIAS_LOTE ||
+        !ids.every((x) => typeof x === 'string' && x.length > 0 && x.length <= 200) ||
+        (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/historias', {
+      method: 'POST', body: JSON.stringify({ quien: q.id, ids }), headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🔑 «TU SERVIDOR». Dlx, 28/09/2026: «La idea es q la gente decida por su
   // cuenta», y dónde y cada cuánto, «1. A 2. A»: en Mi cuenta, uno por
   // temporada como la foto. Quién es lo dice Discord (o la sesión).
@@ -5002,6 +5026,9 @@ export class Avisos {
         "t INTEGER NOT NULL, de TEXT NOT NULL DEFAULT '', creada INTEGER NOT NULL DEFAULT 0, " +
         'PRIMARY KEY (quien, a))');
       this.sql.exec('CREATE INDEX IF NOT EXISTS sigue_a ON sigue (a)');
+      // 📖 LAS HISTORIAS QUE VIO CADA UNO (18/10/2026): el id de cada historia y cuándo, hasta `HISTORIAS_TOPE` por persona y
+      // `HISTORIAS_DIAS` días. Ver `historiasVistas()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS hvistas (quien TEXT NOT NULL, id TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, id))');
       // 🔔 LAS LIGAS QUE SIGUE CADA UNO (17/10/2026): `t` es desde cuándo, para no avisarle de lo de antes
       this.sql.exec('CREATE TABLE IF NOT EXISTS liga_sigue (quien TEXT NOT NULL, liga TEXT NOT NULL, t INTEGER NOT NULL, ' +
         'PRIMARY KEY (quien, liga))');
@@ -5511,6 +5538,7 @@ export class Avisos {
       if (ruta === '/liga-seguir') return json(this.ligaSeguir(d));
       if (ruta === '/mis-ligas') return json(this.misLigas(d));
       if (ruta === '/seguir') return this.seguir(d);
+      if (ruta === '/historias') return this.historiasVistas(d);
       if (ruta === '/sigo') return this.sigo(d);
       if (ruta === '/aplaudir') return this.aplaudir(d);
       if (ruta === '/promo-vio') return this.promoVio(d);
@@ -5905,6 +5933,8 @@ export class Avisos {
       this.sql.exec('DELETE FROM aplaudidas WHERE primero < ?', viejo);
       // 🔔 y la bandeja de cada uno: 30 días
       this.sql.exec('DELETE FROM bandeja WHERE t < ?', viejo);
+      // 📖 y las historias que vio cada uno: para entonces ya no está ninguna
+      this.sql.exec('DELETE FROM hvistas WHERE t < ?', ahora - HISTORIAS_DIAS * DIA_MS);
       // 🤝 y las postulaciones de /sumate: 90 días
       this.sql.exec('DELETE FROM postulaciones WHERE t < ?', ahora - 90 * DIA_MS);
       // 📊 el uso: quién, `USO_DIAS` días; las visitas (sólo un número por día), 90
@@ -8121,6 +8151,8 @@ export class Avisos {
     if (rp.rowsWritten) await this.colaReportes(Date.now());
     // 👏 y a quién felicitó: también va con su Discord ID
     const ap = this.sql.exec('DELETE FROM aplausos WHERE quien = ?', String(d.quien));
+    // 📖 y qué historias vio
+    this.sql.exec('DELETE FROM hvistas WHERE quien = ?', String(d.quien));
     // 🎟️ y su Pase: las Tareas que cumplió y las llaves en vivo que miró
     this.sql.exec('DELETE FROM pase_hecho WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM pase_vivo WHERE quien = ?', String(d.quien));
@@ -8916,6 +8948,24 @@ export class Avisos {
    * ⚠️ VARIAS DE UNA VEZ ES PARA LA PRIMERA VEZ: lo que ese dispositivo ya
    * seguía sin cuenta (`lg:sigo`) sube entero al entrar con Discord.
    */
+  /**
+   * 📖 Las historias que viste, en tu cuenta (Dlx, 18/10/2026: «yes»): suma `ids` (lo que viste en este dispositivo) y
+   * devuelve las tuyas `[[id, t]]`, de la más nueva a la más vieja, para que cada dispositivo sume lo de los otros.
+   */
+  historiasVistas(d) {
+    const quien = String(d.quien || '');
+    if (!/^[0-9]{5,25}$/.test(quien)) return json({ error: 'faltan datos' }, 400);
+    const ahora = Date.now();
+    const ids = (Array.isArray(d.ids) ? d.ids : []).filter((x) => typeof x === 'string' && x && x.length <= 200).slice(0, HISTORIAS_LOTE);
+    for (const id of ids) this.sql.exec('INSERT OR IGNORE INTO hvistas (quien, id, t) VALUES (?, ?, ?)', quien, id, ahora);
+    if (ids.length) {
+      this.sql.exec('DELETE FROM hvistas WHERE quien = ? AND id NOT IN (SELECT id FROM hvistas WHERE quien = ? ORDER BY t DESC LIMIT ?)',
+        quien, quien, HISTORIAS_TOPE);
+    }
+    const filas = this.sql.exec('SELECT id, t FROM hvistas WHERE quien = ? ORDER BY t DESC LIMIT ?', quien, HISTORIAS_TOPE).toArray();
+    return json({ ok: true, vistas: filas.map((f) => [f.id, f.t]) });
+  }
+
   seguir(d) {
     const quien = String(d.quien || '');
     const as = (Array.isArray(d.a) ? d.a : []).filter(claveValida).slice(0, 60);

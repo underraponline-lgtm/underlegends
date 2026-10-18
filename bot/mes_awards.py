@@ -46,8 +46,8 @@ sus jugadores). `CATS_SV`, de los mismos números pero sólo con lo de ese servi
 videos, quién debutó en la Liga ahí y su staff. Se nominan, se sacan, se votan y se cierran junto con los de la Liga; la
 encuesta lleva `sv` y **sólo vota quien jugó ahí ese mes** (`votantes()` → KV `encuestas.solo`, y `validarVoto()` en
 bot/avisos.js). Sólo los Tier 1 (`datos/niveles.json`; sin elegir, Tier 1) y sólo los que tienen algo que votar. El
-ganador se lleva la insignia de su categoría «de su servidor», su lugar en la página de su servidor y una publicación por
-servidor. ⚠️ Los Puntos de Tienda de estos, SIN DECIDIR: `PREMIO_SV` está vacío hasta que Dlx diga.
+ganador se lleva la insignia de su categoría «de su servidor», `PREMIO_SV` Puntos de Tienda (1.000: *«yes sure»*), su
+lugar en la página de su servidor y una publicación por servidor.
 """
 import datetime as dt
 import io
@@ -86,8 +86,9 @@ CATS_SV = (('rapero', 'Rapero del mes', 'los puntos de Temporada del mes en sus 
            ('revelacion', 'Revelación del mes', 'los puntos del mes de los que debutaron en la Liga ahí'),
            ('batalla', 'Batalla del mes', 'las vistas de sus videos de batallas publicados ese mes'),
            ('staff', 'Staff del mes', 'las fechas en que fue jurado, host o DJ ahí, o publicó sus veredictos'))
-#: ⚠️ los Puntos de Tienda de los de cada servidor: SIN DECIDIR (se le preguntó a Dlx el 18/10/2026). Vacío, no pagan
-PREMIO_SV = {}
+#: los Puntos de Tienda de los de cada servidor (Dlx, 18/10/2026, a «¿pagan Puntos de Tienda? nada / 500 / 1.000 como las
+#: demás»: «yes sure»): 1.000, como las de «Ver las demás nominaciones»; la batalla, a cada lado
+PREMIO_SV = {'rapero': 1000, 'revelacion': 1000, 'batalla': 1000, 'staff': 1000}
 NIVELES = os.path.join(BASE, 'datos', 'niveles.json')
 MESES = ('enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre',
          'noviembre', 'diciembre')
@@ -733,14 +734,17 @@ def _self_check():
            'el de cada servidor cierra con sus votos (`mes:<mes>:<SV>:<cat>`)', str(sv1))
         tt = tienda(r, {'Ana': '111', 'Cid': '222'})
         ok(tt.get('2026-10:rapero:Ana', [0, 0])[:2] == ['111', 3000] and tt.get('2026-10:batalla:Cid', [0, 0])[1] == 1500
-           and len(tt) == 3, 'la Tienda: cada premio una vez, a quien tiene su Discord', str(tt))
+           and len([k for k in tt if k.count(':') == 2]) == 3, 'la Tienda: cada premio una vez, a quien tiene su Discord', str(tt))
         w = para_web(r, t3)
         mu = muro(r)
         ok(not w['abierto'] and w['hist'][0]['mes'] == '2026-10' and len(mu) == 5
            and [x for x in mu if x['cat'] == 'sv:FFA'][0]['lista'] == [['rapero', 'Rapero del mes', 'Bea', 80],
                                                                        ['batalla', 'Batalla del mes', 'ANA vs BEA', 0]],
            'cerrado: va al historial y al muro, con UNA publicación por servidor', str(mu))
-        ok(not [k for k in tienda(r, {'Bea': '222'}) if ':FFA:' in k], 'los de cada servidor no cobran Tienda hasta que Dlx diga')
+        tsv = {k: v[:2] for k, v in tienda(r, {'Bea': '222', 'Ana': '111'}).items() if ':FFA:' in k}
+        ok(tsv == {'2026-10:FFA:rapero:Bea': ['222', 1000], '2026-10:FFA:batalla:Ana': ['111', 1000],
+                   '2026-10:FFA:batalla:Bea': ['222', 1000]},
+           'los de cada servidor cobran 1.000 (la batalla, a cada lado), una vez cada uno', str(tsv))
         ok(len(w['cats']) == 4 + len(OTRAS) == 26 and w['cats'][4][3] == 1 and w['cats'][0][3] == 0 and w['premio']['otra'] == 1000
            and [c[0] for c in w['cats'] if c[3] == 2] == ['jurado', 'host', 'dj'],
            'la página recibe las veintitrés: cuáles van detrás del botón y cuáles en el bloque del staff')

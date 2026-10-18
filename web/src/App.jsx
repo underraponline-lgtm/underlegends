@@ -343,6 +343,9 @@ export default function App() {
   // (`lg:historias`), y con algo nuevo volvías a ver todo. `null` hasta pasar lo viejo a lo nuevo (ver abajo)
   const [vistos, setVistos] = useState(() => { try { return JSON.parse(localStorage.getItem('lg:historias2')) || null; } catch (e) { return null; } });
   const [yo, setYo] = useState(quienMira);
+  // 📖 con «Entrar con Discord», lo visto en las historias va también a tu cuenta (ver `mandarVistas`)
+  const yoRef = useRef(null);
+  yoRef.current = yo && yo.dc && yo.dc.id ? String(yo.dc.id) : null;
   const [hash, setHash] = useState(rutaHash);
   const [sigoV, setSigoV] = useState(0);
   // 🧭 «Ver el recorrido otra vez» (la Guía) avisa `lg:tour`: cada pedido es un número nuevo
@@ -440,10 +443,60 @@ export default function App() {
     try { localStorage.setItem('lg:historias2', JSON.stringify(n)); } catch (e) { /* sin guardar */ }
     return n;
   };
+  // 📖 LO VISTO SIGUE A TU CUENTA (Dlx, 18/10/2026: «tengo mi cuenta en muchos dispositivos», y a «¿lo visto sigue a tu
+  // cuenta?»: «yes»). Con «Entrar con Discord», cada historia que ves va también a tu cuenta (de a varias, a los pocos
+  // segundos o al irte) y al abrir la página se suma lo que viste en los otros dispositivos. Sin cuenta, sólo acá
+  const pendientes = useRef(new Set());
+  const mandarVistas = useCallback((alIrse) => {
+    const ids = [...pendientes.current].slice(0, 120);
+    if (!ids.length || !yoRef.current) return;
+    ids.forEach((x) => pendientes.current.delete(x));
+    fetch('/api/avisos/historias', { method: 'POST', keepalive: !!alIrse, headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ ids }) }).catch(() => { ids.forEach((x) => pendientes.current.add(x)); });
+  }, []);
+  const timerVistas = useRef(0);
   const visto = useCallback((id) => setVistos((v) => {
     if (!id || (v && v[id])) return v;
+    pendientes.current.add(id);
+    clearTimeout(timerVistas.current);
+    timerVistas.current = setTimeout(() => mandarVistas(false), 4000);
     return guardarVistos(Object.assign({}, v || {}, { [id]: Date.now() }));
-  }), []);
+  }), [mandarVistas]);
+  // al irse (cambiar de app, cerrar la pestaña), lo que quedó sin mandar
+  useEffect(() => {
+    const f = () => { if (document.visibilityState === 'hidden') mandarVistas(true); };
+    document.addEventListener('visibilitychange', f);
+    return () => document.removeEventListener('visibilitychange', f);
+  }, [mandarVistas]);
+  // al abrir con tu cuenta: se suma lo que viste en los otros dispositivos. La primera vez en este dispositivo, sube
+  // también lo que ya habías visto acá (las 120 más nuevas)
+  const cuentaId = yo && yo.dc && yo.dc.id ? String(yo.dc.id) : '';
+  useEffect(() => {
+    if (!cuentaId || vistos === null) return undefined;
+    let vivo = true;
+    let subir = [];
+    try {
+      if (localStorage.getItem('lg:hv-subido') !== cuentaId) {
+        subir = Object.entries(vistos).sort((a, b) => b[1] - a[1]).slice(0, 120).map((x) => x[0]);
+      }
+    } catch (e) { subir = []; }
+    fetch('/api/avisos/historias', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ids: subir }) })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => {
+        if (!j || !Array.isArray(j.vistas)) return;
+        try { localStorage.setItem('lg:hv-subido', cuentaId); } catch (e) { /* la próxima vez sube de nuevo: no pasa nada */ }
+        if (!vivo) return;
+        setVistos((v) => {
+          const n = Object.assign({}, v || {});
+          let cambio = false;
+          j.vistas.forEach((x) => { if (Array.isArray(x) && typeof x[0] === 'string' && !n[x[0]]) { n[x[0]] = Number(x[1]) || Date.now(); cambio = true; } });
+          return cambio ? guardarVistos(n) : v;
+        });
+      })
+      .catch(() => { /* sin la cuenta, lo de este dispositivo */ });
+    return () => { vivo = false; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cuentaId, vistos === null]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const liga = useMemo(() => (D ? new Liga(D, muro, ahora, yo.k, aQuienSigo()) : null), [D, muro, ahora, yo, sigoV]);

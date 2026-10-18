@@ -2944,6 +2944,10 @@ a.rk-z:hover{border-color:var(--linea)}
 .lk-pd.p1{grid-column:1 / -1;border-color:var(--verde)}
 /* sin tercero, el subcampeón a lo ancho: a la mitad quedaba un hueco al lado */
 .lk-podio.n2 .lk-pd{grid-column:1 / -1}
+/* 🏆 con el campeón en grande arriba (18/10/2026), los que quedan van juntos y centrados debajo: el subcampeón solo, a lo
+   ancho; con el tercero, uno al lado del otro */
+.lk-podio.sin1 .lk-pd{grid-column:auto}
+.lk-podio.sin1.n1 .lk-pd{grid-column:1 / -1}
 .lk-pd-caras{display:flex;justify-content:center}
 .lk-pd-cara{width:56px;height:56px;flex:none;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#2A2A2E;color:#F6F6F6;
   font:900 20px/1 Archivo,sans-serif;border:2px solid #0E0E10}
@@ -3046,6 +3050,37 @@ a.rk-z:hover{border-color:var(--linea)}
 .lk-fc.vac{display:grid;place-items:center;border:2px dashed var(--suave);cursor:default}
 .lk-fc.vac em{font:700 13px/1.2 "Barlow Condensed",sans-serif;color:var(--gris)}
 .lk-b.cartas .lk-et{position:static;margin:0 0 5px;max-width:100%}
+/* 🎬 en vivo, lo que se acaba de decidir se ve pasar (18/10/2026): la carta del que perdió se apaga, la del que pasó
+   late, y la que llega a la ronda siguiente entra de costado. «Menos animaciones» (`.app.calma`) lo apaga todo */
+.lk-b.recien .lk-fc.x .lk-fc-img,.lk-b.recien .lk-fc.x .lk-fc-sin{animation:lk-apaga 1.4s ease both}
+@keyframes lk-apaga{from{filter:none;opacity:1}}
+.lk-b.recien .lk-fc.g,.lk-b.recien .lk-fc.copa{animation:lk-gana .9s ease}
+@keyframes lk-gana{40%{transform:scale(1.06)}}
+.lk-b.recien .lk-l.x{animation:lk-apaga-l 1.2s ease both}
+@keyframes lk-apaga-l{from{color:var(--tinta)}}
+.lk-fc.llega{animation:lk-llega .8s cubic-bezier(.2,.8,.2,1) both}
+@keyframes lk-llega{from{transform:translateX(-36px) scale(.9);opacity:0}}
+/* ⚔️ AHORA, en grande, arriba (en el escenario): las dos cartas enfrentadas y la que sigue */
+.lk-ahora{display:grid;justify-items:center;gap:10px;margin:22px 0 4px}
+.lk-ahora-t{font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.lk-ahora-t b{color:#FF4FA3}
+.lk-ahora-vs{display:flex;align-items:center;justify-content:center;gap:clamp(8px,3vw,26px);width:100%}
+.lk-ahora-x{font:900 clamp(22px,6vw,42px)/1 Archivo,sans-serif;font-stretch:125%;color:var(--tinta)}
+.lk-gr{width:clamp(120px,36vw,220px);flex:none}
+.lk-gr .lk-fc-sin .lk-n{font-size:min(15px,9cqi)}
+.lk-gr .lk-fc-sin .lk-cara{width:56px;height:56px}
+.lk-gr-eq{aspect-ratio:300/438;display:grid;container-type:inline-size}
+.lk-gr-eq .lk-fc-sin{height:100%}
+.lk-gr-eq .lk-caras .lk-cara{width:40px;height:40px}
+.lk-ahora-sig{margin:0;font:700 15px/1.3 "Barlow Condensed",sans-serif;color:var(--gris);text-align:center}
+/* 🏆 el campeón, en grande: su carta (o la de cada uno), la copa y lo que cobró */
+.lk-camp{display:grid;justify-items:center;gap:10px;margin:22px 0 6px;text-align:center}
+.lk-camp-t{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;background:var(--verde);color:#030304;
+  font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.lk-camp-cs{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.lk-camp-c{width:clamp(110px,30vw,230px)}
+.lk-camp-cs:has(> :only-child) .lk-camp-c{width:clamp(160px,46vw,250px)}
+.lk-camp-p{font:800 18px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--tinta)}
 .lk-caras{display:flex;flex:none}
 .lk-caras .lk-cara+.lk-cara{margin-left:-8px}
 .lk-ok{flex:none;font:900 14px/1 Archivo,sans-serif}
@@ -3183,6 +3218,9 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .lk-podio.n2 .lk-pd.p2{grid-column:2}
   .app .lk-podio.n1{grid-template-columns:minmax(0,560px)}
   .app .lk-podio.n1 .lk-pd.p1{grid-column:1}
+  .app .lk-podio.sin1{grid-template-columns:repeat(2,minmax(0,380px));justify-content:center}
+  .app .lk-podio.sin1.n1{grid-template-columns:minmax(0,480px)}
+  .app .lk-podio.sin1 .lk-pd{grid-column:auto;grid-row:auto}
   .app .lk-mwtx{padding:0 var(--gut) 24px}
   .app .lk-pts-top{padding:0 var(--gut) 26px}
   .app .lk-arbol-caja{margin:0;padding:4px 0 12px}

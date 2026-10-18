@@ -84,6 +84,8 @@ const AVISOS = {
   // 👏 felicitar un logro de Publicaciones, y cuántos lleva cada uno (02/10/2026). Ver `validarAplauso()` en
   // bot/avisos.js: quién felicita lo dice Discord; qué publicación, el muro
   '/api/avisos/felicitar': 'POST',
+  // 📖 las historias que viste, en tu cuenta (18/10/2026)
+  '/api/avisos/historias': 'POST',
   '/api/avisos/promo-vio': 'POST',
   '/api/avisos/promo-extender': 'POST',
   '/api/avisos/dueno-logs': 'POST',
