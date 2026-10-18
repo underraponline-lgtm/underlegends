@@ -1,0 +1,127 @@
+{
+ "_leeme": "📖 «Cómo funciona» y el historial de cada liga, para su página (bot/ligas.py `info_de()`). SÓLO lo que publicó cada servidor en sus canales, relevado el 17/10/2026 (las notas, en el artifact privado): lo que no estaba escrito no va. `fmt`: cómo se juega, cómo se entra y quién sube o baja; `hist`: [temporada, campeón, nota] de antes (lo de la T1 lo pone el Salón); `fuente`: de dónde sale.",
+ "fmh-albiceleste": {
+  "fmt": [
+   "Una de las cinco FMH de Urban Freestyle, la de Argentina y Uruguay. Las otras: Andes (Chile y Perú), Carimex (México, el Caribe y Centroamérica), Tricolor (Colombia, Ecuador y Venezuela) y España.",
+   "Puntos: victoria directa 3; en réplica, 2 al que gana y 1 al que pierde; derrota directa 0. Si uno no se presenta, la batalla es del otro.",
+   "Desempata el PTB, la suma de las notas de los jurados. El de más PTB de la jornada es el MVP.",
+   "Cuando son impares, cada jornada uno enfrenta a un ExtraPlayer 🎮, un invitado de afuera.",
+   "Bajan los últimos de la tabla, a FMH Under. Se entra subiendo desde FMH Under (sus 4 primeros), por fichaje o renovación del organizador, o como reemplazo de alguien que se baja.",
+   "El podio (1º, 2º y 3º) va a la FMH Internacional, de 16."
+  ],
+  "fuente": "Lo que publicó Urban Freestyle en sus canales"
+ },
+ "fmh-andes": {
+  "fmt": [
+   "Una de las cinco FMH de Urban Freestyle, la de Chile y Perú. Las otras: Albiceleste (Argentina y Uruguay), Carimex (México, el Caribe y Centroamérica), Tricolor (Colombia, Ecuador y Venezuela) y España.",
+   "Puntos: victoria directa 3; en réplica, 2 al que gana y 1 al que pierde; derrota directa 0. Si uno no se presenta, la batalla es del otro.",
+   "Desempata el PTB, la suma de las notas de los jurados. El de más PTB de la jornada es el MVP.",
+   "Bajan los 2 últimos, a FMH Under. Se entra subiendo desde FMH Under (sus 4 primeros), por fichaje o renovación, o como reemplazo: en Andes el reemplazante hereda los puntos del que se fue.",
+   "El podio (1º, 2º y 3º) va a la FMH Internacional, de 16."
+  ],
+  "fuente": "Lo que publicó Urban Freestyle en sus canales"
+ },
+ "fmh-carimex": {
+  "fmt": [
+   "Una de las cinco FMH de Urban Freestyle, la de México, el Caribe y Centroamérica. Las otras: Albiceleste (Argentina y Uruguay), Andes (Chile y Perú), Tricolor (Colombia, Ecuador y Venezuela) y España.",
+   "Puntos: victoria directa 3; en réplica, 2 al que gana y 1 al que pierde; derrota directa 0. Si uno no se presenta, la batalla es del otro.",
+   "Desempata el PTB, la suma de las notas de los jurados. El de más PTB de la jornada es el MVP.",
+   "Bajan los últimos a FMH Under: esta temporada su staff decía «los 2 últimos» y también «el último», sin cerrarlo. Se entra subiendo desde FMH Under (sus 4 primeros), por fichaje o renovación, o como reemplazo.",
+   "El podio (1º, 2º y 3º) va a la FMH Internacional, de 16."
+  ],
+  "fuente": "Lo que publicó Urban Freestyle en sus canales"
+ },
+ "fmh-tricolor": {
+  "fmt": [
+   "Una de las cinco FMH de Urban Freestyle, la de Colombia, Ecuador y Venezuela. Las otras: Albiceleste (Argentina y Uruguay), Andes (Chile y Perú), Carimex (México, el Caribe y Centroamérica) y España.",
+   "Nueve por temporada: cada jornada uno enfrenta a un ExtraPlayer 🎮, un invitado que puede robar puntos.",
+   "Puntos: victoria directa 3; en réplica, 2 al que gana y 1 al que pierde; derrota directa 0. Si uno no se presenta, la batalla es del otro.",
+   "Desempata el PTB, la suma de las notas de los jurados. El de más PTB de la jornada es el MVP.",
+   "Los 2 últimos están en zona de descenso directo, a FMH Under. Se entra subiendo desde FMH Under (sus 4 primeros), por fichaje o renovación, o como reemplazo.",
+   "El podio (1º, 2º y 3º) va a la FMH Internacional, de 16."
+  ],
+  "fuente": "Lo que publicó Urban Freestyle en sus canales"
+ },
+ "fmh-espana": {
+  "fmt": [
+   "Una de las cinco FMH de Urban Freestyle, la de España. Las otras: Albiceleste (Argentina y Uruguay), Andes (Chile y Perú), Carimex (México, el Caribe y Centroamérica) y Tricolor (Colombia, Ecuador y Venezuela).",
+   "Puntos: victoria directa 3; en réplica, 2 al que gana y 1 al que pierde; derrota directa 0. Si uno no se presenta, la batalla es del otro.",
+   "Desempata el PTB, la suma de las notas de los jurados. El de más PTB de la jornada es el MVP.",
+   "Cuando son impares, cada jornada uno enfrenta a un ExtraPlayer 🎮, un invitado de afuera.",
+   "Bajan los 2 últimos, a FMH Under. Se entra subiendo desde FMH Under (sus 4 primeros), por fichaje o renovación, o como reemplazo. Cambiarse de liga tiene sanción: se arranca con puntos de menos.",
+   "El podio (1º, 2º y 3º) va a la FMH Internacional, de 16."
+  ],
+  "fuente": "Lo que publicó Urban Freestyle en sus canales"
+ },
+ "fmh-under": {
+  "fmt": [
+   "La segunda división de Urban Freestyle: 10 por temporada.",
+   "Entran los 2 primeros del ranking de ascenso de Urban, que suma las compes de quien no está en ninguna liga (lo ves arriba, en la tabla).",
+   "Sus 4 primeros suben a una FMH: a la que los fiche si hay lugar, o a la de su país. También tiene descenso.",
+   "Puntos: victoria directa 3; en réplica, 2 al que gana y 1 al que pierde; derrota directa 0. Desempata el PTB."
+  ],
+  "hist": [["1ª edición", "Guty", "el primer campeón de FMH Under"]],
+  "fuente": "Lo que publicó Urban Freestyle en sus canales"
+ },
+ "snake-generations": {
+  "fmt": [
+   "La liga oficial de Snake Rap, en su edición «Generations»: 10, dos de cada era —Liga FPC, Level God, Snake League, New Gen— y dos del ascenso, en 9 jornadas de una semana desde el 13/09.",
+   "Se vota ronda por ronda: con 2 puntos es victoria directa y la réplica se define por la mínima. En la tabla, 3 la directa, 2 y 1 la réplica, 0 la derrota directa, con el PTB OFICIAL de cada batalla.",
+   "Bajan los 2 últimos. Suben el 1º y el 2º del ranking de ascenso, y el 3º juega un play-off contra el 8º de la liga.",
+   "El campeón va a Matanza de Dioses, la final del ciclo."
+  ],
+  "hist": [["Temporada 6", "Tikal", "terminó el 30/06/2025"], ["Temporada 7 «Coldwar»", "Scorpio", "terminó el 08/01/2026"], ["Temporada 8 «Infinite»", "Luzzano", "terminó el 23/05/2026"]],
+  "fuente": "Lo que publicó Snake Rap (su #info-liga y su museo)"
+ },
+ "snake-new-chapter": {
+  "fmt": [
+   "No es una liga oficial: es una competencia de Rango 1 de Snake Rap, en paralelo a Generations, con jornadas cada dos semanas.",
+   "10: gente que peleó el ascenso anterior y gente histórica.",
+   "Los 5 primeros suman puntos para el ascenso a la Snake League. El campeón va a Matanza de Dioses, y el campeón y el subcampeón a la Snake Cup."
+  ],
+  "fuente": "Lo que publicó Snake Rap (#new-chapter)"
+ },
+ "fzl": {
+  "fmt": [
+   "La liga de Freestyle Zone: 10, todos contra todos en 9 jornadas, una por semana.",
+   "Victoria directa con 2 puntos o más de los jurados; réplica con 1,5 o menos. Si uno falta, los puntos son del rival; si faltan los dos, 0 y 0.",
+   "Desempate: el cruce entre ellos, el PTB, más directas, menos derrotas directas y menos réplicas.",
+   "Los 4 primeros van a la Champions League; del 5º al 8º, a la Conference League. El 9º y el 10º bajan.",
+   "Se entra por el ranking de ascenso de Freestyle Zone (los primeros directo, y uno por play-off), o quedándose."
+  ],
+  "hist": [["Temporada 15", "Juasmio", "invicto (enero y febrero de 2026)"], ["Temporada 16", "Ceko", "9 de 9 y MVP en las 9 (septiembre de 2026)"]],
+  "fuente": "Lo que publicó Freestyle Zone (#información y las tablas de cada temporada)"
+ },
+ "fms-titans": {
+  "fmt": [
+   "Liga de Dimensión del Freestyle, «Regenerations Vol. 1»: 10 elegidos por su organizador.",
+   "Cada jornada, dos tandas de cinco cruces (dos batallas por MC) y tres rondas: cambia la primera (random mode, 8x8, 12x12…).",
+   "Puntos FMS: 3 la victoria, 2 en réplica, 1 la derrota en réplica, 0 la derrota. Un empate sin réplica da 2 a cada uno.",
+   "No hay ascenso ni descenso: las ligas de DDF son independientes. Se entra por invitación o por cupos de copa; los huecos los cubren ExtraPlayers y reemplazos."
+  ],
+  "fuente": "Lo que publicó Dimensión del Freestyle en sus canales"
+ },
+ "fms-peru": {
+  "fmt": [
+   "Sólo peruanos: 10 invitados. Los de otros países juegan como ExtraPlayers contra los de la liga.",
+   "Victoria 3 puntos, y se acumula el PTB. Cada jornada dura dos o tres días, y los MCs buscan sus propios jurados.",
+   "No hay ascenso ni descenso: las ligas de DDF son independientes."
+  ],
+  "fuente": "Lo que publicó Dimensión del Freestyle en sus canales"
+ },
+ "fms-tricolor": {
+  "fmt": [
+   "Colombia, Ecuador y Venezuela, por invitación.",
+   "No hay ascenso ni descenso: las ligas de DDF son independientes."
+  ],
+  "fuente": "Lo que publicó Dimensión del Freestyle en sus canales"
+ },
+ "fms-world-series": {
+  "fmt": [
+   "Por invitación y por una clasificatoria, la «Under FMS World Series», de 8 cupos.",
+   "+3 por victoria. Un W.O. es 15-15 y +3 para el que se presentó. La tabla suma los puntos y el PTB.",
+   "No hay ascenso ni descenso: las ligas de DDF son independientes."
+  ],
+  "fuente": "Lo que publicó Dimensión del Freestyle en sus canales"
+ }
+}

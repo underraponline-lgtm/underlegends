@@ -88,6 +88,8 @@ const AVISOS = {
   '/api/avisos/promo-extender': 'POST',
   '/api/avisos/dueno-logs': 'POST',
   '/api/avisos/pedido': 'POST',
+  '/api/avisos/liga-seguir': 'POST',
+  '/api/avisos/mis-ligas': 'POST',
   '/api/avisos/mis-pedidos': 'POST',
   '/api/avisos/dueno-pedido': 'POST',
   '/api/avisos/aplausos': 'GET',

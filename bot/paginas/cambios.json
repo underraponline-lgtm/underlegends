@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "3.32",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T00:40:00-04:00",
+   "titulo": "La página de cada liga, completa",
+   "items": [
+    "🗂️ Cada liga tiene pestañas: la tabla, las fechas, los números, el staff, los flyers, los videos y cómo funciona.",
+    "📋 En las fechas, cada batalla con su ganador, si fue directa o réplica, el PTB y el veredicto en Discord.",
+    "📊 Los números de la liga: el MVP de cada fecha, la batalla con más PTB, la más pareja y la racha más larga.",
+    "🔔 Podés seguir una liga: te avisamos cuando hay resultados o una fecha nueva."
+   ]
+  },
+  {
    "version": "3.31",
    "dia": "2026-10-17",
    "cuando": "2026-10-17T23:10:00-04:00",

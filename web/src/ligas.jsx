@@ -17,6 +17,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DIAS, MESES, limpio, num, siglaDe, utc } from './liga.js';
 import { Bandera, Cara, Compartir, Ico, Sec, accion, enlace, silueta } from './piezas.jsx';
+import { Miniatura, abrirVideo } from './video.jsx';
 
 // 🏟️ ¿UN NOMBRE ESTÁ MAL? (Dlx, 14/10/2026: «Sí, a Reportes», a ForceGP: «¿no hay manera de que uno pueda corregir
 // eso?»). Elegís el nombre, contás quién es, y le llega a la Liga en Reportes del Dashboard con tu cuenta; lo decide la
@@ -205,31 +206,63 @@ function Flyer({ liga, L }) {
   );
 }
 
-// 📋 LOS RESULTADOS DE CADA FECHA: la jornada si el veredicto la dice; si no, el día en que se cerró. La más nueva
-// abierta, las otras plegadas. Las que no tienen cierre todavía también van: es la fecha entera
-function Fechas({ liga, L, nombre }) {
+// 📋 LAS FECHAS (Dlx, 17/10/2026: «las fechas, mejor»): cada jornada con todas sus batallas a la vista —quién ganó,
+// directa o réplica, el PTB de cada lado, el veredicto en Discord y el video si un canal de los socios la subió—. Lo que
+// el veredicto no dice de qué jornada es va por SEMANA (`ligas._fechas()`): no se inventa una jornada. Arriba, lo que
+// viene: la próxima fecha y el último afiche. Las tres más nuevas abiertas; las demás, plegadas
+const ptbTx = (x) => (x === '' || x == null ? '' : String(x).replace('.', ','));
+const dmy = (d) => (d ? String(d).slice(8, 10) + '/' + String(d).slice(5, 7) : '');
+function sumaDias(d, n) {
+  const [y, m, dd] = String(d || '').split('-').map(Number);
+  if (!y) return '';
+  return new Date(Date.UTC(y, m - 1, dd + n)).toISOString().slice(0, 10);
+}
+function tituloFecha(f) {
+  if (f.j) return 'Jornada ' + f.j;
+  if (f.s) return 'Semana del ' + dmy(f.s) + ' al ' + dmy(sumaDias(f.s, 6));
+  return cap(diaDe(f.d));
+}
+function Fechas({ liga, L, h }) {
   const fs = L.fechas || [];
   if (!fs.length) return null;
+  const sig = L.flyer && L.flyer.tit && /\svs\s/i.test(L.flyer.tit) ? L.flyer : null;
   return (
-    <div className="lgt-fechas">
-      <h4 className="lg-st">Las fechas</h4>
+    <div className="lpg-fechas">
+      {L.prox || sig ? (
+        <div className="lpg-viene">
+          {L.prox ? <Proxima liga={liga} P={L.prox} /> : null}
+          {sig ? <p className="lpg-sig"><small>LO ÚLTIMO QUE ANUNCIÓ</small><b>{limpio(sig.tit)}</b>{sig.link ? <a className="te-link" href={sig.link} target="_blank" rel="noopener noreferrer">El anuncio ↗</a> : null}</p> : null}
+        </div>
+      ) : null}
       {fs.map((f, i) => {
         const con = f.b.filter((b) => b[2]).length;
-        const tit = f.j ? 'Jornada ' + f.j : cap(diaDe(f.d));
         return (
-          <details key={(f.j || '') + f.d + i} className="lgt-fecha" open={i === 0}>
-            <summary><b>{tit}</b><small>{f.j && f.d ? cap(diaDe(f.d)) + ' · ' : ''}{con} de {f.b.length} con veredicto</small></summary>
-            <ul className="lg-ult">
-              {f.b.map(([a, b, g, como], k) => (
-                <li key={k}>
-                  {g ? <>{nombre(g, 'lg-g')} le ganó a {nombre(g === a ? b : a, 'lg-p')}<small>{como === 'replica' ? 'en réplica' : 'directo'}</small></>
-                    : <>{nombre(a, 'lg-p')} vs {nombre(b, 'lg-p')}<small>sin cierre todavía</small></>}
-                </li>
-              ))}
+          <details key={(f.j || '') + (f.s || f.d) + i} className="lpg-fecha" open={i < 3}>
+            <summary><b>{tituloFecha(f)}</b><small>{f.j && f.d ? cap(diaDe(f.d)) + ' · ' : ''}{con === f.b.length ? (con === 1 ? '1 batalla' : con + ' batallas') : con + ' de ' + f.b.length + ' con veredicto'}</small></summary>
+            <ul className="lpg-bats">
+              {f.b.map(([a, b, g, como, pa, pb, mid, vid], k) => {
+                const ganoA = g && g === a;
+                return (
+                  <li key={k} className={(h.esYo(a) || h.esYo(b) ? 'yo ' : '') + (g ? '' : 'pend')}>
+                    <span className="lpg-lados">
+                      <span className={g ? (ganoA ? 'gana' : 'pierde') : ''}>{h.nombre(a)}</span>
+                      <i aria-hidden="true">vs</i>
+                      <span className={g ? (ganoA ? 'pierde' : 'gana') : ''}>{h.nombre(b)}</span>
+                    </span>
+                    <span className="lpg-res">
+                      {g ? <em className={'lpg-como ' + (como === 'replica' ? 'rep' : 'dir')}>{como === 'replica' ? 'Réplica' : 'Directa'}</em> : <em className="lpg-como sin">Sin veredicto</em>}
+                      {pa !== '' && pb !== '' && pa != null ? <span className="lpg-ptb" title="PTB de cada lado">{ptbTx(pa)} – {ptbTx(pb)}</span> : null}
+                      {vid ? <button type="button" className="lpg-vid" onClick={() => abrirVideo({ vid, tit: limpio(a) + ' vs ' + limpio(b), link: 'https://www.youtube.com/watch?v=' + vid })} aria-label={'Ver el video de ' + limpio(a) + ' contra ' + limpio(b)}>▶</button> : null}
+                      {L.vlink && mid ? <a className="lpg-ver" href={L.vlink + mid} target="_blank" rel="noopener noreferrer" aria-label="El veredicto en Discord">↗</a> : null}
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
           </details>
         );
       })}
+      <p className="lg-nota">«Semana del…»: su servidor no escribe la jornada en el veredicto, así que van por la semana en que se cerraron. El PTB es el que dijo el veredicto.</p>
     </div>
   );
 }
@@ -382,7 +415,6 @@ function Torneo({ liga, L, h }) {
             );
           })}
         </ol>
-        <Fechas liga={liga} L={L} nombre={h.nombre} />
         <p className="lg-nota">La tabla sale de los veredictos que se pudieron leer: directa 3 puntos, réplica 2 y 1, sin los invitados.
           {L.link ? <> La oficial, con sanciones y defaults, está en <a className="te-link" href={L.link} target="_blank" rel="noopener noreferrer">su Discord</a>.</> : null}</p>
         <AvisarLiga key={L.id} L={L} />
@@ -409,11 +441,251 @@ function Podio3({ L, h }) {
   );
 }
 
+// ── 📊 LOS NÚMEROS DE LA LIGA (Dlx, 17/10/2026): sale de las fechas que ya viajan —nada nuevo que pesar—. El MVP de
+// cada jornada es el de más PTB (como lo cuentan las FMH), y con el PTB también la mejor batalla y la más pareja; sin
+// PTB (FZ League no lo publica) quedan la racha y las directas ────────────────────────────────────────────────────────
+// ⚠️ LOS 🎮 INVITADOS NO CUENTAN (no son de la liga: UKNOW salía MVP de FMH España), y un PTB muy lejos del resto de la
+// liga tampoco se compara: es otra escala (un veredicto que publicó la suma de los jurados en vez del promedio)
+const ptbOk = (v, tope) => v !== '' && v != null && Number.isFinite(Number(v)) && Number(v) > 0 && Number(v) <= tope;
+function numerosDe(L) {
+  const fs = L.fechas || [];
+  const orden = [];
+  for (let i = fs.length - 1; i >= 0; i--) for (const b of fs[i].b) orden.push([fs[i], b]);
+  const todos = [];
+  for (const f of fs) for (const b of f.b) for (const v of [b[4], b[5]]) if (ptbOk(v, Infinity)) todos.push(Number(v));
+  todos.sort((u, v) => u - v);
+  const tope = todos.length ? 2 * todos[Math.floor(todos.length / 2)] : Infinity;
+  const mvp = [];
+  let mejor = null, pareja = null;
+  const racha = {}, top = {}, dir = {};
+  for (const f of fs) {
+    let m = null;
+    for (const [a, b, g, , pa, pb, , , ex = ''] of f.b) {
+      if (!g) continue;
+      for (const [n, v, lado] of [[a, pa, 'a'], [b, pb, 'b']]) {
+        if (ex.includes(lado) || !ptbOk(v, tope)) continue;
+        if (!m || Number(v) > m[1]) m = [n, Number(v)];
+      }
+    }
+    if (m) mvp.push([tituloFecha(f), m[0], m[1]]);
+  }
+  for (const [f, [a, b, g, como, pa, pb, , , ex = '']] of orden) {
+    if (!g) continue;
+    if (!ex && ptbOk(pa, tope) && ptbOk(pb, tope)) {
+      const x = Number(pa), y = Number(pb);
+      if (!mejor || x + y > mejor[2]) mejor = [a, b, x + y, tituloFecha(f)];
+      const d = Math.abs(x - y);
+      if (!pareja || d < pareja[2]) pareja = [a, b, d, tituloFecha(f)];
+    }
+    const lg = g === a ? 'a' : 'b', lp = g === a ? 'b' : 'a';
+    const p = g === a ? b : a;
+    if (!ex.includes(lp)) racha[p] = 0;
+    if (ex.includes(lg)) continue;
+    racha[g] = (racha[g] || 0) + 1;
+    if (!top[g] || racha[g] > top[g]) top[g] = racha[g];
+    if (como === 'directa') dir[g] = (dir[g] || 0) + 1;
+  }
+  const max = (o) => Object.entries(o).sort((u, v) => v[1] - u[1])[0];
+  return { mvp, mejor, pareja, racha: max(top), directas: max(dir), ahora: max(racha) };
+}
+function Numeros({ L, h }) {
+  const N = useMemo(() => numerosDe(L), [L]);
+  const tarjetas = [];
+  if (N.mejor) tarjetas.push(['🔥', 'La batalla con más PTB', <>{h.nombre(N.mejor[0])} vs {h.nombre(N.mejor[1])}</>, ptbTx(Math.round(N.mejor[2] * 10) / 10) + ' PTB · ' + N.mejor[3]]);
+  if (N.pareja) tarjetas.push(['⚖️', 'La más pareja', <>{h.nombre(N.pareja[0])} vs {h.nombre(N.pareja[1])}</>, (N.pareja[2] ? ptbTx(Math.round(N.pareja[2] * 10) / 10) + ' de diferencia' : 'empataron en PTB') + ' · ' + N.pareja[3]]);
+  if (N.racha && N.racha[1] >= 2) tarjetas.push(['📈', 'La racha más larga', h.nombre(N.racha[0]), N.racha[1] + ' ganadas seguidas']);
+  if (N.ahora && N.ahora[1] >= 2 && (!N.racha || N.ahora[0] !== N.racha[0] || N.ahora[1] !== N.racha[1])) tarjetas.push(['⚡', 'En racha ahora', h.nombre(N.ahora[0]), N.ahora[1] + ' ganadas seguidas']);
+  if (N.directas) tarjetas.push(['🎯', 'Más directas', h.nombre(N.directas[0]), N.directas[1] + (N.directas[1] === 1 ? ' victoria directa' : ' victorias directas')]);
+  if (!tarjetas.length && !N.mvp.length) return <p className="pronto-p">Todavía no hay batallas con veredicto para sacar números.</p>;
+  return (
+    <div className="lpg-num">
+      {tarjetas.length ? (
+        <ul className="lpg-tarjetas">
+          {tarjetas.map(([ico, t, quien, extra]) => (
+            <li key={t}><span className="lpg-ico" aria-hidden="true">{ico}</span><small>{t}</small><b>{quien}</b><span>{extra}</span></li>
+          ))}
+        </ul>
+      ) : null}
+      {N.mvp.length ? (
+        <>
+          <h4 className="lg-st">El MVP de cada fecha</h4>
+          <ol className="lpg-mvp">
+            {N.mvp.map(([f, n, v]) => (
+              <li key={f}><small>{f}</small>{h.cara(n, 'cara dv-cara')}{h.nombre(n, 'lpg-mvp-n')}<b>{ptbTx(v)} PTB</b></li>
+            ))}
+          </ol>
+          <p className="lg-nota">El MVP es el de más PTB en una batalla de esa fecha, con el PTB que dijo cada veredicto.</p>
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+// ── 🧑‍⚖️ EL STAFF (Dlx, 17/10/2026): quién la organiza y quiénes la juzgan o la hostean. Sale de quién publica en sus
+// canales de anuncios y de veredictos (`ligas.staff_de()`); quien sólo juega no está ─────────────────────────────────────
+function Staff({ liga, L }) {
+  const st = L.staff || [];
+  const kDe = (k) => (k ? '#/r/' + encodeURIComponent(k) : '');
+  const fila = ([n, k, an, ver]) => (
+    <li key={n + k}>
+      {k ? <Cara liga={liga} k={k} nombre={n} cls="cara dv-cara" /> : <span className="cara dv-cara ini">{(limpio(n).slice(0, 1) || '?').toUpperCase()}</span>}
+      {k ? <a className="lpg-st-n" href={kDe(k)}>{limpio(n)}</a> : <span className="lpg-st-n">{limpio(n)}</span>}
+      <small>{[an ? an + (an === 1 ? ' anuncio' : ' anuncios') : '', ver ? ver + (ver === 1 ? ' veredicto' : ' veredictos') : ''].filter(Boolean).join(' · ')}</small>
+    </li>
+  );
+  const org = st.filter((x) => x[2] >= 2);
+  const jur = st.filter((x) => x[2] < 2 && x[3] >= 3);
+  return (
+    <div className="lpg-staff">
+      {org.length ? <><h4 className="lg-st">La organizan</h4><ul className="lpg-st">{org.map(fila)}</ul></> : null}
+      {jur.length ? <><h4 className="lg-st">Jurados y hosts</h4><ul className="lpg-st">{jur.map(fila)}</ul></> : null}
+      <p className="lg-nota">Sale de quién publica en sus canales de anuncios y de veredictos de los últimos dos meses.</p>
+    </div>
+  );
+}
+
+// ── 🖼️ LOS FLYERS (Dlx, 17/10/2026: «más flyers»): los afiches de la temporada, re-alojados por el ciclo. Un toque abre
+// el grande, sin salir de la página ────────────────────────────────────────────────────────────────────────────────────
+function Flyers({ liga, L }) {
+  const [abierto, setAbierto] = useState(null);
+  const cerrar = useRef(null);
+  useEffect(() => {
+    if (!abierto) return undefined;
+    if (cerrar.current) cerrar.current.focus();
+    const k = (e) => { if (e.key === 'Escape') setAbierto(null); };
+    window.addEventListener('keydown', k);
+    return () => window.removeEventListener('keydown', k);
+  }, [abierto]);
+  const fl = L.flyers || [];
+  return (
+    <div className="lpg-flyers">
+      <ul className="lpg-gal">
+        {fl.map((F) => (
+          <li key={F.u}>
+            <button type="button" onClick={() => setAbierto(F)} aria-label={'Ver grande: ' + (F.tit ? limpio(F.tit) : 'el flyer')}>
+              <img alt="" src={F.u} width={F.w || undefined} height={F.h || undefined} loading="lazy" decoding="async" />
+            </button>
+            <small>{F.tit ? <b>{limpio(F.tit)}</b> : null}{liga.cuando(F.t)}</small>
+          </li>
+        ))}
+      </ul>
+      {abierto ? (
+        <div className="lgt-zoom" role="dialog" aria-modal="true" aria-label={abierto.tit ? limpio(abierto.tit) : 'El flyer'} onClick={() => setAbierto(null)}>
+          <img alt={abierto.tit ? limpio(abierto.tit) : 'El flyer de ' + L.n} src={abierto.u} />
+          <span className="lpg-zoom-b" onClick={(e) => e.stopPropagation()}>
+            {abierto.link ? <a className="btn borde2 chico" href={abierto.link} target="_blank" rel="noopener noreferrer">En Discord ↗</a> : null}
+            <a className="btn borde2 chico" href={abierto.u} target="_blank" rel="noopener noreferrer">Abrir la imagen</a>
+            <button type="button" ref={cerrar} className="btn borde2 chico" onClick={() => setAbierto(null)}>Cerrar</button>
+          </span>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+// ── 🎬 LOS VIDEOS (Dlx, 17/10/2026): las batallas de la liga que subieron los canales de los socios (`bot/videos.py`), de
+// esta temporada y de las anteriores ─────────────────────────────────────────────────────────────────────────────────
+function Videos({ L }) {
+  return (
+    <ul className="lpg-vids">
+      {(L.vids || []).map(([vid, tit]) => (
+        <li key={vid}>
+          <button type="button" onClick={() => abrirVideo({ vid, tit, link: 'https://www.youtube.com/watch?v=' + vid })}>
+            <span className="lpg-vid-m"><Miniatura vid={vid} cls="lpg-vid-img" /><i aria-hidden="true">▶</i></span>
+            <b>{tit}</b>
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// ── 📖 CÓMO FUNCIONA Y EL HISTORIAL (Dlx, 17/10/2026): lo que publicó su servidor (`datos/ligas_info.json`) y los
+// campeones: los de antes y el de esta temporada, si Dlx ya lo confirmó (el Salón) ─────────────────────────────────────
+function Como({ L, h }) {
+  const inf = L.info || {};
+  const hist = [...(inf.hist || [])];
+  if (L.fin && L.fin.c) hist.push(['Esta temporada', L.fin.c, 'campeón']);
+  return (
+    <div className="lpg-comof">
+      {(inf.fmt || []).length ? <ul className="lpg-reglas">{inf.fmt.map((x) => <li key={x}>{x}</li>)}</ul> : null}
+      {hist.length ? (
+        <>
+          <h4 className="lg-st">Los campeones</h4>
+          <ol className="lpg-hist">
+            {hist.slice().reverse().map(([t, c, nota]) => (
+              <li key={t + c}><small>{t}</small><b>🏆 {h.nombre(c)}</b>{nota ? <span>{nota}</span> : null}</li>
+            ))}
+          </ol>
+        </>
+      ) : null}
+      {inf.fuente ? <p className="lg-nota">{inf.fuente}, relevado por la Liga. Si algo cambió, lo que vale es lo que diga su servidor.</p> : null}
+    </div>
+  );
+}
+
+// ── 🔔 SEGUIR LA LIGA (Dlx, 17/10/2026): la campana avisa cuando hay resultados o una fecha nueva (`ligasSeguidas()` en
+// bot/avisos.js). Con Discord; las que seguís se piden una vez y se recuerdan mientras la página está abierta ─────────────
+const MIAS = { ligas: null, celular: false, pedido: false, oyentes: new Set() };
+function pedirMias() {
+  if (MIAS.pedido || !window.conCuenta || !window.DC) return;
+  MIAS.pedido = true;
+  window.conCuenta('/api/avisos/mis-ligas', {}).then((j) => {
+    if (j && j.ok) { MIAS.ligas = j.ligas || []; MIAS.celular = !!j.celular; MIAS.oyentes.forEach((f) => f()); } else MIAS.pedido = false;
+  }).catch(() => { MIAS.pedido = false; });
+}
+function SeguirLiga({ L }) {
+  const [, setN] = useState(0);
+  const [va, setVa] = useState(false);
+  const [err, setErr] = useState('');
+  useEffect(() => {
+    const f = () => setN((n) => n + 1);
+    MIAS.oyentes.add(f);
+    pedirMias();
+    return () => { MIAS.oyentes.delete(f); };
+  }, []);
+  const sigo = !!(MIAS.ligas && MIAS.ligas.includes(L.id));
+  const tocar = () => {
+    if (va) return;
+    if (!window.conCuenta) { setErr('No pude. Probá de nuevo en un rato.'); return; }
+    setVa(true);
+    setErr('');
+    window.conCuenta('/api/avisos/liga-seguir', { liga: L.id, on: !sigo }, 's').then((j) => {
+      setVa(false);
+      if (j === null) return;
+      if (j && j.ok) { MIAS.ligas = j.ligas || []; MIAS.celular = !!j.celular; MIAS.pedido = true; MIAS.oyentes.forEach((f) => f()); return; }
+      setErr((window.errorCuenta && window.errorCuenta(j && j.error)) || (j && j.error === 'tope' ? 'Ya seguís muchas ligas.' : 'No pude. Probá de nuevo en un rato.'));
+    }).catch(() => { setVa(false); setErr('No pude. Probá de nuevo en un rato.'); });
+  };
+  return (
+    <span className="lpg-seguir">
+      <button type="button" className={'btn ' + (sigo ? 'borde2' : 'verde')} aria-pressed={sigo} disabled={va} onClick={tocar}>
+        {va ? '…' : sigo ? '✓ La seguís' : '🔔 Seguir la liga'}
+      </button>
+      {sigo ? <small>{MIAS.celular ? 'Te avisamos en la campana y al celular cuando hay resultados o una fecha nueva.' : 'Te avisamos en la campana de arriba. Para que llegue al celular, activá los avisos en Mi cuenta → Avisos de eventos.'}</small> : null}
+      {err ? <small role="status">{err}</small> : null}
+    </span>
+  );
+}
+
+// ── 🗂️ LAS PESTAÑAS DE CADA LIGA (Dlx, 17/10/2026, a «¿qué le sumamos?»: las ocho). Una sola página larga con todo
+// sería demasiado: van en pestañas, y cada una sólo si tiene con qué ────────────────────────────────────────────────────
+const PEST = [['tabla', 'La tabla'], ['fechas', 'Fechas'], ['numeros', 'Números'], ['staff', 'Staff'], ['flyers', 'Flyers'],
+  ['videos', 'Videos'], ['como', 'Cómo funciona']];
+function hay(L, k) {
+  return k === 'tabla' ? true : k === 'fechas' ? (L.fechas || []).length > 0 : k === 'numeros' ? (L.fechas || []).some((f) => f.b.some((b) => b[2]))
+    : k === 'staff' ? (L.staff || []).some((x) => x[2] >= 2 || x[3] >= 3) : k === 'flyers' ? (L.flyers || []).length > 0
+      : k === 'videos' ? (L.vids || []).length > 0 : k === 'como' ? !!(L.info || (L.fin && L.fin.c)) : false;
+}
+
 // ── 🏟️ EL PERFIL DE CADA LIGA (`#/ligas/<id>`): su servidor, cómo va, el podio, el torneo y las otras ──────────────────
 function LigaPerfil({ liga, id }) {
   const D = liga.d.ligas;
   const det = useDetalle(D ? D.t : null);
   useEffect(() => { window.scrollTo(0, 0); }, [id]);
+  // 🗂️ la pestaña, ANTES de cualquier `return`: un hook después de uno se rompe cuando la liga todavía no llegó
+  const [tab, setTab] = useState('tabla');
+  useEffect(() => { setTab('tabla'); }, [id]);
   const ls = liga.ligas();
   const L = conDetalle(ls.find((x) => x.id === id), det);
   if (!L) return <LigasInicio liga={liga} falta={id} />;
@@ -425,6 +697,8 @@ function LigaPerfil({ liga, id }) {
   const ultima = L.ult_t ? diaDe(liga.diaClave(L.ult_t)).replace(/^\S+ (\d+) de (\S+)$/, (m, d, mes) => d + '/' + String(MESES.indexOf(mes) + 1).padStart(2, '0')) : '';
   // las de su servidor primero
   const otras = ls.filter((x) => x.id !== L.id).sort((a, b) => (b.sv === L.sv) - (a.sv === L.sv));
+  const pest = PEST.filter(([k]) => hay(L, k));
+  const tv = pest.some(([k]) => k === tab) ? tab : 'tabla';
   return (
     <>
       <div className={'escena lgp-esc lgx-' + est.c} style={{ '--mo-c': color, '--mo-o': 0.9, ...silueta(L.sv, color) }}>
@@ -436,7 +710,8 @@ function LigaPerfil({ liga, id }) {
             <h1 className="hero-ev largo">{L.n}</h1>
             <p className="hero-p lgp-p0"><span className={'lgp-est lgx-' + est.c}>{est.largo}</span> · de <a href={'#/sv/' + sig}>{s.nombre || sig}</a></p>
             <div className="hero-acc">
-              {L.link ? <a className="btn verde" href={L.link} target="_blank" rel="noopener noreferrer">Su tabla en Discord ↗</a> : null}
+              <SeguirLiga key={L.id} L={L} />
+              {L.link ? <a className="btn borde" href={L.link} target="_blank" rel="noopener noreferrer">Su tabla en Discord ↗</a> : null}
               <Compartir cls="btn borde" url={enlace(aLiga(L))} texto={'La tabla de ' + L.n + ' en la Liga Global'} />
             </div>
           </div>
@@ -449,10 +724,27 @@ function LigaPerfil({ liga, id }) {
         {L.fin && L.fin.c ? <p className="lgp-campeon"><Ico n="copa" t={18} /> Campeón: {h.nombre(L.fin.c, 'lgp-campeon-n')}</p> : null}
         <Podio3 L={L} h={h} />
       </div>
-      <Sec id="lgp-tabla" titulo="La tabla" extra="lgp-sec"><Torneo liga={liga} L={L} h={h} /></Sec>
-      {L.asc && (L.asc.filas || []).length ? (
-        <Sec id="lgp-asc" titulo={'Ascenso a la ' + L.asc.n} extra="lgp-sec"><Ascenso A={L.asc} h={h} /></Sec>
+      {pest.length > 1 ? (
+        <nav className="lpg-tabs" role="tablist" aria-label={'Lo de ' + L.n}>
+          {pest.map(([k, t]) => (
+            <button key={k} type="button" role="tab" aria-selected={tv === k} className={tv === k ? 'on' : ''} onClick={() => setTab(k)}>{t}</button>
+          ))}
+        </nav>
       ) : null}
+      {tv === 'tabla' ? (
+        <>
+          <Sec id="lgp-tabla" titulo="La tabla" extra="lgp-sec"><Torneo liga={liga} L={L} h={h} /></Sec>
+          {L.asc && (L.asc.filas || []).length ? (
+            <Sec id="lgp-asc" titulo={'Ascenso a la ' + L.asc.n} extra="lgp-sec"><Ascenso A={L.asc} h={h} /></Sec>
+          ) : null}
+        </>
+      ) : null}
+      {tv === 'fechas' ? <Sec id="lgp-fechas" titulo="Las fechas" extra="lgp-sec"><Fechas liga={liga} L={L} h={h} /></Sec> : null}
+      {tv === 'numeros' ? <Sec id="lgp-numeros" titulo="Los números" extra="lgp-sec"><Numeros L={L} h={h} /></Sec> : null}
+      {tv === 'staff' ? <Sec id="lgp-staff" titulo="El staff" extra="lgp-sec"><Staff liga={liga} L={L} /></Sec> : null}
+      {tv === 'flyers' ? <Sec id="lgp-flyers" titulo="Los flyers" extra="lgp-sec"><Flyers liga={liga} L={L} /></Sec> : null}
+      {tv === 'videos' ? <Sec id="lgp-videos" titulo="Los videos" extra="lgp-sec"><Videos L={L} /></Sec> : null}
+      {tv === 'como' ? <Sec id="lgp-como" titulo="Cómo funciona" extra="lgp-sec"><Como L={L} h={h} /></Sec> : null}
       {otras.length ? (
         <Sec id="lgp-otras" titulo="Las otras ligas" enlace="Todas" href="#/ligas">
           <nav className="lgp-otras" aria-label="Las otras ligas">

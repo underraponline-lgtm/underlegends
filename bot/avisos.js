@@ -2330,6 +2330,8 @@ const RUTAS = {
   '/avisos/encuestas': 'GET', '/avisos/votar': 'POST',
   // 🗳️ «¿quién gana la liga?» (14/10/2026): cuántos votos lleva cada uno, y votar. Ver `validarVotoLiga()` y `ligaVotar()`
   '/avisos/ligas-votos': 'GET', '/avisos/liga-votar': 'POST',
+  // 🔔 seguir una liga (17/10/2026): la campana avisa cuando hay resultados o una fecha nueva. Ver `ligaSeguir()`
+  '/avisos/liga-seguir': 'POST', '/avisos/mis-ligas': 'POST',
   // 🔑 un error en una llave (Dlx, 28/09/2026: «ok»): ver `validarReporte()` y `reportar()`
   '/avisos/reportar': 'POST',
   // 🔑 el precio por cabeza: ver `validarPrecio()`, `precio()` y `billetera()`
@@ -2517,6 +2519,12 @@ export async function textoDeImagen(env, buf, cual = 'afiche') {
 export const SIGUE_TOPE = 200;
 //: de cuántas horas atrás se avisa una publicación a quien sigue a esa persona
 export const SIGUE_HORAS = 24;
+//: 🔔 el id de una liga (`bot/ligas.py`: `fmh-espana`, `fzl`)
+export const LIGA_ID = /^[a-z0-9][a-z0-9-]{1,39}$/;
+//: cuántas ligas puede seguir una persona (hoy son 13: alcanza para todas)
+export const LIGAS_SEGUIR_TOPE = 30;
+//: cuántos envíos al celular por vuelta del vigía, como `TOPE_SEGUIDOS`
+export const TOPE_LIGAS = 8;
 //: cuántos envíos por invocación del vigía: comparte los 50 subpedidos
 export const TOPE_SEGUIDOS = 8;
 // ⭐ «ALGUIEN TE SIGUE» (Dlx, 02/10/2026: «que le lleguen las notificaciones, además de cuando te sigan…»): a quien
@@ -4041,6 +4049,24 @@ export async function rutaAvisos(req, env, ruta) {
       headers: { 'content-type': 'application/json' },
     });
   }
+  // 🔔 SEGUIR UNA LIGA, Y LAS QUE SEGUÍS: quién lo dice Discord (o la sesión), como votar
+  if (ruta === '/avisos/liga-seguir' || ruta === '/avisos/mis-ligas') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    const t = String((d && d.token) || '');
+    if (!d || typeof d !== 'object' || (t && !/^[A-Za-z0-9._-]{10,300}$/.test(t))
+        || (ruta === '/avisos/liga-seguir' && (!LIGA_ID.test(String(d.liga || '')) || typeof d.on !== 'boolean'))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
+      method: 'POST', body: JSON.stringify({ quien: q.id, liga: d.liga, on: d.on }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🔑 UN ERROR EN UNA LLAVE: quién lo dice Discord; qué, la persona
   if (ruta === '/avisos/reportar') {
     const crudo = await req.text();
@@ -4947,6 +4973,10 @@ export class Avisos {
         "t INTEGER NOT NULL, de TEXT NOT NULL DEFAULT '', creada INTEGER NOT NULL DEFAULT 0, " +
         'PRIMARY KEY (quien, a))');
       this.sql.exec('CREATE INDEX IF NOT EXISTS sigue_a ON sigue (a)');
+      // 🔔 LAS LIGAS QUE SIGUE CADA UNO (17/10/2026): `t` es desde cuándo, para no avisarle de lo de antes
+      this.sql.exec('CREATE TABLE IF NOT EXISTS liga_sigue (quien TEXT NOT NULL, liga TEXT NOT NULL, t INTEGER NOT NULL, ' +
+        'PRIMARY KEY (quien, liga))');
+      this.sql.exec('CREATE INDEX IF NOT EXISTS liga_sigue_l ON liga_sigue (liga)');
       // 🎬 TUS BATALLAS EN VIDEO (12/10/2026): cada pedido y cómo terminó, los reportes («esto no es suyo»), lo que
       // cada uno quitó de su perfil y lo que Dlx aprobó o no. Ver `misVideos()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS videos_pedidos (id INTEGER PRIMARY KEY AUTOINCREMENT, quien TEXT NOT NULL, ' +
@@ -5287,6 +5317,8 @@ export class Avisos {
       if (ruta === '/reportar') return await this.reportar(d);
       if (ruta === '/votar') return this.votar(d);
       if (ruta === '/liga-votar') return json(this.ligaVotar(d));
+      if (ruta === '/liga-seguir') return json(this.ligaSeguir(d));
+      if (ruta === '/mis-ligas') return json(this.misLigas(d));
       if (ruta === '/seguir') return this.seguir(d);
       if (ruta === '/sigo') return this.sigo(d);
       if (ruta === '/aplaudir') return this.aplaudir(d);
@@ -5699,6 +5731,10 @@ export class Avisos {
     // 🔑 y lo que le pasó a quien seguís. Nunca frena al vigía: ver `seguidos()`
     try { await this.seguidos(ahora); } catch (e) {
       this.guardar('seguidos', { t: ahora, error: String(e).slice(0, 120) });
+    }
+    // 🔔 y lo nuevo de las ligas que sigue cada uno. Nunca frena al vigía: ver `ligasSeguidas()`
+    try { await this.ligasSeguidas(ahora); } catch (e) {
+      this.guardar('ligas_seguidas', { t: ahora, error: String(e).slice(0, 120) });
     }
     // 🙈 y la lista de fotos ocultas, si quedó pendiente (ver `espejarOcultas()`)
     if (this.leer('ocultas_pend')) {
@@ -7869,6 +7905,7 @@ export class Avisos {
     this.sql.exec('DELETE FROM sesiones WHERE quien = ?', String(d.quien));
     // 🔑 Y A QUIÉN SEGUÍA, Y QUÉ SERVIDOR ELIGIÓ: también van con su Discord ID
     const s = this.sql.exec('DELETE FROM sigue WHERE quien = ?', String(d.quien));
+    this.sql.exec('DELETE FROM liga_sigue WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM servidor WHERE quien = ?', String(d.quien));
     // 🔥 y los días de su racha y lo que jugó: también van con su Discord ID
     this.sql.exec('DELETE FROM activo WHERE quien = ?', String(d.quien));
@@ -8780,6 +8817,77 @@ export class Avisos {
     return enviados;
   }
 
+  // ── 🔔 seguir una liga (Dlx, 17/10/2026: «Seguir la liga») ──────────────────────────────────────────────────────
+  /** Seguir o dejar una liga: `{quien, liga, on}`. Devuelve las que sigue y cuántos siguen esa. */
+  ligaSeguir(d) {
+    const quien = String(d.quien || ''), liga = String(d.liga || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !LIGA_ID.test(liga)) return { error: 'faltan datos' };
+    if (d.on) {
+      const n = this.sql.exec('SELECT COUNT(*) AS n FROM liga_sigue WHERE quien = ?', quien).toArray()[0].n;
+      if (n >= LIGAS_SEGUIR_TOPE) return { error: 'tope' };
+      this.sql.exec('INSERT OR IGNORE INTO liga_sigue (quien, liga, t) VALUES (?, ?, ?)', quien, liga, Date.now());
+    } else {
+      this.sql.exec('DELETE FROM liga_sigue WHERE quien = ? AND liga = ?', quien, liga);
+    }
+    return Object.assign(this.misLigas({ quien }), {
+      n: this.sql.exec('SELECT COUNT(*) AS n FROM liga_sigue WHERE liga = ?', liga).toArray()[0].n });
+  }
+
+  /** Las ligas que sigue alguien, y si tiene un dispositivo vinculado (para decirle si le llega al celular). */
+  misLigas(d) {
+    const quien = String(d.quien || '');
+    if (!/^[0-9]{5,25}$/.test(quien)) return { error: 'faltan datos' };
+    return {
+      ok: true, ligas: this.sql.exec('SELECT liga FROM liga_sigue WHERE quien = ? ORDER BY t', quien).toArray().map((r) => r.liga),
+      celular: !!this.sql.exec('SELECT 1 AS x FROM subs WHERE quien = ? LIMIT 1', quien).toArray()[0],
+    };
+  }
+
+  /**
+   * 🔔 LO NUEVO DE LAS LIGAS QUE SEGUÍS: a la campana (la bandeja) y al celular si lo vinculó. Lo deja el ciclo en
+   * `ligas:nov` (`bot/ligas.py`, `para_nov()`): un aviso por liga y por corrida con todos sus resultados nuevos, y uno
+   * por fecha anunciada. Como `seguidos()`: cada cinco minutos (o al minuto si quedó algo), una vez por novedad y
+   * persona (`hechos`), sólo a quien la seguía desde antes, y con tope por vuelta. Nunca por DM.
+   */
+  async ligasSeguidas(ahora) {
+    if (this.pausada()) return 0;
+    if (!this.sql.exec('SELECT 1 AS x FROM liga_sigue LIMIT 1').toArray()[0]) return 0;
+    const previo = this.leer('ligas_seguidas') || {};
+    if (!previo.quedan && Math.floor(ahora / MIN) % 5 !== 0) return 0;
+    let items = [];
+    try { items = (JSON.parse((await this.env.KV.get('ligas:nov')) || '{}').items) || []; } catch (e) { items = []; }
+    let pedidos = 0, enviados = 0, quedan = 0, sinVinculo = 0, bandeja = 0;
+    for (const it of items) {
+      const t = Date.parse(it.t || '');
+      if (!it.id || !LIGA_ID.test(String(it.liga || '')) || !(t > ahora - 48 * HORA)) continue;
+      const fs = this.sql.exec('SELECT quien FROM liga_sigue WHERE liga = ? AND t <= ?', it.liga, t).toArray();
+      for (const f of fs) {
+        const id = 'lg:' + it.id + ':' + f.quien;
+        if (this.sql.exec('SELECT id FROM hechos WHERE id = ?', id).toArray()[0]) continue;
+        const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', f.quien).toArray();
+        if (pedidos + subs.length > TOPE_LIGAS && pedidos) { quedan++; continue; }
+        this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
+        this.aBandeja(f.quien, 'lg:' + it.id, 'liga', String(it.titulo || '').slice(0, 120), String(it.cuerpo || '').slice(0, 240),
+          String(it.url || ''), '', t);
+        bandeja++;
+        if (!subs.length) { sinVinculo++; continue; }
+        pedidos += subs.length;
+        const cuerpo = cuerpoPersonal({ id: 'lg' + it.id, titulo: it.titulo, cuerpo: it.cuerpo, url: it.url });
+        const estados = await Promise.all(subs.map((sx) => empujar(sx, cuerpo,
+          { ttl: 24 * 3600, topic: ('lg' + it.id).replace(/[^A-Za-z0-9_-]/g, '').slice(0, 32) }, this.env, new Map())));
+        let llego = 0, reintentar = false;
+        estados.forEach((e, i) => {
+          if (e >= 200 && e < 300) { enviados++; llego++; }
+          else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
+          else if (e === 0 || e === 429 || e >= 500) reintentar = true;
+        });
+        if (reintentar && !llego) this.sql.exec('DELETE FROM hechos WHERE id = ?', id);
+      }
+    }
+    this.guardar('ligas_seguidas', { t: ahora, novedades: items.length, bandeja, enviados, sin_vinculo: sinVinculo, quedan });
+    return bandeja;
+  }
+
   /**
    * ⭐ ALGUIEN TE SIGUE, AL CELULAR: a quien siguen, en los dispositivos que vinculó, con su nombre si es uno solo y es
    * de la Liga (`avisoSeguidores()`). Cada cinco minutos —o al minuto si quedó algo—, después de `SEGUIDOR_ESPERA` y
@@ -9034,7 +9142,7 @@ export class Avisos {
     const tablas = ['subs', 'votos', 'liga_voto', 'tienda', 'precios', 'sigue', 'servidor', 'activo', 'jugo_temp', 'foto_oculta',
       'reportes', 'aplausos', 'pase_hecho', 'pase_vivo', 'pase_log', 'pase_hito', 'xp_log', 'promo_visto', 'promo_extra',
       'uso', 'bandeja', 'fondos', 'fotos_carta', 'postulaciones', 'sigue_org', 'org_cola', 'videos_pedidos',
-      'videos_reportes', 'agenda', 'cambios_dia', 'apostado', 'qg_voto', 'roles_manual'];
+      'videos_reportes', 'agenda', 'cambios_dia', 'apostado', 'qg_voto', 'roles_manual', 'liga_sigue'];
     const movidas = {}, fallas = [];
     for (const t of tablas) {
       try {

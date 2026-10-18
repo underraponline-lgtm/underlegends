@@ -69,36 +69,36 @@ SALIDA = os.path.join(BASE, 'datos', 'ligas.json')
 #: domingo». Relevado el 14/10/2026: las FMH publican un afiche por batalla en «Anuncios-<liga>» (1080×1350); DDF anuncia
 #: en «Noticias» (World Series con afiche; Titans y Perú, sólo texto: sin flyer); Snake Rap, en «enfrentamientos»
 LIGAS = {
-    'fmh-albiceleste': {'n': 'FMH Albiceleste', 'sv': 'URBF', 'fam': 'U', 'ver': '1511968616025952347',
+    'fmh-albiceleste': {'n': 'FMH Albiceleste', 'sv': 'URBF', 'fam': 'U', 'vre': r'(?:FMH|MASTER\s+HONGO).*ALBICELESTE|ALBICELESTE.*(?:FMH|MASTER\s+HONGO)', 'ver': '1511968616025952347',
                         'tabla': '1511968417412939897', 'an': '1511968150218866728', 'cc': 'AR'},
-    'fmh-andes': {'n': 'FMH Andes', 'sv': 'URBF', 'fam': 'U', 'ver': '1511969253325017178',
+    'fmh-andes': {'n': 'FMH Andes', 'sv': 'URBF', 'fam': 'U', 'vre': r'(?:FMH|MASTER\s+HONGO).*ANDES|ANDES.*(?:FMH|MASTER\s+HONGO)', 'ver': '1511969253325017178',
                   'tabla': '1511969122961850448', 'an': '1511969014782365846', 'cc': 'CL'},
-    'fmh-carimex': {'n': 'FMH Carimex', 'sv': 'URBF', 'fam': 'U', 'ver': '1511969585770004532',
+    'fmh-carimex': {'n': 'FMH Carimex', 'sv': 'URBF', 'fam': 'U', 'vre': r'(?:FMH|MASTER\s+HONGO).*CARIMEX|CARIMEX.*(?:FMH|MASTER\s+HONGO)', 'ver': '1511969585770004532',
                     'tabla': '1511969454794477598', 'an': '1511969434531528814', 'cc': 'MX'},
-    'fmh-tricolor': {'n': 'FMH Tricolor', 'sv': 'URBF', 'fam': 'U', 'ver': '1511973074973626428',
+    'fmh-tricolor': {'n': 'FMH Tricolor', 'sv': 'URBF', 'fam': 'U', 'vre': r'(?:FMH|MASTER\s+HONGO).*TRICOLOR|TRICOLOR.*(?:FMH|MASTER\s+HONGO)', 'ver': '1511973074973626428',
                      'tabla': '1511972739215261917', 'an': '1511972607338221680', 'cc': 'CO'},
-    'fmh-under': {'n': 'FMH Under', 'sv': 'URBF', 'fam': 'U', 'ver': '1527565480003637268',
+    'fmh-under': {'n': 'FMH Under', 'sv': 'URBF', 'fam': 'U', 'vre': r'(?:FMH|MASTER\s+HONGO).*UNDER|UNDER.*(?:FMH|MASTER\s+HONGO)', 'ver': '1527565480003637268',
                   'tabla': '1527565426622726236', 'an': '1527564677641404487', 'cc': 'VE'},
-    'fmh-espana': {'n': 'FMH España', 'sv': 'URBF', 'fam': 'U', 'ver': '1511973539438399590',
+    'fmh-espana': {'n': 'FMH España', 'sv': 'URBF', 'fam': 'U', 'vre': r'(?:FMH|MASTER\s+HONGO).*ESPA[NÑ]A|ESPA[NÑ]A.*(?:FMH|MASTER\s+HONGO)', 'ver': '1511973539438399590',
                    'tabla': '1511973442033946644', 'an': '1512167830919839844', 'cc': 'ES'},
-    'fms-titans': {'n': 'FMS Titans', 'sv': 'DDF', 'fam': 'D1', 'ver': '1551345471086272542',
+    'fms-titans': {'n': 'FMS Titans', 'sv': 'DDF', 'fam': 'D1', 'vre': r'TITANS', 'ver': '1551345471086272542',
                    'tabla': '1550947722385694871', 'an': '1551426096665337896', 'cc': 'PE'},
-    'fms-peru': {'n': 'FMS Perú', 'sv': 'DDF', 'fam': 'D2', 'ver': '1556501721004376105',
+    'fms-peru': {'n': 'FMS Perú', 'sv': 'DDF', 'fam': 'D2', 'vre': r'FMS\s+PER[UÚ]', 'ver': '1556501721004376105',
                  'tabla': '1556501553609834557', 'an': '1556501776272724078', 'cc': 'PE'},
-    'fms-tricolor': {'n': 'FMS Tricolor', 'sv': 'DDF', 'fam': 'D2', 'ver': '1557529352529387600',
+    'fms-tricolor': {'n': 'FMS Tricolor', 'sv': 'DDF', 'fam': 'D2', 'vre': r'FMS\s+TRICOLOR', 'ver': '1557529352529387600',
                      'tabla': '1557528234885779587', 'an': '1557529416605761557', 'cc': 'CO'},
-    'fms-world-series': {'n': 'FMS World Series', 'sv': 'DDF', 'fam': 'D2', 'ver': '1559218872547283096',
+    'fms-world-series': {'n': 'FMS World Series', 'sv': 'DDF', 'fam': 'D2', 'vre': r'FMS\s+WORLD\s+SERIES', 'ver': '1559218872547283096',
                          'tabla': '1559100558487584838', 'an': '1559219024947183726', 'cc': 'CO'},
-    'snake-generations': {'n': 'Snake League Generations', 'sv': 'SR', 'fam': 'S', 'ver': '1167906700452446218',
+    'snake-generations': {'n': 'Snake League Generations', 'sv': 'SR', 'fam': 'S', 'vre': r'SNAKE\s+LEAGUE', 'ver': '1167906700452446218',
                           'tabla': '1117080676416638977', 'emoji': 'snkliga', 'an': '1117081139702665236', 'cc': 'AR'},
-    'snake-new-chapter': {'n': 'Snake New Chapter', 'sv': 'SR', 'fam': 'S', 'ver': '1167906700452446218',
+    'snake-new-chapter': {'n': 'Snake New Chapter', 'sv': 'SR', 'fam': 'S', 'vre': r'NEW\s+CHAPTER', 'ver': '1167906700452446218',
                           'tabla': '1544074821506437140', 'emoji': 'newchapter', 'an': '1117081139702665236',
                           'cc': 'AR'},
     # 🔱 FRZ entró a la Liga el 14/10/2026 y Dlx decidió que su FZ LEAGUE va a Ligas, como las FMH. No tiene veredicto
     # por batalla: su canal «resultados» publica cada jornada entera ya cerrada («X VENCE DE MANERA DIRECTA A Y»), así
     # que `ver` es ese canal. `tit`: el encabezado de lo suyo (el mismo canal trae la FMS World Series de FRZ), y
     # `reemplaza`: se queda sólo la temporada más nueva, no se suma a lo guardado (cuando arranque la 17, la 16 se va)
-    'fzl': {'n': 'FZ League', 'sv': 'FRZ', 'fam': 'F', 'ver': '961680549712396408', 'tabla': '845072946829721701',
+    'fzl': {'n': 'FZ League', 'sv': 'FRZ', 'fam': 'F', 'vre': r'FZ\s*LEAGUE|\bFZL\b', 'ver': '961680549712396408', 'tabla': '845072946829721701',
             'an': '838599987280609300', 'cc': 'PE', 'tit': r'\bFZ\s+LEAGUE\b|\bFREESTYLE\s+ZONE\s+LEAGUE\b',
             'reemplaza': True},
 }
@@ -109,10 +109,17 @@ CIERRA_DIAS = 21
 CLAVE_KV = 'ligas:votar'
 #: 🖼️ el flyer re-alojado: a qué ancho se achica y con qué calidad (lo más grande que lo dibuja la página son ~520 px)
 ANCHO_FLYER, CALIDAD_FLYER = 720, 82
-#: cuántos mensajes del canal de anuncios se leen por corrida (uno solo pedido: el flyer y la fecha están arriba)
-ANUNCIOS_LEER = 50
-#: cuántas fechas (jornadas) de cada liga viajan a la página, las más nuevas
-FECHAS_WEB = 10
+#: cuántos mensajes del canal de anuncios se leen por corrida (un solo pedido: los flyers, la fecha y quién organiza)
+ANUNCIOS_LEER = 100
+#: cuántas fechas (jornadas) de cada liga viajan a la página, las más nuevas (van en el detalle, no en el lobby)
+FECHAS_WEB = 40
+#: 🖼️ cuántos afiches de cada liga viajan a la galería, y cuántos nuevos se suben a R2 por corrida (la primera vez son
+#: muchos: así entran de a poco y la corrida no se alarga)
+FLYERS_WEB, FLYERS_SUBIR = 12, 4
+#: 🧑‍⚖️ cuántos del staff de cada liga, y cuántos días sigue alguien en la lista sin publicar en sus canales
+STAFF_WEB, STAFF_DIAS = 12, 60
+#: 🔔 cuánto dura una novedad para «Seguir la liga» (lo que lee el vigía de `bot/avisos.js`)
+NOV_HORAS = 48
 #: los puntos de la tabla: directa 3 y 0; réplica 2 y 1 (así puntúan las FMH y Snake: «+3 directo; en réplica +2 el
 #: ganador y +1 el perdedor»)
 PUNTOS = {'directa': (3, 0), 'replica': (2, 1)}
@@ -204,6 +211,12 @@ def marca_replica(linea):
 GANA = re.compile(r'^\W*(.+?)\s+GANA\s+(DIRECTO|DIRECTA|EN\s+(?:LA\s+)?R[EÉ]PLICA)', re.I)
 POR_PUNTOS = re.compile(r'^#+\s*(.+?)\s+POR\s+([\d]+(?:[.,]\d+)?)\s+PUNTOS?\b', re.I)
 PTB_LINEA = re.compile(r'^\W*(.+?)\s*:\s*(\d+(?:[.,]\d+)?)\s*(?:\(\s*[\d.,]+\s*\))?\s*\**\s*(\+\s*[0-3])?', re.I)
+#: 📊 el PTB de un lado: «ZIGNOS 🇩🇴 : 36.5 (109.5)» (el total entre paréntesis, si está) o «CINEXFILO 🇻🇪: 117 +2»
+PTB_PAR = re.compile(r'^\W*(.+?)\s*:\s*(\d+(?:[.,]\d+)?)\s*(?:\(\s*(\d+(?:[.,]\d+)?)\s*\))?', re.I)
+
+
+def _num(x):
+    return float(str(x).replace(',', '.'))
 
 
 def _u(msgs):
@@ -246,6 +259,24 @@ def _u_cierre(texto, bats):
             if all(_quien(n, b['a'], b['b']) for n in nombres if n):
                 return b
         return None
+    # 📊 el PTB de cada lado, si el mensaje lo dice (para los números de la liga: el MVP de cada jornada, la mejor
+    # batalla). No decide nada: quién ganó sale de los cierres de abajo.
+    # ⚠️ EN LA ESCALA DEL PROMEDIO DE LOS JURADOS: «ZIGNOS: 36.5 (109.5)» es 36.5 —el promedio; entre paréntesis, la
+    # suma de los tres—, y el «PTB TOTAL» es la suma, así que va dividido 3. Mezclar las dos escalas ponía a una batalla
+    # de 183 «PTB» arriba de todas en Números (FMH España, 17/10/2026)
+    pares = []
+    total = bool(re.search(r'PTB\s+TOTAL', p, re.I))
+    for l in lineas:
+        mm = PTB_PAR.match(EMOJI.sub(' ', _plano(l)).replace('**', ''))
+        if mm and not re.search(r'PTB|GANA|TOTAL|JORNADA', mm.group(1), re.I) and len(clave(mm.group(1))) >= 2:
+            v = _num(mm.group(2))
+            pares.append((mm.group(1), round(v / 3, 1) if total and not mm.group(3) else v))
+    if len(pares) >= 2:
+        b0 = batalla(pares[0][0], pares[1][0])
+        if b0 and not b0.get('ptbv'):
+            l0, l1 = _quien(pares[0][0], b0['a'], b0['b']), _quien(pares[1][0], b0['a'], b0['b'])
+            if l0 and l1 and l0 != l1:
+                b0['ptbv'] = (pares[0][1], pares[1][1]) if l0 == 'a' else (pares[1][1], pares[0][1])
     if re.search(r'\bDF\b', p) and len(lineas) <= 6:
         b = bats[-1]
         if _quien(texto, b['a'], b['b']) or re.search(r'\bDF\b', p):
@@ -342,6 +373,9 @@ def _d1(msgs):
                 continue
             if re.match(r'^#?\s*X\b', sin) or REPLICA.search(sin):
                 b['rep'] = True
+            mp = PUNTAJE.search(sin)
+            if mp and not b.get('ptbv'):
+                b['ptbv'] = (_num(mp.group(1)), _num(mp.group(2)))
             iz, de = bool(FLECHA_IZQ.search(l)), bool(FLECHA_DER.search(l))
             if iz != de:
                 # la flecha de la réplica nombra a alguien («# 👈 CRONOX»): manda el nombre
@@ -375,8 +409,11 @@ def _d2(msgs):
                 continue
             iz, de = bool(FLECHA_IZQ.search(l)), bool(FLECHA_DER.search(l))
             replica = (iz and de) or bool(re.search('❌|❎|⚔', l)) or bool(REPLICA.search(sin) and not (iz or de))
-            if PUNTAJE.search(sin):
+            mp = PUNTAJE.search(sin)
+            if mp:
                 b['pts'] = True
+                if not b.get('ptbv'):
+                    b['ptbv'] = (_num(mp.group(1)), _num(mp.group(2)))
             if replica:
                 b['rep'] = True
                 continue
@@ -409,15 +446,15 @@ def _s(msgs, emoji):
         for l in texto.splitlines()[1:]:
             mm = PTB_SNAKE.match(_plano(l).replace('*', ''))
             if mm:
-                filas.append((limpio(mm.group(1)), int(mm.group(3)), '🎮' in l))
+                filas.append((limpio(mm.group(1)), int(mm.group(3)), '🎮' in l, _num(mm.group(2))))
         if len(filas) != 2:
             continue
-        (a, pa, ea), (b, pb, eb) = filas
+        (a, pa, ea, ta), (b, pb, eb, tb) = filas
         if not a or not b or {pa, pb} not in ({3, 0}, {2, 1}):
             continue
         gana = a if pa > pb else b
         bats.append({'id': m['id'], 't': m['t'], 'a': a, 'b': b, 'ea': ea, 'eb': eb, 'j': None,
-                     'gana': gana, 'como': 'directa' if max(pa, pb) == 3 else 'replica'})
+                     'gana': gana, 'como': 'directa' if max(pa, pb) == 3 else 'replica', 'ptbv': (ta, tb)})
     return bats
 
 
@@ -475,10 +512,12 @@ def _orden(k):
     return int(p[0]), int(p[1]) if len(p) > 1 and p[1].isdigit() else 0
 
 
-def leer_liga(lid, msgs):
+def leer_liga(lid, msgs, ptb=None):
     """Las batallas de una liga, de sus mensajes en orden: `[[id, iso, jornada, a, b, gana, como, extras]]`.
 
-    `msgs`: `[{id, t (iso), content}]`, del más viejo al más nuevo. `extras`: `''`, `'a'`, `'b'` o `'ab'`."""
+    `msgs`: `[{id, t (iso), content}]`, del más viejo al más nuevo. `extras`: `''`, `'a'`, `'b'` o `'ab'`.
+    `ptb`: un dict donde dejar el PTB de cada batalla que lo dijo, `{id: [a, b]}` (17/10/2026). Va aparte y no en la
+    batalla: varias partes la desarman por posición (`tabla()`, `duelos()`), y un campo más las rompía."""
     L = LIGAS[lid]
     f = L['fam']
     bats = _u(msgs) if f == 'U' else _d1(msgs) if f == 'D1' else _d2(msgs) if f == 'D2' else \
@@ -493,6 +532,8 @@ def leer_liga(lid, msgs):
             continue
         out.append([b['id'], b['t'], b.get('j'), b['a'], b['b'], b.get('gana') or '', b.get('como') or '',
                     ('a' if b.get('ea') else '') + ('b' if b.get('eb') else '')])
+        if ptb is not None and b.get('ptbv'):
+            ptb[b['id']] = [round(b['ptbv'][0], 1), round(b['ptbv'][1], 1)]
     return out
 
 
@@ -559,6 +600,94 @@ def flyer_de(L, msgs):
                 return {'id': m['id'], 't': m['t'], 'w': int(a['w']), 'h': int(a['h']),
                         'tit': titulo_flyer(m.get('content')), 'src': a['u']}
     return None
+
+
+def flyers_de(L, msgs, desde='', tope=FLYERS_WEB):
+    """🖼️ Los afiches de la liga en su canal de anuncios, el más nuevo primero: `[{id, msg, t, w, h, tit, src}]`. Un
+    mensaje con dos afiches da dos (`<mensaje>-1`). `desde`: los de la temporada (lo de antes es otra)."""
+    out = []
+    for m in reversed(msgs or []):
+        if not _de_la_liga(L, m.get('content') or '') or (desde and str(m.get('t') or '') < desde):
+            continue
+        for i, a in enumerate([a for a in m.get('adj') or [] if es_flyer(a) and a.get('u')]):
+            out.append({'id': m['id'] + ('-%d' % i if i else ''), 'msg': m['id'], 't': m['t'], 'w': int(a['w']),
+                        'h': int(a['h']), 'tit': titulo_flyer(m.get('content')), 'src': a['u']})
+            if len(out) >= tope:
+                return out
+    return out
+
+
+def _flyers_nuevos(lid, lista, viejos, aplicar):
+    """La galería que queda guardada: lo que ya está en R2 se reusa, y de lo nuevo se suben hasta `FLYERS_SUBIR` por
+    corrida. Lo de R2 que ya salió de la ventana de lectura se queda hasta el tope: no se pierde un afiche por viejo."""
+    vie = {f['id']: f for f in viejos or [] if f and f.get('url')}
+    out, subidos = [], 0
+    for fl in lista:
+        if fl['id'] in vie:
+            out.append(vie[fl['id']])
+            continue
+        if not aplicar or subidos >= FLYERS_SUBIR:
+            continue
+        subidos += 1
+        r = subir_flyer(lid, fl)
+        if r:
+            out.append({'id': fl['id'], 'msg': fl['msg'], 't': fl['t'], 'tit': fl.get('tit') or '', 'url': r[0],
+                        'w': r[1], 'h': r[2]})
+    ya = {f['id'] for f in out}
+    for f in sorted(vie.values(), key=lambda f: f.get('t') or '', reverse=True):
+        if f['id'] not in ya:
+            out.append(f)
+    out.sort(key=lambda f: f.get('t') or '', reverse=True)
+    return out[:FLYERS_WEB]
+
+
+def staff_de(L, ms_ver, ms_an, viejo=None, ahora=None):
+    """🧑‍⚖️ Quiénes llevan la liga: los que publican en su canal de anuncios (organizan) y en el de veredictos (jurados y
+    hosts), sin bots. `[[discord_id, nombre, anuncios, veredictos, último iso]]`, los que más publican primero.
+
+    De la ventana que se lee en cada corrida; quien no aparece en ella se queda `STAFF_DIAS` desde su último mensaje.
+    En un canal compartido (Snake Rap) cuenta sólo lo que es de esta liga (`_de_la_liga()`)."""
+    ahora = ahora or dt.datetime.now(dt.timezone.utc)
+    st = {}
+    for i, ms in ((2, ms_an), (3, ms_ver)):
+        for m in ms or []:
+            if m.get('bot') or not m.get('au') or not _de_la_liga(L, m.get('content') or ''):
+                continue
+            x = st.setdefault(m['au'], [m['au'], m.get('aun') or '', 0, 0, ''])
+            x[i] += 1
+            x[4] = max(x[4], str(m.get('t') or ''))
+            if m.get('aun'):
+                x[1] = m['aun']
+    corte = (ahora - dt.timedelta(days=STAFF_DIAS)).strftime('%Y-%m-%dT%H:%M:%SZ')
+    for x in viejo or []:
+        if len(x) == 5 and x[0] not in st and str(x[4]) >= corte:
+            st[x[0]] = list(x)
+    return sorted(st.values(), key=lambda x: (-(x[2] + x[3]), x[1].lower()))[:STAFF_WEB]
+
+
+def novedades(lid, antes, bats, prox_antes, prox, viejas, ahora=None):
+    """🔔 Lo nuevo de una liga en esta corrida, para «Seguir la liga»: `[{id, t, que, ids | d, j}]`, más las de antes que
+    todavía no vencieron (`NOV_HORAS`). Uno por corrida y por liga con todos los resultados nuevos juntos —una jornada
+    de cinco batallas es UN aviso, no cinco— y uno por cada fecha anunciada.
+
+    ⚠️ Sólo si ya se conocía la liga (`antes`): la primera lectura trae la temporada entera, y no es una novedad."""
+    ahora = ahora or dt.datetime.now(dt.timezone.utc)
+    t = ahora.strftime('%Y-%m-%dT%H:%M:%SZ')
+    corte = (ahora - dt.timedelta(hours=NOV_HORAS)).strftime('%Y-%m-%dT%H:%M:%SZ')
+    out = [n for n in viejas or [] if str(n.get('t') or '') >= corte]
+    if antes is None:
+        return out
+    ya = {n['id'] for n in out}
+    nuevas = [b[0] for b in bats if b[5] and not (antes.get(b[0]) or [''] * 6)[5]]
+    if nuevas:
+        nid = 'r:%s:%s' % (lid, nuevas[-1])
+        if nid not in ya:
+            out.append({'id': nid, 't': t, 'que': 'res', 'ids': nuevas[-6:]})
+    if prox and prox.get('d') and (not prox_antes or prox_antes.get('d') != prox['d']):
+        nid = 'f:%s:%s' % (lid, prox['d'])
+        if nid not in ya:
+            out.append({'id': nid, 't': t, 'que': 'fecha', 'd': prox['d'], 'j': prox.get('j')})
+    return out
 
 
 def subir_flyer(lid, fl):
@@ -728,8 +857,11 @@ def _mensajes(s, canal, paginas, limite=100):
             adj = [{'u': a.get('url') or '', 'w': a.get('width') or 0, 'h': a.get('height') or 0,
                     'ct': a.get('content_type') or ''}
                    for a in m.get('attachments') or [] if str(a.get('content_type') or '').startswith('image/')]
+            au = m.get('author') or {}
+            # 🧑‍⚖️ quién lo escribió: para el staff de la liga (`staff_de()`). El mensaje no se guarda
             out.append({'id': str(m['id']), 't': str(m.get('timestamp') or '')[:19] + 'Z', 'content': m.get('content') or '',
-                        'adj': adj})
+                        'adj': adj, 'au': str(au.get('id') or ''), 'aun': au.get('global_name') or au.get('username') or '',
+                        'bot': bool(au.get('bot'))})
         antes = str(ms[-1]['id'])
         if len(ms) < limite:
             break
@@ -772,9 +904,15 @@ def correr(aplicar=False):
     for lid, L in LIGAS.items():
         guardadas = {b[0]: b for b in (viejo.get(lid) or {}).get('batallas') or []}
         if L['ver'] not in por_canal:
-            por_canal[L['ver']] = _mensajes(s, L['ver'], PAGINAS if guardadas else PAGINAS_PRIMERA)
+            # la primera vez con el PTB (17/10/2026) se lee la temporada entera, como la primera vez de todas: sin eso
+            # las jornadas viejas no tendrían MVP
+            primera = not guardadas or 'ptb' not in (viejo.get(lid) or {})
+            por_canal[L['ver']] = _mensajes(s, L['ver'], PAGINAS_PRIMERA if primera else PAGINAS)
             time.sleep(0.3)
-        nuevas = leer_liga(lid, por_canal[L['ver']])
+        v = viejo.get(lid) or {}
+        antes = dict(guardadas) if lid in viejo else None
+        ptb = dict(v.get('ptb') or {})
+        nuevas = leer_liga(lid, por_canal[L['ver']], ptb)
         if L.get('reemplaza') and nuevas:
             # 🔱 la temporada más nueva entera, sin lo guardado de la anterior (ver `_f()`)
             guardadas = {}
@@ -789,7 +927,6 @@ def correr(aplicar=False):
             por_an[an] = _mensajes(s, an, 1, limite=ANUNCIOS_LEER)
             time.sleep(0.3)
         ms_an = por_an.get(an) or []
-        v = viejo.get(lid) or {}
         flyer = _flyer_nuevo(lid, flyer_de(L, ms_an), v.get('flyer'), aplicar)
         # sin el canal (Discord no contestó) queda la de antes; `para_web()` no muestra una que ya pasó
         prox = proxima_de(L, ms_an) if ms_an else v.get('prox')
@@ -799,6 +936,27 @@ def correr(aplicar=False):
             out[lid]['flyer'] = flyer
         if prox:
             out[lid]['prox'] = prox
+        # 📊 el PTB de las batallas que lo dijeron, sólo de las que siguen guardadas
+        ids = {b[0] for b in bats}
+        out[lid]['ptb'] = {k: x for k, x in ptb.items() if k in ids}
+        # 🖼️ la galería: los afiches de la temporada (desde 30 días antes de su primera batalla), el último incluido
+        desde = ''
+        if bats:
+            t0 = _instante(bats[0][1])
+            desde = (t0 - dt.timedelta(days=30)).strftime('%Y-%m-%dT%H:%M:%SZ') if t0 else ''
+        viejos = list(v.get('flyers') or []) + ([flyer] if flyer and flyer.get('url') else [])
+        fls = _flyers_nuevos(lid, flyers_de(L, ms_an, desde) if ms_an else [], viejos, aplicar)
+        if fls:
+            out[lid]['flyers'] = fls
+        # 🧑‍⚖️ quién la lleva: lo que se leyó ahora, y si Discord no contestó, lo de antes
+        stf = staff_de(L, por_canal.get(L['ver']) or [], ms_an, v.get('staff')) \
+            if (por_canal.get(L['ver']) or ms_an) else (v.get('staff') or [])
+        if stf:
+            out[lid]['staff'] = stf
+        # 🔔 lo nuevo, para quien la sigue (`novedades()`)
+        nov = novedades(lid, antes, bats, v.get('prox'), prox, v.get('nov'))
+        if nov:
+            out[lid]['nov'] = nov
         con = sum(1 for b in bats if b[5])
         print('   %-26s %3d batalla(s), %3d con resultado%s%s' % (
             L['n'], len(bats), con, (' · jornada %d' % max(js)) if js else '',
@@ -808,7 +966,9 @@ def correr(aplicar=False):
                    '`batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, '
                    'extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). '
                    '`flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima '
-                   'fecha que anunció (`d` el día, `t` el instante si lo dijo).',
+                   'fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la '
+                   'batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en '
+                   'anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).',
          't': dt.datetime.now(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'), 'ligas': out}
     if aplicar:
         with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
@@ -851,24 +1011,74 @@ def vota(bats, prox=None):
     return (t + dt.timedelta(days=CIERRA_DIAS)).strftime('%Y-%m-%dT%H:%M:%SZ') if t else ''
 
 
-def _fechas(bats, rc, z, tope=FECHAS_WEB):
-    """Las batallas por FECHA, la más nueva primero: `[{j, d, t, b: [[a, b, ganador o '', directa|replica|'']]}]`.
+def _fechas(bats, rc, z, tope=FECHAS_WEB, ptb=None, vids=None):
+    """Las batallas por FECHA, la más nueva primero: `[{j, d, s, t, b: [[a, b, ganador o '', directa|replica|'', PTB a,
+    PTB b, mensaje, video, invitados]]}]` (`invitados`: `'a'`, `'b'` o `'ab'`, los 🎮 ExtraPlayers).
 
-    La fecha es la jornada si el veredicto la dice; si no (Albiceleste, Carimex, Snake Rap no la escriben), el día en
-    que se cerró, en la hora de la liga. Las que no tienen cierre van con el ganador vacío: «sin cierre todavía»."""
+    La fecha es la jornada si el veredicto la dice; si no (Albiceleste, Carimex, Snake Rap no la escriben), la SEMANA en
+    que se cerró (`s`, su lunes), en la hora de la liga: Dlx, 17/10/2026, «las fechas, mejor… sin días sueltos». No se
+    inventa una jornada que nadie escribió. Las que no tienen cierre van con el ganador vacío: «sin cierre todavía».
+    `ptb`: `{id: [a, b]}`; `vids`: `{par de claves: video}` (el video de esa batalla, si un canal de los socios la subió)."""
     grupos, por = [], {}
+    ptb, vids = ptb or {}, vids or {}
     for b in bats:
         ins = _instante(b[1])
-        dia = ins.astimezone(z).date().isoformat() if ins else ''
-        k = ('j', b[2]) if b[2] else ('d', dia)
+        loc = ins.astimezone(z).date() if ins else None
+        dia = loc.isoformat() if loc else ''
+        lunes = (loc - dt.timedelta(days=loc.weekday())).isoformat() if loc else ''
+        k = ('j', b[2]) if b[2] else ('s', lunes)
         g = por.get(k)
         if g is None:
-            g = por[k] = {'j': b[2], 'd': dia, 't': b[1], 'b': []}
+            g = por[k] = {'j': b[2], 'd': dia, 's': '' if b[2] else lunes, 'd0': dia, 't': b[1], 'b': []}
             grupos.append(g)
         g['d'], g['t'] = max(g['d'], dia), max(g['t'], b[1])
-        g['b'].append([rc(b[3]), rc(b[4]), rc(b[5]) if b[5] else '', b[6] if b[5] else ''])
+        g['d0'] = min(g['d0'], dia) if g['d0'] and dia else (g['d0'] or dia)
+        pa, pb = (ptb.get(b[0]) or ['', ''])[:2]
+        par = frozenset((clave(b[3]), clave(b[4])))
+        g['b'].append([rc(b[3]), rc(b[4]), rc(b[5]) if b[5] else '', b[6] if b[5] else '', pa, pb,
+                       str(b[0]).split('-')[0], vids.get(par, ''), b[7] if len(b) > 7 else ''])
+    for g in grupos:
+        # una semana con un solo día de batallas es ese día (y entonces no hace falta decir «la semana»)
+        if g['s'] and g['d0'] == g['d']:
+            g['s'] = ''
+        g.pop('d0', None)
     grupos.sort(key=lambda g: g['t'], reverse=True)
     return grupos[:tope]
+
+
+def _videos(L, bats, vj):
+    """🎬 Los videos de una liga, de los canales de los socios (`datos/videos.json`, `bot/videos.py`): los del servidor
+    de la liga cuyo título la nombra (`vre`) o nombra a los dos de una de sus batallas. `([[video, título]], {par de
+    claves: video})`."""
+    vs = (vj or {}).get('videos') or {}
+    pares = {frozenset((clave(b[3]), clave(b[4]))) for b in bats}
+    lista, por_par = [], {}
+    for vid, x in vs.items():
+        if not isinstance(x, list) or len(x) < 2 or x[1] != L.get('sv'):
+            continue
+        tit = str(x[0] or '')
+        lados_ = [clave(p) for p in re.split(r'\s*(?:🆚|\bvs\.?\b|\bv\.s\.?)\s*', re.sub(r'[|│].*$', '', tit), flags=re.I)[:2]]
+        par = frozenset(lados_) if len(lados_) == 2 and all(lados_) else None
+        es_batalla = par in pares if par else False
+        if es_batalla or (L.get('vre') and re.search(L['vre'], _plano(tit), re.I)):
+            lista.append([vid, tit])
+            if es_batalla:
+                por_par.setdefault(par, vid)
+    return lista[:30], por_par
+
+
+_INFO = {}
+
+
+def info_de(lid):
+    """📖 «Cómo funciona» y el historial de una liga (`datos/ligas_info.json`, lo que publicó cada servidor), o `None`."""
+    if 'd' not in _INFO:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'ligas_info.json'), encoding='utf-8') as f:
+                _INFO['d'] = json.load(f) or {}
+        except (OSError, ValueError):
+            _INFO['d'] = {}
+    return _INFO['d'].get(lid)
 
 
 # ── 🏅 EL RECONOCIMIENTO DE LAS LIGAS (Dlx, 16/10/2026) ───────────────────────────────────────────────────────────────
@@ -1100,6 +1310,17 @@ def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None, decis=None
         svs = {}
     out = []
     decis = _decis(decis)
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'videos.json'), encoding='utf-8') as f:
+            vj = json.load(f) or {}
+    except (OSError, ValueError):
+        vj = {}
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'padron.json'), encoding='utf-8') as f:
+            raw_de_id = {str(p['discord_id']): p['raw'] for p in json.load(f) or [] if p.get('discord_id') and p.get('raw')}
+    except (OSError, ValueError):
+        raw_de_id = {}
+    nov_web = []
     for lid, x in ls.items():
         bats = x.get('batallas') or []
         con = [b for b in bats if b[5]]
@@ -1117,7 +1338,8 @@ def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None, decis=None
         rc = lambda x: canon.get(clave(r(x)), r(x)) if x else x  # noqa: E731
         ult = [[rc(b[3]), rc(b[4]), rc(b[5]), b[6], b[2]] for b in con[-6:][::-1]]
         z = _zona(L.get('cc'))
-        fechas = _fechas(bats, rc, z)
+        vids, por_par = _videos(L, bats, vj)
+        fechas = _fechas(bats, rc, z, ptb=x.get('ptb'), vids=por_par)
         nombres = {f[0] for f in tb} | {n for u in ult for n in u[:3] if n} | \
             {n for fe in fechas for y in fe['b'] for n in y[:3] if n}
         ks = {n: claves[clave(n)] for n in sorted(nombres) if claves.get(clave(n))}
@@ -1143,11 +1365,57 @@ def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None, decis=None
         fn = fin_de(decis, lid, ultima(bats))
         if fn:
             y['fin'] = {'c': fn['campeon'], 'p': fn.get('podio') or [fn['campeon']]}
+        # 📜 el link al veredicto de cada batalla: el canal, y la página le suma el mensaje
+        if g and L.get('ver'):
+            y['vlink'] = 'https://discord.com/channels/%s/%s/' % (g, L['ver'])
+        # 🖼️ la galería, sólo lo que está en R2
+        fls = [{'u': f['url'], 'w': f.get('w') or 0, 'h': f.get('h') or 0, 't': f.get('t') or '', 'tit': f.get('tit') or '',
+                'link': 'https://discord.com/channels/%s/%s/%s' % (g, L['an'], f.get('msg') or f['id'].split('-')[0])
+                if g and L.get('an') else ''} for f in x.get('flyers') or [] if f.get('url')]
+        if fls:
+            y['flyers'] = fls
+        # 🧑‍⚖️ el staff: el nombre de la Lista y su perfil si está; si no, el de Discord
+        # ⚠️ quien JUEGA esta liga y no publica anuncios no es staff: comenta sus batallas en el canal de veredictos
+        # (Guty en FMH Under, Forza en Carimex). Y con pocos mensajes, tampoco: hace falta haber organizado (2 anuncios)
+        # o juzgado (3 veredictos)
+        juegan = {clave(f[0]) for f in tabla(bats, r)}
+        stf = []
+        for did, nom, n_an, n_ver, _u in x.get('staff') or []:
+            raw = raw_de_id.get(str(did)) or ''
+            if n_an < 2 and n_ver < 3:
+                continue
+            if not n_an and (clave(r(raw)) in juegan if raw else clave(nom) in juegan):
+                continue
+            k = claves.get(clave(raw)) if raw else ''
+            stf.append([limpio(raw) if raw else (limpio(nom) or nom), k or '', n_an, n_ver])
+        if stf:
+            y['staff'] = stf
+        if vids:
+            y['vids'] = vids
+        inf = info_de(lid)
+        if inf:
+            y['info'] = inf
+        # 🔔 lo nuevo, con su texto, para el vigía (`ligasSeguidas()` en bot/avisos.js)
+        por_id = {b[0]: b for b in bats}
+        for n in x.get('nov') or []:
+            if n.get('que') == 'res':
+                bs = [por_id[i] for i in n.get('ids') or [] if i in por_id and por_id[i][5]]
+                if not bs:
+                    continue
+                frases = ['%s le ganó a %s' % (rc(b[5]), rc(b[4] if clave(b[5]) == clave(b[3]) else b[3])) for b in bs]
+                tit = '⚔️ %s: %s' % (x.get('n'), frases[-1] if len(frases) == 1 else '%d resultados nuevos' % len(frases))
+                cuerpo = (' · '.join(frases) if len(frases) > 1 else 'Mirá cómo quedó la tabla.')[:180]
+            else:
+                tit = '📅 %s: %s, el %s' % (x.get('n'), ('jornada %s' % n['j']) if n.get('j') else 'nueva fecha',
+                                           '%s/%s' % (n['d'][8:10], n['d'][5:7]))
+                cuerpo = 'Ya está anunciada: mirá los cruces y la tabla.'
+            nov_web.append({'id': n['id'], 'liga': lid, 't': n['t'], 'titulo': tit, 'cuerpo': cuerpo,
+                            'url': 'https://underlegends.pages.dev/freestyle-rap/ligas/' + lid})
         out.append(y)
     out.sort(key=lambda x: x['ult_t'], reverse=True)
     if not out:
         return None
-    res = {'t': d.get('t'), 'ligas': out}
+    res = {'t': d.get('t'), 'ligas': out, 'nov': sorted(nov_web, key=lambda n: n['t'])}
     sl = salon(decis, claves)
     if sl:
         res['salon'] = sl
@@ -1168,8 +1436,9 @@ def separar(web):
     if not web:
         return None, None
     lobby, det = [], {}
+    SOLO_DET = ('fechas', 'flyer', 'ks', 'flyers', 'staff', 'vids', 'info', 'vlink')
     for L in web.get('ligas') or []:
-        y = {k: v for k, v in L.items() if k not in ('fechas', 'flyer', 'ks')}
+        y = {k: v for k, v in L.items() if k not in SOLO_DET}
         nombres = {f[0] for f in L.get('tabla') or []} | {n for u in L.get('ult') or [] for n in u[:3] if n}
         y['ks'] = {n: k for n, k in (L.get('ks') or {}).items() if n in nombres}
         if L.get('flyer'):
@@ -1178,12 +1447,26 @@ def separar(web):
         if f0:
             y['f0'] = {'j': f0['j'], 't': f0['t'], 'n': sum(1 for b in f0['b'] if b[2])}
         lobby.append(y)
-        det[L['id']] = {k: L[k] for k in ('fechas', 'flyer', 'ks') if L.get(k)}
+        det[L['id']] = {k: L[k] for k in SOLO_DET if L.get(k)}
     lob = {'t': web.get('t'), 'ligas': lobby}
     # 🏆 el Salón de campeones viaja en el lobby: es corto (una fila por liga terminada) y la portada lo muestra al abrir
     if web.get('salon'):
         lob['salon'] = web['salon']
-    return lob, {'t': web.get('t'), 'ligas': det}
+    det_out = {'t': web.get('t'), 'ligas': det}
+    # 🔔 lo nuevo para «Seguir la liga» no es de la página: `subir_web.py` lo saca de acá y lo sube aparte (`para_nov()`)
+    if web.get('nov') is not None:
+        det_out['_nov'] = web['nov']
+    return lob, det_out
+
+
+#: la clave de KV con lo nuevo de cada liga, para «Seguir la liga» (la lee el vigía: `ligasSeguidas()` en avisos.js)
+CLAVE_NOV = 'ligas:nov'
+
+
+def para_nov(web):
+    """🔔 Lo que lee el vigía para avisarle a quien sigue cada liga: `{items: [{id, liga, t, titulo, cuerpo, url}]}`.
+    Cambia sólo cuando entra algo nuevo: la escritura de KV es una por novedad, no una por corrida."""
+    return {'items': (web or {}).get('nov') or []}
 
 
 def para_kv(web):
@@ -1353,7 +1636,7 @@ def _self_check():
     lp = [x for x in w['ligas'] if x['id'] == 'fms-peru'][0]
     la = [x for x in w['ligas'] if x['id'] == 'fmh-andes'][0]
     ok([(f['j'], f['d'], len(f['b'])) for f in lp['fechas']] == [(None, '2026-10-13', 1), (2, '2026-10-13', 1), (1, '2026-10-07', 2)]
-       and lp['fechas'][1]['b'] == [['SOL', 'PIPAS', '', '']],
+       and [x[:4] for x in lp['fechas'][1]['b']] == [['SOL', 'PIPAS', '', '']],
        'las fechas: por jornada, o por el día en que se cerró (en Lima, el 14/10 03:00 UTC es el 13), la más nueva primero; '
        'la que no tiene cierre va sin ganador', str(lp['fechas']))
     ok('flyer' not in lp and la['flyer']['u'] == 'https://r2/ligas/x.webp' and la['flyer']['link'].endswith('/79'),
@@ -1409,8 +1692,89 @@ def _self_check():
        'la punta: recién con 3 jugadas, sola, y se publica cuando cambia (no en cada fecha)', str(pun))
     ok(campeones_hitos(dfin)[0]['que'] == 'campeon' and campeones_hitos({}) == [],
        'el campeón confirmado también se publica')
+    _self_check_pagina(ok)
     print('\n  %s\n' % ('todo ok' if not mal else '🔴 %d problema(s)' % mal))
     return 1 if mal else 0
+
+
+def _self_check_pagina(ok):
+    """📊 Lo de la página completa de cada liga (17/10/2026): el PTB, el staff, la galería, las fechas por semana, los
+    videos y las novedades para «Seguir la liga»."""
+    def ms(*textos):
+        return [{'id': str(2000 + i), 't': '2026-10-0%dT20:00:00Z' % (1 + i % 9), 'content': x} for i, x in enumerate(textos)]
+    pt = {}
+    u = leer_liga('fmh-albiceleste', ms(
+        '# <:FMH_Albiceleste:1> ZIGNOS 🇩🇴 <:VSAzul:2> BENJIXO 🇺🇾 <:FMH_Albiceleste:1>',
+        '**ZIGNOS 🇩🇴 :  36.5 (109.5)**\nBENJIXO 🇺🇾 : 27 (81)\n**ZIGNOS 🇩🇴 GANA DIRECTO, POR 9.5 PTS! +3**'), pt)
+    pt2 = {}
+    leer_liga('fmh-under', ms(
+        '# <:FMH_UNDER:1> CINEXFILO 🇻🇪 VS MAKMA 🇻🇪 🎮 <:FMH_UNDER:1> - JORNADA 4',
+        '# <:FMH_UNDER:1> ⚔️ RÉPLICA ⚔️ <:FMH_UNDER:1>',
+        '# PTB TOTAL\n**MAKMA 🇻🇪: 121.5** +1\nCINEXFILO 🇻🇪: 117 +2'), pt2)
+    ok(u and pt.get(u[0][0]) == [36.5, 27.0] and list(pt2.values()) == [[39.0, 40.5]],
+       'el PTB de FMH, en la escala del promedio: el número (no la suma entre paréntesis), y el PTB TOTAL dividido 3; de '
+       'cada lado aunque vengan al revés', [pt, pt2])
+    pt3 = {}
+    leer_liga('fms-titans', ms('# 🇵🇪CRIZJ VS NEXUS🇵🇪\n# 👉 19.5 - 22\n# GANADOR NEXUS🇵🇪'), pt3)
+    pt4 = {}
+    leer_liga('fms-peru', ms('# 🇵🇪DREXX <:versus_:1> SOL🇵🇪\n**24 PTB - 29.5 PTB**\n🫱'), pt4)
+    pt5 = {}
+    leer_liga('snake-generations', ms('<:snkLIGA:1> __**PTB OFICIAL**__ <:snkLIGA:1>\n🇦🇷 RUBIK - 125 <:1pt:2>\n'
+                                      '🇦🇷 MCO - 127,5 <:2pts:3>'), pt5)
+    ok(list(pt3.values()) == [[19.5, 22.0]] and list(pt4.values()) == [[24.0, 29.5]] and list(pt5.values()) == [[125.0, 127.5]],
+       'el PTB de DDF (la flecha y «a PTB - b PTB») y el PTB OFICIAL de Snake', [pt3, pt4, pt5])
+    L = LIGAS['snake-generations']
+    ver = [{'id': '1', 't': '2026-10-10T00:00:00Z', 'content': '<:snkLIGA:1> PTB OFICIAL', 'au': '11', 'aun': 'Juez'},
+           {'id': '2', 't': '2026-10-11T00:00:00Z', 'content': '<:NewChapter:1> PTB OFICIAL', 'au': '22', 'aun': 'Otro'},
+           {'id': '3', 't': '2026-10-12T00:00:00Z', 'content': '<:snkLIGA:1> x', 'au': '33', 'aun': 'Bot', 'bot': True}]
+    an = [{'id': '4', 't': '2026-10-09T00:00:00Z', 'content': '<:snkLIGA:1> JORNADA 3', 'au': '44', 'aun': 'Orga'},
+          {'id': '5', 't': '2026-10-13T00:00:00Z', 'content': '<:snkLIGA:1> JORNADA 4', 'au': '44', 'aun': 'Orga'}]
+    ahora = dt.datetime(2026, 10, 17, tzinfo=dt.timezone.utc)
+    st = staff_de(L, ver, an, viejo=[['99', 'Viejo', 1, 0, '2026-09-30T00:00:00Z'], ['98', 'Ido', 1, 0, '2026-07-01T00:00:00Z']],
+                  ahora=ahora)
+    ok([x[:4] for x in st] == [['44', 'Orga', 2, 0], ['11', 'Juez', 0, 1], ['99', 'Viejo', 1, 0]],
+       'el staff: quién publica en anuncios y en veredictos de ESA liga (no la otra del canal), sin bots; el de antes '
+       'se queda 60 días', st)
+    an2 = [{'id': '6', 't': '2026-10-01T00:00:00Z', 'content': '<:snkLIGA:1> afiche',
+            'adj': [{'u': 'https://x/a.png', 'w': 1080, 'h': 1350, 'ct': 'image/png'}, {'u': 'https://x/b.png', 'w': 1080,
+                    'h': 1350, 'ct': 'image/png'}]},
+           {'id': '7', 't': '2026-10-05T00:00:00Z', 'content': '<:snkLIGA:1> otro',
+            'adj': [{'u': 'https://x/c.png', 'w': 1400, 'h': 200, 'ct': 'image/png'}]},
+           {'id': '8', 't': '2026-06-01T00:00:00Z', 'content': '<:snkLIGA:1> viejo',
+            'adj': [{'u': 'https://x/d.png', 'w': 1080, 'h': 1350, 'ct': 'image/png'}]}]
+    fl = flyers_de(L, sorted(an2, key=lambda m: m['id']), desde='2026-09-01')
+    gal = _flyers_nuevos('x', fl, [{'id': '6', 'url': 'https://r2/6.webp', 't': '2026-10-01T00:00:00Z'},
+                                   {'id': '5', 'url': 'https://r2/5.webp', 't': '2026-09-20T00:00:00Z'}], aplicar=False)
+    ok([f['id'] for f in fl] == ['6', '6-1'] and [f['id'] for f in gal] == ['6', '5'],
+       'la galería: dos afiches de un mensaje son dos, el banner no, lo de antes de la temporada no; sin --aplicar no '
+       'sube nada y lo que ya estaba en R2 se queda', [fl, gal])
+    z = dt.timezone(dt.timedelta(hours=-5))
+    bats = [['1', '2026-09-21T20:00:00Z', None, 'A', 'B', 'A', 'directa', ''],
+            ['2', '2026-09-23T20:00:00Z', None, 'C', 'D', 'D', 'replica', ''],
+            ['3', '2026-09-29T20:00:00Z', None, 'A', 'C', '', '', ''],
+            ['4', '2026-10-03T20:00:00Z', 2, 'B', 'D', 'B', 'directa', '']]
+    fs = _fechas(bats, lambda x: x, z, ptb={'1': [30, 25]}, vids={frozenset(('c', 'd')): 'vidCD'})
+    ok([(f['j'], f['s'], f['d'], len(f['b'])) for f in fs] == [(2, '', '2026-10-03', 1), (None, '', '2026-09-29', 1),
+                                                                (None, '2026-09-21', '2026-09-23', 2)]
+       and fs[2]['b'][0][4:7] == [30, 25, '1'] and fs[2]['b'][1][7] == 'vidCD',
+       'las fechas: sin jornada, por semana (y un día solo es ese día); con el PTB, el veredicto y el video', fs)
+    vj = {'videos': {'v1': ['SIX 🆚 DTR || Jornada #1 - Snake League VI', 'SR', ['Six']],
+                     'v2': ['A 🆚 B || Copa X', 'SR', []], 'v3': ['RUBIK VS ZETA | Final', 'URBF', []],
+                     'v4': ['Algo sin cruce', 'SR', []]}}
+    lista, porp = _videos(L, [['1', '', 1, 'A', 'B', 'A', 'directa', '']], vj)
+    ok(sorted(v[0] for v in lista) == ['v1', 'v2'] and porp == {frozenset(('a', 'b')): 'v2'},
+       'los videos de la liga: los que la nombran y los de una de sus batallas, sólo de su servidor', [lista, porp])
+    antes = {'1': ['1', 't', 1, 'A', 'B', '', '', '']}
+    ahora2 = dt.datetime(2026, 10, 17, 12, tzinfo=dt.timezone.utc)
+    n1 = novedades('lg', antes, [['1', 't', 1, 'A', 'B', 'A', 'directa', ''], ['2', 't', 1, 'C', 'D', 'C', 'directa', '']],
+                   {'d': '2026-10-10'}, {'d': '2026-10-18', 'j': 6}, [], ahora=ahora2)
+    n2 = novedades('lg', None, [['1', 't', 1, 'A', 'B', 'A', 'directa', '']], None, {'d': '2026-10-18'}, [], ahora=ahora2)
+    n3 = novedades('lg', antes, [['1', 't', 1, 'A', 'B', '', '', '']], {'d': '2026-10-18'}, {'d': '2026-10-18'},
+                   n1 + [{'id': 'r:viejo', 't': '2026-10-10T00:00:00Z'}], ahora=ahora2)
+    ok([(n['que'], n.get('ids') or n.get('d')) for n in n1] == [('res', ['1', '2']), ('fecha', '2026-10-18')]
+       and n2 == [] and [n['id'] for n in n3] == [n['id'] for n in n1],
+       'lo nuevo para quien sigue la liga: los resultados juntos en uno, la fecha anunciada; la primera lectura no '
+       'es novedad, y lo de hace más de 48 horas vence', [n1, n2, n3])
 
 
 def main():

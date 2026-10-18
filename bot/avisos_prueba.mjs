@@ -1697,6 +1697,33 @@ const ok = (cond, que, det) => {
     const quit = sql.exec("SELECT 1 AS x FROM videos_quitados WHERE clave = 'konan' AND vid = 'abcdefghijk'").toArray().length;
     ok(p5.id !== p4.id && !p5.ya && dv.estado === 'hecho' && quit === 1 && /Sacamos el video/.test((band(OTRA, 'pedido:' + p4.id) || {}).titulo || ''),
       'un video aprobado va a los quitados y se avisa; dos videos distintos son dos pedidos', JSON.stringify([p4, p5, dv, quit]));
+    // 🔔 seguir una liga (17/10/2026): seguir y dejar, y el vigía avisa una vez a quien la seguía desde antes
+    const SEG1 = '2222222222222222222', SEG2 = '3333333333333333333';
+    const ls1 = o.ligaSeguir({ quien: SEG1, liga: 'fmh-espana', on: true });
+    o.ligaSeguir({ quien: SEG1, liga: 'fzl', on: true });
+    const ls2 = o.ligaSeguir({ quien: SEG1, liga: 'fzl', on: false });
+    ok(ls1.ok && ls1.n === 1 && ls1.ligas.join() === 'fmh-espana' && ls2.ligas.join() === 'fmh-espana' && ls1.celular === false
+      && o.ligaSeguir({ quien: SEG1, liga: 'Mal Id!', on: true }).error === 'faltan datos',
+    'seguir una liga y dejarla: devuelve las que sigue, cuántos la siguen y si tiene el celular vinculado', JSON.stringify([ls1, ls2]));
+    const tIt = Date.now() + 60000;
+    const ahoraL = Math.ceil((tIt + 1) / 300000) * 300000;
+    // el KV del objeto va envuelto (lo mide): otro objeto sobre la misma base, con lo nuevo de las ligas en su KV
+    const oL = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
+      blockConcurrencyWhile: async (f) => f() }, { KV: { get: async (k) => (k === 'ligas:nov' ? JSON.stringify({ items: [{
+        id: 'r:fmh-espana:9', liga: 'fmh-espana', t: new Date(tIt).toISOString(), titulo: '⚔️ FMH España: Ortiz le ganó a MTZ',
+        cuerpo: 'Mirá la tabla.', url: 'https://underlegends.pages.dev/freestyle-rap/ligas/fmh-espana' }] }) : null) } });
+    await new Promise((r) => setTimeout(r, 5));
+    sql.exec('INSERT INTO liga_sigue (quien, liga, t) VALUES (?, ?, ?)', SEG2, 'fmh-espana', tIt + 1000);
+    const nb1 = await oL.ligasSeguidas(ahoraL);
+    const nb2 = await oL.ligasSeguidas(ahoraL);
+    const bl = sql.exec("SELECT titulo, url FROM bandeja WHERE quien = ? AND clave = 'lg:r:fmh-espana:9'", SEG1).toArray()[0];
+    const bl2 = sql.exec("SELECT 1 AS x FROM bandeja WHERE quien = ? AND clave LIKE 'lg:%'", SEG2).toArray().length;
+    ok(nb1 === 1 && nb2 === 0 && bl && /Ortiz le ganó/.test(bl.titulo) && /ligas\/fmh-espana$/.test(bl.url) && bl2 === 0,
+      'lo nuevo de una liga llega una vez a la campana de quien la seguía desde antes (quien la siguió después, no)',
+      JSON.stringify([nb1, nb2, bl, bl2]));
+    await o.olvidar({ quien: SEG1 });
+    ok(!sql.exec('SELECT 1 AS x FROM liga_sigue WHERE quien = ?', SEG1).toArray().length,
+      'borrar mis datos borra también las ligas que seguía');
     sql.exec("INSERT INTO subs (endpoint, p256dh, auth, alta, visto, quien) VALUES ('https://push/x', 'p', 'a', 1, 1, ?)", NUEVO);
     const r3 = o.rachaDe(NUEVO);
     sql.exec("UPDATE subs SET quien = '' WHERE endpoint = 'https://push/x'");

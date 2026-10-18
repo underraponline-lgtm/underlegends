@@ -3991,6 +3991,13 @@ def main():
         ok8 = subir(_LG.para_kv(p.get('ligas')), solo_si_cambio='--siempre' not in sys.argv, clave=_LG.CLAVE_KV)
         print('   %s' % ('✓ quién gana las ligas: igual' if ok8 is None else '✅ quién gana las ligas, subido'
                          if ok8 else '🔴 no pude subir quién gana las ligas'))
+        # 🔔 lo nuevo de cada liga, para quien la sigue (17/10/2026): aparte, para el vigía (`ligasSeguidas()`). Sólo si
+        # cambió: cambia cuando entra un resultado o una fecha
+        nov = ligas_det.pop('_nov', None) if ligas_det else None
+        if nov is not None:
+            ok10 = subir(_LG.para_nov({'nov': nov}), solo_si_cambio='--siempre' not in sys.argv, clave=_LG.CLAVE_NOV)
+            print('   %s' % ('✓ lo nuevo de las ligas: igual' if ok10 is None else '✅ lo nuevo de las ligas, subido'
+                             if ok10 else '🔴 no pude subir lo nuevo de las ligas'))
         # 🏟️ Y EL DETALLE DE CADA LIGA (las fechas y el flyer), aparte del lobby: lo pide la página al abrir Ligas
         if ligas_det:
             ok9 = subir(ligas_det, solo_si_cambio='--siempre' not in sys.argv, clave=_LG.CLAVE_WEB)
