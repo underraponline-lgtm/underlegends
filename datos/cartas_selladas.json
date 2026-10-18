@@ -151,7 +151,7 @@
    "competitivo": "b3a8bb588ce5:aa2fab0a1b31",
    "pais": "897af2753175:631b7a4c93c4",
    "servidor": "69a5faa51779:f7bc857dd9f6:be5547",
-   "temporada": "1d4db0b9388e:906ce275eeb8"
+   "temporada": "a36e82946b44:906ce275eeb8"
   },
   "Blood": {
    "servidor": "09b6aba527d2:f7bc857dd9f6:874d2d"
@@ -208,7 +208,7 @@
   "Catarsis": {
    "competitivo": "676bdfce14d8:aa2fab0a1b31",
    "servidor": "a56561d55d3b:f7bc857dd9f6:6a5f1a",
-   "temporada": "984cee844cdd:906ce275eeb8"
+   "temporada": "77911728e81f:906ce275eeb8"
   },
   "Char": {},
   "Charro": {
@@ -345,7 +345,7 @@
   "Dios": {
    "competitivo": "6c180b5326c4:aa2fab0a1b31",
    "pais": "b9c19abba0f5:631b7a4c93c4",
-   "servidor": "5852bf714435:f7bc857dd9f6:6a5f1a"
+   "servidor": "d16f17188cdc:f7bc857dd9f6:6a5f1a"
   },
   "Dominick": {},
   "Dr.Machine": {
@@ -721,7 +721,7 @@
   "Keider": {
    "competitivo": "81bb800a41bc:aa2fab0a1b31",
    "pais": "0f4cc8917f97:631b7a4c93c4",
-   "servidor": "2c8506c68d52:f7bc857dd9f6:be5547",
+   "servidor": "9b77a10b3e8c:f7bc857dd9f6:be5547",
    "temporada": "64693b88b834:906ce275eeb8"
   },
   "Keku": {
@@ -812,7 +812,7 @@
    "competitivo": "706c3d01e5a9:aa2fab0a1b31",
    "pais": "8fb42b97b027:631b7a4c93c4",
    "servidor": "a8be8a5f0be2:f7bc857dd9f6:25c183",
-   "temporada": "4fb07a5283dc:906ce275eeb8"
+   "temporada": "390a30a918a6:906ce275eeb8"
   },
   "LVS": {
    "servidor": "79f6e18db568:f7bc857dd9f6:c4a5ef"
@@ -937,7 +937,7 @@
    "competitivo": "68dd1ce9a734:aa2fab0a1b31",
    "pais": "f34549c43622:631b7a4c93c4",
    "servidor": "0606a5cf9cdc:f7bc857dd9f6:d52d54",
-   "temporada": "f056b436d9dd:906ce275eeb8"
+   "temporada": "ab6212f66ec6:906ce275eeb8"
   },
   "MZK": {
    "competitivo": "2421b7127a2b:aa2fab0a1b31",
@@ -979,7 +979,7 @@
    "competitivo": "aab26861ece3:aa2fab0a1b31",
    "pais": "dcae91dfe4be:631b7a4c93c4",
    "servidor": "2eaab3bce33f:f7bc857dd9f6:25c183",
-   "temporada": "5fb7c426dd30:906ce275eeb8"
+   "temporada": "1c82315ceabf:906ce275eeb8"
   },
   "Marto": {},
   "Masino": {
@@ -1207,7 +1207,7 @@
   "Panchok": {
    "competitivo": "8ac7f7321161:aa2fab0a1b31",
    "pais": "b6874899f875:631b7a4c93c4",
-   "servidor": "7b8f9ac5faa2:f7bc857dd9f6:3580af",
+   "servidor": "4e53bab8d057:f7bc857dd9f6:3580af",
    "temporada": "f11180389b54:906ce275eeb8"
   },
   "Paria": {},
@@ -1592,7 +1592,7 @@
   "Vilca": {
    "competitivo": "b2d44d155019:aa2fab0a1b31",
    "pais": "e66e64f6357c:631b7a4c93c4",
-   "servidor": "0bbbf9f2df98:f7bc857dd9f6:12faed"
+   "servidor": "7be3cd8f4d97:f7bc857dd9f6:12faed"
   },
   "Vize": {
    "servidor": "f878da4ea385:f7bc857dd9f6:ba481e"
@@ -1754,7 +1754,7 @@
   "kerkoide": {
    "competitivo": "8b431e84d92b:aa2fab0a1b31",
    "pais": "fc8e959082ae:631b7a4c93c4",
-   "servidor": "17b7adfa8e91:f7bc857dd9f6:d473d6"
+   "servidor": "35b12cceed63:f7bc857dd9f6:d473d6"
   },
   "leteletras": {},
   "luisito 🏆": {},
@@ -1814,5 +1814,5 @@
    "servidor": "7f8885a35a6d:f7bc857dd9f6:93a344"
   }
  },
- "cuando": "2026-10-18T04:19:35+00:00"
+ "cuando": "2026-10-18T04:25:49+00:00"
 }
