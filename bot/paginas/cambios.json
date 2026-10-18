@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.42",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T02:00:00-04:00",
+   "titulo": "Las animaciones, a la vista",
+   "items": [
+    "🎬 La página entra cuando se va la pantalla de carga, no detrás: las animaciones ahora se ven."
+   ]
+  },
+  {
    "version": "3.41",
    "dia": "2026-10-18",
    "cuando": "2026-10-18T01:55:00-04:00",

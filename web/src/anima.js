@@ -71,3 +71,30 @@ export function useCalma() {
   }, []);
   return c;
 }
+
+// 🎬 ¿la pantalla de carga sigue tapando la página? (Dlx, 18/10/2026: «carga demasiado rápido, al menos para mí, que
+// no logro verlas»). Medido: al abrirse el corte, la entrada de las filas del ranking ya había terminado DETRÁS de la
+// pantalla de carga (440 ms) y la de la página también. Mientras tapa, App.jsx pone `.app.tapado` y las animaciones
+// esperan en pausa (vivo.css); arrancan cuando la pantalla se va (`lg-sale`, web/montar.py)
+function tapadoAhora() {
+  try {
+    const c = document.documentElement.classList;
+    return c.contains('ini-nuevo') && c.contains('lg-carga-js') && !c.contains('lg-sale');
+  } catch (e) {
+    return false;
+  }
+}
+export function useTapado() {
+  const [t, setT] = useState(tapadoAhora);
+  useEffect(() => {
+    if (!tapadoAhora()) { setT(false); return undefined; }
+    let ob = null;
+    try {
+      // ⏱️ y un poco después de que arranca el corte (~0,4 s): destapa en diagonal en ~0,9 s, y lo de arriba sale último
+      ob = new MutationObserver(() => { if (!tapadoAhora()) { if (ob) ob.disconnect(); setTimeout(() => setT(false), 400); } });
+      ob.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    } catch (e) { setT(false); }
+    return () => { if (ob) ob.disconnect(); };
+  }, []);
+  return t;
+}

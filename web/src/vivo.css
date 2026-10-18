@@ -36,14 +36,14 @@
    · los botones se hunden al tocarlos, y las tarjetas y puertas se levantan un poco al pasar el mouse.
    ⚠️ La transición deja `transform` en NADA al terminar (sin `fill-mode`): un `transform` que queda puesto hace que lo
    `position:fixed` de adentro se ubique contra la página y no contra la pantalla */
-.pg-entra{animation:pg-entra .28s cubic-bezier(.2,.7,.2,1)}
-@keyframes pg-entra{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.aparece>*{animation:ap-entra .32s cubic-bezier(.2,.7,.2,1) both}
-.aparece>*:nth-child(2){animation-delay:.03s}.aparece>*:nth-child(3){animation-delay:.06s}.aparece>*:nth-child(4){animation-delay:.09s}
-.aparece>*:nth-child(5){animation-delay:.12s}.aparece>*:nth-child(6){animation-delay:.15s}.aparece>*:nth-child(7){animation-delay:.18s}
-.aparece>*:nth-child(8){animation-delay:.21s}.aparece>*:nth-child(9){animation-delay:.24s}.aparece>*:nth-child(10){animation-delay:.27s}
-.aparece>*:nth-child(11){animation-delay:.3s}.aparece>*:nth-child(12){animation-delay:.33s}
-@keyframes ap-entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.pg-entra{animation:pg-entra .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes pg-entra{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.aparece>*{animation:ap-entra .45s cubic-bezier(.2,.8,.2,1) both}
+.aparece>*:nth-child(2){animation-delay:0.045s}.aparece>*:nth-child(3){animation-delay:0.090s}.aparece>*:nth-child(4){animation-delay:0.135s}
+.aparece>*:nth-child(5){animation-delay:0.180s}.aparece>*:nth-child(6){animation-delay:0.225s}.aparece>*:nth-child(7){animation-delay:0.270s}
+.aparece>*:nth-child(8){animation-delay:0.315s}.aparece>*:nth-child(9){animation-delay:0.360s}.aparece>*:nth-child(10){animation-delay:0.405s}
+.aparece>*:nth-child(11){animation-delay:0.450s}.aparece>*:nth-child(12){animation-delay:0.495s}
+@keyframes ap-entra{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 .app .btn{transition:transform .12s ease,background-color .15s ease,color .15s ease,box-shadow .15s ease}
 .app .btn:active:not(:disabled){transform:translateY(2px)}
 /* 👆 en el celular no hay «pasar el mouse» (por eso Dlx no veía ninguna: las de las puertas y las ligas son de hover):
@@ -3682,23 +3682,23 @@ a.rk-z:hover{border-color:var(--linea)}
    página. Y TODO se apaga junto, abajo: con «Menos animaciones» (`.app.calma`, que pone App.jsx) o con la opción del
    celular (`prefers-reduced-motion`). Antes «Menos animaciones» sólo frenaba el escenario del Inicio: el CSS de esta
    página vive en un shadow root, y la clase `calma` de <html> no le llegaba */
-@keyframes an-sube{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes an-sube{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
 @keyframes an-crece{from{transform:scaleY(0)}to{transform:none}}
 @keyframes an-pop{0%{transform:scale(.7)}60%{transform:scale(1.12)}100%{transform:none}}
 @keyframes an-abre{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
 @keyframes an-fondo{from{opacity:0}to{opacity:1}}
 /* las filas del ranking entran escalonadas (las quince primeras; las de más abajo, juntas) */
-.app .rk-t tbody tr{animation:an-sube .34s cubic-bezier(.2,.8,.2,1) both;animation-delay:.36s}
-.app .rk-t tbody tr:nth-child(1){animation-delay:0s}.app .rk-t tbody tr:nth-child(2){animation-delay:0.03s}.app .rk-t tbody tr:nth-child(3){animation-delay:0.05s}.app .rk-t tbody tr:nth-child(4){animation-delay:0.08s}
-.app .rk-t tbody tr:nth-child(5){animation-delay:0.10s}.app .rk-t tbody tr:nth-child(6){animation-delay:0.12s}.app .rk-t tbody tr:nth-child(7){animation-delay:0.15s}.app .rk-t tbody tr:nth-child(8){animation-delay:0.18s}
-.app .rk-t tbody tr:nth-child(9){animation-delay:0.20s}.app .rk-t tbody tr:nth-child(10){animation-delay:0.23s}.app .rk-t tbody tr:nth-child(11){animation-delay:0.25s}.app .rk-t tbody tr:nth-child(12){animation-delay:0.28s}
-.app .rk-t tbody tr:nth-child(13){animation-delay:0.30s}.app .rk-t tbody tr:nth-child(14){animation-delay:0.33s}.app .rk-t tbody tr:nth-child(15){animation-delay:0.35s}
+.app .rk-t tbody tr{animation:an-sube .45s cubic-bezier(.2,.8,.2,1) both;animation-delay:.5s}
+.app .rk-t tbody tr:nth-child(1){animation-delay:0.000s}.app .rk-t tbody tr:nth-child(2){animation-delay:0.035s}.app .rk-t tbody tr:nth-child(3){animation-delay:0.070s}.app .rk-t tbody tr:nth-child(4){animation-delay:0.105s}
+.app .rk-t tbody tr:nth-child(5){animation-delay:0.140s}.app .rk-t tbody tr:nth-child(6){animation-delay:0.175s}.app .rk-t tbody tr:nth-child(7){animation-delay:0.210s}.app .rk-t tbody tr:nth-child(8){animation-delay:0.245s}
+.app .rk-t tbody tr:nth-child(9){animation-delay:0.280s}.app .rk-t tbody tr:nth-child(10){animation-delay:0.315s}.app .rk-t tbody tr:nth-child(11){animation-delay:0.350s}.app .rk-t tbody tr:nth-child(12){animation-delay:0.385s}
+.app .rk-t tbody tr:nth-child(13){animation-delay:0.420s}.app .rk-t tbody tr:nth-child(14){animation-delay:0.455s}.app .rk-t tbody tr:nth-child(15){animation-delay:0.490s}
 /* los podios: los escalones suben —el segundo, el primero, el tercero— y cada uno aparece arriba del suyo */
-.app .lgp-paso{transform-origin:bottom;animation:an-crece .5s cubic-bezier(.2,.8,.2,1) both}
+.app .lgp-paso{transform-origin:bottom;animation:an-crece .65s cubic-bezier(.2,1.25,.4,1) both}
 .app .lgp-p.p2 .lgp-paso{animation-delay:.05s}.app .lgp-p.p1 .lgp-paso{animation-delay:.15s}.app .lgp-p.p3 .lgp-paso{animation-delay:.25s}
 .app .lgp-quien{animation:an-sube .4s cubic-bezier(.2,.8,.2,1) both;animation-delay:.35s}
 .app .lgp-p.p1 .lgp-quien{animation-delay:.45s}
-.app .rk-p{animation:an-sube .45s cubic-bezier(.2,.8,.2,1) both}
+.app .rk-p{animation:an-sube .6s cubic-bezier(.2,.8,.2,1) both}
 .app .rk-p.p2{animation-delay:.05s}.app .rk-p.p1{animation-delay:.15s}.app .rk-p.p3{animation-delay:.25s}
 /* lo que está más abajo aparece al llegar con el scroll (Chrome y Android; donde no se puede, está quieto y a la vista) */
 @supports (animation-timeline: view()){
@@ -3712,6 +3712,18 @@ a.rk-z:hover{border-color:var(--linea)}
 /* las pestañas cambian de a poco */
 .app .lpg-tabs button,.app .rk-subs button,.app .rk-subs a{transition:color .2s ease,background-color .2s ease,border-color .2s ease}
 
+/* 🎬 MIENTRAS LA PANTALLA DE CARGA TAPA, TODO ESPERA (Dlx, 18/10/2026: «carga demasiado rápido… no logro verlas»):
+   medido, la entrada de la página y de las filas terminaba detrás de la pantalla de carga. `.tapado` lo pone App.jsx
+   (anima.js) hasta que arranca el corte */
+.app.tapado *,.app.tapado *::before,.app.tapado *::after{animation-play-state:paused !important}
+/* lo primero que se ve también entra: los círculos de las historias, de a uno, y el escenario del Inicio */
+@keyframes an-circulo{from{opacity:0;transform:scale(.55)}70%{transform:scale(1.06)}to{opacity:1;transform:none}}
+.app .historias .h{animation:an-circulo .5s cubic-bezier(.2,.8,.2,1) both}
+.app .historias .h:nth-child(2){animation-delay:.05s}.app .historias .h:nth-child(3){animation-delay:.1s}
+.app .historias .h:nth-child(4){animation-delay:.15s}.app .historias .h:nth-child(5){animation-delay:.2s}
+.app .historias .h:nth-child(6){animation-delay:.25s}.app .historias .h:nth-child(n+7){animation-delay:.3s}
+.app .hero-t,.app .hero-ev,.app .hero-p,.app .hero-acc{animation:an-sube .55s cubic-bezier(.2,.8,.2,1) both}
+.app .hero-ev{animation-delay:.08s}.app .hero-p{animation-delay:.16s}.app .hero-acc{animation-delay:.24s}
 /* 🧘 QUIETO: «Menos animaciones» o la opción del celular. Lo que entra aparece ya en su lugar, y lo que late se queda */
 .app.calma *,.app.calma *::before,.app.calma *::after{animation-duration:.01ms !important;animation-delay:0s !important;
   animation-iteration-count:1 !important;transition-duration:.01ms !important;transition-delay:0s !important;scroll-behavior:auto !important}

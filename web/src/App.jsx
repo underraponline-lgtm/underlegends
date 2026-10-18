@@ -152,7 +152,7 @@ const Cargando = () => <div className="cargando" role="status"><span>Cargando…
 import { VentanaVideo } from './video.jsx';
 import { claseTema, guardarTemas, leerTemas } from './temas.js';
 import { urlFondo, useFondos } from './fondos.js';
-import { useCalma } from './anima.js';
+import { useCalma, useTapado } from './anima.js';
 
 // ── el puente con app.js: cada vez que pinta, avisa ──────────────────────────────────────────────
 // ⚠️ Las funciones de app.js son globales (script clásico, sin módulo), y adentro se llaman por su nombre: si se
@@ -547,7 +547,7 @@ export default function App() {
   const fYo = liga && liga.yo && fondosAp ? fondosAp[liga.yo.k] : null;
   const miFondo = fYo && fYo[2] ? urlFondo(fYo[0]) : '';
   // 🧘 «Menos animaciones», a la raíz: el CSS de la página vive acá adentro y no ve la clase de <html> (anima.js)
-  const calma = useCalma() ? ' calma' : '';
+  const calma = (useCalma() ? ' calma' : '') + (useTapado() ? ' tapado' : '');
   if (!liga) return <div className={'app ' + claseTema(tema, temaSv) + calma}><div className="barra-ul" /><div className="cargando">Cargando la Liga…</div></div>;
   return (
     <div className={'app ' + claseTema(tema, temaSv) + calma + (miFondo ? ' con-fondo' : '')} ref={raiz} style={miFondo ? { '--mi-fondo': miFondo } : undefined}>
