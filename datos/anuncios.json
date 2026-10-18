@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-18T21:57:20+00:00",
+ "cuando": "2026-10-18T22:25:26+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -435,12 +435,14 @@
      "KRAVITZ 🇨🇷"
     ],
     "dj": [
-     "DJ Bootrax Humilde 🇸🇪"
+     "DJ Bootrax Humilde 🇸🇪",
+     "PolloSport"
     ]
    },
    "autor": "Kravitz",
    "staff_cuentas": {
-    "DJ Bootrax Humilde 🇸🇪": "1122273746099638354"
+    "DJ Bootrax Humilde 🇸🇪": "1122273746099638354",
+    "PolloSport": "716016310202400848"
    },
    "categoria_id": "1468478330826260500",
    "inscripciones": "cerradas",
@@ -6272,6 +6274,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones-2",
+   "texto": "Luz",
+   "quien": "luzz0",
+   "discord_id": "820803699928072193",
+   "msg_id": "1561499825579495475",
+   "cuando": "2026-10-18T22:02:49"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones-2",

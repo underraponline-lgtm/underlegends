@@ -5152,8 +5152,8 @@
    "g": "1468472442925092958",
    "canal": "1557583344638623754",
    "pub": 1792357298616,
-   "ed": 1792360519710,
-   "texto": "`[ FILTROS ]`\n⌞PANCHOK🇨🇱⌝ 🆚 ⌞LVEL🇻🇪⌝ 🆚 ⌞JOBA🇨🇱⌝ 🆚 ⌞AX🇻🇪⌝ 🆚 ⌞1200🇰🇷⌝\n⌞SEBITA🇱🇷⌝ 🆚 ⌞IMAGY🇵🇪⌝ 🆚 ⌞TAM🇻🇪⌝ 🆚 ⌞MILLONARI-O(MC MILLO)🇵🇾⌝ 🆚 ⌞ONZAS.S🇻🇪⌝\n⌞JOBA🇨🇱R⌝ 🆚 ⌞MAILÉN🇳🇴⌝ 🆚 ⌞PARK-JI SUNG🇰🇷⌝ 🆚 ⌞VANDU🇨🇦⌝ 🆚 ⌞WARAP🇦🇷⌝ 🆚 ⌞CAZAFLA ANTI CAZANOVA🇭🇹⌝\n`[ FILTROS ]`\n⌞JOBA🇨🇱R⌝ 🆚 ⌞MAILÉN🇳🇴⌝ 🆚 ⌞PARK-JI SUNG🇰🇷⌝ 🆚 ⌞VANDU🇨🇦⌝ 🆚 ⌞WARAP🇦🇷⌝ 🆚 ⌞CAZAFLA ANTI CAZANOVA🇭🇹⌝",
+   "ed": 1792362125879,
+   "texto": "`[ FILTROS ]`\n⌞PANCHOK🇨🇱⌝ 🆚 ⌞LVEL🇻🇪⌝ 🆚 ⌞JOBA🇨🇱⌝ 🆚 ⌞AX🇻🇪⌝ 🆚 ⌞1200🇰🇷⌝\n⌞SEBITA🇱🇷⌝ 🆚 ⌞IMAGY🇵🇪⌝ 🆚 ⌞TAM🇻🇪⌝ 🆚 ⌞MILLONARI-O(MC MILLO)🇵🇾⌝ 🆚 ⌞ONZAS.S🇻🇪⌝\n⌞JOBA🇨🇱R⌝ 🆚 ⌞MAILÉN🇳🇴⌝ 🆚 ⌞PARK-JI SUNG🇰🇷⌝ 🆚 ⌞VANDU🇨🇦⌝ 🆚 ⌞WARAP🇦🇷⌝ 🆚 ⌞CAZAFLA ANTI CAZANOVA🇭🇹⌝\n`[ SEMIFINALES ]`\n⌞TAM🇻🇪+SEBITA🇱🇷⌝ 🆚 ⌞ANDRES🇨🇱+CHOP🇭🇳⌝",
    "batallas": [
     [
      "FILTROS",
@@ -5165,7 +5165,7 @@
       "1200🇰🇷"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -5178,7 +5178,7 @@
       "ONZAS.S🇻🇪"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -5192,18 +5192,14 @@
       "CAZAFLA ANTI CAZANOVA🇭🇹"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
-     "FILTROS",
+     "SEMIFINALES",
      [
-      "JOBA🇨🇱R",
-      "MAILÉN🇳🇴",
-      "PARK-JI SUNG🇰🇷",
-      "VANDU🇨🇦",
-      "WARAP🇦🇷",
-      "CAZAFLA ANTI CAZANOVA🇭🇹"
+      "TAM🇻🇪+SEBITA🇱🇷",
+      "ANDRES🇨🇱+CHOP🇭🇳"
      ],
      null,
      "última ronda y no dice campeón",
