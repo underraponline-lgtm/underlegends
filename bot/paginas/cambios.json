@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "3.55",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T06:10:00-04:00",
+   "titulo": "La llave, carta contra carta",
+   "items": [
+    "🃏 En la llave, cada batalla con cartas se ve como un versus: tu carta contra la del otro, sin repetir el nombre ni la bandera (la carta ya los trae).",
+    "⚪ Quien pasó va en color y quien quedó afuera, en gris. Quien todavía no tiene carta aparece con su cara, su nombre y su bandera.",
+    "👆 Tocar una carta sigue marcando su camino en la llave."
+   ]
+  },
+  {
    "version": "3.54",
    "dia": "2026-10-18",
    "cuando": "2026-10-18T05:53:00-04:00",

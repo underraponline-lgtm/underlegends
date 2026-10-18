@@ -3012,6 +3012,33 @@ a.rk-z:hover{border-color:var(--linea)}
 .lk-l.x .lk-carta{filter:grayscale(1);opacity:.6}
 .lk-carta.brilla{box-shadow:0 0 0 1.5px #E5B800,0 0 9px rgba(229,184,0,.7);animation:lk-brilla 2.6s ease-in-out infinite}
 @keyframes lk-brilla{50%{box-shadow:0 0 0 1.5px #F5D04A,0 0 16px rgba(245,208,74,.95)}}
+/* 🃏 SÓLO LA CARTA (18/10/2026): una batalla con cartas es un versus, las dos lado a lado. La carta ya dice el nombre y
+   la bandera; quien no tiene, una ficha del mismo tamaño con su cara, su nombre y su bandera. Quien perdió, en gris;
+   quien pasó, en color (sin ✓: tapaba el puesto de la carta), y la ficha sin carta, como la fila que pasó; ✨ el nivel
+   8 del Pase, con el brillo que sigue la forma de la carta */
+.lk-b.cartas{display:block;padding:4px}
+.lk-vs{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.lk-vs.t3{grid-template-columns:1fr 1fr 1fr}
+.lk-fc{position:relative;display:block;width:100%;aspect-ratio:300/438;min-width:0;padding:0;border:0;background:none;color:var(--tinta);
+  cursor:pointer;-webkit-tap-highlight-color:transparent;container-type:inline-size}
+.lk-fc-img{display:block;width:100%;height:100%;object-fit:contain}
+.lk-fc-sin{display:grid;align-content:center;justify-items:center;gap:6px;width:100%;height:100%;padding:8px 6px;background:var(--suave);
+  border-radius:3px;text-align:center}
+.lk-fc-sin .lk-cara{width:44px;height:44px}
+/* el nombre entra entero en el ancho de la ficha: «FOTOSÍNTESIS» se partía en «FOTOSÍNTESI / S» */
+.lk-fc-sin .lk-n{max-width:100%;font:900 min(13px,9cqi)/1.15 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.02em;white-space:normal;
+  overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:break-word}
+.lk-fc.g .lk-fc-sin{background:var(--inv);color:var(--inv-tinta)}
+.lk-fc.copa .lk-fc-sin{background:var(--verde);color:#030304}
+.lk-fc.x .lk-fc-img,.lk-fc.x .lk-fc-sin{filter:grayscale(1);opacity:.5}
+.lk-fc.brilla .lk-fc-img{filter:drop-shadow(0 0 3px rgba(229,184,0,.95));animation:lk-fc-brilla 2.6s ease-in-out infinite}
+@keyframes lk-fc-brilla{50%{filter:drop-shadow(0 0 7px rgba(245,208,74,1))}}
+.lk-fc .lk-mw{position:absolute;left:-3px;top:-3px;display:grid;place-items:center;width:22px;height:22px;background:var(--magenta);color:#fff}
+.lk-fc.on{outline:3px solid var(--magenta);outline-offset:1px}
+@media (hover: hover) and (pointer: fine){.lk-fc:hover .lk-fc-img{transform:translateY(-2px)}.lk-fc-img{transition:transform .15s}}
+.lk-fc.vac{display:grid;place-items:center;border:2px dashed var(--suave);cursor:default}
+.lk-fc.vac em{font:700 13px/1.2 "Barlow Condensed",sans-serif;color:var(--gris)}
+.lk-b.cartas .lk-et{top:-11px}
 .lk-caras{display:flex;flex:none}
 .lk-caras .lk-cara+.lk-cara{margin-left:-8px}
 .lk-ok{flex:none;font:900 14px/1 Archivo,sans-serif}

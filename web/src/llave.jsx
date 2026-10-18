@@ -108,12 +108,53 @@ function Persona({ ctx, x, conCara = true, perdio = false }) {
 // están verificados, simplemente su cuadrado», y a la pregunta: «carta chica + Pase»). Quien tiene carta lleva la suya
 // en miniatura —la de Servidor si es de ESE servidor, si no la de Temporada (`liga.cartaDe()`)—; quien no, su cara. Y
 // desde el nivel 8 del Pase, brilla
+const urlCarta = (ctx, f) => {
+  const cual = f ? ctx.liga.cartaDe(f.k, { sv: ctx.L && ctx.L.sv }) : null;
+  return cual ? ctx.liga.cartaUrl(f.k, cual) : null;
+};
 function Mini({ ctx, f, nombre }) {
   const liga = ctx.liga;
-  const cual = f ? liga.cartaDe(f.k, { sv: ctx.L && ctx.L.sv }) : null;
-  const url = cual ? liga.cartaUrl(f.k, cual) : null;
+  const url = urlCarta(ctx, f);
   if (!url) return <Cara liga={liga} k={f ? f.k : ''} nombre={nombre} cls="lk-cara" />;
   return <span className={'lk-carta' + (liga.brilla(f.k) ? ' brilla' : '')}><img alt="" src={url} loading="lazy" /></span>;
+}
+
+// 🃏 SÓLO LA CARTA (Dlx, 18/10/2026: «el objetivo de la carta es quitar ese espacio… en la carta aparece el nombre, la
+// bandera… no necesitaríamos el nombre, la bandera o el cuadro, sólo la tarjeta, si está disponible»). Una batalla de
+// uno contra uno donde alguno tiene carta se dibuja como un VERSUS: los dos lados lado a lado, cada uno con su carta
+// —que ya trae nombre y bandera—; quien no tiene, una ficha del mismo tamaño con su cara, su nombre y su bandera. Los
+// equipos y las batallas sin ninguna carta siguen en filas, que ocupan menos. ⚠️ SIN ✓: en la esquina de arriba la
+// carta de Temporada lleva su puesto (#4) y la tapaba; quien pasó se ve en color y quien quedó afuera, en gris
+const enCartas = (ctx, ls) => ls.length > 0 && ls.every((s) => partes(s).length === 1 && (ctx.fila(s) || !ctx.esSin(s)))
+  && ls.some((s) => !!urlCarta(ctx, ctx.fila(s)));
+//: la proporción de las cartas (300 × 438): la Servidor es un poco más baja y entra entera, centrada
+const CARTA_AR = 438 / 300;
+// de a cuántas por fila: de a dos, y de a tres en los grupos de tres o más de cuatro (uno de tres dejaba una carta sola
+// abajo y un hueco al lado)
+const colsVs = (n) => (n === 3 || n >= 5 ? 3 : 2);
+
+function Ficha({ ctx, b, s, copa, pasa }) {
+  const f = ctx.fila(s);
+  const url = urlCarta(ctx, f);
+  const g = gana(b, s) || pasa;
+  const perdio = !!b[1] && !g;
+  const id = ctx.idDe(s);
+  const on = ctx.sigo === id;
+  const sb = sinBanderas(s);
+  const nombre = f ? capital(limpio(f.n)) : capital(sb.txt || s);
+  const cls = 'lk-fc' + (g ? (copa ? ' copa' : ' g') : (b[1] ? ' x' : '')) + (on ? ' on' : '') + (url && ctx.liga.brilla(f.k) ? ' brilla' : '');
+  return (
+    <button type="button" className={cls} aria-pressed={on} title={nombre} onClick={() => ctx.seguir(id)}
+      aria-label={nombre + (g ? (copa ? ', campeón' : ', pasó') : perdio ? ', quedó afuera' : '')}>
+      {url ? <img className="lk-fc-img" alt="" src={url} loading="lazy" />
+        : <span className="lk-fc-sin">
+          <Cara liga={ctx.liga} k={f ? f.k : ''} nombre={nombre} cls="lk-cara" />
+          <span className="lk-n">{nombre}</span>
+          {f ? <Bandera cc={f.cc} cls="lk-flag" /> : sb.ccs.map((cc) => <Bandera key={cc} cc={cc} cls="lk-flag" />)}
+        </span>}
+      {ctx.marca(s, f, perdio)}
+    </button>
+  );
 }
 
 // ── un lado de una batalla: una persona o un equipo (las caras juntas, adelante) ──
@@ -159,6 +200,17 @@ function Batalla({ ctx, b, est, copa, style, altos, pasan }) {
   const ls = b[0];
   const et = etiquetas(ctx, b, est, copa);
   const sigue = !!ctx.sigo && ls.some((s) => partes(s).some((m) => ctx.idDe(m) === ctx.sigo));
+  if (enCartas(ctx, ls)) {
+    return (
+      <div className={'lk-b cartas' + (est ? ' ' + est : '') + (sigue ? ' sigue' : '') + (copa ? ' fin' : '')} style={style} title={b[2] || undefined}>
+        {et.length ? <div className="lk-et">{et.map((x, i) => <span key={i} className={x[1]} title={x[2]}>{x[0]}</span>)}</div> : null}
+        <div className={'lk-vs' + (colsVs(ls.length) === 3 ? ' t3' : '')}>
+          {ls.map((s, i) => <Ficha key={i} ctx={ctx} b={b} s={s} copa={copa} pasa={!!pasan && pasan(s)} />)}
+          {ls.length === 1 ? <div className="lk-fc vac"><em>{b[1] ? 'pasa directo' : 'por definir'}</em></div> : null}
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={'lk-b' + (est ? ' ' + est : '') + (sigue ? ' sigue' : '') + (ls.length ? '' : ' vacio') + (copa ? ' fin' : '')}
       style={style} title={b[2] || undefined}>
@@ -294,7 +346,14 @@ function Arbol({ ctx, rondas: rs, ter, vale, plano = false, oro, copaUlt = true 
   const nm = (s) => partes(s).length || 1;
   const altoLado = (s) => Math.max(FILA, 8 + LINEA * nm(s));
   const altos = (b) => (b[0].length ? b[0].map(altoLado).concat(b[0].length < 2 ? [FILA] : []) : [FILA, FILA]);
-  const alto = (b) => PAD * 2 + altos(b).reduce((a, x) => a + x, 0);
+  // 🃏 un versus: dos cartas por fila, del ancho de la columna (borde 2 + relleno 4 + hueco 4, como en `.lk-b.cartas`)
+  const altoVs = (b) => {
+    const n = Math.max(2, b[0].length);
+    const c = colsVs(n);
+    const f = Math.ceil(n / c);
+    return 4 + 8 + f * ((W - 4 - 8 - 4 * (c - 1)) / c) * CARTA_AR + (f - 1) * 4;
+  };
+  const alto = (b) => (enCartas(ctx, b[0]) ? altoVs(b) : PAD * 2 + altos(b).reduce((a, x) => a + x, 0));
   const hijos = (r, i) => (r ? ((rs[r].b[i] || [])[3] || []).filter((j) => rs[r - 1].b[j]) : []);
   const conPadre = {};
   rs.forEach((R, r) => R.b.forEach((b, i) => hijos(r, i).forEach((j) => { conPadre[(r - 1) + ':' + j] = 1; })));

@@ -661,6 +661,17 @@ def _self_check():
        and any(p['que'] == 'rango' and p['compe'] == 'ccff' for p in A['pendiente'])
        and A['sumado'][0]['fuera'] == ['MCO', 'Fazer'],
        'lo que no se sabe no suma y va a las preguntas: dos semifinalistas sin 3º, y una compe sin rango', A['pendiente'])
+    # 🏙️ URBAN, SIN PARTIDO POR EL 3º: los dos semifinalistas se llevan los puntos de semifinal (Valen, de URBF, por Dlx
+    # el 18/10/2026: «si el evento no hay 3er puesto, en Urban, simplemente los 2 se llevan los puntos de semifinales»).
+    # Su escala ya tiene «Semifinal» y no tiene `dudas`: no es la pregunta abierta de Snake Rap
+    RU = json.loads(json.dumps(reglas().get('URBF') or {}))
+    AU = calcular(RU, {'filas': []}, [{'n': 1, 'nombre': 'X', 'dia': '2026-10-20', 'rango': 'plata',
+                                       'filas': [['Ana', 'Campeón', ''], ['Bea', 'Subcampeón', ''], ['Cid', 'Semifinal', ''],
+                                                 ['Dan', 'Semifinal', '']]}], canon, set())
+    ok(not RU.get('dudas') and [(f[0], f[2]) for f in AU['filas']] == [('Ana', 2000), ('Bea', 1000), ('Cid', 250), ('Dan', 250)]
+       and not AU['pendiente'],
+       'Urban sin partido por el 3º: los dos semifinalistas suman su «Semifinal» (Valen, 18/10), sin pregunta pendiente',
+       AU['filas'])
     e = embed('SR', R, dict(A, oficial={'dia': '2026-10-01'}), 0xE0670B)
     ok(e['description'].startswith('⬆️ **1.** OVER 🇺🇾 · **9.000** `+6.000`') and '🔁 **3.**' in e['description']
        and 'rango 2' in e['fields'][0]['value'].lower() and '⏳' in e['fields'][1]['name'] and '01/10' in e['footer']['text']
