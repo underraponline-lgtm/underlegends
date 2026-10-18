@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-18T01:27:40+00:00",
+ "cuando": "2026-10-18T01:54:55+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1110,30 +1110,6 @@
    },
    "autor": "Lewito",
    "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "LOS QUE MANDAN 95",
-   "servidor": "FFA",
-   "canal": "✦⚡—novedades",
-   "msg_id": "1560102246736470056",
-   "cuando": "2026-10-15T01:29:20",
-   "canal_id": "1531832189187264543",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "797ecd0ceee716c6",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "",
-   "fecha": "11/11",
-   "premios": "",
-   "staff": {},
-   "autor": "Dlxmouche",
-   "de_imagen": true,
-   "categoria_id": "1468472443843776657"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -4432,7 +4408,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "Adriagner",
+     "n": "John pork",
      "id": "1316490165836972104"
     }
    ],
@@ -4447,16 +4423,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "Adriagner"
+     "John pork"
     ],
     "host": [
-     "Adriagner"
+     "John pork"
     ],
     "dj": [
-     "Adriagner"
+     "John pork"
     ]
    },
-   "autor": "Adriagner",
+   "autor": "John pork",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -4516,7 +4492,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "Adriagner",
+     "n": "John pork",
      "id": "1316490165836972104"
     }
    ],
@@ -4531,16 +4507,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "Adriagner"
+     "John pork"
     ],
     "host": [
-     "Adriagner"
+     "John pork"
     ],
     "dj": [
-     "Adriagner"
+     "John pork"
     ]
    },
-   "autor": "Adriagner",
+   "autor": "John pork",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -4589,7 +4565,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "Adriagner",
+     "n": "John pork",
      "id": "1316490165836972104"
     }
    ],
@@ -4604,16 +4580,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "Adriagner"
+     "John pork"
     ],
     "host": [
-     "Adriagner"
+     "John pork"
     ],
     "dj": [
-     "Adriagner"
+     "John pork"
     ]
    },
-   "autor": "Adriagner",
+   "autor": "John pork",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -4678,7 +4654,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "Adriagner",
+     "n": "John pork",
      "id": "1316490165836972104"
     }
    ],
@@ -4693,16 +4669,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "Adriagner"
+     "John pork"
     ],
     "host": [
-     "Adriagner"
+     "John pork"
     ],
     "dj": [
-     "Adriagner"
+     "John pork"
     ]
    },
-   "autor": "Adriagner",
+   "autor": "John pork",
    "categoria_id": "1469944166137073857"
   },
   {
@@ -4716,7 +4692,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "Adriagner",
+     "n": "John pork",
      "id": "1316490165836972104"
     }
    ],
@@ -4731,16 +4707,16 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "Adriagner"
+     "John pork"
     ],
     "host": [
-     "Adriagner"
+     "John pork"
     ],
     "dj": [
-     "Adriagner"
+     "John pork"
     ]
    },
-   "autor": "Adriagner",
+   "autor": "John pork",
    "categoria_id": "1469944166137073857"
   },
   {
