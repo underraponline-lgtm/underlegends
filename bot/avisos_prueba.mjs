@@ -2167,6 +2167,10 @@ const ok = (cond, que, det) => {
     && A.validarPedido({ tipo: 'video', vid: 'abcdefghijk', texto: 'no soy yo' }).vid === 'abcdefghijk'
     && A.validarPedido({ tipo: 'otro', texto: 'x' }).error === 'tipo',
   'los pedidos: tipo conocido, perfil para cuenta e identidad, país de dos letras, video de YouTube');
+  // 🤝 los tiers: {sigla: 1|2|3} y nada más
+  ok(JSON.stringify(A.ajusteValido('tiers', { FFA: 1, FVS: 2, NUEVO: 3 })) === '{"FFA":1,"FVS":2,"NUEVO":3}'
+    && A.ajusteValido('tiers', { FFA: 4 }) === undefined && A.ajusteValido('tiers', { ffa: 1 }) === undefined
+    && A.ajusteValido('tiers', null) === null, 'el nivel de cada servidor: siglas en mayúscula y 1, 2 o 3');
   // 🏆 MES AWARDS: Dlx saca nominados de las veintitrés —también del staff por rol—, y de nada más
   const ms = A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['rapero:Ana', 'organizador:Velatz', 'liga:fmsperu', 'jurado:Flennzs'] });
   ok(ms && ms.quitar.length === 4 && A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['otra:x'] }) === undefined

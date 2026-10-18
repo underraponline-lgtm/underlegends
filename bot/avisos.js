@@ -2358,6 +2358,8 @@ const RUTAS = {
   '/avisos/pedidos-ciclo': 'GET', '/avisos/pedidos-estados': 'POST', '/avisos/mudar-cuenta': 'POST',
   // y lo que el ciclo averiguó de la cuenta VIEJA de un «perdí mi cuenta» (`pedidosPrueba()`)
   '/avisos/pedidos-prueba': 'POST',
+  // 🤝 el puntaje de cada servidor para «Los tiers» del Dashboard (`bot/tiers.py`): lo manda el ciclo, con su clave
+  '/avisos/tiers-ciclo': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx) y los ajustes para el ciclo (con su clave)
   '/avisos/dueno/ajuste': 'POST', '/avisos/ajustes': 'GET',
   // ▶️ correr el ciclo ahora, desde el Dashboard (sólo Dlx): ver `cicloAMano()`
@@ -3214,6 +3216,17 @@ export const NIVELES_AVISO = {
 };
 export function ajusteValido(cual, valor) {
   if (cual === 'campana_pausada') return typeof valor === 'boolean' ? valor : undefined;
+  // 🤝 el nivel de cada servidor (`bot/tiers.py`, Dlx 18/10/2026): `{sigla: 1|2|3}`. El ciclo lo copia a datos/niveles.json
+  if (cual === 'tiers') {
+    if (valor === null) return null;
+    if (!valor || typeof valor !== 'object' || Array.isArray(valor) || Object.keys(valor).length > 60) return undefined;
+    const out = {};
+    for (const [k, v] of Object.entries(valor)) {
+      if (!/^[A-Z]{2,6}$/.test(k) || ![1, 2, 3].includes(v)) return undefined;
+      out[k] = v;
+    }
+    return out;
+  }
   // 🏆 los nominados que Dlx saca de los MES AWARDS antes de que abra la votación (`bot/mes_awards.py`): `{mes, quitar}`
   if (cual === 'mes_sacar') {
     if (valor === null) return null;
@@ -3931,7 +3944,7 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // 🙋 PARA EL CICLO, CON SU CLAVE (traen Discord IDs): lo aprobado, cómo salió, y pasar lo de una cuenta a otra
   if (ruta === '/avisos/pedidos-ciclo' || ruta === '/avisos/pedidos-estados' || ruta === '/avisos/mudar-cuenta'
-      || ruta === '/avisos/pedidos-prueba') {
+      || ruta === '/avisos/pedidos-prueba' || ruta === '/avisos/tiers-ciclo') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     if (ruta === '/avisos/pedidos-ciclo') return elObjeto(env).fetch('https://avisos/pedidos-ciclo');
@@ -5332,6 +5345,12 @@ export class Avisos {
       if (ruta === '/pedidos-estados') return json(this.pedidosEstados(d));
       if (ruta === '/mudar-cuenta') return json(await this.mudarCuenta(d));
       if (ruta === '/pedidos-prueba') return json(this.pedidosPrueba(d));
+      // 🤝 el puntaje de los servidores: sólo lo guarda, tal cual, para el Dashboard (nunca sale a la página)
+      if (ruta === '/tiers-ciclo') {
+        if (!d || !Array.isArray(d.servidores) || d.servidores.length > 60) return json({ error: 'datos' }, 400);
+        this.guardar('tiers', { t: String(d.t || ''), semanas: Number(d.semanas) || 4, servidores: d.servidores });
+        return json({ ok: true });
+      }
       if (ruta === '/bandeja') return this.bandeja(d);
       if (ruta === '/mi-servidor') return this.miServidor(d);
       if (ruta === '/mi-foto') return await this.miFoto(d);
@@ -10735,6 +10754,8 @@ export class Avisos {
       uso: this.usoResumen(),
       // 📊 por semana, para «Comparar semanas» (Números)
       uso_semanas: this.usoSemanas(ahora),
+      // 🤝 cómo viene trabajando cada servidor, para «Los tiers» (`bot/tiers.py`)
+      tiers: this.leer('tiers'),
       tutorial: this.tutorialResumen(),
       secciones: this.seccionesResumen(),
       clics: this.clicsResumen(),

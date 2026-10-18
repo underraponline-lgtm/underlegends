@@ -1486,7 +1486,15 @@ def duelos(desde=None, ruta=None, ps=None):
     el nombre de ESE servidor (`por_servidor()`): el «FORCE» de Urban es ForceGP y cuenta en sus duelos."""
     out = []
     ps = por_servidor() if ps is None else ps
+    # 🤝 las ligas de un servidor en Tier 2 o 3 no cuentan como duelos (`bot/tiers.py`: «el Tier 2 no suma»)
+    try:
+        import tiers as _TI
+        bajos = _TI.bajados()
+    except Exception:                                    # noqa: BLE001
+        bajos = set()
     for x in (leer(ruta).get('ligas') or {}).values():
+        if x.get('sv') in bajos:
+            continue
         sv_m = ps.get(x.get('sv')) or {}
         de = lambda n: sv_m.get(clave(n)) or n           # noqa: E731
         for _id, t, _j, a, b, gana, como, _ex in x.get('batallas') or []:

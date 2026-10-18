@@ -454,6 +454,61 @@ function CompararSemanas({ S, uso, liga }) {
   );
 }
 
+// ── 🤝 LOS TIERS (Dlx, 18/10/2026: «3 tier levels of association… el sistema recomienda y muestra qué tan bien los
+// servidores han hecho su trabajo»). Cada servidor con su nivel —que se elige acá: ajuste `tiers`, el ciclo lo copia a
+// datos/niveles.json—, su puntaje de las últimas 4 semanas y lo que recomienda `bot/tiers.py`. El puntaje no sale de acá
+const TIER_QUE = { 1: 'suma al ranking, todo', 2: 'el calendario, no suma', 3: 'el directorio, sin bot' };
+const REC = { bien: ['✅', 'Bien'], subir: ['⬆️', 'Puede subir'], revisar: ['⚠️', 'Revisar'], casa: ['🏠', 'La casa'] };
+const PARTES = [['actividad', 'Actividad', 35], ['alcance', 'Alcance', 25], ['calidad', 'Calidad', 25], ['comunidad', 'Comunidad', 15]];
+
+function TierCaja({ x, liga, tier, cambiar, ocup, i }) {
+  const pts = useNumero(x.puntos);
+  const m = x.m || {};
+  const [ic, et] = REC[x.rec] || ['', x.rec];
+  return (
+    <article className={'ti-caja r-' + x.rec} style={{ '--i': i }}>
+      <header>
+        {liga && liga.logo ? <img alt="" src={liga.logo(x.sv)} /> : null}
+        <span><b>{x.nombre}</b><small>{siglaDe(x.sv)}</small></span>
+        <label className="ti-sel"><span className="rk-sr">El tier de {x.nombre}</span>
+          <select value={tier} disabled={ocup} onChange={(e) => cambiar(x.sv, Number(e.target.value))}>
+            {[1, 2, 3].map((t) => <option key={t} value={t}>Tier {t}</option>)}
+          </select></label>
+      </header>
+      <p className="ti-que">Tier {tier}: {TIER_QUE[tier]}</p>
+      <div className="ti-pts"><b>{pts}</b><small>de 100{x.antes ? ' · antes ' + x.antes : ''}</small></div>
+      <div className="ti-partes">{PARTES.map(([k, t, tope]) => (
+        <div key={k} title={t + ': ' + ((x.partes || {})[k] || 0) + ' de ' + tope}>
+          <span>{t}</span><i><u style={{ width: (100 * ((x.partes || {})[k] || 0) / tope).toFixed(0) + '%' }} /></i>
+        </div>
+      ))}</div>
+      <p className="ti-m">{num(m.por_semana || 0)} eventos por semana · {num(m.por_evento || 0)} por evento · {num(m.nuevos || 0)} nuevos
+        {m.nuevos ? ' (volvieron ' + Math.round((100 * (m.volvieron || 0)) / m.nuevos) + ' %)' : ''}
+        {m.eventos ? ' · ' + (Math.round((10 * (m.ayudas || 0)) / m.eventos) / 10) + ' ayudas por llave' : ''}
+        {m.anuncios ? ' · staff en ' + Math.round((100 * (m.con_staff || 0)) / m.anuncios) + ' % de sus anuncios' : ''}
+        {m.cancelados ? ' · ' + m.cancelados + ' cancelados' : ''}{m.promos ? ' · ' + m.promos + ' promos' : ''}{m.ligas ? ' · ' + m.ligas + ' ligas' : ''}</p>
+      <p className="ti-rec"><span>{ic} {et}</span> {x.porque}</p>
+    </article>
+  );
+}
+
+function Tiers({ T, aj, hacer, ocup, msg, liga }) {
+  if (!T || !(T.servidores || []).length) return <p className="pronto-p">El puntaje llega con la próxima vuelta del ciclo.</p>;
+  const elegidos = aj.tiers || {};
+  const tierDe = (x) => elegidos[x.sv] || x.tier || 1;
+  const cambiar = (sv, t) => hacer('tiers', Object.assign({}, elegidos, { [sv]: t }),
+    siglaDe(sv) + ' pasa a Tier ' + t + '. El ciclo lo aplica en su próxima vuelta' + (t === 1 ? ': vuelve a sumar al ranking.' : ': sus llaves dejan de sumar.'));
+  return (
+    <div className="ti">
+      <p className="db-tx">Las últimas {T.semanas || 4} semanas. El puntaje recomienda; <b>el nivel lo elegís vos</b>. Tier 1 suma al ranking y
+        lleva todo; Tier 2 sale en el calendario y la campana, pero sus llaves no suman; Tier 3 es el directorio, sin bot.</p>
+      {msg ? <p className="db-msg" role="status">{msg}</p> : null}
+      <div className="ti-g">{T.servidores.map((x, i) => <TierCaja key={x.sv} x={x} liga={liga} tier={tierDe(x)} cambiar={cambiar} ocup={ocup} i={i} />)}</div>
+      {T.t ? <p className="db-tx">Medido {hace(T.t)}.</p> : null}
+    </div>
+  );
+}
+
 // lo que está cerca del techo, para el panel del Inicio
 const cuotasEnRojo = (q) => (q ? TOPES.filter(([g, k, , tope]) => ((q[g] || {})[k] || 0) >= 0.9 * tope) : []);
 function Cuotas({ q }) {
@@ -2217,6 +2272,7 @@ export function Dashboard({ dc, liga }) {
             roles={d.roles} alRoles={(y) => cambiarD({ roles: y })} conRoles={ve('roles')} />) : null}
         {tabV === 'numeros' ? <>
           {sec('COMPARAR SEMANAS', 'de lunes a domingo, en hora del este', <CompararSemanas S={semanas} uso={d.uso_semanas} liga={liga} />)}
+          {ve('ajustes') ? sec('LOS TIERS · CÓMO TRABAJA CADA SERVIDOR', 'recomienda; vos elegís', <Tiers T={d.tiers} aj={d.ajustes || {}} hacer={hacer} ocup={ocup} msg={msg} liga={liga} />) : null}
           {sec('EL BOT Y LA PÁGINA · 7 DÍAS', u.desde ? 'se cuenta desde el ' + corto(u.desde) : null, <Cajas u={u} />)}
           {(d.dias || []).length ? sec('DÍA POR DÍA · DOS SEMANAS', null, <Dias dias={d.dias} />) : null}
           {d.tutorial && Object.keys(d.tutorial.n || {}).length ? sec('EL TUTORIAL · DOS SEMANAS',

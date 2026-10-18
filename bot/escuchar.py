@@ -2712,8 +2712,14 @@ def _guilds_liga():
             svs = (json.load(f) or {}).get('servidores') or {}
     except (OSError, ValueError):
         return set()
+    # 🤝 menos los de Tier 2 y 3 (`bot/tiers.py`, Dlx 18/10/2026: «el Tier 2 no suma»): sus llaves no se leen
+    try:
+        import tiers as _TI
+        fuera = _TI.guilds_bajados(svs)
+    except Exception:                                    # noqa: BLE001
+        fuera = set()
     return {str(d.get('guild_id')) for d in svs.values()
-            if d.get('confirmado') and d.get('guild_id')}
+            if d.get('confirmado') and d.get('guild_id')} - fuera
 
 
 def _canales(s, solo=None, guilds=None):
@@ -2727,8 +2733,16 @@ def _canales(s, solo=None, guilds=None):
     no habria ahorrado nada.
     """
     if solo:
+        # 🤝 los canales conocidos de un servidor que pasó a Tier 2 o 3 tampoco: la memoria es de cuando sumaba
+        try:
+            import tiers as _TI
+            bajos = _TI.guilds_bajados()
+        except Exception:                                # noqa: BLE001
+            bajos = set()
         for cid in sorted(solo):
             d = solo[cid] or {}
+            if str(d.get('guild') or '') in bajos:
+                continue
             yield (cid, d.get('canal') or '?', d.get('servidor') or '?',
                    d.get('guild') or '')
         return

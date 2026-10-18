@@ -199,10 +199,10 @@ def numeros(ini, fin, D, raperos=()):
     por_rol = {r: {} for r in STAFF}
     al_st = D.get('alias_staff') or {}
 
-    def quien_staff(s):
-        """El nombre de alguien del staff: el de la Lista si está, sin banderas ni emojis, y el apodo del servidor
-        en vez de su nombre de Discord (`alias_staff`)."""
-        r = raw(s, '') or ''
+    def quien_staff(s, did=''):
+        """El nombre de alguien del staff: el de la Lista si está —por su cuenta, si el anuncio la trae—, sin
+        banderas ni emojis, y el apodo del servidor en vez de su nombre de Discord (`alias_staff`)."""
+        r = raw(s, did) or ''
         r = r if k(r) in (D.get('canon') or ()) else (nombre_staff(r) or '')
         return al_st.get(k(r), r) if r and r.lower() not in NO_ES_STAFF else ''
     for n, sv, t, tabla, nombre in D.get('eventos') or []:
@@ -229,10 +229,11 @@ def numeros(ini, fin, D, raperos=()):
                 x['_ev'] += 1
                 x['_g'] += gente
         en_staff = []
+        cu = a.get('staff_cuentas') or a.get('cuentas') or {}
         for _rol, ns in (a.get('staff') or {}).items():
             en_rol = []
-            for s in [y for x in ns or [] for y in _partir(x)]:
-                r = quien_staff(s)
+            for x0, s in [(x, y) for x in ns or [] for y in _partir(x)]:
+                r = quien_staff(s, cu.get(x0) or cu.get(s) or '')
                 if r and r not in en_staff:
                     en_staff.append(r)
                 if r and r not in en_rol:
@@ -455,9 +456,12 @@ def vistas(viejas, ahora, mes_de, traer=None, promos=None, staff=None):
         mid = str(a.get('msg_id') or '')
         if not ti or not mid or mes_de(ti) not in deje or not (a.get('staff') or a.get('orgs') or a.get('organizador')):
             continue
-        out.setdefault(mes_de(ti), {'promo': {}, 'pub': {}, 'an': {}, 'ver': {}}).setdefault('an', {})[mid] = {
+        lugar = out.setdefault(mes_de(ti), {'promo': {}, 'pub': {}, 'an': {}, 'ver': {}}).setdefault('an', {})
+        # ⚠️ las cuentas que ya tenía no se pierden si la versión de ahora no las trae (una leída antes de guardarlas)
+        lugar[mid] = {
             'sv': a.get('servidor') or a.get('sv') or '', 'nombre': str(a.get('nombre') or '')[:80], 'mo': _iso(ti),
-            'staff': a.get('staff') or {}, 'orgs': a.get('orgs') or [], 'organizador': a.get('organizador') or ''}
+            'staff': a.get('staff') or {}, 'orgs': a.get('orgs') or [], 'organizador': a.get('organizador') or '',
+            'cuentas': a.get('staff_cuentas') or a.get('cuentas') or (lugar.get(mid) or {}).get('cuentas') or {}}
     for sv, ts, uid, nom in (st or ([], []))[1] or []:
         ti = _de_iso(ts)
         if not ti or mes_de(ti) not in deje or not uid:
@@ -720,6 +724,10 @@ def datos(vistas_guardadas=None):
         ann = (j('datos', 'anuncios.json') or {}).get('anuncios') or []
         # 🎧 y los que ya rotaron de `anuncios.json`, contados de a poco (`vistas()`): sin ellos, de FFA quedaban 20 de 52
         ya = {str(x.get('msg_id') or '') for x in ann}
+        # las cuentas del staff que el anuncio de hoy no trae (uno leído antes de que se guardaran) salen de lo acumulado
+        acc = pl.get('an') or {}
+        ann = [dict(x, staff_cuentas=(acc.get(str(x.get('msg_id') or '')) or {}).get('cuentas'))
+               if not x.get('staff_cuentas') and (acc.get(str(x.get('msg_id') or '')) or {}).get('cuentas') else x for x in ann]
         ann = list(ann) + [dict(v, servidor=v.get('sv'), _mo=v.get('mo')) for mid, v in (pl.get('an') or {}).items()
                            if mid not in ya]
         pas = [{'nombre': x.get('nombre'), 'sv': x.get('servidor') or '',
@@ -865,6 +873,10 @@ def _self_check():
     ok([(x['op'], x['d']) for x in nu['staff']] == [('LEWITO', '2 fechas de staff')]
        and [x['op'] for x in nu['host']] == ['LEWITO'] and [x['op'] for x in nu['dj']] == ['LEWITO'],
        'la misma persona con su nombre de Discord y su apodo del servidor es UNA (l3wito = LEWITO)', str(nu['staff']))
+    nc = numeros(ini, fin, dict(D, anuncio_de={1: {'staff': {'host': ['John pork']}, 'staff_cuentas': {'John pork': '77'}}},
+                               raw=lambda n, did='': 'Adriagner' if did == '77' else str(n or ''), canon={'adriagner'}))
+    ok([x['op'] for x in nc['host']] == ['Adriagner'],
+       'con la cuenta del anuncio, «John pork» es Adriagner (el nombre de la Lista)', str(nc['host']))
     ok(_partir('LEWITO  FLENNZS') == ['LEWITO', 'FLENNZS'] and _partir('Ana, Bea / Cid') == ['Ana', 'Bea', 'Cid']
        and _partir('John pork') == ['John pork'],
        'un renglón del staff con varios (sin sus banderas quedan con doble espacio) se parte; un nombre con espacio, no')

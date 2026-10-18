@@ -1265,6 +1265,13 @@ def _lo_barato(correr):
         paso('2b8e', 'las semanas')
         if not corre(['bot/semanas.py', '--aplicar'], callado=True, mostrar=('⚠️',)):
             print('      ⚠️ las semanas fallaron: queda lo de la corrida anterior')
+    # ── 2b8f · 🤝 los tiers (`bot/tiers.py`, Dlx 18/10/2026: «3 tier levels of association»): el nivel que eligió Dlx en
+    # el Dashboard, a datos/niveles.json (lo leen el lector de llaves y las ligas en la corrida SIGUIENTE), y el puntaje
+    # de cada servidor, al Dashboard. Nunca frena el ciclo
+    if correr:
+        paso('2b8f', 'los tiers')
+        if not corre(['bot/tiers.py', '--aplicar'], callado=True, mostrar=('🤝', '⚠️')):
+            print('      ⚠️ los tiers fallaron: quedan los niveles de antes')
     # ── 2b9 · 🏟️ las ligas de los servidores (`bot/ligas.py`, Dlx 12/10/2026: «1. A», «2. Me gusta»): cada batalla con
     # su resultado, para la pestaña «Ligas» de la web y como duelos (Ranking Duelos y Win%: los toma el paso 1c de la
     # corrida siguiente, como las misiones). Nunca frena el ciclo

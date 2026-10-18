@@ -716,6 +716,15 @@ def parsear(m, servidor, canal, guild=''):
     # 🆚 SIN LA VIÑETA, Y «YO» ES QUIEN PUBLICÓ (FVS, 12/10/2026): «# 𐬺 yo» llegaba así a la página, y los «yo»
     # de Urban Freestyle se contaban en la Copa de la Liga como UNA persona llamada «yo»
     staff, autor = staff_de(m)
+    # 🔑 LA CUENTA de cada uno del staff, cuando se sabe: la mención trae su ID, y «yo» es el de quien publicó. Con el
+    # nombre solo, «John pork» —su nombre de Discord— no se unía con Adriagner, el de la Lista (Dlx, 18/10/2026: «este
+    # es John pork, aka Adriagner»). Va aparte (`staff_cuentas`, {nombre: id}): `staff` sigue siendo de nombres
+    _au = m.get('author') or {}
+    _por = {_nombre_visible(x.get('global_name') or x.get('username')): str(x.get('id'))
+            for x in (m.get('mentions') or []) if x.get('id')}
+    if autor and _au.get('id'):
+        _por.setdefault(autor, str(_au['id']))
+    staff_cuentas = {n: _por[n] for ns in staff.values() for n in ns if n in _por}
     org = re.sub(r'^[#\s➤▸►└├╰┈𐬺]+', '', str(org or '')).strip()
     if YO.match(org) and autor:
         org = autor
@@ -775,7 +784,7 @@ def parsear(m, servidor, canal, guild=''):
         'fecha': puestos.get('fecha') or anchos.get('fecha') or '',
         'premios': puestos.get('premios') or '',
         # ⚖️ jurado, host y DJ, y quien lo publicó (Dlx, 08/10/2026): ver `staff_de()`
-        'staff': staff, 'autor': autor,
+        'staff': staff, 'autor': autor, 'staff_cuentas': staff_cuentas,
     }
 
 
