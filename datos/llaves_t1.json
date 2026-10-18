@@ -10669,14 +10669,116 @@
  },
  "401": {
   "dia": "2026-10-03",
-  "escala": "8-15",
+  "escala": "16+",
   "fecha": "03/10",
+  "funa": [
+   [
+    "Zetryko",
+    false
+   ],
+   [
+    "ARDEAN",
+    false
+   ],
+   [
+    "Efimero",
+    false
+   ],
+   [
+    "Panchok",
+    false
+   ],
+   [
+    "Abyssus",
+    false
+   ],
+   [
+    "Miniboy",
+    false
+   ],
+   [
+    "EMILIO",
+    false
+   ],
+   [
+    "Velatz",
+    false
+   ],
+   [
+    "Flama",
+    false
+   ],
+   [
+    "Fol",
+    false
+   ],
+   [
+    "Mr.Kude",
+    false
+   ],
+   [
+    "Emilio Alva",
+    false
+   ],
+   [
+    "Trot",
+    true
+   ],
+   [
+    "Mc Glock",
+    true
+   ],
+   [
+    "Calíz",
+    true
+   ],
+   [
+    "Corvo",
+    true
+   ],
+   [
+    "Lord Viruzz",
+    true
+   ],
+   [
+    "Drexx",
+    true
+   ],
+   [
+    "UDDIZIM",
+    true
+   ],
+   [
+    "Blaxx",
+    true
+   ],
+   [
+    "Redstonita",
+    true
+   ],
+   [
+    "Carlos",
+    true
+   ],
+   [
+    "Lvel 🇻🇪",
+    true
+   ],
+   [
+    "Zekha",
+    true
+   ],
+   [
+    "Monet",
+    true
+   ]
+  ],
   "links": [
    "https://discord.com/channels/765045834647339038/1309234583023124531/1556049501117087825"
   ],
   "n": 401,
   "nombre": "COPA DE GRUPOS LCW",
-  "participantes": 13,
+  "participantes": 26,
   "rondas": [
    {
     "b": [
@@ -10759,57 +10861,122 @@
    [
     "Zetryko",
     "Campeón",
-    7500
+    10000
    ],
    [
     "Abyssus",
     "Subcampeón",
-    5000
+    7500
    ],
    [
     "Emilio Alva",
     "Semifinal",
-    3500
+    5250
    ],
    [
     "Panchok",
     "Semifinal",
-    3500
+    5250
    ],
    [
     "ARDEAN",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "Efimero",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "Flama",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "Fol",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "Miniboy",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "Mr.Kude",
     "Cuartos",
-    2000
+    2500
    ],
    [
     "Velatz",
     "Cuartos",
-    2000
+    2500
+   ],
+   [
+    "Blaxx",
+    "R32",
+    817
+   ],
+   [
+    "Calíz",
+    "R32",
+    817
+   ],
+   [
+    "Carlos",
+    "R32",
+    817
+   ],
+   [
+    "Corvo",
+    "R32",
+    817
+   ],
+   [
+    "Drexx",
+    "R32",
+    817
+   ],
+   [
+    "Lord Viruzz",
+    "R32",
+    817
+   ],
+   [
+    "Lvel 🇻🇪",
+    "R32",
+    817
+   ],
+   [
+    "Mc Glock",
+    "R32",
+    817
+   ],
+   [
+    "Monet",
+    "R32",
+    817
+   ],
+   [
+    "Redstonita",
+    "R32",
+    817
+   ],
+   [
+    "Trot",
+    "R32",
+    817
+   ],
+   [
+    "UDDIZIM",
+    "R32",
+    817
+   ],
+   [
+    "Zekha",
+    "R32",
+    817
    ]
   ]
  },
@@ -22177,11 +22344,11 @@
      ],
      [
       [
-       "francis 🇨🇷",
+       "francis",
        "Cronox",
        "LRS"
       ],
-      "francis 🇨🇷",
+      "francis",
       "triple (3 bandas)"
      ],
      [
@@ -22210,7 +22377,7 @@
      [
       [
        "Erian",
-       "francis 🇨🇷"
+       "francis"
       ],
       "Erian",
       ""
@@ -22250,7 +22417,7 @@
     3500
    ],
    [
-    "francis 🇨🇷",
+    "francis",
     "Semifinal",
     3500
    ],
@@ -25840,14 +26007,68 @@
  },
  "482": {
   "dia": "2026-10-17",
-  "escala": "4-7",
+  "escala": "8-15",
   "fecha": "17/10",
+  "funa": [
+   [
+    "Emilio Alva",
+    false
+   ],
+   [
+    "Jupiter",
+    false
+   ],
+   [
+    "Panchok",
+    false
+   ],
+   [
+    "Erian",
+    false
+   ],
+   [
+    "Trot",
+    true
+   ],
+   [
+    "Drexx",
+    true
+   ],
+   [
+    "Ariaxer",
+    true
+   ],
+   [
+    "Makmah",
+    true
+   ],
+   [
+    "Lvel 🇻🇪",
+    true
+   ],
+   [
+    "Majiztral",
+    true
+   ],
+   [
+    "Kourier",
+    true
+   ],
+   [
+    "Calíz",
+    true
+   ],
+   [
+    "Leyenda",
+    true
+   ]
+  ],
   "links": [
    "https://discord.com/channels/765045834647339038/1309234583023124531/1561137515174559755"
   ],
   "n": 482,
   "nombre": "MUNDIALITO",
-  "participantes": 4,
+  "participantes": 13,
   "rondas": [
    {
     "b": [
@@ -25889,22 +26110,67 @@
    [
     "Panchok",
     "Campeón",
-    5000
+    7500
    ],
    [
     "Emilio Alva",
     "Subcampeón",
-    3750
+    5000
    ],
    [
     "Erian",
     "Semifinal",
-    2625
+    3500
    ],
    [
     "Jupiter",
     "Semifinal",
-    2625
+    3500
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    888
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    888
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    888
+   ],
+   [
+    "Kourier",
+    "Octavos",
+    888
+   ],
+   [
+    "Leyenda",
+    "Octavos",
+    888
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    888
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    888
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    888
+   ],
+   [
+    "Trot",
+    "Octavos",
+    888
    ]
   ]
  }

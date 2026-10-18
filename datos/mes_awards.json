@@ -15,9 +15,9 @@
     {
      "op": "Makmah",
      "n": "Makmah",
-     "pts": 233500,
+     "pts": 235276,
      "oro": 2,
-     "ev": 33
+     "ev": 34
     },
     {
      "op": "Oasis",
@@ -29,7 +29,7 @@
     {
      "op": "Panchok",
      "n": "Panchok",
-     "pts": 185825,
+     "pts": 192575,
      "oro": 5,
      "ev": 13
     },
@@ -66,16 +66,16 @@
     {
      "op": "Lvel 🇻🇪",
      "n": "Lvel 🇻🇪",
-     "pts": 31106,
+     "pts": 33699,
      "oro": 0,
-     "ev": 10
+     "ev": 12
     },
     {
      "op": "Ariaxer",
      "n": "Ariaxer",
-     "pts": 30438,
+     "pts": 32214,
      "oro": 0,
-     "ev": 9
+     "ev": 10
     }
    ],
    "batalla": [
@@ -109,7 +109,7 @@
     {
      "op": "ACAD",
      "n": "Academia de Rap",
-     "gente": 107,
+     "gente": 110,
      "ev": 6
     },
     {
@@ -339,22 +339,22 @@
      "d": "le ganó a Erian (#6) siendo #89 · LA BELLA ARTE DE LA DESGRACIA VOL3"
     },
     {
-     "op": "481:Calíz",
-     "n": "Calíz",
-     "q": "Calíz",
-     "quien": [
-      "Calíz"
-     ],
-     "d": "le ganó a Erian (#6) siendo #77 · PROYECTO X VOL.3"
-    },
-    {
      "op": "478:Catarsis",
      "n": "Catarsis",
      "q": "Catarsis",
      "quien": [
       "Catarsis"
      ],
-     "d": "le ganó a Colesito (#4) siendo #47 · SNAKE INSIGNIA 5 8"
+     "d": "le ganó a Colesito (#4) siendo #48 · SNAKE INSIGNIA 5 8"
+    },
+    {
+     "op": "481:Calíz",
+     "n": "Calíz",
+     "q": "Calíz",
+     "quien": [
+      "Calíz"
+     ],
+     "d": "le ganó a Erian (#6) siendo #72 · PROYECTO X VOL.3"
     },
     {
      "op": "401:Zetryko",
@@ -720,13 +720,13 @@
      "op": "Follombia",
      "n": "Follombia",
      "quien": [],
-     "d": "544.076 pts · 7 jugaron"
+     "d": "545.826 pts · 7 jugaron"
     },
     {
      "op": "Fuera de Rango",
      "n": "Fuera de Rango",
      "quien": [],
-     "d": "324.238 pts · 2 jugaron"
+     "d": "326.014 pts · 2 jugaron"
     },
     {
      "op": "Fontana",
@@ -738,13 +738,13 @@
      "op": "Lighting Force",
      "n": "Lighting Force",
      "quien": [],
-     "d": "307.513 pts · 3 jugaron"
+     "d": "314.263 pts · 3 jugaron"
     },
     {
      "op": "KS",
      "n": "KS",
      "quien": [],
-     "d": "184.380 pts · 3 jugaron"
+     "d": "186.880 pts · 3 jugaron"
     }
    ],
    "pais": [
@@ -753,35 +753,35 @@
      "n": "Argentina",
      "cc": "ar",
      "quien": [],
-     "d": "1.672.813 pts · 37 jugaron"
+     "d": "1.675.406 pts · 37 jugaron"
     },
     {
      "op": "Chile",
      "n": "Chile",
      "cc": "cl",
      "quien": [],
-     "d": "999.243 pts · 28 jugaron"
+     "d": "1.010.310 pts · 29 jugaron"
     },
     {
      "op": "Colombia",
      "n": "Colombia",
      "cc": "co",
      "quien": [],
-     "d": "921.885 pts · 19 jugaron"
+     "d": "924.478 pts · 19 jugaron"
     },
     {
      "op": "Venezuela",
      "n": "Venezuela",
      "cc": "ar",
      "quien": [],
-     "d": "603.697 pts · 16 jugaron"
+     "d": "608.066 pts · 16 jugaron"
     },
     {
      "op": "Perú",
      "n": "Perú",
      "cc": "pe",
      "quien": [],
-     "d": "234.580 pts · 15 jugaron"
+     "d": "237.673 pts · 15 jugaron"
     }
    ],
    "liga": [

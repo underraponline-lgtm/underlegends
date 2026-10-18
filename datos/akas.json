@@ -246,6 +246,7 @@
   "melgar": "EmiZor",
   "fleivagner": "Adriagner",
   "agustinlareliquia": "EIDP",
+  "egipto": "francis",
   "family": "Emily Family",
   "neosoul": "Neo",
   "belleza": "Provenza",
@@ -325,7 +326,8 @@
   "malasiafighter": "Liberia",
   "dantedelux": "Delux",
   "monyrap": "Mony",
-  "perfumechakal": "Cronox"
+  "perfumechakal": "Cronox",
+  "over": "Mr Still Ballin"
  },
  "pares": [
   [
@@ -1309,6 +1311,10 @@
    "EIDP"
   ],
   [
+   "Egipto",
+   "francis"
+  ],
+  [
    "Family",
    "Emily Family"
   ],
@@ -1635,6 +1641,10 @@
   [
    "PERFUME CHAKAL",
    "Cronox"
+  ],
+  [
+   "Over",
+   "Mr Still Ballin"
   ]
  ],
  "no_confundir": [

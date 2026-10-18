@@ -208,7 +208,7 @@
   "msg": "1556552839642357822"
  },
  "401": {
-  "firma": "COPA DE GRUPOS LCW|03/10|11|3|0|0",
+  "firma": "COPA DE GRUPOS LCW|03/10|24|3|0|0",
   "msg": "1556560094844559372"
  },
  "402": {
@@ -14686,11 +14686,11 @@
    "Panchok": 15
   },
   "fecha": "17/10",
-  "firma": "af44550081237769",
+  "firma": "9891a0566e848c68",
   "msg": "1561153562665558208",
-  "nombre": "Grupo 1",
+  "nombre": "MUNDIALITO",
   "num": 482,
-  "participantes": 4,
+  "participantes": 13,
   "sello": {
    "Panchok": "4c0c8e8062f3:906ce275eeb8"
   },
@@ -14700,22 +14700,67 @@
    [
     "Panchok",
     "Campeón",
-    5000
+    7500
    ],
    [
     "Emilio Alva",
     "Subcampeón",
-    3750
+    5000
    ],
    [
     "Jupiter",
     "Semifinal",
-    2625
+    3500
    ],
    [
     "Erian",
     "Semifinal",
-    2625
+    3500
+   ],
+   [
+    "Trot",
+    "Octavos",
+    888
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    888
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    888
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    888
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    888
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    888
+   ],
+   [
+    "Kourier",
+    "Octavos",
+    888
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    888
+   ],
+   [
+    "Leyenda",
+    "Octavos",
+    888
    ]
   ],
   "v": 2

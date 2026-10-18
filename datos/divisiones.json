@@ -16,18 +16,18 @@
    [
     [
      "Panchok",
-     77562,
+     82562,
      5
     ],
     [
      "Erian",
-     64249,
+     65999,
      12
     ],
     [
      "Makmah",
-     56938,
-     14
+     58714,
+     15
     ],
     [
      "Snow",
@@ -124,6 +124,11 @@
      5
     ],
     [
+     "Nemi",
+     26125,
+     6
+    ],
+    [
      "Cinexfilo",
      22875,
      6
@@ -155,8 +160,8 @@
     ],
     [
      "Ariaxer",
-     11250,
-     4
+     14026,
+     5
     ],
     [
      "Walker",
@@ -169,14 +174,14 @@
      1
     ],
     [
-     "Abyssus",
-     10312,
-     2
-    ],
-    [
      "ONZASS",
      10000,
      3
+    ],
+    [
+     "Jupiter",
+     8250,
+     2
     ],
     [
      "Dynoco",
@@ -194,8 +199,8 @@
      2
     ],
     [
-     "Jupiter",
-     6500,
+     "Drexx",
+     5526,
      2
     ],
     [
@@ -205,11 +210,6 @@
     ],
     [
      "Number",
-     3750,
-     1
-    ],
-    [
-     "Drexx",
      3750,
      1
     ],
@@ -266,14 +266,14 @@
      3
     ],
     [
-     "Gocho",
-     6874,
+     "Majiztral",
+     7401,
      3
     ],
     [
-     "Majiztral",
-     5625,
-     2
+     "Gocho",
+     6874,
+     3
     ],
     [
      "Paria",
@@ -345,9 +345,19 @@
      1
     ],
     [
+     "Lvel",
+     12151,
+     4
+    ],
+    [
      "Under",
      10375,
      3
+    ],
+    [
+     "Abyssus",
+     10312,
+     2
     ],
     [
      "Vargas",
@@ -358,11 +368,6 @@
      "SINTEXT",
      9375,
      4
-    ],
-    [
-     "Lvel",
-     9375,
-     3
     ],
     [
      "Valdoza",
@@ -443,11 +448,6 @@
      "SYEPORUTE🇿🇲",
      1250,
      1
-    ],
-    [
-     "Zeta",
-     1250,
-     1
     ]
    ],
    [
@@ -462,18 +462,13 @@
      7
     ],
     [
-     "Nemi",
-     26125,
-     6
+     "Trot",
+     19838,
+     5
     ],
     [
      "Xubaru",
      18812,
-     4
-    ],
-    [
-     "Trot",
-     16562,
      4
     ],
     [
@@ -502,7 +497,7 @@
      2
     ],
     [
-     "francis 🇨🇷",
+     "francis",
      10500,
      1
     ],
@@ -597,6 +592,11 @@
      1
     ],
     [
+     "Zeta",
+     1250,
+     1
+    ],
+    [
      "Betelguese",
      624,
      1
@@ -615,8 +615,8 @@
     ],
     [
      "Calíz",
-     27875,
-     2
+     29651,
+     3
     ],
     [
      "Shadow",
@@ -659,6 +659,11 @@
      3
     ],
     [
+     "Emilio Alva",
+     10000,
+     1
+    ],
+    [
      "Neo",
      8438,
      2
@@ -675,11 +680,6 @@
     ],
     [
      "Juasmio",
-     7500,
-     1
-    ],
-    [
-     "Emilio Alva",
      7500,
      1
     ],
@@ -784,6 +784,16 @@
      1
     ],
     [
+     "Kourier",
+     1776,
+     1
+    ],
+    [
+     "Leyenda",
+     1776,
+     1
+    ],
+    [
      "Malva",
      938,
      1
@@ -803,11 +813,11 @@
   "ALTER 🇨🇱": 5,
   "ANTONIO🇵🇾": 5,
   "ANTORCHA": 5,
-  "ARDEAN": 5,
+  "ARDEAN": 4,
   "AREZ": 5,
   "Ab'l 🇦🇷 🇩🇴": 5,
   "Aby": 5,
-  "Abyssus": 4,
+  "Abyssus": 5,
   "Acry": 5,
   "Adriagner": 5,
   "Agre": 5,
@@ -815,7 +825,7 @@
   "Aktybo": 5,
   "Akutagawa🇹🇼": 5,
   "Aldre": 5,
-  "Alexi": 4,
+  "Alexi": 3,
   "Alonso": 5,
   "Andres": 4,
   "Andy": 5,
@@ -829,13 +839,14 @@
   "BNA": 5,
   "BRAGEURITHER🇦🇪": 5,
   "BTRX": 5,
-  "Badterne": 4,
+  "Badterne": 5,
   "Baltrip": 5,
   "BastyRetro": 4,
   "Benjixo": 4,
   "Benju": 5,
   "Benshi": 5,
   "Betelguese": 5,
+  "Blaxx": 5,
   "Bloody": 5,
   "Bludi🇨🇴": 5,
   "Btrece": 5,
@@ -845,7 +856,7 @@
   "Cajita": 4,
   "Calíz": 5,
   "Camila": 5,
-  "Campoy": 4,
+  "Campoy": 5,
   "Carlos": 5,
   "Carlosmo": 4,
   "Carlosss": 4,
@@ -909,7 +920,7 @@
   "F1THER": 5,
   "FALON 🇨🇱": 5,
   "FAT PENIS": 5,
-  "Faso": 4,
+  "Faso": 5,
   "Fazer": 4,
   "Filozico": 5,
   "Fin": 5,
@@ -1015,7 +1026,7 @@
   "MARTYNEZ🇺🇾": 5,
   "MATICERNA": 5,
   "MAU KC 🇨🇴": 5,
-  "MAWS🇻🇪": 5,
+  "MAWS🇻🇪": 4,
   "MAXIMILIANO CALVO": 5,
   "MCNadie": 5,
   "MCO": 4,
@@ -1036,6 +1047,7 @@
   "Masino": 5,
   "Mathhias": 5,
   "MauzzitoEmeces": 5,
+  "Mc Glock": 5,
   "Medster": 4,
   "MetriOdin": 5,
   "Miniboy": 4,
@@ -1055,7 +1067,7 @@
   "NXUZ": 3,
   "NYCO": 5,
   "Nairda": 5,
-  "Nemi": 5,
+  "Nemi": 4,
   "Neo": 5,
   "NewCharacter🇦🇷": 5,
   "Noa": 5,
@@ -1180,7 +1192,7 @@
   "Warriorvid": 5,
   "Xclusivo": 4,
   "Xervoe": 5,
-  "Xowee": 5,
+  "Xowee": 4,
   "Xplicit": 5,
   "Xubaru": 5,
   "YOUNG VLAD 🇨🇴": 5,
@@ -1200,7 +1212,7 @@
   "ZiarKI": 5,
   "Zignos": 4,
   "araya": 5,
-  "baggio🇮🇹": 4,
+  "baggio🇮🇹": 5,
   "benjadsantis🇦🇷": 5,
   "cardozo": 5,
   "chekialo 🇧🇯": 5,
@@ -1423,12 +1435,12 @@
   ],
   [
    "2026-09-28",
-   "Motera",
+   "Abyssus",
    4
   ],
   [
    "2026-09-28",
-   "Abyssus",
+   "Motera",
    4
   ],
   [
@@ -1518,17 +1530,32 @@
   ],
   [
    "2026-09-28",
-   "Catarsis",
-   4
-  ],
-  [
-   "2026-09-28",
    "Number",
    4
   ],
   [
    "2026-09-28",
-   "Benjixo",
+   "Emilio Alva",
+   4
+  ],
+  [
+   "2026-09-28",
+   "Eclipsito",
+   4
+  ],
+  [
+   "2026-09-28",
+   "ARDEAN",
+   4
+  ],
+  [
+   "2026-09-28",
+   "Alexi",
+   4
+  ],
+  [
+   "2026-09-28",
+   "Catarsis",
    4
   ],
   [
@@ -1538,7 +1565,7 @@
   ],
   [
    "2026-09-28",
-   "Eclipsito",
+   "Benjixo",
    4
   ],
   [
@@ -1549,21 +1576,6 @@
   [
    "2026-09-28",
    "ReyexXMC",
-   4
-  ],
-  [
-   "2026-09-28",
-   "Faso",
-   4
-  ],
-  [
-   "2026-09-28",
-   "melomaniaco",
-   4
-  ],
-  [
-   "2026-09-28",
-   "Adriagner",
    4
   ],
   [
@@ -1583,12 +1595,12 @@
   ],
   [
    "2026-09-28",
-   "SOL",
+   "MAWS🇻🇪",
    4
   ],
   [
    "2026-09-28",
-   "baggio🇮🇹",
+   "SOL",
    4
   ],
   [
@@ -1703,17 +1715,17 @@
   ],
   [
    "2026-10-05",
-   "Alexi",
-   4
-  ],
-  [
-   "2026-10-05",
    "Geoka",
    4
   ],
   [
    "2026-10-05",
    "Chop",
+   4
+  ],
+  [
+   "2026-10-05",
+   "Nemi",
    4
   ],
   [
@@ -1783,12 +1795,12 @@
   ],
   [
    "2026-10-05",
-   "Campoy",
+   "Ortiz",
    4
   ],
   [
    "2026-10-05",
-   "Ortiz",
+   "Xowee",
    4
   ],
   [
@@ -1828,6 +1840,11 @@
   ],
   [
    "2026-10-05",
+   "Alexi",
+   3
+  ],
+  [
+   "2026-10-05",
    "Motera",
    3
   ],
@@ -1844,16 +1861,17 @@
  ],
  "ult": {
   "baja": [
-   "Adriagner",
+   "Abyssus",
    "BTRX",
+   "Badterne",
    "Bloody",
+   "Emilio Alva",
    "Hassan",
    "Krtman",
    "MTZ",
    "Prosu",
    "Richard",
-   "Zeta",
-   "melomaniaco"
+   "Zeta"
   ],
   "sem": "2026-10-05",
   "sube": [
@@ -1862,7 +1880,6 @@
    "Alexi",
    "BastyRetro",
    "Cajita",
-   "Campoy",
    "Carlosmo",
    "Chop",
    "Cronox",
@@ -1880,6 +1897,7 @@
    "Motera",
    "Mr Still Ballin",
    "NXUZ",
+   "Nemi",
    "OG",
    "ONZASS",
    "Oasis",
@@ -1901,6 +1919,7 @@
    "Verc",
    "Walker",
    "Xclusivo",
+   "Xowee",
    "ikonoxx"
   ]
  },
