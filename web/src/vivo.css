@@ -3019,8 +3019,10 @@ a.rk-z:hover{border-color:var(--linea)}
    la bandera; quien no tiene, una ficha del mismo tamaño con su cara, su nombre y su bandera. Quien perdió, en gris;
    quien pasó, en color (sin ✓: tapaba el puesto de la carta), y la ficha sin carta, como la fila que pasó; ✨ el nivel
    8 del Pase, con el brillo que sigue la forma de la carta */
-.lk-b.cartas{display:block;padding:4px}
-.lk-vs{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+/* sin caja (Dlx, 18/10/2026: «no necesitamos el cuadro blanco que limita la tarjeta»): sólo las cartas. Sin marco tampoco
+   para AHORA, el camino o la final: lo dicen la etiqueta, el contorno de la carta que se sigue y el CAMPEÓN */
+.lk-b.cartas,.lk-b.cartas.ahora,.lk-b.cartas.sigue,.lk-b.cartas.fin{display:block;padding:0;border:0;background:none;box-shadow:none}
+.lk-vs{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .lk-vs.lk-vs3{grid-template-columns:1fr 1fr 1fr}
 .lk-fc{position:relative;display:block;width:100%;aspect-ratio:300/438;min-width:0;padding:0;border:0;background:none;color:var(--tinta);
   cursor:pointer;-webkit-tap-highlight-color:transparent;container-type:inline-size}
@@ -3041,7 +3043,7 @@ a.rk-z:hover{border-color:var(--linea)}
 @media (hover: hover) and (pointer: fine){.lk-fc:hover .lk-fc-img{transform:translateY(-2px)}.lk-fc-img{transition:transform .15s}}
 .lk-fc.vac{display:grid;place-items:center;border:2px dashed var(--suave);cursor:default}
 .lk-fc.vac em{font:700 13px/1.2 "Barlow Condensed",sans-serif;color:var(--gris)}
-.lk-b.cartas .lk-et{top:-11px}
+.lk-b.cartas .lk-et{position:static;margin:0 0 5px;max-width:100%}
 .lk-caras{display:flex;flex:none}
 .lk-caras .lk-cara+.lk-cara{margin-left:-8px}
 .lk-ok{flex:none;font:900 14px/1 Archivo,sans-serif}

@@ -132,6 +132,9 @@ const CARTA_AR = 438 / 300;
 // de a cuántas por fila: de a dos, y de a tres en los grupos de tres o más de cuatro (uno de tres dejaba una carta sola
 // abajo y un hueco al lado)
 const colsVs = (n) => (n === 3 || n >= 5 ? 3 : 2);
+//: el hueco entre las cartas de un versus y el alto del renglón de sus etiquetas (los de `.lk-vs` y `.lk-b.cartas .lk-et`)
+const VS_GAP = 6;
+const ET_H = 26;
 
 function Ficha({ ctx, b, s, copa, pasa }) {
   const f = ctx.fila(s);
@@ -346,14 +349,17 @@ function Arbol({ ctx, rondas: rs, ter, vale, plano = false, oro, copaUlt = true 
   const nm = (s) => partes(s).length || 1;
   const altoLado = (s) => Math.max(FILA, 8 + LINEA * nm(s));
   const altos = (b) => (b[0].length ? b[0].map(altoLado).concat(b[0].length < 2 ? [FILA] : []) : [FILA, FILA]);
-  // 🃏 un versus: dos cartas por fila, del ancho de la columna (borde 2 + relleno 4 + hueco 4, como en `.lk-b.cartas`)
-  const altoVs = (b) => {
-    const n = Math.max(2, b[0].length);
-    const c = colsVs(n);
-    const f = Math.ceil(n / c);
-    return 4 + 8 + f * ((W - 4 - 8 - 4 * (c - 1)) / c) * CARTA_AR + (f - 1) * 4;
+  // 🃏 un versus: las cartas sueltas, sin caja (Dlx, 18/10/2026: «no necesitamos el cuadro blanco que limita la tarjeta»),
+  // del ancho de la columna, y arriba sus etiquetas (PASAN 2, REVIVIDO…) si tiene: van en su renglón y no encima de la carta
+  const copaDe = (r) => copaUlt && r === n - 1 && rs[n - 1].b.length === 1;
+  const conEt = (b, r, i) => etiquetas(ctx, b, r == null ? '' : ctx.est(r, i), r != null && copaDe(r)).length > 0;
+  const altoVs = (b, r, i) => {
+    const k = Math.max(2, b[0].length);
+    const c = colsVs(k);
+    const f = Math.ceil(k / c);
+    return f * ((W - VS_GAP * (c - 1)) / c) * CARTA_AR + (f - 1) * VS_GAP + (conEt(b, r, i) ? ET_H : 0);
   };
-  const alto = (b) => (enCartas(ctx, b[0]) ? altoVs(b) : PAD * 2 + altos(b).reduce((a, x) => a + x, 0));
+  const alto = (b, r, i) => (enCartas(ctx, b[0]) ? altoVs(b, r, i) : PAD * 2 + altos(b).reduce((a, x) => a + x, 0));
   const hijos = (r, i) => (r ? ((rs[r].b[i] || [])[3] || []).filter((j) => rs[r - 1].b[j]) : []);
   const conPadre = {};
   rs.forEach((R, r) => R.b.forEach((b, i) => hijos(r, i).forEach((j) => { conPadre[(r - 1) + ':' + j] = 1; })));
@@ -364,7 +370,7 @@ function Arbol({ ctx, rondas: rs, ter, vale, plano = false, oro, copaUlt = true 
     const ys = hijos(r, i).map((j) => colocar(r - 1, j, cur, lado)).filter((v) => v != null);
     let y;
     if (!ys.length) {
-      const h = alto(rs[r].b[i]);
+      const h = alto(rs[r].b[i], r, i);
       y = cur.y + h / 2;
       cur.y += h + SEP;
     } else y = (Math.min(...ys) + Math.max(...ys)) / 2;
@@ -408,7 +414,7 @@ function Arbol({ ctx, rondas: rs, ter, vale, plano = false, oro, copaUlt = true 
     const p = pos[k];
     const b = rs[p.r].b[p.i];
     const copa = copaUlt && p.r === n - 1 && rs[n - 1].b.length === 1;
-    const h = alto(b);
+    const h = alto(b, p.r, p.i);
     cajas.push(<Batalla key={k} ctx={ctx} b={b} est={ctx.est(p.r, p.i)} copa={copa} altos={altos(b)} pasan={ctx.pasan(p.r)}
       style={{ position: 'absolute', left: X(p), top: Math.round(TOPE + p.y - h / 2), width: W, height: h }} />);
     hijos(p.r, p.i).forEach((j) => {
@@ -429,7 +435,7 @@ function Arbol({ ctx, rondas: rs, ter, vale, plano = false, oro, copaUlt = true 
   if (ter && pf) {
     const bt = ter.b[0];
     const ht = alto(bt);
-    const yt = TOPE + pf.y + alto(rs[n - 1].b[0]) / 2 + 64 + ht / 2;
+    const yt = TOPE + pf.y + alto(rs[n - 1].b[0], n - 1, 0) / 2 + 64 + ht / 2;
     cajas.push(<span key="tl" className="lk-rl sub" style={{ left: X(pf), width: W, top: Math.round(yt - ht / 2 - 30) }}>Tercer puesto</span>);
     cajas.push(<Batalla key="t" ctx={ctx} b={bt} est={!bt[1] && bt[0].length >= 2 && ctx.cerrada ? 'singan' : ''} altos={altos(bt)}
       style={{ position: 'absolute', left: X(pf), top: Math.round(yt - ht / 2), width: W, height: ht }} />);
