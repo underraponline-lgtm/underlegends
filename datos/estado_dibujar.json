@@ -1,45 +1,45 @@
 {
  "v": 1,
- "cuando": "2026-10-18T03:01:09Z",
+ "cuando": "2026-10-18T04:20:28Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 152.3,
+ "dur_s": 1075.3,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.8
+   "s": 8.5
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.5
+   "s": 5.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.4
+   "s": 21.3
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 12 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": true,
-   "s": 54.0
+   "s": 986.4
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": false,
-   "s": 0.4
+   "s": 0.3
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 63.1
+   "s": 52.6
   }
  ],
  "fallas": [
@@ -49,27 +49,27 @@
   }
  ],
  "ultimo_evento": {
-  "n": "482",
-  "nombre": "MUNDIALITO",
-  "sv": "ACAD",
+  "n": "483",
+  "nombre": "TRIBIA",
+  "sv": "FFA",
   "dia": "2026-10-17"
  },
  "cuotas": {
   "kv": {
-   "write": 75,
-   "read": 8832
+   "write": 103,
+   "read": 11918
   },
   "objeto": {
-   "leidas": 417610,
-   "escritas": 6731,
-   "pedidos": 1414
+   "leidas": 681553,
+   "escritas": 9117,
+   "pedidos": 2192
   },
   "worker": {
-   "pedidos": 6655,
+   "pedidos": 6777,
    "errores": 0,
-   "sub": 7021,
+   "sub": 7091,
    "p50_ms": 1.24,
-   "p99_ms": 8.62
+   "p99_ms": 8.71
   },
   "r2": {
    "objetos": 4248,
