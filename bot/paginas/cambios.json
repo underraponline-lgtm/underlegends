@@ -11,6 +11,24 @@
  ],
  "cambios": [
   {
+   "version": "3.45",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T03:05:00-04:00",
+   "titulo": "Anti-raid para los servidores",
+   "items": [
+    "🛡️ /antiraid: el dueño de cada servidor puede prender un escudo de AutoMod, una alarma si entran muchas cuentas de golpe, la vigilancia del staff y un botón de pánico. Avisa con botones y decide el staff: nunca actúa solo."
+   ]
+  },
+  {
+   "version": "3.44",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T02:45:00-04:00",
+   "titulo": "Los nombres, bien",
+   "items": [
+    "👤 Las nominaciones del mes reconocen al staff por su cuenta de Discord: cada uno con el nombre de la Lista."
+   ]
+  },
+  {
    "version": "3.42",
    "dia": "2026-10-18",
    "cuando": "2026-10-18T02:00:00-04:00",
