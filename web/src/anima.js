@@ -114,7 +114,7 @@ export function useTapado() {
     let ob = null;
     try {
       // ⏱️ y un poco después de que arranca el corte (~0,4 s): destapa en diagonal en ~0,9 s, y lo de arriba sale último
-      ob = new MutationObserver(() => { if (!tapadoAhora()) { if (ob) ob.disconnect(); setTimeout(() => setT(false), 400); } });
+      ob = new MutationObserver(() => { if (!tapadoAhora()) { if (ob) ob.disconnect(); setTimeout(() => setT(false), 600); } });
       ob.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     } catch (e) { setT(false); }
     return () => { if (ob) ob.disconnect(); };

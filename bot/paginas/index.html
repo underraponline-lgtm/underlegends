@@ -61,19 +61,19 @@ html.ini-nuevo.lg-listo:not(.lg-carga-js) #lg-carga{opacity:0;visibility:hidden}
 html.ini-nuevo.lg-fuera #lg-carga{display:none}
 #lg-carga .lg-c{position:relative;z-index:3;display:grid;justify-items:center;gap:10px}
 #lg-carga .lg-sello{position:relative;width:96px;height:96px}
-#lg-carga .lg-sello img{position:relative;z-index:2;display:block;width:96px;height:96px;animation:lg-sello .55s cubic-bezier(.2,.8,.25,1.15) both}
-#lg-carga .lg-sombra{position:absolute;inset:0;background:#E41373;animation:lg-sombra .3s .32s cubic-bezier(.2,.9,.3,1.3) both}
-#lg-carga .lg-onda{position:absolute;inset:0;border:3px solid #29B298;opacity:0;animation:lg-onda .5s .3s ease-out both}
+#lg-carga .lg-sello img{position:relative;z-index:2;display:block;width:96px;height:96px;animation:lg-sello .8s cubic-bezier(.2,.8,.25,1.15) both}
+#lg-carga .lg-sombra{position:absolute;inset:0;background:#E41373;animation:lg-sombra .4s .5s cubic-bezier(.2,.9,.3,1.3) both}
+#lg-carga .lg-onda{position:absolute;inset:0;border:3px solid #29B298;opacity:0;animation:lg-onda .8s .45s ease-out both}
 #lg-carga .lg-tit{display:flex;overflow:hidden;padding-top:4px;font:900 23px/1 Archivo,system-ui,sans-serif;font-stretch:118%;letter-spacing:.04em}
-#lg-carga .lg-tit i{display:inline-block;font-style:normal;animation:lg-sube .42s cubic-bezier(.2,.9,.2,1) both;animation-delay:calc(.26s + var(--i) * .03s)}
+#lg-carga .lg-tit i{display:inline-block;font-style:normal;animation:lg-sube .6s cubic-bezier(.2,.9,.2,1) both;animation-delay:calc(.45s + var(--i) * .05s)}
 #lg-carga .lg-tit .lg-esp{width:.32em}
-#lg-carga small{font:700 13px/1 "Barlow Condensed",system-ui,sans-serif;letter-spacing:.24em;color:#29B298;animation:lg-abre .5s .58s cubic-bezier(.2,.8,.2,1) both}
-#lg-carga .lg-seg{display:grid;grid-template-columns:repeat(12,10px);gap:4px;margin-top:10px;animation:lg-aparece .3s .7s both}
+#lg-carga small{font:700 13px/1 "Barlow Condensed",system-ui,sans-serif;letter-spacing:.24em;color:#29B298;animation:lg-abre .7s 1s cubic-bezier(.2,.8,.2,1) both}
+#lg-carga .lg-seg{display:grid;grid-template-columns:repeat(12,10px);gap:4px;margin-top:10px;animation:lg-aparece .4s 1.15s both}
 #lg-carga .lg-seg i{height:7px;background:#1d1d24;transform:skewX(-20deg);transition:background .12s}
 #lg-carga .lg-seg i.on{background:#E41373}
 #lg-carga .lg-seg.lleno i{background:#29B298}
 #lg-carga .lg-tip{display:block;height:16px;overflow:hidden;font:700 13px/16px "Barlow Condensed",system-ui,sans-serif;letter-spacing:.12em;
-  text-transform:uppercase;color:#A5A5A0;animation:lg-aparece .3s .7s both}
+  text-transform:uppercase;color:#A5A5A0;animation:lg-aparece .4s 1.15s both}
 #lg-carga .lg-tip span{display:block;animation:lg-tip .3s ease-out}
 #lg-carga .lg-capa{display:none}
 html.lg-carga-js #lg-carga{background:none}
@@ -83,10 +83,10 @@ html.lg-carga-js #lg-carga .lg-capa{display:block;position:absolute;left:50%;top
 #lg-carga .lg-capa.m{z-index:1;background:#E41373}
 #lg-carga .lg-capa.v{z-index:0;background:#29B298}
 html.lg-sale #lg-carga{pointer-events:none}
-html.lg-sale #lg-carga .lg-c{animation:lg-fuera .22s ease-in forwards}
-html.lg-sale #lg-carga .lg-capa{will-change:transform;animation:lg-corte .62s .15s cubic-bezier(.65,0,.35,1) forwards}
-html.lg-sale #lg-carga .lg-capa.m{animation-delay:.22s}
-html.lg-sale #lg-carga .lg-capa.v{animation-delay:.28s}
+html.lg-sale #lg-carga .lg-c{animation:lg-fuera .35s ease-in forwards}
+html.lg-sale #lg-carga .lg-capa{will-change:transform;animation:lg-corte 1s .25s cubic-bezier(.65,0,.35,1) forwards}
+html.lg-sale #lg-carga .lg-capa.m{animation-delay:.4s}
+html.lg-sale #lg-carga .lg-capa.v{animation-delay:.55s}
 @keyframes lg-sello{0%{transform:scale(1.9) rotate(-14deg);opacity:0}45%{opacity:1}70%{transform:scale(.94) rotate(2deg)}100%{transform:none;opacity:1}}
 @keyframes lg-sombra{from{transform:none}to{transform:translate(7px,7px)}}
 @keyframes lg-onda{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.7);opacity:0}}
@@ -240,7 +240,8 @@ html.calma.lg-sale #lg-carga{opacity:0;transition:opacity .25s ease}
      cae como un sello, la barra se llena por partes y tres capas —negra, magenta, verde— se van en diagonal. Con
      transform y no con clip-path: en un Android modesto mover una capa es barato y recortar la pantalla entera no.
      ⚠️ «LA PÁGINA CARGA RÁPIDO Y LA ANIMACIÓN NO SE NOTA» (Dlx): la primera vez de cada visita (`lg:intro`, de la
-     sesión) el corte espera a que la entrada termine (`MIN`, ~1 s); al recargar en la misma visita, sin espera. Con
+     sesión) el corte espera a que la entrada termine (`MIN`, ~2,3 s: Dlx, 18/10, «la veo completa pero pasa bien
+     rápido»), con la barra llenándose de a poco y un momento llena; al recargar en la misma visita, sin espera. Con
      «reducir movimiento», nada de esto: se apaga con un fundido. Sin este script, se apaga como antes. -->
 <div id="lg-carga" aria-hidden="true"><i class="lg-capa v"></i><i class="lg-capa m"></i><i class="lg-capa n"></i><div class="lg-c"><span class="lg-sello"><span class="lg-sombra"></span><span class="lg-onda"></span><img src="/ul.png" alt="" width="96" height="96"></span><b class="lg-tit"><i style="--i:0">L</i><i style="--i:1">I</i><i style="--i:2">G</i><i style="--i:3">A</i><i class="lg-esp" style="--i:4"></i><i style="--i:5">G</i><i style="--i:6">L</i><i style="--i:7">O</i><i style="--i:8">B</i><i style="--i:9">A</i><i style="--i:10">L</i></b><small>DE FREESTYLE</small><span class="lg-seg"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="lg-tip"><span>Cargando el ranking</span></span></div></div>
 <script>
@@ -253,7 +254,7 @@ html.calma.lg-sale #lg-carga{opacity:0;transition:opacity .25s ease}
   // 🧘 y «Menos animaciones» de Mi cuenta, que app.js pone recién al llegar: acá se lee del navegador
   try { if ((JSON.parse(localStorage.getItem('lg:ajustes') || 'null') || {}).calma) { quieto = true; h.classList.add('calma'); } } catch (e) {}
   try { primera = !sessionStorage.getItem('lg:intro'); sessionStorage.setItem('lg:intro', '1'); } catch (e) {}
-  var MIN = quieto ? 0 : (primera ? 1050 : 0);
+  var MIN = quieto ? 0 : (primera ? 2300 : 0);
   var segs = el.querySelectorAll('.lg-seg i'), tip = el.querySelector('.lg-tip');
   var TIPS = ['Cargando el ranking', 'Preparando las llaves', 'Contando los puntos', 'Buscando tus tarjetas'];
   var k = 0, p = 0, ya = false;
@@ -262,15 +263,15 @@ html.calma.lg-sale #lg-carga{opacity:0;transition:opacity .25s ease}
   var tic = setInterval(function () {
     if (!h.classList.contains('ini-nuevo')) { clearInterval(tic); clearInterval(tt); return; }
     var listo = h.classList.contains('lg-listo');
-    p = listo ? Math.min(1, p + (primera ? 0.2 : 0.34)) : p + (0.86 - p) * 0.06;
+    p = listo ? Math.min(1, p + (primera ? 0.07 : 0.34)) : p + (0.86 - p) * 0.06;
     for (var j = 0, n = Math.floor(p * 12 + 1e-6); j < 12; j++) segs[j].className = j < n ? 'on' : '';
     if (listo && p >= 1 && !ya) {
       ya = true; clearInterval(tic); clearInterval(tt);
       el.querySelector('.lg-seg').className = 'lg-seg lleno';
       setTimeout(function () {
         h.classList.add('lg-sale');
-        setTimeout(function () { h.classList.add('lg-fuera'); }, quieto ? 300 : 1000);
-      }, Math.max(80, MIN - (Date.now() - t0)));
+        setTimeout(function () { h.classList.add('lg-fuera'); }, quieto ? 300 : 1700);
+      }, Math.max(primera && !quieto ? 350 : 80, MIN - (Date.now() - t0)));
     }
   }, 70);
 })();
