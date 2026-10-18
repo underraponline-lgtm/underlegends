@@ -73,6 +73,11 @@ CATALOGO = (
     ('mes_rapero', '🏆', 'Rapero del mes', 'Ganó el Rapero del mes de los MES AWARDS'),
     ('mes_revelacion', '🌠', 'Revelación del mes', 'Ganó la Revelación del mes de los MES AWARDS'),
     ('mes_batalla', '🎬', 'Batalla del mes', 'Su batalla ganó la Batalla del mes de los MES AWARDS'),
+    # 🏟️ y las de cada servidor Tier 1 (18/10/2026, «cada Tier 1 con los suyos»): una por categoría, de su servidor
+    ('mes_sv_rapero', '🏟️', 'Rapero del mes de su servidor', 'Ganó el Rapero del mes de un servidor en los MES AWARDS'),
+    ('mes_sv_revelacion', '🌱', 'Revelación del mes de su servidor', 'Ganó la Revelación del mes de un servidor en los MES AWARDS'),
+    ('mes_sv_batalla', '📼', 'Batalla del mes de su servidor', 'Su batalla ganó la Batalla del mes de un servidor en los MES AWARDS'),
+    ('mes_sv_staff', '🎛️', 'Staff del mes de su servidor', 'Ganó el Staff del mes de un servidor en los MES AWARDS'),
     # 🏆 y las de «Ver las demás nominaciones» (16/10/2026, `bot/mes_otros.py`). Las de grupos —crew, país, liga— no tienen
     ('mes_organizador', '🎙️', 'Organizador del mes', 'Ganó el Organizador del mes de los MES AWARDS'),
     ('mes_staff', '🎧', 'Staff del mes', 'Ganó el Staff del mes de los MES AWARDS: jurado, host o DJ'),

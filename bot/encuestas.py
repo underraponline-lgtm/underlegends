@@ -163,9 +163,20 @@ def gente(pool=None):
 
 
 def para_kv(ahora=None, datos=None, lista=None):
-    """Lo que lee el Worker para validar un voto. ⚠️ Con Discord IDs: sólo a KV."""
+    """Lo que lee el Worker para validar un voto. ⚠️ Con Discord IDs: sólo a KV.
+
+    🏟️ `solo`: quién puede votar cada encuesta de los MES AWARDS de un servidor —los que jugaron ahí ese mes
+    (`mes_awards.votantes()`)—. Si no se puede armar, la lista va vacía: nadie la vota antes que cualquiera."""
     g = gente(datos[0] if datos else None)
-    return {'lista': abiertas(ahora, datos) if lista is None else lista, 'yo': g['yo']}
+    out = {'lista': abiertas(ahora, datos) if lista is None else lista, 'yo': g['yo']}
+    if any(e.get('sv') for e in out['lista'] or []):
+        try:
+            import mes_awards as MA
+            out['solo'] = MA.votantes(out['lista'])
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ encuestas de los servidores sin votantes (%s)' % str(e)[:60])
+            out['solo'] = {x['id']: [] for x in out['lista'] if x.get('sv')}
+    return out
 
 
 # ── cómo van, y quién ganó ───────────────────────────────────────────────

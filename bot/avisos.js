@@ -2820,6 +2820,13 @@ export function validarVoto(defs, d, id, ahora) {
   // 28/09/2026: «3. B y C». Hasta ese día nadie podía votar a «su servidor»
   // (el que más jugó); ahora «tu servidor» lo elige cada uno y no frena el voto.
   if (e.tipo === 'elegido' && ((defs.yo || {})[id] || '') === d.op) return { error: 'vos', estado: 403 };
+  // 🏟️ LOS MES AWARDS DE UN SERVIDOR LOS VOTAN SUS JUGADORES (Dlx, 18/10/2026: «cada Tier 1 con los suyos… los votan sus
+  // jugadores»): la encuesta trae `sv` y el ciclo deja en `solo` quién jugó ahí ese mes (`mes_awards.votantes()`). Sin
+  // esa lista, nadie: antes eso que cualquiera
+  if (e.sv) {
+    const s = (defs.solo || {})[e.id];
+    if (!Array.isArray(s) || s.indexOf(id) < 0) return { error: 'no_jugo', estado: 403, sv: e.sv };
+  }
   return { enc: e.id, op: d.op };
 }
 
@@ -3236,11 +3243,13 @@ export function ajusteValido(cual, valor) {
   if (cual === 'mes_sacar') {
     if (valor === null) return null;
     if (!valor || typeof valor !== 'object' || !/^\d{4}-\d{2}$/.test(String(valor.mes || '')) || !Array.isArray(valor.quitar)
-      || valor.quitar.length > 30) return undefined;
+      || valor.quitar.length > 80) return undefined;
     const q = [];
     for (const x of valor.quitar) {
       const s = String(x || '');
-      if (!/^([a-z]{3,14}):.{1,80}$/.test(s) || !MES_CAT[s.split(':')[0]]) return undefined;
+      // 🏟️ `cat:op` los de la Liga y `SV/cat:op` los de cada servidor (18/10/2026)
+      const m = /^(?:([A-Z]{2,6})\/)?([a-z]{3,14}):.{1,80}$/.exec(s);
+      if (!m || !MES_CAT[m[2]]) return undefined;
       if (!q.includes(s)) q.push(s);
     }
     return { mes: valor.mes, quitar: q };

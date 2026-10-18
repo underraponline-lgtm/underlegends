@@ -1088,6 +1088,26 @@ function MesAwardsDueno({ aj, hacer, ocup }) {
           </div>
         ) : null;
       })}
+      {/* 🏟️ y los de cada servidor Tier 1 (18/10/2026): se sacan igual, con la clave `SV/cat:op` */}
+      {Object.keys(ab.sv || {}).sort().map((sv) => (
+        <div key={sv} className="db-mes-sv">
+          <h4>{sv}</h4>
+          {(S.cats_sv || []).map(([c, n]) => {
+            const pre = sv + '/' + c + ':';
+            const nom = (((ab.sv[sv] || {}).cats || {})[c] || {}).nom || [];
+            const fuera = ya.filter((k) => k.startsWith(pre)).map((k) => k.slice(pre.length));
+            return nom.length || fuera.length ? (
+              <div key={c} className="db-mes-c"><b>{n}</b>
+                <ul>{nom.map((x) => (
+                  <li key={x.op}><span>{x.n}</span><button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => alternar(pre + x.op)}>Sacar</button></li>
+                ))}{fuera.map((op) => (
+                  <li key={'f' + op} className="fuera"><span>{op} · sacado</span><button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => alternar(pre + op)}>Volver a poner</button></li>
+                ))}</ul>
+              </div>
+            ) : null;
+          })}
+        </div>
+      ))}
     </div>
   );
 }

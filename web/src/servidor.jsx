@@ -6,6 +6,7 @@ import { limpio, mult, num, siglaDe, utc } from './liga.js';
 import { Cara, Carta, Compartir, Poster, Sec, aDiscord, accion, enlace, silueta } from './piezas.jsx';
 import { McPersona } from './medio.jsx';
 import { Pub, useAplausos } from './publicaciones.jsx';
+import { Categoria, Nominado, reparto, useSalon } from './salon.jsx';
 
 export const REDES = { instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', twitch: 'Twitch', x: 'X', twitter: 'X', kick: 'Kick' };
 
@@ -34,7 +35,7 @@ function Nota({ liga, x }) {
   );
 }
 
-export function PerfilSv({ liga, sv }) {
+export function PerfilSv({ liga, sv, enc }) {
   const s = liga.svs[sv];
   if (!s) {
     return (
@@ -128,6 +129,8 @@ export function PerfilSv({ liga, sv }) {
           <ul className="notas">{notas.map((n, i) => <Nota key={i} liga={liga} x={n} />)}</ul>
         </Sec>
       ) : null}
+      {/* 🏟️ sus MES AWARDS (Dlx, 18/10/2026: «cada Tier 1 con los suyos») */}
+      <MesSv liga={liga} sv={sv} enc={enc} />
       {/* 📣 lo que se promociona en su canal (Dlx, 16/10/2026: «no en Socios sino en la de cada servidor») */}
       <PromosSv liga={liga} sv={sv} />
       {buscados.length ? (
@@ -148,6 +151,52 @@ export function PerfilSv({ liga, sv }) {
 
 // 📣 LAS PROMOS DE ESTE SERVIDOR: lo que los raperos de la Lista compartieron en su canal de promoción (bot/promos.py),
 // del muro. Las cuatro más nuevas; sin ninguna, no se dibuja
+// 🏟️ LOS MES AWARDS DE ESTE SERVIDOR (Dlx, 18/10/2026: «hacer también los awards para servidor TIER 1», y a la pregunta,
+// «cada Tier 1 con los suyos»: su rapero, su revelación, su batalla y su staff del mes, con lo que se jugó acá, votados
+// por sus jugadores). Salen de `/api/salon` (`bot/mes_awards.py`) y se votan como los de la Liga (`enc`); quién puede
+// votar lo decide el Worker. Sin nominados ni ganadores, no se dibuja: se ve desde el día 1 del mes siguiente
+function MesSv({ liga, sv, enc }) {
+  const S = useSalon();
+  if (!S || !S.cats_sv) return null;
+  const ab = S.abierto && S.abierto.sv && S.abierto.sv[sv] ? S.abierto : null;
+  const hist = (S.hist || []).filter((m) => m.sv && m.sv[sv]);
+  if (!ab && !hist.length) return null;
+  const s = ab ? ab.sv[sv] : null;
+  const votando = !!(ab && ab.votando);
+  const capM = (x) => (x ? x.charAt(0).toUpperCase() + x.slice(1) : x);
+  return (
+    <Sec id="sv-mes" titulo="MES AWARDS" enlace="El Salón de la fama" href="#/salon" extra="negra sf-mes">
+      {ab ? <p className="ma-cab">{votando ? <>Votá lo mejor de <b>{ab.nombre}</b> en {siglaDe(sv)}: cierra {liga.dia(ab.cierra)}.</>
+        : <>Los nominados de <b>{ab.nombre}</b> en {siglaDe(sv)}: la votación abre {liga.dia(ab.abre)}.</>}</p> : null}
+      <p className="ma-como">Los nominados salen de lo que se jugó en {siglaDe(sv)} ese mes, y votan los que jugaron acá: una vez por categoría,
+        y se puede cambiar hasta que cierra. El ganador se lleva su insignia y su lugar en esta página.</p>
+      {s ? (
+        // de a tres cuando son tres: en la compu, el Staff quedaba solo con un hueco al lado
+        <div className={'ma-cats' + (S.cats_sv.filter(([c]) => (((s.cats || {})[c] || {}).nom || []).length).length === 3 ? ' ma-tres' : '')}>{S.cats_sv.map(([c, n, de]) => {
+          const nom = ((s.cats || {})[c] || {}).nom || [];
+          return nom.length ? <Categoria key={c} liga={liga} enc={enc} cat={c} nombre={n} de={de} nom={nom}
+            encId={votando && nom.length >= 2 ? 'mes:' + ab.mes + ':' + sv + ':' + c : ''} /> : null;
+        })}</div>
+      ) : null}
+      {hist.length ? (
+        <div className="ma-hist">
+          <h3 className="lgf-st">Los ganadores</h3>
+          {hist.map((m) => (
+            <div key={m.mes} className="ma-hm">
+              <small>{capM(m.nombre)} {m.mes.slice(0, 4)}</small>
+              <ul>{S.cats_sv.map(([c, n]) => {
+                const x = (m.sv[sv].cats || {})[c] || {};
+                const fila = (x.nom || []).find((y) => y.op === x.gana);
+                return fila ? <li key={c}><Nominado liga={liga} cat={c} x={fila} /><em>{n}</em>{reparto(x)}</li> : null;
+              })}</ul>
+            </div>
+          ))}
+        </div>
+      ) : null}
+    </Sec>
+  );
+}
+
 function PromosSv({ liga, sv }) {
   const A = useAplausos();
   const xs = (liga.muro || []).filter((it) => it.tipo === 'promo' && it.sv === sv && it.o !== 'liga').slice(0, 4);

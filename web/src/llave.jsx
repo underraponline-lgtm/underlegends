@@ -204,7 +204,7 @@ function Batalla({ ctx, b, est, copa, style, altos, pasan }) {
     return (
       <div className={'lk-b cartas' + (est ? ' ' + est : '') + (sigue ? ' sigue' : '') + (copa ? ' fin' : '')} style={style} title={b[2] || undefined}>
         {et.length ? <div className="lk-et">{et.map((x, i) => <span key={i} className={x[1]} title={x[2]}>{x[0]}</span>)}</div> : null}
-        <div className={'lk-vs' + (colsVs(ls.length) === 3 ? ' t3' : '')}>
+        <div className={'lk-vs' + (colsVs(ls.length) === 3 ? ' lk-vs3' : '')}>
           {ls.map((s, i) => <Ficha key={i} ctx={ctx} b={b} s={s} copa={copa} pasa={!!pasan && pasan(s)} />)}
           {ls.length === 1 ? <div className="lk-fc vac"><em>{b[1] ? 'pasa directo' : 'por definir'}</em></div> : null}
         </div>

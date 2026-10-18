@@ -2174,7 +2174,10 @@ const ok = (cond, que, det) => {
   // 🏆 MES AWARDS: Dlx saca nominados de las veintitrés —también del staff por rol—, y de nada más
   const ms = A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['rapero:Ana', 'organizador:Velatz', 'liga:fmsperu', 'jurado:Flennzs'] });
   ok(ms && ms.quitar.length === 4 && A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['otra:x'] }) === undefined
-    && Object.keys(A.MES_CAT).length === 26 && A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['momento:9:Ana vs Bea'] }),
+    && Object.keys(A.MES_CAT).length === 26 && A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['momento:9:Ana vs Bea'] })
+    && A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['FFA/rapero:Ana', 'SR/staff:GP'] }).quitar.length === 2
+    && A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['ffa/rapero:Ana'] }) === undefined
+    && A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['FFA/otra:Ana'] }) === undefined,
   'sacar un nominado vale en las veintiséis categorías (Jurado, Host, DJ, Villano, Showman y Momento también), y en otra no');
 }
 

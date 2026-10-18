@@ -1234,6 +1234,9 @@ button.ma-op:hover{border-color:#F6F6F6}
 .db-mes-c li{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .db-mes-c li.fuera span{text-decoration:line-through;color:var(--gris)}
 @media (min-width: 640px){.ma-cats,.ma-hm ul{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* 🏟️ los de un servidor con tres categorías, de a tres (18/10/2026): de a dos, la tercera quedaba sola con un hueco */
+/* ⚠️ `ma-tres` y no `t3`: `.t3` es una grilla global de estilo.css (220px 1fr 340px) y se colaba en el celular */
+@media (min-width: 1000px){.ma-cats.ma-tres{grid-template-columns:repeat(3,minmax(0,1fr))}}
 /* 🏛️ EL SALÓN DE LA FAMA (Dlx, 16/10/2026): `sf-` (salón de la fama). Dorado de las medallas, sin brillo */
 .sf-num{width:100%;max-width:560px;margin-top:4px}
 .sf-copa{display:none}
@@ -3018,7 +3021,7 @@ a.rk-z:hover{border-color:var(--linea)}
    8 del Pase, con el brillo que sigue la forma de la carta */
 .lk-b.cartas{display:block;padding:4px}
 .lk-vs{display:grid;grid-template-columns:1fr 1fr;gap:4px}
-.lk-vs.t3{grid-template-columns:1fr 1fr 1fr}
+.lk-vs.lk-vs3{grid-template-columns:1fr 1fr 1fr}
 .lk-fc{position:relative;display:block;width:100%;aspect-ratio:300/438;min-width:0;padding:0;border:0;background:none;color:var(--tinta);
   cursor:pointer;-webkit-tap-highlight-color:transparent;container-type:inline-size}
 .lk-fc-img{display:block;width:100%;height:100%;object-fit:contain}

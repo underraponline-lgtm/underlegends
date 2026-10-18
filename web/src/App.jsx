@@ -600,7 +600,7 @@ export default function App() {
       <Aislada n="AvisoVersion"><AvisoVersion pagina={pagina} /></Aislada>
       {quiereTutorial() || repite ? <Aislada n="Tutorial"><Suspense fallback={null}><Tutorial liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv} repite={repite} /></Suspense></Aislada> : null}
       <span id="contenido" tabIndex={-1} />
-      {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} /></Suspense></Aislada>
+      {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} enc={enc} /></Suspense></Aislada>
         : pagina === 'cambios' ? <Aislada key="Cambios" n="Cambios" pagina><Suspense fallback={<Cargando />}><Cambios liga={liga} ver={partes[1] || null} antes={cambiosAntes} /></Suspense></Aislada>
         : pagina === 'socios' || pagina === 'mundo' ? <Aislada key="Socios" n="Socios" pagina><Suspense fallback={<Cargando />}><Socios liga={liga} /></Suspense></Aislada>
         : pagina === 'llave' && partes[1] ? <Aislada key="Llave" n="Llave" pagina><Suspense fallback={<Cargando />}><Llave liga={liga} vivoL={vivoL} n={partes.slice(1).join('/')} raiz={raiz} dc={yo.dc} /></Suspense></Aislada>

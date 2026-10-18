@@ -174,6 +174,7 @@ function errorEnc(E) {
       esc(fmtFecha(E.desde, { day: 'numeric', month: 'long' })) + '.'
     : e === 'opcion' ? 'Esa opción ya no está: la lista se actualiza cada media hora.'
     : e === 'no_existe' ? 'Esa votación ya no está.'
+    : e === 'no_jugo' ? 'Los MES AWARDS de ' + esc(E.sv || 'este servidor') + ' los votan los que jugaron ahí este mes.'
     : 'No pude guardar tu voto. Probá de nuevo en un rato.');
 }
 

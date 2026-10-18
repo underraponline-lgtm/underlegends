@@ -527,7 +527,9 @@ function historiasLiga(liga, mm) {
   if (suben.length) {
     out.push(Slide('ESTA SEMANA · SUBIERON', <><h3 className="st-h">{limpio(suben[0].n)} subió {suben[0].mv} {suben[0].mv === 1 ? 'puesto' : 'puestos'}</h3>
       <Gente liga={liga} fs={suben} txt={(f) => '▲' + f.mv + ' · #' + f.pos} /><small className="st-s">desde el lunes, en el Ranking de la Temporada</small></>,
-    'esta semana', 'Ver el Ranking', { ruta: '#/ranking' }, 'subio:' + hoy + ':' + suben[0].k));
+    // 🔑 POR SEMANA, NO POR DÍA (18/10/2026, Dlx: «al reiniciar el día… me sale como si todo fuese nuevo»): es lo de
+    // «desde el lunes», y con el día en el id volvía a salir sin ver cada mañana aunque dijera lo mismo
+    'esta semana', 'Ver el Ranking', { ruta: '#/ranking' }, 'subio:' + semana + ':' + suben[0].k));
   }
   // 🆕 los que jugaron su primer evento esta semana
   const nuevos = T.filter((f) => f.nu);

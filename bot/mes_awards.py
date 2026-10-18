@@ -39,6 +39,15 @@ constante—. Sus números salen de `bot/mes_otros.py`; lo demás —nominar,
 sacar, votar, cerrar— es igual. El ganador se lleva su insignia y `mes_otros.PREMIO_OTRA` Puntos de Tienda (*«Insignia
 + 1.000 PdT»*); los de grupos —crew, país y liga—, el Salón y la publicación, como el Servidor del mes. Sus ganadores
 salen en UNA publicación por mes, no dieciséis (`muro()`).
+
+🏟️ Y LOS DE CADA SERVIDOR TIER 1 (Dlx, 18/10/2026: *«hacer también los awards para servidor TIER 1»*, y a la pregunta,
+*«cada Tier 1 con los suyos»*: su rapero, su revelación, su batalla y su staff del mes, con lo que se jugó ahí; los votan
+sus jugadores). `CATS_SV`, de los mismos números pero sólo con lo de ese servidor (`numeros_sv()`): sus eventos, sus
+videos, quién debutó en la Liga ahí y su staff. Se nominan, se sacan, se votan y se cierran junto con los de la Liga; la
+encuesta lleva `sv` y **sólo vota quien jugó ahí ese mes** (`votantes()` → KV `encuestas.solo`, y `validarVoto()` en
+bot/avisos.js). Sólo los Tier 1 (`datos/niveles.json`; sin elegir, Tier 1) y sólo los que tienen algo que votar. El
+ganador se lleva la insignia de su categoría «de su servidor», su lugar en la página de su servidor y una publicación por
+servidor. ⚠️ Los Puntos de Tienda de estos, SIN DECIDIR: `PREMIO_SV` está vacío hasta que Dlx diga.
 """
 import datetime as dt
 import io
@@ -72,6 +81,14 @@ PREMIO = {'rapero': 3000, 'revelacion': 2000, 'batalla': 1500}
 import mes_otros as MO  # noqa: E402
 OTRAS = tuple((c, n, de) for c, n, de, _t in MO.OTRAS)
 TODAS = CATS + OTRAS
+#: 🏟️ las de cada servidor Tier 1 (18/10/2026, «cada Tier 1 con los suyos»): (clave, nombre, de qué)
+CATS_SV = (('rapero', 'Rapero del mes', 'los puntos de Temporada del mes en sus eventos'),
+           ('revelacion', 'Revelación del mes', 'los puntos del mes de los que debutaron en la Liga ahí'),
+           ('batalla', 'Batalla del mes', 'las vistas de sus videos de batallas publicados ese mes'),
+           ('staff', 'Staff del mes', 'las fechas en que fue jurado, host o DJ ahí, o publicó sus veredictos'))
+#: ⚠️ los Puntos de Tienda de los de cada servidor: SIN DECIDIR (se le preguntó a Dlx el 18/10/2026). Vacío, no pagan
+PREMIO_SV = {}
+NIVELES = os.path.join(BASE, 'datos', 'niveles.json')
 MESES = ('enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre',
          'noviembre', 'diciembre')
 
@@ -178,6 +195,65 @@ def numeros(mes, eventos, fx, vistos, fuera, videos, svs, clave, otros=None):
     return out
 
 
+def numeros_sv(mes, sv, eventos, fx, vistos, fuera, videos, svs, clave, otros=None):
+    """🏟️ Los números de UN servidor en el mes: `{cat: [opción, …]}` de `CATS_SV`, más `juegan` (los nombres de todos los
+    que jugaron ahí ese mes: son los que votan). Los mismos de `numeros()`, con sólo lo de ese servidor: sus eventos, sus
+    videos, la revelación entre los que debutaron en la Liga AHÍ (`vistos[persona][1]`) y el staff de sus anuncios y sus
+    veredictos."""
+    ini, fin = periodo(mes)
+    evs = [e for e in eventos or [] if e[1] == sv]
+    vis = {k: v for k, v in (vistos or {}).items() if v and len(v) > 1 and v[1] == sv}
+    vids = {k: v for k, v in (videos or {}).items() if len(v) > 1 and v[1] == sv}
+    base = numeros(mes, evs, fx, vis, fuera, vids, svs, clave)
+    out = {'rapero': base['rapero'], 'revelacion': base['revelacion'], 'batalla': base['batalla'], 'staff': []}
+    if otros is not None:
+        o2 = dict(otros, eventos=[e for e in otros.get('eventos') or [] if e[1] == sv],
+                  ver={kd: ns for kd, ns in (otros.get('ver') or {}).items() if str(kd).partition('|')[0] == sv})
+        try:
+            out['staff'] = MO.numeros(ini, fin, o2, out['rapero']).get('staff') or []
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ MES AWARDS de %s sin el staff (%s)' % (sv, str(e)[:60]))
+    juegan = {}
+    for _n, _sv, t, tabla, _nom in evs:
+        if t and ini <= t < fin:
+            for f in tabla or []:
+                if f and f[0] and clave(f[0]):
+                    juegan.setdefault(clave(f[0]), f[0])
+    out['juegan'] = sorted(juegan.values(), key=lambda x: x.lower())
+    return out
+
+
+def nominados_sv(nums, sv, sacar=()):
+    """Los `NOMINADOS` primeros de cada categoría de un servidor, sin los que sacó Dlx (`'SV/cat:op'`)."""
+    sacar = set(sacar or ())
+    return {c: [x for x in nums.get(c) or [] if '%s/%s:%s' % (sv, c, x['op']) not in sacar][:NOMINADOS] for c, _n, _d in CATS_SV}
+
+
+def niveles():
+    """`{sigla: tier}` de `datos/niveles.json` (lo escribe bot/tiers.py). Sin elegir, Tier 1."""
+    try:
+        with io.open(NIVELES, encoding='utf-8') as f:
+            return {k: int(v) for k, v in ((json.load(f) or {}).get('niveles') or {}).items()}
+    except (OSError, ValueError, TypeError):
+        return {}
+
+
+def nominar_sv(mes, datos, sacar=(), niv=None):
+    """🏟️ `{sigla: {cats: {cat: {nom}}, juegan}}` de los servidores Tier 1 que jugaron en el mes y tienen algo que votar
+    (alguna categoría con dos nominados o más)."""
+    niv = niveles() if niv is None else niv
+    ini, fin = periodo(mes)
+    out = {}
+    for sv in sorted({e[1] for e in datos[0] or [] if e[2] and ini <= e[2] < fin and e[1]}):
+        if int(niv.get(sv, 1) or 1) != 1:
+            continue
+        ns = numeros_sv(mes, sv, *datos)
+        noms = nominados_sv(ns, sv, sacar)
+        if any(len(v) >= 2 for v in noms.values()):
+            out[sv] = {'cats': {c: {'nom': noms[c]} for c, _n, _d in CATS_SV if noms[c]}, 'juegan': ns['juegan']}
+    return out
+
+
 def nominados(nums, sacar=()):
     """Los `NOMINADOS` primeros de cada categoría, sin los que sacó Dlx (`'cat:op'`): entra el que sigue."""
     sacar = set(sacar or ())
@@ -249,6 +325,34 @@ def encuestas(ahora=None, d=None):
             if len(nom) >= 2:
                 out.append({'id': 'mes:%s:%s' % (mes, cat), 'tipo': 'mes', 'cat': cat, 'hasta': m['cierra'],
                             'min': EN.MIN_VOTOS, 'op': [x['op'] for x in nom]})
+        # 🏟️ las de cada servidor: llevan `sv`, y por eso sólo las votan los que jugaron ahí (`votantes()`)
+        for sv, s in sorted((m.get('sv') or {}).items()):
+            for cat, _n, _de in CATS_SV:
+                nom = ((s.get('cats') or {}).get(cat) or {}).get('nom') or []
+                if len(nom) >= 2:
+                    out.append({'id': 'mes:%s:%s:%s' % (mes, sv, cat), 'tipo': 'mes', 'cat': cat, 'sv': sv,
+                                'hasta': m['cierra'], 'min': EN.MIN_VOTOS, 'op': [x['op'] for x in nom]})
+    return out
+
+
+def votantes(lista, d=None, dids=None, clave=None):
+    """🏟️ `{id de la encuesta: [discord_id]}`: quién puede votar cada encuesta de un servidor —los que jugaron ahí ese mes
+    y tienen su Discord en el padrón—. ⚠️ Con Discord IDs: sólo a KV (`encuestas.para_kv()`), nunca a la página."""
+    d = leer() if d is None else d
+    if clave is None:
+        import multiplicadores as MU
+        clave = MU._clave_persona
+    por_k = {}
+    for raw, did in (_dids_padron() if dids is None else dids).items():
+        if clave(raw):
+            por_k.setdefault(clave(raw), str(did))
+    out = {}
+    for e in lista or []:
+        if not e.get('sv'):
+            continue
+        mes = str(e.get('id') or '').split(':')[1] if str(e.get('id') or '').count(':') >= 3 else ''
+        jj = ((((d.get('meses') or {}).get(mes) or {}).get('sv') or {}).get(e['sv']) or {}).get('juegan') or []
+        out[e['id']] = sorted({por_k[clave(n)] for n in jj if clave(n) in por_k})
     return out
 
 
@@ -256,32 +360,35 @@ def cerrar(mes, m, votos, ahora):
     """Quién ganó cada categoría: el más votado (`encuestas.ganador()`), o con pocos votos el primero de los números.
     Devuelve el mes cerrado."""
     import encuestas as EN
-    m = dict(m)
-    cats = {}
-    for cat, x in (m.get('cats') or {}).items():
+
+    def una(eid, x):
         x = dict(x)
         nom = x.get('nom') or []
         if nom:
             ops = [y['op'] for y in nom]
-            g = EN.ganador((votos or {}).get('mes:%s:%s' % (mes, cat)) or {}, validas=ops, semilla='mes:%s:%s' % (mes, cat))
+            g = EN.ganador((votos or {}).get(eid) or {}, validas=ops, semilla=eid)
             # 📊 los votos de cada nominado, para publicar los porcentajes (Dlx, 18/10/2026: «me gusta lo de porcentajes»)
-            vv = (votos or {}).get('mes:%s:%s' % (mes, cat)) or {}
+            vv = (votos or {}).get(eid) or {}
             x['cuenta'] = {op: int(vv[op]) for op in ops if str(vv.get(op) or '').isdigit() and int(vv[op]) > 0}
             if g:
                 x['gana'], x['votos'], x['total'], x['por'] = g[0], g[1], g[2], 'votos'
             else:
                 x['gana'], x['por'] = ops[0], 'numeros'
-                x['total'] = sum(int(v) for v in ((votos or {}).get('mes:%s:%s' % (mes, cat)) or {}).values()
-                                 if str(v).isdigit())
-        cats[cat] = x
-    m['cats'] = cats
+                x['total'] = sum(int(v) for v in vv.values() if str(v).isdigit())
+        return x
+    m = dict(m)
+    m['cats'] = {cat: una('mes:%s:%s' % (mes, cat), x) for cat, x in (m.get('cats') or {}).items()}
+    # 🏟️ y los de cada servidor, con su id de encuesta (`mes:<mes>:<SV>:<cat>`)
+    if m.get('sv'):
+        m['sv'] = {sv: dict(s, cats={cat: una('mes:%s:%s:%s' % (mes, sv, cat), x) for cat, x in (s.get('cats') or {}).items()})
+                   for sv, s in m['sv'].items()}
     m['cerrado'] = _iso(ahora)
     return m
 
 
-def correr(aplicar=False, ahora=None, datos=None, votos=None, ajustes=None):
+def correr(aplicar=False, ahora=None, datos=None, votos=None, ajustes=None, niv=None):
     """Una vuelta: «así va» el mes en curso, los nominados del que terminó (si es el día), lo que Dlx sacó, y el cierre.
-    Devuelve lo que se guarda. `datos`, `votos` y `ajustes` son para el self-check."""
+    Devuelve lo que se guarda. `datos`, `votos`, `ajustes` y `niv` (los Tier) son para el self-check."""
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     d = leer()
     meses = dict(d.get('meses') or {})
@@ -317,6 +424,12 @@ def correr(aplicar=False, ahora=None, datos=None, votos=None, ajustes=None):
                            'sacar': sacar, 'cats': {c: {'nom': noms[c]} for c, _n, _d in TODAS}}
             print('   🏆 MES AWARDS de %s: nominados (%s)' % (nombre_mes(prev), ', '.join(
                 '%s %d' % (c, len(noms[c])) for c, _n, _d in TODAS)))
+            # 🏟️ y los de cada servidor Tier 1. Nunca frena los de la Liga
+            try:
+                meses[prev]['sv'] = nominar_sv(prev, datos, sacar, niv)
+                print('   🏟️ MES AWARDS de cada servidor: %s' % (', '.join(sorted(meses[prev]['sv'])) or 'ninguno con qué votar'))
+            except Exception as e:                       # noqa: BLE001
+                print('   ⚠️ MES AWARDS de cada servidor: %s' % str(e)[:80])
     # 🏁 el cierre
     for mes, m in sorted(meses.items()):
         c = _de_iso(m.get('cierra'))
@@ -357,6 +470,22 @@ def ganadores(d=None):
     return out
 
 
+def ganadores_sv(d=None):
+    """🏟️ `[(mes, sigla, cat, opción, la fila del nominado)]` de los de cada servidor, de los meses cerrados."""
+    d = leer() if d is None else d
+    out = []
+    for mes, m in sorted((d.get('meses') or {}).items()):
+        if not m.get('cerrado'):
+            continue
+        for sv, s in sorted((m.get('sv') or {}).items()):
+            for cat, _n, _de in CATS_SV:
+                x = (s.get('cats') or {}).get(cat) or {}
+                fila = next((y for y in x.get('nom') or [] if y['op'] == x.get('gana')), None)
+                if fila:
+                    out.append((mes, sv, cat, x['gana'], fila))
+    return out
+
+
 def personas(cat, fila):
     """Las personas que se llevan el premio: el rapero, o los dos lados de la batalla. El servidor, nadie. De las doce
     de `mes_otros`, las que dice su `quien` —el organizador del evento, quien comparte la promo…—; los grupos, nadie."""
@@ -369,6 +498,14 @@ def personas(cat, fila):
     return []
 
 
+def personas_sv(cat, fila):
+    """Las personas que se llevan un premio de un servidor: el rapero o la revelación, los dos lados de la batalla, y
+    quien fue el staff."""
+    if cat == 'staff':
+        return [q for q in fila.get('quien') or [fila.get('op')] if q]
+    return personas(cat, fila)
+
+
 def insignias(d=None):
     """`{persona: {ids}}` para `bot/insignias.py`: `mes_rapero`, `mes_revelacion`, `mes_batalla` y las de las doce
     (`mes_organizador`, `mes_staff`…)."""
@@ -376,6 +513,10 @@ def insignias(d=None):
     for _mes, cat, _op, fila in ganadores(d):
         for q in personas(cat, fila):
             out.setdefault(q, set()).add('mes_' + cat)
+    # 🏟️ y las de cada servidor: una por categoría, «de su servidor» (`mes_sv_rapero`…)
+    for _mes, _sv, cat, _op, fila in ganadores_sv(d):
+        for q in personas_sv(cat, fila):
+            out.setdefault(q, set()).add('mes_sv_' + cat)
     return out
 
 
@@ -394,6 +535,14 @@ def tienda(d, dids):
             did = dd.get(q) or (fila.get('did') if q == fila.get('n') else None)
             if did and paga and t:
                 out['%s:%s:%s' % (mes, cat, q)] = [did, paga, int(t.timestamp() * 1000)]
+    # 🏟️ los de cada servidor, sólo si Dlx les pone premio (`PREMIO_SV`, hoy vacío)
+    for mes, sv, cat, _op, fila in ganadores_sv(d):
+        t = _de_iso(((d.get('meses') or {}).get(mes) or {}).get('cerrado'))
+        paga = PREMIO_SV.get(cat) or 0
+        for q in personas_sv(cat, fila):
+            did = dd.get(q)
+            if did and paga and t:
+                out['%s:%s:%s:%s' % (mes, sv, cat, q)] = [did, paga, int(t.timestamp() * 1000)]
     return out
 
 
@@ -442,13 +591,34 @@ def muro(d=None):
         j['quien'] = j['quien'][:12]
         j['n'] = '%d ganadores' % len(j['lista'])
         out.append(j)
+    # 🏟️ los de cada servidor: UNA publicación por servidor y mes, con sus ganadores
+    nom_sv = dict((c, n) for c, n, _d in CATS_SV)
+    por_sv = {}
+    for mes, sv, cat, op, fila in ganadores_sv(d):
+        m = (d.get('meses') or {}).get(mes) or {}
+        x = (((m.get('sv') or {}).get(sv) or {}).get('cats') or {}).get(cat) or {}
+        j = por_sv.setdefault((mes, sv), {'tipo': 'mesaward', 't': m.get('cerrado'), 'mes': mes, 'cat': 'sv:' + sv, 'sv': sv,
+                                          'quien': [], 'lista': []})
+        j['lista'].append([cat, nom_sv[cat], fila.get('n') or op, _pct(x)])
+        for q in personas_sv(cat, fila):
+            if q not in j['quien']:
+                j['quien'].append(q)
+    for j in por_sv.values():
+        j['quien'] = j['quien'][:12]
+        j['n'] = '%d ganadores' % len(j['lista'])
+        out.append(j)
     return out
 
 
 def _sin_did(m):
     """El mes sin los Discord IDs de los nominados (los del Hincha): a la página no van."""
-    return dict(m, cats={c: dict(x, nom=[{a: b for a, b in y.items() if a != 'did'} for y in x.get('nom') or []])
-                         for c, x in (m.get('cats') or {}).items()})
+    limpia = lambda cats: {c: dict(x, nom=[{a: b for a, b in y.items() if a != 'did'} for y in x.get('nom') or []])  # noqa: E731
+                           for c, x in (cats or {}).items()}
+    out = dict(m, cats=limpia(m.get('cats')))
+    # 🏟️ los de cada servidor, sin `juegan` (quién vota no va a la página: su lista de Discord IDs vive en KV)
+    if m.get('sv'):
+        out['sv'] = {sv: {'cats': limpia(s.get('cats'))} for sv, s in m['sv'].items()}
+    return out
 
 
 def para_web(d=None, ahora=None):
@@ -469,7 +639,8 @@ def para_web(d=None, ahora=None):
         viv = {'mes': viv['mes'], 'nombre': nombre_mes(viv['mes']), 'vota': _iso(en_et(siguiente(viv['mes']), 1, ABRE_H))}
     # `cats`: [clave, nombre, de qué, 0 a la vista · 1 detrás de «Ver las demás nominaciones» · 2 en el bloque del staff]
     return {'t': _iso(ahora), 'cats': [list(c) + [0] for c in CATS] + [list(c) + [2 if c[0] in MO.STAFF else 1] for c in OTRAS],
-            'premio': dict(PREMIO, otra=MO.PREMIO_OTRA), 'abierto': abierto, 'vivo': viv, 'hist': hist[:24]}
+            'cats_sv': [list(c) for c in CATS_SV], 'premio': dict(PREMIO, otra=MO.PREMIO_OTRA), 'premio_sv': dict(PREMIO_SV),
+            'abierto': abierto, 'vivo': viv, 'hist': hist[:24]}
 
 
 # ── self-check ───────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -513,33 +684,63 @@ def _self_check():
     global SALIDA
     viejo, SALIDA = SALIDA, os.path.join(tempfile.mkdtemp(), 'mes.json')
     try:
-        r = correr(aplicar=True, ahora=t1, datos=datos, votos={}, ajustes={})
+        niv = {'FFA': 1, 'SR': 2}                           # SR es Tier 2: no tiene los suyos
+        r = correr(aplicar=True, ahora=t1, datos=datos, votos={}, ajustes={}, niv=niv)
         ok('2026-10' not in r['meses'] and r['vivo']['mes'] == '2026-11', 'antes de las 11 AM ET del día 1 no hay nominados')
         t2 = dt.datetime(2026, 11, 1, 16, tzinfo=utc)      # 11 AM ET
-        r = correr(aplicar=True, ahora=t2, datos=datos, votos={}, ajustes={'mes_sacar': {'mes': '2026-10', 'quitar': ['rapero:Cid']}})
+        r = correr(aplicar=True, ahora=t2, datos=datos, votos={}, ajustes={'mes_sacar': {'mes': '2026-10', 'quitar': ['rapero:Cid']}},
+                   niv=niv)
         m = r['meses']['2026-10']
         ok([x['op'] for x in m['cats']['rapero']['nom']] == ['Bea', 'Ana'] and m['abre'] == '2026-11-01T23:00:00Z'
            and m['cierra'] == '2026-11-04T23:00:00Z',
            'a las 11 AM ET salen los nominados (sin el que sacó Dlx); abre a las 6 PM y cierra a los tres días (el 1/11 '
            'ya es horario de invierno: 6 PM ET son las 23 UTC)', str((m['abre'], m['cierra'])))
-        ok(not encuestas(t2, r) and [e['id'] for e in encuestas(dt.datetime(2026, 11, 2, tzinfo=utc), r)]
+        ee = encuestas(dt.datetime(2026, 11, 2, tzinfo=utc), r)
+        ok(not encuestas(t2, r) and [e['id'] for e in ee if 'sv' not in e]
            == ['mes:2026-10:rapero', 'mes:2026-10:batalla', 'mes:2026-10:servidor'],
            'se vota desde que abre, y sólo lo que tiene dos nominados o más (la revelación tiene uno)')
+        # 🏟️ los de cada servidor Tier 1
+        msv = r['meses']['2026-10'].get('sv') or {}
+        ok(list(msv) == ['FFA'] and [x['op'] for x in msv['FFA']['cats']['rapero']['nom']] == ['Ana', 'Bea']
+           and msv['FFA']['juegan'] == ['Ana', 'Bea', 'Fuera'] and 'revelacion' not in msv['FFA']['cats'],
+           'cada servidor Tier 1 con los suyos: FFA con su rapero (sin el de fuera de concurso, que sí vota); SR es Tier 2',
+           str(msv))
+        esv = [e for e in ee if e.get('sv')]
+        ok([e['id'] for e in esv] == ['mes:2026-10:FFA:rapero'] and esv[0]['op'] == ['Ana', 'Bea'],
+           'su encuesta lleva el servidor en el id y en `sv`', str(esv))
+        vt = votantes(esv, r, dids={'Ana': '11', 'Fuera': '33', 'Cid': '44'}, clave=lambda n: n.lower())
+        ok(vt == {'mes:2026-10:FFA:rapero': ['11', '33']},
+           'votan sólo los que jugaron ahí ese mes y tienen su Discord (Cid jugó en SR: no vota la de FFA)', str(vt))
+        w0 = para_web(r, dt.datetime(2026, 11, 2, tzinfo=utc))
+        ok(w0['abierto']['sv']['FFA']['cats']['rapero']['nom'][0]['op'] == 'Ana' and 'juegan' not in json.dumps(w0)
+           and [c[0] for c in w0['cats_sv']] == ['rapero', 'revelacion', 'batalla', 'staff'],
+           'la página recibe los de cada servidor, sin la lista de quién vota')
         t3 = dt.datetime(2026, 11, 5, tzinfo=utc)
-        r = correr(aplicar=True, ahora=t3, datos=datos, votos={'mes:2026-10:rapero': {'Ana': 5, 'Bea': 2}}, ajustes={})
+        r = correr(aplicar=True, ahora=t3, datos=datos, votos={'mes:2026-10:rapero': {'Ana': 5, 'Bea': 2},
+                                                             'mes:2026-10:FFA:rapero': {'Bea': 4, 'Ana': 1}}, ajustes={}, niv=niv)
         c = r['meses']['2026-10']['cats']
         ok(c['rapero']['gana'] == 'Ana' and c['rapero']['por'] == 'votos' and c['batalla']['gana'] == 'v2'
            and c['batalla']['por'] == 'numeros',
            'al cierre gana el más votado; con menos de 3 votos, el primero de los números')
         ok(c['rapero'].get('cuenta') == {'Ana': 5, 'Bea': 2} and _pct(c['rapero']) == 71 and _pct(c['batalla']) == 0,
            'al cierre se guardan los votos de cada nominado: el ganador con su porcentaje (5 de 7 = 71 %)', str(c['rapero']))
-        ok(insignias(r) == {'Ana': {'mes_rapero'}, 'Cid': {'mes_revelacion', 'mes_batalla'}},
-           'las insignias: el rapero, la revelación y los dos lados de la batalla (el servidor no)', str(insignias(r)))
+        ok(insignias(r) == {'Ana': {'mes_rapero', 'mes_sv_batalla'}, 'Cid': {'mes_revelacion', 'mes_batalla'},
+                            'Bea': {'mes_sv_rapero', 'mes_sv_batalla'}},
+           'las insignias: el rapero, la revelación y los dos lados de la batalla (el servidor no); y las de FFA: su rapero, '
+           'que ganó Bea con sus votos, y su batalla, la única nominada (como la revelación de la Liga)', str(insignias(r)))
+        sv1 = r['meses']['2026-10']['sv']['FFA']['cats']['rapero']
+        ok(sv1['gana'] == 'Bea' and sv1['por'] == 'votos' and sv1['cuenta'] == {'Bea': 4, 'Ana': 1},
+           'el de cada servidor cierra con sus votos (`mes:<mes>:<SV>:<cat>`)', str(sv1))
         tt = tienda(r, {'Ana': '111', 'Cid': '222'})
         ok(tt.get('2026-10:rapero:Ana', [0, 0])[:2] == ['111', 3000] and tt.get('2026-10:batalla:Cid', [0, 0])[1] == 1500
            and len(tt) == 3, 'la Tienda: cada premio una vez, a quien tiene su Discord', str(tt))
         w = para_web(r, t3)
-        ok(not w['abierto'] and w['hist'][0]['mes'] == '2026-10' and len(muro(r)) == 4, 'cerrado: va al historial y al muro')
+        mu = muro(r)
+        ok(not w['abierto'] and w['hist'][0]['mes'] == '2026-10' and len(mu) == 5
+           and [x for x in mu if x['cat'] == 'sv:FFA'][0]['lista'] == [['rapero', 'Rapero del mes', 'Bea', 80],
+                                                                       ['batalla', 'Batalla del mes', 'ANA vs BEA', 0]],
+           'cerrado: va al historial y al muro, con UNA publicación por servidor', str(mu))
+        ok(not [k for k in tienda(r, {'Bea': '222'}) if ':FFA:' in k], 'los de cada servidor no cobran Tienda hasta que Dlx diga')
         ok(len(w['cats']) == 4 + len(OTRAS) == 26 and w['cats'][4][3] == 1 and w['cats'][0][3] == 0 and w['premio']['otra'] == 1000
            and [c[0] for c in w['cats'] if c[3] == 2] == ['jurado', 'host', 'dj'],
            'la página recibe las veintitrés: cuáles van detrás del botón y cuáles en el bloque del staff')

@@ -2480,6 +2480,15 @@ console.log('\nLAS ENCUESTAS\n');
      v('x2:2026-10-05', 'SR', NUEVO).error === 'nueva' && !!v('x2:2026-10-05', 'SR', NUEVO).desde);
   ok('sin lo que dejó el ciclo en KV, nada vale',
      A.validarVoto(null, { enc: 'x2:2026-10-05', op: 'SR' }, VIEJO, RELOJ).error === 'no_existe');
+  // 🏟️ los MES AWARDS de un servidor (18/10/2026, «los votan sus jugadores»): sólo quien jugó ahí ese mes
+  const OTRO = idDe(Date.parse('2021-03-01T00:00:00Z'));
+  const dsv = { lista: [{ id: 'mes:2026-10:FFA:rapero', tipo: 'mes', sv: 'FFA', hasta: abre, op: ['Ana', 'Bea'] },
+    { id: 'mes:2026-10:SR:rapero', tipo: 'mes', sv: 'SR', hasta: abre, op: ['Cid', 'Dan'] }],
+  solo: { 'mes:2026-10:FFA:rapero': [VIEJO] } };
+  const vs = (enc, id) => A.validarVoto(dsv, { enc, op: enc.includes('FFA') ? 'Ana' : 'Cid' }, id, RELOJ);
+  ok('los de un servidor los vota quien jugó ahí; quien no, no (y se le dice de qué servidor); sin la lista, nadie',
+     !vs('mes:2026-10:FFA:rapero', VIEJO).error && vs('mes:2026-10:FFA:rapero', OTRO).error === 'no_jugo'
+     && vs('mes:2026-10:FFA:rapero', OTRO).sv === 'FFA' && vs('mes:2026-10:SR:rapero', VIEJO).error === 'no_jugo');
 
   // 📣 «¿algo está mal en esta llave?» (Dlx, 28/09/2026: «ok»): mismo portón que el voto
   const rep = (d, id) => A.validarReporte(d, id || VIEJO, RELOJ);

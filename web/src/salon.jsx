@@ -207,7 +207,7 @@ export function useSalon() {
 const capM = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
 
 // cada nominado: su cara (o la miniatura de la batalla, o el escudo del servidor), su nombre y su número del mes
-function Nominado({ liga, cat, x }) {
+export function Nominado({ liga, cat, x }) {
   // 🏆 las de «Ver las demás nominaciones» (bot/mes_otros.py) traen su línea hecha (`d`) y qué se ve: un video, una
   // imagen, el escudo del servidor, la bandera o la cara de `q`
   if (x.d !== undefined) {
@@ -229,7 +229,7 @@ function Nominado({ liga, cat, x }) {
   return <>{vis}<span className="ma-t"><b>{cat === 'batalla' ? limpio(x.n) : f ? limpio(f.n) : limpio(x.n)}</b><small>{dato}</small></span></>;
 }
 
-function Categoria({ liga, enc, cat, nombre, de, nom, encId, gana }) {
+export function Categoria({ liga, enc, cat, nombre, de, nom, encId, gana }) {
   const E = encId ? ((liga.d.enc || []).find((e) => e.id === encId) || null) : null;
   const cu = E && enc ? enc.cuenta(E.id) : {};
   const tot = Object.values(cu).reduce((s, n) => s + (Number(n) || 0), 0);
@@ -260,7 +260,7 @@ function Categoria({ liga, enc, cat, nombre, de, nom, encId, gana }) {
 
 // 📊 los porcentajes del cierre (Dlx, 18/10/2026: «me gusta lo de porcentajes»): el ganador y los que le siguen, como
 // publican los FMS AWARDS. Sólo si se decidió por votos: si fue por los números, no hay reparto que mostrar
-function reparto(x) {
+export function reparto(x) {
   const cu = x.cuenta || {};
   const tot = Object.values(cu).reduce((s, n) => s + (Number(n) || 0), 0);
   if (x.por !== 'votos' || !tot) return null;
@@ -323,7 +323,8 @@ function MesAwards({ liga, enc }) {
       <p className="ma-cab">{cab || <>Cada mes, lo mejor de la Liga, votado por la gente.</>}</p>
       <p className="ma-como">Los nominados salen solos de los números del mes; vota cualquiera con Discord, una vez por categoría, y se puede cambiar
         hasta que cierra. El ganador se lleva su insignia{S.premio ? ', Puntos de Tienda' : ''} y su lugar en este Salón.
-        {nOtras ? ' Los de crew, país, liga y servidor se llevan el Salón y la publicación.' : ''}</p>
+        {nOtras ? ' Los de crew, país, liga y servidor se llevan el Salón y la publicación.' : ''}
+        {S.cats_sv ? ' Y cada servidor Tier 1 tiene los suyos, en su página, votados por los que jugaron ahí.' : ''}</p>
       {cuerpo}
       {hist.length ? (
         <div className="ma-hist">

@@ -109,21 +109,27 @@ export function Pub({ liga, it, A }) {
     // 🏆 un ganador de los MES AWARDS (bot/mes_awards.py, 16/10/2026)
     const mes = MESES[Number(String(it.mes || '').slice(5, 7)) - 1] || '';
     cat = 'MES AWARDS · ' + mes.toUpperCase();
-    vis = it.cat === 'otras' ? <span className="pub-logo pub-mes" aria-hidden="true"><Ico n="copa" t={30} /></span>
+    // 🏟️ los de cada servidor (18/10/2026): una publicación por servidor, con su escudo y sus ganadores
+    const deSv = String(it.cat || '').startsWith('sv:');
+    if (deSv) cat = 'MES AWARDS · ' + siglaDe(it.sv) + ' · ' + mes.toUpperCase();
+    vis = deSv ? <img className="pub-logo" alt="" src={liga.logo(it.sv)} />
+      : it.cat === 'otras' ? <span className="pub-logo pub-mes" aria-hidden="true"><Ico n="copa" t={30} /></span>
       : it.cat === 'batalla' && it.vid ? (
       <button type="button" className="pub-promo-v" onClick={() => abrirVideo({ vid: it.vid, tit: limpio(it.n || ''), link: 'https://www.youtube.com/watch?v=' + it.vid })}
         aria-label={'Mirar ' + limpio(it.n || 'la batalla')}><Miniatura vid={it.vid} cls="pub-promo-img" /><span aria-hidden="true">▶</span></button>
     ) : it.cat === 'servidor' ? <img className="pub-logo" alt="" src={liga.logo(it.sv)} /> : <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
-    txt = it.cat === 'otras' ? <>Los demás ganadores de <b>{mes}</b>:{' '}
+    txt = deSv ? <>Los ganadores de <b>{mes}</b> en {siglaDe(it.sv)}:{' '}
+      {(it.lista || []).map((y, i) => <span key={y[0]}>{i ? ' · ' : ''}{y[1]}: <b>{limpio(y[2])}</b>{y[3] ? ' (' + y[3] + '%)' : ''}</span>)}</>
+      : it.cat === 'otras' ? <>Los demás ganadores de <b>{mes}</b>:{' '}
       {(it.lista || []).map((y, i) => <span key={y[0]}>{i ? ' · ' : ''}{y[1]}: <b>{limpio(y[2])}</b>{y[3] ? ' (' + y[3] + '%)' : ''}</span>)}</>
       : it.cat === 'batalla' ? <><b>{limpio(it.n)}</b> es la Batalla del mes de {mes}</>
       : it.cat === 'servidor' ? <><b>{limpio(it.n)}</b> es el Servidor del mes de {mes}</>
         : <>{nombres} es {MES_CAT[it.cat] || 'ganador'} de <b>{mes}</b></>;
     // 📊 con su porcentaje (Dlx, 18/10/2026: «me gusta lo de porcentajes»)
-    det = it.cat === 'otras' ? '' : it.por === 'votos'
+    det = it.cat === 'otras' || deSv ? '' : it.por === 'votos'
       ? (it.pct ? it.pct + '% de los votos · ' : '') + num(it.votos) + (it.votos === 1 ? ' voto' : ' votos') + (it.total ? ' de ' + num(it.total) : '')
       : 'por los números del mes';
-    acc = <a className="pub-a" href="#/salon">El Salón de la fama</a>;
+    acc = deSv ? <a className="pub-a" href={'#/sv/' + encodeURIComponent(it.sv)}>{siglaDe(it.sv)}</a> : <a className="pub-a" href="#/salon">El Salón de la fama</a>;
   } else if (it.tipo === 'promo') {
     // 📣 lo que un rapero compartió en el canal de promoción de su servidor (bot/promos.py, 16/10/2026): el video se mira
     // acá; lo demás abre en su plataforma. El título es el de la plataforma, no el texto del mensaje

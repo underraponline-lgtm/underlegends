@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "3.56",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T14:56:00-04:00",
+   "titulo": "Cada servidor, sus MES AWARDS",
+   "items": [
+    "🏟️ Desde noviembre, cada servidor Tier 1 tiene sus propios MES AWARDS: su rapero, su revelación, su batalla y su staff del mes, en la página del servidor.",
+    "🗳️ Los votan los que jugaron en ese servidor ese mes.",
+    "🔁 Las historias de «Subieron esta semana» ya no vuelven a salir como nuevas cada día."
+   ]
+  },
+  {
    "version": "3.55",
    "dia": "2026-10-18",
    "cuando": "2026-10-18T06:10:00-04:00",
