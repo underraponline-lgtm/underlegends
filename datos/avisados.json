@@ -14961,5 +14961,366 @@
    ]
   ],
   "v": 2
+ },
+ "484": {
+  "antes": {
+   "1200": [
+    207,
+    80,
+    true
+   ],
+   "Chop": [
+    192,
+    35,
+    true
+   ],
+   "Crk": [
+    81,
+    116,
+    false
+   ],
+   "Drexx": [
+    30,
+    39,
+    false
+   ],
+   "Guess": [
+    21,
+    25,
+    false
+   ],
+   "Jupiter": [
+    28,
+    36,
+    false
+   ],
+   "Krish": [
+    73,
+    100,
+    false
+   ],
+   "Liberia": [
+    10,
+    11,
+    false
+   ],
+   "Molusco": [
+    24,
+    30,
+    false
+   ],
+   "Nemi": [
+    31,
+    40,
+    false
+   ],
+   "Neo": [
+    204,
+    74,
+    true
+   ],
+   "Oasis": [
+    1,
+    1,
+    false
+   ],
+   "Player": [
+    45,
+    61,
+    false
+   ],
+   "Six": [
+    11,
+    12,
+    false
+   ],
+   "Soulb": [
+    55,
+    75,
+    false
+   ],
+   "Velatz": [
+    12,
+    13,
+    false
+   ],
+   "Verc": [
+    8,
+    9,
+    false
+   ],
+   "Xubaru": [
+    46,
+    62,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Velatz",
+    "DarkoMC🇲🇽",
+    "Velatz"
+   ],
+   [
+    "Velatz",
+    "Krish",
+    "Velatz"
+   ],
+   [
+    "Six",
+    "Player",
+    "Six"
+   ],
+   [
+    "1200",
+    "Lvel 🇻🇪",
+    "1200"
+   ],
+   [
+    "1200",
+    "Crk",
+    "1200"
+   ],
+   [
+    "Molusco",
+    "Apolo",
+    "Molusco"
+   ],
+   [
+    "Molusco",
+    "Jobaking",
+    "Molusco"
+   ],
+   [
+    "Guess",
+    "Soulb",
+    "Guess"
+   ],
+   [
+    "Xubaru",
+    "Nemi",
+    "Xubaru"
+   ],
+   [
+    "Xubaru",
+    "Jupiter",
+    "Xubaru"
+   ],
+   [
+    "Verc",
+    "Oasis",
+    "Verc"
+   ],
+   [
+    "Verc",
+    "Neo",
+    "Verc"
+   ],
+   [
+    "Six",
+    "Liberia",
+    "Six"
+   ],
+   [
+    "Six",
+    "Imagy",
+    "Six"
+   ],
+   [
+    "Six",
+    "Drexx",
+    "Six"
+   ],
+   [
+    "Velatz",
+    "Chop",
+    "Velatz"
+   ],
+   [
+    "Molusco",
+    "1200",
+    "Molusco"
+   ],
+   [
+    "Guess",
+    "Xubaru",
+    "Guess"
+   ],
+   [
+    "Verc",
+    "Six",
+    "Verc"
+   ],
+   [
+    "Molusco",
+    "Velatz",
+    "Molusco"
+   ],
+   [
+    "Guess",
+    "Verc",
+    "Guess"
+   ],
+   [
+    "Guess",
+    "Molusco",
+    "Guess"
+   ],
+   [
+    "Verc",
+    "Velatz",
+    "Verc"
+   ]
+  ],
+  "ev_antes": {
+   "1200": 8,
+   "Chop": 12,
+   "Crk": 9,
+   "Drexx": 14,
+   "Guess": 14,
+   "Jupiter": 11,
+   "Krish": 10,
+   "Liberia": 12,
+   "Molusco": 15,
+   "Nemi": 11,
+   "Neo": 7,
+   "Oasis": 26,
+   "Player": 9,
+   "Six": 21,
+   "Soulb": 11,
+   "Velatz": 35,
+   "Verc": 16,
+   "Xubaru": 8
+  },
+  "fecha": "18/10",
+  "firma": "f459bda056a6a7ca",
+  "msg": "1561498207572205609",
+  "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL7 __",
+  "num": 484,
+  "participantes": 24,
+  "sello": {
+   "Guess": "6b7152f04ea9:906ce275eeb8"
+  },
+  "sv": "FFA",
+  "t": "2026-10-18T21:56:22Z",
+  "tabla": [
+   [
+    "Guess",
+    "Campeón",
+    10000
+   ],
+   [
+    "Molusco",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Verc",
+    "Tercero",
+    6000
+   ],
+   [
+    "Velatz",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Chop",
+    "Cuartos",
+    2500
+   ],
+   [
+    "1200",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Xubaru",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Six",
+    "Cuartos",
+    2500
+   ],
+   [
+    "DarkoMC🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Crk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Apolo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jobaking",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Octavos",
+    1250
+   ],
+   [
+    "Nemi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jupiter",
+    "Octavos",
+    1250
+   ],
+   [
+    "Oasis",
+    "Octavos",
+    1250
+   ],
+   [
+    "Neo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Liberia",
+    "Octavos",
+    1250
+   ],
+   [
+    "Imagy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

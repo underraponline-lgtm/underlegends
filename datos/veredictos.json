@@ -1157,6 +1157,17 @@
    "b": "VERC🇨🇱 + ERIAN🇵🇦 + PICHULITA🇦🇷",
    "ganador": "VERC🇨🇱 + ERIAN🇵🇦 + PICHULITA🇦🇷",
    "votos": "1–0"
+  },
+  "1561466351141396521": {
+   "id": "1561466351141396521",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1792352988754,
+   "a": "MOLUSCO 🇦🇷",
+   "b": "GUESS 🇦🇷",
+   "ganador": "GUESS 🇦🇷",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5120,7 +5131,7 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1792352988754,
-   "ed": 1792359350554,
+   "ed": 1792360193995,
    "texto": "`[ FINAL ]`\n⌞MOLUSCO 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝",
    "batallas": [
     [
@@ -5129,8 +5140,8 @@
       "MOLUSCO 🇦🇷",
       "GUESS 🇦🇷"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "GUESS 🇦🇷",
+     "veredicto",
      []
     ]
    ]
@@ -5141,8 +5152,8 @@
    "g": "1468472442925092958",
    "canal": "1557583344638623754",
    "pub": 1792357298616,
-   "ed": 1792360142180,
-   "texto": "`[ FILTROS ]`\n⌞PANCHOK🇨🇱⌝ 🆚 ⌞LVEL🇻🇪⌝ 🆚 ⌞JOBA🇨🇱⌝ 🆚 ⌞AX🇻🇪⌝ 🆚 ⌞1200🇰🇷⌝\n⌞SEBITA🇱🇷⌝ 🆚 ⌞IMAGY🇵🇪⌝ 🆚 ⌞TAM🇻🇪⌝ 🆚 ⌞MILLONARI-O(MC MILLO)🇵🇾⌝ 🆚 ⌞ONZAS.S🇻🇪⌝\n⌞JOBA🇨🇱R⌝ 🆚 ⌞MAILÉN🇳🇴⌝ 🆚 ⌞PARK-JI SUNG🇰🇷⌝ 🆚 ⌞VANDU🇨🇦⌝ 🆚 ⌞CAZAFLA ANTI CAZANOVA🇭🇹⌝ 🆚 ⌞WARAP🇦🇷⌝\n`[ FILTROS ]`\n⌞JOBA🇨🇱R⌝ 🆚 ⌞MAILÉN🇳🇴⌝ 🆚 ⌞PARK-JI SUNG🇰🇷⌝ 🆚 ⌞VANDU🇨🇦⌝ 🆚 ⌞CAZAFLA ANTI CAZANOVA🇭🇹⌝ 🆚 ⌞WARAP🇦🇷⌝",
+   "ed": 1792360519710,
+   "texto": "`[ FILTROS ]`\n⌞PANCHOK🇨🇱⌝ 🆚 ⌞LVEL🇻🇪⌝ 🆚 ⌞JOBA🇨🇱⌝ 🆚 ⌞AX🇻🇪⌝ 🆚 ⌞1200🇰🇷⌝\n⌞SEBITA🇱🇷⌝ 🆚 ⌞IMAGY🇵🇪⌝ 🆚 ⌞TAM🇻🇪⌝ 🆚 ⌞MILLONARI-O(MC MILLO)🇵🇾⌝ 🆚 ⌞ONZAS.S🇻🇪⌝\n⌞JOBA🇨🇱R⌝ 🆚 ⌞MAILÉN🇳🇴⌝ 🆚 ⌞PARK-JI SUNG🇰🇷⌝ 🆚 ⌞VANDU🇨🇦⌝ 🆚 ⌞WARAP🇦🇷⌝ 🆚 ⌞CAZAFLA ANTI CAZANOVA🇭🇹⌝\n`[ FILTROS ]`\n⌞JOBA🇨🇱R⌝ 🆚 ⌞MAILÉN🇳🇴⌝ 🆚 ⌞PARK-JI SUNG🇰🇷⌝ 🆚 ⌞VANDU🇨🇦⌝ 🆚 ⌞WARAP🇦🇷⌝ 🆚 ⌞CAZAFLA ANTI CAZANOVA🇭🇹⌝",
    "batallas": [
     [
      "FILTROS",
@@ -5177,8 +5188,8 @@
       "MAILÉN🇳🇴",
       "PARK-JI SUNG🇰🇷",
       "VANDU🇨🇦",
-      "CAZAFLA ANTI CAZANOVA🇭🇹",
-      "WARAP🇦🇷"
+      "WARAP🇦🇷",
+      "CAZAFLA ANTI CAZANOVA🇭🇹"
      ],
      null,
      "última ronda y no dice campeón",
@@ -5191,8 +5202,8 @@
       "MAILÉN🇳🇴",
       "PARK-JI SUNG🇰🇷",
       "VANDU🇨🇦",
-      "CAZAFLA ANTI CAZANOVA🇭🇹",
-      "WARAP🇦🇷"
+      "WARAP🇦🇷",
+      "CAZAFLA ANTI CAZANOVA🇭🇹"
      ],
      null,
      "última ronda y no dice campeón",

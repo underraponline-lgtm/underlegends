@@ -26329,5 +26329,297 @@
     1000
    ]
   ]
+ },
+ "484": {
+  "dia": "2026-10-18",
+  "escala": "16+",
+  "fecha": "18/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1561483372315021396"
+  ],
+  "n": 484,
+  "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL7",
+  "participantes": 24,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Velatz",
+       "DarkoMC🇲🇽",
+       "Krish"
+      ],
+      "Velatz",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Six",
+       "Chop",
+       "Player"
+      ],
+      "Six, Chop",
+      "triple (3 bandas, pasan 2); también pasa: Chop🇭🇳"
+     ],
+     [
+      [
+       "1200",
+       "Lvel 🇻🇪",
+       "Crk"
+      ],
+      "1200",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Molusco",
+       "Apolo",
+       "Jobaking"
+      ],
+      "Molusco",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Guess",
+       "Soulb"
+      ],
+      "Guess",
+      ""
+     ],
+     [
+      [
+       "Xubaru",
+       "Nemi",
+       "Jupiter"
+      ],
+      "Xubaru",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Verc",
+       "Oasis",
+       "Neo"
+      ],
+      "Verc",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Six",
+       "Liberia",
+       "Imagy",
+       "Drexx"
+      ],
+      "Six",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Velatz",
+       "Chop"
+      ],
+      "Velatz",
+      ""
+     ],
+     [
+      [
+       "Molusco",
+       "1200"
+      ],
+      "Molusco",
+      ""
+     ],
+     [
+      [
+       "Guess",
+       "Xubaru"
+      ],
+      "Guess",
+      ""
+     ],
+     [
+      [
+       "Verc",
+       "Six"
+      ],
+      "Verc",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Molusco",
+       "Velatz"
+      ],
+      "Molusco",
+      ""
+     ],
+     [
+      [
+       "Guess",
+       "Verc"
+      ],
+      "Guess",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc",
+       "Velatz"
+      ],
+      "Verc",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Guess",
+       "Molusco"
+      ],
+      "Guess",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Guess",
+    "Campeón",
+    10000
+   ],
+   [
+    "Molusco",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Verc",
+    "Tercero",
+    6000
+   ],
+   [
+    "Velatz",
+    "Cuarto",
+    4500
+   ],
+   [
+    "1200",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Chop",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Six",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Xubaru",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Apolo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Crk",
+    "Octavos",
+    1250
+   ],
+   [
+    "DarkoMC🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Imagy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jobaking",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jupiter",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "Liberia",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Nemi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Neo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Oasis",
+    "Octavos",
+    1250
+   ],
+   [
+    "Player",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

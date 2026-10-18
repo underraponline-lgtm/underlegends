@@ -411,7 +411,19 @@
    "monto": 2500,
    "t": "2026-10-17T13:34:04Z",
    "fin": "2026-10-19T15:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "1200",
+     2500
+    ]
+   ],
+   "ev": {
+    "n": 484,
+    "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL7",
+    "sv": "FFA",
+    "t": "2026-10-18T20:57:26Z"
+   }
   },
   {
    "id": 25,
@@ -427,7 +439,19 @@
    "monto": 500,
    "t": "2026-10-18T08:28:09Z",
    "fin": "2026-10-19T15:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "1200",
+     500
+    ]
+   ],
+   "ev": {
+    "n": 484,
+    "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL7",
+    "sv": "FFA",
+    "t": "2026-10-18T20:57:26Z"
+   }
   },
   {
    "id": 27,
@@ -435,7 +459,19 @@
    "monto": 5000,
    "t": "2026-10-18T19:24:59Z",
    "fin": "2026-10-19T15:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "Guess",
+     5000
+    ]
+   ],
+   "ev": {
+    "n": 484,
+    "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL7",
+    "sv": "FFA",
+    "t": "2026-10-18T20:57:26Z"
+   }
   }
  ],
  "suma": {
@@ -451,6 +487,8 @@
   "Six": 5000,
   "PIERR": 5000,
   "Emilio Alva": 2500,
-  "Tuca": 1000
+  "Tuca": 1000,
+  "1200": 3000,
+  "Guess": 5000
  }
 }

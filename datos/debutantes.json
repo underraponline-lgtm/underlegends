@@ -3,7 +3,7 @@
  "chats": {
   "ACAD": "2026-10-16",
   "DDF": "2026-10-16",
-  "FFA": "2026-10-17",
+  "FFA": "2026-10-18",
   "FRZ": "2026-10-15",
   "FVS": "2026-10-15",
   "SR": "2026-10-16",
@@ -49,6 +49,19 @@
    "vence": "2026-10-20T00:26:10+00:00",
    "vencido": false
   },
+  "Apolo": {
+   "avisado": "2026-10-18",
+   "chat": "2026-10-18",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-18T20:57:26+00:00",
+   "did": "",
+   "evento": "LA BELLA ARTE DE LA DESGRACIA VOL7",
+   "n": 484,
+   "sv": "FFA",
+   "vence": "2026-10-25T20:57:26+00:00",
+   "vencido": false
+  },
   "Chente": {
    "avisado": "2026-10-14",
    "chat": "2026-10-15",
@@ -73,6 +86,19 @@
    "n": 478,
    "sv": "SR",
    "vence": "2026-10-23T17:34:15+00:00",
+   "vencido": false
+  },
+  "DarkoMC": {
+   "avisado": "2026-10-18",
+   "chat": "2026-10-18",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-18T20:57:26+00:00",
+   "did": "",
+   "evento": "LA BELLA ARTE DE LA DESGRACIA VOL7",
+   "n": 484,
+   "sv": "FFA",
+   "vence": "2026-10-25T20:57:26+00:00",
    "vencido": false
   },
   "FOTOSÍNTESIS": {
@@ -114,6 +140,19 @@
    "vence": "2026-10-23T20:31:59+00:00",
    "vencido": false
   },
+  "Imagy": {
+   "avisado": "2026-10-18",
+   "chat": "2026-10-18",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-18T20:57:26+00:00",
+   "did": "1203061395814350918",
+   "evento": "LA BELLA ARTE DE LA DESGRACIA VOL7",
+   "n": 484,
+   "sv": "FFA",
+   "vence": "2026-10-25T20:57:26+00:00",
+   "vencido": false
+  },
   "Joaquín La Profecia 👨🏻‍🍳": {
    "avisado": "2026-10-12",
    "chat": "2026-10-12",
@@ -125,6 +164,19 @@
    "n": 460,
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
+   "vencido": false
+  },
+  "Jobaking": {
+   "avisado": "2026-10-18",
+   "chat": "2026-10-18",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-18T20:57:26+00:00",
+   "did": "1095893775383023708",
+   "evento": "LA BELLA ARTE DE LA DESGRACIA VOL7",
+   "n": 484,
+   "sv": "FFA",
+   "vence": "2026-10-25T20:57:26+00:00",
    "vencido": false
   },
   "Joshema": {
@@ -354,6 +406,7 @@
    "vencido": false
   },
   "lil": {
+   "avisado": "2026-10-18",
    "chat": "2026-10-17",
    "con": null,
    "cumplido": "",

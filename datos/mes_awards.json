@@ -22,9 +22,9 @@
     {
      "op": "Oasis",
      "n": "Oasis",
-     "pts": 209462,
+     "pts": 211338,
      "oro": 10,
-     "ev": 18
+     "ev": 19
     },
     {
      "op": "Panchok",
@@ -66,9 +66,9 @@
     {
      "op": "Lvel 🇻🇪",
      "n": "Lvel 🇻🇪",
-     "pts": 33699,
+     "pts": 35574,
      "oro": 0,
-     "ev": 12
+     "ev": 13
     },
     {
      "op": "Ariaxer",
@@ -103,8 +103,8 @@
     {
      "op": "FFA",
      "n": "Freestyle For All",
-     "gente": 264,
-     "ev": 52
+     "gente": 268,
+     "ev": 53
     },
     {
      "op": "ACAD",
@@ -139,7 +139,7 @@
      "quien": [
       "LEWITO"
      ],
-     "d": "14 eventos · 284 raperos"
+     "d": "15 eventos · 307 raperos"
     },
     {
      "op": "Flennzs",
@@ -148,7 +148,7 @@
      "quien": [
       "Flennzs"
      ],
-     "d": "7 eventos · 155 raperos"
+     "d": "8 eventos · 178 raperos"
     },
     {
      "op": "Velatz",
@@ -345,7 +345,7 @@
      "quien": [
       "Calíz"
      ],
-     "d": "le ganó a Erian (#5) siendo #72 · PROYECTO X VOL.3"
+     "d": "le ganó a Erian (#5) siendo #73 · PROYECTO X VOL.3"
     },
     {
      "op": "478:Catarsis",
@@ -683,6 +683,15 @@
      "d": "15 podios · 🥇10 🥈4 🥉1"
     },
     {
+     "op": "Verc",
+     "n": "Verc",
+     "q": "Verc",
+     "quien": [
+      "Verc"
+     ],
+     "d": "13 podios · 🥇6 🥈6 🥉1"
+    },
+    {
      "op": "Snow",
      "n": "Snow",
      "q": "Snow",
@@ -690,15 +699,6 @@
       "Snow"
      ],
      "d": "13 podios · 🥇4 🥈8 🥉1"
-    },
-    {
-     "op": "Verc",
-     "n": "Verc",
-     "q": "Verc",
-     "quien": [
-      "Verc"
-     ],
-     "d": "12 podios · 🥇6 🥈6"
     },
     {
      "op": "PichulaMc",
@@ -710,13 +710,13 @@
      "d": "8 podios · 🥇4 🥈4"
     },
     {
-     "op": "Velatz",
-     "n": "Velatz",
-     "q": "Velatz",
+     "op": "Guess",
+     "n": "Guess",
+     "q": "Guess",
      "quien": [
-      "Velatz"
+      "Guess"
      ],
-     "d": "7 podios · 🥇1 🥈6"
+     "d": "7 podios · 🥇2 🥈4 🥉1"
     }
    ],
    "villano": [
@@ -748,11 +748,11 @@
      "d": "al azar entre los que compitieron este mes"
     },
     {
-     "op": "PichulaMc",
-     "n": "PichulaMc",
-     "q": "PichulaMc",
+     "op": "Selek",
+     "n": "Selek",
+     "q": "Selek",
      "quien": [
-      "PichulaMc"
+      "Selek"
      ],
      "d": "al azar entre los que compitieron este mes"
     },
@@ -768,11 +768,11 @@
    ],
    "showman": [
     {
-     "op": "Mito",
-     "n": "Mito",
-     "q": "Mito",
+     "op": "Richard",
+     "n": "Richard",
+     "q": "Richard",
      "quien": [
-      "Mito"
+      "Richard"
      ],
      "d": "al azar entre los que compitieron este mes"
     },
@@ -786,11 +786,11 @@
      "d": "al azar entre los que compitieron este mes"
     },
     {
-     "op": "Motera",
-     "n": "Motera",
-     "q": "Motera",
+     "op": "MCO",
+     "n": "MCO",
+     "q": "MCO",
      "quien": [
-      "Motera"
+      "MCO"
      ],
      "d": "al azar entre los que compitieron este mes"
     },
@@ -815,54 +815,54 @@
    ],
    "momento": [
     {
-     "op": "440:Agus vs Makmah",
-     "n": "Agus vs Makmah",
-     "q": "Agus",
-     "quien": [
-      "Agus",
-      "Makmah"
-     ],
-     "d": "PROYECTO X VOL.2 · ganó Agus · al azar"
-    },
-    {
-     "op": "383:Marcos vs Velatz",
-     "n": "Marcos vs Velatz",
-     "q": "Marcos",
-     "quien": [
-      "Marcos",
-      "Velatz"
-     ],
-     "d": "DESGRACIAS EN TOKYO VOL 21 1v1 · ganó Marcos · al azar"
-    },
-    {
-     "op": "477:Panchok vs Molusco",
-     "n": "Panchok vs Molusco",
-     "q": "Panchok",
-     "quien": [
-      "Panchok",
-      "Molusco"
-     ],
-     "d": "DESGRACIAS EN TOKYO VOL27 · ganó Panchok · al azar"
-    },
-    {
-     "op": "468:Delux vs Liberia",
-     "n": "Delux vs Liberia",
-     "q": "Delux",
-     "quien": [
-      "Delux",
-      "Liberia"
-     ],
-     "d": "DEM UZBEKISTAN FECHA 2 · ganó Delux · al azar"
-    },
-    {
-     "op": "477:OG vs Nemi",
-     "n": "OG vs Nemi",
+     "op": "431:OG vs Zignos",
+     "n": "OG vs Zignos",
      "q": "OG",
      "quien": [
       "OG",
-      "Nemi"
+      "Zignos"
+     ],
+     "d": "LA REDENCIÓN VOL.1 · ganó OG · al azar"
+    },
+    {
+     "op": "477:OG vs Liberia",
+     "n": "OG vs Liberia",
+     "q": "OG",
+     "quien": [
+      "OG",
+      "Liberia"
      ],
      "d": "DESGRACIAS EN TOKYO VOL27 · ganó OG · al azar"
+    },
+    {
+     "op": "442:Walker vs Agus",
+     "n": "Walker vs Agus",
+     "q": "Walker",
+     "quien": [
+      "Walker",
+      "Agus"
+     ],
+     "d": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1 · ganó Walker · al azar"
+    },
+    {
+     "op": "396:Ariaxer vs TøKīØ🦠🧠",
+     "n": "Ariaxer vs TøKīØ🦠🧠",
+     "q": "Ariaxer",
+     "quien": [
+      "Ariaxer",
+      "TøKīØ🦠🧠"
+     ],
+     "d": "COPA SOOLAR 2 · ganó Ariaxer · al azar"
+    },
+    {
+     "op": "449:Vandu vs doble h",
+     "n": "Vandu vs doble h",
+     "q": "Vandu",
+     "quien": [
+      "Vandu",
+      "doble h"
+     ],
+     "d": "HJKSLOWT V.1 · ganó Vandu · al azar"
     }
    ],
    "crew": [
@@ -882,7 +882,7 @@
      "op": "Fontana",
      "n": "Fontana",
      "quien": [],
-     "d": "324.138 pts · 4 jugaron"
+     "d": "326.012 pts · 4 jugaron"
     },
     {
      "op": "Lighting Force",
@@ -903,14 +903,14 @@
      "n": "Argentina",
      "cc": "ar",
      "quien": [],
-     "d": "1.695.029 pts · 37 jugaron"
+     "d": "1.728.779 pts · 37 jugaron"
     },
     {
      "op": "Chile",
      "n": "Chile",
      "cc": "cl",
      "quien": [],
-     "d": "1.014.060 pts · 29 jugaron"
+     "d": "1.035.436 pts · 30 jugaron"
     },
     {
      "op": "Colombia",
@@ -924,14 +924,14 @@
      "n": "Venezuela",
      "cc": "ar",
      "quien": [],
-     "d": "611.066 pts · 16 jugaron"
+     "d": "618.565 pts · 16 jugaron"
     },
     {
-     "op": "Perú",
-     "n": "Perú",
-     "cc": "pe",
+     "op": "México",
+     "n": "México",
+     "cc": "mx",
      "quien": [],
-     "d": "237.673 pts · 15 jugaron"
+     "d": "239.959 pts · 14 jugaron"
     }
    ],
    "liga": [
@@ -974,7 +974,7 @@
      "quien": [
       "Flennzs"
      ],
-     "d": "11 eventos de jurado"
+     "d": "12 eventos de jurado"
     },
     {
      "op": "LEWITO",
@@ -1021,7 +1021,7 @@
      "quien": [
       "LEWITO"
      ],
-     "d": "16 eventos de host"
+     "d": "17 eventos de host"
     },
     {
      "op": "Adriagner",
