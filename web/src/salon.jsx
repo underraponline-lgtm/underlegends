@@ -313,12 +313,10 @@ function MesAwards({ liga, enc }) {
     };
     cuerpo = <div className="ma-cats">{cats.map(una)}{bloque(catsStaff.map(una))}{boton}</div>;
   } else if (viv) {
-    cab = <>Así va <b>{viv.nombre}</b>: si el mes terminara hoy, éstos serían los nominados. Se vota {liga.dia(viv.vota)}.</>;
-    const una = ([c, n, de]) => {
-      const nom = (viv.cats || {})[c] || [];
-      return nom.length ? <Categoria key={c} liga={liga} cat={c} nombre={n} de={de} nom={nom} /> : null;
-    };
-    cuerpo = <div className="ma-cats">{cats.map(una)}{bloque(catsStaff.map(una))}{boton}</div>;
+    // 🤫 LOS NOMINADOS NO SE VEN MIENTRAS EL MES CORRE (Dlx, 18/10/2026: «no muestres los nominados hasta que termine»,
+    // y a la pregunta: «hasta que termine el mes»). Antes aparecía «así va»: quién iba primero en cada categoría. Ahora
+    // se conocen el día 1, cuando salen los nominados de verdad
+    cab = <>Los nominados de <b>{viv.nombre}</b> se conocen cuando termina el mes. Se vota {liga.dia(viv.vota)}.</>;
   }
   return (
     <Sec id="sf-mes" titulo="MES AWARDS" extra="negra sf-mes">

@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.52",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T05:38:00-04:00",
+   "titulo": "MES AWARDS con sorpresa",
+   "items": [
+    "🤫 Los nominados de cada mes se conocen recién cuando el mes termina."
+   ]
+  },
+  {
    "version": "3.51",
    "dia": "2026-10-18",
    "cuando": "2026-10-18T04:59:00-04:00",

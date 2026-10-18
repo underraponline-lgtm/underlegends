@@ -464,8 +464,9 @@ def para_web(d=None, ahora=None):
     hist = [dict(_sin_did(m), mes=mes, nombre=nombre_mes(mes)) for mes, m in sorted(meses.items(), reverse=True) if m.get('cerrado')]
     viv = d.get('vivo')
     if viv:
-        viv = dict(viv, cats={c: [{a: b for a, b in x.items() if a != 'did'} for x in xs] for c, xs in (viv.get('cats') or {}).items()},
-                   nombre=nombre_mes(viv['mes']), vota=_iso(en_et(siguiente(viv['mes']), 1, ABRE_H)))
+        # 🤫 sin los nominados: mientras el mes corre no se ve quién va primero (Dlx, 18/10/2026, «hasta que termine el
+        # mes»). Viaja sólo qué mes es y cuándo se vota
+        viv = {'mes': viv['mes'], 'nombre': nombre_mes(viv['mes']), 'vota': _iso(en_et(siguiente(viv['mes']), 1, ABRE_H))}
     # `cats`: [clave, nombre, de qué, 0 a la vista · 1 detrás de «Ver las demás nominaciones» · 2 en el bloque del staff]
     return {'t': _iso(ahora), 'cats': [list(c) + [0] for c in CATS] + [list(c) + [2 if c[0] in MO.STAFF else 1] for c in OTRAS],
             'premio': dict(PREMIO, otra=MO.PREMIO_OTRA), 'abierto': abierto, 'vivo': viv, 'hist': hist[:24]}
