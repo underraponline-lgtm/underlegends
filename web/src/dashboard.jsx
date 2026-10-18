@@ -482,7 +482,7 @@ function TierCaja({ x, liga, tier, cambiar, ocup, i }) {
           <span>{t}</span><i><u style={{ width: (100 * ((x.partes || {})[k] || 0) / tope).toFixed(0) + '%' }} /></i>
         </div>
       ))}</div>
-      <p className="ti-m">{num(m.por_semana || 0)} eventos por semana · {num(m.por_evento || 0)} por evento · {num(m.nuevos || 0)} nuevos
+      <p className="ti-m">{m.miembros ? <b className={m.miembros < 300 ? 'ti-bajo' : ''}>{num(m.miembros)} miembros{m.miembros < 300 ? ' (mínimo 300)' : m.miembros < 500 ? ' (se recomiendan 500)' : ''} · </b> : null}{num(m.por_semana || 0)} eventos por semana · {num(m.por_evento || 0)} por evento · {num(m.nuevos || 0)} nuevos
         {m.nuevos ? ' (volvieron ' + Math.round((100 * (m.volvieron || 0)) / m.nuevos) + ' %)' : ''}
         {m.eventos ? ' · ' + (Math.round((10 * (m.ayudas || 0)) / m.eventos) / 10) + ' ayudas por llave' : ''}
         {m.anuncios ? ' · staff en ' + Math.round((100 * (m.con_staff || 0)) / m.anuncios) + ' % de sus anuncios' : ''}
@@ -501,7 +501,8 @@ function Tiers({ T, aj, hacer, ocup, msg, liga }) {
   return (
     <div className="ti">
       <p className="db-tx">Las últimas {T.semanas || 4} semanas. El puntaje recomienda; <b>el nivel lo elegís vos</b>. Tier 1 suma al ranking y
-        lleva todo; Tier 2 sale en el calendario y la campana, pero sus llaves no suman; Tier 3 es el directorio, sin bot.</p>
+        lleva todo; Tier 2 sale en el calendario y la campana, pero sus llaves no suman; Tier 3 es el directorio, sin bot. Para ser
+        socio: 300 miembros como mínimo, se recomiendan 500.</p>
       {msg ? <p className="db-msg" role="status">{msg}</p> : null}
       <div className="ti-g">{T.servidores.map((x, i) => <TierCaja key={x.sv} x={x} liga={liga} tier={tierDe(x)} cambiar={cambiar} ocup={ocup} i={i} />)}</div>
       {T.t ? <p className="db-tx">Medido {hace(T.t)}.</p> : null}

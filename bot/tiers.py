@@ -49,6 +49,10 @@ TIERS = (1, 2, 3)
 SEMANAS = 4
 #: 🏠 la casa de la Liga: no es un socio que se evalúa (DRA abre el lunes 19/10/2026 y no tiene eventos todavía)
 CASA = frozenset({'DRA'})
+#: 👥 los miembros de su Discord para ser socio (Tier 1). Dlx, 18/10/2026: «al menos 500 para ser socios (no necesario
+#: pero recomendado), mínimo 300»
+MIN_MIEMBROS = 300
+RECOMENDADO = 500
 
 
 def _j(*p):
@@ -106,7 +110,7 @@ def _sv_de_sec(sec):
     return sv, d
 
 
-def medir(D, hoy, svs, nivel):
+def medir(D, hoy, svs, nivel, miembros=None):
     """`[{sv, nombre, tier, puntos, partes, m, antes, rec, porque}]` de cada servidor de la Liga. `D` trae: `llaves`
     (llaves_t1), `ayudas` ([(sv, día)]: preguntas y correcciones), `anuncios` ([(sv, día, dice_staff)]), `cancelados`
     ([(sv, día)]), `promos` ([(sv, día)]), `ligas` ({id: {sv, batallas}})."""
@@ -153,6 +157,7 @@ def medir(D, hoy, svs, nivel):
         _m0, _p0, pts0 = parte(sv, ini0, ini)
         ult = max((d for d, s, _ns in evs if s == sv), default=None)
         sin = (hoy - ult).days if ult else None
+        m['miembros'] = (miembros or {}).get(sv)
         rec, porque = ('casa', 'la casa de la Liga: no se evalúa como socio') if sv in CASA else recomendar(t, pts, m, sin)
         out.append({'sv': sv, 'nombre': (svs.get(sv) or {}).get('nombre') or sv, 'tier': t, 'puntos': pts,
                     'antes': pts0, 'partes': partes, 'm': m, 'ultimo': str(ult) if ult else '', 'sin_jugar': sin,
@@ -163,14 +168,21 @@ def medir(D, hoy, svs, nivel):
 
 def recomendar(tier, pts, m, sin_jugar):
     """`(recomendación, por qué)`. Recomienda: decide Dlx."""
+    gente = m.get('miembros')
     if tier == 1:
         if sin_jugar is None or sin_jugar > 21:
             return 'revisar', 'hace %s que no juega un evento' % ('más de 4 semanas' if sin_jugar is None else '%d días' % sin_jugar)
+        if gente is not None and gente < MIN_MIEMBROS:
+            return 'revisar', 'tiene %d miembros: para ser socio se piden %d como mínimo' % (gente, MIN_MIEMBROS)
         if pts < 35:
             return 'revisar', 'puntaje bajo (%d): poca actividad o mucha ayuda para leer sus llaves' % pts
+        if gente is not None and gente < RECOMENDADO:
+            return 'bien', 'cumple como Tier 1 (con %d miembros: se recomiendan %d)' % (gente, RECOMENDADO)
         return 'bien', 'cumple como Tier 1'
     if tier == 2:
         if pts >= 60 and m['eventos'] >= 4 and (m['ayudas'] / m['eventos'] if m['eventos'] else 9) <= 1:
+            if gente is not None and gente < MIN_MIEMBROS:
+                return 'bien', 'trabaja como Tier 1, pero tiene %d miembros: el mínimo es %d' % (gente, MIN_MIEMBROS)
             return 'subir', 'listo para Tier 1: %d eventos en 4 semanas y el bot los lee casi solo' % m['eventos']
         return 'bien', 'se mantiene en Tier 2'
     if m['anuncios'] >= 2:
@@ -245,7 +257,15 @@ def correr(aplicar=False, ahora=None):
         if aj is not None:
             elegidos = {k: v for k, v in ((aj.get('tiers') or {}).items()) if v in TIERS}
     nivel = niveles(svs, elegidos)
-    filas = medir(datos(), hoy, svs, nivel)
+    # 👥 los miembros de cada Discord, de su invitación (lo mismo que muestra Socios: `subir_web._miembros()`)
+    gente = {}
+    if aplicar:
+        try:
+            import subir_web
+            gente = {sv: x['miembros'] for sv, x in (subir_web._miembros(svs) or {}).items() if x.get('miembros')}
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ los tiers: no leí los miembros (%s)' % str(e)[:60])
+    filas = medir(datos(), hoy, svs, nivel, gente)
     if aplicar:
         nuevo = {'_leeme': 'El nivel de cada servidor de la Liga (Tier 1: suma al ranking; 2: sólo el calendario; 3: el '
                            'directorio). Lo elige Dlx en el Dashboard; sin elegir, Tier 1. Lo escribe bot/tiers.py y lo '
@@ -298,6 +318,15 @@ def _self_check():
        and recomendar(2, 70, {'eventos': 6, 'ayudas': 12, 'anuncios': 6}, 3)[0] == 'bien',
        'un Tier 2 sube con puntaje, eventos y llaves que el bot lee casi solo; con mucha ayuda, no')
     ok(_sv_de_sec('POESÍA CRUDA · URBF · 01/10 · #380') == ('URBF', dt.date(2026, 10, 1)), 'la sigla y el día de una pregunta')
+    # 👥 los miembros (Dlx: «al menos 500… mínimo 300»)
+    g = {x['sv']: x for x in medir(D, hoy, svs, {'AAA': 1}, {'AAA': 250})}
+    g2 = {x['sv']: x for x in medir(D, hoy, svs, {'AAA': 1}, {'AAA': 420})}
+    sin = {x['sv']: x for x in medir(D, hoy, svs, {'AAA': 1})}
+    ok(g['AAA']['rec'] == 'revisar' and '300' in g['AAA']['porque'] and g2['AAA']['rec'] == 'bien' and '500' in g2['AAA']['porque']
+       and sin['AAA']['rec'] == 'bien' and sin['AAA']['m']['miembros'] is None,
+       'un Tier 1 con 250 miembros: revisar (mínimo 300); con 420 cumple y dice que se recomiendan 500; sin el dato, no se inventa')
+    ok(recomendar(2, 70, {'eventos': 6, 'ayudas': 2, 'anuncios': 6, 'miembros': 120}, 3)[0] == 'bien',
+       'un Tier 2 que trabaja como Tier 1 no sube con menos de 300 miembros')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal == 0
 

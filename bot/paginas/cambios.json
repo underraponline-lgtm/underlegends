@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.48",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T04:12:00-04:00",
+   "titulo": "Cómo sumar tu servidor",
+   "items": [
+    "🤝 Socios: para sumar tu servidor a la Liga, tu Discord necesita 300 miembros como mínimo (se recomiendan 500)."
+   ]
+  },
+  {
    "version": "3.47",
    "dia": "2026-10-18",
    "cuando": "2026-10-18T03:58:00-04:00",
