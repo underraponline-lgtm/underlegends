@@ -493,10 +493,11 @@ def main():
     # esto cae en lo que se deducia antes. Un pipeline que se queda sin
     # pools porque una hoja nueva no contesta es peor que uno que deduce.
     from padron import seguro as _padron
+    from padron import filas as _filas_pad
     PAD = _padron()
     if PAD:
         print('   padrón: %d personas, %d con país'
-              % (len(PAD), sum(1 for d in PAD.values() if d.get('cc'))))
+              % (len(_filas_pad(PAD)), sum(1 for d in _filas_pad(PAD) if d.get('cc'))))
 
     pool = []
     for r in filas:

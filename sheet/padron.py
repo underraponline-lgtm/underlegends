@@ -58,7 +58,22 @@ VERIFICADO = '✅'
 
 
 def cargar(refrescar=False):
-    """{clave: {...}} de las 875 filas del padron. Se cachea."""
+    """{clave: {...}} de las filas del padron. Se cachea.
+
+    🔴 CADA FILA SE ENCUENTRA POR SUS DOS NOMBRES, `Nombre` Y `Rapero`.
+    Hasta el 18/10/2026 sólo por `Nombre`, y las dos columnas no siempre
+    dicen lo mismo: la de Valen dice `Rapero` «Catarsis 🇦🇷» y `Nombre`
+    «La Loquita [Uma Cryu]». Las vitrinas y las llaves la llaman Catarsis,
+    así que los dos pools la buscaban por «catarsis», no la encontraban y
+    la dejaban **sin país y sin cuenta** —sin bandera en el Ranking y con
+    `País` vacío en `Resultados`, o sea fuera del Mundial—. Nada fallaba.
+    Medido ese día: 3 filas así (Catarsis, ReyexXMC = CFM, Nyl = Nashei).
+
+    ⚠️ LA CLAVE DE `Rapero` VA CON `setdefault`, DESPUÉS: si el `Rapero` de
+    una fila es el `Nombre` de otra persona, gana el `Nombre`. Y es el MISMO
+    dict, no una copia: quien recorre `.values()` lo ve dos veces —lo que
+    cuenta personas tiene que contar filas (`filas()`)—.
+    """
     if _CACHE[0] is not None and not refrescar:
         return _CACHE[0]
     from escribir import Hoja
@@ -68,12 +83,12 @@ def cargar(refrescar=False):
     def g(f, n):
         return str(f[ix[n]]).strip() if n in ix and ix[n] < len(f) else ''
 
-    out = {}
+    out, por_rapero = {}, []
     for f in h.filas():
         nom = g(f, 'Nombre') or g(f, 'Rapero')
         if not nom:
             continue
-        out[clave(nom)] = {
+        d = out[clave(nom)] = {
             'nombre': nom,
             'cc': g(f, 'País'),
             'crew': g(f, 'Crew'),
@@ -81,8 +96,19 @@ def cargar(refrescar=False):
             'verificado': g(f, 'Verificado') == VERIFICADO,
             'sv': g(f, 'SV'),
         }
+        if g(f, 'Rapero'):
+            por_rapero.append((clave(g(f, 'Rapero')), d))
+    for k, d in por_rapero:
+        if k:
+            out.setdefault(k, d)
     _CACHE[0] = out
     return out
+
+
+def filas(p):
+    """Las filas del padrón, una vez cada una: `cargar()` guarda la misma fila
+    bajo sus dos nombres, así que `.values()` cuenta de más."""
+    return list({id(d): d for d in p.values()}.values())
 
 
 def seguro():
@@ -267,15 +293,16 @@ def main():
         return 0
 
     p = cargar()
-    con = lambda k: sum(1 for d in p.values() if d.get(k))    # noqa: E731
+    fs = filas(p)
+    con = lambda k: sum(1 for d in fs if d.get(k))    # noqa: E731
     print('\n══ EL PADRÓN ══\n')
-    print('   %-26s %4d' % ('personas', len(p)))
+    print('   %-26s %4d' % ('personas', len(fs)))
     for k, etq in (('cc', 'con país (ISO)'), ('crew', 'con crew'),
                    ('discord_id', 'con Discord ID'), ('sv', 'con servidor'),
                    ('verificado', 'verificados ✅')):
         n = con(k)
-        print('   %-26s %4d   %5.1f %%' % (etq, n, 100.0 * n / max(1, len(p))))
-    listos = [k for k, d in p.items() if d['discord_id'] and d['verificado']]
+        print('   %-26s %4d   %5.1f %%' % (etq, n, 100.0 * n / max(1, len(fs))))
+    listos = [d for d in fs if d['discord_id'] and d['verificado']]
     print('\n   🎴 EL CORTE DE IDENTIDAD PROPUESTO PARA LA T1')
     print('   %-26s %4d   ← discord_id + verificado' % ('lo cumplen',
                                                         len(listos)))

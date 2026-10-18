@@ -474,11 +474,12 @@ def main():
     # contesta es peor que deducir.
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     from padron import seguro as _padron           # noqa: E402
+    from padron import filas as _filas_pad         # noqa: E402
     PAD = _padron()
     if PAD:
         print('   padrón: %d personas, %d con país, %d con crew'
-              % (len(PAD), sum(1 for d in PAD.values() if d.get('cc')),
-                 sum(1 for d in PAD.values() if d.get('crew'))))
+              % (len(_filas_pad(PAD)), sum(1 for d in _filas_pad(PAD) if d.get('cc')),
+                 sum(1 for d in _filas_pad(PAD) if d.get('crew'))))
 
     pool = []
     # ⚠️ LOS QUE NO LLEGAN AL CORTE TAMBIEN SE GUARDAN, Y ANTES SE PERDIAN. Este

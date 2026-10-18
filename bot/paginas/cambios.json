@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.35",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T00:55:00-04:00",
+   "titulo": "Banderas que faltaban",
+   "items": [
+    "🏳️ Quien tiene un nombre distinto en la Lista de Raperos ya no sale sin bandera en el Ranking."
+   ]
+  },
+  {
    "version": "3.34",
    "dia": "2026-10-18",
    "cuando": "2026-10-18T00:35:00-04:00",
