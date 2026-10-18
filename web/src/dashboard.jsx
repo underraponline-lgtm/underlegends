@@ -1056,20 +1056,31 @@ function MesAwardsDueno({ aj, hacer, ocup }) {
   }
   if (ab.votando) return <p className="pronto-p">Se está votando {ab.nombre}: los nominados ya no se cambian. Cierra el {corto(ab.cierra)}.</p>;
   const ya = ((aj.mes_sacar || {}).mes === ab.mes ? (aj.mes_sacar.quitar || []) : []);
+  // 🔁 EL DESCANSO DE QUIEN REPITE LO DECIDE LA DIRECTIVA (Dlx, 18/10/2026): no hay regla automática. Acá se ve quién ya
+  // ganó esa misma categoría en un mes anterior, para sacarlo si les parece
+  const gano = {};
+  for (const h of S.hist || []) {
+    for (const [c, x] of Object.entries(h.cats || {})) {
+      const f = (x.nom || []).find((y) => y.op === x.gana);
+      for (const q of (f && (f.quien || [f.op])) || []) (gano[c + ':' + q] = gano[c + ':' + q] || []).push(h.nombre || h.mes);
+    }
+  }
+  const yaGano = (c, x) => [...new Set((x.quien || [x.op]).flatMap((q) => gano[c + ':' + q] || []))];
   const alternar = (k) => {
     const q = ya.includes(k) ? ya.filter((x) => x !== k) : ya.concat([k]);
     hacer('mes_sacar', q.length ? { mes: ab.mes, quitar: q } : null, ya.includes(k) ? 'Vuelve a estar nominado.' : 'Sacado: en la próxima vuelta del ciclo entra el que sigue.');
   };
   return (
     <div className="db-mes">
-      <p className="pronto-p">Los nominados de <b>{ab.nombre}</b>. La votación abre el {corto(ab.abre)}: hasta entonces podés sacar a alguno.</p>
+      <p className="pronto-p">Los nominados de <b>{ab.nombre}</b>. La votación abre el {corto(ab.abre)}: hasta entonces podés sacar a alguno.
+        El descanso de quien repite lo decide la directiva: «ya ganó» marca a quien se llevó esa categoría antes.</p>
       {(S.cats || []).map(([c, n]) => {
         const nom = ((ab.cats || {})[c] || {}).nom || [];
         const fuera = ya.filter((k) => k.startsWith(c + ':')).map((k) => k.slice(c.length + 1));
         return nom.length || fuera.length ? (
           <div key={c} className="db-mes-c"><b>{n}</b>
             <ul>{nom.map((x) => (
-              <li key={x.op}><span>{x.n}</span><button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => alternar(c + ':' + x.op)}>Sacar</button></li>
+              <li key={x.op}><span>{x.n}{yaGano(c, x).length ? <em className="db-mes-gano"> · ya ganó en {yaGano(c, x).join(', ')}</em> : null}</span><button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => alternar(c + ':' + x.op)}>Sacar</button></li>
             ))}{fuera.map((op) => (
               <li key={'f' + op} className="fuera"><span>{op} · sacado</span><button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => alternar(c + ':' + op)}>Volver a poner</button></li>
             ))}</ul>

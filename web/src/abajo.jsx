@@ -5,7 +5,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { limpio, nuevaQue, num } from './liga.js';
 import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, promoAbierta, subirSiEsta } from './piezas.jsx';
-import { Buscar, CaraDc, CaraH, MENU, QUE_ES } from './arriba.jsx';
+import { Buscar, CaraDc, CaraH, MENU, Orbe, QUE_ES } from './arriba.jsx';
 import { abrirVideo } from './video.jsx';
 
 
@@ -567,6 +567,7 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
         : g.tipo === 'sv' ? '#/sv/' + encodeURIComponent(g.nom) : g.tipo === 'liga' ? '#/ranking' : '#/eventos';
   const circulo = g.tipo === 'gente' ? <CaraH liga={liga} k={g.k} nombre={g.nom} cc={g.cc} />
     : g.tipo === 'liga' ? <span className="h-c"><img alt="" src="/ul.png" /></span>
+    : g.tipo === 'promos' ? <span className="h-c"><Orbe /></span>
     : g.tipo === 'pais' ? <span className="h-c bandera"><img alt="" src={'/banderas/g/' + g.cc + '.webp'} /></span>
       : g.tipo === 'crew' ? (g.crew.logo ? <span className="h-c"><img alt="" src={'/' + g.crew.logo} /></span> : <span className="h-c mono">{g.nom.slice(0, 2).toUpperCase()}</span>)
         : <span className="h-c"><img alt="" src={g.logo} /></span>;

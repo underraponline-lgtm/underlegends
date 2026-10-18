@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.47",
+   "dia": "2026-10-18",
+   "cuando": "2026-10-18T03:58:00-04:00",
+   "titulo": "Historias en el iPhone",
+   "items": [
+    "📏 Las historias con títulos largos ya no se corren ni se cortan en el iPhone, y el círculo de Promos tiene su orbe.",
+    "🎲 MES AWARDS: nuevas nominaciones de Villano, Showman y Momento del mes."
+   ]
+  },
+  {
    "version": "3.46",
    "dia": "2026-10-18",
    "cuando": "2026-10-18T03:15:00-04:00",

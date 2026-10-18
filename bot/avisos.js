@@ -2648,7 +2648,9 @@ export const MES_CAT = { rapero: 'el Rapero del mes', revelacion: 'la Revelació
   hincha: 'el Hincha del mes', clasico: 'el Clásico del mes', sobreviviente: 'el Sobreviviente del mes',
   constante: 'el Constante del mes',
   // 🎧 el staff por rol (18/10/2026, Dlx: «agrega staff por separado»), en su bloque del Salón
-  jurado: 'el Jurado del mes', host: 'el Host del mes', dj: 'el DJ del mes' };
+  jurado: 'el Jurado del mes', host: 'el Host del mes', dj: 'el DJ del mes',
+  // 🎲 las de carácter, al azar de momento (18/10/2026, Dlx: «que sea random de momento»)
+  villano: 'el Villano del mes', showman: 'el Showman del mes', momento: 'el Momento del mes' };
 //: cuánto se guarda un aplauso (el muro trae lo de los últimos 21 días)
 export const APLAUSOS_DIAS = 30;
 //: cuándo vuelve a sonar: la primera vez, y cuando llega a cada uno de éstos

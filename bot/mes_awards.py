@@ -539,7 +539,7 @@ def _self_check():
            and len(tt) == 3, 'la Tienda: cada premio una vez, a quien tiene su Discord', str(tt))
         w = para_web(r, t3)
         ok(not w['abierto'] and w['hist'][0]['mes'] == '2026-10' and len(muro(r)) == 4, 'cerrado: va al historial y al muro')
-        ok(len(w['cats']) == 4 + len(OTRAS) == 23 and w['cats'][4][3] == 1 and w['cats'][0][3] == 0 and w['premio']['otra'] == 1000
+        ok(len(w['cats']) == 4 + len(OTRAS) == 26 and w['cats'][4][3] == 1 and w['cats'][0][3] == 0 and w['premio']['otra'] == 1000
            and [c[0] for c in w['cats'] if c[3] == 2] == ['jurado', 'host', 'dj'],
            'la página recibe las veintitrés: cuáles van detrás del botón y cuáles en el bloque del staff')
         # 🏆 una de las doce: el organizador gana, cobra 1.000 y sale en UNA publicación con las demás

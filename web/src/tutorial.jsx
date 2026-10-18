@@ -179,7 +179,18 @@ export function Tutorial({ liga, dc, pagina, sv, repite }) {
   // B · solo, una vez: la primera visita, entrando por el Inicio, después de que se vea la página
   useEffect(() => {
     if (!T || !T.nuevo || T.tour || !PRIMERA_VISITA || LLEGADA !== '') return undefined;
-    const t = setTimeout(() => { if (enInicio.current && !tuto().tour) { setAbierto(true); contar('tour'); } }, 1200);
+    // ⏳ y no ENCIMA de una historia o una tarjeta abierta (18/10/2026, medido en un iPhone simulado: quien tocaba una
+    // historia apenas entraba la veía tapada por la bienvenida): espera a que la cierre
+    const hayVentana = () => {
+      try { return !!document.getElementById('inicio-nuevo').shadowRoot.querySelector('.hv-ov, .vc, [aria-modal="true"]'); } catch (e) { return false; }
+    };
+    let t = 0;
+    const probar = () => {
+      if (!enInicio.current || tuto().tour) return;
+      if (hayVentana()) { t = setTimeout(probar, 1500); return; }
+      setAbierto(true); contar('tour');
+    };
+    t = setTimeout(probar, 1200);
     return () => clearTimeout(t);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -569,7 +569,10 @@ export function gruposHistorias(liga) {
       const vis = it.vid ? <img className="st-promo" alt="" src={'https://i.ytimg.com/vi/' + it.vid + '/hqdefault.jpg'} />
         : it.img ? <img className="st-promo" alt="" src={it.img} /> : <Cara liga={liga} k={ksDe(it)[0] || ''} nombre={q} cls="st-cara" />;
       const deLiga = it.o === 'liga';
-      return Slide(deLiga ? 'LA LIGA PROMOCIONA' : 'PROMO · ' + siglaDe(it.sv), <>{vis}<h3 className="st-h">{it.tit ? limpio(it.tit) : q + ' en ' + (PL[it.plat] || 'su link')}</h3>
+      // 📏 los títulos de YouTube vienen largos y sin espacios («MAKMA VS TRUST/SEMIFINAL/LIGA…»): se cortan en las barras
+      // (un espacio invisible después de cada una) y, pasados los 48 caracteres, van más chicos
+      const tit = it.tit ? limpio(it.tit).replace(/([/|·_])/g, '$1\u200b') : q + ' en ' + (PL[it.plat] || 'su link');
+      return Slide(deLiga ? 'LA LIGA PROMOCIONA' : 'PROMO · ' + siglaDe(it.sv), <>{vis}<h3 className={'st-h' + (tit.length > 48 ? ' largo' : '')}>{tit}</h3>
         <small className="st-s">{deLiga ? <>{qs.join(' y ')}{it.de ? ' · ' + limpio(it.de) : ''}</> : <>Lo comparte {q} · {PL[it.plat] || ''}</>}</small></>,
       liga.cuando(it.t), it.vid ? 'Mirar el video' : (it.plat === 'sp' || it.plat === 'sc' ? 'Escuchar en ' : 'Ver en ') + (PL[it.plat] || 'su link'),
       it.vid ? { video: { vid: it.vid, tit: limpio(it.tit || ''), link: it.url }, promo: it.id } : { link: it.url, promo: it.id },

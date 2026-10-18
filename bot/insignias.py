@@ -92,6 +92,10 @@ CATALOGO = (
     ('mes_jurado', '⚖️', 'Jurado del mes', 'Ganó el Jurado del mes de los MES AWARDS'),
     ('mes_host', '🎤', 'Host del mes', 'Ganó el Host del mes de los MES AWARDS'),
     ('mes_dj', '💿', 'DJ del mes', 'Ganó el DJ del mes de los MES AWARDS'),
+    # 🎲 las de carácter (18/10/2026), al azar de momento
+    ('mes_villano', '😈', 'Villano del mes', 'Ganó el Villano del mes de los MES AWARDS'),
+    ('mes_showman', '🎭', 'Showman del mes', 'Ganó el Showman del mes de los MES AWARDS'),
+    ('mes_momento', '✨', 'Momento del mes', 'Su batalla fue el Momento del mes de los MES AWARDS'),
 )
 IDS = [c[0] for c in CATALOGO]
 

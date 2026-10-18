@@ -57,6 +57,7 @@ import datetime as dt
 import io
 import json
 import os
+import random
 import re
 import sys
 
@@ -84,6 +85,10 @@ OTRAS = (
     ('clasico', 'Clásico del mes', 'las veces que se cruzaron en duelos (el premio, para los dos)', 'persona'),
     ('sobreviviente', 'Sobreviviente del mes', 'las veces que sobrevivió al Most Wanted', 'persona'),
     ('constante', 'Constante del mes', 'los podios del mes', 'persona'),
+    # 🎲 las de carácter de los FMS AWARDS 2026, al azar «de momento» (Dlx, 18/10/2026: «que sea random de momento»)
+    ('villano', 'Villano del mes', 'de momento, al azar entre los que compitieron este mes', 'persona'),
+    ('showman', 'Showman del mes', 'de momento, al azar entre los que compitieron este mes', 'persona'),
+    ('momento', 'Momento del mes', 'de momento, una batalla del mes al azar (el premio, para los dos)', 'persona'),
     ('crew', 'Crew del mes', 'los puntos de Temporada de su gente', 'grupo'),
     ('pais', 'País del mes', 'los puntos de Temporada de su gente', 'grupo'),
     ('liga', 'Liga del mes', 'las batallas que jugó y la gente que movió', 'grupo'),
@@ -100,6 +105,8 @@ _DE_ROL = {'jurado': 'de jurado', 'host': 'de host', 'dj': 'de DJ'}
 PREMIO_OTRA = 1000
 #: un evento cuenta para el organizador desde esta gente (la del organizador de la semana)
 MIN_GENTE = 8
+#: cuántos nominados se ven por categoría (`mes_awards.NOMINADOS`): el Showman no repite a los que ya salen de Villano
+VISIBLES = 5
 
 
 def _de_iso(s):
@@ -403,6 +410,31 @@ def numeros(ini, fin, D, raperos=()):
             pu.append({'op': iid[:80], 'n': (v[2] or 'Una publicación')[:90], 'q': qs[0] if qs else '', 'quien': qs[:4],
                        '_a': v[0], 'd': _plural(v[0], 'felicitación', 'felicitaciones')})
     out['publicacion'] = sorted(pu, key=lambda x: (-x['_a'], x['op']))
+
+    # 🎲 VILLANO, SHOWMAN y MOMENTO, AL AZAR «de momento» (Dlx, 18/10/2026: «que sea random de momento»). Son las de
+    # carácter de los FMS AWARDS 2026 y no hay número que las mida. ⚠️ EL AZAR VA SEMBRADO CON EL MES: el ciclo arma los
+    # nominados cada media hora, y si cambiaran en cada vuelta nadie podría votarlos. El mismo mes da siempre el mismo
+    # orden, y si la directiva saca a uno entra el que sigue en ese orden
+    mes = ini.strftime('%Y-%m') if hasattr(ini, 'strftime') else str(ini)[:7]
+    pool = sorted({f.get('op') for f in raperos or [] if f.get('op') and k(f.get('op')) not in fuera}, key=lambda x: x.lower())
+    vil = list(pool)
+    random.Random('villano:' + mes).shuffle(vil)
+    sho = [q for q in pool if q not in vil[:VISIBLES]]
+    random.Random('showman:' + mes).shuffle(sho)
+    azar = 'al azar entre los que compitieron este mes'
+    out['villano'] = [{'op': q[:80], 'n': q, 'q': q, 'quien': [q], 'd': azar} for q in vil]
+    out['showman'] = [{'op': q[:80], 'n': q, 'q': q, 'quien': [q], 'd': azar} for q in sho]
+    mom = {}
+    for t, n, a, b, g, ev in D.get('duelos') or []:
+        ka, kb = k(a), k(b)
+        if en(t) and ka and kb and ka != kb and ka not in fuera and kb not in fuera:
+            na, nb = nom(ka), nom(kb)
+            op = ('%s:%s vs %s' % (n, na, nb))[:80]
+            mom[op] = {'op': op, 'n': '%s vs %s' % (na, nb), 'q': na, 'quien': [na, nb],
+                       'd': '%s%s · al azar' % (ev or '#%s' % n, (' · ganó ' + nom(k(g))) if g else '')}
+    mom = [mom[op] for op in sorted(mom)]
+    random.Random('momento:' + mes).shuffle(mom)
+    out['momento'] = mom
 
     # 👥 CREW y 🌎 PAÍS: los puntos del mes de su gente
     crew_de, pais_de = D.get('crew') or {}, D.get('pais') or {}
@@ -890,8 +922,20 @@ def _self_check():
                                                                       ['3', '2026-09-03T00:00:00Z', None, 'C', 'D', 'C']]}},
     }
     nums = numeros(ini, fin, D, [{'op': 'Ana', 'pts': 500}, {'op': 'Bea', 'pts': 300}, {'op': 'Cid', 'pts': 900}])
-    ok(set(nums) == {c for c, _n, _d, _t in OTRAS} and len(OTRAS) == 19,
-       'las diecinueve categorías (las doce, las de «Y más» y las tres del staff)')
+    # 🎲 al azar, pero el mismo mes da siempre lo mismo
+    muchos = [{'op': 'R%02d' % i, 'pts': 10} for i in range(12)] + [{'op': 'Fu', 'pts': 9}]
+    az1, az2 = numeros(ini, fin, D, muchos), numeros(ini, fin, D, list(reversed(muchos)))
+    nov = numeros(fin, fin + dt.timedelta(days=30), D, muchos)
+    ok(az1['villano'] == az2['villano'] and az1['showman'] == az2['showman'] and az1['momento'] == az2['momento']
+       and len(az1['villano']) == 12 and 'Fu' not in [x['n'] for x in az1['villano']]
+       and [x['n'] for x in nov['villano']] != [x['n'] for x in az1['villano']],
+       'Villano, Showman y Momento: al azar, el mismo mes siempre igual (aunque cambie el orden), otro mes otro orden, sin los fuera de concurso')
+    ok(not {x['n'] for x in az1['villano'][:5]} & {x['n'] for x in az1['showman'][:5]} and len(az1['showman']) == 7,
+       'el Showman no repite a los cinco que ya salen de Villano')
+    ok(len(az1['momento']) == 5 and all(len(x['quien']) == 2 for x in az1['momento'])
+       and all('Fu' not in x['quien'] for x in az1['momento']), 'Momento: las batallas del mes (sin fuera de concurso), el premio para los dos')
+    ok(set(nums) == {c for c, _n, _d, _t in OTRAS} and len(OTRAS) == 22,
+       'las veintidós categorías (las doce, las de «Y más», las tres al azar y las tres del staff)')
     ok([(x['op'], x['d']) for x in nums['jurado']] == [('Jota', '1 evento de jurado'), ('Velatz', '1 evento de jurado')]
        and [(x['op'], x['d']) for x in nums['host']] == [('Jota', '1 evento de host')]
        and [(x['op'], x['d']) for x in nums['dj']] == [('Jota', '1 evento de DJ')],

@@ -285,6 +285,15 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
 /* en el celular las flechas quedan ENCIMA de la historia: lo que cuenta va entre las dos (las caras de «La Liga» se
    tapaban en las puntas, 02/10/2026) */
 @media (max-width: 599px){.hv-cuerpo .st{max-width:calc(100vw - 128px)}}
+/* 📏 NADA SE PASA DEL ANCHO DE LA HISTORIA (Dlx, 18/10/2026, con una captura del iPhone: «asegúrate que todo esté
+   posicionado bien»). Un título largo sin espacios —«TRUST/SEMIFINAL/LIGA»— hacía la columna más ancha que la historia:
+   la imagen y el texto se corrían a la derecha, se cortaban contra el borde y quedaban debajo de la flecha. La columna no
+   puede pasar del ancho de `.st` (minmax(0,1fr)), y una palabra que no entra se corta */
+.hv-cuerpo,.hv-sig{min-width:0}
+.hv-cuerpo .st,.hv-sig .st{width:100%;min-width:0;grid-template-columns:minmax(0,1fr)}
+.hv-cuerpo .st>*,.hv-sig .st>*{max-width:100%;min-width:0}
+.st-h{overflow-wrap:anywhere}
+.st-h.largo{font-size:19px;line-height:1.08}
 /* Misiones y Tus eventos ya no van con pestañas: sus tarjetas perdían el `.pz .tu{margin:0}` y quedaban corridas */
 .pz-2 .tu,.pz-2 .mis,.pz-2 .te{margin:0}
 /* la cabecera del celular con tu cuenta: tres botones de 40 y el nombre en dos renglones, no en cuatro */
