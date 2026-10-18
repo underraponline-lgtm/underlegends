@@ -1,39 +1,39 @@
 {
  "v": 1,
- "cuando": "2026-10-18T19:58:57Z",
+ "cuando": "2026-10-18T20:28:59Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 335.9,
+ "dur_s": 336.8,
  "pasos": [
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.7
+   "s": 0.8
   },
   {
    "n": "0c",
    "que": "lo corregido desde los reportes",
    "ok": true,
-   "s": 3.9
+   "s": 3.0
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 52.4
+   "s": 46.2
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 37.9
+   "s": 39.9
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.5
+   "s": 7.3
   },
   {
    "n": "1a2",
@@ -45,25 +45,25 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 32.2
+   "s": 32.8
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 1.8
+   "s": 2.0
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 7.2
+   "s": 6.2
   },
   {
    "n": "2b0",
    "que": "el Writing Challenge de FFA",
    "ok": true,
-   "s": 0.6
+   "s": 0.5
   },
   {
    "n": "2b",
@@ -75,7 +75,7 @@
    "n": "2b2",
    "que": "las insignias",
    "ok": true,
-   "s": 1.1
+   "s": 1.0
   },
   {
    "n": "2b3",
@@ -105,19 +105,19 @@
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.9
+   "s": 0.7
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.5
+   "s": 0.7
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.2
+   "s": 3.5
   },
   {
    "n": "2b5b",
@@ -129,7 +129,7 @@
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 34.4
+   "s": 35.2
   },
   {
    "n": "2b7",
@@ -141,49 +141,49 @@
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 3.3
+   "s": 2.9
   },
   {
    "n": "2b8c",
    "que": "las promociones",
    "ok": true,
-   "s": 2.8
+   "s": 2.3
   },
   {
    "n": "2b8d",
    "que": "los MES AWARDS",
    "ok": true,
-   "s": 36.2
+   "s": 39.0
   },
   {
    "n": "2b8e",
    "que": "las semanas",
    "ok": true,
-   "s": 0.0
+   "s": 0.1
   },
   {
    "n": "2b8f",
    "que": "los tiers",
    "ok": true,
-   "s": 4.4
+   "s": 3.9
   },
   {
    "n": "2b8b",
    "que": "la agenda",
    "ok": true,
-   "s": 0.3
+   "s": 0.4
   },
   {
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 24.0
+   "s": 22.9
   },
   {
    "n": "2b9b",
    "que": "el ascenso de cada servidor",
    "ok": true,
-   "s": 2.1
+   "s": 2.0
   },
   {
    "n": "2b10",
@@ -195,19 +195,19 @@
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 49.1
+   "s": 46.6
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 5.6
+   "s": 0.4
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 11.9
+   "s": 11.0
   },
   {
    "n": "2e",
@@ -219,13 +219,19 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.1
+   "s": 7.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.6
+   "s": 6.1
+  },
+  {
+   "n": "5b",
+   "que": "las Bloqueadas",
+   "ok": true,
+   "s": 4.9
   }
  ],
  "fallas": [],
@@ -238,7 +244,7 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-18T19:54:23Z",
+  "cuando": "2026-10-18T20:24:18Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 469,
   "un_evento": 225,
@@ -272,20 +278,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 239,
-   "read": 33666
+   "write": 254,
+   "read": 35226
   },
   "objeto": {
-   "leidas": 1788210,
-   "escritas": 16032,
-   "pedidos": 7366
+   "leidas": 1844814,
+   "escritas": 16465,
+   "pedidos": 7619
   },
   "worker": {
-   "pedidos": 8358,
+   "pedidos": 8489,
    "errores": 0,
-   "sub": 8821,
+   "sub": 8957,
    "p50_ms": 1.24,
-   "p99_ms": 9.0
+   "p99_ms": 9.03
   },
   "r2": {
    "objetos": 4353,
