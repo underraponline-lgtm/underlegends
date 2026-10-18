@@ -5120,14 +5120,14 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1792352988754,
-   "ed": 1792358380982,
-   "texto": "`[ SEMIFINALES ]`\n⌞VELATZ 🇨🇱⌝ 🆚 ⌞MOLUSCO 🇦🇷⌝",
+   "ed": 1792359350554,
+   "texto": "`[ FINAL ]`\n⌞MOLUSCO 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝",
    "batallas": [
     [
-     "SEMIFINALES",
+     "FINAL",
      [
-      "VELATZ 🇨🇱",
-      "MOLUSCO 🇦🇷"
+      "MOLUSCO 🇦🇷",
+      "GUESS 🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",
@@ -5141,8 +5141,8 @@
    "g": "1468472442925092958",
    "canal": "1557583344638623754",
    "pub": 1792357298616,
-   "ed": 1792358345921,
-   "texto": "`[ FILTROS ]`\n⌞PANCHOK🇨🇱⌝ 🆚 ⌞LVEL🇻🇪⌝ 🆚 ⌞JOBA🇨🇱⌝ 🆚 ⌞AX🇻🇪⌝ 🆚 ⌞1200🇰🇷⌝\n⌞GEOKA🇦🇷⌝ 🆚 ⌞IMAGY🇵🇪⌝ 🆚 ⌞TAM🇻🇪⌝ 🆚 ⌞NEMI🇦🇷⌝ 🆚 ⌞DARKOMC🇲🇽⌝\n⌞GUESS🇦🇷⌝ 🆚 ⌞SHISUI🇯🇵⌝ 🆚 ⌞SEBITA🇱🇷⌝ 🆚 ⌞MILLONARI-O(MC MILLO)🇵🇾⌝ 🆚 ⌞CAZAFLA ANTI CAZANOVA🇭🇹⌝\n⌞HOTARU ADEYEMI 🇦🇷🏳️‍⚧️⌝ 🆚 ⌞DREXX🇬🇵⌝ 🆚 ⌞CHOP🇭🇳⌝\n`[ FILTROS ]`\n⌞PANCHOK🇨🇱⌝ 🆚 ⌞LVEL🇻🇪⌝ 🆚 ⌞JOBA🇨🇱⌝ 🆚 ⌞AX🇻🇪⌝ 🆚 ⌞1200🇰🇷⌝",
+   "ed": 1792360142180,
+   "texto": "`[ FILTROS ]`\n⌞PANCHOK🇨🇱⌝ 🆚 ⌞LVEL🇻🇪⌝ 🆚 ⌞JOBA🇨🇱⌝ 🆚 ⌞AX🇻🇪⌝ 🆚 ⌞1200🇰🇷⌝\n⌞SEBITA🇱🇷⌝ 🆚 ⌞IMAGY🇵🇪⌝ 🆚 ⌞TAM🇻🇪⌝ 🆚 ⌞MILLONARI-O(MC MILLO)🇵🇾⌝ 🆚 ⌞ONZAS.S🇻🇪⌝\n⌞JOBA🇨🇱R⌝ 🆚 ⌞MAILÉN🇳🇴⌝ 🆚 ⌞PARK-JI SUNG🇰🇷⌝ 🆚 ⌞VANDU🇨🇦⌝ 🆚 ⌞CAZAFLA ANTI CAZANOVA🇭🇹⌝ 🆚 ⌞WARAP🇦🇷⌝\n`[ FILTROS ]`\n⌞JOBA🇨🇱R⌝ 🆚 ⌞MAILÉN🇳🇴⌝ 🆚 ⌞PARK-JI SUNG🇰🇷⌝ 🆚 ⌞VANDU🇨🇦⌝ 🆚 ⌞CAZAFLA ANTI CAZANOVA🇭🇹⌝ 🆚 ⌞WARAP🇦🇷⌝",
    "batallas": [
     [
      "FILTROS",
@@ -5160,24 +5160,11 @@
     [
      "FILTROS",
      [
-      "GEOKA🇦🇷",
+      "SEBITA🇱🇷",
       "IMAGY🇵🇪",
       "TAM🇻🇪",
-      "NEMI🇦🇷",
-      "DARKOMC🇲🇽"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "FILTROS",
-     [
-      "GUESS🇦🇷",
-      "SHISUI🇯🇵",
-      "SEBITA🇱🇷",
       "MILLONARI-O(MC MILLO)🇵🇾",
-      "CAZAFLA ANTI CAZANOVA🇭🇹"
+      "ONZAS.S🇻🇪"
      ],
      null,
      "última ronda y no dice campeón",
@@ -5186,9 +5173,12 @@
     [
      "FILTROS",
      [
-      "HOTARU ADEYEMI 🇦🇷🏳️‍⚧️",
-      "DREXX🇬🇵",
-      "CHOP🇭🇳"
+      "JOBA🇨🇱R",
+      "MAILÉN🇳🇴",
+      "PARK-JI SUNG🇰🇷",
+      "VANDU🇨🇦",
+      "CAZAFLA ANTI CAZANOVA🇭🇹",
+      "WARAP🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",
@@ -5197,14 +5187,15 @@
     [
      "FILTROS",
      [
-      "PANCHOK🇨🇱",
-      "LVEL🇻🇪",
-      "JOBA🇨🇱",
-      "AX🇻🇪",
-      "1200🇰🇷"
+      "JOBA🇨🇱R",
+      "MAILÉN🇳🇴",
+      "PARK-JI SUNG🇰🇷",
+      "VANDU🇨🇦",
+      "CAZAFLA ANTI CAZANOVA🇭🇹",
+      "WARAP🇦🇷"
      ],
-     "PANCHOK🇨🇱",
-     "veredicto",
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
