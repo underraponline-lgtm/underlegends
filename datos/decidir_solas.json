@@ -1125,6 +1125,25 @@
     "MARTYNEZ"
    ],
    "escribio": {}
+  },
+  {
+   "id": "5f46b78e27",
+   "tipo": "alta",
+   "sec": "🪪 Identidad",
+   "que": "A «Loki Salta» lo buscó otra persona con /card en ACAD (no lo usó él) y no está en la Lista de Raperos. Si ya está con otro nombre, elegilo o escribilo: le pongo su Discord.\nSu cuenta: https://discord.com/users/549637741550239775",
+   "r": "Ya está resuelto",
+   "regla": "R3 · un alta que no hace falta: el bot, o una cuenta que buscó otro y no jugó",
+   "rk": "R3",
+   "por": "el ciclo",
+   "porque": "no usó /card: lo buscó otra persona, y no jugó en la T1 (ni su nombre ni con lo que se anotó está en ningún resultado). Si se anota sola, entra como cualquiera",
+   "t": 1792358921598,
+   "filas": [
+    738
+   ],
+   "variantes": [
+    "Loki Salta = 549637741550239775"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []
