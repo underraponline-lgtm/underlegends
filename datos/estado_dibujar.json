@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-18T00:04:18Z",
+ "cuando": "2026-10-18T01:15:33Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 16.3,
+ "dur_s": 872.2,
  "pasos": [
   {
    "n": "2f",
@@ -15,13 +15,31 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.3
+   "s": 6.1
+  },
+  {
+   "n": "4",
+   "que": "las caras, desde R2",
+   "ok": true,
+   "s": 22.9
+  },
+  {
+   "n": "5",
+   "que": "tanda 1 de 5 · 40 persona(s)",
+   "ok": true,
+   "s": 781.5
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": false,
-   "s": 3.8
+   "s": 0.3
+  },
+  {
+   "n": "6",
+   "que": "refrescar KV",
+   "ok": true,
+   "s": 53.9
   }
  ],
  "fallas": [
@@ -32,26 +50,26 @@
  ],
  "ultimo_evento": {
   "n": "482",
-  "nombre": "Grupo 1",
+  "nombre": "MUNDIALITO",
   "sv": "ACAD",
   "dia": "2026-10-17"
  },
  "cuotas": {
   "kv": {
-   "write": 3,
-   "read": 44
+   "write": 32,
+   "read": 3539
   },
   "objeto": {
-   "leidas": 8789,
-   "escritas": 34,
-   "pedidos": 23
+   "leidas": 183999,
+   "escritas": 3924,
+   "pedidos": 457
   },
   "worker": {
-   "pedidos": 6921,
+   "pedidos": 6864,
    "errores": 0,
-   "sub": 7311,
+   "sub": 7245,
    "p50_ms": 1.26,
-   "p99_ms": 8.63
+   "p99_ms": 8.66
   },
   "r2": {
    "objetos": 4248,
