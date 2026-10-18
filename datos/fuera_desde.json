@@ -380,9 +380,6 @@
    "sv-urbf": "2026-10-12",
    "temporada": "2026-10-12"
   },
-  "filozico": {
-   "temporada": "2026-10-12"
-  },
   "fin": {
    "temporada": "2026-10-12"
   },
@@ -1121,7 +1118,7 @@
   }
  },
  "pasaban": 391,
- "cuando": "2026-10-18T01:00:16Z",
+ "cuando": "2026-10-18T01:30:58Z",
  "borradas": [
   [
    "jotap",

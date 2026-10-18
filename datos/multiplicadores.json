@@ -482,7 +482,7 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 19,
+     "FFA": 18,
      "FRZ": 2,
      "URBF": 12,
      "DDF": 1,
@@ -497,12 +497,12 @@
      "URBF": 20,
      "FVS": 5,
      "FRZ": 9,
-     "ACAD": 18
+     "ACAD": 25
     },
     "gana": "URBF"
    },
    "meta_va": {
-    "ACAD": 18,
+    "ACAD": 25,
     "DDF": 19,
     "DRA": 0,
     "FFA": 109,

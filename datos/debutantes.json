@@ -220,19 +220,6 @@
    "vence": "2026-10-20T01:56:58+00:00",
    "vencido": false
   },
-  "Over": {
-   "avisado": "2026-10-16",
-   "chat": "2026-10-16",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-16T17:34:15+00:00",
-   "did": "",
-   "evento": "SNAKE INSIGNIA 5 8",
-   "n": 478,
-   "sv": "SR",
-   "vence": "2026-10-23T17:34:15+00:00",
-   "vencido": false
-  },
   "PETER": {
    "avisado": "2026-10-16",
    "chat": "2026-10-16",
@@ -364,19 +351,6 @@
    "n": 468,
    "sv": "FFA",
    "vence": "2026-10-20T23:50:48+00:00",
-   "vencido": false
-  },
-  "francis": {
-   "avisado": "2026-10-15",
-   "chat": "2026-10-15",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-13T15:18:36+00:00",
-   "did": "1517014246087589923",
-   "evento": "QCYO RAPEEN",
-   "n": 465,
-   "sv": "FFA",
-   "vence": "2026-10-20T15:18:36+00:00",
    "vencido": false
   },
   "🏳️‍⚧️ VEPG 🏳️‍⚧️": {

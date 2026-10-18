@@ -2045,17 +2045,6 @@
     "racha": "0/0"
    }
   },
-  "Egipto 🇨🇷": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 2062,
-    "racha": "0/0"
-   }
-  },
   "El Hombre Eyau": {
    "URBF": {
     "duelos": "",
@@ -4921,6 +4910,15 @@
     "tg": {
      "fin": 4
     }
+   },
+   "SR": {
+    "duelos": "4/4",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 52,
+    "pod": 1,
+    "pts": 50000,
+    "racha": "1/1"
    }
   },
   "Mr.Kude": {
@@ -5386,21 +5384,6 @@
     "pts": 28000,
     "racha": "0/0",
     "tg": {
-     "nuevo": true
-    }
-   }
-  },
-  "Over": {
-   "SR": {
-    "duelos": "4/4",
-    "ev": 1,
-    "oro": 1,
-    "ovr": 52,
-    "pod": 1,
-    "pts": 50000,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1,
      "nuevo": true
     }
    }
@@ -8072,11 +8055,11 @@
   "francis": {
    "FFA": {
     "duelos": "0/1",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 48,
     "pod": 0,
-    "pts": 10500,
+    "pts": 17812,
     "racha": "0/0",
     "tg": {
      "nuevo": true
