@@ -133,22 +133,22 @@
    ],
    "organizador": [
     {
+     "op": "Lewis",
+     "n": "Lewis",
+     "q": "Lewis",
+     "quien": [
+      "Lewis"
+     ],
+     "d": "8 eventos · 171 raperos"
+    },
+    {
      "op": "Flennzs",
      "n": "Flennzs",
      "q": "Flennzs",
      "quien": [
       "Flennzs"
      ],
-     "d": "4 eventos · 86 raperos"
-    },
-    {
-     "op": "LEWITO",
-     "n": "LEWITO",
-     "q": "LEWITO",
-     "quien": [
-      "LEWITO"
-     ],
-     "d": "4 eventos · 85 raperos"
+     "d": "7 eventos · 155 raperos"
     },
     {
      "op": "Velatz",
@@ -157,54 +157,54 @@
      "quien": [
       "Velatz"
      ],
-     "d": "4 eventos · 74 raperos"
+     "d": "6 eventos · 111 raperos"
     },
     {
-     "op": "Benjixo",
-     "n": "Benjixo",
-     "q": "Benjixo",
+     "op": "Elsoolar",
+     "n": "Elsoolar",
+     "q": "Elsoolar",
      "quien": [
-      "Benjixo"
+      "Elsoolar"
      ],
-     "d": "2 eventos · 51 raperos"
+     "d": "6 eventos · 98 raperos"
     },
     {
-     "op": "Adriagner",
-     "n": "Adriagner",
-     "q": "Adriagner",
+     "op": "LEWITO",
+     "n": "LEWITO",
+     "q": "LEWITO",
      "quien": [
-      "Adriagner"
+      "LEWITO"
      ],
-     "d": "5 eventos · 43 raperos"
+     "d": "5 eventos · 98 raperos"
     }
    ],
    "staff": [
     {
-     "op": "Flennzs",
-     "n": "Flennzs",
-     "q": "Flennzs",
-     "quien": [
-      "Flennzs"
-     ],
-     "d": "6 eventos de jurado, host o DJ"
-    },
-    {
-     "op": "John pork",
-     "n": "John pork",
-     "q": "John pork",
-     "quien": [
-      "John pork"
-     ],
-     "d": "5 eventos de jurado, host o DJ"
-    },
-    {
      "op": "LEWITO",
      "n": "LEWITO",
      "q": "LEWITO",
      "quien": [
       "LEWITO"
      ],
-     "d": "5 eventos de jurado, host o DJ"
+     "d": "11 fechas de staff"
+    },
+    {
+     "op": "Flennzs",
+     "n": "Flennzs",
+     "q": "Flennzs",
+     "quien": [
+      "Flennzs"
+     ],
+     "d": "8 fechas de staff"
+    },
+    {
+     "op": "ARDEAN",
+     "n": "ARDEAN",
+     "q": "ARDEAN",
+     "quien": [
+      "ARDEAN"
+     ],
+     "d": "6 fechas de staff"
     },
     {
      "op": "Velatz",
@@ -213,16 +213,16 @@
      "quien": [
       "Velatz"
      ],
-     "d": "4 eventos de jurado, host o DJ"
+     "d": "6 fechas de staff"
     },
     {
-     "op": "Zaik",
-     "n": "Zaik",
-     "q": "Zaik",
+     "op": "Elsoolar",
+     "n": "Elsoolar",
+     "q": "Elsoolar",
      "quien": [
-      "Zaik"
+      "Elsoolar"
      ],
-     "d": "3 eventos de jurado, host o DJ"
+     "d": "5 fechas de staff"
     }
    ],
    "duelista": [
@@ -434,8 +434,10 @@
      "op": "405",
      "n": "DESGRACIAS EN TOKYO VOL 24",
      "sv": "FFA",
-     "d": "29 raperos · FFA",
-     "quien": []
+     "d": "29 raperos · FFA · organiza Lewis",
+     "quien": [
+      "Lewis"
+     ]
     },
     {
      "op": "462",
@@ -450,8 +452,10 @@
      "op": "434",
      "n": "PRITTY FREE",
      "sv": "FFA",
-     "d": "26 raperos · FFA",
-     "quien": []
+     "d": "26 raperos · FFA · organiza nachonc_",
+     "quien": [
+      "nachonc_"
+     ]
     }
    ],
    "promo": [
@@ -824,6 +828,24 @@
      "quien": [
       "Flennzs"
      ],
+     "d": "11 eventos de jurado"
+    },
+    {
+     "op": "LEWITO",
+     "n": "LEWITO",
+     "q": "LEWITO",
+     "quien": [
+      "LEWITO"
+     ],
+     "d": "6 eventos de jurado"
+    },
+    {
+     "op": "Velatz",
+     "n": "Velatz",
+     "q": "Velatz",
+     "quien": [
+      "Velatz"
+     ],
      "d": "6 eventos de jurado"
     },
     {
@@ -836,23 +858,16 @@
      "d": "5 eventos de jurado"
     },
     {
-     "op": "Velatz",
-     "n": "Velatz",
-     "q": "Velatz",
-     "quien": [
-      "Velatz"
-     ],
-     "d": "4 eventos de jurado"
-    },
-    {
      "op": "Kravitz",
      "n": "Kravitz",
      "q": "Kravitz",
      "quien": [
       "Kravitz"
      ],
-     "d": "2 eventos de jurado"
-    },
+     "d": "5 eventos de jurado"
+    }
+   ],
+   "host": [
     {
      "op": "LEWITO",
      "n": "LEWITO",
@@ -860,10 +875,17 @@
      "quien": [
       "LEWITO"
      ],
-     "d": "2 eventos de jurado"
-    }
-   ],
-   "host": [
+     "d": "16 eventos de host"
+    },
+    {
+     "op": "Elsoolar",
+     "n": "Elsoolar",
+     "q": "Elsoolar",
+     "quien": [
+      "Elsoolar"
+     ],
+     "d": "5 eventos de host"
+    },
     {
      "op": "John pork",
      "n": "John pork",
@@ -874,13 +896,13 @@
      "d": "5 eventos de host"
     },
     {
-     "op": "LEWITO",
-     "n": "LEWITO",
-     "q": "LEWITO",
+     "op": "Kravitz",
+     "n": "Kravitz",
+     "q": "Kravitz",
      "quien": [
-      "LEWITO"
+      "Kravitz"
      ],
-     "d": "4 eventos de host"
+     "d": "5 eventos de host"
     },
     {
      "op": "Velatz",
@@ -889,28 +911,19 @@
      "quien": [
       "Velatz"
      ],
-     "d": "4 eventos de host"
-    },
-    {
-     "op": "Flennzs",
-     "n": "Flennzs",
-     "q": "Flennzs",
-     "quien": [
-      "Flennzs"
-     ],
-     "d": "2 eventos de host"
-    },
-    {
-     "op": "Kravitz",
-     "n": "Kravitz",
-     "q": "Kravitz",
-     "quien": [
-      "Kravitz"
-     ],
-     "d": "2 eventos de host"
+     "d": "5 eventos de host"
     }
    ],
    "dj": [
+    {
+     "op": "LEWITO",
+     "n": "LEWITO",
+     "q": "LEWITO",
+     "quien": [
+      "LEWITO"
+     ],
+     "d": "7 eventos de DJ"
+    },
     {
      "op": "John pork",
      "n": "John pork",
@@ -919,6 +932,15 @@
       "John pork"
      ],
      "d": "5 eventos de DJ"
+    },
+    {
+     "op": "Kravitz",
+     "n": "Kravitz",
+     "q": "Kravitz",
+     "quien": [
+      "Kravitz"
+     ],
+     "d": "4 eventos de DJ"
     },
     {
      "op": "Velatz",
@@ -930,31 +952,13 @@
      "d": "4 eventos de DJ"
     },
     {
-     "op": "Zaik",
-     "n": "Zaik",
-     "q": "Zaik",
+     "op": "Elsoolar",
+     "n": "Elsoolar",
+     "q": "Elsoolar",
      "quien": [
-      "Zaik"
+      "Elsoolar"
      ],
      "d": "3 eventos de DJ"
-    },
-    {
-     "op": "Kravitz",
-     "n": "Kravitz",
-     "q": "Kravitz",
-     "quien": [
-      "Kravitz"
-     ],
-     "d": "2 eventos de DJ"
-    },
-    {
-     "op": "ARDEAN",
-     "n": "ARDEAN",
-     "q": "ARDEAN",
-     "quien": [
-      "ARDEAN"
-     ],
-     "d": "1 evento de DJ"
     }
    ]
   }
@@ -4279,6 +4283,11 @@
       "",
       "𝔥𝔞𝔠",
       "hac_oficial"
+     ],
+     "1512105727047499836": [
+      "benja mvp",
+      "benja",
+      "benja.ki00"
      ]
     },
     "ACAD|2026-09-27": {
