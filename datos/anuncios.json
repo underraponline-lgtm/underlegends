@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-19T00:09:40+00:00",
+ "cuando": "2026-10-19T00:25:13+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -433,13 +433,13 @@
      "KRAVITZ 🇨🇷"
     ],
     "dj": [
-     "DJ Bootrax Humilde 🇸🇪",
+     "Bootrax Humilde",
      "PolloSport"
     ]
    },
    "autor": "Kravitz",
    "staff_cuentas": {
-    "DJ Bootrax Humilde 🇸🇪": "1122273746099638354",
+    "Bootrax Humilde": "1122273746099638354",
     "PolloSport": "716016310202400848"
    },
    "categoria_id": "1468478330826260500"
@@ -4407,10 +4407,10 @@
    "cuando": "2026-03-15T01:46:34",
    "canal_id": "1416914076545581179",
    "guild_id": "1367688812892913774",
-   "organizador": "@DJ Bootrax Humilde 🇸🇪",
+   "organizador": "@Bootrax Humilde",
    "orgs": [
     {
-     "n": "DJ Bootrax Humilde 🇸🇪",
+     "n": "Bootrax Humilde",
      "id": "1122273746099638354"
     }
    ],
@@ -4424,7 +4424,7 @@
    "fecha": "ahora",
    "premios": "",
    "staff": {},
-   "autor": "DJ Bootrax Humilde 🇸🇪",
+   "autor": "Bootrax Humilde",
    "staff_cuentas": {},
    "categoria_id": "1373343272482902127"
   },
@@ -4502,15 +4502,15 @@
    "premios": "",
    "staff": {
     "host": [
-     "DJ Bootrax Humilde 🇸🇪"
+     "Bootrax Humilde"
     ],
     "dj": [
-     "DJ Bootrax Humilde 🇸🇪"
+     "Bootrax Humilde"
     ]
    },
-   "autor": "DJ Bootrax Humilde 🇸🇪",
+   "autor": "Bootrax Humilde",
    "staff_cuentas": {
-    "DJ Bootrax Humilde 🇸🇪": "1122273746099638354"
+    "Bootrax Humilde": "1122273746099638354"
    },
    "categoria_id": "1373343272482902127"
   },

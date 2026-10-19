@@ -446,5 +446,27 @@
   "sin_permiso": false,
   "sv": "DDF"
  },
+ "1561484428012818537": {
+  "autor": "1345962362615894027",
+  "canal": "1557583344638623754",
+  "cuando": "2026-10-18T21:01:38.616000+00:00",
+  "evento": "LA ISLA DE OKINAWA V.1",
+  "fecha": "18/10",
+  "llave": "1561484428012818537",
+  "pregunta": "1561535355524620360",
+  "preguntada": "2026-10-18 8:24 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "WARAP🇦🇷✖️+MAILÉN🇳🇴+PANCHOK🇨🇱✖️",
+     "TAM🇻🇪+SEBITA🇱🇷✖️+ANDRES🇨🇱✖️"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
