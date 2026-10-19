@@ -1,63 +1,126 @@
 /* 🎮 LA PANTALLA DE BIENVENIDA (19/10/2026, bienvenida.jsx). Viene con su pedazo, no con el paquete de todos.
    Oscura siempre, como la pantalla de carga de la que sale: es la portada de la Liga, no una página del tema elegido.
-   ⚠️ Sin degradés, sin blur, radios de 3 px: las reglas del remake. Las capas de atrás son las del corte de la carga,
-   quietas; la sombra del botón es la del sello (dura, verde). */
-.bv{position:fixed;inset:0;z-index:2000;display:grid;place-items:center;overflow:auto;overflow-x:hidden;
-  background:#030304;color:#F6F6F6;padding:28px 16px calc(28px + env(safe-area-inset-bottom,0px));-webkit-overflow-scrolling:touch}
-/* (fijas: absolutas agrandaban el área de scroll y se podía bajar a una pantalla vacía) */
-.bv-capa{position:fixed;left:50%;top:50%;width:170vmax;height:34vmax;pointer-events:none}
-.bv-capa.m{background:#E41373;opacity:.13;transform:translate(-50%,-50%) rotate(-24deg) translateY(-30vmax)}
-.bv-capa.v{background:#29B298;opacity:.09;transform:translate(-50%,-50%) rotate(-24deg) translateY(30vmax)}
-.bv-c{position:relative;z-index:1;width:100%;max-width:620px;display:grid;justify-items:center;text-align:center;gap:14px}
+   ⚠️ Sin degradés, sin blur, radios de 3 px: las reglas del remake.
 
-/* las cartas de los primeros del ranking, en abanico: el primero al medio y adelante */
-.bv-cartas{position:relative;width:100%;height:clamp(150px,30vh,232px);margin-bottom:4px}
-.bv-carta{position:absolute;left:50%;bottom:0;width:clamp(92px,18vh,140px);aspect-ratio:300/438;object-fit:contain;
-  transform-origin:50% 100%;transform:var(--t);animation:bv-carta .6s cubic-bezier(.2,.9,.25,1.1) both}
-.bv-carta.c0{--t:translateX(-122%) rotate(-11deg);animation-delay:.12s}
-.bv-carta.c1{--t:translateX(-50%);animation-delay:.2s}
-.bv-carta.c2{--t:translateX(22%) rotate(11deg);animation-delay:.28s}
-.bv-carta.uno{z-index:2;width:clamp(104px,21vh,158px);animation:bv-carta .6s cubic-bezier(.2,.9,.25,1.1) .2s both,bv-flota 3.6s ease-in-out .9s infinite alternate}
-/* sola o de a dos (pocos con carta): al medio */
-.bv-cartas .bv-carta:only-child{--t:translateX(-50%)}
+   🎨 LA SEGUNDA VERSIÓN, EL MISMO DÍA (Dlx: «creo que esa nueva página puede ser mejor»; el research «Estética del hub
+   de la Liga»): un AFICHE y no una landing. En la compu, dos columnas —a la izquierda el cartel (el sello torcido, el
+   título, los servidores de verdad, la carta que te toca y el botón que dice qué pide Discord), a la derecha los tres
+   primeros en abanico y el último campeón— y abajo una cinta con lo que pasa en la Liga. En el teléfono, una columna.
+   Una sola animación que no termina por pantalla (la cinta): el botón ya no late y la carta del medio ya no flota —
+   el research: dos cosas que no paran «parecen un casino»—. El #1 llega último al abanico. */
+.bv{position:fixed;inset:0;z-index:2000;display:flex;flex-direction:column;overflow:auto;overflow-x:hidden;
+  background:#030304;color:#F6F6F6;-webkit-overflow-scrolling:touch}
+/* la cinta de las esquinas, como en los escenarios de la página (fijas: absolutas agrandaban el área de scroll) */
+.bv-tape{position:fixed;width:260px;height:58px;pointer-events:none;transform:rotate(32deg)}
+.bv-tape.a{right:-120px;top:-24px;background:#E41373;opacity:.85}
+.bv-tape.b{left:-120px;bottom:-24px;background:#29B298;opacity:.6}
+/* (`minmax(0,1fr)`: sin eso la columna toma el ancho del título —que no se parte— y en el teléfono todo se corría) */
+.bv-c{position:relative;z-index:1;flex:1 0 auto;width:100%;max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr);
+  align-content:center;justify-items:center;text-align:center;gap:14px;padding:24px 16px calc(20px + env(safe-area-inset-bottom,0px))}
 
-.bv-k{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.24em;color:#29B298;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .34s both}
-.bv-t{margin:0;display:grid;gap:2px;font:900 clamp(28px,7.8vw,50px)/.92 Archivo,sans-serif;font-stretch:125%;letter-spacing:.01em;white-space:nowrap}
+/* ── paso 1: el afiche ── */
+.bv-izq{display:grid;justify-items:center;gap:14px;width:100%;max-width:560px}
+.bv-der{display:grid;justify-items:center;gap:8px;width:100%}
+
+/* el sello de la temporada: torcido, con la sombra dura del botón */
+.bv-sello{display:inline-block;padding:7px 12px 6px;background:#E41373;color:#fff;border-radius:2px;font:700 15px/1 "Barlow Condensed",sans-serif;
+  letter-spacing:.14em;text-transform:uppercase;transform:rotate(-3deg);box-shadow:4px 4px 0 #29B298;animation:bv-sello .5s cubic-bezier(.2,.9,.25,1.2) .3s both}
+/* (el foco arranca acá, por accesibilidad, pero no es un botón: sin el contorno) */
+.bv-t{margin:0;display:grid;gap:2px;font:900 clamp(26px,7.4vw,52px)/.9 Archivo,sans-serif;font-stretch:125%;letter-spacing:.01em;word-spacing:.08em;
+  white-space:nowrap;outline:0}
 .bv-t span{display:block;animation:bv-sube .55s cubic-bezier(.2,.9,.2,1) .42s both}
-.bv-t span+span{color:#E41373;animation-delay:.52s}
+.bv-t span+span{color:#E41373;animation-delay:.5s}
 .bv-t.chico{font-size:clamp(20px,5.6vw,36px);white-space:normal;text-wrap:balance}
-.bv-p{margin:0;max-width:44ch;color:#C9C9C4;font:500 15px/1.5 Archivo,sans-serif;text-wrap:pretty;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .62s both}
-.bv-n{list-style:none;margin:2px 0 4px;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .72s both}
-.bv-n li{display:grid;gap:4px;min-width:96px;padding:10px 12px;border:1px solid #2A2A30;background:#0D0D10;border-radius:3px}
-.bv-n b{font:900 24px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
-.bv-n span{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#9A9AA6}
+.bv-p{margin:0;max-width:44ch;color:#C9C9C4;font:500 15px/1.5 Archivo,sans-serif;text-wrap:pretty;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .58s both}
 
-/* el botón de entrar: grande, magenta, con la sombra dura del sello */
-.bv-si{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:min(100%,340px);min-height:56px;padding:14px 22px;
-  border:0;border-radius:3px;background:#E41373;color:#fff;font:900 18px/1 Archivo,sans-serif;letter-spacing:.05em;text-transform:uppercase;
-  cursor:pointer;box-shadow:5px 5px 0 #29B298;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .84s both,bv-late 2.2s ease-in-out 1.6s infinite}
-.bv-si:hover{background:#F0247F}
-.bv-si:active{transform:translate(3px,3px);box-shadow:2px 2px 0 #29B298}
+/* los servidores de verdad, apilados como caras: la prueba antes del pedido */
+.bv-svs{display:grid;justify-items:center;gap:8px;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .66s both}
+.bv-svs-l{display:flex;padding-left:8px}
+.bv-svs-l img{width:34px;height:34px;margin-left:-8px;border-radius:50%;border:2px solid #030304;background:#16161A;object-fit:cover}
+.bv-svs small{font:700 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#9A9AA6}
+.bv-svs small b{color:#F6F6F6;font-variant-numeric:tabular-nums}
+
+/* la carta que te toca: la silueta de una Servidor (300 × 405), con su porqué */
+.bv-premio{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;width:100%;max-width:440px;padding:12px 14px;
+  border:2px solid #2A2A30;background:#0D0D10;border-radius:3px;text-align:left;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .74s both}
+.bv-sil{display:grid;place-items:center;width:44px;aspect-ratio:300/405;background:#16161A;border:2px solid #E41373;border-radius:3px;
+  transform:rotate(-4deg);box-shadow:3px 3px 0 #29B298;font:900 22px/1 Archivo,sans-serif;color:#E41373}
+.bv-premio p{margin:0;color:#C9C9C4;font:500 13.5px/1.4 Archivo,sans-serif}
+.bv-premio b{display:block;margin-bottom:2px;color:#F6F6F6;font:900 15px/1.15 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;word-spacing:.1em}
+
+/* el botón: grande, magenta, con el logo de Discord adentro y la sombra dura que se hunde al tocar */
+.bv-acc{display:grid;justify-items:center;gap:8px;width:100%;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .84s both}
+.bv-si{display:inline-flex;align-items:center;justify-content:center;gap:12px;width:min(100%,380px);min-height:56px;padding:14px 22px;
+  border:0;border-radius:3px;background:#E41373;color:#fff;font:900 18px/1 Archivo,sans-serif;letter-spacing:.04em;text-transform:uppercase;
+  cursor:pointer;box-shadow:5px 5px 0 #29B298;transition:transform .12s,box-shadow .12s}
+.bv-si svg{flex:none}
+@media (hover:hover) and (pointer:fine){.bv-si:hover{background:#F0247F}}
+.bv-si:active{transform:translate(4px,4px);box-shadow:1px 1px 0 #29B298}
 .bv-si:focus-visible,.bv-luego:focus-visible{outline:3px solid #29B298;outline-offset:3px}
-.bv-nota{color:#9A9AA6;font:500 13px/1.4 Archivo,sans-serif;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .9s both}
+.bv-nota{max-width:42ch;color:#9A9AA6;font:500 13px/1.45 Archivo,sans-serif}
 .bv-luego{border:0;background:none;color:#C9C9C4;font:700 15px/1 Archivo,sans-serif;text-decoration:underline;text-underline-offset:4px;
-  padding:12px 14px;cursor:pointer;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .96s both}
-.bv-luego:hover{color:#F6F6F6}
+  padding:12px 14px;cursor:pointer}
+@media (hover:hover) and (pointer:fine){.bv-luego:hover{color:#F6F6F6}}
 
-/* el paso 2: la verificación de Mi cuenta, en una caja con el tema de cada uno */
-.bv-p2{gap:16px}
+/* los tres primeros, en abanico: el #1 al medio, adelante, y LLEGA ÚLTIMO */
+.bv-cartas{position:relative;width:100%;height:clamp(150px,27svh,232px);margin-bottom:2px}
+.bv-carta{position:absolute;left:50%;bottom:0;width:clamp(88px,16svh,136px);aspect-ratio:300/438;object-fit:contain;
+  transform-origin:50% 100%;transform:var(--t);animation:bv-carta .62s cubic-bezier(.2,.9,.25,1.1) both}
+.bv-carta.c0{--t:translateX(-118%) rotate(-11deg);animation-delay:.1s}
+.bv-carta.c2{--t:translateX(18%) rotate(11deg);animation-delay:.18s}
+.bv-carta.c1{--t:translateX(-50%);animation-delay:.3s}
+.bv-carta.uno{z-index:2;width:clamp(100px,19svh,156px)}
+.bv-cartas .bv-carta:only-child{--t:translateX(-50%)}
+.bv-top{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.bv-ult{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-width:0;overflow:hidden;margin:0;color:#9A9AA6;font:700 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;
+  text-transform:uppercase;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .5s both}
+.bv-ult svg{flex:none;color:#E5B800}
+.bv-ult span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#F6F6F6}
+.bv-ult small{flex:none;font:inherit}
+
+/* la cinta de abajo: lo que pasa en la Liga, corriendo (la única animación que no termina) */
+.bv-cinta{position:relative;z-index:1;flex:none;overflow:hidden;border-top:2px solid #E41373;background:#0B0B0E;padding:10px 0 calc(10px + env(safe-area-inset-bottom,0px))}
+.bv-mq{display:flex;width:max-content;animation:bv-mq 60s linear 1.2s infinite}
+.bv-mq span{flex:none;padding:0 18px;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#C9C9C4;white-space:nowrap}
+.bv-mq span:before{content:"✦";margin-right:18px;color:#E41373}
+
+/* en la compu: el afiche a la izquierda, el abanico grande a la derecha */
+@media (min-width:900px){
+  .bv-p1{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);align-items:center;justify-items:stretch;gap:48px;padding:40px 48px 28px}
+  .bv-izq{order:1;justify-items:start;text-align:left;max-width:600px}
+  .bv-der{order:2}
+  .bv-t{font-size:clamp(46px,5.4vw,78px)}
+  .bv-svs{justify-items:start}
+  .bv-acc{justify-items:start}
+  .bv-luego{padding-left:2px}
+  .bv-cartas{height:clamp(300px,54vh,470px)}
+  .bv-carta{width:clamp(150px,15vw,214px)}
+  .bv-carta.uno{width:clamp(176px,17.5vw,248px)}
+  .bv-tape{width:340px;height:76px}
+  .bv-tape.a{right:-150px;top:-30px}
+  .bv-tape.b{left:-150px;bottom:-30px}
+}
+/* en el teléfono: el abanico arriba */
+@media (max-width:899.98px){
+  .bv-der{order:-1}
+  .bv-p1{gap:12px;padding-top:18px}
+  .bv-izq{gap:12px}
+}
+@media (max-height:640px) and (max-width:899.98px){.bv-cartas{height:clamp(110px,22svh,160px)}.bv-p{display:none}}
+/* en el celular el abanico se cierra: abierto, las de los costados se salían de la pantalla */
+@media (max-width:440px){.bv-carta.c0{--t:translateX(-108%) rotate(-10deg)}.bv-carta.c2{--t:translateX(8%) rotate(10deg)}}
+
+/* ── paso 2: la verificación de Mi cuenta, en una caja con el tema de cada uno ── */
+.bv-p2{max-width:640px;gap:16px}
 .bv-ver{width:100%;text-align:left;background:var(--fondo,#030304);color:var(--tinta,#F6F6F6);border:1px solid #2A2A30;border-radius:3px;padding:4px 12px;
   animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .4s both}
+.bv-p2 .bv-si{flex-direction:row}
 
 .bv.sale{animation:bv-fuera .38s ease-in forwards}
 @keyframes bv-carta{from{opacity:0;transform:var(--t) translateY(70px) scale(.86)}to{opacity:1;transform:var(--t)}}
-@keyframes bv-flota{from{transform:var(--t) translateY(0)}to{transform:var(--t) translateY(-7px)}}
+@keyframes bv-sello{from{opacity:0;transform:rotate(-3deg) scale(1.4)}to{opacity:1;transform:rotate(-3deg)}}
 @keyframes bv-sube{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-@keyframes bv-late{0%,100%{transform:none}50%{transform:scale(1.03)}}
+@keyframes bv-mq{to{transform:translateX(-50%)}}
 @keyframes bv-fuera{to{opacity:0;transform:scale(1.04)}}
-@media (max-height:640px){.bv-cartas{height:clamp(110px,24vh,170px)}.bv-c{gap:10px}}
-/* en el celular el abanico se cierra: abierto, las de los costados se salían de la pantalla */
-@media (max-width:440px){.bv-carta{width:clamp(84px,16vh,116px)}.bv-carta.uno{width:clamp(96px,19vh,132px)}
-  .bv-carta.c0{--t:translateX(-112%) rotate(-10deg)}.bv-carta.c2{--t:translateX(12%) rotate(10deg)}}
-@media (prefers-reduced-motion:reduce){.bv,.bv *{animation:none!important}}
-.calma .bv,.calma .bv *{animation:none!important}
+@media (prefers-reduced-motion:reduce){.bv,.bv *{animation:none!important;transition:none!important}}
+.calma .bv,.calma .bv *{animation:none!important;transition:none!important}
