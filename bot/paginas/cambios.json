@@ -11,6 +11,21 @@
  ],
  "cambios": [
   {
+   "version": "3.66",
+   "dia": "2026-10-19",
+   "cuando": "2026-10-19T19:30:00-04:00",
+   "titulo": "Links para tu crew, TAGs nuevos y el vs de los grupos",
+   "items": [
+    "🔗 **Links de invitación a tu crew**: desde el panel de la crew, quien puede invitar arma un link para 1, 5, 10 personas o hasta que se llene. Con el link **se entra directo**, sin pedir permiso ni cumplir los requisitos. Dura 7 días.",
+    "💸 Cambiar el **nombre** o el **logo** de una crew ahora cuesta Puntos de Tienda. La **descripción** y los **requisitos**, gratis y cuando quieras. Si un logo no se aprueba, se devuelve lo pagado.",
+    "🪪 Quien está en una crew **sin verificarse** tiene 7 días para hacerlo; mientras tanto no suma para el ranking ni el tier de su crew, y en la página dice «Sin verificar».",
+    "🏷️ **TAGs nuevos**: ⚡ RELÁMPAGO (ganaste 2 eventos la misma semana), 🗳️ FAVORITO DEL PÚBLICO (el público te votó ganador en el bot en vivo), 💎 CREW DE ÉLITE (tu crew está en Diamante o más) y 👥 FUNDADOR DE CREW en la Temporada; INTERNACIONAL (le ganaste a rivales de 5 países) en la de País.",
+    "🖼️ **El vs de 2v2, 1v3, 8v1 y todos contra todos**, rehecho: las tarjetas se acomodan solas (también ocho contra uno), y cada lado lleva **su pronóstico**, su promedio y cuántos son.",
+    "🎤 **El bot en vivo**: ya no menciona a quien no está en ese servidor; en un todos contra todos se vota con un botón por lado; y trae títulos y «¿Sabías que…?» nuevos (clásicos, duelos de crews, debuts, podios, crews y más).",
+    "🏆 Los números de los **tiers de crews** ahora se pueden ajustar desde el Dashboard de la Liga."
+   ]
+  },
+  {
    "version": "3.65",
    "dia": "2026-10-19",
    "cuando": "2026-10-19T17:30:00-04:00",
