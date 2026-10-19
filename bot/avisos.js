@@ -2501,6 +2501,8 @@ const RUTAS = {
   '/avisos/crews-sembrar': 'POST',
   // 🪪 los de las crews que no están verificados, con la clave del ciclo (`bot/crews_verificar.py`)
   '/avisos/crews-verificar': 'POST',
+  // 🏆 el cierre de los tiers de las crews, a la campana de su gente (`bot/crews_tiers.py`, con la clave del ciclo)
+  '/avisos/crews-tiers': 'POST',
   // 📊 el panel de un socio Tier 1 o 2, para su dueño (19/10/2026). Ver `panelSocio()` del objeto
   '/avisos/panel-socio': 'POST',
   // 🗳️ a quién votó el público como ganador en el bot en vivo, sumado por nombre (público: sin ningún Discord ID)
@@ -4482,7 +4484,7 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // 🌱 las 34 de antes, una vez: lo manda el ciclo, con su clave (`bot/crews_vivas.py --sembrar`); y 🪪 quiénes de las
   // crews no están verificados, cada corrida (`bot/crews_verificar.py`)
-  if (ruta === '/avisos/crews-sembrar' || ruta === '/avisos/crews-verificar') {
+  if (ruta === '/avisos/crews-sembrar' || ruta === '/avisos/crews-verificar' || ruta === '/avisos/crews-tiers') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     const crudo = await req.text();
@@ -6069,6 +6071,7 @@ export class Avisos {
         return json(r, r.estado || 200);
       }
       if (ruta === '/crews-sembrar') { const r = CW.sembrar(this, d); return json(r, r.estado || 200); }
+      if (ruta === '/crews-tiers') { const r = CW.crewTiersAvisar(this, d); return json(r, r.estado || 200); }
       if (ruta === '/crews-verificar') {
         const ahora = Date.now();
         const r = CW.crewVerificar(this, d, ahora);
@@ -10416,7 +10419,8 @@ export class Avisos {
     const tierDe = (x) => tiers[x.sv] || x.tier || 1;
     const desde = diaET(Date.now() - 27 * DIA_MS);
     const servidores = (T.servidores || []).filter((x) => [1, 2].includes(tierDe(x)) && (esDlx || de(x).includes(quien))).map((x) => ({
-      sv: x.sv, nombre: x.nombre, tier: tierDe(x), puntos: x.puntos, antes: x.antes, partes: x.partes, m: x.m, ultimo: x.ultimo,
+      sv: x.sv, nombre: x.nombre, tier: tierDe(x), puntos: x.puntos, antes: x.antes, compara: x.compara !== false,
+      compara_desde: x.compara_desde || '', partes: x.partes, m: x.m, ultimo: x.ultimo,
       sin_jugar: x.sin_jugar, panel: x.panel || null,
       visitas: this.sql.exec('SELECT dia, n FROM secciones WHERE s = ? AND dia >= ? ORDER BY dia', 'sv-' + x.sv, desde).toArray()
         .map((r) => [r.dia, Number(r.n) || 0]),

@@ -85,6 +85,14 @@ export function Pub({ liga, it, A }) {
     cat = 'MOST WANTED · SOBREVIVIÓ';
     vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
     txt = <>{nombres} sobrevivió al Most Wanted ({it.cat}) y se lleva <b>{num(it.pts)}</b></>;
+  } else if (it.tipo === 'crewtier') {
+    // 🏆 una crew que sube de tier al cerrar la semana (bot/muro.py `crews_suben()`, 19/10/2026)
+    const col = (liga.d.crews_tiers && (liga.d.crews_tiers.colores || [])[it.tier]) || '#E41373';
+    cat = 'CREWS · SUBE DE TIER';
+    vis = it.logo ? <img className="pub-logo" alt="" src={it.logo} /> : <span className="pub-rg" style={{ background: col }}>{String(it.tn || '').slice(0, 2)}</span>;
+    txt = <><b>{limpio(it.nombre)}</b> sube a <b style={{ color: col }}>{it.tn}</b>{it.tarjeta ? ' y desbloquea su tarjeta de crew' : ''}</>;
+    det = it.pts ? num(it.pts) + ' puntos en la semana' : '';
+    acc = <a className="pub-a" href={'#/crew/' + encodeURIComponent(it.crew)}>Ver la crew</a>;
   } else if (it.tipo === 'pase') {
     // 🎟️ llegar a un nivel del Pase que se publica, o completarlo (Dlx, 06/10/2026: «5. c»)
     cat = it.completo ? 'PASE DE RAPERO · COMPLETO' : 'PASE DE RAPERO';

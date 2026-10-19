@@ -227,6 +227,38 @@ def para_web(estado, vivas):
     }
 
 
+def avisar_cierre(estado):
+    """🔔 A la campana de la gente de cada crew que subió o bajó, una vez por cierre (`avisado`): lo hace el objeto
+    (`/avisos/crews-tiers`), que es quien sabe la cuenta de cada uno. Devuelve si quedó avisado."""
+    ult = estado.get('ult') or {}
+    if not ult.get('cuenta') or not ult.get('sem') or estado.get('avisado') == ult['sem']:
+        return False
+    cambios = [[cid, int(x.get('de', 0)), int(x.get('a', 0))] for cid, x in (ult.get('crews') or {}).items()
+               if int(x.get('de', 0)) != int(x.get('a', 0))]
+    if not cambios:
+        estado['avisado'] = ult['sem']
+        return True
+    try:
+        import requests
+        import clave_ciclo as CC
+        import fotos as F
+        from alertar import WORKER
+        tok = F.env('DISCORD_TOKEN', obligatorio=False)
+        if not tok:
+            return False
+        r = requests.post(WORKER + '/avisos/crews-tiers', headers={'x-lg-ciclo': CC.clave(tok), 'content-type': 'application/json'},
+                          data=json.dumps({'sem': ult['sem'], 'nombres': [t[0] for t in TIERS], 'tarjeta': TARJETA,
+                                           'cambios': cambios}, ensure_ascii=False).encode('utf-8'), timeout=25)
+        if r.status_code == 200:
+            estado['avisado'] = ult['sem']
+            print('   🔔 %d crews avisadas de su tier (%s personas)' % (len(cambios), r.json().get('avisados', '?')))
+            return True
+        print('   ⚠️ el aviso de los tiers no llegó (%s): va en la corrida siguiente' % r.status_code)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ el aviso de los tiers no llegó (%s): va en la corrida siguiente' % str(e)[:60])
+    return False
+
+
 def _escribir(estado):
     nuevo = json.dumps(dict({'_leeme': 'Los tiers de las crews: el de cada una, la semana en curso (la última foto de '
                                        'los puntos de cada persona) y los últimos cambios. Lo escribe bot/crews_tiers.py '
@@ -328,6 +360,7 @@ def main():
         for cid, (p, j) in sorted(act.items(), key=lambda x: -x[1][0])[:10]:
             print('   %-28s %-9s %9s pts · jugaron %d' % (cid, TIERS[int((estado.get('tier') or {}).get(cid, 0))][0], format(p, ',').replace(',', '.'), j))
         return
+    avisar_cierre(estado)
     if _escribir(estado):
         print('   🏆 tiers de crews: semana %s%s' % (estado.get('sem'), ' · %d cambios' % len(cambios) if cambios else ''))
 

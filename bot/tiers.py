@@ -151,6 +151,15 @@ def medir(D, hoy, svs, nivel, miembros=None):
         partes = {'actividad': round(act), 'alcance': round(alc), 'calidad': round(cal), 'comunidad': round(com)}
         return m, partes, round(act + alc + cal + com)
 
+    # 📈 ¿las 4 semanas de antes son de esta temporada? Si no, comparar contra ellas es comparar contra cero: todos
+    # «suben» (el panel de los socios decía «▲ 81» a FFA el 19/10). `compara_desde`: el día en que ya se puede
+    try:
+        from comun.temporada import FECHAS, ACTUAL
+        arranque = dt.date.fromisoformat(FECHAS[ACTUAL][0])
+    except Exception:                                    # noqa: BLE001
+        arranque = None
+    compara = arranque is None or ini0 >= arranque
+    compara_desde = (arranque + dt.timedelta(days=7 * SEMANAS * 2 - 1)).isoformat() if arranque else ''
     out = []
     for sv, t in nivel.items():
         m, partes, pts = parte(sv, ini, fin)
@@ -160,7 +169,7 @@ def medir(D, hoy, svs, nivel, miembros=None):
         m['miembros'] = (miembros or {}).get(sv)
         rec, porque = ('casa', 'la casa de la Liga: no se evalúa como socio') if sv in CASA else recomendar(t, pts, m, sin)
         out.append({'sv': sv, 'nombre': (svs.get(sv) or {}).get('nombre') or sv, 'tier': t, 'puntos': pts,
-                    'antes': pts0, 'partes': partes, 'm': m, 'ultimo': str(ult) if ult else '', 'sin_jugar': sin,
+                    'antes': pts0, 'compara': compara, 'compara_desde': compara_desde, 'partes': partes, 'm': m, 'ultimo': str(ult) if ult else '', 'sin_jugar': sin,
                     'rec': rec, 'porque': porque})
     out.sort(key=lambda x: (x['tier'], -x['puntos'], x['sv']))
     return out

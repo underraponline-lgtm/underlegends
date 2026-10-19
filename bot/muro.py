@@ -195,6 +195,45 @@ def premios(mult):
     return out
 
 
+def crews_suben(ct, vivas):
+    """🏆 Las crews que subieron de tier al cerrar cada semana (`bot/crews_tiers.py`, su `hist`: `[sem, crew, de, a,
+    puntos]`). Dlx, 19/10/2026, a «el primer cierre de tiers pasa en silencio»: «me gusta todo». Sólo las que SUBEN: que
+    una crew baje no es una noticia para publicar (a su gente le llega a la campana). La hora es la del cierre: el lunes
+    siguiente, a las 11 AM ET."""
+    try:
+        from zoneinfo import ZoneInfo
+        et = ZoneInfo('America/New_York')
+    except Exception:                                    # noqa: BLE001
+        et = dt.timezone(dt.timedelta(hours=-4))
+    nombres = (ct or {}).get('nombres') or ['Bronce', 'Plata', 'Oro', 'Platino', 'Diamante', 'Maestro', 'Leyenda']
+    try:
+        import crews_tiers as CT
+        nombres = [t[0] for t in CT.TIERS]
+        diamante = CT.TARJETA
+    except Exception:                                    # noqa: BLE001
+        diamante = 4
+    viva = {c.get('id'): c for c in (vivas or {}).get('crews') or []}
+    out = []
+    for h in (ct or {}).get('hist') or []:
+        if not isinstance(h, list) or len(h) < 5 or not isinstance(h[2], int) or not isinstance(h[3], int) or h[3] <= h[2]:
+            continue
+        c = viva.get(h[1])
+        if not c:
+            continue
+        try:
+            cierre = dt.datetime.combine(dt.date.fromisoformat(h[0]) + dt.timedelta(days=7), dt.time(11), et)
+        except ValueError:
+            continue
+        x = {'tipo': 'crewtier', 't': _iso(cierre.astimezone(dt.timezone.utc)), 'crew': h[1], 'nombre': c.get('nombre') or h[1],
+             'tier': h[3], 'tn': nombres[h[3]] if 0 <= h[3] < len(nombres) else '', 'pts': int(h[4] or 0), 'sem': h[0]}
+        if h[3] == diamante:
+            x['tarjeta'] = True
+        if str(c.get('logo') or '').startswith('https://'):
+            x['logo'] = c['logo']
+        out.append(x)
+    return out
+
+
 def anuncios(an):
     """📢 los anuncios de eventos de todos los servidores."""
     out = []
@@ -317,6 +356,9 @@ def id_de(x):
     elif tipo == 'ligahito':
         # 🏟️ qué pasó, en qué liga, quién y cuándo: el mismo hito sale igual en cada corrida
         partes = [tipo, x.get('que') or '', x.get('liga') or '', '|'.join(x.get('quien') or []), x.get('t') or '']
+    elif tipo == 'crewtier':
+        # 🏆 qué crew, qué semana y a qué tier: una por cierre
+        partes = [tipo, x.get('crew') or '', x.get('sem') or '', str(x.get('tier') or '')]
     elif tipo == 'pase':
         # 🎟️ de quién (su perfil), de qué temporada y qué nivel: llega una sola vez
         partes = [tipo, x.get('temp') or '', str(x.get('nivel') or ''), (x.get('ks') or [''])[0] or '|'.join(x.get('quien') or [])]
@@ -418,7 +460,8 @@ def _fuentes():
     return {'llaves': regs, 'instantes': LW.instantes(regs), 'mw': _j('datos', 'mw.json'),
             'precios': _j('datos', 'precios.json'), 'mult': _j('datos', 'multiplicadores.json'),
             'anuncios': _j('datos', 'anuncios.json'), 'pase': _j('datos', 'pase_niveles.json'),
-            'ligas': _j('datos', 'ligas.json'), 'promos': _j('datos', 'promos.json')}
+            'ligas': _j('datos', 'ligas.json'), 'promos': _j('datos', 'promos.json'),
+            'crews_tiers': _j('datos', 'crews_tiers.json'), 'crews_vivas': _j('datos', 'crews_vivas.json')}
 
 
 def _arranque(ahora):
@@ -489,7 +532,8 @@ def _todo(p, guardado, ahora, fuentes, promos_por=None):
             + premios(fuentes.get('mult')) + anuncios(fuentes.get('anuncios'))
             + pase(fuentes.get('pase'), p.get('tabla')) + novedades(p.get('novedades'))
             + flyers(fuentes.get('ligas'), fuentes.get('svs')) + ligas_hitos(fuentes.get('ligas'))
-            + promos_muro(fuentes.get('promos'), ahora, promos_por) + mes_muro())
+            + promos_muro(fuentes.get('promos'), ahora, promos_por) + mes_muro()
+            + crews_suben(fuentes.get('crews_tiers'), fuentes.get('crews_vivas')))
     return todo, estado, anotados
 
 
@@ -630,13 +674,17 @@ def _self_check():
             'fms-world-series': {'n': 'FMS World Series', 'sv': 'DDF', 'flyer': {
                 'id': '57', 't': '2026-10-14T12:00:00Z', 'url': 'https://r2/ligas/ws/57.webp'},
                 'batallas': [['3', '2026-10-13T20:00:00Z', 1, 'A', 'B', '', '', '']]}}},
-        'svs': {'URBF': {'guild_id': '9'}}}
+        'svs': {'URBF': {'guild_id': '9'}},
+        # 🏆 una crew que sube y otra que baja (la que baja no se publica)
+        'crews_tiers': {'hist': [['2026-10-05', 'KS', 0, 1, 31000], ['2026-10-05', 'Otra', 1, 0, 100]]},
+        'crews_vivas': {'crews': [{'id': 'KS', 'nombre': 'Knowledge Sombrío', 'logo': 'https://r2/logos-crews/a.webp'},
+                                  {'id': 'Otra', 'nombre': 'Otra'}]}}
     muro, guardar = armar({'tabla': tabla, 'novedades': [{'t': '2026-10-14T13:00:00Z', 'tit': 'Hola',
                                                           'tx': 'la Liga', 'link': 'x'}]},
                           guardado={'estado': antes, 'cambios': []}, ahora=ahora, fuentes=fuentes)
     ts = [x['tipo'] for x in muro['items']]
     ok(set(ts) == {'rango', 'tarjeta', 'campeon', 'caza', 'elegido', 'precio', 'premios', 'anuncio', 'liga', 'pase',
-                   'flyer'},
+                   'flyer', 'crewtier'},
        'entra todo: rango, tarjeta, campeón, caza, El Elegido, precio, premios, anuncio, novedades, el Pase y los flyers  %s'
        % sorted(set(ts)))
     fy = [x for x in muro['items'] if x['tipo'] == 'flyer']
@@ -644,6 +692,10 @@ def _self_check():
        and fy[0]['link'] == 'https://discord.com/channels/9/1512167830919839844/55' and fy[0]['tit'] == 'MTZ vs ORTIZ'
        and 'ks' not in fy[0] and fy[0]['id'] == id_de(dict(fy[0], tit='otro', t='x')),
        '🖼️ el flyer de una liga: sólo el que está en R2, con el link a su mensaje, de nadie, y su id es el del mensaje  %s' % fy)
+    ct = [x for x in muro['items'] if x['tipo'] == 'crewtier']
+    ok(len(ct) == 1 and ct[0]['nombre'] == 'Knowledge Sombrío' and ct[0]['tn'] == 'Plata' and ct[0]['t'] == '2026-10-12T15:00:00Z'
+       and ct[0]['logo'].endswith('a.webp') and 'ks' not in ct[0],
+       '🏆 la crew que sube de tier, con la hora del cierre (lunes 11 AM ET); la que baja no se publica  %s' % ct)
     pa = [x for x in muro['items'] if x['tipo'] == 'pase']
     ok(len(pa) == 1 and pa[0]['quien'] == ['Ana'] and pa[0]['ks'] == ['ana'] and pa[0]['nivel'] == 10
        and pa[0]['premio'] == 'De la casa' and pa[0]['completo'] is False and pa[0]['t'] == '2026-10-13T20:00:00Z',

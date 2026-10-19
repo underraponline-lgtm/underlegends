@@ -31,7 +31,9 @@ function Puntaje({ x }) {
   return (
     <div className="so-pts">
       <div className="so-pts-n"><b>{pts}</b><small>de 100</small></div>
-      <p className={'so-tend ' + (dif > 0 ? 'sube' : dif < 0 ? 'baja' : '')}>{dif > 0 ? '▲ ' + dif : dif < 0 ? '▼ ' + -dif : '='} <span>contra las 4 semanas de antes ({x.antes || 0})</span></p>
+      {/* 📈 sólo contra 4 semanas de ESTA temporada: contra las de antes del arranque, todos «subían» */}
+      {x.compara === false ? <p className="so-tend"><span>La comparación con las 4 semanas anteriores llega el {fechaCorta(x.compara_desde)}, cuando la temporada tenga 8 semanas.</span></p>
+        : <p className={'so-tend ' + (dif > 0 ? 'sube' : dif < 0 ? 'baja' : '')}>{dif > 0 ? '▲ ' + dif : dif < 0 ? '▼ ' + -dif : '='} <span>contra las 4 semanas de antes ({x.antes || 0})</span></p>}
       <div className="so-partes">{PARTES.map(([k, t, tope, que]) => {
         const v = (x.partes || {})[k] || 0;
         return (

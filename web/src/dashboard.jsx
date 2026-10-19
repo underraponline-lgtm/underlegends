@@ -519,7 +519,7 @@ function TierCaja({ x, liga, tier, cambiar, ocup, i, aj, hacer }) {
           </select></label>
       </header>
       <p className="ti-que">Tier {tier}: {TIER_QUE[tier]}</p>
-      <div className="ti-pts"><b>{pts}</b><small>de 100{x.antes ? ' · antes ' + x.antes : ''}</small></div>
+      <div className="ti-pts"><b>{pts}</b><small>de 100{x.antes && x.compara !== false ? ' · antes ' + x.antes : ''}</small></div>
       <div className="ti-partes">{PARTES.map(([k, t, tope]) => (
         <div key={k} title={t + ': ' + ((x.partes || {})[k] || 0) + ' de ' + tope}>
           <span>{t}</span><i><u style={{ width: (100 * ((x.partes || {})[k] || 0) / tope).toFixed(0) + '%' }} /></i>

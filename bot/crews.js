@@ -290,6 +290,8 @@ export function crewTablas(sql) {
   for (const col of ['pend INTEGER NOT NULL DEFAULT 0', 'pend_av INTEGER NOT NULL DEFAULT 0']) {
     try { sql.exec('ALTER TABLE crew_miembros ADD COLUMN ' + col); } catch (e) { /* ya estaba */ }
   }
+  // y de qué plazo ya se le avisó a quien manda en la crew (`crewVencer()`): uno por plazo, no uno por hora
+  try { sql.exec('ALTER TABLE crews ADD COLUMN pend_aviso INTEGER NOT NULL DEFAULT 0'); } catch (e) { /* ya estaba */ }
   sql.exec('CREATE TABLE IF NOT EXISTS crew_inv (crew TEXT NOT NULL, k TEXT NOT NULL, de TEXT NOT NULL, t INTEGER NOT NULL, ' +
     'PRIMARY KEY (crew, k))');
   sql.exec('CREATE TABLE IF NOT EXISTS crew_ped (crew TEXT NOT NULL, k TEXT NOT NULL, quien TEXT NOT NULL, t INTEGER NOT NULL, ' +
@@ -447,6 +449,22 @@ export function crewVencer(o, ahora = Date.now()) {
     for (const x of mandan(o, c.id)) {
       avisar(o, x, 'crew-salio:' + c.id + ':' + m.k, nombreDe(o, m.k) + ' salió de ' + c.nombre,
         'No se verificó en DRA en sus ' + PEND_MS / DIA + ' días. Puede volver cuando se verifique.', '#/crew/' + encodeURIComponent(c.id));
+    }
+  }
+  // 🪪 y a 2 días del plazo, a quien manda en la crew (Dlx, 19/10/2026, «me gusta todo»): a ellos sí les llega la campana
+  // —la mayoría de los que faltan no tiene cuenta— y son los que más interés tienen en que se verifiquen. Una vez por
+  // plazo (`pend_aviso`)
+  for (const r of filas(o, 'SELECT crew, MIN(pend) AS hasta, COUNT(*) AS n FROM crew_miembros WHERE pend > 0 GROUP BY crew')) {
+    const c = crewDe(o, r.crew);
+    if (!c || r.hasta - ahora > 2 * DIA || r.hasta <= ahora || c.pend_aviso === r.hasta) continue;
+    o.sql.exec('UPDATE crews SET pend_aviso = ? WHERE id = ?', r.hasta, c.id);
+    const quienes = filas(o, 'SELECT k FROM crew_miembros WHERE crew = ? AND pend > 0 ORDER BY desde LIMIT 6', c.id).map((x) => nombreDe(o, x.k));
+    const dia = new Intl.DateTimeFormat('es', { timeZone: 'America/New_York', weekday: 'long', day: 'numeric', month: 'numeric' }).format(new Date(r.hasta));
+    const lideres = filas(o, "SELECT k FROM crew_miembros WHERE crew = ? AND rol IN ('lider','colider') AND pend = 0", c.id).map((x) => x.k);
+    for (const x of lideres) {
+      avisar(o, x, 'crew-pend:' + c.id, '⏳ ' + r.n + (r.n === 1 ? ' de ' + c.nombre + ' sale' : ' de ' + c.nombre + ' salen') + ' el ' + dia,
+        'Todavía no se verificaron en DRA: ' + quienes.join(', ') + (r.n > quienes.length ? ' y más' : '') + '. Pasales el link para verificarse.',
+        '#/crew/' + encodeURIComponent(c.id));
     }
   }
   for (const c of filas(o, 'SELECT * FROM crews WHERE vence > 0')) {
@@ -1109,6 +1127,32 @@ export function crewVerificar(o, d, ahora = Date.now()) {
     'WHERE m.pend > 0 AND m.pend_av = 0').map((r) => Object.assign({ n: r.k, id: '', sv: '' }, sin.get(r.k) || {},
     { k: r.k, crew: r.nombre, hasta: r.pend }));
   return { ok: true, sin: cuantosSin, de: todos.length, marcados, verificados, lideres: lideres.length, anunciar };
+}
+
+/**
+ * 🏆 El cierre de la semana de los tiers, a la campana de la gente de cada crew que cambió (19/10/2026, Dlx: «me gusta
+ * todo», a que el primer cierre pasaba en silencio). `d`: `{sem, nombres, tarjeta, cambios: [[crew, de, a]]}`, del
+ * ciclo (`bot/crews_tiers.py`). Una vez por crew y semana: la clave del aviso lleva la semana.
+ */
+export function crewTiersAvisar(o, d) {
+  if (!d || !Array.isArray(d.cambios) || d.cambios.length > 200 || !/^\d{4}-\d{2}-\d{2}$/.test(String(d.sem || ''))) return mal('datos');
+  const nombres = Array.isArray(d.nombres) ? d.nombres.map((x) => String(x).slice(0, 20)) : [];
+  let avisados = 0;
+  for (const x of d.cambios) {
+    const [cid, de, a] = Array.isArray(x) ? x : [];
+    const c = crewDe(o, String(cid || ''));
+    if (!c || !Number.isInteger(de) || !Number.isInteger(a) || de === a) continue;
+    const tn = nombres[a] || 'otro tier';
+    const sube = a > de;
+    const titulo = sube ? '🏆 ' + c.nombre + ' sube a ' + tn : '📉 ' + c.nombre + ' baja a ' + tn;
+    const cuerpo = sube ? (a === d.tarjeta ? '¡Desbloquearon la tarjeta de crew! ' : '') + 'Lo que sumaron la semana pasada los subió.'
+      : 'La semana pasada no alcanzó: esta semana pueden volver a subir.';
+    for (const m of filas(o, 'SELECT k FROM crew_miembros WHERE crew = ? AND pend = 0', c.id)) {
+      avisar(o, m.k, 'crew-tier:' + c.id + ':' + d.sem, titulo, cuerpo, '#/crew/' + encodeURIComponent(c.id));
+      avisados += 1;
+    }
+  }
+  return { ok: true, avisados };
 }
 
 /** 🪪 Los ya mencionados en el chat de su servidor, para no volver a mencionarlos. */

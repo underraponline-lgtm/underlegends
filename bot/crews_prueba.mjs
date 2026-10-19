@@ -352,12 +352,24 @@ if (!DatabaseSync) {
   const todos = CW.crewsPublico(o).crews.flatMap((c) => c.gente.map((x) => ({ k: x[0] })));
   ok(CW.crewVerificar(o, { sin: todos }, tv).error === 'demasiados' && g('Viejas', 'vok1').length === 3,
     'el seguro: si dice que casi nadie está verificado, no toca nada');
+  const cuantosPend = () => bandeja.filter((b) => b.quien === id(900) && /de Viejas sale/.test(b.titulo)).length;
+  CW.crewVencer(o, tv + CW.PEND_MS - 3 * DIA);
+  ok(cuantosPend() === 0, 'a 3 días del plazo, todavía nada');
+  CW.crewVencer(o, tv + CW.PEND_MS - DIA);
+  CW.crewVencer(o, tv + CW.PEND_MS - DIA + 3600000);
+  ok(cuantosPend() === 1 && bandeja.find((b) => /de Viejas sale/.test(b.titulo)).cuerpo.includes('vlid'),
+    'a 2 días, a quien manda le llega UNA vez quién falta (los que no se verificaron no reciben campana)');
   CW.crewVencer(o, tv + CW.PEND_MS - 1000);
   ok(!!pubC('Nadie') && !!g('Viejas', 'vlid'), 'antes de los 7 días, nadie sale');
   CW.crewVencer(o, tv + CW.PEND_MS + 1);
   ok(!pubC('Nadie') && !g('Viejas', 'vlid') && pubC('Viejas').gente.length === 3
     && bandeja.some((b) => b.quien === id(900) && b.titulo === 'vlid salió de Viejas'),
   'a los 7 días salen, la crew sin nadie se borra, y a quien manda le llega');
+  // 🏆 el cierre de los tiers, a la campana de la gente de cada crew que cambió
+  const ta = CW.crewTiersAvisar(o, { sem: '2026-10-19', nombres: ['Bronce', 'Plata'], tarjeta: 4, cambios: [['Viejas', 0, 1], ['NoExiste', 0, 1]] });
+  ok(ta.ok && ta.avisados === 3 && bandeja.some((b) => b.quien === id(900) && b.titulo === '🏆 Viejas sube a Plata')
+    && CW.crewTiersAvisar(o, { sem: 'ayer', cambios: [] }).error === 'datos',
+  'el cierre de los tiers le llega a la gente de la crew (la que no existe, nada)');
 }
 
 console.log(mal ? `\n  🔴 ${mal} mal, ${bien} bien` : `  ✅ crews: ${bien} bien`);
