@@ -470,5 +470,34 @@
   "sin_permiso": false,
   "sv": "FFA"
  },
+ "1561594726019375135": {
+  "autor": "1385452830684614697",
+  "canal": "1487207377601040516",
+  "cuando": "2026-10-19T04:19:55.710000+00:00",
+  "evento": "__ FREESTYLE LEAGUE __",
+  "fecha": "19/10",
+  "llave": "1561594726019375135",
+  "pregunta": "1561625929963274282",
+  "preguntada": "2026-10-19 2:23 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "vandu🇨🇦",
+     "Guess 🇦🇷"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "Sin límites 🇵🇪",
+     "emi 🇲🇽"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

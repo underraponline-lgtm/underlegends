@@ -2410,6 +2410,20 @@
      ],
      "organizador": "LRS",
      "cuentas": {}
+    },
+    "1561621474832289803": {
+     "sv": "FFA",
+     "nombre": "nombre de la compe",
+     "mo": "2026-10-19T06:06:13Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "LRS",
+       "id": ""
+      }
+     ],
+     "organizador": "LRS",
+     "cuentas": {}
     }
    },
    "ver": {

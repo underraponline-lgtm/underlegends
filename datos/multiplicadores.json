@@ -490,13 +490,13 @@
      "FFA": 22,
      "FRZ": 2,
      "URBF": 12,
-     "DDF": 3,
+     "DDF": 4,
      "ACAD": 2,
      "SR": 4,
      "FVS": 1
     },
     "gente": {
-     "DDF": 28,
+     "DDF": 29,
      "FFA": 123,
      "SR": 33,
      "URBF": 20,
@@ -508,7 +508,7 @@
    },
    "meta_va": {
     "ACAD": 25,
-    "DDF": 28,
+    "DDF": 29,
     "DRA": 0,
     "FFA": 123,
     "FFS": 0,

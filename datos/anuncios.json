@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-19T05:54:55+00:00",
+ "cuando": "2026-10-19T06:25:06+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -400,6 +400,35 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "nombre de la compe",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1561621474832289803",
+   "cuando": "2026-10-19T06:06:13",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "LRS",
+   "orgs": [
+    {
+     "n": "LRS",
+     "id": ""
+    }
+   ],
+   "autor_h": "275527176611c43b",
+   "cupos_texto": "12",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "BRONCE",
+   "modalidad": "1 🆚 1",
+   "horario": "10 minutos",
+   "fecha": "",
+   "premios": "puntos para el ascenso",
+   "staff": {},
+   "autor": "LRS la sustancia  💫",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "FREESTYLE LEAGUE N°2",
@@ -1110,56 +1139,6 @@
    "autor": "CRONOX 🇨🇱",
    "staff_cuentas": {
     "CRONOX 🇨🇱": "1487658663148785734"
-   },
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "ME QUISIERA MORIR, PERO NO MULTIVERSE VOL.1",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1559205137233350679",
-   "cuando": "2026-10-12T14:04:33",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Kravitz",
-     "id": "1345962362615894027"
-    }
-   ],
-   "autor_h": "7cc3316a3e5f345f",
-   "cupos_texto": "0/16",
-   "inscriptos": 0,
-   "cupo_total": 16,
-   "rango": "Competencia De Ascenso Rango bronce ɪɪɪ 🥉 🌎",
-   "modalidad": "Multiverse",
-   "horario": "⭐ 8:15 AM HORA MEXICO CENTRAL ⭐",
-   "fecha": "12 10",
-   "premios": ":mundo: Clasificacion bronce ɪɪɪ 🥉 y Rol De Campeon 🌎",
-   "staff": {
-    "jurado": [
-     "Kravitz",
-     "Lewito",
-     "Ax",
-     "Flennzs | ⛩️"
-    ],
-    "host": [
-     "Kravitz"
-    ],
-    "dj": [
-     "Kravitz",
-     "Ax",
-     "PolloSport"
-    ]
-   },
-   "autor": "Kravitz",
-   "staff_cuentas": {
-    "Kravitz": "1345962362615894027",
-    "Lewito": "1086485696572817418",
-    "Ax": "1397110475594010700",
-    "Flennzs | ⛩️": "1414431452346581052",
-    "PolloSport": "716016310202400848"
    },
    "categoria_id": "1468478330826260500"
   },
@@ -6209,6 +6188,114 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "ingra el impio 🇧🇴",
+   "quien": "ingra9223",
+   "discord_id": "1122768350641135738",
+   "msg_id": "1561625256890859612",
+   "cuando": "2026-10-19T06:21:14"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "J.R🇵🇪",
+   "quien": "j.r_ga",
+   "discord_id": "855918964655783967",
+   "msg_id": "1561623826134212612",
+   "cuando": "2026-10-19T06:15:33"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tomyhilfiger🇾🇹",
+   "quien": "crakero_crew_1312",
+   "discord_id": "1374555884868337738",
+   "msg_id": "1561623323895668767",
+   "cuando": "2026-10-19T06:13:33"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tnor🇻🇪",
+   "quien": "tenor_25499",
+   "discord_id": "1370860602972569632",
+   "msg_id": "1561623272276230235",
+   "cuando": "2026-10-19T06:13:21"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "DarkoMC🇲🇽",
+   "quien": "alamosza_95845",
+   "discord_id": "1375578701302857738",
+   "msg_id": "1561623175383617577",
+   "cuando": "2026-10-19T06:12:58"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Blitz 🇮🇱",
+   "quien": "nahanah",
+   "discord_id": "1023727385822122104",
+   "msg_id": "1561623153552392223",
+   "cuando": "2026-10-19T06:12:53"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Kravitz 🇨🇷",
+   "quien": "thekravitz777",
+   "discord_id": "1345962362615894027",
+   "msg_id": "1561622928309887047",
+   "cuando": "2026-10-19T06:11:59"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "okam  🇨🇷",
+   "quien": "okam77_25976",
+   "discord_id": "1512148565890306153",
+   "msg_id": "1561621856908353598",
+   "cuando": "2026-10-19T06:07:44"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "J19 🇨🇷",
+   "quien": "josue19_cr",
+   "discord_id": "1401047963853389965",
+   "msg_id": "1561621806287298612",
+   "cuando": "2026-10-19T06:07:32"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Molusco 🇦🇷",
+   "quien": "moluscoanvriento_79058",
+   "discord_id": "1363285354442133778",
+   "msg_id": "1561621780542521385",
+   "cuando": "2026-10-19T06:07:26"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "sin limites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1561621747969818717",
+   "cuando": "2026-10-19T06:07:18"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1561621700599218197",
+   "cuando": "2026-10-19T06:07:06"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
