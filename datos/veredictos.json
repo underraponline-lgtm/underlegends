@@ -1279,6 +1279,39 @@
    "b": "SINLIMITES",
    "ganador": "SINLIMITES",
    "votos": "1–0"
+  },
+  "1561625969939185747": {
+   "id": "1561625969939185747",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1792391044841,
+   "a": "MOLUSCO",
+   "b": "BLITZ",
+   "ganador": "MOLUSCO",
+   "votos": "1–0"
+  },
+  "1561630031632007200": {
+   "id": "1561630031632007200",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1792392013224,
+   "a": "SINLIMITES",
+   "b": "MOLUSCO",
+   "ganador": "MOLUSCO",
+   "votos": "1–0"
+  },
+  "1561631765196709981": {
+   "id": "1561631765196709981",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1792392426538,
+   "a": "TENOR",
+   "b": "KRAVITZ",
+   "ganador": "TENOR",
+   "votos": "1–0"
   }
  },
  "llaves": {

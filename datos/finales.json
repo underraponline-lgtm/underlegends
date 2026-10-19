@@ -495,7 +495,9 @@
     "ronda": "CUARTOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "vandu🇨🇦"
+  },
   "sin_permiso": false,
   "sv": "FFA"
  },

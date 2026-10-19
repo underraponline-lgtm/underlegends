@@ -27010,16 +27010,16 @@
      ],
      [
       [
-       "Sin límites 🇵🇪",
-       "emi 🇲🇽"
+       "Vandu",
+       "Guess"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Vandu",
+      "ganador: ✅ Decidir"
      ],
      [
       [
-       "vandu🇨🇦",
-       "Guess 🇦🇷"
+       "Sin límites 🇵🇪",
+       "emi 🇲🇽"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -27096,6 +27096,11 @@
     "Makmah",
     "Cuarto",
     3000
+   ],
+   [
+    "Guess",
+    "Cuartos",
+    2000
    ],
    [
     "Joshema",
