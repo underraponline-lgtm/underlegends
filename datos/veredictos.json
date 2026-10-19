@@ -2,50 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1559340030462267583": {
-   "id": "1559340030462267583",
-   "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
-   "g": "492346406976356374",
-   "canal": "863208026508623883",
-   "pub": 1791846034399,
-   "a": "BNA 🇦🇷",
-   "b": "PROSU 🇨🇴",
-   "ganador": "PROSU 🇨🇴",
-   "votos": "1–0"
-  },
-  "1559341119362568246": {
-   "id": "1559341119362568246",
-   "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
-   "g": "492346406976356374",
-   "canal": "863208026508623883",
-   "pub": 1791846294013,
-   "a": "NC 🇦🇷",
-   "b": "VELATZ 🇨🇱",
-   "ganador": "VELATZ 🇨🇱",
-   "votos": "1–0"
-  },
-  "1559342591705620542": {
-   "id": "1559342591705620542",
-   "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
-   "g": "492346406976356374",
-   "canal": "863208026508623883",
-   "pub": 1791846645047,
-   "a": "ABYSSUS 🇵🇦",
-   "b": "JOAQUÍN LA PROFECÍA 🇦🇷",
-   "ganador": "ABYSSUS 🇵🇦",
-   "votos": "1–0"
-  },
-  "1559344000903684247": {
-   "id": "1559344000903684247",
-   "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
-   "g": "492346406976356374",
-   "canal": "863208026508623883",
-   "pub": 1791846981026,
-   "a": "ZIGNOS 🇩🇴",
-   "b": "PROSU 🇨🇴",
-   "ganador": "PROSU 🇨🇴",
-   "votos": "1–0"
-  },
   "1559348389055963197": {
    "id": "1559348389055963197",
    "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",

@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-19T22:55:15+00:00",
+ "cuando": "2026-10-19T23:25:06+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -6188,6 +6188,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "delux",
+   "quien": "delux.13",
+   "discord_id": "729809358627536938",
+   "msg_id": "1561875943323345010",
+   "cuando": "2026-10-19T22:57:23"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Family 🇵🇾",
+   "quien": "plapla23",
+   "discord_id": "839707244069126174",
+   "msg_id": "1561875446759432254",
+   "cuando": "2026-10-19T22:55:24"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",

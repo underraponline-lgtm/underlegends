@@ -668,6 +668,11 @@
    },
    "organizadores": [
     [
+     "Velatz",
+     25,
+     1
+    ],
+    [
      "Kravitz",
      19,
      1
@@ -675,18 +680,18 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 2
+     "FFA": 3
     },
     "gente": {
-     "FFA": 19
+     "FFA": 38
     },
-    "gana": null
+    "gana": "FFA"
    },
    "meta_va": {
     "ACAD": 0,
     "DDF": 0,
     "DRA": 0,
-    "FFA": 19,
+    "FFA": 38,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,

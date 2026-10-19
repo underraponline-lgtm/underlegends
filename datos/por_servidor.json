@@ -374,11 +374,11 @@
   "Agente sombra": {
    "FFA": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 46,
     "pod": 0,
-    "pts": 6562,
+    "pts": 7500,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -8621,20 +8621,6 @@
     "pod": 0,
     "pts": 5775,
     "racha": "1/1"
-   }
-  },
-  "will🇻🇪": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 938,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "xz": {
