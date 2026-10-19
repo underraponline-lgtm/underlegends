@@ -5367,6 +5367,8 @@ export class Avisos {
     if (v.pausa && ahora < v.pausa) return { ok: false, pausa: true };
     if (this.arEn && ahora - this.arEn < 3 * MIN) { this.medir('antiraid', 'salteada', 1); return { ok: true, salteada: true }; }
     this.arEn = ahora;
+    // (cuántas vueltas: sin esto, una ronda que dejó de llegar se ve igual que una sin nada que avisar)
+    this.medir('antiraid', 'vueltas', 1);
     try {
       await this.antiraidVuelta(ahora);
       return { ok: true };

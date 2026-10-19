@@ -178,8 +178,8 @@ if (!DatabaseSync) {
   const envO = { AVISOS: { idFromName: () => 'liga', get: () => ({ fetch: (u, op) => { rutas.push(new URL(u).pathname); return o.fetch(new Request(u, op)); } }) } };
   await A.vigilar(envO, [], '', true);
   ok(pedidos.slice(n4).some((p) => p.u.includes('with_counts')), 'de madrugada el vigía duerme, pero el anti-raid mira igual');
-  ok(rutas.sort().join() === '/antiraid-vuelta,/vigilar',
-    'el cron llama al vigía y al anti-raid por separado (cada uno con su presupuesto de pedidos y su candado)', rutas.join());
+  ok(rutas.sort().join() === '/antiraid-vuelta,/vigilar' && (o.medidasVer().antiraid || {}).vueltas >= 1,
+    'el cron llama al vigía y al anti-raid por separado (cada uno con su presupuesto y su candado), y las vueltas se cuentan', rutas.join());
 
   // ── 🤖 AUTOMÁTICO (Dlx, 18/10/2026: «el bot toma decisiones si nadie está») ──
   const msgs = {};
