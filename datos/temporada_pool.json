@@ -37,6 +37,7 @@
    "infalt": true,
    "perf": 2,
    "podsem": true,
+   "relampago": true,
    "solo": 3,
    "suelto": true,
    "svc": 1,
@@ -81,6 +82,7 @@
    "infalt": true,
    "perf": 2,
    "podsem": true,
+   "relampago": true,
    "solo": 1,
    "suelto": true,
    "svc": 1,
@@ -125,6 +127,7 @@
    "infalt": true,
    "perf": 1,
    "podsem": true,
+   "relampago": true,
    "rev": 2,
    "sube": true,
    "svc": 1,
@@ -167,6 +170,7 @@
    "dcor": true,
    "dobles": 4,
    "perf": 1,
+   "relampago": true,
    "rey": true,
    "solo": 3,
    "svc": 1,
@@ -209,6 +213,7 @@
    "dobles": 10,
    "infalt": true,
    "perf": 1,
+   "relampago": true,
    "rev": 1,
    "rey": true,
    "solo": 2,
@@ -255,6 +260,7 @@
    "infalt": true,
    "perf": 2,
    "podsem": true,
+   "relampago": true,
    "rey": true,
    "solo": 1,
    "sube": true,
@@ -299,6 +305,7 @@
    "infalt": true,
    "perf": 2,
    "podsem": true,
+   "relampago": true,
    "rev": 1,
    "solo": 1,
    "sube": true,
@@ -342,6 +349,7 @@
    "dobles": 4,
    "perf": 2,
    "reciente": true,
+   "relampago": true,
    "solo": 1,
    "sube": true,
    "svc": 1,
@@ -387,6 +395,7 @@
    "infalt": true,
    "perf": 2,
    "podsem": true,
+   "relampago": true,
    "svc": 2,
    "trios": 9
   }
@@ -427,6 +436,7 @@
    "infalt": true,
    "perf": 2,
    "podsem": true,
+   "relampago": true,
    "sube": true,
    "svc": 3,
    "trios": 4
@@ -465,6 +475,7 @@
   "tg_t": {
    "dobles": 4,
    "perf": 2,
+   "relampago": true,
    "rev": 1,
    "solo": 1,
    "sube": true,
@@ -550,6 +561,7 @@
    "infalt": true,
    "perf": 1,
    "podsem": true,
+   "relampago": true,
    "rev": 1,
    "solo": 1,
    "suelto": true,
@@ -594,6 +606,7 @@
    "infalt": true,
    "perf": 2,
    "podsem": true,
+   "relampago": true,
    "svc": 1,
    "trios": 3
   }
@@ -632,6 +645,7 @@
    "dobles": 3,
    "infalt": true,
    "perf": 2,
+   "relampago": true,
    "svc": 1,
    "trios": 4
   }
@@ -709,6 +723,7 @@
    "cab": 1,
    "dcor": true,
    "dobles": 3,
+   "relampago": true,
    "svc": 2,
    "trios": 3
   }
@@ -785,6 +800,7 @@
    "cobro": 1,
    "dobles": 2,
    "perf": 1,
+   "relampago": true,
    "sube": true,
    "svc": 1,
    "trios": 3
@@ -825,6 +841,7 @@
    "dobles": 6,
    "infalt": true,
    "perf": 1,
+   "relampago": true,
    "svc": 1,
    "trios": 1
   }
@@ -988,6 +1005,7 @@
    "cobro": 1,
    "dobles": 3,
    "infalt": true,
+   "relampago": true,
    "solo": 1,
    "svc": 3,
    "trios": 4
@@ -1029,6 +1047,7 @@
    "dobles": 2,
    "perf": 2,
    "reciente": true,
+   "relampago": true,
    "rey": true,
    "solo": 1,
    "sube": true,
@@ -1790,6 +1809,7 @@
    "busc": 2,
    "dcor": true,
    "dobles": 2,
+   "relampago": true,
    "svc": 1,
    "trios": 1
   }
@@ -2052,6 +2072,7 @@
    "dcor": true,
    "dobles": 2,
    "perf": 1,
+   "relampago": true,
    "svc": 2
   }
  },
@@ -2532,6 +2553,7 @@
   "rango": "C",
   "tg_t": {
    "dcor": true,
+   "relampago": true,
    "svc": 1
   }
  },
@@ -2829,6 +2851,7 @@
   "total": 188,
   "rango": "D",
   "tg_t": {
+   "relampago": true,
    "svc": 1,
    "svtag": "llamas",
    "trios": 1
