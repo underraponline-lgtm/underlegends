@@ -838,6 +838,17 @@ sembrar, `crews_vivas.py` no toca nada: el objeto vacío borraría las crews de
 las cartas. Las 34 de antes se sembraron el 19/10 (`--sembrar`), cada persona
 en la misma crew.
 
+⚠️ **`crews.json` Y `crews_vivas.json` VAN EN `ARCHIVOS` de `guardar.sh`**: el
+paso 0a2 corre en `escuchar` y `dibujar` dibuja con lo que `escuchar`
+commiteó. Hasta el 19/10 no estaban, y una crew nueva no habría llegado nunca
+a una carta. **Crear pide sigla, logo y descripción** (el logo, por el filtro
+de los fondos: `crewConImagen()` de avisos.js); **una crew nueva tiene 7 días
+para sumar 2 personas** o se borra sola (`crewVencer()`). **Los tiers**,
+Bronce a Leyenda, suben o bajan cada lunes como las divisiones
+(`bot/crews_tiers.py`, un ESTADO en `datos/crews_tiers.json`); en Diamante se
+desbloquea la tarjeta de crew, que todavía no existe (nadie llega antes del
+16/11).
+
 ⚠️ **El lector de anuncios está en Python y en JS**, atados por
 `bot/avisos_casos.json`: si se toca uno, CI se pone rojo hasta que el otro
 lea igual. Y `python herramientas/probar_avisos.py` prueba la cadena

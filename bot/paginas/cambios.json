@@ -11,6 +11,20 @@
  ],
  "cambios": [
   {
+   "version": "3.64",
+   "dia": "2026-10-19",
+   "cuando": "2026-10-19T07:45:00-04:00",
+   "titulo": "Tiers de crews, como en el fútbol",
+   "items": [
+    "🏆 **Tiers de crews**: Bronce, Plata, Oro, Platino, Diamante, Maestro y Leyenda. Cada lunes a las 11 AM, cada crew **sube, baja o se mantiene** según los puntos que sumó su gente en la semana. Todas arrancan en Bronce, y la primera semana que cuenta es esta.",
+    "🎴 La crew que llega a **Diamante** desbloquea su propia tarjeta, personalizable por el Líder.",
+    "🛠️ Para armar una crew ahora hacen falta **sigla** (2 a 4 letras), **logo** y **descripción**. El logo pasa por un filtro automático: nada de desnudos, sangre, odio ni datos personales.",
+    "⏳ Una crew nueva tiene **una semana para sumar 2 personas**; si no, se borra sola. El Líder lo ve arriba de todo en la página de su crew, y le avisamos en la campana.",
+    "🖼️ El Líder cambia el logo y la descripción desde la página de su crew.",
+    "🔤 Los títulos de toda la página, con un solo estilo."
+   ]
+  },
+  {
    "version": "3.63",
    "dia": "2026-10-19",
    "cuando": "2026-10-19T07:00:00-04:00",
