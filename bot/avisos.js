@@ -864,6 +864,19 @@ export function batallaChat(L) {
  * (`rd`)—; `h2h` es `{ga, gb, ult}`: cuántas ganó cada uno entre ellos y quién ganó la última ('a', 'b' o ''). `buscar`
  * da la clave de un nombre de llave (o ''), `tabla` las filas por clave y `perf` los perfiles (`/api/perfiles`).
  */
+/**
+ * 🧾 Una persona para el vs de los otros formatos (2v2, 1v3, 8v1, todos contra todos): lo mismo que un lado del mano a
+ * mano —el OVR, el Score, la letra, los últimos 5 duelos y la racha— (19/10/2026, Dlx: «más algo de info como los de
+ * 1v1»). `dc` es lo de `datosCruce()`: la tabla, los perfiles y las cartas.
+ */
+export function personaVs(y, dc) {
+  const f = (y.k && (dc.tabla || {})[y.k]) || {};
+  const pf = (y.k && (dc.perf || {})[y.k]) || null;
+  const forma = ((pf && pf.du) || []).slice().sort((p, q) => Number(p[0]) - Number(q[0])).slice(-5).map((d) => (d[2] ? 'G' : 'P')).join('');
+  return { n: y.n, fl: y.fl, k: y.k, ovr: f.ovr || 0, sc: f.sc || 0, rg: f.rg || '', forma, racha: (pf && pf.rd && pf.rd[0]) || 0,
+    carta: y.k && dc.cartaDe ? dc.cartaDe(y.k) : '' };
+}
+
 export function infoCruce(lados, buscar, tabla, perf) {
   const lado = (n) => {
     const k = buscar(n) || '';
@@ -6806,8 +6819,7 @@ export class Avisos {
             lineas.push(lineaVoto(voto.a, voto.b, 0, 0, '', voto.mas, []));
             const titEv = escMd(String(nombre || L.nombre || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
             // 🧩 y el vs con todas las tarjetas, separadas por VS (`html_vs_grupos()` de bot/kit.py)
-            const persona = (y) => ({ n: y.n, fl: y.fl, k: y.k, ovr: (dc.tabla[y.k] || {}).ovr || 0, sc: (dc.tabla[y.k] || {}).sc || 0,
-              rg: (dc.tabla[y.k] || {}).rg || '', carta: y.k ? dc.cartaDe(y.k) : '' });
+            const persona = (y) => personaVs(y, dc);
             const vs = { ev: String(nombre || L.nombre || '').replace(/[_*~`]+/g, '').trim(), ronda: bat.r,
               titulo: equipos ? bat.lados.length + ' EQUIPOS' : 'TODOS CONTRA TODOS', sub: '', grupos: gs.map((g) => g.map(persona)) };
             ms.push({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n'), vs });
@@ -6850,8 +6862,7 @@ export class Avisos {
             // sale ya, con el texto, y la imagen se le agrega editándolo (una edición no le suena a nadie)
             // 🧩 CON EQUIPOS (2v2, 1v3, 8v1 del Multiverse) TAMBIÉN, con todas las tarjetas (19/10/2026, Dlx: «hacer algo
             // para que muestre sus tarjetas en estos formatos distintos»): `grupos`, que dibuja `html_vs_grupos()`
-            const persona = (y) => ({ n: y.n, fl: y.fl, k: y.k, ovr: (dc.tabla[y.k] || {}).ovr || 0, sc: (dc.tabla[y.k] || {}).sc || 0,
-              rg: (dc.tabla[y.k] || {}).rg || '', carta: y.k ? dc.cartaDe(y.k) : '' });
+            const persona = (y) => personaVs(y, dc);
             const vsEq = ga.length > 1 || gb.length > 1 ? { ev: String(nombre || L.nombre || '').replace(/[_*~`]+/g, '').trim(),
               ronda: bat.r, titulo: tt ? tt.t : '', sub: tt ? tt.sub || '' : '', grupos: [ga.map(persona), gb.map(persona)] } : null;
             const vs = vsEq || (ga.length === 1 && gb.length === 1) ? vsEq || { ev: String(nombre || L.nombre || '').replace(/[_*~`]+/g, '').trim(),

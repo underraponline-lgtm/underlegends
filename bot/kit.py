@@ -253,6 +253,8 @@ def prob_vs(a, b):
     return None
 
 
+#: 🧾 el alto de la tira de debajo de cada carta (la letra, los últimos 5 y la racha), contra el alto de la carta
+TIRA = 0.13
 #: 🎨 el color de cada lado en los otros formatos: el magenta de la Liga, el dorado, el verde, el celeste y el blanco
 COLORES_LADO = ('#E41373', '#FFD24A', '#29B298', '#58A6FF', '#F6F6F6')
 
@@ -341,6 +343,7 @@ def html_vs_grupos(v, d):
       · el nombre ya no se repite debajo de las tarjetas: la tarjeta lo trae. Sólo quien no tiene tarjeta lleva el
         suyo, adentro de su silueta."""
     from comun import sin_foto as SF
+    from comun.rangos import ACENTO
     grupos = [[y for y in (g or []) if y] for g in (v.get('grupos') or [])]
     grupos = [g for g in grupos if g][:5]
     S = len(grupos)
@@ -371,8 +374,30 @@ def html_vs_grupos(v, d):
         W = (1120 - (S - 1) * vsw) / max(1, S)
         zonas = [(40 + i * (W + vsw), W) for i in range(S)]
 
+    def tira(y, w):
+        """🧾 debajo de cada carta, como en el mano a mano (Dlx, 19/10/2026: «más algo de info como los de 1v1»): su
+        letra con su color, los últimos 5 duelos —verde ganó, magenta perdió— y la racha si es de 2 o más. Del tamaño
+        de la carta: con ocho por lado es chica. Alineada a la izquierda, que es lo que se ve cuando se superponen"""
+        partes = []
+        rg = str(y.get('rg') or '')
+        fs = max(11, min(22, int(w / 9)))
+        if rg:
+            col = ACENTO.get(rg.rstrip('+-−'), '#F6F6F6')
+            partes.append('<b class="rg" style="color:%s;border-color:%s;font-size:%dpx">%s</b>' % (col, col, fs, _e(rg)))
+        forma = re.sub(r'[^GP]', '', str(y.get('forma') or ''))[-5:]
+        if forma:
+            q = max(6, min(15, int(w / 15)))
+            partes.append('<span class="fm">%s</span>' % ''.join(
+                '<i class="%s" style="width:%dpx;height:%dpx"></i>' % ('g' if c == 'G' else 'p', q, q) for c in forma))
+        if int(y.get('racha') or 0) >= 2:
+            partes.append('<span class="rc" style="font-size:%dpx">🔥%d</span>' % (fs, int(y['racha'])))
+        return '<div class="gt">%s</div>' % ''.join(partes) if partes else ''
+
     def lado(g, x0, W):
-        filas, c, h, w, paso = acomodar(len(g), W, H)
+        # cada uno ocupa su carta MÁS la tira de abajo: la proporción de la caja entera, para que `acomodar()` los
+        # haga entrar igual que antes
+        filas, c, h, w, paso = acomodar(len(g), W, H, ratio=0.685 / (1 + TIRA))
+        alto_carta = w / 0.685
         alto_total = filas * h + (filas - 1) * 12
         out = []
         for i, y in enumerate(g):
@@ -388,12 +413,13 @@ def html_vs_grupos(v, d):
                 gira = 'transform:translateY(%.1fpx) rotate(%.1fdeg);' % (abs(off) * 5, max(-7, min(7, off * 3)))
             caja = 'left:%.1fpx;top:%.1fpx;width:%.1fpx;height:%.1fpx;z-index:%d;%s' % (left, top, w, h, 10 + i, gira)
             if y.get('carta'):
-                out.append('<img class="gc" style="%s" src="%s" alt="">' % (caja, _e(y['carta'])))
-                continue
-            fs = max(13, min(30, int(w / 8)))
-            ovr = '<span class="ovr" style="font-size:%dpx">OVR %d</span>' % (fs, y['ovr']) if y.get('ovr') else ''
-            out.append('<div class="gs" style="%s"><img class="sil" src="%s" alt=""><b style="font-size:%dpx">%s%s</b>%s</div>'
-                       % (caja, sil(y.get('n')), fs, _e(y.get('n') or '¿?'), bandera(y.get('fl')), ovr))
+                carta = '<img class="gc" style="height:%.1fpx" src="%s" alt="">' % (alto_carta, _e(y['carta']))
+            else:
+                fs = max(13, min(30, int(w / 8)))
+                ovr = '<span class="ovr" style="font-size:%dpx">OVR %d</span>' % (fs, y['ovr']) if y.get('ovr') else ''
+                carta = ('<div class="gs" style="height:%.1fpx"><img class="sil" src="%s" alt=""><b style="font-size:%dpx">%s%s</b>%s</div>'
+                         % (alto_carta, sil(y.get('n')), fs, _e(y.get('n') or '¿?'), bandera(y.get('fl')), ovr))
+            out.append('<div class="gi" style="%s">%s%s</div>' % (caja, carta, tira(y, w)))
         return ''.join(out)
 
     pr = prob_lados(grupos)
@@ -446,10 +472,18 @@ def html_vs_grupos(v, d):
 #c .chips .fmt{font-weight:900;font-size:24px;line-height:1;padding:6px 12px;border:3px solid #fff;font-style:italic}
 #c .chips .tit{display:inline-block;background:#FFD24A;color:#0a0a0d;font-size:22px;padding:6px 12px}
 #c .chips small{font-size:18px;opacity:.9;overflow:hidden;text-overflow:ellipsis}
-#c .gc{position:absolute;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.6));transform-origin:50%% 100%%}
-#c .gs{position:absolute;border:3px solid rgba(255,255,255,.3);border-radius:12px;background:#17171C;display:flex;flex-direction:column;
-  align-items:center;justify-content:flex-end;gap:6px;padding:10px 8px 14px;text-align:center;box-shadow:0 10px 18px rgba(0,0,0,.5);
-  transform-origin:50%% 100%%}
+#c .gi{position:absolute;display:flex;flex-direction:column;align-items:stretch;transform-origin:50%% 100%%}
+#c .gc{display:block;width:100%%;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.6))}
+#c .gs{border:3px solid rgba(255,255,255,.3);border-radius:12px;background:#17171C;display:flex;flex-direction:column;
+  align-items:center;justify-content:flex-end;gap:6px;padding:10px 8px 14px;text-align:center;box-shadow:0 10px 18px rgba(0,0,0,.5)}
+#c .gt{flex:1 1 auto;display:flex;align-items:center;justify-content:flex-start;gap:6px;margin-top:5px;padding:0 6px;
+  background:rgba(10,10,13,.82);border-radius:6px;overflow:hidden;white-space:nowrap}
+#c .gt .rg{font-weight:900;line-height:1;padding:1px 4px;border:2px solid;border-radius:3px}
+#c .gt .fm{display:flex;gap:3px}
+#c .gt .fm i{display:block;border:1.5px solid #fff}
+#c .gt .fm i.g{background:#29B298}
+#c .gt .fm i.p{background:#E41373}
+#c .gt .rc{font-weight:900;line-height:1;color:#FFD24A}
 #c .gs .sil{width:68%%;height:auto;opacity:.9;margin-bottom:auto;margin-top:12%%}
 #c .gs b{font-weight:900;line-height:1.05;text-transform:uppercase;overflow-wrap:anywhere}
 #c .gs .ovr{font-weight:900;color:#FFD24A}
