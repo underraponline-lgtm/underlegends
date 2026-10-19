@@ -75,7 +75,7 @@ const r5 = await yo.crewConImagen({ quien: String(7000000001), de: 'ana', accion
 ok(r5.ok && borrados.includes(viejo) && !r2.has(viejo) && r2.size === 2 && r5.viejos === undefined,
   'cambiar el logo borra el viejo de R2 (y no le devuelve URLs a la página)');
 ok((await yo.crewConImagen({ quien: String(7000000009), de: 'zoe', accion: 'logo', img: PNG })).error === 'sin_crew', 'sin crew, no hay logo que cambiar');
-const r6 = CW.crewDueno(yo, { que: 'logo', crew: 'Dudosa', si: false });
+const r6 = CW.crewDueno(yo, { que: 'logo', crew: 'Dudosa', si: false, url: CW.crewLogosDueno(yo).pend[0].url });
 await yo.borrarLogosCrew(r6.viejos);
 ok(r6.ok && r2.size === 1 && CW.crewLogosDueno(yo).pend.length === 0, 'el dueño descarta el dudoso y se borra de R2');
 // 🧽 el JPEG que arma Safari trae un Exif suyo: antes frenaba la crew con «trae datos escondidos»; ahora se le saca

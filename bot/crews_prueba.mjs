@@ -170,9 +170,12 @@ if (!DatabaseSync) {
   ok(lr.ok && lr.logo === 'revisar' && pubLg().logo === '' && pubLg().desc === CREAR.desc
     && CW.crewLogosDueno(o).pend.some((x) => x.id === 'Logos') && CW.crewMia(o, { quien: id(300), de: 'leo' }).logo_pend === true,
   'un logo dudoso: la crew se crea, el logo espera y no se ve');
-  ok(CW.crewDueno(o, { que: 'logo', crew: 'Logos', si: true }).ok && pubLg().logo.endsWith('/b.webp')
+  ok(CW.crewDueno(o, { que: 'logo', crew: 'Logos', si: true, url: 'https://pub.r2.dev/logos-crews/otro.webp' }).error === 'cambio',
+    'el dueño decide sobre el logo que vio: si no es el que espera, «cambio»');
+  ok(CW.crewDueno(o, { que: 'logo', crew: 'Logos', si: true, url: 'https://pub.r2.dev/logos-crews/b.webp' }).ok && pubLg().logo.endsWith('/b.webp')
+    && !CW.crewLogosDueno(o).vistos.some((x) => x.id === 'Logos')
     && bandeja.some((b) => b.quien === id(300) && /ya se ve/.test(b.titulo)), 'aprobado: se ve, y al Líder le llega');
-  const ql = CW.crewDueno(o, { que: 'logo', crew: 'Logos', si: false, motivo: 'no va' });
+  const ql = CW.crewDueno(o, { que: 'logo', crew: 'Logos', si: false, motivo: 'no va', url: 'https://pub.r2.dev/logos-crews/b.webp' });
   ok(ql.ok && ql.viejos[0].endsWith('/b.webp') && pubLg().logo === '' && bandeja.some((b) => b.quien === id(300) && /se quitó/.test(b.titulo)),
     'y se puede quitar uno que ya se ve (lo que el filtro dejó pasar)');
   yo(301, 'lu', { accion: 'pedir', crew: 'Logos' });
@@ -186,7 +189,40 @@ if (!DatabaseSync) {
   ok(CW.chequeoCrear(o, Object.assign({ quien: id(302), de: 'mia', inicial: 5000, nombre: 'Logos', sigla: 'LG' }, CREAR)).error === 'nombre_usado'
     && CW.chequeoCrear(o, Object.assign({ quien: id(302), de: 'mia', inicial: 5000, nombre: 'Nueva', sigla: 'NV' }, CREAR)).ok,
   'el chequeo de crear, sin escribir nada (antes de gastar la IA en el logo)');
+  // 🛡️ un logo nuevo esperando NO pone al viejo en «lo que aprobó el filtro», y «Quitar» sobre el viejo quita el viejo
+  db.prepare("UPDATE crews SET logo_t = 1 WHERE id = 'Logos'").run(); // el logo que se ve es de hace mucho
+  yo(300, 'leo', { accion: 'logo', logo_url: 'https://pub.r2.dev/logos-crews/e.webp', logo_v: 'revisar' });
+  const ld = CW.crewLogosDueno(o);
+  ok(ld.pend.some((x) => x.url.endsWith('/e.webp')) && !ld.vistos.some((x) => x.url.endsWith('/d.webp'))
+    && CW.crewDueno(o, { que: 'logo', crew: 'Logos', si: false, url: 'https://pub.r2.dev/logos-crews/d.webp' }).ok
+    && pubLg().logo === '' && CW.crewLogosDueno(o).pend.some((x) => x.url.endsWith('/e.webp')),
+  'con un logo esperando, el viejo no aparece como aprobado por el filtro, y quitar el que se ve no toca el que espera');
   CW.crewDueno(o, { que: 'borrar', crew: 'Logos' });
+  ok(CW.crewBasura(o).some((u) => u.endsWith('/e.webp')), 'borrar una crew manda sus logos a la basura (si no, quedaban en R2 para siempre)');
+  CW.crewBasuraLista(o, CW.crewBasura(o));
+
+  // 📨 invitar a quien ya está en otra crew, y cambiarse (Dlx, 19/10/2026: «por default que sí»)
+  const cx = yo(400, 'lia', { accion: 'crear', nombre: 'Cambio Uno', sigla: 'CU', entrada: 'abierta' });
+  yo(401, 'max', { accion: 'pedir', crew: 'Cambio Uno' });
+  yo(402, 'noa', { accion: 'pedir', crew: 'Cambio Uno' });
+  const cy = yo(403, 'oto', { accion: 'crear', nombre: 'Cambio Dos', sigla: 'CD', entrada: 'invitacion' });
+  const pubC = (id) => CW.crewsPublico(o).crews.find((c) => c.id === id);
+  ok(cx.ok && cy.ok && yo(403, 'oto', { accion: 'invitar', a: 'max' }).invitado === 'max'
+    && bandeja.some((b) => b.quien === id(401) && /Te invitaron a Cambio Dos/.test(b.titulo)),
+  'a quien ya está en otra crew se lo puede invitar, y le llega');
+  ok(yo(402, 'noa', { accion: 'pref_inv', si: false }).ok && yo(403, 'oto', { accion: 'invitar', a: 'noa' }).error === 'no_recibe'
+    && CW.crewMia(o, { quien: id(402), de: 'noa' }).recibe === false, 'quien apagó «recibir invitaciones» no recibe');
+  ok(yo(403, 'oto', { accion: 'invitar', a: 'lia' }).ok && yo(400, 'lia', { accion: 'responder', crew: 'Cambio Dos', si: true }).error === 'lider_pasa_primero',
+    'un Líder no se cambia sin pasar el liderazgo');
+  const sw = yo(401, 'max', { accion: 'responder', crew: 'Cambio Dos', si: true });
+  ok(sw.ok && sw.dejo === 'Cambio Uno' && pubC('Cambio Dos').gente.some((g) => g[0] === 'max') && !pubC('Cambio Uno').gente.some((g) => g[0] === 'max')
+    && bandeja.some((b) => b.quien === id(400) && /max se fue a Cambio Dos|se fue a Cambio Dos/.test(b.titulo)),
+  'aceptar estando en otra crew: se cambia en un paso, y a los de la vieja les llega');
+  yo(400, 'lia', { accion: 'invitar', a: 'max' });
+  ok(yo(401, 'max', { accion: 'responder', crew: 'Cambio Uno', si: true }).error === 'espera', 'cambiarse cuenta como salir: no se vuelve a mover en 7 días');
+  ok(yo(403, 'oto', { accion: 'invitar', a: 'max' }).error === 'ya_en_crew', 'a alguien de tu propia crew no se lo invita');
+  CW.crewDueno(o, { que: 'borrar', crew: 'Cambio Uno' });
+  CW.crewDueno(o, { que: 'borrar', crew: 'Cambio Dos' });
 
   // ⏳ la primera semana, en el tiempo
   const DIA = 86400000;

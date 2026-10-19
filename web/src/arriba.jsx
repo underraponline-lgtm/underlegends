@@ -1,7 +1,7 @@
 // Lo de arriba del Inicio: la cabecera negra, las historias, el escenario (el carrusel de momentos), la Tira de
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { MESES, capital, diaISO, ksDe, limpio, mult, norm, num, recorte, resultado, siglaDe, utc } from './liga.js';
+import { MESES, capital, diaISO, ksDe, limpio, mult, norm, num, recorte, resultado, siglaDe, srcLogo, utc } from './liga.js';
 import { Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, silueta, subirSiEsta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { useRacha } from './racha.js';
@@ -586,8 +586,7 @@ function claveCrew(n) {
 }
 
 export function CrewCirculo({ c, cls = 'h-c' }) {
-  // el de una crew de la gente viene de R2, con su URL entera (19/10/2026); los de antes, del repo
-  if (c.logo) return <span className={cls}><img alt="" src={/^https:\/\//.test(c.logo) ? c.logo : '/' + c.logo} /></span>;
+  if (c.logo) return <span className={cls}><img alt="" src={srcLogo(c.logo)} /></span>;
   const p = limpio(c.crew).split(' ');
   const mono = p.length > 1 ? p[0][0] + p[1][0] : p[0].slice(0, 2);
   return <span className={cls + ' mono'}>{mono.toUpperCase()}</span>;

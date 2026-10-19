@@ -3360,6 +3360,21 @@ a.rk-z:hover{border-color:var(--linea)}
 .cw-logo-b input{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
 .cw-desc-in{min-height:64px;padding:10px 12px;line-height:1.4;resize:vertical}
 .cw-desc{max-width:62ch;margin:0 0 14px;font:500 16px/1.5 Archivo,sans-serif}
+/* ⏳ crear tarda (el logo pasa por la IA del filtro): la barra por etapas y el aviso de no irse */
+.cw-campos{display:grid;gap:12px;min-width:0;margin:0;padding:0;border:0}
+.cw-campos:disabled{opacity:.55}
+.cw-cargando{display:grid;gap:8px;max-width:480px;padding:14px 16px;border:2px solid var(--linea);background:var(--caja)}
+.cw-cargando-t{font:900 18px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.cw-cargando-barra{height:12px;border:1.5px solid var(--linea);background:var(--fondo);overflow:hidden}
+.cw-cargando-barra i{display:block;height:100%;background:var(--verde);transition:width .25s linear}
+.cw-cargando-e{margin:0;font:600 15px/1.4 Archivo,sans-serif}
+.cw-cargando-e span{color:var(--gris);font-variant-numeric:tabular-nums}
+.cw-cargando-ojo{margin:0;padding:8px 10px;border-left:3px solid var(--magenta);font:600 14px/1.45 Archivo,sans-serif}
+.cw-listo{padding:10px 12px;border:2px solid var(--verde)}
+/* 📨 invitar a quien está en otra crew: de cuál es, y recibir o no invitaciones */
+.cw-en{color:var(--gris);font:600 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.cw-pref{display:inline-flex;align-items:center;gap:8px;min-height:40px;font:600 15px/1.3 Archivo,sans-serif;cursor:pointer}
+.cw-pref input{width:18px;height:18px;accent-color:var(--verde)}
 /* 🏆 el tier de una crew: el color viene del payload (bot/crews_tiers.py), acá sólo la forma */
 .tier-chip{display:inline-block;padding:4px 9px 3px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;
   white-space:nowrap}

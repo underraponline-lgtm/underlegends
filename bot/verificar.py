@@ -443,6 +443,16 @@ def main():
         print('  %d carta(s) chica(s), %.1f MB: la misma carta para la página, no se cuentan acá'
               % (len(chicas), sum(int(o['size']) for o in chicas) / 1024 ** 2))
     todos = [o for o in todos if not o['key'].endswith('.chica.webp')]
+    # 🖼️ Y LO QUE SUBE LA GENTE O EL CICLO QUE NO ES UNA CARTA (19/10/2026, la auditoría dio rojo con «3.105 webp en R2 ·
+    # 2.984 en el inventario»: 120 eran los flyers de las ligas y 1 un fondo). Cuarta vez de la misma forma: se cuentan
+    # aparte, a la vista, como las fotos y las chicas
+    OTRAS = (('ligas/', 'flyer(s) de las ligas'), ('fondos/', 'fondo(s) de perfil'), ('pendientes/', 'foto(s) de tarjeta esperando revisión'),
+             ('logos-crews/', 'logo(s) de crews'))
+    for pref, que in OTRAS:
+        xs = [o for o in todos if o['key'].startswith(pref)]
+        if xs:
+            print('  %d %s en %s, %.1f MB: no son cartas y no se cuentan acá' % (len(xs), que, pref, sum(int(o['size']) for o in xs) / 1024 ** 2))
+    todos = [o for o in todos if not o['key'].startswith(tuple(p for p, _ in OTRAS))]
     resto = [o for o in todos if not o['key'].startswith('fotos/')]
     objs = [o for o in resto if o['key'].endswith('.webp')]
     viejos = [o for o in resto if not o['key'].endswith('.webp')]

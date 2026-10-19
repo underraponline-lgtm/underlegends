@@ -1,6 +1,6 @@
 // El medio del Inicio: Fechas, Lo último, Los que mandan y el panel de abajo. Traducido de docs/remake/reales.py
 // (fechas, noticias, raperos, panel, tus_eventos, tu_temporada, numeros).
-import { DIAS, hora, limpio, minutosDelDia, num, resultado, siglaDe, utc } from './liga.js';
+import { DIAS, hora, limpio, minutosDelDia, num, resultado, siglaDe, srcLogo, utc } from './liga.js';
 import { Bandera, Cara, Carta, Compartir, Ico, Pest, Rango, Sec, aDiscord, accion, enlace, nombrePais } from './piezas.jsx';
 import { avance, premioTexto, proximoEspecial, usePase, usePases } from './pase.js';
 
@@ -247,7 +247,7 @@ export function LosQueMandan({ liga, dc }) {
   const miCrew = yo ? liga.crewDe(yo) : null;
   const xCrew = miCrew ? puestoDe(liga, crT, (c) => c.crew === miCrew.crew, (c) => c.pts || 0, 'pts') : null;
   cats.push(['crews', 'Crews', crT.slice(0, 5).map((c, i) => <McGrupo key={c.crew} n={i + 1} href={'#/crew/' + encodeURIComponent(c.clave || c.crew)}
-    img={c.logo ? <img className="mc-logo" alt="" src={'/' + c.logo} /> : <span className="mc-ini">{limpio(c.crew).slice(0, 2).toUpperCase()}</span>}
+    img={c.logo ? <img className="mc-logo" alt="" src={srcLogo(c.logo)} /> : <span className="mc-ini">{limpio(c.crew).slice(0, 2).toUpperCase()}</span>}
     nombre={limpio(c.crew)} dato={num(c.pts) + ' PTS · ' + c.n + ' RAPEROS'} />),
   xCrew ? <Puesto cara={null} quien={'TU CREW · ' + limpio(miCrew.crew).toUpperCase()} pos={'#' + xCrew.pos} txt={xCrew.txt} href="#/ranking/crews" /> : null]);
   // sin haber entrado (ni con Discord ni eligiendo quién sos), la invitación a verse

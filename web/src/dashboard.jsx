@@ -2044,8 +2044,10 @@ function LogosCrews({ cl }) {
     setOcup(x.id); setMsg('');
     try {
       const r = await fetch('/api/avisos/dueno/crew', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ que: 'logo', crew: x.id, si, motivo: si ? '' : motivo[x.id] || MOTIVOS_FONDO[0] }) });
+        body: JSON.stringify({ que: 'logo', crew: x.id, url: x.url, si, motivo: si ? '' : motivo[x.id] || MOTIVOS_FONDO[0] }) });
       const j = await r.json().catch(() => ({}));
+      // 🛡️ se decide sobre el logo que viste: si el Líder subió otro mientras tanto, el objeto contesta `cambio`
+      if (j.error === 'cambio') throw new Error('el logo de esta crew cambió mientras lo mirabas: recargá el Dashboard');
       if (!r.ok || j.error) throw new Error(j.error || String(r.status));
       setLista(Object.assign({}, lista, { [de]: lista[de].filter((y) => y.id !== x.id) }));
     } catch (e) { setMsg('No se pudo: ' + e.message); }

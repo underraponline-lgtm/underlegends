@@ -2,7 +2,7 @@
 // aceptar una invitación, invitar, y el panel de quien manda —los pedidos, los rangos, sacar, pasar el liderazgo, los
 // representantes, cómo se entra, el nombre y cerrarla—. Y «Mi crew» en Mi cuenta, con el formulario para crear una.
 // ⚠️ Lo que el rol no deja, no se muestra; y si igual se pide, el objeto dice que no (la página no decide nada).
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { limpio, norm, num } from './liga.js';
 import { Cara, DosToques } from './piezas.jsx';
 import { aBase64, achicar } from './imagen.js';
@@ -48,6 +48,36 @@ function ElegirLogo({ vista, onElegido, onError, chico }) {
       <label className="btn borde2 chico cw-logo-b">{vista ? 'Cambiar' : 'Elegir el logo'}
         <input type="file" accept="image/png,image/jpeg,image/webp" onChange={elegir} /></label>
     </span>
+  );
+}
+// ⏳ CREAR UNA CREW TARDA, Y LA PÁGINA NO DECÍA NADA (Dlx, 19/10/2026, después de armar la suya: «que diga está
+// cargando… por favor no cambiar la página ni salirse ni apagar el dispositivo… o una barra de progreso porque se
+// demoró»). El logo pasa por la IA del filtro antes de guardarse: de 5 a 30 segundos. Cuánto falta de verdad no se
+// sabe —es un solo pedido—, así que la barra avanza por etapas según el tiempo, nunca llega sola al final, y se va
+// cuando el objeto contesta. Mientras tanto, salir de la página pide confirmar: si se corta, la crew puede quedar a medias.
+const ETAPAS_CREAR = [[0, 'Subiendo el logo'], [2500, 'Revisando el logo con el filtro automático'], [14000, 'Armando la crew'],
+  [26000, 'Ya casi: el filtro está tardando un poco más']];
+const ETAPAS_LOGO = [[0, 'Subiendo el logo'], [2500, 'Revisando el logo con el filtro automático'], [20000, 'Ya casi: el filtro está tardando un poco más']];
+function Cargando({ titulo, etapas }) {
+  const [t, setT] = useState(0);
+  useEffect(() => {
+    const t0 = Date.now();
+    const iv = setInterval(() => setT(Date.now() - t0), 250);
+    const salir = (e) => { e.preventDefault(); e.returnValue = ''; };
+    window.addEventListener('beforeunload', salir);
+    return () => { clearInterval(iv); window.removeEventListener('beforeunload', salir); };
+  }, []);
+  const pct = Math.min(95, Math.round(95 * (1 - Math.exp(-t / 9000))));
+  const etapa = etapas.filter(([d]) => t >= d).pop()[1];
+  return (
+    <div className="cw-cargando" role="status" aria-live="polite">
+      <b className="cw-cargando-t">{titulo}</b>
+      <div className="cw-cargando-barra" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct} aria-label={etapa}>
+        <i style={{ width: pct + '%' }} />
+      </div>
+      <p className="cw-cargando-e">{etapa}… <span>{pct}%</span></p>
+      <p className="cw-cargando-ojo">⚠️ No cierres ni cambies la página, y no apagues el dispositivo. Puede tardar hasta medio minuto.</p>
+    </div>
   );
 }
 const msgLogo = (j) => (j && j.logo === 'revisar' ? ' El logo lo revisa la Liga antes de mostrarse: te avisamos en la campana.' : '');
@@ -134,6 +164,22 @@ export function TierCrew({ T, id }) {
   );
 }
 
+/** Todos los que tienen perfil (`/api/perfiles`, `p[k].f`): se piden la primera vez que se busca, como en el buscador
+ *  de arriba (`Buscar` de arriba.jsx). La tabla de la temporada sola dejaba afuera a quien no jugó la T1 (Dlx, 19/10/2026:
+ *  «quiero invitar a mi admin Lil Drako pero no aparece»). */
+function usePerfiles(activo) {
+  const [todos, setTodos] = useState(null);
+  useEffect(() => {
+    if (todos || !activo || typeof window.perfiles !== 'function') return undefined;
+    let vivo = true;
+    Promise.resolve(window.perfiles()).then((d) => { if (vivo && d && d.p) setTodos(d.p); }).catch(() => {});
+    return () => { vivo = false; };
+  }, [activo, todos]);
+  return todos;
+}
+// «lildrako» encuentra a «Lil Drako»: también se compara todo junto, sin espacios ni signos
+const junto = (s) => norm(s).replace(/[^\p{L}\p{N}]/gu, '');
+
 // ── entrar: lo que ve quien no está en esa crew ──────────────────────────────────────────────────────────────────────
 export function EntrarCrew({ c }) {
   const { mia, todas } = useCrews();
@@ -144,7 +190,20 @@ export function EntrarCrew({ c }) {
   const inv = mia && (mia.inv || []).find((x) => x.crew === c.id);
   const pedi = mia && (mia.ped || []).find((x) => x.crew === c.id);
   let cuerpo;
-  if (yo) cuerpo = <p className="cw-nota">Estás en <a href={enlaceCrew(yo.id)}>{limpio(yo.nombre)}</a>: para entrar a otra, primero salí de esa.</p>;
+  if (yo && inv) {
+    // 📨 invitado estando en otra crew (19/10/2026): aceptar es cambiarse
+    cuerpo = (
+      <div className="cw-entrar">
+        <p className="cw-nota">Te invitaron. Estás en <a href={enlaceCrew(yo.id)}>{limpio(yo.nombre)}</a>: si aceptás, la dejás{mia.rol === 'lider'
+          ? ', pero antes tenés que pasarle el liderazgo a alguien' : ''}, y por 7 días no te podés cambiar de nuevo.</p>
+        <div className="cw-fila">
+          <button type="button" className="btn verde" disabled={va || mia.rol === 'lider'}
+            onClick={() => hacer({ accion: 'responder', crew: c.id, si: true }, (j) => '¡Entraste!' + (j.dejo ? ' Dejaste ' + limpio(j.dejo) + '.' : ''))}>Aceptar y cambiarme</button>
+          <button type="button" className="btn borde2" disabled={va} onClick={() => hacer({ accion: 'responder', crew: c.id, si: false })}>No, gracias</button>
+        </div>
+      </div>
+    );
+  } else if (yo) cuerpo = <p className="cw-nota">Estás en <a href={enlaceCrew(yo.id)}>{limpio(yo.nombre)}</a>: para entrar a otra, primero salí de esa (o que te inviten).</p>;
   else if (inv) {
     cuerpo = (
       <div className="cw-fila">
@@ -175,6 +234,7 @@ export function PanelCrew({ liga, c }) {
   const { va, msg, hacer, setMsg } = useAccion();
   const [q, setQ] = useState('');
   const busca = useRef(null);
+  const todos = usePerfiles(q.trim().length >= 2);
   if (!c || !mia || !mia.crew || mia.crew.id !== c.id) return null;
   const rol = mia.rol;
   const manda = rol === 'lider' || rol === 'colider';
@@ -182,8 +242,15 @@ export function PanelCrew({ liga, c }) {
   const maxReps = (todas && todas.ranking && todas.ranking.n) || 5;
   const reps = c.reps || [];
   const gente = c.gente || [];
-  const nq = norm(q);
-  const candidatos = nq.length >= 2 ? Object.values(liga.T).filter((f) => norm(f.n).includes(nq) && !crewDe(f.k) && f.k !== mia.de).slice(0, 8) : [];
+  const nq = norm(q).trim(), nqc = junto(q);
+  // 📨 TODOS LOS QUE TIENEN PERFIL, TAMBIÉN LOS QUE ESTÁN EN OTRA CREW (19/10/2026): antes sólo la tabla de la temporada y
+  // sin crew, y el buscador decía «nadie» de Velatz (Líder de otra) y de Lil Drako (no jugó la T1)
+  const pool = new Map();
+  Object.values(liga.T).forEach((f) => { if (f && f.k) pool.set(f.k, f); });
+  Object.values(todos || {}).forEach((x) => { if (x && x.f && x.f.k && !pool.has(x.f.k)) pool.set(x.f.k, x.f); });
+  const deMiCrew = new Set(gente.map((g) => g[0]));
+  const candidatos = nq.length >= 2 ? [...pool.values()].filter((f) => f.k !== mia.de && !deMiCrew.has(f.k)
+    && (norm(f.n).includes(nq) || (nqc.length >= 2 && junto(f.n).includes(nqc)))).slice(0, 8) : [];
   const yaInvitados = new Set((mia.invitados || []).map((x) => x.k));
   return (
     <section className="cw-panel" aria-label="Tu crew">
@@ -225,12 +292,13 @@ export function PanelCrew({ liga, c }) {
                 <ul className="cw-lista">{candidatos.map((f) => (
                   <li key={f.k}>
                     <Cara liga={liga} k={f.k} nombre={f.n} cls="cara cw-cara" />
-                    <span>{limpio(f.n)}</span>
+                    <span>{limpio(f.n)}{crewDe(f.k) ? <small className="cw-en"> · en {limpio(crewDe(f.k).c.nombre)}</small> : null}</span>
                     <span className="cw-acc">{yaInvitados.has(f.k) ? <small>Invitado</small>
                       : <button type="button" className="btn verde chico" disabled={va} onClick={() => hacer({ accion: 'invitar', a: f.k }, 'Invitación enviada a ' + limpio(f.n) + '.')}>Invitar</button>}</span>
                   </li>
                 ))}</ul>
-              ) : nq.length >= 2 ? <p className="cw-nota">Nadie sin crew con ese nombre.</p> : null}
+              ) : nq.length >= 2 ? <p className="cw-nota">{todos ? 'Nadie con ese nombre.' : 'Buscando…'}</p> : null}
+              <small className="cw-nota">A quien ya está en otra crew también lo podés invitar: si acepta, se cambia a la tuya.</small>
               {(mia.invitados || []).length ? <p className="cw-nota">Esperan respuesta: {mia.invitados.map((x) => nombreDe(liga, x.k)).join(', ')}.</p> : null}
             </>
           )}
@@ -290,6 +358,7 @@ function AjustesLider({ c, va, hacer, setMsg, pend }) {
   const [sigla, setSigla] = useState(c.sigla || '');
   const [desc, setDesc] = useState(c.desc || '');
   const [logo, setLogo] = useState(null);
+  const [subiendo, setSubiendo] = useState(false);
   return (
     <div className="cw-bloque">
       <h3 className="cw-h">Cómo se entra</h3>
@@ -308,9 +377,15 @@ function AjustesLider({ c, va, hacer, setMsg, pend }) {
       <h3 className="cw-h">El logo</h3>
       <div className="cw-fila">
         <ElegirLogo vista={logo ? logo[1] : c.logo} chico onElegido={(b, u) => setLogo([b, u])} onError={setMsg} />
-        {logo ? <button type="button" className="btn verde chico" disabled={va}
-          onClick={async () => { const j = await hacer({ accion: 'logo', img: await aBase64(logo[0]) }, (r) => 'Listo.' + msgLogo(r)); if (j) setLogo(null); }}>Subir el logo</button> : null}
+        {logo && !subiendo ? <button type="button" className="btn verde chico" disabled={va}
+          onClick={async () => {
+            setSubiendo(true);
+            const j = await hacer({ accion: 'logo', img: await aBase64(logo[0]) }, (r) => 'Listo.' + msgLogo(r));
+            setSubiendo(false);
+            if (j) setLogo(null);
+          }}>Subir el logo</button> : null}
       </div>
+      {subiendo ? <Cargando titulo="Subiendo el logo de la crew" etapas={ETAPAS_LOGO} /> : null}
       {pend ? <small className="cw-nota">Tu logo nuevo espera que lo revise la Liga.</small> : null}
       <h3 className="cw-h">La descripción</h3>
       <form className="cw-crear" onSubmit={(e) => { e.preventDefault(); hacer({ accion: 'desc', desc: desc.trim() }, 'Listo.'); }}>
@@ -326,7 +401,8 @@ function AjustesLider({ c, va, hacer, setMsg, pend }) {
 export function InvitarACrew({ k, nombre }) {
   const { mia } = useCrews();
   const { va, msg, hacer } = useAccion();
-  if (!mia || !mia.crew || !['lider', 'colider', 'veterano'].includes(mia.rol) || k === mia.de || crewDe(k)) return null;
+  const suya = crewDe(k);
+  if (!mia || !mia.crew || !['lider', 'colider', 'veterano'].includes(mia.rol) || k === mia.de || (suya && suya.c.id === mia.crew.id)) return null;
   const ya = (mia.invitados || []).some((x) => x.k === k);
   return (
     <span className="cw-inv-b">
@@ -346,14 +422,40 @@ export function MiCrew({ liga, dc }) {
   const [desc, setDesc] = useState('');
   const [logo, setLogo] = useState(null);
   const [entrada, setEntrada] = useState('pedido');
+  const [armando, setArmando] = useState(false);
   if (!dc) return <p className="cu-d">Entrá con Discord para armar tu crew o aceptar una invitación.</p>;
   if (!mia) return <p className="cu-d">Mirando tu crew…</p>;
   if (!mia.de) return <p className="cu-d">Las crews son de los Miembros de Discord Rap Español: <a href="#/cuenta/verificar">verificate</a> y armá la tuya o sumate a una.</p>;
   if (mia.crew) {
     return (
       <div className="cw-mia">
+        {msg ? <p role="status" className="cw-msg cw-listo">{msg}</p> : null}
         <SemanaCrew c={mia.crew} rol={mia.rol} />
         <p className="cu-d">Sos <RolCrew rol={mia.rol} /> de <a href={enlaceCrew(mia.crew.id)}><b>{limpio(mia.crew.nombre)}</b></a> · {mia.crew.gente.length} de {mia.max}.</p>
+        {mia.logo_pend ? <p className="cu-d">🖼️ El logo de tu crew espera que lo revise la Liga: te avisamos en la campana cuando se vea.</p> : null}
+        {(mia.inv || []).length ? (
+          <div className="cw-bloque">
+            <h3 className="cw-h">Te invitaron a otra crew</h3>
+            <ul className="cw-lista">{mia.inv.map((x) => (
+              <li key={x.crew}>
+                <a href={enlaceCrew(x.crew)}><b>{limpio(x.nombre)}</b></a>
+                <small>te invitó {nombreDe(liga, x.de)}</small>
+                <span className="cw-acc">
+                  <button type="button" className="btn verde chico" disabled={va || mia.rol === 'lider'}
+                    onClick={() => hacer({ accion: 'responder', crew: x.crew, si: true }, '¡Te cambiaste a ' + limpio(x.nombre) + '!')}>Aceptar y cambiarme</button>
+                  <button type="button" className="btn borde2 chico" disabled={va} onClick={() => hacer({ accion: 'responder', crew: x.crew, si: false })}>No</button>
+                </span>
+              </li>
+            ))}</ul>
+            <small className="cw-nota">{mia.rol === 'lider' ? 'Sos Líder: para cambiarte, primero pasale el liderazgo a alguien de tu crew.'
+              : 'Si aceptás, dejás ' + limpio(mia.crew.nombre) + ' y por 7 días no te podés cambiar de nuevo.'}</small>
+          </div>
+        ) : null}
+        <label className="cw-pref">
+          <input type="checkbox" checked={mia.recibe !== false} disabled={va}
+            onChange={(e) => hacer({ accion: 'pref_inv', si: e.target.checked }, e.target.checked ? 'Vas a recibir invitaciones de otras crews.' : 'Ya no vas a recibir invitaciones de otras crews.')} />
+          Recibir invitaciones de otras crews
+        </label>
         <a className="btn verde chico" href={enlaceCrew(mia.crew.id)}>Ir a la crew</a>
       </div>
     );
@@ -386,10 +488,14 @@ export function MiCrew({ liga, dc }) {
         <p className="cu-d cw-aviso-semana">⏳ Después tenés <b>una semana para sumar {sumar} personas</b> a la crew. Si no llegan, la crew se borra y los Puntos no vuelven.</p>
         <form className="cw-crear" onSubmit={async (e) => {
           e.preventDefault();
+          if (armando) return;
           if (!logo) { setMsg('Falta el logo de la crew.'); return; }
-          hacer({ accion: 'crear', nombre: nombre.trim(), sigla: sigla.trim(), desc: desc.trim(), entrada, img: await aBase64(logo[0]) },
+          setArmando(true);
+          await hacer({ accion: 'crear', nombre: nombre.trim(), sigla: sigla.trim(), desc: desc.trim(), entrada, img: await aBase64(logo[0]) },
             (j) => '¡Tu crew está armada! Ahora sumá a ' + sumar + ' personas en una semana.' + msgLogo(j));
+          setArmando(false);
         }}>
+          <fieldset className="cw-campos" disabled={armando}>
           <div className="cw-logo-campo"><span className="cw-logo-t">Logo</span>
             <ElegirLogo vista={logo && logo[1]} onElegido={(b, u) => setLogo([b, u])} onError={setMsg} />
             <small>Cuadrado, se ve en un círculo. Pasa por el filtro automático: nada de desnudos, sangre, odio ni datos personales.</small></div>
@@ -400,8 +506,11 @@ export function MiCrew({ liga, dc }) {
           <fieldset className="cw-reps"><legend>Cómo se entra</legend>{Object.entries(ENTRADA_NOMBRE).map(([k, t]) => (
             <label key={k} className={'cw-rep' + (entrada === k ? ' on' : '')}><input type="radio" name="cw-ent" checked={entrada === k} onChange={() => setEntrada(k)} />{t}</label>
           ))}</fieldset>
-          <button type="submit" className="btn verde" disabled={va || espera || (typeof mia.saldo === 'number' && mia.saldo < precio)}>
-            Armar la crew · {num(precio)}</button>
+          </fieldset>
+          {armando ? <Cargando titulo="Armando tu crew" etapas={ETAPAS_CREAR} /> : (
+            <button type="submit" className="btn verde" disabled={va || espera || (typeof mia.saldo === 'number' && mia.saldo < precio)}>
+              Armar la crew · {num(precio)}</button>
+          )}
         </form>
       </div>
       {msg ? <p role="status" className="cw-msg">{msg}</p> : null}

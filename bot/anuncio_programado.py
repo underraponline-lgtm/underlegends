@@ -100,10 +100,16 @@ def mandar(aplicar=True):
     hechos = 0
     for a in tocar:
         ch_de = dict(canales(a.get('servidores') or []))
+        # 🛡️ si un mensaje no salió en un canal, los que siguen en ESE canal esperan a la corrida siguiente: si no, el
+        # segundo saldría antes que el primero, el del @here (la revisión del 19/10/2026)
+        trabados = set()
         for s, i in pendientes(a, mandados):
+            if s in trabados:
+                continue
             ch = ch_de.get(s)
             m = a['mensajes'][i]
             if not ch:
+                trabados.add(s)
                 print('   🔴 %s: no hay canales.%s.novedades' % (a['id'], s))
                 continue
             ult = requests.get('%s/channels/%s/messages?limit=30' % (API, ch), headers=h, timeout=20)
@@ -113,6 +119,7 @@ def mandar(aplicar=True):
                 r = requests.post('%s/channels/%s/messages' % (API, ch), headers=h, data=json.dumps(cuerpo), timeout=30)
                 if r.status_code not in (200, 201):
                     print('   🔴 %s → %s: Discord contestó %s %s' % (a['id'], s, r.status_code, r.text[:160]))
+                    trabados.add(s)
                     continue
                 mid = r.json().get('id')
                 hechos += 1

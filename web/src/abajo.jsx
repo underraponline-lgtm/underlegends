@@ -3,7 +3,7 @@
 // y los servidores (Dlx: «la TIENDA no debería estar ahí, debería estar merchandising» y «los servidores de la liga
 // estando abajo es algo tonto porque ya están arriba»), y El Elegido se mudó a Encuestas.
 import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { limpio, nuevaQue, num } from './liga.js';
+import { limpio, nuevaQue, num, srcLogo } from './liga.js';
 import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, promoAbierta, subirSiEsta } from './piezas.jsx';
 import { Buscar, CaraDc, CaraH, MENU, Orbe, QUE_ES } from './arriba.jsx';
 import { abrirVideo } from './video.jsx';
@@ -670,7 +670,7 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
     : g.tipo === 'liga' ? <span className="h-c"><img alt="" src="/ul.png" /></span>
     : g.tipo === 'promos' ? <span className="h-c"><Orbe /></span>
     : g.tipo === 'pais' ? <span className="h-c bandera"><img alt="" src={'/banderas/g/' + g.cc + '.webp'} /></span>
-      : g.tipo === 'crew' ? (g.crew.logo ? <span className="h-c"><img alt="" src={'/' + g.crew.logo} /></span> : <span className="h-c mono">{g.nom.slice(0, 2).toUpperCase()}</span>)
+      : g.tipo === 'crew' ? (g.crew.logo ? <span className="h-c"><img alt="" src={srcLogo(g.crew.logo)} /></span> : <span className="h-c mono">{g.nom.slice(0, 2).toUpperCase()}</span>)
         : <span className="h-c"><img alt="" src={g.logo} /></span>;
   return (
     <div className="hv-ov" onClick={(e) => { if (e.target === e.currentTarget) onCerrar(); }}>

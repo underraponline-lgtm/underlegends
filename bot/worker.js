@@ -2874,13 +2874,14 @@ export function utcDeZona(dia, mes, h, mi, z, ahora = Date.now()) {
 // manda DMs. Se lo menciona —eso sí le suena— y nadie más puede aceptar por él.
 const ERRORES_CREW = {
   verificate: 'Las crews son de los Miembros de Discord Rap Español: primero verificate (`/verificar`).',
-  ya_en_crew: 'Ya está en una crew.',
+  ya_en_crew: 'Ya está en esa crew.',
+  no_recibe: 'Esa persona no recibe invitaciones mientras está en su crew.',
   espera: 'Saliste de una crew hace poco: hay que esperar 7 días para entrar a otra.',
   llena: 'La crew está llena: son 20 como máximo.',
   solo_invitacion: 'A esa crew se entra sólo por invitación.',
   sin_invitacion: 'Esa invitación ya no está (vencen a la semana).',
   rol: 'Tu rango en la crew no te deja hacer eso.',
-  lider_pasa_primero: 'Sos el Líder: antes de irte, pasale el liderazgo a alguien desde la página de tu crew.',
+  lider_pasa_primero: 'Sos el Líder: antes de irte (o de cambiarte de crew), pasale el liderazgo a alguien desde la página de tu crew.',
   sin_crew: 'No estás en ninguna crew.',
   no_existe: 'Esa crew ya no existe.',
   espera_dia: 'Ya hiciste mucho de esto hoy: probá mañana.',

@@ -4330,7 +4330,7 @@ export async function rutaAvisos(req, env, ruta) {
     if (!(await puede(q.id, d.que === 'logo' ? 'fondos' : 'ajustes'))) return json({ error: 'no' }, 403);
     return elObjeto(env).fetch('https://avisos/crew-dueno', {
       method: 'POST', body: JSON.stringify({ que: d.que, crew: d.crew, a: d.a, nombre: d.nombre, si: d.si,
-        motivo: String(d.motivo || '').slice(0, 120), por: q.id }),
+        motivo: String(d.motivo || '').slice(0, 120), url: typeof d.url === 'string' ? d.url.slice(0, 300) : '', por: q.id }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -5794,7 +5794,7 @@ export class Avisos {
       if (ruta === '/seguidores') return json(this.seguidores(), 200, 60);
       if (ruta === '/servidores') return json(this.servidoresElegidos(), 200, 60);
       // 👥 todas las crews, sin ningún Discord ID: la página y el ciclo (`bot/crews_vivas.py`)
-      if (ruta === '/crews') return json(CW.crewsPublico(this), 200, 60);
+      if (ruta === '/crews') { const r = CW.crewsPublico(this); await this.vaciarBasuraCrews(); return json(r, 200, 60); }
       if (ruta === '/aplausos') return json(this.aplausosCuenta(), 200, 20);
       if (ruta === '/promos-extra') return json(this.promosExtra(), 200, 60);
       if (ruta === '/promos-vistas') return json(this.promosVistas(), 200, 60);
@@ -5891,11 +5891,13 @@ export class Avisos {
       }
       if (ruta === '/bandeja') return this.bandeja(d);
       // 👥 las crews: quién actúa y de qué perfil lo dice el Worker (`/avisos/crew`, el bot), nunca la página
-      if (ruta === '/crew') { const r = await this.crewConImagen(d); return json(r, r.estado || 200); }
+      if (ruta === '/crew') { const r = await this.crewConImagen(d); await this.vaciarBasuraCrews(); return json(r, r.estado || 200); }
       if (ruta === '/crew-mia') return json(CW.crewMia(this, d));
       if (ruta === '/crew-dueno') {
         const r = CW.crewDueno(this, d);
         if (r.viejos) await this.borrarLogosCrew(r.viejos);
+        delete r.viejos;
+        await this.vaciarBasuraCrews();
         return json(r, r.estado || 200);
       }
       if (ruta === '/crews-sembrar') { const r = CW.sembrar(this, d); return json(r, r.estado || 200); }
@@ -6303,6 +6305,7 @@ export class Avisos {
       this.sql.exec('DELETE FROM chat_vivo WHERE t < ?', ahora - 2 * DIA_MS);
       // 👥 y de las crews, lo vencido: invitaciones y pedidos de más de una semana, esperas cumplidas
       try { CW.crewLimpiar(this); } catch (e) { /* sigue */ }
+      await this.vaciarBasuraCrews();
     }
     this.guardar('vigia', {
       t: ahora, canales: (canales.lista || []).length, leidos, nuevos, errores,
@@ -10072,6 +10075,16 @@ export class Avisos {
     if (r.viejos) await this.borrarLogosCrew(r.viejos);
     delete r.viejos;
     return r;
+  }
+
+  /** 🗑️ Los logos de las crews que se borraron (bot/crews.js `crewBasura()`), fuera de R2. Nunca frena nada. */
+  async vaciarBasuraCrews() {
+    try {
+      const urls = CW.crewBasura(this);
+      if (!urls.length) return;
+      await this.borrarLogosCrew(urls);
+      CW.crewBasuraLista(this, urls);
+    } catch (e) { /* la próxima */ }
   }
 
   /** Borra de R2 logos de crews que ya no se usan. Sólo los de su carpeta: nunca una carta ni un fondo. */

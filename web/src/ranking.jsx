@@ -16,7 +16,7 @@
 // Lo que agrega el remake (estructura, no pintura): el podio con las cartas de verdad, «tu lugar» siempre a la vista
 // con «Encontrarme», los filtros de servidor, país y a quién seguís, y en el celular las columnas que entran.
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
-import { MESES, limpio, norm, num, resultado, siglaDe, utc } from './liga.js';
+import { MESES, limpio, norm, num, resultado, siglaDe, srcLogo, utc } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
 import { useDesliza } from './anima.js';
 import { SeBusca } from './abajo.jsx';
@@ -106,8 +106,7 @@ function Pais({ x, f }) {
 
 function LogoCrew({ c, cls }) {
   const [mal, setMal] = useState(false);
-  // el logo que subió el líder viene de R2, con su URL entera (19/10/2026)
-  if (c.logo && !mal) return <img className={cls} alt="" src={/^https:\/\//.test(c.logo) ? c.logo : '/' + String(c.logo).replace(/^\//, '')} loading="lazy" onError={() => setMal(true)} />;
+  if (c.logo && !mal) return <img className={cls} alt="" src={srcLogo(c.logo)} loading="lazy" onError={() => setMal(true)} />;
   return <span className={cls + ' ini'}>{limpio(c.crew).slice(0, 2).toUpperCase()}</span>;
 }
 

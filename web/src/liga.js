@@ -102,6 +102,15 @@ export function nuevaQue(a, b) {
   }
   return false;
 }
+/**
+ * 🖼️ LA DIRECCIÓN DEL LOGO DE UNA CREW, EN UN SOLO LUGAR (19/10/2026). El de una crew que subió su Líder viene de R2 con
+ * la URL entera; los de antes, del repo (`logos/crews/X.webp`). Cuatro lugares la armaban a mano y dos le pegaban la
+ * barra a la URL entera —`/https://…`, un 404—: el Inicio y las historias (lo encontró la revisión del 19/10).
+ */
+export function srcLogo(logo) {
+  if (!logo) return '';
+  return /^https:\/\//.test(logo) ? logo : '/' + String(logo).replace(/^\//, '');
+}
 export function hora(t) {
   const d = utc(t);
   if (W.fmtHora) return W.fmtHora(d);

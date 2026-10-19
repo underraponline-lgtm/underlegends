@@ -29,6 +29,11 @@
 //     con algo que no va, no entra y la crew no se crea; dudoso, la crew se crea y el logo espera en el Dashboard (lo
 //     revisan los que revisan los fondos). El líder lo cambia cuando quiera, con el mismo filtro
 //   · LA DESCRIPCIÓN: de 10 a 160 caracteres, sin menciones ni links (`descCrew()`)
+// Y esa tarde, armando la suya: «que a pesar de que estés en una crew, que puedas configurar en tu cuenta que puedas
+// recibir invitaciones a unirte a otras crews estando en una crew… por default dejalo que sí»:
+//   · A QUIEN YA ESTÁ EN UNA CREW SE LO PUEDE INVITAR, salvo que haya apagado «recibir invitaciones» (`crew_prefs`; sin
+//     fila, sí). Si acepta, SE CAMBIA: sale de la suya y entra a la nueva, en un paso. Cuenta como salir: los 7 días
+//     corren desde ahí, así que no se salta de crew en crew. Un Líder primero pasa el liderazgo, como para irse
 //
 // 🔑 DE QUIÉN ES CADA COSA: un miembro es un PERFIL (`k`, la clave de la página: `oasis`, `volk-co`), no una cuenta de
 // Discord. Quien actúa lo dice el Worker —`quien` (su Discord ID) y `de` (su perfil, de `d:<id>`: sólo verificados)—,
@@ -116,7 +121,7 @@ export function puede(rol, que, sobre = '') {
 // la clave de un perfil: la misma regla que `claveValida()` de avisos.js
 const claveOk = (k) => typeof k === 'string' && k.length >= 1 && k.length <= 60 && /^[\p{L}\p{N}][\p{L}\p{N}-]*$/u.test(k);
 export const ACCIONES = ['crear', 'responder', 'pedir', 'cancelar_pedido', 'invitar', 'desinvitar', 'decidir', 'salir', 'sacar',
-  'rol', 'lider', 'reps', 'entrada', 'nombre', 'borrar', 'logo', 'desc'];
+  'rol', 'lider', 'reps', 'entrada', 'nombre', 'borrar', 'logo', 'desc', 'pref_inv'];
 
 /**
  * La forma de un pedido de la página o del bot, antes de llegar al objeto: sólo los campos de cada acción y con su
@@ -195,9 +200,14 @@ export function crewTablas(sql) {
   try { sql.exec('ALTER TABLE crews ADD COLUMN vence_aviso INTEGER NOT NULL DEFAULT 0'); } catch (e) { /* ya estaba */ }
   // el logo (el que se ve y el que espera revisión, con cuándo se subió) y la descripción (19/10/2026)
   for (const col of ["logo TEXT NOT NULL DEFAULT ''", "logo_pend TEXT NOT NULL DEFAULT ''", 'logo_t INTEGER NOT NULL DEFAULT 0',
-    "descr TEXT NOT NULL DEFAULT ''"]) {
+    "descr TEXT NOT NULL DEFAULT ''", 'logo_pend_t INTEGER NOT NULL DEFAULT 0']) {
     try { sql.exec('ALTER TABLE crews ADD COLUMN ' + col); } catch (e) { /* ya estaba */ }
   }
+  // 🗑️ los logos de R2 que ya no usa nadie, hasta que algo que puede esperar los borre (`crewBasura()`): borrar una
+  // crew es sincrónico —la semana que venció la borra `crewVencer()` en medio de una lectura— y R2 no
+  sql.exec('CREATE TABLE IF NOT EXISTS crew_basura (url TEXT PRIMARY KEY, t INTEGER NOT NULL)');
+  // 📨 si quien ya está en una crew recibe invitaciones de otras (sin fila: sí, Dlx: «por default dejalo que sí»)
+  sql.exec('CREATE TABLE IF NOT EXISTS crew_prefs (k TEXT PRIMARY KEY, inv INTEGER NOT NULL DEFAULT 1)');
   sql.exec('CREATE TABLE IF NOT EXISTS crew_miembros (k TEXT PRIMARY KEY, crew TEXT NOT NULL, rol TEXT NOT NULL, ' +
     "quien TEXT NOT NULL DEFAULT '', desde INTEGER NOT NULL)");
   sql.exec('CREATE INDEX IF NOT EXISTS crew_miembros_crew ON crew_miembros (crew)');
@@ -263,10 +273,17 @@ function avisar(o, k, clave, titulo, cuerpo, url) {
 /** Los que mandan en una crew (Líder y Colíderes), para avisarles de un pedido. */
 const mandan = (o, id) => filas(o, "SELECT k FROM crew_miembros WHERE crew = ? AND rol IN ('lider','colider')", id).map((r) => r.k);
 
-/** Entra `k` a la crew `c` como Miembro, si hay lugar y no está en otra ni esperando. */
-function entrar(o, c, k, quien, por, ahora) {
+/** ¿Recibe invitaciones de otras crews quien ya está en una? Sin preferencia anotada, sí. */
+function recibe(o, k) {
+  const f = fila(o, 'SELECT inv FROM crew_prefs WHERE k = ?', k);
+  return !f || !!f.inv;
+}
+
+/** Entra `k` a la crew `c` como Miembro, si hay lugar y no está en otra ni esperando. `cambio`: viene de otra crew por una
+ *  invitación (`cambiarse()`), y la espera que acaba de empezar es por ESTE cambio: no lo frena. */
+function entrar(o, c, k, quien, por, ahora, cambio = false) {
   if (miembroDe(o, k)) return mal('ya_en_crew', 409);
-  const e = espera(o, k, ahora);
+  const e = cambio ? 0 : espera(o, k, ahora);
   if (e) return mal('espera', 409, { faltan_ms: e });
   if (cuantos(o, c.id) >= CREW_MAX) return mal('llena', 409, { max: CREW_MAX });
   o.state.storage.transactionSync(() => {
@@ -340,6 +357,7 @@ export function crewMia(o, d) {
       out.invitados = filas(o, 'SELECT k, de, t FROM crew_inv WHERE crew = ? AND t > ? ORDER BY t', m.crew, ahora - VENCE_MS);
     }
   }
+  out.recibe = recibe(o, k);
   out.inv = filas(o, 'SELECT i.crew, i.de, i.t, c.nombre FROM crew_inv i JOIN crews c ON c.id = i.crew WHERE i.k = ? AND i.t > ? ' +
     'ORDER BY i.t DESC', k, ahora - VENCE_MS);
   out.ped = filas(o, 'SELECT p.crew, p.t, c.nombre FROM crew_ped p JOIN crews c ON c.id = p.crew WHERE p.k = ? AND p.t > ?',
@@ -394,8 +412,9 @@ export function crewAccion(o, d) {
     const ok = d.logo_v === 'ok';
     o.state.storage.transactionSync(() => {
       o.sql.exec('INSERT INTO crews (id, nombre, norm, sigla, entrada, reps, oficial, creada, por, nombre_t, t, vence, vence_aviso, ' +
-        "logo, logo_pend, logo_t, descr) VALUES (?, ?, ?, ?, ?, '[]', 0, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?)", nombre, nombre, normCrew(nombre), sigla,
-      entrada, ahora, quien, ahora, ahora, vence, ok ? d.logo_url : '', ok ? '' : d.logo_url, ahora, descr);
+        "logo, logo_pend, logo_t, logo_pend_t, descr) VALUES (?, ?, ?, ?, ?, '[]', 0, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?)", nombre, nombre,
+      normCrew(nombre), sigla, entrada, ahora, quien, ahora, ahora, vence, ok ? d.logo_url : '', ok ? '' : d.logo_url, ok ? ahora : 0,
+      ok ? 0 : ahora, descr);
       o.sql.exec('INSERT INTO crew_miembros (k, crew, rol, quien, desde) VALUES (?, ?, ?, ?, ?)', k, nombre, 'lider', quien, ahora);
       o.sql.exec('DELETE FROM crew_inv WHERE k = ?', k);
       o.sql.exec('DELETE FROM crew_ped WHERE k = ?', k);
@@ -421,6 +440,7 @@ export function crewAccion(o, d) {
     }
     const cc = crewDe(o, id);
     if (!cc) return mal('no_existe', 404);
+    if (yo) return cambiarse(o, yo, cc, k, quien, inv.de, ahora);
     return entrar(o, cc, k, quien, inv.de, ahora);
   }
   if (a === 'pedir') {
@@ -443,6 +463,11 @@ export function crewAccion(o, d) {
     o.sql.exec('DELETE FROM crew_ped WHERE crew = ? AND k = ?', String(d.crew || ''), k);
     return { ok: true };
   }
+  if (a === 'pref_inv') {
+    // 📨 recibir (o no) invitaciones de otras crews mientras estás en una
+    o.sql.exec('INSERT OR REPLACE INTO crew_prefs (k, inv) VALUES (?, ?)', k, d.si === false ? 0 : 1);
+    return { ok: true, recibe: d.si !== false };
+  }
 
   // ── lo que se hace desde adentro ──
   if (!yo || !c) return mal('sin_crew', 409);
@@ -453,7 +478,10 @@ export function crewAccion(o, d) {
     if (!puede(rol, 'invitar')) return mal('rol', 403);
     const a2 = String(d.a || '');
     if (!a2 || a2 === k) return mal('a quién');
-    if (miembroDe(o, a2)) return mal('ya_en_crew', 409);
+    // 📨 a quien ya está en OTRA crew también se lo invita, si recibe invitaciones (Dlx, 19/10/2026)
+    const suyo = miembroDe(o, a2);
+    if (suyo && suyo.crew === c.id) return mal('ya_en_crew', 409);
+    if (suyo && !recibe(o, a2)) return mal('no_recibe', 409);
     if (cuantos(o, c.id) >= CREW_MAX) return mal('llena', 409, { max: CREW_MAX });
     if (fila(o, 'SELECT 1 AS x FROM crew_inv WHERE crew = ? AND k = ? AND t > ?', c.id, a2, ahora - VENCE_MS)) return { ok: true, ya: true };
     if (!o.cuentaCambio(quien, 'crew-inv', INV_DIA)) return mal('espera_dia', 429);
@@ -463,7 +491,8 @@ export function crewAccion(o, d) {
     }
     o.sql.exec('INSERT OR REPLACE INTO crew_inv (crew, k, de, t) VALUES (?, ?, ?, ?)', c.id, a2, k, ahora);
     anotar(o, c.id, 'invito', a2, k);
-    avisar(o, a2, 'crew-inv:' + c.id, 'Te invitaron a ' + c.nombre, 'Aceptá o no desde tu cuenta: tenés una semana.', '#/cuenta/crew');
+    avisar(o, a2, 'crew-inv:' + c.id, 'Te invitaron a ' + c.nombre, suyo ? 'Si aceptás, dejás tu crew de ahora. Tenés una semana para decidir.'
+      : 'Aceptá o no desde tu cuenta: tenés una semana.', '#/cuenta/crew');
     return { ok: true, invitado: a2 };
   }
   if (a === 'desinvitar') {
@@ -578,10 +607,12 @@ export function crewAccion(o, d) {
     if (d.logo_v === 'ok') {
       if (c.logo) viejos.push(c.logo);
       if (c.logo_pend) viejos.push(c.logo_pend);
-      o.sql.exec("UPDATE crews SET logo = ?, logo_pend = '', logo_t = ?, t = ? WHERE id = ?", d.logo_url, ahora, ahora, c.id);
+      o.sql.exec("UPDATE crews SET logo = ?, logo_pend = '', logo_t = ?, logo_pend_t = 0, t = ? WHERE id = ?", d.logo_url, ahora, ahora, c.id);
     } else {
       if (c.logo_pend) viejos.push(c.logo_pend);
-      o.sql.exec('UPDATE crews SET logo_pend = ?, logo_t = ?, t = ? WHERE id = ?', d.logo_url, ahora, ahora, c.id);
+      // ⚠️ `logo_pend_t` y no `logo_t`: tocar `logo_t` ponía el logo VIEJO en «lo que aprobó el filtro» del Dashboard,
+      // al lado del nuevo, y su «Quitar» descartaba el nuevo (la revisión del 19/10/2026)
+      o.sql.exec('UPDATE crews SET logo_pend = ?, logo_pend_t = ?, t = ? WHERE id = ?', d.logo_url, ahora, ahora, c.id);
     }
     anotar(o, c.id, 'logo', d.logo_v === 'ok' ? 'ok' : 'revisar', k);
     return { ok: true, viejos, logo: d.logo_v === 'ok' ? 'ok' : 'revisar' };
@@ -635,6 +666,35 @@ export function chequeoLogo(o, d) {
   return puede(m.rol, 'nombre') ? { ok: true } : mal('rol', 403);
 }
 
+/**
+ * 📨 CAMBIARSE DE CREW POR UNA INVITACIÓN: sale de la suya y entra a la nueva. Todo lo que puede fallar se mira ANTES de
+ * sacarlo de la suya —si no, una crew llena lo dejaría sin ninguna—. Cuenta como salir: los 7 días corren desde ahora.
+ */
+function cambiarse(o, yo, cc, k, quien, por, ahora) {
+  if (yo.crew === cc.id) return mal('ya_en_crew', 409);
+  if (yo.rol === 'lider') return mal('lider_pasa_primero', 409);
+  const e = espera(o, k, ahora);
+  if (e) return mal('espera', 409, { faltan_ms: e });
+  if (cuantos(o, cc.id) >= CREW_MAX) return mal('llena', 409, { max: CREW_MAX });
+  const vieja = crewDe(o, yo.crew);
+  o.state.storage.transactionSync(() => {
+    o.sql.exec('DELETE FROM crew_miembros WHERE k = ?', k);
+    o.sql.exec('INSERT OR REPLACE INTO crew_salidas (k, t) VALUES (?, ?)', k, ahora);
+    if (vieja) {
+      o.sql.exec('UPDATE crews SET t = ? WHERE id = ?', ahora, vieja.id);
+      sacarDeReps(o, vieja, k);
+      anotar(o, vieja.id, 'se_cambio', k, cc.id);
+    }
+  });
+  if (vieja) {
+    for (const m of mandan(o, vieja.id)) {
+      avisar(o, m, 'crew-sefue:' + vieja.id + ':' + k, nombreDe(o, k) + ' se fue a ' + cc.nombre, 'Dejó ' + vieja.nombre + ' por una invitación.',
+        '#/crew/' + encodeURIComponent(vieja.id));
+    }
+  }
+  return Object.assign(entrar(o, cc, k, quien, por, ahora, true), { dejo: vieja ? vieja.nombre : '' });
+}
+
 function sacarDeReps(o, c, k) {
   let reps = [];
   try { reps = JSON.parse(c.reps || '[]'); } catch (e) { reps = []; }
@@ -648,6 +708,8 @@ function borrar(o, c, por, ahora, aviso = null) {
   // 19/10/2026 el «se cerró» le llegaba sólo a quien la página conocía por otro lado—
   const gente = filas(o, 'SELECT k FROM crew_miembros WHERE crew = ?', c.id).map((r) => [r.k, idDe(o, r.k)]);
   o.state.storage.transactionSync(() => {
+    // 🗑️ sus logos, a la basura: si no, quedaban en R2 para siempre, públicos —también uno que nadie revisó—
+    tirar(o, [c.logo, c.logo_pend]);
     o.sql.exec('DELETE FROM crew_miembros WHERE crew = ?', c.id);
     o.sql.exec('DELETE FROM crew_inv WHERE crew = ?', c.id);
     o.sql.exec('DELETE FROM crew_ped WHERE crew = ?', c.id);
@@ -690,27 +752,31 @@ export function crewDueno(o, d) {
   }
   if (d.que === 'borrar') return borrar(o, c, 'dueño', ahora);
   if (d.que === 'logo') {
-    // 🛡️ como los fondos: con uno esperando, `si` lo aprueba y `!si` lo descarta; sin nada esperando, `!si` quita el
-    // que se ve (lo que el filtro dejó pasar y no tenía que pasar). A su Líder le llega a la campana
+    // 🛡️ como los fondos, pero SOBRE EL LOGO QUE SE VIO (`d.url`): aprobar o descartar el que espera, o quitar el que se
+    // ve. Si mientras se miraba el Líder subió otro, no se aprueba algo que nadie vio ni se descarta lo que no se eligió
+    // (la revisión del 19/10/2026): contesta `cambio` y el Dashboard pide recargar. A su Líder le llega a la campana
     const lid = fila(o, "SELECT k FROM crew_miembros WHERE crew = ? AND rol = 'lider'", c.id);
     const url = '#/crew/' + encodeURIComponent(c.id);
     const motivo = String(d.motivo || '').slice(0, 120);
-    if (c.logo_pend && d.si) {
-      o.sql.exec("UPDATE crews SET logo = logo_pend, logo_pend = '', t = ? WHERE id = ?", ahora, c.id);
+    const u = String(d.url || '');
+    const esPend = !!c.logo_pend && u === c.logo_pend, esVisto = !!c.logo && u === c.logo;
+    if (d.si) {
+      if (!esPend) return mal('cambio', 409);
+      // aprobado por una persona: no va a «lo que aprobó el filtro» (`logo_t` en 0)
+      o.sql.exec("UPDATE crews SET logo = logo_pend, logo_pend = '', logo_t = 0, logo_pend_t = 0, t = ? WHERE id = ?", ahora, c.id);
       anotar(o, c.id, 'logo_si', '', 'dueño');
       if (lid) avisar(o, lid.k, 'crew-logo:' + c.id, '🖼️ El logo de ' + c.nombre + ' ya se ve', 'Lo aprobamos.', url);
       return { ok: true, viejos: c.logo ? [c.logo] : [] };
     }
-    if (d.si) return mal('nada');
-    const viejos = c.logo_pend ? [c.logo_pend] : c.logo ? [c.logo] : [];
-    if (!viejos.length) return mal('nada');
-    o.sql.exec(c.logo_pend ? "UPDATE crews SET logo_pend = '', t = ? WHERE id = ?" : "UPDATE crews SET logo = '', t = ? WHERE id = ?", ahora, c.id);
-    anotar(o, c.id, c.logo_pend ? 'logo_no' : 'logo_quitado', motivo, 'dueño');
+    if (!esPend && !esVisto) return mal('cambio', 409);
+    o.sql.exec(esPend ? "UPDATE crews SET logo_pend = '', logo_pend_t = 0, t = ? WHERE id = ?" : "UPDATE crews SET logo = '', logo_t = 0, t = ? WHERE id = ?",
+      ahora, c.id);
+    anotar(o, c.id, esPend ? 'logo_no' : 'logo_quitado', motivo, 'dueño');
     if (lid) {
-      avisar(o, lid.k, 'crew-logo:' + c.id, '🖼️ El logo de ' + c.nombre + (c.logo_pend ? ' no se aprobó' : ' se quitó'),
+      avisar(o, lid.k, 'crew-logo:' + c.id, '🖼️ El logo de ' + c.nombre + (esPend ? ' no se aprobó' : ' se quitó'),
         (motivo ? motivo + '. ' : '') + 'Subí otro desde la página de la crew.', url);
     }
-    return { ok: true, viejos };
+    return { ok: true, viejos: [u] };
   }
   return mal('que');
 }
@@ -719,7 +785,7 @@ export function crewDueno(o, d) {
 export function crewLogosDueno(o) {
   const desde = Date.now() - 3 * DIA;
   return {
-    pend: filas(o, "SELECT id, nombre, logo_pend AS url, logo_t AS t FROM crews WHERE logo_pend != '' ORDER BY logo_t"),
+    pend: filas(o, "SELECT id, nombre, logo_pend AS url, logo_pend_t AS t FROM crews WHERE logo_pend != '' ORDER BY logo_pend_t"),
     vistos: filas(o, "SELECT id, nombre, logo AS url, logo_t AS t FROM crews WHERE logo != '' AND logo_t > ? ORDER BY logo_t DESC", desde),
   };
 }
@@ -754,6 +820,20 @@ export function sembrar(o, d) {
   return { ok: true, nuevas, gente };
 }
 
+/** 🗑️ Anotar logos que ya no se usan (vacíos afuera). Los borra de R2 quien puede esperar: `crewBasura()`. */
+function tirar(o, urls) {
+  for (const u of urls || []) if (u) o.sql.exec('INSERT OR IGNORE INTO crew_basura (url, t) VALUES (?, ?)', u, Date.now());
+}
+
+/** Los logos para borrar de R2 (hasta `n`), y `crewBasuraLista()` para darlos por borrados. Los llama el objeto
+ *  (`vaciarBasuraCrews()` de avisos.js) después de cada acción y en el vigía. */
+export function crewBasura(o, n = 50) {
+  return filas(o, 'SELECT url FROM crew_basura ORDER BY t LIMIT ?', n).map((r) => r.url);
+}
+export function crewBasuraLista(o, urls) {
+  for (const u of urls || []) o.sql.exec('DELETE FROM crew_basura WHERE url = ?', u);
+}
+
 /** 🧹 Lo vencido: invitaciones y pedidos de más de una semana, y esperas cumplidas. Lo llama el vigía. */
 export function crewLimpiar(o) {
   const ahora = Date.now();
@@ -773,12 +853,18 @@ export function crewOlvidar(o, k) {
     const sig = fila(o, "SELECT k FROM crew_miembros WHERE crew = ? AND k != ? ORDER BY CASE rol WHEN 'colider' THEN 0 " +
       "WHEN 'veterano' THEN 1 ELSE 2 END, desde LIMIT 1", m.crew, k);
     if (sig) o.sql.exec("UPDATE crew_miembros SET rol = 'lider' WHERE k = ?", sig.k);
-    else { o.sql.exec('DELETE FROM crews WHERE id = ?', m.crew); o.sql.exec('DELETE FROM crew_inv WHERE crew = ?', m.crew); }
+    else {
+      const c = crewDe(o, m.crew);
+      if (c) tirar(o, [c.logo, c.logo_pend]);
+      o.sql.exec('DELETE FROM crews WHERE id = ?', m.crew);
+      o.sql.exec('DELETE FROM crew_inv WHERE crew = ?', m.crew);
+    }
   }
   o.sql.exec('DELETE FROM crew_miembros WHERE k = ?', k);
   o.sql.exec('DELETE FROM crew_inv WHERE k = ? OR de = ?', k, k);
   o.sql.exec('DELETE FROM crew_ped WHERE k = ?', k);
   o.sql.exec('DELETE FROM crew_salidas WHERE k = ?', k);
+  o.sql.exec('DELETE FROM crew_prefs WHERE k = ?', k);
 }
 
 /** Para `mudarCuenta()`: la cuenta nueva es otra persona en Discord, pero el perfil es el mismo: se anota el ID nuevo. */

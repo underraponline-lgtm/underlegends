@@ -102,7 +102,8 @@ export function errorCrew(j) {
   if (c) return c;
   return ({
     verificate: 'Primero verificate: las crews son de los Miembros de Discord Rap Español.',
-    ya_en_crew: 'Ya está en una crew.',
+    ya_en_crew: 'Ya está en esa crew.',
+    no_recibe: 'Esa persona no recibe invitaciones mientras está en su crew.',
     espera: 'Saliste de una crew hace poco: podés entrar a otra en ' + dias(j && j.faltan_ms) + ' días.',
     nombre: 'Ese nombre no vale: de 3 a 24 letras o números, sin símbolos.',
     nombre_usado: 'Ya hay una crew con ese nombre.',
@@ -122,7 +123,7 @@ export function errorCrew(j) {
     sin_invitacion: 'Esa invitación ya no está.',
     sin_pedido: 'Ese pedido ya no está.',
     rol: 'Tu rango en la crew no te deja hacer eso.',
-    lider_pasa_primero: 'Antes de irte, pasale el liderazgo a alguien de la crew.',
+    lider_pasa_primero: 'Sos el Líder: antes de irte o de cambiarte de crew, pasale el liderazgo a alguien de la tuya.',
     reps: 'Elegí hasta ' + ((j && j.max) || 5) + ' representantes de la crew.',
     espera_dia: 'Ya hiciste mucho de esto hoy: probá mañana.',
     no_existe: 'Esa crew ya no existe.',

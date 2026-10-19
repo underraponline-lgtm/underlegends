@@ -167,6 +167,10 @@ def paso(estado, div, vivas):
     if not estado.get('sem'):
         estado['sem'], estado['pts'] = sem_d, pts
         return []
+    # 🛡️ una semana VIEJA (un divisiones.json de antes que volvió al repo) no cierra nada: cerraría la de ahora a medias y
+    # la corrida siguiente la cerraría de nuevo —dos ascensos en una semana— (la revisión del 19/10/2026)
+    if sem_d < estado['sem']:
+        return []
     if sem_d != estado['sem']:
         # 🛡️ sin las crews (el objeto no contestó) NO se cierra: se borrarían todas de la tabla. Se espera a la corrida
         # siguiente con la foto que había —la semana nueva todavía no tiene nada que perder—
@@ -247,6 +251,9 @@ def _auto():
     vivas['crews'].pop()
     paso(e, div('2026-11-09', {}), vivas)
     ok('C' not in e['tier'], 'la crew que se borró sale de la tabla')
+    vieja = dict(e)
+    ok(paso(e, div('2026-11-02', {'a1': 10 ** 6}), vivas) == [] and e['sem'] == vieja['sem'] and e['tier'] == vieja['tier'],
+       'una semana más vieja que la de ahora no cierra nada')
     antes = dict(e['tier'])
     ok(paso(e, div('2026-11-16', {}), {}) == [] and e['tier'] == antes and e['sem'] == '2026-11-09',
        'sin las crews (el objeto no contestó) la semana no se cierra: nadie pierde su tier')
