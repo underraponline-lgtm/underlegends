@@ -51,7 +51,8 @@ export function AvisoVersion({ pagina }) {
   if (cerrado === c.version || (visto && !nuevaQue(c.version, visto))) return null;
   const recargar = alAbrir && nuevaQue(c.version, alAbrir);
   const cerrar = () => { guardarVista(c.version); setCerrado(c.version); };
-  const item = String((c.items || [])[0] || '');
+  // (sin las marcas: el changelog escribe **negrita** y `código`, que acá salían con sus asteriscos — 19/10/2026)
+  const item = String((c.items || [])[0] || '').replace(/\*\*([^*]+)\*\*/g, '$1').replace(/`([^`]+)`/g, '$1');
   return (
     <aside className="aviso-version" role="status" aria-label="Hay una actualización de la página">
       <p className="av-et">🆕 Nueva actualización · v{c.version}</p>

@@ -66,15 +66,19 @@ ARRANCA_H = 11
 #: cuántos buscados por período. Dlx, 27/09/2026: *«de momento, como es
 #: diario, que sean 3… y que cuando sea por semana que sean 9»*
 #: 🔑 12 POR SEMANA (Dlx, 08/10/2026: *«pon 12 personas como most wanted cada semana»*). Eran 9
-CUANTOS = {'dia': 3, 'semana': 12}
+#: 🔑 15 POR SEMANA desde la semana del 19/10/2026 (Dlx: *«en vez que sean 12 buscados sean 15»*). La Guía lo lee de
+#: acá (`subir_web._guia()`, `mw`): no se escribe en ningún texto
+CUANTOS = {'dia': 3, 'semana': 15}
 #: cómo se reparten entre los niveles de categoría. ⚠️ Sin esto, con tres
 #: lugares salían SIEMPRE El Rey, El Imparable y El Verdugo —las tres
 #: primeras de la lista—: el Rey es casi imposible de cazar y los demás
 #: nunca aparecían. Uno de cada nivel: un pez gordo, uno del medio y uno al
 #: alcance de cualquiera. Dentro de cada nivel la categoría sale sorteada.
 #: Con 12, la misma proporción que con 9 (2-3-3-1): más peces gordos y más al alcance de cualquiera.
+#: Con 15 (3-5-4-3), los tres de más van al medio y abajo: arriba hay sólo dos categorías (El Rey y El Imparable), y
+#: lo que un nivel no llena lo completa El Comodín igual
 CUPOS = {'dia': (('A', 1), ('B', 1), ('CD', 1)),
-         'semana': (('A', 3), ('B', 4), ('C', 3), ('D', 2))}
+         'semana': (('A', 3), ('B', 5), ('C', 4), ('D', 3))}
 #: 🔑 DESDE CUÁNDO ES SEMANAL, en una temporada sin corte (`comun/temporada.SIN_CORTE`). Dlx, 08/10/2026: la T1
 #: arranca el 22/09 sin reset, y el Most Wanted pasa a ser de 12 por semana. Las semanas van de lunes a lunes a las
 #: 11 AM ET: la primera entera es la del lunes 12/10, y hasta ahí siguen los diarios. El último día termina justo
@@ -989,12 +993,13 @@ def _self_check():
     el = {b['n']: b['cat'] for b in elegir(pool, evs3, None, t0, tipo='dia')}
     ok('Bea' not in el and el.get('Ana') == 'rey',
        'un fuera de concurso no es buscado aunque haya ganado; el Rey es el #1 oficial  %s' % el)
-    # el cupo y el reparto: 3 por día, uno de cada nivel; 9 por semana
-    pool9 = [{'raw': 'P%02d' % i, 'pos': i, 'o': i, 'sv': 'FFA', 'ev': 20 - i, 'pod': 10 - i}
-             for i in range(1, 16)]
+    # el cupo y el reparto: 3 por día, uno de cada nivel; `CUANTOS['semana']` por semana. ⚠️ Con más gente activa que
+    # lugares (20 juegan): con 14 activos, 15 buscados no se podían llenar y la prueba lo daba por error del reparto
+    pool9 = [{'raw': 'P%02d' % i, 'pos': i, 'o': i, 'sv': 'FFA', 'ev': 25 - i, 'pod': 12 - i}
+             for i in range(1, 22)]
     # ⚠️ con su fase: la actividad de cada uno sale de ahí (ver `_stats()`)
-    evs9 = [ev_de([[[['P%02d' % i, 'P%02d' % (i + 1)], 'P%02d' % i] for i in range(1, 15, 2)]],
-                  {'P%02d' % i: 'Cuartos' if i % 2 else 'Octavos' for i in range(1, 15)},
+    evs9 = [ev_de([[[['P%02d' % i, 'P%02d' % (i + 1)], 'P%02d' % i] for i in range(1, 21, 2)]],
+                  {'P%02d' % i: 'Cuartos' if i % 2 else 'Octavos' for i in range(1, 21)},
                   t=t0 - dt.timedelta(hours=h)) for h in (5, 30, 60)]
     d3 = elegir(pool9, evs9, None, t0, tipo='dia', semilla='x')
     ok(len(d3) == CUANTOS['dia'] and len({NIVEL[b['cat']] in 'CD' and 'CD' or NIVEL[b['cat']] for b in d3}) == 3,
@@ -1018,9 +1023,13 @@ def _self_check():
        'al fuera de concurso no se lo puede elegir aunque lo voten: entra el siguiente')
     s9e = elegir(pool9, evs9, None, t0, tipo='semana', semilla='x', votos={'P12': 7})
     nb = dict(CUPOS['semana'])['B']
-    ok(len(s9e) == CUANTOS['semana'] and sum(1 for b in s9e if NIVEL[b['cat']] == 'B') == nb
+    # (el nivel del medio NO pasa de su cupo con El Elegido adentro; que lo llene depende de cuántas categorías cumplen:
+    # con estos datos, cuatro —no hay Muro—, y lo que falta lo pone El Comodín)
+    nb_hay = 1 + len({b['cat'] for b in s9 if NIVEL[b['cat']] == 'B'})
+    ok(len(s9e) == CUANTOS['semana'] and sum(1 for b in s9e if NIVEL[b['cat']] == 'B') == min(nb, nb_hay)
        and s9e[0]['cat'] == 'elegido',
-       'por semana también: %d buscados, El Elegido y %d más del medio' % (len(s9e), nb - 1))
+       'por semana también: %d buscados, El Elegido y %d más del medio  %s' % (
+           len(s9e), nb - 1, [(b['n'], b['cat']) for b in s9e]))
     # la cuenta que leen la web y las vitrinas: sólo la temporada de ahora
     per = lambda temp, bs: {'id': temp, 'temporada': temp, 'buscados': bs}
     caza = lambda quien, por, cobra: {'n': quien, 'cn': 'El Rey', 'estado': 'cazado',

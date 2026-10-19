@@ -1259,6 +1259,12 @@ def _guia():
             print('   ⚠️ los puntos de Config, de la copia (%s)' % str(e)[:60])
     if esc.get('tablas'):
         out['puntos'] = {k: esc[k] for k in ('tablas', 'walkin', 'revivido') if k in esc}
+    # 🎯 cuántos buscados por semana, del mismo lugar que los elige: la Guía decía «9» cuando ya eran 12 (19/10/2026)
+    try:
+        import most_wanted as _MW
+        out['mw'] = int(_MW.CUANTOS['semana'])
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ la guía sin el Most Wanted (%s)' % str(e)[:60])
     return out
 
 

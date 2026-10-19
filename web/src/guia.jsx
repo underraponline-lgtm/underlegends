@@ -35,7 +35,7 @@ const SECCIONES = [
 
 // las palabras de la Liga, por tema (el texto de la Guía de siempre)
 const MW_TIENDA = [
-  ['Most Wanted', 'Los buscados: 3 por día (desde la Temporada 1, 9 por semana), cada uno con su recompensa. El primero que le gana a uno en un evento de la Liga lo caza y cobra; si nadie lo caza y jugó, sobrevive y se lleva la mitad. Lo cobrado suma a tus Puntos de la Temporada, nunca al Competitivo, y además el 10 % va a tus Puntos de Tienda.'],
+  ['Most Wanted', 'Los buscados de la semana{MW}, de lunes a lunes, cada uno con su recompensa. El primero que le gana a uno en un evento de la Liga lo caza y cobra; si nadie lo caza y jugó, sobrevive y se lleva la mitad. Lo cobrado suma a tus Puntos de la Temporada, nunca al Competitivo, y además el 10 % va a tus Puntos de Tienda.'],
   ['El Elegido', 'Uno de los buscados lo elige la gente: mientras corre un Most Wanted se vota quién es buscado en el siguiente, y el más votado entra como «El Elegido». Vota cualquiera que entre con Discord; nadie se vota a sí mismo, y hacen falta 3 votos.'],
   ['El ×2 votado', 'Durante la semana se vota qué servidor se lleva el ×2 la siguiente: el más votado sale del sorteo del lunes con ×2 como mínimo. Se puede votar a cualquiera, también al tuyo. Hacen falta 3 votos.'],
   ['Puntos de Tienda', 'Una moneda aparte de los puntos del ranking: todos arrancan con los mismos y se ven en la Tienda, entrando con Discord. Se ganan cazando (todo el precio por cabeza, y el 10 % del Most Wanted) y hoy sirven para el precio por cabeza.'],
@@ -204,7 +204,8 @@ export function Guia({ liga, dc }) {
             </div>
           </Seccion>
         ) : null}
-        <Seccion id="mw" titulo="Most Wanted, encuestas y Tienda"><Lista xs={MW_TIENDA} /></Seccion>
+        {/* 🎯 cuántos buscados, del payload (`most_wanted.CUANTOS`): decía «9 por semana» cuando ya eran 12 */}
+        <Seccion id="mw" titulo="Most Wanted, encuestas y Tienda"><Lista xs={MW_TIENDA.map(([t, d]) => [t, d.replace('{MW}', G.mw ? ' (' + G.mw + ')' : '')])} /></Seccion>
         <Seccion id="semana" titulo="Lo de cada semana" bajada="Lo que cambia los puntos semana a semana, y lo que se gana."><Lista xs={SEMANA} /></Seccion>
         <Seccion id="palabras" titulo="Las palabras de la Liga"><Lista xs={PALABRAS} /></Seccion>
         <Seccion id="preguntas" titulo="Preguntas frecuentes">
