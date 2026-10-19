@@ -17,6 +17,7 @@ import { useRacha } from './racha.js';
 import { TEMAS_SV, nivelTema, nombreTema } from './temas.js';
 import { useRoles } from './roles.js';
 import { urlFondo } from './fondos.js';
+import { useSocio } from './panelsocio.js';
 import { seguirOrg, useOrgs } from './orgs.js';
 
 import { PasosInstalar } from './instalar.jsx';
@@ -1150,6 +1151,8 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, cual =
   // 🔐 el botón del Dashboard: Dlx, y quien tiene un rol que lo abre (Admin, Asistente, Moderador; 13/10/2026)
   const misRoles = ((useRoles() || {})[liga.yo && liga.yo.k] || []).map((x) => x[0]);
   const dueno = cual === 'cuenta' && !!dc && (String(dc.id) === DUENO || misRoles.some((r) => ['admin', 'asistente', 'moderador'].includes(r)));
+  // 📊 dueño de un servidor socio (Tier 1 o 2): el botón a su panel (`#/socio`). Se pregunta una vez por sesión
+  const socio = useSocio(cual === 'cuenta' && !!dc);
   const todas = gs.flatMap((g) => g[1]);
   // verificarse no está en la lista: se llega desde la tarjeta de arriba (y desde el botón del bot)
   const extra = cual === 'cuenta' && parte === 'verificar' ? ['verificar', 'ok', 'Verificarme', ''] : null;
@@ -1186,7 +1189,7 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, cual =
   if (enTarjetas) {
     return (
       <div className="cu tarjetas">
-        <div className="cu-cab"><h1 className="cu-h">{cual === 'ajustes' ? 'Ajustes' : 'Mi cuenta'}</h1>{dueno ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
+        <div className="cu-cab"><h1 className="cu-h">{cual === 'ajustes' ? 'Ajustes' : 'Mi cuenta'}</h1>{socio ? <a className="btn borde2 chico" href="#/socio">Mi servidor</a> : null}{dueno ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
         {cual === 'cuenta' ? <div className="cu-tj-quien"><Quien liga={liga} dc={dc} /></div> : null}
         <TodasJuntas.Provider value={cual === 'cuenta'}>
         <div className="cu-tarjetas">
@@ -1204,7 +1207,7 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, cual =
   }
   return (
     <div className={'cu' + (abierta ? ' con-parte' : '')}>
-      <div className="cu-cab"><h1 className="cu-h">{abierta && !ancha ? '' : (cual === 'ajustes' ? 'Ajustes' : 'Mi cuenta')}</h1>{dueno && !abierta ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
+      <div className="cu-cab"><h1 className="cu-h">{abierta && !ancha ? '' : (cual === 'ajustes' ? 'Ajustes' : 'Mi cuenta')}</h1>{socio && !abierta ? <a className="btn borde2 chico" href="#/socio">Mi servidor</a> : null}{dueno && !abierta ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
       <div className="cu-g2">
         <aside className="cu-lado">
           {cual === 'cuenta' ? <Quien liga={liga} dc={dc} /> : null}

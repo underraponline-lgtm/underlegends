@@ -190,6 +190,194 @@ def recomendar(tier, pts, m, sin_jugar):
     return 'bien', 'se mantiene en Tier 3'
 
 
+# ── 📊 EL PANEL DE CADA SOCIO (Tier 1 y 2) ─────────────────────────────────────────────────────────────────────────
+# Dlx, 19/10/2026: *«dar un acceso especial tipo dashboard para los socios, o sea los owners de los sv… para ver cómo sus
+# servidores están mejorando, sus estadísticas»*, y a las preguntas: *«digo tier 1 y tier 2»*, el dueño *«automático y
+# lo corregís vos»*, y que traiga *«sugerencias para mejorar, ver cuándo hay actividad, qué días hacer eventos y qué
+# días no»*, su puntaje y tendencia, eventos y gente, sus raperos y crews, y las visitas a su página.
+#
+# ⚠️ COMO EL PUNTAJE, VA SÓLO AL OBJETO (`/avisos/tiers-ciclo`) y no al repo, que es público. Lo lee el dueño del
+# servidor con su cuenta (`panelSocio()` del objeto); las visitas las pone el objeto, que es quien las cuenta.
+
+DIAS = ('lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábados', 'domingos')
+#: las franjas del día, en hora del este (las de la Liga: casi todo pasa de tarde y de noche)
+FRANJAS = ((0, 6, 'de madrugada'), (6, 12, 'a la mañana'), (12, 16, 'al mediodía'), (16, 20, 'a la tarde'),
+           (20, 24, 'a la noche'))
+#: con menos eventos que esto en un día o una franja, no se saca conclusión de ese día
+MIN_MUESTRA = 2
+#: las semanas del panel (la tendencia y los días)
+SEMANAS_PANEL = 8
+
+
+def hora_et(links):
+    """🕐 Cuándo se publicó la llave, en hora del este: el ID del mensaje de Discord trae la hora adentro. Es lo más
+    cerca que la Liga tiene de cuándo se jugó (la llave sale al arrancar). `None` sin link."""
+    try:
+        from zoneinfo import ZoneInfo
+        et = ZoneInfo('America/New_York')
+    except Exception:                                    # noqa: BLE001
+        et = dt.timezone(dt.timedelta(hours=-4))
+    for u in links or []:
+        m = re.search(r'/(\d{17,20})/?$', str(u))
+        if m:
+            ms = (int(m.group(1)) >> 22) + 1420070400000
+            return dt.datetime.fromtimestamp(ms / 1000, et)
+    return None
+
+
+def _franja(h):
+    for i, (a, b, _t) in enumerate(FRANJAS):
+        if a <= h < b:
+            return i
+    return len(FRANJAS) - 1
+
+
+def _prom(xs):
+    return round(sum(xs) / len(xs), 1) if xs else 0
+
+
+def panel(D, hoy, sv, ps=None, crews=None, otros=None):
+    """📊 Lo de un servidor para su dueño. `D` es lo de `datos()`; `ps`, la gente de `por_servidor.json`; `crews`,
+    `{clave de persona: (id, nombre de la crew)}`; `otros`, las siglas de los demás socios (para cuántos eventos tiene
+    la Liga cada día). Devuelve `{semanas, dias, franjas, liga, raperos, crews, sugerencias}`. Pura."""
+    from comun.claves import clave as K
+    fin = hoy + dt.timedelta(days=1)
+    lunes = hoy - dt.timedelta(days=hoy.weekday())
+    ini = lunes - dt.timedelta(days=7 * (SEMANAS_PANEL - 1))
+    ini4 = fin - dt.timedelta(days=28)
+    evs = []
+    primero = {}
+    for v in sorted((D.get('llaves') or {}).values(), key=lambda v: str(v.get('dia') or '')):
+        d = _dia(v.get('dia'))
+        if not d:
+            continue
+        gente = [f[0] for f in v.get('tabla') or [] if f and f[0]]
+        n = int(v.get('participantes') or 0) or len(gente)
+        for x in gente:
+            primero.setdefault(x, (d, v.get('sv') or ''))
+        evs.append((d, v.get('sv') or '', n, hora_et(v.get('links')), gente))
+    mios = [e for e in evs if e[1] == sv and ini <= e[0] < fin]
+    # la tendencia: semana por semana (de lunes a domingo), con la gente nueva que trajo cada una
+    semanas = []
+    for k in range(SEMANAS_PANEL):
+        a = ini + dt.timedelta(days=7 * k)
+        b = a + dt.timedelta(days=7)
+        ee = [e for e in mios if a <= e[0] < b]
+        nuevos = sum(1 for x, (d, s) in primero.items() if s == sv and a <= d < b)
+        semanas.append([a.isoformat(), len(ee), sum(e[2] for e in ee), nuevos])
+    # los días y las franjas: cuántos eventos y cuánta gente por evento
+    dias = [[0, 0] for _ in DIAS]
+    for i in range(7):
+        xs = [e[2] for e in mios if e[0].weekday() == i]
+        dias[i] = [len(xs), _prom(xs)]
+    franjas = []
+    for i in range(len(FRANJAS)):
+        xs = [e[2] for e in mios if e[3] and _franja(e[3].hour) == i]
+        franjas.append([len(xs), _prom(xs)])
+    # la Liga: cuántos eventos por semana hay cada día en los demás socios, y cuánta gente juntan
+    otros = set(otros or ()) - {sv}
+    liga = []
+    for i in range(7):
+        ee = [e for e in evs if e[1] in otros and ini4 <= e[0] < fin and e[0].weekday() == i]
+        liga.append([round(len(ee) / 4.0, 1), _prom([e[2] for e in ee])])
+    # su gente: lo de cada uno EN este servidor (`por_servidor.json`)
+    raperos = []
+    for n, x in (ps or {}).items():
+        y = (x or {}).get(sv) or {}
+        if y.get('ev'):
+            raperos.append([n, K(n), int(y.get('ev') or 0), int(y.get('pts') or 0), int(y.get('oro') or 0), int(y.get('pod') or 0)])
+    raperos.sort(key=lambda r: (-r[3], -r[2], r[0]))
+    cr = {}
+    for r in raperos:
+        c = (crews or {}).get(r[1])
+        if c:
+            a = cr.setdefault(c[0], [c[0], c[1], 0, 0])
+            a[2] += 1
+            a[3] += r[3]
+    crews_top = sorted(cr.values(), key=lambda c: (-c[2], -c[3]))[:6]
+    # ⚠️ la tendencia de las sugerencias, con la MISMA ventana que los números de arriba (los últimos 28 días, como
+    # `medir()`): con las semanas de lunes a domingo del gráfico daba 63 eventos donde el recuadro decía 76
+    a4, a8 = fin - dt.timedelta(days=28), fin - dt.timedelta(days=56)
+    ev4 = [sum(1 for e in evs if e[1] == sv and a8 <= e[0] < a4), sum(1 for e in evs if e[1] == sv and a4 <= e[0] < fin),
+           sum(1 for x, (d, s) in primero.items() if s == sv and a4 <= d < fin)]
+    out = {'semanas': semanas, 'dias': dias, 'franjas': franjas, 'liga': liga, 'raperos': raperos[:10],
+           'gente_total': len(raperos), 'crews': crews_top, 'ev4': ev4}
+    out['sugerencias'] = sugerencias(out)
+    return out
+
+
+def sugerencias(p, m=None):
+    """💡 Lo que conviene, en palabras y con el número que lo respalda: qué días junta más gente, cuál menos, qué días
+    la Liga está más o menos llena, a qué hora y cómo viene. Sólo lo que los números dicen: con poca muestra, nada."""
+    out = []
+    dias = p.get('dias') or []
+    buenos = [(i, d) for i, d in enumerate(dias) if d[0] >= MIN_MUESTRA]
+    if len(buenos) >= 2:
+        mejor = max(buenos, key=lambda x: x[1][1])
+        peor = min(buenos, key=lambda x: x[1][1])
+        out.append('Los %s tus eventos juntan %s raperos de promedio: el mejor día que tenés.' % (DIAS[mejor[0]], _n(mejor[1][1])))
+        if peor[0] != mejor[0] and peor[1][1] < mejor[1][1] * 0.8:
+            out.append('Los %s, %s de promedio: el más flojo. Si podés, movelo a otro día.' % (DIAS[peor[0]], _n(peor[1][1])))
+    liga = p.get('liga') or []
+    if any(x[0] for x in liga):
+        lleno = max(range(7), key=lambda i: liga[i][0])
+        libres = [i for i in range(7) if liga[i][0] <= 0.5]
+        if liga[lleno][0] >= 2:
+            out.append('Los %s la Liga tiene %s eventos por semana: un evento tuyo ese día compite por la misma gente.'
+                       % (DIAS[lleno], _n(liga[lleno][0])))
+        if libres:
+            out.append('Casi nadie juega los %s (%s): menos competencia para llenar tu llave.'
+                       % (_lista([DIAS[i] for i in libres]), 'ningún evento' if all(liga[i][0] == 0 for i in libres) else 'medio evento por semana o menos'))
+    fr = [(i, f) for i, f in enumerate(p.get('franjas') or []) if f[0] >= MIN_MUESTRA]
+    if len(fr) >= 2:
+        i, f = max(fr, key=lambda x: x[1][1])
+        out.append('%s es cuando más gente juntás (%s por evento).' % (FRANJAS[i][2].capitalize(), _n(f[1])))
+    ev4 = p.get('ev4') or []
+    if len(ev4) == 3:
+        a, b, nuevos = ev4
+        if b == 0 and a:
+            out.append('En las últimas 4 semanas no hubo eventos: un evento por semana ya te devuelve a la tabla.')
+        elif a and b >= a * 1.25:
+            out.append('Vas en subida: %d eventos en las últimas 4 semanas contra %d en las 4 de antes.' % (b, a))
+        elif a and b <= a * 0.75:
+            out.append('Bajaste: %d eventos en las últimas 4 semanas contra %d en las 4 de antes.' % (b, a))
+        if nuevos:
+            out.append('Trajiste %d raperos nuevos en 4 semanas: avisales del próximo evento para que vuelvan.' % nuevos)
+    m = m or {}
+    if m.get('eventos') and m.get('por_semana', 0) < 1:
+        out.append('Hacés %s eventos por semana; con 2 por semana la parte de actividad de tu puntaje llega al máximo.' % _n(m['por_semana']))
+    if m.get('anuncios') and m.get('con_staff', 0) < m['anuncios'] * 0.5:
+        out.append('Sólo %d de tus %d anuncios dicen quién organiza: ponerlo suma a la calidad.' % (m.get('con_staff', 0), m['anuncios']))
+    return out[:7]
+
+
+def _n(x):
+    """10.5 -> «10,5»; 10.0 -> «10»."""
+    return ('%d' % x) if float(x) == int(x) else ('%s' % x).replace('.', ',')
+
+
+def _lista(xs):
+    return xs[0] if len(xs) == 1 else ', '.join(xs[:-1]) + ' y ' + xs[-1]
+
+
+def duenos(svs, tok):
+    """👑 El dueño de cada servidor en Discord (`owner_id` del servidor), para el panel. `{sigla: id}`; el que no se pudo
+    leer, no está. Dlx lo corrige en el Dashboard (`socios_duenos`), y eso manda."""
+    import requests
+    out = {}
+    for sv, x in (svs or {}).items():
+        g = str(x.get('guild_id') or x.get('guild') or '')
+        if not re.match(r'^\d{15,22}$', g):
+            continue
+        try:
+            r = requests.get('https://discord.com/api/v10/guilds/' + g, headers={'Authorization': 'Bot ' + tok}, timeout=15)
+            if r.status_code == 200 and re.match(r'^\d{15,22}$', str(r.json().get('owner_id') or '')):
+                out[sv] = str(r.json()['owner_id'])
+        except Exception:                                # noqa: BLE001
+            continue
+    return out
+
+
 def datos():
     """Lo que pide `medir()`, de `datos/`."""
     import zoneinfo
@@ -265,7 +453,33 @@ def correr(aplicar=False, ahora=None):
             gente = {sv: x['miembros'] for sv, x in (subir_web._miembros(svs) or {}).items() if x.get('miembros')}
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ los tiers: no leí los miembros (%s)' % str(e)[:60])
-    filas = medir(datos(), hoy, svs, nivel, gente)
+    D = datos()
+    filas = medir(D, hoy, svs, nivel, gente)
+    # 📊 el panel de los socios Tier 1 y 2, con su dueño (ver arriba)
+    try:
+        from comun.crews import DE_CADA_UNO, norm as _norm
+        from comun.claves import clave as _K
+        noms = (_j('datos', 'crews.json') or {}).get('_nombres') or {}
+        ps = (_j('datos', 'por_servidor.json') or {}).get('gente') or {}
+        crews = {}
+        for n in ps:
+            c = DE_CADA_UNO.get(_norm(n))
+            if c:
+                crews[_K(n)] = (c, noms.get(c, c))
+        socios = [sv for sv, t in nivel.items() if t in (1, 2)]
+        for f in filas:
+            if f['tier'] in (1, 2):
+                f['panel'] = panel(D, hoy, f['sv'], ps, crews, socios)
+                f['panel']['sugerencias'] = sugerencias(f['panel'], f.get('m'))
+        if aplicar:
+            import fotos as F
+            tok = F.env('DISCORD_TOKEN', obligatorio=False)
+            ds = duenos({sv: svs[sv] for sv in socios if sv in svs}, tok) if tok else {}
+            for f in filas:
+                if f['sv'] in ds:
+                    f['dueno'] = ds[f['sv']]
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ el panel de los socios no se armó (%s): el puntaje va igual' % str(e)[:80])
     if aplicar:
         nuevo = {'_leeme': 'El nivel de cada servidor de la Liga (Tier 1: suma al ranking; 2: sólo el calendario; 3: el '
                            'directorio). Lo elige Dlx en el Dashboard; sin elegir, Tier 1. Lo escribe bot/tiers.py y lo '
@@ -327,6 +541,28 @@ def _self_check():
        'un Tier 1 con 250 miembros: revisar (mínimo 300); con 420 cumple y dice que se recomiendan 500; sin el dato, no se inventa')
     ok(recomendar(2, 70, {'eventos': 6, 'ayudas': 2, 'anuncios': 6, 'miembros': 120}, 3)[0] == 'bien',
        'un Tier 2 que trabaja como Tier 1 no sube con menos de 300 miembros')
+    # 📊 el panel: la hora sale del mensaje de la llave, los días y la Liga, y lo que se sugiere con los números
+    snow = lambda d, h: '%d' % ((int((dt.datetime(d.year, d.month, d.day, tzinfo=dt.timezone.utc)  # noqa: E731
+                                      + dt.timedelta(hours=h + 4)).timestamp() * 1000) - 1420070400000) << 22)
+    L = {}
+    for i, (dd, sv, n, h) in enumerate([(13, 'AAA', 20, 19), (6, 'AAA', 22, 19), (14, 'AAA', 8, 13), (7, 'AAA', 9, 13),
+                                         (10, 'BBB', 15, 21), (11, 'BBB', 15, 21), (3, 'BBB', 9, 21)]):
+        d = dt.date(2026, 10, dd)
+        L[str(i)] = {'dia': d.isoformat(), 'sv': sv, 'participantes': n, 'tabla': [['p%d_%d' % (i, j), 'Octavos'] for j in range(2)],
+                     'links': ['https://discord.com/channels/1/2/' + snow(d, h)]}
+    hh = hora_et(L['0']['links'])
+    pa = panel({'llaves': L}, hoy, 'AAA', {'Ana': {'AAA': {'ev': 3, 'pts': 900}}, 'Beto': {'AAA': {'ev': 1, 'pts': 100}, 'BBB': {'ev': 2}}},
+               {'ana': ('KS', 'Knowledge'), 'beto': ('KS', 'Knowledge')}, ['AAA', 'BBB'])
+    ok(hh and hh.hour == 19 and hh.date() == dt.date(2026, 10, 13), 'la hora de la llave, del ID del mensaje, en hora del este')
+    ok(pa['dias'][1] == [2, 21.0] and pa['dias'][2] == [2, 8.5] and pa['liga'][5] == [0.5, 12.0] and pa['liga'][1] == [0, 0],
+       'los días de AAA (martes 21 de promedio, miércoles 8,5) y los de la Liga (BBB los sábados: medio evento por semana, 12)')
+    ok(pa['raperos'][0][:2] == ['Ana', 'ana'] and pa['gente_total'] == 2 and pa['crews'] == [['KS', 'Knowledge', 2, 1000]],
+       'su gente y sus crews, de lo que jugaron EN ese servidor')
+    su = sugerencias(pa, {'eventos': 4, 'por_semana': 0.5, 'anuncios': 4, 'con_staff': 1})
+    ok(any('martes' in x and '21' in x for x in su) and any('miércoles' in x for x in su)
+       and any('a la noche' in x.lower() or 'a la tarde' in x.lower() for x in su) and any('2 por semana' in x for x in su)
+       and any('quién organiza' in x for x in su), 'las sugerencias, con el número que las respalda')
+    ok(sugerencias({'dias': [[1, 30]] + [[0, 0]] * 6}) == [], 'con poca muestra, no se sugiere nada')
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return mal == 0
 

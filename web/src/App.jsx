@@ -86,7 +86,8 @@ if (typeof window !== 'undefined') {
 }
 /** Anota una vez por día y por navegador (`lg:secc`, como las secciones). Lo que no está en `SECC` no se manda */
 function anotarUnaVez(k) {
-  if (!SECC.has(k)) return;
+  // 📊 y la página de cada servidor (`sv-FFA`), para el panel de su dueño (19/10/2026): el objeto sólo acepta los que existen
+  if (!SECC.has(k) && !/^sv-[A-Z]{2,6}$/.test(k)) return;
   try {
     const hoy = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());
     let m = null;
@@ -122,6 +123,8 @@ const LigasPagina = lazy(() => import('./ligas.jsx').then((m) => ({ default: m.L
 const SalonFama = lazy(() => import('./salon.jsx').then((m) => ({ default: m.SalonFama })));
 // 👥 las Crews, su propia sección desde el 19/10/2026 (eran una pestaña del Ranking): ver crewspagina.jsx
 const CrewsPagina = lazy(() => import('./crewspagina.jsx').then((m) => ({ default: m.CrewsPagina })));
+// 📊 el panel de los socios Tier 1 y 2, para el dueño de cada servidor (19/10/2026): ver socio.jsx
+const PanelSocio = lazy(() => import('./socio.jsx').then((m) => ({ default: m.PanelSocio })));
 // ⚡ lo que no hace falta para abrir el Inicio va aparte (la pasada del 04/10/2026: el paquete principal pasaba de los
 // 130 KB comprimidos que se puso el remake): Mi cuenta, el changelog y la página de cada servidor
 const Cuenta = lazy(() => import('./cuenta.jsx').then((m) => ({ default: m.Cuenta })));
@@ -551,7 +554,7 @@ export default function App() {
   // sección cuenta UNA vez por día y por navegador (`lg:secc`, en hora del este como la visita) y el vigía sólo suma un
   // número: nunca quién. La lista cerrada es `SECC_EV` de bot/avisos.js; lo que no está ahí no se manda
   const seccion = sv ? 'servidor' : pagina === '' ? 'inicio' : pagina === 'r' ? 'perfil' : paginaMenu;
-  useEffect(() => { anotarUnaVez(seccion); }, [seccion]);
+  useEffect(() => { anotarUnaVez(seccion); if (sv) anotarUnaVez('sv-' + String(sv).toUpperCase()); }, [seccion, sv]);
   // 👆 Y TODO LO QUE SE TOCA, EN CUALQUIER SECCIÓN (16/10/2026): ver `contarClic()`
   useEffect(() => {
     const f = (e) => {
@@ -586,6 +589,7 @@ export default function App() {
       : pagina === 'tarjetas' ? 'Tarjetas'
       : pagina === 'salon' ? 'Salón de la fama'
       : pagina === 'crews' ? 'Crews'
+      : pagina === 'socio' ? 'Panel de tu servidor'
       : pagina === 'ligas' ? ({ superliga: 'Superliga', clausura: 'Clausura' }[ligaId] || (ligaId && liga && (liga.ligas().find((x) => x.id === ligaId) || {}).n) || 'Ligas')
       : crewT ? limpio(crewT.crew)
       : pagina === 'pais' && liga && (liga.d.tabla || []).some((f) => String(f.cc).toLowerCase() === String(partes[1]).toLowerCase())
@@ -690,6 +694,7 @@ export default function App() {
         : pagina === 'r' && partes[1] ? <Aislada key="Perfil" n="Perfil" pagina><Suspense fallback={<Cargando />}><Perfil liga={liga} dc={yo.dc} k={partes[1]} tab={partes[2] || ''} /></Suspense></Aislada>
         : pagina === 'salon' ? <Aislada key="Salon" n="Salon" pagina><Suspense fallback={<Cargando />}><SalonFama liga={liga} enc={enc} /></Suspense></Aislada>
         : pagina === 'crews' ? <Aislada key="Crews" n="Crews" pagina><Suspense fallback={<Cargando />}><CrewsPagina liga={liga} dc={yo.dc} /></Suspense></Aislada>
+        : pagina === 'socio' ? <Aislada key="Socio" n="Socio" pagina><Suspense fallback={<Cargando />}><PanelSocio liga={liga} q={(hash || '').split('?')[1] || ''} /></Suspense></Aislada>
         : pagina === 'ligas' ? <Aislada key="Ligas" n="Ligas" pagina><Suspense fallback={<Cargando />}><LigasPagina liga={liga} id={ligaId} /></Suspense></Aislada>
         : pagina === 'tarjetas' ? <Aislada key="Tarjetas" n="Tarjetas" pagina><Suspense fallback={<Cargando />}><Tarjetas liga={liga} dc={yo.dc} tipo={partes[1] || ''} q={(hash || '').split('?')[1] || ''} /></Suspense></Aislada>
         : pagina === 'guia' ? <Aislada key="Guia" n="Guia" pagina><Suspense fallback={<Cargando />}><Guia liga={liga} dc={yo.dc} /></Suspense></Aislada>

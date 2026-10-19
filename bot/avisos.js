@@ -2488,6 +2488,8 @@ const RUTAS = {
   '/avisos/crews-sembrar': 'POST',
   // 🪪 los de las crews que no están verificados, con la clave del ciclo (`bot/crews_verificar.py`)
   '/avisos/crews-verificar': 'POST',
+  // 📊 el panel de un socio Tier 1 o 2, para su dueño (19/10/2026). Ver `panelSocio()` del objeto
+  '/avisos/panel-socio': 'POST',
   // 🗳️ a quién votó el público como ganador en el bot en vivo, sumado por nombre (público: sin ningún Discord ID)
   '/avisos/favoritos': 'GET',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026). Ver `visita()` del objeto
@@ -3469,6 +3471,17 @@ export function ajusteValido(cual, valor) {
   // 🏆 los números de los tiers de las crews (`bot/crews_tiers.py` los lee): `{sube, baja, juegan}`, `null` = los de siempre
   if (cual === 'crews_tiers_num') return CW.tiersValidos(valor);
   // 🤝 el nivel de cada servidor (`bot/tiers.py`, Dlx 18/10/2026): `{sigla: 1|2|3}`. El ciclo lo copia a datos/niveles.json
+  // 👑 el dueño de cada socio para su panel, cuando el de Discord no es (19/10/2026, «lo corregís vos»): `{sigla: [ids]}`
+  if (cual === 'socios_duenos') {
+    if (valor === null) return null;
+    if (!valor || typeof valor !== 'object' || Array.isArray(valor) || Object.keys(valor).length > 60) return undefined;
+    const out = {};
+    for (const [k, v] of Object.entries(valor)) {
+      if (!/^[A-Z]{2,6}$/.test(k) || !Array.isArray(v) || v.length > 3 || !v.every((x) => /^[0-9]{15,22}$/.test(String(x)))) return undefined;
+      if (v.length) out[k] = [...new Set(v.map(String))];
+    }
+    return out;
+  }
   if (cual === 'tiers') {
     if (valor === null) return null;
     if (!valor || typeof valor !== 'object' || Array.isArray(valor) || Object.keys(valor).length > 60) return undefined;
@@ -4492,6 +4505,19 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // 📖 LAS HISTORIAS QUE VISTE, EN TU CUENTA (Dlx, 18/10/2026: «tengo mi cuenta en muchos dispositivos», y a «¿lo visto
   // sigue a tu cuenta?»: «yes»). Sin `ids` devuelve lo tuyo; con `ids`, lo suma. Sólo con «Entrar con Discord»
+  // 📊 EL PANEL DE UN SOCIO: quién pide lo dice Discord; de qué servidor es dueño, el objeto (`panelSocio()`)
+  if (ruta === '/avisos/panel-socio') {
+    const crudo = await req.text();
+    if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/panel-socio', {
+      method: 'POST', body: JSON.stringify({ quien: q.id }), headers: { 'content-type': 'application/json' },
+    });
+  }
   if (ruta === '/avisos/historias') {
     const crudo = await req.text();
     if (crudo.length > 24576) return json({ error: 'demasiado grande' }, 413);
@@ -6094,6 +6120,7 @@ export class Avisos {
       // directo y no pasaban por acá; ahora `avisos_prueba.mjs` entra por `fetch()`, como la página
       if (ruta === '/tutorial') return this.tutorial(d);
       if (ruta === '/seccion') return this.seccion(d);
+      if (ruta === '/panel-socio') return this.panelSocio(d);
       if (ruta === '/clics') return this.clics(d);
       if (ruta === '/error-pagina') return this.errorPagina(d);
       if (ruta === '/dueno') {
@@ -10358,6 +10385,34 @@ export class Avisos {
     return { t: Date.now(), temporada, n };
   }
 
+  /**
+   * 📊 EL PANEL DE UN SOCIO (Dlx, 19/10/2026: «un acceso especial tipo dashboard para los socios, o sea los owners de los
+   * sv… para ver cómo sus servidores están mejorando, sus estadísticas», *«tier 1 y tier 2»*, y el dueño «automático y
+   * lo corregís vos»). Los servidores de `quien`: los Tier 1 y 2 de los que es dueño en Discord (lo lee `bot/tiers.py`)
+   * o que Dlx le asignó en el Dashboard (`socios_duenos`, que manda sobre lo de Discord). Dlx los ve todos. Lo de cada
+   * uno: su puntaje y el de antes, sus cuatro partes, el panel que armó el ciclo y las visitas a su página de las
+   * últimas 4 semanas (`secciones`, una por navegador y por día). ⚠️ Sin lo que es sólo de Dlx: ni la recomendación de
+   * `bot/tiers.py` ni el Discord ID del dueño.
+   */
+  panelSocio(d) {
+    const quien = String((d && d.quien) || '');
+    const T = this.leer('tiers') || {};
+    const aj = this.ajustes();
+    const mano = (aj.socios_duenos && typeof aj.socios_duenos === 'object') ? aj.socios_duenos : {};
+    const tiers = (aj.tiers && typeof aj.tiers === 'object') ? aj.tiers : {};
+    const esDlx = quien === DUENO;
+    const de = (x) => (Array.isArray(mano[x.sv]) && mano[x.sv].length ? mano[x.sv] : (x.dueno ? [x.dueno] : []));
+    const tierDe = (x) => tiers[x.sv] || x.tier || 1;
+    const desde = diaET(Date.now() - 27 * DIA_MS);
+    const servidores = (T.servidores || []).filter((x) => [1, 2].includes(tierDe(x)) && (esDlx || de(x).includes(quien))).map((x) => ({
+      sv: x.sv, nombre: x.nombre, tier: tierDe(x), puntos: x.puntos, antes: x.antes, partes: x.partes, m: x.m, ultimo: x.ultimo,
+      sin_jugar: x.sin_jugar, panel: x.panel || null,
+      visitas: this.sql.exec('SELECT dia, n FROM secciones WHERE s = ? AND dia >= ? ORDER BY dia', 'sv-' + x.sv, desde).toArray()
+        .map((r) => [r.dia, Number(r.n) || 0]),
+    }));
+    return json({ ok: true, t: T.t || '', semanas: T.semanas || 4, todos: esDlx, servidores });
+  }
+
   /** 🗑️ Los logos de las crews que se borraron (bot/crews.js `crewBasura()`), fuera de R2. Nunca frena nada. */
   async vaciarBasuraCrews() {
     try {
@@ -11649,7 +11704,10 @@ export class Avisos {
   /** 📊 Una sección abierta, de un navegador (ver `SECC_EV`). Con tope por día, como la visita */
   seccion(d) {
     const s = d && typeof d.ev === 'string' ? d.ev : '';
-    if (!SECC_EV.has(s)) return json({ error: 'faltan datos' }, 400);
+    // 📊 y la página de cada servidor (`sv-FFA`), para el panel de su dueño (19/10/2026): sólo los que mide el ciclo,
+    // o cualquiera podría llenar la tabla de nombres inventados
+    const deUnSv = /^sv-[A-Z]{2,6}$/.test(s) && ((this.leer('tiers') || {}).servidores || []).some((x) => 'sv-' + x.sv === s);
+    if (!SECC_EV.has(s) && !deUnSv) return json({ error: 'faltan datos' }, 400);
     this.sql.exec('INSERT INTO secciones (dia, s, n) VALUES (?, ?, 1) ON CONFLICT(dia, s) DO UPDATE SET n = n + 1 ' +
       'WHERE n < 20000', diaET(), s);
     return json({ ok: true });

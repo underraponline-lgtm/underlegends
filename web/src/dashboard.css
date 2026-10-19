@@ -365,6 +365,11 @@
 .ti-m{margin:0;font:500 13.5px/1.45 Archivo,sans-serif}
 .ti-rec{margin:0;font:600 13.5px/1.4 Archivo,sans-serif}
 .ti-rec span{font-weight:800}
+/* 👑 quién ve el panel del socio (#/socio): el dueño de Discord, o el que pone Dlx */
+.ti-dueno{display:grid;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid var(--suave)}
+.ti-dueno small{font:500 12.5px/1.4 Archivo,sans-serif;color:var(--gris);overflow-wrap:anywhere}
+.ti-dueno-f{display:flex;gap:6px}
+.ti-dueno-f input{flex:1 1 auto;min-width:0;font-variant-numeric:tabular-nums}
 @media (prefers-reduced-motion: reduce){.ti-caja,.ti-partes u{animation:none}}
 .app.calma .ti-caja,.app.calma .ti-partes u{animation:none}
 /* 👥 las crews (19/10/2026): la tarjeta va a lo ancho y la lista de líderes, plegada */

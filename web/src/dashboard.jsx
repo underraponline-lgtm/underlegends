@@ -479,7 +479,32 @@ const TIER_QUE = { 1: 'suma al ranking, todo', 2: 'el calendario, no suma', 3: '
 const REC = { bien: ['✅', 'Bien'], subir: ['⬆️', 'Puede subir'], revisar: ['⚠️', 'Revisar'], casa: ['🏠', 'La casa'] };
 const PARTES = [['actividad', 'Actividad', 35], ['alcance', 'Alcance', 25], ['calidad', 'Calidad', 25], ['comunidad', 'Comunidad', 15]];
 
-function TierCaja({ x, liga, tier, cambiar, ocup, i }) {
+/** 👑 El dueño de un socio para su panel (`#/socio`): el de Discord, que lee el ciclo, o el que pongas acá, que manda. */
+function DuenoSocio({ x, aj, hacer, ocup }) {
+  const mano = (aj.socios_duenos || {})[x.sv] || [];
+  const [v, setV] = useState(mano.join(', '));
+  const [mal, setMal] = useState('');
+  const guardar = () => {
+    const ids = v.split(/[\s,]+/).map((y) => y.trim()).filter(Boolean);
+    if (ids.some((y) => !/^[0-9]{15,22}$/.test(y)) || ids.length > 3) { setMal('Hasta 3 Discord IDs (sólo números), separados por coma.'); return; }
+    setMal('');
+    const todos = Object.assign({}, aj.socios_duenos || {});
+    if (ids.length) todos[x.sv] = ids; else delete todos[x.sv];
+    hacer('socios_duenos', todos, ids.length ? 'El panel de ' + siglaDe(x.sv) + ' ahora lo ve ' + ids.join(', ') + '.' : 'El panel de ' + siglaDe(x.sv) + ' vuelve al dueño de Discord.');
+  };
+  return (
+    <div className="ti-dueno">
+      <small>Su panel lo ve: <b>{mano.length ? mano.join(', ') + ' (a mano)' : x.dueno ? x.dueno + ' (dueño en Discord)' : 'nadie todavía'}</b> · <a href={'#/socio?sv=' + x.sv}>Ver su panel</a></small>
+      <span className="ti-dueno-f">
+        <input value={v} onChange={(e) => setV(e.target.value)} placeholder="Otro Discord ID (hasta 3)" aria-label={'Quién ve el panel de ' + x.nombre} inputMode="numeric" />
+        <button type="button" className="btn borde2 chico" disabled={ocup || v.trim() === mano.join(', ')} onClick={guardar}>Guardar</button>
+      </span>
+      {mal ? <small className="ti-bajo" role="alert">{mal}</small> : null}
+    </div>
+  );
+}
+
+function TierCaja({ x, liga, tier, cambiar, ocup, i, aj, hacer }) {
   const pts = useNumero(x.puntos);
   const m = x.m || {};
   const [ic, et] = REC[x.rec] || ['', x.rec];
@@ -506,6 +531,7 @@ function TierCaja({ x, liga, tier, cambiar, ocup, i }) {
         {m.anuncios ? ' · staff en ' + Math.round((100 * (m.con_staff || 0)) / m.anuncios) + ' % de sus anuncios' : ''}
         {m.cancelados ? ' · ' + m.cancelados + ' cancelados' : ''}{m.promos ? ' · ' + m.promos + ' promos' : ''}{m.ligas ? ' · ' + m.ligas + ' ligas' : ''}</p>
       <p className="ti-rec"><span>{ic} {et}</span> {x.porque}</p>
+      {tier === 1 || tier === 2 ? <DuenoSocio x={x} aj={aj} hacer={hacer} ocup={ocup} /> : null}
     </article>
   );
 }
@@ -522,7 +548,7 @@ function Tiers({ T, aj, hacer, ocup, msg, liga }) {
         lleva todo; Tier 2 sale en el calendario y la campana, pero sus llaves no suman; Tier 3 es el directorio, sin bot. Para ser
         socio: 300 miembros como mínimo, se recomiendan 500.</p>
       {msg ? <p className="db-msg" role="status">{msg}</p> : null}
-      <div className="ti-g">{T.servidores.map((x, i) => <TierCaja key={x.sv} x={x} liga={liga} tier={tierDe(x)} cambiar={cambiar} ocup={ocup} i={i} />)}</div>
+      <div className="ti-g">{T.servidores.map((x, i) => <TierCaja key={x.sv} x={x} liga={liga} tier={tierDe(x)} cambiar={cambiar} ocup={ocup} i={i} aj={aj} hacer={hacer} />)}</div>
       {T.t ? <p className="db-tx">Medido {hace(T.t)}.</p> : null}
     </div>
   );

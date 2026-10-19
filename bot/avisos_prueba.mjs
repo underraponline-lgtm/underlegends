@@ -2190,6 +2190,29 @@ const ok = (cond, que, det) => {
     const enApp = /const SECC = new Set\(\[([^\]]+)\]/.exec(readFileSync(join(aqui, '..', 'web', 'src', 'App.jsx'), 'utf8'));
     const deApp = enApp ? enApp[1].match(/'([a-z-]+)'/g).map((x) => x.slice(1, -1)).sort() : [];
     ok(JSON.stringify(deApp) === JSON.stringify([...A.SECC_EV].sort()), 'la lista de App.jsx es SECC_EV', deApp.join(','));
+    // 📊 el panel de los socios (19/10/2026): las visitas de cada servidor, y quién ve qué
+    o.guardar('tiers', { t: '2026-10-19T23:00:00Z', semanas: 4, servidores: [
+      { sv: 'FFA', nombre: 'Freestyle For All', tier: 1, dueno: '400000000000000001', puntos: 81, antes: 40, rec: 'bien', porque: 'x',
+        partes: { actividad: 35 }, m: { eventos: 10 }, panel: { sugerencias: ['a'] } },
+      { sv: 'SR', nombre: 'Snake Rap', tier: 1, dueno: '400000000000000002', puntos: 50 },
+      { sv: 'TRS', nombre: 'Tres', tier: 3, dueno: '400000000000000001', puntos: 10 }] });
+    ok(await se('sv-FFA') === 200 && await se('sv-FFA') === 200 && await se('sv-ZZZ') === 400 && await se('sv-ffa') === 400,
+      'visitas de cada servidor: sólo de los que mide el ciclo');
+    const ps = async (quien) => (await o.panelSocio({ quien })).json();
+    const p1 = await ps('400000000000000001');
+    ok(p1.ok && p1.servidores.length === 1 && p1.servidores[0].sv === 'FFA' && p1.servidores[0].visitas[0][1] === 2
+      && !('rec' in p1.servidores[0]) && !('dueno' in p1.servidores[0]) && !p1.todos,
+    'el dueño ve su Tier 1 (no el Tier 3), con sus visitas, sin la recomendación ni el ID del dueño');
+    ok((await ps('400000000000000009')).servidores.length === 0 && (await ps(A.DUENO)).servidores.length === 2 && (await ps(A.DUENO)).todos,
+      'quien no es dueño no ve nada; Dlx ve todos los Tier 1 y 2');
+    const aj0 = o.leer('ajustes_dueno') || {};
+    o.guardar('ajustes_dueno', Object.assign({}, aj0, { socios_duenos: { SR: ['400000000000000009'] } }));
+    ok((await ps('400000000000000009')).servidores[0].sv === 'SR' && (await ps('400000000000000002')).servidores.length === 0,
+      'lo que corrige Dlx en el Dashboard manda sobre el dueño de Discord');
+    o.guardar('ajustes_dueno', aj0);
+    ok(A.ajusteValido('socios_duenos', { SR: ['400000000000000009'] }).SR.length === 1 && A.ajusteValido('socios_duenos', { SR: ['x'] }) === undefined
+      && A.ajusteValido('socios_duenos', null) === null && A.ajusteValido('socios_duenos', { sr: [] }) === undefined,
+    'el dueño a mano: siglas en mayúscula e IDs de Discord');
   }
 }
 
