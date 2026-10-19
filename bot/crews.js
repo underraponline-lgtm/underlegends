@@ -77,6 +77,12 @@ export const LOGO_CARPETA = 'logos-crews/';
 export const ORDEN_RG = ['E', 'D', 'C', 'B', 'A', 'S', 'SS', 'SSS'];
 /** 🪪 los días que tiene quien está en una crew sin verificarse, antes de salir (Dlx, 19/10/2026: «darles 7 días») */
 export const PEND_MS = 7 * DIA;
+/** 🔗 los links de invitación (Dlx, 19/10/2026: «links de invitación para unirse a crew únicos, o sea con ese link
+ *  entrás sí o sí»): cuánto duran, cuántos puede tener abiertos una crew, y los topes de usos que se eligen (0 = hasta
+ *  que se llene) */
+export const LINK_MS = 7 * DIA;
+export const LINKS_MAX = 5;
+export const LINK_USOS = [1, 5, 10, 0];
 /** y el seguro: si el ciclo dice que más de esta parte de todos no está verificada, algo anda mal de su lado */
 export const PEND_TOPE = 0.6;
 export const REQ_EV_MAX = 100;
@@ -135,9 +141,12 @@ export function puede(rol, que, sobre = '') {
 }
 
 // la clave de un perfil: la misma regla que `claveValida()` de avisos.js
+/** 🔗 un código de link: 10 letras y números, sin los que se confunden (0 O 1 I L) */
+const LINK_LETRAS = 'abcdefghjkmnpqrstuvwxyz23456789';
+export const codLinkOk = (s) => typeof s === 'string' && /^[a-hjkmnp-z2-9]{10}$/.test(s);
 const claveOk = (k) => typeof k === 'string' && k.length >= 1 && k.length <= 60 && /^[\p{L}\p{N}][\p{L}\p{N}-]*$/u.test(k);
 export const ACCIONES = ['crear', 'responder', 'pedir', 'cancelar_pedido', 'invitar', 'desinvitar', 'decidir', 'salir', 'sacar',
-  'rol', 'lider', 'reps', 'entrada', 'nombre', 'borrar', 'logo', 'desc', 'pref_inv', 'req'];
+  'rol', 'lider', 'reps', 'entrada', 'nombre', 'borrar', 'logo', 'desc', 'pref_inv', 'req', 'link_crear', 'link_borrar', 'link_unirse'];
 
 /**
  * La forma de un pedido de la página o del bot, antes de llegar al objeto: sólo los campos de cada acción y con su
@@ -159,6 +168,8 @@ export function validarCrew(d) {
   if (d.sigla !== undefined) { if (typeof d.sigla !== 'string' || d.sigla.length > 8) return { error: 'sigla' }; out.sigla = d.sigla; }
   if (d.desc !== undefined) { if (typeof d.desc !== 'string' || d.desc.length > 400) return { error: 'desc' }; out.desc = d.desc; }
   if (d.req !== undefined) { const r = reqValido(d.req); if (!r) return { error: 'req' }; out.req = r; }
+  if (d.cod !== undefined) { if (!codLinkOk(d.cod)) return { error: 'cod' }; out.cod = d.cod; }
+  if (d.max !== undefined) { if (!LINK_USOS.includes(d.max)) return { error: 'max' }; out.max = d.max; }
   // el logo, en base64; lo mira el objeto (el tipo por los bytes, el tope, los metadatos y el filtro). ⚠️ `logo_url` y
   // `logo_v` NO se copian: los pone el objeto después del filtro
   if (d.img !== undefined) {
@@ -284,6 +295,9 @@ export function crewTablas(sql) {
   sql.exec('CREATE TABLE IF NOT EXISTS crew_ped (crew TEXT NOT NULL, k TEXT NOT NULL, quien TEXT NOT NULL, t INTEGER NOT NULL, ' +
     'PRIMARY KEY (crew, k))');
   sql.exec('CREATE TABLE IF NOT EXISTS crew_salidas (k TEXT PRIMARY KEY, t INTEGER NOT NULL)');
+  // 🔗 los links de invitación: de qué crew, quién lo armó (su clave), hasta cuándo, cuántos entraron y el tope
+  sql.exec('CREATE TABLE IF NOT EXISTS crew_links (cod TEXT PRIMARY KEY, crew TEXT NOT NULL, por TEXT NOT NULL, t INTEGER NOT NULL, ' +
+    'vence INTEGER NOT NULL, usos INTEGER NOT NULL DEFAULT 0, max INTEGER NOT NULL DEFAULT 0)');
   sql.exec('CREATE TABLE IF NOT EXISTS crew_log (id INTEGER PRIMARY KEY AUTOINCREMENT, crew TEXT NOT NULL, t INTEGER NOT NULL, ' +
     "que TEXT NOT NULL, k TEXT NOT NULL DEFAULT '', por TEXT NOT NULL DEFAULT '')");
 }
@@ -479,6 +493,11 @@ export function crewMia(o, d) {
       out.pedidos = filas(o, 'SELECT k, t FROM crew_ped WHERE crew = ? AND t > ? ORDER BY t', m.crew, ahora - VENCE_MS);
       out.invitados = filas(o, 'SELECT k, de, t FROM crew_inv WHERE crew = ? AND t > ? ORDER BY t', m.crew, ahora - VENCE_MS);
     }
+    // 🔗 los links abiertos de la crew, para los que pueden invitar (Veterano para arriba)
+    if (puede(m.rol, 'invitar')) {
+      out.links = filas(o, 'SELECT cod, por, t, vence, usos, max FROM crew_links WHERE crew = ? AND vence > ? AND (max = 0 OR usos < max) ' +
+        'ORDER BY t DESC', m.crew, ahora);
+    }
   }
   out.recibe = recibe(o, k);
   out.inv = filas(o, 'SELECT i.crew, i.de, i.t, c.nombre FROM crew_inv i JOIN crews c ON c.id = i.crew WHERE i.k = ? AND i.t > ? ' +
@@ -597,6 +616,22 @@ export function crewAccion(o, d) {
     o.sql.exec('DELETE FROM crew_ped WHERE crew = ? AND k = ?', String(d.crew || ''), k);
     return { ok: true };
   }
+  if (a === 'link_unirse') {
+    // 🔗 CON EL LINK SE ENTRA SÍ O SÍ (Dlx, 19/10/2026): sin pedir permiso, sin los requisitos y también a una que es «sólo
+    // por invitación» —el link ES la invitación—. Lo que no se saltea: estar verificado (`de`), que haya lugar, los 7
+    // días entre crews y que el Líder pase el liderazgo antes de irse. Desde otra crew es cambiarse, como una invitación
+    const ln = fila(o, 'SELECT * FROM crew_links WHERE cod = ?', String(d.cod || ''));
+    if (!ln || ln.vence <= ahora) return mal('link_vencido', 410);
+    if (ln.max && ln.usos >= ln.max) return mal('link_usado', 410);
+    const cc = crewDe(o, ln.crew);
+    if (!cc) return mal('no_existe', 404);
+    const r = yo ? cambiarse(o, yo, cc, k, quien, ln.por, ahora) : entrar(o, cc, k, quien, ln.por, ahora);
+    if (r.ok) {
+      o.sql.exec('UPDATE crew_links SET usos = usos + 1 WHERE cod = ?', ln.cod);
+      anotar(o, cc.id, 'link', k, ln.por);
+    }
+    return Object.assign(r, r.ok ? { crew: cc.id, nombre: cc.nombre } : {});
+  }
   if (a === 'pref_inv') {
     // 📨 recibir (o no) invitaciones de otras crews mientras estás en una
     o.sql.exec('INSERT OR REPLACE INTO crew_prefs (k, inv) VALUES (?, ?)', k, d.si === false ? 0 : 1);
@@ -634,6 +669,25 @@ export function crewAccion(o, d) {
     avisar(o, a2, 'crew-inv:' + c.id, 'Te invitaron a ' + c.nombre, suyo ? 'Si aceptás, dejás tu crew de ahora. Tenés una semana para decidir.'
       : 'Aceptá o no desde tu cuenta: tenés una semana.', '#/cuenta/crew');
     return { ok: true, invitado: a2 };
+  }
+  if (a === 'link_crear') {
+    if (!puede(rol, 'invitar')) return mal('rol', 403);
+    // los que todavía sirven: vencidos o gastados no ocupan lugar
+    if (fila(o, 'SELECT COUNT(*) AS n FROM crew_links WHERE crew = ? AND vence > ? AND (max = 0 OR usos < max)', c.id, ahora).n >= LINKS_MAX) {
+      return mal('links_max', 409, { max: LINKS_MAX });
+    }
+    if (!o.cuentaCambio(quien, 'crew-link', 10)) return mal('espera_dia', 429);
+    let cod = '';
+    for (const b of crypto.getRandomValues(new Uint8Array(10))) cod += LINK_LETRAS[b % LINK_LETRAS.length];
+    const max = LINK_USOS.includes(d.max) ? d.max : 0;
+    o.sql.exec('INSERT INTO crew_links (cod, crew, por, t, vence, usos, max) VALUES (?, ?, ?, ?, ?, 0, ?)', cod, c.id, k, ahora, ahora + LINK_MS, max);
+    anotar(o, c.id, 'link_nuevo', '', k);
+    return { ok: true, cod, vence: ahora + LINK_MS, max };
+  }
+  if (a === 'link_borrar') {
+    if (!puede(rol, 'invitar')) return mal('rol', 403);
+    o.sql.exec('DELETE FROM crew_links WHERE cod = ? AND crew = ?', String(d.cod || ''), c.id);
+    return { ok: true };
   }
   if (a === 'desinvitar') {
     if (!puede(rol, 'invitar')) return mal('rol', 403);
@@ -883,6 +937,7 @@ function borrar(o, c, por, ahora, aviso = null) {
     o.sql.exec('DELETE FROM crew_miembros WHERE crew = ?', c.id);
     o.sql.exec('DELETE FROM crew_inv WHERE crew = ?', c.id);
     o.sql.exec('DELETE FROM crew_ped WHERE crew = ?', c.id);
+    o.sql.exec('DELETE FROM crew_links WHERE crew = ?', c.id);
     o.sql.exec('DELETE FROM crews WHERE id = ?', c.id);
     anotar(o, c.id, 'cerrada', '', por);
   });
@@ -1082,6 +1137,7 @@ export function crewLimpiar(o) {
   o.sql.exec('DELETE FROM crew_inv WHERE t < ?', ahora - VENCE_MS);
   o.sql.exec('DELETE FROM crew_ped WHERE t < ?', ahora - VENCE_MS);
   o.sql.exec('DELETE FROM crew_salidas WHERE t < ?', ahora - ESPERA_MS);
+  o.sql.exec('DELETE FROM crew_links WHERE vence < ?', ahora);
   o.sql.exec('DELETE FROM crew_log WHERE t < ?', ahora - 120 * DIA);
 }
 

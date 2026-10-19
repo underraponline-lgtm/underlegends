@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { limpio, norm, num } from './liga.js';
 import { Cara, DosToques } from './piezas.jsx';
 import { aBase64, achicar } from './imagen.js';
-import { ENTRADA_NOMBRE, ROL_NOMBRE, accionCrew, crewDe, cuandoVence, diaCrew, errorCrew, quedan, useCrews } from './crews.js';
+import { ENTRADA_NOMBRE, ROL_NOMBRE, accionCrew, codigoLink, crewDe, cuandoVence, diaCrew, errorCrew, linkCrew, quedan, useCrews } from './crews.js';
 
 // el orden de las letras para elegir el mínimo (de la mejor a la peor): sólo el orden, los umbrales viven en comun/rangos.py
 const LETRAS = ['SSS', 'SS', 'S', 'A', 'B', 'C', 'D', 'E'];
@@ -199,8 +199,25 @@ export function EntrarCrew({ c }) {
   if (yo && yo.id === c.id) return null;
   const inv = mia && (mia.inv || []).find((x) => x.crew === c.id);
   const pedi = mia && (mia.ped || []).find((x) => x.crew === c.id);
+  // 🔗 llegó con un link de invitación (`?u=…`, Dlx 19/10/2026: «con ese link entrás sí o sí»)
+  const cod = codigoLink();
   let cuerpo;
-  if (yo && inv) {
+  if (cod) {
+    const lider = !!(yo && mia.rol === 'lider');
+    const sacar = () => { try { history.replaceState(history.state, '', window.urlLG ? window.urlLG(enlaceCrew(c.id)) : enlaceCrew(c.id)); } catch (e) { /* queda */ } };
+    cuerpo = (
+      <div className="cw-entrar">
+        <p className="cw-nota">🔗 Te pasaron un link para entrar a <b>{limpio(c.nombre)}</b>: entrás directo, sin pedir permiso.
+          {yo ? <> Estás en <a href={enlaceCrew(yo.id)}>{limpio(yo.nombre)}</a>: si entrás, la dejás, y por 7 días no te podés cambiar de nuevo.</> : null}</p>
+        <div className="cw-fila">
+          <button type="button" className="btn verde" disabled={va || lider}
+            onClick={() => hacer({ accion: 'link_unirse', cod }, (j) => { sacar(); return '¡Entraste!' + (j.dejo ? ' Dejaste ' + limpio(j.dejo) + '.' : ''); })}>
+            Entrar con el link</button>
+        </div>
+        {lider ? <small className="cw-nota">Sos Líder de tu crew: primero pasale el liderazgo a alguien.</small> : null}
+      </div>
+    );
+  } else if (yo && inv) {
     // 📨 invitado estando en otra crew (19/10/2026): aceptar es cambiarse
     cuerpo = (
       <div className="cw-entrar">
@@ -236,6 +253,44 @@ export function EntrarCrew({ c }) {
     );
   }
   return <div className="cw-entrar"><SemanaCrew c={c} publico />{cuerpo}{msg ? <small role="status" className="cw-msg">{msg}</small> : null}</div>;
+}
+
+// ── 🔗 los links de invitación (Dlx, 19/10/2026: «links de invitación para unirse a crew únicos, o sea con ese link
+// entrás sí o sí»). Los arma quien puede invitar; duran 7 días y sirven para 1, 5, 10 o hasta que se llene ──────────
+const USOS_LINK = [[1, 'Para 1 persona'], [5, 'Para 5'], [10, 'Para 10'], [0, 'Hasta que se llene']];
+function LinksCrew({ c, mia, va, hacer }) {
+  const [max, setMax] = useState(1);
+  const [copiado, setCopiado] = useState('');
+  const links = mia.links || [];
+  const copiar = async (cod) => {
+    try { await navigator.clipboard.writeText(linkCrew(c.id, cod)); setCopiado(cod); setTimeout(() => setCopiado(''), 2500); } catch (e) { setCopiado('no'); }
+  };
+  return (
+    <div className="cw-bloque">
+      <h3 className="cw-h">Links de invitación</h3>
+      <p className="cw-nota">Quien entra con el link queda adentro sin pedir permiso ni cumplir los requisitos. Cada link dura 7 días.</p>
+      <div className="cw-fila">
+        <select className="cw-sel" value={max} onChange={(e) => setMax(Number(e.target.value))} aria-label="Para cuántos sirve el link">
+          {USOS_LINK.map(([v, t]) => <option key={v} value={v}>{t}</option>)}
+        </select>
+        <button type="button" className="btn verde chico" disabled={va}
+          onClick={() => hacer({ accion: 'link_crear', max }, (j) => { copiar(j.cod); return 'Link armado: copialo y pasáselo.'; })}>Armar link</button>
+      </div>
+      {links.length ? (
+        <ul className="cw-lista cw-links">{links.map((l) => (
+          <li key={l.cod}>
+            <span className="cw-link-u"><b>{linkCrew(c.id, l.cod).replace(/^https:\/\//, '')}</b>
+              <small>{(l.max ? l.usos + ' de ' + l.max : (l.usos === 1 ? '1 entró' : l.usos + ' entraron')) + ' · vence el ' + diaCrew(l.vence)}</small></span>
+            <span className="cw-acc">
+              <button type="button" className="btn borde2 chico" onClick={() => copiar(l.cod)}>{copiado === l.cod ? 'Copiado' : 'Copiar'}</button>
+              <DosToques className="btn borde2 chico" confirmar="¿Borrarlo?" disabled={va} onClick={() => hacer({ accion: 'link_borrar', cod: l.cod })}>Borrar</DosToques>
+            </span>
+          </li>
+        ))}</ul>
+      ) : null}
+      {copiado === 'no' ? <p className="cw-nota">No pude copiarlo solo: mantené apretado el link de arriba para copiarlo.</p> : null}
+    </div>
+  );
 }
 
 // ── el panel de los de adentro ───────────────────────────────────────────────────────────────────────────────────────
@@ -314,6 +369,8 @@ export function PanelCrew({ liga, c }) {
           )}
         </div>
       ) : null}
+
+      {invita ? <LinksCrew c={c} mia={mia} va={va} hacer={hacer} /> : null}
 
       {manda ? (
         <div className="cw-bloque">

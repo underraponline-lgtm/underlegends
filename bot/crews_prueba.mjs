@@ -306,6 +306,29 @@ if (!DatabaseSync) {
   ok(CW.crewDueno(o, { que: 'borrar', crew: 'Trio' }).ok && bandeja.some((b) => b.quien === id(211) && b.titulo === 'Trio se cerró'),
     'al cerrar una crew, a su gente le llega (las cuentas se buscan antes de borrar)');
 
+  // ── 🔗 los links de invitación (19/10/2026, Dlx: «con ese link entrás sí o sí») ──
+  yo(600, 'lk', { accion: 'crear', nombre: 'Links', sigla: 'LK', entrada: 'invitacion' });
+  const ln = yo(600, 'lk', { accion: 'link_crear', max: 1 });
+  ok(ln.ok && CW.codLinkOk(ln.cod) && ln.max === 1 && CW.crewMia(o, { quien: id(600), de: 'lk' }).links.length === 1, 'el Líder arma un link');
+  const u1 = yo(601, 'lk1', { accion: 'link_unirse', cod: ln.cod });
+  ok(u1.ok && u1.crew === 'Links' && pubC('Links').gente.some((x) => x[0] === 'lk1'), 'con el link se entra, aunque sea «sólo por invitación»');
+  ok(yo(602, 'lk2', { accion: 'link_unirse', cod: ln.cod }).error === 'link_usado', 'el de un uso, se gasta');
+  ok(yo(601, 'lk1', { accion: 'link_crear' }).error === 'rol', 'un Miembro no arma links');
+  const ln2 = yo(600, 'lk', { accion: 'link_crear' });
+  ok(yo(600, 'lk', { accion: 'link_borrar', cod: ln2.cod }).ok && yo(602, 'lk2', { accion: 'link_unirse', cod: ln2.cod }).error === 'link_vencido',
+    'el link borrado ya no sirve');
+  ok(CW.validarCrew({ accion: 'link_unirse', cod: 'ABC' }).error === 'cod' && CW.validarCrew({ accion: 'link_crear', max: 3 }).error === 'max',
+    'un código o un tope raros no llegan al objeto');
+  const ln3 = yo(600, 'lk', { accion: 'link_crear' });
+  yo(610, 'otro', { accion: 'crear', nombre: 'Otra Crew', sigla: 'OC' });
+  yo(611, 'mv', { accion: 'pedir', crew: 'Otra Crew' });
+  yo(610, 'otro', { accion: 'decidir', a: 'mv', si: true });
+  const sw2 = yo(611, 'mv', { accion: 'link_unirse', cod: ln3.cod });
+  ok(sw2.ok && sw2.dejo === 'Otra Crew' && pubC('Links').gente.some((x) => x[0] === 'mv'), 'desde otra crew, el link es cambiarse');
+  ok(yo(610, 'otro', { accion: 'link_unirse', cod: ln3.cod }).error === 'lider_pasa_primero', 'el Líder primero pasa el liderazgo');
+  for (let i = 0; i < 5; i++) yo(600, 'lk', { accion: 'link_crear' });
+  ok(yo(600, 'lk', { accion: 'link_crear' }).error === 'links_max', 'hasta ' + CW.LINKS_MAX + ' links abiertos por crew');
+
   // ── 🪪 los que no están verificados (19/10/2026): 7 días, la crew al primer verificado, una sola mención ──
   const tv = Date.now();
   CW.sembrar(o, { crews: [{ id: 'Viejas', gente: ['vlid', 'vmie', 'vok1', 'vok2'] }, { id: 'Nadie', gente: ['n1', 'n2'] }] });

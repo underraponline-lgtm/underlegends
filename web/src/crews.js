@@ -65,6 +65,22 @@ export function crewDe(k) {
  * 👥 Una acción (`accion` y lo suyo). Devuelve la respuesta, o `null` si se fue a Discord a entrar. Después, todo de
  * nuevo: lo tuyo y la lista.
  */
+/** 🔗 El código del link de invitación de la dirección (`?u=…`), o `''`. Viene en la dirección de verdad
+ *  (`/freestyle-rap/crew/X?u=…`) o en un `#/crew/X?u=…` de antes. */
+export function codigoLink() {
+  try {
+    const q = (W.location.search || '') || ('?' + ((W.location.hash || '').split('?')[1] || ''));
+    const c = new URLSearchParams(q).get('u') || '';
+    return /^[a-hjkmnp-z2-9]{10}$/.test(c) ? c : '';
+  } catch (e) { return ''; }
+}
+
+/** 🔗 El link para compartir: la página de la crew con el código. */
+export function linkCrew(id, cod) {
+  const r = '#/crew/' + encodeURIComponent(id) + '?u=' + cod;
+  return 'https://underlegends.pages.dev' + (W.urlLG ? W.urlLG(r) : '/' + r);
+}
+
 export function accionCrew(cuerpo) {
   if (!W.conCuenta) return Promise.resolve({ error: 'red' });
   return W.conCuenta('/api/avisos/crew', cuerpo, 's').then((j) => {
@@ -109,6 +125,10 @@ export function errorCrew(j) {
   if (c) return c;
   return ({
     verificate: 'Primero verificate: las crews son de los Miembros de Discord Rap Español.',
+    link_vencido: 'Ese link ya venció o lo borraron: pedile uno nuevo a la crew.',
+    link_usado: 'Ese link ya se usó todas las veces que tenía: pedile uno nuevo a la crew.',
+    links_max: 'Ya tienen ' + ((j && j.max) || 5) + ' links abiertos: borrá uno para armar otro.',
+    cod: 'Ese link está mal copiado: pedilo de nuevo.',
     ya_en_crew: 'Ya está en esa crew.',
     no_recibe: 'Esa persona no recibe invitaciones mientras está en su crew.',
     no_verificado: 'Esa persona todavía no es Miembro verificado de DRA: las crews son sólo de verificados.',
