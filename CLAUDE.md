@@ -905,6 +905,7 @@ Lo que Dlx decidió (ver `NOVEDADES.md`):
 | **`web/`** | la app: Vite + React, **sin** Tailwind ni shadcn |
 | `web/src/estilo.css` | nació **generado** desde el prototipo (`docs/remake/reales.py`) con `python web/css_del_prototipo.py`. **Desde el 30/09/2026 se edita acá**: el Inicio está en línea, el prototipo quedó congelado y el generador se niega a pisarlo sin `--pisar` |
 | `web/src/vivo.css` | lo que es sólo de la página de verdad: botones, votos, el menú ☰ |
+| `web/src/css/<página>.css` | **desde el 19/10/2026**, lo que usa UNA sola página que se baja aparte (Ranking, Perfil, Eventos…): la página lo inyecta al bajarse con `usarCss()` (`web/src/css.js`), así el Inicio no lo carga. ⚠️ Una regla se mudó sólo si **ninguna** de sus clases aparece en una regla que se quedó: al quedar última, `.rk-t td.c-pos` le ganó a `.rk-tw.todas td` y la columna cambió de ancho |
 | **`bot/paginas/inicio/`** | lo construido (`npx vite build`, en `web/`). **Se commitea**: el ciclo no construye nada, sube lo que hay |
 | `web/montar.py` | engancha la app en `index.html`: el CSS que apaga el marco de hoy, `#inicio-nuevo` y el script. Ya está hecho; se usa sólo si el HTML se rehace |
 
@@ -943,7 +944,8 @@ cambia también ahí.
 ⚠️ **LAS CLASES DEL PROTOTIPO SON GLOBALES ADENTRO DEL SHADOW ROOT**, y ya
 chocaron cuatro veces: `.llave` y `.prox` le cambiaban la forma a los tags del
 escenario, `.pronto` pintaba de amarillo los canjes y `.st-l` volvía magenta
-la Tira. **Antes de nombrar una clase, buscarla en `estilo.css`.**
+la Tira. **Antes de nombrar una clase, buscarla en `estilo.css`, `vivo.css` y
+`web/src/css/`** (las tres viven en el mismo shadow root).
 
 ⚠️ **21st: buscar sí, traer código NO sin el OK de Dlx.** `search`,
 `search_picker`, `get_inspiration`, `get_theme` y `search_logo` son gratis.

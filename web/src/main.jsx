@@ -6,13 +6,13 @@ import App, { Respaldo } from './App.jsx';
 import './fuentes.css';
 import estilo from './estilo.css?inline';
 import vivo from './vivo.css?inline';
+import { cssBase } from './css.js';
 
 const host = document.getElementById('inicio-nuevo');
 if (host && !host.shadowRoot) {
   const sombra = host.attachShadow({ mode: 'open' });
-  const st = document.createElement('style');
-  st.textContent = estilo + '\n' + vivo;
-  sombra.appendChild(st);
+  // el CSS de todos, primero; el de cada página entra después, al bajarse (`usarCss`)
+  cssBase(sombra, estilo + '\n' + vivo);
   const raiz = document.createElement('div');
   sombra.appendChild(raiz);
   createRoot(raiz).render(<Respaldo><App /></Respaldo>);

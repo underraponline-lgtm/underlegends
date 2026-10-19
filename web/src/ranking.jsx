@@ -25,6 +25,11 @@ import { Divisiones } from './divisiones.jsx';
 import { Misiones } from './misiones.jsx';
 import { svElegido, useElegidos } from './elegidos.js';
 import { Ascenso, useDetalle } from './ligas.jsx';
+import CSS_PAGINA from './css/ranking.css?inline';
+import { usarCss } from './css.js';
+
+// 🎨 su CSS, con su pedazo (web/src/css/ranking.css)
+usarCss('ranking', CSS_PAGINA);
 
 const pct = (x) => parseFloat(String(x == null ? '' : x).replace(',', '.')) || 0;
 const coma = (x, d = 1) => Number(x || 0).toFixed(d).replace('.', ',');

@@ -9,6 +9,11 @@ import { useEffect, useState } from 'react';
 import { limpio, norm, num, utc } from './liga.js';
 import { Bandera, Cara, DosToques } from './piezas.jsx';
 import { Merch } from './abajo.jsx';
+import CSS_PAGINA from './css/tienda.css?inline';
+import { usarCss } from './css.js';
+
+// 🎨 su CSS, con su pedazo (web/src/css/tienda.css)
+usarCss('tienda', CSS_PAGINA);
 
 const sinEtiquetas = (h) => String(h || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
 function usePrecios() {

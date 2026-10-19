@@ -6,6 +6,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { hora, nuevaQue } from './liga.js';
 import { Chevron, Compartir, Sec, enlace } from './piezas.jsx';
+import CSS_PAGINA from './css/cambios.css?inline';
+import { usarCss } from './css.js';
+
+// 🎨 su CSS, con su pedazo (web/src/css/cambios.css)
+usarCss('cambios', CSS_PAGINA);
 
 // `nuevaQue()` vive en liga.js: la usan la barra de abajo y Mi cuenta, y traerla de acá metía el changelog entero en el
 // paquete principal (la pasada del 04/10/2026, para que esta página se cargue sólo al abrirla)

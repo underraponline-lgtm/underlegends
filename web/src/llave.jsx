@@ -15,6 +15,11 @@ import { Bandera, Cara, Compartir, Ico, Medalla, PUESTO_MEDALLA, enlace, silueta
 import { completar, enOrden, esArbol, esDoble, jugado, partirDoble } from './arriba.jsx';
 import { vioVivo, vivoPendiente } from './pase.js';
 import { TEMAS_SV, leerTemas } from './temas.js';
+import CSS_PAGINA from './css/llave.css?inline';
+import { usarCss } from './css.js';
+
+// 🎨 su CSS, con su pedazo (web/src/css/llave.css)
+usarCss('llave', CSS_PAGINA);
 
 const MEDALLA = PUESTO_MEDALLA;
 const ORD_P = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos', 'Dieciseisavos', 'R32'];

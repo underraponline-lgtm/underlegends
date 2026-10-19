@@ -14,6 +14,11 @@ import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 import { usePaseDe } from './pase.js';
 import { svElegido, useElegidos } from './elegidos.js';
 import * as RQ from './requisitos.js';
+import CSS_PAGINA from './css/tarjetas.css?inline';
+import { usarCss } from './css.js';
+
+// 🎨 su CSS, con su pedazo (web/src/css/tarjetas.css)
+usarCss('tarjetas', CSS_PAGINA);
 
 const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
 const NOMBRE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País' };

@@ -10,6 +10,11 @@ import { Suspense, lazy } from 'react';
 import { num } from './liga.js';
 import { Carta, Medalla, PUESTO_MEDALLA } from './piezas.jsx';
 import * as RQ from './requisitos.js';
+import CSS_PAGINA from './css/guia.css?inline';
+import { usarCss } from './css.js';
+
+// 🎨 su CSS, con su pedazo (web/src/css/guia.css)
+usarCss('guia', CSS_PAGINA);
 
 const PrimerosPasos = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.PrimerosPasos })));
 

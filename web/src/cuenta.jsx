@@ -18,6 +18,11 @@ import { urlFondo } from './fondos.js';
 import { seguirOrg, useOrgs } from './orgs.js';
 
 import { PasosInstalar } from './instalar.jsx';
+import CSS_PAGINA from './css/cuenta.css?inline';
+import { usarCss } from './css.js';
+
+// 🎨 su CSS, con su pedazo (web/src/css/cuenta.css)
+usarCss('cuenta', CSS_PAGINA);
 
 const leer = (k, d) => { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } };
 const W = typeof window !== 'undefined' ? window : {};

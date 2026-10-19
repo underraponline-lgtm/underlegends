@@ -17,6 +17,11 @@ import { LaLiga } from './medio.jsx';
 import { REDES } from './servidor.jsx';
 import { BotHace, DLX, QueGana } from './sumar.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
+import CSS_PAGINA from './css/socios.css?inline';
+import { usarCss } from './css.js';
+
+// 🎨 su CSS, con su pedazo (web/src/css/socios.css)
+usarCss('socios', CSS_PAGINA);
 
 // lo que hace la Liga por cada servidor, el bot y Dlx: en `sumar.jsx` (era también de /sumate, que se fue el 13/10/2026)
 

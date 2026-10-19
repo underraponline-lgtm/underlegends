@@ -1,0 +1,22 @@
+/* 🎨 EL CSS DE TARJETAS, CON SU PEDAZO (19/10/2026; Dlx: «dale», a «partir el CSS por página»).
+   Salió de vivo.css: son las reglas cuyas clases usa SÓLO tarjetas.jsx (`css_mover`, que lo mide con el árbol de imports
+   y postcss). Lo inyecta `usarCss()` (web/src/css.js) cuando ese pedazo se baja. ⚠️ Una clase nueva de esta página va
+   acá; si la usa también otra página o el Inicio, va en vivo.css. */
+.tj-pide{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;font:700 15px/1.45 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--esc-tinta)}
+.tj-pide b{color:#F0559A;letter-spacing:.12em}
+.tj-lnk{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px;justify-self:start}
+.tj-hueco{display:grid;place-items:center;border:2px dashed var(--linea);background:var(--caja);color:var(--gris)}
+.tj-tu-acc{margin-top:18px}
+/* la galería: los de un tipo, sin cajas alrededor (la carta ya es la caja) */
+.tj-fil{margin-bottom:18px}
+/* «Para historias» debajo de cada tarjeta tuya: chico, porque son cuatro */
+.tj-hist{justify-self:start;display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 10px;margin-top:2px;
+  border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);cursor:pointer;
+  font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase}
+.tj-hist[aria-busy="true"]{opacity:.7;cursor:progress}
+@media (hover: hover) and (pointer: fine){.tj-hist:hover{background:var(--inv);color:var(--inv-tinta)}}
+.tj-pie{display:grid;gap:3px;min-width:0}
+.tj-pie b{font:800 14px/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tj-pie small{font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.025em;text-transform:uppercase;color:var(--gris)}
+.tj-pie small.tj-dib{display:flex;align-items:center;gap:4px;color:var(--magenta-tx)}
+.tj-mas{margin:22px 0 4px}

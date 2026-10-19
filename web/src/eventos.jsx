@@ -12,6 +12,11 @@ import { claveOrg, seguirOrg, useOrgs } from './orgs.js';
 import { Anotados, Cara, Carta, Compartir, Ico, aDiscord, accion, enlace, useCampana } from './piezas.jsx';
 import { CuadroMini, LlaveCorta, cortaDe, eventoDelBoton, gcal, llaveEnVivo } from './arriba.jsx';
 import { H, W, aPng, armarYCompartir, cargarImg, carta, lienzo, pie } from './historia.js';
+import CSS_PAGINA from './css/eventos.css?inline';
+import { usarCss } from './css.js';
+
+// 🎨 su CSS, con su pedazo (web/src/css/eventos.css)
+usarCss('eventos', CSS_PAGINA);
 
 // 🔑 CÓMO TE FUE (Dlx, 02/10/2026, al ver la preview: «sí, hazla como sugeriste»): en cada evento que jugaste, una línea
 // «VOS», y un punto en los días que jugaste. Antes había dicho «no sobrecargar»: por eso es una línea y un punto, nada más

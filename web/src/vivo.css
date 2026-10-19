@@ -14,11 +14,6 @@
 .pd-campo .ti-busca{max-width:none;margin:0}
 .cu-caja > .pd-tipos,.cu-caja > .pd-campo,.cu-caja > .pd-mios{justify-self:stretch}
 .pd-campo textarea,.pd-campo select{width:100%;padding:10px;border:2px solid var(--suave);background:var(--fondo);color:var(--tinta);font:15px/1.4 Archivo,sans-serif}
-.pd-res{list-style:none;margin:0;padding:0;display:grid;gap:4px}
-.pd-res button{width:100%;text-align:left;padding:8px 10px;border:1px solid var(--suave);background:none;color:inherit;font:700 14px/1.2 Archivo,sans-serif;cursor:pointer}
-.pd-elegido{margin:0;display:flex;align-items:center;gap:10px}
-.pd-falta{color:var(--gris);align-self:center}
-.pd-atajo{margin:14px 0 0;padding:10px 12px;border-left:4px solid #E41373;background:var(--caja);font-size:14px;line-height:1.45;justify-self:stretch}
 .pd-mios{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .pd-mios li{padding:8px 0;border-bottom:1px solid var(--suave)}
 .pd-mios b{display:block;font:800 14px/1.2 Archivo,sans-serif}
@@ -457,29 +452,10 @@ button.btn{background:transparent;cursor:pointer}
 /* la bandera no va en círculo: rectangular, con el mismo borde y la misma sombra */
 .svp-logo.gp-pais{border-radius:4px;width:150px;height:100px}
 .svp-logo.gp-pais img{width:100%;height:100%;object-fit:cover}
-.gp-sub{margin-top:8px}
 .svp-num dd a{color:inherit;text-decoration-thickness:2px;text-underline-offset:4px}
-.gp-flags{display:flex;flex-wrap:wrap;gap:6px}
-.gp-flag{width:24px;height:16px;border-radius:2px;object-fit:cover;flex:none}
-.gp-chips{display:flex;flex-wrap:wrap;gap:6px}
-.gp-chip{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;border:1.5px solid #F6F6F6;padding:7px 9px;color:#F6F6F6}
-.gp-l{list-style:none;margin:0;padding:0;border-top:2px solid var(--linea)}
-.gp-l li{border-bottom:1px solid var(--suave)}
-.gp-f{width:100%;display:grid;grid-template-columns:44px 40px minmax(0,1fr) 46px 64px;align-items:center;gap:10px;padding:10px 4px;text-align:left}
-.gp-f:hover,.gp-f:focus-visible{background:var(--caja)}
-.gp-pos{font:700 16px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
-.gp-cara{width:40px;height:40px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:var(--caja);font:900 16px/1 Archivo,sans-serif}
-.gp-cara img{width:100%;height:100%;object-fit:cover}
-.gp-n{display:flex;align-items:center;gap:8px;min-width:0}
-.gp-n b{font:800 16px/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.gp-d{display:grid;justify-items:end;gap:3px}
-.gp-d b{font:900 17px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
-.gp-d small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:var(--gris)}
-.gp-ev{display:none}
 .gp-otros .gp-mini{width:30px;height:30px;border-radius:50%;overflow:hidden;display:grid;place-items:center;flex:none;font:900 12px/1 Archivo,sans-serif;background:var(--caja)}
 .gp-otros .gp-mini img{width:100%;height:100%;object-fit:cover}
 .gp-otros .gp-mini.bandera{border-radius:3px;width:36px;height:24px;object-fit:cover}
-@media (min-width:640px){.gp-f{grid-template-columns:52px 44px minmax(0,1fr) 56px 80px 48px}.gp-ev{display:grid}}
 /* el link de cada servidor ES la caja: con display:contents un <a> mide 0x0 y no recibe el foco (medido el
    30/09/2026, ni con Tab: los cuatro de la tira quedaban fuera del teclado y del lector de pantalla) */
 .ts-l li{padding:0;justify-items:stretch}
@@ -534,7 +510,6 @@ button.btn{background:transparent;cursor:pointer}
 .cb-cab .hero-p{max-width:30ch}
 @media (min-width: 900px){.app .cb-cab .hero-p{max-width:62ch}}
 .cb-n{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;padding:6px 7px;border:1.5px solid currentColor;white-space:nowrap}
-.cb-lista{display:grid;gap:12px;padding-bottom:18px}
 .cb-dia{display:grid;gap:10px}
 .cb-dia.abierto{margin-bottom:12px}
 .cb-dh{margin:0}
@@ -543,7 +518,6 @@ button.btn{background:transparent;cursor:pointer}
 .cb-d small{color:var(--gris);letter-spacing:.06em;text-transform:none;font-weight:700}
 .cb-d svg{margin-left:auto;flex:none;width:16px;height:16px;transition:transform .15s}
 .cb-dia.abierto .cb-d svg{transform:rotate(90deg)}
-.cb-vs{display:grid;gap:10px;min-width:0}
 .cb-v{border:2px solid var(--linea);background:var(--fondo);min-width:0}
 .cb-v.nueva{box-shadow:inset 0 -4px 0 var(--magenta)}
 .cb-s{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;width:100%;padding:12px 12px 12px 14px;
@@ -555,9 +529,6 @@ button.btn{background:transparent;cursor:pointer}
 .cb-t em{font-style:normal;color:var(--magenta);letter-spacing:.1em}
 .cb-s svg{flex:none;transition:transform .15s}
 .cb-v.abierta .cb-s svg{transform:rotate(90deg)}
-.cb-c{display:grid;gap:14px;justify-items:start;padding:0 14px 16px 14px}
-.cb-i{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:15px;line-height:1.45;max-width:72ch}
-.cb-i code{font:600 16px/1 "Barlow Condensed",sans-serif;background:var(--caja);padding:2px 4px}
 .x-nuevo{font-style:normal;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;background:var(--magenta);color:#fff;padding:3px 5px;margin-right:8px}
 @media (min-width: 900px){
   .app .cb-cab{padding:44px var(--gut) 34px}
@@ -573,7 +544,6 @@ button.btn{background:transparent;cursor:pointer}
 .cu-cab{padding:20px 16px 0}
 .cu-h{margin:0;font:900 30px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
 .cu-quien{position:relative;display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;align-items:end;margin:14px 16px 0;padding:0 14px 16px;border:2px solid var(--linea)}
-.cu-banda{grid-column:1/-1;height:58px;margin:0 -14px;background:var(--cu-c)}
 .cu-av{width:76px;height:76px;border-radius:50%;overflow:hidden;border:4px solid var(--fondo);margin-top:-38px;background:var(--caja);display:grid;place-items:center;
   font:900 28px/1 Archivo,sans-serif;color:var(--tinta)}
 .cu-av img{width:100%;height:100%;object-fit:cover;display:block}
@@ -581,17 +551,6 @@ button.btn{background:transparent;cursor:pointer}
 .cu-q{grid-column:1/-1;display:grid;gap:5px;margin-top:10px;min-width:0}
 .cu-q b{font:900 24px/1 Archivo,sans-serif;font-stretch:120%;text-transform:uppercase;overflow-wrap:anywhere}
 .cu-q small{font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--gris)}
-.cu-datos{font:600 14px/1.4 Archivo,sans-serif}
-.cu-datos code{font:600 13px "Space Mono",monospace;background:var(--caja);padding:1px 4px}
-.cu-ver{grid-column:1/-1;justify-self:start;margin-top:12px}
-/* 🔥 la racha diaria y el nivel (04/10/2026): debajo de quién sos, a lo ancho. Ver `RachaNivel` en cuenta.jsx */
-.cu-rn{grid-column:1/-1;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:14px;padding-top:12px;border-top:1px solid var(--linea)}
-.cu-rn-c{display:grid;gap:6px;align-content:start;min-width:0}
-.cu-rn-c > b{font:900 16px/1.1 Archivo,sans-serif}
-.cu-rn-c small{font:600 13px/1.4 Archivo,sans-serif;color:var(--gris)}
-.cu-rn-c small b{font:inherit;color:var(--tinta)}
-.cu-rn-barra{display:block;height:8px;background:var(--caja);border:1px solid var(--linea)}
-.cu-rn-barra i{display:block;height:100%;background:#29B298}
 /* ⭐ cómo subir de nivel (14/10/2026) */
 .cu-xp{font:600 13px/1.4 Archivo,sans-serif;color:var(--gris)}
 .cu-xp summary{cursor:pointer;color:var(--tinta);font-weight:800;padding:2px 0}
@@ -604,17 +563,11 @@ button.btn{background:transparent;cursor:pointer}
 .cu-xp p{margin:6px 0 0}
 /* 📰 sus publicaciones, en el perfil (14/10/2026) */
 .pf-pubs .pub-dia{padding-top:4px}
-.pf-pubs-mas{justify-self:start;margin-top:10px}
-/* 🏟️ sus ligas, en el perfil (14/10/2026) */
-.pf-lg{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:8px}
 /* 📈 el ascenso de cada servidor, al día (17/10/2026): en el perfil de la liga y una fila en «Sus ligas» */
 /* ⚠️ `asc-caja` y no `asc` (pasada del 19/10/2026): `.asc` es también la columna ordenada de menor a mayor del Ranking
    (<th class="on asc">), que se volvía grilla y dejaba de quedarse arriba */
 .asc-caja{display:grid;gap:10px}
 .asc-camino{padding:10px 12px;border-left:4px solid #E41373;background:var(--caja);color:var(--tinta)}
-.rk-asc{display:grid;gap:12px}
-.rk-asc-t{margin:4px 0 0;font:900 20px/1.15 Archivo,sans-serif;text-transform:uppercase}
-.rk-asc-l{margin:0}
 .asc-p{margin:0;font-size:14px;line-height:1.5;color:var(--gris)}
 .asc-p b{color:var(--tinta)}
 .asc-t{list-style:none;margin:0;padding:0;display:grid;gap:4px}
@@ -634,21 +587,12 @@ button.btn{background:transparent;cursor:pointer}
 .asc-c.sube::before{border-color:#1F9E6E;background:#1F9E6E}
 .asc-c.po::before{border-color:#E5B800;background:#E5B800}
 @media (max-width: 599.98px){.asc-t li{grid-template-columns:1.8em minmax(0,1fr) auto 4.6em;gap:8px;padding:8px}}
-.pf-lg li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;align-items:baseline;padding:10px 12px;border:2px solid var(--linea);background:var(--caja)}
-.pf-lg li > b{font:900 16px/1.2 Archivo,sans-serif}
-.pf-lg li small{grid-column:1;font:700 13px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
-.pf-lg-p{grid-column:2;grid-row:1;font:900 16px/1 Archivo,sans-serif}
-.pf-lg li > span:last-child{grid-column:2;grid-row:2;font:600 13px/1.2 Archivo,sans-serif;color:var(--gris);text-align:right}
-.pf-lg li > span:last-child b{color:var(--tinta)}
 /* 🔥 y al lado de tu cuenta, arriba */
 .yo-racha{font:800 13px/1 Archivo,sans-serif;white-space:nowrap}
 /* 🏟️ las divisiones de la semana (04/10/2026). Ver divisiones.jsx: verde sube, rojo baja */
 .dv{display:grid;gap:14px}
 .dv-cab,.dv-ult{margin:0;font:600 14px/1.5 Archivo,sans-serif;max-width:70ch}
 .dv-ult{color:var(--gris)}
-.dv-g{display:grid;gap:8px}
-.dv-gt{margin:6px 0 0;display:flex;align-items:baseline;gap:10px;font:900 18px/1.1 Archivo,sans-serif;text-transform:uppercase}
-.dv-gt small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--gris);text-transform:none}
 .dv-tabla{list-style:none;margin:0;padding:0;border:2px solid var(--linea)}
 .dv-tabla li{display:grid;grid-template-columns:28px 32px minmax(0,1fr) auto auto auto;align-items:center;gap:10px;padding:7px 10px;
   border-top:1px solid var(--linea);border-left:4px solid transparent}
@@ -656,15 +600,12 @@ button.btn{background:transparent;cursor:pointer}
 .dv-tabla li.sube{border-left-color:#29B298}
 .dv-tabla li.baja{border-left-color:#E5484D}
 .dv-tabla li.yo{background:var(--caja)}
-.dv-i{font:800 14px/1 Archivo,sans-serif;text-align:right;font-variant-numeric:tabular-nums}
-.dv-cara{width:32px;height:32px}
-.dv-n{font:800 15px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:inherit}
 .dv-z{font:700 15px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:0.03em;padding:3px 5px;border:1.5px solid currentColor}
 .dv-tabla li.sube .dv-z{color:#29B298}
 .dv-tabla li.baja .dv-z{color:#E5484D}
 .dv-ev{font:600 12px/1 Archivo,sans-serif;color:var(--gris);white-space:nowrap}
 .dv-p{font:900 16px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;min-width:56px;text-align:right}
-@media (max-width: 520px){.dv-tabla li{grid-template-columns:24px 28px minmax(0,1fr) auto auto}.dv-ev{display:none}.dv-cara{width:28px;height:28px}}
+@media (max-width: 520px){.dv-tabla li{grid-template-columns:24px 28px minmax(0,1fr) auto auto}.dv-ev{display:none}}
 /* 🏟️ la previa de las divisiones en el Inicio (`DivisionPrevia`): tu grupo, la zona de subida y vos */
 /* 🪜 la escalera de las divisiones (08/10/2026): de Sexta, abajo a la izquierda, a Primera, arriba a la derecha */
 .dv-esc{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));align-items:end;gap:6px;max-width:720px}
@@ -874,7 +815,6 @@ button.btn{background:transparent;cursor:pointer}
 .lgt-fecha summary b{font:900 15px/1.1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.02em}
 .lgt-fecha summary small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.02em;color:var(--gris)}
 .lgt-fecha .lg-ult{padding:0 0 12px 18px}
-.pf-lg b a{color:inherit;text-decoration:none}
 @media (max-width: 520px){
   .lgt-tabla.con-voto li{grid-template-columns:22px 28px minmax(0,1fr) auto 26px 60px;gap:7px}
   .lgt-tabla.con-voto .dv-p{min-width:0}
@@ -1338,28 +1278,15 @@ button.ma-op:hover{border-color:#F6F6F6}
    una con su barra y lo que falta en palabras— con la cuenta atrás al lunes; la cacería con su presa y la Semana
    perfecta lado a lado en la compu; y las dos tablas de siempre abajo, en columnas para no dejar huecos */
 .mi{display:grid;gap:22px}
-.mi-tus{display:grid;gap:12px}
-.mi-tus-cab{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
-.mi-tus-tx{display:grid;gap:6px;min-width:0;flex:1 1 320px}
-.mi-tus-tx h2{margin:0;font:900 28px/1.05 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase}
-.mi-eti{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:0.08em;color:var(--gris);text-transform:uppercase}
 .mi-intro,.mi-reglas{margin:0;font:600 14px/1.45 Archivo,sans-serif;max-width:76ch}
 .mi-reglas{color:var(--gris)}
 .mi-intro .btn{margin-left:4px;vertical-align:middle}
 .mi-reglas b{color:var(--tinta)}
-/* las tres del bono, como vidas de un juego */
-.mi-bono{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font:600 14px/1.35 Archivo,sans-serif}
 .mi-bono-m{display:inline-flex;gap:4px}
 .mi-bono-m i{width:24px;height:12px;border:2px solid var(--linea)}
 .mi-bono-m i.si{background:#29B298;border-color:#29B298}
 .mi-bono-m i.si.mi-media{background:#E8A93B;border-color:#E8A93B}
 .mi-bono-m i.si.mi-dificil{background:#E41373;border-color:#E41373}
-/* ⏳ la cuenta atrás al lunes a las 11 AM ET */
-.mi-reloj{display:grid;justify-items:end;gap:4px;padding:9px 12px;background:var(--inv);color:var(--inv-tinta);border:2px solid var(--linea)}
-.mi-reloj small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:0.08em;text-transform:uppercase;opacity:.82}
-.mi-reloj b{font:900 28px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
-/* las misiones, una carta cada una: el color de su nivel arriba y en la barra */
-.mi-lista{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
 .mi-m{--mi-c:var(--tinta);display:grid;align-content:start;gap:8px;padding:11px 12px 12px;border:2px solid var(--linea);border-top-width:6px;background:var(--fondo)}
 .mi-facil{border-top-color:#29B298;--mi-c:#29B298}
 .mi-media{border-top-color:#E8A93B;--mi-c:#E8A93B}
@@ -1369,30 +1296,13 @@ button.ma-op:hover{border-color:#F6F6F6}
 /* ✨ la misión del evento dorado, con el dorado de los eventos dorados (`.evp-ev.dorado`) */
 .mi-dorado{border-top-color:#E7B622;--mi-c:#E7B622}
 .mi-m.ok{background:var(--caja)}
-.mi-arr{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
-.mi-niv{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:var(--gris)}
-.mi-p{font:900 22px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
-.mi-cuerpo{display:flex;align-items:center;gap:10px;min-width:0}
-.mi-sv{width:36px;height:36px;flex:none;border-radius:50%;object-fit:cover;border:2px solid var(--linea);background:var(--caja)}
-.mi-cara{width:36px;height:36px}
-.mi-t{font:900 17px/1.2 Archivo,sans-serif;text-wrap:balance;min-width:0}
-.mi-t a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 .mi-m .mi-barra{height:12px}
 .mi-m .mi-barra i{background:var(--mi-c)}
 .mi-m.ok .mi-barra i{background:#29B298}
 .mi-yo{font:800 14px/1.3 Archivo,sans-serif}
 .mi-yo small{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--gris)}
 .mi-m.ok .mi-yo{color:#29B298}
-.mi-acl{font:600 12px/1.35 Archivo,sans-serif;color:var(--gris)}
-.mi-c{font:600 12px/1.2 Archivo,sans-serif;color:var(--gris)}
-/* la cacería y la Semana perfecta: lado a lado en la compu */
-.mi-dos{display:grid;gap:22px;align-items:start}
-.mi-presa{display:grid;grid-template-columns:132px minmax(0,1fr);gap:14px;align-items:start;padding:12px;border:2px solid var(--linea);border-top-width:6px;background:var(--fondo)}
 .mi-presa-c .ci{width:100%}
-.mi-presa-tx{display:grid;gap:8px;min-width:0}
-.mi-presa-tx p{margin:0;font:600 14px/1.45 Archivo,sans-serif}
-.mi-presa-n{display:flex;align-items:center;gap:10px;min-width:0}
-.mi-presa-n .dv-n{font:900 22px/1.1 Archivo,sans-serif;font-stretch:110%}
 .mi-presa-cara{width:42px;height:42px}
 .mi-presa-c .mi-presa-cara{width:100%;height:auto;aspect-ratio:1}
 .mi-presa-yo{font:800 14px/1.2 Archivo,sans-serif}
@@ -1401,30 +1311,19 @@ button.ma-op:hover{border-color:#F6F6F6}
 .mi-caras a{display:block;color:inherit}
 .mi-cc{width:34px;height:34px}
 .mi-caras li.yo .mi-cc{outline:3px solid var(--magenta);outline-offset:1px}
-.mi-mas{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris);padding:0 4px}
-.mi-nada{margin:0;font:600 13px/1.45 Archivo,sans-serif;color:var(--gris)}
 .dv-tabla.mi-perf-l li{grid-template-columns:32px minmax(0,1fr) auto auto}
-.mi-bono-s{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:0.06em;background:#29B298;color:#030304;padding:4px 6px;white-space:nowrap}
 .dv-tabla.mi-tabla li{grid-template-columns:32px minmax(0,1fr) auto auto}
 .dv-tabla.mi-tabla.con-i li{grid-template-columns:28px 32px minmax(0,1fr) auto}
 .mi-marcas{display:inline-flex;gap:4px}
 .mi-marcas i{width:11px;height:11px;border:1.5px solid var(--linea)}
 .mi-marcas i.si{background:#29B298;border-color:#29B298}
 @media (min-width: 900px){
-  .mi-dos{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
-  .mi-dos>:only-child{grid-column:1/-1}
   /* las tablas largas, en columnas: 93 filas de una no dejaban nada al costado */
   .dv-tabla.mi-cols{column-width:300px;column-gap:0;column-rule:1px solid var(--suave)}
   .dv-tabla.mi-cols li{break-inside:avoid}
 }
 @media (max-width: 640px){
   .mi-m{gap:6px;padding:9px 11px 10px}
-  .mi-t{font-size:16px}
-  .mi-tus-tx h2{font-size:24px}
-  .mi-reloj{flex:1 1 100%;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
-  .mi-reloj b{font-size:24px}
-  .mi-presa{grid-template-columns:108px minmax(0,1fr);gap:10px;padding:10px}
-  .mi-presa-n .dv-n{font-size:19px}
 }
 
 .cu-quien.anon{grid-template-columns:auto minmax(0,1fr);align-items:center;row-gap:14px;padding:16px 14px}
@@ -1434,7 +1333,6 @@ button.ma-op:hover{border-color:#F6F6F6}
 .cu-quien.anon .cu-q small{font:500 14px/1.35 Archivo,sans-serif;letter-spacing:0}
 .cu-quien.anon .btn{grid-column:1/-1;justify-self:stretch}
 .cu-g{margin:22px 16px 0}
-.cu-gt{display:block;margin-bottom:8px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.06em;color:var(--gris)}
 .cu-g ul{list-style:none;margin:0;padding:0;border:2px solid var(--linea)}
 .cu-g li+li{border-top:1.5px solid var(--suave)}
 .cu-g a{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;padding:13px 12px;color:inherit}
@@ -1453,11 +1351,6 @@ button.ma-op:hover{border-color:#F6F6F6}
 .cu-pt{display:flex;align-items:center;gap:10px;margin:16px 0 4px;font:900 28px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
 .cu-caja{display:grid;gap:10px;justify-items:start;margin-top:16px;padding-top:16px;border-top:2px solid var(--linea)}
 .cu-caja h3{margin:0;font:700 16px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;text-transform:uppercase}
-.cu-d{margin:0;max-width:62ch;color:var(--gris);font-size:14px;line-height:1.45}
-.cu-fila{display:flex;align-items:center;gap:12px;width:100%}
-.cu-fila span{display:grid;gap:2px;flex:1;min-width:0}
-.cu-fila small{color:var(--gris);font-size:13px}
-.cu-foto{display:flex;flex-wrap:wrap;align-items:flex-start;gap:16px}
 .cu-carta{width:150px;height:auto;display:block}
 .cu-carta.vacia{display:grid;place-items:center;aspect-ratio:300/438;border:2px dashed var(--gris);color:var(--gris);font:700 15px "Barlow Condensed",sans-serif}
 .cu-foto-tx{display:grid;gap:10px;justify-items:start;max-width:230px}
@@ -1467,11 +1360,6 @@ button.ma-op:hover{border-color:#F6F6F6}
 .cu-lista li{display:flex;align-items:center;gap:12px;padding:11px 12px}
 .cu-lista li+li{border-top:1.5px solid var(--suave)}
 .cu-lista img{width:28px;height:28px;border-radius:50%;flex:none}
-/* 🎬 mis batallas en video (12/10/2026): el link y cómo terminó cada pedido */
-.cu-vid{display:flex;flex-wrap:wrap;gap:8px;width:100%}
-.cu-vid input{flex:1 1 220px;min-width:0;padding:9px 11px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);font:600 14px/1.2 Archivo,sans-serif}
-.cu-vids li{display:grid;gap:3px;align-items:start}
-.cu-vids a{font:600 13px/1.3 Archivo,sans-serif;color:inherit;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .cu-vid-e{font:700 15px/1.3 "Barlow Condensed",sans-serif;color:var(--gris)}
 .cu-vid-e.ok{color:#29B298}
 .cu-vid-e.no{color:#E5484D}
@@ -1487,7 +1375,6 @@ button.ma-op:hover{border-color:#F6F6F6}
 .cu-sw span{display:grid;gap:3px;flex:1}
 .cu-sw small{color:var(--gris);font-size:13px}
 .cu-sw input{position:absolute;opacity:0;pointer-events:none}
-.cu-svs{display:flex;flex-wrap:wrap;gap:8px}
 .cu-sv{display:flex;align-items:center;gap:8px;padding:8px 12px;border:2px solid var(--linea);box-shadow:4px 4px 0 var(--c);background:transparent;color:inherit;
   font:900 14px/1 Archivo,sans-serif;font-stretch:115%;cursor:pointer}
 .cu-sv img{width:26px;height:26px;border-radius:50%}
@@ -1496,8 +1383,6 @@ button.ma-op:hover{border-color:#F6F6F6}
    previa de la foto y cada red con su casilla */
 .cu-sv:disabled{opacity:.45;cursor:default}
 .cu-sv.pide{box-shadow:inset 0 0 0 3px var(--verde)}
-/* «Ninguno» (07/10/2026): sin logo ni color de servidor */
-.cu-sv-no b{padding:4px 2px;letter-spacing:.04em}
 /* ♿ «saltar al contenido» (App.jsx): escondido arriba hasta que el teclado llega */
 .saltar{position:absolute;left:12px;top:-64px;z-index:300;padding:10px 14px;background:#030304;color:#fff;font-weight:800;
   text-decoration:none;border:2px solid var(--verde)}
@@ -1505,14 +1390,6 @@ button.ma-op:hover{border-color:#F6F6F6}
 #contenido:focus{outline:none}
 /* 🛡️ el segundo toque de `DosToques` (piezas.jsx): el mismo verde que pide confirmar un servidor */
 .btn.pide{box-shadow:inset 0 0 0 2px var(--verde)}
-.cu-foto-v{width:96px;height:96px;border-radius:50%;object-fit:cover;border:2px solid var(--linea)}
-.cu-red{display:flex;align-items:center;gap:12px;width:100%;cursor:pointer}
-.cu-red input{width:18px;height:18px;accent-color:var(--verde);flex:none}
-.cu-red span{color:var(--gris);font:700 15px/1 "Barlow Condensed",sans-serif;text-transform:uppercase;min-width:84px}
-.cu-gente{list-style:none;margin:0;padding:0;width:100%;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
-.cu-gente a{display:flex;align-items:center;gap:10px;padding:8px;border:2px solid var(--linea);color:inherit}
-.cu-gente b{flex:1;min-width:0;font:800 14px/1.15 Archivo,sans-serif;overflow-wrap:anywhere}
-.cu-gente small{color:var(--gris);font:700 15px "Barlow Condensed",sans-serif}
 .cu-temas{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;max-width:440px}
 .cu-tema{display:grid;gap:8px;padding:10px;border:2px solid var(--linea);background:transparent;color:inherit;cursor:pointer;
   font:900 14px/1 Archivo,sans-serif;text-transform:uppercase;text-align:left}
@@ -1520,7 +1397,6 @@ button.ma-op:hover{border-color:#F6F6F6}
 /* 🔓 los que todavía no abriste (13/10/2026): se ven apagados, con el nivel que piden */
 .cu-tema.cerrado .cu-mini{filter:grayscale(1);opacity:.45}
 .cu-tema.cerrado b{opacity:.6}
-.cu-tema-nivel{display:inline-flex;align-items:center;gap:4px;justify-self:start;padding:2px 6px;border:1.5px solid var(--linea);font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
 .cu-mini{display:grid;align-content:start;gap:6px;aspect-ratio:4/3;padding:8px;border:1.5px solid var(--suave)}
 .cu-mini i{display:block;height:14px}
 .cu-mini u{display:block;height:9px}
@@ -1532,7 +1408,6 @@ button.ma-op:hover{border-color:#F6F6F6}
 .cu-tema.noche .cu-mini{background:#030304}
 .cu-tema.noche .cu-mini i{background:#232326}
 .cu-tema.noche .cu-mini u{background:#3A3A3E}
-.cu-seg{display:flex}
 .cu-pasos{margin:0;padding-left:20px;display:grid;gap:8px;max-width:60ch}
 .cu-btns{display:flex;flex-wrap:wrap;gap:8px}
 @media (max-width: 899.98px){.cu.con-parte .cu-lado,.cu.con-parte .cu-cab{display:none}}
@@ -1563,10 +1438,6 @@ button.ma-op:hover{border-color:#F6F6F6}
   .app .cab-der{gap:4px}
 }
 .cu-lista.radio li{padding:0}
-.cu-radio{display:flex;align-items:center;gap:12px;width:100%;padding:11px 12px;background:transparent;border:0;color:inherit;font:inherit;text-align:left;cursor:pointer}
-.cu-radio b{flex:1;min-width:0;font:700 15px/1.2 Archivo,sans-serif}
-/* verificarse */
-.cu-nota{color:var(--gris);font-size:13px;max-width:52ch}
 .cu-chk{list-style:none;margin:0;padding:0;width:100%;border:2px solid var(--linea)}
 .cu-chk li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:start;padding:12px}
 .cu-chk li+li{border-top:1.5px solid var(--suave)}
@@ -1576,47 +1447,10 @@ button.ma-op:hover{border-color:#F6F6F6}
 .cu-chk li.falta .cu-chk-i{color:var(--magenta)}
 .cu-chk li.aviso .cu-chk-i{color:#C77700}
 .cu-chk li.espera .cu-chk-i{color:var(--gris)}
-.cu-chk-t{display:grid;gap:3px;min-width:0}
-.cu-chk-t b{font:800 15px/1.2 Archivo,sans-serif}
-.cu-chk-t small{color:var(--gris);font-size:13px;line-height:1.4}
 .cu-pais{display:flex;flex-wrap:wrap;gap:8px}
-.cu-band{width:21px;height:14px;margin-left:4px;vertical-align:-1px;object-fit:cover;border:1px solid var(--suave)}
 .cu-sola .cu-parte{max-width:760px}
 .cu-chk li[aria-busy=true],.cu-chk[aria-busy=true]{opacity:.6}
 .cu-pais select{min-height:44px;padding:0 10px;border:2px solid var(--linea);background:var(--fondo);color:var(--tinta);font:700 14px Archivo,sans-serif}
-/* instalar la app, paso a paso y con un dibujo por paso (Dlx, 01/10/2026: «genera imágenes que reflejen cada paso»).
-   Los dibujos toman los colores del tema: en Noche, el teléfono también es oscuro */
-.pi-ya{display:flex;align-items:center;gap:12px;width:100%;padding:12px;border:2px solid var(--verde)}
-.pi-ya span{display:grid;gap:3px;flex:1;min-width:0}
-.pi-ya small{color:var(--gris);font-size:13px}
-.pi-cual{margin-top:4px}
-.pi-pasos{list-style:none;margin:8px 0 0;padding:0;width:100%;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px 14px}
-.pi-paso{display:grid;gap:10px;align-content:start}
-.pi-paso p{margin:0;font-size:15px;line-height:1.45}
-.pi-paso b{font-weight:800}
-.pi-fig{position:relative;padding:14px 14px 0;border:2px solid var(--linea);background:var(--caja);color:var(--tinta);overflow:hidden}
-.pi-n{position:absolute;top:8px;left:8px;z-index:1;width:28px;height:28px;display:grid;place-items:center;background:var(--inv);color:var(--inv-tinta);
-  font:900 15px/1 Archivo,sans-serif}
-.pi-svg{display:block;width:100%;max-width:300px;height:auto;margin:0 auto}
-.pi-tel{fill:var(--fondo)}
-.pi-borde{fill:none;stroke:currentColor;stroke-width:2.5}
-.pi-velo{fill:#000;fill-opacity:.4}
-.pi-g{fill:var(--suave)}
-.pi-t{fill:currentColor}
-.pi-trazo{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.pi-menu,.pi-caja{fill:var(--fondo);stroke:var(--suave);stroke-width:1.5}
-.pi-anillo{fill:none;stroke:var(--verde);stroke-width:3}
-.pi-tx{font:700 8.5px Archivo,sans-serif;fill:currentColor}
-.pi-tit{font-size:10px;font-weight:800}
-.pi-chico{font-size:6.5px}
-.pi-med{font-size:7.4px}
-.pi-gr{fill:var(--gris)}
-.pi-acc{fill:var(--verde);font-weight:800}
-.pi-url{font:600 6px Archivo,sans-serif;fill:var(--gris)}
-.pi-fondo-ini{fill:var(--verde);fill-opacity:.16}
-.pi-app{fill:var(--fondo)}
-.pi-sw{fill:var(--verde)}
-@media (max-width: 599.98px){.pi-pasos{grid-template-columns:1fr}.pi-svg{max-width:280px}}
 /* ── el video, en la página (video.jsx). Dlx, 01/10/2026: «deja que se vea el video en la página misma» ── */
 button.mo-yt{display:block;width:100%;padding:0;cursor:pointer;font:inherit;color:inherit}
 button.mo-yt:hover .mo-play,button.mo-yt:focus-visible .mo-play{background:#F6F6F6;color:#0D0D0F}
@@ -1683,7 +1517,6 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .rk-ci.sincarta{gap:6px;padding:8px 4px}
 .rk-ci.sincarta b{font-size:12px}
 .rk-ci.sincarta .sc-cara{width:46px;height:46px;font-size:20px}
-.rk-pnota{font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:#A5A5A0;text-align:center}
 .rk-ped{display:grid;align-content:start;justify-items:center;gap:5px;padding:9px 4px 10px;text-align:center}
 .rk-p.p1 .rk-ped{background:#29B298;color:#030304;min-height:88px}
 .rk-p.p2 .rk-ped{background:#E41373;color:#FFFFFF;min-height:66px}
@@ -1692,10 +1525,6 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .rk-p.p1 .rk-ped-n{font-size:44px}
 .rk-ped b{font:900 12px/1.1 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase;overflow-wrap:anywhere}
 .rk-ped small{font:700 15px/1.15 "Barlow Condensed",sans-serif;letter-spacing:0.02em;font-variant-numeric:tabular-nums}
-.rk-pvis{display:block;width:100%}
-.rk-pflag{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border:2px solid #F6F6F6}
-.rk-plogo{display:grid;place-items:center;width:100%;aspect-ratio:1;object-fit:cover;border:2px solid #F6F6F6;background:#121214;
-  color:#F6F6F6;font:900 26px/1 Archivo,sans-serif;font-stretch:125%}
 /* la tabla */
 .rk-sec{padding-top:18px}
 .rk-fil{display:grid;gap:10px;margin-bottom:14px}
@@ -1747,43 +1576,13 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .rk-n.p2{background:#E41373;color:#FFFFFF}
 .rk-n.p3{background:var(--inv);color:var(--inv-tinta)}
 .rk-n.sin{color:var(--gris);font-weight:700}
-.rk-nada{color:var(--gris);font-weight:600}
-.rk-q{display:flex;align-items:center;gap:10px;min-width:0}
-.rk-cara{width:36px;height:36px;font:800 15px/1 Archivo,sans-serif}
-.rk-qn{display:grid;gap:3px;min-width:0}
-.rk-qa{display:flex;align-items:center;gap:7px;min-width:0}
-.rk-qa a,.rk-qa b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tinta);
-  font:800 15px/1.2 Archivo,sans-serif;font-stretch:105%}
-.rk-qa a:hover{text-decoration:underline;text-underline-offset:3px}
-.rk-flag{flex:none;width:20px;height:auto;box-shadow:0 0 0 1px var(--suave)}
-.rk-gflag{flex:none;width:42px;height:28px;object-fit:cover;box-shadow:0 0 0 1px var(--suave)}
-.rk-clogo{flex:none;display:grid;place-items:center;width:36px;height:36px;object-fit:cover;background:var(--inv);color:var(--inv-tinta);
-  font:900 13px/1 Archivo,sans-serif}
-.rk-qn small{display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;white-space:nowrap;
-  font:700 15px/1.1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;color:var(--gris)}
-.rk-qn small:empty{display:none}
-.rk-qx{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.rk-qx:empty{display:none}
 .rk-vos,.rk-sigo{flex:none;font-style:normal;font-size:12px;letter-spacing:.08em;padding:2px 4px}
 .rk-vos{background:#E41373;color:#FFFFFF}
 .rk-sigo{border:1px solid currentColor;color:var(--tinta)}
-.rk-rg{width:38px;height:26px}
-.rk-rch{font-weight:800}
-.rk-rch.viva{color:var(--magenta-tx)}
-.rk-rch span{color:var(--gris);font-weight:600}
-.rk-ult{display:inline-grid;justify-items:end;gap:3px}
-.rk-ult b{font:800 12px/1 Archivo,sans-serif;font-stretch:110%}
-.rk-ult small{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris);text-transform:uppercase}
 .rk-lnk{background:none;border:0;padding:0;color:var(--tinta);font:inherit;font-weight:800;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .rk-vacio{margin:6px 0 10px;max-width:62ch;font:400 16px/1.5 Archivo,sans-serif;color:var(--gris)}
 .rk-vacio b{color:var(--tinta)}
-.rk-pie{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding:14px 0 4px;
-  font:700 15px/1.4 "Barlow Condensed",sans-serif;letter-spacing:0.025em;text-transform:uppercase;color:var(--gris)}
 .rk-pie-acc{display:flex;flex-wrap:wrap;gap:8px}
-.rk-nota{margin:10px 0 18px;max-width:72ch;font:400 13.5px/1.5 Archivo,sans-serif;color:var(--gris)}
-.rk-nota b{color:var(--tinta)}
-.rk-pronto{display:grid;gap:12px;justify-items:start;padding:6px 0 26px}
-.rk-pronto p{margin:0;max-width:60ch;font:400 16px/1.5 Archivo,sans-serif;color:var(--gris)}
 /* las flechas al ranking de al lado: las del escenario del Inicio (`.mo-fl`), sólo en la compu. ⚠️ NO `.rk-fl`: ése es
    el triangulito de orden de las columnas de la tabla */
 .rk-flecha{display:none}
@@ -1794,10 +1593,6 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
   .app .escena > .rk-flecha.izq{left:max(4px,calc(var(--gut) / 2 - 28px))}
   .app .escena > .rk-flecha.der{right:max(4px,calc(var(--gut) / 2 - 28px))}
 }
-.rk-ej{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;width:100%}
-.rk-ej li{display:grid;gap:8px;align-content:start;padding:14px;border:2px solid var(--linea);background:var(--caja)}
-.rk-ej b{font:900 16px/1.15 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
-.rk-ej small{font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.03em;color:var(--gris);text-transform:uppercase}
 /* en el celular, «todas las columnas» se desliza de costado con el puesto y el nombre fijos */
 .rk-tw.todas{overflow-x:auto}
 .rk-tw.todas .rk-t th{position:static}
@@ -1815,9 +1610,6 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .rk-lcara{width:38px;height:38px;font:800 15px/1 Archivo,sans-serif;background:#F6F6F6;color:#030304}
 .rk-lflag{width:42px;height:28px;object-fit:cover}
 .rk-llogo{display:grid;place-items:center;width:38px;height:38px;object-fit:cover;background:#F6F6F6;color:#030304;font:900 13px/1 Archivo,sans-serif}
-.rk-lt{display:grid;gap:4px;min-width:0}
-.rk-lt small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;color:#A5A5A0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.rk-lt b{font:800 14px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rk-lugar .btn{min-height:40px;padding:0 12px}
 @media (prefers-reduced-motion: reduce){.rk-lugar{transition:none}}
 /* en un celular angosto la cara se va y la grilla pierde esa columna: con la de 4, el texto caía en una `auto` y
@@ -1825,7 +1617,6 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 @media (max-width: 420px){
   .rk-lugar{grid-template-columns:auto minmax(0,1fr) auto;gap:8px;padding:9px 12px}
   .rk-lugar .rk-lcara,.rk-lugar .rk-lflag,.rk-lugar .rk-llogo{display:none}
-  .rk-lt b{font-size:13px}
 }
 @media (min-width: 900px){
   .app .rk-subs-in{padding:0 calc(var(--gut) - 10px)}
@@ -1852,8 +1643,6 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 
 /* ── las cinco ideas del Ranking (Dlx, 02/10/2026: «1. me gusta … 5. listo») ── */
 .rk-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
-/* 1 · ▲▼ desde el lunes: el triángulo dibujado, el número en tinta (el verde agua no va como texto sobre blanco) */
-.rk-posc{display:inline-grid;justify-items:center;gap:3px}
 .rk-mv{display:inline-flex;align-items:center;gap:3px;font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--tinta);white-space:nowrap}
 .rk-mv i{width:0;height:0;border-left:4.5px solid transparent;border-right:4.5px solid transparent;flex:none}
 .rk-mv.sube i{border-bottom:7px solid #29B298}
@@ -1861,8 +1650,6 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .rk-mv.baja{color:var(--magenta-tx)}
 .rk-lugar .rk-mv{color:#F6F6F6;font-size:12px;letter-spacing:.04em}
 .rk-lugar .rk-mv.baja{color:#F07DB2}
-/* 3 · «NUEVO»: su primer evento es de esta semana */
-.rk-nuevo{flex:none;font-style:normal;font-size:12px;letter-spacing:.08em;padding:2px 4px;background:#29B298;color:#030304}
 .rk-chips button.rk-chip-nuevo:not(.on){border-color:#29B298;box-shadow:inset 0 0 0 1px #29B298}
 /* 🏆 la línea de los 16 que clasifican al torneo de cierre de la T1 (sólo con `?prev=fin` hasta que Dlx lo anuncie) */
 .rk-t tr.rk-corte td{padding:0;border:0;background:none}
@@ -1880,11 +1667,6 @@ button.mo-yt:focus-visible{outline:3px solid var(--verde);outline-offset:2px}
 .pub-mes{display:grid;place-items:center;background:#030304;color:#E5B800}
 .rk-corte span,.rk-corte a{display:block;text-decoration:none;margin:2px 0;padding:6px 10px;border-top:2px dashed var(--magenta);color:var(--magenta-tx);
   font:700 15px/1.35 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;white-space:normal}
-.rk-final{margin:10px 0 0;padding:8px 10px;border:2px solid var(--magenta);background:var(--caja);font-size:14px}
-/* 2 · los que tenés cerca */
-.rk-cerca{margin:0 0 16px}
-.rk-cerca-t{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 14px;margin-bottom:10px;
-  font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:var(--gris)}
 .rk-zs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .rk-z{display:grid;gap:5px;align-content:start;min-width:0;padding:10px 10px 11px;border:1.5px solid var(--suave);color:var(--tinta);background:var(--fondo)}
 a.rk-z:hover{border-color:var(--linea)}
@@ -1892,27 +1674,15 @@ a.rk-z:hover{border-color:var(--linea)}
 .rk-z.vacio{border-style:dashed;color:var(--gris)}
 .rk-zt{display:flex;align-items:center;gap:8px;min-width:0}
 .rk-zt .rk-n{min-width:30px;height:26px;font-size:15px}
-.rk-zcara{width:34px;height:34px;font:800 14px/1 Archivo,sans-serif}
-.rk-zflag{width:40px;height:27px;object-fit:cover;box-shadow:0 0 0 1px var(--suave)}
-.rk-zlogo{display:grid;place-items:center;width:34px;height:34px;object-fit:cover;background:var(--inv);color:var(--inv-tinta);font:900 12px/1 Archivo,sans-serif}
 .rk-z b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 14px/1.2 Archivo,sans-serif;font-stretch:105%}
 .rk-z small{font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--gris);overflow-wrap:anywhere}
 .rk-z.yo small{color:var(--tinta)}
-.rk-hist{min-height:40px;padding:0 12px}
 /* 4 · la fila abierta */
 .rk-t tr.abierta td{background:var(--caja)}
 .rk-t tr.rk-det td{padding:0 0 14px;background:var(--caja);border-bottom:2px solid var(--linea);white-space:normal;text-align:left;cursor:default}
 .rk-t tr.rk-det:hover td{background:var(--caja)}
 .rk-det-in{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;padding:4px 12px 0}
 .rk-det-carta{width:96px}
-.rk-det-ci{display:block;width:100%;height:auto}
-.rk-det-l{display:grid;gap:10px;align-content:start;min-width:0}
-.rk-det-n{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0}
-.rk-det-n div{display:grid;gap:2px}
-.rk-det-n dt{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:var(--gris)}
-.rk-det-n dd{margin:0;font:900 17px/1 Archivo,sans-serif;font-stretch:110%;font-variant-numeric:tabular-nums}
-.rk-det-t{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:var(--gris)}
-.rk-det-c{margin:0;font:400 14px/1.4 Archivo,sans-serif;color:var(--gris)}
 .rk-det-e,.rk-det-g{list-style:none;margin:0;padding:0;display:grid;gap:2px}
 .rk-det-e button{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid var(--suave)}
 .rk-det-ev{display:grid;gap:2px;min-width:0}
@@ -1923,17 +1693,12 @@ a.rk-z:hover{border-color:var(--linea)}
 .rk-det-r.campeon{color:var(--magenta-tx)}
 .rk-det-g a{display:flex;align-items:center;gap:8px;padding:5px 0;color:var(--tinta)}
 .rk-det-g .rk-n{min-width:28px;height:24px;font-size:14px}
-.rk-det-cara{width:28px;height:28px;font:800 12px/1 Archivo,sans-serif}
 .rk-det-g b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 14px/1.2 Archivo,sans-serif}
-.rk-det-acc{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
-.rk-det-mas{font:700 15px/1.3 "Barlow Condensed",sans-serif;color:var(--gris)}
 .rk-tw.todas .rk-det-in{position:sticky;left:0;max-width:calc(100vw - 32px)}
 @media (max-width: 420px){
   .rk-zs{gap:6px}
   .rk-z{padding:8px 7px 9px}
   .rk-zt{gap:5px}
-  .rk-zcara,.rk-zlogo{width:28px;height:28px}
-  .rk-zflag{width:32px;height:21px}
   .rk-det-carta{width:78px}
 }
 @media (min-width: 900px){
@@ -1965,7 +1730,6 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-mo-n{display:flex;align-items:center;gap:10px;min-width:0}
 .evp-mo-n img{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:none;border:2px solid #F6F6F6}
 .evp-mo-n b{font:900 22px/1.05 Archivo,sans-serif;font-stretch:120%;text-transform:uppercase;text-wrap:balance;overflow-wrap:anywhere}
-.evp-mo-s{font:700 15px/1.4 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:#A5A5A0;text-transform:uppercase}
 .evp-mo .mo-cuenta{margin-top:2px}
 .evp-mo .hero-acc{margin-top:4px}
 .evp-mo-txt{display:grid;gap:8px;justify-items:start;min-width:0}
@@ -1982,7 +1746,6 @@ a.rk-z:hover{border-color:var(--linea)}
    Y se achica en vez de partirse («PICHULAM / C») */
 .evp-mo.ult .evp-mo-n img{display:none}
 .evp-mo.ult .evp-mo-n b{font-size:19px;overflow-wrap:normal;word-break:normal}
-.evp-mo-ci{display:block;width:100%;height:auto}
 .evp-mo .evp-cm{width:100%}
 /* la tira de los días, pegada arriba */
 .evp-dias{position:sticky;top:0;z-index:20;display:flex;align-items:stretch;background:#030304;color:#F6F6F6;border-bottom:2px solid #2A2A2C}
@@ -2022,42 +1785,20 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-ev{border-left-width:2px}
 .evp-ev header{grid-template-columns:40px minmax(0,1fr) auto}
 .evp-ev header img{object-fit:cover}
-.evp-nm{display:grid;gap:3px;min-width:0}
-.evp-nm b{overflow-wrap:anywhere}
-.evp-h{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--tinta)}
 .evp-ev.es-prox .t-est{background:var(--inv);color:var(--inv-tinta);border-color:var(--inv)}
 /* lo que ya se jugó va en «piel» (`--caja`), como «Lo que pasó» del Inicio (`.fecha.hecho`); lo que viene, en blanco.
    Dlx, 02/10/2026: «I like this PIEL color… maybe we could include it for some stuff» */
 .evp-ev.hecho{background:var(--caja)}
 .evp-ev.hecho .t-est{color:var(--gris);border-color:var(--suave)}
-/* cómo te fue en ese evento, como «tu fila» del Ranking: el fondo y el VOS magenta */
-.evp-vos{display:flex;align-items:center;gap:8px;margin:0 12px 10px;padding:7px 10px;background:var(--rk-yo);
-  font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.02em;text-transform:uppercase}
-.evp-vos b{font-weight:700}
-.evp-dyo{position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:#E41373}
 .evp-ev.cancelado{opacity:.7}
 .evp-ev.cancelado .t-est{border-style:dashed}
 /* 📢 lo que el organizador avisó después (07/10/2026): en pausa o atrasado, con sus palabras */
 .evp-ev.pausa .t-est{color:#E7B622;border-color:#E7B622}
-.evp-aviso{display:flex;flex-direction:column;gap:3px;margin:0;padding:0 12px 10px;font:400 13.5px/1.4 Archivo,sans-serif;color:var(--gris)}
-.evp-aviso b{font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.02em;text-transform:uppercase;color:#E7B622}
 .evp-ev.dorado{border-color:#E7B622;box-shadow:inset 0 0 0 1px #E7B622}
-.evp-xtra{display:flex;flex-wrap:wrap;gap:6px 10px;padding:0 12px 10px}
-.evp-dor,.evp-mult{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;padding:5px 7px;background:#E7B622;color:#030304}
-.evp-mult{background:#29B298}
-.evp-premio{font:400 13.5px/1.4 Archivo,sans-serif;color:var(--gris)}
-.evp-camp{display:flex;align-items:center;gap:6px;margin:0;padding:0 12px 10px;font:600 14px/1.3 Archivo,sans-serif;color:var(--gris)}
-.evp-camp b{color:var(--tinta)}
-.evp-abierto{display:grid;gap:4px;border-top:1px solid var(--suave);padding-top:8px}
 /* en una tarjeta ancha, el podio en dos columnas (1–2 / 3–4) y el cuadro a todo el ancho (`lugar` de CuadroMini). Por
    el ancho de LA TARJETA y no de la pantalla: con el zoom de la compu (1.1 a 1.35) la tarjeta mide ~810 en todas.
    Dlx, 02/10/2026, con la captura: el podio de punta a punta y el cuadro en la mitad izquierda, «too much white» */
 .evp-ev{container-type:inline-size}
-@container (min-width: 560px){
-  .evp-abierto .podio2{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px}
-}
-.evp-pq{display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.evp-pc{width:26px;height:26px;font:800 12px/1 Archivo,sans-serif}
 .evp-cm{overflow-x:auto;scrollbar-width:thin;padding:4px 12px 10px}
 .evp-cm .cm{margin:0}
 .evp-nada{display:grid;gap:12px;justify-items:start;padding:18px 16px 4px}
@@ -2068,8 +1809,6 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-h2{display:flex;align-items:center;gap:8px;margin:0 0 12px;font:900 20px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
 .evp-mes-pc{display:none}
 .evp-mes-movil{padding:14px 16px 4px}
-.evp-mes-t{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
-.evp-mes-t b{font:900 16px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
 .evp-fl{display:grid;place-items:center;width:34px;height:34px;border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);cursor:pointer;transform:scaleX(-1)}
 .evp-fl.der{transform:none}
 .evp-g button{display:grid;justify-items:center;gap:3px;padding:6px 0;min-height:42px;border:1px solid var(--suave);background:var(--fondo);color:var(--tinta);
@@ -2081,78 +1820,39 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-g button em{display:flex;gap:2px;font-style:normal}
 .evp-g button i{width:6px;height:6px;border-radius:50%}
 .evp-g button u{font:700 15px/1 "Barlow Condensed",sans-serif;text-decoration:none}
-.evp-vacio{border:0}
-.evp-ley{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;color:var(--gris)}
-.evp-ley span{display:inline-flex;align-items:center;gap:5px}
-.evp-ley i{width:8px;height:8px;border-radius:50%}
 .evp-tx{margin:0;font:400 14.5px/1.45 Archivo,sans-serif;color:var(--gris)}
-.evp-campana,.evp-cal{display:grid;gap:12px;justify-items:start}
-.evp-ok{margin:0;font:700 14.5px/1.4 Archivo,sans-serif;color:var(--tinta)}
-.evp-pasos{margin:0;padding-left:20px;display:grid;gap:4px;font:400 14.5px/1.45 Archivo,sans-serif}
 .evp-acc{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
 .evp-lnk{background:none;border:0;padding:0;color:var(--tinta);font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;text-transform:uppercase;
   text-decoration:underline;text-underline-offset:4px;cursor:pointer}
-.evp-yo{display:grid;gap:8px;justify-items:start;padding-top:10px;border-top:1px solid var(--suave);width:100%}
 .evp-msg{margin:0;font:700 15px/1.4 "Barlow Condensed",sans-serif;color:var(--magenta-tx)}
 .evp-vig,.evp-nota{margin:0;font:700 15px/1.45 "Barlow Condensed",sans-serif;color:var(--gris)}
-.evp-ics{font:700 15px/1.3 "Barlow Condensed",sans-serif;background:var(--caja);padding:6px 8px;overflow-wrap:anywhere;user-select:all}
 /* los últimos campeones, con su carta */
 .evp-campeones .sec-t{align-items:center}
-.evp-comp{background:none;border:0;color:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:6px;font:700 15px/1 "Barlow Condensed",sans-serif;
-  letter-spacing:0.04em;text-transform:uppercase}
 .evp-camps{grid-auto-columns:140px;overflow-x:auto;scrollbar-width:none;padding-bottom:12px}
 .evp-camps::-webkit-scrollbar{display:none}
-.evp-cp{display:grid;gap:6px;justify-items:start;align-content:start;padding:0;border:0;background:none;color:inherit;text-align:left;cursor:pointer}
-.evp-cp-ci{display:block;width:100%;height:auto}
-.evp-cp-sin{display:grid;place-items:center;width:100%;aspect-ratio:900/1314;border:2px dashed #6E6E6A}
-.evp-cp-cara{width:64px;height:64px;font:900 24px/1 Archivo,sans-serif}
-.evp-cp small{display:flex;align-items:center;gap:5px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:#A5A5A0}
-.evp-cp small img{width:16px;height:16px;border-radius:50%}
-.evp-cp b{font:900 14px/1.1 Archivo,sans-serif;font-stretch:112%;text-transform:uppercase;overflow-wrap:anywhere}
-.evp-cp span{font:400 13px/1.3 Archivo,sans-serif;color:#A5A5A0}
 /* cómo se juega */
 .evp-como{display:grid;gap:18px}
-.evp-et{display:block;margin-bottom:8px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:var(--gris)}
-.evp-bar{display:grid;grid-template-columns:110px minmax(0,1fr) 30px;gap:10px;align-items:center;padding:4px 0;font:700 13px/1.2 Archivo,sans-serif}
-.evp-bar i{height:12px;background:var(--caja)}
-.evp-bar u{display:block;height:100%;background:#E41373;text-decoration:none}
-.evp-bar b{text-align:right;font-variant-numeric:tabular-nums}
-.evp-orgs{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.evp-orgs li{display:inline-flex;align-items:center;gap:8px;padding:6px 8px;border:1.5px solid var(--suave);font:700 13px/1 Archivo,sans-serif}
-.evp-orgs a{display:inline-flex;align-items:center;gap:6px;color:var(--tinta)}
-.evp-orgs em{font:700 15px/1 "Barlow Condensed",sans-serif;font-style:normal;color:var(--gris)}
 /* cuándo suele jugar cada servidor: un cuadrito por día de la semana (más lleno, más eventos ese día) y la franja abajo,
    que en 12 horas —«5:00 p. m. a 1:00 a. m.»— no entra al costado en un teléfono */
 .evp-cuando{display:grid;gap:10px;justify-items:start;min-width:0}
-.evp-antes{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
-.evp-antes li{display:inline-flex;align-items:center;gap:6px;min-height:34px;padding:0 10px;border:1.5px solid var(--linea);font:800 12px/1 Archivo,sans-serif;font-stretch:115%}
-.evp-antes img{width:18px;height:18px;border-radius:50%;object-fit:cover}
-.evp-antes b{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
 .evp-cj{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .evp-cj li{display:grid;grid-template-columns:76px repeat(7,24px);column-gap:5px;row-gap:5px;align-items:center}
 .evp-cj-cab{margin-bottom:-4px}
 .evp-cj-cab u{font:700 15px/1 "Barlow Condensed",sans-serif;text-decoration:none;text-align:center;color:var(--gris)}
 .evp-cj-cab u.on{color:var(--tinta);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
-.evp-cj-sv{display:inline-flex;align-items:center;gap:6px;min-width:0;font:800 12px/1 Archivo,sans-serif;font-stretch:115%}
-.evp-cj-sv img{width:18px;height:18px;border-radius:50%;object-fit:cover;flex:none}
 .evp-cj i{display:block;height:24px}
 .evp-cj i.no{border:1.5px solid var(--suave)}
 .evp-cj i.on{outline:2px solid var(--tinta);outline-offset:1px}
-.evp-cj-h{grid-column:2 / -1;font:700 15px/1.2 "Barlow Condensed",sans-serif;color:var(--gris);white-space:nowrap}
 /* 🗓️ lo que suele haber hoy y todavía no se anunció (12/10/2026): una tarjeta en punteado, de probable */
 .fecha.suele{border-style:dashed;opacity:.85}
 .fecha.suele .f-hora{color:var(--gris)}
-/* 📅 quiénes organizan en cada servidor (12/10/2026) */
-.evp-cj-org{grid-column:2 / -1;margin-top:-3px;font:600 12px/1.3 Archivo,sans-serif;color:var(--gris);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .evp-org{padding:0;border:0;background:none;color:inherit;font:inherit;cursor:pointer;text-decoration:underline dotted}
 .evp-org.si{color:var(--tinta);font-weight:800;text-decoration:none}
 /* 👥 cada organizador con su cara y su perfil, y el ☆ al lado (14/10/2026) */
 .evp-cj-o{display:inline-flex;align-items:center;gap:4px;vertical-align:middle}
 .evp-cj-o>a,.evp-cj-o>span{display:inline-flex;align-items:center;gap:4px;color:inherit}
 .evp-cj-o>a:hover{color:var(--tinta)}
-.evp-cj-org .evp-oc{width:16px;height:16px;font-size:9px}
 .evp-cj-o .evp-org{text-decoration:none;padding:0 2px;min-width:20px;min-height:20px}
-.evp-orgs li>span{display:inline-flex;align-items:center;gap:6px}
 /* adentro del día vacío, `.evp-nada p` (16 px) les ganaba a las dos */
 .evp-cuando .evp-tx{font:400 14.5px/1.45 Archivo,sans-serif}
 .evp-cuando-pc{display:none}
@@ -2164,7 +1864,6 @@ a.rk-z:hover{border-color:var(--linea)}
   .evp-mo .evp-hist.ic{width:48px;padding:0}
   .evp-mo .evp-hist.ic span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 }
-.evp-oc{width:22px;height:22px;font:800 12px/1 Archivo,sans-serif}
 @media (min-width: 900px){
   .app .evp-esc:before{top:44px;bottom:auto;right:-110px}
   /* el texto y la tarjeta, centrados uno contra el otro. Con `align-items:end` el título se iba al fondo y arriba
@@ -2340,48 +2039,23 @@ a.rk-z:hover{border-color:var(--linea)}
    «Sumá tu servidor», en negro: qué gana y qué hace el bot ── */
 .soc-hero,.gu-hero{display:grid;gap:12px;justify-items:start;padding:24px 16px 26px}
 .soc-hero .hero-ev,.gu-hero .hero-ev{margin:0}
-.soc-tot{display:flex;flex-wrap:wrap;gap:8px 24px;margin:4px 0 6px}
-.soc-tot div{display:grid;gap:4px}
-.soc-tot dt{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:#A5A5A0}
-.soc-tot dd{margin:0;font:900 30px/1 Archivo,sans-serif;font-stretch:120%;color:#F6F6F6}
 .soc-lista{display:grid;gap:14px;padding:18px 16px 8px}
-.soc{display:flex;flex-direction:column;gap:14px;padding:16px;border:2px solid var(--linea);background:var(--caja);box-shadow:4px 4px 0 var(--c)}
-.soc-cab{display:flex;align-items:center;gap:14px;min-width:0}
-.soc-logo{flex:none;width:64px;height:64px;border-radius:50%;border:3px solid var(--c);object-fit:cover;background:#030304}
-.soc-cab h2{margin:0;font:900 22px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;overflow-wrap:anywhere}
-.soc-cab small{font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.03em;color:var(--gris)}
 .soc-num{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:0}
 .soc-num div{display:grid;gap:5px;padding:8px;border:1.5px solid var(--suave);background:var(--fondo);min-width:0}
 .soc-num dt{font:700 15px/1.15 "Barlow Condensed",sans-serif;letter-spacing:0.03em;color:var(--gris)}
 .soc-num dd{margin:0;font:900 18px/1 Archivo,sans-serif;font-stretch:110%;font-variant-numeric:tabular-nums}
 .soc-num dd.sube{color:#1F8F79}
-.soc-medio{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center}
-.soc-carta-c{display:block;width:72px;height:auto}
-.soc-datos{list-style:none;margin:0;padding:0;display:grid;gap:9px;font:600 14px/1.35 Archivo,sans-serif;min-width:0}
-.soc-datos b{display:block;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:var(--magenta-tx);margin-bottom:4px}
 .soc-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
-.soc-espera{margin:0;padding:12px 14px;border:1.5px dashed var(--gris);font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
-.soc-espera b{display:block;margin-bottom:4px;font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:var(--magenta-tx)}
-/* el lugar que sobra con un número impar de servidores: invita al que falta */
-.soc-mas{align-items:flex-start;justify-content:center;border-style:dashed;box-shadow:none;padding-left:16px}
-.soc-mas h2{margin:0;font:900 22px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
-.soc-mas p{margin:0;font:500 14.5px/1.45 Archivo,sans-serif;color:var(--gris);max-width:40ch}
-.soc-mas-c{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;border:3px dashed var(--gris);
-  font:900 30px/1 Archivo,sans-serif;color:var(--gris)}
 .soc-pat{padding:18px 16px}
 .soc-pat ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:16px}
 .soc-pat img{height:56px;width:auto}
 /* 📺 «Lo que publican» (13/10/2026): el video más nuevo de cada socio y las redes de todos, arriba de la lista */
 .soc-pub{display:grid;gap:12px;justify-items:start;padding:24px 16px 6px}
 .soc-pub .evp-h2{margin:0}
-.soc-pub-p{margin:0;max-width:62ch;color:var(--gris)}
 .soc-pub .soc-vid,.soc-sig{width:100%}
 .soc-sig{list-style:none;margin:4px 0 0;padding:0;display:grid;gap:10px}
 .soc-sig li{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;padding:10px 12px;border:2px solid var(--linea);box-shadow:4px 4px 0 var(--c)}
-.soc-sig-sv{display:flex;align-items:center;gap:8px;min-width:74px;font:900 15px/1 Archivo,sans-serif}
-.soc-sig-sv img{width:28px;height:28px;border-radius:50%;object-fit:cover}
 .soc-sumar{display:grid;gap:18px;margin-top:20px;padding:26px 16px 32px;background:#030304;color:#F6F6F6}
-.soc-sumar-tit{display:grid;gap:10px;justify-items:start}
 .soc-sumar .hero-ev{margin:0}
 .soc-dos{display:grid;gap:14px}
 .soc-bloque{border:2px solid #3A3A3E;padding:16px}
@@ -2396,19 +2070,8 @@ a.rk-z:hover{border-color:var(--linea)}
 .soc-feats .ico{grid-row:span 2;color:#F0559A}
 .soc-feats b{font:900 15px/1.2 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;color:#F6F6F6}
 .soc-feats span{font:500 14px/1.45 Archivo,sans-serif;color:#D8D8D4}
-.soc-cta{display:grid;gap:10px;align-content:start;justify-items:start;border-color:#29B298}
-.soc-cta h3{margin:0}
-.soc-cta p{margin:0;font:500 16px/1.45 Archivo,sans-serif;color:#D8D8D4}
-.soc-at{text-transform:none}
-/* las redes: de cada servidor en su tarjeta (en piel) y las de Under Legends en «Sumá tu servidor» (en negro) */
-.soc-redes,.soc-ul{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
-.soc-redes a,.soc-ul a{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;padding:7px 9px;border:1.5px solid var(--linea)}
-.soc-ul span{margin-right:6px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:#A5A5A0}
-.soc-ul a{border-color:#3A3A3E;color:#F6F6F6}
 /* ── la Guía (`guia.jsx`, desde la 2.02): «cómo empezar» en tres pasos y un índice; todo en piel ── */
 .gu-cuerpo{display:grid;padding:0 16px 34px}
-.gu-sec{display:grid;gap:12px;padding-top:26px}
-.gu-baj{margin:0;max-width:66ch;font:500 15px/1.5 Archivo,sans-serif;color:var(--gris)}
 .gu-pasos{list-style:none;margin:0;padding:0;display:grid;gap:12px}
 .gu-pasos li{display:grid;gap:8px;justify-items:start;align-content:start;padding:16px;border:2px solid var(--linea);background:var(--caja)}
 .gu-pasos li > b{display:grid;place-items:center;width:34px;height:34px;background:var(--verde);color:#030304;font:900 18px/1 Archivo,sans-serif}
@@ -2418,44 +2081,15 @@ a.rk-z:hover{border-color:var(--linea)}
 .gu-cartas{display:grid;gap:12px}
 .gu-carta{display:grid;grid-template-columns:84px minmax(0,1fr);gap:14px;align-items:start;padding:14px;border:2px solid var(--linea);background:var(--caja)}
 .gu-carta.prox{opacity:.8}
-.gu-carta-c{display:block;width:84px;height:auto}
-.gu-sin{display:grid;place-items:center;height:118px;border:2px dashed var(--gris);font:900 22px/1 Archivo,sans-serif;color:var(--gris)}
 .gu-carta h3{margin:0 0 4px;font:900 18px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
 .gu-carta p{margin:0 0 8px;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
 .gu-carta ul{margin:0;padding:0 0 0 18px;display:grid;gap:3px;font:700 13px/1.35 Archivo,sans-serif}
-.gu-tabla{overflow-x:auto;border:2px solid var(--linea);background:var(--caja)}
-.gu-tabla table{width:100%;border-collapse:collapse;font:600 14px/1.3 Archivo,sans-serif;font-variant-numeric:tabular-nums}
-.gu-tabla th{padding:10px;text-align:right;font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;border-bottom:2px solid var(--linea)}
-.gu-tabla th small{display:block;font-weight:400;color:var(--gris)}
-.gu-tabla th:first-child,.gu-tabla td:first-child{text-align:left}
-.gu-tabla td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--suave)}
-.gu-tabla td small{display:block;font:500 12px/1.3 Archivo,sans-serif;color:var(--gris)}
-.gu-notas{margin:0;padding:0 0 0 18px;display:grid;gap:6px;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
-.gu-notas b{color:var(--tinta)}
 .gu-rangos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.gu-rg{display:grid;gap:5px;justify-items:center;padding:14px 6px 12px;border:2px solid var(--linea);background:var(--caja);box-shadow:inset 0 6px 0 var(--c)}
-.gu-rg b{font:900 26px/1 Archivo,sans-serif;font-stretch:120%}
-.gu-rg small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;color:var(--gris)}
-.gu-rg em{font:700 15px/1 "Barlow Condensed",sans-serif;font-style:normal}
 .gu-dos{display:grid;gap:14px}
-.gu-pesos{display:grid;gap:9px;align-content:start;padding:16px;border:2px solid var(--linea);background:var(--caja)}
-.gu-pesos h3{margin:0 0 4px;font:900 17px/1.2 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
-.gu-pesos h3 small{display:block;font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:none;color:var(--gris)}
-.gu-p{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 46px;gap:10px;align-items:center;font:600 14px/1.25 Archivo,sans-serif}
-.gu-p small{display:block;font:500 12px/1.3 Archivo,sans-serif;color:var(--gris)}
-.gu-p i{height:10px;background:var(--fondo);border:1.5px solid var(--linea)}
-.gu-p u{display:block;height:100%;background:var(--verde)}
-.gu-p b{text-align:right;font:700 16px/1 "Barlow Condensed",sans-serif}
-.gu-nota{margin:4px 0 0;font:500 13px/1.45 Archivo,sans-serif;color:var(--gris)}
 .gu-glos{margin:0;display:grid;gap:10px}
 .gu-glos div{padding:12px 14px;border:2px solid var(--linea);background:var(--caja)}
 .gu-glos dt{margin-bottom:4px;font:900 16px/1.2 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase}
 .gu-glos dd{margin:0;font:500 14.5px/1.5 Archivo,sans-serif}
-.gu-faq{display:grid;gap:8px}
-.gu-faq details{border:2px solid var(--linea);background:var(--caja)}
-.gu-faq summary{padding:12px 14px;cursor:pointer;font:800 15px/1.3 Archivo,sans-serif}
-.gu-faq p{margin:0;padding:0 14px 14px;font:500 14.5px/1.5 Archivo,sans-serif}
-.gu-faq a{color:inherit;font-weight:800}
 @media (min-width: 900px){
   .app .soc-hero,.app .gu-hero{padding:36px var(--gut) 30px}
   .app .soc-lista{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding:26px var(--gut) 10px}
@@ -2493,25 +2127,13 @@ a.rk-z:hover{border-color:var(--linea)}
 .soc-feats.con-ej li:hover{border-color:#29B298}
 .soc-feat-b:focus-visible{outline:3px solid #29B298;outline-offset:-3px}
 .soc-mas-l{font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;color:#29B298}
-.ej-fondo{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:16px;background:rgba(3,3,4,.82)}
-.ej{display:grid;gap:12px;width:min(880px,100%);max-height:calc(100vh - 32px);overflow:auto;padding:16px;border:2px solid #F6F6F6;
-  background:#0B0B0D;color:#F6F6F6;outline:0}
 .ej-cab{display:flex;align-items:center;gap:10px}
 .ej-cab .ico{color:#29B298;flex:none}
 .ej-cab b{flex:1;min-width:0;font:900 18px/1.15 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
-.ej-n{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;color:#A5A5A0}
 .ej-cab .btn-ico{flex:none;color:#F6F6F6;border-color:#3A3A3E}
-.ej-fig{margin:0;display:grid;gap:6px}
-.ej-fig img{display:block;width:100%;height:auto;max-height:62vh;object-fit:contain;border:1.5px solid #3A3A3E;background:#030304}
-.ej-fig figcaption{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:#A5A5A0}
-.ej-tx{margin:0;font:500 15.5px/1.55 Archivo,sans-serif;color:#D8D8D4;max-width:70ch}
 .ej-pie{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .ej-pie .btn{color:#F6F6F6}
 .ej-pie .btn.negro{background:#F6F6F6;color:#030304}
-@media (max-width: 599.98px){
-  .ej-fondo{padding:0;place-items:stretch}
-  .ej{width:100%;max-height:100vh;height:100%;border:0;align-content:start}
-}
 /* ── /sumate (`sumate.jsx`, preview con `lg:prev-sum`): para quién es, lo que hacemos, cómo se suma, preguntas y la
    postulación, que le llega a Dlx por Discord ── */
 .su-hero{display:grid;gap:12px;justify-items:start;padding:24px 16px 26px}
@@ -2586,10 +2208,6 @@ a.rk-z:hover{border-color:var(--linea)}
      «Activar la campana» en tres renglones (Eventos, 322 px) */
   :is(.hero-acc,.t-acc,.su-acc,.soc-acc):has(> .btn.compartir:not(:only-child):not(.dijo), > .btn.evp-hist.ic)
     > .btn:not(.compartir):not(.evp-hist.ic){flex-basis:calc(100% - 56px)}
-  /* las redes de Under Legends: el título arriba y las seis de a tres, en vez de una suelta en el último renglón */
-  .soc-ul{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
-  .soc-ul span{grid-column:1/-1;margin:0 0 2px}
-  .soc-ul a{text-align:center}
 }
 
 /* ── 🌸 MAGENTA DE LA MARCA DONDE TODO ERA VERDE (Dlx, 03/10/2026: «podrías agregar algo rosadito, pero de la marca en
@@ -2608,8 +2226,6 @@ a.rk-z:hover{border-color:var(--linea)}
 .tj-c{display:block;width:100%;height:auto;aspect-ratio:var(--ar,900/1314);object-fit:contain}
 .tj-c.sincarta{border:2px solid var(--linea);background:var(--caja)}
 .tj-cab .hero-p code,.tj-sin code{font:700 .9em/1 "Space Mono",monospace;padding:2px 5px;background:rgba(127,127,127,.18)}
-.tj-pide{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;font:700 15px/1.45 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--esc-tinta)}
-.tj-pide b{color:#F0559A;letter-spacing:.12em}
 .tj-abanico{display:none}
 @media (min-width: 900px){
   .app .tj-abanico{display:flex;align-items:flex-end;list-style:none;margin:0;padding:0 18px 6px}
@@ -2622,7 +2238,6 @@ a.rk-z:hover{border-color:var(--linea)}
 .tj-invita-w{padding-bottom:0}
 .tj-invita-w .rk-invita{margin:0}
 .tj-n{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;color:var(--gris)}
-.tj-lnk{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px;justify-self:start}
 .tj-sin p{max-width:62ch;margin:0 0 14px;font-size:15px;line-height:1.5}
 .app{--tj-gana:#167A66}
 .noche{--tj-gana:#29B298}
@@ -2630,7 +2245,6 @@ a.rk-z:hover{border-color:var(--linea)}
 .tj-tuyas-l{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 12px}
 .tj-tu{display:grid;gap:8px;align-content:start;min-width:0}
 .tj-tu .tj-c{aspect-ratio:2/3;object-position:center bottom}
-.tj-hueco{display:grid;place-items:center;border:2px dashed var(--linea);background:var(--caja);color:var(--gris)}
 .tj-tu-pie{display:grid;gap:5px;min-width:0}
 .tj-tu-pie b{font:900 15px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
 .tj-tu-pie small{display:flex;align-items:center;gap:5px;font:700 15px/1.35 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--gris)}
@@ -2642,25 +2256,11 @@ a.rk-z:hover{border-color:var(--linea)}
 .tj-falta li.ok u{background:#29B298}
 /* qué es y cómo se consigue (requisitos.js; Dlx, 07/10/2026: «sé más descriptivo»): una frase, no un contador */
 .tj-falta em{font:500 14px/1.4 Archivo,sans-serif;font-style:normal;letter-spacing:0;color:var(--gris);text-wrap:pretty}
-.tj-tu-acc{margin-top:18px}
 @media (min-width: 900px){.app .tj-tuyas-l{grid-template-columns:repeat(4,minmax(0,1fr));gap:24px}}
-/* la galería: los de un tipo, sin cajas alrededor (la carta ya es la caja) */
-.tj-fil{margin-bottom:18px}
-/* «Para historias» debajo de cada tarjeta tuya: chico, porque son cuatro */
-.tj-hist{justify-self:start;display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 10px;margin-top:2px;
-  border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);cursor:pointer;
-  font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase}
-.tj-hist[aria-busy="true"]{opacity:.7;cursor:progress}
-@media (hover: hover) and (pointer: fine){.tj-hist:hover{background:var(--inv);color:var(--inv-tinta)}}
 .tj-grilla{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 12px}
 .tj-grilla li{display:grid;gap:8px;align-content:start;min-width:0}
 .tj-grilla .sin-boton .tj-c,.tj-tu .sin-boton .tj-c{transition:transform .2s cubic-bezier(.2,.8,.2,1)}
 @media (hover: hover) and (pointer: fine){.tj-grilla .sin-boton:hover .tj-c,.tj-tu .sin-boton:hover .tj-c{transform:translateY(-4px)}}
-.tj-pie{display:grid;gap:3px;min-width:0}
-.tj-pie b{font:800 14px/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.tj-pie small{font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.025em;text-transform:uppercase;color:var(--gris)}
-.tj-pie small.tj-dib{display:flex;align-items:center;gap:4px;color:var(--magenta-tx)}
-.tj-mas{margin:22px 0 4px}
 @media (min-width: 600px){.tj-grilla{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (min-width: 900px){.app .tj-grilla{grid-template-columns:repeat(5,minmax(0,1fr));gap:28px 18px}}
 @media (min-width: 1240px){.app .tj-grilla{grid-template-columns:repeat(6,minmax(0,1fr))}}
@@ -2691,18 +2291,9 @@ a.rk-z:hover{border-color:var(--linea)}
 /* ── 👤 EL PERFIL (`perfil.jsx`, 03/10/2026, Dlx: «1. A 2. A 3. A»): arriba quién es y su tarjeta; abajo, pestañas
    (Resumen · Eventos · Duelos · Insignias), así ninguna vista se hace eterna en el celular ── */
 .pf-cab{align-items:start}
-.pf-tx{gap:14px}
 .pf-quien{display:flex;align-items:center;gap:14px;min-width:0}
 .pf-quien .hero-ev{margin:0;overflow-wrap:anywhere}
 .pf-cara{width:64px;height:64px;font:900 26px/1 Archivo,sans-serif;box-shadow:0 0 0 3px var(--esc-tinta)}
-.pf-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.pf-chips a,.pf-chips span{display:inline-flex;align-items:center;gap:7px;min-height:34px;padding:0 11px;border:1.5px solid var(--esc-linea);
-  color:var(--esc-tinta);font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;text-transform:uppercase}
-.pf-chips img{width:20px;height:20px;border-radius:50%;object-fit:cover}
-.pf-flag{width:22px;height:15px;object-fit:cover;flex:none}
-@media (hover: hover) and (pointer: fine){.pf-chips a:hover{border-color:var(--esc-tinta)}}
-/* 🎟️ el Pase de rapero en el perfil: su borde es el dorado del Pase */
-.pf-chips a.pf-pase{border-color:#F5C542}
 /* 🏷️ los roles en la Liga (13/10/2026): chicos y en fila; los que pone Dlx, con el magenta de la marca; el socio, con el verde */
 .pf-roles{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
 .pf-roles li{display:inline-flex;align-items:center;min-height:26px;padding:0 8px;border:1px solid var(--esc-linea);color:var(--esc-tinta);
@@ -2716,20 +2307,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .pf-num dd.ovr{color:#29B298}
 .pf-num dd.largo{font-size:clamp(18px,5.4vw,26px)}
 .pf-num .rg{display:inline-grid;place-items:center;min-width:34px;height:30px;padding:0 6px;font:900 18px/1 Archivo,sans-serif;color:#030304}
-.pf-acc{margin-top:2px}
-.pf-nv{margin:0;font:700 15px/1.4 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:#F0559A}
-.pf-nv code{font:inherit;text-transform:none}
-.pf-nv b{font-weight:700;color:#F6F6F6}
-.pf-nv a{color:#F6F6F6;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
-.pf-segs{margin:0;font:600 14px/1 Archivo,sans-serif;color:var(--esc-gris)}
-.pf-segs b{color:var(--esc-tinta);font-weight:900}
-.pf-redes{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
-.pf-redes a{display:inline-flex;align-items:center;min-height:30px;padding:0 9px;border:1.5px solid var(--esc-linea);color:var(--esc-tinta);
-  font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase}
-@media (hover: hover) and (pointer: fine){.pf-redes a:hover{border-color:var(--esc-tinta)}}
 .pf-sigo .ico{margin-right:2px}
-/* el precio por su cabeza */
-.pf-pr{margin:0 0 12px;font:500 17px/1.4 Archivo,sans-serif}
 .pf-pr-v{font:900 20px/1 Archivo,sans-serif;color:#B7791F}
 .noche .pf-pr-v{color:#FFD24A}
 .pf-pr-m{display:flex;gap:8px;margin-bottom:10px;max-width:520px}
@@ -2741,7 +2319,6 @@ a.rk-z:hover{border-color:var(--linea)}
 .pf-cartas button{min-height:32px;padding:0 8px;border:1.5px solid var(--esc-linea);background:transparent;color:var(--esc-gris);cursor:pointer;
   font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;text-transform:uppercase}
 .pf-cartas button.on{background:var(--esc-tinta);border-color:var(--esc-tinta);color:#030304}
-.pf-carta-c{width:100%}
 @media (min-width: 900px){
   .app .pf-cab{grid-template-columns:minmax(0,1fr) 250px;gap:48px}
   .app .pf-num{grid-template-columns:repeat(5,minmax(0,auto));justify-content:start;gap:12px 34px}
@@ -2750,8 +2327,6 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .pf-cara{width:84px;height:84px;font-size:34px}
 }
 .pf-sec .sec-t a{display:inline-flex;align-items:center;gap:6px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase}
-.pf-bajada{margin:-4px 0 14px;max-width:62ch;color:var(--gris);font-size:15px}
-.pf-lnk{padding:0;border:0;background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 /* resumen: sus números */
 .pf-tiles{margin:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .pf-tiles div{display:grid;gap:6px;align-content:center;padding:14px;border:2px solid var(--linea)}
@@ -2766,52 +2341,13 @@ a.rk-z:hover{border-color:var(--linea)}
 @media (min-width: 900px){.app .pf-tiles{grid-template-columns:repeat(4,minmax(0,1fr))}}
 /* resumen: el radar */
 .pf-fz{display:grid;gap:18px;align-items:center}
-.pf-radar{display:block;width:100%;max-width:360px;justify-self:center;overflow:visible}
-.pf-r-red,.pf-r-eje{fill:none;stroke:var(--suave);stroke-width:1.2}
-.pf-r-liga{fill:none;stroke:var(--gris);stroke-width:1.5;stroke-dasharray:5 4}
-.pf-r-yo{fill:rgba(228,19,115,.2);stroke:#E41373;stroke-width:2.5;stroke-linejoin:round}
-.pf-r-et{font:700 15.5px "Barlow Condensed",sans-serif;fill:var(--tinta)}
-.pf-fz-tx{display:grid;gap:14px}
-.pf-fz-dos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.pf-fz-dos p{margin:0;display:grid;gap:5px;padding:12px;background:var(--caja)}
-.pf-fz-dos small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:var(--gris)}
-.pf-fz-dos b{font:800 16px/1.15 Archivo,sans-serif}
-.pf-dims{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-.pf-dims li{display:grid;grid-template-columns:minmax(0,1fr) 40px;grid-template-areas:"t v" "b b";gap:6px 10px;align-items:end}
-.pf-dims span{grid-area:t;display:grid;gap:2px;min-width:0}
-.pf-dims span b{font:800 15px/1.2 Archivo,sans-serif}
-.pf-dims span small{font:500 12.5px/1.3 Archivo,sans-serif;color:var(--gris)}
-.pf-dims i{grid-area:b;position:relative;display:block;height:8px;background:var(--suave)}
-.pf-dims u{display:block;height:100%;background:#E41373;text-decoration:none}
-.pf-dims s{position:absolute;top:-4px;bottom:-4px;width:2px;margin-left:-1px;background:var(--tinta)}
-.pf-dims em{grid-area:v;font:900 20px/1 Archivo,sans-serif;font-style:normal;text-align:right;font-variant-numeric:tabular-nums}
 .pf-ley{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
 .pf-ley i{display:inline-block;width:22px;height:0;border-top:3px solid #E41373}
 .pf-ley i.liga{border-top:2px dashed var(--gris);margin-left:8px}
-/* 🔒 sus fortalezas, bloqueadas: la vista previa (Dlx, 07/10/2026). La forma es de ejemplo, punteada y sin relleno, y
-   el candado va en el centro del radar (cx 150 de 300, cy 132 de 270) */
-.pf-bloq{display:inline-flex;align-items:center;gap:6px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;
-  text-transform:uppercase;color:var(--gris);white-space:nowrap}
-.pf-fz-prev{position:relative;width:100%;max-width:360px;justify-self:center}
-.pf-fz-prev .pf-radar{max-width:none}
-.pf-r-yo.fantasma{fill:none;stroke:var(--gris);stroke-width:2;stroke-dasharray:2 6;stroke-linecap:round}
-.pf-fz-cand{position:absolute;left:50%;top:48.9%;transform:translate(-50%,-50%);display:grid;place-items:center;
-  width:50px;height:50px;background:var(--fondo);border:2px solid var(--linea);color:var(--tinta)}
-.pf-fz-q{margin:0;display:grid;gap:6px;max-width:52ch;color:var(--gris);font-size:15px;line-height:1.45}
-.pf-fz-q b{font:800 19px/1.2 Archivo,sans-serif;color:var(--tinta)}
-.pf-fz-meta{max-width:420px}
-.pf-fz-falta{margin:-6px 0 0}
-.pf-dims-bloq em{color:var(--gris)}
 /* 🎨 las bandas negras del perfil (07/10/2026, como el Inicio): lo que en blanco tiene un color fijo pide el suyo */
 .pf-sec.negra{--tj-gana:#29B298}
 .negra .pf-pr-v{color:#FFD24A}
 @media (min-width: 900px){.app .pf-fz{grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:40px}}
-/* resumen: en cada ranking y lo que le falta */
-.pf-rk{list-style:none;margin:0;padding:0;display:grid}
-.pf-rk a{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:8px 2px;border-bottom:1px solid var(--suave)}
-.pf-rk span{display:inline-flex;align-items:center;gap:8px;font:600 16px/1.2 Archivo,sans-serif}
-.pf-rk b{font:900 17px/1 Archivo,sans-serif;color:var(--tj-gana);font-variant-numeric:tabular-nums}
-@media (hover: hover) and (pointer: fine){.pf-rk a:hover span{text-decoration:underline;text-underline-offset:3px}}
 .pf-falta{list-style:none;margin:0;padding:0;display:grid;gap:4px}
 .pf-falta > li{display:grid;gap:8px;padding:12px 0;border-bottom:1px solid var(--suave)}
 .pf-falta h3{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0;font:800 16px/1.2 Archivo,sans-serif}
@@ -2829,30 +2365,12 @@ a.rk-z:hover{border-color:var(--linea)}
   background:transparent;color:var(--esc-gris);cursor:pointer;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em}
 .pf-svs button img{width:18px;height:18px;object-fit:contain}
 .pf-svs button.on{background:var(--esc-tinta);border-color:var(--esc-tinta);color:#030304}
-/* 🔎 sus datos (07/10/2026): qué días juega, su verdugo, su hijo, con quién hace mejor equipo y sus réplicas */
-.pf-datos{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
-.pf-datos li{display:grid;grid-template-columns:auto 1fr;column-gap:12px;row-gap:4px;align-items:center;padding:14px;border:2px solid var(--linea)}
 .pf-dt-ic{grid-row:1 / span 3;font-size:26px;line-height:1}
-.pf-datos small{font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:var(--gris)}
-.pf-datos b,.pf-dt-q{font:800 18px/1.2 Archivo,sans-serif}
-.pf-dt-q{display:inline-flex;align-items:center;gap:8px;color:inherit;text-decoration:none}
-@media (hover: hover) and (pointer: fine){a.pf-dt-q:hover{text-decoration:underline;text-underline-offset:3px}}
-.pf-dt-cara{width:28px;height:28px;font-size:13px}
-.pf-datos em{font:400 14px/1.3 Archivo,sans-serif;font-style:normal;color:var(--gris)}
 /* eventos */
 .pf-ev{list-style:none;margin:0;padding:0;display:grid}
 .pf-ev li{display:grid;grid-template-columns:58px minmax(0,1fr) auto;grid-template-areas:"f t pts" "f p ll";gap:6px 12px;align-items:center;
   padding:12px 0;border-bottom:1px solid var(--suave)}
 .pf-ev-f{grid-area:f;align-self:start;padding-top:3px;font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.03em;color:var(--gris)}
-.pf-ev-tx{grid-area:t;display:grid;gap:3px;min-width:0}
-.pf-ev-tx b{font:800 15px/1.25 Archivo,sans-serif;overflow-wrap:anywhere}
-.pf-ev-tx small{display:inline-flex;align-items:center;gap:6px;font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.025em;text-transform:uppercase;color:var(--gris)}
-.pf-ev-tx small img{width:16px;height:16px;border-radius:50%}
-.pf-ev-p{grid-area:p;font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase}
-.pf-ev-pts{grid-area:pts;justify-self:end;font:900 18px/1 Archivo,sans-serif;color:var(--tj-gana);font-variant-numeric:tabular-nums}
-.pf-ev-ll{grid-area:ll;justify-self:end;min-height:34px;padding:0 10px;border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);
-  cursor:pointer;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase}
-@media (hover: hover) and (pointer: fine){.pf-ev-ll:hover{background:var(--inv);color:var(--inv-tinta)}}
 @media (min-width: 900px){
   .app .pf-ev li{grid-template-columns:80px minmax(0,1fr) 170px 90px auto;grid-template-areas:"f t p pts ll";gap:12px 20px}
   .app .pf-ev-f{align-self:center;padding:0}
@@ -2868,73 +2386,31 @@ a.rk-z:hover{border-color:var(--linea)}
 .pf-vid-b:hover .pf-vid-m,.pf-vid-b:focus-visible .pf-vid-m{border-color:var(--linea)}
 .pf-vid-b b{font:700 13px/1.3 Archivo,sans-serif;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .pf-vid-b small{font:700 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:var(--gris)}
-/* 🎬 las que sumó él (12/10/2026): su título y el botón chico de reportar o quitar */
-.pf-vid-t{margin:14px 0 0;font:900 15px/1.1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.02em}
-.pf-vid-r{display:inline-block;margin-top:4px;padding:0;border:0;background:none;color:var(--gris);font:700 14px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.02em;text-decoration:underline;cursor:pointer;text-align:left}
 /* en el celular, de a dos: arriba del perfil, uno por fila eran cuatro pantallas de videos antes de Sus datos */
 @media (max-width:600px){.pf-vid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}.pf-vid-b b{font-size:12px}.pf-vid-m i{width:28px;height:28px;font-size:12px;left:6px;bottom:6px}.pf-vid-b small{font-size:10px}}
 .pf-cc{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
 .pf-cc li{min-width:0;border:2px solid var(--suave)}
 .pf-cc li.on{grid-column:1/-1;border-color:var(--linea)}
-.pf-cc-b{width:100%;display:grid;grid-template-columns:34px minmax(0,1fr) auto;grid-template-areas:"c n r" "c n t";align-items:center;gap:2px 10px;
-  padding:10px 12px;border:0;background:var(--fondo);color:var(--tinta);cursor:pointer;text-align:left}
-.pf-cc-cara{grid-area:c;width:34px;height:34px;font:900 14px/1 Archivo,sans-serif}
-.pf-cc-b b{grid-area:n;font:800 15px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .pf-cc-res{grid-area:r;justify-self:end;font:900 18px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
 .pf-cc-res.gana{color:var(--tj-gana)}
 .pf-cc-res.pierde{color:var(--magenta-tx)}
-.pf-cc-b small{grid-area:t;justify-self:end;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;color:var(--gris)}
-@media (hover: hover) and (pointer: fine){.pf-cc-b:hover{background:var(--caja)}}
-.pf-cc-ds{list-style:none;margin:0;padding:4px 12px 12px;display:grid;gap:8px;border-top:1px solid var(--suave)}
-.pf-cc-ds li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;border:0;padding-top:8px}
-.pf-cc-ds li.pf-cc-ver{display:block}
-.pf-gano,.pf-perdio{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;padding:5px 7px}
-.pf-gano{background:#29B298;color:#030304}
-.pf-perdio{background:#E41373;color:#FFFFFF}
-.pf-cc-ds small{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
 @media (min-width: 600px){.pf-cc{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (min-width: 900px){.app .pf-cc{grid-template-columns:repeat(3,minmax(0,1fr))}}
 /* insignias: las que tiene, encendidas; las que no, apagadas con lo que piden */
 .pf-ins{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .pf-ins li{display:grid;gap:5px;align-content:start;padding:12px;border:2px solid var(--suave);opacity:.6}
 .pf-ins li.si{opacity:1;border-color:var(--linea);background:var(--caja)}
-.pf-ins-ic{font-size:24px;line-height:1}
 .pf-ins b{font:800 15px/1.2 Archivo,sans-serif}
 .pf-ins small{font:500 12.5px/1.35 Archivo,sans-serif;color:var(--gris)}
 @media (min-width: 600px){.pf-ins{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (min-width: 900px){.app .pf-ins{grid-template-columns:repeat(5,minmax(0,1fr))}}
 .pf-caza{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media (min-width: 900px){.app .pf-caza{grid-template-columns:repeat(4,minmax(0,1fr))}}
-.pf-czd{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
-.pf-czd li{display:grid;gap:3px;padding:10px 0;border-bottom:1px solid var(--suave)}
-.pf-czd b{font:800 15px/1.2 Archivo,sans-serif}
-.pf-czd small{font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.02em;text-transform:uppercase;color:var(--gris)}
 /* en el celular, la tarjeta del perfil sólo en Resumen: en Eventos, Duelos e Insignias eran 420 px de más arriba de la lista */
 @media (max-width: 899.98px){.pf-cab.sin-carta .pf-carta{display:none}}
-
-/* ── 🏆 LA LLAVE (`llave.jsx`, 03/10/2026, Dlx: «2. A»): una página. Arriba el podio; abajo, en el celular, una ronda
-   por pantalla deslizando —como las apps de fútbol— y en la compu el cuadro entero con sus ramas. Tocar un nombre
-   marca su camino: lo demás se apaga y abajo queda quién es y cómo le fue ── */
-.lk-esc{padding:0}
 .lk-cab{display:grid;gap:14px;padding:14px 16px 18px}
-.lk-volver{justify-self:start;display:inline-flex;align-items:center;min-height:36px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;
-  text-transform:uppercase;color:var(--esc-gris)}
-.lk-cab-in{display:flex;align-items:center;gap:14px;min-width:0}
-.lk-logo{width:56px;height:56px;flex:none;border-radius:50%;object-fit:cover;border:2px solid var(--esc-tinta);background:#030304}
-.lk-cab-tx{min-width:0;display:grid;gap:10px;justify-items:start}
 .lk-tit{margin:0;overflow-wrap:anywhere}
 @media (max-width: 899.98px){.app .lk-tit.pal-larga{font-size:24px}}
-.lk-datos{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.lk-datos li{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 10px;border:1.5px solid var(--esc-linea);
-  font:700 12px/1.2 Archivo,sans-serif;color:var(--esc-tinta)}
-.lk-datos li small{font:700 15px/1.2 "Barlow Condensed",sans-serif;color:var(--esc-gris)}
-.lk-datos a{text-decoration:underline;text-underline-offset:3px}
-/* 👥 los organizadores de a uno, con su cara (14/10/2026) */
-.lk-datos li.lk-orgs{flex-wrap:wrap;gap:4px 6px}
-.lk-orgs a{display:inline-flex;align-items:center;gap:5px}
-.lk-oc{width:20px;height:20px;font:800 11px/1 Archivo,sans-serif}
-.lk-datos .lk-mult{border-color:var(--magenta)}
-.lk-vivo{margin:0;font:700 15px/1.5 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--esc-gris)}
 /* 🎟️ si mirar la llave contó para el Pase (07/10/2026): dorado, el color del Pase */
 .lk-pase{margin:8px 0 0;padding:8px 10px;border:2px solid #F5C542;background:rgba(245,197,66,.08);font:600 13px/1.45 Archivo,sans-serif;color:var(--esc-tinta)}
 .lk-pase a{color:#F5C542}
@@ -2950,24 +2426,17 @@ a.rk-z:hover{border-color:var(--linea)}
    ancho; con el tercero, uno al lado del otro */
 .lk-podio.sin1 .lk-pd{grid-column:auto}
 .lk-podio.sin1.n1 .lk-pd{grid-column:1 / -1}
-.lk-pd-caras{display:flex;justify-content:center}
 .lk-pd-cara{width:56px;height:56px;flex:none;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#2A2A2E;color:#F6F6F6;
   font:900 20px/1 Archivo,sans-serif;border:2px solid #0E0E10}
 .lk-pd-cara img{width:100%;height:100%;object-fit:cover;display:block}
 .lk-pd-cara+.lk-pd-cara{margin-left:-14px}
 .lk-pd.p1 .lk-pd-cara{width:84px;height:84px;font-size:30px;border-color:var(--verde)}
-.lk-pd-ns{display:flex;flex-wrap:wrap;justify-content:center;gap:0 10px;min-width:0;max-width:100%}
 .lk-pd .lk-p{color:#F6F6F6}
 .lk-pd .lk-p .lk-n{font:900 15px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
 .lk-pd.p1 .lk-p .lk-n{font-size:22px}
 .lk-pd small{font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;color:var(--esc-gris)}
 .lk-mwtx{display:grid;gap:6px;padding:0 16px 18px;font:600 14px/1.45 Archivo,sans-serif;color:var(--esc-tinta)}
 .lk-mwtx p{margin:0}
-
-.lk-sub{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:var(--gris)}
-.lk-ayuda{margin:-4px 0 12px;font:700 15px/1.4 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--gris)}
-.lk-h{display:flex;align-items:baseline;gap:10px;margin:0 0 10px;font:900 16px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
-.lk-h small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;text-transform:none;color:var(--gris)}
 
 /* las pestañas de las rondas (el punto magenta: ahí jugó quien seguís) */
 .lk-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -16px 6px;padding:6px 16px 4px}
@@ -2980,15 +2449,6 @@ a.rk-z:hover{border-color:var(--linea)}
 .lk-tabs button.on small{color:inherit;opacity:.75}
 .lk-tabs button.mio:after{content:"";position:absolute;top:-6px;right:-6px;width:12px;height:12px;border-radius:50%;background:var(--magenta);
   border:2px solid var(--fondo)}
-
-/* el celular: una ronda por pantalla, con la siguiente asomando a la derecha */
-.lk-pista{position:relative;display:flex;align-items:flex-start;gap:12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
-  scrollbar-width:none;margin:0 -16px;padding:0 16px;scroll-padding:0 16px;transition:height .25s cubic-bezier(.16,1,.3,1)}
-.lk-pista::-webkit-scrollbar{display:none}
-.lk-col{flex:0 0 calc(100% - 40px);min-width:0;scroll-snap-align:start;display:grid;gap:20px;padding:14px 0 6px}
-.lk-ter{margin:4px 0 -8px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:var(--gris)}
-.lk-guia{margin:8px 0 0;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.025em;color:var(--gris);text-align:center}
-@media (prefers-reduced-motion: reduce){.lk-pista{transition:none;scroll-behavior:auto}}
 
 /* una batalla */
 .lk-b{position:relative;display:grid;align-content:stretch;min-width:0;background:var(--fondo);border:2px solid var(--linea)}
@@ -3009,7 +2469,6 @@ a.rk-z:hover{border-color:var(--linea)}
 .lk-p{display:inline-flex;align-items:center;gap:7px;min-width:0;max-width:100%;min-height:34px;padding:0;border:0;background:none;color:inherit;
   font:800 13.5px/1.2 Archivo,sans-serif;font-stretch:106%;text-align:left;cursor:pointer}
 .lk-n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.lk-flag{width:18px;height:12px;flex:none;object-fit:cover}
 .lk-cara{width:24px;height:24px;flex:none;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:var(--suave);color:var(--tinta);
   font:900 12px/1 Archivo,sans-serif}
 .lk-cara img{width:100%;height:100%;object-fit:cover;display:block}
@@ -3030,8 +2489,6 @@ a.rk-z:hover{border-color:var(--linea)}
 /* sin caja (Dlx, 18/10/2026: «no necesitamos el cuadro blanco que limita la tarjeta»): sólo las cartas. Sin marco tampoco
    para AHORA, el camino o la final: lo dicen la etiqueta, el contorno de la carta que se sigue y el CAMPEÓN */
 .lk-b.cartas,.lk-b.cartas.ahora,.lk-b.cartas.sigue,.lk-b.cartas.fin{display:block;padding:0;border:0;background:none;box-shadow:none}
-.lk-vs{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.lk-vs.lk-vs3{grid-template-columns:1fr 1fr 1fr}
 .lk-fc{position:relative;display:block;width:100%;aspect-ratio:300/438;min-width:0;padding:0;border:0;background:none;color:var(--tinta);
   cursor:pointer;-webkit-tap-highlight-color:transparent;container-type:inline-size}
 .lk-fc-img{display:block;width:100%;height:100%;object-fit:contain}
@@ -3062,27 +2519,12 @@ a.rk-z:hover{border-color:var(--linea)}
 @keyframes lk-apaga-l{from{color:var(--tinta)}}
 .lk-fc.llega{animation:lk-llega .8s cubic-bezier(.2,.8,.2,1) both}
 @keyframes lk-llega{from{transform:translateX(-36px) scale(.9);opacity:0}}
-/* ⚔️ AHORA, en grande, arriba (en el escenario): las dos cartas enfrentadas y la que sigue */
-.lk-ahora{display:grid;justify-items:center;gap:10px;margin:22px 0 4px}
-.lk-ahora-t{font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
-.lk-ahora-t b{color:#FF4FA3}
-.lk-ahora-vs{display:flex;align-items:center;justify-content:center;gap:clamp(8px,3vw,26px);width:100%}
-.lk-ahora-x{font:900 clamp(22px,6vw,42px)/1 Archivo,sans-serif;font-stretch:125%;color:var(--tinta)}
 .lk-gr{width:clamp(120px,36vw,220px);flex:none}
 .lk-gr .lk-fc-sin .lk-n{font-size:min(15px,9cqi)}
 .lk-gr .lk-fc-sin .lk-cara{width:56px;height:56px}
 .lk-gr-eq{aspect-ratio:300/438;display:grid;container-type:inline-size}
 .lk-gr-eq .lk-fc-sin{height:100%}
 .lk-gr-eq .lk-caras .lk-cara{width:40px;height:40px}
-.lk-ahora-sig{margin:0;font:700 15px/1.3 "Barlow Condensed",sans-serif;color:var(--gris);text-align:center}
-/* 🏆 el campeón, en grande: su carta (o la de cada uno), la copa y lo que cobró */
-.lk-camp{display:grid;justify-items:center;gap:10px;margin:22px 0 6px;text-align:center}
-.lk-camp-t{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;background:var(--verde);color:#030304;
-  font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
-.lk-camp-cs{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
-.lk-camp-c{width:clamp(110px,30vw,230px)}
-.lk-camp-cs:has(> :only-child) .lk-camp-c{width:clamp(160px,46vw,250px)}
-.lk-camp-p{font:800 18px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--tinta)}
 .lk-caras{display:flex;flex:none}
 .lk-caras .lk-cara+.lk-cara{margin-left:-8px}
 .lk-ok{flex:none;font:900 14px/1 Archivo,sans-serif}
@@ -3119,27 +2561,17 @@ a.rk-z:hover{border-color:var(--linea)}
 .lk-rl small{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
 .lk-rl.sub{border-bottom:0;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;text-transform:uppercase;color:var(--gris)}
 
-/* la doble eliminación (`Doble`): la llave de ganadores, la de perdedores y la gran final, una abajo de la otra */
-/* ⚠️ `minmax(0,1fr)`: sin eso cada llave se estiraba a lo ancho de su pista (591 px en un celular de 375) */
-.lk-doble{display:grid;grid-template-columns:minmax(0,1fr);gap:30px}
-.lk-db{min-width:0}
-.lk-db .lk-h{flex-wrap:wrap;row-gap:6px}
-.lk-gf{display:grid;gap:22px;max-width:360px;padding-top:12px}
-
 /* 5 vidas y la nave de funa */
 .lk-vd-t{list-style:none;margin:0 0 20px;padding:0;border-top:2px solid var(--linea)}
 .lk-vd-t li{display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;gap:2px 10px;padding:6px 0;border-bottom:1px solid var(--suave)}
 .lk-vd-t li small{grid-column:2 / -1;font:700 15px/1.2 "Barlow Condensed",sans-serif;color:var(--gris)}
 .lk-vd.siguiendo .lk-vd-t li:not(.sigue){opacity:.4}
-.lk-vd-l{font:900 14px/1 Archivo,sans-serif}
-.lk-vd-n{min-width:0}
 .lk-vd-cs{display:flex;gap:2px;color:var(--magenta-tx)}
 .lk-vd-cs i{font-style:normal;font-size:15px}
 .lk-vd-cs i.x{color:var(--gris)}
 .lk-vd-bs{display:grid;gap:20px;padding-top:12px}
 .lk-vd-m{flex:none;font:700 15px/1.2 "Barlow Condensed",sans-serif;color:var(--magenta-tx)}
 .lk-vd-m.ult{color:var(--gris)}
-.lk-vd-sin{margin:0;padding:8px;font:700 15px/1.3 "Barlow Condensed",sans-serif;color:var(--gris)}
 .lk-funa{margin-bottom:18px}
 .lk-funa ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
 .lk-funa li{display:inline-flex;align-items:center;gap:6px;padding:2px 10px 2px 6px;border:1.5px solid var(--linea)}
@@ -3160,34 +2592,8 @@ a.rk-z:hover{border-color:var(--linea)}
 /* la barra de quien se sigue, justo encima de la de abajo del celular (como «tu lugar» del Ranking) */
 .lk-barra{position:sticky;bottom:var(--lk-tb,0px);z-index:31;display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:10px;
   margin:16px -16px 0;padding:10px 16px;background:#030304;color:#F6F6F6;border-top:3px solid var(--magenta)}
-.lk-bcara{width:38px;height:38px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#F6F6F6;color:#030304;font:900 15px/1 Archivo,sans-serif}
-.lk-bcara img{width:100%;height:100%;object-fit:cover;display:block}
-.lk-bt{display:grid;gap:4px;min-width:0}
-.lk-bt b{font:800 14px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.lk-bt small{font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:#A5A5A0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .lk-barra .btn{min-height:40px;padding:0 12px}
-.lk-bx{width:40px;height:40px;border:2px solid #F6F6F6;background:none;color:#F6F6F6;font:400 24px/1 Archivo,sans-serif;cursor:pointer}
-
-/* los puntos, por puesto (cerrados: lo que se vino a ver es la llave) */
-.lk-pts summary{display:flex;align-items:baseline;gap:10px;padding:12px 0;border-top:2px solid var(--linea);list-style:none;cursor:pointer;
-  font:900 18px/1 Archivo,sans-serif;font-stretch:120%;text-transform:uppercase}
-.lk-pts summary::-webkit-details-marker{display:none}
-.lk-pts summary:after{content:"+";margin-left:auto;font:900 22px/1 Archivo,sans-serif}
-.lk-pts[open] summary:after{content:"–"}
-.lk-pts summary small{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
 .lk-pgs{display:grid;gap:16px;padding:4px 0 10px}
-.lk-pg h4{display:flex;align-items:baseline;gap:8px;margin:0 0 4px;font:800 13px/1 Archivo,sans-serif;text-transform:uppercase}
-.lk-pg h4 small{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
-.lk-pg ul{list-style:none;margin:0;padding:0}
-.lk-pg li{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:38px;border-bottom:1px solid var(--suave)}
-.lk-pg li a,.lk-pg li span{display:inline-flex;align-items:center;gap:6px;min-width:0;font:700 13.5px/1.2 Archivo,sans-serif}
-.lk-pg li b{font:700 16px/1 "Barlow Condensed",sans-serif;font-variant-numeric:tabular-nums}
-
-/* las acciones y «¿Algo está mal?»: ARRIBA, en el escenario (Dlx, 03/10/2026: «arriba de todo, no debajo»). El escenario
-   de la llave lleva los colores de `.sec.negra`, así el botón de «¿Algo está mal?» y su formulario, y los puntos, se
-   leen sobre el negro */
-.lk-esc{--magenta-tx:#E41373;--fondo:#030304;--tinta:#F6F6F6;--linea:#F6F6F6;--suave:#2A2A2E;--gris:#A5A5A0;--caja:#101012;
-  --inv:#F6F6F6;--inv-tinta:#030304}
 .lk-acc-b{display:flex;flex-wrap:wrap;align-items:flex-start;gap:8px}
 .lk-acc-b .lk-rep{flex-basis:100%;margin-top:4px}
 .lk-pts-top{padding:0 16px 20px}
@@ -3287,21 +2693,16 @@ a.rk-z:hover{border-color:var(--linea)}
 .ti-cab{align-items:start}
 .ti-bill{display:grid;gap:8px;align-content:start;min-width:0;padding:16px;border:2px solid var(--esc-tinta);background:#0E0E10;color:#F6F6F6}
 .ti-bill small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:var(--esc-gris)}
-.ti-saldo{font:900 44px/1 Archivo,sans-serif;font-stretch:120%;font-variant-numeric:tabular-nums;color:#F6F6F6}
 .ti-bill p{margin:0;font:600 14px/1.45 Archivo,sans-serif;color:var(--esc-gris)}
 .ti-bill p b{color:#F6F6F6}
 .ti-bill .btn{justify-self:start}
 .ti-bill .ti-mal{color:#F0559A}
-.ti-mios ul{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
-.ti-mios li{padding:5px 8px;border:1.5px solid var(--esc-linea);font:700 12.5px/1.2 Archivo,sans-serif;color:#F6F6F6}
 .ti-hasta{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;color:var(--gris);white-space:nowrap}
 .ti-pasos{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:10px;max-width:72ch}
 .ti-pasos li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;align-items:start;font:500 15px/1.45 Archivo,sans-serif}
 .ti-pasos li>b{display:grid;place-items:center;height:26px;background:var(--inv);color:var(--inv-tinta);font:700 15px/1 "Barlow Condensed",sans-serif}
 .ti-nota{margin:0 0 6px;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
 .ti-nota b{color:var(--tinta)}
-.ti-h{display:flex;align-items:baseline;gap:8px;margin:26px 0 10px;font:900 16px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
-.ti-h small{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
 .ti-lista{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-width:640px}
 .ti-c{display:flex;align-items:center;gap:10px;width:100%;min-height:52px;padding:6px 12px 6px 8px;border:2px solid var(--linea);
   background:var(--fondo);color:var(--tinta);text-align:left;cursor:pointer}
@@ -3310,27 +2711,17 @@ a.rk-z:hover{border-color:var(--linea)}
   font:900 13px/1 Archivo,sans-serif}
 .ti-cara img{width:100%;height:100%;object-fit:cover;display:block}
 .ti-c.on .ti-cara.ini{background:var(--inv-tinta);color:var(--inv)}
-.ti-n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 15px/1.2 Archivo,sans-serif;font-stretch:106%}
-.ti-flag{width:20px;height:14px;flex:none;object-fit:cover}
 .ti-v{margin-left:auto;flex:none;font:700 20px/1 "Barlow Condensed",sans-serif;font-variant-numeric:tabular-nums}
 .ti-v.sin{font-size:12px;letter-spacing:.06em;text-transform:uppercase;opacity:.7}
 .ti-panel{display:grid;gap:10px;padding:12px;border:2px solid var(--linea);border-top:0;background:var(--caja)}
 .ti-panel p{margin:0;font:600 14px/1.45 Archivo,sans-serif}
-.ti-pv{font:700 20px/1 "Barlow Condensed",sans-serif;color:var(--magenta-tx)}
 .ti-montos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;max-width:440px}
 .ti-montos .btn{padding:0 6px}
 .ti-panel .ti-msg{font:700 15.5px/1.4 "Barlow Condensed",sans-serif;color:var(--gris)}
 .ti-panel .ti-msg.mal{color:var(--magenta-tx)}
 .ti-panel .ti-nota{margin:0}
-.ti-perfil{justify-self:start;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;text-decoration:underline;
-  text-underline-offset:3px}
 .ti-busca{width:100%;max-width:640px;min-height:48px;margin:0 0 8px;padding:0 14px;border:2px solid var(--linea);background:var(--fondo);
   color:var(--tinta);font:600 16px/1 Archivo,sans-serif}
-.ti-cazas{list-style:none;margin:0;padding:0;display:grid;max-width:72ch}
-.ti-cazas li{padding:9px 0;border-bottom:1px solid var(--suave);font:500 14.5px/1.45 Archivo,sans-serif}
-.ti-pronto{display:grid;justify-items:start;gap:10px;max-width:640px;margin-bottom:26px;padding:18px;border:2px dashed var(--linea)}
-.ti-pronto h2{margin:0;font:900 22px/1 Archivo,sans-serif;font-stretch:120%;text-transform:uppercase}
-.ti-pronto p{margin:0;max-width:60ch;font:500 15px/1.45 Archivo,sans-serif;color:var(--gris)}
 @media (min-width: 900px){
   .app .ti-bill{width:340px}
   .app .ti-pasos{grid-template-columns:repeat(3,minmax(0,1fr));max-width:none}
@@ -3428,13 +2819,6 @@ a.rk-z:hover{border-color:var(--linea)}
 .qe-b{position:relative}
 .qe-t{margin:10px 0 0;padding:10px 12px;border:2px solid var(--verde);background:none;
   font-size:14px;line-height:1.45;max-width:62ch}
-.rk-qe{margin:0 0 12px}
-.rk-qe summary{cursor:pointer;font:700 16px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.03em;color:var(--gris);padding:6px 0;
-  min-height:32px}
-.rk-qe dl{margin:6px 0 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:14px;line-height:1.35}
-.rk-qe dl div{display:contents}
-.rk-qe dt{font-weight:800}
-.rk-qe dd{margin:0;color:var(--gris)}
 
 /* ⬆️ la flecha para subir (13/10/2026): negra, abajo a la derecha. En el celular, arriba de la barra de abajo (~62 px);
    el borde claro es para que se vea también sobre lo negro */
@@ -3698,14 +3082,6 @@ a.rk-z:hover{border-color:var(--linea)}
    entera, 13/10/2026) */
 .lb-cara img,.lb-p-c img,.lb-af-c img{display:block;width:100%;height:100%;object-fit:cover}
 .lb-cara.ini,.lb-p-c.ini,.lb-af-c.ini{display:grid;place-items:center;font:900 20px/1 Archivo,sans-serif;background:#1C1C20;color:#F6F6F6}
-
-/* 🎯 SU PRÓXIMA META, en el perfil (13/10/2026): como el botón grande del lobby, blanca con la sombra verde */
-.pf-meta-sec{padding-block:6px 0}
-.pf-meta{display:grid;gap:6px;padding:14px 16px;background:#F6F6F6;color:#030304;border:2px solid #030304;
-  box-shadow:6px 6px 0 #29B298;text-decoration:none}
-.pf-meta-et{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:#1F7A68}
-.pf-meta b{font:900 22px/1.15 Archivo,sans-serif;font-stretch:108%;overflow-wrap:anywhere}
-.pf-meta small{font:600 16px/1.25 "Barlow Condensed",sans-serif;color:#3A3A3E}
 /* 🔁 después de jugar, tu próximo (Eventos): debajo de tu resultado */
 .evp-sig{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;margin:-4px 12px 12px;
   font:600 16px/1.3 "Barlow Condensed",sans-serif;color:var(--tinta)}
@@ -3776,12 +3152,6 @@ a.rk-z:hover{border-color:var(--linea)}
 .cu-tema.tsv b{display:flex;align-items:center;gap:6px}
 /* «Ninguno»: los acentos de Under Legends, no los del servidor que esté elegido */
 .cu-tema.tsv-base{--verde:#29B298;--magenta:#E41373}
-/* 🖼️ tu fondo (13/10/2026): la vista previa en Mi cuenta, en el formato de la cabecera (1600×640) */
-.cu-fondo-ver{width:100%;max-width:520px;aspect-ratio:5/2;background:#030304 center/cover no-repeat;border:1.5px solid var(--suave)}
-.cu-fondo-donde{display:grid;gap:6px;font-size:14px}
-.cu-fondo-donde label{display:flex;align-items:center;gap:8px}
-.cu-fondo-arch{position:relative;overflow:hidden;cursor:pointer}
-.cu-fondo-arch input{position:absolute;inset:0;opacity:0;cursor:pointer}
 /* 📸 tu foto de tarjeta (13/10/2026): una fila por tarjeta, con la que tiene */
 .cu-fotos-carta{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .cu-fotos-carta li{display:grid;grid-template-columns:40px 1fr auto;align-items:center;column-gap:10px;font-size:14px}
@@ -3791,14 +3161,12 @@ a.rk-z:hover{border-color:var(--linea)}
 .cu-fotos-carta li button{grid-column:3;grid-row:1/span 2}
 .cu-foto-mini{width:40px;height:40px;background:#030304 center/cover no-repeat;border:1.5px solid var(--suave)}
 .cu-foto-mini.vacia{background:repeating-linear-gradient(45deg,transparent 0 4px,var(--suave) 4px 5px)}
-.cu-foto-ver{width:160px;max-width:100%;aspect-ratio:1;background:#030304 center/cover no-repeat;border:1.5px solid var(--suave)}
 /* en el perfil: la imagen detrás de la cabecera, con un velo para que el nombre y los números se lean igual */
 .escena.pf-esc.con-fondo{background-image:linear-gradient(180deg,rgba(3,3,4,.66),rgba(3,3,4,.88)),var(--pf-fondo);background-size:cover;background-position:center}
 /* y de fondo de tu propia página: en las franjas oscuras (el escenario), con el mismo velo */
 .app.con-fondo .escena:not(.con-fondo){background-image:linear-gradient(180deg,rgba(3,3,4,.68),rgba(3,3,4,.88)),var(--mi-fondo);background-size:cover;background-position:center}
 .cu-tema.tsv b img{width:18px;height:18px;border-radius:50%;object-fit:cover}
 .cu-temas.sv{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));max-width:none}
-.cu-temas-t{margin:14px 0 8px;font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:var(--gris)}
 
 /* 🆕 «hay una actualización» (13/10/2026): abajo, arriba de la barra en el celular; a la derecha en la compu */
 .aviso-version{position:fixed;z-index:40;left:16px;right:16px;bottom:calc(76px + env(safe-area-inset-bottom,0px));max-width:380px;margin-left:auto;padding:12px 14px;background:var(--fondo);color:var(--tinta);border:2px solid var(--tinta);box-shadow:4px 4px 0 var(--magenta)}

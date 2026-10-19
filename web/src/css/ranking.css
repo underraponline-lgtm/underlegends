@@ -1,0 +1,135 @@
+/* 🎨 EL CSS DE RANKING, CON SU PEDAZO (19/10/2026; Dlx: «dale», a «partir el CSS por página»).
+   Salió de vivo.css: son las reglas cuyas clases usa SÓLO ranking.jsx (`css_mover`, que lo mide con el árbol de imports
+   y postcss). Lo inyecta `usarCss()` (web/src/css.js) cuando ese pedazo se baja. ⚠️ Una clase nueva de esta página va
+   acá; si la usa también otra página o el Inicio, va en vivo.css. */
+.rk-asc{display:grid;gap:12px}
+.rk-asc-t{margin:4px 0 0;font:900 20px/1.15 Archivo,sans-serif;text-transform:uppercase}
+.rk-asc-l{margin:0}
+.dv-g{display:grid;gap:8px}
+.dv-gt{margin:6px 0 0;display:flex;align-items:baseline;gap:10px;font:900 18px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.dv-gt small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--gris);text-transform:none}
+.dv-i{font:800 14px/1 Archivo,sans-serif;text-align:right;font-variant-numeric:tabular-nums}
+.dv-cara{width:32px;height:32px}
+.dv-n{font:800 15px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:inherit}
+@media (max-width: 520px){.dv-cara{width:28px;height:28px}}
+.mi-tus{display:grid;gap:12px}
+.mi-tus-cab{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}
+.mi-tus-tx{display:grid;gap:6px;min-width:0;flex:1 1 320px}
+.mi-tus-tx h2{margin:0;font:900 28px/1.05 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase}
+.mi-eti{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:0.08em;color:var(--gris);text-transform:uppercase}
+/* las tres del bono, como vidas de un juego */
+.mi-bono{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font:600 14px/1.35 Archivo,sans-serif}
+/* ⏳ la cuenta atrás al lunes a las 11 AM ET */
+.mi-reloj{display:grid;justify-items:end;gap:4px;padding:9px 12px;background:var(--inv);color:var(--inv-tinta);border:2px solid var(--linea)}
+.mi-reloj small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:0.08em;text-transform:uppercase;opacity:.82}
+.mi-reloj b{font:900 28px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+/* las misiones, una carta cada una: el color de su nivel arriba y en la barra */
+.mi-lista{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.mi-arr{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.mi-niv{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:var(--gris)}
+.mi-p{font:900 22px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mi-cuerpo{display:flex;align-items:center;gap:10px;min-width:0}
+.mi-sv{width:36px;height:36px;flex:none;border-radius:50%;object-fit:cover;border:2px solid var(--linea);background:var(--caja)}
+.mi-cara{width:36px;height:36px}
+.mi-t{font:900 17px/1.2 Archivo,sans-serif;text-wrap:balance;min-width:0}
+.mi-t a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+.mi-acl{font:600 12px/1.35 Archivo,sans-serif;color:var(--gris)}
+.mi-c{font:600 12px/1.2 Archivo,sans-serif;color:var(--gris)}
+/* la cacería y la Semana perfecta: lado a lado en la compu */
+.mi-dos{display:grid;gap:22px;align-items:start}
+.mi-presa{display:grid;grid-template-columns:132px minmax(0,1fr);gap:14px;align-items:start;padding:12px;border:2px solid var(--linea);border-top-width:6px;background:var(--fondo)}
+.mi-presa-tx{display:grid;gap:8px;min-width:0}
+.mi-presa-tx p{margin:0;font:600 14px/1.45 Archivo,sans-serif}
+.mi-presa-n{display:flex;align-items:center;gap:10px;min-width:0}
+.mi-presa-n .dv-n{font:900 22px/1.1 Archivo,sans-serif;font-stretch:110%}
+.mi-mas{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris);padding:0 4px}
+.mi-nada{margin:0;font:600 13px/1.45 Archivo,sans-serif;color:var(--gris)}
+.mi-bono-s{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:0.06em;background:#29B298;color:#030304;padding:4px 6px;white-space:nowrap}
+@media (min-width: 900px){
+  .mi-dos{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}
+  .mi-dos>:only-child{grid-column:1/-1}}
+@media (max-width: 640px){
+  .mi-t{font-size:16px}
+  .mi-tus-tx h2{font-size:24px}
+  .mi-reloj{flex:1 1 100%;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+  .mi-reloj b{font-size:24px}
+  .mi-presa{grid-template-columns:108px minmax(0,1fr);gap:10px;padding:10px}
+  .mi-presa-n .dv-n{font-size:19px}}
+.rk-pnota{font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:#A5A5A0;text-align:center}
+.rk-pvis{display:block;width:100%}
+.rk-pflag{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border:2px solid #F6F6F6}
+.rk-plogo{display:grid;place-items:center;width:100%;aspect-ratio:1;object-fit:cover;border:2px solid #F6F6F6;background:#121214;
+  color:#F6F6F6;font:900 26px/1 Archivo,sans-serif;font-stretch:125%}
+.rk-nada{color:var(--gris);font-weight:600}
+.rk-q{display:flex;align-items:center;gap:10px;min-width:0}
+.rk-cara{width:36px;height:36px;font:800 15px/1 Archivo,sans-serif}
+.rk-qn{display:grid;gap:3px;min-width:0}
+.rk-qa{display:flex;align-items:center;gap:7px;min-width:0}
+.rk-qa a,.rk-qa b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--tinta);
+  font:800 15px/1.2 Archivo,sans-serif;font-stretch:105%}
+.rk-qa a:hover{text-decoration:underline;text-underline-offset:3px}
+.rk-flag{flex:none;width:20px;height:auto;box-shadow:0 0 0 1px var(--suave)}
+.rk-gflag{flex:none;width:42px;height:28px;object-fit:cover;box-shadow:0 0 0 1px var(--suave)}
+.rk-clogo{flex:none;display:grid;place-items:center;width:36px;height:36px;object-fit:cover;background:var(--inv);color:var(--inv-tinta);
+  font:900 13px/1 Archivo,sans-serif}
+.rk-qn small{display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;white-space:nowrap;
+  font:700 15px/1.1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;color:var(--gris)}
+.rk-qn small:empty{display:none}
+.rk-qx{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rk-qx:empty{display:none}
+.rk-rg{width:38px;height:26px}
+.rk-rch{font-weight:800}
+.rk-rch.viva{color:var(--magenta-tx)}
+.rk-rch span{color:var(--gris);font-weight:600}
+.rk-ult{display:inline-grid;justify-items:end;gap:3px}
+.rk-ult b{font:800 12px/1 Archivo,sans-serif;font-stretch:110%}
+.rk-ult small{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris);text-transform:uppercase}
+.rk-pie{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding:14px 0 4px;
+  font:700 15px/1.4 "Barlow Condensed",sans-serif;letter-spacing:0.025em;text-transform:uppercase;color:var(--gris)}
+.rk-nota{margin:10px 0 18px;max-width:72ch;font:400 13.5px/1.5 Archivo,sans-serif;color:var(--gris)}
+.rk-nota b{color:var(--tinta)}
+.rk-pronto{display:grid;gap:12px;justify-items:start;padding:6px 0 26px}
+.rk-pronto p{margin:0;max-width:60ch;font:400 16px/1.5 Archivo,sans-serif;color:var(--gris)}
+.rk-ej{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;width:100%}
+.rk-ej li{display:grid;gap:8px;align-content:start;padding:14px;border:2px solid var(--linea);background:var(--caja)}
+.rk-ej b{font:900 16px/1.15 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.rk-ej small{font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.03em;color:var(--gris);text-transform:uppercase}
+.rk-lt{display:grid;gap:4px;min-width:0}
+.rk-lt small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;color:#A5A5A0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rk-lt b{font:800 14px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width: 420px){
+  .rk-lt b{font-size:13px}}
+/* 1 · ▲▼ desde el lunes: el triángulo dibujado, el número en tinta (el verde agua no va como texto sobre blanco) */
+.rk-posc{display:inline-grid;justify-items:center;gap:3px}
+/* 3 · «NUEVO»: su primer evento es de esta semana */
+.rk-nuevo{flex:none;font-style:normal;font-size:12px;letter-spacing:.08em;padding:2px 4px;background:#29B298;color:#030304}
+.rk-final{margin:10px 0 0;padding:8px 10px;border:2px solid var(--magenta);background:var(--caja);font-size:14px}
+/* 2 · los que tenés cerca */
+.rk-cerca{margin:0 0 16px}
+.rk-cerca-t{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 14px;margin-bottom:10px;
+  font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:var(--gris)}
+.rk-zcara{width:34px;height:34px;font:800 14px/1 Archivo,sans-serif}
+.rk-zflag{width:40px;height:27px;object-fit:cover;box-shadow:0 0 0 1px var(--suave)}
+.rk-zlogo{display:grid;place-items:center;width:34px;height:34px;object-fit:cover;background:var(--inv);color:var(--inv-tinta);font:900 12px/1 Archivo,sans-serif}
+.rk-hist{min-height:40px;padding:0 12px}
+.rk-det-ci{display:block;width:100%;height:auto}
+.rk-det-l{display:grid;gap:10px;align-content:start;min-width:0}
+.rk-det-n{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0}
+.rk-det-n div{display:grid;gap:2px}
+.rk-det-n dt{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:var(--gris)}
+.rk-det-n dd{margin:0;font:900 17px/1 Archivo,sans-serif;font-stretch:110%;font-variant-numeric:tabular-nums}
+.rk-det-t{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:var(--gris)}
+.rk-det-c{margin:0;font:400 14px/1.4 Archivo,sans-serif;color:var(--gris)}
+.rk-det-cara{width:28px;height:28px;font:800 12px/1 Archivo,sans-serif}
+.rk-det-acc{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.rk-det-mas{font:700 15px/1.3 "Barlow Condensed",sans-serif;color:var(--gris)}
+@media (max-width: 420px){
+  .rk-zcara,.rk-zlogo{width:28px;height:28px}
+  .rk-zflag{width:32px;height:21px}}
+.rk-qe{margin:0 0 12px}
+.rk-qe summary{cursor:pointer;font:700 16px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.03em;color:var(--gris);padding:6px 0;
+  min-height:32px}
+.rk-qe dl{margin:6px 0 0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:14px;line-height:1.35}
+.rk-qe dl div{display:contents}
+.rk-qe dt{font-weight:800}
+.rk-qe dd{margin:0;color:var(--gris)}

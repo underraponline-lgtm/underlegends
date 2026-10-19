@@ -1,0 +1,9 @@
+/* 🎨 EL CSS DE CAMBIOS, CON SU PEDAZO (19/10/2026; Dlx: «dale», a «partir el CSS por página»).
+   Salió de vivo.css: son las reglas cuyas clases usa SÓLO cambios.jsx (`css_mover`, que lo mide con el árbol de imports
+   y postcss). Lo inyecta `usarCss()` (web/src/css.js) cuando ese pedazo se baja. ⚠️ Una clase nueva de esta página va
+   acá; si la usa también otra página o el Inicio, va en vivo.css. */
+.cb-lista{display:grid;gap:12px;padding-bottom:18px}
+.cb-vs{display:grid;gap:10px;min-width:0}
+.cb-c{display:grid;gap:14px;justify-items:start;padding:0 14px 16px 14px}
+.cb-i{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:15px;line-height:1.45;max-width:72ch}
+.cb-i code{font:600 16px/1 "Barlow Condensed",sans-serif;background:var(--caja);padding:2px 4px}

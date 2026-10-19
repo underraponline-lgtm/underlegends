@@ -1,0 +1,53 @@
+/* 🎨 EL CSS DE SOCIOS, CON SU PEDAZO (19/10/2026; Dlx: «dale», a «partir el CSS por página»).
+   Salió de vivo.css: son las reglas cuyas clases usa SÓLO socios.jsx (`css_mover`, que lo mide con el árbol de imports
+   y postcss). Lo inyecta `usarCss()` (web/src/css.js) cuando ese pedazo se baja. ⚠️ Una clase nueva de esta página va
+   acá; si la usa también otra página o el Inicio, va en vivo.css. */
+.soc-tot{display:flex;flex-wrap:wrap;gap:8px 24px;margin:4px 0 6px}
+.soc-tot div{display:grid;gap:4px}
+.soc-tot dt{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:#A5A5A0}
+.soc-tot dd{margin:0;font:900 30px/1 Archivo,sans-serif;font-stretch:120%;color:#F6F6F6}
+.soc{display:flex;flex-direction:column;gap:14px;padding:16px;border:2px solid var(--linea);background:var(--caja);box-shadow:4px 4px 0 var(--c)}
+.soc-cab{display:flex;align-items:center;gap:14px;min-width:0}
+.soc-logo{flex:none;width:64px;height:64px;border-radius:50%;border:3px solid var(--c);object-fit:cover;background:#030304}
+.soc-cab h2{margin:0;font:900 22px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;overflow-wrap:anywhere}
+.soc-cab small{font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.03em;color:var(--gris)}
+.soc-medio{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center}
+.soc-carta-c{display:block;width:72px;height:auto}
+.soc-datos{list-style:none;margin:0;padding:0;display:grid;gap:9px;font:600 14px/1.35 Archivo,sans-serif;min-width:0}
+.soc-datos b{display:block;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:var(--magenta-tx);margin-bottom:4px}
+.soc-espera{margin:0;padding:12px 14px;border:1.5px dashed var(--gris);font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
+.soc-espera b{display:block;margin-bottom:4px;font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:var(--magenta-tx)}
+/* el lugar que sobra con un número impar de servidores: invita al que falta */
+.soc-mas{align-items:flex-start;justify-content:center;border-style:dashed;box-shadow:none;padding-left:16px}
+.soc-mas h2{margin:0;font:900 22px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.soc-mas p{margin:0;font:500 14.5px/1.45 Archivo,sans-serif;color:var(--gris);max-width:40ch}
+.soc-mas-c{display:grid;place-items:center;width:64px;height:64px;border-radius:50%;border:3px dashed var(--gris);
+  font:900 30px/1 Archivo,sans-serif;color:var(--gris)}
+.soc-pub-p{margin:0;max-width:62ch;color:var(--gris)}
+.soc-sig-sv{display:flex;align-items:center;gap:8px;min-width:74px;font:900 15px/1 Archivo,sans-serif}
+.soc-sig-sv img{width:28px;height:28px;border-radius:50%;object-fit:cover}
+.soc-sumar-tit{display:grid;gap:10px;justify-items:start}
+.soc-cta{display:grid;gap:10px;align-content:start;justify-items:start;border-color:#29B298}
+.soc-cta h3{margin:0}
+.soc-cta p{margin:0;font:500 16px/1.45 Archivo,sans-serif;color:#D8D8D4}
+.soc-at{text-transform:none}
+/* las redes: de cada servidor en su tarjeta (en piel) y las de Under Legends en «Sumá tu servidor» (en negro) */
+.soc-redes,.soc-ul{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.soc-redes a,.soc-ul a{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;padding:7px 9px;border:1.5px solid var(--linea)}
+.soc-ul span{margin-right:6px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:#A5A5A0}
+.soc-ul a{border-color:#3A3A3E;color:#F6F6F6}
+.ej-fondo{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:16px;background:rgba(3,3,4,.82)}
+.ej{display:grid;gap:12px;width:min(880px,100%);max-height:calc(100vh - 32px);overflow:auto;padding:16px;border:2px solid #F6F6F6;
+  background:#0B0B0D;color:#F6F6F6;outline:0}
+.ej-n{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;color:#A5A5A0}
+.ej-fig{margin:0;display:grid;gap:6px}
+.ej-fig img{display:block;width:100%;height:auto;max-height:62vh;object-fit:contain;border:1.5px solid #3A3A3E;background:#030304}
+.ej-fig figcaption{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:#A5A5A0}
+.ej-tx{margin:0;font:500 15.5px/1.55 Archivo,sans-serif;color:#D8D8D4;max-width:70ch}
+@media (max-width: 599.98px){
+  .ej-fondo{padding:0;place-items:stretch}
+  .ej{width:100%;max-height:100vh;height:100%;border:0;align-content:start}
+  /* las redes de Under Legends: el título arriba y las seis de a tres, en vez de una suelta en el último renglón */
+  .soc-ul{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .soc-ul span{grid-column:1/-1;margin:0 0 2px}
+  .soc-ul a{text-align:center}}

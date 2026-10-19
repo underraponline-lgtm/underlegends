@@ -1,0 +1,23 @@
+/* 🎨 EL CSS DE GRUPO, CON SU PEDAZO (19/10/2026; Dlx: «dale», a «partir el CSS por página»).
+   Salió de vivo.css: son las reglas cuyas clases usa SÓLO grupo.jsx (`css_mover`, que lo mide con el árbol de imports
+   y postcss). Lo inyecta `usarCss()` (web/src/css.js) cuando ese pedazo se baja. ⚠️ Una clase nueva de esta página va
+   acá; si la usa también otra página o el Inicio, va en vivo.css. */
+.gp-sub{margin-top:8px}
+.gp-flags{display:flex;flex-wrap:wrap;gap:6px}
+.gp-flag{width:24px;height:16px;border-radius:2px;object-fit:cover;flex:none}
+.gp-chips{display:flex;flex-wrap:wrap;gap:6px}
+.gp-chip{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;border:1.5px solid #F6F6F6;padding:7px 9px;color:#F6F6F6}
+.gp-l{list-style:none;margin:0;padding:0;border-top:2px solid var(--linea)}
+.gp-l li{border-bottom:1px solid var(--suave)}
+.gp-f{width:100%;display:grid;grid-template-columns:44px 40px minmax(0,1fr) 46px 64px;align-items:center;gap:10px;padding:10px 4px;text-align:left}
+.gp-f:hover,.gp-f:focus-visible{background:var(--caja)}
+.gp-pos{font:700 16px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+.gp-cara{width:40px;height:40px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:var(--caja);font:900 16px/1 Archivo,sans-serif}
+.gp-cara img{width:100%;height:100%;object-fit:cover}
+.gp-n{display:flex;align-items:center;gap:8px;min-width:0}
+.gp-n b{font:800 16px/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gp-d{display:grid;justify-items:end;gap:3px}
+.gp-d b{font:900 17px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.gp-d small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;color:var(--gris)}
+.gp-ev{display:none}
+@media (min-width:640px){.gp-f{grid-template-columns:52px 44px minmax(0,1fr) 56px 80px 48px}.gp-ev{display:grid}}

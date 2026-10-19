@@ -6,6 +6,11 @@ import { limpio, num } from './liga.js';
 import { Bandera, Cara, Compartir, Sec, accion, enlace, nombrePais } from './piezas.jsx';
 import { McPersona } from './medio.jsx';
 import { CrewCirculo } from './arriba.jsx';
+import CSS_PAGINA from './css/grupo.css?inline';
+import { usarCss } from './css.js';
+
+// 🎨 su CSS, con su pedazo (web/src/css/grupo.css)
+usarCss('grupo', CSS_PAGINA);
 
 const clave = (c) => c.clave || c.crew;
 // el orden de la Temporada (`o` es el lugar, también para quien está fuera de concurso)

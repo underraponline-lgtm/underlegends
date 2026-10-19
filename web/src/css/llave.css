@@ -1,0 +1,94 @@
+/* 🎨 EL CSS DE LLAVE, CON SU PEDAZO (19/10/2026; Dlx: «dale», a «partir el CSS por página»).
+   Salió de vivo.css: son las reglas cuyas clases usa SÓLO llave.jsx (`css_mover`, que lo mide con el árbol de imports
+   y postcss). Lo inyecta `usarCss()` (web/src/css.js) cuando ese pedazo se baja. ⚠️ Una clase nueva de esta página va
+   acá; si la usa también otra página o el Inicio, va en vivo.css. */
+/* ── 🏆 LA LLAVE (`llave.jsx`, 03/10/2026, Dlx: «2. A»): una página. Arriba el podio; abajo, en el celular, una ronda
+   por pantalla deslizando —como las apps de fútbol— y en la compu el cuadro entero con sus ramas. Tocar un nombre
+   marca su camino: lo demás se apaga y abajo queda quién es y cómo le fue ── */
+.lk-esc{padding:0}
+.lk-volver{justify-self:start;display:inline-flex;align-items:center;min-height:36px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.05em;
+  text-transform:uppercase;color:var(--esc-gris)}
+.lk-cab-in{display:flex;align-items:center;gap:14px;min-width:0}
+.lk-logo{width:56px;height:56px;flex:none;border-radius:50%;object-fit:cover;border:2px solid var(--esc-tinta);background:#030304}
+.lk-cab-tx{min-width:0;display:grid;gap:10px;justify-items:start}
+.lk-datos{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.lk-datos li{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 10px;border:1.5px solid var(--esc-linea);
+  font:700 12px/1.2 Archivo,sans-serif;color:var(--esc-tinta)}
+.lk-datos li small{font:700 15px/1.2 "Barlow Condensed",sans-serif;color:var(--esc-gris)}
+.lk-datos a{text-decoration:underline;text-underline-offset:3px}
+/* 👥 los organizadores de a uno, con su cara (14/10/2026) */
+.lk-datos li.lk-orgs{flex-wrap:wrap;gap:4px 6px}
+.lk-orgs a{display:inline-flex;align-items:center;gap:5px}
+.lk-oc{width:20px;height:20px;font:800 11px/1 Archivo,sans-serif}
+.lk-datos .lk-mult{border-color:var(--magenta)}
+.lk-vivo{margin:0;font:700 15px/1.5 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--esc-gris)}
+.lk-pd-caras{display:flex;justify-content:center}
+.lk-pd-ns{display:flex;flex-wrap:wrap;justify-content:center;gap:0 10px;min-width:0;max-width:100%}
+
+.lk-sub{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:var(--gris)}
+.lk-ayuda{margin:-4px 0 12px;font:700 15px/1.4 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--gris)}
+.lk-h{display:flex;align-items:baseline;gap:10px;margin:0 0 10px;font:900 16px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.lk-h small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;text-transform:none;color:var(--gris)}
+
+/* el celular: una ronda por pantalla, con la siguiente asomando a la derecha */
+.lk-pista{position:relative;display:flex;align-items:flex-start;gap:12px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
+  scrollbar-width:none;margin:0 -16px;padding:0 16px;scroll-padding:0 16px;transition:height .25s cubic-bezier(.16,1,.3,1)}
+.lk-pista::-webkit-scrollbar{display:none}
+.lk-col{flex:0 0 calc(100% - 40px);min-width:0;scroll-snap-align:start;display:grid;gap:20px;padding:14px 0 6px}
+.lk-ter{margin:4px 0 -8px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.06em;text-transform:uppercase;color:var(--gris)}
+.lk-guia{margin:8px 0 0;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.025em;color:var(--gris);text-align:center}
+@media (prefers-reduced-motion: reduce){.lk-pista{transition:none;scroll-behavior:auto}}
+.lk-flag{width:18px;height:12px;flex:none;object-fit:cover}
+.lk-vs{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.lk-vs.lk-vs3{grid-template-columns:1fr 1fr 1fr}
+/* ⚔️ AHORA, en grande, arriba (en el escenario): las dos cartas enfrentadas y la que sigue */
+.lk-ahora{display:grid;justify-items:center;gap:10px;margin:22px 0 4px}
+.lk-ahora-t{font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.lk-ahora-t b{color:#FF4FA3}
+.lk-ahora-vs{display:flex;align-items:center;justify-content:center;gap:clamp(8px,3vw,26px);width:100%}
+.lk-ahora-x{font:900 clamp(22px,6vw,42px)/1 Archivo,sans-serif;font-stretch:125%;color:var(--tinta)}
+.lk-ahora-sig{margin:0;font:700 15px/1.3 "Barlow Condensed",sans-serif;color:var(--gris);text-align:center}
+/* 🏆 el campeón, en grande: su carta (o la de cada uno), la copa y lo que cobró */
+.lk-camp{display:grid;justify-items:center;gap:10px;margin:22px 0 6px;text-align:center}
+.lk-camp-t{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;background:var(--verde);color:#030304;
+  font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+.lk-camp-cs{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.lk-camp-c{width:clamp(110px,30vw,230px)}
+.lk-camp-cs:has(> :only-child) .lk-camp-c{width:clamp(160px,46vw,250px)}
+.lk-camp-p{font:800 18px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--tinta)}
+
+/* la doble eliminación (`Doble`): la llave de ganadores, la de perdedores y la gran final, una abajo de la otra */
+/* ⚠️ `minmax(0,1fr)`: sin eso cada llave se estiraba a lo ancho de su pista (591 px en un celular de 375) */
+.lk-doble{display:grid;grid-template-columns:minmax(0,1fr);gap:30px}
+.lk-db{min-width:0}
+.lk-db .lk-h{flex-wrap:wrap;row-gap:6px}
+.lk-gf{display:grid;gap:22px;max-width:360px;padding-top:12px}
+.lk-vd-l{font:900 14px/1 Archivo,sans-serif}
+.lk-vd-n{min-width:0}
+.lk-vd-sin{margin:0;padding:8px;font:700 15px/1.3 "Barlow Condensed",sans-serif;color:var(--gris)}
+.lk-bcara{width:38px;height:38px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#F6F6F6;color:#030304;font:900 15px/1 Archivo,sans-serif}
+.lk-bcara img{width:100%;height:100%;object-fit:cover;display:block}
+.lk-bt{display:grid;gap:4px;min-width:0}
+.lk-bt b{font:800 14px/1.2 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lk-bt small{font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:#A5A5A0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lk-bx{width:40px;height:40px;border:2px solid #F6F6F6;background:none;color:#F6F6F6;font:400 24px/1 Archivo,sans-serif;cursor:pointer}
+
+/* los puntos, por puesto (cerrados: lo que se vino a ver es la llave) */
+.lk-pts summary{display:flex;align-items:baseline;gap:10px;padding:12px 0;border-top:2px solid var(--linea);list-style:none;cursor:pointer;
+  font:900 18px/1 Archivo,sans-serif;font-stretch:120%;text-transform:uppercase}
+.lk-pts summary::-webkit-details-marker{display:none}
+.lk-pts summary:after{content:"+";margin-left:auto;font:900 22px/1 Archivo,sans-serif}
+.lk-pts[open] summary:after{content:"–"}
+.lk-pts summary small{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+.lk-pg h4{display:flex;align-items:baseline;gap:8px;margin:0 0 4px;font:800 13px/1 Archivo,sans-serif;text-transform:uppercase}
+.lk-pg h4 small{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+.lk-pg ul{list-style:none;margin:0;padding:0}
+.lk-pg li{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:38px;border-bottom:1px solid var(--suave)}
+.lk-pg li a,.lk-pg li span{display:inline-flex;align-items:center;gap:6px;min-width:0;font:700 13.5px/1.2 Archivo,sans-serif}
+.lk-pg li b{font:700 16px/1 "Barlow Condensed",sans-serif;font-variant-numeric:tabular-nums}
+
+/* las acciones y «¿Algo está mal?»: ARRIBA, en el escenario (Dlx, 03/10/2026: «arriba de todo, no debajo»). El escenario
+   de la llave lleva los colores de `.sec.negra`, así el botón de «¿Algo está mal?» y su formulario, y los puntos, se
+   leen sobre el negro */
+.lk-esc{--magenta-tx:#E41373;--fondo:#030304;--tinta:#F6F6F6;--linea:#F6F6F6;--suave:#2A2A2E;--gris:#A5A5A0;--caja:#101012;
+  --inv:#F6F6F6;--inv-tinta:#030304}

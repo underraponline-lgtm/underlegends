@@ -21,6 +21,11 @@ import { svElegido, useElegidos } from './elegidos.js';
 import * as RQ from './requisitos.js';
 import { Cartas, Pub, useAplausos } from './publicaciones.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
+import CSS_PAGINA from './css/perfil.css?inline';
+import { usarCss } from './css.js';
+
+// 🎨 su CSS, con su pedazo (web/src/css/perfil.css)
+usarCss('perfil', CSS_PAGINA);
 
 // 🔑 UNA SOLA PÁGINA (Dlx, 07/10/2026: *«me gustaría que todo esté en una página, no que esté dividido en varias»*).
 // Las pestañas de antes siguen siendo links que circulan (`#/r/x/duelos`): ahora bajan hasta su sección

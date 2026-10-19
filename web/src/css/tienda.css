@@ -1,0 +1,19 @@
+/* 🎨 EL CSS DE TIENDA, CON SU PEDAZO (19/10/2026; Dlx: «dale», a «partir el CSS por página»).
+   Salió de vivo.css: son las reglas cuyas clases usa SÓLO tienda.jsx (`css_mover`, que lo mide con el árbol de imports
+   y postcss). Lo inyecta `usarCss()` (web/src/css.js) cuando ese pedazo se baja. ⚠️ Una clase nueva de esta página va
+   acá; si la usa también otra página o el Inicio, va en vivo.css. */
+.ti-saldo{font:900 44px/1 Archivo,sans-serif;font-stretch:120%;font-variant-numeric:tabular-nums;color:#F6F6F6}
+.ti-mios ul{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.ti-mios li{padding:5px 8px;border:1.5px solid var(--esc-linea);font:700 12.5px/1.2 Archivo,sans-serif;color:#F6F6F6}
+.ti-h{display:flex;align-items:baseline;gap:8px;margin:26px 0 10px;font:900 16px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.ti-h small{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+.ti-n{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:800 15px/1.2 Archivo,sans-serif;font-stretch:106%}
+.ti-flag{width:20px;height:14px;flex:none;object-fit:cover}
+.ti-pv{font:700 20px/1 "Barlow Condensed",sans-serif;color:var(--magenta-tx)}
+.ti-perfil{justify-self:start;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.03em;text-transform:uppercase;text-decoration:underline;
+  text-underline-offset:3px}
+.ti-cazas{list-style:none;margin:0;padding:0;display:grid;max-width:72ch}
+.ti-cazas li{padding:9px 0;border-bottom:1px solid var(--suave);font:500 14.5px/1.45 Archivo,sans-serif}
+.ti-pronto{display:grid;justify-items:start;gap:10px;max-width:640px;margin-bottom:26px;padding:18px;border:2px dashed var(--linea)}
+.ti-pronto h2{margin:0;font:900 22px/1 Archivo,sans-serif;font-stretch:120%;text-transform:uppercase}
+.ti-pronto p{margin:0;max-width:60ch;font:500 15px/1.45 Archivo,sans-serif;color:var(--gris)}
