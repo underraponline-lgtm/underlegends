@@ -3,8 +3,8 @@
 // en el Inicio, y el Inicio mira la dirección (ver App.jsx). Todo sale del payload: `svs` (el color acordado, el
 // logo de hoy, la invitación, las redes), la tabla, las llaves, los próximos, el muro, Se busca y la semana.
 import { limpio, mult, num, siglaDe, utc } from './liga.js';
-import { Cara, Carta, Compartir, Poster, Sec, aDiscord, accion, enlace, silueta } from './piezas.jsx';
-import { McPersona } from './medio.jsx';
+import { Compartir, Poster, Sec, aDiscord, accion, enlace, silueta } from './piezas.jsx';
+import { McPersona, Vis } from './medio.jsx';
 import { Pub, useAplausos } from './publicaciones.jsx';
 import { Categoria, Nominado, reparto, useSalon } from './salon.jsx';
 
@@ -21,13 +21,10 @@ function ir(d) {
   else if (d.ancla) location.hash = d.ancla === 'sebusca' ? '#/ranking/mw' : '#/';
 }
 
+// 🧹 el dibujo de cada novedad sale de UN lugar (`Vis` de medio.jsx): esta copia no conocía el flyer ni el logo de UL, y
+// el flyer de una liga salía roto («/logos/https://…», lo encontró el recorrido del 19/10/2026)
 function Nota({ liga, x }) {
-  const v = x[2];
-  let vis;
-  if (v[0] === 'carta') vis = <Carta liga={liga} k={v[1]} cual={v[2]} cls="n-vis n-carta" abre={false} />;
-  else if (v[0] === 'rango') vis = <span className="n-vis rgv" style={{ background: liga.colorRg(v[1]) }}>{v[1]}</span>;
-  else if (v[0] === 'cara') vis = <Cara liga={liga} k={v[1]} nombre={v[2]} cls="n-vis n-cara" />;
-  else vis = <img className="n-vis" alt="" src={liga.logo(v[1])} />;
+  const vis = <Vis liga={liga} v={x[2]} />;
   return (
     <li><button type="button" className="sin-boton nota-b" onClick={() => ir(x[4])}>
       {vis}<div><span className="cat">{x[0]}</span><b>{x[1]}</b><small>{x[3].charAt(0).toUpperCase() + x[3].slice(1)}</small></div>

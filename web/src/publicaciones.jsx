@@ -27,7 +27,10 @@ const CARTA = { pais: 'de País', temporada: 'de Temporada', servidor: 'de Servi
 // los perfiles de una publicación, siempre en lista: `ksDe()` de liga.js (en los premios `ks` es un objeto)
 
 // 👏 los aplausos viven en aplausos.js (también los usan las historias): acá se re-exportan para perfil y servidor
-export { useAplausos } from './aplausos.js';
+// ⚠️ IMPORTARLO Y RE-EXPORTARLO: `export { x } from` no deja `x` definido acá, y este archivo lo usa (Publicaciones se rompió
+// en producción el 18/10/2026 con «useAplausos is not defined»: lo encontró el recorrido, no la compilación)
+import { useAplausos } from './aplausos.js';
+export { useAplausos };
 
 function Felicitar({ liga, it, A }) {
   const id = it.id;

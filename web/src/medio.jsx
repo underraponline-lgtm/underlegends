@@ -106,7 +106,7 @@ export function Fechas({ liga }) {
 }
 
 // ── Lo último ─────────────────────────────────────────────────────────────────────────────────────
-function Vis({ liga, v, cls = 'n-vis' }) {
+export function Vis({ liga, v, cls = 'n-vis' }) {
   if (v[0] === 'carta') return <Carta liga={liga} k={v[1]} cual={v[2]} cls={cls + ' n-carta'} abre={false} />;
   if (v[0] === 'rango') return <span className={cls + ' rgv'} style={{ background: liga.colorRg(v[1]) }}>{v[1]}</span>;
   if (v[0] === 'cara') return <Cara liga={liga} k={v[1]} nombre={v[2]} cls={cls + ' n-cara'} />;

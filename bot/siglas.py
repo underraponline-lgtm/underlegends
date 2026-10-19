@@ -20,6 +20,12 @@ todos por un dato que ninguna carta dibuja.
 import io
 import json
 import os
+import sys
+
+try:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+except Exception:
+    pass
 
 _BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 _S = None
