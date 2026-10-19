@@ -398,13 +398,6 @@
 "temporada"
 ]
 },
-"walker": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "cinexfilo": {
 "rg": "E",
 "c": [
@@ -426,6 +419,13 @@
 "rg": "",
 "c": [
 "pais",
+"servidor",
+"temporada"
+]
+},
+"walker": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
