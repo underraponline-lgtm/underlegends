@@ -1307,6 +1307,51 @@
      "1401047963853389965"
     ]
    }
+  },
+  {
+   "id": "bf2ff1fe92",
+   "tipo": "Nombre desconocido",
+   "sec": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2 · FFA · 19/10 · #489",
+   "que": "¿Quién es «matacuak🇵🇪»?",
+   "r": "Es Andy (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @andy._.2321 · en la Lista: Andy se anotó como «matacuak» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1792440173084,
+   "filas": [
+    757
+   ],
+   "variantes": [
+    "matacuak🇵🇪"
+   ],
+   "escribio": {
+    "quien": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2 · FFA · 19/10 · matacuak🇵🇪"
+   }
+  },
+  {
+   "id": "58e89cb132",
+   "tipo": "Nombre desconocido",
+   "sec": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2 · FFA · 19/10 · #489",
+   "que": "¿Quién es «Kwl🇳🇮»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1506335168699301939",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1506335168699301939)",
+   "t": 1792440173084,
+   "filas": [
+    756
+   ],
+   "variantes": [
+    "Kwl🇳🇮"
+   ],
+   "escribio": {
+    "alta": [
+     "Kwl",
+     "1506335168699301939"
+    ]
+   }
   }
  ],
  "deshechas": []

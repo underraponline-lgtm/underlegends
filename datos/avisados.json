@@ -16109,5 +16109,280 @@
    ]
   ],
   "v": 2
+ },
+ "489": {
+  "antes": {
+   "Colesito": [
+    4,
+    5,
+    false
+   ],
+   "Dyzz": [
+    62,
+    84,
+    false
+   ],
+   "Izaya": [
+    413,
+    400,
+    true
+   ],
+   "Liberia": [
+    10,
+    11,
+    false
+   ],
+   "Magic": [
+    130,
+    238,
+    false
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "OG": [
+    16,
+    18,
+    false
+   ],
+   "Panchok": [
+    5,
+    6,
+    false
+   ],
+   "Pomberito": [
+    215,
+    109,
+    true
+   ],
+   "Trot": [
+    25,
+    32,
+    false
+   ],
+   "Vandu": [
+    14,
+    16,
+    false
+   ],
+   "Warap": [
+    241,
+    152,
+    true
+   ],
+   "Xubaru": [
+    30,
+    40,
+    false
+   ],
+   "francis": [
+    246,
+    158,
+    true
+   ],
+   "yinn": [
+    189,
+    20,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Trot",
+    "Magic, OG",
+    "Trot"
+   ],
+   [
+    "Dyzz",
+    "J.r",
+    "Dyzz"
+   ],
+   [
+    "Dyzz",
+    "Kwl🇳🇮",
+    "Dyzz"
+   ],
+   [
+    "Vandu",
+    "Valen",
+    "Vandu"
+   ],
+   [
+    "Vandu",
+    "francis",
+    "Vandu"
+   ],
+   [
+    "Xubaru, Makmah",
+    "Pomberito",
+    "Xubaru, Makmah"
+   ],
+   [
+    "Xubaru, Makmah",
+    "matacuak🇵🇪",
+    "Xubaru, Makmah"
+   ],
+   [
+    "Xubaru, Makmah",
+    "Panchok",
+    "Xubaru, Makmah"
+   ],
+   [
+    "Colesito",
+    "Izaya",
+    "Colesito"
+   ],
+   [
+    "Xubaru, Makmah",
+    "Dyzz",
+    "Xubaru, Makmah"
+   ],
+   [
+    "Vandu",
+    "Trot",
+    "Vandu"
+   ],
+   [
+    "Colesito",
+    "yinn, Liberia, Warap",
+    "Colesito"
+   ],
+   [
+    "Xubaru, Makmah, OG",
+    "Colesito, Vandu",
+    "Xubaru, Makmah, OG"
+   ]
+  ],
+  "ev_antes": {
+   "Colesito": 32,
+   "Dyzz": 8,
+   "Izaya": 1,
+   "Liberia": 14,
+   "Magic": 3,
+   "Makmah": 53,
+   "OG": 13,
+   "Panchok": 17,
+   "Pomberito": 2,
+   "Trot": 21,
+   "Vandu": 25,
+   "Warap": 3,
+   "Xubaru": 10,
+   "francis": 2,
+   "yinn": 19
+  },
+  "fecha": "19/10",
+  "firma": "ad36b73a4761cfbd",
+  "msg": "1561829021870723213",
+  "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2",
+  "num": 489,
+  "participantes": 19,
+  "sello": {
+   "Makmah": "f14e66a97eeb:eac8e3b22c41",
+   "OG": "d107a7fddd71:eac8e3b22c41",
+   "Xubaru": "123c368cf4d8:eac8e3b22c41"
+  },
+  "sv": "FFA",
+  "t": "2026-10-19T19:54:27Z",
+  "tabla": [
+   [
+    "Colesito",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Vandu",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Xubaru",
+    "Campeón",
+    3333
+   ],
+   [
+    "Makmah",
+    "Campeón",
+    3333
+   ],
+   [
+    "OG",
+    "Campeón",
+    3333
+   ],
+   [
+    "Izaya",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dyzz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Trot",
+    "Cuartos",
+    2500
+   ],
+   [
+    "yinn",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Warap",
+    "Semifinal",
+    1750
+   ],
+   [
+    "J.r",
+    "R32",
+    625
+   ],
+   [
+    "Kwl🇳🇮",
+    "R32",
+    625
+   ],
+   [
+    "Valen",
+    "R32",
+    625
+   ],
+   [
+    "francis",
+    "R32",
+    625
+   ],
+   [
+    "Pomberito",
+    "R32",
+    625
+   ],
+   [
+    "matacuak🇵🇪",
+    "R32",
+    625
+   ],
+   [
+    "Panchok",
+    "R32",
+    625
+   ],
+   [
+    "Magic",
+    "R32",
+    312
+   ]
+  ],
+  "v": 2
  }
 }

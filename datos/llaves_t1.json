@@ -27266,5 +27266,225 @@
     625
    ]
   ]
+ },
+ "489": {
+  "dia": "2026-10-19",
+  "escala": "16+",
+  "fecha": "19/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1561784128972791931",
+   "https://discord.com/channels/1468472442925092958/1487206164864438513/1561793578244505673"
+  ],
+  "n": 489,
+  "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2",
+  "participantes": 19,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Trot",
+       "yinn, Liberia",
+       "Magic, OG"
+      ],
+      "Trot, yinn, Liberia",
+      "triple (3 bandas, pasan 2); también pasa: yinn 🇲🇦 + sebita 🇺🇸"
+     ],
+     [
+      [
+       "Dyzz",
+       "Izaya",
+       "J.r",
+       "Kwl🇳🇮"
+      ],
+      "Dyzz, Izaya",
+      "triple (4 bandas, pasan 2); también pasa: Izaya 🇨🇱"
+     ],
+     [
+      [
+       "Vandu",
+       "OG",
+       "Valen",
+       "francis"
+      ],
+      "Vandu, OG",
+      "triple (4 bandas, pasan 2); también pasa: OG🇻🇪"
+     ],
+     [
+      [
+       "Xubaru, Makmah",
+       "Colesito",
+       "Pomberito",
+       "matacuak🇵🇪",
+       "Panchok"
+      ],
+      "Xubaru, Makmah, Colesito",
+      "triple (5 bandas, pasan 2); también pasa: colesito"
+     ]
+    ],
+    "r": "Filtros"
+   },
+   {
+    "b": [
+     [
+      [
+       "Colesito",
+       "Izaya"
+      ],
+      "Colesito",
+      ""
+     ],
+     [
+      [
+       "Xubaru, Makmah",
+       "Dyzz"
+      ],
+      "Xubaru, Makmah",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "Trot"
+      ],
+      "Vandu",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Colesito",
+       "yinn, Liberia, Warap"
+      ],
+      "Colesito",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Xubaru, Makmah, OG",
+       "Colesito, Vandu"
+      ],
+      "Xubaru, Makmah, OG",
+      ""
+     ],
+     [
+      [
+       "COLESITO🇨🇴+VANDU🇨🇦",
+       "AX🇩🇪 + MAKMA🇻🇪 + OG🇻🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Colesito",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Vandu",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Makmah",
+    "Campeón",
+    3333
+   ],
+   [
+    "OG",
+    "Campeón",
+    3333
+   ],
+   [
+    "Xubaru",
+    "Campeón",
+    3333
+   ],
+   [
+    "Dyzz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Izaya",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Trot",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Warap",
+    "Semifinal",
+    1750
+   ],
+   [
+    "yinn",
+    "Semifinal",
+    1750
+   ],
+   [
+    "J.r",
+    "R32",
+    625
+   ],
+   [
+    "Kwl🇳🇮",
+    "R32",
+    625
+   ],
+   [
+    "Panchok",
+    "R32",
+    625
+   ],
+   [
+    "Pomberito",
+    "R32",
+    625
+   ],
+   [
+    "Valen",
+    "R32",
+    625
+   ],
+   [
+    "francis",
+    "R32",
+    625
+   ],
+   [
+    "matacuak🇵🇪",
+    "R32",
+    625
+   ],
+   [
+    "Magic",
+    "R32",
+    312
+   ]
+  ]
  }
 }

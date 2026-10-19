@@ -1,7 +1,27 @@
 {
  "_leeme": "Los tiers de las crews: el de cada una, la semana en curso (la última foto de los puntos de cada persona) y los últimos cambios. Lo escribe bot/crews_tiers.py en el paso 1c; las reglas viven en ese archivo.",
  "hist": [],
- "pts": {},
+ "pts": {
+  "colesito": 5625,
+  "dyzz": 3750,
+  "francis": 938,
+  "izaya": 3750,
+  "jr": 938,
+  "kwl": 938,
+  "liberia": 2625,
+  "magic": 468,
+  "makmah": 5000,
+  "matacuak": 938,
+  "og": 5000,
+  "panchok": 938,
+  "pomberito": 938,
+  "trot": 3750,
+  "valen": 938,
+  "vandu": 5625,
+  "warap": 2625,
+  "xubaru": 5000,
+  "yinn": 2625
+ },
  "sem": "2026-10-19",
  "tier": {
   "04": 0,

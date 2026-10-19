@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-19T19:25:35+00:00",
+ "cuando": "2026-10-19T19:55:23+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -427,7 +427,11 @@
    "premios": ":mundo: Clasificacion bronce ɪɪɪ 🥉 y Rol De Campeon ☎️",
    "staff": {
     "jurado": [
-     "Kravitz"
+     "Kravitz",
+     "zaik0009",
+     "krish",
+     "l3wito",
+     "Flennzs | ⛩️"
     ],
     "host": [
      "Kravitz"
@@ -438,7 +442,9 @@
    },
    "autor": "Kravitz",
    "staff_cuentas": {
-    "Kravitz": "1345962362615894027"
+    "Kravitz": "1345962362615894027",
+    "krish": "1513620494199558295",
+    "Flennzs | ⛩️": "1414431452346581052"
    },
    "categoria_id": "1468478330826260500"
   },
@@ -6188,6 +6194,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Izaya 🇨🇱",
+   "quien": "dragun0994",
+   "discord_id": "1150044918216130636",
+   "msg_id": "1561823646404841687",
+   "cuando": "2026-10-19T19:29:34"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",

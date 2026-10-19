@@ -182,6 +182,18 @@
    "vence": "2026-10-25T20:57:26+00:00",
    "vencido": false
   },
+  "J.r": {
+   "avisado": "2026-10-19",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-19T16:52:32+00:00",
+   "did": "855918964655783967",
+   "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2",
+   "n": 489,
+   "sv": "FFA",
+   "vence": "2026-10-26T16:52:32+00:00",
+   "vencido": false
+  },
   "J19": {
    "avisado": "2026-10-19",
    "con": null,
@@ -272,6 +284,18 @@
    "n": 466,
    "sv": "FVS",
    "vence": "2026-10-20T15:58:57+00:00",
+   "vencido": false
+  },
+  "Kwl": {
+   "avisado": "2026-10-19",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-19T16:52:32+00:00",
+   "did": "",
+   "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2",
+   "n": 489,
+   "sv": "FFA",
+   "vence": "2026-10-26T16:52:32+00:00",
    "vencido": false
   },
   "MALBORO": {
@@ -495,6 +519,18 @@
    "vence": "2026-10-21T21:51:16+00:00",
    "vencido": false
   },
+  "Valen": {
+   "avisado": "2026-10-19",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-19T16:52:32+00:00",
+   "did": "894017160756736091",
+   "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2",
+   "n": 489,
+   "sv": "FFA",
+   "vence": "2026-10-26T16:52:32+00:00",
+   "vencido": false
+  },
   "Vargas": {
    "avisado": "2026-10-12",
    "avisado_cumplido": "2026-10-14",
@@ -534,6 +570,18 @@
    "n": 483,
    "sv": "FFA",
    "vence": "2026-10-25T02:26:23+00:00",
+   "vencido": false
+  },
+  "matacuak": {
+   "avisado": "2026-10-19",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-19T16:52:32+00:00",
+   "did": "",
+   "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2",
+   "n": 489,
+   "sv": "FFA",
+   "vence": "2026-10-26T16:52:32+00:00",
    "vencido": false
   },
   "tomyhilfiger": {
