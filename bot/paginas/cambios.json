@@ -11,6 +11,20 @@
  ],
  "cambios": [
   {
+   "version": "3.65",
+   "dia": "2026-10-19",
+   "cuando": "2026-10-19T17:30:00-04:00",
+   "titulo": "La página de crews",
+   "items": [
+    "👥 **Crews tiene su propia página**, en el menú: cada crew con su tier, cuánta gente tiene, cómo se entra, qué tan activa está esta semana, su nivel y lo que pide. Ordenadas **para vos**: primero las que te aceptan, las que están vivas y las que tienen gente que seguís o de tu servidor.",
+    "🎯 El Líder puede pedir una **letra mínima** o un **mínimo de eventos** para entrar. A quien invita, entra igual.",
+    "📨 Ahora podés **invitar a alguien que ya está en otra crew**: si acepta, se cambia a la tuya. En Mi cuenta → Mi crew elegís si querés recibir esas invitaciones.",
+    "🔎 El buscador de **Invitar** encuentra a todos los que tienen perfil, con o sin espacios, y dice en qué crew está cada uno.",
+    "⏳ Al armar la crew o cambiar el logo, una **barra** te muestra cómo va: el logo pasa por el filtro y puede tardar hasta medio minuto.",
+    "📱 Arreglado: en **iPhone y iPad** no se podía subir el logo, el fondo ni la foto de tarjeta («la imagen trae datos escondidos»)."
+   ]
+  },
+  {
    "version": "3.64",
    "dia": "2026-10-19",
    "cuando": "2026-10-19T07:45:00-04:00",
