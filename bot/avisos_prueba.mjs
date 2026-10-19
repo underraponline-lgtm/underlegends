@@ -1431,6 +1431,28 @@ const ok = (cond, que, det) => {
     const zf = pedidos.slice(n3).find((p) => p.m === 'POST' && /COPA Z/.test((p.b && p.b.content) || ''));
     ok(zf && zf.b.content.includes('<@' + ANA + '>') && !zf.b.content.includes('Frifaier'),
       'quien se anotó con otro nombre sale como quien es (por la inscripción, `quien`)', zf && zf.b.content);
+    // 🧮 TODOS CONTRA TODOS (19/10/2026, Dlx: «¿qué sucede cuando son 3 personas distintas batallando?»): un cruce con un
+    // botón de voto por lado, y se vota a cualquiera de los tres
+    const n4 = pedidos.length;
+    sql.exec('INSERT INTO vivo (id, canal, sv, g, autor, pub, ed, texto, visto, men) ' +
+      "VALUES ('11', '3', 'FFA', '111', 'z', ?, ?, ?, ?, '[]')", T + 59 * 60000, T + 60 * 60000,
+    '# COPA TRES\n`[ OCTAVOS ]`\n⌞Ana 🇦🇷⌝ 🆚 ⌞Bea 🇨🇱⌝ 🆚 ⌞Cami 🇻🇪⌝\n⌞Dora 🇲🇽⌝ 🆚 ⌞Eli 🇨🇴⌝ 🆚 ⌞Fer 🇵🇪⌝\n', T + 60 * 60000);
+    await o.chatVivo(T + 60 * 60000);
+    const tres = pedidos.slice(n4).find((p) => p.m === 'POST' && /TODOS CONTRA TODOS/.test((p.b && p.b.content) || ''));
+    const bts = tres && tres.b.components && tres.b.components[0] ? tres.b.components[0].components : [];
+    ok(tres && bts.length === 3 && bts.map((x) => x.custom_id.slice(-1)).join('') === 'ABC'
+      && /Octavos: \*\*<@123456789012345678> 🇦🇷\*\* vs \*\*Bea 🇨🇱\*\* vs \*\*Cami 🇻🇪\*\*/.test(tres.b.content),
+    'todos contra todos: el cruce sale, con un botón por lado', JSON.stringify(pedidos.slice(n4).map((p) => [p.m, p.b && p.b.content, p.b && p.b.components])));
+    const qid = bts.length ? bts[2].custom_id.split(':')[1] : '';
+    const v1 = o.qgVotar({ quien: '700000201', id: qid, lado: 'C' }, T + 61 * 60000);
+    const v2 = o.qgVotar({ quien: '700000202', id: qid, lado: 'A' }, T + 61 * 60000);
+    const v3 = o.qgVotar({ quien: '700000203', id: qid, lado: 'D' }, T + 61 * 60000);
+    ok(v1.ok && v1.nombre === 'Cami' && v1.pct === 100 && v2.ok && v2.n === 2 && v2.pct === 50 && v3.error === 'datos',
+      'se vota a cualquiera de los tres (y a un cuarto que no existe, no)', JSON.stringify([v1, v2, v3]));
+    ok(A.lineaVoto('Ana', 'Bea', 2, 1, '', ['Cami'], [1]) === '🗳️ El público: **Ana** 50 % · **Bea** 25 % · **Cami** 25 % (4 votos)'
+      && /iba con \*\*Cami\*\* \(100 %, 2 votos\): acertó/.test(A.lineaVoto('Ana', 'Bea', 0, 0, 'C', ['Cami'], [2]) || '')
+      && A.lineaVoto('Ana', 'Bea', 3, 1, '') === '🗳️ El público: **Ana** 75 % · **Bea** 25 % (4 votos)',
+    'el renglón con tres lados, y el de dos como siempre');
     globalThis.fetch = antesF;
   }
 }

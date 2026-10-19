@@ -997,11 +997,17 @@ export function botonesApuesta(id, a, b, cerrada, montos = AP_MONTOS) {
 export const QG_VENCE = 30 * MIN;
 export const QG_TOPE = 6;
 
-/** Los dos botones del voto, con el nombre de cada uno. */
-export function botonesVoto(id, a, b) {
-  const corto = (n) => { const s = sinBandera(n); return s.length > 30 ? s.slice(0, 29) + '…' : s || '¿?'; };
-  return [{ type: 1, components: [['A', a], ['B', b]].map(([lado, n]) => ({
-    type: 2, style: 2, emoji: { name: '🗳️' }, label: corto(n), custom_id: 'qg:' + id + ':' + lado })) }];
+//: las letras de cada lado del voto: dos en un mano a mano, hasta cinco (un renglón de botones de Discord) en un
+//: «todos contra todos» —1v1v1, 1v1v1v1— (19/10/2026, Dlx: «¿qué sucede cuando son 3 personas distintas batallando?»)
+export const LADOS_VOTO = ['A', 'B', 'C', 'D', 'E'];
+
+/** Los botones del voto, uno por lado con su nombre: `a`, `b` y los de `mas` (los lados C, D, E). */
+export function botonesVoto(id, a, b, mas = []) {
+  const lados = [a, b].concat(mas || []).slice(0, LADOS_VOTO.length);
+  const tope = lados.length > 2 ? 18 : 30;
+  const corto = (n) => { const s = sinBandera(n); return s.length > tope ? s.slice(0, tope - 1) + '…' : s || '¿?'; };
+  return [{ type: 1, components: lados.map((n, i) => ({
+    type: 2, style: 2, emoji: { name: '🗳️' }, label: corto(n), custom_id: 'qg:' + id + ':' + LADOS_VOTO[i] })) }];
 }
 
 // ═════════════════════════════════════════════════════════════════════
@@ -1021,18 +1027,25 @@ export function filaTarjeta(vs) {
   return [{ type: 1, components: [{ type: 2, style: 5, label: 'Conseguí tu tarjeta', emoji: { name: '🃏' }, url: HUB_TARJETAS }] }];
 }
 
-/** El renglón del voto: cómo va, o —con `ganador` ('A', 'B', o 'x' sin resultado)— si el público acertó. */
-export function lineaVoto(a, b, na, nb, ganador) {
-  const n = (na || 0) + (nb || 0);
-  const A = escMd(sinBandera(a)), B = escMd(sinBandera(b));
+/** El renglón del voto: cómo va, o —con `ganador` (la letra del lado, o 'x' sin resultado)— si el público acertó.
+ *  `mas` y `nmas`: los lados de más de un «todos contra todos» y sus votos (ver `LADOS_VOTO`). */
+export function lineaVoto(a, b, na, nb, ganador, mas = [], nmas = []) {
+  const lados = [a, b].concat(mas || []).map((x) => escMd(sinBandera(x)));
+  const ns = [na || 0, nb || 0].concat((mas || []).map((_, i) => Number((nmas || [])[i]) || 0));
+  const n = ns.reduce((x, y) => x + y, 0);
   if (!n) return ganador ? '🗳️ Nadie votó quién ganaba' : '🗳️ ¿Quién gana? Votá abajo: sin plata, para ver qué dice el público';
-  const pa = Math.round((100 * na) / n), pb = 100 - pa;
+  // los porcentajes suman 100: el último se lleva lo que falta del redondeo (en un mano a mano, como siempre)
+  const pc = ns.map((x) => Math.round((100 * x) / n));
+  pc[pc.length - 1] = 100 - pc.slice(0, -1).reduce((x, y) => x + y, 0);
   const votos = n + (n === 1 ? ' voto' : ' votos');
-  if (!ganador) return '🗳️ El público: **' + A + '** ' + pa + ' % · **' + B + '** ' + pb + ' % (' + votos + ')';
-  if (na === nb) return '🗳️ El público estaba dividido: ' + pa + ' a ' + pb + ' (' + votos + ')';
-  const fav = na > nb ? 'A' : 'B';
-  return '🗳️ El público iba con **' + (fav === 'A' ? A : B) + '** (' + Math.max(pa, pb) + ' %, ' + votos + '): '
-    + (ganador === 'x' ? 'sin resultado' : ganador === fav ? 'acertó' : 'se equivocó');
+  if (!ganador) return '🗳️ El público: ' + lados.map((l, i) => '**' + l + '** ' + pc[i] + ' %').join(' · ') + ' (' + votos + ')';
+  const max = Math.max(...ns);
+  if (ns.filter((x) => x === max).length > 1) {
+    return '🗳️ El público estaba dividido: ' + (lados.length === 2 ? pc[0] + ' a ' + pc[1] : pc.join(' · ')) + ' (' + votos + ')';
+  }
+  const fav = ns.indexOf(max);
+  return '🗳️ El público iba con **' + lados[fav] + '** (' + pc[fav] + ' %, ' + votos + '): '
+    + (ganador === 'x' ? 'sin resultado' : ganador === LADOS_VOTO[fav] ? 'acertó' : 'se equivocó');
 }
 
 /** El texto del mensaje con el renglón del voto cambiado, o agregado al final si no estaba. */
@@ -1061,17 +1074,19 @@ export function repartoPozo(ap, ganador) {
 }
 
 /** Qué lado de la apuesta ganó su batalla en la llave `L`: 'A', 'B' o '' (todavía no se sabe). */
-export function ladoGanador(L, ronda, a, b) {
+export function ladoGanador(L, ronda, a, b, mas = []) {
   const rondas = (L && L.rondas) || [];
-  const ka = claveTurno(a), kb = claveTurno(b);
+  // 🧮 con N lados (un «todos contra todos»): la letra del que pasó, o '' si todavía no se sabe
+  const kl = [a, b].concat(mas || []).map(claveTurno);
   for (let k = 0; k < rondas.length; k++) {
     if (rondas[k].r !== ronda) continue;
     for (const bt of batallasDe(rondas[k])) {
       const ks = (bt[0] || []).map(claveTurno);
-      if (!ks.includes(ka) || !ks.includes(kb)) continue;
+      if (!kl.every((x) => ks.includes(x))) continue;
       const pas = pasaronChat(rondas, k, bt).map(claveTurno);
       if (pas.length !== 1) return '';
-      return pas[0] === ka ? 'A' : pas[0] === kb ? 'B' : '';
+      const i = kl.indexOf(pas[0]);
+      return i >= 0 ? LADOS_VOTO[i] : '';
     }
   }
   return '';
@@ -5385,6 +5400,9 @@ export class Avisos {
         "nb INTEGER NOT NULL DEFAULT 0, dicho TEXT NOT NULL DEFAULT '', abre INTEGER NOT NULL, estado TEXT NOT NULL DEFAULT 'abierta')");
       this.sql.exec('CREATE TABLE IF NOT EXISTS qg_voto (id TEXT NOT NULL, quien TEXT NOT NULL, lado TEXT NOT NULL, ' +
         't INTEGER NOT NULL, PRIMARY KEY (id, quien))');
+      // 🧮 los lados de más de un «todos contra todos» (C, D, E) y sus votos, en JSON (19/10/2026)
+      try { this.sql.exec("ALTER TABLE qg ADD COLUMN mas TEXT NOT NULL DEFAULT '[]'"); } catch (e) { /* ya estaba */ }
+      try { this.sql.exec("ALTER TABLE qg ADD COLUMN nmas TEXT NOT NULL DEFAULT '[]'"); } catch (e) { /* ya estaba */ }
       // 👏 FELICITAR (02/10/2026): un aplauso por Discord ID y publicación (`aplausos`), y de cada publicación
       // felicitada lo que dice el aviso y hasta cuántos se avisó (`aplaudidas`). Ver `aplaudir()` y `avisarAplausos()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS aplausos (id TEXT NOT NULL, quien TEXT NOT NULL, ' +
@@ -6655,6 +6673,30 @@ export class Avisos {
       let apuesta = null, voto = null;
       if ((nivel === 'datos' || nivel === 'full') && fresca) {
         const bat = batallaChat(L);
+        // 🧮 TODOS CONTRA TODOS (1v1v1, 1v1v1v1, o tres equipos): el cruce también sale, con un botón de voto por lado. Sin
+        // apuestas (son de dos lados) ni el vs con tarjetas (es de dos). Dlx, 19/10/2026: «¿qué sucede cuando son 3
+        // personas distintas batallando? ¿el bot hace 3 votaciones?». Una votación, con un botón para cada uno
+        if (bat && bat.lados.length >= 3 && bat.lados.length <= LADOS_VOTO.length) {
+          const clave = bat.r + ':' + bat.lados.map(claveTurno).sort().join('|');
+          const mv = 'v:' + bat.r + ':' + bat.i;
+          if (!hechos[mv]) {
+            const gs = bat.lados.map((l) => genteChat(l, buscar, dc.tabla, opc.ids, opc.enSv));
+            const equipos = gs.some((g) => g.length > 1);
+            const x = infoCruce(bat.lados.slice(0, 2), buscar, dc.tabla, dc.perf);
+            if (gs[0].length === 1) x.a.n = gs[0][0].n;
+            if (gs[1].length === 1) x.b.n = gs[1][0].n;
+            const dato = datoCurioso(x, L.id + clave, (y) => (y.f ? this.encima(y.f.n, ahora) : 0));
+            const lineas = ['🔥 **' + (equipos ? bat.lados.length + ' EQUIPOS' : 'TODOS CONTRA TODOS') + '** · ' + bat.lados.length
+              + (equipos ? ' equipos' : ' raperos') + ' en la misma batalla, y pasa uno'];
+            lineas.push('⚔️ ' + bat.r + ': ' + gs.map((g) => '**' + nombresChat(g) + '**').join(' vs '));
+            if (dato) lineas.push('💡 ' + escMd(dato));
+            voto = { id: codigoDe(L.id + ':' + clave + ':qg').slice(0, 12), m: mv, ronda: bat.r, a: bat.lados[0], b: bat.lados[1],
+              mas: bat.lados.slice(2) };
+            lineas.push(lineaVoto(voto.a, voto.b, 0, 0, '', voto.mas, []));
+            const titEv = escMd(String(nombre || L.nombre || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
+            ms.push({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n') });
+          }
+        }
         if (bat && bat.lados.length === 2) {
           const clave = bat.r + ':' + bat.lados.map(claveTurno).sort().join('|');
           // 🧩 la clave es la batalla, no sus nombres: un equipo que crece antes de jugar no la anuncia dos veces
@@ -6820,7 +6862,7 @@ export class Avisos {
             body: JSON.stringify(Object.assign({ content: p.texto.slice(0, 1900), allowed_mentions: { parse: [] } },
               p.tipo === 'editar' ? {} : p.img ? { embeds: [{ image: { url: p.img }, color: 0xE41373 }] } : { flags: 4 },
               conAp || conVoto || filaT.length ? { components: (conAp ? botonesApuesta(conAp.id, conAp.a, conAp.b, false, apc.montos)
-                : conVoto ? botonesVoto(conVoto.id, conVoto.a, conVoto.b) : []).concat(filaT) } : {})),
+                : conVoto ? botonesVoto(conVoto.id, conVoto.a, conVoto.b, conVoto.mas || []) : []).concat(filaT) } : {})),
           });
         } catch (e) { r = null; }
         if (r && r.ok) {
@@ -6841,8 +6883,9 @@ export class Avisos {
             try { this.vsEncolar(Object.assign({}, p.vs, { sv: b.sv || '', canal, msg: id }), ahora); } catch (e) { /* sin imagen */ }
           }
           if (conVoto && id) {
-            this.sql.exec('INSERT OR IGNORE INTO qg (id, canal, msg, sv, llave, ronda, a, b, dicho, abre) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-              conVoto.id, canal, id, b.sv || '', L.id, conVoto.ronda, conVoto.a, conVoto.b, lineaVoto(conVoto.a, conVoto.b, 0, 0), ahora);
+            this.sql.exec('INSERT OR IGNORE INTO qg (id, canal, msg, sv, llave, ronda, a, b, dicho, abre, mas) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+              conVoto.id, canal, id, b.sv || '', L.id, conVoto.ronda, conVoto.a, conVoto.b,
+              lineaVoto(conVoto.a, conVoto.b, 0, 0, '', conVoto.mas || [], []), ahora, JSON.stringify(conVoto.mas || []));
           }
           if (conAp && id) {
             this.sql.exec('INSERT OR IGNORE INTO apuestas (id, canal, msg, sv, llave, ronda, a, b, texto, abre, cierra) ' +
@@ -7117,19 +7160,28 @@ export class Avisos {
    */
   qgVotar(d, ahora = Date.now()) {
     const quien = String(d.quien || '');
-    const lado = d.lado === 'A' || d.lado === 'B' ? d.lado : '';
-    if (!/^[0-9]{5,25}$/.test(quien) || !lado) return { error: 'datos' };
     const q = this.sql.exec('SELECT * FROM qg WHERE id = ?', String(d.id || '')).toArray()[0];
+    let mas = [];
+    try { mas = JSON.parse((q && q.mas) || '[]') || []; } catch (e) { mas = []; }
+    // 🧮 los lados de ESTE voto: dos, o los de un «todos contra todos»
+    const lados = q ? [q.a, q.b].concat(mas) : [];
+    const i = LADOS_VOTO.indexOf(String(d.lado || ''));
+    const lado = i >= 0 && i < Math.max(2, lados.length) ? LADOS_VOTO[i] : '';
+    if (!/^[0-9]{5,25}$/.test(quien) || !lado) return { error: 'datos' };
     if (!q) return { error: 'no existe' };
     if (q.estado !== 'abierta') return { error: 'cerrada' };
     const antes = this.sql.exec('SELECT lado FROM qg_voto WHERE id = ? AND quien = ?', q.id, quien).toArray()[0];
     this.sql.exec('INSERT OR REPLACE INTO qg_voto (id, quien, lado, t) VALUES (?, ?, ?, ?)', q.id, quien, lado, ahora);
     this.xpVio(quien, 'qg', q.id, ahora);
-    const c = this.sql.exec("SELECT SUM(CASE WHEN lado = 'A' THEN 1 ELSE 0 END) AS a, SUM(CASE WHEN lado = 'B' THEN 1 ELSE 0 END) AS b " +
-      'FROM qg_voto WHERE id = ?', q.id).toArray()[0] || {};
-    const na = Number(c.a) || 0, nb = Number(c.b) || 0;
-    this.sql.exec('UPDATE qg SET na = ?, nb = ? WHERE id = ?', na, nb, q.id);
-    return { ok: true, lado, nombre: sinBandera(lado === 'A' ? q.a : q.b), cambio: !!(antes && antes.lado !== lado), na, nb };
+    const cuenta = {};
+    for (const r of this.sql.exec('SELECT lado, COUNT(*) AS n FROM qg_voto WHERE id = ? GROUP BY lado', q.id).toArray()) cuenta[r.lado] = Number(r.n) || 0;
+    const na = cuenta.A || 0, nb = cuenta.B || 0;
+    const nmas = mas.map((_, j) => cuenta[LADOS_VOTO[j + 2]] || 0);
+    this.sql.exec('UPDATE qg SET na = ?, nb = ?, nmas = ? WHERE id = ?', na, nb, JSON.stringify(nmas), q.id);
+    const n = na + nb + nmas.reduce((x, y) => x + y, 0);
+    const mio = [na, nb].concat(nmas)[i] || 0;
+    return { ok: true, lado, nombre: sinBandera(lados[i] || ''), cambio: !!(antes && antes.lado !== lado), na, nb, nmas, n,
+      pct: n ? Math.round((100 * mio) / n) : 0 };
   }
 
   /**
@@ -7144,9 +7196,11 @@ export class Avisos {
     for (const q of abiertos) {
       if (n >= QG_TOPE) break;
       const L = llaves.get(q.llave);
-      let g = L ? ladoGanador(L, q.ronda, q.a, q.b) : '';
+      let mas = [], nmas = [];
+      try { mas = JSON.parse(q.mas || '[]') || []; nmas = JSON.parse(q.nmas || '[]') || []; } catch (e) { mas = []; nmas = []; }
+      let g = L ? ladoGanador(L, q.ronda, q.a, q.b, mas) : '';
       if (!g && ahora - q.abre > QG_VENCE) g = 'x';
-      const linea = lineaVoto(q.a, q.b, q.na, q.nb, g);
+      const linea = lineaVoto(q.a, q.b, q.na, q.nb, g, mas, nmas);
       if (!g && linea === q.dicho) continue;
       const h = this.sql.exec('SELECT texto FROM chat_vivo WHERE canal = ? AND msg = ? ORDER BY t DESC LIMIT 1', q.canal, q.msg).toArray()[0];
       // ⚠️ sin el texto del mensaje no se edita: se pisaría todo con el renglón solo

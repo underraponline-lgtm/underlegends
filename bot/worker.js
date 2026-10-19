@@ -4436,8 +4436,9 @@ export default {
           j = await r.json();
         } catch (e) { j = { error: 'red' }; }
         if (j.ok) {
-          const n = (j.na || 0) + (j.nb || 0);
-          const pct = n ? Math.round((100 * (j.lado === 'A' ? j.na : j.nb)) / n) : 0;
+          // 🧮 con N lados (un «todos contra todos») el total y el porcentaje los da el objeto
+          const n = typeof j.n === 'number' ? j.n : (j.na || 0) + (j.nb || 0);
+          const pct = typeof j.pct === 'number' ? j.pct : n ? Math.round((100 * (j.lado === 'A' ? j.na : j.nb)) / n) : 0;
           return aviso('🗳️ ' + (j.cambio ? 'Cambiaste tu voto: ahora vas con' : 'Votaste por') + ' **' + j.nombre + '**, que tiene el '
             + pct + ' % de ' + n + (n === 1 ? ' voto' : ' votos') + '. En el mensaje se ve en un minuto.');
         }
