@@ -71,6 +71,10 @@ if (!DatabaseSync) {
   db.prepare('INSERT INTO persona (k, v, t) VALUES (?, ?, 0)').run('p:gus', JSON.stringify({ n: 'Gus 🇦🇷' }));
   db.prepare('INSERT INTO servidor VALUES (?, ?, ?, ?, ?, ?)').run('7000002002', 't1', 'FFA', 'fabi', 1, 0);
   CW.crewTablas(sql);
+  // los que se invitan tienen que ser Miembros verificados: su fila en `persona`, sin `nv`
+  const verif = (...ks) => ks.forEach((k) => db.prepare('INSERT OR IGNORE INTO persona (k, v, t) VALUES (?, ?, 0)').run('p:' + k, JSON.stringify({ n: k })));
+  verif('fabi', 'hugo', 'max', 'noa', 'lia', 'lu', 'ruy', ...Array.from({ length: 25 }, (_, i) => 'p' + i));
+  db.prepare('INSERT INTO persona (k, v, t) VALUES (?, ?, 0)').run('p:nover', JSON.stringify({ n: 'Nover', nv: 1 }));
   const id = (n) => String(7000000000 + n);
   // crear trae la descripción y el logo ya filtrado (`logo_url` y `logo_v` los pone el objeto después del filtro)
   const CREAR = { desc: 'La crew de la prueba, del barrio', logo_url: 'https://pub.r2.dev/logos-crews/a.webp', logo_v: 'ok' };
@@ -201,6 +205,10 @@ if (!DatabaseSync) {
   ok(CW.crewBasura(o).some((u) => u.endsWith('/e.webp')), 'borrar una crew manda sus logos a la basura (si no, quedaban en R2 para siempre)');
   CW.crewBasuraLista(o, CW.crewBasura(o));
 
+  // 🛡️ invitar, sólo a Miembros verificados de DRA (Dlx, 19/10/2026)
+  ok(yo(1, 'dora', { accion: 'invitar', a: 'nover' }).error === 'no_verificado' && yo(1, 'dora', { accion: 'invitar', a: 'nadie' }).error === 'no_verificado',
+    'no se invita a quien juega sin verificarse ni a quien nunca se verificó');
+
   // 📨 invitar a quien ya está en otra crew, y cambiarse (Dlx, 19/10/2026: «por default que sí»)
   const cx = yo(400, 'lia', { accion: 'crear', nombre: 'Cambio Uno', sigla: 'CU', entrada: 'abierta' });
   yo(401, 'max', { accion: 'pedir', crew: 'Cambio Uno' });
@@ -228,7 +236,7 @@ if (!DatabaseSync) {
   ok(CW.reqValido({ rg: 'b', ev: 5 }).rg === 'B' && CW.reqValido({ rg: 'Z' }) === null && CW.reqValido({ ev: 500 }) === null
     && CW.faltaReq({ rg: 'B', ev: 5 }, { rg: 'A', ev: 9 }).length === 0 && CW.faltaReq({ rg: 'B', ev: 5 }, { rg: 'C', ev: 2 }).length === 2
     && CW.faltaReq({ rg: 'B' }, {}).length === 1, 'los requisitos: la letra se compara por orden, los eventos por número');
-  db.prepare('INSERT INTO persona (k, v, t) VALUES (?, ?, 0)').run('p:ruy', JSON.stringify({ n: 'Ruy', rg: 'C', ev: 3 }));
+  db.prepare('INSERT OR REPLACE INTO persona (k, v, t) VALUES (?, ?, 0)').run('p:ruy', JSON.stringify({ n: 'Ruy', rg: 'C', ev: 3 }));
   db.prepare('INSERT INTO persona (k, v, t) VALUES (?, ?, 0)').run('p:sol2', JSON.stringify({ n: 'Sol', rg: 'A', ev: 12 }));
   const rq = yo(500, 'reo', { accion: 'crear', nombre: 'Exigentes', sigla: 'EX', entrada: 'abierta' });
   ok(rq.ok && yo(500, 'reo', { accion: 'req', req: { rg: 'B', ev: 5 } }).ok && CW.crewsPublico(o).crews.find((c) => c.id === 'Exigentes').req.rg === 'B',

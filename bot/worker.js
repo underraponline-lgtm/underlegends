@@ -2876,6 +2876,7 @@ const ERRORES_CREW = {
   verificate: 'Las crews son de los Miembros de Discord Rap Español: primero verificate (`/verificar`).',
   ya_en_crew: 'Ya está en esa crew.',
   no_recibe: 'Esa persona no recibe invitaciones mientras está en su crew.',
+  no_verificado: 'Esa persona todavía no es Miembro verificado de DRA: las crews son sólo de verificados.',
   espera: 'Saliste de una crew hace poco: hay que esperar 7 días para entrar a otra.',
   llena: 'La crew está llena: son 20 como máximo.',
   solo_invitacion: 'A esa crew se entra sólo por invitación.',

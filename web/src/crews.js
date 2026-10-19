@@ -104,6 +104,7 @@ export function errorCrew(j) {
     verificate: 'Primero verificate: las crews son de los Miembros de Discord Rap Español.',
     ya_en_crew: 'Ya está en esa crew.',
     no_recibe: 'Esa persona no recibe invitaciones mientras está en su crew.',
+    no_verificado: 'Esa persona todavía no es Miembro verificado de DRA: las crews son sólo de verificados.',
     requisitos: 'Esa crew pide ' + ((j && j.falta) || []).join(' y ') + ': todavía no llegás.',
     req: 'Los requisitos no valen: una letra de la Liga y de 0 a 100 eventos.',
     espera: 'Saliste de una crew hace poco: podés entrar a otra en ' + dias(j && j.faltan_ms) + ' días.',

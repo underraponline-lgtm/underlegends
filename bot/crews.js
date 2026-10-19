@@ -522,6 +522,12 @@ export function crewAccion(o, d) {
     if (!puede(rol, 'invitar')) return mal('rol', 403);
     const a2 = String(d.a || '');
     if (!a2 || a2 === k) return mal('a quién');
+    // 🛡️ SÓLO MIEMBROS VERIFICADOS DE DRA (Dlx, 19/10/2026: «que sólo los que estén en DRA, verificados completamente,
+    // puedan crear crews, así mismo los participantes»). Crear, pedir y aceptar ya lo pedían (`de` sale de `d:`, que es
+    // sólo de verificados); invitar no: le llegaba a quien no podía aceptar. Lo dice `persona` (subir_datos.py): sin
+    // fila, nunca se verificó; con `nv`, juega sin estar verificado
+    const p2 = personaDe(o, a2);
+    if (!p2.n || p2.nv) return mal('no_verificado', 409);
     // 📨 a quien ya está en OTRA crew también se lo invita, si recibe invitaciones (Dlx, 19/10/2026)
     const suyo = miembroDe(o, a2);
     if (suyo && suyo.crew === c.id) return mal('ya_en_crew', 409);
