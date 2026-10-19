@@ -56,7 +56,7 @@ def main():
     from subir_cartas import sesion, listar, PUBLICA
 
     s = sesion()
-    claves = sorted(o['key'][:-5] for o in listar(s) if o['key'].endswith('.webp'))
+    claves = sorted(o['key'][:-5] for o in listar(s) if o['key'].endswith('.webp') and not o['key'].endswith('.chica.webp'))
     if '--muestra' in sys.argv:
         claves = claves[::10]
     print('\ncomparando %d carta(s): el PNG viejo contra la WEBP que se sirve\n'

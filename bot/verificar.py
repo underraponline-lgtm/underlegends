@@ -436,6 +436,13 @@ def main():
     # excluyen en silencio: si algun dia sobran o faltan fotos, hay que
     # poder verlo.
     fotos = [o for o in todos if o['key'].startswith('fotos/')]
+    # 🃏 las chicas (19/10/2026, `CHICA_ANCHO` de bot/subir_cartas.py): la misma carta achicada para la página. Se
+    # cuentan aparte, como las fotos: sumadas a las cartas, la cuenta daría «de más» sin que sobre nada
+    chicas = [o for o in todos if o['key'].endswith('.chica.webp')]
+    if chicas:
+        print('  %d carta(s) chica(s), %.1f MB: la misma carta para la página, no se cuentan acá'
+              % (len(chicas), sum(int(o['size']) for o in chicas) / 1024 ** 2))
+    todos = [o for o in todos if not o['key'].endswith('.chica.webp')]
     resto = [o for o in todos if not o['key'].startswith('fotos/')]
     objs = [o for o in resto if o['key'].endswith('.webp')]
     viejos = [o for o in resto if not o['key'].endswith('.webp')]

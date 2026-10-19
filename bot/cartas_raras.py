@@ -33,7 +33,7 @@ def main():
     from subir_cartas import sesion, listar, PUBLICA
 
     s = sesion()
-    claves = sorted(o['key'] for o in listar(s) if o['key'].endswith('.webp'))
+    claves = sorted(o['key'] for o in listar(s) if o['key'].endswith('.webp') and not o['key'].endswith('.chica.webp'))
     print('\nmidiendo %d cartas\n' % len(claves))
 
     def una(k):

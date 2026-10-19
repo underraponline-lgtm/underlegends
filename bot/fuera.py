@@ -196,6 +196,8 @@ def main():
             s = OLV.sesion()
             claves = [c for k in lote
                       for c in claves_r2({x: u for x, u in (inv.get(k) or {}).items() if x in quitar[k]})]
+            # 🃏 y la chica de cada una (la de la página, 19/10/2026): si no, quedaba la carta achicada
+            claves += [c[:-5] + '.chica.webp' for c in claves if c.endswith('.webp')]
             idos, quedan = OLV.borrar_r2(s, claves)
             print('   R2: %d de %d objetos borrados%s'
                   % (idos, len(claves), (' · 🔴 quedan %d' % len(quedan)) if quedan else ''))

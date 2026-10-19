@@ -174,12 +174,14 @@ export class Liga {
   }
 
   // ── rutas de imágenes (todas públicas: R2, el CDN de Discord y la propia página) ──
-  cartaUrl(k, cual) {
+  // 🃏 `chica`: la de 300 px de ancho (19/10/2026, `CHICA_ANCHO` de bot/subir_cartas.py), para donde se dibuja en chico
+  // —las llaves—; ~22 KB en vez de ~150. Puede no existir todavía: quien la usa vuelve a la grande si no carga
+  cartaUrl(k, cual, chica = false) {
     const f = this.T[k];
     if (!f || !(f.c || []).includes(cual)) return null;
     const i = (this.d.cartas || []).indexOf(cual);
     const v = typeof f.cv === 'string' && i >= 0 ? f.cv.split('.')[i] : '';
-    return this.d.r2 + '/' + k + '/' + cual + '.webp' + (v ? '?v=' + v : '');
+    return this.d.r2 + '/' + k + '/' + cual + (chica ? '.chica' : '') + '.webp' + (v ? '?v=' + v : '');
   }
   // 🃏 QUÉ CARTA REPRESENTA A CADA UNO, SEGÚN DÓNDE (Dlx, 18/10/2026: «según dónde»). En algo de un servidor —su llave,
   // su página, sus eventos— la de Servidor, si es la de ESE servidor; en lo competitivo (`comp`), la Competitiva; en lo

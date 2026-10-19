@@ -115,15 +115,24 @@ function Persona({ ctx, x, conCara = true, perdio = false }) {
 // están verificados, simplemente su cuadrado», y a la pregunta: «carta chica + Pase»). Quien tiene carta lleva la suya
 // en miniatura —la de Servidor si es de ESE servidor, si no la de Temporada (`liga.cartaDe()`)—; quien no, su cara. Y
 // desde el nivel 8 del Pase, brilla
-const urlCarta = (ctx, f) => {
+const urlCarta = (ctx, f, chica = false) => {
   const cual = f ? ctx.liga.cartaDe(f.k, { sv: ctx.L && ctx.L.sv }) : null;
-  return cual ? ctx.liga.cartaUrl(f.k, cual) : null;
+  return cual ? ctx.liga.cartaUrl(f.k, cual, chica) : null;
 };
+// 🃏 LA CARTA CHICA (Dlx, 19/10/2026: «si»): en la llave se dibuja a ~80–150 px y bajaba la de Discord, ~150 KB cada una
+// (una llave de 16, ~2,4 MB en el celular). La chica pesa ~22 KB; si todavía no existe (una carta recién dibujada antes
+// de que el ciclo la complete), vuelve a la grande sola, una vez
+function ImgCarta({ ctx, f, cls, grande = false }) {
+  const chica = grande ? null : urlCarta(ctx, f, true);
+  const full = urlCarta(ctx, f);
+  return <img className={cls} alt="" src={chica || full} loading="lazy" decoding="async"
+    onError={chica ? (e) => { if (e.currentTarget.src !== full) e.currentTarget.src = full; } : undefined} />;
+}
 function Mini({ ctx, f, nombre }) {
   const liga = ctx.liga;
   const url = urlCarta(ctx, f);
   if (!url) return <Cara liga={liga} k={f ? f.k : ''} nombre={nombre} cls="lk-cara" />;
-  return <span className={'lk-carta' + (liga.brilla(f.k) ? ' brilla' : '')}><img alt="" src={url} loading="lazy" /></span>;
+  return <span className={'lk-carta' + (liga.brilla(f.k) ? ' brilla' : '')}><ImgCarta ctx={ctx} f={f} /></span>;
 }
 
 // 🃏 SÓLO LA CARTA (Dlx, 18/10/2026: «el objetivo de la carta es quitar ese espacio… en la carta aparece el nombre, la
@@ -143,7 +152,7 @@ const colsVs = (n) => (n === 3 || n >= 5 ? 3 : 2);
 const VS_GAP = 6;
 const ET_H = 26;
 
-function Ficha({ ctx, b, s, copa, pasa, llega }) {
+function Ficha({ ctx, b, s, copa, pasa, llega, grande = false }) {
   const f = ctx.fila(s);
   const url = urlCarta(ctx, f);
   const g = gana(b, s) || pasa;
@@ -157,7 +166,7 @@ function Ficha({ ctx, b, s, copa, pasa, llega }) {
   return (
     <button type="button" className={cls} aria-pressed={on} title={nombre} onClick={() => ctx.seguir(id)}
       aria-label={nombre + (g ? (copa ? ', campeón' : ', pasó') : perdio ? ', quedó afuera' : '')}>
-      {url ? <img className="lk-fc-img" alt="" src={url} loading="lazy" />
+      {url ? <ImgCarta ctx={ctx} f={f} cls="lk-fc-img" grande={grande} />
         : <span className="lk-fc-sin">
           <Cara liga={ctx.liga} k={f ? f.k : ''} nombre={nombre} cls="lk-cara" />
           <span className="lk-n">{nombre}</span>
@@ -170,7 +179,8 @@ function Ficha({ ctx, b, s, copa, pasa, llega }) {
 
 // 🎤 UN LADO EN GRANDE (lo de AHORA y el campeón): su carta, o su cara y su nombre; un equipo, las caras y los nombres
 function Grande({ ctx, b, s, cls = 'lk-gr' }) {
-  if (partes(s).length === 1) return <div className={cls}><Ficha ctx={ctx} b={b} s={s} copa={false} pasa={false} /></div>;
+  // (en grande, la carta grande: la chica se vería borrosa)
+  if (partes(s).length === 1) return <div className={cls}><Ficha ctx={ctx} b={b} s={s} copa={false} pasa={false} grande /></div>;
   return (
     <div className={cls + ' lk-gr-eq'}>
       <span className="lk-fc-sin">

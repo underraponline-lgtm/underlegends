@@ -1541,6 +1541,9 @@ def main():
         # ⚠️ PERO LAS BLOQUEADAS SE MIRAN IGUAL. Ver rehacer_bloqueadas():
         # su contador puede moverse sin que se mueva ninguna carta.
         n_bq = rehacer_bloqueadas() if correr else 0
+        # 🃏 y las cartas chicas que falten (ver abajo, después de las tandas)
+        if correr:
+            corre(['bot/subir_cartas.py', '--chicas', '300'], callado=False)
         # 🔴 Y KV SE REFRESCA SIEMPRE, no sólo si hubo Bloqueadas. Quien
         # PIERDE el portón —se le saca la verificación, pide salir— no
         # cambia ninguna carta, así que esta rama no redibujaba nada y KV
@@ -1838,6 +1841,10 @@ def main():
                 pass
 
     subidas += rehacer_bloqueadas()
+
+    # 🃏 LAS CARTAS CHICAS DE LA PÁGINA (19/10/2026): las nuevas ya suben con su chica; esto completa las que falten
+    # —las de antes, o una que no subió— y borra las que se quedaron sin su grande. Nunca frena el ciclo
+    corre(['bot/subir_cartas.py', '--chicas', '300'], callado=False)
 
     # ── KV, UNA SOLA VEZ AL FINAL ──────────────────────────────────
     # ⚠️ Es un diff-writer y KV da 1.000 escrituras por dia: llamarlo por

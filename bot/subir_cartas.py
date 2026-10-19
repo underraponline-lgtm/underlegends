@@ -265,6 +265,9 @@ def sincronizar(s):
         # `fotos/t2/` sigue andando. Ver `comun/temporada.clave_foto()`.
         if clave.startswith('fotos/'):
             continue
+        # 🃏 y las chicas tampoco son cartas: son la misma, achicada para la página (ver `CHICA_ANCHO`)
+        if es_chica(clave):
+            continue
         quien, _, carta = clave.rpartition('/')
         mapa.setdefault(quien, {})[carta[:-5]] = '%s/%s' % (PUBLICA, clave)
     salida = os.path.join(BASE, 'datos', 'cartas_r2.json')
@@ -278,6 +281,41 @@ def sincronizar(s):
     for k, n in sorted(c.items()):
         print('  %-16s %3d %s' % (k, n, '' if n == len(mapa) else '⚠️ faltan %d' % (len(mapa) - n)))
     print('\n-> %s' % os.path.relpath(salida, BASE))
+
+
+#: 🃏 LA CARTA CHICA (Dlx, 19/10/2026: «si», a «cartas chicas en las llaves»). Una llave muestra una carta por persona
+#: y cada una pesaba lo que pesa para Discord: medido sobre 60 de R2, la Servidor 149 KB de mediana, la Competitiva 102,
+#: la Temporada 88 y la de País 72 —una llave de 16 en el celular eran ~2,4 MB—. En la llave se dibujan a ~80–150 px,
+#: así que 300 de ancho alcanza también en un celular de pantalla densa: ~22 KB la Servidor, siete veces menos.
+#: ⚠️ VA EN LA MISMA CARPETA (`<persona>/<carta>.chica.webp`): así borrar a alguien (`bot/olvidar.py`) se la lleva sola.
+#: El inventario no la cuenta (`sincronizar()`), y `bot/verificar.py` la cuenta aparte, como las fotos.
+CHICA_ANCHO = 300
+CHICA_CALIDAD = 82
+#: las cartas que se dibujan en la página (las de servidor `sv-xxx` y las bloqueadas, no)
+CON_CHICA = ('temporada', 'competitivo', 'servidor', 'pais')
+
+
+def clave_chica(clave):
+    """`konan/servidor.webp` -> `konan/servidor.chica.webp`."""
+    return clave[:-5] + '.chica.webp'
+
+
+def es_chica(clave):
+    return clave.endswith('.chica.webp')
+
+
+def a_chica(datos):
+    """La carta chica, de la grande (el PNG del generador o la webp de R2). Con alfa, como la grande."""
+    from PIL import Image
+    im = Image.open(io.BytesIO(datos)).convert('RGBA')
+    if im.size[0] > CHICA_ANCHO:
+        im = im.resize((CHICA_ANCHO, max(1, round(im.size[1] * CHICA_ANCHO / im.size[0]))), Image.LANCZOS)
+    b = io.BytesIO()
+    im.save(b, 'WEBP', quality=CHICA_CALIDAD, method=6)
+    out = b.getvalue()
+    if Image.open(io.BytesIO(out)).mode != 'RGBA':
+        raise ValueError('la chica perdio el alfa')
+    return out
 
 
 def a_webp(datos):
@@ -317,6 +355,7 @@ def subir(s, ruta, clave, intentos=3):
     # se lee despues como carta valida y el embed sale roto sin avisar.
     if len(datos) < 1024:
         return None, 'pesa %d bytes' % len(datos)
+    png = datos
     try:
         datos = a_webp(datos)
     except Exception as e:
@@ -326,6 +365,14 @@ def subir(s, ruta, clave, intentos=3):
             r = s.put('%s/objects/%s' % (API, clave), data=datos,
                       headers={'Content-Type': 'image/webp'}, timeout=60)
             if _ok(r, clave) is not None:
+                # 🃏 y la chica, del PNG original (mejor que achicar la webp). Si falla, la grande ya está: la página
+                # vuelve a la grande sola y `--chicas` la completa en la próxima corrida
+                if clave.rpartition('/')[2][:-5] in CON_CHICA:
+                    try:
+                        s.put('%s/objects/%s' % (API, clave_chica(clave)), data=a_chica(png),
+                              headers={'Content-Type': 'image/webp'}, timeout=60)
+                    except Exception:                    # noqa: BLE001
+                        pass
                 return len(datos), hashlib.md5(datos).hexdigest()[:8]
         except Exception as e:
             if n == intentos - 1:
@@ -334,8 +381,49 @@ def subir(s, ruta, clave, intentos=3):
     return None, 'la API rechazo la subida %d veces' % intentos
 
 
+def completar_chicas(s, tope=200):
+    """🃏 Las chicas que faltan —las cartas de antes del 19/10/2026, o una que no subió— y las que quedaron sin su
+    grande. Hasta `tope` por corrida, achicando la webp de R2. Devuelve `(hechas, borradas, faltan)`."""
+    import requests
+    claves = {o['key'] for o in listar(s)}
+    grandes = {k for k in claves if k.endswith('.webp') and not es_chica(k) and not k.startswith('fotos/')
+               and k.rpartition('/')[2][:-5] in CON_CHICA}
+    faltan = sorted(k for k in grandes if clave_chica(k) not in claves)
+    solas = sorted(k for k in claves if es_chica(k) and k[:-11] + '.webp' not in claves)
+    hechas = borradas = 0
+    for k in solas[:tope]:
+        if _ok(s.delete('%s/objects/%s' % (API, k)), 'borrar') is not None:
+            borradas += 1
+    # (de a ocho y una sesión por hilo, como la subida: ver `main()`)
+    local = threading.local()
+
+    def una(k):
+        if not hasattr(local, 's'):
+            local.s = sesion()
+        try:
+            g = requests.get('%s/%s' % (PUBLICA, k), timeout=30)
+            if g.status_code != 200 or len(g.content) < 1024:
+                return False
+            r = local.s.put('%s/objects/%s' % (API, clave_chica(k)), data=a_chica(g.content),
+                            headers={'Content-Type': 'image/webp'}, timeout=60)
+            return _ok(r, clave_chica(k)) is not None
+        except Exception:                                # noqa: BLE001
+            return False
+    with cf.ThreadPoolExecutor(max_workers=8) as pool:
+        hechas = sum(1 for x in pool.map(una, faltan[:tope]) if x)
+    print('cartas chicas: %d hechas, %d sin su grande borradas, %d faltan todavía'
+          % (hechas, borradas, max(0, len(faltan) - hechas)))
+    return hechas, borradas, max(0, len(faltan) - hechas)
+
+
 def main():
     s = sesion()
+
+    if '--chicas' in sys.argv:
+        i = sys.argv.index('--chicas')
+        tope = int(sys.argv[i + 1]) if i + 1 < len(sys.argv) and sys.argv[i + 1].isdigit() else 200
+        completar_chicas(s, tope)
+        return
 
     if '--listar' in sys.argv:
         objs = listar(s)
