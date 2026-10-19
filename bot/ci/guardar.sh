@@ -52,6 +52,10 @@ set -euo pipefail
 # dia: el del porton era de hace 15 horas y el de servidores de
 # hace 17, mientras el ciclo los refrescaba cada hora.
 #
+# 🔴 `crews.json` Y `crews_vivas.json` DESDE EL 19/10/2026: el paso 0a2 los
+# baja del objeto en `escuchar`, y `dibujar` NO corre ese paso —dibuja con lo
+# que `escuchar` commiteó—. Sin guardarlos, las cartas seguían con la lista
+# de crews escrita a mano: una crew que arma la gente no llegaba a una carta.
 # 🔴 `avisados.json` DESDE EL 23/09/2026, Y ES EL QUE DLX VIO.
 # Es la memoria de que llaves ya se anunciaron en Discord. Sin
 # commitearla el runner arranca **sin memoria** y vuelve a
@@ -96,7 +100,7 @@ ARCHIVOS="datos/cartas_selladas.json datos/releer_llaves.json datos/promos.json 
           datos/identidad_llaves.json datos/nombres_llaves.json datos/formatos_llaves.json \
           datos/invitaciones.json datos/ranking_semana.json datos/finales.json datos/salud_lector.json datos/recalculados.json \
           datos/estado_escuchar.json datos/estado_dibujar.json \
-          datos/por_servidor.json datos/cancelados.json datos/divisiones.json datos/crews_tiers.json datos/anuncio_programado.json \
+          datos/por_servidor.json datos/cancelados.json datos/divisiones.json datos/crews_tiers.json datos/anuncio_programado.json datos/crews.json datos/crews_vivas.json \
           datos/ocr_anuncios.json datos/ocr_llaves.json datos/misiones.json \
           datos/pase_niveles.json datos/conservan.json datos/fases_llaves.json datos/debutantes.json datos/videos.json datos/ligas.json datos/ascenso.json datos/ascenso_msgs.json datos/videos_propios.json datos/agenda.json datos/decidir_solas.json datos/writing.json"
 # 🔴 CADA PALABRA DE LA LISTA TIENE QUE SER UN `datos/*.json`, Y SE MIRA.

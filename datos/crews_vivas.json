@@ -1,0 +1,996 @@
+{
+ "_leeme": "Lo público de las crews (bot/crews.js `crewsPublico()`): gente [clave, rol, desde], representantes, cómo se entra y el ranking del Dashboard. Sin ningún Discord ID. Lo escribe bot/crews_vivas.py",
+ "max": 20,
+ "precio": 2500,
+ "ranking": {
+  "modo": "todos",
+  "n": 5
+ },
+ "prueba": {
+  "dias": 7,
+  "sumar": 2
+ },
+ "crews": [
+  {
+   "id": "Follombia",
+   "nombre": "Follombia",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "prosu",
+     "lider",
+     1792404668196
+    ],
+    [
+     "vlade",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "saz",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "juasmio",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "bloody",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "vandu",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "erian",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "97",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "colesito",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "sami",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "partim",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "jd",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "nfk",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "kirito",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "jj",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "malacostumbre",
+     "miembro",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Sexosos",
+   "nombre": "Sexosos",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "zekha",
+     "lider",
+     1792404668196
+    ],
+    [
+     "juanpa",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "axinu",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "christo",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "acry",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "astaroth",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "7po",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "polosport",
+     "miembro",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "NOBLESSE OBLIGE",
+   "nombre": "NOBLESSE OBLIGE",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "kyss",
+     "lider",
+     1792404668196
+    ],
+    [
+     "rubik",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "jetix",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "vize",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "kenzingle",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "masino",
+     "miembro",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "berazategui global hustlers",
+   "nombre": "berazategui global hustlers",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "erik",
+     "lider",
+     1792404668196
+    ],
+    [
+     "betelguese",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "klk",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "bna",
+     "miembro",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Fuera de Rango",
+   "nombre": "Fuera de Rango",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "gp",
+     "lider",
+     1792404668196
+    ],
+    [
+     "pablosky",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "cronox",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "leiter",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "makmah",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "thiflow",
+     "miembro",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Fontana",
+   "nombre": "Fontana",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "valen",
+     "lider",
+     1792404668196
+    ],
+    [
+     "liberia",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "luzzano",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "agus",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "rodrilp",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "prodigy",
+     "miembro",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "KS",
+   "nombre": "Knowledge Sombrío",
+   "sigla": "KS",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "zignos",
+     "lider",
+     1792404668196
+    ],
+    [
+     "abyssus",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "heat",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "sombra",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "jere",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "kain",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "zaylax",
+     "miembro",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Lighting Force",
+   "nombre": "Lighting Force",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "og",
+     "lider",
+     1792404668196
+    ],
+    [
+     "panchok",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "imagy",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "camila",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "andres",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "mcnadie",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "messinegro",
+     "miembro",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Santa Trinidad",
+   "nombre": "Santa Trinidad",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "gocho",
+     "lider",
+     1792404668196
+    ],
+    [
+     "humildad",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "mika",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "kc",
+     "miembro",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "La Formula Crew",
+   "nombre": "La Formula Crew",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "nacidoenitalia",
+     "lider",
+     1792404668196
+    ],
+    [
+     "deuxs",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "pipe",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "kuasar",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "brayan",
+     "miembro",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Blanca Perla",
+   "nombre": "Blanca Perla",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "six",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "El Último Bastón",
+   "nombre": "El Último Bastón",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "fafax",
+     "lider",
+     1792404668196
+    ],
+    [
+     "blackmagic",
+     "miembro",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Guardia Nacional",
+   "nombre": "Guardia Nacional",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "kourier",
+     "lider",
+     1792404668196
+    ],
+    [
+     "volk",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "cj",
+     "miembro",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Argentina Crew",
+   "nombre": "Argentina Crew",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "franky",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "La Pampa Crew",
+   "nombre": "La Pampa Crew",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "mco",
+     "lider",
+     1792404668196
+    ],
+    [
+     "konan",
+     "miembro",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Sentinelense",
+   "nombre": "Sentinelense",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "velatz",
+     "lider",
+     1792404668196
+    ],
+    [
+     "praiseriza",
+     "miembro",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Caypher",
+   "nombre": "Caypher",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "rayden",
+     "lider",
+     1792404668196
+    ],
+    [
+     "rayo",
+     "miembro",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Mafia Chilena",
+   "nombre": "Mafia Chilena",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "xerve",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Arte del Chakalaje",
+   "nombre": "Arte del Chakalaje",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "pichulamc",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Dinoguay",
+   "nombre": "Dinoguay",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "elindigenadelparque",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "04",
+   "nombre": "04",
+   "sigla": "04",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "molt",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Mayas Crew",
+   "nombre": "Mayas Crew",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "mayanmc",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "RKT Crew",
+   "nombre": "RKT Crew",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "raezer",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Peruvianleads",
+   "nombre": "Peruvianleads",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "noone",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "montevideo wanders",
+   "nombre": "montevideo wanders",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "gus",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Mdk Crew",
+   "nombre": "Mdk Crew",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "am",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "kzt",
+   "nombre": "kzt",
+   "sigla": "KZT",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "verc",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Podesta City",
+   "nombre": "Podesta City",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "lewito",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Yuta",
+   "nombre": "Yuta",
+   "sigla": "YUTA",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "kminant",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Rosario",
+   "nombre": "Rosario",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "nc",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Miakamata",
+   "nombre": "Miakamata",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "crk",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Área Limítrofe",
+   "nombre": "Área Limítrofe",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "saiko",
+     "lider",
+     1792404668196
+    ],
+    [
+     "meteoro",
+     "miembro",
+     1792404668196
+    ],
+    [
+     "luz",
+     "miembro",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "Underground Freestyle",
+   "nombre": "Underground Freestyle",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "adrianex",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  },
+  {
+   "id": "B.A.A",
+   "nombre": "B.A.A",
+   "sigla": "",
+   "entrada": "pedido",
+   "oficial": true,
+   "creada": 1792404668196,
+   "reps": [],
+   "gente": [
+    [
+     "provenza",
+     "lider",
+     1792404668196
+    ]
+   ],
+   "vence": 0,
+   "logo": "",
+   "desc": ""
+  }
+ ]
+}
