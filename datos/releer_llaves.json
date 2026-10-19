@@ -1,4 +1,13 @@
 {
  "_leeme": "Las llaves incompletas (sin campeón, sin subcampeón o con batallas sin ganador) que el ciclo vuelve a pedir a Discord en las corridas siguientes, aunque ya no estén entre los últimos mensajes de su canal; recién después de 3 relecturas se le pregunta al organizador. Lo escribe bot/llaves_a_entrada.py (marcar_releer) y lo lee bot/escuchar.py (a_releer). Dlx, 16/10/2026.",
- "llaves": {}
+ "llaves": {
+  "1561594726019375135": {
+   "canal": "1487207377601040516",
+   "desde": "2026-10-19T05:12:53+00:00",
+   "evento": "__ FREESTYLE LEAGUE __",
+   "fecha": "19/10",
+   "sv": "FFA",
+   "vistas": 1
+  }
+ }
 }

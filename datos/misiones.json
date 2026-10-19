@@ -1902,7 +1902,7 @@
      0
     ],
     "Joshema": [
-     3,
+     4,
      8,
      8,
      0
@@ -2033,6 +2033,12 @@
      16,
      0
     ],
+    "MALBORO 🇦🇷": [
+     1,
+     2,
+     2,
+     0
+    ],
     "MARTYNEZ": [
      0,
      99,
@@ -2064,7 +2070,7 @@
      0
     ],
     "Makmah": [
-     15,
+     16,
      2,
      2,
      0
@@ -2124,7 +2130,7 @@
      0
     ],
     "Molusco": [
-     5,
+     6,
      1,
      1,
      0
@@ -2329,6 +2335,12 @@
     ],
     "Scritura": [
      2,
+     4,
+     4,
+     0
+    ],
+    "Senticide": [
+     1,
      4,
      4,
      0
@@ -2626,6 +2638,7 @@
     "Lord Viruzz": 300,
     "Luzzano": 600,
     "Lvel": 300,
+    "MALBORO 🇦🇷": 600,
     "MCO": 3700,
     "MTZ": 300,
     "Magic": 300,
@@ -2657,6 +2670,7 @@
     "SEBITAS🇱🇷": 600,
     "SINTEXT": 300,
     "Scritura": 900,
+    "Senticide": 600,
     "Shadow": 300,
     "Sin Limites": 900,
     "Six": 900,
@@ -2809,6 +2823,7 @@
   "Lord Viruzz": 600,
   "Luzzano": 900,
   "Lvel": 600,
+  "MALBORO 🇦🇷": 600,
   "MATICERNA": 300,
   "MAU KC 🇨🇴": 300,
   "MCO": 6600,
@@ -2880,6 +2895,7 @@
   "Scot": 300,
   "Scritura": 900,
   "Selek": 300,
+  "Senticide": 600,
   "Shadow": 300,
   "Sin Limites": 1200,
   "Six": 3800,

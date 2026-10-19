@@ -1246,6 +1246,28 @@
    "b": "GUESS",
    "ganador": "MOLUSCO",
    "votos": "1–0"
+  },
+  "1561604082764873779": {
+   "id": "1561604082764873779",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1792385826532,
+   "a": "MALBORO",
+   "b": "SENTICIDE",
+   "ganador": "MALBORO",
+   "votos": "1–0"
+  },
+  "1561606307918778429": {
+   "id": "1561606307918778429",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1792386357050,
+   "a": "MOLUSCO",
+   "b": "MALBORO",
+   "ganador": "MOLUSCO",
+   "votos": "1–0"
   }
  },
  "llaves": {

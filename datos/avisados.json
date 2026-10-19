@@ -7803,7 +7803,7 @@
    "yinn": 15
   },
   "fecha": "12/10",
-  "firma": "372fdfecc2838f87",
+  "firma": "a7b606d295251be3",
   "msg": "1559247601923137630",
   "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
   "num": 454,
@@ -11664,7 +11664,7 @@
    "Verc": 10
   },
   "fecha": "13/10",
-  "firma": "7c665e2de285c678",
+  "firma": "145f63a43a2b6deb",
   "msg": "1559769924178804738",
   "nombre": "PRITTY FREE",
   "num": 469,
@@ -11865,7 +11865,7 @@
    "Xubaru": 4
   },
   "fecha": "14/10",
-  "firma": "1a18308fb7dbbdd4",
+  "firma": "8d6a94e96c4614b8",
   "msg": "1559809185120518145",
   "nombre": "__ Inserte Nombre de la Compe __",
   "num": 470,
@@ -14983,6 +14983,7 @@
   "v": 2
  },
  "484": {
+  "al_dia": true,
   "antes": {
    "1200": [
     207,
@@ -15214,7 +15215,7 @@
    "Xubaru": 8
   },
   "fecha": "18/10",
-  "firma": "87b3ed24f0a1b128",
+  "firma": "a6450d90c218c29a",
   "msg": "1561498207572205609",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL7 __",
   "num": 484,
@@ -15344,6 +15345,7 @@
   "v": 2
  },
  "485": {
+  "al_dia": true,
   "antes": {
    "1200": [
     203,
@@ -15645,6 +15647,7 @@
   "v": 2
  },
  "486": {
+  "al_dia": true,
   "antes": {
    "Adriagner": [
     104,
@@ -15823,6 +15826,98 @@
     "Misterioso",
     "R32",
     625
+   ]
+  ],
+  "v": 2
+ },
+ "487": {
+  "al_dia": true,
+  "antes": {
+   "Joshema": [
+    102,
+    167,
+    false
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "Molusco": [
+    22,
+    26,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "MALBORO 🇦🇷",
+    "Joshema",
+    "MALBORO 🇦🇷"
+   ],
+   [
+    "Molusco",
+    "Makmah",
+    "Molusco"
+   ],
+   [
+    "MALBORO 🇦🇷",
+    "Senticide",
+    "MALBORO 🇦🇷"
+   ],
+   [
+    "Molusco",
+    "MALBORO 🇦🇷",
+    "Molusco"
+   ],
+   [
+    "Senticide",
+    "Makmah",
+    "Senticide"
+   ]
+  ],
+  "ev_antes": {
+   "Joshema": 3,
+   "Makmah": 51,
+   "Molusco": 16
+  },
+  "fecha": "19/10",
+  "firma": "8d3ea8b79de2cbcf",
+  "msg": "1561607804798898179",
+  "nombre": "__ FREESTYLE LEAGUE __",
+  "num": 487,
+  "participantes": 9,
+  "sello": {
+   "Molusco": "10d3137098c8:906ce275eeb8"
+  },
+  "sv": "FFA",
+  "t": "2026-10-19T05:13:19Z",
+  "tabla": [
+   [
+    "MALBORO 🇦🇷",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Senticide",
+    "Tercero",
+    4000
+   ],
+   [
+    "Molusco",
+    "Campeón",
+    3750
+   ],
+   [
+    "Makmah",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Joshema",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2

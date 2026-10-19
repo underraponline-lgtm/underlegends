@@ -261,6 +261,17 @@
    "vence": "2026-10-20T15:58:57+00:00",
    "vencido": false
   },
+  "MALBORO": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-19T04:19:55+00:00",
+   "did": "",
+   "evento": "FREESTYLE LEAGUE",
+   "n": 487,
+   "sv": "FFA",
+   "vence": "2026-10-26T04:19:55+00:00",
+   "vencido": false
+  },
   "Magic": {
    "avisado": "2026-10-12",
    "avisado_cumplido": "2026-10-12",
@@ -417,6 +428,17 @@
    "n": 460,
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
+   "vencido": false
+  },
+  "Senticide": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-19T04:19:55+00:00",
+   "did": "",
+   "evento": "FREESTYLE LEAGUE",
+   "n": 487,
+   "sv": "FFA",
+   "vence": "2026-10-26T04:19:55+00:00",
    "vencido": false
   },
   "Snake": {

@@ -15,9 +15,9 @@
     {
      "op": "Makmah",
      "n": "Makmah",
-     "pts": 235276,
+     "pts": 239776,
      "oro": 2,
-     "ev": 34
+     "ev": 35
     },
     {
      "op": "Oasis",
@@ -103,8 +103,8 @@
     {
      "op": "FFA",
      "n": "Freestyle For All",
-     "gente": 271,
-     "ev": 54
+     "gente": 273,
+     "ev": 55
     },
     {
      "op": "ACAD",
@@ -269,7 +269,7 @@
      "quien": [
       "Makmah"
      ],
-     "d": "17 de 36 duelos ganados"
+     "d": "17 de 37 duelos ganados"
     }
    ],
    "cazador": [
@@ -815,54 +815,54 @@
    ],
    "momento": [
     {
-     "op": "449:Vandu vs Player",
-     "n": "Vandu vs Player",
-     "q": "Vandu",
+     "op": "477:Nemi vs Makmah",
+     "n": "Nemi vs Makmah",
+     "q": "Nemi",
      "quien": [
-      "Vandu",
-      "Player"
+      "Nemi",
+      "Makmah"
      ],
-     "d": "HJKSLOWT V.1 · ganó Vandu · al azar"
+     "d": "DESGRACIAS EN TOKYO VOL27 · ganó Nemi · al azar"
     },
     {
-     "op": "451:Majiztral vs Teo",
-     "n": "Majiztral vs Teo",
-     "q": "Majiztral",
+     "op": "469:Verc vs Nemi",
+     "n": "Verc vs Nemi",
+     "q": "Verc",
      "quien": [
-      "Majiztral",
-      "Teo"
+      "Verc",
+      "Nemi"
      ],
-     "d": "MORTAL KOMBAT MAPACHE CUP · ganó Majiztral · al azar"
+     "d": "PRITTY FREE · ganó Verc · al azar"
     },
     {
-     "op": "426:Dyzz vs Delux",
-     "n": "Dyzz vs Delux",
-     "q": "Dyzz",
+     "op": "432:Makmah vs Cronox",
+     "n": "Makmah vs Cronox",
+     "q": "Makmah",
      "quien": [
-      "Dyzz",
-      "Delux"
+      "Makmah",
+      "Cronox"
      ],
-     "d": "Doble Eliminación Vol. 2 · ganó Dyzz · al azar"
+     "d": "GALACTICOS DEL FREESTYLE VOL.10 · ganó Makmah · al azar"
     },
     {
-     "op": "484:Guess vs Xubaru",
-     "n": "Guess vs Xubaru",
-     "q": "Guess",
+     "op": "383:Trot vs Marcos",
+     "n": "Trot vs Marcos",
+     "q": "Trot",
      "quien": [
-      "Guess",
-      "Xubaru"
+      "Trot",
+      "Marcos"
      ],
-     "d": "LA BELLA ARTE DE LA DESGRACIA VOL7 · ganó Guess · al azar"
+     "d": "DESGRACIAS EN TOKYO VOL 21 1v1 · ganó Trot · al azar"
     },
     {
-     "op": "407:TøKīØ🦠🧠 vs Velatz",
-     "n": "TøKīØ🦠🧠 vs Velatz",
-     "q": "TøKīØ🦠🧠",
+     "op": "477:Liberia vs Agus",
+     "n": "Liberia vs Agus",
+     "q": "Liberia",
      "quien": [
-      "TøKīØ🦠🧠",
-      "Velatz"
+      "Liberia",
+      "Agus"
      ],
-     "d": "COPA SOOLAR 3 · ganó TøKīØ🦠🧠 · al azar"
+     "d": "DESGRACIAS EN TOKYO VOL27 · ganó Liberia · al azar"
     }
    ],
    "crew": [
@@ -882,7 +882,7 @@
      "op": "Fuera de Rango",
      "n": "Fuera de Rango",
      "quien": [],
-     "d": "326.014 pts · 2 jugaron"
+     "d": "330.514 pts · 2 jugaron"
     },
     {
      "op": "Lighting Force",
@@ -903,7 +903,7 @@
      "n": "Argentina",
      "cc": "ar",
      "quien": [],
-     "d": "1.737.529 pts · 37 jugaron"
+     "d": "1.743.154 pts · 37 jugaron"
     },
     {
      "op": "Chile",
@@ -924,14 +924,14 @@
      "n": "Venezuela",
      "cc": "ar",
      "quien": [],
-     "d": "625.691 pts · 16 jugaron"
+     "d": "630.191 pts · 16 jugaron"
     },
     {
      "op": "Perú",
      "n": "Perú",
      "cc": "pe",
      "quien": [],
-     "d": "240.485 pts · 15 jugaron"
+     "d": "243.485 pts · 15 jugaron"
     }
    ],
    "liga": [

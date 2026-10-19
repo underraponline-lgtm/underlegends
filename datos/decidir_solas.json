@@ -1259,6 +1259,30 @@
      296
     ]
    }
+  },
+  {
+   "id": "081ad7e845",
+   "tipo": "Nombre desconocido",
+   "sec": "FREESTYLE LEAGUE · FFA · 19/10 · #487",
+   "que": "¿Quién es «MALBORO 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1220200835531935784",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1220200835531935784)",
+   "t": 1792387237130,
+   "filas": [
+    751
+   ],
+   "variantes": [
+    "MALBORO 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "MALBORO",
+     "1220200835531935784"
+    ]
+   }
   }
  ],
  "deshechas": []
