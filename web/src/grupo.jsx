@@ -6,6 +6,8 @@ import { limpio, num } from './liga.js';
 import { Bandera, Cara, Compartir, Sec, accion, enlace, nombrePais } from './piezas.jsx';
 import { McPersona } from './medio.jsx';
 import { CrewCirculo } from './arriba.jsx';
+import { crewViva, useCrews } from './crews.js';
+import { EntrarCrew, PanelCrew, RolCrew } from './crewpanel.jsx';
 import CSS_PAGINA from './css/grupo.css?inline';
 import { usarCss } from './css.js';
 
@@ -19,8 +21,9 @@ const porLugar = (a, b) => (a.o || a.pos || 999) - (b.o || b.pos || 999);
 // las dos de abajo), y las que no entran están en la lista de toda la gente
 const cartas = (gente) => gente.slice(0, gente.length >= 10 ? 10 : gente.length >= 5 ? 5 : gente.length);
 
-/** Toda la gente, en una lista: el puesto en la Liga, la cara, el nombre con su bandera y sus números. */
-function Lista({ liga, gente }) {
+/** Toda la gente, en una lista: el puesto en la Liga, la cara, el nombre con su bandera y sus números (y su rango en la
+ *  crew, si viene `roles`). */
+function Lista({ liga, gente, roles }) {
   return (
     <ol className="gp-l">
       {gente.map((f) => (
@@ -28,7 +31,7 @@ function Lista({ liga, gente }) {
           <button type="button" className="sin-boton gp-f" onClick={() => accion.perfil(f.k)} aria-label={'Ver el perfil de ' + limpio(f.n)}>
             <span className="gp-pos">{f.pos ? '#' + f.pos : '—'}</span>
             <Cara liga={liga} k={f.k} nombre={f.n} cls="gp-cara" lazy />
-            <span className="gp-n"><b>{limpio(f.n)}</b><Bandera cc={f.cc} cls="gp-flag" /></span>
+            <span className="gp-n"><b>{limpio(f.n)}</b><Bandera cc={f.cc} cls="gp-flag" />{roles && roles[f.k] && roles[f.k] !== 'miembro' ? <RolCrew rol={roles[f.k]} /> : null}</span>
             <span className="gp-d"><b>{f.ovr || '—'}</b><small>OVR</small></span>
             <span className="gp-d"><b>{num(f.pts || 0)}</b><small>PTS</small></span>
             <span className="gp-d gp-ev"><b>{f.ev || 0}</b><small>EV</small></span>
@@ -66,34 +69,54 @@ function NoEsta({ que, href, volver }) {
 }
 
 // ── la de una crew ────────────────────────────────────────────────────────────────────────────────
+// 👥 DESDE EL 19/10/2026 LA GENTE SALE DEL OBJETO (`crews.js`: las crews que arma la gente, con su rango) y los PUNTOS del
+// payload. Una crew recién armada todavía no tiene puntos —nadie jugó con ella— y igual tiene su página
+const ORDEN_ROL = { lider: 0, colider: 1, veterano: 2, miembro: 3 };
 export function PaginaCrew({ liga, id }) {
+  useCrews();
   const cs = liga.d.crews || [];
-  const c = cs.find((x) => clave(x) === id) || cs.find((x) => limpio(x.crew).toLowerCase() === limpio(id).toLowerCase());
-  if (!c) return <NoEsta que="Esa crew" href="#/ranking/crews" volver="Ver las crews" />;
+  const viva = crewViva(id);
+  const c0 = cs.find((x) => clave(x) === id) || cs.find((x) => limpio(x.crew).toLowerCase() === limpio(id).toLowerCase())
+    || (viva ? cs.find((x) => clave(x) === viva.id) : null);
+  if (!c0 && !viva) return <NoEsta que="Esa crew" href="#/ranking/crews" volver="Ver las crews" />;
+  const c = c0 || { crew: viva.nombre, clave: viva.id, n: 0, pts: 0, gente: [] };
+  const nombre = limpio((viva && viva.nombre) || c.crew);
   const conPuesto = cs.filter((x) => x.rk !== 0);
-  const pos = conPuesto.indexOf(c) + 1;
-  const gente = (c.gente || []).map((n) => liga.fila(n)).filter(Boolean).sort(porLugar);
+  const pos = c0 ? conPuesto.indexOf(c0) + 1 : 0;
+  // la gente: la del objeto (con su rango) si se sabe; si no, la del payload. Quien no está en la tabla, con su clave
+  const roles = viva ? Object.fromEntries(viva.gente.map(([k, r]) => [k, r])) : null;
+  const gente = (viva ? viva.gente.map(([k]) => liga.T[k] || { k, n: k }) : (c.gente || []).map((n) => liga.fila(n)).filter(Boolean))
+    .sort((a, b) => (roles ? (ORDEN_ROL[roles[a.k]] ?? 9) - (ORDEN_ROL[roles[b.k]] ?? 9) : 0) || porLugar(a, b));
+  const jugaron = gente.filter((f) => f.pos || f.o);
   const ccs = [...new Set(gente.map((f) => f.cc).filter(Boolean))];
   const mejor = c.mejor ? liga.fila(c.mejor) : null;
+  const lider = viva ? viva.gente.find((g) => g[1] === 'lider') : null;
   return (
     <>
-      <Cabeza img={<CrewCirculo c={c} cls="svp-logo gp-crew" />} nombre={limpio(c.crew)} url={'#/crew/' + encodeURIComponent(clave(c))}
+      <Cabeza img={<CrewCirculo c={c} cls="svp-logo gp-crew" />} nombre={nombre} url={'#/crew/' + encodeURIComponent(clave(c))}
         tag={pos ? '#' + pos + ' DE LAS CREWS' : 'SIN PUESTO · HACEN FALTA TRES RAPEROS'}
-        sub={ccs.length ? <span className="gp-flags">{ccs.map((cc) => <Bandera key={cc} cc={cc} cls="gp-flag" />)}</span> : null}
-        numeros={[['RAPEROS', num(c.n || gente.length)], ['PUNTOS', num(c.pts || 0)],
+        sub={<>{ccs.length ? <span className="gp-flags">{ccs.map((cc) => <Bandera key={cc} cc={cc} cls="gp-flag" />)}</span> : null}
+          {lider ? <span className="gp-lider">Líder: <a className="te-link" href={'#/r/' + encodeURIComponent(lider[0])}>{limpio((liga.T[lider[0]] || {}).n || lider[0])}</a></span> : null}</>}
+        numeros={[['RAPEROS', num(viva ? viva.gente.length : c.n || gente.length)], ['PUNTOS', num(c.pts || 0)],
           ['POR RAPERO', c.n ? num(Math.round((c.pts || 0) / c.n)) : '—'],
           ['EL MEJOR', mejor ? <a className="te-link" href={'#/r/' + encodeURIComponent(mejor.k)}>{limpio(mejor.n)}</a> : limpio(c.mejor || '—')]]} />
-      {gente.length ? (
-        <Sec id="gp-cartas" titulo={'Los que mandan en ' + limpio(c.crew)} extra="negra">
-          <div className="rail mcs2">{cartas(gente).map((f) => <McPersona key={f.k} liga={liga} f={f} />)}</div>
+      {viva ? (
+        <Sec id="gp-unirse" titulo={'La crew'}>
+          <EntrarCrew c={viva} />
+          <PanelCrew liga={liga} c={viva} />
+        </Sec>
+      ) : null}
+      {jugaron.length ? (
+        <Sec id="gp-cartas" titulo={'Los que mandan en ' + nombre} extra="negra">
+          <div className="rail mcs2">{cartas(jugaron.slice().sort(porLugar)).map((f) => <McPersona key={f.k} liga={liga} f={f} />)}</div>
         </Sec>
       ) : null}
       <Sec id="gp-gente" titulo="Toda la crew">
-        {gente.length ? <Lista liga={liga} gente={gente} /> : <p className="pronto-p">Todavía nadie de la crew jugó la temporada.</p>}
+        {gente.length ? <Lista liga={liga} gente={gente} roles={roles} /> : <p className="pronto-p">Todavía nadie de la crew jugó la temporada.</p>}
       </Sec>
       <Sec id="gp-otras" titulo="Las otras crews" enlace="El ranking de crews" href="#/ranking/crews">
         <nav className="svp-otros gp-otros">
-          {conPuesto.filter((x) => x !== c).slice(0, 18).map((x) => (
+          {conPuesto.filter((x) => x !== c0).slice(0, 18).map((x) => (
             <a key={clave(x)} href={'#/crew/' + encodeURIComponent(clave(x))}><CrewCirculo c={x} cls="gp-mini" /><b>{limpio(x.crew)}</b></a>
           ))}
         </nav>

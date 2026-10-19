@@ -618,8 +618,12 @@ export class Liga {
   // la crew de alguien (la de su fila), con su gente
   crewDe(f) {
     if (!f || !f.crew) return null;
+    // 🔴 POR LA CLAVE PRIMERO (19/10/2026): la fila trae la CLAVE de la crew («KS») y `crew` es el nombre que se ve
+    // («Knowledge Sombrío»): comparando con el nombre, los seis de KS de la T1 no tenían crew en su perfil, ni la
+    // historia «TU CREW», ni el link en el visor
     const c = limpio(f.crew).toLowerCase();
-    return (this.d.crews || []).find((x) => limpio(x.crew).toLowerCase() === c) || null;
+    const cs = this.d.crews || [];
+    return cs.find((x) => x.clave === f.crew) || cs.find((x) => limpio(x.crew).toLowerCase() === c) || null;
   }
   // un país: su puesto en la Liga y su gente, en el orden del ranking
   paisDe(cc) {

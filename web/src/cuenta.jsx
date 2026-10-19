@@ -10,6 +10,8 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { DUENO, PAIS, hora, limpio, nuevaQue, num, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, DosToques, Ico, accion } from './piezas.jsx';
+import { MiCrew } from './crewpanel.jsx';
+import { crewDe } from './crews.js';
 import { CaraDc } from './arriba.jsx';
 import { useRacha } from './racha.js';
 import { TEMAS_SV, nivelTema, nombreTema } from './temas.js';
@@ -119,6 +121,8 @@ function grupos(liga, dc, tema, cual, temaSv) {
       ['cuenta', 'yo', 'Mi cuenta', dc ? 'Discord · ' + limpio(dc.n) : 'Entrar con Discord'],
       ['perfil', 'perfil', 'Mi perfil', yo ? 'tu foto, tus redes y tu servidor' : 'lo que los demás ven de vos'],
       ['fondo', 'tema', 'Tu fondo', 'tu imagen, con el nivel 10 del Pase'],
+      // 👥 las crews que arma la gente (19/10/2026): la tuya, tus invitaciones, o armar una (`crewpanel.jsx`)
+      ['crew', 'socios', 'Mi crew', crewDe(dc && dc.clave) ? 'la tuya: ' + limpio(crewDe(dc.clave).c.nombre) : 'armá la tuya o sumate a una'],
       ['siguiendo', 'seguir', 'Siguiendo', liga.sigue.length ? liga.sigue.length + (liga.sigue.length === 1 ? ' rapero' : ' raperos') : 'todavía nadie'],
       ['privacidad', 'candado', 'Privacidad', 'tu foto, tus datos y este dispositivo'],
       // 🙋 los pedidos (17/10/2026): perdí mi cuenta, ese no soy yo, mi país, un video que no es mío
@@ -905,6 +909,7 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
       </>
     );
   }
+  if (id === 'crew') return <Caja t="Mi crew"><MiCrew liga={liga} dc={dc} /></Caja>;
   if (id === 'siguiendo') {
     const fs = liga.sigue.map((k) => liga.T[k]).filter(Boolean);
     return (

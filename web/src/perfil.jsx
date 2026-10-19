@@ -21,6 +21,8 @@ import { svElegido, useElegidos } from './elegidos.js';
 import * as RQ from './requisitos.js';
 import { Cartas, Pub, useAplausos } from './publicaciones.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
+import { crewDe, useCrews } from './crews.js';
+import { InvitarACrew, RolCrew } from './crewpanel.jsx';
 import CSS_PAGINA from './css/perfil.css?inline';
 import { usarCss } from './css.js';
 
@@ -147,6 +149,8 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
   const svE = svElegido(liga, useElegidos(), k);
   const sv = svE && liga.svs[svE];
   const crew = liga.crewDe(f);
+  useCrews();
+  const cv = crewDe(k);
   // 🔥 su nivel y su racha diaria (04/10/2026): por la clave del perfil, nunca por cuenta. Sin Discord no hay
   const nvs = useNiveles();
   const nv = nvs && nvs[k];
@@ -174,7 +178,9 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
           <ul className="pf-chips">
             {f.cc ? <li><a href={'#/pais/' + f.cc}><Bandera cc={f.cc} cls="pf-flag" />{nombrePais(f.cc)}</a></li> : null}
             {svE ? <li><a href={'#/sv/' + siglaDe(svE)} title="Eligió este servidor"><img alt="" src={liga.logo(svE)} />{(sv && sv.nombre) || siglaDe(svE)}</a></li> : null}
-            {crew ? <li><a href={'#/crew/' + encodeURIComponent(crew.clave || crew.crew)}>{limpio(crew.crew)}</a></li>
+            {/* 👥 la crew en vivo (la que arma la gente, con su rango), y si no, la del payload */}
+            {cv ? <li><a href={'#/crew/' + encodeURIComponent(cv.c.id)}>{limpio(cv.c.nombre)}{cv.rol !== 'miembro' ? <RolCrew rol={cv.rol} /> : null}</a></li>
+              : crew ? <li><a href={'#/crew/' + encodeURIComponent(crew.clave || crew.crew)}>{limpio(crew.crew)}</a></li>
               : f.crew ? <li><span>{limpio(f.crew)}</span></li> : null}
             {p && textoVerificado(p.vd) ? <li><span className="pf-con pf-vd" title="Tiene el rol de Miembro en Discord Rap Español"><Ico n="ok" t={15} />{textoVerificado(p.vd)}</span></li> : null}
             {nv ? <li><span className="pf-nivel" title="Sube jugando, entrando cada día y con lo que hace en la Liga">Nivel {nv[0]}</span></li> : null}
@@ -206,6 +212,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
             {!esYo && liga.yo && liga.yo.k !== f.k && enComparar(liga.yo) && enComparar(f) ? (
               <a className="btn borde chico" href={'#/tarjetas?a=' + encodeURIComponent(liga.yo.k) + '&b=' + encodeURIComponent(f.k)}>Comparar conmigo</a>
             ) : null}
+            {!esYo ? <InvitarACrew k={k} nombre={f.n} /> : null}
             <Compartir cls="btn borde chico" url={enlace('#/r/' + encodeURIComponent(k))} texto={limpio(f.n) + ' en la Liga Global'} etiqueta="Compartir" />
           </div>
           {f.nv ? <p className="pf-nv"><b>Sin verificar.</b> {RQ.sinVerificar(f.nv, esYo)}{esYo ? <> <a href="#/cuenta/verificar">Verificarme</a></> : null}</p> : null}

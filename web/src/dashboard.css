@@ -366,3 +366,9 @@
 .ti-rec span{font-weight:800}
 @media (prefers-reduced-motion: reduce){.ti-caja,.ti-partes u{animation:none}}
 .app.calma .ti-caja,.app.calma .ti-partes u{animation:none}
+/* 👥 las crews (19/10/2026): la tarjeta va a lo ancho y la lista de líderes, plegada */
+.db-aj-ancho{grid-column:1 / -1}
+.db-det summary{cursor:pointer;font-weight:700;padding:6px 0}
+.db-crews{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px 18px}
+.db-crews li{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--suave)}
+.db-crews select{max-width:150px}

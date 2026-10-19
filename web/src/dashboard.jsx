@@ -9,6 +9,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { diaISO, hora, limpio, mult, num, siglaDe } from './liga.js';
 import { DosToques, Ico } from './piezas.jsx';
 import { urlFondo } from './fondos.js';
+import { pedirCrews, useCrews } from './crews.js';
 import { useNumero } from './anima.js';
 
 // 📸 la dirección de una foto de tarjeta, para el CSS: sólo del bucket de la Liga (las caras y las que esperan revisión)
@@ -1013,6 +1014,75 @@ function AjSilencio({ aj, hacer, ocup }) {
   );
 }
 
+// 👥 LAS CREWS (Dlx, 19/10/2026: «que yo tenga la configuración para elegir eso»): cuánto cuesta crear una, cómo se
+// arma su ranking (todos, los N mejores o los representantes que elige el líder) y el líder de cada una —las 34 de antes
+// arrancaron con el primero de la lista—. El precio y el ranking son ajustes; el líder va por `/avisos/dueno/crew`
+const MODOS_CREW = [['todos', 'La suma de todos'], ['mejores', 'Los N mejores de cada una'], ['reps', 'Los representantes que elige el líder']];
+function AjCrews({ liga, aj, hacer, ocup }) {
+  const { todas } = useCrews();
+  const r = aj.crews_ranking || { modo: 'todos', n: 5 };
+  const [precio, setPrecio] = useState(String(aj.crew_precio ?? 2500));
+  const [modo, setModo] = useState(r.modo);
+  const [n, setN] = useState(String(r.n || 5));
+  const [msg, setMsg] = useState('');
+  const [va, setVa] = useState(false);
+  const lider = (crew, a) => {
+    setVa(true);
+    setMsg('');
+    window.conCuenta('/api/avisos/dueno/crew', { que: 'lider', crew, a }, 's').then((j) => {
+      setVa(false);
+      if (j && j.ok) { setMsg('Listo: nuevo líder.'); pedirCrews(true); } else setMsg('No pude (' + ((j && j.error) || 'red') + ').');
+    }).catch(() => { setVa(false); setMsg('No pude.'); });
+  };
+  const nombre = (k) => { const f = liga.T[k]; return f ? limpio(f.n) : k; };
+  const crews = ((todas && todas.crews) || []).slice().sort((a, b) => (b.oficial - a.oficial) || String(a.nombre).localeCompare(b.nombre));
+  return (
+    <div className="db-aj db-aj-ancho">
+      <div className="db-aj-c"><h3>Las crews</h3><span className="db-est">{crews.length} crews · crear cuesta {num(aj.crew_precio ?? 2500)}</span></div>
+      <p className="db-tx">Las arma la gente: verificados, pagando Puntos de Tienda, hasta 20 cada una. Líder, Colíder, Veterano y Miembro; 7 días entre una crew y otra.</p>
+      <form className="db-form uno" onSubmit={(e) => {
+        e.preventDefault();
+        hacer('crew_precio', Number(precio), 'Guardado: crear una crew cuesta ' + num(Number(precio)) + '.');
+      }}>
+        <div className="db-fila">
+          <label className="db-campo db-corto"><span>Crear cuesta (Puntos de Tienda)</span>
+            <input type="number" min="0" max="50000" step="100" value={precio} onChange={(e) => setPrecio(e.target.value)} /></label>
+        </div>
+        <div className="cu-btns"><button type="submit" className="btn verde chico" disabled={ocup}>Guardar el precio</button></div>
+      </form>
+      <form className="db-form uno" onSubmit={(e) => {
+        e.preventDefault();
+        hacer('crews_ranking', { modo, n: Number(n) }, 'Guardado: el ranking de crews cambia en la próxima vuelta del ciclo.');
+      }}>
+        <div className="db-fila">
+          <label className="db-campo"><span>El ranking de crews suma</span>
+            <select value={modo} onChange={(e) => setModo(e.target.value)}>{MODOS_CREW.map(([k, t]) => <option key={k} value={k}>{t}</option>)}</select></label>
+          {modo !== 'todos' ? <label className="db-campo db-corto"><span>{modo === 'reps' ? 'Representantes' : 'Cuántos'}</span>
+            <input type="number" min="1" max="20" value={n} onChange={(e) => setN(e.target.value)} /></label> : null}
+        </div>
+        <div className="cu-btns"><button type="submit" className="btn verde chico" disabled={ocup}>Guardar el ranking</button></div>
+      </form>
+      {crews.length ? (
+        <details className="db-det">
+          <summary>El líder de cada crew ({crews.length})</summary>
+          <ul className="db-crews">{crews.map((c) => {
+            const l = (c.gente.find((g) => g[1] === 'lider') || [])[0] || '';
+            return (
+              <li key={c.id}>
+                <a href={'#/crew/' + encodeURIComponent(c.id)}><b>{limpio(c.nombre)}</b></a>{c.oficial ? <small> · de antes</small> : null}
+                <select value={l} disabled={va} aria-label={'El líder de ' + c.nombre} onChange={(e) => lider(c.id, e.target.value)}>
+                  {c.gente.map(([k]) => <option key={k} value={k}>{nombre(k)}</option>)}
+                </select>
+              </li>
+            );
+          })}</ul>
+        </details>
+      ) : null}
+      {msg ? <p className="db-msg" role="status">{msg}</p> : null}
+    </div>
+  );
+}
+
 // ⏱️ el ritmo del bot en vivo: cada cuánto puede mandar un mensaje nuevo en un mismo chat
 const RIT_NORMAL = [3, 5, 10, 15, 20, 30];
 const RIT_BATALLA = [1, 2, 3, 5, 10];
@@ -1505,6 +1575,7 @@ function Ajustes({ liga, aj, chat, hist, hacer, msg, ocup, roles, alRoles, conRo
         <AjSilencio aj={aj} hacer={hacer} ocup={ocup} />
         <AjApuestas liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} general />
         <AjAvisos liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} general />
+        <AjCrews liga={liga} aj={aj} hacer={hacer} ocup={ocup} />
       </div>
       <h2 className="db-h">Los últimos cambios</h2>
       <Historial hist={hist} hacer={hacer} ocup={ocup} />
