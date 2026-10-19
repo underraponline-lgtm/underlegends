@@ -253,20 +253,98 @@ def prob_vs(a, b):
     return None
 
 
+#: 🎨 el color de cada lado en los otros formatos: el magenta de la Liga, el dorado, el verde, el celeste y el blanco
+COLORES_LADO = ('#E41373', '#FFD24A', '#29B298', '#58A6FF', '#F6F6F6')
+
+
+def prob_lados(grupos):
+    """📊 QUIÉN GANA CON MÁS DE UNO POR LADO O MÁS DE DOS LADOS (19/10/2026, Dlx: «necesitamos ahí la información aún, o
+    sea la data como quién es más probable que gane»). La fuerza de cada lado es el PROMEDIO de los suyos —con el Score si
+    lo tienen todos, si no con el OVR (al menos uno por lado)— y la cuenta es la de `prob_vs()` llevada a N lados: con dos
+    da lo mismo. `(ps, por)` con enteros que suman 100, o `None` si de un lado no se sabe nada: la imagen dice «??».
+
+    ⚠️ PROMEDIO Y NO SUMA: con la suma, ocho contra uno lo ganarían siempre los ocho, y la barra diría cuántos son, no
+    qué tan buenos. Nunca 0 ni 100, como en el mano a mano."""
+    lados = [[y for y in (g or []) if y] for g in (grupos or [])]
+    lados = [g for g in lados if g]
+    if len(lados) < 2:
+        return None
+    for campo, escala, por in (('sc', PROB_SCORE, 'Score promedio'), ('ovr', PROB_OVR, 'OVR promedio')):
+        vals = []
+        for g in lados:
+            xs = []
+            for y in g:
+                try:
+                    x = float(y.get(campo) or 0)
+                except (TypeError, ValueError):
+                    x = 0.0
+                if x > 0:
+                    xs.append(x)
+            if not xs or (campo == 'sc' and len(xs) != len(g)):
+                vals = None
+                break
+            vals.append(sum(xs) / len(xs))
+        if not vals:
+            continue
+        if len(vals) == 2:
+            p = 1 / (1 + 10 ** ((vals[1] - vals[0]) / escala))
+            pa = min(97, max(3, int(round(p * 100))))
+            return [pa, 100 - pa], por
+        pesos = [10 ** ((x - max(vals)) / escala) for x in vals]
+        crudo = [100 * w / sum(pesos) for w in pesos]
+        ps = [int(x) for x in crudo]
+        for i in sorted(range(len(ps)), key=lambda i: crudo[i] - ps[i], reverse=True)[:100 - sum(ps)]:
+            ps[i] += 1
+        # nadie en 0: el que quedó abajo de 2 se lleva de lo del primero
+        for i in range(len(ps)):
+            if ps[i] < 2:
+                j = ps.index(max(ps))
+                ps[j] -= 2 - ps[i]
+                ps[i] = 2
+        return ps, por
+    return None
+
+
+def acomodar(n, ancho, alto, gap=12, solapa=0.2, ratio=0.685):
+    """El tamaño de las tarjetas de un lado: en una fila o en dos, y desde tres superpuestas un poco, como una mano de
+    cartas (la idea de «Card Hand Gallery» de 21st), lo que las deje más grandes. Así un 8 contra 1 sigue leyéndose:
+    los ocho en dos filas de cuatro y el uno, grande. `(filas, por_fila, alto, ancho, paso)`."""
+    mejor = None
+    for filas in (1, 2):
+        if filas > n:
+            break
+        c = -(-n // filas)
+        h_fila = (alto - (filas - 1) * gap) / filas
+        o = solapa if c >= 3 else 0
+        w_max = (ancho - (0 if o else (c - 1) * gap)) / (c - (c - 1) * o)
+        h = min(h_fila, w_max / ratio)
+        w = h * ratio
+        paso = w * (1 - o) if o else w + gap
+        if mejor is None or h > mejor[2] + 1:
+            mejor = (filas, c, h, w, paso)
+    return mejor
+
+
 def html_vs_grupos(v, d):
-    """🖼️ EL VS DE LOS OTROS FORMATOS (19/10/2026, Dlx: «hacer algo para que muestre sus tarjetas en estos formatos
-    distintos»): 2v2, 1v3, 8v1 del Multiverse y los «todos contra todos» (1v1v1). `v['grupos']` son los lados, cada uno
-    una lista de `{n, fl, ovr, carta}`; cada lado con sus tarjetas, separados por VS. El tamaño de las tarjetas sale de
-    cuántas hay —todas entran en los 1200 de ancho—, y quien no tiene tarjeta sale con la silueta y su nombre, como en
-    el mano a mano. Sin barra de pronóstico ni cara a cara: son de dos personas."""
+    """🖼️ EL VS DE LOS OTROS FORMATOS: 2v2, 1v3, 8v1 del Multiverse y los «todos contra todos» (1v1v1). `v['grupos']`
+    son los lados, cada uno una lista de `{n, fl, ovr, sc, rg, carta}`.
+
+    🧩 LA SEGUNDA VUELTA (19/10/2026, Dlx sobre el 3 contra 1 de LA REDENCIÓN VOL.6: «¿puedes usar 21st para ver qué
+    diseños podemos usar para mejorar esto? Recuerda pueden haber en casos extremos 8vs1… y necesitamos ahí la
+    información, como quién es más probable que gane»). La primera ponía todas las tarjetas en una fila del mismo
+    tamaño —con ocho, de 100 px— y el nombre otra vez debajo de cada una. Ahora, en 1200×675:
+      · con DOS lados, cada uno en su mitad, y sus tarjetas se acomodan solas (`acomodar()`): una grande, dos al lado,
+        desde tres superpuestas como una mano de cartas y, si conviene, en dos filas. El VS en el medio;
+      · con TRES O MÁS, una columna por lado con un VS chico entre cada una;
+      · debajo de cada lado, su pronóstico grande en su color, su OVR promedio y cuántos son;
+      · abajo de todo, la barra partida en un tramo por lado (la idea de «Partition Bar» de 21st), con `prob_lados()`;
+      · el nombre ya no se repite debajo de las tarjetas: la tarjeta lo trae. Sólo quien no tiene tarjeta lleva el
+        suyo, adentro de su silueta."""
     from comun import sin_foto as SF
     grupos = [[y for y in (g or []) if y] for g in (v.get('grupos') or [])]
     grupos = [g for g in grupos if g][:5]
-    total = sum(len(g) for g in grupos) or 1
-    vss = max(0, len(grupos) - 1)
-    # el ancho: 1120 útiles, 92 por cada VS y 14 entre tarjetas del mismo lado; una tarjeta mide 0,7 de su alto
-    alto = int(min(400, (1120 - vss * 92 - (total - len(grupos)) * 14) / (total * 0.7)))
-    ancho = int(alto * 0.7)
+    S = len(grupos)
+    cols = [COLORES_LADO[i % len(COLORES_LADO)] for i in range(S)]
 
     def bandera(fl):
         cps = [ord(c) - 0x1F1E6 for c in str(fl or '')]
@@ -283,52 +361,122 @@ def html_vs_grupos(v, d):
         return 'data:image/svg+xml;base64,' + base64.b64encode(
             SF.svg(SF.cual(n)).replace('#0a0a0d', '#F6F6F6').encode('utf-8')).decode()
 
-    def uno(y):
-        nom = '<span class="gn">%s%s</span>' % (_e(y.get('n') or '¿?'), bandera(y.get('fl')))
-        if y.get('carta'):
-            return '<div class="gc"><img class="carta" src="%s" alt="">%s</div>' % (_e(y['carta']), nom)
-        ovr = '<span class="ovr">OVR %d</span>' % y['ovr'] if y.get('ovr') else ''
-        return '<div class="gc"><div class="sin"><img class="sil" src="%s" alt="">%s</div>%s</div>' % (sil(y.get('n')), ovr, nom)
+    # ── dónde va cada lado ──
+    hay_tit = bool(v.get('titulo'))
+    y0, H = 160, 352
+    if S == 2:
+        zonas = [(40, 470), (690, 470)]
+    else:
+        vsw = 56
+        W = (1120 - (S - 1) * vsw) / max(1, S)
+        zonas = [(40 + i * (W + vsw), W) for i in range(S)]
+
+    def lado(g, x0, W):
+        filas, c, h, w, paso = acomodar(len(g), W, H)
+        alto_total = filas * h + (filas - 1) * 12
+        out = []
+        for i, y in enumerate(g):
+            fila, col = divmod(i, c)
+            en_fila = min(c, len(g) - fila * c)
+            ancho_fila = w + (en_fila - 1) * paso
+            left = x0 + (W - ancho_fila) / 2 + col * paso
+            top = y0 + (H - alto_total) / 2 + fila * (h + 12)
+            # la mano de cartas: un poco giradas y en arco, sólo cuando se superponen
+            gira = ''
+            if paso < w:
+                off = col - (en_fila - 1) / 2
+                gira = 'transform:translateY(%.1fpx) rotate(%.1fdeg);' % (abs(off) * 5, max(-7, min(7, off * 3)))
+            caja = 'left:%.1fpx;top:%.1fpx;width:%.1fpx;height:%.1fpx;z-index:%d;%s' % (left, top, w, h, 10 + i, gira)
+            if y.get('carta'):
+                out.append('<img class="gc" style="%s" src="%s" alt="">' % (caja, _e(y['carta'])))
+                continue
+            fs = max(13, min(30, int(w / 8)))
+            ovr = '<span class="ovr" style="font-size:%dpx">OVR %d</span>' % (fs, y['ovr']) if y.get('ovr') else ''
+            out.append('<div class="gs" style="%s"><img class="sil" src="%s" alt=""><b style="font-size:%dpx">%s%s</b>%s</div>'
+                       % (caja, sil(y.get('n')), fs, _e(y.get('n') or '¿?'), bandera(y.get('fl')), ovr))
+        return ''.join(out)
+
+    pr = prob_lados(grupos)
+
+    # debajo de cada lado, el MISMO número con el que se hizo la cuenta: si el pronóstico salió por Score, el Score
+    campo, etiqueta = ('sc', 'Score') if pr and pr[1].startswith('Score') else ('ovr', 'OVR')
+
+    def prom(g):
+        xs = [float(y.get(campo) or 0) for y in g if float(y.get(campo) or 0) > 0]
+        return int(round(sum(xs) / len(xs))) if xs else 0
+
+    def pie(i, g, x0, W):
+        o = prom(g)
+        quien = ('%d raperos' % len(g)) if len(g) > 1 else ''
+        dato = ' · '.join(x for x in (('%s %d' % (etiqueta, o) if len(g) == 1 else '%s prom. %d' % (etiqueta, o)) if o
+                                       else 'Sin datos en la Liga', quien) if x)
+        pct = ('%d%%' % pr[0][i]) if pr else '??'
+        return ('<div class="pie%s" style="left:%.1fpx;width:%.1fpx"><b style="color:%s">%s</b><span>%s</span></div>'
+                % ('' if S == 2 else ' col', x0, W, cols[i] if pr else '#8A8A90', pct, _e(dato)))
 
     partes = []
-    for i, g in enumerate(grupos):
-        if i:
-            partes.append('<div class="vs">VS</div>')
-        partes.append('<div class="gr">%s</div>' % ''.join(uno(y) for y in g))
-    tit = ('<div class="tt"><span class="et">%s</span>%s</div>' % (_e(v.get('titulo')), (' <small>%s</small>' % _e(v.get('sub')))
-                                                                    if v.get('sub') else '')) if v.get('titulo') else ''
+    for i, (g, (x0, W)) in enumerate(zip(grupos, zonas)):
+        partes.append(lado(g, x0, W))
+        partes.append(pie(i, g, x0, W))
+        if S > 2 and i:
+            partes.append('<div class="vs chico" style="left:%.1fpx">VS</div>' % (x0 - 56 / 2 - 22))
+    if S == 2:
+        partes.append('<div class="vs" style="left:%dpx">VS</div>' % (600 - 55))
+
+    if pr:
+        barra = ''.join('<i style="width:%d%%;background:%s"></i>' % (p, c) for p, c in zip(pr[0], cols))
+        pron = '<div class="pr"><div class="pr-b">%s</div><span class="et">Pronóstico · por %s</span></div>' % (barra, pr[1])
+    else:
+        pron = '<div class="pr nada"><div class="pr-b"></div><span class="et">Pronóstico: sin datos de un lado</span></div>'
+
+    formato = ' VS '.join(str(len(g)) for g in grupos) if S == 2 else ''
+    chips = ''.join(x for x in (
+        '<span class="fmt">%s</span>' % _e(formato) if formato else '',
+        '<span class="et tit">%s</span>' % _e(v.get('titulo')) if hay_tit else '',
+        '<small>%s</small>' % _e(v.get('sub')) if v.get('sub') else '') if x)
     ev = re.sub(r'[_*~`#>]+', ' ', str(v.get('ev') or '')).strip()
     css = """
 #c{width:1200px;height:675px;position:relative;overflow:hidden;background:#0a0a0d}
 #c .mitad{position:absolute;inset:0;background:%(fondo)s;clip-path:polygon(0 0,58%% 0,42%% 100%%,0 100%%)}
-#c .cab{position:absolute;left:44px;top:30px;right:44px;display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
+#c .cab{position:absolute;left:44px;top:28px;right:44px;display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
 #c .cab b{display:block;font-weight:900;font-size:34px;line-height:1;text-transform:uppercase;font-stretch:112%%;max-width:760px}
 #c .cab .et{display:block;margin-top:6px;font-size:22px;opacity:.85}
 #c .cab .marca img{width:62px;height:62px;border-radius:50%%;object-fit:cover}
-#c .tt{position:absolute;left:44px;top:118px;display:flex;align-items:baseline;gap:12px;max-width:1100px}
-#c .tt .et{display:inline-block;background:#FFD24A;color:#0a0a0d;font-size:24px;padding:5px 12px}
-#c .tt small{font-size:18px;opacity:.9}
-#c .fila{position:absolute;left:40px;right:40px;top:%(top)dpx;bottom:34px;display:flex;align-items:center;justify-content:center;gap:0}
-#c .gr{display:flex;align-items:flex-start;gap:14px}
-#c .gc{display:flex;flex-direction:column;align-items:center;gap:8px;width:%(ancho)dpx}
-#c .carta{height:%(alto)dpx;width:auto;max-width:%(ancho)dpx;filter:drop-shadow(0 12px 20px rgba(0,0,0,.55))}
-#c .sin{width:%(ancho)dpx;height:%(alto)dpx;border:3px solid rgba(255,255,255,.28);border-radius:14px;background:rgba(255,255,255,.06);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
-#c .sin .sil{width:70%%;height:auto;opacity:.9}
-#c .ovr{font-weight:900;font-size:%(fs)dpx;color:#FFD24A}
-#c .gn{max-width:%(ancho)dpx;font-weight:900;font-size:%(fs)dpx;line-height:1.05;text-transform:uppercase;text-align:center;overflow-wrap:anywhere}
+#c .chips{position:absolute;left:44px;right:44px;top:108px;display:flex;align-items:center;gap:12px;white-space:nowrap;overflow:hidden}
+#c .chips .fmt{font-weight:900;font-size:24px;line-height:1;padding:6px 12px;border:3px solid #fff;font-style:italic}
+#c .chips .tit{display:inline-block;background:#FFD24A;color:#0a0a0d;font-size:22px;padding:6px 12px}
+#c .chips small{font-size:18px;opacity:.9;overflow:hidden;text-overflow:ellipsis}
+#c .gc{position:absolute;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.6));transform-origin:50%% 100%%}
+#c .gs{position:absolute;border:3px solid rgba(255,255,255,.3);border-radius:12px;background:#17171C;display:flex;flex-direction:column;
+  align-items:center;justify-content:flex-end;gap:6px;padding:10px 8px 14px;text-align:center;box-shadow:0 10px 18px rgba(0,0,0,.5);
+  transform-origin:50%% 100%%}
+#c .gs .sil{width:68%%;height:auto;opacity:.9;margin-bottom:auto;margin-top:12%%}
+#c .gs b{font-weight:900;line-height:1.05;text-transform:uppercase;overflow-wrap:anywhere}
+#c .gs .ovr{font-weight:900;color:#FFD24A}
 #c .fl{height:.75em;width:auto;vertical-align:.04em;margin-left:6px;border-radius:2px}
-#c .vs{flex:none;width:72px;height:72px;margin:0 10px;border-radius:50%%;background:#E41373;border:5px solid #fff;display:grid;place-items:center;
-  font-weight:900;font-size:30px;font-style:italic;box-shadow:0 10px 30px rgba(0,0,0,.5);align-self:center}
-""" % {'fondo': _e(d['color']), 'alto': alto, 'ancho': ancho, 'top': 168 if tit else 122,
-       'fs': max(14, min(26, int(ancho / 9)))}
+#c .vs{position:absolute;top:%(vs_y)dpx;width:110px;height:110px;border-radius:50%%;background:#E41373;border:6px solid #fff;
+  display:grid;place-items:center;font-weight:900;font-size:46px;font-style:italic;box-shadow:0 10px 30px rgba(0,0,0,.5);z-index:40}
+#c .vs.chico{width:44px;height:44px;top:%(vs_c)dpx;border-width:3px;font-size:18px}
+#c .pie{position:absolute;top:%(pie_y)dpx;display:flex;align-items:baseline;justify-content:center;gap:12px;text-align:center}
+#c .pie b{font-weight:900;font-size:40px;line-height:1}
+#c .pie span{font-weight:800;font-size:19px;opacity:.9;text-transform:uppercase;letter-spacing:.02em}
+#c .pie.col{flex-direction:column;align-items:center;gap:4px;top:%(pie_c)dpx}
+#c .pie.col b{font-size:34px}
+#c .pie.col span{font-size:15px;line-height:1.1}
+#c .pr{position:absolute;left:44px;right:44px;top:%(pr_y)dpx}
+#c .pr-b{display:flex;height:16px;border:2px solid #fff;background:#3A3A3E}
+#c .pr-b i{display:block;height:100%%;border-right:3px solid #0a0a0d}
+#c .pr-b i:last-child{border-right:0}
+#c .pr .et{display:block;margin-top:8px;font-size:16px;opacity:.85;text-align:center}
+""" % {'fondo': _e(d['color']), 'vs_y': y0 + H // 2 - 55, 'vs_c': y0 + H // 2 - 22, 'pie_y': y0 + H + 14, 'pie_c': y0 + H + 6, 'pr_y': y0 + H + 72}
     return ("""<!doctype html><html><head><meta charset="utf-8"><style>%s%s%s</style></head><body><div id="c" class="f">
 <div class="mitad"></div>
 <div class="cab"><div><b>%s</b><span class="et">%s · %s</span></div><div class="marca">%s</div></div>
+<div class="chips">%s</div>
 %s
-<div class="fila">%s</div>
+%s
 </div></body></html>""" % (_fuentes(), _BASE_CSS, css, _e(ev[:60] or 'Liga Global'), _e(v.get('ronda') or ''), _e(d['nombre']),
-                            ('<img src="%s" alt="">' % d['logo']) if d['logo'] else '', tit, ''.join(partes)))
+                            ('<img src="%s" alt="">' % d['logo']) if d['logo'] else '', chips, ''.join(partes), pron))
 
 
 def html_vs(v, d):
@@ -615,13 +763,27 @@ def _self_check():
          and prob_vs({'ovr': 92}, {'ovr': 0}) is None and prob_vs({'ovr': 99, 'sc': 95}, {'ovr': 40, 'sc': 5})[0] == 97
          and '??' in vs and 'Sin datos de uno' in vs
          and 'width:64%' in html_vs({'a': {'n': 'A', 'ovr': 92}, 'b': {'n': 'B', 'ovr': 82}}, d)),
-        ('los otros formatos (2v2, 1v3, todos contra todos): cada lado con sus tarjetas y un VS entre lados, la silueta para '
-         'quien no tiene, y todo entra en los 1200 de ancho',
+        ('los otros formatos (2v2, 1v3, 8v1, todos contra todos): cada lado con sus tarjetas, un VS entre lados (uno grande '
+         'con dos, uno chico entre cada uno con más), la silueta para quien no tiene, y su pronóstico debajo',
          html_vs({'grupos': [[{'n': 'A', 'carta': 'https://pub-x.r2.dev/a.webp'}], [{'n': 'B', 'ovr': 70}, {'n': 'C'}, {'n': 'D'}]]}, d)
-         .count('class="gr"') == 2
-         and html_vs({'grupos': [[{'n': 'A'}], [{'n': 'B'}], [{'n': 'C'}]]}, d).count('class="vs"') == 2
+         .count('class="gs"') == 3
+         and html_vs({'grupos': [[{'n': 'A'}], [{'n': 'B'}], [{'n': 'C'}]]}, d).count('class="vs chico"') == 2
          and 'class="sil"' in html_vs({'grupos': [[{'n': 'A'}], [{'n': 'B'}]]}, d)
-         and '<b>x' not in html_vs({'grupos': [[{'n': '<b>x</b>'}], [{'n': 'B'}]]}, d)),
+         and '<b>x' not in html_vs({'grupos': [[{'n': '<b>x</b>'}], [{'n': 'B'}]]}, d)
+         and '>3 VS 1<' in html_vs({'grupos': [[{'n': 'A'}, {'n': 'B'}, {'n': 'C'}], [{'n': 'D'}]]}, d)),
+        ('el pronóstico con grupos: por el PROMEDIO (ocho flojos no le ganan a uno bueno por ser ocho), con dos lados igual '
+         'que el mano a mano, con más suma 100 y nadie en 0, y «??» si de un lado no se sabe nada',
+         prob_lados([[{'ovr': 92}], [{'ovr': 82}]]) == ([64, 36], 'OVR promedio')
+         and prob_lados([[{'ovr': 60}] * 8, [{'ovr': 95}]])[0][1] > 80
+         and prob_lados([[{'ovr': 90, 'sc': 70}], [{'ovr': 60, 'sc': 70}]])[1] == 'Score promedio'
+         and prob_lados([[{'ovr': 90, 'sc': 70}], [{'ovr': 60}]])[1] == 'OVR promedio'
+         and sum(prob_lados([[{'ovr': 99}], [{'ovr': 40}], [{'ovr': 41}], [{'ovr': 42}]])[0]) == 100
+         and min(prob_lados([[{'ovr': 99}], [{'ovr': 40}], [{'ovr': 41}], [{'ovr': 42}]])[0]) >= 2
+         and prob_lados([[{'ovr': 80}], [{'n': 'x'}]]) is None
+         and '??' in html_vs({'grupos': [[{'n': 'A', 'ovr': 80}], [{'n': 'B'}]]}, d)),
+        ('las tarjetas de un lado: una grande; ocho en dos filas de cuatro de 150 px o más, y ninguna más ancha que su lado',
+         acomodar(1, 470, 352)[0] == 1 and acomodar(8, 470, 352)[:2] == (2, 4) and acomodar(8, 470, 352)[2] > 150
+         and all(acomodar(n, 470, 352)[3] <= 470 for n in range(1, 9))),
         ('lo que viene de Discord se escapa: ningún HTML crudo',
          '<b>x' not in html_afiche(dict(a, nombre='<b>x</b>', horario='<i>9</i>'), 'FFA', d)
          and '&lt;i&gt;9' in html_afiche(dict(a, nombre='<b>x</b>', horario='<i>9</i>'), 'FFA', d)),

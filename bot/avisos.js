@@ -6777,7 +6777,8 @@ export class Avisos {
             lineas.push(lineaVoto(voto.a, voto.b, 0, 0, '', voto.mas, []));
             const titEv = escMd(String(nombre || L.nombre || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
             // 🧩 y el vs con todas las tarjetas, separadas por VS (`html_vs_grupos()` de bot/kit.py)
-            const persona = (y) => ({ n: y.n, fl: y.fl, k: y.k, ovr: (dc.tabla[y.k] || {}).ovr || 0, carta: y.k ? dc.cartaDe(y.k) : '' });
+            const persona = (y) => ({ n: y.n, fl: y.fl, k: y.k, ovr: (dc.tabla[y.k] || {}).ovr || 0, sc: (dc.tabla[y.k] || {}).sc || 0,
+              rg: (dc.tabla[y.k] || {}).rg || '', carta: y.k ? dc.cartaDe(y.k) : '' });
             const vs = { ev: String(nombre || L.nombre || '').replace(/[_*~`]+/g, '').trim(), ronda: bat.r,
               titulo: equipos ? bat.lados.length + ' EQUIPOS' : 'TODOS CONTRA TODOS', sub: '', grupos: gs.map((g) => g.map(persona)) };
             ms.push({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n'), vs });
@@ -6820,7 +6821,8 @@ export class Avisos {
             // sale ya, con el texto, y la imagen se le agrega editándolo (una edición no le suena a nadie)
             // 🧩 CON EQUIPOS (2v2, 1v3, 8v1 del Multiverse) TAMBIÉN, con todas las tarjetas (19/10/2026, Dlx: «hacer algo
             // para que muestre sus tarjetas en estos formatos distintos»): `grupos`, que dibuja `html_vs_grupos()`
-            const persona = (y) => ({ n: y.n, fl: y.fl, k: y.k, ovr: (dc.tabla[y.k] || {}).ovr || 0, carta: y.k ? dc.cartaDe(y.k) : '' });
+            const persona = (y) => ({ n: y.n, fl: y.fl, k: y.k, ovr: (dc.tabla[y.k] || {}).ovr || 0, sc: (dc.tabla[y.k] || {}).sc || 0,
+              rg: (dc.tabla[y.k] || {}).rg || '', carta: y.k ? dc.cartaDe(y.k) : '' });
             const vsEq = ga.length > 1 || gb.length > 1 ? { ev: String(nombre || L.nombre || '').replace(/[_*~`]+/g, '').trim(),
               ronda: bat.r, titulo: tt ? tt.t : '', sub: tt ? tt.sub || '' : '', grupos: [ga.map(persona), gb.map(persona)] } : null;
             const vs = vsEq || (ga.length === 1 && gb.length === 1) ? vsEq || { ev: String(nombre || L.nombre || '').replace(/[_*~`]+/g, '').trim(),
