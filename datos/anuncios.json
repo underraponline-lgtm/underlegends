@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-19T17:57:10+00:00",
+ "cuando": "2026-10-19T18:25:15+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1263,6 +1263,35 @@
    "categoria_id": "863207988251852820"
   },
   {
+   "nombre": "El festín de Afrodita",
+   "servidor": "SR",
+   "canal": "[🏆]eventos",
+   "msg_id": "1561805816917393541",
+   "cuando": "2026-10-19T18:18:43",
+   "canal_id": "863208020900184084",
+   "guild_id": "492346406976356374",
+   "organizador": "",
+   "orgs": [
+    {
+     "n": "gxbrrlaljndrr",
+     "id": "847124099243180042"
+    }
+   ],
+   "autor_h": "f8abf54d3900e8f9",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "2🆚️2",
+   "horario": "<t:1792438200:t>",
+   "fecha": "19/10",
+   "premios": "Puntos de ascenso + Puntos de ranking GØÐZ",
+   "staff": {},
+   "autor": "gxbrrlaljndrr",
+   "staff_cuentas": {},
+   "categoria_id": "863207988739309600"
+  },
+  {
    "nombre": "SNAKE INSIGNIA",
    "servidor": "SR",
    "canal": "[🏆]eventos",
@@ -1937,30 +1966,6 @@
    "modalidad": "ROYAL RUMBLE",
    "horario": "en 15",
    "fecha": "3",
-   "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
-   "staff": {},
-   "autor": "Nc",
-   "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
-  },
-  {
-   "nombre": "FLEIVA FREE",
-   "servidor": "SR",
-   "canal": "[🏆]eventos",
-   "msg_id": "1541620851307454574",
-   "cuando": "2026-08-25T01:30:52",
-   "canal_id": "863208020900184084",
-   "guild_id": "492346406976356374",
-   "organizador": "@nachonc_",
-   "orgs": [],
-   "autor_h": "d83234c3da26ac85",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "4",
-   "modalidad": "MULTIVERSE(1-4)",
-   "horario": "23 HS 🇦🇷",
-   "fecha": "2",
    "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
    "staff": {},
    "autor": "Nc",
@@ -6188,6 +6193,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "SR",
+   "canal": "[📝]inscripciones",
+   "texto": "Joaquín la Profecia🇦🇷",
+   "quien": "urban0223",
+   "discord_id": "665972494846394389",
+   "msg_id": "1561807377093754963",
+   "cuando": "2026-10-19T18:24:55"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Panchok 🇨🇱",
+   "quien": "panchok0103",
+   "discord_id": "1400508144920170577",
+   "msg_id": "1561800327718641826",
+   "cuando": "2026-10-19T17:56:54"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",

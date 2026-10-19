@@ -2450,6 +2450,20 @@
      "cuentas": {
       "Kravitz": "1345962362615894027"
      }
+    },
+    "1561805816917393541": {
+     "sv": "SR",
+     "nombre": "El festín de Afrodita",
+     "mo": "2026-10-19T19:30:00Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "gxbrrlaljndrr",
+       "id": "847124099243180042"
+      }
+     ],
+     "organizador": "",
+     "cuentas": {}
     }
    },
    "ver": {
@@ -2726,6 +2740,13 @@
       "",
       "Kravitz",
       "thekravitz777"
+     ]
+    },
+    "SR|2026-10-19": {
+     "847124099243180042": [
+      "GP",
+      "gxbrrlaljndrr",
+      "gxbrielalejandro"
      ]
     }
    }
