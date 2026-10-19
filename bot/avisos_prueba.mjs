@@ -914,6 +914,8 @@ const ok = (cond, que, det) => {
     // 👆 los toques de toda la página (16/10/2026): se suman por día, y lo que no tiene la forma no entra
     o.clics({ c: { 'ranking:→ perfil': 3, 'inicio:ver llave': 1, 'x:<b>': 5 } });
     o.clics({ c: { 'ranking:→ perfil': 2, 'tienda:comprar': 999 } });
+    // (pasada del 19/10/2026: se juntan en memoria y van a la base una vez por minuto, o cuando el Dashboard los pide)
+    ok(o.sql.exec('SELECT COUNT(*) AS n FROM clics').toArray()[0].n === 0, 'los toques se juntan en memoria: ni una fila escrita por pedido');
     const cr = o.clicsResumen();
     ok(cr.n['ranking:→ perfil'][0] === 5 && cr.n['inicio:ver llave'][0] === 1 && !cr.n['x:<b>'] && !cr.n['tienda:comprar']
       && A.claveClic('Ranking:x') === '' && A.claveClic('eventos:inscribite ya') === 'eventos:inscribite ya',
@@ -997,12 +999,21 @@ const ok = (cond, que, det) => {
       const r2 = await hv({ quien: '100000030', ids: ['m:abc', 'sem:FFA:2026-10-12'] });
       const r3 = await hv({ quien: '100000030' });
       const otro = await hv({ quien: '100000031' });
-      const muchas = Array.from({ length: 120 }, (_, k) => 'x' + k);
-      for (let k = 0; k < 6; k += 1) await hv({ quien: '100000032', ids: muchas.map((x) => x + '-' + k) });
+      // (las 600 de días anteriores: en un mismo día hay un tope, ver abajo)
+      for (let k = 0; k < A.HISTORIAS_TOPE; k += 1) {
+        o.sql.exec('INSERT INTO hvistas (quien, id, t) VALUES (?, ?, ?)', '100000032', 'viejo-' + k, Date.now() - 2 * 86400e3 - k);
+      }
+      await hv({ quien: '100000032', ids: ['nueva-1', 'nueva-2'] });
       const n32 = o.sql.exec("SELECT COUNT(*) AS n FROM hvistas WHERE quien = '100000032'").toArray()[0].n;
+      const n32nuevas = o.sql.exec("SELECT COUNT(*) AS n FROM hvistas WHERE quien = '100000032' AND id LIKE 'nueva-%'").toArray()[0].n;
       ok(r1.vistas.length === 2 && r2.vistas.length === 3 && r3.vistas.map((x) => x[0]).sort().join() === 'hoy:2026-10-18:2:0,m:abc,sem:FFA:2026-10-12'
-        && otro.vistas.length === 0 && n32 === A.HISTORIAS_TOPE && (await o.historiasVistas({ quien: 'x' }).json()).error,
-      'las historias vistas en tu cuenta: se suman sin repetir, cada uno las suyas, hasta 600', JSON.stringify([r2, n32]));
+        && otro.vistas.length === 0 && n32 === A.HISTORIAS_TOPE && n32nuevas === 2 && (await o.historiasVistas({ quien: 'x' }).json()).error,
+      'las historias vistas en tu cuenta: se suman sin repetir, cada uno las suyas, hasta 600 (se van las más viejas)', JSON.stringify([r2, n32]));
+      // 🔴 y un tope por día (pasada del 19/10/2026): ids inventados en un bucle no escriben filas sin fin
+      const muchas = Array.from({ length: 120 }, (_, k) => 'x' + k);
+      for (let k = 0; k < 6; k += 1) await hv({ quien: '100000033', ids: muchas.map((x) => x + '-' + k) });
+      const n33 = o.sql.exec("SELECT COUNT(*) AS n FROM hvistas WHERE quien = '100000033'").toArray()[0].n;
+      ok(n33 === A.HISTORIAS_DIA, 'en un mismo día, hasta ' + A.HISTORIAS_DIA + ' historias distintas por persona', n33);
     }
     // 🗳️ «¿quién gana la liga?» (14/10/2026): uno por persona y liga, se cambia; afuera se ve cuántos; los de una liga
     // que cerró hace más de 30 días se borran, y los de una que sigue no (su cierre se corre con cada voto)
@@ -2119,6 +2130,13 @@ const ok = (cond, que, det) => {
     const f1 = filas();
     ok(f1.length === 5 && cobrado(LVEL) === 500 + 300 + 1000 && cobrado(MELO) === 500 && cobrado(KRISH) === 100,
       'cada fecha paga una vez a cada uno (Lvel 500 + 300, más su debut, que no se toca); sin Discord o en 0, nada', JSON.stringify(f1));
+    // 🏷️ (pasada del 19/10/2026) igualar escribe sólo la diferencia: lo mismo otra vez, cero filas; una que cambia, una
+    const igual = o.tiendaIgualar('wr:', wr, t2);
+    const cambia = o.tiendaIgualar('wr:', { ...wr, ['prueba:f1:' + KRISH]: [KRISH, 60, t1] }, t2);
+    const saca = o.tiendaIgualar('wr:', Object.fromEntries(Object.entries(wr).filter(([id]) => id !== 'prueba:f2:' + MELO)), t2);
+    ok(igual === 0 && cambia === 1 && saca === 2 && filas().length === 4 && cobrado(LVEL) === 500 + 300 + 1000,
+      'la Tienda escribe sólo lo que cambió (antes, todo dos veces por corrida) y no toca otro prefijo', JSON.stringify([igual, cambia, saca]));
+    o.tiendaIgualar('wr:', wr, t2);
     // la misma corrida otra vez (misma huella) y la relectura del canal (otra huella, lo mismo adentro): igual
     await o.resolverPrecios(t2 + 1);
     kv = JSON.stringify({ v: 'a2', r: {}, wr });

@@ -2847,6 +2847,8 @@ export function validarVoto(defs, d, id, ahora) {
 export const HISTORIAS_TOPE = 600;
 export const HISTORIAS_DIAS = 30;
 export const HISTORIAS_LOTE = 120;
+//: cuántas historias distintas por persona en 24 h (la página muestra unas decenas por día)
+export const HISTORIAS_DIA = 400;
 //: los votos de una liga se borran a los tantos días de que cierra su encuesta (lo dice la página de privacidad)
 export const LIGA_VOTOS_DIAS = 30;
 
@@ -3261,7 +3263,8 @@ export function ajusteValido(cual, valor) {
       const s = String(x || '');
       // 🏟️ `cat:op` los de la Liga y `SV/cat:op` los de cada servidor (18/10/2026)
       const m = /^(?:([A-Z]{2,6})\/)?([a-z]{3,14}):.{1,80}$/.exec(s);
-      if (!m || !MES_CAT[m[2]]) return undefined;
+      // (`hasOwn`: «constructor» pasa la expresión y está en cualquier objeto, pasada del 19/10/2026)
+      if (!m || !Object.hasOwn(MES_CAT, m[2])) return undefined;
       if (!q.includes(s)) q.push(s);
     }
     return { mes: valor.mes, quitar: q };
@@ -4833,10 +4836,17 @@ export async function olvidarAvisos(env, quien, clave) {
 
 export async function vigilar(env, servidores, dueno, dormido) {
   if (!env.AVISOS) return;
-  await elObjeto(env).fetch('https://avisos/vigilar', {
-    method: 'POST', body: JSON.stringify({ servidores, dueno: dueno || '', dormido: !!dormido }),
-    headers: { 'content-type': 'application/json' },
-  });
+  const o = elObjeto(env);
+  const pedir = (ruta, cuerpo) => o.fetch('https://avisos' + ruta, {
+    method: 'POST', body: JSON.stringify(cuerpo), headers: { 'content-type': 'application/json' } });
+  // 🛡️ EL ANTI-RAID VA EN SU PROPIO PEDIDO, a la par del vigía (pasada del 19/10/2026). Adentro de la vuelta del vigía
+  // compartía sus 50 pedidos a Discord por invocación —el vigía lee todos los canales de la Liga— y se perdía cada vez
+  // que el vigía se salteaba (una vuelta colgada lo saltea 3 minutos). Así tiene su presupuesto y su candado. Y NO
+  // DUERME (Dlx, 18/10/2026: «sí, sólo el anti-raid»): el raid a DDF fue a las 22:49 y pudo ser a las 4 AM
+  await Promise.allSettled([
+    pedir('/vigilar', { servidores, dueno: dueno || '', dormido: !!dormido }),
+    pedir('/antiraid-vuelta', {}),
+  ]);
 }
 
 // ═════════════════════════════════════════════════════════════════════
@@ -5224,7 +5234,9 @@ export class Avisos {
         // 📏 y los de la pasada del 19/10/2026: en 13 días el objeto leyó 1,46 millones de filas por día, y la que más
         // leía era el chat en vivo de un canal (234.000 por día recorriendo la tabla entera), después los votos y los
         // precios de cada uno (cuántos puso hoy): las tres, sin índice
-        ['chat_vivo_canal', 'chat_vivo', 'canal, t'], ['votos_quien', 'votos', 'quien, t'], ['precios_quien', 'precios', 'quien, t']]) {
+        ['chat_vivo_canal', 'chat_vivo', 'canal, t'], ['votos_quien', 'votos', 'quien, t'], ['precios_quien', 'precios', 'quien, t'],
+        // y las dos limpiezas por fecha que recorrían la tabla entera: lo visto de las historias y de las promos
+        ['hvistas_t', 'hvistas', 't'], ['promo_visto_t', 'promo_visto', 't']]) {
         this.sql.exec(`CREATE INDEX IF NOT EXISTS ${nombre} ON ${tabla} (${col})`);
       }
     });
@@ -5308,10 +5320,18 @@ export class Avisos {
     const id = (x) => (/^\d{5,25}$/.test(String(x || '')) ? String(x) : '');
     const cerrado = c.cerrado && !Number.isNaN(Date.parse(c.cerrado.hasta || ''))
       ? { hasta: new Date(Date.parse(c.cerrado.hasta)).toISOString(), nivel: Math.max(0, Math.min(4, Number(c.cerrado.nivel) || 0)) } : null;
-    const cfg = {
+    const nuevo = {
       canal: id(c.canal), escudo: (Array.isArray(c.escudo) ? c.escudo : []).map(id).filter(Boolean).slice(0, 6),
       oleada: c.oleada === true, staff: c.staff === true, cerrado, auto: c.auto === true,
     };
+    // 🔴 CAMPO POR CAMPO (pasada del 19/10/2026): con `solo` se cambian ésos y el resto queda como está en la base (el panel
+    // leía, cambiaba una cosa y guardaba todo: pisaba el cierre que AUTOMÁTICO hizo mientras tanto)
+    const antes = this.antiraidCfg(gid);
+    const solo = Array.isArray(d.solo) ? d.solo.filter((k) => ['canal', 'escudo', 'oleada', 'staff', 'cerrado', 'auto'].includes(k)) : null;
+    const cfg = solo ? { ...antes, ...Object.fromEntries(solo.map((k) => [k, nuevo[k]])) } : nuevo;
+    // 🕵️ la vigilancia que se vuelve a prender arranca de cero: `desde` le dice a la vuelta que el cursor del registro es de
+    // antes (si no, leía lo que pasó mientras estaba apagada y avisaba —o actuaba— sobre eso)
+    cfg.desde = cfg.staff && !antes.staff ? Date.now() : (Number(antes.desde) || 0);
     this.sql.exec("INSERT INTO antiraid (gid, cfg, est, t) VALUES (?, ?, '{}', ?) " +
       'ON CONFLICT(gid) DO UPDATE SET cfg = excluded.cfg, t = excluded.t', gid, JSON.stringify(cfg), Date.now());
     return { ok: true, cfg };
@@ -5336,9 +5356,37 @@ export class Avisos {
     return { roles: x && Array.isArray(x.roles) ? x.roles : null };
   }
 
+  /** 🛡️ La vuelta de cada minuto, en su propio pedido (ver `vigilar()` de afuera), con su candado como el del vigía. */
+  async antiraidRonda() {
+    const ahora = Date.now();
+    if (!this.env.DISCORD_TOKEN) return { ok: false };
+    // con Discord diciendo 401 el vigía para una hora: el anti-raid también, que usa el mismo token
+    const v = this.leer('vigia') || {};
+    if (v.pausa && ahora < v.pausa) return { ok: false, pausa: true };
+    if (this.arEn && ahora - this.arEn < 3 * MIN) { this.medir('antiraid', 'salteada', 1); return { ok: true, salteada: true }; }
+    this.arEn = ahora;
+    try {
+      await this.antiraidVuelta(ahora);
+      return { ok: true };
+    } catch (e) {
+      this.medir('antiraid', 'error', 1);
+      return { ok: false };
+    } finally {
+      this.arEn = 0;
+    }
+  }
+
   async antiraidVuelta(ahora) {
-    const filas = this.sql.exec('SELECT gid, cfg, est FROM antiraid').toArray();
-    for (const f of filas) {
+    // 📏 hasta `TOPE_PEDIDOS` pedidos a Discord por vuelta: si corta, la próxima arranca por el servidor que quedó, así
+    // ninguno se queda siempre atrás. Cada fila se lee recién antes de mirarla (la de arriba puede tardar)
+    const gids = this.sql.exec('SELECT gid FROM antiraid ORDER BY gid').toArray().map((f) => String(f.gid));
+    const i0 = Math.max(0, gids.indexOf(this.arSigue || ''));
+    const n0 = AR.gasto.n;
+    this.arSigue = '';
+    for (const gid of [...gids.slice(i0), ...gids.slice(0, i0)]) {
+      if (AR.gasto.n - n0 >= AR.TOPE_PEDIDOS) { this.arSigue = gid; this.medir('antiraid', 'tope', 1); break; }
+      const f = this.sql.exec('SELECT gid, cfg, est FROM antiraid WHERE gid = ?', gid).toArray()[0];
+      if (!f) continue;
       try { await this.antiraidUno(f, ahora); } catch (e) { this.medir('antiraid', 'error', 1); }
     }
   }
@@ -5350,23 +5398,39 @@ export class Avisos {
     try { cfg = { ...AR.AR_BASE, ...JSON.parse(f.cfg || '{}') }; } catch (e) { cfg = { ...AR.AR_BASE }; }
     try { est = JSON.parse(f.est || '{}') || {}; } catch (e) { est = {}; }
     if (!cfg.oleada && !cfg.staff && !cfg.cerrado) return;
+    // 🚪 el bot ya no está en ese servidor (Discord dijo 404): una hora sin preguntar, en vez de 1.440 pedidos rechazados
+    // por día (pasada del 19/10/2026)
+    if (est.fuera && ahora < est.fuera) return;
+    const afuera = () => est.fuera && ahora < est.fuera;
     const avisos = [];
     let usuarios = {};
     let cambioCfg = false;
     // ⏲️ el pánico vencido
-    if (cfg.cerrado && Date.parse(cfg.cerrado.hasta || '') <= ahora) {
-      await AR.abrir(env, gid, cfg.cerrado.nivel);
-      cfg.cerrado = null;
-      cambioCfg = true;
-      if (cfg.canal) {
-        await AR.mandar(env, cfg.canal, { content: '🛡️ Pasó el tiempo del cierre: el servidor volvió a abrirse (invitaciones, ' +
-          'mensajes directos y verificación como estaban).' });
+    if (cfg.cerrado && Date.parse(cfg.cerrado.hasta || '') <= ahora && (!est.reab || ahora - est.reab >= 10 * MIN)) {
+      const a = await AR.abrir(env, gid, cfg.cerrado.nivel);
+      if (a.ok) {
+        cfg.cerrado = null;
+        cambioCfg = true;
+        delete est.reab;
+        if (cfg.canal) {
+          await AR.mandar(env, cfg.canal, { content: '🛡️ Pasó el tiempo del cierre: el servidor volvió a abrirse (invitaciones, ' +
+            'mensajes directos y verificación como estaban).' });
+        }
+      } else {
+        // 🔴 SÓLO SI ABRIÓ (pasada del 19/10/2026): sin permiso, la verificación quedaba al máximo para siempre y la
+        // configuración se olvidaba del nivel de antes. Se reintenta cada 10 minutos y se avisa una vez
+        if (!est.reab && cfg.canal) {
+          await AR.mandar(env, cfg.canal, { content: '⚠️ Pasó el tiempo del cierre y **no pude abrir el servidor**: el bot ' +
+            'necesita **Gestionar servidor**. Lo sigo intentando cada 10 minutos (o ábranlo con `/antiraid`).' });
+        }
+        est.reab = ahora;
       }
     }
     // 🌊 la oleada
     if (cfg.oleada && cfg.canal) {
       const r = await AR.pedir(env, `/guilds/${gid}?with_counts=true`);
-      if (r.ok) {
+      if (r.status === 404) est.fuera = ahora + 60 * MIN;
+      else if (r.ok) {
         const g = await r.json();
         const n = Number(g.approximate_member_count) || 0;
         if (n) est.m = [...(est.m || []).filter(([t]) => ahora - t <= 6 * 60 * 1000), [ahora, n]];
@@ -5375,7 +5439,7 @@ export class Avisos {
       }
     }
     // 🕵️ el staff
-    if (cfg.staff && cfg.canal) {
+    if (cfg.staff && cfg.canal && !afuera()) {
       if (!est.roles || ahora - (est.roles.t || 0) > 10 * 60 * 1000) {
         const r = await AR.pedir(env, `/guilds/${gid}/roles`);
         if (r.ok) {
@@ -5383,19 +5447,34 @@ export class Avisos {
           est.roles = { t: ahora, ids: roles.filter((x) => AR.tieneP(x.permissions, AR.PELIGROSOS)).map((x) => String(x.id)) };
         }
       }
-      // la primera vuelta marca desde dónde: lo de antes de prenderlo no se avisa
-      if (!est.ult) est.ult = AR.snowflakeDe(ahora);
-      else {
+      // la primera vuelta marca desde dónde: lo de antes de prenderlo no se avisa. 🔴 Y la primera DESPUÉS DE VOLVER A
+      // PRENDERLA también (pasada del 19/10/2026): el cursor viejo traía lo que pasó mientras estaba apagada
+      if (!est.ult || (Number(cfg.desde) || 0) !== (Number(est.desde) || 0)) {
+        est.ult = AR.snowflakeDe(ahora);
+        est.w = [];
+        est.desde = Number(cfg.desde) || 0;
+        delete est.aud;
+      } else if (!est.aud || ahora >= (est.aud.hasta || 0)) {
         const r = await AR.pedir(env, `/guilds/${gid}/audit-logs?limit=100&after=${est.ult}`);
         if (r.ok) {
+          delete est.aud;
           const j = await r.json();
           const nuevas = (j.audit_log_entries || []).filter((e) => e && e.id)
             .sort((a, b) => (BigInt(a.id) < BigInt(b.id) ? -1 : 1));
           for (const u of j.users || []) usuarios[String(u.id)] = { bot: !!u.bot, username: u.username || '', global_name: u.global_name || '' };
           const ventana = (est.w || []).filter((e) => ahora - AR.instante(e.id) <= AR.VENTANA_MS);
           const yo = this.yo || ((this.leer('canales') || {}).yo) || '';
-          for (const r2 of AR.riesgos([...ventana, ...nuevas], usuarios, new Set((est.roles || {}).ids || []), yo)) avisos.push(r2);
-          est.w = [...ventana, ...nuevas.filter((e) => [20, 22, 12, 32].includes(e.action_type))
+          // 🔴 LO VIEJO (pasada del 19/10/2026): lo de hace más de dos ventanas llegó tarde —el registro estuvo cerrado un
+          // rato—. Lo que sigue en pie (un rol, un permiso, un bot) se avisa igual pero sin AUTOMÁTICO; lo que se cuenta en
+          // la ventana (expulsiones, borrados) ya no es «en masa»
+          const viejas = nuevas.filter((e) => ahora - AR.instante(e.id) > 2 * AR.VENTANA_MS);
+          const frescas = nuevas.filter((e) => ahora - AR.instante(e.id) <= 2 * AR.VENTANA_MS);
+          const pel = new Set((est.roles || {}).ids || []);
+          for (const r2 of AR.riesgos([...ventana, ...frescas], usuarios, pel, yo)) avisos.push(r2);
+          for (const r2 of AR.riesgos(viejas, usuarios, pel, yo)) if (['rol', 'permiso', 'bot'].includes(r2.tipo)) avisos.push({ ...r2, viejo: true });
+          // un rol creado o cambiado: la lista de los peligrosos se vuelve a pedir en la vuelta siguiente
+          if (est.roles && nuevas.some((e) => e.action_type === 30 || e.action_type === 31)) est.roles.t = 0;
+          est.w = [...ventana, ...frescas.filter((e) => [20, 22, 12, 32].includes(e.action_type))
             .map((e) => ({ id: e.id, user_id: e.user_id, action_type: e.action_type }))].slice(-300);
           if (nuevas.length) est.ult = nuevas[nuevas.length - 1].id;
           // los nombres de quien se nombra, para el próximo aviso que lo cuente entre vueltas
@@ -5403,49 +5482,86 @@ export class Avisos {
           const vivos = new Set(est.w.map((e) => String(e.user_id)));
           for (const k of Object.keys(est.u)) if (!vivos.has(k) && !usuarios[k]) delete est.u[k];
           usuarios = est.u;
-        } else if (r.status === 403) est.error = 'auditoria';
+        } else if (r.status === 404) est.fuera = ahora + 60 * MIN;
+        else if (r.status === 403) {
+          // 🔴 SIN EL REGISTRO, LA VIGILANCIA ESTÁ CIEGA (pasada del 19/10/2026): antes se anotaba en silencio y se volvía
+          // a pedir cada minuto. Se avisa una vez por día y se reintenta cada 10 minutos
+          const avisado = (est.aud && est.aud.avisado) || 0;
+          if (ahora - avisado >= DIA_MS) {
+            await AR.mandar(env, cfg.canal, { content: '⚠️ **La vigilancia del staff está ciega**: el bot perdió el permiso **Ver el ' +
+              'registro de auditoría**. Hasta que se lo devuelvan no ve expulsiones, baneos ni roles peligrosos.' });
+          }
+          est.aud = { hasta: ahora + 10 * MIN, avisado: ahora - avisado >= DIA_MS ? ahora : avisado };
+        }
       }
     }
     // 🤖 AUTOMÁTICO: los avisos que nadie respondió en `ESPERA_AUTO_MS`. «Respondió» = el aviso ya no tiene todos sus
-    // botones (cada botón usado se va, y «Ya lo vimos» los saca todos); borrado, también cuenta como respondido
+    // botones (cada botón usado se va, y «Ya lo vimos» los saca todos).
+    // 🔴 BORRADO NO ES RESPONDIDO (pasada del 19/10/2026): antes un 404 lo daba por contestado, así que borrar el aviso
+    // —cualquiera con permiso de borrar mensajes, también quien está haciendo el raid— apagaba AUTOMÁTICO. Lo mismo un
+    // aviso que no se pudo mandar (`sin:`): nadie lo pudo responder. Lo que hace va entonces en un mensaje nuevo
     est.dev = Object.fromEntries(Object.entries(est.dev || {}).filter(([, x]) => x && ahora - (x.t || 0) < AR.DEVOLVER_MS));
+    let hechas = 0;
     for (const [mid, p] of Object.entries(est.pend || {})) {
       if (!cfg.auto || !cfg.canal || ahora - p.t > AR.AUTO_TOPE_MS) { delete est.pend[mid]; continue; }
-      if (ahora - p.t < AR.ESPERA_AUTO_MS) continue;
-      const rm = await AR.pedir(env, `/channels/${cfg.canal}/messages/${mid}`);
-      if (rm.status === 404) { delete est.pend[mid]; continue; }
-      if (!rm.ok) continue;
-      const m = await rm.json();
-      if (AR.botonesDe(m) < p.nb) { delete est.pend[mid]; continue; }
+      if (ahora - p.t < AR.ESPERA_AUTO_MS || hechas >= 3) continue;
+      let m = null;
+      if (!mid.startsWith('sin:')) {
+        const rm = await AR.pedir(env, `/channels/${cfg.canal}/messages/${mid}`);
+        if (rm.ok) m = await rm.json().catch(() => null);
+        else if (rm.status !== 404) continue;
+      }
+      if (m && AR.botonesDe(m) < p.nb) { delete est.pend[mid]; continue; }
       delete est.pend[mid];
+      hechas++;
       const x = await AR.actuar(env, gid, p.a);
+      if (x.reintentar) { est.pend[mid] = p; continue; }
       if (x.cerrado) {
         cfg.cerrado = { hasta: x.cerrado.hasta, nivel: (cfg.cerrado && cfg.cerrado.nivel) ?? x.cerrado.nivel };
         cambioCfg = true;
       }
-      if (x.dev) est.dev[x.dev.uid] = { roles: x.dev.roles, t: ahora };
-      await AR.pedir(env, `/channels/${cfg.canal}/messages/${mid}`, { method: 'PATCH', body: JSON.stringify(AR.tras(m, p.a, x)) });
+      // 🔴 LOS ROLES GUARDADOS SE SUMAN (pasada del 19/10/2026): una segunda acción sobre la misma persona la encontraba
+      // ya sin roles y guardaba «ninguno» encima de los que tenía
+      if (x.dev) {
+        const roles = [...new Set([...((est.dev[x.dev.uid] || {}).roles || []), ...x.dev.roles])];
+        if (roles.length) est.dev[x.dev.uid] = { roles, t: ahora };
+      }
+      if (m) await AR.pedir(env, `/channels/${cfg.canal}/messages/${mid}`, { method: 'PATCH', body: JSON.stringify(AR.tras(m, p.a, x)) });
+      else await AR.mandar(env, cfg.canal, AR.sinAviso(x));
       this.medir('antiraid', x.ok ? 'auto' : 'auto-no', 1);
     }
-    // 📣 los avisos, una vez cada uno
+    // 📣 los avisos, una vez cada uno y hasta 6 por vuelta (cada uno es un pedido): lo que sobra espera al minuto siguiente
     est.av = Object.fromEntries(Object.entries(est.av || {}).filter(([, t]) => ahora - t < AR.REPETIR_MS));
-    for (const a of avisos) {
+    const cola = [...(est.cola || []), ...avisos];
+    est.cola = [];
+    let mandados = 0;
+    for (const a of cola) {
       const k = AR.claveAviso(a);
       if (est.av[k]) continue;
+      if (mandados >= 6) { if (est.cola.length < 30) est.cola.push(a); continue; }
+      mandados++;
       const cuerpo = AR.aviso(gid, a, usuarios, cfg.auto);
       const r = await AR.mandar(env, cfg.canal, cuerpo);
       est.av[k] = ahora;
       this.medir('antiraid', a.tipo, 1);
       if (!r.ok) est.error = 'canal';
-      // 🤖 con AUTOMÁTICO, queda esperando a ver si alguien lo responde
-      const acc = cfg.auto && r.ok ? AR.accionAuto(a) : null;
-      if (acc) {
-        const j = await r.json().catch(() => ({}));
-        if (j && j.id) est.pend = { ...(est.pend || {}), [String(j.id)]: { t: ahora, a: acc, nb: AR.botonesDe(cuerpo) } };
+      // 🤖 con AUTOMÁTICO, queda esperando a ver si alguien lo responde. Una vez por persona y acción: dos avisos de la
+      // misma cuenta no le sacan los roles dos veces
+      const acc = cfg.auto ? AR.accionAuto(a, usuarios) : null;
+      if (acc && !Object.values(est.pend || {}).some((q) => q.a && q.a.que === acc.que && (q.a.uid || '') === (acc.uid || ''))) {
+        const j = r.ok ? await r.json().catch(() => ({})) : {};
+        const mid = j && j.id ? String(j.id) : 'sin:' + ahora + ':' + k;
+        est.pend = { ...(est.pend || {}), [mid]: { t: ahora, a: acc, nb: j && j.id ? AR.botonesDe(cuerpo) : 0 } };
       }
     }
-    this.sql.exec('UPDATE antiraid SET est = ?' + (cambioCfg ? ', cfg = ?' : '') + ' WHERE gid = ?',
-      ...(cambioCfg ? [JSON.stringify(est), JSON.stringify(cfg), gid] : [JSON.stringify(est), gid]));
+    if (!est.cola.length) delete est.cola;
+    // 🔴 LA CONFIGURACIÓN, RECIÉN LEÍDA (pasada del 19/10/2026): mientras esta vuelta esperaba a Discord el dueño pudo
+    // cambiar algo en el panel, y escribir la `cfg` leída al principio lo deshacía. Sólo se toca el cierre
+    if (cambioCfg) {
+      const ya = this.antiraidCfg(gid);
+      ya.cerrado = cfg.cerrado;
+      this.sql.exec('UPDATE antiraid SET est = ?, cfg = ? WHERE gid = ?', JSON.stringify(est), JSON.stringify(ya), gid);
+    } else this.sql.exec('UPDATE antiraid SET est = ? WHERE gid = ?', JSON.stringify(est), gid);
   }
 
 
@@ -5562,6 +5678,7 @@ export class Avisos {
       if (ruta === '/antiraid-leer') return json({ cfg: this.antiraidCfg(d && d.gid) });
       if (ruta === '/antiraid-guardar') return json(this.antiraidGuardar(d));
       if (ruta === '/antiraid-devolver') return json(this.antiraidDevolver(d));
+      if (ruta === '/antiraid-vuelta') return json(await this.antiraidRonda());
       // 🤝 el puntaje de los servidores: sólo lo guarda, tal cual, para el Dashboard (nunca sale a la página)
       if (ruta === '/tiers-ciclo') {
         if (!d || !Array.isArray(d.servidores) || d.servidores.length > 60) return json({ error: 'datos' }, 400);
@@ -5801,9 +5918,9 @@ export class Avisos {
     // horas se avisa si su evento todavía no empezó —`anotar()` descarta
     // lo que llega tarde—. Lo que ya estaba programado antes de las 3 (un
     // recordatorio) sale igual por su alarma.
-    // 🛡️ EL ANTI-RAID NO DUERME (Dlx, 18/10/2026: «sí, sólo el anti-raid»): el raid a DDF fue a las 22:49 y pudo ser a
-    // las 4 AM. Sólo mira los servidores cuyo dueño lo prendió; sin ninguno, es una consulta vacía
-    try { await this.antiraidVuelta(ahora); } catch (e) { this.medir('antiraid', 'error', 1); }
+    // 🛡️ (el anti-raid, que no duerme, ya no va acá: tiene su propio pedido, ver `vigilar()` de afuera)
+    // 👆 los toques juntados en memoria, a la base: una vez por minuto, también de madrugada
+    try { this.clicsVolcar(); } catch (e) { this.medir('filas', 'clics-error', 1); }
     if (d && d.dormido) {
       this.guardar('vigia', { t: ahora, dormido: true, canales: previo.canales, limpio: previo.limpio });
       return { ok: true, dormido: true };
@@ -8965,7 +9082,13 @@ export class Avisos {
     const quien = String(d.quien || '');
     if (!/^[0-9]{5,25}$/.test(quien)) return json({ error: 'faltan datos' }, 400);
     const ahora = Date.now();
-    const ids = (Array.isArray(d.ids) ? d.ids : []).filter((x) => typeof x === 'string' && x && x.length <= 200).slice(0, HISTORIAS_LOTE);
+    let ids = (Array.isArray(d.ids) ? d.ids : []).filter((x) => typeof x === 'string' && x && x.length <= 200).slice(0, HISTORIAS_LOTE);
+    // 🔴 UN TOPE POR DÍA (pasada del 19/10/2026): el lote tiene tope, los pedidos no, y alguien que mandara ids inventados
+    // en un bucle escribía filas sin fin. Nadie ve de verdad más de `HISTORIAS_DIA` historias distintas en un día
+    if (ids.length) {
+      const hoy = (this.sql.exec('SELECT COUNT(*) AS n FROM hvistas WHERE quien = ? AND t > ?', quien, ahora - DIA_MS).toArray()[0] || {}).n || 0;
+      ids = ids.slice(0, Math.max(0, HISTORIAS_DIA - hoy));
+    }
     for (const id of ids) this.sql.exec('INSERT OR IGNORE INTO hvistas (quien, id, t) VALUES (?, ?, ?)', quien, id, ahora);
     if (ids.length) {
       this.sql.exec('DELETE FROM hvistas WHERE quien = ? AND id NOT IN (SELECT id FROM hvistas WHERE quien = ? ORDER BY t DESC LIMIT ?)',
@@ -9822,6 +9945,37 @@ export class Avisos {
     return { ok: r.ok, estado: r.status };
   }
 
+  /**
+   * 🏷️ Lo de un prefijo de la Tienda (`mw:`, `div:`…) igual a `mapa` `{id: [quien, monto, t]}`, tocando sólo lo que cambió
+   * (pasada del 19/10/2026). Antes se borraba todo con un `LIKE` —que no usa el índice de la clave: recorre la tabla
+   * entera— y se volvía a escribir todo en cada corrida aunque no hubiera cambiado nada: cada fila, dos escrituras. El
+   * rango `[prefijo, prefijo siguiente)` sí usa el índice, y se escribe la diferencia. Devuelve cuántas filas cambió.
+   */
+  tiendaIgualar(prefijo, mapa, ahora) {
+    const hasta = prefijo.slice(0, -1) + String.fromCharCode(prefijo.charCodeAt(prefijo.length - 1) + 1);
+    const hay = new Map(this.sql.exec('SELECT id, quien, monto, t FROM tienda WHERE id >= ? AND id < ?', prefijo, hasta)
+      .toArray().map((f) => [f.id, f]));
+    const quiero = new Map();
+    for (const [id, x] of Object.entries(mapa || {})) {
+      if (!Array.isArray(x) || !/^[0-9]{5,25}$/.test(String(x[0])) || !Number.isInteger(x[1]) || x[1] <= 0) continue;
+      const k = prefijo + String(id).slice(0, 160);
+      const f = hay.get(k);
+      // sin fecha, la de la fila que ya estaba (si no, «ahora» la reescribía en cada corrida)
+      quiero.set(k, [String(x[0]), x[1], Number(x[2]) || (f ? f.t : ahora)]);
+    }
+    let n = 0;
+    for (const id of hay.keys()) {
+      if (!quiero.has(id)) { this.sql.exec('DELETE FROM tienda WHERE id = ?', id); n++; }
+    }
+    for (const [id, [quien, monto, t]] of quiero) {
+      const f = hay.get(id);
+      if (f && String(f.quien) === quien && f.monto === monto && f.t === t) continue;
+      this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', id, quien, monto, t);
+      n++;
+    }
+    return n;
+  }
+
   async resolverPrecios(ahora) {
     const crudo = await this.env.KV.get('precios:resolucion');
     if (!crudo) return 0;
@@ -9849,57 +10003,27 @@ export class Avisos {
     // manda todo lo de la temporada y se REEMPLAZA entero, así una llave
     // corregida no hace cobrar dos veces. `ref` 0: no es un precio.
     if (r.mw && typeof r.mw === 'object') {
-      this.sql.exec("DELETE FROM tienda WHERE id LIKE 'mw:%'");
-      for (const [id, x] of Object.entries(r.mw)) {
-        if (!Array.isArray(x) || !/^[0-9]{5,25}$/.test(String(x[0])) || !Number.isInteger(x[1]) || x[1] <= 0) continue;
-        this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
-          'mw:' + String(id).slice(0, 160), String(x[0]), x[1], Number(x[2]) || ahora);
-        cambios++;
-      }
+      cambios += this.tiendaIgualar('mw:', r.mw, ahora);
     }
     // 🏟️ LAS SUBIDAS DE DIVISIÓN TAMBIÉN PAGAN TIENDA (`bot/divisiones.py`): enteras en cada corrida y se REEMPLAZAN,
     // como el MW, así una llave corregida no hace cobrar dos veces. `ref` 0: no es un precio
     if (r.div && typeof r.div === 'object') {
-      this.sql.exec("DELETE FROM tienda WHERE id LIKE 'div:%'");
-      for (const [id, x] of Object.entries(r.div)) {
-        if (!Array.isArray(x) || !/^[0-9]{5,25}$/.test(String(x[0])) || !Number.isInteger(x[1]) || x[1] <= 0) continue;
-        this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
-          'div:' + String(id).slice(0, 160), String(x[0]), x[1], Number(x[2]) || ahora);
-        cambios++;
-      }
+      cambios += this.tiendaIgualar('div:', r.div, ahora);
     }
     // 🎤 EL RETO DEL DEBUT TAMBIÉN PAGA TIENDA (`bot/debutantes.py`, Dlx 12/10/2026): entero y se REEMPLAZA, como las
     // divisiones
     if (r.deb && typeof r.deb === 'object') {
-      this.sql.exec("DELETE FROM tienda WHERE id LIKE 'deb:%'");
-      for (const [id, x] of Object.entries(r.deb)) {
-        if (!Array.isArray(x) || !/^[0-9]{5,25}$/.test(String(x[0])) || !Number.isInteger(x[1]) || x[1] <= 0) continue;
-        this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
-          'deb:' + String(id).slice(0, 160), String(x[0]), x[1], Number(x[2]) || ahora);
-        cambios++;
-      }
+      cambios += this.tiendaIgualar('deb:', r.deb, ahora);
     }
     // ✍️ EL WRITING CHALLENGE DE FFA TAMBIÉN PAGA TIENDA (`bot/writing.py`, Dlx 14/10/2026): una clave por fecha y
     // persona (`<temporada>:f<N>:<discord>`), entero y se REEMPLAZA, como el debut: releer el canal no paga dos veces
     if (r.wr && typeof r.wr === 'object') {
-      this.sql.exec("DELETE FROM tienda WHERE id LIKE 'wr:%'");
-      for (const [id, x] of Object.entries(r.wr)) {
-        if (!Array.isArray(x) || !/^[0-9]{5,25}$/.test(String(x[0])) || !Number.isInteger(x[1]) || x[1] <= 0) continue;
-        this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
-          'wr:' + String(id).slice(0, 160), String(x[0]), x[1], Number(x[2]) || ahora);
-        cambios++;
-      }
+      cambios += this.tiendaIgualar('wr:', r.wr, ahora);
     }
     // 🏆 LOS MES AWARDS TAMBIÉN PAGAN TIENDA (`bot/mes_awards.py`, Dlx 16/10/2026): una clave por mes, categoría y persona,
     // entero y se REEMPLAZA, como el Writing
     if (r.mes && typeof r.mes === 'object') {
-      this.sql.exec("DELETE FROM tienda WHERE id LIKE 'mes:%'");
-      for (const [id, x] of Object.entries(r.mes)) {
-        if (!Array.isArray(x) || !/^[0-9]{5,25}$/.test(String(x[0])) || !Number.isInteger(x[1]) || x[1] <= 0) continue;
-        this.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
-          'mes:' + String(id).slice(0, 160), String(x[0]), x[1], Number(x[2]) || ahora);
-        cambios++;
-      }
+      cambios += this.tiendaIgualar('mes:', r.mes, ahora);
     }
     // 🔥 LA RACHA: los números y quién jugó qué días (`bot/racha.py`). Lo de la temporada en curso llega ENTERO y se
     // reemplaza (sólo esa temporada); los días se suman, y uno que ya contó no se borra
@@ -10841,23 +10965,46 @@ export class Avisos {
 
   /** 👆 Los toques de un navegador (ver `claveClic()`): se suman por día; una etiqueta nueva entra sólo si el día
    *  todavía no tiene `CLICS_MAX_K` distintas */
+  /**
+   * 👆 Los toques de la página. 🔴 JUNTADOS EN MEMORIA Y A LA BASE UNA VEZ POR MINUTO (pasada del 19/10/2026): cada
+   * página manda los suyos cada tanto, y cada pedido eran hasta 40 filas escritas y 41 leídas; ahora la misma tecla de
+   * cien personas en un minuto es UNA escritura. Lo vuelca el vigía (`clicsVolcar()`, también de madrugada), y el
+   * Dashboard antes de leer. ⚠️ Si el objeto se reinicia, se pierde el último minuto de toques: es un conteo, no plata.
+   */
   clics(d) {
     const dia = diaET();
-    let distintas = (this.sql.exec('SELECT COUNT(*) AS n FROM clics WHERE dia = ?', dia).toArray()[0] || {}).n || 0;
+    const buf = (this.clicsBuf = this.clicsBuf || new Map());
+    const hoy = buf.get(dia) || new Map();
+    buf.set(dia, hoy);
     for (const [k, v] of Object.entries((d && d.c) || {}).slice(0, 40)) {
       const kk = claveClic(k);
       if (!kk || !Number.isInteger(v) || v < 1 || v > 200) continue;
-      const ya = this.sql.exec('SELECT n FROM clics WHERE dia = ? AND k = ?', dia, kk).toArray()[0];
-      if (!ya && distintas >= CLICS_MAX_K) continue;
-      if (!ya) distintas++;
-      this.sql.exec('INSERT INTO clics (dia, k, n) VALUES (?, ?, ?) ON CONFLICT(dia, k) DO UPDATE SET n = n + excluded.n ' +
-        'WHERE n < 1000000', dia, kk, v);
+      if (!hoy.has(kk) && hoy.size >= CLICS_MAX_K) continue;
+      hoy.set(kk, (hoy.get(kk) || 0) + v);
     }
     return json({ ok: true });
   }
 
+  /** 👆 Los toques juntados, a la base (con el mismo tope de teclas distintas por día que antes). */
+  clicsVolcar() {
+    const buf = this.clicsBuf;
+    if (!buf || !buf.size) return;
+    this.clicsBuf = new Map();
+    for (const [dia, hoy] of buf) {
+      let distintas = (this.sql.exec('SELECT COUNT(*) AS n FROM clics WHERE dia = ?', dia).toArray()[0] || {}).n || 0;
+      for (const [kk, v] of hoy) {
+        const ya = this.sql.exec('SELECT n FROM clics WHERE dia = ? AND k = ?', dia, kk).toArray()[0];
+        if (!ya && distintas >= CLICS_MAX_K) continue;
+        if (!ya) distintas++;
+        this.sql.exec('INSERT INTO clics (dia, k, n) VALUES (?, ?, ?) ON CONFLICT(dia, k) DO UPDATE SET n = n + excluded.n ' +
+          'WHERE n < 1000000', dia, kk, Math.min(v, 1000000));
+      }
+    }
+  }
+
   /** 👆 Lo más tocado de los últimos 7 días, con los 7 anteriores al lado: `{k: [estos7, anteriores7]}` (las 80 más) */
   clicsResumen() {
+    this.clicsVolcar();
     const desde = (n) => diaET(Date.now() - n * DIA_MS);
     const out = {};
     for (const [i, a, b] of [[0, 7, 0], [1, 14, 7]]) {

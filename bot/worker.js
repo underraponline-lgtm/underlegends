@@ -2178,14 +2178,16 @@ const AYUDA = {
 
   antiraid: () => [
     '## `/antiraid` — el anti-raid del servidor',
-    'Sólo para **el dueño del servidor**. Todo es opcional y **nunca actúa solo**: avisa en el canal que elijas, con ' +
-    'botones, y decide el staff.',
+    'Sólo para **el dueño del servidor**. Todo es opcional y, salvo con AUTOMÁTICO, **nunca actúa solo**: avisa en el ' +
+    'canal que elijas, con botones, y decide el staff.',
     '',
     '· **Escudo de Discord** — reglas de AutoMod: menciones masivas, spam, insultos de odio y links de invitación ajenos ' +
     '(los de la Liga pasan).',
     '· **Alarma de oleada** — si entran muchas cuentas de golpe.',
     '· **Vigilancia del staff** — expulsiones, baneos o borrados en masa, y un rol peligroso para una cuenta que no es un bot.',
     '· **Botón de pánico** — pausa las invitaciones y los mensajes directos y sube la verificación; «abrir» lo deja como estaba.',
+    '· **AUTOMÁTICO** _(experimental)_ — si nadie responde un aviso en 2 minutos, hace lo más seguro: cierra el servidor o ' +
+    'le saca los roles a quien hace el daño (se devuelven con un botón). Nunca expulsa ni banea.',
   ].join('\n'),
 
   notify: () => [
