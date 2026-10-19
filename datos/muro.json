@@ -579,7 +579,8 @@
 "dyzz": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "teito": {
@@ -672,6 +673,13 @@
 "rg": "",
 "c": []
 },
+"masino": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "zeta": {
 "rg": "",
 "c": [
@@ -717,13 +725,6 @@
 "rg": "",
 "c": [
 "servidor"
-]
-},
-"masino": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
 ]
 },
 "fazer": {
@@ -797,18 +798,18 @@
 "rg": "",
 "c": []
 },
-"richard": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor"
-]
-},
 "adriagner": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
+]
+},
+"richard": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor"
 ]
 },
 "mathhias": {
@@ -2418,14 +2419,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Denik"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5728,6 +5721,14 @@
 "Shadow"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-19T03:28:50Z",
+"quien": [
+"Dyzz"
+],
+"carta": "temporada"
 }
 ]
 }
