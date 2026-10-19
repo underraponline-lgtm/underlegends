@@ -264,10 +264,6 @@
    "temporada": "2026-10-12"
   },
   "dyzz": {
-   "servidor": "2026-10-12",
-   "sv-acad": "2026-10-12",
-   "sv-ffa": "2026-10-12",
-   "sv-ffs": "2026-10-12",
    "temporada": "2026-10-12"
   },
   "eclipsito": {
@@ -1111,8 +1107,8 @@
    "temporada": "2026-10-12"
   }
  },
- "pasaban": 391,
- "cuando": "2026-10-19T00:58:34Z",
+ "pasaban": 392,
+ "cuando": "2026-10-19T01:28:26Z",
  "borradas": [
   [
    "keller",

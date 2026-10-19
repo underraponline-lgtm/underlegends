@@ -327,7 +327,7 @@
      "quien": [
       "Aldre"
      ],
-     "d": "le ganó a Colesito (#4) siendo #119 · Cuentas Pendientes V.1"
+     "d": "le ganó a Colesito (#4) siendo #120 · Cuentas Pendientes V.1"
     },
     {
      "op": "436:HH",
@@ -336,7 +336,16 @@
      "quien": [
       "HH"
      ],
-     "d": "le ganó a Erian (#6) siendo #90 · LA BELLA ARTE DE LA DESGRACIA VOL3"
+     "d": "le ganó a Erian (#6) siendo #91 · LA BELLA ARTE DE LA DESGRACIA VOL3"
+    },
+    {
+     "op": "481:Calíz",
+     "n": "Calíz",
+     "q": "Calíz",
+     "quien": [
+      "Calíz"
+     ],
+     "d": "le ganó a Erian (#6) siendo #74 · PROYECTO X VOL.3"
     },
     {
      "op": "478:Catarsis",
@@ -346,15 +355,6 @@
       "Catarsis"
      ],
      "d": "le ganó a Colesito (#4) siendo #49 · SNAKE INSIGNIA 5 8"
-    },
-    {
-     "op": "481:Calíz",
-     "n": "Calíz",
-     "q": "Calíz",
-     "quien": [
-      "Calíz"
-     ],
-     "d": "le ganó a Erian (#6) siendo #73 · PROYECTO X VOL.3"
     },
     {
      "op": "401:Zetryko",
@@ -721,38 +721,38 @@
    ],
    "villano": [
     {
-     "op": "Emily Family",
-     "n": "Emily Family",
-     "q": "Emily Family",
+     "op": "Dyzz",
+     "n": "Dyzz",
+     "q": "Dyzz",
      "quien": [
-      "Emily Family"
+      "Dyzz"
      ],
      "d": "al azar entre los que compitieron este mes"
     },
     {
-     "op": "RT",
-     "n": "RT",
-     "q": "RT",
+     "op": "VR",
+     "n": "VR",
+     "q": "VR",
      "quien": [
-      "RT"
+      "VR"
      ],
      "d": "al azar entre los que compitieron este mes"
     },
     {
-     "op": "Gus",
-     "n": "Gus",
-     "q": "Gus",
+     "op": "Guess",
+     "n": "Guess",
+     "q": "Guess",
      "quien": [
-      "Gus"
+      "Guess"
      ],
      "d": "al azar entre los que compitieron este mes"
     },
     {
-     "op": "Selek",
-     "n": "Selek",
-     "q": "Selek",
+     "op": "Number VE",
+     "n": "Number VE",
+     "q": "Number VE",
      "quien": [
-      "Selek"
+      "Number VE"
      ],
      "d": "al azar entre los que compitieron este mes"
     },
@@ -786,20 +786,11 @@
      "d": "al azar entre los que compitieron este mes"
     },
     {
-     "op": "MCO",
-     "n": "MCO",
-     "q": "MCO",
+     "op": "MCNadie",
+     "n": "MCNadie",
+     "q": "MCNadie",
      "quien": [
-      "MCO"
-     ],
-     "d": "al azar entre los que compitieron este mes"
-    },
-    {
-     "op": "Jayden",
-     "n": "Jayden",
-     "q": "Jayden",
-     "quien": [
-      "Jayden"
+      "MCNadie"
      ],
      "d": "al azar entre los que compitieron este mes"
     },
@@ -811,58 +802,67 @@
       "Iguana"
      ],
      "d": "al azar entre los que compitieron este mes"
+    },
+    {
+     "op": "HH",
+     "n": "HH",
+     "q": "HH",
+     "quien": [
+      "HH"
+     ],
+     "d": "al azar entre los que compitieron este mes"
     }
    ],
    "momento": [
     {
-     "op": "431:OG vs Zignos",
-     "n": "OG vs Zignos",
-     "q": "OG",
-     "quien": [
-      "OG",
-      "Zignos"
-     ],
-     "d": "LA REDENCIÓN VOL.1 · ganó OG · al azar"
-    },
-    {
-     "op": "477:OG vs Liberia",
-     "n": "OG vs Liberia",
-     "q": "OG",
-     "quien": [
-      "OG",
-      "Liberia"
-     ],
-     "d": "DESGRACIAS EN TOKYO VOL27 · ganó OG · al azar"
-    },
-    {
-     "op": "442:Walker vs Agus",
-     "n": "Walker vs Agus",
-     "q": "Walker",
-     "quien": [
-      "Walker",
-      "Agus"
-     ],
-     "d": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1 · ganó Walker · al azar"
-    },
-    {
-     "op": "396:Ariaxer vs TøKīØ🦠🧠",
-     "n": "Ariaxer vs TøKīØ🦠🧠",
-     "q": "Ariaxer",
-     "quien": [
-      "Ariaxer",
-      "TøKīØ🦠🧠"
-     ],
-     "d": "COPA SOOLAR 2 · ganó Ariaxer · al azar"
-    },
-    {
-     "op": "449:Vandu vs doble h",
-     "n": "Vandu vs doble h",
+     "op": "449:Vandu vs Player",
+     "n": "Vandu vs Player",
      "q": "Vandu",
      "quien": [
       "Vandu",
-      "doble h"
+      "Player"
      ],
      "d": "HJKSLOWT V.1 · ganó Vandu · al azar"
+    },
+    {
+     "op": "451:Majiztral vs Teo",
+     "n": "Majiztral vs Teo",
+     "q": "Majiztral",
+     "quien": [
+      "Majiztral",
+      "Teo"
+     ],
+     "d": "MORTAL KOMBAT MAPACHE CUP · ganó Majiztral · al azar"
+    },
+    {
+     "op": "426:Dyzz vs Delux",
+     "n": "Dyzz vs Delux",
+     "q": "Dyzz",
+     "quien": [
+      "Dyzz",
+      "Delux"
+     ],
+     "d": "Doble Eliminación Vol. 2 · ganó Dyzz · al azar"
+    },
+    {
+     "op": "484:Guess vs Xubaru",
+     "n": "Guess vs Xubaru",
+     "q": "Guess",
+     "quien": [
+      "Guess",
+      "Xubaru"
+     ],
+     "d": "LA BELLA ARTE DE LA DESGRACIA VOL7 · ganó Guess · al azar"
+    },
+    {
+     "op": "407:TøKīØ🦠🧠 vs Velatz",
+     "n": "TøKīØ🦠🧠 vs Velatz",
+     "q": "TøKīØ🦠🧠",
+     "quien": [
+      "TøKīØ🦠🧠",
+      "Velatz"
+     ],
+     "d": "COPA SOOLAR 3 · ganó TøKīØ🦠🧠 · al azar"
     }
    ],
    "crew": [
@@ -910,7 +910,7 @@
      "n": "Chile",
      "cc": "cl",
      "quien": [],
-     "d": "1.046.168 pts · 30 jugaron"
+     "d": "1.078.193 pts · 31 jugaron"
     },
     {
      "op": "Colombia",
@@ -3491,6 +3491,15 @@
      },
      "orgs": [],
      "organizador": "LEWITO",
+     "cuentas": {}
+    },
+    "1561550271279136869": {
+     "sv": "DDF",
+     "nombre": "LA MISIÓN DEL MONJE",
+     "mo": "2026-10-19T01:23:16Z",
+     "staff": {},
+     "orgs": [],
+     "organizador": "shit4brains🇬🇵",
      "cuentas": {}
     }
    },

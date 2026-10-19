@@ -570,7 +570,9 @@
 },
 "dyzz": {
 "rg": "",
-"c": []
+"c": [
+"servidor"
+]
 },
 "teito": {
 "rg": "E",
@@ -2415,14 +2417,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Pomberito"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5724,6 +5718,14 @@
 ],
 "rg": "E",
 "primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-19T01:28:13Z",
+"quien": [
+"Dyzz"
+],
+"carta": "servidor"
 }
 ]
 }
