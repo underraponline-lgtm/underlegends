@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-19T21:25:13+00:00",
+ "cuando": "2026-10-19T21:54:53+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -471,9 +471,9 @@
    "staff": {
     "jurado": [
      "Kravitz",
-     "zaik0009",
+     "Zaik",
      "krish",
-     "l3wito",
+     "Lewito",
      "Flennzs | ⛩️"
     ],
     "host": [
@@ -486,7 +486,9 @@
    "autor": "Kravitz",
    "staff_cuentas": {
     "Kravitz": "1345962362615894027",
+    "Zaik": "1555067257376346122",
     "krish": "1513620494199558295",
+    "Lewito": "1086485696572817418",
     "Flennzs | ⛩️": "1414431452346581052"
    },
    "categoria_id": "1468478330826260500"
@@ -6180,6 +6182,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Ariaxer🇦🇷",
+   "quien": "ariaxer",
+   "discord_id": "659687894587277322",
+   "msg_id": "1561858884778459200",
+   "cuando": "2026-10-19T21:49:36"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Joba 🇨🇱",
+   "quien": "jobains",
+   "discord_id": "1095893775383023708",
+   "msg_id": "1561858601029599283",
+   "cuando": "2026-10-19T21:48:28"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
