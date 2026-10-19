@@ -848,9 +848,13 @@ const GENTILICIO = { ar: 'ARGENTINO', cl: 'CHILENO', co: 'COLOMBIANO', mx: 'MEXI
 
 /**
  * El título de un cruce, si se gana uno: `{t, sub}` o `null`. En orden: EL CLÁSICO (tres cruces o más), LA REVANCHA
- * (ya se cruzaron), DUELO DE CAMPEONES (los dos ganaron un evento), DAVID CONTRA GOLIAT (20 de OVR o más de
- * diferencia), DEBUT (uno no jugó nada en la temporada) y el duelo del mismo país. ⚠️ DEBUT sólo con un nombre que la
- * Liga reconoce (`hay`): uno que no se pudo identificar no es un debutante
+ * (ya se cruzaron), DUELO DE CREWS (cada uno de una crew), FUEGO AMIGO (los dos de la misma), DUELO DE CAMPEONES (los
+ * dos ganaron un evento), DUELO DE TITANES (los dos en el top 10), DAVID CONTRA GOLIAT (20 de OVR o más de diferencia),
+ * RACHA EN JUEGO (uno viene de 5 duelos ganados o más), LA EXPERIENCIA CONTRA EL HAMBRE (15 eventos o más contra 2 o
+ * menos), DEBUT (uno no jugó nada en la temporada), DUELO DE ÉLITE (los dos con letra S o más) y el duelo del mismo
+ * país. ⚠️ DEBUT sólo con un nombre que la Liga reconoce (`hay`): uno que no se pudo identificar no es un debutante.
+ * ⚠️ La crew (`crew: {n, tier}`) la pone quien llama, del objeto (19/10/2026, Dlx: «más cosas así… David vs Goliat
+ * está bien pero más cosas»): sin ella, esos dos no salen
  */
 export function tituloCruce(x) {
   const { a, b, h2h } = x;
@@ -864,21 +868,37 @@ export function tituloCruce(x) {
     const [g, p] = h2h.ult === 'a' ? [a, b] : [b, a];
     return { t: 'LA REVANCHA', sub: g.n + ' le ganó la última vez y ' + p.n + ' viene por la revancha' };
   }
+  const cr = (y) => (y.crew ? y.crew.n + (y.crew.tier ? ' (' + y.crew.tier + ')' : '') : '');
+  if (a.crew && b.crew && a.crew.n !== b.crew.n) return { t: 'DUELO DE CREWS', sub: cr(a) + ' contra ' + cr(b) };
+  if (a.crew && b.crew && a.crew.n === b.crew.n) return { t: 'FUEGO AMIGO', sub: 'los dos son de ' + a.crew.n };
   if ((fa.oro || 0) >= 1 && (fb.oro || 0) >= 1) return { t: 'DUELO DE CAMPEONES', sub: 'los dos ya ganaron un evento esta temporada' };
+  if (fa.pos && fb.pos && fa.pos <= 10 && fb.pos <= 10) {
+    return { t: 'DUELO DE TITANES', sub: 'el #' + Math.min(fa.pos, fb.pos) + ' contra el #' + Math.max(fa.pos, fb.pos) + ' de la temporada' };
+  }
   if (fa.ovr && fb.ovr && Math.abs(fa.ovr - fb.ovr) >= 20) {
     const [g, d] = fa.ovr > fb.ovr ? [a, b] : [b, a];
     return { t: 'DAVID CONTRA GOLIAT', sub: d.n + ' (OVR ' + d.f.ovr + ') contra ' + g.n + ' (OVR ' + g.f.ovr + ')' };
   }
+  const rach = [a, b].filter((y) => y.rd && y.rd[0] >= 5).sort((p, q) => q.rd[0] - p.rd[0])[0];
+  if (rach) return { t: 'RACHA EN JUEGO', sub: rach.n + ' viene de ganar ' + rach.rd[0] + ' duelos seguidos: ¿quién lo frena?' };
+  if (fa.ev && fb.ev && Math.max(fa.ev, fb.ev) >= 15 && Math.min(fa.ev, fb.ev) <= 2) {
+    const [v, n] = fa.ev > fb.ev ? [a, b] : [b, a];
+    return { t: 'LA EXPERIENCIA CONTRA EL HAMBRE', sub: v.n + ' lleva ' + v.f.ev + ' eventos; ' + n.n + ', ' + n.f.ev };
+  }
   const nuevo = [a, b].find((y) => y.k && !y.hay && !y.f);
   if (nuevo) return { t: 'DEBUT', sub: nuevo.n + ' juega su primer evento de la temporada' };
+  const elite = ['S', 'SS', 'SSS'];
+  if (elite.includes(fa.rg) && elite.includes(fb.rg)) return { t: 'DUELO DE ÉLITE', sub: 'letra ' + fa.rg + ' contra letra ' + fb.rg };
   if (fa.cc && fa.cc === fb.cc) return { t: 'DUELO ' + (GENTILICIO[fa.cc] || 'ENTRE COMPATRIOTAS'), sub: '' };
   return null;
 }
 
 /**
- * Un «¿sabías que…?» de verdad sobre uno de los dos, o `''`: su racha, su puesto, sus títulos y podios, sus duelos, que
- * nunca le pudo ganar al otro o el precio por su cabeza (`cabeza(lado)`, en Puntos de Tienda). El mismo cruce da siempre
- * el mismo dato (`semilla`), así no cambia si se vuelve a armar el mensaje.
+ * Un «¿sabías que…?» de verdad sobre uno de los dos, o `''`: su racha, su puesto (en la temporada y en su país), sus
+ * títulos y podios, sus duelos, su crew y su tier, su letra, lo que cazó en Most Wanted, sus Misiones, que nunca le pudo
+ * ganar al otro, que es la primera vez que se cruzan o el precio por su cabeza (`cabeza(lado)`, en Puntos de Tienda).
+ * El mismo cruce da siempre el mismo dato (`semilla`), así no cambia si se vuelve a armar el mensaje. `y.pp` es su
+ * puesto en su país (lo pone quien llama, con la tabla)
  */
 export function datoCurioso(x, semilla, cabeza) {
   const c = [];
@@ -886,11 +906,19 @@ export function datoCurioso(x, semilla, cabeza) {
     const f = y.f || {};
     if (y.rd && y.rd[0] >= 3) c.push(y.n + ' viene de ganar ' + y.rd[0] + ' duelos seguidos');
     if (f.pos && f.pos <= 10) c.push(y.n + ' es el #' + f.pos + ' de la temporada');
+    if (y.pp && y.pp <= 3 && f.cc && GENTILICIO[f.cc]) {
+      c.push(y.n + (y.pp === 1 ? ' es el mejor ' : ' es el #' + y.pp + ' ') + GENTILICIO[f.cc].toLowerCase() + ' de la temporada');
+    }
     if ((f.oro || 0) >= 2) c.push(y.n + ' ya ganó ' + f.oro + ' eventos esta temporada');
     const pod = (f.oro || 0) + (f.seg || 0) + (f.ter || 0);
     if (pod >= 3) c.push(y.n + ' lleva ' + pod + ' podios esta temporada');
     if (y.du.length >= 6) c.push(y.n + ' ganó ' + y.du.filter((d) => d[2]).length + ' de sus ' + y.du.length + ' duelos de la temporada');
     if ((f.ev || 0) >= 10) c.push(y.n + ' ya jugó ' + f.ev + ' eventos esta temporada');
+    if (y.crew) c.push(y.n + ' es de la crew ' + y.crew.n + (y.crew.tier ? ', que está en ' + y.crew.tier : ''));
+    if (['SSS', 'SS', 'S'].includes(f.rg)) c.push(y.n + ' tiene letra ' + f.rg + ' en el Competitivo');
+    if ((f.caz || 0) >= 1) c.push(y.n + ' ya cazó ' + (f.caz === 1 ? 'a un buscado' : f.caz + ' buscados') + ' en Most Wanted');
+    if ((f.sob || 0) >= 1) c.push(y.n + ' sobrevivió ' + (f.sob === 1 ? 'una vez' : f.sob + ' veces') + ' siendo buscado en Most Wanted');
+    if ((f.mis || 0) >= 2000) c.push(y.n + ' sumó ' + milesAp(f.mis) + ' puntos con las Misiones de la semana');
     const v = cabeza ? cabeza(y) : 0;
     if (v > 0) c.push('por la cabeza de ' + y.n + ' hay ' + milesAp(v) + ' Puntos de Tienda: el que le gane se los lleva');
   }
@@ -898,6 +926,10 @@ export function datoCurioso(x, semilla, cabeza) {
   if (ga + gb >= 2 && (!ga || !gb)) {
     const [g, p] = ga ? [x.a, x.b] : [x.b, x.a];
     c.push(p.n + ' nunca le pudo ganar a ' + g.n + ' (' + (ga + gb) + ' de ' + (ga + gb) + ')');
+  }
+  // la primera vez: sólo si la Liga sabe quiénes son los dos y conoce los duelos de alguno
+  if (!ga && !gb && x.a.k && x.b.k && (x.a.du.length || x.b.du.length) && c.length) {
+    c.push('es la primera vez que ' + x.a.n + ' y ' + x.b.n + ' se cruzan esta temporada');
   }
   if (!c.length) return '';
   let h = 0;
@@ -6629,6 +6661,13 @@ export class Avisos {
           const mv = 'v:' + bat.r + ':' + bat.i;
           if (!hechos[mv]) {
             const x = infoCruce(bat.lados, buscar, dc.tabla, dc.perf);
+            // 👥 la crew de cada uno (del objeto, con su tier del payload) y su puesto en su país: para los títulos y
+            // los «¿sabías que…?» nuevos (19/10/2026, Dlx: «más cosas así… David vs Goliat está bien pero más cosas»)
+            for (const y of [x.a, x.b]) {
+              y.crew = this.crewChat(y.k, dc.tiers);
+              const f = y.f;
+              if (f && f.cc && f.pts) y.pp = 1 + Object.values(dc.tabla).filter((g) => g && g.cc === f.cc && (g.pts || 0) > f.pts).length;
+            }
             const [ga, gb] = bat.lados.map((l) => genteChat(l, buscar, dc.tabla, opc.ids, opc.enSv));
             // el nombre de la Liga también en el título y el dato («MAKMAH le ganó la última vez» → Makmah)
             if (ga.length === 1) x.a.n = ga[0].n;
@@ -7026,6 +7065,17 @@ export class Avisos {
    * cada uno) y `buscar(nombre de llave)` → clave, por la tabla y los alias. Diez minutos en la memoria del objeto: son
    * los dos JSON más grandes de KV y se piden sólo cuando hay un cruce que anunciar.
    */
+  /** 👥 La crew de alguien para el chat en vivo: `{n, tier}` (su tier, del payload), o `null`. */
+  crewChat(k, tiers) {
+    if (!k) return null;
+    try {
+      const r = this.sql.exec('SELECT c.id, c.nombre FROM crew_miembros m JOIN crews c ON c.id = m.crew WHERE m.k = ?', k).toArray()[0];
+      if (!r) return null;
+      const t = tiers && tiers.crews && tiers.crews[r.id] && tiers.nombres ? tiers.nombres[tiers.crews[r.id][0]] : '';
+      return { n: r.nombre, tier: t || '' };
+    } catch (e) { return null; }
+  }
+
   async datosCruce(ahora) {
     if (this.cruceMem && ahora - this.cruceMem.t < 10 * MIN) return this.cruceMem;
     let lobby = {}, perf = {}, perfT = 0;
@@ -7051,7 +7101,8 @@ export class Avisos {
       const v = typeof f.cv === 'string' && i >= 0 ? f.cv.split('.')[i] : '';
       return r2 + '/' + encodeURIComponent(k) + '/' + cual + '.webp' + (v ? '?v=' + v : '');
     };
-    this.cruceMem = { t: ahora, tabla, perf, perfT, buscar, cartaDe };
+    // 🏆 los tiers de las crews (bot/crews_tiers.py, en el payload): para decir «la crew X, que está en Oro»
+    this.cruceMem = { t: ahora, tabla, perf, perfT, buscar, cartaDe, tiers: lobby.crews_tiers || null };
     return this.cruceMem;
   }
 

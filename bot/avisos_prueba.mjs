@@ -1973,6 +1973,26 @@ const ok = (cond, que, det) => {
   ok(t3 && t3.t === 'DEBUT', 'quien no jugó nada esta temporada: DEBUT', JSON.stringify(t3));
   const t4 = A.tituloCruce(A.infoCruce(['Desconocido', 'OG'], () => '', tabla, perf));
   ok(!t4 || t4.t !== 'DEBUT', 'un nombre que la Liga no reconoce no es un debutante');
+  // los títulos nuevos (19/10/2026, Dlx: «David vs Goliat está bien pero más cosas así»)
+  const tb2 = { a: { k: 'a', n: 'Ale', ovr: 70, pos: 4, cc: 'ar', ev: 20, rg: 'SS', oro: 0, pts: 900 },
+    b: { k: 'b', n: 'Beto', ovr: 72, pos: 8, cc: 'cl', ev: 12, rg: 'S', oro: 0, pts: 800 },
+    c: { k: 'c', n: 'Ceci', ovr: 60, pos: 30, cc: 'mx', ev: 1, rg: '', oro: 0, pts: 50 },
+    d: { k: 'd', n: 'Dani', ovr: 62, pos: 25, cc: 'pe', ev: 18, rg: 'A', oro: 0, pts: 300 } };
+  const pf2 = { a: { du: [[1, 'x', 1]] }, b: { du: [[1, 'y', 1]] }, c: { du: [] }, d: { du: [[2, 'z', 1]], rd: [6, 6] } };
+  // como en el bot: el nombre de la Liga reemplaza al de la llave (`x.a.n = ga[0].n`)
+  const cx = (p, q, crews) => { const x = A.infoCruce([p, q], (n) => n, tb2, pf2); x.a.n = tb2[p].n; x.b.n = tb2[q].n; if (crews) [x.a.crew, x.b.crew] = crews; return x; };
+  const T = (x) => (A.tituloCruce(x) || {}).t;
+  ok(T(cx('a', 'b', [{ n: 'Follombia', tier: 'Oro' }, { n: 'Fontana', tier: 'Plata' }])) === 'DUELO DE CREWS'
+    && /Follombia \(Oro\) contra Fontana \(Plata\)/.test(A.tituloCruce(cx('a', 'b', [{ n: 'Follombia', tier: 'Oro' }, { n: 'Fontana', tier: 'Plata' }])).sub)
+    && T(cx('a', 'b', [{ n: 'KS' }, { n: 'KS' }])) === 'FUEGO AMIGO' && T(cx('a', 'b')) === 'DUELO DE TITANES'
+    && T(cx('d', 'c')) === 'RACHA EN JUEGO' && T(cx('a', 'c')) === 'LA EXPERIENCIA CONTRA EL HAMBRE',
+  'los títulos nuevos: crews, fuego amigo, titanes, racha y experiencia contra hambre');
+  const xe = cx('a', 'b');
+  xe.a.pp = 1;
+  const datos = new Set(Array.from({ length: 40 }, (_, i) => A.datoCurioso(Object.assign(xe, { a: Object.assign(xe.a, { crew: { n: 'Follombia', tier: 'Oro' } }) }), 's' + i, () => 0)));
+  ok([...datos].some((d) => /mejor argentino de la temporada/.test(d)) && [...datos].some((d) => /es de la crew Follombia, que está en Oro/.test(d))
+    && [...datos].some((d) => /letra SS en el Competitivo/.test(d)) && [...datos].some((d) => /primera vez que Ale y Beto se cruzan/.test(d)),
+  'los datos nuevos: su país, su crew, su letra y la primera vez', [...datos].join(' | '));
   const d1 = A.datoCurioso(x1, 'semilla', () => 0);
   ok(/^¿Sabías que .+\?$/.test(d1) && A.datoCurioso(x1, 'semilla', () => 0) === d1, 'el dato es de verdad y no cambia para el mismo cruce', d1);
   ok(A.datoCurioso(x1, 'x', () => 0) !== '' && A.datoCurioso(A.infoCruce(['A', 'B'], () => '', {}, {}), 's', () => 0) === '',
