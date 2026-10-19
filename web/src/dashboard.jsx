@@ -602,6 +602,9 @@ function TutorialNumeros({ t }) {
   const cajas = [
     ['VIERON EL RECORRIDO', v('tour'), v('repite') ? 'y ' + num(v('repite')) + ' lo pidieron otra vez en la Guía' : 'la primera vez que entraron, por el Inicio'],
     ['LO TERMINARON', v('tour_fin'), pct(v('tour_fin'), v('tour')) + ' de los que lo vieron'],
+    // 🎮 la pantalla de bienvenida (19/10/2026)
+    ['VIERON LA BIENVENIDA', v('bienv'), num(v('bienv_unirse')) + ' tocaron «Unirme» · ' + num(v('bienv_listo')) + ' terminaron · '
+      + num(v('bienv_luego')) + ' «en otro momento»'],
     ['LLEGARON POR UN LINK', v('franja'), num(v('franja_si')) + ' tocaron «Ver cómo»'],
     ['PRIMEROS PASOS', v('pasos_fin'), 'completos, de ' + num(v('pasos')) + ' que los vieron en el Inicio'],
   ];

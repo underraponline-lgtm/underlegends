@@ -1198,7 +1198,10 @@ export function logsRojos(ms, ahora) {
  * la invitación, `franja_si` la tocó, `pasos` vio los primeros pasos en el Inicio y `pasos_fin` los completó
  */
 export const TUTO_EV = new Set(['tour', 'tour_fin', 'salta0', 'salta1', 'salta2', 'salta3', 'salta4', 'repite', 'franja',
-  'franja_si', 'pasos', 'pasos_fin']);
+  'franja_si', 'pasos', 'pasos_fin',
+  // 🎮 la pantalla de bienvenida (19/10/2026, web/src/bienvenida.jsx): la vieron, tocaron «Unirme», volvieron al paso 2,
+  // la terminaron o la dejaron para otro momento
+  'bienv', 'bienv_unirse', 'bienv_paso2', 'bienv_listo', 'bienv_luego']);
 
 /**
  * 📊 QUÉ SECCIONES SE ABREN (Dlx, 12/10/2026, el research «página sencilla»: «hacé todo menos los dos puntos que

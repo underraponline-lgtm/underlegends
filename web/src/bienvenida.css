@@ -1,0 +1,63 @@
+/* 🎮 LA PANTALLA DE BIENVENIDA (19/10/2026, bienvenida.jsx). Viene con su pedazo, no con el paquete de todos.
+   Oscura siempre, como la pantalla de carga de la que sale: es la portada de la Liga, no una página del tema elegido.
+   ⚠️ Sin degradés, sin blur, radios de 3 px: las reglas del remake. Las capas de atrás son las del corte de la carga,
+   quietas; la sombra del botón es la del sello (dura, verde). */
+.bv{position:fixed;inset:0;z-index:2000;display:grid;place-items:center;overflow:auto;overflow-x:hidden;
+  background:#030304;color:#F6F6F6;padding:28px 16px calc(28px + env(safe-area-inset-bottom,0px));-webkit-overflow-scrolling:touch}
+/* (fijas: absolutas agrandaban el área de scroll y se podía bajar a una pantalla vacía) */
+.bv-capa{position:fixed;left:50%;top:50%;width:170vmax;height:34vmax;pointer-events:none}
+.bv-capa.m{background:#E41373;opacity:.13;transform:translate(-50%,-50%) rotate(-24deg) translateY(-30vmax)}
+.bv-capa.v{background:#29B298;opacity:.09;transform:translate(-50%,-50%) rotate(-24deg) translateY(30vmax)}
+.bv-c{position:relative;z-index:1;width:100%;max-width:620px;display:grid;justify-items:center;text-align:center;gap:14px}
+
+/* las cartas de los primeros del ranking, en abanico: el primero al medio y adelante */
+.bv-cartas{position:relative;width:100%;height:clamp(150px,30vh,232px);margin-bottom:4px}
+.bv-carta{position:absolute;left:50%;bottom:0;width:clamp(92px,18vh,140px);aspect-ratio:300/438;object-fit:contain;
+  transform-origin:50% 100%;transform:var(--t);animation:bv-carta .6s cubic-bezier(.2,.9,.25,1.1) both}
+.bv-carta.c0{--t:translateX(-122%) rotate(-11deg);animation-delay:.12s}
+.bv-carta.c1{--t:translateX(-50%);animation-delay:.2s}
+.bv-carta.c2{--t:translateX(22%) rotate(11deg);animation-delay:.28s}
+.bv-carta.uno{z-index:2;width:clamp(104px,21vh,158px);animation:bv-carta .6s cubic-bezier(.2,.9,.25,1.1) .2s both,bv-flota 3.6s ease-in-out .9s infinite alternate}
+/* sola o de a dos (pocos con carta): al medio */
+.bv-cartas .bv-carta:only-child{--t:translateX(-50%)}
+
+.bv-k{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.24em;color:#29B298;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .34s both}
+.bv-t{margin:0;display:grid;gap:2px;font:900 clamp(28px,7.8vw,50px)/.92 Archivo,sans-serif;font-stretch:125%;letter-spacing:.01em;white-space:nowrap}
+.bv-t span{display:block;animation:bv-sube .55s cubic-bezier(.2,.9,.2,1) .42s both}
+.bv-t span+span{color:#E41373;animation-delay:.52s}
+.bv-t.chico{font-size:clamp(20px,5.6vw,36px);white-space:normal;text-wrap:balance}
+.bv-p{margin:0;max-width:44ch;color:#C9C9C4;font:500 15px/1.5 Archivo,sans-serif;text-wrap:pretty;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .62s both}
+.bv-n{list-style:none;margin:2px 0 4px;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .72s both}
+.bv-n li{display:grid;gap:4px;min-width:96px;padding:10px 12px;border:1px solid #2A2A30;background:#0D0D10;border-radius:3px}
+.bv-n b{font:900 24px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.bv-n span{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#9A9AA6}
+
+/* el botón de entrar: grande, magenta, con la sombra dura del sello */
+.bv-si{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:min(100%,340px);min-height:56px;padding:14px 22px;
+  border:0;border-radius:3px;background:#E41373;color:#fff;font:900 18px/1 Archivo,sans-serif;letter-spacing:.05em;text-transform:uppercase;
+  cursor:pointer;box-shadow:5px 5px 0 #29B298;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .84s both,bv-late 2.2s ease-in-out 1.6s infinite}
+.bv-si:hover{background:#F0247F}
+.bv-si:active{transform:translate(3px,3px);box-shadow:2px 2px 0 #29B298}
+.bv-si:focus-visible,.bv-luego:focus-visible{outline:3px solid #29B298;outline-offset:3px}
+.bv-nota{color:#9A9AA6;font:500 13px/1.4 Archivo,sans-serif;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .9s both}
+.bv-luego{border:0;background:none;color:#C9C9C4;font:700 15px/1 Archivo,sans-serif;text-decoration:underline;text-underline-offset:4px;
+  padding:12px 14px;cursor:pointer;animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .96s both}
+.bv-luego:hover{color:#F6F6F6}
+
+/* el paso 2: la verificación de Mi cuenta, en una caja con el tema de cada uno */
+.bv-p2{gap:16px}
+.bv-ver{width:100%;text-align:left;background:var(--fondo,#030304);color:var(--tinta,#F6F6F6);border:1px solid #2A2A30;border-radius:3px;padding:4px 12px;
+  animation:bv-sube .5s cubic-bezier(.2,.9,.2,1) .4s both}
+
+.bv.sale{animation:bv-fuera .38s ease-in forwards}
+@keyframes bv-carta{from{opacity:0;transform:var(--t) translateY(70px) scale(.86)}to{opacity:1;transform:var(--t)}}
+@keyframes bv-flota{from{transform:var(--t) translateY(0)}to{transform:var(--t) translateY(-7px)}}
+@keyframes bv-sube{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes bv-late{0%,100%{transform:none}50%{transform:scale(1.03)}}
+@keyframes bv-fuera{to{opacity:0;transform:scale(1.04)}}
+@media (max-height:640px){.bv-cartas{height:clamp(110px,24vh,170px)}.bv-c{gap:10px}}
+/* en el celular el abanico se cierra: abierto, las de los costados se salían de la pantalla */
+@media (max-width:440px){.bv-carta{width:clamp(84px,16vh,116px)}.bv-carta.uno{width:clamp(96px,19vh,132px)}
+  .bv-carta.c0{--t:translateX(-112%) rotate(-10deg)}.bv-carta.c2{--t:translateX(12%) rotate(10deg)}}
+@media (prefers-reduced-motion:reduce){.bv,.bv *{animation:none!important}}
+.calma .bv,.calma .bv *{animation:none!important}

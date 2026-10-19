@@ -96,6 +96,16 @@ export function pasosEnInicio(dc) {
   return reciente() || !!(dc && !dc.rapero);
 }
 
+/**
+ * 🎮 ¿LA PANTALLA DE BIENVENIDA? (19/10/2026, bienvenida.jsx) Una vez: quien llega por primera vez, por el Inicio y sin
+ * cuenta —quien entra por un link va directo a eso—. Y el paso 2, al volver de Discord después de «Unirme a la Liga»
+ * (`lg:bienv` de la sesión), donde sea que vuelva.
+ */
+export function quiereBienvenida(dc) {
+  try { if (sessionStorage.getItem('lg:bienv') === 'paso2') return true; } catch (e) { return false; }
+  return !!(T && T.nuevo && !T.bienv && !T.tour && PRIMERA_VISITA && LLEGADA === '' && !(dc && dc.id));
+}
+
 /** Pedir el recorrido (la Guía, «Ver el recorrido»): lo escucha App.jsx */
 export function pedirRecorrido() {
   try { window.dispatchEvent(new CustomEvent('lg:tour')); } catch (e) { /* nada */ }

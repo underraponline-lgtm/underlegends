@@ -11,7 +11,7 @@ import { Encuestas } from './encuestas.jsx';
 import { Lobby } from './lobby.jsx';
 // 🧭 el tutorial (Dlx, 12/10/2026, «A … B … C … D … E. Dale»): quién es nuevo se decide al cargar (primera.js, chico);
 // lo que se dibuja se baja sólo si hace falta
-import { pasosEnInicio, quiereTutorial } from './primera.js';
+import { pasosEnInicio, quiereBienvenida, quiereTutorial } from './primera.js';
 import { AvisoVersion } from './novedad.jsx';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
 const SECC = new Set(['inicio', 'eventos', 'ranking', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'socios', 'guia',
@@ -100,6 +100,8 @@ function anotarUnaVez(k) {
   } catch (e) { /* sin almacenamiento, no se cuenta */ }
 }
 const Tutorial = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.Tutorial })));
+// 🎮 la pantalla de bienvenida (19/10/2026): se baja sólo para quien llega por primera vez
+const Bienvenida = lazy(() => import('./bienvenida.jsx'));
 const PrimerosPasos = lazy(() => import('./tutorial.jsx').then((m) => ({ default: m.PrimerosPasos })));
 // 🔑 EL RANKING Y EVENTOS, EN SU PROPIO ARCHIVO: se bajan recién al abrirlos. Con los dos adentro, el JS del Inicio
 // pasaba de 120 a 133 KB comprimido (02/10/2026), y el Inicio es lo que abre todo el mundo, en el celular
@@ -671,6 +673,7 @@ export default function App() {
       <Aislada n="AvisoWeb"><AvisoWeb aviso={aviso} /></Aislada>
       {/* 🆕 «hay una actualización» (13/10/2026): ver web/src/novedad.jsx */}
       <Aislada n="AvisoVersion"><AvisoVersion pagina={pagina} /></Aislada>
+      {quiereBienvenida(yo.dc) ? <Aislada n="Bienvenida"><Suspense fallback={null}><Bienvenida liga={liga} dc={yo.dc} /></Suspense></Aislada> : null}
       {quiereTutorial() || repite ? <Aislada n="Tutorial"><Suspense fallback={null}><Tutorial liga={liga} dc={yo.dc} pagina={paginaMenu} sv={sv} repite={repite} /></Suspense></Aislada> : null}
       <span id="contenido" tabIndex={-1} />
       {sv ? <Aislada key="PerfilSv" n="PerfilSv" pagina><Suspense fallback={<Cargando />}><PerfilSv liga={liga} sv={sv} enc={enc} /></Suspense></Aislada>

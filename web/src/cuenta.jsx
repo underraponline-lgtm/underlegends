@@ -1047,7 +1047,8 @@ function ElegirPais({ v }) {
   );
 }
 
-function Verificar({ liga, dc }) {
+// (exportada: la usa también la pantalla de bienvenida, en su paso 2 —bienvenida.jsx—)
+export function Verificar({ liga, dc }) {
   const v = useVerif();
   const yo = liga.yo;
   // ya cargado: con su clave de la Liga (`d:`), que sólo tiene quien pasó el portón
