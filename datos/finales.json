@@ -501,5 +501,27 @@
   "sin_permiso": false,
   "sv": "FFA"
  },
+ "1561784128972791931": {
+  "autor": "1345962362615894027",
+  "canal": "1487207377601040516",
+  "cuando": "2026-10-19T16:52:32.893000+00:00",
+  "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2",
+  "fecha": "19/10",
+  "llave": "1561784128972791931",
+  "pregunta": "1561852400053256253",
+  "preguntada": "2026-10-19 5:23 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "COLESITO🇨🇴+VANDU🇨🇦",
+     "AX🇩🇪 + MAKMA🇻🇪 + OG🇻🇪"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-19T20:55:20+00:00",
+ "cuando": "2026-10-19T21:25:13+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -427,7 +427,8 @@
    "premios": "Clasificación + Campeonato 🏆",
    "staff": {
     "jurado": [
-     "Velatz"
+     "Velatz",
+     "𓂀"
     ],
     "host": [
      "Velatz"
@@ -438,7 +439,8 @@
    },
    "autor": "Velatz",
    "staff_cuentas": {
-    "Velatz": "1426686911908675628"
+    "Velatz": "1426686911908675628",
+    "𓂀": "1071185986366742630"
    },
    "categoria_id": "1468478330826260500"
   },
@@ -4668,7 +4670,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "83 | Adriagner [GDF]",
+     "n": "Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4683,18 +4685,18 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "83 | Adriagner [GDF]"
+     "Adriagner"
     ],
     "host": [
-     "83 | Adriagner [GDF]"
+     "Adriagner"
     ],
     "dj": [
-     "83 | Adriagner [GDF]"
+     "Adriagner"
     ]
    },
-   "autor": "83 | Adriagner [GDF]",
+   "autor": "Adriagner",
    "staff_cuentas": {
-    "83 | Adriagner [GDF]": "1316490165836972104"
+    "Adriagner": "1316490165836972104"
    },
    "categoria_id": "1469944166137073857"
   },
@@ -4757,7 +4759,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "83 | Adriagner [GDF]",
+     "n": "Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4772,18 +4774,18 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "83 | Adriagner [GDF]"
+     "Adriagner"
     ],
     "host": [
-     "83 | Adriagner [GDF]"
+     "Adriagner"
     ],
     "dj": [
-     "83 | Adriagner [GDF]"
+     "Adriagner"
     ]
    },
-   "autor": "83 | Adriagner [GDF]",
+   "autor": "Adriagner",
    "staff_cuentas": {
-    "83 | Adriagner [GDF]": "1316490165836972104"
+    "Adriagner": "1316490165836972104"
    },
    "categoria_id": "1469944166137073857"
   },
@@ -4834,7 +4836,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "83 | Adriagner [GDF]",
+     "n": "Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4849,18 +4851,18 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "83 | Adriagner [GDF]"
+     "Adriagner"
     ],
     "host": [
-     "83 | Adriagner [GDF]"
+     "Adriagner"
     ],
     "dj": [
-     "83 | Adriagner [GDF]"
+     "Adriagner"
     ]
    },
-   "autor": "83 | Adriagner [GDF]",
+   "autor": "Adriagner",
    "staff_cuentas": {
-    "83 | Adriagner [GDF]": "1316490165836972104"
+    "Adriagner": "1316490165836972104"
    },
    "categoria_id": "1469944166137073857"
   },
@@ -4928,7 +4930,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "83 | Adriagner [GDF]",
+     "n": "Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4943,18 +4945,18 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "83 | Adriagner [GDF]"
+     "Adriagner"
     ],
     "host": [
-     "83 | Adriagner [GDF]"
+     "Adriagner"
     ],
     "dj": [
-     "83 | Adriagner [GDF]"
+     "Adriagner"
     ]
    },
-   "autor": "83 | Adriagner [GDF]",
+   "autor": "Adriagner",
    "staff_cuentas": {
-    "83 | Adriagner [GDF]": "1316490165836972104"
+    "Adriagner": "1316490165836972104"
    },
    "categoria_id": "1469944166137073857"
   },
@@ -4969,7 +4971,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "83 | Adriagner [GDF]",
+     "n": "Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4984,18 +4986,18 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "83 | Adriagner [GDF]"
+     "Adriagner"
     ],
     "host": [
-     "83 | Adriagner [GDF]"
+     "Adriagner"
     ],
     "dj": [
-     "83 | Adriagner [GDF]"
+     "Adriagner"
     ]
    },
-   "autor": "83 | Adriagner [GDF]",
+   "autor": "Adriagner",
    "staff_cuentas": {
-    "83 | Adriagner [GDF]": "1316490165836972104"
+    "Adriagner": "1316490165836972104"
    },
    "categoria_id": "1469944166137073857"
   },
@@ -5116,7 +5118,9 @@
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
-   "categoria_id": "868218509975498805"
+   "categoria_id": "868218509975498805",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-19T21:12:02"
   },
   {
    "nombre": "PRADE RAP VOL.1 | LACREW",
@@ -5152,7 +5156,9 @@
    },
    "autor": "Ardean",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-19T21:12:02"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 5",
@@ -5176,7 +5182,9 @@
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-19T21:12:02"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - HOY )",
@@ -5200,31 +5208,9 @@
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477"
-  },
-  {
-   "nombre": "COMPE CHILL",
-   "servidor": "ACAD",
-   "canal": "🥇┇torneos",
-   "msg_id": "1551643910953246751",
-   "cuando": "2026-09-21T17:18:56",
-   "canal_id": "1309243940448243856",
-   "guild_id": "765045834647339038",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "8f502dc57bad1da2",
-   "cupos_texto": "8",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "1V1",
-   "horario": "APENAS SE LLENEN LOS CUPOS",
-   "fecha": "",
-   "premios": "",
-   "staff": {},
-   "autor": "HERYIETEERJOUKATEITHORER",
-   "staff_cuentas": {},
-   "categoria_id": "1309234419525222477"
+   "categoria_id": "1309234419525222477",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-19T21:12:02"
   },
   {
    "nombre": "ASTRAL NO SIRVES PARA NADA CUP",
@@ -6194,6 +6180,60 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "riolu🇪🇸",
+   "quien": "alvaroriolu03",
+   "discord_id": "522777983921029162",
+   "msg_id": "1561852611710423141",
+   "cuando": "2026-10-19T21:24:40"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1561852428196778155",
+   "cuando": "2026-10-19T21:23:56"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Ax🇩🇪",
+   "quien": "xxxxxx.fl",
+   "discord_id": "1397110475594010700",
+   "msg_id": "1561852339772723212",
+   "cuando": "2026-10-19T21:23:35"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "SOSA 🇺🇾",
+   "quien": "sosaatrz",
+   "discord_id": "1471153954254622774",
+   "msg_id": "1561847756245438497",
+   "cuando": "2026-10-19T21:05:22"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tnor🇻🇪",
+   "quien": "tenor_25499",
+   "discord_id": "1370860602972569632",
+   "msg_id": "1561845934646763655",
+   "cuando": "2026-10-19T20:58:08"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "sosa + xd 🇺🇾",
+   "quien": "sosaatrz",
+   "discord_id": "1471153954254622774",
+   "msg_id": "1561845299243122772",
+   "cuando": "2026-10-19T20:55:37"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
