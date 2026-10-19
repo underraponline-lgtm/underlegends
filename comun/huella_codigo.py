@@ -94,6 +94,34 @@ pasa todos los dias—, es **una vez** por tanda de cambios, y falla
 hacia el lado seguro. Lo que no hay que hacer es sorprenderse: si
 despues de tocar `comun/` el ciclo dice «le toca a todo el pool», esto
 es por que.
+
+LA VERSION 2: LO QUE SE SACA POR SU FORMA, NUNCA POR SU NOMBRE (19/10/2026)
+--------------------------------------------------------------------------
+🔴 **El 19/10/2026 cinco lineas redibujaron el pool entero.** Para que la
+consola de Windows imprimiera emojis se le agrego a `comun/sin_foto.py`
+un `sys.stdout.reconfigure(...)`: ningun pixel cambia, y el ciclo tardo
+44 minutos en vez de ~10, con el de despues 35 minutos en la cola. Dlx:
+*«dale»*, a que eso no vuelva a pasar.
+
+Se sacan DOS cosas, y las dos por su FORMA —la regla de arriba sigue: nada
+por una lista de nombres—:
+
+1. **el bloque `if __name__ == '__main__':` de nivel de modulo**: por
+   definicion no corre cuando un generador importa el modulo;
+2. **la sentencia que solo reconfigura la consola** —`sys.stdout` o
+   `sys.stderr` `.reconfigure(...)`, sola o adentro de un `try` que no
+   hace otra cosa—: cambia como se ESCRIBE en la consola, no lo que se
+   dibuja.
+
+⚠️ `verificar()` y los `_self_check()` SIGUEN ADENTRO: son `def`, y una
+`def` puede correr al importarse (ver la razon 2 de arriba).
+
+⚠️ CAMBIAR LA NORMALIZACION MUEVE TODAS LAS HUELLAS UNA VEZ, y eso seria
+otro redibujo del pool entero por un cambio que no dibuja. Por eso queda la
+version 1 (`VERSION_VIEJA`): `bot/que_cambio.py` (`migrar()`) traduce cada
+sello cuyo codigo era la huella VIEJA del codigo de HOY —o sea, nada cambio
+segun las reglas de antes— a la nueva. Si ademas cambio algo de verdad, la
+vieja no coincide y se redibuja como siempre.
 """
 import ast
 import hashlib
@@ -242,7 +270,52 @@ def _sin_docstrings(arbol):
     return arbol
 
 
-def normalizar(ruta, datos):
+#: la normalizacion de hoy, y la de antes (para migrar los sellos sin redibujar: ver arriba)
+VERSION = 2
+VERSION_VIEJA = 1
+
+
+def _es_consola(st):
+    """¿Esa sentencia SOLO reconfigura la consola? `sys.stdout.reconfigure(...)` (o `stderr`), sola o en un `try` cuyo
+    cuerpo no hace otra cosa (y sus `except` tampoco)."""
+    def llamada(s):
+        if not (isinstance(s, ast.Expr) and isinstance(s.value, ast.Call)):
+            return False
+        f = s.value.func
+        return (isinstance(f, ast.Attribute) and f.attr == 'reconfigure'
+                and isinstance(f.value, ast.Attribute) and f.value.attr in ('stdout', 'stderr')
+                and isinstance(f.value.value, ast.Name) and f.value.value.id == 'sys')
+    if llamada(st):
+        return True
+    if isinstance(st, ast.Try) and st.body and all(llamada(s) for s in st.body) and not st.orelse and not st.finalbody:
+        return all(all(isinstance(s, ast.Pass) or llamada(s) for s in h.body) for h in st.handlers)
+    return False
+
+
+def _es_main(st):
+    """¿Es el `if __name__ == '__main__':` de nivel de modulo (sin `else`)?"""
+    if not isinstance(st, ast.If) or st.orelse:
+        return False
+    t = st.test
+    return (isinstance(t, ast.Compare) and len(t.ops) == 1 and isinstance(t.ops[0], ast.Eq)
+            and isinstance(t.left, ast.Name) and t.left.id == '__name__'
+            and len(t.comparators) == 1 and isinstance(t.comparators[0], ast.Constant)
+            and t.comparators[0].value == '__main__')
+
+
+def _sin_lo_que_no_dibuja(arbol):
+    """La version 2: sin el bloque `__main__` y sin lo que solo reconfigura la consola. Muta y devuelve."""
+    arbol.body = [s for s in arbol.body if not _es_main(s)]
+    for n in ast.walk(arbol):
+        c = getattr(n, 'body', None)
+        if isinstance(c, list) and c:
+            resto = [s for s in c if not _es_consola(s)]
+            # (un cuerpo no puede quedar vacio: si era SOLO eso, queda un `pass`)
+            n.body = resto or [ast.Pass()]
+    return arbol
+
+
+def normalizar(ruta, datos, version=VERSION):
     """El contenido de ese archivo sin lo que no cambia el dibujo.
 
     ⚠️ UN `.py` QUE NO PARSEA CUENTA POR SUS BYTES, y no revienta. Un
@@ -251,7 +324,8 @@ def normalizar(ruta, datos):
     """
     if ruta.endswith('.py'):
         try:
-            return ast.dump(_sin_docstrings(ast.parse(datos)))
+            a = _sin_docstrings(ast.parse(datos))
+            return ast.dump(_sin_lo_que_no_dibuja(a) if version >= 2 else a)
         except SyntaxError:
             return datos
     if ruta.endswith('.css'):
@@ -293,8 +367,8 @@ def archivos(carta):
     return sorted(set(out) | set(_rescatados(carta)))
 
 
-def de(carta):
-    """La huella del codigo que dibuja esa carta. 12 hex."""
+def de(carta, version=VERSION):
+    """La huella del codigo que dibuja esa carta. 12 hex. `version`: la de la normalizacion (ver `VERSION`)."""
     h = hashlib.sha1()
     for rel in archivos(carta):
         try:
@@ -306,7 +380,7 @@ def de(carta):
         # mover una funcion de uno a otro da la misma huella.
         h.update(rel.encode('utf-8'))
         h.update(b'\0')
-        h.update(normalizar(rel, d).encode('utf-8', 'replace'))
+        h.update(normalizar(rel, d, version).encode('utf-8', 'replace'))
         h.update(b'\0')
     # y los dibujos: ver `DIBUJOS`
     for rel in dibujos():
@@ -321,9 +395,9 @@ def de(carta):
     return h.hexdigest()[:12]
 
 
-def todas():
+def todas(version=VERSION):
     """{carta: huella} para las cuatro."""
-    return {c: de(c) for c in CARPETAS}
+    return {c: de(c, version) for c in CARPETAS}
 
 
 def _self_check():
@@ -338,6 +412,16 @@ def _self_check():
         ('un umbral en un dict', "U = {'S': 62}\n", "U = {'S': 65}\n", False),
         ('un nombre', 'def f():\n    pass\n', 'def g():\n    pass\n', False),
         ('un texto de verdad', "t = 'hola'\n", "t = 'chau'\n", False),
+        # la version 2 (19/10/2026): lo que se saca por su forma
+        ('la consola (try)', 'import sys\nx = 1\n',
+         "import sys\nx = 1\ntry:\n    sys.stdout.reconfigure(encoding='utf-8')\nexcept Exception:\n    pass\n", True),
+        ('la consola suelta', 'def f():\n    return 1\n',
+         "def f():\n    sys.stderr.reconfigure(errors='replace')\n    return 1\n", True),
+        ('el __main__', 'x = 1\n', "x = 1\nif __name__ == '__main__':\n    print(x)\n", True),
+        ('un try que hace más', 'x = 1\n',
+         "x = 1\ntry:\n    sys.stdout.reconfigure(encoding='utf-8')\n    y = 2\nexcept Exception:\n    pass\n", False),
+        ('un __main__ con else', 'x = 1\n', "x = 1\nif __name__ == '__main__':\n    pass\nelse:\n    x = 3\n", False),
+        ('verificar() no se va', 'x = 1\n', 'x = 1\ndef verificar():\n    return 1\n', False),
     ]
     mal = 0
     print('\n  la normalizacion de .py')

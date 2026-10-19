@@ -285,7 +285,9 @@ def mapa_viejo():
     if not antes:
         return ['(el mapa no guarda con qué código se midió: regeneralo)']
     hoy = huella_codigo.todas()
-    return sorted(c for c in hoy if antes.get(c) != hoy[c])
+    # (un mapa medido con la versión 1 de la huella sigue valiendo si el código no cambió: ver `migrar()`)
+    viejo = huella_codigo.todas(huella_codigo.VERSION_VIEJA)
+    return sorted(c for c in hoy if antes.get(c) not in (hoy[c], viejo[c]))
 
 
 def por_campo():
@@ -688,6 +690,35 @@ def faltan_en_r2(quien, est, inv, emi=None):
     return out
 
 
+def migrar(antes, viejo=None, nuevo=None):
+    """🔀 Los sellos de antes de la versión 2 de la huella del código (19/10/2026, `comun/huella_codigo.py`).
+
+    Cambiar CÓMO se calcula la huella la mueve para todos, y eso redibujaría el pool entero por un cambio que no dibuja
+    —justo lo que la versión 2 existe para evitar—. Un sello cuya parte de código es la huella VIEJA del código de HOY
+    no vio ningún cambio según las reglas de antes: se traduce a la nueva. ⚠️ Si además cambió algo de verdad, la vieja
+    no coincide y se redibuja como siempre. `viejo` y `nuevo` (`{carta: huella}`) son para las pruebas.
+    """
+    if not antes:
+        return antes
+    viejo = huella_codigo.todas(huella_codigo.VERSION_VIEJA) if viejo is None else viejo
+    nuevo = huella_codigo.todas() if nuevo is None else nuevo
+    cambia = {c: (viejo[c], nuevo[c]) for c in nuevo if viejo.get(c) and viejo[c] != nuevo[c]}
+    if not cambia:
+        return antes
+    out = {}
+    for quien, cs in antes.items():
+        fila = {}
+        for c, v in (cs or {}).items():
+            if c in cambia and isinstance(v, str):
+                d, s1, resto = v.partition(':')
+                cod, s2, cam = resto.partition(':')
+                if s1 and cod == cambia[c][0]:
+                    v = d + ':' + cambia[c][1] + (s2 + cam if s2 else '')
+            fila[c] = v
+        out[quien] = fila
+    return out
+
+
 def solo_dibujo(antes, hoy):
     """¿Cambió el código y NO los datos? `antes` y `hoy`, dos huellas.
 
@@ -724,7 +755,7 @@ def cambios(motivos=None, ahora=None):
     antes = None
     if os.path.exists(SELLO):
         with io.open(SELLO, encoding='utf-8') as f:
-            antes = (json.load(f) or {}).get('cartas')
+            antes = migrar((json.load(f) or {}).get('cartas'))
     if antes is None:
         return {}, sorted(hoy), [], False
     est = estado()
@@ -798,7 +829,7 @@ def sellar(solo=None):
     previo = {}
     if os.path.exists(SELLO):
         with io.open(SELLO, encoding='utf-8') as f:
-            previo = (json.load(f) or {}).get('cartas') or {}
+            previo = migrar((json.load(f) or {}).get('cartas') or {})
     if solo is not None:
         if not isinstance(solo, dict):
             solo = {q: None for q in solo}
@@ -858,6 +889,12 @@ def _self_check():
     print('')
     print('  que_cambio.py — el sello por carta, sin red')
     print('')
+    # 🔀 la versión 2 de la huella no redibuja nada que no cambió (19/10/2026, `migrar()`)
+    viejo, nuevo = {'temporada': 'v1aaa', 'servidor': 'v1sss'}, {'temporada': 'v2aaa', 'servidor': 'v2sss'}
+    m = migrar({'ana': {'temporada': 'd1:v1aaa', 'servidor': 'd2:v1sss:cam9'}, 'bea': {'temporada': 'd3:otro1'}},
+               viejo, nuevo)
+    ok(m['ana'] == {'temporada': 'd1:v2aaa', 'servidor': 'd2:v2sss:cam9'} and m['bea'] == {'temporada': 'd3:otro1'},
+       'el sello viejo pasa a la huella nueva si el código no cambió (con las camisetas); si cambió de verdad, no')
     g = globals()
     orig = {k: g[k] for k in ('huellas', 'estado', 'emitibles', 'SELLO', 'inventario')}
     ya = os.environ.pop('REDIBUJAR_YA', None)
