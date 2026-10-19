@@ -1035,6 +1035,8 @@ export function botonesApuesta(id, a, b, cerrada, montos = AP_MONTOS) {
 // ═════════════════════════════════════════════════════════════════════
 export const QG_VENCE = 30 * MIN;
 export const QG_TOPE = 6;
+/** 🗳️ los votos que hacen falta para que el público tenga un favorito en un cruce (TAG 🗳️ FAVORITO DEL PÚBLICO) */
+export const QG_FAV_MIN = 3;
 
 //: las letras de cada lado del voto: dos en un mano a mano, hasta cinco (un renglón de botones de Discord) en un
 //: «todos contra todos» —1v1v1, 1v1v1v1— (19/10/2026, Dlx: «¿qué sucede cuando son 3 personas distintas batallando?»)
@@ -1118,6 +1120,21 @@ export function repartoPozo(ap, ganador) {
 }
 
 /** Qué lado de la apuesta ganó su batalla en la llave `L`: 'A', 'B' o '' (todavía no se sabe). */
+/**
+ * 🗳️ A quién votó el público en un cruce: el nombre con más votos, si hay `QG_FAV_MIN` o más y no hay empate arriba;
+ * `''` si no. Un lado de equipo («Ana, Beto») no es una persona: no tiene favorito. Para el TAG 🗳️ FAVORITO DEL
+ * PÚBLICO de la Temporada (19/10/2026), que cuenta cuántas veces le pasó a cada uno (`favoritos()` del objeto).
+ */
+export function favoritoDe(a, b, na, nb, mas = [], nmas = []) {
+  const lados = [[a, Number(na) || 0], [b, Number(nb) || 0]].concat((mas || []).map((x, i) => [x, Number((nmas || [])[i]) || 0]));
+  const total = lados.reduce((s, x) => s + x[1], 0);
+  if (total < QG_FAV_MIN) return '';
+  const orden = lados.slice().sort((x, y) => y[1] - x[1]);
+  if (orden.length > 1 && orden[0][1] === orden[1][1]) return '';
+  const n = String(orden[0][0] || '').trim();
+  return n && !n.includes(',') ? n : '';
+}
+
 export function ladoGanador(L, ronda, a, b, mas = []) {
   const rondas = (L && L.rondas) || [];
   // 🧮 con N lados (un «todos contra todos»): la letra del que pasó, o '' si todavía no se sabe
@@ -2471,6 +2488,8 @@ const RUTAS = {
   '/avisos/crews-sembrar': 'POST',
   // 🪪 los de las crews que no están verificados, con la clave del ciclo (`bot/crews_verificar.py`)
   '/avisos/crews-verificar': 'POST',
+  // 🗳️ a quién votó el público como ganador en el bot en vivo, sumado por nombre (público: sin ningún Discord ID)
+  '/avisos/favoritos': 'GET',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026). Ver `visita()` del objeto
   '/avisos/visita': 'POST',
   // 🧭 el tutorial (12/10/2026): qué vio y qué terminó un navegador, sin nada de nadie. Ver `tutorial()` del objeto
@@ -5450,6 +5469,9 @@ export class Avisos {
       // 🧮 los lados de más de un «todos contra todos» (C, D, E) y sus votos, en JSON (19/10/2026)
       try { this.sql.exec("ALTER TABLE qg ADD COLUMN mas TEXT NOT NULL DEFAULT '[]'"); } catch (e) { /* ya estaba */ }
       try { this.sql.exec("ALTER TABLE qg ADD COLUMN nmas TEXT NOT NULL DEFAULT '[]'"); } catch (e) { /* ya estaba */ }
+      // 🗳️ a quién votó el público en cada cruce cerrado (19/10/2026): `qg` se borra a la semana y el TAG 🗳️ FAVORITO
+      // DEL PÚBLICO cuenta la temporada entera. Uno por cruce; ver `favoritoDe()` y `favoritos()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS qg_fav (id TEXT PRIMARY KEY, n TEXT NOT NULL, temporada TEXT NOT NULL, t INTEGER NOT NULL)');
       // 👏 FELICITAR (02/10/2026): un aplauso por Discord ID y publicación (`aplausos`), y de cada publicación
       // felicitada lo que dice el aviso y hasta cuántos se avisó (`aplaudidas`). Ver `aplaudir()` y `avisarAplausos()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS aplausos (id TEXT NOT NULL, quien TEXT NOT NULL, ' +
@@ -5897,6 +5919,8 @@ export class Avisos {
       // 👥 todas las crews, sin ningún Discord ID: la página y el ciclo (`bot/crews_vivas.py`)
       if (ruta === '/crews') { const r = CW.crewsPublico(this); await this.vaciarBasuraCrews(); return json(r, 200, 60); }
       if (ruta === '/aplausos') return json(this.aplausosCuenta(), 200, 20);
+      // 🗳️ cuántas veces el público votó a cada uno como ganador, en la temporada (el ciclo: `bot/hechos_vivo.py`)
+      if (ruta === '/favoritos') return json(this.favoritos(), 200, 300);
       if (ruta === '/promos-extra') return json(this.promosExtra(), 200, 60);
       if (ruta === '/promos-vistas') return json(this.promosVistas(), 200, 60);
       if (ruta === '/niveles') return json(this.niveles(), 200, 300);
@@ -7265,6 +7289,14 @@ export class Avisos {
       try { mas = JSON.parse(q.mas || '[]') || []; nmas = JSON.parse(q.nmas || '[]') || []; } catch (e) { mas = []; nmas = []; }
       let g = L ? ladoGanador(L, q.ronda, q.a, q.b, mas) : '';
       if (!g && ahora - q.abre > QG_VENCE) g = 'x';
+      // 🗳️ al cerrarse, a quién votó el público (una vez por cruce: la clave es el id)
+      if (g) {
+        const fav = favoritoDe(q.a, q.b, q.na, q.nb, mas, nmas);
+        if (fav) {
+          this.sql.exec('INSERT OR IGNORE INTO qg_fav (id, n, temporada, t) VALUES (?, ?, ?, ?)', q.id, fav,
+            String(this.env.TEMPORADA || 't1'), ahora);
+        }
+      }
       const linea = lineaVoto(q.a, q.b, q.na, q.nb, g, mas, nmas);
       if (!g && linea === q.dicho) continue;
       const h = this.sql.exec('SELECT texto FROM chat_vivo WHERE canal = ? AND msg = ? ORDER BY t DESC LIMIT 1', q.canal, q.msg).toArray()[0];
@@ -10307,6 +10339,17 @@ export class Avisos {
       }
     }
     return out;
+  }
+
+  /** 🗳️ `{t, temporada, n: {nombre: veces}}`: a quién votó el público como ganador, en la temporada de ahora. Nombres, como
+   *  los escribe la llave: la clave la pone el ciclo, que es quien resuelve los nombres. */
+  favoritos() {
+    const temporada = String(this.env.TEMPORADA || 't1');
+    const n = {};
+    for (const r of this.sql.exec('SELECT n, COUNT(*) AS c FROM qg_fav WHERE temporada = ? GROUP BY n', temporada).toArray()) {
+      n[r.n] = Number(r.c) || 0;
+    }
+    return { t: Date.now(), temporada, n };
   }
 
   /** 🗑️ Los logos de las crews que se borraron (bot/crews.js `crewBasura()`), fuera de R2. Nunca frena nada. */

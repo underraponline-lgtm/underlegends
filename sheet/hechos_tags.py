@@ -56,6 +56,12 @@ LLEGADO_DIAS = 7
 COHETE = 20
 #: los ocho tramos del rango, de abajo para arriba (🗡️ MATAGIGANTES mide «dos tramos arriba»)
 TRAMOS = ['E', 'D', 'C', 'B', 'A', 'S', 'SS', 'SSS']
+#: ⚡ RELÁMPAGO: eventos ganados en la misma semana (19/10/2026, los TAGs que aprobó Dlx)
+RELAMPAGO = 2
+#: 🗳️ FAVORITO DEL PÚBLICO: veces que el público lo votó como ganador en el bot en vivo
+FAVORITO = 5
+#: INTERNACIONAL (la de País): países distintos de los rivales que venció
+INTERNACIONAL = 5
 #: los ids de la Servidor que chocan con un TAG de otra carta (ver `svtag()`)
 CHOCA_T = ('campeon', 'llamas')
 CHOCA_C = ('duelista',)
@@ -102,6 +108,11 @@ def cargar():
         'divisiones': _j('divisiones.json', {}) or {},
         'semana': _j('ranking_semana.json', {}) or {},
         'ps': (_j('por_servidor.json', {}) or {}).get('gente') or {},
+        # 🗳️ cuántas veces el público votó a cada uno como ganador en el bot en vivo (`bot/hechos_vivo.py`, del objeto)
+        'favoritos': (_j('favoritos.json', {}) or {}).get('n') or {},
+        # 👥 las crews (lo público del objeto, `bot/crews_vivas.py`) y su tier (`bot/crews_tiers.py`)
+        'crews': _j('crews_vivas.json', {}) or {},
+        'tiers': (_j('crews_tiers.json', {}) or {}).get('tier') or {},
     }
 
 
@@ -178,6 +189,25 @@ def _notas(L):
                 if 'triple' in nota and gan and ',' not in gan:
                     trios[K(gan)] += 1
     return rev, trios, fenix
+
+
+def crews_hechos(vivas, tiers):
+    """`(fundadores, elite)`: quién es Líder de una crew que armó él y ya pasó su primera semana (las de la Liga no
+    cuentan: ésas las armó Dlx), y quién está en una crew de Diamante o más —el tier que desbloquea la tarjeta de crew—.
+    ⚠️ Quien está sin verificarse (el cuarto lugar de `gente`, `crewVerificar()` de bot/crews.js) no cuenta."""
+    try:
+        from crews_tiers import TARJETA as diamante
+    except Exception:                                    # noqa: BLE001
+        diamante = 4
+    fund, elite = set(), set()
+    for c in (vivas or {}).get('crews') or []:
+        gente = [g for g in c.get('gente') or [] if g and not (len(g) > 3 and g[3])]
+        lider = next((g[0] for g in gente if len(g) > 1 and g[1] == 'lider'), '')
+        if lider and not c.get('oficial') and not c.get('vence') and c.get('fund') == lider:
+            fund.add(lider)
+        if int((tiers or {}).get(c.get('id'), 0) or 0) >= diamante:
+            elite |= {g[0] for g in gente}
+    return fund, elite
 
 
 def _cc_de(*pools):
@@ -258,6 +288,11 @@ def temporada(filas, D=None, hoy=None, comp=None):
     `cohete` subió 20 o más desde el lunes · `dobles` días con dos eventos o más · `trios` triples ganados ·
     `reciente` debutó hace 14 días o menos · `rev` revividos · `sube` subió de división · `infalt` jugó cada semana ·
     `svtag` el TAG de su Servidor cuando choca con uno de esta carta (ver `svtag()`).
+
+    Y desde el 19/10/2026 (los que aprobó Dlx): `relampago` ganó 2 eventos o más en la misma semana · `fcrew` es Líder
+    de la crew que armó y ya pasó su primera semana · `elite` está en una crew de Diamante o más · `fav` el público lo
+    votó como ganador 5 veces o más en el bot en vivo. Los cuatro como sí/no: los de crews se mueven con lo que hacen
+    otros, y el de los votos, con cada voto.
     """
     D = D or cargar()
     hoy = hoy or hoy_et()
@@ -276,6 +311,13 @@ def temporada(filas, D=None, hoy=None, comp=None):
     pasadas = {_semana(e['dia']) for e in L.values() if e.get('dia')} - {sem_hoy}
     pasadas = {s for s in pasadas if s < sem_hoy}
     comp = {K(x['raw']): x for x in (comp if comp is not None else (_j('competitivo_pool.json', []) or []))}
+    fav = collections.Counter()
+    for n, c in (D.get('favoritos') or {}).items():
+        try:
+            fav[K(n)] += int(c or 0)
+        except (TypeError, ValueError):
+            continue
+    fund, elite = crews_hechos(D.get('crews'), D.get('tiers'))
     out = {}
     for f in filas:
         k = K(f.get('raw'))
@@ -300,6 +342,11 @@ def temporada(filas, D=None, hoy=None, comp=None):
             'rev': rev.get(k, 0),
             'sube': k in sube,
             'infalt': len(pasadas) >= 2 and pasadas <= semanas,
+            'relampago': max(list(collections.Counter(_semana(e[0]) for e in evs if e[0] and e[3] == 'Campeón').values())
+                             or [0]) >= RELAMPAGO,
+            'fcrew': k in fund,
+            'elite': k in elite,
+            'fav': fav.get(k, 0) >= FAVORITO,
         }
         st = svtag(f.get('raw'), comp.get(k), D['ps'])
         h['svtag'] = st if st in CHOCA_T else ''
@@ -366,7 +413,7 @@ def competitivo(filas_c, D=None):
 def pais(filas_c, filas_t=None, D=None):
     """`{clave: hechos}` de la de País.
 
-    Claves: `paises` países distintos de los rivales que enfrentó · `pionero` el primero de su país en debutar en la
+    Claves: `paises` países distintos de los rivales que enfrentó · `paisesg` los de los que venció (19/10/2026) · `pionero` el primero de su país en debutar en la
     temporada · `primer` el primero de su país en salir campeón · `unico` el único campeón de su país. Las tres de
     país, sólo en países con 3 o más personas que jugaron: «el primero de 1» no dice nada (la regla de los puestos).
     """
@@ -396,6 +443,7 @@ def pais(filas_c, filas_t=None, D=None):
     for f in filas_c:
         k = K(f.get('raw'))
         out[k] = _limpio({'paises': len({cc[x[2]] for x in du.get(k, []) if cc.get(x[2])}),
+                          'paisesg': len({cc[x[2]] for x in du.get(k, []) if x[3] and cc.get(x[2])}),
                           'pionero': k in pionero, 'primer': k in primer, 'unico': k in unico})
     return out
 
@@ -565,6 +613,23 @@ def _self_check():
                                                        'tabla': [['Eva', 'Octavos', 1]], 'rondas': []}})),
                    hoy='2026-10-14', comp=C)
     ok(t2['ana'].get('infalt'), 'el lunes no le saca a nadie el 📅 INFALTABLE: la semana de hoy no se exige')
+    # ⚡ 👥 💎 🗳️ los del 19/10/2026
+    D6 = dict(D, llaves=dict(L, **{'6': {'n': 6, 'dia': '2026-10-08', 'sv': 'SR', 'tabla': [['Beto', 'Campeón', 1]],
+                                         'rondas': []}}),
+              favoritos={'Ana': 5, 'Beto': 4},
+              crews={'crews': [{'id': 'Los Pibes', 'oficial': False, 'vence': 0, 'fund': 'ana',
+                                'gente': [['ana', 'lider', 1], ['beto', 'miembro', 2], ['eva', 'miembro', 3, 99]]},
+                               {'id': 'Nueva', 'oficial': False, 'vence': 5, 'fund': 'cyn', 'gente': [['cyn', 'lider', 1]]},
+                               {'id': 'Liga', 'oficial': True, 'vence': 0, 'gente': [['dan', 'lider', 1]]}]},
+              tiers={'Los Pibes': 4, 'Liga': 3})
+    t6 = temporada(T + [{'raw': 'Cyn', 'pos': 20}], D6, hoy='2026-10-14', comp=C)
+    ok(t6['beto'].get('relampago') and not t6['ana'].get('relampago'),
+       'relámpago: Beto ganó el 07/10 y el 08/10 (la misma semana); Ana ganó en dos semanas distintas')
+    ok(t6['ana'].get('fcrew') and not t6['cyn'].get('fcrew') and not t6['dan'].get('fcrew'),
+       'fundador de crew: Ana armó la suya y pasó la semana; Cyn todavía no, y la de Dan es de la Liga')
+    ok(t6['ana'].get('elite') and t6['beto'].get('elite') and not t6['eva'].get('elite') and not t6['dan'].get('elite'),
+       'crew de élite: Ana y Beto en una de Diamante; Eva está sin verificarse y Dan en una de Platino')
+    ok(t6['ana'].get('fav') and not t6['beto'].get('fav'), 'favorito del público: Ana 5 veces, Beto 4')
     c = competitivo(C, D)
     ok(c['ana'].get('fg') == 2 and c['ana'].get('fp') == 1 and c['beto'].get('fp') == 2,
        'finales 1 contra 1: Ana 2-1, Beto 1-2 (la de equipos no cuenta)')
@@ -579,6 +644,8 @@ def _self_check():
     ok(p['ana'].get('primer') and not p['beto'].get('primer') and not p['ana'].get('unico'),
        'Ana fue la primera campeona argentina; Beto también ganó, así que no hay único')
     ok(not p['cyn'].get('pionero'), 'Chile tiene 1 persona: sin pionero (el umbral de 3)')
+    ok(p['beto'].get('paisesg') == 2 and p['ana'].get('paisesg') == 1 and not p['dan'].get('paisesg'),
+       'países vencidos: Beto le ganó a un argentino y a una chilena (2), Ana sólo a argentinos (1)')
     ok(p['ana'].get('paises') == 1 and p['beto'].get('paises') == 2,
        'países enfrentados: Ana sólo argentinos (1), Beto argentina y chileno (2)')
     ps = {'Ana': {'FFA': {'ev': 3}, 'SR': {'ev': 1}}, 'Beto': {'FFA': {'ev': 2}}, 'Eva': {'FFA': {'ev': 2}},

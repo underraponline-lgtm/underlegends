@@ -1349,6 +1349,11 @@ const ok = (cond, que, det) => {
       && muchos.length > 1 && muchos.every((m) => m.texto.length <= 2000 && m.ids.length <= 100)
       && muchos.reduce((n, m) => n + m.ks.length, 0) === 120 && !TSV([], 'x').length,
     'crews sin verificar: por crew, menciona a quien tiene cuenta y nombra a quien no, la fecha en ET, y entra en Discord');
+    // 🗳️ a quién votó el público (TAG 🗳️ FAVORITO DEL PÚBLICO, 19/10/2026)
+    const FD = A.favoritoDe;
+    ok(FD('Ana', 'Beto', 3, 1) === 'Ana' && FD('Ana', 'Beto', 1, 1) === '' && FD('Ana', 'Beto', 2, 2) === ''
+      && FD('Ana', 'Beto', 1, 2, ['Cyn'], [4]) === 'Cyn' && FD('Ana, Eva', 'Beto', 5, 1) === '' && FD('Ana', 'Beto', 0, 0) === '',
+    'favorito del público: el más votado con 3 votos o más, sin empate arriba y sin equipos');
     // 🔐 los permisos del Dashboard (13/10/2026)
     const PR = A.puedeRol;
     ok(PR(['owner'], 'roles') && !PR(['admin'], 'roles') && PR(['admin'], 'ajustes') && PR(['asistente'], 'reportes')

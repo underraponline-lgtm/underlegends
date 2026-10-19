@@ -1324,6 +1324,9 @@ def tag(pos, nac=0, mun=0, evt=0, pod=0, win='0%', rch=0, dna='', din='', h=None
     # rivales de 7 países o más
     if h.get('paises', 0) >= 7:
         return ('SIN FRONTERAS', 't2')
+    # le ganó a rivales de 5 países o más (19/10/2026, Dlx). Enfrentarlos es SIN FRONTERAS; ganarles, esto
+    if h.get('paisesg', 0) >= 5:
+        return ('INTERNACIONAL', 't2')
     if h.get('srv', 0) >= 4:
         return ('EMBAJADOR', 't2')
     # el primero de su país en debutar en la temporada

@@ -250,6 +250,10 @@ def tag(c):
     if h.get('solo', 0) >= 1:               return ('🐺 LOBO SOLITARIO', 't2')    # cazó sin ayuda
     if pts >= 100000:                       return ('💯 CENTENARIO', 't2')
     if oro >= 5:                            return ('⭐ PENTACAMPEÓN', 't2')
+    # ⚡ 🗳️ 💎 los del 19/10/2026 (Dlx los aprobó; cada uno vive sólo en esta carta)
+    if h.get('relampago'):                  return ('⚡ RELÁMPAGO', 't2')          # 2+ eventos ganados la misma semana
+    if h.get('fav'):                        return ('🗳️ FAVORITO DEL PÚBLICO', 't2')  # el público lo votó 5+ veces
+    if h.get('elite'):                      return ('💎 CREW DE ÉLITE', 't2')      # en una crew de Diamante o más
     if h.get('dcor'):                       return ('🚪 DEBUT CON CORONA', 't2')  # ganó su primer evento
     if h.get('fenix', 0) >= 1:              return ('🐦‍🔥 FÉNIX', 't2')            # revivido y llegó a la final
     if c.get('seg', 0) >= 3 and oro <= 1:   return ('🥈 SIEMPRE EN LA FINAL', 't2')
@@ -262,6 +266,8 @@ def tag(c):
     if h.get('perf', 0) >= 1:               return ('📋 SEMANA PERFECTA', 't2')
     # ── t3 · lo que se ve ───────────────────────────────────────────────
     if srv >= 4:                            return ('🌍 TROTAMUNDOS', 't3')
+    # 👥 «DE CREW» porque el 🧱 FUNDADOR de la Servidor es otra cosa (jugó el primer evento del servidor)
+    if h.get('fcrew'):                      return ('👥 FUNDADOR DE CREW', 't3')  # armó su crew y pasó la semana
     if h.get('rev', 0) >= 1:                return ('🧟 RESUCITADO', 't3')        # revivido en una llave
     if oro >= 1 and sv != 'campeon':        return ('👑 CAMPEÓN x%d' % oro, 't3')
     if h.get('sube'):                       return ('📈 EN ASCENSO', 't3')        # subió de división

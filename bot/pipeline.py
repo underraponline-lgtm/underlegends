@@ -700,6 +700,9 @@ def _lo_barato(correr):
         corre(['bot/crews_verificar.py'], callado=False)
         if not corre(['bot/crews_vivas.py'], callado=False):
             print('      ⚠️ no pude bajar las crews: quedan las de antes')
+        # 🗳️ y a quién votó el público en el bot en vivo, para el TAG 🗳️ FAVORITO DEL PÚBLICO (`bot/hechos_vivo.py`):
+        # antes de los pools (paso 2), que arman los TAGs
+        corre(['bot/hechos_vivo.py'], callado=False)
         paso('0b', 'los multiplicadores de la semana')
         if not corre(['bot/multiplicadores.py', '--aplicar'], callado=False):
             print('      ⚠️ no pude sortear los multiplicadores: quedan los que había')

@@ -295,6 +295,8 @@ if (!DatabaseSync) {
     && g('Viejas', 'vok1').length === 3 && bandeja.some((b) => b.quien === id(900) && b.titulo === '👑 Ahora sos Líder de Viejas'),
   'el Líder sin verificar pasa a Colíder, manda el primer verificado (y le llega), y lo público dice hasta cuándo');
   ok(g('Nadie', 'n1')[1] === 'lider', 'sin nadie verificado, la crew queda como está');
+  ok(pubC('Viejas').fund === '' && CW.crewsPublico(o).crews.filter((c) => !c.oficial && c.gente.length).every((c) => c.fund),
+    'quién la armó: las de la Liga no tienen; las de la gente, su clave (para 👥 FUNDADOR DE CREW)');
   CW.crewVerificarAnunciados(o, vr.anunciar.map((x) => x.k));
   const vr2 = CW.crewVerificar(o, { sin: [{ k: 'vlid', id: '8000000001' }, { k: 'n1' }, { k: 'n2' }] }, tv + 1000);
   ok(vr2.ok && vr2.marcados === 0 && vr2.verificados === 1 && !vr2.anunciar.length && g('Viejas', 'vmie').length === 3

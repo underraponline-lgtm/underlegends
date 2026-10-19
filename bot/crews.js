@@ -449,7 +449,10 @@ export function crewPublica(o, c) {
     // tier mientras tanto: `crews_vivas.armar()` y `crews_tiers.de_la_semana()` lo saltean, y acá los representantes
     reps: reps.filter((k) => gente.some((g) => g.k === k && !g.pend)),
     gente: gente.map((g) => (g.pend ? [g.k, g.rol, g.desde, g.pend] : [g.k, g.rol, g.desde])),
-    vence: c.vence || 0, logo: c.logo || '', desc: c.descr || '', req: reqDe(c) };
+    vence: c.vence || 0, logo: c.logo || '', desc: c.descr || '', req: reqDe(c),
+    // 👥 quién la armó (su clave, si sigue adentro), para el TAG 👥 FUNDADOR DE CREW (`sheet/hechos_tags.crews_hechos()`).
+    // Las de la Liga no tienen: las armó Dlx
+    fund: c.oficial ? '' : (fila(o, "SELECT k FROM crew_miembros WHERE crew = ? AND quien = ? AND quien != ''", c.id, c.por) || {}).k || '' };
 }
 
 /** Todas, para `/avisos/crews` (público, 60 s): lo lee la página y el ciclo. */
