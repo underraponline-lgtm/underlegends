@@ -48,6 +48,7 @@
 
 // 🛡️ el anti-raid (18/10/2026): su lógica y lo que contesta el Worker viven en `bot/antiraid.js`; acá, la vuelta de cada minuto
 import * as AR from './antiraid.js';
+import * as CW from './crews.js';
 
 export const CRON_VIGIA = '* * * * *';
 
@@ -2369,6 +2370,10 @@ const RUTAS = {
   '/avisos/historias': 'POST',
   // 🔑 «tu servidor»: elegirlo en Mi cuenta, y cuál eligió cada perfil. Ver `miServidor()`
   '/avisos/mi-servidor': 'POST', '/avisos/servidores': 'GET',
+  // 👥 LAS CREWS QUE ARMA LA GENTE (19/10/2026, bot/crews.js): todas (pública), una acción, la tuya; lo del dueño, y las
+  // 34 de antes, una vez, con la clave del ciclo
+  '/avisos/crews': 'GET', '/avisos/crew': 'POST', '/avisos/crew-mia': 'POST', '/avisos/dueno/crew': 'POST',
+  '/avisos/crews-sembrar': 'POST',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026). Ver `visita()` del objeto
   '/avisos/visita': 'POST',
   // 🧭 el tutorial (12/10/2026): qué vio y qué terminó un navegador, sin nada de nadie. Ver `tutorial()` del objeto
@@ -3269,6 +3274,9 @@ export const NIVELES_AVISO = {
 };
 export function ajusteValido(cual, valor) {
   if (cual === 'campana_pausada') return typeof valor === 'boolean' ? valor : undefined;
+  // 👥 las crews (19/10/2026): cuánto cuesta crear una (Puntos de Tienda) y cómo se arma su ranking (`{modo, n}`)
+  if (cual === 'crew_precio') return CW.precioValido(valor);
+  if (cual === 'crews_ranking') return CW.rankingValido(valor);
   // 🤝 el nivel de cada servidor (`bot/tiers.py`, Dlx 18/10/2026): `{sigla: 1|2|3}`. El ciclo lo copia a datos/niveles.json
   if (cual === 'tiers') {
     if (valor === null) return null;
@@ -4206,6 +4214,61 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // 🔑 SEGUIR, Y A QUIÉN SEGUÍS: quién sigue lo dice Discord (o la sesión),
   // nunca la página; a quién, la página, con una clave de perfil válida
+  // 👥 LAS CREWS (19/10/2026, bot/crews.js): una acción, o la tuya. Quién sos lo dice Discord o tu sesión, y de qué perfil,
+  // `d:` —sólo verificados: crear, invitar y entrar son de Miembros de DRA (Dlx: «verificado y pagando Puntos de
+  // Tienda»)—. Acá se valida la forma; las reglas (el rol, el lugar, la plata) las mira el objeto, que es uno solo
+  if (ruta === '/avisos/crew' || ruta === '/avisos/crew-mia') {
+    const crudo = await req.text();
+    if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const v = ruta === '/avisos/crew' ? CW.validarCrew(d) : {};
+    if (v.error) return json(v, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    let de = '';
+    try { de = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { de = ''; }
+    // la billetera: con cuánto arrancó la temporada (crear cuesta Puntos de Tienda), como `/avisos/promo-extender`
+    let cfg = null;
+    try { cfg = JSON.parse((await env.KV.get('precios', { cacheTtl: 60 })) || 'null'); } catch (e) { cfg = null; }
+    const base = { quien: q.id, de: claveValida(de) ? de : '' };
+    if (cfg && Number.isInteger(cfg.inicial)) { base.inicial = cfg.inicial; base.desde = Date.parse(cfg.desde || '') || 0; }
+    return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
+      method: 'POST', body: JSON.stringify(Object.assign(v, base)), headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 👥 lo del dueño (y Admin) con las crews: el líder de las de antes, el nombre, cerrarla. La puerta del Dashboard
+  if (ruta === '/avisos/dueno/crew') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token))) ||
+        !['lider', 'nombre', 'borrar'].includes(d.que) || typeof d.crew !== 'string' || d.crew.length > 40 ||
+        (d.a !== undefined && !claveValida(d.a)) || (d.nombre !== undefined && (typeof d.nombre !== 'string' || d.nombre.length > 40))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (!(await puede(q.id, 'ajustes'))) return json({ error: 'no' }, 403);
+    return elObjeto(env).fetch('https://avisos/crew-dueno', {
+      method: 'POST', body: JSON.stringify({ que: d.que, crew: d.crew, a: d.a, nombre: d.nombre, por: q.id }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 🌱 las 34 de antes, una vez: lo manda el ciclo, con su clave (`bot/crews_vivas.py --sembrar`)
+  if (ruta === '/avisos/crews-sembrar') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 200000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/crews-sembrar', {
+      method: 'POST', body: crudo, headers: { 'content-type': 'application/json' },
+    });
+  }
   if (ruta === '/avisos/seguir' || ruta === '/avisos/sigo') {
     const crudo = await req.text();
     if (crudo.length > 4096) return json({ error: 'demasiado grande' }, 413);
@@ -5278,6 +5341,8 @@ export class Avisos {
       // con cada evento—, y KV da 1.000 por día: el 06/10 a las 7:57 PM iba en 909. Acá son filas, de 100.000 por día.
       // Las escribe el ciclo (`personasCiclo()`, desde `bot/subir_datos.py`) y las lee el Worker (`leerP()`)
       this.sql.exec('CREATE TABLE IF NOT EXISTS persona (k TEXT PRIMARY KEY, v TEXT NOT NULL, t INTEGER NOT NULL) WITHOUT ROWID');
+      // 👥 LAS CREWS QUE ARMA LA GENTE (19/10/2026): sus tablas viven con su lógica, en bot/crews.js
+      CW.crewTablas(this.sql);
       // 📏 LOS ÍNDICES QUE FALTABAN (05/10/2026), medidos con `medidas`: en una hora tranquila el objeto leía 61.000
       // filas, y el 57 % eran dos limpiezas que corren cada minuto —las inscripciones viejas y las marcas de «ya
       // avisado»— recorriendo la tabla entera para borrar casi nada. Con el índice, borrar lee sólo lo que borra.
@@ -5653,6 +5718,8 @@ export class Avisos {
       if (ruta === '/precios') return json(this.precios(), 200, 20);
       if (ruta === '/seguidores') return json(this.seguidores(), 200, 60);
       if (ruta === '/servidores') return json(this.servidoresElegidos(), 200, 60);
+      // 👥 todas las crews, sin ningún Discord ID: la página y el ciclo (`bot/crews_vivas.py`)
+      if (ruta === '/crews') return json(CW.crewsPublico(this), 200, 60);
       if (ruta === '/aplausos') return json(this.aplausosCuenta(), 200, 20);
       if (ruta === '/promos-extra') return json(this.promosExtra(), 200, 60);
       if (ruta === '/promos-vistas') return json(this.promosVistas(), 200, 60);
@@ -5748,6 +5815,11 @@ export class Avisos {
         return json({ ok: true });
       }
       if (ruta === '/bandeja') return this.bandeja(d);
+      // 👥 las crews: quién actúa y de qué perfil lo dice el Worker (`/avisos/crew`, el bot), nunca la página
+      if (ruta === '/crew') { const r = CW.crewAccion(this, d); return json(r, r.estado || 200); }
+      if (ruta === '/crew-mia') return json(CW.crewMia(this, d));
+      if (ruta === '/crew-dueno') { const r = CW.crewDueno(this, d); return json(r, r.estado || 200); }
+      if (ruta === '/crews-sembrar') { const r = CW.sembrar(this, d); return json(r, r.estado || 200); }
       if (ruta === '/mi-servidor') return this.miServidor(d);
       if (ruta === '/mi-foto') return await this.miFoto(d);
       if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
@@ -6150,6 +6222,8 @@ export class Avisos {
       this.sql.exec('DELETE FROM cambios_dia WHERE dia < ?', new Date(ahora - DIA_MS).toISOString().slice(0, 10));
       // 🎤 y lo que dijo el bot en vivo: dos días (de una llave sólo se habla mientras se mueve)
       this.sql.exec('DELETE FROM chat_vivo WHERE t < ?', ahora - 2 * DIA_MS);
+      // 👥 y de las crews, lo vencido: invitaciones y pedidos de más de una semana, esperas cumplidas
+      try { CW.crewLimpiar(this); } catch (e) { /* sigue */ }
     }
     this.guardar('vigia', {
       t: ahora, canales: (canales.lista || []).length, leidos, nuevos, errores,
@@ -8413,6 +8487,10 @@ export class Avisos {
     // 🧠 y sus datos de /card (`persona`), que viven acá desde el 06/10/2026: los busca por su clave, que manda el
     // Worker (`borrarMisDatos()`)
     if (d.clave && typeof d.clave === 'string') this.sql.exec('DELETE FROM persona WHERE k = ?', 'p:' + d.clave.slice(0, 100));
+    // 👥 y su lugar en una crew, sus invitaciones y sus pedidos (19/10/2026). Si era el líder, la crew pasa al colíder
+    // más viejo; si era el único, se cierra (`crewOlvidar()`)
+    if (d.clave && typeof d.clave === 'string') { try { CW.crewOlvidar(this, d.clave.slice(0, 100)); } catch (e) { /* sigue con lo demás */ } }
+    try { this.sql.exec("UPDATE crew_miembros SET quien = '' WHERE quien = ?", String(d.quien)); } catch (e) { /* sin crews */ }
     const r = this.sql.exec("UPDATE subs SET quien = '' WHERE quien = ?", String(d.quien));
     // 🔑 Y SUS VOTOS: van con su Discord ID, así que son un dato suyo. Lo que
     // ya se aplicó (un Elegido, un ×2) quedó en el ciclo y no cambia.
@@ -9708,6 +9786,8 @@ export class Avisos {
       } catch (e) { fallas.push(t); }
     }
     try { this.sql.exec('UPDATE OR IGNORE idk SET id = ? WHERE id = ?', nuevo, viejo); } catch (e) { fallas.push('idk'); }
+    // 👥 las crews son de un PERFIL, no de una cuenta: sólo se anota el ID nuevo (no van en `tablas`, que borra lo viejo)
+    try { CW.crewMudar(this, viejo, nuevo); } catch (e) { fallas.push('crews'); }
     try { this.sql.exec('UPDATE inscritos SET autor_id = ? WHERE autor_id = ?', nuevo, viejo); } catch (e) { fallas.push('inscritos'); }
     this.sql.exec('DELETE FROM sesiones WHERE quien = ?', viejo);
     if (movidas.foto_oculta) await this.espejarOcultas();

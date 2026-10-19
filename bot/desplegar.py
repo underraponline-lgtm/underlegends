@@ -47,7 +47,7 @@ COMPAT = '2026-09-16'
 
 #: los módulos del Worker. `worker.js` es el principal: Cloudflare busca ahí
 #: las clases de los Durable Objects, y por eso re-exporta `Avisos`.
-MODULOS = ('worker.js', 'avisos.js', 'llave_vivo.js', 'antiraid.js')
+MODULOS = ('worker.js', 'avisos.js', 'llave_vivo.js', 'antiraid.js', 'crews.js')
 #: de dónde sale cada módulo, si no está en `bot/` con su nombre. 🔑 `llave_vivo.js` es EL lector de la página
 #: (`bot/paginas/llave_vivo.js`): el vigía lo usa para «te toca» (`turnos()` en avisos.js). Un solo archivo para
 #: los dos —si fueran dos copias, la página y el aviso leerían distinto la misma llave—

@@ -691,6 +691,11 @@ def _lo_barato(correr):
         paso('0a', 'los nombres de Discord de la Lista, del Operativo')
         if not corre(['bot/apodos_sheet.py', '--traer'], callado=False):
             print('      ⚠️ sin los nombres de Discord: el organizador de la semana sale sin ellos')
+        # 👥 las crews que arma la gente (19/10/2026, `bot/crews_vivas.py`): del objeto a `datos/crews.json`, ANTES de
+        # todo lo que dibuja —`comun/crews.py` lee el archivo al importarse—. Sin red o sin sembrar, quedan las de antes
+        paso('0a2', 'las crews, del objeto')
+        if not corre(['bot/crews_vivas.py'], callado=False):
+            print('      ⚠️ no pude bajar las crews: quedan las de antes')
         paso('0b', 'los multiplicadores de la semana')
         if not corre(['bot/multiplicadores.py', '--aplicar'], callado=False):
             print('      ⚠️ no pude sortear los multiplicadores: quedan los que había')

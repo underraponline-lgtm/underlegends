@@ -2921,21 +2921,29 @@ def _crews():
     nombres = (_json('datos', 'crews.json') or {}).get('_nombres') or {}
     logos = os.path.join(SCR, 'paginas', 'logos', 'crews')
     pool = _json('datos', 'temporada_pool.json') or []
+    # 👥 LAS CREWS DE LA GENTE (19/10/2026): cómo se suman los puntos lo elige Dlx en el Dashboard —todos, los N mejores
+    # o los representantes que eligió el líder— y viaja en lo público del objeto (`bot/crews_vivas.py`)
+    vivas = _json('datos', 'crews_vivas.json') or {}
+    rk_cfg = vivas.get('ranking') or {'modo': 'todos', 'n': 5}
+    reps_de = {c.get('id'): c.get('reps') or [] for c in vivas.get('crews') or []}
+    from comun.claves import clave as _ck
     acc = {}
     for p in pool:
         c = DE_CADA_UNO.get(norm(p.get('raw')))
         if not c:
             continue
-        a = acc.setdefault(c, {'crew': nombres.get(c, c), 'clave': c, 'n': 0, 'pts': 0,
+        a = acc.setdefault(c, {'crew': nombres.get(c, c), 'clave': c, 'n': 0, 'pts': 0, 'por': {},
                                'mejor': '', 'mejor_pos': 10 ** 9, 'gente': []})
         a['n'] += 1
-        a['pts'] += p.get('pts') or 0
+        a['por'][_ck(p.get('raw') or '')] = p.get('pts') or 0
         a['gente'].append(p.get('raw'))
         if (p.get('pos') or 10 ** 9) < a['mejor_pos']:
             a['mejor_pos'] = p.get('pos') or 10 ** 9
             a['mejor'] = p.get('raw')
+    import crews_vivas as _CV
     fuera = list(acc.values())
     for a in fuera:
+        a['pts'] = int(round(_CV.puntos(a.pop('por'), rk_cfg.get('modo'), int(rk_cfg.get('n') or 5), reps_de.get(a['clave']))))
         a.pop('mejor_pos', None)
         a['rk'] = 1 if a['n'] >= 3 else 0
         if os.path.exists(os.path.join(logos, a['clave'] + '.webp')):

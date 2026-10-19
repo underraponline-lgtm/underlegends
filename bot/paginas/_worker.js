@@ -79,6 +79,11 @@ const AVISOS = {
   // Ver `miServidor()` en bot/avisos.js
   '/api/avisos/mi-servidor': 'POST',
   '/api/avisos/servidores': 'GET',
+  // 👥 las crews (19/10/2026, bot/crews.js): todas, una acción, la tuya, y lo del dueño. Quién actúa lo dice Discord
+  '/api/avisos/crews': 'GET',
+  '/api/avisos/crew': 'POST',
+  '/api/avisos/crew-mia': 'POST',
+  '/api/avisos/dueno/crew': 'POST',
   // 🙈 «ocultar mi foto» (02/10/2026): en Mi cuenta → Privacidad. Ver `miFoto()` en bot/avisos.js
   '/api/avisos/mi-foto': 'POST',
   // 👏 felicitar un logro de Publicaciones, y cuántos lleva cada uno (02/10/2026). Ver `validarAplauso()` en
