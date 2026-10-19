@@ -108,7 +108,7 @@
    "competitivo": "7db8f4e0e0fb:aa2fab0a1b31",
    "pais": "7d2e9c8f4130:631b7a4c93c4",
    "servidor": "3917613fa3b3:f7bc857dd9f6:874d2d",
-   "temporada": "0969559caefa:906ce275eeb8"
+   "temporada": "b9a13cd501ed:906ce275eeb8"
   },
   "Ashen": {
    "servidor": "4af907e5d349:f7bc857dd9f6:055f77"
@@ -209,7 +209,7 @@
    "competitivo": "9a6933359fd1:aa2fab0a1b31",
    "pais": "24cb347aa92e:631b7a4c93c4",
    "servidor": "8687d9648df1:f7bc857dd9f6:6a5f1a",
-   "temporada": "e80c364dea9f:906ce275eeb8"
+   "temporada": "bfd57fb551c4:906ce275eeb8"
   },
   "Char": {},
   "Charro": {
@@ -306,7 +306,7 @@
    "competitivo": "c11006f4ac54:aa2fab0a1b31",
    "pais": "e4a632aea0e4:631b7a4c93c4",
    "servidor": "e2a3e5d050a6:f7bc857dd9f6:a672ab",
-   "temporada": "5bf06c89cf04:906ce275eeb8"
+   "temporada": "b90034e4bac1:906ce275eeb8"
   },
   "Dash": {
    "servidor": "5326ca7e9e57:f7bc857dd9f6:ce9c52"
@@ -320,7 +320,7 @@
    "competitivo": "3c0797560696:aa2fab0a1b31",
    "pais": "fc1b3743140f:631b7a4c93c4",
    "servidor": "50bf6b072ca8:f7bc857dd9f6:6a5f1a",
-   "temporada": "8ab337bd3e7b:906ce275eeb8"
+   "temporada": "80ba582fa4fc:906ce275eeb8"
   },
   "Deluxe": {
    "competitivo": "2546cdcf91c2:aa2fab0a1b31",
@@ -535,7 +535,7 @@
    "competitivo": "cd9e3ed3df62:aa2fab0a1b31",
    "pais": "2ce6f09856e8:631b7a4c93c4",
    "servidor": "e0d9d429d674:f7bc857dd9f6:1f00d0",
-   "temporada": "413ba3d6e173:906ce275eeb8"
+   "temporada": "442e46cbb481:906ce275eeb8"
   },
   "Goru": {
    "servidor": "20408aacfb30:f7bc857dd9f6:15af16"
@@ -549,7 +549,7 @@
    "competitivo": "f638b3a640f2:aa2fab0a1b31",
    "pais": "9d82ecc5e1f3:631b7a4c93c4",
    "servidor": "988db8a768fb:f7bc857dd9f6:c09f56",
-   "temporada": "ce61691d1244:906ce275eeb8"
+   "temporada": "2a0ad4274ce9:906ce275eeb8"
   },
   "Gus": {
    "competitivo": "59ee5a5242ba:aa2fab0a1b31",
@@ -1133,7 +1133,7 @@
    "competitivo": "a43709433a37:aa2fab0a1b31",
    "pais": "7ea52bb14529:631b7a4c93c4",
    "servidor": "c52478fd1eeb:f7bc857dd9f6:8a6226",
-   "temporada": "369227c3bef4:906ce275eeb8"
+   "temporada": "b1db4187d818:906ce275eeb8"
   },
   "Neo": {},
   "Ness": {
@@ -1423,7 +1423,7 @@
    "competitivo": "f1a7ca2c8bdc:aa2fab0a1b31",
    "pais": "738aa94ebdfe:631b7a4c93c4",
    "servidor": "e62ed76013fe:f7bc857dd9f6:4975e5",
-   "temporada": "f636a952ff5d:906ce275eeb8"
+   "temporada": "0653d7ba9e31:906ce275eeb8"
   },
   "Simon": {
    "servidor": "a7f2c6559975:f7bc857dd9f6:874d2d"
@@ -1593,7 +1593,7 @@
    "competitivo": "6aeee36c60fc:aa2fab0a1b31",
    "pais": "0a1adfee3678:631b7a4c93c4",
    "servidor": "a8fcb319837d:f7bc857dd9f6:c43f56",
-   "temporada": "06ae51b5612e:906ce275eeb8"
+   "temporada": "67e0ea574c45:906ce275eeb8"
   },
   "Vilca": {
    "competitivo": "b93a167e458b:aa2fab0a1b31",
@@ -1642,7 +1642,7 @@
    "competitivo": "8797b439d80e:aa2fab0a1b31",
    "pais": "167810a38684:631b7a4c93c4",
    "servidor": "d0a5afd01e30:f7bc857dd9f6:a29fa0",
-   "temporada": "75c55f40b25f:906ce275eeb8"
+   "temporada": "b758dd0e5cf7:906ce275eeb8"
   },
   "YACO": {
    "servidor": "8dc17afd358c:f7bc857dd9f6:980594"
@@ -1823,5 +1823,5 @@
    "servidor": "7f8885a35a6d:f7bc857dd9f6:93a344"
   }
  },
- "cuando": "2026-10-19T04:32:07+00:00"
+ "cuando": "2026-10-19T05:01:42+00:00"
 }
