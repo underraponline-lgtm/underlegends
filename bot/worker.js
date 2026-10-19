@@ -37,11 +37,13 @@
 // Object— y porque Node los prueba sin levantar el Worker entero. Ver
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
-import { anotarUso, DUENO, NIVELES_CHAT, claveMedida, claveFoto, claveCiclo, APP_ID } from './avisos.js';
+import { anotarUso, DUENO, NIVELES_CHAT, claveMedida, claveFoto, claveCiclo, APP_ID, claveValida } from './avisos.js';
 import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva,
   sesionFin, cookieSesion, SESION_DIAS } from './avisos.js';
 // 🛡️ el anti-raid (18/10/2026): `/antiraid` y sus botones. La vuelta de cada minuto vive en el objeto (avisos.js)
 import * as AR from './antiraid.js';
+// 👥 las crews (19/10/2026): la forma de comparar nombres, la misma que el objeto
+import { normCrew } from './crews.js';
 export { Avisos };
 
 // ── Tipos de Discord, con nombre para que se lea ──────────────────────────
@@ -2864,7 +2866,148 @@ export function utcDeZona(dia, mes, h, mi, z, ahora = Date.now()) {
   return null;
 }
 
+// ── 👥 LAS CREWS EN EL BOT (Dlx, 19/10/2026: «en la página principalmente, pero también en el bot») ─────────────────────
+// Lo rápido: ver una crew, invitar, pedir entrar y salir. Armarla y manejarla (rangos, representantes, cómo se entra)
+// es de la página. Las reglas son las de bot/crews.js —el objeto decide—; acá sólo se arma el pedido con quién sos
+// (Discord lo firma) y tu perfil (`d:`, sólo verificados).
+// 🔑 LA INVITACIÓN SALE EN EL CANAL, con botones que sólo el invitado puede tocar (`cw:si|no:<crew>:<su id>`): el bot no
+// manda DMs. Se lo menciona —eso sí le suena— y nadie más puede aceptar por él.
+const ERRORES_CREW = {
+  verificate: 'Las crews son de los Miembros de Discord Rap Español: primero verificate (`/verificar`).',
+  ya_en_crew: 'Ya está en una crew.',
+  espera: 'Saliste de una crew hace poco: hay que esperar 7 días para entrar a otra.',
+  llena: 'La crew está llena: son 20 como máximo.',
+  solo_invitacion: 'A esa crew se entra sólo por invitación.',
+  sin_invitacion: 'Esa invitación ya no está (vencen a la semana).',
+  rol: 'Tu rango en la crew no te deja hacer eso.',
+  lider_pasa_primero: 'Sos el Líder: antes de irte, pasale el liderazgo a alguien desde la página de tu crew.',
+  sin_crew: 'No estás en ninguna crew.',
+  no_existe: 'Esa crew ya no existe.',
+  espera_dia: 'Ya hiciste mucho de esto hoy: probá mañana.',
+};
+const textoCrew = (j) => ERRORES_CREW[(j && j.error) || ''] || 'Ahora no pude: probá en un rato.';
+const urlCrew = (id) => HUB_URL + '/freestyle-rap/crew/' + encodeURIComponent(id);
+const publicoConMencion = (data) => new Response(JSON.stringify({ type: RESPONDE.MENSAJE, data }),
+  { headers: { 'content-type': 'application/json' } });
+
+async function crewAvisos(env, ruta, cuerpo) {
+  const objeto = env.AVISOS.get(env.AVISOS.idFromName('liga'));
+  const r = await objeto.fetch('https://avisos' + ruta, cuerpo ? {
+    method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo),
+  } : undefined);
+  return r.json().catch(() => ({}));
+}
+async function crewPerfil(env, id) {
+  try { const k = await env.KV.get('d:' + id); return claveValida(k) ? k : ''; } catch (e) { return ''; }
+}
+async function crewNombre(env, k) {
+  try { const p = JSON.parse((await leerP(env, k)) || 'null'); if (p && p.n) return String(p.n).replace(/[`*_~|<>@]/g, ''); } catch (e) { /* la clave */ }
+  return k;
+}
+const crewDeK = (todas, k) => ((todas && todas.crews) || []).find((c) => (c.gente || []).some((g) => g[0] === k)) || null;
+
+async function crewComando(i, env, sub, op) {
+  const id = idDe(i);
+  if (!id) return aviso('No pude saber quién sos.');
+  const esperar = frenado(id, 'comando');
+  if (esperar) return espera(esperar);
+  if (!env.AVISOS) return aviso('Ahora no puedo: probá en un rato.');
+  const de = await crewPerfil(env, id);
+  const todas = await crewAvisos(env, '/crews');
+  if (sub === 'ver') {
+    const t = op.quien || id;
+    const k = t === id ? de : await crewPerfil(env, t);
+    const c = k ? crewDeK(todas, k) : null;
+    if (!c) {
+      return aviso((t === id ? 'No estás en ninguna crew.' : '<@' + t + '> no está en ninguna crew.') + ' Las crews se arman en la página.',
+        [{ type: 2, style: 5, label: 'Las crews', url: HUB_URL + '/freestyle-rap/ranking/crews' }]);
+    }
+    const lid = (c.gente.find((g) => g[1] === 'lider') || [])[0];
+    const rol = (c.gente.find((g) => g[0] === k) || [])[1] || '';
+    const ROL = { lider: 'Líder', colider: 'Colíder', veterano: 'Veterano', miembro: 'Miembro' };
+    return aviso('👥 **' + c.nombre + '**' + (c.sigla ? ' [' + c.sigla + ']' : '') + ' · ' + c.gente.length + ' de ' + (todas.max || 20) +
+      (lid ? ' · Líder: **' + (await crewNombre(env, lid)) + '**' : '') + (rol ? '\n' + (t === id ? 'Sos ' : '<@' + t + '> es ') + ROL[rol] + '.' : ''),
+    [{ type: 2, style: 5, label: 'Ver la crew', url: urlCrew(c.id) }]);
+  }
+  if (sub === 'invitar') {
+    const t = String(op.quien || '');
+    if (!t) return aviso('¿A quién?');
+    if (t === id) return aviso('No te podés invitar a vos.');
+    if (!de) return aviso(ERRORES_CREW.verificate);
+    const mia = crewDeK(todas, de);
+    if (!mia) return aviso('No estás en ninguna crew: armá la tuya en la página.', [{ type: 2, style: 5, label: 'Mi crew', url: HUB_URL + '/cuenta/crew' }]);
+    const a = await crewPerfil(env, t);
+    if (!a) return aviso('<@' + t + '> todavía no está verificado: las crews son de los Miembros de Discord Rap Español.');
+    const r = await crewAvisos(env, '/crew', { accion: 'invitar', quien: id, de, a });
+    if (!r.ok) return aviso(textoCrew(r));
+    if (r.ya) return aviso('Ya invitaste a <@' + t + '>: la invitación sigue en pie una semana.');
+    if (!r.invitado) return aviso('✅ <@' + t + '> ya había pedido entrar: entró a **' + mia.nombre + '**.');
+    // (pública y con la mención: es la única forma de que le llegue sin un DM. `responderPanel` es siempre efímero)
+    return publicoConMencion({
+      content: '👥 <@' + t + '>, **' + (await crewNombre(env, de)) + '** te invita a la crew **' + mia.nombre + '**. Tenés una semana.',
+      allowed_mentions: { users: [t] },
+      components: [{ type: 1, components: [
+        { type: 2, style: ESTILO.PRIMARIO, label: 'Aceptar', custom_id: ('cw:si:' + mia.id + ':' + t).slice(0, 100) },
+        { type: 2, style: ESTILO.SECUNDARIO, label: 'No, gracias', custom_id: ('cw:no:' + mia.id + ':' + t).slice(0, 100) },
+        { type: 2, style: 5, label: 'Ver la crew', url: urlCrew(mia.id) },
+      ] }],
+    });
+  }
+  if (sub === 'unirme') {
+    if (!de) return aviso(ERRORES_CREW.verificate);
+    const q = normCrew(op.nombre);
+    const c = ((todas && todas.crews) || []).find((x) => normCrew(x.nombre) === q || normCrew(x.id) === q);
+    if (!c) return aviso('No encontré una crew con ese nombre.', [{ type: 2, style: 5, label: 'Las crews', url: HUB_URL + '/freestyle-rap/ranking/crews' }]);
+    const r = await crewAvisos(env, '/crew', { accion: 'pedir', quien: id, de, crew: c.id });
+    if (!r.ok) return aviso(textoCrew(r));
+    return aviso(r.pedido ? '📨 Pediste entrar a **' + c.nombre + '**: te avisamos en la campana de la página cuando te acepten.'
+      : '✅ Entraste a **' + c.nombre + '**.', [{ type: 2, style: 5, label: 'Ver la crew', url: urlCrew(c.id) }]);
+  }
+  if (sub === 'salir') {
+    const c = de ? crewDeK(todas, de) : null;
+    if (!c) return aviso(ERRORES_CREW.sin_crew);
+    return aviso('¿Seguro que querés salir de **' + c.nombre + '**? Después esperás 7 días para entrar a otra.',
+      [{ type: 2, style: ESTILO.PELIGRO, label: 'Sí, salir', custom_id: 'cw:salir:x:' + id }]);
+  }
+  return aviso('No conozco esa opción.');
+}
+
+/** 👥 Los botones `cw:` (la invitación y el «sí, salir»): sólo los toca la persona del botón. */
+async function crewBoton(i, env, que, crew, dueno) {
+  const id = idDe(i);
+  if (!dueno || id !== dueno) return aviso(que === 'salir' ? 'Ese botón es de otra persona.' : 'Esa invitación es para otra persona.');
+  const esperar = frenado(id, 'click');
+  if (esperar) return espera(esperar);
+  if (!env.AVISOS) return aviso('Ahora no puedo: probá en un rato.');
+  const de = await crewPerfil(env, id);
+  if (que === 'salir') {
+    const r = await crewAvisos(env, '/crew', { accion: 'salir', quien: id, de });
+    if (!r.ok) return aviso(textoCrew(r));
+    return responderPanel(RESPONDE.ACTUALIZAR, { content: r.cerrada ? 'Listo: la crew se cerró.' : '👋 Saliste de la crew. En 7 días podés entrar a otra.', components: [] });
+  }
+  const r = await crewAvisos(env, '/crew', { accion: 'responder', quien: id, de, crew, si: que === 'si' });
+  if (!r.ok) return aviso(textoCrew(r));
+  const todas = await crewAvisos(env, '/crews');
+  const c = ((todas && todas.crews) || []).find((x) => x.id === crew);
+  const nombre = c ? c.nombre : crew;
+  return responderPanel(RESPONDE.ACTUALIZAR, {
+    content: que === 'si' ? '✅ <@' + id + '> entró a la crew **' + nombre + '**.' : 'La invitación a **' + nombre + '** quedó sin aceptar.',
+    allowed_mentions: { parse: [] },
+    components: que === 'si' ? [{ type: 1, components: [{ type: 2, style: 5, label: 'Ver la crew', url: urlCrew(crew) }] }] : [],
+  });
+}
+
 const COMANDOS = {
+  // 👥 /crew ver|invitar|unirme|salir (ver arriba `crewComando`)
+  async crew(i, env) {
+    const sub = ((i.data && i.data.options) || [])[0] || {};
+    const op = Object.fromEntries((sub.options || []).map((o) => [o.name, o.value]));
+    return crewComando(i, env, sub.name, op);
+  },
+  // 🖱️ click derecho en una persona → Apps → Invitar a mi crew
+  async 'Invitar a mi crew'(i, env) {
+    return crewComando(i, env, 'invitar', { quien: i.data && i.data.target_id });
+  },
   async agendar(i, env) {
     const sv = aquiEs(i.guild_id);
     if (!sv) return aviso('`/agendar` funciona en los servidores de la Liga.');
@@ -4263,6 +4406,9 @@ export default {
       // ── 🗳️ «¿Quién gana?» (13/10/2026): `qg:<id>:<A|B>`, un voto por persona y sin plata ───────────────────
       // Quién vota es quien tocó (Discord lo firma); el objeto lo anota (`qgVotar()`) y la respuesta la ve sólo él. El
       // mensaje se actualiza con cómo va en la vuelta siguiente del vigía (`qgRevisar()`)
+      // ── 👥 las crews (19/10/2026): `cw:si|no:<crew>:<invitado>` y `cw:salir:x:<quien>` (ver `crewBoton`) ──────────
+      if (que === 'cw') return crewBoton(i, env, quien, extra, dueno);
+
       if (que === 'qg') {
         const esperarQg = frenado(idDe(i), 'click');
         if (esperarQg) return espera(esperarQg);

@@ -3388,5 +3388,58 @@ console.log('\n«EL PASE DE RAPERO»\n');
   env.AVISOS = antes;
 }
 
+// 👥 LAS CREWS EN EL BOT (19/10/2026): la invitación sale en el canal, mencionando al invitado, con botones que sólo él
+// toca; quien no está verificado no se invita; y lo que va al objeto lleva quién es según Discord, nunca otra cosa
+console.log('\nLAS CREWS\n');
+{
+  const antes = env.AVISOS;
+  const pedidos = [];
+  const CR = { id: 'Los del Barrio', nombre: 'Los del Barrio', sigla: '', entrada: 'pedido', gente: [['dora', 'lider', 1]] };
+  env.AVISOS = { idFromName: () => 'liga', get: () => ({ fetch: async (url, opc) => {
+    const u = String(url);
+    if (/\/(uso|medir)$/.test(u)) return new Response('{"ok":true}');
+    if (u.endsWith('/crews')) return new Response(JSON.stringify({ max: 20, crews: [CR] }));
+    if (u.includes('/persona')) return new Response('{"n":"Dora"}');
+    const b = opc && opc.body ? JSON.parse(opc.body) : null;
+    pedidos.push(b);
+    if (b && b.accion === 'invitar') return new Response(JSON.stringify({ ok: true, invitado: b.a }));
+    if (b && b.accion === 'responder') return new Response(JSON.stringify({ ok: true, crew: b.crew }));
+    if (b && b.accion === 'salir') return new Response(JSON.stringify({ ok: true }));
+    return new Response('{"ok":true}');
+  } }) };
+  const LID = '700901', INV = '700902', OTRO = '700903';
+  PUESTO['d:' + LID] = 'dora';
+  PUESTO['d:' + INV] = 'fabi';
+  const cmd = (quien, sub, ops) => pedir({ type: 2, guild_id: G.DRA, channel_id: '1', member: { user: { id: quien } },
+    data: { name: 'crew', options: [{ name: sub, type: 1, options: ops }] } });
+  const boton = (quien, cid) => pedir({ type: 3, guild_id: G.DRA, channel_id: '1', member: { user: { id: quien } },
+    data: { component_type: 2, custom_id: cid } });
+  let r = await cmd(LID, 'invitar', [{ name: 'quien', type: 6, value: INV }]);
+  const d = r.json?.data || {};
+  const cids = JSON.stringify(d.components || []);
+  ok('invitar: un mensaje PÚBLICO que menciona sólo al invitado, con sus dos botones',
+     r.json?.type === 4 && !d.flags && (d.allowed_mentions?.users || []).join() === INV && d.content.includes('<@' + INV + '>')
+     && cids.includes('cw:si:Los del Barrio:' + INV) && cids.includes('cw:no:Los del Barrio:' + INV), JSON.stringify(r.json).slice(0, 240));
+  ok('y al objeto le llega quién invita según Discord, su perfil y el del invitado',
+     pedidos[0]?.accion === 'invitar' && pedidos[0]?.quien === LID && pedidos[0]?.de === 'dora' && pedidos[0]?.a === 'fabi', JSON.stringify(pedidos[0]));
+  r = await cmd(LID, 'invitar', [{ name: 'quien', type: 6, value: OTRO }]);
+  ok('a quien no está verificado no se lo invita (y no se lo menciona)', r.json?.data?.flags === 64 && /no está verificado/.test(texto(r))
+     && pedidos.length === 1, texto(r));
+  r = await boton(OTRO, 'cw:si:Los del Barrio:' + INV);
+  ok('el botón de otro no acepta nada', /para otra persona/.test(texto(r)) && pedidos.length === 1, texto(r));
+  r = await boton(INV, 'cw:si:Los del Barrio:' + INV);
+  ok('el invitado acepta: el objeto recibe SU id y SU perfil, y el mensaje dice que entró, sin volver a mencionar',
+     r.json?.type === 7 && /entró a la crew \*\*Los del Barrio\*\*/.test(texto(r)) && pedidos[1]?.accion === 'responder'
+     && pedidos[1]?.quien === INV && pedidos[1]?.de === 'fabi' && pedidos[1]?.si === true
+     && JSON.stringify(r.json?.data?.allowed_mentions || {}) !== JSON.stringify({ users: [INV] }), JSON.stringify(r.json).slice(0, 220));
+  r = await cmd(LID, 'salir', []);
+  ok('salir pide confirmar, con un botón de esa persona', r.json?.data?.flags === 64 && JSON.stringify(r.json?.data?.components || []).includes('cw:salir:x:' + LID), texto(r));
+  r = await boton(OTRO, 'cw:salir:x:' + LID);
+  ok('y otro no puede tocarlo', /de otra persona/.test(texto(r)) && pedidos.length === 2, texto(r));
+  delete PUESTO['d:' + LID];
+  delete PUESTO['d:' + INV];
+  env.AVISOS = antes;
+}
+
 console.log(mal ? `\n${mal} fallo(s)\n` : '\nTodo bien: la firma es lo único que hay que probar contra Discord.\n');
 process.exit(mal ? 1 : 0);

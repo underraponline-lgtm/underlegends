@@ -187,6 +187,30 @@ const COMANDOS = [
     ...EN_TODOS_LADOS,
   },
   {
+    // 👥 LAS CREWS (Dlx, 19/10/2026: «crear crews e invitar gente… en la página principalmente, pero también en el
+    // bot»). Armarla y manejarla, en la página; acá lo rápido. La invitación sale EN EL CANAL con botones que sólo el
+    // invitado toca: el bot no manda DMs. Sólo en servidores: en un DM no hay canal donde invitar
+    name: 'crew',
+    type: 1,
+    description: 'tu crew: verla, invitar a alguien, pedir entrar a una o salir',
+    ...SOLO_EN_SERVIDOR,
+    options: [
+      { name: 'ver', type: 1, description: 'tu crew, o la de alguien',
+        options: [{ name: 'quien', type: 6, description: 'de quién (si no, la tuya)', required: false }] },
+      { name: 'invitar', type: 1, description: 'invitá a alguien a tu crew (Líder, Colíder o Veterano)',
+        options: [{ name: 'quien', type: 6, description: 'a quién', required: true }] },
+      { name: 'unirme', type: 1, description: 'pedí entrar a una crew',
+        options: [{ name: 'nombre', type: 3, description: 'el nombre de la crew', required: true, max_length: 40 }] },
+      { name: 'salir', type: 1, description: 'salí de tu crew (después esperás 7 días para entrar a otra)' },
+    ],
+  },
+  {
+    // 🖱️ click derecho en una persona → Apps → Invitar a mi crew: es `/crew invitar quien:<esa persona>`
+    name: 'Invitar a mi crew',
+    type: 2,
+    ...SOLO_EN_SERVIDOR,
+  },
+  {
     name: 'versus',
     type: 1,
     description: 'quién gana entre dos, en la categoría que elijas',
