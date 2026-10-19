@@ -2886,6 +2886,8 @@ const ERRORES_CREW = {
   sin_crew: 'No estás en ninguna crew.',
   no_existe: 'Esa crew ya no existe.',
   espera_dia: 'Ya hiciste mucho de esto hoy: probá mañana.',
+  links_max: 'Tu crew ya tiene 5 links abiertos: borrá uno desde la página de la crew para armar otro.',
+  saldo: 'No te alcanzan los Puntos de Tienda.',
 };
 const textoCrew = (j) => ((j && j.error) === 'requisitos' ? 'Esa crew pide ' + (j.falta || []).join(' y ') + ': todavía no llegás.'
   : ERRORES_CREW[(j && j.error) || ''] || 'Ahora no pude: probá en un rato.');
@@ -2976,6 +2978,20 @@ async function crewComando(i, env, sub, op) {
     return aviso(r.pedido ? '📨 Pediste entrar a **' + c.nombre + '**: te avisamos en la campana de la página cuando te acepten.'
       : '✅ Entraste a **' + c.nombre + '**.', [{ type: 2, style: 5, label: 'Ver la crew', url: urlCrew(c.id) }]);
   }
+  // 🔗 un link de invitación, desde Discord (19/10/2026, Dlx: «me gusta todo»): los links se comparten acá, y hasta
+  // ahora se armaban sólo en la página. Con él se entra directo (`link_unirse` en bot/crews.js)
+  if (sub === 'link') {
+    if (!de) return aviso(ERRORES_CREW.verificate);
+    const mia = crewDeK(todas, de);
+    if (!mia) return aviso('No estás en ninguna crew: armá la tuya en la página.', [{ type: 2, style: 5, label: 'Mi crew', url: HUB_URL + '/cuenta/crew' }]);
+    const max = [1, 5, 10, 0].includes(Number(op.para)) ? Number(op.para) : 1;
+    const r = await crewAvisos(env, '/crew', { accion: 'link_crear', quien: id, de, max });
+    if (!r.ok) return aviso(textoCrew(r));
+    const url = urlCrew(mia.id) + '?u=' + r.cod;
+    return aviso('🔗 Tu link para entrar a **' + mia.nombre + '** (' + (r.max ? 'para ' + r.max + (r.max === 1 ? ' persona' : ' personas') : 'hasta que se llene')
+      + ', dura 7 días). Con este link se entra directo, sin pedir permiso:\n' + url,
+    [{ type: 2, style: 5, label: 'Abrir', url }]);
+  }
   if (sub === 'salir') {
     const c = de ? crewDeK(todas, de) : null;
     if (!c) return aviso(ERRORES_CREW.sin_crew);
@@ -3011,7 +3027,7 @@ async function crewBoton(i, env, que, crew, dueno) {
 }
 
 const COMANDOS = {
-  // 👥 /crew ver|invitar|unirme|salir (ver arriba `crewComando`)
+  // 👥 /crew ver|invitar|unirme|link|salir (ver arriba `crewComando`)
   async crew(i, env) {
     const sub = ((i.data && i.data.options) || [])[0] || {};
     const op = Object.fromEntries((sub.options || []).map((o) => [o.name, o.value]));
