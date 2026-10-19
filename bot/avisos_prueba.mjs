@@ -229,6 +229,12 @@ const ok = (cond, que, det) => {
     const bus = (n) => ({ snow: 'snow', number: 'number' })[A.claveTurno(n)] || '';
     ok(A.nombresChat(A.genteChat('🇨🇴 SNOW 🇨🇴 + PEPE 🇦🇷', bus, tb)) === 'Snow 🇨🇴 y PEPE 🇦🇷',
       'con la Liga: su nombre y su país de la Liga, no las mayúsculas de la llave; y «A y B»');
+    // 🙈 la mención, sólo a quien está en el servidor del chat (19/10/2026: «¿por qué dice unknown user?»)
+    const idsT = { snow: '700000101', number: '700000102' };
+    const gm = A.genteChat('SNOW 🇨🇴, NUMBER 🇺🇾', bus, tb, idsT, (k) => k === 'snow');
+    ok(gm[0].id === '700000101' && gm[1].id === '' && A.nombresChat(gm) === '<@700000101> 🇨🇴 y Number 🇺🇾'
+      && A.genteChat('SNOW', bus, tb, idsT)[0].id === '700000101',
+    'la mención sólo a quien está en ese servidor; a los demás, su nombre (si no, Discord pone «@unknown-user»)');
     // el equipo que crece: «pasa» una vez, y quien llega después «se suma»
     const G1 = '# COMPE\n`[ OCTAVOS ]`\n⌞Teo 🇨🇴⌝ 🆚 ⌞Rodri 🇦🇷⌝\n⌞Zaik 🇪🇸⌝ 🆚 ⌞Verc 🇨🇱 + Rizas 🇻🇪⌝\n'
       + '`[ CUARTOS ]`\n⌞Rodri 🇦🇷⌝ 🆚 ⌞Verc 🇨🇱 + Rizas 🇻🇪⌝\n';
@@ -1382,6 +1388,8 @@ const ok = (cond, que, det) => {
     const o = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
       blockConcurrencyWhile: async (f) => f() }, { DISCORD_TOKEN: 'x', KV: { get: async (k) => kv.get(k) ?? null } });
     await new Promise((r) => setTimeout(r, 5));
+    // 🙈 Ana está en FFA (sus servidores, en `persona`): por eso se la menciona (ver `genteChat()`)
+    sql.exec('INSERT OR REPLACE INTO persona (k, v, t) VALUES (?, ?, 0)', 'p:ana', JSON.stringify({ n: 'Ana', svs: ['FFA'] }));
     const antesF = globalThis.fetch;
     const pedidos = [];
     globalThis.fetch = async (u, op = {}) => {

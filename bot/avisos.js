@@ -421,7 +421,7 @@ export const banderaDe = (cc) => (/^[a-z]{2}$/i.test(String(cc || ''))
  * Erian. Cada uno se queda con la bandera que más se repite en SU pedazo; y si la Liga lo conoce (`buscar`, la tabla),
  * con su nombre y su país de la Liga, no con las mayúsculas de la llave.
  */
-export function genteChat(lado, buscar, tabla, ids) {
+export function genteChat(lado, buscar, tabla, ids, enSv) {
   const out = [];
   for (const seg of String(lado || '').split(/\s*[,+&]\s*/)) {
     const fls = seg.match(BANDERAS_RE) || [];
@@ -436,7 +436,11 @@ export function genteChat(lado, buscar, tabla, ids) {
     const f = k && tabla ? tabla[k] : null;
     // 🔔 su cuenta, si la Liga la conoce (`turnos:nombres`, el índice de «te toca»): por cómo lo escribe la llave o por
     // su nombre de la Liga
-    const id = ids ? String(ids[claveTurno(n)] || (f && f.n ? ids[claveTurno(f.n)] : '') || '') : '';
+    let id = ids ? String(ids[claveTurno(n)] || (f && f.n ? ids[claveTurno(f.n)] : '') || '') : '';
+    // 🙈 SÓLO A QUIEN ESTÁ EN ESE SERVIDOR (19/10/2026, Dlx con una captura de FFA: «¿por qué dice unknown user?»). La
+    // mención de alguien que no está en el servidor del chat Discord la dibuja «@unknown-user»: con `enSv` (sus servidores,
+    // de `persona`) se escribe su nombre en vez de mencionarlo. Sin saber quién es (`k`), tampoco se menciona
+    if (id && enSv && !enSv(k)) id = '';
     if (f && f.n) {
       n = sinBandera(f.n);
       fl = banderaDe(f.cc) || fl;
@@ -530,7 +534,7 @@ export function momentosChat(L, nombre, fav, nivel = 'normal', opc = {}) {
   const out = [];
   const rondas = (L && L.rondas) || [];
   if (!rondas.some((R) => batallasDe(R).length)) return out;
-  const gente = (lado) => genteChat(lado, opc.buscar, opc.tabla, opc.ids);
+  const gente = (lado) => genteChat(lado, opc.buscar, opc.tabla, opc.ids, opc.enSv);
   // un rival: su nombre, o «el equipo de …» si son varios
   const rival = (lado) => { const gs = gente(lado); return (gs.length > 1 ? 'el equipo de ' : '') + nombresChat(gs); };
   const tit = escMd(String(nombre || (L && L.nombre) || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
@@ -6530,8 +6534,14 @@ export class Avisos {
         const q = qsv[normPagina(n)];
         return (q && (dc.tabla[q] || dc.perf[q]) ? q : '') || dc.buscar(n);
       };
+      // 🙈 quién está en el servidor de ESTE chat, para mencionarlo (ver `genteChat()`): sus servidores, de `persona`
+      const svChat = b.sv || L.sv || '';
+      const enSv = (k) => {
+        if (!k || !svChat) return false;
+        try { return ((JSON.parse(this.persona('p:' + k) || '{}') || {}).svs || []).includes(svChat); } catch (e) { return false; }
+      };
       const opc = { buscar, tabla: dc.tabla, perf: dc.perf, perfT: dc.perfT, cartaDe: dc.cartaDe,
-        ids: await this.indiceNombres(ahora) };
+        ids: await this.indiceNombres(ahora), enSv };
       let ms = momentosChat(L, nombre, [], nivel, opc);
       // los favoritos sólo si «Arrancó» sale ahora: el lobby pesa, no se lee cada minuto
       if (!hechos.llave && ms.length && (porBatalla(nivel) || ms[ms.length - 1].m === 'llave') && fresca
@@ -6619,7 +6629,7 @@ export class Avisos {
           const mv = 'v:' + bat.r + ':' + bat.i;
           if (!hechos[mv]) {
             const x = infoCruce(bat.lados, buscar, dc.tabla, dc.perf);
-            const [ga, gb] = bat.lados.map((l) => genteChat(l, buscar, dc.tabla, opc.ids));
+            const [ga, gb] = bat.lados.map((l) => genteChat(l, buscar, dc.tabla, opc.ids, opc.enSv));
             // el nombre de la Liga también en el título y el dato («MAKMAH le ganó la última vez» → Makmah)
             if (ga.length === 1) x.a.n = ga[0].n;
             if (gb.length === 1) x.b.n = gb[0].n;
@@ -6669,7 +6679,7 @@ export class Avisos {
         const mv = bat ? 'v:' + bat.r + ':' + bat.i : '';
         if (bat && bat.lados.length === 2 && !hechos[mv]) {
           const clave = bat.r + ':' + bat.lados.map(claveTurno).sort().join('|');
-          const [ga, gb] = bat.lados.map((l) => genteChat(l, buscar, dc.tabla, opc.ids));
+          const [ga, gb] = bat.lados.map((l) => genteChat(l, buscar, dc.tabla, opc.ids, opc.enSv));
           const titEv = escMd(String(nombre || L.nombre || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
           const texto = ['⚔️ **' + titEv + '**', '⚔️ ' + bat.r + ': **' + nombresChat(ga) + '** vs **' + nombresChat(gb) + '**',
             lineaApuesta('abierta', apc)].join('\n');
