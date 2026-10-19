@@ -825,6 +825,19 @@ cuenta, uno por temporada con la misma ventana libre que la foto (tabla
 `sv` de los pools**, que sigue siendo donde más jugaste y es el de la
 tarjeta de Servidor. Y en el ×2 votado se vota a cualquiera, también al suyo.
 
+👥 **LAS CREWS LAS ARMA LA GENTE, DESDE EL 19/10/2026** (Dlx: *«crear crews
+e invitar gente… en la página principalmente, pero también en el bot»*).
+`datos/crews.json` **ya no se edita a mano**: lo escribe el ciclo (paso 0a2,
+`bot/crews_vivas.py`) desde el objeto, con la misma forma, así las cartas, el
+payload y los MES AWARDS siguen leyendo `comun/crews.py`. Las reglas viven en
+**`bot/crews.js`** (crear = verificado + 2.500 PdT, 20 máx, Líder · Colíder ·
+Veterano · Miembro, 7 días entre crews) y la página en `web/src/crews.js` y
+`crewpanel.jsx`; el bot, `/crew` y «Invitar a mi crew». ⚠️ Un miembro es un
+**perfil** (la clave), no una cuenta; quién actúa lo dice el Worker. ⚠️ Sin
+sembrar, `crews_vivas.py` no toca nada: el objeto vacío borraría las crews de
+las cartas. Las 34 de antes se sembraron el 19/10 (`--sembrar`), cada persona
+en la misma crew.
+
 ⚠️ **El lector de anuncios está en Python y en JS**, atados por
 `bot/avisos_casos.json`: si se toca uno, CI se pone rojo hasta que el otro
 lea igual. Y `python herramientas/probar_avisos.py` prueba la cadena

@@ -11,6 +11,20 @@
  ],
  "cambios": [
   {
+   "version": "3.63",
+   "dia": "2026-10-19",
+   "cuando": "2026-10-19T07:00:00-04:00",
+   "titulo": "Las crews, ahora las arman ustedes",
+   "items": [
+    "👥 **Armá tu crew**: en Mi cuenta → Mi crew, si estás verificado, por 2.500 Puntos de Tienda. Hasta 20 raperos, con Líder, Colíder, Veterano y Miembro.",
+    "📨 **Invitá** desde la página de tu crew, desde el perfil de alguien o en Discord con `/crew invitar` (o click derecho → Invitar a mi crew). La invitación llega en el canal, y sólo el invitado puede aceptarla.",
+    "🚪 Cada crew elige cómo se entra: abierta, con pedido o sólo por invitación. Para pasar de una crew a otra hay que esperar 7 días.",
+    "🎯 **Most Wanted**: ahora son 15 buscados por semana.",
+    "🎨 Una pasada de diseño por toda la página: las cartas otra vez con su forma, el tema Noche sin parches claros, menos huecos y los perfiles más cortos.",
+    "🎮 La pantalla de bienvenida, nueva: te muestra los servidores de la Liga y qué pide Discord antes de entrar."
+   ]
+  },
+  {
    "version": "3.62",
    "dia": "2026-10-19",
    "cuando": "2026-10-19T03:50:00-04:00",
