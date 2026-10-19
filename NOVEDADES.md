@@ -2628,7 +2628,8 @@ inglés, y `/borrar-mis-datos`.
 ## ❓ Esperando a Dlx
 
 - **Dos pasos tuyos en Discord, para lo de la 3.61** (no se pueden hacer por la API):
-  1. **Los roles vinculados**: en el portal de Discord, la app → General
+  1. ⏸️ **Para otro momento** (Dlx, 19/10: *«lo de #1 lo pasaremos otro momento»*).
+     **Los roles vinculados**: en el portal de Discord, la app → General
      Information → **Linked Roles Verification URL** =
      `https://underlegends.pages.dev/vincular/`. Los cuatro datos ya están
      registrados (rango, eventos, nivel del Pase, verificado). Después,
