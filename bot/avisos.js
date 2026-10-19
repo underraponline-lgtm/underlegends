@@ -3079,6 +3079,77 @@ export function tieneMetadatos(b) {
   }
   return false;
 }
+
+/**
+ * 🧽 SACARLE LOS METADATOS EN VEZ DE RECHAZARLA (19/10/2026, Dlx desde su iPad: «no me deja crear crew por esto»).
+ * Safari no sabe hacer webp desde un canvas, así que la página le manda un JPEG, y el JPEG que arma Safari (ImageIO)
+ * trae un bloque Exif suyo —el tamaño y el espacio de color, sin ubicación—. `tieneMetadatos()` rechazaba cualquier
+ * Exif, así que a todo iPhone y iPad se le frenaban el logo, el fondo y la foto de tarjeta con «trae datos escondidos».
+ * Ahora se le quitan los mismos bloques que `tieneMetadatos()` mira —APP1, APP13 y comentarios del JPEG; EXIF y XMP
+ * del webp (con su marca en VP8X); eXIf y los textos del PNG— y se guarda la limpia: lo que se quería evitar (la
+ * ubicación en una imagen pública) no se guarda nunca. Devuelve la imagen limpia, la misma si no traía nada, o `null`
+ * si su estructura no se entiende. Pura.
+ */
+export function limpiarMetadatos(b) {
+  if (!b || b.length < 12) return b;
+  const tag = (i, n) => String.fromCharCode(...b.subarray(i, i + n));
+  const unir = (partes) => {
+    const out = new Uint8Array(partes.reduce((a, p) => a + p.length, 0));
+    let i = 0;
+    for (const p of partes) { out.set(p, i); i += p.length; }
+    return out;
+  };
+  if (b[0] === 0xFF && b[1] === 0xD8) {
+    const partes = [b.subarray(0, 2)];
+    for (let i = 2; i + 4 <= b.length;) {
+      if (b[i] !== 0xFF) return null;
+      const m = b[i + 1];
+      // desde los datos de la imagen (SOS) va entero: lo que se saca vive antes
+      if (m === 0xDA) { partes.push(b.subarray(i)); return unir(partes); }
+      const n = (b[i + 2] << 8) | b[i + 3];
+      if (n < 2 || i + 2 + n > b.length) return null;
+      if (m !== 0xE1 && m !== 0xED && m !== 0xFE) partes.push(b.subarray(i, i + 2 + n));
+      i += 2 + n;
+    }
+    return null;
+  }
+  if (b[0] === 0x89 && tag(1, 3) === 'PNG') {
+    const partes = [b.subarray(0, 8)];
+    for (let i = 8; i + 12 <= b.length;) {
+      const n = ((b[i] << 24) | (b[i + 1] << 16) | (b[i + 2] << 8) | b[i + 3]) >>> 0;
+      const t = tag(i + 4, 4);
+      if (i + 12 + n > b.length) return null;
+      if (t !== 'eXIf' && t !== 'tEXt' && t !== 'iTXt' && t !== 'zTXt') partes.push(b.subarray(i, i + 12 + n));
+      i += 12 + n;
+      if (t === 'IEND') return unir(partes);
+    }
+    return null;
+  }
+  if (tag(0, 4) === 'RIFF' && tag(8, 4) === 'WEBP') {
+    const partes = [];
+    for (let i = 12; i + 8 <= b.length;) {
+      const t = tag(i, 4);
+      const n = (b[i + 4] | (b[i + 5] << 8) | (b[i + 6] << 16) | (b[i + 7] << 24)) >>> 0;
+      const fin = i + 8 + n + (n & 1);
+      if (i + 8 + n > b.length) return null;
+      if (t !== 'EXIF' && t !== 'XMP ') {
+        const c = b.slice(i, Math.min(fin, b.length));
+        // VP8X dice qué trae: sin el bit de EXIF (0x08) ni el de XMP (0x04), o un lector estricto los busca
+        if (t === 'VP8X' && c.length > 8) c[8] &= ~0x0C;
+        partes.push(c);
+      }
+      i = fin;
+    }
+    const cuerpo = unir(partes);
+    const out = new Uint8Array(12 + cuerpo.length);
+    out.set(b.subarray(0, 12));
+    out.set(cuerpo, 12);
+    const tam = 4 + cuerpo.length;
+    out[4] = tam & 255; out[5] = (tam >> 8) & 255; out[6] = (tam >> 16) & 255; out[7] = (tam >>> 24) & 255;
+    return out;
+  }
+  return b;
+}
 const FONDO_POR_DIA = 5;
 //: cuántos días queda a la vista en el Dashboard lo que aprobó el filtro, con «Quitar»
 const FILTRO_VISTA_DIAS = 3;
@@ -8734,7 +8805,9 @@ export class Avisos {
       if (!tipo) return { error: 'no es una imagen' };
       if (b.length > FONDO_TOPE) return { error: 'demasiado grande' };
       // 🛡️ con la ubicación o algún dato escondido, no (ver `tieneMetadatos()`)
-      if (tieneMetadatos(b)) return { error: 'metadatos' };
+      // 🧽 se le sacan (ver `limpiarMetadatos()`): el JPEG de Safari trae un Exif suyo, sin ubicación
+      b = limpiarMetadatos(b);
+      if (!b || tieneMetadatos(b)) return { error: 'metadatos' };
       // 🛡️ EL FILTRO, antes de guardar nada. Con tope propio: si no, alguien podría probar mil imágenes contra la IA
       // hasta que una pase (cuentan también las que no entran, que no suman a `subidas`)
       if (!this.cuentaCambio(quien, 'fondo_filtro', FONDO_POR_DIA * 2)) return { error: 'tope' };
@@ -8908,7 +8981,8 @@ export class Avisos {
     const tipo = b ? tipoImagen(b) : '';
     if (!tipo) return { error: 'no es una imagen' };
     if (b.length > FOTO_CARTA_TOPE) return { error: 'demasiado grande' };
-    if (tieneMetadatos(b)) return { error: 'metadatos' };
+    b = limpiarMetadatos(b);
+    if (!b || tieneMetadatos(b)) return { error: 'metadatos' };
     if (!this.cuentaCambio(quien, 'foto_filtro', 10)) return { error: 'tope' };
     let filtro = { v: 'revisar', si: [], quizas: [], crudo: '', error: 'sin IA' };
     if (this.env.AI) {
@@ -9970,7 +10044,8 @@ export class Avisos {
     const tipo = b ? tipoImagen(b) : '';
     if (!tipo) return { error: 'no es una imagen', estado: 400 };
     if (b.length > CW.LOGO_TOPE) return { error: 'demasiado grande', estado: 413 };
-    if (tieneMetadatos(b)) return { error: 'metadatos', estado: 400 };
+    b = limpiarMetadatos(b);
+    if (!b || tieneMetadatos(b)) return { error: 'metadatos', estado: 400 };
     // 🛡️ con tope propio, como los fondos: si no, se podrían probar mil imágenes contra la IA hasta que una pase
     if (!this.cuentaCambio(quien, 'crew_logo_filtro', 8)) return { error: 'espera_dia', estado: 429 };
     let filtro = { v: 'revisar', si: [], quizas: [], crudo: '', error: 'sin IA' };

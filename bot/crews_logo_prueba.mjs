@@ -78,6 +78,14 @@ ok((await yo.crewConImagen({ quien: String(7000000009), de: 'zoe', accion: 'logo
 const r6 = CW.crewDueno(yo, { que: 'logo', crew: 'Dudosa', si: false });
 await yo.borrarLogosCrew(r6.viejos);
 ok(r6.ok && r2.size === 1 && CW.crewLogosDueno(yo).pend.length === 0, 'el dueño descarta el dudoso y se borra de R2');
+// 🧽 el JPEG que arma Safari trae un Exif suyo: antes frenaba la crew con «trae datos escondidos»; ahora se le saca
+const exif = Buffer.concat([Buffer.from([0xFF, 0xD8, 0xFF, 0xE0, 0, 16]), Buffer.from('JFIF\0'), Buffer.alloc(9),
+  Buffer.from([0xFF, 0xE1, 0, 20]), Buffer.from('Exif\0\0'), Buffer.alloc(12),
+  Buffer.from([0xFF, 0xDB, 0, 4, 0, 0, 0xFF, 0xDA, 0, 2, 1, 2, 3, 0xFF, 0xD9])]);
+const rs = await yo.crewConImagen(base(5, 'eva', { nombre: 'Safari', img: exif.toString('base64') }));
+const guardada = [...r2.entries()].find(([k]) => k.endsWith('.jpg'));
+ok(rs.ok && guardada && !Buffer.from(guardada[1]).includes(Buffer.from('Exif')) && guardada[1][0] === 0xFF && guardada[1][1] === 0xD8,
+  'un JPEG de iPhone con Exif crea la crew, y se guarda sin el Exif');
 await yo.borrarLogosCrew(['https://pub-x.r2.dev/fondos/abc.webp', 'https://pub-x.r2.dev/oasis/temporada.webp']);
 ok(!borrados.some((k) => k.startsWith('fondos/') || k.startsWith('oasis/')), 'borrar logos nunca toca un fondo ni una carta');
 

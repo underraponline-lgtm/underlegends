@@ -1313,6 +1313,22 @@ const ok = (cond, que, det) => {
       && !TM(jpg([[0xE0, 14], [0xDB, 4]])) && TM(jpg([[0xE0, 14], [0xE1, 20]])) && TM(jpg([[0xFE, 5]]))
       && !TM(png([['IHDR', 13], ['IDAT', 8], ['IEND', 0]])) && TM(png([['IHDR', 13], ['tEXt', 8], ['IEND', 0]])),
     'anti-doxeo: un webp, un jpeg o un png con EXIF, XMP o texto adentro no entra; el limpio, sí');
+    // 🧽 …pero se le SACAN en vez de rechazarla (19/10/2026: el JPEG que arma Safari trae un Exif suyo y a todo iPhone y
+    // iPad se le frenaba el logo de la crew, el fondo y la foto de tarjeta)
+    const LM = A.limpiarMetadatos;
+    const jx = jpg([[0xE0, 14], [0xE1, 20], [0xDB, 4], [0xFE, 5]]), jl = LM(jx);
+    const wx = riff([['VP8X', 10], ['VP8 ', 10], ['EXIF', 6], ['XMP ', 3]]);
+    wx[20] = 0x0C | 0x10;
+    const wl = LM(wx);
+    const tamW = wl[4] | (wl[5] << 8) | (wl[6] << 16) | (wl[7] << 24);
+    const px = png([['IHDR', 13], ['tEXt', 8], ['IDAT', 8], ['iTXt', 3], ['IEND', 0]]), pl = LM(px);
+    const jpgSano = jpg([[0xE0, 14], [0xDB, 4]]);
+    ok(!TM(jl) && jl[0] === 0xFF && jl[1] === 0xD8 && jl.length === jx.length - 24 - 9 && jl[jl.length - 3] === 0xDA
+      && !TM(wl) && tamW === wl.length - 8 && (wl[20] & 0x0C) === 0 && (wl[20] & 0x10) === 0x10
+      && !TM(pl) && pl.length === px.length - 20 - 15 && String.fromCharCode(...pl.subarray(pl.length - 8, pl.length - 4)) === 'IEND'
+      && LM(jpgSano).length === jpgSano.length && LM(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])).length === 13
+      && LM(new Uint8Array([0xFF, 0xD8, 0x00, 0x00, 0, 0, 0, 0, 0, 0, 0, 0])) === null,
+    'anti-doxeo: los metadatos se sacan (JPEG, webp con su marca en VP8X y el largo del RIFF, PNG) y la imagen queda sana; lo que no se entiende, no entra');
     // 🔐 los permisos del Dashboard (13/10/2026)
     const PR = A.puedeRol;
     ok(PR(['owner'], 'roles') && !PR(['admin'], 'roles') && PR(['admin'], 'ajustes') && PR(['asistente'], 'reportes')
