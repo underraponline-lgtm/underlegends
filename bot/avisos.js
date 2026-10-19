@@ -9530,6 +9530,14 @@ export class Avisos {
       'uso', 'bandeja', 'fondos', 'fotos_carta', 'postulaciones', 'sigue_org', 'org_cola', 'videos_pedidos',
       'videos_reportes', 'agenda', 'cambios_dia', 'apostado', 'qg_voto', 'roles_manual', 'liga_sigue'];
     const movidas = {}, fallas = [];
+    // 🔴 LAS CLAVES DE LA TIENDA LLEVAN EL ID ADENTRO (pasada del 19/10/2026): `rhito:<id>:…`, `racha:<id>:…`,
+    // `rdia:<día>:<id>`, `bien:<id>:<paso>`, `pase:…:<id>:<nivel>`… Pasaba la fila a la cuenta nueva con la clave vieja,
+    // y al mirar «¿ya cobró este hito?» con la clave nueva no la encontraba: pagaba los hitos de racha (y lo demás) dos
+    // veces. Primero se cambia el ID en la clave; lo que choca con algo que la nueva ya tenía queda como estaba
+    try {
+      this.sql.exec("UPDATE OR IGNORE tienda SET id = replace(id, ':' || ?, ':' || ?) WHERE quien = ? AND instr(id, ':' || ?) > 0",
+        viejo, nuevo, viejo, viejo);
+    } catch (e) { fallas.push('tienda-claves'); }
     for (const t of tablas) {
       try {
         const r = this.sql.exec(`UPDATE OR IGNORE ${t} SET quien = ? WHERE quien = ?`, nuevo, viejo);

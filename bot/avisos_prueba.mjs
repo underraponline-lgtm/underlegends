@@ -1724,6 +1724,7 @@ const ok = (cond, que, det) => {
       && o.duenoPedido({ id: p1.id, si: false }).error === 'ya',
     'un pedido de cuenta: el mismo dos veces es uno, se aprueba una vez y el ciclo lo ve para aplicarlo', JSON.stringify([p1, p2, d1, pcl]));
     sql.exec('INSERT INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, 777, ?)', 'x:viejo', VIEJA, Date.now());
+    sql.exec('INSERT INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, 500, ?)', 'rhito:' + VIEJA + ':2026-10-01:7', VIEJA, Date.now());
     o.xpVio(VIEJA, 'sigue', 'konan');
     o.xpVio(NUEVA, 'sigue', 'konan');
     sql.exec('INSERT INTO sigue (quien, a, t) VALUES (?, ?, ?)', VIEJA, 'oasis', Date.now());
@@ -1734,6 +1735,9 @@ const ok = (cond, que, det) => {
       && de('sigue', NUEVA) >= 1 && de('sesiones', VIEJA) === 0 && o.pedidosEstados({ estados: { [p1.id]: { ok: true } } }).n === 1,
     'pasar la cuenta: la Tienda, la XP y a quién sigue van a la nueva (sin repetir lo que ya tenía), la vieja ya no entra',
     JSON.stringify(mu));
+    ok(!!sql.exec('SELECT 1 AS x FROM tienda WHERE id = ? AND quien = ?', 'rhito:' + NUEVA + ':2026-10-01:7', NUEVA).toArray()[0]
+      && !sql.exec("SELECT 1 AS x FROM tienda WHERE id LIKE '%' || ? || '%'", VIEJA).toArray()[0] && sql.exec("SELECT 1 FROM tienda WHERE id = 'x:viejo'").toArray().length === 1,
+    'y las claves de la Tienda con el ID adentro pasan al nuevo: el hito de racha ya cobrado no se vuelve a pagar');
     const band = (q, c) => sql.exec('SELECT titulo FROM bandeja WHERE quien = ? AND clave = ?', q, c).toArray()[0];
     ok(/cuenta nueva ya es la de tu perfil/.test((band(NUEVA, 'pedido:' + p1.id) || {}).titulo || ''),
       'cuando el ciclo lo aplica, a quien pidió le llega a la campana', JSON.stringify(band(NUEVA, 'pedido:' + p1.id)));
