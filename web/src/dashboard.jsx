@@ -1357,6 +1357,15 @@ function AjServidores({ liga, aj, hacer, ocup, chat }) {
                 <option value="si">Prendidas, en cualquier nivel</option>
                 <option value="no">Apagadas</option>
               </select></label>
+            {/* 📅 los eventos de Discord (19/10/2026): cada anuncio, un evento del servidor con «Me interesa» */}
+            <label><span>Eventos de Discord</span>
+              <select value={(aj.eventos_discord || {})[sv] === true ? 'si' : ''} disabled={ocup}
+                onChange={(e) => cambiar('eventos_discord', aj.eventos_discord || {}, sv, e.target.value === 'si' ? true : '')}>
+                <option value="">Apagados</option>
+                <option value="si">Cada anuncio, un evento de su Discord</option>
+              </select>
+              {(c.evd || {})[sv] ? <small className="db-tx">{(c.evd[sv].creados || 0) + ' en 7 días'
+                + (c.evd[sv].error === 'permiso' ? ' · ⚠️ al bot le falta «Crear eventos» ahí' : c.evd[sv].error ? ' · ⚠️ ' + c.evd[sv].error : '')}</small> : null}</label>
             <label><span>Aviso de cada evento</span>
               <select value={porSv[sv] || ''} disabled={ocup} onChange={(e) => cambiarAviso(sv, e.target.value)}>
                 <option value="">Donde habla el bot en vivo</option>

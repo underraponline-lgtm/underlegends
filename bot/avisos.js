@@ -2862,6 +2862,10 @@ export function validarVoto(defs, d, id, ahora) {
 // deja el ciclo en KV (`ligas:votar`, `ligas.para_kv()` en bot/ligas.py); quién vota lo dice Discord (la sesión), como en
 // las encuestas; el objeto guarda uno por persona y liga (tabla `liga_voto`). ⚠️ Afuera se ve cuántos, nunca quién.
 //: 📖 las historias que vio cada uno: cuántas se guardan, cuántos días y cuántas se mandan de una vez
+//: 📅 los eventos de Discord (`eventosDiscord()`): cuánto dura cada uno (Discord pide hora de fin en los de afuera) y
+//: cuántos pedidos a Discord por vuelta del vigía
+export const EV_DC_DURA = 3 * 60 * 60 * 1000;
+export const EV_DC_POR_VUELTA = 3;
 export const HISTORIAS_TOPE = 600;
 export const HISTORIAS_DIAS = 30;
 export const HISTORIAS_LOTE = 120;
@@ -3248,6 +3252,8 @@ export const DUENO = '739338101603696681';
 //                     que la página ya pide al abrir y cada pocos minutos: no suma ningún pedido
 //   en_vivo           {SV: bool}: el bot en el chat de cada servidor durante un evento (llega con esa función)
 //   en_vivo_nivel     {SV: poco|normal|todo}: cuánto habla ahí (`NIVELES_CHAT`); gana sobre el que eligió su admin
+//   eventos_discord   {SV: bool}: en qué servidores cada anuncio pasa a ser un EVENTO de Discord (`eventosDiscord()`,
+//                     19/10/2026). Sin elegir, apagado: se crea en el servidor de otro y se ve allá
 //   avisos_nivel      poco|normal|todo: cuánto dice el aviso de cada evento en el canal de la Liga (`NIVELES_AVISO`,
 //                     lo lee el ciclo: `bot/aviso_evento.py`). Sin elegir, «normal»
 export const FACTORES = [0.5, 1, 1.5, 2, 3, 5];
@@ -3313,6 +3319,15 @@ export function ajusteValido(cual, valor) {
     const out = {};
     for (const [k, v] of Object.entries(valor)) {
       if (!/^[A-Z]{2,5}$/.test(k) || typeof v !== 'boolean') return undefined;
+      out[k] = v;
+    }
+    return out;
+  }
+  if (cual === 'eventos_discord') {
+    if (!valor || typeof valor !== 'object') return undefined;
+    const out = {};
+    for (const [k, v] of Object.entries(valor)) {
+      if (!/^[A-Z]{2,6}$/.test(k) || typeof v !== 'boolean') return undefined;
       out[k] = v;
     }
     return out;
@@ -5160,6 +5175,12 @@ export class Avisos {
         try { this.sql.exec('ALTER TABLE reportes ADD COLUMN ' + c); } catch (e) { /* ya estaba */ }
       }
       // 🔑 LOS EVENTOS CANCELADOS (01/10/2026): ver `cancelado()` y `cancelaciones()`
+      // 📅 LOS EVENTOS DE DISCORD (19/10/2026, `eventosDiscord()`): cada anuncio de un servidor que lo tiene prendido,
+      // con el evento que se le creó allá y en qué quedó (0 por crear · 1 creado · 2 en vivo · 3 terminado ·
+      // 4 cancelado · 8 tarde · 9 no se pudo)
+      this.sql.exec('CREATE TABLE IF NOT EXISTS ev_discord (id TEXT PRIMARY KEY, sv TEXT NOT NULL, g TEXT NOT NULL, ' +
+        "nombre TEXT NOT NULL, url TEXT NOT NULL, ini INTEGER NOT NULL, fin INTEGER NOT NULL, ev TEXT NOT NULL DEFAULT '', " +
+        "estado INTEGER NOT NULL DEFAULT 0, intentos INTEGER NOT NULL DEFAULT 0, error TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
       this.sql.exec('CREATE TABLE IF NOT EXISTS cancelados (id TEXT PRIMARY KEY, sv TEXT NOT NULL, ' +
         "cuerpo TEXT NOT NULL, t INTEGER NOT NULL, por TEXT NOT NULL DEFAULT '')");
       // 📢 LO QUE EL ORGANIZADOR AVISÓ DESPUÉS (07/10/2026): cancelado, en pausa o atrasado, y de qué anuncio. Ver
@@ -6047,6 +6068,8 @@ export class Avisos {
       } catch (e) {
         this.guardar('cancelados', { t: ahora, error: String(e).slice(0, 160) });
       }
+      // 📅 y los eventos de Discord: crearlos, ponerlos en vivo, terminarlos. Nunca frena al vigía: ver `eventosDiscord()`
+      try { await this.eventosDiscord(ahora); } catch (e) { this.guardar('ev_discord', { t: ahora, error: String(e).slice(0, 160) }); }
       // 🎙️ y quién está en la llamada, minuto a minuto. Nunca frena al vigía: ver `llamada()`
       try { await this.llamada(ahora); } catch (e) {
         this.guardar('llamada', { ...(this.leer('llamada') || {}), error: String(e).slice(0, 160) });
@@ -7686,6 +7709,13 @@ export class Avisos {
     const hasta = ini != null ? ini + GRACIA : publicado + EDAD_SIN_HORA;
     this.sql.exec('INSERT OR IGNORE INTO avisos (id, sv, cuerpo, desde, hasta, creado) ' +
       'VALUES (?, ?, ?, ?, ?, ?)', m.id, c.sv, JSON.stringify(cuerpo), ahora, hasta, ahora);
+    // 📅 y a la cola de los eventos de Discord, si ese servidor lo tiene prendido (`eventosDiscord()`)
+    try {
+      if (ini != null && c.g && (this.ajustes().eventos_discord || {})[c.sv] === true) {
+        this.sql.exec('INSERT OR IGNORE INTO ev_discord (id, sv, g, nombre, url, ini, fin, t) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+          m.id, c.sv, String(c.g), a.nombre.slice(0, 100), cuerpo.url, ini, ini + EV_DC_DURA, ahora);
+      }
+    } catch (e) { /* sigue */ }
     // 📣 y a quienes siguen a su organizador —el «Organiza:» o, sin él, quien lo publicó—. Nunca frena
     try {
       const au = m.author || {};
@@ -7716,6 +7746,88 @@ export class Avisos {
       JSON.stringify({ ...cuerpo, tipo: 'antes' }), ini - ANTES, ini + GRACIA, ahora);
     }
     return true;
+  }
+
+  /**
+   * 📅 LOS EVENTOS DE DISCORD (Dlx, 19/10/2026: «dale», a «cada anuncio como evento del servidor, con “Me interesa”»).
+   * En los servidores que lo tienen prendido en el Dashboard (`eventos_discord`), cada anuncio con hora pasa a ser un
+   * evento programado de ese servidor: sale arriba de la lista de canales, con «Me interesa», y Discord le avisa solo a
+   * quien lo marcó. Esta vuelta lo crea, lo pone EN VIVO a la hora, lo termina `EV_DC_DURA` después, y sigue lo que el
+   * organizador avisó: cancelado (`cancelados`) o atrasado (`estados`).
+   * ⚠️ APAGADO SI NO SE ELIGE: se crea en el servidor de otro y se ve allá. Y el bot necesita «Crear eventos» o
+   * «Gestionar eventos» ahí: sin eso, Discord dice 403 y queda anotado para el Dashboard, sin reintentar.
+   * ⚠️ Hasta `EV_DC_POR_VUELTA` pedidos por minuto: el vigía comparte su presupuesto de pedidos con esto.
+   */
+  async eventosDiscord(ahora) {
+    const on = this.ajustes().eventos_discord || {};
+    if (!Object.values(on).some(Boolean) && !this.sql.exec('SELECT 1 AS x FROM ev_discord WHERE estado IN (1, 2) LIMIT 1').toArray().length) return;
+    const dc = (ruta, op = {}) => fetch('https://discord.com/api/v10' + ruta, { ...op,
+      headers: { authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'content-type': 'application/json',
+        'x-audit-log-reason': encodeURIComponent('Liga Global · el evento de un anuncio') } });
+    let pedidos = 0;
+    const fin = (f, estado, error) => this.sql.exec('UPDATE ev_discord SET estado = ?, error = ? WHERE id = ?', estado, error || '', f.id);
+    // 1 · lo cancelado o atrasado por el organizador, a lo que ya se creó
+    for (const f of this.sql.exec('SELECT * FROM ev_discord WHERE estado = 1').toArray()) {
+      if (pedidos >= EV_DC_POR_VUELTA) return;
+      const cx = this.sql.exec("SELECT 1 AS x FROM cancelados WHERE id = ? UNION SELECT 1 FROM estados WHERE evento = ? AND tipo = 'cancelado'",
+        f.id, f.id).toArray().length;
+      const at = cx ? null : this.sql.exec("SELECT nueva, mas FROM estados WHERE evento = ? AND tipo = 'atrasado' ORDER BY pub DESC LIMIT 1", f.id).toArray()[0];
+      const nueva = at ? (at.nueva || (at.mas ? f.ini + at.mas : 0)) : 0;
+      if (cx) {
+        pedidos++;
+        const r = await dc(`/guilds/${f.g}/scheduled-events/${f.ev}`, { method: 'PATCH', body: JSON.stringify({ status: 4 }) });
+        fin(f, 4, r.ok || r.status === 404 ? '' : 'cancelar ' + r.status);
+      } else if (nueva && nueva > f.ini && nueva > ahora + MIN) {
+        pedidos++;
+        const r = await dc(`/guilds/${f.g}/scheduled-events/${f.ev}`, { method: 'PATCH', body: JSON.stringify({
+          scheduled_start_time: new Date(nueva).toISOString(), scheduled_end_time: new Date(nueva + EV_DC_DURA).toISOString() }) });
+        if (r.ok) this.sql.exec('UPDATE ev_discord SET ini = ?, fin = ? WHERE id = ?', nueva, nueva + EV_DC_DURA, f.id);
+      }
+    }
+    // 2 · a la hora, EN VIVO; y `EV_DC_DURA` después, terminado
+    for (const f of this.sql.exec('SELECT * FROM ev_discord WHERE (estado = 1 AND ini <= ?) OR (estado = 2 AND fin <= ?) ORDER BY ini',
+      ahora, ahora).toArray()) {
+      if (pedidos >= EV_DC_POR_VUELTA) return;
+      pedidos++;
+      const st = f.estado === 1 ? 2 : 3;
+      const r = await dc(`/guilds/${f.g}/scheduled-events/${f.ev}`, { method: 'PATCH', body: JSON.stringify({ status: st }) });
+      // (si ya no está —lo borró un admin— o Discord no deja ese paso, se da por cerrado: no se insiste)
+      if (r.ok || r.status === 404 || r.status === 400) fin(f, r.ok ? st : 3, r.ok ? '' : 'estado ' + r.status);
+    }
+    // 3 · los nuevos (lo que ya empezó o está por empezar no se crea: Discord pide una hora futura)
+    for (const f of this.sql.exec('SELECT * FROM ev_discord WHERE estado = 0 ORDER BY ini').toArray()) {
+      if (on[f.sv] !== true) { this.sql.exec('DELETE FROM ev_discord WHERE id = ?', f.id); continue; }
+      if (f.ini < ahora + 2 * MIN) { fin(f, 8, ''); continue; }
+      if (pedidos >= EV_DC_POR_VUELTA) return;
+      pedidos++;
+      const r = await dc(`/guilds/${f.g}/scheduled-events`, { method: 'POST', body: JSON.stringify({
+        name: f.nombre.slice(0, 100) || 'Evento', privacy_level: 2, entity_type: 3,
+        entity_metadata: { location: 'Anuncio y llave: underlegends.pages.dev' },
+        scheduled_start_time: new Date(f.ini).toISOString(), scheduled_end_time: new Date(f.fin).toISOString(),
+        description: ('Evento de la Liga Global. El anuncio, con cómo inscribirse: ' + f.url).slice(0, 1000) }) });
+      if (r.ok) {
+        const j = await r.json().catch(() => ({}));
+        this.sql.exec("UPDATE ev_discord SET ev = ?, estado = 1, error = '' WHERE id = ?", String(j.id || ''), f.id);
+      } else if (r.status === 403 || r.status === 404 || r.status === 400) {
+        fin(f, 9, r.status === 403 ? 'permiso' : 'discord ' + r.status);
+      } else {
+        // un 429 o un 5xx: se reintenta en la vuelta siguiente, hasta tres veces
+        this.sql.exec('UPDATE ev_discord SET intentos = intentos + 1, estado = CASE WHEN intentos >= 2 THEN 9 ELSE 0 END, error = ? WHERE id = ?',
+          'discord ' + r.status, f.id);
+      }
+    }
+    this.sql.exec('DELETE FROM ev_discord WHERE t < ?', ahora - 30 * DIA_MS);
+  }
+
+  /** 📅 `{SV: {creados, error}}`: los eventos de Discord de los últimos 7 días, para el Dashboard. */
+  eventosDiscordEstado(ahora) {
+    const out = {};
+    for (const f of this.sql.exec('SELECT sv, estado, error FROM ev_discord WHERE t > ? ORDER BY t', ahora - 7 * DIA_MS).toArray()) {
+      const x = (out[f.sv] = out[f.sv] || { creados: 0, error: '' });
+      if ([1, 2, 3, 4].includes(f.estado)) x.creados++;
+      x.error = f.estado === 9 ? f.error : f.estado >= 1 && f.estado <= 4 ? '' : x.error;
+    }
+    return out;
   }
 
   /** 🧪 El aviso de una prueba de Dlx. Ver `anotar()`. */
@@ -11255,6 +11367,8 @@ export class Avisos {
       // prendió cada admin
       chat: { generales: ((this.leer('canales') || {}).generales || []).map((x) => ({ sv: x.sv, g: x.g })),
         ultimo: this.leer('chat_vivo'), admin: {}, nivel: {}, niveles: NIVELES_CHAT,
+        // 📅 los eventos de Discord de cada servidor en los últimos 7 días: cuántos se crearon y el último error
+        evd: this.eventosDiscordEstado(ahora),
         // 🎛️ lo de siempre, para que el Dashboard lo muestre sin escribir los números (ver `apuestasCfg()`)
         def: { apuestas: { montos: AP_MONTOS, minutos: AP_CIERRA / MIN, tope: AP_TOPE },
           ritmo: { normal: CHAT_ENTRE / MIN, batalla: CHAT_ENTRE_TODO / MIN } } },

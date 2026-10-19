@@ -929,6 +929,48 @@ const ok = (cond, que, det) => {
       ok(antesE === 0 && er.length === 2 && pub.n === 3 && pub.dias === 1 && pub.f === 'inicio/inicio-publicaciones.js:1:2345' && !('k' in pub),
         'los errores se juntan en memoria (ni una fila por pedido) y el Dashboard los ve sumados', JSON.stringify(er));
     }
+    // 📅 los eventos de Discord (19/10/2026): se crean sólo donde se prendió, en vivo a la hora, terminados después
+    {
+      const fAntes = globalThis.fetch;
+      const pedidosEv = [];
+      let resp = 200;
+      globalThis.fetch = async (u, op = {}) => {
+        pedidosEv.push({ u: String(u), m: op.method || 'GET', b: op.body ? JSON.parse(op.body) : null });
+        return new Response(JSON.stringify({ id: 'EV1' }), { status: resp });
+      };
+      const t0 = Date.now();
+      const fila = (id, sv, ini) => o.sql.exec('INSERT INTO ev_discord (id, sv, g, nombre, url, ini, fin, t) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        id, sv, '900', 'EL TORNEO ' + id, 'https://discord.com/channels/900/1/' + id, ini, ini + A.EV_DC_DURA, t0);
+      const est = (id) => (o.sql.exec('SELECT estado, ev, error FROM ev_discord WHERE id = ?', id).toArray()[0] || {});
+      o.ajuste({ cual: 'eventos_discord', valor: { FFA: true } });
+      fila('e1', 'FFA', t0 + 3600e3);
+      fila('e2', 'DRA', t0 + 3600e3);
+      await o.eventosDiscord(t0);
+      const crear = pedidosEv.find((p) => p.m === 'POST' && /\/guilds\/900\/scheduled-events$/.test(p.u));
+      ok(!!crear && crear.b.entity_type === 3 && crear.b.name === 'EL TORNEO e1' && crear.b.scheduled_start_time === new Date(t0 + 3600e3).toISOString()
+        && est('e1').estado === 1 && est('e1').ev === 'EV1' && est('e2').estado === undefined,
+      'un anuncio de un servidor prendido pasa a ser un evento de su Discord; el de uno apagado no', JSON.stringify(pedidosEv));
+      pedidosEv.length = 0;
+      await o.eventosDiscord(t0 + 3600e3);
+      await o.eventosDiscord(t0 + 3600e3 + A.EV_DC_DURA);
+      ok(pedidosEv.map((p) => p.b && p.b.status).join() === '2,3' && est('e1').estado === 3,
+        'a la hora se pone en vivo y, tres horas después, terminado', JSON.stringify(pedidosEv));
+      fila('e3', 'FFA', t0 + 7200e3);
+      await o.eventosDiscord(t0);
+      o.sql.exec("INSERT INTO cancelados (id, sv, cuerpo, t) VALUES ('e3', 'FFA', '{}', ?)", t0);
+      pedidosEv.length = 0;
+      await o.eventosDiscord(t0 + 60e3);
+      ok(pedidosEv.length === 1 && pedidosEv[0].b.status === 4 && est('e3').estado === 4, 'si el organizador lo cancela, se cancela allá también');
+      resp = 403;
+      fila('e4', 'FFA', t0 + 7200e3);
+      await o.eventosDiscord(t0 + 120e3);
+      ok(est('e4').estado === 9 && est('e4').error === 'permiso' && (o.eventosDiscordEstado(t0 + 200e3).FFA || {}).error === 'permiso',
+        'sin el permiso de crear eventos queda anotado para el Dashboard, sin reintentar', JSON.stringify(est('e4')));
+      ok(A.ajusteValido('eventos_discord', { FFA: true, DRA: false }) && A.ajusteValido('eventos_discord', { ffa: true }) === undefined,
+        'el ajuste: siglas de servidor y sí o no');
+      o.ajuste({ cual: 'eventos_discord', valor: null });
+      globalThis.fetch = fAntes;
+    }
     // (pasada del 19/10/2026: se juntan en memoria y van a la base una vez por minuto, o cuando el Dashboard los pide)
     ok(o.sql.exec('SELECT COUNT(*) AS n FROM clics').toArray()[0].n === 0, 'los toques se juntan en memoria: ni una fila escrita por pedido');
     const cr = o.clicsResumen();
