@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-19T22:24:51+00:00",
+ "cuando": "2026-10-19T22:55:15+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -428,6 +428,9 @@
    "staff": {
     "jurado": [
      "Velatz",
+     "Flennzs | ⛩️",
+     "Kravitz",
+     "Zaik",
      "𓂀"
     ],
     "host": [
@@ -440,6 +443,9 @@
    "autor": "Velatz",
    "staff_cuentas": {
     "Velatz": "1426686911908675628",
+    "Flennzs | ⛩️": "1414431452346581052",
+    "Kravitz": "1345962362615894027",
+    "Zaik": "1555067257376346122",
     "𓂀": "1071185986366742630"
    },
    "categoria_id": "1468478330826260500"
@@ -6182,6 +6188,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1561873503446368428",
+   "cuando": "2026-10-19T22:47:41"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Siberius 🇵🇪",
+   "quien": "pablito_backyardigan21",
+   "discord_id": "1408293284081831986",
+   "msg_id": "1561869091516457134",
+   "cuando": "2026-10-19T22:30:09"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",

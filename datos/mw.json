@@ -34,10 +34,22 @@
     "o": 21,
     "votos": 4,
     "de": 6,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 7250
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Cuartos",
+    "valor": 7250,
+    "caza": {
+     "n": 490,
+     "evento": "LA REDENCIÓN",
+     "sv": "FFA",
+     "t": "2026-10-19T20:40:51Z",
+     "por": [
+      {
+       "n": "PRAISERIZA",
+       "cobra": 7250
+      }
+     ]
+    }
    },
    {
     "n": "Juasmio",
@@ -158,10 +170,22 @@
     "nivel": "C",
     "base": 5000,
     "o": 72,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 5000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Cuartos",
+    "valor": 5000,
+    "caza": {
+     "n": 490,
+     "evento": "LA REDENCIÓN",
+     "sv": "FFA",
+     "t": "2026-10-19T20:40:51Z",
+     "por": [
+      {
+       "n": "Nmb",
+       "cobra": 10000
+      }
+     ]
+    }
    },
    {
     "n": "Erian",
@@ -223,10 +247,26 @@
     "nivel": "D",
     "base": 4000,
     "o": 118,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 5000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 5000,
+    "caza": {
+     "n": 490,
+     "evento": "LA REDENCIÓN",
+     "sv": "FFA",
+     "t": "2026-10-19T20:40:51Z",
+     "por": [
+      {
+       "n": "MCO",
+       "cobra": 2500
+      },
+      {
+       "n": "Xubaru",
+       "cobra": 2500
+      }
+     ]
+    }
    },
    {
     "n": "Six",
@@ -236,10 +276,22 @@
     "nivel": "D",
     "base": 4750,
     "o": 12,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 5000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Semifinal",
+    "valor": 5000,
+    "caza": {
+     "n": 490,
+     "evento": "LA REDENCIÓN",
+     "sv": "FFA",
+     "t": "2026-10-19T20:40:51Z",
+     "por": [
+      {
+       "n": "PRAISERIZA",
+       "cobra": 5000
+      }
+     ]
+    }
    }
   ],
   "snap": {

@@ -27505,5 +27505,286 @@
     312
    ]
   ]
+ },
+ "490": {
+  "dia": "2026-10-19",
+  "escala": "16+",
+  "fecha": "19/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1561841586705408172"
+  ],
+  "n": 490,
+  "nombre": "LA REDENCIÓN",
+  "participantes": 25,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "PichulaMc, Liberia, Verc",
+       "yinn"
+      ],
+      "PichulaMc, Liberia, Verc",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Scritura"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Tenor",
+       "Valdoza"
+      ],
+      "Tenor",
+      ""
+     ],
+     [
+      [
+       "Nmb",
+       "Revo, will🇻🇪"
+      ],
+      "Nmb",
+      ""
+     ],
+     [
+      [
+       "Six",
+       "Trot"
+      ],
+      "Six",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "Teo, Majiztral"
+      ],
+      "Vandu",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "Drexx, NXUZ, Miniboy"
+      ],
+      "PRAISERIZA",
+      ""
+     ],
+     [
+      [
+       "MCO, Xubaru",
+       "Chop, Dominick, Adriagner"
+      ],
+      "MCO, Xubaru",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc, Liberia, Verc",
+       "Makmah"
+      ],
+      "PichulaMc, Liberia, Verc",
+      ""
+     ],
+     [
+      [
+       "Nmb",
+       "Tenor"
+      ],
+      "Nmb",
+      ""
+     ],
+     [
+      [
+       "Six",
+       "Vandu"
+      ],
+      "Six",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "MCO, Xubaru"
+      ],
+      "PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Nmb",
+       "PichulaMc, Liberia, Verc"
+      ],
+      "Nmb",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "Six"
+      ],
+      "PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA",
+       "Nmb"
+      ],
+      "PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "PRAISERIZA",
+    "Campeón",
+    10000
+   ],
+   [
+    "Nmb",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Six",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tenor",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    1750
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Verc",
+    "Semifinal",
+    1750
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Scritura",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
+    "Octavos",
+    1250
+   ],
+   [
+    "Valdoza",
+    "Octavos",
+    1250
+   ],
+   [
+    "Xubaru",
+    "Cuartos",
+    1250
+   ],
+   [
+    "yinn",
+    "Octavos",
+    1250
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    625
+   ],
+   [
+    "Revo",
+    "Octavos",
+    625
+   ],
+   [
+    "Teo",
+    "Octavos",
+    625
+   ],
+   [
+    "will🇻🇪",
+    "Octavos",
+    625
+   ],
+   [
+    "Adriagner",
+    "Octavos",
+    416
+   ],
+   [
+    "Chop",
+    "Octavos",
+    416
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    416
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    416
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    416
+   ],
+   [
+    "NXUZ",
+    "Octavos",
+    416
+   ]
+  ]
  }
 }

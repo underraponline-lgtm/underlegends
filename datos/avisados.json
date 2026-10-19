@@ -5081,7 +5081,7 @@
    "Xclusivo": 10
   },
   "fecha": "09/10",
-  "firma": "00270e50fd4d2697",
+  "firma": "79dda9cd9e92cf98",
   "msg": "1558334120172462091",
   "nombre": "PROYECTO X VOL.2",
   "num": 440,
@@ -5811,7 +5811,7 @@
    "PichulaMc": 27
   },
   "fecha": "10/10",
-  "firma": "07ce10e25d48d2e0",
+  "firma": "cb87b49a9e2ef174",
   "msg": "1558643633110917121",
   "nombre": "(sin titulo)",
   "num": 444,
@@ -6117,7 +6117,7 @@
    "Spartan": 1
   },
   "fecha": "10/10",
-  "firma": "58314cff680ff637",
+  "firma": "d041a752e7b6708c",
   "msg": "1558711595163590740",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
   "num": 446,
@@ -10528,7 +10528,7 @@
    "Tenor": 3
   },
   "fecha": "13/10",
-  "firma": "26828bcf7d111d25",
+  "firma": "90031c79a1aeabdf",
   "msg": "1559459229411057705",
   "nombre": "QCYO RAPEEN",
   "num": 465,
@@ -10954,7 +10954,7 @@
    "Verc": 8
   },
   "fecha": "13/10",
-  "firma": "2ef31409440a57d4",
+  "firma": "c155f26ac3ddb872",
   "msg": "1559705366705475605",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL5 __",
   "num": 467,
@@ -11298,7 +11298,7 @@
    "Zignos": 20
   },
   "fecha": "13/10",
-  "firma": "ea73c86a76d1a825",
+  "firma": "f584dbc66b93c327",
   "msg": "1559752028111114252",
   "nombre": "DEM UZBEKISTAN FECHA 2",
   "num": 468,
@@ -13980,7 +13980,7 @@
    "Vandu": 22
   },
   "fecha": "16/10",
-  "firma": "b92bc4bd7697d12f",
+  "firma": "ca70810edd45f503",
   "msg": "1560779869497983097",
   "nombre": "PRADERAP VOL.1",
   "num": 479,
@@ -14706,7 +14706,7 @@
    "Panchok": 15
   },
   "fecha": "17/10",
-  "firma": "465d2d70012ddc88",
+  "firma": "65bf02df03ba757d",
   "msg": "1561153562665558208",
   "nombre": "MUNDIALITO",
   "num": 482,
@@ -16382,6 +16382,361 @@
     "Magic",
     "R32",
     312
+   ]
+  ],
+  "v": 2
+ },
+ "490": {
+  "antes": {
+   "Adriagner": [
+    84,
+    117,
+    false
+   ],
+   "Chop": [
+    196,
+    37,
+    true
+   ],
+   "Dominick": [
+    203,
+    60,
+    true
+   ],
+   "Drexx": [
+    32,
+    42,
+    false
+   ],
+   "Liberia": [
+    9,
+    10,
+    false
+   ],
+   "MCO": [
+    18,
+    21,
+    false
+   ],
+   "Majiztral": [
+    24,
+    28,
+    false
+   ],
+   "Makmah": [
+    3,
+    3,
+    false
+   ],
+   "Miniboy": [
+    35,
+    46,
+    false
+   ],
+   "NXUZ": [
+    31,
+    41,
+    false
+   ],
+   "PRAISERIZA": [
+    189,
+    4,
+    true
+   ],
+   "PichulaMc": [
+    8,
+    9,
+    false
+   ],
+   "Scritura": [
+    123,
+    223,
+    false
+   ],
+   "Six": [
+    12,
+    13,
+    false
+   ],
+   "Tenor": [
+    50,
+    69,
+    false
+   ],
+   "Teo": [
+    72,
+    96,
+    false
+   ],
+   "Trot": [
+    26,
+    33,
+    false
+   ],
+   "Valdoza": [
+    219,
+    111,
+    true
+   ],
+   "Vandu": [
+    15,
+    16,
+    false
+   ],
+   "Verc": [
+    7,
+    8,
+    false
+   ],
+   "Xubaru": [
+    25,
+    32,
+    false
+   ],
+   "yinn": [
+    191,
+    20,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "PichulaMc, Liberia, Verc",
+    "yinn",
+    "PichulaMc, Liberia, Verc"
+   ],
+   [
+    "Makmah",
+    "Scritura",
+    "Makmah"
+   ],
+   [
+    "Tenor",
+    "Valdoza",
+    "Tenor"
+   ],
+   [
+    "Nmb",
+    "Revo, will🇻🇪",
+    "Nmb"
+   ],
+   [
+    "Six",
+    "Trot",
+    "Six"
+   ],
+   [
+    "Vandu",
+    "Teo, Majiztral",
+    "Vandu"
+   ],
+   [
+    "PRAISERIZA",
+    "Drexx, NXUZ, Miniboy",
+    "PRAISERIZA"
+   ],
+   [
+    "MCO, Xubaru",
+    "Chop, Dominick, Adriagner",
+    "MCO, Xubaru"
+   ],
+   [
+    "PichulaMc, Liberia, Verc",
+    "Makmah",
+    "PichulaMc, Liberia, Verc"
+   ],
+   [
+    "Nmb",
+    "Tenor",
+    "Nmb"
+   ],
+   [
+    "Six",
+    "Vandu",
+    "Six"
+   ],
+   [
+    "PRAISERIZA",
+    "MCO, Xubaru",
+    "PRAISERIZA"
+   ],
+   [
+    "Nmb",
+    "PichulaMc, Liberia, Verc",
+    "Nmb"
+   ],
+   [
+    "PRAISERIZA",
+    "Six",
+    "PRAISERIZA"
+   ],
+   [
+    "PRAISERIZA",
+    "Nmb",
+    "PRAISERIZA"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 3,
+   "Chop": 14,
+   "Dominick": 11,
+   "Drexx": 16,
+   "Liberia": 15,
+   "MCO": 16,
+   "Majiztral": 19,
+   "Makmah": 54,
+   "Miniboy": 15,
+   "NXUZ": 13,
+   "PRAISERIZA": 12,
+   "PichulaMc": 35,
+   "Scritura": 2,
+   "Six": 22,
+   "Tenor": 6,
+   "Teo": 10,
+   "Trot": 22,
+   "Valdoza": 7,
+   "Vandu": 26,
+   "Verc": 17,
+   "Xubaru": 11,
+   "yinn": 20
+  },
+  "fecha": "19/10",
+  "firma": "a49d86f8022480f3",
+  "msg": "1561870034760892509",
+  "nombre": "LA REDENCIÓN",
+  "num": 490,
+  "participantes": 25,
+  "sello": {
+   "PRAISERIZA": ""
+  },
+  "sv": "FFA",
+  "t": "2026-10-19T22:54:21Z",
+  "tabla": [
+   [
+    "PRAISERIZA",
+    "Campeón",
+    10000
+   ],
+   [
+    "Nmb",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Six",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Tenor",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Verc",
+    "Semifinal",
+    1750
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Xubaru",
+    "Cuartos",
+    1250
+   ],
+   [
+    "yinn",
+    "Octavos",
+    1250
+   ],
+   [
+    "Scritura",
+    "Octavos",
+    1250
+   ],
+   [
+    "Valdoza",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
+    "Octavos",
+    1250
+   ],
+   [
+    "Revo",
+    "Octavos",
+    625
+   ],
+   [
+    "will🇻🇪",
+    "Octavos",
+    625
+   ],
+   [
+    "Teo",
+    "Octavos",
+    625
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    625
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    416
+   ],
+   [
+    "NXUZ",
+    "Octavos",
+    416
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    416
+   ],
+   [
+    "Chop",
+    "Octavos",
+    416
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    416
+   ],
+   [
+    "Adriagner",
+    "Octavos",
+    416
    ]
   ],
   "v": 2

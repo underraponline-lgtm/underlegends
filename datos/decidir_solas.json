@@ -1352,6 +1352,33 @@
      "1506335168699301939"
     ]
    }
+  },
+  {
+   "id": "ac261e254f",
+   "tipo": "Nombre desconocido",
+   "sec": "LA REDENCIÓN · FFA · 19/10 · #490",
+   "que": "¿Quién es «will🇻🇪»?",
+   "r": "Es Agente sombra",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Agente sombra: estaba en la llamada del evento con ese nombre",
+   "t": 1792450920227,
+   "filas": [
+    758
+   ],
+   "variantes": [
+    "will🇻🇪"
+   ],
+   "escribio": {
+    "alias": [
+     "will",
+     "Agente sombra"
+    ],
+    "filas": [
+     297
+    ]
+   }
   }
  ],
  "deshechas": []

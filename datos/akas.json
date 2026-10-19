@@ -290,6 +290,7 @@
   "natsuki": "Catarsis",
   "joba": "Jobaking",
   "mosquitorap": "Mosquitrap 🦟",
+  "will": "Agente sombra",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1495,6 +1496,10 @@
   [
    "MOSQUITORAP",
    "Mosquitrap 🦟"
+  ],
+  [
+   "will",
+   "Agente sombra"
   ],
   [
    "Nexus",
