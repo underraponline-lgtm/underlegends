@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "3.62",
+   "dia": "2026-10-19",
+   "cuando": "2026-10-19T03:50:00-04:00",
+   "titulo": "La bienvenida",
+   "items": [
+    "🎮 Si es tu primera vez en la página, te recibe una **pantalla de bienvenida**: te unís a la Liga con tu cuenta de Discord en un toque, te verificás ahí mismo y te mostramos dónde está cada cosa. Si preferís mirar primero, «En otro momento».",
+    "🔔 Con la campana activada, la página ya no te pide que la actives.",
+    "🃏 Las cartas cargan más livianas también en **Tarjetas**, los perfiles y las historias.",
+    "⚡ La página arranca más rápido: cada sección trae su diseño cuando la abrís, no todo de entrada."
+   ]
+  },
+  {
    "version": "3.61",
    "dia": "2026-10-19",
    "cuando": "2026-10-19T03:00:00-04:00",
