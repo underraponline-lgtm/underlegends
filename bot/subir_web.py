@@ -692,6 +692,10 @@ def armar():
         'crews': _crews(),
         # 🏆 los tiers de las crews (19/10/2026, `bot/crews_tiers.py`): las reglas, y de cada una su tier y su semana
         'crews_tiers': _crews_tiers(),
+        # 🏷️ el TAG que hoy muestra cada carta de cada uno, para «los tuyos» del catálogo de la Guía (`sheet/catalogo_tags.py`).
+        # ⚠️ NO VIAJA EN EL LOBBY: `main()` lo sube aparte, a `web:tags` (`/api/tags`), y la Guía lo pide al abrirse. En
+        # el lobby lo pasaba de su tope (49,2 KB comprimido contra 50)
+        '_tags': _tags_de(),
         'records': _records(gente, regs, _comp),
         # 🔑 MOST WANTED: el tablero del período, los cazadores de la temporada
         # y qué se cazó en cada llave. Ver `_mw()` y `bot/most_wanted.py`.
@@ -2897,6 +2901,21 @@ def _rachas(gente, tope=8):
     return con[:tope]
 
 
+#: 🏷️ la KV de los TAGs de cada uno (`/api/tags`), aparte del lobby
+CLAVE_TAGS = 'web:tags'
+
+
+def _tags_de():
+    """🏷️ `{clave: [temporada, competitivo, servidor, país]}` (el lugar de cada TAG en el catálogo), o `None`. Nunca
+    frena el lobby."""
+    try:
+        import catalogo_tags as _CAT
+        return _CAT.para_web(_CAT.de_cada_uno()) or None
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ los TAGs de cada uno no entran al lobby: %s' % str(e)[:120])
+        return None
+
+
 def _crews_tiers():
     """🏆 Lo de `bot/crews_tiers.para_web()`, o `None` si todavía no hay. Nunca frena el lobby."""
     try:
@@ -3727,6 +3746,7 @@ def _self_check():
     todas = p.pop('_llaves', None)
     # 🏟️ el detalle de las ligas tampoco viaja en el lobby (14/10/2026): las fechas van a `ligas.CLAVE_WEB`
     _lgd = p.pop('_ligas', None)
+    p.pop('_tags', None)
     ok(not any('fechas' in x for x in ((p.get('ligas') or {}).get('ligas') or []))
        and (_lgd is None) == (p.get('ligas') is None),
        'las fechas de cada liga no viajan en el lobby: van aparte, a `web:ligas`')
@@ -4018,6 +4038,7 @@ def main():
     perf = p.pop('_perfiles', None) or {}
     todas = p.pop('_llaves', None) or {}
     ligas_det = p.pop('_ligas', None)
+    tags_det = p.pop('_tags', None)
     redes_ok = _con_redes(perf) is not None
     print('\n══ LO QUE VA A LA WEB ══\n')
     print('   temporada %s · %d en el padrón del pool' % (p['temporada'],
@@ -4096,6 +4117,11 @@ def main():
                              if ok9 else '🔴 no pude subir el detalle de las ligas'))
     except Exception as e:                               # noqa: BLE001
         print('   🔴 las ligas: %s' % str(e)[:80])
+    # 🏷️ LOS TAGS DE CADA UNO, aparte del lobby (`_tags_de()`): sólo si cambió, que es cuando alguien cambia de TAG
+    if tags_det:
+        okt = subir({'de': tags_det}, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_TAGS)
+        print('   %s' % ('✓ los TAGs de cada uno: igual' if okt is None else '✅ los TAGs de cada uno, subidos'
+                         if okt else '🔴 no pude subir los TAGs de cada uno'))
     # 🔑 LOS PERFILES, CON EL MISMO DIFF-WRITER: cambian cuando entra una
     # llave, no en cada corrida. Si fallan, el lobby ya está arriba.
     ok2 = None

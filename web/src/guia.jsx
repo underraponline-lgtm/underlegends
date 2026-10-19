@@ -6,7 +6,8 @@
 // `comun/rangos.py`, los puntos de `Config` y los pesos de `sheet/ovr.py` y `sheet/competitivo.py` (`_guia()` de
 // bot/subir_web.py). Acá no se escribe ninguno. Lo que es texto —las palabras, las preguntas— es el de la Guía de
 // app.js (index.html), ordenado por tema.
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
+import TAGS from './tags_catalogo.json';
 import { num } from './liga.js';
 import { Carta, Medalla, PUESTO_MEDALLA } from './piezas.jsx';
 import * as RQ from './requisitos.js';
@@ -29,7 +30,7 @@ const pideLargo = (p) => {
 };
 
 const SECCIONES = [
-  ['empezar', 'Cómo empezar'], ['tarjetas', 'Tarjetas'], ['puntos', 'Puntos'], ['rangos', 'Rangos'],
+  ['empezar', 'Cómo empezar'], ['tarjetas', 'Tarjetas'], ['tags', 'Los TAG'], ['puntos', 'Puntos'], ['rangos', 'Rangos'],
   ['mw', 'Most Wanted'], ['semana', 'La semana'], ['palabras', 'Palabras'], ['preguntas', 'Preguntas'],
 ];
 
@@ -99,6 +100,54 @@ const Lista = ({ xs }) => (
   <dl className="gu-glos">{xs.map(([t, d]) => <div key={t}><dt>{t}</dt><dd>{d}</dd></div>)}</dl>
 );
 
+// 🏷️ LOS TAG DE LAS TARJETAS (Dlx, 19/10/2026, «me gusta todo», a «un catálogo de TAGs en la Guía… cuáles hay, qué
+// pide cada uno y cuáles tenés vos»). El catálogo es `tags_catalogo.json`, la copia de `sheet/catalogo_tags.py` (CI la
+// compara contra las cuatro cascadas de verdad); cuál tiene cada uno lo trae `/api/tags` al abrir la Guía, y de ahí
+// sale también cuánta gente tiene cada uno: lo raro se ve raro
+const CARTAS_TAG = [['temporada', 'Temporada'], ['competitivo', 'Competitiva'], ['servidor', 'Servidor'], ['pais', 'País']];
+function TagsCatalogo({ liga }) {
+  const [cual, setCual] = useState('temporada');
+  const [de, setDe] = useState(null);
+  useEffect(() => {
+    let vivo = true;
+    fetch('/api/tags', { headers: { accept: 'application/json' } }).then((r) => (r.ok ? r.json() : null))
+      // sin respuesta, sin números: «0 lo tienen» diría algo que no se sabe
+      .then((d) => { if (vivo) setDe((d && d.de) || null); }).catch(() => { if (vivo) setDe(null); });
+    return () => { vivo = false; };
+  }, []);
+  const col = CARTAS_TAG.findIndex(([c]) => c === cual);
+  const lista = (TAGS.cat || {})[cual] || [];
+  const cuantos = lista.map(() => 0);
+  Object.values(de || {}).forEach((v) => { const i = (v || [])[col]; if (i >= 0 && i < cuantos.length) cuantos[i] += 1; });
+  const yo = liga.yo && de ? (de[liga.yo.k] || null) : null;
+  const mios = yo ? CARTAS_TAG.map(([c, n], j) => [n, yo[j] >= 0 ? ((TAGS.cat[c] || [])[yo[j]] || [])[0] : '']).filter((x) => x[1]) : [];
+  return (
+    <>
+      {mios.length ? (
+        <div className="gu-tags-tuyos"><b>Los tuyos hoy</b>{mios.map(([n, t]) => <span key={n}><small>{n}</small>{t.replace('%d', '')}</span>)}</div>
+      ) : null}
+      <div className="gu-tabs" role="tablist" aria-label="Los TAG de cada tarjeta">
+        {CARTAS_TAG.map(([c, n]) => (
+          <button key={c} type="button" role="tab" aria-selected={c === cual} className={c === cual ? 'on' : ''} onClick={() => setCual(c)}>
+            {n}<small>{((TAGS.cat || {})[c] || []).length}</small></button>
+        ))}
+      </div>
+      <ul className="gu-tags">{lista.map(([t, nivel, pide], i) => {
+        const tuyo = yo && yo[col] === i;
+        return (
+          <li key={t} className={tuyo ? 'tuyo' : ''}>
+            {/* ⚠️ `gu-n1`… y no `t1`…: `.t3` de estilo.css es una grilla de tres columnas, y el TAG raro la heredaba */}
+            <span className={'gu-tag gu-n' + String(nivel).slice(1)}>{t.replace(' x%d', ' ×N').replace('%d', 'N')}</span>
+            <span className="gu-tag-p">{pide}<small>{(TAGS.niveles || {})[nivel] || ''}{de ? ' · ' + (cuantos[i] === 1 ? '1 lo tiene' : cuantos[i] + ' lo tienen') : ''}
+              {tuyo ? ' · el tuyo' : ''}</small></span>
+          </li>
+        );
+      })}</ul>
+      <p className="gu-nota">Cada tarjeta muestra uno solo: el primero de la lista que cumplís. El mismo hecho no sale en dos tarjetas tuyas.</p>
+    </>
+  );
+}
+
 function Seccion({ id, titulo, bajada, children }) {
   return (
     <section className="gu-sec" id={'gu-' + id} aria-labelledby={'gu-t-' + id}>
@@ -165,6 +214,9 @@ export function Guia({ liga, dc }) {
             </div>
           </Seccion>
         ) : null}
+        <Seccion id="tags" titulo="Los TAG de las tarjetas" bajada="El cartelito de abajo de cada tarjeta. Hay de cuatro niveles —legendario, épico, raro y común— y cada uno pide algo.">
+          <TagsCatalogo liga={liga} />
+        </Seccion>
         {escs.length ? (
           <Seccion id="puntos" titulo="Cuántos puntos da cada puesto" bajada="Depende de cuánta gente juega la llave: ganar una de 16 vale más que ganar una de 6.">
             <div className="gu-tabla">

@@ -3,6 +3,28 @@
    y postcss). Lo inyecta `usarCss()` (web/src/css.js) cuando ese pedazo se baja. ⚠️ Una clase nueva de esta página va
    acá; si la usa también otra página o el Inicio, va en vivo.css. */
 .gu-sec{display:grid;gap:12px;padding-top:26px}
+/* 🏷️ el catálogo de los TAG: las pestañas de cada tarjeta, y cada TAG con el color de su nivel (los de las cartas:
+   dorado, púrpura, azul y gris). No son colores de rango ni de servidor: ésos vienen del payload */
+.gu-tabs{display:flex;flex-wrap:wrap;gap:8px}
+.gu-tabs button{display:inline-flex;align-items:baseline;gap:6px;min-height:40px;padding:0 12px;border:2px solid var(--linea);border-radius:4px;
+  background:var(--caja);color:var(--tinta);font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.gu-tabs button small{font-weight:700;color:var(--gris)}
+.gu-tabs button.on{border-color:var(--magenta);box-shadow:inset 0 -3px 0 var(--magenta)}
+.gu-tags{display:grid;gap:0;margin:0;padding:0;list-style:none}
+.gu-tags li{display:grid;grid-template-columns:minmax(0,15em) minmax(0,1fr);gap:4px 14px;align-items:center;padding:9px 0;border-bottom:1px solid var(--suave)}
+.gu-tags li.tuyo{background:var(--caja);box-shadow:inset 4px 0 0 var(--verde);padding-left:10px}
+.gu-tag{justify-self:start;padding:5px 10px;border-radius:4px;font:800 13px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:#0a0a0d}
+.gu-tag.gu-n1{background:#E8B923}
+.gu-tag.gu-n2{background:#B48CFF}
+.gu-tag.gu-n3{background:#7FB8FF}
+.gu-tag.gu-n4{background:#C9C9CE}
+.gu-tag-p{display:grid;gap:2px;font:500 14px/1.4 Archivo,sans-serif}
+.gu-tag-p small{font:700 12.5px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--gris)}
+.gu-tags-tuyos{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:10px 12px;border:2px solid var(--verde);background:var(--caja)}
+.gu-tags-tuyos b{font:800 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.gu-tags-tuyos span{display:inline-flex;align-items:baseline;gap:6px;font:700 14px/1 Archivo,sans-serif}
+.gu-tags-tuyos small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+@media (max-width:560px){.gu-tags li{grid-template-columns:minmax(0,1fr)}}
 .gu-baj{margin:0;max-width:66ch;font:500 15px/1.5 Archivo,sans-serif;color:var(--gris)}
 .gu-carta-c{display:block;width:84px;height:auto}
 .gu-sin{display:grid;place-items:center;height:118px;border:2px dashed var(--gris);font:900 22px/1 Archivo,sans-serif;color:var(--gris)}
