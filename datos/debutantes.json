@@ -262,10 +262,11 @@
    "vencido": false
   },
   "MALBORO": {
+   "avisado": "2026-10-19",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-19T04:19:55+00:00",
-   "did": "",
+   "did": "1220200835531935784",
    "evento": "FREESTYLE LEAGUE",
    "n": 487,
    "sv": "FFA",
@@ -431,6 +432,7 @@
    "vencido": false
   },
   "Senticide": {
+   "avisado": "2026-10-19",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-19T04:19:55+00:00",
