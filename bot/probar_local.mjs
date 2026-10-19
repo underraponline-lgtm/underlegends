@@ -1599,6 +1599,44 @@ console.log('\nMI CUENTA CON DISCORD\n');
   delete PUESTO['d:555000111222333444'];
 }
 
+console.log('\nLOS ROLES VINCULADOS DE DISCORD\n');
+
+{
+  // 🔗 (19/10/2026) `/cuenta/rol` escribe los datos de la Liga en Discord con el permiso de la persona
+  const antes = globalThis.fetch;
+  const pk = KV_FALSO['p:konan'];
+  KV_FALSO['p:konan'] = JSON.stringify({ ...JSON.parse(pk), rg: 'A' });
+  PUESTO['d:555000111222333444'] = 'konan';
+  const puestos = [];
+  let estadoPut = 204;
+  globalThis.fetch = async (url, op = {}) => {
+    if (/\/role-connection$/.test(String(url))) {
+      puestos.push({ auth: (op.headers || {}).Authorization, b: JSON.parse(op.body) });
+      return new Response(estadoPut === 204 ? '{}' : '{"message":"x"}', { status: estadoPut === 204 ? 200 : estadoPut });
+    }
+    return comoDiscord(url, { id: '555000111222333444', username: 'konan_' });
+  };
+  const rol = async (token) => {
+    const r = await worker.fetch(new Request('https://x/cuenta/rol', { method: 'POST', body: JSON.stringify({ token }) }), env, ctx);
+    return { status: r.status, json: JSON.parse(await r.text()) };
+  };
+  let r = await rol('permisoBueno1234567890');
+  const p0 = puestos[0] || { b: {} };
+  ok('vincular escribe en Discord, con el permiso de la persona, su rango (A = 5), sus eventos y que está verificada',
+     r.status === 200 && r.json.ok && p0.auth === 'Bearer permisoBueno1234567890' && p0.b.platform_name === 'Liga Global'
+     && p0.b.platform_username === 'Konan' && p0.b.metadata.rango === '5' && p0.b.metadata.eventos === '95'
+     && p0.b.metadata.verificado === '1', JSON.stringify([r.json, p0.b]));
+  estadoPut = 403;
+  r = await rol('permisoBueno1234567890');
+  ok('sin el permiso de los roles vinculados, la página sabe que tiene que pedirlo', r.status === 403 && r.json.error === 'permiso');
+  globalThis.fetch = async (url) => comoDiscord(url, { id: '555000111222333444', username: 'konan_' }, '999999999999999999');
+  r = await rol('permisoAjeno1234567890');
+  ok('y un permiso de otra app no escribe nada', r.status === 401);
+  globalThis.fetch = antes;
+  KV_FALSO['p:konan'] = pk;
+  delete PUESTO['d:555000111222333444'];
+}
+
 console.log('\nEL PROXY DE PAGES DEJA PASAR TODO LO QUE LA PÁGINA PIDE\n');
 
 // 🔴 EL 25/09/2026 LAS TRES RUTAS NUEVAS DE «MI CUENTA» ANDABAN ACÁ Y NO EN LA

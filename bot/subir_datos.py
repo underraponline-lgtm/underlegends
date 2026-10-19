@@ -646,6 +646,16 @@ def armar():
                           if c.startswith('sv-')
                           and (not svs or c[3:].upper() in svs)),
         }
+        # 🔗 LA LETRA DEL RANGO, para los roles vinculados de Discord (19/10/2026, `cuentaRol()` en worker.js): de
+        # `comun.rangos.letra_de()`, el único lugar que la calcula —con la puerta de 10 eventos—. Sólo quien la tiene:
+        # escribirla en el Worker sería el sexto lugar donde vive el rango
+        try:
+            from comun.rangos import letra_de as _letra
+            _rg = _letra(x['raw'])
+            if _rg:
+                valor['rg'] = _rg
+        except Exception:                                # noqa: BLE001
+            pass
         # 🔑 LAS LIBRES: sin el portón, sólo la Temporada y la Servidor. `nv`
         # le dice al Worker que la Competitiva y la de País no le faltan por
         # jugar sino por verificarse.

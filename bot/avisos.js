@@ -5746,6 +5746,8 @@ export class Avisos {
         const r = d.cobrar === 'dia' ? this.cobrarDia(q) : this.rachaDe(q);
         return json(Object.assign(r, { bienvenida: await this.bienvenidaDe(q) }));
       }
+      // 🔗 lo del Pase para los roles vinculados (worker.js, `cuentaRol()`): sólo el nivel
+      if (ruta === '/rol-datos') return json(this.rolDatos(d));
       if (ruta === '/pase') {
         if (!/^[0-9]{5,25}$/.test(String(d.quien || ''))) return json({ error: 'falta quién' }, 400);
         return json(this.paseDe(String(d.quien)));
@@ -10766,6 +10768,14 @@ export class Avisos {
   }
 
   /** El nivel de alguien en el Pase de la temporada */
+  /** 🔗 El nivel del Pase de alguien, para los roles vinculados de Discord (0 si no es miembro o no hay Pase). */
+  rolDatos(d) {
+    const quien = String((d && d.quien) || '');
+    if (!/^[0-9]{5,25}$/.test(quien)) return { error: 'datos' };
+    const P = this.paseDatos();
+    return { nivel: P.cfg && P.miembros.has(quien) ? this.paseNivel(quien, P.cfg) : 0 };
+  }
+
   paseNivel(quien, cfg) {
     return nivelDeXP(cfg, this.paseXP(quien, cfg));
   }

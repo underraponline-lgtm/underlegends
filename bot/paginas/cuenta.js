@@ -381,6 +381,9 @@ function volverDeDiscord() {
   // quien vino a vincular sus avisos vuelve a la campana; quien vino a poner
   // un precio, adonde lo tocó (la tienda o un perfil)
   var modo0 = String(q.state || '').charAt(0), pp = null;
+  // 🔗 LOS ROLES VINCULADOS (19/10/2026): Discord vuelve acá —es la dirección registrada— y el trámite sigue en su
+  // página, con lo que trajo (el permiso o el error)
+  if (modo0 === 'l') { location.replace('/vincular/' + location.hash); return; }
   if (modo0 === 't') {
     try { pp = JSON.parse(sessionStorage.getItem('lg:precio') || 'null'); } catch (e) { pp = null; }
   }

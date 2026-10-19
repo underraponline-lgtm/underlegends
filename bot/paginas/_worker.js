@@ -161,6 +161,8 @@ const CUENTA = {
   '/api/cuenta/salir': '/cuenta/salir',
   // 🔑 verificarse desde la página, entrando a DRA (01/10/2026)
   '/api/cuenta/verificar': '/cuenta/verificar',
+  // 🔗 los roles vinculados de Discord (19/10/2026, `bot/paginas/vincular/`)
+  '/api/cuenta/rol': '/cuenta/rol',
 };
 
 // 🔑 LA SESIÓN (28/09/2026): entrar con Discord una vez. La cookie `lg_ses`

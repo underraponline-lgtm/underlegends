@@ -37,7 +37,7 @@
 // Object— y porque Node los prueba sin levantar el Worker entero. Ver
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
-import { anotarUso, DUENO, NIVELES_CHAT, claveMedida, claveFoto, claveCiclo } from './avisos.js';
+import { anotarUso, DUENO, NIVELES_CHAT, claveMedida, claveFoto, claveCiclo, APP_ID } from './avisos.js';
 import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva,
   sesionFin, cookieSesion, SESION_DIAS } from './avisos.js';
 // 🛡️ el anti-raid (18/10/2026): `/antiraid` y sus botones. La vuelta de cada minuto vive en el objeto (avisos.js)
@@ -1435,6 +1435,58 @@ async function cuentaDiscord(req, env) {
   } catch (e) { rapero = ''; yo = {}; }
   return new Response(JSON.stringify(Object.assign({ id: u.id, n: u.global_name || u.username || '',
     av: u.avatar ? u.id + '/' + u.avatar : '', rapero }, rapero ? yo : {})), { headers: h });
+}
+
+// ── 🔗 Los roles vinculados de Discord ─────────────────────────────────────
+// 🔑 Dlx, 19/10/2026: «dale», a «los roles vinculados (Linked Roles): el rango de la Liga en el perfil de Discord». Un
+// servidor arma un rol con requisitos —«Rango de la Liga ≥ 5», «Verificado en la Liga»— y Discord se lo da a quien
+// cumple. Discord abre `/vincular` (`bot/paginas/vincular/`), la página pide el permiso `role_connections.write` y
+// esto escribe los datos de la Liga de esa persona con SU permiso. Los datos que se pueden pedir los registra
+// `bot/roles_vinculados.py` (una vez, con el bot).
+//
+// ⚠️ SIN GUARDAR NINGÚN PERMISO, como entrar con Discord: se usa y se tira. Por eso los datos se actualizan cuando la
+// persona vuelve a `/vincular` (Discord no deja escribirlos sin un permiso suyo), y la página lo dice.
+// ⚠️ LA LETRA LA CALCULA EL CICLO (`rg` del registro, de `comun.rangos.letra_de()`): acá sólo se ordena. Escribir los
+// umbrales en el Worker sería el sexto lugar donde vive el rango.
+const ORDEN_RG = ['E', 'D', 'C', 'B', 'A', 'S', 'SS', 'SSS'];
+export async function cuentaRol(req, env) {
+  const h = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
+  const json = (o, status) => new Response(JSON.stringify(o), { status: status || 200, headers: h });
+  let d = null;
+  try { d = await req.json(); } catch (e) { d = null; }
+  const t = String((d && d.token) || '');
+  const q = await discordDe(t);
+  if (q.error === 'ocupado') return json({ error: 'discord_ocupado' }, 503);
+  if (!q.u) return json({ error: 'discord' }, 401);
+  const u = q.u;
+  let rapero = '', ev = 0, rg = '', verif = false;
+  try {
+    const clave = await env.KV.get('d:' + u.id);
+    if (clave) {
+      verif = true;
+      const p = JSON.parse((await leerP(env, clave)) || '{}');
+      rapero = p.n || '';
+      ev = Number(p.ev) || 0;
+      rg = ORDEN_RG.includes(p.rg) ? p.rg : '';
+    }
+  } catch (e) { /* sin sus datos: sale como no verificado */ }
+  let nivel = 0;
+  if (env.AVISOS) {
+    try {
+      const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/rol-datos', {
+        method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ quien: u.id }) });
+      nivel = Number(((await r.json()) || {}).nivel) || 0;
+    } catch (e) { nivel = 0; }
+  }
+  const datos = { rango: rg ? ORDEN_RG.indexOf(rg) + 1 : 0, eventos: ev, nivel, verificado: verif ? 1 : 0 };
+  const r = await fetch(`${DC_API}/users/@me/applications/${APP_ID}/role-connection`, {
+    method: 'PUT', headers: { Authorization: 'Bearer ' + t, 'content-type': 'application/json' },
+    body: JSON.stringify({ platform_name: 'Liga Global', platform_username: String(rapero || u.global_name || u.username || '').slice(0, 100),
+      metadata: Object.fromEntries(Object.entries(datos).map(([k, v]) => [k, String(v)])) }) });
+  // sin el permiso de escribir los roles vinculados (se entró sólo con «identify»): la página lo vuelve a pedir
+  if (r.status === 401 || r.status === 403) return json({ error: 'permiso' }, 403);
+  if (!r.ok) return json({ error: 'discord', estado: r.status }, 502);
+  return json({ ok: true, rapero, rango: rg, eventos: ev, nivel, verificado: verif });
 }
 
 // ── Verificarse desde la página ───────────────────────────────────────────
@@ -4085,6 +4137,8 @@ export default {
     if (camino === '/cuenta/foto' && req.method === 'POST') return cuentaFoto(req, env);
     // 🔑 verificarse desde la página, entrando a DRA (01/10/2026)
     if (camino === '/cuenta/verificar' && req.method === 'POST') return cuentaVerificar(req, env, ctx);
+    // 🔗 los roles vinculados de Discord (19/10/2026)
+    if (camino === '/cuenta/rol' && req.method === 'POST') return cuentaRol(req, env);
 
     if (req.method === 'GET') {
       const ruta = camino;

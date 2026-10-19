@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Vincular con Discord · Liga Global</title>
+<link rel="icon" href="/ul-192.png">
+<!-- 🔗 LOS ROLES VINCULADOS DE DISCORD (Dlx, 19/10/2026: «dale»). Discord abre esta página desde «Vincular» en los
+     requisitos de un rol; acá se pide el permiso de escribir los datos de la Liga (`role_connections.write`) y el Worker
+     los escribe (`cuentaRol()` en bot/worker.js). El permiso se usa y se tira: para actualizar tu rango, se vuelve acá.
+     ⚠️ Discord vuelve a la raíz —la única dirección registrada— y `cuenta.js` reenvía hasta acá lo que trae. -->
+<style>
+:root{--fondo:#030304;--tinta:#F6F6F6;--suave:#9a9aa6;--mag:#E41373;--verde:#29B298;--caja:#111117;--borde:#26262f;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--fondo);color:var(--tinta)}
+body{font:500 16px/1.5 Archivo,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;display:grid;place-items:center;padding:24px 16px}
+main{width:100%;max-width:440px;display:grid;gap:18px;justify-items:center;text-align:center}
+img.logo{width:72px;height:72px}
+h1{margin:0;font:900 24px/1.15 Archivo,system-ui,sans-serif;letter-spacing:.01em;text-wrap:balance}
+p{margin:0;color:var(--suave);text-wrap:pretty}
+.datos{list-style:none;margin:0;padding:0;width:100%;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.datos li{background:var(--caja);border:1px solid var(--borde);padding:12px 10px;display:grid;gap:2px}
+.datos b{font:900 26px/1 Archivo,system-ui,sans-serif;color:var(--tinta);font-variant-numeric:tabular-nums}
+.datos span{font:700 12px/1.2 Archivo,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--suave)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+a.btn,button.btn{display:inline-block;padding:12px 18px;border:0;background:var(--mag);color:#fff;font:800 15px/1 Archivo,system-ui,sans-serif;text-decoration:none;cursor:pointer}
+a.btn.borde,button.btn.borde{background:none;border:2px solid var(--borde);color:var(--tinta)}
+.ok{color:var(--verde)}
+small{color:var(--suave);font-size:13px}
+</style>
+</head>
+<body>
+<main id="m" aria-live="polite">
+  <img class="logo" src="/ul.png" alt="" width="72" height="72">
+  <h1>Conectando con Discord…</h1>
+  <p>Un segundo: Discord te va a pedir permiso para guardar tus datos de la Liga.</p>
+</main>
+<script>
+(function () {
+  var APP = '1550026808404217926';
+  var m = document.getElementById('m');
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  function pintar(titulo, texto, extra) {
+    m.innerHTML = '<img class="logo" src="/ul.png" alt="" width="72" height="72"><h1>' + titulo + '</h1>' +
+      (texto ? '<p>' + texto + '</p>' : '') + (extra || '');
+  }
+  function aDiscord(consentir) {
+    var st = 'l' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    try { sessionStorage.setItem('lg:estado', st); sessionStorage.setItem('lg:rol-intento', consentir ? 'consent' : 'none'); } catch (e) {}
+    location.replace('https://discord.com/oauth2/authorize?client_id=' + APP + '&response_type=token' +
+      '&redirect_uri=' + encodeURIComponent(location.origin + '/') +
+      '&scope=' + encodeURIComponent('identify role_connections.write') +
+      '&prompt=' + (consentir ? 'consent' : 'none') + '&state=' + encodeURIComponent(st));
+  }
+  var otraVez = '<div class="btns"><button type="button" class="btn" id="otra">Probar otra vez</button>' +
+    '<a class="btn borde" href="/freestyle-rap/">Ir a la Liga</a></div>';
+  function conBoton() { var b = document.getElementById('otra'); if (b) b.onclick = function () { aDiscord(true); }; }
+
+  var q = {};
+  location.hash.replace(/^#/, '').split('&').forEach(function (x) {
+    var i = x.indexOf('=');
+    try { if (i > 0) q[decodeURIComponent(x.slice(0, i))] = decodeURIComponent(x.slice(i + 1)); } catch (e) {}
+  });
+  try { history.replaceState(null, '', location.pathname); } catch (e) {}
+  var st = '', intento = '';
+  try { st = sessionStorage.getItem('lg:estado') || ''; intento = sessionStorage.getItem('lg:rol-intento') || ''; sessionStorage.removeItem('lg:estado'); } catch (e) {}
+
+  // sin nada: primero sin preguntar (si ya diste el permiso, es un rebote); si hace falta, Discord pregunta
+  if (!q.access_token && !q.error) { aDiscord(false); return; }
+  if (q.error) {
+    if (q.error !== 'access_denied' && intento !== 'consent') { aDiscord(true); return; }
+    pintar('No se vinculó', q.error === 'access_denied' ? 'Cancelaste el permiso en Discord. Sin él no podemos decirle a Discord tu rango.'
+      : 'Discord no dio el permiso. Probá otra vez en un rato.', otraVez);
+    conBoton();
+    return;
+  }
+  if (!st || q.state !== st) { pintar('No se vinculó', 'El permiso no era de esta página. Probá otra vez desde Discord.', otraVez); conBoton(); return; }
+
+  pintar('Guardando tus datos…', 'Le estamos diciendo a Discord tu rango de la Liga.');
+  fetch('/api/cuenta/rol', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token: q.access_token }) })
+    .then(function (r) { return r.json().then(function (j) { return { s: r.status, j: j || {} }; }); })
+    .then(function (x) {
+      var j = x.j;
+      if (x.s === 403 && j.error === 'permiso' && intento !== 'consent') { aDiscord(true); return; }
+      if (!j.ok) {
+        pintar('No se vinculó', j.error === 'discord_ocupado' ? 'Discord está ocupado: probá otra vez en un minuto.'
+          : 'Algo falló al hablar con Discord. Probá otra vez.', otraVez);
+        conBoton();
+        return;
+      }
+      var datos = '<ul class="datos">' +
+        '<li><b>' + esc(j.rango || '—') + '</b><span>Rango</span></li>' +
+        '<li><b>' + esc(j.eventos || 0) + '</b><span>Eventos</span></li>' +
+        '<li><b>' + esc(j.nivel || 0) + '</b><span>Nivel del Pase</span></li>' +
+        '<li><b class="' + (j.verificado ? 'ok' : '') + '">' + (j.verificado ? 'Sí' : 'No') + '</b><span>Verificado</span></li></ul>';
+      var nota = j.verificado
+        ? 'Volvé a Discord: los roles que piden esto se dan solos. <small>Si cambia tu rango, volvé a esta página para actualizarlo.</small>'
+        : 'Todavía no estás verificado en la Liga, así que Discord ve todo en cero. <a href="/freestyle-rap/cuenta/verificar" style="color:var(--tinta)">Verificate</a> y volvé acá.';
+      pintar('<span class="ok">Listo</span>' + (j.rapero ? ', ' + esc(j.rapero) : ''), nota,
+        datos + '<div class="btns"><a class="btn borde" href="/freestyle-rap/">Ir a la Liga</a></div>');
+    })
+    .catch(function () { pintar('No se vinculó', 'No pudimos llegar a la Liga. Revisá tu conexión y probá otra vez.', otraVez); conBoton(); });
+})();
+</script>
+</body>
+</html>
