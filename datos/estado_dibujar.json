@@ -1,70 +1,70 @@
 {
  "v": 1,
- "cuando": "2026-10-19T07:04:44Z",
+ "cuando": "2026-10-19T15:50:57Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 202.2,
+ "dur_s": 796.8,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 9.5
+   "s": 6.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.8
+   "s": 7.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.9
+   "s": 21.0
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 10 persona(s)",
+   "que": "tanda 1 de 3 · 40 persona(s)",
    "ok": true,
-   "s": 104.9
+   "s": 691.9
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.3
+   "s": 9.7
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 54.4
+   "s": 59.2
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "487",
-  "nombre": "FREESTYLE LEAGUE",
+  "n": "488",
+  "nombre": "FREESTYLE LEAGUE N3",
   "sv": "FFA",
   "dia": "2026-10-19"
  },
  "cuotas": {
   "kv": {
-   "write": 223,
-   "read": 23161
+   "write": 241,
+   "read": 25169
   },
   "objeto": {
-   "leidas": 1143792,
-   "escritas": 15902,
-   "pedidos": 3454
+   "leidas": 1684812,
+   "escritas": 19064,
+   "pedidos": 6200
   },
   "worker": {
-   "pedidos": 8129,
+   "pedidos": 8847,
    "errores": 0,
-   "sub": 8642,
-   "p50_ms": 1.33,
-   "p99_ms": 9.86
+   "sub": 9822,
+   "p50_ms": 1.29,
+   "p99_ms": 9.78
   },
   "r2": {
    "objetos": 4109,
