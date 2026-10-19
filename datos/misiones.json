@@ -1871,14 +1871,8 @@
      8,
      0
     ],
-    "Joba 🇨🇱": [
-     1,
-     32,
-     32,
-     0
-    ],
     "Jobaking": [
-     1,
+     2,
      16,
      16,
      0
@@ -2081,7 +2075,7 @@
      8,
      0
     ],
-    "Millonari-O🇵🇾": [
+    "Millonari-O": [
      1,
      32,
      32,
@@ -2567,6 +2561,7 @@
     "Imagy": 300,
     "JHEYSON": 300,
     "JJ": 1600,
+    "Jobaking": 300,
     "Joshema": 300,
     "Juasmio": 1600,
     "Jult": 300,
@@ -2731,6 +2726,7 @@
   "JHEYSON": 300,
   "JJ": 2900,
   "JOSHU": 2900,
+  "Jobaking": 300,
   "Joshema": 300,
   "Juasmio": 1900,
   "Jult": 600,

@@ -3250,28 +3250,14 @@
     }
    }
   },
-  "Joba 🇨🇱": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 1406,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "Jobaking": {
    "FFA": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 45,
     "pod": 0,
-    "pts": 1875,
+    "pts": 3983,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -4825,7 +4811,7 @@
     "racha": "0/0"
    }
   },
-  "Millonari-O🇵🇾": {
+  "Millonari-O": {
    "FFA": {
     "duelos": "",
     "ev": 1,

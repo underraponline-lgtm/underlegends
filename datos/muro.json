@@ -314,6 +314,10 @@
 "temporada"
 ]
 },
+"andres": {
+"rg": "C",
+"c": []
+},
 "nemi": {
 "rg": "E",
 "c": [
@@ -321,10 +325,6 @@
 "servidor",
 "temporada"
 ]
-},
-"andres": {
-"rg": "C",
-"c": []
 },
 "lordviruzz": {
 "rg": "D",
@@ -956,11 +956,11 @@
 "temporada"
 ]
 },
-"betelguese": {
+"warap": {
 "rg": "",
 "c": []
 },
-"warap": {
+"betelguese": {
 "rg": "",
 "c": []
 },
