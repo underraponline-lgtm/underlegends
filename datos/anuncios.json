@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-19T16:55:09+00:00",
+ "cuando": "2026-10-19T17:25:04+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -443,7 +443,7 @@
    "categoria_id": "1468478330826260500"
   },
   {
-   "nombre": "nombre de la compe",
+   "nombre": "FREESTYLE LEAGUE N°3",
    "servidor": "FFA",
    "canal": "✦🏆—eventos",
    "msg_id": "1561621474832289803",
@@ -6188,6 +6188,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Sosa",
+   "quien": "sosaatrz",
+   "discord_id": "1471153954254622774",
+   "msg_id": "1561789942730981419",
+   "cuando": "2026-10-19T17:15:39"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "J.R🇵🇪",
+   "quien": "j.r_ga",
+   "discord_id": "855918964655783967",
+   "msg_id": "1561786677364523039",
+   "cuando": "2026-10-19T17:02:40"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",

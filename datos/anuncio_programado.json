@@ -6,7 +6,10 @@
    "_por": "Dlx, 19/10/2026: «publícalo tú automáticamente en la corrida de las 1pm», en DRA y en FFA, con el foco en cómo se crean las crews, y otro mensaje aparte que invite a crearlas",
    "desde": "2026-10-19T13:00:00-04:00",
    "hasta": "2026-10-19T22:00:00-04:00",
-   "servidores": ["DRA", "FFA"],
+   "servidores": [
+    "DRA",
+    "FFA"
+   ],
    "mensajes": [
     {
      "aqui": true,
@@ -64,5 +67,16 @@
    ]
   }
  ],
- "mandados": {}
+ "mandados": {
+  "3.64-crews": {
+   "DRA": {
+    "0": "1561793289487650818",
+    "1": "1561793293291884556"
+   },
+   "FFA": {
+    "0": "1561793296634871889",
+    "1": "1561793301101809855"
+   }
+  }
+ }
 }
