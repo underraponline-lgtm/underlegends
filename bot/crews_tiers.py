@@ -20,8 +20,10 @@ LAS REGLAS (los números, acá abajo)
   De a uno por semana, como un ascenso: llegar a Diamante pide un mes jugando.
 - **Subir pide gente, no sólo puntos** (lo que Dlx dejó para sugerir): para entrar a cada tier tienen que haber jugado
   esa semana al menos `JUEGAN[t]` de la crew —para Diamante, 4—. Una crew de uno que gana todo no es una crew.
-- **Cuenta quien ya estaba en la crew cuando arrancó la semana**: el que entra a mitad de semana suma desde la
-  siguiente. Si no, se fichan tres cracks el domingo y se sube el lunes.
+- **Cuentan todos los que están en la crew cuando cierra la semana**, con lo que hicieron esa semana. No hace falta
+  frenar los «fichajes del domingo»: quien deja una crew espera 7 días para entrar a otra (`bot/crews.js`), así que
+  nadie le suma la misma semana a dos crews. (Se probó al revés —sólo quien estaba al arrancar la semana— y dejaba a
+  toda crew nueva sin sumar su primera semana: la que se arma un martes no podía subir hasta dos lunes después.)
 - **La tarjeta de crew personalizable** se desbloquea en `TARJETA` (Diamante) y la aprueba un mod. Si la crew baja, la
   tarjeta deja de verse; si vuelve a subir, vuelve.
 
@@ -127,7 +129,7 @@ def cerrar(estado, vivas, sem_nueva, pts_nuevos):
     sem = estado.get('sem') or ''
     rk = (vivas or {}).get('ranking') or {}
     modo, n = rk.get('modo') or 'todos', int(rk.get('n') or 5)
-    desde = inicio_ms(sem) if sem else None
+    desde = None  # cuentan todos los que están al cerrar (ver arriba)
     tiers = estado.setdefault('tier', {})
     res, cambios = {}, []
     cuenta = bool(sem) and sem >= ARRANQUE
@@ -154,9 +156,7 @@ def actual(estado, vivas):
     """Cómo va la semana en curso de cada crew, para la página: `{id: [puntos, jugaron]}`."""
     rk = (vivas or {}).get('ranking') or {}
     modo, n = rk.get('modo') or 'todos', int(rk.get('n') or 5)
-    sem = estado.get('sem') or ''
-    desde = inicio_ms(sem) if sem else None
-    return {c.get('id'): list(de_la_semana(c, estado.get('pts') or {}, desde, modo, n)) for c in (vivas or {}).get('crews') or []}
+    return {c.get('id'): list(de_la_semana(c, estado.get('pts') or {}, None, modo, n)) for c in (vivas or {}).get('crews') or []}
 
 
 def paso(estado, div, vivas):
@@ -236,11 +236,12 @@ def _auto():
     cambios = paso(e, div('2026-10-19', {}), vivas)
     ok(not cambios and e['ult']['cuenta'] is False and e['tier'].get('A') == 0, 'la semana de antes del arranque no cuenta')
     paso(e, div('2026-10-19', {'a1': 9000, 'a2': 8000, 'b1': 1000, 'b2': 900000, 'c1': 0}), vivas)
-    ok(actual(e, vivas)['A'] == [17000, 2] and actual(e, vivas)['B'] == [1000, 1], 'la semana en curso, y el que entró tarde no suma')
+    ok(actual(e, vivas)['A'] == [17000, 2] and actual(e, vivas)['B'] == [901000, 2], 'la semana en curso, con todos los que están')
     cambios = paso(e, div('2026-10-26', {}), vivas)
-    ok(e['tier'] == {'A': 1, 'B': 0, 'C': 0} and cambios == [['2026-10-19', 'A', 0, 1, 17000]], 'al cerrar: A sube a Plata, B y C no')
+    ok(e['tier'] == {'A': 1, 'B': 1, 'C': 0} and ['2026-10-19', 'A', 0, 1, 17000] in cambios,
+       'al cerrar: A y B suben a Plata (el que entró a mitad de semana también suma), C no')
     paso(e, div('2026-11-02', {}), vivas)
-    ok(e['tier']['A'] == 0 and e['hist'][0][2:4] == [1, 0], 'una semana sin jugar, baja')
+    ok(e['tier']['A'] == 0 and e['tier']['B'] == 0 and e['hist'][0][2:4] == [1, 0], 'una semana sin jugar, baja')
     w = para_web(e, vivas)
     ok(w['crews']['A'][0] == 0 and w['nombres'][4] == 'Diamante' and w['colores'][0].startswith('#'), 'lo de la página')
     vivas['crews'].pop()

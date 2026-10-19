@@ -1328,6 +1328,13 @@ def _lo_barato(correr):
         paso('2c2', 'el aviso de cada evento, al día')
         if not corre(['bot/aviso_evento.py', '--al-dia', '--aplicar'], callado=False):
             print('      ⚠️ no pude poner al día los avisos: se reintenta en la próxima')
+        # ── 2c3 · el anuncio que sale solo a su hora ──────────────────────
+        # 🔑 Dlx, 19/10/2026: «publícalo tú automáticamente en la corrida de las 1pm». Lo que está en
+        # `datos/anuncio_programado.json`, en su ventana y una sola vez (anotado y mirando el canal antes). Después de 2c:
+        # la página ya tiene lo que el anuncio cuenta. Nunca frena el ciclo. Ver `bot/anuncio_programado.py`.
+        paso('2c3', 'el anuncio que sale solo a su hora')
+        if not corre(['bot/anuncio_programado.py', '--aplicar'], callado=False):
+            print('      ⚠️ el anuncio programado no salió: se reintenta en la próxima, dentro de su ventana')
 
         # 🔴 Y EL SITIO EN SI, QUE HASTA HOY NO SE DESPLEGABA SOLO.
         # Cloudflare Pages está conectado al repo **privado**, así que

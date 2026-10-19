@@ -1,0 +1,68 @@
+{
+ "_leeme": "Los anuncios que salen solos en una corrida del ciclo (bot/anuncio_programado.py, paso 2c3). Cada uno con su ventana, sus servidores y sus mensajes en orden; el primero con @here. Para frenar uno: \"pausado\": true. Lo mandado queda anotado en \"mandados\".",
+ "anuncios": [
+  {
+   "id": "3.64-crews",
+   "_por": "Dlx, 19/10/2026: «publícalo tú automáticamente en la corrida de las 1pm», en DRA y en FFA, con el foco en cómo se crean las crews, y otro mensaje aparte que invite a crearlas",
+   "desde": "2026-10-19T13:00:00-04:00",
+   "hasta": "2026-10-19T22:00:00-04:00",
+   "servidores": ["DRA", "FFA"],
+   "mensajes": [
+    {
+     "aqui": true,
+     "marca": "ACTUALIZACIÓN 3.64",
+     "lineas": [
+      "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
+      "# 🛠️ LIGA GLOBAL · ACTUALIZACIÓN 3.64",
+      "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
+      "",
+      "## 👥 Llegaron las CREWS",
+      "Armá tu crew, sumá a tu gente y compitan juntos en el ranking de crews. Hasta **20 por crew**, con rangos: **Líder · Colíder · Veterano · Miembro**. Si ya estabas en una de las crews de la Liga, seguís adentro.",
+      "",
+      "## 🛠️ Cómo se arma una",
+      "**1.** Entrá a 👉 https://underlegends.pages.dev/cuenta/crew con tu Discord (tenés que estar verificado en DRA)",
+      "**2.** Poné el **nombre**, la **sigla** (2 a 4 letras), el **logo** y una **descripción**",
+      "**3.** Elegí cómo se entra: **abierta**, **con pedido** o **sólo por invitación**",
+      "**4.** Cuesta **2.500 Puntos de Tienda**, y vos quedás de **Líder**",
+      "",
+      "⏳ **Tenés 1 semana para sumar 2 personas.** Si no llegan, la crew se borra sola.",
+      "🛡️ El logo pasa por un filtro automático: nada de desnudos, sangre, odio ni datos personales.",
+      "",
+      "## 🏆 Tiers, como en el fútbol",
+      "Bronce → Plata → Oro → Platino → **Diamante** → Maestro → Leyenda",
+      "Todas arrancan en Bronce. Cada **lunes a las 11 AM** (hora del este) tu crew **sube, baja o se mantiene** según los puntos que sumó su gente esa semana.",
+      "🎴 En **Diamante** se desbloquea **la tarjeta de tu crew**, personalizable por el Líder.",
+      "",
+      "## 🤖 También desde Discord",
+      "`/crew ver` · `/crew invitar` · `/crew unirme` · `/crew salir`",
+      "O tocá a alguien → **Apps** → **Invitar a mi crew**",
+      "",
+      "## 🎯 Y en Most Wanted",
+      "Ahora son **15 buscados** por semana.",
+      "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
+     ]
+    },
+    {
+     "marca": "TODAVÍA NO TENÉS CREW",
+     "lineas": [
+      "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
+      "# 👥 ¿TODAVÍA NO TENÉS CREW?",
+      "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬",
+      "",
+      "La primera semana de los tiers **ya arrancó** y cierra el **lunes 26 a las 11 AM**. Las crews que jueguen esta semana son las primeras en subir.",
+      "",
+      "🔥 **Juntá a tu gente**: con 3 ya son crew.",
+      "📈 **Cada evento que juegan suma** para la crew.",
+      "💎 **Para llegar a Diamante** hacen falta puntos y que jueguen al menos 4.",
+      "🎴 **La que llega a Diamante desbloquea su propia tarjeta.**",
+      "",
+      "👉 **Armala:** https://underlegends.pages.dev/cuenta/crew",
+      "👉 **O sumate a una:** https://underlegends.pages.dev/freestyle-rap/ranking/crews",
+      "▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬"
+     ]
+    }
+   ]
+  }
+ ],
+ "mandados": {}
+}
