@@ -116,6 +116,8 @@ const AVISOS = {
   '/api/avisos/seccion': 'POST',
   // 👆 qué se toca en toda la página (16/10/2026), de a tandas. Ver `clics()` en bot/avisos.js
   '/api/avisos/clics': 'POST',
+  // 🐞 un error de la página, para el Dashboard (19/10/2026, web/src/errores.js): nunca de quién
+  '/api/avisos/error': 'POST',
   // 🔒 el Dashboard del dueño: el Worker comprueba que es Dlx (ver `/avisos/dueno` en bot/avisos.js)
   '/api/avisos/dueno': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx)

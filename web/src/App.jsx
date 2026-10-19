@@ -155,6 +155,10 @@ import { VentanaVideo } from './video.jsx';
 import { claseTema, guardarTemas, leerTemas } from './temas.js';
 import { urlFondo, useFondos } from './fondos.js';
 import { useCalma, useTapado } from './anima.js';
+// 🐞 los errores de la página, al Dashboard (19/10/2026): los de cada sección y los que no agarra ninguna
+import { escucharErrores, reportarError } from './errores.js';
+
+escucharErrores();
 
 // ── el puente con app.js: cada vez que pinta, avisa ──────────────────────────────────────────────
 // ⚠️ Las funciones de app.js son globales (script clásico, sin módulo), y adentro se llaman por su nombre: si se
@@ -270,7 +274,7 @@ function vaHacia(previo, clave, i, hondo) {
 class Aislada extends Component {
   constructor(p) { super(p); this.state = { roto: false }; this.va = vaPagina; }
   static getDerivedStateFromError() { return { roto: true }; }
-  componentDidCatch(e) { console.error('[inicio:' + this.props.n + ']', e); }
+  componentDidCatch(e) { console.error('[inicio:' + this.props.n + ']', e); reportarError(this.props.n, e); }
   render() {
     // 🎞️ una PÁGINA entra con su transición (`.pg-entra`, vivo.css): como va con `key` por página, cambiar de sección la
     // vuelve a montar y la animación corre de nuevo (Dlx, 17/10/2026: «mejores transiciones, animaciones… tampoco tan
@@ -288,6 +292,7 @@ export class Respaldo extends Component {
   static getDerivedStateFromError() { return { roto: true }; }
   componentDidCatch(e) {
     console.error('[inicio]', e);
+    reportarError('inicio', e);
     window.__inicioSinDatos = true;
     document.documentElement.classList.remove('ini-nuevo');
     // lo viejo vuelve a la vista y hay que dibujarlo: mientras mandaba esto, app.js no lo dibujó (`mandaLoNuevo()`)

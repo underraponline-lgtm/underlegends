@@ -1226,6 +1226,22 @@ export function claveClic(k) {
 /** cuántas etiquetas distintas por día, como mucho: más que eso es ruido o alguien jugando con la ruta */
 export const CLICS_MAX_K = 1500;
 
+/**
+ * 🐞 UN ERROR DE LA PÁGINA (Dlx, 19/10/2026: «ok», a que los errores de la página lleguen al Dashboard). Lo manda
+ * web/src/errores.js: en qué parte (`d`), el mensaje (`m`), dónde del código (`f`, `inicio/x.js:1:234`) y su tipo
+ * (`t`). Nada de nadie: los números largos se tapan acá también, por si la página no lo hizo. `null` si no tiene forma.
+ */
+export function errorValido(d) {
+  if (!d || typeof d !== 'object') return null;
+  const donde = typeof d.d === 'string' && /^[a-z0-9:_-]{1,40}$/.test(d.d) ? d.d : '';
+  const msg = typeof d.m === 'string' ? d.m.replace(/\s+/g, ' ').replace(/\d{5,}/g, '#').trim().slice(0, 200) : '';
+  const f = typeof d.f === 'string' && /^[\w./-]{1,60}:\d{1,7}:\d{1,7}$/.test(d.f) ? d.f : '';
+  const tipo = typeof d.t === 'string' && /^[A-Za-z]{1,30}$/.test(d.t) ? d.t : '';
+  return donde && msg ? { donde, msg, f, tipo } : null;
+}
+/** cuántos errores distintos por día, como mucho (la ruta es pública: lo de más es ruido o alguien jugando) */
+export const ERRORES_DIA = 100;
+
 /** 📣 La clave de un organizador: sin la arroba, en minúsculas y sólo letras y números (`latino()` para las de fantasía). */
 export function claveOrg(nombre) {
   return latino(String(nombre || '').replace(/^[@!\s]+/, '')).toLowerCase().replace(/[\u0300-\u036f]/g, '')
@@ -2358,6 +2374,8 @@ const RUTAS = {
   '/avisos/seccion': 'POST',
   // 👆 qué se toca en toda la página (16/10/2026): la sección y el nombre del botón, sumados, sin nada de nadie
   '/avisos/clics': 'POST',
+  // 🐞 un error de la página, para el Dashboard (19/10/2026): nunca de quién
+  '/avisos/error': 'POST',
   // 🔒 el Dashboard del dueño (04/10/2026): ver `/avisos/dueno` en `rutaAvisos()`
   '/avisos/dueno': 'POST',
   // 🔴 lo que avisó el canal de Logs, para el Dashboard (`logsRojos()`)
@@ -4016,6 +4034,16 @@ export async function rutaAvisos(req, env, ruta) {
     return elObjeto(env).fetch('https://avisos/clics', { method: 'POST', body: JSON.stringify({ c }),
       headers: { 'content-type': 'application/json' } });
   }
+  // 🐞 un error de la página (19/10/2026): en qué parte, el mensaje y dónde del código; nunca quién
+  if (ruta === '/avisos/error') {
+    const crudo = await req.text();
+    let d = null;
+    try { d = crudo.length <= 1000 ? JSON.parse(crudo) : null; } catch (e) { d = null; }
+    const e = errorValido(d);
+    if (!e) return json({ error: 'faltan datos' }, 400);
+    return elObjeto(env).fetch('https://avisos/error-pagina', { method: 'POST', body: JSON.stringify({ d: e.donde, m: e.msg, f: e.f, t: e.tipo }),
+      headers: { 'content-type': 'application/json' } });
+  }
   // 📊 una visita sin cuenta: no lleva nada de nadie, sólo suma (ver `visita()` del objeto)
   if (ruta === '/avisos/visita') return elObjeto(env).fetch('https://avisos/visita', { method: 'POST', body: '{}', 
     headers: { 'content-type': 'application/json' } });
@@ -5023,6 +5051,10 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS secciones (dia TEXT NOT NULL, s TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
         'PRIMARY KEY (dia, s)) WITHOUT ROWID');
       // 👆 y qué se toca en toda la página (16/10/2026): la sección y la etiqueta del botón, sumadas por día
+      // 🐞 los errores de la página, por día y por error (19/10/2026, `errorPagina()`): nunca de quién
+      this.sql.exec('CREATE TABLE IF NOT EXISTS errores_pag (dia TEXT NOT NULL, k TEXT NOT NULL, donde TEXT NOT NULL, ' +
+        "msg TEXT NOT NULL, f TEXT NOT NULL DEFAULT '', tipo TEXT NOT NULL DEFAULT '', n INTEGER NOT NULL DEFAULT 0, " +
+        'primero INTEGER NOT NULL, ultimo INTEGER NOT NULL, PRIMARY KEY (dia, k)) WITHOUT ROWID');
       this.sql.exec('CREATE TABLE IF NOT EXISTS clics (dia TEXT NOT NULL, k TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
         'PRIMARY KEY (dia, k)) WITHOUT ROWID');
       // 🔥 LA RACHA DIARIA Y LOS NIVELES (04/10/2026): qué días contó cada uno (`activo`: el bot, la página con su
@@ -5744,6 +5776,7 @@ export class Avisos {
       if (ruta === '/tutorial') return this.tutorial(d);
       if (ruta === '/seccion') return this.seccion(d);
       if (ruta === '/clics') return this.clics(d);
+      if (ruta === '/error-pagina') return this.errorPagina(d);
       if (ruta === '/dueno') {
         const p = this.panelDueno(d);
         // 🔐 Asistente y Moderador: sólo lo suyo, sin lo que cuesta (lo en vivo, GitHub, KV)
@@ -5925,6 +5958,7 @@ export class Avisos {
     // 🛡️ (el anti-raid, que no duerme, ya no va acá: tiene su propio pedido, ver `vigilar()` de afuera)
     // 👆 los toques juntados en memoria, a la base: una vez por minuto, también de madrugada
     try { this.clicsVolcar(); } catch (e) { this.medir('filas', 'clics-error', 1); }
+    try { this.errVolcar(); } catch (e) { this.medir('filas', 'errores-error', 1); }
     if (d && d.dormido) {
       this.guardar('vigia', { t: ahora, dormido: true, canales: previo.canales, limpio: previo.limpio });
       return { ok: true, dormido: true };
@@ -6073,6 +6107,8 @@ export class Avisos {
       this.sql.exec('DELETE FROM tutorial WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM secciones WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       this.sql.exec('DELETE FROM clics WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
+      // 🐞 los errores de la página: 30 días
+      this.sql.exec('DELETE FROM errores_pag WHERE dia < ?', diaET(ahora - 30 * DIA_MS));
       // 🔴 y los dispositivos que nunca recibieron nada y fallaron cinco veces (revisión del 03/10/2026): sólo 404 y
       // 410 borran al momento (ver `MUERTA`), así que uno inventado con un servicio que no resuelve quedaba para
       // siempre ocupando lugar en el tope y recibiendo cada evento. Uno de verdad recibe la de prueba al anotarse
@@ -10997,6 +11033,46 @@ export class Avisos {
     return json({ ok: true });
   }
 
+  /**
+   * 🐞 Un error de la página (19/10/2026). Como los toques: se junta en memoria y va a la base una vez por minuto
+   * (`errVolcar()`), así una página rota que abren cien personas es una escritura y no cien.
+   */
+  errorPagina(d) {
+    const e = errorValido(d);
+    if (!e) return json({ error: 'faltan datos' }, 400);
+    const buf = (this.errBuf = this.errBuf || new Map());
+    const k = (e.donde + '|' + e.msg).slice(0, 260);
+    const x = buf.get(k);
+    if (x) { x.n++; x.ultimo = Date.now(); if (!x.f && e.f) x.f = e.f; }
+    else if (buf.size < 50) buf.set(k, { ...e, n: 1, primero: Date.now(), ultimo: Date.now() });
+    return json({ ok: true });
+  }
+
+  errVolcar() {
+    const buf = this.errBuf;
+    if (!buf || !buf.size) return;
+    this.errBuf = new Map();
+    const dia = diaET();
+    let distintas = (this.sql.exec('SELECT COUNT(*) AS n FROM errores_pag WHERE dia = ?', dia).toArray()[0] || {}).n || 0;
+    for (const [k, x] of buf) {
+      const ya = this.sql.exec('SELECT n FROM errores_pag WHERE dia = ? AND k = ?', dia, k).toArray()[0];
+      if (!ya && distintas >= ERRORES_DIA) continue;
+      if (!ya) distintas++;
+      this.sql.exec('INSERT INTO errores_pag (dia, k, donde, msg, f, tipo, n, primero, ultimo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) ' +
+        "ON CONFLICT(dia, k) DO UPDATE SET n = min(n + excluded.n, 1000000), ultimo = excluded.ultimo, " +
+        "f = CASE WHEN excluded.f != '' THEN excluded.f ELSE f END", dia, k, x.donde, x.msg, x.f || '', x.tipo || '',
+      Math.min(x.n, 1000000), x.primero, x.ultimo);
+    }
+  }
+
+  /** 🐞 Los errores de los últimos 7 días, del último al primero: `[{donde, msg, f, tipo, n, primero, ultimo, dias}]`. */
+  erroresResumen() {
+    this.errVolcar();
+    return this.sql.exec('SELECT k, donde, msg, MAX(f) AS f, MAX(tipo) AS tipo, SUM(n) AS n, MIN(primero) AS primero, ' +
+      'MAX(ultimo) AS ultimo, COUNT(*) AS dias FROM errores_pag WHERE dia > ? GROUP BY k ORDER BY ultimo DESC LIMIT 30',
+    diaET(Date.now() - 7 * DIA_MS)).toArray().map(({ k, ...x }) => x);
+  }
+
   /** 👆 Los toques juntados, a la base (con el mismo tope de teclas distintas por día que antes). */
   clicsVolcar() {
     const buf = this.clicsBuf;
@@ -11160,6 +11236,8 @@ export class Avisos {
       tutorial: this.tutorialResumen(),
       secciones: this.seccionesResumen(),
       clics: this.clicsResumen(),
+      // 🐞 lo que se rompió en la página, los últimos 7 días (Sistema)
+      errores_pag: this.erroresResumen(),
       ajustes: this.ajustes(),
       // 🕓 los últimos cambios de ajustes, con lo que había antes (ver `ajuste()`)
       ajustes_hist: this.leer('ajustes_hist') || [],

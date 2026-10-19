@@ -95,6 +95,23 @@ const hace = (t) => {
   return m < 1 ? 'recién' : m < 60 ? 'hace ' + m + ' min' : m < 48 * 60 ? 'hace ' + Math.round(m / 60) + ' h' : 'hace ' + Math.round(m / 1440) + ' días';
 };
 
+// 🐞 LO QUE SE ROMPIÓ EN LA PÁGINA (Dlx, 19/10/2026: «ok»). Lo manda web/src/errores.js: en qué parte, el mensaje y dónde
+// del código, nunca quién. «inicio» es la página entera (cayó a la de respaldo); «global» y «promesa», lo que no agarró
+// ninguna sección
+function ErroresPagina({ e }) {
+  if (!(e || []).length) return <p className="pronto-p">Ningún error en los últimos 7 días.</p>;
+  return (
+    <div className="db-aj">
+      <ul className="db-corr">{e.map((x) => (
+        <li key={x.donde + x.msg}><b>{x.donde}</b><span>{x.msg}</span>
+          <small>{num(x.n)} {x.n === 1 ? 'vez' : 'veces'} · {x.dias === 1 ? 'un día' : x.dias + ' días'} · el último {hace(x.ultimo)}
+            {x.f ? ' · ' + x.f : ''}{x.tipo ? ' · ' + x.tipo : ''}</small></li>
+      ))}</ul>
+      <p className="db-tx">Cada error una vez por sesión de cada navegador: «12 veces» son 12 visitas que lo vieron. El lugar del código es del archivo ya construido (<code>inicio/…js:línea:columna</code>).</p>
+    </div>
+  );
+}
+
 function Sistema({ s, sesiones }) {
   const d = (s.disparador || {}).ultimo || {};
   const filas = [
@@ -2321,6 +2338,7 @@ export function Dashboard({ dc, liga }) {
         </> : null}
         {tabV === 'sistema' ? <>
           {sec('LO QUE GASTA CLOUDFLARE HOY', 'el plan gratis', <Cuotas q={cuotas} />)}
+          {sec('ERRORES DE LA PÁGINA · 7 DÍAS', 'nunca de quién', <ErroresPagina e={d.errores_pag} />)}
           {sec('CÓMO ANDA TODO', null, <><Corridas corridas={d.corridas} s={d.sistema || {}} github={d.github} /><Sistema s={d.sistema || {}} sesiones={d.sesiones} /></>)}
         </> : null}
       </>

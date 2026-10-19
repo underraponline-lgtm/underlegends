@@ -914,6 +914,21 @@ const ok = (cond, que, det) => {
     // 👆 los toques de toda la página (16/10/2026): se suman por día, y lo que no tiene la forma no entra
     o.clics({ c: { 'ranking:→ perfil': 3, 'inicio:ver llave': 1, 'x:<b>': 5 } });
     o.clics({ c: { 'ranking:→ perfil': 2, 'tienda:comprar': 999 } });
+    // 🐞 los errores de la página (19/10/2026): validados, juntados en memoria y nunca de quién
+    {
+      const ev = A.errorValido({ d: 'publicaciones', m: 'useAplausos is not defined  en 1234567890123', f: 'inicio/inicio-publicaciones.js:1:2345', t: 'ReferenceError' });
+      ok(ev && ev.msg === 'useAplausos is not defined en #' && ev.f === 'inicio/inicio-publicaciones.js:1:2345'
+        && A.errorValido({ d: 'Mala Seccion', m: 'x' }) === null && A.errorValido({ d: 'x', m: '' }) === null
+        && A.errorValido({ d: 'x', m: 'y', f: 'https://otro.com/a.js?z=1' }).f === '',
+      'un error de la página: la sección y el mensaje, con los números largos tapados; lo que no tiene forma no entra', JSON.stringify(ev));
+      for (let k = 0; k < 3; k += 1) o.errorPagina({ d: 'publicaciones', m: 'useAplausos is not defined', f: 'inicio/inicio-publicaciones.js:1:2345', t: 'ReferenceError' });
+      o.errorPagina({ d: 'global', m: 'otro' });
+      const antesE = o.sql.exec('SELECT COUNT(*) AS n FROM errores_pag').toArray()[0].n;
+      const er = o.erroresResumen();
+      const pub = er.find((x) => x.donde === 'publicaciones');
+      ok(antesE === 0 && er.length === 2 && pub.n === 3 && pub.dias === 1 && pub.f === 'inicio/inicio-publicaciones.js:1:2345' && !('k' in pub),
+        'los errores se juntan en memoria (ni una fila por pedido) y el Dashboard los ve sumados', JSON.stringify(er));
+    }
     // (pasada del 19/10/2026: se juntan en memoria y van a la base una vez por minuto, o cuando el Dashboard los pide)
     ok(o.sql.exec('SELECT COUNT(*) AS n FROM clics').toArray()[0].n === 0, 'los toques se juntan en memoria: ni una fila escrita por pedido');
     const cr = o.clicsResumen();
