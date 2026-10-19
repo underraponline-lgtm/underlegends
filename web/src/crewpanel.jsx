@@ -362,12 +362,22 @@ export function PanelCrew({ liga, c }) {
         </div>
       ) : null}
 
-      {rol === 'lider' ? <AjustesLider c={c} va={va} hacer={hacer} setMsg={setMsg} pend={mia.logo_pend} /> : null}
+      {rol === 'lider' ? <AjustesLider c={c} va={va} hacer={hacer} setMsg={setMsg} pend={mia.logo_pend} mia={mia} /> : null}
     </section>
   );
 }
 
-function AjustesLider({ c, va, hacer, setMsg, pend }) {
+// 💸 cambiar el nombre (o la sigla) y el logo cuesta Puntos de Tienda; la descripción y los requisitos, gratis y cuando
+// quieras (Dlx, 19/10/2026). Los precios los pone el Dashboard y llegan con la crew (`crewMia()`)
+function Cuesta({ precio, saldo }) {
+  if (!precio) return null;
+  return <>Cuesta <b>{num(precio)} Puntos de Tienda</b>{typeof saldo === 'number' ? <> (tenés {num(saldo)})</> : null}.</>;
+}
+
+function AjustesLider({ c, va, hacer, setMsg, pend, mia }) {
+  const pNombre = (mia && mia.precio_nombre) || 0, pLogo = (mia && mia.precio_logo) || 0;
+  const saldo = mia && typeof mia.saldo === 'number' ? mia.saldo : null;
+  const corto = (p) => saldo !== null && p > saldo;
   const [nombre, setNombre] = useState(c.nombre);
   const [sigla, setSigla] = useState(c.sigla || '');
   const [desc, setDesc] = useState(c.desc || '');
@@ -398,28 +408,33 @@ function AjustesLider({ c, va, hacer, setMsg, pend }) {
         </label>
         <button type="submit" className="btn borde2 chico" disabled={va}>Guardar</button>
       </form>
-      <small className="cw-nota">Se mira cuando alguien pide entrar o se une a una abierta. A quien invitás, entra igual.</small>
+      <small className="cw-nota">Se mira cuando alguien pide entrar o se une a una abierta. A quien invitás, entra igual. Cambiarlo es gratis.</small>
       <h3 className="cw-h">El nombre</h3>
-      <form className="cw-fila" onSubmit={(e) => { e.preventDefault(); hacer({ accion: 'nombre', nombre, sigla }, 'Listo.'); }}>
+      <form className="cw-fila" onSubmit={(e) => {
+        e.preventDefault();
+        hacer({ accion: 'nombre', nombre, sigla }, (r) => (r && r.precio ? 'Listo: se cobraron ' + num(r.precio) + ' Puntos de Tienda.' : 'Listo.'));
+      }}>
         <input className="cw-busca" value={nombre} maxLength={24} onChange={(e) => setNombre(e.target.value)} aria-label="El nombre de la crew" />
         <input className="cw-busca cw-sigla" value={sigla} maxLength={4} required minLength={2} onChange={(e) => setSigla(e.target.value)} placeholder="Sigla" aria-label="La sigla" />
-        <button type="submit" className="btn borde2 chico" disabled={va}>Guardar</button>
+        <button type="submit" className="btn borde2 chico" disabled={va || ((nombre !== c.nombre || sigla.toUpperCase() !== (c.sigla || '')) && corto(pNombre))}>
+          {pNombre ? 'Guardar · ' + num(pNombre) : 'Guardar'}</button>
       </form>
-      <small className="cw-nota">El nombre se cambia una vez cada 30 días. La sigla es obligatoria.</small>
+      <small className="cw-nota"><Cuesta precio={pNombre} saldo={saldo} /> El nombre se cambia una vez cada 30 días. La sigla es obligatoria.</small>
       <h3 className="cw-h">El logo</h3>
       <div className="cw-fila">
         <ElegirLogo vista={logo ? logo[1] : c.logo} chico onElegido={(b, u) => setLogo([b, u])} onError={setMsg} />
-        {logo && !subiendo ? <button type="button" className="btn verde chico" disabled={va}
+        {logo && !subiendo ? <button type="button" className="btn verde chico" disabled={va || corto(pLogo)}
           onClick={async () => {
             setSubiendo(true);
             const j = await hacer({ accion: 'logo', img: await aBase64(logo[0]) }, (r) => 'Listo.' + msgLogo(r));
             setSubiendo(false);
             if (j) setLogo(null);
-          }}>Subir el logo</button> : null}
+          }}>{pLogo ? 'Subir el logo · ' + num(pLogo) : 'Subir el logo'}</button> : null}
       </div>
+      {pLogo ? <small className="cw-nota"><Cuesta precio={pLogo} saldo={saldo} /> Si la Liga no lo aprueba, te lo devolvemos.</small> : null}
       {subiendo ? <Cargando titulo="Subiendo el logo de la crew" etapas={ETAPAS_LOGO} /> : null}
       {pend ? <small className="cw-nota">Tu logo nuevo espera que lo revise la Liga.</small> : null}
-      <h3 className="cw-h">La descripción</h3>
+      <h3 className="cw-h">La descripción <small className="cw-en">· gratis</small></h3>
       <form className="cw-crear" onSubmit={(e) => { e.preventDefault(); hacer({ accion: 'desc', desc: desc.trim() }, 'Listo.'); }}>
         <textarea className="cw-busca cw-desc-in" value={desc} maxLength={160} minLength={10} required rows={2} onChange={(e) => setDesc(e.target.value)}
           aria-label="La descripción de la crew" />

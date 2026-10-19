@@ -185,7 +185,7 @@ if (!DatabaseSync) {
   yo(301, 'lu', { accion: 'pedir', crew: 'Logos' });
   yo(300, 'leo', { accion: 'decidir', a: 'lu', si: true });
   ok(yo(301, 'lu', { accion: 'logo', logo_url: 'https://pub.r2.dev/logos-crews/c.webp', logo_v: 'ok' }).error === 'rol'
-    && CW.chequeoLogo(o, { de: 'lu' }).error === 'rol' && CW.chequeoLogo(o, { de: 'leo' }).ok, 'el logo lo cambia el Líder');
+    && CW.chequeoLogo(o, { de: 'lu' }).error === 'rol' && CW.chequeoLogo(o, { de: 'leo', quien: id(300), inicial: 5000 }).ok, 'el logo lo cambia el Líder');
   const nl = yo(300, 'leo', { accion: 'logo', logo_url: 'https://pub.r2.dev/logos-crews/d.webp', logo_v: 'ok' });
   ok(nl.ok && pubLg().logo.endsWith('/d.webp') && yo(300, 'leo', { accion: 'desc', desc: 'Otra descripción, más larga' }).ok
     && pubLg().desc === 'Otra descripción, más larga' && yo(300, 'leo', { accion: 'desc', desc: 'no' }).error === 'desc',
@@ -201,8 +201,25 @@ if (!DatabaseSync) {
     && CW.crewDueno(o, { que: 'logo', crew: 'Logos', si: false, url: 'https://pub.r2.dev/logos-crews/d.webp' }).ok
     && pubLg().logo === '' && CW.crewLogosDueno(o).pend.some((x) => x.url.endsWith('/e.webp')),
   'con un logo esperando, el viejo no aparece como aprobado por el filtro, y quitar el que se ve no toca el que espera');
+  // 💸 cambiar el logo y el nombre cuesta; la descripción y los requisitos, no (Dlx, 19/10/2026)
+  const saldoLeo = () => CW.crewMia(o, { quien: id(300), de: 'leo', inicial: 5000, desde: 0 }).saldo;
+  ok(saldoLeo() === 5000 - 2500 - CW.PRECIO_LOGO * 2, 'crear 2.500 y cada logo nuevo ' + CW.PRECIO_LOGO);
+  ok(CW.crewDueno(o, { que: 'logo', crew: 'Logos', si: false, url: 'https://pub.r2.dev/logos-crews/e.webp' }).ok
+    && saldoLeo() === 5000 - 2500 - CW.PRECIO_LOGO && bandeja.some((b) => b.quien === id(300) && /Te devolvimos/.test(b.cuerpo)),
+  'el logo que esperaba y no se aprobó no se vio nunca: lo pagado vuelve, y se lo dice');
+  const s0 = saldoLeo();
+  const nm = yo(300, 'leo', { accion: 'nombre', nombre: 'Logos', sigla: 'LGS' });
+  ok(nm.ok && nm.precio === CW.PRECIO_NOMBRE && saldoLeo() === s0 - CW.PRECIO_NOMBRE && yo(300, 'leo', { accion: 'nombre', nombre: 'Logos', sigla: 'LGS' }).precio === 0,
+    'cambiar la sigla (o el nombre) cuesta; dejarlos igual, no');
+  ok(yo(300, 'leo', { accion: 'desc', desc: 'Otra más, gratis siempre' }).ok && yo(300, 'leo', { accion: 'req', req: { ev: 2 } }).ok
+    && saldoLeo() === s0 - CW.PRECIO_NOMBRE, 'la descripción y los requisitos, gratis');
+  ok(yo(300, 'leo', { accion: 'logo', logo_url: 'https://pub.r2.dev/logos-crews/f.webp', logo_v: 'ok', inicial: 0 }).error === 'saldo'
+    && CW.chequeoLogo(o, { de: 'leo', quien: id(300), inicial: 0 }).error === 'saldo'
+    && yo(300, 'leo', { accion: 'nombre', nombre: 'Logos', sigla: 'LGX', inicial: 0 }).error === 'saldo' && pubLg().sigla === 'LGS',
+  'sin saldo no se cambia nada (y no se gasta la IA en el logo)');
+  yo(300, 'leo', { accion: 'logo', logo_url: 'https://pub.r2.dev/logos-crews/g.webp', logo_v: 'revisar', inicial: 9000 });
   CW.crewDueno(o, { que: 'borrar', crew: 'Logos' });
-  ok(CW.crewBasura(o).some((u) => u.endsWith('/e.webp')), 'borrar una crew manda sus logos a la basura (si no, quedaban en R2 para siempre)');
+  ok(CW.crewBasura(o).some((u) => u.endsWith('/g.webp')), 'borrar una crew manda sus logos a la basura (si no, quedaban en R2 para siempre)');
   CW.crewBasuraLista(o, CW.crewBasura(o));
 
   // 🛡️ invitar, sólo a Miembros verificados de DRA (Dlx, 19/10/2026)

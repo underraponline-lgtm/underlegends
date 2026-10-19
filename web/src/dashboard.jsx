@@ -1022,6 +1022,10 @@ function AjCrews({ liga, aj, hacer, ocup }) {
   const { todas } = useCrews();
   const r = aj.crews_ranking || { modo: 'todos', n: 5 };
   const [precio, setPrecio] = useState(String(aj.crew_precio ?? 2500));
+  // 💸 cambiar el nombre (o la sigla) y el logo (Dlx, 19/10/2026: «cuesta plata»): lo de siempre, `PRECIO_NOMBRE` y
+  // `PRECIO_LOGO` de bot/crews.js
+  const [pNombre, setPNombre] = useState(String(aj.crew_precio_nombre ?? 1000));
+  const [pLogo, setPLogo] = useState(String(aj.crew_precio_logo ?? 1000));
   const [modo, setModo] = useState(r.modo);
   const [n, setN] = useState(String(r.n || 5));
   const [msg, setMsg] = useState('');
@@ -1042,13 +1046,23 @@ function AjCrews({ liga, aj, hacer, ocup }) {
       <p className="db-tx">Las arma la gente: verificados, pagando Puntos de Tienda, hasta 20 cada una. Líder, Colíder, Veterano y Miembro; 7 días entre una crew y otra.</p>
       <form className="db-form uno" onSubmit={(e) => {
         e.preventDefault();
-        hacer('crew_precio', Number(precio), 'Guardado: crear una crew cuesta ' + num(Number(precio)) + '.');
+        // de a uno, sólo lo que cambió: cada ajuste se guarda solo
+        (async () => {
+          const cambios = [['crew_precio', precio, aj.crew_precio ?? 2500], ['crew_precio_nombre', pNombre, aj.crew_precio_nombre ?? 1000],
+            ['crew_precio_logo', pLogo, aj.crew_precio_logo ?? 1000]].filter(([, v, antes]) => Number(v) !== Number(antes));
+          for (const [k, v] of cambios) { if (!(await hacer(k, Number(v), 'Guardado: crear ' + num(Number(precio)) + ', cambiar el nombre ' + num(Number(pNombre)) + ', cambiar el logo ' + num(Number(pLogo)) + '.'))) break; }
+        })();
       }}>
         <div className="db-fila">
           <label className="db-campo db-corto"><span>Crear cuesta (Puntos de Tienda)</span>
             <input type="number" min="0" max="50000" step="100" value={precio} onChange={(e) => setPrecio(e.target.value)} /></label>
+          <label className="db-campo db-corto"><span>Cambiar el nombre o la sigla</span>
+            <input type="number" min="0" max="50000" step="100" value={pNombre} onChange={(e) => setPNombre(e.target.value)} /></label>
+          <label className="db-campo db-corto"><span>Cambiar el logo</span>
+            <input type="number" min="0" max="50000" step="100" value={pLogo} onChange={(e) => setPLogo(e.target.value)} /></label>
         </div>
-        <div className="cu-btns"><button type="submit" className="btn verde chico" disabled={ocup}>Guardar el precio</button></div>
+        <p className="db-tx">La descripción y los requisitos se cambian gratis. Un logo que no se aprueba se devuelve.</p>
+        <div className="cu-btns"><button type="submit" className="btn verde chico" disabled={ocup}>Guardar los precios</button></div>
       </form>
       <form className="db-form uno" onSubmit={(e) => {
         e.preventDefault();

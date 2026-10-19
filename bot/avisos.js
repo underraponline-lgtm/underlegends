@@ -3463,6 +3463,8 @@ export function ajusteValido(cual, valor) {
   if (cual === 'campana_pausada') return typeof valor === 'boolean' ? valor : undefined;
   // 👥 las crews (19/10/2026): cuánto cuesta crear una (Puntos de Tienda) y cómo se arma su ranking (`{modo, n}`)
   if (cual === 'crew_precio') return CW.precioValido(valor);
+  // 💸 y cuánto cuesta cambiarle el nombre (o la sigla) y el logo (Dlx, 19/10/2026: «cuesta plata»)
+  if (cual === 'crew_precio_nombre' || cual === 'crew_precio_logo') return CW.precioValido(valor);
   if (cual === 'crews_ranking') return CW.rankingValido(valor);
   // 🤝 el nivel de cada servidor (`bot/tiers.py`, Dlx 18/10/2026): `{sigla: 1|2|3}`. El ciclo lo copia a datos/niveles.json
   if (cual === 'tiers') {

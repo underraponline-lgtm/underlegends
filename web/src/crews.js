@@ -127,7 +127,8 @@ export function errorCrew(j) {
     'no es una imagen': 'Eso no es una imagen.',
     'demasiado grande': 'La imagen es muy pesada.',
     sin_crew: 'No estás en ninguna crew.',
-    saldo: 'No te alcanzan los Puntos de Tienda: crear una crew cuesta ' + ((j && j.precio) || 2500).toLocaleString('es') + '.',
+    saldo: 'No te alcanzan los Puntos de Tienda: cuesta ' + ((j && j.precio) || 2500).toLocaleString('es')
+      + (j && typeof j.saldo === 'number' ? ' y tenés ' + j.saldo.toLocaleString('es') : '') + '.',
     llena: 'La crew está llena: son ' + ((j && j.max) || 20) + ' como máximo.',
     solo_invitacion: 'A esta crew se entra sólo por invitación.',
     sin_invitacion: 'Esa invitación ya no está.',

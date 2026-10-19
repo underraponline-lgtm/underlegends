@@ -51,6 +51,10 @@ export const ROLES = ['lider', 'colider', 'veterano', 'miembro'];
 export const ROL_NOMBRE = { lider: 'Líder', colider: 'Colíder', veterano: 'Veterano', miembro: 'Miembro' };
 export const ENTRADAS = ['abierta', 'pedido', 'invitacion'];
 export const PRECIO_CREW = 2500;
+/** 💸 cambiar el nombre (o la sigla) y el logo cuesta (Dlx, 19/10/2026: «cambiar el logo o el nombre de la crew cuesta
+ *  plata; se puede cambiar la descripción y requisitos siempre»). Lo de siempre; el Dashboard lo cambia */
+export const PRECIO_NOMBRE = 1000;
+export const PRECIO_LOGO = 1000;
 export const RANKING_MODOS = ['todos', 'mejores', 'reps'];
 export const RANKING_N = 5;
 const DIA = 86400000;
@@ -242,6 +246,10 @@ export function crewTablas(sql) {
   sql.exec('CREATE TABLE IF NOT EXISTS crew_prefs (k TEXT PRIMARY KEY, inv INTEGER NOT NULL DEFAULT 1)');
   // 🎯 los requisitos para entrar (`{rg, ev}`), los elige el Líder
   try { sql.exec("ALTER TABLE crews ADD COLUMN req TEXT NOT NULL DEFAULT '{}'"); } catch (e) { /* ya estaba */ }
+  // 💸 lo que se pagó por el logo que espera revisión, y quién: si no se aprueba, vuelve (`devolverLogo()`)
+  for (const col of ['logo_pago INTEGER NOT NULL DEFAULT 0', "logo_pago_q TEXT NOT NULL DEFAULT ''"]) {
+    try { sql.exec('ALTER TABLE crews ADD COLUMN ' + col); } catch (e) { /* ya estaba */ }
+  }
   sql.exec('CREATE TABLE IF NOT EXISTS crew_miembros (k TEXT PRIMARY KEY, crew TEXT NOT NULL, rol TEXT NOT NULL, ' +
     "quien TEXT NOT NULL DEFAULT '', desde INTEGER NOT NULL)");
   sql.exec('CREATE INDEX IF NOT EXISTS crew_miembros_crew ON crew_miembros (crew)');
@@ -271,9 +279,32 @@ const mal = (error, estado = 400, extra = {}) => Object.assign({ error, estado }
 /** El precio y el ranking de hoy (el Dashboard, o lo de siempre). */
 export function crewConfig(o) {
   const a = o.ajustes();
-  const p = precioValido(a.crew_precio);
+  const val = (v, def) => { const x = precioValido(v); return x === undefined || x === null ? def : x; };
   const r = rankingValido(a.crews_ranking);
-  return { precio: p === undefined || p === null ? PRECIO_CREW : p, ranking: r || { modo: 'todos', n: RANKING_N } };
+  return { precio: val(a.crew_precio, PRECIO_CREW), precio_nombre: val(a.crew_precio_nombre, PRECIO_NOMBRE),
+    precio_logo: val(a.crew_precio_logo, PRECIO_LOGO), ranking: r || { modo: 'todos', n: RANKING_N } };
+}
+
+/** 💸 ¿Le alcanza a `quien` para pagar `monto`? `{s}` (su saldo) o el error. Sin `inicial` (la billetera no se leyó)
+ *  no se cobra nada: `todavia`. */
+function alcanza(o, d, monto) {
+  const ini = Number(d.inicial);
+  if (!Number.isInteger(ini)) return mal('todavia', 503);
+  const s = o.saldo(String(d.quien || ''), Number(d.desde) || 0, ini);
+  return monto > s ? mal('saldo', 409, { saldo: s, precio: monto }) : { s };
+}
+
+/** 💸 El cobro en la billetera (la tabla `tienda` del objeto, la misma que crear). Adentro de la transacción de quien llama. */
+function cobrar(o, quien, monto, ref, ahora) {
+  if (monto) o.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', ref + ':' + quien + ':' + ahora, quien, -monto, ahora);
+}
+
+/** 💸 Lo que se pagó por un logo que nunca se vio (lo rechazó el Dashboard o el Líder subió otro antes), de vuelta. */
+function devolverLogo(o, c, ahora) {
+  if (!c || !c.logo_pago || !c.logo_pago_q) return;
+  o.sql.exec('INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)',
+    'crew-logo-dev:' + c.logo_pago_q + ':' + ahora, c.logo_pago_q, c.logo_pago, ahora);
+  o.sql.exec("UPDATE crews SET logo_pago = 0, logo_pago_q = '' WHERE id = ?", c.id);
 }
 
 /** ¿Le falta esperar para entrar a otra crew? Los ms que faltan, o 0. */
@@ -412,7 +443,7 @@ export function crewMia(o, d) {
   const ahora = Date.now();
   const k = String(d.de || '');
   const cfg = crewConfig(o);
-  const out = { ok: true, de: k, precio: cfg.precio, max: CREW_MAX, espera_ms: k ? espera(o, k, ahora) : 0, crew: null, inv: [], ped: [],
+  const out = { ok: true, de: k, precio: cfg.precio, precio_nombre: cfg.precio_nombre, precio_logo: cfg.precio_logo, max: CREW_MAX, espera_ms: k ? espera(o, k, ahora) : 0, crew: null, inv: [], ped: [],
     prueba: { dias: PRUEBA_MS / DIA, sumar: PRUEBA_SUMAR } };
   if (!k) return out;
   crewVencer(o, ahora);
@@ -682,28 +713,46 @@ export function crewAccion(o, d) {
       if (c.nombre_t && ahora - c.nombre_t < NOMBRE_MS) return mal('nombre_espera', 409, { faltan_ms: c.nombre_t + NOMBRE_MS - ahora });
       if (fila(o, 'SELECT id FROM crews WHERE norm = ? AND id != ?', normCrew(nombre), c.id)) return mal('nombre_usado', 409);
     }
-    o.sql.exec('UPDATE crews SET nombre = ?, norm = ?, sigla = ?, nombre_t = ?, t = ? WHERE id = ?', nombre, normCrew(nombre), sigla,
-      nombre !== c.nombre ? ahora : c.nombre_t, ahora, c.id);
-    anotar(o, c.id, 'nombre', nombre, k);
-    return { ok: true };
+    if (nombre === c.nombre && sigla === c.sigla) return { ok: true, precio: 0 };
+    // 💸 el nombre o la sigla cuestan (`PRECIO_NOMBRE`): se mira el saldo antes de tocar nada
+    const { precio_nombre: precio } = crewConfig(o);
+    const al = precio ? alcanza(o, d, precio) : { s: 0 };
+    if (al.error) return al;
+    o.state.storage.transactionSync(() => {
+      o.sql.exec('UPDATE crews SET nombre = ?, norm = ?, sigla = ?, nombre_t = ?, t = ? WHERE id = ?', nombre, normCrew(nombre), sigla,
+        nombre !== c.nombre ? ahora : c.nombre_t, ahora, c.id);
+      cobrar(o, quien, precio, 'crew-nombre', ahora);
+      anotar(o, c.id, 'nombre', nombre, k);
+    });
+    return precio ? { ok: true, precio, saldo: al.s - precio } : { ok: true, precio: 0 };
   }
   if (a === 'logo') {
     if (!puede(rol, 'nombre')) return mal('rol', 403);
     if (!d.logo_url) return mal('logo');
+    // 💸 cuesta (`PRECIO_LOGO`); `chequeoLogo()` ya lo miró antes de pasarlo por la IA, y acá otra vez: entre las dos
+    // pudo gastar en otra cosa
+    const { precio_logo: precio } = crewConfig(o);
+    const al = precio ? alcanza(o, d, precio) : { s: 0 };
+    if (al.error) return al;
     // lo que se reemplaza se borra de R2 (lo hace `crewConImagen()`, que es la que puede esperar)
     const viejos = [];
-    if (d.logo_v === 'ok') {
-      if (c.logo) viejos.push(c.logo);
-      if (c.logo_pend) viejos.push(c.logo_pend);
-      o.sql.exec("UPDATE crews SET logo = ?, logo_pend = '', logo_t = ?, logo_pend_t = 0, t = ? WHERE id = ?", d.logo_url, ahora, ahora, c.id);
-    } else {
-      if (c.logo_pend) viejos.push(c.logo_pend);
-      // ⚠️ `logo_pend_t` y no `logo_t`: tocar `logo_t` ponía el logo VIEJO en «lo que aprobó el filtro» del Dashboard,
-      // al lado del nuevo, y su «Quitar» descartaba el nuevo (la revisión del 19/10/2026)
-      o.sql.exec('UPDATE crews SET logo_pend = ?, logo_pend_t = ?, t = ? WHERE id = ?', d.logo_url, ahora, ahora, c.id);
-    }
-    anotar(o, c.id, 'logo', d.logo_v === 'ok' ? 'ok' : 'revisar', k);
-    return { ok: true, viejos, logo: d.logo_v === 'ok' ? 'ok' : 'revisar' };
+    o.state.storage.transactionSync(() => {
+      // el que esperaba revisión no se llegó a ver: lo que se pagó por él vuelve
+      if (c.logo_pend) { viejos.push(c.logo_pend); devolverLogo(o, c, ahora); }
+      if (d.logo_v === 'ok') {
+        if (c.logo) viejos.push(c.logo);
+        o.sql.exec("UPDATE crews SET logo = ?, logo_pend = '', logo_t = ?, logo_pend_t = 0, logo_pago = 0, logo_pago_q = '', t = ? WHERE id = ?",
+          d.logo_url, ahora, ahora, c.id);
+      } else {
+        // ⚠️ `logo_pend_t` y no `logo_t`: tocar `logo_t` ponía el logo VIEJO en «lo que aprobó el filtro» del Dashboard,
+        // al lado del nuevo, y su «Quitar» descartaba el nuevo (la revisión del 19/10/2026)
+        o.sql.exec('UPDATE crews SET logo_pend = ?, logo_pend_t = ?, logo_pago = ?, logo_pago_q = ?, t = ? WHERE id = ?',
+          d.logo_url, ahora, precio, precio ? quien : '', ahora, c.id);
+      }
+      cobrar(o, quien, precio, 'crew-logo', ahora);
+      anotar(o, c.id, 'logo', d.logo_v === 'ok' ? 'ok' : 'revisar', k);
+    });
+    return Object.assign({ ok: true, viejos, logo: d.logo_v === 'ok' ? 'ok' : 'revisar', precio }, precio ? { saldo: al.s - precio } : {});
   }
   if (a === 'req') {
     if (!puede(rol, 'entrada')) return mal('rol', 403);
@@ -759,7 +808,11 @@ export function chequeoCrear(o, d) {
 export function chequeoLogo(o, d) {
   const m = d.de ? miembroDe(o, String(d.de)) : null;
   if (!m) return mal('sin_crew', 409);
-  return puede(m.rol, 'nombre') ? { ok: true } : mal('rol', 403);
+  if (!puede(m.rol, 'nombre')) return mal('rol', 403);
+  // 💸 que le alcance ANTES de pasar el logo por la IA y guardarlo en R2
+  const { precio_logo: precio } = crewConfig(o);
+  const al = precio ? alcanza(o, d, precio) : { s: 0 };
+  return al.error ? al : { ok: true };
 }
 
 /**
@@ -859,18 +912,22 @@ export function crewDueno(o, d) {
     if (d.si) {
       if (!esPend) return mal('cambio', 409);
       // aprobado por una persona: no va a «lo que aprobó el filtro» (`logo_t` en 0)
-      o.sql.exec("UPDATE crews SET logo = logo_pend, logo_pend = '', logo_t = 0, logo_pend_t = 0, t = ? WHERE id = ?", ahora, c.id);
+      o.sql.exec("UPDATE crews SET logo = logo_pend, logo_pend = '', logo_t = 0, logo_pend_t = 0, logo_pago = 0, logo_pago_q = '', t = ? WHERE id = ?",
+        ahora, c.id);
       anotar(o, c.id, 'logo_si', '', 'dueño');
       if (lid) avisar(o, lid.k, 'crew-logo:' + c.id, '🖼️ El logo de ' + c.nombre + ' ya se ve', 'Lo aprobamos.', url);
       return { ok: true, viejos: c.logo ? [c.logo] : [] };
     }
     if (!esPend && !esVisto) return mal('cambio', 409);
+    // 💸 el que esperaba revisión y no se aprobó no se vio nunca: lo que se pagó vuelve. El que ya se veía, no
+    if (esPend) devolverLogo(o, c, ahora);
     o.sql.exec(esPend ? "UPDATE crews SET logo_pend = '', logo_pend_t = 0, t = ? WHERE id = ?" : "UPDATE crews SET logo = '', logo_t = 0, t = ? WHERE id = ?",
       ahora, c.id);
     anotar(o, c.id, esPend ? 'logo_no' : 'logo_quitado', motivo, 'dueño');
     if (lid) {
       avisar(o, lid.k, 'crew-logo:' + c.id, '🖼️ El logo de ' + c.nombre + (esPend ? ' no se aprobó' : ' se quitó'),
-        (motivo ? motivo + '. ' : '') + 'Subí otro desde la página de la crew.', url);
+        (motivo ? motivo + '. ' : '') + (esPend && c.logo_pago ? 'Te devolvimos los ' + c.logo_pago + ' Puntos de Tienda. ' : '')
+        + 'Subí otro desde la página de la crew.', url);
     }
     return { ok: true, viejos: [u] };
   }
