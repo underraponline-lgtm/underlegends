@@ -624,6 +624,8 @@ function nombreDia(k, hoyK) {
 }
 
 export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
+  // 🔔 con la campana ya prendida en este dispositivo, el día vacío no la pide (19/10/2026, como el Inicio)
+  const camp = useCampana();
   const vivoS = useMemo(() => liga.vivo(), [liga]);
   const hoyK = liga.diaClave(liga.ahora);
   const [svFil, setSvFil] = useState('');
@@ -779,7 +781,8 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
         <div className="hero-acc">
           <button type="button" className="btn verde" onClick={() => accion.llave(ultima.n)}>Ver la llave</button>
           {g.length ? <BotonCampeon liga={liga} ll={ultima} estilo="borde" ic /> : null}
-          <button type="button" className="btn borde" onClick={() => accion.ir('ev-campana')}><Ico n="campana" t={18} />Activar la campana</button>
+          {camp && camp.activa ? null
+            : <button type="button" className="btn borde" onClick={() => accion.ir('ev-campana')}><Ico n="campana" t={18} />Activar la campana</button>}
         </div>
       </div>
     );

@@ -403,6 +403,8 @@ export function tuMomento(liga, L) {
 
 // ── 🎯 EL BOTÓN GRANDE: lo tuyo, una sola vez, en su estado de ahora ──
 function ElBoton({ liga }) {
+  // (arriba de todo: un hook no puede ir después de un `return`)
+  const camp = useCampana();
   const yo = liga.yo;
   const ahora = liga.ahora;
   const vivos = liga.vivo();
@@ -436,6 +438,9 @@ function ElBoton({ liga }) {
   // `eventoDelBoton()`, que el escenario usa para no repetirlo
   const { e, anotado } = eventoDelBoton(liga);
   if (!e) {
+    // 🔔 CON LA CAMPANA YA PRENDIDA EN ESTE DISPOSITIVO, NO SE PIDE (Dlx, 19/10/2026, con la captura: «ya lo tengo
+    // activado pero esto no desaparece»). El botón de abajo pedía activarla siempre, sin preguntarle a `campana.js`
+    if (camp && camp.activa) return null;
     return (
       <div className="lb-boton nada">
         <span className="lb-b-et">TODAVÍA NO ANUNCIARON EL PRÓXIMO</span>

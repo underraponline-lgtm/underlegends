@@ -5070,6 +5070,8 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS errores_pag (dia TEXT NOT NULL, k TEXT NOT NULL, donde TEXT NOT NULL, ' +
         "msg TEXT NOT NULL, f TEXT NOT NULL DEFAULT '', tipo TEXT NOT NULL DEFAULT '', n INTEGER NOT NULL DEFAULT 0, " +
         'primero INTEGER NOT NULL, ultimo INTEGER NOT NULL, PRIMARY KEY (dia, k)) WITHOUT ROWID');
+      // y cuáles ya se avisaron al canal de Logs (`erroresAvisar()`), para no repetirlos
+      this.sql.exec('CREATE TABLE IF NOT EXISTS errores_avisados (k TEXT PRIMARY KEY, t INTEGER NOT NULL) WITHOUT ROWID');
       this.sql.exec('CREATE TABLE IF NOT EXISTS clics (dia TEXT NOT NULL, k TEXT NOT NULL, n INTEGER NOT NULL DEFAULT 0, ' +
         'PRIMARY KEY (dia, k)) WITHOUT ROWID');
       // 🔥 LA RACHA DIARIA Y LOS NIVELES (04/10/2026): qué días contó cada uno (`activo`: el bot, la página con su
@@ -6070,6 +6072,8 @@ export class Avisos {
       }
       // 📅 y los eventos de Discord: crearlos, ponerlos en vivo, terminarlos. Nunca frena al vigía: ver `eventosDiscord()`
       try { await this.eventosDiscord(ahora); } catch (e) { this.guardar('ev_discord', { t: ahora, error: String(e).slice(0, 160) }); }
+      // 🐞 y un error nuevo de la página que se repite, una vez al canal de Logs. Nunca frena al vigía
+      try { await this.erroresAvisar(ahora); } catch (e) { this.medir('filas', 'errores-logs-error', 1); }
       // 🎙️ y quién está en la llamada, minuto a minuto. Nunca frena al vigía: ver `llamada()`
       try { await this.llamada(ahora); } catch (e) {
         this.guardar('llamada', { ...(this.leer('llamada') || {}), error: String(e).slice(0, 160) });
@@ -6134,6 +6138,7 @@ export class Avisos {
       this.sql.exec('DELETE FROM clics WHERE dia < ?', diaET(ahora - 90 * DIA_MS));
       // 🐞 los errores de la página: 30 días
       this.sql.exec('DELETE FROM errores_pag WHERE dia < ?', diaET(ahora - 30 * DIA_MS));
+      this.sql.exec('DELETE FROM errores_avisados WHERE t < ?', ahora - 30 * DIA_MS);
       // 🔴 y los dispositivos que nunca recibieron nada y fallaron cinco veces (revisión del 03/10/2026): sólo 404 y
       // 410 borran al momento (ver `MUERTA`), así que uno inventado con un servicio que no resuelve quedaba para
       // siempre ocupando lugar en el tope y recibiendo cada evento. Uno de verdad recibe la de prueba al anotarse
@@ -11185,6 +11190,41 @@ export class Avisos {
         "f = CASE WHEN excluded.f != '' THEN excluded.f ELSE f END", dia, k, x.donde, x.msg, x.f || '', x.tipo || '',
       Math.min(x.n, 1000000), x.primero, x.ultimo);
     }
+  }
+
+  /**
+   * 🐞 UN ERROR NUEVO DE LA PÁGINA, AL CANAL DE LOGS (Dlx, 19/10/2026: «dale», a «un aviso a Logs la primera vez que
+   * se repite un error»). Hasta ahí sólo se veían en el Dashboard, y había que acordarse de abrirlo. «Se repite»: dos
+   * veces o más en 7 días —una sola puede ser un navegador raro o una extensión—. Cada error UNA vez cada 30 días
+   * (`errores_avisados`), hasta dos por vuelta. Lo llama el vigía despierto: de madrugada no sale nada, y nunca por DM.
+   */
+  async erroresAvisar(ahora) {
+    this.errVolcar();
+    const filas = this.sql.exec('SELECT k, donde, msg, MAX(f) AS f, SUM(n) AS n FROM errores_pag WHERE dia > ? ' +
+      'GROUP BY k HAVING SUM(n) >= 2 ORDER BY MAX(ultimo) DESC LIMIT 20', diaET(ahora - 7 * DIA_MS)).toArray();
+    let mandados = 0;
+    for (const e of filas) {
+      if (mandados >= 2) break;
+      if (this.sql.exec('SELECT 1 AS x FROM errores_avisados WHERE k = ?', e.k).toArray().length) continue;
+      this.sql.exec('INSERT OR IGNORE INTO errores_avisados (k, t) VALUES (?, ?)', e.k, ahora);
+      mandados++;
+      const limpio = (s) => String(s || '').replace(/`/g, "'").slice(0, 200);
+      try {
+        const r = await fetch(`${DC}/channels/${CANAL_LOGS}/messages`, {
+          method: 'POST',
+          headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+          body: JSON.stringify({
+            content: `🐞 **Un error nuevo en la página** (${e.n} veces) · en \`${limpio(e.donde)}\`:\n\`${limpio(e.msg)}\`` +
+              (e.f ? `\n\`${limpio(e.f)}\`` : '') + '\nSe ve en el Dashboard → Sistema.',
+            allowed_mentions: { parse: [] },
+          }),
+        });
+        if (r.status !== 200) this.guardar('ultimo_error', { t: ahora, ruta: 'errores-logs', error: 'mensaje ' + r.status });
+      } catch (err) {
+        this.guardar('ultimo_error', { t: ahora, ruta: 'errores-logs', error: String(err).slice(0, 120) });
+      }
+    }
+    return mandados;
   }
 
   /** 🐞 Los errores de los últimos 7 días, del último al primero: `[{donde, msg, f, tipo, n, primero, ultimo, dias}]`. */

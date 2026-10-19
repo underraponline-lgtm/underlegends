@@ -1,7 +1,7 @@
 // 🔎 ESLINT PARA LA PÁGINA (Dlx, 19/10/2026: «dale», a «¿lo bajo para CI?»). Existe por Publicaciones: un
 // `export { useAplausos } from './aplausos.js'` NO define `useAplausos` adentro del archivo, vite lo construyó sin
-// avisar y la página se rompió en producción al abrir. `herramientas/web_nombres.py` tapó ese caso con expresiones
-// regulares; esto lo mira con el árbol de verdad, y también lo que las expresiones no ven.
+// avisar y la página se rompió en producción al abrir. Antes lo tapaba `herramientas/web_nombres.py` con expresiones
+// regulares (se sacó el 19/10/2026, Dlx: «dale»): esto lo mira con el árbol de verdad, y también lo que no veía.
 //
 // ⚠️ SÓLO LO QUE ROMPE: un nombre sin definir, un hook fuera de lugar, una clave repetida, código que no se alcanza.
 // Lo de estilo (variables sin usar, dependencias de los efectos) queda afuera a propósito: CI se pone rojo por lo que

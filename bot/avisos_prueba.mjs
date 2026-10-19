@@ -928,6 +928,16 @@ const ok = (cond, que, det) => {
       const pub = er.find((x) => x.donde === 'publicaciones');
       ok(antesE === 0 && er.length === 2 && pub.n === 3 && pub.dias === 1 && pub.f === 'inicio/inicio-publicaciones.js:1:2345' && !('k' in pub),
         'los errores se juntan en memoria (ni una fila por pedido) y el Dashboard los ve sumados', JSON.stringify(er));
+      // y el que se repite, una vez al canal de Logs (el de una sola vez, no)
+      const fA = globalThis.fetch;
+      const logs = [];
+      globalThis.fetch = async (u, op = {}) => { logs.push({ u: String(u), b: op.body ? JSON.parse(op.body) : null }); return new Response('{}', { status: 200 }); };
+      const n1 = await o.erroresAvisar(Date.now());
+      const n2 = await o.erroresAvisar(Date.now());
+      globalThis.fetch = fA;
+      ok(n1 === 1 && n2 === 0 && logs.length === 1 && logs[0].u.endsWith('/channels/' + A.CANAL_LOGS + '/messages')
+        && /useAplausos is not defined/.test(logs[0].b.content) && logs[0].b.allowed_mentions.parse.length === 0,
+      'un error que se repite avisa UNA vez al canal de Logs; el que pasó una sola vez, no', JSON.stringify(logs));
     }
     // 📅 los eventos de Discord (19/10/2026): se crean sólo donde se prendió, en vivo a la hora, terminados después
     {
