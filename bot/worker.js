@@ -2886,7 +2886,8 @@ const ERRORES_CREW = {
   no_existe: 'Esa crew ya no existe.',
   espera_dia: 'Ya hiciste mucho de esto hoy: probá mañana.',
 };
-const textoCrew = (j) => ERRORES_CREW[(j && j.error) || ''] || 'Ahora no pude: probá en un rato.';
+const textoCrew = (j) => ((j && j.error) === 'requisitos' ? 'Esa crew pide ' + (j.falta || []).join(' y ') + ': todavía no llegás.'
+  : ERRORES_CREW[(j && j.error) || ''] || 'Ahora no pude: probá en un rato.');
 const urlCrew = (id) => HUB_URL + '/freestyle-rap/crew/' + encodeURIComponent(id);
 const publicoConMencion = (data) => new Response(JSON.stringify({ type: RESPONDE.MENSAJE, data }),
   { headers: { 'content-type': 'application/json' } });

@@ -271,7 +271,7 @@ const SUBS = {
     et: 'Crews', grupo: 'crew', filas: (L) => L.d.crews || [], sinChips: 1, nombre: (f) => limpio(f.crew),
     orden: (a, b) => ((b.rk !== 0) - (a.rk !== 0)) || (b.pts - a.pts) || (b.n - a.n), sinPuesto: (f) => f.rk === 0,
     cols: ['i', 'crew', 'tier', 'nc', 'pts', 'mejor'], movil: ['i', 'crew', 'tier', 'pts'], que: ['crew', 'crews'],
-    baj: <>Por los puntos que suman. Para tener puesto una crew necesita <b>tres raperos</b> en la temporada: las que no llegan se ven, sin número. Y cada lunes, como en el fútbol, cada crew <b>sube, baja o se mantiene de tier</b> según lo que sumó en la semana.</>,
+    baj: <>Por los puntos que suman. Para tener puesto una crew necesita <b>tres raperos</b> en la temporada: las que no llegan se ven, sin número. Y cada lunes, como en el fútbol, cada crew <b>sube, baja o se mantiene de tier</b> según lo que sumó en la semana. Para armar una o sumarte, <a className="te-link" href="#/crews">la página de crews</a>.</>,
     valor: [(f) => f.pts || 0, 'pts'], dato: (f) => num(f.pts) + ' PTS',
   },
   mw: {

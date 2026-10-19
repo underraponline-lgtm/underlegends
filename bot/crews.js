@@ -34,6 +34,10 @@
 //   · A QUIEN YA ESTÁ EN UNA CREW SE LO PUEDE INVITAR, salvo que haya apagado «recibir invitaciones» (`crew_prefs`; sin
 //     fila, sí). Si acepta, SE CAMBIA: sale de la suya y entra a la nueva, en un paso. Cuenta como salir: los 7 días
 //     corren desde ahí, así que no se salta de crew en crew. Un Líder primero pasa el liderazgo, como para irse
+// Y para la página de crews (*«que requisitos hay… mira como hacen los diferentes juegos para unirse a clubs»*): como
+// los trofeos mínimos de un clan, el Líder pide una LETRA MÍNIMA y/o un MÍNIMO DE EVENTOS en la temporada (`req`). Se
+// miran al pedir entrar o al unirse a una abierta —con la letra y los eventos que el ciclo deja en `persona`
+// (`subir_datos.py`, los mismos de los roles vinculados)—, no al aceptar una invitación: ahí ya eligió el Líder
 //
 // 🔑 DE QUIÉN ES CADA COSA: un miembro es un PERFIL (`k`, la clave de la página: `oasis`, `volk-co`), no una cuenta de
 // Discord. Quien actúa lo dice el Worker —`quien` (su Discord ID) y `de` (su perfil, de `d:<id>`: sólo verificados)—,
@@ -64,6 +68,10 @@ export const PRUEBA_SUMAR = 2;
 export const LOGO_TOPE = 300 * 1024;
 // dónde viven los logos en R2. Con prefijo propio: la carpeta de una carta es el nombre de la persona
 export const LOGO_CARPETA = 'logos-crews/';
+// el orden de las letras, para comparar «B o más». ⚠️ SÓLO EL ORDEN: los umbrales viven en comun/rangos.py y la letra de
+// cada uno la calcula el ciclo (está en `persona`); escribirlos acá sería el sexto lugar donde vive el rango
+export const ORDEN_RG = ['E', 'D', 'C', 'B', 'A', 'S', 'SS', 'SSS'];
+export const REQ_EV_MAX = 100;
 
 // ── lo puro: se prueba solo (`bot/crews_prueba.mjs`) ─────────────────────────────────────────────────────────────
 
@@ -121,7 +129,7 @@ export function puede(rol, que, sobre = '') {
 // la clave de un perfil: la misma regla que `claveValida()` de avisos.js
 const claveOk = (k) => typeof k === 'string' && k.length >= 1 && k.length <= 60 && /^[\p{L}\p{N}][\p{L}\p{N}-]*$/u.test(k);
 export const ACCIONES = ['crear', 'responder', 'pedir', 'cancelar_pedido', 'invitar', 'desinvitar', 'decidir', 'salir', 'sacar',
-  'rol', 'lider', 'reps', 'entrada', 'nombre', 'borrar', 'logo', 'desc', 'pref_inv'];
+  'rol', 'lider', 'reps', 'entrada', 'nombre', 'borrar', 'logo', 'desc', 'pref_inv', 'req'];
 
 /**
  * La forma de un pedido de la página o del bot, antes de llegar al objeto: sólo los campos de cada acción y con su
@@ -142,6 +150,7 @@ export function validarCrew(d) {
   if (d.nombre !== undefined) { if (!corto(d.nombre, 40)) return { error: 'nombre' }; out.nombre = d.nombre; }
   if (d.sigla !== undefined) { if (typeof d.sigla !== 'string' || d.sigla.length > 8) return { error: 'sigla' }; out.sigla = d.sigla; }
   if (d.desc !== undefined) { if (typeof d.desc !== 'string' || d.desc.length > 400) return { error: 'desc' }; out.desc = d.desc; }
+  if (d.req !== undefined) { const r = reqValido(d.req); if (!r) return { error: 'req' }; out.req = r; }
   // el logo, en base64; lo mira el objeto (el tipo por los bytes, el tope, los metadatos y el filtro). ⚠️ `logo_url` y
   // `logo_v` NO se copian: los pone el objeto después del filtro
   if (d.img !== undefined) {
@@ -153,6 +162,25 @@ export function validarCrew(d) {
     out.reps = d.reps;
   }
   return out;
+}
+
+/** Los requisitos de una crew: `{rg, ev}` limpios (`rg` una letra o `''`, `ev` 0 a 100), o `null` si no valen. Pura. */
+export function reqValido(r) {
+  if (!r || typeof r !== 'object') return null;
+  const rg = r.rg ? String(r.rg).toUpperCase() : '';
+  const ev = r.ev === undefined || r.ev === null || r.ev === '' ? 0 : Number(r.ev);
+  if (rg && !ORDEN_RG.includes(rg)) return null;
+  if (!Number.isInteger(ev) || ev < 0 || ev > REQ_EV_MAX) return null;
+  return { rg, ev };
+}
+
+/** ¿Cumple `p` (`{rg, ev}` de `persona`) los requisitos `req`? Lo que le falta, en palabras, o `[]`. Pura. */
+export function faltaReq(req, p) {
+  const r = reqValido(req) || { rg: '', ev: 0 };
+  const falta = [];
+  if (r.rg && ORDEN_RG.indexOf(String((p && p.rg) || '')) < ORDEN_RG.indexOf(r.rg)) falta.push('letra ' + r.rg + ' o más');
+  if (r.ev && (Number((p && p.ev) || 0) || 0) < r.ev) falta.push(r.ev + (r.ev === 1 ? ' evento' : ' eventos') + ' en la temporada');
+  return falta;
 }
 
 /** El ajuste del Dashboard para el ranking: `{modo, n}` válido o `undefined`. */
@@ -208,6 +236,8 @@ export function crewTablas(sql) {
   sql.exec('CREATE TABLE IF NOT EXISTS crew_basura (url TEXT PRIMARY KEY, t INTEGER NOT NULL)');
   // 📨 si quien ya está en una crew recibe invitaciones de otras (sin fila: sí, Dlx: «por default dejalo que sí»)
   sql.exec('CREATE TABLE IF NOT EXISTS crew_prefs (k TEXT PRIMARY KEY, inv INTEGER NOT NULL DEFAULT 1)');
+  // 🎯 los requisitos para entrar (`{rg, ev}`), los elige el Líder
+  try { sql.exec("ALTER TABLE crews ADD COLUMN req TEXT NOT NULL DEFAULT '{}'"); } catch (e) { /* ya estaba */ }
   sql.exec('CREATE TABLE IF NOT EXISTS crew_miembros (k TEXT PRIMARY KEY, crew TEXT NOT NULL, rol TEXT NOT NULL, ' +
     "quien TEXT NOT NULL DEFAULT '', desde INTEGER NOT NULL)");
   sql.exec('CREATE INDEX IF NOT EXISTS crew_miembros_crew ON crew_miembros (crew)');
@@ -253,6 +283,15 @@ function idDe(o, k) {
   }
   return '';
 }
+
+/** Lo que el ciclo sabe de un perfil (tabla `persona`, `subir_datos.py`): su letra y sus eventos, para los requisitos. */
+function personaDe(o, k) {
+  try {
+    const f = fila(o, 'SELECT v FROM persona WHERE k = ?', 'p:' + k);
+    return f ? (JSON.parse(f.v) || {}) : {};
+  } catch (e) { return {}; }
+}
+const reqDe = (c) => { try { return reqValido(JSON.parse((c && c.req) || '{}')) || { rg: '', ev: 0 }; } catch (e) { return { rg: '', ev: 0 }; } };
 
 /** Cómo se llama un perfil, para los avisos: el nombre de su `/card` (tabla `persona`), o la clave. */
 function nombreDe(o, k) {
@@ -375,7 +414,7 @@ export function crewPublica(o, c) {
   try { reps = JSON.parse(c.reps || '[]'); } catch (e) { reps = []; }
   return { id: c.id, nombre: c.nombre, sigla: c.sigla, entrada: c.entrada, oficial: !!c.oficial, creada: c.creada,
     reps: reps.filter((k) => gente.some((g) => g.k === k)), gente: gente.map((g) => [g.k, g.rol, g.desde]),
-    vence: c.vence || 0, logo: c.logo || '', desc: c.descr || '' };
+    vence: c.vence || 0, logo: c.logo || '', desc: c.descr || '', req: reqDe(c) };
 }
 
 /** Todas, para `/avisos/crews` (público, 60 s): lo lee la página y el ciclo. */
@@ -450,6 +489,11 @@ export function crewAccion(o, d) {
     if (cc.entrada === 'invitacion') return mal('solo_invitacion', 409);
     // ¿ya lo invitaron? entonces entra
     const inv = fila(o, 'SELECT de FROM crew_inv WHERE crew = ? AND k = ? AND t > ?', cc.id, k, ahora - VENCE_MS);
+    // 🎯 los requisitos: al pedir y al unirse a una abierta; con invitación no (ya eligió el Líder)
+    if (!inv) {
+      const falta = faltaReq(reqDe(cc), personaDe(o, k));
+      if (falta.length) return mal('requisitos', 409, { falta });
+    }
     if (cc.entrada === 'abierta' || inv) return entrar(o, cc, k, quien, inv ? inv.de : k, ahora);
     const e = espera(o, k, ahora);
     if (e) return mal('espera', 409, { faltan_ms: e });
@@ -616,6 +660,14 @@ export function crewAccion(o, d) {
     }
     anotar(o, c.id, 'logo', d.logo_v === 'ok' ? 'ok' : 'revisar', k);
     return { ok: true, viejos, logo: d.logo_v === 'ok' ? 'ok' : 'revisar' };
+  }
+  if (a === 'req') {
+    if (!puede(rol, 'entrada')) return mal('rol', 403);
+    const r = reqValido(d.req);
+    if (!r) return mal('req');
+    o.sql.exec('UPDATE crews SET req = ?, t = ? WHERE id = ?', JSON.stringify(r), ahora, c.id);
+    anotar(o, c.id, 'req', JSON.stringify(r), k);
+    return { ok: true, req: r };
   }
   if (a === 'desc') {
     if (!puede(rol, 'nombre')) return mal('rol', 403);

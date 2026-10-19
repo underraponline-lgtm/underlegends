@@ -8,7 +8,7 @@ import { useRacha } from './racha.js';
 
 export const MENU = [
   ['Inicio', '#/'], ['Eventos', '#/eventos'], ['Ranking', '#/ranking'], ['Pase rapero', '#/pase'],
-  ['Ligas', '#/ligas'], ['Tarjetas', '#/tarjetas'], ['Salón de la fama', '#/salon'], ['Publicaciones', '#/publicaciones'], ['Tienda', '#/tienda'], ['Socios', '#/socios'], ['Guía', '#/guia'],
+  ['Ligas', '#/ligas'], ['Crews', '#/crews'], ['Tarjetas', '#/tarjetas'], ['Salón de la fama', '#/salon'], ['Publicaciones', '#/publicaciones'], ['Tienda', '#/tienda'], ['Socios', '#/socios'], ['Guía', '#/guia'],
 ];
 // «Socios» es lo que era «Mundo» (Dlx, 03/10/2026: «1. A»); `#/mundo` sigue abriéndolo (App.jsx). «Ligas», al lado de
 // Tarjetas desde el 16/10/2026 (Dlx: «que ligas tenga su propio espacio aparte de ranking… al costado de tarjetas»)
@@ -22,6 +22,7 @@ export const QUE_ES = {
   '#/': 'Lo que pasa ahora en la Liga', '#/eventos': 'Cuándo se juega, y la campana para enterarte',
   '#/ranking': 'Las tablas de la temporada', '#/publicaciones': 'Campeones, rangos nuevos y anuncios',
   '#/tarjetas': 'Las tarjetas de cada rapero', '#/ligas': 'Las ligas de los servidores, con su tabla',
+  '#/crews': 'Armá tu crew o sumate a una, con su tier',
   '#/salon': 'Los campeones, los récords y lo más difícil de la Liga',
   '#/pase': 'Premios por participar en la temporada',
   '#/tienda': 'Tus Puntos de Tienda, y el precio por cabeza', '#/socios': 'Los servidores que forman la Liga',

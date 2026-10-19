@@ -224,6 +224,23 @@ if (!DatabaseSync) {
   CW.crewDueno(o, { que: 'borrar', crew: 'Cambio Uno' });
   CW.crewDueno(o, { que: 'borrar', crew: 'Cambio Dos' });
 
+  // 🎯 los requisitos (como los trofeos mínimos de un clan): letra y eventos, de lo que el ciclo deja en `persona`
+  ok(CW.reqValido({ rg: 'b', ev: 5 }).rg === 'B' && CW.reqValido({ rg: 'Z' }) === null && CW.reqValido({ ev: 500 }) === null
+    && CW.faltaReq({ rg: 'B', ev: 5 }, { rg: 'A', ev: 9 }).length === 0 && CW.faltaReq({ rg: 'B', ev: 5 }, { rg: 'C', ev: 2 }).length === 2
+    && CW.faltaReq({ rg: 'B' }, {}).length === 1, 'los requisitos: la letra se compara por orden, los eventos por número');
+  db.prepare('INSERT INTO persona (k, v, t) VALUES (?, ?, 0)').run('p:ruy', JSON.stringify({ n: 'Ruy', rg: 'C', ev: 3 }));
+  db.prepare('INSERT INTO persona (k, v, t) VALUES (?, ?, 0)').run('p:sol2', JSON.stringify({ n: 'Sol', rg: 'A', ev: 12 }));
+  const rq = yo(500, 'reo', { accion: 'crear', nombre: 'Exigentes', sigla: 'EX', entrada: 'abierta' });
+  ok(rq.ok && yo(500, 'reo', { accion: 'req', req: { rg: 'B', ev: 5 } }).ok && CW.crewsPublico(o).crews.find((c) => c.id === 'Exigentes').req.rg === 'B',
+    'el Líder pone los requisitos, y se ven');
+  const no = yo(501, 'ruy', { accion: 'pedir', crew: 'Exigentes' });
+  ok(no.error === 'requisitos' && no.falta.length === 2 && yo(502, 'sol2', { accion: 'pedir', crew: 'Exigentes' }).ok,
+    'quien no llega no entra (y se le dice qué le falta); quien llega, sí');
+  ok(yo(500, 'reo', { accion: 'invitar', a: 'ruy' }).ok && yo(501, 'ruy', { accion: 'responder', crew: 'Exigentes', si: true }).ok,
+    'con invitación entra igual: ya eligió el Líder');
+  ok(yo(501, 'ruy', { accion: 'req', req: { rg: 'E' } }).error === 'rol', 'los requisitos los pone el Líder');
+  CW.crewDueno(o, { que: 'borrar', crew: 'Exigentes' });
+
   // ⏳ la primera semana, en el tiempo
   const DIA = 86400000;
   CW.crewDueno(o, { que: 'borrar', crew: 'Ricos 2' });

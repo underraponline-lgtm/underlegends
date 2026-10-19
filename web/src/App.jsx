@@ -15,7 +15,7 @@ import { pasosEnInicio, quiereBienvenida, quiereTutorial } from './primera.js';
 import { AvisoVersion } from './novedad.jsx';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
 const SECC = new Set(['inicio', 'eventos', 'ranking', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'socios', 'guia',
-  'perfil', 'servidor', 'crew', 'pais', 'cuenta', 'cambios',
+  'perfil', 'servidor', 'crew', 'crews', 'pais', 'cuenta', 'cambios',
   'i-historias', 'i-envivo', 'i-semana', 'i-ira', 'i-fechas', 'i-sebusca', 'i-noticias', 'i-encuestas', 'i-raperos',
   'i-panel', 'i-merch', 'i-numeros', 'p-eventos', 'p-ranking', 'p-mw', 'p-tarjetas', 'p-pase', 'p-tienda']);
 // 👆 qué bloque del Inicio es cada toque: la puerta por su dirección, lo demás por el bloque que lo contiene
@@ -120,6 +120,8 @@ const Pase = lazy(() => import('./pase.jsx').then((m) => ({ default: m.Pase })))
 const LigasPagina = lazy(() => import('./ligas.jsx').then((m) => ({ default: m.LigasPagina })));
 // 🏛️ el Salón de la fama (16/10/2026): ver salon.jsx
 const SalonFama = lazy(() => import('./salon.jsx').then((m) => ({ default: m.SalonFama })));
+// 👥 las Crews, su propia sección desde el 19/10/2026 (eran una pestaña del Ranking): ver crewspagina.jsx
+const CrewsPagina = lazy(() => import('./crewspagina.jsx').then((m) => ({ default: m.CrewsPagina })));
 // ⚡ lo que no hace falta para abrir el Inicio va aparte (la pasada del 04/10/2026: el paquete principal pasaba de los
 // 130 KB comprimidos que se puso el remake): Mi cuenta, el changelog y la página de cada servidor
 const Cuenta = lazy(() => import('./cuenta.jsx').then((m) => ({ default: m.Cuenta })));
@@ -523,7 +525,7 @@ export default function App() {
   // 🔤 `/sv/SNK` es Snake Rap: la sigla que se lee abre el mismo perfil que el código (`Liga.codigo()`)
   if (sv && liga) sv = liga.codigo(sv);
   useEffect(() => { if (sv) window.scrollTo(0, 0); }, [sv]);
-  const enRanking = /^#\/(ranking|duelos|eventos|publicaciones|socios|mundo|guia|tarjetas|ligas|salon)(\/|$|\?)/.test(hash || '');
+  const enRanking = /^#\/(ranking|duelos|eventos|publicaciones|socios|mundo|guia|tarjetas|ligas|salon|crews)(\/|$|\?)/.test(hash || '');
   useEffect(() => { if (enRanking) window.scrollTo(0, 0); }, [enRanking]);
   // qué página: '' es el Inicio; `cambios` (01/10/2026) la primera que el Inicio nuevo le sacó a la de hoy
   const partes = (hash || '').replace(/^#\/?/, '').split('?')[0].split('/');
@@ -583,6 +585,7 @@ export default function App() {
     const t = sv ? nombreSv : pagina === 'socios' || pagina === 'mundo' ? 'Socios'
       : pagina === 'tarjetas' ? 'Tarjetas'
       : pagina === 'salon' ? 'Salón de la fama'
+      : pagina === 'crews' ? 'Crews'
       : pagina === 'ligas' ? ({ superliga: 'Superliga', clausura: 'Clausura' }[ligaId] || (ligaId && liga && (liga.ligas().find((x) => x.id === ligaId) || {}).n) || 'Ligas')
       : crewT ? limpio(crewT.crew)
       : pagina === 'pais' && liga && (liga.d.tabla || []).some((f) => String(f.cc).toLowerCase() === String(partes[1]).toLowerCase())
@@ -686,6 +689,7 @@ export default function App() {
         : pagina === 'pais' && partes[1] ? <Aislada key={'Pais' + partes[1]} n="Pais" pagina><Suspense fallback={<Cargando />}><PaginaPais liga={liga} cc={partes[1]} /></Suspense></Aislada>
         : pagina === 'r' && partes[1] ? <Aislada key="Perfil" n="Perfil" pagina><Suspense fallback={<Cargando />}><Perfil liga={liga} dc={yo.dc} k={partes[1]} tab={partes[2] || ''} /></Suspense></Aislada>
         : pagina === 'salon' ? <Aislada key="Salon" n="Salon" pagina><Suspense fallback={<Cargando />}><SalonFama liga={liga} enc={enc} /></Suspense></Aislada>
+        : pagina === 'crews' ? <Aislada key="Crews" n="Crews" pagina><Suspense fallback={<Cargando />}><CrewsPagina liga={liga} dc={yo.dc} /></Suspense></Aislada>
         : pagina === 'ligas' ? <Aislada key="Ligas" n="Ligas" pagina><Suspense fallback={<Cargando />}><LigasPagina liga={liga} id={ligaId} /></Suspense></Aislada>
         : pagina === 'tarjetas' ? <Aislada key="Tarjetas" n="Tarjetas" pagina><Suspense fallback={<Cargando />}><Tarjetas liga={liga} dc={yo.dc} tipo={partes[1] || ''} q={(hash || '').split('?')[1] || ''} /></Suspense></Aislada>
         : pagina === 'guia' ? <Aislada key="Guia" n="Guia" pagina><Suspense fallback={<Cargando />}><Guia liga={liga} dc={yo.dc} /></Suspense></Aislada>

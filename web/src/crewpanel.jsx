@@ -8,6 +8,8 @@ import { Cara, DosToques } from './piezas.jsx';
 import { aBase64, achicar } from './imagen.js';
 import { ENTRADA_NOMBRE, ROL_NOMBRE, accionCrew, crewDe, cuandoVence, errorCrew, quedan, useCrews } from './crews.js';
 
+// el orden de las letras para elegir el mínimo (de la mejor a la peor): sólo el orden, los umbrales viven en comun/rangos.py
+const LETRAS = ['SSS', 'SS', 'S', 'A', 'B', 'C', 'D', 'E'];
 const nombreDe = (liga, k) => { const f = liga.T[k]; return f ? limpio(f.n) : k; };
 const enlaceCrew = (id) => '#/crew/' + encodeURIComponent(id);
 
@@ -359,6 +361,8 @@ function AjustesLider({ c, va, hacer, setMsg, pend }) {
   const [desc, setDesc] = useState(c.desc || '');
   const [logo, setLogo] = useState(null);
   const [subiendo, setSubiendo] = useState(false);
+  const [rg, setRg] = useState((c.req && c.req.rg) || '');
+  const [ev, setEv] = useState(String((c.req && c.req.ev) || 0));
   return (
     <div className="cw-bloque">
       <h3 className="cw-h">Cómo se entra</h3>
@@ -367,6 +371,22 @@ function AjustesLider({ c, va, hacer, setMsg, pend }) {
           <input type="radio" name="cw-entrada" checked={c.entrada === k} disabled={va} onChange={() => hacer({ accion: 'entrada', entrada: k })} />{t}
         </label>
       ))}</div>
+      {/* 🎯 lo que pide para entrar, como los trofeos mínimos de un clan (19/10/2026): se mira al pedir o al unirse a una
+          abierta, no al aceptar una invitación (bot/crews.js `faltaReq()`) */}
+      <h3 className="cw-h">Qué pide para entrar</h3>
+      <form className="cw-fila" onSubmit={(e) => { e.preventDefault(); hacer({ accion: 'req', req: { rg, ev: Number(ev) || 0 } }, 'Listo: así se ve en la página de crews.'); }}>
+        <label className="cw-req-l">Letra mínima
+          <select className="cw-sel" value={rg} onChange={(e) => setRg(e.target.value)}>
+            <option value="">Ninguna</option>
+            {LETRAS.map((x) => <option key={x} value={x}>{x} o más</option>)}
+          </select>
+        </label>
+        <label className="cw-req-l">Eventos en la temporada
+          <input className="cw-busca cw-req-n" type="number" min={0} max={100} inputMode="numeric" value={ev} onChange={(e) => setEv(e.target.value)} />
+        </label>
+        <button type="submit" className="btn borde2 chico" disabled={va}>Guardar</button>
+      </form>
+      <small className="cw-nota">Se mira cuando alguien pide entrar o se une a una abierta. A quien invitás, entra igual.</small>
       <h3 className="cw-h">El nombre</h3>
       <form className="cw-fila" onSubmit={(e) => { e.preventDefault(); hacer({ accion: 'nombre', nombre, sigla }, 'Listo.'); }}>
         <input className="cw-busca" value={nombre} maxLength={24} onChange={(e) => setNombre(e.target.value)} aria-label="El nombre de la crew" />
