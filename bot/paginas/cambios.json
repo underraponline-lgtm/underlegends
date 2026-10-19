@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.67",
+   "dia": "2026-10-19",
+   "cuando": "2026-10-19T21:30:00-04:00",
+   "titulo": "El panel de los servidores socios",
+   "items": [
+    "📊 **Los dueños de los servidores socios tienen su panel**: su puntaje y cómo viene, sus eventos y su gente semana a semana, qué días y a qué hora juntan más raperos, qué días la Liga está más llena de eventos, sus raperos, sus crews y las visitas a su página. Con sugerencias de qué conviene. Si sos dueño, lo ves en **Mi cuenta → Mi servidor**."
+   ]
+  },
+  {
    "version": "3.66",
    "dia": "2026-10-19",
    "cuando": "2026-10-19T19:30:00-04:00",
