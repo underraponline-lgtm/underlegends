@@ -151,6 +151,8 @@ if (!DatabaseSync) {
   const titulos = mand.map((p) => p.b.embeds[0].title);
   ok(titulos.length === 2 && titulos.some((x) => /rol peligroso/.test(x)) && titulos.some((x) => /en masa/.test(x)),
     'la vuelta avisa las dos cosas de DDF: el rol a una cuenta que no es un bot y las expulsiones en masa', titulos.join(' | '));
+  const medAr = o.medidasVer().antiraid || {};
+  ok(medAr.rol === 1 && medAr.masivo === 1, 'y queda medido en el estado del objeto (antes `medir` no tenía dónde guardarlo)', JSON.stringify(medAr));
   const n1 = pedidos.length;
   registro.push(...echa(3, '9', 5e3).map((e, k) => ({ ...e, id: sf(T + 4 * 60e3 + k * 5e3) })));
   await o.antiraidVuelta(T + 5 * 60e3);

@@ -4866,8 +4866,10 @@ export class Avisos {
     // una semana, contra un techo gratis de 5 millones (y las lecturas de KV, de 32.000 a 63.000 de 100.000). Antes de
     // arreglar se mide: cada consulta suma sus filas leídas bajo su propio texto —así dos pedidos que se cruzan no se
     // confunden—, cada lectura de KV bajo su clave (las de cada persona, juntas) y cada pedido bajo su ruta. Sólo
-    // números, nunca de quién. Se guarda cada 10 minutos (`medidasGuardar()`) y se ve en `/avisos/estado`
-    this.med = { filas: {}, kv: {}, pedidos: {} };
+    // números, nunca de quién. Se guarda cada 10 minutos (`medidasGuardar()`) y se ve en `/avisos/estado`.
+    // 🔴 `antiraid` (pasada del 19/10/2026): el anti-raid contaba sus avisos, lo de AUTOMÁTICO y sus errores con
+    // `medir('antiraid', …)` desde el 18/10, y sin este balde no se guardaba nada: anduviera o no, se veía igual
+    this.med = { filas: {}, kv: {}, pedidos: {}, antiraid: {} };
     const real = state.storage.sql;
     const filas = (cur, q) => {
       let n = 0;
@@ -5256,16 +5258,16 @@ export class Avisos {
     if (!forzar && this.medT && ahora - this.medT < 10 * MIN) return;
     this.medT = ahora;
     const g = this.medidasVer();
-    this.med = { filas: {}, kv: {}, pedidos: {} };
+    this.med = { filas: {}, kv: {}, pedidos: {}, antiraid: {} };
     this.guardar('medidas', g);
   }
 
-  /** 📏 Lo guardado más lo que todavía no se guardó: `{desde, t, filas, kv, pedidos}`, cada uno de mayor a menor */
+  /** 📏 Lo guardado más lo que todavía no se guardó: `{desde, t, filas, kv, pedidos, antiraid}`, cada uno de mayor a menor */
   medidasVer() {
     const ahora = Date.now();
     const g = this.leer('medidas') || {};
     const out = { desde: g.desde || ahora, t: ahora };
-    for (const c of ['filas', 'kv', 'pedidos']) {
+    for (const c of ['filas', 'kv', 'pedidos', 'antiraid']) {
       const suma = Object.assign({}, g[c] || {});
       for (const [k, n] of Object.entries(this.med[c] || {})) suma[k] = (suma[k] || 0) + n;
       out[c] = Object.fromEntries(Object.entries(suma).sort((a, b) => b[1] - a[1]).slice(0, c === 'filas' ? 80 : 60));
