@@ -234,14 +234,20 @@ class Reconocer:
         for k in multi:
             self.lista.pop(k, None)
         self.alias = {clave(a): b for a, b in (alias or {}).items() if clave(a) and b}
+        # 🔴 LOS NOMBRES DE DISCORD, FUERTES Y DÉBILES (pasada del 19/10/2026). El usuario (el último de la lista: `@algo`)
+        # es único en Discord y vale siempre. El apodo y el nombre visible son de cualquiera: «Max» era DKT y «Adrian» era
+        # Nairda, y un recién llegado con ese nombre se llevaba lo de otro. Valen sólo si dicen algo: 7 letras o más, o
+        # con números («lilgosu», «number9408» sí; «max», «adrian», «ezeee» no)
         self.dc = {}
         for did, ns in (discord or {}).items():
             raw = self.did.get(str(did))
             if not raw:
                 continue
-            for n in ns or []:
+            ns = [n for n in (ns or []) if n]
+            for j, n in enumerate(ns):
                 k = clave(n)
-                if len(k) >= 3:
+                usuario = j == len(ns) - 1
+                if len(k) >= 3 and (usuario or len(k) >= 7 or any(ch.isdigit() for ch in k)):
                     self.dc.setdefault(k, set()).add(raw)
         self.leets = {}
         for k, raw in self.lista.items():
@@ -270,17 +276,22 @@ class Reconocer:
         k = clave(limpio(texto))
         if not k:
             return '', ''
-        if k in self.lista:
-            return self.lista[k], 'lista'
+        # 🔴 el alias declarado ANTES que la Lista (pasada del 19/10/2026): «Over» está en la Lista como fila suelta y su
+        # alias dice Mr Still Ballin, que es lo que dice `canon()` del ranking
         a = self._por_alias(k)
         if a:
             return a, 'alias'
+        if k in self.lista:
+            return self.lista[k], 'lista'
         d = self.dc.get(k) or set()
         if len(d) == 1:
             return next(iter(d)), 'discord'
-        lt = self.leets.get(leet(k)) or set()
-        if len(lt) == 1:
-            return next(iter(lt)), 'numeros'
+        # 🔴 los números como letras, sólo si lo ESCRITO trae números (pasada del 19/10/2026): «l3wito» es LEWITO, pero
+        # «Gabo» no es G4B0 ni «Ti» es 71
+        if any(ch.isdigit() for ch in k):
+            lt = self.leets.get(leet(k)) or set()
+            if len(lt) == 1:
+                return next(iter(lt)), 'numeros'
         return '', ''
 
     def nombre(self, texto, did='', evento=''):

@@ -192,7 +192,11 @@ def numeros(mes, eventos, fx, vistos, fuera, videos, svs, clave, otros=None):
            'batalla': bats,
            'servidor': [{'op': s, 'n': svs.get(s) or s, 'gente': len(gente_sv[s]), 'ev': ev_sv.get(s, 0)} for s in sv_l]}
     if otros is not None:
-        out.update(MO.numeros(ini, fin, otros, out['rapero']))
+        # 🔴 una falla en las de «Ver las demás» no tumba el paso entero (pasada del 19/10/2026): sin esto, ni cierre ni pago
+        try:
+            out.update(MO.numeros(ini, fin, otros, out['rapero']))
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ MES AWARDS sin las demás nominaciones (%s)' % str(e)[:80])
     return out
 
 
@@ -357,10 +361,50 @@ def votantes(lista, d=None, dids=None, clave=None):
     return out
 
 
-def cerrar(mes, m, votos, ahora):
+def _paga(cat, sv=False):
+    """Los Puntos de Tienda de un premio, con los números de HOY (sólo se usan al cerrar: después quedan congelados)."""
+    if sv:
+        return PREMIO_SV.get(cat) or 0
+    return PREMIO.get(cat) or (MO.PREMIO_OTRA if cat in dict((c, 1) for c, _n, _d in OTRAS) else 0)
+
+
+def _resolver_did():
+    """`did_de(persona, fila)`: el Discord de quien cobra. El de la fila primero (el Hincha trae el suyo y puede no estar en
+    la Lista), después el del padrón por la CLAVE de la persona y no por el texto exacto: «Lvel 🇻🇪» y «Lvel» son la misma
+    (pasada del 19/10/2026: con el texto exacto, 4 de 167 nominados de octubre no cobraban)."""
+    pad = _dids_padron()
+    try:
+        import multiplicadores as MU
+        k = MU._clave_persona
+    except Exception:                                    # noqa: BLE001
+        k = (lambda n: str(n or '').lower())             # noqa: E731
+    por_k = {}
+    for raw, did in pad.items():
+        if k(raw):
+            por_k.setdefault(k(raw), did)
+
+    def did_de(q, fila):
+        if fila.get('did') and q == fila.get('n'):
+            return str(fila['did'])
+        return pad.get(q) or por_k.get(k(q)) or ''
+    return did_de
+
+
+def cerrar(mes, m, votos, ahora, did_de=None):
     """Quién ganó cada categoría: el más votado (`encuestas.ganador()`), o con pocos votos el primero de los números.
-    Devuelve el mes cerrado."""
+    Devuelve el mes cerrado.
+
+    🔒 Y CONGELA EL PREMIO (pasada del 19/10/2026): `premio` = `[[persona, discord, puntos]]` al cierre. Antes la Tienda se
+    rearmaba en cada corrida con los nombres y los números de ese día: renombrar a alguien en la Lista, sacar una categoría
+    «de momento» o cambiar un premio borraba o cambiaba lo YA pagado de un mes cerrado."""
     import encuestas as EN
+
+    def premiar(x, cat, sv=False):
+        fila = next((y for y in x.get('nom') or [] if y['op'] == x.get('gana')), None)
+        if fila:
+            ps = personas_sv(cat, fila) if sv else personas(cat, fila)
+            x['premio'] = [[q, (did_de(q, fila) if did_de else '') or '', _paga(cat, sv)] for q in ps]
+        return x
 
     def una(eid, x):
         x = dict(x)
@@ -378,10 +422,11 @@ def cerrar(mes, m, votos, ahora):
                 x['total'] = sum(int(v) for v in vv.values() if str(v).isdigit())
         return x
     m = dict(m)
-    m['cats'] = {cat: una('mes:%s:%s' % (mes, cat), x) for cat, x in (m.get('cats') or {}).items()}
+    m['cats'] = {cat: premiar(una('mes:%s:%s' % (mes, cat), x), cat) for cat, x in (m.get('cats') or {}).items()}
     # 🏟️ y los de cada servidor, con su id de encuesta (`mes:<mes>:<SV>:<cat>`)
     if m.get('sv'):
-        m['sv'] = {sv: dict(s, cats={cat: una('mes:%s:%s:%s' % (mes, sv, cat), x) for cat, x in (s.get('cats') or {}).items()})
+        m['sv'] = {sv: dict(s, cats={cat: premiar(una('mes:%s:%s:%s' % (mes, sv, cat), x), cat, True)
+                                     for cat, x in (s.get('cats') or {}).items()})
                    for sv, s in m['sv'].items()}
     m['cerrado'] = _iso(ahora)
     return m
@@ -391,6 +436,8 @@ def correr(aplicar=False, ahora=None, datos=None, votos=None, ajustes=None, niv=
     """Una vuelta: «así va» el mes en curso, los nominados del que terminó (si es el día), lo que Dlx sacó, y el cierre.
     Devuelve lo que se guarda. `datos`, `votos`, `ajustes` y `niv` (los Tier) son para el self-check."""
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
+    # la corrida de verdad (no la del self-check): sólo ahí se busca el Discord de quien cobra en el padrón
+    real = datos is None
     d = leer()
     meses = dict(d.get('meses') or {})
     # 📣👏 lo contado de a poco para la Promo y la Publicación del mes (no en el self-check, que trae sus `datos`)
@@ -402,8 +449,11 @@ def correr(aplicar=False, ahora=None, datos=None, votos=None, ajustes=None, niv=
             print('   ⚠️ MES AWARDS: no pude contar promos y felicitaciones (%s)' % str(e)[:60])
         datos = _datos(vistas)
     actual = mes_de(ahora)
-    # 📈 así va el mes en curso (para la página: «si el mes terminara hoy»)
-    vivo = {'mes': actual, 'cats': nominados(numeros(actual, *datos))} if actual >= DESDE else None
+    # 📈 así va el mes en curso: la página sólo usa qué mes es (los nominados no se ven hasta que termina); los números,
+    # sólo a mano (`main()`), que en el ciclo costaban ~2 s por corrida para nada (pasada del 19/10/2026)
+    vivo = {'mes': actual} if actual >= DESDE else None
+    if vivo and not aplicar:
+        vivo['cats'] = nominados(numeros(actual, *datos))
     # 🗳️ los nominados del mes que terminó, el día 1 desde las 11 AM ET, y hasta que abre se rehacen con lo que sacó Dlx
     prev = anterior(actual)
     if ajustes is None:
@@ -412,6 +462,9 @@ def correr(aplicar=False, ahora=None, datos=None, votos=None, ajustes=None, niv=
             ajustes = MU.ajustes_dueno()
         except Exception:                                # noqa: BLE001
             ajustes = None
+    # 🔴 UN DASHBOARD QUE NO CONTESTA NO ES «DLX NO SACÓ A NADIE» (pasada del 19/10/2026): si no se pudo leer, lo nominado
+    # queda como estaba, con lo que ya había sacado
+    ajustes_ok = ajustes is not None
     sacar = []
     ms = (ajustes or {}).get('mes_sacar') or {}
     if ms.get('mes') == prev:
@@ -419,7 +472,9 @@ def correr(aplicar=False, ahora=None, datos=None, votos=None, ajustes=None, niv=
     if prev >= DESDE and ahora >= en_et(actual, 1, NOMINA_H):
         m = meses.get(prev)
         abre, cierra = en_et(actual, 1, ABRE_H), en_et(actual, 1 + DIAS_VOTO, ABRE_H)
-        if m is None or (ahora < _de_iso(m['abre']) and m.get('sacar') != sacar):
+        # 🔁 HASTA QUE ABRE, SE RECALCULA EN CADA CORRIDA (pasada del 19/10/2026): las llaves del 31 que se procesan
+        # después de las 11 AM del 1 también entran (la madrugada no corre), y lo que Dlx saca entra igual
+        if m is None or (ahora < _de_iso(m['abre']) and ajustes_ok):
             noms = nominados(numeros(prev, *datos), sacar)
             meses[prev] = {'nominado': (m or {}).get('nominado') or _iso(ahora), 'abre': _iso(abre), 'cierra': _iso(cierra),
                            'sacar': sacar, 'cats': {c: {'nom': noms[c]} for c, _n, _d in TODAS}}
@@ -441,7 +496,7 @@ def correr(aplicar=False, ahora=None, datos=None, votos=None, ajustes=None, niv=
             if votos is None:
                 print('   ⚠️ MES AWARDS de %s: no pude leer los votos; se cierra en la corrida siguiente' % nombre_mes(mes))
                 continue
-            meses[mes] = cerrar(mes, m, votos, ahora)
+            meses[mes] = cerrar(mes, m, votos, ahora, did_de=_resolver_did() if real else None)
             print('   🏆 MES AWARDS de %s: cerrado (%s)' % (nombre_mes(mes), ', '.join(
                 '%s %s' % (c2, x.get('gana')) for c2, x in meses[mes]['cats'].items() if x.get('gana'))))
     out = {'_leeme': 'Los MES AWARDS: los nominados, los votos al cierre y los ganadores de cada mes. Los escribe '
@@ -456,22 +511,30 @@ def correr(aplicar=False, ahora=None, datos=None, votos=None, ajustes=None, niv=
 
 
 # ── lo que sale de los ganadores ────────────────────────────────────────────────────────────────────────────────────
-def ganadores(d=None):
-    """`[(mes, cat, opción, la fila del nominado)]` de los meses cerrados."""
+def _orden(cats, base):
+    """Las categorías GUARDADAS de un mes, en el orden de `base`, y al final las que ya no están en el catálogo: un mes
+    cerrado no pierde un ganador porque después se sacó su categoría (pasada del 19/10/2026)."""
+    ks = [c for c, _n, _d in base if c in cats]
+    return ks + sorted(c for c in cats if c not in ks)
+
+
+def ganadores(d=None, con_x=False):
+    """`[(mes, cat, opción, la fila del nominado)]` de los meses cerrados (con `con_x`, también lo guardado de la categoría)."""
     d = leer() if d is None else d
     out = []
     for mes, m in sorted((d.get('meses') or {}).items()):
         if not m.get('cerrado'):
             continue
-        for cat, _n, _de in TODAS:
-            x = (m.get('cats') or {}).get(cat) or {}
+        cats = m.get('cats') or {}
+        for cat in _orden(cats, TODAS):
+            x = cats.get(cat) or {}
             fila = next((y for y in x.get('nom') or [] if y['op'] == x.get('gana')), None)
             if fila:
-                out.append((mes, cat, x['gana'], fila))
+                out.append((mes, cat, x['gana'], fila, x) if con_x else (mes, cat, x['gana'], fila))
     return out
 
 
-def ganadores_sv(d=None):
+def ganadores_sv(d=None, con_x=False):
     """🏟️ `[(mes, sigla, cat, opción, la fila del nominado)]` de los de cada servidor, de los meses cerrados."""
     d = leer() if d is None else d
     out = []
@@ -479,11 +542,12 @@ def ganadores_sv(d=None):
         if not m.get('cerrado'):
             continue
         for sv, s in sorted((m.get('sv') or {}).items()):
-            for cat, _n, _de in CATS_SV:
-                x = (s.get('cats') or {}).get(cat) or {}
+            cats = s.get('cats') or {}
+            for cat in _orden(cats, CATS_SV):
+                x = cats.get(cat) or {}
                 fila = next((y for y in x.get('nom') or [] if y['op'] == x.get('gana')), None)
                 if fila:
-                    out.append((mes, sv, cat, x['gana'], fila))
+                    out.append((mes, sv, cat, x['gana'], fila, x) if con_x else (mes, sv, cat, x['gana'], fila))
     return out
 
 
@@ -511,12 +575,12 @@ def insignias(d=None):
     """`{persona: {ids}}` para `bot/insignias.py`: `mes_rapero`, `mes_revelacion`, `mes_batalla` y las de las doce
     (`mes_organizador`, `mes_staff`…)."""
     out = {}
-    for _mes, cat, _op, fila in ganadores(d):
-        for q in personas(cat, fila):
+    for _mes, cat, _op, fila, x in ganadores(d, con_x=True):
+        for q in [p[0] for p in x.get('premio') or []] or personas(cat, fila):
             out.setdefault(q, set()).add('mes_' + cat)
     # 🏟️ y las de cada servidor: una por categoría, «de su servidor» (`mes_sv_rapero`…)
-    for _mes, _sv, cat, _op, fila in ganadores_sv(d):
-        for q in personas_sv(cat, fila):
+    for _mes, _sv, cat, _op, fila, x in ganadores_sv(d, con_x=True):
+        for q in [p[0] for p in x.get('premio') or []] or personas_sv(cat, fila):
             out.setdefault(q, set()).add('mes_sv_' + cat)
     return out
 
@@ -528,22 +592,26 @@ def tienda(d, dids):
     dd = dict(_dids_padron())
     dd.update(dids or {})
     out = {}
-    for mes, cat, _op, fila in ganadores(d):
+
+    # 🔒 lo congelado al cierre manda (`cerrar()`): quién, su Discord y cuánto. Sin `premio` (un mes cerrado antes de esto),
+    # como antes. Si el Discord quedó vacío, se busca ahora: el Hincha trae el suyo en la fila, y va primero
+    def filas(cat, fila, x, sv):
+        if x.get('premio'):
+            return x['premio']
+        return [[q, '', _paga(cat, sv)] for q in (personas_sv(cat, fila) if sv else personas(cat, fila))]
+    for mes, cat, _op, fila, x in ganadores(d, con_x=True):
         t = _de_iso(((d.get('meses') or {}).get(mes) or {}).get('cerrado'))
-        paga = PREMIO.get(cat) or (MO.PREMIO_OTRA if cat in dict((c, 1) for c, _n, _d in OTRAS) else 0)
-        for q in personas(cat, fila):
-            # 🙌 el Hincha puede no estar en la Lista: trae su Discord
-            did = dd.get(q) or (fila.get('did') if q == fila.get('n') else None)
+        for q, did, paga in filas(cat, fila, x, False):
+            did = did or (fila.get('did') if q == fila.get('n') else None) or dd.get(q)
             if did and paga and t:
-                out['%s:%s:%s' % (mes, cat, q)] = [did, paga, int(t.timestamp() * 1000)]
-    # 🏟️ los de cada servidor, sólo si Dlx les pone premio (`PREMIO_SV`, hoy vacío)
-    for mes, sv, cat, _op, fila in ganadores_sv(d):
+                out['%s:%s:%s' % (mes, cat, q)] = [str(did), paga, int(t.timestamp() * 1000)]
+    # 🏟️ los de cada servidor
+    for mes, sv, cat, _op, fila, x in ganadores_sv(d, con_x=True):
         t = _de_iso(((d.get('meses') or {}).get(mes) or {}).get('cerrado'))
-        paga = PREMIO_SV.get(cat) or 0
-        for q in personas_sv(cat, fila):
-            did = dd.get(q)
+        for q, did, paga in filas(cat, fila, x, True):
+            did = did or dd.get(q)
             if did and paga and t:
-                out['%s:%s:%s:%s' % (mes, sv, cat, q)] = [did, paga, int(t.timestamp() * 1000)]
+                out['%s:%s:%s:%s' % (mes, sv, cat, q)] = [str(did), paga, int(t.timestamp() * 1000)]
     return out
 
 
@@ -615,10 +683,13 @@ def _sin_did(m):
     """El mes sin los Discord IDs de los nominados (los del Hincha): a la página no van."""
     limpia = lambda cats: {c: dict(x, nom=[{a: b for a, b in y.items() if a != 'did'} for y in x.get('nom') or []])  # noqa: E731
                            for c, x in (cats or {}).items()}
-    out = dict(m, cats=limpia(m.get('cats')))
+    # 🔴 sin `sacar` (a quién sacó Dlx no es público: pasada del 19/10/2026) y sin el `premio` congelado (lleva Discord IDs)
+    out = dict(m, cats={c: {a: b for a, b in x.items() if a != 'premio'} for c, x in limpia(m.get('cats')).items()})
+    out.pop('sacar', None)
     # 🏟️ los de cada servidor, sin `juegan` (quién vota no va a la página: su lista de Discord IDs vive en KV)
     if m.get('sv'):
-        out['sv'] = {sv: {'cats': limpia(s.get('cats'))} for sv, s in m['sv'].items()}
+        out['sv'] = {sv: {'cats': {c: {a: b for a, b in x.items() if a != 'premio'} for c, x in limpia(s.get('cats')).items()}}
+                     for sv, s in m['sv'].items()}
     return out
 
 
@@ -761,6 +832,33 @@ def _self_check():
            'el ganador de una de las doce: insignia y 1.000 PdT; el de un grupo, nada (como el servidor)', str(tt2))
         ok(len(mm) == 1 and [y[0] for y in mm[0]['lista']] == ['organizador', 'crew'] and mm[0]['quien'] == ['Velatz'],
            'las doce salen en una sola publicación del mes', str(mm))
+        # 🔒 la pasada del 19/10/2026: lo pagado queda congelado al cierre
+        r3 = correr(aplicar=True, ahora=dt.datetime(2026, 11, 5, 1, tzinfo=utc), datos=datos, votos={}, ajustes={}, niv=niv)
+        ok(r3['meses']['2026-10']['sv']['FFA']['cats']['rapero']['premio'] == [['Bea', '', 1000]],
+           'al cierre se congela quién cobra y cuánto', str(r3['meses']['2026-10']['sv']['FFA']['cats']['rapero'].get('premio')))
+        viejo_p = PREMIO_SV['rapero']
+        PREMIO_SV['rapero'] = 9999
+        try:
+            t9 = tienda(r3, {'Bea': '222'})
+        finally:
+            PREMIO_SV['rapero'] = viejo_p
+        ok(t9.get('2026-10:FFA:rapero:Bea', [0, 0])[1] == 1000, 'cambiar un premio después no cambia lo ya pagado', str(t9))
+        w9 = json.dumps(para_web(r3, dt.datetime(2026, 11, 5, 2, tzinfo=utc)))
+        ok('"sacar"' not in w9 and '"premio": [[' not in w9, 'la página no recibe a quién sacó Dlx ni el premio congelado (con Discord)', w9[:300])
+        # 🔴 un Dashboard que no contesta no deshace lo que Dlx sacó
+        import multiplicadores as _MU
+        viejo_a = _MU.ajustes_dueno
+        _MU.ajustes_dueno = lambda *a, **k: None
+        try:
+            SALIDA2 = SALIDA
+            io.open(SALIDA2, 'w', encoding='utf-8').write(json.dumps({'meses': {}}))
+            correr(aplicar=True, ahora=dt.datetime(2026, 11, 1, 16, tzinfo=utc), datos=datos, votos={},
+                   ajustes={'mes_sacar': {'mes': '2026-10', 'quitar': ['rapero:Cid']}}, niv=niv)
+            r5 = correr(aplicar=True, ahora=dt.datetime(2026, 11, 1, 17, tzinfo=utc), datos=datos, votos={}, ajustes=None, niv=niv)
+        finally:
+            _MU.ajustes_dueno = viejo_a
+        ok('Cid' not in [x['op'] for x in r5['meses']['2026-10']['cats']['rapero']['nom']] and r5['meses']['2026-10']['sacar'] == ['rapero:Cid'],
+           'si el Dashboard no contesta, lo que Dlx sacó sigue afuera', str(r5['meses']['2026-10']['cats']['rapero']['nom']))
     finally:
         SALIDA = viejo
     print('\n   %s\n' % ('todo bien' if not mal else '🔴 %d mal' % mal))
