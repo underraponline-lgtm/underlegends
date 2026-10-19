@@ -221,6 +221,8 @@ export function Merch({ liga }) {
   // los socios: los servidores de la Liga que vienen en el lobby, con su color y su logo
   const svs = liga ? Object.values(liga.svs || {}).filter((s) => s.color && s.sv) : [];
   const socios = svs.filter((s) => s.logo).slice(0, 4);
+  // (cada ítem es una tupla [clave, título, texto, dibujo]: el dibujo no se pinta como lista, la clave va en el <li>)
+  /* eslint-disable react/jsx-key */
   const items = [
     ['remera', 'Remera Under Legends', 'Negra, con el logo al pecho', <Prenda tipo="remera" color="#141414" logo="/ul.png" />],
     ['buzo', 'Buzo Liga Global', 'Magenta, con el logo y «LIGA GLOBAL»', <Prenda tipo="buzo" color="#E41373" logo="/ul.png" texto="LIGA GLOBAL" />],
@@ -230,6 +232,7 @@ export function Merch({ liga }) {
     ...(svs.length ? [['stickers', 'Stickers de la Liga', 'Los logos de los socios',
       <Stickers logos={['/ul.png', ...svs.filter((s) => s.logo).map((s) => liga.logo(s.sv))]} />]] : []),
   ];
+  /* eslint-enable react/jsx-key */
   return (
     <Sec id="merch" titulo="Merchandising">
       {/* el texto en UN span: la nota es flex, y cada pedazo suelto quedaba como un ítem con su hueco («nada : cuando») */}

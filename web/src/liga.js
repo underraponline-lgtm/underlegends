@@ -16,8 +16,10 @@ export const PAIS = {
   ni: 'Nicaragua', cu: 'Cuba', br: 'Brasil', ae: 'Emiratos', no: 'Noruega',
 };
 
-// sin emojis, banderas ni rellenos invisibles: «RIZAS 🇻🇪» -> «RIZAS»
-const FUERA = /[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{20E3}\u{200D}\u{3164}\u{2800}\u{2070}-\u{209F}\u{B9}\u{B2}\u{B3}\u{E0020}-\u{E007F}]/gu;
+// sin emojis, banderas ni rellenos invisibles: «RIZAS 🇻🇪» -> «RIZAS» (con `u`, punto de código por punto de código: el
+// selector de variante y el unidor sueltos se van a propósito)
+// eslint-disable-next-line no-misleading-character-class
+const FUERA =/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}\u{20E3}\u{200D}\u{3164}\u{2800}\u{2070}-\u{209F}\u{B9}\u{B2}\u{B3}\u{E0020}-\u{E007F}]/gu;
 export function limpio(s) {
   return String(s || '').replace(FUERA, '').replace(/\s+/g, ' ').replace(/^[ ·-]+|[ ·-]+$/g, '');
 }

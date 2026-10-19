@@ -50,6 +50,8 @@ export function etiquetaClic(el) {
     return '→ ' + (IR_A[seg] || seg || 'inicio').slice(0, 30);
   }
   const t = String(el.getAttribute('aria-label') || el.textContent || '').replace(/\d+([.,]\d+)*/g, '#')
+    // (con `u`, cada punto de c\u00F3digo por separado: el selector de variante y el unidor se van solos, a prop\u00F3sito)
+    // eslint-disable-next-line no-misleading-character-class
     .replace(/[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}\uFE0F\u200D]/gu, '').replace(/\s+/g, ' ').trim().toLowerCase();
   const limpio = t.replace(/[^\p{L}\p{N} #·.,¿?¡!'()/&+_→«»-]/gu, '').trim().slice(0, 40);
   if (limpio && /\p{L}/u.test(limpio)) return limpio;

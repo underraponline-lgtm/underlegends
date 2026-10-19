@@ -81,6 +81,18 @@ jobs:
         if: success() || failure()
         with:
           node-version: '20'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      # 🔎 LA PÁGINA, CON ESLINT (Dlx, 19/10/2026: «dale»). Publicaciones se rompió en
+      # producción por un nombre reexportado y usado sin importar, y vite lo construyó
+      # sin avisar. Mira sólo lo que tumba la página (ver web/eslint.config.js).
+      - name: la página, con ESLint
+        if: success() || failure()
+        working-directory: web
+        run: |
+          npm ci --no-audit --no-fund
+          npx eslint src eslint.config.js vite.config.js
 
       # 🔔 EL WORKER, SIN CLOUDFLARE. `avisos_prueba.mjs` cifra contra el
       # ejemplo del RFC 8291 y lee los anuncios igual que Python —con

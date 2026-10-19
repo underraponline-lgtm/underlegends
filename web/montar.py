@@ -125,8 +125,8 @@ HTML_CARGA = """<body>
      cae como un sello, la barra se llena por partes y tres capas —negra, magenta, verde— se van en diagonal. Con
      transform y no con clip-path: en un Android modesto mover una capa es barato y recortar la pantalla entera no.
      ⚠️ «LA PÁGINA CARGA RÁPIDO Y LA ANIMACIÓN NO SE NOTA» (Dlx): la primera vez de cada visita (`lg:intro`, de la
-     sesión) el corte espera a que la entrada termine (`MIN`, ~1,4 s: Dlx, 18/10, «la veo completa pero pasa bien
-     rápido» y después «1 segundo menos»), con la barra llenándose de a poco y un momento llena; al recargar en la misma visita, sin espera. Con
+     sesión) el corte espera a que la entrada termine (`MIN`, ~1,9 s: Dlx, 18/10, «la veo completa pero pasa bien
+     rápido», después «1 segundo menos» y el 19/10 «medio segundo más»), con la barra llenándose de a poco y un momento llena; al recargar en la misma visita, sin espera. Con
      «reducir movimiento», nada de esto: se apaga con un fundido. Sin este script, se apaga como antes. -->
 <div id="lg-carga" aria-hidden="true"><i class="lg-capa v"></i><i class="lg-capa m"></i><i class="lg-capa n"></i><div class="lg-c"><span class="lg-sello"><span class="lg-sombra"></span><span class="lg-onda"></span><img src="/ul.png" alt="" width="96" height="96"></span><b class="lg-tit"><i style="--i:0">L</i><i style="--i:1">I</i><i style="--i:2">G</i><i style="--i:3">A</i><i class="lg-esp" style="--i:4"></i><i style="--i:5">G</i><i style="--i:6">L</i><i style="--i:7">O</i><i style="--i:8">B</i><i style="--i:9">A</i><i style="--i:10">L</i></b><small>DE FREESTYLE</small><span class="lg-seg"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="lg-tip"><span>Cargando el ranking</span></span></div></div>
 <script>
@@ -139,7 +139,7 @@ HTML_CARGA = """<body>
   // 🧘 y «Menos animaciones» de Mi cuenta, que app.js pone recién al llegar: acá se lee del navegador
   try { if ((JSON.parse(localStorage.getItem('lg:ajustes') || 'null') || {}).calma) { quieto = true; h.classList.add('calma'); } } catch (e) {}
   try { primera = !sessionStorage.getItem('lg:intro'); sessionStorage.setItem('lg:intro', '1'); } catch (e) {}
-  var MIN = quieto ? 0 : (primera ? 1400 : 0);
+  var MIN = quieto ? 0 : (primera ? 1900 : 0);
   var segs = el.querySelectorAll('.lg-seg i'), tip = el.querySelector('.lg-tip');
   var TIPS = ['Cargando el ranking', 'Preparando las llaves', 'Contando los puntos', 'Buscando tus tarjetas'];
   var k = 0, p = 0, ya = false;
