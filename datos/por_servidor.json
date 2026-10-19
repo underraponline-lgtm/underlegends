@@ -997,10 +997,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 3300,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "",
@@ -1065,10 +1062,7 @@
     "ovr": 48,
     "pod": 0,
     "pts": 20250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Calíz": {
@@ -1143,10 +1137,7 @@
     "ovr": 46,
     "pod": 0,
     "pts": 10000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Carlos": {
@@ -1180,8 +1171,7 @@
     "racha": "1/1",
     "tg": {
      "dv": true,
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -1314,8 +1304,7 @@
     "pts": 8250,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    },
    "FFA": {
@@ -2035,8 +2024,7 @@
     "pts": 4998,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -2351,8 +2339,7 @@
     "pts": 8925,
     "racha": "0/0",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -2603,10 +2590,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 2888,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "GS🇦🇷": {
@@ -4814,10 +4798,7 @@
     "ovr": 47,
     "pod": 0,
     "pts": 17500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "MetriOdin": {
@@ -5533,10 +5514,7 @@
     "ovr": 51,
     "pod": 1,
     "pts": 28000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "PARADOJA": {
@@ -7242,10 +7220,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 3300,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "0/1",
@@ -7324,10 +7299,7 @@
     "ovr": 49,
     "pod": 0,
     "pts": 26500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Tuca": {
@@ -7812,10 +7784,7 @@
     "ovr": 46,
     "pod": 0,
     "pts": 10000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Xplicit": {
@@ -8179,10 +8148,7 @@
     "ovr": 46,
     "pod": 0,
     "pts": 9750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "dxg": {
@@ -8445,10 +8411,7 @@
     "ovr": 46,
     "pod": 0,
     "pts": 10000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "tito calderon": {

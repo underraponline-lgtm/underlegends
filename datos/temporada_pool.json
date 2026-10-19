@@ -547,7 +547,6 @@
    "dobles": 10,
    "infalt": true,
    "perf": 1,
-   "podsem": true,
    "sube": true,
    "svc": 1,
    "trios": 6
@@ -630,8 +629,6 @@
    "cab": 1,
    "dcor": true,
    "dobles": 3,
-   "infalt": true,
-   "podsem": true,
    "svc": 2,
    "trios": 3
   }
@@ -2096,7 +2093,6 @@
   "tg_t": {
    "cohete": true,
    "dobles": 3,
-   "reciente": true,
    "rev": 1,
    "trios": 1
   }
@@ -2615,7 +2611,6 @@
   "total": 186,
   "rango": "C",
   "tg_t": {
-   "infalt": true,
    "trios": 1
   }
  },
@@ -2803,7 +2798,6 @@
   "total": 186,
   "rango": "D",
   "tg_t": {
-   "infalt": true,
    "sube": true,
    "svc": 1,
    "svtag": "llamas",
@@ -2879,7 +2873,6 @@
   "rango": "D",
   "tg_t": {
    "dobles": 2,
-   "infalt": true,
    "perf": 1
   }
  },
@@ -3058,7 +3051,6 @@
   "tg_t": {
    "busc": 2,
    "cobro": 1,
-   "infalt": true,
    "suelto": true,
    "svc": 1,
    "trios": 1
@@ -3170,8 +3162,7 @@
   "total": 186,
   "rango": "D",
   "tg_t": {
-   "dobles": 2,
-   "infalt": true
+   "dobles": 2
   }
  },
  {
@@ -3459,7 +3450,6 @@
   "rango": "D",
   "tg_t": {
    "dobles": 2,
-   "infalt": true,
    "rev": 1
   }
  },
@@ -4384,8 +4374,7 @@
   "total": 186,
   "rango": "E",
   "tg_t": {
-   "dobles": 3,
-   "infalt": true
+   "dobles": 3
   }
  },
  {
@@ -4489,7 +4478,6 @@
   "rango": "E",
   "tg_t": {
    "dcor": true,
-   "reciente": true,
    "svc": 1,
    "svtag": "campeon"
   }
@@ -4525,8 +4513,7 @@
   "total": 186,
   "rango": "E",
   "tg_t": {
-   "dobles": 2,
-   "infalt": true
+   "dobles": 2
   }
  },
  {
@@ -4563,7 +4550,6 @@
    "cab": 1,
    "dcor": true,
    "dobles": 1,
-   "infalt": true,
    "svc": 1
   }
  },
@@ -4743,7 +4729,6 @@
   "rango": "E",
   "tg_t": {
    "dobles": 1,
-   "infalt": true,
    "sube": true
   }
  },
@@ -4988,7 +4973,6 @@
   "total": 186,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
    "trios": 1
   }
  },
@@ -5308,7 +5292,6 @@
   "total": 186,
   "rango": "E",
   "tg_t": {
-   "infalt": true,
    "svtag": "llamas",
    "trios": 1
   }
@@ -5532,7 +5515,6 @@
   "rango": "E",
   "tg_t": {
    "dobles": 1,
-   "infalt": true,
    "trios": 2
   }
  },
@@ -5773,10 +5755,7 @@
   "o": 155,
   "pos": 98,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "infalt": true
-  }
+  "rango": "E"
  },
  {
   "full": "CJ",
@@ -5991,8 +5970,7 @@
   "rango": "E",
   "tg_t": {
    "busc": 1,
-   "dobles": 1,
-   "reciente": true
+   "dobles": 1
   }
  },
  {
@@ -6132,8 +6110,7 @@
   "total": 186,
   "rango": "E",
   "tg_t": {
-   "busc": 1,
-   "infalt": true
+   "busc": 1
   }
  },
  {
@@ -6306,8 +6283,7 @@
   "total": 186,
   "rango": "E",
   "tg_t": {
-   "dobles": 1,
-   "infalt": true
+   "dobles": 1
   }
  },
  {
@@ -6375,10 +6351,7 @@
   "pos": 254,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "infalt": true
-  }
+  "rango": "E"
  },
  {
   "full": "Scot",
@@ -6410,10 +6383,7 @@
   "pos": 255,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "infalt": true
-  }
+  "rango": "E"
  },
  {
   "full": "Global Hustler",
@@ -6480,10 +6450,7 @@
   "pos": 257,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "infalt": true
-  }
+  "rango": "E"
  },
  {
   "full": "MHS",
@@ -6517,8 +6484,7 @@
   "total": 186,
   "rango": "E",
   "tg_t": {
-   "dobles": 1,
-   "infalt": true
+   "dobles": 1
   }
  },
  {
@@ -6856,8 +6822,7 @@
   "total": 186,
   "rango": "E",
   "tg_t": {
-   "cohete": true,
-   "reciente": true
+   "cohete": true
   }
  },
  {
@@ -7118,8 +7083,7 @@
   "total": 186,
   "rango": "E",
   "tg_t": {
-   "cobro": 1,
-   "reciente": true
+   "cobro": 1
   }
  },
  {
@@ -7283,10 +7247,7 @@
   "o": 199,
   "pos": 114,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "infalt": true
-  }
+  "rango": "E"
  },
  {
   "full": "Abysuss",
@@ -8424,10 +8385,7 @@
   "pos": 292,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Fin",
@@ -8594,10 +8552,7 @@
   "o": 237,
   "pos": 129,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "infalt": true
-  }
+  "rango": "E"
  },
  {
   "full": "Focox",
@@ -8628,10 +8583,7 @@
   "o": 238,
   "pos": 130,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "infalt": true
-  }
+  "rango": "E"
  },
  {
   "full": "Magic",
@@ -8797,8 +8749,7 @@
   "total": 186,
   "rango": "E",
   "tg_t": {
-   "dobles": 1,
-   "reciente": true
+   "dobles": 1
   }
  },
  {
@@ -9900,7 +9851,6 @@
   "total": 186,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
    "trios": 1
   }
  },
@@ -10032,10 +9982,7 @@
   "pos": 322,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "infalt": true
-  }
+  "rango": "E"
  },
  {
   "full": "Imagy",
@@ -10136,10 +10083,7 @@
   "o": 283,
   "pos": 146,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "MetriOdin",
@@ -11925,10 +11869,7 @@
   "pos": 360,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "MAXIMILIANO CALVO",
@@ -12058,10 +11999,7 @@
   "o": 340,
   "pos": 163,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Lambroggini",
@@ -12375,8 +12313,7 @@
   "total": 186,
   "rango": "E",
   "tg_t": {
-   "dobles": 1,
-   "reciente": true
+   "dobles": 1
   }
  },
  {
@@ -13608,10 +13545,7 @@
   "pos": 401,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "lil",
@@ -13742,10 +13676,7 @@
   "pos": 405,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Ab'l 🇦🇷 🇩🇴",
@@ -13999,10 +13930,7 @@
   "pos": 411,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Izaya",
@@ -14802,10 +14730,7 @@
   "o": 423,
   "pos": 179,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Ivaynex",
@@ -15297,10 +15222,7 @@
   "pos": 442,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "gibraltar 🇦🇨",
@@ -15716,10 +15638,7 @@
   "pos": 455,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "FALON 🇨🇱",
@@ -15815,10 +15734,7 @@
   "pos": 458,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Galileo",
@@ -15849,10 +15765,7 @@
   "o": 455,
   "pos": 183,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Jere",
@@ -15884,10 +15797,7 @@
   "pos": 459,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "King",
@@ -15951,10 +15861,7 @@
   "pos": 461,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "LV",
@@ -15986,10 +15893,7 @@
   "pos": 462,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "maldita enfermedad",
@@ -16053,10 +15957,7 @@
   "pos": 464,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Rayden",
@@ -16088,10 +15989,7 @@
   "pos": 465,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "SDK",
@@ -16123,10 +16021,7 @@
   "pos": 466,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "SMAFF",
@@ -16222,10 +16117,7 @@
   "pos": 469,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "tkl",
@@ -16320,10 +16212,7 @@
   "pos": 471,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Yio",
@@ -16355,10 +16244,7 @@
   "pos": 472,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Zafka",
@@ -16389,10 +16275,7 @@
   "o": 471,
   "pos": 185,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Zanet",
@@ -16424,10 +16307,7 @@
   "pos": 473,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Zanti",
@@ -16459,10 +16339,7 @@
   "pos": 474,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "ZWO 🇦🇷",
@@ -16494,10 +16371,7 @@
   "pos": 475,
   "fc": true,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "ELPIBEOSIRIS",
