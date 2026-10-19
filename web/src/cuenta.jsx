@@ -7,7 +7,7 @@
 // hace cada cosa por dentro —la foto, las redes, «tu servidor», salir— lo sigue haciendo app.js (`cuentaFotoSi()`,
 // `cuentaRedes()`, `cuentaServidor()`, `cuentaSalir()`…) y esta página se entera de cada cambio por `lg:cuentaest`
 // (App.jsx envuelve `pintaPopCuenta()`). Su ventana vieja queda de respaldo, si esto no se monta.
-import { useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { DUENO, PAIS, hora, limpio, nuevaQue, num, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, DosToques, Ico, accion } from './piezas.jsx';
 import { CaraDc } from './arriba.jsx';
@@ -227,6 +227,15 @@ function Quien({ liga, dc }) {
 }
 
 // ── cada parte ───────────────────────────────────────────────────────────────────────────────────
+// 🧩 ¿TODAS LAS PARTES A LA VEZ? (la vista en tarjetas de la compu, 19/10/2026): ahí arriba ya está «Todavía no entraste»
+// con su botón, y cada parte repetía el suyo —cinco «Entrar con Discord» a la vez—. En el teléfono se abre una por vez y
+// cada una sí lleva el suyo: sin él, la parte quedaba sin forma de entrar
+const TodasJuntas = createContext(false);
+function BotonEntrar({ chico = true }) {
+  if (useContext(TodasJuntas)) return null;
+  return <button type="button" className={'btn verde' + (chico ? ' chico' : '')} onClick={accion.entrar}>Entrar con Discord</button>;
+}
+
 function Caja({ t, children, d }) {
   return <section className="cu-caja"><h3>{t}</h3>{d ? <p className="cu-d">{d}</p> : null}{children}</section>;
 }
@@ -444,8 +453,9 @@ function FotoCaja({ liga, dc }) {
   const libre = (f) => (f.libre_hasta ? 'Hasta el ' + f.libre_hasta + ' la podés cambiar las veces que quieras.'
     : 'Hasta que arranque la temporada la podés cambiar las veces que quieras.');
   let cuerpo;
+  // (sin entrar: el botón, salvo en la vista con todas las partes, que ya tiene el de arriba — ver `TodasJuntas`)
   if (!dc) {
-    cuerpo = <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button>;
+    cuerpo = <BotonEntrar />;
   } else if (!dc.clave) {
     cuerpo = <a className="btn verde chico" href="#/cuenta/verificar">Verificarme</a>;
   } else if (F && F.hecho) {
@@ -707,13 +717,7 @@ function OcultarFoto({ dc }) {
   const est = useCuentaEst();
   useEffect(() => { if (dc && W.pedirMiFoto) W.pedirMiFoto(); }, [dc && dc.id]);
   const d = 'Si la ocultás, la página y tus tarjetas (también las de Discord) te muestran con tu inicial. Se aplica en la próxima vuelta del ciclo: cada media hora, salvo de 3 a 11 AM (hora del este).';
-  if (!dc) {
-    return (
-      <Caja t="Tu foto" d={d}>
-        <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button>
-      </Caja>
-    );
-  }
+  if (!dc) return <Caja t="Tu foto" d={d + ' Entrá con Discord para usarlo.'}><BotonEntrar /></Caja>;
   const M = est.MIFOTO || {};
   const e = est.MIFOTO_EST || {};
   const nota = !est.MIFOTO ? 'Cargando…'
@@ -784,7 +788,7 @@ function Pedidos({ liga, dc }) {
   };
   useEffect(pedirMios, [dc && dc.id]);
   if (!dc) {
-    return <Caja t="Algo está mal" d="Entrá con Discord —con la cuenta que usás ahora— para pedir que lo arreglemos."><button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button></Caja>;
+    return <Caja t="Algo está mal" d="Entrá con Discord —con la cuenta que usás ahora— para pedir que lo arreglemos."><BotonEntrar chico={false} /></Caja>;
   }
   const res = q.trim().length >= 2 ? (liga.d.tabla || []).filter((f) => limpio(f.n).toLowerCase().includes(q.trim().toLowerCase())).slice(0, 6) : [];
   const elegido = k ? liga.T[k] : null;
@@ -866,7 +870,7 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
           {dc ? (
             <div className="cu-fila"><CaraDc dc={dc} cls="cu-av chica" /><span><b>{limpio(dc.n)}</b>
               <small>{yo ? 'Tu tarjeta: ' + limpio(yo.n) : dc.rapero ? 'Sos ' + limpio(dc.rapero) + ' · todavía no jugaste esta temporada' : 'Sin tarjeta todavía'}</small></span></div>
-          ) : <button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button>}
+          ) : <BotonEntrar chico={false} />}
           {/* la sesión de antes del 25/09 no trae la clave: es un toque, `prompt=none` no vuelve a pedir nada */}
           {dc && dc.rapero && !dc.clave ? (
             <p className="cu-d">Tu sesión es de una versión anterior. Actualizala para ver tus tarjetas y tu perfil: es un toque, no te pide nada.{' '}
@@ -1199,6 +1203,7 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, cual =
       <div className="cu tarjetas">
         <div className="cu-cab"><h1 className="cu-h">{cual === 'ajustes' ? 'Ajustes' : 'Mi cuenta'}</h1>{dueno ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
         {cual === 'cuenta' ? <div className="cu-tj-quien"><Quien liga={liga} dc={dc} /></div> : null}
+        <TodasJuntas.Provider value={cual === 'cuenta'}>
         <div className="cu-tarjetas">
           {cartas.map((c) => (
             <section key={c.id} id={'cu-' + c.id} className="cu-tj" aria-label={c.n}>
@@ -1207,6 +1212,7 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, cual =
             </section>
           ))}
         </div>
+        </TodasJuntas.Provider>
         {cual === 'cuenta' && (dc || liga.yo) ? <button type="button" className="cu-salir" onClick={accion.salir}><Ico n="salir" t={20} />{dc ? 'Salir' : 'No soy yo'}</button> : null}
       </div>
     );

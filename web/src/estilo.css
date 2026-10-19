@@ -22,7 +22,9 @@ h1,h2,h3,p{margin:0}
 .marca img{width:40px;height:40px;border-radius:50%}
 .marca small{display:block;font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:0.06em;margin-top:4px;color:var(--gris)}
 .cab-der{display:flex;align-items:center;gap:10px}
-.btn-ico{width:44px;height:44px;display:grid;place-items:center;border:2px solid var(--linea)}
+.btn-ico{width:44px;height:44px;display:grid;place-items:center;border:2px solid var(--linea);background:none;color:inherit;padding:0;cursor:pointer}
+/* ↑ sin fondo en la base (19/10/2026): la campana y la lupa son <button> y el engranaje un <a>, así que las dos primeras
+   llevaban el gris del navegador —#F0F0F0 en Clara, #6B6B6B en Noche, que parece deshabilitado— y el engranaje no */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;font:800 14px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;letter-spacing:.02em;border:2px solid transparent;white-space:nowrap}
 .btn.verde{background:var(--verde);color:#030304}
 .btn.borde{border-color:var(--esc-tinta);color:var(--esc-tinta)}
