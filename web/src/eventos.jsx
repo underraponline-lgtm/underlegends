@@ -882,8 +882,9 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
               {ultimoDia ? <button type="button" className="btn borde2 chico" onClick={() => elegir(ultimoDia, true)}>Ver el último día con eventos</button> : null}
             </div>
           ) : null}
-          {/* un día sin nada no es un callejón: abajo, lo último que se jugó (era media página en blanco en la compu) */}
-          {nada && ultimoDia ? (
+          {/* un día sin nada no es un callejón: abajo, lo último que se jugó (era media página en blanco en la compu). Y
+              un día CORTO tampoco (19/10/2026): con dos eventos, la columna terminaba ~1.000 px antes que la de al lado */}
+          {(nada || evs.length < 3) && ultimoDia ? (
             <section className="grupo evp-ultdia"><h3 className="g-t">Lo último que se jugó · {tituloDe(ultimoDia)}</h3>
               {(porDia[ultimoDia] || []).slice().sort((a, b) => (a.t < b.t ? 1 : -1)).slice(0, 3)
                 .map((c, i) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={i === 0 && !!c.ll} sig={sigDe(c, 0)} />)}

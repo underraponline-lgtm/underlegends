@@ -34,6 +34,8 @@ const DIAS = ['domingos', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 
 const DIA1 = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
 const NOMBRE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País' };
+// las listas largas del perfil (sus eventos, cara a cara): cuántas se ven antes de «Ver los N»
+const VER_PRIMEROS = 8;
 // quién está en «Comparar dos» de Tarjetas (la de Temporada, que es la que abre): con carta y con cara, como
 // `conTarjeta()` de app.js. Sin esto, «Comparar conmigo» con alguien sin cara ponía en su lugar al #1 de la lista
 const enComparar = (x) => !!x && (x.c || []).includes('temporada') && x.fo !== 0;
@@ -210,7 +212,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
         </div>
         <div className="pf-carta">
           {cs.length > 1 ? (
-            <div className="pf-cartas" role="tablist" aria-label="Sus tarjetas">
+            <div className={'pf-cartas' + (cs.length > 3 ? ' cuatro' : '')} role="tablist" aria-label="Sus tarjetas">
               {cs.map((c) => <button key={c} type="button" role="tab" aria-selected={c === cual} className={c === cual ? 'on' : ''} onClick={() => setCual(c)}>{NOMBRE[c]}</button>)}
             </div>
           ) : null}
@@ -590,15 +592,19 @@ function Eventos({ liga, p, e }) {
   const ev = (p && p.ev) || [];
   const [q, setQ] = useState('');
   const [pu, setPu] = useState('');
+  const [todos, setTodos] = useState(false);
   if (!ev.length) return <section className="sec pf-sec"><p className="rk-vacio">Todavía no jugó ningún evento en la {liga.temp}.</p></section>;
   const cuenta = {};
   ev.forEach(([, x]) => { cuenta[x] = (cuenta[x] || 0) + 1; });
   const puestos = Object.keys(cuenta).sort((a, b) => ordenPuesto(a) - ordenPuesto(b));
   const nq = norm(q);
-  const vis = ev.filter(([n, x]) => (!pu || x === pu) && (!nq || norm(((e || {})[n] || [])[0] || '').includes(nq)));
+  const vis0 = ev.filter(([n, x]) => (!pu || x === pu) && (!nq || norm(((e || {})[n] || [])[0] || '').includes(nq)));
+  // (los últimos 8 y el resto a un toque; con un filtro o una búsqueda, todos los que cumplen — 19/10/2026)
+  const corta = !todos && !q && !pu && vis0.length > VER_PRIMEROS;
+  const vis = corta ? vis0.slice(0, VER_PRIMEROS) : vis0;
   return (
     <section className="sec pf-sec">
-      <div className="sec-t"><h2>Sus eventos</h2><span className="tj-n">{vis.length === ev.length ? ev.length + ' en la ' + liga.temp : vis.length + ' de ' + ev.length}</span></div>
+      <div className="sec-t"><h2>Sus eventos</h2><span className="tj-n">{vis0.length === ev.length ? ev.length + ' en la ' + liga.temp : vis0.length + ' de ' + ev.length}</span></div>
       {ev.length > 3 ? (
         <div className="rk-fil pf-ev-fil">
           <label className="rk-buscar"><Ico n="buscar" t={18} />
@@ -634,6 +640,10 @@ function Eventos({ liga, p, e }) {
           );
         })}
       </ol>
+      {corta || (todos && !q && !pu && vis0.length > VER_PRIMEROS) ? (
+        <button type="button" className="btn borde chico pf-ver-mas" aria-expanded={todos} onClick={() => setTodos(!todos)}>
+          {todos ? 'Ver menos' : 'Ver los ' + vis0.length + ' eventos'}</button>
+      ) : null}
     </section>
   );
 }
@@ -714,7 +724,11 @@ function Duelos({ liga, p, e }) {
     return [...por.values()].sort((a, b) => (b.g + b.p) - (a.g + a.p) || (b.g - b.p) - (a.g - a.p));
   }, [du, liga]);
   const [abierto, setAbierto] = useState(null);
+  const [todos, setTodos] = useState(false);
   if (!du.length) return <section className="sec pf-sec"><p className="rk-vacio">Todavía no tiene duelos en la {liga.temp}: cuentan los 1vs1 de las llaves.</p></section>;
+  // (los 8 con quien más se cruzó y el resto a un toque, 19/10/2026: con 26 rivales eran 17 pantallas de perfil en el
+  // teléfono; el abierto se muestra aunque esté más abajo)
+  const vis = todos ? rivales : rivales.filter((r, i) => i < VER_PRIMEROS || r.id === abierto);
   const g = du.filter((d) => d[2]).length;
   const rd = (p && p.rd) || null;
   return (
@@ -722,7 +736,7 @@ function Duelos({ liga, p, e }) {
       <div className="sec-t"><h2>Cara a cara</h2><span className="tj-n">{g} ganados de {du.length}{rd ? ' · racha ' + rd[0] + ' (máx ' + rd[1] + ')' : ''}</span></div>
       <p className="pf-bajada">Contra cada rival: cuántas veces se cruzaron y cómo le fue. Tocá uno para ver sus duelos.</p>
       <ul className="pf-cc">
-        {rivales.map((r) => {
+        {vis.map((r) => {
           const t = r.g + r.p;
           const on = abierto === r.id;
           return (
@@ -752,6 +766,10 @@ function Duelos({ liga, p, e }) {
           );
         })}
       </ul>
+      {rivales.length > VER_PRIMEROS ? (
+        <button type="button" className="btn borde chico pf-ver-mas" aria-expanded={todos} onClick={() => setTodos(!todos)}>
+          {todos ? 'Ver menos' : 'Ver los ' + rivales.length + ' rivales'}</button>
+      ) : null}
     </section>
   );
 }
@@ -830,26 +848,37 @@ function SusPromos({ liga, p, esYo }) {
 }
 
 function Insignias({ liga, p }) {
+  const [faltan, setFaltan] = useState(false);
   const cat = liga.d.insignias || [];
   const tiene = new Map(((p && p.ins) || []).map((x) => [x[0], x[1]]));
   const mw = (p && p.mw) || {};
+  // 🏅 LAS QUE TIENE, A LA VISTA; LAS QUE FALTAN, A UN TOQUE (19/10/2026): eran 49 en grilla —38 bloqueadas— y lo más
+  // largo del perfil era lo que NO tenía (~1.700 px en la compu, ~3.500 en el teléfono). No se saca ninguna
+  const fila = ([id, ic, n, desc]) => {
+    const t = tiene.get(id);
+    return (
+      <li key={id} className={t ? 'si' : ''}>
+        <span className="pf-ins-ic" aria-hidden="true">{ic}</span>
+        <b>{n}</b>
+        <small>{t ? 'desde el ' + fecha(t).toLowerCase() : desc}</small>
+      </li>
+    );
+  };
+  const si = cat.filter((x) => tiene.has(x[0]));
+  const no = cat.filter((x) => !tiene.has(x[0]));
   return (
     <>
       {cat.length ? (
         <section className="sec pf-sec">
           <div className="sec-t"><h2>Insignias</h2><span className="tj-n">{tiene.size} de {cat.length}</span></div>
-          <ul className="pf-ins">
-            {cat.map(([id, ic, n, desc]) => {
-              const t = tiene.get(id);
-              return (
-                <li key={id} className={t ? 'si' : ''}>
-                  <span className="pf-ins-ic" aria-hidden="true">{ic}</span>
-                  <b>{n}</b>
-                  <small>{t ? 'desde el ' + fecha(t).toLowerCase() : desc}</small>
-                </li>
-              );
-            })}
-          </ul>
+          {si.length ? <ul className="pf-ins">{si.map(fila)}</ul> : <p className="pf-ins-nada">Todavía ninguna.</p>}
+          {no.length ? (
+            <>
+              <button type="button" className="btn borde chico pf-ins-mas" aria-expanded={faltan} onClick={() => setFaltan(!faltan)}>
+                {faltan ? 'Esconder las que faltan' : 'Ver las ' + no.length + ' que faltan'}</button>
+              {faltan ? <ul className="pf-ins pf-ins-no">{no.map(fila)}</ul> : null}
+            </>
+          ) : null}
         </section>
       ) : null}
       <section className="sec pf-sec">
@@ -862,7 +891,9 @@ function Insignias({ liga, p }) {
         </dl>
         {(mw.czd || []).length || (mw.caz || []).length ? (
           <ul className="pf-czd">
-            {(mw.caz || []).map((x, i) => <li key={'a' + i}><b>Cazó a {limpio((x[3] || [])[0] || '')}</b><small>{x[1]} · {limpio(x[2] || '')}</small></li>)}
+            {/* 🔴 `caz` es [período, buscado, categoría, evento, cobró] y NO el orden de `czd` [período, categoría, evento,
+                [cazadores]]: copiado de la línea de abajo, decía «Cazó a P» —la primera letra del evento— (19/10/2026) */}
+            {(mw.caz || []).map((x, i) => <li key={'a' + i}><b>Cazó a {limpio(x[1] || '')}</b><small>{limpio(x[2] || '')} · {limpio(x[3] || '')}</small></li>)}
             {(mw.czd || []).map((x, i) => <li key={'b' + i}><b>Lo cazó {limpio((x[3] || [])[0] || '')}</b><small>{x[1]} · {limpio(x[2] || '')}</small></li>)}
           </ul>
         ) : null}

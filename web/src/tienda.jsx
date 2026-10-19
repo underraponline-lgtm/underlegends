@@ -239,18 +239,21 @@ export function Tienda({ liga, dc }) {
           aria-label="Buscar un rapero para ponerle precio" enterKeyHint="search" />
         {qq ? (res.length ? <ul className="ti-lista">{lista(res.map((x) => x.n), 'res')}</ul>
           : <p className="ti-nota">No hay nadie con ese nombre en la temporada.</p>) : null}
+        </div>
 
+        {/* lo cobrado, abajo y a lo ancho (19/10/2026): a la derecha, con diez cobros contra dos cabezas, dejaba ~440 px
+            vacíos a la izquierda. En la compu, en dos columnas */}
         {cazas.length ? (
-          <>
+          <div className="ti-cobros">
             <h3 className="ti-h">Lo último que se cobró</h3>
             <ul className="ti-cazas">
               {cazas.map((x, i) => (
                 <li key={i}><b>{x.por.map((y) => limpio((liga.fila(y[0]) || {}).n || y[0])).join(' y ')}</b>{x.por.length > 1 ? ' le ganaron a ' : ' le ganó a '}<b>{limpio((liga.fila(x.cabeza) || {}).n || x.cabeza)}</b> en {limpio(x.ev)}{x.por.length > 1 ? ' y cobraron ' : ' y cobró '}<b>{num(x.monto)}</b>.</li>
               ))}
             </ul>
-          </>
+          </div>
         ) : null}
-        </div></div>
+        </div>
       </section>
 
       <TuPromo liga={liga} dc={dc} />

@@ -14,6 +14,13 @@
   text-underline-offset:3px}
 .ti-cazas{list-style:none;margin:0;padding:0;display:grid;max-width:72ch}
 .ti-cazas li{padding:9px 0;border-bottom:1px solid var(--suave);font:500 14.5px/1.45 Archivo,sans-serif}
-.ti-pronto{display:grid;justify-items:start;gap:10px;max-width:640px;margin-bottom:26px;padding:18px;border:2px dashed var(--linea)}
+/* (borde lleno y a lo ancho, 19/10/2026: punteado se leía «sin terminar», y a 640 px dejaba media fila vacía; en la
+   compu el texto a la izquierda y el botón a la derecha) */
+.ti-pronto{display:grid;justify-items:start;gap:10px;margin-bottom:26px;padding:18px;border:2px solid var(--linea);background:var(--caja)}
+@media (min-width: 900px){
+  .app .ti-pronto{grid-template-columns:minmax(0,1fr) auto;column-gap:32px;padding:22px 24px}
+  .app .ti-pronto>*{grid-column:1}
+  .app .ti-pronto>.btn{grid-column:2;grid-row:1 / span 3;align-self:center}
+}
 .ti-pronto h2{margin:0;font:900 22px/1 Archivo,sans-serif;font-stretch:120%;text-transform:uppercase}
 .ti-pronto p{margin:0;max-width:60ch;font:500 15px/1.45 Archivo,sans-serif;color:var(--gris)}

@@ -163,7 +163,9 @@ h1,h2,h3,p{margin:0}
 @media (min-width: 900px){.app .sec{padding:30px var(--gut) 6px}}
 @media (min-width: 900px){.app .sec-t h2{font-size:30px}}
 @media (min-width: 900px){.app .rail{grid-auto-flow:row;grid-template-columns:repeat(5,1fr);overflow:visible}}
-@media (min-width: 900px){.app .notas-g{grid-template-columns:1.25fr 1fr;align-items:start;gap:24px}}
+@media (min-width: 900px){.app .notas-g{grid-template-columns:1.25fr 1fr;align-items:stretch;gap:24px}}
+/* ↑ la destacada, del alto de la lista (19/10/2026, Dlx con una captura: «mirá cómo quedó esta parte»): con `start`
+   terminaba ~100 px antes que las notas de al lado y dejaba ese hueco abajo a la izquierda */
 @media (min-width: 900px){.app .destacada{padding:18px;gap:22px}}
 @media (min-width: 900px){.app .destacada h3{font-size:28px}}
 @media (min-width: 900px){.app .mcs{grid-template-columns:repeat(5,1fr)}}
@@ -408,7 +410,10 @@ h1,h2,h3,p{margin:0}
 .yo-chip{display:flex;align-items:center;gap:8px;border:2px solid #F6F6F6;padding:3px 12px 3px 3px;font:800 14px/1 Archivo,sans-serif}
 .yo-chip .cara{width:34px;height:34px}
 .cara,.h-c,.sc-cara,.p-foto,.mono-c,.cp-cara,.n-cara,.f-cara{overflow:hidden}
-.cara{display:inline-grid;place-items:center;border-radius:50%;background:var(--inv);color:var(--inv-tinta);flex:none}
+.cara{display:inline-grid;place-items:center;border-radius:50%;background:var(--inv);color:var(--inv-tinta);flex:none;
+  box-shadow:0 0 0 1.5px color-mix(in srgb,var(--tinta) 22%,transparent)}
+/* ↑ el anillo (19/10/2026): una foto negra (la de Hassan es un cuadrado negro de verdad) era un disco sin borde en Clara
+   y desaparecía en Noche. Sale de la tinta de cada tema y de cada sección oscura, así que se ve en las dos */
 .cara img,.h-c img,.sc-cara img,.p-foto img,.mono-c img,.cp-cara img,.n-cara img,.f-cara img{width:100%;height:100%;object-fit:cover;display:block}
 .ini{font:900 16px/1 Archivo,sans-serif;font-stretch:120%}
 .tab-av{width:24px;height:24px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 2px currentColor}
@@ -474,7 +479,7 @@ h1,h2,h3,p{margin:0}
 .n-vis.n-carta{width:52px;height:auto;border:0}
 .n-cara,.f-cara{border-radius:50%;display:grid;place-items:center;background:var(--inv);color:var(--inv-tinta)}
 .n-cara{width:52px;height:52px}
-@media (min-width: 900px){.app .d-vis{width:170px}}
+@media (min-width: 900px){.app .d-vis{width:196px}}
 .mcs2{grid-auto-columns:138px}
 .mc-ci{width:100%}
 @media (min-width: 900px){.app .mcs2{grid-template-columns:repeat(5,1fr)}}
@@ -856,6 +861,9 @@ h1,h2,h3,p{margin:0}
 @media (min-width: 900px){.app .sec.negra{padding-bottom:36px}}
 .noche .sec.negra,.noche .pie.negra,.noche .nt-p{--fondo:#121214}
 .sec.negra+.pie.negra{margin-top:0;border-top-color:#2A2A2E}
+/* 🧵 dos oscuros seguidos, pegados (19/10/2026): el margen separa una sección negra de una blanca, y entre dos oscuras
+   dejaba ver el fondo de la página —una costura blanca de 18 px en Clara (Salón, cada servidor) y una banda en Noche— */
+.escena+.sec.negra,.escena+.pie.negra,.sec.negra+.sec.negra{margin-top:0}
 .pz-cab{display:flex;align-items:center;gap:12px;margin:-2px 0 16px}
 .pz-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0;padding:2px 0}
 .pz-tabs::-webkit-scrollbar{display:none}

@@ -368,11 +368,14 @@ span.tab-av img{width:100%;height:100%;object-fit:cover;display:block}
    eran de las señales de «página hecha con IA» (orbes de color atrás). Ahora, sin servidor, DOS TIRAS DE CINTA en las
    esquinas, como la que sostiene un afiche en la pared, lejos del texto; y con servidor (`silueta()` de piezas.jsx
    pone `--mo-sil`), SU SILUETA grande y cortada atrás del título, en su color */
-.escena:before{content:"";position:absolute;right:-62px;top:26px;width:250px;height:58px;background:var(--mo-c,var(--magenta));
+/* 📌 LA CINTA, SOBRE LA ESQUINA (19/10/2026): las tiras medían 420–440 px y entraban 270 px en el escenario, así que
+   cruzaban párrafos, números y botones en diez páginas (las capturas de ese día). Ahora cada una tiene su centro EN la
+   esquina, como la cinta que sostiene un afiche: corta la esquina y no llega al texto */
+.escena:before{content:"";position:absolute;right:-75px;top:-20px;width:150px;height:40px;background:var(--mo-c,var(--magenta));
   opacity:var(--mo-o,.5);transform:rotate(32deg);transition:background-color .6s,opacity .6s}
-.escena:after{content:"";position:absolute;left:-70px;bottom:30px;width:250px;height:58px;background:var(--mo-c2,var(--verde));
+.escena:after{content:"";position:absolute;left:-75px;bottom:-20px;width:150px;height:40px;background:var(--mo-c2,var(--verde));
   opacity:.5;transform:rotate(32deg)}
-@media (min-width: 900px){.app .escena:before{width:440px;height:86px;right:-110px;top:44px}.app .escena:after{width:420px;height:80px;left:-120px;bottom:48px}}
+@media (min-width: 900px){.app .escena:before{width:240px;height:60px;right:-120px;top:-30px}.app .escena:after{width:240px;height:60px;left:-120px;bottom:-30px}}
 .escena[style*="--mo-sil"]:before{right:-150px;top:-30px;width:440px;height:440px;transform:rotate(-8deg);opacity:var(--mo-so,.55);
   -webkit-mask:var(--mo-sil) center/contain no-repeat;mask:var(--mo-sil) center/contain no-repeat}
 .escena[style*="--mo-sil"]:after{display:none}
@@ -1804,7 +1807,10 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-nada{display:grid;gap:12px;justify-items:start;padding:18px 16px 4px}
 .evp-nada p{margin:0;max-width:56ch;font:400 16px/1.5 Archivo,sans-serif;color:var(--gris)}
 /* la columna de al lado: el mes, la campana y el calendario */
-.evp-der{display:grid;gap:0;align-content:start;border-top:2px solid var(--linea)}
+/* (`minmax(0,1fr)`: sin eso la columna tomaba el ancho de lo más ancho de adentro —el mes, 378 px en una columna de 360—
+   y en la compu se salía 18 px de la grilla de la página, con el texto pegado al borde — 19/10/2026) */
+.evp-der{display:grid;grid-template-columns:minmax(0,1fr);gap:0;align-content:start;border-top:2px solid var(--linea)}
+.evp-g{grid-template-columns:repeat(7,minmax(0,1fr))}
 .evp-bloque{padding:18px 16px 16px;border-bottom:2px solid var(--linea)}
 .evp-h2{display:flex;align-items:center;gap:8px;margin:0 0 12px;font:900 20px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
 .evp-mes-pc{display:none}
@@ -1817,7 +1823,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .evp-g button.pas{background:var(--caja)}
 .evp-g button.hoy{box-shadow:inset 0 0 0 2px #29B298}
 .evp-g button.sel{background:var(--inv);color:var(--inv-tinta)}
-.evp-g button em{display:flex;gap:2px;font-style:normal}
+.evp-g button em{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;max-width:100%;font-style:normal}
 .evp-g button i{width:6px;height:6px;border-radius:50%}
 .evp-g button u{font:700 15px/1 "Barlow Condensed",sans-serif;text-decoration:none}
 .evp-tx{margin:0;font:400 14.5px/1.45 Archivo,sans-serif;color:var(--gris)}
@@ -2081,13 +2087,17 @@ a.rk-z:hover{border-color:var(--linea)}
 .gu-cartas{display:grid;gap:12px}
 .gu-carta{display:grid;grid-template-columns:84px minmax(0,1fr);gap:14px;align-items:start;padding:14px;border:2px solid var(--linea);background:var(--caja)}
 .gu-carta.prox{opacity:.8}
-.gu-carta h3{margin:0 0 4px;font:900 18px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.gu-carta h3{margin:0 0 4px;font:900 18px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;word-spacing:.14em}
+/* ↑ el espacio de Archivo en 900 ancho mide 4 px contra letras de 14: «HISTÓRICA Y PRIME» se leía de corrido (19/10/2026) */
 .gu-carta p{margin:0 0 8px;font:500 14px/1.45 Archivo,sans-serif;color:var(--gris)}
 .gu-carta ul{margin:0;padding:0 0 0 18px;display:grid;gap:3px;font:700 13px/1.35 Archivo,sans-serif}
 .gu-rangos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 .gu-dos{display:grid;gap:14px}
-.gu-glos{margin:0;display:grid;gap:10px}
-.gu-glos div{padding:12px 14px;border:2px solid var(--linea);background:var(--caja)}
+/* 📖 LAS PALABRAS, COMO UN GLOSARIO Y NO COMO CAJAS (19/10/2026): eran ~6.000 px de cajas grises iguales, y en la compu
+   cada una se estiraba al alto de su vecina (una línea en una caja de 200 px). Ahora cada palabra con una raya arriba y
+   el alto que necesita; en la compu, dos columnas de diario */
+.gu-glos{margin:0;display:grid;gap:0}
+.gu-glos div{padding:12px 0 14px;border-top:2px solid var(--linea);break-inside:avoid}
 .gu-glos dt{margin-bottom:4px;font:900 16px/1.2 Archivo,sans-serif;font-stretch:110%;text-transform:uppercase}
 .gu-glos dd{margin:0;font:500 14.5px/1.5 Archivo,sans-serif}
 @media (min-width: 900px){
@@ -2111,7 +2121,7 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .gu-cartas{grid-template-columns:repeat(2,minmax(0,1fr))}
   .app .gu-rangos{grid-template-columns:repeat(8,minmax(0,1fr))}
   .app .gu-dos{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .app .gu-glos{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .app .gu-glos{display:block;columns:2;column-gap:40px}
 }
 
 /* ── «Lo que hacemos» con su ejemplo (`sumar.jsx`, preview con `lg:prev-sum`). Dlx, 03/10/2026: «que cuando se
@@ -2315,9 +2325,15 @@ a.rk-z:hover{border-color:var(--linea)}
 .pf-pr-e{margin:0;font:700 15px/1.45 "Barlow Condensed",sans-serif;letter-spacing:0.02em;color:var(--gris)}
 .pf-pr-e.mal{color:var(--magenta-tx)}
 .pf-carta{display:grid;gap:10px;justify-items:center;width:min(220px,62vw);justify-self:center}
-.pf-cartas{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
-.pf-cartas button{min-height:32px;padding:0 8px;border:1.5px solid var(--esc-linea);background:transparent;color:var(--esc-gris);cursor:pointer;
-  font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;text-transform:uppercase}
+/* 🎚️ UNA SOLA FILA, como un selector (19/10/2026): con tres, SERVIDOR quedaba sola abajo; con cuatro (País), dos y dos.
+   Y fondo propio: sobre la franja del escenario, «COMPETITIVA» era gris sobre magenta */
+.pf-cartas{display:flex;width:100%}
+.pf-cartas.cuatro{display:grid;grid-template-columns:1fr 1fr}
+.pf-cartas button{flex:1 1 auto;min-width:0;min-height:34px;padding:0 5px;border:1.5px solid var(--esc-linea);background:var(--escenario);color:var(--esc-gris);
+  cursor:pointer;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;text-transform:uppercase;white-space:nowrap}
+.pf-cartas button+button{margin-left:-1.5px}
+.pf-cartas.cuatro button:nth-child(n+3){margin-top:-1.5px}
+.pf-cartas.cuatro button:nth-child(3){margin-left:0}
 .pf-cartas button.on{background:var(--esc-tinta);border-color:var(--esc-tinta);color:#030304}
 @media (min-width: 900px){
   .app .pf-cab{grid-template-columns:minmax(0,1fr) 250px;gap:48px}
@@ -2398,7 +2414,12 @@ a.rk-z:hover{border-color:var(--linea)}
 @media (min-width: 900px){.app .pf-cc{grid-template-columns:repeat(3,minmax(0,1fr))}}
 /* insignias: las que tiene, encendidas; las que no, apagadas con lo que piden */
 .pf-ins{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.pf-ins li{display:grid;gap:5px;align-content:start;padding:12px;border:2px solid var(--suave);opacity:.6}
+.pf-ins li{display:grid;gap:5px;align-content:start;padding:12px;border:2px solid var(--suave)}
+/* (las que faltan: el ícono apagado y el texto en el gris de la letra, no todo al 60 %: a 2,4:1 no se leía qué piden) */
+.pf-ins li:not(.si) .pf-ins-ic{filter:grayscale(1);opacity:.55}
+.pf-ins-mas,.pf-ver-mas{margin-top:12px}
+.pf-ins-no{margin-top:12px}
+.pf-ins-nada{margin:0;color:var(--gris)}
 .pf-ins li.si{opacity:1;border-color:var(--linea);background:var(--caja)}
 .pf-ins b{font:800 15px/1.2 Archivo,sans-serif}
 .pf-ins small{font:500 12.5px/1.35 Archivo,sans-serif;color:var(--gris)}
@@ -2492,14 +2513,18 @@ a.rk-z:hover{border-color:var(--linea)}
 .lk-fc{position:relative;display:block;width:100%;aspect-ratio:300/438;min-width:0;padding:0;border:0;background:none;color:var(--tinta);
   cursor:pointer;-webkit-tap-highlight-color:transparent;container-type:inline-size}
 .lk-fc-img{display:block;width:100%;height:100%;object-fit:contain}
-.lk-fc-sin{display:grid;align-content:center;justify-items:center;gap:6px;width:100%;height:100%;padding:8px 6px;background:var(--suave);
-  border-radius:3px;text-align:center}
-.lk-fc-sin .lk-cara{width:44px;height:44px}
+/* 🃏 LA FICHA DE QUIEN NO TIENE CARTA, UNA SOLA (19/10/2026): oscura en los dos temas, como el dorso de una carta, y
+   quien pasó lo dice el borde verde —no otro fondo—. Antes eran tres: gris, la invertida para quien pasó (un bloque negro
+   que parecía el eliminado, y en Noche blanco brillante) y la gris apagada; las tres en la misma llave */
+.lk-fc-sin{display:grid;align-content:center;justify-items:center;gap:6px;width:100%;height:100%;padding:8px 6px;background:var(--escenario);
+  color:var(--esc-tinta);border:2px solid var(--esc-linea);border-radius:3px;text-align:center}
+.lk-fc-sin .lk-flag{box-shadow:0 0 0 1px var(--esc-linea)}
+.lk-fc-sin .lk-cara{width:44px;height:44px;background:var(--esc-linea);color:var(--esc-tinta);box-shadow:0 0 0 1.5px var(--esc-gris)}
 /* el nombre entra entero en el ancho de la ficha: «FOTOSÍNTESIS» se partía en «FOTOSÍNTESI / S» */
 .lk-fc-sin .lk-n{max-width:100%;font:900 min(13px,9cqi)/1.15 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.02em;white-space:normal;
   overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:break-word}
-.lk-fc.g .lk-fc-sin{background:var(--inv);color:var(--inv-tinta)}
-.lk-fc.copa .lk-fc-sin{background:var(--verde);color:#030304}
+.lk-fc.g .lk-fc-sin{border-color:var(--verde)}
+.lk-fc.copa .lk-fc-sin{background:var(--verde);color:#030304;border-color:var(--verde)}
 .lk-fc.x .lk-fc-img,.lk-fc.x .lk-fc-sin{filter:grayscale(1);opacity:.5}
 .lk-fc.brilla .lk-fc-img{filter:drop-shadow(0 0 3px rgba(229,184,0,.95));animation:lk-fc-brilla 2.6s ease-in-out infinite}
 @keyframes lk-fc-brilla{50%{filter:drop-shadow(0 0 7px rgba(245,208,74,1))}}
@@ -2727,6 +2752,9 @@ a.rk-z:hover{border-color:var(--linea)}
   .app .ti-pasos{grid-template-columns:repeat(3,minmax(0,1fr));max-width:none}
   .app .ti-dos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px;align-items:start}
   .app .ti-dos .ti-lista,.app .ti-dos .ti-busca{max-width:none}
+  .app .ti-cobros{grid-column:1/-1}
+  .app .ti-cobros .ti-cazas{display:block;max-width:none;columns:2;column-gap:48px}
+  .app .ti-cobros .ti-cazas li{break-inside:avoid}
 }
 
 /* 🎟️ el Pase de rapero (pase.jsx): vive en pase.css, que carga su propio pedazo (05/10/2026) */
@@ -2739,7 +2767,9 @@ a.rk-z:hover{border-color:var(--linea)}
 
 /* 🔒 el Dashboard del dueño: vive en dashboard.css, que carga su propio pedazo (05/10/2026) */
 /* 📣 el aviso de la página */
-.aviso-web{display:flex;align-items:flex-start;gap:12px;padding:10px var(--gut);background:var(--inv);color:var(--inv-tinta);border-bottom:4px solid var(--magenta)}
+/* (el color del escenario y no el invertido: el aviso va pegado a la cabecera, que es oscura en los dos temas, y en Noche
+   el invertido lo volvía la franja más clara de la pantalla — las capturas del 19/10/2026) */
+.aviso-web{display:flex;align-items:flex-start;gap:12px;padding:10px var(--gut);background:var(--escenario);color:var(--esc-tinta);border-bottom:4px solid var(--magenta)}
 .aviso-web p{margin:0;flex:1;font-weight:700;line-height:1.4;overflow-wrap:anywhere}
 .aviso-web button{flex:none;width:32px;height:32px;margin:-4px -6px -4px 0;border:0;background:none;color:inherit;font:700 16px/1 Archivo,sans-serif;cursor:pointer}
 .aviso-web button:focus-visible{outline:2px solid var(--magenta);outline-offset:0}
@@ -2782,14 +2812,16 @@ a.rk-z:hover{border-color:var(--linea)}
 .pp-cab h2{margin:6px 0 4px;font:900 22px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
 .pp-cab small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;color:var(--gris)}
 .pp-barra{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
-.pp-barra i{height:6px;background:var(--suave)}
-.pp-barra i.si{background:var(--verde)}
+/* (las casillas y la barra vacías, con el gris de la letra y no con `--suave`: a 1,3:1 no se veía que hubiera casillas
+   ni progreso, en los dos temas — 19/10/2026) */
+.pp-barra i{height:8px;border:1.5px solid var(--gris)}
+.pp-barra i.si{background:var(--verde);border-color:var(--verde)}
 .pp-lista{list-style:none;margin:0;padding:0;border:2px solid var(--linea)}
 .pp-lista li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:start;padding:12px}
 .pp-lista li+li{border-top:1.5px solid var(--suave)}
 .pp-lista li.ahora{background:var(--caja)}
 .pp-lista li>.btn{grid-column:2;justify-self:start;margin-top:6px}
-.pp-i{display:grid;place-items:center;width:26px;height:26px;border:2px solid var(--suave);color:#fff}
+.pp-i{display:grid;place-items:center;width:26px;height:26px;border:2px solid var(--gris);color:#fff}
 .pp-lista li.ok .pp-i{background:var(--verde);border-color:var(--verde)}
 .pp-lista li.ahora .pp-i{border-color:var(--magenta)}
 .pp-lista li.ok .pp-t b{color:var(--gris)}
