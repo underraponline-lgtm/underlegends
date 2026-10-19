@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-10-19T01:27:27Z",
+ "t": "2026-10-19T01:58:13Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -5800,7 +5800,7 @@
      "847124099243180042",
      "gxbrrlaljndrr",
      0,
-     24,
+     23,
      "2026-10-13T22:37:16Z"
     ],
     [
@@ -5988,6 +5988,16 @@
      "DTR",
      "directa",
      ""
+    ],
+    [
+     "1561557330129190923",
+     "2026-10-19T01:51:19Z",
+     null,
+     "DELUXE",
+     "LHYON",
+     "DELUXE",
+     "replica",
+     ""
     ]
    ],
    "tabla": [
@@ -6016,6 +6026,12 @@
      5
     ],
     [
+     "DELUXE",
+     3,
+     2,
+     4
+    ],
+    [
      "NUMBER",
      2,
      1,
@@ -6028,12 +6044,6 @@
      3
     ],
     [
-     "DELUXE",
-     2,
-     1,
-     2
-    ],
-    [
      "GUS",
      3,
      0,
@@ -6041,9 +6051,9 @@
     ],
     [
      "LHYON",
-     2,
+     3,
      0,
-     0
+     1
     ],
     [
      "DLOSCORIA",
@@ -6104,6 +6114,10 @@
     "1561229734317269114": [
      118.0,
      111.5
+    ],
+    "1561557330129190923": [
+     99.5,
+     99.0
     ]
    },
    "staff": [
@@ -6115,18 +6129,18 @@
      "2026-10-18T01:27:21Z"
     ],
     [
+     "847124099243180042",
+     "gxbrrlaljndrr",
+     0,
+     13,
+     "2026-10-19T01:51:19Z"
+    ],
+    [
      "1070553144964173906",
      "Rubik",
      0,
      12,
      "2026-10-14T01:43:48Z"
-    ],
-    [
-     "847124099243180042",
-     "gxbrrlaljndrr",
-     0,
-     10,
-     "2026-10-19T01:25:38Z"
     ],
     [
      "694719521461764126",
@@ -6157,6 +6171,14 @@
      "que": "res",
      "ids": [
       "1561229734317269114"
+     ]
+    },
+    {
+     "id": "r:snake-new-chapter:1561557330129190923",
+     "t": "2026-10-19T01:58:10Z",
+     "que": "res",
+     "ids": [
+      "1561557330129190923"
      ]
     }
    ]
