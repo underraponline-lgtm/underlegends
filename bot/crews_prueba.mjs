@@ -12,7 +12,13 @@ ok(CW.nombreCrew('  Los   del Barrio ') === 'Los del Barrio' && CW.nombreCrew('a
   && CW.nombreCrew('@everyone') === null && CW.nombreCrew('x'.repeat(25)) === null && CW.nombreCrew('Ржунимагу') === 'Ржунимагу',
 'el nombre: 3 a 24, sin markdown ni menciones, cualquier alfabeto');
 ok(CW.siglaCrew('ks') === 'KS' && CW.siglaCrew('') === '' && CW.siglaCrew('ABCDE') === null && CW.siglaCrew('A') === null,
-  'la sigla: 2 a 4, en mayúsculas, opcional');
+  'la sigla: 2 a 4, en mayúsculas');
+ok(CW.descCrew('La crew del barrio, desde 2020') === 'La crew del barrio, desde 2020' && CW.descCrew('corta') === null
+  && CW.descCrew('Sumate en discord.gg/abcdef ya mismo') === null && CW.descCrew('Hablale a @everyone del barrio') === null
+  && CW.descCrew('x'.repeat(161)) === null && CW.descCrew('Mirá https://algo.com para más') === null,
+'la descripción: 10 a 160, sin menciones ni links');
+ok(CW.siglaCrew('', true) === null && CW.siglaCrew('  ', true) === null && CW.siglaCrew('ks', true) === 'KS',
+  'y obligatoria cuando se pide (al crear y al cambiar el nombre)');
 ok(CW.puede('lider', 'borrar') && !CW.puede('colider', 'borrar') && CW.puede('colider', 'sacar', 'veterano')
   && !CW.puede('colider', 'sacar', 'colider') && CW.puede('veterano', 'invitar') && !CW.puede('veterano', 'decidir')
   && !CW.puede('miembro', 'invitar') && !CW.puede('lider', 'sacar', 'lider') && !CW.puede('colider', 'lider'),
@@ -52,7 +58,7 @@ if (!DatabaseSync) {
     ajustes: () => estado.ajustes || {},
     leer: (k) => estado[k],
     cuentaCambio: () => true,
-    aBandeja: (quien, clave, tipo, titulo) => bandeja.push({ quien, clave, titulo }),
+    aBandeja: (quien, clave, tipo, titulo, cuerpo) => bandeja.push({ quien, clave, titulo, cuerpo }),
     saldo(quien, desde, inicial) {
       const r = db.prepare('SELECT COALESCE(SUM(monto), 0) AS n FROM tienda WHERE quien = ?').get(quien);
       return inicial + r.n;
@@ -66,7 +72,9 @@ if (!DatabaseSync) {
   db.prepare('INSERT INTO servidor VALUES (?, ?, ?, ?, ?, ?)').run('7000002002', 't1', 'FFA', 'fabi', 1, 0);
   CW.crewTablas(sql);
   const id = (n) => String(7000000000 + n);
-  const yo = (n, k, x) => CW.crewAccion(o, Object.assign({ quien: id(n), de: k, inicial: 5000, desde: 0 }, x));
+  // crear trae la descripción y el logo ya filtrado (`logo_url` y `logo_v` los pone el objeto después del filtro)
+  const CREAR = { desc: 'La crew de la prueba, del barrio', logo_url: 'https://pub.r2.dev/logos-crews/a.webp', logo_v: 'ok' };
+  const yo = (n, k, x) => CW.crewAccion(o, Object.assign({ quien: id(n), de: k, inicial: 5000, desde: 0 }, x.accion === 'crear' ? CREAR : {}, x));
 
   const s = CW.sembrar(o, { crews: [{ id: 'Follombia', gente: ['ana', 'bea', 'cid'] }, { id: 'KS', nombre: 'KS', gente: ['ana', 'zig'] }] });
   const pub0 = CW.crewsPublico(o);
@@ -78,12 +86,19 @@ if (!DatabaseSync) {
   const c1 = yo(1, 'dora', { accion: 'crear', nombre: 'Los del Barrio', sigla: 'ldb', entrada: 'pedido' });
   ok(c1.ok && c1.saldo === 2500 && c1.precio === CW.PRECIO_CREW, 'crear cuesta 2.500 Puntos de Tienda');
   ok(yo(1, 'dora', { accion: 'crear', nombre: 'Otra' }).error === 'ya_en_crew', 'una crew por persona');
-  ok(yo(2, 'eli', { accion: 'crear', nombre: 'FOLLÓMBIA' }).error === 'nombre_usado', 'el nombre no se repite (sin tildes ni mayúsculas)');
+  ok(yo(2, 'eli', { accion: 'crear', nombre: 'FOLLÓMBIA', sigla: 'FL' }).error === 'nombre_usado', 'el nombre no se repite (sin tildes ni mayúsculas)');
   ok(CW.crewAccion(o, { quien: id(3), de: '', accion: 'crear', nombre: 'Sin cuenta', inicial: 5000 }).error === 'verificate',
     'sin verificarse no se crea nada');
-  ok(yo(4, 'pobre', { accion: 'crear', nombre: 'Pobres', inicial: 1000 }).error === 'saldo', 'sin la plata, no');
+  ok(yo(4, 'pobre', { accion: 'crear', nombre: 'Pobres', sigla: 'PB', inicial: 1000 }).error === 'saldo', 'sin la plata, no');
+  ok(yo(4, 'pobre', { accion: 'crear', nombre: 'Pobres', sigla: 'PB', desc: 'corta', inicial: 9000 }).error === 'desc'
+    && yo(4, 'pobre', { accion: 'crear', nombre: 'Pobres', sigla: 'PB', logo_url: '', inicial: 9000 }).error === 'logo',
+  'sin descripción o sin logo, no se crea');
+  ok(CW.validarCrew({ accion: 'crear', logo_url: 'https://mal', logo_v: 'ok' }).logo_url === undefined
+    && CW.validarCrew({ accion: 'crear', img: 'no es base64!' }).error === 'img', 'el logo filtrado NUNCA sale del pedido');
+  ok(yo(4, 'pobre', { accion: 'crear', nombre: 'Pobres', inicial: 9000 }).error === 'sigla'
+    && yo(4, 'pobre', { accion: 'crear', nombre: 'Pobres', sigla: ' ', inicial: 9000 }).error === 'sigla', 'sin sigla, no se crea');
   estado.ajustes = { crew_precio: 1000 };
-  ok(yo(5, 'rico', { accion: 'crear', nombre: 'Ricos' }).saldo === 4000, 'el precio sale del Dashboard');
+  ok(yo(5, 'rico', { accion: 'crear', nombre: 'Ricos', sigla: 'RC' }).saldo === 4000, 'el precio sale del Dashboard');
   estado.ajustes = {};
 
   ok(yo(1, 'dora', { accion: 'invitar', a: 'fabi' }).ok && bandeja.some((b) => b.quien === '7000002002' && /Los del Barrio/.test(b.titulo)),
@@ -96,6 +111,9 @@ if (!DatabaseSync) {
     'con pedido: queda pedido, y al Líder le llega con el nombre (no la clave)');
   ok(yo(6, 'fabi', { accion: 'decidir', a: 'gus', si: true }).error === 'rol', 'un Veterano no acepta pedidos');
   ok(yo(1, 'dora', { accion: 'decidir', a: 'gus', si: true }).ok, 'el Líder acepta el pedido');
+  ok(CW.crewsPublico(o).crews.find((c) => c.id === 'Los del Barrio').vence === 0
+    && bandeja.some((b) => b.quien === id(1) && b.titulo === '🎉 Los del Barrio queda'),
+  'la primera semana: con dos personas más, la crew queda, y al Líder le llega');
   ok(yo(1, 'dora', { accion: 'rol', a: 'gus', rol: 'colider' }).ok, 'el Líder hace Colíder');
   ok(yo(7, 'gus', { accion: 'rol', a: 'fabi', rol: 'colider' }).error === 'rol' && yo(7, 'gus', { accion: 'rol', a: 'fabi', rol: 'miembro' }).ok,
     'el Colíder baja a Miembro, pero no hace Colíder');
@@ -107,7 +125,7 @@ if (!DatabaseSync) {
   // los 7 días
   ok(yo(6, 'fabi', { accion: 'salir' }).ok && yo(6, 'fabi', { accion: 'pedir', crew: 'Ricos' }).error === 'espera',
     'quien sale espera 7 días para entrar a otra');
-  ok(yo(7, 'gus', { accion: 'sacar', a: 'hugo' }).ok && yo(8, 'hugo', { accion: 'crear', nombre: 'Hugos' }).error === 'espera',
+  ok(yo(7, 'gus', { accion: 'sacar', a: 'hugo' }).ok && yo(8, 'hugo', { accion: 'crear', nombre: 'Hugos', sigla: 'HG' }).error === 'espera',
     'y quien sacan también (si no, «sacame y me meto en otra» saltea los 7 días)');
 
   // el líder
@@ -136,12 +154,71 @@ if (!DatabaseSync) {
     && CW.crewsPublico(o).crews.find((c) => c.id === 'Follombia').gente.find((g) => g[0] === 'ana')[1] === 'colider',
   'Dlx elige el líder de una crew de antes');
   ok(CW.crewDueno(o, { que: 'borrar', crew: 'Ricos' }).ok && !CW.crewsPublico(o).crews.some((c) => c.id === 'Ricos')
-    && yo(5, 'rico', { accion: 'crear', nombre: 'Ricos 2' }).ok, 'cerrar una crew deja a su gente libre, sin esperar');
+    && yo(5, 'rico', { accion: 'crear', nombre: 'Ricos 2', sigla: 'RC2' }).ok, 'cerrar una crew deja a su gente libre, sin esperar');
 
   // borrar mis datos
   CW.crewOlvidar(o, 'cid');
   ok(CW.crewsPublico(o).crews.find((c) => c.id === 'Follombia').gente.find((g) => g[1] === 'lider')[0] === 'ana',
     'si el líder borra sus datos, la crew pasa al colíder');
+  ok(yo(9, 'ana', { accion: 'nombre', nombre: 'Follombia' }).error === 'sigla' && yo(9, 'ana', { accion: 'nombre', nombre: 'Follombia', sigla: 'fol' }).ok
+    && CW.crewsPublico(o).crews.find((c) => c.id === 'Follombia').sigla === 'FOL',
+  'una de la Liga sin sigla la pone cuando su Líder toca el nombre');
+
+  // 🖼️ el logo: dudoso espera, lo aprueba o lo quita quien revisa los fondos, y le llega al Líder
+  const lr = yo(300, 'leo', { accion: 'crear', nombre: 'Logos', sigla: 'LG', logo_url: 'https://pub.r2.dev/logos-crews/b.webp', logo_v: 'revisar' });
+  const pubLg = () => CW.crewsPublico(o).crews.find((c) => c.id === 'Logos');
+  ok(lr.ok && lr.logo === 'revisar' && pubLg().logo === '' && pubLg().desc === CREAR.desc
+    && CW.crewLogosDueno(o).pend.some((x) => x.id === 'Logos') && CW.crewMia(o, { quien: id(300), de: 'leo' }).logo_pend === true,
+  'un logo dudoso: la crew se crea, el logo espera y no se ve');
+  ok(CW.crewDueno(o, { que: 'logo', crew: 'Logos', si: true }).ok && pubLg().logo.endsWith('/b.webp')
+    && bandeja.some((b) => b.quien === id(300) && /ya se ve/.test(b.titulo)), 'aprobado: se ve, y al Líder le llega');
+  const ql = CW.crewDueno(o, { que: 'logo', crew: 'Logos', si: false, motivo: 'no va' });
+  ok(ql.ok && ql.viejos[0].endsWith('/b.webp') && pubLg().logo === '' && bandeja.some((b) => b.quien === id(300) && /se quitó/.test(b.titulo)),
+    'y se puede quitar uno que ya se ve (lo que el filtro dejó pasar)');
+  yo(301, 'lu', { accion: 'pedir', crew: 'Logos' });
+  yo(300, 'leo', { accion: 'decidir', a: 'lu', si: true });
+  ok(yo(301, 'lu', { accion: 'logo', logo_url: 'https://pub.r2.dev/logos-crews/c.webp', logo_v: 'ok' }).error === 'rol'
+    && CW.chequeoLogo(o, { de: 'lu' }).error === 'rol' && CW.chequeoLogo(o, { de: 'leo' }).ok, 'el logo lo cambia el Líder');
+  const nl = yo(300, 'leo', { accion: 'logo', logo_url: 'https://pub.r2.dev/logos-crews/d.webp', logo_v: 'ok' });
+  ok(nl.ok && pubLg().logo.endsWith('/d.webp') && yo(300, 'leo', { accion: 'desc', desc: 'Otra descripción, más larga' }).ok
+    && pubLg().desc === 'Otra descripción, más larga' && yo(300, 'leo', { accion: 'desc', desc: 'no' }).error === 'desc',
+  'el Líder cambia el logo y la descripción');
+  ok(CW.chequeoCrear(o, Object.assign({ quien: id(302), de: 'mia', inicial: 5000, nombre: 'Logos', sigla: 'LG' }, CREAR)).error === 'nombre_usado'
+    && CW.chequeoCrear(o, Object.assign({ quien: id(302), de: 'mia', inicial: 5000, nombre: 'Nueva', sigla: 'NV' }, CREAR)).ok,
+  'el chequeo de crear, sin escribir nada (antes de gastar la IA en el logo)');
+  CW.crewDueno(o, { que: 'borrar', crew: 'Logos' });
+
+  // ⏳ la primera semana, en el tiempo
+  const DIA = 86400000;
+  CW.crewDueno(o, { que: 'borrar', crew: 'Ricos 2' });
+  const t0 = Date.now();
+  const sol = yo(200, 'sol', { accion: 'crear', nombre: 'Solos', sigla: 'SL', entrada: 'abierta' });
+  const pubSol = () => CW.crewsPublico(o).crews.find((c) => c.id === 'Solos');
+  ok(sol.ok && Math.abs(sol.vence - (t0 + CW.PRUEBA_MS)) < 5000 && pubSol().vence === sol.vence
+    && bandeja.some((b) => b.quien === id(200) && b.titulo === '⏳ Solos: tenés una semana'),
+  'una crew nueva nace con una semana, y al Líder le llega al crearla');
+  ok(CW.crewsPublico(o).crews.filter((c) => c.oficial).every((c) => c.vence === 0), 'las de la Liga no tienen semana');
+  const cuenta = (t) => bandeja.filter((b) => b.quien === id(200) && b.titulo === t).length;
+  CW.crewVencer(o, t0 + 3 * DIA);
+  ok(!cuenta('⏳ Quedan 2 días para Solos'), 'a mitad de semana, nada');
+  CW.crewVencer(o, t0 + 5.5 * DIA);
+  CW.crewVencer(o, t0 + 5.6 * DIA);
+  ok(cuenta('⏳ Quedan 2 días para Solos') === 1 && bandeja.find((b) => b.titulo === '⏳ Quedan 2 días para Solos').cuerpo.startsWith('Le faltan 2 personas'),
+    'a dos días le llega el recordatorio, una sola vez');
+  ok(yo(201, 'tom', { accion: 'pedir', crew: 'Solos' }).ok && pubSol().vence > 0, 'con una persona más todavía no queda');
+  CW.crewVencer(o, t0 + 6.5 * DIA);
+  ok(cuenta('⏳ Último día para Solos') === 1 && bandeja.find((b) => b.titulo === '⏳ Último día para Solos').cuerpo.startsWith('Le falta 1 persona'),
+    'el último día, otro, con lo que falta');
+  const trio = yo(210, 'tri', { accion: 'crear', nombre: 'Trio', sigla: 'TR', entrada: 'abierta' });
+  yo(211, 'u1', { accion: 'pedir', crew: 'Trio' });
+  yo(212, 'u2', { accion: 'pedir', crew: 'Trio' });
+  ok(trio.ok && CW.crewVencer(o, t0 + 8 * DIA) === 1 && !pubSol() && CW.crewsPublico(o).crews.some((c) => c.id === 'Trio'),
+    'pasada la semana, la que no llegó se borra y la que llegó queda');
+  ok(bandeja.some((b) => b.quien === id(200) && b.titulo === 'Solos se borró')
+    && bandeja.some((b) => b.quien === id(201) && b.titulo === 'Solos se borró')
+    && yo(201, 'tom', { accion: 'crear', nombre: 'Tomas', sigla: 'TM' }).ok, 'les llega a todos, y quedan libres sin esperar');
+  ok(CW.crewDueno(o, { que: 'borrar', crew: 'Trio' }).ok && bandeja.some((b) => b.quien === id(211) && b.titulo === 'Trio se cerró'),
+    'al cerrar una crew, a su gente le llega (las cuentas se buscan antes de borrar)');
 }
 
 console.log(mal ? `\n  🔴 ${mal} mal, ${bien} bien` : `  ✅ crews: ${bien} bien`);

@@ -4219,7 +4219,8 @@ export async function rutaAvisos(req, env, ruta) {
   // Tienda»)—. Acá se valida la forma; las reglas (el rol, el lugar, la plata) las mira el objeto, que es uno solo
   if (ruta === '/avisos/crew' || ruta === '/avisos/crew-mia') {
     const crudo = await req.text();
-    if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+    // con el logo (19/10/2026) un pedido trae la imagen en base64: hasta el tope del logo y un poco
+    if (crudo.length > (ruta === '/avisos/crew' ? Math.ceil(CW.LOGO_TOPE * 4 / 3) + 4096 : 2048)) return json({ error: 'demasiado grande' }, 413);
     let d = null;
     try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
     if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {
@@ -4247,15 +4248,18 @@ export async function rutaAvisos(req, env, ruta) {
     let d = null;
     try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
     if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token))) ||
-        !['lider', 'nombre', 'borrar'].includes(d.que) || typeof d.crew !== 'string' || d.crew.length > 40 ||
+        !['lider', 'nombre', 'borrar', 'logo'].includes(d.que) || typeof d.crew !== 'string' || d.crew.length > 40 ||
+        (d.si !== undefined && typeof d.si !== 'boolean') ||
         (d.a !== undefined && !claveValida(d.a)) || (d.nombre !== undefined && (typeof d.nombre !== 'string' || d.nombre.length > 40))) {
       return json({ error: 'faltan datos' }, 400);
     }
     const q = await quienPide(req, env, d);
     if (!q.id) return json({ error: q.error }, q.estado);
-    if (!(await puede(q.id, 'ajustes'))) return json({ error: 'no' }, 403);
+    // 🖼️ el logo lo revisan los que revisan los fondos (Dlx: «vos y los del Dashboard»); lo demás, Ajustes
+    if (!(await puede(q.id, d.que === 'logo' ? 'fondos' : 'ajustes'))) return json({ error: 'no' }, 403);
     return elObjeto(env).fetch('https://avisos/crew-dueno', {
-      method: 'POST', body: JSON.stringify({ que: d.que, crew: d.crew, a: d.a, nombre: d.nombre, por: q.id }),
+      method: 'POST', body: JSON.stringify({ que: d.que, crew: d.crew, a: d.a, nombre: d.nombre, si: d.si,
+        motivo: String(d.motivo || '').slice(0, 120), por: q.id }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -5816,9 +5820,13 @@ export class Avisos {
       }
       if (ruta === '/bandeja') return this.bandeja(d);
       // 👥 las crews: quién actúa y de qué perfil lo dice el Worker (`/avisos/crew`, el bot), nunca la página
-      if (ruta === '/crew') { const r = CW.crewAccion(this, d); return json(r, r.estado || 200); }
+      if (ruta === '/crew') { const r = await this.crewConImagen(d); return json(r, r.estado || 200); }
       if (ruta === '/crew-mia') return json(CW.crewMia(this, d));
-      if (ruta === '/crew-dueno') { const r = CW.crewDueno(this, d); return json(r, r.estado || 200); }
+      if (ruta === '/crew-dueno') {
+        const r = CW.crewDueno(this, d);
+        if (r.viejos) await this.borrarLogosCrew(r.viejos);
+        return json(r, r.estado || 200);
+      }
       if (ruta === '/crews-sembrar') { const r = CW.sembrar(this, d); return json(r, r.estado || 200); }
       if (ruta === '/mi-servidor') return this.miServidor(d);
       if (ruta === '/mi-foto') return await this.miFoto(d);
@@ -9942,6 +9950,63 @@ export class Avisos {
     return enviados;
   }
 
+  // ── 👥 el logo de una crew (19/10/2026) ──────────────────────────────
+  /**
+   * 👥 Una acción de crew. Crear y cambiar el logo traen una imagen (Dlx: «un logo que pase por el auto filtro que
+   * tenemos»): ANTES se mira que la acción se pueda hacer —no se gasta la IA ni R2 en una crew que no se iba a crear—,
+   * después el filtro de los fondos (`filtrarImagen()`), y recién ahí se guarda y se hace (bot/crews.js). Con algo que no
+   * va, no entra; dudoso, entra a revisar (`logo_pend`) y la crew se crea igual.
+   */
+  async crewConImagen(d) {
+    const a = String(d.accion || '');
+    if (a !== 'crear' && a !== 'logo') return CW.crewAccion(this, d);
+    const ch = a === 'crear' ? CW.chequeoCrear(this, d) : CW.chequeoLogo(this, d);
+    if (ch.error) return ch;
+    if (!d.img) return { error: 'logo', estado: 400 };
+    const quien = String(d.quien || '');
+    let b = null;
+    try { b = Uint8Array.from(atob(d.img), (c) => c.charCodeAt(0)); } catch (e) { b = null; }
+    // por los primeros bytes, no por lo que dice el pedido (`tipoImagen()`)
+    const tipo = b ? tipoImagen(b) : '';
+    if (!tipo) return { error: 'no es una imagen', estado: 400 };
+    if (b.length > CW.LOGO_TOPE) return { error: 'demasiado grande', estado: 413 };
+    if (tieneMetadatos(b)) return { error: 'metadatos', estado: 400 };
+    // 🛡️ con tope propio, como los fondos: si no, se podrían probar mil imágenes contra la IA hasta que una pase
+    if (!this.cuentaCambio(quien, 'crew_logo_filtro', 8)) return { error: 'espera_dia', estado: 429 };
+    let filtro = { v: 'revisar', si: [], quizas: [], crudo: '', error: 'sin IA' };
+    if (this.env.AI) {
+      try { filtro = await filtrarImagen(this.env, d.img, tipo); } catch (e) {
+        filtro = { v: 'revisar', si: [], quizas: [], crudo: '', error: String((e && e.message) || e).slice(0, 100) };
+      }
+    }
+    this.anotarFiltro(quien, String(d.de || ''), Object.assign({ tipo: 'crew' }, filtro), Date.now());
+    if (filtro.v === 'no') {
+      const cats = filtro.si.filter((x) => FILTRO_NO.includes(x));
+      return { error: 'filtro', estado: 400, cats, texto: cats.map((x) => FILTRO_TEXTO[x]).join(', ') };
+    }
+    const azar = Array.from(crypto.getRandomValues(new Uint8Array(12)), (x) => x.toString(16).padStart(2, '0')).join('');
+    const clave = CW.LOGO_CARPETA + azar + '.' + ({ 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' }[tipo]);
+    try {
+      await this.env.CARTAS.put(clave, b, { httpMetadata: { contentType: tipo, cacheControl: 'public, max-age=31536000' } });
+    } catch (e) {
+      return { error: 'no pude guardarla', estado: 500 };
+    }
+    const url = R2_PUB + '/' + clave;
+    const r = CW.crewAccion(this, Object.assign({}, d, { img: undefined, logo_url: url, logo_v: filtro.v === 'ok' ? 'ok' : 'revisar' }));
+    if (r.error) { await this.borrarLogosCrew([url]); return r; }
+    if (r.viejos) await this.borrarLogosCrew(r.viejos);
+    delete r.viejos;
+    return r;
+  }
+
+  /** Borra de R2 logos de crews que ya no se usan. Sólo los de su carpeta: nunca una carta ni un fondo. */
+  async borrarLogosCrew(urls) {
+    for (const u of urls || []) {
+      const k = String(u || '').split('.r2.dev/')[1];
+      if (k && k.startsWith(CW.LOGO_CARPETA)) { try { await this.env.CARTAS.delete(k); } catch (e) { /* queda huérfano */ } }
+    }
+  }
+
   // ── 🔔 la bandeja: el panel de la campana ────────────────────────────
   /** Anota un aviso en la bandeja de esa persona. El mismo `clave` se pisa y vuelve a «nueva». */
   aBandeja(quien, clave, tipo, titulo, cuerpo, url, cara, t) {
@@ -11462,6 +11527,7 @@ export class Avisos {
         decidir: ve('decidir') ? this.decidirDueno() : {}, videos: ve('videos') ? (this.leer('videos_revisar') || []) : [],
         fondos: ve('fondos') ? this.fondosDueno() : [], filtro: ve('fondos') ? this.filtroDueno() : null,
         fotos_carta: ve('fondos') ? this.fotosCartaDueno() : [],
+        crews_logos: ve('fondos') ? CW.crewLogosDueno(this) : null,
         pedidos: ve('reportes') || ve('reportes_cerrar') ? this.pedidosDueno() : [] };
     }
     const dias = [];
@@ -11510,6 +11576,8 @@ export class Avisos {
       filtro: this.filtroDueno(),
       // 📸 las fotos de tarjeta que esperan revisión (13/10/2026)
       fotos_carta: this.fotosCartaDueno(),
+      // 👥 los logos de las crews: los que esperan y los que el filtro aprobó hace poco (19/10/2026)
+      crews_logos: CW.crewLogosDueno(this),
       // 🙋 los pedidos de la gente (17/10/2026)
       pedidos: this.pedidosDueno(),
       dias,

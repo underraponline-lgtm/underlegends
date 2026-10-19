@@ -2905,6 +2905,15 @@ async function crewNombre(env, k) {
   return k;
 }
 const crewDeK = (todas, k) => ((todas && todas.crews) || []).find((c) => (c.gente || []).some((g) => g[0] === k)) || null;
+/** ⏳ La primera semana de una crew nueva (bot/crews.js `crewVencer()`), en una línea: la hora la pone Discord, en la de
+ *  quien lee. `''` si ya quedó o es de la Liga. */
+function crewSemana(c, todas) {
+  if (!c || !c.vence) return '';
+  const falta = Math.max(0, 1 + (((todas && todas.prueba) || {}).sumar || 2) - (c.gente || []).length);
+  const s = Math.floor(c.vence / 1000);
+  return '\n⏳ Crew nueva: le falta' + (falta === 1 ? ' 1 persona' : 'n ' + falta + ' personas') + ' antes del <t:' + s + ':f> (<t:' + s +
+    ':R>) o se borra.';
+}
 
 async function crewComando(i, env, sub, op) {
   const id = idDe(i);
@@ -2926,7 +2935,8 @@ async function crewComando(i, env, sub, op) {
     const rol = (c.gente.find((g) => g[0] === k) || [])[1] || '';
     const ROL = { lider: 'Líder', colider: 'Colíder', veterano: 'Veterano', miembro: 'Miembro' };
     return aviso('👥 **' + c.nombre + '**' + (c.sigla ? ' [' + c.sigla + ']' : '') + ' · ' + c.gente.length + ' de ' + (todas.max || 20) +
-      (lid ? ' · Líder: **' + (await crewNombre(env, lid)) + '**' : '') + (rol ? '\n' + (t === id ? 'Sos ' : '<@' + t + '> es ') + ROL[rol] + '.' : ''),
+      (lid ? ' · Líder: **' + (await crewNombre(env, lid)) + '**' : '') + (c.desc ? '\n> ' + c.desc : '') +
+      (rol ? '\n' + (t === id ? 'Sos ' : '<@' + t + '> es ') + ROL[rol] + '.' : '') + crewSemana(c, todas),
     [{ type: 2, style: 5, label: 'Ver la crew', url: urlCrew(c.id) }]);
   }
   if (sub === 'invitar') {

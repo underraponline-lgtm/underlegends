@@ -25,6 +25,7 @@ import { Divisiones } from './divisiones.jsx';
 import { Misiones } from './misiones.jsx';
 import { svElegido, useElegidos } from './elegidos.js';
 import { Ascenso, useDetalle } from './ligas.jsx';
+import { TierChip } from './crewpanel.jsx';
 import CSS_PAGINA from './css/ranking.css?inline';
 import { usarCss } from './css.js';
 
@@ -105,7 +106,8 @@ function Pais({ x, f }) {
 
 function LogoCrew({ c, cls }) {
   const [mal, setMal] = useState(false);
-  if (c.logo && !mal) return <img className={cls} alt="" src={'/' + String(c.logo).replace(/^\//, '')} loading="lazy" onError={() => setMal(true)} />;
+  // el logo que subió el líder viene de R2, con su URL entera (19/10/2026)
+  if (c.logo && !mal) return <img className={cls} alt="" src={/^https:\/\//.test(c.logo) ? c.logo : '/' + String(c.logo).replace(/^\//, '')} loading="lazy" onError={() => setMal(true)} />;
   return <span className={cls + ' ini'}>{limpio(c.crew).slice(0, 2).toUpperCase()}</span>;
 }
 
@@ -168,6 +170,8 @@ const COL = {
   prom: { t: 'Por rapero', tit: 'Puntos por cada rapero de ese país', s: (f) => (f.n ? f.pts / f.n : 0), v: (f) => (f.n ? num(Math.round(f.pts / f.n)) : NADA) },
   crew: { t: 'Crew', cls: 'c-n', txt: 1, s: (f) => norm(limpio(f.crew)), v: (f, x) => <Crew x={x} f={f} /> },
   nc: { t: 'Raperos', tc: 'Rap.', s: (f) => f.n || 0, v: (f) => f.n || 0 },
+  // 🏆 el tier de la crew (19/10/2026, bot/crews_tiers.py): se ordena de Leyenda a Bronce
+  tier: { t: 'Tier', s: (f) => f.tier || 0, v: (f, x) => <TierChip n={f.tier || 0} T={x.liga.d.crews_tiers} chico /> },
   mejor: { t: 'Su mejor', tit: 'El mejor de la crew en la temporada', txt: 1, cls: 'c-izq', s: (f) => norm(limpio(f.mejor)),
     v: (f, x) => { const t = f.mejor ? x.liga.fila(f.mejor) : null; return t ? <a className="rk-lnk" href={'#/r/' + encodeURIComponent(t.k)}>{limpio(f.mejor)}</a> : limpio(f.mejor || ''); } },
 };
@@ -267,8 +271,8 @@ const SUBS = {
   crews: {
     et: 'Crews', grupo: 'crew', filas: (L) => L.d.crews || [], sinChips: 1, nombre: (f) => limpio(f.crew),
     orden: (a, b) => ((b.rk !== 0) - (a.rk !== 0)) || (b.pts - a.pts) || (b.n - a.n), sinPuesto: (f) => f.rk === 0,
-    cols: ['i', 'crew', 'nc', 'pts', 'mejor'], movil: ['i', 'crew', 'nc', 'pts'], que: ['crew', 'crews'],
-    baj: <>Por los puntos que suman. Para tener puesto una crew necesita <b>tres raperos</b> en la temporada: las que no llegan se ven, sin número.</>,
+    cols: ['i', 'crew', 'tier', 'nc', 'pts', 'mejor'], movil: ['i', 'crew', 'tier', 'pts'], que: ['crew', 'crews'],
+    baj: <>Por los puntos que suman. Para tener puesto una crew necesita <b>tres raperos</b> en la temporada: las que no llegan se ven, sin número. Y cada lunes, como en el fútbol, cada crew <b>sube, baja o se mantiene de tier</b> según lo que sumó en la semana.</>,
     valor: [(f) => f.pts || 0, 'pts'], dato: (f) => num(f.pts) + ' PTS',
   },
   mw: {

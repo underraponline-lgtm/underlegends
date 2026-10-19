@@ -864,6 +864,9 @@ def _lo_barato(correr):
         except Exception:                                # noqa: BLE001
             pass
         corre(['sheet/rankings.py', '--otras', '--aplicar'], callado=False)
+        # 🏆 los tiers de las crews (19/10/2026, `bot/crews_tiers.py`): con la foto de la semana que acaba de dejar
+        # `divisiones.json`; si la semana terminó, la cierra —suben, bajan o se mantienen—
+        corre(['bot/crews_tiers.py', '--aplicar'], callado=False)
         # ⚠️ LOS ANUNCIOS DE DISCORD, para el hub: `subir_web.py` (paso 2c)
         # arma «lo que viene» con ellos. Antes también los leía el afiche
         # del Lobby; el índice ya no los muestra —están en el hub—.

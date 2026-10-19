@@ -226,8 +226,9 @@ async function avisos(req, url) {
   const init = { method: metodo, headers: { accept: 'application/json', 'x-lg-ip': ipDe(req) } };
   if (metodo === 'POST') {
     const cuerpo = await req.text();
-    // 🖼️ una imagen de fondo es más que 4 KB: sólo esa ruta, y con su propio tope (el Worker lo vuelve a medir)
-    const grande = url.pathname === '/api/avisos/fondo' || url.pathname === '/api/avisos/foto-carta';
+    // 🖼️ una imagen de fondo es más que 4 KB: sólo esa ruta, y con su propio tope (el Worker lo vuelve a medir). Y el
+    // logo de una crew (19/10/2026): viaja en el mismo pedido que la crea
+    const grande = url.pathname === '/api/avisos/fondo' || url.pathname === '/api/avisos/foto-carta' || url.pathname === '/api/avisos/crew';
     if (cuerpo.length > (grande ? 900000 : 4096)) return new Response('demasiado grande', { status: 413 });
     init.body = cuerpo;
     init.headers['content-type'] = 'application/json';

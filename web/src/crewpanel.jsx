@@ -2,35 +2,136 @@
 // aceptar una invitación, invitar, y el panel de quien manda —los pedidos, los rangos, sacar, pasar el liderazgo, los
 // representantes, cómo se entra, el nombre y cerrarla—. Y «Mi crew» en Mi cuenta, con el formulario para crear una.
 // ⚠️ Lo que el rol no deja, no se muestra; y si igual se pide, el objeto dice que no (la página no decide nada).
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { limpio, norm, num } from './liga.js';
 import { Cara, DosToques } from './piezas.jsx';
-import { ENTRADA_NOMBRE, ROL_NOMBRE, accionCrew, crewDe, errorCrew, useCrews } from './crews.js';
+import { aBase64, achicar } from './imagen.js';
+import { ENTRADA_NOMBRE, ROL_NOMBRE, accionCrew, crewDe, cuandoVence, errorCrew, quedan, useCrews } from './crews.js';
 
 const nombreDe = (liga, k) => { const f = liga.T[k]; return f ? limpio(f.n) : k; };
 const enlaceCrew = (id) => '#/crew/' + encodeURIComponent(id);
 
-/** Un botón que hace una acción y dice cómo le fue. */
+/** Un botón que hace una acción y dice cómo le fue. `ok`: el texto, o una función de la respuesta que lo arma. */
 function useAccion() {
   const [va, setVa] = useState(false);
   const [msg, setMsg] = useState('');
   const hacer = (cuerpo, ok) => {
-    if (va) return;
+    if (va) return Promise.resolve(null);
     setVa(true);
     setMsg('');
-    accionCrew(cuerpo).then((j) => {
+    return accionCrew(cuerpo).then((j) => {
       setVa(false);
-      if (j === null) return;
-      if (j && j.ok) { if (ok) setMsg(ok); return; }
+      if (j === null) return null;
+      if (j && j.ok) { const t = typeof ok === 'function' ? ok(j) : ok; if (t) setMsg(t); return j; }
       setMsg(errorCrew(j));
-    }).catch(() => { setVa(false); setMsg('No pude. Probá de nuevo en un rato.'); });
+      return null;
+    }).catch(() => { setVa(false); setMsg('No pude. Probá de nuevo en un rato.'); return null; });
   };
-  return { va, msg, hacer };
+  return { va, msg, hacer, setMsg };
 }
+
+// 🖼️ EL LOGO DE UNA CREW (Dlx, 19/10/2026: «que cuando se cree la crew se necesite un logo que pase por el auto filtro
+// que tenemos»). Se achica acá a 512×512 en webp —el canvas, además, no copia la ubicación de una foto del celular— y el
+// objeto lo pasa por el filtro de los fondos: limpio se ve ya, dudoso espera revisión (bot/crews.js)
+const LOGO_LADO = 512, LOGO_TOPE = 300 * 1024;
+function ElegirLogo({ vista, onElegido, onError, chico }) {
+  const elegir = async (e) => {
+    const a = e.target.files && e.target.files[0];
+    e.target.value = '';
+    if (!a) return;
+    if (!/^image\//.test(a.type)) { onError('Eso no es una imagen.'); return; }
+    try { const b = await achicar(a, LOGO_LADO, LOGO_LADO, LOGO_TOPE); onElegido(b, URL.createObjectURL(b)); } catch (er) { onError('No pude usar esa imagen: ' + er.message); }
+  };
+  return (
+    <span className={'cw-logo-el' + (chico ? ' chico' : '')}>
+      <span className="cw-logo-v">{vista ? <img src={vista} alt="El logo elegido" /> : <span aria-hidden="true">LOGO</span>}</span>
+      <label className="btn borde2 chico cw-logo-b">{vista ? 'Cambiar' : 'Elegir el logo'}
+        <input type="file" accept="image/png,image/jpeg,image/webp" onChange={elegir} /></label>
+    </span>
+  );
+}
+const msgLogo = (j) => (j && j.logo === 'revisar' ? ' El logo lo revisa la Liga antes de mostrarse: te avisamos en la campana.' : '');
 
 /** El rango, como pastilla. */
 export function RolCrew({ rol }) {
   return rol ? <span className={'cw-rol ' + rol}>{ROL_NOMBRE[rol] || rol}</span> : null;
+}
+
+// ── ⏳ la primera semana de una crew nueva ──────────────────────────────────────────────────────────────────────────
+// Dlx, 19/10/2026: «una semana para invitar a 2 personas como mínimo, o la crew se eliminará; que esto sea notable por el
+// líder». Al Líder y a los Colíderes, arriba de todo y grande, con lo que falta, hasta cuándo y el botón a invitar; a la
+// gente de la crew, lo mismo sin el botón; a quien la mira de afuera, una línea —que también le sirve: busca gente—
+const DIA = 86400000;
+export function SemanaCrew({ c, rol, publico, onInvitar }) {
+  const { todas } = useCrews();
+  if (!c || !c.vence) return null;
+  const total = 1 + ((todas && todas.prueba && todas.prueba.sumar) || 2);
+  const n = (c.gente || []).length;
+  const falta = Math.max(0, total - n);
+  const resta = c.vence - Date.now();
+  if (falta <= 0 || resta <= 0) return null;
+  const quienes = falta === 1 ? '1 persona más' : falta + ' personas más';
+  if (publico) return <p className="cw-nota cw-semana-p">⏳ Crew nueva: busca <b>{quienes}</b> hasta el {cuandoVence(c.vence)}.</p>;
+  const manda = rol === 'lider' || rol === 'colider';
+  return (
+    <div className={'cw-semana' + (resta <= 2 * DIA ? ' urge' : '')}>
+      <div className="cw-semana-t">
+        <span className="cw-semana-tag">Primera semana</span>
+        <b className="cw-semana-q">{quedan(resta)}</b>
+      </div>
+      <p className="cw-semana-d">{manda ? 'Sumá' : 'La crew necesita'} <b>{quienes}</b> antes del {cuandoVence(c.vence)}, o la crew <b>se borra</b>.</p>
+      <div className="cw-semana-pie">
+        <span className="cw-semana-pips" role="img" aria-label={n + ' de ' + total + ' en la crew'}>
+          {Array.from({ length: total }, (_, i) => <i key={i} className={i < n ? 'on' : ''} />)}
+          <small>{n} de {total}</small>
+        </span>
+        {manda && onInvitar ? <button type="button" className="btn verde chico" onClick={onInvitar}>Invitar</button>
+          : manda ? <a className="btn verde chico" href={enlaceCrew(c.id)}>Ir a invitar</a> : null}
+      </div>
+    </div>
+  );
+}
+
+// ── 🏆 el tier (Dlx, 19/10/2026: «como los equipos de fútbol: pueden bajar de división, subir y mantenerse») ─────
+// Las reglas y los colores viajan en el payload (`liga.d.crews_tiers`, de bot/crews_tiers.py): acá no se escribe ninguno
+const TINTA_OSCURA = '#030304';
+function tintaSobre(hex) {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex || '');
+  if (!m) return '#fff';
+  const n = parseInt(m[1], 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255;
+  return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? TINTA_OSCURA : '#fff';
+}
+export function TierChip({ n = 0, T, chico }) {
+  if (!T || !T.nombres) return null;
+  const c = (T.colores || [])[n] || '#888';
+  return <span className={'tier-chip' + (chico ? ' chico' : '')} style={{ background: c, color: tintaSobre(c) }}>{T.nombres[n]}</span>;
+}
+
+export function TierCrew({ T, id }) {
+  if (!T || !T.crews) return null;
+  const [n, pts, jug, antes] = T.crews[id] || [0, 0, 0, null];
+  const sig = n + 1 < T.nombres.length ? n + 1 : null;
+  const sube = sig !== null ? T.sube[n] : null, juegan = sig !== null ? T.juegan[sig] : 0, baja = T.baja[n];
+  const pct = sube ? Math.min(100, Math.round((100 * pts) / sube)) : 100;
+  const vino = antes === null || antes === undefined || antes === n ? '' : antes < n ? 'Subió la semana pasada' : 'Bajó la semana pasada';
+  return (
+    <div className="tier-caja" style={{ '--tier': T.colores[n] }}>
+      <div className="tier-arriba">
+        <TierChip n={n} T={T} />
+        {vino ? <small className="tier-vino">{vino}</small> : null}
+      </div>
+      <p className="tier-sem">Esta semana: <b>{num(pts)} puntos</b> · {jug === 1 ? 'jugó 1' : 'jugaron ' + jug} de la crew</p>
+      {sube ? (
+        <>
+          <div className="tier-barra" role="img" aria-label={pct + '% de lo que pide ' + T.nombres[sig]}><i style={{ width: pct + '%' }} /></div>
+          <p className="cw-nota">Para subir a <b>{T.nombres[sig]}</b>: {num(sube)} puntos en la semana{juegan > 1 ? ' y que jueguen ' + juegan + ' de la crew' : ''}.
+            {baja ? <> Con menos de {num(baja)}, baja a {T.nombres[n - 1]}.</> : null}</p>
+        </>
+      ) : <p className="cw-nota">El tier más alto.{baja ? <> Con menos de {num(baja)} puntos en la semana, baja a {T.nombres[n - 1]}.</> : null}</p>}
+      <p className="cw-nota">La semana cierra el lunes a las 11 AM (hora del este). {n >= T.tarjeta ? 'La crew tiene desbloqueada su tarjeta personalizable.'
+        : 'En ' + T.nombres[T.tarjeta] + ' se desbloquea la tarjeta de la crew, personalizable por su Líder.'}</p>
+    </div>
+  );
 }
 
 // ── entrar: lo que ve quien no está en esa crew ──────────────────────────────────────────────────────────────────────
@@ -65,14 +166,15 @@ export function EntrarCrew({ c }) {
         {c.entrada === 'abierta' ? 'Unirme a la crew' : 'Pedir entrar'}</button>
     );
   }
-  return <div className="cw-entrar">{cuerpo}{msg ? <small role="status" className="cw-msg">{msg}</small> : null}</div>;
+  return <div className="cw-entrar"><SemanaCrew c={c} publico />{cuerpo}{msg ? <small role="status" className="cw-msg">{msg}</small> : null}</div>;
 }
 
 // ── el panel de los de adentro ───────────────────────────────────────────────────────────────────────────────────────
 export function PanelCrew({ liga, c }) {
   const { mia, todas } = useCrews();
-  const { va, msg, hacer } = useAccion();
+  const { va, msg, hacer, setMsg } = useAccion();
   const [q, setQ] = useState('');
+  const busca = useRef(null);
   if (!c || !mia || !mia.crew || mia.crew.id !== c.id) return null;
   const rol = mia.rol;
   const manda = rol === 'lider' || rol === 'colider';
@@ -85,6 +187,7 @@ export function PanelCrew({ liga, c }) {
   const yaInvitados = new Set((mia.invitados || []).map((x) => x.k));
   return (
     <section className="cw-panel" aria-label="Tu crew">
+      <SemanaCrew c={c} rol={rol} onInvitar={invita ? () => { const el = busca.current; if (el) { el.scrollIntoView({ block: 'center' }); el.focus({ preventScroll: true }); } } : null} />
       <div className="cw-yo">
         <span>Sos <RolCrew rol={rol} /> de <b>{limpio(c.nombre)}</b></span>
         {rol === 'lider' && gente.length > 1 ? <small>Para irte, primero pasale el liderazgo a alguien.</small> : (
@@ -116,7 +219,7 @@ export function PanelCrew({ liga, c }) {
           <h3 className="cw-h">Invitar</h3>
           {gente.length >= ((todas && todas.max) || 20) ? <p className="cw-nota">La crew está llena.</p> : (
             <>
-              <input type="search" className="cw-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscá a quién invitar"
+              <input ref={busca} type="search" className="cw-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscá a quién invitar"
                 aria-label="Buscar a quién invitar a la crew" enterKeyHint="search" />
               {candidatos.length ? (
                 <ul className="cw-lista">{candidatos.map((f) => (
@@ -177,14 +280,16 @@ export function PanelCrew({ liga, c }) {
         </div>
       ) : null}
 
-      {rol === 'lider' ? <AjustesLider c={c} va={va} hacer={hacer} /> : null}
+      {rol === 'lider' ? <AjustesLider c={c} va={va} hacer={hacer} setMsg={setMsg} pend={mia.logo_pend} /> : null}
     </section>
   );
 }
 
-function AjustesLider({ c, va, hacer }) {
+function AjustesLider({ c, va, hacer, setMsg, pend }) {
   const [nombre, setNombre] = useState(c.nombre);
   const [sigla, setSigla] = useState(c.sigla || '');
+  const [desc, setDesc] = useState(c.desc || '');
+  const [logo, setLogo] = useState(null);
   return (
     <div className="cw-bloque">
       <h3 className="cw-h">Cómo se entra</h3>
@@ -196,10 +301,23 @@ function AjustesLider({ c, va, hacer }) {
       <h3 className="cw-h">El nombre</h3>
       <form className="cw-fila" onSubmit={(e) => { e.preventDefault(); hacer({ accion: 'nombre', nombre, sigla }, 'Listo.'); }}>
         <input className="cw-busca" value={nombre} maxLength={24} onChange={(e) => setNombre(e.target.value)} aria-label="El nombre de la crew" />
-        <input className="cw-busca cw-sigla" value={sigla} maxLength={4} onChange={(e) => setSigla(e.target.value)} placeholder="Sigla" aria-label="La sigla (opcional)" />
+        <input className="cw-busca cw-sigla" value={sigla} maxLength={4} required minLength={2} onChange={(e) => setSigla(e.target.value)} placeholder="Sigla" aria-label="La sigla" />
         <button type="submit" className="btn borde2 chico" disabled={va}>Guardar</button>
       </form>
-      <small className="cw-nota">El nombre se cambia una vez cada 30 días.</small>
+      <small className="cw-nota">El nombre se cambia una vez cada 30 días. La sigla es obligatoria.</small>
+      <h3 className="cw-h">El logo</h3>
+      <div className="cw-fila">
+        <ElegirLogo vista={logo ? logo[1] : c.logo} chico onElegido={(b, u) => setLogo([b, u])} onError={setMsg} />
+        {logo ? <button type="button" className="btn verde chico" disabled={va}
+          onClick={async () => { const j = await hacer({ accion: 'logo', img: await aBase64(logo[0]) }, (r) => 'Listo.' + msgLogo(r)); if (j) setLogo(null); }}>Subir el logo</button> : null}
+      </div>
+      {pend ? <small className="cw-nota">Tu logo nuevo espera que lo revise la Liga.</small> : null}
+      <h3 className="cw-h">La descripción</h3>
+      <form className="cw-crear" onSubmit={(e) => { e.preventDefault(); hacer({ accion: 'desc', desc: desc.trim() }, 'Listo.'); }}>
+        <textarea className="cw-busca cw-desc-in" value={desc} maxLength={160} minLength={10} required rows={2} onChange={(e) => setDesc(e.target.value)}
+          aria-label="La descripción de la crew" />
+        <button type="submit" className="btn borde2 chico" disabled={va}>Guardar</button>
+      </form>
     </div>
   );
 }
@@ -222,9 +340,11 @@ export function InvitarACrew({ k, nombre }) {
 // ── Mi cuenta → Mi crew ──────────────────────────────────────────────────────────────────────────────────────────────
 export function MiCrew({ liga, dc }) {
   const { mia, todas } = useCrews();
-  const { va, msg, hacer } = useAccion();
+  const { va, msg, hacer, setMsg } = useAccion();
   const [nombre, setNombre] = useState('');
   const [sigla, setSigla] = useState('');
+  const [desc, setDesc] = useState('');
+  const [logo, setLogo] = useState(null);
   const [entrada, setEntrada] = useState('pedido');
   if (!dc) return <p className="cu-d">Entrá con Discord para armar tu crew o aceptar una invitación.</p>;
   if (!mia) return <p className="cu-d">Mirando tu crew…</p>;
@@ -232,12 +352,14 @@ export function MiCrew({ liga, dc }) {
   if (mia.crew) {
     return (
       <div className="cw-mia">
+        <SemanaCrew c={mia.crew} rol={mia.rol} />
         <p className="cu-d">Sos <RolCrew rol={mia.rol} /> de <a href={enlaceCrew(mia.crew.id)}><b>{limpio(mia.crew.nombre)}</b></a> · {mia.crew.gente.length} de {mia.max}.</p>
         <a className="btn verde chico" href={enlaceCrew(mia.crew.id)}>Ir a la crew</a>
       </div>
     );
   }
   const precio = mia.precio ?? 2500;
+  const sumar = (mia.prueba && mia.prueba.sumar) || 2;
   const espera = mia.espera_ms > 0;
   return (
     <div className="cw-mia">
@@ -261,9 +383,20 @@ export function MiCrew({ liga, dc }) {
       <div className="cw-bloque">
         <h3 className="cw-h">Armá tu crew</h3>
         <p className="cu-d">Cuesta <b>{num(precio)} Puntos de Tienda</b>{typeof mia.saldo === 'number' ? <> (tenés {num(mia.saldo)})</> : null}. Hasta {mia.max} raperos; vos sos el Líder.</p>
-        <form className="cw-crear" onSubmit={(e) => { e.preventDefault(); hacer({ accion: 'crear', nombre: nombre.trim(), sigla: sigla.trim(), entrada }, '¡Tu crew está armada!'); }}>
+        <p className="cu-d cw-aviso-semana">⏳ Después tenés <b>una semana para sumar {sumar} personas</b> a la crew. Si no llegan, la crew se borra y los Puntos no vuelven.</p>
+        <form className="cw-crear" onSubmit={async (e) => {
+          e.preventDefault();
+          if (!logo) { setMsg('Falta el logo de la crew.'); return; }
+          hacer({ accion: 'crear', nombre: nombre.trim(), sigla: sigla.trim(), desc: desc.trim(), entrada, img: await aBase64(logo[0]) },
+            (j) => '¡Tu crew está armada! Ahora sumá a ' + sumar + ' personas en una semana.' + msgLogo(j));
+        }}>
+          <div className="cw-logo-campo"><span className="cw-logo-t">Logo</span>
+            <ElegirLogo vista={logo && logo[1]} onElegido={(b, u) => setLogo([b, u])} onError={setMsg} />
+            <small>Cuadrado, se ve en un círculo. Pasa por el filtro automático: nada de desnudos, sangre, odio ni datos personales.</small></div>
           <label>Nombre<input className="cw-busca" value={nombre} maxLength={24} required minLength={3} onChange={(e) => setNombre(e.target.value)} placeholder="Los del Barrio" /></label>
-          <label>Sigla <small>(opcional)</small><input className="cw-busca cw-sigla" value={sigla} maxLength={4} onChange={(e) => setSigla(e.target.value)} placeholder="LDB" /></label>
+          <label>Sigla <small>(2 a 4 letras)</small><input className="cw-busca cw-sigla" value={sigla} maxLength={4} required minLength={2} pattern="[\p{L}\p{N}]{2,4}" title="De 2 a 4 letras o números" onChange={(e) => setSigla(e.target.value)} placeholder="LDB" /></label>
+          <label>Descripción <small>(10 a 160 letras, sin links)</small><textarea className="cw-busca cw-desc-in" value={desc} maxLength={160} minLength={10} required rows={2}
+            onChange={(e) => setDesc(e.target.value)} placeholder="Quiénes son, de dónde, qué buscan" /></label>
           <fieldset className="cw-reps"><legend>Cómo se entra</legend>{Object.entries(ENTRADA_NOMBRE).map(([k, t]) => (
             <label key={k} className={'cw-rep' + (entrada === k ? ' on' : '')}><input type="radio" name="cw-ent" checked={entrada === k} onChange={() => setEntrada(k)} />{t}</label>
           ))}</fieldset>

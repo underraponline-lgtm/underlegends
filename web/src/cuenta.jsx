@@ -22,6 +22,7 @@ import { seguirOrg, useOrgs } from './orgs.js';
 import { PasosInstalar } from './instalar.jsx';
 import CSS_PAGINA from './css/cuenta.css?inline';
 import { usarCss } from './css.js';
+import { achicar as achicarImagen, aBase64 } from './imagen.js';
 
 // 🎨 su CSS, con su pedazo (web/src/css/cuenta.css)
 usarCss('cuenta', CSS_PAGINA);
@@ -250,28 +251,7 @@ function Caja({ t, children, d }) {
 // achica acá antes de mandarla: 1600×640 recortada al centro, en webp, bajo los 600 KB (ver `fondo()` en avisos.js) ──
 const FONDO_W = 1600, FONDO_H = 640, FONDO_TOPE = 600 * 1024;
 
-async function achicar(archivo, AN = FONDO_W, AL = FONDO_H, TOPE = FONDO_TOPE) {
-  const url = URL.createObjectURL(archivo);
-  try {
-    const img = await new Promise((ok, mal) => { const i = new Image(); i.onload = () => ok(i); i.onerror = mal; i.src = url; });
-    const c = document.createElement('canvas');
-    c.width = AN; c.height = AL;
-    const x = c.getContext('2d');
-    // «cover»: llena el cuadro y recorta lo que sobra, al centro
-    const e = Math.max(AN / img.naturalWidth, AL / img.naturalHeight);
-    const w = img.naturalWidth * e, h = img.naturalHeight * e;
-    x.drawImage(img, (AN - w) / 2, (AL - h) / 2, w, h);
-    for (const q of [0.82, 0.7, 0.58, 0.45]) {
-      const b = await new Promise((ok) => c.toBlob(ok, 'image/webp', q));
-      if (b && b.size <= TOPE && b.type === 'image/webp') return b;
-    }
-    // sin webp (Safari viejo): jpeg
-    const j = await new Promise((ok) => c.toBlob(ok, 'image/jpeg', 0.7));
-    if (j && j.size <= TOPE) return j;
-    throw new Error('la imagen quedó muy pesada');
-  } finally { URL.revokeObjectURL(url); }
-}
-const aBase64 = (b) => new Promise((ok, mal) => { const r = new FileReader(); r.onload = () => ok(String(r.result).split(',')[1] || ''); r.onerror = mal; r.readAsDataURL(b); });
+const achicar = (archivo, AN = FONDO_W, AL = FONDO_H, TOPE = FONDO_TOPE) => achicarImagen(archivo, AN, AL, TOPE);
 
 async function pedirFondo(ruta, cuerpo) {
   const r = await fetch('/api/avisos/' + ruta, { method: 'POST', credentials: 'same-origin',

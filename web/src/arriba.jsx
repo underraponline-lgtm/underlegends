@@ -586,7 +586,8 @@ function claveCrew(n) {
 }
 
 export function CrewCirculo({ c, cls = 'h-c' }) {
-  if (c.logo) return <span className={cls}><img alt="" src={'/' + c.logo} /></span>;
+  // el de una crew de la gente viene de R2, con su URL entera (19/10/2026); los de antes, del repo
+  if (c.logo) return <span className={cls}><img alt="" src={/^https:\/\//.test(c.logo) ? c.logo : '/' + c.logo} /></span>;
   const p = limpio(c.crew).split(' ');
   const mono = p.length > 1 ? p[0][0] + p[1][0] : p[0].slice(0, 2);
   return <span className={cls + ' mono'}>{mono.toUpperCase()}</span>;

@@ -7,7 +7,7 @@ import { Bandera, Cara, Compartir, Sec, accion, enlace, nombrePais } from './pie
 import { McPersona } from './medio.jsx';
 import { CrewCirculo } from './arriba.jsx';
 import { crewViva, useCrews } from './crews.js';
-import { EntrarCrew, PanelCrew, RolCrew } from './crewpanel.jsx';
+import { EntrarCrew, PanelCrew, RolCrew, TierCrew } from './crewpanel.jsx';
 import CSS_PAGINA from './css/grupo.css?inline';
 import { usarCss } from './css.js';
 
@@ -79,7 +79,7 @@ export function PaginaCrew({ liga, id }) {
   const c0 = cs.find((x) => clave(x) === id) || cs.find((x) => limpio(x.crew).toLowerCase() === limpio(id).toLowerCase())
     || (viva ? cs.find((x) => clave(x) === viva.id) : null);
   if (!c0 && !viva) return <NoEsta que="Esa crew" href="#/ranking/crews" volver="Ver las crews" />;
-  const c = c0 || { crew: viva.nombre, clave: viva.id, n: 0, pts: 0, gente: [] };
+  const c = Object.assign({}, c0 || { crew: viva.nombre, clave: viva.id, n: 0, pts: 0, gente: [] }, viva && viva.logo ? { logo: viva.logo } : {});
   const nombre = limpio((viva && viva.nombre) || c.crew);
   const conPuesto = cs.filter((x) => x.rk !== 0);
   const pos = c0 ? conPuesto.indexOf(c0) + 1 : 0;
@@ -91,10 +91,13 @@ export function PaginaCrew({ liga, id }) {
   const ccs = [...new Set(gente.map((f) => f.cc).filter(Boolean))];
   const mejor = c.mejor ? liga.fila(c.mejor) : null;
   const lider = viva ? viva.gente.find((g) => g[1] === 'lider') : null;
+  // 🏆 su tier (bot/crews_tiers.py): del payload, con la clave del objeto
+  const T = liga.d.crews_tiers && liga.d.crews_tiers.nombres ? liga.d.crews_tiers : null;
+  const tier = T ? ((T.crews || {})[viva ? viva.id : clave(c)] || [0])[0] : 0;
   return (
     <>
       <Cabeza img={<CrewCirculo c={c} cls="svp-logo gp-crew" />} nombre={nombre} url={'#/crew/' + encodeURIComponent(clave(c))}
-        tag={pos ? '#' + pos + ' DE LAS CREWS' : 'SIN PUESTO · HACEN FALTA TRES RAPEROS'}
+        tag={(T ? T.nombres[tier].toUpperCase() + ' · ' : '') + (pos ? '#' + pos + ' DE LAS CREWS' : 'SIN PUESTO · HACEN FALTA TRES RAPEROS')}
         sub={<>{ccs.length ? <span className="gp-flags">{ccs.map((cc) => <Bandera key={cc} cc={cc} cls="gp-flag" />)}</span> : null}
           {lider ? <span className="gp-lider">Líder: <a className="te-link" href={'#/r/' + encodeURIComponent(lider[0])}>{limpio((liga.T[lider[0]] || {}).n || lider[0])}</a></span> : null}</>}
         numeros={[['RAPEROS', num(viva ? viva.gente.length : c.n || gente.length)], ['PUNTOS', num(c.pts || 0)],
@@ -102,6 +105,8 @@ export function PaginaCrew({ liga, id }) {
           ['EL MEJOR', mejor ? <a className="te-link" href={'#/r/' + encodeURIComponent(mejor.k)}>{limpio(mejor.n)}</a> : limpio(c.mejor || '—')]]} />
       {viva ? (
         <Sec id="gp-unirse" titulo={'La crew'}>
+          {viva.desc ? <p className="cw-desc">{viva.desc}</p> : null}
+          <TierCrew T={T} id={viva.id} />
           <EntrarCrew c={viva} />
           <PanelCrew liga={liga} c={viva} />
         </Sec>

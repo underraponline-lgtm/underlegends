@@ -108,6 +108,8 @@ jobs:
           node bot/antiraid_prueba.mjs
           # 👥 las crews: crear, invitar, los rangos, los 7 días, el tope de 20 y que no salga ningún Discord ID
           node bot/crews_prueba.mjs
+          # 🖼️ el logo de una crew por el camino de verdad: el filtro, R2 y lo que no se crea no gasta la IA
+          node bot/crews_logo_prueba.mjs
           # 🔴 las llaves en vivo: el lector de la página contra el de Python
           node bot/llave_vivo_prueba.mjs
 
@@ -120,7 +122,7 @@ jobs:
           for f in bot/anuncios.py bot/autoverificar.py bot/avisar.py bot/avisos_casos.py bot/avisos_personales.py bot/cuando.py bot/encuestas.py bot/escuchar.py bot/insignias.py \
                    bot/fuera.py bot/inscripciones.py bot/lunes.py bot/muro.py bot/llaves_a_entrada.py bot/llaves_casos.py bot/madrugada.py bot/most_wanted.py bot/multiplicadores.py bot/olvidar.py bot/precios.py \
                    bot/que_cambio.py bot/reportes.py bot/invitaciones.py bot/en_llamada.py bot/siglas.py bot/racha.py bot/divisiones.py bot/misiones.py bot/pase.py bot/subir_datos.py bot/alertar.py \
-                   bot/verificados.py bot/aviso_evento.py bot/avisar.py bot/finales.py bot/salud_lector.py bot/debutantes.py bot/videos.py bot/ligas.py bot/videos_propios.py bot/promos.py bot/mes_awards.py bot/mes_otros.py bot/pedidos.py bot/ascenso.py bot/semanas.py bot/tiers.py bot/agenda.py bot/kit.py bot/paneles_dra.py bot/clave_ciclo.py bot/subir_web.py bot/roles.py bot/writing.py bot/nombres.py bot/apodos_sheet.py bot/roles_vinculados.py bot/crews_vivas.py sheet/archivar_temporada.py \
+                   bot/verificados.py bot/aviso_evento.py bot/avisar.py bot/finales.py bot/salud_lector.py bot/debutantes.py bot/videos.py bot/ligas.py bot/videos_propios.py bot/promos.py bot/mes_awards.py bot/mes_otros.py bot/pedidos.py bot/ascenso.py bot/semanas.py bot/tiers.py bot/agenda.py bot/kit.py bot/paneles_dra.py bot/clave_ciclo.py bot/subir_web.py bot/roles.py bot/writing.py bot/nombres.py bot/apodos_sheet.py bot/roles_vinculados.py bot/crews_vivas.py bot/crews_tiers.py sheet/archivar_temporada.py \
                    sheet/competitivo.py sheet/construir_pool_competitivo.py \
                    sheet/decidir.py sheet/escribir.py sheet/estilo.py sheet/llaves_web.py sheet/lobby.py sheet/motor.py \
                    sheet/pendientes.py sheet/procesar_entrada.py sheet/rankings.py sheet/registrar_ids.py sheet/resetear.py \

@@ -1337,6 +1337,7 @@ function atencion(d, liga, q, logs) {
     // 🖼️ y los fondos que esperan (13/10/2026)
     ...((d.fondos || []).length ? [['🖼️', (d.fondos.length === 1 ? 'Un fondo' : d.fondos.length + ' fondos') + ' para revisar', 'Abajo, en Lo que te llegó.']] : []),
     // 📸 y las fotos de tarjeta que esperan (13/10/2026)
+    ...((d.crews_logos && d.crews_logos.pend || []).length ? [['👥', (d.crews_logos.pend.length === 1 ? 'Un logo de crew' : d.crews_logos.pend.length + ' logos de crew') + ' para revisar', 'Abajo, en Lo que te llegó.']] : []),
     ...((d.fotos_carta || []).length ? [['📸', (d.fotos_carta.length === 1 ? 'Una foto de tarjeta' : d.fotos_carta.length + ' fotos de tarjeta') + ' para revisar', 'Abajo, en Lo que te llegó.']] : []),
     // ✅ y lo de ✅ Decidir sin contestar (13/10/2026)
     ...(sinContestar(d.decidir) ? [['✅', sinContestar(d.decidir) === 1 ? 'Una pregunta de ✅ Decidir sin contestar' : sinContestar(d.decidir) + ' preguntas de ✅ Decidir sin contestar', 'En la pestaña Decisiones.']] : []),
@@ -2032,12 +2033,56 @@ function FondosRevisar({ fs, alCambiar, filtro, alFiltro, fcs = [], alFotos }) {
   );
 }
 
+// 👥 LOS LOGOS DE LAS CREWS (19/10/2026, bot/crews.js `crewDueno()`): lo que el filtro no supo decidir no se ve hasta que
+// lo aprobás, y lo que aprobó queda tres días acá con «Quitar» —lo mismo que los fondos—. Al Líder le llega a su campana
+function LogosCrews({ cl }) {
+  const [lista, setLista] = useState(cl || { pend: [], vistos: [] });
+  const [ocup, setOcup] = useState('');
+  const [msg, setMsg] = useState('');
+  const [motivo, setMotivo] = useState({});
+  const decidir = async (x, si, de) => {
+    setOcup(x.id); setMsg('');
+    try {
+      const r = await fetch('/api/avisos/dueno/crew', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ que: 'logo', crew: x.id, si, motivo: si ? '' : motivo[x.id] || MOTIVOS_FONDO[0] }) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || j.error) throw new Error(j.error || String(r.status));
+      setLista(Object.assign({}, lista, { [de]: lista[de].filter((y) => y.id !== x.id) }));
+    } catch (e) { setMsg('No se pudo: ' + e.message); }
+    setOcup('');
+  };
+  const fila = (x, de) => (
+    <li key={de + x.id}>
+      <div className="db-l1"><b><a href={'#/crew/' + encodeURIComponent(x.id)}>{x.nombre}</a></b><small>{hace(x.t)}</small></div>
+      <img className="db-logo-crew" src={x.url} alt={'El logo de ' + x.nombre} />
+      <div className="cu-btns">
+        {de === 'pend' ? <button type="button" className="btn verde chico" disabled={ocup === x.id} onClick={() => decidir(x, true, de)}>Aprobar</button> : null}
+        <select className="db-sel db-sel-corto" value={motivo[x.id] || MOTIVOS_FONDO[0]} onChange={(e) => setMotivo(Object.assign({}, motivo, { [x.id]: e.target.value }))}>
+          {MOTIVOS_FONDO.map((m) => <option key={m}>{m}</option>)}</select>
+        <button type="button" className="btn borde2 chico" disabled={ocup === x.id} onClick={() => decidir(x, false, de)}>{de === 'pend' ? 'No' : 'Quitar'}</button>
+      </div>
+    </li>
+  );
+  if (!lista.pend.length && !lista.vistos.length) return null;
+  return (
+    <div>
+      {lista.pend.length ? <><h3>Logos de crews para revisar <small>el filtro automático no estuvo seguro: no se ven hasta que los aprobás</small></h3>
+        <ul>{lista.pend.map((x) => fila(x, 'pend'))}</ul></> : null}
+      {lista.vistos.length ? <><h3>Logos de crews que ya se ven <small>los aprobó el filtro en los últimos 3 días</small></h3>
+        <ul>{lista.vistos.map((x) => fila(x, 'vistos'))}</ul></> : null}
+      {msg ? <small role="status">{msg}</small> : null}
+    </div>
+  );
+}
+
 // 🤝 lo que también te llega: los videos y los fondos para revisar. Los reportes y ✅ Decidir tienen su pestaña desde el
 // 13/10/2026
 function Llego({ d, alFondos, alFiltro, alFotos }) {
   const vs = d.videos || [], fs = d.fondos || [], fcs = d.fotos_carta || [], vivos = (d.filtro && d.filtro.vivos) || [];
-  if (!vs.length && !fs.length && !fcs.length && !vivos.length) return <p className="pronto-p">Nada nuevo acá: los reportes de las llaves y lo de ✅ Decidir tienen su pestaña.</p>;
-  return <div className="db-llego">{fs.length || fcs.length || vivos.length ? <FondosRevisar fs={fs} alCambiar={alFondos} filtro={d.filtro} alFiltro={alFiltro} fcs={fcs} alFotos={alFotos} /> : null}{vs.length ? <VideosRevisar vs={vs} /> : null}</div>;
+  const cl = d.crews_logos || { pend: [], vistos: [] };
+  const hayLogos = (cl.pend || []).length || (cl.vistos || []).length;
+  if (!vs.length && !fs.length && !fcs.length && !vivos.length && !hayLogos) return <p className="pronto-p">Nada nuevo acá: los reportes de las llaves y lo de ✅ Decidir tienen su pestaña.</p>;
+  return <div className="db-llego">{fs.length || fcs.length || vivos.length ? <FondosRevisar fs={fs} alCambiar={alFondos} filtro={d.filtro} alFiltro={alFiltro} fcs={fcs} alFotos={alFotos} /> : null}{hayLogos ? <LogosCrews cl={cl} /> : null}{vs.length ? <VideosRevisar vs={vs} /> : null}</div>;
 }
 
 // ── ✅ DECIDIR, EN EL DASHBOARD (13/10/2026). Dlx: «estaba pensando en mover lo de decidir del sheet, aquí», y a la

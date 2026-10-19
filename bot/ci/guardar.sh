@@ -96,7 +96,7 @@ ARCHIVOS="datos/cartas_selladas.json datos/releer_llaves.json datos/promos.json 
           datos/identidad_llaves.json datos/nombres_llaves.json datos/formatos_llaves.json \
           datos/invitaciones.json datos/ranking_semana.json datos/finales.json datos/salud_lector.json datos/recalculados.json \
           datos/estado_escuchar.json datos/estado_dibujar.json \
-          datos/por_servidor.json datos/cancelados.json datos/divisiones.json \
+          datos/por_servidor.json datos/cancelados.json datos/divisiones.json datos/crews_tiers.json \
           datos/ocr_anuncios.json datos/ocr_llaves.json datos/misiones.json \
           datos/pase_niveles.json datos/conservan.json datos/fases_llaves.json datos/debutantes.json datos/videos.json datos/ligas.json datos/ascenso.json datos/ascenso_msgs.json datos/videos_propios.json datos/agenda.json datos/decidir_solas.json datos/writing.json"
 # 🔴 CADA PALABRA DE LA LISTA TIENE QUE SER UN `datos/*.json`, Y SE MIRA.

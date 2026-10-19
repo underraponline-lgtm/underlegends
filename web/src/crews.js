@@ -75,6 +75,26 @@ export function accionCrew(cuerpo) {
 
 const dias = (ms) => Math.max(1, Math.ceil((Number(ms) || 0) / 86400000));
 
+/** ⏳ Hasta cuándo tiene una crew nueva para sumar a su gente, en palabras: «lunes 26 de octubre a las 14:30». */
+export function cuandoVence(ms) {
+  const d = new Date(ms);
+  const dia = W.fmtFecha ? W.fmtFecha(d.toISOString(), { weekday: 'long', day: 'numeric', month: 'long' })
+    : d.toLocaleDateString('es', { weekday: 'long', day: 'numeric', month: 'long' });
+  const h = W.fmtHora ? W.fmtHora(d) : d.toLocaleTimeString('es', { hour: 'numeric', minute: '2-digit' });
+  return dia + ' a las ' + h;
+}
+
+/** «Quedan 5 días», «Queda 1 día y 20 horas», «Quedan 20 minutos»: para abajo, que una fecha límite nunca diga MÁS
+ *  tiempo del que hay (con 5 días y 1 hora, «6 días» hace creer que sobra). */
+export function quedan(ms) {
+  const H = 3600000, D = 24 * H;
+  const pl = (n, u) => n + ' ' + (n === 1 ? u[0] : u[1]);
+  const dias = Math.floor(ms / D), horas = Math.floor((ms % D) / H);
+  const t = dias >= 2 ? pl(dias, ['día', 'días']) : dias === 1 ? pl(1, ['día', 'días']) + (horas ? ' y ' + pl(horas, ['hora', 'horas']) : '')
+    : ms >= H ? pl(Math.floor(ms / H), ['hora', 'horas']) : pl(Math.max(1, Math.floor(ms / 60000)), ['minuto', 'minutos']);
+  return (/^1 /.test(t) && !/ y /.test(t) ? 'Queda ' : 'Quedan ') + t;
+}
+
 /** Lo que se le dice a quien no pudo. */
 export function errorCrew(j) {
   const e = (j && j.error) || '';
@@ -87,7 +107,15 @@ export function errorCrew(j) {
     nombre: 'Ese nombre no vale: de 3 a 24 letras o números, sin símbolos.',
     nombre_usado: 'Ya hay una crew con ese nombre.',
     nombre_espera: 'El nombre se cambia una vez cada 30 días.',
-    sigla: 'La sigla: de 2 a 4 letras o números.',
+    sigla: 'La sigla es obligatoria: de 2 a 4 letras o números.',
+    desc: 'La descripción: de 10 a 160 letras, sin links ni menciones.',
+    logo: 'Falta el logo de la crew.',
+    img: 'No pude leer esa imagen: elegila de nuevo.',
+    filtro: 'Ese logo no pasó el filtro automático' + (j && j.texto ? ': parece tener ' + j.texto : '') + '. Elegí otro.',
+    metadatos: 'La imagen trae datos escondidos (como dónde se sacó): elegila de nuevo desde acá y se limpian solos.',
+    'no es una imagen': 'Eso no es una imagen.',
+    'demasiado grande': 'La imagen es muy pesada.',
+    sin_crew: 'No estás en ninguna crew.',
     saldo: 'No te alcanzan los Puntos de Tienda: crear una crew cuesta ' + ((j && j.precio) || 2500).toLocaleString('es') + '.',
     llena: 'La crew está llena: son ' + ((j && j.max) || 20) + ' como máximo.',
     solo_invitacion: 'A esta crew se entra sólo por invitación.',

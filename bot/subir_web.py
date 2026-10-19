@@ -690,6 +690,8 @@ def armar():
         'duelos': _duelos(tope=300),
         'rachas': _rachas(gente),
         'crews': _crews(),
+        # 🏆 los tiers de las crews (19/10/2026, `bot/crews_tiers.py`): las reglas, y de cada una su tier y su semana
+        'crews_tiers': _crews_tiers(),
         'records': _records(gente, regs, _comp),
         # 🔑 MOST WANTED: el tablero del período, los cazadores de la temporada
         # y qué se cazó en cada llave. Ver `_mw()` y `bot/most_wanted.py`.
@@ -2895,6 +2897,17 @@ def _rachas(gente, tope=8):
     return con[:tope]
 
 
+def _crews_tiers():
+    """🏆 Lo de `bot/crews_tiers.para_web()`, o `None` si todavía no hay. Nunca frena el lobby."""
+    try:
+        import crews_tiers as _CT
+        est = _json('datos', 'crews_tiers.json') or {}
+        return _CT.para_web(est, _json('datos', 'crews_vivas.json') or {}) if est else None
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ los tiers de las crews no entran al lobby: %s' % str(e)[:120])
+        return None
+
+
 def _crews():
     """Las crews con su gente y sus puntos.
 
@@ -2926,6 +2939,10 @@ def _crews():
     vivas = _json('datos', 'crews_vivas.json') or {}
     rk_cfg = vivas.get('ranking') or {'modo': 'todos', 'n': 5}
     reps_de = {c.get('id'): c.get('reps') or [] for c in vivas.get('crews') or []}
+    # 🖼️ el logo que subió el líder (19/10/2026): de R2, con su URL entera; si no hay, el del repo (`logos/crews/`)
+    logo_de = {c.get('id'): c.get('logo') for c in vivas.get('crews') or [] if str(c.get('logo') or '').startswith('https://')}
+    # 🏆 y su tier (`bot/crews_tiers.py`): Bronce si todavía no tiene
+    tier_de = (_json('datos', 'crews_tiers.json') or {}).get('tier') or {}
     from comun.claves import clave as _ck
     acc = {}
     for p in pool:
@@ -2946,7 +2963,10 @@ def _crews():
         a['pts'] = int(round(_CV.puntos(a.pop('por'), rk_cfg.get('modo'), int(rk_cfg.get('n') or 5), reps_de.get(a['clave']))))
         a.pop('mejor_pos', None)
         a['rk'] = 1 if a['n'] >= 3 else 0
-        if os.path.exists(os.path.join(logos, a['clave'] + '.webp')):
+        a['tier'] = int(tier_de.get(a['clave'], 0) or 0)
+        if logo_de.get(a['clave']):
+            a['logo'] = logo_de[a['clave']]
+        elif os.path.exists(os.path.join(logos, a['clave'] + '.webp')):
             a['logo'] = 'logos/crews/%s.webp' % a['clave']
     return sorted(fuera, key=lambda a: (-a['rk'], -a['pts'], -a['n']))
 

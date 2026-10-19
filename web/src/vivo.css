@@ -3324,11 +3324,54 @@ a.rk-z:hover{border-color:var(--linea)}
 .cw-crear{display:grid;gap:12px;max-width:480px}
 .cw-crear label{display:grid;gap:6px;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
 .cw-crear label small{font:inherit;color:var(--gris);text-transform:none}
-.cw-crear .cw-rep{text-transform:none;letter-spacing:0;font:600 14px/1.2 Archivo,sans-serif}
+.cw-crear .cw-rep{display:inline-flex;text-transform:none;letter-spacing:0;font:600 14px/1.2 Archivo,sans-serif}
 .cw-crear .btn{justify-self:start}
 .cw-mia{display:grid;gap:14px}
 .cw-inv-b{display:inline-grid;gap:4px}
 .gp-lider{display:inline-block;margin-left:10px;font:600 15px/1.4 Archivo,sans-serif}
+/* ⏳ la primera semana de una crew nueva (Dlx: «que esto sea notable por el líder»): arriba de todo, con el borde
+   magenta de lo que vence; los dos últimos días, entera en magenta */
+.cw-semana{display:grid;gap:10px;padding:14px 16px;border:2px solid var(--magenta);background:var(--caja)}
+.cw-semana-t{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px}
+.cw-semana-tag{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--magenta)}
+.cw-semana-q{font:900 22px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
+.cw-semana-d{margin:0;font:500 15px/1.45 Archivo,sans-serif}
+.cw-semana-pie{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.cw-semana-pips{display:inline-flex;align-items:center;gap:6px}
+.cw-semana-pips i{width:22px;height:22px;border:2px solid var(--linea)}
+.cw-semana-pips i.on{background:var(--verde);border-color:var(--verde)}
+.cw-semana-pips small{margin-left:4px;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.cw-semana.urge{background:var(--magenta);color:#fff}
+.cw-semana.urge :is(.cw-semana-tag,.cw-semana-pips small){color:#fff}
+.cw-semana.urge .cw-semana-pips i{border-color:#fff}
+.cw-semana-p{color:var(--tinta)}
+.cw-aviso-semana{padding-left:10px;border-left:3px solid var(--magenta)}
+/* 🖼️ el logo (se ve en un círculo, como en las historias y el Ranking) y la descripción */
+.cw-logo-campo{display:grid;gap:8px}
+.cw-logo-t{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.cw-logo-campo small{color:var(--gris);font:500 13px/1.4 Archivo,sans-serif}
+.cw-logo-el{display:inline-flex;align-items:center;gap:12px}
+.cw-logo-v{display:grid;place-items:center;width:84px;height:84px;border-radius:50%;overflow:hidden;border:2px dashed var(--linea);
+  background:var(--fondo);font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:var(--gris)}
+.cw-logo-v img{width:100%;height:100%;object-fit:cover}
+.cw-logo-el.chico .cw-logo-v{width:56px;height:56px}
+.cw-logo-v:has(img){border-style:solid}
+.cw-logo-b{position:relative;overflow:hidden;cursor:pointer}
+.cw-logo-b input{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}
+.cw-desc-in{min-height:64px;padding:10px 12px;line-height:1.4;resize:vertical}
+.cw-desc{max-width:62ch;margin:0 0 14px;font:500 16px/1.5 Archivo,sans-serif}
+/* 🏆 el tier de una crew: el color viene del payload (bot/crews_tiers.py), acá sólo la forma */
+.tier-chip{display:inline-block;padding:4px 9px 3px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;
+  white-space:nowrap}
+.tier-chip.chico{padding:3px 7px 2px;font-size:13px}
+.tier-caja{display:grid;gap:8px;max-width:640px;margin:0 0 16px;padding:14px 16px;border:2px solid var(--linea);border-left:6px solid var(--tier,var(--linea));
+  background:var(--caja)}
+.tier-arriba{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+.tier-arriba .tier-chip{font-size:18px;padding:6px 12px 5px}
+.tier-vino{color:var(--gris);font:600 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.tier-sem{margin:0;font:500 15px/1.45 Archivo,sans-serif}
+.tier-barra{height:10px;border:1.5px solid var(--linea);background:var(--fondo)}
+.tier-barra i{display:block;height:100%;background:var(--tier,var(--verde))}
 
 /* ── 🔤 UN SOLO ESTILO DE TÍTULO (Dlx, 19/10/2026, mirando los seis que había: «sí, como el del Inicio») ──────────────
    El de sección es el de `.sec-t` del Inicio: la raya arriba y Archivo 900 ancho en mayúsculas (22 px, 30 en la compu;
