@@ -1058,7 +1058,9 @@
 },
 "noone": {
 "rg": "",
-"c": []
+"c": [
+"servidor"
+]
 },
 "mhs": {
 "rg": "",
@@ -2427,14 +2429,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"MATICERNA"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5740,6 +5734,14 @@
 ],
 "rg": "C",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-19T22:46:26Z",
+"quien": [
+"Noone"
+],
+"carta": "servidor"
 }
 ]
 }
