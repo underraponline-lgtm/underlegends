@@ -2,16 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1559281254354919497": {
-   "id": "1559281254354919497",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "pub": 1791832021083,
-   "a": "MAKMA🇻🇪 + NC🇦🇷 + GUESS🇦🇷",
-   "b": "XCLUSIVO🇻🇪 + OG🇻🇪 + EMI🇲🇽",
-   "ganador": "MAKMA🇻🇪 + NC🇦🇷 + GUESS🇦🇷",
-   "votos": "1–0"
-  },
   "1559326557372162069": {
    "id": "1559326557372162069",
    "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
@@ -5392,6 +5382,27 @@
      ],
      "MOSQUITORAP🇦🇷",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1561793578244505673": {
+   "id": "1561793578244505673",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1792431005775,
+   "ed": 1792437719468,
+   "texto": "`[ FILTROS ]`\n`[ FINAL ]`\n⌞OG 🇻🇪⌝ 🆚 ⌞VANDU 🇨🇦⌝",
+   "batallas": [
+    [
+     "FINAL",
+     [
+      "OG 🇻🇪",
+      "VANDU 🇨🇦"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

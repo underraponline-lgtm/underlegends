@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-19T18:54:58+00:00",
+ "cuando": "2026-10-19T19:25:35+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -6188,6 +6188,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Scritura🇻🇪",
+   "quien": "scritura",
+   "discord_id": "1559007314126704653",
+   "msg_id": "1561817409336385589",
+   "cuando": "2026-10-19T19:04:47"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Roda🇵🇦",
+   "quien": "rodaaa_mc",
+   "discord_id": "1492592375812587551",
+   "msg_id": "1561817197121118240",
+   "cuando": "2026-10-19T19:03:56"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Scritura",
+   "quien": "scritura",
+   "discord_id": "1559007314126704653",
+   "msg_id": "1561817139705413745",
+   "cuando": "2026-10-19T19:03:43"
+  },
   {
    "servidor": "SR",
    "canal": "[📝]inscripciones",
