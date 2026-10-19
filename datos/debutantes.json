@@ -217,7 +217,7 @@
    "n": 460,
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Jobaking": {
    "avisado": "2026-10-18",
@@ -452,7 +452,7 @@
    "n": 460,
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Scritura": {
    "avisado": "2026-10-12",
