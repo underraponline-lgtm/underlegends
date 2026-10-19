@@ -2470,6 +2470,32 @@
      ],
      "organizador": "",
      "cuentas": {}
+    },
+    "1561835549667627050": {
+     "sv": "FFA",
+     "nombre": "LA REDENCION VOL.6",
+     "mo": "2026-10-19T20:16:52Z",
+     "staff": {
+      "jurado": [
+       "Velatz"
+      ],
+      "host": [
+       "Velatz"
+      ],
+      "dj": [
+       "Velatz"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Velatz",
+       "id": "1426686911908675628"
+      }
+     ],
+     "organizador": "",
+     "cuentas": {
+      "Velatz": "1426686911908675628"
+     }
     }
    },
    "ver": {

@@ -267,11 +267,6 @@
      1792404668196
     ],
     [
-     "makmah",
-     "miembro",
-     1792404668196
-    ],
-    [
      "thiflow",
      "miembro",
      1792404668196
@@ -991,6 +986,25 @@
    "vence": 0,
    "logo": "",
    "desc": ""
+  },
+  {
+   "id": "Los ULEYES",
+   "nombre": "Los ULEYES",
+   "sigla": "ULY",
+   "entrada": "abierta",
+   "oficial": false,
+   "creada": 1792439945419,
+   "reps": [],
+   "gente": [
+    [
+     "dlx",
+     "lider",
+     1792439945419
+    ]
+   ],
+   "vence": 1793044745419,
+   "logo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/logos-crews/0cf1a4fb69c1a154d27b36a2.jpg",
+   "desc": "Probando. D"
   }
  ]
 }

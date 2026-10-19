@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-19T19:55:23+00:00",
+ "cuando": "2026-10-19T20:25:41+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -400,6 +400,47 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "LA REDENCION VOL.6",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1561835549667627050",
+   "cuando": "2026-10-19T20:16:52",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "orgs": [
+    {
+     "n": "Velatz",
+     "id": "1426686911908675628"
+    }
+   ],
+   "autor_h": "c36f9caea613c5c9",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Plata II 🥈",
+   "modalidad": "Multiverse",
+   "horario": "5:30",
+   "fecha": "",
+   "premios": "Clasificación + Campeonato 🏆",
+   "staff": {
+    "jurado": [
+     "Velatz"
+    ],
+    "host": [
+     "Velatz"
+    ],
+    "dj": [
+     "Velatz"
+    ]
+   },
+   "autor": "Velatz",
+   "staff_cuentas": {
+    "Velatz": "1426686911908675628"
+   },
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "ME QUISIERA MORIR, PERO NO MULTIVERSE VOL.2",
@@ -1105,47 +1146,6 @@
    },
    "autor": "Lewito",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "LA REDENCION VOL.4",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1559273957524377611",
-   "cuando": "2026-10-12T18:38:01",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Velatz",
-     "id": "1426686911908675628"
-    }
-   ],
-   "autor_h": "c36f9caea613c5c9",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Plata II 🥈",
-   "modalidad": "Pandillas",
-   "horario": "16:00",
-   "fecha": "",
-   "premios": "Clasificación + Campeonato 🏆",
-   "staff": {
-    "jurado": [
-     "Velatz"
-    ],
-    "host": [
-     "Velatz"
-    ],
-    "dj": [
-     "Velatz"
-    ]
-   },
-   "autor": "Velatz",
-   "staff_cuentas": {
-    "Velatz": "1426686911908675628"
-   },
    "categoria_id": "1468478330826260500"
   },
   {
@@ -6194,6 +6194,168 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Scritura🇻🇪",
+   "quien": "scritura",
+   "discord_id": "1559007314126704653",
+   "msg_id": "1561837653907865663",
+   "cuando": "2026-10-19T20:25:14"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Tus parientes 🇨🇱 🇵🇾 Yo y verc",
+   "quien": "plapla23",
+   "discord_id": "839707244069126174",
+   "msg_id": "1561837231134740591",
+   "cuando": "2026-10-19T20:23:33"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Emily wants to play 🇵🇾",
+   "quien": "plapla23",
+   "discord_id": "839707244069126174",
+   "msg_id": "1561836690778366026",
+   "cuando": "2026-10-19T20:21:24"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1561836147599089676",
+   "cuando": "2026-10-19T20:19:15"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "verc 🇨🇱   Emily wants to play 🇵🇾",
+   "quien": "jovenvesta",
+   "discord_id": "913652602208649226",
+   "msg_id": "1561835868594114591",
+   "cuando": "2026-10-19T20:18:08"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Teo 🇨🇴 + Krish 🇪🇸",
+   "quien": "krishsss11111",
+   "discord_id": "1513620494199558295",
+   "msg_id": "1561835692529680575",
+   "cuando": "2026-10-19T20:17:26"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Magic🇲🇽",
+   "quien": "soul011294",
+   "discord_id": "915051512575717457",
+   "msg_id": "1561835538963632149",
+   "cuando": "2026-10-19T20:16:49"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Teito 🇨🇴 + Krish 🇪🇸",
+   "quien": "krishsss11111",
+   "discord_id": "1513620494199558295",
+   "msg_id": "1561835413340168264",
+   "cuando": "2026-10-19T20:16:20"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Pichulamc 🇦🇷 + Libreria 🇺🇸 + abyssus 🇵🇦",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1561834752372252733",
+   "cuando": "2026-10-19T20:13:42"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Krish🇪🇸 + Teito 🇨🇴",
+   "quien": "krishsss11111",
+   "discord_id": "1513620494199558295",
+   "msg_id": "1561834576400093285",
+   "cuando": "2026-10-19T20:13:00"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Pichulamc 🇦🇷 + Sebita 🇺🇸 + abyssus 🇵🇦",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1561834490354081843",
+   "cuando": "2026-10-19T20:12:39"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Chop🇭🇳",
+   "quien": "30fps30hz",
+   "discord_id": "1364747464170668042",
+   "msg_id": "1561834454266421331",
+   "cuando": "2026-10-19T20:12:31"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Valdoza 🇨🇱",
+   "quien": "voltaxxdddd67",
+   "discord_id": "1263213463644143672",
+   "msg_id": "1561834255468732519",
+   "cuando": "2026-10-19T20:11:43"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Luck 🇵🇾",
+   "quien": "luck.vc",
+   "discord_id": "1367919102382964878",
+   "msg_id": "1561833890400706675",
+   "cuando": "2026-10-19T20:10:16"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Dyzz🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1561833771546714124",
+   "cuando": "2026-10-19T20:09:48"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Sebita🇱🇷",
+   "quien": "malasiafighter",
+   "discord_id": "1357796427191029932",
+   "msg_id": "1561833765016174745",
+   "cuando": "2026-10-19T20:09:47"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1561833747509157891",
+   "cuando": "2026-10-19T20:09:42"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Teo 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1561833717004243054",
+   "cuando": "2026-10-19T20:09:35"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",

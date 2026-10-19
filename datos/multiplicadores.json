@@ -666,17 +666,27 @@
     "org": "Flennzs",
     "clave": "flennzs"
    },
-   "organizadores": [],
+   "organizadores": [
+    [
+     "Kravitz",
+     19,
+     1
+    ]
+   ],
    "semillero": {
-    "nuevos": {},
-    "gente": {},
+    "nuevos": {
+     "FFA": 2
+    },
+    "gente": {
+     "FFA": 19
+    },
     "gana": null
    },
    "meta_va": {
     "ACAD": 0,
     "DDF": 0,
     "DRA": 0,
-    "FFA": 0,
+    "FFA": 19,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,

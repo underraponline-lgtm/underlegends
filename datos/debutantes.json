@@ -291,7 +291,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-19T16:52:32+00:00",
-   "did": "",
+   "did": "1506335168699301939",
    "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2",
    "n": 489,
    "sv": "FFA",
@@ -570,18 +570,6 @@
    "n": 483,
    "sv": "FFA",
    "vence": "2026-10-25T02:26:23+00:00",
-   "vencido": false
-  },
-  "matacuak": {
-   "avisado": "2026-10-19",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-19T16:52:32+00:00",
-   "did": "",
-   "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2",
-   "n": 489,
-   "sv": "FFA",
-   "vence": "2026-10-26T16:52:32+00:00",
    "vencido": false
   },
   "tomyhilfiger": {

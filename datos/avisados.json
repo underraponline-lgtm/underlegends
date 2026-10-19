@@ -2516,7 +2516,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "e5c924735e0c0a2c",
+  "firma": "8e31aff9b5bba39e",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "2316f959eb38d6d8",
+  "firma": "8f5ce57008f2d2be",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -6117,7 +6117,7 @@
    "Spartan": 1
   },
   "fecha": "10/10",
-  "firma": "4c21c703d68ecf0a",
+  "firma": "4c21e070933f5b93",
   "msg": "1558711595163590740",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
   "num": 446,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "a8552b5006765a32",
+  "firma": "4dba27e3caa265a8",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -10954,7 +10954,7 @@
    "Verc": 8
   },
   "fecha": "13/10",
-  "firma": "b1fe9a530dcc41c0",
+  "firma": "b21ab20ce3cf85d3",
   "msg": "1559705366705475605",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL5 __",
   "num": 467,
@@ -11664,7 +11664,7 @@
    "Verc": 10
   },
   "fecha": "13/10",
-  "firma": "2e411ac4c0ef8dae",
+  "firma": "9d6f1ca46acbb10e",
   "msg": "1559769924178804738",
   "nombre": "PRITTY FREE",
   "num": 469,
@@ -11865,7 +11865,7 @@
    "Xubaru": 4
   },
   "fecha": "14/10",
-  "firma": "791010f6ce3b0aa0",
+  "firma": "6a7a246232173d2f",
   "msg": "1559809185120518145",
   "nombre": "__ Inserte Nombre de la Compe __",
   "num": 470,
@@ -13980,7 +13980,7 @@
    "Vandu": 22
   },
   "fecha": "16/10",
-  "firma": "c3af0498718c7af0",
+  "firma": "3872f7e8199e3a41",
   "msg": "1560779869497983097",
   "nombre": "PRADERAP VOL.1",
   "num": 479,
@@ -14579,7 +14579,7 @@
    "Sin Limites": 18
   },
   "fecha": "16/10",
-  "firma": "6f02224b4dcc7807",
+  "firma": "7f7550ed5e9525c7",
   "msg": "1560858617589272627",
   "nombre": "PROYECTO X VOL.3",
   "num": 481,
@@ -14706,7 +14706,7 @@
    "Panchok": 15
   },
   "fecha": "17/10",
-  "firma": "ab799aa6d2793a9b",
+  "firma": "e5a9ef6ff212831e",
   "msg": "1561153562665558208",
   "nombre": "MUNDIALITO",
   "num": 482,
@@ -16041,7 +16041,7 @@
    "Tenor": 5
   },
   "fecha": "19/10",
-  "firma": "f2532cf94866be7b",
+  "firma": "ed060a6e876414dc",
   "msg": "1561761975514697891",
   "nombre": "FREESTYLE LEAGUE N3",
   "num": 488,
@@ -16111,6 +16111,7 @@
   "v": 2
  },
  "489": {
+  "al_dia": true,
   "antes": {
    "Colesito": [
     4,

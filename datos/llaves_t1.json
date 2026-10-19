@@ -27295,10 +27295,10 @@
        "Dyzz",
        "Izaya",
        "J.r",
-       "Kwl🇳🇮"
+       "Kwl"
       ],
       "Dyzz, Izaya",
-      "triple (4 bandas, pasan 2); también pasa: Izaya 🇨🇱"
+      "triple (4 bandas, pasan 2); también pasa: Izaya 🇨🇱; Revivido: Dyzz🇨🇱"
      ],
      [
       [
@@ -27315,7 +27315,18 @@
        "Xubaru, Makmah",
        "Colesito",
        "Pomberito",
-       "matacuak🇵🇪",
+       "Andy",
+       "Panchok"
+      ],
+      "Xubaru, Makmah, Colesito",
+      "triple (5 bandas, pasan 2); también pasa: colesito; Revivido: pombe"
+     ],
+     [
+      [
+       "Xubaru, Makmah",
+       "Colesito",
+       "Pomberito",
+       "Andy",
        "Panchok"
       ],
       "Xubaru, Makmah, Colesito",
@@ -27348,6 +27359,14 @@
        "Trot"
       ],
       "Vandu",
+      ""
+     ],
+     [
+      [
+       "Xubaru, Makmah",
+       "Dyzz"
+      ],
+      "Xubaru, Makmah",
       ""
      ]
     ],
@@ -27396,6 +27415,11 @@
     3750
    ],
    [
+    "Dyzz",
+    "Cuartos",
+    3750
+   ],
+   [
     "Vandu",
     "Subcampeón",
     3750
@@ -27414,11 +27438,6 @@
     "Xubaru",
     "Campeón",
     3333
-   ],
-   [
-    "Dyzz",
-    "Cuartos",
-    2500
    ],
    [
     "Izaya",
@@ -27446,22 +27465,27 @@
     1750
    ],
    [
+    "Panchok",
+    "R32",
+    937
+   ],
+   [
+    "Pomberito",
+    "R32",
+    937
+   ],
+   [
+    "Andy",
+    "R32",
+    625
+   ],
+   [
     "J.r",
     "R32",
     625
    ],
    [
-    "Kwl🇳🇮",
-    "R32",
-    625
-   ],
-   [
-    "Panchok",
-    "R32",
-    625
-   ],
-   [
-    "Pomberito",
+    "Kwl",
     "R32",
     625
    ],
@@ -27472,11 +27496,6 @@
    ],
    [
     "francis",
-    "R32",
-    625
-   ],
-   [
-    "matacuak🇵🇪",
     "R32",
     625
    ],
