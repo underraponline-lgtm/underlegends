@@ -373,3 +373,10 @@
 .db-crews{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:6px 18px}
 .db-crews li{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--suave)}
 .db-crews select{max-width:150px}
+/* 🏆 los números de los tiers de las crews: una tabla de siete filas, que en el teléfono se corre de costado */
+.db-sub{margin:4px 0 0;font:800 16px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;text-transform:uppercase}
+.db-tabla-x{overflow-x:auto}
+.db-tiers{border-collapse:collapse;width:100%;min-width:420px;font-size:14px}
+.db-tiers th,.db-tiers td{padding:4px 6px;text-align:left;border-bottom:1px solid var(--suave)}
+.db-tiers thead th{font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:var(--gris);text-transform:uppercase}
+.db-tiers input{width:100%;min-width:80px;font-variant-numeric:tabular-nums}

@@ -201,6 +201,27 @@ export function rankingValido(v) {
 }
 
 /** El precio del Dashboard: un entero de 0 a 50.000, o `undefined`. */
+/**
+ * 🏆 Los números de los tiers de las crews, del Dashboard (19/10/2026, Dlx: «Tiers en el Dashboard»): `{sube, baja,
+ * juegan}` —seis, seis y siete— o `undefined` si no valen (`null`: los de siempre). `sube[t]`: los puntos de la semana
+ * para subir DESDE el tier `t` (Leyenda no sube); `baja[t]`: con menos de esto baja el tier `t + 1` (Bronce no baja);
+ * `juegan[t]`: cuántos de la crew tienen que haber jugado para ENTRAR al tier `t`. ⚠️ Las mismas reglas que
+ * `reglas_validas()` de bot/crews_tiers.py, que es quien los usa: si se toca una, se toca la otra.
+ */
+export function tiersValidos(v) {
+  if (v === null) return null;
+  if (!v || typeof v !== 'object') return undefined;
+  const ent = (xs, n, min, max) => (Array.isArray(xs) && xs.length === n && xs.every((x) => Number.isInteger(x) && x >= min && x <= max)
+    ? xs.slice() : null);
+  const sube = ent(v.sube, 6, 1, 10000000), baja = ent(v.baja, 6, 0, 10000000), juegan = ent(v.juegan, 7, 0, CREW_MAX);
+  if (!sube || !baja || !juegan) return undefined;
+  for (let i = 1; i < 6; i++) if (sube[i] <= sube[i - 1] || baja[i] < baja[i - 1]) return undefined;
+  for (let i = 1; i < 7; i++) if (juegan[i] < juegan[i - 1]) return undefined;
+  // quien recién sube al tier t + 1 no puede estar ya bajando: lo que pide quedarse no pasa lo que pidió subir
+  for (let i = 0; i < 6; i++) if (baja[i] > sube[i]) return undefined;
+  return { sube, baja, juegan };
+}
+
 export function precioValido(v) {
   if (v === null) return null;
   const n = Number(v);

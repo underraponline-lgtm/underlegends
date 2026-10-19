@@ -66,6 +66,37 @@ ARRANQUE = '2026-10-19'
 HISTORIA = 200
 
 
+def reglas_validas(r):
+    """🏆 Los números del Dashboard (`crews_tiers_num`, Dlx 19/10/2026: «Tiers en el Dashboard»): `(sube, baja, juegan)`
+    como las tuplas de arriba, o `None` si no valen. ⚠️ Las mismas reglas que `tiersValidos()` de bot/crews.js, que es
+    quien los guarda: se vuelven a mirar acá porque un número roto cerraría la semana de todas las crews."""
+    if not isinstance(r, dict):
+        return None
+
+    def ent(xs, n, lo, hi):
+        ok = isinstance(xs, list) and len(xs) == n and all(isinstance(x, int) and not isinstance(x, bool) and lo <= x <= hi
+                                                            for x in xs)
+        return list(xs) if ok else None
+    sube, baja, juegan = ent(r.get('sube'), 6, 1, 10 ** 7), ent(r.get('baja'), 6, 0, 10 ** 7), ent(r.get('juegan'), 7, 0, 20)
+    if not sube or not baja or not juegan:
+        return None
+    if any(sube[i] <= sube[i - 1] or baja[i] < baja[i - 1] for i in range(1, 6)) \
+            or any(juegan[i] < juegan[i - 1] for i in range(1, 7)) or any(baja[i] > sube[i] for i in range(6)):
+        return None
+    return tuple(sube) + (None,), (None,) + tuple(baja), tuple(juegan)
+
+
+def usar_reglas(aj):
+    """Si el Dashboard puso números, son los de esta corrida (y los de la página: `para_web()`). Sin ajustes —el Worker
+    no contestó— o con números rotos, los de siempre. Devuelve si se usaron los del Dashboard."""
+    global SUBE, BAJA, JUEGAN
+    r = reglas_validas((aj or {}).get('crews_tiers_num'))
+    if not r:
+        return False
+    SUBE, BAJA, JUEGAN = r
+    return True
+
+
 def _json(ruta, defecto=None):
     try:
         with io.open(ruta, encoding='utf-8') as f:
@@ -262,6 +293,11 @@ def _auto():
     antes = dict(e['tier'])
     ok(paso(e, div('2026-11-16', {}), {}) == [] and e['tier'] == antes and e['sem'] == '2026-11-09',
        'sin las crews (el objeto no contestó) la semana no se cierra: nadie pierde su tier')
+    bien = {'sube': [1, 2, 3, 4, 5, 6], 'baja': [0, 1, 2, 3, 4, 5], 'juegan': [0, 1, 1, 2, 2, 3, 3]}
+    ok(reglas_validas(bien) == ((1, 2, 3, 4, 5, 6, None), (None, 0, 1, 2, 3, 4, 5), (0, 1, 1, 2, 2, 3, 3))
+       and reglas_validas(dict(bien, sube=[1, 1, 3, 4, 5, 6])) is None and reglas_validas(dict(bien, baja=[0, 9, 9, 9, 9, 9])) is None
+       and reglas_validas(dict(bien, juegan=[0, 1])) is None and reglas_validas(dict(bien, sube=[1, 2, 3, 4, 5, '6'])) is None
+       and reglas_validas(None) is None, 'los números del Dashboard: crecen, lo de quedarse no pasa lo de subir, y si no, nada')
     print('  ✅ tiers de crews: todo bien' if not mal else '\n  🔴 %d mal' % len(mal))
     return not mal
 
@@ -270,6 +306,12 @@ def main():
     if '--auto' in sys.argv:
         sys.exit(0 if _auto() else 1)
     aplicar = '--aplicar' in sys.argv
+    try:
+        import multiplicadores as _M
+        if usar_reglas(_M.ajustes_dueno()):
+            print('   🏆 con los números del Dashboard')
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ los números de los tiers del Dashboard no se leyeron (%s): van los de siempre' % str(e)[:60])
     estado = _json(RUTA, {}) or {}
     estado.pop('_leeme', None)
     div, vivas = _json(DIVISIONES), _json(VIVAS) or {}

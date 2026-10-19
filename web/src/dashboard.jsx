@@ -1018,6 +1018,52 @@ function AjSilencio({ aj, hacer, ocup }) {
 // arma su ranking (todos, los N mejores o los representantes que elige el líder) y el líder de cada una —las 34 de antes
 // arrancaron con el primero de la lista—. El precio y el ranking son ajustes; el líder va por `/avisos/dueno/crew`
 const MODOS_CREW = [['todos', 'La suma de todos'], ['mejores', 'Los N mejores de cada una'], ['reps', 'Los representantes que elige el líder']];
+// 🏆 los de siempre (bot/crews_tiers.py `SUBE`, `BAJA`, `JUEGAN`), por si el payload todavía no los trae
+const TIERS_DEF = { nombres: ['Bronce', 'Plata', 'Oro', 'Platino', 'Diamante', 'Maestro', 'Leyenda'],
+  sube: [15000, 30000, 50000, 80000, 120000, 180000], baja: [5000, 15000, 25000, 40000, 60000, 90000], juegan: [0, 1, 2, 3, 4, 5, 6] };
+
+/** 🏆 Los números de los tiers de las crews (Dlx, 19/10/2026: «Tiers en el Dashboard»): para subir, para no bajar y
+ *  cuántos tienen que jugar, tier por tier. Los valida `tiersValidos()` de bot/crews.js y los usa el ciclo en el cierre
+ *  de la semana (`bot/crews_tiers.py`); los de hoy llegan con el payload. */
+function TiersCrew({ liga, aj, hacer, ocup }) {
+  const P = (liga.d && liga.d.crews_tiers) || {};
+  const de = aj.crews_tiers_num || { sube: (P.sube || TIERS_DEF.sube).slice(0, 6), baja: (P.baja || [null].concat(TIERS_DEF.baja)).slice(1),
+    juegan: P.juegan || TIERS_DEF.juegan };
+  const nombres = P.nombres || TIERS_DEF.nombres;
+  const [t, setT] = useState(() => ({ sube: de.sube.map(String), baja: de.baja.map(String), juegan: de.juegan.map(String) }));
+  const pon = (que, i, v) => setT((x) => Object.assign({}, x, { [que]: x[que].map((y, j) => (j === i ? v : y)) }));
+  const num0 = (xs) => xs.map((x) => Number(x));
+  return (
+    <form className="db-form uno" onSubmit={(e) => {
+      e.preventDefault();
+      hacer('crews_tiers_num', { sube: num0(t.sube), baja: num0(t.baja), juegan: num0(t.juegan) },
+        'Guardado: los tiers se mueven con estos números desde el próximo cierre (lunes 11 AM ET).');
+    }}>
+      <h4 className="db-sub">Los tiers · puntos de la semana</h4>
+      <div className="db-tabla-x"><table className="db-tiers">
+        <thead><tr><th>Tier</th><th>Para subir</th><th>Baja con menos de</th><th>Para entrar juegan</th></tr></thead>
+        <tbody>{nombres.map((n, i) => (
+          <tr key={n}>
+            <th>{n}</th>
+            <td>{i < 6 ? <input type="number" min="1" max="10000000" step="1000" value={t.sube[i]} aria-label={'Para subir desde ' + n}
+              onChange={(e) => pon('sube', i, e.target.value)} /> : '—'}</td>
+            <td>{i > 0 ? <input type="number" min="0" max="10000000" step="1000" value={t.baja[i - 1]} aria-label={'Baja de ' + n + ' con menos de'}
+              onChange={(e) => pon('baja', i - 1, e.target.value)} /> : '—'}</td>
+            <td><input type="number" min="0" max="20" value={t.juegan[i]} aria-label={'Para entrar a ' + n + ', cuántos juegan'}
+              onChange={(e) => pon('juegan', i, e.target.value)} /></td>
+          </tr>
+        ))}</tbody>
+      </table></div>
+      <p className="db-tx">Cada número de una columna, igual o más que el de arriba. Lo que pide no bajar en un tier no puede ser más que lo
+        que pidió subir a él. La tarjeta de crew se desbloquea en Diamante.</p>
+      <div className="cu-btns">
+        <button type="submit" className="btn verde chico" disabled={ocup}>Guardar los tiers</button>
+        {aj.crews_tiers_num ? <button type="button" className="btn borde2 chico" disabled={ocup}
+          onClick={() => hacer('crews_tiers_num', null, 'Listo: vuelven los números de siempre.')}>Volver a los de siempre</button> : null}
+      </div>
+    </form>
+  );
+}
 function AjCrews({ liga, aj, hacer, ocup }) {
   const { todas } = useCrews();
   const r = aj.crews_ranking || { modo: 'todos', n: 5 };
@@ -1076,6 +1122,7 @@ function AjCrews({ liga, aj, hacer, ocup }) {
         </div>
         <div className="cu-btns"><button type="submit" className="btn verde chico" disabled={ocup}>Guardar el ranking</button></div>
       </form>
+      <TiersCrew liga={liga} aj={aj} hacer={hacer} ocup={ocup} />
       {crews.length ? (
         <details className="db-det">
           <summary>El líder de cada crew ({crews.length})</summary>

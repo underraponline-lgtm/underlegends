@@ -35,6 +35,14 @@ ok(CW.validarCrew({ accion: 'crear', nombre: 'Los del Barrio', quien: '999', de:
   && CW.validarCrew({ accion: 'reps', reps: ['ana', 'bea'] }).reps.length === 2,
 'la forma: sólo las acciones que existen, y quién actúa NUNCA sale del pedido');
 
+// 🏆 los números de los tiers del Dashboard: los de siempre (bot/crews_tiers.py) valen; uno que no crece o lo de quedarse por
+// encima de lo de subir, no
+const TD = { sube: [15000, 30000, 50000, 80000, 120000, 180000], baja: [5000, 15000, 25000, 40000, 60000, 90000], juegan: [0, 1, 2, 3, 4, 5, 6] };
+ok(CW.tiersValidos(TD) && CW.tiersValidos(null) === null && CW.tiersValidos(Object.assign({}, TD, { sube: [1, 1, 3, 4, 5, 6] })) === undefined
+  && CW.tiersValidos(Object.assign({}, TD, { baja: [5000, 15000, 25000, 40000, 60000, 190000] })) === undefined
+  && CW.tiersValidos(Object.assign({}, TD, { juegan: [0, 1] })) === undefined && CW.tiersValidos('x') === undefined,
+'los tiers del Dashboard: los de siempre valen; los que no crecen o piden más para quedarse que para subir, no');
+
 // ── sobre el objeto ──
 let DatabaseSync = null;
 try { ({ DatabaseSync } = await import('node:sqlite')); } catch (e) { DatabaseSync = null; }

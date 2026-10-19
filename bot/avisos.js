@@ -3466,6 +3466,8 @@ export function ajusteValido(cual, valor) {
   // 💸 y cuánto cuesta cambiarle el nombre (o la sigla) y el logo (Dlx, 19/10/2026: «cuesta plata»)
   if (cual === 'crew_precio_nombre' || cual === 'crew_precio_logo') return CW.precioValido(valor);
   if (cual === 'crews_ranking') return CW.rankingValido(valor);
+  // 🏆 los números de los tiers de las crews (`bot/crews_tiers.py` los lee): `{sube, baja, juegan}`, `null` = los de siempre
+  if (cual === 'crews_tiers_num') return CW.tiersValidos(valor);
   // 🤝 el nivel de cada servidor (`bot/tiers.py`, Dlx 18/10/2026): `{sigla: 1|2|3}`. El ciclo lo copia a datos/niveles.json
   if (cual === 'tiers') {
     if (valor === null) return null;
