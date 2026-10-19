@@ -3329,3 +3329,21 @@ a.rk-z:hover{border-color:var(--linea)}
 .cw-mia{display:grid;gap:14px}
 .cw-inv-b{display:inline-grid;gap:4px}
 .gp-lider{display:inline-block;margin-left:10px;font:600 15px/1.4 Archivo,sans-serif}
+
+/* ── 🔤 UN SOLO ESTILO DE TÍTULO (Dlx, 19/10/2026, mirando los seis que había: «sí, como el del Inicio») ──────────────
+   El de sección es el de `.sec-t` del Inicio: la raya arriba y Archivo 900 ancho en mayúsculas (22 px, 30 en la compu;
+   en las columnas de costado, 22). Y un solo subtítulo para lo de adentro de una sección: Archivo 900 de 16 px.
+   ⚠️ `.app :is()` para ganarle a los pedazos de cada página, que se cargan DESPUÉS de este archivo (css.js).
+   ⚠️ La raya del título es la que separa: los bloques de las columnas de costado (Eventos, Publicaciones) ya no llevan
+   la suya abajo, o eran dos rayas por bloque. Mi cuenta y el Changelog no entran: sus títulos van adentro de tarjetas
+   con borde, y la raya se sumaba al marco */
+.app :is(.evp-h2,.pub-dh,.evp-dia){border-top:2px solid var(--linea);padding-top:12px;font:900 22px/1 Archivo,sans-serif;font-stretch:125%;
+  text-transform:uppercase;word-spacing:.08em}
+@media (min-width: 900px){.app :is(.pub-dh,.evp-dia){font-size:30px}}
+.app .evp-dia{margin:14px 16px 2px;padding:12px 0 0}
+@media (min-width: 900px){.app .evp-dia{margin:14px 0 2px}}
+.app :is(.evp-bloque,.pub-bloque){border-bottom:0}
+.app :is(.evp-der,.pub-der){border-top:0}
+.app :is(.ti-h,.lk-h,.lgf-st,.dv-gt,.cw-h,.g-t){font:900 16px/1.1 Archivo,sans-serif;font-stretch:115%;letter-spacing:0;word-spacing:.1em;
+  text-transform:uppercase;color:var(--tinta)}
+.app .g-t.vivo{color:var(--magenta)}
