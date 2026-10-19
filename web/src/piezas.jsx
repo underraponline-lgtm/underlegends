@@ -1,6 +1,6 @@
 // Las piezas chicas del Inicio: íconos, cartas, caras, rangos, banderas, secciones y las secciones con pestañas.
 // Las clases son las del prototipo (docs/remake/reales.py): su CSS se genera de ahí (web/css_del_prototipo.py).
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { PAIS, limpio, num } from './liga.js';
 import * as RQ from './requisitos.js';
 
@@ -259,20 +259,32 @@ export function SinCarta({ liga, k, nombre, cc, cls = 'ci' }) {
 // una carta de verdad (de R2) o, si esa persona no la tiene, su cara con «SIN CARTA». Nunca una carta inventada.
 export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true }) {
   const [fallo, setFallo] = useState({ src: null, n: 0 });
+  // el ancho en que se dibuja, en píxeles de pantalla: 0 todavía no se midió, -1 no se pudo (va la grande)
+  const [ancho, setAncho] = useState(0);
+  const ref = useRef(null);
   const f = liga.T[k];
   const src0 = liga.cartaUrl(k, cual);
   // las fallas cuentan para ESA dirección: una carta nueva (otra `?v=`) se vuelve a intentar
   const fallas = fallo.src === src0 ? fallo.n : 0;
+  // 🃏 LA CHICA DONDE SE DIBUJA EN CHICO (Dlx, 19/10/2026: «dale»). Se mide ANTES de pintar (el img todavía sin `src`
+  // ocupa el ancho que le da su CSS) y se elige: la de 300 px (~22 KB) si alcanza para ese ancho por la densidad de la
+  // pantalla, si no la grande (~150). Sin ancho propio —un img sin `src` mide 0— va la grande, como siempre.
+  // 🔴 NO `sizes="auto"`: el navegador le pone `contain: size` con 300×150 de tamaño propio (la regla es del estándar y
+  // con !important: no se puede pisar), y toda carta de alto automático salía de 150 px, aplastada o recortada. Pasó
+  // en producción unas horas del 19/10/2026 (Dlx: «mirá cómo quedó esta parte»: Lo último y Los que mandan)
+  useLayoutEffect(() => {
+    if (ancho || !ref.current) return;
+    const w = ref.current.getBoundingClientRect().width;
+    setAncho(w > 0 ? w * Math.max(1, window.devicePixelRatio || 1) : -1);
+  }, [ancho, src0]);
   if (!src0 || fallas > 1) return <SinCarta liga={liga} k={k} nombre={f ? f.n : k} cc={f ? f.cc : ''} cls={cls} />;
   // 🔴 una carta que no carga (R2 corta a veces) mostraba el ícono de imagen rota: se reintenta una vez y, si
-  // vuelve a fallar, la cara con «SIN CARTA» (revisión del 30/09/2026)
-  const src = fallas ? src0 + (src0.indexOf('?') < 0 ? '?' : '&') + 'r=1' : src0;
-  // 🃏 LA CHICA DONDE SE DIBUJA EN CHICO (Dlx, 19/10/2026: «dale»): con `sizes="auto"` el navegador mira el ancho en que
-  // se dibuja y elige la de 300 px (~22 KB) o la grande (~150). Un navegador que no conoce `auto` la toma por todo el
-  // ancho de la pantalla y baja la grande, como antes. Si la chica falla, entra el reintento de abajo, con la grande
+  // vuelve a fallar, la cara con «SIN CARTA» (revisión del 30/09/2026). Si falla la chica, entra la grande
+  const grande = fallas ? src0 + (src0.indexOf('?') < 0 ? '?' : '&') + 'r=1' : src0;
   const chica = fallas ? null : liga.cartaUrl(k, cual, true);
-  const img = <img className={cls} alt={'Carta ' + cual + ' de ' + f.n} src={src} loading="lazy"
-    srcSet={chica ? chica + ' 300w, ' + src0 + ' 900w' : undefined} sizes={chica ? 'auto' : undefined}
+  const src = !ancho ? undefined : chica && ancho > 0 && ancho <= 300 ? chica : grande;
+  // (sin `src`, el alt vacío: si no, el navegador dibuja el texto y lo que se mide es el texto)
+  const img = <img ref={ref} className={cls} alt={src ? 'Carta ' + cual + ' de ' + f.n : ''} src={src} loading="lazy"
     onError={() => setTimeout(() => setFallo((x) => ({ src: src0, n: (x.src === src0 ? x.n : 0) + 1 })), fallas ? 0 : 1200)} />;
   if (!abre) return img;
   return <button type="button" className="sin-boton" onClick={() => accion.carta(k)} aria-label={'Ver la carta de ' + f.n}>{img}</button>;
