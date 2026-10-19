@@ -233,7 +233,7 @@
    "competitivo": "db658a87dafd:c896d13a6eea",
    "pais": "30c91b0bd4b5:1f7b0cf01b60",
    "servidor": "55799d9071e2:b8c1c7c39e87:6a5f1a",
-   "temporada": "ca55f873fa5b:eac8e3b22c41"
+   "temporada": "cea738a89bc7:eac8e3b22c41"
   },
   "Clitax": {},
   "Colesito": {
@@ -776,7 +776,7 @@
    "competitivo": "46d23488582d:c896d13a6eea",
    "pais": "4cba7ce766d0:1f7b0cf01b60",
    "servidor": "8bb9860de69d:b8c1c7c39e87:b11e87",
-   "temporada": "7da1f088fe4d:eac8e3b22c41"
+   "temporada": "4276016cef5e:eac8e3b22c41"
   },
   "Krozakeo": {
    "servidor": "2de415aac9b8:b8c1c7c39e87:055f77"
@@ -814,7 +814,7 @@
    "competitivo": "05f9351dc851:c896d13a6eea",
    "pais": "53fe8e6361a4:1f7b0cf01b60",
    "servidor": "d8aeb62c5e50:b8c1c7c39e87:d0970d",
-   "temporada": "477b01310034:eac8e3b22c41"
+   "temporada": "4b3855a0ade7:eac8e3b22c41"
   },
   "LGBD": {
    "servidor": "d1bce8faed5c:b8c1c7c39e87:4975e5"
@@ -918,7 +918,7 @@
   "Lvel": {
    "competitivo": "99ff891b2646:c896d13a6eea",
    "servidor": "9b1d08d68995:b8c1c7c39e87:039304",
-   "temporada": "9b6e4bb95669:eac8e3b22c41"
+   "temporada": "acb30f4e54dd:eac8e3b22c41"
   },
   "MATICERNA": {},
   "MAXIMILIANO CALVO": {},
@@ -1084,7 +1084,7 @@
    "competitivo": "17ed2993b80b:c896d13a6eea",
    "pais": "130df8a58cd9:1f7b0cf01b60",
    "servidor": "b23aa4214e85:b8c1c7c39e87:6b6c7f",
-   "temporada": "9facb0c78d06:eac8e3b22c41"
+   "temporada": "282b642e0eeb:eac8e3b22c41"
   },
   "Mrpuyosa": {
    "servidor": "e63c71ecad6a:b8c1c7c39e87:055f77"
@@ -1114,7 +1114,7 @@
    "competitivo": "0d41d16d1ae5:c896d13a6eea",
    "pais": "b4e8f97d32bb:1f7b0cf01b60",
    "servidor": "2dfd755da9ea:b8c1c7c39e87:89fd7c",
-   "temporada": "5eb43495da68:eac8e3b22c41"
+   "temporada": "c585aab24901:eac8e3b22c41"
   },
   "NFK": {
    "servidor": "a60b74fd45eb:b8c1c7c39e87:100254"
@@ -1711,7 +1711,7 @@
    "competitivo": "263faa6e055d:c896d13a6eea",
    "pais": "ee73850e30a0:1f7b0cf01b60",
    "servidor": "9ba9a1e872e0:b8c1c7c39e87:3580af",
-   "temporada": "4eafecb2301b:eac8e3b22c41"
+   "temporada": "fba5647b042a:eac8e3b22c41"
   },
   "Zkalefa": {
    "servidor": "f7db99f48cc8:b8c1c7c39e87:15af16"
@@ -1827,5 +1827,5 @@
    "servidor": "7f8885a35a6d:b8c1c7c39e87:93a344"
   }
  },
- "cuando": "2026-10-19T16:04:02+00:00"
+ "cuando": "2026-10-19T16:31:26+00:00"
 }
