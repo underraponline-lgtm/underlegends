@@ -267,7 +267,12 @@ export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true }) 
   // 🔴 una carta que no carga (R2 corta a veces) mostraba el ícono de imagen rota: se reintenta una vez y, si
   // vuelve a fallar, la cara con «SIN CARTA» (revisión del 30/09/2026)
   const src = fallas ? src0 + (src0.indexOf('?') < 0 ? '?' : '&') + 'r=1' : src0;
+  // 🃏 LA CHICA DONDE SE DIBUJA EN CHICO (Dlx, 19/10/2026: «dale»): con `sizes="auto"` el navegador mira el ancho en que
+  // se dibuja y elige la de 300 px (~22 KB) o la grande (~150). Un navegador que no conoce `auto` la toma por todo el
+  // ancho de la pantalla y baja la grande, como antes. Si la chica falla, entra el reintento de abajo, con la grande
+  const chica = fallas ? null : liga.cartaUrl(k, cual, true);
   const img = <img className={cls} alt={'Carta ' + cual + ' de ' + f.n} src={src} loading="lazy"
+    srcSet={chica ? chica + ' 300w, ' + src0 + ' 900w' : undefined} sizes={chica ? 'auto' : undefined}
     onError={() => setTimeout(() => setFallo((x) => ({ src: src0, n: (x.src === src0 ? x.n : 0) + 1 })), fallas ? 0 : 1200)} />;
   if (!abre) return img;
   return <button type="button" className="sin-boton" onClick={() => accion.carta(k)} aria-label={'Ver la carta de ' + f.n}>{img}</button>;
