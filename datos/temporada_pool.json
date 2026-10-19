@@ -335,7 +335,6 @@
   "rango": "SS",
   "tg_t": {
    "cab": 1,
-   "cohete": true,
    "dobles": 4,
    "perf": 2,
    "reciente": true,
@@ -782,7 +781,6 @@
   "rango": "A",
   "tg_t": {
    "cobro": 1,
-   "cohete": true,
    "dobles": 2,
    "perf": 1,
    "sube": true,
@@ -1333,7 +1331,6 @@
   "total": 186,
   "rango": "B",
   "tg_t": {
-   "cohete": true,
    "dobles": 2,
    "reciente": true,
    "solo": 1,
@@ -1631,7 +1628,6 @@
   "total": 186,
   "rango": "B",
   "tg_t": {
-   "cohete": true,
    "dobles": 2,
    "infalt": true,
    "perf": 1,
@@ -1749,7 +1745,6 @@
   "total": 186,
   "rango": "B",
   "tg_t": {
-   "cohete": true,
    "dobles": 3,
    "reciente": true,
    "sube": true,
@@ -2091,7 +2086,6 @@
   "total": 186,
   "rango": "C",
   "tg_t": {
-   "cohete": true,
    "dobles": 3,
    "rev": 1,
    "trios": 1
@@ -2539,7 +2533,6 @@
   "total": 186,
   "rango": "C",
   "tg_t": {
-   "cohete": true,
    "dobles": 2,
    "infalt": true
   }
@@ -2646,7 +2639,6 @@
   "rango": "C",
   "tg_t": {
    "busc": 1,
-   "cohete": true,
    "dobles": 1,
    "infalt": true,
    "rev": 1
@@ -2684,7 +2676,6 @@
   "rango": "D",
   "tg_t": {
    "cab": 1,
-   "cohete": true,
    "dcor": true,
    "dobles": 1,
    "svc": 1
@@ -4584,7 +4575,6 @@
   "total": 186,
   "rango": "E",
   "tg_t": {
-   "cohete": true,
    "dobles": 1,
    "reciente": true
   }
@@ -6820,10 +6810,7 @@
   "o": 186,
   "pos": 111,
   "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "cohete": true
-  }
+  "rango": "E"
  },
  {
   "full": "JHEYSON",
