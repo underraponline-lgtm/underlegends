@@ -2,7 +2,7 @@
  "_leeme": "El Writing Challenge de FFA: cada fecha, quién quedó dónde y de qué cuenta. Lo arma bot/writing.py en el ciclo (paso 2b0); las reglas y los números viven ahí. Sin las rimas: el repo es público. `res`: p puesto, n nombre como lo escribió el organizador, b banderas, pts, persona (vacío: sin resolver), did (para la Tienda), como (de dónde salió), rima/cuenta (el mensaje y la cuenta que lo publicó), x (tenía ❌). Una fecha por número: la más nueva gana.",
  "canal": "1551050637280673792",
  "sv": "FFA",
- "t": "2026-10-18T00:25:53Z",
+ "t": "2026-10-19T15:56:40Z",
  "fechas": {
   "1": {
    "fecha": "1 REPRISE",
@@ -313,6 +313,246 @@
    ],
    "temp": "prueba",
    "sem": "2026-10-05"
+  },
+  "3": {
+   "fecha": "3",
+   "n": 3,
+   "msg": "1561769424653131776",
+   "t": "2026-10-19T15:54:07Z",
+   "ed": "",
+   "anuncio": "1561090729109889175",
+   "anuncio_t": "2026-10-17T18:57:13Z",
+   "org": "1462602972197556237",
+   "res": [
+    {
+     "p": 1,
+     "n": "ZIGNOS",
+     "b": [
+      "do"
+     ],
+     "pts": 6,
+     "persona": "Zignos",
+     "como": "nombre",
+     "did": "1071185986366742630"
+    },
+    {
+     "p": 2,
+     "n": "JAHNO \"El MELOMANÍACO\"",
+     "b": [
+      "ar"
+     ],
+     "pts": 5,
+     "persona": "melomaniaco",
+     "como": "nombre",
+     "did": "653011056184000513"
+    },
+    {
+     "p": 3,
+     "n": "LVEL",
+     "b": [
+      "ve"
+     ],
+     "pts": 5,
+     "rima": "1561334771869552721",
+     "cuenta": "1241407042195816459",
+     "cn": true,
+     "persona": "Lvel",
+     "como": "nombre+cuenta",
+     "did": "1241407042195816459"
+    },
+    {
+     "p": 4,
+     "n": "MOTERA",
+     "b": [
+      "es"
+     ],
+     "pts": 5,
+     "rima": "1561104310773878883",
+     "cuenta": "885365894606381068",
+     "cn": true,
+     "persona": "Motera",
+     "como": "nombre+cuenta",
+     "did": "885365894606381068"
+    },
+    {
+     "p": 5,
+     "n": "NC",
+     "b": [
+      "iq"
+     ],
+     "pts": 5,
+     "rima": "1561093733649359000",
+     "cuenta": "1523082259870257315",
+     "cn": true,
+     "persona": "NC",
+     "como": "nombre+cuenta",
+     "did": "1523082259870257315"
+    },
+    {
+     "p": 6,
+     "n": "ANTETOKUMPO",
+     "b": [
+      "gr"
+     ],
+     "pts": 3,
+     "rima": "1561092193068777493",
+     "cuenta": "1553211427022700568",
+     "cn": false,
+     "como": ""
+    },
+    {
+     "p": 7,
+     "n": "ZAIK",
+     "b": [
+      "es"
+     ],
+     "pts": 3,
+     "rima": "1561097547060088925",
+     "cuenta": "1555067257376346122",
+     "cn": true,
+     "persona": "Zaik",
+     "como": "nombre+cuenta",
+     "did": "1555067257376346122"
+    },
+    {
+     "p": 8,
+     "n": "ELSOOLAR",
+     "b": [
+      "co"
+     ],
+     "pts": 3,
+     "persona": "Elsoolar",
+     "como": "nombre",
+     "did": "758073934645297262"
+    },
+    {
+     "p": 9,
+     "n": "CINEXFILO",
+     "b": [
+      "ve"
+     ],
+     "pts": 3,
+     "persona": "Cinexfilo",
+     "como": "nombre",
+     "did": "781971857519804417"
+    },
+    {
+     "p": 10,
+     "n": "ADRIANEX",
+     "b": [
+      "es"
+     ],
+     "pts": 3,
+     "rima": "1561104635765465181",
+     "cuenta": "1276857675316989962",
+     "cn": false,
+     "persona": "Adrianex",
+     "como": "nombre+cuenta",
+     "did": "1276857675316989962"
+    },
+    {
+     "p": 11,
+     "n": "KRISH",
+     "b": [
+      "es"
+     ],
+     "pts": 2,
+     "persona": "Krish",
+     "como": "nombre",
+     "did": "1513620494199558295"
+    },
+    {
+     "p": 12,
+     "n": "DLX",
+     "b": [
+      "us"
+     ],
+     "pts": 2,
+     "persona": "DLX",
+     "como": "nombre",
+     "did": "739338101603696681"
+    },
+    {
+     "p": 13,
+     "n": "MOCHI",
+     "b": [
+      "ec"
+     ],
+     "pts": 1,
+     "rima": "1561103155800973485",
+     "cuenta": "1385749808945561734",
+     "cn": false,
+     "como": ""
+    },
+    {
+     "p": 14,
+     "n": "LEWITO",
+     "b": [
+      "ar"
+     ],
+     "pts": 1,
+     "persona": "LEWITO",
+     "como": "nombre",
+     "did": "1086485696572817418"
+    },
+    {
+     "p": 15,
+     "n": "MONY RAP",
+     "b": [
+      "mx"
+     ],
+     "pts": 1,
+     "persona": "Mony",
+     "como": "nombre"
+    },
+    {
+     "p": 16,
+     "n": "N1K",
+     "b": [
+      "pe"
+     ],
+     "pts": 1,
+     "persona": "N1k",
+     "como": "nombre",
+     "did": "1505432009491615864"
+    },
+    {
+     "p": 17,
+     "n": "MOLUSCO",
+     "b": [
+      "ar"
+     ],
+     "pts": 0,
+     "persona": "Molusco",
+     "como": "nombre",
+     "did": "1363285354442133778"
+    },
+    {
+     "p": 18,
+     "n": "MATI CERNA",
+     "b": [
+      "ar"
+     ],
+     "pts": 0,
+     "persona": "MATICERNA",
+     "como": "nombre",
+     "did": "818981079699947530"
+    },
+    {
+     "p": 19,
+     "n": "PERFUME CHAKAL",
+     "b": [
+      "cl",
+      "pe"
+     ],
+     "pts": 0,
+     "persona": "Cronox",
+     "como": "nombre",
+     "did": "1487658663148785734"
+    }
+   ],
+   "temp": "prueba",
+   "sem": "2026-10-12"
   }
  },
  "sin_resolver": [
@@ -325,6 +565,16 @@
    "2",
    "LVEL",
    "el nombre es Lvel y la rima la publicó otra cuenta, que no está en la Lista"
+  ],
+  [
+   "3",
+   "ANTETOKUMPO",
+   "no está en la Lista, y su cuenta tampoco"
+  ],
+  [
+   "3",
+   "MOCHI",
+   "no está en la Lista, y su cuenta tampoco"
   ]
  ]
 }

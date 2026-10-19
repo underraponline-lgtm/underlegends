@@ -30,7 +30,7 @@
   "total": 186,
   "rango": "SSS",
   "tg_t": {
-   "busc": 2,
+   "busc": 3,
    "cab": 1,
    "dcor": true,
    "dobles": 9,
@@ -38,6 +38,7 @@
    "perf": 2,
    "podsem": true,
    "solo": 3,
+   "suelto": true,
    "svc": 1,
    "trios": 6
   }
@@ -73,7 +74,7 @@
   "total": 186,
   "rango": "SSS",
   "tg_t": {
-   "busc": 5,
+   "busc": 6,
    "cab": 6,
    "cobro": 1,
    "dobles": 10,
@@ -81,6 +82,7 @@
    "perf": 2,
    "podsem": true,
    "solo": 1,
+   "suelto": true,
    "svc": 1,
    "trios": 9
   }
@@ -202,6 +204,7 @@
   "total": 186,
   "rango": "SS",
   "tg_t": {
+   "busc": 1,
    "cab": 1,
    "dobles": 10,
    "infalt": true,
@@ -210,6 +213,7 @@
    "rey": true,
    "solo": 2,
    "sube": true,
+   "suelto": true,
    "svc": 2,
    "trios": 6
   }
@@ -290,7 +294,7 @@
   "total": 186,
   "rango": "SS",
   "tg_t": {
-   "busc": 1,
+   "busc": 2,
    "cab": 1,
    "dobles": 12,
    "infalt": true,
@@ -299,6 +303,7 @@
    "rev": 1,
    "solo": 1,
    "sube": true,
+   "suelto": true,
    "svc": 4,
    "trios": 5
   }
@@ -499,6 +504,7 @@
   "total": 186,
   "rango": "S",
   "tg_t": {
+   "busc": 1,
    "cobro": 1,
    "dobles": 4,
    "fenix": 1,
@@ -507,6 +513,7 @@
    "podsem": true,
    "rev": 1,
    "solo": 1,
+   "suelto": true,
    "svc": 2,
    "trios": 4
   }
@@ -855,11 +862,12 @@
   "total": 186,
   "rango": "A",
   "tg_t": {
-   "busc": 1,
+   "busc": 2,
    "dobles": 4,
    "infalt": true,
    "perf": 2,
    "sube": true,
+   "suelto": true,
    "svc": 2,
    "trios": 4
   }
@@ -1019,11 +1027,13 @@
   "total": 186,
   "rango": "A",
   "tg_t": {
+   "busc": 1,
    "dobles": 8,
    "infalt": true,
    "perf": 1,
    "rev": 1,
    "sube": true,
+   "suelto": true,
    "svc": 1,
    "trios": 4
   }
@@ -1345,7 +1355,7 @@
   "crew": "",
   "discord_id": "729809358627536938",
   "verificado": true,
-  "pts": 86224,
+  "pts": 86474,
   "ev": 9,
   "wr": "",
   "pod": 2,
@@ -1898,6 +1908,45 @@
   }
  },
  {
+  "full": "JJ",
+  "raw": "JJ",
+  "cc": "co",
+  "sv": "FFA",
+  "crew": "Follombia",
+  "discord_id": "1097650470476070995",
+  "verificado": false,
+  "pts": 62875,
+  "ev": 8,
+  "wr": "",
+  "pod": 2,
+  "oro": 1,
+  "sem": 0,
+  "seg": 1,
+  "ter": 0,
+  "caz": 1,
+  "czd": 0,
+  "sob": 0,
+  "mis": 4,
+  "srv": 1,
+  "racha": 2,
+  "racha_act": 2,
+  "score": 0.0,
+  "av": "",
+  "ovr": 60,
+  "o": 49,
+  "pos": 198,
+  "fc": true,
+  "total": 186,
+  "rango": "C",
+  "tg_t": {
+   "dobles": 2,
+   "reciente": true,
+   "svc": 1,
+   "svtag": "campeon",
+   "trios": 1
+  }
+ },
+ {
   "full": "Player",
   "raw": "Player",
   "cc": "ve",
@@ -1923,7 +1972,7 @@
   "score": 18.9,
   "av": "",
   "ovr": 60,
-  "o": 49,
+  "o": 50,
   "pos": 38,
   "total": 186,
   "rango": "C",
@@ -1960,7 +2009,7 @@
   "score": 17.8,
   "av": "",
   "ovr": 60,
-  "o": 50,
+  "o": 51,
   "pos": 39,
   "total": 186,
   "rango": "C",
@@ -1999,7 +2048,7 @@
   "score": 11.1,
   "av": "",
   "ovr": 60,
-  "o": 51,
+  "o": 52,
   "pos": 40,
   "total": 186,
   "rango": "C",
@@ -2035,7 +2084,7 @@
   "score": 0.0,
   "av": "",
   "ovr": 59,
-  "o": 52,
+  "o": 53,
   "pos": 41,
   "total": 186,
   "rango": "C",
@@ -2044,47 +2093,7 @@
    "dcor": true,
    "dobles": 2,
    "perf": 1,
-   "suelto": true,
    "svc": 2
-  }
- },
- {
-  "full": "JJ",
-  "raw": "JJ",
-  "cc": "co",
-  "sv": "FFA",
-  "crew": "Follombia",
-  "discord_id": "1097650470476070995",
-  "verificado": false,
-  "pts": 62625,
-  "ev": 8,
-  "wr": "",
-  "pod": 2,
-  "oro": 1,
-  "sem": 0,
-  "seg": 1,
-  "ter": 0,
-  "caz": 1,
-  "czd": 0,
-  "sob": 0,
-  "mis": 4,
-  "srv": 1,
-  "racha": 2,
-  "racha_act": 2,
-  "score": 0.0,
-  "av": "",
-  "ovr": 59,
-  "o": 53,
-  "pos": 198,
-  "fc": true,
-  "total": 186,
-  "rango": "C",
-  "tg_t": {
-   "dobles": 2,
-   "reciente": true,
-   "svc": 1,
-   "svtag": "campeon",
-   "trios": 1
   }
  },
  {
@@ -2227,7 +2236,6 @@
   "tg_t": {
    "busc": 1,
    "cab": 1,
-   "suelto": true,
    "svc": 1
   }
  },
@@ -2262,10 +2270,12 @@
   "total": 186,
   "rango": "C",
   "tg_t": {
+   "busc": 1,
    "dcor": true,
    "dobles": 1,
    "perf": 1,
    "solo": 1,
+   "suelto": true,
    "svc": 1
   }
  },
@@ -2492,6 +2502,47 @@
   }
  },
  {
+  "full": "Tenor",
+  "raw": "Tenor",
+  "cc": "ve",
+  "sv": "FFA",
+  "crew": "",
+  "discord_id": "1370860602972569632",
+  "verificado": true,
+  "pts": 50907,
+  "ev": 6,
+  "wr": "",
+  "pod": 2,
+  "oro": 1,
+  "sem": 2,
+  "seg": 1,
+  "ter": 0,
+  "caz": 0,
+  "czd": 0,
+  "sob": 0,
+  "mis": 4,
+  "srv": 1,
+  "racha": 2,
+  "racha_act": 2,
+  "score": 0.0,
+  "av": "",
+  "ovr": 56,
+  "o": 65,
+  "pos": 47,
+  "total": 186,
+  "rango": "C",
+  "tg_t": {
+   "busc": 1,
+   "cohete": true,
+   "perf": 1,
+   "reciente": true,
+   "suelto": true,
+   "svc": 1,
+   "svtag": "campeon",
+   "trios": 2
+  }
+ },
+ {
   "full": "Shadow",
   "raw": "Shadow",
   "cc": "co",
@@ -2517,8 +2568,8 @@
   "score": 12.9,
   "av": "",
   "ovr": 56,
-  "o": 65,
-  "pos": 47,
+  "o": 66,
+  "pos": 48,
   "total": 186,
   "rango": "C",
   "tg_t": {
@@ -2553,7 +2604,7 @@
   "score": 0.0,
   "av": "",
   "ovr": 56,
-  "o": 66,
+  "o": 67,
   "pos": 205,
   "fc": true,
   "total": 186,
@@ -2589,8 +2640,8 @@
   "score": 11.2,
   "av": "",
   "ovr": 56,
-  "o": 67,
-  "pos": 48,
+  "o": 68,
+  "pos": 49,
   "total": 186,
   "rango": "C",
   "tg_t": {
@@ -2623,8 +2674,8 @@
   "score": 11.9,
   "av": "",
   "ovr": 56,
-  "o": 68,
-  "pos": 49,
+  "o": 69,
+  "pos": 50,
   "total": 186,
   "rango": "C",
   "tg_t": {
@@ -2660,15 +2711,17 @@
   "score": 0.0,
   "av": "",
   "ovr": 55,
-  "o": 69,
-  "pos": 50,
+  "o": 70,
+  "pos": 51,
   "total": 186,
   "rango": "D",
   "tg_t": {
+   "busc": 1,
    "cab": 1,
    "dcor": true,
    "dobles": 1,
    "sube": true,
+   "suelto": true,
    "svc": 1
   }
  },
@@ -2698,8 +2751,8 @@
   "score": 18.9,
   "av": "",
   "ovr": 55,
-  "o": 70,
-  "pos": 51,
+  "o": 71,
+  "pos": 52,
   "total": 186,
   "rango": "D",
   "tg_t": {
@@ -2734,52 +2787,14 @@
   "score": 0.0,
   "av": "",
   "ovr": 55,
-  "o": 71,
-  "pos": 52,
+  "o": 72,
+  "pos": 53,
   "total": 186,
   "rango": "D",
   "tg_t": {
    "busc": 1,
    "infalt": true,
    "perf": 1,
-   "svc": 1,
-   "svtag": "campeon",
-   "trios": 2
-  }
- },
- {
-  "full": "Tenor",
-  "raw": "Tenor",
-  "cc": "ve",
-  "sv": "FFA",
-  "crew": "",
-  "discord_id": "1370860602972569632",
-  "verificado": true,
-  "pts": 48607,
-  "ev": 6,
-  "wr": "",
-  "pod": 2,
-  "oro": 1,
-  "sem": 2,
-  "seg": 1,
-  "ter": 0,
-  "caz": 0,
-  "czd": 0,
-  "sob": 0,
-  "mis": 4,
-  "srv": 1,
-  "racha": 2,
-  "racha_act": 2,
-  "score": 0.0,
-  "av": "",
-  "ovr": 55,
-  "o": 72,
-  "pos": 53,
-  "total": 186,
-  "rango": "D",
-  "tg_t": {
-   "perf": 1,
-   "reciente": true,
    "svc": 1,
    "svtag": "campeon",
    "trios": 2
@@ -2959,9 +2974,10 @@
   "total": 186,
   "rango": "D",
   "tg_t": {
-   "busc": 3,
+   "busc": 4,
    "dobles": 1,
    "infalt": true,
+   "suelto": true,
    "svc": 2
   }
  },
@@ -3008,7 +3024,7 @@
   "crew": "",
   "discord_id": "1345962362615894027",
   "verificado": true,
-  "pts": 32050,
+  "pts": 32950,
   "ev": 9,
   "wr": "",
   "pod": 2,
@@ -3103,7 +3119,6 @@
   "tg_t": {
    "busc": 2,
    "cobro": 1,
-   "suelto": true,
    "svc": 1,
    "trios": 1
   }
@@ -3358,8 +3373,10 @@
   "total": 186,
   "rango": "D",
   "tg_t": {
+   "busc": 1,
    "dcor": true,
    "reciente": true,
+   "suelto": true,
    "svc": 1,
    "svtag": "campeon"
   }
@@ -3790,10 +3807,12 @@
   "total": 186,
   "rango": "D",
   "tg_t": {
+   "busc": 1,
    "dobles": 1,
    "infalt": true,
    "rev": 1,
-   "sube": true
+   "sube": true,
+   "suelto": true
   }
  },
  {
@@ -4427,8 +4446,10 @@
   "total": 186,
   "rango": "E",
   "tg_t": {
+   "busc": 1,
    "dcor": true,
    "sube": true,
+   "suelto": true,
    "svc": 1,
    "svtag": "campeon"
   }
@@ -6128,6 +6149,8 @@
   "total": 186,
   "rango": "E",
   "tg_t": {
+   "busc": 1,
+   "suelto": true,
    "trios": 1
   }
  },
@@ -7960,8 +7983,7 @@
   "rango": "E",
   "tg_t": {
    "busc": 1,
-   "reciente": true,
-   "suelto": true
+   "reciente": true
   }
  },
  {
@@ -10006,6 +10028,41 @@
   "rango": "E"
  },
  {
+  "full": "DarkoMC",
+  "raw": "DarkoMC",
+  "cc": "mx",
+  "sv": "FFA",
+  "crew": "",
+  "discord_id": "1375578701302857738",
+  "verificado": false,
+  "pts": 3581,
+  "ev": 2,
+  "wr": "",
+  "pod": 0,
+  "oro": 0,
+  "sem": 0,
+  "seg": 0,
+  "ter": 0,
+  "caz": 0,
+  "czd": 0,
+  "sob": 0,
+  "mis": 1,
+  "srv": 1,
+  "racha": 0,
+  "racha_act": 0,
+  "score": 0.0,
+  "av": "",
+  "ovr": 45,
+  "o": 282,
+  "pos": 325,
+  "fc": true,
+  "total": 186,
+  "rango": "E",
+  "tg_t": {
+   "reciente": true
+  }
+ },
+ {
   "full": "Imagy",
   "raw": "Imagy",
   "cc": "pe",
@@ -10031,8 +10088,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 45,
-  "o": 282,
-  "pos": 325,
+  "o": 283,
+  "pos": 326,
   "fc": true,
   "total": 186,
   "rango": "E",
@@ -10067,7 +10124,7 @@
   "score": 0.0,
   "av": "",
   "ovr": 45,
-  "o": 283,
+  "o": 284,
   "pos": 144,
   "total": 186,
   "rango": "E",
@@ -10101,7 +10158,7 @@
   "score": 0.0,
   "av": "",
   "ovr": 45,
-  "o": 284,
+  "o": 285,
   "pos": 145,
   "total": 186,
   "rango": "E"
@@ -10132,45 +10189,10 @@
   "score": 0.0,
   "av": "",
   "ovr": 45,
-  "o": 285,
+  "o": 286,
   "pos": 146,
   "total": 186,
   "rango": "E"
- },
- {
-  "full": "DarkoMC",
-  "raw": "DarkoMC",
-  "cc": "mx",
-  "sv": "FFA",
-  "crew": "",
-  "discord_id": "1375578701302857738",
-  "verificado": false,
-  "pts": 3281,
-  "ev": 2,
-  "wr": "",
-  "pod": 0,
-  "oro": 0,
-  "sem": 0,
-  "seg": 0,
-  "ter": 0,
-  "caz": 0,
-  "czd": 0,
-  "sob": 0,
-  "mis": 1,
-  "srv": 1,
-  "racha": 0,
-  "racha_act": 0,
-  "score": 0.0,
-  "av": "",
-  "ovr": 45,
-  "o": 286,
-  "pos": 326,
-  "fc": true,
-  "total": 186,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
  },
  {
   "full": "tormen",
@@ -14920,12 +14942,12 @@
   }
  },
  {
-  "full": "J19 🇨🇷",
+  "full": "J19",
   "raw": "J19",
   "cc": "cr",
   "sv": "FFA",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1401047963853389965",
   "verificado": false,
   "pts": 938,
   "ev": 1,

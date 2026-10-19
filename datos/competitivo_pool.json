@@ -1399,7 +1399,7 @@
    "fg": 2,
    "fp": 6,
    "mata": 1,
-   "riv": 47,
+   "riv": 48,
    "venc": 23,
    "vengo": 2
   },
@@ -1497,12 +1497,12 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
-   "dg": 13,
+   "dg": 15,
    "fg": 2,
    "fp": 2,
    "mata": 1,
-   "riv": 19,
-   "venc": 11,
+   "riv": 22,
+   "venc": 13,
    "vengo": 1
   },
   "tg_p": {
@@ -2481,12 +2481,15 @@
   "pos_sv": "29/133",
   "arc_sv": 79,
   "tg_c": {
+   "bestia": 1,
    "clasico": 1,
+   "dg": 2,
    "fg": 1,
-   "riv": 2
+   "riv": 4,
+   "venc": 2
   },
   "tg_p": {
-   "paises": 2
+   "paises": 3
   }
  },
  {
@@ -2574,10 +2577,10 @@
   "arc_sv": 77,
   "tg_c": {
    "bestia": 1,
-   "clasico": 1,
-   "dg": 4,
-   "riv": 12,
-   "venc": 4
+   "clasico": 2,
+   "dg": 5,
+   "riv": 14,
+   "venc": 5
   },
   "tg_p": {
    "paises": 7,
@@ -6542,11 +6545,14 @@
   "pos_sv": "63/133",
   "arc_sv": 53,
   "tg_c": {
-   "clasico": 1,
-   "riv": 3
+   "clasico": 2,
+   "dg": 1,
+   "riv": 4,
+   "venc": 1,
+   "vengo": 1
   },
   "tg_p": {
-   "paises": 3,
+   "paises": 4,
    "pionero": true
   }
  },
@@ -9056,7 +9062,7 @@
   "arc_sv": 0,
   "tg_c": {
    "clasico": 1,
-   "riv": 3
+   "riv": 4
   },
   "tg_p": {
    "paises": 2
@@ -20689,12 +20695,12 @@
   "arc_sv": 0
  },
  {
-  "full": "J19 🇨🇷",
+  "full": "J19",
   "raw": "J19",
   "cc": "cr",
   "sv": "FFA",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1401047963853389965",
   "verificado": false,
   "ev": 1,
   "score": 0.8,

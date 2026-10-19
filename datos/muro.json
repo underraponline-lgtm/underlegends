@@ -358,6 +358,10 @@
 "temporada"
 ]
 },
+"jj": {
+"rg": "",
+"c": []
+},
 "player": {
 "rg": "D",
 "c": [
@@ -389,10 +393,6 @@
 "servidor",
 "temporada"
 ]
-},
-"jj": {
-"rg": "",
-"c": []
 },
 "cinexfilo": {
 "rg": "E",
@@ -458,6 +458,13 @@
 "rg": "",
 "c": []
 },
+"tenor": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "shadow": {
 "rg": "E",
 "c": [
@@ -503,13 +510,6 @@
 ]
 },
 "tøkiø": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"tenor": {
 "rg": "",
 "c": [
 "servidor",
