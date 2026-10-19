@@ -1213,6 +1213,25 @@
      "1373340031413911624"
     ]
    }
+  },
+  {
+   "id": "9fb0a5b6fc",
+   "tipo": "alta",
+   "sec": "🪪 Identidad",
+   "que": "A «dyzzmzt» lo buscó otra persona con /card en ACAD (no lo usó él) y no está en la Lista de Raperos. Si ya está con otro nombre, elegilo o escribilo: le pongo su Discord.\nSu cuenta: https://discord.com/users/1406806279275417640",
+   "r": "Ya está resuelto",
+   "regla": "R3 · un alta que no hace falta: el bot, o una cuenta que buscó otro y no jugó",
+   "rk": "R3",
+   "por": "el ciclo",
+   "porque": "no usó /card: lo buscó otra persona, y no jugó en la T1 (ni su nombre ni con lo que se anotó está en ningún resultado). Si se anota sola, entra como cualquiera",
+   "t": 1792371510125,
+   "filas": [
+    744
+   ],
+   "variantes": [
+    "dyzzmzt = 1406806279275417640"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []
