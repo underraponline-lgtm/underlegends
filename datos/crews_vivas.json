@@ -103,7 +103,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Sexosos",
@@ -157,7 +161,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "NOBLESSE OBLIGE",
@@ -201,7 +209,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "berazategui global hustlers",
@@ -235,7 +247,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Fuera de Rango",
@@ -274,7 +290,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Fontana",
@@ -318,7 +338,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "KS",
@@ -367,7 +391,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Lighting Force",
@@ -416,7 +444,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Santa Trinidad",
@@ -450,7 +482,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "La Formula Crew",
@@ -489,7 +525,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Blanca Perla",
@@ -508,7 +548,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "El Último Bastón",
@@ -532,7 +576,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Guardia Nacional",
@@ -561,7 +609,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Argentina Crew",
@@ -580,7 +632,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "La Pampa Crew",
@@ -604,7 +660,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Sentinelense",
@@ -628,7 +688,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Caypher",
@@ -652,7 +716,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Mafia Chilena",
@@ -671,7 +739,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Arte del Chakalaje",
@@ -690,7 +762,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Dinoguay",
@@ -709,7 +785,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "04",
@@ -728,7 +808,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Mayas Crew",
@@ -747,7 +831,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "RKT Crew",
@@ -766,7 +854,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Peruvianleads",
@@ -785,7 +877,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "montevideo wanders",
@@ -804,7 +900,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Mdk Crew",
@@ -823,7 +923,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "kzt",
@@ -842,7 +946,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Podesta City",
@@ -861,7 +969,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Yuta",
@@ -880,7 +992,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Rosario",
@@ -899,7 +1015,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Miakamata",
@@ -918,7 +1038,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Área Limítrofe",
@@ -947,7 +1071,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Underground Freestyle",
@@ -966,7 +1094,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "B.A.A",
@@ -985,7 +1117,11 @@
    ],
    "vence": 0,
    "logo": "",
-   "desc": ""
+   "desc": "",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   },
   {
    "id": "Los ULEYES",
@@ -1004,7 +1140,11 @@
    ],
    "vence": 1793044745419,
    "logo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/logos-crews/0cf1a4fb69c1a154d27b36a2.jpg",
-   "desc": "Probando. D"
+   "desc": "Probando. D",
+   "req": {
+    "rg": "",
+    "ev": 0
+   }
   }
  ]
 }

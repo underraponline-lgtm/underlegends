@@ -1958,24 +1958,24 @@
      "mo": "2026-10-10T18:11:13Z",
      "staff": {
       "jurado": [
-       "Adriagner [GDF]"
+       "83 | Adriagner [GDF]"
       ],
       "host": [
-       "Adriagner [GDF]"
+       "83 | Adriagner [GDF]"
       ],
       "dj": [
-       "Adriagner [GDF]"
+       "83 | Adriagner [GDF]"
       ]
      },
      "orgs": [
       {
-       "n": "Adriagner [GDF]",
+       "n": "83 | Adriagner [GDF]",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "Adriagner [GDF]": "1316490165836972104"
+      "83 | Adriagner [GDF]": "1316490165836972104"
      }
     },
     "1558302266933645423": {
@@ -2002,24 +2002,24 @@
      "mo": "2026-10-08T23:51:25Z",
      "staff": {
       "jurado": [
-       "Adriagner [GDF]"
+       "83 | Adriagner [GDF]"
       ],
       "host": [
-       "Adriagner [GDF]"
+       "83 | Adriagner [GDF]"
       ],
       "dj": [
-       "Adriagner [GDF]"
+       "83 | Adriagner [GDF]"
       ]
      },
      "orgs": [
       {
-       "n": "Adriagner [GDF]",
+       "n": "83 | Adriagner [GDF]",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "Adriagner [GDF]": "1316490165836972104"
+      "83 | Adriagner [GDF]": "1316490165836972104"
      }
     },
     "1557849532300001293": {
@@ -2049,24 +2049,24 @@
      "mo": "2026-10-08T16:40:33Z",
      "staff": {
       "jurado": [
-       "Adriagner [GDF]"
+       "83 | Adriagner [GDF]"
       ],
       "host": [
-       "Adriagner [GDF]"
+       "83 | Adriagner [GDF]"
       ],
       "dj": [
-       "Adriagner [GDF]"
+       "83 | Adriagner [GDF]"
       ]
      },
      "orgs": [
       {
-       "n": "Adriagner [GDF]",
+       "n": "83 | Adriagner [GDF]",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "Adriagner [GDF]": "1316490165836972104"
+      "83 | Adriagner [GDF]": "1316490165836972104"
      }
     },
     "1557531207904927865": {
@@ -2098,24 +2098,24 @@
      "mo": "2026-10-06T16:35:24Z",
      "staff": {
       "jurado": [
-       "Adriagner [GDF]"
+       "83 | Adriagner [GDF]"
       ],
       "host": [
-       "Adriagner [GDF]"
+       "83 | Adriagner [GDF]"
       ],
       "dj": [
-       "Adriagner [GDF]"
+       "83 | Adriagner [GDF]"
       ]
      },
      "orgs": [
       {
-       "n": "Adriagner [GDF]",
+       "n": "83 | Adriagner [GDF]",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "Adriagner [GDF]": "1316490165836972104"
+      "83 | Adriagner [GDF]": "1316490165836972104"
      }
     },
     "1556841665589944352": {
@@ -2124,24 +2124,24 @@
      "mo": "2026-10-06T01:37:57Z",
      "staff": {
       "jurado": [
-       "Adriagner [GDF]"
+       "83 | Adriagner [GDF]"
       ],
       "host": [
-       "Adriagner [GDF]"
+       "83 | Adriagner [GDF]"
       ],
       "dj": [
-       "Adriagner [GDF]"
+       "83 | Adriagner [GDF]"
       ]
      },
      "orgs": [
       {
-       "n": "Adriagner [GDF]",
+       "n": "83 | Adriagner [GDF]",
        "id": "1316490165836972104"
       }
      ],
      "organizador": "",
      "cuentas": {
-      "Adriagner [GDF]": "1316490165836972104"
+      "83 | Adriagner [GDF]": "1316490165836972104"
      }
     },
     "1556822349016211497": {
@@ -2496,6 +2496,32 @@
      "cuentas": {
       "Velatz": "1426686911908675628"
      }
+    },
+    "1561840504017260668": {
+     "sv": "FFA",
+     "nombre": "LA REDENCION VOL.6",
+     "mo": "2026-10-19T20:36:33Z",
+     "staff": {
+      "jurado": [
+       "Velatz"
+      ],
+      "host": [
+       "Velatz"
+      ],
+      "dj": [
+       "Velatz"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Velatz",
+       "id": "1426686911908675628"
+      }
+     ],
+     "organizador": "",
+     "cuentas": {
+      "Velatz": "1426686911908675628"
+     }
     }
    },
    "ver": {
@@ -2609,7 +2635,7 @@
     "FVS|2026-10-02": {
      "1413322255047594015": [
       "xiv",
-      "thedinamite",
+      "benjovich",
       "thedinamite."
      ],
      "1386542982743982112": [
@@ -2787,6 +2813,21 @@
       "",
       "Flennzs | ⛩️",
       "elmascapito300_."
+     ],
+     "1426686911908675628": [
+      "#19 | Velatz",
+      "Velatz",
+      "funhorlavild"
+     ],
+     "1249980492951060561": [
+      "TöKīØ",
+      "💤",
+      "paratimiringuicaro"
+     ],
+     "1071185986366742630": [
+      "#9 | Zignos",
+      "𓂀",
+      "emekultra"
      ]
     },
     "SR|2026-10-19": {
