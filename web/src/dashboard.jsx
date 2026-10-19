@@ -1080,7 +1080,8 @@ function MesAwardsDueno({ aj, hacer, ocup }) {
         const fuera = ya.filter((k) => k.startsWith(c + ':')).map((k) => k.slice(c.length + 1));
         return nom.length || fuera.length ? (
           <div key={c} className="db-mes-c"><b>{n}</b>
-            <ul>{nom.map((x) => (
+            {/* los que sacaste ya no van en la lista: salían dos veces, y «Sacar» los volvía a poner (pasada del 19/10/2026) */}
+            <ul>{nom.filter((x) => !ya.includes(c + ':' + x.op)).map((x) => (
               <li key={x.op}><span>{x.n}{yaGano(c, x).length ? <em className="db-mes-gano"> · ya ganó en {yaGano(c, x).join(', ')}</em> : null}</span><button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => alternar(c + ':' + x.op)}>Sacar</button></li>
             ))}{fuera.map((op) => (
               <li key={'f' + op} className="fuera"><span>{op} · sacado</span><button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => alternar(c + ':' + op)}>Volver a poner</button></li>
@@ -1098,7 +1099,7 @@ function MesAwardsDueno({ aj, hacer, ocup }) {
             const fuera = ya.filter((k) => k.startsWith(pre)).map((k) => k.slice(pre.length));
             return nom.length || fuera.length ? (
               <div key={c} className="db-mes-c"><b>{n}</b>
-                <ul>{nom.map((x) => (
+                <ul>{nom.filter((x) => !ya.includes(pre + x.op)).map((x) => (
                   <li key={x.op}><span>{x.n}</span><button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => alternar(pre + x.op)}>Sacar</button></li>
                 ))}{fuera.map((op) => (
                   <li key={'f' + op} className="fuera"><span>{op} · sacado</span><button type="button" className="btn borde2 chico" disabled={ocup} onClick={() => alternar(pre + op)}>Volver a poner</button></li>

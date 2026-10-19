@@ -472,7 +472,10 @@ def vistas(viejas, ahora, mes_de, traer=None, promos=None, staff=None):
                'an': dict((v or {}).get('an') or {}), 'ver': {k2: dict(x) for k2, x in ((v or {}).get('ver') or {}).items()}}
            for m, v in (viejas or {}).items()}
     este = mes_de(ahora)
-    deje = {este, mes_de(ahora - dt.timedelta(days=32))}
+    # 🔴 EL MES ANTERIOR, NO «HACE 32 DÍAS» (pasada del 19/10/2026): el 1/11 eso caía en septiembre y octubre —el mes que se
+    # nomina ese día— perdía su staff, sus promos y sus felicitaciones tardías
+    y, m = int(este[:4]), int(este[5:7])
+    deje = {este, '%04d-%02d' % (y - (m == 1), 12 if m == 1 else m - 1)}
     # 🎧 el staff, de a poco: los anuncios que lo dicen (rotan en `datos/anuncios.json`) y quién publicó los veredictos.
     # Sólo en la corrida de verdad (`traer` lo pasa el self-check)
     st = staff() if staff else (None if traer else _traer_staff(min(deje) + '-01T00:00:00'))

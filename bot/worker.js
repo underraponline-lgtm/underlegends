@@ -37,7 +37,7 @@
 // Object— y porque Node los prueba sin levantar el Worker entero. Ver
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
-import { anotarUso, DUENO, NIVELES_CHAT, claveMedida, claveFoto } from './avisos.js';
+import { anotarUso, DUENO, NIVELES_CHAT, claveMedida, claveFoto, claveCiclo } from './avisos.js';
 import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva,
   sesionFin, cookieSesion, SESION_DIAS } from './avisos.js';
 // 🛡️ el anti-raid (18/10/2026): `/antiraid` y sus botones. La vuelta de cada minuto vive en el objeto (avisos.js)
@@ -4054,11 +4054,19 @@ export default {
     // ⚠️ y no a las IP de Cloudflare (`2a06:98c0:…`): un subpedido de un Worker sale con ésas, así que contarlas sería
     // frenar a toda la página junta. Lo que pide la página trae la IP de quien mira (`x-lg-ip`, ver `ipDe()` en
     // paginas/_worker.js) y se cuenta por ésa
+    // 🔴 LOS DOS ENCABEZADOS SE COMPRUEBAN (pasada del 19/10/2026): cualquiera que llamara directo podía mandar un
+    // `x-lg-ciclo` cualquiera y saltarse el freno, o un `x-lg-ip` distinto en cada pedido y no frenarse nunca. Ahora
+    // `x-lg-ip` vale sólo si el pedido viene de un Worker (`cf-worker`: el subpedido de la página), y el ciclo se salta
+    // el freno sólo con SU clave (`claveCiclo()`)
     const ipQ = req.headers.get('cf-connecting-ip') || '';
-    const ipPag = req.headers.get('x-lg-ip') || '';
+    const deWorker = !!req.headers.get('cf-worker');
+    const ipPag = deWorker ? (req.headers.get('x-lg-ip') || '') : '';
     const claveIP = ipPag ? 'pag:' + bloqueIP(ipPag)
-      : ipQ && !ipQ.startsWith('2a06:98c0:') && !req.headers.get('cf-worker') ? 'ip:' + bloqueIP(ipQ) : '';
-    if (!(req.method === 'POST' && camino === '/') && !req.headers.get('x-lg-ciclo') && claveIP
+      : ipQ && !ipQ.startsWith('2a06:98c0:') && !deWorker ? 'ip:' + bloqueIP(ipQ) : '';
+    let esCiclo = false;
+    const kc = req.headers.get('x-lg-ciclo') || '';
+    if (kc && env0.DISCORD_TOKEN) { try { esCiclo = kc === await claveCiclo(env0.DISCORD_TOKEN); } catch (e) { esCiclo = false; } }
+    if (!(req.method === 'POST' && camino === '/') && !esCiclo && claveIP
       && await frenoIP(env0, claveIP)) return muchos();
     // 📏 cada lectura de KV, contada por ruta (ver `kvMedido()`)
     const env = kvMedido(env0, ctx, req.method === 'POST' && camino === '/' ? 'interaccion' : camino);

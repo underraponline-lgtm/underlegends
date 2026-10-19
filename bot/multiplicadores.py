@@ -199,6 +199,13 @@ def _arranque():
     return dt.datetime.fromisoformat(a) if a else None
 
 
+def _semana_despues(t):
+    """`t` más siete días en hora del este de reloj (el lunes a las 11 AM ET, también si en el medio cambia el horario).
+    🔴 Sumarlos en UTC (pasada del 19/10/2026) corría el fin de la semana del 26/10 una hora: terminaba el lunes 2/11 a
+    las 10 AM EST, la siguiente empezaba a las 11, y el ×2 votado de esa semana no abría nunca (`encuestas.x2()`)."""
+    return (t.astimezone(_et()) + dt.timedelta(days=7)).astimezone(dt.timezone.utc)
+
+
 def _lunes(t):
     """El lunes a las `ARRANCA_H` ET más reciente que no pasa de `t`."""
     e = t.astimezone(_et())
@@ -220,7 +227,7 @@ def periodo(ahora=None, a=None):
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     a = _arranque() if a is None else a
     ini = _lunes(ahora)
-    fin = ini + dt.timedelta(days=7)
+    fin = _semana_despues(ini)
     if a and ini <= a < fin:
         if ahora < a:
             fin = a
@@ -229,7 +236,7 @@ def periodo(ahora=None, a=None):
     if a and a <= ini < a + JUNTAR:
         ini = a
     if a and a <= fin < a + JUNTAR and ini == a:
-        fin += dt.timedelta(days=7)
+        fin = _semana_despues(fin)
     return ini.astimezone(_et()).strftime('%Y-%m-%d'), ini, fin
 
 

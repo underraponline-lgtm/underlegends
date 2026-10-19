@@ -608,7 +608,9 @@ button.btn{background:transparent;cursor:pointer}
 /* 🏟️ sus ligas, en el perfil (14/10/2026) */
 .pf-lg{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:8px}
 /* 📈 el ascenso de cada servidor, al día (17/10/2026): en el perfil de la liga y una fila en «Sus ligas» */
-.asc{display:grid;gap:10px}
+/* ⚠️ `asc-caja` y no `asc` (pasada del 19/10/2026): `.asc` es también la columna ordenada de menor a mayor del Ranking
+   (<th class="on asc">), que se volvía grilla y dejaba de quedarse arriba */
+.asc-caja{display:grid;gap:10px}
 .asc-camino{padding:10px 12px;border-left:4px solid #E41373;background:var(--caja);color:var(--tinta)}
 .rk-asc{display:grid;gap:12px}
 .rk-asc-t{margin:4px 0 0;font:900 20px/1.15 Archivo,sans-serif;text-transform:uppercase}

@@ -332,7 +332,9 @@ function MesAwards({ liga, enc }) {
           {hist.map((m) => (
             <div key={m.mes} className="ma-hm">
               <small>{capM(m.nombre)} {m.mes.slice(0, 4)}</small>
-              <ul>{cats.concat(catsStaff).map(([c, n]) => {
+              {/* todas las categorías: los botones de «las demás» y del staff están sólo con un mes abierto, y con el mes
+                  cerrado sus ganadores no se veían (pasada del 19/10/2026) */}
+              <ul>{(S.cats || []).map(([c, n]) => {
                 const x = (m.cats || {})[c] || {};
                 const fila = (x.nom || []).find((y) => y.op === x.gana);
                 return fila ? <li key={c}><Nominado liga={liga} cat={c} x={fila} /><em>{n}</em>{reparto(x)}</li> : null;

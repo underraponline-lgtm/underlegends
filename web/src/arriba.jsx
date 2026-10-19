@@ -390,21 +390,27 @@ function slidesDe(liga, items) {
       const f = liga.T[k];
       // 🏆 EL RESUMEN DEL EVENTO: EL PODIO CON LAS TRES CARTAS (Dlx, 18/10/2026, a las ideas de historias: «todas»). El 1º
       // al medio y más alto; sin carta, la cara. Sin llave cargada queda la carta del campeón sola, como antes
-      const top = (ll.tabla || []).slice(0, 3);
+      // 🔴 POR PUESTO, NO POR RENGLÓN (pasada del 19/10/2026): la tabla tiene un renglón por persona, y en un evento de
+      // equipos los tres campeones salían 1º, 2º y 3º y el subcampeón no salía. Uno por puesto, con todos sus nombres
+      const lugares = [['Campeón', 1], ['Subcampeón', 2], ['Tercero', 3]].map(([p, m]) => {
+        const rs = (ll.tabla || []).filter((r) => r[1] === p);
+        return rs.length ? { z: rs[0], m, n: rs.map((r) => limpio(r[0])).join(' · ') } : null;
+      });
+      const top = lugares.filter(Boolean);
       const kDe = (z) => z[3] || (liga.fila(z[0]) || {}).k || '';
-      const pieza = (z, i) => {
-        if (!z) return null;
-        const kz = kDe(z);
+      const pieza = (x) => {
+        if (!x) return null;
+        const kz = kDe(x.z);
         const cz = kz ? liga.cartaDe(kz, { sv: it.sv }) : null;
         return (
-          <li key={i} className={'p' + (i + 1)}>
+          <li key={x.m} className={'p' + x.m}>
             {cz ? <Carta liga={liga} k={kz} cual={cz} cls="st-p3-c" abre={false} />
-              : <Cara liga={liga} k={kz} nombre={z[0]} cls="st-p3-cara" />}
-            <b>{i + 1}º</b><span>{limpio(z[0])}</span>
+              : <Cara liga={liga} k={kz} nombre={x.z[0]} cls="st-p3-cara" />}
+            <b>{x.m}º</b><span>{x.n}</span>
           </li>
         );
       };
-      const vis = top.length >= 2 ? <ol className="st-podio3" aria-label="El podio">{[pieza(top[1], 1), pieza(top[0], 0), pieza(top[2], 2)]}</ol>
+      const vis = top.length >= 2 ? <ol className="st-podio3" aria-label="El podio">{[pieza(lugares[1]), pieza(lugares[0]), pieza(lugares[2])]}</ol>
         : f && (f.c || []).includes('temporada') ? <Carta liga={liga} k={k} cual="temporada" cls="st-carta" abre={false} /> : <Cara liga={liga} k={k} nombre={q[0]} cls="st-cara" />;
       out.push(Slide('CAMPEÓN · ' + siglaDe(it.sv), <><h3 className="st-h">{limpio(it.ev)}</h3>{vis}
         <small className="st-s">{top.length >= 2 ? 'Campeón: ' + q.join(' y ') + ' · ' : ''}{it.part || 0} raperos</small></>, c, 'Ver la llave', { llave: it.ll }));
@@ -430,7 +436,10 @@ function slidesDe(liga, items) {
       c, 'Ver la liga', { ruta: '#/ligas/' + encodeURIComponent(it.liga || '') }));
     }
     // la identidad de la historia es la de su publicación (`id` del muro, ver bot/muro.py); las cartas juntas, la de todas
-    const id = 'm:' + g.map((o) => o.id || o.tipo + (o.t || '') + (o.quien || []).join(',')).join('+');
+    // 🔴 CORTO (pasada del 19/10/2026): las cartas nuevas juntas armaban un id con TODOS los suyos —69 cartas del 29/09, ~900
+    // letras—, que no entraba en lo visto de la cuenta y llenaba lo del navegador. La primera y cuántas son
+    const id0 = (o) => o.id || o.tipo + (o.t || '') + (o.quien || []).join(',');
+    const id = 'm:' + (g.length > 1 ? id0(g[0]) + '+' + g.length : id0(g[0]));
     for (let i = n0; i < out.length; i++) {
       out[i].t = String(it.t || '');
       out[i].id = id;

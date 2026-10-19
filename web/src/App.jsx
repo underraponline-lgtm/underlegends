@@ -448,11 +448,15 @@ export default function App() {
   // segundos o al irte) y al abrir la página se suma lo que viste en los otros dispositivos. Sin cuenta, sólo acá
   const pendientes = useRef(new Set());
   const mandarVistas = useCallback((alIrse) => {
-    const ids = [...pendientes.current].slice(0, 120);
+    // de a 30 (la página manda hasta 4 KB por pedido: 120 de 200 letras no entraban) y sin las que no se pueden guardar
+    const ids = [...pendientes.current].filter((x) => x.length <= 200).slice(0, 30);
+    [...pendientes.current].filter((x) => x.length > 200).forEach((x) => pendientes.current.delete(x));
     if (!ids.length || !yoRef.current) return;
     ids.forEach((x) => pendientes.current.delete(x));
+    // si no se pudo (sin red o el servidor caído), vuelven a la cola; si el pedido estaba mal, no se insiste
+    const volver = () => ids.forEach((x) => pendientes.current.add(x));
     fetch('/api/avisos/historias', { method: 'POST', keepalive: !!alIrse, headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ ids }) }).catch(() => { ids.forEach((x) => pendientes.current.add(x)); });
+      body: JSON.stringify({ ids }) }).then((r) => { if (r.status >= 500) volver(); }).catch(volver);
   }, []);
   const timerVistas = useRef(0);
   const visto = useCallback((id) => setVistos((v) => {
@@ -477,7 +481,7 @@ export default function App() {
     let subir = [];
     try {
       if (localStorage.getItem('lg:hv-subido') !== cuentaId) {
-        subir = Object.entries(vistos).sort((a, b) => b[1] - a[1]).slice(0, 120).map((x) => x[0]);
+        subir = Object.entries(vistos).filter((x) => x[0].length <= 200).sort((a, b) => b[1] - a[1]).slice(0, 30).map((x) => x[0]);
       }
     } catch (e) { subir = []; }
     fetch('/api/avisos/historias', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ids: subir }) })
@@ -598,14 +602,23 @@ export default function App() {
   const hLink = (() => { try { return new URLSearchParams((hash || '').split('?')[1] || '').get('h') || ''; } catch (e) { return ''; } })();
   const hUsado = useRef('');
   const [desde, setDesde] = useState('');
+  // 🔴 ESPERA AL MURO (pasada del 19/10/2026): casi todas las historias que se comparten salen del muro, que llega después
+  // del lobby; el link se gastaba con los círculos de los servidores y no abría nada. Si en 8 s no aparece, se deja
+  const [hTarde, setHTarde] = useState(false);
+  useEffect(() => {
+    if (!hLink) return undefined;
+    const t = setTimeout(() => setHTarde(true), 8000);
+    return () => clearTimeout(t);
+  }, [hLink]);
   useEffect(() => {
     if (!hLink || hUsado.current === hLink || !grupos.length) return;
+    const i = grupos.findIndex((g) => g.slides.some((s) => s.id === hLink));
+    if (i < 0 && muro === null && !hTarde) return;
     hUsado.current = hLink;
     try { history.replaceState(history.state, '', window.urlLG ? window.urlLG('#/' + partes.join('/')) : '#/' + partes.join('/')); } catch (e) { /* queda */ }
-    const i = grupos.findIndex((g) => g.slides.some((s) => s.id === hLink));
     if (i >= 0) { setDesde(hLink); setHistoria(i); }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hLink, grupos.length]);
+  }, [hLink, grupos, muro, hTarde]);
   // lo que ya habías visto con la marca vieja (una por círculo) pasa una vez a la nueva, así nadie vuelve a ver todo
   useEffect(() => {
     if (vistos !== null || !grupos.length) return;

@@ -614,7 +614,8 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
   })();
   // ✋ tocar, mantener o deslizar: mantener pausa (y al soltar no pasa de historia); deslizar abajo cierra y al costado
   // cambia de círculo
-  const empieza = (e) => { pausa.current = true; gesto.current = { x: e.clientX, y: e.clientY, t: performance.now() }; };
+  // (cada toque arranca de cero: mantener apretado «Felicitar» dejaba marcado que el próximo toque no pasara de historia)
+  const empieza = (e) => { tragar.current = false; pausa.current = true; gesto.current = { x: e.clientX, y: e.clientY, t: performance.now() }; };
   const suelta = (e) => {
     pausa.current = false;
     const g0 = gesto.current;
@@ -674,7 +675,9 @@ export function Visor({ liga, grupos, abierto, onCerrar, onVisto, vistos = {}, r
         onPointerDown={empieza} onPointerUp={suelta} onPointerCancel={corta} onPointerLeave={corta}>
         <div className="hv-bars" ref={barras}>{ids.map((id, i) => <i key={id} className={i < si ? 'hecho' : ''}><b ref={i === si ? barra : null} style={{ width: 0 }} /></i>)}</div>
         <div className="hv-cab">
-          <a className="hv-quien" href={perfil} onClick={onCerrar} aria-label={'Ir al perfil de ' + g.nombre}>{circulo}<span><b>{g.nombre}</b><small>{s.cuando || ''}</small></span></a>
+          {/* 🔴 soltar el paso del historial ANTES de cerrar (pasada del 19/10/2026): si no, el `history.back()` del cierre
+              deshacía la navegación al perfil y quedabas en el Inicio */}
+          <a className="hv-quien" href={perfil} onClick={() => { soltarPaso(); onCerrar(); }} aria-label={'Ir al perfil de ' + g.nombre}>{circulo}<span><b>{g.nombre}</b><small>{s.cuando || ''}</small></span></a>
           <Compartir cls="hv-comp" url={compartir} texto={'En la Liga Global: ' + g.nombre} etiqueta="" />
           <button type="button" className={'hv-comp hv-img' + (img ? ' ' + img : '')} aria-label="Guardar como imagen para tus historias"
             title="Como imagen, para tus historias" disabled={img === 'armando'} onClick={imagen}><Ico n="imagen" t={22} /></button>

@@ -2120,13 +2120,23 @@ console.log('\n🛡️ EL FRENO POR IP\n');
     cw.slice(0, 240).every((c) => c !== 429) && cw.slice(240).every((c) => c === 429) && pag !== 429 && cfl !== 429,
     JSON.stringify([cw.filter((c) => c === 429).length, pag, cfl]));
   // y lo que pide la página CON la IP de quien mira se cuenta por esa IP (`pag:`), aparte de la directa
-  const conIP = (x) => worker.fetch(new Request('https://w/no-existe', { headers: { 'cf-connecting-ip': '2a06:98c0:3600::103', 'x-lg-ip': x } }), env, ctx);
+  const conIP = (x) => worker.fetch(new Request('https://w/no-existe', { headers: { 'cf-connecting-ip': '2a06:98c0:3600::103', 'cf-worker': 'underlegends.pages.dev', 'x-lg-ip': x } }), env, ctx);
   const cp = [];
   for (let i = 0; i < 242; i++) cp.push((await conIP('203.0.113.50')).status);
   const otraP = (await conIP('203.0.113.51')).status;
   ok('el Worker: lo que pide la página se cuenta por la IP de quien mira: el 241 de esa persona frena, otra no',
     cp.slice(0, 240).every((c) => c !== 429) && cp.slice(240).every((c) => c === 429) && otraP !== 429,
     JSON.stringify([cp.filter((c) => c === 429).length, otraP]));
+  // 🔴 los dos encabezados que cualquiera puede mandar (pasada del 19/10/2026): un `x-lg-ip` distinto en cada pedido desde
+  // afuera, o un `x-lg-ciclo` inventado, ya no esquivan el freno: se cuenta la IP real
+  const ipFalsa = '192.0.2.99';
+  const truco = [];
+  for (let i = 0; i < 242; i++) {
+    truco.push((await worker.fetch(new Request('https://w/no-existe', { headers: { 'cf-connecting-ip': ipFalsa,
+      'x-lg-ip': '198.51.100.' + (i % 200), 'x-lg-ciclo': 'cualquiera' } }), env, ctx)).status);
+  }
+  ok('desde afuera, inventar la IP de la página o la clave del ciclo no esquiva el freno: se cuenta la IP real',
+    truco.slice(0, 240).every((c) => c !== 429) && truco.slice(240).every((c) => c === 429), JSON.stringify(truco.filter((c) => c === 429).length));
   // IPv6: se cuenta el bloque /64, así rotar direcciones adentro de él no esquiva el freno
   const v6 = [];
   for (let i = 0; i < 242; i++) {

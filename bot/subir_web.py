@@ -813,6 +813,13 @@ def _os(x):
     ns = []
     for o in x.get('orgs') or []:
         n = _org((o or {}).get('n'))
+        # 🔴 sólo nombres (pasada del 19/10/2026): una mención de rol partida llegaba a la página como organizador
+        # («1130…738> ORGANIZADOR»), con un número de Discord adentro
+        try:
+            import nombres as NB
+            n = NB.limpio(re.sub(r'^[\W_]+', '', n)) if n and NB.es_nombre(re.sub(r'^[\W_]+', '', n)) else ''
+        except Exception:                                # noqa: BLE001
+            n = '' if re.search(r'\d{15,}|[<>]', n or '') else n
         if n and n not in ns:
             ns.append(n)
     return {'os': ns} if ns and ns != [_org(x.get('organizador'))] else {}

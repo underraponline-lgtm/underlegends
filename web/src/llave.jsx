@@ -860,7 +860,9 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
       return vs.length && vs.every((v) => v === vs[0]) ? vs[0] : null;
     };
     const ult = prin.length - 1;
-    const final = ult >= 0 && prin[ult].b.length === 1 ? prin[ult].b[0] : null;
+    // 🔴 UNA FINAL DE VERDAD (pasada del 19/10/2026): «la última ronda tiene una batalla» también es la primera batalla de
+    // una llave de vidas o una en vivo que recién arranca, y salía «CAMPEÓN» en grande con el ganador de la primera
+    const final = !vidasDe(L) && ult >= 0 && prin[ult].b.length === 1 && (ult > 0 || /final/i.test(prin[ult].r)) ? prin[ult].b[0] : null;
     const ptsCamp = (() => {
       if (!final || !final[1]) return '';
       const ps = miembros(final[1]).map((m) => ptsM[m]).filter((v) => v != null);
@@ -903,7 +905,8 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
     // AHORA y SIGUE, sólo si se juega en orden (`enOrden()`): si no, no se sabe cuál se está jugando. Jugado es con
     // ganador o con alguno de sus lados ya en la ronda siguiente (`jugado()`: en un grupo de tres pueden pasar dos)
     const pend = [];
-    if (!cerrada && enOrden(prin)) prin.forEach((R, i) => R.b.forEach((b, j) => { if (!jugado(prin, i, b) && b[0].length >= 2) pend.push(i + ':' + j); }));
+    // (en la doble no: las dos llaves se juegan intercaladas y no se sabe cuál va, como dice `Doble`)
+    if (!cerrada && enOrden(prin) && !esDoble(prin)) prin.forEach((R, i) => R.b.forEach((b, j) => { if (!jugado(prin, i, b) && b[0].length >= 2) pend.push(i + ':' + j); }));
     const est = (i, j) => {
       const b = prin[i] && prin[i].b[j];
       if (!b) return '';
@@ -945,11 +948,16 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
     if (!prev || prev.n !== n) return undefined;
     const nb = new Set(Object.keys(g).filter((k) => !prev.g[k]));
     const ns = new Set([...ss].filter((k) => !prev.ss.has(k)));
-    if (!nb.size && !ns.size) return undefined;
-    setAnim({ b: nb, s: ns });
+    if (nb.size || ns.size) setAnim({ b: nb, s: ns });
+    return undefined;
+  }, [base, n]);
+  // 🔴 el apagado, aparte (pasada del 19/10/2026): adentro del efecto de arriba lo cancelaba cualquier vuelta de `base` (cada
+  // minuto, al entrar con la cuenta), y la animación quedaba prendida y se repetía
+  useEffect(() => {
+    if (!anim) return undefined;
     const t = setTimeout(() => setAnim(null), 2600);
     return () => clearTimeout(t);
-  }, [base, n]);
+  }, [anim]);
 
   if (!L) {
     if (!enVivo && vieja === undefined) return <div className="cargando">Buscando la llave…</div>;

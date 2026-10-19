@@ -642,19 +642,24 @@ def organizadores(m):
                 linea = ls[j + 1]
             break
     # lo de adelante de la etiqueta: los dos puntos, el formato y la viñeta («:`__ », «** », «⇢ », «# 𐬺 »)
-    linea = re.sub(r'^[\s*_`~:|>⇢→↝#➤▸►└├╰┈𐬺\-]+', '', linea)
+    # 🔴 Y EL SELECTOR DE VARIANTE (U+FE0F) Y EL UNIDOR (U+200D) que dejan los emojis (pasada del 19/10/2026): «️: SHADOW»
+    # quedaba con eso adelante y no era un nombre, y seis anuncios de la T1 perdían a su organizador
+    linea = re.sub(r'^[\s*_`~:|>⇢→↝#➤▸►└├╰┈𐬺\-\ufe0f\u200d]+', '', linea)
     fichas = []
 
     def ficha(mm):
         fichas.append(mm.group(1))
         return ' + QQM%dQQ + ' % (len(fichas) - 1)
     linea = re.sub(r'<@!?(\d+)>', ficha, linea)
+    # 🔴 la mención de un ROL (`<@&id>`) o de un canal no es nadie: antes el `&` la partía en dos y su número llegaba a la
+    # página como un organizador («1130…738> ORGANIZADOR», pasada del 19/10/2026)
+    linea = re.sub(r'<@&\d+>|<#\d+>', ' + ', linea)
     # las banderas y los emojis del servidor separan: «FLENNZS <a:MEXICO:…> + LEWITO»
     linea = re.sub(r'<a?:\w+:\d+>', ' + ', linea)
     linea = re.sub('[\U0001F1E6-\U0001F1FF]{2}', ' + ', linea)
     out = []
     for p in re.split(r'\s+-\s+|\s*[,/|&+]\s*|\s+y\s+', linea):
-        p = re.sub(r'[*`~]|__', '', p).strip(' .:')
+        p = re.sub(r'[*`~]|__', '', p).strip(' .:\ufe0f\u200d')
         mf = re.fullmatch(r'QQM(\d+)QQ', p)
         if mf:
             did = fichas[int(mf.group(1))]
@@ -665,6 +670,9 @@ def organizadores(m):
             # sin los emojis sueltos de adelante o de atrás («💻 Lewis»), que no son parte del nombre
             n = ''.join(c for c in _nombre_visible(p) if unicodedata.category(c) not in ('So', 'Sk', 'Cf')).strip()
             i = ''
+        # ni la conjunción suelta ni la etiqueta misma («… y <@&rol> ORGANIZADOR»)
+        if n.lower() in ('y', 'e', 'and') or ORG_ETIQUETA.fullmatch(n):
+            continue
         if n and re.search(r'\w', n) and not NO_PERSONA.match(n) and '???' not in n and len(n) <= 32 \
                 and all(x['n'].lower() != n.lower() for x in out):
             out.append({'n': n, 'id': i})

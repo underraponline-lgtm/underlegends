@@ -781,7 +781,7 @@ export function Ascenso({ A, h, desde = '' }) {
   const ver = todo ? filas : filas.slice(0, 12);
   const suben = A.suben || 0, po = A.po || 0;
   return (
-    <div className="asc">
+    <div className="asc-caja">
       {/* en las otras ligas del servidor, el ascenso es el camino de abajo: se dice adónde lleva */}
       {desde && A.dest && desde !== A.dest ? (
         <p className="asc-p asc-camino">En {siglaDe(A.sv)}, a la <b>{A.n}</b> se sube con este ranking. <a className="te-link" href={'#/ligas/' + encodeURIComponent(A.dest)}>Ver la {A.n} →</a></p>

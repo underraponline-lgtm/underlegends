@@ -284,7 +284,12 @@ class Reconocer:
         return '', ''
 
     def nombre(self, texto, did='', evento=''):
-        """El nombre de la Lista, o el limpio si no es nadie de la Lista; `''` si no es una persona."""
+        """El nombre de la Lista, o el limpio si no es nadie de la Lista; `''` si no es una persona.
+
+        🔴 Sin lo que se le pegó adelante (pasada del 19/10/2026): «️: SHADOW» —el selector de un emoji y los dos puntos de
+        la etiqueta— no pasaba `es_nombre()` por los dos puntos, y el organizador se perdía. Sólo adelante: «CUPOS: 16»
+        sigue sin ser nadie."""
+        texto = re.sub(r'^[\W_]+', '', str(texto or ''))
         q, _por = self.quien(texto, did, evento)
         if q:
             return q
@@ -296,13 +301,17 @@ class Reconocer:
         """Los organizadores de un anuncio, de a uno y con su nombre de la Lista (`orgs` con su cuenta si el anuncio la
         trae, ver `anuncios.organizadores()`; si no, el texto de `organizador` partido). Sin repetir."""
         crudos = [(o.get('n'), o.get('id')) for o in (a.get('orgs') or []) if isinstance(o, dict)]
-        if not crudos:
-            crudos = [(x, '') for x in partir(a.get('organizador'))]
         out = []
-        for n, did in crudos:
+        for n, did in crudos or [(x, '') for x in partir(a.get('organizador'))]:
             x = self.nombre(n, did, a.get('nombre') or '')
             if x and clave(x) not in {clave(y) for y in out}:
                 out.append(x)
+        # 🔴 si de los de a uno no quedó nadie, el texto de «Organiza:» (pasada del 19/10/2026): antes se perdía
+        if not out and crudos:
+            for n in partir(a.get('organizador')):
+                x = self.nombre(n, '', a.get('nombre') or '')
+                if x and clave(x) not in {clave(y) for y in out}:
+                    out.append(x)
         return out
 
 

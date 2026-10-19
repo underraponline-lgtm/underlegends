@@ -1259,12 +1259,17 @@ export function organizadoresDe(m) {
       break;
     }
   }
-  linea = linea.replace(/^[\s*_`~:|>\u21e2\u2192\u219d#\u27a4\u25b8\u25ba\u2514\u251c\u2570\u2508\ud802\udf3a-]+/u, '')
+  // 🔴 como en Python (pasada del 19/10/2026): el selector de variante y el unidor de los emojis adelante, y la mención de un
+  // ROL o de un canal, que no es nadie (antes el `&` la partía y su número quedaba como organizador)
+  linea = linea.replace(/^[\s*_`~:|>\u21e2\u2192\u219d#\u27a4\u25b8\u25ba\u2514\u251c\u2570\u2508\ud802\udf3a\ufe0f\u200d-]+/u, '')
+    .replace(/<@&\d+>|<#\d+>/g, ' + ')
     .replace(/<@!?(\d+)>/g, (_, id) => ' + ' + (men[id] || '') + ' + ')
     .replace(/<a?:\w+:\d+>/g, ' + ').replace(/[\u{1F1E6}-\u{1F1FF}]{2}/gu, ' + ');
   const out = [];
   for (let p of linea.split(/\s+-\s+|\s*[,/|&+]\s*|\s+y\s+/)) {
-    p = p.replace(/[*`~]|__/g, '').replace(/^[\s.:!@\u00b7\u2022~#\u27a4\u25b8\u25ba\u2514\u251c\u2570\u2508\ud802\udf3a]+|[\s.:]+$/gu, '');
+    p = p.replace(/[*`~]|__/g, '').replace(/^[\s.:!@\u00b7\u2022~#\u27a4\u25b8\u25ba\u2514\u251c\u2570\u2508\ud802\udf3a\ufe0f\u200d]+|[\s.:\ufe0f\u200d]+$/gu, '');
+    // ni la conjunción suelta ni la etiqueta misma («… y <@&rol> ORGANIZADOR»)
+    if (/^(?:y|e|and)$/i.test(p) || new RegExp('^(?:' + ETQ.source + ')$', 'i').test(p)) continue;
     if (/^(?:capaz\s+)?@?yo\b/i.test(p)) p = autor;
     p = p.replace(/[\p{So}\p{Sk}\p{Cf}]/gu, '').trim();
     if (p && /[\p{L}\p{N}]/u.test(p) && p.length <= 32 && !/^(?:@?(?:everyone|here)|tod[oa]s?|-+|\?+)$/i.test(p)
@@ -5215,7 +5220,11 @@ export class Avisos {
         // leía después de los primeros índices, las inscripciones de un servidor desde una hora (`inscripciones()`)
         ['pase_hecho_temp', 'pase_hecho', 'temp, quien'], ['tienda_quien', 'tienda', 'quien'],
         ['pase_hito_temp', 'pase_hito', 'temp, nivel, t'],
-        ['inscritos_sv_pub', 'inscritos', 'sv, pub']]) {
+        ['inscritos_sv_pub', 'inscritos', 'sv, pub'],
+        // 📏 y los de la pasada del 19/10/2026: en 13 días el objeto leyó 1,46 millones de filas por día, y la que más
+        // leía era el chat en vivo de un canal (234.000 por día recorriendo la tabla entera), después los votos y los
+        // precios de cada uno (cuántos puso hoy): las tres, sin índice
+        ['chat_vivo_canal', 'chat_vivo', 'canal, t'], ['votos_quien', 'votos', 'quien, t'], ['precios_quien', 'precios', 'quien, t']]) {
         this.sql.exec(`CREATE INDEX IF NOT EXISTS ${nombre} ON ${tabla} (${col})`);
       }
     });
