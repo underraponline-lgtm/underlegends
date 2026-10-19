@@ -686,6 +686,11 @@ def _lo_barato(correr):
     #
     # ⚠️ NUNCA FRENA EL CICLO: sin sorteo nuevo, las vitrinas usan lo guardado.
     if correr:
+        # 📇 los nombres de Discord de la gente de la Lista, guardados en el Operativo: el organizador de la semana los
+        # necesita y el 1b, que los trae de Discord, va después (pasada del 19/10/2026; ver `bot/apodos_sheet.py`)
+        paso('0a', 'los nombres de Discord de la Lista, del Operativo')
+        if not corre(['bot/apodos_sheet.py', '--traer'], callado=False):
+            print('      ⚠️ sin los nombres de Discord: el organizador de la semana sale sin ellos')
         paso('0b', 'los multiplicadores de la semana')
         if not corre(['bot/multiplicadores.py', '--aplicar'], callado=False):
             print('      ⚠️ no pude sortear los multiplicadores: quedan los que había')
@@ -1004,6 +1009,9 @@ def _lo_barato(correr):
         else:
             print('      %-42s %d -> %d'
                   % ('en qué servidores está cada uno', antes_s, hay_s))
+            # 📇 y los de la Lista, al Operativo, para el paso 0b de la próxima corrida (`bot/apodos_sheet.py`)
+            if not corre(['bot/apodos_sheet.py', '--guardar'], callado=False):
+                print('      ⚠️ no pude guardar los nombres de Discord en el Operativo: quedan los de antes')
 
     # 🎙️ QUIÉN ESTÁ EN LA LLAMADA, sólo con un evento en vivo. Dlx,
     # 29/09/2026: «fíjate muy bien para no gastar recursos y solo cuando en

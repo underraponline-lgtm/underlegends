@@ -184,9 +184,17 @@ def miembros(s, gid):
                 # 🏷️ y sus roles, para saber quién es staff (ver `staff_y_socios()`)
                 _ROLES_DE.setdefault(gid, {})[u['id']] = list(m.get('roles') or [])
                 ns = _NOMBRES.setdefault(u['id'], [])
-                for x in (m.get('nick'), u.get('global_name'), u.get('username')):
+                for x in (m.get('nick'), u.get('global_name')):
                     if x and x.strip() and x.strip() not in ns:
                         ns.append(x.strip())
+                # 🔴 EL USUARIO, SIEMPRE ÚLTIMO (pasada del 19/10/2026): `nombres.Reconocer` toma el último como el usuario
+                # —el único único en Discord, que vale siempre— y una cuenta en dos servidores quedaba con el apodo del
+                # segundo DETRÁS del usuario, así que un apodo corto («Max») contaba como si fuera único
+                un = (u.get('username') or '').strip()
+                if un:
+                    if un in ns:
+                        ns.remove(un)
+                    ns.append(un)
         # 🔴 `key=int` NO ES COSMETICO. Los snowflakes tienen 17, 18 y 19
         # digitos, y `max()` sobre cadenas compara alfabeticamente: asi
         # '999999999999999999' le gana a '1000000000000000000', que es
