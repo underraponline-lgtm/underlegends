@@ -384,7 +384,8 @@ def numeros(ini, fin, D, raperos=()):
         tp = _de_iso(v[5] if len(v) > 5 else '')
         if en(tp):
             qs = [q for q in v[1] if q]
-            dia = tp.astimezone(dt.timezone(dt.timedelta(hours=-4))).strftime('%d/%m')
+            # en hora del este de verdad (desde el 1/11 es UTC−5): con −4 fijo, lo de la noche salía al día siguiente
+            dia = _fecha_et(tp)[8:10] + '/' + _fecha_et(tp)[5:7]
             x = {'op': pid[:80], 'n': (v[2] or 'su promo')[:80], 'q': qs[0] if qs else '', 'quien': qs[:2], '_v': v[0],
                  '_t': v[5], 'd': '%s · %s' % (' y '.join(qs[:2]) or 'alguien', (
                      _plural(v[0], 'persona la abrió', 'la abrieron') if v[0] else 'la compartió el ' + dia))}
@@ -616,14 +617,18 @@ def _nombres_lista(s, guilds):
                 real = did_raw.get(str(u.get('id') or ''))
                 if not real:
                     continue
-                for x in (u.get('username'), u.get('global_name'), m.get('nick')):
+                # 🔴 como `nombres.Reconocer` (pasada del 19/10/2026): el usuario vale siempre; el visible y el apodo sólo
+                # con 7 letras o números («adrian» eran dos personas y se llevaba el premio la primera que aparecía)
+                for j, x in enumerate((u.get('username'), u.get('global_name'), m.get('nick'))):
                     c = nombre_staff(x)
-                    if c:
-                        out.setdefault(MU._clave_persona(c), real)
+                    k = MU._clave_persona(c) if c else ''
+                    if k and (j == 0 or len(k) >= 7 or any(ch.isdigit() for ch in k)):
+                        out.setdefault(k, set()).add(real)
             if len(lote) < 1000:
                 break
             after = max((str((m.get('user') or {}).get('id', '0')) for m in lote), key=int)
-    return out
+    # un nombre que es de dos personas no es de ninguna
+    return {k: next(iter(v)) for k, v in out.items() if len(v) == 1}
 
 
 def _traer_staff(desde):
