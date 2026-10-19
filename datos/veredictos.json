@@ -1169,6 +1169,17 @@
    "b": "MAILEN🇳🇴",
    "ganador": "TAM🇻🇪",
    "votos": "1–0"
+  },
+  "1561564498043605066": {
+   "id": "1561564498043605066",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792376388799,
+   "a": "ERIAN🇵🇦",
+   "b": "ADRIAGNER🇳🇮",
+   "ganador": "ERIAN🇵🇦",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5153,8 +5164,8 @@
    "g": "1468472442925092958",
    "canal": "1557583344638623754",
    "pub": 1792357298616,
-   "ed": 1792363534488,
-   "texto": "`[ FILTROS ]`\n⌞PANCHOK🇨🇱⌝ 🆚 ⌞LVEL🇻🇪⌝ 🆚 ⌞JOBA🇨🇱⌝ 🆚 ⌞AX🇻🇪⌝ 🆚 ⌞1200🇰🇷⌝\n⌞SEBITA🇱🇷⌝ 🆚 ⌞IMAGY🇵🇪⌝ 🆚 ⌞TAM🇻🇪⌝ 🆚 ⌞MILLONARI-O(MC MILLO)🇵🇾⌝ 🆚 ⌞ONZAS.S🇻🇪⌝\n⌞JOBA🇨🇱R⌝ 🆚 ⌞MAILÉN🇳🇴⌝ 🆚 ⌞PARK-JI SUNG🇰🇷⌝ 🆚 ⌞VANDU🇨🇦⌝ 🆚 ⌞WARAP🇦🇷⌝ 🆚 ⌞CAZAFLA ANTI CAZANOVA🇭🇹⌝\n`[ FINAL ]`\n⌞WARAP🇦🇷✖️+MAILÉN🇳🇴+PANCHOK🇨🇱✖️⌝ 🆚 ⌞TAM🇻🇪+SEBITA🇱🇷✖️+ANDRES🇨🇱✖️⌝",
+   "ed": 1792375654842,
+   "texto": "`[ FILTROS ]`\n⌞PANCHOK🇨🇱⌝ 🆚 ⌞LVEL🇻🇪⌝ 🆚 ⌞JOBA🇨🇱⌝ 🆚 ⌞AX🇻🇪⌝ 🆚 ⌞1200🇰🇷⌝\n⌞SEBITA🇱🇷⌝ 🆚 ⌞IMAGY🇵🇪⌝ 🆚 ⌞TAM🇻🇪⌝ 🆚 ⌞MILLONARI-O(MC MILLO)🇵🇾⌝ 🆚 ⌞ONZAS.S🇻🇪⌝\n⌞JOBA🇨🇱R⌝ 🆚 ⌞MAILÉN🇳🇴⌝ 🆚 ⌞PARK-JI SUNG🇰🇷⌝ 🆚 ⌞VANDU🇨🇦⌝ 🆚 ⌞WARAP🇦🇷⌝ 🆚 ⌞CAZAFLA ANTI CAZANOVA🇭🇹⌝\n`[ FINAL ]`\n⌞WARAP🇦🇷✖️+MAILÉN🇳🇴✖️+PANCHOK🇨🇱✖️⌝ 🆚 ⌞TAM🇻🇪+SEBITA🇱🇷✖️+ANDRES🇨🇱✖️⌝",
    "batallas": [
     [
      "FILTROS",
@@ -5199,8 +5210,59 @@
     [
      "FINAL",
      [
-      "WARAP🇦🇷✖️+MAILÉN🇳🇴+PANCHOK🇨🇱✖️",
+      "WARAP🇦🇷✖️+MAILÉN🇳🇴✖️+PANCHOK🇨🇱✖️",
       "TAM🇻🇪+SEBITA🇱🇷✖️+ANDRES🇨🇱✖️"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1561560619419959317": {
+   "id": "1561560619419959317",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792375464063,
+   "ed": 1792376620505,
+   "texto": "`[ SEMIFINALES ]`\n⌞MOSQUITRAP🇦🇷 + ADRIAGNER🇳🇮⌝ 🆚 ⌞CARLOS🇪🇨 + KEIDER🇻🇪⌝\n⌞MASINO🇨🇱 + EVANGELINE🇧🇴⌝ 🆚 ⌞ERIAN🇦🇱 + SEBITAS🇱🇷⌝\n`[ FINAL ]`\n⌞ERIAN🇵🇦⌝ 🆚 ⌞ADRIAGNER🇳🇮⌝\n⌞ERIAN🇵🇦⌝ 🆚 ⌞CARLOS🇪🇨⌝",
+   "batallas": [
+    [
+     "SEMIFINALES",
+     [
+      "MOSQUITRAP🇦🇷 + ADRIAGNER🇳🇮",
+      "CARLOS🇪🇨 + KEIDER🇻🇪"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "MASINO🇨🇱 + EVANGELINE🇧🇴",
+      "ERIAN🇦🇱 + SEBITAS🇱🇷"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ERIAN🇵🇦",
+      "ADRIAGNER🇳🇮"
+     ],
+     "ERIAN🇵🇦",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ERIAN🇵🇦",
+      "CARLOS🇪🇨"
      ],
      null,
      "última ronda y no dice campeón",
