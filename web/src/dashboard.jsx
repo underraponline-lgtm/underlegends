@@ -655,6 +655,31 @@ const NOMBRE_SECC = { inicio: 'Inicio', eventos: 'Eventos', ranking: 'Ranking', 
   'i-raperos': 'Los que mandan', 'i-panel': 'Misiones', 'i-merch': 'Merchandising', 'i-numeros': 'La Liga en números',
   'p-eventos': 'Puerta · Eventos', 'p-ranking': 'Puerta · Ranking', 'p-mw': 'Puerta · Se busca', 'p-tarjetas': 'Puerta · Tarjetas',
   'p-pase': 'Puerta · Pase', 'p-tienda': 'Puerta · Tienda' };
+// 👥 LOS NÚMEROS DE LAS CREWS (19/10/2026, `crewNumeros()` de bot/crews.js): esta semana contra la anterior, y hoy
+const CREW_NUM = [['creada', 'Crews armadas'], ['entro', 'Entraron a una crew'], ['link', '… con un link'],
+  ['invito', 'Invitaciones mandadas'], ['se_cambio', 'Se cambiaron de crew'], ['link_nuevo', 'Links armados'],
+  ['salio', 'Salieron'], ['cerrada', 'Crews cerradas o borradas'], ['quedo', 'Pasaron su primera semana'],
+  ['verifico', 'Se verificaron (estaban sin verificar)'], ['salio_sin_verificar', 'Salieron por no verificarse']];
+function CrewsNumeros({ c }) {
+  const s = c.semana || {}, a = c.antes || {}, h = c.hoy || {};
+  const filas = CREW_NUM.filter(([k]) => s[k] || a[k]);
+  const tope = Math.max(1, ...filas.map(([k]) => s[k] || 0));
+  return (
+    <div className="db-aj">
+      <p className="db-tx"><b>Hoy:</b> {num(h.crews || 0)} crews ({num(h.de_la_gente || 0)} armadas por la gente, {num(h.primera_semana || 0)} en su
+        primera semana) · {num(h.gente || 0)} personas en una crew{h.sin_verificar ? ' (' + num(h.sin_verificar) + ' sin verificar)' : ''} · {num(h.links || 0)} links
+        abiertos · {num(c.paneles || 0)} {c.paneles === 1 ? 'dueño abrió' : 'dueños abrieron'} su panel de socio esta semana.</p>
+      {filas.length ? (
+        <div className="db-q">{filas.map(([k, t]) => (
+          <div key={k} className="db-q-f"><span>{t}</span><i><u style={{ width: ((100 * (s[k] || 0)) / tope).toFixed(1) + '%' }} /></i>
+            <b>{num(s[k] || 0)} <small>{a[k] ? 'antes ' + num(a[k]) : 'esta semana'}</small></b></div>
+        ))}</div>
+      ) : <p className="pronto-p">Todavía no pasó nada esta semana.</p>}
+      <p className="db-tx">Los últimos 7 días y, al lado, los 7 de antes. Sirve para saber qué se usa de las crews antes de cambiar algo.</p>
+    </div>
+  );
+}
+
 function SeccionesNumeros({ s, toques }) {
   // `toques`: lo que se toca en el Inicio (`i-` y `p-`); si no, las secciones que se abren
   const filas = Object.entries((s && s.n) || {}).filter(([k]) => /^[ip]-/.test(k) === !!toques).map(([k, v]) => [k, v[0] || 0, v[1] || 0])
@@ -2551,6 +2576,7 @@ export function Dashboard({ dc, liga }) {
           {d.clics ? sec('QUÉ SE TOCA EN TODA LA PÁGINA · 7 DÍAS', d.clics.desde ? 'se cuenta desde el ' + corto(d.clics.desde) : null,
             <ClicsNumeros c={d.clics} />) : null}
           {sec('¿EL LOBBY HACE VOLVER A LA GENTE?', 'la meta del research', <MetaLobby r={retencion} />)}
+          {d.crews_num ? sec('LAS CREWS · 7 DÍAS', 'contra los 7 de antes', <CrewsNumeros c={d.crews_num} />) : null}
           {d.pase ? sec('EL PASE DE RAPERO', d.pase.semana ? 'la semana del ' + corto(d.pase.semana) : null, <PaseNumeros p={d.pase} liga={liga} />) : null}
         </> : null}
         {tabV === 'sistema' ? <>

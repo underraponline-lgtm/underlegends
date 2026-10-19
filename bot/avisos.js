@@ -10408,6 +10408,14 @@ export class Avisos {
    * últimas 4 semanas (`secciones`, una por navegador y por día). ⚠️ Sin lo que es sólo de Dlx: ni la recomendación de
    * `bot/tiers.py` ni el Discord ID del dueño.
    */
+  /** 📊 Cuántos dueños distintos abrieron su panel, los últimos 7 días (para Números del Dashboard). Nunca quién. */
+  panelesVistos(ahora = Date.now()) {
+    try {
+      return Number((this.sql.exec('SELECT COUNT(DISTINCT quien) AS n FROM socio_vistas WHERE dia >= ? AND quien != ?',
+        diaET(ahora - 6 * DIA_MS), DUENO).toArray()[0] || {}).n) || 0;
+    } catch (e) { return 0; }
+  }
+
   panelSocio(d) {
     const quien = String((d && d.quien) || '');
     const T = this.leer('tiers') || {};
@@ -10425,6 +10433,14 @@ export class Avisos {
       visitas: this.sql.exec('SELECT dia, n FROM secciones WHERE s = ? AND dia >= ? ORDER BY dia', 'sv-' + x.sv, desde).toArray()
         .map((r) => [r.dia, Number(r.n) || 0]),
     }));
+    // 📊 para saber si lo usan: un día por dueño (sin Dlx). Se borra a los 30 días con lo demás del vigía
+    if (servidores.length && !esDlx) {
+      try {
+        this.sql.exec('CREATE TABLE IF NOT EXISTS socio_vistas (dia TEXT NOT NULL, quien TEXT NOT NULL, PRIMARY KEY (dia, quien))');
+        this.sql.exec('INSERT OR IGNORE INTO socio_vistas (dia, quien) VALUES (?, ?)', diaET(), quien);
+        this.sql.exec('DELETE FROM socio_vistas WHERE dia < ?', diaET(Date.now() - 30 * DIA_MS));
+      } catch (e) { /* es un conteo */ }
+    }
     return json({ ok: true, t: T.t || '', semanas: T.semanas || 4, todos: esDlx, servidores });
   }
 
@@ -11986,6 +12002,8 @@ export class Avisos {
       uso_semanas: this.usoSemanas(ahora),
       // 🤝 cómo viene trabajando cada servidor, para «Los tiers» (`bot/tiers.py`)
       tiers: this.leer('tiers'),
+      // 👥 los números de las crews (`crewNumeros()` de bot/crews.js) y cuántos dueños abrieron su panel de socio
+      crews_num: Object.assign(CW.crewNumeros(this, ahora), { paneles: this.panelesVistos(ahora) }),
       tutorial: this.tutorialResumen(),
       secciones: this.seccionesResumen(),
       clics: this.clicsResumen(),

@@ -1155,6 +1155,30 @@ export function crewTiersAvisar(o, d) {
   return { ok: true, avisados };
 }
 
+/**
+ * 📊 Los números de las crews para el Dashboard (19/10/2026, Dlx: «me gusta todo», a «para saber en dos semanas qué
+ * sirve antes de tocar nada más»): lo de los últimos 7 días contra los 7 de antes, del registro de cada crew
+ * (`crew_log`, 120 días), y cómo están hoy. Sin nombres de nadie: sólo cuántos. Qué es cada cosa lo dice el
+ * Dashboard (`CREW_NUM` de web/src/dashboard.jsx).
+ */
+export function crewNumeros(o, ahora = Date.now()) {
+  const cuenta = (a, b) => {
+    const out = {};
+    for (const r of filas(o, 'SELECT que, COUNT(*) AS n FROM crew_log WHERE t >= ? AND t < ? GROUP BY que', a, b)) out[r.que] = Number(r.n) || 0;
+    return out;
+  };
+  const ya = (q) => fila(o, q).n;
+  return {
+    semana: cuenta(ahora - 7 * DIA, ahora + 1), antes: cuenta(ahora - 14 * DIA, ahora - 7 * DIA),
+    hoy: {
+      crews: ya('SELECT COUNT(*) AS n FROM crews'), de_la_gente: ya('SELECT COUNT(*) AS n FROM crews WHERE oficial = 0'),
+      gente: ya('SELECT COUNT(*) AS n FROM crew_miembros'), sin_verificar: ya('SELECT COUNT(*) AS n FROM crew_miembros WHERE pend > 0'),
+      links: fila(o, 'SELECT COUNT(*) AS n FROM crew_links WHERE vence > ? AND (max = 0 OR usos < max)', ahora).n,
+      primera_semana: ya('SELECT COUNT(*) AS n FROM crews WHERE vence > 0'),
+    },
+  };
+}
+
 /** 🪪 Los ya mencionados en el chat de su servidor, para no volver a mencionarlos. */
 export function crewVerificarAnunciados(o, ks) {
   for (const k of ks || []) o.sql.exec('UPDATE crew_miembros SET pend_av = 1 WHERE k = ? AND pend > 0', String(k));

@@ -370,6 +370,10 @@ if (!DatabaseSync) {
   ok(ta.ok && ta.avisados === 3 && bandeja.some((b) => b.quien === id(900) && b.titulo === '🏆 Viejas sube a Plata')
     && CW.crewTiersAvisar(o, { sem: 'ayer', cambios: [] }).error === 'datos',
   'el cierre de los tiers le llega a la gente de la crew (la que no existe, nada)');
+  // 📊 los números del Dashboard: cuántos, de esta semana, sin nombres
+  const nu = CW.crewNumeros(o);
+  ok(nu.semana.creada >= 5 && nu.semana.link >= 2 && nu.semana.entro >= nu.semana.link && nu.hoy.crews >= 3 && nu.hoy.gente > 0
+    && !JSON.stringify(nu).match(/[0-9]{15,}/), 'los números de las crews: armadas, entradas, links, y ningún ID');
 }
 
 console.log(mal ? `\n  🔴 ${mal} mal, ${bien} bien` : `  ✅ crews: ${bien} bien`);
