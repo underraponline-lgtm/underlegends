@@ -1742,7 +1742,8 @@
  },
  "kuarzo": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuarzo/servidor.webp",
-  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuarzo/sv-dra.webp"
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuarzo/sv-dra.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuarzo/sv-ffa.webp"
  },
  "kuni": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kuni/bloq-competitivo.webp",
@@ -2164,7 +2165,8 @@
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mcarepa/sv-ffa.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mcarepa/sv-fvs.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mcarepa/sv-sr.webp",
-  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mcarepa/sv-urbf.webp"
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mcarepa/sv-urbf.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mcarepa/temporada.webp"
  },
  "mcarita": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mcarita/servidor.webp",

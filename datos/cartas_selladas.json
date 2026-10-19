@@ -792,7 +792,7 @@
    "servidor": "d308669f9a50:b8c1c7c39e87:980594"
   },
   "Kuarzo": {
-   "servidor": "c56d4a8bc580:b8c1c7c39e87:055f77"
+   "servidor": "7379ee79f7ca:b8c1c7c39e87:980594"
   },
   "Kuni": {
    "competitivo": "b3b8a832bc07:c896d13a6eea",
@@ -1021,7 +1021,8 @@
    "servidor": "9100b1adaf31:b8c1c7c39e87:055f77"
   },
   "Mc arepa": {
-   "servidor": "2e28ae34a8d5:b8c1c7c39e87:abdb4a"
+   "servidor": "2e28ae34a8d5:b8c1c7c39e87:abdb4a",
+   "temporada": "2590a0044199:eac8e3b22c41"
   },
   "Mcarita": {
    "servidor": "02128fc165e7:b8c1c7c39e87:67201a"
@@ -1829,5 +1830,5 @@
    "servidor": "7f8885a35a6d:b8c1c7c39e87:93a344"
   }
  },
- "cuando": "2026-10-19T21:01:16+00:00"
+ "cuando": "2026-10-19T21:31:11+00:00"
 }
