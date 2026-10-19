@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { limpio, norm, num } from './liga.js';
 import { Cara, DosToques } from './piezas.jsx';
 import { aBase64, achicar } from './imagen.js';
-import { ENTRADA_NOMBRE, ROL_NOMBRE, accionCrew, crewDe, cuandoVence, errorCrew, quedan, useCrews } from './crews.js';
+import { ENTRADA_NOMBRE, ROL_NOMBRE, accionCrew, crewDe, cuandoVence, diaCrew, errorCrew, quedan, useCrews } from './crews.js';
 
 // el orden de las letras para elegir el mínimo (de la mejor a la peor): sólo el orden, los umbrales viven en comun/rangos.py
 const LETRAS = ['SSS', 'SS', 'S', 'A', 'B', 'C', 'D', 'E'];
@@ -87,6 +87,14 @@ const msgLogo = (j) => (j && j.logo === 'revisar' ? ' El logo lo revisa la Liga 
 /** El rango, como pastilla. */
 export function RolCrew({ rol }) {
   return rol ? <span className={'cw-rol ' + rol}>{ROL_NOMBRE[rol] || rol}</span> : null;
+}
+
+/** 🪪 Quien está en la crew sin verificarse en DRA (19/10/2026, `crewVerificar()` de bot/crews.js): hasta cuándo tiene. */
+export function SinVerificar({ hasta }) {
+  return hasta ? (
+    <span className="cw-rol cw-sinv" title={'Tiene hasta el ' + diaCrew(hasta) + ' para verificarse en DRA; si no, sale de la crew. '
+      + 'Mientras tanto no suma para el ranking ni el tier.'}>Sin verificar · hasta {diaCrew(hasta)}</span>
+  ) : null;
 }
 
 // ── ⏳ la primera semana de una crew nueva ──────────────────────────────────────────────────────────────────────────
@@ -310,12 +318,16 @@ export function PanelCrew({ liga, c }) {
       {manda ? (
         <div className="cw-bloque">
           <h3 className="cw-h">La gente</h3>
-          <ul className="cw-lista">{gente.filter((g) => g[0] !== mia.de).map(([k, r]) => {
+          {gente.some((g) => g[3]) ? (
+            <p className="cw-nota">Quien dice «Sin verificar» todavía no es Miembro de Discord Rap Español: tiene hasta esa fecha para
+              verificarse o sale de la crew, y mientras tanto no suma. Pasale el link: <a href="#/cuenta/verificar">cómo verificarse</a>.</p>
+          ) : null}
+          <ul className="cw-lista">{gente.filter((g) => g[0] !== mia.de).map(([k, r, , pend]) => {
             const puedeTocar = rol === 'lider' || r === 'veterano' || r === 'miembro';
             return (
               <li key={k}>
                 <Cara liga={liga} k={k} nombre={nombreDe(liga, k)} cls="cara cw-cara" />
-                <span>{nombreDe(liga, k)} <RolCrew rol={r} /></span>
+                <span>{nombreDe(liga, k)} <RolCrew rol={r} /><SinVerificar hasta={pend} /></span>
                 {puedeTocar ? (
                   <span className="cw-acc">
                     <select className="cw-sel" value={r} disabled={va || r === 'lider'} aria-label={'El rango de ' + nombreDe(liga, k)}

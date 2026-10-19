@@ -805,6 +805,45 @@ export function enSilencio(aj, ahora = Date.now()) {
 const milesAp = (v) => String(Math.round(v || 0)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 const sinBandera = (n) => String(n || '').replace(/[\u{1F1E6}-\u{1F1FF}]/gu, '').replace(/\s+/g, ' ').trim();
 
+/**
+ * 🪪 Los mensajes que mencionan a los de las crews que no están verificados (19/10/2026, `crewVerificar()` de
+ * bot/crews.js): por crew, con la mención a quien tiene cuenta y el nombre a quien no —sin ID no se puede mencionar—,
+ * partidos si no entran en un mensaje. `personas`: `[{k, id, n, crew, hasta}]`. Devuelve `[{texto, ids, ks}]`.
+ */
+export function textosSinVerificar(personas, url) {
+  const ps = (personas || []).filter((p) => p && p.k);
+  if (!ps.length) return [];
+  const hasta = Math.min(...ps.map((p) => Number(p.hasta) || Infinity));
+  const d = diaET(Number.isFinite(hasta) ? hasta : Date.now());
+  const fecha = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'][new Date(d + 'T12:00:00Z').getUTCDay()] + ' ' + d.slice(8, 10) + '/' + d.slice(5, 7);
+  const uno = ps.length === 1;
+  const cab = '🪪 **Crews: falta verificarse**';
+  const pie = (uno ? 'Está en una crew de la Liga y todavía no se verificó' : 'Están en una crew de la Liga y todavía no se verificaron')
+    + ' en Discord Rap Español. ' + (uno ? 'Tiene' : 'Tienen') + ' hasta el **' + fecha + '**: si no, ' + (uno ? 'sale' : 'salen')
+    + ' de la crew, y mientras tanto no ' + (uno ? 'suma' : 'suman') + ' para el ranking ni el tier.\n👉 Cómo verificarse: <' + url + '>';
+  const porCrew = new Map();
+  for (const p of ps) {
+    const c = String(p.crew || '');
+    if (!porCrew.has(c)) porCrew.set(c, []);
+    porCrew.get(c).push(p);
+  }
+  const out = [];
+  let cur = null;
+  for (const [c, gs] of porCrew) {
+    const linea = ('**' + escMd(c) + ':** ' + gs.map((p) => (p.id ? '<@' + p.id + '>' : escMd(p.n || p.k))).join(', ')).slice(0, 1400);
+    if (!cur || cab.length + pie.length + cur.lineas.join('\n').length + linea.length + 4 > 1900 || cur.ids.length + gs.length > 90) {
+      cur = { lineas: [], ids: [], ks: [] };
+      out.push(cur);
+    }
+    cur.lineas.push(linea);
+    for (const p of gs) {
+      cur.ks.push(p.k);
+      if (p.id) cur.ids.push(p.id);
+    }
+  }
+  return out.map((m) => ({ texto: cab + '\n' + m.lineas.join('\n') + '\n' + pie, ids: m.ids, ks: m.ks }));
+}
+
 /** La batalla de la que se habla: la de AHORA (`turnosDe()`) o, sin nada jugado todavía, la primera de la llave. */
 export function batallaChat(L) {
   const t = turnosDe(L);
@@ -2430,6 +2469,8 @@ const RUTAS = {
   // 34 de antes, una vez, con la clave del ciclo
   '/avisos/crews': 'GET', '/avisos/crew': 'POST', '/avisos/crew-mia': 'POST', '/avisos/dueno/crew': 'POST',
   '/avisos/crews-sembrar': 'POST',
+  // 🪪 los de las crews que no están verificados, con la clave del ciclo (`bot/crews_verificar.py`)
+  '/avisos/crews-verificar': 'POST',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026). Ver `visita()` del objeto
   '/avisos/visita': 'POST',
   // 🧭 el tutorial (12/10/2026): qué vio y qué terminó un navegador, sin nada de nadie. Ver `tutorial()` del objeto
@@ -4390,13 +4431,14 @@ export async function rutaAvisos(req, env, ruta) {
       headers: { 'content-type': 'application/json' },
     });
   }
-  // 🌱 las 34 de antes, una vez: lo manda el ciclo, con su clave (`bot/crews_vivas.py --sembrar`)
-  if (ruta === '/avisos/crews-sembrar') {
+  // 🌱 las 34 de antes, una vez: lo manda el ciclo, con su clave (`bot/crews_vivas.py --sembrar`); y 🪪 quiénes de las
+  // crews no están verificados, cada corrida (`bot/crews_verificar.py`)
+  if (ruta === '/avisos/crews-sembrar' || ruta === '/avisos/crews-verificar') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     const crudo = await req.text();
     if (crudo.length > 200000) return json({ error: 'demasiado grande' }, 413);
-    return elObjeto(env).fetch('https://avisos/crews-sembrar', {
+    return elObjeto(env).fetch('https://avisos/' + ruta.slice('/avisos/'.length), {
       method: 'POST', body: crudo, headers: { 'content-type': 'application/json' },
     });
   }
@@ -5960,6 +6002,15 @@ export class Avisos {
         return json(r, r.estado || 200);
       }
       if (ruta === '/crews-sembrar') { const r = CW.sembrar(this, d); return json(r, r.estado || 200); }
+      if (ruta === '/crews-verificar') {
+        const ahora = Date.now();
+        const r = CW.crewVerificar(this, d, ahora);
+        // a quién mencionar no vuelve al ciclo: son Discord IDs, y su log es público
+        if (r.ok) r.anunciados = r.anunciar.length ? await this.anunciarSinVerificar(r.anunciar, ahora) : {};
+        delete r.anunciar;
+        await this.vaciarBasuraCrews();
+        return json(r, r.estado || 200);
+      }
       if (ruta === '/mi-servidor') return this.miServidor(d);
       if (ruta === '/mi-foto') return await this.miFoto(d);
       if (ruta.startsWith('/sesion/')) return await this.sesion(ruta, d);
@@ -10213,6 +10264,49 @@ export class Avisos {
     if (r.viejos) await this.borrarLogosCrew(r.viejos);
     delete r.viejos;
     return r;
+  }
+
+  /**
+   * 🪪 Menciona en el chat general de su servidor más activo a los de las crews que no están verificados (Dlx,
+   * 19/10/2026: «darles 7 días pero mencionarles en el sv más activo que están»), una sola vez por persona (`pend_av`).
+   * El servidor lo elige el ciclo; si ese no tiene chat general encontrado o el Dashboard le apagó el bot en su chat
+   * (`en_vivo` en `false`), va al de DRA, que es donde se verifica. En el horario de silencio espera a la corrida
+   * siguiente, y sin ningún chat también. Devuelve `{sv: cuántos}`: ningún ID, el log del ciclo es público.
+   */
+  async anunciarSinVerificar(lista, ahora) {
+    const aj = this.ajustes();
+    if (enSilencio(aj, ahora)) return { silencio: lista.length };
+    const dash = (aj.en_vivo && typeof aj.en_vivo === 'object') ? aj.en_vivo : {};
+    const gen = new Map(((this.leer('canales') || {}).generales || []).map((x) => [x.sv, String(x.id || '')]));
+    const hay = (sv) => !!sv && dash[sv] !== false && /^[0-9]{5,25}$/.test(gen.get(sv) || '');
+    const grupos = new Map();
+    let espera = 0;
+    for (const p of lista) {
+      const sv = hay(p.sv) ? p.sv : (hay('DRA') ? 'DRA' : '');
+      if (!sv) { espera += 1; continue; }
+      if (!grupos.has(sv)) grupos.set(sv, []);
+      grupos.get(sv).push(p);
+    }
+    const out = espera ? { espera } : {};
+    for (const [sv, ps] of grupos) {
+      for (const m of textosSinVerificar(ps, HUB + '/cuenta/verificar')) {
+        let r = null;
+        try {
+          r = await fetch(`${DC}/channels/${gen.get(sv)}/messages`, {
+            method: 'POST',
+            headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA, 'content-type': 'application/json' },
+            body: JSON.stringify({ content: m.texto, allowed_mentions: { parse: [], users: m.ids }, flags: 4 }),
+          });
+        } catch (e) { r = null; }
+        // ⚠️ un 4xx (sin permiso en ese canal…) no se reintenta: sería el mismo error cada media hora
+        if (r && (r.ok || (r.status >= 400 && r.status < 500 && r.status !== 429))) {
+          CW.crewVerificarAnunciados(this, m.ks);
+          if (r.ok) out[sv] = (out[sv] || 0) + m.ks.length;
+          else out['fallo_' + r.status] = (out['fallo_' + r.status] || 0) + m.ks.length;
+        }
+      }
+    }
+    return out;
   }
 
   /** 🗑️ Los logos de las crews que se borraron (bot/crews.js `crewBasura()`), fuera de R2. Nunca frena nada. */

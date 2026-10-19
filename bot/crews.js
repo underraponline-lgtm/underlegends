@@ -71,6 +71,10 @@ export const LOGO_CARPETA = 'logos-crews/';
 // el orden de las letras, para comparar «B o más». ⚠️ SÓLO EL ORDEN: los umbrales viven en comun/rangos.py y la letra de
 // cada uno la calcula el ciclo (está en `persona`); escribirlos acá sería el sexto lugar donde vive el rango
 export const ORDEN_RG = ['E', 'D', 'C', 'B', 'A', 'S', 'SS', 'SSS'];
+/** 🪪 los días que tiene quien está en una crew sin verificarse, antes de salir (Dlx, 19/10/2026: «darles 7 días») */
+export const PEND_MS = 7 * DIA;
+/** y el seguro: si el ciclo dice que más de esta parte de todos no está verificada, algo anda mal de su lado */
+export const PEND_TOPE = 0.6;
 export const REQ_EV_MAX = 100;
 
 // ── lo puro: se prueba solo (`bot/crews_prueba.mjs`) ─────────────────────────────────────────────────────────────
@@ -241,6 +245,11 @@ export function crewTablas(sql) {
   sql.exec('CREATE TABLE IF NOT EXISTS crew_miembros (k TEXT PRIMARY KEY, crew TEXT NOT NULL, rol TEXT NOT NULL, ' +
     "quien TEXT NOT NULL DEFAULT '', desde INTEGER NOT NULL)");
   sql.exec('CREATE INDEX IF NOT EXISTS crew_miembros_crew ON crew_miembros (crew)');
+  // 🪪 quien está sin verificarse (19/10/2026): `pend` es cuándo sale si no se verifica (0 = verificado) y `pend_av`,
+  // si ya se lo mencionó en el chat de su servidor (una sola vez: ver `crewVerificar()`)
+  for (const col of ['pend INTEGER NOT NULL DEFAULT 0', 'pend_av INTEGER NOT NULL DEFAULT 0']) {
+    try { sql.exec('ALTER TABLE crew_miembros ADD COLUMN ' + col); } catch (e) { /* ya estaba */ }
+  }
   sql.exec('CREATE TABLE IF NOT EXISTS crew_inv (crew TEXT NOT NULL, k TEXT NOT NULL, de TEXT NOT NULL, t INTEGER NOT NULL, ' +
     'PRIMARY KEY (crew, k))');
   sql.exec('CREATE TABLE IF NOT EXISTS crew_ped (crew TEXT NOT NULL, k TEXT NOT NULL, quien TEXT NOT NULL, t INTEGER NOT NULL, ' +
@@ -351,6 +360,29 @@ function entrar(o, c, k, quien, por, ahora, cambio = false) {
  */
 export function crewVencer(o, ahora = Date.now()) {
   let borradas = 0;
+  // 🪪 quien no se verificó en sus 7 días sale (`crewVerificar()`); si era el último, la crew se borra, y si era el
+  // Líder —sólo pasa si nadie de su crew estaba verificado—, manda el que sigue
+  for (const m of filas(o, 'SELECT k, crew, rol FROM crew_miembros WHERE pend > 0 AND pend <= ?', ahora)) {
+    const c = crewDe(o, m.crew);
+    o.sql.exec('DELETE FROM crew_miembros WHERE k = ?', m.k);
+    anotar(o, m.crew, 'salio_sin_verificar', m.k, 'liga');
+    if (!c) continue;
+    sacarDeReps(o, c, m.k);
+    if (!cuantos(o, c.id)) {
+      borrar(o, c, 'liga', ahora);
+      borradas += 1;
+      continue;
+    }
+    if (m.rol === 'lider') {
+      const sig = fila(o, "SELECT k FROM crew_miembros WHERE crew = ? ORDER BY pend > 0, CASE rol WHEN 'colider' THEN 0 " +
+        "WHEN 'veterano' THEN 1 ELSE 2 END, desde, rowid LIMIT 1", c.id);
+      if (sig) o.sql.exec("UPDATE crew_miembros SET rol = 'lider' WHERE k = ?", sig.k);
+    }
+    for (const x of mandan(o, c.id)) {
+      avisar(o, x, 'crew-salio:' + c.id + ':' + m.k, nombreDe(o, m.k) + ' salió de ' + c.nombre,
+        'No se verificó en DRA en sus ' + PEND_MS / DIA + ' días. Puede volver cuando se verifique.', '#/crew/' + encodeURIComponent(c.id));
+    }
+  }
   for (const c of filas(o, 'SELECT * FROM crews WHERE vence > 0')) {
     const n = cuantos(o, c.id);
     if (n >= 1 + PRUEBA_SUMAR) { o.sql.exec('UPDATE crews SET vence = 0, vence_aviso = 0 WHERE id = ?', c.id); continue; }
@@ -408,12 +440,15 @@ export function crewMia(o, d) {
 /** Una crew para afuera: sin ningún Discord ID. */
 export function crewPublica(o, c) {
   if (!c) return null;
-  const gente = filas(o, 'SELECT k, rol, desde FROM crew_miembros WHERE crew = ? ORDER BY desde', c.id)
+  const gente = filas(o, 'SELECT k, rol, desde, pend FROM crew_miembros WHERE crew = ? ORDER BY desde', c.id)
     .sort((a, b) => ROLES.indexOf(a.rol) - ROLES.indexOf(b.rol) || a.desde - b.desde);
   let reps = [];
   try { reps = JSON.parse(c.reps || '[]'); } catch (e) { reps = []; }
   return { id: c.id, nombre: c.nombre, sigla: c.sigla, entrada: c.entrada, oficial: !!c.oficial, creada: c.creada,
-    reps: reps.filter((k) => gente.some((g) => g.k === k)), gente: gente.map((g) => [g.k, g.rol, g.desde]),
+    // 🪪 el cuarto lugar: hasta cuándo tiene para verificarse (sólo quien no lo está). Sin contar para el ranking ni el
+    // tier mientras tanto: `crews_vivas.armar()` y `crews_tiers.de_la_semana()` lo saltean, y acá los representantes
+    reps: reps.filter((k) => gente.some((g) => g.k === k && !g.pend)),
+    gente: gente.map((g) => (g.pend ? [g.k, g.rol, g.desde, g.pend] : [g.k, g.rol, g.desde])),
     vence: c.vence || 0, logo: c.logo || '', desc: c.descr || '', req: reqDe(c) };
 }
 
@@ -876,6 +911,73 @@ export function sembrar(o, d) {
     gente += ks.length;
   }
   return { ok: true, nuevas, gente };
+}
+
+/**
+ * 🪪 LOS QUE NO ESTÁN VERIFICADOS, ADENTRO DE UNA CREW (19/10/2026). Las 34 de antes se sembraron con la lista de Dlx y
+ * 41 de sus 101 no son Miembros de DRA; crear y entrar ya lo piden (`personaDe()`), así que Dlx: «darles 7 días pero
+ * mencionarles en el sv más activo que están». El ciclo manda quiénes (`bot/crews_verificar.py`, con la regla del
+ * portón: `verificados.pasa()`) y acá:
+ *  - al que aparece por primera vez, 7 días (`pend`): mientras tanto no cuenta para el ranking ni el tier de su crew;
+ *  - el que ya no aparece se verificó: queda, y se borra la marca;
+ *  - el Líder sin verificar pasa a Colíder y manda el primero verificado (por rol y antigüedad);
+ *  - lo que falta mencionar (`pend_av = 0`) vuelve en `anunciar`, para que el objeto lo diga en el chat de su servidor.
+ * Sacar a los vencidos lo hace `crewVencer()`, cada hora. ⚠️ El seguro: si la lista trae a más de `PEND_TOPE` de todos,
+ * algo se rompió del lado del ciclo (un padrón a medias) y no se toca nada.
+ */
+export function crewVerificar(o, d, ahora = Date.now()) {
+  if (!d || !Array.isArray(d.sin) || d.sin.length > 2000) return mal('datos');
+  const sin = new Map();
+  for (const x of d.sin) {
+    const k = String((x && x.k) || '');
+    if (!k || k.length > 60) continue;
+    sin.set(k, { id: /^[0-9]{5,25}$/.test(String(x.id || '')) ? String(x.id) : '', sv: String(x.sv || '').slice(0, 12),
+      n: String(x.n || '').slice(0, 40) });
+  }
+  crewVencer(o, ahora);
+  const todos = filas(o, 'SELECT k, crew, rol, pend FROM crew_miembros');
+  const cuantosSin = todos.filter((m) => sin.has(m.k)).length;
+  if (todos.length && cuantosSin > todos.length * PEND_TOPE) return mal('demasiados', 409, { sin: cuantosSin, de: todos.length });
+  let marcados = 0, verificados = 0;
+  const lideres = [];
+  o.state.storage.transactionSync(() => {
+    for (const m of todos) {
+      if (sin.has(m.k) && !m.pend) {
+        o.sql.exec('UPDATE crew_miembros SET pend = ?, pend_av = 0 WHERE k = ?', ahora + PEND_MS, m.k);
+        anotar(o, m.crew, 'sin_verificar', m.k, 'liga');
+        marcados += 1;
+      } else if (!sin.has(m.k) && m.pend) {
+        o.sql.exec('UPDATE crew_miembros SET pend = 0, pend_av = 0 WHERE k = ?', m.k);
+        anotar(o, m.crew, 'verifico', m.k, 'liga');
+        verificados += 1;
+      }
+    }
+    for (const l of filas(o, "SELECT k, crew FROM crew_miembros WHERE rol = 'lider' AND pend > 0")) {
+      const sig = fila(o, "SELECT k FROM crew_miembros WHERE crew = ? AND pend = 0 ORDER BY CASE rol WHEN 'colider' THEN 0 " +
+        "WHEN 'veterano' THEN 1 ELSE 2 END, desde, rowid LIMIT 1", l.crew);
+      if (!sig) continue;
+      o.sql.exec("UPDATE crew_miembros SET rol = 'colider' WHERE k = ?", l.k);
+      o.sql.exec("UPDATE crew_miembros SET rol = 'lider' WHERE k = ?", sig.k);
+      anotar(o, l.crew, 'lider', sig.k, 'liga');
+      lideres.push([l.crew, sig.k, l.k]);
+    }
+  });
+  for (const [cid, nuevo, viejo] of lideres) {
+    const c = crewDe(o, cid);
+    if (c) {
+      avisar(o, nuevo, 'crew-lider:' + cid, '👑 Ahora sos Líder de ' + c.nombre,
+        nombreDe(o, viejo) + ' todavía no se verificó en DRA: la crew queda a tu cargo.', '#/crew/' + encodeURIComponent(cid));
+    }
+  }
+  const anunciar = filas(o, 'SELECT m.k, m.pend, c.nombre FROM crew_miembros m JOIN crews c ON c.id = m.crew ' +
+    'WHERE m.pend > 0 AND m.pend_av = 0').map((r) => Object.assign({ n: r.k, id: '', sv: '' }, sin.get(r.k) || {},
+    { k: r.k, crew: r.nombre, hasta: r.pend }));
+  return { ok: true, sin: cuantosSin, de: todos.length, marcados, verificados, lideres: lideres.length, anunciar };
+}
+
+/** 🪪 Los ya mencionados en el chat de su servidor, para no volver a mencionarlos. */
+export function crewVerificarAnunciados(o, ks) {
+  for (const k of ks || []) o.sql.exec('UPDATE crew_miembros SET pend_av = 1 WHERE k = ? AND pend > 0', String(k));
 }
 
 /** 🗑️ Anotar logos que ya no se usan (vacíos afuera). Los borra de R2 quien puede esperar: `crewBasura()`. */

@@ -7,7 +7,7 @@ import { Bandera, Cara, Compartir, Sec, accion, enlace, nombrePais } from './pie
 import { McPersona } from './medio.jsx';
 import { CrewCirculo } from './arriba.jsx';
 import { crewViva, useCrews } from './crews.js';
-import { EntrarCrew, PanelCrew, RolCrew, TierCrew } from './crewpanel.jsx';
+import { EntrarCrew, PanelCrew, RolCrew, SinVerificar, TierCrew } from './crewpanel.jsx';
 import CSS_PAGINA from './css/grupo.css?inline';
 import { usarCss } from './css.js';
 
@@ -23,7 +23,7 @@ const cartas = (gente) => gente.slice(0, gente.length >= 10 ? 10 : gente.length 
 
 /** Toda la gente, en una lista: el puesto en la Liga, la cara, el nombre con su bandera y sus números (y su rango en la
  *  crew, si viene `roles`). */
-function Lista({ liga, gente, roles }) {
+function Lista({ liga, gente, roles, pend }) {
   return (
     <ol className="gp-l">
       {gente.map((f) => (
@@ -31,7 +31,8 @@ function Lista({ liga, gente, roles }) {
           <button type="button" className="sin-boton gp-f" onClick={() => accion.perfil(f.k)} aria-label={'Ver el perfil de ' + limpio(f.n)}>
             <span className="gp-pos">{f.pos ? '#' + f.pos : '—'}</span>
             <Cara liga={liga} k={f.k} nombre={f.n} cls="gp-cara" lazy />
-            <span className="gp-n"><b>{limpio(f.n)}</b><Bandera cc={f.cc} cls="gp-flag" />{roles && roles[f.k] && roles[f.k] !== 'miembro' ? <RolCrew rol={roles[f.k]} /> : null}</span>
+            <span className="gp-n"><b>{limpio(f.n)}</b><Bandera cc={f.cc} cls="gp-flag" />{roles && roles[f.k] && roles[f.k] !== 'miembro' ? <RolCrew rol={roles[f.k]} /> : null}
+              <SinVerificar hasta={pend && pend[f.k]} /></span>
             <span className="gp-d"><b>{f.ovr || '—'}</b><small>OVR</small></span>
             <span className="gp-d"><b>{num(f.pts || 0)}</b><small>PTS</small></span>
             <span className="gp-d gp-ev"><b>{f.ev || 0}</b><small>EV</small></span>
@@ -85,6 +86,8 @@ export function PaginaCrew({ liga, id }) {
   const pos = c0 ? conPuesto.indexOf(c0) + 1 : 0;
   // la gente: la del objeto (con su rango) si se sabe; si no, la del payload. Quien no está en la tabla, con su clave
   const roles = viva ? Object.fromEntries(viva.gente.map(([k, r]) => [k, r])) : null;
+  // 🪪 quien está sin verificarse, hasta cuándo (el cuarto lugar de cada uno: `crewVerificar()` de bot/crews.js)
+  const pend = viva ? Object.fromEntries(viva.gente.filter((g) => g[3]).map((g) => [g[0], g[3]])) : null;
   const gente = (viva ? viva.gente.map(([k]) => liga.T[k] || { k, n: k }) : (c.gente || []).map((n) => liga.fila(n)).filter(Boolean))
     .sort((a, b) => (roles ? (ORDEN_ROL[roles[a.k]] ?? 9) - (ORDEN_ROL[roles[b.k]] ?? 9) : 0) || porLugar(a, b));
   const jugaron = gente.filter((f) => f.pos || f.o);
@@ -117,7 +120,7 @@ export function PaginaCrew({ liga, id }) {
         </Sec>
       ) : null}
       <Sec id="gp-gente" titulo="Toda la crew">
-        {gente.length ? <Lista liga={liga} gente={gente} roles={roles} /> : <p className="pronto-p">Todavía nadie de la crew jugó la temporada.</p>}
+        {gente.length ? <Lista liga={liga} gente={gente} roles={roles} pend={pend} /> : <p className="pronto-p">Todavía nadie de la crew jugó la temporada.</p>}
       </Sec>
       <Sec id="gp-otras" titulo="Las otras crews" enlace="El ranking de crews" href="#/ranking/crews">
         <nav className="svp-otros gp-otros">

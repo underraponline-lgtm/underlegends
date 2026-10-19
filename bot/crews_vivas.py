@@ -85,7 +85,12 @@ def armar(pub, viejo, nombres):
     out = {k: v for k, v in (viejo or {}).items() if k.startswith('_') and k != '_nombres'}
     crews, noms = {}, {}
     for c in (pub or {}).get('crews') or []:
-        gente = sorted(c.get('gente') or [], key=lambda g: (ORDEN_ROL.get(g[1], 9), g[2] if len(g) > 2 else 0))
+        # 🪪 quien está sin verificarse (el cuarto lugar: hasta cuándo, `crewVerificar()` de bot/crews.js) no cuenta para
+        # el ranking mientras tanto, y las cartas son de los verificados: afuera. Una crew sin nadie verificado, también
+        gente = sorted((g for g in c.get('gente') or [] if not (len(g) > 3 and g[3])),
+                       key=lambda g: (ORDEN_ROL.get(g[1], 9), g[2] if len(g) > 2 else 0))
+        if not gente:
+            continue
         # sin nombre conocido, la clave: `comun/crews.py` compara por clave, así que igual se encuentra
         crews[c['id']] = [nombres.get(g[0], g[0]) for g in gente]
         if c.get('nombre') and c['nombre'] != c['id']:
@@ -166,6 +171,9 @@ def _auto():
     a = armar(pub, viejo, {'abyssus': 'Abyssus', 'dora': 'Dora'})
     ok(a['_nota'] == 'x' and a['crews']['KS'] == ['Abyssus', 'zig'] and a['_nombres'] == {'KS': 'Knowledge Sombrío'}
        and a['crews']['Los del Barrio'] == ['Dora'], 'armar: el líder primero, sin nombre la clave, las notas quedan')
+    a = armar({'crews': [{'id': 'KS', 'nombre': 'KS', 'gente': [['abyssus', 'lider', 1], ['zig', 'miembro', 2, 99]]},
+                         {'id': 'Sola', 'nombre': 'Sola', 'gente': [['x', 'lider', 1, 99]]}]}, {}, {})
+    ok(a['crews'] == {'KS': ['abyssus']}, 'armar: sin quien está sin verificar, ni la crew sin nadie verificado')
     s = para_sembrar({'_nombres': {'KS': 'Knowledge Sombrío'}, 'crews': {'KS': ['Zignos', 'Abyssus', 'zignos'],
                                                                           'Follombia': ['Lázaro']}})
     ok(s[0] == {'id': 'KS', 'nombre': 'Knowledge Sombrío', 'sigla': 'KS', 'gente': ['zignos', 'abyssus']}

@@ -109,6 +109,9 @@ def de_la_semana(crew, pts, desde_ms, modo, n):
         k, desde = g[0], (g[2] if len(g) > 2 else 0) or 0
         if desde_ms is not None and desde > desde_ms:
             continue
+        # 🪪 quien está sin verificarse no suma para el tier mientras tanto (`crewVerificar()` de bot/crews.js)
+        if len(g) > 3 and g[3]:
+            continue
         suyos[k] = int(pts.get(k, 0) or 0)
     reps = [k for k in crew.get('reps') or [] if k in suyos]
     total = int(round(CV.puntos(suyos, modo, n, reps)))
@@ -224,6 +227,8 @@ def _auto():
     ok(mover(1, 4000, 1) == 0 and mover(1, 10000, 1) == 1, 'Plata baja con menos de 5.000 y se mantiene entre las dos')
     ok(mover(3, 500000, 3) == 3 and mover(3, 500000, 4) == 4, 'a Diamante se entra con 4 que jugaron, no con un crack solo')
     ok(mover(6, 10 ** 7, 20) == 6 and mover(6, 0, 0) == 5, 'Leyenda no sube más, y baja si no juega')
+    ok(de_la_semana({'gente': [['a', 'lider', 1], ['b', 'miembro', 2, 99]]}, {'a': 100, 'b': 900}, None, 'todos', 5) == (100, 1),
+       'quien está sin verificarse no suma para el tier')
     ok(all(SUBE[i] is None or BAJA[i + 1] is None or BAJA[i + 1] <= SUBE[i] for i in range(len(TIERS) - 1)),
        'subir a un tier nunca pide menos que no bajar de él (si no, se sube y se baja la misma semana)')
     ok(len(TIERS) == len(SUBE) == len(BAJA) == len(JUEGAN) and TIERS[TARJETA][0] == 'Diamante', 'siete tiers y la tarjeta en Diamante')

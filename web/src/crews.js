@@ -84,6 +84,13 @@ export function cuandoVence(ms) {
   return dia + ' a las ' + h;
 }
 
+/** «lun 26/10», en la zona de quien mira: para el plazo de quien está sin verificarse. */
+export function diaCrew(ms) {
+  const d = new Date(ms);
+  return W.fmtFecha ? W.fmtFecha(d.toISOString(), { weekday: 'short', day: 'numeric', month: 'numeric' })
+    : d.toLocaleDateString('es', { weekday: 'short', day: 'numeric', month: 'numeric' });
+}
+
 /** «Quedan 5 días», «Queda 1 día y 20 horas», «Quedan 20 minutos»: para abajo, que una fecha límite nunca diga MÁS
  *  tiempo del que hay (con 5 días y 1 hora, «6 días» hace creer que sobra). */
 export function quedan(ms) {

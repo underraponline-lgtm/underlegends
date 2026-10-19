@@ -1335,6 +1335,20 @@ const ok = (cond, que, det) => {
       && LM(jpgSano).length === jpgSano.length && LM(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13])).length === 13
       && LM(new Uint8Array([0xFF, 0xD8, 0x00, 0x00, 0, 0, 0, 0, 0, 0, 0, 0])) === null,
     'anti-doxeo: los metadatos se sacan (JPEG, webp con su marca en VP8X y el largo del RIFF, PNG) y la imagen queda sana; lo que no se entiende, no entra');
+    // 🪪 la mención a los de las crews sin verificar (19/10/2026): por crew, con la mención a quien tiene cuenta y el
+    // nombre a quien no, la fecha en hora del este, y partido si no entra en un mensaje de Discord
+    const TSV = A.textosSinVerificar;
+    const hastaSV = Date.UTC(2026, 9, 26, 22, 0);   // lun 26/10, 6 PM ET
+    const sv1 = TSV([{ k: 'a', id: '800000001', crew: 'Fontana', hasta: hastaSV }, { k: 'b', n: 'Be_to', crew: 'Fontana', hasta: hastaSV },
+      { k: 'c', id: '800000003', crew: 'KS', hasta: hastaSV }], 'https://x/cuenta/verificar');
+    const sv2 = TSV([{ k: 'a', id: '800000001', crew: 'Fontana', hasta: hastaSV }], 'https://x');
+    const muchos = TSV(Array.from({ length: 120 }, (_, i) => ({ k: 'k' + i, id: String(800000100 + i), crew: 'C' + (i % 40), hasta: hastaSV })), 'https://x');
+    ok(sv1.length === 1 && sv1[0].texto.includes('**Fontana:** <@800000001>, Be\\_to') && sv1[0].texto.includes('**KS:** <@800000003>')
+      && sv1[0].texto.includes('hasta el **lun 26/10**') && sv1[0].texto.includes('Tienen') && sv1[0].ids.join() === '800000001,800000003'
+      && sv1[0].ks.join() === 'a,b,c' && sv2[0].texto.includes('Tiene hasta') && sv2[0].texto.includes('Está en una crew')
+      && muchos.length > 1 && muchos.every((m) => m.texto.length <= 2000 && m.ids.length <= 100)
+      && muchos.reduce((n, m) => n + m.ks.length, 0) === 120 && !TSV([], 'x').length,
+    'crews sin verificar: por crew, menciona a quien tiene cuenta y nombra a quien no, la fecha en ET, y entra en Discord');
     // 🔐 los permisos del Dashboard (13/10/2026)
     const PR = A.puedeRol;
     ok(PR(['owner'], 'roles') && !PR(['admin'], 'roles') && PR(['admin'], 'ajustes') && PR(['asistente'], 'reportes')

@@ -3294,6 +3294,8 @@ a.rk-z:hover{border-color:var(--linea)}
 .cw-rol{display:inline-block;margin-left:6px;padding:3px 6px 2px;border:1.5px solid var(--linea);font:700 12px/1 "Barlow Condensed",sans-serif;
   letter-spacing:.06em;text-transform:uppercase;vertical-align:2px;white-space:nowrap}
 .cw-rol.lider{background:var(--magenta);border-color:var(--magenta);color:#fff}
+/* 🪪 quien está en la crew sin verificarse: con borde y sin relleno, que no se confunda con un rango */
+.cw-rol.cw-sinv{border-style:dashed;color:var(--gris);text-transform:none}
 .cw-rol.colider{background:var(--verde);border-color:var(--verde);color:#030304}
 .cw-rol.veterano{background:var(--inv);border-color:var(--inv);color:var(--inv-tinta)}
 .cw-entrar{display:grid;justify-items:start;gap:8px;margin-bottom:6px}

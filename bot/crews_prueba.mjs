@@ -280,6 +280,34 @@ if (!DatabaseSync) {
     && yo(201, 'tom', { accion: 'crear', nombre: 'Tomas', sigla: 'TM' }).ok, 'les llega a todos, y quedan libres sin esperar');
   ok(CW.crewDueno(o, { que: 'borrar', crew: 'Trio' }).ok && bandeja.some((b) => b.quien === id(211) && b.titulo === 'Trio se cerró'),
     'al cerrar una crew, a su gente le llega (las cuentas se buscan antes de borrar)');
+
+  // ── 🪪 los que no están verificados (19/10/2026): 7 días, la crew al primer verificado, una sola mención ──
+  const tv = Date.now();
+  CW.sembrar(o, { crews: [{ id: 'Viejas', gente: ['vlid', 'vmie', 'vok1', 'vok2'] }, { id: 'Nadie', gente: ['n1', 'n2'] }] });
+  db.prepare('INSERT INTO servidor VALUES (?, ?, ?, ?, ?, ?)').run(id(900), 't1', 'FFA', 'vok1', 1, 0);
+  const g = (c, k) => pubC(c).gente.find((x) => x[0] === k);
+  const vr = CW.crewVerificar(o, { sin: [{ k: 'vlid', id: '8000000001', sv: 'FFA', n: 'Vlid' }, { k: 'vmie', n: 'Vmie' },
+    { k: 'n1', id: '8000000003', sv: 'SR' }, { k: 'n2' }] }, tv);
+  ok(vr.ok && vr.marcados === 4 && vr.lideres === 1 && vr.anunciar.length === 4
+    && vr.anunciar.find((x) => x.k === 'vlid').id === '8000000001' && vr.anunciar.find((x) => x.k === 'vlid').crew === 'Viejas',
+  'marca a los que no están verificados, con lo que hace falta para mencionarlos');
+  ok(g('Viejas', 'vok1')[1] === 'lider' && g('Viejas', 'vlid')[1] === 'colider' && g('Viejas', 'vlid')[3] === tv + CW.PEND_MS
+    && g('Viejas', 'vok1').length === 3 && bandeja.some((b) => b.quien === id(900) && b.titulo === '👑 Ahora sos Líder de Viejas'),
+  'el Líder sin verificar pasa a Colíder, manda el primer verificado (y le llega), y lo público dice hasta cuándo');
+  ok(g('Nadie', 'n1')[1] === 'lider', 'sin nadie verificado, la crew queda como está');
+  CW.crewVerificarAnunciados(o, vr.anunciar.map((x) => x.k));
+  const vr2 = CW.crewVerificar(o, { sin: [{ k: 'vlid', id: '8000000001' }, { k: 'n1' }, { k: 'n2' }] }, tv + 1000);
+  ok(vr2.ok && vr2.marcados === 0 && vr2.verificados === 1 && !vr2.anunciar.length && g('Viejas', 'vmie').length === 3
+    && g('Viejas', 'vlid')[3] === tv + CW.PEND_MS, 'una sola mención; quien se verificó pierde la marca y el plazo no se corre');
+  const todos = CW.crewsPublico(o).crews.flatMap((c) => c.gente.map((x) => ({ k: x[0] })));
+  ok(CW.crewVerificar(o, { sin: todos }, tv).error === 'demasiados' && g('Viejas', 'vok1').length === 3,
+    'el seguro: si dice que casi nadie está verificado, no toca nada');
+  CW.crewVencer(o, tv + CW.PEND_MS - 1000);
+  ok(!!pubC('Nadie') && !!g('Viejas', 'vlid'), 'antes de los 7 días, nadie sale');
+  CW.crewVencer(o, tv + CW.PEND_MS + 1);
+  ok(!pubC('Nadie') && !g('Viejas', 'vlid') && pubC('Viejas').gente.length === 3
+    && bandeja.some((b) => b.quien === id(900) && b.titulo === 'vlid salió de Viejas'),
+  'a los 7 días salen, la crew sin nadie se borra, y a quien manda le llega');
 }
 
 console.log(mal ? `\n  🔴 ${mal} mal, ${bien} bien` : `  ✅ crews: ${bien} bien`);

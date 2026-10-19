@@ -694,6 +694,10 @@ def _lo_barato(correr):
         # 👥 las crews que arma la gente (19/10/2026, `bot/crews_vivas.py`): del objeto a `datos/crews.json`, ANTES de
         # todo lo que dibuja —`comun/crews.py` lee el archivo al importarse—. Sin red o sin sembrar, quedan las de antes
         paso('0a2', 'las crews, del objeto')
+        # 🪪 antes, quién de las crews no está verificado (Dlx, 19/10/2026: «darles 7 días pero mencionarles en el sv
+        # más activo q están»): el objeto lo marca, le pasa la crew al primer verificado y lo menciona una vez; con los
+        # verificados y el padrón de la corrida anterior (1b y 2 van después). Nunca frena el ciclo
+        corre(['bot/crews_verificar.py'], callado=False)
         if not corre(['bot/crews_vivas.py'], callado=False):
             print('      ⚠️ no pude bajar las crews: quedan las de antes')
         paso('0b', 'los multiplicadores de la semana')
