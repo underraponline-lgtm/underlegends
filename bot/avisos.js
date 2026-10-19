@@ -1023,6 +1023,11 @@ export const HUB_TARJETAS = HUB + '/freestyle-rap/tarjetas';
 
 /** La fila del botón si a alguno de los dos lados del vs le falta tarjeta (`[]` si no, o si no es un vs). */
 export function filaTarjeta(vs) {
+  // 🧩 con grupos (2v2, 1v3, todos contra todos): si a alguno le falta
+  if (vs && Array.isArray(vs.grupos)) {
+    if (!vs.grupos.some((g) => (g || []).some((y) => y && !y.carta))) return [];
+    return [{ type: 1, components: [{ type: 2, style: 5, label: 'Conseguí tu tarjeta', emoji: { name: '🃏' }, url: HUB_TARJETAS }] }];
+  }
   if (!vs || !vs.a || !vs.b || (vs.a.carta && vs.b.carta)) return [];
   return [{ type: 1, components: [{ type: 2, style: 5, label: 'Conseguí tu tarjeta', emoji: { name: '🃏' }, url: HUB_TARJETAS }] }];
 }
@@ -6694,7 +6699,11 @@ export class Avisos {
               mas: bat.lados.slice(2) };
             lineas.push(lineaVoto(voto.a, voto.b, 0, 0, '', voto.mas, []));
             const titEv = escMd(String(nombre || L.nombre || 'el evento').replace(/^[\s_*~]+|[\s_*~]+$/g, ''));
-            ms.push({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n') });
+            // 🧩 y el vs con todas las tarjetas, separadas por VS (`html_vs_grupos()` de bot/kit.py)
+            const persona = (y) => ({ n: y.n, fl: y.fl, k: y.k, ovr: (dc.tabla[y.k] || {}).ovr || 0, carta: y.k ? dc.cartaDe(y.k) : '' });
+            const vs = { ev: String(nombre || L.nombre || '').replace(/[_*~`]+/g, '').trim(), ronda: bat.r,
+              titulo: equipos ? bat.lados.length + ' EQUIPOS' : 'TODOS CONTRA TODOS', sub: '', grupos: gs.map((g) => g.map(persona)) };
+            ms.push({ m: mv, cab: '⚔️ **' + titEv + '**', texto: lineas.join('\n'), vs });
           }
         }
         if (bat && bat.lados.length === 2) {
@@ -6732,14 +6741,19 @@ export class Avisos {
             // 🖼️ EL VS CON LAS DOS TARJETAS (Dlx, 12/10/2026: «hacerlo más visual… las tarjetas», «B», «con datos y a
             // full»): sólo mano a mano. La imagen la dibuja `bot/kit.py` (`vsEncolar()`) y llega en un minuto: el mensaje
             // sale ya, con el texto, y la imagen se le agrega editándolo (una edición no le suena a nadie)
-            const vs = ga.length === 1 && gb.length === 1 ? { ev: String(nombre || L.nombre || '').replace(/[_*~`]+/g, '').trim(),
+            // 🧩 CON EQUIPOS (2v2, 1v3, 8v1 del Multiverse) TAMBIÉN, con todas las tarjetas (19/10/2026, Dlx: «hacer algo
+            // para que muestre sus tarjetas en estos formatos distintos»): `grupos`, que dibuja `html_vs_grupos()`
+            const persona = (y) => ({ n: y.n, fl: y.fl, k: y.k, ovr: (dc.tabla[y.k] || {}).ovr || 0, carta: y.k ? dc.cartaDe(y.k) : '' });
+            const vsEq = ga.length > 1 || gb.length > 1 ? { ev: String(nombre || L.nombre || '').replace(/[_*~`]+/g, '').trim(),
+              ronda: bat.r, titulo: tt ? tt.t : '', sub: tt ? tt.sub || '' : '', grupos: [ga.map(persona), gb.map(persona)] } : null;
+            const vs = vsEq || (ga.length === 1 && gb.length === 1) ? vsEq || { ev: String(nombre || L.nombre || '').replace(/[_*~`]+/g, '').trim(),
               ronda: bat.r, titulo: tt ? tt.t : '', sub: tt ? tt.sub || '' : '',
               // 📊 el Score va también: la barra de quién gana de la imagen lo prefiere al OVR (`prob_vs()` de bot/kit.py)
               a: { n: ga[0].n, fl: ga[0].fl, k: ga[0].k, ovr: (dc.tabla[ga[0].k] || {}).ovr || 0, sc: (dc.tabla[ga[0].k] || {}).sc || 0, carta: ga[0].k ? dc.cartaDe(ga[0].k) : '' },
               b: { n: gb[0].n, fl: gb[0].fl, k: gb[0].k, ovr: (dc.tabla[gb[0].k] || {}).ovr || 0, sc: (dc.tabla[gb[0].k] || {}).sc || 0, carta: gb[0].k ? dc.cartaDe(gb[0].k) : '' } } : null;
             // 🧾 y lo de los costados de la imagen y el cara a cara (13/10/2026): la letra, los últimos 5 y la racha de cada
             // uno, y cuántas ganó cada uno contra el otro (`html_vs()` de bot/kit.py)
-            if (vs) {
+            if (vs && !vs.grupos) {
               const forma = (y) => (y.du || []).slice().sort((p, q) => Number(p[0]) - Number(q[0])).slice(-5).map((d) => (d[2] ? 'G' : 'P')).join('');
               for (const [l, y] of [[vs.a, x.a], [vs.b, x.b]]) {
                 Object.assign(l, { rg: (y.f || {}).rg || '', forma: forma(y), racha: (y.rd && y.rd[0]) || 0 });
@@ -8417,8 +8431,17 @@ export class Avisos {
       forma: String((y && y.forma) || '').replace(/[^GP]/g, '').slice(-5), racha: Math.max(0, Math.min(999, Number(y && y.racha) || 0)),
       carta: /^https:\/\/pub-[a-z0-9]+\.r2\.dev\//.test(String((y && y.carta) || '')) ? String(y.carta).slice(0, 300) : '' });
     const h2h = Array.isArray(d.h2h) && d.h2h.length === 2 ? d.h2h.map((x) => Math.max(0, Math.min(999, Number(x) || 0))) : null;
+    // 🧩 los otros formatos (19/10/2026): hasta 5 lados y 10 personas, cada una como un lado de siempre
+    let grupos = null;
+    if (Array.isArray(d.grupos)) {
+      let quedan = 10;
+      grupos = d.grupos.slice(0, 5).map((g) => (Array.isArray(g) ? g : []).filter(Boolean).slice(0, Math.max(0, quedan)).map((y) => { quedan--; return lado(y); }))
+        .filter((g) => g.length);
+      if (grupos.length < 2) grupos = null;
+    }
     const datos = Object.assign({ ev: String(d.ev || '').slice(0, 80), ronda: String(d.ronda || '').slice(0, 30),
-      titulo: String(d.titulo || '').slice(0, 40), sub: String(d.sub || '').slice(0, 120), a: lado(d.a), b: lado(d.b) }, h2h ? { h2h } : {});
+      titulo: String(d.titulo || '').slice(0, 40), sub: String(d.sub || '').slice(0, 120) },
+    grupos ? { grupos } : { a: lado(d.a), b: lado(d.b) }, h2h && !grupos ? { h2h } : {});
     this.sql.exec('INSERT INTO vs_cola (id, sv, canal, msg, datos, t) VALUES (?, ?, ?, ?, ?, ?)', id,
       String(d.sv || '').toUpperCase().slice(0, 6), String(d.canal), String(d.msg), JSON.stringify(datos), ahora);
     return { ok: true, id };

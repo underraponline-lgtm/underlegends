@@ -253,6 +253,84 @@ def prob_vs(a, b):
     return None
 
 
+def html_vs_grupos(v, d):
+    """🖼️ EL VS DE LOS OTROS FORMATOS (19/10/2026, Dlx: «hacer algo para que muestre sus tarjetas en estos formatos
+    distintos»): 2v2, 1v3, 8v1 del Multiverse y los «todos contra todos» (1v1v1). `v['grupos']` son los lados, cada uno
+    una lista de `{n, fl, ovr, carta}`; cada lado con sus tarjetas, separados por VS. El tamaño de las tarjetas sale de
+    cuántas hay —todas entran en los 1200 de ancho—, y quien no tiene tarjeta sale con la silueta y su nombre, como en
+    el mano a mano. Sin barra de pronóstico ni cara a cara: son de dos personas."""
+    from comun import sin_foto as SF
+    grupos = [[y for y in (g or []) if y] for g in (v.get('grupos') or [])]
+    grupos = [g for g in grupos if g][:5]
+    total = sum(len(g) for g in grupos) or 1
+    vss = max(0, len(grupos) - 1)
+    # el ancho: 1120 útiles, 92 por cada VS y 14 entre tarjetas del mismo lado; una tarjeta mide 0,7 de su alto
+    alto = int(min(400, (1120 - vss * 92 - (total - len(grupos)) * 14) / (total * 0.7)))
+    ancho = int(alto * 0.7)
+
+    def bandera(fl):
+        cps = [ord(c) - 0x1F1E6 for c in str(fl or '')]
+        if len(cps) != 2 or not all(0 <= c < 26 for c in cps):
+            return ''
+        try:
+            from comun import banderas as BA
+            src = BA.src(''.join(chr(97 + c) for c in cps))
+        except Exception:                                # noqa: BLE001
+            src = ''
+        return ' <img class="fl" src="%s" alt="">' % src if src else ''
+
+    def sil(n):
+        return 'data:image/svg+xml;base64,' + base64.b64encode(
+            SF.svg(SF.cual(n)).replace('#0a0a0d', '#F6F6F6').encode('utf-8')).decode()
+
+    def uno(y):
+        nom = '<span class="gn">%s%s</span>' % (_e(y.get('n') or '¿?'), bandera(y.get('fl')))
+        if y.get('carta'):
+            return '<div class="gc"><img class="carta" src="%s" alt="">%s</div>' % (_e(y['carta']), nom)
+        ovr = '<span class="ovr">OVR %d</span>' % y['ovr'] if y.get('ovr') else ''
+        return '<div class="gc"><div class="sin"><img class="sil" src="%s" alt="">%s</div>%s</div>' % (sil(y.get('n')), ovr, nom)
+
+    partes = []
+    for i, g in enumerate(grupos):
+        if i:
+            partes.append('<div class="vs">VS</div>')
+        partes.append('<div class="gr">%s</div>' % ''.join(uno(y) for y in g))
+    tit = ('<div class="tt"><span class="et">%s</span>%s</div>' % (_e(v.get('titulo')), (' <small>%s</small>' % _e(v.get('sub')))
+                                                                    if v.get('sub') else '')) if v.get('titulo') else ''
+    ev = re.sub(r'[_*~`#>]+', ' ', str(v.get('ev') or '')).strip()
+    css = """
+#c{width:1200px;height:675px;position:relative;overflow:hidden;background:#0a0a0d}
+#c .mitad{position:absolute;inset:0;background:%(fondo)s;clip-path:polygon(0 0,58%% 0,42%% 100%%,0 100%%)}
+#c .cab{position:absolute;left:44px;top:30px;right:44px;display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
+#c .cab b{display:block;font-weight:900;font-size:34px;line-height:1;text-transform:uppercase;font-stretch:112%%;max-width:760px}
+#c .cab .et{display:block;margin-top:6px;font-size:22px;opacity:.85}
+#c .cab .marca img{width:62px;height:62px;border-radius:50%%;object-fit:cover}
+#c .tt{position:absolute;left:44px;top:118px;display:flex;align-items:baseline;gap:12px;max-width:1100px}
+#c .tt .et{display:inline-block;background:#FFD24A;color:#0a0a0d;font-size:24px;padding:5px 12px}
+#c .tt small{font-size:18px;opacity:.9}
+#c .fila{position:absolute;left:40px;right:40px;top:%(top)dpx;bottom:34px;display:flex;align-items:center;justify-content:center;gap:0}
+#c .gr{display:flex;align-items:flex-start;gap:14px}
+#c .gc{display:flex;flex-direction:column;align-items:center;gap:8px;width:%(ancho)dpx}
+#c .carta{height:%(alto)dpx;width:auto;max-width:%(ancho)dpx;filter:drop-shadow(0 12px 20px rgba(0,0,0,.55))}
+#c .sin{width:%(ancho)dpx;height:%(alto)dpx;border:3px solid rgba(255,255,255,.28);border-radius:14px;background:rgba(255,255,255,.06);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+#c .sin .sil{width:70%%;height:auto;opacity:.9}
+#c .ovr{font-weight:900;font-size:%(fs)dpx;color:#FFD24A}
+#c .gn{max-width:%(ancho)dpx;font-weight:900;font-size:%(fs)dpx;line-height:1.05;text-transform:uppercase;text-align:center;overflow-wrap:anywhere}
+#c .fl{height:.75em;width:auto;vertical-align:.04em;margin-left:6px;border-radius:2px}
+#c .vs{flex:none;width:72px;height:72px;margin:0 10px;border-radius:50%%;background:#E41373;border:5px solid #fff;display:grid;place-items:center;
+  font-weight:900;font-size:30px;font-style:italic;box-shadow:0 10px 30px rgba(0,0,0,.5);align-self:center}
+""" % {'fondo': _e(d['color']), 'alto': alto, 'ancho': ancho, 'top': 168 if tit else 122,
+       'fs': max(14, min(26, int(ancho / 9)))}
+    return ("""<!doctype html><html><head><meta charset="utf-8"><style>%s%s%s</style></head><body><div id="c" class="f">
+<div class="mitad"></div>
+<div class="cab"><div><b>%s</b><span class="et">%s · %s</span></div><div class="marca">%s</div></div>
+%s
+<div class="fila">%s</div>
+</div></body></html>""" % (_fuentes(), _BASE_CSS, css, _e(ev[:60] or 'Liga Global'), _e(v.get('ronda') or ''), _e(d['nombre']),
+                            ('<img src="%s" alt="">' % d['logo']) if d['logo'] else '', tit, ''.join(partes)))
+
+
 def html_vs(v, d):
     """🖼️ EL VS (Dlx, 12/10/2026: «hacerlo más visual para mostrar las imágenes cuando sea un vs, o sea las tarjetas»; a
     las dos formas, «B»: una imagen armada). `v` es lo que guardó el objeto (`vsEncolar()` en avisos.js): `{ev, ronda,
@@ -266,6 +344,9 @@ def html_vs(v, d):
     tira con su letra, sus últimos 5 y su racha; en el medio, en una columna que reparte el aire sola —y se acomoda si
     falta algo—, el título del cruce, el cara a cara, el VS y el pronóstico. Personalizada a los dos: la barra y la tira
     de cada uno llevan el color de SU letra (`comun.rangos.ACENTO`); sin letra, el magenta y el blanco de la Liga."""
+    # 🧩 los otros formatos (2v2, 1v3, 1v1v1…): su propio armado, con todas las tarjetas
+    if v.get('grupos'):
+        return html_vs_grupos(v, d)
     from comun import sin_foto as SF
     from comun.rangos import ACENTO
 
@@ -467,7 +548,8 @@ def correr_vs(sv):
             url = subir(ruta, 'vs/%s-%s.jpg' % (sv.lower(), vid), 'image/jpeg')
             rr = requests.post(AV.WORKER + '/avisos/vs-listo', headers={'x-lg-ciclo': _clave()}, timeout=20,
                                json={'id': v.get('id'), 'url': url})
-            print('   ✅ %s vs %s · %s' % ((v.get('a') or {}).get('n'), (v.get('b') or {}).get('n'), rr.text[:80]))
+            quienes = [' + '.join(str(y.get('n')) for y in g) for g in v['grupos']] if v.get('grupos')                 else [(v.get('a') or {}).get('n'), (v.get('b') or {}).get('n')]
+            print('   ✅ %s · %s' % (' vs '.join(str(q) for q in quienes), rr.text[:80]))
         except Exception as e:                           # noqa: BLE001
             mal += 1
             print('   🔴 %s: %s' % (vid, str(e)[:120]))
@@ -533,6 +615,13 @@ def _self_check():
          and prob_vs({'ovr': 92}, {'ovr': 0}) is None and prob_vs({'ovr': 99, 'sc': 95}, {'ovr': 40, 'sc': 5})[0] == 97
          and '??' in vs and 'Sin datos de uno' in vs
          and 'width:64%' in html_vs({'a': {'n': 'A', 'ovr': 92}, 'b': {'n': 'B', 'ovr': 82}}, d)),
+        ('los otros formatos (2v2, 1v3, todos contra todos): cada lado con sus tarjetas y un VS entre lados, la silueta para '
+         'quien no tiene, y todo entra en los 1200 de ancho',
+         html_vs({'grupos': [[{'n': 'A', 'carta': 'https://pub-x.r2.dev/a.webp'}], [{'n': 'B', 'ovr': 70}, {'n': 'C'}, {'n': 'D'}]]}, d)
+         .count('class="gr"') == 2
+         and html_vs({'grupos': [[{'n': 'A'}], [{'n': 'B'}], [{'n': 'C'}]]}, d).count('class="vs"') == 2
+         and 'class="sil"' in html_vs({'grupos': [[{'n': 'A'}], [{'n': 'B'}]]}, d)
+         and '<b>x' not in html_vs({'grupos': [[{'n': '<b>x</b>'}], [{'n': 'B'}]]}, d)),
         ('lo que viene de Discord se escapa: ningún HTML crudo',
          '<b>x' not in html_afiche(dict(a, nombre='<b>x</b>', horario='<i>9</i>'), 'FFA', d)
          and '&lt;i&gt;9' in html_afiche(dict(a, nombre='<b>x</b>', horario='<i>9</i>'), 'FFA', d)),
