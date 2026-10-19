@@ -1185,7 +1185,7 @@
    "competitivo": "e6ddc9293c67:c896d13a6eea",
    "pais": "a3278e5b43c4:1f7b0cf01b60",
    "servidor": "9057b987f337:b8c1c7c39e87:3ce074",
-   "temporada": "a9d3dda69922:eac8e3b22c41"
+   "temporada": "e9f5bb065a01:eac8e3b22c41"
   },
   "OKAM": {},
   "OKTA": {
@@ -1647,7 +1647,7 @@
    "competitivo": "28b730f0b774:c896d13a6eea",
    "pais": "8c36a69e97d3:1f7b0cf01b60",
    "servidor": "2539ffe12dd3:b8c1c7c39e87:a29fa0",
-   "temporada": "29803cc31647:eac8e3b22c41"
+   "temporada": "9c741de58f56:eac8e3b22c41"
   },
   "YACO": {
    "servidor": "8dc17afd358c:b8c1c7c39e87:980594"
@@ -1829,5 +1829,5 @@
    "servidor": "7f8885a35a6d:b8c1c7c39e87:93a344"
   }
  },
- "cuando": "2026-10-19T20:40:51+00:00"
+ "cuando": "2026-10-19T21:01:16+00:00"
 }
