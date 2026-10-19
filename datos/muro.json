@@ -116,6 +116,10 @@
 "temporada"
 ]
 },
+"hassan": {
+"rg": "A",
+"c": []
+},
 "vandu": {
 "rg": "D",
 "c": [
@@ -123,10 +127,6 @@
 "servidor",
 "temporada"
 ]
-},
-"hassan": {
-"rg": "A",
-"c": []
 },
 "provenza": {
 "rg": "C",
@@ -166,6 +166,15 @@
 "temporada"
 ]
 },
+"molusco": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "abyssus": {
 "rg": "A",
 "c": [
@@ -180,15 +189,6 @@
 },
 "nc": {
 "rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"molusco": {
-"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -243,18 +243,18 @@
 "temporada"
 ]
 },
-"delux": {
-"rg": "",
+"sinlimites": {
+"rg": "C",
 "c": [
-"pais",
+"competitivo",
 "servidor",
 "temporada"
 ]
 },
-"sinlimites": {
-"rg": "D",
+"delux": {
+"rg": "",
 "c": [
-"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -358,10 +358,6 @@
 "temporada"
 ]
 },
-"jj": {
-"rg": "",
-"c": []
-},
 "player": {
 "rg": "D",
 "c": [
@@ -379,10 +375,6 @@
 "temporada"
 ]
 },
-"paria": {
-"rg": "D",
-"c": []
-},
 "ariaxer": {
 "rg": "E",
 "c": [
@@ -398,6 +390,10 @@
 "temporada"
 ]
 },
+"jj": {
+"rg": "",
+"c": []
+},
 "cinexfilo": {
 "rg": "E",
 "c": [
@@ -405,6 +401,10 @@
 "servidor",
 "temporada"
 ]
+},
+"paria": {
+"rg": "D",
+"c": []
 },
 "lrs": {
 "rg": "E",
@@ -509,6 +509,13 @@
 "temporada"
 ]
 },
+"tenor": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "19": {
 "rg": "",
 "c": []
@@ -545,6 +552,13 @@
 "rg": "E",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"kravitz": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -640,24 +654,10 @@
 "temporada"
 ]
 },
-"tenor": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "krish": {
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"kravitz": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -808,6 +808,10 @@
 "servidor"
 ]
 },
+"blitz": {
+"rg": "",
+"c": []
+},
 "mathhias": {
 "rg": "",
 "c": [
@@ -837,10 +841,6 @@
 "temporada"
 ]
 },
-"santi": {
-"rg": "",
-"c": []
-},
 "tusicario": {
 "rg": "",
 "c": [
@@ -861,10 +861,6 @@
 "c": []
 },
 "rayo": {
-"rg": "",
-"c": []
-},
-"blitz": {
 "rg": "",
 "c": []
 },
@@ -897,6 +893,10 @@
 "servidor",
 "temporada"
 ]
+},
+"santi": {
+"rg": "",
+"c": []
 },
 "joshu": {
 "rg": "",
@@ -1170,10 +1170,6 @@
 "servidor"
 ]
 },
-"alonso": {
-"rg": "",
-"c": []
-},
 "malboro": {
 "rg": "",
 "c": []
@@ -1205,6 +1201,10 @@
 ]
 },
 "abysuss": {
+"rg": "",
+"c": []
+},
+"alonso": {
 "rg": "",
 "c": []
 },
@@ -2423,14 +2423,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Denik"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5733,6 +5725,15 @@
 "Dyzz"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-10-19T15:34:32Z",
+"quien": [
+"Sin Limites"
+],
+"rg": "C",
+"primero": false
 }
 ]
 }

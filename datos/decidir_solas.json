@@ -1283,6 +1283,30 @@
      "1220200835531935784"
     ]
    }
+  },
+  {
+   "id": "33deab39ff",
+   "tipo": "Nombre desconocido",
+   "sec": "FREESTYLE LEAGUE N3 · FFA · 19/10 · #488",
+   "que": "¿Quién es «J19 🇨🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1401047963853389965",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1401047963853389965)",
+   "t": 1792424088334,
+   "filas": [
+    752
+   ],
+   "variantes": [
+    "J19 🇨🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "J19",
+     "1401047963853389965"
+    ]
+   }
   }
  ],
  "deshechas": []

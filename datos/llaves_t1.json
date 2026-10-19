@@ -27108,5 +27108,163 @@
     2000
    ]
   ]
+ },
+ "488": {
+  "dia": "2026-10-19",
+  "escala": "8-15",
+  "fecha": "19/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1561623502988120135"
+  ],
+  "n": 488,
+  "nombre": "FREESTYLE LEAGUE N3",
+  "participantes": 11,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Sin Limites",
+       "Makmah"
+      ],
+      "Sin Limites",
+      ""
+     ],
+     [
+      [
+       "Molusco",
+       "BLITZ"
+      ],
+      "Molusco",
+      ""
+     ],
+     [
+      [
+       "Tenor",
+       "DarkoMC",
+       "tomyhilfiger🇾🇹",
+       "Jult"
+      ],
+      "Tenor",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Kravitz",
+       "J19 🇨🇷",
+       "OKAM"
+      ],
+      "Kravitz",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Filtros"
+   },
+   {
+    "b": [
+     [
+      [
+       "Molusco",
+       "Sin Limites"
+      ],
+      "Molusco",
+      ""
+     ],
+     [
+      [
+       "Tenor",
+       "Kravitz"
+      ],
+      "Tenor",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Kravitz",
+       "Sin Limites"
+      ],
+      "Kravitz",
+      ""
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Tenor",
+       "Molusco"
+      ],
+      "Tenor",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Tenor",
+    "Campeón",
+    7500
+   ],
+   [
+    "Molusco",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Kravitz",
+    "Tercero",
+    4000
+   ],
+   [
+    "Sin Limites",
+    "Cuarto",
+    3000
+   ],
+   [
+    "BLITZ",
+    "R32",
+    625
+   ],
+   [
+    "DarkoMC",
+    "R32",
+    625
+   ],
+   [
+    "J19 🇨🇷",
+    "R32",
+    625
+   ],
+   [
+    "Jult",
+    "R32",
+    625
+   ],
+   [
+    "Makmah",
+    "R32",
+    625
+   ],
+   [
+    "OKAM",
+    "R32",
+    625
+   ],
+   [
+    "tomyhilfiger🇾🇹",
+    "R32",
+    625
+   ]
+  ]
  }
 }

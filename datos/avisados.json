@@ -2516,7 +2516,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "a9bd267301b3d9c4",
+  "firma": "332249ac4809c98c",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -5562,7 +5562,7 @@
    "Xclusivo": 12
   },
   "fecha": "10/10",
-  "firma": "d1b4c10866e136e2",
+  "firma": "1fe2cad1889f2e9b",
   "msg": "1558545514931163258",
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
   "num": 442,
@@ -7803,7 +7803,7 @@
    "yinn": 15
   },
   "fecha": "12/10",
-  "firma": "9f4c0dc97f21f295",
+  "firma": "4935ffe0bd6be17c",
   "msg": "1559247601923137630",
   "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.1",
   "num": 454,
@@ -7999,7 +7999,7 @@
    "Walker": 4
   },
   "fecha": "12/10",
-  "firma": "33ba89fd28f26fdd",
+  "firma": "ad6fdc441311149e",
   "msg": "1559247607283454084",
   "nombre": "FMS UNDER",
   "num": 455,
@@ -12079,7 +12079,7 @@
    "Vandu": 20
   },
   "fecha": "14/10",
-  "firma": "da20ff0ae376449d",
+  "firma": "7f2ee6567616bcf3",
   "msg": "1560019837609050254",
   "nombre": "DEM UZBEKISTAN FECHA 3",
   "num": 471,
@@ -12644,7 +12644,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "6eba9e535d8ed1ad",
+  "firma": "2ec9ee0398d02624",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -13179,7 +13179,7 @@
    "Zignos": 22
   },
   "fecha": "15/10",
-  "firma": "c13d82bc921e5915",
+  "firma": "637597652aaf2ffb",
   "msg": "1560502933315915857",
   "nombre": "LA REDENCIÓN",
   "num": 476,
@@ -13461,7 +13461,7 @@
    "Xubaru": 7
   },
   "fecha": "16/10",
-  "firma": "1f2647c98d252377",
+  "firma": "4976b54c6586bc8e",
   "msg": "1560725555203014688",
   "nombre": "__ DESGRACIAS EN TOKYO VOL27 __",
   "num": 477,
@@ -14579,7 +14579,7 @@
    "Sin Limites": 18
   },
   "fecha": "16/10",
-  "firma": "b07e9aa04605b2f5",
+  "firma": "0098c4cca68d31d6",
   "msg": "1560858617589272627",
   "nombre": "PROYECTO X VOL.3",
   "num": 481,
@@ -15215,7 +15215,7 @@
    "Xubaru": 8
   },
   "fecha": "18/10",
-  "firma": "7731462653eb5db3",
+  "firma": "cb785e43cb660010",
   "msg": "1561498207572205609",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL7 __",
   "num": 484,
@@ -15918,6 +15918,194 @@
     "Joshema",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "488": {
+  "al_dia": true,
+  "antes": {
+   "BLITZ": [
+    227,
+    131,
+    true
+   ],
+   "DarkoMC": [
+    394,
+    376,
+    true
+   ],
+   "Jult": [
+    46,
+    61,
+    false
+   ],
+   "Kravitz": [
+    71,
+    93,
+    false
+   ],
+   "Makmah": [
+    3,
+    4,
+    false
+   ],
+   "Molusco": [
+    21,
+    25,
+    false
+   ],
+   "OKAM": [
+    330,
+    292,
+    true
+   ],
+   "Sin Limites": [
+    27,
+    34,
+    false
+   ],
+   "Tenor": [
+    69,
+    91,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Sin Limites",
+    "Makmah",
+    "Sin Limites"
+   ],
+   [
+    "Molusco",
+    "BLITZ",
+    "Molusco"
+   ],
+   [
+    "Tenor",
+    "DarkoMC",
+    "Tenor"
+   ],
+   [
+    "Tenor",
+    "tomyhilfiger🇾🇹",
+    "Tenor"
+   ],
+   [
+    "Tenor",
+    "Jult",
+    "Tenor"
+   ],
+   [
+    "Kravitz",
+    "J19 🇨🇷",
+    "Kravitz"
+   ],
+   [
+    "Kravitz",
+    "OKAM",
+    "Kravitz"
+   ],
+   [
+    "Molusco",
+    "Sin Limites",
+    "Molusco"
+   ],
+   [
+    "Tenor",
+    "Kravitz",
+    "Tenor"
+   ],
+   [
+    "Kravitz",
+    "Sin Limites",
+    "Kravitz"
+   ],
+   [
+    "Tenor",
+    "Molusco",
+    "Tenor"
+   ]
+  ],
+  "ev_antes": {
+   "BLITZ": 4,
+   "DarkoMC": 1,
+   "Jult": 12,
+   "Kravitz": 8,
+   "Makmah": 52,
+   "Molusco": 17,
+   "OKAM": 1,
+   "Sin Limites": 19,
+   "Tenor": 5
+  },
+  "fecha": "19/10",
+  "firma": "ba3f8f53a68ec75d",
+  "msg": "1561761975514697891",
+  "nombre": "FREESTYLE LEAGUE N3",
+  "num": 488,
+  "participantes": 11,
+  "sello": {
+   "Tenor": "76080e675127:027b45bc66ff"
+  },
+  "sv": "FFA",
+  "t": "2026-10-19T15:24:29Z",
+  "tabla": [
+   [
+    "Tenor",
+    "Campeón",
+    7500
+   ],
+   [
+    "Molusco",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Kravitz",
+    "Tercero",
+    4000
+   ],
+   [
+    "Sin Limites",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Makmah",
+    "R32",
+    625
+   ],
+   [
+    "BLITZ",
+    "R32",
+    625
+   ],
+   [
+    "DarkoMC",
+    "R32",
+    625
+   ],
+   [
+    "tomyhilfiger🇾🇹",
+    "R32",
+    625
+   ],
+   [
+    "Jult",
+    "R32",
+    625
+   ],
+   [
+    "J19 🇨🇷",
+    "R32",
+    625
+   ],
+   [
+    "OKAM",
+    "R32",
+    625
    ]
   ],
   "v": 2

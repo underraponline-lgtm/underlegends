@@ -395,6 +395,22 @@
       "URBF",
       "DRA"
      ]
+    ],
+    "ppp": {
+     "DDF": 3258.9,
+     "FFA": 6223.0,
+     "FFS": 0,
+     "ACAD": 3019.7,
+     "SR": 3136.4,
+     "FVS": 3325.0,
+     "URBF": 2908.3,
+     "DRA": 0
+    },
+    "gana": [
+     "FFA",
+     "ACAD",
+     "FVS",
+     "URBF"
     ]
    },
    "metas": {
@@ -504,7 +520,8 @@
      "FRZ": 9,
      "ACAD": 25
     },
-    "gana": "URBF"
+    "gana": "URBF",
+    "final": true
    },
    "meta_va": {
     "ACAD": 25,
@@ -555,7 +572,117 @@
      }
     }
    ],
-   "manual": true
+   "manual": true,
+   "organizadores_final": true,
+   "premios_semana": {
+    "figura": [
+     "Verc",
+     110124
+    ],
+    "revelacion": [
+     "Hotaru Adeyemi 🏳️‍⚧️",
+     38906
+    ],
+    "servidor": [
+     "FFA",
+     123
+    ]
+   }
+  },
+  {
+   "id": "2026-10-19",
+   "inicio": "2026-10-19T15:00:00Z",
+   "fin": "2026-10-26T15:00:00Z",
+   "temporada": "prueba",
+   "sorteado": "2026-10-19T15:23:25Z",
+   "sv": {
+    "FVS": 3.0,
+    "DRA": 0.5,
+    "DDF": 1,
+    "FFS": 1,
+    "SR": 1,
+    "FRZ": 1,
+    "URBF": 4.5,
+    "FFA": 1.5,
+    "ACAD": 3.0
+   },
+   "dorado": {
+    "sv": "SR",
+    "desde": "2026-10-22T04:00:00Z"
+   },
+   "guerra": {
+    "pares": [
+     [
+      "FVS",
+      "FFA"
+     ],
+     [
+      "DDF",
+      "FFS"
+     ],
+     [
+      "URBF",
+      "FRZ"
+     ],
+     [
+      "ACAD",
+      "DRA"
+     ]
+    ]
+   },
+   "metas": {
+    "ACAD": 48,
+    "DDF": 38,
+    "DRA": 8,
+    "FFA": 164,
+    "FFS": 8,
+    "FRZ": 10,
+    "FVS": 10,
+    "SR": 35,
+    "URBF": 24
+   },
+   "votado": {
+    "sv": "URBF",
+    "votos": 5,
+    "de": 11
+   },
+   "premios": {
+    "URBF": [
+     "votado",
+     "guerra",
+     "semillero"
+    ],
+    "FFA": [
+     "guerra"
+    ],
+    "ACAD": [
+     "guerra"
+    ],
+    "FVS": [
+     "guerra"
+    ]
+   },
+   "copa": {
+    "org": "Flennzs",
+    "clave": "flennzs"
+   },
+   "organizadores": [],
+   "semillero": {
+    "nuevos": {},
+    "gente": {},
+    "gana": null
+   },
+   "meta_va": {
+    "ACAD": 0,
+    "DDF": 0,
+    "DRA": 0,
+    "FFA": 0,
+    "FFS": 0,
+    "FRZ": 0,
+    "FVS": 0,
+    "SR": 0,
+    "URBF": 0
+   }
   }
  ]
 }

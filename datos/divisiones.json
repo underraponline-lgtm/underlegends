@@ -3,909 +3,21 @@
  "divs": [
   [],
   [],
-  [
-   [
-    [
-     "Oasis",
-     40375,
-     7
-    ]
-   ]
-  ],
-  [
-   [
-    [
-     "Panchok",
-     90250,
-     6
-    ],
-    [
-     "Erian",
-     79997,
-     14
-    ],
-    [
-     "Makmah",
-     63214,
-     16
-    ],
-    [
-     "Velatz",
-     34750,
-     6
-    ],
-    [
-     "Snow",
-     28000,
-     5
-    ],
-    [
-     "Motera",
-     22500,
-     1
-    ],
-    [
-     "PichulaMc",
-     22375,
-     6
-    ],
-    [
-     "Presagio",
-     12500,
-     2
-    ],
-    [
-     "Provenza",
-     11124,
-     4
-    ],
-    [
-     "Sosa",
-     7875,
-     2
-    ],
-    [
-     "NXUZ",
-     7500,
-     1
-    ]
-   ]
-  ],
-  [
-   [
-    [
-     "Verc",
-     99874,
-     13
-    ],
-    [
-     "Guess",
-     70623,
-     10
-    ],
-    [
-     "Agus",
-     69062,
-     5
-    ],
-    [
-     "Colesito",
-     68125,
-     9
-    ],
-    [
-     "Vandu",
-     52686,
-     8
-    ],
-    [
-     "Chop",
-     50188,
-     7
-    ],
-    [
-     "Molusco",
-     49438,
-     6
-    ],
-    [
-     "OG",
-     46750,
-     5
-    ],
-    [
-     "Zignos",
-     34375,
-     6
-    ],
-    [
-     "Nemi",
-     28000,
-     7
-    ],
-    [
-     "Delux",
-     26688,
-     5
-    ],
-    [
-     "Six",
-     24062,
-     6
-    ],
-    [
-     "Cinexfilo",
-     22875,
-     6
-    ],
-    [
-     "Lord Viruzz",
-     22250,
-     4
-    ],
-    [
-     "LRS",
-     20875,
-     6
-    ],
-    [
-     "Cronox",
-     20375,
-     5
-    ],
-    [
-     "Jupiter",
-     15250,
-     4
-    ],
-    [
-     "Benjixo",
-     14625,
-     3
-    ],
-    [
-     "Ariaxer",
-     14026,
-     5
-    ],
-    [
-     "Walker",
-     11250,
-     1
-    ],
-    [
-     "ONZASS",
-     10938,
-     4
-    ],
-    [
-     "Tenor",
-     10500,
-     1
-    ],
-    [
-     "Drexx",
-     9338,
-     4
-    ],
-    [
-     "Tam",
-     7624,
-     2
-    ],
-    [
-     "Dynoco",
-     7562,
-     3
-    ],
-    [
-     "TøKīØ🦠🧠",
-     7500,
-     1
-    ],
-    [
-     "Xclusivo",
-     7125,
-     2
-    ],
-    [
-     "Cajita",
-     3750,
-     1
-    ],
-    [
-     "Number",
-     3750,
-     1
-    ],
-    [
-     "Erik",
-     2625,
-     1
-    ]
-   ],
-   [
-    [
-     "Mr Still Ballin",
-     64312,
-     4
-    ],
-    [
-     "MCO",
-     56250,
-     2
-    ],
-    [
-     "Catarsis",
-     43750,
-     2
-    ],
-    [
-     "Liberia",
-     39937,
-     6
-    ],
-    [
-     "Ortiz",
-     18000,
-     1
-    ],
-    [
-     "Carlosss",
-     12750,
-     1
-    ],
-    [
-     "Deluxe",
-     12500,
-     1
-    ],
-    [
-     "Kochi",
-     9750,
-     2
-    ],
-    [
-     "Andres",
-     8937,
-     1
-    ],
-    [
-     "Geoka",
-     8250,
-     3
-    ],
-    [
-     "Majiztral",
-     7401,
-     3
-    ],
-    [
-     "Gocho",
-     6874,
-     3
-    ],
-    [
-     "Paria",
-     4688,
-     2
-    ],
-    [
-     "Dominick",
-     3750,
-     1
-    ],
-    [
-     "Miniboy",
-     3750,
-     1
-    ],
-    [
-     "ikonoxx",
-     2812,
-     2
-    ],
-    [
-     "CrisZJ",
-     1875,
-     1
-    ]
-   ]
-  ],
-  [
-   [
-    [
-     "NC",
-     37124,
-     9
-    ],
-    [
-     "BNA",
-     35312,
-     4
-    ],
-    [
-     "EmiZor",
-     16500,
-     2
-    ],
-    [
-     "Prosu",
-     16250,
-     2
-    ],
-    [
-     "Teo",
-     16000,
-     6
-    ],
-    [
-     "Lvel",
-     14964,
-     6
-    ],
-    [
-     "Keider",
-     14625,
-     3
-    ],
-    [
-     "DO-C",
-     14125,
-     4
-    ],
-    [
-     "Player",
-     13375,
-     4
-    ],
-    [
-     "yinn",
-     13125,
-     3
-    ],
-    [
-     "JHEYSON",
-     12750,
-     2
-    ],
-    [
-     "JJ",
-     12750,
-     1
-    ],
-    [
-     "Under",
-     10375,
-     3
-    ],
-    [
-     "Abyssus",
-     10312,
-     2
-    ],
-    [
-     "Vargas",
-     10250,
-     2
-    ],
-    [
-     "SINTEXT",
-     9375,
-     4
-    ],
-    [
-     "Valdoza",
-     9375,
-     3
-    ],
-    [
-     "Teito",
-     9250,
-     2
-    ],
-    [
-     "Krish",
-     8500,
-     3
-    ],
-    [
-     "Scritura",
-     7750,
-     2
-    ],
-    [
-     "Agente sombra",
-     6562,
-     2
-    ],
-    [
-     "doble h",
-     5625,
-     1
-    ],
-    [
-     "Magic",
-     5000,
-     3
-    ],
-    [
-     "Elbesaabuelas",
-     4500,
-     1
-    ],
-    [
-     "AFR",
-     3750,
-     1
-    ],
-    [
-     "Efimero",
-     3750,
-     1
-    ],
-    [
-     "OEP",
-     3750,
-     1
-    ],
-    [
-     "Number VE",
-     3000,
-     1
-    ],
-    [
-     "Joaquín La Profecia 👨🏻‍🍳",
-     2500,
-     1
-    ],
-    [
-     "SYEPORUTE🇿🇲",
-     1250,
-     1
-    ]
-   ],
-   [
-    [
-     "Bloody",
-     47125,
-     5
-    ],
-    [
-     "Sin Limites",
-     40875,
-     7
-    ],
-    [
-     "Xubaru",
-     23500,
-     6
-    ],
-    [
-     "Trot",
-     19838,
-     5
-    ],
-    [
-     "Rodas",
-     19375,
-     4
-    ],
-    [
-     "Joshema",
-     18125,
-     4
-    ],
-    [
-     "francis",
-     15750,
-     1
-    ],
-    [
-     "DarnBless",
-     14188,
-     3
-    ],
-    [
-     "Kusoh",
-     13125,
-     1
-    ],
-    [
-     "Raizer",
-     13125,
-     1
-    ],
-    [
-     "Polosport",
-     12750,
-     2
-    ],
-    [
-     "ONDADISKO",
-     10248,
-     1
-    ],
-    [
-     "AGUSTÍN51K",
-     7500,
-     1
-    ],
-    [
-     "Masino",
-     6873,
-     2
-    ],
-    [
-     "Jult",
-     6750,
-     3
-    ],
-    [
-     "Zaik",
-     6625,
-     3
-    ],
-    [
-     "Korey",
-     6000,
-     1
-    ],
-    [
-     "Tusicario",
-     6000,
-     1
-    ],
-    [
-     "AKARK",
-     5625,
-     1
-    ],
-    [
-     "Abysuss",
-     5000,
-     1
-    ],
-    [
-     "rodrilp",
-     3938,
-     1
-    ],
-    [
-     "Guty",
-     3750,
-     1
-    ],
-    [
-     "MauzzitoEmeces",
-     3750,
-     1
-    ],
-    [
-     "7",
-     1875,
-     1
-    ],
-    [
-     "🏳️‍⚧️ VEPG 🏳️‍⚧️",
-     1875,
-     1
-    ],
-    [
-     "Rayo",
-     1875,
-     1
-    ],
-    [
-     "Sami",
-     1875,
-     1
-    ],
-    [
-     "Konan",
-     1875,
-     1
-    ],
-    [
-     "Zeta",
-     1250,
-     1
-    ],
-    [
-     "Betelguese",
-     624,
-     1
-    ]
-   ],
-   [
-    [
-     "Shadow",
-     30375,
-     4
-    ],
-    [
-     "Calíz",
-     29651,
-     3
-    ],
-    [
-     "1200",
-     20500,
-     4
-    ],
-    [
-     "Vacile🇪🇸",
-     15000,
-     1
-    ],
-    [
-     "Kyss",
-     12500,
-     1
-    ],
-    [
-     "Road",
-     12500,
-     1
-    ],
-    [
-     "Sombra",
-     12500,
-     1
-    ],
-    [
-     "Neo",
-     11312,
-     3
-    ],
-    [
-     "Warap",
-     11250,
-     3
-    ],
-    [
-     "Tuca",
-     11250,
-     3
-    ],
-    [
-     "Soulb",
-     11062,
-     5
-    ],
-    [
-     "Juasmio",
-     7500,
-     1
-    ],
-    [
-     "Choka",
-     6250,
-     1
-    ],
-    [
-     "Kain",
-     6250,
-     1
-    ],
-    [
-     "MTZ",
-     4875,
-     2
-    ],
-    [
-     "Kminant",
-     3750,
-     1
-    ],
-    [
-     "Kravitz",
-     3000,
-     1
-    ],
-    [
-     "Luzzano",
-     2625,
-     1
-    ],
-    [
-     "Abraham 🇻🇪",
-     2000,
-     1
-    ],
-    [
-     "Milo",
-     2000,
-     1
-    ],
-    [
-     "Marto",
-     1875,
-     1
-    ],
-    [
-     "Snake",
-     1875,
-     1
-    ],
-    [
-     "Yor",
-     1875,
-     1
-    ],
-    [
-     "Leonart",
-     1875,
-     1
-    ],
-    [
-     "Marcos",
-     1875,
-     1
-    ],
-    [
-     "Chente",
-     1875,
-     1
-    ],
-    [
-     "Gus",
-     1875,
-     1
-    ],
-    [
-     "BTRX",
-     1875,
-     1
-    ],
-    [
-     "PETER🇵🇪",
-     1875,
-     1
-    ],
-    [
-     "Malva",
-     938,
-     1
-    ]
-   ],
-   [
-    [
-     "Hotaru Adeyemi 🏳️‍⚧️",
-     38906,
-     2
-    ],
-    [
-     "VECA 🇧🇱",
-     12500,
-     1
-    ],
-    [
-     "Emilio Alva",
-     10000,
-     1
-    ],
-    [
-     "Adriagner",
-     7500,
-     1
-    ],
-    [
-     "Mosquitrap 🦟",
-     7500,
-     1
-    ],
-    [
-     "MALBORO",
-     7500,
-     1
-    ],
-    [
-     "Senticide",
-     6000,
-     1
-    ],
-    [
-     "Evangeline🇵🇪",
-     5625,
-     1
-    ],
-    [
-     "SEBITAS🇱🇷",
-     5250,
-     1
-    ],
-    [
-     "EVANGELINE🇧🇴",
-     4998,
-     1
-    ],
-    [
-     "Jobaking",
-     3983,
-     2
-    ],
-    [
-     "FOTOSÍNTESIS",
-     3750,
-     1
-    ],
-    [
-     "JEIXDER",
-     3750,
-     1
-    ],
-    [
-     "Imagy",
-     3281,
-     2
-    ],
-    [
-     "Apolo",
-     1875,
-     1
-    ],
-    [
-     "Crk",
-     1875,
-     1
-    ],
-    [
-     "DarkoMC",
-     1875,
-     1
-    ],
-    [
-     "Misterioso",
-     1875,
-     1
-    ],
-    [
-     "RC🇲🇽",
-     1875,
-     1
-    ],
-    [
-     "Kourier",
-     1776,
-     1
-    ],
-    [
-     "Leyenda",
-     1776,
-     1
-    ],
-    [
-     "Gosu Z",
-     1500,
-     1
-    ],
-    [
-     "lil",
-     1500,
-     1
-    ],
-    [
-     "Cazafla anti cazanova🇭🇹",
-     938,
-     1
-    ],
-    [
-     "Millonari-O",
-     938,
-     1
-    ]
-   ]
-  ]
+  [],
+  [],
+  [],
+  []
  ],
- "fin": "2026-10-19T15:00:00Z",
+ "fin": "2026-10-26T15:00:00Z",
  "nivel": {
   ".SosaATR": 5,
-  "1200": 5,
+  "1200": 4,
   "19": 4,
   "27 🇺🇸": 5,
   "7": 5,
+  "AFR": 5,
   "AGUSTÍN51K": 5,
+  "AKARK": 5,
   "ALESS": 5,
   "ALTER 🇨🇱": 5,
   "ANTONIO🇵🇾": 5,
@@ -913,12 +25,15 @@
   "ARDEAN": 4,
   "AREZ": 5,
   "Ab'l 🇦🇷 🇩🇴": 5,
+  "Abraham 🇻🇪": 5,
   "Aby": 5,
   "Abyssus": 5,
+  "Abysuss": 5,
   "Acry": 5,
-  "Adriagner": 5,
+  "Adriagner": 4,
+  "Agente sombra": 5,
   "Agre": 5,
-  "Agus": 4,
+  "Agus": 3,
   "Aktybo": 5,
   "Akutagawa🇹🇼": 5,
   "Aldre": 5,
@@ -926,6 +41,7 @@
   "Alonso": 5,
   "Andres": 4,
   "Andy": 5,
+  "Apolo": 5,
   "Ariaxer": 4,
   "Assuan": 5,
   "Astral": 5,
@@ -933,7 +49,7 @@
   "BLANKO 🇺🇸": 5,
   "BLITZ": 5,
   "BM": 5,
-  "BNA": 5,
+  "BNA": 4,
   "BRAGEURITHER🇦🇪": 5,
   "BTRX": 5,
   "Badterne": 5,
@@ -944,27 +60,30 @@
   "Benshi": 5,
   "Betelguese": 5,
   "Blaxx": 5,
-  "Bloody": 5,
+  "Bloody": 4,
   "Bludi🇨🇴": 5,
   "Btrece": 5,
   "CHOCLITO": 5,
   "CJ": 5,
   "Cabece": 5,
-  "Cajita": 4,
-  "Calíz": 5,
+  "Cajita": 5,
+  "Calíz": 4,
   "Camila": 5,
   "Campoy": 5,
   "Carlos": 5,
   "Carlosmo": 4,
   "Carlosss": 4,
-  "Catarsis": 4,
+  "Catarsis": 3,
+  "Cazafla anti cazanova🇭🇹": 5,
   "Char": 5,
+  "Chente": 5,
+  "Choka": 5,
   "Chop": 4,
   "Cinexfilo": 4,
   "Clitax": 5,
-  "Colesito": 4,
+  "Colesito": 3,
   "Corvo": 5,
-  "CrisZJ": 4,
+  "CrisZJ": 5,
   "Crk": 5,
   "Cronox": 4,
   "DANCOLL 🇻🇪": 5,
@@ -973,6 +92,7 @@
   "DIDYER": 5,
   "DO-C": 5,
   "Damian": 5,
+  "DarkoMC": 5,
   "DarnBless": 5,
   "David CM": 5,
   "Dcet": 5,
@@ -983,7 +103,7 @@
   "Deuxs": 5,
   "Dios": 5,
   "Dm🇵🇪": 5,
-  "Dominick": 4,
+  "Dominick": 5,
   "Drexx": 4,
   "Drezz🇵🇪": 5,
   "Dynoco": 4,
@@ -994,6 +114,7 @@
   "ELSOLAR 🇨🇴": 5,
   "EMMY": 5,
   "ENEK 🇪🇸": 5,
+  "EVANGELINE🇧🇴": 5,
   "Eclipsito": 4,
   "Efimero": 5,
   "El Hombre Eyau": 5,
@@ -1002,13 +123,13 @@
   "Elinge_TIMP": 5,
   "Eliot": 5,
   "Elsoolar": 5,
-  "EmiZor": 5,
-  "Emilio Alva": 5,
+  "EmiZor": 4,
+  "Emilio Alva": 4,
   "Emily Family": 5,
   "Enkil 🇦🇷": 5,
-  "Erian": 3,
+  "Erian": 2,
   "EricRJ": 5,
-  "Erik": 4,
+  "Erik": 5,
   "Erizo": 5,
   "Evangeline🇵🇪": 5,
   "Eze": 5,
@@ -1016,6 +137,7 @@
   "F1THER": 5,
   "FALON 🇨🇱": 5,
   "FAT PENIS": 5,
+  "FOTOSÍNTESIS": 5,
   "Faso": 5,
   "Fazer": 4,
   "Filozico": 5,
@@ -1042,8 +164,9 @@
   "Gocho": 4,
   "Gosu Z": 5,
   "Greyfitsh🇵🇦": 5,
-  "Guess": 4,
+  "Guess": 3,
   "Gus": 5,
+  "Guty": 5,
   "Gwynyth": 5,
   "HH": 4,
   "Hardcore": 5,
@@ -1051,15 +174,19 @@
   "Heat": 5,
   "Henry": 5,
   "Holden": 5,
+  "Hotaru Adeyemi 🏳️‍⚧️": 4,
   "Humildad": 5,
   "IFX": 5,
   "ISAIAS": 5,
   "Iguana": 5,
+  "Imagy": 5,
   "Indígena": 5,
   "Infecte": 5,
   "Ivaynex": 5,
   "Izaya": 5,
+  "J19 🇨🇷": 5,
   "JEIXDER": 5,
+  "JHEYSON": 5,
   "JIMMY": 4,
   "JJ": 5,
   "JOACO 🇨🇱": 5,
@@ -1068,7 +195,10 @@
   "Jayden": 5,
   "Jere": 5,
   "Joaco Zeo": 5,
+  "Joaquín La Profecia 👨🏻‍🍳": 5,
+  "Jobaking": 5,
   "Johao": 5,
+  "Joshema": 5,
   "Jotap": 5,
   "Juanpa": 4,
   "Juasmio": 5,
@@ -1080,11 +210,13 @@
   "KIPMC 🇧🇷": 5,
   "KIRITO": 5,
   "KRNAN 🇨🇱": 5,
+  "Kain": 5,
   "Keider": 5,
   "Kenny": 5,
   "King": 5,
   "Kminant": 5,
   "Kochi": 4,
+  "Konan": 5,
   "Korey": 5,
   "Kourier": 5,
   "Kravitz": 5,
@@ -1093,8 +225,9 @@
   "Krtman": 5,
   "Kun Z": 5,
   "Kuni": 5,
+  "Kusoh": 5,
   "Kyron": 5,
-  "Kyss": 5,
+  "Kyss": 4,
   "L 🇨🇴": 5,
   "LAST": 5,
   "LEWITO": 5,
@@ -1111,7 +244,7 @@
   "Leyenda": 5,
   "Lhyon": 5,
   "Liam": 5,
-  "Liberia": 4,
+  "Liberia": 3,
   "Lilñaño": 5,
   "LitKunai": 5,
   "Lizeninn": 5,
@@ -1119,13 +252,14 @@
   "Luffy": 5,
   "Luzzano": 5,
   "Lvel": 5,
+  "MALBORO": 5,
   "MARTYNEZ🇺🇾": 5,
   "MATICERNA": 5,
   "MAU KC 🇨🇴": 5,
   "MAWS🇻🇪": 4,
   "MAXIMILIANO CALVO": 5,
   "MCNadie": 5,
-  "MCO": 4,
+  "MCO": 3,
   "MD": 5,
   "METORITO": 5,
   "METRO": 5,
@@ -1134,9 +268,10 @@
   "MTZ": 5,
   "MZK": 5,
   "MaYeuTyK": 5,
+  "Magic": 5,
   "Mail O": 5,
   "Majiztral": 4,
-  "Makmah": 3,
+  "Makmah": 2,
   "Malva": 5,
   "Marcos": 5,
   "Marto": 5,
@@ -1146,21 +281,24 @@
   "Mc Glock": 5,
   "Medster": 4,
   "MetriOdin": 5,
-  "Miniboy": 4,
+  "Millonari-O": 5,
+  "Milo": 5,
+  "Miniboy": 5,
+  "Misterioso": 5,
   "Mito": 5,
   "Molt": 5,
-  "Molusco": 4,
+  "Molusco": 3,
   "Monet": 5,
-  "Mosquitrap 🦟": 5,
+  "Mosquitrap 🦟": 4,
   "Motera": 3,
-  "Mr Still Ballin": 4,
+  "Mr Still Ballin": 3,
   "Mr.Kude": 5,
   "Musicdum": 5,
   "MvA": 5,
   "N1k": 5,
   "NAW": 5,
-  "NC": 5,
-  "NXUZ": 3,
+  "NC": 4,
+  "NXUZ": 4,
   "NYCO": 5,
   "Nairda": 5,
   "Nemi": 4,
@@ -1171,23 +309,25 @@
   "Noone": 5,
   "Nox": 5,
   "Noxvell": 4,
-  "Number": 4,
+  "Number": 5,
   "Number VE": 5,
   "OEP": 5,
   "OG": 4,
   "OKAM": 5,
+  "ONDADISKO": 5,
   "ONZASS": 4,
   "Oasis": 2,
   "Oni 🇦🇷": 5,
-  "Ortiz": 4,
+  "Ortiz": 3,
   "PARADOJA": 5,
+  "PETER🇵🇪": 5,
   "PIERR🇵🇪": 5,
   "PLA PLA": 5,
   "PRAISERIZA": 3,
   "PROMETHEUS BIB 🇨🇴": 5,
   "PUBLIC ENEMY": 5,
-  "Panchok": 3,
-  "Paria": 4,
+  "Panchok": 2,
+  "Paria": 5,
   "Partim": 5,
   "Pcyka": 5,
   "Perrin": 5,
@@ -1200,15 +340,17 @@
   "Pomberito": 4,
   "Presagio": 3,
   "Prodigy": 4,
-  "Prosu": 5,
-  "Provenza": 3,
+  "Prosu": 4,
+  "Provenza": 4,
   "QUEEN": 5,
   "RAGE BAIT": 5,
+  "RC🇲🇽": 5,
   "REPTILE JR": 5,
   "RICKYFORT": 5,
   "RIQUEZA": 5,
   "RT": 4,
   "Ragna": 4,
+  "Raizer": 5,
   "Ram": 5,
   "Rayden": 5,
   "Rayo": 5,
@@ -1221,13 +363,15 @@
   "Richard": 5,
   "Riolu": 4,
   "Risa": 5,
-  "Rodas": 5,
+  "Road": 5,
+  "Rodas": 4,
   "Rosmel 🇻🇪": 5,
   "Rubik": 5,
   "Ruvi": 5,
   "Ruvick": 5,
   "SAEVA": 5,
   "SDK": 5,
+  "SEBITAS🇱🇷": 5,
   "SGB": 4,
   "SHULIOT": 5,
   "SINTEXT": 5,
@@ -1236,6 +380,7 @@
   "SOL": 4,
   "SONIC_DORADITO": 5,
   "SUDAKA🇦🇷": 5,
+  "SYEPORUTE🇿🇲": 5,
   "Saiko": 5,
   "Saito": 4,
   "Sami": 5,
@@ -1243,19 +388,22 @@
   "Santo Trinidad 🇨🇴": 5,
   "Saz": 5,
   "Scot": 5,
+  "Scritura": 5,
   "Selek": 5,
+  "Senticide": 5,
   "Sexo": 5,
-  "Shadow": 5,
+  "Shadow": 4,
   "Silence": 5,
-  "Sin Limites": 5,
+  "Sin Limites": 4,
   "Six": 4,
   "Skratch": 5,
   "Slasher": 5,
+  "Snake": 5,
   "Snow": 3,
   "Soft": 5,
   "Sombra": 5,
   "Soneto": 5,
-  "Sosa": 3,
+  "Sosa": 4,
   "Soulb": 5,
   "Spartan": 5,
   "Steven🇨🇴": 5,
@@ -1265,32 +413,36 @@
   "Tayo": 5,
   "Teito": 5,
   "Tenor": 4,
-  "Teo": 5,
+  "Teo": 4,
   "Tiagoms": 5,
   "Tier": 5,
-  "Trot": 5,
+  "Trot": 4,
   "Tuca": 5,
   "Tusicario": 5,
-  "TøKīØ🦠🧠": 4,
+  "TøKīØ🦠🧠": 5,
   "UDDIZIM": 5,
   "Under": 5,
   "V-zir 🇻🇪": 5,
+  "VECA 🇧🇱": 4,
   "VR": 5,
+  "Vacile🇪🇸": 4,
   "Valdoza": 5,
   "Vandu": 4,
+  "Vargas": 5,
   "Velatz": 3,
-  "Verc": 4,
+  "Verc": 3,
   "Vilca": 5,
   "Vlade": 5,
   "Volk": 5,
   "WILLY": 5,
   "Walker": 4,
+  "Warap": 5,
   "Warriorvid": 5,
-  "Xclusivo": 4,
+  "Xclusivo": 5,
   "Xervoe": 5,
   "Xowee": 4,
   "Xplicit": 5,
-  "Xubaru": 5,
+  "Xubaru": 4,
   "YOUNG VLAD 🇨🇴": 5,
   "Yeyox": 5,
   "Yio": 5,
@@ -1318,9 +470,10 @@
   "fleivaman": 5,
   "francis": 5,
   "gibraltar 🇦🇨": 5,
-  "ikonoxx": 4,
+  "ikonoxx": 5,
   "kerkoide": 5,
   "leteletras": 5,
+  "lil": 5,
   "luisito 🏆": 5,
   "maldita enfermedad": 5,
   "melomaniaco": 5,
@@ -1333,11 +486,13 @@
   "stormed": 5,
   "tito calderon": 5,
   "tkl": 5,
+  "tomyhilfiger🇾🇹": 5,
   "tormen": 5,
   "wei shenlong": 5,
   "xz": 5,
   "yinn": 5,
-  "🇺🇾 ATR": 5
+  "🇺🇾 ATR": 5,
+  "🏳️‍⚧️ VEPG 🏳️‍⚧️": 5
  },
  "nombres": [
   "Primera",
@@ -1348,7 +503,7 @@
   "Sexta"
  ],
  "premio": 500,
- "sem": "2026-10-12",
+ "sem": "2026-10-19",
  "subidas": [
   [
    "2026-09-21",
@@ -1954,70 +1109,224 @@
    "2026-10-05",
    "Oasis",
    2
+  ],
+  [
+   "2026-10-12",
+   "NC",
+   4
+  ],
+  [
+   "2026-10-12",
+   "BNA",
+   4
+  ],
+  [
+   "2026-10-12",
+   "EmiZor",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Prosu",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Teo",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Bloody",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Sin Limites",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Xubaru",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Trot",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Rodas",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Shadow",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Calíz",
+   4
+  ],
+  [
+   "2026-10-12",
+   "1200",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Vacile🇪🇸",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Kyss",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Hotaru Adeyemi 🏳️‍⚧️",
+   4
+  ],
+  [
+   "2026-10-12",
+   "VECA 🇧🇱",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Emilio Alva",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Adriagner",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Mosquitrap 🦟",
+   4
+  ],
+  [
+   "2026-10-12",
+   "Panchok",
+   2
+  ],
+  [
+   "2026-10-12",
+   "Erian",
+   2
+  ],
+  [
+   "2026-10-12",
+   "Makmah",
+   2
+  ],
+  [
+   "2026-10-12",
+   "Verc",
+   3
+  ],
+  [
+   "2026-10-12",
+   "Guess",
+   3
+  ],
+  [
+   "2026-10-12",
+   "Agus",
+   3
+  ],
+  [
+   "2026-10-12",
+   "Colesito",
+   3
+  ],
+  [
+   "2026-10-12",
+   "Molusco",
+   3
+  ],
+  [
+   "2026-10-12",
+   "Mr Still Ballin",
+   3
+  ],
+  [
+   "2026-10-12",
+   "MCO",
+   3
+  ],
+  [
+   "2026-10-12",
+   "Catarsis",
+   3
+  ],
+  [
+   "2026-10-12",
+   "Liberia",
+   3
+  ],
+  [
+   "2026-10-12",
+   "Ortiz",
+   3
   ]
  ],
  "ult": {
   "baja": [
-   "Abyssus",
-   "BTRX",
-   "Badterne",
-   "Bloody",
-   "Emilio Alva",
-   "Hassan",
-   "Krtman",
-   "MTZ",
-   "Prosu",
-   "Richard",
-   "Zeta"
-  ],
-  "sem": "2026-10-05",
-  "sube": [
-   "19",
-   "Agus",
-   "Alexi",
-   "BastyRetro",
    "Cajita",
-   "Carlosmo",
-   "Chop",
-   "Cronox",
-   "Delux",
+   "CrisZJ",
    "Dominick",
-   "Dynoco",
-   "EIDP",
    "Erik",
-   "Geoka",
-   "Guess",
-   "HH",
-   "Majiztral",
-   "Makmah",
-   "Medster",
-   "Motera",
-   "Mr Still Ballin",
+   "Miniboy",
    "NXUZ",
-   "Nemi",
-   "OG",
-   "ONZASS",
-   "Oasis",
-   "Ortiz",
-   "PRAISERIZA",
+   "Number",
    "Paria",
-   "Pomberito",
-   "Presagio",
-   "Prodigy",
    "Provenza",
-   "RT",
-   "Santi",
-   "Snow",
    "Sosa",
-   "Tam",
-   "Tenor",
-   "Vandu",
-   "Velatz",
-   "Verc",
-   "Walker",
+   "TøKīØ🦠🧠",
    "Xclusivo",
-   "Xowee",
    "ikonoxx"
+  ],
+  "sem": "2026-10-12",
+  "sube": [
+   "1200",
+   "Adriagner",
+   "Agus",
+   "BNA",
+   "Bloody",
+   "Calíz",
+   "Catarsis",
+   "Colesito",
+   "EmiZor",
+   "Emilio Alva",
+   "Erian",
+   "Guess",
+   "Hotaru Adeyemi 🏳️‍⚧️",
+   "Kyss",
+   "Liberia",
+   "MCO",
+   "Makmah",
+   "Molusco",
+   "Mosquitrap 🦟",
+   "Mr Still Ballin",
+   "NC",
+   "Ortiz",
+   "Panchok",
+   "Prosu",
+   "Rodas",
+   "Shadow",
+   "Sin Limites",
+   "Teo",
+   "Trot",
+   "VECA 🇧🇱",
+   "Vacile🇪🇸",
+   "Verc",
+   "Xubaru"
   ]
  },
  "zona": 5

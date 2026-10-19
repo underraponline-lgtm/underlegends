@@ -1,7 +1,7 @@
 {
  "_leeme": "Las misiones de la semana: las arma bot/misiones.py en el paso 1c, enteras en cada corrida. Las reglas y los números viven en ese archivo. `suma` es lo que cada uno lleva sumado a la Temporada; `semanas`, qué tocó cada semana y quién cumplió.",
  "bono": 1000,
- "sem": "2026-10-12",
+ "sem": "2026-10-19",
  "semanas": {
   "2026-10-05": {
    "fin": "2026-10-12T15:00:00Z",
@@ -1613,6 +1613,12 @@
      16,
      0
     ],
+    "BLITZ": [
+     1,
+     32,
+     32,
+     0
+    ],
     "BNA": [
      4,
      1,
@@ -1728,7 +1734,7 @@
      0
     ],
     "DarkoMC": [
-     1,
+     2,
      16,
      16,
      0
@@ -1871,6 +1877,12 @@
      16,
      0
     ],
+    "J19 🇨🇷": [
+     1,
+     32,
+     32,
+     0
+    ],
     "JEIXDER": [
      1,
      16,
@@ -1914,7 +1926,7 @@
      0
     ],
     "Jult": [
-     3,
+     4,
      8,
      8,
      0
@@ -1968,9 +1980,9 @@
      0
     ],
     "Kravitz": [
-     1,
-     8,
-     8,
+     2,
+     4,
+     4,
      0
     ],
     "Krish": [
@@ -2070,7 +2082,7 @@
      0
     ],
     "Makmah": [
-     16,
+     17,
      2,
      2,
      0
@@ -2130,7 +2142,7 @@
      0
     ],
     "Molusco": [
-     6,
+     7,
      1,
      1,
      0
@@ -2199,6 +2211,12 @@
      5,
      1,
      1,
+     0
+    ],
+    "OKAM": [
+     1,
+     32,
+     32,
      0
     ],
     "ONDADISKO": [
@@ -2352,7 +2370,7 @@
      0
     ],
     "Sin Limites": [
-     7,
+     8,
      4,
      4,
      0
@@ -2412,9 +2430,9 @@
      0
     ],
     "Tenor": [
+     2,
      1,
-     2,
-     2,
+     1,
      0
     ],
     "Teo": [
@@ -2573,6 +2591,12 @@
      4,
      0
     ],
+    "tomyhilfiger🇾🇹": [
+     1,
+     32,
+     32,
+     0
+    ],
     "yinn": [
      3,
      1,
@@ -2608,6 +2632,7 @@
     "Colesito": 2900,
     "Cronox": 300,
     "DO-C": 300,
+    "DarkoMC": 300,
     "DarnBless": 300,
     "Delux": 900,
     "Drexx": 300,
@@ -2631,6 +2656,7 @@
     "Jupiter": 900,
     "Keider": 900,
     "Kochi": 300,
+    "Kravitz": 900,
     "Krish": 300,
     "Kusoh": 600,
     "LRS": 900,
@@ -2679,7 +2705,7 @@
     "Soulb": 900,
     "Tam": 2900,
     "Teito": 300,
-    "Tenor": 600,
+    "Tenor": 2900,
     "Teo": 300,
     "Trot": 900,
     "Tuca": 1700,
@@ -2702,6 +2728,51 @@
     "rodrilp": 600,
     "yinn": 2900
    }
+  },
+  "2026-10-19": {
+   "fin": "2026-10-26T15:00:00Z",
+   "lista": [
+    [
+     "multi",
+     "Jugá un evento del servidor con el multiplicador más alto",
+     "facil",
+     1,
+     300
+    ],
+    [
+     "mundo3",
+     "Ganale a raperos de 3 países distintos al tuyo",
+     "media",
+     3,
+     600
+    ],
+    [
+     "final",
+     "Llegá a una final",
+     "dificil",
+     2,
+     1000
+    ],
+    [
+     "caza",
+     "Ganale un duelo a Makmah",
+     "caza",
+     1,
+     800,
+     "Makmah"
+    ],
+    [
+     "dorado",
+     "Jugá el evento dorado de Snake Rap",
+     "dorado",
+     1,
+     600,
+     null,
+     "SR"
+    ]
+   ],
+   "prog": {},
+   "pts": {}
   }
  },
  "suma": {
@@ -2749,6 +2820,7 @@
   "Cronox": 1600,
   "DAVIJUAN": 300,
   "DO-C": 600,
+  "DarkoMC": 300,
   "DarnBless": 600,
   "Delux": 1800,
   "Denik": 300,
@@ -2805,7 +2877,7 @@
   "Kminant": 300,
   "Kochi": 300,
   "Korey": 300,
-  "Kravitz": 300,
+  "Kravitz": 1200,
   "Krinkross🇪🇸": 300,
   "Krish": 600,
   "Kun Z": 300,
@@ -2905,7 +2977,7 @@
   "Soulb": 1200,
   "Tam": 4200,
   "Teito": 300,
-  "Tenor": 900,
+  "Tenor": 3200,
   "Teo": 600,
   "Tier": 300,
   "Trot": 1200,

@@ -103,9 +103,10 @@
   },
   "DarkoMC": {
    "avisado": "2026-10-18",
+   "avisado_cumplido": "2026-10-19",
    "chat": "2026-10-18",
-   "con": null,
-   "cumplido": "",
+   "con": 488,
+   "cumplido": "2026-10-19T06:14:16+00:00",
    "debut": "2026-10-18T20:57:26+00:00",
    "did": "1375578701302857738",
    "evento": "LA BELLA ARTE DE LA DESGRACIA VOL7",
@@ -179,6 +180,18 @@
    "n": 484,
    "sv": "FFA",
    "vence": "2026-10-25T20:57:26+00:00",
+   "vencido": false
+  },
+  "J19": {
+   "avisado": "2026-10-19",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-19T06:14:16+00:00",
+   "did": "",
+   "evento": "FREESTYLE LEAGUE N3",
+   "n": 488,
+   "sv": "FFA",
+   "vence": "2026-10-26T06:14:16+00:00",
    "vencido": false
   },
   "Joaquín La Profecia 👨🏻‍🍳": {
@@ -521,6 +534,18 @@
    "n": 483,
    "sv": "FFA",
    "vence": "2026-10-25T02:26:23+00:00",
+   "vencido": false
+  },
+  "tomyhilfiger": {
+   "avisado": "2026-10-19",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-19T06:14:16+00:00",
+   "did": "",
+   "evento": "FREESTYLE LEAGUE N3",
+   "n": 488,
+   "sv": "FFA",
+   "vence": "2026-10-26T06:14:16+00:00",
    "vencido": false
   },
   "🏳️‍⚧️ VEPG 🏳️‍⚧️": {
