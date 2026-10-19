@@ -558,16 +558,68 @@ def copa_n(semana, eventos, org_de):
     return cands[0][1] if cands else None
 
 
-def _clave_persona(nombre):
+_AMBIGUOS = None
+
+
+def _ambiguos():
+    """Las claves (sin bandera) que son de DOS O MÁS PERSONAS que sólo cambian de bandera: `{clave}`.
+
+    🔴 «EVANGELINE» 🇧🇴 Y «Evangeline» 🇵🇪 ERAN UNA SOLA (pasada del 19/10/2026; Dlx, a «¿las separo, migrando?»:
+    *«A»*). El ranking ya las tenía como dos —`rankings._grafia()` separa a los desconocidos por la bandera, que es la
+    regla de Dlx: *«la bandera no siempre es decoración»*— y esta clave las juntaba: la primera vez, el Semillero, la
+    Revelación del mes y los Clásicos eran de las dos a la vez.
+
+    Salen del pool —dos filas con la misma clave y DOS PAÍSES DISTINTOS— y de los `no_confundir` de la hoja de AKAs.
+    ⚠️ «JULIX» sin bandera contra «Julix» 🇧🇴 NO entra: sin bandera no se sabe de cuál es, y queda como estaba.
+    """
+    global _AMBIGUOS
+    if _AMBIGUOS is None:
+        import re
+        import rankings as RK
+        por = {}
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'temporada_pool.json'), encoding='utf-8') as f:
+                pool = json.load(f) or []
+        except (OSError, ValueError):
+            pool = []
+        for p in pool:
+            raw = re.sub(r'[\U0001F1E6-\U0001F1FF]', '', str(p.get('raw') or '')).replace('❓', '').strip()
+            cc = str(p.get('cc') or '').lower()
+            if raw and re.fullmatch(r'[a-z]{2}', cc):
+                por.setdefault(_gente(RK.canon(raw)), set()).add(cc)
+        amb = {k for k, ccs in por.items() if k and len(ccs) >= 2}
+        try:
+            RK._grafia('x')                              # (lee la hoja de AKAs la primera vez)
+            amb |= {_gente(k) for k in (RK._POR_BANDERA or ()) if k}
+        except Exception:                                # noqa: BLE001
+            pass
+        _AMBIGUOS = amb
+    return _AMBIGUOS
+
+
+def _clave_persona(nombre, cc=''):
     """La identidad de alguien de una llave, la misma en todas las temporadas.
 
     Sin banderas ni `❓` y con su AKA (`rankings.canon()`): «MAU KC 🇨🇴» de una
     llave y «Mau Kc» de la pre-temporada son la misma persona.
+
+    🔴 SALVO QUE ESE NOMBRE SEA DE DOS PERSONAS CON DISTINTA BANDERA (`_ambiguos()`): entonces lleva su país pegado
+    —«evangelinepe», «evangelinebo»—, sin separador para que `nombres.clave()` no lo pierda y la clave pase dos veces
+    por acá sin cambiar. El país sale de la bandera del nombre o, para una fila del pool (que no la trae), de `cc`.
     """
     import re
     import rankings as RK
-    x = re.sub(r'[\U0001F1E6-\U0001F1FF]', '', str(nombre or '')).replace('❓', '').strip()
-    return _gente(RK.canon(x)) if x else ''
+    crudo = str(nombre or '')
+    x = re.sub(r'[\U0001F1E6-\U0001F1FF]', '', crudo).replace('❓', '').strip()
+    if not x:
+        return ''
+    k = _gente(RK.canon(x))
+    if k and k in _ambiguos():
+        fl = re.search(r'[\U0001F1E6-\U0001F1FF]{2}', crudo)
+        pais = ''.join(chr(ord(c) - 0x1F1E6 + 97) for c in fl.group(0)) if fl else str(cc or '').lower()
+        if re.fullmatch(r'[a-z]{2}', pais):
+            return k + pais
+    return k
 
 
 def leer_vistos(ruta=None):
@@ -1032,6 +1084,14 @@ def correr(ahora=None, aplicar=False, d=None, eventos=None, org_de=None, vistos=
     vistos = leer_vistos() if vistos is None else vistos
     semillero_ok = bool(vistos)
     if semillero_ok:
+        # 🔀 LOS QUE SE SEPARARON POR LA BANDERA (pasada del 19/10/2026, ver `_ambiguos()`): su clave vieja juntaba a
+        # dos personas. Se borra si su primera vez está entre las llaves que se releen, así `anotar_vistos()` anota a
+        # cada una con SU primera vez; si es de antes (la pre-temporada), se deja: no habría de dónde recalcularla
+        t0 = min((e[2] for e in evs if e[2]), default=None)
+        for k in sorted(_ambiguos()):
+            ya = vistos.get(k)
+            if ya and ya[0] and t0 and _de_iso(ya[0]) >= t0:
+                del vistos[k]
         anotar_vistos(vistos, evs)
     # 🔑 LOS DUELOS DE LA TEMPORADA, al día: de ahí salen los Clásicos
     rivales_ok = rivales is not None or eventos is None
@@ -1337,6 +1397,24 @@ def _self_check():
         vis['v%d' % i] = ['2026-09-23T00:00:00Z', 'FFA']
     ok(anotar_vistos(vis, evn) == 7 and vis['n1'][1] == 'SR' and vis['viejo1'][1] == '',
        'se anota quien juega por primera vez (7), con el servidor de ese primer evento; el viejo sigue viejo')
+
+    # 🔀 dos personas con el mismo nombre y distinta bandera (pasada del 19/10/2026, Dlx: «A»)
+    global _AMBIGUOS
+    amb0 = _AMBIGUOS
+    _AMBIGUOS = {'evangeline'}
+    kpe, kbo = _clave_persona('Evangeline🇵🇪'), _clave_persona('EVANGELINE 🇧🇴')
+    ok(kpe == 'evangelinepe' and kbo == 'evangelinebo' and _clave_persona('Evangeline') == 'evangeline'
+       and _clave_persona('Evangeline', 'pe') == kpe and _clave_persona(kpe) == kpe
+       and _clave_persona('MAU KC 🇨🇴') == _clave_persona('Mau Kc'),
+       'el mismo nombre con dos banderas son dos personas (y la clave pasa dos veces sin cambiar); con una sola, '
+       'la bandera sigue siendo decoración')
+    vb = {'evangeline': [_iso(en(10, 13, 20)), 'DDF'], 'viejo1': ['2026-01-01T00:00:00Z', '']}
+    evb = [(51, 'DDF', en(10, 13, 20), [['Evangeline🇵🇪', 'x', 1]], 'a'), (52, 'DDF', en(10, 18, 20), [['EVANGELINE🇧🇴', 'x', 1]], 'b')]
+    correr(ahora=en(10, 19, 11), d={'semanas': []}, eventos=evb, org_de={}, vistos=vb, rivales=[], votos={}, ajustes={})
+    ok('evangeline' not in vb and vb.get('evangelinepe', [''])[0] == _iso(en(10, 13, 20))
+       and vb.get('evangelinebo', [''])[0] == _iso(en(10, 18, 20)) and 'viejo1' in vb,
+       'la clave vieja que juntaba a las dos se rehace: cada una con SU primera vez  %s' % vb)
+    _AMBIGUOS = amb0
     rs = resultado_semillero({'inicio': _iso(en(10, 12, 11)), 'fin': _iso(en(10, 19, 11))}, evn, vis)
     ok(rs['nuevos'] == {'SR': 3, 'FFA': 4} and rs['gana'] == 'SR',
        'gana SR con 3 nuevos de 4 (FFA trajo 4, pero de 20): en proporción, no en cantidad  %s' % rs)

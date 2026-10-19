@@ -74,7 +74,7 @@ def debutantes(semana, vistos=None, pool=None):
             pool = []
     nombre = {}
     for x in pool:
-        k = MU._clave_persona(x.get('raw') or '')
+        k = MU._clave_persona(x.get('raw') or '', x.get('cc'))
         if k:
             nombre.setdefault(k, x.get('raw'))
     ini, fin = MU._de_iso(semana['inicio']), MU._de_iso(semana['fin'])

@@ -3123,7 +3123,7 @@ def _rivales(gente):
     """
     try:
         import multiplicadores as _MU
-        idx = {_MU._clave_persona(p.get('raw')): _clave(p) for p in gente if p.get('raw')}
+        idx = {_MU._clave_persona(p.get('raw'), p.get('cc')): _clave(p) for p in gente if p.get('raw')}
         out = {}
         for (ka, kb), v in _MU.rivalidades().items():
             pa, pb = idx.get(ka), idx.get(kb)

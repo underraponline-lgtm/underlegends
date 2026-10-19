@@ -206,7 +206,7 @@ def _datos():
     import multiplicadores as MU
     with io.open(os.path.join(BASE, 'datos', 'temporada_pool.json'), encoding='utf-8') as f:
         pool = json.load(f) or []
-    idx = {MU._clave_persona(p.get('raw')): p.get('raw') for p in pool if p.get('raw')}
+    idx = {MU._clave_persona(p.get('raw'), p.get('cc')): p.get('raw') for p in pool if p.get('raw')}
     raw_de = lambda nombre: idx.get(MU._clave_persona(nombre))
     mw = MW.suma()[0]
     reyes = set()

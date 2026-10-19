@@ -274,7 +274,7 @@ def _datos(vistas=None):
             pool = json.load(f) or []
     except (OSError, ValueError):
         pass
-    fuera = {MU._clave_persona(p.get('raw')) for p in pool if p.get('fc') and p.get('raw')}
+    fuera = {MU._clave_persona(p.get('raw'), p.get('cc')) for p in pool if p.get('fc') and p.get('raw')}
     evs = MU.eventos_de()
     d = MU.leer()
     filas = [(e[0], e[1], e[2], f[0], MU._num(f[2])) for e in evs if e[2] for f in (e[3] or []) if f and len(f) >= 3]
