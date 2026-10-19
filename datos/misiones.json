@@ -1577,6 +1577,12 @@
      1,
      0
     ],
+    "Adriagner": [
+     1,
+     1,
+     1,
+     0
+    ],
     "Agente sombra": [
      2,
      16,
@@ -1649,6 +1655,12 @@
      4,
      0
     ],
+    "Carlosss": [
+     1,
+     4,
+     4,
+     0
+    ],
     "Catarsis": [
      2,
      2,
@@ -1689,6 +1701,12 @@
      9,
      1,
      1,
+     0
+    ],
+    "CrisZJ": [
+     1,
+     32,
+     32,
      0
     ],
     "Crk": [
@@ -1751,6 +1769,12 @@
      8,
      0
     ],
+    "EVANGELINE🇧🇴": [
+     1,
+     2,
+     2,
+     0
+    ],
     "Efimero": [
      1,
      8,
@@ -1776,7 +1800,7 @@
      0
     ],
     "Erian": [
-     13,
+     14,
      1,
      1,
      0
@@ -1908,7 +1932,7 @@
      0
     ],
     "Keider": [
-     2,
+     3,
      4,
      4,
      0
@@ -2064,9 +2088,9 @@
      0
     ],
     "Masino": [
-     1,
-     16,
-     16,
+     2,
+     2,
+     2,
      0
     ],
     "MauzzitoEmeces": [
@@ -2093,8 +2117,20 @@
      16,
      0
     ],
+    "Misterioso": [
+     1,
+     32,
+     32,
+     0
+    ],
     "Molusco": [
      5,
+     1,
+     1,
+     0
+    ],
+    "Mosquitrap 🦟": [
+     1,
      1,
      1,
      0
@@ -2237,6 +2273,12 @@
      2,
      0
     ],
+    "RC🇲🇽": [
+     1,
+     32,
+     32,
+     0
+    ],
     "Raizer": [
      1,
      4,
@@ -2256,9 +2298,15 @@
      0
     ],
     "Rodas": [
-     3,
+     4,
      8,
      8,
+     0
+    ],
+    "SEBITAS🇱🇷": [
+     1,
+     4,
+     4,
      0
     ],
     "SINTEXT": [
@@ -2286,7 +2334,7 @@
      0
     ],
     "Shadow": [
-     3,
+     4,
      8,
      8,
      0
@@ -2532,6 +2580,7 @@
     "AKARK": 600,
     "Abyssus": 900,
     "Abysuss": 1600,
+    "Adriagner": 1600,
     "Agente sombra": 300,
     "Agus": 2900,
     "Andres": 1600,
@@ -2540,6 +2589,7 @@
     "Benjixo": 900,
     "Bloody": 900,
     "Calíz": 900,
+    "Carlosss": 600,
     "Catarsis": 1700,
     "Chop": 900,
     "Cinexfilo": 900,
@@ -2550,6 +2600,7 @@
     "Delux": 900,
     "Drexx": 300,
     "Dynoco": 300,
+    "EVANGELINE🇧🇴": 600,
     "EmiZor": 900,
     "Emilio Alva": 600,
     "Erian": 2900,
@@ -2580,7 +2631,9 @@
     "Magic": 300,
     "Majiztral": 300,
     "Makmah": 900,
+    "Masino": 900,
     "Molusco": 2900,
+    "Mosquitrap 🦟": 1600,
     "Motera": 1600,
     "Mr Still Ballin": 2900,
     "NC": 2900,
@@ -2601,6 +2654,7 @@
     "Provenza": 900,
     "Raizer": 600,
     "Rodas": 300,
+    "SEBITAS🇱🇷": 600,
     "SINTEXT": 300,
     "Scritura": 900,
     "Shadow": 300,
@@ -2649,6 +2703,7 @@
   "ARDEAN": 300,
   "Abyssus": 1200,
   "Abysuss": 1600,
+  "Adriagner": 1600,
   "Agente sombra": 300,
   "Agus": 5800,
   "Akutagawa🇹🇼": 300,
@@ -2670,7 +2725,7 @@
   "Cajita": 300,
   "Calíz": 900,
   "Carlosmo": 1600,
-  "Carlosss": 1600,
+  "Carlosss": 2200,
   "Catarsis": 1700,
   "Chop": 2200,
   "Cinexfilo": 900,
@@ -2692,6 +2747,7 @@
   "Dyzz": 900,
   "EGI": 300,
   "EIDP": 2900,
+  "EVANGELINE🇧🇴": 600,
   "Eclipsito": 2900,
   "Efimero": 300,
   "Eliot": 1300,
@@ -2763,10 +2819,12 @@
   "Makmah": 3800,
   "Malva": 300,
   "Marto": 300,
+  "Masino": 900,
   "Mathhias": 300,
   "Miniboy": 300,
   "Mito": 300,
   "Molusco": 3200,
+  "Mosquitrap 🦟": 1600,
   "Motera": 2600,
   "Mr Still Ballin": 5800,
   "Musicdum": 300,
@@ -2812,6 +2870,7 @@
   "Rosmel 🇻🇪": 300,
   "Ruvick": 300,
   "SAEVA": 300,
+  "SEBITAS🇱🇷": 600,
   "SINTEXT": 600,
   "Saiko": 300,
   "Sami": 300,

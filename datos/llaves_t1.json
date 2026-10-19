@@ -26830,5 +26830,161 @@
     625
    ]
   ]
+ },
+ "486": {
+  "dia": "2026-10-18",
+  "escala": "8-15",
+  "fecha": "18/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1561553405791572000"
+  ],
+  "n": 486,
+  "nombre": "LA MISIÓN DEL MONJE",
+  "participantes": 15,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "Liberia",
+       "RC🇲🇽"
+      ],
+      "Erian, Liberia",
+      "triple (3 bandas, pasan 2); también pasa: Sebita🇱🇷; Drafteado: erian 🇵🇦"
+     ],
+     [
+      [
+       "Evangeline🇵🇪",
+       "CrisZJ",
+       "Shadow"
+      ],
+      "Evangeline🇵🇪",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Keider",
+       "Carlosss",
+       "Rodas"
+      ],
+      "Keider, Carlosss",
+      "triple (3 bandas, pasan 2); también pasa: Carlosss"
+     ],
+     [
+      [
+       "Mosquitrap 🦟",
+       "Adriagner",
+       "Misterioso"
+      ],
+      "Mosquitrap 🦟, Adriagner",
+      "triple (3 bandas, pasan 2); también pasa: Adriagner🇳🇮"
+     ]
+    ],
+    "r": "Filtros"
+   },
+   {
+    "b": [
+     [
+      [
+       "Masino, EVANGELINE🇧🇴",
+       "Erian, SEBITAS🇱🇷"
+      ],
+      "Masino, EVANGELINE🇧🇴",
+      ""
+     ],
+     [
+      [
+       "MOSQUITORAP🇦🇷, Adriagner",
+       "Carlosss, Keider"
+      ],
+      "MOSQUITORAP🇦🇷, Adriagner",
+      "Drafteado: CARLOS🇪🇨"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mosquitrap 🦟, Adriagner, Carlosss",
+       "Masino, EVANGELINE🇧🇴, Erian"
+      ],
+      "Mosquitrap 🦟, Adriagner, Carlosss",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Carlosss",
+    "Semifinal",
+    4250
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    3416
+   ],
+   [
+    "Adriagner",
+    "Campeón",
+    2500
+   ],
+   [
+    "Mosquitrap 🦟",
+    "Campeón",
+    2500
+   ],
+   [
+    "Keider",
+    "Semifinal",
+    1750
+   ],
+   [
+    "SEBITAS🇱🇷",
+    "Semifinal",
+    1750
+   ],
+   [
+    "EVANGELINE🇧🇴",
+    "Subcampeón",
+    1666
+   ],
+   [
+    "Masino",
+    "Subcampeón",
+    1666
+   ],
+   [
+    "CrisZJ",
+    "R32",
+    625
+   ],
+   [
+    "Misterioso",
+    "R32",
+    625
+   ],
+   [
+    "RC🇲🇽",
+    "R32",
+    625
+   ],
+   [
+    "Rodas",
+    "R32",
+    625
+   ],
+   [
+    "Shadow",
+    "R32",
+    625
+   ]
+  ]
  }
 }

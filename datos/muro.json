@@ -326,6 +326,13 @@
 "temporada"
 ]
 },
+"carlosss": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "lordviruzz": {
 "rg": "D",
 "c": [
@@ -339,13 +346,6 @@
 "rg": "D",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"carlosss": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -457,6 +457,14 @@
 "alexi": {
 "rg": "",
 "c": []
+},
+"shadow": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "neo": {
 "rg": "",
@@ -603,7 +611,7 @@
 "temporada"
 ]
 },
-"shadow": {
+"rodas": {
 "rg": "",
 "c": [
 "servidor",
@@ -675,13 +683,6 @@
 "rg": "",
 "c": []
 },
-"rodas": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "efimero": {
 "rg": "",
 "c": []
@@ -718,6 +719,13 @@
 "servidor"
 ]
 },
+"masino": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "fazer": {
 "rg": "",
 "c": []
@@ -733,6 +741,13 @@
 "rg": "",
 "c": [
 "servidor"
+]
+},
+"keider": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
 ]
 },
 "pomberito": {
@@ -789,7 +804,7 @@
 "servidor"
 ]
 },
-"masino": {
+"adriagner": {
 "rg": "",
 "c": [
 "servidor",
@@ -804,13 +819,6 @@
 ]
 },
 "darnbless": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"keider": {
 "rg": "",
 "c": [
 "servidor",
@@ -864,6 +872,10 @@
 "c": []
 },
 "noa": {
+"rg": "",
+"c": []
+},
+"mosquitrap": {
 "rg": "",
 "c": []
 },
@@ -1072,13 +1084,6 @@
 "rg": "",
 "c": []
 },
-"adriagner": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "rbk": {
 "rg": "",
 "c": [
@@ -1213,10 +1218,6 @@
 "c": []
 },
 "akark": {
-"rg": "",
-"c": []
-},
-"mosquitrap": {
 "rg": "",
 "c": []
 },
@@ -2417,22 +2418,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Aby"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Aby"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5726,6 +5711,23 @@
 "Dyzz"
 ],
 "carta": "servidor"
+},
+{
+"tipo": "rango",
+"t": "2026-10-19T03:02:11Z",
+"quien": [
+"Shadow"
+],
+"rg": "E",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-19T03:02:11Z",
+"quien": [
+"Shadow"
+],
+"carta": "competitivo"
 }
 ]
 }

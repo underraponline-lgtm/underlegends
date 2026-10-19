@@ -2,7 +2,7 @@
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
   "ACAD": "2026-10-16",
-  "DDF": "2026-10-16",
+  "DDF": "2026-10-18",
   "FFA": "2026-10-18",
   "FRZ": "2026-10-15",
   "FVS": "2026-10-15",
@@ -111,6 +111,19 @@
    "n": 484,
    "sv": "FFA",
    "vence": "2026-10-25T20:57:26+00:00",
+   "vencido": false
+  },
+  "EVANGELINE": {
+   "avisado": "2026-10-18",
+   "chat": "2026-10-18",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-19T01:35:44+00:00",
+   "did": "",
+   "evento": "LA MISIÓN DEL MONJE",
+   "n": 486,
+   "sv": "DDF",
+   "vence": "2026-10-26T01:35:44+00:00",
    "vencido": false
   },
   "FOTOSÍNTESIS": {
@@ -286,6 +299,19 @@
    "vence": "2026-10-22T01:41:57+00:00",
    "vencido": false
   },
+  "Misterioso": {
+   "avisado": "2026-10-18",
+   "chat": "2026-10-18",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-19T01:35:44+00:00",
+   "did": "1112754838346928262",
+   "evento": "LA MISIÓN DEL MONJE",
+   "n": 486,
+   "sv": "DDF",
+   "vence": "2026-10-26T01:35:44+00:00",
+   "vencido": false
+  },
   "ONDADISKO": {
    "avisado": "2026-10-13",
    "chat": "2026-10-14",
@@ -312,6 +338,19 @@
    "vence": "2026-10-23T02:35:47+00:00",
    "vencido": false
   },
+  "RC": {
+   "avisado": "2026-10-18",
+   "chat": "2026-10-18",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-19T01:35:44+00:00",
+   "did": "",
+   "evento": "LA MISIÓN DEL MONJE",
+   "n": 486,
+   "sv": "DDF",
+   "vence": "2026-10-26T01:35:44+00:00",
+   "vencido": false
+  },
   "Raizer": {
    "avisado": "2026-10-13",
    "chat": "2026-10-15",
@@ -336,6 +375,19 @@
    "n": 478,
    "sv": "SR",
    "vence": "2026-10-23T17:34:15+00:00",
+   "vencido": false
+  },
+  "SEBITAS": {
+   "avisado": "2026-10-18",
+   "chat": "2026-10-18",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-19T01:35:44+00:00",
+   "did": "",
+   "evento": "LA MISIÓN DEL MONJE",
+   "n": 486,
+   "sv": "DDF",
+   "vence": "2026-10-26T01:35:44+00:00",
    "vencido": false
   },
   "SYEPORUTE": {

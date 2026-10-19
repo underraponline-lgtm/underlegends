@@ -15628,5 +15628,188 @@
    ]
   ],
   "v": 2
+ },
+ "486": {
+  "antes": {
+   "Adriagner": [
+    104,
+    175,
+    false
+   ],
+   "Carlosss": [
+    36,
+    47,
+    false
+   ],
+   "CrisZJ": [
+    196,
+    39,
+    true
+   ],
+   "Erian": [
+    6,
+    7,
+    false
+   ],
+   "Keider": [
+    87,
+    121,
+    false
+   ],
+   "Masino": [
+    84,
+    118,
+    false
+   ],
+   "Mosquitrap 🦟": [
+    274,
+    203,
+    true
+   ],
+   "Rodas": [
+    73,
+    97,
+    false
+   ],
+   "Shadow": [
+    64,
+    86,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Erian",
+    "RC🇲🇽",
+    "Erian"
+   ],
+   [
+    "Evangeline🇵🇪",
+    "CrisZJ",
+    "Evangeline🇵🇪"
+   ],
+   [
+    "Evangeline🇵🇪",
+    "Shadow",
+    "Evangeline🇵🇪"
+   ],
+   [
+    "Keider",
+    "Rodas",
+    "Keider"
+   ],
+   [
+    "Mosquitrap 🦟",
+    "Misterioso",
+    "Mosquitrap 🦟"
+   ],
+   [
+    "Masino, EVANGELINE🇧🇴",
+    "Erian, SEBITAS🇱🇷",
+    "Masino, EVANGELINE🇧🇴"
+   ],
+   [
+    "MOSQUITORAP🇦🇷, Adriagner",
+    "Carlosss, Keider",
+    "MOSQUITORAP🇦🇷, Adriagner"
+   ],
+   [
+    "Mosquitrap 🦟, Adriagner, Carlosss",
+    "Masino, EVANGELINE🇧🇴, Erian",
+    "Mosquitrap 🦟, Adriagner, Carlosss"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 2,
+   "Carlosss": 7,
+   "CrisZJ": 10,
+   "Erian": 40,
+   "Keider": 5,
+   "Masino": 4,
+   "Mosquitrap 🦟": 2,
+   "Rodas": 8,
+   "Shadow": 9
+  },
+  "fecha": "18/10",
+  "firma": "2d10d4d05faf6b81",
+  "msg": "1561573199915778210",
+  "nombre": "LA MISIÓN DEL MONJE",
+  "num": 486,
+  "participantes": 15,
+  "sello": {
+   "Adriagner": "46259c832d0e:906ce275eeb8",
+   "Mosquitrap 🦟": ""
+  },
+  "sv": "DDF",
+  "t": "2026-10-19T02:54:22Z",
+  "tabla": [
+   [
+    "Carlosss",
+    "Semifinal",
+    4250
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    3416
+   ],
+   [
+    "Mosquitrap 🦟",
+    "Campeón",
+    2500
+   ],
+   [
+    "Adriagner",
+    "Campeón",
+    2500
+   ],
+   [
+    "SEBITAS🇱🇷",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Keider",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Masino",
+    "Subcampeón",
+    1666
+   ],
+   [
+    "EVANGELINE🇧🇴",
+    "Subcampeón",
+    1666
+   ],
+   [
+    "RC🇲🇽",
+    "R32",
+    625
+   ],
+   [
+    "CrisZJ",
+    "R32",
+    625
+   ],
+   [
+    "Shadow",
+    "R32",
+    625
+   ],
+   [
+    "Rodas",
+    "R32",
+    625
+   ],
+   [
+    "Misterioso",
+    "R32",
+    625
+   ]
+  ],
+  "v": 2
  }
 }

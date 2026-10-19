@@ -1232,6 +1232,33 @@
     "dyzzmzt = 1406806279275417640"
    ],
    "escribio": {}
+  },
+  {
+   "id": "743534cf20",
+   "tipo": "Nombre desconocido",
+   "sec": "LA MISIÓN DEL MONJE · DDF · 18/10 · #486",
+   "que": "¿Quién es «MOSQUITORAP🇦🇷»?",
+   "r": "Es Mosquitrap 🦟",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Mosquitrap 🦟: estaba en la llamada del evento con un nombre parecido",
+   "t": 1792378946207,
+   "filas": [
+    746
+   ],
+   "variantes": [
+    "MOSQUITORAP🇦🇷"
+   ],
+   "escribio": {
+    "alias": [
+     "MOSQUITORAP",
+     "Mosquitrap 🦟"
+    ],
+    "filas": [
+     296
+    ]
+   }
   }
  ],
  "deshechas": []

@@ -1180,6 +1180,50 @@
    "b": "ADRIAGNER🇳🇮",
    "ganador": "ERIAN🇵🇦",
    "votos": "1–0"
+  },
+  "1561565469889003623": {
+   "id": "1561565469889003623",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792376620505,
+   "a": "ERIAN🇵🇦",
+   "b": "CARLOS🇪🇨",
+   "ganador": "CARLOS🇪🇨",
+   "votos": "1–0"
+  },
+  "1561566115140997234": {
+   "id": "1561566115140997234",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792376774345,
+   "a": "CARLOS🇪🇨",
+   "b": "EVANGELINE🇧🇴",
+   "ganador": "CARLOS🇪🇨",
+   "votos": "1–0"
+  },
+  "1561566903191863420": {
+   "id": "1561566903191863420",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792376962231,
+   "a": "MASINO🇨🇱",
+   "b": "CARLOS🇪🇨",
+   "ganador": "MASINO🇨🇱",
+   "votos": "1–0"
+  },
+  "1561567975809613895": {
+   "id": "1561567975809613895",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792377217963,
+   "a": "MASINO🇨🇱",
+   "b": "MOSQUITORAP🇦🇷",
+   "ganador": "MOSQUITORAP🇦🇷",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5225,8 +5269,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1792375464063,
-   "ed": 1792376620505,
-   "texto": "`[ SEMIFINALES ]`\n⌞MOSQUITRAP🇦🇷 + ADRIAGNER🇳🇮⌝ 🆚 ⌞CARLOS🇪🇨 + KEIDER🇻🇪⌝\n⌞MASINO🇨🇱 + EVANGELINE🇧🇴⌝ 🆚 ⌞ERIAN🇦🇱 + SEBITAS🇱🇷⌝\n`[ FINAL ]`\n⌞ERIAN🇵🇦⌝ 🆚 ⌞ADRIAGNER🇳🇮⌝\n⌞ERIAN🇵🇦⌝ 🆚 ⌞CARLOS🇪🇨⌝",
+   "ed": 1792377476055,
+   "texto": "`[ SEMIFINALES ]`\n⌞MOSQUITRAP🇦🇷 + ADRIAGNER🇳🇮⌝ 🆚 ⌞CARLOS🇪🇨 + KEIDER🇻🇪⌝\n⌞MASINO🇨🇱 + EVANGELINE🇧🇴⌝ 🆚 ⌞ERIAN🇦🇱 + SEBITAS🇱🇷⌝\n`[ FINAL ]`\n⌞ERIAN🇵🇦⌝ 🆚 ⌞ADRIAGNER🇳🇮⌝\n⌞ERIAN🇵🇦⌝ 🆚 ⌞CARLOS🇪🇨⌝\n⌞CARLOS🇪🇨⌝ 🆚 ⌞EVANGELINE🇧🇴⌝\n⌞MASINO🇨🇱⌝ 🆚 ⌞CARLOS🇪🇨⌝\n⌞MASINO🇨🇱⌝ 🆚 ⌞MOSQUITORAP🇦🇷⌝",
    "batallas": [
     [
      "SEMIFINALES",
@@ -5264,8 +5308,38 @@
       "ERIAN🇵🇦",
       "CARLOS🇪🇨"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "CARLOS🇪🇨",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "CARLOS🇪🇨",
+      "EVANGELINE🇧🇴"
+     ],
+     "CARLOS🇪🇨",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MASINO🇨🇱",
+      "CARLOS🇪🇨"
+     ],
+     "MASINO🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MASINO🇨🇱",
+      "MOSQUITORAP🇦🇷"
+     ],
+     "MOSQUITORAP🇦🇷",
+     "veredicto",
      []
     ]
    ]

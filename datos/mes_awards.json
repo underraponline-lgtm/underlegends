@@ -115,8 +115,8 @@
     {
      "op": "DDF",
      "n": "Dimensión del Freestyle",
-     "gente": 71,
-     "ev": 17
+     "gente": 76,
+     "ev": 18
     },
     {
      "op": "SR",
@@ -336,7 +336,16 @@
      "quien": [
       "HH"
      ],
-     "d": "le ganó a Erian (#6) siendo #91 · LA BELLA ARTE DE LA DESGRACIA VOL3"
+     "d": "le ganó a Erian (#6) siendo #92 · LA BELLA ARTE DE LA DESGRACIA VOL3"
+    },
+    {
+     "op": "478:Catarsis",
+     "n": "Catarsis",
+     "q": "Catarsis",
+     "quien": [
+      "Catarsis"
+     ],
+     "d": "le ganó a Colesito (#4) siendo #50 · SNAKE INSIGNIA 5 8"
     },
     {
      "op": "481:Calíz",
@@ -348,22 +357,13 @@
      "d": "le ganó a Erian (#6) siendo #74 · PROYECTO X VOL.3"
     },
     {
-     "op": "478:Catarsis",
-     "n": "Catarsis",
-     "q": "Catarsis",
-     "quien": [
-      "Catarsis"
-     ],
-     "d": "le ganó a Colesito (#4) siendo #49 · SNAKE INSIGNIA 5 8"
-    },
-    {
      "op": "401:Zetryko",
      "n": "Zetryko",
      "q": "Zetryko",
      "quien": [
       "Zetryko"
      ],
-     "d": "le ganó a Panchok (#5) siendo #57 · COPA DE GRUPOS LCW"
+     "d": "le ganó a Panchok (#5) siendo #58 · COPA DE GRUPOS LCW"
     }
    ],
    "imparable": [
@@ -710,13 +710,13 @@
      "d": "8 podios · 🥇4 🥈4"
     },
     {
-     "op": "Guess",
-     "n": "Guess",
-     "q": "Guess",
+     "op": "Erian",
+     "n": "Erian",
+     "q": "Erian",
      "quien": [
-      "Guess"
+      "Erian"
      ],
-     "d": "7 podios · 🥇2 🥈4 🥉1"
+     "d": "7 podios · 🥇4 🥈3"
     }
    ],
    "villano": [
@@ -870,7 +870,7 @@
      "op": "Follombia",
      "n": "Follombia",
      "quien": [],
-     "d": "553.012 pts · 7 jugaron"
+     "d": "563.260 pts · 7 jugaron"
     },
     {
      "op": "Fontana",
@@ -910,21 +910,21 @@
      "n": "Chile",
      "cc": "cl",
      "quien": [],
-     "d": "1.078.193 pts · 31 jugaron"
+     "d": "1.083.191 pts · 31 jugaron"
     },
     {
      "op": "Colombia",
      "n": "Colombia",
      "cc": "co",
      "quien": [],
-     "d": "928.852 pts · 19 jugaron"
+     "d": "930.727 pts · 19 jugaron"
     },
     {
      "op": "Venezuela",
      "n": "Venezuela",
      "cc": "ar",
      "quien": [],
-     "d": "620.441 pts · 16 jugaron"
+     "d": "625.691 pts · 16 jugaron"
     },
     {
      "op": "Perú",

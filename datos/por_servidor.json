@@ -348,14 +348,14 @@
   "Adriagner": {
    "DDF": {
     "duelos": "2/3",
-    "ev": 2,
-    "oro": 1,
-    "ovr": 48,
-    "pod": 1,
-    "pts": 9938,
-    "racha": "0/1",
+    "ev": 3,
+    "oro": 2,
+    "ovr": 51,
+    "pod": 2,
+    "pts": 17438,
+    "racha": "1/1",
     "tg": {
-     "fin": 1
+     "fin": 2
     }
    }
   },
@@ -1188,12 +1188,12 @@
   "Carlosss": {
    "DDF": {
     "duelos": "17/19",
-    "ev": 7,
+    "ev": 8,
     "oro": 5,
-    "ovr": 60,
+    "ovr": 61,
     "pod": 6,
-    "pts": 74025,
-    "racha": "7/7",
+    "pts": 86775,
+    "racha": "8/8",
     "tg": {
      "bcasa": true,
      "fin": 6
@@ -1448,11 +1448,11 @@
   "CrisZJ": {
    "DDF": {
     "duelos": "10/17",
-    "ev": 10,
+    "ev": 11,
     "oro": 1,
     "ovr": 64,
     "pod": 3,
-    "pts": 50300,
+    "pts": 52175,
     "racha": "0/2",
     "tg": {
      "fin": 2,
@@ -2025,6 +2025,21 @@
     }
    }
   },
+  "EVANGELINE🇧🇴": {
+   "DDF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 46,
+    "pod": 1,
+    "pts": 4998,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   }
+  },
   "Eclipsito": {
    "ACAD": {
     "duelos": "3/6",
@@ -2228,15 +2243,15 @@
    },
    "DDF": {
     "duelos": "3/8",
-    "ev": 6,
+    "ev": 7,
     "oro": 1,
-    "ovr": 53,
-    "pod": 1,
-    "pts": 30037,
-    "racha": "0/1",
+    "ovr": 55,
+    "pod": 2,
+    "pts": 40285,
+    "racha": "1/1",
     "tg": {
      "dv": true,
-     "fin": 1
+     "fin": 2
     }
    },
    "FFA": {
@@ -2336,6 +2351,7 @@
     "pts": 8925,
     "racha": "0/0",
     "tg": {
+     "fin": 1,
      "nuevo": true
     }
    }
@@ -3523,12 +3539,12 @@
   "Keider": {
    "DDF": {
     "duelos": "1/4",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 49,
     "pod": 0,
-    "pts": 13875,
-    "racha": "0/0"
+    "pts": 19125,
+    "racha": "1/1"
    },
    "FFA": {
     "duelos": "",
@@ -4689,12 +4705,16 @@
    },
    "DDF": {
     "duelos": "1/1",
-    "ev": 0,
+    "ev": 1,
     "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
+    "ovr": 46,
+    "pod": 1,
+    "pts": 4998,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
    },
    "FFA": {
     "duelos": "4/5",
@@ -4871,6 +4891,20 @@
     "racha": "1/1"
    }
   },
+  "Misterioso": {
+   "DDF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 1875,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Mito": {
    "FFA": {
     "duelos": "0/1",
@@ -4950,6 +4984,19 @@
    }
   },
   "Mosquitrap 🦟": {
+   "DDF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 47,
+    "pod": 1,
+    "pts": 7500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "0/1",
     "ev": 1,
@@ -5984,6 +6031,20 @@
     }
    }
   },
+  "RC🇲🇽": {
+   "DDF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 1875,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "REPTILE JR": {
    "DDF": {
     "duelos": "0/1",
@@ -6276,11 +6337,11 @@
   "Rodas": {
    "DDF": {
     "duelos": "0/3",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 47,
     "pod": 0,
-    "pts": 7425,
+    "pts": 9300,
     "racha": "0/0"
    },
    "FFA": {
@@ -6390,6 +6451,20 @@
     "pod": 0,
     "pts": 625,
     "racha": "0/0"
+   }
+  },
+  "SEBITAS🇱🇷": {
+   "DDF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 5250,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "SGB": {
@@ -6688,11 +6763,11 @@
    },
    "DDF": {
     "duelos": "0/4",
-    "ev": 5,
+    "ev": 6,
     "oro": 0,
-    "ovr": 49,
+    "ovr": 50,
     "pod": 0,
-    "pts": 17924,
+    "pts": 19799,
     "racha": "0/0"
    },
    "FFA": {
