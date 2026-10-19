@@ -128,6 +128,39 @@ def dueno_distinto():
     return ''
 
 
+#: lo que es texto: su fin de línea no cuenta para el sello (git lo deja en CRLF en Windows y en LF en el runner)
+TEXTO = ('.html', '.js', '.mjs', '.css', '.json', '.txt', '.svg', '.xml', '.md', '.webmanifest', '.ics')
+
+
+def sello(fs):
+    """🔑 El hash del CONTENIDO de lo que se va a publicar, igual en Windows y en el runner (19/10/2026).
+
+    Viaja en el despliegue (`commit_message = 'sello:<hash>'`) y antes de subir se compara con el de la página
+    publicada: si es el mismo, no se sube. Desde que la página también se publica al pushear (`.github/workflows/web.yml`)
+    hay dos que publican —ese y el ciclo— y sin esto subirían lo mismo dos veces.
+    """
+    import hashlib as _h
+    h = _h.sha256()
+    for r, d in fs:
+        h.update(r.encode('utf-8'))
+        h.update(b'\0')
+        h.update(d.replace(b'\r\n', b'\n') if os.path.splitext(r)[1].lower() in TEXTO else d)
+        h.update(b'\0')
+    return h.hexdigest()[:16]
+
+
+def sello_publicado(requests, h, cid):
+    """El sello de la página publicada (la última de producción), o `''` si no tiene o no se pudo saber."""
+    try:
+        r = requests.get('%s/accounts/%s/pages/projects/%s/deployments' % (API, cid, PROYECTO), headers=h,
+                         params={'env': 'production', 'per_page': 1}, timeout=30).json()
+        x = (r.get('result') or [{}])[0]
+        m = str(((x.get('deployment_trigger') or {}).get('metadata') or {}).get('commit_message') or '')
+        return m[6:] if m.startswith('sello:') else ''
+    except Exception:                                    # noqa: BLE001
+        return ''
+
+
 def mas_nueva_en_origin():
     """El motivo para NO desplegar, o `''`: que GitHub ya tenga una versión más nueva de la página que esta copia.
 
@@ -182,6 +215,11 @@ def main():
     viejo = mas_nueva_en_origin()
     if viejo:
         print('   ⏭️ %s\n' % viejo)
+        return 0
+    # 🔑 LO MISMO NO SE SUBE DOS VECES (ver `sello()`): la publicada ya es esta. `--forzar` la sube igual
+    s = sello(fs)
+    if not rama and '--forzar' not in sys.argv and sello_publicado(requests, h, cid) == s:
+        print('   ⏭️ la página publicada ya es ésta (sello %s): no la subo otra vez\n' % s)
         return 0
 
     base = '%s/accounts/%s/pages/projects/%s' % (API, cid, PROYECTO)
@@ -251,7 +289,7 @@ def main():
     # ⚠️ EL MANIFIESTO VA COMO CAMPO DE UN MULTIPART, no como json suelto:
     # el endpoint de deployments es `multipart/form-data` y mandarlo como
     # `json=` devuelve un 400 que no dice cuál es el problema.
-    campos = {'manifest': (None, json.dumps(manifiesto))}
+    campos = {'manifest': (None, json.dumps(manifiesto)), 'commit_message': (None, 'sello:' + s)}
     for nombre, datos in sorted(aparte.items()):
         campos[nombre] = (nombre, datos, especiales[nombre])
     # 🔍 `--rama X`: un despliegue de prueba, en `X.underlegends.pages.dev`, que no toca el de todos

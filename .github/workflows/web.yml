@@ -1,0 +1,56 @@
+name: web
+
+# 🌐 LA PÁGINA SE PUBLICA AL PUSHEAR (Dlx, 19/10/2026: «dale pero fijate bien los límites q tenemos»).
+#
+# Hasta acá la publicaba sólo el ciclo, a las :22 y :52, y si el ciclo venía lento —la noche del 19/10 redibujó el
+# pool entero, 44 minutos— los arreglos de la página esperaban. Ese día la publiqué a mano seis veces.
+#
+# ⚠️ LOS LÍMITES, MEDIDOS ANTES DE ARMARLO:
+#   · GitHub Actions: el repo es público, los minutos son ilimitados. Esto tarda ~30 s.
+#   · Cloudflare Pages: su documentación dice 500 «builds» por mes y no dice si las subidas directas (las nuestras)
+#     cuentan. Medido: 740 subidas desde fines de septiembre, 350 en los últimos 15 días (68 el 13/10), y todas
+#     anduvieron. Igual se cuida:
+#       - sólo cuando cambia `bot/paginas/` (lo que el ciclo commitea es `datos/`: no dispara esto);
+#       - si llegan varios pushes seguidos, corre el último (`cancel-in-progress`);
+#       - y cada subida lleva el sello de su contenido (`bot/paginas_subir.py`, `sello()`): si la publicada ya es
+#         ésa, no se sube. Así el ciclo y esto nunca suben lo mismo dos veces.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'bot/paginas/**'
+  workflow_dispatch:
+
+concurrency:
+  group: web-pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # (`paginas_subir.py` mira si origin/main tiene algo más nuevo en bot/paginas/ antes de pisarlo)
+          fetch-depth: 50
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: instalar
+        run: pip install -q requests
+
+      # el `.env` del ciclo (trae CLOUDFLARE_API_TOKEN); nunca se imprime y no sale del runner
+      - name: credenciales
+        env:
+          ENV_FILE: ${{ secrets.ENV_FILE }}
+        run: printf '%s\n' "$ENV_FILE" > .env
+
+      - name: publicar
+        run: python bot/paginas_subir.py --aplicar
