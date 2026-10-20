@@ -1,70 +1,70 @@
 {
  "v": 1,
- "cuando": "2026-10-20T00:02:50Z",
+ "cuando": "2026-10-20T00:57:18Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 124.6,
+ "dur_s": 1367.4,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 11.2
+   "s": 6.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.7
+   "s": 7.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 25.8
+   "s": 27.5
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 1 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": true,
-   "s": 8.8
+   "s": 1253.4
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.0
+   "s": 10.7
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 64.8
+   "s": 60.4
   }
  ],
  "fallas": [],
  "ultimo_evento": {
-  "n": "490",
-  "nombre": "LA REDENCIÓN",
-  "sv": "FFA",
+  "n": "491",
+  "nombre": "FATS BATTLES PALOOZA FECHA 7",
+  "sv": "ACAD",
   "dia": "2026-10-19"
  },
  "cuotas": {
   "kv": {
-   "write": 0,
-   "read": 518
+   "write": 25,
+   "read": 2574
   },
   "objeto": {
-   "leidas": 27973,
-   "escritas": 87,
-   "pedidos": 54
+   "leidas": 237355,
+   "escritas": 2376,
+   "pedidos": 703
   },
   "worker": {
-   "pedidos": 9902,
+   "pedidos": 10040,
    "errores": 0,
-   "sub": 11346,
-   "p50_ms": 1.39,
-   "p99_ms": 11.31
+   "sub": 11561,
+   "p50_ms": 1.4,
+   "p99_ms": 11.26
   },
   "r2": {
    "objetos": 4578,
