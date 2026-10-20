@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.71",
+   "dia": "2026-10-19",
+   "cuando": "2026-10-19T22:53:00-04:00",
+   "titulo": "Cada página con su propia imagen al compartir el link",
+   "items": [
+    "🖼️ **Cada página tiene su propio thumbnail**: al pegar el link de Ranking, Crews, Eventos, Tarjetas, Pase rapero, Ligas, Tienda, Publicaciones, Socios, Guía o Salón de la fama en Discord (o donde sea), sale una imagen distinta, con lo que es esa página.",
+    "👥 **Y cada crew también**: el link de una crew muestra su nombre, su descripción, cuántos son y su logo."
+   ]
+  },
+  {
    "version": "3.70",
    "dia": "2026-10-19",
    "cuando": "2026-10-19T22:38:00-04:00",
