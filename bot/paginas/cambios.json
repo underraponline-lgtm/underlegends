@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.83",
+   "dia": "2026-10-20",
+   "cuando": "2026-10-20T17:13:00-04:00",
+   "titulo": "Tu cuenta en la compu, de a una",
+   "items": [
+    "🖥️ **En la compu, Tu cuenta muestra solo la sección que elegiste** a la izquierda, en vez de todas a la vez."
+   ]
+  },
+  {
    "version": "3.82",
    "dia": "2026-10-20",
    "cuando": "2026-10-20T17:07:00-04:00",
