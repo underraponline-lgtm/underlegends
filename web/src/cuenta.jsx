@@ -9,7 +9,7 @@
 // (App.jsx envuelve `pintaPopCuenta()`). Su ventana vieja queda de respaldo, si esto no se monta.
 import { createContext, useContext, useEffect, useState } from 'react';
 import { DUENO, PAIS, hora, limpio, nuevaQue, num, siglaDe } from './liga.js';
-import { Bandera, Cara, Carta, Chevron, DosToques, Ico, accion } from './piezas.jsx';
+import { Bandera, Cara, Carta, Chevron, DosToques, GrillaDias, Ico, accion, diaET, masDias, semanasEntre, usePerfiles } from './piezas.jsx';
 import { MiCrew } from './crewpanel.jsx';
 import { crewDe } from './crews.js';
 import { CaraDc } from './arriba.jsx';
@@ -182,7 +182,33 @@ function ComoSubir({ R }) {
 }
 
 // ── 🔥 tu racha diaria y tu nivel, debajo de quién sos (Dlx, 04/10/2026). La cuenta es del servidor ──────────────
-function RachaNivel({ dc }) {
+// 📅 LA RACHA COMO CALENDARIO (Dlx, 19/10/2026, «me gustan todas», a «Habit Tracker Calendar» de 21st): las últimas
+// cinco semanas, L a D, con los días que contaron (`R.dias`, del servidor) y, encima, los que jugaste (tus eventos, de
+// `/api/perfiles`, pasados a día del este). Hoy lleva su aro; lo que viene, apagado. Una racha se entiende de un vistazo
+// cuando se ve la tira de días llenos, no cuando se lee «3 días seguidos»
+function CalendarioRacha({ R, liga }) {
+  const P = usePerfiles();
+  const yo = liga && liga.yo;
+  const hoy = R.hoy || diaET();
+  const jugo = new Set();
+  if (P && yo && P.p && P.p[yo.k]) {
+    ((P.p[yo.k] || {}).ev || []).forEach(([n]) => { const x = (P.e || {})[n] || (P.e || {})[String(n)]; if (x && x[2]) jugo.add(diaET(Date.parse(x[2]))); });
+  }
+  const conto = new Set(R.dias || []);
+  const semanas = semanasEntre(masDias(hoy, -28), hoy);
+  const marca = (iso) => (jugo.has(iso) ? { cls: 'jugo', t: 'Jugaste' } : conto.has(iso) ? { cls: 'conto', t: 'Entraste' } : null);
+  return (
+    <div className="cu-cal">
+      <GrillaDias semanas={semanas} marca={marca} hoy={hoy} etiqueta="Tus últimas cinco semanas" />
+      <ul className="gd-ley">
+        <li><b>{semanas.flat().filter((d) => d <= hoy && (conto.has(d) || jugo.has(d))).length} de {semanas.flat().filter((d) => d <= hoy).length} días</b></li>
+        <li><i className="gd-c conto" />entraste</li><li><i className="gd-c jugo" />jugaste</li><li><i className="gd-c hoy" />hoy</li>
+      </ul>
+    </div>
+  );
+}
+
+function RachaNivel({ dc, liga }) {
   const R = useRacha(!!dc);
   if (!R) return null;
   const { racha: r, nivel: n } = R;
@@ -195,6 +221,7 @@ function RachaNivel({ dc }) {
         <b className="cu-con"><Ico n="fuego" t={18} />{r.actual ? dias(r.actual) + ' seguidos' : 'Sin racha todavía'}</b>
         <small>{r.actual ? (r.hoy ? 'Hoy ya contó. ' : 'Entrá o jugá hoy para no cortarla. ') : 'Cuenta cada día que usás el bot, entrás con tu cuenta o jugás un evento. '}
           {R.hito ? <>A los {dias(R.hito[0])} seguidos: <b>+{num(R.hito[1])} Puntos de Tienda</b>. </> : null}El premio de cada día se cobra en el Inicio.{r.maxima > r.actual ? ' Tu mejor racha: ' + dias(r.maxima) + '.' : ''}</small>
+        <CalendarioRacha R={R} liga={liga} />
       </div>
       <div className="cu-rn-c">
         <b>Nivel {n.n}</b>
@@ -274,7 +301,7 @@ function Quien({ liga, dc }) {
         <p className="cu-d cu-ver">Tu sesión es de una versión anterior. Actualizala para ver tus tarjetas y tu perfil: es un toque, no te pide nada.{' '}
           <button type="button" className="btn borde2 chico" onClick={accion.entrar}>Actualizar mi cuenta</button></p>
       ) : null}
-      <RachaNivel dc={dc} />
+      <RachaNivel dc={dc} liga={liga} />
     </div>
   );
 }

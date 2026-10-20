@@ -11,7 +11,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
 import { useDesliza } from './anima.js';
-import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, SinCarta, accion, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
+import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, GrillaDias, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, SinCarta, accion, diaET, enlace, https, nombrePais, semanasEntre, usePerfiles } from './piezas.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
 import { usePaseDe } from './pase.js';
@@ -595,6 +595,31 @@ function LoQueFalta({ f, p, esYo }) {
 // buscar evento y filtrar, ya sea que fue campeón, subcampeón, etc.»). Los filtros son los puestos que tiene, con cuántos
 const PUESTO_ORDEN = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos', 'R32', 'Dieciseisavos'];
 const ordenPuesto = (x) => (PUESTO_ORDEN.indexOf(x) < 0 ? 99 : PUESTO_ORDEN.indexOf(x));
+// 📅 LOS DÍAS QUE JUGÓ (Dlx, 19/10/2026, «me gustan todas», a «Activity Heatmap» de 21st): una columna por semana de la
+// temporada, desde la semana de su primer evento hasta hoy; cada día que jugó, pintado (más oscuro con dos o más). Dice
+// de un vistazo si alguien juega seguido o de a ráfagas, que la lista de eventos no muestra
+function DiasJugados({ liga, ev, e }) {
+  const hoy = diaET();
+  const porDia = {};
+  ev.forEach(([n]) => { const x = (e || {})[n] || (e || {})[String(n)]; if (x && x[2]) { const d = diaET(Date.parse(x[2])); porDia[d] = (porDia[d] || 0) + 1; } });
+  const dias = Object.keys(porDia).sort();
+  if (!dias.length) return null;
+  const semanas = semanasEntre(dias[0], hoy);
+  const marca = (iso) => (porDia[iso] ? { cls: porDia[iso] > 1 ? 'jugo2' : 'jugo', t: porDia[iso] + (porDia[iso] === 1 ? ' evento' : ' eventos') } : null);
+  // el día de la semana que más juega, si uno se despega (con tres días jugados o más)
+  const DIAS = ['los lunes', 'los martes', 'los miércoles', 'los jueves', 'los viernes', 'los sábados', 'los domingos'];
+  const porSem = [0, 0, 0, 0, 0, 0, 0];
+  dias.forEach((d) => { porSem[(new Date(d + 'T12:00:00Z').getUTCDay() + 6) % 7] += porDia[d]; });
+  const top = porSem.indexOf(Math.max(...porSem));
+  const masQue = dias.length >= 3 && porSem.filter((x) => x === porSem[top]).length === 1 ? ' · más ' + DIAS[top] : '';
+  return (
+    <div className="pf-dias">
+      <span className="pf-dias-t">DÍAS QUE JUGÓ · {dias.length} en {semanas.length} {semanas.length === 1 ? 'semana' : 'semanas'}{masQue}</span>
+      <GrillaDias semanas={semanas} marca={marca} hoy={hoy} vertical={false} etiqueta={'Días que jugó en la ' + liga.temp} />
+    </div>
+  );
+}
+
 function Eventos({ liga, p, e }) {
   const ev = (p && p.ev) || [];
   const [q, setQ] = useState('');
@@ -612,6 +637,7 @@ function Eventos({ liga, p, e }) {
   return (
     <section className="sec pf-sec">
       <div className="sec-t"><h2>Sus eventos</h2><span className="tj-n">{vis0.length === ev.length ? ev.length + ' en la ' + liga.temp : vis0.length + ' de ' + ev.length}</span></div>
+      <DiasJugados liga={liga} ev={ev} e={e} />
       {ev.length > 3 ? (
         <div className="rk-fil pf-ev-fil">
           <label className="rk-buscar"><Ico n="buscar" t={18} />

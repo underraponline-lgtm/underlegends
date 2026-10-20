@@ -136,3 +136,6 @@
 }
 /* los dos botones en una fila, como la maqueta: en condensada, que es como entran los dos en 375 px */
 .cu .cu-quien .cu-acciones .btn{padding:10px 12px;font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:0.1em}
+
+/* 📅 la racha como calendario, debajo del texto de la racha (20/10/2026) */
+.cu-cal{margin-top:10px}

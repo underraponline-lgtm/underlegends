@@ -152,6 +152,58 @@ export const enlace = (ruta) => location.origin + (window.urlLG ? window.urlLG(r
 
 // el historial de cada uno (`/api/perfiles`: sus eventos, sus duelos, lo que le falta, sus insignias), una vez: lo pide
 // y lo guarda app.js (`perfiles()`). Lo usan Tarjetas y el perfil
+// 📅 LOS DÍAS COMO GRILLA (Dlx, 19/10/2026, «me gustan todas», a «Habit Tracker Calendar» y «Activity Heatmap» de
+// 21st): la racha en Tu cuenta es un calendario (filas = semanas, L a D, hoy al final) y los días que jugó alguien, en
+// su perfil, un mapa de calor (columnas = semanas, como GitHub). Las dos usan esto. Los días son los del este, como los
+// cuenta el servidor (`diaET()` en bot/avisos.js): un día que contó ahí tiene que caer en la misma casilla acá
+export function diaET(t = Date.now()) {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(t));
+}
+export function masDias(dia, n) {
+  const d = new Date(String(dia) + 'T12:00:00Z');
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+export function lunesDe(dia) {
+  const d = new Date(String(dia) + 'T12:00:00Z');
+  return masDias(dia, -((d.getUTCDay() + 6) % 7));
+}
+/** Las semanas enteras (lunes a domingo) que van de `desde` a `hasta`, como `[[iso×7], …]` */
+export function semanasEntre(desde, hasta) {
+  const out = [];
+  for (let lun = lunesDe(desde); lun <= hasta; lun = masDias(lun, 7)) out.push([0, 1, 2, 3, 4, 5, 6].map((i) => masDias(lun, i)));
+  return out;
+}
+const MES_CORTO = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+export const diaCorto = (iso) => Number(iso.slice(8, 10)) + ' ' + MES_CORTO[Number(iso.slice(5, 7)) - 1];
+/**
+ * La grilla. `semanas` de `semanasEntre()`; `marca(iso)` devuelve `{cls, t}` (clase y título) o nada; `hoy` lleva su
+ * aro; lo que viene después de hoy queda apagado. `vertical`: filas = semanas (calendario); si no, columnas = semanas
+ * (mapa de calor). `meses`: el nombre del mes cuando cambia, en el calendario
+ */
+export function GrillaDias({ semanas, marca, hoy, vertical = true, etiqueta }) {
+  const L = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+  const celda = (iso) => {
+    const m = iso <= hoy ? marca(iso) : null;
+    const t = (m && m.t ? m.t + ' · ' : '') + diaCorto(iso) + (iso === hoy ? ' · hoy' : '');
+    return <i key={iso} className={'gd-c' + (m && m.cls ? ' ' + m.cls : '') + (iso === hoy ? ' hoy' : '') + (iso > hoy ? ' fut' : '')} title={t} aria-label={t} role="img" />;
+  };
+  if (vertical) {
+    return (
+      <div className={'gd gd-v'} role="group" aria-label={etiqueta}>
+        <div className="gd-l">{L.map((x, i) => <span key={i}>{x}</span>)}</div>
+        {semanas.map((s) => <div className="gd-f" key={s[0]}><span className="gd-m">{s.some((d) => d.slice(8, 10) === '01' || d === semanas[0][0]) ? MES_CORTO[Number(s[6].slice(5, 7)) - 1] : ''}</span>{s.map(celda)}</div>)}
+      </div>
+    );
+  }
+  return (
+    <div className="gd gd-h" role="group" aria-label={etiqueta}>
+      <div className="gd-l">{L.map((x, i) => <span key={i}>{i % 2 === 0 ? x : ''}</span>)}</div>
+      {semanas.map((s) => <div className="gd-col" key={s[0]} title={'Semana del ' + diaCorto(s[0])}>{s.map(celda)}</div>)}
+    </div>
+  );
+}
+
 export function usePerfiles() {
   const [p, setP] = useState(null);
   useEffect(() => {

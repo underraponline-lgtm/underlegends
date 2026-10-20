@@ -3425,3 +3425,26 @@ a.rk-z:hover{border-color:var(--linea)}
 .vacio-c b{font:900 17px/1.15 Archivo,sans-serif}
 .vacio-c p{margin:0;max-width:56ch;color:var(--gris);font:500 14.5px/1.45 Archivo,sans-serif}
 .vacio-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+
+/* 📅 la grilla de días (20/10/2026): calendario (gd-v, filas = semanas) y mapa de calor (gd-h, columnas = semanas) */
+.gd{--gd:22px;--gd-g:4px;display:grid;gap:var(--gd-g);width:max-content;max-width:100%}
+.gd-c{display:block;width:var(--gd);height:var(--gd);border-radius:4px;background:var(--suave);box-sizing:border-box}
+.gd-c.conto{background:#29B298}
+.gd-c.jugo{background:var(--magenta)}
+.gd-c.jugo2{background:var(--magenta);box-shadow:inset 0 0 0 3px rgba(0,0,0,.35)}
+.gd-c.hoy{box-shadow:0 0 0 2px var(--fondo),0 0 0 4px var(--tinta)}
+.gd-c.fut{opacity:.35}
+.gd-l{display:grid;gap:var(--gd-g);font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:0.08em;color:var(--gris);text-align:center}
+.gd-v .gd-l{grid-template-columns:30px repeat(7,var(--gd));}
+.gd-v .gd-l span:first-child{grid-column:2}
+.gd-f{display:grid;grid-template-columns:30px repeat(7,var(--gd));gap:var(--gd-g);align-items:center}
+.gd-m{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:0.08em;text-transform:uppercase;color:var(--gris)}
+.gd-h{grid-auto-flow:column;grid-template-rows:auto;align-items:start;overflow-x:auto;padding-bottom:4px;width:100%}
+.gd-h .gd-l{grid-template-rows:repeat(7,var(--gd));align-items:center;width:14px;text-align:left}
+.gd-h .gd-col{display:grid;gap:var(--gd-g)}
+.gd-h{--gd:14px;--gd-g:3px}
+.gd-ley{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 14px;font:600 12px/1 Archivo,sans-serif;color:var(--gris)}
+.gd-ley li{display:flex;align-items:center;gap:6px}
+.gd-ley .gd-c{--gd:12px;border-radius:3px}
+.gd-ley .gd-c.hoy{box-shadow:0 0 0 2px var(--tinta)}
+.gd-ley b{color:var(--tinta);font-weight:800}

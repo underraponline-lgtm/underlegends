@@ -11263,9 +11263,10 @@ export class Avisos {
     // ⭐ y lo demás que suma (14/10/2026): `xp_de` es el desglose, para que la página diga de dónde sale cada punto
     const extra = this.xpDe(quien);
     const xp_de = Object.assign({ ev: [eventos, eventos * c.xp_ev], dia: [r.total, r.total * c.xp_dia] }, extra.de);
+    // 📅 `dias`: los últimos 70 días que contaron, para el calendario de la racha en Tu cuenta (20/10/2026)
     return { racha: r, eventos, nivel: nivelDeXp(eventos * c.xp_ev + r.total * c.xp_dia + extra.xp, c.paso),
       cada: c.cada, premio: c.premio, falta: c.cada - (r.actual % c.cada), xp_ev: c.xp_ev, xp_dia: c.xp_dia, hoy, semana,
-      premios, cofre_dias: COFRE_DIAS, hito: sigHito, xp_de, xp_fuentes: XP_FUENTES };
+      premios, cofre_dias: COFRE_DIAS, hito: sigHito, xp_de, xp_fuentes: XP_FUENTES, dias: dias.slice(-70) };
   }
 
   /** ⭐ Anota algo que sube el nivel (`que` de `XP_FUENTES`), una vez por cosa. Devuelve si era nuevo */

@@ -58,3 +58,12 @@ búsquedas, vacías). **Temas**: nada por «dark neon magenta» (y ya tenemos pa
   redesigns are also for the PC». Desde acá **cada maqueta trae su versión de compu** y se mide en los dos anchos.
 - En la compu, el «Settings Sidebar» de 21st es literal: la lista en cajas a la izquierda es el menú; las tarjetas a
   la derecha en dos columnas (lo que Dlx pidió el 02/10). La página pasa a llamarse «Tu cuenta».
+
+## 20/10/2026 · la racha como calendario y los días que jugó (3.80; sólo búsquedas, 0 del cupo)
+
+- Dlx: «utiliza los nuevos conectores que te hice instalar». 21st, dos búsquedas: «Habit Tracker Calendar» (calendario
+  mensual con los días hechos marcados y **cuántos van**: de ahí el «15 de 35 días» al lado de la grilla), «GitHub
+  Activity Grid» (un solo tooltip que se desliza entre días y un *reveal* que ondula desde hoy: anotado, no puesto —el
+  remake prohíbe animar por animar—), «Activity Heatmap Calendar» (resalta **el día de la semana que más pesa**: de ahí
+  el «más los sábados» del perfil). Magic UI: sólo progresos circulares (ya tenemos el anillo). shadcn: sin registro
+  configurado, nada. Ningún código traído: la grilla es `GrillaDias` en piezas.jsx, CSS propio.

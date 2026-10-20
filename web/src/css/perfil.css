@@ -123,3 +123,7 @@
 .pf-meta-et{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:#1F7A68}
 .pf-meta b{font:900 22px/1.15 Archivo,sans-serif;font-stretch:108%;overflow-wrap:anywhere}
 .pf-meta small{font:600 16px/1.25 "Barlow Condensed",sans-serif;color:#3A3A3E}
+
+/* 📅 los días que jugó, arriba de la lista de eventos (20/10/2026) */
+.pf-dias{display:grid;gap:8px;margin:0 0 14px}
+.pf-dias-t{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:0.06em;color:var(--gris)}
