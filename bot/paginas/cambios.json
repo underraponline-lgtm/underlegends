@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.77",
+   "dia": "2026-10-20",
+   "cuando": "2026-10-20T00:04:00-04:00",
+   "titulo": "Filtros con «+N más» y vacíos con qué hacer",
+   "items": [
+    "➕ En Crews y en la Guía, los filtros ya no se amontonan en el celular: ves los primeros y un **«+N más»** abre el resto.",
+    "🫙 Cuando una búsqueda no da nada o el muro está vacío, ahora hay **botones para seguir**: ver todas, armar tu crew, ver los eventos o el ranking."
+   ]
+  },
+  {
    "version": "3.76",
    "dia": "2026-10-19",
    "cuando": "2026-10-19T23:56:00-04:00",
