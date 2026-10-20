@@ -229,6 +229,9 @@ function AnilloNivel({ dc }) {
   );
 }
 
+// 🎨 el color del cuadradito de cada fila, como en la maqueta (20/10/2026): verde lo tuyo, magenta tu gente; el resto, gris
+const ICO_COLOR = { perfil: 'v', fondo: 'v', crew: 'm', siguiendo: 'm' };
+
 function Quien({ liga, dc }) {
   const yo = liga.yo;
   if (!yo && !dc) {
@@ -243,21 +246,25 @@ function Quien({ liga, dc }) {
   const s = yo && liga.svs[yo.sv];
   return (
     <div className="cu-quien" style={{ '--cu-c': (s && s.color) || '#29B298' }}>
-      <span className="cu-banda" aria-hidden="true" />
       <span className="cu-av-con">
         {yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="cu-av" /> : <CaraDc dc={dc} cls="cu-av" />}
         <AnilloNivel dc={dc} />
       </span>
       <div className="cu-q">
         <b>{limpio(yo ? yo.n : dc.n)}</b>
-        <small>{dc ? 'Conectado con Discord' : 'Elegiste quién sos, sin entrar'}</small>
+        {/* 🪪 la línea de estado, como en la maqueta que eligió Dlx (20/10/2026): quién sos para la Liga, en tres datos */}
+        <small className="cu-estado">{[
+          dc && dc.rapero ? 'Verificado' : dc ? 'Con Discord' : 'Sin entrar',
+          yo && yo.rg ? 'Rango ' + yo.rg : (yo ? 'Sin rango todavía' : ''),
+          s ? limpio(s.nombre || yo.sv) : '',
+        ].filter(Boolean).join(' · ')}</small>
         {yo ? <span className="cu-datos">{yo.pos ? '#' + yo.pos + ' de la ' + liga.temp : 'Sin puesto todavía'} · OVR {yo.ovr || '—'} · {yo.ev || 0} {yo.ev === 1 ? 'evento' : 'eventos'}</span>
           // 🔴 UN RAPERO QUE TODAVÍA NO JUGÓ LA TEMPORADA NO ES «SIN TARJETA»: el día del arranque es el caso de todos
           : <span className="cu-datos">{dc && dc.rapero ? 'Todavía no jugaste esta temporada.' : 'Todavía sin tarjeta.'}</span>}
       </div>
       <div className="cu-ver cu-acciones">
-        {yo ? <a className="btn borde2 chico" href={'#/r/' + encodeURIComponent(yo.k)}>Ver mi perfil público</a>
-          : dc && dc.clave ? <a className="btn borde2 chico" href={'#/r/' + encodeURIComponent(dc.clave)}>Ver mi perfil público</a>
+        {yo ? <a className="btn verde chico" href={'#/r/' + encodeURIComponent(yo.k)}>Ver mi perfil público</a>
+          : dc && dc.clave ? <a className="btn verde chico" href={'#/r/' + encodeURIComponent(dc.clave)}>Ver mi perfil público</a>
           : <a className="btn verde chico" href="#/cuenta/verificar">Verificarme</a>}
         {/* salir (o «no soy yo») vive acá desde la 3.74: antes era el último botón de la lista, debajo de todo */}
         <button type="button" className="btn borde2 chico" onClick={accion.salir}>{dc ? 'Salir' : 'No soy yo'}</button>
@@ -1220,7 +1227,9 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv }) {
         <div className="cu-g" key={t}><span className="cu-gt">{t}</span>
           <ul>{xs.map(([id, ico, n, v]) => (
             <li key={id}><a href={'#/cuenta/' + id} className={abierta && abierta[0] === id ? 'on' : ''} aria-current={abierta && abierta[0] === id ? 'page' : undefined}>
-              <Ico n={ico} t={20} /><span><b>{n}</b><small>{v}</small></span><Chevron /></a></li>
+              <i className={'cu-ico ' + (ICO_COLOR[id] || '')} aria-hidden="true"><Ico n={ico} t={18} /></i>
+              <span><b>{n}</b><small>{(v || '').replace(/ · NUEVO$/, '')}</small></span>
+              {/NUEVO$/.test(v || '') ? <em className="cu-chip">NUEVO</em> : <Chevron />}</a></li>
           ))}</ul></div>
       ))}
     </nav>
@@ -1245,7 +1254,7 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv }) {
   }
   return (
     <div className={'cu' + (abierta ? ' con-parte' : '')}>
-      <div className="cu-cab"><h1 className="cu-h">{abierta && !ancha ? '' : 'Vos'}</h1>{socio && !abierta ? <a className="btn borde2 chico" href="#/socio">Mi servidor</a> : null}{dueno && !abierta ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
+      <div className="cu-cab"><h1 className="cu-h">{abierta && !ancha ? '' : <>Vos<small className="cu-hs">todo lo tuyo</small></>}</h1>{socio && !abierta ? <a className="btn borde2 chico" href="#/socio">Mi servidor</a> : null}{dueno && !abierta ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
       <div className="cu-g2">
         <aside className="cu-lado">
           <Quien liga={liga} dc={dc} />

@@ -72,10 +72,37 @@ function Tendencia({ g, lunes }) {
   if (!g || !g.length) return NADA;
   const max = Math.max(...g, 1);
   const tit = 'Puntos por semana: ' + g.map((v, i) => (lunes && lunes[i] ? fechaCorta(lunes[i]) + ' ' : '') + num(v)).join(' · ');
+  // 🗣️ con el número de esta semana al lado (Dlx, 20/10/2026: «es difícil de entender si primera vez lo ves»): las
+  // barritas solas no dicen qué miden; «+40» en magenta, sí —y es lo que ordena la columna
+  const hoy = g[g.length - 1] || 0;
   return (
-    <span className="rk-ten" title={tit} aria-label={tit}>
-      {g.map((v, i) => <i key={i} className={i === g.length - 1 ? 'ult' : ''} style={{ height: Math.max(2, Math.round((16 * v) / max)) + 'px' }} />)}
+    <span className="rk-ten-c" title={tit} aria-label={tit}>
+      <span className="rk-ten">
+        {g.map((v, i) => <i key={i} className={i === g.length - 1 ? 'ult' : ''} style={{ height: Math.max(2, Math.round((16 * v) / max)) + 'px' }} />)}
+      </span>
+      <small className="rk-ten-n">{hoy ? '+' + num(hoy) : '0'}</small>
     </span>
+  );
+}
+
+// 📈 la misma historia, con sus números y sus fechas: va en la fila abierta, donde hay lugar para explicarla
+function Semanas({ g, lunes }) {
+  if (!g || !g.length) return null;
+  const max = Math.max(...g, 1);
+  return (
+    <>
+      <span className="rk-det-t">SEMANA A SEMANA</span>
+      <ol className="rk-det-sem" aria-label="Puntos que sumó cada semana de la temporada">
+        {g.map((v, i) => (
+          <li key={i} className={i === g.length - 1 ? 'ult' : ''}>
+            <b>{v ? '+' + num(v) : '0'}</b>
+            <i style={{ height: Math.max(3, Math.round((34 * v) / max)) + 'px' }} />
+            <small>{i === g.length - 1 ? 'esta sem.' : lunes && lunes[i] ? fechaCorta(lunes[i]) : 'sem. ' + (i + 1)}</small>
+          </li>
+        ))}
+      </ol>
+      <p className="rk-det-c">Cuánto sumó en cada semana de la temporada; la magenta es esta semana, hasta hoy.</p>
+    </>
   );
 }
 
@@ -165,7 +192,7 @@ const COL = {
   sc: { t: 'Score', tit: 'El número del Competitivo, de 0 a 100', s: (f) => f.sc || 0, v: (f) => (f.sc ? coma(f.sc) : NADA) },
   pts: { t: 'Puntos', tc: 'Pts', tit: 'Cada evento suma según el puesto y cuánta gente jugó', s: (f) => f.pts || 0, v: (f) => num(f.pts) },
   // 📈 la tendencia: se ordena por lo que sumó esta semana (la última barra)
-  ten: { t: 'Semana a semana', tc: 'Sem.', tit: 'Puntos que sumó cada semana de la temporada; la última barra, esta semana',
+  ten: { t: 'Esta semana', tc: 'Sem.', tit: 'Lo que sumó esta semana; las barritas, cada semana de la temporada',
     s: (f) => (((SEM && SEM.g[f.k]) || []).slice(-1)[0] || 0), v: (f, x) => <Tendencia g={x.sem && x.sem.g[f.k]} lunes={x.sem && x.sem.lunes} /> },
   ev: { t: 'Eventos', tc: 'Ev', tit: 'Eventos jugados en la temporada', s: (f) => f.ev || 0, v: (f) => f.ev || 0 },
   wr: { t: 'Win%', tit: 'Duelos ganados sobre duelos jugados', s: (f) => (f.wr ? pct(f.wr) : ''), v: (f) => (f.wr ? Math.round(pct(f.wr)) + '%' : NADA) },
@@ -246,7 +273,7 @@ const SUBS = {
     et: 'Temporada', filas: (L) => L.d.tabla || [], orden: 'pos',
     // 🔑 LAS COLUMNAS DEL RANKING OFICIAL (Dlx, 25/09/2026: racha, último evento, cazó, cazado, sobrevivió y misiones)
     cols: ['pos', 'n', 'ovr', 'rg', 'pts', 'ten', 'ev', 'racha', 'ult', 'caz', 'czd', 'sob', 'mis', 'wch'], movil: ['pos', 'n', 'ovr', 'pts'],
-    baj: <>El orden sale del <b>OVR</b>, el mismo número que lleva la carta de Temporada. Las flechas, cuántos puestos subió o bajó cada uno desde el lunes.</>,
+    baj: <>El orden sale del <b>OVR</b>, el mismo número que lleva la carta de Temporada. Las flechas, cuántos puestos subió o bajó cada uno desde el lunes. <b>Esta semana</b>: lo que sumó desde el lunes, y en barritas cada semana de la temporada.</>,
     // ⚠️ SIN `dato`: los puntos ya están en la carta (Dlx, 02/10/2026: «quitar eso de puntos porque la tarjeta ya
     // lo dice»). El escalón lleva sólo el número
     valor: [(f) => f.ovr || 0, 'de OVR'], podio: 'temporada', final: 16,
@@ -544,6 +571,7 @@ function Detalle({ x, cfg, f, perf }) {
           <div><dt>Podios</dt><dd>{t.pod || 0}</dd></div>
           {t.wr ? <div><dt>Win%</dt><dd>{Math.round(pct(t.wr))}%</dd></div> : null}
         </dl>
+        {x.sem && x.sem.g[f.k] ? <Semanas g={x.sem.g[f.k]} lunes={x.sem.lunes} /> : null}
         <span className="rk-det-t">SUS EVENTOS{evs && evs.length ? ' · ' + evs.length : ''}</span>
         {evs === null ? <p className="rk-det-c">Cargando…</p> : !evs.length ? <p className="rk-det-c">Todavía no jugó en la temporada.</p> : (
           <ol className="rk-det-e">

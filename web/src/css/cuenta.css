@@ -100,3 +100,38 @@
 .cu-anillo{position:absolute;inset:-7px;width:calc(100% + 14px);height:calc(100% + 14px);pointer-events:none}
 .cu-anillo-n{position:absolute;right:-8px;bottom:-4px;min-width:24px;height:24px;padding:0 6px;border-radius:12px;background:var(--magenta);color:#fff;
   font:800 13px/24px "Barlow Condensed",sans-serif;text-align:center;box-shadow:0 0 0 2px var(--fondo)}
+
+/* 🪪 «VOS» COMO LA MAQUETA DEL TELÉFONO (Dlx, 20/10/2026: «pensé que ibas a reordenar y remakear la página de mi cuenta
+   así como ese ejemplo que me pasaste de celular que está ordenado»). La maqueta es `orden_mi_cuenta.html` (opción A,
+   la que eligió): una tarjeta de identidad con borde de color, el avatar al lado del nombre y el estado en una línea; y
+   la lista en grupos, cada fila una caja con su cuadradito de ícono, título, bajada y la flecha. Pisa las reglas base
+   de vivo.css (`.cu-quien`, `.cu-g`), que quedan para la vista en tarjetas de la compu. */
+.cu-h .cu-hs{display:inline-block;margin-left:10px;vertical-align:baseline;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:0.1em;text-transform:uppercase;color:var(--gris)}
+.cu .cu-quien:not(.anon){grid-template-columns:auto minmax(0,1fr);column-gap:12px;align-items:center;padding:12px 12px 14px;border:2px solid var(--cu-c);background:var(--caja)}
+.cu .cu-quien:not(.anon) .cu-av-con{width:60px;height:60px;margin-top:0}
+.cu .cu-quien:not(.anon) .cu-av{width:60px;height:60px;border:3px solid var(--caja);margin:0}
+.cu .cu-quien:not(.anon) .cu-anillo{inset:-6px;width:calc(100% + 12px);height:calc(100% + 12px)}
+.cu .cu-quien:not(.anon) .cu-q{grid-column:auto;margin:0;gap:4px}
+.cu .cu-quien:not(.anon) .cu-q b{font-size:20px}
+.cu .cu-quien:not(.anon) .cu-estado{font:700 12px/1.25 "Barlow Condensed",sans-serif;letter-spacing:0.1em;text-transform:uppercase;color:var(--cu-c)}
+.cu .cu-quien:not(.anon) .cu-datos{font:600 13px/1.35 Archivo,sans-serif;color:var(--gris)}
+.cu .cu-quien .cu-acciones{grid-column:1/-1;margin-top:12px}
+.cu .cu-g{margin:18px 16px 0}
+.cu .cu-gt{margin-bottom:6px;font-size:12px;letter-spacing:0.14em;text-transform:uppercase}
+.cu .cu-g ul{display:grid;gap:6px;border:0}
+.cu .cu-g li+li{border-top:0}
+.cu .cu-g a{grid-template-columns:30px minmax(0,1fr) auto;gap:10px;min-height:50px;padding:8px 10px;border:1.5px solid var(--suave);background:var(--caja)}
+.cu .cu-g a b{font:700 15px/1.1 Archivo,sans-serif}
+.cu .cu-g a small{font:500 12.5px/1.25 Archivo,sans-serif}
+.cu-ico{display:grid;place-items:center;width:30px;height:30px;border-radius:6px;background:var(--suave);color:var(--tinta)}
+.cu-ico.v{background:#29B298;color:#030304}
+.cu-ico.m{background:var(--magenta);color:#fff}
+.cu .cu-g a.on{border-color:var(--inv)}
+.cu .cu-g a.on .cu-ico{background:var(--inv-tinta);color:var(--inv)}
+.cu-chip{align-self:center;padding:4px 6px;border-radius:3px;background:var(--magenta);color:#fff;font:800 10px/1 "Barlow Condensed",sans-serif;letter-spacing:0.1em;font-style:normal}
+@media (min-width: 900px){
+  .app .cu-h .cu-hs{font-size:14px;margin-left:14px}
+  .app .cu .cu-g{margin-left:0;margin-right:0}
+}
+/* los dos botones en una fila, como la maqueta: en condensada, que es como entran los dos en 375 px */
+.cu .cu-quien .cu-acciones .btn{padding:10px 12px;font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:0.1em}

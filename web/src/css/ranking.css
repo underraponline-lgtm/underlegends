@@ -134,6 +134,16 @@
 .rk-qe dt{font-weight:800}
 .rk-qe dd{margin:0;color:var(--gris)}
 /* 📈 semana a semana (19/10/2026): barritas, la última (esta semana) en magenta */
+.rk-ten-c{display:inline-flex;align-items:center;gap:6px;vertical-align:middle}
+.rk-ten-n{font:800 13px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;color:var(--magenta)}
 .rk-ten{display:inline-flex;align-items:flex-end;gap:2px;height:18px;vertical-align:middle}
+/* 📈 la fila abierta: cada semana con su número arriba, su barra y su fecha abajo (20/10/2026) */
+.rk-det-sem{list-style:none;margin:0;padding:0;display:flex;align-items:flex-end;gap:8px;overflow-x:auto}
+.rk-det-sem li{display:grid;justify-items:center;gap:3px;min-width:44px}
+.rk-det-sem li b{font:800 13px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;color:var(--gris)}
+.rk-det-sem li i{display:block;width:100%;background:var(--verde);border-radius:2px 2px 0 0}
+.rk-det-sem li small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:var(--gris);white-space:nowrap}
+.rk-det-sem li.ult b,.rk-det-sem li.ult small{color:var(--magenta)}
+.rk-det-sem li.ult i{background:var(--magenta)}
 .rk-ten i{display:block;width:5px;background:var(--verde);border-radius:1px}
 .rk-ten i.ult{background:var(--magenta)}
