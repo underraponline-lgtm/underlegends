@@ -270,7 +270,7 @@
 ]
 },
 "sinlimites": {
-"rg": "C",
+"rg": "D",
 "c": [
 "competitivo",
 "servidor",
@@ -772,10 +772,6 @@
 "temporada"
 ]
 },
-"nmb": {
-"rg": "",
-"c": []
-},
 "crk": {
 "rg": "E",
 "c": [
@@ -832,6 +828,10 @@
 "c": [
 "servidor"
 ]
+},
+"nmb": {
+"rg": "",
+"c": []
 },
 "tusicario": {
 "rg": "",

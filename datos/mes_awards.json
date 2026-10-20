@@ -2647,6 +2647,82 @@
      "cuentas": {
       "Erian 恵理久": "1055474244089286706"
      }
+    },
+    "1561600567909027922": {
+     "sv": "FDS",
+     "nombre": "RAP SIN GROSERIAS FDS",
+     "mo": "2026-10-19T04:43:08Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "h6itam29",
+       "id": ""
+      }
+     ],
+     "organizador": "@h6itam29",
+     "cuentas": {}
+    },
+    "1560059270140133377": {
+     "sv": "FDS",
+     "nombre": "GG SANGRERAP",
+     "mo": "2026-10-14T22:38:34Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "Cu?",
+       "id": "1452005860493492335"
+      }
+     ],
+     "organizador": "@Cu?",
+     "cuentas": {}
+    },
+    "1558965683377930312": {
+     "sv": "FDS",
+     "nombre": "RAP SIN GROSERIAA FDS",
+     "mo": "2026-10-11T22:13:03Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "mato0801",
+       "id": ""
+      }
+     ],
+     "organizador": "@mato0801",
+     "cuentas": {}
+    },
+    "1558660396473254020": {
+     "sv": "FDS",
+     "nombre": "5 VIDAS FDS",
+     "mo": "2026-10-11T01:59:57Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "Mate",
+       "id": "702969188121313352"
+      }
+     ],
+     "organizador": "@Mate",
+     "cuentas": {}
+    },
+    "1555359260303429663": {
+     "sv": "FDS",
+     "nombre": "SHAOLING BATTLES 1v1",
+     "mo": "2026-10-01T23:22:24Z",
+     "staff": {
+      "jurado": [
+       "Alessan"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "h6itam29",
+       "id": ""
+      }
+     ],
+     "organizador": "@h6itam29",
+     "cuentas": {
+      "Alessan": "1399930746918928527"
+     }
     }
    },
    "ver": {
@@ -2974,6 +3050,18 @@
       "nc",
       "Nc",
       "nachonc_"
+     ]
+    },
+    "URBF|2026-10-20": {
+     "472896251424276500": [
+      "Bocamio",
+      "Bocamio",
+      "bocamio"
+     ],
+     "1055474244089286706": [
+      "",
+      "Erian 恵理久",
+      "deslanofthemind"
      ]
     }
    }
@@ -3906,6 +3994,98 @@
      "organizador": "Mathhias",
      "cuentas": {
       "Mathhias": "1177916322122833933"
+     }
+    },
+    "1554613019860926516": {
+     "sv": "FDS",
+     "nombre": "SHAOLING BATTLES 1v1",
+     "mo": "2026-09-29T21:57:07Z",
+     "staff": {
+      "jurado": [
+       "Alessan"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Alessan",
+       "id": "1399930746918928527"
+      }
+     ],
+     "organizador": "@Alessan",
+     "cuentas": {
+      "Alessan": "1399930746918928527"
+     }
+    },
+    "1553893978674569237": {
+     "sv": "FDS",
+     "nombre": "SHAOLING BATTLES 1v1",
+     "mo": "2026-09-27T22:19:54Z",
+     "staff": {
+      "jurado": [
+       "Artezzy"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Artezzy",
+       "id": "1435531540472795240"
+      }
+     ],
+     "organizador": "@Artezzy",
+     "cuentas": {
+      "Artezzy": "1435531540472795240"
+     }
+    },
+    "1553213184184164403": {
+     "sv": "FDS",
+     "nombre": "GOD LEVEL 2v2",
+     "mo": "2026-09-26T01:14:40Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "️ Hoosteros",
+       "id": ""
+      }
+     ],
+     "organizador": "🎙️ Hoosteros:",
+     "cuentas": {}
+    },
+    "1545179598566723624": {
+     "sv": "FDS",
+     "nombre": "SHAOLING BATTLES 1v1",
+     "mo": "2026-09-03T21:12:04Z",
+     "staff": {
+      "jurado": [
+       "h6itam29"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "h6itam29",
+       "id": ""
+      }
+     ],
+     "organizador": "@h6itam29",
+     "cuentas": {}
+    },
+    "1543752741099278436": {
+     "sv": "FDS",
+     "nombre": "LIGA VENOM 1v1",
+     "mo": "2026-09-06T14:45:00Z",
+     "staff": {
+      "jurado": [
+       "Artezzy"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Artezzy",
+       "id": "1435531540472795240"
+      }
+     ],
+     "organizador": "@Artezzy",
+     "cuentas": {
+      "Artezzy": "1435531540472795240"
      }
     }
    },
