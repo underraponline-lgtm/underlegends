@@ -2398,8 +2398,10 @@ const ok = (cond, que, det) => {
     && A.socioAjusteValido('vivo_nivel', 'mucho', cs) === undefined
     && JSON.stringify(A.socioAjusteValido('canales', ['11', '22', '11'], cs)) === '["11","22"]'
     && A.socioAjusteValido('canales', ['11', '99'], cs) === undefined && A.socioAjusteValido('eventos_discord', true, cs) === true
-    && A.socioAjusteValido('multiplicador', 2, cs) === undefined && JSON.stringify(A.CFG_BASE) === '{"nick":true,"canales":[],"avisos":"","vivo":"","vivo_nivel":"normal","ascenso":""}',
-  'el panel del socio: el #N, los canales (sin repetir, sólo los del servidor), el nivel, los eventos de Discord; nada más');
+    && A.socioAjusteValido('aviso_evento', 'chat', cs) === 'chat' && A.socioAjusteValido('aviso_evento', null, cs) === ''
+    && A.socioAjusteValido('aviso_evento', 'si', cs) === undefined
+    && A.socioAjusteValido('multiplicador', 2, cs) === undefined && JSON.stringify(A.CFG_BASE) === '{"nick":true,"canales":[],"avisos":"","vivo":"","vivo_nivel":"normal","ascenso":"","aviso_evento":""}',
+  'el panel del socio: el #N, los canales (sin repetir, sólo los del servidor), el nivel, los eventos de Discord, el aviso de cada evento; nada más');
 }
 
 if (fallas) {

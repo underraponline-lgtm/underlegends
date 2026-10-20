@@ -124,8 +124,9 @@ function Visitas({ x }) {
 
 // ⚙️ LOS AJUSTES DEL BOT (Dlx, 19/10/2026: «que los socios puedan usar las opciones de /settings en su propia página…
 // que ellos tengan su dashboard propio… para que ellos manejen esas cosas mejor»). Los mismos de `/settings` —es el
-// mismo lugar guardado: lo último que se toque, acá o en Discord, es lo que vale— más «Eventos de Discord». Lo que la
-// Liga fijó para este servidor se ve como fijado, sin control. Los canales salen de su Discord al abrir
+// mismo lugar guardado: lo último que se toque, acá o en Discord, es lo que vale— más «Eventos de Discord» y dónde va el
+// aviso de cada evento. ⚠️ Lo que Dlx fijó en el Dashboard para ese servidor gana por abajo Y NO SE MUESTRA (Dlx, 19/10:
+// «lo mío manda, pero que no le aparezca eso a ellos, sino que ellos lo pueden cambiar»). Los canales salen de su Discord
 const AJ_ERR = { sin_guild: 'Todavía no tengo el Discord de este servidor a mano: probá en una hora.',
   discord: 'Discord no contestó: probá de nuevo en un minuto.', no: 'Este servidor no es tuyo.', espera: 'Muy seguido: esperá un segundo.',
   kv: 'No se pudo guardar ahora: probá en un rato.', valor: 'Ese valor no vale.' };
@@ -156,32 +157,27 @@ function Ajustes({ sv }) {
   };
   if (!j) return <p className="pronto-p">Buscando los ajustes…</p>;
   if (!j.ok) return <p className="pronto-p">{AJ_ERR[j.error] || 'No pude traer los ajustes. Probá de nuevo en un rato.'}</p>;
-  const c = j.cfg || {}, L = j.liga || {}, cs = j.canales || [], niveles = j.niveles || [];
+  const c = j.cfg || {}, cs = j.canales || [], niveles = j.niveles || [];
   const nombre = (id) => { const k = cs.find((x) => x.id === id); return k ? '#' + k.n : id ? 'un canal que ya no está' : ''; };
   const general = j.general ? nombre(j.general) : 'su chat general';
-  const vivoFijo = L.en_vivo === true || L.en_vivo === false;
-  const prendido = vivoFijo ? L.en_vivo : !!c.vivo;
   const elegidos = c.canales || [];
   const toggleCanal = (id) => cambiar('canales', elegidos.includes(id) ? elegidos.filter((x) => x !== id) : elegidos.concat(id));
   const sel = { c, cs, ocup, cambiar };
   return (
     <div className="so-aj">
       <label><span>El bot en vivo</span>
-        {vivoFijo ? <small className="so-fijo">La Liga lo fijó: {L.en_vivo ? 'prendido, en ' + general : 'apagado'}. Eso gana sobre lo tuyo.</small>
-          : <Canal {...sel} cual="vivo" vacio="Apagado" />}
+        <Canal {...sel} cual="vivo" vacio="Apagado" />
         <small>Durante un evento de la Liga en tu servidor, cuenta en ese canal cómo va. Nunca menciona a nadie.</small></label>
       <label><span>Cuánto habla</span>
-        {L.en_vivo_nivel ? <small className="so-fijo">La Liga lo fijó: {(niveles.find((n) => n[0] === L.en_vivo_nivel) || [])[1]}.</small>
-          : <select value={c.vivo_nivel || 'normal'} disabled={ocup || !prendido} onChange={(e) => cambiar('vivo_nivel', e.target.value)}>
-            {niveles.map(([k, n, q]) => <option key={k} value={k}>{n} · {q}</option>)}
-          </select>}
-        {!prendido && !L.en_vivo_nivel ? <small>Con el bot en vivo apagado no hay dónde hablar.</small> : null}</label>
+        <select value={c.vivo_nivel || 'normal'} disabled={ocup} onChange={(e) => cambiar('vivo_nivel', e.target.value)}>
+          {niveles.map(([k, n, q]) => <option key={k} value={k}>{n} · {q}</option>)}
+        </select>
+        <small>{c.vivo ? 'Cuánto cuenta el bot en vivo en ' + nombre(c.vivo) + '.' : 'Vale cuando el bot en vivo tiene un canal.'}</small></label>
       <label><span>Apuestas</span>
-        {L.apuestas ? <small className="so-fijo">La Liga las dejó {L.apuestas} en tu servidor. Eso gana.</small>
-          : <select value={c.apuestas ? 'si' : ''} disabled={ocup} onChange={(e) => cambiar('apuestas', e.target.value === 'si')}>
-            <option value="">Como siempre: sólo con el bot en «A full»</option>
-            <option value="si">Prendidas, en cualquier nivel</option>
-          </select>}
+        <select value={c.apuestas ? 'si' : ''} disabled={ocup} onChange={(e) => cambiar('apuestas', e.target.value === 'si')}>
+          <option value="">Como siempre: sólo con el bot en «A full»</option>
+          <option value="si">Prendidas, en cualquier nivel</option>
+        </select>
         <small>Antes de cada batalla se apuesta con Puntos de Tienda desde el chat, y el pozo se reparte entre los que aciertan.</small></label>
       <label><span>Eventos de Discord</span>
         <select value={j.eventos_discord ? 'si' : ''} disabled={ocup} onChange={(e) => cambiar('eventos_discord', e.target.value === 'si')}>
@@ -189,6 +185,13 @@ function Ajustes({ sv }) {
           <option value="si">Cada anuncio, un evento de tu Discord</option>
         </select>
         <small>El bot necesita «Crear eventos» en tu servidor.</small></label>
+      <label><span>El aviso de cada evento</span>
+        <select value={c.aviso_evento || ''} disabled={ocup} onChange={(e) => cambiar('aviso_evento', e.target.value)}>
+          <option value="">Donde habla el bot en vivo</option>
+          <option value="chat">En {general}, siempre</option>
+          <option value="no">Apagado</option>
+        </select>
+        <small>Cuando un servidor anuncia un evento, el bot lo cuenta ahí. Vale desde el próximo evento.</small></label>
       <label><span>Avisos de cambio de rango</span><Canal {...sel} cual="avisos" vacio="Ninguno" />
         <small>Dónde anunciar cuando alguien sube o baja de rango.</small></label>
       <label><span>El ascenso de tus ligas</span><Canal {...sel} cual="ascenso" vacio="Apagado" />
@@ -208,7 +211,6 @@ function Ajustes({ sv }) {
               onChange={() => toggleCanal(k.id)} />#{k.n}{k.cat ? <i> · {k.cat}</i> : null}</label>
           ))}</div></details>
       </div>
-      {L.aviso_evento ? <small className="so-fijo so-aj-ancho">El aviso de cada evento: {L.aviso_evento === 'no' ? 'apagado' : 'en ' + general + ', siempre'} (lo fijó la Liga).</small> : null}
       {msg ? <p className="so-aj-msg so-aj-ancho" role="status">{msg}</p> : null}
       <small className="so-aj-ancho">Es lo mismo que <code>/settings</code> en tu Discord: lo último que cambies, acá o allá, es lo que vale.</small>
     </div>

@@ -374,7 +374,9 @@ export const CHAT_FRESCA = 30 * MIN;
 // el panel del socio en la página (`socioAjustes()` del objeto): el mismo lugar, así lo último que se toque en cualquiera
 // de los dos es lo que vale. ⚠️ EL DEFAULT ES «PRENDIDO Y SIN RESTRICCIONES», y eso es una decisión: un servidor que nunca
 // abrió `/settings` tiene que comportarse como antes de que `/settings` existiera (ver el comentario en worker.js)
-export const CFG_BASE = { nick: true, canales: [], avisos: '', vivo: '', vivo_nivel: 'normal', ascenso: '' };
+// `aviso_evento`: dónde va el aviso de cada evento, elegido por el dueño desde su panel (19/10/2026): '' donde habla el
+// bot en vivo, 'chat' en su chat general siempre, 'no' apagado. Lo del Dashboard para ese servidor gana (`canalesChat()`)
+export const CFG_BASE = { nick: true, canales: [], avisos: '', vivo: '', vivo_nivel: 'normal', ascenso: '', aviso_evento: '' };
 
 export const NIVELES_CHAT = {
   poco: ['Lo justo', 'Cuando arranca y el campeón'],
@@ -3494,6 +3496,7 @@ export function socioAjusteValido(cual, valor, canales) {
   const ids = new Set((canales || []).map((c) => String(c.id)));
   if (cual === 'nick' || cual === 'apuestas' || cual === 'eventos_discord') return typeof valor === 'boolean' ? valor : undefined;
   if (cual === 'vivo_nivel') return Object.prototype.hasOwnProperty.call(NIVELES_CHAT, valor) ? valor : undefined;
+  if (cual === 'aviso_evento') return (valor === '' || valor === null) ? '' : (valor === 'chat' || valor === 'no') ? valor : undefined;
   if (cual === 'avisos' || cual === 'vivo' || cual === 'ascenso') {
     if (valor === '' || valor === null) return '';
     return typeof valor === 'string' && ids.has(valor) ? valor : undefined;
@@ -7582,11 +7585,13 @@ export class Avisos {
     const resto = av.resto && guild.has(av.resto) ? String(gen.get(guild.get(av.resto)) || '') : '';
     const out = {};
     for (const [sv, g] of guild) {
-      if (porSv[sv] === 'no') continue;
       let c = {};
       try { c = JSON.parse((await this.env.KV.get('cfg:' + g, { cacheTtl: 300 })) || '{}') || {}; } catch (e) { c = {}; }
+      // ⚙️ y lo que eligió el dueño desde su panel (`aviso_evento` en `cfg:<guild>`, 19/10/2026), si Dlx no fijó nada
+      const eleccion = porSv[sv] || ((c.aviso_evento === 'chat' || c.aviso_evento === 'no') ? c.aviso_evento : '');
+      if (eleccion === 'no') continue;
       let canal = '';
-      if (porSv[sv] === 'chat') canal = String(c.vivo || '') || String(gen.get(g) || '');
+      if (eleccion === 'chat') canal = String(c.vivo || '') || String(gen.get(g) || '');
       else if (dash[sv] !== false) canal = String(c.vivo || '') || (dash[sv] === true ? String(gen.get(g) || '') : '');
       if (!canal) canal = resto;
       if (/^\d{5,25}$/.test(canal)) out[sv] = canal;
@@ -10558,7 +10563,8 @@ export class Avisos {
    * `panelSocio()`: el dueño del servidor (Dlx, todos). Sin `cambio` sólo lee. Los canales para elegir salen de Discord
    * en el momento (`canalesDe()`), y un cambio vale sólo con un canal de ESE servidor (`socioAjusteValido()`).
    * ⚠️ Lo que Dlx fijó en el Dashboard para ese servidor —el bot en vivo, cuánto habla, las apuestas, el aviso de cada
-   * evento— se le muestra como fijado (`liga`): gana sobre lo suyo, como ya ganaba sobre `/settings`.
+   * evento— GANA POR ABAJO Y NO SE LE MUESTRA (Dlx, 19/10/2026: «lo mío manda, pero que no le aparezca eso a ellos,
+   * sino que ellos lo pueden cambiar»): el dueño ve y cambia lo suyo, como con `/settings`, y el Dashboard decide.
    * 🕓 Qué cambió cada dueño queda en `socio_hist` (los 50 últimos), para mirarlo si algo se ve raro.
    */
   async socioAjustes(d) {
@@ -10601,26 +10607,16 @@ export class Avisos {
         this.guardar('socio_hist', h.slice(0, 50));
       }
     }
-    const apc = apuestasCfg(aj);
-    const av = (aj.aviso_evento && typeof aj.aviso_evento === 'object') ? aj.aviso_evento : {};
     const gen = ((this.leer('canales') || {}).generales || []).find((c) => c.sv === sv);
-    const vivo = (aj.en_vivo && typeof aj.en_vivo === 'object') ? aj.en_vivo[sv] : undefined;
-    const nivelLiga = (aj.en_vivo_nivel && typeof aj.en_vivo_nivel === 'object') ? aj.en_vivo_nivel[sv] : '';
     return json({
       ok: true, sv,
       cfg: { nick: cfg.nick !== false, canales: Array.isArray(cfg.canales) ? cfg.canales.map(String) : [], avisos: String(cfg.avisos || ''),
         vivo: String(cfg.vivo || ''), vivo_nivel: NIVELES_CHAT[cfg.vivo_nivel] ? cfg.vivo_nivel : 'normal',
-        apuestas: cfg.apuestas === true, ascenso: String(cfg.ascenso || '') },
+        apuestas: cfg.apuestas === true, ascenso: String(cfg.ascenso || ''),
+        aviso_evento: (cfg.aviso_evento === 'chat' || cfg.aviso_evento === 'no') ? cfg.aviso_evento : '' },
       eventos_discord: ((aj.eventos_discord && typeof aj.eventos_discord === 'object') ? aj.eventos_discord : {})[sv] === true,
       canales, general: gen ? String(gen.id) : '',
       niveles: Object.entries(NIVELES_CHAT).map(([k, [n, q]]) => [k, n, q]),
-      // lo que fijó la Liga para este servidor, si fijó algo: gana sobre lo del dueño
-      liga: {
-        en_vivo: typeof vivo === 'boolean' ? vivo : null,
-        en_vivo_nivel: NIVELES_CHAT[nivelLiga] ? nivelLiga : '',
-        apuestas: apc.apagadas[sv] ? 'apagadas' : apc.prendidas[sv] ? 'prendidas' : '',
-        aviso_evento: (av.sv || {})[sv] || '',
-      },
     });
   }
 
