@@ -17063,5 +17063,303 @@
    ]
   ],
   "v": 2
+ },
+ "492": {
+  "antes": {
+   "Adriagner": [
+    83,
+    118,
+    false
+   ],
+   "Andres": [
+    200,
+    45,
+    true
+   ],
+   "Calíz": [
+    79,
+    106,
+    false
+   ],
+   "DO-C": [
+    237,
+    139,
+    true
+   ],
+   "DarnBless": [
+    90,
+    134,
+    false
+   ],
+   "Delux": [
+    34,
+    44,
+    false
+   ],
+   "Drexx": [
+    32,
+    42,
+    false
+   ],
+   "Dyzz": [
+    39,
+    51,
+    false
+   ],
+   "Makmah": [
+    2,
+    2,
+    false
+   ],
+   "Millonari-O": [
+    442,
+    436,
+    true
+   ],
+   "Molusco": [
+    20,
+    23,
+    false
+   ],
+   "PichulaMc": [
+    7,
+    8,
+    false
+   ],
+   "Provenza": [
+    17,
+    19,
+    false
+   ],
+   "Shadow": [
+    52,
+    72,
+    false
+   ],
+   "Snow": [
+    3,
+    3,
+    false
+   ],
+   "Tam": [
+    196,
+    34,
+    true
+   ],
+   "Tenor": [
+    48,
+    65,
+    false
+   ],
+   "Teo": [
+    64,
+    86,
+    false
+   ],
+   "Under": [
+    248,
+    155,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "NC, Snake, Snake NC",
+    "Teo, DO-C",
+    "NC, Snake, Snake NC"
+   ],
+   [
+    "Andres, Tam",
+    "Millonari-O, Zaik 🇪🇸",
+    "Andres, Tam"
+   ],
+   [
+    "Andres, Tam",
+    "DarnBless, Under",
+    "Andres, Tam"
+   ],
+   [
+    "Andres, Tam",
+    "Tenor, Provenza",
+    "Andres, Tam"
+   ],
+   [
+    "223🇦🇹-LIBERIA🇦🇪",
+    "Drexx, Adriagner",
+    "223🇦🇹-LIBERIA🇦🇪"
+   ],
+   [
+    "223🇦🇹-LIBERIA🇦🇪",
+    "PichulaMc, Delux",
+    "223🇦🇹-LIBERIA🇦🇪"
+   ],
+   [
+    "223🇦🇹-LIBERIA🇦🇪",
+    "Calíz, Shadow",
+    "223🇦🇹-LIBERIA🇦🇪"
+   ],
+   [
+    "Snow, PichulaMc",
+    "223🇦🇹-LIBERIA🇦🇪",
+    "Snow, PichulaMc"
+   ],
+   [
+    "Snow, PichulaMc",
+    "Andres, Tam",
+    "Snow, PichulaMc"
+   ],
+   [
+    "Snow, Velatz",
+    "Luz, Dyzz",
+    "Snow, Velatz"
+   ],
+   [
+    "Snow, Velatz",
+    "Makmah, Molusco",
+    "Snow, Velatz"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 4,
+   "Andres": 10,
+   "Calíz": 7,
+   "DO-C": 5,
+   "DarnBless": 5,
+   "Delux": 9,
+   "Drexx": 17,
+   "Dyzz": 10,
+   "Makmah": 56,
+   "Millonari-O": 1,
+   "Molusco": 18,
+   "PichulaMc": 36,
+   "Provenza": 25,
+   "Shadow": 10,
+   "Snow": 37,
+   "Tam": 10,
+   "Tenor": 7,
+   "Teo": 11,
+   "Under": 4
+  },
+  "fecha": "19/10",
+  "firma": "04272bfcc8d0ec8d",
+  "msg": "1561924402592088160",
+  "nombre": "LA ISLA DE OKINAWA V.2",
+  "num": 492,
+  "participantes": 28,
+  "sello": {
+   "PichulaMc": "b034dceffc21:84b47cf43136",
+   "Snow": "5d240d355f83:84b47cf43136"
+  },
+  "sv": "FFA",
+  "t": "2026-10-20T02:24:06Z",
+  "tabla": [
+   [
+    "Snow",
+    "Campeón",
+    5000
+   ],
+   [
+    "PichulaMc",
+    "Campeón",
+    5000
+   ],
+   [
+    "Andres",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Tam",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Teo",
+    "Cuartos",
+    1250
+   ],
+   [
+    "DO-C",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Millonari-O",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Cuartos",
+    1250
+   ],
+   [
+    "DarnBless",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Under",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Tenor",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Provenza",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Delux",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Luz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Molusco",
+    "Cuartos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

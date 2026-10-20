@@ -2,50 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1559384055521349725": {
-   "id": "1559384055521349725",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1791856530791,
-   "a": "RODRI LP",
-   "b": "OASIS",
-   "ganador": "OASIS",
-   "votos": "1–0"
-  },
-  "1559387806466445343": {
-   "id": "1559387806466445343",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1791857425086,
-   "a": "ABYSUSS",
-   "b": "OASIS",
-   "ganador": "ABYSUSS",
-   "votos": "1–0"
-  },
-  "1559388697357713419": {
-   "id": "1559388697357713419",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1791857637491,
-   "a": "ABYSUSS",
-   "b": "AKARK",
-   "ganador": "ABYSUSS",
-   "votos": "1–0"
-  },
-  "1559390695494787194": {
-   "id": "1559390695494787194",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1791858113884,
-   "a": "ABYSUSS",
-   "b": "OASIS",
-   "ganador": "OASIS",
-   "votos": "1–0"
-  },
   "1559391363223658587": {
    "id": "1559391363223658587",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1155,6 +1111,17 @@
    "a": "NC🇮🇶+SNAKE🇦🇷",
    "b": "TEO🇨🇴+DO-C🇵🇾",
    "ganador": "NC🇮🇶+SNAKE🇦🇷",
+   "votos": "1–0"
+  },
+  "1561908312574795787": {
+   "id": "1561908312574795787",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1792458360571,
+   "a": "SNOW🇨🇴+PICHULA🇦🇷",
+   "b": "ANDRES🇨🇱+TAM🇻🇪",
+   "ganador": "SNOW🇨🇴+PICHULA🇦🇷",
    "votos": "1–0"
   }
  },
@@ -5303,8 +5270,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1792458348636,
-   "ed": 1792460932523,
-   "texto": "`[ CUARTOS ]`\n⌞NC🇮🇶+SNAKE🇦🇷⌝ 🆚 ⌞TEO🇨🇴+DO-C🇵🇾⌝\n⌞LUZ🇨🇱+DYZZ🇨🇱⌝ 🆚 ⌞SNOW🇨🇴+VELATZ 🇨🇱⌝ 🆚 ⌞MAKMA🇻🇪+MOLUSCO🇦🇷⌝\n⌞MILLONARI-O(MC MILLO)🇵🇾+ZAIK🇪🇸⌝ 🆚 ⌞DARNBLESS🇨🇴+UNDER🇨🇴⌝ 🆚 ⌞TENOR🇻🇪+ZA🇦🇷⌝ 🆚 ⌞ANDRES🇨🇱+TAM🇻🇪⌝\n⌞DREXX🇵🇪+ADRIAGNER🇳🇮⌝ 🆚 ⌞223🇦🇹-LIBERIA🇦🇪⌝ 🆚 ⌞PICHULITAMC🇦🇷+DELUX🇦🇷⌝ 🆚 ⌞CALÍZ🇲🇽⌝\n`[ SEMIFINALES ]`\n⌞ANDRES🇨🇱+TAM🇻🇪⌝ 🆚 ⌞223🇦🇹-LIBERIA🇦🇪⌝",
+   "ed": 1792462030639,
+   "texto": "`[ CUARTOS ]`\n⌞NC🇮🇶+SNAKE🇦🇷⌝ 🆚 ⌞TEO🇨🇴+DO-C🇵🇾⌝\n⌞LUZ🇨🇱+DYZZ🇨🇱⌝ 🆚 ⌞SNOW🇨🇴+VELATZ 🇨🇱⌝ 🆚 ⌞MAKMA🇻🇪+MOLUSCO🇦🇷⌝\n⌞MILLONARI-O(MC MILLO)🇵🇾+ZAIK🇪🇸⌝ 🆚 ⌞DARNBLESS🇨🇴+UNDER🇨🇴⌝ 🆚 ⌞TENOR🇻🇪+ZA🇦🇷⌝ 🆚 ⌞ANDRES🇨🇱+TAM🇻🇪⌝\n⌞DREXX🇵🇪+ADRIAGNER🇳🇮⌝ 🆚 ⌞223🇦🇹-LIBERIA🇦🇪⌝ 🆚 ⌞PICHULITAMC🇦🇷+DELUX🇦🇷⌝ 🆚 ⌞CALÍZ🇲🇽⌝\n`[ FINAL ]`\n⌞SNOW🇨🇴+PICHULA🇦🇷⌝ 🆚 ⌞ANDRES🇨🇱+TAM🇻🇪⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5347,18 +5314,18 @@
       "PICHULITAMC🇦🇷+DELUX🇦🇷",
       "CALÍZ🇲🇽"
      ],
-     "223🇦🇹-LIBERIA🇦🇪",
-     "ronda siguiente",
+     null,
+     "no aparece nadie después",
      []
     ],
     [
-     "SEMIFINALES",
+     "FINAL",
      [
-      "ANDRES🇨🇱+TAM🇻🇪",
-      "223🇦🇹-LIBERIA🇦🇪"
+      "SNOW🇨🇴+PICHULA🇦🇷",
+      "ANDRES🇨🇱+TAM🇻🇪"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "SNOW🇨🇴+PICHULA🇦🇷",
+     "veredicto",
      []
     ]
    ]

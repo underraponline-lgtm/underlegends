@@ -2564,7 +2564,8 @@
        "🎤 KRAVITZ 🇨🇷"
       ],
       "dj": [
-       "Kravitz"
+       "Kravitz",
+       "Zaik"
       ]
      },
      "orgs": [
@@ -2575,7 +2576,8 @@
      ],
      "organizador": "KRAVITZ",
      "cuentas": {
-      "Kravitz": "1345962362615894027"
+      "Kravitz": "1345962362615894027",
+      "Zaik": "1555067257376346122"
      }
     }
    },

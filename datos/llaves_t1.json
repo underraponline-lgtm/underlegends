@@ -28027,5 +28027,208 @@
     1250
    ]
   ]
+ },
+ "492": {
+  "dia": "2026-10-19",
+  "escala": "16+",
+  "fecha": "19/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1561906174520070245",
+   "https://discord.com/channels/1468472442925092958/1487206164864438513/1561908262516039742"
+  ],
+  "n": 492,
+  "nombre": "LA ISLA DE OKINAWA V.2",
+  "participantes": 28,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NC, Snake, Snake NC",
+       "Teo, DO-C"
+      ],
+      "NC, Snake, Snake NC",
+      "ganador según #veredictos"
+     ],
+     [
+      [
+       "Andres, Tam",
+       "Millonari-O, Zaik 🇪🇸",
+       "DarnBless, Under",
+       "Tenor, Provenza"
+      ],
+      "Andres, Tam",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "223🇦🇹-LIBERIA🇦🇪",
+       "Drexx, Adriagner",
+       "PichulaMc, Delux",
+       "Calíz, Shadow"
+      ],
+      "223🇦🇹-LIBERIA🇦🇪",
+      "triple (4 bandas); Sin integrantes: 223🇦🇹-LIBERIA🇦🇪"
+     ],
+     [
+      [
+       "Snow, Velatz",
+       "Luz, Dyzz",
+       "Makmah, Molusco"
+      ],
+      "Snow, Velatz",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "LUZ🇨🇱+DYZZ🇨🇱",
+       "snow🇦🇴 + velatz🇵🇪",
+       "makmah 🇻🇪 + Molusco 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Snow, PichulaMc",
+       "Andres, Tam",
+       "223🇦🇹-LIBERIA🇦🇪"
+      ],
+      "Snow, PichulaMc, Andres, Tam",
+      "triple (3 bandas, pasan 2); también pasa: ANDRES🇨🇱+TAM🇻🇪; Sin integrantes: 223🇦🇹-LIBERIA🇦🇪"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Snow, PichulaMc",
+       "Andres, Tam"
+      ],
+      "Snow, PichulaMc",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sin": [
+   "223🇦🇹-LIBERIA🇦🇪"
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "PichulaMc",
+    "Campeón",
+    5000
+   ],
+   [
+    "Snow",
+    "Campeón",
+    5000
+   ],
+   [
+    "Andres",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Tam",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "DO-C",
+    "Cuartos",
+    1250
+   ],
+   [
+    "DarnBless",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Delux",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Luz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Millonari-O",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Molusco",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Provenza",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Tenor",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Teo",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Under",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Cuartos",
+    1250
+   ]
+  ]
  }
 }

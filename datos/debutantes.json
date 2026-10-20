@@ -311,6 +311,18 @@
    "vence": "2026-10-26T16:52:32+00:00",
    "vencido": false
   },
+  "Luz": {
+   "avisado": "2026-10-19",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-20T00:57:30+00:00",
+   "did": "820803699928072193",
+   "evento": "LA ISLA DE OKINAWA V.2",
+   "n": 492,
+   "sv": "FFA",
+   "vence": "2026-10-27T00:57:30+00:00",
+   "vencido": false
+  },
   "MALBORO": {
    "avisado": "2026-10-19",
    "con": null,
@@ -339,9 +351,10 @@
   },
   "Millonari-O": {
    "avisado": "2026-10-18",
+   "avisado_cumplido": "2026-10-19",
    "chat": "2026-10-19",
-   "con": null,
-   "cumplido": "",
+   "con": 492,
+   "cumplido": "2026-10-20T00:57:30+00:00",
    "debut": "2026-10-18T21:01:38+00:00",
    "did": "1373340031413911624",
    "evento": "LA ISLA DE OKINAWA V.1",
@@ -399,7 +412,7 @@
    "n": 464,
    "sv": "URBF",
    "vence": "2026-10-20T01:56:58+00:00",
-   "vencido": false
+   "vencido": true
   },
   "PETER": {
    "avisado": "2026-10-16",

@@ -99,9 +99,9 @@
     "base": 9000,
     "o": 2,
     "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 9000
+    "ev": 1,
+    "fase": "Campeón",
+    "valor": 10750
    },
    {
     "n": "Walker",
@@ -157,10 +157,22 @@
     "nivel": "C",
     "base": 5000,
     "o": 100,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 5000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Cuartos",
+    "valor": 5000,
+    "caza": {
+     "n": 492,
+     "evento": "LA ISLA DE OKINAWA V.2",
+     "sv": "FFA",
+     "t": "2026-10-20T00:57:30Z",
+     "por": [
+      {
+       "n": "PichulaMc",
+       "cobra": 5000
+      }
+     ]
+    }
    },
    {
     "n": "Tenor",
@@ -182,7 +194,7 @@
      "por": [
       {
        "n": "Nmb",
-       "cobra": 9500
+       "cobra": 10000
       }
      ]
     }
@@ -237,9 +249,9 @@
     "base": 6000,
     "o": 25,
     "estado": "suelto",
-    "ev": 0,
+    "ev": 1,
     "fase": "",
-    "valor": 6000
+    "valor": 7250
    },
    {
     "n": "Erik",
