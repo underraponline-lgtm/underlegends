@@ -1379,6 +1379,25 @@
      297
     ]
    }
+  },
+  {
+   "id": "e956a63dc7",
+   "tipo": "alta",
+   "sec": "🪪 Identidad",
+   "que": "A «Ritmo» lo buscó otra persona con /card en FFA (no lo usó él) y no está en la Lista de Raperos. Si ya está con otro nombre, elegilo o escribilo: le pongo su Discord.\nSu cuenta: https://discord.com/users/1371969975929278464",
+   "r": "Ya está resuelto",
+   "regla": "R3 · un alta que no hace falta: el bot, o una cuenta que buscó otro y no jugó",
+   "rk": "R3",
+   "por": "el ciclo",
+   "porque": "no usó /card: lo buscó otra persona, y no jugó en la T1 (ni su nombre ni con lo que se anotó está en ningún resultado). Si se anota sola, entra como cualquiera",
+   "t": 1792454334916,
+   "filas": [
+    759
+   ],
+   "variantes": [
+    "Ritmo = 1371969975929278464"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []
