@@ -19,7 +19,7 @@ import { useMemo, useState } from 'react';
 import { limpio, norm, num } from './liga.js';
 import { Bandera, Cara, accion } from './piezas.jsx';
 import { CrewCirculo } from './arriba.jsx';
-import { accionCrew, errorCrew, useCrews } from './crews.js';
+import { accionCrew, armarCrews as armar, errorCrew, useCrews } from './crews.js';
 import { SemanaCrew, TierChip } from './crewpanel.jsx';
 import CSS_PAGINA from './css/crews.css?inline';
 import { usarCss } from './css.js';
@@ -33,52 +33,6 @@ const ENTRA = { abierta: ['Abierta', 'Entra quien quiera'], pedido: ['Con pedido
 // qué tan viva está: por cuántos de la crew jugaron esta semana y cuándo jugó el último
 const ACT = [['Dormida', 'Nadie jugó en las últimas 3 semanas'], ['Tranquila', 'Jugaron en las últimas 3 semanas'],
   ['Activa', 'Alguien jugó esta semana'], ['Muy activa', 'Jugaron 3 o más esta semana']];
-
-/** El orden de las letras, de la peor a la mejor, del payload (`rangos`): acá no se escribe ninguna. */
-const ordenLetras = (liga) => (liga.d.rangos || []).map((r) => r.r).reverse();
-
-/** Todo lo que la página dice de cada crew, armado una vez. */
-function armar(liga, todas, mia) {
-  const T = liga.d.crews_tiers && liga.d.crews_tiers.nombres ? liga.d.crews_tiers : null;
-  const pay = new Map((liga.d.crews || []).map((c) => [c.clave || c.crew, c]));
-  const yo = liga.yo;
-  const sigo = new Set(liga.sigue || []);
-  const L = ordenLetras(liga);
-  const max = (todas && todas.max) || 20;
-  const miId = mia && mia.crew ? mia.crew.id : '';
-  const invitado = new Set(((mia && mia.inv) || []).map((x) => x.crew));
-  return ((todas && todas.crews) || []).map((c) => {
-    const ks = (c.gente || []).map((g) => g[0]);
-    const filas = ks.map((k) => liga.T[k]).filter(Boolean);
-    const [tier, semPts, jugaron] = (T && T.crews && T.crews[c.id]) || [0, 0, 0];
-    const ult = filas.map((f) => (f.ult && f.ult[0]) || '').filter(Boolean).sort().pop() || '';
-    const dias = ult ? Math.max(0, Math.floor((liga.ahora - new Date(ult + 'T16:00:00Z')) / DIA)) : null;
-    const act = jugaron >= 3 ? 3 : (jugaron >= 1 || (dias !== null && dias <= 7)) ? 2 : (dias !== null && dias <= 21) ? 1 : 0;
-    // el nivel competitivo: la letra del medio de los que tienen letra (la tiene quien llegó a 10 eventos)
-    const idx = filas.map((f) => L.indexOf(f.rg)).filter((i) => i >= 0).sort((a, b) => a - b);
-    const letra = idx.length ? L[idx[Math.floor((idx.length - 1) / 2)]] : '';
-    const mejor = idx.length ? L[idx[idx.length - 1]] : '';
-    const ccs = [...new Set(filas.map((f) => f.cc).filter(Boolean))];
-    const conozco = ks.filter((k) => sigo.has(k));
-    const deMiSv = yo && yo.sv ? filas.filter((f) => f.sv === yo.sv && f.k !== yo.k).length : 0;
-    const deMiPais = yo && yo.cc ? filas.filter((f) => f.cc === yo.cc && f.k !== yo.k).length : 0;
-    const req = c.req || { rg: '', ev: 0 };
-    // lo que te falta para lo que pide: con tu fila de la temporada (el objeto lo vuelve a mirar al pedir)
-    const falta = [];
-    if (req.rg && L.indexOf(yo ? yo.rg : '') < L.indexOf(req.rg)) falta.push('letra ' + req.rg);
-    if (req.ev && ((yo && yo.ev) || 0) < req.ev) falta.push(req.ev + ' eventos');
-    const llena = ks.length >= max;
-    const puede = !llena && (c.entrada !== 'invitacion' || invitado.has(c.id)) && (!falta.length || invitado.has(c.id));
-    // 🔢 «Recomendadas»: las que te aceptan, vivas, con gente que conocés; un empujón a las nuevas que buscan gente
-    const reco = (puede ? 30 : 0) + act * 10 + Math.min(conozco.length, 3) * 12 + Math.min(deMiSv, 3) * 6 + Math.min(deMiPais, 3) * 4
-      + (c.vence ? 8 : 0) + Math.min(jugaron, 5) * 2 + tier * 3 + (invitado.has(c.id) ? 100 : 0) - (act === 0 ? 40 : 0) - (llena ? 20 : 0);
-    const p = pay.get(c.id) || {};
-    // el logo: el que subió el Líder (R2) o, en las de la Liga, el del repo (`logos/crews/`, del payload)
-    const logo = c.logo || p.logo || '';
-    return { c, logo, ks, filas, tier, semPts, jugaron, dias, act, letra, mejor, ccs, conozco, deMiSv, deMiPais, req, falta, llena, puede,
-      reco, mia: c.id === miId, invitado: invitado.has(c.id), pts: p.pts || 0, max };
-  });
-}
 
 const FILTROS = [['', 'Todas'], ['lugar', 'Te aceptan'], ['abiertas', 'Abiertas'], ['activas', 'Activas'], ['conozco', 'Con gente que seguís'],
   ['servidor', 'De tu servidor'], ['pais', 'De tu país'], ['nuevas', 'Nuevas']];

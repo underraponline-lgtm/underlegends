@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
 import { limpio, norm, num } from './liga.js';
 import { Cara, DosToques } from './piezas.jsx';
 import { aBase64, achicar } from './imagen.js';
-import { ENTRADA_NOMBRE, ROL_NOMBRE, accionCrew, codigoLink, crewDe, cuandoVence, diaCrew, errorCrew, linkCrew, quedan, useCrews } from './crews.js';
+import { ENTRADA_NOMBRE, ROL_NOMBRE, accionCrew, armarCrews, codigoLink, crewDe, cuandoVence, diaCrew, errorCrew, linkCrew, quedan, useCrews } from './crews.js';
 
 // el orden de las letras para elegir el mínimo (de la mejor a la peor): sólo el orden, los umbrales viven en comun/rangos.py
 const LETRAS = ['SSS', 'SS', 'S', 'A', 'B', 'C', 'D', 'E'];
@@ -291,6 +291,31 @@ function LinksCrew({ c, mia, va, hacer }) {
       {copiado === 'no' ? <p className="cw-nota">No pude copiarlo solo: mantené apretado el link de arriba para copiarlo.</p> : null}
     </div>
   );
+}
+
+// ── 🤝 CREWS QUE TE ACEPTAN (Dlx, 19/10/2026, «me gusta todo», a «a quien juega su primer evento, sugerirle crews que
+// lo aceptan»: el 42 % juega una sola vez, y una crew es una razón para volver). A quien está verificado y no tiene crew:
+// las mejores de «Para vos» de la página de Crews (`armarCrews()`, la misma cuenta) que lo aceptan y están vivas ──────
+export function CrewsParaVos({ liga, max = 3, seccion = '' }) {
+  const { todas, mia } = useCrews();
+  if (!todas || !mia || !mia.de || mia.crew) return null;
+  const xs = armarCrews(liga, todas, mia).filter((x) => x.puede && x.act > 0).sort((a, b) => b.reco - a.reco).slice(0, max);
+  if (!xs.length) return null;
+  // `seccion`: envuelta en su sección sólo cuando hay algo (en el perfil, una sección vacía dejaba un hueco)
+  const bloque = (
+    <div className="cw-bloque cw-paravos">
+      <h3 className="cw-h">Crews que te aceptan</h3>
+      <ul className="cw-lista">{xs.map((x) => (
+        <li key={x.c.id}>
+          <a href={enlaceCrew(x.c.id)}><b>{limpio(x.c.nombre)}</b></a>
+          <small>{x.ks.length} raperos{x.conozco.length ? ' · ' + x.conozco.length + ' que seguís' : ''}{x.deMiSv ? ' · ' + x.deMiSv + ' de tu servidor' : ''}
+            {' · '}{x.invitado ? 'te invitaron' : x.c.entrada === 'abierta' ? 'entrás directo' : 'pedís entrar'}</small>
+        </li>
+      ))}</ul>
+      <a className="btn borde2 chico" href="#/crews">Ver todas las crews</a>
+    </div>
+  );
+  return seccion ? <section className={seccion}>{bloque}</section> : bloque;
 }
 
 // ── el panel de los de adentro ───────────────────────────────────────────────────────────────────────────────────────
@@ -586,6 +611,7 @@ export function MiCrew({ liga, dc }) {
       ) : null}
       {(mia.ped || []).length ? <p className="cu-d">Pediste entrar a {mia.ped.map((x) => limpio(x.nombre)).join(', ')}: falta que te acepten.</p> : null}
       {espera ? <p className="cu-d">Saliste de una crew hace poco: podés entrar a otra o armar la tuya en {Math.ceil(mia.espera_ms / 86400000)} días.</p> : null}
+      {!espera ? <CrewsParaVos liga={liga} /> : null}
       <div className="cw-bloque">
         <h3 className="cw-h">Armá tu crew</h3>
         <p className="cu-d">Cuesta <b>{num(precio)} Puntos de Tienda</b>{typeof mia.saldo === 'number' ? <> (tenés {num(mia.saldo)})</> : null}. Hasta {mia.max} raperos; vos sos el Líder.</p>
@@ -618,7 +644,7 @@ export function MiCrew({ liga, dc }) {
         </form>
       </div>
       {msg ? <p role="status" className="cw-msg">{msg}</p> : null}
-      {todas && todas.crews && todas.crews.length ? <p className="cu-d">O sumate a una: <a href="#/ranking/crews">las crews de la Liga</a>.</p> : null}
+      {todas && todas.crews && todas.crews.length ? <p className="cu-d">O sumate a una: <a href="#/crews">las crews de la Liga</a>.</p> : null}
     </div>
   );
 }

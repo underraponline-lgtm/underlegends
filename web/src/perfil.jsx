@@ -22,7 +22,7 @@ import * as RQ from './requisitos.js';
 import { Cartas, Pub, useAplausos } from './publicaciones.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { crewDe, useCrews } from './crews.js';
-import { InvitarACrew, RolCrew } from './crewpanel.jsx';
+import { CrewsParaVos, InvitarACrew, RolCrew } from './crewpanel.jsx';
 import CSS_PAGINA from './css/perfil.css?inline';
 import { usarCss } from './css.js';
 
@@ -974,6 +974,9 @@ export function Perfil({ liga, dc, k: k0, tab }) {
     <>
       <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} resumen />
       <div ref={abajo} />
+      {/* 🤝 en tu perfil y sin crew: las que te aceptan, debajo de la cabecera (sale sola sólo si estás verificado y sin
+          crew: ver `CrewsParaVos` de crewpanel.jsx) */}
+      {esYo && !crewDe(k) ? <CrewsParaVos liga={liga} seccion="sec pf-sec" /> : null}
       {f.fuera ? <section className="sec pf-sec"><p className="pronto-p">Tu historial todavía no está en la página: aparece cuando entrás entre los 200 de la tabla.</p></section> : null}
       {!P ? <div className="cargando">Cargando…</div> : (
         <>
