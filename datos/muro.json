@@ -9,6 +9,14 @@
 "temporada"
 ]
 },
+"snow": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "makmah": {
 "rg": "C",
 "c": [
@@ -18,20 +26,12 @@
 "temporada"
 ]
 },
-"snow": {
-"rg": "B",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "praiseriza": {
 "rg": "S",
 "c": []
 },
-"panchok": {
-"rg": "SS",
+"pichulamc": {
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -39,8 +39,8 @@
 "temporada"
 ]
 },
-"pichulamc": {
-"rg": "B",
+"panchok": {
+"rg": "SS",
 "c": [
 "competitivo",
 "pais",
@@ -772,10 +772,6 @@
 "temporada"
 ]
 },
-"nmb": {
-"rg": "",
-"c": []
-},
 "crk": {
 "rg": "E",
 "c": [
@@ -832,6 +828,10 @@
 "c": [
 "servidor"
 ]
+},
+"nmb": {
+"rg": "",
+"c": []
 },
 "tusicario": {
 "rg": "",

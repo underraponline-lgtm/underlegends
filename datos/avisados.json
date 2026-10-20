@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "9c0300e7807640d7",
+  "firma": "45368ce2efcab42a",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -5562,7 +5562,7 @@
    "Xclusivo": 12
   },
   "fecha": "10/10",
-  "firma": "b9f16e5bc39c90c1",
+  "firma": "9ed168069def0f35",
   "msg": "1558545514931163258",
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
   "num": 442,
@@ -5811,7 +5811,7 @@
    "PichulaMc": 27
   },
   "fecha": "10/10",
-  "firma": "091ada429cfb2a13",
+  "firma": "4a740bf03522919e",
   "msg": "1558643633110917121",
   "nombre": "(sin titulo)",
   "num": 444,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "f7c1d4679074d942",
+  "firma": "f05109bbc92d18f1",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -10528,7 +10528,7 @@
    "Tenor": 3
   },
   "fecha": "13/10",
-  "firma": "f9c0a4942f0b2e61",
+  "firma": "939166d0ffd09428",
   "msg": "1559459229411057705",
   "nombre": "QCYO RAPEEN",
   "num": 465,
@@ -10954,7 +10954,7 @@
    "Verc": 8
   },
   "fecha": "13/10",
-  "firma": "1553b66cc122fa5d",
+  "firma": "edaa2683d51fb846",
   "msg": "1559705366705475605",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL5 __",
   "num": 467,
@@ -11865,7 +11865,7 @@
    "Xubaru": 4
   },
   "fecha": "14/10",
-  "firma": "3fb346fbc9e7cc11",
+  "firma": "d4b52074c630ea43",
   "msg": "1559809185120518145",
   "nombre": "__ Inserte Nombre de la Compe __",
   "num": 470,
@@ -12644,7 +12644,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "6e07421319cfab57",
+  "firma": "5273ecf4fcd94d60",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -16051,7 +16051,7 @@
    "Tenor": 5
   },
   "fecha": "19/10",
-  "firma": "ce455a6244a1d20a",
+  "firma": "6122736b62add098",
   "msg": "1561761975514697891",
   "nombre": "FREESTYLE LEAGUE N3",
   "num": 488,
@@ -17065,6 +17065,7 @@
   "v": 2
  },
  "492": {
+  "al_dia": true,
   "antes": {
    "Adriagner": [
     83,
