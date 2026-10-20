@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-20T22:25:00+00:00",
+ "cuando": "2026-10-20T22:55:18+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -6953,6 +6953,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Scritura🇻🇪",
+   "quien": "scritura",
+   "discord_id": "1559007314126704653",
+   "msg_id": "1562232777858875403",
+   "cuando": "2026-10-20T22:35:19"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "cronox 🇨🇱",
+   "quien": "cronoxzito",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1562231139727314945",
+   "cuando": "2026-10-20T22:28:48"
+  },
   {
    "servidor": "URBF",
    "canal": "《📑》Inscripciones",
