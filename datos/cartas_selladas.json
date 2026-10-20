@@ -986,10 +986,10 @@
    "servidor": "70fbb8574a0b:b8c1c7c39e87:0ab0a0"
   },
   "Makmah": {
-   "competitivo": "5c770abb1536:c896d13a6eea",
+   "competitivo": "8c0cda835c64:c896d13a6eea",
    "pais": "5c8502b16253:17e4aabb8008",
    "servidor": "8bf5a3756e7a:b8c1c7c39e87:3580af",
-   "temporada": "bd8d55513759:84b47cf43136"
+   "temporada": "96bc1bb2b05e:84b47cf43136"
   },
   "Malova": {
    "servidor": "671a7c56b92d:b8c1c7c39e87:15af16"
@@ -1124,7 +1124,7 @@
    "competitivo": "ad5686451246:c896d13a6eea",
    "pais": "65fd08150421:17e4aabb8008",
    "servidor": "64fc452cd411:b8c1c7c39e87:89fd7c",
-   "temporada": "f8af5e9eb521:84b47cf43136"
+   "temporada": "50af30080aa3:84b47cf43136"
   },
   "NFK": {
    "servidor": "a60b74fd45eb:b8c1c7c39e87:100254"
@@ -1230,10 +1230,10 @@
   "PRAISERIZA": {},
   "PUBLIC ENEMY": {},
   "Panchok": {
-   "competitivo": "6ae8424faa87:c896d13a6eea",
+   "competitivo": "c01e7b7aadc1:c896d13a6eea",
    "pais": "eeb60de1b2b0:17e4aabb8008",
    "servidor": "81f38c747f9a:b8c1c7c39e87:3580af",
-   "temporada": "e875eae112c4:84b47cf43136"
+   "temporada": "24078831544a:84b47cf43136"
   },
   "Paria": {},
   "Partim": {
@@ -1247,10 +1247,10 @@
    "servidor": "79ccaefefa5f:b8c1c7c39e87:57c7a7"
   },
   "PichulaMc": {
-   "competitivo": "d9d6889be953:c896d13a6eea",
+   "competitivo": "0e9290520ba0:c896d13a6eea",
    "pais": "cda37bfbb2e7:17e4aabb8008",
-   "servidor": "994ae4f082e3:b8c1c7c39e87:abdb4a",
-   "temporada": "32e492cfb6d4:84b47cf43136"
+   "servidor": "60a3d98c43f4:b8c1c7c39e87:abdb4a",
+   "temporada": "a80304bdbefd:84b47cf43136"
   },
   "Pipe": {
    "competitivo": "b2412a5b362d:c896d13a6eea",
@@ -1472,10 +1472,10 @@
   },
   "Slasher": {},
   "Snow": {
-   "competitivo": "557a9d07fcd2:c896d13a6eea",
-   "pais": "253bad8f5a48:17e4aabb8008",
-   "servidor": "812dbfc2f014:b8c1c7c39e87:43d041",
-   "temporada": "ec6ff0e096ed:84b47cf43136"
+   "competitivo": "76620b644ef2:c896d13a6eea",
+   "pais": "c5c587ed5b5c:17e4aabb8008",
+   "servidor": "7756eab98481:b8c1c7c39e87:43d041",
+   "temporada": "2347906725a4:84b47cf43136"
   },
   "Soft": {},
   "Sombra": {
@@ -1843,5 +1843,5 @@
    "servidor": "7f8885a35a6d:b8c1c7c39e87:93a344"
   }
  },
- "cuando": "2026-10-20T03:07:07+00:00"
+ "cuando": "2026-10-20T03:31:29+00:00"
 }
