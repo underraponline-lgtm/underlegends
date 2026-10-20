@@ -7,7 +7,7 @@
 // hace cada cosa por dentro —la foto, las redes, «tu servidor», salir— lo sigue haciendo app.js (`cuentaFotoSi()`,
 // `cuentaRedes()`, `cuentaServidor()`, `cuentaSalir()`…) y esta página se entera de cada cambio por `lg:cuentaest`
 // (App.jsx envuelve `pintaPopCuenta()`). Su ventana vieja queda de respaldo, si esto no se monta.
-import { createContext, useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DUENO, PAIS, hora, limpio, nuevaQue, num, siglaDe } from './liga.js';
 import { Bandera, Cara, Carta, Chevron, DosToques, GrillaDias, Ico, accion, diaET, masDias, semanasEntre, usePerfiles } from './piezas.jsx';
 import { MiCrew } from './crewpanel.jsx';
@@ -307,12 +307,8 @@ function Quien({ liga, dc }) {
 }
 
 // ── cada parte ───────────────────────────────────────────────────────────────────────────────────
-// 🧩 ¿TODAS LAS PARTES A LA VEZ? (la vista en tarjetas de la compu, 19/10/2026): ahí arriba ya está «Todavía no entraste»
-// con su botón, y cada parte repetía el suyo —cinco «Entrar con Discord» a la vez—. En el teléfono se abre una por vez y
-// cada una sí lleva el suyo: sin él, la parte quedaba sin forma de entrar
-const TodasJuntas = createContext(false);
+// el botón de entrar de cada parte (se abre una por vez, también en la compu desde el 20/10/2026)
 function BotonEntrar({ chico = true }) {
-  if (useContext(TodasJuntas)) return null;
   return <button type="button" className={'btn verde' + (chico ? ' chico' : '')} onClick={accion.entrar}>Entrar con Discord</button>;
 }
 
@@ -512,7 +508,7 @@ function FotoCaja({ liga, dc }) {
   const libre = (f) => (f.libre_hasta ? 'Hasta el ' + f.libre_hasta + ' la podés cambiar las veces que quieras.'
     : 'Hasta que arranque la temporada la podés cambiar las veces que quieras.');
   let cuerpo;
-  // (sin entrar: el botón, salvo en la vista con todas las partes, que ya tiene el de arriba — ver `TodasJuntas`)
+  // (sin entrar: el botón)
   if (!dc) {
     cuerpo = <BotonEntrar />;
   } else if (!dc.clave) {
@@ -1206,23 +1202,10 @@ export function PaginaVerificar({ liga, dc }) {
   );
 }
 
-// 🔑 MI CUENTA Y AJUSTES EN TARJETAS, EN LA COMPU (Dlx, 02/10/2026, al ver la preview: «hazlo como están las cosas de la
-// derecha, me gusta rellenar el espacio así»): con un menú más alto que la parte de al lado quedaba media página vacía;
-// en tarjetas, todas las partes a la vista y en dos columnas. En el celular sigue la lista y una parte por vez
-// 🖥️ Y DESDE EL 20/10/2026 LA COMPU TAMBIÉN LLEVA LA MAQUETA (Dlx: «make sure all these page redesigns are also for the
-// PC, I keep seeing the same design for the PC»): a la izquierda la tarjeta de identidad y la lista en cajas —la misma
-// del teléfono, que acá es el menú: cada fila lleva a su tarjeta—; a la derecha las tarjetas, en dos columnas como él
-// pidió (se sigue rellenando el espacio), con el cuadradito de ícono en el título. Las dos vistas, un solo dibujo
-// las tarjetas: una por parte, y las tres de «La Liga» juntas (cada una es un link: separadas repetían el título)
-function tarjetasDe(gs) {
-  const out = [];
-  gs.forEach(([t, xs]) => {
-    if (t === 'AYUDA Y TUS DATOS') out.push({ id: 'ayuda', ico: 'guia', n: 'Ayuda y tus datos', partes: xs.map((x) => x[0]) });
-    else xs.forEach(([id, ico, n]) => out.push({ id, ico, n, partes: [id] }));
-  });
-  return out;
-}
-
+// 🖥️ EN LA COMPU, LA SECCIÓN ELEGIDA Y NADA MÁS (Dlx, 20/10/2026, ~5:15 PM: «está mostrando todas las configuraciones a
+// lo loco cuando debería mostrar de acuerdo a lo que está seleccionado en el momento»). Es la misma vista del teléfono
+// —la lista en cajas a la izquierda, la parte a la derecha—, con la primera abierta de entrada. Hasta hoy la compu
+// mostraba TODAS las partes en tarjetas, en dos columnas (Dlx, 02/10: «me gusta rellenar el espacio así»): la sacó él
 export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv }) {
   const gs = grupos(liga, dc, tema, temaSv);
   // 🔒 el acceso al Dashboard, a la vista sólo para el dueño. Es un atajo: la puerta de verdad está en el servidor
@@ -1245,13 +1228,6 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv }) {
     return () => { if (m.removeEventListener) m.removeEventListener('change', f); };
   }, []);
   const abierta = actual || (ancha ? todas[0] : null);
-  const enTarjetas = ancha && !extra;
-  const cartas = enTarjetas ? tarjetasDe(gs) : [];
-  useEffect(() => {
-    if (!enTarjetas || !parte) return;
-    const c = cartas.find((x) => x.partes.includes(parte));
-    if (c) accion.ir('cu-' + c.id);
-  }, [enTarjetas, parte]); // eslint-disable-line react-hooks/exhaustive-deps
   const lista = (
     <nav className="cu-nav" aria-label="Tu cuenta">
       {gs.map(([t, xs]) => (
@@ -1265,32 +1241,9 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv }) {
       ))}
     </nav>
   );
-  if (enTarjetas) {
-    return (
-      <div className="cu tarjetas">
-        <div className="cu-cab"><h1 className="cu-h">Tu cuenta<small className="cu-hs">todo lo tuyo</small></h1>{socio ? <a className="btn borde2 chico" href="#/socio">Mi servidor</a> : null}{dueno ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
-        <div className="cu-g2">
-          <aside className="cu-lado">
-            <Quien liga={liga} dc={dc} />
-            {lista}
-          </aside>
-          <TodasJuntas.Provider value>
-          <div className="cu-tarjetas">
-            {cartas.map((c) => (
-              <section key={c.id} id={'cu-' + c.id} className="cu-tj" aria-label={c.n}>
-                <h2 className="cu-tjt"><i className={'cu-ico ' + (ICO_COLOR[c.id] || '')} aria-hidden="true"><Ico n={c.ico} t={18} /></i>{c.n}</h2>
-                {c.partes.map((id) => <Parte key={id} id={id} liga={liga} dc={dc} tema={tema} onTema={onTema} temaSv={temaSv} onTemaSv={onTemaSv} />)}
-              </section>
-            ))}
-          </div>
-          </TodasJuntas.Provider>
-        </div>
-      </div>
-    );
-  }
   return (
     <div className={'cu' + (abierta ? ' con-parte' : '')}>
-      <div className="cu-cab"><h1 className="cu-h">{abierta && !ancha ? '' : <>Tu cuenta<small className="cu-hs">todo lo tuyo</small></>}</h1>{socio && !abierta ? <a className="btn borde2 chico" href="#/socio">Mi servidor</a> : null}{dueno && !abierta ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
+      <div className="cu-cab"><h1 className="cu-h">{abierta && !ancha ? '' : <>Tu cuenta<small className="cu-hs">todo lo tuyo</small></>}</h1>{socio && (!abierta || ancha) ? <a className="btn borde2 chico" href="#/socio">Mi servidor</a> : null}{dueno && (!abierta || ancha) ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
       <div className="cu-g2">
         <aside className="cu-lado">
           <Quien liga={liga} dc={dc} />
