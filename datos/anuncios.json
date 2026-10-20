@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-20T17:25:31+00:00",
+ "cuando": "2026-10-20T17:55:16+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -402,35 +402,6 @@
    "categoria_id": "1497457390637809837"
   },
   {
-   "nombre": "qcyo rapeen 2",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1561973090890682440",
-   "cuando": "2026-10-20T05:23:24",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "@nachonc_",
-   "orgs": [
-    {
-     "n": "nachonc_",
-     "id": ""
-    }
-   ],
-   "autor_h": "d83234c3da26ac85",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "bronce",
-   "modalidad": "1v1",
-   "horario": "ya",
-   "fecha": "",
-   "premios": "aura",
-   "staff": {},
-   "autor": "Nc",
-   "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
-  },
-  {
    "nombre": "LA ISLA DE OKINAWA V.2 🗾☯️ (DUPLAS)",
    "servidor": "FFA",
    "canal": "✦🏆—eventos",
@@ -633,8 +604,8 @@
    "nombre": "LA ISLA DE OKINAWA V.1",
    "servidor": "FFA",
    "canal": "✦🏆—eventos",
-   "msg_id": "1561467222793265256",
-   "cuando": "2026-10-18T19:53:16",
+   "msg_id": "1561464291020898398",
+   "cuando": "2026-10-18T19:41:37",
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "KRAVITZ",
@@ -670,49 +641,6 @@
     "Bootrax Humilde": "1122273746099638354",
     "PolloSport": "716016310202400848"
    },
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 7",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1561466643031396444",
-   "cuando": "2026-10-18T19:50:58",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "FLENNZS LEWITO",
-   "orgs": [
-    {
-     "n": "FLENNZS",
-     "id": ""
-    },
-    {
-     "n": "LEWITO",
-     "id": ""
-    }
-   ],
-   "autor_h": "211322958af20ae2",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "PLATA III",
-   "modalidad": "",
-   "horario": "EN 1 HORA",
-   "fecha": "HOY",
-   "premios": "ROL CAMPEÓN +  CUPO PARA COMPE POR PLATA RANGO ORO II",
-   "staff": {
-    "jurado": [
-     "FLENNZS"
-    ],
-    "host": [
-     "LEWITO"
-    ],
-    "dj": [
-     "💿 KRISH"
-    ]
-   },
-   "autor": "Lewito",
-   "staff_cuentas": {},
    "categoria_id": "1468478330826260500"
   },
   {
@@ -1189,6 +1117,86 @@
    "staff": {},
    "autor": "𓂀",
    "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
+  },
+  {
+   "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 4",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1559287213320044714",
+   "cuando": "2026-10-12T19:30:41",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "orgs": [
+    {
+     "n": "Flennzs | ⛩️",
+     "id": "1414431452346581052"
+    }
+   ],
+   "autor_h": "211322958af20ae2",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "PLATA III",
+   "modalidad": "",
+   "horario": "EN 1 HORA",
+   "fecha": "HOY",
+   "premios": "ROL CAMPEÓN +  CUPO PARA COMPE POR PLATA RANGO ORO II",
+   "staff": {
+    "jurado": [
+     "FLENNZS"
+    ],
+    "host": [
+     "LEWITO  FLENNZS"
+    ],
+    "dj": [
+     "💿 LEWITO"
+    ]
+   },
+   "autor": "Lewito",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
+  },
+  {
+   "nombre": "LA REDENCION VOL.4",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1559273957524377611",
+   "cuando": "2026-10-12T18:38:01",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "orgs": [
+    {
+     "n": "Velatz",
+     "id": "1426686911908675628"
+    }
+   ],
+   "autor_h": "c36f9caea613c5c9",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "Plata II 🥈",
+   "modalidad": "Pandillas",
+   "horario": "16:00",
+   "fecha": "",
+   "premios": "Clasificación + Campeonato 🏆",
+   "staff": {
+    "jurado": [
+     "Velatz"
+    ],
+    "host": [
+     "Velatz"
+    ],
+    "dj": [
+     "Velatz"
+    ]
+   },
+   "autor": "Velatz",
+   "staff_cuentas": {
+    "Velatz": "1426686911908675628"
+   },
    "categoria_id": "1468478330826260500"
   },
   {
@@ -4696,7 +4704,7 @@
    "fecha": "",
    "premios": "UNA NOCHE CON PLAYER",
    "staff": {},
-   "autor": "WALKER",
+   "autor": "REO",
    "staff_cuentas": {},
    "categoria_id": "1469944166137073857"
   },

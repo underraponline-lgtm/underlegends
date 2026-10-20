@@ -2593,6 +2593,34 @@
      ],
      "organizador": "@nachonc_",
      "cuentas": {}
+    },
+    "1561464291020898398": {
+     "sv": "FFA",
+     "nombre": "LA ISLA DE OKINAWA V.1",
+     "mo": "2026-10-18T20:11:37Z",
+     "staff": {
+      "jurado": [
+       "KRAVITZ 🇨🇷"
+      ],
+      "host": [
+       "KRAVITZ 🇨🇷"
+      ],
+      "dj": [
+       "Bootrax Humilde",
+       "PolloSport"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "KRAVITZ",
+       "id": ""
+      }
+     ],
+     "organizador": "KRAVITZ",
+     "cuentas": {
+      "Bootrax Humilde": "1122273746099638354",
+      "PolloSport": "716016310202400848"
+     }
     }
    },
    "ver": {
