@@ -2663,9 +2663,13 @@ inglés, y `/borrar-mis-datos`.
   mensaje tuyo a cada dueño, un aviso en el canal de socios, o lo armo yo para que lo mandes?
 - **👤 Mi cuenta «muy confusa»** (19/10): ✅ resuelto en la 3.74 con «Vos» (opción A de la maqueta). Queda para después, si
   querés: juntar las cinco filas de ayuda en tres, como en la maqueta.
-- **🤝 Los amigos de Discord** (19/10, *«¿es posible que la app pueda ver sus amigos de Discord?»*): no, Discord no le da
-  la lista de amigos a ninguna app común. Lo más parecido que sí se puede: pedir, al entrar, en qué servidores está cada
-  uno y mostrar «gente de la Liga en tus mismos servidores». ¿Lo anoto como idea para después?
+- **🤝 «Gente de la Liga en tus mismos servidores»** (19/10, de *«¿es posible que la app pueda ver sus amigos de
+  Discord?»*): los amigos no (Discord no se los da a ninguna app común); los servidores sí, pidiendo el permiso `guilds`
+  al entrar. Dlx: *«Sí, dale, me gusta»* → **anotado como idea**, para las crews recomendadas y los perfiles. Pide un
+  permiso más en «Entrar con Discord» y guardar por persona en qué servidores de la Liga está: se hace cuando toque.
+- **🎨 El remake, página por página, con lo que vayamos viendo en 21st** (19/10, *«quiero que veas cada página para
+  remakear con los diseños que vayamos viendo del 21st»*): la lista propuesta y el orden están en el chat del 19/10
+  (~11:50 PM); falta que Dlx elija por dónde empezar. Una por vez: maqueta con dos opciones → elige → se hace → se mide.
 - **🖼️ ¿Cómo se gana un 8 contra 1 en el MULTIVERSE?** (19/10): el pronóstico del vs compara el **promedio** de cada
   lado, así que ocho medianos contra uno muy bueno puede dar al uno. Si en ese formato los ocho tienen ventaja (por
   ejemplo, el uno tiene que ganarle a todos, o se vota por lado), decime cómo se decide y el pronóstico lo tiene en cuenta.

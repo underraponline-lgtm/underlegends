@@ -19,3 +19,12 @@ Publicaciones. Lo dibujado está en `herramientas/banner_paginas.py`, todo HTML 
 lista agrupada de ajustes («Settings Sidebar Layout», «Settings Sidebar Accordion», «Vertical Settings Tabs»). Se
 llevaron a una maqueta con dos opciones (A: una página; B: perfil + ajustes) y Dlx eligió A. Lo hecho está en
 `web/src/cuenta.jsx` (`grupos()`, `Quien`), todo nuestro.
+
+## 19/10/2026 · una pasada por todas las páginas (sólo búsquedas, 0 del cupo)
+
+Dlx: «quiero que veas cada página para remakear con los diseños que vayamos viendo del 21st». Doce búsquedas, una por
+página; lo que sirvió como idea: Ranking → «Leaderboard Table» (medallas al top 3, movimiento semanal ▲▼) y «Rank Bars»
+(barras contra el #1); Eventos → «Activity Timeline» (agenda por día con riel) y «Event Countdown Card»; Guía → «Table of
+Contents» (índice que sigue el scroll); Tarjetas → «Card Hand Gallery» (las tuyas en mano) y «Glow Card Grid»; Perfil →
+«Stats cards with progress»; Publicaciones → «Activity Feed» por día; Socios → «Pixel Logo Grid» (apagados, color al
+tocar); Salón → «Award» (placas). Nada para la Llave ni la Tienda. Ningún código traído; lo que se haga se anota acá.
