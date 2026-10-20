@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.69",
+   "dia": "2026-10-19",
+   "cuando": "2026-10-19T22:24:00-04:00",
+   "titulo": "Los dueños de los servidores socios manejan el bot desde su panel",
+   "items": [
+    "⚙️ **Si sos dueño de un servidor socio, el bot se maneja desde tu panel**: el bot en vivo y cuánto habla, las apuestas, los eventos de Discord, los avisos de rango, el ascenso, el #N del apodo y en qué canales se usa `/card`. Es lo mismo que `/settings` en tu Discord: lo último que cambies, acá o allá, es lo que vale.",
+    "🏷️ En el panel, los servidores salen por su sigla (LCW, URB), como en toda la página."
+   ]
+  },
+  {
    "version": "3.68",
    "dia": "2026-10-19",
    "cuando": "2026-10-19T20:01:00-04:00",
