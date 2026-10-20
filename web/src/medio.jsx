@@ -414,7 +414,7 @@ export function TusEventos({ liga, dc }) {
             <li key={ll.n}><button type="button" className="sin-boton te-b" onClick={() => accion.llave(ll.n)}>
               <img alt="" src={liga.logo(ll.sv)} />
               <div><b>{limpio(ll.nombre)}</b><small>{siglaDe(ll.sv)} · {liga.cuando(liga.fechaLlave(ll))} · {ll.participantes} raperos</small></div>
-              <span className={'te-tú' + (res === 'Campeón' ? ' campeon' : '')}>{resultado(res, true)}<small>+{num(pts)} pts</small></span>
+              <span className={'te-vos' + (res === 'Campeón' ? ' campeon' : '')}>{resultado(res, true)}<small>+{num(pts)} pts</small></span>
             </button></li>
           ))}
         </ol>

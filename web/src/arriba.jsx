@@ -1458,7 +1458,7 @@ function momentos(liga, vivoL) {
       const k = ks.sort()[0];
       out.push({
         tipo: 'seguis', et: 'Sigues', sv: liga.T[k].sv,
-        txt: <><div className="hero-t"><span className="tag tg-seguis">DE LOS QUE SEGUÍS · {x[3].toUpperCase()}</span></div><Tit c={largo(x[1])}>{x[1]}</Tit>
+        txt: <><div className="hero-t"><span className="tag tg-seguis">DE LOS QUE SIGUES · {x[3].toUpperCase()}</span></div><Tit c={largo(x[1])}>{x[1]}</Tit>
           <p className="hero-p">{x[0].charAt(0) + x[0].slice(1).toLowerCase()}.</p>
           <div className="hero-acc"><a className="btn verde" href={'#/r/' + encodeURIComponent(k)}>Ver su perfil</a></div></>,
         vis: <div className="mo-cara"><Cara liga={liga} k={k} nombre={liga.T[k].n} cls="st-cara" /></div>,

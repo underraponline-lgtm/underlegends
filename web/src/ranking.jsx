@@ -139,7 +139,7 @@ function Quien({ x, f }) {
           <Bandera cc={f.cc} cls="rk-flag" />
         </span>
         {/* las etiquetas van ANTES del servidor y la crew: al final se las comía el «…» de una crew larga en el celular */}
-        <small>{mio ? <em className="rk-tú">VOS</em> : sigo ? <em className="rk-sigo">SEGUÍS</em> : null}
+        <small>{mio ? <em className="rk-vos">TÚ</em> : sigo ? <em className="rk-sigo">SIGUES</em> : null}
           {nuevo ? <em className="rk-nuevo">NUEVO</em> : null}<span className="rk-qx">{[siglaDe(svElegido(liga, x.eleg, f.k)), crew].filter(Boolean).join(' · ')}</span></small>
       </span>
     </span>
@@ -152,7 +152,7 @@ function Pais({ x, f }) {
       <Bandera cc={f.cc} cls="rk-gflag" />
       <span className="rk-qn">
         <span className="rk-qa"><a href={'#/pais/' + f.cc}>{nombrePais(f.cc)}</a></span>
-        {x.miCc === f.cc ? <small><em className="rk-tú">TU PAÍS</em></small> : null}
+        {x.miCc === f.cc ? <small><em className="rk-vos">TU PAÍS</em></small> : null}
       </span>
     </span>
   );
@@ -171,7 +171,7 @@ function Crew({ x, f }) {
       <LogoCrew c={f} cls="rk-clogo" />
       <span className="rk-qn">
         <span className="rk-qa"><a href={'#/crew/' + encodeURIComponent(f.clave || f.crew)}>{limpio(f.crew)}</a></span>
-        <small>{f.rk === 0 ? 'SIN PUESTO: LE FALTAN RAPEROS' : ''}{mia ? <em className="rk-tú">TU CREW</em> : null}</small>
+        <small>{f.rk === 0 ? 'SIN PUESTO: LE FALTAN RAPEROS' : ''}{mia ? <em className="rk-vos">TU CREW</em> : null}</small>
       </span>
     </span>
   );

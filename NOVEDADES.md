@@ -2674,6 +2674,12 @@ inglés, y `/borrar-mis-datos`.
   Discord?»*): los amigos no (Discord no se los da a ninguna app común); los servidores sí, pidiendo el permiso `guilds`
   al entrar. Dlx: *«Sí, dale, me gusta»* → **anotado como idea**, para las crews recomendadas y los perfiles. Pide un
   permiso más en «Entrar con Discord» y guardar por persona en qué servidores de la Liga está: se hace cuando toque.
+- **🤝 Los servidores chicos y los tiers** (20/10, ~5 PM): Dlx quiere **meter servidores a mano en un tier** —hay uno de
+  80 personas con 5 ligas que aportaría a Ligas— y **el bot en cualquier tier** para sacar información e IDs sin dar
+  todos los beneficios. Lo que ya existe: el tier se elige en el Dashboard (`tiers`) y `solo_identidad` es el bot sólo
+  para IDs; lo que falta: el alta desde el Dashboard. Propuse Tier 3 + bot (anti-raid, ver tarjetas, su gente
+  reconocida, **sus ligas en Ligas** sin contar como duelos; sin tarjeta ni puntos hasta T1). **Dlx tiene una llamada
+  con el dueño** para ver qué quieren y qué ofrecemos: no se construye nada hasta que vuelva.
 - **🎨 El remake con las ideas de 21st**: Dlx aprobó **todas** (19/10, ~11:50 PM); las tandas 1–4 ya salieron (3.75–3.80).
   ✅ **Y eligió las páginas enteras, todas, en este orden (20/10, 3:40 PM)**: Ranking → Eventos → Perfil → Tarjetas →
   Pase rapero → Publicaciones → Guía → Socios y País. Cada una con maqueta de celular **y de compu**, dos opciones, pasando

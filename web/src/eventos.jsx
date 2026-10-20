@@ -380,7 +380,7 @@ function Evento({ liga, e, est, L, abierto, arriba, campVivo, sig }) {
         </div>
       ) : null}
       {st ? <p className="evp-aviso"><b>{liga.estadoTexto(st, { cuando: e.t, t: e.t, sv: e.sv, n: e.n, link: e.link })}</b>{st.texto ? <span>«{recorte(st.texto.replace(/<a?:\w+:\d+>/g, '').replace(/\s+/g, ' ').trim(), 140)}»</span> : null}</p> : null}
-      {mia ? <p className="evp-tú"><em className="rk-tú">VOS</em><b>{resultado(mia[1])}</b><span>· +{num(mia[2])}</span></p> : null}
+      {mia ? <p className="evp-vos"><em className="rk-vos">TÚ</em><b>{resultado(mia[1])}</b><span>· +{num(mia[2])}</span></p> : null}
       {mia && sig && sig.e ? <TuProximo liga={liga} s={sig} /> : null}
       {camp.length && !abierto ? <p className="evp-camp">{camp.length > 1 ? 'Campeones' : 'Campeón'}: <b>{camp.join(' y ')}</b></p> : null}
       {!camp.length && campVivo ? <p className="evp-camp">Campeón: <b>{campVivo}</b></p> : null}

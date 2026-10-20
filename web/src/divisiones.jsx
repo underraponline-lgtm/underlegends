@@ -130,7 +130,7 @@ function Escalera({ liga, nombres, divs, sel, setSel, mia }) {
             aria-label={nombres[i] + ' División: ' + (n ? n + ' jugando' : 'nadie') + (i === mia ? ', la tuya' : '')}
             className={'dv-esc-p' + (i === sel ? ' on' : '') + (i === mia ? ' mia' : '') + (n ? '' : ' vacia')}
             style={{ '--alto': (78 + k * 12) + 'px' }} title={nombres[i] + ' División'}>
-            {i === mia ? <i className="dv-esc-tú" aria-hidden="true">VOS</i> : null}
+            {i === mia ? <i className="dv-esc-vos" aria-hidden="true">TÚ</i> : null}
             <b>{i + 1}ª</b>
             <span>{nombres[i]}</span>
             {top.length ? (
