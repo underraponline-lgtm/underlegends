@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.76",
+   "dia": "2026-10-19",
+   "cuando": "2026-10-19T23:56:00-04:00",
+   "titulo": "Semana a semana en el Ranking",
+   "items": [
+    "📈 **El Ranking de Temporada muestra cuánto sumó cada uno en cada semana**: barritas al lado de los puntos; la última, en magenta, es esta semana. Tocá una fila para ver los números.",
+    "👥 En las crews, después de las cinco caras, **«+N»** con cuántos más son."
+   ]
+  },
+  {
    "version": "3.75",
    "dia": "2026-10-19",
    "cuando": "2026-10-19T23:50:00-04:00",
