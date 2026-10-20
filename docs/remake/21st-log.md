@@ -45,3 +45,9 @@ búsquedas, vacías). **Temas**: nada por «dark neon magenta» (y ya tenemos pa
   punto que late (EN VIVO), «Leaderboard Card» (el top 3), «Us vs Them» (el versus por categorías), «World Map» (SVG).
 - No aplica: «Shader Metal», «3D Globe», «Country Flags Globe», «ASCII Swirl» (WebGL pesado para Android; el remake
   prohíbe blur y degradés) y «Bottom Nav Bar» con píldora (la barra de abajo va limpia: Dlx, 03/10 y 17/10).
+
+## 20/10/2026 · «Vos», la página real como la maqueta (3.78)
+
+- Lo que se había tomado de 21st para la maqueta de «Vos» (Profile Card + Settings Sidebar como lista de teléfono)
+  pasó a `css/cuenta.css`: tarjeta de identidad con borde de color y línea de estado, filas en cajas con cuadradito de
+  ícono. Sin búsquedas nuevas: es la maqueta del 19/10 aplicada.

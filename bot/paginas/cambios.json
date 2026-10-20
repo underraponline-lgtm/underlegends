@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.78",
+   "dia": "2026-10-20",
+   "cuando": "2026-10-20T00:18:00-04:00",
+   "titulo": "«Vos» ordenada, y «Esta semana» en el Ranking",
+   "items": [
+    "🪪 **«Vos» se ve como la maqueta**: tu tarjeta de identidad arriba (quién sos, tu rango y tu servidor, tu puesto) y cada opción en su caja, en grupos.",
+    "📈 En el Ranking, **«Esta semana»** lleva el número de lo que sumaste desde el lunes al lado de las barritas; al abrir una fila, cada semana con su número y su fecha."
+   ]
+  },
+  {
    "version": "3.77",
    "dia": "2026-10-20",
    "cuando": "2026-10-20T00:04:00-04:00",
