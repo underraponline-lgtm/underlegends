@@ -37,7 +37,7 @@
 // Object— y porque Node los prueba sin levantar el Worker entero. Ver
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
-import { anotarUso, DUENO, NIVELES_CHAT, claveMedida, claveFoto, claveCiclo, APP_ID, claveValida } from './avisos.js';
+import { anotarUso, DUENO, NIVELES_CHAT, CFG_BASE, claveMedida, claveFoto, claveCiclo, APP_ID, claveValida } from './avisos.js';
 import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva,
   sesionFin, cookieSesion, SESION_DIAS } from './avisos.js';
 // 🛡️ el anti-raid (18/10/2026): `/antiraid` y sus botones. La vuelta de cada minuto vive en el objeto (avisos.js)
@@ -1856,7 +1856,7 @@ const claveCfg = (gid) => `cfg:${gid}`;
 // en un servidor que no lo pidió (ver `chatVivo()` en avisos.js). 🔊 `vivo_nivel`: cuánto habla ahí
 // (`NIVELES_CHAT`, 05/10/2026); sin elegir, «normal», lo de siempre
 // 📈 `ascenso`: el canal donde el bot mantiene su ranking de ascenso al día (17/10/2026). Vacío = apagado, como `vivo`
-const CFG_BASE = { nick: true, canales: [], avisos: '', vivo: '', vivo_nivel: 'normal', ascenso: '' };
+// (`CFG_BASE` vive en avisos.js desde el 19/10/2026: el panel del socio en la página escribe el mismo `cfg:<guild>`)
 
 async function ajustes(env, gid) {
   if (!gid) return { ...CFG_BASE };

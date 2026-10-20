@@ -7,8 +7,8 @@
 // (`panelSocio()` de bot/avisos.js); Dlx los ve todos. ⚠️ Pregunta en silencio (sin ir a Discord): a Discord se va
 // recién si la persona aprieta «Entrar con Discord».
 import { useEffect, useState } from 'react';
-import { pedirPanel } from './panelsocio.js';
-import { limpio, num } from './liga.js';
+import { pedirAjustes, pedirPanel } from './panelsocio.js';
+import { limpio, num, siglaDe } from './liga.js';
 import { Sec } from './piezas.jsx';
 import { useNumero } from './anima.js';
 import CSS_PAGINA from './css/socio.css?inline';
@@ -122,19 +122,118 @@ function Visitas({ x }) {
   );
 }
 
+// ⚙️ LOS AJUSTES DEL BOT (Dlx, 19/10/2026: «que los socios puedan usar las opciones de /settings en su propia página…
+// que ellos tengan su dashboard propio… para que ellos manejen esas cosas mejor»). Los mismos de `/settings` —es el
+// mismo lugar guardado: lo último que se toque, acá o en Discord, es lo que vale— más «Eventos de Discord». Lo que la
+// Liga fijó para este servidor se ve como fijado, sin control. Los canales salen de su Discord al abrir
+const AJ_ERR = { sin_guild: 'Todavía no tengo el Discord de este servidor a mano: probá en una hora.',
+  discord: 'Discord no contestó: probá de nuevo en un minuto.', no: 'Este servidor no es tuyo.', espera: 'Muy seguido: esperá un segundo.',
+  kv: 'No se pudo guardar ahora: probá en un rato.', valor: 'Ese valor no vale.' };
+function Canal({ c, cs, cual, ocup, cambiar, vacio }) {
+  return (
+    <select value={c[cual] || ''} disabled={ocup} onChange={(e) => cambiar(cual, e.target.value)}>
+      <option value="">{vacio}</option>
+      {cs.map((k) => <option key={k.id} value={k.id}>{'#' + k.n + (k.cat ? ' · ' + k.cat : '')}</option>)}
+    </select>
+  );
+}
+function Ajustes({ sv }) {
+  const [j, setJ] = useState(null);
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  useEffect(() => {
+    let vivo = true;
+    setJ(null); setMsg('');
+    pedirAjustes(sv).then((r) => { if (vivo) setJ(r || { error: 'red' }); });
+    return () => { vivo = false; };
+  }, [sv]);
+  const cambiar = (cual, valor) => {
+    setOcup(true); setMsg('');
+    pedirAjustes(sv, { cual, valor }).then((r) => {
+      if (r && r.ok) { setJ(r); setMsg('✅ Guardado: vale desde ahora.'); } else setMsg('⚠️ ' + (AJ_ERR[r && r.error] || 'No se pudo guardar.'));
+      setOcup(false);
+    });
+  };
+  if (!j) return <p className="pronto-p">Buscando los ajustes…</p>;
+  if (!j.ok) return <p className="pronto-p">{AJ_ERR[j.error] || 'No pude traer los ajustes. Probá de nuevo en un rato.'}</p>;
+  const c = j.cfg || {}, L = j.liga || {}, cs = j.canales || [], niveles = j.niveles || [];
+  const nombre = (id) => { const k = cs.find((x) => x.id === id); return k ? '#' + k.n : id ? 'un canal que ya no está' : ''; };
+  const general = j.general ? nombre(j.general) : 'su chat general';
+  const vivoFijo = L.en_vivo === true || L.en_vivo === false;
+  const prendido = vivoFijo ? L.en_vivo : !!c.vivo;
+  const elegidos = c.canales || [];
+  const toggleCanal = (id) => cambiar('canales', elegidos.includes(id) ? elegidos.filter((x) => x !== id) : elegidos.concat(id));
+  const sel = { c, cs, ocup, cambiar };
+  return (
+    <div className="so-aj">
+      <label><span>El bot en vivo</span>
+        {vivoFijo ? <small className="so-fijo">La Liga lo fijó: {L.en_vivo ? 'prendido, en ' + general : 'apagado'}. Eso gana sobre lo tuyo.</small>
+          : <Canal {...sel} cual="vivo" vacio="Apagado" />}
+        <small>Durante un evento de la Liga en tu servidor, cuenta en ese canal cómo va. Nunca menciona a nadie.</small></label>
+      <label><span>Cuánto habla</span>
+        {L.en_vivo_nivel ? <small className="so-fijo">La Liga lo fijó: {(niveles.find((n) => n[0] === L.en_vivo_nivel) || [])[1]}.</small>
+          : <select value={c.vivo_nivel || 'normal'} disabled={ocup || !prendido} onChange={(e) => cambiar('vivo_nivel', e.target.value)}>
+            {niveles.map(([k, n, q]) => <option key={k} value={k}>{n} · {q}</option>)}
+          </select>}
+        {!prendido && !L.en_vivo_nivel ? <small>Con el bot en vivo apagado no hay dónde hablar.</small> : null}</label>
+      <label><span>Apuestas</span>
+        {L.apuestas ? <small className="so-fijo">La Liga las dejó {L.apuestas} en tu servidor. Eso gana.</small>
+          : <select value={c.apuestas ? 'si' : ''} disabled={ocup} onChange={(e) => cambiar('apuestas', e.target.value === 'si')}>
+            <option value="">Como siempre: sólo con el bot en «A full»</option>
+            <option value="si">Prendidas, en cualquier nivel</option>
+          </select>}
+        <small>Antes de cada batalla se apuesta con Puntos de Tienda desde el chat, y el pozo se reparte entre los que aciertan.</small></label>
+      <label><span>Eventos de Discord</span>
+        <select value={j.eventos_discord ? 'si' : ''} disabled={ocup} onChange={(e) => cambiar('eventos_discord', e.target.value === 'si')}>
+          <option value="">Apagados</option>
+          <option value="si">Cada anuncio, un evento de tu Discord</option>
+        </select>
+        <small>El bot necesita «Crear eventos» en tu servidor.</small></label>
+      <label><span>Avisos de cambio de rango</span><Canal {...sel} cual="avisos" vacio="Ninguno" />
+        <small>Dónde anunciar cuando alguien sube o baja de rango.</small></label>
+      <label><span>El ascenso de tus ligas</span><Canal {...sel} cual="ascenso" vacio="Apagado" />
+        <small>El bot mantiene ahí su ranking de ascenso al día.</small></label>
+      <label><span>#N del ranking en el apodo</span>
+        <select value={c.nick ? 'si' : 'no'} disabled={ocup} onChange={(e) => cambiar('nick', e.target.value === 'si')}>
+          <option value="si">Activado: se le pone el número a todos</option>
+          <option value="no">Apagado: no se le pone a nadie</option>
+        </select>
+        <small>Quien lo eligió con /numeral se queda con lo suyo.</small></label>
+      <div className="so-aj-ancho">
+        <span className="so-aj-t">Canales donde se puede usar /card</span>
+        <small>{elegidos.length ? elegidos.map(nombre).join(', ') + '.' : 'En cualquiera.'} Hasta 10.</small>
+        <details><summary>Elegir canales</summary>
+          <div className="so-aj-lista">{cs.map((k) => (
+            <label key={k.id}><input type="checkbox" checked={elegidos.includes(k.id)} disabled={ocup || (!elegidos.includes(k.id) && elegidos.length >= 10)}
+              onChange={() => toggleCanal(k.id)} />#{k.n}{k.cat ? <i> · {k.cat}</i> : null}</label>
+          ))}</div></details>
+      </div>
+      {L.aviso_evento ? <small className="so-fijo so-aj-ancho">El aviso de cada evento: {L.aviso_evento === 'no' ? 'apagado' : 'en ' + general + ', siempre'} (lo fijó la Liga).</small> : null}
+      {msg ? <p className="so-aj-msg so-aj-ancho" role="status">{msg}</p> : null}
+      <small className="so-aj-ancho">Es lo mismo que <code>/settings</code> en tu Discord: lo último que cambies, acá o allá, es lo que vale.</small>
+    </div>
+  );
+}
+
 function Servidor({ liga, x }) {
   const p = x.panel || {};
   const logo = liga && liga.logo ? liga.logo(x.sv) : '';
+  // el botón «Ajustes» baja a la sección: adentro del shadow root, así que se busca desde ahí y no en `document`
+  const bajar = (e) => { const r = e.currentTarget.getRootNode(); const el = r && r.getElementById ? r.getElementById('so-ajustes') : null; if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
   return (
     <>
       <header className="so-cab">
         {logo ? <img alt="" src={logo} /> : null}
         <div><h1>{limpio(x.nombre)}</h1><p>{TIER[x.tier] || 'Tier ' + x.tier}{x.ultimo ? ' · último evento el ' + fechaCorta(x.ultimo) : ''}</p></div>
-        <a className="btn borde2 chico" href={'#/sv/' + encodeURIComponent(x.sv)}>Su página</a>
+        <button type="button" className="btn borde2 chico" onClick={bajar}>Ajustes</button>
+        <a className="btn borde2 chico" href={'#/sv/' + encodeURIComponent(siglaDe(x.sv))}>Su página</a>
       </header>
       <Sec id="so-puntaje" titulo="Su puntaje" bajada="De 0 a 100, con las últimas 4 semanas. Es lo que mira la Liga para los niveles de socio.">
         <Puntaje x={x} />
         <Numeros x={x} />
+      </Sec>
+      <Sec id="so-ajustes" titulo="Los ajustes del bot" bajada="Lo mismo que /settings en tu Discord, desde acá: el bot en vivo, las apuestas, los avisos y dónde se usa /card.">
+        <Ajustes sv={x.sv} />
       </Sec>
       {(p.sugerencias || []).length ? (
         <Sec id="so-sug" titulo="Lo que conviene">
@@ -207,7 +306,7 @@ export function PanelSocio({ liga, q }) {
       {svs.length > 1 ? (
         <nav className="so-elegir" aria-label="Elegí el servidor">{svs.map((s) => (
           <button key={s.sv} type="button" className={'so-chip' + (s.sv === x.sv ? ' on' : '')} aria-pressed={s.sv === x.sv} onClick={() => setSel(s.sv)}>
-            {s.sv}<small>{s.puntos}</small></button>
+            {siglaDe(s.sv)}<small>{s.puntos}</small></button>
         ))}</nav>
       ) : null}
       <Servidor liga={liga} x={x} />

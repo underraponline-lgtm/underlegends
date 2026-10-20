@@ -370,6 +370,12 @@ export const CHAT_FRESCA = 30 * MIN;
 // Dashboard (`en_vivo_nivel`, que gana). Sin elegir, «normal»: lo de siempre. En «cada batalla» dice quién pasó en cada
 // una apenas la llave lo muestra —si se juntan varias, en el mismo mensaje— y el freno baja a uno cada 2 minutos: sigue
 // sin mencionar a nadie, y lo que cambia se dice en un mensaje NUEVO solo si pasaron esos 2 minutos.
+// ⚙️ LO QUE UN SERVIDOR PUEDE AJUSTAR (`cfg:<guild>` en KV): lo escribe `/settings` en el Worker y, desde el 19/10/2026,
+// el panel del socio en la página (`socioAjustes()` del objeto): el mismo lugar, así lo último que se toque en cualquiera
+// de los dos es lo que vale. ⚠️ EL DEFAULT ES «PRENDIDO Y SIN RESTRICCIONES», y eso es una decisión: un servidor que nunca
+// abrió `/settings` tiene que comportarse como antes de que `/settings` existiera (ver el comentario en worker.js)
+export const CFG_BASE = { nick: true, canales: [], avisos: '', vivo: '', vivo_nivel: 'normal', ascenso: '' };
+
 export const NIVELES_CHAT = {
   poco: ['Lo justo', 'Cuando arranca y el campeón'],
   normal: ['Normal', 'El arranque, quién pasa cada ronda, la final y el campeón'],
@@ -2505,6 +2511,8 @@ const RUTAS = {
   '/avisos/crews-tiers': 'POST',
   // 📊 el panel de un socio Tier 1 o 2, para su dueño (19/10/2026). Ver `panelSocio()` del objeto
   '/avisos/panel-socio': 'POST',
+  // ⚙️ los ajustes del bot de ese servidor, desde el panel del socio (19/10/2026). Ver `socioAjustes()` del objeto
+  '/avisos/socio-ajustes': 'POST',
   // 🗳️ a quién votó el público como ganador en el bot en vivo, sumado por nombre (público: sin ningún Discord ID)
   '/avisos/favoritos': 'GET',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026). Ver `visita()` del objeto
@@ -3476,6 +3484,32 @@ export const NIVELES_AVISO = {
   normal: ['Normal', 'Además el podio con sus puntos y la tarjeta del campeón'],
   todo: ['Todo', 'Además quién subió en el ranking, quién debutó, las insignias, los rangos y la sorpresa'],
 };
+/**
+ * ⚙️ Un ajuste del bot que pide el dueño desde su panel (`socioAjustes()` del objeto): los mismos de `/settings` (ver
+ * `CFG_BASE`) más `eventos_discord`. Devuelve el valor limpio o `undefined`. Un canal vale sólo si está en la lista de
+ * canales de texto de ESE servidor (`canales`, de Discord): el dueño no puede apuntar el bot a un canal de otro. Pura:
+ * la prueba `bot/avisos_prueba.mjs`.
+ */
+export function socioAjusteValido(cual, valor, canales) {
+  const ids = new Set((canales || []).map((c) => String(c.id)));
+  if (cual === 'nick' || cual === 'apuestas' || cual === 'eventos_discord') return typeof valor === 'boolean' ? valor : undefined;
+  if (cual === 'vivo_nivel') return Object.prototype.hasOwnProperty.call(NIVELES_CHAT, valor) ? valor : undefined;
+  if (cual === 'avisos' || cual === 'vivo' || cual === 'ascenso') {
+    if (valor === '' || valor === null) return '';
+    return typeof valor === 'string' && ids.has(valor) ? valor : undefined;
+  }
+  if (cual === 'canales') {
+    if (!Array.isArray(valor) || valor.length > 10) return undefined;
+    const out = [];
+    for (const v of valor) {
+      if (typeof v !== 'string' || !ids.has(v)) return undefined;
+      if (!out.includes(v)) out.push(v);
+    }
+    return out;
+  }
+  return undefined;
+}
+
 export function ajusteValido(cual, valor) {
   if (cual === 'campana_pausada') return typeof valor === 'boolean' ? valor : undefined;
   // 👥 las crews (19/10/2026): cuánto cuesta crear una (Puntos de Tienda) y cómo se arma su ranking (`{modo, n}`)
@@ -4531,6 +4565,28 @@ export async function rutaAvisos(req, env, ruta) {
     if (!q.id) return json({ error: q.error }, q.estado);
     return elObjeto(env).fetch('https://avisos/panel-socio', {
       method: 'POST', body: JSON.stringify({ quien: q.id }), headers: { 'content-type': 'application/json' },
+    });
+  }
+  // ⚙️ LOS AJUSTES DEL BOT DESDE EL PANEL DEL SOCIO (19/10/2026): quién pide lo dice Discord; si es dueño y qué vale,
+  // el objeto (`socioAjustes()`). El cuerpo: `{sv, cambio?: {cual, valor}}`; sin `cambio` sólo lee
+  if (ruta === '/avisos/socio-ajustes') {
+    const crudo = await req.text();
+    if (crudo.length > 4096) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    const cambio = d && d.cambio && typeof d.cambio === 'object' ? d.cambio : null;
+    const valorOk = (v) => typeof v === 'boolean' || v === null || (typeof v === 'string' && v.length <= 32)
+      || (Array.isArray(v) && v.length <= 10 && v.every((x) => typeof x === 'string' && x.length <= 32));
+    if (!d || typeof d !== 'object' || !/^[A-Z]{2,6}$/.test(String(d.sv || ''))
+        || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))
+        || (d.cambio !== undefined && (!cambio || typeof cambio.cual !== 'string' || cambio.cual.length > 20 || !valorOk(cambio.valor)))) {
+      return json({ error: 'faltan datos' }, 400);
+    }
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    return elObjeto(env).fetch('https://avisos/socio-ajustes', {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ quien: q.id, sv: String(d.sv), cambio: cambio ? { cual: cambio.cual, valor: cambio.valor } : null }),
     });
   }
   if (ruta === '/avisos/historias') {
@@ -6137,6 +6193,7 @@ export class Avisos {
       if (ruta === '/tutorial') return this.tutorial(d);
       if (ruta === '/seccion') return this.seccion(d);
       if (ruta === '/panel-socio') return this.panelSocio(d);
+      if (ruta === '/socio-ajustes') return this.socioAjustes(d);
       if (ruta === '/clics') return this.clics(d);
       if (ruta === '/error-pagina') return this.errorPagina(d);
       if (ruta === '/dueno') {
@@ -6338,6 +6395,13 @@ export class Avisos {
         (firma && canales.firma !== firma)) {
       canales = await this.descubrir(d && d.servidores, ahora);
     }
+    // 🗺️ qué guild es cada servidor, para lo que llega por una ruta y no por el vigía (el panel del socio, 19/10/2026).
+    // La lista viene cada minuto: se escribe sólo si cambió
+    try {
+      const gs = {};
+      for (const s of (d && Array.isArray(d.servidores)) ? d.servidores : []) if (s && s.sv && s.guild) gs[String(s.sv)] = String(s.guild);
+      if (Object.keys(gs).length && JSON.stringify(gs) !== JSON.stringify(this.leer('guilds') || {})) this.guardar('guilds', gs);
+    } catch (e) { /* es un mapa de apoyo */ }
     this.yo = canales.yo || '';
     this.dueno = (d && d.dueno) || '';
     // guardado, para lo que llega por una ruta y no por el vigía (era la postulación de /sumate, que se fue el 13/10/2026)
@@ -10416,8 +10480,9 @@ export class Avisos {
     } catch (e) { return 0; }
   }
 
-  panelSocio(d) {
-    const quien = String((d && d.quien) || '');
+  /** Los socios Tier 1 o 2 de los que `quien` es dueño (en Discord, o por `socios_duenos` del Dashboard, que manda);
+   *  Dlx, todos. La misma puerta para el panel y para sus ajustes: `{esDlx, T, lista}`, cada uno con su `tier` ya resuelto */
+  sociosDe(quien) {
     const T = this.leer('tiers') || {};
     const aj = this.ajustes();
     const mano = (aj.socios_duenos && typeof aj.socios_duenos === 'object') ? aj.socios_duenos : {};
@@ -10425,9 +10490,17 @@ export class Avisos {
     const esDlx = quien === DUENO;
     const de = (x) => (Array.isArray(mano[x.sv]) && mano[x.sv].length ? mano[x.sv] : (x.dueno ? [x.dueno] : []));
     const tierDe = (x) => tiers[x.sv] || x.tier || 1;
+    const lista = (T.servidores || []).filter((x) => [1, 2].includes(tierDe(x)) && (esDlx || de(x).includes(quien)))
+      .map((x) => ({ ...x, tier: tierDe(x) }));
+    return { esDlx, T, lista };
+  }
+
+  panelSocio(d) {
+    const quien = String((d && d.quien) || '');
+    const { esDlx, T, lista } = this.sociosDe(quien);
     const desde = diaET(Date.now() - 27 * DIA_MS);
-    const servidores = (T.servidores || []).filter((x) => [1, 2].includes(tierDe(x)) && (esDlx || de(x).includes(quien))).map((x) => ({
-      sv: x.sv, nombre: x.nombre, tier: tierDe(x), puntos: x.puntos, antes: x.antes, compara: x.compara !== false,
+    const servidores = lista.map((x) => ({
+      sv: x.sv, nombre: x.nombre, tier: x.tier, puntos: x.puntos, antes: x.antes, compara: x.compara !== false,
       compara_desde: x.compara_desde || '', partes: x.partes, m: x.m, ultimo: x.ultimo,
       sin_jugar: x.sin_jugar, panel: x.panel || null,
       visitas: this.sql.exec('SELECT dia, n FROM secciones WHERE s = ? AND dia >= ? ORDER BY dia', 'sv-' + x.sv, desde).toArray()
@@ -10442,6 +10515,113 @@ export class Avisos {
       } catch (e) { /* es un conteo */ }
     }
     return json({ ok: true, t: T.t || '', semanas: T.semanas || 4, todos: esDlx, servidores });
+  }
+
+  /** 🗺️ El guild de un servidor: el mapa que deja el vigía (`guilds`), o el del chat general si todavía no lo dejó */
+  guildDe(sv) {
+    const g = (this.leer('guilds') || {})[sv];
+    if (g) return String(g);
+    const gen = ((this.leer('canales') || {}).generales || []).find((x) => x.sv === sv);
+    return gen && gen.g ? String(gen.g) : '';
+  }
+
+  /** 📋 Los canales de texto de un servidor, para elegir en el panel: `[{id, n, cat}]` en el orden de Discord, hasta 200;
+   *  `null` si Discord no contestó. En memoria 5 minutos: cambiar tres ajustes seguidos no son tres pedidos */
+  async canalesDe(g) {
+    const ahora = Date.now();
+    if (!this._canalesSv) this._canalesSv = new Map();
+    const c = this._canalesSv.get(g);
+    if (c && ahora - c.t < 5 * MIN) return c.lista;
+    try {
+      const r = await fetch(`${DC}/guilds/${g}/channels`, {
+        headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA },
+      });
+      if (r.status !== 200) return null;
+      const cs = await r.json();
+      const cats = new Map((cs || []).filter((x) => x && x.type === 4).map((x) => [String(x.id), x]));
+      const pos = (x) => { const p = cats.get(String(x.parent_id || '')); return [p ? Number(p.position) || 0 : -1, Number(x.position) || 0]; };
+      const lista = (cs || []).filter((x) => x && x.type === 0)
+        .sort((a, b) => { const [pa, qa] = pos(a), [pb, qb] = pos(b); return pa - pb || qa - qb; })
+        .slice(0, 200)
+        .map((x) => ({ id: String(x.id), n: String(x.name || '').slice(0, 60),
+          cat: String((cats.get(String(x.parent_id || '')) || {}).name || '').slice(0, 40) }));
+      this._canalesSv.set(g, { t: ahora, lista });
+      return lista;
+    } catch (e) { return null; }
+  }
+
+  /**
+   * ⚙️ LOS AJUSTES DEL BOT, DESDE EL PANEL DEL SOCIO (Dlx, 19/10/2026: «que los socios puedan usar las opciones de
+   * /settings en su propia página… que ellos tengan su página o su dashboard propio… para que ellos manejen esas cosas
+   * mejor»). Lo mismo que `/settings` en Discord —el MISMO `cfg:<guild>` de KV, así lo último que se toque en cualquiera
+   * de los dos es lo que vale— más «Eventos de Discord», que hasta hoy prendía sólo Dlx. La misma puerta que
+   * `panelSocio()`: el dueño del servidor (Dlx, todos). Sin `cambio` sólo lee. Los canales para elegir salen de Discord
+   * en el momento (`canalesDe()`), y un cambio vale sólo con un canal de ESE servidor (`socioAjusteValido()`).
+   * ⚠️ Lo que Dlx fijó en el Dashboard para ese servidor —el bot en vivo, cuánto habla, las apuestas, el aviso de cada
+   * evento— se le muestra como fijado (`liga`): gana sobre lo suyo, como ya ganaba sobre `/settings`.
+   * 🕓 Qué cambió cada dueño queda en `socio_hist` (los 50 últimos), para mirarlo si algo se ve raro.
+   */
+  async socioAjustes(d) {
+    const quien = String((d && d.quien) || '');
+    const sv = String((d && d.sv) || '').toUpperCase();
+    const x = this.sociosDe(quien).lista.find((s) => s.sv === sv);
+    if (!x) return json({ error: 'no' }, 403);
+    const g = this.guildDe(sv);
+    if (!g) return json({ error: 'sin_guild' }, 404);
+    const canales = await this.canalesDe(g);
+    if (!canales) return json({ error: 'discord' }, 503);
+    let cfg = { ...CFG_BASE };
+    try { cfg = { ...CFG_BASE, ...(JSON.parse((await this.env.KV.get('cfg:' + g)) || '{}') || {}) }; } catch (e) { /* sin KV, lo de siempre */ }
+    let aj = this.ajustes();
+    if (d && d.cambio && typeof d.cambio === 'object') {
+      const cual = String(d.cambio.cual || '');
+      const v = socioAjusteValido(cual, d.cambio.valor, canales);
+      if (v === undefined) return json({ error: 'valor' }, 400);
+      // ⏱️ una escritura cada 2 s por servidor: KV tiene 1.000 escrituras por día para todo el bot
+      if (!this._cfgT) this._cfgT = new Map();
+      const ahora = Date.now();
+      if (ahora - (this._cfgT.get(g) || 0) < 2000) return json({ error: 'espera' }, 429);
+      this._cfgT.set(g, ahora);
+      let antes;
+      if (cual === 'eventos_discord') {
+        const ev = { ...((aj.eventos_discord && typeof aj.eventos_discord === 'object') ? aj.eventos_discord : {}) };
+        antes = ev[sv] === true;
+        if (v) ev[sv] = true; else delete ev[sv];
+        if (antes !== v) { this.ajuste({ cual: 'eventos_discord', valor: ev, por: quien }); aj = this.ajustes(); }
+      } else {
+        antes = cfg[cual];
+        if (JSON.stringify(antes) !== JSON.stringify(v)) {
+          cfg[cual] = v;
+          try { await this.env.KV.put('cfg:' + g, JSON.stringify(cfg)); } catch (e) { return json({ error: 'kv' }, 503); }
+        }
+      }
+      if (JSON.stringify(antes) !== JSON.stringify(v)) {
+        const h = this.leer('socio_hist') || [];
+        h.unshift({ t: ahora, sv, cual, antes: antes === undefined ? null : antes, despues: v, por: quien });
+        this.guardar('socio_hist', h.slice(0, 50));
+      }
+    }
+    const apc = apuestasCfg(aj);
+    const av = (aj.aviso_evento && typeof aj.aviso_evento === 'object') ? aj.aviso_evento : {};
+    const gen = ((this.leer('canales') || {}).generales || []).find((c) => c.sv === sv);
+    const vivo = (aj.en_vivo && typeof aj.en_vivo === 'object') ? aj.en_vivo[sv] : undefined;
+    const nivelLiga = (aj.en_vivo_nivel && typeof aj.en_vivo_nivel === 'object') ? aj.en_vivo_nivel[sv] : '';
+    return json({
+      ok: true, sv,
+      cfg: { nick: cfg.nick !== false, canales: Array.isArray(cfg.canales) ? cfg.canales.map(String) : [], avisos: String(cfg.avisos || ''),
+        vivo: String(cfg.vivo || ''), vivo_nivel: NIVELES_CHAT[cfg.vivo_nivel] ? cfg.vivo_nivel : 'normal',
+        apuestas: cfg.apuestas === true, ascenso: String(cfg.ascenso || '') },
+      eventos_discord: ((aj.eventos_discord && typeof aj.eventos_discord === 'object') ? aj.eventos_discord : {})[sv] === true,
+      canales, general: gen ? String(gen.id) : '',
+      niveles: Object.entries(NIVELES_CHAT).map(([k, [n, q]]) => [k, n, q]),
+      // lo que fijó la Liga para este servidor, si fijó algo: gana sobre lo del dueño
+      liga: {
+        en_vivo: typeof vivo === 'boolean' ? vivo : null,
+        en_vivo_nivel: NIVELES_CHAT[nivelLiga] ? nivelLiga : '',
+        apuestas: apc.apagadas[sv] ? 'apagadas' : apc.prendidas[sv] ? 'prendidas' : '',
+        aviso_evento: (av.sv || {})[sv] || '',
+      },
+    });
   }
 
   /** 🗑️ Los logos de las crews que se borraron (bot/crews.js `crewBasura()`), fuera de R2. Nunca frena nada. */

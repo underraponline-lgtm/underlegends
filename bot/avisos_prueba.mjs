@@ -2390,6 +2390,16 @@ const ok = (cond, que, det) => {
     && A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['ffa/rapero:Ana'] }) === undefined
     && A.ajusteValido('mes_sacar', { mes: '2026-10', quitar: ['FFA/otra:Ana'] }) === undefined,
   'sacar un nominado vale en las veintiséis categorías (Jurado, Host, DJ, Villano, Showman y Momento también), y en otra no');
+  // ⚙️ los ajustes del bot desde el panel del socio (19/10/2026): los de /settings, y un canal sólo de ESE servidor
+  const cs = [{ id: '11', n: 'general', cat: '' }, { id: '22', n: 'torneos', cat: 'EVENTOS' }];
+  ok(A.socioAjusteValido('nick', false, cs) === false && A.socioAjusteValido('nick', 'no', cs) === undefined
+    && A.socioAjusteValido('vivo', '22', cs) === '22' && A.socioAjusteValido('vivo', '', cs) === '' && A.socioAjusteValido('vivo', null, cs) === ''
+    && A.socioAjusteValido('vivo', '99', cs) === undefined && A.socioAjusteValido('vivo_nivel', 'full', cs) === 'full'
+    && A.socioAjusteValido('vivo_nivel', 'mucho', cs) === undefined
+    && JSON.stringify(A.socioAjusteValido('canales', ['11', '22', '11'], cs)) === '["11","22"]'
+    && A.socioAjusteValido('canales', ['11', '99'], cs) === undefined && A.socioAjusteValido('eventos_discord', true, cs) === true
+    && A.socioAjusteValido('multiplicador', 2, cs) === undefined && JSON.stringify(A.CFG_BASE) === '{"nick":true,"canales":[],"avisos":"","vivo":"","vivo_nivel":"normal","ascenso":""}',
+  'el panel del socio: el #N, los canales (sin repetir, sólo los del servidor), el nivel, los eventos de Discord; nada más');
 }
 
 if (fallas) {
