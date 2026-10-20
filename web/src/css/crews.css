@@ -82,3 +82,10 @@
   .app .crw-fil{margin:0 0 14px}
   .app .crw-num b{font-size:32px}
 }
+
+/* ⭐ recomendadas para vos (19/10/2026): tres fichas arriba de la lista, para quien busca crew */
+.crw-reco{display:grid;gap:10px;margin:14px 0 6px}
+.crw-h2{margin:0;font:900 20px/1.1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+/* 🧱 el formulario de armar, abierto adentro de «tu crew» */
+.crw-tu.armando{border-color:var(--verde)}
+.crw-tu .cw-armar{margin-top:6px;padding-top:12px;border-top:1px solid var(--suave)}

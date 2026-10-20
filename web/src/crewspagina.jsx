@@ -20,7 +20,7 @@ import { limpio, norm, num } from './liga.js';
 import { Bandera, Cara, accion } from './piezas.jsx';
 import { CrewCirculo } from './arriba.jsx';
 import { accionCrew, armarCrews as armar, errorCrew, useCrews } from './crews.js';
-import { SemanaCrew, TierChip } from './crewpanel.jsx';
+import { CrearCrew, SemanaCrew, TierChip } from './crewpanel.jsx';
 import CSS_PAGINA from './css/crews.css?inline';
 import { usarCss } from './css.js';
 
@@ -39,9 +39,13 @@ const FILTROS = [['', 'Todas'], ['lugar', 'Te aceptan'], ['abiertas', 'Abiertas'
 const ORDENES = [['reco', 'Para vos'], ['activas', 'Más activas esta semana'], ['tier', 'Tier más alto'], ['gente', 'Más gente'],
   ['puntos', 'Más puntos en la temporada'], ['nuevas', 'Las más nuevas']];
 
-export function CrewsPagina({ liga, dc }) {
+export function CrewsPagina({ liga, dc, qs }) {
   const { todas, mia } = useCrews();
   const [filElegido, setFil] = useState(null);
+  // 🧱 «Armar la mía» abre el formulario acá mismo (Dlx, 19/10/2026: «la gente no sabe dónde crear crews»); `?armar=1`
+  // lo trae abierto (el botón de Mi crew). ⚠️ No se llama `armar`: así se llama la función importada que arma la lista,
+  // y pisarla tumbó la página entera («m is not a function»)
+  const [abierto, setAbierto] = useState(() => /(?:^|&)armar=1/.test(qs || ''));
   const [orden, setOrden] = useState('reco');
   const [q, setQ] = useState('');
   const T = liga.d.crews_tiers && liga.d.crews_tiers.nombres ? liga.d.crews_tiers : null;
@@ -66,6 +70,11 @@ export function CrewsPagina({ liga, dc }) {
   const enCrews = xs.reduce((a, x) => a + x.ks.length, 0);
   const aceptan = xs.filter((x) => !x.mia && x.puede).length;
   const activas = xs.filter((x) => x.act >= 2).length;
+  // ⭐ RECOMENDADAS PARA VOS (Dlx, 19/10/2026: «agregar la opción de recomendados, o sea crews recomendadas para que te
+  // unas»): para quien busca crew, las tres que mejor dan con `reco` —te aceptan, están vivas, y primero las que tienen
+  // gente de tu servidor, de tu país o que seguís—, con su ficha y su botón, arriba de la lista
+  const buscando = !!(dc && mia && mia.de && !mia.crew);
+  const reco = buscando ? xs.filter((x) => !x.mia && x.puede && x.act > 0).sort((a, b) => (b.reco - a.reco) || (b.pts - a.pts)).slice(0, 3) : [];
   return (
     <>
       <div className="escena pub-esc crw-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.85 }}>
@@ -83,7 +92,14 @@ export function CrewsPagina({ liga, dc }) {
       </div>
       <div className="pub-t2 crw-t2">
         <main className="pub-feed crw-main">
-          <TuCrew liga={liga} dc={dc} mia={mia} x={mias} T={T} />
+          <TuCrew liga={liga} dc={dc} mia={mia} x={mias} T={T} armar={abierto} setArmar={setAbierto} />
+          {reco.length ? (
+            <section className="crw-reco" aria-label="Recomendadas para vos">
+              <h2 className="crw-h2">Recomendadas para vos</h2>
+              <p className="crw-tu-s">Te aceptan y están activas; primero las que tienen gente de tu servidor, de tu país o que seguís.</p>
+              <ul className="crw-lista">{reco.map((x) => <li key={x.c.id}><Ficha liga={liga} x={x} T={T} dc={dc} mia={mia} /></li>)}</ul>
+            </section>
+          ) : null}
           <div className="crw-busca">
             <input type="search" className="cw-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscá una crew por nombre o sigla"
               aria-label="Buscar una crew" enterKeyHint="search" />
@@ -113,7 +129,7 @@ export function CrewsPagina({ liga, dc }) {
 }
 
 /** Arriba de todo: tu crew (con su semana) o, sin crew, armar una; y las invitaciones que tenés. */
-function TuCrew({ liga, dc, mia, x, T }) {
+function TuCrew({ liga, dc, mia, x, T, armar, setArmar }) {
   if (!dc) {
     return (
       <section className="crw-tu" aria-label="Tu crew">
@@ -141,15 +157,25 @@ function TuCrew({ liga, dc, mia, x, T }) {
       </section>
     );
   }
+  if (!mia.de) {
+    return (
+      <section className="crw-tu" aria-label="Tu crew">
+        <p className="crw-tu-t">Las crews son de los Miembros de Discord Rap Español.</p>
+        <p className="crw-tu-s"><a className="te-link" href="#/cuenta/verificar">Verificate</a> y después armá la tuya o sumate a una.</p>
+      </section>
+    );
+  }
   return (
-    <section className="crw-tu" aria-label="Tu crew">
+    <section className={'crw-tu' + (armar ? ' armando' : '')} aria-label="Tu crew">
       <p className="crw-tu-t">Todavía no tenés crew.</p>
       {inv.length ? <p className="crw-tu-s">📨 Te invitaron a {inv.map((i) => <a key={i.crew} className="te-link" href={enlaceCrew(i.crew)}>{limpio(i.nombre)}</a>)
-        .reduce((a, b) => [a, ', ', b])}.</p> : null}
+        .reduce((a, b) => [a, ', ', b])}: <a className="te-link" href="#/cuenta/crew">responder</a>.</p> : null}
       <div className="cw-fila">
-        <a className="btn verde" href="#/cuenta/crew">Armar la mía · {num(mia.precio ?? 2500)}</a>
-        <span className="cw-nota">o sumate a una de abajo</span>
+        <button type="button" className={'btn ' + (armar ? 'borde2' : 'verde')} aria-expanded={armar} onClick={() => setArmar(!armar)}>
+          {armar ? 'Cerrar' : 'Armar la mía · ' + num(mia.precio ?? 2500)}</button>
+        <span className="cw-nota">{armar ? 'o sumate a una de abajo' : 'o sumate a una de abajo: las recomendadas, primero'}</span>
       </div>
+      {armar ? <CrearCrew mia={mia} /> : null}
     </section>
   );
 }

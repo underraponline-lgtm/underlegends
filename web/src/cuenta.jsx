@@ -124,7 +124,7 @@ function grupos(liga, dc, tema, cual, temaSv) {
       ['perfil', 'perfil', 'Mi perfil', yo ? 'tu foto, tus redes y tu servidor' : 'lo que los demás ven de vos'],
       ['fondo', 'tema', 'Tu fondo', 'tu imagen, con el nivel 10 del Pase'],
       // 👥 las crews que arma la gente (19/10/2026): la tuya, tus invitaciones, o armar una (`crewpanel.jsx`)
-      ['crew', 'socios', 'Mi crew', crewDe(dc && dc.clave) ? 'la tuya: ' + limpio(crewDe(dc.clave).c.nombre) : 'armá la tuya o sumate a una'],
+      ['crew', 'socios', 'Mi crew', crewDe(dc && dc.clave) ? 'la tuya: ' + limpio(crewDe(dc.clave).c.nombre) : 'tus invitaciones; se arman en Crews'],
       ['siguiendo', 'seguir', 'Siguiendo', liga.sigue.length ? liga.sigue.length + (liga.sigue.length === 1 ? ' rapero' : ' raperos') : 'todavía nadie'],
       ['privacidad', 'candado', 'Privacidad', 'tu foto, tus datos y este dispositivo'],
       // 🙋 los pedidos (17/10/2026): perdí mi cuenta, ese no soy yo, mi país, un video que no es mío

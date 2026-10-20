@@ -304,7 +304,7 @@ export function CrewsParaVos({ liga, max = 3, seccion = '' }) {
   // `seccion`: envuelta en su sección sólo cuando hay algo (en el perfil, una sección vacía dejaba un hueco)
   const bloque = (
     <div className="cw-bloque cw-paravos">
-      <h3 className="cw-h">Crews que te aceptan</h3>
+      <h3 className="cw-h">Recomendadas para vos</h3>
       <ul className="cw-lista">{xs.map((x) => (
         <li key={x.c.id}>
           <a href={enlaceCrew(x.c.id)}><b>{limpio(x.c.nombre)}</b></a>
@@ -543,8 +543,13 @@ export function InvitarACrew({ k, nombre }) {
 }
 
 // ── Mi cuenta → Mi crew ──────────────────────────────────────────────────────────────────────────────────────────────
-export function MiCrew({ liga, dc }) {
-  const { mia, todas } = useCrews();
+/**
+ * 🧱 ARMAR UNA CREW: el formulario, con su precio y el aviso de la primera semana. Vive en la página de Crews (Dlx,
+ * 19/10/2026: «la gente no sabe dónde crear crews… quizás necesite estar en crews») y Mi crew manda ahí: hasta ese día
+ * estaba sólo en Mi cuenta → Mi crew, detrás de las pestañas, y el botón de Crews te mandaba a otra página. `mia` viene
+ * verificado y sin crew (quien llama ya lo miró).
+ */
+export function CrearCrew({ mia }) {
   const { va, msg, hacer, setMsg } = useAccion();
   const [nombre, setNombre] = useState('');
   const [sigla, setSigla] = useState('');
@@ -552,6 +557,49 @@ export function MiCrew({ liga, dc }) {
   const [logo, setLogo] = useState(null);
   const [entrada, setEntrada] = useState('pedido');
   const [armando, setArmando] = useState(false);
+  const precio = mia.precio ?? 2500;
+  const sumar = (mia.prueba && mia.prueba.sumar) || 2;
+  const espera = mia.espera_ms > 0;
+  return (
+    <div className="cw-bloque cw-armar">
+      <h3 className="cw-h">Armá tu crew</h3>
+      <p className="cw-nota">Cuesta <b>{num(precio)} Puntos de Tienda</b>{typeof mia.saldo === 'number' ? <> (tenés {num(mia.saldo)})</> : null}. Hasta {mia.max} raperos; vos sos el Líder.</p>
+      <p className="cw-nota cw-aviso-semana">⏳ Después tenés <b>una semana para sumar {sumar} personas</b> a la crew. Si no llegan, la crew se borra y los Puntos no vuelven.</p>
+      {espera ? <p className="cw-nota">Saliste de una crew hace poco: podés armar la tuya en {Math.ceil(mia.espera_ms / 86400000)} días.</p> : null}
+      <form className="cw-crear" onSubmit={async (e) => {
+        e.preventDefault();
+        if (armando) return;
+        if (!logo) { setMsg('Falta el logo de la crew.'); return; }
+        setArmando(true);
+        await hacer({ accion: 'crear', nombre: nombre.trim(), sigla: sigla.trim(), desc: desc.trim(), entrada, img: await aBase64(logo[0]) },
+          (j) => '¡Tu crew está armada! Ahora sumá a ' + sumar + ' personas en una semana.' + msgLogo(j));
+        setArmando(false);
+      }}>
+        <fieldset className="cw-campos" disabled={armando}>
+        <div className="cw-logo-campo"><span className="cw-logo-t">Logo</span>
+          <ElegirLogo vista={logo && logo[1]} onElegido={(b, u) => setLogo([b, u])} onError={setMsg} />
+          <small>Cuadrado, se ve en un círculo. Pasa por el filtro automático: nada de desnudos, sangre, odio ni datos personales.</small></div>
+        <label>Nombre<input className="cw-busca" value={nombre} maxLength={24} required minLength={3} onChange={(e) => setNombre(e.target.value)} placeholder="Los del Barrio" /></label>
+        <label>Sigla <small>(2 a 4 letras)</small><input className="cw-busca cw-sigla" value={sigla} maxLength={4} required minLength={2} pattern="[\p{L}\p{N}]{2,4}" title="De 2 a 4 letras o números" onChange={(e) => setSigla(e.target.value)} placeholder="LDB" /></label>
+        <label>Descripción <small>(10 a 160 letras, sin links)</small><textarea className="cw-busca cw-desc-in" value={desc} maxLength={160} minLength={10} required rows={2}
+          onChange={(e) => setDesc(e.target.value)} placeholder="Quiénes son, de dónde, qué buscan" /></label>
+        <fieldset className="cw-reps"><legend>Cómo se entra</legend>{Object.entries(ENTRADA_NOMBRE).map(([k, t]) => (
+          <label key={k} className={'cw-rep' + (entrada === k ? ' on' : '')}><input type="radio" name="cw-ent" checked={entrada === k} onChange={() => setEntrada(k)} />{t}</label>
+        ))}</fieldset>
+        </fieldset>
+        {armando ? <Cargando titulo="Armando tu crew" etapas={ETAPAS_CREAR} /> : (
+          <button type="submit" className="btn verde" disabled={va || espera || (typeof mia.saldo === 'number' && mia.saldo < precio)}>
+            Armar la crew · {num(precio)}</button>
+        )}
+      </form>
+      {msg ? <p role="status" className="cw-msg">{msg}</p> : null}
+    </div>
+  );
+}
+
+export function MiCrew({ liga, dc }) {
+  const { mia } = useCrews();
+  const { va, msg, hacer, setMsg } = useAccion();
   if (!dc) return <p className="cu-d">Entrá con Discord para armar tu crew o aceptar una invitación.</p>;
   if (!mia) return <p className="cu-d">Mirando tu crew…</p>;
   if (!mia.de) return <p className="cu-d">Las crews son de los Miembros de Discord Rap Español: <a href="#/cuenta/verificar">verificate</a> y armá la tuya o sumate a una.</p>;
@@ -589,8 +637,6 @@ export function MiCrew({ liga, dc }) {
       </div>
     );
   }
-  const precio = mia.precio ?? 2500;
-  const sumar = (mia.prueba && mia.prueba.sumar) || 2;
   const espera = mia.espera_ms > 0;
   return (
     <div className="cw-mia">
@@ -612,39 +658,13 @@ export function MiCrew({ liga, dc }) {
       {(mia.ped || []).length ? <p className="cu-d">Pediste entrar a {mia.ped.map((x) => limpio(x.nombre)).join(', ')}: falta que te acepten.</p> : null}
       {espera ? <p className="cu-d">Saliste de una crew hace poco: podés entrar a otra o armar la tuya en {Math.ceil(mia.espera_ms / 86400000)} días.</p> : null}
       {!espera ? <CrewsParaVos liga={liga} /> : null}
+      {/* 🧱 el formulario se mudó a la página de Crews (Dlx, 19/10/2026: «la gente no sabe dónde crear crews»): acá, el camino */}
       <div className="cw-bloque">
         <h3 className="cw-h">Armá tu crew</h3>
-        <p className="cu-d">Cuesta <b>{num(precio)} Puntos de Tienda</b>{typeof mia.saldo === 'number' ? <> (tenés {num(mia.saldo)})</> : null}. Hasta {mia.max} raperos; vos sos el Líder.</p>
-        <p className="cu-d cw-aviso-semana">⏳ Después tenés <b>una semana para sumar {sumar} personas</b> a la crew. Si no llegan, la crew se borra y los Puntos no vuelven.</p>
-        <form className="cw-crear" onSubmit={async (e) => {
-          e.preventDefault();
-          if (armando) return;
-          if (!logo) { setMsg('Falta el logo de la crew.'); return; }
-          setArmando(true);
-          await hacer({ accion: 'crear', nombre: nombre.trim(), sigla: sigla.trim(), desc: desc.trim(), entrada, img: await aBase64(logo[0]) },
-            (j) => '¡Tu crew está armada! Ahora sumá a ' + sumar + ' personas en una semana.' + msgLogo(j));
-          setArmando(false);
-        }}>
-          <fieldset className="cw-campos" disabled={armando}>
-          <div className="cw-logo-campo"><span className="cw-logo-t">Logo</span>
-            <ElegirLogo vista={logo && logo[1]} onElegido={(b, u) => setLogo([b, u])} onError={setMsg} />
-            <small>Cuadrado, se ve en un círculo. Pasa por el filtro automático: nada de desnudos, sangre, odio ni datos personales.</small></div>
-          <label>Nombre<input className="cw-busca" value={nombre} maxLength={24} required minLength={3} onChange={(e) => setNombre(e.target.value)} placeholder="Los del Barrio" /></label>
-          <label>Sigla <small>(2 a 4 letras)</small><input className="cw-busca cw-sigla" value={sigla} maxLength={4} required minLength={2} pattern="[\p{L}\p{N}]{2,4}" title="De 2 a 4 letras o números" onChange={(e) => setSigla(e.target.value)} placeholder="LDB" /></label>
-          <label>Descripción <small>(10 a 160 letras, sin links)</small><textarea className="cw-busca cw-desc-in" value={desc} maxLength={160} minLength={10} required rows={2}
-            onChange={(e) => setDesc(e.target.value)} placeholder="Quiénes son, de dónde, qué buscan" /></label>
-          <fieldset className="cw-reps"><legend>Cómo se entra</legend>{Object.entries(ENTRADA_NOMBRE).map(([k, t]) => (
-            <label key={k} className={'cw-rep' + (entrada === k ? ' on' : '')}><input type="radio" name="cw-ent" checked={entrada === k} onChange={() => setEntrada(k)} />{t}</label>
-          ))}</fieldset>
-          </fieldset>
-          {armando ? <Cargando titulo="Armando tu crew" etapas={ETAPAS_CREAR} /> : (
-            <button type="submit" className="btn verde" disabled={va || espera || (typeof mia.saldo === 'number' && mia.saldo < precio)}>
-              Armar la crew · {num(precio)}</button>
-          )}
-        </form>
+        <p className="cu-d">Las crews se arman y se buscan en la página de Crews. Armar una cuesta <b>{num(mia.precio ?? 2500)} Puntos de Tienda</b>{typeof mia.saldo === 'number' ? <> (tenés {num(mia.saldo)})</> : null}.</p>
+        <div className="cw-fila"><a className="btn verde" href="#/crews?armar=1">Armar mi crew</a><a className="btn borde2" href="#/crews">Ver las crews</a></div>
       </div>
       {msg ? <p role="status" className="cw-msg">{msg}</p> : null}
-      {todas && todas.crews && todas.crews.length ? <p className="cu-d">O sumate a una: <a href="#/crews">las crews de la Liga</a>.</p> : null}
     </div>
   );
 }
