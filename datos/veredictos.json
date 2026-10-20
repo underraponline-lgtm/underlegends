@@ -2,50 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1559446013310144513": {
-   "id": "1559446013310144513",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1791871302679,
-   "a": "ERIAN",
-   "b": "SIN LIMITES",
-   "ganador": "ERIAN",
-   "votos": "1–0"
-  },
-  "1559447776696475699": {
-   "id": "1559447776696475699",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1791871723103,
-   "a": "NHP",
-   "b": "LRS",
-   "ganador": "NHP",
-   "votos": "1–0"
-  },
-  "1559450779226742865": {
-   "id": "1559450779226742865",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1791872438962,
-   "a": "LORD",
-   "b": "TENOR",
-   "ganador": "TENOR",
-   "votos": "1–0"
-  },
-  "1559451418597785722": {
-   "id": "1559451418597785722",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1791872591400,
-   "a": "DARNBLES",
-   "b": "CINEXFILO",
-   "ganador": "CINEXFILO",
-   "votos": "1–0"
-  },
   "1559454580742426648": {
    "id": "1559454580742426648",
    "sv": "[FFA] Freestyle For All 👾",
