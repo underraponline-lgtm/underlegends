@@ -28,3 +28,20 @@ página; lo que sirvió como idea: Ranking → «Leaderboard Table» (medallas a
 Contents» (índice que sigue el scroll); Tarjetas → «Card Hand Gallery» (las tuyas en mano) y «Glow Card Grid»; Perfil →
 «Stats cards with progress»; Publicaciones → «Activity Feed» por día; Socios → «Pixel Logo Grid» (apagados, color al
 tocar); Salón → «Award» (placas). Nada para la Llave ni la Tienda. Ningún código traído; lo que se haga se anota acá.
+
+## 19/10/2026 · la pasada ancha, por piezas y no por páginas (sólo búsquedas, 0 del cupo)
+
+Dlx: «¿estás seguro que sacaste todo eso de 21st? ¿algo más que puedas sacar?». Dieciocho búsquedas más, por pieza, y
+`get_inspiration` con la descripción del hub. **Plantillas**: ninguna de esports, ligas ni comunidades (las tres
+búsquedas, vacías). **Temas**: nada por «dark neon magenta» (y ya tenemos paleta). Lo que sirvió como idea:
+
+- Enganche: «Habit Tracker Calendar» y «Activity Heatmap» (la racha como calendario; los días que jugaste, como grilla),
+  «Achievement List / Unlocked / badge locked» (insignias con estado y el «¡desbloqueaste!» al momento), «Sprint Task
+  Checklist» (las Tareas del Pase con festejo al completar), «Circle Progress» (el nivel como anillo en la foto),
+  «Onboarding Steps with Progress» (el «¿primera vez?» como checklist).
+- Navegación: «Notification Panel» (la campana por día y por tipo, visto ≠ atendido), «Chip Group» (filtros con «+N»),
+  «Command Search» (el buscador con ejemplos que se tipean solos), «Empty» (los «no hay nada» con qué hacer).
+- Datos de un vistazo: «Sparkline» (tendencia al lado del número), «Avatar Stack» (quiénes van / están), «Status» con
+  punto que late (EN VIVO), «Leaderboard Card» (el top 3), «Us vs Them» (el versus por categorías), «World Map» (SVG).
+- No aplica: «Shader Metal», «3D Globe», «Country Flags Globe», «ASCII Swirl» (WebGL pesado para Android; el remake
+  prohíbe blur y degradés) y «Bottom Nav Bar» con píldora (la barra de abajo va limpia: Dlx, 03/10 y 17/10).
