@@ -11,6 +11,21 @@
  ],
  "cambios": [
   {
+   "version": "3.68",
+   "dia": "2026-10-19",
+   "cuando": "2026-10-19T20:01:00-04:00",
+   "titulo": "Los TAG en la Guía y más para las crews",
+   "items": [
+    "🖼️ **El vs de 2v2, 1v3 y 8v1** trae más de cada uno: debajo de cada tarjeta, su **letra**, sus **últimos 5** y su **racha**, como en el 1v1.",
+    "🏷️ **Los TAG, en la Guía**: todos los de cada tarjeta, qué pide cada uno, **cuánta gente lo tiene** y **los tuyos de hoy**.",
+    "🔗 **`/crew link`** en el bot: arma el link de invitación de tu crew sin entrar a la página.",
+    "👥 **Crews que te aceptan**: si todavía no tenés crew, en Mi cuenta y en tu perfil te mostramos algunas que te aceptan hoy.",
+    "🏆 Cuando tu crew **sube o baja de tier** te llega a la campana, y las que suben salen en **Publicaciones** el lunes.",
+    "🪪 Si tu crew tiene gente **sin verificar**, al Líder le avisamos **2 días antes** de que se venza su plazo.",
+    "📊 En el panel de los servidores socios, la comparación con las 4 semanas anteriores aparece cuando la temporada tenga 8 semanas (antes comparaba con la pre-temporada)."
+   ]
+  },
+  {
    "version": "3.67",
    "dia": "2026-10-19",
    "cuando": "2026-10-19T18:58:00-04:00",
