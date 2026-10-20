@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "3.73",
+   "dia": "2026-10-19",
+   "cuando": "2026-10-19T23:27:00-04:00",
+   "titulo": "Las crews se arman en Crews, con recomendadas para vos",
+   "items": [
+    "👥 **Armá tu crew desde la página de Crews**: «Armar la mía» abre el formulario ahí mismo, arriba de la lista.",
+    "⭐ **Recomendadas para vos**: si buscás crew, arriba de todo tenés tres que te aceptan y están activas, primero las que tienen gente de tu servidor, de tu país o que seguís.",
+    "👤 Mi cuenta → Mi crew queda para lo tuyo: tu crew y tus invitaciones."
+   ]
+  },
+  {
    "version": "3.72",
    "dia": "2026-10-19",
    "cuando": "2026-10-19T23:03:00-04:00",
