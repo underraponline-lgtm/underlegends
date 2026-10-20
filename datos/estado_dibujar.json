@@ -1,55 +1,51 @@
 {
  "v": 1,
- "cuando": "2026-10-20T23:39:43Z",
+ "cuando": "2026-10-20T23:43:40Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 511.2,
+ "dur_s": 202.2,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.2
+   "s": 10.0
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.5
+   "s": 4.5
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 23.0
+   "s": 19.6
   },
   {
    "n": "5",
-   "que": "tanda 1 de 3 · 40 persona(s)",
+   "que": "tanda 1 de 1 · 15 persona(s)",
    "ok": false,
-   "s": 413.2
+   "s": 107.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.2
+   "s": 5.1
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 54.0
+   "s": 54.4
   }
  ],
  "fallas": [
   {
    "paso": "5",
    "que": "03_Servidor/generar.py Artezzy"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py MCO"
   }
  ],
  "ultimo_evento": {
@@ -64,16 +60,16 @@
    "read": 43777
   },
   "objeto": {
-   "leidas": 3275616,
-   "escritas": 38719,
-   "pedidos": 11676
+   "leidas": 3296663,
+   "escritas": 38784,
+   "pedidos": 11761
   },
   "worker": {
-   "pedidos": 9544,
+   "pedidos": 9569,
    "errores": 0,
-   "sub": 11972,
+   "sub": 12004,
    "p50_ms": 1.49,
-   "p99_ms": 11.33
+   "p99_ms": 11.36
   },
   "r2": {
    "objetos": 4633,
