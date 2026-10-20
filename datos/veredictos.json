@@ -2,17 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1559378343957110785": {
-   "id": "1559378343957110785",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1791855169048,
-   "a": "OASIS",
-   "b": "NUMBER",
-   "ganador": "OASIS",
-   "votos": "1–0"
-  },
   "1559384055521349725": {
    "id": "1559384055521349725",
    "sv": "[FFA] Freestyle For All 👾",
@@ -5314,8 +5303,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1792458348636,
-   "ed": 1792459194474,
-   "texto": "`[ CUARTOS ]`\n⌞NC🇮🇶+SNAKE🇦🇷⌝ 🆚 ⌞TEO🇨🇴+DO-C🇵🇾⌝\n⌞LUZ🇨🇱+DYZZ🇨🇱⌝ 🆚 ⌞SNOW🇨🇴+VELATZ 🇨🇱⌝ 🆚 ⌞MAKMA🇻🇪+MOLUSCO🇦🇷⌝\n⌞MILLONARI-O(MC MILLO)🇵🇾+ZAIK🇪🇸⌝ 🆚 ⌞DARNBLESS🇨🇴+UNDER🇨🇴⌝ 🆚 ⌞TENOR🇻🇪+ZA🇦🇷⌝ 🆚 ⌞ANDRES🇨🇱+TAM🇻🇪⌝\n⌞DREXX🇵🇪+ADRIAGNER🇳🇮⌝ 🆚 ⌞223🇦🇹-LIBERIA🇦🇪⌝\n`[ CUARTOS ]`\n⌞MILLONARI-O(MC MILLO)🇵🇾+ZAIK🇪🇸⌝ 🆚 ⌞DARNBLESS🇨🇴+UNDER🇨🇴⌝ 🆚 ⌞TENOR🇻🇪+ZA🇦🇷⌝ 🆚 ⌞ANDRES🇨🇱+TAM🇻🇪⌝",
+   "ed": 1792460932523,
+   "texto": "`[ CUARTOS ]`\n⌞NC🇮🇶+SNAKE🇦🇷⌝ 🆚 ⌞TEO🇨🇴+DO-C🇵🇾⌝\n⌞LUZ🇨🇱+DYZZ🇨🇱⌝ 🆚 ⌞SNOW🇨🇴+VELATZ 🇨🇱⌝ 🆚 ⌞MAKMA🇻🇪+MOLUSCO🇦🇷⌝\n⌞MILLONARI-O(MC MILLO)🇵🇾+ZAIK🇪🇸⌝ 🆚 ⌞DARNBLESS🇨🇴+UNDER🇨🇴⌝ 🆚 ⌞TENOR🇻🇪+ZA🇦🇷⌝ 🆚 ⌞ANDRES🇨🇱+TAM🇻🇪⌝\n⌞DREXX🇵🇪+ADRIAGNER🇳🇮⌝ 🆚 ⌞223🇦🇹-LIBERIA🇦🇪⌝ 🆚 ⌞PICHULITAMC🇦🇷+DELUX🇦🇷⌝ 🆚 ⌞CALÍZ🇲🇽⌝\n`[ SEMIFINALES ]`\n⌞ANDRES🇨🇱+TAM🇻🇪⌝ 🆚 ⌞223🇦🇹-LIBERIA🇦🇪⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5324,7 +5313,7 @@
       "TEO🇨🇴+DO-C🇵🇾"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -5335,7 +5324,7 @@
       "MAKMA🇻🇪+MOLUSCO🇦🇷"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -5346,27 +5335,27 @@
       "TENOR🇻🇪+ZA🇦🇷",
       "ANDRES🇨🇱+TAM🇻🇪"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "ANDRES🇨🇱+TAM🇻🇪",
+     "ronda siguiente",
      []
     ],
     [
      "CUARTOS",
      [
       "DREXX🇵🇪+ADRIAGNER🇳🇮",
-      "223🇦🇹-LIBERIA🇦🇪"
+      "223🇦🇹-LIBERIA🇦🇪",
+      "PICHULITAMC🇦🇷+DELUX🇦🇷",
+      "CALÍZ🇲🇽"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "223🇦🇹-LIBERIA🇦🇪",
+     "ronda siguiente",
      []
     ],
     [
-     "CUARTOS",
+     "SEMIFINALES",
      [
-      "MILLONARI-O(MC MILLO)🇵🇾+ZAIK🇪🇸",
-      "DARNBLESS🇨🇴+UNDER🇨🇴",
-      "TENOR🇻🇪+ZA🇦🇷",
-      "ANDRES🇨🇱+TAM🇻🇪"
+      "ANDRES🇨🇱+TAM🇻🇪",
+      "223🇦🇹-LIBERIA🇦🇪"
      ],
      null,
      "última ronda y no dice campeón",
