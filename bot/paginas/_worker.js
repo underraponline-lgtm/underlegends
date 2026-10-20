@@ -437,8 +437,82 @@ const PAGINAS = {
   socios: ['Socios', 'Los servidores de rap online que suman al ranking mundial.'],
   guia: ['Guía', 'Puntos, rangos, tarjetas y TAGs, explicados en una página.'],
   salon: ['Salón de la fama', 'Los MES AWARDS, las promos y los que hicieron historia.'],
+  // y las que no están en el menú pero se comparten (Dlx, 19/10/2026: «¿estás seguro que ésos son todos?»)
+  cuenta: ['Mi cuenta', 'Entrá con Discord: tus tarjetas, tu Pase, tus Puntos y tus avisos, en un lugar.'],
+  cambios: ['Lo nuevo', 'Cada cambio de la página y del bot, con su versión y su hora.'],
+  socio: ['El panel de tu servidor', 'Tu puntaje, cuándo hay actividad, tus raperos y los ajustes del bot, para los dueños.'],
 };
+// los nombres viejos de algunas páginas, que siguen abriendo lo mismo: la misma vista previa
+const ALIAS = { avisos: 'eventos', mundo: 'socios', duelos: 'ranking' };
+// `/cuenta` y `/cambios` son de toda la marca y viven en la raíz (`EN_RAIZ` de web/montar.py); el resto, en /freestyle-rap
+const RUTA_PAGINA = new RegExp('^/(?:freestyle-rap/)?(' + Object.keys(PAGINAS).concat(Object.keys(ALIAS), ['llave', 'pais']).join('|') + ')(?:/|$)');
 const R2_CREWS = /^https:\/\/pub-[a-z0-9]+\.r2\.dev\/crews\/[\w.-]+$/;
+
+/** Un json del Worker del bot, cacheado 5 min (el lobby, las llaves viejas); `null` si no contestó */
+async function pedirJson(ruta) {
+  const r = await fetch(ORIGEN + ruta, { headers: { accept: 'application/json' }, cf: { cacheTtl: 300, cacheEverything: true } }).catch(() => null);
+  return r && r.ok ? r.json().catch(() => null) : null;
+}
+
+/** La imagen de un servidor (`/og/<sv>.png`, de banner_link.py: hay una por servidor con logo), o la de esa página */
+function imagenSv(L, sv, url, pagina) {
+  const s = L && (L.svs || []).find((y) => y && y.sv === sv);
+  return s && s.logo && /^[A-Z]{2,5}$/.test(String(sv)) ? url.origin + '/og/' + String(sv).toLowerCase() + '.png' : url.origin + '/og/p/' + pagina + '.png';
+}
+
+// 🏟️ LA DE CADA LIGA (`/freestyle-rap/ligas/<id>`): su nombre, de qué servidor es y cuántas batallas lleva, con la imagen
+// de ese servidor. La Superliga y la Clausura no son de un servidor: van con la de Ligas
+async function vistaLiga(req, env, id, url) {
+  const fijas = { superliga: ['Superliga', 'El cierre de la temporada: el top 16 del Competitivo, en una liga de 10.'],
+    clausura: ['Clausura', 'El cierre del ranking de Temporada: el top 16, en octavos.'] };
+  if (fijas[id]) {
+    return conVista(req, env, url, { tab: fijas[id][0] + ' · Liga Global de Freestyle', titulo: fijas[id][0] + ' · Liga Global de Freestyle',
+      desc: fijas[id][1], img: url.origin + '/og/p/ligas.png', alt: fijas[id][0] });
+  }
+  const L = await pedirJson('/lobby?json=1');
+  const x = L && ((L.ligas || {}).ligas || []).find((l) => l && l.id === id);
+  if (!x || !x.n) return null;
+  const s = (L.svs || []).find((y) => y && y.sv === x.sv);
+  const nombre = String(x.n).trim();
+  const desc = 'La liga de ' + (s ? s.nombre : x.sv) + (x.bat ? ' · ' + x.bat + ' batallas' : '') + '. Sus fechas, su tabla y sus campeones, en la Liga Global de Freestyle.';
+  return conVista(req, env, url, { tab: nombre + ' · Liga Global de Freestyle', titulo: nombre + ' · Liga Global de Freestyle', desc,
+    img: imagenSv(L, x.sv, url, 'ligas'), alt: nombre, color: s && /^#[0-9a-f]{6}$/i.test(String(s.color || '')) ? s.color : '' });
+}
+
+// 🏆 LA DE CADA LLAVE (`/freestyle-rap/llave/<n>`): el nombre del evento, su servidor, la fecha, cuántos jugaron y el
+// campeón, con la imagen del servidor. Las del lobby primero; las viejas, de `/llaves`. Las en vivo (`v:…`) no: cambian
+async function vistaLlave(req, env, n, url) {
+  if (!/^\d{1,6}$/.test(n)) return null;
+  const L = await pedirJson('/lobby?json=1');
+  let x = L && (L.llaves || {})[n];
+  if (!x) { const T = await pedirJson('/llaves'); x = T && T[n]; }
+  if (!x || !x.nombre) return null;
+  const s = L && (L.svs || []).find((y) => y && y.sv === x.sv);
+  const camp = (x.tabla || []).filter((f) => Array.isArray(f) && f[1] === 'Campeón').map((f) => String(f[0]).trim()).slice(0, 2);
+  const nombre = String(x.nombre).trim();
+  const desc = [x.fecha ? String(x.fecha) : '', s ? s.nombre : String(x.sv || ''), x.participantes ? x.participantes + ' participantes' : '',
+    camp.length ? 'Campeón: ' + camp.join(' y ') : ''].filter(Boolean).join(' · ') + '. La llave completa, batalla por batalla.';
+  return conVista(req, env, url, { tab: nombre + ' · Liga Global de Freestyle', titulo: nombre + (x.sv ? ' · ' + x.sv : '') + ' · Liga Global',
+    desc, img: imagenSv(L, x.sv, url, 'eventos'), alt: 'La llave de ' + nombre,
+    color: s && /^#[0-9a-f]{6}$/i.test(String(s.color || '')) ? s.color : '' });
+}
+
+// 🌎 LA DE CADA PAÍS (`/freestyle-rap/pais/<cc>`): su nombre y cuántos raperos tiene, con su bandera (`/og/pais/<cc>.png`,
+// de banner_paginas.py --paises). El nombre sale de `og/pais/nombres.json`, que el mismo script deja desde web/src/liga.js
+async function vistaPais(req, env, cc, url) {
+  cc = String(cc || '').toLowerCase();
+  if (!/^[a-z]{2}$/.test(cc)) return null;
+  const r = await env.ASSETS.fetch(new Request(url.origin + '/og/pais/nombres.json')).catch(() => null);
+  const nombres = r && r.ok ? await r.json().catch(() => null) : null;
+  if (!nombres || !nombres[cc]) return null;
+  const L = await pedirJson('/lobby?json=1');
+  const p = L && (L.paises || []).find((y) => y && String(y.cc).toLowerCase() === cc);
+  const nombre = String(nombres[cc]);
+  const desc = (p && p.n ? p.n + (p.n === 1 ? ' rapero' : ' raperos') + ' en la Liga Global. ' : '')
+    + 'Su ranking, su OVR Nacional y sus tarjetas de País en el freestyle online.';
+  return conVista(req, env, url, { tab: nombre + ' · Liga Global de Freestyle', titulo: nombre + ' en la Liga Global de Freestyle', desc,
+    img: url.origin + '/og/pais/' + cc + '.png', alt: 'La bandera de ' + nombre });
+}
 
 /** El index.html con otra vista previa: `{tab, titulo, desc, img, alt, color?}` sobre la página de siempre */
 async function conVista(req, env, url, v) {
@@ -488,10 +562,19 @@ export default {
     const url = new URL(req.url);
     const ua = req.headers.get('user-agent') || '';
 
-    // 🖼️ la vista previa de cada página del menú, sólo para los bots (ver `vistaPagina()`)
-    const mPag = req.method === 'GET' && /^\/freestyle-rap\/([a-z]+)\/?(?:[^/?#]*\/?)?$/.exec(url.pathname);
-    if (mPag && PAGINAS[mPag[1]] && BOTS_VISTA.test(ua)) {
-      const v = await vistaPagina(req, env, mPag[1], url).catch(() => null);
+    // 🖼️ la vista previa de cada página, sólo para los bots: una liga, una llave o un país tienen la suya; las demás, la de
+    // su página (ver `vistaPagina()` y las tres de arriba)
+    const mPag = req.method === 'GET' && BOTS_VISTA.test(ua) && RUTA_PAGINA.exec(url.pathname);
+    if (mPag) {
+      const pagina = ALIAS[mPag[1]] || mPag[1];
+      const resto = url.pathname.slice(mPag[0].length).replace(/\/$/, '');
+      let id = resto;
+      try { id = decodeURIComponent(resto); } catch (e) { /* tal cual */ }
+      let v = null;
+      if (id && pagina === 'ligas') v = await vistaLiga(req, env, id, url).catch(() => null);
+      else if (id && mPag[1] === 'llave') v = await vistaLlave(req, env, id, url).catch(() => null);
+      else if (id && mPag[1] === 'pais') v = await vistaPais(req, env, id, url).catch(() => null);
+      if (!v && PAGINAS[pagina]) v = await vistaPagina(req, env, pagina, url).catch(() => null);
       if (v) return v;
     }
     // 👥 y la de cada crew (ver `vistaCrew()`)
@@ -526,7 +609,9 @@ export default {
     // (el ciclo, un navegador viejo) pasa como antes
     // 🛡️ el freno por IP: todo lo de la API y la vista previa de los perfiles (ver `demasiados()`)
     if ((url.pathname.indexOf('/api/') === 0 || url.pathname.indexOf('/freestyle-rap/r/') === 0
-      || url.pathname.indexOf('/freestyle-rap/sv/') === 0 || url.pathname.indexOf('/freestyle-rap/crew/') === 0)
+      || url.pathname.indexOf('/freestyle-rap/sv/') === 0 || url.pathname.indexOf('/freestyle-rap/crew/') === 0
+      || url.pathname.indexOf('/freestyle-rap/llave/') === 0 || url.pathname.indexOf('/freestyle-rap/pais/') === 0
+      || url.pathname.indexOf('/freestyle-rap/ligas/') === 0)
       && demasiados(bloqueIP(req.headers.get('cf-connecting-ip')))) return muchos();
     if (req.method === 'POST' && url.pathname.indexOf('/api/') === 0) {
       const o = req.headers.get('origin');

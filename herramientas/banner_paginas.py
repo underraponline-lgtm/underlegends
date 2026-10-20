@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """LA IMAGEN DE LA VISTA PREVIA DE CADA PÁGINA (1200×630), UNA POR PÁGINA.
 
-    python herramientas/banner_paginas.py            -> bot/paginas/og/p/<pagina>.png, las once
+    python herramientas/banner_paginas.py            -> bot/paginas/og/p/<pagina>.png, las catorce
     python herramientas/banner_paginas.py crews ranking   sólo ésas
+    python herramientas/banner_paginas.py --paises   -> bot/paginas/og/pais/<cc>.png, una por país, con su bandera,
+                                                        y og/pais/nombres.json (el nombre de cada uno, de web/src/liga.js)
     python herramientas/banner_paginas.py --html     deja también el HTML de cada una, para mirarlo en el navegador
 
 🔑 Dlx, 19/10/2026, con el link de /crews pegado en Discord y el cartel de la Liga abajo: *«quiero que cada página como
@@ -30,6 +32,7 @@ import sys
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE)
 SALIDA = os.path.join(BASE, 'bot', 'paginas', 'og', 'p')
+SALIDA_PAISES = os.path.join(BASE, 'bot', 'paginas', 'og', 'pais')
 VERDE, MAGENTA, TINTA, GRIS = '#29B298', '#E41373', '#EDEDF2', '#9CAAA7'
 
 
@@ -67,6 +70,26 @@ def _siglas_crews(n=6):
     while len(out) < n:
         out.append(['CREW', 'LIGA', 'UL', 'T1', 'ORO', 'TOP'][len(out)])
     return out
+
+
+def _paises():
+    """`{cc: nombre}` de `PAIS` en web/src/liga.js: la página ya lo tiene escrito y acá no se repite, se lee."""
+    import re
+    with io.open(os.path.join(BASE, 'web', 'src', 'liga.js'), encoding='utf-8') as f:
+        s = f.read()
+    m = re.search(r'export const PAIS = \{(.*?)\};', s, re.S)
+    if not m:
+        raise SystemExit('no encuentro PAIS en web/src/liga.js')
+    return dict(re.findall(r"(\w{2}): '([^']+)'", m.group(1)))
+
+
+def _cambios(n=3):
+    """Las últimas versiones del changelog público, para la ilustración de «Lo nuevo»."""
+    try:
+        c = json.load(io.open(os.path.join(BASE, 'bot', 'paginas', 'cambios.json'), encoding='utf-8'))['cambios']
+        return [(x.get('version', ''), x.get('titulo', '')) for x in c[:n]]
+    except (OSError, ValueError, KeyError):
+        return [('3.71', 'Cada página con su propia imagen'), ('3.70', 'El panel del socio'), ('3.69', 'Las crews')]
 
 
 def _logos_servidores(n=9):
@@ -337,7 +360,94 @@ def _salon():
     return html, css
 
 
-# ── las once: etiqueta, título en dos líneas (blanca y magenta), bajada e ilustración ──────────────────────────────
+def _cuenta():
+    html = '''<div class="cta">
+  <div class="cab"><i></i><div><b>TU NOMBRE</b><small>VERIFICADO · RANGO A</small></div></div>
+  <div class="chips"><span><b>4</b>tarjetas</span><span><b>12</b>nivel</span><span class="m"><b>5.000</b>PdT</span></div>
+  <div class="btn">ENTRAR CON DISCORD</div>
+</div>'''
+    css = '''
+.cta{display:grid;gap:22px;width:440px;padding:28px;background:#0B0B0F;border:2px solid rgba(237,237,242,.16);border-radius:12px;transform:rotate(-2deg);box-shadow:0 24px 50px rgba(0,0,0,.6)}
+.cta .cab{display:flex;align-items:center;gap:16px}
+.cta .cab i{width:72px;height:72px;border-radius:50%;background:#29B298;box-shadow:0 0 0 4px #0B0B0F,0 0 0 7px #E41373;
+  clip-path:none;position:relative;overflow:hidden}
+.cta .cab i::before{content:"";position:absolute;left:50%;top:14px;width:26px;height:26px;margin-left:-13px;border-radius:50%;background:#0B0B0F}
+.cta .cab i::after{content:"";position:absolute;left:50%;top:44px;width:50px;height:40px;margin-left:-25px;border-radius:25px 25px 0 0;background:#0B0B0F}
+.cta .cab b{display:block;font:900 30px/1 Archivo,sans-serif;letter-spacing:-.02em;color:#EDEDF2}
+.cta .cab small{display:block;margin-top:6px;font:700 15px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;color:#29B298}
+.chips{display:flex;gap:10px}
+.chips span{flex:1;display:grid;gap:2px;padding:10px 12px;border:2px solid rgba(237,237,242,.16);border-radius:6px;
+  font:700 14px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#9CAAA7}
+.chips b{font:900 26px/1 Archivo,sans-serif;color:#EDEDF2;letter-spacing:-.02em}
+.chips span.m{border-color:#E41373}
+.chips span.m b{color:#E41373}
+.btn{padding:16px;border-radius:6px;background:#5865F2;color:#fff;text-align:center;font:800 22px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em}
+'''
+    return html, css
+
+
+def _cambios_ilus():
+    vs = _cambios(3)
+    f = ''.join('<div class="v%s"><b>%s</b><span>%s</span></div>' % (' top' if i == 0 else '', _esc(v), _esc(t)) for i, (v, t) in enumerate(vs))
+    css = '''
+.log{display:grid;gap:12px;width:450px}
+.log .v{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:16px;padding:16px 18px;background:#0B0B0F;border:2px solid rgba(237,237,242,.16);border-radius:10px}
+.log .v.top{border-color:#E41373;transform:scale(1.04);box-shadow:0 18px 40px rgba(0,0,0,.55)}
+.log .v:nth-child(2){transform:translateX(16px)}
+.log .v:nth-child(3){transform:translateX(32px);opacity:.8}
+.log b{padding:8px 10px;border-radius:4px;background:#29B298;color:#030304;font:900 20px/1 Archivo,sans-serif;letter-spacing:-.02em}
+.log .top b{background:#E41373;color:#EDEDF2}
+.log span{font:700 20px/1.15 Archivo,sans-serif;color:#EDEDF2;letter-spacing:-.01em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+'''
+    return '<div class="log">%s</div>' % f, css
+
+
+def _socio():
+    partes = [('ACTIVIDAD', 100), ('ALCANCE', 100), ('CALIDAD', 68), ('COMUNIDAD', 27)]
+    b = ''.join('<div class="p"><small>%s</small><i><u style="width:%d%%"></u></i></div>' % (n, w) for n, w in partes)
+    html = '''<div class="panel">
+  <div class="top"><div><small>SU PUNTAJE</small><b>81<em>de 100</em></b></div><span>TIER 1</span></div>
+  <div class="partes">%s</div>
+  <div class="aj"><i></i>AJUSTES DEL BOT<i></i></div>
+</div>''' % b
+    css = '''
+.panel{display:grid;gap:18px;width:450px;padding:26px;background:rgba(3,3,4,.84);border:2px solid rgba(237,237,242,.16);border-radius:10px;transform:rotate(2deg)}
+.panel .top{display:flex;justify-content:space-between;align-items:flex-start}
+.panel .top small{display:block;font:700 18px/1 'Barlow Condensed',sans-serif;letter-spacing:.16em;color:#29B298}
+.panel .top b{display:flex;align-items:baseline;gap:8px;font:900 74px/.95 Archivo,sans-serif;letter-spacing:-.04em;color:#EDEDF2}
+.panel .top em{font:700 18px/1 'Barlow Condensed',sans-serif;font-style:normal;letter-spacing:.1em;color:#9CAAA7}
+.panel .top span{padding:8px 10px;border:2px solid #E41373;border-radius:4px;font:800 16px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;color:#E41373}
+.partes{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px}
+.partes .p{display:grid;gap:6px}
+.partes small{font:700 14px/1 'Barlow Condensed',sans-serif;letter-spacing:.12em;color:#9CAAA7}
+.partes i{display:block;height:10px;background:rgba(237,237,242,.12)}
+.partes u{display:block;height:100%;background:#E41373}
+.aj{display:flex;align-items:center;gap:12px;padding:12px 14px;border:2px solid rgba(237,237,242,.2);border-radius:6px;
+  font:800 18px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em;color:#EDEDF2}
+.aj i{flex:none;width:34px;height:18px;border-radius:9px;background:#29B298;position:relative}
+.aj i::after{content:"";position:absolute;right:2px;top:2px;width:14px;height:14px;border-radius:50%;background:#030304}
+.aj i:last-child{background:rgba(237,237,242,.25);margin-left:auto}
+.aj i:last-child::after{right:auto;left:2px}
+'''
+    return html, css
+
+
+def _pais(cc):
+    from comun import banderas
+    # la del repo (1280 px) si está; si no, la grande del CDN: `banderas.src()` cae en w80, que a 420 px se ve borrosa
+    src = banderas.src(cc) if banderas.ruta(cc) else 'https://flagcdn.com/w1280/%s.png' % cc
+    html = '<div class="bandera"><img src="%s" alt=""><b>%s</b></div>' % (src, _esc(cc.upper()))
+    css = '''
+.bandera{position:relative;width:420px;height:280px;border-radius:14px;overflow:hidden;transform:rotate(-5deg);
+  box-shadow:0 0 0 4px #030304,0 0 0 7px #29B298,0 30px 70px rgba(0,0,0,.65)}
+.bandera img{display:block;width:100%;height:100%;object-fit:cover}
+.bandera b{position:absolute;right:16px;bottom:12px;padding:7px 11px;border-radius:4px;background:#030304;color:#EDEDF2;
+  font:800 22px/1 'Barlow Condensed',sans-serif;letter-spacing:.16em}
+'''
+    return html, css
+
+
+# ── las catorce: etiqueta, título en dos líneas (blanca y magenta), bajada e ilustración ───────────────────────────
 PAGINAS = {
     'ranking': ('Temporada 1 · Ranking', 'El ranking', 'de la temporada', 'Los mejores del freestyle online, de todos los servidores, en una sola tabla.', _ranking),
     'crews': ('Liga Global · Crews', 'Las crews', 'de la Liga', 'Armá la tuya, invitá a tu gente y subí de tier cada semana.', _crews),
@@ -350,11 +460,23 @@ PAGINAS = {
     'socios': ('Liga Global · Socios', 'Los servidores', 'socios', 'Los servidores de rap online que suman al ranking mundial.', _socios),
     'guia': ('Liga Global · Guía', 'Cómo funciona', 'la Liga', 'Puntos, rangos, tarjetas y TAGs, explicados en una página.', _guia),
     'salon': ('Liga Global · Salón de la fama', 'El Salón', 'de la fama', 'Los MES AWARDS, las promos y los que hicieron historia.', _salon),
+    'cuenta': ('Liga Global · Mi cuenta', 'Mi cuenta', 'en la Liga', 'Entrá con Discord: tus tarjetas, tu Pase, tus Puntos y tus avisos, en un lugar.', _cuenta),
+    'cambios': ('Liga Global · Lo nuevo', 'Lo nuevo', 'de la Liga', 'Cada cambio de la página y del bot, con su versión y su hora.', _cambios_ilus),
+    'socio': ('Liga Global · Socios', 'El panel', 'de tu servidor', 'Tu puntaje, cuándo hay actividad, tus raperos y los ajustes del bot, para los dueños.', _socio),
 }
 
 
 def html(pagina):
-    etq, t1, t2, desc, ilus = PAGINAS[pagina]
+    return html_de(PAGINAS[pagina])
+
+
+def html_pais(cc, nombre):
+    return html_de(('Liga Global · País', nombre, 'en la Liga Global', 'Sus raperos, su OVR Nacional y el ranking del país en el freestyle online.',
+                    lambda: _pais(cc)))
+
+
+def html_de(spec):
+    etq, t1, t2, desc, ilus = spec
     cuerpo, css = ilus()
     with io.open(os.path.join(BASE, 'comun', 'fonts', 'embed.css'), encoding='utf-8') as f:
         fuentes = f.read()
@@ -414,18 +536,27 @@ def main():
         print('   ⚠️ no existe: %s · las que hay: %s' % (', '.join(malas), ', '.join(PAGINAS)))
         sys.exit(1)
     os.makedirs(SALIDA, exist_ok=True)
+    # 🌎 los países: una por cada uno de `PAIS` (web/src/liga.js), con su bandera; y el nombre de cada uno en un json
+    # chico que `vistaPais()` (bot/paginas/_worker.js) lee de la página misma, así el nombre vive en un solo lugar
+    trabajos = [(pagina, html(pagina), os.path.join(SALIDA, pagina + '.png')) for pagina in (pedidas or list(PAGINAS))]
+    if '--paises' in sys.argv:
+        os.makedirs(SALIDA_PAISES, exist_ok=True)
+        paises = _paises()
+        with io.open(os.path.join(SALIDA_PAISES, 'nombres.json'), 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(paises, f, ensure_ascii=False, indent=1)
+        trabajos = [(cc, html_pais(cc, nombre), os.path.join(SALIDA_PAISES, cc + '.png')) for cc, nombre in paises.items()]
     from playwright.sync_api import sync_playwright
     with sync_playwright() as p:
         b = p.chromium.launch()
         pg = b.new_page(viewport={'width': 1200, 'height': 630})
-        for pagina in (pedidas or list(PAGINAS)):
-            h = html(pagina)
+        for nombre, h, ruta in trabajos:
             if '--html' in sys.argv:
-                with io.open(os.path.join(SALIDA, pagina + '.html'), 'w', encoding='utf-8', newline='\n') as f:
+                with io.open(ruta[:-4] + '.html', 'w', encoding='utf-8', newline='\n') as f:
                     f.write(h)
             pg.set_content(h)
+            # las banderas que no están en el repo vienen del CDN: se espera a que la imagen cargue
+            pg.wait_for_load_state('networkidle')
             pg.wait_for_timeout(300)
-            ruta = os.path.join(SALIDA, pagina + '.png')
             pg.screenshot(path=ruta)
             print('   ✅ %s (%d KB)' % (os.path.relpath(ruta, BASE), os.path.getsize(ruta) // 1024))
         b.close()

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "description": "Sólo la API pasa por _worker.js; los archivos los sirve Pages directo (04/10/2026). Ver bot/paginas_subir.py. Y los perfiles (14/10/2026), para la vista previa de cada link: ver vistaPerfil() en _worker.js Y los servidores (14/10/2026): vistaServidor(). Y las once páginas del menú y cada crew (19/10/2026), con su propia imagen: vistaPagina() y vistaCrew(). Para la persona es el index.html de siempre: sólo los bots de vista previa se llevan otra.",
+  "description": "Sólo la API pasa por _worker.js; los archivos los sirve Pages directo (04/10/2026). Ver bot/paginas_subir.py. Y los perfiles (14/10/2026), para la vista previa de cada link: ver vistaPerfil() en _worker.js Y los servidores (14/10/2026): vistaServidor(). Y las once páginas del menú y cada crew (19/10/2026), con su propia imagen: vistaPagina() y vistaCrew(). Para la persona es el index.html de siempre: sólo los bots de vista previa se llevan otra. Y una liga, una llave, un país, Mi cuenta, Lo nuevo y el panel del socio (19/10/2026, «¿ésos son todos?»).",
   "include": [
     "/api/*",
     "/calendario.ics",
@@ -30,7 +30,20 @@
     "/freestyle-rap/guia/*",
     "/freestyle-rap/salon",
     "/freestyle-rap/salon/*",
-    "/freestyle-rap/crew/*"
+    "/freestyle-rap/crew/*",
+    "/freestyle-rap/llave/*",
+    "/freestyle-rap/pais/*",
+    "/freestyle-rap/cuenta",
+    "/freestyle-rap/cambios",
+    "/freestyle-rap/cambios/*",
+    "/freestyle-rap/socio",
+    "/freestyle-rap/avisos",
+    "/freestyle-rap/mundo",
+    "/freestyle-rap/duelos",
+    "/freestyle-rap/duelos/*",
+    "/cuenta",
+    "/cambios",
+    "/cambios/*"
   ],
   "exclude": []
 }
