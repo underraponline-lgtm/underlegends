@@ -523,5 +523,43 @@
   "sin_permiso": false,
   "sv": "FFA"
  },
+ "1561867654464012369": {
+  "autor": "1494178897908990136",
+  "canal": "1309234583023124531",
+  "cuando": "2026-10-19T22:24:26.922000+00:00",
+  "evento": "FATS BATTLES PALOOZA FECHA 7",
+  "fecha": "19/10",
+  "llave": "1561867654464012369",
+  "pregunta": "",
+  "preguntada": "2026-10-19 9:23 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "MAJIZTRAL 🇨🇴 + MINIBOY 🇨🇱",
+     "MCO 🇦🇷 + MATHIAS 🇻🇪"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "Dios 🇲🇽",
+     "Lvel 🇻🇪",
+     "Iguana 🇵🇪"
+    ],
+    "ronda": "OCTAVOS"
+   },
+   {
+    "lados": [
+     "makma 🇻🇪",
+     "Joba 🇨🇱",
+     "Ezias🇵🇾🇬🇪🇪🇨🇫🇷🇧🇷🇨🇱🥈✒️🧢🐍"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "sv": "ACAD"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

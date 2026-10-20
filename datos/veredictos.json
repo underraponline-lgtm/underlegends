@@ -5314,8 +5314,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1792458348636,
-   "ed": 1792458782604,
-   "texto": "`[ CUARTOS ]`\n⌞NC🇮🇶+SNAKE🇦🇷⌝ 🆚 ⌞TEO🇨🇴+DO-C🇵🇾⌝\n⌞LUZ🇨🇱+DYZZ🇨🇱⌝ 🆚 ⌞SNOW🇨🇴+VELATZ 🇨🇱⌝ 🆚 ⌞MAKMA🇻🇪+MOLUSCO🇦🇷⌝\n⌞MILLONARI-O(MC MILLO)🇵🇾+ZAIK🇪🇸⌝ 🆚 ⌞DARNBLESS🇨🇴+UNDER🇨🇴⌝\n⌞DREXX🇵🇪+ADRIAGNER🇳🇮⌝ 🆚 ⌞223🇦🇹-LIBERIA🇦🇪⌝\n`[ CUARTOS ]`\n⌞LUZ🇨🇱+DYZZ🇨🇱⌝ 🆚 ⌞SNOW🇨🇴+VELATZ 🇨🇱⌝ 🆚 ⌞MAKMA🇻🇪+MOLUSCO🇦🇷⌝",
+   "ed": 1792459194474,
+   "texto": "`[ CUARTOS ]`\n⌞NC🇮🇶+SNAKE🇦🇷⌝ 🆚 ⌞TEO🇨🇴+DO-C🇵🇾⌝\n⌞LUZ🇨🇱+DYZZ🇨🇱⌝ 🆚 ⌞SNOW🇨🇴+VELATZ 🇨🇱⌝ 🆚 ⌞MAKMA🇻🇪+MOLUSCO🇦🇷⌝\n⌞MILLONARI-O(MC MILLO)🇵🇾+ZAIK🇪🇸⌝ 🆚 ⌞DARNBLESS🇨🇴+UNDER🇨🇴⌝ 🆚 ⌞TENOR🇻🇪+ZA🇦🇷⌝ 🆚 ⌞ANDRES🇨🇱+TAM🇻🇪⌝\n⌞DREXX🇵🇪+ADRIAGNER🇳🇮⌝ 🆚 ⌞223🇦🇹-LIBERIA🇦🇪⌝\n`[ CUARTOS ]`\n⌞MILLONARI-O(MC MILLO)🇵🇾+ZAIK🇪🇸⌝ 🆚 ⌞DARNBLESS🇨🇴+UNDER🇨🇴⌝ 🆚 ⌞TENOR🇻🇪+ZA🇦🇷⌝ 🆚 ⌞ANDRES🇨🇱+TAM🇻🇪⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5342,7 +5342,9 @@
      "CUARTOS",
      [
       "MILLONARI-O(MC MILLO)🇵🇾+ZAIK🇪🇸",
-      "DARNBLESS🇨🇴+UNDER🇨🇴"
+      "DARNBLESS🇨🇴+UNDER🇨🇴",
+      "TENOR🇻🇪+ZA🇦🇷",
+      "ANDRES🇨🇱+TAM🇻🇪"
      ],
      null,
      "última ronda y no dice campeón",
@@ -5361,9 +5363,10 @@
     [
      "CUARTOS",
      [
-      "LUZ🇨🇱+DYZZ🇨🇱",
-      "SNOW🇨🇴+VELATZ 🇨🇱",
-      "MAKMA🇻🇪+MOLUSCO🇦🇷"
+      "MILLONARI-O(MC MILLO)🇵🇾+ZAIK🇪🇸",
+      "DARNBLESS🇨🇴+UNDER🇨🇴",
+      "TENOR🇻🇪+ZA🇦🇷",
+      "ANDRES🇨🇱+TAM🇻🇪"
      ],
      null,
      "última ronda y no dice campeón",
