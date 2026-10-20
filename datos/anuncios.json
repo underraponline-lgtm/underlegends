@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-19T23:55:12+00:00",
+ "cuando": "2026-10-20T00:25:28+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -400,6 +400,40 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "DESGRACIAS EN TOKYO VOL 29 2 VS 2",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1561890492013219913",
+   "cuando": "2026-10-19T23:55:11",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "LEWITO",
+   "orgs": [],
+   "autor_h": "211322958af20ae2",
+   "cupos_texto": "16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "PLATA 3",
+   "modalidad": "",
+   "horario": "EN 1 HORA",
+   "fecha": "",
+   "premios": "RESPETO",
+   "staff": {
+    "jurado": [
+     "LEWITO"
+    ],
+    "host": [
+     "LEWITO"
+    ],
+    "dj": [
+     "LEWITO"
+    ]
+   },
+   "autor": "Lewito",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "LA REDENCION VOL.6",
@@ -1116,45 +1150,6 @@
    "premios": "1.5 Dolares gente (NO ES JODA DA PA COMPRARSE UNA EMPANADA, INSCRIBANSE)",
    "staff": {},
    "autor": "𓂀",
-   "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 4",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1559287213320044714",
-   "cuando": "2026-10-12T19:30:41",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Flennzs | ⛩️",
-     "id": "1414431452346581052"
-    }
-   ],
-   "autor_h": "211322958af20ae2",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "PLATA III",
-   "modalidad": "",
-   "horario": "EN 1 HORA",
-   "fecha": "HOY",
-   "premios": "ROL CAMPEÓN +  CUPO PARA COMPE POR PLATA RANGO ORO II",
-   "staff": {
-    "jurado": [
-     "FLENNZS"
-    ],
-    "host": [
-     "LEWITO  FLENNZS"
-    ],
-    "dj": [
-     "💿 LEWITO"
-    ]
-   },
-   "autor": "Lewito",
    "staff_cuentas": {},
    "categoria_id": "1468478330826260500"
   },
@@ -6188,6 +6183,141 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "223 🇦🇪  - liberia 🇦🇹",
+   "quien": "ivanjajaa",
+   "discord_id": "639232575461654538",
+   "msg_id": "1561897388723933325",
+   "cuando": "2026-10-20T00:22:36"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Dyzz🇨🇱 + 🇦🇷benja",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1561897363780669482",
+   "cuando": "2026-10-20T00:22:30"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Sityro🇺🇸 + Tenor🇻🇪",
+   "quien": "provenzaaznevorp",
+   "discord_id": "711076230857752627",
+   "msg_id": "1561894477356859433",
+   "cuando": "2026-10-20T00:11:01"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "snake🇦🇷-nc🇮🇶 <@1523082259870257315> <@1470819179509842235>",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1561894468968259667",
+   "cuando": "2026-10-20T00:10:59"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Abyssus 🇨🇦 - Oasis 🇮🇷",
+   "quien": "vipertapestry",
+   "discord_id": "768561204707983361",
+   "msg_id": "1561893889651249224",
+   "cuando": "2026-10-20T00:08:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Zaik 🇪🇸  + Kravitz 🇨🇷",
+   "quien": "zaik0009",
+   "discord_id": "1555067257376346122",
+   "msg_id": "1561893694339031154",
+   "cuando": "2026-10-20T00:07:55"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "223 🇦🇩",
+   "quien": "ivanjajaa",
+   "discord_id": "639232575461654538",
+   "msg_id": "1561893665448661023",
+   "cuando": "2026-10-20T00:07:48"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "ADRIAGNER🇳🇮 + CHOP🇭🇳",
+   "quien": "adriagner",
+   "discord_id": "1316490165836972104",
+   "msg_id": "1561893615146373171",
+   "cuando": "2026-10-20T00:07:36"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "MCO🇦🇷 + MC METALOIDE🇵🇾",
+   "quien": "pelotadel_10_68491",
+   "discord_id": "1373340031413911624",
+   "msg_id": "1561893040719659020",
+   "cuando": "2026-10-20T00:05:19"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Zaik 🇪🇸  + Kravitz 🇨🇷",
+   "quien": "zaik0009",
+   "discord_id": "1555067257376346122",
+   "msg_id": "1561892712293335053",
+   "cuando": "2026-10-20T00:04:01"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Zignos 🇩🇴",
+   "quien": "emekultra",
+   "discord_id": "1071185986366742630",
+   "msg_id": "1561892490309799939",
+   "cuando": "2026-10-20T00:03:08"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Molusco 🇦🇷",
+   "quien": "moluscoanvriento_79058",
+   "discord_id": "1363285354442133778",
+   "msg_id": "1561892183345332247",
+   "cuando": "2026-10-20T00:01:55"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Teo 🇨🇴 + Do c 🇵🇾",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1561892088952655945",
+   "cuando": "2026-10-20T00:01:32"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Ckl🇦🇷",
+   "quien": "benjaclink31",
+   "discord_id": "849765868819972166",
+   "msg_id": "1561891509689655327",
+   "cuando": "2026-10-19T23:59:14"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Pichula mc 🇦🇷",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1561891263169695855",
+   "cuando": "2026-10-19T23:58:15"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",

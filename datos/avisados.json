@@ -5811,7 +5811,7 @@
    "PichulaMc": 27
   },
   "fecha": "10/10",
-  "firma": "00ab080ad0b98d1b",
+  "firma": "091ada429cfb2a13",
   "msg": "1558643633110917121",
   "nombre": "(sin titulo)",
   "num": 444,
@@ -11664,7 +11664,7 @@
    "Verc": 10
   },
   "fecha": "13/10",
-  "firma": "1093576214030380",
+  "firma": "69fcc15bf485829b",
   "msg": "1559769924178804738",
   "nombre": "PRITTY FREE",
   "num": 469,
@@ -11865,7 +11865,7 @@
    "Xubaru": 4
   },
   "fecha": "14/10",
-  "firma": "51ed7def84afef7e",
+  "firma": "4d1521060f04f44c",
   "msg": "1559809185120518145",
   "nombre": "__ Inserte Nombre de la Compe __",
   "num": 470,
@@ -12079,7 +12079,7 @@
    "Vandu": 20
   },
   "fecha": "14/10",
-  "firma": "37c716fc2c719ba4",
+  "firma": "c31c98ea3ccd0efa",
   "msg": "1560019837609050254",
   "nombre": "DEM UZBEKISTAN FECHA 3",
   "num": 471,
@@ -14579,7 +14579,7 @@
    "Sin Limites": 18
   },
   "fecha": "16/10",
-  "firma": "7f7550ed5e9525c7",
+  "firma": "e94c6632691f1529",
   "msg": "1560858617589272627",
   "nombre": "PROYECTO X VOL.3",
   "num": 481,
@@ -16738,6 +16738,317 @@
     "Adriagner",
     "Octavos",
     416
+   ]
+  ],
+  "v": 2
+ },
+ "491": {
+  "antes": {
+   "Ariaxer": [
+    43,
+    55,
+    false
+   ],
+   "Corvo": [
+    316,
+    265,
+    true
+   ],
+   "Dominick": [
+    204,
+    58,
+    true
+   ],
+   "Dyzz": [
+    51,
+    70,
+    false
+   ],
+   "Eclipsito": [
+    210,
+    81,
+    true
+   ],
+   "Emily Family": [
+    109,
+    184,
+    false
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Kourier": [
+    164,
+    337,
+    false
+   ],
+   "Leonart": [
+    77,
+    103,
+    false
+   ],
+   "Liberia": [
+    9,
+    10,
+    false
+   ],
+   "Lord Viruzz": [
+    37,
+    48,
+    false
+   ],
+   "MCO": [
+    17,
+    19,
+    false
+   ],
+   "Majiztral": [
+    25,
+    29,
+    false
+   ],
+   "Makmah": [
+    2,
+    2,
+    false
+   ],
+   "Masino": [
+    75,
+    100,
+    false
+   ],
+   "Panchok": [
+    4,
+    5,
+    false
+   ],
+   "Ruvick": [
+    349,
+    314,
+    true
+   ],
+   "Teito": [
+    62,
+    84,
+    false
+   ],
+   "Trot": [
+    26,
+    33,
+    false
+   ]
+  },
+  "canal": "925213294703300649",
+  "duelos": [
+   [
+    "Erian",
+    "Teito",
+    "Erian"
+   ],
+   [
+    "Majiztral",
+    "Trot",
+    "Majiztral"
+   ],
+   [
+    "Majiztral",
+    "Dominick",
+    "Majiztral"
+   ],
+   [
+    "MCO",
+    "Ruvick",
+    "MCO"
+   ],
+   [
+    "Liberia",
+    "Emily Family",
+    "Liberia"
+   ],
+   [
+    "Panchok",
+    "Dyzz",
+    "Panchok"
+   ],
+   [
+    "Leonart",
+    "Lord Viruzz",
+    "Leonart"
+   ],
+   [
+    "Eclipsito, YIN - SON 🇺🇸",
+    "Erian, Chuwin",
+    "Eclipsito, YIN - SON 🇺🇸"
+   ],
+   [
+    "Masino, Liberia",
+    "Panchok, Kourier",
+    "Masino, Liberia"
+   ],
+   [
+    "Corvo, Leonart",
+    "Lord Viruzz, Ariaxer",
+    "Corvo, Leonart"
+   ],
+   [
+    "Erian, Eclipsito, YIN-SON 🇺🇸",
+    "Makmah, MCO, Majiztral",
+    "Erian, Eclipsito, YIN-SON 🇺🇸"
+   ],
+   [
+    "Masino, Panchok, Liberia",
+    "Corvo, Leonart, Lord Viruzz",
+    "Masino, Panchok, Liberia"
+   ],
+   [
+    "Corvo, Panchok, Masino, Lord Viruzz, Liberia",
+    "MCO, Makmah, Eclipsito, YIN-SON 🇺🇸, Erian",
+    "Corvo, Panchok, Masino, Lord Viruzz, Liberia"
+   ]
+  ],
+  "ev_antes": {
+   "Ariaxer": 10,
+   "Corvo": 2,
+   "Dominick": 12,
+   "Dyzz": 9,
+   "Eclipsito": 9,
+   "Emily Family": 3,
+   "Erian": 41,
+   "Kourier": 2,
+   "Leonart": 8,
+   "Liberia": 16,
+   "Lord Viruzz": 16,
+   "MCO": 17,
+   "Majiztral": 20,
+   "Makmah": 55,
+   "Masino": 5,
+   "Panchok": 18,
+   "Ruvick": 1,
+   "Teito": 13,
+   "Trot": 23
+  },
+  "fecha": "19/10",
+  "firma": "e069fe08997fedef",
+  "msg": "1561897867122184213",
+  "nombre": "FATS BATTLES PALOOZA FECHA 7",
+  "num": 491,
+  "participantes": 32,
+  "sello": {
+   "Corvo": "",
+   "Liberia": "0dd4a04e0c0c:84b47cf43136",
+   "Lord Viruzz": "a1d23fdce165:eac8e3b22c41",
+   "Masino": "013ed7396da6:84b47cf43136",
+   "Panchok": "b5e3fb941610:84b47cf43136"
+  },
+  "sv": "ACAD",
+  "t": "2026-10-20T00:24:28Z",
+  "tabla": [
+   [
+    "Lord Viruzz",
+    "Campeón",
+    6250
+   ],
+   [
+    "Corvo",
+    "Campeón",
+    3750
+   ],
+   [
+    "Panchok",
+    "Campeón",
+    3250
+   ],
+   [
+    "MCO",
+    "Subcampeón",
+    3250
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    3250
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    2750
+   ],
+   [
+    "Masino",
+    "Campeón",
+    2000
+   ],
+   [
+    "Liberia",
+    "Campeón",
+    2000
+   ],
+   [
+    "Majiztral",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Leonart",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Eclipsito",
+    "Subcampeón",
+    1500
+   ],
+   [
+    "YIN-SON 🇺🇸",
+    "Subcampeón",
+    1500
+   ],
+   [
+    "Chuwin",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Kourier",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Teito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ruvick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Emily Family",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
    ]
   ],
   "v": 2

@@ -27272,8 +27272,7 @@
   "escala": "16+",
   "fecha": "19/10",
   "links": [
-   "https://discord.com/channels/1468472442925092958/1487207377601040516/1561784128972791931",
-   "https://discord.com/channels/1468472442925092958/1487206164864438513/1561793578244505673"
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1561784128972791931"
   ],
   "n": 489,
   "nombre": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2",
@@ -27298,7 +27297,7 @@
        "Kwl"
       ],
       "Dyzz, Izaya",
-      "triple (4 bandas, pasan 2); también pasa: Izaya 🇨🇱; Revivido: Dyzz🇨🇱"
+      "triple (4 bandas, pasan 2); también pasa: Izaya 🇨🇱"
      ],
      [
       [
@@ -27309,17 +27308,6 @@
       ],
       "Vandu, OG",
       "triple (4 bandas, pasan 2); también pasa: OG🇻🇪"
-     ],
-     [
-      [
-       "Xubaru, Makmah",
-       "Colesito",
-       "Pomberito",
-       "Andy",
-       "Panchok"
-      ],
-      "Xubaru, Makmah, Colesito",
-      "triple (5 bandas, pasan 2); también pasa: colesito; Revivido: pombe"
      ],
      [
       [
@@ -27360,14 +27348,6 @@
       ],
       "Vandu",
       ""
-     ],
-     [
-      [
-       "Xubaru, Makmah",
-       "Dyzz"
-      ],
-      "Xubaru, Makmah",
-      ""
      ]
     ],
     "r": "Cuartos"
@@ -27394,14 +27374,6 @@
       ],
       "Xubaru, Makmah, OG",
       ""
-     ],
-     [
-      [
-       "COLESITO🇨🇴+VANDU🇨🇦",
-       "AX🇩🇪 + MAKMA🇻🇪 + OG🇻🇪"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Final"
@@ -27412,11 +27384,6 @@
    [
     "Colesito",
     "Subcampeón",
-    3750
-   ],
-   [
-    "Dyzz",
-    "Cuartos",
     3750
    ],
    [
@@ -27438,6 +27405,11 @@
     "Xubaru",
     "Campeón",
     3333
+   ],
+   [
+    "Dyzz",
+    "Cuartos",
+    2500
    ],
    [
     "Izaya",
@@ -27465,16 +27437,6 @@
     1750
    ],
    [
-    "Panchok",
-    "R32",
-    937
-   ],
-   [
-    "Pomberito",
-    "R32",
-    937
-   ],
-   [
     "Andy",
     "R32",
     625
@@ -27486,6 +27448,16 @@
    ],
    [
     "Kwl",
+    "R32",
+    625
+   ],
+   [
+    "Panchok",
+    "R32",
+    625
+   ],
+   [
+    "Pomberito",
     "R32",
     625
    ],
@@ -27784,6 +27756,275 @@
     "NXUZ",
     "Octavos",
     416
+   ]
+  ]
+ },
+ "491": {
+  "dia": "2026-10-19",
+  "escala": "16+",
+  "fecha": "19/10",
+  "links": [
+   "https://discord.com/channels/765045834647339038/1309234583023124531/1561867654464012369"
+  ],
+  "n": 491,
+  "nombre": "FATS BATTLES PALOOZA FECHA 7",
+  "participantes": 32,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "Chuwin",
+       "Teito"
+      ],
+      "Erian, Chuwin",
+      "triple (3 bandas, pasan 2); también pasa: Chuwin; Drafteado: erian"
+     ],
+     [
+      [
+       "Majiztral",
+       "Trot",
+       "Dominick"
+      ],
+      "Majiztral",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "MCO",
+       "Ariaxer",
+       "Ruvick"
+      ],
+      "MCO, Ariaxer",
+      "triple (3 bandas, pasan 2); también pasa: Ariaxer🇦🇷; Drafteado: MCO 🇦🇷"
+     ],
+     [
+      [
+       "Liberia",
+       "Masino",
+       "Emily Family"
+      ],
+      "Liberia, Masino",
+      "triple (3 bandas, pasan 2); también pasa: masino🇨🇱"
+     ],
+     [
+      [
+       "Panchok",
+       "Kourier",
+       "Dyzz"
+      ],
+      "Panchok, Kourier",
+      "triple (3 bandas, pasan 2); también pasa: Kourier 🇲🇽; Drafteado: Panchok 🇨🇱"
+     ],
+     [
+      [
+       "Leonart",
+       "Corvo",
+       "Lord Viruzz"
+      ],
+      "Leonart, Corvo",
+      "triple (3 bandas, pasan 2); también pasa: Corvo 🇧🇴"
+     ],
+     [
+      [
+       "Dios 🇲🇽",
+       "Lvel 🇻🇪",
+       "Iguana 🇵🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "makma 🇻🇪",
+       "Joba 🇨🇱",
+       "Ezias🇵🇾🇬🇪🇪🇨🇫🇷🇧🇷🇨🇱🥈✒️🧢🐍"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Eclipsito, YIN - SON 🇺🇸",
+       "Erian, Chuwin"
+      ],
+      "Eclipsito, YIN - SON 🇺🇸",
+      ""
+     ],
+     [
+      [
+       "Masino, Liberia",
+       "Panchok, Kourier"
+      ],
+      "Masino, Liberia",
+      ""
+     ],
+     [
+      [
+       "Corvo, Leonart",
+       "Lord Viruzz, Ariaxer"
+      ],
+      "Corvo, Leonart",
+      "Drafteado: CORVO 🇧🇴; Drafteado: LORDVIRUZZ 🇨🇴"
+     ],
+     [
+      [
+       "MAJIZTRAL 🇨🇴 + MINIBOY 🇨🇱",
+       "MCO 🇦🇷 + MATHIAS 🇻🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Erian, Eclipsito, YIN-SON 🇺🇸",
+       "Makmah, MCO, Majiztral"
+      ],
+      "Erian, Eclipsito, YIN-SON 🇺🇸",
+      "Drafteado: MAKMA 🇻🇪"
+     ],
+     [
+      [
+       "Masino, Panchok, Liberia",
+       "Corvo, Leonart, Lord Viruzz"
+      ],
+      "Masino, Panchok, Liberia",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Corvo, Panchok, Masino, Lord Viruzz, Liberia",
+       "MCO, Makmah, Eclipsito, YIN-SON 🇺🇸, Erian"
+      ],
+      "Corvo, Panchok, Masino, Lord Viruzz, Liberia",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "ACAD",
+  "tabla": [
+   [
+    "Lord Viruzz",
+    "Campeón",
+    6250
+   ],
+   [
+    "Corvo",
+    "Campeón",
+    3750
+   ],
+   [
+    "MCO",
+    "Subcampeón",
+    3250
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    3250
+   ],
+   [
+    "Panchok",
+    "Campeón",
+    3250
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    2750
+   ],
+   [
+    "Liberia",
+    "Campeón",
+    2000
+   ],
+   [
+    "Masino",
+    "Campeón",
+    2000
+   ],
+   [
+    "Leonart",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Majiztral",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Eclipsito",
+    "Subcampeón",
+    1500
+   ],
+   [
+    "YIN-SON 🇺🇸",
+    "Subcampeón",
+    1500
+   ],
+   [
+    "Ariaxer",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Chuwin",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Emily Family",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kourier",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Ruvick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
+    "Octavos",
+    1250
    ]
   ]
  }

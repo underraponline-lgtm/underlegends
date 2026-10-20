@@ -195,10 +195,38 @@
     "nivel": "C",
     "base": 7500,
     "o": 7,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 7500
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Subcampeón",
+    "valor": 7500,
+    "caza": {
+     "n": 491,
+     "evento": "FATS BATTLES PALOOZA FECHA 7",
+     "sv": "ACAD",
+     "t": "2026-10-19T22:24:26Z",
+     "por": [
+      {
+       "n": "Corvo",
+       "cobra": 3000
+      },
+      {
+       "n": "Liberia",
+       "cobra": 1500
+      },
+      {
+       "n": "Lord Viruzz",
+       "cobra": 2250
+      },
+      {
+       "n": "Masino",
+       "cobra": 3000
+      },
+      {
+       "n": "Panchok",
+       "cobra": 1500
+      }
+     ]
+    }
    },
    {
     "n": "NC",

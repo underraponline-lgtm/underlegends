@@ -1,51 +1,51 @@
 {
  "v": 1,
- "cuando": "2026-10-20T00:00:13Z",
+ "cuando": "2026-10-20T00:33:56Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 413.5,
+ "dur_s": 636.8,
  "pasos": [
   {
    "n": "0a",
    "que": "los nombres de Discord de la Lista, del Operativo",
    "ok": true,
-   "s": 1.0
+   "s": 1.8
   },
   {
    "n": "0a2",
    "que": "las crews, del objeto",
    "ok": true,
-   "s": 1.1
+   "s": 1.3
   },
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.6
+   "s": 1.0
   },
   {
    "n": "0c",
    "que": "lo corregido desde los reportes",
    "ok": true,
-   "s": 2.0
+   "s": 2.8
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 61.1
+   "s": 74.5
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 47.7
+   "s": 49.1
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 2.3
+   "s": 0.5
   },
   {
    "n": "1a2",
@@ -57,7 +57,7 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 36.7
+   "s": 38.6
   },
   {
    "n": "1b2",
@@ -69,7 +69,7 @@
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.1
+   "s": 7.3
   },
   {
    "n": "2b0",
@@ -87,7 +87,7 @@
    "n": "2b2",
    "que": "las insignias",
    "ok": true,
-   "s": 0.9
+   "s": 1.2
   },
   {
    "n": "2b3",
@@ -99,7 +99,7 @@
    "n": "2b3d",
    "que": "los paneles de DRA",
    "ok": true,
-   "s": 0.3
+   "s": 28.1
   },
   {
    "n": "2b3b",
@@ -111,61 +111,61 @@
    "n": "2b3c",
    "que": "el reto del debut",
    "ok": true,
-   "s": 0.1
+   "s": 2.8
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.8
+   "s": 1.6
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.4
+   "s": 0.6
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 2.9
+   "s": 3.4
   },
   {
    "n": "2b5b",
    "que": "los pedidos de la gente",
    "ok": true,
-   "s": 0.2
+   "s": 0.3
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 33.6
+   "s": 235.5
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 3.9
+   "s": 8.8
   },
   {
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 2.5
+   "s": 3.5
   },
   {
    "n": "2b8c",
    "que": "las promociones",
    "ok": true,
-   "s": 2.4
+   "s": 3.6
   },
   {
    "n": "2b8d",
    "que": "los MES AWARDS",
    "ok": false,
-   "s": 36.3
+   "s": 47.3
   },
   {
    "n": "2b8e",
@@ -177,7 +177,7 @@
    "n": "2b8f",
    "que": "los tiers",
    "ok": true,
-   "s": 5.7
+   "s": 7.4
   },
   {
    "n": "2b8b",
@@ -189,43 +189,43 @@
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 22.1
+   "s": 26.4
   },
   {
    "n": "2b9b",
    "que": "el ascenso de cada servidor",
    "ok": true,
-   "s": 1.9
+   "s": 2.3
   },
   {
    "n": "2b10",
    "que": "los roles de la página",
    "ok": true,
-   "s": 0.3
+   "s": 0.4
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 48.6
+   "s": 54.2
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 0.5
+   "s": 0.4
   },
   {
    "n": "2c3",
    "que": "el anuncio que sale solo a su hora",
    "ok": true,
-   "s": 0.8
+   "s": 1.1
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 10.9
+   "s": 13.1
   },
   {
    "n": "2e",
@@ -237,13 +237,13 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 68.6
+   "s": 7.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.6
+   "s": 5.9
   }
  ],
  "fallas": [
@@ -252,20 +252,20 @@
    "que": "bot/mes_awards.py --aplicar"
   }
  ],
- "decidir": 84,
+ "decidir": 86,
  "ultimo_evento": {
-  "n": "490",
-  "nombre": "LA REDENCIÓN",
-  "sv": "FFA",
+  "n": "491",
+  "nombre": "FATS BATTLES PALOOZA FECHA 7",
+  "sv": "ACAD",
   "dia": "2026-10-19"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-19T23:54:31Z",
+  "cuando": "2026-10-20T00:24:46Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 488,
-  "un_evento": 238,
-  "diez_o_mas": 67,
+  "jugadores": 490,
+  "un_evento": 239,
+  "diez_o_mas": 69,
   "cohortes": [
    {
     "semana": "2026-09-21",
@@ -282,7 +282,7 @@
    {
     "semana": "2026-10-05",
     "nuevos": 104,
-    "volvieron": 31,
+    "volvieron": 32,
     "completa": false
    },
    {
@@ -293,24 +293,28 @@
    },
    {
     "semana": "2026-10-19",
-    "nuevos": 9,
+    "nuevos": 11,
     "volvieron": 0,
     "completa": false
    }
   ]
  },
  "cuotas": {
+  "kv": {
+   "write": 12,
+   "read": 1378
+  },
   "objeto": {
-   "leidas": 0,
-   "escritas": 0,
-   "pedidos": 0
+   "leidas": 161486,
+   "escritas": 1531,
+   "pedidos": 439
   },
   "worker": {
-   "pedidos": 9876,
+   "pedidos": 9989,
    "errores": 0,
-   "sub": 11310,
+   "sub": 11477,
    "p50_ms": 1.39,
-   "p99_ms": 11.31
+   "p99_ms": 11.26
   },
   "r2": {
    "objetos": 4578,

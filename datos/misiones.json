@@ -2793,6 +2793,13 @@
      0,
      0
     ],
+    "Ariaxer": [
+     0,
+     0,
+     8,
+     0,
+     0
+    ],
     "Chop": [
      0,
      0,
@@ -2800,10 +2807,24 @@
      0,
      0
     ],
+    "Chuwin": [
+     0,
+     0,
+     8,
+     0,
+     0
+    ],
     "Colesito": [
      0,
      1,
      2,
+     0,
+     0
+    ],
+    "Corvo": [
+     0,
+     0,
+     1,
      0,
      0
     ],
@@ -2828,6 +2849,27 @@
      0,
      0
     ],
+    "Eclipsito": [
+     0,
+     0,
+     2,
+     0,
+     0
+    ],
+    "Emily Family": [
+     0,
+     0,
+     16,
+     0,
+     0
+    ],
+    "Erian": [
+     0,
+     0,
+     2,
+     0,
+     0
+    ],
     "Izaya": [
      0,
      0,
@@ -2842,6 +2884,13 @@
      0,
      0
     ],
+    "Kourier": [
+     0,
+     0,
+     8,
+     0,
+     0
+    ],
     "Kwl": [
      0,
      0,
@@ -2849,17 +2898,31 @@
      0,
      0
     ],
-    "Liberia": [
+    "Leonart": [
      0,
      0,
      4,
      0,
      0
     ],
+    "Liberia": [
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
+    "Lord Viruzz": [
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
     "MCO": [
      0,
      0,
-     8,
+     2,
      0,
      0
     ],
@@ -2873,11 +2936,18 @@
     "Majiztral": [
      0,
      0,
-     16,
+     4,
      0,
      0
     ],
     "Makmah": [
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
+    "Masino": [
      0,
      0,
      1,
@@ -2922,7 +2992,7 @@
     "Panchok": [
      0,
      0,
-     32,
+     1,
      0,
      0
     ],
@@ -2947,6 +3017,13 @@
      0,
      0
     ],
+    "Ruvick": [
+     0,
+     0,
+     16,
+     0,
+     0
+    ],
     "Scritura": [
      0,
      0,
@@ -2958,6 +3035,13 @@
      0,
      2,
      4,
+     0,
+     0
+    ],
+    "Teito": [
+     0,
+     0,
+     16,
      0,
      0
     ],
@@ -3024,6 +3108,13 @@
      0,
      0
     ],
+    "YIN-SON 🇺🇸": [
+     0,
+     0,
+     2,
+     0,
+     0
+    ],
     "francis": [
      0,
      0,
@@ -3041,12 +3132,21 @@
    },
    "pts": {
     "Colesito": 1000,
+    "Corvo": 1000,
+    "Eclipsito": 1000,
+    "Erian": 1000,
+    "Liberia": 1000,
+    "Lord Viruzz": 1000,
+    "MCO": 1000,
     "Makmah": 1000,
+    "Masino": 1000,
     "Nmb": 1000,
     "OG": 1000,
     "PRAISERIZA": 1000,
+    "Panchok": 1000,
     "Vandu": 1000,
-    "Xubaru": 1000
+    "Xubaru": 1000,
+    "YIN-SON 🇺🇸": 1000
    }
   }
  },
@@ -3090,6 +3190,7 @@
   "Chop": 2200,
   "Cinexfilo": 900,
   "Colesito": 4800,
+  "Corvo": 1000,
   "CrisZJ": 1600,
   "Crk": 300,
   "Cronox": 1600,
@@ -3109,7 +3210,7 @@
   "EGI": 300,
   "EIDP": 2900,
   "EVANGELINE🇧🇴": 600,
-  "Eclipsito": 2900,
+  "Eclipsito": 3900,
   "Efimero": 300,
   "Eliot": 1300,
   "Elsoolar": 300,
@@ -3117,7 +3218,7 @@
   "Emilio Alva": 600,
   "Emily Family": 300,
   "Enkil 🇦🇷": 300,
-  "Erian": 5800,
+  "Erian": 6800,
   "Erik": 1900,
   "Erizo": 300,
   "Eze": 300,
@@ -3165,15 +3266,15 @@
   "Leonart": 300,
   "Letrao🇨🇱": 1300,
   "Liam": 300,
-  "Liberia": 5800,
+  "Liberia": 6800,
   "LitKunai": 300,
-  "Lord Viruzz": 600,
+  "Lord Viruzz": 1600,
   "Luzzano": 900,
   "Lvel": 600,
   "MALBORO": 600,
   "MATICERNA": 300,
   "MAU KC 🇨🇴": 300,
-  "MCO": 6600,
+  "MCO": 7600,
   "MHS": 300,
   "MTZ": 600,
   "Magic": 300,
@@ -3181,7 +3282,7 @@
   "Makmah": 4800,
   "Malva": 300,
   "Marto": 300,
-  "Masino": 900,
+  "Masino": 1900,
   "Mathhias": 300,
   "Miniboy": 300,
   "Mito": 300,
@@ -3209,7 +3310,7 @@
   "PIERR🇵🇪": 300,
   "PRAISERIZA": 3900,
   "PROMETHEUS BIB 🇨🇴": 300,
-  "Panchok": 5800,
+  "Panchok": 6800,
   "Paria": 600,
   "Personality": 300,
   "PichulaMc": 5800,
@@ -3272,6 +3373,7 @@
   "Xclusivo": 3800,
   "Xplicit": 300,
   "Xubaru": 5200,
+  "YIN-SON 🇺🇸": 1000,
   "YOUNG VLAD 🇨🇴": 1300,
   "Zaik": 600,
   "Zaza": 300,
