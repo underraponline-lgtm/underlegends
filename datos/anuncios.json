@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-20T21:54:56+00:00",
+ "cuando": "2026-10-20T22:25:00+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -5230,9 +5230,7 @@
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
-   "categoria_id": "868218509975498805",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-19T22:01:59"
+   "categoria_id": "868218509975498805"
   },
   {
    "nombre": "PRADE RAP VOL.1 | LACREW",
@@ -5268,9 +5266,7 @@
    },
    "autor": "Ardean",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-19T22:01:59"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 5",
@@ -5294,9 +5290,7 @@
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-19T22:01:59"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - HOY )",
@@ -5320,9 +5314,7 @@
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-19T22:01:59"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "ASTRAL NO SIRVES PARA NADA CUP",
@@ -6961,6 +6953,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Bloody 🇨🇴",
+   "quien": "bloodypintor",
+   "discord_id": "692881329573986317",
+   "msg_id": "1562225495309811903",
+   "cuando": "2026-10-20T22:06:22"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Panchok 🇨🇱",
+   "quien": "panchok0103",
+   "discord_id": "1400508144920170577",
+   "msg_id": "1562222818555592766",
+   "cuando": "2026-10-20T21:55:44"
+  },
   {
    "servidor": "URBF",
    "canal": "《📑》Inscripciones",
