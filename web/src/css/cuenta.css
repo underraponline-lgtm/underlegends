@@ -92,3 +92,5 @@
 .cu-fondo-arch input{position:absolute;inset:0;opacity:0;cursor:pointer}
 .cu-foto-ver{width:160px;max-width:100%;aspect-ratio:1;background:#030304 center/cover no-repeat;border:1.5px solid var(--suave)}
 .cu-temas-t{margin:14px 0 8px;font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.04em;text-transform:uppercase;color:var(--gris)}
+/* 🔑 «Vos» (19/10/2026): ver el perfil público y salir, en la cabecera */
+.cu-quien .cu-acciones{display:flex;flex-wrap:wrap;gap:8px}

@@ -197,9 +197,9 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
         {/* Ajustes, con su engranaje (Dlx, 01/10/2026: «al costado de la campanita y la cuenta»). Y en el celular, en
             el lugar de tu cuenta, que vuelve abajo como «Yo» (Dlx, 02/10/2026: «el engranaje en vez de la cuenta. En
             el celular. En la PC que esté arriba, por supuesto») */}
-        <a className="btn-ico ajustes-b" href="#/ajustes" aria-label="Ajustes"><Ico n="engranaje" t={20} /></a>
+        <a className="btn-ico ajustes-b" href="#/cuenta/apariencia" aria-label="La app: apariencia, hora y avisos"><Ico n="engranaje" t={20} /></a>
         {cara ? (
-          <a className="yo-chip" href="#/cuenta" aria-label={'Mi cuenta' + (fuego ? ' · ' + fuego + (fuego === 1 ? ' día seguido' : ' días seguidos') : '')}>
+          <a className="yo-chip" href="#/cuenta" aria-label={'Vos' + (fuego ? ' · ' + fuego + (fuego === 1 ? ' día seguido' : ' días seguidos') : '')}>
             {cara}<span>{nombre}</span>{fuego ? <span className="yo-racha" aria-hidden="true"><Ico n="fuego" t={13} />{fuego}</span> : null}</a>
         ) : (
           <button type="button" className="btn verde chico entrar" onClick={accion.entrar}>Entrar</button>
@@ -1556,7 +1556,7 @@ export function Instalar() {
         <small>{ev ? 'Instalala como app: queda en tu pantalla y se abre de un toque.' : 'En el iPhone se instala desde Safari, y así también te llegan los avisos.'}</small></span>
       {ev ? <button type="button" className="btn verde chico" onClick={instalar}>Instalar</button>
         // los pasos, con un dibujo por paso, viven en Ajustes (Dlx, 01/10/2026: «sé más específico»)
-        : <a className="btn verde chico" href="#/ajustes/instalar">Ver cómo</a>}
+        : <a className="btn verde chico" href="#/cuenta/instalar">Ver cómo</a>}
       <button type="button" className="btn-ico inst-x" aria-label="No mostrar más" onClick={cerrar}><Ico n="cerrar" t={18} /></button>
     </aside>
   );

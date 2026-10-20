@@ -109,26 +109,30 @@ function ParteInstalar() {
   );
 }
 
-// las partes, en grupos, como Discord. Dlx, 01/10/2026: «creo que ajustes tendría su propia sección»: Mi cuenta es
-// lo tuyo y Ajustes lo de la página en este dispositivo
-function grupos(liga, dc, tema, cual, temaSv) {
+// las partes, en grupos, como Discord. Dlx, 01/10/2026: «creo que ajustes tendría su propia sección»: Mi cuenta era
+// lo tuyo y Ajustes lo de la página en este dispositivo.
+// 🔑 UNA SOLA PÁGINA, «VOS», DESDE EL 19/10/2026 (Dlx: «la pestaña de mi perfil o mi cuenta y quizás ajustes es muy
+// confusa», y a las dos opciones: «1, a»): «Mi cuenta» dejó de ser una pestaña —entrar, salir y verificado viven en la
+// cabecera (`Quien`)—, Ajustes dejó de ser otra página (el ⚙ de arriba abre «La app» acá mismo) y los grupos son por lo
+// que la persona quiere hacer: tu perfil, tu gente, avisos, la app, ayuda y tus datos. `#/ajustes/<parte>` sigue
+// abriendo lo mismo, para los links que ya circulan
+function grupos(liga, dc, tema, temaSv) {
   const yo = liga.yo;
   const { z, f, aj } = horaYZona();
   const C = W.CAMBIOS;
   const ult = Array.isArray(C) && C[0] ? C[0].version : '';
   const nuevo = !!ult && nuevaQue(ult, W.CAMBIOS_VISTO);
   const avisos = !!leer('campana:activada', false);
-  const g = [
-    ['TU CUENTA', [
-      ['cuenta', 'yo', 'Mi cuenta', dc ? 'Discord · ' + limpio(dc.n) : 'Entrar con Discord'],
-      ['perfil', 'perfil', 'Mi perfil', yo ? 'tu foto, tus redes y tu servidor' : 'lo que los demás ven de vos'],
+  const crew = crewDe(dc && dc.clave);
+  return [
+    ['TU PERFIL', [
+      ['perfil', 'perfil', 'Foto y redes', yo ? 'tu foto, tus redes y tu servidor' : 'lo que los demás ven de vos'],
       ['fondo', 'tema', 'Tu fondo', 'tu imagen, con el nivel 10 del Pase'],
-      // 👥 las crews que arma la gente (19/10/2026): la tuya, tus invitaciones, o armar una (`crewpanel.jsx`)
-      ['crew', 'socios', 'Mi crew', crewDe(dc && dc.clave) ? 'la tuya: ' + limpio(crewDe(dc.clave).c.nombre) : 'tus invitaciones; se arman en Crews'],
+    ]],
+    ['TU GENTE', [
+      // 👥 las crews que arma la gente (19/10/2026): la tuya y tus invitaciones; armar una, en Crews (3.73)
+      ['crew', 'socios', 'Mi crew', crew ? 'la tuya: ' + limpio(crew.c.nombre) : 'tus invitaciones; se arman en Crews'],
       ['siguiendo', 'seguir', 'Siguiendo', liga.sigue.length ? liga.sigue.length + (liga.sigue.length === 1 ? ' rapero' : ' raperos') : 'todavía nadie'],
-      ['privacidad', 'candado', 'Privacidad', 'tu foto, tus datos y este dispositivo'],
-      // 🙋 los pedidos (17/10/2026): perdí mi cuenta, ese no soy yo, mi país, un video que no es mío
-      ['algo-mal', 'aviso', 'Algo está mal', 'perdí mi cuenta, mi país, un video…'],
     ]],
     ['AVISOS', [
       ['avisos', 'campana', 'Avisos de eventos', avisos ? 'activados en este dispositivo' : 'apagados'],
@@ -139,13 +143,15 @@ function grupos(liga, dc, tema, cual, temaSv) {
       ['accesibilidad', 'calma', 'Accesibilidad', aj.calma ? 'menos animaciones' : 'animaciones normales'],
       ['instalar', 'instalar', 'Instalar la app', 'en tu pantalla de inicio'],
     ]],
-    ['LA LIGA', [
-      ['novedades', 'novedades', 'Novedades', ult ? 'v' + ult + (nuevo ? ' · NUEVO' : '') : 'el changelog'],
+    ['AYUDA Y TUS DATOS', [
+      ['privacidad', 'candado', 'Privacidad y mis datos', 'tu foto, lo que guardamos y este dispositivo'],
+      // 🙋 los pedidos (17/10/2026): perdí mi cuenta, ese no soy yo, mi país, un video que no es mío
+      ['algo-mal', 'aviso', 'Algo está mal', 'perdí mi cuenta, mi país, un video…'],
       ['guia', 'guia', 'Guía', 'cómo funciona la Liga'],
-      ['legal', 'legal', 'Privacidad y términos', 'lo que guardamos y las reglas'],
+      ['novedades', 'novedades', 'Novedades', ult ? 'v' + ult + (nuevo ? ' · NUEVO' : '') : 'el changelog'],
+      ['legal', 'legal', 'Términos y privacidad', 'las reglas y lo que guardamos'],
     ]],
   ];
-  return cual === 'ajustes' ? g.slice(1) : g.slice(0, 1);
 }
 
 // ⭐ CÓMO SUBIR DE NIVEL (Dlx, 14/10/2026: «haz que otras y muchas cosas más te hagan subir de nivel… no me refiero a
@@ -224,9 +230,18 @@ function Quien({ liga, dc }) {
           // 🔴 UN RAPERO QUE TODAVÍA NO JUGÓ LA TEMPORADA NO ES «SIN TARJETA»: el día del arranque es el caso de todos
           : <span className="cu-datos">{dc && dc.rapero ? 'Todavía no jugaste esta temporada.' : 'Todavía sin tarjeta.'}</span>}
       </div>
-      {yo ? <a className="btn borde2 chico cu-ver" href={'#/r/' + encodeURIComponent(yo.k)}>Ver mi perfil</a>
-        : dc && dc.clave ? <a className="btn borde2 chico cu-ver" href={'#/r/' + encodeURIComponent(dc.clave)}>Ver mi perfil</a>
-        : <a className="btn verde chico cu-ver" href="#/cuenta/verificar">Verificarme</a>}
+      <div className="cu-ver cu-acciones">
+        {yo ? <a className="btn borde2 chico" href={'#/r/' + encodeURIComponent(yo.k)}>Ver mi perfil público</a>
+          : dc && dc.clave ? <a className="btn borde2 chico" href={'#/r/' + encodeURIComponent(dc.clave)}>Ver mi perfil público</a>
+          : <a className="btn verde chico" href="#/cuenta/verificar">Verificarme</a>}
+        {/* salir (o «no soy yo») vive acá desde la 3.74: antes era el último botón de la lista, debajo de todo */}
+        <button type="button" className="btn borde2 chico" onClick={accion.salir}>{dc ? 'Salir' : 'No soy yo'}</button>
+      </div>
+      {/* la sesión de antes del 25/09 no trae la clave: es un toque, `prompt=none` no vuelve a pedir nada */}
+      {dc && dc.rapero && !dc.clave ? (
+        <p className="cu-d cu-ver">Tu sesión es de una versión anterior. Actualizala para ver tus tarjetas y tu perfil: es un toque, no te pide nada.{' '}
+          <button type="button" className="btn borde2 chico" onClick={accion.entrar}>Actualizar mi cuenta</button></p>
+      ) : null}
       <RachaNivel dc={dc} />
     </div>
   );
@@ -1139,23 +1154,23 @@ export function PaginaVerificar({ liga, dc }) {
 function tarjetasDe(gs) {
   const out = [];
   gs.forEach(([t, xs]) => {
-    if (t === 'LA LIGA') out.push({ id: 'la-liga', ico: 'guia', n: 'La Liga', partes: xs.map((x) => x[0]) });
+    if (t === 'AYUDA Y TUS DATOS') out.push({ id: 'ayuda', ico: 'guia', n: 'Ayuda y tus datos', partes: xs.map((x) => x[0]) });
     else xs.forEach(([id, ico, n]) => out.push({ id, ico, n, partes: [id] }));
   });
   return out;
 }
 
-export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, cual = 'cuenta' }) {
-  const gs = grupos(liga, dc, tema, cual, temaSv);
+export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv }) {
+  const gs = grupos(liga, dc, tema, temaSv);
   // 🔒 el acceso al Dashboard, a la vista sólo para el dueño. Es un atajo: la puerta de verdad está en el servidor
   // 🔐 el botón del Dashboard: Dlx, y quien tiene un rol que lo abre (Admin, Asistente, Moderador; 13/10/2026)
   const misRoles = ((useRoles() || {})[liga.yo && liga.yo.k] || []).map((x) => x[0]);
-  const dueno = cual === 'cuenta' && !!dc && (String(dc.id) === DUENO || misRoles.some((r) => ['admin', 'asistente', 'moderador'].includes(r)));
+  const dueno = !!dc && (String(dc.id) === DUENO || misRoles.some((r) => ['admin', 'asistente', 'moderador'].includes(r)));
   // 📊 dueño de un servidor socio (Tier 1 o 2): el botón a su panel (`#/socio`). Se pregunta una vez por sesión
-  const socio = useSocio(cual === 'cuenta' && !!dc);
+  const socio = useSocio(!!dc);
   const todas = gs.flatMap((g) => g[1]);
   // verificarse no está en la lista: se llega desde la tarjeta de arriba (y desde el botón del bot)
-  const extra = cual === 'cuenta' && parte === 'verificar' ? ['verificar', 'ok', 'Verificarme', ''] : null;
+  const extra = parte === 'verificar' ? ['verificar', 'ok', 'Verificarme', ''] : null;
   const actual = extra || todas.find((x) => x[0] === parte) || null;
   // en la computadora siempre hay una abierta: la primera
   const [ancha, setAncha] = useState(() => !!(W.matchMedia && W.matchMedia('(min-width: 900px)').matches));
@@ -1175,23 +1190,22 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, cual =
     if (c) accion.ir('cu-' + c.id);
   }, [enTarjetas, parte]); // eslint-disable-line react-hooks/exhaustive-deps
   const lista = (
-    <nav className="cu-nav" aria-label="Mi cuenta">
+    <nav className="cu-nav" aria-label="Vos">
       {gs.map(([t, xs]) => (
         <div className="cu-g" key={t}><span className="cu-gt">{t}</span>
           <ul>{xs.map(([id, ico, n, v]) => (
-            <li key={id}><a href={'#/' + cual + '/' + id} className={abierta && abierta[0] === id ? 'on' : ''} aria-current={abierta && abierta[0] === id ? 'page' : undefined}>
+            <li key={id}><a href={'#/cuenta/' + id} className={abierta && abierta[0] === id ? 'on' : ''} aria-current={abierta && abierta[0] === id ? 'page' : undefined}>
               <Ico n={ico} t={20} /><span><b>{n}</b><small>{v}</small></span><Chevron /></a></li>
           ))}</ul></div>
       ))}
-      {cual === 'cuenta' && (dc || liga.yo) ? <button type="button" className="cu-salir" onClick={accion.salir}><Ico n="salir" t={20} />{dc ? 'Salir' : 'No soy yo'}</button> : null}
     </nav>
   );
   if (enTarjetas) {
     return (
       <div className="cu tarjetas">
-        <div className="cu-cab"><h1 className="cu-h">{cual === 'ajustes' ? 'Ajustes' : 'Mi cuenta'}</h1>{socio ? <a className="btn borde2 chico" href="#/socio">Mi servidor</a> : null}{dueno ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
-        {cual === 'cuenta' ? <div className="cu-tj-quien"><Quien liga={liga} dc={dc} /></div> : null}
-        <TodasJuntas.Provider value={cual === 'cuenta'}>
+        <div className="cu-cab"><h1 className="cu-h">Vos</h1>{socio ? <a className="btn borde2 chico" href="#/socio">Mi servidor</a> : null}{dueno ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
+        <div className="cu-tj-quien"><Quien liga={liga} dc={dc} /></div>
+        <TodasJuntas.Provider value>
         <div className="cu-tarjetas">
           {cartas.map((c) => (
             <section key={c.id} id={'cu-' + c.id} className="cu-tj" aria-label={c.n}>
@@ -1201,21 +1215,20 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv, cual =
           ))}
         </div>
         </TodasJuntas.Provider>
-        {cual === 'cuenta' && (dc || liga.yo) ? <button type="button" className="cu-salir" onClick={accion.salir}><Ico n="salir" t={20} />{dc ? 'Salir' : 'No soy yo'}</button> : null}
       </div>
     );
   }
   return (
     <div className={'cu' + (abierta ? ' con-parte' : '')}>
-      <div className="cu-cab"><h1 className="cu-h">{abierta && !ancha ? '' : (cual === 'ajustes' ? 'Ajustes' : 'Mi cuenta')}</h1>{socio && !abierta ? <a className="btn borde2 chico" href="#/socio">Mi servidor</a> : null}{dueno && !abierta ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
+      <div className="cu-cab"><h1 className="cu-h">{abierta && !ancha ? '' : 'Vos'}</h1>{socio && !abierta ? <a className="btn borde2 chico" href="#/socio">Mi servidor</a> : null}{dueno && !abierta ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
       <div className="cu-g2">
         <aside className="cu-lado">
-          {cual === 'cuenta' ? <Quien liga={liga} dc={dc} /> : null}
+          <Quien liga={liga} dc={dc} />
           {lista}
         </aside>
         {abierta ? (
           <section className="cu-parte" aria-label={abierta[2]}>
-            <a className="cu-volver" href={'#/' + cual}><Chevron />{cual === 'ajustes' ? 'Ajustes' : 'Mi cuenta'}</a>
+            <a className="cu-volver" href="#/cuenta"><Chevron />Vos</a>
             <h2 className="cu-pt"><Ico n={abierta[1]} t={24} />{abierta[2]}</h2>
             <Parte id={abierta[0]} liga={liga} dc={dc} tema={tema} onTema={onTema} temaSv={temaSv} onTemaSv={onTemaSv} />
           </section>

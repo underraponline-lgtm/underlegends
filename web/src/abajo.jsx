@@ -373,7 +373,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
           return <a key={k} href={r} onClick={subirSiEsta(r)} className={(k === 'inicio' ? !pagina : pagina === k) ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span></a>;
         })}
       </div>
-      <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} aria-label="Mi cuenta">{cara || <Ico n="yo" t={22} />}<span>Yo</span></a>
+      <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} aria-label="Vos">{cara || <Ico n="yo" t={22} />}<span>Vos</span></a>
     </nav>
   );
 }
@@ -424,11 +424,11 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema, temaSv }) {
             </div></div>
           {/* 🎨 y los de los servidores (13/10/2026): están en Apariencia, con la vista previa de cada uno */}
           <div className="x-fila"><span>Colores de un servidor<small>{temaSv ? 'Ahora: ' + temaSv + '. ' : ''}Encima de Clara o de Noche, los colores de un servidor de la Liga.</small></span>
-            <a className="btn negro chico" href="#/ajustes/apariencia" onClick={onCerrar}>Elegir</a></div>
+            <a className="btn negro chico" href="#/cuenta/apariencia" onClick={onCerrar}>Elegir</a></div>
           <div className="x-fila"><span>Hora, zona y más<small>El formato de la hora, tu zona y menos animaciones.</small></span>
-            <a className="btn negro chico" href="#/ajustes/hora" onClick={onCerrar}>Abrir</a></div>
+            <a className="btn negro chico" href="#/cuenta/hora" onClick={onCerrar}>Abrir</a></div>
           {cambios}
-          <div className="x-fila"><span>Mi cuenta<small>Entrar con Discord, tu foto, tus redes y tus avisos.</small></span>
+          <div className="x-fila"><span>Vos<small>Entrar con Discord, tu foto, tu crew, tus avisos y la app.</small></span>
             <button type="button" className="btn negro chico" onClick={() => { onCerrar(); accion.cuenta(); }}>Abrir</button></div>
         </div>
       </div>
