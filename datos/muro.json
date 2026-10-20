@@ -65,19 +65,19 @@
 "temporada"
 ]
 },
-"verc": {
-"rg": "A",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "liberia": {
 "rg": "S",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"verc": {
+"rg": "A",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -247,6 +247,15 @@
 "rg": "D",
 "c": []
 },
+"lordviruzz": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "tam": {
 "rg": "C",
 "c": []
@@ -255,15 +264,6 @@
 "rg": "C",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"lordviruzz": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -366,6 +366,10 @@
 "temporada"
 ]
 },
+"eclipsito": {
+"rg": "D",
+"c": []
+},
 "dyzz": {
 "rg": "E",
 "c": [
@@ -373,10 +377,6 @@
 "servidor",
 "temporada"
 ]
-},
-"eclipsito": {
-"rg": "D",
-"c": []
 },
 "ariaxer": {
 "rg": "E",
@@ -481,6 +481,13 @@
 "rg": "",
 "c": []
 },
+"masino": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "gocho": {
 "rg": "E",
 "c": [
@@ -577,13 +584,6 @@
 ]
 },
 "kravitz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"masino": {
 "rg": "",
 "c": [
 "servidor",
@@ -786,6 +786,10 @@
 "rg": "",
 "c": []
 },
+"corvo": {
+"rg": "",
+"c": []
+},
 "adriagner": {
 "rg": "",
 "c": [
@@ -930,10 +934,6 @@
 "c": []
 },
 "elsoolar": {
-"rg": "",
-"c": []
-},
-"corvo": {
 "rg": "",
 "c": []
 },
