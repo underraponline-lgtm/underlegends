@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.70",
+   "dia": "2026-10-19",
+   "cuando": "2026-10-19T22:38:00-04:00",
+   "titulo": "El dueño de un servidor socio cambia todos los ajustes del bot",
+   "items": [
+    "⚙️ En el panel del socio, el dueño ahora **cambia todos los ajustes del bot** de su servidor, y también **dónde va el aviso de cada evento**: donde habla el bot en vivo, en su chat general siempre, o apagado."
+   ]
+  },
+  {
    "version": "3.69",
    "dia": "2026-10-19",
    "cuando": "2026-10-19T22:24:00-04:00",
