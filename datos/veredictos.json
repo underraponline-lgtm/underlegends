@@ -2,17 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1559598456505503815": {
-   "id": "1559598456505503815",
-   "sv": "╔═══ஜ𝕍.𝕊ஜ═══╗",
-   "g": "1283205153624952975",
-   "canal": "1439611946906157079",
-   "pub": 1791907647969,
-   "a": "MOLUSCO",
-   "b": "RAIZER",
-   "ganador": "MOLUSCO",
-   "votos": "1–0"
-  },
   "1559674437815640150": {
    "id": "1559674437815640150",
    "sv": "[FFA] Freestyle For All 👾",
