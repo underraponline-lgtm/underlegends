@@ -2516,7 +2516,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "20e1e3fc098a138e",
+  "firma": "91669c939c19ceda",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "b66885f0493f5d94",
+  "firma": "9c0300e7807640d7",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -5562,7 +5562,7 @@
    "Xclusivo": 12
   },
   "fecha": "10/10",
-  "firma": "537bb99b3de3c10f",
+  "firma": "b9f16e5bc39c90c1",
   "msg": "1558545514931163258",
   "nombre": "SORTEO Y FIXTURE OFICIAL 19 CUP VOL. 1",
   "num": 442,
@@ -6117,7 +6117,7 @@
    "Spartan": 1
   },
   "fecha": "10/10",
-  "firma": "de0f3fff8fa38a5f",
+  "firma": "2a0adbaecf550d1e",
   "msg": "1558711595163590740",
   "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
   "num": 446,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "ae81340c1b2eceb5",
+  "firma": "f7c1d4679074d942",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -10528,7 +10528,7 @@
    "Tenor": 3
   },
   "fecha": "13/10",
-  "firma": "1aefe16e8044ac32",
+  "firma": "f9c0a4942f0b2e61",
   "msg": "1559459229411057705",
   "nombre": "QCYO RAPEEN",
   "num": 465,
@@ -10954,7 +10954,7 @@
    "Verc": 8
   },
   "fecha": "13/10",
-  "firma": "70f4ea14d7480e26",
+  "firma": "1553b66cc122fa5d",
   "msg": "1559705366705475605",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL5 __",
   "num": 467,
@@ -11298,7 +11298,7 @@
    "Zignos": 20
   },
   "fecha": "13/10",
-  "firma": "492563aeae8795e7",
+  "firma": "df2281640481b356",
   "msg": "1559752028111114252",
   "nombre": "DEM UZBEKISTAN FECHA 2",
   "num": 468,
@@ -12644,7 +12644,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "0de933cbffbcbb75",
+  "firma": "6e07421319cfab57",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -13980,7 +13980,7 @@
    "Vandu": 22
   },
   "fecha": "16/10",
-  "firma": "0eb94186961617a3",
+  "firma": "0378bd7945e12104",
   "msg": "1560779869497983097",
   "nombre": "PRADERAP VOL.1",
   "num": 479,
@@ -14579,7 +14579,7 @@
    "Sin Limites": 18
   },
   "fecha": "16/10",
-  "firma": "e94c6632691f1529",
+  "firma": "8aee41914c4e5428",
   "msg": "1560858617589272627",
   "nombre": "PROYECTO X VOL.3",
   "num": 481,
@@ -14706,7 +14706,7 @@
    "Panchok": 15
   },
   "fecha": "17/10",
-  "firma": "4a48d32de6341e76",
+  "firma": "54ff306e126b7262",
   "msg": "1561153562665558208",
   "nombre": "MUNDIALITO",
   "num": 482,
@@ -15875,6 +15875,11 @@
     "Senticide",
     "Makmah",
     "Senticide"
+   ],
+   [
+    "Vandu",
+    "Guess",
+    "Vandu"
    ]
   ],
   "ev_antes": {
@@ -15883,7 +15888,7 @@
    "Molusco": 16
   },
   "fecha": "19/10",
-  "firma": "40c0810974b44013",
+  "firma": "18c3905dfb88cb9f",
   "msg": "1561607804798898179",
   "nombre": "__ FREESTYLE LEAGUE __",
   "num": 487,
@@ -15916,6 +15921,11 @@
    ],
    [
     "Joshema",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Guess",
     "Cuartos",
     2000
    ]
@@ -16041,7 +16051,7 @@
    "Tenor": 5
   },
   "fecha": "19/10",
-  "firma": "8bcb0512e6a1af2c",
+  "firma": "ce455a6244a1d20a",
   "msg": "1561761975514697891",
   "nombre": "FREESTYLE LEAGUE N3",
   "num": 488,
@@ -16743,6 +16753,7 @@
   "v": 2
  },
  "491": {
+  "al_dia": true,
   "antes": {
    "Ariaxer": [
     43,

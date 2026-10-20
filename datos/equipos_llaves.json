@@ -1,4 +1,13 @@
 {
  "_leeme": "Los equipos que una llave nombra con UN nombre (TEAM VENECIA): quiénes cobran, y por qué. Lo escribe marcar_equipos() de bot/llaves_a_entrada.py en cada corrida; lo lee Pendientes para no preguntar por ellos como si fueran personas. Dlx, 29/09/2026.",
- "equipos": []
+ "equipos": [
+  {
+   "evento": "LA ISLA DE OKINAWA V.2",
+   "sv": "FFA",
+   "fecha": "19/10",
+   "equipo": "223🇦🇹-LIBERIA🇦🇪",
+   "integrantes": [],
+   "por": "ni la llave ni una inscripción dicen quiénes son"
+  }
+ ]
 }
