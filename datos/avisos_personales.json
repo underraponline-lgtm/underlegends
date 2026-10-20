@@ -86,7 +86,7 @@
 "servidor",
 "temporada"
 ],
-"pos": 6,
+"pos": 5,
 "rg": "B"
 },
 "1063539592801824798": {
@@ -1727,7 +1727,7 @@
 "servidor",
 "temporada"
 ],
-"pos": 5,
+"pos": 7,
 "rg": "B"
 },
 "582257130560815118": {
@@ -2118,6 +2118,7 @@
 },
 "729809358627536938": {
 "cs": [
+"competitivo",
 "pais",
 "servidor",
 "temporada"
@@ -2338,7 +2339,7 @@
 "servidor",
 "temporada"
 ],
-"pos": 7,
+"pos": 6,
 "rg": "B"
 },
 "794733304729436212": {
