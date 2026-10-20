@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.81",
+   "dia": "2026-10-20",
+   "cuando": "2026-10-20T16:53:00-04:00",
+   "titulo": "Tú, no vos",
+   "items": [
+    "🗣️ **La Liga te habla de tú**: la página, el bot y los avisos pasaron a español latino neutro («entra», «ganas», «tienes»), sin voseo."
+   ]
+  },
+  {
    "version": "3.80",
    "dia": "2026-10-20",
    "cuando": "2026-10-20T16:06:00-04:00",
