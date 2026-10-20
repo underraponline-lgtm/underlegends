@@ -126,7 +126,8 @@
 .cu-ico{display:grid;place-items:center;width:30px;height:30px;border-radius:6px;background:var(--suave);color:var(--tinta)}
 .cu-ico.v{background:#29B298;color:#030304}
 .cu-ico.m{background:var(--magenta);color:#fff}
-.cu .cu-g a.on{border-color:var(--inv)}
+/* la fila abierta: mi regla de la caja (3 clases) pisaba al `.cu-g a.on` de vivo.css (2) y dejaba texto blanco sobre fondo claro */
+.cu .cu-g a.on{background:var(--inv);color:var(--inv-tinta);border-color:var(--inv)}
 .cu .cu-g a.on .cu-ico{background:var(--inv-tinta);color:var(--inv)}
 .cu-chip{align-self:center;padding:4px 6px;border-radius:3px;background:var(--magenta);color:#fff;font:800 10px/1 "Barlow Condensed",sans-serif;letter-spacing:0.1em;font-style:normal}
 @media (min-width: 900px){

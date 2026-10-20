@@ -594,7 +594,7 @@ export default function App() {
       : crewT ? limpio(crewT.crew)
       : pagina === 'pais' && liga && (liga.d.tabla || []).some((f) => String(f.cc).toLowerCase() === String(partes[1]).toLowerCase())
         ? nombrePais(String(partes[1]).toLowerCase())
-      : pagina === 'cuenta' || pagina === 'ajustes' ? 'Vos' : pagina === 'dashboard' ? 'Dashboard' : '';
+      : pagina === 'cuenta' || pagina === 'ajustes' ? 'Tu cuenta' : pagina === 'dashboard' ? 'Dashboard' : '';
     if (!t) return undefined;
     const poner = () => { document.title = t + ' · Liga Global de Freestyle'; };
     poner();

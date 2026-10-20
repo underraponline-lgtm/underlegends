@@ -438,7 +438,7 @@ const PAGINAS = {
   guia: ['Guía', 'Puntos, rangos, tarjetas y TAGs, explicados en una página.'],
   salon: ['Salón de la fama', 'Los MES AWARDS, las promos y los que hicieron historia.'],
   // y las que no están en el menú pero se comparten (Dlx, 19/10/2026: «¿estás seguro que ésos son todos?»)
-  cuenta: ['Mi cuenta', 'Entrá con Discord: tus tarjetas, tu Pase, tus Puntos y tus avisos, en un lugar.'],
+  cuenta: ['Tu cuenta', 'Entrá con Discord: tus tarjetas, tu Pase, tus Puntos y tus avisos, en un lugar.'],
   cambios: ['Lo nuevo', 'Cada cambio de la página y del bot, con su versión y su hora.'],
   socio: ['El panel de tu servidor', 'Tu puntaje, cuándo hay actividad, tus raperos y los ajustes del bot, para los dueños.'],
 };

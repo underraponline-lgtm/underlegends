@@ -460,7 +460,7 @@ PAGINAS = {
     'socios': ('Liga Global · Socios', 'Los servidores', 'socios', 'Los servidores de rap online que suman al ranking mundial.', _socios),
     'guia': ('Liga Global · Guía', 'Cómo funciona', 'la Liga', 'Puntos, rangos, tarjetas y TAGs, explicados en una página.', _guia),
     'salon': ('Liga Global · Salón de la fama', 'El Salón', 'de la fama', 'Los MES AWARDS, las promos y los que hicieron historia.', _salon),
-    'cuenta': ('Liga Global · Mi cuenta', 'Mi cuenta', 'en la Liga', 'Entrá con Discord: tus tarjetas, tu Pase, tus Puntos y tus avisos, en un lugar.', _cuenta),
+    'cuenta': ('Liga Global · Tu cuenta', 'Tu cuenta', 'en la Liga', 'Entrá con Discord: tus tarjetas, tu Pase, tus Puntos y tus avisos, en un lugar.', _cuenta),
     'cambios': ('Liga Global · Lo nuevo', 'Lo nuevo', 'de la Liga', 'Cada cambio de la página y del bot, con su versión y su hora.', _cambios_ilus),
     'socio': ('Liga Global · Socios', 'El panel', 'de tu servidor', 'Tu puntaje, cuándo hay actividad, tus raperos y los ajustes del bot, para los dueños.', _socio),
 }

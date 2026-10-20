@@ -1182,6 +1182,10 @@ export function PaginaVerificar({ liga, dc }) {
 // 🔑 MI CUENTA Y AJUSTES EN TARJETAS, EN LA COMPU (Dlx, 02/10/2026, al ver la preview: «hazlo como están las cosas de la
 // derecha, me gusta rellenar el espacio así»): con un menú más alto que la parte de al lado quedaba media página vacía;
 // en tarjetas, todas las partes a la vista y en dos columnas. En el celular sigue la lista y una parte por vez
+// 🖥️ Y DESDE EL 20/10/2026 LA COMPU TAMBIÉN LLEVA LA MAQUETA (Dlx: «make sure all these page redesigns are also for the
+// PC, I keep seeing the same design for the PC»): a la izquierda la tarjeta de identidad y la lista en cajas —la misma
+// del teléfono, que acá es el menú: cada fila lleva a su tarjeta—; a la derecha las tarjetas, en dos columnas como él
+// pidió (se sigue rellenando el espacio), con el cuadradito de ícono en el título. Las dos vistas, un solo dibujo
 // las tarjetas: una por parte, y las tres de «La Liga» juntas (cada una es un link: separadas repetían el título)
 function tarjetasDe(gs) {
   const out = [];
@@ -1222,7 +1226,7 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv }) {
     if (c) accion.ir('cu-' + c.id);
   }, [enTarjetas, parte]); // eslint-disable-line react-hooks/exhaustive-deps
   const lista = (
-    <nav className="cu-nav" aria-label="Vos">
+    <nav className="cu-nav" aria-label="Tu cuenta">
       {gs.map(([t, xs]) => (
         <div className="cu-g" key={t}><span className="cu-gt">{t}</span>
           <ul>{xs.map(([id, ico, n, v]) => (
@@ -1237,24 +1241,29 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv }) {
   if (enTarjetas) {
     return (
       <div className="cu tarjetas">
-        <div className="cu-cab"><h1 className="cu-h">Vos</h1>{socio ? <a className="btn borde2 chico" href="#/socio">Mi servidor</a> : null}{dueno ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
-        <div className="cu-tj-quien"><Quien liga={liga} dc={dc} /></div>
-        <TodasJuntas.Provider value>
-        <div className="cu-tarjetas">
-          {cartas.map((c) => (
-            <section key={c.id} id={'cu-' + c.id} className="cu-tj" aria-label={c.n}>
-              <h2 className="cu-tjt"><Ico n={c.ico} t={22} />{c.n}</h2>
-              {c.partes.map((id) => <Parte key={id} id={id} liga={liga} dc={dc} tema={tema} onTema={onTema} temaSv={temaSv} onTemaSv={onTemaSv} />)}
-            </section>
-          ))}
+        <div className="cu-cab"><h1 className="cu-h">Tu cuenta<small className="cu-hs">todo lo tuyo</small></h1>{socio ? <a className="btn borde2 chico" href="#/socio">Mi servidor</a> : null}{dueno ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
+        <div className="cu-g2">
+          <aside className="cu-lado">
+            <Quien liga={liga} dc={dc} />
+            {lista}
+          </aside>
+          <TodasJuntas.Provider value>
+          <div className="cu-tarjetas">
+            {cartas.map((c) => (
+              <section key={c.id} id={'cu-' + c.id} className="cu-tj" aria-label={c.n}>
+                <h2 className="cu-tjt"><i className={'cu-ico ' + (ICO_COLOR[c.id] || '')} aria-hidden="true"><Ico n={c.ico} t={18} /></i>{c.n}</h2>
+                {c.partes.map((id) => <Parte key={id} id={id} liga={liga} dc={dc} tema={tema} onTema={onTema} temaSv={temaSv} onTemaSv={onTemaSv} />)}
+              </section>
+            ))}
+          </div>
+          </TodasJuntas.Provider>
         </div>
-        </TodasJuntas.Provider>
       </div>
     );
   }
   return (
     <div className={'cu' + (abierta ? ' con-parte' : '')}>
-      <div className="cu-cab"><h1 className="cu-h">{abierta && !ancha ? '' : <>Vos<small className="cu-hs">todo lo tuyo</small></>}</h1>{socio && !abierta ? <a className="btn borde2 chico" href="#/socio">Mi servidor</a> : null}{dueno && !abierta ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
+      <div className="cu-cab"><h1 className="cu-h">{abierta && !ancha ? '' : <>Tu cuenta<small className="cu-hs">todo lo tuyo</small></>}</h1>{socio && !abierta ? <a className="btn borde2 chico" href="#/socio">Mi servidor</a> : null}{dueno && !abierta ? <a className="btn borde2 chico" href="#/dashboard">Dashboard</a> : null}</div>
       <div className="cu-g2">
         <aside className="cu-lado">
           <Quien liga={liga} dc={dc} />
@@ -1262,7 +1271,7 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv }) {
         </aside>
         {abierta ? (
           <section className="cu-parte" aria-label={abierta[2]}>
-            <a className="cu-volver" href="#/cuenta"><Chevron />Vos</a>
+            <a className="cu-volver" href="#/cuenta"><Chevron />Tu cuenta</a>
             <h2 className="cu-pt"><Ico n={abierta[1]} t={24} />{abierta[2]}</h2>
             <Parte id={abierta[0]} liga={liga} dc={dc} tema={tema} onTema={onTema} temaSv={temaSv} onTemaSv={onTemaSv} />
           </section>

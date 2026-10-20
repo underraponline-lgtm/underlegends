@@ -217,7 +217,7 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
             el celular. En la PC que esté arriba, por supuesto») */}
         <a className="btn-ico ajustes-b" href="#/cuenta/apariencia" aria-label="La app: apariencia, hora y avisos"><Ico n="engranaje" t={20} /></a>
         {cara ? (
-          <a className="yo-chip" href="#/cuenta" aria-label={'Vos' + (fuego ? ' · ' + fuego + (fuego === 1 ? ' día seguido' : ' días seguidos') : '')}>
+          <a className="yo-chip" href="#/cuenta" aria-label={'Tu cuenta' + (fuego ? ' · ' + fuego + (fuego === 1 ? ' día seguido' : ' días seguidos') : '')}>
             {cara}<span>{nombre}</span>{fuego ? <span className="yo-racha" aria-hidden="true"><Ico n="fuego" t={13} />{fuego}</span> : null}</a>
         ) : (
           <button type="button" className="btn verde chico entrar" onClick={accion.entrar}>Entrar</button>

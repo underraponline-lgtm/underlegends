@@ -373,7 +373,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
           return <a key={k} href={r} onClick={subirSiEsta(r)} className={(k === 'inicio' ? !pagina : pagina === k) ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span></a>;
         })}
       </div>
-      <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} aria-label="Vos">{cara || <Ico n="yo" t={22} />}<span>Vos</span></a>
+      <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} aria-label="Tu cuenta">{cara || <Ico n="yo" t={22} />}<span>Tu cuenta</span></a>
     </nav>
   );
 }
@@ -428,7 +428,7 @@ export function Menu({ liga, abierto, onCerrar, tema, onTema, temaSv }) {
           <div className="x-fila"><span>Hora, zona y más<small>El formato de la hora, tu zona y menos animaciones.</small></span>
             <a className="btn negro chico" href="#/cuenta/hora" onClick={onCerrar}>Abrir</a></div>
           {cambios}
-          <div className="x-fila"><span>Vos<small>Entrar con Discord, tu foto, tu crew, tus avisos y la app.</small></span>
+          <div className="x-fila"><span>Tu cuenta<small>Entrar con Discord, tu foto, tu crew, tus avisos y la app.</small></span>
             <button type="button" className="btn negro chico" onClick={() => { onCerrar(); accion.cuenta(); }}>Abrir</button></div>
         </div>
       </div>
