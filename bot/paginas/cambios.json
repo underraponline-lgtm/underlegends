@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "3.75",
+   "dia": "2026-10-19",
+   "cuando": "2026-10-19T23:50:00-04:00",
+   "titulo": "Tu nivel en tu foto, EN VIVO que late y el buscador con ejemplos",
+   "items": [
+    "⭕ En «Vos», **tu nivel del Pase es un anillo alrededor de tu foto**: se ve cuánto te falta para el próximo sin leer.",
+    "🔴 **EN VIVO late**: un punto que respira delante de cada «EN VIVO». Con «Menos animaciones» se queda quieto.",
+    "🔎 **El buscador te muestra qué podés buscar**: un rapero, un servidor, una crew, un país."
+   ]
+  },
+  {
    "version": "3.74",
    "dia": "2026-10-19",
    "cuando": "2026-10-19T23:38:00-04:00",
