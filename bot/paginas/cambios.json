@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "3.82",
+   "dia": "2026-10-20",
+   "cuando": "2026-10-20T17:07:00-04:00",
+   "titulo": "El Ranking, rehecho",
+   "items": [
+    "🏁 **El Ranking de Temporada se ve distinto**: el podio con lo que sumó cada uno esta semana, y debajo **tu tira**: tu puesto, a cuánto estás del de arriba, quién tienes arriba y abajo, y «Ver mi fila».",
+    "🥇 Medallas al top 3, una barra de puntos bajo cada nombre y, al abrir una fila, **tú contra ése** en seis categorías.",
+    "📱 En el celular, filas de dos renglones en vez de la tabla apretada, y arriba el interruptor **Resumen · Todos los datos**."
+   ]
+  },
+  {
    "version": "3.81",
    "dia": "2026-10-20",
    "cuando": "2026-10-20T16:53:00-04:00",
