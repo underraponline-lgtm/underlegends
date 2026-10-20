@@ -3411,3 +3411,10 @@ a.rk-z:hover{border-color:var(--linea)}
 .app :is(.ti-h,.lk-h,.lgf-st,.dv-gt,.cw-h,.g-t){font:900 16px/1.1 Archivo,sans-serif;font-stretch:115%;letter-spacing:0;word-spacing:.1em;
   text-transform:uppercase;color:var(--tinta)}
 .app .g-t.vivo{color:var(--magenta)}
+
+/* 🔴 EN VIVO con un punto que late (Dlx, 19/10/2026, «me gustan todas»: «Status» de 21st). Con «Menos animaciones»
+   (`.app.calma *::before`, arriba) y con `prefers-reduced-motion` se queda quieto */
+.vivo-late::before{content:"";display:inline-block;width:8px;height:8px;margin:0 6px 1px 0;border-radius:50%;background:currentColor;vertical-align:middle;
+  animation:vivo-late 1.4s ease-in-out infinite}
+@keyframes vivo-late{0%,100%{opacity:.35;transform:scale(.75)}50%{opacity:1;transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.vivo-late::before{animation:none}}

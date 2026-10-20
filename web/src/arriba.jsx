@@ -49,8 +49,26 @@ const ETIQUETA_TIPO = { rapero: 'rapero', servidor: 'servidor', pais: 'país', c
 // minúsculas, sin tildes y sólo letras y números. Un aka cuenta medio punto menos que el nombre: si alguien SE LLAMA así,
 // sale primero
 const normAka = (s) => norm(s).replace(/[^\p{L}\p{N}]/gu, '');
+// 🔎 EL BUSCADOR CON EJEMPLOS (Dlx, 19/10/2026, «me gustan todas», a «Command Search» de 21st): mientras está vacío, el
+// placeholder va mostrando qué se puede buscar, uno por vez. Sin tipeo letra por letra: en el celular cansa, y con
+// «Menos animaciones» se queda en el primero
+const EJEMPLOS = ['Buscá un rapero…', 'Buscá un servidor…', 'Buscá una crew…', 'Buscá un país…', 'Buscar en la Liga'];
+function useEjemplo(activo) {
+  const [i, setI] = useState(0);
+  useEffect(() => {
+    if (!activo) return undefined;
+    const app = document.querySelector('#inicio-nuevo');
+    const calma = !!(app && app.shadowRoot && app.shadowRoot.querySelector('.app.calma'));
+    if (calma || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return undefined;
+    const t = setInterval(() => setI((x) => (x + 1) % EJEMPLOS.length), 2800);
+    return () => clearInterval(t);
+  }, [activo]);
+  return EJEMPLOS[i];
+}
+
 export function Buscar({ liga, onIr }) {
   const [q, setQ] = useState('');
+  const ejemplo = useEjemplo(!q);
   // 🔴 TODOS LOS QUE TIENEN PERFIL, NO SÓLO LOS 200 DE LA TABLA (13/10/2026, Dlx: «a pesar de que existe Lil Drako no
   // aparece en el buscador»). Desde la 2.97 tiene perfil todo el que jugó, pero los que no están en el top 200 viajan en
   // `/api/perfiles` (`p[k].f`) y el buscador sólo miraba la tabla del lobby. Se piden la primera vez que se escribe
@@ -133,7 +151,7 @@ export function Buscar({ liga, onIr }) {
     <div className="buscar-w" ref={caja}>
       <label className="buscar">
         <Ico n="buscar" t={18} />
-        <input type="search" placeholder="Buscar en la Liga" aria-label="Buscar raperos, servidores, países y crews" value={q} onChange={(e) => setQ(e.target.value)}
+        <input type="search" placeholder={ejemplo} aria-label="Buscar raperos, servidores, países y crews" value={q} onChange={(e) => setQ(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter' && res[0]) { location.hash = res[0].href; ir(); } if (e.key === 'Escape') setQ(''); }} />
       </label>
       {res.length ? (
@@ -313,7 +331,7 @@ function PanelAvisos({ liga, B, onCerrar }) {
             <li key={'ev' + i}><button type="button" className="nt-i" onClick={() => ir('#/eventos')}>
               <img className="nt-c" alt="" src={liga.logo(x.sv)} />
               <span className="nt-t"><b>{limpio(x.nombre)}</b><small>{vivos.includes(x) ? 'se está jugando ahora' : liga.dia(x.cuando).replace(/^hoy /, 'hoy a las ')} · {siglaDe(x.sv)}</small></span>
-              <em>{vivos.includes(x) ? 'EN VIVO' : ''}</em>
+              <em className={vivos.includes(x) ? 'vivo-late' : ''}>{vivos.includes(x) ? 'EN VIVO' : ''}</em>
             </button></li>
           ))}</ul>
         </>
@@ -796,7 +814,7 @@ export function Historias({ liga, grupos, vistos, onAbrir }) {
     const abrir = () => onAbrir(i);
     if (g.tipo === 'vivo') {
       partes.push(<button type="button" key={g.id} className={'h en-vivo' + visto} onClick={abrir}><span className="h-w"><span className="h-c"><img alt="" src={g.logo} /></span>
-        <span className="h-badge">EN VIVO</span></span><small>{g.nom}</small></button>);
+        <span className="h-badge vivo-late">EN VIVO</span></span><small>{g.nom}</small></button>);
     } else if (g.tipo === 'liga') {
       partes.push(<button type="button" key={g.id} className={'h liga nuevo' + visto} onClick={abrir}><span className="h-c"><img alt="" src="/ul.png" /></span><small>La Liga</small></button>);
     } else if (g.tipo === 'yo') {
@@ -1329,7 +1347,7 @@ function momentos(liga, vivoL) {
     const det = [e.modalidad, e.cupos ? 'cupos ' + String(e.cupos).toLowerCase() : ''].filter(Boolean).join(' · ');
     out.push({
       tipo: 'vivo', clave: iv ? 'vivo-' + e.sv + '-' + iv : 'vivo', et: vivos.length > 1 ? 'En vivo · ' + siglaDe(e.sv) : 'En vivo', sv: e.sv,
-      txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag">EN VIVO AHORA</span>
+      txt: <><div className="hero-t"><img className="hv-logo" alt="" src={liga.logo(e.sv)} /><span className="tag vivo-late">EN VIVO AHORA</span>
         <span className="hero-meta">{siglaDe(e.sv)} · EMPEZÓ {liga.dia(e.cuando).replace(/^hoy /, '')}{m ? ' · ' + mult(m) + ' ESTA SEMANA' : ''}</span></div>
         <Tit c={'hero-ev' + (n.length > 16 ? ' largo' : '')}>{n}</Tit>
         {det || e.premios ? <p className="hero-p">{det}{e.premios ? (det ? '. ' : '') + 'Premio: ' + recorte(e.premios, 70) : ''}</p> : null}

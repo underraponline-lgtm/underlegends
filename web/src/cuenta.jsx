@@ -207,6 +207,28 @@ function RachaNivel({ dc }) {
 }
 
 // ── la tarjeta de arriba: quién sos, como el «Tú» de Discord ──────────────────────────────────────
+// ⭕ EL NIVEL DEL PASE COMO ANILLO ALREDEDOR DE TU FOTO (Dlx, 19/10/2026, «me gustan todas», a «Circle Progress» de
+// 21st): cuánto te falta para el próximo nivel se ve sin leer. Un SVG con dos círculos, sin degradé (el remake no los
+// usa); el número, en una pastilla abajo a la derecha. Sin cuenta (o sin racha cargada) no hay anillo
+function AnilloNivel({ dc }) {
+  const R = useRacha(!!dc);
+  if (!R || !R.nivel) return null;
+  const n = R.nivel;
+  const tramo = Math.max(1, n.sig - n.base);
+  const pct = Math.max(0, Math.min(1, (n.xp - n.base) / tramo));
+  const r = 46, c = 2 * Math.PI * r;
+  return (
+    <>
+      <svg className="cu-anillo" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r={r} fill="none" stroke="var(--suave)" strokeWidth="6" />
+        <circle cx="50" cy="50" r={r} fill="none" stroke="var(--magenta)" strokeWidth="6" strokeLinecap="round" strokeDasharray={c}
+          strokeDashoffset={c * (1 - pct)} transform="rotate(-90 50 50)" />
+      </svg>
+      <b className="cu-anillo-n" title={'Nivel ' + n.n + ' · ' + Math.round(pct * 100) + ' % al ' + (n.n + 1)}>{n.n}</b>
+    </>
+  );
+}
+
 function Quien({ liga, dc }) {
   const yo = liga.yo;
   if (!yo && !dc) {
@@ -222,7 +244,10 @@ function Quien({ liga, dc }) {
   return (
     <div className="cu-quien" style={{ '--cu-c': (s && s.color) || '#29B298' }}>
       <span className="cu-banda" aria-hidden="true" />
-      {yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="cu-av" /> : <CaraDc dc={dc} cls="cu-av" />}
+      <span className="cu-av-con">
+        {yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="cu-av" /> : <CaraDc dc={dc} cls="cu-av" />}
+        <AnilloNivel dc={dc} />
+      </span>
       <div className="cu-q">
         <b>{limpio(yo ? yo.n : dc.n)}</b>
         <small>{dc ? 'Conectado con Discord' : 'Elegiste quién sos, sin entrar'}</small>
