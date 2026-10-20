@@ -4144,12 +4144,12 @@
    },
    "DDF": {
     "duelos": "0/1",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 46,
     "pod": 0,
-    "pts": 5775,
-    "racha": "0/0"
+    "pts": 11025,
+    "racha": "1/1"
    },
    "FFA": {
     "duelos": "20/27",
@@ -6591,20 +6591,6 @@
     "pod": 0,
     "pts": 625,
     "racha": "0/0"
-   }
-  },
-  "SEBITAS🇱🇷": {
-   "DDF": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 5250,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "SGB": {
