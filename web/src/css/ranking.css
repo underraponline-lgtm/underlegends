@@ -147,3 +147,99 @@
 .rk-det-sem li.ult i{background:var(--magenta)}
 .rk-ten i{display:block;width:5px;background:var(--verde);border-radius:1px}
 .rk-ten i.ult{background:var(--magenta)}
+
+/* ── 🏁 EL RANKING COMO LA MAQUETA C v5 (Dlx, 20/10/2026). Las reglas base siguen en vivo.css; esto las pisa ── */
+/* el escenario: el texto, el podio y la tira (en la compu, la tira debajo del texto; en el celular, debajo del podio) */
+.rk-cab{grid-template-areas:"tx" "podio" "tu"}
+.rk-tx{grid-area:tx}
+.rk-podio{grid-area:podio}
+.rk-tu{grid-area:tu}
+@media (min-width: 900px){
+  .app .rk-cab{grid-template-areas:"tx podio" "tu podio";align-items:center;row-gap:18px}
+  .app .rk-tu{max-width:560px;grid-template-columns:minmax(0,1fr) auto;align-items:center}
+  .app .rk-tu .rk-tu-l,.app .rk-tu .rk-tu-chips{grid-column:1}
+  .app .rk-tu .rk-tu-btn{grid-column:2;grid-row:1/3;align-self:center;justify-self:end}
+  .app .rk-tu.invita{max-width:560px}
+}
+/* las medallas del top 3 (de «Leaderboard Table» de 21st): redondas, oro · plata · bronce */
+.rk-n.p1,.rk-n.p2,.rk-n.p3{min-width:30px;height:30px;padding:0;border-radius:50%;font-size:15px}
+.rk-n.p1{background:#F2C94C;color:#2A1D00}
+.rk-n.p2{background:#C9CDD4;color:#222222}
+.rk-n.p3{background:#D98C4A;color:#2A1600}
+/* el pedestal: lo que sumó esta semana */
+.rk-psem{font:700 12px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.06em;opacity:.92}
+.rk-psem.q{opacity:.6}
+/* la tira «Tú» */
+.rk-tu{display:grid;gap:8px;padding:10px 12px;background:#15151A;color:#F6F6F6;border-radius:8px}
+.rk-tu.invita{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px}
+.rk-tu-l{display:grid;grid-template-columns:auto auto minmax(0,1fr);align-items:center;gap:10px;min-width:0}
+.rk-tu.invita .rk-tu-l{grid-template-columns:auto minmax(0,1fr)}
+.rk-tu.invita .rk-tu-l b{font:800 14px/1.3 Archivo,sans-serif}
+.rk-tu .rk-lcara,.rk-tu .rk-lflag,.rk-tu .rk-llogo{width:40px;height:40px}
+.rk-tu .rk-lflag{height:27px}
+.rk-tu-n .rk-n{min-width:34px;height:30px}
+.rk-tu-n .rk-n:not(.p1):not(.p2):not(.p3):not(.sin){background:#F6F6F6;color:#030304}
+.rk-tu-t{display:grid;gap:3px;min-width:0}
+.rk-tu-t small{display:flex;flex-wrap:wrap;align-items:center;gap:4px;font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;color:#A5A5A0;text-transform:uppercase}
+.rk-tu-t small .rk-mv{color:#F6F6F6}
+.rk-tu-t small .rk-mv.baja{color:#F07DB2}
+.rk-tu-t b{font:800 13.5px/1.3 Archivo,sans-serif}
+.rk-tu-chips{display:flex;flex-wrap:wrap;gap:6px}
+.rk-tu-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 9px 4px 5px;border:1.5px solid #3A3A3F;border-radius:999px;font:700 12px/1 Archivo,sans-serif;color:#F6F6F6;white-space:nowrap;max-width:100%}
+.rk-tu-chip i{width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;margin-left:3px}
+.rk-tu-chip.up i{border-bottom:6px solid #29B298}
+.rk-tu-chip.dn i{border-top:6px solid #E41373}
+.rk-tu-chip b{overflow:hidden;text-overflow:ellipsis;max-width:120px}
+.rk-tu-chip em{font-style:normal;font-weight:700;color:#A5A5A0}
+.rk-tu-cara{width:22px;height:22px;font-size:10px}
+.rk-tu-flag{width:22px;height:15px;object-fit:cover}
+.rk-tu-logo{display:grid;place-items:center;width:22px;height:22px;object-fit:cover;background:#F6F6F6;color:#030304;font:900 9px/1 Archivo,sans-serif}
+.rk-tu-btn{justify-self:stretch;text-align:center;min-height:42px;font-size:14px}
+/* la barra de puntos bajo el nombre */
+.rk-bar{display:block;height:3px;width:var(--w);max-width:100%;background:#B3B3AC;border-radius:2px;margin-top:1px}
+tr.yo .rk-bar,.rk-fila.yo .rk-bar{background:#E41373}
+/* el interruptor Resumen · Todos los datos */
+.rk-fil-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:stretch}
+.rk-seg{display:inline-flex;border:2px solid var(--linea);background:var(--fondo)}
+.rk-seg button{padding:0 10px;border:0;background:none;color:var(--tinta);font:800 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.rk-seg button.on{background:var(--inv);color:var(--inv-tinta)}
+/* la lista del celular */
+.rk-tw.lista{border-top:0}
+.rk-lista{list-style:none;margin:0;padding:0}
+.rk-fila{display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:8px;min-height:60px;padding:9px 0 10px;border-top:1px solid var(--suave);cursor:pointer}
+.rk-fila:first-child{border-top:0}
+.rk-fila.yo{background:var(--rk-yo);margin:0 -16px;padding-left:16px;padding-right:16px}
+.rk-fila.abierta{background:var(--caja)}
+.rk-fila.chica{color:var(--gris)}
+.rk-fila.brilla{animation:rk-brilla 2s cubic-bezier(.16,1,.3,1)}
+.rk-fila-n{display:grid;justify-items:center}
+.rk-fila-n .rk-posc{gap:2px}
+.rk-fila-q{display:grid;gap:3px;min-width:0}
+.rk-fila-q .rk-q{gap:8px}
+.rk-fila-q .rk-cara{width:36px;height:36px}
+.rk-fila-2{display:block;font:500 12.5px/1.25 Archivo,sans-serif;color:#5C5C58;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:44px}
+.rk-fila-2 em{font-style:normal;font-weight:800}
+.rk-fila-2 em.sem{color:var(--magenta-tx,#D0106A)}
+.rk-fila-2 em.q,.rk-fila-2 .q{color:#767672;font-weight:600}
+.rk-fila-2 span+span::before{content:" · "}
+.rk-fila-d{display:grid;justify-items:end;gap:4px}
+.rk-fila-v{font:900 20px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.rk-fila-det{padding:0 0 10px;background:var(--caja);border-bottom:2px solid var(--linea)}
+.rk-fila-corte{list-style:none;margin:6px 0;padding:0}
+.rk-fila-corte a{display:flex;align-items:center;justify-content:center;gap:6px;padding:7px 0;font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;color:var(--magenta-tx,#D0106A);text-transform:uppercase;border-top:1.5px dashed var(--magenta);border-bottom:1.5px dashed var(--magenta)}
+/* el versus por categorías */
+.rk-vs{display:grid;gap:6px;margin:12px 0 14px}
+.rk-vs-cab{display:flex;justify-content:space-between;align-items:center;gap:8px;font:800 13px/1 Archivo,sans-serif;letter-spacing:.02em;margin-bottom:2px}
+.rk-vs-cara{width:28px;height:28px;font-size:12px}
+.rk-vs-f{display:grid;grid-template-columns:64px minmax(0,1fr) 84px minmax(0,1fr) 64px;align-items:center;gap:8px;height:22px}
+.rk-vs-n{font:800 13px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;color:var(--gris)}
+.rk-vs-n:first-child{text-align:right}
+.rk-vs-n.g{color:var(--tinta)}
+.rk-vs-t{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);text-align:center}
+.rk-vs-b{display:block;height:9px;border-radius:2px;background:var(--suave);position:relative}
+.rk-vs-b::after{content:"";position:absolute;top:0;bottom:0;width:var(--w);background:#B5B5AF;border-radius:2px}
+.rk-vs-b.l::after{right:0}
+.rk-vs-b.r::after{left:0}
+.rk-vs-b.l.g::after{background:var(--magenta)}
+.rk-vs-b.r.g::after{background:var(--tinta)}
+@media (max-width: 480px){.rk-vs-f{grid-template-columns:52px minmax(0,1fr) 70px minmax(0,1fr) 52px}.rk-vs-n{font-size:12px}}
