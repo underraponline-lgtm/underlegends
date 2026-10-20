@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.80",
+   "dia": "2026-10-20",
+   "cuando": "2026-10-20T16:06:00-04:00",
+   "titulo": "Tu racha como calendario, y los días que jugó cada uno",
+   "items": [
+    "📅 **En Tu cuenta, tu racha es un calendario**: las últimas cinco semanas, con los días que entraste en verde y los que jugaste en magenta, y cuántos van.",
+    "🟪 **En cada perfil, «Días que jugó»**: una grilla por semana de la temporada, con el día de la semana en que más juega."
+   ]
+  },
+  {
    "version": "3.79",
    "dia": "2026-10-20",
    "cuando": "2026-10-20T15:21:00-04:00",
