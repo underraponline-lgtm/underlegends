@@ -39,6 +39,15 @@
 "temporada"
 ]
 },
+"pichulamc": {
+"rg": "B",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "erian": {
 "rg": "B",
 "c": [
@@ -48,15 +57,6 @@
 ]
 },
 "colesito": {
-"rg": "B",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"pichulamc": {
 "rg": "B",
 "c": [
 "competitivo",
@@ -294,6 +294,10 @@
 "temporada"
 ]
 },
+"andres": {
+"rg": "B",
+"c": []
+},
 "jupiter": {
 "rg": "D",
 "c": [
@@ -323,10 +327,6 @@
 "servidor",
 "temporada"
 ]
-},
-"andres": {
-"rg": "B",
-"c": []
 },
 "carlosss": {
 "rg": "",
@@ -772,6 +772,10 @@
 "temporada"
 ]
 },
+"nmb": {
+"rg": "",
+"c": []
+},
 "crk": {
 "rg": "E",
 "c": [
@@ -828,10 +832,6 @@
 "c": [
 "servidor"
 ]
-},
-"nmb": {
-"rg": "",
-"c": []
 },
 "tusicario": {
 "rg": "",

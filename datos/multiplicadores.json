@@ -668,13 +668,13 @@
    },
    "organizadores": [
     [
-     "Velatz",
-     25,
-     1
+     "Kravitz",
+     40,
+     2
     ],
     [
-     "Kravitz",
-     19,
+     "Velatz",
+     25,
      1
     ]
    ],
@@ -684,7 +684,7 @@
      "ACAD": 1
     },
     "gente": {
-     "FFA": 38,
+     "FFA": 52,
      "ACAD": 21
     },
     "gana": "FFA"
@@ -693,7 +693,7 @@
     "ACAD": 21,
     "DDF": 0,
     "DRA": 0,
-    "FFA": 38,
+    "FFA": 52,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,

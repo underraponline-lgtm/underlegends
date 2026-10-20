@@ -28044,10 +28044,10 @@
     "b": [
      [
       [
-       "NC, Snake, Snake NC",
+       "NC, Snake, Snake",
        "Teo, DO-C"
       ],
-      "NC, Snake, Snake NC",
+      "NC, Snake, Snake",
       "ganador según #veredictos"
      ],
      [
@@ -28068,7 +28068,7 @@
        "Calíz, Shadow"
       ],
       "223🇦🇹-LIBERIA🇦🇪",
-      "triple (4 bandas); Sin integrantes: 223🇦🇹-LIBERIA🇦🇪"
+      "triple (4 bandas); Revivido: 223🇦🇹-LIBERIA🇦🇪; Sin integrantes: 223🇦🇹-LIBERIA🇦🇪"
      ],
      [
       [
@@ -28078,15 +28078,6 @@
       ],
       "Snow, Velatz",
       "triple (3 bandas)"
-     ],
-     [
-      [
-       "LUZ🇨🇱+DYZZ🇨🇱",
-       "snow🇦🇴 + velatz🇵🇪",
-       "makmah 🇻🇪 + Molusco 🇦🇷"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -28101,6 +28092,22 @@
       ],
       "Snow, PichulaMc, Andres, Tam",
       "triple (3 bandas, pasan 2); también pasa: ANDRES🇨🇱+TAM🇻🇪; Sin integrantes: 223🇦🇹-LIBERIA🇦🇪"
+     ],
+     [
+      [
+       "Snow, PichulaMc",
+       "NC, Snake, Snake"
+      ],
+      "Snow, PichulaMc",
+      ""
+     ],
+     [
+      [
+       "Andres, Tam",
+       "223🇦🇹-LIBERIA🇦🇪"
+      ],
+      "Andres, Tam",
+      "Sin integrantes: 223🇦🇹-LIBERIA🇦🇪"
      ]
     ],
     "r": "Semifinales"
@@ -28143,6 +28150,16 @@
     "Tam",
     "Subcampeón",
     3750
+   ],
+   [
+    "Snake",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NC",
+    "Semifinal",
+    1750
    ],
    [
     "Adriagner",

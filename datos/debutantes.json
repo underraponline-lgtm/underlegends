@@ -532,9 +532,10 @@
   },
   "Snake": {
    "avisado": "2026-10-13",
+   "avisado_cumplido": "2026-10-19",
    "chat": "2026-10-14",
-   "con": null,
-   "cumplido": "",
+   "con": 492,
+   "cumplido": "2026-10-20T00:57:30+00:00",
    "debut": "2026-10-13T23:50:48+00:00",
    "did": "1470819179509842235",
    "evento": "DEM UZBEKISTAN FECHA 2",

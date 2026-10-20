@@ -194,7 +194,7 @@
      "por": [
       {
        "n": "Nmb",
-       "cobra": 10000
+       "cobra": 9250
       }
      ]
     }
@@ -248,10 +248,26 @@
     "nivel": "C",
     "base": 6000,
     "o": 25,
-    "estado": "suelto",
+    "estado": "cazado",
     "ev": 1,
-    "fase": "",
-    "valor": 7250
+    "fase": "Semifinal",
+    "valor": 6000,
+    "caza": {
+     "n": 492,
+     "evento": "LA ISLA DE OKINAWA V.2",
+     "sv": "FFA",
+     "t": "2026-10-20T00:57:30Z",
+     "por": [
+      {
+       "n": "PichulaMc",
+       "cobra": 3000
+      },
+      {
+       "n": "Snow",
+       "cobra": 3000
+      }
+     ]
+    }
    },
    {
     "n": "Erik",

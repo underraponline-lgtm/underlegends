@@ -5275,11 +5275,11 @@
   "NC": {
    "FFA": {
     "duelos": "6/17",
-    "ev": 25,
+    "ev": 26,
     "oro": 0,
-    "ovr": 65,
+    "ovr": 66,
     "pod": 2,
-    "pts": 87659,
+    "pts": 90284,
     "racha": "0/1",
     "tg": {
      "fin": 2
@@ -7134,11 +7134,11 @@
   "Snake": {
    "FFA": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 46,
     "pod": 0,
-    "pts": 1875,
+    "pts": 9750,
     "racha": "0/0",
     "tg": {
      "nuevo": true
