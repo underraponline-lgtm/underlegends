@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.74",
+   "dia": "2026-10-19",
+   "cuando": "2026-10-19T23:38:00-04:00",
+   "titulo": "«Vos»: tu cuenta, tu perfil y los ajustes en una sola página",
+   "items": [
+    "👤 **Mi cuenta, Mi perfil y Ajustes son ahora una sola página: «Vos»** (el botón de abajo). Arriba, quién sos y «Ver mi perfil público»; abajo, todo agrupado por lo que querés hacer: tu perfil, tu gente, avisos, la app, ayuda y tus datos.",
+    "⚙️ El engranaje de arriba abre «La app» (apariencia, hora y zona, accesibilidad, instalar) en esa misma página. Los links viejos a Ajustes siguen funcionando."
+   ]
+  },
+  {
    "version": "3.73",
    "dia": "2026-10-19",
    "cuando": "2026-10-19T23:27:00-04:00",
