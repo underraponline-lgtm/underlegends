@@ -133,3 +133,7 @@
 .rk-qe dl div{display:contents}
 .rk-qe dt{font-weight:800}
 .rk-qe dd{margin:0;color:var(--gris)}
+/* 📈 semana a semana (19/10/2026): barritas, la última (esta semana) en magenta */
+.rk-ten{display:inline-flex;align-items:flex-end;gap:2px;height:18px;vertical-align:middle}
+.rk-ten i{display:block;width:5px;background:var(--verde);border-radius:1px}
+.rk-ten i.ult{background:var(--magenta)}

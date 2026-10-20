@@ -52,6 +52,33 @@ function Num({ n, fc }) {
   return <span className={'rk-n' + (n <= 3 ? ' p' + n : '')}>{n}</span>;
 }
 
+// ── 📈 SEMANA A SEMANA (Dlx, 19/10/2026, «me gustan todas», a «Sparkline» de 21st): cuánto sumó cada uno en cada
+// semana de la temporada, de `/api/semanas` (`_semanas_de()` de bot/subir_web.py: va aparte del lobby, que ya está al
+// tope). Se pide una vez por sesión, sólo en el Ranking de Temporada; la última barra es esta semana hasta hoy ────────
+let SEM = null, semPidiendo = null;
+function useSemanas(activo) {
+  const [s, setS] = useState(SEM);
+  useEffect(() => {
+    if (!activo || SEM) return undefined;
+    let vivo = true;
+    semPidiendo = semPidiendo || fetch('/api/semanas', { headers: { accept: 'application/json' } })
+      .then((r) => (r.ok ? r.json() : null)).catch(() => null);
+    semPidiendo.then((j) => { if (j && j.g) SEM = j; if (vivo) setS(SEM); });
+    return () => { vivo = false; };
+  }, [activo]);
+  return s;
+}
+function Tendencia({ g, lunes }) {
+  if (!g || !g.length) return NADA;
+  const max = Math.max(...g, 1);
+  const tit = 'Puntos por semana: ' + g.map((v, i) => (lunes && lunes[i] ? fechaCorta(lunes[i]) + ' ' : '') + num(v)).join(' · ');
+  return (
+    <span className="rk-ten" title={tit} aria-label={tit}>
+      {g.map((v, i) => <i key={i} className={i === g.length - 1 ? 'ult' : ''} style={{ height: Math.max(2, Math.round((16 * v) / max)) + 'px' }} />)}
+    </span>
+  );
+}
+
 // ── ▲▼ cuánto subió desde el lunes (`mv` del ciclo: la foto del lunes, `foto_semana()` de bot/subir_web.py). La
 // flecha es un triángulo dibujado, no un carácter; el número dice cuántos puestos ──────────────────────────────────
 function Mov({ mv, largo = false }) {
@@ -137,6 +164,9 @@ const COL = {
     v: (f, x) => (f.rg ? <span className="rg rk-rg" style={{ background: x.liga.colorRg(f.rg) }}>{f.rg}</span> : NADA) },
   sc: { t: 'Score', tit: 'El número del Competitivo, de 0 a 100', s: (f) => f.sc || 0, v: (f) => (f.sc ? coma(f.sc) : NADA) },
   pts: { t: 'Puntos', tc: 'Pts', tit: 'Cada evento suma según el puesto y cuánta gente jugó', s: (f) => f.pts || 0, v: (f) => num(f.pts) },
+  // 📈 la tendencia: se ordena por lo que sumó esta semana (la última barra)
+  ten: { t: 'Semana a semana', tc: 'Sem.', tit: 'Puntos que sumó cada semana de la temporada; la última barra, esta semana',
+    s: (f) => (((SEM && SEM.g[f.k]) || []).slice(-1)[0] || 0), v: (f, x) => <Tendencia g={x.sem && x.sem.g[f.k]} lunes={x.sem && x.sem.lunes} /> },
   ev: { t: 'Eventos', tc: 'Ev', tit: 'Eventos jugados en la temporada', s: (f) => f.ev || 0, v: (f) => f.ev || 0 },
   wr: { t: 'Win%', tit: 'Duelos ganados sobre duelos jugados', s: (f) => (f.wr ? pct(f.wr) : ''), v: (f) => (f.wr ? Math.round(pct(f.wr)) + '%' : NADA) },
   racha: { t: 'Racha', tit: 'La que lleva ahora / la más larga de la temporada',
@@ -215,7 +245,7 @@ const SUBS = {
   temporada: {
     et: 'Temporada', filas: (L) => L.d.tabla || [], orden: 'pos',
     // 🔑 LAS COLUMNAS DEL RANKING OFICIAL (Dlx, 25/09/2026: racha, último evento, cazó, cazado, sobrevivió y misiones)
-    cols: ['pos', 'n', 'ovr', 'rg', 'pts', 'ev', 'racha', 'ult', 'caz', 'czd', 'sob', 'mis', 'wch'], movil: ['pos', 'n', 'ovr', 'pts'],
+    cols: ['pos', 'n', 'ovr', 'rg', 'pts', 'ten', 'ev', 'racha', 'ult', 'caz', 'czd', 'sob', 'mis', 'wch'], movil: ['pos', 'n', 'ovr', 'pts'],
     baj: <>El orden sale del <b>OVR</b>, el mismo número que lleva la carta de Temporada. Las flechas, cuántos puestos subió o bajó cada uno desde el lunes.</>,
     // ⚠️ SIN `dato`: los puntos ya están en la carta (Dlx, 02/10/2026: «quitar eso de puntos porque la tarjeta ya
     // lo dice»). El escalón lleva sólo el número
@@ -623,8 +653,9 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const mwOn = !!((liga.d.mw && (liga.d.mw.b || []).length) || (liga.d.tabla || []).some((f) => f.caz || f.czd || f.sob));
   const yo = liga.yo;
   const miCrewF = yo ? liga.crewDe(yo) : null;
+  const sem = useSemanas(sub === 'temporada');
   const x = {
-    liga, mw: mwOn, yoK: yo ? yo.k : '', sigo: new Set(liga.sigue || []), eleg,
+    liga, mw: mwOn, yoK: yo ? yo.k : '', sigo: new Set(liga.sigue || []), eleg, sem,
     miCc: yo ? yo.cc : '', miCrew: miCrewF ? limpio(miCrewF.crew).toLowerCase() : '',
   };
 

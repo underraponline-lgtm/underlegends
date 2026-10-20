@@ -205,7 +205,8 @@ function Ficha({ liga, x, T, dc, mia }) {
           : <li title="Nadie de la crew llegó todavía a 10 eventos">Sin letras</li>}
       </ul>
       <div className="crw-gente">
-        <span className="crw-caras">{caras.map((f) => <Cara key={f.k} liga={liga} k={f.k} nombre={f.n} cls="cara crw-cara" lazy />)}</span>
+        <span className="crw-caras">{caras.map((f) => <Cara key={f.k} liga={liga} k={f.k} nombre={f.n} cls="cara crw-cara" lazy />)}
+          {x.ks.length > caras.length ? <i className="crw-mas" title={x.ks.length + ' en la crew'}>+{x.ks.length - caras.length}</i> : null}</span>
         {x.ccs.length ? <span className="crw-flags">{x.ccs.slice(0, 4).map((cc) => <Bandera key={cc} cc={cc} cls="crw-flag" />)}</span> : null}
       </div>
       <p className="crw-semana">{x.jugaron ? <><b>{x.jugaron} de {x.ks.length}</b> {x.jugaron === 1 ? 'jugó' : 'jugaron'} esta semana · {num(x.semPts)} pts</>

@@ -89,3 +89,6 @@
 /* 🧱 el formulario de armar, abierto adentro de «tu crew» */
 .crw-tu.armando{border-color:var(--verde)}
 .crw-tu .cw-armar{margin-top:6px;padding-top:12px;border-top:1px solid var(--suave)}
+/* 👥 «+N» después de las caras (19/10/2026, «Avatar Stack» de 21st) */
+.crw-caras .crw-mas{display:inline-grid;place-items:center;width:30px;height:30px;margin-left:-6px;border-radius:50%;border:2px solid var(--fondo);
+  background:var(--caja);font:800 11px/1 "Barlow Condensed",sans-serif;font-style:normal;color:var(--tinta)}

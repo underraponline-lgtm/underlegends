@@ -696,6 +696,9 @@ def armar():
         # ⚠️ NO VIAJA EN EL LOBBY: `main()` lo sube aparte, a `web:tags` (`/api/tags`), y la Guía lo pide al abrirse. En
         # el lobby lo pasaba de su tope (49,2 KB comprimido contra 50)
         '_tags': _tags_de(),
+        # 📈 cuánto sumó cada uno en cada semana, para la tendencia del Ranking (19/10/2026). Tampoco viaja en el lobby:
+        # `main()` lo sube a `web:semanas` (`/api/semanas`) y el Ranking lo pide al abrirse
+        '_semanas': _semanas_de(gente),
         'records': _records(gente, regs, _comp),
         # 🔑 MOST WANTED: el tablero del período, los cazadores de la temporada
         # y qué se cazó en cada llave. Ver `_mw()` y `bot/most_wanted.py`.
@@ -2903,6 +2906,40 @@ def _rachas(gente, tope=8):
 
 #: 🏷️ la KV de los TAGs de cada uno (`/api/tags`), aparte del lobby
 CLAVE_TAGS = 'web:tags'
+#: 📈 la KV de las semanas de cada uno (`/api/semanas`), aparte del lobby
+CLAVE_SEMANAS = 'web:semanas'
+
+
+def _semanas_de(gente):
+    '''📈 `{lunes: [...], g: {clave: [puntos de cada semana...]}}`, o `None`: la tendencia del Ranking (Dlx, 19/10/2026,
+    «me gustan todas» a «Sparkline» de 21st). Cuánto sumó cada uno en cada semana de la temporada, de las fotos de cada
+    lunes (`datos/semanas.json`, bot/semanas.py) y la de ahora: la primera barra es la semana del arranque (la foto del
+    primer lunes trae lo acumulado hasta ahí), la última es esta semana hasta hoy. Las fotos van por NOMBRE; la clave
+    sale de `gente`. Sólo quien sumó algo. Nunca frena el lobby.'''
+    try:
+        import datetime as _dt
+        d = _json('datos', 'semanas.json') or {}
+        fotos = d.get('fotos') or {}
+        ult = d.get('ultima') or {}
+        lunes = sorted(k for k in fotos if isinstance(fotos[k], dict))
+        if not lunes or not isinstance(ult.get('foto'), dict):
+            return None
+        cortes = [fotos[k] for k in lunes] + [ult['foto']]
+        primero = (_dt.date.fromisoformat(lunes[0]) - _dt.timedelta(days=7)).isoformat()
+        etiquetas = [primero] + lunes
+        g = {}
+        for p in gente:
+            n, k = p.get('raw'), _clave(p)
+            if not n or not k or k in g:
+                continue
+            pts = [int((c.get(n) or [0, 0])[1] or 0) for c in cortes]
+            dif = [max(0, b - a) for a, b in zip([0] + pts[:-1], pts)]
+            if any(dif):
+                g[k] = dif
+        return {'lunes': etiquetas, 'g': g} if g else None
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ las semanas de cada uno no entran: %s' % str(e)[:120])
+        return None
 
 
 def _tags_de():
@@ -3747,6 +3784,7 @@ def _self_check():
     # 🏟️ el detalle de las ligas tampoco viaja en el lobby (14/10/2026): las fechas van a `ligas.CLAVE_WEB`
     _lgd = p.pop('_ligas', None)
     p.pop('_tags', None)
+    p.pop('_semanas', None)
     ok(not any('fechas' in x for x in ((p.get('ligas') or {}).get('ligas') or []))
        and (_lgd is None) == (p.get('ligas') is None),
        'las fechas de cada liga no viajan en el lobby: van aparte, a `web:ligas`')
@@ -4039,6 +4077,7 @@ def main():
     todas = p.pop('_llaves', None) or {}
     ligas_det = p.pop('_ligas', None)
     tags_det = p.pop('_tags', None)
+    sem_det = p.pop('_semanas', None)
     redes_ok = _con_redes(perf) is not None
     print('\n══ LO QUE VA A LA WEB ══\n')
     print('   temporada %s · %d en el padrón del pool' % (p['temporada'],
@@ -4122,6 +4161,11 @@ def main():
         okt = subir({'de': tags_det}, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_TAGS)
         print('   %s' % ('✓ los TAGs de cada uno: igual' if okt is None else '✅ los TAGs de cada uno, subidos'
                          if okt else '🔴 no pude subir los TAGs de cada uno'))
+    # 📈 LAS SEMANAS DE CADA UNO, aparte del lobby (`_semanas_de()`): cambian con cada evento, como el lobby
+    if sem_det:
+        oks = subir(sem_det, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_SEMANAS)
+        print('   %s' % ('✓ las semanas de cada uno: igual' if oks is None else '✅ las semanas de cada uno, subidas'
+                         if oks else '🔴 no pude subir las semanas de cada uno'))
     # 🔑 LOS PERFILES, CON EL MISMO DIFF-WRITER: cambian cuando entra una
     # llave, no en cada corrida. Si fallan, el lobby ya está arriba.
     ok2 = None
