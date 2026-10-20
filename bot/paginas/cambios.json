@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.72",
+   "dia": "2026-10-19",
+   "cuando": "2026-10-19T23:03:00-04:00",
+   "titulo": "Thumbnails para cada liga, cada llave y cada país",
+   "items": [
+    "🖼️ **También tienen su propia vista previa** el link de cada liga (con la imagen de su servidor), el de cada llave (el evento, su servidor, la fecha y el campeón), el de cada país (con su bandera), Mi cuenta, Lo nuevo y el panel de los socios."
+   ]
+  },
+  {
    "version": "3.71",
    "dia": "2026-10-19",
    "cuando": "2026-10-19T22:53:00-04:00",
