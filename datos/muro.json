@@ -1007,7 +1007,8 @@
 "ezias": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "sami": {
@@ -2441,14 +2442,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Clitax"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5757,6 +5750,14 @@
 ],
 "rg": "D",
 "primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-20T01:04:21Z",
+"quien": [
+"Ezias🥈✒️🧢🐍"
+],
+"carta": "temporada"
 }
 ]
 }

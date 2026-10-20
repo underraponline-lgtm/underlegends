@@ -757,7 +757,8 @@
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/sv-frz.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/sv-fvs.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/sv-sr.webp",
-  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/sv-urbf.webp"
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/sv-urbf.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dios/temporada.webp"
  },
  "dist": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dist/servidor.webp",
@@ -1005,7 +1006,8 @@
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ezias/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ezias/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ezias/sv-ffa.webp",
-  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ezias/sv-urbf.webp"
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ezias/sv-urbf.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ezias/temporada.webp"
  },
  "ferra": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ferra/servidor.webp",
@@ -1332,7 +1334,8 @@
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/iguana/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/iguana/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/iguana/sv-ffa.webp",
-  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/iguana/sv-sr.webp"
+  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/iguana/sv-sr.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/iguana/temporada.webp"
  },
  "inder": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/inder/servidor.webp",
@@ -1446,7 +1449,8 @@
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jobaking/sv-ffs.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jobaking/sv-frz.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jobaking/sv-fvs.webp",
-  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jobaking/sv-sr.webp"
+  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jobaking/sv-sr.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/jobaking/temporada.webp"
  },
  "johao": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/johao/bloq-competitivo.webp",
@@ -1689,7 +1693,8 @@
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kourier/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kourier/sv-ffa.webp",
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kourier/sv-ffs.webp",
-  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kourier/sv-urbf.webp"
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kourier/sv-urbf.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kourier/temporada.webp"
  },
  "kravitz": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kravitz/bloq-competitivo.webp",
