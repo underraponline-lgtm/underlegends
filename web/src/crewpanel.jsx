@@ -207,7 +207,7 @@ export function EntrarCrew({ c }) {
     const sacar = () => { try { history.replaceState(history.state, '', window.urlLG ? window.urlLG(enlaceCrew(c.id)) : enlaceCrew(c.id)); } catch (e) { /* queda */ } };
     cuerpo = (
       <div className="cw-entrar">
-        <p className="cw-nota">🔗 Te pasaron un link para entrar a <b>{limpio(c.nombre)}</b>: entrás directo, sin pedir permiso.
+        <p className="cw-nota">🔗 Te pasaron un link para entrar a <b>{limpio(c.nombre)}</b>: entras directo, sin pedir permiso.
           {yo ? <> Estás en <a href={enlaceCrew(yo.id)}>{limpio(yo.nombre)}</a>: si entras, la dejas, y por 7 días no te puedes cambiar de nuevo.</> : null}</p>
         <div className="cw-fila">
           <button type="button" className="btn verde" disabled={va || lider}
@@ -221,8 +221,8 @@ export function EntrarCrew({ c }) {
     // 📨 invitado estando en otra crew (19/10/2026): aceptar es cambiarse
     cuerpo = (
       <div className="cw-entrar">
-        <p className="cw-nota">Te invitaron. Estás en <a href={enlaceCrew(yo.id)}>{limpio(yo.nombre)}</a>: si aceptás, la dejás{mia.rol === 'lider'
-          ? ', pero antes tienes que pasarle el liderazgo a alguien' : ''}, y por 7 días no te podés cambiar de nuevo.</p>
+        <p className="cw-nota">Te invitaron. Estás en <a href={enlaceCrew(yo.id)}>{limpio(yo.nombre)}</a>: si aceptas, la dejas{mia.rol === 'lider'
+          ? ', pero antes tienes que pasarle el liderazgo a alguien' : ''}, y por 7 días no te puedes cambiar de nuevo.</p>
         <div className="cw-fila">
           <button type="button" className="btn verde" disabled={va || mia.rol === 'lider'}
             onClick={() => hacer({ accion: 'responder', crew: c.id, si: true }, (j) => '¡Entraste!' + (j.dejo ? ' Dejaste ' + limpio(j.dejo) + '.' : ''))}>Aceptar y cambiarme</button>
@@ -274,7 +274,7 @@ function LinksCrew({ c, mia, va, hacer }) {
           {USOS_LINK.map(([v, t]) => <option key={v} value={v}>{t}</option>)}
         </select>
         <button type="button" className="btn verde chico" disabled={va}
-          onClick={() => hacer({ accion: 'link_crear', max }, (j) => { copiar(j.cod); return 'Link armado: cópialo y pasáselo.'; })}>Armar link</button>
+          onClick={() => hacer({ accion: 'link_crear', max }, (j) => { copiar(j.cod); return 'Link armado: cópialo y pásaselo.'; })}>Armar link</button>
       </div>
       {links.length ? (
         <ul className="cw-lista cw-links">{links.map((l) => (
@@ -453,7 +453,7 @@ export function PanelCrew({ liga, c }) {
 // quieras (Dlx, 19/10/2026). Los precios los pone el Dashboard y llegan con la crew (`crewMia()`)
 function Cuesta({ precio, saldo }) {
   if (!precio) return null;
-  return <>Cuesta <b>{num(precio)} Puntos de Tienda</b>{typeof saldo === 'number' ? <> (tenés {num(saldo)})</> : null}.</>;
+  return <>Cuesta <b>{num(precio)} Puntos de Tienda</b>{typeof saldo === 'number' ? <> (tienes {num(saldo)})</> : null}.</>;
 }
 
 function AjustesLider({ c, va, hacer, setMsg, pend, mia }) {
@@ -563,9 +563,9 @@ export function CrearCrew({ mia }) {
   return (
     <div className="cw-bloque cw-armar">
       <h3 className="cw-h">Arma tu crew</h3>
-      <p className="cw-nota">Cuesta <b>{num(precio)} Puntos de Tienda</b>{typeof mia.saldo === 'number' ? <> (tenés {num(mia.saldo)})</> : null}. Hasta {mia.max} raperos; vos sos el Líder.</p>
+      <p className="cw-nota">Cuesta <b>{num(precio)} Puntos de Tienda</b>{typeof mia.saldo === 'number' ? <> (tienes {num(mia.saldo)})</> : null}. Hasta {mia.max} raperos; tú eres el Líder.</p>
       <p className="cw-nota cw-aviso-semana">⏳ Después tienes <b>una semana para sumar {sumar} personas</b> a la crew. Si no llegan, la crew se borra y los Puntos no vuelven.</p>
-      {espera ? <p className="cw-nota">Saliste de una crew hace poco: podés armar la tuya en {Math.ceil(mia.espera_ms / 86400000)} días.</p> : null}
+      {espera ? <p className="cw-nota">Saliste de una crew hace poco: puedes armar la tuya en {Math.ceil(mia.espera_ms / 86400000)} días.</p> : null}
       <form className="cw-crear" onSubmit={async (e) => {
         e.preventDefault();
         if (armando) return;
@@ -656,12 +656,12 @@ export function MiCrew({ liga, dc }) {
         </div>
       ) : null}
       {(mia.ped || []).length ? <p className="cu-d">Pediste entrar a {mia.ped.map((x) => limpio(x.nombre)).join(', ')}: falta que te acepten.</p> : null}
-      {espera ? <p className="cu-d">Saliste de una crew hace poco: podés entrar a otra o armar la tuya en {Math.ceil(mia.espera_ms / 86400000)} días.</p> : null}
+      {espera ? <p className="cu-d">Saliste de una crew hace poco: puedes entrar a otra o armar la tuya en {Math.ceil(mia.espera_ms / 86400000)} días.</p> : null}
       {!espera ? <CrewsParaVos liga={liga} /> : null}
       {/* 🧱 el formulario se mudó a la página de Crews (Dlx, 19/10/2026: «la gente no sabe dónde crear crews»): acá, el camino */}
       <div className="cw-bloque">
         <h3 className="cw-h">Arma tu crew</h3>
-        <p className="cu-d">Las crews se arman y se buscan en la página de Crews. Armar una cuesta <b>{num(mia.precio ?? 2500)} Puntos de Tienda</b>{typeof mia.saldo === 'number' ? <> (tenés {num(mia.saldo)})</> : null}.</p>
+        <p className="cu-d">Las crews se arman y se buscan en la página de Crews. Armar una cuesta <b>{num(mia.precio ?? 2500)} Puntos de Tienda</b>{typeof mia.saldo === 'number' ? <> (tienes {num(mia.saldo)})</> : null}.</p>
         <div className="cw-fila"><a className="btn verde" href="#/crews?armar=1">Armar mi crew</a><a className="btn borde2" href="#/crews">Ver las crews</a></div>
       </div>
       {msg ? <p role="status" className="cw-msg">{msg}</p> : null}

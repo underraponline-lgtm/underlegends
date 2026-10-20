@@ -132,7 +132,7 @@ function Tuya({ liga, k, c, tiene, bloq, cs, nv, nivel }) {
         <b>{NOMBRE[c]}</b>
         {tiene ? <small className="ok"><Ico n="ok" t={14} />La tienes</small>
           : listo ? <small><Ico n="reloj" t={14} />Se está dibujando</small>
-            : espera ? <small>Primero verificate. {RQ.sinVerificar(nv, true)}</small>
+            : espera ? <small>Primero verifícate. {RQ.sinVerificar(nv, true)}</small>
               : c === 'temporada' ? <small>{RQ.pase(true)}</small>
                 : <small>Bloqueada</small>}
         {!tiene && !listo && (c === 'competitivo' || c === 'pais') && cs.length ? <Falta cs={cs} /> : null}

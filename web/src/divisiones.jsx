@@ -178,7 +178,7 @@ function TuSemana({ liga, D, nombres, divs, esYo }) {
   const max = Math.max(1, g[0][1]);
   let msg, chip = '';
   if (subeZ && pos < subeZ) {
-    msg = <>Si la semana cierra así, <b className="sube">subís a {nombres[di - 1]}</b> y cobrás {num(D.p)} Puntos de Tienda.</>;
+    msg = <>Si la semana cierra así, <b className="sube">subes a {nombres[di - 1]}</b> y cobras {num(D.p)} Puntos de Tienda.</>;
     const atras = g[subeZ];
     if (atras) chip = limpio(atras[0]) + ', ' + (subeZ + 1) + 'º, a ' + num(Math.max(0, pts - atras[1])) + ' pts';
   } else if (bajaZ && pos >= g.length - bajaZ) {
@@ -278,7 +278,7 @@ export function Divisiones({ liga }) {
       <div className="dv2-info">
         <section className="dv-caja">
           <h4>Cómo funciona</h4>
-          <p>Semana del {fechaCorta(D.sem)} al {liga.dia(D.fin)}. Jugás un evento y entrás en Sexta; los grupos son de 30.
+          <p>Semana del {fechaCorta(D.sem)} al {liga.dia(D.fin)}. Juegas un evento y entras en Sexta; los grupos son de 30.
             {' '}Al cierre, los {D.z} primeros de cada grupo suben y cobran <b>{num(D.p)} Puntos de Tienda</b>, y los {D.z} últimos bajan. En un grupo chico, un tercio.</p>
         </section>
         {ult ? (

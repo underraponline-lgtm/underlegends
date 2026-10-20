@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.85",
+   "dia": "2026-10-20",
+   "cuando": "2026-10-20T17:58:00-04:00",
+   "titulo": "Los textos que faltaban en «tú»",
+   "items": [
+    "🗣️ **Mi cuenta, Crews, el Inicio y el bot: los textos que seguían en «vos» pasan a «tú»**, como todo lo demás desde la 3.81.",
+    "🐛 Al subir una foto sin elegir tarjeta, el aviso vuelve a decir qué falta (la página no reconocía la respuesta)."
+   ]
+  },
+  {
    "version": "3.84",
    "dia": "2026-10-20",
    "cuando": "2026-10-20T17:40:00-04:00",

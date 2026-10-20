@@ -1275,7 +1275,7 @@ function MesAwardsDueno({ aj, hacer, ocup }) {
   };
   return (
     <div className="db-mes">
-      <p className="pronto-p">Los nominados de <b>{ab.nombre}</b>. La votación abre el {corto(ab.abre)}: hasta entonces podés sacar a alguno.
+      <p className="pronto-p">Los nominados de <b>{ab.nombre}</b>. La votación abre el {corto(ab.abre)}: hasta entonces puedes sacar a alguno.
         El descanso de quien repite lo decide la directiva: «ya ganó» marca a quien se llevó esa categoría antes.</p>
       {(S.cats || []).map(([c, n]) => {
         const nom = ((ab.cats || {})[c] || {}).nom || [];
@@ -1891,7 +1891,7 @@ function Corregir({ r, liga, alListo, hermanos }) {
           <div className="db-opc">{b.lados.map((x) => <button key={x} type="button" className={gana === x ? 'on' : ''} onClick={() => setGana(x)}>{x}{x === b.ganador ? ' (lo que dice hoy)' : ''}</button>)}</div>
         </> : null}
       </>}
-      {yaDice ? <p className="db-rep-ya">La llave ya dice que ganó {gana}: no hay nada que corregir. Si el reporte pedía eso, cerralo con «Listo».</p>
+      {yaDice ? <p className="db-rep-ya">La llave ya dice que ganó {gana}: no hay nada que corregir. Si el reporte pedía eso, ciérralo con «Listo».</p>
         : <p className="db-rep-nota">Cambia sólo en la #{r.llave}. Lo aplica el ciclo en su próxima corrida y a quien lo reportó le llega a la campana.</p>}
       {hermanos.length && !yaDice ? <label className="db-rep-herm"><input type="checkbox" checked={conHermanos} onChange={(e) => setConHermanos(e.target.checked)} />
         {' '}lo mismo para {hermanos.length === 1 ? 'el otro reporte' : 'los otros ' + hermanos.length + ' reportes'} de la #{r.llave}</label> : null}
@@ -2518,7 +2518,7 @@ export function Dashboard({ dc, liga }) {
     cuerpo = (<><p className="pronto-p">Esta página es del dueño de la Liga. Entra con tu cuenta de Discord.</p>
       <div className="cu-btns"><button type="button" className="btn verde chico" onClick={entrar}>Entrar con Discord</button></div></>);
   } else if (st.no) cuerpo = <p className="pronto-p">Esta página es sólo del dueño de la Liga.</p>;
-  else if (st.error) cuerpo = <p className="pronto-p">No pude leerlo ({st.error}). Probá en un rato.</p>;
+  else if (st.error) cuerpo = <p className="pronto-p">No pude leerlo ({st.error}). Prueba en un rato.</p>;
   else {
     const d = st.d || {};
     const u = d.uso || {};

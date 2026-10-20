@@ -2716,7 +2716,7 @@ export function panelBaja(id) {
       '- tus redes guardadas, tus votos en las encuestas, a quién felicitaste y el vínculo de tus avisos.\n\n' +
       'Además queda anotado que **no te vuelva a sumar solo**. Tus resultados en ' +
       'eventos quedan en el historial de la Liga; si quieres que cambiemos tu ' +
-      'nombre ahí, pedíselo a un admin.\n' +
+      'nombre ahí, pídeselo a un admin.\n' +
       '-# Si después quieres volver, también se lo pides a un admin.',
     components: [{ type: COMP.FILA, components: [
       { type: COMP.BOTON, style: ESTILO.PELIGRO, label: 'Borrar mis datos',
@@ -3753,7 +3753,7 @@ const COMANDOS = {
                    `Tu apodo va a quedar \`${destino || '(sin apodo)'}\`.\n` +
                    '⏳ Se aplica en la próxima sincronización — el bot no cambia ' +
                    'apodos por sí mismo, a propósito. Si no quieres esperar, ' +
-                   'ponételo tú.');
+                   'póntelo tú.');
     }
     // ⚠️ LA PREFERENCIA QUEDA GUARDADA AUNQUE EL APODO FALLE, y eso es lo que
     // se quiere: al dueño del servidor y a quien tenga un rol más alto que el
@@ -4448,7 +4448,7 @@ export default {
         const esperarQg = frenado(idDe(i), 'click');
         if (esperarQg) return espera(esperarQg);
         const did = idDe(i);
-        if (!did) return aviso('No pude saber quién sos: prueba de nuevo.');
+        if (!did) return aviso('No pude saber quién eres: prueba de nuevo.');
         let j = {};
         try {
           const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/qg-votar', {

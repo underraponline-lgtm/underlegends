@@ -124,9 +124,9 @@ export function errorCrew(j) {
   const c = W.errorCuenta && W.errorCuenta(e);
   if (c) return c;
   return ({
-    verificate: 'Primero verificate: las crews son de los Miembros de Discord Rap Español.',
-    link_vencido: 'Ese link ya venció o lo borraron: pedile uno nuevo a la crew.',
-    link_usado: 'Ese link ya se usó todas las veces que tenía: pedile uno nuevo a la crew.',
+    verificate: 'Primero verifícate: las crews son de los Miembros de Discord Rap Español.',
+    link_vencido: 'Ese link ya venció o lo borraron: pídele uno nuevo a la crew.',
+    link_usado: 'Ese link ya se usó todas las veces que tenía: pídele uno nuevo a la crew.',
     links_max: 'Ya tienen ' + ((j && j.max) || 5) + ' links abiertos: borra uno para armar otro.',
     cod: 'Ese link está mal copiado: pídelo de nuevo.',
     ya_en_crew: 'Ya está en esa crew.',

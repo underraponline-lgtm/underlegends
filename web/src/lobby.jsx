@@ -98,7 +98,7 @@ function TuBarra({ liga, dc, P, R, saldo }) {
       </a>
       {fest ? (
         <button type="button" className="lb-fest" onClick={() => setFest(null)}>
-          <Ico n="fuego" t={26} /><span><b>¡{fest} DÍAS SEGUIDOS!</b><small>Tu racha llegó a {fest}. Tocá para seguir.</small></span>
+          <Ico n="fuego" t={26} /><span><b>¡{fest} DÍAS SEGUIDOS!</b><small>Tu racha llegó a {fest}. Toca para seguir.</small></span>
         </button>
       ) : null}
     </>
@@ -202,7 +202,7 @@ function Racha({ R }) {
           <b>{num(monto)}</b>
         </li>
       ))}</ol>
-      {ps[6] && !ps[6][4] && !ps[6][2] ? <small className="lb-racha-pie">El domingo es un cofre de {num(300)} si entrás {R.cofre_dias || 5} días de la semana.</small> : null}
+      {ps[6] && !ps[6][4] && !ps[6][2] ? <small className="lb-racha-pie">El domingo es un cofre de {num(300)} si entras {R.cofre_dias || 5} días de la semana.</small> : null}
     </section>
   );
 }
@@ -476,7 +476,7 @@ function ElBoton({ liga }) {
             <em className="mw">{juegan.length === 1 ? 'Juega ' + limpio(juegan[0].n) : 'Juegan ' + juegan.slice(0, 3).map((b) => limpio(b.n)).join(', ')}
               , de Se busca{cobras ? ': ' + (juegan.length === 1 ? 'ganale y cobras ' : 'cobras hasta ') + num(cobras) + ' pts' : ''}</em>
           ) : null}
-          {reto ? <em>Jugalo antes del {liga.dia(new Date(vence))} y ganás 1.000 Puntos de Tienda</em> : null}
+          {reto ? <em>Juégalo antes del {liga.dia(new Date(vence))} y ganas 1.000 Puntos de Tienda</em> : null}
           {m > 1 ? <em>{siglaDe(e.sv)} va {mult(m)} esta semana</em> : null}
           {debut ? <em className="gris">Tu debut: {limpio(debut[0].nombre)} · +{num(debut[2])} pts</em> : null}
         </span>

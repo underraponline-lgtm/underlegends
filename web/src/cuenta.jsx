@@ -226,7 +226,7 @@ function RachaNivel({ dc, liga }) {
       <div className="cu-rn-c">
         <b>Nivel {n.n}</b>
         <span className="cu-rn-barra" role="progressbar" aria-label={'Nivel ' + n.n} aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct}><i style={{ width: pct + '%' }} /></span>
-        <small>{n.xp - n.base} de {tramo} para el nivel {n.n + 1}. Sube jugando, entrando cada día y con lo que hacés en la Liga.</small>
+        <small>{n.xp - n.base} de {tramo} para el nivel {n.n + 1}. Sube jugando, entrando cada día y con lo que haces en la Liga.</small>
         <ComoSubir R={R} />
       </div>
     </div>
@@ -414,13 +414,13 @@ async function pedirFotoCarta(ruta, cuerpo) {
     headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo || {}) });
   const j = await r.json().catch(() => ({}));
   if (!r.ok || j.error) {
-    const e = { nivel: 'Se desbloquea con el nivel ' + (j.falta || 15) + ' del Pase de rapero.', tope: 'Ya probaste varias hoy: probá mañana.',
+    const e = { nivel: 'Se desbloquea con el nivel ' + (j.falta || 15) + ' del Pase de rapero.', tope: 'Ya probaste varias hoy: prueba mañana.',
       semana: 'La foto de ' + nombresCartas(j.cartas) + ' ya la cambiaste esta semana: se vuelve a abrir el ' + (j.desde ? fechaLarga(j.desde) : 'que viene') + '.',
-      sin_perfil: 'Primero necesitás tu tarjeta: verificate en la página.', 'elegí en qué tarjetas': 'Elegí en qué tarjetas va.',
+      sin_perfil: 'Primero necesitas tu tarjeta: verifícate en la página.', 'elige en qué tarjetas': 'Elige en qué tarjetas va.',
       'no es una imagen': 'Eso no es una imagen.', 'demasiado grande': 'La imagen es muy pesada.',
-      metadatos: 'La imagen trae datos escondidos (como dónde se sacó): elegila de nuevo desde acá y se limpian solos.',
-      filtro: 'Esa imagen no pasó el filtro automático' + (j.texto ? ': parece tener ' + j.texto : '') + '. Elegí otra.' }[j.error];
-    throw new Error(r.status === 401 ? 'Entrá con Discord de nuevo.' : e || j.error || String(r.status));
+      metadatos: 'La imagen trae datos escondidos (como dónde se sacó): elígela de nuevo desde acá y se limpian solos.',
+      filtro: 'Esa imagen no pasó el filtro automático' + (j.texto ? ': parece tener ' + j.texto : '') + '. Elige otra.' }[j.error];
+    throw new Error(r.status === 401 ? 'Entra con Discord de nuevo.' : e || j.error || String(r.status));
   }
   return j;
 }
@@ -439,8 +439,8 @@ function FotoCartaCaja({ dc }) {
     return () => { vivo = false; };
   }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
   const T = 'Tu foto de tarjeta';
-  if (!dc) return <Caja t={T} d="Entrá con Discord para poner tu propia foto en tus tarjetas." />;
-  if (!dc.clave) return <Caja t={T} d="Primero necesitás tu tarjeta: verificate en la página." />;
+  if (!dc) return <Caja t={T} d="Entra con Discord para poner tu propia foto en tus tarjetas." />;
+  if (!dc.clave) return <Caja t={T} d="Primero necesitas tu tarjeta: verifícate en la página." />;
   if (!st) return <Caja t={T}><p className="cu-d">{msg || 'Cargando…'}</p></Caja>;
   const pu = st.puede || {}, cs = st.cartas || {}, ahora = Date.now();
   const libre = (c) => !cs[c] || !cs[c].desde || cs[c].desde <= ahora;
@@ -505,8 +505,8 @@ function FotoCaja({ liga, dc }) {
   const F = est.FOTO;
   const yo = liga.yo;
   const T = (F && F.temporada) || liga.temp || 'temporada';
-  const libre = (f) => (f.libre_hasta ? 'Hasta el ' + f.libre_hasta + ' la podés cambiar las veces que quieras.'
-    : 'Hasta que arranque la temporada la podés cambiar las veces que quieras.');
+  const libre = (f) => (f.libre_hasta ? 'Hasta el ' + f.libre_hasta + ' la puedes cambiar las veces que quieras.'
+    : 'Hasta que arranque la temporada la puedes cambiar las veces que quieras.');
   let cuerpo;
   // (sin entrar: el botón)
   if (!dc) {
@@ -516,11 +516,11 @@ function FotoCaja({ liga, dc }) {
   } else if (F && F.hecho) {
     cuerpo = <p className="cu-d"><b>Listo</b>: ésa es tu foto de la {T}. Tus tarjetas se vuelven a dibujar en la próxima vuelta del ciclo (cada media hora; de 3 a 11 AM, hora del este, no corre).{F.libre ? ' ' + libre(F) : ''}</p>;
   } else if (F && F.error) {
-    const m = F.error === 'sin_foto' ? 'No tenés foto puesta en Discord: tu tarjeta va con la inicial, que con el color de tu rango queda bien. Si te ponés una, volvé.'
-      : F.error === 'sin_perfil' ? 'Primero necesitás tu tarjeta: verificate en la página.'
+    const m = F.error === 'sin_foto' ? 'No tienes foto puesta en Discord: tu tarjeta va con la inicial, que con el color de tu rango queda bien. Si te pones una, vuelve.'
+      : F.error === 'sin_perfil' ? 'Primero necesitas tu tarjeta: verifícate en la página.'
       : F.error === 'usado' ? 'Ya elegiste tu foto de la ' + T + ': va una por temporada. Se vuelve a abrir cuando arranque la que sigue.'
       : F.error === 'cdn' ? 'Discord no me dio tu foto. Suele arreglarse volviéndotela a poner en Discord y probando de nuevo.'
-      : F.error === 'espera' ? 'Esperá un minuto y probá de nuevo.' : 'No pude cambiarla. Probá de nuevo en un rato.';
+      : F.error === 'espera' ? 'Espera un minuto y prueba de nuevo.' : 'No pude cambiarla. Prueba de nuevo en un rato.';
     cuerpo = <><p className="cu-d">{m}</p><button type="button" className="btn borde2 chico" onClick={() => W.cuentaFotoNo && W.cuentaFotoNo()}>Volver</button></>;
   } else if (F && F.estado === 'usado') {
     cuerpo = <p className="cu-d">Ya elegiste tu foto de la {T} y va <b>una por temporada</b>: la Histórica necesita la cara que tenías en cada una. Se vuelve a abrir cuando arranque la que sigue.</p>;
@@ -529,7 +529,7 @@ function FotoCaja({ liga, dc }) {
       <div className="cu-foto">
         <img className="cu-foto-v" src={F.vista} alt="Tu foto de Discord" width="96" height="96" />
         <div className="cu-foto-tx">
-          <small>Tu tarjeta de la {T} va a llevar ésta, la de tu perfil de Discord. {F.libre ? libre(F) : F.pase ? 'Con el pase de DRA la podés cambiar cuando quieras.' : 'Va una por temporada: después no se puede cambiar hasta la próxima.'}</small>
+          <small>Tu tarjeta de la {T} va a llevar ésta, la de tu perfil de Discord. {F.libre ? libre(F) : F.pase ? 'Con el pase de DRA la puedes cambiar cuando quieras.' : 'Va una por temporada: después no se puede cambiar hasta la próxima.'}</small>
           <div className="cu-btns"><button type="button" className="btn verde chico" onClick={() => W.cuentaFotoSi && W.cuentaFotoSi()}>Usar esta foto</button>
             <button type="button" className="btn borde2 chico" onClick={() => W.cuentaFotoNo && W.cuentaFotoNo()}>Cancelar</button></div>
         </div>
@@ -548,8 +548,8 @@ function FotoCaja({ liga, dc }) {
   // 🙈 si la ocultó, que lo sepa acá también: si no, cambiar la foto parece no hacer nada
   const oculta = !!(est.MIFOTO && est.MIFOTO.oculta);
   return (
-    <Caja t="Tu foto de la tarjeta" d={!dc ? 'La de tu Discord. Entrá con Discord para cambiarla.' : !dc.clave ? 'Primero necesitás tu tarjeta.' : 'La de tu Discord. Va una por temporada.'}>
-      {oculta ? <p className="cu-d">La tenés <b>oculta</b>: tus tarjetas van con tu inicial. Se cambia en <a href="#/cuenta/privacidad">Privacidad</a>.</p> : null}
+    <Caja t="Tu foto de la tarjeta" d={!dc ? 'La de tu Discord. Entra con Discord para cambiarla.' : !dc.clave ? 'Primero necesitas tu tarjeta.' : 'La de tu Discord. Va una por temporada.'}>
+      {oculta ? <p className="cu-d">La tienes <b>oculta</b>: tus tarjetas van con tu inicial. Se cambia en <a href="#/cuenta/privacidad">Privacidad</a>.</p> : null}
       {cuerpo}
     </Caja>
   );
@@ -566,21 +566,21 @@ function RedesCaja({ dc }) {
   const titulo = 'Mis redes en mi perfil';
   if (!R || !est.token) {
     return (
-      <Caja t={titulo} d="Mostrá en tu perfil las redes que ya tenés conectadas en Discord (Instagram, TikTok, YouTube…). Discord te pide permiso para leerlas.">
+      <Caja t={titulo} d="Muestra en tu perfil las redes que ya tienes conectadas en Discord (Instagram, TikTok, YouTube…). Discord te pide permiso para leerlas.">
         <button type="button" className="btn borde2 chico" onClick={accion.redes}>Elegir mis redes</button>
       </Caja>
     );
   }
   if (R.error) {
     return (
-      <Caja t={titulo} d={R.error === 'sin_perfil' ? 'Primero necesitás tu tarjeta: verificate en la página.' : 'No pude leer tus redes. Probá de nuevo.'}>
+      <Caja t={titulo} d={R.error === 'sin_perfil' ? 'Primero necesitas tu tarjeta: verifícate en la página.' : 'No pude leer tus redes. Prueba de nuevo.'}>
         <button type="button" className="btn borde2 chico" onClick={accion.redes}>Probar de nuevo</button>
       </Caja>
     );
   }
   if (!(R.publicas || []).length) {
     return (
-      <Caja t={titulo} d="No tenés redes públicas en Discord. Andá a Ajustes → Conexiones, conectá tu Instagram, TikTok o YouTube y activá «Mostrar en el perfil». Después volvé acá.">
+      <Caja t={titulo} d="No tienes redes públicas en Discord. Ve a Ajustes → Conexiones, conecta tu Instagram, TikTok o YouTube y activa «Mostrar en el perfil». Después vuelve acá.">
         <button type="button" className="btn borde2 chico" onClick={accion.redes}>Ya las conecté</button>
       </Caja>
     );
@@ -595,7 +595,7 @@ function RedesCaja({ dc }) {
     W.cuentaRedes(ids).then((m) => { setNota(m); setVa(false); setMarcadas(null); });
   };
   return (
-    <Caja t={titulo} d="Las que tenés públicas en Discord: elegí cuáles salen en tu perfil.">
+    <Caja t={titulo} d="Las que tienes públicas en Discord: elige cuáles salen en tu perfil.">
       <ul className="cu-lista">{R.publicas.map((r) => {
         const id = r.t + ':' + r.n;
         return (
@@ -605,7 +605,7 @@ function RedesCaja({ dc }) {
       })}</ul>
       <div className="cu-btns"><button type="button" className="btn verde chico" disabled={va} onClick={() => guardar(sel)}>Guardar en mi perfil</button>
         {ya.length ? <button type="button" className="btn borde2 chico" disabled={va} onClick={() => guardar([])}>Quitar todas</button> : null}</div>
-      <p className="cu-d" role="status">{nota || ((ya.length ? 'Tu perfil muestra ' + ya.length + '.' : 'Todavía no mostrás ninguna.') + ' Los cambios aparecen en la próxima actualización (cada media hora).')}</p>
+      <p className="cu-d" role="status">{nota || ((ya.length ? 'Tu perfil muestra ' + ya.length + '.' : 'Todavía no muestras ninguna.') + ' Los cambios aparecen en la próxima actualización (cada media hora).')}</p>
     </Caja>
   );
 }
@@ -615,8 +615,8 @@ function OrgsCaja({ dc }) {
   const orgs = useOrgs(dc);
   if (!dc) return null;
   return (
-    <Caja t="Organizadores que seguís" d={orgs && orgs.length ? 'Te llega a la campana cuando anuncian un evento.'
-      : 'En Eventos, «Cuándo suele jugar» dice quiénes organizan en cada servidor: tocá uno y te avisamos cuando anuncie.'}>
+    <Caja t="Organizadores que sigues" d={orgs && orgs.length ? 'Te llega a la campana cuando anuncian un evento.'
+      : 'En Eventos, «Cuándo suele jugar» dice quiénes organizan en cada servidor: toca uno y te avisamos cuando anuncie.'}>
       {orgs && orgs.length ? (
         <ul className="cu-lista">{orgs.map((o) => (
           <li key={o.org}><b>{limpio(o.nombre)}</b>
@@ -630,13 +630,13 @@ function OrgsCaja({ dc }) {
 // 🎬 TUS BATALLAS EN VIDEO (Dlx, 12/10/2026: «las 2 [un link o un canal], pero asegurate que haya restricciones»). Acá
 // sólo se pide y se ve cómo terminó cada pedido: lo que entra lo decide el ciclo (`bot/videos_propios.py`) con sus reglas
 const VID_ERR = {
-  sin_verificar: 'Sólo los verificados pueden sumar videos: verificate en DRA.',
-  link: 'Pegá el link de un video o de un canal de YouTube.',
-  muchos: 'Ya mandaste cinco hoy: probá mañana.',
-  espera: 'Tenés diez esperando: esperá a que se revisen.',
+  sin_verificar: 'Sólo los verificados pueden sumar videos: verifícate en DRA.',
+  link: 'Pega el link de un video o de un canal de YouTube.',
+  muchos: 'Ya mandaste cinco hoy: prueba mañana.',
+  espera: 'Tienes diez esperando: espera a que se revisen.',
   ya: 'Ese ya lo mandaste.',
-  sin_sesion: 'Tu sesión venció: entrá con Discord de nuevo.',
-  respuestas: 'Completá las tres cosas: tu nombre en el video, cómo te reconocemos y el minuto (por ejemplo 4:35).',
+  sin_sesion: 'Tu sesión venció: entra con Discord de nuevo.',
+  respuestas: 'Completa las tres cosas: tu nombre en el video, cómo te reconocemos y el minuto (por ejemplo 4:35).',
   pedido: 'Ese pedido ya no espera respuesta.',
 };
 const VID_EST = { espera: 'En cola · se revisa en la próxima media hora', ok: '✓', no: '✗', revisar: 'Lo revisa Dlx',
@@ -653,17 +653,17 @@ function Contanos({ p, pedir, setMsg }) {
     setVa(true);
     const err = await pedir({ accion: 'responder', id: p.id, nombre: f.nombre.trim(), como: f.como.trim(), minuto: f.minuto.trim() });
     setVa(false);
-    setMsg(err || 'Gracias: lo revisa Dlx con lo que contaste y, si sos vos, sale en tu perfil.');
+    setMsg(err || 'Gracias: lo revisa Dlx con lo que contaste y, si eres tú, sale en tu perfil.');
   };
   const campo = (k, t, ph, max) => (
     <label><span>{t}</span><input value={f[k]} maxLength={max} placeholder={ph} onChange={(e) => setF(Object.assign({}, f, { [k]: e.target.value }))} /></label>
   );
   return (
     <form className="cu-contanos" onSubmit={mandar}>
-      <p>No encontramos tu nombre en el título. Contanos cómo aparecés y lo revisa Dlx:</p>
-      {campo('nombre', '¿Con qué nombre aparecés en el video?', 'Ej.: SEBA', 60)}
+      <p>No encontramos tu nombre en el título. Cuéntanos cómo apareces y lo revisa Dlx:</p>
+      {campo('nombre', '¿Con qué nombre apareces en el video?', 'Ej.: SEBA', 60)}
       {campo('como', '¿Cómo te reconocemos?', 'Ej.: lentes, buzo negro, el de la izquierda', 160)}
-      {campo('minuto', '¿En qué minuto aparecés?', 'Ej.: 4:35', 8)}
+      {campo('minuto', '¿En qué minuto apareces?', 'Ej.: 4:35', 8)}
       <button type="submit" className="btn verde chico" disabled={!ok || va}>{va ? 'Mandando…' : 'Mandar'}</button>
     </form>
   );
@@ -678,7 +678,7 @@ function VideosCaja({ dc }) {
       headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
     const j = await r.json().catch(() => ({}));
     if (j.pedidos) setPs(j.pedidos);
-    return r.ok ? '' : VID_ERR[j.error] || 'No se pudo. Probá de nuevo.';
+    return r.ok ? '' : VID_ERR[j.error] || 'No se pudo. Prueba de nuevo.';
   };
   useEffect(() => {
     if (!dc || !dc.clave) return;
@@ -695,7 +695,7 @@ function VideosCaja({ dc }) {
     if (!err) setUrl('');
   };
   return (
-    <Caja t="Mis batallas en video" d="Pegá el link de una batalla tuya en YouTube, o el de un canal donde estén tus batallas (una liga, una plaza). Entra si el título es una batalla («A vs B») y dice tu nombre de la Liga o un apodo tuyo; si trae bandera, la de tu país. Si en el video te dicen de otra forma, te preguntamos cómo aparecés y lo revisa Dlx; un canal grande o un nombre famoso, también.">
+    <Caja t="Mis batallas en video" d="Pega el link de una batalla tuya en YouTube, o el de un canal donde estén tus batallas (una liga, una plaza). Entra si el título es una batalla («A vs B») y dice tu nombre de la Liga o un apodo tuyo; si trae bandera, la de tu país. Si en el video te dicen de otra forma, te preguntamos cómo apareces y lo revisa Dlx; un canal grande o un nombre famoso, también.">
       <form className="cu-vid" onSubmit={mandar}>
         <input type="url" maxLength={300} value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://youtube.com/…" aria-label="Link de YouTube" />
         <button type="submit" className="btn verde chico" disabled={va}>{va ? 'Mandando…' : 'Sumar'}</button>
@@ -725,18 +725,18 @@ function ServidorCaja({ liga, dc, paso }) {
   const hasta = M.libre_hasta && W.fmtFecha ? W.fmtFecha(new Date(M.libre_hasta - 60000).toISOString(), { day: 'numeric', month: 'long' }) : '';
   const nota = !est.MISV ? 'Cargando…'
     : e.error ? e.error
-    : M.error ? ((W.errorCuenta && W.errorCuenta(M.error)) || 'No pude leerlo. Probá en un rato.')
+    : M.error ? ((W.errorCuenta && W.errorCuenta(M.error)) || 'No pude leerlo. Prueba en un rato.')
     : e.va ? 'Guardando…'
     // 🏠 sin elegir, ninguno: la página ya no le pone a nadie el servidor donde más jugó (Dlx, 12/10/2026, elegidos.js)
-    : M.elegido && !M.sv ? 'Elegiste ninguno: tu perfil no muestra ningún servidor. Podés elegir uno cuando quieras.'
-    : M.libre ? 'Cambialo cuantas veces quieras hasta el ' + hasta + '; después, uno por temporada.'
-    : M.puede ? (M.sv ? 'Podés cambiarlo una vez en esta temporada.' : 'Se elige una vez por temporada.')
+    : M.elegido && !M.sv ? 'Elegiste ninguno: tu perfil no muestra ningún servidor. Puedes elegir uno cuando quieras.'
+    : M.libre ? 'Cámbialo cuantas veces quieras hasta el ' + hasta + '; después, uno por temporada.'
+    : M.puede ? (M.sv ? 'Puedes cambiarlo una vez en esta temporada.' : 'Se elige una vez por temporada.')
     : 'Ya lo elegiste esta temporada: se vuelve a abrir en la que viene.';
   const nombre = (sv) => ((liga.svs[sv] || {}).nombre || sv);
   return (
     <Caja t={(paso ? 'Último paso: tu servidor' : 'Tu servidor') + (M.sv ? ' · ' + nombre(M.sv) : M.elegido ? ' · ninguno' : '')}
-      d={paso ? '¿De qué servidor venís, o a cuál querés representar en la Liga? Sale en tu perfil. Si no es ninguno de éstos, elegí «Ninguno».'
-        : 'El que representás en la Liga: sale en tu perfil. Tu tarjeta de Servidor sigue siendo la de donde jugás.'}>
+      d={paso ? '¿De qué servidor vienes, o a cuál quieres representar en la Liga? Sale en tu perfil. Si no es ninguno de éstos, elige «Ninguno».'
+        : 'El que representas en la Liga: sale en tu perfil. Tu tarjeta de Servidor sigue siendo la de donde juegas.'}>
       <div className="cu-svs">{svs.map((o) => {
         const on = M.sv === o.sv;
         const off = (est.MISV && !M.error && !M.puede && !on) || !!e.va;
@@ -853,7 +853,7 @@ function Pedidos({ liga, dc }) {
     setEst({ va: true });
     const v = (vid.match(/(?:youtu\.be\/|v=|shorts\/)([A-Za-z0-9_-]{11})/) || [])[1] || vid.trim();
     W.conCuenta('/api/avisos/pedido', { tipo, k, texto, cc, vid: v }, 's').then((j) => {
-      if (j === null) return; // se fue a Discord a confirmar quién sos
+      if (j === null) return; // se fue a Discord a confirmar quién eres
       if (j && j.ok) { setEst({ ok: true }); setTipo(''); setTexto(''); setK(''); setQ(''); pedirMios(); }
       else setEst({ error: (j && j.error) || 'error' });
     }).catch(() => setEst({ error: 'red' }));
@@ -1128,7 +1128,7 @@ export function Verificar({ liga, dc }) {
     );
   }
   if (v && v.olvido) {
-    return <Caja t="Borraste tus datos de la Liga" d="Con /borrar-mis-datos pediste que no te sumemos solos. Para volver, pedíselo a un admin de la Liga en DRA." />;
+    return <Caja t="Borraste tus datos de la Liga" d="Con /borrar-mis-datos pediste que no te sumemos solos. Para volver, pídeselo a un admin de la Liga en DRA." />;
   }
   if (!v || (v.cargando && !v.enDra)) {
     return (
