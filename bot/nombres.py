@@ -144,7 +144,7 @@ def leet(k):
 NO_ES = frozenset(('yo', 'nosotros', 'staff', 'admin', 'admins', 'mods', 'moderadores', 'ustedes', 'todos', 'todas',
                    'publico', 'el publico', 'chat', 'el chat', 'votacion', 'la gente', 'nadie', 'tbd', 'por confirmar',
                    'a confirmar', 'invitados', 'invitado', 'everyone', 'here', 'organizador', 'organizadores', 'jurado',
-                   'jurados', 'host', 'dj', 'vos', 'tu', 'equipo', 'directiva', 'la directiva'))
+                   'jurados', 'host', 'dj', 'tú', 'tu', 'equipo', 'directiva', 'la directiva'))
 
 
 def limpio(s):

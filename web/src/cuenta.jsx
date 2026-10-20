@@ -126,7 +126,7 @@ function grupos(liga, dc, tema, temaSv) {
   const crew = crewDe(dc && dc.clave);
   return [
     ['TU PERFIL', [
-      ['perfil', 'perfil', 'Foto y redes', yo ? 'tu foto, tus redes y tu servidor' : 'lo que los demás ven de vos'],
+      ['perfil', 'perfil', 'Foto y redes', yo ? 'tu foto, tus redes y tu servidor' : 'lo que los demás ven de ti'],
       ['fondo', 'tema', 'Tu fondo', 'tu imagen, con el nivel 10 del Pase'],
     ]],
     ['TU GENTE', [
@@ -160,7 +160,7 @@ function grupos(liga, dc, tema, temaSv) {
 function ComoSubir({ R }) {
   const de = R.xp_de || {};
   const fuentes = R.xp_fuentes || {};
-  const filas = [['ev', 'Jugar un evento', R.xp_ev, 0], ['dia', 'Cada día que entrás o jugás', R.xp_dia, 0]]
+  const filas = [['ev', 'Jugar un evento', R.xp_ev, 0], ['dia', 'Cada día que entras o juegas', R.xp_dia, 0]]
     .concat(Object.entries(fuentes).map(([k, [vale, tope, txt]]) => [k, txt, vale, tope]));
   return (
     <details className="cu-xp">
@@ -219,7 +219,7 @@ function RachaNivel({ dc, liga }) {
     <div className="cu-rn">
       <div className="cu-rn-c">
         <b className="cu-con"><Ico n="fuego" t={18} />{r.actual ? dias(r.actual) + ' seguidos' : 'Sin racha todavía'}</b>
-        <small>{r.actual ? (r.hoy ? 'Hoy ya contó. ' : 'Entrá o jugá hoy para no cortarla. ') : 'Cuenta cada día que usás el bot, entrás con tu cuenta o jugás un evento. '}
+        <small>{r.actual ? (r.hoy ? 'Hoy ya contó. ' : 'Entra o juega hoy para no cortarla. ') : 'Cuenta cada día que usas el bot, entras con tu cuenta o juegas un evento. '}
           {R.hito ? <>A los {dias(R.hito[0])} seguidos: <b>+{num(R.hito[1])} Puntos de Tienda</b>. </> : null}El premio de cada día se cobra en el Inicio.{r.maxima > r.actual ? ' Tu mejor racha: ' + dias(r.maxima) + '.' : ''}</small>
         <CalendarioRacha R={R} liga={liga} />
       </div>
@@ -265,7 +265,7 @@ function Quien({ liga, dc }) {
     return (
       <div className="cu-quien anon">
         <span className="cu-av anon"><Ico n="yo" t={30} /></span>
-        <div className="cu-q"><b>Todavía no entraste</b><small>Entrá con Discord y ves tu puesto, tus tarjetas y tus avisos, y podés seguir a otros.</small></div>
+        <div className="cu-q"><b>Todavía no entraste</b><small>Entra con Discord y ves tu puesto, tus tarjetas y tus avisos, y puedes seguir a otros.</small></div>
         <button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button>
       </div>
     );
@@ -333,12 +333,12 @@ async function pedirFondo(ruta, cuerpo) {
     headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo || {}) });
   const j = await r.json().catch(() => ({}));
   if (!r.ok || j.error) {
-    const e = { nivel: 'Se desbloquea con el nivel ' + (j.falta || 10) + ' del Pase de rapero.', tope: 'Ya subiste varias hoy: probá mañana.',
+    const e = { nivel: 'Se desbloquea con el nivel ' + (j.falta || 10) + ' del Pase de rapero.', tope: 'Ya subiste varias hoy: prueba mañana.',
       'no es una imagen': 'Eso no es una imagen.', 'demasiado grande': 'La imagen es muy pesada.',
-      metadatos: 'La imagen trae datos escondidos (como dónde se sacó): elegila de nuevo desde acá y se limpian solos.',
+      metadatos: 'La imagen trae datos escondidos (como dónde se sacó): elígela de nuevo desde acá y se limpian solos.',
       // 🛡️ el filtro automático (13/10/2026): no entra, y se dice por qué
-      filtro: 'Esa imagen no pasó el filtro automático' + (j.texto ? ': parece tener ' + j.texto : '') + '. Elegí otra.' }[j.error];
-    throw new Error(r.status === 401 ? 'Entrá con Discord de nuevo.' : e || j.error || String(r.status));
+      filtro: 'Esa imagen no pasó el filtro automático' + (j.texto ? ': parece tener ' + j.texto : '') + '. Elige otra.' }[j.error];
+    throw new Error(r.status === 401 ? 'Entra con Discord de nuevo.' : e || j.error || String(r.status));
   }
   return j;
 }
@@ -355,7 +355,7 @@ function FondoCaja({ dc }) {
     pedirFondo('mi-fondo').then((j) => { if (vivo) setSt(j); }).catch((e) => { if (vivo) setMsg(e.message); });
     return () => { vivo = false; };
   }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
-  if (!dc) return <Caja t="Tu fondo" d="Entrá con Discord para poner tu propia imagen de fondo." />;
+  if (!dc) return <Caja t="Tu fondo" d="Entra con Discord para poner tu propia imagen de fondo." />;
   if (!st) return <Caja t="Tu fondo"><p className="cu-d">{msg || 'Cargando…'}</p></Caja>;
   const f = st.fondo, pu = st.puede || {};
   const perfil = f ? f.perfil : true, pagina = f ? f.pagina : true;
@@ -379,7 +379,7 @@ function FondoCaja({ dc }) {
     setOcup(false);
   };
   const subir = async () => { if (archivo) await mandar({ img: await aBase64(archivo), perfil, pagina }); };
-  const estado = !f ? '' : f.pend ? 'En revisión: el filtro automático no estuvo seguro y la mira la Liga.' : f.estado === 'no' ? 'No se aprobó' + (f.motivo ? ': ' + f.motivo : '') + '. Podés subir otra.' : 'Ya se ve.';
+  const estado = !f ? '' : f.pend ? 'En revisión: el filtro automático no estuvo seguro y la mira la Liga.' : f.estado === 'no' ? 'No se aprobó' + (f.motivo ? ': ' + f.motivo : '') + '. Puedes subir otra.' : 'Ya se ve.';
   return (
     <Caja t="Tu fondo" d={pu.si ? 'Tu propia imagen de fondo. Pasa por un filtro automático: sin desnudos, sangre, violencia, odio ni datos personales.' : 'Tu propia imagen de fondo, en tu perfil y en tu página.'}>
       {!pu.si && !(f && f.url) ? <p className="cu-d">🔒 Se desbloquea con el <b>nivel {pu.falta || 10}</b> del <a href="#/pase">Pase de rapero</a>{pu.nivel != null ? ' (vas en el ' + pu.nivel + ')' : ''}.</p> : null}
@@ -775,13 +775,13 @@ function ServidorCaja({ liga, dc, paso }) {
 function OcultarFoto({ dc }) {
   const est = useCuentaEst();
   useEffect(() => { if (dc && W.pedirMiFoto) W.pedirMiFoto(); }, [dc && dc.id]);
-  const d = 'Si la ocultás, la página y tus tarjetas (también las de Discord) te muestran con tu inicial. Se aplica en la próxima vuelta del ciclo: cada media hora, salvo de 3 a 11 AM (hora del este).';
-  if (!dc) return <Caja t="Tu foto" d={d + ' Entrá con Discord para usarlo.'}><BotonEntrar /></Caja>;
+  const d = 'Si la ocultas, la página y tus tarjetas (también las de Discord) te muestran con tu inicial. Se aplica en la próxima vuelta del ciclo: cada media hora, salvo de 3 a 11 AM (hora del este).';
+  if (!dc) return <Caja t="Tu foto" d={d + ' Entra con Discord para usarlo.'}><BotonEntrar /></Caja>;
   const M = est.MIFOTO || {};
   const e = est.MIFOTO_EST || {};
   const nota = !est.MIFOTO ? 'Cargando…'
     : e.error ? e.error
-    : M.error ? ((W.errorCuenta && W.errorCuenta(M.error)) || 'No pude leerlo. Probá en un rato.')
+    : M.error ? ((W.errorCuenta && W.errorCuenta(M.error)) || 'No pude leerlo. Prueba en un rato.')
     : e.va ? 'Guardando…'
     : M.oculta ? (e.ok ? '✓ Oculta. ' : '') + 'Tus tarjetas se vuelven a dibujar con tu inicial en la próxima vuelta.'
     : (e.ok ? '✓ Visible. ' : '') + 'Tu foto se ve en la página y en tus tarjetas.';
@@ -816,7 +816,7 @@ function TeSiguen({ liga }) {
 // «ese no soy yo», «mi país» y «un video que no es mío»). Se pide con tu Discord —el de ahora—; lo que el bot ve de tu
 // cuenta va de prueba solo (`pedir()` en bot/avisos.js). Lo aprobado de cuenta y país lo aplica el ciclo (bot/pedidos.py)
 const PEDIDOS = [
-  ['cuenta', 'Perdí mi cuenta de Discord', 'Entraste con una cuenta nueva y querés recuperar tu perfil: tus tarjetas, tus Puntos de Tienda, tu Pase y a quién seguís.'],
+  ['cuenta', 'Perdí mi cuenta de Discord', 'Entraste con una cuenta nueva y quieres recuperar tu perfil: tus tarjetas, tus Puntos de Tienda, tu Pase y a quién sigues.'],
   ['identidad', 'Ese no soy yo / mi nombre está mal', 'Una llave te puso el resultado de otro, o tu nombre en la Liga está mal escrito.'],
   ['pais', 'Mi país o mi bandera están mal', 'Tu bandera en la Liga no es la tuya.'],
   ['video', 'Un video que no es mío', 'En un perfil aparece una batalla que no es de esa persona.'],
@@ -826,7 +826,7 @@ const PEDIDOS = [
 const ATAJO_PED = {
   identidad: '¿Es el resultado de una llave? Lo más rápido es abrir esa llave y tocar «¿Algo está mal en esta llave?»: '
     + 'se corrige y se aplica solo. Acá, mejor lo que no es de una llave, como tu nombre mal escrito.',
-  video: 'Si es un video que sumaste vos, en tu perfil tiene «Quitar» y se va al instante. Acá van los demás: las batallas '
+  video: 'Si es un video que sumaste tú, en tu perfil tiene «Quitar» y se va al instante. Acá van los demás: las batallas '
     + 'de los canales de los socios, que se suman solas por el nombre.',
 };
 const ESTADO_PED = { '': 'esperando que lo mire alguien', si: 'aprobado: se aplica en la próxima vuelta (menos de una hora)',
@@ -847,7 +847,7 @@ function Pedidos({ liga, dc }) {
   };
   useEffect(pedirMios, [dc && dc.id]);
   if (!dc) {
-    return <Caja t="Algo está mal" d="Entrá con Discord —con la cuenta que usás ahora— para pedir que lo arreglemos."><BotonEntrar chico={false} /></Caja>;
+    return <Caja t="Algo está mal" d="Entra con Discord —con la cuenta que usas ahora— para pedir que lo arreglemos."><BotonEntrar chico={false} /></Caja>;
   }
   const res = q.trim().length >= 2 ? (liga.d.tabla || []).filter((f) => limpio(f.n).toLowerCase().includes(q.trim().toLowerCase())).slice(0, 6) : [];
   const elegido = k ? liga.T[k] : null;
@@ -862,14 +862,14 @@ function Pedidos({ liga, dc }) {
       else setEst({ error: (j && j.error) || 'error' });
     }).catch(() => setEst({ error: 'red' }));
   };
-  const falta = !tipo ? 'Elegí qué está mal.' : (tipo === 'cuenta' || tipo === 'identidad' || tipo === 'video') && !k ? 'Buscá el perfil.'
-    : tipo === 'pais' && !cc ? 'Elegí tu país.' : tipo === 'video' && !vid.trim() ? 'Pegá el link del video.'
-      : tipo !== 'pais' && texto.trim().length < 3 ? 'Contanos un poco más.' : '';
-  const errorTxt = { tope: 'Ya tenés tres pedidos esperando: cuando se resuelvan podés mandar otro.', perfil: 'Elegí tu perfil de la lista.',
-    texto: 'Contanos un poco más.', pais: 'Elegí tu país.', video: 'Ese link no es de un video de YouTube.' };
+  const falta = !tipo ? 'Elige qué está mal.' : (tipo === 'cuenta' || tipo === 'identidad' || tipo === 'video') && !k ? 'Busca el perfil.'
+    : tipo === 'pais' && !cc ? 'Elige tu país.' : tipo === 'video' && !vid.trim() ? 'Pega el link del video.'
+      : tipo !== 'pais' && texto.trim().length < 3 ? 'Cuéntanos un poco más.' : '';
+  const errorTxt = { tope: 'Ya tienes tres pedidos esperando: cuando se resuelvan puedes mandar otro.', perfil: 'Elige tu perfil de la lista.',
+    texto: 'Cuéntanos un poco más.', pais: 'Elige tu país.', video: 'Ese link no es de un video de YouTube.' };
   return (
     <>
-      <Caja t="¿Qué está mal?" d="Lo mira Dlx o un Moderador. Si es tu cuenta, también ve lo que el bot sabe de la cuenta con la que entraste (tu apodo en DRA y desde cuándo estás), así que pedilo desde la cuenta nueva.">
+      <Caja t="¿Qué está mal?" d="Lo mira Dlx o un Moderador. Si es tu cuenta, también ve lo que el bot sabe de la cuenta con la que entraste (tu apodo en DRA y desde cuándo estás), así que pídelo desde la cuenta nueva.">
         <div className="pd-tipos" role="radiogroup" aria-label="Qué está mal">{PEDIDOS.map(([t, n, d]) => (
           <button key={t} type="button" role="radio" aria-checked={tipo === t} className={'pd-tipo' + (tipo === t ? ' on' : '')} onClick={() => { setTipo(t); setEst({}); if (t === 'video' && !k && yoK) setK(yoK); }}>
             <b>{n}</b><small>{d}</small></button>
@@ -888,7 +888,7 @@ function Pedidos({ liga, dc }) {
         ) : null}
         {tipo === 'pais' ? (
           <div className="pd-campo"><label htmlFor="pd-cc">Tu país</label>
-            <select id="pd-cc" value={cc} onChange={(e) => setCc(e.target.value)}><option value="">Elegí…</option>
+            <select id="pd-cc" value={cc} onChange={(e) => setCc(e.target.value)}><option value="">Elige…</option>
               {paises.map(([c, n]) => <option key={c} value={c}>{n}</option>)}</select></div>
         ) : null}
         {tipo === 'video' ? (
@@ -896,13 +896,13 @@ function Pedidos({ liga, dc }) {
             <input id="pd-vid" type="url" className="ti-busca" value={vid} onChange={(e) => setVid(e.target.value)} placeholder="https://youtu.be/…" /></div>
         ) : null}
         {tipo ? (
-          <div className="pd-campo"><label htmlFor="pd-tx">{tipo === 'cuenta' ? '¿Cómo lo comprobamos? (tu cuenta vieja, quién te conoce…)' : 'Contanos qué pasa'}{tipo === 'pais' ? ' (si querés)' : ''}</label>
+          <div className="pd-campo"><label htmlFor="pd-tx">{tipo === 'cuenta' ? '¿Cómo lo comprobamos? (tu cuenta vieja, quién te conoce…)' : 'Cuéntanos qué pasa'}{tipo === 'pais' ? ' (si quieres)' : ''}</label>
             <textarea id="pd-tx" rows={3} maxLength={400} value={texto} onChange={(e) => setTexto(e.target.value)} /></div>
         ) : null}
         {tipo ? <div className="cu-btns"><button type="button" className="btn verde chico" disabled={!!falta || est.va} onClick={mandar}>{est.va ? 'Mandando…' : 'Mandar el pedido'}</button>
           {falta ? <small className="pd-falta">{falta}</small> : null}</div> : null}
         {est.ok ? <p className="cu-d" role="status">✓ Listo: lo vas a ver abajo, y cuando lo resuelvan te avisamos en la campana.</p> : null}
-        {est.error ? <p className="cu-d" role="alert">{errorTxt[est.error] || (W.errorCuenta && W.errorCuenta(est.error)) || 'No pude mandarlo. Probá de nuevo.'}</p> : null}
+        {est.error ? <p className="cu-d" role="alert">{errorTxt[est.error] || (W.errorCuenta && W.errorCuenta(est.error)) || 'No pude mandarlo. Prueba de nuevo.'}</p> : null}
       </Caja>
       {mios && mios.length ? (
         <Caja t="Tus pedidos" d="Los últimos que mandaste.">
@@ -925,10 +925,10 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
   if (id === 'cuenta') {
     return (
       <>
-        <Caja t="Discord" d={dc ? 'Entraste con tu cuenta de Discord. No guardamos ningún permiso: cada vez que hacés algo, Discord confirma que sos vos.' : 'Entrá con Discord para ver tu puesto, tus tarjetas y tus avisos.'}>
+        <Caja t="Discord" d={dc ? 'Entraste con tu cuenta de Discord. No guardamos ningún permiso: cada vez que haces algo, Discord confirma que eres tú.' : 'Entra con Discord para ver tu puesto, tus tarjetas y tus avisos.'}>
           {dc ? (
             <div className="cu-fila"><CaraDc dc={dc} cls="cu-av chica" /><span><b>{limpio(dc.n)}</b>
-              <small>{yo ? 'Tu tarjeta: ' + limpio(yo.n) : dc.rapero ? 'Sos ' + limpio(dc.rapero) + ' · todavía no jugaste esta temporada' : 'Sin tarjeta todavía'}</small></span></div>
+              <small>{yo ? 'Tu tarjeta: ' + limpio(yo.n) : dc.rapero ? 'Eres ' + limpio(dc.rapero) + ' · todavía no jugaste esta temporada' : 'Sin tarjeta todavía'}</small></span></div>
           ) : <BotonEntrar chico={false} />}
           {/* la sesión de antes del 25/09 no trae la clave: es un toque, `prompt=none` no vuelve a pedir nada */}
           {dc && dc.rapero && !dc.clave ? (
@@ -937,13 +937,13 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
           ) : null}
         </Caja>
         {!dc && yo ? (
-          <Caja t="Sin entrar" d={'Elegiste ser ' + limpio(yo.n) + ' sin entrar con Discord. Entrá y queda confirmado.'}>
+          <Caja t="Sin entrar" d={'Elegiste ser ' + limpio(yo.n) + ' sin entrar con Discord. Entra y queda confirmado.'}>
             <div className="cu-btns"><button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button>
               <button type="button" className="btn borde2 chico" onClick={accion.salir}>No soy yo</button></div>
           </Caja>
         ) : null}
         {dc && !yo && !dc.rapero ? (
-          <Caja t="Tu tarjeta" d="Son dos pasos: verificate en DRA (acá, en un toque) y se abre tu Servidor; con tu primera Tarea del Pase de rapero, tu Temporada.">
+          <Caja t="Tu tarjeta" d="Son dos pasos: verifícate en DRA (acá, en un toque) y se abre tu Servidor; con tu primera Tarea del Pase de rapero, tu Temporada.">
             <div className="cu-btns"><a className="btn verde chico" href="#/cuenta/verificar">Verificarme</a>
               <a className="btn borde2 chico" href="#/guia">Cómo conseguir tu tarjeta</a></div>
           </Caja>
@@ -969,8 +969,8 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
     const fs = liga.sigue.map((k) => liga.T[k]).filter(Boolean);
     return (
       <>
-        <Caja t={'Seguís a ' + fs.length} d={dc ? 'Te llega un aviso cuando ganan, suben de rango o desbloquean una tarjeta (activá los avisos en este dispositivo).'
-          : 'Entrá con Discord y te avisamos cuando ganen o suban de rango.'}>
+        <Caja t={'Sigues a ' + fs.length} d={dc ? 'Te llega un aviso cuando ganan, suben de rango o desbloquean una tarjeta (activa los avisos en este dispositivo).'
+          : 'Entra con Discord y te avisamos cuando ganen o suban de rango.'}>
           {fs.length ? <ul className="cu-gente">{fs.map((f) => (
             <li key={f.k}><a href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cu-av chica" /><b>{limpio(f.n)}</b>
               <small>{f.pos ? '#' + f.pos : ''}</small></a></li>
@@ -985,9 +985,9 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
     return (
       <>
         <OcultarFoto dc={dc} />
-        <Caja t="Tus datos" d="En Discord, /borrar-mis-datos borra todo lo tuyo de la Liga: tus tarjetas, tu foto y lo que el bot sabe de vos." />
-        <Caja t="Este dispositivo" d="Olvida quién sos, tus ajustes y los avisos de este dispositivo. Tus tarjetas y tu cuenta no se tocan.">
-          <DosToques className="btn borde2 chico" confirmar="¿Seguro? Tocá de nuevo" onClick={() => { if (W.cuentaOlvidarTodo) W.cuentaOlvidarTodo(); }}>Olvidar este dispositivo</DosToques>
+        <Caja t="Tus datos" d="En Discord, /borrar-mis-datos borra todo lo tuyo de la Liga: tus tarjetas, tu foto y lo que el bot sabe de ti." />
+        <Caja t="Este dispositivo" d="Olvida quién eres, tus ajustes y los avisos de este dispositivo. Tus tarjetas y tu cuenta no se tocan.">
+          <DosToques className="btn borde2 chico" confirmar="¿Seguro? Toca de nuevo" onClick={() => { if (W.cuentaOlvidarTodo) W.cuentaOlvidarTodo(); }}>Olvidar este dispositivo</DosToques>
         </Caja>
       </>
     );
@@ -1018,8 +1018,8 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
         <p className="cu-temas-t">Con los colores de un servidor de la Liga:</p>
         {(() => {
           const n = Rn && Rn.nivel ? Rn.nivel.n || 1 : 0;
-          return <p className="cu-d">{dc ? (n ? 'Vas en el nivel ' + n + '. ' : '') + 'Se abren con tu nivel: 3 en el nivel 2, 3 más en el 3 y los últimos en el 5. Subís jugando, entrando cada día y con lo que hacés en la Liga (mirá «Cómo subir de nivel», arriba).'
-            : 'Se abren con tu nivel: entrá con Discord y subís jugando, entrando cada día y con lo que hacés en la Liga.'}</p>;
+          return <p className="cu-d">{dc ? (n ? 'Vas en el nivel ' + n + '. ' : '') + 'Se abren con tu nivel: 3 en el nivel 2, 3 más en el 3 y los últimos en el 5. Subes jugando, entrando cada día y con lo que haces en la Liga (mira «Cómo subir de nivel», arriba).'
+            : 'Se abren con tu nivel: entra con Discord y subes jugando, entrando cada día y con lo que haces en la Liga.'}</p>;
         })()}
         <div className="cu-temas sv">
           <button type="button" className={'cu-tema tsv tsv-base ' + tema + (!temaSv ? ' on' : '')} aria-pressed={!temaSv} onClick={() => onTemaSv('')}>
@@ -1032,7 +1032,7 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
             return (
               <button type="button" key={sv} className={'cu-tema tsv ' + tema + ' t-' + sv.toLowerCase() + (temaSv === sv ? ' on' : '') + (abierto ? '' : ' cerrado')}
                 aria-pressed={temaSv === sv} aria-label={abierto ? nom : nom + ': se abre con el nivel ' + pide}
-                onClick={() => { if (abierto) { setTemaMsg(''); onTemaSv(sv); } else setTemaMsg('Los colores de ' + nom + ' se abren con el nivel ' + pide + (tengo ? ': vas en el ' + tengo + '.' : '. Entrá con Discord para subir de nivel.')); }}>
+                onClick={() => { if (abierto) { setTemaMsg(''); onTemaSv(sv); } else setTemaMsg('Los colores de ' + nom + ' se abren con el nivel ' + pide + (tengo ? ': vas en el ' + tengo + '.' : '. Entra con Discord para subir de nivel.')); }}>
                 <span className="cu-mini" aria-hidden="true"><i /><u /><u /><s /></span>
                 <b>{liga && liga.logo ? <img alt="" src={liga.logo(sv)} /> : null}{nom}</b>
                 {abierto ? null : <span className="cu-tema-nivel"><Ico n="candado" t={14} />Nivel {pide}</span>}</button>
@@ -1071,20 +1071,20 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
 const DRA_URL = 'https://discord.com/channels/841017460341604382';
 const ERR_VERIF = {
   cancelado: 'Cancelaste el permiso en Discord. Sin él no podemos mirar DRA ni meterte.',
-  discord_error: 'Discord no dio el permiso. Probá de nuevo en un rato.',
-  permiso: 'Discord no nos dio permiso para meterte en DRA. Probá de nuevo y aceptá «Unirse a servidores».',
-  discord: 'Tu permiso de Discord se venció. Probá de nuevo.',
-  token: 'Tu permiso de Discord se venció. Probá de nuevo.',
-  discord_ocupado: 'Discord está ocupado ahora mismo. Probá en un minuto.',
-  dra: 'No pude mirar Discord Rap Español ahora mismo. Probá en un minuto.',
-  porton: 'La verificación no está disponible ahora. Probá en un rato, o con /verificar en Discord.',
-  lleno: 'Estás en el máximo de servidores que permite Discord. Salí de alguno y probá de nuevo.',
-  no_deja: 'Discord Rap Español no nos deja meterte. Si creés que es un error, hablá con un admin de DRA.',
-  entrar: 'No pude meterte en DRA ahora mismo. Probá de nuevo en un rato.',
-  rol: 'No pude ponerte el país en DRA. Probá de nuevo en un rato.',
-  pais: 'Ese país no está en DRA. Elegí otro.',
-  espera: 'Fueron muchos intentos seguidos. Esperá un minuto y probá de nuevo.',
-  red: 'No pude conectarme. Revisá tu internet y probá de nuevo.',
+  discord_error: 'Discord no dio el permiso. Prueba de nuevo en un rato.',
+  permiso: 'Discord no nos dio permiso para meterte en DRA. Prueba de nuevo y acepta «Unirse a servidores».',
+  discord: 'Tu permiso de Discord se venció. Prueba de nuevo.',
+  token: 'Tu permiso de Discord se venció. Prueba de nuevo.',
+  discord_ocupado: 'Discord está ocupado ahora mismo. Prueba en un minuto.',
+  dra: 'No pude mirar Discord Rap Español ahora mismo. Prueba en un minuto.',
+  porton: 'La verificación no está disponible ahora. Prueba en un rato, o con /verificar en Discord.',
+  lleno: 'Estás en el máximo de servidores que permite Discord. Sal de alguno y prueba de nuevo.',
+  no_deja: 'Discord Rap Español no nos deja meterte. Si crees que es un error, habla con un admin de DRA.',
+  entrar: 'No pude meterte en DRA ahora mismo. Prueba de nuevo en un rato.',
+  rol: 'No pude ponerte el país en DRA. Prueba de nuevo en un rato.',
+  pais: 'Ese país no está en DRA. Elige otro.',
+  espera: 'Fueron muchos intentos seguidos. Espera un minuto y prueba de nuevo.',
+  red: 'No pude conectarme. Revisa tu internet y prueba de nuevo.',
 };
 // los que piden un permiso nuevo de Discord; el resto se reintenta con el que hay
 const REPERMISO = { cancelado: 1, discord_error: 1, permiso: 1, discord: 1, token: 1 };
@@ -1108,7 +1108,7 @@ function ElegirPais({ v }) {
   return (
     <span className="cu-pais">
       <select aria-label="Tu país" value={pais} onChange={(e) => setPais(e.target.value)}>
-        <option value="" disabled>Elegí tu país</option>
+        <option value="" disabled>Elige tu país</option>
         {ops.map((c) => <option key={c} value={c}>{PAIS[c] || c.toUpperCase()}</option>)}
       </select>
       <button type="button" className="btn verde chico" disabled={!pais || v.cargando} onClick={() => revisar(pais)}>Guardar</button>
@@ -1139,7 +1139,7 @@ export function Verificar({ liga, dc }) {
       <Caja t="Qué es estar verificado" d="Estar en Discord Rap Español, con tu país y el rol de Miembro. Sin eso no hay tarjetas: verificado se abre tu Servidor, con tu primera Tarea del Pase tu Temporada, y la Competitiva y la de País con su requisito. Y tu perfil, con tu foto y tus redes.">
         <button type="button" className="btn verde" disabled={!!(v && v.cargando)} onClick={() => (W.DC_TOKEN ? revisar() : irADiscord())}>
           {v && v.cargando ? 'Mirando Discord Rap Español…' : 'Verificarme con Discord'}</button>
-        <small className="cu-nota">Discord te va a pedir dos permisos: ver tu usuario y unirte a servidores por vos, que es lo que deja al bot meterte en Discord Rap Español si todavía no estás. Se usa una vez y no se guarda.</small>
+        <small className="cu-nota">Discord te va a pedir dos permisos: ver tu usuario y unirte a servidores por ti, que es lo que deja al bot meterte en Discord Rap Español si todavía no estás. Se usa una vez y no se guarda.</small>
       </Caja>
     );
   }
@@ -1157,23 +1157,23 @@ export function Verificar({ liga, dc }) {
     pais = ['ok', <>Tu país: {PAIS[paises[0]] || paises[0].toUpperCase()} <Bandera cc={paises[0]} cls="cu-band" /></>,
       v.puso ? 'Te pusimos el rol en DRA recién.' : ''];
   } else if (v.pendiente) {
-    pais = ['espera', 'Tu país', 'Lo elegís acá cuando aceptes las reglas.'];
+    pais = ['espera', 'Tu país', 'Lo eliges acá cuando aceptes las reglas.'];
   } else if (paises.length > 1 && v.porRol) {
-    pais = ['aviso', 'Tenés ' + paises.length + ' países en DRA', 'Dejá uno solo en tus roles de DRA y tocá «Revisar de nuevo».', abrir];
+    pais = ['aviso', 'Tienes ' + paises.length + ' países en DRA', 'Deja uno solo en tus roles de DRA y toca «Revisar de nuevo».', abrir];
   } else {
-    pais = ['falta', 'Tu país', paises.length > 1 ? 'Tu nombre tiene ' + paises.length + ' banderas: elegí la tuya y el bot te pone ese rol en DRA.'
-      : 'Elegilo y el bot te pone ese rol en DRA.', <ElegirPais key="p" v={v} />];
+    pais = ['falta', 'Tu país', paises.length > 1 ? 'Tu nombre tiene ' + paises.length + ' banderas: elige la tuya y el bot te pone ese rol en DRA.'
+      : 'Elígelo y el bot te pone ese rol en DRA.', <ElegirPais key="p" v={v} />];
   }
   const vuelta = v.vuelta ? hora(v.vuelta) : '';
   // ✅ con todo completo, el Worker te lo da en el momento (`darMiembro()`, Dlx 12/10/2026: «A y B»)
-  const miembro = v.rol ? ['ok', 'Tenés el rol de Miembro', v.dimos ? 'Te lo dimos recién.' : '']
+  const miembro = v.rol ? ['ok', 'Tienes el rol de Miembro', v.dimos ? 'Te lo dimos recién.' : '']
     : v.revisa ? ['aviso', 'Tu caso lo revisa un admin', 'No hace falta que hagas nada más.']
       : v.completo ? ['espera', 'Tu rol de Miembro', 'Te lo da el bot solo' + (vuelta ? ', en la vuelta de las ' + vuelta + ' o en la siguiente' : '') + '. Con él salen tus tarjetas.']
         : ['espera', 'Tu rol de Miembro', 'Te lo da el bot cuando completes lo de arriba.'];
   const filas = [
     ['ok', 'Tu Discord', dc ? limpio(dc.n) : 'Conectado'],
     ['ok', 'Estás en Discord Rap Español', v.entro ? 'Te metimos recién.' : 'Ya estabas adentro.'],
-    v.pendiente ? ['aviso', 'Aceptá las reglas de DRA', 'Discord te las muestra al abrir el servidor: es un toque. Después volvé acá y tocá «Revisar de nuevo».', abrir]
+    v.pendiente ? ['aviso', 'Acepta las reglas de DRA', 'Discord te las muestra al abrir el servidor: es un toque. Después vuelve acá y toca «Revisar de nuevo».', abrir]
       : ['ok', 'Aceptaste las reglas de DRA', ''],
     pais,
     miembro,

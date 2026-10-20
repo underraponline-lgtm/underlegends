@@ -4971,7 +4971,7 @@ def main():
               '%s · %s · %s' % (ev, sv_i, fec_i),
               ' | '.join(['sin campeón y sin tocar hace %d h o más: la '
                           'guía (Parte 1) lo descarta y NO se sumó nada. Si '
-                          'cuenta, completá la final en la llave' % QUIETA_H]
+                          'cuenta, completa la final en la llave' % QUIETA_H]
                          + cosas[:5]) + (' · %s' % link_de[(ev, sv_i, fec_i)]
                                          if link_de.get((ev, sv_i, fec_i)) else ''))
              for ev, sv_i, fec_i, cosas in incompletos]

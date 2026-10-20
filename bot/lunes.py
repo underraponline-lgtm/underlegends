@@ -170,7 +170,7 @@ def armar(d=None, ahora=None, mw=None):
                 ' y %d más' % (len(deb) - 12) if len(deb) > 12 else ''))
     # 🔑 LAS ENCUESTAS DE LA PÁGINA (bot/encuestas.py): el ×2 de la que viene se
     # vota toda la semana, y El Elegido de cada Most Wanted antes de que salga
-    ls.append('**🗳️ Votá en la página** — qué servidor se lleva el ×2 la semana que viene y quién es '
+    ls.append('**🗳️ Vota en la página** — qué servidor se lleva el ×2 la semana que viene y quién es '
               'El Elegido del Most Wanted')
     h = fin.hour
     hora = 'la medianoche' if h == 0 else 'las %d %s' % (h if h <= 12 else h - 12, 'AM' if h < 12 else 'PM')
@@ -261,7 +261,7 @@ def _self_check():
     # 🔑 las encuestas: lo que votó la gente, y la invitación a votar
     _t, ls3 = armar({'semanas': [dict(d['semanas'][1], votado={'sv': 'SR', 'votos': 12, 'de': 30})]},
                     en(10, 13, 12), mw={})
-    ok('SNK sale con ×2 como mínimo (12 de 30 votos)' in '\n'.join(ls3) and 'Votá en la página' in todo,
+    ok('SNK sale con ×2 como mínimo (12 de 30 votos)' in '\n'.join(ls3) and 'Vota en la página' in todo,
        'el ×2 que votó la gente, y la invitación a votar')
     # publicar: una vez por semana, y se edita sólo si cambió
     import tempfile

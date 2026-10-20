@@ -127,9 +127,9 @@ function Visitas({ x }) {
 // mismo lugar guardado: lo último que se toque, acá o en Discord, es lo que vale— más «Eventos de Discord» y dónde va el
 // aviso de cada evento. ⚠️ Lo que Dlx fijó en el Dashboard para ese servidor gana por abajo Y NO SE MUESTRA (Dlx, 19/10:
 // «lo mío manda, pero que no le aparezca eso a ellos, sino que ellos lo pueden cambiar»). Los canales salen de su Discord
-const AJ_ERR = { sin_guild: 'Todavía no tengo el Discord de este servidor a mano: probá en una hora.',
-  discord: 'Discord no contestó: probá de nuevo en un minuto.', no: 'Este servidor no es tuyo.', espera: 'Muy seguido: esperá un segundo.',
-  kv: 'No se pudo guardar ahora: probá en un rato.', valor: 'Ese valor no vale.' };
+const AJ_ERR = { sin_guild: 'Todavía no tengo el Discord de este servidor a mano: prueba en una hora.',
+  discord: 'Discord no contestó: prueba de nuevo en un minuto.', no: 'Este servidor no es tuyo.', espera: 'Muy seguido: espera un segundo.',
+  kv: 'No se pudo guardar ahora: prueba en un rato.', valor: 'Ese valor no vale.' };
 function Canal({ c, cs, cual, ocup, cambiar, vacio }) {
   return (
     <select value={c[cual] || ''} disabled={ocup} onChange={(e) => cambiar(cual, e.target.value)}>
@@ -156,7 +156,7 @@ function Ajustes({ sv }) {
     });
   };
   if (!j) return <p className="pronto-p">Buscando los ajustes…</p>;
-  if (!j.ok) return <p className="pronto-p">{AJ_ERR[j.error] || 'No pude traer los ajustes. Probá de nuevo en un rato.'}</p>;
+  if (!j.ok) return <p className="pronto-p">{AJ_ERR[j.error] || 'No pude traer los ajustes. Prueba de nuevo en un rato.'}</p>;
   const c = j.cfg || {}, cs = j.canales || [], niveles = j.niveles || [];
   const nombre = (id) => { const k = cs.find((x) => x.id === id); return k ? '#' + k.n : id ? 'un canal que ya no está' : ''; };
   const general = j.general ? nombre(j.general) : 'su chat general';
@@ -297,8 +297,8 @@ export function PanelSocio({ liga, q }) {
     return (
       <div className="so so-vacio">
         <h1>El panel de tu servidor</h1>
-        <p>{j.ok ? 'Este panel es para los dueños de los servidores socios de la Liga (Tier 1 y 2). Si sos dueño de uno y no lo ves, escribile a @itsdlx.'
-          : 'No pude traer el panel ahora. Probá de nuevo en un rato.'}</p>
+        <p>{j.ok ? 'Este panel es para los dueños de los servidores socios de la Liga (Tier 1 y 2). Si eres dueño de uno y no lo ves, escribile a @itsdlx.'
+          : 'No pude traer el panel ahora. Prueba de nuevo en un rato.'}</p>
       </div>
     );
   }
@@ -306,7 +306,7 @@ export function PanelSocio({ liga, q }) {
   return (
     <div className="so">
       {svs.length > 1 ? (
-        <nav className="so-elegir" aria-label="Elegí el servidor">{svs.map((s) => (
+        <nav className="so-elegir" aria-label="Elige el servidor">{svs.map((s) => (
           <button key={s.sv} type="button" className={'so-chip' + (s.sv === x.sv ? ' on' : '')} aria-pressed={s.sv === x.sv} onClick={() => setSel(s.sv)}>
             {siglaDe(s.sv)}<small>{s.puntos}</small></button>
         ))}</nav>

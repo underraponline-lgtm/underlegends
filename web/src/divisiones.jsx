@@ -26,8 +26,8 @@ function SemanaNueva({ liga, D, esYo }) {
   return (
     <div className="dvp">
       <p className="dvp-cab"><b>Semana nueva</b> · todavía nadie jugó · cierra {liga.dia(D.fin)}</p>
-      <p className="dvp-yo">{mio != null ? 'Estás en ' + nombres[D.v[mio]] + ' División: jugá un evento y entrás en la tabla de esta semana.'
-        : 'Jugás un evento y entrás en Sexta; los primeros de cada grupo suben.'}</p>
+      <p className="dvp-yo">{mio != null ? 'Estás en ' + nombres[D.v[mio]] + ' División: juega un evento y entras en la tabla de esta semana.'
+        : 'Juegas un evento y entras en Sexta; los primeros de cada grupo suben.'}</p>
       {ult ? <p className="dvp-yo">{ultYo ? (ultYo === 'subiste' ? '⬆️ La semana pasada subiste de división. ' : '⬇️ La semana pasada bajaste de división. ') : ''}
         La semana del {fechaCorta(ult.sem)} subieron {ult.sube.length} y bajaron {ult.baja.length}.</p> : null}
       {/* los que subieron la semana pasada, con su cara: la previa no queda en tres renglones (sin huecos grandes) */}
@@ -72,8 +72,8 @@ export function DivisionPrevia({ liga }) {
   const pos = mia ? g.findIndex((f) => esYo(f[0])) : -1;
   const filas = g.slice(0, Math.max(z, 3)).map((f, i) => [f, i]);
   if (pos >= filas.length) filas.push([g[pos], pos]);
-  const estado = !mia ? (yo ? 'Esta semana todavía no jugaste: con un evento entrás en tu división.'
-    : 'Jugás un evento y entrás en Sexta.')
+  const estado = !mia ? (yo ? 'Esta semana todavía no jugaste: con un evento entras en tu división.'
+    : 'Juegas un evento y entras en Sexta.')
     : pos < z && di > 0 ? '⬆️ Vas ' + (pos + 1) + 'º: estás en zona de subida.'
       : pos >= g.length - z && di < ultima ? '⬇️ Vas ' + (pos + 1) + 'º: estás en zona de descenso.'
         : 'Vas ' + (pos + 1) + 'º de ' + g.length + '.';
@@ -130,7 +130,7 @@ function Escalera({ liga, nombres, divs, sel, setSel, mia }) {
             aria-label={nombres[i] + ' División: ' + (n ? n + ' jugando' : 'nadie') + (i === mia ? ', la tuya' : '')}
             className={'dv-esc-p' + (i === sel ? ' on' : '') + (i === mia ? ' mia' : '') + (n ? '' : ' vacia')}
             style={{ '--alto': (78 + k * 12) + 'px' }} title={nombres[i] + ' División'}>
-            {i === mia ? <i className="dv-esc-vos" aria-hidden="true">VOS</i> : null}
+            {i === mia ? <i className="dv-esc-tú" aria-hidden="true">VOS</i> : null}
             <b>{i + 1}ª</b>
             <span>{nombres[i]}</span>
             {top.length ? (
@@ -165,7 +165,7 @@ function TuSemana({ liga, D, nombres, divs, esYo }) {
     return (
       <section className="dv-tu" aria-label="Tu semana">
         <div className="dv-tu-c"><b>{yaEsta != null ? nombres[D.v[yaEsta]] + ' División' : 'Sexta División'}</b><small>todavía no jugaste esta semana</small></div>
-        <p>Jugás un evento y entrás en la tabla de esta semana. Los primeros de cada grupo suben y cobran <b>{num(D.p)} Puntos de Tienda</b>.</p>
+        <p>Juegas un evento y entras en la tabla de esta semana. Los primeros de cada grupo suben y cobran <b>{num(D.p)} Puntos de Tienda</b>.</p>
         <div className="dv-tu-chips">{reloj}</div>
       </section>
     );
@@ -183,7 +183,7 @@ function TuSemana({ liga, D, nombres, divs, esYo }) {
     if (atras) chip = limpio(atras[0]) + ', ' + (subeZ + 1) + 'º, a ' + num(Math.max(0, pts - atras[1])) + ' pts';
   } else if (bajaZ && pos >= g.length - bajaZ) {
     const arriba = g[g.length - bajaZ - 1];
-    msg = <><b className="baja">Zona de descenso</b>: {arriba ? 'te faltan ' + num(Math.max(1, arriba[1] - pts + 1)) + ' pts para salir.' : 'si cierra así, bajás a ' + nombres[di + 1] + '.'}</>;
+    msg = <><b className="baja">Zona de descenso</b>: {arriba ? 'te faltan ' + num(Math.max(1, arriba[1] - pts + 1)) + ' pts para salir.' : 'si cierra así, bajas a ' + nombres[di + 1] + '.'}</>;
     if (arriba) chip = 'para salir: pasar a ' + limpio(arriba[0]);
   } else if (subeZ) {
     const corte = g[subeZ - 1];

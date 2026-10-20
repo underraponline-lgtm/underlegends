@@ -427,18 +427,18 @@ async function vistaServidor(req, env, x, url) {
 // siempre. ⚠️ El título y la bajada van acá y en banner_paginas.py: si se cambia uno, se cambia el otro
 const PAGINAS = {
   ranking: ['Ranking', 'Los mejores del freestyle online, de todos los servidores, en una sola tabla.'],
-  crews: ['Crews', 'Armá la tuya, invitá a tu gente y subí de tier cada semana.'],
+  crews: ['Crews', 'Arma la tuya, invita a tu gente y subí de tier cada semana.'],
   eventos: ['Eventos', 'Qué se juega hoy en cada servidor, con la llave en vivo y la campana.'],
   tarjetas: ['Tarjetas', 'Temporada, Competitiva, Servidor y País: tus números, en una carta.'],
-  pase: ['Pase rapero', 'Tareas diarias y semanales, XP y niveles: subí y desbloqueá.'],
+  pase: ['Pase rapero', 'Tareas diarias y semanales, XP y niveles: subí y desbloquea.'],
   ligas: ['Ligas', 'Fechas, tablas y campeones de las ligas de los servidores socios.'],
-  tienda: ['Tienda', 'Cazá cabezas, apostá en vivo y gastá tus Puntos de Tienda.'],
+  tienda: ['Tienda', 'Caza cabezas, apuesta en vivo y gasta tus Puntos de Tienda.'],
   publicaciones: ['Publicaciones', 'Campeones, rachas y crews que suben: el muro de todos los servidores.'],
   socios: ['Socios', 'Los servidores de rap online que suman al ranking mundial.'],
   guia: ['Guía', 'Puntos, rangos, tarjetas y TAGs, explicados en una página.'],
   salon: ['Salón de la fama', 'Los MES AWARDS, las promos y los que hicieron historia.'],
   // y las que no están en el menú pero se comparten (Dlx, 19/10/2026: «¿estás seguro que ésos son todos?»)
-  cuenta: ['Tu cuenta', 'Entrá con Discord: tus tarjetas, tu Pase, tus Puntos y tus avisos, en un lugar.'],
+  cuenta: ['Tu cuenta', 'Entra con Discord: tus tarjetas, tu Pase, tus Puntos y tus avisos, en un lugar.'],
   cambios: ['Lo nuevo', 'Cada cambio de la página y del bot, con su versión y su hora.'],
   socio: ['El panel de tu servidor', 'Tu puntaje, cuándo hay actividad, tus raperos y los ajustes del bot, para los dueños.'],
 };

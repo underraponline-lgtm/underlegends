@@ -40,7 +40,7 @@ function armar(d) {
   if (d.tipo === 'prueba') {
     return {
       titulo: '🔔 Avisos activados',
-      cuerpo: 'Así te va a llegar cada evento de la Liga. Tocá para abrir el hub.',
+      cuerpo: 'Así te va a llegar cada evento de la Liga. Toca para abrir el hub.',
       url: '/freestyle-rap/avisos', tag: 'prueba',
     };
   }

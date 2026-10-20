@@ -523,7 +523,7 @@ def corregir_liga(r, fix, mano, resolver, padron, ligas=None):
     if fix.get('reporta') or fix.get('es'):
         nuevo, _cc = destino(fix, r.get('quien'), resolver.padron, padron)
     else:
-        raise ValueError('una liga no crea gente: elegí alguien de la Lista')
+        raise ValueError('una liga no crea gente: elige alguien de la Lista')
     # ⚠️ el nombre puede venir resuelto (la tabla de la página dice «Agus» por «Agustín»): vale si alguna forma escrita
     # en la liga se resuelve a él, y se anotan TODAS esas formas
     formas = sorted({x for b in bats for x in (b[3], b[4]) if x and (LG.clave(x) == LG.clave(viejo)

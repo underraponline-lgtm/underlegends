@@ -124,7 +124,7 @@ function notaEncuesta(liga) {
   const E = x2 || el;
   if (!E) return null;
   const x = String(E.x || 2).replace('.', ',');
-  const tit = x2 ? '¿Qué servidor se lleva el ×' + x + ' la semana que viene? Votá' : '¿A quién salimos a buscar? Votá a El Elegido';
+  const tit = x2 ? '¿Qué servidor se lleva el ×' + x + ' la semana que viene? Vota' : '¿A quién salimos a buscar? Vota a El Elegido';
   return ['ENCUESTA', tit, ['enc', x2 ? '×' + x : '?'], 'cierra ' + liga.dia(E.hasta), { ancla: 'encuestas' }];
 }
 function irA(d, raiz) {
@@ -250,9 +250,9 @@ export function LosQueMandan({ liga, dc }) {
     img={c.logo ? <img className="mc-logo" alt="" src={srcLogo(c.logo)} /> : <span className="mc-ini">{limpio(c.crew).slice(0, 2).toUpperCase()}</span>}
     nombre={limpio(c.crew)} dato={num(c.pts) + ' PTS · ' + c.n + ' RAPEROS'} />),
   xCrew ? <Puesto cara={null} quien={'TU CREW · ' + limpio(miCrew.crew).toUpperCase()} pos={'#' + xCrew.pos} txt={xCrew.txt} href="#/ranking/crews" /> : null]);
-  // sin haber entrado (ni con Discord ni eligiendo quién sos), la invitación a verse
+  // sin haber entrado (ni con Discord ni eligiendo quién eres), la invitación a verse
   const invita = !yo && !dc ? (
-    <div className="mc-yo invita"><span className="mc-yo-t">¿Y vos? Entrá con Discord y ves tu puesto en cada categoría.</span>
+    <div className="mc-yo invita"><span className="mc-yo-t">¿Y tú? Entra con Discord y ves tu puesto en cada categoría.</span>
       <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar</button></div>
   ) : null;
   const items = cats.filter((c) => c[2].length).map(([c, et, h, yoFila]) => ({ c, et, t: 'Los que mandan', cuerpo: <><div className="rail mcs2">{h}</div>{yoFila || invita}</> }));
@@ -399,7 +399,7 @@ export function TusEventos({ liga, dc }) {
     return (
       <section className="te">
         <div className="mis-cab"><span>CÓMO TE FUE</span></div>
-        <p className="pronto-p">Entrá con Discord y acá aparecen los eventos que jugaste esta temporada, con tu puesto y los puntos que sumaste.</p>
+        <p className="pronto-p">Entra con Discord y acá aparecen los eventos que jugaste esta temporada, con tu puesto y los puntos que sumaste.</p>
         <div className="te-acc"><button type="button" className="btn negro" onClick={accion.entrar}>Entrar con Discord</button></div>
       </section>
     );
@@ -414,7 +414,7 @@ export function TusEventos({ liga, dc }) {
             <li key={ll.n}><button type="button" className="sin-boton te-b" onClick={() => accion.llave(ll.n)}>
               <img alt="" src={liga.logo(ll.sv)} />
               <div><b>{limpio(ll.nombre)}</b><small>{siglaDe(ll.sv)} · {liga.cuando(liga.fechaLlave(ll))} · {ll.participantes} raperos</small></div>
-              <span className={'te-vos' + (res === 'Campeón' ? ' campeon' : '')}>{resultado(res, true)}<small>+{num(pts)} pts</small></span>
+              <span className={'te-tú' + (res === 'Campeón' ? ' campeon' : '')}>{resultado(res, true)}<small>+{num(pts)} pts</small></span>
             </button></li>
           ))}
         </ol>
@@ -440,7 +440,7 @@ export function TuTemporada({ liga, dc }) {
     return (
       <section className="tu">
         <div className="tu-t">TU TEMPORADA</div>
-        <p className="pronto-p">Entrá con Discord y acá vas a ver tu puesto, tu OVR, cuánto te falta para tu letra y si te buscan.</p>
+        <p className="pronto-p">Entra con Discord y acá vas a ver tu puesto, tu OVR, cuánto te falta para tu letra y si te buscan.</p>
         <button type="button" className="btn negro" onClick={accion.entrar}>Entrar con Discord</button>
       </section>
     );
@@ -458,7 +458,7 @@ export function TuTemporada({ liga, dc }) {
       </div>
       <div className="tu-prog">
         <div className="barra10">{Array.from({ length: 10 }, (_, i) => <i key={i} className={i < ev ? 'si' : ''} />)}</div>
-        <small>{falta ? 'Todavía sin letra: ' + ev + ' de 10 eventos. Te faltan ' + falta + ' para tu rango.' : 'Ya tenés letra.'}</small>
+        <small>{falta ? 'Todavía sin letra: ' + ev + ' de 10 eventos. Te faltan ' + falta + ' para tu rango.' : 'Ya tienes letra.'}</small>
       </div>
       {bus ? <div className="te-buscan"><b>HOY TE BUSCAN</b><span>{num(bus.v)} pts por tu cabeza · {bus.cn} · hasta {liga.dia(mw.fin)}</span></div> : null}
       <div className="tu-acc"><a className="btn negro" href={'#/r/' + encodeURIComponent(f.k)}>Ver mi perfil</a>

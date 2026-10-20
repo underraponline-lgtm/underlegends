@@ -158,7 +158,7 @@ export function panel(nombre, cfg, appPerms) {
     `> Si **nadie responde** un aviso en ${ESPERA_AUTO_MS / 60000} minutos, actúa: con una oleada cierra el servidor; si no, ` +
     'le saca los roles a la cuenta en peligro o a quien hace el daño (se devuelven con un botón). **Nunca expulsa ni banea**.',
     '',
-    `**Canal de los avisos** · ${c.canal ? `<#${c.canal}>` : '**elegí uno abajo** (sin canal, la 2 y la 3 no pueden avisar)'}`,
+    `**Canal de los avisos** · ${c.canal ? `<#${c.canal}>` : '**elige uno abajo** (sin canal, la 2 y la 3 no pueden avisar)'}`,
     falta.length ? '\n⚠️ Al bot le falta: ' + falta.join(' · ') + '.' : '',
   ].filter((x, k, a) => x !== '' || a[k - 1] !== '').join('\n');
   const btn = (id, label, on, extra = {}) => ({ type: 2, style: on ? 2 : 1, label, custom_id: id, ...extra });
@@ -482,14 +482,14 @@ async function invitacionesPropias(env, gid) {
 /** `/antiraid`: el panel, sólo para el dueño. `h` trae lo del Worker: `luego`, `idDe`, `aviso`, `nombre`, `pasan`. */
 export function comando(i, env, ctx, h) {
   const gid = i.guild_id;
-  if (!gid) return h.aviso('`/antiraid` va **adentro del servidor** que querés proteger.');
+  if (!gid) return h.aviso('`/antiraid` va **adentro del servidor** que quieres proteger.');
   h.luego(ctx, (async () => {
     try {
       const es = await esDueno(env, gid, h.idDe(i));
-      if (es === null) return editar(i, { content: 'No pude preguntarle a Discord quién es el dueño del servidor: probá en un rato.' });
+      if (es === null) return editar(i, { content: 'No pude preguntarle a Discord quién es el dueño del servidor: prueba en un rato.' });
       if (!es) return editar(i, { content: '🛡️ El anti-raid lo configura **sólo el dueño del servidor**.' });
       return editar(i, panel(h.nombre, await leerCfg(env, gid), i.app_permissions));
-    } catch (e) { return editar(i, { content: 'Algo falló al abrir el anti-raid: probá en un rato.' }); }
+    } catch (e) { return editar(i, { content: 'Algo falló al abrir el anti-raid: prueba en un rato.' }); }
   })());
   return diferir(5, true);
 }
@@ -508,7 +508,7 @@ function delPanel(i, env, ctx, h, que) {
     try {
       const es = await esDueno(env, gid, h.idDe(i));
       if (!es) {
-        return aparte(i, es === null ? 'No pude preguntarle a Discord quién es el dueño: probá en un rato.'
+        return aparte(i, es === null ? 'No pude preguntarle a Discord quién es el dueño: prueba en un rato.'
           : '🛡️ El anti-raid lo cambia **sólo el dueño del servidor**.');
       }
       const cfg = await leerCfg(env, gid);
@@ -537,7 +537,7 @@ function delPanel(i, env, ctx, h, que) {
         } else cfg.staff = !cfg.staff && !!cfg.canal;
       } else if (que === 'auto') {
         if (!cfg.auto && (!cfg.canal || !(cfg.oleada || cfg.staff))) {
-          nota.push('🤖 AUTOMÁTICO actúa sobre los avisos: primero prendé la alarma de oleada o la vigilancia del staff.');
+          nota.push('🤖 AUTOMÁTICO actúa sobre los avisos: primero prende la alarma de oleada o la vigilancia del staff.');
         } else {
           cfg.auto = !cfg.auto;
           nota.push(cfg.auto ? '🤖 AUTOMÁTICO prendido (experimental): si nadie responde un aviso en ' + (ESPERA_AUTO_MS / 60000) +
@@ -549,7 +549,7 @@ function delPanel(i, env, ctx, h, que) {
           const r = await mandar(env, nuevo, {
             content: '🛡️ Acá van a llegar los avisos del **anti-raid de la Liga Global**. Los botones de cada aviso los puede usar el dueño o un admin.' });
           if (!r.ok) {
-            nota.push('⚠️ No puedo escribir en <#' + nuevo + '>: dale al bot permiso de ver y escribir ahí, y elegilo otra vez.');
+            nota.push('⚠️ No puedo escribir en <#' + nuevo + '>: dale al bot permiso de ver y escribir ahí, y elígelo otra vez.');
           } else {
             cfg.canal = nuevo;
             // las reglas avisan en un canal: si cambia, se rehacen
@@ -585,7 +585,7 @@ function delPanel(i, env, ctx, h, que) {
       const guardado = await guardarCfg(env, gid, cfg, CAMPOS[que] || []);
       const pn = panel(h.nombre, guardado || cfg, ap);
       return editar(i, { ...pn, content: pn.content + (nota.length ? '\n\n' + nota.map((x) => '> ' + x).join('\n') : '') });
-    } catch (e) { return aparte(i, 'Algo falló: probá de nuevo.'); }
+    } catch (e) { return aparte(i, 'Algo falló: prueba de nuevo.'); }
   })());
   return diferir(6);
 }
@@ -600,9 +600,9 @@ function deAviso(i, env, ctx, h, p) {
       const quien = h.idDe(i);
       // 🔴 el aviso habla de vos: lo contesta otro (pasada del 19/10/2026). El dueño, sí: AUTOMÁTICO nunca lo toca
       if (sujetos.includes(String(quien)) && !(await esDueno(env, gid, quien))) {
-        return aparte(i, '🛡️ Este aviso habla de vos: lo responde otra persona del staff o el dueño del servidor.');
+        return aparte(i, '🛡️ Este aviso habla de ti: lo responde otra persona del staff o el dueño del servidor.');
       }
-      const noAlcanza = (al, uid2) => aparte(i, al === null ? 'No pude preguntarle a Discord por los roles: probá en un rato.'
+      const noAlcanza = (al, uid2) => aparte(i, al === null ? 'No pude preguntarle a Discord por los roles: prueba en un rato.'
         : `🛡️ Eso lo hace el dueño o alguien con un rol más alto que el de <@${uid2}> (el bot no lo hace por quien no llega).`);
       let linea = '', ok = true;
       if (que === 'cerrar') {
@@ -658,7 +658,7 @@ function deAviso(i, env, ctx, h, p) {
       const botones = ((((m.components || [])[0] || {}).components) || [])
         .filter((b) => (que === 'ok' ? deshacer(b) : !ok || !String(b.custom_id || '').startsWith('ar:x:' + que + ':')));
       return editar(i, { embeds: emb, components: botones.length ? [{ type: 1, components: botones }] : [] });
-    } catch (e) { return aparte(i, 'Algo falló: probá de nuevo.'); }
+    } catch (e) { return aparte(i, 'Algo falló: prueba de nuevo.'); }
   })());
   return diferir(6);
 }

@@ -59,7 +59,7 @@ def main():
         return 0
     if env.get('VAPID_PUBLICA') or env.get('VAPID_PRIVADA'):
         sys.exit('🔴 .env tiene UNA de las dos claves VAPID. Eso no se arregla '
-                 'generando otra: buscá la que falta en ACCESOS.md (5c).')
+                 'generando otra: busca la que falta en ACCESOS.md (5c).')
     from cryptography.hazmat.primitives import serialization
     from cryptography.hazmat.primitives.asymmetric import ec
     k = ec.generate_private_key(ec.SECP256R1())
@@ -72,7 +72,7 @@ def main():
                 'VAPID_PUBLICA=%s\nVAPID_PRIVADA=%s\n' % (publica, privada))
     print('✅ claves nuevas en .env')
     print('pública: %s' % publica)
-    print('⚠️ copiá las dos a ACCESOS.md (sección 5c) antes de desplegar.')
+    print('⚠️ copia las dos a ACCESOS.md (sección 5c) antes de desplegar.')
     return 0
 
 

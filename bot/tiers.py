@@ -324,9 +324,9 @@ def sugerencias(p, m=None):
     if len(buenos) >= 2:
         mejor = max(buenos, key=lambda x: x[1][1])
         peor = min(buenos, key=lambda x: x[1][1])
-        out.append('Los %s tus eventos juntan %s raperos de promedio: el mejor día que tenés.' % (DIAS[mejor[0]], _n(mejor[1][1])))
+        out.append('Los %s tus eventos juntan %s raperos de promedio: el mejor día que tienes.' % (DIAS[mejor[0]], _n(mejor[1][1])))
         if peor[0] != mejor[0] and peor[1][1] < mejor[1][1] * 0.8:
-            out.append('Los %s, %s de promedio: el más flojo. Si podés, movelo a otro día.' % (DIAS[peor[0]], _n(peor[1][1])))
+            out.append('Los %s, %s de promedio: el más flojo. Si puedes, movelo a otro día.' % (DIAS[peor[0]], _n(peor[1][1])))
     liga = p.get('liga') or []
     if any(x[0] for x in liga):
         lleno = max(range(7), key=lambda i: liga[i][0])
@@ -340,7 +340,7 @@ def sugerencias(p, m=None):
     fr = [(i, f) for i, f in enumerate(p.get('franjas') or []) if f[0] >= MIN_MUESTRA]
     if len(fr) >= 2:
         i, f = max(fr, key=lambda x: x[1][1])
-        out.append('%s es cuando más gente juntás (%s por evento).' % (FRANJAS[i][2].capitalize(), _n(f[1])))
+        out.append('%s es cuando más gente juntas (%s por evento).' % (FRANJAS[i][2].capitalize(), _n(f[1])))
     ev4 = p.get('ev4') or []
     if len(ev4) == 3:
         a, b, nuevos = ev4
@@ -354,7 +354,7 @@ def sugerencias(p, m=None):
             out.append('Trajiste %d raperos nuevos en 4 semanas: avisales del próximo evento para que vuelvan.' % nuevos)
     m = m or {}
     if m.get('eventos') and m.get('por_semana', 0) < 1:
-        out.append('Hacés %s eventos por semana; con 2 por semana la parte de actividad de tu puntaje llega al máximo.' % _n(m['por_semana']))
+        out.append('Haces %s eventos por semana; con 2 por semana la parte de actividad de tu puntaje llega al máximo.' % _n(m['por_semana']))
     if m.get('anuncios') and m.get('con_staff', 0) < m['anuncios'] * 0.5:
         out.append('Sólo %d de tus %d anuncios dicen quién organiza: ponerlo suma a la calidad.' % (m.get('con_staff', 0), m['anuncios']))
     return out[:7]

@@ -432,7 +432,7 @@ console.log('\nLA INVITACIÓN\n');
       member: { user: { id: '777222' } } });   // 777222 NO es konan
     const c2 = r2.json?.data?.content || '';
     const b2 = (r2.json?.data?.components || []).flatMap(f => f.components || []);
-    ok('mirando la carta de OTRO, no te invitan a vos',
+    ok('mirando la carta de OTRO, no te invitan a ti',
        !/Entrá por acá/.test(c2) && !b2.some(b => (b.url || '').includes('discord.gg/')),
        c2.slice(0, 60));
     ok('y dice de quién es la carta que falta', /Konan/.test(c2) && /DRA/.test(c2),
@@ -536,7 +536,7 @@ console.log('\nLOS DATOS\n');
   // ⚠️ SE PIDE EL CAMINO, NO LA FRASE. Lo que no puede faltar es cómo
   // verificarse. Afirmar el texto entero haría fallar la prueba por una coma.
   const c = r.json?.data?.content || '';
-  ok('un ID desconocido avisa en vez de reventar', c.includes('Verificate en la página'), c.slice(0, 48));
+  ok('un ID desconocido avisa en vez de reventar', c.includes('Verifícate en la página'), c.slice(0, 48));
   // 🔑 DESDE EL 01/10/2026 ES UN BOTÓN, A LA PÁGINA (Dlx: «que esto te
   // redirija, y que te entres a DRA automáticamente»). Antes eran dos —la
   // invitación y el canal de DRA—, y la página hace los dos pasos.
@@ -559,7 +559,7 @@ console.log('\nLOS DATOS\n');
     member: { user: { id: '000000' } }, data: { name: 'card' } });
   const c = r.json?.data?.content || '';
   ok('parado en DRA también va a la página, sin «te mete»',
-     c.includes('Verificate en la página') && !/te mete/.test(c), c.slice(-90));
+     c.includes('Verifícate en la página') && !/te mete/.test(c), c.slice(-90));
   const bs = (r.json?.data?.components || []).flatMap(f => f.components || []);
   ok('y le quedan verificarse, el Pase y los próximos eventos', bs.length === 3 &&
      /\.dev\/cuenta\/verificar$/.test(bs[0]?.url || ''), bs.map(b => b.label).join(' · '));
@@ -676,7 +676,7 @@ console.log('\nTRES MANERAS DE PEDIR\n');
   const r = await pedir({ type: 2, guild_id: '1', member: { user: { id: '999111' } },
     data: { name: 'card' } });
   const u = galeria(r.json?.data?.components)?.items?.[0]?.media?.url || '';
-  ok('sin argumentos, sos vos', u.includes('/konan/'), u);
+  ok('sin argumentos, eres tú', u.includes('/konan/'), u);
 }
 {
   // ⚠️ El selector MANDA sobre el nombre: si alguien pone los dos, gana el ID,
@@ -2317,7 +2317,7 @@ console.log('\nTU CARTA SIN TU FOTO\n');
     cdn = 200;
     r = await pedirMia('999777', 'abc123');
     const b = (mandados[0]?.components?.[0]?.components || [])[0] || {};
-    ok('sin verificar: «verificate en la página», con el botón (lo que pidió Dlx)',
+    ok('sin verificar: «verifícate en la página», con el botón (lo que pidió Dlx)',
        mandados.length === 1 && /verificados en DRA/.test(mandados[0].content) &&
        b.url === 'https://underlegends.pages.dev/cuenta/verificar' && !puestos.length, JSON.stringify(mandados));
     r = await pedirMia('999555', 'abc123', { data: { name: 'card', options: [{ name: 'nombre', value: 'Konan' }] } });
@@ -2389,13 +2389,13 @@ console.log('\nLAS LIBRES: LA TEMPORADA Y LA SERVIDOR, SIN VERIFICAR\n');
     data: { name: 'versus', options: [{ name: 'rival', value: '999333' },
                                       { name: 'carta', value: 'competitivo' }] } });
   txt = r.json?.data?.content || '';
-  ok('y si es él: «vos todavía no te verificaste»', txt.includes('Vos todavía no te verificaste'), txt);
+  ok('y si es él: «tú todavía no te verificaste»', txt.includes('Tú todavía no te verificaste'), txt);
 
   // lo de la cuenta sigue siendo de los verificados
   r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '999777', avatar: 'abc' } },
     data: { name: 'foto' } });
   txt = r.json?.data?.content || '';
-  ok('/foto: no es «no estás en la Liga», es «verificate»', txt.includes('verificado en DRA') &&
+  ok('/foto: no es «no estás en la Liga», es «verifícate»', txt.includes('verificado en DRA') &&
      !txt.includes('no estás en la Liga'), txt);
   r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: '999777' } },
     data: { name: 'verificar' } });
@@ -2520,7 +2520,7 @@ console.log('\nLAS ENCUESTAS\n');
   ok('un voto bueno vale', JSON.stringify(v('x2:2026-10-05', 'SR')) === '{"enc":"x2:2026-10-05","op":"SR"}');
   // 🔑 Dlx, 28/09/2026: «3. B y C» — en el ×2 cualquiera vota a cualquiera
   ok('a tu servidor, también (desde el 28/09)', !v('x2:2026-10-05', 'FFA').error);
-  ok('a vos, no; a otro, sí', v('mw:2026-09-28', 'Zeta').error === 'vos' && !v('mw:2026-09-28', 'Hassan').error);
+  ok('a ti, no; a otro, sí', v('mw:2026-09-28', 'Zeta').error === 'tú' && !v('mw:2026-09-28', 'Hassan').error);
   ok('lo que ya cerró, no', v('mw:2026-09-27', 'Hassan').error === 'cerrada');
   ok('lo que no está en la lista, no', v('mw:2026-09-28', 'Otro').error === 'opcion' &&
      v('nada', 'x').error === 'no_existe');
@@ -2779,7 +2779,7 @@ console.log('\nEL PRECIO POR CABEZA\n');
   ok('un precio bueno vale, con los números que dejó el ciclo',
      bueno.cabeza === 'Ana' && bueno.monto === 1500 && bueno.inicial === 5000 && bueno.tope === 20000 &&
      bueno.fin === Date.parse(cfg.fin), JSON.stringify(bueno));
-  ok('a vos mismo, no', v({ cabeza: 'Bea', monto: 1000 }).error === 'vos');
+  ok('a ti mismo, no', v({ cabeza: 'Bea', monto: 1000 }).error === 'tú');
   ok('a quien no juega la temporada (o es fuera de concurso), no', v({ cabeza: 'Zoe', monto: 1000 }).error === 'cabeza');
   ok('menos del mínimo, o no de a 100, no', v({ cabeza: 'Ana', monto: 400 }).error === 'monto' &&
      v({ cabeza: 'Ana', monto: 550 }).error === 'monto' && v({ cabeza: 'Ana', monto: '1e3' }).error === 'monto');
@@ -2931,8 +2931,8 @@ console.log('\n👏 FELICITAR\n');
      al[0][1].pub.motivo === 'subir a rango B' && JSON.stringify(al[0][1].pub.ks) === '["cid"]', JSON.stringify(al));
   alObjeto.length = 0;
   r = await pedirF({ id: 'aaaaaaaaaaaa' }, SES);
-  ok('a uno mismo no (su perfil, aunque no esté verificado: dn:): 403 «vos»',
-     r.status === 403 && r.json.error === 'vos' && !alObjeto.some(([u]) => u.endsWith('/aplaudir')));
+  ok('a uno mismo no (su perfil, aunque no esté verificado: dn:): 403 «tú»',
+     r.status === 403 && r.json.error === 'tú' && !alObjeto.some(([u]) => u.endsWith('/aplaudir')));
   r = await pedirF({ id: 'bbbbbbbbbbbb' }, SES);
   ok('una carta nueva no es un logro: 400', r.status === 400 && r.json.error === 'no_se_felicita');
   r = await pedirF({ id: 'dddddddddddd' }, SES);
@@ -2985,18 +2985,18 @@ console.log('\n👏 FELICITAR\n');
   // 🗑️ /sumate se fue el 13/10/2026 (Dlx: «descartado… nosotros elegimos manualmente a qué servidores el bot puede
   // entrar»): la postulación ya no llega al objeto —el único camino de un desconocido al DM de Dlx— ni pasa el proxy
   alObjeto.length = 0;
-  const rs = await worker.fetch(new Request('https://x/avisos/sumate', { method: 'POST',
+  const rs = await worker.fetch(new Request('https://x/avisos/súmate', { method: 'POST',
     body: JSON.stringify({ tipo: 'servidor', nombre: 'Rap Zone' }), headers: { 'x-lg-ses': SES } }), env, ctx);
-  ok('/sumate ya no existe: la postulación no llega al objeto', rs.status >= 400 && !alObjeto.some(([u]) => u.endsWith('/sumate')),
+  ok('/súmate ya no existe: la postulación no llega al objeto', rs.status >= 400 && !alObjeto.some(([u]) => u.endsWith('/súmate')),
      String(rs.status));
   fue = null;
   globalThis.fetch = async (u, opc) => {
     fue = { u: String(u), h: (opc && opc.headers) || {} };
     return new Response('{"ok":true}', { status: 200 });
   };
-  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/sumate', { method: 'POST', body: '{"tipo":"otro","nombre":"X Y"}',
+  await proxy.fetch(new Request('https://underlegends.pages.dev/api/avisos/súmate', { method: 'POST', body: '{"tipo":"otro","nombre":"X Y"}',
     headers: { cookie: 'lg_ses=' + SES } }), envP);
-  ok('y el proxy tampoco la deja pasar', !fue || !fue.u.endsWith('/avisos/sumate'), JSON.stringify(fue));
+  ok('y el proxy tampoco la deja pasar', !fue || !fue.u.endsWith('/avisos/súmate'), JSON.stringify(fue));
   globalThis.fetch = antesF;
   env.AVISOS = antesA;
   delete PUESTO['web:muro'];

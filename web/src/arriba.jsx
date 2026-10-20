@@ -22,7 +22,7 @@ export const QUE_ES = {
   '#/': 'Lo que pasa ahora en la Liga', '#/eventos': 'Cuándo se juega, y la campana para enterarte',
   '#/ranking': 'Las tablas de la temporada', '#/publicaciones': 'Campeones, rangos nuevos y anuncios',
   '#/tarjetas': 'Las tarjetas de cada rapero', '#/ligas': 'Las ligas de los servidores, con su tabla',
-  '#/crews': 'Armá tu crew o sumate a una, con su tier',
+  '#/crews': 'Arma tu crew o súmate a una, con su tier',
   '#/salon': 'Los campeones, los récords y lo más difícil de la Liga',
   '#/pase': 'Premios por participar en la temporada',
   '#/tienda': 'Tus Puntos de Tienda, y el precio por cabeza', '#/socios': 'Los servidores que forman la Liga',
@@ -52,7 +52,7 @@ const normAka = (s) => norm(s).replace(/[^\p{L}\p{N}]/gu, '');
 // 🔎 EL BUSCADOR CON EJEMPLOS (Dlx, 19/10/2026, «me gustan todas», a «Command Search» de 21st): mientras está vacío, el
 // placeholder va mostrando qué se puede buscar, uno por vez. Sin tipeo letra por letra: en el celular cansa, y con
 // «Menos animaciones» se queda en el primero
-const EJEMPLOS = ['Buscá un rapero…', 'Buscá un servidor…', 'Buscá una crew…', 'Buscá un país…', 'Buscar en la Liga'];
+const EJEMPLOS = ['Busca un rapero…', 'Busca un servidor…', 'Busca una crew…', 'Busca un país…', 'Buscar en la Liga'];
 function useEjemplo(activo) {
   const [i, setI] = useState(0);
   useEffect(() => {
@@ -338,7 +338,7 @@ function PanelAvisos({ liga, B, onCerrar }) {
       ) : null}
       {B.sinCuenta ? (
         <div className="nt-vacio">
-          <p className="nt-tx">Entrá con Discord y acá te llega lo tuyo: quién te sigue, quién te felicita, tus rangos y tus cartas, y cuando gana alguien que seguís.</p>
+          <p className="nt-tx">Entra con Discord y acá te llega lo tuyo: quién te sigue, quién te felicita, tus rangos y tus cartas, y cuando gana alguien que sigues.</p>
           <button type="button" className="btn verde chico" onClick={() => { onCerrar(); accion.entrar(); }}>Entrar con Discord</button>
         </div>
       ) : !B.listo ? <p className="nt-tx nt-vacio">Cargando…</p> : items.length ? (
@@ -505,7 +505,7 @@ function historiasTuyas(liga, mm) {
   out.push(Slide('TU SEMANA', <><Cara liga={liga} k={yo.k} nombre={yo.n} cls="st-cara" />
     <h3 className="st-h">{mios.length ? 'Jugaste ' + mios.length + (mios.length === 1 ? ' evento' : ' eventos') : 'Esta semana todavía no jugaste'}</h3>
     {mios.length ? <ul className="st-l">{mios.slice(-5).map(([ll, p, n], i) => <li key={i}><b>{limpio(String(p || ''))}</b>{limpio(ll.nombre)} · {num(Number(n) || 0)} pts</li>)}</ul> : null}
-    <small className="st-s">{[yo.pos ? '#' + yo.pos + ' en el Ranking' : '', mueve ? mueve + ' desde el lunes' : '', mios.length ? num(pts) + ' pts esta semana' : 'Jugá uno y sumás para tu Temporada'].filter(Boolean).join(' · ')}</small></>,
+    <small className="st-s">{[yo.pos ? '#' + yo.pos + ' en el Ranking' : '', mueve ? mueve + ' desde el lunes' : '', mios.length ? num(pts) + ' pts esta semana' : 'Juega uno y sumas para tu Temporada'].filter(Boolean).join(' · ')}</small></>,
   'esta semana', 'Ver tu perfil', { perfil: yo.k }, 'yo:sem:' + (mm.ini || '') + ':' + mios.length, ultimo));
   // tu próximo evento: el primero de un servidor donde jugaste; si no, el primero que viene
   const svs = new Set(liga.semanaDe(yo.k).map(([ll]) => ll.sv));
@@ -547,7 +547,7 @@ function historiasLiga(liga, mm) {
   if (sueltos.length) {
     out.push(Slide('SE BUSCA · MOST WANTED', <><h3 className="st-h">{sueltos.length === 1 ? 'Un buscado suelto' : sueltos.length + ' buscados sueltos'}</h3>
       <ul className="st-gente">{sueltos.slice(0, 6).map((b) => <li key={b.k || b.n}><Cara liga={liga} k={b.k || ''} nombre={b.n} cls="st-mini" /><span>{limpio(b.n)} · {num(b.v)}</span></li>)}</ul>
-      <small className="st-s">Ganale a uno en un evento y cobrás su precio.</small></>,
+      <small className="st-s">Ganale a uno en un evento y cobras su precio.</small></>,
     'hasta ' + liga.dia(mw.fin), 'Ver Se busca', { ancla: 'sebusca' }, 'mw:' + mw.id + ':' + sueltos.length));
   }
   // ▲ los que más subieron en el Ranking desde el lunes
@@ -762,7 +762,7 @@ export function gruposHistorias(liga) {
     let slides = slidesDe(liga, propios).slice(0, 4).sort(masViejo);
     // alguien que seguís y no hizo nada nuevo igual tiene su círculo: su carta y cómo va (una vez por semana)
     if (!slides.length) {
-      slides = [Slide('SEGUÍS A', <><Carta liga={liga} k={k} cual="temporada" cls="st-carta" abre={false} /><h3 className="st-h">{limpio(f.n)}</h3>
+      slides = [Slide('SIGUES A', <><Carta liga={liga} k={k} cual="temporada" cls="st-carta" abre={false} /><h3 className="st-h">{limpio(f.n)}</h3>
         <small className="st-s">{f.pos ? '#' + f.pos + ' · ' : ''}OVR {f.ovr || '—'} · {num(f.pts)} pts · {f.ev || 0} {f.ev === 1 ? 'evento' : 'eventos'}</small></>,
       'esta temporada', 'Ver su perfil', { perfil: k }, 'seg:' + k + ':' + (mm.ini || ''), String(mm.ini || ''))];
     }
@@ -836,10 +836,10 @@ export function Historias({ liga, grupos, vistos, onAbrir }) {
   // sin nadie a quien seguir, el lugar de esa gente invita a empezar: se sigue desde el perfil de cada uno
   if (!liga.sigue.length && (liga.d.tabla || []).length) {
     if (partes.length) partes.push(<span key="s-sumar" className="h-sep" aria-hidden="true" />);
-    partes.push(<a key="sumar" className="h sumar" href="#/ranking"><span className="h-c mas" aria-hidden="true">+</span><small>Seguí a alguien</small><em>desde su perfil</em></a>);
+    partes.push(<a key="sumar" className="h sumar" href="#/ranking"><span className="h-c mas" aria-hidden="true">+</span><small>Sigue a alguien</small><em>desde su perfil</em></a>);
   }
   if (!partes.length) return null;
-  return <nav className="historias" aria-label="Historias: en vivo, servidores, tu país, tu crew y a quién seguís">{partes}</nav>;
+  return <nav className="historias" aria-label="Historias: en vivo, servidores, tu país, tu crew y a quién sigues">{partes}</nav>;
 }
 
 // ── el cuadro de cruces: cuartos, semis, final y el campeón, con líneas ─────────────────────────────
@@ -1457,7 +1457,7 @@ function momentos(liga, vivoL) {
       if (!x) continue;
       const k = ks.sort()[0];
       out.push({
-        tipo: 'seguis', et: 'Seguís', sv: liga.T[k].sv,
+        tipo: 'seguis', et: 'Sigues', sv: liga.T[k].sv,
         txt: <><div className="hero-t"><span className="tag tg-seguis">DE LOS QUE SEGUÍS · {x[3].toUpperCase()}</span></div><Tit c={largo(x[1])}>{x[1]}</Tit>
           <p className="hero-p">{x[0].charAt(0) + x[0].slice(1).toLowerCase()}.</p>
           <div className="hero-acc"><a className="btn verde" href={'#/r/' + encodeURIComponent(k)}>Ver su perfil</a></div></>,

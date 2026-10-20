@@ -3438,7 +3438,7 @@ def main():
                 print('      · %-24s tendría que decir  %s'
                       % (_n, _real))
             print('      -> esa celda no entró, o falta reescribir la '
-                  'vitrina.\n         Repetí el comando y volvé a mirar.')
+                  'vitrina.\n         Repite el comando y vuelve a mirar.')
         print('\n   %s\n' % ('✅ la vitrina quedó como se calculó'
                              if ok else '🔴 la hoja NO quedó como se pidió'))
         return 0 if ok else 1

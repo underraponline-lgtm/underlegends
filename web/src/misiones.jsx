@@ -16,8 +16,8 @@ const NIVEL = { facil: 'Fácil', media: 'Media', dificil: 'Difícil', caza: 'Cac
 const DEL_BONO = ['facil', 'media', 'dificil'];
 // lo que se aclara debajo de las que tienen letra chica (`q` de `bot/misiones.py`)
 const ACLARA = {
-  arriba1: 'Vale el rango que cada uno tenía el lunes. Sin letra, contás como E.',
-  arriba2: 'Vale el rango que cada uno tenía el lunes. Sin letra, contás como E.',
+  arriba1: 'Vale el rango que cada uno tenía el lunes. Sin letra, cuentas como E.',
+  arriba2: 'Vale el rango que cada uno tenía el lunes. Sin letra, cuentas como E.',
   paises: 'El país de cada uno es el de la Lista: un rival sin país no cuenta.',
   cuartos: 'Llegar más lejos también cuenta.',
   chico: 'Uno de los servidores que menos juegan: cualquier evento suyo de esta semana.',
@@ -68,7 +68,7 @@ function falta(liga, x, v) {
     case 'chico': return 'Te falta jugar un evento de ' + nombreSv(liga, x.sv || x.x);
     case 'caza': return 'Te falta ganarle un duelo a ' + limpio(x.x || 'la presa');
     case 'dorado': return 'Te falta jugar el evento dorado';
-    default: return x.m > 1 ? 'Llevás ' + (v || 0) + ' de ' + x.m : 'Todavía no';
+    default: return x.m > 1 ? 'Llevas ' + (v || 0) + ' de ' + x.m : 'Todavía no';
   }
 }
 
@@ -150,7 +150,7 @@ function Caceria({ liga, M, i, esYo, mio }) {
             <Quien liga={liga} raw={x.x} cls="cara mi-presa-cara" />
             {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(f.n)}</a> : <b className="dv-n">{limpio(x.x)}</b>}
           </div>
-          <p>Una de las más activas de la Liga. Ganale un duelo en cualquier evento de la semana y sumás <b>+{num(x.p)}</b> a tu Temporada.</p>
+          <p>Una de las más activas de la Liga. Ganale un duelo en cualquier evento de la semana y sumas <b>+{num(x.p)}</b> a tu Temporada.</p>
           {mio != null ? <p className={'mi-presa-yo' + (yoSi ? ' si' : '')}>{yoSi ? '✓ La cazaste' : 'Todavía no la cazaste'}</p> : null}
           <span className="mi-eti">{cazaron.length ? 'YA LA ' + de(cazaron.length, 'CAZÓ 1', 'CAZARON ' + cazaron.length) : 'NADIE LA CAZÓ TODAVÍA'}</span>
           {cazaron.length ? (
@@ -230,12 +230,12 @@ export function Misiones({ liga }) {
               <div className="mi-bono" role="img" aria-label={hechas + ' de ' + tres.length + ' del bono'}>
                 <span className="mi-bono-m">{tres.map(([x, i]) => <i key={x.id} className={valor(i) >= x.m ? 'si mi-' + x.n : ''} />)}</span>
                 <span>{hechas === tres.length ? <><b>¡Semana perfecta!</b> Sumaste el bono de +{num(M.bono)}.</>
-                  : <>Llevás <b>{hechas} de {tres.length}</b>: las tres juntas suman <b>+{num(M.bono)}</b> más.</>}
+                  : <>Llevas <b>{hechas} de {tres.length}</b>: las tres juntas suman <b>+{num(M.bono)}</b> más.</>}
                 {mios ? <> Esta semana, <b>+{num(mios)}</b> a tu Temporada.</> : null}</span>
               </div>
             ) : (
-              <p className="mi-intro">{dc ? 'Con tu primer evento de la ' + liga.temp + ' acá ves cuánto llevás de cada una.'
-                : 'Entrá con Discord y acá ves cuánto llevás de cada una.'}
+              <p className="mi-intro">{dc ? 'Con tu primer evento de la ' + liga.temp + ' acá ves cuánto llevas de cada una.'
+                : 'Entra con Discord y acá ves cuánto llevas de cada una.'}
                 {!dc ? <> <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button></> : null}</p>
             )}
           </div>

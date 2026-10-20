@@ -84,15 +84,15 @@ function ponerPrecio(cabeza, monto) {
 }
 function errorPrecio(E) {
   var T = D.tienda || {}, e = E.error;
-  return errorCuenta(e) || (e === 'saldo' ? 'No te alcanzan: tenés ' + num(E.saldo) + ' Puntos de Tienda.'
+  return errorCuenta(e) || (e === 'saldo' ? 'No te alcanzan: tienes ' + num(E.saldo) + ' Puntos de Tienda.'
     : e === 'tope' ? (E.queda ? 'Esa cabeza está cerca del máximo: se le pueden poner ' + num(E.queda) + ' más.'
       : 'Esa cabeza ya vale lo máximo (' + num(T.tope) + ').')
-    : e === 'vos' ? 'No te podés poner precio a vos.'
+    : e === 'tú' ? 'No te puedes poner precio a ti.'
     : e === 'nueva' ? 'Tu cuenta de Discord es muy nueva: vas a poder desde el ' +
       esc(fmtFecha(E.desde, { day: 'numeric', month: 'long' })) + '.'
     : e === 'cabeza' ? 'A esa persona no se le puede poner precio: tiene que jugar la temporada.'
     : e === 'monto' ? 'Desde ' + num(E.min) + ', de a ' + num(E.paso) + '.'
-    : e === 'cerrada' ? 'La semana terminó: probá de nuevo en un rato.'
-    : e === 'todavia' ? 'La tienda todavía no está lista: probá en un rato.'
-    : 'No pude ponerlo. Probá de nuevo en un rato.');
+    : e === 'cerrada' ? 'La semana terminó: prueba de nuevo en un rato.'
+    : e === 'todavia' ? 'La tienda todavía no está lista: prueba en un rato.'
+    : 'No pude ponerlo. Prueba de nuevo en un rato.');
 }

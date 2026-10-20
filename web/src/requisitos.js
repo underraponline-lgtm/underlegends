@@ -59,7 +59,7 @@ export function queEs(et, pide) {
     case 'part':
       return 'Participar en ' + n + ' ' + plural(n, 'evento', 'eventos') + ' ' + LIGA + ', en la temporada.';
     case 'pais':
-      return 'Tener tu país: lo elegís en «Verificarme», en Mi cuenta.';
+      return 'Tener tu país: lo eliges en «Verificarme», en Mi cuenta.';
     case 'dnac':
       return 'Jugar ' + n + ' ' + plural(n, 'duelo nacional', 'duelos nacionales') + ': batallas 1 contra 1, en la llave de un evento, contra alguien de tu mismo país.';
     case 'dint':
@@ -78,18 +78,18 @@ export const paseGuia = 'Llegar al nivel 1 del Pase de rapero: ' + PASE_COMO + '
 /** Verificarse: lo primero que le falta del portón (`nv` del payload: `id`, `pais`, `dra`), en una frase */
 export function sinVerificar(nv, tu) {
   if (nv === 'id') {
-    return tu ? 'Tu Discord todavía no está vinculado a la Liga: entrá con Discord y tocá «Verificarme», en Mi cuenta.'
+    return tu ? 'Tu Discord todavía no está vinculado a la Liga: entra con Discord y toca «Verificarme», en Mi cuenta.'
       : 'Su Discord todavía no está vinculado a la Liga: se vincula entrando con Discord, en «Verificarme» (Mi cuenta).';
   }
   if (nv === 'pais') {
-    return tu ? 'Te falta elegir tu país: lo elegís en «Verificarme», en Mi cuenta.'
+    return tu ? 'Te falta elegir tu país: lo eliges en «Verificarme», en Mi cuenta.'
       : 'Le falta elegir su país, en «Verificarme» (Mi cuenta).';
   }
   if (nv === 'dra') {
     return tu ? 'Te falta el rol de Miembro de Discord Rap Español (DRA): en «Verificarme», en Mi cuenta, el bot te mete al servidor y te lo da solo.'
       : 'Le falta el rol de Miembro de Discord Rap Español (DRA): se consigue en «Verificarme», en Mi cuenta.';
   }
-  return tu ? 'Te falta verificarte: entrá con Discord y tocá «Verificarme», en Mi cuenta.'
+  return tu ? 'Te falta verificarte: entra con Discord y toca «Verificarme», en Mi cuenta.'
     : 'Le falta verificarse, en «Verificarme» (Mi cuenta).';
 }
 // en la Guía va en las cuatro tarjetas: corta, y lo largo queda en «Verificado» de sus palabras

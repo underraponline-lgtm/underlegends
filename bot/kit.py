@@ -754,7 +754,7 @@ def correr(tipo, sv, id_=None):
             if not ll or not ll[1]:
                 raise LookupError('No encontré una llave de %s de las últimas %d horas.' % (sv, HORAS))
             foto(html_llave(ll[0], ll[1], sv, d), ruta)
-            texto = '🧰 La llave de **%s**, como la leyó el bot. Si algo salió mal, es que se leyó mal: avisá.' % ll[0]
+            texto = '🧰 La llave de **%s**, como la leyó el bot. Si algo salió mal, es que se leyó mal: avisa.' % ll[0]
     except LookupError as e:
         print('   ⚠️ %s' % e)
         if id_:
@@ -763,7 +763,7 @@ def correr(tipo, sv, id_=None):
     except Exception as e:                               # noqa: BLE001
         print('   🔴 %s' % e)
         if id_:
-            avisar(id_, error='No pude armarla esta vez. Probá de nuevo en un rato.')
+            avisar(id_, error='No pude armarla esta vez. Prueba de nuevo en un rato.')
         return 1
     print('   ✅ %s' % ruta)
     if id_:

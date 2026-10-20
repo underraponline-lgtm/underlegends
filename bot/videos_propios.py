@@ -152,7 +152,7 @@ def canal(url):
 #: el motivo de «no está tu nombre», que dispara las preguntas (regla 8)
 NO_NOMBRE = 'tu nombre no está en el título'
 #: lo que ve quien pidió el video mientras no contestó
-PREGUNTA = 'tu nombre no está en el título: contanos cómo aparecés y lo revisa Dlx'
+PREGUNTA = 'tu nombre no está en el título: cuéntanos cómo apareces y lo revisa Dlx'
 
 
 def respuestas(p):
@@ -291,7 +291,7 @@ def correr(aplicar=False):
         try:
             if p.get('tipo') == 'canal' and es_canal(url):
                 if len(canales.get(raw, [])) >= MAX_CANALES:
-                    estados[str(p['id'])] = ['no', 'ya tenés %d canales' % MAX_CANALES]
+                    estados[str(p['id'])] = ['no', 'ya tienes %d canales' % MAX_CANALES]
                     continue
                 c = canal(url)
                 if not c:

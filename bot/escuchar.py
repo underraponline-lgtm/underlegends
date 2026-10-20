@@ -4088,7 +4088,7 @@ def _self_check():
     casos = [
         ('una llave de dos rondas', llave, True),
         ('charla que dice OCTAVOS', 'che cuando son los octavos?', False),
-        ('charla con un vs', 'yo vs vos cuando quieras', False),
+        ('charla con un vs', 'yo vs tú cuando quieras', False),
         ('una sola ronda', '`[ FINAL ]`\n⌞A⌝ 🆚 ⌞B⌝', False),
         ('con corchetes', '[OCTAVOS]\n[A] 🆚 [B]\n[C] 🆚 [D]\n'
                           '[FINAL]\n[A] 🆚 [C]', True),

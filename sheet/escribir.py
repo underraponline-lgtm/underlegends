@@ -198,7 +198,7 @@ def poner(a1, filas):
     if malas:
         i, j, v, got = malas[0]
         raise RuntimeError(
-            '%s: escribí %d celda(s) que NO quedaron. La primera es la fila '
+            '%s: escribe %d celda(s) que NO quedaron. La primera es la fila '
             '%d, columna %d: mandé %r y hay %r. La causa habitual es una '
             'CELDA COMBINADA, que se come los valores sin dar error.'
             % (a1, len(malas), i + 1, j + 1, v, got))

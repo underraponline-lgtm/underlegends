@@ -139,7 +139,7 @@ function Quien({ x, f }) {
           <Bandera cc={f.cc} cls="rk-flag" />
         </span>
         {/* las etiquetas van ANTES del servidor y la crew: al final se las comía el «…» de una crew larga en el celular */}
-        <small>{mio ? <em className="rk-vos">VOS</em> : sigo ? <em className="rk-sigo">SEGUÍS</em> : null}
+        <small>{mio ? <em className="rk-tú">VOS</em> : sigo ? <em className="rk-sigo">SEGUÍS</em> : null}
           {nuevo ? <em className="rk-nuevo">NUEVO</em> : null}<span className="rk-qx">{[siglaDe(svElegido(liga, x.eleg, f.k)), crew].filter(Boolean).join(' · ')}</span></small>
       </span>
     </span>
@@ -152,7 +152,7 @@ function Pais({ x, f }) {
       <Bandera cc={f.cc} cls="rk-gflag" />
       <span className="rk-qn">
         <span className="rk-qa"><a href={'#/pais/' + f.cc}>{nombrePais(f.cc)}</a></span>
-        {x.miCc === f.cc ? <small><em className="rk-vos">TU PAÍS</em></small> : null}
+        {x.miCc === f.cc ? <small><em className="rk-tú">TU PAÍS</em></small> : null}
       </span>
     </span>
   );
@@ -171,7 +171,7 @@ function Crew({ x, f }) {
       <LogoCrew c={f} cls="rk-clogo" />
       <span className="rk-qn">
         <span className="rk-qa"><a href={'#/crew/' + encodeURIComponent(f.clave || f.crew)}>{limpio(f.crew)}</a></span>
-        <small>{f.rk === 0 ? 'SIN PUESTO: LE FALTAN RAPEROS' : ''}{mia ? <em className="rk-vos">TU CREW</em> : null}</small>
+        <small>{f.rk === 0 ? 'SIN PUESTO: LE FALTAN RAPEROS' : ''}{mia ? <em className="rk-tú">TU CREW</em> : null}</small>
       </span>
     </span>
   );
@@ -359,8 +359,8 @@ const SUBS = {
   divisiones: {
     // ⚠️ `orden` tiene que estar aunque no haya tabla: `armar()` busca su columna en `COL` y sin él revienta
     et: 'Divisiones', propia: Divisiones, filas: () => [], orden: () => 0, hay: (L) => !!L.d.div,
-    siNo: <><b>Divisiones</b>: una tabla por semana, de a 30. Jugás un evento y entrás en Sexta; los cinco primeros de cada grupo suben y ganan Puntos de Tienda, y los cinco últimos bajan.</>,
-    baj: <>Una tabla por semana, de a 30: jugás un evento y entrás. Los <b>primeros</b> de cada grupo suben de división y ganan <b>Puntos de Tienda</b>; los últimos bajan.</>,
+    siNo: <><b>Divisiones</b>: una tabla por semana, de a 30. Juegas un evento y entras en Sexta; los cinco primeros de cada grupo suben y ganan Puntos de Tienda, y los cinco últimos bajan.</>,
+    baj: <>Una tabla por semana, de a 30: juegas un evento y entras. Los <b>primeros</b> de cada grupo suben de división y ganan <b>Puntos de Tienda</b>; los últimos bajan.</>,
   },
 };
 export const RANKINGS = ['temporada', 'divisiones', 'competitivo', 'duelos', 'podios', 'rachas', 'eventos', 'paises', 'crews', 'ascensos', 'mw', 'misiones'];
@@ -472,7 +472,7 @@ function Vecino({ x, cfg, f, rol, txt }) {
   return (
     <a className={'rk-z ' + rol} href={href}>
       <span className="rk-zt"><Num n={numero(cfg, f)} />{vis}</span>
-      <b>{rol === 'yo' && !cfg.grupo ? 'Vos' : nombre}</b>
+      <b>{rol === 'yo' && !cfg.grupo ? 'Tú' : nombre}</b>
       <small>{txt}</small>
     </a>
   );
@@ -506,12 +506,12 @@ function Cerca({ x, cfg, base, i, sub, clas }) {
   let tA = 'Estás primero';
   if (arriba) tA = igual(arriba, yo) ? 'Empatados' : cfg.valor ? (distancia(cfg, arriba, yo) ? 'Te lleva ' + distancia(cfg, arriba, yo) : 'Empatados') : medallas(arriba);
   let tB = '';
-  if (abajo) tB = igual(abajo, yo) ? 'Empatados' : cfg.valor ? (distancia(cfg, yo, abajo) ? 'A ' + distancia(cfg, yo, abajo) + ' de vos' : 'Empatados') : medallas(abajo);
+  if (abajo) tB = igual(abajo, yo) ? 'Empatados' : cfg.valor ? (distancia(cfg, yo, abajo) ? 'A ' + distancia(cfg, yo, abajo) + ' de ti' : 'Empatados') : medallas(abajo);
   const yoTxt = sub === 'temporada' && yo.mv ? <Mov mv={yo.mv} largo /> : cfg.grupo === 'pais' ? 'Tu país' : cfg.grupo === 'crew' ? 'Tu crew' : !cfg.valor ? medallas(yo) : '';
   return (
-    <section className="rk-cerca" aria-label="Los que tenés cerca">
+    <section className="rk-cerca" aria-label="Los que tienes cerca">
       <div className="rk-cerca-t">
-        <span>{cfg.grupo === 'pais' ? 'LOS PAÍSES QUE TIENE CERCA EL TUYO' : cfg.grupo === 'crew' ? 'LAS CREWS QUE TIENE CERCA LA TUYA' : 'LOS QUE TENÉS CERCA'}</span>
+        <span>{cfg.grupo === 'pais' ? 'LOS PAÍSES QUE TIENE CERCA EL TUYO' : cfg.grupo === 'crew' ? 'LAS CREWS QUE TIENE CERCA LA TUYA' : 'LOS QUE TIENES CERCA'}</span>
         {!cfg.grupo ? <BotonHistoria liga={x.liga} cfg={cfg} f={yo} n={numero(cfg, yo)} sub={sub} /> : null}
       </div>
       <div className="rk-zs">
@@ -520,7 +520,7 @@ function Cerca({ x, cfg, base, i, sub, clas }) {
         <Vecino x={x} cfg={cfg} f={abajo} rol="abajo" txt={tB} />
       </div>
       {clas && numero(cfg, yo) ? (
-        <p className="rk-final">{dentro ? <>Si la temporada terminara hoy, <b>{sub === 'competitivo' ? 'entrás a la Superliga' : 'jugás la Clausura'}</b>.</>
+        <p className="rk-final">{dentro ? <>Si la temporada terminara hoy, <b>{sub === 'competitivo' ? 'entras a la Superliga' : 'juegas la Clausura'}</b>.</>
           : falta ? <>Te faltan <b>{falta}</b> para entrar a {sub === 'competitivo' ? 'la Superliga' : 'la Clausura'}: clasifican los {cfg.final} primeros.</>
             : null}</p>
       ) : null}
@@ -769,7 +769,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
       const n = numero(cfg, f);
       let txt;
       if (!n) {
-        txt = f.fc ? 'Fuera de concurso: verificate en Discord Rap Español y tenés número'
+        txt = f.fc ? 'Fuera de concurso: verifícate en Discord Rap Español y tienes número'
           : cfg.grupo === 'crew' ? 'Sin puesto: una crew necesita tres raperos en la temporada' : 'Sin puesto todavía';
       } else {
         // el de arriba con número (la Temporada tiene empates: con el mismo número, «empatado»)
@@ -928,7 +928,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
                     onClick={() => { setSv(''); setCc(''); setSoloSigo(false); setSoloNuevos(false); }}>Todos</button>
                   {nuevos ? <button type="button" className={'rk-chip-nuevo' + (soloNuevos ? ' on' : '')} aria-pressed={soloNuevos}
                     onClick={() => setSoloNuevos(!soloNuevos)} title="Los que jugaron su primer evento esta semana">Nuevos · {nuevos}</button> : null}
-                  {x.sigo.size ? <button type="button" className={soloSigo ? 'on' : ''} aria-pressed={soloSigo} onClick={() => setSoloSigo(!soloSigo)}>A quién seguís</button> : null}
+                  {x.sigo.size ? <button type="button" className={soloSigo ? 'on' : ''} aria-pressed={soloSigo} onClick={() => setSoloSigo(!soloSigo)}>A quién sigues</button> : null}
                   {svs.length > 1 ? svs.map((s) => (
                     <button type="button" key={s} className={sv === s ? 'on' : ''} aria-pressed={sv === s} onClick={() => setSv(sv === s ? '' : s)}>
                       <img alt="" src={liga.logo(s)} />{siglaDe(s)}
@@ -947,7 +947,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
               ) : null}
             </div> : null}
             {invita ? (
-              <div className="rk-invita"><span>¿Y vos? Entrá con Discord y te marcamos en cada ranking.</span>
+              <div className="rk-invita"><span>¿Y tú? Entra con Discord y te marcamos en cada ranking.</span>
                 <button type="button" className="btn verde chico" onClick={accion.cuenta}>Entrar</button></div>
             ) : null}
             {iYo >= 0 && lugar && lugar.n ? <Cerca x={x} cfg={cfg} base={base} i={iYo} sub={sub} clas={clas} /> : null}

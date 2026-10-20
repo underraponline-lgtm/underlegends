@@ -282,7 +282,7 @@ function Encuestas({ liga, enc }) {
   const ver = x2 && el ? cual : (x2 ? 'x2' : 'el');
   return (
     <section className="pub-encs" aria-label="Encuestas">
-      <h2 className="pub-dh">Encuestas<small>votá antes de que cierren</small></h2>
+      <h2 className="pub-dh">Encuestas<small>vota antes de que cierren</small></h2>
       {x2 && el ? (
         <div className="pub-enc-tabs" role="tablist">
           <button type="button" role="tab" aria-selected={ver === 'x2'} className={ver === 'x2' ? 'on' : ''} onClick={() => setCual('x2')}>El ×{String(x2.x || 2).replace('.', ',')}</button>
@@ -306,7 +306,7 @@ function Avisame() {
   return (
     <section className="pub-bloque">
       <h2 className="evp-h2">Que te llegue</h2>
-      <p className="pub-tx">Cuando te felicitan, cuando alguien te sigue, cuando la Liga publica algo de quien seguís y cuando te toca pelear: un aviso en este dispositivo. Nunca por DM.</p>
+      <p className="pub-tx">Cuando te felicitan, cuando alguien te sigue, cuando la Liga publica algo de quien sigues y cuando te toca pelear: un aviso en este dispositivo. Nunca por DM.</p>
       {!puede ? <a className="pub-a" href="#/avisos">Cómo activarlos</a>
         : !e.activa ? <button type="button" className="btn verde chico pub-avb" onClick={() => C.activar()}><Ico n="campana" t={16} />Activar avisos</button>
           : <button type="button" className="btn borde2 chico pub-avb" onClick={() => C.vincular()}>Vincular con mi Discord</button>}
@@ -371,7 +371,7 @@ export function Publicaciones({ liga, enc }) {
         <section className="pub-cab">
           <span className="tag">PUBLICACIONES · {liga.temp}</span>
           <h1 className="hero-ev largo">Publicaciones</h1>
-          <p className="hero-p">Lo que pasa en la Liga, contado solo, y los anuncios de todos los servidores. Felicitá a quien gana: le llega al teléfono.</p>
+          <p className="hero-p">Lo que pasa en la Liga, contado solo, y los anuncios de todos los servidores. Felicita a quien gana: le llega al teléfono.</p>
         </section>
       </div>
       <nav className="pub-fil" aria-label="Qué ver">
@@ -393,7 +393,7 @@ export function Publicaciones({ liga, enc }) {
           )) : (
             <>
               {fil === 'sigo'
-                ? <Vacio titulo="Nada todavía de la gente que seguís" texto="Cuando ganen, suban de rango o saquen carta, aparece acá."
+                ? <Vacio titulo="Nada todavía de la gente que sigues" texto="Cuando ganen, suban de rango o saquen carta, aparece acá."
                   acciones={[['Ver el ranking y seguir a alguien', '#/ranking'], ['Ver todo', () => { setFil(''); setVer(40); }, 'borde2']]} />
                 : <Vacio titulo="Todavía no pasó nada" texto="Cuando se juegue el primer evento, aparece acá solo."
                   acciones={[['Ver los eventos', '#/eventos']]} />}
@@ -407,10 +407,10 @@ export function Publicaciones({ liga, enc }) {
           <div className="pub-der-in">
             <section className="pub-bloque"><h2 className="evp-h2">Lo más felicitado</h2><MasFelicitado liga={liga} pubs={semana} A={A} /></section>
             <Avisame />
-            {sigo.length ? <section className="pub-bloque"><h2 className="evp-h2">A quién seguís</h2><Sigo liga={liga} sigo={sigo} onVer={() => { setFil('sigo'); setVer(40); }} /></section> : null}
+            {sigo.length ? <section className="pub-bloque"><h2 className="evp-h2">A quién sigues</h2><Sigo liga={liga} sigo={sigo} onVer={() => { setFil('sigo'); setVer(40); }} /></section> : null}
           </div>
         {fil === 'promos' ? <p className="pub-promo-paga">Lo que comparten los raperos en el canal de promoción de su servidor, y los videos de
-          nuestros participantes que promociona la Liga. Cada promo está una semana (la tuya la podés alargar en la <a href="#/tienda">Tienda</a>).
+          nuestros participantes que promociona la Liga. Cada promo está una semana (la tuya la puedes alargar en la <a href="#/tienda">Tienda</a>).
           Abrilas con tu cuenta de Discord: cada una te da <b>50 Puntos de Tienda</b> (hasta 3 por día) y suma a tu Pase.</p> : null}
         </aside>
       </div>

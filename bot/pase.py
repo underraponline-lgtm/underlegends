@@ -76,9 +76,9 @@ COLA = (1000, 300)
 MIDE = ('activo', 'fel', 'vivo', 'precio', 'dra', 'caza', 'voto', 'apuesta', 'sigue', 'promo')
 #: las Tareas: `(id, texto, cómo se cumple, qué mide, meta, xp)`, en el orden en que se muestran
 DIARIAS = (
-    ('entrar', 'Entrá hoy', 'Con tu cuenta en la página, usando el bot o jugando un evento.', 'activo', 1, 150),
-    ('felicitar1', 'Felicitá a alguien', 'Con 👏 en una publicación de Publicaciones.', 'fel', 1, 150),
-    ('vivo1', 'Mirá una llave en vivo', 'Abrí con tu cuenta la llave de un evento mientras se juega, y dejala abierta 20 '
+    ('entrar', 'Entra hoy', 'Con tu cuenta en la página, usando el bot o jugando un evento.', 'activo', 1, 150),
+    ('felicitar1', 'Felicita a alguien', 'Con 👏 en una publicación de Publicaciones.', 'fel', 1, 150),
+    ('vivo1', 'Mira una llave en vivo', 'Abre con tu cuenta la llave de un evento mientras se juega, y déjala abierta 20 '
      'segundos.', 'vivo', 1, 150),
 )
 #: 🆕 LAS TAREAS NUEVAS (Dlx, 14/10/2026: «mejorá las misiones del pase»), desde la semana del lunes 19/10, con las
@@ -91,43 +91,43 @@ TAREAS_DESDE = '2026-10-19'
 DIARIAS_NUEVAS = (
     DIARIAS[0],
     DIARIAS[2],
-    ('sigue1', 'Seguí a un rapero', 'Desde su perfil, con ⭐ Seguir.', 'sigue', 1, 150),
+    ('sigue1', 'Sigue a un rapero', 'Desde su perfil, con ⭐ Seguir.', 'sigue', 1, 150),
     DIARIAS[1],
 )
 #: cuántas diarias hay cada día: la primera siempre, y las demás se turnan día por día
 POR_DIA = 2
 SEMANALES = (
-    ('dias', 'Entrá 3 días', 'Tres días cualesquiera de la semana: la página con tu cuenta, el bot o un evento.',
+    ('dias', 'Entra 3 días', 'Tres días cualesquiera de la semana: la página con tu cuenta, el bot o un evento.',
      'activo', 3, 500),
-    ('felicitar', 'Felicitá a 3 personas', 'Con 👏 en Publicaciones: tres publicaciones distintas.', 'fel', 3, 500),
-    ('dra', 'Jugá un evento en DRA', 'Cualquier evento de DRA de esta semana.', 'dra', 1, 500),
-    ('vivo', 'Mirá 2 llaves en vivo', 'Dos llaves distintas mientras se juegan, con tu cuenta: 20 segundos cada una.',
+    ('felicitar', 'Felicita a 3 personas', 'Con 👏 en Publicaciones: tres publicaciones distintas.', 'fel', 3, 500),
+    ('dra', 'Juega un evento en DRA', 'Cualquier evento de DRA de esta semana.', 'dra', 1, 500),
+    ('vivo', 'Mira 2 llaves en vivo', 'Dos llaves distintas mientras se juegan, con tu cuenta: 20 segundos cada una.',
      'vivo', 2, 500),
-    ('precio', 'Poné precio a una cabeza', 'En la Tienda, con tus Puntos de Tienda: a cualquiera de los buscados.',
+    ('precio', 'Pon precio a una cabeza', 'En la Tienda, con tus Puntos de Tienda: a cualquiera de los buscados.',
      'precio', 1, 500),
 )
 TEMPORADA = (
-    ('fel10', 'Felicitá a 10 personas', 'En toda la temporada, con 👏 en Publicaciones.', 'fel', 10, 1500),
-    ('vivo5', 'Mirá 5 llaves en vivo', 'En toda la temporada.', 'vivo', 5, 1500),
-    ('dra3', 'Jugá 3 eventos en DRA', 'En toda la temporada.', 'dra', 3, 2000),
-    ('fel20', 'Felicitá a 20 personas', 'En toda la temporada.', 'fel', 20, 2000),
-    ('vivo10', 'Mirá 10 llaves en vivo', 'En toda la temporada.', 'vivo', 10, 2000),
-    ('caza', 'Cazá a un buscado', 'Ganale a un buscado del Most Wanted, en cualquier servidor de la Liga.', 'caza', 1,
+    ('fel10', 'Felicita a 10 personas', 'En toda la temporada, con 👏 en Publicaciones.', 'fel', 10, 1500),
+    ('vivo5', 'Mira 5 llaves en vivo', 'En toda la temporada.', 'vivo', 5, 1500),
+    ('dra3', 'Juega 3 eventos en DRA', 'En toda la temporada.', 'dra', 3, 2000),
+    ('fel20', 'Felicita a 20 personas', 'En toda la temporada.', 'fel', 20, 2000),
+    ('vivo10', 'Mira 10 llaves en vivo', 'En toda la temporada.', 'vivo', 10, 2000),
+    ('caza', 'Caza a un buscado', 'Ganale a un buscado del Most Wanted, en cualquier servidor de la Liga.', 'caza', 1,
      3000),
-    ('dra5', 'Jugá 5 eventos en DRA', 'En toda la temporada.', 'dra', 5, 3000),
-    ('dias30', 'Entrá 30 días', 'En toda la temporada: la página con tu cuenta, el bot o un evento.', 'activo', 30,
+    ('dra5', 'Juega 5 eventos en DRA', 'En toda la temporada.', 'dra', 5, 3000),
+    ('dias30', 'Entra 30 días', 'En toda la temporada: la página con tu cuenta, el bot o un evento.', 'activo', 30,
      3000),
 )
 #: 🆕 dos de temporada más desde `TAREAS_DESDE`, de cosas de la página que el objeto ya cuenta y ninguna Tarea pedía
 #: con DRA organizando: votar las encuestas (dos por semana: El Elegido y el ×2) y el precio por cabeza de la Tienda.
 #: Como toda Tarea de temporada, cuentan desde el arranque del Pase: quien ya votó 5 veces la cumple al aparecer
 TEMPORADA_NUEVAS = (
-    ('voto5', 'Votá en 5 encuestas', 'En toda la temporada: El Elegido del Most Wanted y el ×2 de cada semana, en la '
+    ('voto5', 'Vota en 5 encuestas', 'En toda la temporada: El Elegido del Most Wanted y el ×2 de cada semana, en la '
      'página.', 'voto', 5, 1500),
-    ('precio5', 'Poné precio a 5 cabezas', 'En toda la temporada, en la Tienda: cinco precios, a los buscados que '
+    ('precio5', 'Pon precio a 5 cabezas', 'En toda la temporada, en la Tienda: cinco precios, a los buscados que '
      'quieras.', 'precio', 5, 2000),
     # 📣 (Dlx, 16/10/2026): abrir lo que promocionan los raperos de los servidores. Ver `promoVio()` en bot/avisos.js
-    ('promo10', 'Abrí 10 promos', 'En toda la temporada: el video o el link de algo que promociona un rapero, desde '
+    ('promo10', 'Abre 10 promos', 'En toda la temporada: el video o el link de algo que promociona un rapero, desde '
      'Publicaciones, un perfil, un servidor o las historias.', 'promo', 10, 1500),
 )
 #: 🏠 MIENTRAS DRA NO ORGANICE, SUS TRES TAREAS SE CAMBIAN POR ESTAS (Dlx, 12/10/2026, «6. B»). DRA no había hecho
@@ -135,11 +135,11 @@ TEMPORADA_NUEVAS = (
 #: XP fuera de alcance. Las de reemplazo no piden jugar —eso es de las Misiones— y valen lo mismo. Vuelven solas cuando
 #: DRA juega un evento en los últimos `DRA_DIAS` días (`dra_activo()`). Con ids propios: lo cumplido de una no es de otra
 SIN_DRA = {
-    'dra': ('voto', 'Votá en una encuesta', 'El Elegido del Most Wanted o el ×2 de la semana, en la página.', 'voto', 1,
+    'dra': ('voto', 'Vota en una encuesta', 'El Elegido del Most Wanted o el ×2 de la semana, en la página.', 'voto', 1,
             500),
-    'dra3': ('apuesta3', 'Apostá en 3 batallas en vivo', 'Con tus Puntos de Tienda, en el chat de un servidor con el bot '
+    'dra3': ('apuesta3', 'Apuesta en 3 batallas en vivo', 'Con tus Puntos de Tienda, en el chat de un servidor con el bot '
              'en vivo.', 'apuesta', 3, 2000),
-    'dra5': ('sigue5', 'Seguí a 5 raperos', 'Desde su perfil, con ⭐ Seguir.', 'sigue', 5, 3000),
+    'dra5': ('sigue5', 'Sigue a 5 raperos', 'Desde su perfil, con ⭐ Seguir.', 'sigue', 5, 3000),
 }
 DRA_DIAS = 14
 #: Puntos de Tienda por cada nivel (la billetera arranca con 5.000: `precios.INICIAL`)
@@ -479,7 +479,7 @@ def _self_check():
        % (u[-1], tope))
     d1, d2 = diarias_de('2026-10-12'), diarias_de('2026-10-13')
     ok(len(d1) == POR_DIA and d1[0][0] == 'entrar' and d2[0][0] == 'entrar' and d1[1][0] != d2[1][0],
-       'las diarias: «Entrá hoy» siempre, y la otra se turna día por día  %s %s' % ([x[0] for x in d1],
+       'las diarias: «Entra hoy» siempre, y la otra se turna día por día  %s %s' % ([x[0] for x in d1],
                                                                                     [x[0] for x in d2]))
     c = config('t1')
     ok(c['temp'] == 't1' and c['umbrales'] == u and c['cola'] == [1000, 300] and c['publicar'] == [10, 30]

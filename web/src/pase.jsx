@@ -21,7 +21,7 @@ function Caja({ liga, dc, P, cfg }) {
     return (
       <div className="pa-caja">
         <small>TU PASE</small>
-        <p>Entrá con tu cuenta de Discord y mirá tu nivel, tu XP y tus Tareas.</p>
+        <p>Entra con tu cuenta de Discord y mira tu nivel, tu XP y tus Tareas.</p>
         <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button>
       </div>
     );
@@ -31,7 +31,7 @@ function Caja({ liga, dc, P, cfg }) {
     return (
       <div className="pa-caja">
         <small>TU PASE</small>
-        <p>Tu sesión venció: entrá de nuevo con Discord y aparece tu nivel.</p>
+        <p>Tu sesión venció: entra de nuevo con Discord y aparece tu nivel.</p>
         <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button>
       </div>
     );
@@ -40,7 +40,7 @@ function Caja({ liga, dc, P, cfg }) {
     return (
       <div className="pa-caja">
         <small>TU PASE</small>
-        <p className="pa-mal">No pude leer tu Pase. Probá de nuevo en un rato.</p>
+        <p className="pa-mal">No pude leer tu Pase. Prueba de nuevo en un rato.</p>
       </div>
     );
   }
@@ -49,7 +49,7 @@ function Caja({ liga, dc, P, cfg }) {
     return (
       <div className="pa-caja">
         <small>TU PASE</small>
-        <p>El Pase es de los <b>miembros de Discord Rap Español</b>: entrá al servidor y verificate. Con el rol Miembro, tus Tareas empiezan a contar.</p>
+        <p>El Pase es de los <b>miembros de Discord Rap Español</b>: entra al servidor y verifícate. Con el rol Miembro, tus Tareas empiezan a contar.</p>
         <div className="pa-acc">
           {dra.invita ? <a className="btn verde chico" href={dra.invita} target="_blank" rel="noopener noreferrer">Entrar a DRA ↗</a> : null}
           <a className="btn borde chico" href="#/cuenta/verificar">Cómo verificarme</a>
@@ -190,7 +190,7 @@ export function Pase({ liga, dc }) {
             <Tareas titulo="DE LA TEMPORADA" lista={temporada} miembro={miembro} nota="EN CUALQUIER ORDEN" />
           </div>
         </div>
-        <p className="ti-nota pa-nota">Se cumplen solas: el Pase se entera de lo que hacés en la página, en el bot y en los eventos. Las Tareas no son las Misiones: ésas son para todos y suman a la Temporada.</p>
+        <p className="ti-nota pa-nota">Se cumplen solas: el Pase se entera de lo que haces en la página, en el bot y en los eventos. Las Tareas no son las Misiones: ésas son para todos y suman a la Temporada.</p>
       </section>
       <Salon liga={liga} lista={pub && pub.salon && pub.salon[temp]} temp={temp} />
     </>

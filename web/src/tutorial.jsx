@@ -25,11 +25,11 @@ const PASOS = [
   { a: '#/eventos', tag: 'EVENTOS', h: 'Cuándo se juega',
     p: 'Cada servidor de la Liga organiza sus eventos, y acá está el calendario de todos. La campana te avisa al minuto cuando anuncian uno.' },
   { a: '#/ranking', tag: 'RANKING', h: 'Un solo ranking',
-    p: 'Jugá un evento en cualquier servidor de la Liga y ya entrás. Cada puesto suma puntos a tu temporada.' },
+    p: 'Juega un evento en cualquier servidor de la Liga y ya entras. Cada puesto suma puntos a tu temporada.' },
   { a: '#/tarjetas', tag: 'TARJETAS', h: 'Tu tarjeta',
-    p: 'Cada rapero tiene sus tarjetas estilo FIFA, con sus números de verdad. Las tuyas salen cuando te verificás en Discord Rap Español.' },
+    p: 'Cada rapero tiene sus tarjetas estilo FIFA, con sus números de verdad. Las tuyas salen cuando te verificas en Discord Rap Español.' },
   { a: '#/pase', tag: 'PASE DE RAPERO', h: 'Sin jugar también se sube',
-    p: 'Las Tareas del Pase te suben de nivel con lo que hacés en la página y en el bot. El nivel 1 te da tu tarjeta de Temporada.' },
+    p: 'Las Tareas del Pase te suben de nivel con lo que haces en la página y en el bot. El nivel 1 te da tu tarjeta de Temporada.' },
 ];
 
 /** El link del menú que se ve: el de arriba en la compu, el de la tira en el celular (que se corre hasta mostrarlo) */
@@ -143,12 +143,12 @@ function Recorrido({ liga, dc, onCerrar }) {
 // ⚠️ UN CONSEJO DE QUÉ HACER, NO QUÉ ES: lo que es ya lo dice el título de cada página (la Tienda, Socios), y repetirlo
 // arriba eran dos bloques diciendo lo mismo. La nota dice lo que no se ve a simple vista
 const NOTAS = {
-  publicaciones: 'Tocá 👏 en un logro para felicitar: a quien felicitás le llega el aviso, y se ve cuántos, nunca quiénes.',
-  tienda: 'Ponele precio a la cabeza de alguien con tus Puntos de Tienda: el primero que le gane en un evento se los lleva. Si nadie lo caza en la semana, vuelven a vos.',
+  publicaciones: 'Toca 👏 en un logro para felicitar: a quien felicitas le llega el aviso, y se ve cuántos, nunca quiénes.',
+  tienda: 'Ponele precio a la cabeza de alguien con tus Puntos de Tienda: el primero que le gane en un evento se los lleva. Si nadie lo caza en la semana, vuelven a ti.',
   socios: '¿Tu servidor no está? Escribile a @itsdlx en Discord.',
-  r: 'Con «Seguir» te avisa cuando gana algo, y con el botón de compartir mandás su perfil.',
-  llave: 'Si se está jugando, se actualiza sola: dejala abierta y mirá quién pasa.',
-  sv: 'En Eventos, en «Cuándo suele jugar», podés seguir a sus organizadores: te avisa cuando anuncian.',
+  r: 'Con «Seguir» te avisa cuando gana algo, y con el botón de compartir mandas su perfil.',
+  llave: 'Si se está jugando, se actualiza sola: déjala abierta y mira quién pasa.',
+  sv: 'En Eventos, en «Cuándo suele jugar», puedes seguir a sus organizadores: te avisa cuando anuncian.',
   crew: 'Una crew suma los puntos de su gente; para tener puesto necesita tres raperos en la temporada.',
   pais: 'Los raperos de un país en la temporada, y cómo le va al país en el ranking mundial.',
 };
@@ -222,7 +222,7 @@ export function Tutorial({ liga, dc, pagina, sv, repite }) {
     <>
       {franja && !abierto ? (
         <div className="rc-franja" role="region" aria-label="Primera vez">
-          <p>{FRANJA[LLEGADA] || '¿Primera vez en la Liga? Mirá cómo funciona.'}</p>
+          <p>{FRANJA[LLEGADA] || '¿Primera vez en la Liga? Mira cómo funciona.'}</p>
           <button type="button" className="btn verde chico" onClick={verFranja}>Ver cómo · 1 min</button>
           <button type="button" className="btn-ico rc-x" aria-label="Cerrar" onClick={cerrarFranja}><Ico n="cerrar" t={18} /></button>
         </div>
@@ -250,15 +250,15 @@ export function PrimerosPasos({ liga, dc, enGuia }) {
   const P = usePase(verificado, false);
   const nivel = P && P.listo ? P.nivel || 0 : 0;
   const pasos = [
-    ['entrar', !!dc, 'Entrá con Discord', 'Con tu cuenta: tu perfil, tus avisos, votar y seguir.',
+    ['entrar', !!dc, 'Entra con Discord', 'Con tu cuenta: tu perfil, tus avisos, votar y seguir.',
       dc ? null : <button key="b" type="button" className="btn verde chico" onClick={accion.entrar}>Entrar</button>],
-    ['verif', verificado, 'Verificate', 'En Discord Rap Español, con tu país. Se abre tu tarjeta de Servidor.',
+    ['verif', verificado, 'Verifícate', 'En Discord Rap Español, con tu país. Se abre tu tarjeta de Servidor.',
       <a key="b" className="btn verde chico" href="#/cuenta/verificar">Verificarme</a>],
-    ['pase', nivel >= 1, 'Llegá al nivel 1 del Pase', 'Dos Tareas del día o una de la semana, sin necesidad de jugar. Se abre tu tarjeta de Temporada.',
+    ['pase', nivel >= 1, 'Llega al nivel 1 del Pase', 'Dos Tareas del día o una de la semana, sin necesidad de jugar. Se abre tu tarjeta de Temporada.',
       <a key="b" className="btn verde chico" href="#/pase">Ver mis Tareas</a>],
-    ['campana', !!leerLS('campana:activada'), 'Prendé la campana', 'Te avisa al minuto cuando un servidor anuncia un evento.',
+    ['campana', !!leerLS('campana:activada'), 'Prende la campana', 'Te avisa al minuto cuando un servidor anuncia un evento.',
       <a key="b" className="btn verde chico" href="#/avisos">Activar</a>],
-    ['seguir', liga.sigue.length > 0, 'Seguí a un rapero', 'Te avisa cuando gana algo.',
+    ['seguir', liga.sigue.length > 0, 'Sigue a un rapero', 'Te avisa cuando gana algo.',
       <a key="b" className="btn verde chico" href="#/ranking">Ver el ranking</a>],
   ];
   const hechos = pasos.filter((p) => p[1]).length;
@@ -279,7 +279,7 @@ export function PrimerosPasos({ liga, dc, enGuia }) {
       <div className="pp-cab">
         <div>
           {enGuia ? null : <><span className="pp-k">PRIMEROS PASOS</span>
-            <h2 id="pp-h">{completo ? 'Ya diste los primeros pasos' : 'Empezá por acá'}</h2></>}
+            <h2 id="pp-h">{completo ? 'Ya diste los primeros pasos' : 'Empieza por acá'}</h2></>}
           <small>{hechos} de {pasos.length}{completo ? ' · listo' : ''}</small>
         </div>
         {!enGuia ? <button type="button" className="btn-ico rc-x" aria-label="Cerrar los primeros pasos"

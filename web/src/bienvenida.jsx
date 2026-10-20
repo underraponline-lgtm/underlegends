@@ -126,7 +126,7 @@ export default function Bienvenida({ liga, dc }) {
             <div className="bv-izq">
               <span className="bv-sello">TEMPORADA {String(liga.temp || '').replace(/^T/i, '')} · EN JUEGO</span>
               <h1 className="bv-t" id="bv-t" tabIndex={-1} ref={tit}><span>LIGA GLOBAL</span><span>DE FREESTYLE</span></h1>
-              <p className="bv-p">El ranking de los servidores de freestyle de Discord. Jugá en el tuyo, subí en la tabla y ganá tu carta.</p>
+              <p className="bv-p">El ranking de los servidores de freestyle de Discord. Juega en el tuyo, subí en la tabla y gana tu carta.</p>
               {svs.length ? (
                 <div className="bv-svs">
                   <span className="bv-svs-l">{svs.slice(0, 9).map((s) => <img key={s} alt={nombreSv(s)} title={nombreSv(s)} src={liga.logo(s)} />)}</span>
@@ -135,7 +135,7 @@ export default function Bienvenida({ liga, dc }) {
               ) : null}
               <div className="bv-premio">
                 <span className="bv-sil" aria-hidden="true">?</span>
-                <p><b>Tu carta de Servidor</b>Cuando terminás de unirte se dibuja con tu foto y tu bandera. La de Temporada, con tu primera Tarea del Pase.</p>
+                <p><b>Tu carta de Servidor</b>Cuando terminas de unirte se dibuja con tu foto y tu bandera. La de Temporada, con tu primera Tarea del Pase.</p>
               </div>
               <div className="bv-acc">
                 <button type="button" className="bv-si" onClick={unirme}>
@@ -155,8 +155,8 @@ export default function Bienvenida({ liga, dc }) {
       ) : (
         <div className="bv-c bv-p2">
           <span className="bv-sello">{listo ? 'YA ESTÁS ADENTRO' : 'UN PASO MÁS'}</span>
-          <h1 className="bv-t chico" id="bv-t" tabIndex={-1} ref={tit}><span>{listo ? 'BIENVENIDO A LA' : 'COMENZÁ A SER PARTE DE LA'}</span><span>LIGA GLOBAL</span></h1>
-          {listo ? <p className="bv-p">Ya sos parte. Ahora te mostramos dónde está cada cosa: los eventos, el ranking, tu tarjeta y el Pase.</p>
+          <h1 className="bv-t chico" id="bv-t" tabIndex={-1} ref={tit}><span>{listo ? 'BIENVENIDO A LA' : 'COMIENZA A SER PARTE DE LA'}</span><span>LIGA GLOBAL</span></h1>
+          {listo ? <p className="bv-p">Ya eres parte. Ahora te mostramos dónde está cada cosa: los eventos, el ranking, tu tarjeta y el Pase.</p>
             : <div className="bv-ver"><Suspense fallback={<p className="bv-p">Mirando tu cuenta…</p>}><Verificar liga={liga} dc={dc} /></Suspense></div>}
           <button type="button" className={listo ? 'bv-si' : 'bv-luego'} onClick={() => cerrar(listo ? 'listo' : 'luego')}>
             {listo ? <>Empezar<Ico n="flecha" t={22} /></> : 'Seguir después'}</button>

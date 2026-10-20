@@ -381,7 +381,7 @@ def huellas():
         raise RuntimeError(
             'falta datos/campos_por_carta.json: sin el mapa campo→carta '
             'las huellas son todas iguales y el sello queda inservible. '
-            'Corré `python herramientas/que_pide_cada_carta.py`.')
+            'Corre `python herramientas/que_pide_cada_carta.py`.')
     mapa = pc[0]
     porcarta = {}
     for campo, cartas in mapa.items():

@@ -203,7 +203,7 @@
     try {
       var d = await pedir('probar', { endpoint: SUB.endpoint });
       if (!d.ok) {
-        MSG = '⚠️ El servicio de avisos contestó ' + d.estado + '. Probá desactivar y activar de nuevo.';
+        MSG = '⚠️ El servicio de avisos contestó ' + d.estado + '. Prueba desactivar y activar de nuevo.';
         pinta();
         return;
       }
@@ -216,13 +216,13 @@
       // ajuste que lo arregle desde acá.
       MSG = llego
         ? '✅ Llegó a este dispositivo. Si no viste la notificación, la está tapando el ' +
-          'sistema: en Windows, Configuración → Sistema → Notificaciones → activá tu ' +
-          'navegador y apagá «No molestar».'
+          'sistema: en Windows, Configuración → Sistema → Notificaciones → activa tu ' +
+          'navegador y apaga «No molestar».'
         : '⚠️ Tu navegador aceptó la suscripción pero el aviso no le llegó. Pasa con ' +
-          'algunos navegadores de compu (Opera GX, por ejemplo): en esta compu probá con ' +
+          'algunos navegadores de compu (Opera GX, por ejemplo): en esta compu prueba con ' +
           'Chrome, Edge o Firefox. En el teléfono, Chrome anda.';
     } catch (e) {
-      MSG = e.estado === 429 ? 'Esperá unos segundos entre pruebas.' : '⚠️ ' + e.message;
+      MSG = e.estado === 429 ? 'Espera unos segundos entre pruebas.' : '⚠️ ' + e.message;
     }
     pinta();
   }
@@ -249,7 +249,7 @@
   // 🔑 VINCULAR: se entra con Discord (sin pedir nada nuevo: `prompt=none`)
   // y a la vuelta `vincularAvisos()` de app.js anota el dispositivo.
   function vincular() {
-    if (typeof window.urlLogin !== 'function') throw new Error('recargá la página');
+    if (typeof window.urlLogin !== 'function') throw new Error('recarga la página');
     location.href = window.urlLogin('v');
   }
   async function desvincular() {
@@ -259,11 +259,11 @@
     pinta();
   }
   window.addEventListener('lg:vinculado', function () {
-    MSG = '✅ Listo: te llegan tus avisos (rango, tarjetas, cuando te toca pelear, cuando te felicitan y cuando alguien te sigue) y los de la gente que seguís en este dispositivo.';
+    MSG = '✅ Listo: te llegan tus avisos (rango, tarjetas, cuando te toca pelear, cuando te felicitan y cuando alguien te sigue) y los de la gente que sigues en este dispositivo.';
     pinta();
   });
   window.addEventListener('lg:vinculado-no', function () {
-    MSG = '⚠️ No pude vincularlo. Activá los avisos en este dispositivo y probá de nuevo.';
+    MSG = '⚠️ No pude vincularlo. Activa los avisos en este dispositivo y prueba de nuevo.';
     pinta();
   });
 
@@ -324,16 +324,16 @@
     var h = '';
     if (!SOPORTA && IOS && !INSTALADA) {
       h = '<p class="cp-tx">En iPhone y iPad los avisos llegan con la Liga en la pantalla de inicio:</p>' +
-        '<ol class="cp-pasos"><li>Tocá <b>Compartir</b> (el cuadrado con la flecha).</li>' +
-        '<li>Elegí <b>Agregar a inicio</b>.</li>' +
-        '<li>Abrí la Liga <b>desde ese ícono</b> y volvé a esta pantalla.</li></ol>';
+        '<ol class="cp-pasos"><li>Toca <b>Compartir</b> (el cuadrado con la flecha).</li>' +
+        '<li>Elige <b>Agregar a inicio</b>.</li>' +
+        '<li>Abre la Liga <b>desde ese ícono</b> y vuelve a esta pantalla.</li></ol>';
     } else if (!SOPORTA) {
       h = '<p class="cp-tx">Este navegador no puede recibir avisos. En Android andan Chrome, ' +
         'Firefox, Edge y Samsung Internet; en la compu, cualquiera de esos.</p>';
     } else if (negado) {
       h = '<p class="cp-tx">Las notificaciones de esta página están <b>bloqueadas</b>. Para ' +
-        'activarlas: tocá el candado al lado de la dirección → <b>Notificaciones</b> → ' +
-        '<b>Permitir</b>, y recargá.</p>';
+        'activarlas: toca el candado al lado de la dirección → <b>Notificaciones</b> → ' +
+        '<b>Permitir</b>, y recarga.</p>';
     } else if (!SUB) {
       h = (pedidoValido() ? '<p class="cp-ok">Vas a activar los avisos de <b>' +
         esc(textoPedido(pedidoValido())) + '</b>, como elegiste en Discord.</p>' : '') +
@@ -367,7 +367,7 @@
       // ⭐ y desde el 28/09/2026, lo de la gente que seguís (ver `seguidos()`)
       // 🎤 y desde el 01/10/2026, cuando te toca pelear en una llave en vivo (ver `turnos()` en bot/avisos.js)
       h += '<div class="cp-yo"><p class="cp-tx"><b>&#128100; Avisos míos</b>: cuando te toca pelear en una ' +
-        'llave en vivo, cuando subís de rango o desbloqueás una tarjeta, y cuando alguien que seguís gana o sube.</p>' + (yo && yo.id
+        'llave en vivo, cuando subes de rango o desbloqueas una tarjeta, y cuando alguien que sigues gana o sube.</p>' + (yo && yo.id
         ? '<p class="cp-ok">✅ Vinculado con tu Discord' + (yo.n ? ' (' + esc(yo.n) + ')' : '') +
           '.</p><button class="bajar cp-no" data-cp="desvincular"><span>Desvincular</span></button>'
         : '<button class="bajar" data-cp="vincular"><i aria-hidden="true">&#128279;</i>' +

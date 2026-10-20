@@ -431,7 +431,7 @@ def correr(aplicar):
     if raros:
         import alertar
         alertar.alertar('autoverificar', 'Autoverificar no aplicó nada: %s. '
-                        'Eso no es el goteo normal; mirá antes de correrlo a mano '
+                        'Eso no es el goteo normal; mira antes de correrlo a mano '
                         '(`python bot/autoverificar.py`).' % ' y '.join(raros))
     if not pp and not pv:
         print('   nada que hacer')

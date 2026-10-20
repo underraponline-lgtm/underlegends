@@ -406,7 +406,7 @@ def main():
         print('\n══ LAS ALERTAS ══')
         sys.exit(0 if _self_check() else 1)
     if '--probar' in a:
-        ok = dm('✅ Prueba: las alertas del ciclo te llegan por acá, y sólo a vos. '
+        ok = dm('✅ Prueba: las alertas del ciclo te llegan por acá, y sólo a ti. '
                 'Lo normal va al canal de Logs. (%s)' % _et())
         print('   %s' % ('DM mandado' if ok else 'no salió'))
         return

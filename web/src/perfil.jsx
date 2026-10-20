@@ -93,21 +93,21 @@ function Precio({ liga, f, esYo, dc }) {
   const saldo = window.BILL && window.BILL.ok ? window.BILL.saldo : null;
   const queda = T.tope - v;
   const msg = est.va ? 'Poniendo ' + num(est.va) + '…'
-    : est.ok ? '✓ Pusiste ' + num(est.ok) + '. Si nadie lo caza en la semana, vuelven a vos.'
+    : est.ok ? '✓ Pusiste ' + num(est.ok) + '. Si nadie lo caza en la semana, vuelven a ti.'
       : est.error ? sinEtiquetas(typeof window.errorPrecio === 'function' ? window.errorPrecio(est) : 'No pude ponerlo.')
-        : dc ? 'Elegí cuánto ponerle.' : 'Para poner un precio entrás con Discord: tocá un monto.';
+        : dc ? 'Elige cuánto ponerle.' : 'Para poner un precio entras con Discord: toca un monto.';
   return (
     <section className="sec pf-sec negra">
       <div className="sec-t"><h2>Precio por su cabeza</h2><a href="#/tienda">Cómo funciona <Ico n="flecha" t={16} /></a></div>
       <p className="pf-bajada">El primero que le gane en un evento de la Liga se lleva lo que vale, en Puntos de Tienda y en su Temporada.</p>
       <p className="pf-pr"><b>{limpio(f.n)}</b> vale <span className="pf-pr-v">{num(v)}</span>
         {v < T.tope ? <> · se le pueden poner {num(queda)} más</> : <> · ya vale lo máximo</>}</p>
-      {esYo ? <p className="pf-bajada">Sos vos: no te podés poner precio.</p> : (
+      {esYo ? <p className="pf-bajada">Eres tú: no te puedes poner precio.</p> : (
         <>
           <div className="pf-pr-m">
             {[1, 2, 5, 10].map((x) => T.min * x).map((m) => (
               <DosToques key={m} className="btn borde2 chico" disabled={m > queda || (saldo != null && m > saldo) || !!est.va}
-                confirmar={'¿' + num(m) + '? Tocá de nuevo'} onClick={() => window.ponerPrecio(f.n, m)}>+{num(m)}</DosToques>
+                confirmar={'¿' + num(m) + '? Toca de nuevo'} onClick={() => window.ponerPrecio(f.n, m)}>+{num(m)}</DosToques>
             ))}
           </div>
           <p className={'pf-pr-e' + (est.error ? ' mal' : '')} aria-live="polite">{msg}</p>
@@ -438,13 +438,13 @@ function FortalezasBloq({ dims, f, pide, esYo }) {
         </div>
         <div className="pf-fz-tx">
           <p className="pf-fz-q"><b>Se desbloquea con la tarjeta Competitiva</b>
-            {esYo ? 'En qué sos más fuerte y qué te toca trabajar' : 'En qué es más fuerte y qué le toca trabajar'}: las cinco
+            {esYo ? 'En qué eres más fuerte y qué te toca trabajar' : 'En qué es más fuerte y qué le toca trabajar'}: las cinco
             cosas que mide el Score, contra el promedio de la Liga.</p>
           <ul className="tj-falta pf-fz-meta">
             <li className={llego ? 'ok' : ''}><span>{Math.min(ev, pide)}/{pide} eventos</span><i><u style={{ width: pct + '%' }} /></i></li>
           </ul>
           <p className="pf-bajada pf-fz-falta">{llego
-            ? (esYo ? 'Ya tenés los ' : 'Ya tiene los ') + pide + ' eventos. ' + (f.nv ? (esYo ? 'Sólo te falta verificarte (arriba dice cómo).' : 'Sólo le falta verificarse.') : 'La tarjeta sale en la próxima vuelta del bot.')
+            ? (esYo ? 'Ya tienes los ' : 'Ya tiene los ') + pide + ' eventos. ' + (f.nv ? (esYo ? 'Sólo te falta verificarte (arriba dice cómo).' : 'Sólo le falta verificarse.') : 'La tarjeta sale en la próxima vuelta del bot.')
             : RQ.falta('EVENTOS', ev, pide, esYo)}</p>
           <ul className="pf-dims pf-dims-bloq">
             {dims.map((d) => (
@@ -513,13 +513,13 @@ function ProximaMeta({ liga, f, esYo }) {
   const corte = f.pos > 16 && of.length >= 16 ? of[15] : null;
   const n = (x) => limpio(x.n);
   let t;
-  if (!arriba) t = (esYo ? 'Sos el #1 de la Temporada' : 'Es el #1 de la Temporada')
-    + (abajo && ovr(f) > ovr(abajo) ? ' · ' + (esYo ? 'le sacás ' : 'le saca ') + D_OVR(ovr(f) - ovr(abajo)) + ' a ' + n(abajo) : '');
+  if (!arriba) t = (esYo ? 'Eres el #1 de la Temporada' : 'Es el #1 de la Temporada')
+    + (abajo && ovr(f) > ovr(abajo) ? ' · ' + (esYo ? 'le sacas ' : 'le saca ') + D_OVR(ovr(f) - ovr(abajo)) + ' a ' + n(abajo) : '');
   else if (ovr(arriba) > ovr(f)) t = (esYo ? 'Te faltan ' : 'Le faltan ') + D_OVR(ovr(arriba) - ovr(f)) + ' para pasar a ' + n(arriba)
     + ' y subir al #' + arriba.pos;
   else t = (esYo ? 'Estás pegado a ' : 'Está pegado a ') + n(arriba) + ', el #' + arriba.pos + ': el próximo evento los separa';
   const sub = corte ? (ovr(corte) > ovr(f) ? 'Y ' + D_OVR(ovr(corte) - ovr(f)) + ' para entrar a los 16 de la Clausura' : '')
-    : (esYo ? 'Si la temporada terminara hoy, jugás la Clausura' : 'Si la temporada terminara hoy, juega la Clausura');
+    : (esYo ? 'Si la temporada terminara hoy, juegas la Clausura' : 'Si la temporada terminara hoy, juega la Clausura');
   return (
     <section className="sec pf-sec pf-meta-sec">
       <a className="pf-meta" href="#/ranking/temporada">
@@ -579,7 +579,7 @@ function LoQueFalta({ f, p, esYo }) {
             <li key={c}>
               <h3>{NOMBRE[c]}<span>{espera ? 'Falta verificarse' : 'Bloqueada'}</span></h3>
               {/* el porqué entero va una sola vez, arriba (`pf-nv`): acá repetirlo en cada tarjeta era la misma frase tres veces */}
-              {espera ? <p>{esYo ? 'Ya cumplís lo que pide: sólo te falta verificarte (arriba dice cómo).' : 'Ya cumple lo que pide: sólo le falta verificarse.'}</p> : null}
+              {espera ? <p>{esYo ? 'Ya cumples lo que pide: sólo te falta verificarte (arriba dice cómo).' : 'Ya cumple lo que pide: sólo le falta verificarse.'}</p> : null}
               {!listo && !espera && c === 'temporada' ? <p>{RQ.pase(esYo)}</p> : null}
               {!listo && !espera && c !== 'temporada' ? <FaltaLista q={q} tu={esYo} /> : null}
             </li>
@@ -718,7 +718,7 @@ function Videos({ liga, p, k, esYo, dc }) {
   return (
     <section className="sec pf-sec negra">
       <div className="sec-t"><h2>Sus batallas en video</h2><span className="tj-n">{vs.length + vp.length === 1 ? 'una' : vs.length + vp.length}</span></div>
-      {vs.length ? <p className="pf-bajada">De los canales de YouTube de los servidores de la Liga. Tocá una para verla acá.</p> : null}
+      {vs.length ? <p className="pf-bajada">De los canales de YouTube de los servidores de la Liga. Toca una para verla acá.</p> : null}
       {vs.length ? <ul className="pf-vid">
         {vs.map(([vid, tit, sv]) => (
           <li key={vid}>
@@ -733,7 +733,7 @@ function Videos({ liga, p, k, esYo, dc }) {
       {vp.length ? (
         <>
           <h3 className="pf-vid-t">De plazas y otras ligas</h3>
-          <p className="pf-bajada">Las sumó {esYo ? 'vos' : 'él'}: entran solas si el título es una batalla con su nombre.{esYo ? ' Las tuyas se suman en Mi cuenta → Mi perfil.' : ''}</p>
+          <p className="pf-bajada">Las sumó {esYo ? 'tú' : 'él'}: entran solas si el título es una batalla con su nombre.{esYo ? ' Las tuyas se suman en Mi cuenta → Mi perfil.' : ''}</p>
           <ul className="pf-vid">{vp.map((v) => <VideoPropio key={v[0]} v={v} k={k} esYo={esYo} dc={dc} />)}</ul>
         </>
       ) : null}
@@ -767,7 +767,7 @@ function Duelos({ liga, p, e }) {
   return (
     <section className="sec pf-sec negra">
       <div className="sec-t"><h2>Cara a cara</h2><span className="tj-n">{g} ganados de {du.length}{rd ? ' · racha ' + rd[0] + ' (máx ' + rd[1] + ')' : ''}</span></div>
-      <p className="pf-bajada">Contra cada rival: cuántas veces se cruzaron y cómo le fue. Tocá uno para ver sus duelos.</p>
+      <p className="pf-bajada">Contra cada rival: cuántas veces se cruzaron y cómo le fue. Toca uno para ver sus duelos.</p>
       <ul className="pf-cc">
         {vis.map((r) => {
           const t = r.g + r.p;
@@ -979,7 +979,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
     return (
       <section className="sec pf-sec">
         <div className="sec-t"><h2>Todavía no jugó esta temporada</h2></div>
-        <p className="pronto-p">Buscalo en el <a className="te-link" href="#/ranking">Ranking</a>.</p>
+        <p className="pronto-p">Búscalo en el <a className="te-link" href="#/ranking">Ranking</a>.</p>
       </section>
     );
   }
@@ -1003,7 +1003,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
       {/* 🤝 en tu perfil y sin crew: las que te aceptan, debajo de la cabecera (sale sola sólo si estás verificado y sin
           crew: ver `CrewsParaVos` de crewpanel.jsx) */}
       {esYo && !crewDe(k) ? <CrewsParaVos liga={liga} seccion="sec pf-sec" /> : null}
-      {f.fuera ? <section className="sec pf-sec"><p className="pronto-p">Tu historial todavía no está en la página: aparece cuando entrás entre los 200 de la tabla.</p></section> : null}
+      {f.fuera ? <section className="sec pf-sec"><p className="pronto-p">Tu historial todavía no está en la página: aparece cuando entras entre los 200 de la tabla.</p></section> : null}
       {!P ? <div className="cargando">Cargando…</div> : (
         <>
           <ProximaMeta liga={liga} f={f} esYo={esYo} />

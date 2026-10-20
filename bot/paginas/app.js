@@ -414,7 +414,7 @@ function pintaHero() {
       '</b><small>' + sub +
       '</small></div>' + der + '</div>';
   }).join('') + (pr.length < 2 ? '<p class="vi-mas">Los servidores suelen anunciar sus ' +
-    'eventos el mismo día. Con los <a href="#/avisos">avisos</a> te enterás apenas sale uno.</p>' : '');
+    'eventos el mismo día. Con los <a href="#/avisos">avisos</a> te enteras apenas sale uno.</p>' : '');
   pintaRelojes();
 }
 function vieneDestacado(e) {
@@ -1074,7 +1074,7 @@ function abrirLlave(n) {
   // no se sigue a nadie, que es justo cuando hace falta.
   var vid = vidasDe(L);
   var ley = vid ? '<div class="l-ley"><span class="ley-n">' + vid + ' vidas: cada batalla le saca una al que ' +
-    'pierde y el que gana se queda. Con ' + vid + ' derrotas quedás afuera, y el lugar es el orden en que ' +
+    'pierde y el que gana se queda. Con ' + vid + ' derrotas quedas afuera, y el lugar es el orden en que ' +
     'cayeron.</span></div>' :
     '<div class="l-ley"><span class="ley-g"><i></i>Ganó y pasa de ronda</span>' +
     '<span class="ley-p"><i></i>Quedó afuera</span><span class="ley-o"><i></i>El camino del campeón</span>' +
@@ -1137,13 +1137,13 @@ var REP = { que: '' };
 function pintaReporte(est) {
   var el = $('#lRep');
   if (!el) return;
-  el.innerHTML = '<p class="rep-t">Contanos qué está mal y lo revisa la Liga.</p>' +
+  el.innerHTML = '<p class="rep-t">Cuéntanos qué está mal y lo revisa la Liga.</p>' +
     '<div class="rep-q" role="group" aria-label="Qué está mal">' + REP_QUE.map(function (q) {
       return '<button type="button" data-rep-que="' + q[0] + '" aria-pressed="' + (REP.que === q[0]) + '">' +
         esc(q[1]) + '</button>';
     }).join('') + '</div>' +
     '<textarea id="lRepTxt" maxlength="300" rows="3" placeholder="Qué batalla y qué pasó' +
-      (REP.que === 'otro' ? '' : ' (si querés)') + '">' + esc(REP.txt || '') + '</textarea>' +
+      (REP.que === 'otro' ? '' : ' (si quieres)') + '">' + esc(REP.txt || '') + '</textarea>' +
     '<div class="rep-pie"><button type="button" class="btn" data-rep-enviar' +
       (REP.que && !REP.va ? '' : ' disabled') + '>' + (REP.va ? 'Enviando…' : 'Enviar') + '</button>' +
     '<span class="rep-est" aria-live="polite">' + (est || '') + '</span></div>' +
@@ -1154,7 +1154,7 @@ function enviarReporte() {
   var t = (($('#lRepTxt') && $('#lRepTxt').value) || '').replace(/\s+/g, ' ').trim();
   REP.txt = t;
   if (!REP.que || !LL || REP.va) return;
-  if (REP.que === 'otro' && t.length < 3) { pintaReporte('Contá qué pasó.'); return; }
+  if (REP.que === 'otro' && t.length < 3) { pintaReporte('Cuenta qué pasó.'); return; }
   REP.va = true;
   pintaReporte();
   conCuenta('/api/avisos/reportar', { llave: String(LL.n), que: REP.que, texto: t })
@@ -1167,12 +1167,12 @@ function enviarReporte() {
         return;
       }
       var e = (j && j.error) || '';
-      pintaReporte(errorCuenta(e) || (j && j.status === 401 ? 'Para reportar, entrá con Discord desde Mi cuenta.'
+      pintaReporte(errorCuenta(e) || (j && j.status === 401 ? 'Para reportar, entra con Discord desde Mi cuenta.'
         : e === 'nueva' ? 'Tu cuenta de Discord es muy nueva para reportar.'
-        : e === 'tope' ? 'Ya mandaste varios hoy: probá mañana.'
-        : 'No pude mandarlo. Probá de nuevo en un rato.'));
+        : e === 'tope' ? 'Ya mandaste varios hoy: prueba mañana.'
+        : 'No pude mandarlo. Prueba de nuevo en un rato.'));
     })
-    .catch(function () { REP.va = false; pintaReporte('No pude mandarlo. Probá de nuevo en un rato.'); });
+    .catch(function () { REP.va = false; pintaReporte('No pude mandarlo. Prueba de nuevo en un rato.'); });
 }
 /* la ficha de una llave en vivo: no tiene puntos ni fecha de calendario */
 function pintaCabVivo(L) {
@@ -1271,8 +1271,8 @@ function pintaBarraSigue(k, fijo) {
   bar.classList.toggle('on', !!f);
   if (!f) {
     bar.innerHTML = '<span class="ls-idle">' + (HOVER
-      ? 'Pasá el mouse por un nombre y se ilumina su camino. Con un clic, su perfil.'
-      : 'Tocá un nombre y se ilumina su camino.') + '</span>';
+      ? 'Pasa el mouse por un nombre y se ilumina su camino. Con un clic, su perfil.'
+      : 'Toca un nombre y se ilumina su camino.') + '</span>';
     return;
   }
   // 🔑 DOS RENGLONES FIJOS —quién, y cómo le fue— para que la barra mida
@@ -1801,7 +1801,7 @@ var SUB = 'temporada';
 var SUBS = {
   temporada: {
     baj: 'El orden sale del <b>OVR</b>, que es el mismo número que lleva la tarjeta. ' +
-      'Tocá cualquier encabezado para ordenar, y un nombre para abrir su perfil.',
+      'Toca cualquier encabezado para ordenar, y un nombre para abrir su perfil.',
     filas: function () { return D.tabla || []; },
     orden: 'pos',
     // 🔑 LAS COLUMNAS DEL RANKING OFICIAL. Dlx, 25/09/2026: «chequea cómo
@@ -1889,7 +1889,7 @@ var SUBS = {
     filas: function () { return (D.mw && D.mw.caz) || []; },
     orden: 'mwp',
     cols: ['i', 'n', 'mwp', 'mwc', 'mwz', 'mws'],
-    vacio: function () { return 'Todavía nadie cazó a un buscado. Mirá el tablero del Inicio.'; },
+    vacio: function () { return 'Todavía nadie cazó a un buscado. Mira el tablero del Inicio.'; },
   },
   misiones: { pronto: '<b>Las misiones</b> de la temporada arrancan pronto.' },
   ligas: { pronto: '<b>El ranking de ligas</b> llega en la Temporada 2.', cuando: 'Temporada 2' },
@@ -2050,7 +2050,7 @@ function pintaGaleria() {
     // sobra el nombre, faltan las caras.
     $('#galeria').innerHTML = '<p class="sin-carta">' + (hay.length
       ? 'Nadie con ese nombre.'
-      : 'Todavía no hay tarjetas con foto. Poné la tuya en Discord con ' +
+      : 'Todavía no hay tarjetas con foto. Pon la tuya en Discord con ' +
         '<code>/foto</code>.') + '</p>';
     $('#masCartas').hidden = true;
     return;
@@ -2126,7 +2126,7 @@ function pintaComparar() {
     if (!f) return '';
     return '<div class="cmp-lado">' +
       '<input class="cmp-busca" data-lado="' + j + '" ' +
-      'value="' + esc(f.n) + '" placeholder="Escribí un nombre…" ' +
+      'value="' + esc(f.n) + '" placeholder="Escribe un nombre…" ' +
       'autocomplete="off" spellcheck="false" ' +
       'aria-label="Rapero a comparar">' +
       '<img loading="lazy" decoding="async" src="' + urlCarta(f, CMP_CAT) +
@@ -2152,7 +2152,7 @@ function pintaComparar() {
   $('#cmp').innerHTML =
     '<div class="sugeridor" id="sugeridor" hidden></div>' +
     lado(0) + lado(1) +
-    (a.k === b.k ? '<p class="sin">Elegí dos distintos.</p>'
+    (a.k === b.k ? '<p class="sin">Elige dos distintos.</p>'
                  : '<div class="vs">' + vs + '</div>');
   $('#cmp').dataset.par = a.k + '|' + b.k;
   pintaCaraCmp();
@@ -2712,7 +2712,7 @@ function cuadro(L, quien, cara) {
   }
   var ancho = ncol * (W + G) - G, alto2 = Math.ceil(fondo + 8);
   // en el teléfono el cuadro no entra: se avisa que sigue a la derecha
-  return (angosto && ncol > 2 ? '<p class="cuadro-guia">Deslizá para ver hasta la final &#8594;</p>' : '') +
+  return (angosto && ncol > 2 ? '<p class="cuadro-guia">Desliza para ver hasta la final &#8594;</p>' : '') +
     '<div class="cuadro-caja"><div class="cuadro" style="width:' + ancho +
     'px;height:' + alto2 + 'px"><svg width="' + ancho + '" height="' + alto2 +
     '" aria-hidden="true">' + lineas.join('') + '</svg>' + html.join('') +
@@ -3062,7 +3062,7 @@ function pintaEvCab() {
         'hacer desde la app—: en calendar.google.com, «Otros calendarios» → «+» → «Desde URL», con este ' +
         'link. Después aparecen solos en tu teléfono. '
       : 'Si el botón de Google no te lo suma, en calendar.google.com: «Otros calendarios» → «+» → ' +
-        '«Desde URL», y pegá este link. ') +
+        '«Desde URL», y pega este link. ') +
       '<code id="evcIcs">https://' + esc(ICS_HOST) + '/calendario.ics</code> ' +
       'Google lo actualiza cada algunas horas.</p>';
   $('#evCab').innerHTML = h;
@@ -3357,7 +3357,7 @@ document.addEventListener('error', function (e) {
 function quienEs(f, tam) {
   return '<span class="quien">' + avatar(f, tam) + '<span class="qn">' + esc(f.n) +
     '</span>' + (bandera(f.cc) || '') +
-    (sigoA(f.k) ? '<i class="sigo-et" title="Lo seguís">&#9733;</i>' : '') + '</span>';
+    (sigoA(f.k) ? '<i class="sigo-et" title="Lo sigues">&#9733;</i>' : '') + '</span>';
 }
 /* lo que viene sin cara en su lista (duelos, rachas) la toma de la tabla */
 function conCara(x) {
@@ -3555,7 +3555,7 @@ function pintaPerfil(k) {
     caja.innerHTML = '<a class="volver" href="#/ranking">&#8249; Ranking</a>' +
       '<section class="blk entro"><h2><span>&#9203;</span> Todavía no jugó esta temporada</h2>' +
       '<p class="bajada">Su perfil aparece solo en cuanto juegue su primer evento. Si el link vino de otro lado, ' +
-      'fijate que esté bien escrito.</p></section>';
+      'fíjate que esté bien escrito.</p></section>';
     return;
   }
   // la clave de verdad, aunque se haya llegado por un link viejo (`porK()`);
@@ -3865,7 +3865,7 @@ function pintaComunidad() {
       '</small></div>';
   }).join('') + '</dl>' +
     // ver `pintaPedi()`: se esconde para quien ya tiene la suya
-    '<a class="com-pedi" id="comPedi" href="#/tarjetas">¿Todavía no tenés tu tarjeta? Pedila &#8594;</a>';
+    '<a class="com-pedi" id="comPedi" href="#/tarjetas">¿Todavía no tienes tu tarjeta? Pídela &#8594;</a>';
   caja.hidden = false;
   try { pintaPedi(); } catch (e) { /* la cuenta lo vuelve a pintar */ }
 }
@@ -3883,11 +3883,11 @@ function pintaPedi() {
   var dra = svDe('DRA');
   var s = $('#secPedi');
   if (s) {
-    s.innerHTML = '<h2><span>&#127183;</span> ¿Todavía no tenés tu tarjeta?</h2>' +
-      '<p class="bajada">La pide cada uno y es un minuto: escribí <code>/verificar</code> en ' +
+    s.innerHTML = '<h2><span>&#127183;</span> ¿Todavía no tienes tu tarjeta?</h2>' +
+      '<p class="bajada">La pide cada uno y es un minuto: escribe <code>/verificar</code> en ' +
       'Discord. El bot te dice qué te falta y, si está todo, te carga solo: en menos de una hora ' +
-      'tenés tu tarjeta.</p>' +
-      '<p class="bajada">Son dos pasos: verificate —estar en <b>Discord Rap Español</b> con el rol ' +
+      'tienes tu tarjeta.</p>' +
+      '<p class="bajada">Son dos pasos: verifícate —estar en <b>Discord Rap Español</b> con el rol ' +
       '<b>Miembro</b> y tu <b>país</b>— y se desbloquea tu <b>Servidor</b>; cumplí tu primera Tarea del ' +
       '<b>Pase de rapero</b> y se desbloquea tu <b>Temporada</b>.</p>' +
       '<div class="pedi-bt">' +
@@ -4001,7 +4001,7 @@ function pintaFeed() {
   var rs = D.redes || [];
   if (!fs.length && !rs.length) { apaga('#secRedes'); return; }
   $('#secRedes').hidden = false;
-  $('#novRedes').innerHTML = rs.length ? '<span>Seguí a la Liga</span>' + redes(rs) : '';
+  $('#novRedes').innerHTML = rs.length ? '<span>Sigue a la Liga</span>' + redes(rs) : '';
   $('#feed').hidden = !fs.length;
   pager(FEED, fs, porPagina(), '#feed', '#feedNav', '#feedPag', '#feedAntes', '#feedDespues', itemFeed);
 }
@@ -4067,7 +4067,7 @@ function pintaMW() {
   pag.dataset.tit = '&#128128; Most Wanted' + (M.tipo === 'dia' ? ' de hoy' : ' de la semana');
   var tmw = D.tienda && D.tienda.mw;
   pag.innerHTML = '<p class="mw-cab"><b>' + sueltos + ' de ' + M.b.length + '</b> siguen sueltos. ' +
-    'Cazalos en cualquier evento de la Liga: le ganás a uno y su recompensa suma a tus Puntos' +
+    'Cazalos en cualquier evento de la Liga: le ganas a uno y su recompensa suma a tus Puntos' +
     (tmw ? ' (y el ' + Math.round(tmw * 100) + ' % en Puntos de Tienda)' : '') + '. Vence el ' +
     esc(fmtFecha(M.fin, { weekday: 'long' })) + ' a las ' + esc(fmtHora(M.fin)) + ' ' + etiquetaHora(M.fin) +
     '.</p><div class="mw-t">' + M.b.map(cartelMW).join('') + '</div>' +
@@ -4094,9 +4094,9 @@ function pieEnc(E, nombre) {
   if (est.va) return 'Guardando tu voto&hellip;';
   if (est.error) return '<span class="enc-mal">' + errorEnc(est) + '</span>';
   if (mio && E.op.indexOf(mio) >= 0) {
-    return 'Votaste por <b>' + esc(nombre(mio)) + '</b>. Lo podés cambiar hasta que cierre.';
+    return 'Votaste por <b>' + esc(nombre(mio)) + '</b>. Lo puedes cambiar hasta que cierre.';
   }
-  return (DC ? 'Tocá una opción para votar.' : 'Para votar entrás con Discord: tocá una opción.') +
+  return (DC ? 'Toca una opción para votar.' : 'Para votar entras con Discord: toca una opción.') +
     ' Nadie ve a quién votaste.';
 }
 function cabEnc(E, tot) {
@@ -4126,11 +4126,11 @@ function pintaElegido(E) {
       : 'del ' + esc(fmtFecha(E.hasta, { weekday: 'long' }));
     c.dataset.id = E.id;
     c.innerHTML = '<h4>&#128499;&#65039; El Elegido ' + para + '</h4><p class="enc-b"></p>' +
-      '<input type="search" class="enc-busca" placeholder="Buscá a quién votar" ' +
+      '<input type="search" class="enc-busca" placeholder="Busca a quién votar" ' +
       'aria-label="Buscar un rapero para votar" value="' + esc(ENC_BUSCA) + '">' +
       '<div class="enc-ops"></div><p class="enc-e" aria-live="polite"></p>';
   }
-  c.querySelector('.enc-b').innerHTML = 'Votá a quién buscar: el más votado entra al Most Wanted como ' +
+  c.querySelector('.enc-b').innerHTML = 'Vota a quién buscar: el más votado entra al Most Wanted como ' +
     '<b>El Elegido</b>. ' + cabEnc(E, totalEnc(cuentaEnc(E.id)));
   pintaOpsElegido(E);
   c.hidden = false;
@@ -4152,13 +4152,13 @@ function pintaOpsElegido(E) {
   c.querySelector('.enc-ops').innerHTML = ver.length ? ver.map(function (op) {
     var f = fDe(op), n = cu[op] || 0, esYo = yoF && f && f.k === yoF.k;
     return '<button type="button" class="enc-op' + (mio === op ? ' mio' : '') + (est.va === op ? ' va' : '') +
-      '" data-votar="' + esc(E.id) + '" data-op="' + esc(op) + '"' + (esYo ? ' disabled title="Sos vos"' : '') + '>' +
+      '" data-votar="' + esc(E.id) + '" data-op="' + esc(op) + '"' + (esYo ? ' disabled title="Eres tú"' : '') + '>' +
       '<i class="enc-bar" style="width:' + (tot ? Math.round(100 * n / tot) : 0) + '%"></i>' +
       (f ? quienEs(f, 26) : '<span class="quien">' + conBanderas(op) + '</span>') +
-      '<span class="enc-n">' + (esYo ? 'sos vos' : (mio === op ? '&#10003; ' : '') + n) + '</span></button>';
+      '<span class="enc-n">' + (esYo ? 'eres tú' : (mio === op ? '&#10003; ' : '') + n) + '</span></button>';
   }).join('') : '<p class="nota">Nadie con ese nombre puede ser El Elegido.</p>';
   c.querySelector('.enc-e').innerHTML = pieEnc(E, nombre) + (!q && E.op.length > ver.length
-    ? ' Se puede votar a ' + E.op.length + ': buscá a quién.' : '');
+    ? ' Se puede votar a ' + E.op.length + ': busca a quién.' : '');
 }
 /* 🔑 EL ×2 DE LA SEMANA QUE VIENE: los servidores, con sus votos */
 function pintaX2(E) {
@@ -4200,12 +4200,12 @@ function panelPrecio(c, T) {
   var v = valorCabezas()[c] || 0, est = PR_EST[c] || {}, f = porK(kDe(c)), yoF = yoDiscord();
   var esYo = yoF && f && yoF.k === f.k;
   var msg = est.va ? 'Poniendo ' + num(est.va) + '&hellip;'
-    : est.ok ? '&#10003; Pusiste <b>' + num(est.ok) + '</b>. Si nadie lo caza en la semana, vuelven a vos.'
+    : est.ok ? '&#10003; Pusiste <b>' + num(est.ok) + '</b>. Si nadie lo caza en la semana, vuelven a ti.'
     : est.error ? '<span class="enc-mal">' + errorPrecio(est) + '</span>'
-    : DC ? 'Elegí cuánto ponerle.' : 'Para poner un precio entrás con Discord: tocá un monto.';
+    : DC ? 'Elige cuánto ponerle.' : 'Para poner un precio entras con Discord: toca un monto.';
   return '<div class="pr-sel"><p>' + (f ? quienEs(f, 26) : esc(c)) + ' vale <span class="pt-i">' + num(v) +
     '</span>' + (v < T.tope ? ' &middot; se le pueden poner ' + num(T.tope - v) + ' más' : ' &middot; ya vale lo máximo') +
-    '</p>' + (esYo ? '<p class="nota">Sos vos: no te podés poner precio.</p>' : montosPrecio(c, T)) +
+    '</p>' + (esYo ? '<p class="nota">Eres tú: no te puedes poner precio.</p>' : montosPrecio(c, T)) +
     '<p class="enc-e" aria-live="polite">' + msg + '</p></div>';
 }
 /* → movido a datos.js (13/10/2026): el muro: MURO y pedirMuro */
@@ -4339,13 +4339,13 @@ function pintaTienda() {
         }).join('') + '</div>' : '');
   } else if (BILL && BILL.error) {
     b.innerHTML = cab + '<p class="enc-e"><span class="enc-mal">' + (errorCuenta(BILL.error) ||
-      (BILL.error === 'todavia' ? 'La tienda todavía no está lista: probá en un rato.'
-        : 'No pude leer tu billetera. Probá de nuevo.')) +
+      (BILL.error === 'todavia' ? 'La tienda todavía no está lista: prueba en un rato.'
+        : 'No pude leer tu billetera. Prueba de nuevo.')) +
       '</span></p><button type="button" class="btn sec" data-billetera>Probar de nuevo</button>';
   } else {
     b.innerHTML = cab + '<p class="bajada">Todos arrancan con <b>' + num(T.inicial) + '</b>, y se ganan cazando: ' +
       'todo el precio por cabeza' + (T.mw ? ', y el <b>' + Math.round(T.mw * 100) + ' %</b> de lo que pagan los ' +
-      'buscados del Most Wanted' : '') + '. Para ver los tuyos entrás con Discord: los ves sólo vos.</p>' +
+      'buscados del Most Wanted' : '') + '. Para ver los tuyos entras con Discord: los ves sólo tú.</p>' +
       '<button type="button" class="btn" data-billetera>Ver mis Puntos de Tienda</button>';
   }
   b.hidden = false;
@@ -4354,11 +4354,11 @@ function pintaTienda() {
     p.dataset.listo = '1';
     p.innerHTML = '<h2><span>&#128176;</span> Precio por cabeza</h2><p class="bajada pr-cab"></p>' +
       '<div class="pr-lista pr-top"></div><div class="pr-poner"><input type="search" class="enc-busca pr-busca" ' +
-      'placeholder="Buscá a quién ponerle precio" aria-label="Buscar un rapero para ponerle precio" value="' +
+      'placeholder="Busca a quién ponerle precio" aria-label="Buscar un rapero para ponerle precio" value="' +
       esc(PR_BUSCA) + '"><div class="pr-lista pr-res"></div><div class="pr-panel"></div></div>' +
       '<div class="pr-cazas"></div>';
   }
-  p.querySelector('.pr-cab').innerHTML = 'Poné Puntos de Tienda sobre un rapero de la temporada: el primero que ' +
+  p.querySelector('.pr-cab').innerHTML = 'Pon Puntos de Tienda sobre un rapero de la temporada: el primero que ' +
     'le gana en un evento de la Liga se los lleva, <b>y lo mismo suma a su Temporada</b>. Si nadie lo caza hasta ' +
     'el ' + esc(fmtFecha(T.fin, { weekday: 'long' })) + ' a las ' + esc(fmtHora(T.fin)) + ' ' + etiquetaHora(T.fin) +
     ', vuelven a quien los puso. Una cabeza vale como mucho <b>' + num(T.tope) + '</b>, y nadie ve quién puso.';
@@ -4366,7 +4366,7 @@ function pintaTienda() {
   var top = Object.keys(v).filter(function (c) { return v[c] > 0; }).sort(function (x, y) { return v[y] - v[x]; });
   p.querySelector('.pr-top').innerHTML = top.length ? top.map(function (c) {
     return filaPrecio(c, v[c]);
-  }).join('') : '<p class="nota">Esta semana todavía nadie tiene precio. Buscá a alguien y ponele el primero.</p>';
+  }).join('') : '<p class="nota">Esta semana todavía nadie tiene precio. Busca a alguien y ponele el primero.</p>';
   pintaBuscaPrecio();
   p.querySelector('.pr-panel').innerHTML = PR_SEL ? panelPrecio(PR_SEL, T) : '';
   var cz = (T.cazas || []).slice().reverse();
@@ -4415,7 +4415,7 @@ function pintaPrecioInicio() {
       var f = porK(kDe(x));
       return (f ? '<button type="button" class="ql" data-k="' + esc(f.k) + '">' + esc(f.n) + '</button>' : esc(x)) +
         ' <span class="pt-i">' + num(v[x]) + '</span>';
-    }).join(' &middot; ') + '. Quien le gane, cobra.' : 'Poné Puntos de Tienda sobre un rapero: quien le gane, ' +
+    }).join(' &middot; ') + '. Quien le gane, cobra.' : 'Pon Puntos de Tienda sobre un rapero: quien le gane, ' +
     'cobra.') + ' <a href="#/tienda">Ir a la Tienda &#8250;</a></p>';
   c.hidden = false;
 }
@@ -4441,13 +4441,13 @@ function pintaYoPanel() {
     var n = (DC.cs || []).length + (DC.bl || []).length;
     c.innerHTML = '<div class="teaser yo lleno">' + avatar({ n: DC.n, av: DC.av }, 56) +
       '<h3>' + esc(DC.rapero) + '</h3><p class="yo-pos">Todavía sin eventos esta temporada</p>' +
-      '<p class="yo-falta">Con tu primer evento entrás al ranking' +
+      '<p class="yo-falta">Con tu primer evento entras al ranking' +
       (reqDe('temporada') ? ' y se desbloquea tu Temporada' : '') + '.</p>' +
       (DC.clave && n ? '<button type="button" class="btn" data-carta="' + esc(DC.clave) +
         '">&#127183; Ver mis tarjetas</button>' : '') + '</div>';
   } else if (!f) {
     c.innerHTML = '<div class="teaser yo"><span class="tz-ico" aria-hidden="true">&#128100;</span>' +
-      '<h3>¿Quién sos?</h3><p>Elegí tu nombre y acá ves tu puesto, tu racha y lo que te falta.</p>' +
+      '<h3>¿Quién eres?</h3><p>Elige tu nombre y acá ves tu puesto, tu racha y lo que te falta.</p>' +
       '<button type="button" class="btn" data-abrir-cuenta>Elegir quién soy</button></div>';
   } else {
     var pide = reqDe('competitivo') || 10, r = f.rch || [0, 0];
@@ -4459,7 +4459,7 @@ function pintaYoPanel() {
       '<div><dt>Racha</dt><dd>' + (r[0] ? '&#128293;' + r[0] : '0') + '<s>/' + r[1] + '</s></dd></div></dl>' +
       '<p class="yo-falta">' + (f.rg ? 'Rango <b>' + esc(f.rg) + '</b>'
         : falta ? 'Te ' + (falta === 1 ? 'falta <b>1 evento</b>' : 'faltan <b>' + falta + ' eventos</b>') +
-          ' para la Competitiva' : 'Ya tenés los eventos de la Competitiva') + '</p></div>';
+          ' para la Competitiva' : 'Ya tienes los eventos de la Competitiva') + '</p></div>';
   }
   var ahora = Date.now();
   var prox = (D.calendario || []).filter(function (x) { return Date.parse(x.t) > ahora; })[0];
@@ -4579,8 +4579,8 @@ function secSigo() {
         ' más: tienen la &#9733; en el ranking.</p>' : '') +
       // sin Discord no hay aviso: el servidor no sabe a quién seguís
       (DC ? '<p class="nota">Te llega un aviso cuando ganan, suben de rango o desbloquean una tarjeta ' +
-        '(<a href="#/avisos">activá los avisos</a> en este dispositivo).</p>'
-        : '<p class="nota">Entrá con Discord y te avisamos cuando ganen o suban de rango.</p>') + '</section>';
+        '(<a href="#/avisos">activa los avisos</a> en este dispositivo).</p>'
+        : '<p class="nota">Entra con Discord y te avisamos cuando ganen o suban de rango.</p>') + '</section>';
   }
   if (ms) {
     var otros = ms.n - suyos.length;
@@ -4605,14 +4605,14 @@ function secMiServidor() {
     { day: 'numeric', month: 'long' }) : '';
   var nota = !MISV ? 'Cargando&hellip;'
     : est.error ? '<span class="enc-mal">' + est.error + '</span>'
-    : M.error ? '<span class="enc-mal">' + (errorCuenta(M.error) || 'No pude leerlo. Probá en un rato.') + '</span>'
+    : M.error ? '<span class="enc-mal">' + (errorCuenta(M.error) || 'No pude leerlo. Prueba en un rato.') + '</span>'
     : est.va ? 'Guardando&hellip;'
-    : M.libre ? 'Cambialo cuantas veces quieras hasta el ' + esc(hasta) + '; después, uno por temporada.'
-    : M.puede ? (M.sv ? 'Podés cambiarlo una vez en esta temporada.' : 'Se elige una vez por temporada.')
+    : M.libre ? 'Cámbialo cuantas veces quieras hasta el ' + esc(hasta) + '; después, uno por temporada.'
+    : M.puede ? (M.sv ? 'Puedes cambiarlo una vez en esta temporada.' : 'Se elige una vez por temporada.')
     : 'Ya lo elegiste esta temporada: se vuelve a abrir en la que viene.';
   return '<section class="pop-sec"><h4>&#127968; Tu servidor' + (M.sv ? ' <small>' + esc(nombreSv(M.sv)) +
-    '</small>' : '') + '</h4><p class="nota">El que representás en la Liga: sale en tu perfil. Tu tarjeta de ' +
-    'Servidor sigue siendo la de donde jugás.</p><div class="ms-svs">' + svs.map(function (s) {
+    '</small>' : '') + '</h4><p class="nota">El que representas en la Liga: sale en tu perfil. Tu tarjeta de ' +
+    'Servidor sigue siendo la de donde juegas.</p><div class="ms-svs">' + svs.map(function (s) {
       var on = M.sv === s.sv, pide = est.pide === s.sv;
       return '<button type="button" class="ms-sv' + (on ? ' on' : '') + (pide ? ' pide' : '') + '" data-misv="' +
         esc(s.sv) + '" style="--c:' + esc(colorSv(s.sv)) + '" aria-pressed="' + on + '"' +
@@ -4637,7 +4637,7 @@ function secProximos() {
   if (!mios.length) {
     return '<section class="pop-sec"><h4>' + titulo + '</h4><p class="nota">' +
       (svs.length ? 'Ninguno anunciado en tus servidores' + (fut.length ? ' (hay ' + fut.length +
-        ' en otros)' : '') : 'No hay eventos anunciados') + '. <a href="#/avisos">Activá los avisos</a> y ' +
+        ' en otros)' : '') : 'No hay eventos anunciados') + '. <a href="#/avisos">Activa los avisos</a> y ' +
       'te llega uno al celular cuando salga.</p></section>';
   }
   return '<section class="pop-sec"><h4>' + titulo + '</h4><div class="pop-ev">' +
@@ -4689,7 +4689,7 @@ function _pintaPopCuenta() {
     c.innerHTML = '<div class="pop-yo">' + avatar({ n: DC.n, av: DC.av }, 46) + '<div><b>' +
       esc(DC.rapero) + '</b><small>Conectado con Discord' +
       (DC.n && DC.n !== DC.rapero ? ' como ' + esc(DC.n) : '') + '</small></div></div>' +
-      (DC.clave ? '<p class="nota">Todavía no jugaste esta temporada: aparecés en el ranking ' +
+      (DC.clave ? '<p class="nota">Todavía no jugaste esta temporada: apareces en el ranking ' +
         'con tu primer evento.</p>'
         : '<p class="nota">Tu sesión es de una versión anterior. Actualizala para ver tus ' +
           'tarjetas y tu perfil: es un toque, no te pide nada.</p>' +
@@ -4709,7 +4709,7 @@ function _pintaPopCuenta() {
   if (!f && DC) {
     c.innerHTML = '<div class="pop-yo">' + avatar({ n: DC.n, av: DC.av }, 46) + '<div><b>' +
       esc(DC.n) + '</b><small>Conectado con Discord</small></div></div>' +
-      '<p class="nota">Todavía no estás verificado en la Liga. Verificate acá, en un toque: si no ' +
+      '<p class="nota">Todavía no estás verificado en la Liga. Verifícate acá, en un toque: si no ' +
       'estás en Discord Rap Español te metemos, y te decimos qué te falta. Si estás en la Lista y ' +
       'ya jugaste, tu Temporada y tu Servidor salen igual con <code>/card</code>.</p><nav class="pop-menu">' +
       // 🔑 Dlx, 01/10/2026: «haz que la gente se verifique por la página web»
@@ -4720,10 +4720,10 @@ function _pintaPopCuenta() {
     return;
   }
   if (!f) {
-    c.innerHTML = '<h3>Mi cuenta</h3><p class="nota">Entrá con tu Discord y la página sabe quién ' +
+    c.innerHTML = '<h3>Mi cuenta</h3><p class="nota">Entra con tu Discord y la página sabe quién ' +
       'sos: tu perfil, tus tarjetas y tu temporada, a un toque. Sólo lee tu nombre y tu foto; no ' +
       'publica nada.</p>' + entrar +
-      '<details class="pop-sin"><summary>O elegí tu nombre sin entrar</summary>' +
+      '<details class="pop-sin"><summary>O elige tu nombre sin entrar</summary>' +
       '<input type="search" id="yoBusca" placeholder="Tu nombre de competencia…" autocomplete="off" ' +
       'spellcheck="false" aria-label="Tu nombre"><div class="pop-lista" id="yoRes"></div></details>' +
       secSigo();
@@ -4739,7 +4739,7 @@ function _pintaPopCuenta() {
     '<a href="#/avisos">&#128276; Mis avisos</a>' +
     (DC && DC.clave ? '<button type="button" data-foto>&#128247; Cambiar mi foto</button>' : '') +
     '<button type="button" id="yoOlvidar">' + (DC ? 'Salir' : 'No soy yo') + '</button></nav>' +
-    (DC ? '' : '<p class="nota">¿Es tu cuenta? Entrá con Discord y queda confirmado.</p>' + entrar) +
+    (DC ? '' : '<p class="nota">¿Es tu cuenta? Entra con Discord y queda confirmado.</p>' + entrar) +
     secFoto() + secRedes() + secMiServidor() + secProximos() + secSigo();
 }
 function pintaYoRes(q) {
@@ -5360,8 +5360,8 @@ function eventos() {
       var u = location.origin + urlDe('llave/' + cl.dataset.copiarLlave);
       var listo = function () { cl.querySelector('span').textContent = '✓ Link copiado'; };
       try {
-        navigator.clipboard.writeText(u).then(listo, function () { window.prompt('Copiá el link:', u); });
-      } catch (x) { window.prompt('Copiá el link:', u); }
+        navigator.clipboard.writeText(u).then(listo, function () { window.prompt('Copia el link:', u); });
+      } catch (x) { window.prompt('Copia el link:', u); }
       return;
     }
     // 🔑 EN EL TELÉFONO, EL PRIMER TOQUE SIGUE Y EL SEGUNDO ABRE EL PERFIL.
@@ -5556,7 +5556,7 @@ fetch('/api/lobby', { headers: { accept: 'application/json' } })
         '<section class="blk entro" style="margin-top:0">' +
         '<h2><span>⚠️</span> No pude cargar los datos</h2>' +
         '<p class="bajada">El servidor contestó <code>' + esc(e.message) +
-        '</code>. Los datos se refrescan solos cada media hora — probá ' +
+        '</code>. Los datos se refrescan solos cada media hora — prueba ' +
         'recargar en un rato.</p></section>');
     }
   });

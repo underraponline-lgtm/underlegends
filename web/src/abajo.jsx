@@ -20,7 +20,7 @@ export function SeBusca({ liga, aca }) {
   const diario = mw.tipo === 'dia';
   const correr = (d) => { if (tira.current) tira.current.scrollBy({ left: d * tira.current.clientWidth * 0.8, behavior: 'smooth' }); };
   return (
-    <Sec id="sebusca" titulo="Se busca" bajada="Los buscados del Most Wanted: si le ganás a uno en un evento, te llevás su recompensa." enlace={aca ? undefined : 'Most Wanted'} href={aca ? undefined : '#/ranking/mw'} extra="negra">
+    <Sec id="sebusca" titulo="Se busca" bajada="Los buscados del Most Wanted: si le ganas a uno en un evento, te llevas su recompensa." enlace={aca ? undefined : 'Most Wanted'} href={aca ? undefined : '#/ranking/mw'} extra="negra">
       <div className="mw-cab"><span>{mw.b.length} buscados {diario ? 'hoy' : 'esta semana'} · vencen {liga.dia(mw.fin)}</span>
         <span className="mw-fl"><button type="button" className="mw-b" aria-label="Anteriores" onClick={() => correr(-1)}>←</button>
           <button type="button" className="mw-b" aria-label="Siguientes" onClick={() => correr(1)}>→</button></span></div>
@@ -362,7 +362,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
     <nav className="tabbar" aria-label="Secciones">
       {aprende ? (
         <div className="tb-globo" role="note">
-          <span className="tb-mano" aria-hidden="true">👆</span> Deslizá la barra de costado: hay más secciones
+          <span className="tb-mano" aria-hidden="true">👆</span> Desliza la barra de costado: hay más secciones
           <button type="button" aria-label="Entendido" onClick={aprendio}>✕</button>
         </div>
       ) : null}

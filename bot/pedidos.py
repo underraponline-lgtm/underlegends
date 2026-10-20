@@ -207,7 +207,7 @@ def correr(aplicar=False):
                     mu = {'ok': False}
             estados[str(i)] = {'ok': bool(ok and mu.get('ok')),
                                'nota': 'la cuenta nueva ya es la del perfil; pasó: %s' % ', '.join(sorted(mu.get('movidas') or {}))
-                               if ok and mu.get('ok') else 'no pude pasar todo: avisale a Dlx'}
+                               if ok and mu.get('ok') else 'no pude pasar todo: avísale a Dlx'}
         elif acc == 'poner_id':
             print('   🙋 #%s: %s recibe su cuenta' % (i, x['raw']))
             if aplicar:

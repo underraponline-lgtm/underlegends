@@ -123,16 +123,16 @@ def eventos(antes, hoy):
         if rh and rh != ra:
             if not ra:
                 out.append({'id': _id(did, 'rango', rh), 'quien': did,
-                            'titulo': '🏅 Ya tenés rango: %s' % rh,
+                            'titulo': '🏅 Ya tienes rango: %s' % rh,
                             'cuerpo': 'Llegaste a los eventos del Competitivo: tu rango es %s.' % rh,
                             'url': url})
             elif _nivel(rh) > _nivel(ra):
                 out.append({'id': _id(did, 'rango', rh), 'quien': did,
                             'titulo': '📈 Subiste a rango %s' % rh,
-                            'cuerpo': 'Antes eras %s. Mirá tu perfil.' % ra, 'url': url})
+                            'cuerpo': 'Antes eras %s. Mira tu perfil.' % ra, 'url': url})
             elif AVISA_BAJADA:
                 out.append({'id': _id(did, 'baja', rh), 'quien': did,
-                            'titulo': '📉 Ahora sos rango %s' % rh,
+                            'titulo': '📉 Ahora eres rango %s' % rh,
                             'cuerpo': 'Antes eras %s.' % ra, 'url': url})
         # 📉 te pasaron: tu puesto bajó desde la última corrida. Va al perfil, que dice tu próxima meta
         pa, ph, arr = a.get('pos'), h.get('pos'), h.get('arriba')
@@ -458,7 +458,7 @@ def _self_check():
     ok(len(e) == 1 and 'Temporada' in e[0]['titulo'] and e[0]['url'].endswith('/freestyle-rap/r/konan'),
        'una tarjeta nueva, un aviso con el link al perfil')
     e = eventos({'1': base}, {'1': dict(base, rg='B')})
-    ok(len(e) == 1 and e[0]['titulo'] == '🏅 Ya tenés rango: B', 'el primer rango')
+    ok(len(e) == 1 and e[0]['titulo'] == '🏅 Ya tienes rango: B', 'el primer rango')
     e = eventos({'1': dict(base, rg='B')}, {'1': dict(base, rg='A-')})
     ok(len(e) == 1 and e[0]['titulo'] == '📈 Subiste a rango A−', 'subir, con el signo bien escrito')
     ok(eventos({'1': dict(base, rg='A')}, {'1': dict(base, rg='B+')}) == [], 'bajar no se avisa')

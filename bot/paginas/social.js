@@ -160,22 +160,22 @@ function pedirBandeja(visto) {
 /* lo que se le dice a quien no pudo felicitar (texto: la página nueva lo escapa sola) */
 function errorAplauso(E) {
   var e = E && E.error;
-  return errorCuenta(e) || (e === 'vos' ? 'Es tuyo: a vos te felicitan los demás.'
+  return errorCuenta(e) || (e === 'tú' ? 'Es tuyo: a ti te felicitan los demás.'
     : e === 'nueva' ? 'Tu cuenta de Discord es muy nueva para felicitar: vas a poder desde el ' +
       fmtFecha(E.desde, { day: 'numeric', month: 'long' }) + '.'
     : e === 'no_existe' ? 'Esa publicación ya no está: se actualiza cada media hora.'
-    : 'No pude guardarlo. Probá de nuevo en un rato.');
+    : 'No pude guardarlo. Prueba de nuevo en un rato.');
 }
 function errorEnc(E) {
   var e = E.error;
   return errorCuenta(e) || (e === 'cerrada' ? 'La votación ya cerró.'
-    : e === 'vos' ? 'No podés votarte a vos.'
+    : e === 'tú' ? 'No puedes votarte a ti.'
     : e === 'nueva' ? 'Tu cuenta de Discord es muy nueva para votar: vas a poder desde el ' +
       esc(fmtFecha(E.desde, { day: 'numeric', month: 'long' })) + '.'
     : e === 'opcion' ? 'Esa opción ya no está: la lista se actualiza cada media hora.'
     : e === 'no_existe' ? 'Esa votación ya no está.'
     : e === 'no_jugo' ? 'Los MES AWARDS de ' + esc(E.sv || 'este servidor') + ' los votan los que jugaron ahí este mes.'
-    : 'No pude guardar tu voto. Probá de nuevo en un rato.');
+    : 'No pude guardar tu voto. Prueba de nuevo en un rato.');
 }
 
 /* ── seguir raperos ───────────────────────────────────────────────────
@@ -233,13 +233,13 @@ function alternarSigo(k) {
       if (j.n && SEGUIDORES) SEGUIDORES[k] = j.n[k] || 0;
     } else {
       guardarSigo(antes);
-      SIGO_EST[k] = { error: j.error === 'tope' ? 'Ya seguís a ' + SIGO_TOPE + ': dejá de seguir a alguien primero.'
-        : errorCuenta(j.error) || 'No pude guardarlo. Probá de nuevo en un rato.' };
+      SIGO_EST[k] = { error: j.error === 'tope' ? 'Ya sigues a ' + SIGO_TOPE + ': deja de seguir a alguien primero.'
+        : errorCuenta(j.error) || 'No pude guardarlo. Prueba de nuevo en un rato.' };
     }
     repintarSigo(k);
   }).catch(function () {
     guardarSigo(antes);
-    SIGO_EST[k] = { error: 'Sin conexión: probá de nuevo.' };
+    SIGO_EST[k] = { error: 'Sin conexión: prueba de nuevo.' };
     repintarSigo(k);
   });
 }

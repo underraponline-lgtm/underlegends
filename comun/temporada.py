@@ -389,7 +389,7 @@ def _self_check():
                   % (suya or '(sin binding)', '✅' if igual else '🔴'))
             if not igual:
                 print('  🔴 el bot pide la temporada %r y las cartas se '
-                      'dibujan\n     con %r. Volvé a desplegar: '
+                      'dibujan\n     con %r. Vuelve a desplegar: '
                       '`python bot/desplegar.py`' % (suya or 't1', ACTUAL))
                 mal += 1
         else:

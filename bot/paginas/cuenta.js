@@ -52,8 +52,8 @@ function conCuenta(ruta, cuerpo, modo, clave, pendiente) {
 }
 /* lo que se le dice a quien no pudo entrar */
 function errorCuenta(e) {
-  return e === 'discord_ocupado' ? 'Discord no contesta ahora: probá de nuevo en un minuto.'
-    : e === 'discord' || e === 'sin_sesion' ? 'Discord no confirmó tu cuenta. Probá entrar de nuevo desde Mi cuenta.'
+  return e === 'discord_ocupado' ? 'Discord no contesta ahora: prueba de nuevo en un minuto.'
+    : e === 'discord' || e === 'sin_sesion' ? 'Discord no confirmó tu cuenta. Prueba entrar de nuevo desde Mi cuenta.'
     : '';
 }
 
@@ -124,10 +124,10 @@ function elegirMiServidor(sv) {
       MISV = Object.assign({}, MISV || {}, { sv: j.sv, fijo: true, puede: false, libre: false });
       MISV_EST = { error: 'Ya lo elegiste esta temporada: se vuelve a abrir en la que viene.' };
     } else {
-      MISV_EST = { error: errorCuenta(j.error) || 'No pude guardarlo. Probá de nuevo en un rato.' };
+      MISV_EST = { error: errorCuenta(j.error) || 'No pude guardarlo. Prueba de nuevo en un rato.' };
     }
     repintarMiServidor();
-  }).catch(function () { MISV_EST = { error: 'Sin conexión: probá de nuevo.' }; repintarMiServidor(); });
+  }).catch(function () { MISV_EST = { error: 'Sin conexión: prueba de nuevo.' }; repintarMiServidor(); });
 }
 /* 🙈 «OCULTAR MI FOTO» (Dlx, 29/09/2026: «con ocultar mi foto en ajustes»; el 02/10: «1. A»). Como «tu servidor»:
    lo guarda el vigía con tu Discord (`miFoto()` en bot/avisos.js) y el ciclo lo aplica en su próxima vuelta: la página
@@ -148,9 +148,9 @@ function cuentaMiFoto(ocultar) {
   conCuenta('/api/avisos/mi-foto', { ocultar: !!ocultar }, 's').then(function (j) {
     if (!j) { MIFOTO_EST = {}; pintaPopCuenta(); return; }
     if (j.status === 200) { MIFOTO = j; MIFOTO_EST = { ok: true }; }
-    else MIFOTO_EST = { error: errorCuenta(j.error) || 'No pude guardarlo. Probá de nuevo en un rato.' };
+    else MIFOTO_EST = { error: errorCuenta(j.error) || 'No pude guardarlo. Prueba de nuevo en un rato.' };
     pintaPopCuenta();
-  }).catch(function () { MIFOTO_EST = { error: 'Sin conexión: probá de nuevo.' }; pintaPopCuenta(); });
+  }).catch(function () { MIFOTO_EST = { error: 'Sin conexión: prueba de nuevo.' }; pintaPopCuenta(); });
 }
 
 /* 🔑 ENTRAR CON DISCORD. Dlx, 25/09/2026: «creo que sería mejor meter el
@@ -281,8 +281,8 @@ function pedirFoto(confirmar) {
 }
 /* 🔑 Dlx, 25/09/2026: «cambios ilimitados hasta el 9». La fecha viene del Worker. */
 function libreTexto(F) {
-  return F.libre_hasta ? 'Hasta el <b>' + esc(F.libre_hasta) + '</b> la podés cambiar las veces que quieras.'
-    : 'Hasta que arranque la temporada la podés cambiar las veces que quieras.';
+  return F.libre_hasta ? 'Hasta el <b>' + esc(F.libre_hasta) + '</b> la puedes cambiar las veces que quieras.'
+    : 'Hasta que arranque la temporada la puedes cambiar las veces que quieras.';
 }
 function secFoto() {
   if (!FOTO || !DC) return '';
@@ -294,15 +294,15 @@ function secFoto() {
       'este, no corre).' + (F.libre ? ' ' + libreTexto(F) : '') + '</p></section>';
   }
   if (F.error) {
-    var m = F.error === 'sin_foto' ? 'No tenés foto puesta en Discord: tu tarjeta va con la inicial, ' +
-      'que con el color de tu rango queda bien. Si te ponés una, volvé.'
-      : F.error === 'sin_perfil' ? 'Primero necesitás tu tarjeta: escribí <code>/verificar</code> en Discord.'
+    var m = F.error === 'sin_foto' ? 'No tienes foto puesta en Discord: tu tarjeta va con la inicial, ' +
+      'que con el color de tu rango queda bien. Si te pones una, vuelve.'
+      : F.error === 'sin_perfil' ? 'Primero necesitas tu tarjeta: escribe <code>/verificar</code> en Discord.'
       : F.error === 'usado' ? 'Ya elegiste tu foto de la ' + T + ': va una por temporada. Se vuelve a abrir ' +
         'cuando arranque la que sigue.'
       : F.error === 'cdn' ? 'Discord no me dio tu foto. Suele arreglarse volviéndotela a poner en Discord ' +
         'y probando de nuevo.'
-      : F.error === 'espera' ? 'Esperá un minuto y probá de nuevo.'
-      : 'No pude cambiarla. Probá de nuevo en un rato.';
+      : F.error === 'espera' ? 'Espera un minuto y prueba de nuevo.'
+      : 'No pude cambiarla. Prueba de nuevo en un rato.';
     return cab + '<p class="nota">' + m + '</p></section>';
   }
   if (F.estado === 'usado') {
@@ -312,7 +312,7 @@ function secFoto() {
   }
   return cab + '<div class="foto-vista"><img src="' + esc(F.vista) + '" alt="Tu foto de Discord" ' +
     'width="96" height="96"><p class="nota">Tu tarjeta de la ' + T + ' va a llevar ésta, la de tu ' +
-    'perfil de Discord. ' + (F.libre ? libreTexto(F) : F.pase ? 'Con el pase de DRA la podés cambiar cuando quieras.'
+    'perfil de Discord. ' + (F.libre ? libreTexto(F) : F.pase ? 'Con el pase de DRA la puedes cambiar cuando quieras.'
       : '<b>Va una por temporada</b>: después no se puede cambiar hasta la próxima.') + '</p></div>' +
     '<button type="button" class="btn ancho" id="dcFotoSi">Usar esta foto</button>' +
     '<button type="button" class="btn sec ancho" id="dcFotoNo">Cancelar</button></section>';
@@ -331,18 +331,18 @@ function secRedes() {
   // con dos iguales `pintaFeed()` podía agarrar esta sección
   var cab = '<section class="pop-sec" id="secMisRedes"><h4>&#128279; Mis redes en mi perfil</h4>';
   if (!R || !DC_TOKEN) {
-    return cab + '<p class="nota">Mostrá en tu perfil las redes que ya tenés conectadas en Discord ' +
+    return cab + '<p class="nota">Muestra en tu perfil las redes que ya tienes conectadas en Discord ' +
       '(Instagram, TikTok, YouTube…). Discord te pide permiso para leerlas.</p>' +
       '<button type="button" class="btn sec ancho" id="dcRedes">Elegir mis redes</button></section>';
   }
   if (R.error) {
-    return cab + '<p class="nota">' + (R.error === 'sin_perfil' ? 'Primero necesitás tu tarjeta: escribí ' +
-      '<code>/verificar</code> en Discord.' : 'No pude leer tus redes. Probá de nuevo.') + '</p>' +
+    return cab + '<p class="nota">' + (R.error === 'sin_perfil' ? 'Primero necesitas tu tarjeta: escribe ' +
+      '<code>/verificar</code> en Discord.' : 'No pude leer tus redes. Prueba de nuevo.') + '</p>' +
       '<button type="button" class="btn sec ancho" id="dcRedes">Probar de nuevo</button></section>';
   }
   if (!(R.publicas || []).length) {
-    return cab + '<p class="nota">No tenés redes públicas en Discord. Andá a <b>Ajustes → Conexiones</b>, ' +
-      'conectá tu Instagram, TikTok o YouTube y activá <b>«Mostrar en el perfil»</b>. Después volvé acá.</p>' +
+    return cab + '<p class="nota">No tienes redes públicas en Discord. Ve a <b>Ajustes → Conexiones</b>, ' +
+      'conecta tu Instagram, TikTok o YouTube y activa <b>«Mostrar en el perfil»</b>. Después vuelve acá.</p>' +
       '<button type="button" class="btn sec ancho" id="dcRedes">Ya las conecté</button></section>';
   }
   var ya = {};
@@ -357,7 +357,7 @@ function secRedes() {
       ' <small>' + esc(r.n) + '</small></span></label>';
   }).join('') + '</div><button type="button" class="btn ancho" id="dcRedesGuardar">Guardar en mi perfil</button>' +
     (nada ? '' : '<button type="button" class="btn sec ancho" id="dcRedesQuitar">Quitar todas</button>') +
-    '<p class="nota" id="redesNota">' + (nada ? 'Todavía no mostrás ninguna.' : 'Tu perfil muestra ' +
+    '<p class="nota" id="redesNota">' + (nada ? 'Todavía no muestras ninguna.' : 'Tu perfil muestra ' +
       R.guardadas.length + '.') + ' Los cambios aparecen en la próxima actualización (cada media hora).</p>' +
     '</section>';
 }
@@ -529,13 +529,13 @@ function cuentaRedes(elegidas) {
   return pedirRedes(elegidas).then(function (R) {
     if (R && R.guardadas) REDES_MIAS = R;
     pintaPopCuenta();
-    if (R && R.error === 'tope') return 'Ya cambiaste tus redes muchas veces hoy: probá mañana.';
-    if (R && R.error === 'espera') return 'Esperá un minuto y probá de nuevo.';
-    if (!R || !R.guardadas) return 'No pude guardar. Probá de nuevo.';
+    if (R && R.error === 'tope') return 'Ya cambiaste tus redes muchas veces hoy: prueba mañana.';
+    if (R && R.error === 'espera') return 'Espera un minuto y prueba de nuevo.';
+    if (!R || !R.guardadas) return 'No pude guardar. Prueba de nuevo.';
     return '✓ Guardado. ' + (R.guardadas.length ? 'Tu perfil va a mostrar ' + R.guardadas.length +
       (R.guardadas.length === 1 ? ' red' : ' redes') : 'Tu perfil no muestra ninguna') +
       ' desde la próxima actualización (cada media hora).';
-  }).catch(function () { return 'No pude guardar. Probá de nuevo.'; });
+  }).catch(function () { return 'No pude guardar. Prueba de nuevo.'; });
 }
 /* «tu servidor»: durante la ventana libre se elige al toque; después, como es para toda la temporada, se confirma */
 function cuentaServidor(sv) {

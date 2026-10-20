@@ -654,7 +654,7 @@ def main():
                       'Es lo que hace el ciclo cuando una llave se completa: '
                       'edita **este mismo mensaje** en vez de mandarte otro.',
                       '',
-                      '_Podés borrarlo cuando quieras._'],
+                      '_Puedes borrarlo cuando quieras._'],
                      editar=r)
         print('  %s' % ('✅ editado en su lugar (mensaje %s)' % r if ok2
                         else '🔴 el PATCH falló: los avisos se repetirían'))

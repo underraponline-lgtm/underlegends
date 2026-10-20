@@ -130,7 +130,7 @@ function Tuya({ liga, k, c, tiene, bloq, cs, nv, nivel }) {
       {img}
       <div className="tj-tu-pie">
         <b>{NOMBRE[c]}</b>
-        {tiene ? <small className="ok"><Ico n="ok" t={14} />La tenés</small>
+        {tiene ? <small className="ok"><Ico n="ok" t={14} />La tienes</small>
           : listo ? <small><Ico n="reloj" t={14} />Se está dibujando</small>
             : espera ? <small>Primero verificate. {RQ.sinVerificar(nv, true)}</small>
               : c === 'temporada' ? <small>{RQ.pase(true)}</small>
@@ -162,9 +162,9 @@ function LasTuyas({ liga, dc, perf }) {
       <section className="sec tj-tuyas">
         <div className="sec-t"><h2>Las tuyas</h2></div>
         <div className="tj-sin">
-          <p><b>Todavía no tenés tarjetas.</b> Son dos pasos: verificate —estar en Discord Rap Español con el rol
+          <p><b>Todavía no tienes tarjetas.</b> Son dos pasos: verifícate —estar en Discord Rap Español con el rol
             Miembro y tu país— y se desbloquea tu Servidor; cumplí tu primera Tarea del Pase de rapero y se desbloquea tu
-            Temporada. Escribí <code>/verificar</code> en Discord y el bot te dice qué te falta.</p>
+            Temporada. Escribe <code>/verificar</code> en Discord y el bot te dice qué te falta.</p>
           <div className="hero-acc">
             {dra ? <a className="btn verde chico" href={dra} target="_blank" rel="noopener noreferrer">Entrar a Discord Rap Español ↗</a> : null}
             <a className="btn borde2 chico" href="#/guia">Cómo funciona</a>
@@ -228,7 +228,7 @@ function Galeria({ liga, t, lista }) {
               <button type="button" className={!filtra ? 'on' : ''} aria-pressed={!filtra} onClick={() => { setSv(''); setSoloNuevas(false); setSoloSigo(false); }}>Todas</button>
               {nNuevas ? <button type="button" className={'rk-chip-nuevo' + (soloNuevas ? ' on' : '')} aria-pressed={soloNuevas}
                 onClick={() => setSoloNuevas(!soloNuevas)} title="Las que salieron esta semana">Nuevas · {nNuevas}</button> : null}
-              {nSigo ? <button type="button" className={soloSigo ? 'on' : ''} aria-pressed={soloSigo} onClick={() => setSoloSigo(!soloSigo)}>A quién seguís</button> : null}
+              {nSigo ? <button type="button" className={soloSigo ? 'on' : ''} aria-pressed={soloSigo} onClick={() => setSoloSigo(!soloSigo)}>A quién sigues</button> : null}
               {svs.length > 1 ? svs.map((s) => (
                 <button type="button" key={s} className={sv === s ? 'on' : ''} aria-pressed={sv === s} onClick={() => setSv(sv === s ? '' : s)}>
                   <img alt="" src={liga.logo(s)} />{siglaDe(s)}
@@ -385,7 +385,7 @@ export function Tarjetas({ liga, dc, tipo, q = '' }) {
       </div>
       {mira ? <LasTuyas liga={liga} dc={dc} perf={perf} /> : (
         <div className="sec tj-invita-w">
-          <div className="rk-invita"><span>¿Y las tuyas? Entrá con Discord: te mostramos tus tarjetas y lo que te falta para las que no tenés.</span>
+          <div className="rk-invita"><span>¿Y las tuyas? Entra con Discord: te mostramos tus tarjetas y lo que te falta para las que no tienes.</span>
             <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar</button></div>
         </div>
       )}

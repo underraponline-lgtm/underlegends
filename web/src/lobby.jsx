@@ -75,7 +75,7 @@ function TuBarra({ liga, dc, P, R, saldo }) {
   if (!dc) {
     return (
       <div className="lb-yo invita">
-        <p><b>¿Jugás en la Liga?</b> Entrá con Discord y ves acá tu racha, tu letra, tu Pase y tus Puntos.</p>
+        <p><b>¿Juegas en la Liga?</b> Entra con Discord y ves acá tu racha, tu letra, tu Pase y tus Puntos.</p>
         <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar</button>
       </div>
     );
@@ -90,8 +90,8 @@ function TuBarra({ liga, dc, P, R, saldo }) {
           {yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="lb-cara" /> : <span className="lb-cara vacia"><Ico n="yo" t={26} /></span>}
           {actual >= 1 ? <span className="lb-fuego" title={actual + (actual === 1 ? ' día seguido' : ' días seguidos')}><Ico n="fuego" t={13} />{actual}</span> : null}
         </span>
-        <span className="lb-quien"><b>{limpio(yo ? yo.n : dc.n || 'Vos')}</b>
-          <small>{letra ? 'RANGO ' + letra : yo ? Math.min(ev, 10) + '/10 PARA TU RANGO' : 'JUGÁ UN EVENTO Y APARECÉS'}
+        <span className="lb-quien"><b>{limpio(yo ? yo.n : dc.n || 'Tú')}</b>
+          <small>{letra ? 'RANGO ' + letra : yo ? Math.min(ev, 10) + '/10 PARA TU RANGO' : 'JUEGA UN EVENTO Y APARECES'}
             {a ? ' · PASE ' + P.nivel : yo && yo.pos ? ' · #' + yo.pos + ' DE LA TEMPORADA' : ''}</small>
           {a ? <i className="lb-mini"><u style={{ width: Math.round((100 * a.lleva) / a.de) + '%' }} /></i> : null}</span>
         {saldo != null ? <span className="lb-saldo"><Ico n="moneda" t={18} /><b>{num(saldo)}</b></span> : null}
@@ -118,7 +118,7 @@ function cuentaT1(liga) {
   let top = '';
   if (yo && yo.pos) {
     const clas = (liga.d.tabla || []).filter((f) => f.pos).sort((a, b) => a.pos - b.pos).slice(0, 16);
-    if (clas.some((f) => f.k === yo.k)) top = 'Estás en el top 16: jugás la Clausura';
+    if (clas.some((f) => f.k === yo.k)) top = 'Estás en el top 16: juegas la Clausura';
     else if (clas.length === 16) {
       const d = (clas[15].ovr || 0) - (yo.ovr || 0);
       top = d > 0 ? 'A ' + d + ' de OVR del top 16' : 'Pegado al top 16';
@@ -138,7 +138,7 @@ function Temporada({ liga }) {
   let top = '';
   if (yo && yo.pos) {
     const clas = (liga.d.tabla || []).filter((f) => f.pos).sort((a, b) => a.pos - b.pos).slice(0, 16);
-    if (clas.some((f) => f.k === yo.k)) top = 'ESTÁS EN EL TOP 16: JUGÁS LA CLAUSURA';
+    if (clas.some((f) => f.k === yo.k)) top = 'ESTÁS EN EL TOP 16: JUEGAS LA CLAUSURA';
     else if (clas.length === 16) {
       const d = (clas[15].ovr || 0) - (yo.ovr || 0);
       top = d > 0 ? 'A ' + d + ' DE OVR DEL TOP 16' : 'PEGADO AL TOP 16';
@@ -181,7 +181,7 @@ function Racha({ R }) {
   const cobrar = async () => {
     setOcup(true); setMsg('');
     const d = await cobrarRacha('dia').catch(() => null);
-    setMsg(d && d.cobrado ? '+' + num(d.cobrado) + ' Puntos de Tienda' : 'No se pudo: probá de nuevo.');
+    setMsg(d && d.cobrado ? '+' + num(d.cobrado) + ' Puntos de Tienda' : 'No se pudo: prueba de nuevo.');
     setOcup(false);
   };
   return (
@@ -189,14 +189,14 @@ function Racha({ R }) {
       <div className="lb-racha-cab">
         <span className="lb-racha-n"><Ico n="fuego" t={26} /><b>{actual}</b></span>
         <span className="lb-racha-tx"><b>{actual === 1 ? '1 DÍA SEGUIDO' : actual + ' DÍAS SEGUIDOS'}</b>
-          <small>{R.hito ? 'A los ' + R.hito[0] + ' días: +' + num(R.hito[1]) : 'Entrá todos los días: la página, el bot o un evento'}
+          <small>{R.hito ? 'A los ' + R.hito[0] + ' días: +' + num(R.hito[1]) : 'Entra todos los días: la página, el bot o un evento'}
             {r.maxima > actual ? ' · tu mejor: ' + r.maxima : ''}</small></span>
         {hoy && hoy[3] ? <button type="button" className="btn verde chico" disabled={ocup} onClick={cobrar}>{ocup ? '…' : 'Cobrar ' + num(hoy[1])}</button>
           : msg ? <small className="lb-racha-ok" role="status">{msg}</small> : null}
       </div>
       <ol className="lb-premios">{ps.map(([d, monto, cobrado, , cofre], i) => (
         <li key={d} className={(cobrado ? 'si' : '') + (d === R.hoy ? ' hoy' : '') + (d > R.hoy ? ' luego' : '') + (i === 6 ? ' cofre' : '')}
-          title={i === 6 ? (cofre ? 'Cofre: entraste ' + (R.cofre_dias || 5) + ' días' : 'Cofre si entrás ' + (R.cofre_dias || 5) + ' días de la semana') : d}>
+          title={i === 6 ? (cofre ? 'Cofre: entraste ' + (R.cofre_dias || 5) + ' días' : 'Cofre si entras ' + (R.cofre_dias || 5) + ' días de la semana') : d}>
           <small>{LETRAS_DIA[i]}</small>
           {cobrado ? <Ico n="ok" t={16} /> : <Ico n={i === 6 ? 'premio' : 'moneda'} t={16} />}
           <b>{num(monto)}</b>
@@ -220,7 +220,7 @@ function Bienvenida({ B }) {
     setOcup(true); setMsg('');
     const d = await cobrarRacha('bienvenida').catch(() => null);
     setMsg(d && d.cobrado ? '+' + num(d.cobrado) + ' Puntos de Tienda. Mañana, el que sigue.' : d && d.error === 'falta' ? 'Primero: ' + ahora[2].toLowerCase() + '.'
-      : d && d.error === 'manana' ? 'Uno por día: volvé mañana.' : 'No se pudo: probá de nuevo.');
+      : d && d.error === 'manana' ? 'Uno por día: vuelve mañana.' : 'No se pudo: prueba de nuevo.');
     setOcup(false);
   };
   return (
@@ -228,8 +228,8 @@ function Bienvenida({ B }) {
       <div className="lb-racha-cab">
         <span className="lb-racha-n"><Ico n="premio" t={24} /><b>{B.paso + 1}</b><small>/7</small></span>
         <span className="lb-racha-tx"><b>TUS PRIMEROS 7 DÍAS</b>
-          <small>{B.hoy ? 'Ya cobraste el de hoy: mañana viene el que sigue.' : B.hecha ? 'Listo: cobrá ' + num(ahora[0]) + ' Puntos de Tienda.'
-            : 'Hoy: ' + ahora[2].toLowerCase() + ' y cobrás ' + num(ahora[0]) + '.'}</small></span>
+          <small>{B.hoy ? 'Ya cobraste el de hoy: mañana viene el que sigue.' : B.hecha ? 'Listo: cobra ' + num(ahora[0]) + ' Puntos de Tienda.'
+            : 'Hoy: ' + ahora[2].toLowerCase() + ' y cobras ' + num(ahora[0]) + '.'}</small></span>
         {!B.hoy && B.hecha ? <button type="button" className="btn verde chico" disabled={ocup} onClick={cobrar}>{ocup ? '…' : 'Cobrar ' + num(ahora[0])}</button>
           : !B.hoy && IR_PASO[ahora[1]] ? <a className="btn verde chico" href={IR_PASO[ahora[1]]}>Ir</a> : null}
       </div>
@@ -270,7 +270,7 @@ function PremioSemanal({ dc, R }) {
   return (
     <div className="lb-sem"><Ico n="moneda" t={24} />
       <span><b>PREMIO DE LA SEMANA · {num(st.monto)} PUNTOS</b>
-        <small>{st.error ? 'No se pudo cobrar: probá de nuevo.' : st.dias
+        <small>{st.error ? 'No se pudo cobrar: prueba de nuevo.' : st.dias
           ? 'Entraste ' + st.dias + (st.dias === 1 ? ' día' : ' días') + ' la semana pasada: 50 + 50 por cada uno.'
           : '50 de base, y la semana que viene 50 más por cada día que entres.'}</small></span>
       <button type="button" className="btn verde chico" disabled={ocup} onClick={cobrar}>{ocup ? '…' : 'Cobrar'}</button>
@@ -328,7 +328,7 @@ function Rival({ liga, dc }) {
   if (!yo || !yo.pos) {
     return (
       <a className="lb-rival vacio" href="#/eventos">
-        <span className="lb-rival-tx"><b>TU RIVAL</b><small>Jugá un evento: entrás al ranking y te ponemos a alguien para pasar.</small></span>
+        <span className="lb-rival-tx"><b>TU RIVAL</b><small>Juega un evento: entras al ranking y te ponemos a alguien para pasar.</small></span>
         <Ico n="flecha" t={18} />
       </a>
     );
@@ -351,8 +351,8 @@ function Rival({ liga, dc }) {
     }
   }
   const pct = arriba && (otro.ovr || 0) > 0 ? Math.max(4, Math.min(100, Math.round((100 * (yoF.ovr || 0)) / otro.ovr))) : 100;
-  const falta = !dif ? (arriba ? 'Empatados en OVR: un evento más y lo pasás' : 'Empatados en OVR: no aflojes')
-    : arriba ? 'Te faltan ' + dif + ' de OVR para pasarlo' : 'Le llevás ' + dif + ' de OVR';
+  const falta = !dif ? (arriba ? 'Empatados en OVR: un evento más y lo pasas' : 'Empatados en OVR: no aflojes')
+    : arriba ? 'Te faltan ' + dif + ' de OVR para pasarlo' : 'Le llevas ' + dif + ' de OVR';
   return (
     <a className="lb-rival" href={'#/r/' + encodeURIComponent(otro.k)}>
       <span className="lb-rival-p"><Cara liga={liga} k={yo.k} nombre={yo.n} cls="lb-rival-c" /><b>#{yo.pos}</b></span>
@@ -381,23 +381,23 @@ export function tuMomento(liga, L) {
   const contra = (ls) => ls.filter((x) => !mio(x)).map(sinBandera).join(' y ');
   const m = momentosLlave(L);
   if (m && m.ahora && m.ahora.lados.some(mio)) return { et: '¡TE TOCA!', sub: m.ahora.r + ' · contra ' + contra(m.ahora.lados), toca: true };
-  if (m && m.sigue && m.sigue.lados.some(mio)) return { et: 'SOS EL PRÓXIMO', sub: m.sigue.r + ' · contra ' + contra(m.sigue.lados), toca: true };
+  if (m && m.sigue && m.sigue.lados.some(mio)) return { et: 'ERES EL PRÓXIMO', sub: m.sigue.r + ' · contra ' + contra(m.sigue.lados), toca: true };
   let ult = null;
   (L.rondas || []).forEach((R) => (R.b || []).forEach((b) => { if (lados(b).length >= 2 && lados(b).some(mio)) ult = { r: R.r, b }; }));
   if (!ult) return null;
   const r = String(ult.r || '');
   const g = ganador(ult.b);
-  if (!g) return { et: 'ESPERÁ TU TURNO', sub: r + ' · contra ' + contra(lados(ult.b)) };
+  if (!g) return { et: 'ESPERA TU TURNO', sub: r + ' · contra ' + contra(lados(ult.b)) };
   if (mio(g)) {
-    if (r === 'Final') return { et: '¡SOS EL CAMPEÓN!', sub: 'Ganaste la final' };
+    if (r === 'Final') return { et: '¡ERES EL CAMPEÓN!', sub: 'Ganaste la final' };
     if (r === 'Tercer puesto') return { et: '¡TERCER PUESTO!', sub: 'Ganaste el tercer puesto' };
-    return { et: 'PASASTE ' + r.toUpperCase(), sub: 'Seguís en carrera: esperá la próxima ronda' };
+    return { et: 'PASASTE ' + r.toUpperCase(), sub: 'Sigues en carrera: espera la próxima ronda' };
   }
   if (r === 'Final') return { et: '¡SUBCAMPEÓN!', sub: 'Llegaste a la final' };
   if (r === 'Tercer puesto') return { et: 'CUARTO PUESTO', sub: 'Llegaste a las semifinales' };
   // la doble se ve por su llave de perdedores o, antes de que se escriba, por la de ganadores
   const doble = esDoble(L.rondas) || (L.rondas || []).some((R) => /ganadores/i.test(R.r || ''));
-  if (doble && !/perdedores/i.test(r)) return { et: 'PERDISTE EN ' + r.toUpperCase(), sub: 'Bajás a la llave de perdedores: seguís' };
+  if (doble && !/perdedores/i.test(r)) return { et: 'PERDISTE EN ' + r.toUpperCase(), sub: 'Bajas a la llave de perdedores: sigues' };
   return { et: 'QUEDASTE AFUERA EN ' + r.toUpperCase(), sub: 'Te ganó ' + sinBandera(g), afuera: true };
 }
 
@@ -444,7 +444,7 @@ function ElBoton({ liga }) {
     return (
       <div className="lb-boton nada">
         <span className="lb-b-et">TODAVÍA NO ANUNCIARON EL PRÓXIMO</span>
-        <p>Los eventos se anuncian con poco tiempo. Activá la campana y te llega al minuto.</p>
+        <p>Los eventos se anuncian con poco tiempo. Activa la campana y te llega al minuto.</p>
         <a className="btn verde" href="#/avisos"><Ico n="campana" t={18} />Activar la campana</a>
       </div>
     );
@@ -474,7 +474,7 @@ function ElBoton({ liga }) {
         <span className="lb-b-pr">
           {juegan.length ? (
             <em className="mw">{juegan.length === 1 ? 'Juega ' + limpio(juegan[0].n) : 'Juegan ' + juegan.slice(0, 3).map((b) => limpio(b.n)).join(', ')}
-              , de Se busca{cobras ? ': ' + (juegan.length === 1 ? 'ganale y cobrás ' : 'cobrás hasta ') + num(cobras) + ' pts' : ''}</em>
+              , de Se busca{cobras ? ': ' + (juegan.length === 1 ? 'ganale y cobras ' : 'cobras hasta ') + num(cobras) + ' pts' : ''}</em>
           ) : null}
           {reto ? <em>Jugalo antes del {liga.dia(new Date(vence))} y ganás 1.000 Puntos de Tienda</em> : null}
           {m > 1 ? <em>{siglaDe(e.sv)} va {mult(m)} esta semana</em> : null}
@@ -507,7 +507,7 @@ function PedirCampana({ liga, dc }) {
     <div className="lb-camp">
       <span className="lb-camp-ic"><Ico n="campana" t={22} /></span>
       <span className="lb-camp-t"><b>{paso2 ? 'FALTA UN PASO' : '¿TE AVISAMOS CUANDO TE TOQUE?'}</b>
-        <small>{paso2 ? 'Vinculá este teléfono con tu Discord y te llegan los tuyos: te toca, tu carta, te pasaron.'
+        <small>{paso2 ? 'Vincula este teléfono con tu Discord y te llegan los tuyos: te toca, tu carta, te pasaron.'
           : 'Cuando te toca pelear, sale tu carta o te pasan en el ranking: al teléfono, al momento. Nunca por DM.'}</small></span>
       <span className="lb-camp-b">
         <button type="button" className="btn verde chico" onClick={() => (paso2 ? C.vincular() : C.activar())}>{paso2 ? 'Vincular' : 'Activar'}</button>
@@ -595,7 +595,7 @@ export function Lobby({ liga, dc }) {
             <span className="lb-afiches">{caras.map((b) => (
               <span key={b.k} className="lb-afiche"><Cara liga={liga} k={b.k} nombre={b.n} cls="lb-af-c" /><b>{limpio(b.n)}</b></span>
             ))}</span>
-            <small>{sueltos.length} {sueltos.length === 1 ? 'sigue suelto' : 'siguen sueltos'}{tope ? ' · cobrás hasta ' + num(tope) + ' pts' : ''}</small>
+            <small>{sueltos.length} {sueltos.length === 1 ? 'sigue suelto' : 'siguen sueltos'}{tope ? ' · cobras hasta ' + num(tope) + ' pts' : ''}</small>
           </a>
         ) : null}
         <a className="pu lb lb-ev" href="#/eventos">
@@ -621,15 +621,15 @@ export function Lobby({ liga, dc }) {
                 <Cara liga={liga} k={f.k} nombre={f.n} cls="lb-pod-c" /><b>{f.pos}</b></span>
             ))}</span> : null}
           </span>
-          <small>{pos ? (t1 && t1.top ? t1.top : 'en la Temporada') : dc && !yo ? 'Jugá un evento y entrás a la tabla'
-            : dc && (sinVerif || yo.fc) ? 'Verificate en DRA y entrás al ranking oficial' : 'Las tablas de la temporada'}</small>
+          <small>{pos ? (t1 && t1.top ? t1.top : 'en la Temporada') : dc && !yo ? 'Juega un evento y entras a la tabla'
+            : dc && (sinVerif || yo.fc) ? 'Verifícate en DRA y entras al ranking oficial' : 'Las tablas de la temporada'}</small>
         </a>
         <a className="pu lb lb-tj" href="#/tarjetas" onClick={() => { if (tuya) guardar('lg:lb-carta', tuya); }}>
           <span className="lb-t">TARJETAS</span>
           {cartaNueva ? <span className="lb-glob nueva">NUEVA</span> : null}
           <span className="lb-abanico">{tuya ? <img alt="" loading="lazy" src={tuya} className="sola" />
             : otras.map((f) => <img key={f.k} alt="" loading="lazy" src={liga.cartaUrl(f.k, 'temporada')} />)}</span>
-          <small>{tuya ? (cartaNueva ? 'Tu carta cambió' : 'La tuya') : sinVerif ? 'Verificate en DRA y tenés tu primera carta'
+          <small>{tuya ? (cartaNueva ? 'Tu carta cambió' : 'La tuya') : sinVerif ? 'Verifícate en DRA y tienes tu primera carta'
             : 'Las de cada rapero'}</small>
         </a>
         {/* 🔁 CADA DATO UNA VEZ, también adentro del lobby (Dlx, 13/10/2026: «evitar que se repitan las cosas»): tu nivel
@@ -648,7 +648,7 @@ export function Lobby({ liga, dc }) {
           </span>
           <i className="lb-barra"><u style={{ width: (a && hoy ? Math.round((100 * hechas) / hoy.length) : 0) + '%' }} /></i>
           <small>{a && hoy ? (hechas === hoy.length ? 'Mañana vienen otras' : 'Cada una te da XP')
-            : sinVerif ? 'Es de los miembros de DRA: verificate para subir de nivel' : 'Tareas que dan premios'}</small>
+            : sinVerif ? 'Es de los miembros de DRA: verifícate para subir de nivel' : 'Tareas que dan premios'}</small>
         </a>
         <a className="pu lb lb-ti" href="#/tienda">
           <span className="lb-big"><Ico n="moneda" t={34} /></span>

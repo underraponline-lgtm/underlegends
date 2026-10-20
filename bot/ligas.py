@@ -1404,11 +1404,11 @@ def para_web(d=None, claves=None, ps=None, ahora=None, resolver=None, decis=None
                     continue
                 frases = ['%s le ganó a %s' % (rc(b[5]), rc(b[4] if clave(b[5]) == clave(b[3]) else b[3])) for b in bs]
                 tit = '⚔️ %s: %s' % (x.get('n'), frases[-1] if len(frases) == 1 else '%d resultados nuevos' % len(frases))
-                cuerpo = (' · '.join(frases) if len(frases) > 1 else 'Mirá cómo quedó la tabla.')[:180]
+                cuerpo = (' · '.join(frases) if len(frases) > 1 else 'Mira cómo quedó la tabla.')[:180]
             else:
                 tit = '📅 %s: %s, el %s' % (x.get('n'), ('jornada %s' % n['j']) if n.get('j') else 'nueva fecha',
                                            '%s/%s' % (n['d'][8:10], n['d'][5:7]))
-                cuerpo = 'Ya está anunciada: mirá los cruces y la tabla.'
+                cuerpo = 'Ya está anunciada: mira los cruces y la tabla.'
             nov_web.append({'id': n['id'], 'liga': lid, 't': n['t'], 'titulo': tit, 'cuerpo': cuerpo,
                             'url': 'https://underlegends.pages.dev/freestyle-rap/ligas/' + lid})
         out.append(y)

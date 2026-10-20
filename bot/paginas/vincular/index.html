@@ -71,11 +71,11 @@ small{color:var(--suave);font-size:13px}
   if (q.error) {
     if (q.error !== 'access_denied' && intento !== 'consent') { aDiscord(true); return; }
     pintar('No se vinculó', q.error === 'access_denied' ? 'Cancelaste el permiso en Discord. Sin él no podemos decirle a Discord tu rango.'
-      : 'Discord no dio el permiso. Probá otra vez en un rato.', otraVez);
+      : 'Discord no dio el permiso. Prueba otra vez en un rato.', otraVez);
     conBoton();
     return;
   }
-  if (!st || q.state !== st) { pintar('No se vinculó', 'El permiso no era de esta página. Probá otra vez desde Discord.', otraVez); conBoton(); return; }
+  if (!st || q.state !== st) { pintar('No se vinculó', 'El permiso no era de esta página. Prueba otra vez desde Discord.', otraVez); conBoton(); return; }
 
   pintar('Guardando tus datos…', 'Le estamos diciendo a Discord tu rango de la Liga.');
   fetch('/api/cuenta/rol', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ token: q.access_token }) })
@@ -84,8 +84,8 @@ small{color:var(--suave);font-size:13px}
       var j = x.j;
       if (x.s === 403 && j.error === 'permiso' && intento !== 'consent') { aDiscord(true); return; }
       if (!j.ok) {
-        pintar('No se vinculó', j.error === 'discord_ocupado' ? 'Discord está ocupado: probá otra vez en un minuto.'
-          : 'Algo falló al hablar con Discord. Probá otra vez.', otraVez);
+        pintar('No se vinculó', j.error === 'discord_ocupado' ? 'Discord está ocupado: prueba otra vez en un minuto.'
+          : 'Algo falló al hablar con Discord. Prueba otra vez.', otraVez);
         conBoton();
         return;
       }
@@ -95,12 +95,12 @@ small{color:var(--suave);font-size:13px}
         '<li><b>' + esc(j.nivel || 0) + '</b><span>Nivel del Pase</span></li>' +
         '<li><b class="' + (j.verificado ? 'ok' : '') + '">' + (j.verificado ? 'Sí' : 'No') + '</b><span>Verificado</span></li></ul>';
       var nota = j.verificado
-        ? 'Volvé a Discord: los roles que piden esto se dan solos. <small>Si cambia tu rango, volvé a esta página para actualizarlo.</small>'
-        : 'Todavía no estás verificado en la Liga, así que Discord ve todo en cero. <a href="/freestyle-rap/cuenta/verificar" style="color:var(--tinta)">Verificate</a> y volvé acá.';
+        ? 'Vuelve a Discord: los roles que piden esto se dan solos. <small>Si cambia tu rango, vuelve a esta página para actualizarlo.</small>'
+        : 'Todavía no estás verificado en la Liga, así que Discord ve todo en cero. <a href="/freestyle-rap/cuenta/verificar" style="color:var(--tinta)">Verifícate</a> y vuelve acá.';
       pintar('<span class="ok">Listo</span>' + (j.rapero ? ', ' + esc(j.rapero) : ''), nota,
         datos + '<div class="btns"><a class="btn borde" href="/freestyle-rap/">Ir a la Liga</a></div>');
     })
-    .catch(function () { pintar('No se vinculó', 'No pudimos llegar a la Liga. Revisá tu conexión y probá otra vez.', otraVez); conBoton(); });
+    .catch(function () { pintar('No se vinculó', 'No pudimos llegar a la Liga. Revisa tu conexión y prueba otra vez.', otraVez); conBoton(); });
 })();
 </script>
 </body>

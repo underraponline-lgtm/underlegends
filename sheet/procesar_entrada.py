@@ -269,7 +269,7 @@ def avisar_rutas(raros):
     """Un mensaje a Logs con los eventos nuevos que entraron por un camino poco común."""
     if not raros:
         return
-    lineas = ['🧭 **Entró por un camino poco común — revisalo**:']
+    lineas = ['🧭 **Entró por un camino poco común — revísalo**:']
     for n, nombre, sv, fecha, por in raros:
         lineas.append('• **#%s %s** (%s, %s): %s' % (n, nombre[:60], sv, fecha, '; '.join(por)))
     lineas.append('Si alguno no tiene que contar, decímelo y sale.')

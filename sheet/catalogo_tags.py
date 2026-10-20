@@ -82,7 +82,7 @@ CATALOGO = {
         ('🥇 TOP 3', 't1', 'Estar en el top 3 del Competitivo.'),
         ('🧊 SANGRE FRÍA', 't1', 'Ganar 3 finales o más, y 3 de cada 4.'),
         ('⭐ TOP 10', 't1', 'Estar en el top 10 del Competitivo.'),
-        ('🗡️ MATAGIGANTES', 't2', 'Ganarle un duelo a alguien con dos letras más que vos.'),
+        ('🗡️ MATAGIGANTES', 't2', 'Ganarle un duelo a alguien con dos letras más que tú.'),
         ('🎯 FRANCOTIRADOR', 't2', 'Ganar el 65 % de tus duelos, con 15 o más jugados.'),
         ('😈 BESTIA NEGRA', 't2', 'Ganarle 3 veces al mismo rival sin perder nunca.'),
         ('🔁 VENGADOR', 't2', 'Perder con alguien y después ganarle (2 veces).'),

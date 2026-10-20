@@ -50,7 +50,7 @@ function Billetera({ liga, dc }) {
   }
   if (B && B.error) {
     const e = (typeof window.errorCuenta === 'function' && window.errorCuenta(B.error))
-      || (B.error === 'todavia' ? 'La tienda todavía no está lista: probá en un rato.' : 'No pude leer tus Puntos. Probá de nuevo.');
+      || (B.error === 'todavia' ? 'La tienda todavía no está lista: prueba en un rato.' : 'No pude leer tus Puntos. Prueba de nuevo.');
     return (
       <div className="ti-bill">
         <small>TUS PUNTOS DE TIENDA</small>
@@ -68,7 +68,7 @@ function Billetera({ liga, dc }) {
       {/* sin la cuenta, el número no es «tuyo»: es con cuánto arranca cada uno */}
       <small>TODOS ARRANCAN CON</small>
       <b className="ti-saldo">{num(T.inicial)}</b>
-      <p>Para ver los tuyos entrás con Discord: los ves sólo vos.</p>
+      <p>Para ver los tuyos entras con Discord: los ves sólo tú.</p>
       <button type="button" className="btn verde chico" onClick={pedir}>Ver mis Puntos</button>
     </div>
   );
@@ -97,19 +97,19 @@ function Panel({ liga, n, dc }) {
   const f = liga.fila(n);
   const esYo = !!(f && liga.yo && liga.yo.k === f.k);
   const msg = est.va ? 'Poniendo ' + num(est.va) + '…'
-    : est.ok ? '✓ Pusiste ' + num(est.ok) + '. Si nadie lo caza en la semana, vuelven a vos.'
+    : est.ok ? '✓ Pusiste ' + num(est.ok) + '. Si nadie lo caza en la semana, vuelven a ti.'
       : est.error ? sinEtiquetas(typeof window.errorPrecio === 'function' ? window.errorPrecio(est) : 'No pude ponerlo.')
-        : dc ? 'Elegí cuánto ponerle.' : 'Para poner un precio entrás con Discord: tocá un monto.';
+        : dc ? 'Elige cuánto ponerle.' : 'Para poner un precio entras con Discord: toca un monto.';
   return (
     <div className="ti-panel">
       <p><b>{limpio(f ? f.n : n)}</b> vale <span className="ti-pv">{num(v)}</span>
         {v < T.tope ? <> · se le pueden poner {num(queda)} más</> : <> · ya vale lo máximo</>}</p>
-      {esYo ? <p className="ti-nota">Sos vos: no te podés poner precio.</p> : (
+      {esYo ? <p className="ti-nota">Eres tú: no te puedes poner precio.</p> : (
         <>
           <div className="ti-montos">
             {[1, 2, 5, 10].map((x) => T.min * x).map((m) => (
               <DosToques key={m} className="btn borde2 chico" disabled={m > queda || (saldo != null && m > saldo) || !!est.va}
-                confirmar={'¿' + num(m) + '? Tocá de nuevo'} onClick={() => window.ponerPrecio(n, m)}>+{num(m)}</DosToques>
+                confirmar={'¿' + num(m) + '? Toca de nuevo'} onClick={() => window.ponerPrecio(n, m)}>+{num(m)}</DosToques>
             ))}
           </div>
           <p className={'ti-msg' + (est.error ? ' mal' : '')} aria-live="polite">{msg}</p>
@@ -138,16 +138,16 @@ function TuPromo({ liga, dc }) {
     }).catch(() => setEst((e) => ({ ...e, [it.id]: { error: 'error' } })));
   };
   const msg = (e) => (e.va ? 'Alargando…' : e.ok ? '✓ Sigue en la página hasta el ' + liga.dia(new Date(e.ok).toISOString()) + '.'
-    : e.error === 'saldo' ? 'Te faltan Puntos de Tienda' + (e.saldo != null ? ': tenés ' + num(e.saldo) + '.' : '.')
+    : e.error === 'saldo' ? 'Te faltan Puntos de Tienda' + (e.saldo != null ? ': tienes ' + num(e.saldo) + '.' : '.')
       : e.error === 'vencida' ? 'Ya salió de la página.' : e.error === 'no_es_tuya' ? 'Esta promo no es tuya.'
-        : e.error === 'todavia' ? 'La tienda todavía no está lista: probá en un rato.' : e.error ? 'No pude alargarla. Probá de nuevo.' : '');
+        : e.error === 'todavia' ? 'La tienda todavía no está lista: prueba en un rato.' : e.error ? 'No pude alargarla. Prueba de nuevo.' : '');
   return (
     <section className="sec ti-sec">
       <div className="sec-t"><h2>Tu promo, una semana más</h2></div>
       <p className="ti-nota">Cada promo está <b>una semana</b> en la página —en Publicaciones, tu perfil y el círculo de las historias—.
-        Si es tuya, la alargás <b>una semana más por {num(PROMO_SEMANA)} Puntos de Tienda</b>, y de nuevo cuando vuelva a vencer.</p>
-      {!dc ? <p className="ti-nota">Entrá con Discord para ver las tuyas.</p>
-        : !xs.length ? <p className="ti-nota">Ahora no tenés ninguna en la página. Compartí tu tema o tu video en el canal de promoción de tu servidor y aparece acá.</p>
+        Si es tuya, la alargas <b>una semana más por {num(PROMO_SEMANA)} Puntos de Tienda</b>, y de nuevo cuando vuelva a vencer.</p>
+      {!dc ? <p className="ti-nota">Entra con Discord para ver las tuyas.</p>
+        : !xs.length ? <p className="ti-nota">Ahora no tienes ninguna en la página. Comparte tu tema o tu video en el canal de promoción de tu servidor y aparece acá.</p>
           : (
             <ul className="ti-promos">
               {xs.map((it) => {
@@ -162,7 +162,7 @@ function TuPromo({ liga, dc }) {
                       <p className={'ti-msg' + (e.error ? ' mal' : '')} aria-live="polite">{msg(e)}</p>
                     </div>
                     <DosToques className="btn borde2 chico" disabled={!!e.va || (saldo != null && saldo < PROMO_SEMANA)}
-                      confirmar={'¿' + num(PROMO_SEMANA) + '? Tocá de nuevo'} onClick={() => alargar(it)}>+1 semana · {num(PROMO_SEMANA)}</DosToques>
+                      confirmar={'¿' + num(PROMO_SEMANA) + '? Toca de nuevo'} onClick={() => alargar(it)}>+1 semana · {num(PROMO_SEMANA)}</DosToques>
                   </li>
                 );
               })}
@@ -187,7 +187,7 @@ export function Tienda({ liga, dc }) {
     return (
       <section className="sec ti-sec">
         <div className="sec-t"><h2>La tienda</h2></div>
-        <p className="pronto-p">La tienda todavía no está lista: probá en un rato.</p>
+        <p className="pronto-p">La tienda todavía no está lista: prueba en un rato.</p>
       </section>
     );
   }
@@ -221,7 +221,7 @@ export function Tienda({ liga, dc }) {
       <section className="sec ti-sec">
         <div className="sec-t"><h2>Precio por cabeza</h2><span className="ti-hasta">hasta {liga.dia(T.fin)}</span></div>
         <ol className="ti-pasos">
-          <li><b>1</b><span>Ponés Puntos de Tienda sobre un rapero de la temporada.</span></li>
+          <li><b>1</b><span>Pones Puntos de Tienda sobre un rapero de la temporada.</span></li>
           <li><b>2</b><span>El primero que le gana en un evento de la Liga se los lleva, <b>y lo mismo suma a su Temporada</b>.</span></li>
           <li><b>3</b><span>Si nadie lo caza en la semana, vuelven a quien los puso.</span></li>
         </ol>
@@ -232,10 +232,10 @@ export function Tienda({ liga, dc }) {
         <div className="ti-dos"><div>
         <h3 className="ti-h">Las cabezas de esta semana<small>{top.length || ''}</small></h3>
         {top.length ? <ul className="ti-lista">{lista(top, 'top')}</ul>
-          : <p className="ti-nota">Esta semana todavía nadie tiene precio. Buscá a alguien y ponele el primero.</p>}
+          : <p className="ti-nota">Esta semana todavía nadie tiene precio. Busca a alguien y ponele el primero.</p>}
         </div><div>
         <h3 className="ti-h">Ponerle precio a alguien</h3>
-        <input type="search" className="ti-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscá a quién"
+        <input type="search" className="ti-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Busca a quién"
           aria-label="Buscar un rapero para ponerle precio" enterKeyHint="search" />
         {qq ? (res.length ? <ul className="ti-lista">{lista(res.map((x) => x.n), 'res')}</ul>
           : <p className="ti-nota">No hay nadie con ese nombre en la temporada.</p>) : null}
@@ -262,7 +262,7 @@ export function Tienda({ liga, dc }) {
         <div className="ti-pronto">
           <span className="tag">PRÓXIMAMENTE</span>
           <h2>La tienda abre pronto</h2>
-          <p>Acá vas a poder gastar tus Puntos de Tienda. Cuando abra se anuncia en la Liga, y si activás los avisos te llega al teléfono.</p>
+          <p>Acá vas a poder gastar tus Puntos de Tienda. Cuando abra se anuncia en la Liga, y si activas los avisos te llega al teléfono.</p>
           <a className="btn borde2 chico" href="#/avisos">Activar los avisos</a>
         </div>
       </section>

@@ -43,7 +43,7 @@ function pedirDueno() {
 async function ajustar(cual, valor) {
   const r = await fetch('/api/avisos/dueno/ajuste', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ cual, valor }) });
   const j = await r.json().catch(() => ({}));
-  if (!r.ok) throw new Error(r.status === 401 ? 'la sesión venció: entrá de nuevo' : j.error || String(r.status));
+  if (!r.ok) throw new Error(r.status === 401 ? 'la sesión venció: entra de nuevo' : j.error || String(r.status));
   return { ajustes: j.ajustes || {}, hist: j.hist };
 }
 
@@ -141,8 +141,8 @@ function Corridas({ corridas, s, github }) {
       const r = await fetch('/api/avisos/dueno/ciclo', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' });
       const j = await r.json().catch(() => ({}));
       if (r.ok) setMsg('✅ Pedido: GitHub lo larga en uno o dos minutos.');
-      else if (j.error === 'espera') setMsg('⏳ Ya se corrió hace poco: probá en ' + (j.minutos || 10) + ' min.');
-      else setMsg('⚠️ No se pudo: ' + (r.status === 401 ? 'la sesión venció, entrá de nuevo' : j.error || r.status) + '.');
+      else if (j.error === 'espera') setMsg('⏳ Ya se corrió hace poco: prueba en ' + (j.minutos || 10) + ' min.');
+      else setMsg('⚠️ No se pudo: ' + (r.status === 401 ? 'la sesión venció, entra de nuevo' : j.error || r.status) + '.');
     } catch (e) { setMsg('⚠️ No se pudo: sin red.'); }
     setOcup(false);
   };
@@ -168,7 +168,7 @@ function Corridas({ corridas, s, github }) {
         })}</ul>
       ) : <p className="db-tx">No pude preguntarle a GitHub ahora.</p>}
       <div className="cu-btns">
-        <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Tocá de nuevo para correrlo" onClick={correr}>▶️ Correr el ciclo ahora</DosToques>
+        <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo para correrlo" onClick={correr}>▶️ Correr el ciclo ahora</DosToques>
       </div>
       <p className="db-tx">Es la misma corrida que sale sola cada media hora: lee Discord, procesa lo que terminó y actualiza la página. Como mucho una vez cada 10 minutos.</p>
       {msg ? <p className="db-msg" role="status">{msg}</p> : null}
@@ -544,7 +544,7 @@ function Tiers({ T, aj, hacer, ocup, msg, liga }) {
     siglaDe(sv) + ' pasa a Tier ' + t + '. El ciclo lo aplica en su próxima vuelta' + (t === 1 ? ': vuelve a sumar al ranking.' : ': sus llaves dejan de sumar.'));
   return (
     <div className="ti">
-      <p className="db-tx">Las últimas {T.semanas || 4} semanas. El puntaje recomienda; <b>el nivel lo elegís vos</b>. Tier 1 suma al ranking y
+      <p className="db-tx">Las últimas {T.semanas || 4} semanas. El puntaje recomienda; <b>el nivel lo eliges tú</b>. Tier 1 suma al ranking y
         lleva todo; Tier 2 sale en el calendario y la campana, pero sus llaves no suman; Tier 3 es el directorio, sin bot. Para ser
         socio: 300 miembros como mínimo, se recomiendan 500.</p>
       {msg ? <p className="db-msg" role="status">{msg}</p> : null}
@@ -758,7 +758,7 @@ function AjCampana({ aj, hacer, ocup }) {
       <p className="db-tx">En pausa no sale ningún aviso. Los de los eventos que se anuncien en ese rato no se mandan; los personales esperan y salen al reanudar, si siguen frescos. La página de Eventos dice que está en pausa.</p>
       <div className="cu-btns">
         {p ? <button type="button" className="btn verde chico" disabled={ocup} onClick={() => hacer('campana_pausada', false, 'La campana vuelve a sonar.')}>Reanudar</button>
-          : <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Tocá de nuevo para pausar" onClick={() => hacer('campana_pausada', true, 'La campana quedó en pausa.')}>Pausar la campana</DosToques>}
+          : <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo para pausar" onClick={() => hacer('campana_pausada', true, 'La campana quedó en pausa.')}>Pausar la campana</DosToques>}
       </div>
     </div>
   );
@@ -799,7 +799,7 @@ function AjMult({ liga, aj, hacer, ocup }) {
       <div className="cu-btns">
         <button type="button" className="btn verde chico" disabled={ocup || !cambio}
           onClick={() => hacer('multiplicadores', { semana: m.id, sv: sel }, 'Guardado. Entra en la próxima corrida del ciclo.')}>Guardar</button>
-        {man ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Tocá de nuevo para volver al sorteo"
+        {man ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo para volver al sorteo"
           onClick={() => hacer('multiplicadores', null, 'Vuelve el sorteo en la próxima corrida del ciclo.')}>Volver al sorteo</DosToques> : null}
         {cambio ? <button type="button" className="evp-lnk" onClick={() => setSel(ref)}>Deshacer</button> : null}
       </div>
@@ -819,7 +819,7 @@ function AjAviso({ liga, aj, hacer, ocup }) {
         <div className="db-vig">
           <p>{vig.texto}</p>
           <small>Hasta {liga.dia(vig.hasta)}</small>
-          <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Tocá de nuevo para sacarlo" onClick={() => hacer('aviso_web', null, 'Aviso sacado.')}>Sacarlo</DosToques>
+          <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo para sacarlo" onClick={() => hacer('aviso_web', null, 'Aviso sacado.')}>Sacarlo</DosToques>
         </div>
       ) : null}
       <form className="db-form" onSubmit={(e) => {
@@ -837,7 +837,7 @@ function AjAviso({ liga, aj, hacer, ocup }) {
           </select></label>
         <div className="cu-btns"><button type="submit" className="btn verde chico" disabled={ocup || !txt.trim()}>Publicar</button></div>
       </form>
-      <p className="db-tx">Lo ve todo el mundo, arriba de cada página, hasta que vence o lo sacás. Cada uno lo puede cerrar.</p>
+      <p className="db-tx">Lo ve todo el mundo, arriba de cada página, hasta que vence o lo sacas. Cada uno lo puede cerrar.</p>
     </div>
   );
 }
@@ -857,8 +857,8 @@ function AjVivo({ liga, aj, hacer, ocup, chat, general }) {
   const admin = c.admin || {};
   const svs = [...new Set([...(c.generales || []).map((x) => x.sv), ...Object.keys(admin), ...Object.keys(dash)])].sort();
   const prendido = (sv) => dash[sv] !== false && (!!admin[sv] || dash[sv] === true);
-  const estado = (sv) => (dash[sv] === false ? 'Apagado por vos' : admin[sv] ? 'Lo prendió su admin'
-    : dash[sv] === true ? 'Prendido por vos, en el chat general' : 'Apagado: su admin no eligió canal');
+  const estado = (sv) => (dash[sv] === false ? 'Apagado por ti' : admin[sv] ? 'Lo prendió su admin'
+    : dash[sv] === true ? 'Prendido por ti, en el chat general' : 'Apagado: su admin no eligió canal');
   const cambiar = (sv, v) => {
     const n = Object.assign({}, dash);
     if (v === '') delete n[sv]; else n[sv] = v === 'si';
@@ -873,7 +873,7 @@ function AjVivo({ liga, aj, hacer, ocup, chat, general }) {
   return (
     <div className="db-aj">
       <div className="db-aj-c"><h3>El bot en vivo</h3><span className={'db-est' + (svs.some(prendido) ? ' ok' : '')}>{svs.filter(prendido).length} prendido(s)</span></div>
-      <p className="db-tx">Durante un evento cuenta en el chat cómo va, y cuánto habla se elige: <b>lo justo</b> (el arranque y el campeón), <b>normal</b> (además quién pasa cada ronda y la final, como mucho un mensaje cada 10 minutos) o <b>cada batalla</b> (quién gana cada una apenas se sabe, como mucho uno cada 2 minutos). No menciona a nadie. Lo prende el admin de cada servidor con /settings; desde acá lo prendés en el chat general, lo apagás o le cambiás cuánto habla aunque su admin haya elegido otra cosa.</p>
+      <p className="db-tx">Durante un evento cuenta en el chat cómo va, y cuánto habla se elige: <b>lo justo</b> (el arranque y el campeón), <b>normal</b> (además quién pasa cada ronda y la final, como mucho un mensaje cada 10 minutos) o <b>cada batalla</b> (quién gana cada una apenas se sabe, como mucho uno cada 2 minutos). No menciona a nadie. Lo prende el admin de cada servidor con /settings; desde acá lo prendes en el chat general, lo apagas o le cambias cuánto habla aunque su admin haya elegido otra cosa.</p>
       {general ? <p className="db-tx">Si habla y cuánto, servidor por servidor, en su tarjeta de arriba.</p> : svs.length ? (
         <div className="db-mult db-mult-vivo">{svs.map((sv) => (
           <label key={sv} className="db-sv db-sv-vivo" title={estado(sv)}>
@@ -1029,7 +1029,7 @@ function AjApuestas({ liga, aj, hacer, ocup, chat, general }) {
         {mal ? <p className="db-tx db-mal">{mal}</p> : null}
         <div className="cu-btns">
           <button type="submit" className="btn verde chico" disabled={ocup || !!mal}>Guardar</button>
-          {a ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Tocá de nuevo para volver a lo de siempre"
+          {a ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo para volver a lo de siempre"
             onClick={() => hacer('apuestas', null, 'Volvieron los de siempre.')}>Volver a lo de siempre</DosToques> : null}
         </div>
       </form>
@@ -1057,7 +1057,7 @@ function AjSilencio({ aj, hacer, ocup }) {
         </div>
         <div className="cu-btns">
           <button type="submit" className="btn verde chico" disabled={ocup || !desde || !hasta || desde === hasta}>Guardar</button>
-          {s ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Tocá de nuevo para sacarlo"
+          {s ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo para sacarlo"
             onClick={() => hacer('silencio', null, 'Sin silencio: vuelve a hablar a toda hora.')}>Sacarlo</DosToques> : null}
         </div>
       </form>
@@ -1224,7 +1224,7 @@ function AjRitmo({ aj, hacer, ocup, chat }) {
       <div className="cu-btns">
         <button type="button" className="btn verde chico" disabled={ocup || !cambio}
           onClick={() => hacer('ritmo', { normal: n, batalla: b }, 'Guardado: vale desde el próximo minuto.')}>Guardar</button>
-        {r ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Tocá de nuevo para volver a lo de siempre"
+        {r ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo para volver a lo de siempre"
           onClick={() => hacer('ritmo', null, 'Volvió el de siempre.')}>Volver a lo de siempre</DosToques> : null}
       </div>
       <p className="db-tx">Lo de siempre: uno cada {def.normal} minutos, y en «Cada batalla», uno cada {def.batalla}.</p>
@@ -1255,7 +1255,7 @@ function MesAwardsDueno({ aj, hacer, ocup }) {
   const ab = S.abierto;
   if (!ab) {
     const v = S.vivo;
-    return <p className="pronto-p">{v ? 'Así va ' + v.nombre + ': los nominados salen el día 1 a las 11 AM, y desde ahí hasta las 6 PM podés sacar a alguno acá.' : 'Todavía no hay MES AWARDS.'}</p>;
+    return <p className="pronto-p">{v ? 'Así va ' + v.nombre + ': los nominados salen el día 1 a las 11 AM, y desde ahí hasta las 6 PM puedes sacar a alguno acá.' : 'Todavía no hay MES AWARDS.'}</p>;
   }
   if (ab.votando) return <p className="pronto-p">Se está votando {ab.nombre}: los nominados ya no se cambian. Cierra el {corto(ab.cierra)}.</p>;
   const ya = ((aj.mes_sacar || {}).mes === ab.mes ? (aj.mes_sacar.quitar || []) : []);
@@ -1397,7 +1397,7 @@ function Pedidos({ ps, liga, alCambiar }) {
     setVa(p.id); setMsg('');
     fetch('/api/avisos/dueno-pedido', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: p.id, si }) })
       .then(async (r) => ({ r, j: await r.json().catch(() => ({})) }))
-      .then(({ r, j }) => { setVa(0); if (r.ok && j.pedidos) alCambiar(j.pedidos); else setMsg(j.error === 'no' ? 'No tenés permiso.' : 'No pude: ' + (j.error || r.status)); })
+      .then(({ r, j }) => { setVa(0); if (r.ok && j.pedidos) alCambiar(j.pedidos); else setMsg(j.error === 'no' ? 'No tienes permiso.' : 'No pude: ' + (j.error || r.status)); })
       .catch(() => { setVa(0); setMsg('No pude: la red.'); });
   };
   if (!ps.length) return <p className="pronto-p">Nadie pidió nada en los últimos días.</p>;
@@ -1441,10 +1441,10 @@ function atencion(d, liga, q, logs) {
     aj.multiplicadores && aj.multiplicadores.semana === m.id ? ['✍', 'El multiplicador de esta semana va a mano', 'No es el del sorteo.'] : null,
     d.sistema && d.sistema.ok === false ? ['⚠️', 'El vigía no contesta', 'Los avisos al minuto y el bot en vivo pueden estar quietos.'] : null,
     ult && ult.estado === 'completed' && ult.fin && ult.fin !== 'success' && ult.fin !== 'skipped'
-      ? ['⚠️', 'La última corrida del ciclo ' + String(FIN_CORRIDA[ult.fin] || ult.fin).replace(/^\S+\s/, ''), 'Mirá Sistema.'] : null,
+      ? ['⚠️', 'La última corrida del ciclo ' + String(FIN_CORRIDA[ult.fin] || ult.fin).replace(/^\S+\s/, ''), 'Mira Sistema.'] : null,
     ...cuotasEnRojo(q).map(([, , t]) => ['⚠️', t + ' casi llenas hoy', 'Se renuevan a las 8 PM ET.']),
     // 📣 los reportes de las llaves sin mirar, y una corrección que no se pudo (13/10/2026)
-    ...(() => { const r = (d.reportes || []).filter((x) => x.estado === ''); return r.length ? [['📣', r.length === 1 ? 'Un reporte de una llave sin mirar' : r.length + ' reportes de llaves sin mirar', 'En la pestaña Reportes: corregilo o marcalo como listo.']] : []; })(),
+    ...(() => { const r = (d.reportes || []).filter((x) => x.estado === ''); return r.length ? [['📣', r.length === 1 ? 'Un reporte de una llave sin mirar' : r.length + ' reportes de llaves sin mirar', 'En la pestaña Reportes: corregilo o márcalo como listo.']] : []; })(),
     ...(d.reportes || []).filter((x) => x.estado === 'no_pude').map((x) => ['⚠️', 'No se pudo corregir la llave #' + x.llave, x.resultado]),
     // 🖼️ y los fondos que esperan (13/10/2026)
     ...((d.fondos || []).length ? [['🖼️', (d.fondos.length === 1 ? 'Un fondo' : d.fondos.length + ' fondos') + ' para revisar', 'Abajo, en Lo que te llegó.']] : []),
@@ -1511,7 +1511,7 @@ function AjServidores({ liga, aj, hacer, ocup, chat }) {
       {m.id ? (
         <div className="db-svs-c">
           <span className={'db-est' + (man ? ' ojo' : '')}>{man ? '✍ El multiplicador de esta semana va a mano' : 'El multiplicador de esta semana es el del sorteo'}</span>
-          {man ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Tocá de nuevo para volver al sorteo"
+          {man ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo para volver al sorteo"
             onClick={() => hacer('multiplicadores', null, 'Vuelve el sorteo en la próxima corrida del ciclo.')}>Volver al sorteo</DosToques> : null}
         </div>
       ) : null}
@@ -1588,7 +1588,7 @@ function Historial({ hist, hacer, ocup }) {
         <li key={x.t + x.cual}>
           <div><b>{NOMBRE_AJ[x.cual] || x.cual}</b>
             <small>{hace(x.t)} · {x.despues === null ? 'volvió a lo de siempre' : x.antes === null ? 'pasó a tu gusto' : 'cambió'}{x.por && x.por !== 'Dlx' ? ' · lo cambió ' + x.por : ''}</small></div>
-          {puede ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Tocá de nuevo: vuelve a como estaba"
+          {puede ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo: vuelve a como estaba"
             onClick={() => hacer(x.cual, x.antes, 'Deshecho: volvió a como estaba.')}>Deshacer</DosToques> : null}
         </li>
       );
@@ -1608,7 +1608,7 @@ async function ponerRol(cuerpo) {
   const r = await fetch('/api/avisos/dueno/rol', { method: 'POST', credentials: 'same-origin',
     headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
   const j = await r.json().catch(() => ({}));
-  if (!r.ok || j.error) throw new Error(r.status === 401 ? 'la sesión venció: entrá de nuevo' : j.error || String(r.status));
+  if (!r.ok || j.error) throw new Error(r.status === 401 ? 'la sesión venció: entra de nuevo' : j.error || String(r.status));
   return j.roles || {};
 }
 
@@ -1642,7 +1642,7 @@ function Roles({ roles, alCambiar }) {
         <div className="db-rep-form">
           <span className="db-rep-p">{p[1]}{p[0] ? <> · <a href={'#/r/' + p[0]}>su perfil</a></> : null}</span>
           <div className="db-l1">{p[3].length ? chips(p[3]) : <small>Sin roles.</small>}</div>
-          {p[2] === '739338101603696681' ? <small>Owner: sólo vos, siempre.</small> : null}
+          {p[2] === '739338101603696681' ? <small>Owner: sólo tú, siempre.</small> : null}
           <ul className="db-roles-l">{ROLES_MANO.map(([rol, n]) => {
             const m = (man[p[2]] || {})[rol];
             const solo = p[4] && p[4][rol];
@@ -1722,7 +1722,7 @@ function VideosRevisar({ vs }) {
             <div className="cu-btns">
               <button type="button" className="btn verde chico" onClick={() => decidir(id, true)}>Aprobar</button>
               <button type="button" className="btn borde2 chico" onClick={() => decidir(id, false)}>No</button>
-              {hecho[id] === 'falló' ? <small>No se pudo: probá de nuevo.</small> : null}
+              {hecho[id] === 'falló' ? <small>No se pudo: prueba de nuevo.</small> : null}
             </div>
           )}
         </li>
@@ -1758,7 +1758,7 @@ async function decidirReporte(cuerpo) {
   const r = await fetch('/api/avisos/dueno/reporte', { method: 'POST', credentials: 'same-origin',
     headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
   const j = await r.json().catch(() => ({}));
-  if (!r.ok || j.error) throw new Error(r.status === 401 ? 'la sesión venció: entrá de nuevo' : j.error || String(r.status));
+  if (!r.ok || j.error) throw new Error(r.status === 401 ? 'la sesión venció: entra de nuevo' : j.error || String(r.status));
   return j.reportes || [];
 }
 
@@ -1803,7 +1803,7 @@ function CorregirLiga({ r, liga, alListo }) {
       <p className="db-rep-nota">Queda como su nombre en {L ? L.sv : 'ese servidor'}: en la liga y en las llaves de ese servidor. Lo aplica el ciclo en su próxima corrida y a quien lo mandó le llega a la campana.</p>
       <div className="cu-btns">
         <button type="button" className="btn verde chico" disabled={!listo || ocup} onClick={aplicar}>{ocup ? 'Guardando…' : 'Aplicar'}</button>
-        {!listo ? <small>{!nombre ? 'Elegí el nombre.' : 'Elegí quién es.'}</small> : null}
+        {!listo ? <small>{!nombre ? 'Elige el nombre.' : 'Elige quién es.'}</small> : null}
         {msg ? <small role="status">{msg}</small> : null}
       </div>
     </div>
@@ -1839,8 +1839,8 @@ function Corregir({ r, liga, alListo, hermanos }) {
   // ⚠️ ELEGIR LO QUE LA LLAVE YA DICE NO CAMBIA NADA, y el botón apagado no lo decía (Dlx, con el de Zetryko: «estoy
   // haciendo click a aplicar pero nada»): se dice, y se ofrece cerrarlo
   const yaDice = modo === 'ganador' && !!b && !!gana && gana === b.ganador;
-  const falta = modo === 'nombre' ? (!nombre ? 'Elegí el nombre que está mal.' : !listo ? 'Elegí de quién era.' : '')
-    : (!b ? 'Elegí la batalla.' : !gana ? 'Elegí quién la ganó.' : '');
+  const falta = modo === 'nombre' ? (!nombre ? 'Elige el nombre que está mal.' : !listo ? 'Elige de quién era.' : '')
+    : (!b ? 'Elige la batalla.' : !gana ? 'Elige quién la ganó.' : '');
   const aplicar = async () => {
     setOcup(true); setMsg('');
     try {
@@ -1883,7 +1883,7 @@ function Corregir({ r, liga, alListo, hermanos }) {
       </> : <>
         <span className="db-rep-p">¿Qué batalla de la #{r.llave}?</span>
         <select className="db-sel" value={bat} onChange={(e) => { setBat(e.target.value); setGana(''); }}>
-          <option value="">Elegí la batalla</option>
+          <option value="">Elige la batalla</option>
           {batallas.map((x) => <option key={x.k} value={x.k}>{x.ronda} · {x.lados.join(' vs ')} (dice: {x.ganador || '—'})</option>)}
         </select>
         {b ? <>
@@ -2097,7 +2097,7 @@ function FondosRevisar({ fs, alCambiar, filtro, alFiltro, fcs = [], alFotos }) {
   };
   const fl = filtro || {}, c = fl.cuenta || {}, vivos = fl.vivos || [];
   return (
-    <div>{fs.length ? <h3>Fondos para revisar <small>el filtro automático no estuvo seguro: no se ven hasta que los aprobás</small></h3> : null}
+    <div>{fs.length ? <h3>Fondos para revisar <small>el filtro automático no estuvo seguro: no se ven hasta que los apruebas</small></h3> : null}
       <ul>{fs.map((f) => (
         <li key={f.quien}>
           <div className="db-l1"><b>{f.k ? <a href={'#/r/' + f.k}>{f.k}</a> : 'una cuenta'}</b><small>{hace(f.t)}</small></div>
@@ -2111,7 +2111,7 @@ function FondosRevisar({ fs, alCambiar, filtro, alFiltro, fcs = [], alFotos }) {
         </li>
       ))}</ul>
       {/* 📸 las fotos de tarjeta que el filtro no supo decidir (13/10/2026) */}
-      {fcs.length ? <h3>Fotos de tarjeta para revisar <small>el filtro automático no estuvo seguro: no salen hasta que las aprobás</small></h3> : null}
+      {fcs.length ? <h3>Fotos de tarjeta para revisar <small>el filtro automático no estuvo seguro: no salen hasta que las apruebas</small></h3> : null}
       <ul>{fcs.map((f) => (
         <li key={'p' + f.quien}>
           <div className="db-l1"><b>{f.k ? <a href={'#/r/' + f.k}>{f.k}</a> : 'una cuenta'}</b><small>{hace(f.t)} · para {(f.cartas || []).join(', ')}</small></div>
@@ -2159,7 +2159,7 @@ function LogosCrews({ cl }) {
         body: JSON.stringify({ que: 'logo', crew: x.id, url: x.url, si, motivo: si ? '' : motivo[x.id] || MOTIVOS_FONDO[0] }) });
       const j = await r.json().catch(() => ({}));
       // 🛡️ se decide sobre el logo que viste: si el Líder subió otro mientras tanto, el objeto contesta `cambio`
-      if (j.error === 'cambio') throw new Error('el logo de esta crew cambió mientras lo mirabas: recargá el Dashboard');
+      if (j.error === 'cambio') throw new Error('el logo de esta crew cambió mientras lo mirabas: recarga el Dashboard');
       if (!r.ok || j.error) throw new Error(j.error || String(r.status));
       setLista(Object.assign({}, lista, { [de]: lista[de].filter((y) => y.id !== x.id) }));
     } catch (e) { setMsg('No se pudo: ' + e.message); }
@@ -2180,7 +2180,7 @@ function LogosCrews({ cl }) {
   if (!lista.pend.length && !lista.vistos.length) return null;
   return (
     <div>
-      {lista.pend.length ? <><h3>Logos de crews para revisar <small>el filtro automático no estuvo seguro: no se ven hasta que los aprobás</small></h3>
+      {lista.pend.length ? <><h3>Logos de crews para revisar <small>el filtro automático no estuvo seguro: no se ven hasta que los apruebas</small></h3>
         <ul>{lista.pend.map((x) => fila(x, 'pend'))}</ul></> : null}
       {lista.vistos.length ? <><h3>Logos de crews que ya se ven <small>los aprobó el filtro en los últimos 3 días</small></h3>
         <ul>{lista.vistos.map((x) => fila(x, 'vistos'))}</ul></> : null}
@@ -2207,7 +2207,7 @@ async function contestarDecidir(cuerpo) {
   const r = await fetch('/api/avisos/dueno/decidir', { method: 'POST', credentials: 'same-origin',
     headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
   const j = await r.json().catch(() => ({}));
-  if (!r.ok || j.error) throw new Error(r.status === 401 ? 'la sesión venció: entrá de nuevo' : j.error || String(r.status));
+  if (!r.ok || j.error) throw new Error(r.status === 401 ? 'la sesión venció: entra de nuevo' : j.error || String(r.status));
   return j.decidir || {};
 }
 export const sinContestar = (dec) => ((dec && dec.preguntas) || []).filter((p) => !((dec.respuestas || {})[p.id])).length;
@@ -2215,23 +2215,23 @@ export const sinContestar = (dec) => ((dec && dec.preguntas) || []).filter((p) =
 // ❔ QUÉ SE PREGUNTA Y QUÉ HACE CADA RESPUESTA (Dlx, 13/10/2026: «¿cómo lo resuelvo yo? ¿qué pongo?… que se pueda
 // resolver bien y que se entienda bien»). Una línea por tipo, en palabras, y debajo de los botones lo que hace cada uno
 const QUE_ES = {
-  'Bracket incompleto': 'La llave no dice quién ganó y nadie la terminó. Si sabés quién salió campeón, tocá «Ganó…». Si era de prueba o no se jugó, «No cuenta».',
-  'Batalla sin ganador': 'La llave no dice quién ganó esta batalla. Elegí al que pasó; si nadie siguió (no se presentó o lo reemplazaron), «Nadie siguió».',
-  'Evento dudoso': 'Algo de este evento no le cierra al bot. Mirá la llave al costado: si está bien así, confirmalo; si no, marcalo para revisar.',
-  'Nombre desconocido': 'Este nombre está en una llave y el bot no sabe de quién es. Elegí la cuenta, escribí quién es, o marcalo como nuevo.',
-  'Alias posible': 'Una misma cuenta de Discord usó dos nombres. Decí si son la misma persona: así suma todo junto.',
-  'alta': 'Alguien que no está en la Lista apareció en el bot. Si es alguien nuevo de verdad, sumalo; si no, cerralo.',
-  'conflicto': 'Una cuenta de Discord apareció con un nombre que en la Lista ya tiene otra cuenta. Revisalo y cerralo.',
+  'Bracket incompleto': 'La llave no dice quién ganó y nadie la terminó. Si sabes quién salió campeón, toca «Ganó…». Si era de prueba o no se jugó, «No cuenta».',
+  'Batalla sin ganador': 'La llave no dice quién ganó esta batalla. Elige al que pasó; si nadie siguió (no se presentó o lo reemplazaron), «Nadie siguió».',
+  'Evento dudoso': 'Algo de este evento no le cierra al bot. Mira la llave al costado: si está bien así, confirmalo; si no, márcalo para revisar.',
+  'Nombre desconocido': 'Este nombre está en una llave y el bot no sabe de quién es. Elige la cuenta, escribe quién es, o márcalo como nuevo.',
+  'Alias posible': 'Una misma cuenta de Discord usó dos nombres. Di si son la misma persona: así suma todo junto.',
+  'alta': 'Alguien que no está en la Lista apareció en el bot. Si es alguien nuevo de verdad, sumalo; si no, ciérralo.',
+  'conflicto': 'Una cuenta de Discord apareció con un nombre que en la Lista ya tiene otra cuenta. Revísalo y ciérralo.',
   'ambiguo': 'Esta cuenta se parece a más de una persona de la Lista.',
-  'Vidas cargado': 'El bot cargó solo un 5 vidas desde #veredictos. Confirmá que está bien o sacalo.',
+  'Vidas cargado': 'El bot cargó solo un 5 vidas desde #veredictos. Confirma que está bien o sácalo.',
   'Evento duplicado': 'El mismo evento quedó cargado dos veces. Si es el mismo, se saca el repetido.',
   'Llave sin resolver': 'El bot no pudo leer esta llave.',
-  'Liga terminada': 'Una liga de los servidores lleva tres semanas sin batallas. Si terminó, elegí quién la ganó: entra al Salón de campeones con su insignia.',
+  'Liga terminada': 'Una liga de los servidores lleva tres semanas sin batallas. Si terminó, elige quién la ganó: entra al Salón de campeones con su insignia.',
 };
 const HACE = [
   [/^No cuenta$/, 'la llave no suma nada, para nadie.'],
   [/^Sí cuenta$/, 'la llave suma como cualquier evento.'],
-  [/^La completo en Discord$/, 'la editás (o el organizador) en Discord con quién ganó, y el bot la lee sola en la próxima vuelta.'],
+  [/^La completo en Discord$/, 'la editas (o el organizador) en Discord con quién ganó, y el bot la lee sola en la próxima vuelta.'],
   [/^Ganó /, 'ése gana (o sale campeón) y el resto queda como está en la llave.'],
   [/^Pasó /, 'ése pasa de ronda y los otros quedan afuera.'],
   [/^Nadie siguió/, 'todos cobran esa ronda, nadie pasa y no cuenta como duelo.'],
@@ -2374,7 +2374,7 @@ function Lote({ ps, sel, setSel, alListo, visibles }) {
     }
     if (ultimo) alListo(ultimo);
     setSel(new Set()); setOcup(''); setNota('');
-    setMsg(mal ? 'Quedaron ' + mal + ' sin contestar: probá de nuevo.' : '✓ Contestadas ' + elegidas.length + ': «' + resp + '».');
+    setMsg(mal ? 'Quedaron ' + mal + ' sin contestar: prueba de nuevo.' : '✓ Contestadas ' + elegidas.length + ': «' + resp + '».');
   };
   if (!elegidas.length) {
     return (
@@ -2389,7 +2389,7 @@ function Lote({ ps, sel, setSel, alListo, visibles }) {
       <p><b>{elegidas.length} elegida{elegidas.length === 1 ? '' : 's'}</b> · <button type="button" className="evp-lnk" onClick={() => setSel(new Set())}>soltarlas</button>
         {libres.length > elegidas.length ? <> · <button type="button" className="evp-lnk" onClick={() => setSel(new Set(libres.map((p) => p.id)))}>elegir las {libres.length} que se ven</button></> : null}</p>
       {comunes.length ? <div className="db-opc">{comunes.map((o) => <button key={o} type="button" disabled={!!ocup} onClick={() => contestar(o)}>{ocup === o ? '…' : o}</button>)}</div>
-        : <small>Estas preguntas no tienen ninguna respuesta en común: elegí de un solo tipo (el filtro «Tipo» ayuda).</small>}
+        : <small>Estas preguntas no tienen ninguna respuesta en común: elige de un solo tipo (el filtro «Tipo» ayuda).</small>}
       {comunes.length ? <div className="db-rep-q"><label>Nota para todas (opcional):
         <input type="text" value={nota} maxLength={300} onChange={(e) => setNota(e.target.value)} /></label></div> : null}
       {msg ? <small role="status">{msg}</small> : null}
@@ -2515,7 +2515,7 @@ export function Dashboard({ dc, liga }) {
   let cuerpo;
   if (st.cargando) cuerpo = <p className="pronto-p">Cargando…</p>;
   else if (st.sinCuenta) {
-    cuerpo = (<><p className="pronto-p">Esta página es del dueño de la Liga. Entrá con tu cuenta de Discord.</p>
+    cuerpo = (<><p className="pronto-p">Esta página es del dueño de la Liga. Entra con tu cuenta de Discord.</p>
       <div className="cu-btns"><button type="button" className="btn verde chico" onClick={entrar}>Entrar con Discord</button></div></>);
   } else if (st.no) cuerpo = <p className="pronto-p">Esta página es sólo del dueño de la Liga.</p>;
   else if (st.error) cuerpo = <p className="pronto-p">No pude leerlo ({st.error}). Probá en un rato.</p>;
@@ -2559,12 +2559,12 @@ export function Dashboard({ dc, liga }) {
           (d.reportes || []).length ? <div className="db-llego"><Reportes rep={d.reportes} liga={liga} alCambiar={(l) => cambiarD({ reportes: l })} corrige={ve('reportes')} /></div>
             : <p className="pronto-p">Nadie reportó nada en los últimos 14 días.</p>) : null}
         {tabV === 'decisiones' ? sec('✅ DECIDIR', 'las mismas preguntas que la hoja', <Decisiones dec={d.decidir} liga={liga} alCambiar={(y) => cambiarD({ decidir: y })} />) : null}
-        {tabV === 'ajustes' ? sec(ve('roles') ? 'CONFIGURACIÓN · SÓLO VOS' : 'CONFIGURACIÓN', null,
+        {tabV === 'ajustes' ? sec(ve('roles') ? 'CONFIGURACIÓN · SÓLO TÚ' : 'CONFIGURACIÓN', null,
           <Ajustes liga={liga} aj={d.ajustes || {}} chat={d.chat} hist={d.ajustes_hist} hacer={hacer} msg={msg} ocup={ocup}
             roles={d.roles} alRoles={(y) => cambiarD({ roles: y })} conRoles={ve('roles')} />) : null}
         {tabV === 'numeros' ? <>
           {sec('COMPARAR SEMANAS', 'de lunes a domingo, en hora del este', <CompararSemanas S={semanas} uso={d.uso_semanas} liga={liga} />)}
-          {ve('ajustes') ? sec('LOS TIERS · CÓMO TRABAJA CADA SERVIDOR', 'recomienda; vos elegís', <Tiers T={d.tiers} aj={d.ajustes || {}} hacer={hacer} ocup={ocup} msg={msg} liga={liga} />) : null}
+          {ve('ajustes') ? sec('LOS TIERS · CÓMO TRABAJA CADA SERVIDOR', 'recomienda; tú eliges', <Tiers T={d.tiers} aj={d.ajustes || {}} hacer={hacer} ocup={ocup} msg={msg} liga={liga} />) : null}
           {sec('EL BOT Y LA PÁGINA · 7 DÍAS', u.desde ? 'se cuenta desde el ' + corto(u.desde) : null, <Cajas u={u} />)}
           {(d.dias || []).length ? sec('DÍA POR DÍA · DOS SEMANAS', null, <Dias dias={d.dias} />) : null}
           {d.tutorial && Object.keys(d.tutorial.n || {}).length ? sec('EL TUTORIAL · DOS SEMANAS',
@@ -2649,7 +2649,7 @@ export function PanelDueno({ liga }) {
           </dl>
           {marcas.length ? <p className="db-ini-m">{marcas.join(' · ')}</p> : null}
         </>
-      ) : <p className="db-ini-m">{st.sinCuenta ? 'Entrá con Discord para verlo.' : 'No pude leerlo ahora.'}</p>}
+      ) : <p className="db-ini-m">{st.sinCuenta ? 'Entra con Discord para verlo.' : 'No pude leerlo ahora.'}</p>}
     </section>
   );
 }

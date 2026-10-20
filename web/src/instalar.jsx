@@ -240,23 +240,23 @@ function S4() {
 
 const PASOS = {
   android: [
-    [A1, <>Abrí <b>underlegends.pages.dev</b> en <b>Chrome</b> y tocá los <b>tres puntos ⋮</b>, arriba a la derecha.</>],
-    [A2, <>Tocá <b>«Instalar app»</b>. En algunos teléfonos dice <b>«Agregar a la pantalla principal»</b>.</>],
-    [A3, <>Confirmá con <b>«Instalar»</b>.</>],
+    [A1, <>Abre <b>underlegends.pages.dev</b> en <b>Chrome</b> y toca los <b>tres puntos ⋮</b>, arriba a la derecha.</>],
+    [A2, <>Toca <b>«Instalar app»</b>. En algunos teléfonos dice <b>«Agregar a la pantalla principal»</b>.</>],
+    [A3, <>Confirma con <b>«Instalar»</b>.</>],
     [Listo, <>Listo: la Liga queda en tu <b>pantalla de inicio</b>. Se abre desde ahí, como cualquier app.</>],
   ],
   ios: [
-    [I1, <>Abrí <b>underlegends.pages.dev</b> en <b>Safari</b> y tocá <b>«•••»</b>, abajo a la derecha. Si no lo ves, tocá directo el botón <b>Compartir</b> (un cuadrado con una flecha) y seguí en el paso 3.</>],
-    [I2, <>Tocá <b>«Compartir»</b>.</>],
-    [I3, <>Bajá en la lista y tocá <b>«Agregar a inicio»</b>.</>],
-    [I4, <>Si aparece <b>«Abrir como app web»</b>, dejalo prendido. Tocá <b>«Agregar»</b>.</>],
-    [Listo, <>Abrila desde el <b>ícono nuevo</b>: en el iPhone, así es como se pueden activar los avisos de eventos.</>],
+    [I1, <>Abre <b>underlegends.pages.dev</b> en <b>Safari</b> y toca <b>«•••»</b>, abajo a la derecha. Si no lo ves, toca directo el botón <b>Compartir</b> (un cuadrado con una flecha) y sigue en el paso 3.</>],
+    [I2, <>Toca <b>«Compartir»</b>.</>],
+    [I3, <>Baja en la lista y toca <b>«Agregar a inicio»</b>.</>],
+    [I4, <>Si aparece <b>«Abrir como app web»</b>, déjalo prendido. Toca <b>«Agregar»</b>.</>],
+    [Listo, <>Ábrela desde el <b>ícono nuevo</b>: en el iPhone, así es como se pueden activar los avisos de eventos.</>],
   ],
   samsung: [
-    [S1, <>Abrí <b>underlegends.pages.dev</b> en <b>Samsung Internet</b> y tocá el menú <b>≡</b>, abajo a la derecha.</>],
-    [S2, <>Tocá <b>«Agregar página a»</b> (el ícono con el <b>+</b>).</>],
-    [S3, <>Elegí <b>«Pantalla de inicio»</b>.</>],
-    [S4, <>Confirmá con <b>«Agregar»</b>. Si arriba en la barra ves un ícono de <b>descargar</b>, también sirve: es «Instalar».</>],
+    [S1, <>Abre <b>underlegends.pages.dev</b> en <b>Samsung Internet</b> y toca el menú <b>≡</b>, abajo a la derecha.</>],
+    [S2, <>Toca <b>«Agregar página a»</b> (el ícono con el <b>+</b>).</>],
+    [S3, <>Elige <b>«Pantalla de inicio»</b>.</>],
+    [S4, <>Confirma con <b>«Agregar»</b>. Si arriba en la barra ves un ícono de <b>descargar</b>, también sirve: es «Instalar».</>],
     [Listo, <>Listo: la Liga queda en tu <b>pantalla de inicio</b>. Se abre desde ahí, como cualquier app.</>],
   ],
 };
@@ -293,7 +293,7 @@ export function PasosInstalar() {
     <>
       {ev ? (
         <div className="pi-ya">
-          <span><b>Tu teléfono la instala de un toque.</b><small>Si preferís hacerlo a mano, abajo están los pasos.</small></span>
+          <span><b>Tu teléfono la instala de un toque.</b><small>Si prefieres hacerlo a mano, abajo están los pasos.</small></span>
           <button type="button" className="btn verde chico" onClick={instalar}>Instalar</button>
         </div>
       ) : null}
@@ -310,7 +310,7 @@ export function PasosInstalar() {
           </li>
         ))}
       </ol>
-      {cual === 'android' ? <p className="cu-nota">¿Tenés un Samsung y usás Samsung Internet? Mirá la pestaña <b>Samsung</b>.</p> : null}
+      {cual === 'android' ? <p className="cu-nota">¿Tienes un Samsung y usas Samsung Internet? Mira la pestaña <b>Samsung</b>.</p> : null}
     </>
   );
 }

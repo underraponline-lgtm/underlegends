@@ -65,20 +65,20 @@ function haceVigia(liga, t) {
 function Campana({ liga }) {
   const e = useCampana();
   const C = window.Campana;
-  if (!e || !C) return <p className="pronto-p">La campana no cargó en este navegador. Recargá la página.</p>;
+  if (!e || !C) return <p className="pronto-p">La campana no cargó en este navegador. Recarga la página.</p>;
   let cuerpo;
   if (!e.soporta && e.ios && !e.instalada) {
     cuerpo = (
       <>
         <p className="evp-tx">En iPhone y iPad los avisos llegan con la Liga en la pantalla de inicio:</p>
-        <ol className="evp-pasos"><li>Tocá <b>Compartir</b> (el cuadrado con la flecha).</li><li>Elegí <b>Agregar a inicio</b>.</li>
-          <li>Abrí la Liga <b>desde ese ícono</b> y volvé acá.</li></ol>
+        <ol className="evp-pasos"><li>Toca <b>Compartir</b> (el cuadrado con la flecha).</li><li>Elige <b>Agregar a inicio</b>.</li>
+          <li>Abre la Liga <b>desde ese ícono</b> y vuelve acá.</li></ol>
       </>
     );
   } else if (!e.soporta) {
     cuerpo = <p className="evp-tx">Este navegador no puede recibir avisos. En Android andan Chrome, Firefox, Edge y Samsung Internet; en la compu, cualquiera de esos.</p>;
   } else if (e.negado) {
-    cuerpo = <p className="evp-tx">Las notificaciones de esta página están <b>bloqueadas</b>. Tocá el candado al lado de la dirección → <b>Notificaciones</b> → <b>Permitir</b>, y recargá.</p>;
+    cuerpo = <p className="evp-tx">Las notificaciones de esta página están <b>bloqueadas</b>. Toca el candado al lado de la dirección → <b>Notificaciones</b> → <b>Permitir</b>, y recarga.</p>;
   } else if (!e.activa) {
     cuerpo = (
       <>
@@ -109,7 +109,7 @@ function Campana({ liga }) {
           <button type="button" className="evp-lnk" onClick={() => C.desactivar()}>Desactivar</button>
         </div>
         <div className="evp-yo">
-          <p className="evp-tx"><b>Tus avisos</b>: cuando te toca pelear en una llave en vivo, cuando subís de rango o desbloqueás una tarjeta, cuando te felicitan, cuando alguien te sigue y cuando alguien que seguís gana.</p>
+          <p className="evp-tx"><b>Tus avisos</b>: cuando te toca pelear en una llave en vivo, cuando subes de rango o desbloqueas una tarjeta, cuando te felicitan, cuando alguien te sigue y cuando alguien que sigues gana.</p>
           {e.yo && e.yo.id ? (
             <p className="evp-ok">Vinculado con tu Discord{e.yo.n ? ' (' + e.yo.n + ')' : ''}. <button type="button" className="evp-lnk" onClick={() => C.desvincular()}>Desvincular</button></p>
           ) : <button type="button" className="btn borde2 chico" onClick={() => C.vincular()}>Vincular con mi Discord</button>}
@@ -123,7 +123,7 @@ function Campana({ liga }) {
       {e.msg ? <p className="evp-msg" role="status">{e.msg}</p> : null}
       {/* 🔔 en pausa desde el Dashboard: si no se dice, la campana parece rota */}
       {e.pausada ? <p className="evp-msg" role="status">⏸ La campana está en pausa por un rato. Los avisos vuelven solos.</p> : null}
-      <p className="evp-nota">Desde Discord: escribí <b>/notify</b> en cualquier servidor de la Liga y el bot te trae acá con ese servidor ya elegido.</p>
+      <p className="evp-nota">Desde Discord: escribe <b>/notify</b> en cualquier servidor de la Liga y el bot te trae acá con ese servidor ya elegido.</p>
       {e.vigia ? (
         <p className="evp-vig">{e.vigia.ok ? '● ' : '⚠ '}Revisa los canales de eventos cada minuto · última vez {haceVigia(liga, e.vigia.t)}
           {e.vigia.dispositivos ? ' · ' + e.vigia.dispositivos + ' dispositivos con la campana' : ''}</p>
@@ -149,7 +149,7 @@ function Calendario() {
         {!ANDROID ? <a className="btn borde2 chico" href={'webcal://' + ICS}>Apple · Outlook</a> : null}
         <button type="button" className="btn borde2 chico" onClick={copiar}>{copiado ? 'Link copiado' : 'Copiar el link'}</button>
       </div>
-      {TACTIL ? <p className="evp-nota">Desde el teléfono, Google no deja sumarlo: hacelo una vez en calendar.google.com, en «Otros calendarios» → «Desde URL», con este link. Después aparece solo en el teléfono.</p> : null}
+      {TACTIL ? <p className="evp-nota">Desde el teléfono, Google no deja sumarlo: hazlo una vez en calendar.google.com, en «Otros calendarios» → «Desde URL», con este link. Después aparece solo en el teléfono.</p> : null}
       <code className="evp-ics">{url}</code>
     </div>
   );
@@ -380,7 +380,7 @@ function Evento({ liga, e, est, L, abierto, arriba, campVivo, sig }) {
         </div>
       ) : null}
       {st ? <p className="evp-aviso"><b>{liga.estadoTexto(st, { cuando: e.t, t: e.t, sv: e.sv, n: e.n, link: e.link })}</b>{st.texto ? <span>«{recorte(st.texto.replace(/<a?:\w+:\d+>/g, '').replace(/\s+/g, ' ').trim(), 140)}»</span> : null}</p> : null}
-      {mia ? <p className="evp-vos"><em className="rk-vos">VOS</em><b>{resultado(mia[1])}</b><span>· +{num(mia[2])}</span></p> : null}
+      {mia ? <p className="evp-tú"><em className="rk-tú">VOS</em><b>{resultado(mia[1])}</b><span>· +{num(mia[2])}</span></p> : null}
       {mia && sig && sig.e ? <TuProximo liga={liga} s={sig} /> : null}
       {camp.length && !abierto ? <p className="evp-camp">{camp.length > 1 ? 'Campeones' : 'Campeón'}: <b>{camp.join(' y ')}</b></p> : null}
       {!camp.length && campVivo ? <p className="evp-camp">Campeón: <b>{campVivo}</b></p> : null}
@@ -505,7 +505,7 @@ function CuandoJuega({ liga, cal, dia, color, et }) {
   const alternar = async (n) => {
     const si = !sigo.has(claveOrg(n));
     const e = await seguirOrg(n, si);
-    setNota(e === 'sin_sesion' ? 'Entrá con Discord para seguir organizadores.' : e === 'muchos' ? 'Ya seguís a 30.'
+    setNota(e === 'sin_sesion' ? 'Entra con Discord para seguir organizadores.' : e === 'muchos' ? 'Ya sigues a 30.'
       : e ? 'No se pudo.' : si ? 'Te avisamos cuando ' + limpio(n) + ' anuncie un evento (en la campana).' : '');
   };
   if (!P.svs.length) return null;
@@ -556,7 +556,7 @@ function CuandoJuega({ liga, cal, dia, color, et }) {
         ))}
       </ul>
       {nota ? <p className="evp-nota" role="status">{nota}</p> : null}
-      <p className="evp-nota">Sobre los {P.todos.length} eventos {desde === 'hoy' || desde === 'ayer' ? 'desde ' + desde : 'desde el ' + desde}, en tu hora.{dc ? ' Tocá un organizador para que te avisemos cuando anuncie.' : ''}</p>
+      <p className="evp-nota">Sobre los {P.todos.length} eventos {desde === 'hoy' || desde === 'ayer' ? 'desde ' + desde : 'desde el ' + desde}, en tu hora.{dc ? ' Toca un organizador para que te avisemos cuando anuncie.' : ''}</p>
     </div>
   );
 }

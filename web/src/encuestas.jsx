@@ -17,7 +17,7 @@ function comoVa(E, cu, mio, nombre) {
   const tot = suma(cu);
   const top = Object.keys(cu).sort((a, b) => (cu[b] || 0) - (cu[a] || 0))[0];
   if (mio) return '✓ Votaste a ' + nombre(mio) + (top && tot ? ' · va ganando ' + nombre(top) : '');
-  return tot && top ? 'Va ganando ' + nombre(top) + ' · ' + votos(tot) : 'Todavía nadie votó: ¿sos el primero?';
+  return tot && top ? 'Va ganando ' + nombre(top) + ' · ' + votos(tot) : 'Todavía nadie votó: ¿eres el primero?';
 }
 function Plegada({ linea, mio, children }) {
   const [abierta, setAbierta] = useState(false);
@@ -93,15 +93,15 @@ export function Elegido({ liga, enc, E, corta }) {
           const esYo = !!(yoK && f && f.k === yoK);
           return (
             <button type="button" key={op} className={'en-op' + (mio === op ? ' mia' : '') + (est.va === op ? ' va' : '')} disabled={esYo}
-              title={esYo ? 'Sos vos' : undefined} onClick={() => accion.votar(E.id, op)}>
+              title={esYo ? 'Eres tú' : undefined} onClick={() => accion.votar(E.id, op)}>
               <i className="en-bar" style={{ width: pct(n, tot) }} />
               <Cara liga={liga} k={f ? f.k : ''} nombre={op} cls="en-cara" /><b>{nombre(op)}</b>
-              <span className="en-n">{esYo ? 'sos vos' : (mio === op ? '✓ ' : '') + n}</span>
+              <span className="en-n">{esYo ? 'eres tú' : (mio === op ? '✓ ' : '') + n}</span>
             </button>
           );
         }) : <p className="en-b">Nadie con ese nombre puede ser El Elegido.</p>}
       </div>
-      <input type="search" className="en-busca" placeholder={'Buscá entre los ' + E.op.length} aria-label="Buscar a quién votar"
+      <input type="search" className="en-busca" placeholder={'Busca entre los ' + E.op.length} aria-label="Buscar a quién votar"
         value={q} onChange={(e) => setQ(e.target.value)} />
       <p className="en-e" aria-live="polite">{enc.pie(E, nombre)}</p>
       </>)}

@@ -164,7 +164,7 @@ function MesSv({ liga, sv, enc }) {
   const capM = (x) => (x ? x.charAt(0).toUpperCase() + x.slice(1) : x);
   return (
     <Sec id="sv-mes" titulo="MES AWARDS" enlace="El Salón de la fama" href="#/salon" extra="negra sf-mes">
-      {ab ? <p className="ma-cab">{votando ? <>Votá lo mejor de <b>{ab.nombre}</b> en {siglaDe(sv)}: cierra {liga.dia(ab.cierra)}.</>
+      {ab ? <p className="ma-cab">{votando ? <>Vota lo mejor de <b>{ab.nombre}</b> en {siglaDe(sv)}: cierra {liga.dia(ab.cierra)}.</>
         : <>Los nominados de <b>{ab.nombre}</b> en {siglaDe(sv)}: la votación abre {liga.dia(ab.abre)}.</>}</p> : null}
       <p className="ma-como">Los nominados salen de lo que se jugó en {siglaDe(sv)} ese mes, y votan los que jugaron acá: una vez por categoría,
         y se puede cambiar hasta que cierra. El ganador se lleva su insignia{(S.premio_sv || {}).rapero ? ', ' + num(S.premio_sv.rapero) + ' Puntos de Tienda' : ''} y su lugar en esta página.</p>

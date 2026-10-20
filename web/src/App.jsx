@@ -325,8 +325,8 @@ function estadoEnc() {
     const e = est[E.id] || {};
     if (e.va) return 'Guardando tu voto…';
     if (e.error) return w.errorEnc ? w.errorEnc(e).replace(/<[^>]+>/g, '') : 'No pude guardar tu voto.';
-    if (mio[E.id] && E.op.includes(mio[E.id])) return 'Votaste por ' + nombre(mio[E.id]) + '. Lo podés cambiar hasta que cierre.';
-    return (w.DC ? 'Tocá una opción para votar.' : 'Para votar entrás con Discord: tocá una opción.') + ' Nadie ve a quién votaste.';
+    if (mio[E.id] && E.op.includes(mio[E.id])) return 'Votaste por ' + nombre(mio[E.id]) + '. Lo puedes cambiar hasta que cierre.';
+    return (w.DC ? 'Toca una opción para votar.' : 'Para votar entras con Discord: toca una opción.') + ' Nadie ve a quién votaste.';
   };
   const yoDiscord = w.DC && w.DC.clave ? w.DC.clave : null;
   return { mio, est, cuenta, pie, yoDiscord };

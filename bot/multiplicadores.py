@@ -1294,7 +1294,7 @@ def _self_check():
     ok(f('URBF', en(9, 30, 20), 99, 'Zoe') == 0.5 and f('FFA', en(9, 30, 20), 98, 'Zoe') == 1,
        'el que salió ×0,5 vale la mitad; el que no salió, ×1')
     ok(f('DRA', en(10, 2, 21), 13, 'Bea') == 5 and (('Bea', 13) in volve_de(filas)),
-       '«Volvé»: el segundo de Bea a un día del primero ×1,5 (sobre ×5, techo)')
+       '«Vuelve»: el segundo de Bea a un día del primero ×1,5 (sobre ×5, techo)')
     ok(f('SR', en(9, 27, 11)) == 1 and f('SR', None) == 1,
        'antes de toda semana sorteada, o sin fecha, ×1 (no se aplica para atrás)')
     lejos = [(1, 'SR', en(9, 28, 20), 'Cid', 1), (2, 'SR', en(10, 8, 20), 'Cid', 1)]
@@ -1460,7 +1460,7 @@ def _self_check():
                         evp, {'cid': ['2026-10-14T00:00:00Z', 'SR']}, mwp)
     ok(pr.get('figura') == ['Ana', 8000] and pr.get('revelacion') == ['Cid', 3000]
        and pr.get('cazador') == ['Bea', 9000] and pr.get('servidor') == ['SR', 3],
-       'la figura (Ana: 5.000 + 2.000 con «Volvé» ×1,5), la revelación (Cid, debutó), el cazador (Bea) '
+       'la figura (Ana: 5.000 + 2.000 con «Vuelve» ×1,5), la revelación (Cid, debutó), el cazador (Bea) '
        'y el servidor (SR, 3 personas)  %s' % pr)
 
     # los Clásicos: el tercer cruce, o más, con los ganados de antes

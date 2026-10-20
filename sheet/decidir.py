@@ -1852,7 +1852,7 @@ def _guardar_ligas(ligas_fin, ligas_sigue, estados, dry=True):
         nombres = tablas.get(lid) or []
         c = next((x for x in nombres if LG.clave(x) == LG.clave(quien)), None)
         if not c:
-            estados[p['id']] = '⚠️ «%s» no está en la tabla de %s: elegí de la lista' % (quien, n)
+            estados[p['id']] = '⚠️ «%s» no está en la tabla de %s: elige de la lista' % (quien, n)
             continue
         d.setdefault(LG.FIN, [])
         d[LG.FIN] = [x for x in d[LG.FIN] if not (x.get('liga') == lid and x.get('ult') == ult)]
@@ -2316,7 +2316,7 @@ def recuperar_pendientes(preguntas, dry=True, respuestas=None, hechas=()):
             y.pop('pendiente', None)
             y['r'] = '⚠️ Dlx contestó otra cosa'
             y['porque'] = ('%s · ⚠️ Dlx contestó otra cosa antes de que se cerrara, y lo que escribió la regla (%s) no se '
-                           'pudo sacar solo: sacalo con «Deshacer»' % (y.get('porque') or '', quedan[y['id']]))[:600]
+                           'pudo sacar solo: sácalo con «Deshacer»' % (y.get('porque') or '', quedan[y['id']]))[:600]
         else:
             sacar.add(y['id'])
     d['solas'] = [y for y in d['solas'] if not (y.get('pendiente') and y.get('id') in sacar)]
@@ -3571,7 +3571,7 @@ def _pregunta(p):
         dice = ('a «%s» lo buscó otra persona con /card%s (no lo usó él)' % (quien, ' en %s' % sv if sv and sv != '?' else '')
                 if _por_otro(match) else '«%s» usó /card%s' % (quien, ' en %s' % sv if sv and sv != '?' else ''))
         return ('%s y no está en la Lista de Raperos. Si ya '
-                'está con otro nombre, elegilo o escribilo: le pongo su '
+                'está con otro nombre, elígelo o escribilo: le pongo su '
                 'Discord.%s' % (dice[0].upper() + dice[1:],
                                 '\nSu cuenta: https://discord.com/users/%s' % did
                                 if did.isdigit() else ''),
@@ -3580,7 +3580,7 @@ def _pregunta(p):
     if t in ('conflicto', 'ambiguo'):
         quien = det.split(' = ')[0].strip()
         return ('«%s» usó /card y su nombre choca con la lista (%s). '
-                'Revisalo en Discord.' % (quien, match or t),
+                'Revísalo en Discord.' % (quien, match or t),
                 match or '—', ['Ya lo revisé', 'Dejar para después'])
     if t == 'Alias posible':
         # ⚠️ LA PREGUNTA ES «¿ES LA MISMA PERSONA?» Y LAS OPCIONES ERAN «YA LO
@@ -3618,7 +3618,7 @@ def _pregunta(p):
             return ('Esta llave no dice quién ganó y lleva más de 12 h sin '
                     'cambios, así que no sumó nada. ¿Cuenta?',
                     '—', ['No cuenta', 'La completo en Discord'])
-        return ('Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabés quién '
+        return ('Esta llave no dice quién ganó y lleva más de 12 h sin cambios, así que no sumó nada. Si sabes quién '
                 'salió campeón, elegilo: %s. Si no, ¿cuenta?' % como_cobra(ult),
                 '—', ['Ganó %s' % x for x in gan] + ['No cuenta', 'La completo en Discord'])
     if t == 'Evento dudoso' and 'llaves' in p['origen'].lower():
@@ -3630,7 +3630,7 @@ def _pregunta(p):
                 ['Está bien así', 'Hay que revisarlo'])
     if t == 'Llave sin resolver':
         return ('No pude leer estas batallas: %s' % (match or det), '—',
-                ['La corrijo en Discord', 'Dejala así'])
+                ['La corrijo en Discord', 'Déjala así'])
     return ('%s: %s' % (t, det), match or '—', ['Hecho', 'Dejar para después'])
 
 
@@ -3639,7 +3639,7 @@ def _pregunta(p):
 #: lo que cierra la pregunta tal cual, sin hacer nada más
 MISMA, OTRA = 'Es la misma persona', 'Es otra persona'
 CIERRAN = {'Ya lo revisé', 'Ya está resuelto', 'La completo en Discord',
-           'Está bien así', 'La corrijo en Discord', 'Dejala así', 'Hecho',
+           'Está bien así', 'La corrijo en Discord', 'Déjala así', 'Hecho',
            MISMA, OTRA}
 #: lo que la deja abierta, con la respuesta anotada
 ESPERAN = {'Dejar para después', 'Hay que revisarlo'}
@@ -3721,7 +3721,7 @@ def interpretar(p, respuesta):
             if len(hit) > 1:
                 hit = [x for x in hit if banderas_de(x) == banderas_de(m.group(1))]
             if len(hit) != 1:
-                return ('error', '«%s» no está en la última ronda de la llave: elegí de la lista' % m.group(1))
+                return ('error', '«%s» no está en la última ronda de la llave: elige de la lista' % m.group(1))
             return ('campeon', {'ganador': hit[0], 'ronda': ult,
                                 'batallas': [lados for _r, lados, paso in bats if not paso],
                                 'pasaron': [paso for _r, _l, paso in bats if paso]})
@@ -3737,7 +3737,7 @@ def interpretar(p, respuesta):
         hit = [l for l in (x[4] if x else []) if norm(_sin_bandera(l)) == quien]
         if len(hit) == 1:
             return ('batalla', hit[0])
-        return ('error', '«%s» no es uno de los que pelearon: elegí de la lista' % r)
+        return ('error', '«%s» no es uno de los que pelearon: elige de la lista' % r)
     if r in ('No cuenta', 'Sí cuenta'):
         if p['tipo'] in ('Bracket incompleto', 'Evento dudoso', 'Vidas cargado'):
             return ('evento', 'cuenta' if r == 'Sí cuenta' else 'no cuenta')
@@ -3746,7 +3746,7 @@ def interpretar(p, respuesta):
         nombre = r[3:].strip() if r.lower().startswith('es ') else r
         if nombre:
             return ('alias', nombre)
-    return ('error', 'no entiendo «%s»: elegí una opción de la lista' % r)
+    return ('error', 'no entiendo «%s»: elige una opción de la lista' % r)
 
 
 def _decisiones():
@@ -4396,7 +4396,7 @@ def aplicar(preguntas, respuestas, repetidas, dry=True):
             if str(c['id']) in (entraron or {}):
                 cierres += [(f, 'alta con la cuenta @%s' % c['usuario']) for f in p['filas']]
             else:
-                estados[p['id']] = '⚠️ no pude cargarlo: mirá la Lista'
+                estados[p['id']] = '⚠️ no pude cargarlo: mira la Lista'
     if ids:
         errores = _poner_ids([(real, did) for real, did, _p in ids])
         for real, did, p in ids:
@@ -4771,8 +4771,8 @@ def pintar(preguntas, estados, respuestas, hechas, dry=True):
     secs = secciones(preguntas)
     filas = [
         ['✅  DECIDIR'] + [''] * (ANCHO - 1),
-        ['Lo que el sistema no pudo resolver solo. Elegí una respuesta en la columna '
-         'amarilla ✍️ —si es alguien que ya está en la Lista de Raperos, escribí su '
+        ['Lo que el sistema no pudo resolver solo. Elige una respuesta en la columna '
+         'amarilla ✍️ —si es alguien que ya está en la Lista de Raperos, escribe su '
          'nombre como figura ahí— y el ciclo la aplica en menos de media hora. La fila '
          'se pone verde cuando está contestada. Para aclarar algo, 📝 NOTA: se guarda.']
         + [''] * (ANCHO - 1),
@@ -5698,7 +5698,7 @@ def _self_check():
        and interpretar(_q, OTRA) == ('distintos', ('Shisui', 'Velatz')),
        '«¿es la misma persona?»: «es la misma» los une y «otra» los marca distintos')
     ok('los puntos de «Shisui» pasan a Velatz' in _conflicto_en_palabras(_q['detalle']),
-       'y la pregunta dice qué pasa si contestás que sí')
+       'y la pregunta dice qué pasa si contestas que sí')
 
     # 👥 DOS CUENTAS, UNA PERSONA (07/10/2026): Riferian y Erian, como estaban en la Lista
     _rd = lambda n: norm(_sin_bandera(n))                                 # noqa: E731
@@ -5782,7 +5782,7 @@ def _self_check():
            'Deshacer: lo ya deshecho no se repite')
         # 🏆 el «Bracket incompleto» con «Ganó X» (Dlx, 13/10/2026)
         _m22 = ('sin campeón y sin tocar hace 12 h o más: la guía (Parte 1) lo descarta y NO se sumó nada. Si cuenta, '
-                'completá la final en la llave | cuartos: cinefilo vs solar vs marco polo | cuartos: nc vs mi sicario '
+                'completa la final en la llave | cuartos: cinefilo vs solar vs marco polo | cuartos: nc vs mi sicario '
                 'vs regional (masino | semifinales: los 3 vs nacho vs baltrip')
         _mr3 = ('sin campeón y sin tocar hace 12 h o más: x | cuartos: ⚔️ Semifinales: OASIS, LETRAO vs Verc | '
                 'semifinales: ⚔️ Semifinales: SNOW vs tam')

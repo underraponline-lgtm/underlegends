@@ -314,10 +314,10 @@ const ok = (cond, que, det) => {
       && A.filaTarjeta({ a: { carta: ct }, b: { carta: cs } }).length === 0
       && A.filaTarjeta({ a: { carta: '' }, b: { carta: '' } }).length === 1
       && A.filaTarjeta(null).length === 0 && A.filaTarjeta({ a: { carta: '' } }).length === 0,
-    '«Conseguí tu tarjeta»: sale si alguno del vs va con la silueta; con sólo la Servidor (una tarjeta) no; sin vs, nada');
+    '«Consigue tu tarjeta»: sale si alguno del vs va con la silueta; con sólo la Servidor (una tarjeta) no; sin vs, nada');
     const bv = A.botonesVoto('q1', 'Snow 🇨🇴', 'Makmah');
     ok(bv[0].components.map((x) => x.custom_id).join() === 'qg:q1:A,qg:q1:B' && bv[0].components[0].label === 'Snow'
-      && /Votá abajo/.test(A.lineaVoto('A', 'B', 0, 0)) && /\*\*A\*\* 75 % · \*\*B\*\* 25 % \(4 votos\)/.test(A.lineaVoto('A', 'B', 3, 1))
+      && /Vota abajo/.test(A.lineaVoto('A', 'B', 0, 0)) && /\*\*A\*\* 75 % · \*\*B\*\* 25 % \(4 votos\)/.test(A.lineaVoto('A', 'B', 3, 1))
       && /iba con \*\*A\*\* \(75 %, 4 votos\): acertó/.test(A.lineaVoto('A', 'B', 3, 1, 'A'))
       && /se equivocó/.test(A.lineaVoto('A', 'B', 3, 1, 'B')) && /dividido/.test(A.lineaVoto('A', 'B', 2, 2, 'A'))
       && /Nadie votó/.test(A.lineaVoto('A', 'B', 0, 0, 'x'))
@@ -1227,7 +1227,7 @@ const ok = (cond, que, det) => {
       && sub.fondo.estado === 'revisar' && sub.fondo.pend.includes('/fondos/') && !sub.fondo.pagina && !antes.dlx
       && ap.ok && despues.dlx && despues.dlx[1] === 1 && despues.dlx[2] === 0 && aj.fondo.perfil === false && aj.fondo.pagina === true
       && borr.fondo === null && Object.keys(enR2).length === 0,
-    'tu fondo: pide el nivel del Pase y que sea una imagen de verdad, se ve recién aprobado, elegís dónde, y quitarlo lo borra de R2',
+    'tu fondo: pide el nivel del Pase y que sea una imagen de verdad, se ve recién aprobado, eliges dónde, y quitarlo lo borra de R2',
     JSON.stringify([sinNivel, falsa, sub, despues, enR2]));
     // 🛡️ el filtro automático (13/10/2026): limpio se ve ya, con algo que no va no entra, y lo dudoso espera revisión
     const LF = A.leerFiltro;
@@ -1303,7 +1303,7 @@ const ok = (cond, que, det) => {
       && vivosF.length === 1 && vivosF[0].cartas.length === 2 && quitarF.ok && k7.length === 0
       && A.claveFoto({ FOTOS_SAL: 'x', TEMPORADA: 't1' }, 'konan') === 'fotos/x-t1/konan.webp'
       && A.claveFoto({}, 'konan', 'pais') === 'fotos/t1/konan@pais.webp',
-    'tu foto de tarjeta: pide el nivel y tu perfil, va en las cartas que elegís, una por semana (también después de volver a la de Discord), la dudosa espera afuera de las caras, la frenada no entra, y se puede quitar',
+    'tu foto de tarjeta: pide el nivel y tu perfil, va en las cartas que eliges, una por semana (también después de volver a la de Discord), la dudosa espera afuera de las caras, la frenada no entra, y se puede quitar',
     JSON.stringify([sinNivelF, f1, f2, f3, f4, f5, pendF, ap5, k5, f6, vivosF, k7]));
     // 🛡️ anti-doxeo: una imagen con metadatos (la ubicación, la cámara) no entra (13/10/2026)
     const TM = A.tieneMetadatos;
@@ -1527,7 +1527,7 @@ const ok = (cond, que, det) => {
     ok(pedidos.length === 1 && msg && /LA REVANCHA/.test(msg.content) && /Ana 🇦🇷\*\* vs \*\*Bea 🇨🇱/.test(msg.content)
       && /🎲 \*\*Apuestas abiertas/.test(msg.content) && msg.components && msg.components.length === 3 && ap && ap.estado === 'abierta'
       && msg.components[2].components[0].url === A.HUB_TARJETAS,
-    'A full: el cruce con su título, su apuesta y sus botones, en un solo mensaje; y como Ana y Bea no tienen tarjeta, debajo «Conseguí tu tarjeta»',
+    'A full: el cruce con su título, su apuesta y sus botones, en un solo mensaje; y como Ana y Bea no tienen tarjeta, debajo «Consigue tu tarjeta»',
     msg && msg.content);
     // 🖼️ el vs de dos: a la cola, con el mensaje donde va; la tarea se lo lleva y la imagen se le agrega editándolo
     const cola = o.vsCola('FFA', T + 1000).vs;
@@ -1603,12 +1603,12 @@ const ok = (cond, que, det) => {
     && A.rangoDiaET('2026-11-01').join() === [Date.UTC(2026, 10, 1, 4), Date.UTC(2026, 10, 2, 5)].join()
     && A.finDiaET(Date.UTC(2026, 10, 3, 4, 30)) === Date.UTC(2026, 10, 3, 5),
   'el día del este: de medianoche a medianoche, y el del cambio de hora dura 25 horas');
-  const DIARIAS = [['entrar', 'Entrá hoy', '', 'activo', 1, 150], ['felicitar1', 'Felicitá a alguien', '', 'fel', 1, 150],
-    ['vivo1', 'Mirá una llave en vivo', '', 'vivo', 1, 150]];
+  const DIARIAS = [['entrar', 'Entra hoy', '', 'activo', 1, 150], ['felicitar1', 'Felicita a alguien', '', 'fel', 1, 150],
+    ['vivo1', 'Mira una llave en vivo', '', 'vivo', 1, 150]];
   const d12 = A.paseDelDia({ diarias: DIARIAS, por_dia: 2 }, '2026-10-12').map((t) => t[0]);
   const d13 = A.paseDelDia({ diarias: DIARIAS, por_dia: 2 }, '2026-10-13').map((t) => t[0]);
   ok(d12.join() === 'entrar,felicitar1' && d13.join() === 'entrar,vivo1',
-    'las diarias: «Entrá hoy» siempre y la otra se turna, igual que `diarias_de()` de bot/pase.py', d12 + ' / ' + d13);
+    'las diarias: «Entra hoy» siempre y la otra se turna, igual que `diarias_de()` de bot/pase.py', d12 + ' / ' + d13);
   const UMB = Array.from({ length: 30 }, (_, i) => (i < 3 ? 300 * (i + 1) : 900 + 1000 * (i - 2)));
   const C0 = { niveles: 30, umbrales: UMB, cola: [1000, 300] };
   ok(A.nivelDeXP(C0, 299) === 0 && A.nivelDeXP(C0, 300) === 1 && A.nivelDeXP(C0, 1899) === 3 && A.nivelDeXP(C0, 99999) === 30
@@ -1645,13 +1645,13 @@ const ok = (cond, que, det) => {
       const ESP = { 1: ['tarjeta', 'Temporada'], 5: ['insignia', 'Pase Bronce'], 10: ['titulo', 'De la casa'],
         15: ['insignia', 'Pase Plata'], 20: ['color', '#F5C542'], 25: ['titulo', 'Pilar de DRA'], 30: ['insignia', 'Pase Oro'] };
       const PREMIOS = Array.from({ length: 30 }, (_, i) => [i + 1, 150].concat(ESP[i + 1] || ['', '']));
-      const SEMANALES = [['dias', 'Entrá 3 días', '', 'activo', 3, 500], ['felicitar', 'Felicitá a 3', '', 'fel', 3, 500],
-        ['dra', 'Jugá en DRA', '', 'dra', 1, 500], ['vivo', 'Mirá 2 llaves', '', 'vivo', 2, 500],
-        ['precio', 'Poné precio', '', 'precio', 1, 500]];
-      const TEMPORADA = [['fel10', 'Felicitá a 10', '', 'fel', 10, 1500], ['vivo5', 'Mirá 5 llaves', '', 'vivo', 5, 1500],
-        ['dra3', 'Jugá 3 en DRA', '', 'dra', 3, 2000], ['fel20', 'Felicitá a 20', '', 'fel', 20, 2000],
-        ['vivo10', 'Mirá 10 llaves', '', 'vivo', 10, 2000], ['caza', 'Cazá a un buscado', '', 'caza', 1, 3000],
-        ['dra5', 'Jugá 5 en DRA', '', 'dra', 5, 3000], ['dias30', 'Entrá 30 días', '', 'activo', 30, 3000]];
+      const SEMANALES = [['dias', 'Entra 3 días', '', 'activo', 3, 500], ['felicitar', 'Felicita a 3', '', 'fel', 3, 500],
+        ['dra', 'Juega en DRA', '', 'dra', 1, 500], ['vivo', 'Mira 2 llaves', '', 'vivo', 2, 500],
+        ['precio', 'Pon precio', '', 'precio', 1, 500]];
+      const TEMPORADA = [['fel10', 'Felicita a 10', '', 'fel', 10, 1500], ['vivo5', 'Mira 5 llaves', '', 'vivo', 5, 1500],
+        ['dra3', 'Juega 3 en DRA', '', 'dra', 3, 2000], ['fel20', 'Felicita a 20', '', 'fel', 20, 2000],
+        ['vivo10', 'Mira 10 llaves', '', 'vivo', 10, 2000], ['caza', 'Caza a un buscado', '', 'caza', 1, 3000],
+        ['dra5', 'Juega 5 en DRA', '', 'dra', 5, 3000], ['dias30', 'Entra 30 días', '', 'activo', 30, 3000]];
       const CFG = { temp: 'prueba', niveles: 30, umbrales: UMB, cola: [1000, 300], diarias: DIARIAS, por_dia: 2,
         semanales: SEMANALES, temporada: TEMPORADA, premios: PREMIOS, publicar: [10, 30], legado: { misiones: 500 } };
       const ciclo = (v, hechas) => o.paseCiclo({ v, cfg: CFG, sem: [[SEM, ini, fin]], miembros: [ANA, BEA], hechas });
@@ -1907,7 +1907,7 @@ const ok = (cond, que, det) => {
     const oL = new A.Avisos({ storage: { sql, setAlarm() {}, getAlarm() { return null; }, transactionSync: (f) => f() },
       blockConcurrencyWhile: async (f) => f() }, { KV: { get: async (k) => (k === 'ligas:nov' ? JSON.stringify({ items: [{
         id: 'r:fmh-espana:9', liga: 'fmh-espana', t: new Date(tIt).toISOString(), titulo: '⚔️ FMH España: Ortiz le ganó a MTZ',
-        cuerpo: 'Mirá la tabla.', url: 'https://underlegends.pages.dev/freestyle-rap/ligas/fmh-espana' }] }) : null) } });
+        cuerpo: 'Mira la tabla.', url: 'https://underlegends.pages.dev/freestyle-rap/ligas/fmh-espana' }] }) : null) } });
     await new Promise((r) => setTimeout(r, 5));
     sql.exec('INSERT INTO liga_sigue (quien, liga, t) VALUES (?, ?, ?)', SEG2, 'fmh-espana', tIt + 1000);
     const nb1 = await oL.ligasSeguidas(ahoraL);
@@ -2123,7 +2123,7 @@ const ok = (cond, que, det) => {
     // 🎬 «contanos cómo aparecés» (16/10/2026): sólo sobre un pedido tuyo que el ciclo dejó en `preguntar`, con las
     // tres cosas; vuelve a la cola con lo que contestaste
     const pq = o.videosCiclo().pedidos[0].id;
-    o.videosEstados({ estados: { [pq]: ['preguntar', 'tu nombre no está en el título: contanos cómo aparecés'] } });
+    o.videosEstados({ estados: { [pq]: ['preguntar', 'tu nombre no está en el título: cuéntanos cómo apareces'] } });
     const resp = (x) => o.misVideos(Object.assign({ quien: '700000000000000001', de: 'ana', accion: 'responder', id: pq }, x));
     const mal1 = await (await resp({ nombre: 'SEBA', como: 'lentes', minuto: 'ayer' })).json();
     const ajeno = await (await o.misVideos({ quien: '700000000000000002', de: 'bea', accion: 'responder', id: pq,
@@ -2348,7 +2348,7 @@ const ok = (cond, que, det) => {
   ok(r.pid === '9-0' && !r.error, 'una promo del muro vale', JSON.stringify(r));
   ok(A.validarPromo(items, { id: 'bbbbbbbbbbb2' }, vieja, [], Date.now()).error === 'no_existe',
     'lo que no es una promo no paga');
-  ok(A.validarPromo(items, { id: 'aaaaaaaaaaa1' }, vieja, ['ana'], Date.now()).error === 'vos', 'la promo propia no paga');
+  ok(A.validarPromo(items, { id: 'aaaaaaaaaaa1' }, vieja, ['ana'], Date.now()).error === 'tú', 'la promo propia no paga');
   ok(A.PROMO_PAGA === 50 && A.PROMO_TOPE_DIA === 3 && A.PASE_MIDE.includes('promo') && A.XP_FUENTES.promo,
     '50 Puntos por promo, hasta 3 por día, y cuenta para el Pase y el nivel');
   // 📣 una semana más, desde la Tienda: sólo la tuya y mientras está en la página

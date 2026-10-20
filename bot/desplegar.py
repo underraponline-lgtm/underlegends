@@ -558,11 +558,11 @@ def ver_igual(sesion, cid):
         if a == b:
             print('  repo  ✅ lo que está arriba es `bot/%s`' % RUTA_MODULO.get(mod, mod).replace(os.sep, '/'))
         elif mod not in arriba:
-            print('  repo  🔴 ARRIBA NO ESTA `%s`. Corré `python bot/desplegar.py`.'
+            print('  repo  🔴 ARRIBA NO ESTA `%s`. Corre `python bot/desplegar.py`.'
                   % mod)
         else:
             print('  repo  🔴 `%s` DESPLEGADO NO ES EL DEL REPO (%d vs %d bytes). '
-                  'Corré `python bot/desplegar.py`.' % (mod, len(a), len(b)))
+                  'Corre `python bot/desplegar.py`.' % (mod, len(a), len(b)))
 
 
 def ver_vivo(url):

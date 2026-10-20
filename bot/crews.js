@@ -472,7 +472,7 @@ export function crewVencer(o, ahora = Date.now()) {
     if (n >= 1 + PRUEBA_SUMAR) { o.sql.exec('UPDATE crews SET vence = 0, vence_aviso = 0 WHERE id = ?', c.id); continue; }
     if (c.vence <= ahora) {
       borrar(o, c, 'semana', ahora, [c.nombre + ' se borró',
-        'No sumó ' + PRUEBA_SUMAR + ' personas en su primera semana. Podés armar otra o entrar a una.']);
+        'No sumó ' + PRUEBA_SUMAR + ' personas en su primera semana. Puedes armar otra o entrar a una.']);
       borradas += 1;
       continue;
     }
@@ -483,7 +483,7 @@ export function crewVencer(o, ahora = Date.now()) {
       o.sql.exec('UPDATE crews SET vence_aviso = ? WHERE id = ?', nivel, c.id);
       for (const m of mandan(o, c.id)) {
         avisar(o, m, 'crew-prueba:' + c.id, (nivel === 3 ? '⏳ Último día para ' : '⏳ Quedan 2 días para ') + c.nombre,
-          'Le falta' + (falta === 1 ? ' 1 persona' : 'n ' + falta + ' personas') + ' o la crew se borra. Invitá desde la página de la crew.',
+          'Le falta' + (falta === 1 ? ' 1 persona' : 'n ' + falta + ' personas') + ' o la crew se borra. Invita desde la página de la crew.',
           '#/crew/' + encodeURIComponent(c.id));
       }
     }
@@ -562,7 +562,7 @@ export function crewAccion(o, d) {
   const quien = String(d.quien || ''), k = String(d.de || '');
   const ahora = Date.now();
   if (!/^[0-9]{5,25}$/.test(quien)) return mal('faltan datos');
-  if (!k) return mal('verificate', 403);
+  if (!k) return mal('verifícate', 403);
   crewVencer(o, ahora);
   const yo = miembroDe(o, k);
   const c = yo ? crewDe(o, yo.crew) : null;
@@ -590,8 +590,8 @@ export function crewAccion(o, d) {
       }
       anotar(o, nombre, 'creada', k, k);
     });
-    o.aBandeja(quien, 'crew-prueba:' + nombre, 'crew', '⏳ ' + nombre + ': tenés una semana',
-      'Sumá ' + PRUEBA_SUMAR + ' personas a la crew en 7 días o se borra.', '#/crew/' + encodeURIComponent(nombre), '', ahora);
+    o.aBandeja(quien, 'crew-prueba:' + nombre, 'crew', '⏳ ' + nombre + ': tienes una semana',
+      'Suma ' + PRUEBA_SUMAR + ' personas a la crew en 7 días o se borra.', '#/crew/' + encodeURIComponent(nombre), '', ahora);
     return { ok: true, crew: nombre, saldo: s - precio, precio, vence, logo: ok ? 'ok' : 'revisar' };
   }
 
@@ -684,8 +684,8 @@ export function crewAccion(o, d) {
     }
     o.sql.exec('INSERT OR REPLACE INTO crew_inv (crew, k, de, t) VALUES (?, ?, ?, ?)', c.id, a2, k, ahora);
     anotar(o, c.id, 'invito', a2, k);
-    avisar(o, a2, 'crew-inv:' + c.id, 'Te invitaron a ' + c.nombre, suyo ? 'Si aceptás, dejás tu crew de ahora. Tenés una semana para decidir.'
-      : 'Aceptá o no desde tu cuenta: tenés una semana.', '#/cuenta/crew');
+    avisar(o, a2, 'crew-inv:' + c.id, 'Te invitaron a ' + c.nombre, suyo ? 'Si aceptas, dejas tu crew de ahora. Tienes una semana para decidir.'
+      : 'Acepta o no desde tu cuenta: tienes una semana.', '#/cuenta/crew');
     return { ok: true, invitado: a2 };
   }
   if (a === 'link_crear') {
@@ -753,7 +753,7 @@ export function crewAccion(o, d) {
       sacarDeReps(o, c, a2);
       anotar(o, c.id, 'sacado', a2, k);
     });
-    avisar(o, a2, 'crew-fuera:' + c.id, 'Ya no estás en ' + c.nombre, 'Te sacaron de la crew. Podés entrar a otra en 7 días.', '#/cuenta/crew');
+    avisar(o, a2, 'crew-fuera:' + c.id, 'Ya no estás en ' + c.nombre, 'Te sacaron de la crew. Puedes entrar a otra en 7 días.', '#/cuenta/crew');
     return { ok: true };
   }
   if (a === 'rol') {
@@ -764,7 +764,7 @@ export function crewAccion(o, d) {
     if (!puede(rol, 'rol', el.rol) || (rol === 'colider' && nuevo === 'colider')) return mal('rol', 403);
     o.sql.exec('UPDATE crew_miembros SET rol = ? WHERE k = ?', nuevo, a2);
     anotar(o, c.id, 'rol:' + nuevo, a2, k);
-    avisar(o, a2, 'crew-rol:' + c.id, 'Ahora sos ' + ROL_NOMBRE[nuevo] + ' de ' + c.nombre, '', '#/crew/' + encodeURIComponent(c.id));
+    avisar(o, a2, 'crew-rol:' + c.id, 'Ahora eres ' + ROL_NOMBRE[nuevo] + ' de ' + c.nombre, '', '#/crew/' + encodeURIComponent(c.id));
     return { ok: true };
   }
   if (a === 'lider') {
@@ -777,7 +777,7 @@ export function crewAccion(o, d) {
       o.sql.exec("UPDATE crew_miembros SET rol = 'colider' WHERE k = ?", k);
       anotar(o, c.id, 'lider', a2, k);
     });
-    avisar(o, a2, 'crew-lider:' + c.id, 'Ahora sos el Líder de ' + c.nombre, '', '#/crew/' + encodeURIComponent(c.id));
+    avisar(o, a2, 'crew-lider:' + c.id, 'Ahora eres el Líder de ' + c.nombre, '', '#/crew/' + encodeURIComponent(c.id));
     return { ok: true };
   }
   if (a === 'reps') {
@@ -878,7 +878,7 @@ export function chequeoCrear(o, d) {
   const quien = String(d.quien || ''), k = String(d.de || '');
   const ahora = Date.now();
   if (!/^[0-9]{5,25}$/.test(quien)) return mal('faltan datos');
-  if (!k) return mal('verificate', 403);
+  if (!k) return mal('verifícate', 403);
   if (miembroDe(o, k)) return mal('ya_en_crew', 409);
   const e = espera(o, k, ahora);
   if (e) return mal('espera', 409, { faltan_ms: e });
@@ -962,7 +962,7 @@ function borrar(o, c, por, ahora, aviso = null) {
   for (const [g, q] of gente) {
     if (!q || (!aviso && g === por)) continue;
     if (aviso) o.aBandeja(q, 'crew-prueba:' + c.id, 'crew', aviso[0], aviso[1], '#/cuenta/crew', '', ahora);
-    else o.aBandeja(q, 'crew-cerrada:' + c.id, 'crew', c.nombre + ' se cerró', 'Podés entrar a otra crew cuando quieras.', '#/cuenta/crew', '', ahora);
+    else o.aBandeja(q, 'crew-cerrada:' + c.id, 'crew', c.nombre + ' se cerró', 'Puedes entrar a otra crew cuando quieras.', '#/cuenta/crew', '', ahora);
   }
   return { ok: true, cerrada: true };
 }
@@ -1119,7 +1119,7 @@ export function crewVerificar(o, d, ahora = Date.now()) {
   for (const [cid, nuevo, viejo] of lideres) {
     const c = crewDe(o, cid);
     if (c) {
-      avisar(o, nuevo, 'crew-lider:' + cid, '👑 Ahora sos Líder de ' + c.nombre,
+      avisar(o, nuevo, 'crew-lider:' + cid, '👑 Ahora eres Líder de ' + c.nombre,
         nombreDe(o, viejo) + ' todavía no se verificó en DRA: la crew queda a tu cargo.', '#/crew/' + encodeURIComponent(cid));
     }
   }

@@ -90,17 +90,17 @@ def mensaje(f):
     saludo = SALUDO % (f['autor'], f['evento'])
     if len(ps) == 1 and len(ps[0]['lados']) == 2:
         p = ps[0]
-        texto = (saludo + '\nEn tu llave no encontré quién ganó %s: **%s** vs **%s**.\n👉 **Tocá el nombre de quien '
+        texto = (saludo + '\nEn tu llave no encontré quién ganó %s: **%s** vs **%s**.\n👉 **Toca el nombre de quien '
                  'ganó** y listo.' % ('la final' if 'final' in str(p['ronda']).lower()
                                       else 'una batalla de %s' % str(p['ronda']).lower(), p['lados'][0], p['lados'][1]))
         filas = [{'type': 1, 'components': [
             {'type': 2, 'style': 1, 'label': str(p['lados'][j]).strip()[:80], 'custom_id': '%s:0:%s' % (base, LETRAS[j])}
             for j in range(2)]}]
     else:
-        texto = (saludo + '\nEn tu llave no encontré quién ganó %s.\n👉 **Abrí cada menú de abajo y elegí quién ganó '
+        texto = (saludo + '\nEn tu llave no encontré quién ganó %s.\n👉 **Abre cada menú de abajo y elige quién ganó '
                  'esa batalla.**%s' % ('una batalla' if len(ps) == 1 else '%d batallas' % len(ps),
                                        '' if all('final' in str(p['ronda']).lower() for p in ps)
-                                       else ' Si alguien no se presentó o lo reemplazaron, elegí «Nadie siguió».'))
+                                       else ' Si alguien no se presentó o lo reemplazaron, elige «Nadie siguió».'))
         filas = []
         for i, p in enumerate(ps):
             ops = [{'label': str(x).strip()[:100], 'value': LETRAS[j]} for j, x in enumerate(p['lados'][:24])]
@@ -245,7 +245,7 @@ def _self_check():
     if m['allowed_mentions'] != {'users': ['832733202769641554'], 'replied_user': False}:
         malos.append('menciona a alguien más que al organizador')
     if not (m['content'].startswith('🏁 <@832733202769641554>') and 'Soy el bot de la **Liga Global**' in m['content']
-            and 'la final: **Mathias 🇪🇸** vs **Rfran 🇪🇸**' in m['content'] and 'Tocá el nombre' in m['content']):
+            and 'la final: **Mathias 🇪🇸** vs **Rfran 🇪🇸**' in m['content'] and 'Toca el nombre' in m['content']):
         malos.append('el mensaje: la mención primero, quién es el bot, qué falta y qué tocar (%r)' % m['content'][:120])
     ids = [c['custom_id'] for c in m['components'][0]['components']]
     if ids != ['dud:1553507758240964609:832733202769641554:0:a', 'dud:1553507758240964609:832733202769641554:0:b']:

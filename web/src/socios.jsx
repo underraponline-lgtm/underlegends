@@ -90,7 +90,7 @@ function Publican({ liga, svs }) {
     <section className="soc-pub" aria-label="Lo que publican">
       <span className="tag">SUS REDES</span>
       <h2 className="evp-h2">Lo que publican</h2>
-      <p className="soc-pub-p">Promocionamos sus eventos y también lo que suben a sus redes: lo compartimos en las de Under Legends y acá.{vids.length ? ' Tocá un video para verlo.' : ''}</p>
+      <p className="soc-pub-p">Promocionamos sus eventos y también lo que suben a sus redes: lo compartimos en las de Under Legends y acá.{vids.length ? ' Toca un video para verlo.' : ''}</p>
       {vids.length ? (
         <ul className="pf-vid soc-vid">
           {vids.map((v) => (
@@ -167,10 +167,10 @@ export function Socios({ liga }) {
           <ul>{pat.map((p, i) => <li key={i}><a href={p.link} target="_blank" rel="noopener noreferrer"><img alt={p.nombre} src={p.logo} /></a></li>)}</ul>
         </section>
       ) : null}
-      <section className="soc-sumar" aria-label="Sumá tu servidor">
+      <section className="soc-sumar" aria-label="Suma tu servidor">
         <div className="soc-sumar-tit">
           <span className="tag">PARA SERVIDORES</span>
-          <h2 className="hero-ev">Sumá tu servidor</h2>
+          <h2 className="hero-ev">Suma tu servidor</h2>
           <p className="hero-p">Los servidores de arriba ya están: {svs.map((s) => siglaDe(s.sv)).join(', ')}. Esto es lo que la Liga hace por cada uno.</p>
         </div>
         {/* 🔍 con `lg:prev-sum`, cada caja se toca y muestra su ejemplo (Dlx, 03/10/2026) */}
@@ -184,7 +184,7 @@ export function Socios({ liga }) {
         <div className="soc-dos">
           <BotHace />
           <div className="soc-bloque soc-cta">
-            <h3>¿Querés que tu servidor sea parte?</h3>
+            <h3>¿Quieres que tu servidor sea parte?</h3>
             {/* 👥 Dlx, 18/10/2026: «al menos 500 para ser socios (no necesario pero recomendado), mínimo 300» */}
             <p>Para ser socio, tu Discord necesita <b>300 miembros como mínimo</b>; se recomiendan 500.</p>
             <p>Escribile a <b>@itsdlx</b> en Discord.</p>

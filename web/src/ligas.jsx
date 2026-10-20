@@ -38,18 +38,18 @@ function AvisarLiga({ L }) {
   const enviar = () => {
     const t = txt.replace(/\s+/g, ' ').trim();
     if (!nombre || va) return;
-    if (t.length < 2) { setEst('Contá quién es.'); return; }
-    if (!window.conCuenta) { setEst('No pude mandarlo. Probá de nuevo en un rato.'); return; }
+    if (t.length < 2) { setEst('Cuenta quién es.'); return; }
+    if (!window.conCuenta) { setEst('No pude mandarlo. Prueba de nuevo en un rato.'); return; }
     setVa(true);
     setEst('');
     window.conCuenta('/api/avisos/reportar', { llave: 'liga:' + L.id, que: 'nombre', texto: t, batalla: nombre }).then((j) => {
       setVa(false);
       if (j && j.ok) { setOk(true); return; }
       const e = (j && j.error) || '';
-      setEst((window.errorCuenta && window.errorCuenta(e)) || (j && j.status === 401 ? 'Para avisar, entrá con Discord desde Mi cuenta.'
+      setEst((window.errorCuenta && window.errorCuenta(e)) || (j && j.status === 401 ? 'Para avisar, entra con Discord desde Mi cuenta.'
         : e === 'nueva' ? 'Tu cuenta de Discord es muy nueva para avisar.'
-          : e === 'tope' ? 'Ya mandaste varios hoy: probá mañana.' : 'No pude mandarlo. Probá de nuevo en un rato.'));
-    }).catch(() => { setVa(false); setEst('No pude mandarlo. Probá de nuevo en un rato.'); });
+          : e === 'tope' ? 'Ya mandaste varios hoy: prueba mañana.' : 'No pude mandarlo. Prueba de nuevo en un rato.'));
+    }).catch(() => { setVa(false); setEst('No pude mandarlo. Prueba de nuevo en un rato.'); });
   };
   return (
     <div className="lk-rep">
@@ -344,7 +344,7 @@ function Torneo({ liga, L, h }) {
   const mio = mios[L.id] || '';
   function votar(op, solo) {
     if (!abierta || va) return;
-    if (!window.conCuenta) { setErr('No pude guardar tu voto. Probá de nuevo en un rato.'); return; }
+    if (!window.conCuenta) { setErr('No pude guardar tu voto. Prueba de nuevo en un rato.'); return; }
     setVa(op);
     setErr('');
     window.conCuenta('/api/avisos/liga-votar', { liga: L.id, op }).then((j) => {
@@ -365,8 +365,8 @@ function Torneo({ liga, L, h }) {
       }
       setErr((window.errorCuenta && window.errorCuenta(e)) || (e === 'cerrada' ? 'La encuesta de esta liga ya cerró.'
         : e === 'nueva' ? 'Tu cuenta de Discord es muy nueva para votar.'
-          : e === 'opcion' ? 'La tabla cambió: recargá la página y votá de nuevo.' : 'No pude guardar tu voto. Probá de nuevo en un rato.'));
-    }).catch(() => { setVa(''); setErr('No pude guardar tu voto. Probá de nuevo en un rato.'); });
+          : e === 'opcion' ? 'La tabla cambió: recarga la página y vota de nuevo.' : 'No pude guardar tu voto. Prueba de nuevo en un rato.'));
+    }).catch(() => { setVa(''); setErr('No pude guardar tu voto. Prueba de nuevo en un rato.'); });
   }
   const top = (L.tabla || []).map((f) => [f[0], Number(cuenta[f[0]]) || 0]).filter((x) => x[1] > 0).sort((a, b) => b[1] - a[1])[0];
   const lado = L.flyer || L.prox;
@@ -382,12 +382,12 @@ function Torneo({ liga, L, h }) {
         {L.vota ? (
           <div className={'lgt-enc' + (abierta ? '' : ' cerrada')}>
             <p className="lgt-enc-t"><b>🗳️ ¿Quién gana {L.n}?</b>
-              {abierta ? <> Tocá el % de quien creés que gana: un voto por cuenta de Discord, y lo podés cambiar hasta que la liga termine.</>
+              {abierta ? <> Toca el % de quien crees que gana: un voto por cuenta de Discord, y lo puedes cambiar hasta que la liga termine.</>
                 : <> La encuesta cerró: la liga lleva tres semanas sin batallas.</>}</p>
-            <small>{tot ? num(tot) + (tot === 1 ? ' voto' : ' votos') + (top ? ' · va ganando ' + limpio(top[0]) : '') : abierta ? 'Todavía nadie votó: ¿sos el primero?' : 'Nadie votó.'}
+            <small>{tot ? num(tot) + (tot === 1 ? ' voto' : ' votos') + (top ? ' · va ganando ' + limpio(top[0]) : '') : abierta ? 'Todavía nadie votó: ¿eres el primero?' : 'Nadie votó.'}
               {abierta ? ' · cierra el ' + diaDe(liga.diaClave(L.vota)).replace(/^\S+ /, '') + ' si no hay más batallas' : ''}</small>
             {err === 'entrar' ? (
-              <p className="lgt-enc-e">Para votar, entrá con Discord. <button type="button" className="btn verde chico" onClick={() => accion.entrar()}>Entrar con Discord</button>
+              <p className="lgt-enc-e">Para votar, entra con Discord. <button type="button" className="btn verde chico" onClick={() => accion.entrar()}>Entrar con Discord</button>
                 <small>Tu voto queda guardado: sale solo cuando vuelvas a esta liga.</small></p>
             ) : err ? <p className="lgt-enc-e" role="status">{err}</p> : null}
           </div>
@@ -652,22 +652,22 @@ function SeguirLiga({ L }) {
   const sigo = !!(MIAS.ligas && MIAS.ligas.includes(L.id));
   const tocar = () => {
     if (va) return;
-    if (!window.conCuenta) { setErr('No pude. Probá de nuevo en un rato.'); return; }
+    if (!window.conCuenta) { setErr('No pude. Prueba de nuevo en un rato.'); return; }
     setVa(true);
     setErr('');
     window.conCuenta('/api/avisos/liga-seguir', { liga: L.id, on: !sigo }, 's').then((j) => {
       setVa(false);
       if (j === null) return;
       if (j && j.ok) { MIAS.ligas = j.ligas || []; MIAS.celular = !!j.celular; MIAS.pedido = true; MIAS.oyentes.forEach((f) => f()); return; }
-      setErr((window.errorCuenta && window.errorCuenta(j && j.error)) || (j && j.error === 'tope' ? 'Ya seguís muchas ligas.' : 'No pude. Probá de nuevo en un rato.'));
-    }).catch(() => { setVa(false); setErr('No pude. Probá de nuevo en un rato.'); });
+      setErr((window.errorCuenta && window.errorCuenta(j && j.error)) || (j && j.error === 'tope' ? 'Ya sigues muchas ligas.' : 'No pude. Prueba de nuevo en un rato.'));
+    }).catch(() => { setVa(false); setErr('No pude. Prueba de nuevo en un rato.'); });
   };
   return (
     <span className="lpg-seguir">
       <button type="button" className={'btn ' + (sigo ? 'borde2' : 'verde')} aria-pressed={sigo} disabled={va} onClick={tocar}>
-        {va ? '…' : sigo ? '✓ La seguís' : '🔔 Seguir la liga'}
+        {va ? '…' : sigo ? '✓ La sigues' : '🔔 Seguir la liga'}
       </button>
-      {sigo ? <small>{MIAS.celular ? 'Te avisamos en la campana y al celular cuando hay resultados o una fecha nueva.' : 'Te avisamos en la campana de arriba. Para que llegue al celular, activá los avisos en Mi cuenta → Avisos de eventos.'}</small> : null}
+      {sigo ? <small>{MIAS.celular ? 'Te avisamos en la campana y al celular cuando hay resultados o una fecha nueva.' : 'Te avisamos en la campana de arriba. Para que llegue al celular, activa los avisos en Mi cuenta → Avisos de eventos.'}</small> : null}
       {err ? <small role="status">{err}</small> : null}
     </span>
   );
@@ -1001,7 +1001,7 @@ function Clasificado({ liga, f, n, cual, grande = false }) {
       <a href={'#/r/' + encodeURIComponent(f.k)}>
         <span className="lgf-n">{n}</span>
         <Cara liga={liga} k={f.k} nombre={f.n} cls="lgf-cara" />
-        <b>{yo ? 'Vos' : limpio(f.n)}</b>
+        <b>{yo ? 'Tú' : limpio(f.n)}</b>
         <small>{dato}</small>
       </a>
     </li>
@@ -1016,8 +1016,8 @@ function TuLugar({ liga, top, cual }) {
   const que = cual === 'competitivo' ? 'la Superliga' : 'la Clausura';
   let txt;
   if (i >= 0) {
-    txt = cual === 'competitivo' ? (i < 4 ? <>Si la temporada terminara hoy, <b>entrás directo a la Superliga</b>.</> : <>Si la temporada terminara hoy, <b>vas al duelo a muerte</b> por un lugar en la Superliga.</>)
-      : <>Si la temporada terminara hoy, <b>jugás la Clausura</b> como {i + 1}º.</>;
+    txt = cual === 'competitivo' ? (i < 4 ? <>Si la temporada terminara hoy, <b>entras directo a la Superliga</b>.</> : <>Si la temporada terminara hoy, <b>vas al duelo a muerte</b> por un lugar en la Superliga.</>)
+      : <>Si la temporada terminara hoy, <b>juegas la Clausura</b> como {i + 1}º.</>;
   } else if (cual === 'competitivo' && !yo.rg) {
     const pide = 10;
     txt = <>Para entrar al Competitivo hacen falta <b>{pide} eventos</b> en la temporada: llevás {yo.ev || 0}.</>;

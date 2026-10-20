@@ -386,7 +386,7 @@ function Pista({ ctx, rondas, ter, inicial, vale, copaUlt = true }) {
           </div>
         ))}
       </div>
-      {rondas.length > 1 ? <p className="lk-guia">{act < ult ? 'Deslizá para ver ' + rondas[act + 1].r + ' →' : '← Deslizá para ver las rondas de antes'}</p> : null}
+      {rondas.length > 1 ? <p className="lk-guia">{act < ult ? 'Desliza para ver ' + rondas[act + 1].r + ' →' : '← Desliza para ver las rondas de antes'}</p> : null}
     </>
   );
 }
@@ -713,26 +713,26 @@ function Reporte({ n }) {
   const enviar = () => {
     const t = txt.replace(/\s+/g, ' ').trim();
     if (!que || va) return;
-    if (que === 'otro' && t.length < 3) { setEst('Contá qué pasó.'); return; }
-    if (!window.conCuenta) { setEst('No pude mandarlo. Probá de nuevo en un rato.'); return; }
+    if (que === 'otro' && t.length < 3) { setEst('Cuenta qué pasó.'); return; }
+    if (!window.conCuenta) { setEst('No pude mandarlo. Prueba de nuevo en un rato.'); return; }
     setVa(true);
     setEst('');
     window.conCuenta('/api/avisos/reportar', { llave: String(n), que, texto: t }).then((j) => {
       setVa(false);
       if (j && j.ok) { setOk(true); return; }
       const e = (j && j.error) || '';
-      setEst((window.errorCuenta && window.errorCuenta(e)) || (j && j.status === 401 ? 'Para reportar, entrá con Discord desde Mi cuenta.'
+      setEst((window.errorCuenta && window.errorCuenta(e)) || (j && j.status === 401 ? 'Para reportar, entra con Discord desde Mi cuenta.'
         : e === 'nueva' ? 'Tu cuenta de Discord es muy nueva para reportar.'
-          : e === 'tope' ? 'Ya mandaste varios hoy: probá mañana.' : 'No pude mandarlo. Probá de nuevo en un rato.'));
-    }).catch(() => { setVa(false); setEst('No pude mandarlo. Probá de nuevo en un rato.'); });
+          : e === 'tope' ? 'Ya mandaste varios hoy: prueba mañana.' : 'No pude mandarlo. Prueba de nuevo en un rato.'));
+    }).catch(() => { setVa(false); setEst('No pude mandarlo. Prueba de nuevo en un rato.'); });
   };
   return (
     <div className="lk-rep">
-      <p className="lk-rep-t">Contanos qué está mal y lo revisa la Liga.</p>
+      <p className="lk-rep-t">Cuéntanos qué está mal y lo revisa la Liga.</p>
       <div className="lk-rep-q" role="group" aria-label="Qué está mal">
         {REP_QUE.map(([id, et]) => <button key={id} type="button" aria-pressed={que === id} className={que === id ? 'on' : ''} onClick={() => setQue(id)}>{et}</button>)}
       </div>
-      <textarea aria-label="Qué está mal en la llave" maxLength={300} rows={3} value={txt} onChange={(e) => setTxt(e.target.value)} placeholder={'Qué batalla y qué pasó' + (que === 'otro' ? '' : ' (si querés)')} />
+      <textarea aria-label="Qué está mal en la llave" maxLength={300} rows={3} value={txt} onChange={(e) => setTxt(e.target.value)} placeholder={'Qué batalla y qué pasó' + (que === 'otro' ? '' : ' (si quieres)')} />
       <div className="lk-rep-pie">
         <button type="button" className="btn verde chico" disabled={!que || va} onClick={enviar}>{va ? 'Enviando…' : 'Enviar'}</button>
         <span aria-live="polite">{est}</span>
@@ -1127,8 +1127,8 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
           de esta llave, sobre su Clara o su Noche (`.lk-tsv.t-xxx`, en vivo.css junto a los temas) */}
       <section className={'sec lk-sec piel' + temaLlave(L.sv)}>
         <div className="sec-t"><h2>{N ? N + ' vidas' : base.dob ? 'Doble eliminación' : 'La llave'}</h2>{L.participantes ? <span className="lk-sub">{L.participantes} raperos</span> : null}</div>
-        {hayR || (L.funa || []).length ? <p className="lk-ayuda">{N ? 'Cada batalla le saca una vida al que pierde y el que gana se queda. Con ' + N + ' derrotas quedás afuera.' : base.dob ? 'Nadie queda afuera a la primera: quien pierde en la llave de ganadores sigue en la de perdedores. '
-            + 'Tocá un nombre y se marca su camino.' : 'Tocá un nombre y se marca su camino.'}</p> : null}
+        {hayR || (L.funa || []).length ? <p className="lk-ayuda">{N ? 'Cada batalla le saca una vida al que pierde y el que gana se queda. Con ' + N + ' derrotas quedas afuera.' : base.dob ? 'Nadie queda afuera a la primera: quien pierde en la llave de ganadores sigue en la de perdedores. '
+            + 'Toca un nombre y se marca su camino.' : 'Toca un nombre y se marca su camino.'}</p> : null}
         <Funa ctx={ctx} L={L} />
         {N ? <Vidas ctx={ctx} L={L} N={N} />
           : !hayR ? ((L.funa || []).length ? null : <p className="pronto-p">Esta llave todavía no tiene batallas.</p>)

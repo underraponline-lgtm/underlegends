@@ -127,7 +127,7 @@ export function Cambios({ liga, ver, antes }) {
           setAbiertas(new Set((lista || []).map((x) => x.version)));
           setDias(new Set(grupos.map((g) => g.k)));
         }}>
-        {mal ? <p className="pronto-p">No pude cargar el changelog. Probá recargar la página.</p> : null}
+        {mal ? <p className="pronto-p">No pude cargar el changelog. Prueba recargar la página.</p> : null}
         {!lista && !mal ? <p className="pronto-p">Cargando…</p> : null}
         <div className="cb-lista">
           {grupos.map((g) => {

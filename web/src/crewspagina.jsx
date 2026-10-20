@@ -34,9 +34,9 @@ const ENTRA = { abierta: ['Abierta', 'Entra quien quiera'], pedido: ['Con pedido
 const ACT = [['Dormida', 'Nadie jugó en las últimas 3 semanas'], ['Tranquila', 'Jugaron en las últimas 3 semanas'],
   ['Activa', 'Alguien jugó esta semana'], ['Muy activa', 'Jugaron 3 o más esta semana']];
 
-const FILTROS = [['', 'Todas'], ['lugar', 'Te aceptan'], ['abiertas', 'Abiertas'], ['activas', 'Activas'], ['conozco', 'Con gente que seguís'],
+const FILTROS = [['', 'Todas'], ['lugar', 'Te aceptan'], ['abiertas', 'Abiertas'], ['activas', 'Activas'], ['conozco', 'Con gente que sigues'],
   ['servidor', 'De tu servidor'], ['pais', 'De tu país'], ['nuevas', 'Nuevas']];
-const ORDENES = [['reco', 'Para vos'], ['activas', 'Más activas esta semana'], ['tier', 'Tier más alto'], ['gente', 'Más gente'],
+const ORDENES = [['reco', 'Para ti'], ['activas', 'Más activas esta semana'], ['tier', 'Tier más alto'], ['gente', 'Más gente'],
   ['puntos', 'Más puntos en la temporada'], ['nuevas', 'Las más nuevas']];
 
 export function CrewsPagina({ liga, dc, qs }) {
@@ -81,7 +81,7 @@ export function CrewsPagina({ liga, dc, qs }) {
         <section className="pub-cab crw-cab">
           <span className="tag">CREWS · {liga.temp}</span>
           <h1 className="hero-ev largo">Crews</h1>
-          <p className="hero-p">Armá la tuya o sumate a una. Cada lunes, como en el fútbol, cada crew sube, baja o se mantiene de tier por lo que jugó su gente.</p>
+          <p className="hero-p">Arma la tuya o súmate a una. Cada lunes, como en el fútbol, cada crew sube, baja o se mantiene de tier por lo que jugó su gente.</p>
           <ul className="crw-num">
             <li><b>{num(xs.length)}</b><span>crews</span></li>
             <li><b>{num(enCrews)}</b><span>raperos en crews</span></li>
@@ -94,14 +94,14 @@ export function CrewsPagina({ liga, dc, qs }) {
         <main className="pub-feed crw-main">
           <TuCrew liga={liga} dc={dc} mia={mia} x={mias} T={T} armar={abierto} setArmar={setAbierto} />
           {reco.length ? (
-            <section className="crw-reco" aria-label="Recomendadas para vos">
-              <h2 className="crw-h2">Recomendadas para vos</h2>
-              <p className="crw-tu-s">Te aceptan y están activas; primero las que tienen gente de tu servidor, de tu país o que seguís.</p>
+            <section className="crw-reco" aria-label="Recomendadas para ti">
+              <h2 className="crw-h2">Recomendadas para ti</h2>
+              <p className="crw-tu-s">Te aceptan y están activas; primero las que tienen gente de tu servidor, de tu país o que sigues.</p>
               <ul className="crw-lista">{reco.map((x) => <li key={x.c.id}><Ficha liga={liga} x={x} T={T} dc={dc} mia={mia} /></li>)}</ul>
             </section>
           ) : null}
           <div className="crw-busca">
-            <input type="search" className="cw-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscá una crew por nombre o sigla"
+            <input type="search" className="cw-busca" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Busca una crew por nombre o sigla"
               aria-label="Buscar una crew" enterKeyHint="search" />
             <label className="crw-orden">Ordenar
               <select className="cw-sel" value={orden} onChange={(e) => setOrden(e.target.value)}>
@@ -136,7 +136,7 @@ function TuCrew({ liga, dc, mia, x, T, armar, setArmar }) {
   if (!dc) {
     return (
       <section className="crw-tu" aria-label="Tu crew">
-        <p className="crw-tu-t">Entrá con Discord para armar tu crew o sumarte a una.</p>
+        <p className="crw-tu-t">Entra con Discord para armar tu crew o sumarte a una.</p>
         <button type="button" className="btn verde" onClick={accion.entrar}>Entrar con Discord</button>
       </section>
     );
@@ -164,19 +164,19 @@ function TuCrew({ liga, dc, mia, x, T, armar, setArmar }) {
     return (
       <section className="crw-tu" aria-label="Tu crew">
         <p className="crw-tu-t">Las crews son de los Miembros de Discord Rap Español.</p>
-        <p className="crw-tu-s"><a className="te-link" href="#/cuenta/verificar">Verificate</a> y después armá la tuya o sumate a una.</p>
+        <p className="crw-tu-s"><a className="te-link" href="#/cuenta/verificar">Verifícate</a> y después arma la tuya o súmate a una.</p>
       </section>
     );
   }
   return (
     <section className={'crw-tu' + (armar ? ' armando' : '')} aria-label="Tu crew">
-      <p className="crw-tu-t">Todavía no tenés crew.</p>
+      <p className="crw-tu-t">Todavía no tienes crew.</p>
       {inv.length ? <p className="crw-tu-s">📨 Te invitaron a {inv.map((i) => <a key={i.crew} className="te-link" href={enlaceCrew(i.crew)}>{limpio(i.nombre)}</a>)
         .reduce((a, b) => [a, ', ', b])}: <a className="te-link" href="#/cuenta/crew">responder</a>.</p> : null}
       <div className="cw-fila">
         <button type="button" className={'btn ' + (armar ? 'borde2' : 'verde')} aria-expanded={armar} onClick={() => setArmar(!armar)}>
           {armar ? 'Cerrar' : 'Armar la mía · ' + num(mia.precio ?? 2500)}</button>
-        <span className="cw-nota">{armar ? 'o sumate a una de abajo' : 'o sumate a una de abajo: las recomendadas, primero'}</span>
+        <span className="cw-nota">{armar ? 'o súmate a una de abajo' : 'o súmate a una de abajo: las recomendadas, primero'}</span>
       </div>
       {armar ? <CrearCrew mia={mia} /> : null}
     </section>
@@ -217,12 +217,12 @@ function Ficha({ liga, x, T, dc, mia }) {
           : 'Nadie de la crew jugó todavía en la temporada'}</p>
       {conocidos.length || x.deMiSv || x.deMiPais ? (
         <p className="crw-conoce">{x.conozco.slice(0, 3).map((k) => <Cara key={k} liga={liga} k={k} nombre={(liga.T[k] || {}).n || k} cls="cara crw-cara chica" lazy />)}
-          {[conocidos.length ? 'Seguís a ' + conocidos.slice(0, 2).join(' y ') + (conocidos.length > 2 ? ' y ' + (conocidos.length - 2) + ' más' : '') : '',
+          {[conocidos.length ? 'Sigues a ' + conocidos.slice(0, 2).join(' y ') + (conocidos.length > 2 ? ' y ' + (conocidos.length - 2) + ' más' : '') : '',
           x.deMiSv ? x.deMiSv + ' de tu servidor' : '', x.deMiPais ? x.deMiPais + ' de tu país' : ''].filter(Boolean).join(' · ')}</p>
       ) : null}
       {x.req.rg || x.req.ev ? (
         <p className={'crw-req' + (x.falta.length ? ' no' : ' si')}>Pide {[x.req.rg ? 'letra ' + x.req.rg + ' o más' : '', x.req.ev ? x.req.ev + ' eventos' : ''].filter(Boolean).join(' y ')}
-          {dc && liga.yo ? (x.falta.length ? ' · te falta ' + x.falta.join(' y ') : ' · ✓ cumplís') : ''}</p>
+          {dc && liga.yo ? (x.falta.length ? ' · te falta ' + x.falta.join(' y ') : ' · ✓ cumples') : ''}</p>
       ) : null}
       {faltan ? <p className="crw-nueva">NUEVA · busca {faltan === 1 ? '1 persona más' : faltan + ' personas más'}
         {c.vence > liga.ahora ? ' · ' + (Math.ceil((c.vence - liga.ahora) / DIA) <= 1 ? 'último día' : 'quedan ' + Math.ceil((c.vence - liga.ahora) / DIA) + ' días') : ''}</p> : null}
@@ -245,7 +245,7 @@ function Unirme({ x, dc, mia }) {
     if (va) return;
     setVa(true); setMsg('');
     accionCrew(cuerpo).then((j) => { setVa(false); if (j && j.ok) setMsg(typeof ok === 'function' ? ok(j) : ok); else if (j) setMsg(errorCrew(j)); })
-      .catch(() => { setVa(false); setMsg('No pude. Probá de nuevo en un rato.'); });
+      .catch(() => { setVa(false); setMsg('No pude. Prueba de nuevo en un rato.'); });
   };
   let b;
   if (x.invitado) {
@@ -260,7 +260,7 @@ function Unirme({ x, dc, mia }) {
   }
   else if (x.llena) b = <small className="crw-ya">Llena</small>;
   else if (c.entrada === 'invitacion') b = <small className="crw-ya">Sólo por invitación</small>;
-  else if (x.falta.length) b = <small className="crw-ya">No llegás a lo que pide</small>;
+  else if (x.falta.length) b = <small className="crw-ya">No llegas a lo que pide</small>;
   else {
     b = <button type="button" className="btn verde chico" disabled={va}
       onClick={() => hacer({ accion: 'pedir', crew: c.id }, c.entrada === 'abierta' ? '¡Entraste!' : 'Pedido enviado: te avisamos cuando te acepten.')}>
@@ -298,7 +298,7 @@ function ComoFunciona({ todas, T }) {
         <li><b>La primera semana</b>: una crew nueva tiene 7 días para sumar 2 personas, o se borra.</li>
         <li><b>Cómo se entra</b>: abierta (entra quien quiera), con pedido (acepta el Líder o un Colíder) o sólo por invitación. Algunas piden una letra o eventos mínimos.</li>
         <li><b>Los rangos</b>: Líder, Colíder, Veterano y Miembro. El Colíder casi todo, el Veterano invita.</li>
-        <li><b>Cambiarse</b>: si te invitan estando en otra, podés cambiarte; después esperás 7 días para moverte de nuevo.</li>
+        <li><b>Cambiarse</b>: si te invitan estando en otra, puedes cambiarte; después esperas 7 días para moverte de nuevo.</li>
         {T ? <li><b>Los tiers</b>: de {T.nombres[0]} a {T.nombres[T.nombres.length - 1]}, cada lunes por lo que jugó la crew.</li> : null}
       </ul>
     </section>

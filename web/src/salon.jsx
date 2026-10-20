@@ -305,7 +305,7 @@ function MesAwards({ liga, enc }) {
   let cuerpo = null;
   if (ab) {
     const votando = ab.votando;
-    cab = votando ? <>Votá lo mejor de <b>{ab.nombre}</b>: cierra {liga.dia(ab.cierra)}.</> : <>Los nominados de <b>{ab.nombre}</b>: la votación abre {liga.dia(ab.abre)}.</>;
+    cab = votando ? <>Vota lo mejor de <b>{ab.nombre}</b>: cierra {liga.dia(ab.cierra)}.</> : <>Los nominados de <b>{ab.nombre}</b>: la votación abre {liga.dia(ab.abre)}.</>;
     const una = ([c, n, de]) => {
       const nom = ((ab.cats || {})[c] || {}).nom || [];
       if (!nom.length) return null;

@@ -1210,14 +1210,14 @@ def _rango_ev(s, sv=''):
 _DIMS = ('E', 'C', 'Dm', 'T', 'V')
 #: el nombre de cada dimensión del Score, como la explica `sheet/competitivo.py`
 _DIM = {'E': ['⚡', 'Eficiencia', 'puntos por evento'],
-        'C': ['🎯', 'Consistencia', 'qué tan seguido llegás a semifinal o más'],
+        'C': ['🎯', 'Consistencia', 'qué tan seguido llegas a semifinal o más'],
         'Dm': ['👑', 'Dominancia', 'eventos ganados'],
         'T': ['🔥', 'Racha', 'eventos seguidos en semifinal o más'],
         # ⚠️ DÓNDE SUMÁS, no en cuántos jugás: la Diversidad reparte los
         # PUNTOS por servidor (rework A4). Dlx, 25/09/2026, al leer «en
         # cuántos servidores competís»: «asegurate que eso de la diversidad
         # del rework aplique». Aplicaba; el que estaba mal era este texto.
-        'V': ['🌍', 'Diversidad', 'dónde sumás tus puntos: repartidos entre servidores vale más']}
+        'V': ['🌍', 'Diversidad', 'dónde sumas tus puntos: repartidos entre servidores vale más']}
 #: el orden de los componentes del OVR, como los recibe `sheet/ovr.calcular()`
 _OVR_COMP = ['Puntos', 'Eventos', 'Win%', 'Podios', 'Most Wanted']
 #: cómo se escribe cada puesto de `Config` en la página

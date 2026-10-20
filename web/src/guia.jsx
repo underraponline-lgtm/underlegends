@@ -49,7 +49,7 @@ const SEMANA = [
   ['Copa de la Liga', 'Cada evento de 8 o más le suma a su organizador (el «Organiza:» del anuncio) la gente que juntó. El primero de la semana organiza la Copa de la siguiente: su próximo evento vale ×2.'],
   ['Semillero', 'Cada semana gana el servidor que más gente nueva trae (gente que juega por primera vez en su vida en la Liga), en proporción a su gente y con 3 como mínimo. Lleva ×1,5 la semana siguiente.'],
   ['Meta de comunidad', 'Cada lunes, cada servidor recibe una meta de gente distinta en sus eventos (un 10 % más que su promedio). Si la junta, todos los que jugaron ahí esa semana suman +10 %.'],
-  ['Bonos', 'Tu segundo evento de la temporada vale ×1,5 si lo jugás dentro de los 7 días del primero. En una semana, jugar en 3 servidores da +1.500 y jugar 3 días distintos, +1.000. Nada de esto toca el Competitivo.'],
+  ['Bonos', 'Tu segundo evento de la temporada vale ×1,5 si lo juegas dentro de los 7 días del primero. En una semana, jugar en 3 servidores da +1.500 y jugar 3 días distintos, +1.000. Nada de esto toca el Competitivo.'],
   ['Clásico', 'Cuando dos se cruzan en un duelo en su tercer evento (o más), es un Clásico: la llave lo marca con cómo venían, y el que gana suma +10 % en ese evento. Cuentan los eventos, no las batallas. Las rivalidades no se borran con la temporada.'],
   ['Misiones', 'Tres por semana, las mismas para todos, que se renuevan el lunes a las 11 AM (hora del este): se cumplen jugando y cada una suma puntos a tu Temporada; las tres juntas, un bono. Están en el Ranking.'],
   ['Divisiones', 'Una tabla por semana con los puntos de Temporada de esa semana, en grupos de 30, de Sexta a Primera: los primeros de cada grupo suben de división y ganan Puntos de Tienda, y los últimos bajan.'],
@@ -65,7 +65,7 @@ const PALABRAS = [
   ['Score', 'El número del Competitivo, de 0 a 100. Mide la calidad y no la cantidad: de él sale tu rango.'],
   ['Rango', 'La letra, de E a SSS. Es una sola por persona y es la misma en todas tus tarjetas.'],
   ['Racha', 'Eventos seguidos llegando arriba de la llave: la final si es de menos de 16, la semifinal de 16 a 31, cuartos de 32 a 63 y octavos de 64 o más. En Duelos, duelos ganados seguidos.'],
-  ['Evento', 'Un torneo de cualquier servidor asociado a la Liga Global, con su llave. Cada uno en el que participás cuenta, ganes o pierdas: son los que pide la Competitiva.'],
+  ['Evento', 'Un torneo de cualquier servidor asociado a la Liga Global, con su llave. Cada uno en el que participas cuenta, ganes o pierdas: son los que pide la Competitiva.'],
   ['Duelo', 'Una batalla uno contra uno. Los triples, los de cuatro y los de equipos no cuentan: ahí no hay un solo rival.'],
   ['Duelo nacional', 'Un duelo contra alguien de tu mismo país; contra alguien de otro país es internacional. La tarjeta de País pide jugar de los dos.'],
   ['Win%', 'Duelos ganados sobre duelos jugados.'],
@@ -74,23 +74,23 @@ const PALABRAS = [
   ['Revivido', 'Volver a la llave después de caer. Cobra su primer puesto entero y una parte del final.'],
   ['Llave', 'El cuadro de un evento, ronda por ronda. Se abre desde «Ver la llave».'],
   ['Temporada', 'La T1 es la primera. El Competitivo se mide dentro de cada temporada y vuelve a cero en la siguiente.'],
-  ['Tu servidor', 'El que representás en la Liga: lo elegís en Mi cuenta, entrando con Discord, y sale en tu perfil y en el Ranking. Si no elegís, no se muestra ninguno. Al arrancar la temporada se cambia libre; después, una vez por temporada. Tu tarjeta de Servidor sigue siendo la de donde jugás.'],
+  ['Tu servidor', 'El que representas en la Liga: lo eliges en Mi cuenta, entrando con Discord, y sale en tu perfil y en el Ranking. Si no eliges, no se muestra ninguno. Al arrancar la temporada se cambia libre; después, una vez por temporada. Tu tarjeta de Servidor sigue siendo la de donde juegas.'],
   ['Crew', 'Tu equipo. Suma los puntos de su gente; para tener puesto necesita tres raperos en la temporada.'],
-  ['Verificado', 'Tener el rol de Miembro en Discord Rap Español (DRA), con tu cuenta y tu país. Se hace una vez, en «Verificarme» (Mi cuenta): entrás con Discord, elegís tu país y el bot te mete al servidor y te da el rol. Sin verificarte no hay tarjetas: verificarte desbloquea tu Servidor, y con el nivel 1 del Pase, tu Temporada.'],
+  ['Verificado', 'Tener el rol de Miembro en Discord Rap Español (DRA), con tu cuenta y tu país. Se hace una vez, en «Verificarme» (Mi cuenta): entras con Discord, eliges tu país y el bot te mete al servidor y te da el rol. Sin verificarte no hay tarjetas: verificarte desbloquea tu Servidor, y con el nivel 1 del Pase, tu Temporada.'],
   ['Bloqueada', 'La tarjeta que todavía no te ganaste: dice cuánto te falta.'],
   // ⭐ el nivel de cada uno, que no es el del Pase (14/10/2026)
-  ['Nivel', 'El tuyo, no el del Pase: dice qué tan activo sos en la Liga y abre los temas de la página (en el nivel 2, 3 y 5). Sube jugando eventos (+10 cada uno), cada día que entrás (+2) y con lo que hacés: mirar una llave en vivo, seguir raperos, votar, felicitar, apostar, poner precios, reportar un error que se corrigió, activar la campana, mostrar tus redes, ponerle fondo a tu perfil o foto a una tarjeta y las Tareas del Pase. Cada cosa cuenta una vez y con tope: en Mi cuenta, «Cómo subir de nivel».'],
+  ['Nivel', 'El tuyo, no el del Pase: dice qué tan activo eres en la Liga y abre los temas de la página (en el nivel 2, 3 y 5). Sube jugando eventos (+10 cada uno), cada día que entras (+2) y con lo que hacés: mirar una llave en vivo, seguir raperos, votar, felicitar, apostar, poner precios, reportar un error que se corrigió, activar la campana, mostrar tus redes, ponerle fondo a tu perfil o foto a una tarjeta y las Tareas del Pase. Cada cosa cuenta una vez y con tope: en Mi cuenta, «Cómo subir de nivel».'],
   ['Felicitar', 'En Publicaciones, un toque en un logro (un campeón, un rango, el Most Wanted), uno por persona. Se ve cuántos felicitaron, nunca quiénes, y a quien felicitan le llega un aviso.'],
 ];
 const PREGUNTAS = [
-  ['¿Cómo pido mi tarjeta?', <>En Discord, con <code>/card</code>. Son dos pasos: verificate (entrando con Discord en <a href="#/cuenta">Mi cuenta</a>) y se desbloquea tu Servidor; cumplí tu primera Tarea del <a href="#/pase">Pase de rapero</a> y se desbloquea tu Temporada. La Competitiva y la de País piden además su requisito, y <code>/verificar</code> te dice qué te falta.</>],
-  ['¿Cómo aparezco en el ranking?', <>Jugando un evento en un servidor de la Liga. Con una participación ya entrás al ranking de Temporada.</>],
+  ['¿Cómo pido mi tarjeta?', <>En Discord, con <code>/card</code>. Son dos pasos: verifícate (entrando con Discord en <a href="#/cuenta">Mi cuenta</a>) y se desbloquea tu Servidor; cumplí tu primera Tarea del <a href="#/pase">Pase de rapero</a> y se desbloquea tu Temporada. La Competitiva y la de País piden además su requisito, y <code>/verificar</code> te dice qué te falta.</>],
+  ['¿Cómo aparezco en el ranking?', <>Jugando un evento en un servidor de la Liga. Con una participación ya entras al ranking de Temporada.</>],
   ['¿Cada cuánto se actualiza?', <>Sola, cada media hora. De 3 a 11 de la mañana (hora del este de EE. UU.) corre dos veces.</>],
   ['¿Por qué mi Competitiva está bloqueada?', <>Pide participar en diez eventos de cualquier servidor asociado a la Liga Global, en la temporada, y estar verificado. Hasta entonces la tarjeta sale bloqueada, con cuántos te faltan; tu perfil también lo dice.</>],
   ['¿Cómo cambio mi foto?', <>Con <code>/foto</code> en Discord, una vez por temporada.</>],
-  ['¿Cómo me entero de los eventos?', <>Activá los <a href="#/avisos">avisos</a> (o escribí <code>/notify</code> en Discord): te llegan al teléfono o a la compu cuando un servidor anuncia uno. También podés sumar el calendario de la Liga a tu Google Calendar desde <a href="#/eventos">Eventos</a>.</>],
+  ['¿Cómo me entero de los eventos?', <>Activa los <a href="#/avisos">avisos</a> (o escribe <code>/notify</code> en Discord): te llegan al teléfono o a la compu cuando un servidor anuncia uno. También puedes sumar el calendario de la Liga a tu Google Calendar desde <a href="#/eventos">Eventos</a>.</>],
   ['¿Mi servidor se puede sumar a la Liga?', <>Sí: escribile a <b>@itsdlx</b> en Discord. Qué gana tu servidor y qué hace el bot, en <a href="#/socios">Socios</a>.</>],
-  ['¿Cómo borro mis datos?', <>Escribí <code>/borrar-mis-datos</code> en Discord: te muestra qué se borra y, si confirmás, lo borra al instante. Todo sobre tus datos está en la <a href="privacidad.html">política de privacidad</a>.</>],
+  ['¿Cómo borro mis datos?', <>Escribe <code>/borrar-mis-datos</code> en Discord: te muestra qué se borra y, si confirmas, lo borra al instante. Todo sobre tus datos está en la <a href="privacidad.html">política de privacidad</a>.</>],
 ];
 const NOMBRE_EV = { '16+': '16 o más', '8-15': '8 a 15', '4-7': '4 a 7' };
 const PUESTOS = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos', 'Dieciseisavos'];
@@ -143,7 +143,7 @@ function TagsCatalogo({ liga }) {
           </li>
         );
       })}</ul>
-      <p className="gu-nota">Cada tarjeta muestra uno solo: el primero de la lista que cumplís. El mismo hecho no sale en dos tarjetas tuyas.</p>
+      <p className="gu-nota">Cada tarjeta muestra uno solo: el primero de la lista que cumples. El mismo hecho no sale en dos tarjetas tuyas.</p>
     </>
   );
 }
@@ -192,7 +192,7 @@ export function Guia({ liga, dc }) {
       <div className="gu-cuerpo">
         {/* 🧭 los pasos se tildan solos (Dlx, 12/10/2026, el tutorial: «A pero que no sea necesariamente con jugar»):
             la misma lista que el Inicio le muestra a quien llegó hace poco. Ver tutorial.jsx */}
-        <Seccion id="empezar" titulo="Cómo empezar" bajada="Cinco pasos, y ninguno pide jugar: se tildan solos a medida que los hacés.">
+        <Seccion id="empezar" titulo="Cómo empezar" bajada="Cinco pasos, y ninguno pide jugar: se tildan solos a medida que los haces.">
           <Suspense fallback={null}><PrimerosPasos liga={liga} dc={dc} enGuia /></Suspense>
         </Seccion>
         {reqs.length ? (

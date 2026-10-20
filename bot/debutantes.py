@@ -102,7 +102,7 @@ def avisos_pagina(nuevos, cumplidos):
         if r.get('did'):
             out.append({'id': _id(r['did'], 'reto', r['debut'][:10]), 'quien': r['did'],
                         'titulo': '🎤 Jugaste tu primer evento en la Liga',
-                        'cuerpo': 'Reto: jugá otro antes del %s y te llevás %s Puntos de Tienda.'
+                        'cuerpo': 'Reto: juega otro antes del %s y te llevas %s Puntos de Tienda.'
                                   % (_dia(dt.datetime.fromisoformat(r['vence'])), '{:,}'.format(PREMIO).replace(',', '.')),
                         'url': WEB + 'eventos', 't': ahora})
     for raw, r in cumplidos:
@@ -136,8 +136,8 @@ def mensaje_chat(gente, sv=''):
     texto = ('🎤 **Bienvenida a la Liga Global:** %s %s su primer evento.\n'
              '**Reto:** %s otro evento antes del %s y %s **%s Puntos de Tienda**. Cualquier servidor de la Liga '
              'cuenta. Lo siguen en %s'
-             % (quien, 'jugaron' if len(gente) > 1 else 'jugó', 'jueguen' if len(gente) > 1 else 'jugá',
-                _dia(vence), 'se llevan' if len(gente) > 1 else 'te llevás',
+             % (quien, 'jugaron' if len(gente) > 1 else 'jugó', 'jueguen' if len(gente) > 1 else 'juega',
+                _dia(vence), 'se llevan' if len(gente) > 1 else 'te llevas',
                 '{:,}'.format(PREMIO).replace(',', '.'), _link(sv)))
     return texto, [r['did'] for _raw, r in gente if r.get('did')]
 

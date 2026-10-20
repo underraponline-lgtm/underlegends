@@ -153,7 +153,7 @@ def gente_con_id():
     """
     p = os.path.join(SCR, '_kv_volcado.json')
     if not os.path.exists(p):
-        sys.exit('Falta bot/_kv_volcado.json. Corré antes:  python bot/volcar_kv.py')
+        sys.exit('Falta bot/_kv_volcado.json. Corre antes:  python bot/volcar_kv.py')
     with io.open(p, encoding='utf-8') as f:
         v = json.load(f)
     # `d:<discord_id>` -> clave
@@ -770,7 +770,7 @@ def main():
               % (mal, len(faltan), parte))
         if parte > 10:
             print('  🔴 Eso es demasiado para ser hashes muertos sueltos: '
-                  'mirá el token y la conexión.')
+                  'mira el token y la conexión.')
             sys.exit(1)
         print('  (son hashes que el CDN ya no sirve; esa gente cae en la '
               'inicial, que es el comportamiento correcto)')

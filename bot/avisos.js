@@ -1001,7 +1001,7 @@ export function datoCurioso(x, semilla, cabeza) {
 export function lineaApuesta(estado, d = {}) {
   if (estado === 'abierta') {
     const mins = Math.round((d.cierra || AP_CIERRA) / MIN), ms = d.montos || AP_MONTOS;
-    return '🎲 **Apuestas abiertas ' + mins + (mins === 1 ? ' minuto' : ' minutos') + '**: tocá a quién y cuánto, de '
+    return '🎲 **Apuestas abiertas ' + mins + (mins === 1 ? ' minuto' : ' minutos') + '**: toca a quién y cuánto, de '
       + milesAp(ms[0]) + ' a ' + milesAp(d.tope || AP_TOPE) + ' Puntos de Tienda. Lo de los que pierden se reparte entre '
       + 'los que aciertan.';
   }
@@ -1088,10 +1088,10 @@ export function filaTarjeta(vs) {
   // 🧩 con grupos (2v2, 1v3, todos contra todos): si a alguno le falta
   if (vs && Array.isArray(vs.grupos)) {
     if (!vs.grupos.some((g) => (g || []).some((y) => y && !y.carta))) return [];
-    return [{ type: 1, components: [{ type: 2, style: 5, label: 'Conseguí tu tarjeta', emoji: { name: '🃏' }, url: HUB_TARJETAS }] }];
+    return [{ type: 1, components: [{ type: 2, style: 5, label: 'Consigue tu tarjeta', emoji: { name: '🃏' }, url: HUB_TARJETAS }] }];
   }
   if (!vs || !vs.a || !vs.b || (vs.a.carta && vs.b.carta)) return [];
-  return [{ type: 1, components: [{ type: 2, style: 5, label: 'Conseguí tu tarjeta', emoji: { name: '🃏' }, url: HUB_TARJETAS }] }];
+  return [{ type: 1, components: [{ type: 2, style: 5, label: 'Consigue tu tarjeta', emoji: { name: '🃏' }, url: HUB_TARJETAS }] }];
 }
 
 /** El renglón del voto: cómo va, o —con `ganador` (la letra del lado, o 'x' sin resultado)— si el público acertó.
@@ -1100,7 +1100,7 @@ export function lineaVoto(a, b, na, nb, ganador, mas = [], nmas = []) {
   const lados = [a, b].concat(mas || []).map((x) => escMd(sinBandera(x)));
   const ns = [na || 0, nb || 0].concat((mas || []).map((_, i) => Number((nmas || [])[i]) || 0));
   const n = ns.reduce((x, y) => x + y, 0);
-  if (!n) return ganador ? '🗳️ Nadie votó quién ganaba' : '🗳️ ¿Quién gana? Votá abajo: sin plata, para ver qué dice el público';
+  if (!n) return ganador ? '🗳️ Nadie votó quién ganaba' : '🗳️ ¿Quién gana? Vota abajo: sin plata, para ver qué dice el público';
   // los porcentajes suman 100: el último se lleva lo que falta del redondeo (en un mano a mano, como siempre)
   const pc = ns.map((x) => Math.round((100 * x) / n));
   pc[pc.length - 1] = 100 - pc.slice(0, -1).reduce((x, y) => x + y, 0);
@@ -1201,10 +1201,10 @@ export function cuerpoTurno(L, bat, tipo, n = 1) {
   const evento = String((L && L.nombre) || 'la llave').slice(0, 60);
   return {
     v: 1, tipo: 'turno', id: (L && L.id) || '',
-    t: (tipo !== 'ahora' ? '⏳ Sos el próximo · ' : n > 1 ? '🎤 ¡Te están llamando! · ' : '🎤 ¡Te toca! · ') + evento,
+    t: (tipo !== 'ahora' ? '⏳ Eres el próximo · ' : n > 1 ? '🎤 ¡Te están llamando! · ' : '🎤 ¡Te toca! · ') + evento,
     b: tipo === 'ahora'
-      ? `${vs} (${bat.r}). Entrá a la llamada: si no llegás, el organizador te reemplaza.`
-      : `Después de la batalla que se está jugando: ${vs} (${bat.r}). Andá entrando a la llamada.`,
+      ? `${vs} (${bat.r}). Entra a la llamada: si no llegas, el organizador te reemplaza.`
+      : `Después de la batalla que se está jugando: ${vs} (${bat.r}). Ve entrando a la llamada.`,
     url: ((L && L.links) || [])[0] || HUB + '/freestyle-rap/',
   };
 }
@@ -1968,9 +1968,9 @@ export const COFRE_DIAS = 5;
 export const RACHA_HITOS = [[14, 500], [30, 1000]];
 // 🌱 «TUS PRIMEROS 7 DÍAS»: en vez de la racha, para quien entró por primera vez hace menos de `BIENVENIDA_DIAS` días. Siete
 // pasos, uno por día como mucho, cada uno con algo chico que hacer —es el tutorial, con premio— y más grandes que la racha
-export const BIENVENIDA = [[200, 'entrar', 'Entrá a la Liga'], [200, 'seguir', 'Seguí a un rapero'],
-  [300, 'campana', 'Activá la campana de avisos'], [300, 'llave', 'Mirá una llave en vivo'], [400, 'verificar', 'Verificate'],
-  [400, 'anotarse', 'Anotate a un evento'], [500, 'listo', 'Completá tu primera semana']];
+export const BIENVENIDA = [[200, 'entrar', 'Entra a la Liga'], [200, 'seguir', 'Sigue a un rapero'],
+  [300, 'campana', 'Activa la campana de avisos'], [300, 'llave', 'Mira una llave en vivo'], [400, 'verificar', 'Verifícate'],
+  [400, 'anotarse', 'Anótate a un evento'], [500, 'listo', 'Completa tu primera semana']];
 export const BIENVENIDA_DIAS = 14;
 // ⭐ LO QUE SUBE EL NIVEL, ADEMÁS DE JUGAR Y ENTRAR (Dlx, 14/10/2026: «haz que otras y muchas cosas más te hagan subir de
 // nivel acá… ojo, no me refiero a nivel de pase, eso es otra cosa»). El nivel es el de `nivelDeXp()`: el de tu perfil, el
@@ -2627,13 +2627,13 @@ export function tipoImagen(b) {
   return '';
 }
 export const OCR_MODELO = '@cf/meta/llama-4-scout-17b-16e-instruct';
-export const OCR_PEDIDO = 'Copiá TODO el texto que se lee en esta imagen, renglón por renglón y tal cual está escrito '
+export const OCR_PEDIDO = 'Copia TODO el texto que se lee en esta imagen, renglón por renglón y tal cual está escrito '
   + '(mayúsculas, números, horas, fechas, signos). No describas la imagen ni agregues nada tuyo. '
-  + 'Si no hay texto, contestá NADA.';
+  + 'Si no hay texto, contesta NADA.';
 // 🏆 LA LLAVE QUE ES UNA IMAGEN (Dlx, 07/10/2026: «ya deberías poder reconocer las imágenes, ¿no?»): la IA la copia en
 // el formato que lee `bot/escuchar.py` —las rondas, o las dos llaves de la doble eliminación con «MATCH N: A vs B»— y
 // el ciclo la lee como cualquier otra. Sólo transcribe: quién ganó lo decide el lector por dónde sigue cada uno
-export const OCR_PEDIDO_LLAVE = 'Esta imagen es la llave (bracket) de un torneo. Copiá cada cruce que tenga nombres, '
+export const OCR_PEDIDO_LLAVE = 'Esta imagen es la llave (bracket) de un torneo. Copia cada cruce que tenga nombres, '
   + 'con los nombres EXACTAMENTE como están escritos, en este formato y nada más:\n'
   + 'el título del torneo en el primer renglón, si se ve;\n'
   + 'si es de doble eliminación, un renglón «WINNER BRACKET» y abajo «MATCH 1: A vs B» por cada cruce, en orden de '
@@ -2645,11 +2645,11 @@ export const OCR_PEDIDO_LLAVE = 'Esta imagen es la llave (bracket) de un torneo.
   + 'SÓLO si la imagen tiene escrita la palabra CAMPEÓN (o GANADOR o WINNER) con un nombre, un último renglón '
   + '«CAMPEÓN: nombre». Quién ganó la final NO se deduce: si no está escrito, ese renglón no va.\n'
   + 'Un cruce sin nombres no se escribe. Un lado vacío se escribe «?». No inventes nombres ni describas la imagen. '
-  + 'Si no es la llave de un torneo, contestá NADA.';
+  + 'Si no es la llave de un torneo, contesta NADA.';
 
 //: la segunda pregunta, cuando la copia de una llave trae campeón (ver `textoDeImagen()`)
 export const OCR_VERIFICA_CAMPEON = '¿Esta imagen tiene ESCRITA la palabra CAMPEÓN, CAMPEON, GANADOR o WINNER? '
-  + 'Respondé sólo SI o NO.';
+  + 'Responde sólo SI o NO.';
 
 export async function textoDeImagen(env, buf, cual = 'afiche') {
   const tipo = tipoImagen(buf);
@@ -2723,7 +2723,7 @@ export const TOPE_NUEVOS_SEGUIDORES = 6;
  */
 export function avisoSeguidores(n, nombre) {
   const t = n === 1 ? (nombre ? `⭐ ${nombre} empezó a seguirte` : '⭐ Alguien nuevo te sigue') : `⭐ ${n} personas nuevas te siguen`;
-  return { titulo: t.slice(0, 120), cuerpo: 'Tocá para ver quién te sigue.' };
+  return { titulo: t.slice(0, 120), cuerpo: 'Toca para ver quién te sigue.' };
 }
 //: lo que dice cada tarjeta en un aviso, como `NOMBRE` de `bot/avisos_personales.py`
 const CARTA_AVISO = { temporada: 'de Temporada', competitivo: 'Competitiva', pais: 'de País', servidor: 'de Servidor' };
@@ -2789,7 +2789,7 @@ export function paraSeguidores(items, ahora) {
       if (!claveValida(k) || typeof n !== 'string' || !n) continue;
       const titulo = tituloSeguido(x, n, rol);
       if (!titulo) continue;
-      out.push({ pub, k, t, titulo, cuerpo: `Seguís a ${n} en la Liga · tocá para ver su perfil`.slice(0, 240),
+      out.push({ pub, k, t, titulo, cuerpo: `Sigues a ${n} en la Liga · toca para ver su perfil`.slice(0, 240),
         url: 'https://underlegends.pages.dev/freestyle-rap/r/' + encodeURIComponent(k) });
     }
   }
@@ -2873,7 +2873,7 @@ export function validarAplauso(items, d, id, mios, ahora) {
     return { error: 'nueva', estado: 403, desde: new Date(creada + EDAD_MIN_DIAS * DIA_MS).toISOString() };
   }
   const ks = Array.isArray(x.ks) ? x.ks.map((k) => (claveValida(k) ? k : '')) : [];
-  if ((mios || []).some((k) => k && ks.indexOf(k) >= 0)) return { error: 'vos', estado: 403 };
+  if ((mios || []).some((k) => k && ks.indexOf(k) >= 0)) return { error: 'tú', estado: 403 };
   return { id: x.id, tipo: x.tipo, quien: (x.quien || []).slice(0, 8).map((n) => String(n).slice(0, 60)),
     ks: ks.slice(0, 8), motivo: motivoAplauso(x), t: String(x.t || '').slice(0, 30) };
 }
@@ -2898,7 +2898,7 @@ export function validarPromo(items, d, id, mios, ahora) {
   const creada = creadaEn(id);
   if (!creada || ahora - creada < EDAD_MIN_DIAS * DIA_MS) return { error: 'nueva', estado: 403 };
   const ks = Array.isArray(x.ks) ? x.ks.map((k) => (claveValida(k) ? k : '')) : [];
-  if ((mios || []).some((k) => k && ks.indexOf(k) >= 0)) return { error: 'vos', estado: 403 };
+  if ((mios || []).some((k) => k && ks.indexOf(k) >= 0)) return { error: 'tú', estado: 403 };
   return { id: x.id, pid: String(x.pid || x.id).slice(0, 60) };
 }
 
@@ -2950,7 +2950,7 @@ export function aplausoParaAvisar(f, ahora) {
 export function avisoAplauso(n, motivo) {
   return {
     titulo: n === 1 ? '👏 Alguien te felicitó' : `👏 ${n} personas te felicitaron`,
-    cuerpo: (motivo ? `Por ${motivo}. ` : '') + 'Tocá para verlo en Publicaciones.',
+    cuerpo: (motivo ? `Por ${motivo}. ` : '') + 'Toca para verlo en Publicaciones.',
   };
 }
 
@@ -2996,7 +2996,7 @@ export function validarVoto(defs, d, id, ahora) {
   // 🔑 EN EL ×2 CUALQUIERA VOTA A CUALQUIERA, también al suyo. Dlx,
   // 28/09/2026: «3. B y C». Hasta ese día nadie podía votar a «su servidor»
   // (el que más jugó); ahora «tu servidor» lo elige cada uno y no frena el voto.
-  if (e.tipo === 'elegido' && ((defs.yo || {})[id] || '') === d.op) return { error: 'vos', estado: 403 };
+  if (e.tipo === 'elegido' && ((defs.yo || {})[id] || '') === d.op) return { error: 'tú', estado: 403 };
   // 🏟️ LOS MES AWARDS DE UN SERVIDOR LOS VOTAN SUS JUGADORES (Dlx, 18/10/2026: «cada Tier 1 con los suyos… los votan sus
   // jugadores»): la encuesta trae `sv` y el ciclo deja en `solo` quién jugó ahí ese mes (`mes_awards.votantes()`). Sin
   // esa lista, nadie: antes eso que cualquiera
@@ -3123,7 +3123,7 @@ export function validarDecisionReporte(d) {
     if (!nombre) return { error: 'falta el nombre' };
     if (d.reporta === true) return { id, accion, fix: { tipo: 'nombre', liga, nombre, reporta: true } };
     const es = txt(d.es, 60);
-    if (!es) return { error: 'elegí de quién es' };
+    if (!es) return { error: 'elige de quién es' };
     return { id, accion, fix: { tipo: 'nombre', liga, nombre, es } };
   }
   const n = String((d && d.n) || '');
@@ -3133,7 +3133,7 @@ export function validarDecisionReporte(d) {
     if (!nombre) return { error: 'falta el nombre' };
     if (d.reporta === true) return { id, accion, fix: { tipo: 'nombre', n, nombre, reporta: true } };
     const es = txt(d.es, 60), nuevo = txt(d.nuevo, 40);
-    if (!!es === !!nuevo) return { error: 'elegí de quién es' };
+    if (!!es === !!nuevo) return { error: 'elige de quién es' };
     return { id, accion, fix: es ? { tipo: 'nombre', n, nombre, es } : { tipo: 'nombre', n, nombre, nuevo } };
   }
   if (accion === 'ganador') {
@@ -3440,7 +3440,7 @@ export function validarPrecio(cfg, d, id, ahora) {
   if (!creada || ahora - creada < EDAD_MIN_DIAS * DIA_MS) {
     return { error: 'nueva', estado: 403, desde: new Date(creada + EDAD_MIN_DIAS * DIA_MS).toISOString() };
   }
-  if (((cfg.yo || {})[id] || '') === d.cabeza) return { error: 'vos', estado: 403 };
+  if (((cfg.yo || {})[id] || '') === d.cabeza) return { error: 'tú', estado: 403 };
   return { cabeza: d.cabeza, monto: m, fin, desde: Date.parse(cfg.desde || '') || 0, inicial: cfg.inicial,
     tope: cfg.tope };
 }
@@ -7631,7 +7631,7 @@ export class Avisos {
       const cupos = /^\s*\d+\s*$/.test(String(a.cup || '')) ? Number(a.cup) : 0;
       const texto = '📝 **' + escMd(a.n) + '** · ya se anotaron **' + lista.length + '**' + (cupos ? ' de ' + cupos : '') + ': '
         + lista.slice(0, 12).map(escMd).join(', ') + (lista.length > 12 ? ' y ' + (lista.length - 12) + ' más' : '')
-        + (a.url ? '\n¿Te sumás? <' + a.url + '>' : '');
+        + (a.url ? '\n¿Te sumas? <' + a.url + '>' : '');
       const h = this.sql.exec("SELECT msg, texto, t FROM chat_vivo WHERE llave = ? AND canal = ? AND m = 'inscriptos'",
         'i:' + a.id, canal).toArray()[0];
       if (h && (h.texto === texto || !h.msg || ahora - h.t < CHAT_ENTRE_TODO)) continue;
@@ -8359,11 +8359,11 @@ export class Avisos {
     const texto = p.n
       ? `🧪 Leí tu «${p.texto}» en ${donde} (${hora}) y te la mandé a **${p.n} ` +
         `dispositivo${p.n === 1 ? '' : 's'}** con 🧪 Pruebas. Si en alguno no apareció, ` +
-        'abrí ahí <https://underlegends.pages.dev/freestyle-rap/avisos> y tocá «Mandar una de ' +
+        'abre ahí <https://underlegends.pages.dev/freestyle-rap/avisos> y toca «Mandar una de ' +
         'prueba»: te dice si es el navegador o el sistema.'
       : `🧪 Leí tu «${p.texto}» en ${donde} (${hora}), pero **ningún dispositivo tiene ` +
-        '🧪 Pruebas** marcado, así que no se la mandé a nadie. En cada dispositivo abrí ' +
-        '<https://underlegends.pages.dev/freestyle-rap/avisos>, tocá «🧪 Pruebas» y volvé a escribir ' +
+        '🧪 Pruebas** marcado, así que no se la mandé a nadie. En cada dispositivo abre ' +
+        '<https://underlegends.pages.dev/freestyle-rap/avisos>, toca «🧪 Pruebas» y vuelve a escribir ' +
         '«probando».';
     try {
       const r = await fetch(`${DC}/users/@me/channels`, { method: 'POST', headers: h,
@@ -8744,7 +8744,7 @@ export class Avisos {
       }
       const titulo = '📣 ' + q.nombre + ' organiza ' + String(evento || '').slice(0, 60);
       // ⚠️ sin la hora: el objeto no sabe en qué zona estás, y la página y Discord sí (el anuncio la muestra en la tuya)
-      const cuerpo = String(svn || '') + ' · tocá para ver el anuncio';
+      const cuerpo = String(svn || '') + ' · toca para ver el anuncio';
       this.aBandeja(q.quien, 'org:' + id, 'organiza', titulo, cuerpo, url, '', ahora);
       this.sql.exec('INSERT INTO org_cola (quien, clave, titulo, cuerpo, url, t) VALUES (?, ?, ?, ?, ?, ?)', q.quien,
         'org' + id, titulo, cuerpo, url, ahora);
@@ -9222,7 +9222,7 @@ export class Avisos {
       if (k && k.startsWith('fondos/')) { try { await this.env.CARTAS.delete(k); } catch (e) { /* queda huérfano */ } }
       this.sql.exec("UPDATE fondos SET url = '', estado = 'no', motivo = ? WHERE quien = ?", String(d.motivo || ''), r.quien);
       this.aBandeja(r.quien, 'fondo', 'fondo', '🖼️ Tu fondo se quitó', (d.motivo ? d.motivo + '. ' : '') +
-        'Podés subir otro desde Mi cuenta.', HUB + '/cuenta/fondo', '', ahora);
+        'Puedes subir otro desde Mi cuenta.', HUB + '/cuenta/fondo', '', ahora);
       return { ok: true, fondos: this.fondosDueno(), filtro: this.filtroDueno() };
     }
     if (!r || !r.pend) return { error: 'no hay nada para revisar' };
@@ -9241,7 +9241,7 @@ export class Avisos {
       this.sql.exec("UPDATE fondos SET pend = '', estado = CASE WHEN url != '' THEN 'ok' ELSE 'no' END, motivo = ? WHERE quien = ?",
         String(d.motivo || ''), r.quien);
       this.aBandeja(r.quien, 'fondo', 'fondo', '🖼️ Tu fondo no se aprobó', (d.motivo ? d.motivo + '. ' : '') +
-        'Podés subir otro desde Mi cuenta.', HUB + '/cuenta/fondo', '', ahora);
+        'Puedes subir otro desde Mi cuenta.', HUB + '/cuenta/fondo', '', ahora);
     }
     return { ok: true, fondos: this.fondosDueno(), filtro: this.filtroDueno() };
   }
@@ -9309,7 +9309,7 @@ export class Avisos {
     }
     if (!d.img) return { error: 'faltan datos' };
     const cartas = [...new Set((Array.isArray(d.cartas) ? d.cartas : []).filter((c) => CARTAS_FOTO.includes(c)))];
-    if (!cartas.length) return { error: 'elegí en qué tarjetas' };
+    if (!cartas.length) return { error: 'elige en qué tarjetas' };
     const p = this.puedeFotoCarta(quien);
     if (!p.si) return { error: 'nivel', nivel: p.nivel, falta: FOTO_CARTA_NIVEL };
     const trabadas = quien === DUENO ? [] : cartas.filter((c) => filas[c] && filas[c].t && ahora - filas[c].t < FOTO_CARTA_SEMANA);
@@ -9386,7 +9386,7 @@ export class Avisos {
           String(d.motivo || ''), quien, r.carta);
       }
       this.aBandeja(quien, 'foto-carta', 'fondo', '📸 Tu foto de tarjeta no se aprobó', (d.motivo ? d.motivo + '. ' : '') +
-        'Podés subir otra desde Mi cuenta.', HUB + '/cuenta/perfil', '', ahora);
+        'Puedes subir otra desde Mi cuenta.', HUB + '/cuenta/perfil', '', ahora);
     } else if (!d.si) {
       const vivas = filas.filter((r) => r.estado === 'ok');
       if (!vivas.length) return { error: 'no hay nada para revisar' };
@@ -10117,14 +10117,14 @@ export class Avisos {
   /** 🔔 A quien pidió, cuando se resuelve: a su campana (la bandeja), como los reportes y los fondos. Nunca por DM. */
   avisarPedido(p, est, nota, ahora) {
     const T = {
-      cuenta: ['✅ Tu cuenta nueva ya es la de tu perfil', 'Pasó todo: tus tarjetas, tus Puntos de Tienda, tu Pase y a quién seguís.'],
+      cuenta: ['✅ Tu cuenta nueva ya es la de tu perfil', 'Pasó todo: tus tarjetas, tus Puntos de Tienda, tu Pase y a quién sigues.'],
       pais: ['✅ Tu país ya está corregido', 'Se ve en tu perfil y en tus tarjetas en la próxima actualización.'],
       identidad: ['✅ Arreglamos lo que pediste', 'Gracias por avisar.'],
       video: ['✅ Sacamos el video de tu perfil', 'Se va en la próxima actualización.'],
     };
     const [titulo, cuerpo] = est === 'hecho' ? (T[p.tipo] || T.identidad)
       : est === 'no_pude' ? ['⚠️ Tu pedido está aprobado, pero falta un paso', 'Lo termina Dlx a mano.']
-        : ['Tu pedido no se aprobó', nota ? nota.slice(0, 160) : 'Si creés que es un error, escribile a un Moderador.'];
+        : ['Tu pedido no se aprobó', nota ? nota.slice(0, 160) : 'Si crees que es un error, escribile a un Moderador.'];
     this.aBandeja(p.quien, 'pedido:' + p.id, 'pedido', titulo, cuerpo, HUB + '/cuenta/algo-mal', '', ahora);
   }
 
@@ -11094,7 +11094,7 @@ export class Avisos {
       pedidos += subs.length;
       avisados++;
       const cuerpo = cuerpoPersonal({ id: 'racha' + hoy.replace(/-/g, ''),
-        titulo: '🔥 Tu racha de ' + r.actual + ' días se corta hoy', cuerpo: 'Entrá a la página antes de la medianoche y la mantenés.',
+        titulo: '🔥 Tu racha de ' + r.actual + ' días se corta hoy', cuerpo: 'Entra a la página antes de la medianoche y la mantienes.',
         url: HUB + '/freestyle-rap' });
       const estados = await Promise.all(subs.map((x) => empujar(x, cuerpo, { ttl: 4 * 3600, topic: 'racha' }, this.env, new Map())));
       let llego = 0, reintentar = false;
@@ -11146,7 +11146,7 @@ export class Avisos {
     // uno inventado tocaba «Probar» y quedaba para siempre. Los 30 segundos entre pruebas, ahora en la memoria del objeto
     this.probados = this.probados || new Map();
     if (ahora - Math.max(s.prueba || 0, this.probados.get(s.id) || 0) < 30 * 1000) {
-      return json({ error: 'esperá unos segundos' }, 429);
+      return json({ error: 'espera unos segundos' }, 429);
     }
     if (this.probados.size > 2000) this.probados.clear();
     this.probados.set(s.id, ahora);
@@ -11387,7 +11387,7 @@ export class Avisos {
       if (racha.actual < n) continue;
       const id = 'rhito:' + quien + ':' + racha.inicio + ':' + n;
       if (this.sql.exec('INSERT OR IGNORE INTO tienda (id, ref, quien, monto, t) VALUES (?, 0, ?, ?, ?)', id, quien, monto, ahora).rowsWritten) {
-        this.aBandeja(quien, id, 'racha', '🔥 ¡' + n + ' días seguidos!', '+' + monto + ' Puntos de Tienda. Seguí así.', HUB + '/', '', ahora);
+        this.aBandeja(quien, id, 'racha', '🔥 ¡' + n + ' días seguidos!', '+' + monto + ' Puntos de Tienda. Sigue así.', HUB + '/', '', ahora);
       }
     }
   }

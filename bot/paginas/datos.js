@@ -201,7 +201,7 @@ function llaveVieja(n) {
   fetch('/api/llaves', { headers: { accept: 'application/json' } })
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (t) { LLAVES_TODAS = t || {}; dic(LLAVES_TODAS); })
-    .catch(function () { avisoLlave('No pude traer esa llave. Probá de nuevo en un rato.'); });
+    .catch(function () { avisoLlave('No pude traer esa llave. Prueba de nuevo en un rato.'); });
 }
 
 /* ── de app.js: los perfiles: PERF y perfiles() ── */
@@ -325,7 +325,7 @@ function cargarCambios(listo) {
     .then(function (d) { CAMBIOS = (d && d.cambios) || []; puntoCambios(); if (listo) listo(); })
     .catch(function () {
       var c = $('#cambios');
-      if (c && listo) c.innerHTML = '<p class="nota">No pude cargar el changelog. Probá recargar.</p>';
+      if (c && listo) c.innerHTML = '<p class="nota">No pude cargar el changelog. Prueba recargar.</p>';
     });
 }
 // 🔑 «LO NUEVO» ES LA VERSIÓN, NO EL DÍA: hay días con varias. Dlx, 25/09/2026:

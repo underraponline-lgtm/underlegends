@@ -233,7 +233,7 @@ def html_mw(d):
 """
     sueltos = sum(1 for b in d['b'] if b['estado'] not in ('cazado', 'escondio'))
     tope = max([b['v'] for b in d['b']] or [0])
-    cuerpo = ('<div class="et vence">VENCE EL %s · %d %s · COBRÁS HASTA %s PTS</div>'
+    cuerpo = ('<div class="et vence">VENCE EL %s · %d %s · COBRAS HASTA %s PTS</div>'
               % (_e(_cuando(d['fin']).upper()) if d['fin'] else '—', sueltos, 'SIGUE SUELTO' if sueltos == 1 else 'SIGUEN SUELTOS', _num(tope)))
     cuerpo += '<div class="grid">'
     for b in d['b']:

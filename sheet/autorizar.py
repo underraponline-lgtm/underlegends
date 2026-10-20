@@ -128,7 +128,7 @@ def credenciales(interactivo=True):
                                  '   Si dice «Google hasn\'t verified this '
                                  'app»: Advanced -> Go to … (unsafe).\n',
                                  success_message=
-                                 'Listo, ya podés cerrar esta pestaña.')
+                                 'Listo, ya puedes cerrar esta pestaña.')
     _guardar(cred)
     return cred
 
@@ -154,8 +154,8 @@ def probar(cred):
         n = len(r.json().get('files', []))
         return True, 'leí el proyecto: %d archivo(s)' % n
     if r.status_code == 403 and 'has not enabled' in r.text:
-        return False, ('sigue el 403 del interruptor. Entrá a '
-                       'script.google.com/home/usersettings y activá '
+        return False, ('sigue el 403 del interruptor. Entra a '
+                       'script.google.com/home/usersettings y activa '
                        '«Google Apps Script API»')
     return False, '%s %s' % (r.status_code, r.text[:120])
 

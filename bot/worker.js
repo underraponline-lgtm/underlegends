@@ -559,7 +559,7 @@ function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
         type: COMP.SELECT,
         custom_id: `s:${quien}::${dueno}`,
         disabled: !!apagado,
-        placeholder: 'Elegí un servidor',
+        placeholder: 'Elige un servidor',
         // ⚠️ LOS NUEVE SIEMPRE ESTÁN, Y LOS QUE NO TIENEN CARTA DICEN
         // «BLOQUEADA» EN LA ETIQUETA. Dlx, 19/09/2026: *«todas las opciones
         // deberían aparecer ahí... y el título debería decir como BLOQUEADA»*.
@@ -888,7 +888,7 @@ const aviso = (txt, botones) => new Response(JSON.stringify({
 // que el freno quiere evitar. Es la misma razón que el aviso de «esa carta la
 // pidió otra persona».
 const espera = (seg) => aviso(
-  `Pará un poco 🙂 Probá de nuevo en **${seg} s**.`);
+  `Para un poco 🙂 Prueba de nuevo en **${seg} s**.`);
 
 // ── La invitación ─────────────────────────────────────────────────────────
 // ⚠️ EL BOT NO PUEDE SABER EN QUÉ SERVIDORES ESTÁS, y conviene tenerlo claro
@@ -938,7 +938,7 @@ function invitacion(sv) {
   const s = SV_DE(sv);
   if (!s || !s.invita) return null;
   return {
-    texto: `**${s.sv}** · ${s.nombre}\n¿No estás adentro? Entrá por acá 👇`,
+    texto: `**${s.sv}** · ${s.nombre}\n¿No estás adentro? Entra por acá 👇`,
     botones: [botonLink(`Entrar a ${s.sv}`, s.invita)],
   };
 }
@@ -996,9 +996,9 @@ export const VERIFICA = {
 // anotarlo deja su ID y su país listos para el día que juegue, nada más. El texto de
 // antes decía «entrás a la Liga solo en menos de una hora», y se leía como «en una
 // hora tenés tu carta».
-const YA_TE_ANOTE = 'Todavía no tenés tarjeta 🃏 — se consiguen en dos pasos, y los dos son tuyos.\n\n' +
+const YA_TE_ANOTE = 'Todavía no tienes tarjeta 🃏 — se consiguen en dos pasos, y los dos son tuyos.\n\n' +
   '✍️ Ya te anoté: si Discord sabe tu país (bandera en tu apodo o un rol de país), ' +
-  'quedás en la Lista en menos de una hora; si no, te lo pido en la página.';
+  'quedas en la Lista en menos de una hora; si no, te lo pido en la página.';
 // 📅 adónde ir a jugar: la página de Eventos, con los que vienen y cómo anotarse
 const URL_EVENTOS = 'https://underlegends.pages.dev/freestyle-rap/eventos';
 const botonEventos = () => ({ type: 2, style: 5, label: 'Ver los próximos eventos', url: URL_EVENTOS });
@@ -1007,7 +1007,7 @@ const botonEventos = () => ({ type: 2, style: 5, label: 'Ver los próximos event
 // en la página… y así desbloquea la tarjeta de servidor para cada sv que él se encuentre», «C», «nivel 1»). Sin
 // verificarse, ninguna; la Temporada es la recompensa del nivel 1 del Pase. Lo usan `/card` y `/versus`; la regla
 // vive en `bot/verificados.puede()`
-const QUE_PIDE = '1️⃣ **Verificate en la página**: se desbloquea tu **Servidor**, ' +
+const QUE_PIDE = '1️⃣ **Verifícate en la página**: se desbloquea tu **Servidor**, ' +
   'la de cada servidor donde estás.\n' +
   '2️⃣ **Cumplí tu primera Tarea del Pase de rapero** y se desbloquea tu **Temporada**. Si todavía no jugaste, ' +
   'sale con «—» y se llena con tu primer evento.\n' +
@@ -1036,8 +1036,8 @@ function comoVerificarse(aqui) {
   const nombre = (s && s.nombre) || 'Discord Rap Español';
   const botones = [botonLink('Verificarme en la página', URL_VERIFICAR)];
   const texto = aqui === VERIFICA.sv
-    ? 'Verificate en la página, en un toque: te pide tu país y te dice qué te falta 👇'
-    : `Verificate en la página, en un toque: si no estás en **${nombre}** te mete, ` +
+    ? 'Verifícate en la página, en un toque: te pide tu país y te dice qué te falta 👇'
+    : `Verifícate en la página, en un toque: si no estás en **${nombre}** te mete, ` +
       'te pide tu país y te dice qué te falta 👇';
   return { texto, botones };
 }
@@ -1808,10 +1808,10 @@ export function panelNotify(aqui, escuchados, elegidos) {
     'aunque no tengas Discord abierto.',
     '',
     '**Elegidos:** ' + (todos ? 'todos los servidores.' : sel.map((sv) => '**' + nombre(sv) + '**').join(', ') + '.'),
-    '1. Cambialos con el menú si querés.',
-    '2. Tocá **Activar**: se abre la página y aceptás las notificaciones. Listo.',
+    '1. Cámbialos con el menú si quieres.',
+    '2. Toca **Activar**: se abre la página y aceptas las notificaciones. Listo.',
     '',
-    '📱 **En iPhone**, antes: Safari → **Compartir** → **Agregar a inicio**, y abrí la Liga desde ese ícono.',
+    '📱 **En iPhone**, antes: Safari → **Compartir** → **Agregar a inicio**, y abre la Liga desde ese ícono.',
     'Se activa una vez en cada dispositivo. Si ya lo tenías, **Activar** cambia los servidores.'];
   if (aqui && !hay(aqui)) {
     lineas.push('', `⚠️ Todavía no se escuchan los eventos de **${nombre(aqui)}**.`);
@@ -1825,7 +1825,7 @@ export function panelNotify(aqui, escuchados, elegidos) {
     { emoji: { name: '🔔' } }));
   return { content: lineas.join('\n'), components: [
     { type: COMP.FILA, components: [{
-      type: COMP.SELECT, custom_id: 'ntf:svs', placeholder: 'Elegí de qué servidores',
+      type: COMP.SELECT, custom_id: 'ntf:svs', placeholder: 'Elige de qué servidores',
       min_values: 1, max_values: lista.length,
       options: lista.map((x) => ({ label: x.nombre, value: x.sv, default: !todos && sel.indexOf(x.sv) >= 0 })),
     }] },
@@ -1913,7 +1913,7 @@ function panelAjustes(sv, cfg) {
     '> Dónde anunciar cuando alguien sube o baja de rango.',
     '',
     `**El bot en vivo** · ${vivo}` + (cfg.vivo ? ` · habla: **${NIVELES_CHAT[nivel][0].toLowerCase()}**` : ''),
-    '> Durante un evento de la Liga en este servidor, cuenta en ese canal cómo va. Cuánto habla lo elegís abajo: ' +
+    '> Durante un evento de la Liga en este servidor, cuenta en ese canal cómo va. Cuánto habla lo eliges abajo: ' +
     '**lo justo** (el arranque y el campeón), **normal** (además quién pasa cada ronda y la final; como mucho un ' +
     'mensaje cada 10 minutos) o **cada batalla** (quién gana cada una apenas se sabe; como mucho uno cada 2 ' +
     'minutos). Nunca menciona a nadie.',
@@ -2102,7 +2102,7 @@ function requisitos(m) {
 const AYUDA = {
   agendar: () => [
     '## `/agendar` — un evento en el calendario de la Liga',
-    'Agendá un evento de este servidor con **día** (`18/10`), **hora** (`20:00`) y el **país** de esa hora: sale en el ' +
+    'Agenda un evento de este servidor con **día** (`18/10`), **hora** (`20:00`) y el **país** de esa hora: sale en el ' +
     'calendario de la página y cada uno lo ve en su hora.',
     '',
     'Con **12 horas o más** de anticipación, quienes lo juegan suman **+10 %** en la Temporada, y al organizador le ' +
@@ -2134,7 +2134,7 @@ const AYUDA = {
     '**Qué hace falta para cada una**',
     requisitos(m),
     '',
-    'Si todavía no llegás a una, el botón igual aparece: te lleva a una ' +
+    'Si todavía no llegas a una, el botón igual aparece: te lleva a una ' +
     'tarjeta que dice **cuánto te falta**. El botón sólo desaparece cuando la ' +
     'tarjeta no se puede emitir — por ejemplo País sin país cargado.',
     '',
@@ -2144,7 +2144,7 @@ const AYUDA = {
   versus: () => [
     '## `/versus` — quién gana',
     '`/versus rival:@alguien` los enfrenta y te dice quién gana.',
-    'Con `contra:` elegís vos a los dos, así que sirve para armar un cruce ' +
+    'Con `contra:` eliges tú a los dos, así que sirve para armar un cruce ' +
     'entre otras dos personas.',
     '',
     '`carta:` elige la categoría. Por defecto es la de **Servidor**, y los ' +
@@ -2172,15 +2172,15 @@ const AYUDA = {
     '`/numeral` solo te dice cómo está hoy.',
     '`/numeral mostrar:True` lo muestra · `/numeral mostrar:False` lo oculta.',
     '',
-    '**Es por servidor**: podés llevarlo en DRA y no en FFA.',
+    '**Es por servidor**: puedes llevarlo en DRA y no en FFA.',
     '',
     '⚠️ **Tu decisión le gana a la del servidor.** Si un admin apaga el `#N` ' +
-    'para todos con `/settings`, a vos no te lo tocan si alguna vez lo ' +
-    'elegiste a mano. Y al revés: si nunca usaste este comando, seguís lo ' +
+    'para todos con `/settings`, a ti no te lo tocan si alguna vez lo ' +
+    'elegiste a mano. Y al revés: si nunca usaste este comando, sigues lo ' +
     'que diga el servidor.',
     '',
     'Por eso pedir `/numeral mostrar:True` cuando el número **ya se ve** no es ' +
-    'al pedo: deja constancia de que lo querés, y eso te protege de un ' +
+    'al pedo: deja constancia de que lo quieres, y eso te protege de un ' +
     'apagón posterior.',
   ].join('\n'),
 
@@ -2191,7 +2191,7 @@ const AYUDA = {
   // de gusto.
   foto: () => [
     '## `/foto` — la cara de tus tarjetas',
-    'Corré `/foto` y se guarda **la que tenés puesta en Discord ahora**.',
+    'Corre `/foto` y se guarda **la que tienes puesta en Discord ahora**.',
     '',
     '⚠️ **Va una por temporada, y queda congelada.** Después de elegirla, ' +
     'aunque cambies tu foto de Discord, tus tarjetas de esta temporada ' +
@@ -2207,7 +2207,7 @@ const AYUDA = {
     '',
     '· Se toma tu **foto global** de Discord, no la que te pusiste en un ' +
     'servidor: la tarjeta es una sola para todos.',
-    '· Si no tenés foto puesta, **no se guarda nada** — tu tarjeta va con la ' +
+    '· Si no tienes foto puesta, **no se guarda nada** — tu tarjeta va con la ' +
     'inicial, que con el color de tu rango queda bien.',
     '· Se ve la próxima vez que se dibujen tus tarjetas.',
     '',
@@ -2250,7 +2250,7 @@ const AYUDA = {
     'donde lo escribiste ya elegido. Cuando anuncia un evento, te llega un aviso ' +
     'al minuto aunque no tengas Discord abierto.',
     '',
-    'En iPhone, primero agregá la página a tu pantalla de inicio (Safari → ' +
+    'En iPhone, primero agrega la página a tu pantalla de inicio (Safari → ' +
     'Compartir → Agregar a inicio). Se apagan o se cambian en la misma página.',
   ].join('\n'),
 
@@ -2289,17 +2289,17 @@ const AYUDA_INDICE = [
   '',
   '· **`/card`** — tu tarjeta, o la de quien elijas',
   '· **`/verificar`** — qué te falta para verificarte (y tener las cuatro)',
-  '· **`/notify`** — activá los avisos de eventos en tu celular o compu',
+  '· **`/notify`** — activa los avisos de eventos en tu celular o compu',
   '· **`/website`** — la página de la Liga',
   '· **`/versus`** — quién gana entre dos, en la categoría que elijas',
-  '· **`/foto`** — usá tu foto de Discord en tus tarjetas ' +
+  '· **`/foto`** — usa tu foto de Discord en tus tarjetas ' +
   '*(una por temporada, libre hasta que arranque)*',
-  '· **`/numeral`** — mostrá u ocultá tu `#N` en tu apodo *(en un servidor)*',
+  '· **`/numeral`** — muestra u oculta tu `#N` en tu apodo *(en un servidor)*',
   '· **`/settings`** — los ajustes del servidor *(admins)*',
   '· **`/antiraid`** — el anti-raid del servidor *(el dueño)*',
   '· **`/afiche`** y **`/llave`** — la imagen del último anuncio y de la última llave *(staff y organizadores)*',
   '· **`/agendar`** — un evento en el calendario de la Liga, con tiempo *(staff y organizadores)*',
-  '· **`/borrar-mis-datos`** — borrá tu perfil, tus tarjetas y tu foto de la Liga',
+  '· **`/borrar-mis-datos`** — borra tu perfil, tus tarjetas y tu foto de la Liga',
   '· **`/ping`** — ¿está vivo?',
   '',
   'Para el detalle de uno: **`/help comando:card`**',
@@ -2462,8 +2462,8 @@ async function avisoFoto(env, i, quien, g) {
   }
   const { id, hash } = avatarDe(i);
   if (!hash) {
-    return seguir(i, '📸 Tu tarjeta va con tu inicial porque no tenés foto en Discord. ' +
-                     'Ponete una y el bot la toma sola en la próxima vuelta.');
+    return seguir(i, '📸 Tu tarjeta va con tu inicial porque no tienes foto en Discord. ' +
+                     'Ponte una y el bot la toma sola en la próxima vuelta.');
   }
   const res = await fotoAR2(env, quien, id, hash, false);
   if (!res.ok) return;
@@ -2531,7 +2531,7 @@ async function guardarFoto(env, i, quien, id, hash) {
   const res = await fotoAR2(env, quien, id, hash, arranco0);
   if (!res.ok && res.paso === 'cdn' && res.error) {
     return seguir(i, 'No pude llegar al CDN de Discord (`' +
-                     res.error + '`). Probá de nuevo en un rato.');
+                     res.error + '`). Prueba de nuevo en un rato.');
   }
   if (!res.ok && res.paso === 'cdn') {
     // 🔴 PASA DE VERDAD, Y NO ES UN ERROR NUESTRO. Medido el 20/09/2026:
@@ -2544,7 +2544,7 @@ async function guardarFoto(env, i, quien, id, hash) {
   }
   if (!res.ok) {
     return seguir(i, 'No pude guardar tu foto (`' + res.error +
-                     '`). Probá de nuevo en un rato — **no te gasté** el ' +
+                     '`). Prueba de nuevo en un rato — **no te gasté** el ' +
                      'cambio de la temporada.');
   }
   // ⚠️ EL SELLO SE ESCRIBE **DESPUES** DE GUARDAR. Al revés, un fallo del
@@ -2573,15 +2573,15 @@ async function guardarFoto(env, i, quien, id, hash) {
   if (res.libre) {
     const hasta = libreHastaTexto(env);
     return seguir(i, '📸 Tu foto **quedó guardada**.\n' + (hasta
-      ? 'Hasta el **' + hasta + '** podés cambiarla las veces que quieras.'
-      : 'La temporada todavía no arrancó, así que podés ' +
+      ? 'Hasta el **' + hasta + '** puedes cambiarla las veces que quieras.'
+      : 'La temporada todavía no arrancó, así que puedes ' +
         'cambiarla las veces que quieras hasta que empiece.'));
   }
   if (!res.anotado) {
     return seguir(i, '📸 Tu foto **quedó guardada**.\n' +
                      '⚠️ Pero no pude anotar que ya usaste tu cambio de la ' +
                      'temporada (`' + res.error + '`), así que ' +
-                     '`/foto` te va a dejar cambiarla de nuevo. Avisale a Dlx.');
+                     '`/foto` te va a dejar cambiarla de nuevo. Avísale a Dlx.');
   }
   return seguir(i,
     '📸 Listo: ésa es tu foto de la **' + temporadaDe(env).toUpperCase() + '**.\n' +
@@ -2710,9 +2710,9 @@ export function panelBaja(id) {
       '- tu foto de las tarjetas,\n' +
       '- tus redes guardadas, tus votos en las encuestas, a quién felicitaste y el vínculo de tus avisos.\n\n' +
       'Además queda anotado que **no te vuelva a sumar solo**. Tus resultados en ' +
-      'eventos quedan en el historial de la Liga; si querés que cambiemos tu ' +
+      'eventos quedan en el historial de la Liga; si quieres que cambiemos tu ' +
       'nombre ahí, pedíselo a un admin.\n' +
-      '-# Si después querés volver, también se lo pedís a un admin.',
+      '-# Si después quieres volver, también se lo pides a un admin.',
     components: [{ type: COMP.FILA, components: [
       { type: COMP.BOTON, style: ESTILO.PELIGRO, label: 'Borrar mis datos',
         custom_id: `baja:si::${id}` },
@@ -2814,7 +2814,7 @@ async function kit(i, env, ctx, tipo) {
   const sv = aquiEs(i.guild_id);
   if (!sv) return aviso('`/' + tipo + '` funciona en los servidores de la Liga.');
   if (!(await esStaff(i, env))) return aviso('`/' + tipo + '` es para el staff y los organizadores del servidor.');
-  if (!env.GH_TOKEN || !env.GH_REPO || !env.AVISOS) return aviso('Ahora no puedo armarla: probá en un rato.');
+  if (!env.GH_TOKEN || !env.GH_REPO || !env.AVISOS) return aviso('Ahora no puedo armarla: prueba en un rato.');
   const id = [...crypto.getRandomValues(new Uint8Array(12))].map((b) => b.toString(16).padStart(2, '0')).join('');
   const editar = (txt) => fetch(`https://discord.com/api/v10/webhooks/${i.application_id}/${i.token}/messages/@original`, {
     method: 'PATCH', headers: { 'content-type': 'application/json' },
@@ -2827,18 +2827,18 @@ async function kit(i, env, ctx, tipo) {
         body: JSON.stringify({ id, token: i.token, app: i.application_id, tipo, sv }),
       });
       const gd = await g.json().catch(() => ({}));
-      if (gd.error === 'espera') return editar('Ya hay una en camino en este servidor: esperá un minuto y pedila de nuevo.');
-      if (!gd.ok) return editar('Ahora no puedo armarla: probá en un rato.');
+      if (gd.error === 'espera') return editar('Ya hay una en camino en este servidor: espera un minuto y pídela de nuevo.');
+      if (!gd.ok) return editar('Ahora no puedo armarla: prueba en un rato.');
       const r = await fetch(`https://api.github.com/repos/${env.GH_REPO}/actions/workflows/kit.yml/dispatches`, {
         method: 'POST',
         headers: { 'User-Agent': 'liga-global-bot', Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + env.GH_TOKEN,
           'content-type': 'application/json' },
         body: JSON.stringify({ ref: 'main', inputs: { tipo, sv, id } }),
       });
-      if (r.status !== 204) return editar('Ahora no puedo armarla: probá en un rato.');
+      if (r.status !== 204) return editar('Ahora no puedo armarla: prueba en un rato.');
       return editar('🧰 Armando ' + (tipo === 'afiche' ? 'el afiche del último anuncio' : 'la última llave') + ' de ' + sv +
         '… en uno o dos minutos aparece acá.');
-    } catch (e) { return editar('Ahora no puedo armarla: probá en un rato.'); }
+    } catch (e) { return editar('Ahora no puedo armarla: prueba en un rato.'); }
   })());
   return new Response(JSON.stringify({ type: RESPONDE.PENSANDO }), { headers: { 'content-type': 'application/json' } });
 }
@@ -2873,7 +2873,7 @@ export function utcDeZona(dia, mes, h, mi, z, ahora = Date.now()) {
 // 🔑 LA INVITACIÓN SALE EN EL CANAL, con botones que sólo el invitado puede tocar (`cw:si|no:<crew>:<su id>`): el bot no
 // manda DMs. Se lo menciona —eso sí le suena— y nadie más puede aceptar por él.
 const ERRORES_CREW = {
-  verificate: 'Las crews son de los Miembros de Discord Rap Español: primero verificate (`/verificar`).',
+  verificate: 'Las crews son de los Miembros de Discord Rap Español: primero verifícate (`/verificar`).',
   ya_en_crew: 'Ya está en esa crew.',
   no_recibe: 'Esa persona no recibe invitaciones mientras está en su crew.',
   no_verificado: 'Esa persona todavía no es Miembro verificado de DRA: las crews son sólo de verificados.',
@@ -2882,15 +2882,15 @@ const ERRORES_CREW = {
   solo_invitacion: 'A esa crew se entra sólo por invitación.',
   sin_invitacion: 'Esa invitación ya no está (vencen a la semana).',
   rol: 'Tu rango en la crew no te deja hacer eso.',
-  lider_pasa_primero: 'Sos el Líder: antes de irte (o de cambiarte de crew), pasale el liderazgo a alguien desde la página de tu crew.',
+  lider_pasa_primero: 'Eres el Líder: antes de irte (o de cambiarte de crew), pasale el liderazgo a alguien desde la página de tu crew.',
   sin_crew: 'No estás en ninguna crew.',
   no_existe: 'Esa crew ya no existe.',
-  espera_dia: 'Ya hiciste mucho de esto hoy: probá mañana.',
-  links_max: 'Tu crew ya tiene 5 links abiertos: borrá uno desde la página de la crew para armar otro.',
+  espera_dia: 'Ya hiciste mucho de esto hoy: prueba mañana.',
+  links_max: 'Tu crew ya tiene 5 links abiertos: borra uno desde la página de la crew para armar otro.',
   saldo: 'No te alcanzan los Puntos de Tienda.',
 };
-const textoCrew = (j) => ((j && j.error) === 'requisitos' ? 'Esa crew pide ' + (j.falta || []).join(' y ') + ': todavía no llegás.'
-  : ERRORES_CREW[(j && j.error) || ''] || 'Ahora no pude: probá en un rato.');
+const textoCrew = (j) => ((j && j.error) === 'requisitos' ? 'Esa crew pide ' + (j.falta || []).join(' y ') + ': todavía no llegas.'
+  : ERRORES_CREW[(j && j.error) || ''] || 'Ahora no pude: prueba en un rato.');
 const urlCrew = (id) => HUB_URL + '/freestyle-rap/crew/' + encodeURIComponent(id);
 const publicoConMencion = (data) => new Response(JSON.stringify({ type: RESPONDE.MENSAJE, data }),
   { headers: { 'content-type': 'application/json' } });
@@ -2922,10 +2922,10 @@ function crewSemana(c, todas) {
 
 async function crewComando(i, env, sub, op) {
   const id = idDe(i);
-  if (!id) return aviso('No pude saber quién sos.');
+  if (!id) return aviso('No pude saber quién eres.');
   const esperar = frenado(id, 'comando');
   if (esperar) return espera(esperar);
-  if (!env.AVISOS) return aviso('Ahora no puedo: probá en un rato.');
+  if (!env.AVISOS) return aviso('Ahora no puedo: prueba en un rato.');
   const de = await crewPerfil(env, id);
   const todas = await crewAvisos(env, '/crews');
   if (sub === 'ver') {
@@ -2941,16 +2941,16 @@ async function crewComando(i, env, sub, op) {
     const ROL = { lider: 'Líder', colider: 'Colíder', veterano: 'Veterano', miembro: 'Miembro' };
     return aviso('👥 **' + c.nombre + '**' + (c.sigla ? ' [' + c.sigla + ']' : '') + ' · ' + c.gente.length + ' de ' + (todas.max || 20) +
       (lid ? ' · Líder: **' + (await crewNombre(env, lid)) + '**' : '') + (c.desc ? '\n> ' + c.desc : '') +
-      (rol ? '\n' + (t === id ? 'Sos ' : '<@' + t + '> es ') + ROL[rol] + '.' : '') + crewSemana(c, todas),
+      (rol ? '\n' + (t === id ? 'Eres ' : '<@' + t + '> es ') + ROL[rol] + '.' : '') + crewSemana(c, todas),
     [{ type: 2, style: 5, label: 'Ver la crew', url: urlCrew(c.id) }]);
   }
   if (sub === 'invitar') {
     const t = String(op.quien || '');
     if (!t) return aviso('¿A quién?');
-    if (t === id) return aviso('No te podés invitar a vos.');
+    if (t === id) return aviso('No te puedes invitar a ti.');
     if (!de) return aviso(ERRORES_CREW.verificate);
     const mia = crewDeK(todas, de);
-    if (!mia) return aviso('No estás en ninguna crew: armá la tuya en la página.', [{ type: 2, style: 5, label: 'Mi crew', url: HUB_URL + '/cuenta/crew' }]);
+    if (!mia) return aviso('No estás en ninguna crew: arma la tuya en la página.', [{ type: 2, style: 5, label: 'Mi crew', url: HUB_URL + '/cuenta/crew' }]);
     const a = await crewPerfil(env, t);
     if (!a) return aviso('<@' + t + '> todavía no está verificado: las crews son de los Miembros de Discord Rap Español.');
     const r = await crewAvisos(env, '/crew', { accion: 'invitar', quien: id, de, a });
@@ -2959,7 +2959,7 @@ async function crewComando(i, env, sub, op) {
     if (!r.invitado) return aviso('✅ <@' + t + '> ya había pedido entrar: entró a **' + mia.nombre + '**.');
     // (pública y con la mención: es la única forma de que le llegue sin un DM. `responderPanel` es siempre efímero)
     return publicoConMencion({
-      content: '👥 <@' + t + '>, **' + (await crewNombre(env, de)) + '** te invita a la crew **' + mia.nombre + '**. Tenés una semana.',
+      content: '👥 <@' + t + '>, **' + (await crewNombre(env, de)) + '** te invita a la crew **' + mia.nombre + '**. Tienes una semana.',
       allowed_mentions: { users: [t] },
       components: [{ type: 1, components: [
         { type: 2, style: ESTILO.PRIMARIO, label: 'Aceptar', custom_id: ('cw:si:' + mia.id + ':' + t).slice(0, 100) },
@@ -2983,7 +2983,7 @@ async function crewComando(i, env, sub, op) {
   if (sub === 'link') {
     if (!de) return aviso(ERRORES_CREW.verificate);
     const mia = crewDeK(todas, de);
-    if (!mia) return aviso('No estás en ninguna crew: armá la tuya en la página.', [{ type: 2, style: 5, label: 'Mi crew', url: HUB_URL + '/cuenta/crew' }]);
+    if (!mia) return aviso('No estás en ninguna crew: arma la tuya en la página.', [{ type: 2, style: 5, label: 'Mi crew', url: HUB_URL + '/cuenta/crew' }]);
     const max = [1, 5, 10, 0].includes(Number(op.para)) ? Number(op.para) : 1;
     const r = await crewAvisos(env, '/crew', { accion: 'link_crear', quien: id, de, max });
     if (!r.ok) return aviso(textoCrew(r));
@@ -2995,7 +2995,7 @@ async function crewComando(i, env, sub, op) {
   if (sub === 'salir') {
     const c = de ? crewDeK(todas, de) : null;
     if (!c) return aviso(ERRORES_CREW.sin_crew);
-    return aviso('¿Seguro que querés salir de **' + c.nombre + '**? Después esperás 7 días para entrar a otra.',
+    return aviso('¿Seguro que quieres salir de **' + c.nombre + '**? Después esperas 7 días para entrar a otra.',
       [{ type: 2, style: ESTILO.PELIGRO, label: 'Sí, salir', custom_id: 'cw:salir:x:' + id }]);
   }
   return aviso('No conozco esa opción.');
@@ -3007,12 +3007,12 @@ async function crewBoton(i, env, que, crew, dueno) {
   if (!dueno || id !== dueno) return aviso(que === 'salir' ? 'Ese botón es de otra persona.' : 'Esa invitación es para otra persona.');
   const esperar = frenado(id, 'click');
   if (esperar) return espera(esperar);
-  if (!env.AVISOS) return aviso('Ahora no puedo: probá en un rato.');
+  if (!env.AVISOS) return aviso('Ahora no puedo: prueba en un rato.');
   const de = await crewPerfil(env, id);
   if (que === 'salir') {
     const r = await crewAvisos(env, '/crew', { accion: 'salir', quien: id, de });
     if (!r.ok) return aviso(textoCrew(r));
-    return responderPanel(RESPONDE.ACTUALIZAR, { content: r.cerrada ? 'Listo: la crew se cerró.' : '👋 Saliste de la crew. En 7 días podés entrar a otra.', components: [] });
+    return responderPanel(RESPONDE.ACTUALIZAR, { content: r.cerrada ? 'Listo: la crew se cerró.' : '👋 Saliste de la crew. En 7 días puedes entrar a otra.', components: [] });
   }
   const r = await crewAvisos(env, '/crew', { accion: 'responder', quien: id, de, crew, si: que === 'si' });
   if (!r.ok) return aviso(textoCrew(r));
@@ -3041,7 +3041,7 @@ const COMANDOS = {
     const sv = aquiEs(i.guild_id);
     if (!sv) return aviso('`/agendar` funciona en los servidores de la Liga.');
     if (!(await esStaff(i, env))) return aviso('`/agendar` es para el staff y los organizadores del servidor.');
-    if (!env.AVISOS) return aviso('Ahora no puedo agendarlo: probá en un rato.');
+    if (!env.AVISOS) return aviso('Ahora no puedo agendarlo: prueba en un rato.');
     const op = Object.fromEntries(((i.data && i.data.options) || []).map((o) => [o.name, o.value]));
     const nombre = String(op.nombre || '').replace(/[`*_~|<>@]/g, '').trim().slice(0, 80);
     if (!nombre) return aviso('Falta el nombre del evento.');
@@ -3057,7 +3057,7 @@ const COMANDOS = {
     const z = ZONAS_AGENDA[String(op.pais || '')];
     if (!fm || +fm[1] < 1 || +fm[1] > 31 || +fm[2] < 1 || +fm[2] > 12) return aviso('El día va como **dd/mm**: `18/10`.');
     if (!hm || +hm[1] > 23 || (hm[2] && +hm[2] > 59)) return aviso('La hora va de **0 a 23**, como `20:00`.');
-    if (!z) return aviso('Elegí el país de esa hora.');
+    if (!z) return aviso('Elige el país de esa hora.');
     const ini = utcDeZona(+fm[1], +fm[2], +hm[1], +(hm[2] || 0), z);
     if (!ini || ini - Date.now() > 300 * 24 * 3600000) return aviso('Esa fecha ya pasó.');
     if (ini - Date.now() > 60 * 24 * 3600000) return aviso('Se puede agendar hasta dos meses adelante.');
@@ -3065,8 +3065,8 @@ const COMANDOS = {
       body: JSON.stringify({ sv, g: String(i.guild_id || ''), quien: idDe(i), nombre, ini,
         formato: String(op.formato || '').replace(/[`*_~|<>@]/g, '').slice(0, 30) }) });
     const d = await r.json().catch(() => ({}));
-    if (d.error === 'muchos') return aviso('Este servidor ya tiene 20 eventos agendados: borrá alguno con `borrar: True`.');
-    if (!d.ok) return aviso('Ahora no puedo agendarlo: probá en un rato.');
+    if (d.error === 'muchos') return aviso('Este servidor ya tiene 20 eventos agendados: borra alguno con `borrar: True`.');
+    if (!d.ok) return aviso('Ahora no puedo agendarlo: prueba en un rato.');
     const s = Math.floor(ini / 1000);
     const conTiempo = ini - Date.now() >= 12 * 3600000;
     return aviso('📅 Agendado: **' + nombre + '** · <t:' + s + ':F> (<t:' + s + ':R>; cada uno lo ve en su hora).\n' +
@@ -3085,7 +3085,7 @@ const COMANDOS = {
 
   async 'borrar-mis-datos'(i, env, ctx) {
     const id = idDe(i);
-    if (!id) return aviso('No pude saber quién sos.');
+    if (!id) return aviso('No pude saber quién eres.');
     return responderPanel(RESPONDE.MENSAJE, panelBaja(id));
   },
 
@@ -3117,23 +3117,23 @@ const COMANDOS = {
                      '`/verificar` te dice qué te falta.');
       }
       return aviso('Todavía no estás en la Liga, así que no hay carta donde ' +
-                   'poner la foto.\nProbá `/card` y te anoto.');
+                   'poner la foto.\nPrueba `/card` y te anoto.');
     }
     if (!hash) {
       // ⚠️ NO SE GUARDA EL BLOB GRIS. Discord da un avatar por defecto para
       // el que nunca se puso foto; guardarlo haría que la carta dibuje ese
       // gris en vez de la inicial gigante con el color del rango, que es
       // mejor carta.
-      return aviso('No tenés foto puesta en Discord — tu carta va con la ' +
+      return aviso('No tienes foto puesta en Discord — tu carta va con la ' +
                    'inicial, que con el color de tu rango queda bien.\n' +
-                   'Si te ponés una, volvé y corré `/foto`.');
+                   'Si te pones una, vuelve y corre `/foto`.');
     }
     // ⚠️ SI NO HAY BINDING DE R2 EL COMANDO NO PUEDE HACER NADA, y conviene
     // decirlo en vez de fallar adentro del `waitUntil` — ahí el error no lo
     // ve nadie y la persona se queda mirando «está pensando…».
     if (!env.CARTAS) {
       return aviso('El guardado de fotos todavía no está enchufado. ' +
-                   'Avisale a Dlx.');
+                   'Avísale a Dlx.');
     }
     // 🔴 MIENTRAS LA TEMPORADA NO ARRANCÓ, CAMBIAR LA CARA ES LIBRE.
     // Dlx, 22/09/2026: *«cuando el plazo está abierto no hay necesidad de
@@ -3307,7 +3307,7 @@ const COMANDOS = {
     const { estado, miembro } = await miembroDra(env, P.guild, yo);
     if (!miembro && estado !== 404) {
       return aviso('No pude mirar Discord Rap Español ahora mismo (contestó ' + estado +
-                   '). Probá de nuevo en un rato.');
+                   '). Prueba de nuevo en un rato.');
     }
     let dg = diagnostico(miembro, P);
     // 🔗 «B»: el botón de la página va siempre, también cuando no te falta nada: ahí se ve cómo va
@@ -3324,20 +3324,20 @@ const COMANDOS = {
                    'no te encuentro.\n\n' + lista + '\n\n' + v.texto, v.botones);
     }
     if (dg.paises.length > 1) {
-      return aviso(lista + '\n\nTenés **' + dg.paises.length + ' países** en DRA (' +
-                   dg.paises.map(emojiBandera).join(' ') + '): dejá uno solo y volvé a ' +
+      return aviso(lista + '\n\nTienes **' + dg.paises.length + ' países** en DRA (' +
+                   dg.paises.map(emojiBandera).join(' ') + '): deja uno solo y vuelve a ' +
                    'escribir `/verificar`.', aLaPagina);
     }
     if (!unPais) {
       // 🔑 y desde el 01/10/2026 se elige en la página: el bot te pone el rol
-      return aviso(lista + '\n\nNo encuentro tu **país** en DRA. Elegilo en la página y el ' +
-                   'bot te pone el rol 👇 (o elegí tu rol de país en DRA, o poné tu bandera ' +
-                   'en el apodo, y volvé a escribir `/verificar`).', v.botones);
+      return aviso(lista + '\n\nNo encuentro tu **país** en DRA. Elígelo en la página y el ' +
+                   'bot te pone el rol 👇 (o elige tu rol de país en DRA, o pon tu bandera ' +
+                   'en el apodo, y vuelve a escribir `/verificar`).', v.botones);
     }
     // las reglas de DRA sin aceptar: Discord no deja darle roles a quien no entró del todo
     if (miembro && miembro.pending === true) {
       return aviso(lista + '\n\nTe falta **aceptar las reglas de DRA**: Discord te las muestra al abrir el ' +
-                   'servidor, es un toque. Después volvé a escribir `/verificar`.', aLaPagina);
+                   'servidor, es un toque. Después vuelve a escribir `/verificar`.', aLaPagina);
     }
     if ((P.revisa || []).indexOf(String(yo)) >= 0) {
       return aviso(lista + '\n\nLo tuyo está completo. Tu caso lo revisa un admin: no ' +
@@ -3371,7 +3371,7 @@ const COMANDOS = {
     if (i.guild_id) {
       const cfg = await ajustes(env, i.guild_id);
       if (cfg.canales.length && cfg.canales.indexOf(i.channel_id) < 0) {
-        return aviso('Acá no se pueden pedir cartas. Probá en ' +
+        return aviso('Acá no se pueden pedir cartas. Prueba en ' +
                      cfg.canales.map(c => `<#${c}>`).join(' · ') + '.');
       }
     }
@@ -3409,7 +3409,7 @@ const COMANDOS = {
       comoDije = `**${porNombre.value}**`;
     } else {
       quien = await quienEsCarta(i, env);
-      comoDije = 'vos';
+      comoDije = 'tú';
       if (!quien) {
         // El caso de la captura de Lil Drako: corrió /card, el bot no lo tenía.
         // Se lo anota con su ID y su apodo del servidor para que no se pierda.
@@ -3509,15 +3509,15 @@ const COMANDOS = {
     const sinCs = !Array.isArray(g.cs);
     const algunaCarta = sinCs || g.cs.length || (g.bl && g.bl.length);
     if (!algunaCarta) {
-      return aviso(`${comoDije === 'vos' ? 'Ya estás' : comoDije + ' ya está'}` +
+      return aviso(`${comoDije === 'tú' ? 'Ya estás' : comoDije + ' ya está'}` +
                    ' en la Liga ✅ — pero las cartas todavía no están ' +
                    'dibujadas.\nSe generan solas en la próxima vuelta del ' +
-                   'ciclo; probá de nuevo en un rato.');
+                   'ciclo; prueba de nuevo en un rato.');
     }
     const abre = ((g.cs || []).indexOf('competitivo') >= 0)
       ? 'competitivo' : 'servidor';
     // 📸 tu carta sin tu foto: un aviso que ves sólo vos (ver `avisoFoto()`)
-    if (comoDije === 'vos' || (porUsuario && String(porUsuario.value) === String(idDe(i)))) {
+    if (comoDije === 'tú' || (porUsuario && String(porUsuario.value) === String(idDe(i)))) {
       luego(ctx, avisoFoto(env, i, quien, g));
     }
     return responder(RESPONDE.MENSAJE,
@@ -3530,7 +3530,7 @@ const COMANDOS = {
     if (i.guild_id) {
       const cfg = await ajustes(env, i.guild_id);
       if (cfg.canales.length && cfg.canales.indexOf(i.channel_id) < 0) {
-        return aviso('Acá no se pueden pedir cartas. Probá en ' +
+        return aviso('Acá no se pueden pedir cartas. Prueba en ' +
                      cfg.canales.map(c => `<#${c}>`).join(' · ') + '.');
       }
     }
@@ -3558,7 +3558,7 @@ const COMANDOS = {
     // ⚠️ `contra` ES OPCIONAL Y POR DEFECTO SOS VOS. Que se pueda enfrentar a
     // dos terceros no es un lujo: la mitad de los usos son de un organizador
     // armando un cruce entre otras dos personas.
-    const mio = pedido || { clave: await quienEsCarta(i, env), como: 'vos' };
+    const mio = pedido || { clave: await quienEsCarta(i, env), como: 'tú' };
     if (!mio.clave) {
       if (!pedido) {
         const d = datosDe(i, idDe(i));
@@ -3608,7 +3608,7 @@ const COMANDOS = {
           ? `${q.como} todavía no desbloqueó la **${et}** — le falta competir.`
           // 🔑 las LIBRES: no le falta competir, le falta verificarse
           : sinVerificar(g, cual)
-            ? (q.como === 'vos' ? 'Vos todavía no te verificaste' : `${q.como} todavía no se verificó`) +
+            ? (q.como === 'tú' ? 'Tú todavía no te verificaste' : `${q.como} todavía no se verificó`) +
               ` en DRA, y ${laDe(cual)} es de los verificados.`
           : `${q.como} no tiene carta de **${et}**.`).join('\n') +
         (juntas.length
@@ -3620,7 +3620,7 @@ const COMANDOS = {
     if (cual === 'servidor' && !svDeAmbos(ga, gb, aqui, m)) {
       return aviso(`${mio.como} y ${rival.como} no comparten ningún servidor, ` +
                    'así que las dos cartas saldrían de lugares distintos.\n' +
-                   'Probá con otra categoría.');
+                   'Prueba con otra categoría.');
     }
     return responderTexto(RESPONDE.MENSAJE,
       versus(mio.clave, ga, rival.clave, gb, cual, idDe(i), m, aqui));
@@ -3633,7 +3633,7 @@ const COMANDOS = {
   // cambió mientras tanto lo corrige la próxima corrida del sincronizador.
   async settings(i, env, ctx) {
     const gid = i.guild_id;
-    if (!gid) return aviso('`/settings` va **adentro del servidor** que querés configurar.');
+    if (!gid) return aviso('`/settings` va **adentro del servidor** que quieres configurar.');
     if (!puedeAjustar(i)) {
       return aviso('Esto lo manejan los **admins** del servidor (o quien tenga ' +
                    '*Gestionar roles*).\n' +
@@ -3655,7 +3655,7 @@ const COMANDOS = {
     const uid = idDe(i);
     if (!gid) {
       return aviso('Este comando va **adentro de un servidor**: la preferencia es ' +
-                   'de cada uno por separado, así que podés llevar el puesto en ' +
+                   'de cada uno por separado, así que puedes llevar el puesto en ' +
                    'DRA y no en FFA.');
     }
     const sv = aquiEs(gid) || 'este servidor';
@@ -3679,8 +3679,8 @@ const COMANDOS = {
         quite = r === 'ok' ? '\nTe saqué el número viejo del apodo.' : '';
       }
       return aviso('El **#** del apodo es tu puesto en el **Ranking Competitivo**, y ahí se entra ' +
-                   'con **10 eventos** en la temporada. Todavía no tenés número: cuando entres, ' +
-                   'aparece solo (y con `/numeral` lo podés esconder).' + quite);
+                   'con **10 eventos** en la temporada. Todavía no tienes número: cuando entres, ' +
+                   'aparece solo (y con `/numeral` lo puedes esconder).' + quite);
     }
     const [mio, cfg] = await Promise.all([eleccionNick(env, gid, uid), ajustes(env, gid)]);
     // lo que rige hoy: lo tuyo si elegiste, si no lo del servidor
@@ -3689,7 +3689,7 @@ const COMANDOS = {
     const op = ((i.data && i.data.options) || []).find(o => o.name === 'mostrar');
     if (!op) {
       const porque = mio
-        ? 'porque **vos** lo elegiste — le gana a lo que diga el servidor.'
+        ? 'porque **tú** lo elegiste — le gana a lo que diga el servidor.'
         : `porque es lo que tiene puesto el servidor (nadie lo cambió a mano).`;
       return aviso(`En **${sv}** tu puesto está **${ahoraOn ? 'a la vista' : 'oculto'}**, ` +
                    porque + '\nPara cambiarlo: `/numeral mostrar:True` o ' +
@@ -3726,7 +3726,7 @@ const COMANDOS = {
       }));
     } catch (e) {
       return aviso('No pude guardar tu elección (`' + String(e).slice(0, 60) +
-                   '`), así que no te toqué el apodo. Probá de nuevo en un rato.');
+                   '`), así que no te toqué el apodo. Prueba de nuevo en un rato.');
     }
 
     if (yaEraMio && destino === actual) {
@@ -3747,8 +3747,8 @@ const COMANDOS = {
       return aviso(`Anotado: en **${sv}** tu puesto **${que}**.\n` +
                    `Tu apodo va a quedar \`${destino || '(sin apodo)'}\`.\n` +
                    '⏳ Se aplica en la próxima sincronización — el bot no cambia ' +
-                   'apodos por sí mismo, a propósito. Si no querés esperar, ' +
-                   'ponételo vos.');
+                   'apodos por sí mismo, a propósito. Si no quieres esperar, ' +
+                   'ponételo tú.');
     }
     // ⚠️ LA PREFERENCIA QUEDA GUARDADA AUNQUE EL APODO FALLE, y eso es lo que
     // se quiere: al dueño del servidor y a quien tenga un rol más alto que el
@@ -3756,8 +3756,8 @@ const COMANDOS = {
     // descartara la preferencia, esa persona no podría elegir jamás.
     return aviso(`Anotado: en **${sv}** tu puesto **${que}**.\n` +
                  `⚠️ Pero no pude cambiarte el apodo (\`${res}\`). Suele ser porque ` +
-                 'sos el dueño del servidor o tenés un rol más alto que el del bot: ' +
-                 `ponelo a mano como \`${destino || '(sin el #)'}\`.`);
+                 'eres el dueño del servidor o tienes un rol más alto que el del bot: ' +
+                 `ponlo a mano como \`${destino || '(sin el #)'}\`.`);
   },
 };
 
@@ -4352,7 +4352,7 @@ export default {
         // ⚠️ UNA lectura de KV y un template. Nada más entra en 10 ms.
         const crudo = await env.KV.get('web:lobby');
         if (!crudo) {
-          return new Response('El lobby todavía no se armó. Corré `bot/subir_web.py --aplicar`.',
+          return new Response('El lobby todavía no se armó. Corre `bot/subir_web.py --aplicar`.',
             { status: 503, headers: { 'content-type': 'text/plain; charset=utf-8' } });
         }
         // 🔑 `?json=1` DEVUELVE EL PAYLOAD CRUDO, sin dibujar nada. Es lo
@@ -4443,7 +4443,7 @@ export default {
         const esperarQg = frenado(idDe(i), 'click');
         if (esperarQg) return espera(esperarQg);
         const did = idDe(i);
-        if (!did) return aviso('No pude saber quién sos: probá de nuevo.');
+        if (!did) return aviso('No pude saber quién sos: prueba de nuevo.');
         let j = {};
         try {
           const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/qg-votar', {
@@ -4460,7 +4460,7 @@ export default {
             + pct + ' % de ' + n + (n === 1 ? ' voto' : ' votos') + '. En el mensaje se ve en un minuto.');
         }
         return aviso('🗳️ ' + ({ cerrada: 'Ese voto ya cerró: la batalla se jugó.', 'no existe': 'Ese voto ya no existe.' }[j.error]
-          || 'No pude anotar tu voto: probá de nuevo.'));
+          || 'No pude anotar tu voto: prueba de nuevo.'));
       }
 
       // ── 🎲 Una apuesta en vivo (07/10/2026, el nivel «A full» del bot en vivo) ──────────
@@ -4472,7 +4472,7 @@ export default {
         const did = idDe(i);
         let cfg = null;
         try { cfg = JSON.parse((await env.KV.get('precios', { cacheTtl: 60 })) || 'null'); } catch (e) { cfg = null; }
-        if (!did || !cfg || !Number.isInteger(cfg.inicial)) return aviso('Las apuestas todavía no están listas: probá en un rato.');
+        if (!did || !cfg || !Number.isInteger(cfg.inicial)) return aviso('Las apuestas todavía no están listas: prueba en un rato.');
         let clave = '';
         try { clave = (await claveCarta(env, did)) || ''; } catch (e) { clave = ''; }
         let j = {};
@@ -4493,12 +4493,12 @@ export default {
         const por = {
           cerrada: 'Las apuestas de esa batalla ya cerraron.',
           'no existe': 'Esa apuesta ya no existe.',
-          propia: 'No podés apostar en tu propia batalla.',
+          propia: 'No puedes apostar en tu propia batalla.',
           'otro lado': `Ya apostaste a **${j.nombre || 'el otro'}**: en una batalla se apuesta a un solo lado.`,
           tope: `El tope es ${mil(j.tope || 500)} por batalla: te quedan ${mil(j.queda)}.`,
-          saldo: `No te alcanza: tenés ${mil(j.saldo)} Puntos de Tienda.`,
+          saldo: `No te alcanza: tienes ${mil(j.saldo)} Puntos de Tienda.`,
         };
-        return aviso('🎲 ' + (por[j.error] || 'No pude anotar la apuesta: probá de nuevo.'));
+        return aviso('🎲 ' + (por[j.error] || 'No pude anotar la apuesta: prueba de nuevo.'));
       }
 
       // ── 🏁 Lo que el lector no entendió de una llave (12/10/2026) ───────
@@ -4531,7 +4531,7 @@ export default {
             } else if (!menu && c.custom_id === id) nombre = String(c.label || '');
           }
         }
-        if (!/^\d{1,2}$/.test(nro) || !/^[a-z]$/.test(v) || !nombre) return aviso('No encontré esa opción: probá de nuevo.');
+        if (!/^\d{1,2}$/.test(nro) || !/^[a-z]$/.test(v) || !nombre) return aviso('No encontré esa opción: prueba de nuevo.');
         let j = {};
         try {
           const r = await env.AVISOS.get(env.AVISOS.idFromName('liga')).fetch('https://avisos/final', {
@@ -4540,7 +4540,7 @@ export default {
           });
           j = await r.json();
         } catch (e) { j = { error: 'red' }; }
-        if (!j.ok && !j.ya) return aviso('No pude anotarlo: probá de nuevo en un rato.');
+        if (!j.ok && !j.ya) return aviso('No pude anotarlo: prueba de nuevo en un rato.');
         const quedan = filas.filter((f) => !(f.components || []).some((c) => c.custom_id === id
           || (!menu && String(c.custom_id || '').startsWith(`dud:${quien}:${extra}:${nro}:`))));
         const linea = `✅ ${cual ? cual + ' → ' : ''}**${j.ya || nombre}** — lo marcó <@${j.quien || did}>.`;
@@ -4568,7 +4568,7 @@ export default {
       if (que === 'cfg') {
         if (!i.guild_id) return aviso('Esto va adentro de un servidor.');
         if (!puedeAjustar(i)) {
-          return aviso('Ya no tenés permiso para tocar los ajustes del servidor.');
+          return aviso('Ya no tienes permiso para tocar los ajustes del servidor.');
         }
         const esperarA = frenado(idDe(i), 'ajuste');
         if (esperarA) return espera(esperarA);
@@ -4595,7 +4595,7 @@ export default {
           if (JSON.stringify(cfg) !== antesCfg) await env.KV.put(claveCfg(i.guild_id), JSON.stringify(cfg));
         } catch (e) {
           return aviso('No pude guardar el ajuste (`' + String(e).slice(0, 60) +
-                       '`): quedó como estaba. Probá de nuevo en un rato.');
+                       '`): quedó como estaba. Prueba de nuevo en un rato.');
         }
         // ⚠️ SE REDIBUJA EL MISMO MENSAJE (tipo 7), no se manda uno nuevo. Un
         // panel que deja un mensaje por click convierte tres ajustes en tres
@@ -4622,7 +4622,7 @@ export default {
           h = await borrarMisDatos(env, dueno);
         } catch (e) {
           return responderPanel(RESPONDE.ACTUALIZAR, { content: 'No pude terminar de ' +
-            'borrar (`' + String(e).slice(0, 60) + '`). Probá de nuevo en un rato: lo ' +
+            'borrar (`' + String(e).slice(0, 60) + '`). Prueba de nuevo en un rato: lo ' +
             'que ya se borró no vuelve.', components: [] });
         }
         return responderPanel(RESPONDE.ACTUALIZAR, {
@@ -4657,7 +4657,7 @@ export default {
         const rival = id.split(':')[4] || '';
         if (dueno && idDe(i) !== dueno) {
           return aviso('Ese versus lo pidió otra persona.\n' +
-                       'Tirá `/versus` y tenés el tuyo, con tus propios botones.');
+                       'Tira `/versus` y tienes el tuyo, con tus propios botones.');
         }
         const esperar2 = frenado(idDe(i), 'click');
         if (esperar2) return espera(esperar2);
@@ -4674,7 +4674,7 @@ export default {
         // apretando. Sin esto devolvería un hueco, que Discord no avisa.
         if (!tieneReal(ga, extra) || !tieneReal(gb, extra)) {
           return aviso('Uno de los dos ya no tiene esa carta desbloqueada.\n' +
-                       'Tirá `/versus` de nuevo y te salen las que tienen los dos.');
+                       'Tira `/versus` de nuevo y te salen las que tienen los dos.');
         }
         if (extra === 'servidor' && !svDeAmbos(ga, gb, aqui, m)) {
           return aviso('Ya no comparten ningún servidor, así que las dos cartas ' +
@@ -4693,7 +4693,7 @@ export default {
       // cualquiera te cambia la carta delante de todos.
       if (dueno && idDe(i) !== dueno) {
         return aviso('Esa carta la pidió otra persona.\n' +
-                     'Tirá `/card` y tenés la tuya, con tus propios botones.');
+                     'Tira `/card` y tienes la tuya, con tus propios botones.');
       }
       // ⚠️ El freno del click va DESPUÉS del dueño: si fuera antes, el que
       // machaca botones ajenos gastaría las ranuras del dueño.
@@ -4722,7 +4722,7 @@ export default {
       if (vencida(i, Date.now())) {
         const cual = cartaEnPantalla(i) || extra;
         luego(ctx, seguir(i, 'Esa carta ya estaba quieta hace rato, así que le ' +
-          'apagué los botones.\nTirá `/card` y tenés una nueva.'));
+          'apagué los botones.\nTira `/card` y tienes una nueva.'));
         return responder(RESPONDE.ACTUALIZAR,
           carta(quien, g, cual, svEnPantalla(i), dueno, m, aqui, true));
       }
@@ -4752,7 +4752,7 @@ export default {
         // botón de ayer sigue apretándose. Sin esto, devolvería un hueco.
         if (!tiene(g, extra)) {
           return aviso(`${g.n || quien} no tiene carta de **${extra}**.\n` +
-                       'Tirá `/card` de nuevo y te salen las que sí tiene.');
+                       'Tira `/card` de nuevo y te salen las que sí tiene.');
         }
         return responder(RESPONDE.ACTUALIZAR,
           carta(quien, g, extra, null, dueno, m, aqui));
@@ -4788,7 +4788,7 @@ export default {
                        inv.botones);
         }
         return aviso(esMia
-          ? `Todavía no tengo tu carta de **${sv}**: la estoy generando. Probá en un rato.`
+          ? `Todavía no tengo tu carta de **${sv}**: la estoy generando. Prueba en un rato.`
           : `**${suyo}** no tiene carta de **${sv}** 🔒`);
       }
       const inv = esMia ? invitaSi(g, sv, aqui, m) : null;
