@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.79",
+   "dia": "2026-10-20",
+   "cuando": "2026-10-20T15:21:00-04:00",
+   "titulo": "«Tu cuenta», también en la compu",
+   "items": [
+    "🖥️ **La página se llama «Tu cuenta»** (antes «Vos») y en la compu también lleva el orden nuevo: tu tarjeta de identidad y el menú en cajas a la izquierda, tus opciones a la derecha."
+   ]
+  },
+  {
    "version": "3.78",
    "dia": "2026-10-20",
    "cuando": "2026-10-20T00:18:00-04:00",

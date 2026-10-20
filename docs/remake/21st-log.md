@@ -51,3 +51,10 @@ búsquedas, vacías). **Temas**: nada por «dark neon magenta» (y ya tenemos pa
 - Lo que se había tomado de 21st para la maqueta de «Vos» (Profile Card + Settings Sidebar como lista de teléfono)
   pasó a `css/cuenta.css`: tarjeta de identidad con borde de color y línea de estado, filas en cajas con cuadradito de
   ícono. Sin búsquedas nuevas: es la maqueta del 19/10 aplicada.
+
+## 20/10/2026 · «Tu cuenta» en la compu (3.79), y la regla de los dos anchos
+
+- La maqueta de «Vos» era sólo de teléfono y la compu quedó con la vista vieja; Dlx: «make sure all these page
+  redesigns are also for the PC». Desde acá **cada maqueta trae su versión de compu** y se mide en los dos anchos.
+- En la compu, el «Settings Sidebar» de 21st es literal: la lista en cajas a la izquierda es el menú; las tarjetas a
+  la derecha en dos columnas (lo que Dlx pidió el 02/10). La página pasa a llamarse «Tu cuenta».
