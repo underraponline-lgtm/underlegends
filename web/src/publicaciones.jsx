@@ -9,7 +9,7 @@
 // publicación —eran 46 de 80 renglones—, y Felicitar va sólo en los logros de verdad (campeón, rango, Most Wanted).
 import { Fragment, useMemo, useState } from 'react';
 import { MESES, ksDe, limpio, num, siglaDe } from './liga.js';
-import { Cara, Carta, Ico, accion, promoAbierta, useCampana } from './piezas.jsx';
+import { Cara, Carta, Ico, Vacio, accion, promoAbierta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { Elegido, X2 } from './encuestas.jsx';
 
@@ -392,8 +392,11 @@ export function Publicaciones({ liga, enc }) {
             </Fragment>
           )) : (
             <>
-              <p className="pub-tx pub-nada">{fil === 'sigo' ? 'Nada todavía de la gente que seguís: cuando ganen, suban de rango o saquen carta, aparece acá.'
-                : 'Todavía no pasó nada. Cuando se juegue el primer evento, aparece acá solo.'}</p>
+              {fil === 'sigo'
+                ? <Vacio titulo="Nada todavía de la gente que seguís" texto="Cuando ganen, suban de rango o saquen carta, aparece acá."
+                  acciones={[['Ver el ranking y seguir a alguien', '#/ranking'], ['Ver todo', () => { setFil(''); setVer(40); }, 'borde2']]} />
+                : <Vacio titulo="Todavía no pasó nada" texto="Cuando se juegue el primer evento, aparece acá solo."
+                  acciones={[['Ver los eventos', '#/eventos']]} />}
               {!votaste ? encs : null}
             </>
           )}

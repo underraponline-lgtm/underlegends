@@ -17,7 +17,7 @@
 // cada crew del objeto (crews.js), y la letra, el país y el último evento de cada uno, de la tabla de la temporada.
 import { useMemo, useState } from 'react';
 import { limpio, norm, num } from './liga.js';
-import { Bandera, Cara, accion } from './piezas.jsx';
+import { Bandera, Cara, ConMas, Vacio, accion } from './piezas.jsx';
 import { CrewCirculo } from './arriba.jsx';
 import { accionCrew, armarCrews as armar, errorCrew, useCrews } from './crews.js';
 import { CrearCrew, SemanaCrew, TierChip } from './crewpanel.jsx';
@@ -110,11 +110,14 @@ export function CrewsPagina({ liga, dc, qs }) {
             </label>
           </div>
           <nav className="pub-fil crw-fil" aria-label="Qué crews ver">
-            {filtros.map(([v, t]) => <button type="button" key={v || 'todas'} className={fil === v ? 'on' : ''} aria-pressed={fil === v} onClick={() => setFil(v)}>{t}</button>)}
+            <ConMas max={4}>
+              {filtros.map(([v, t]) => <button type="button" key={v || 'todas'} className={fil === v ? 'on' : ''} aria-pressed={fil === v} onClick={() => setFil(v)}>{t}</button>)}
+            </ConMas>
           </nav>
           {!todas ? <p className="pub-tx">Cargando las crews…</p>
             : lista.length ? <ul className="crw-lista">{lista.map((x) => <li key={x.c.id}><Ficha liga={liga} x={x} T={T} dc={dc} mia={mia} /></li>)}</ul>
-              : <p className="pub-tx">Ninguna crew con eso. Probá con otro filtro{dc ? ', o armá la tuya' : ''}.</p>}
+              : <Vacio titulo="Ninguna crew con eso" texto={nq ? 'No hay ninguna crew con «' + q.trim() + '» en el nombre o la sigla.' : 'Con ese filtro no queda ninguna.'}
+                acciones={[['Ver todas', () => { setQ(''); setFil(''); }, 'borde2']].concat(buscando ? [['Armar la mía', () => { setQ(''); setFil(''); setAbierto(true); window.scrollTo({ top: 0, behavior: 'smooth' }); }]] : [])} />}
           <p className="crw-rk"><a className="te-link" href="#/ranking/crews">Ver el ranking de crews de la temporada</a></p>
         </main>
         <aside className="pub-der crw-der">

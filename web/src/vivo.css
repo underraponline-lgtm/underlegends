@@ -3418,3 +3418,10 @@ a.rk-z:hover{border-color:var(--linea)}
   animation:vivo-late 1.4s ease-in-out infinite}
 @keyframes vivo-late{0%,100%{opacity:.35;transform:scale(.75)}50%{opacity:1;transform:scale(1)}}
 @media (prefers-reduced-motion:reduce){.vivo-late::before{animation:none}}
+
+/* ➕ «+N más» en una fila de filtros, y 🫙 el vacío con qué hacer (19/10/2026) */
+.pub-fil .mas-b{opacity:.85}
+.vacio-c{display:grid;gap:8px;justify-items:start;padding:18px 16px;border:1.5px dashed var(--linea);background:var(--caja)}
+.vacio-c b{font:900 17px/1.15 Archivo,sans-serif}
+.vacio-c p{margin:0;max-width:56ch;color:var(--gris);font:500 14.5px/1.45 Archivo,sans-serif}
+.vacio-acc{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}

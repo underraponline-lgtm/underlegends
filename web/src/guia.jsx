@@ -9,7 +9,7 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
 import TAGS from './tags_catalogo.json';
 import { num } from './liga.js';
-import { Carta, Medalla, PUESTO_MEDALLA } from './piezas.jsx';
+import { Carta, ConMas, Medalla, PUESTO_MEDALLA } from './piezas.jsx';
 import * as RQ from './requisitos.js';
 import CSS_PAGINA from './css/guia.css?inline';
 import { usarCss } from './css.js';
@@ -185,7 +185,9 @@ export function Guia({ liga, dc }) {
         </section>
       </div>
       <nav className="pub-fil gu-fil" aria-label="Secciones de la Guía">
-        {SECCIONES.map(([id, t]) => <button type="button" key={id} onClick={() => ir(id)}>{t}</button>)}
+        <ConMas max={5}>
+          {SECCIONES.map(([id, t]) => <button type="button" key={id} onClick={() => ir(id)}>{t}</button>)}
+        </ConMas>
       </nav>
       <div className="gu-cuerpo">
         {/* 🧭 los pasos se tildan solos (Dlx, 12/10/2026, el tutorial: «A pero que no sea necesariamente con jugar»):

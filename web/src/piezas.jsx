@@ -1,6 +1,6 @@
 // Las piezas chicas del Inicio: íconos, cartas, caras, rangos, banderas, secciones y las secciones con pestañas.
 // Las clases son las del prototipo (docs/remake/reales.py): su CSS se genera de ahí (web/css_del_prototipo.py).
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Children, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { PAIS, limpio, num } from './liga.js';
 import * as RQ from './requisitos.js';
 
@@ -300,6 +300,39 @@ export const nombrePais = (cc) => PAIS[cc] || String(cc || '').toUpperCase();
 // 🙋 LOS ANOTADOS DE UN EVENTO, ANTES DE LA LLAVE (03/10/2026, Dlx: «Me gusta tu A»): «12 anotados» con las caras y, al
 // tocar, quiénes. Va en la tarjeta del evento —el Próximo del Inicio y Eventos— hasta que aparece la llave, que lo
 // reemplaza. Sin anotados, no se dibuja (`liga.anotados()`)
+// ➕ «+N MÁS» EN UNA FILA DE FICHAS (Dlx, 19/10/2026, «me gustan todas», a «Chip Group» de 21st): una fila de filtros
+// que se envuelve en tres renglones en el celular muestra los primeros `max` y un «+N más» que abre el resto. Si el
+// elegido (`className` con `on`) quedó escondido, se abre solo: nunca un filtro activo invisible
+export function ConMas({ max = 4, children }) {
+  const [abierto, setAbierto] = useState(false);
+  const todos = Children.toArray(children).filter(Boolean);
+  const activoEscondido = todos.slice(max).some((c) => c && c.props && /\bon\b/.test(String(c.props.className || '')));
+  if (todos.length <= max + 1 || abierto || activoEscondido) return <>{todos}</>;
+  return (
+    <>
+      {todos.slice(0, max)}
+      <button type="button" className="mas-b" onClick={() => setAbierto(true)} aria-label={'Ver ' + (todos.length - max) + ' filtros más'}>
+        +{todos.length - max} más</button>
+    </>
+  );
+}
+
+// 🫙 UN VACÍO CON QUÉ HACER (Dlx, 19/10/2026, «me gustan todas», a «Empty» de 21st): en vez de una línea gris, qué pasó y
+// uno o dos botones para salir de ahí. `acciones`: `[[texto, href o función, clase?]]`
+export function Vacio({ titulo, texto, acciones = [] }) {
+  return (
+    <div className="vacio-c" role="status">
+      {titulo ? <b>{titulo}</b> : null}
+      {texto ? <p>{texto}</p> : null}
+      {acciones.length ? (
+        <div className="vacio-acc">{acciones.map(([t, a, cls]) => (typeof a === 'function'
+          ? <button key={t} type="button" className={'btn chico ' + (cls || 'verde')} onClick={a}>{t}</button>
+          : <a key={t} className={'btn chico ' + (cls || 'verde')} href={a}>{t}</a>))}</div>
+      ) : null}
+    </div>
+  );
+}
+
 export function Anotados({ liga, e }) {
   const [ver, setVer] = useState(false);
   const l = liga.anotados(e);
