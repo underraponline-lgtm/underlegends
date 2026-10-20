@@ -281,7 +281,7 @@ if (!DatabaseSync) {
   const sol = yo(200, 'sol', { accion: 'crear', nombre: 'Solos', sigla: 'SL', entrada: 'abierta' });
   const pubSol = () => CW.crewsPublico(o).crews.find((c) => c.id === 'Solos');
   ok(sol.ok && Math.abs(sol.vence - (t0 + CW.PRUEBA_MS)) < 5000 && pubSol().vence === sol.vence
-    && bandeja.some((b) => b.quien === id(200) && b.titulo === '⏳ Solos: tenés una semana'),
+    && bandeja.some((b) => b.quien === id(200) && b.titulo === '⏳ Solos: tienes una semana'),
   'una crew nueva nace con una semana, y al Líder le llega al crearla');
   ok(CW.crewsPublico(o).crews.filter((c) => c.oficial).every((c) => c.vence === 0), 'las de la Liga no tienen semana');
   const cuenta = (t) => bandeja.filter((b) => b.quien === id(200) && b.titulo === t).length;
@@ -340,7 +340,7 @@ if (!DatabaseSync) {
     && vr.anunciar.find((x) => x.k === 'vlid').id === '8000000001' && vr.anunciar.find((x) => x.k === 'vlid').crew === 'Viejas',
   'marca a los que no están verificados, con lo que hace falta para mencionarlos');
   ok(g('Viejas', 'vok1')[1] === 'lider' && g('Viejas', 'vlid')[1] === 'colider' && g('Viejas', 'vlid')[3] === tv + CW.PEND_MS
-    && g('Viejas', 'vok1').length === 3 && bandeja.some((b) => b.quien === id(900) && b.titulo === '👑 Ahora sos Líder de Viejas'),
+    && g('Viejas', 'vok1').length === 3 && bandeja.some((b) => b.quien === id(900) && b.titulo === '👑 Ahora eres Líder de Viejas'),
   'el Líder sin verificar pasa a Colíder, manda el primer verificado (y le llega), y lo público dice hasta cuándo');
   ok(g('Nadie', 'n1')[1] === 'lider', 'sin nadie verificado, la crew queda como está');
   ok(pubC('Viejas').fund === '' && CW.crewsPublico(o).crews.filter((c) => !c.oficial && c.gente.length).every((c) => c.fund),

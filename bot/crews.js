@@ -562,7 +562,7 @@ export function crewAccion(o, d) {
   const quien = String(d.quien || ''), k = String(d.de || '');
   const ahora = Date.now();
   if (!/^[0-9]{5,25}$/.test(quien)) return mal('faltan datos');
-  if (!k) return mal('verifícate', 403);
+  if (!k) return mal('verificate', 403);
   crewVencer(o, ahora);
   const yo = miembroDe(o, k);
   const c = yo ? crewDe(o, yo.crew) : null;
@@ -878,7 +878,7 @@ export function chequeoCrear(o, d) {
   const quien = String(d.quien || ''), k = String(d.de || '');
   const ahora = Date.now();
   if (!/^[0-9]{5,25}$/.test(quien)) return mal('faltan datos');
-  if (!k) return mal('verifícate', 403);
+  if (!k) return mal('verificate', 403);
   if (miembroDe(o, k)) return mal('ya_en_crew', 409);
   const e = espera(o, k, ahora);
   if (e) return mal('espera', 409, { faltan_ms: e });

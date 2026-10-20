@@ -71,7 +71,8 @@ ok(r4.ok && r4.logo === 'revisar' && pub().find((c) => c.id === 'Dudosa').logo =
   'lo dudoso: la crew se crea y el logo espera revisión');
 respuestaIA = 'SEXUAL=no GORE=no VIOLENCE=no HATE=no DRUGS=no PERSONAL=no';
 const viejo = pub().find((c) => c.id === 'Primera').logo.split('.r2.dev/')[1];
-const r5 = await yo.crewConImagen({ quien: String(7000000001), de: 'ana', accion: 'logo', img: PNG });
+// 💰 cambiar el logo cuesta (`precio_logo`), así que lleva el saldo como `crear`: sin `inicial` contesta «todavía»
+const r5 = await yo.crewConImagen({ quien: String(7000000001), de: 'ana', accion: 'logo', img: PNG, inicial: 5000, desde: 0 });
 ok(r5.ok && borrados.includes(viejo) && !r2.has(viejo) && r2.size === 2 && r5.viejos === undefined,
   'cambiar el logo borra el viejo de R2 (y no le devuelve URLs a la página)');
 ok((await yo.crewConImagen({ quien: String(7000000009), de: 'zoe', accion: 'logo', img: PNG })).error === 'sin_crew', 'sin crew, no hay logo que cambiar');

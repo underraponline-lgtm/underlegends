@@ -297,7 +297,7 @@ if (!DatabaseSync) {
   AR.componente(inter(OTRO, { data: { custom_id: 'ar:x:ok:' + G + '::' + OTRO },
     message: { embeds: [{ description: 'x' }], components: [{ type: 1, components: [{ custom_id: 'ar:x:ok:' + G + '::' + OTRO }] }] } }), env, {}, h);
   await Promise.all(promesas.splice(0));
-  ok(/habla de vos/.test(aparteDe().pop() || ''), 'la cuenta de la que habla el aviso no lo puede contestar (si no, apagaba AUTOMÁTICO)');
+  ok(/habla de ti/.test(aparteDe().pop() || ''), 'la cuenta de la que habla el aviso no lo puede contestar (si no, apagaba AUTOMÁTICO)');
   const msgOk = { embeds: [{ description: 'aviso' }], components: [{ type: 1, components: [
     { custom_id: 'ar:x:devolver:' + G + ':900000000000000009' }, { custom_id: 'ar:x:ok:' + G }] }] };
   AR.componente(inter(DUENO_G, { data: { custom_id: 'ar:x:ok:' + G }, message: msgOk }), env, {}, h);
