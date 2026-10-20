@@ -420,9 +420,88 @@ async function vistaServidor(req, env, x, url) {
   return new Response(out.body, { status: 200, headers: h });
 }
 
+// 🖼️ LA VISTA PREVIA DE CADA PÁGINA (Dlx, 19/10/2026, con el link de /crews pegado en Discord y el cartel de la Liga
+// abajo: «quiero que cada página como la de crews tenga su propio thumbnail»). Las once del menú, cada una con su
+// imagen (`/og/p/<pagina>.png`, de herramientas/banner_paginas.py: la misma piel, otra ilustración), su título y su
+// bajada. Igual que el perfil y el servidor: sólo para los bots de vista previa; la persona recibe el index.html de
+// siempre. ⚠️ El título y la bajada van acá y en banner_paginas.py: si se cambia uno, se cambia el otro
+const PAGINAS = {
+  ranking: ['Ranking', 'Los mejores del freestyle online, de todos los servidores, en una sola tabla.'],
+  crews: ['Crews', 'Armá la tuya, invitá a tu gente y subí de tier cada semana.'],
+  eventos: ['Eventos', 'Qué se juega hoy en cada servidor, con la llave en vivo y la campana.'],
+  tarjetas: ['Tarjetas', 'Temporada, Competitiva, Servidor y País: tus números, en una carta.'],
+  pase: ['Pase rapero', 'Tareas diarias y semanales, XP y niveles: subí y desbloqueá.'],
+  ligas: ['Ligas', 'Fechas, tablas y campeones de las ligas de los servidores socios.'],
+  tienda: ['Tienda', 'Cazá cabezas, apostá en vivo y gastá tus Puntos de Tienda.'],
+  publicaciones: ['Publicaciones', 'Campeones, rachas y crews que suben: el muro de todos los servidores.'],
+  socios: ['Socios', 'Los servidores de rap online que suman al ranking mundial.'],
+  guia: ['Guía', 'Puntos, rangos, tarjetas y TAGs, explicados en una página.'],
+  salon: ['Salón de la fama', 'Los MES AWARDS, las promos y los que hicieron historia.'],
+};
+const R2_CREWS = /^https:\/\/pub-[a-z0-9]+\.r2\.dev\/crews\/[\w.-]+$/;
+
+/** El index.html con otra vista previa: `{tab, titulo, desc, img, alt, color?}` sobre la página de siempre */
+async function conVista(req, env, url, v) {
+  const pag = await env.ASSETS.fetch(new Request(url.origin + '/', { headers: req.headers }));
+  const poner = (atr, valor) => ({ element(el) { el.setAttribute(atr, valor); } });
+  const rw = new HTMLRewriter()
+    .on('title', { element(el) { el.setInnerContent(v.tab); } })
+    .on('meta[property="og:title"]', poner('content', v.titulo))
+    .on('meta[property="og:description"]', poner('content', v.desc))
+    .on('meta[name="description"]', poner('content', v.desc))
+    .on('meta[property="og:url"]', poner('content', url.origin + url.pathname))
+    .on('meta[property="og:image"]', poner('content', v.img))
+    .on('meta[name="twitter:image"]', poner('content', v.img))
+    .on('meta[property="og:image:alt"]', poner('content', v.alt || v.titulo))
+    .on('meta[name="theme-color"]', poner('content', v.color || '#E41373'));
+  const out = rw.transform(pag);
+  const h = new Headers(out.headers);
+  h.set('cache-control', 'public, max-age=300');
+  return new Response(out.body, { status: 200, headers: h });
+}
+
+function vistaPagina(req, env, pagina, url) {
+  const [nombre, desc] = PAGINAS[pagina];
+  return conVista(req, env, url, { tab: nombre + ' · Liga Global de Freestyle', titulo: nombre + ' · Liga Global de Freestyle', desc,
+    img: url.origin + '/og/p/' + pagina + '.png', alt: nombre + ' en la Liga Global de Freestyle' });
+}
+
+// 👥 Y LA DE CADA CREW: su nombre, su descripción, cuántos son y su logo (`/avisos/crews` es público y se cachea 5 min).
+// Sin logo, o si la crew no existe, la imagen de la página de crews
+async function vistaCrew(req, env, id, url) {
+  const r = await fetch(ORIGEN + '/avisos/crews', { headers: { accept: 'application/json' }, cf: { cacheTtl: 300, cacheEverything: true } })
+    .catch(() => null);
+  const j = r && r.ok ? await r.json().catch(() => null) : null;
+  const c = j && (j.crews || []).find((x) => x && x.id === id);
+  if (!c) return null;
+  const nombre = String(c.nombre || id).trim();
+  const n = (c.gente || []).length;
+  const desc = (c.desc ? String(c.desc).trim().slice(0, 160) + ' · ' : '') + n + (n === 1 ? ' integrante' : ' integrantes')
+    + (c.sigla ? ' · ' + String(c.sigla).toUpperCase() : '') + ' · una crew de la Liga Global de Freestyle.';
+  const img = R2_CREWS.test(String(c.logo || '')) ? String(c.logo) : url.origin + '/og/p/crews.png';
+  return conVista(req, env, url, { tab: nombre + ' · Liga Global de Freestyle', titulo: nombre + ' · crew de la Liga Global', desc, img,
+    alt: 'El logo de ' + nombre });
+}
+
 export default {
   async fetch(req, env) {
     const url = new URL(req.url);
+    const ua = req.headers.get('user-agent') || '';
+
+    // 🖼️ la vista previa de cada página del menú, sólo para los bots (ver `vistaPagina()`)
+    const mPag = req.method === 'GET' && /^\/freestyle-rap\/([a-z]+)\/?(?:[^/?#]*\/?)?$/.exec(url.pathname);
+    if (mPag && PAGINAS[mPag[1]] && BOTS_VISTA.test(ua)) {
+      const v = await vistaPagina(req, env, mPag[1], url).catch(() => null);
+      if (v) return v;
+    }
+    // 👥 y la de cada crew (ver `vistaCrew()`)
+    const mCrew = req.method === 'GET' && /^\/freestyle-rap\/crew\/([^/?#]{1,60})\/?$/.exec(url.pathname);
+    if (mCrew && BOTS_VISTA.test(ua)) {
+      let id = mCrew[1];
+      try { id = decodeURIComponent(id); } catch (e) { /* tal cual */ }
+      const v = await vistaCrew(req, env, id, url).catch(() => null);
+      if (v) return v;
+    }
 
     // 🏟️ la vista previa de cada servidor, sólo para los bots (ver `vistaServidor()`)
     const mSv = req.method === 'GET' && /^\/freestyle-rap\/sv\/([A-Za-z]{2,5})\/?$/.exec(url.pathname);
@@ -447,7 +526,7 @@ export default {
     // (el ciclo, un navegador viejo) pasa como antes
     // 🛡️ el freno por IP: todo lo de la API y la vista previa de los perfiles (ver `demasiados()`)
     if ((url.pathname.indexOf('/api/') === 0 || url.pathname.indexOf('/freestyle-rap/r/') === 0
-      || url.pathname.indexOf('/freestyle-rap/sv/') === 0)
+      || url.pathname.indexOf('/freestyle-rap/sv/') === 0 || url.pathname.indexOf('/freestyle-rap/crew/') === 0)
       && demasiados(bloqueIP(req.headers.get('cf-connecting-ip')))) return muchos();
     if (req.method === 'POST' && url.pathname.indexOf('/api/') === 0) {
       const o = req.headers.get('origin');

@@ -1,13 +1,36 @@
 {
   "version": 1,
-  "description": "Sólo la API pasa por _worker.js; los archivos los sirve Pages directo (04/10/2026). Ver bot/paginas_subir.py. Y los perfiles (14/10/2026), para la vista previa de cada link: ver vistaPerfil() en _worker.js Y los servidores (14/10/2026): vistaServidor().",
+  "description": "Sólo la API pasa por _worker.js; los archivos los sirve Pages directo (04/10/2026). Ver bot/paginas_subir.py. Y los perfiles (14/10/2026), para la vista previa de cada link: ver vistaPerfil() en _worker.js Y los servidores (14/10/2026): vistaServidor(). Y las once páginas del menú y cada crew (19/10/2026), con su propia imagen: vistaPagina() y vistaCrew(). Para la persona es el index.html de siempre: sólo los bots de vista previa se llevan otra.",
   "include": [
     "/api/*",
     "/calendario.ics",
     "/lobby",
     "/lobby/",
     "/freestyle-rap/r/*",
-    "/freestyle-rap/sv/*"
+    "/freestyle-rap/sv/*",
+    "/freestyle-rap/ranking",
+    "/freestyle-rap/ranking/*",
+    "/freestyle-rap/crews",
+    "/freestyle-rap/crews/*",
+    "/freestyle-rap/eventos",
+    "/freestyle-rap/eventos/*",
+    "/freestyle-rap/tarjetas",
+    "/freestyle-rap/tarjetas/*",
+    "/freestyle-rap/pase",
+    "/freestyle-rap/pase/*",
+    "/freestyle-rap/ligas",
+    "/freestyle-rap/ligas/*",
+    "/freestyle-rap/tienda",
+    "/freestyle-rap/tienda/*",
+    "/freestyle-rap/publicaciones",
+    "/freestyle-rap/publicaciones/*",
+    "/freestyle-rap/socios",
+    "/freestyle-rap/socios/*",
+    "/freestyle-rap/guia",
+    "/freestyle-rap/guia/*",
+    "/freestyle-rap/salon",
+    "/freestyle-rap/salon/*",
+    "/freestyle-rap/crew/*"
   ],
   "exclude": []
 }
