@@ -475,7 +475,7 @@ function CompararSemanas({ S, uso, liga }) {
 // ── 🤝 LOS TIERS (Dlx, 18/10/2026: «3 tier levels of association… el sistema recomienda y muestra qué tan bien los
 // servidores han hecho su trabajo»). Cada servidor con su nivel —que se elige acá: ajuste `tiers`, el ciclo lo copia a
 // datos/niveles.json—, su puntaje de las últimas 4 semanas y lo que recomienda `bot/tiers.py`. El puntaje no sale de acá
-const TIER_QUE = { 1: 'suma al ranking, todo', 2: 'el calendario, no suma', 3: 'el directorio, sin bot' };
+const TIER_QUE = { 1: 'suma al ranking, todo', 2: 'el calendario, no suma', 3: 'su página y sus ligas, no suma' };
 const REC = { bien: ['✅', 'Bien'], subir: ['⬆️', 'Puede subir'], revisar: ['⚠️', 'Revisar'], casa: ['🏠', 'La casa'] };
 const PARTES = [['actividad', 'Actividad', 35], ['alcance', 'Alcance', 25], ['calidad', 'Calidad', 25], ['comunidad', 'Comunidad', 15]];
 
@@ -545,8 +545,8 @@ function Tiers({ T, aj, hacer, ocup, msg, liga }) {
   return (
     <div className="ti">
       <p className="db-tx">Las últimas {T.semanas || 4} semanas. El puntaje recomienda; <b>el nivel lo eliges tú</b>. Tier 1 suma al ranking y
-        lleva todo; Tier 2 sale en el calendario y la campana, pero sus llaves no suman; Tier 3 es el directorio, sin bot. Para ser
-        socio: 300 miembros como mínimo, se recomiendan 500.</p>
+        lleva todo; Tier 2 sale en el calendario y la campana, pero sus llaves no suman; Tier 3 tiene su página y sus ligas en Ligas,
+        sin sumar. Los eventos y las redes se promocionan en los tres. Para ser socio: 300 miembros como mínimo, se recomiendan 500.</p>
       {msg ? <p className="db-msg" role="status">{msg}</p> : null}
       <div className="ti-g">{T.servidores.map((x, i) => <TierCaja key={x.sv} x={x} liga={liga} tier={tierDe(x)} cambiar={cambiar} ocup={ocup} i={i} aj={aj} hacer={hacer} />)}</div>
       {T.t ? <p className="db-tx">Medido {hace(T.t)}.</p> : null}

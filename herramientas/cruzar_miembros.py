@@ -89,7 +89,8 @@ def _guilds():
          ('ACAD', '765045834647339038'),
          ('FVS', '1283205153624952975'),
          # 🌀 FREESTYLE ZONE, DESDE EL 14/10/2026
-         ('FRZ', '838593179187544064')]
+         ('FRZ', '838593179187544064'),
+         ('FDS', '1489848581203689535')]
     try:
         with io.open(os.path.join(BASE, 'datos', 'servidores.json'),
                      encoding='utf-8') as f:

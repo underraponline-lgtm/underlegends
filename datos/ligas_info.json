@@ -60,7 +60,13 @@
    "Sus 4 primeros suben a una FMH: a la que los fiche si hay lugar, o a la de su país. También tiene descenso.",
    "Puntos: victoria directa 3; en réplica, 2 al que gana y 1 al que pierde; derrota directa 0. Desempata el PTB."
   ],
-  "hist": [["1ª edición", "Guty", "el primer campeón de FMH Under"]],
+  "hist": [
+   [
+    "1ª edición",
+    "Guty",
+    "el primer campeón de FMH Under"
+   ]
+  ],
   "fuente": "Lo que publicó Urban Freestyle en sus canales"
  },
  "snake-generations": {
@@ -70,7 +76,23 @@
    "Bajan los 2 últimos. Suben el 1º y el 2º del ranking de ascenso, y el 3º juega un play-off contra el 8º de la liga.",
    "El campeón va a Matanza de Dioses, la final del ciclo."
   ],
-  "hist": [["Temporada 6", "Tikal", "terminó el 30/06/2025"], ["Temporada 7 «Coldwar»", "Scorpio", "terminó el 08/01/2026"], ["Temporada 8 «Infinite»", "Luzzano", "terminó el 23/05/2026"]],
+  "hist": [
+   [
+    "Temporada 6",
+    "Tikal",
+    "terminó el 30/06/2025"
+   ],
+   [
+    "Temporada 7 «Coldwar»",
+    "Scorpio",
+    "terminó el 08/01/2026"
+   ],
+   [
+    "Temporada 8 «Infinite»",
+    "Luzzano",
+    "terminó el 23/05/2026"
+   ]
+  ],
   "fuente": "Lo que publicó Snake Rap (su #info-liga y su museo)"
  },
  "snake-new-chapter": {
@@ -89,7 +111,18 @@
    "Los 4 primeros van a la Champions League; del 5º al 8º, a la Conference League. El 9º y el 10º bajan.",
    "Se entra por el ranking de ascenso de Freestyle Zone (los primeros directo, y uno por play-off), o quedándose."
   ],
-  "hist": [["Temporada 15", "Juasmio", "invicto (enero y febrero de 2026)"], ["Temporada 16", "Ceko", "9 de 9 y MVP en las 9 (septiembre de 2026)"]],
+  "hist": [
+   [
+    "Temporada 15",
+    "Juasmio",
+    "invicto (enero y febrero de 2026)"
+   ],
+   [
+    "Temporada 16",
+    "Ceko",
+    "9 de 9 y MVP en las 9 (septiembre de 2026)"
+   ]
+  ],
   "fuente": "Lo que publicó Freestyle Zone (#información y las tablas de cada temporada)"
  },
  "fms-titans": {
@@ -123,5 +156,23 @@
    "No hay ascenso ni descenso: las ligas de DDF son independientes."
   ],
   "fuente": "Lo que publicó Dimensión del Freestyle en sus canales"
+ },
+ "fds-peru": {
+  "fmt": [
+   "La liga de Freestyle Discord Series para Perú, «la liga de la Sangre pura»: la juegan peruanos, venezolanos, argentinos y mexicanos, que entran por fichaje.",
+   "Cada batalla se juega por patrones —Easy mode, Hard mode, Temática, Rand mode, Minuto ida y vuelta y Deluxe— y los jurados puntúan cada uno; el total decide, y si queda parejo hay réplica.",
+   "Al cierre cada uno suma PTB: +500 al que gana directo (−250 al que pierde), +300 y +100 cuando hubo réplica.",
+   "Las jornadas se anuncian con sede (Lima, Trujillo, Arequipa, Chiclayo…) y horario, y la batalla que no se juega pasa a una fecha recuperativa. Quien acumula dos DF (no presentarse) se da de baja y sube otro freestyler."
+  ],
+  "fuente": "Lo que publicó FDS en los canales de cada liga (anuncios, fechas y resultados), relevado el 20/10/2026"
+ },
+ "fds-mexico": {
+  "fmt": [
+   "La liga de Freestyle Discord Series para México. Su line-up se armó por países: 4 peruanos, 2 argentinos y un mexicano, un hondureño, un paraguayo, un chileno, un uruguayo y un boliviano, con batallas «vida o muerte» para entrar.",
+   "Cada batalla se juega por patrones —Easy mode, Hard mode, Temática, Rand mode, Minuto ida y vuelta y Deluxe— y los jurados puntúan cada uno; el total decide (+3 puntos al que gana), y si queda parejo hay réplica.",
+   "Al cierre cada uno suma PTB: +500 al que gana directo (−250 al que pierde), +300 y +100 cuando hubo réplica.",
+   "Quien queda inactivo y no responde se reemplaza por otro MC."
+  ],
+  "fuente": "Lo que publicó FDS en los canales de cada liga (anuncios, fechas y resultados), relevado el 20/10/2026"
  }
 }

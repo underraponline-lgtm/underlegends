@@ -204,6 +204,10 @@ export const SERVIDORES = [
   // 🆚 FVS (12/10/2026): de la Liga (Dlx: «asegurate que sea bien integrada completamente»), con la invitación
   // permanente que creó el bot (`bot/invitaciones.py`) a su «Bienvenida»
   { sv: 'FVS', nombre: 'Freestyle Versus', guild: '1283205153624952975', invita: 'https://discord.gg/dG9dJtZ5y7', sigla: 'FVS' },
+  // 🎙️ FDS (20/10/2026): socio Tier 3 (Dlx: «no cuentes para la Liga Global nada aún»): su página, sus dos ligas y sus
+  // eventos promocionados, SIN carta de Servidor —por eso `sinCarta`: no va en el menú de /card, donde saldría bloqueada
+  // para todo el mundo—. La invitación permanente la creó el bot (`bot/invitaciones.py`)
+  { sv: 'FDS', nombre: 'Freestyle Discord Series', guild: '1489848581203689535', invita: 'https://discord.gg/uTpFjBYEDR', sigla: 'FDS', sinCarta: true },
 ];
 
 const SV_DE = (sv) => SERVIDORES.find(s => s.sv === String(sv || '').toUpperCase());
@@ -586,7 +590,8 @@ function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
         // salían siempre bloqueados (TWR, FTN y FRZ, Dlx 05/10/2026: «a»)
         // ⚠️ SALVO EL QUE SE ESTÁ MOSTRANDO: quien tiene su carta de la pre-temporada en TWR la ve al abrir /card, y
         // sin su opción el menú no marcaba ninguna ni dejaba volver a ella
-        options: SERVIDORES.filter(s => !s.fuera || s.sv === svAhora).map(s => {
+        // 🎙️ ni los que no tienen carta de Servidor (`sinCarta`: FDS, Tier 3, 20/10/2026)
+        options: SERVIDORES.filter(s => (!s.fuera && !s.sinCarta) || s.sv === svAhora).map(s => {
           const tiene = hayCarta(g, s.sv, m);
           const suyo = (g && g.n) || quien;
           const botAhi = !m || !m.bot_en || m.bot_en.indexOf(s.sv) >= 0;

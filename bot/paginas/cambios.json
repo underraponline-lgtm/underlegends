@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.84",
+   "dia": "2026-10-20",
+   "cuando": "2026-10-20T17:40:00-04:00",
+   "titulo": "Freestyle Discord Series se suma, con sus dos ligas",
+   "items": [
+    "🎙️ **Freestyle Discord Series (FDS) entra como servidor socio**: su página en Socios y sus eventos en el calendario, la campana y Publicaciones. Por ahora sus llaves no suman al ranking.",
+    "🏅 **Dos ligas nuevas en Ligas: FDS Perú y FDS México**, con sus fechas, resultados, tabla y cómo se juega cada una (sus batallas no cuentan como duelos)."
+   ]
+  },
+  {
    "version": "3.83",
    "dia": "2026-10-20",
    "cuando": "2026-10-20T17:13:00-04:00",

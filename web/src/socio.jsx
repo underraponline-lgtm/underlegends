@@ -20,7 +20,7 @@ const FRANJAS = ['Madrugada', 'Mañana', 'Mediodía', 'Tarde', 'Noche'];
 const PARTES = [['actividad', 'Actividad', 35, 'eventos por semana (2 es lo máximo)'], ['alcance', 'Alcance', 25, 'raperos por evento y gente nueva'],
   ['calidad', 'Calidad', 25, 'llaves que el bot lee solo, anuncios con su staff, pocos cancelados'],
   ['comunidad', 'Comunidad', 15, 'los nuevos que vuelven, promos y ligas']];
-const TIER = { 1: 'Tier 1 · suma al ranking', 2: 'Tier 2 · el calendario y la campana' };
+const TIER = { 1: 'Tier 1 · suma al ranking', 2: 'Tier 2 · el calendario y la campana', 3: 'Tier 3 · la página y las ligas, sin sumar al ranking' };
 
 const fechaCorta = (iso) => { const p = String(iso || '').split('-'); return p.length === 3 ? Number(p[2]) + '/' + Number(p[1]) : ''; };
 const coma = (x) => String(Math.round((Number(x) || 0) * 10) / 10).replace('.', ',');

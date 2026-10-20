@@ -16,11 +16,25 @@ QUÉ ES CADA UNO
   · TIER 1: sus eventos suman al ranking oficial y lleva todo (el bot completo, su carta, los multiplicadores…).
   · TIER 2: sus anuncios se leen (el calendario y la campana), pero sus llaves NO: no suma al ranking. Tampoco sus
     ligas cuentan como duelos.
-  · TIER 3: el directorio. Sin el bot.
+  · TIER 3: su página de servidor y sus ligas en Ligas (sin contar como duelos); sin carta de Servidor ni puntos.
+    ⚠️ DECÍA «el directorio, sin el bot» hasta el 20/10/2026, y FDS entró a Tier 3 CON el bot (Dlx: «para cualquier
+    TIER meter el bot, así nos beneficiamos de información y de IDs… pero que no necesariamente convierta a tener esos
+    beneficios»). El bot adentro es lo que hace posible leerle las ligas y reconocer a su gente.
 
-DE DÓNDE SALE EL NIVEL: lo elige Dlx en el Dashboard (ajuste `tiers`, `{sigla: 1|2|3}`); sin elegir, Tier 1 quien está
-en la Liga. El ciclo lo copia a `datos/niveles.json` (público: es lo que dice la página) y de ahí lo leen el lector de
-llaves (`escuchar._guilds_liga()`) y las ligas (`ligas.duelos()`), con `bajados()`.
+🔑 Y LO QUE ES DE TODOS, EN CUALQUIER TIER (Dlx, 20/10/2026: «I want their events to be promoted and social media. I
+think that should be a general benefit… because we provide information to the Liga Global»): sus eventos en el
+calendario, la campana y Publicaciones, y sus redes en Socios. Por eso `bot/anuncios.py` lee a TODOS los confirmados sin
+mirar el tier; lo que el tier apaga son las llaves (`escuchar._guilds_liga()`) y los duelos de las ligas.
+
+DE DÓNDE SALE EL NIVEL: lo elige Dlx en el Dashboard (ajuste `tiers`, `{sigla: 1|2|3}`); sin elegir, el `tier` escrito en
+`datos/servidores.json`, y si tampoco, Tier 1 quien está en la Liga. El ciclo lo copia a `datos/niveles.json` (público:
+es lo que dice la página) y de ahí lo leen el lector de llaves (`escuchar._guilds_liga()`) y las ligas
+(`ligas.duelos()`), con `bajados()`.
+
+🔴 EL `tier` DEL JSON EXISTE PORQUE EL DEFAULT ERA EL PEOR: «sin elegir, Tier 1» significaba que un servidor nuevo que
+Dlx todavía no tocó en el Dashboard —FDS, el 20/10/2026, a las horas de decidir que NO suma— arrancaba sumando al ranking
+en la corrida siguiente, y el ajuste del Dashboard REEMPLAZA entero a `niveles.json` (ver `correr()`), así que escribir el
+3 ahí no alcanzaba. Un default que no es la decisión es un bug que no avisa.
 
 EL PUNTAJE (0–100, de las últimas 4 semanas, contra las 4 de antes) va SÓLO al Dashboard (`/avisos/tiers-ciclo`): no al
 repo, que es público. Cuatro partes, con lo que ya medimos:
@@ -65,7 +79,8 @@ def _j(*p):
 
 # ── el nivel de cada uno ─────────────────────────────────────────────────────────────────────────────────────────────
 def niveles(servidores=None, guardados=None):
-    """`{sigla: tier}` de los servidores de la Liga: lo elegido (`datos/niveles.json`), y Tier 1 por defecto."""
+    """`{sigla: tier}` de los servidores de la Liga: lo elegido (`datos/niveles.json`, o el Dashboard), si no el `tier`
+    que declara `datos/servidores.json`, y si no Tier 1."""
     svs = servidores if servidores is not None else ((_j('datos', 'servidores.json') or {}).get('servidores') or {})
     g = guardados if guardados is not None else ((_j('datos', 'niveles.json') or {}).get('niveles') or {})
     out = {}
@@ -73,6 +88,8 @@ def niveles(servidores=None, guardados=None):
         if x.get('en_la_liga') is False or not x.get('confirmado'):
             continue
         t = g.get(sv)
+        if t not in TIERS:
+            t = x.get('tier')
         out[sv] = t if t in TIERS else 1
     return out
 
@@ -199,7 +216,7 @@ def recomendar(tier, pts, m, sin_jugar):
     return 'bien', 'se mantiene en Tier 3'
 
 
-# ── 📊 EL PANEL DE CADA SOCIO (Tier 1 y 2) ─────────────────────────────────────────────────────────────────────────
+# ── 📊 EL PANEL DE CADA SOCIO (los tres tiers desde el 20/10/2026; nació para 1 y 2) ─────────────────────────────────────────────────────────────────────────
 # Dlx, 19/10/2026: *«dar un acceso especial tipo dashboard para los socios, o sea los owners de los sv… para ver cómo sus
 # servidores están mejorando, sus estadísticas»*, y a las preguntas: *«digo tier 1 y tier 2»*, el dueño *«automático y
 # lo corregís vos»*, y que traiga *«sugerencias para mejorar, ver cuándo hay actividad, qué días hacer eventos y qué
@@ -464,7 +481,8 @@ def correr(aplicar=False, ahora=None):
             print('   ⚠️ los tiers: no leí los miembros (%s)' % str(e)[:60])
     D = datos()
     filas = medir(D, hoy, svs, nivel, gente)
-    # 📊 el panel de los socios Tier 1 y 2, con su dueño (ver arriba)
+    # 📊 el panel de cada socio, con su dueño (ver arriba). Los tres tiers: Dlx, 20/10/2026, del dueño de FDS (Tier 3),
+    # «para que pueda ver su página y sus estadísticas»
     try:
         from comun.crews import DE_CADA_UNO, norm as _norm
         from comun.claves import clave as _K
@@ -475,9 +493,9 @@ def correr(aplicar=False, ahora=None):
             c = DE_CADA_UNO.get(_norm(n))
             if c:
                 crews[_K(n)] = (c, noms.get(c, c))
-        socios = [sv for sv, t in nivel.items() if t in (1, 2)]
+        socios = [sv for sv, t in nivel.items() if t in TIERS]
         for f in filas:
-            if f['tier'] in (1, 2):
+            if f['tier'] in TIERS:
                 f['panel'] = panel(D, hoy, f['sv'], ps, crews, socios)
                 f['panel']['sugerencias'] = sugerencias(f['panel'], f.get('m'))
         if aplicar:
@@ -490,9 +508,10 @@ def correr(aplicar=False, ahora=None):
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ el panel de los socios no se armó (%s): el puntaje va igual' % str(e)[:80])
     if aplicar:
-        nuevo = {'_leeme': 'El nivel de cada servidor de la Liga (Tier 1: suma al ranking; 2: sólo el calendario; 3: el '
-                           'directorio). Lo elige Dlx en el Dashboard; sin elegir, Tier 1. Lo escribe bot/tiers.py y lo '
-                           'leen el lector de llaves y las ligas. El puntaje de cada uno NO va acá: va al Dashboard.',
+        nuevo = {'_leeme': 'El nivel de cada servidor de la Liga (Tier 1: suma al ranking; 2: sólo el calendario; 3: su '
+                           'página, sus ligas y sus eventos promocionados, sin sumar). Lo elige Dlx en el Dashboard; sin '
+                           'elegir, el `tier` de datos/servidores.json, y si no, Tier 1. Lo escribe bot/tiers.py y lo leen '
+                           'el lector de llaves y las ligas. El puntaje de cada uno NO va acá: va al Dashboard.',
                  'niveles': {sv: t for sv, t in sorted(nivel.items())}}
         if nuevo['niveles'] != viejo.get('niveles'):
             with io.open(NIVELES, 'w', encoding='utf-8', newline='\n') as f:
@@ -519,6 +538,10 @@ def _self_check():
     svs = {'AAA': {'confirmado': True, 'guild_id': '1', 'nombre': 'Uno'}, 'BBB': {'confirmado': True, 'guild_id': '2'},
            'CCC': {'confirmado': True, 'guild_id': '3'}, 'FUE': {'en_la_liga': False, 'confirmado': True, 'guild_id': '4'}}
     ok(niveles(svs, {}) == {'AAA': 1, 'BBB': 1, 'CCC': 1}, 'sin elegir, Tier 1 quien está en la Liga (el de afuera no)')
+    con3 = dict(svs, NUE={'confirmado': True, 'guild_id': '5', 'tier': 3}, MAL={'confirmado': True, 'guild_id': '6', 'tier': 7})
+    ok(niveles(con3, {})['NUE'] == 3 and niveles(con3, {})['MAL'] == 1 and niveles(con3, {'NUE': 1})['NUE'] == 1
+       and guilds_bajados(con3, {}) == {'5'},
+       'el `tier` de servidores.json es el default de un servidor nuevo (uno que no es tier no vale); lo elegido manda sobre él')
     ok(niveles(svs, {'BBB': 2, 'CCC': 9}) == {'AAA': 1, 'BBB': 2, 'CCC': 1} and bajados(svs, {'BBB': 2}) == {'BBB'}
        and guilds_bajados(svs, {'BBB': 2, 'CCC': 3}) == {'2', '3'},
        'lo elegido manda; un número que no es tier no vale; los de Tier 2 y 3 son los «bajados»')

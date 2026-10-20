@@ -16,6 +16,10 @@ DIEZ LIGAS EN TRES SERVIDORES, Y CADA SERVIDOR ESCRIBE A SU MANERA (relevado el 
     D1  DDF, FMS TITANS                 título, `# 👈 a - b` y `# GANADOR [REPLICA] X`
     D2  DDF, FMS PERU (y las dos nuevas) título, `**a PTB - b PTB**` y una mano: 🫲/👈 la izquierda, 🫱/👉 la derecha
     S   Snake Rap, Generations y New Chapter, en el mismo canal: el `PTB OFICIAL` es la batalla entera
+    F   FRZ, la FZ LEAGUE                cada jornada cerrada en un mensaje: «X VENCE DE MANERA DIRECTA A Y»
+    FD  FDS, Perú y México (20/10/2026)  un mensaje por batalla: el título, los puntos de cada patrón, el `Total:` y el
+                                        PTB del cierre (+500 directo, +300 y +100 con réplica); o «## Gana X» a secas.
+                                        «por df» (no se presentó) no es una batalla. Tier 3: no cuentan como duelos
 
 🔴 SÓLO CUENTA UNA BATALLA CON UN CIERRE QUE NO DEJA DUDAS. Los jurados deforman los nombres, votan con «# X» en la
 misma conversación en que se discute, hay réplicas de réplicas y un cierre puede llegar horas después como respuesta a
@@ -47,6 +51,7 @@ termina una liga no lo dice nadie —cada servidor la arranca y la cierra cuando
 a las `CIERRA_DIAS` sin batallas, salvo que haya una próxima fecha anunciada.
 """
 import datetime as dt
+import difflib
 import io
 import json
 import os
@@ -101,6 +106,14 @@ LIGAS = {
     'fzl': {'n': 'FZ League', 'sv': 'FRZ', 'fam': 'F', 'vre': r'FZ\s*LEAGUE|\bFZL\b', 'ver': '961680549712396408', 'tabla': '845072946829721701',
             'an': '838599987280609300', 'cc': 'PE', 'tit': r'\bFZ\s+LEAGUE\b|\bFREESTYLE\s+ZONE\s+LEAGUE\b',
             'reemplaza': True},
+    # 🎙️ FDS entró el 20/10/2026 como Tier 3 (Dlx: «crea su página del servidor y añade sus ligas, pero no cuentes para la
+    # Liga Global nada aún»): sus dos ligas van acá y NO cuentan como duelos (`duelos()` salta a los bajados). Cada una
+    # tiene su categoría —anuncios, fechas, resultados y tabla—: `ver` es «resultados» (un mensaje por batalla, cerrado
+    # con el PTB), `an` es «fechas» (la jornada con sede, la marca de Discord y el afiche) y `tabla` es una imagen
+    'fds-peru': {'n': 'FDS Perú', 'sv': 'FDS', 'fam': 'FD', 'vre': r'FDS\s*PER[UÚ]', 'ver': '1540179968879890452',
+                 'tabla': '1540180092058210414', 'an': '1540179843017080845', 'cc': 'PE'},
+    'fds-mexico': {'n': 'FDS México', 'sv': 'FDS', 'fam': 'FD', 'vre': r'FDS\s*M[EÉ]XICO', 'ver': '1558967211820065239',
+                   'tabla': '1558967354946363513', 'an': '1558967030777126922', 'cc': 'MX'},
 }
 #: 🗳️ la encuesta «¿quién gana la liga?» cierra a los tantos días sin batallas (y sin una fecha anunciada por delante):
 #: es lo único que dice que una liga terminó. Ver `vota()`
@@ -174,8 +187,8 @@ def lados(linea):
     if len(partes) != 2:
         return None
     a, b = partes
-    # «… - JORNADA 4» al final del título de FMH Under
-    b = re.sub(r'\s*-\s*JORNADA\s*\d+.*$', '', b, flags=re.I)
+    # «… - JORNADA 4» al final del título de FMH Under, y «…| Jornada 2» en el de FDS
+    b = re.sub(r'\s*[-|]\s*JORNADA\s*\d+.*$', '', b, flags=re.I)
     ea, eb = '🎮' in a, '🎮' in b
     a, b = limpio(a), limpio(b)
     # en DDF Titans el título lleva «(REMPLAZO)»: `limpio()` ya lo saca
@@ -512,6 +525,123 @@ def _orden(k):
     return int(p[0]), int(p[1]) if len(p) > 1 and p[1].isdigit() else 0
 
 
+# ── familia FD: Freestyle Discord Series (FDS Perú y FDS México, 20/10/2026) ──────────────────────────────────────
+# Un mensaje por batalla en «resultados»: el título `# 🏅 A <:vs:> B | Jornada N 🏅`, los puntos de cada patrón (Easy,
+# Hard, Temática, Rand, Minuto ida y vuelta, Deluxe), el `Total:` de cada lado y el PTB del cierre: `+500` al que gana
+# directo (`-250` al otro), `+300` y `+100` cuando hubo réplica. Y los cierres cortos: `## Gana X`, `## Gana X por df`
+# (el rival no se presentó: NO es una batalla, como el «dividen puntos» de FZL), `# GANADOR POR LA MINIMA Cine` en el
+# mensaje de la réplica, y `# Gana : A 66 - B 60` sin título.
+# ⚠️ AL CERRAR APODAN («Cine» y «Cinefilox» por CINEXFILO, «MC arepa» por MC AREPA): `_cual()` acepta el principio del
+# nombre o un parecido claro de una palabra, siempre que el otro lado no se parezca. Y un «RESULTADOS 92 CINE - 87
+# MCarepa» seguido de «REPLICA» no cierra nada: la réplica viene en el mensaje siguiente, con el mismo título.
+GANA_FD = re.compile(r'^\W*GANA\s*:?\s*(.+?)\s*$', re.I)
+MARCADOR_FD = re.compile(r'^\W*GANA\s*:?\s*(.+?)\s+(\d+(?:[.,]\d+)?)\s*-\s*(.+?)\s+(\d+(?:[.,]\d+)?)\s*$', re.I)
+#: el PTB del cierre, un lado por renglón: «SOL: (+100)», «Cinexfilo: (-250)», «MC arepa +100»
+PTB_FD = re.compile(r'^\W*(.+?)\s*:?\s*\(?\s*([+-])\s*(\d+)\s*\)?\s*$')
+#: el total de un lado, sólo debajo de «Total:»: «SOL: (44.5)», «SOUL B : (36.5) -> +3 PTS»
+TOTAL_FD = re.compile(r'^\W*(.+?)\s*:\s*\(\s*(\d+(?:[.,]\d+)?)\s*\)')
+
+
+def _cual(texto, a, b):
+    """Como `_quien()`, y si el texto no trae el nombre entero, por el principio o un parecido claro de alguna palabra
+    (o de dos seguidas): «Cine» → Cinexfilo, «Cinefilox» → Cinexfilo, «MC arepa» → MC AREPA. `None` si no está claro."""
+    r = _quien(texto, a, b)
+    if r:
+        return r
+    ws = re.findall(r'[a-z0-9]+', EMOJI.sub(' ', _plano(texto)).lower())
+    cands = [w for w in ws if len(w) >= 3] + [ws[i] + ws[i + 1] for i in range(len(ws) - 1)]
+
+    def punt(k):
+        best = 0.0
+        for c in cands:
+            if len(k) < 3:
+                continue
+            if c == k:
+                v = 1.0
+            elif len(c) >= 4 and k.startswith(c):
+                v = 0.9
+            else:
+                v = difflib.SequenceMatcher(None, c, k).ratio()
+            best = max(best, v)
+        return best
+    pa, pb = punt(clave(a)), punt(clave(b))
+    if max(pa, pb) < 0.75 or abs(pa - pb) < 0.2:
+        return None
+    return 'a' if pa > pb else 'b'
+
+
+def _fd(msgs):
+    """Las batallas de una liga de FDS: `[{id, t, a, b, ea, eb, j, gana, como, df, ptbv}]`."""
+    bats, j = [], None
+    for m in msgs:
+        texto = m.get('content') or ''
+        lineas = [l for l in texto.splitlines() if l.strip()]
+        for l in lineas:
+            pl = _plano(l)
+            ls = lados(l)
+            lj = JORNADA.search(pl)
+            if lj and not ls and l.lstrip().startswith('#'):
+                j = int(lj.group(1) or lj.group(2))
+                continue
+            if ls:
+                bats.append({'id': m['id'], 't': m['t'], 'a': ls[0], 'b': ls[1], 'ea': ls[2], 'eb': ls[3],
+                             'j': int(lj.group(1) or lj.group(2)) if lj else j, 'gana': '', 'como': '', 'rep': False,
+                             'df': False})
+                continue
+            mm = MARCADOR_FD.match(EMOJI.sub(' ', pl).replace('*', '').strip())
+            if mm:
+                a, b = limpio(mm.group(1)), limpio(mm.group(3))
+                if re.search(r'[A-Za-z]', a) and re.search(r'[A-Za-z]', b) and len(a) <= 40 and len(b) <= 40:
+                    bats.append({'id': m['id'], 't': m['t'], 'a': a, 'b': b, 'ea': False, 'eb': False, 'j': j,
+                                 'gana': a, 'como': 'directa', 'rep': False, 'df': False})
+        if not bats:
+            continue
+        # el cierre habla de la última batalla: FDS cierra cada una en su mensaje o en el siguiente (la réplica)
+        b = bats[-1]
+        if b['gana'] or b['df']:
+            continue
+        if any(marca_replica(l) for l in lineas):
+            b['rep'] = True
+        pares, totales, en_total = [], [], False
+        for l in lineas:
+            pl = EMOJI.sub(' ', _plano(l)).replace('*', '').strip()
+            if re.match(r'^\W*TOTAL\b', pl, re.I):
+                en_total = True
+                continue
+            if en_total:
+                mt = TOTAL_FD.match(pl)
+                if mt and len(totales) < 2:
+                    totales.append((mt.group(1), _num(mt.group(2))))
+                if len(totales) >= 2 or re.match(r'^\W*(PTB|PBT|R[EÉ]PLICA)\b', pl, re.I):
+                    en_total = False
+            mp = PTB_FD.match(pl)
+            if mp and not lados(l):
+                pares.append((mp.group(1), int(mp.group(3)) * (-1 if mp.group(2) == '-' else 1)))
+                continue
+            g = GANA_FD.match(pl)
+            if g and re.search(r'\bDF\b', pl, re.I):
+                b['df'] = True
+                break
+            gd = GANADOR.match(pl)
+            quien = gd.group(2) if gd else (g.group(1) if g and not MARCADOR_FD.match(pl) else '')
+            if quien and not b['gana']:
+                lado = _cual(quien, b['a'], b['b'])
+                if lado:
+                    b['gana'], b['como'] = b[lado], 'replica' if b['rep'] else 'directa'
+        if b['df']:
+            continue
+        if len(totales) == 2 and not b.get('ptbv'):
+            la, lb = _cual(totales[0][0], b['a'], b['b']), _cual(totales[1][0], b['a'], b['b'])
+            if la and lb and la != lb:
+                b['ptbv'] = (totales[0][1], totales[1][1]) if la == 'a' else (totales[1][1], totales[0][1])
+        if not b['gana'] and len(pares) >= 2 and pares[0][1] != pares[1][1]:
+            la, lb = _cual(pares[0][0], b['a'], b['b']), _cual(pares[1][0], b['a'], b['b'])
+            if la and lb and la != lb:
+                b['gana'] = b[la if pares[0][1] > pares[1][1] else lb]
+                b['como'] = 'replica' if (b['rep'] or max(pares[0][1], pares[1][1]) == 300) else 'directa'
+    return bats
+
+
 def leer_liga(lid, msgs, ptb=None):
     """Las batallas de una liga, de sus mensajes en orden: `[[id, iso, jornada, a, b, gana, como, extras]]`.
 
@@ -521,7 +651,7 @@ def leer_liga(lid, msgs, ptb=None):
     L = LIGAS[lid]
     f = L['fam']
     bats = _u(msgs) if f == 'U' else _d1(msgs) if f == 'D1' else _d2(msgs) if f == 'D2' else \
-        _f(msgs, L['tit']) if f == 'F' else _s(msgs, L['emoji'])
+        _f(msgs, L['tit']) if f == 'F' else _fd(msgs) if f == 'FD' else _s(msgs, L['emoji'])
     out = []
     for i, b in enumerate(bats):
         if b.get('df') or b.get('nulo'):
@@ -1588,6 +1718,39 @@ def _self_check():
     ok(sorted(['30-1', '9', '30-0', '29'], key=_orden) == ['9', '29', '30-0', '30-1'], 'los ids se ordenan por mensaje y orden')
     u2 = VENCE.match(_plano('CEKO 🇦🇷 VENCE A BM 🇦🇷 DE MANERA DIRECTA'))
     ok(u2 and u2.group(4) and u2.group(5).upper() == 'DIRECTA', 'y el orden de su canal «tabla» («VENCE A X DE MANERA DIRECTA»)')
+
+    # 🎙️ FDS (20/10/2026): un mensaje por batalla; el PTB del cierre decide; los cierres cortos; el df no es batalla
+    pfd = {}
+    fd = leer_liga('fds-peru', ms(
+        '# <:FDSPERU:1> JORNADA 1 <:FDSPERU:1>',
+        '# __ MC AREPA <:vs:2>  CINEXFILO __\n\nEasy mode\n\nMC Arepa: (2) (2) (2) (3) (1) (1)  11\nCinexfilo: (2) (2) (2) (2) (3) (2) 13\n'
+        'RESULTADOS 92 CINE - 87 MCarepa\nREPLICA',
+        '# __ MC AREPA <:vs:2>  CINEXFILO __\n# REPLICA\nMC Arepa (2) (1) (2) (1)  6\nCinexfilo (2) (1) (3) (1)  7\n'
+        '# GANADOR POR LA MINIMA Cine\n# <:alerta:3>  Resultados <:alerta:3>\nMC arepa +100\nCinefilox +300',
+        '# <:FDSPERU:1> Artezzy <:vs:2> Cronox <:FDSPERU:1>\n\n##  Gana Artezzy por df el rival no se presentó.',
+        '# Gana : Pepe Mujica 66 - Giansito 60',
+        '# <:FDSPERU:1> JORNADA 2 <:FDSPERU:1>',
+        '# <:FDSPERU:1> SIN LIMITES <:vs:2> SOL| Jornada 2 <:FDSPERU:1>\n\nEasy mode\nSOL: (0) (0.) (1) (1) (0.) (0) = 4\n'
+        'SIN LIMITES: (1) (0.) (2) (0) (0.) (0) = 4\n\nTotal:\n\nSOL: (44.5)\nSIN LIMITES: (46)\n\nRéplica:\n\n'
+        'SIN LIMITES: (1) (0.) (2) (0.) (1) (0) (3) (1) = 9\nSOL: (2) (1) (0) (1) (0) (0.) (1) (2) =  7.5\n\nPTB:\n \nSOL: (+100)\nSIN LIMITES: (+300)',
+        '# <:FDSPERU:1> Pepe Mujica <:vs:2> Cinexfilo | Jornada 2 <:FDSPERU:1>\n\nTotal:\n\nPepe Mujica: (44.5)\nCinexfilo: (37)\n\n'
+        'PTB:\n \nPepe Mujica: (+500)\nCinexfilo: (-250)',
+        '# <:FDSPERU:1>  Giansito  <:vs:2> Telmex <:FDSPERU:1>\n\n##  Gana Giansito',
+        '1 ROUND EASY MODE\n\nMato\n\nReplica\n\nPoxe 0 0 0 0:0\nMato 0 0 0 0:0'), pfd)
+    ok([x[2:7] for x in fd] == [[1, 'MC AREPA', 'CINEXFILO', 'CINEXFILO', 'replica'], [1, 'Pepe Mujica', 'Giansito', 'Pepe Mujica', 'directa'],
+                                [2, 'SIN LIMITES', 'SOL', 'SIN LIMITES', 'replica'], [2, 'Pepe Mujica', 'Cinexfilo', 'Pepe Mujica', 'directa'],
+                                [2, 'Giansito', 'Telmex', 'Giansito', 'directa']],
+       'FDS: la réplica cierra en el mensaje siguiente («GANADOR POR LA MINIMA Cine»), el PTB +300/+100 es réplica y +500/-250 '
+       'directa, «Gana : A 66 - B 60» y «Gana X» a secas; el «por df» no es batalla, y una planilla sin título no reabre nada',
+       str([x[2:7] for x in fd]))
+    ok(pfd.get('1006') == [46.0, 44.5] and pfd.get('1007') == [44.5, 37.0] and '1008' not in pfd,
+       'FDS: el total de cada lado, en el orden del título, sólo cuando lo dijo', str(pfd))
+    ok(_cual('POR LA MINIMA Cine', 'MC AREPA', 'CINEXFILO') == 'b' and _cual('Cinefilox', 'MC AREPA', 'CINEXFILO') == 'b'
+       and _cual('MC arepa', 'MC AREPA', 'CINEXFILO') == 'a' and _cual('Sol', 'SIN LIMITES', 'SOL') == 'b'
+       and _cual('ganador', 'MC AREPA', 'CINEXFILO') is None and _cual('C', 'CAMPOY', 'CEKO') is None,
+       'los apodos del cierre: el principio del nombre o un parecido claro, nunca con los dos lados parecidos')
+    ok(lados('# <:FDSPERU:1> SIN LIMITES <:vs:2> SOL| Jornada 2 <:FDSPERU:1>')[:2] == ('SIN LIMITES', 'SOL'),
+       'el «| Jornada 2» del título de FDS no es parte del nombre')
 
     # 🖼️ el flyer: un afiche, no un separador
     ok(es_flyer({'ct': 'image/jpeg', 'w': 1080, 'h': 1350}) and not es_flyer({'ct': 'image/jpeg', 'w': 1400, 'h': 200})

@@ -2200,11 +2200,12 @@ const ok = (cond, que, det) => {
       'visitas de cada servidor: sólo de los que mide el ciclo');
     const ps = async (quien) => (await o.panelSocio({ quien })).json();
     const p1 = await ps('400000000000000001');
-    ok(p1.ok && p1.servidores.length === 1 && p1.servidores[0].sv === 'FFA' && p1.servidores[0].visitas[0][1] === 2
+    ok(p1.ok && p1.servidores.length === 2 && p1.servidores[0].sv === 'FFA' && p1.servidores[0].visitas[0][1] === 2
+      && p1.servidores[1].sv === 'TRS' && p1.servidores[1].tier === 3
       && !('rec' in p1.servidores[0]) && !('dueno' in p1.servidores[0]) && !p1.todos,
-    'el dueño ve su Tier 1 (no el Tier 3), con sus visitas, sin la recomendación ni el ID del dueño');
-    ok((await ps('400000000000000009')).servidores.length === 0 && (await ps(A.DUENO)).servidores.length === 2 && (await ps(A.DUENO)).todos,
-      'quien no es dueño no ve nada; Dlx ve todos los Tier 1 y 2');
+    'el dueño ve sus dos (el Tier 1 y el Tier 3: los tres tiers desde el 20/10/2026), con sus visitas, sin la recomendación ni el ID del dueño');
+    ok((await ps('400000000000000009')).servidores.length === 0 && (await ps(A.DUENO)).servidores.length === 3 && (await ps(A.DUENO)).todos,
+      'quien no es dueño no ve nada; Dlx ve todos');
     const aj0 = o.leer('ajustes_dueno') || {};
     o.guardar('ajustes_dueno', Object.assign({}, aj0, { socios_duenos: { SR: ['400000000000000009'] } }));
     ok((await ps('400000000000000009')).servidores[0].sv === 'SR' && (await ps('400000000000000002')).servidores.length === 0,

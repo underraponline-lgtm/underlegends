@@ -141,6 +141,13 @@
      "canal_id": "1507450564844323037",
      "categoria_id": "1468478330826260500",
      "creada": "2026-10-03"
+    },
+    {
+     "codigo": "ZAMbgTDNVq",
+     "canal": "✦📝︱inscripciones-2",
+     "canal_id": "1561465039867748453",
+     "categoria_id": "1468478330826260500",
+     "creada": "2026-10-20"
     }
    ]
   },
@@ -290,7 +297,16 @@
     "canal": "➣「👋」bienvenido",
     "canal_id": "841119822704279593",
     "creada": "2026-10-15"
-   }
+   },
+   "invitaciones_inscripcion": [
+    {
+     "codigo": "aDFf7zxsgg",
+     "canal": "➣「📝」inscripciones",
+     "canal_id": "1547064939221360701",
+     "categoria_id": "867553625508282369",
+     "creada": "2026-10-20"
+    }
+   ]
   },
   "URBF": {
    "nombre": "Urban Freestyle",
@@ -401,6 +417,13 @@
      "canal_id": "1475519486671978696",
      "categoria_id": "1373340537486053527",
      "creada": "2026-10-03"
+    },
+    {
+     "codigo": "UF3nR9SVf6",
+     "canal": "「🐂」𝐈𝐍𝐒𝐂𝐑𝐈𝐏𝐂𝐈𝐎𝐍𝐄𝐒",
+     "canal_id": "1559536518593257552",
+     "categoria_id": "1373340537486053527",
+     "creada": "2026-10-20"
     }
    ]
   },
@@ -527,6 +550,46 @@
     ]
    ],
    "youtube_id": "UCvBsCGWVsw0lq0jf_d8O98g"
+  },
+  "FDS": {
+   "nombre": "Freestyle Discord Series",
+   "guild_id": "1489848581203689535",
+   "en_el_sheet": false,
+   "nota": "20/10/2026: el bot entró (el dueño lo sumó con permisos de administrador) y Dlx lo registró como TIER 3 después de una llamada con el dueño: «crea su página del servidor y añade sus ligas, pero no cuentes para la Liga Global nada aún» y «I want FDS to be TIER 3». En Discord se llama «#FDS ╏FREESTYLE DISCORD SERIES» (224 miembros el 20/10). Sus ligas: FDS Perú y FDS México (una categoría cada una: anuncios, fechas, resultados y tabla), que van a Ligas (`bot/ligas.py`, familia FD) y no cuentan como duelos; la RED BULL es un torneo con llaves. Sus eventos se promocionan como los de todos (calendario, campana, Publicaciones) y sus llaves NO se leen: es Tier 3. Sin carta de Servidor, sin tag todavía (lo elige Dlx) y sin redes (el dueño las iba a pasar).",
+   "confirmado": true,
+   "sigla": "FDS",
+   "tier": 3,
+   "categorias_fuera": {
+    "_por_que": "Sus dos ligas van a Ligas (bot/ligas.py), no al calendario de eventos: una jornada leída como evento entraba como llave. Dlx, 20/10/2026: «añade sus ligas».",
+    "ids": [
+     "1489848582809976866",
+     "1558966592031948941"
+    ],
+    "_ids": "las categorías «⦑🏅🔴⦒LIGA FDS PERÚ T1» y «⦑🏅🟢⦒LIGA FDS MEXICO T1»"
+   },
+   "invitacion": "https://discord.gg/uTpFjBYEDR",
+   "invitacion_liga": {
+    "codigo": "uTpFjBYEDR",
+    "canal": "🛬・bienvenidas",
+    "canal_id": "1489848581765730411",
+    "creada": "2026-10-20"
+   },
+   "invitaciones_inscripcion": [
+    {
+     "codigo": "8YKZmZcxVh",
+     "canal": "✅╏inscripciones-express",
+     "canal_id": "1506833778402918421",
+     "categoria_id": "1489848582189224103",
+     "creada": "2026-10-20"
+    },
+    {
+     "codigo": "2fhsRyjZBu",
+     "canal": "│🔵📋┆inscripciones",
+     "canal_id": "1555686122485715074",
+     "categoria_id": "1555684181043056761",
+     "creada": "2026-10-20"
+    }
+   ]
   }
  },
  "_fuera_de_la_tabla": [
@@ -614,5 +677,6 @@
   "EFA nunca estuvo en el Sheet. bot/desplegar.py frena si worker.js (`fuera: true`) no dice lo mismo.",
   "TWR, FTN y FRZ también desde el 05/10/2026 (Dlx, a «¿los saco del menú, como TFC y EFA?»: «a»): el bot no está",
   "en esos servidores, así que en el menú salían siempre «🔒 BLOQUEADA». Siguen registrados y su historia queda."
- ]
+ ],
+ "_tier_leeme": "`tier`: el nivel con el que ARRANCA un servidor (1 suma al ranking, 2 el calendario sin sumar, 3 la página y sus ligas sin sumar) mientras Dlx no elija otro en el Dashboard (ajuste `tiers`, que manda). Sin `tier`, Tier 1 (los nueve socios de siempre). Existe por FDS (20/10/2026): sin un default escrito, un servidor nuevo que Dlx no tocó en el Dashboard arrancaba en Tier 1 y sus llaves sumaban al ranking. Lo lee bot/tiers.py `niveles()`."
 }

@@ -307,7 +307,8 @@ console.log('\nLA CARTA\n');
   // (`fuera`: TFC y EFA, Dlx 04/10/2026), que no salen
   // (y desde el 05/10/2026 TWR, FTN y FRZ: el bot no está ahí). ⚠️ SALVO EL QUE SE ESTÁ MOSTRANDO: Konan tiene su
   // carta de la pre-temporada en TWR, y esa opción se queda para que el menú la marque y se pueda volver
-  const deLaLiga = (await import('./worker.js')).SERVIDORES.filter((s) => !s.fuera);
+  // 🎙️ y sin los que no tienen carta de Servidor (`sinCarta`: FDS, Tier 3, 20/10/2026)
+  const deLaLiga = (await import('./worker.js')).SERVIDORES.filter((s) => !s.fuera && !s.sinCarta);
   const opts = select(c)?.options || [];
   ok('lista todos los servidores de la Liga, más el que se está mostrando',
      opts.length === deLaLiga.length + 1 && opts.some((o) => o.value === 'TWR' && o.default),
@@ -412,7 +413,7 @@ console.log('\nLA INVITACIÓN\n');
   const d = r.json?.data;
   ok('elegir un servidor sin carta NO pisa el mensaje', r.json?.type === 4,
      `type ${r.json?.type}` + (r.json?.type === 7 ? '  ← borraría la carta pública' : ''));
-  ok('y contesta con la invitación', /Entrá por acá/.test(d?.content || ''),
+  ok('y contesta con la invitación', /Entra por acá/.test(d?.content || ''),
      (d?.content || '').slice(0, 48));
   // ⚠️ EL LINK VIVE EN EL BOTÓN, NO EN EL TEXTO, desde el 18/09/2026. Se
   // comprueba la forma entera —estilo 5, con `url` y SIN `custom_id`— porque
@@ -433,7 +434,7 @@ console.log('\nLA INVITACIÓN\n');
     const c2 = r2.json?.data?.content || '';
     const b2 = (r2.json?.data?.components || []).flatMap(f => f.components || []);
     ok('mirando la carta de OTRO, no te invitan a ti',
-       !/Entrá por acá/.test(c2) && !b2.some(b => (b.url || '').includes('discord.gg/')),
+       !/Entra por acá/.test(c2) && !b2.some(b => (b.url || '').includes('discord.gg/')),
        c2.slice(0, 60));
     ok('y dice de quién es la carta que falta', /Konan/.test(c2) && /DRA/.test(c2),
        c2.slice(0, 60));
@@ -452,7 +453,7 @@ console.log('\nLA INVITACIÓN\n');
   const r = await pedir({ type: 3, guild_id: G.FFA, application_id: 'app', token: 'tok',
     data: { custom_id: 's:konan::999111', values: ['FFA'] }, member: { user: { id: '999111' } } });
   const t = r.json?.data?.content || '';
-  ok('sin carta pero estando ahí, NO invita', !/Entrá por acá|invitaci/.test(t),
+  ok('sin carta pero estando ahí, NO invita', !/Entra por acá|invitaci/.test(t),
      t.slice(0, 48));
   ok('y dice que la está generando', /generando/.test(t), t.slice(0, 48));
 }
@@ -548,7 +549,7 @@ console.log('\nLOS DATOS\n');
      /\/freestyle-rap\/pase$/.test(bs[1]?.url || '') && /\/freestyle-rap\/eventos$/.test(bs[2]?.url || ''),
      bs.map(b => b.label + ' ' + b.url).join(' · '));
   ok('y dice los dos pasos: verificarse (la Servidor) y la primera Tarea del Pase (la Temporada)',
-     /Todavía no tenés tarjeta/.test(c) && /Verificate en la página/.test(c) && /\*\*Servidor\*\*/.test(c) &&
+     /Todavía no tienes tarjeta/.test(c) && /Verifícate en la página/.test(c) && /\*\*Servidor\*\*/.test(c) &&
      /Tarea del Pase/.test(c) && /\*\*Temporada\*\*/.test(c), c.slice(0, 90));
   ok('que dice que si no está en DRA, la página lo mete', /te mete/.test(c), c.slice(-120));
 }
@@ -661,7 +662,7 @@ console.log('\nTRES MANERAS DE PEDIR\n');
   const r2 = await pedir({ type: 2, guild_id: '1', member: { user: { id: '777333' } },
     data: { name: 'card', options: [{ name: 'quien', type: 6, value: '777333' }] } });
   const c2 = r2.json?.data?.content || '';
-  ok('elegirse a uno mismo en «quien» contesta como a uno mismo', /Todavía no tenés tarjeta/.test(c2) && !/su nombre/.test(c2),
+  ok('elegirse a uno mismo en «quien» contesta como a uno mismo', /Todavía no tienes tarjeta/.test(c2) && !/su nombre/.test(c2),
      c2.slice(0, 60));
 }
 {
@@ -876,11 +877,11 @@ console.log('\nEL FRENO AL SPAM\n');
       { seguido: true }));
   }
   const pasaron = tiros.filter(r => r.json?.type === 4 &&
-    !/Pará un poco/.test(r.json?.data?.content || '')).length;
+    !/Para un poco/.test(r.json?.data?.content || '')).length;
   ok('/card seguido se corta a las cuatro', pasaron === 4, `pasaron ${pasaron} de 6`);
   const frenado = tiros[5];
   ok('y el quinto avisa cuánto falta',
-     /Pará un poco/.test(frenado.json?.data?.content || ''),
+     /Para un poco/.test(frenado.json?.data?.content || ''),
      (frenado.json?.data?.content || '').slice(0, 40));
   ok('el aviso dice los segundos', /\*\*\d+ s\*\*/.test(frenado.json?.data?.content || ''));
   ok('y es efímero', (frenado.json?.data?.flags & EF) !== 0,
@@ -897,7 +898,7 @@ console.log('\nEL FRENO AL SPAM\n');
   const r = await pedir({ type: 2, guild_id: G.FFA, member: { user: { id: YO } },
     data: { name: 'card', options: [{ name: 'nombre', value: 'Konan' }] } });
   ok('pasado el minuto vuelve a andar',
-     !/Pará un poco/.test(r.json?.data?.content || ''),
+     !/Para un poco/.test(r.json?.data?.content || ''),
      (r.json?.data?.content || '').slice(0, 40));
 }
 {
@@ -929,7 +930,7 @@ console.log('\nEL FRENO AL SPAM\n');
     data: { name: 'card', options: [{ name: 'nombre', value: 'Konan' }] } },
     { seguido: true });
   ok('frenar a uno no frena a los demás',
-     !/Pará un poco/.test(r.json?.data?.content || ''));
+     !/Para un poco/.test(r.json?.data?.content || ''));
 }
 
 // ── SE ANOTA A QUIEN EL BOT NO CONOCE ─────────────────────────────────────
@@ -1223,7 +1224,7 @@ const eligeSv = (guild, sv, uid = '999222', quien = 'drako') => ({
                      : { user: { id: uid } }),
   data: { custom_id: `s:${quien}:x:${uid}`, values: [sv] },
 });
-const hayInvitacion = (r) => /Entrá por acá|Entrar a/.test(JSON.stringify(r.json || {}));
+const hayInvitacion = (r) => /Entra por acá|Entrar a/.test(JSON.stringify(r.json || {}));
 
 {
   // 🔴 EL BUG QUE REPORTÓ DRAKO: está en FFA y le ofrecían entrar a FFA.
@@ -1320,7 +1321,7 @@ for (const u of ['777002', '777003', '777004', '777005', '777006']) PUESTO['d:' 
 {
   const r = await pedir(cmdPuesto(G.FFA, '777009'));
   ok('sin número en el Competitivo, /numeral explica cómo se consigue y no guarda nada',
-     /10 eventos/.test(texto(r)) && /Todavía no tenés número/.test(texto(r)) && leerNick(G.FFA, '777009') === null,
+     /10 eventos/.test(texto(r)) && /Todavía no tienes número/.test(texto(r)) && leerNick(G.FFA, '777009') === null,
      texto(r).slice(0, 90));
 }
 {
@@ -1409,7 +1410,7 @@ const ADMIN = '8', NADIE = '0', SOLO_ROLES = '268435456';
 }
 {
   const r = await pedir(clickCfg(G.FFA, NADIE, 'cfg:nick'));
-  ok('sin permiso, el click tampoco pasa', /no tenés permiso/i.test(texto(r)),
+  ok('sin permiso, el click tampoco pasa', /no tienes permiso/i.test(texto(r)),
      'efímero nunca fue un control de acceso');
 }
 {
@@ -1424,7 +1425,7 @@ const ADMIN = '8', NADIE = '0', SOLO_ROLES = '268435456';
   const r = await pedir(cmdPuesto(G.DRA, '777005'));
   ok('quien lo prendió a mano lo conserva aunque el servidor esté apagado',
      /a la vista/i.test(texto(r)), 'es lo suyo, le gana al servidor');
-  ok('y el mensaje dice que es por elección suya', /vos/i.test(texto(r)));
+  ok('y el mensaje dice que es por elección suya', /\*\*tú\*\* lo elegiste/i.test(texto(r)));
 }
 {
   // ⚠️ Y PRENDERLO CUANDO YA SE VE **IGUAL SE GUARDA**: hoy se ve igual, pero
@@ -1918,7 +1919,7 @@ console.log('\n/VERIFICAR\n');
   r = await pedirVer('700002', { roles: [], user: { username: 'sinpais' } });
   ok('sin país: lo pide', /No encuentro tu \*\*país\*\*/.test(texto(r)), texto(r));
   r = await pedirVer('700003', { roles: ['R_AR', 'R_CL'], user: {} });
-  ok('dos países: pide dejar uno', /dejá uno solo/.test(texto(r)), texto(r));
+  ok('dos países: pide dejar uno', /deja uno solo/.test(texto(r)), texto(r));
   r = await pedirVer('700004', { roles: ['R_AR'], user: {} });
   const bots = (r.json?.data?.components || []).flatMap((f) => f.components || []);
   ok('completo sin Miembro: se lo damos EN EL MOMENTO (Dlx, 12/10/2026: «A»), y dice cuándo sale la tarjeta',
@@ -2310,7 +2311,7 @@ console.log('\nTU CARTA SIN TU FOTO\n');
     puestos.length = 0;
     r = await pedirMia('999111', null);
     ok('sin foto en Discord: que se ponga una, sin guardar el gris de Discord',
-       !puestos.length && mandados.length === 1 && /no tenés foto en Discord/.test(mandados[0].content));
+       !puestos.length && mandados.length === 1 && /no tienes foto en Discord/.test(mandados[0].content));
     cdn = 404;
     r = await pedirMia('999111', 'muerto');
     ok('si el CDN no la da, se calla: la carta ya salió y el ciclo reintenta', !puestos.length && !mandados.length);

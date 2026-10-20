@@ -10485,8 +10485,10 @@ export class Avisos {
     } catch (e) { return 0; }
   }
 
-  /** Los socios Tier 1 o 2 de los que `quien` es dueño (en Discord, o por `socios_duenos` del Dashboard, que manda);
-   *  Dlx, todos. La misma puerta para el panel y para sus ajustes: `{esDlx, T, lista}`, cada uno con su `tier` ya resuelto */
+  /** Los socios de los que `quien` es dueño (en Discord, o por `socios_duenos` del Dashboard, que manda); Dlx, todos.
+   *  Los tres tiers desde el 20/10/2026 (nació para 1 y 2): Dlx, del dueño de FDS, Tier 3, «para que pueda ver su página
+   *  y sus estadísticas». La misma puerta para el panel y para sus ajustes: `{esDlx, T, lista}`, cada uno con su `tier` ya
+   *  resuelto */
   sociosDe(quien) {
     const T = this.leer('tiers') || {};
     const aj = this.ajustes();
@@ -10495,7 +10497,7 @@ export class Avisos {
     const esDlx = quien === DUENO;
     const de = (x) => (Array.isArray(mano[x.sv]) && mano[x.sv].length ? mano[x.sv] : (x.dueno ? [x.dueno] : []));
     const tierDe = (x) => tiers[x.sv] || x.tier || 1;
-    const lista = (T.servidores || []).filter((x) => [1, 2].includes(tierDe(x)) && (esDlx || de(x).includes(quien)))
+    const lista = (T.servidores || []).filter((x) => [1, 2, 3].includes(tierDe(x)) && (esDlx || de(x).includes(quien)))
       .map((x) => ({ ...x, tier: tierDe(x) }));
     return { esDlx, T, lista };
   }
