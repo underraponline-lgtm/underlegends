@@ -2621,6 +2621,32 @@
       "Bootrax Humilde": "1122273746099638354",
       "PolloSport": "716016310202400848"
      }
+    },
+    "1562215107549732935": {
+     "sv": "URBF",
+     "nombre": "COMPE CHILL",
+     "mo": "2026-10-20T21:25:06Z",
+     "staff": {
+      "jurado": [
+       "Erian 恵理久"
+      ],
+      "host": [
+       "Erian 恵理久"
+      ],
+      "dj": [
+       "Erian 恵理久"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Erian 恵理久",
+       "id": "1055474244089286706"
+      }
+     ],
+     "organizador": "Erian 恵理久",
+     "cuentas": {
+      "Erian 恵理久": "1055474244089286706"
+     }
     }
    },
    "ver": {

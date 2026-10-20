@@ -8,21 +8,21 @@
    "lista": [
     [
      "multi",
-     "Jugá un evento del servidor con el multiplicador más alto",
+     "Juega un evento del servidor con el multiplicador más alto",
      "facil",
      1,
      300
     ],
     [
      "duelos3",
-     "Ganá 3 duelos",
+     "Gana 3 duelos",
      "media",
      3,
      600
     ],
     [
      "final",
-     "Llegá a una final",
+     "Llega a una final",
      "dificil",
      2,
      1000
@@ -1500,21 +1500,21 @@
    "lista": [
     [
      "eventos2",
-     "Jugá 2 eventos",
+     "Juega 2 eventos",
      "facil",
      2,
      300
     ],
     [
      "semis",
-     "Llegá a una semifinal",
+     "Llega a una semifinal",
      "media",
      4,
      600
     ],
     [
      "campeon",
-     "Ganá un evento",
+     "Gana un evento",
      "dificil",
      1,
      1000
@@ -2734,7 +2734,7 @@
    "lista": [
     [
      "multi",
-     "Jugá un evento del servidor con el multiplicador más alto",
+     "Juega un evento del servidor con el multiplicador más alto",
      "facil",
      1,
      300
@@ -2748,7 +2748,7 @@
     ],
     [
      "final",
-     "Llegá a una final",
+     "Llega a una final",
      "dificil",
      2,
      1000
@@ -2763,7 +2763,7 @@
     ],
     [
      "dorado",
-     "Jugá el evento dorado de Snake Rap",
+     "Juega el evento dorado de Snake Rap",
      "dorado",
      1,
      600,
