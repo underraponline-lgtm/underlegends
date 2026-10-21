@@ -28408,5 +28408,433 @@
     1250
    ]
   ]
+ },
+ "494": {
+  "dia": "2026-10-21",
+  "escala": "16+",
+  "fecha": "21/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1562541382990831727"
+  ],
+  "n": 494,
+  "nombre": "DESGRACIAS EN TOKYO VOL 30 1 VS 1",
+  "participantes": 27,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Velatz",
+       "SULTAN",
+       "Assuan"
+      ],
+      "Velatz",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Sosa",
+       "DO-C",
+       "Teo"
+      ],
+      "Sosa",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Abyssus",
+       "Vandu",
+       "OKAM"
+      ],
+      "Abyssus",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Colesito",
+       "Panchok",
+       "Drexx"
+      ],
+      "Colesito",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Makmah",
+       "Krish",
+       "DarnBless"
+      ],
+      "Makmah",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Mr Still Ballin",
+       "Agus",
+       "LRS"
+      ],
+      "Mr Still Ballin, Agus",
+      "triple (3 bandas, pasan 2); también pasa: agus"
+     ],
+     [
+      [
+       "Oasis",
+       "PichulaMc",
+       "1200"
+      ],
+      "Oasis",
+      "triple (3 bandas); Revivido: Pichulamc"
+     ],
+     [
+      [
+       "Agus",
+       "Jobaking",
+       "Dyzz",
+       "Tenor",
+       "Kyss",
+       "PichulaMc"
+      ],
+      "Agus",
+      "triple (6 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Velatz",
+       "Makmah"
+      ],
+      "Velatz",
+      ""
+     ],
+     [
+      [
+       "Mr Still Ballin",
+       "Sosa"
+      ],
+      "Mr Still Ballin",
+      ""
+     ],
+     [
+      [
+       "Abyssus",
+       "Oasis"
+      ],
+      "Abyssus",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "Colesito"
+      ],
+      "Agus",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Abyssus",
+       "Velatz"
+      ],
+      "Abyssus",
+      ""
+     ],
+     [
+      [
+       "Mr Still Ballin",
+       "Agus"
+      ],
+      "Mr Still Ballin",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Agus",
+       "Velatz"
+      ],
+      "Agus",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Abyssus",
+       "Mr Still Ballin"
+      ],
+      "Abyssus",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Abyssus",
+    "Campeón",
+    10000
+   ],
+   [
+    "Mr Still Ballin",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Agus",
+    "Tercero",
+    6000
+   ],
+   [
+    "Velatz",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Oasis",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sosa",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    1875
+   ],
+   [
+    "1200",
+    "Octavos",
+    1250
+   ],
+   [
+    "Assuan",
+    "Octavos",
+    1250
+   ],
+   [
+    "DO-C",
+    "Octavos",
+    1250
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jobaking",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kyss",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "Panchok",
+    "Octavos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tenor",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ]
+  ]
+ },
+ "495": {
+  "dia": "2026-10-21",
+  "escala": "8-15",
+  "fecha": "21/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1562573563859304573"
+  ],
+  "n": 495,
+  "nombre": "19 CUP - FUTCARD EDITION VOL.3",
+  "participantes": 14,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Miniboy",
+       "🟢 Batalla 2: Mco"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "MaYeuTyK",
+       "🟢 Batalla 4: GHV",
+       "Xclusivo"
+      ],
+      "MaYeuTyK",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "🟢 Batalla 1: Carlos",
+       "Drexx"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "🟢 Batalla 3: Desio",
+       "Dominick🇵🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "Miniboy"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "MaYeuTyK",
+       "🔴 Semi 2: DESIO"
+      ],
+      "MaYeuTyK",
+      "Walk-in 1: 🔴 Semi 2: DESIO"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "MaYeuTyK"
+      ],
+      "Carlosss",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Carlosss",
+    "Campeón",
+    7500
+   ],
+   [
+    "MaYeuTyK",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Xclusivo",
+    "Cuartos",
+    2000
+   ],
+   [
+    "🟢 Batalla 2: Mco",
+    "Cuartos",
+    2000
+   ],
+   [
+    "🟢 Batalla 4: GHV",
+    "Cuartos",
+    2000
+   ],
+   [
+    "🔴 Semi 2: DESIO",
+    "Semifinal",
+    1750
+   ]
+  ]
  }
 }

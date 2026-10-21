@@ -2,17 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1560047366801981441": {
-   "id": "1560047366801981441",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1792014676524,
-   "a": "Kochi🇨🇱",
-   "b": "Vacile🇪🇸",
-   "ganador": "Vacile🇪🇸",
-   "votos": "1–0"
-  },
   "1560048659716898948": {
    "id": "1560048659716898948",
    "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
@@ -5152,6 +5141,27 @@
      [
       "Artezzy 🇵🇪",
       "Lrs 🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1562580161281392821": {
+   "id": "1562580161281392821",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792618541785,
+   "ed": 1792618586628,
+   "texto": "`[ FINAL ]`\n⌞CARLOS 🇧🇴⌝ 🆚 ⌞MARTINEZ 🇵🇪⌝",
+   "batallas": [
+    [
+     "FINAL",
+     [
+      "CARLOS 🇧🇴",
+      "MARTINEZ 🇵🇪"
      ],
      null,
      "última ronda y no dice campeón",

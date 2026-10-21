@@ -72,10 +72,22 @@
     "nivel": "A",
     "base": 12000,
     "o": 1,
-    "estado": "suelto",
-    "ev": 1,
+    "estado": "cazado",
+    "ev": 2,
     "fase": "Campeón",
-    "valor": 14500
+    "valor": 14500,
+    "caza": {
+     "n": 494,
+     "evento": "DESGRACIAS EN TOKYO VOL 30 1 VS 1",
+     "sv": "FFA",
+     "t": "2026-10-21T19:01:36Z",
+     "por": [
+      {
+       "n": "Abyssus",
+       "cobra": 20000
+      }
+     ]
+    }
    },
    {
     "n": "Catarsis",

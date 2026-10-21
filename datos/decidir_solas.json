@@ -1550,6 +1550,33 @@
     "🏳️‍⚧️ VEPG 🏳️‍⚧️"
    ],
    "escribio": {}
+  },
+  {
+   "id": "eb329a2d6c",
+   "tipo": "Nombre desconocido",
+   "sec": "19 CUP - FUTCARD EDITION VOL.3 · DDF · 21/10 · #495",
+   "que": "¿Quién es «🔴 Semi 2: DESIO»?",
+   "r": "Es Desio",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Desio: estaba en la llamada del evento con un nombre parecido",
+   "t": 1792620139469,
+   "filas": [
+    775
+   ],
+   "variantes": [
+    "🔴 Semi 2: DESIO"
+   ],
+   "escribio": {
+    "alias": [
+     "🔴 Semi 2: DESIO",
+     "Desio"
+    ],
+    "filas": [
+     300
+    ]
+   }
   }
  ],
  "deshechas": []

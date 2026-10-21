@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "213d8795bbc6643f",
+  "firma": "4ad47cc65e045a6f",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "b98f56fac861982c",
+  "firma": "d6bb1da6fb23d9de",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "b93681d1c846f8be",
+  "firma": "181d983d067d8fbd",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -15936,7 +15936,7 @@
    "Tenor": 5
   },
   "fecha": "19/10",
-  "firma": "469769f54a86686e",
+  "firma": "fef24a148e1c8d21",
   "msg": "1561761975514697891",
   "nombre": "FREESTYLE LEAGUE N3",
   "num": 488,
@@ -17623,6 +17623,546 @@
     "Dyzz",
     "Octavos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "494": {
+  "antes": {
+   "1200": [
+    208,
+    59,
+    true
+   ],
+   "Abyssus": [
+    21,
+    24,
+    false
+   ],
+   "Agus": [
+    10,
+    11,
+    false
+   ],
+   "Assuan": [
+    229,
+    125,
+    true
+   ],
+   "Colesito": [
+    7,
+    8,
+    false
+   ],
+   "DO-C": [
+    238,
+    137,
+    true
+   ],
+   "DarnBless": [
+    87,
+    119,
+    false
+   ],
+   "Drexx": [
+    32,
+    41,
+    false
+   ],
+   "Dyzz": [
+    38,
+    48,
+    false
+   ],
+   "Jobaking": [
+    130,
+    233,
+    false
+   ],
+   "Krish": [
+    74,
+    97,
+    false
+   ],
+   "Kyss": [
+    94,
+    140,
+    false
+   ],
+   "LRS": [
+    44,
+    55,
+    false
+   ],
+   "Makmah": [
+    3,
+    3,
+    false
+   ],
+   "Mr Still Ballin": [
+    23,
+    26,
+    false
+   ],
+   "OKAM": [
+    140,
+    261,
+    false
+   ],
+   "Oasis": [
+    1,
+    1,
+    false
+   ],
+   "Panchok": [
+    5,
+    6,
+    false
+   ],
+   "PichulaMc": [
+    4,
+    5,
+    false
+   ],
+   "SULTAN": [
+    405,
+    388,
+    true
+   ],
+   "Sosa": [
+    56,
+    76,
+    false
+   ],
+   "Tenor": [
+    49,
+    65,
+    false
+   ],
+   "Teo": [
+    72,
+    95,
+    false
+   ],
+   "Vandu": [
+    13,
+    14,
+    false
+   ],
+   "Velatz": [
+    12,
+    13,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Velatz",
+    "SULTAN",
+    "Velatz"
+   ],
+   [
+    "Velatz",
+    "Assuan",
+    "Velatz"
+   ],
+   [
+    "Sosa",
+    "DO-C",
+    "Sosa"
+   ],
+   [
+    "Sosa",
+    "Teo",
+    "Sosa"
+   ],
+   [
+    "Abyssus",
+    "Vandu",
+    "Abyssus"
+   ],
+   [
+    "Abyssus",
+    "OKAM",
+    "Abyssus"
+   ],
+   [
+    "Colesito",
+    "Panchok",
+    "Colesito"
+   ],
+   [
+    "Colesito",
+    "Drexx",
+    "Colesito"
+   ],
+   [
+    "Makmah",
+    "Krish",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "DarnBless",
+    "Makmah"
+   ],
+   [
+    "Mr Still Ballin",
+    "LRS",
+    "Mr Still Ballin"
+   ],
+   [
+    "Oasis",
+    "PichulaMc",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "1200",
+    "Oasis"
+   ],
+   [
+    "Agus",
+    "Jobaking",
+    "Agus"
+   ],
+   [
+    "Agus",
+    "Dyzz",
+    "Agus"
+   ],
+   [
+    "Agus",
+    "Tenor",
+    "Agus"
+   ],
+   [
+    "Agus",
+    "Kyss",
+    "Agus"
+   ],
+   [
+    "Agus",
+    "PichulaMc",
+    "Agus"
+   ],
+   [
+    "Velatz",
+    "Makmah",
+    "Velatz"
+   ],
+   [
+    "Mr Still Ballin",
+    "Sosa",
+    "Mr Still Ballin"
+   ],
+   [
+    "Abyssus",
+    "Oasis",
+    "Abyssus"
+   ],
+   [
+    "Agus",
+    "Colesito",
+    "Agus"
+   ],
+   [
+    "Abyssus",
+    "Velatz",
+    "Abyssus"
+   ],
+   [
+    "Mr Still Ballin",
+    "Agus",
+    "Mr Still Ballin"
+   ],
+   [
+    "Abyssus",
+    "Mr Still Ballin",
+    "Abyssus"
+   ],
+   [
+    "Agus",
+    "Velatz",
+    "Agus"
+   ]
+  ],
+  "ev_antes": {
+   "1200": 10,
+   "Abyssus": 17,
+   "Agus": 16,
+   "Assuan": 3,
+   "Colesito": 33,
+   "DO-C": 6,
+   "DarnBless": 6,
+   "Drexx": 19,
+   "Dyzz": 12,
+   "Jobaking": 3,
+   "Krish": 11,
+   "Kyss": 6,
+   "LRS": 16,
+   "Makmah": 57,
+   "Mr Still Ballin": 7,
+   "OKAM": 2,
+   "Oasis": 29,
+   "Panchok": 19,
+   "PichulaMc": 38,
+   "SULTAN": 1,
+   "Sosa": 14,
+   "Tenor": 8,
+   "Teo": 11,
+   "Vandu": 28,
+   "Velatz": 37
+  },
+  "fecha": "21/10",
+  "firma": "50e0ad8dd3f6c0b5",
+  "msg": "1562578019472773131",
+  "nombre": "__ DESGRACIAS EN TOKYO VOL 30 1 VS 1 __",
+  "num": 494,
+  "participantes": 27,
+  "sello": {
+   "Abyssus": "38609d39e054:a001e7b21e4d"
+  },
+  "sv": "FFA",
+  "t": "2026-10-21T21:53:39Z",
+  "tabla": [
+   [
+    "Abyssus",
+    "Campeón",
+    10000
+   ],
+   [
+    "Mr Still Ballin",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Agus",
+    "Tercero",
+    6000
+   ],
+   [
+    "Velatz",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sosa",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Oasis",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Colesito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    1875
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Assuan",
+    "Octavos",
+    1250
+   ],
+   [
+    "DO-C",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "Panchok",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "1200",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jobaking",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tenor",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kyss",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "495": {
+  "antes": {
+   "Carlosss": [
+    36,
+    46,
+    false
+   ],
+   "MaYeuTyK": [
+    142,
+    265,
+    false
+   ],
+   "Miniboy": [
+    35,
+    45,
+    false
+   ],
+   "Xclusivo": [
+    199,
+    33,
+    true
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Miniboy",
+    "🟢 Batalla 2: Mco",
+    "Miniboy"
+   ],
+   [
+    "MaYeuTyK",
+    "🟢 Batalla 4: GHV",
+    "MaYeuTyK"
+   ],
+   [
+    "MaYeuTyK",
+    "Xclusivo",
+    "MaYeuTyK"
+   ],
+   [
+    "Carlosss",
+    "Miniboy",
+    "Carlosss"
+   ],
+   [
+    "MaYeuTyK",
+    "🔴 Semi 2: DESIO",
+    "MaYeuTyK"
+   ],
+   [
+    "Carlosss",
+    "MaYeuTyK",
+    "Carlosss"
+   ]
+  ],
+  "ev_antes": {
+   "Carlosss": 8,
+   "MaYeuTyK": 3,
+   "Miniboy": 16,
+   "Xclusivo": 17
+  },
+  "fecha": "21/10",
+  "firma": "5e3197e2d5c9995c",
+  "msg": "1562582559702130758",
+  "nombre": "19 CUP - FUTCARD EDITION VOL.3",
+  "num": 495,
+  "participantes": 14,
+  "sello": {
+   "Carlosss": "6307b83abe49:a001e7b21e4d"
+  },
+  "sv": "DDF",
+  "t": "2026-10-21T21:53:40Z",
+  "tabla": [
+   [
+    "Carlosss",
+    "Campeón",
+    7500
+   ],
+   [
+    "MaYeuTyK",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "🟢 Batalla 2: Mco",
+    "Cuartos",
+    2000
+   ],
+   [
+    "🟢 Batalla 4: GHV",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Xclusivo",
+    "Cuartos",
+    2000
+   ],
+   [
+    "🔴 Semi 2: DESIO",
+    "Semifinal",
+    1750
    ]
   ],
   "v": 2
