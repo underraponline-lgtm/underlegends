@@ -1054,6 +1054,8 @@ export function Llave({ liga, vivoL, n: n0, raiz, dc }) {
             {mod ? <li><Ico n="micro" t={16} />{mod}</li> : null}
             {rgo ? <li title={asc ? 'Puntos de ascenso en ' + (sv.nombre || L.sv) + ' (no en la Liga): ' + asc : undefined}>{rgo}{asc ? <small> · {asc}</small> : null}</li> : null}
             {L.participantes ? <li>{L.participantes} raperos</li> : null}
+            {/* 👀 la llave de un servidor que no suma (Tier 2 y 3): se ve, pero no cuenta (`llaves_a_entrada.para_ver()`) */}
+            {L.ns ? <li>No suma al ranking</li> : null}
             {orgsL.length ? <li className="lk-orgs">{L.vivo && !L.terminada ? 'organiza' : 'organizó'}{' '}
               {orgsL.map(({ n: on, f }, i) => [i ? ', ' : '', f
                 ? <a key={on} href={'#/r/' + encodeURIComponent(f.k)}><Cara liga={liga} k={f.k} nombre={f.n} cls="cara lk-oc" />{limpio(f.n)}</a>

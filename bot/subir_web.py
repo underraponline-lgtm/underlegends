@@ -559,6 +559,11 @@ def armar():
             sys.path.append(_sh)
         import llaves_web as _LW
         regs = _LW.leer()
+        # 👀 Y LAS DE LOS SERVIDORES QUE NO SUMAN (Dlx, 20/10/2026: «las llaves tienen que estar ahí. Simplemente no
+        # cuentan para el ranking»): SÓLO acá, para el calendario y «Ver llave». Ver `llaves_a_entrada.para_ver()`
+        for _k, _v in (_json('datos', 'llaves_sin_sumar.json') or {}).items():
+            if not _k.startswith('_') and isinstance(_v, dict) and _k not in regs:
+                regs[_k] = _v
         # ⚠️ CON TODOS LOS ANUNCIOS DE CONTEXTO: «Lo que pasó» muestra seis, y
         # la llave de un séptimo no es huérfana (`llaves_web._huerfanas()`)
         llaves = _LW.cruzar(pas, regs, todos=[

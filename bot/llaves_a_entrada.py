@@ -104,6 +104,75 @@ def no_suman(hallazgos, fuera=None):
     return si, no
 
 
+#: 👀 las llaves de los servidores que no suman, sólo para VERLAS en la página (ver `para_ver()`)
+SIN_SUMAR = os.path.join(BASE, 'datos', 'llaves_sin_sumar.json')
+#: su número en la página: lejos de los de la Liga (#400…) y entero en JavaScript (un ID de Discord no lo es)
+BASE_N = 10 ** 8
+
+
+def para_ver(sin_sumar, aplicar=False):
+    """👀 Las llaves de los servidores que no suman, armadas como las de `datos/llaves_t1.json` pero en
+    `datos/llaves_sin_sumar.json`, que lee SÓLO la página (`subir_web.py`: el calendario y «Ver llave»).
+
+    Dlx, 20/10/2026: *«las llaves tienen que estar ahí. Simplemente no cuentan para el ranking»*, y a si cuentan para
+    algo más, *«No cuenta para nada»*. Por eso NO van a `llaves_t1.json`: de ahí leen las Misiones, el Pase, el Most
+    Wanted, las insignias, los multiplicadores y los MES AWARDS. El motor sólo arma la tabla —quién llegó a dónde— y los
+    puntos van en 0, así ni la página dice que alguien sumó.
+
+    Lo de cada corrida reemplaza a lo anterior, salvo las que Discord ya no muestra: ésas se quedan."""
+    import motor
+    import llaves_web as LW
+    mods = {'walkin': {0: 0.0, 1: 0.0, 2: 0.0, 3: 0.0}, 'revivido': 0.0, 'invitado': 0.0}
+    try:
+        # la copia de `Config` alcanza: los puntos van en 0, la tabla sólo dice quién llegó a dónde
+        tab = motor.tablas_guardadas()[0]
+    except Exception:                                    # noqa: BLE001
+        tab = None
+    try:
+        with io.open(SIN_SUMAR, encoding='utf-8') as f:
+            viejo = json.load(f) or {}
+    except (OSError, ValueError):
+        viejo = {}
+    regs = {k: v for k, v in viejo.items() if not k.startswith('_')}
+    nuevas = 0
+    for g in agrupar(sin_sumar):
+        h0 = g['llaves'][0]
+        try:
+            nom, fec = nombre_de(g), fecha_de(g)
+            sv = codigo_servidor(h0.get('guild'))[0] or ''
+            filas = []
+            for h in g['llaves']:
+                filas += filas_de(h, nom, fec)[0]
+            if not filas or nom == '(sin titulo)':
+                continue
+            n = BASE_N + int(h0['msg_id']) % BASE_N
+            ev = motor.procesar(filas, n, fec, sv, tab=tab, mods=mods)
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ la llave sin sumar de %s no se pudo armar (%s)' % (h0.get('servidor') or '?', str(e)[:70]))
+            continue
+        ev['nombre'] = nom
+        links = ['https://discord.com/channels/%s/%s/%s' % (h.get('guild'), h.get('canal_id'), h.get('msg_id'))
+                 for h in g['llaves'] if h.get('msg_id') and h.get('canal_id')]
+        r = dict(LW.armar(ev, links, pendientes=[]), ns=1)
+        # los puntos del motor ordenan la tabla (el campeón primero) y después se borran: no sumó nada
+        r['tabla'] = [[q, pos, 0] for q, pos, _p in r.get('tabla') or []]
+        if regs.get(str(n)) != r:
+            nuevas += 1
+        regs[str(n)] = r
+    print('   👀 %d llave(s) de servidores que no suman, para verlas en la página (%d nueva(s) o cambiada(s))'
+          % (len(regs), nuevas))
+    if aplicar and nuevas:
+        d = {'_leeme': 'Las llaves de los servidores que no suman al ranking (Tier 2 y 3), SÓLO para verlas en la página: '
+                       'el calendario y «Ver llave». Lo escribe bot/llaves_a_entrada.py (`para_ver()`) y lo lee '
+                       'bot/subir_web.py. No las lee nada más: ni el ranking, ni las Misiones, ni el Pase, ni el Most '
+                       'Wanted (Dlx, 20/10/2026: «No cuenta para nada»). Los puntos van en 0.'}
+        d.update(regs)
+        with io.open(SIN_SUMAR, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(d, f, ensure_ascii=False, indent=1, sort_keys=True)
+            f.write('\n')
+    return regs
+
+
 def _ddmm(iso):
     """`2026-09-21T05:31:00+00:00` -> `21/09`, que es como lo escribe la hoja.
 
@@ -4161,6 +4230,12 @@ def main():
     if sin_sumar:
         print('   🤝 %d llave(s) de servidores que no suman (Tier 2 y 3): se leen, no entran al ranking'
               % len(sin_sumar))
+        for h in sin_sumar:
+            h['fecha'] = _ddmm(h.get('cuando'))
+        try:
+            para_ver(de_esta_temporada(sin_sumar)[0], aplicar)
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ las llaves que no suman no se armaron para la página (%s)' % str(e)[:80])
     # las batallas y las llaves de #veredictos de esta lectura, también si vino guardada (`comparar_lector.py`): ver
     # `escuchar.ganador_por_veredicto()` y `llave_de_veredictos_para()`
     E._VER_BATALLAS[0] = info.get('ver_batallas') or E._VER_BATALLAS[0] or []
