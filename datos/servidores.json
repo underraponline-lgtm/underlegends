@@ -591,6 +591,24 @@
     }
    ],
    "tag": "OPORTUNIDADES"
+  },
+  "LKR": {
+   "nombre": "LATÍN KING RAP",
+   "guild_id": "1558611504046153750",
+   "en_el_sheet": false,
+   "confirmado": true,
+   "sigla": "LKR",
+   "tier": 3,
+   "alta": "dashboard",
+   "nota": "dado de alta desde el Dashboard el 21/10/2026 (bot/tiers.py `altas()`)",
+   "tag": "EXPERIMENTAL",
+   "invitacion": "https://discord.gg/sxjg9uaM26",
+   "invitacion_liga": {
+    "codigo": "sxjg9uaM26",
+    "canal": "bienvenida-y-normas",
+    "canal_id": "1558611505040064603",
+    "creada": "2026-10-21"
+   }
   }
  },
  "_fuera_de_la_tabla": [

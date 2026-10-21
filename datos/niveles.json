@@ -6,10 +6,102 @@
   "DRA": 1,
   "FDS": 3,
   "FFA": 1,
-  "FFS": 1,
+  "FFS": 3,
   "FRZ": 1,
   "FVS": 1,
+  "LKR": 3,
   "SR": 1,
   "URBF": 1
- }
+ },
+ "beneficios": {
+  "ACAD": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": true,
+   "duelos": true
+  },
+  "DDF": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": true,
+   "duelos": true
+  },
+  "DRA": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": true,
+   "duelos": true
+  },
+  "FDS": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": false,
+   "duelos": false
+  },
+  "FFA": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": true,
+   "duelos": true
+  },
+  "FFS": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": false,
+   "duelos": false
+  },
+  "FRZ": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": true,
+   "duelos": true
+  },
+  "FVS": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": true,
+   "duelos": true
+  },
+  "LKR": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": false,
+   "duelos": false
+  },
+  "SR": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": true,
+   "duelos": true
+  },
+  "URBF": {
+   "pagina": true,
+   "calendario": true,
+   "ligas": true,
+   "panel": true,
+   "suma": true,
+   "duelos": true
+  }
+ },
+ "beneficios_elegidos": {}
 }
