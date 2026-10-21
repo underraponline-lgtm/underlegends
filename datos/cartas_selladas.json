@@ -427,7 +427,7 @@
    "competitivo": "66ff0d22985e:a62fb156b44f",
    "pais": "9c866c687026:351b86d66ea6",
    "servidor": "5413e33688fd:2d5142698a31:c09f56",
-   "temporada": "d07de3d80fd8:a001e7b21e4d"
+   "temporada": "55f9caea4b55:a001e7b21e4d"
   },
   "Espectro": {
    "servidor": "439ddb5429bc:2d5142698a31:27d4a9"
@@ -764,7 +764,7 @@
   "Konan": {
    "competitivo": "c7e9c33d2e83:a62fb156b44f",
    "pais": "918890866a59:351b86d66ea6",
-   "servidor": "1eef8da7c826:2d5142698a31:25c183"
+   "servidor": "5d6032cdb514:2d5142698a31:25c183"
   },
   "Koppakidd": {
    "servidor": "2d7457ff5a3d:2d5142698a31:3bed7b"
@@ -971,7 +971,7 @@
   "Magic": {
    "competitivo": "6b3aec279c6e:a62fb156b44f",
    "pais": "269a2e614927:351b86d66ea6",
-   "servidor": "cf917f8abc26:2d5142698a31:43d041",
+   "servidor": "b7a9ab653bc6:2d5142698a31:43d041",
    "temporada": "507db4e93d70:a001e7b21e4d"
   },
   "Mail O": {},
@@ -1105,7 +1105,7 @@
    "competitivo": "509c3ffd3002:a62fb156b44f",
    "pais": "40a881094c89:351b86d66ea6",
    "servidor": "3e4e5f21f2fa:2d5142698a31:980594",
-   "temporada": "b36028f9eea1:a001e7b21e4d"
+   "temporada": "0d1ee4103a22:a001e7b21e4d"
   },
   "Musttang": {
    "servidor": "ccfd4e58392c:2d5142698a31:055f77"
@@ -1284,7 +1284,7 @@
    "competitivo": "849f64adc438:a62fb156b44f",
    "pais": "d15ae610941a:351b86d66ea6",
    "servidor": "bec1b5808ab4:2d5142698a31:43d041",
-   "temporada": "d520325752ee:a001e7b21e4d"
+   "temporada": "554211558ca4:a001e7b21e4d"
   },
   "Prosu": {
    "competitivo": "bf8a05b7f4c3:a62fb156b44f",
@@ -1319,7 +1319,7 @@
    "competitivo": "c9b07848a89f:a62fb156b44f",
    "pais": "b2161e58ec34:351b86d66ea6",
    "servidor": "67bb93701898:2d5142698a31:80c07f",
-   "temporada": "55c9608bd8c6:a001e7b21e4d"
+   "temporada": "3084739dd12f:a001e7b21e4d"
   },
   "RZ": {
    "servidor": "9a6fb23857fe:2d5142698a31:e87867"
@@ -1843,5 +1843,5 @@
    "servidor": "7f8885a35a6d:2d5142698a31:93a344"
   }
  },
- "cuando": "2026-10-21T04:26:42+00:00"
+ "cuando": "2026-10-21T04:40:28+00:00"
 }
