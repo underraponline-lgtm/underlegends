@@ -1022,7 +1022,15 @@ def canales(s):
     except (OSError, ValueError, KeyError):
         return out
     sin_acceso = 0
+    # 🎛️ sin los que tienen apagado `calendario` en el Dashboard (`bot/tiers.py`, 20/10/2026): sus eventos no se promocionan
+    try:
+        import tiers as _TI
+        sin_cal = _TI.sin('calendario')
+    except Exception:                                    # noqa: BLE001
+        sin_cal = set()
     for cod, d in (svs.items() if isinstance(svs, dict) else []):
+        if cod in sin_cal:
+            continue
         g = d.get('guild_id') or d.get('guild')
         # 🔴 SÓLO LOS CONFIRMADOS (Dlx, 25/09/2026: «Olvida TFC, ya te dije
         # que no está»). Un servidor que no es de la Liga no aporta eventos.

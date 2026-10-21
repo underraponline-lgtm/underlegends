@@ -414,6 +414,9 @@ def ver_servidores():
     fuera = set(_re.findall(r"\{\s*sv:\s*'([^']+)'[^}]*\bfuera:\s*true", js))
     malos = []
     for sv, v in tabla.items():
+        # ➕ los dados de alta desde el Dashboard (`bot/tiers.py altas()`) no están en worker.js, a propósito
+        if v.get('alta') == 'dashboard' and sv not in enel:
+            continue
         if (v.get('en_la_liga') is False) != (sv in fuera):
             malos.append('%s: en_la_liga del json %r · fuera del worker %r' % (sv, v.get('en_la_liga'), sv in fuera))
         nom, gid = v.get('nombre', ''), str(v.get('guild_id') or '')

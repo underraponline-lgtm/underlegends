@@ -2787,6 +2787,13 @@ def _servidores(gente):
     # confirme otro, se cambia ahí y la página lo toma sola.
     svs = {k: v for k, v in ((_json('datos', 'servidores.json') or {})
                              .get('servidores') or {}).items() if v.get('confirmado')}
+    # 🎛️ y sin los que tienen apagada su página en el Dashboard (`bot/tiers.py`, beneficio `pagina`, 20/10/2026)
+    try:
+        import tiers as _TI
+        for sv in _TI.sin('pagina'):
+            svs.pop(sv, None)
+    except Exception:                                    # noqa: BLE001
+        pass
     acc = {}
     for p in gente:
         sv = (p.get('sv') or '').upper()

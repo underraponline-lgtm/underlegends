@@ -94,6 +94,129 @@ def niveles(servidores=None, guardados=None):
     return out
 
 
+# ── 🎛️ LOS BENEFICIOS DE CADA SERVIDOR (Dlx, 20/10/2026: «yo debería tener las herramientas para agregar, qué beneficio
+# dar que no, qué tier, a cada servidor nuevo», y a la propuesta, «Dale») ─────────────────────────────────────────────
+# El tier es un PRESET: prende un grupo de beneficios. En el Dashboard, cada servidor tiene además un interruptor por
+# beneficio (ajuste `beneficios`, `{sigla: {beneficio: bool}}`) que manda sobre el preset. El ciclo deja el resultado en
+# `datos/niveles.json` (`beneficios`) y cada lector pregunta con `sin()`.
+#
+# ⚠️ SÓLO LOS QUE ESTÁN CABLEADOS. Son los seis que un lector de verdad respeta hoy; la carta de Servidor, los
+# multiplicadores, los MES AWARDS y el anti-raid NO están acá porque prenderlos o apagarlos no cambiaría nada todavía, y un
+# interruptor que no hace nada es peor que no tenerlo.
+BENEFICIOS = (
+    ('pagina', 'Su página en Socios'),
+    ('calendario', 'Sus eventos: calendario, campana y Publicaciones'),
+    ('ligas', 'Sus ligas en Ligas'),
+    ('panel', 'El panel de su dueño'),
+    ('suma', 'Sus llaves suman al ranking'),
+    ('duelos', 'Sus ligas cuentan como duelos'),
+)
+#: lo que prende cada tier. Los eventos y la página son de todos (Dlx, 20/10: «a general benefit»); sumar, sólo el 1
+PRESET = {1: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'duelos'},
+          2: {'pagina', 'calendario', 'ligas', 'panel'},
+          3: {'pagina', 'calendario', 'ligas', 'panel'}}
+#: 🔴 sumar al ranking pide que el servidor esté en las listas del código (`sheet/rankings.py` y las demás, que llena
+#: `herramientas/sumar_servidor.py`): uno dado de alta desde el Dashboard no lo está, y sus llaves entrarían a medias.
+#: Hasta que se sume a mano, `suma` y `duelos` quedan apagados y el Dashboard dice por qué.
+PIDEN_CODIGO = ('suma', 'duelos')
+
+
+def en_el_codigo():
+    """Las siglas que `sheet/rankings.py` conoce (su `SERVIDORES`): las únicas que pueden sumar al ranking."""
+    try:
+        txt = io.open(os.path.join(BASE, 'sheet', 'rankings.py'), encoding='utf-8').read()
+        m = re.search(r"^SERVIDORES = \((.*)\)$", txt, re.M)
+        return set(re.findall(r"'([^']*)'", m.group(1))) if m else set()
+    except OSError:
+        return set()
+
+
+def beneficios(nivel, elegidos=None, codigo=None):
+    """`{sigla: {beneficio: bool}}`: el preset de su tier, con lo que Dlx eligió encima; `suma` y `duelos`, sólo si el
+    servidor está en el código. Y `bloq`: los que no se pueden prender todavía, para que el Dashboard diga por qué."""
+    codigo = en_el_codigo() if codigo is None else codigo
+    out, bloq = {}, {}
+    for sv, t in nivel.items():
+        b = {k: k in PRESET.get(t, PRESET[3]) for k, _t in BENEFICIOS}
+        for k, v in ((elegidos or {}).get(sv) or {}).items():
+            if k in b and isinstance(v, bool):
+                b[k] = v
+        if sv not in codigo:
+            for k in PIDEN_CODIGO:
+                b[k] = False
+            bloq[sv] = list(PIDEN_CODIGO)
+        out[sv] = b
+    return out, bloq
+
+
+def sin(beneficio, guardado=None):
+    """Las siglas con ese beneficio APAGADO, de `datos/niveles.json`. Sin `beneficios` guardados (antes de la primera
+    corrida con esto), lo de antes: los bajados no suman ni cuentan duelos, y lo demás lo tienen todos."""
+    g = guardado if guardado is not None else (_j('datos', 'niveles.json') or {})
+    ben = g.get('beneficios')
+    if not isinstance(ben, dict):
+        return {sv for sv, t in (g.get('niveles') or {}).items() if t != 1} if beneficio in PIDEN_CODIGO else set()
+    return {sv for sv, b in ben.items() if isinstance(b, dict) and b.get(beneficio) is False}
+
+
+def guilds_sin(beneficio, servidores=None, guardado=None):
+    """Los guild ID de los servidores con ese beneficio apagado (para el lector de llaves: `suma`)."""
+    svs = servidores if servidores is not None else ((_j('datos', 'servidores.json') or {}).get('servidores') or {})
+    return {str(svs[sv].get('guild_id')) for sv in sin(beneficio, guardado) if svs.get(sv, {}).get('guild_id')}
+
+
+# ── ➕ EL ALTA DESDE EL DASHBOARD (ajuste `altas`, `{sigla: {n, g, t, tag}}`) ─────────────────────────────────────
+# Lo que hacía a mano `herramientas/sumar_servidor.py` y es dato, no código: la entrada en `datos/servidores.json`
+# (confirmada, con su tier y `alta: 'dashboard'`), el bot (`datos/bot_en.json`, si está adentro) y la invitación
+# permanente de la Liga (`bot/invitaciones.py`). ⚠️ No toca el código: el Worker no lo conoce (no sale en el menú de
+# /card ni reconoce su servidor en los comandos) y no puede sumar al ranking hasta que se sume a mano —`PIDEN_CODIGO`—.
+# Por eso `bot/desplegar.py` no lo pide en worker.js.
+def altas(aj, svs, tok=None, ahora=None):
+    """Agrega a `svs` los servidores nuevos de `aj['altas']`. Devuelve las siglas que entraron."""
+    nuevas = []
+    hoy = (ahora or dt.datetime.now(dt.timezone.utc)).strftime('%d/%m/%Y')
+    for sv, x in sorted(((aj or {}).get('altas') or {}).items()):
+        if sv in svs or not isinstance(x, dict) or not re.match(r'^[A-Z]{2,6}$', sv):
+            continue
+        g, n = str(x.get('g') or ''), str(x.get('n') or '').strip()
+        if not re.match(r'^\d{15,22}$', g) or not n or any(str(y.get('guild_id')) == g for y in svs.values()):
+            continue
+        e = {'nombre': n[:60], 'guild_id': g, 'en_el_sheet': False, 'confirmado': True, 'sigla': sv,
+             'tier': x.get('t') if x.get('t') in TIERS else 3, 'alta': 'dashboard',
+             'nota': 'dado de alta desde el Dashboard el %s (bot/tiers.py `altas()`)' % hoy}
+        if str(x.get('tag') or '').strip():
+            e['tag'] = str(x['tag']).strip().upper()[:24]
+        svs[sv] = e
+        nuevas.append(sv)
+    return nuevas
+
+
+def _alta_completar(nuevas, svs, tok):
+    """El bot y la invitación de los recién dados de alta (con red). Lo que falle queda para la corrida siguiente."""
+    import requests
+    if not nuevas or not tok:
+        return
+    bot = _j('datos', 'bot_en.json') or []
+    h = {'Authorization': 'Bot ' + tok, 'User-Agent': 'DiscordBot (underlegends, 1.0)'}
+    for sv in nuevas:
+        try:
+            r = requests.get('https://discord.com/api/v10/guilds/%s' % svs[sv]['guild_id'], headers=h, timeout=20)
+            if r.status_code == 200 and sv not in bot:
+                bot.append(sv)
+                print('   🤖 el bot está en %s' % sv)
+            elif r.status_code != 200:
+                print('   ⚠️ el bot no está en %s (Discord dijo %d): sin bot no se leen sus anuncios' % (sv, r.status_code))
+        except OSError as e:
+            print('   ⚠️ %s: %s' % (sv, str(e)[:60]))
+    with io.open(os.path.join(BASE, 'datos', 'bot_en.json'), 'w', encoding='utf-8', newline='\n') as f:
+        json.dump(bot, f, ensure_ascii=False)
+    try:
+        import invitaciones
+        invitaciones.crear(aplicar=True)
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ la invitación de los nuevos: %s' % str(e)[:80])
+
+
 def bajados(servidores=None, guardados=None):
     """Las siglas en Tier 2 o 3: sus llaves no se leen y sus ligas no cuentan como duelos."""
     return {sv for sv, t in niveles(servidores, guardados).items() if t != 1}
@@ -457,9 +580,11 @@ def _mandar(x):
 def correr(aplicar=False, ahora=None):
     import zoneinfo
     hoy = (ahora or dt.datetime.now(dt.timezone.utc)).astimezone(zoneinfo.ZoneInfo('America/New_York')).date()
-    svs = (_j('datos', 'servidores.json') or {}).get('servidores') or {}
+    todo_svs = _j('datos', 'servidores.json') or {}
+    svs = todo_svs.get('servidores') or {}
     viejo = _j('datos', 'niveles.json') or {}
     elegidos = dict(viejo.get('niveles') or {})
+    elegidos_b = dict(viejo.get('beneficios_elegidos') or {})
     # lo elegido en el Dashboard manda; sin poder leerlo, queda lo de antes (un Worker que no contesta no es «Dlx cambió»)
     if aplicar:
         try:
@@ -470,7 +595,21 @@ def correr(aplicar=False, ahora=None):
             aj = None
         if aj is not None:
             elegidos = {k: v for k, v in ((aj.get('tiers') or {}).items()) if v in TIERS}
+            elegidos_b = aj.get('beneficios') or {}
+            # ➕ los servidores nuevos del Dashboard, antes de medir: así entran a la lista en esta misma corrida
+            nuevas = altas(aj, svs, ahora=ahora)
+            if nuevas:
+                with io.open(os.path.join(BASE, 'datos', 'servidores.json'), 'w', encoding='utf-8', newline='\n') as f:
+                    json.dump(todo_svs, f, ensure_ascii=False, indent=1)
+                    f.write('\n')
+                print('   ➕ dados de alta desde el Dashboard: %s' % ', '.join(nuevas))
+                try:
+                    import fotos as F
+                    _alta_completar(nuevas, svs, F.env('DISCORD_TOKEN', obligatorio=False))
+                except Exception as e:                   # noqa: BLE001
+                    print('   ⚠️ el bot y la invitación de los nuevos: %s' % str(e)[:80])
     nivel = niveles(svs, elegidos)
+    ben, bloq = beneficios(nivel, elegidos_b)
     # 👥 los miembros de cada Discord, de su invitación (lo mismo que muestra Socios: `subir_web._miembros()`)
     gente = {}
     if aplicar:
@@ -481,6 +620,13 @@ def correr(aplicar=False, ahora=None):
             print('   ⚠️ los tiers: no leí los miembros (%s)' % str(e)[:60])
     D = datos()
     filas = medir(D, hoy, svs, nivel, gente)
+    # 🎛️ los beneficios de cada uno van con su fila: el Dashboard dibuja los interruptores y el objeto filtra el panel
+    for f in filas:
+        f['ben'] = ben.get(f['sv']) or {}
+        if bloq.get(f['sv']):
+            f['bloq'] = bloq[f['sv']]
+        if (svs.get(f['sv']) or {}).get('alta') == 'dashboard':
+            f['alta'] = True
     # 📊 el panel de cada socio, con su dueño (ver arriba). Los tres tiers: Dlx, 20/10/2026, del dueño de FDS (Tier 3),
     # «para que pueda ver su página y sus estadísticas»
     try:
@@ -512,8 +658,12 @@ def correr(aplicar=False, ahora=None):
                            'página, sus ligas y sus eventos promocionados, sin sumar). Lo elige Dlx en el Dashboard; sin '
                            'elegir, el `tier` de datos/servidores.json, y si no, Tier 1. Lo escribe bot/tiers.py y lo leen '
                            'el lector de llaves y las ligas. El puntaje de cada uno NO va acá: va al Dashboard.',
-                 'niveles': {sv: t for sv, t in sorted(nivel.items())}}
-        if nuevo['niveles'] != viejo.get('niveles'):
+                 'niveles': {sv: t for sv, t in sorted(nivel.items())},
+                 # 🎛️ lo que resulta (los lectores preguntan con `sin()`) y lo que Dlx eligió, para cuando el Dashboard
+                 # no contesta
+                 'beneficios': {sv: ben[sv] for sv in sorted(ben)},
+                 'beneficios_elegidos': elegidos_b}
+        if any(nuevo.get(k) != viejo.get(k) for k in ('niveles', 'beneficios', 'beneficios_elegidos')):
             with io.open(NIVELES, 'w', encoding='utf-8', newline='\n') as f:
                 json.dump(nuevo, f, ensure_ascii=False, indent=1)
             print('   🤝 los niveles cambiaron: %s' % ', '.join('%s %d' % kv for kv in sorted(nivel.items())))
@@ -545,6 +695,22 @@ def _self_check():
     ok(niveles(svs, {'BBB': 2, 'CCC': 9}) == {'AAA': 1, 'BBB': 2, 'CCC': 1} and bajados(svs, {'BBB': 2}) == {'BBB'}
        and guilds_bajados(svs, {'BBB': 2, 'CCC': 3}) == {'2', '3'},
        'lo elegido manda; un número que no es tier no vale; los de Tier 2 y 3 son los «bajados»')
+    # 🎛️ los beneficios y el alta
+    bn, bq = beneficios({'AAA': 1, 'BBB': 3, 'CCC': 1}, {'BBB': {'ligas': False}, 'CCC': {'suma': True}}, codigo={'AAA', 'BBB'})
+    ok(bn['AAA']['suma'] and not bn['BBB']['suma'] and bn['BBB']['pagina'] and not bn['BBB']['ligas']
+       and not bn['CCC']['suma'] and bq == {'CCC': ['suma', 'duelos']},
+       'el tier es un preset, lo elegido manda; sumar pide estar en el código (CCC no, aunque lo prendan)')
+    sb = globals()['sin']   # (el self-check tiene su propio `sin`, más abajo)
+    ok(sb('suma', {'beneficios': {k: v for k, v in bn.items()}}) == {'BBB', 'CCC'}
+       and sb('suma', {'niveles': {'AAA': 1, 'BBB': 2}}) == {'BBB'} and sb('pagina', {'niveles': {'AAA': 1}}) == set(),
+       'los lectores preguntan con sin(); sin beneficios guardados, lo de antes')
+    sv2 = {'AAA': {'guild_id': '111111111111111111'}}
+    nv = altas({'altas': {'NUE': {'n': 'Nuevo', 'g': '222222222222222222', 't': 3, 'tag': 'comunidad'},
+                          'DUP': {'n': 'Otro', 'g': '111111111111111111'}, 'AAA': {'n': 'x', 'g': '333333333333333333'},
+                          'mal': {'n': 'x', 'g': '444444444444444444'}}}, sv2)
+    ok(nv == ['NUE'] and sv2['NUE']['confirmado'] and sv2['NUE']['tier'] == 3 and sv2['NUE']['alta'] == 'dashboard'
+       and sv2['NUE']['tag'] == 'COMUNIDAD',
+       'el alta: entra el nuevo, confirmado y con su tier; ni una sigla que ya está, ni un guild repetido, ni una sigla mal')
     hoy = dt.date(2026, 10, 18)
     tb = lambda *ns: [[n, 'x', 1] for n in ns]  # noqa: E731
     ll = {str(i): {'dia': str(hoy - dt.timedelta(days=i * 3)), 'sv': 'AAA', 'tabla': tb(*['p%d' % j for j in range(16)])}

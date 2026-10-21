@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.86",
+   "dia": "2026-10-20",
+   "cuando": "2026-10-20T20:21:00-04:00",
+   "titulo": "Más servidores pueden sumarse a la Liga",
+   "items": [
+    "🤝 **Sumar un servidor a la Liga es más rápido**: cada uno entra con lo que le corresponde (su página, sus eventos promocionados y sus ligas) y suma al ranking cuando corresponde."
+   ]
+  },
+  {
    "version": "3.85",
    "dia": "2026-10-20",
    "cuando": "2026-10-20T17:58:00-04:00",

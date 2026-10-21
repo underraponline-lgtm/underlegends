@@ -1031,7 +1031,15 @@ def correr(aplicar=False):
     viejo = leer().get('ligas') or {}
     por_canal, por_an = {}, {}
     out = {}
+    # 🎛️ las de un servidor con el beneficio `ligas` apagado en el Dashboard no se leen ni se muestran (`bot/tiers.py`)
+    try:
+        import tiers as _TI
+        sin_ligas = _TI.sin('ligas')
+    except Exception:                                    # noqa: BLE001
+        sin_ligas = set()
     for lid, L in LIGAS.items():
+        if L['sv'] in sin_ligas:
+            continue
         guardadas = {b[0]: b for b in (viejo.get(lid) or {}).get('batallas') or []}
         if L['ver'] not in por_canal:
             # la primera vez con el PTB (17/10/2026) se lee la temporada entera, como la primera vez de todas: sin eso
@@ -1616,10 +1624,11 @@ def duelos(desde=None, ruta=None, ps=None):
     el nombre de ESE servidor (`por_servidor()`): el «FORCE» de Urban es ForceGP y cuenta en sus duelos."""
     out = []
     ps = por_servidor() if ps is None else ps
-    # 🤝 las ligas de un servidor en Tier 2 o 3 no cuentan como duelos (`bot/tiers.py`: «el Tier 2 no suma»)
+    # 🤝 las ligas de un servidor que no suma no cuentan como duelos (`bot/tiers.py`: «el Tier 2 no suma»; desde el
+    # 20/10/2026, el beneficio `duelos` de cada servidor)
     try:
         import tiers as _TI
-        bajos = _TI.bajados()
+        bajos = _TI.sin('duelos')
     except Exception:                                    # noqa: BLE001
         bajos = set()
     for x in (leer(ruta).get('ligas') or {}).values():

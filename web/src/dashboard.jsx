@@ -476,6 +476,87 @@ function CompararSemanas({ S, uso, liga }) {
 // servidores han hecho su trabajo»). Cada servidor con su nivel —que se elige acá: ajuste `tiers`, el ciclo lo copia a
 // datos/niveles.json—, su puntaje de las últimas 4 semanas y lo que recomienda `bot/tiers.py`. El puntaje no sale de acá
 const TIER_QUE = { 1: 'suma al ranking, todo', 2: 'el calendario, no suma', 3: 'su página y sus ligas, no suma' };
+// 🎛️ los beneficios de cada servidor (Dlx, 20/10/2026: «qué beneficio dar que no, qué tier, a cada servidor nuevo»). El
+// tier los prende en grupo (`PRESET` de bot/tiers.py); cada interruptor manda sobre el preset
+const BENEF = [['pagina', 'Su página en Socios'], ['calendario', 'Sus eventos (calendario, campana, Publicaciones)'],
+  ['ligas', 'Sus ligas en Ligas'], ['panel', 'El panel de su dueño'], ['suma', 'Sus llaves suman al ranking'],
+  ['duelos', 'Sus ligas cuentan como duelos']];
+const PRESET = { 1: ['pagina', 'calendario', 'ligas', 'panel', 'suma', 'duelos'], 2: ['pagina', 'calendario', 'ligas', 'panel'],
+  3: ['pagina', 'calendario', 'ligas', 'panel'] };
+
+function Beneficios({ x, tier, aj, hacer, ocup }) {
+  const mios = (aj.beneficios || {})[x.sv] || {};
+  const bloq = x.bloq || [];
+  const val = (b) => (bloq.includes(b) ? false : b in mios ? mios[b] : (x.ben && b in x.ben ? x.ben[b] : PRESET[tier].includes(b)));
+  const poner = (b, v) => hacer('beneficios', Object.assign({}, aj.beneficios || {}, { [x.sv]: Object.assign({}, mios, { [b]: v }) }),
+    BENEF.find((y) => y[0] === b)[1] + (v ? ' prendido' : ' apagado') + ' para ' + siglaDe(x.sv) + '. El ciclo lo aplica en su próxima vuelta.');
+  const volver = () => {
+    const o = Object.assign({}, aj.beneficios || {});
+    delete o[x.sv];
+    hacer('beneficios', o, siglaDe(x.sv) + ' vuelve a lo que da su tier.');
+  };
+  return (
+    <div className="ti-ben">
+      <small>Lo que recibe {Object.keys(mios).length ? <button type="button" className="ti-ben-x" disabled={ocup} onClick={volver}>volver al tier</button> : null}</small>
+      {BENEF.map(([b, t]) => (
+        <label key={b} className={bloq.includes(b) ? 'off' : ''} title={bloq.includes(b) ? 'Para sumar al ranking hay que sumarlo al código: pídeselo a Claude.' : ''}>
+          <input type="checkbox" checked={val(b)} disabled={ocup || bloq.includes(b)} onChange={(e) => poner(b, e.target.checked)} />
+          <span>{t}{bloq.includes(b) ? ' · falta sumarlo al código' : ''}</span>
+        </label>
+      ))}
+    </div>
+  );
+}
+
+// ➕ EL ALTA DE UN SERVIDOR (Dlx, 20/10/2026: «agrega esa función para yo agregar a los servidores manualmente»). Se guarda
+// en el ajuste `altas` y el ciclo lo suma (`altas()` de bot/tiers.py): la entrada, el bot y la invitación de la Liga
+function SumarServidor({ T, aj, hacer, ocup }) {
+  const [f, setF] = useState({ sv: '', n: '', g: '', t: 3, tag: '' });
+  const [mal, setMal] = useState('');
+  const ya = new Set((T.servidores || []).map((x) => x.sv));
+  const pend = Object.entries(aj.altas || {}).filter(([sv]) => !ya.has(sv));
+  const set = (k) => (e) => setF(Object.assign({}, f, { [k]: k === 't' ? Number(e.target.value) : e.target.value }));
+  const mandar = async (e) => {
+    e.preventDefault();
+    const sv = f.sv.trim().toUpperCase();
+    if (!/^[A-Z]{2,6}$/.test(sv)) return setMal('La sigla: de 2 a 6 letras, sin números ni espacios.');
+    if (ya.has(sv)) return setMal(sv + ' ya está en la Liga.');
+    if (!f.n.trim()) return setMal('Falta el nombre.');
+    if (!/^[0-9]{15,22}$/.test(f.g.trim())) return setMal('El ID del servidor: en Discord, clic derecho en el servidor → «Copiar ID del servidor».');
+    setMal('');
+    const nuevo = { n: f.n.trim(), g: f.g.trim(), t: f.t };
+    if (f.tag.trim()) nuevo.tag = f.tag.trim().toUpperCase();
+    const bien = await hacer('altas', Object.assign({}, aj.altas || {}, { [sv]: nuevo }),
+      sv + ' entra en la próxima vuelta del ciclo, como Tier ' + f.t + '. Si el bot está adentro, también su invitación.');
+    if (bien) setF({ sv: '', n: '', g: '', t: 3, tag: '' });
+    return null;
+  };
+  const quitar = (sv) => {
+    const o = Object.assign({}, aj.altas || {});
+    delete o[sv];
+    hacer('altas', o, sv + ' ya no se suma.');
+  };
+  return (
+    <form className="ti-alta" onSubmit={mandar}>
+      <b>Sumar un servidor</b>
+      <div className="ti-alta-g">
+        <input value={f.sv} onChange={set('sv')} placeholder="Sigla (FDS)" maxLength={6} aria-label="Sigla" />
+        <input value={f.n} onChange={set('n')} placeholder="Nombre" maxLength={60} aria-label="Nombre" />
+        <input value={f.g} onChange={set('g')} placeholder="ID del servidor de Discord" inputMode="numeric" aria-label="ID del servidor" />
+        <input value={f.tag} onChange={set('tag')} placeholder="Etiqueta (opcional)" maxLength={24} aria-label="Etiqueta" />
+        <select value={f.t} onChange={set('t')} aria-label="Tier">{[1, 2, 3].map((t) => <option key={t} value={t}>Tier {t}</option>)}</select>
+        <button type="submit" className="btn chico" disabled={ocup}>Sumar</button>
+      </div>
+      <small>Entra confirmado y con lo que da su tier; después le cambias los beneficios en su caja. Sumar al ranking pide sumarlo al
+        código (pídeselo a Claude): hasta entonces sus llaves no suman. El bot tiene que estar adentro para leer sus anuncios.</small>
+      {mal ? <small className="ti-bajo" role="alert">{mal}</small> : null}
+      {pend.length ? <ul className="ti-alta-p">{pend.map(([sv, x]) => (
+        <li key={sv}><b>{sv}</b> {x.n} · Tier {x.t} · espera la próxima vuelta del ciclo
+          <button type="button" className="ti-ben-x" disabled={ocup} onClick={() => quitar(sv)}>quitar</button></li>
+      ))}</ul> : null}
+    </form>
+  );
+}
 const REC = { bien: ['✅', 'Bien'], subir: ['⬆️', 'Puede subir'], revisar: ['⚠️', 'Revisar'], casa: ['🏠', 'La casa'] };
 const PARTES = [['actividad', 'Actividad', 35], ['alcance', 'Alcance', 25], ['calidad', 'Calidad', 25], ['comunidad', 'Comunidad', 15]];
 
@@ -531,7 +612,8 @@ function TierCaja({ x, liga, tier, cambiar, ocup, i, aj, hacer }) {
         {m.anuncios ? ' · staff en ' + Math.round((100 * (m.con_staff || 0)) / m.anuncios) + ' % de sus anuncios' : ''}
         {m.cancelados ? ' · ' + m.cancelados + ' cancelados' : ''}{m.promos ? ' · ' + m.promos + ' promos' : ''}{m.ligas ? ' · ' + m.ligas + ' ligas' : ''}</p>
       <p className="ti-rec"><span>{ic} {et}</span> {x.porque}</p>
-      {tier === 1 || tier === 2 ? <DuenoSocio x={x} aj={aj} hacer={hacer} ocup={ocup} /> : null}
+      <Beneficios x={x} tier={tier} aj={aj} hacer={hacer} ocup={ocup} />
+      <DuenoSocio x={x} aj={aj} hacer={hacer} ocup={ocup} />
     </article>
   );
 }
@@ -548,6 +630,7 @@ function Tiers({ T, aj, hacer, ocup, msg, liga }) {
         lleva todo; Tier 2 sale en el calendario y la campana, pero sus llaves no suman; Tier 3 tiene su página y sus ligas en Ligas,
         sin sumar. Los eventos y las redes se promocionan en los tres. Para ser socio: 300 miembros como mínimo, se recomiendan 500.</p>
       {msg ? <p className="db-msg" role="status">{msg}</p> : null}
+      <SumarServidor T={T} aj={aj} hacer={hacer} ocup={ocup} />
       <div className="ti-g">{T.servidores.map((x, i) => <TierCaja key={x.sv} x={x} liga={liga} tier={tierDe(x)} cambiar={cambiar} ocup={ocup} i={i} aj={aj} hacer={hacer} />)}</div>
       {T.t ? <p className="db-tx">Medido {hace(T.t)}.</p> : null}
     </div>

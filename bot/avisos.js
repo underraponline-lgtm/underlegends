@@ -3513,6 +3513,9 @@ export function socioAjusteValido(cual, valor, canales) {
   return undefined;
 }
 
+/** 🎛️ los beneficios que se prenden y apagan por servidor (los mismos de `BENEFICIOS` en bot/tiers.py) */
+export const BENEFICIOS_SV = ['pagina', 'calendario', 'ligas', 'panel', 'suma', 'duelos'];
+
 export function ajusteValido(cual, valor) {
   if (cual === 'campana_pausada') return typeof valor === 'boolean' ? valor : undefined;
   // 👥 las crews (19/10/2026): cuánto cuesta crear una (Puntos de Tienda) y cómo se arma su ranking (`{modo, n}`)
@@ -3531,6 +3534,35 @@ export function ajusteValido(cual, valor) {
     for (const [k, v] of Object.entries(valor)) {
       if (!/^[A-Z]{2,6}$/.test(k) || !Array.isArray(v) || v.length > 3 || !v.every((x) => /^[0-9]{15,22}$/.test(String(x)))) return undefined;
       if (v.length) out[k] = [...new Set(v.map(String))];
+    }
+    return out;
+  }
+  // 🎛️ los beneficios de cada servidor (20/10/2026): `{sigla: {beneficio: bool}}`, los seis de `bot/tiers.py` BENEFICIOS
+  if (cual === 'beneficios') {
+    if (valor === null) return null;
+    if (!valor || typeof valor !== 'object' || Array.isArray(valor) || Object.keys(valor).length > 60) return undefined;
+    const out = {};
+    for (const [k, v] of Object.entries(valor)) {
+      if (!/^[A-Z]{2,6}$/.test(k) || !v || typeof v !== 'object' || Array.isArray(v)) return undefined;
+      const b = {};
+      for (const [n, x] of Object.entries(v)) {
+        if (!BENEFICIOS_SV.includes(n) || typeof x !== 'boolean') return undefined;
+        b[n] = x;
+      }
+      out[k] = b;
+    }
+    return out;
+  }
+  // ➕ los servidores que Dlx da de alta (20/10/2026): `{sigla: {n, g, t, tag}}`; el ciclo los suma (`bot/tiers.py altas()`)
+  if (cual === 'altas') {
+    if (valor === null) return null;
+    if (!valor || typeof valor !== 'object' || Array.isArray(valor) || Object.keys(valor).length > 30) return undefined;
+    const out = {};
+    for (const [k, v] of Object.entries(valor)) {
+      if (!/^[A-Z]{2,6}$/.test(k) || !v || typeof v !== 'object') return undefined;
+      const n = String(v.n || '').trim(), g = String(v.g || ''), tag = String(v.tag || '').trim();
+      if (!n || n.length > 60 || !/^[0-9]{15,22}$/.test(g) || ![1, 2, 3].includes(v.t) || tag.length > 24) return undefined;
+      out[k] = tag ? { n, g, t: v.t, tag } : { n, g, t: v.t };
     }
     return out;
   }
@@ -10497,7 +10529,10 @@ export class Avisos {
     const esDlx = quien === DUENO;
     const de = (x) => (Array.isArray(mano[x.sv]) && mano[x.sv].length ? mano[x.sv] : (x.dueno ? [x.dueno] : []));
     const tierDe = (x) => tiers[x.sv] || x.tier || 1;
-    const lista = (T.servidores || []).filter((x) => [1, 2, 3].includes(tierDe(x)) && (esDlx || de(x).includes(quien)))
+    // 🎛️ el panel es un beneficio (20/10/2026): lo que Dlx eligió recién manda sobre lo que trajo el ciclo
+    const ben = (aj.beneficios && typeof aj.beneficios === 'object') ? aj.beneficios : {};
+    const conPanel = (x) => ((ben[x.sv] || {}).panel ?? (x.ben || {}).panel) !== false;
+    const lista = (T.servidores || []).filter((x) => [1, 2, 3].includes(tierDe(x)) && (esDlx || (conPanel(x) && de(x).includes(quien))))
       .map((x) => ({ ...x, tier: tierDe(x) }));
     return { esDlx, T, lista };
   }
