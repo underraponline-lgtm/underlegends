@@ -29,7 +29,14 @@
 // ⚠️ NUNCA POR MENSAJE DIRECTO (el bot no manda DMs): al canal que elige el dueño.
 
 export const API = 'https://discord.com/api/v10';
-export const AR_BASE = { canal: '', escudo: [], oleada: false, staff: false, cerrado: null, auto: false };
+export const AR_BASE = { canal: '', escudo: [], oleada: false, staff: false, cerrado: null, auto: false, por: '' };
+
+// 🤝 DLX TAMBIÉN (Dlx, 20/10/2026, con DDF amenazado de raid: «ponle modo automático. Y pon esto ha sido prendido por el
+// socio DLX. El propietario o DLX pueden cambiar esto únicamente. O sea, ÚNICAMENTE SI ES QUE EL BOT TOMA ACCIONES»). El
+// panel lo abre y lo cambia el dueño del servidor o Dlx; `por: 'dlx'` dice que AUTOMÁTICO lo prendió él, y entonces lo
+// que AUTOMÁTICO hace lleva `NOTA_DLX` (sólo cuando actúa: el aviso que espera al staff no la lleva)
+export const DLX = '739338101603696681';
+export const NOTA_DLX = '-# 🤖 AUTOMÁTICO lo prendió el socio **Dlx**. Sólo el propietario del servidor o Dlx pueden cambiarlo.';
 
 // 🔐 los permisos, en BigInt (el bitfield pasa de 2^53)
 export const P = {
@@ -114,6 +121,12 @@ export async function esDueno(env, gid, uid) {
   return String(g.owner_id || '') === String(uid || '');
 }
 
+/** ¿Puede abrir y cambiar el panel? El dueño del servidor o Dlx. `null` si Discord no contestó. */
+export async function puedeConfigurar(env, gid, uid) {
+  if (String(uid || '') === DLX) return true;
+  return esDueno(env, gid, uid);
+}
+
 /** ¿Puede responder a un aviso? El dueño o un administrador (`member.permissions`, que Discord ya calcula). */
 export function puedeResponder(i) {
   return tieneP(i.member && i.member.permissions, P.ADMIN);
@@ -139,7 +152,7 @@ export function panel(nombre, cfg, appPerms) {
   const falta = faltan(appPerms);
   const texto = [
     `## 🛡️ Anti-raid de ${nombre}`,
-    'Sólo lo ve y lo cambia **el dueño del servidor**. Todo es opcional y, salvo con AUTOMÁTICO, **nunca actúa solo**: ' +
+    'Sólo lo ven y lo cambian **el dueño del servidor y Dlx**. Todo es opcional y, salvo con AUTOMÁTICO, **nunca actúa solo**: ' +
     'los avisos traen botones y decide el staff. Nada va por mensaje directo.',
     '',
     `**1 · Escudo de Discord** · ${ON(c.escudo && c.escudo.length)}`,
@@ -154,7 +167,7 @@ export function panel(nombre, cfg, appPerms) {
     `**4 · Botón de pánico** · ${cerrado ? `🚨 **cerrado** hasta <t:${Math.floor(Date.parse(c.cerrado.hasta) / 1000)}:t>` : 'abierto'}`,
     `> Pausa las invitaciones y los mensajes directos del servidor (hasta ${PANICO_H} h) y pone la verificación al ` +
     'máximo. **Abrir** lo deja como estaba.',
-    `**5 · AUTOMÁTICO** _(experimental)_ · ${ON(c.auto)}`,
+    `**5 · AUTOMÁTICO** _(experimental)_ · ${ON(c.auto)}${c.auto && c.por === 'dlx' ? ' · lo prendió **Dlx**' : ''}`,
     `> Si **nadie responde** un aviso en ${ESPERA_AUTO_MS / 60000} minutos, actúa: con una oleada cierra el servidor; si no, ` +
     'le saca los roles a la cuenta en peligro o a quien hace el daño (se devuelven con un botón). **Nunca expulsa ni banea**.',
     '',
@@ -454,8 +467,8 @@ async function guardarCfg(env, gid, cfg, solo) {
   return j && j.cfg ? { ...AR_BASE, ...j.cfg } : null;
 }
 //: qué toca cada botón del panel
-const CAMPOS = { escudo: ['escudo'], oleada: ['oleada'], staff: ['staff'], auto: ['auto'],
-  canal: ['canal', 'escudo', 'oleada', 'staff', 'auto'], cerrar: ['cerrado'], abrir: ['cerrado'] };
+const CAMPOS = { escudo: ['escudo'], oleada: ['oleada'], staff: ['staff'], auto: ['auto', 'por'],
+  canal: ['canal', 'escudo', 'oleada', 'staff', 'auto', 'por'], cerrar: ['cerrado'], abrir: ['cerrado'] };
 const editar = (i, data) => fetch(`${API}/webhooks/${i.application_id}/${i.token}/messages/@original`, {
   method: 'PATCH', headers: { 'content-type': 'application/json' },
   body: JSON.stringify({ allowed_mentions: { parse: [] }, ...data }) });
@@ -485,9 +498,9 @@ export function comando(i, env, ctx, h) {
   if (!gid) return h.aviso('`/antiraid` va **adentro del servidor** que quieres proteger.');
   h.luego(ctx, (async () => {
     try {
-      const es = await esDueno(env, gid, h.idDe(i));
+      const es = await puedeConfigurar(env, gid, h.idDe(i));
       if (es === null) return editar(i, { content: 'No pude preguntarle a Discord quién es el dueño del servidor: prueba en un rato.' });
-      if (!es) return editar(i, { content: '🛡️ El anti-raid lo configura **sólo el dueño del servidor**.' });
+      if (!es) return editar(i, { content: '🛡️ El anti-raid lo configuran **sólo el dueño del servidor y Dlx**.' });
       return editar(i, panel(h.nombre, await leerCfg(env, gid), i.app_permissions));
     } catch (e) { return editar(i, { content: 'Algo falló al abrir el anti-raid: prueba en un rato.' }); }
   })());
@@ -506,10 +519,10 @@ function delPanel(i, env, ctx, h, que) {
   const vals = (i.data && i.data.values) || [];
   h.luego(ctx, (async () => {
     try {
-      const es = await esDueno(env, gid, h.idDe(i));
+      const es = await puedeConfigurar(env, gid, h.idDe(i));
       if (!es) {
         return aparte(i, es === null ? 'No pude preguntarle a Discord quién es el dueño: prueba en un rato.'
-          : '🛡️ El anti-raid lo cambia **sólo el dueño del servidor**.');
+          : '🛡️ El anti-raid lo cambian **sólo el dueño del servidor y Dlx**.');
       }
       const cfg = await leerCfg(env, gid);
       const ap = i.app_permissions;
@@ -540,6 +553,8 @@ function delPanel(i, env, ctx, h, que) {
           nota.push('🤖 AUTOMÁTICO actúa sobre los avisos: primero prende la alarma de oleada o la vigilancia del staff.');
         } else {
           cfg.auto = !cfg.auto;
+          // quién lo prendió: si fue Dlx, lo que AUTOMÁTICO haga lo dice (`NOTA_DLX`)
+          cfg.por = cfg.auto && String(h.idDe(i)) === DLX ? 'dlx' : '';
           nota.push(cfg.auto ? '🤖 AUTOMÁTICO prendido (experimental): si nadie responde un aviso en ' + (ESPERA_AUTO_MS / 60000) +
             ' minutos, el bot hace lo más seguro.' : 'AUTOMÁTICO apagado: los avisos vuelven a esperar al staff.');
         }
@@ -563,6 +578,7 @@ function delPanel(i, env, ctx, h, que) {
           cfg.oleada = false;
           cfg.staff = false;
           cfg.auto = false;
+          cfg.por = '';
         }
       } else if (que === 'cerrar') {
         const c = await cerrar(env, gid);

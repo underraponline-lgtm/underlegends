@@ -2539,6 +2539,8 @@ const RUTAS = {
   '/avisos/pedidos-prueba': 'POST',
   // 🤝 el puntaje de cada servidor para «Los tiers» del Dashboard (`bot/tiers.py`): lo manda el ciclo, con su clave
   '/avisos/tiers-ciclo': 'POST',
+  // 🤝 el anti-raid que prende Dlx en un servidor (con la clave del ciclo): ver `antiraidDlx()`
+  '/avisos/antiraid-dlx': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx) y los ajustes para el ciclo (con su clave)
   '/avisos/dueno/ajuste': 'POST', '/avisos/ajustes': 'GET',
   // ▶️ correr el ciclo ahora, desde el Dashboard (sólo Dlx): ver `cicloAMano()`
@@ -4325,7 +4327,7 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // 🙋 PARA EL CICLO, CON SU CLAVE (traen Discord IDs): lo aprobado, cómo salió, y pasar lo de una cuenta a otra
   if (ruta === '/avisos/pedidos-ciclo' || ruta === '/avisos/pedidos-estados' || ruta === '/avisos/mudar-cuenta'
-      || ruta === '/avisos/pedidos-prueba' || ruta === '/avisos/tiers-ciclo') {
+      || ruta === '/avisos/pedidos-prueba' || ruta === '/avisos/tiers-ciclo' || ruta === '/avisos/antiraid-dlx') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     if (ruta === '/avisos/pedidos-ciclo') return elObjeto(env).fetch('https://avisos/pedidos-ciclo');
@@ -5791,6 +5793,25 @@ export class Avisos {
     try { return { ...AR.AR_BASE, ...JSON.parse((f && f.cfg) || '{}') }; } catch (e) { return { ...AR.AR_BASE }; }
   }
 
+  /** 🤝 Lo que Dlx prende desde acá, con la clave del ciclo (20/10/2026, DDF amenazado de raid): `{gid, ver}` sólo lo lee;
+   *  `{gid, canal?}` prende la alarma de oleada, la vigilancia del staff y AUTOMÁTICO con `por: 'dlx'`. Sin un canal de
+   *  avisos (el que tiene, o `canal`) no prende nada: AUTOMÁTICO actúa sobre avisos. */
+  async antiraidDlx(d) {
+    const gid = String((d && d.gid) || '');
+    if (!/^\d{5,25}$/.test(gid)) return { error: 'datos' };
+    const antes = this.antiraidCfg(gid);
+    if (d.ver) return { cfg: antes };
+    const canal = /^\d{5,25}$/.test(String(d.canal || '')) ? String(d.canal) : antes.canal;
+    if (!canal) return { error: 'sin_canal', cfg: antes };
+    if (canal !== antes.canal) {
+      const r = await AR.mandar(this.env, canal, { content: '🛡️ Acá van a llegar los avisos del **anti-raid de la Liga Global**. ' +
+        'Los botones de cada aviso los puede usar el dueño o un admin.' });
+      if (!r.ok) return { error: 'canal', estado: r.status, cfg: antes };
+    }
+    return this.antiraidGuardar({ gid, cfg: { ...antes, canal, oleada: true, staff: true, auto: true, por: 'dlx' },
+      solo: ['canal', 'oleada', 'staff', 'auto', 'por'] });
+  }
+
   /** Guarda lo elegido, validado campo por campo: lo manda el Worker, pero el objeto no confía en nadie. */
   antiraidGuardar(d) {
     const gid = String((d && d.gid) || '');
@@ -5802,11 +5823,13 @@ export class Avisos {
     const nuevo = {
       canal: id(c.canal), escudo: (Array.isArray(c.escudo) ? c.escudo : []).map(id).filter(Boolean).slice(0, 6),
       oleada: c.oleada === true, staff: c.staff === true, cerrado, auto: c.auto === true,
+      // 🤝 quién prendió AUTOMÁTICO: 'dlx' o nadie en particular (el dueño). Ver `NOTA_DLX` en antiraid.js
+      por: c.auto === true && c.por === 'dlx' ? 'dlx' : '',
     };
     // 🔴 CAMPO POR CAMPO (pasada del 19/10/2026): con `solo` se cambian ésos y el resto queda como está en la base (el panel
     // leía, cambiaba una cosa y guardaba todo: pisaba el cierre que AUTOMÁTICO hizo mientras tanto)
     const antes = this.antiraidCfg(gid);
-    const solo = Array.isArray(d.solo) ? d.solo.filter((k) => ['canal', 'escudo', 'oleada', 'staff', 'cerrado', 'auto'].includes(k)) : null;
+    const solo = Array.isArray(d.solo) ? d.solo.filter((k) => ['canal', 'escudo', 'oleada', 'staff', 'cerrado', 'auto', 'por'].includes(k)) : null;
     const cfg = solo ? { ...antes, ...Object.fromEntries(solo.map((k) => [k, nuevo[k]])) } : nuevo;
     // 🕵️ la vigilancia que se vuelve a prender arranca de cero: `desde` le dice a la vuelta que el cursor del registro es de
     // antes (si no, leía lo que pasó mientras estaba apagada y avisaba —o actuaba— sobre eso)
@@ -5997,6 +6020,8 @@ export class Avisos {
       hechas++;
       const x = await AR.actuar(env, gid, p.a);
       if (x.reintentar) { est.pend[mid] = p; continue; }
+      // 🤝 si lo prendió Dlx, lo que hizo lo dice (sólo cuando actúa: Dlx, 20/10/2026)
+      if (cfg.por === 'dlx' && x.linea) x.linea += '\n' + AR.NOTA_DLX;
       if (x.cerrado) {
         cfg.cerrado = { hasta: x.cerrado.hasta, nivel: (cfg.cerrado && cfg.cerrado.nivel) ?? x.cerrado.nivel };
         cambioCfg = true;
@@ -6162,6 +6187,7 @@ export class Avisos {
       // 🛡️ el anti-raid: lo lee y lo guarda el Worker (`/antiraid` y sus botones). No están en `RUTAS`: no se llega de afuera
       if (ruta === '/antiraid-leer') return json({ cfg: this.antiraidCfg(d && d.gid) });
       if (ruta === '/antiraid-guardar') return json(this.antiraidGuardar(d));
+      if (ruta === '/antiraid-dlx') return json(await this.antiraidDlx(d));
       if (ruta === '/antiraid-devolver') return json(this.antiraidDevolver(d));
       if (ruta === '/antiraid-vuelta') return json(await this.antiraidRonda());
       // 🤝 el puntaje de los servidores: sólo lo guarda, tal cual, para el Dashboard (nunca sale a la página)

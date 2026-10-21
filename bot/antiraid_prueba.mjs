@@ -87,8 +87,13 @@ ok(inv.test('entren a discord.gg/xyz') && inv.test('https://discord.com/invite/A
 
 const pn = AR.panel('DDF', { canal: '', oleada: false }, '0');
 const botonesPn = pn.components.flatMap((f) => f.components);
-ok(/sólo el dueño|\*\*el dueño del servidor\*\*/.test(pn.content) && botonesPn.find((b) => b.custom_id === 'ar:oleada').disabled
+ok(/\*\*el dueño del servidor y Dlx\*\*/.test(pn.content) && botonesPn.find((b) => b.custom_id === 'ar:oleada').disabled
   && /Gestionar servidor/.test(pn.content), 'el panel: sin canal no se prende la alarma, y dice qué permiso le falta al bot');
+// 🤝 AUTOMÁTICO prendido por Dlx (20/10/2026): el panel lo dice, y lo que hace lleva la nota (sólo al actuar)
+ok(/lo prendió \*\*Dlx\*\*/.test(AR.panel('DDF', { canal: '1', oleada: true, auto: true, por: 'dlx' }, '8').content)
+  && !/lo prendió/.test(AR.panel('DDF', { canal: '1', oleada: true, auto: true }, '8').content)
+  && /Sólo el propietario del servidor o Dlx/.test(AR.NOTA_DLX) && AR.DLX === '739338101603696681',
+  'AUTOMÁTICO prendido por Dlx: el panel lo dice y la nota de cuando actúa nombra al propietario y a Dlx');
 const pnA = AR.panel('DDF', { canal: '555', staff: true, auto: true }, '8');
 ok(botonesPn.find((b) => b.custom_id === 'ar:auto').disabled && /AUTOMÁTICO/.test(pnA.content) && /Nunca expulsa ni banea/.test(pnA.content) && pnA.content.length < 1800
   && pnA.components[0].components.find((b) => b.custom_id === 'ar:auto').label === 'Apagar AUTOMÁTICO',
