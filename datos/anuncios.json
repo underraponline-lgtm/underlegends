@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-21T06:55:23+00:00",
+ "cuando": "2026-10-21T15:24:35+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1316,6 +1316,47 @@
    "nombre": "SNAKE INSIGNIA",
    "servidor": "SR",
    "canal": "[🏆]eventos",
+   "msg_id": "1562486558299394230",
+   "cuando": "2026-10-21T15:23:45",
+   "canal_id": "863208020900184084",
+   "guild_id": "492346406976356374",
+   "organizador": "@d l o z c o r i a",
+   "orgs": [
+    {
+     "n": "1130121095618502738> ORGANIZADOR",
+     "id": ""
+    },
+    {
+     "n": "d l o z c o r i a",
+     "id": "927662680540594236"
+    },
+    {
+     "n": "El Pibe  | Los Culeanizadores",
+     "id": "535579351710957568"
+    },
+    {
+     "n": "Jothazé",
+     "id": "694719521461764126"
+    }
+   ],
+   "autor_h": "97d76f2ca828eea5",
+   "cupos_texto": "Ilimitados",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "<t:1792616400:F>",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "d l o z c o r i a",
+   "staff_cuentas": {},
+   "categoria_id": "863207988739309600"
+  },
+  {
+   "nombre": "SNAKE INSIGNIA",
+   "servidor": "SR",
+   "canal": "[🏆]eventos",
    "msg_id": "1560340102595481632",
    "cuando": "2026-10-15T17:14:30",
    "canal_id": "863208020900184084",
@@ -1987,30 +2028,6 @@
    "modalidad": "ROYAL RUMBLE",
    "horario": "en 15",
    "fecha": "3",
-   "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
-   "staff": {},
-   "autor": "Nc",
-   "staff_cuentas": {},
-   "categoria_id": "863207988739309600"
-  },
-  {
-   "nombre": "FLEIVA FREE",
-   "servidor": "SR",
-   "canal": "[🏆]eventos",
-   "msg_id": "1541620851307454574",
-   "cuando": "2026-08-25T01:30:52",
-   "canal_id": "863208020900184084",
-   "guild_id": "492346406976356374",
-   "organizador": "@nachonc_",
-   "orgs": [],
-   "autor_h": "d83234c3da26ac85",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "4",
-   "modalidad": "MULTIVERSE(1-4)",
-   "horario": "23 HS 🇦🇷",
-   "fecha": "2",
    "premios": "PTS PARA EL RANKING+PTS PARA LA TABLA",
    "staff": {},
    "autor": "Nc",

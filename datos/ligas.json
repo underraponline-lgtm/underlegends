@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-10-21T06:58:29Z",
+ "t": "2026-10-21T15:29:54Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -825,10 +825,10 @@
     ]
    ],
    "flyer": {
-    "id": "1562263604198252660",
-    "t": "2026-10-21T00:37:48Z",
-    "tit": "PANCHOK vs OEP",
-    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-andes/1562263604198252660.webp",
+    "id": "1562463755298803775",
+    "t": "2026-10-21T13:53:08Z",
+    "tit": "MAXIRAP vs KOCHI",
+    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-andes/1562463755298803775.webp",
     "w": 720,
     "h": 900
    },
@@ -899,6 +899,23 @@
     ]
    },
    "flyers": [
+    {
+     "id": "1562463755298803775",
+     "t": "2026-10-21T13:53:08Z",
+     "tit": "MAXIRAP vs KOCHI",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-andes/1562463755298803775.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1562459141375664242",
+     "msg": "1562459141375664242",
+     "t": "2026-10-21T13:34:48Z",
+     "tit": "MAKMA vs DEUXS",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-andes/1562459141375664242.webp",
+     "w": 720,
+     "h": 900
+    },
     {
      "id": "1562263604198252660",
      "t": "2026-10-21T00:37:48Z",
@@ -983,33 +1000,15 @@
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-andes/1559239641083814099.webp",
      "w": 720,
      "h": 900
-    },
-    {
-     "id": "1559205710091391067",
-     "msg": "1559205710091391067",
-     "t": "2026-10-12T14:06:49Z",
-     "tit": "EXTRAPLAYER 🇨🇴🎮",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-andes/1559205710091391067.webp",
-     "w": 720,
-     "h": 900
-    },
-    {
-     "id": "1559194255963193414",
-     "msg": "1559194255963193414",
-     "t": "2026-10-12T13:21:19Z",
-     "tit": "🇵🇪 JORNADA 4 🇨🇱",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-andes/1559194255963193414.webp",
-     "w": 720,
-     "h": 900
     }
    ],
    "staff": [
     [
      "472896251424276500",
      "Bocamio",
-     26,
      28,
-     "2026-10-21T00:37:48Z"
+     28,
+     "2026-10-21T13:53:08Z"
     ],
     [
      "1513243793116102867",
