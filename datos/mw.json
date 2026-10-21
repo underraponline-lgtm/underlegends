@@ -73,9 +73,9 @@
     "base": 12000,
     "o": 1,
     "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 12000
+    "ev": 1,
+    "fase": "Campeón",
+    "valor": 14500
    },
    {
     "n": "Catarsis",
@@ -99,9 +99,9 @@
     "base": 9000,
     "o": 2,
     "estado": "suelto",
-    "ev": 1,
+    "ev": 2,
     "fase": "Campeón",
-    "valor": 10750
+    "valor": 12500
    },
    {
     "n": "Walker",
@@ -194,7 +194,7 @@
      "por": [
       {
        "n": "Nmb",
-       "cobra": 10000
+       "cobra": 9000
       }
      ]
     }

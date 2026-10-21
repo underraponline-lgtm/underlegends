@@ -15,13 +15,24 @@
    "chat": "2026-10-12",
    "con": null,
    "cumplido": "",
-   "debut": "2026-10-13T00:26:10+00:00",
+   "debut": "2026-10-13T02:35:27+00:00",
    "did": "567047504491708416",
    "evento": "COMPE POR 1.5 DOLARES",
    "n": 462,
    "sv": "FFA",
-   "vence": "2026-10-20T00:26:10+00:00",
+   "vence": "2026-10-20T02:35:27+00:00",
    "vencido": true
+  },
+  "ASURA": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-21T01:13:25+00:00",
+   "did": "",
+   "evento": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS",
+   "n": 493,
+   "sv": "FFA",
+   "vence": "2026-10-28T01:13:25+00:00",
+   "vencido": false
   },
   "Abraham": {
    "avisado": "2026-10-15",
@@ -41,12 +52,12 @@
    "chat": "2026-10-12",
    "con": null,
    "cumplido": "",
-   "debut": "2026-10-13T00:26:10+00:00",
+   "debut": "2026-10-13T02:35:27+00:00",
    "did": "",
    "evento": "COMPE POR 1.5 DOLARES",
    "n": 462,
    "sv": "FFA",
-   "vence": "2026-10-20T00:26:10+00:00",
+   "vence": "2026-10-20T02:35:27+00:00",
    "vencido": true
   },
   "Apolo": {
@@ -128,6 +139,17 @@
    "vence": "2026-10-25T20:57:26+00:00",
    "vencido": false
   },
+  "Desu": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-21T01:13:25+00:00",
+   "did": "",
+   "evento": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS",
+   "n": 493,
+   "sv": "FFA",
+   "vence": "2026-10-28T01:13:25+00:00",
+   "vencido": false
+  },
   "EVANGELINE": {
    "avisado": "2026-10-18",
    "chat": "2026-10-18",
@@ -159,12 +181,12 @@
    "chat": "2026-10-12",
    "con": null,
    "cumplido": "",
-   "debut": "2026-10-13T00:26:10+00:00",
+   "debut": "2026-10-13T02:35:27+00:00",
    "did": "1173707334216859860",
    "evento": "COMPE POR 1.5 DOLARES",
    "n": 462,
    "sv": "FFA",
-   "vence": "2026-10-20T00:26:10+00:00",
+   "vence": "2026-10-20T02:35:27+00:00",
    "vencido": true
   },
   "Hotaru Adeyemi 🏳️‍⚧️": {
@@ -344,8 +366,8 @@
    "avisado": "2026-10-12",
    "avisado_cumplido": "2026-10-12",
    "chat": "2026-10-12",
-   "con": 462,
-   "cumplido": "2026-10-13T00:26:10+00:00",
+   "con": 467,
+   "cumplido": "2026-10-13T21:09:07+00:00",
    "debut": "2026-10-12T22:01:43+00:00",
    "did": "915051512575717457",
    "evento": "GODZ",
@@ -483,6 +505,17 @@
    "n": 478,
    "sv": "SR",
    "vence": "2026-10-23T17:34:15+00:00",
+   "vencido": false
+  },
+  "SULTAN": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-21T01:13:25+00:00",
+   "did": "",
+   "evento": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS",
+   "n": 493,
+   "sv": "FFA",
+   "vence": "2026-10-28T01:13:25+00:00",
    "vencido": false
   },
   "SYEPORUTE": {
@@ -644,19 +677,6 @@
    "sv": "FFA",
    "vence": "2026-10-26T06:14:16+00:00",
    "vencido": false
-  },
-  "🏳️‍⚧️ VEPG 🏳️‍⚧️": {
-   "avisado": "2026-10-12",
-   "chat": "2026-10-12",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-13T00:26:10+00:00",
-   "did": "",
-   "evento": "COMPE POR 1.5 DOLARES",
-   "n": 462,
-   "sv": "FFA",
-   "vence": "2026-10-20T00:26:10+00:00",
-   "vencido": true
   }
  }
 }

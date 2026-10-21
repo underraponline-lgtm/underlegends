@@ -1465,6 +1465,91 @@
     "𝓣𝓸𝔁𝓲𝓴𝓸 = 1543681134842618027"
    ],
    "escribio": {}
+  },
+  {
+   "id": "d2676def05",
+   "tipo": "Nombre desconocido",
+   "sec": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS · FFA · 20/10 · #493",
+   "que": "¿Quién es «ASURA 🇪🇸»?",
+   "r": "Es AKARK (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @asura.pd (en Discord: «asura») · en la Lista: AKARK se anotó como «ASURA» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1792553604372,
+   "filas": [
+    770
+   ],
+   "variantes": [
+    "ASURA 🇪🇸"
+   ],
+   "escribio": {
+    "quien": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS · FFA · 20/10 · ASURA 🇪🇸"
+   }
+  },
+  {
+   "id": "b54b6c6100",
+   "tipo": "Nombre desconocido",
+   "sec": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS · FFA · 20/10 · #493",
+   "que": "¿Quién es «asura 🇯🇵»?",
+   "r": "Es AKARK (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @asura.pd (en Discord: «asura») · en la Lista: AKARK se anotó como «asura» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1792553604372,
+   "filas": [
+    772
+   ],
+   "variantes": [
+    "asura 🇯🇵"
+   ],
+   "escribio": {
+    "quien": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS · FFA · 20/10 · asura 🇯🇵"
+   }
+  },
+  {
+   "id": "045f451119",
+   "tipo": "Nombre desconocido",
+   "sec": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS · FFA · 20/10 · #493",
+   "que": "¿Quién es «SULTAN 🇨🇱»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1560477107598008355",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1560477107598008355)",
+   "t": 1792553604372,
+   "filas": [
+    771
+   ],
+   "variantes": [
+    "SULTAN 🇨🇱"
+   ],
+   "escribio": {
+    "alta": [
+     "SULTAN",
+     "1560477107598008355"
+    ]
+   }
+  },
+  {
+   "id": "8d73231f6e",
+   "tipo": "Nombre desconocido",
+   "sec": "COMPE POR 1.5 DOLARES · FFA · 12/10 · #462",
+   "que": "¿Quién es «🏳️‍⚧️ VEPG 🏳️‍⚧️»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792553604372,
+   "filas": [
+    605
+   ],
+   "variantes": [
+    "🏳️‍⚧️ VEPG 🏳️‍⚧️"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

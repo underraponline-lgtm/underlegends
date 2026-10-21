@@ -21873,80 +21873,15 @@
  },
  "462": {
   "dia": "2026-10-12",
-  "escala": "16+",
+  "escala": "8-15",
   "fecha": "12/10",
   "links": [
-   "https://discord.com/channels/1468472442925092958/1487207377601040516/1559361572353212579"
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1559394106361385043"
   ],
   "n": 462,
   "nombre": "COMPE POR 1.5 DOLARES",
-  "participantes": 28,
+  "participantes": 15,
   "rondas": [
-   {
-    "b": [
-     [
-      [
-       "rodrilp, Velatz, Snow",
-       "Teo",
-       "Betelguese, Guess, Erian"
-      ],
-      "rodrilp, Velatz, Snow",
-      "triple (3 bandas)"
-     ],
-     [
-      [
-       "Guty",
-       "🏳️‍⚧️ VEPG 🏳️‍⚧️",
-       "Zaik 🇪🇸"
-      ],
-      "Guty",
-      "triple (3 bandas)"
-     ],
-     [
-      [
-       "Oasis, AKARK",
-       "Makmah"
-      ],
-      "Oasis, AKARK",
-      ""
-     ],
-     [
-      [
-       "Number",
-       "Dynoco",
-       "Nemi"
-      ],
-      "Number",
-      "triple (3 bandas); Revivido: dynoco"
-     ],
-     [
-      [
-       "MauzzitoEmeces",
-       "Magic",
-       "Dynoco"
-      ],
-      "MauzzitoEmeces",
-      "triple (3 bandas)"
-     ],
-     [
-      [
-       "Delux, Erik, Tam",
-       "BNA, NC"
-      ],
-      "Delux, Erik, Tam",
-      "Revivido: 🇦🇷 NC 🇦🇷 (R) 🇦🇷"
-     ],
-     [
-      [
-       "7, NC",
-       "SINTEXT"
-      ],
-      "7, NC",
-      ""
-     ]
-    ],
-    "r": "Octavos"
-   },
    {
     "b": [
      [
@@ -22024,142 +21959,82 @@
    [
     "AKARK",
     "Subcampeón",
-    3750
-   ],
-   [
-    "Oasis",
-    "Subcampeón",
-    3750
+    2500
    ],
    [
     "Abysuss",
     "Campeón",
-    3333
+    2500
+   ],
+   [
+    "Oasis",
+    "Subcampeón",
+    2500
    ],
    [
     "Presagio",
     "Campeón",
-    3333
+    2500
    ],
    [
     "Verc",
     "Campeón",
-    3333
+    2500
    ],
    [
     "Guty",
     "Cuartos",
-    2500
+    2000
    ],
    [
     "MauzzitoEmeces",
     "Cuartos",
-    2500
+    2000
    ],
    [
     "Number",
     "Cuartos",
-    2500
-   ],
-   [
-    "Dynoco",
-    "Octavos",
-    1875
+    2000
    ],
    [
     "Delux",
     "Semifinal",
-    1750
+    1166
    ],
    [
     "Erik",
     "Semifinal",
-    1750
+    1166
    ],
    [
     "Snow",
     "Semifinal",
-    1750
+    1166
    ],
    [
     "Tam",
     "Semifinal",
-    1750
+    1166
    ],
    [
     "Velatz",
     "Semifinal",
-    1750
+    1166
    ],
    [
     "rodrilp",
     "Semifinal",
-    1750
+    1166
    ],
    [
     "7",
     "Cuartos",
-    1250
-   ],
-   [
-    "Magic",
-    "Octavos",
-    1250
-   ],
-   [
-    "Makmah",
-    "Octavos",
-    1250
+    1000
    ],
    [
     "NC",
     "Cuartos",
-    1250
-   ],
-   [
-    "Nemi",
-    "Octavos",
-    1250
-   ],
-   [
-    "SINTEXT",
-    "Octavos",
-    1250
-   ],
-   [
-    "Teo",
-    "Octavos",
-    1250
-   ],
-   [
-    "Zaik 🇪🇸",
-    "Octavos",
-    1250
-   ],
-   [
-    "🏳️‍⚧️ VEPG 🏳️‍⚧️",
-    "Octavos",
-    1250
-   ],
-   [
-    "BNA",
-    "Octavos",
-    625
-   ],
-   [
-    "Betelguese",
-    "Octavos",
-    416
-   ],
-   [
-    "Erian",
-    "Octavos",
-    416
-   ],
-   [
-    "Guess",
-    "Octavos",
-    416
+    1000
    ]
   ]
  },
@@ -28234,6 +28109,302 @@
    [
     "Zaik 🇪🇸",
     "Cuartos",
+    1250
+   ]
+  ]
+ },
+ "493": {
+  "dia": "2026-10-20",
+  "escala": "16+",
+  "fecha": "20/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1562272568134733865"
+  ],
+  "n": 493,
+  "nombre": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS",
+  "participantes": 26,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Provenza",
+       "Neo",
+       "Calíz"
+      ],
+      "Provenza, Neo",
+      "triple (3 bandas, pasan 2); también pasa: Neo🇦🇷"
+     ],
+     [
+      [
+       "NC",
+       "Six",
+       "Drexx"
+      ],
+      "NC, Six",
+      "triple (3 bandas, pasan 2); también pasa: six; Drafteado: Nc"
+     ],
+     [
+      [
+       "Oasis",
+       "Snow",
+       "Kourier"
+      ],
+      "Oasis, Snow",
+      "triple (3 bandas, pasan 2); también pasa: Seko Boy🇨🇴"
+     ],
+     [
+      [
+       "Abyssus",
+       "Velatz",
+       "Jobaking"
+      ],
+      "Abyssus, Velatz",
+      "triple (3 bandas, pasan 2); también pasa: Shisui 🇯🇵; Drafteado: Abyssus 🇨🇦"
+     ],
+     [
+      [
+       "PichulaMc",
+       "Tam",
+       "Makmah"
+      ],
+      "PichulaMc, Tam",
+      "triple (3 bandas, pasan 2); también pasa: tam"
+     ],
+     [
+      [
+       "asura 🇯🇵",
+       "Desu",
+       "Cronox"
+      ],
+      "asura 🇯🇵, Desu",
+      "triple (3 bandas, pasan 2); también pasa: DESUU 🇨🇱; Drafteado: asura 🇯🇵"
+     ],
+     [
+      [
+       "Player",
+       "Andres",
+       "Musicdum"
+      ],
+      "Player, Andres",
+      "triple (3 bandas, pasan 2); también pasa: nhp 🇨🇱"
+     ],
+     [
+      [
+       "Vandu",
+       "Sultán🇧🇴",
+       "Sin Limites",
+       "LRS",
+       "Dyzz"
+      ],
+      "Vandu, Sultán🇧🇴",
+      "triple (5 bandas, pasan 2); también pasa: Sultán🇧🇴; Drafteado: vandu🇨🇦"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Provenza, Neo",
+       "Tam, PichulaMc"
+      ],
+      "Provenza, Neo",
+      "Drafteado: TAM 🇻🇪"
+     ],
+     [
+      [
+       "NC, Six",
+       "ASURA 🇪🇸, Desu"
+      ],
+      "NC, Six",
+      ""
+     ],
+     [
+      [
+       "Oasis, Snow",
+       "Andres, Player"
+      ],
+      "Oasis, Snow",
+      "Drafteado: NHP 🇨🇱"
+     ],
+     [
+      [
+       "Abyssus, Velatz",
+       "SULTAN 🇨🇱, Vandu"
+      ],
+      "Abyssus, Velatz",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Provenza, Neo, Tam",
+       "Six, NC, ASURA 🇪🇸"
+      ],
+      "Provenza, Neo, Tam",
+      ""
+     ],
+     [
+      [
+       "Oasis, Snow, Andres",
+       "Abyssus, Velatz, Vandu"
+      ],
+      "Oasis, Snow, Andres",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis, Andres, Snow, Abyssus",
+       "Provenza, Neo, Tam, NC"
+      ],
+      "Oasis, Andres, Snow, Abyssus",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Abyssus",
+    "Campeón",
+    4250
+   ],
+   [
+    "Andres",
+    "Campeón",
+    3750
+   ],
+   [
+    "NC",
+    "Subcampeón",
+    3625
+   ],
+   [
+    "Tam",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Vandu",
+    "Semifinal",
+    3000
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    2500
+   ],
+   [
+    "Snow",
+    "Campeón",
+    2500
+   ],
+   [
+    "Neo",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Provenza",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "ASURA 🇪🇸",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Six",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Velatz",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cronox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Desu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jobaking",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kourier",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Musicdum",
+    "Octavos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Player",
+    "Cuartos",
+    1250
+   ],
+   [
+    "SULTAN 🇨🇱",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
     1250
    ]
   ]

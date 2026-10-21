@@ -2,61 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1559761347946749972": {
-   "id": "1559761347946749972",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1557583344638623754",
-   "pub": 1791946484315,
-   "a": "AGUS",
-   "b": "WARAP",
-   "ganador": "AGUS",
-   "votos": "1–0"
-  },
-  "1559761422957940820": {
-   "id": "1559761422957940820",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1557583344638623754",
-   "pub": 1791946502199,
-   "a": "LIBERIA",
-   "b": "GOCHO",
-   "ganador": "LIBERIA",
-   "votos": "1–0"
-  },
-  "1559764984412512267": {
-   "id": "1559764984412512267",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1557583344638623754",
-   "pub": 1791947351316,
-   "a": "VERC",
-   "b": "PICHULA",
-   "ganador": "VERC",
-   "votos": "1–0"
-  },
-  "1559766767600009297": {
-   "id": "1559766767600009297",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1557583344638623754",
-   "pub": 1791947776461,
-   "a": "AGUS",
-   "b": "SEBAS",
-   "ganador": "AGUS",
-   "votos": "1–0"
-  },
-  "1559768178467410012": {
-   "id": "1559768178467410012",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1557583344638623754",
-   "pub": 1791948112838,
-   "a": "VERC",
-   "b": "NEMI",
-   "ganador": "VERC",
-   "votos": "1–0"
-  },
   "1559800708335931526": {
    "id": "1559800708335931526",
    "sv": "[FFA] Freestyle For All 👾",
