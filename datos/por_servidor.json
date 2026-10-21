@@ -112,12 +112,12 @@
   "AKARK": {
    "FFA": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 47,
     "pod": 1,
-    "pts": 3750,
-    "racha": "1/1",
+    "pts": 6375,
+    "racha": "2/2",
     "tg": {
      "fin": 1
     }
@@ -216,20 +216,6 @@
     "pod": 0,
     "pts": 1938,
     "racha": "0/0"
-   }
-  },
-  "ASURA 🇪🇸": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 2625,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "Ab'l 🇦🇷 🇩🇴": {
@@ -6739,7 +6725,7 @@
     "racha": "0/0"
    }
   },
-  "SULTAN 🇨🇱": {
+  "SULTAN": {
    "FFA": {
     "duelos": "",
     "ev": 1,

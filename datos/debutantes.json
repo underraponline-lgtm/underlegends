@@ -23,17 +23,6 @@
    "vence": "2026-10-20T02:35:27+00:00",
    "vencido": true
   },
-  "ASURA": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-21T01:13:25+00:00",
-   "did": "",
-   "evento": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS",
-   "n": 493,
-   "sv": "FFA",
-   "vence": "2026-10-28T01:13:25+00:00",
-   "vencido": false
-  },
   "Abraham": {
    "avisado": "2026-10-15",
    "chat": "2026-10-15",
@@ -140,6 +129,7 @@
    "vencido": false
   },
   "Desu": {
+   "avisado": "2026-10-20",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-21T01:13:25+00:00",
@@ -508,10 +498,11 @@
    "vencido": false
   },
   "SULTAN": {
+   "avisado": "2026-10-20",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-21T01:13:25+00:00",
-   "did": "",
+   "did": "1560477107598008355",
    "evento": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS",
    "n": 493,
    "sv": "FFA",

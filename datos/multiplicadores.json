@@ -673,6 +673,11 @@
      2
     ],
     [
+     "LEWITO",
+     26,
+     1
+    ],
+    [
      "Velatz",
      25,
      1
@@ -680,11 +685,11 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 3,
+     "FFA": 5,
      "ACAD": 1
     },
     "gente": {
-     "FFA": 54,
+     "FFA": 68,
      "ACAD": 21
     },
     "gana": "FFA"
@@ -693,7 +698,7 @@
     "ACAD": 21,
     "DDF": 0,
     "DRA": 0,
-    "FFA": 54,
+    "FFA": 68,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,
