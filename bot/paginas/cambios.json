@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "3.96",
+   "dia": "2026-10-21",
+   "cuando": "2026-10-21T19:24:04-04:00",
+   "titulo": "Tu foto más grande, y los números sin rayas encima",
+   "items": [
+    "👤 **Tu foto, más grande**: el círculo de arriba del perfil pasó a 210 px en la compu y 120 en el teléfono.",
+    "🔢 **La raya entre tus puntos y tus eventos ya no pasa por encima del número**: cada columna mide al menos lo que su número.",
+    "🔢 **El Inicio cuenta bien los eventos de la temporada**: contaba también las llaves de los servidores que no suman."
+   ]
+  },
+  {
    "version": "3.95",
    "dia": "2026-10-21",
    "cuando": "2026-10-21T19:18:24-04:00",

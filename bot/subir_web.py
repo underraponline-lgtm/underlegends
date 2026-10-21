@@ -559,6 +559,9 @@ def armar():
             sys.path.append(_sh)
         import llaves_web as _LW
         regs = _LW.leer()
+        # 🔢 los que CUENTAN, antes de sumar los que no (21/10/2026): con las de abajo adentro, el Inicio decía «144
+        # eventos» con 134 de la Liga. El self-check lo vio el día que `llaves_sin_sumar.json` tuvo sus primeras 10
+        n_eventos = len(regs)
         # 👀 Y LAS DE LOS SERVIDORES QUE NO SUMAN (Dlx, 20/10/2026: «las llaves tienen que estar ahí. Simplemente no
         # cuentan para el ranking»): SÓLO acá, para el calendario y «Ver llave». Ver `llaves_a_entrada.para_ver()`
         for _k, _v in (_json('datos', 'llaves_sin_sumar.json') or {}).items():
@@ -621,6 +624,7 @@ def armar():
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ sin llaves para «Lo que pasó» (%s)' % str(e)[:60])
         regs, llaves, calendario, todas = {}, {}, [], {}
+        n_eventos = 0
 
     # 🔑 LA FASE: prueba hasta que arranca la temporada, y sus fechas. La
     # página decide qué mostrar según el día de quien mira. Ver `FECHAS`.
@@ -681,7 +685,7 @@ def armar():
         # 🔴 LOS EVENTOS DE LA TEMPORADA, NO LAS PARTICIPACIONES. El Inicio
         # sumaba `ev` de cada persona y decía «134 eventos» con siete
         # jugados (auditoría del 25/09/2026).
-        'eventos': len(regs),
+        'eventos': n_eventos,
         'r2': R2,
         'cartas': list(CARTAS),
         'svs': _servidores(gente),
