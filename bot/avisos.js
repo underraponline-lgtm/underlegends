@@ -3537,6 +3537,26 @@ export function ajusteValido(cual, valor) {
     }
     return out;
   }
+  // ✋ las promos a mano (Dlx, 20/10/2026: «agregar y qué cosas añadir o borrar manualmente en PROMO»): las que agrega,
+  // `[{u, quien, sv, dias, t}]`, y los links que saca. Las aplica `bot/promos.py`
+  if (cual === 'promos_mano') {
+    if (valor === null) return null;
+    if (!Array.isArray(valor) || valor.length > 30) return undefined;
+    const out = [];
+    for (const x of valor) {
+      const u = String((x && x.u) || '').trim(), q = String((x && x.quien) || '').trim(), sv = String((x && x.sv) || '');
+      const d = x && x.dias, t = String((x && x.t) || '');
+      if (!/^https:\/\/[^\s]{6,300}$/.test(u) || q.length > 40 || (sv && !/^[A-Z]{2,6}$/.test(sv)) || !Number.isInteger(d) || d < 1 || d > 30
+        || !Number.isFinite(Date.parse(t))) return undefined;
+      out.push({ u, quien: q, sv, dias: d, t: new Date(Date.parse(t)).toISOString() });
+    }
+    return out;
+  }
+  if (cual === 'promos_quitar') {
+    if (valor === null) return null;
+    if (!Array.isArray(valor) || valor.length > 200 || !valor.every((u) => /^https:\/\/[^\s]{6,300}$/.test(String(u)))) return undefined;
+    return [...new Set(valor.map(String))];
+  }
   // 🎛️ los beneficios de cada servidor (20/10/2026): `{sigla: {beneficio: bool}}`, los seis de `bot/tiers.py` BENEFICIOS
   if (cual === 'beneficios') {
     if (valor === null) return null;

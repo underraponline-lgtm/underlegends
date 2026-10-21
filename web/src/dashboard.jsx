@@ -508,6 +508,74 @@ function Beneficios({ x, tier, aj, hacer, ocup }) {
   );
 }
 
+// ✋ LAS PROMOS A MANO (Dlx, 20/10/2026: «yo debería tener la opción de agregar y qué cosas añadir o borrar manualmente
+// en PROMO»). Dos ajustes que aplica bot/promos.py en la vuelta siguiente: `promos_mano` (las que agregas, con sus días; van
+// primero y sin el tope por persona) y `promos_quitar` (los links que sacas, vengan de donde vengan)
+const PLATS = /^https:\/\/(www\.|m\.)?(youtube\.com|youtu\.be|open\.spotify\.com|spotify\.link|soundcloud\.com|on\.soundcloud\.com|instagram\.com|tiktok\.com|vm\.tiktok\.com)\//i;
+function PromosMano({ aj, hacer, ocup }) {
+  const mano = aj.promos_mano || [], quitar = aj.promos_quitar || [];
+  const [f, setF] = useState({ u: '', quien: '', sv: '', dias: 7 });
+  const [q, setQ] = useState('');
+  const [mal, setMal] = useState('');
+  const set = (k) => (e) => setF(Object.assign({}, f, { [k]: k === 'dias' ? Number(e.target.value) : e.target.value }));
+  const agregar = async (e) => {
+    e.preventDefault();
+    const u = f.u.trim();
+    if (!PLATS.test(u)) return setMal('El link tiene que ser de YouTube, Spotify, SoundCloud, Instagram o TikTok (como las demás promos).');
+    if (mano.some((x) => x.u === u)) return setMal('Esa ya está.');
+    setMal('');
+    const sv = f.sv.trim().toUpperCase();
+    const bien = await hacer('promos_mano', [{ u, quien: f.quien.trim(), sv, dias: f.dias, t: new Date().toISOString() }, ...mano].slice(0, 30),
+      'Promo agregada por ' + f.dias + (f.dias === 1 ? ' día' : ' días') + '. Sale en la próxima vuelta del ciclo.');
+    if (bien) setF({ u: '', quien: '', sv: '', dias: 7 });
+    return null;
+  };
+  const sacarMia = (u) => hacer('promos_mano', mano.filter((x) => x.u !== u), 'Promo quitada. Se va en la próxima vuelta del ciclo.');
+  const sacar = async (e) => {
+    e.preventDefault();
+    const u = q.trim();
+    if (!/^https:\/\//.test(u)) return setMal('Pega el link de la promo que quieres sacar.');
+    setMal('');
+    const bien = await hacer('promos_quitar', [...new Set([u, ...quitar])].slice(0, 200), 'Esa promo deja de salir en la próxima vuelta del ciclo.');
+    if (bien) setQ('');
+    return null;
+  };
+  const devolver = (u) => hacer('promos_quitar', quitar.filter((x) => x !== u), 'Esa promo vuelve a salir en la próxima vuelta del ciclo.');
+  return (
+    <div className="pm">
+      <form className="ti-alta" onSubmit={agregar}>
+        <b>Agregar una promo</b>
+        <div className="ti-alta-g">
+          <input value={f.u} onChange={set('u')} placeholder="Link (YouTube, Spotify, SoundCloud, Instagram, TikTok)" aria-label="Link" />
+          <input value={f.quien} onChange={set('quien')} placeholder="De quién (nombre en la Lista, opcional)" maxLength={40} aria-label="De quién" />
+          <input value={f.sv} onChange={set('sv')} placeholder="Servidor (sigla, opcional)" maxLength={6} aria-label="Servidor" />
+          <select value={f.dias} onChange={set('dias')} aria-label="Cuántos días">{[1, 3, 7, 14, 30].map((d) => <option key={d} value={d}>{d} {d === 1 ? 'día' : 'días'}</option>)}</select>
+          <button type="submit" className="btn chico" disabled={ocup}>Agregar</button>
+        </div>
+        <small>Va primera en Publicaciones, en las historias y, si pones de quién, en su perfil. Sin el tope de dos por persona.</small>
+        {mano.length ? <ul className="ti-alta-p">{mano.map((x) => (
+          <li key={x.u}><a href={x.u} target="_blank" rel="noopener noreferrer">{x.u.replace(/^https:\/\/(www\.)?/, '').slice(0, 48)}</a>
+            {x.quien ? ' · ' + x.quien : ''} · {x.dias} {x.dias === 1 ? 'día' : 'días'} desde el {new Date(x.t).toLocaleDateString('es')}
+            <button type="button" className="ti-ben-x" disabled={ocup} onClick={() => sacarMia(x.u)}>quitar</button></li>
+        ))}</ul> : null}
+      </form>
+      <form className="ti-alta" onSubmit={sacar}>
+        <b>Sacar una promo</b>
+        <div className="ti-alta-g">
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Pega el link de la promo" aria-label="Link de la promo que sale" />
+          <button type="submit" className="btn chico" disabled={ocup}>Sacar</button>
+        </div>
+        <small>Sirve para cualquiera: la de un canal de promoción, la de la Liga o una tuya. El link se copia de la promo en Publicaciones.</small>
+        {quitar.length ? <ul className="ti-alta-p">{quitar.map((u) => (
+          <li key={u}>{u.replace(/^https:\/\/(www\.)?/, '').slice(0, 56)}
+            <button type="button" className="ti-ben-x" disabled={ocup} onClick={() => devolver(u)}>devolver</button></li>
+        ))}</ul> : null}
+      </form>
+      {mal ? <p className="ti-bajo" role="alert">{mal}</p> : null}
+    </div>
+  );
+}
+
 // ➕ EL ALTA DE UN SERVIDOR (Dlx, 20/10/2026: «agrega esa función para yo agregar a los servidores manualmente»). Se guarda
 // en el ajuste `altas` y el ciclo lo suma (`altas()` de bot/tiers.py): la entrada, el bot y la invitación de la Liga
 function SumarServidor({ T, aj, hacer, ocup }) {
@@ -2645,6 +2713,7 @@ export function Dashboard({ dc, liga }) {
         {tabV === 'ajustes' ? sec(ve('roles') ? 'CONFIGURACIÓN · SÓLO TÚ' : 'CONFIGURACIÓN', null,
           <Ajustes liga={liga} aj={d.ajustes || {}} chat={d.chat} hist={d.ajustes_hist} hacer={hacer} msg={msg} ocup={ocup}
             roles={d.roles} alRoles={(y) => cambiarD({ roles: y })} conRoles={ve('roles')} />) : null}
+        {tabV === 'ajustes' && ve('ajustes') ? sec('PROMOS A MANO', 'agregar y sacar', <PromosMano aj={d.ajustes || {}} hacer={hacer} ocup={ocup} />) : null}
         {tabV === 'numeros' ? <>
           {sec('COMPARAR SEMANAS', 'de lunes a domingo, en hora del este', <CompararSemanas S={semanas} uso={d.uso_semanas} liga={liga} />)}
           {ve('ajustes') ? sec('LOS TIERS · CÓMO TRABAJA CADA SERVIDOR', 'recomienda; tú eliges', <Tiers T={d.tiers} aj={d.ajustes || {}} hacer={hacer} ocup={ocup} msg={msg} liga={liga} />) : null}

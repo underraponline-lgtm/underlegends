@@ -232,6 +232,44 @@ def extras():
         return None
 
 
+# ── ✋ A MANO, DESDE EL DASHBOARD (Dlx, 20/10/2026: «yo debería tener la opción de agregar y qué cosas añadir o borrar
+# manualmente en PROMO») ──────────────────────────────────────────────────────────────────────────────────────────
+# Dos ajustes: `promos_mano` (las que Dlx agrega: `[{u, quien, sv, dias, t}]`) y `promos_quitar` (los links que saca, de
+# donde sea que vengan: un canal de promoción, la Liga o las suyas). Las suyas van primero y sin el tope por persona,
+# como las alargadas en la Tienda, y duran los días que eligió. Si el Dashboard no contesta, queda lo de la corrida
+# anterior (un Worker caído no es «Dlx las sacó»).
+def _clave_url(u):
+    """El link sin lo que cambia entre copias (`?si=`, `utm_`, la barra final): para que «sacar» encuentre la promo."""
+    u = re.sub(r'[?&](si|igsh|utm_[a-z]+|feature|share_id)=[^&#]*', '', str(u or '').strip())
+    return u.rstrip('/?&').lower()
+
+
+def a_mano(lista, ahora, cache=None, s=None):
+    """Las promos que agregó Dlx, con la forma de las demás (`o: 'mano'`, `hasta`). Sin plataforma conocida, no entra."""
+    import hashlib
+    out = []
+    for x in lista or []:
+        u = str((x or {}).get('u') or '').strip()
+        p = plataforma(u)
+        if not p:
+            print('   ⚠️ promo a mano sin plataforma conocida, no entra: %s' % u[:80])
+            continue
+        t = _de_iso(x.get('t')) or ahora
+        dias = x.get('dias') if isinstance(x.get('dias'), int) and 1 <= x.get('dias') <= 30 else SEMANA
+        y = {'id': 'm-' + hashlib.sha1(u.encode('utf-8')).hexdigest()[:12], 'o': 'mano', 'por': 'Dlx', 't': _iso(t),
+             'hasta': _iso(t + dt.timedelta(days=dias)), 'sv': str(x.get('sv') or ''),
+             'quien': [q for q in [str(x.get('quien') or '').strip()] if q], 'url': u, 'plat': p}
+        if p == 'yt':
+            v = YT_ID.search(u)
+            if v:
+                y['vid'] = v.group(1)
+                y['img'] = 'https://i.ytimg.com/vi/%s/hqdefault.jpg' % v.group(1)
+        if s is not None and cache is not None:
+            y.update({k: v for k, v in oembed(s, y, cache).items() if v})
+        out.append(y)
+    return out
+
+
 def _yt(vid, t, quien, tit, de, sv, por):
     return {'id': 'v-' + vid, 'o': 'liga', 'por': por, 't': t, 'sv': sv or '', 'quien': [q for q in quien if q],
             'url': 'https://www.youtube.com/watch?v=' + vid, 'plat': 'yt', 'vid': vid, 'tit': str(tit or '')[:120],
@@ -346,9 +384,24 @@ def correr(aplicar=False, ahora=None):
     ya = {x['id'] for x in liga}
     liga += [x for x in viejo.get('liga') or [] if x['id'] not in ya and (extra.get(x['id']) or '') > ahora_s]
     liga = liga[:GUARDA]
+    # ✋ lo de Dlx (ver `a_mano()`): las suyas y lo que sacó; sin el Dashboard, lo de la corrida anterior
+    try:
+        import multiplicadores as MU
+        aj = MU.ajustes_dueno()
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ promos a mano: no leí los ajustes (%s)' % str(e)[:60])
+        aj = None
+    if aj is None:
+        mano, quitar = viejo.get('mano') or [], viejo.get('quitar') or []
+    else:
+        mano = a_mano(aj.get('promos_mano') or [], ahora, cache, s)
+        quitar = sorted({_clave_url(u) for u in aj.get('promos_quitar') or [] if u})
+    mano = [x for x in mano if x.get('hasta', '') > ahora_s]
     print('   📣 promos: %d canal(es) de %d servidor(es) · %d nueva(s) · %d guardada(s) · %d de la Liga · %d alargada(s)'
           % (sum(len(v) for v in canales.values()), len(canales), nuevas, len(lista), len(liga),
              sum(1 for v in extra.values() if v > ahora_s)))
+    if mano or quitar:
+        print('   ✋ promos a mano: %d agregada(s) · %d sacada(s)' % (len(mano), len(quitar)))
     if aplicar:
         with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
             json.dump({'_leeme': 'Las promociones de los canales de promoción de cada servidor: el link y de quién es, '
@@ -356,6 +409,7 @@ def correr(aplicar=False, ahora=None):
                                  'y hasta cuándo va cada una alargada en la Tienda (`extra`). Lo escribe bot/promos.py '
                                  '(paso 2b8c); lo lee bot/muro.py.',
                        'canales': canales, 'canales_t': t_can, 'ult': ult, 'items': lista, 'liga': liga, 'extra': extra,
+                       'mano': mano, 'quitar': quitar,
                        'oembed': cache},
                       f, ensure_ascii=False, indent=0)
     return lista
@@ -372,10 +426,15 @@ def para_muro(d, ahora=None, por_persona=POR_PERSONA, tope=AL_MURO, respaldo=Tru
     ahora = ahora or dt.datetime.now(dt.timezone.utc)
     d = d or {}
     extra = d.get('extra') or {}
+    # ✋ lo que Dlx sacó no sale, venga de donde venga; lo que agregó va con el resto (ver `a_mano()`)
+    fuera = set(d.get('quitar') or [])
     todas = [dict(x, quien=[x.get('quien') or ''] if isinstance(x.get('quien'), str) else list(x.get('quien') or []))
-             for x in (d.get('items') or []) + (d.get('liga') or [])]
+             for x in (d.get('mano') or []) + (d.get('items') or []) + (d.get('liga') or [])
+             if _clave_url(x.get('url')) not in fuera]
 
     def vence(x):
+        if x.get('o') == 'mano' and _de_iso(x.get('hasta')):
+            return _de_iso(x['hasta'])
         t = _de_iso(x.get('t'))
         v = (t + dt.timedelta(days=SEMANA)) if t else None
         e = _de_iso(extra.get(x['id'])) if extra.get(x['id']) else None
@@ -396,9 +455,10 @@ def para_muro(d, ahora=None, por_persona=POR_PERSONA, tope=AL_MURO, respaldo=Tru
     activas = [(x, vence(x)) for x in todas if vence(x) > ahora]
     # la alargada primero (pagó por estar), después la más nueva
     activas.sort(key=lambda p: p[0].get('t') or '', reverse=True)
-    activas.sort(key=lambda p: not (extra.get(p[0]['id']) or '') > _iso(ahora))
+    activas.sort(key=lambda p: not ((extra.get(p[0]['id']) or '') > _iso(ahora) or p[0].get('o') == 'mano'))
     for x, hasta in activas:
-        pago = (extra.get(x['id']) or '') > _iso(ahora)
+        # las de Dlx, como las pagadas: primero y sin el tope por persona
+        pago = (extra.get(x['id']) or '') > _iso(ahora) or x.get('o') == 'mano'
         es_liga = x.get('o') == 'liga'
         if not pago:
             if any(por.get(q, 0) >= por_persona for q in x['quien']):
@@ -435,6 +495,19 @@ def _self_check():
        == ['yt', 'sp', 'ig', 'tt', 'sc', 'yt'],
        'sólo música y video: YouTube, Spotify, Instagram, TikTok y SoundCloud; la invitación a otro Discord, no')
     ok(len(links('https://youtu.be/a1 https://youtu.be/a2 https://youtu.be/a3')) == 2, 'como mucho dos links por mensaje')
+    # ✋ a mano: agregar y sacar
+    t0 = dt.datetime(2026, 10, 20, 20, tzinfo=dt.timezone.utc)
+    mm = a_mano([{'u': 'https://youtu.be/abcdefghijk', 'quien': 'SOL', 'dias': 3, 't': '2026-10-20T20:00:00Z'},
+                 {'u': 'https://discord.gg/x'}], t0)
+    ok(len(mm) == 1 and mm[0]['o'] == 'mano' and mm[0]['hasta'] == '2026-10-23T20:00:00Z' and mm[0]['vid'] == 'abcdefghijk',
+       'a mano: entra con sus días; un link que no es de música ni video, no', str(mm))
+    dd = {'mano': mm, 'quitar': [_clave_url('https://youtu.be/zzzzzzzzzzz?si=abc')],
+          'items': [{'id': 'a', 't': '2026-10-20T10:00:00Z', 'sv': 'FFA', 'quien': 'SOL', 'url': 'https://youtu.be/zzzzzzzzzzz', 'plat': 'yt'},
+                    {'id': 'b', 't': '2026-10-20T11:00:00Z', 'sv': 'FFA', 'quien': 'SOL', 'url': 'https://youtu.be/yyyyyyyyyyy', 'plat': 'yt'},
+                    {'id': 'c', 't': '2026-10-20T12:00:00Z', 'sv': 'FFA', 'quien': 'SOL', 'url': 'https://youtu.be/xxxxxxxxxxx', 'plat': 'yt'}]}
+    pm = para_muro(dd, t0, respaldo=False)
+    ok([y['pid'] for y in pm][:1] == [mm[0]['id']] and 'a' not in [y['pid'] for y in pm] and len(pm) == 2,
+       'la de Dlx entra primera (y cuenta en el tope de dos de esa persona); la sacada no sale aunque su link traiga ?si=', str([y['pid'] for y in pm]))
     cats = {'1': '「⚙」STAFF', '2': '🌐〘General FVS〙🌐'}
     ok(es_canal({'type': 0, 'name': '「📱」Spam-Promocion', 'parent_id': '2'}, cats)
        and es_canal({'type': 0, 'name': '[🌠]ᴘʀᴏᴍᴏᴄɪᴏɴ'.replace('ᴘʀᴏᴍᴏᴄɪᴏɴ', 'promocion'), 'parent_id': ''}, cats)

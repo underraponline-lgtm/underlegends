@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.87",
+   "dia": "2026-10-20",
+   "cuando": "2026-10-20T20:53:00-04:00",
+   "titulo": "Promos destacadas por la Liga",
+   "items": [
+    "📣 **La Liga puede destacar promos a mano**: un tema o un video que vale la pena sale primero en Publicaciones y en las historias."
+   ]
+  },
+  {
    "version": "3.86",
    "dia": "2026-10-20",
    "cuando": "2026-10-20T20:21:00-04:00",
