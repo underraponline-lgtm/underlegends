@@ -1,45 +1,45 @@
 {
  "v": 1,
- "cuando": "2026-10-21T22:49:30Z",
+ "cuando": "2026-10-21T23:11:20Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 505.7,
+ "dur_s": 705.3,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.8
+   "s": 6.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.0
+   "s": 7.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.9
+   "s": 36.5
   },
   {
    "n": "5",
    "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 410.1
+   "s": 591.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.0
+   "s": 6.2
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 56.1
+   "s": 56.9
   }
  ],
  "fallas": [
@@ -53,7 +53,7 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Scritura"
+   "que": "03_Servidor/generar.py Sin Limites"
   },
   {
    "paso": "5",
@@ -68,20 +68,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 488,
-   "read": 46270
+   "write": 547,
+   "read": 50236
   },
   "objeto": {
-   "leidas": 3317324,
-   "escritas": 40599,
-   "pedidos": 10560
+   "leidas": 3411493,
+   "escritas": 40903,
+   "pedidos": 10815
   },
   "worker": {
-   "pedidos": 9476,
+   "pedidos": 9345,
    "errores": 0,
-   "sub": 11614,
-   "p50_ms": 1.39,
-   "p99_ms": 11.72
+   "sub": 11471,
+   "p50_ms": 1.4,
+   "p99_ms": 11.71
   },
   "r2": {
    "objetos": 4731,
