@@ -824,6 +824,11 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   const [foco, setFoco] = useState('');
   const tira = useRef(null);
   const grupos = useRef(null);
+  const der = useRef(null);
+  // cuántos de «lo último que se jugó»: arranca chico y crece hasta llenar el costado (ver el bloque al final de <main>)
+  const [mas, setMas] = useState({ k: '', n: 0 });
+  const [, setMedida] = useState(0);
+  const poolN = useRef(0);
 
   // `#/avisos`: la campana, a la vista
   useEffect(() => {
@@ -986,6 +991,32 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   const tituloDe = (k) => (k === hoyK ? 'Hoy' : k === diaMas(hoyK, -1) ? 'Ayer' : k === diaMas(hoyK, 1) ? 'Mañana' : liga.fechaLarga(k + 'T16:00:00Z'));
   const tituloDia = tituloDe(dia);
   const nada = !vivos.length && !prox.length && !hechos.length && !cancelados.length;
+  // 🧱 lo último que se jugó (el bloque al final de <main>): en el día, lo de antes de ese día; en la semana y el mes, lo más nuevo
+  const pasPool = filtrado.filter((c) => c.ll && utc(c.t).getTime() <= ahora && (vista !== 'dia' || liga.diaClave(c.t) < dia))
+    .sort((a, b) => (a.t < b.t ? 1 : -1)).slice(0, 30);
+  poolN.current = pasPool.length;
+  // atado a la vista, el día y el filtro: al cambiar cualquiera vuelve a arrancar chico. ⚠️ No con un efecto que lo
+  // reinicie: el reinicio y el «crece» caían en la misma pasada, daban el mismo número de antes y React no volvía a
+  // dibujar ni a medir (medido: 247 px de hueco al pasar de Mes a Día)
+  const claveMas = vista + '|' + dia + '|' + svFil;
+  const nMas = mas.k === claveMas ? mas.n : (vista === 'dia' ? (nada ? 6 : 3) : 4);
+  // …y crece mientras al lado quede hueco, sólo con la página en dos columnas (en el teléfono el costado va abajo)
+  useEffect(() => {
+    const m = grupos.current;
+    const a = der.current;
+    if (!m || !a || !m.lastElementChild) return;
+    if (getComputedStyle(m.parentNode).gridTemplateColumns.trim().split(/\s+/).length < 2) return;
+    const hueco = a.getBoundingClientRect().bottom - m.lastElementChild.getBoundingClientRect().bottom;
+    if (hueco > 90 && nMas < poolN.current) setMas({ k: claveMas, n: Math.min(poolN.current, nMas + Math.max(1, Math.floor(hueco / 140))) });
+  });
+  // el costado cambia de largo solo (la campana carga después, la ventana cambia de ancho): se vuelve a medir
+  useEffect(() => {
+    const a = der.current;
+    if (!a || typeof ResizeObserver === 'undefined') return undefined;
+    const ro = new ResizeObserver(() => setMedida((x) => x + 1));
+    ro.observe(a);
+    return () => ro.disconnect();
+  }, []);
   // lo último que hubo, para el día vacío
   const ultimoDia = conDias.filter((k) => k < dia).pop();
   // 🔁 tu último evento (48 h) y tu próximo, para «después de jugar» (ver `TuProximo`)
@@ -1066,19 +1097,10 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
               larga y quedaba un hueco grande (Dlx, 21/10/2026: «debajo hay un espacio vacío que se ve feo») */}
           {vista !== 'dia' ? (() => {
             const fut = filtrado.filter((c) => utc(c.t).getTime() > ahora && !liga.canceladoCal(c)).sort((a, b) => (a.t < b.t ? -1 : 1)).slice(0, 3);
-            const pas = filtrado.filter((c) => c.ll && utc(c.t).getTime() <= ahora).sort((a, b) => (a.t < b.t ? 1 : -1)).slice(0, 4);
-            return (
-              <>
-                {fut.length ? (
-                  <section className="grupo evp-mas"><h3 className="g-t">Lo que viene</h3>
-                    <ol className="evp-tl">{fut.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="prox" conDia />)}</ol></section>
-                ) : null}
-                {pas.length ? (
-                  <section className="grupo evp-mas"><h3 className="g-t">Lo último que se jugó</h3>
-                    <ol className="evp-tl">{pas.map((c, i) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={i === 0} conDia />)}</ol></section>
-                ) : null}
-              </>
-            );
+            return fut.length ? (
+              <section className="grupo evp-mas"><h3 className="g-t">Lo que viene</h3>
+                <ol className="evp-tl">{fut.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="prox" conDia />)}</ol></section>
+            ) : null;
           })() : null}
           {vista === 'dia' ? <h2 className="evp-dia">{tituloDia}<small>{evs.length ? evs.length + (evs.length === 1 ? ' evento' : ' eventos') : ''}</small></h2> : null}
           {vista === 'dia' && vivos.length ? (
@@ -1115,15 +1137,17 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
                 <ol className="evp-tl">{fut.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="prox" conDia />)}</ol></section>
             ) : null;
           })() : null}
-          {/* con el día vacío, los dos últimos días que tuvieron algo; si no, el último (y tres eventos) */}
-          {vista === 'dia' && ultimoDia ? conDias.filter((k) => k < dia).slice(nada ? -2 : -1).reverse().map((k, j) => (
-            <section key={k} className="grupo evp-ultdia"><h3 className="g-t">{j ? tituloDe(k) : 'Lo último que se jugó · ' + tituloDe(k)}</h3>
-              <ol className="evp-tl">{(porDia[k] || []).slice().sort((a, b) => (a.t < b.t ? 1 : -1)).slice(0, nada ? 8 : 5)
-                .map((c, i, xs) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={!j && c === xs.find((h) => h.ll)} sig={sigDe(c, 0)} />)}</ol>
+          {/* 🧱 LO ÚLTIMO QUE SE JUGÓ, con su fecha, en las tres vistas: en el día, lo de antes de ese día; en la semana y el mes,
+              lo más nuevo. Arranca con 3 o 4 y, si la página va en dos columnas, suma eventos hasta llegar al largo de la de
+              al lado (Dlx, 21/10/2026, con una captura del iPad: con cantidades fijas medidas a 1333 px, a otro ancho el
+              hueco volvía). Ver el efecto de `nMas` */}
+          {pasPool.length ? (
+            <section className="grupo evp-mas evp-ultdia"><h3 className="g-t">Lo último que se jugó</h3>
+              <ol className="evp-tl">{pasPool.slice(0, nMas).map((c, i) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={i === 0 && (vista !== 'dia' || nada)} sig={sigDe(c, 0)} conDia />)}</ol>
             </section>
-          )) : null}
+          ) : null}
         </main>
-        <aside className="evp-der">
+        <aside className="evp-der" ref={der}>
           {/* en la vista Mes, el mes ya está en el centro: al costado sería el mismo dos veces */}
           <section className={'evp-bloque evp-mes-pc' + (vista === 'mes' ? ' fuera' : '')}><h2 className="evp-h2">El mes</h2>
             <Mes liga={liga} porDia={porDia} dia={dia} onDia={(k) => elegir(k, false)} ym={ym} setYm={setYm} color={color} />

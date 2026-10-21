@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "3.93",
+   "dia": "2026-10-21",
+   "cuando": "2026-10-21T01:54:00-04:00",
+   "titulo": "Eventos sin huecos en cualquier pantalla",
+   "items": [
+    "📐 **«Lo último que se jugó» se alarga hasta el largo de la columna de al lado**, en la compu, la tablet o una pantalla ancha: ya no queda espacio vacío abajo."
+   ]
+  },
+  {
    "version": "3.92",
    "dia": "2026-10-21",
    "cuando": "2026-10-21T01:46:00-04:00",
