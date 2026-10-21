@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "3.91",
+   "dia": "2026-10-21",
+   "cuando": "2026-10-21T00:45:00-04:00",
+   "titulo": "Eventos, como una agenda: por día, por semana o por mes",
+   "items": [
+    "📅 **Cada día es una línea de tiempo**: la hora, el color del servidor y cada evento que se abre y se cierra. Cerrado, la cara del campeón y «Ver la llave»; abierto, el podio, la llave y los botones.",
+    "🗓️ **Elige cómo mirar: Día, Semana o Mes.** La semana se ve de un vistazo y tocar un evento te lleva a ese día con el evento abierto.",
+    "🎟️ **Lo próximo es un boleto**: la cuenta atrás, cuántos se anotaron y los botones para inscribirte o para que te avisemos.",
+    "🔔 **La campana, con un interruptor por servidor**, y «Cuándo suele jugar» con barras por día de la semana."
+   ]
+  },
+  {
    "version": "3.88",
    "dia": "2026-10-20",
    "cuando": "2026-10-20T21:18:00-04:00",

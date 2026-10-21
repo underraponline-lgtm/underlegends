@@ -256,7 +256,7 @@ export function DosToques({ children, confirmar, onClick, className, disabled })
 export function aDiscord(liga, e, vivo) {
   if (!e) return null;
   const inv = https((((liga && liga.svs) || {})[e.sv] || {}).invita);
-  if (!vivo && https(e.ins)) return { url: https(e.ins), txt: 'Inscribite ya' };
+  if (!vivo && https(e.ins)) return { url: https(e.ins), txt: 'Inscríbete ya' };
   if (inv) return { url: inv, txt: 'Entrar al servidor' };
   return https(e.link) ? { url: https(e.link), txt: vivo ? 'Mirar en Discord' : 'Ver en Discord' } : null;
 }

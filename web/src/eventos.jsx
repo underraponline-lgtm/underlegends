@@ -62,6 +62,39 @@ function haceVigia(liga, t) {
   return liga.cuando(t);
 }
 
+// 🔔 un interruptor por servidor (Dlx, 21/10/2026, eligió la opción A de la maqueta: «Grouped Notification Toggles»
+// de 21st). Campana.elegir() suma o saca un servidor y «todos» es la lista vacía, así que apagar uno con «todos» prendido
+// es elegir los demás, uno por uno (el guardado espera medio segundo y sale una sola vez)
+function Interruptor({ on, label, onClick }) {
+  return <button type="button" role="switch" aria-checked={!!on} aria-label={label} className={'evp-sw' + (on ? ' on' : '')} onClick={onClick} />;
+}
+function CampanaServidores({ liga, e, C }) {
+  const [nota, setNota] = useState('');
+  const prueba = (sv) => sv === e.pruebaSv;
+  const prendido = (sv) => (prueba(sv) ? !!e.prueba : e.todos || e.elegidos.includes(sv));
+  const tocar = (sv) => {
+    setNota('');
+    if (prueba(sv) || !prendido(sv)) { C.elegir(sv); return; }
+    if (e.todos) { e.svs.forEach((s) => { if (s.sv !== sv && !prueba(s.sv)) C.elegir(s.sv); }); return; }
+    // apagar el último sería volver a «todos» (la lista vacía): se dice en vez de hacer lo contrario de lo que se tocó
+    if (e.elegidos.length <= 1) { setNota('Deja al menos uno. Para no recibir ninguno, «Desactivar».'); return; }
+    C.elegir(sv);
+  };
+  return (
+    <>
+      <ul className="evp-cam-l" aria-label="Servidores de los avisos">
+        <li className="evp-cam-todos"><span>Todos los servidores</span>
+          <Interruptor on={e.todos} label="Avisos de todos los servidores" onClick={() => { if (!e.todos) C.elegir(''); }} /></li>
+        {e.svs.map((s) => (
+          <li key={s.sv}><img alt="" src={liga.logo(s.sv)} /><span>{s.n || siglaDe(s.sv)}</span>
+            <Interruptor on={prendido(s.sv)} label={'Avisos de ' + (s.n || siglaDe(s.sv))} onClick={() => tocar(s.sv)} /></li>
+        ))}
+      </ul>
+      {nota ? <p className="evp-msg" role="status">{nota}</p> : null}
+    </>
+  );
+}
+
 function Campana({ liga }) {
   const e = useCampana();
   const C = window.Campana;
@@ -88,20 +121,13 @@ function Campana({ liga }) {
       </>
     );
   } else {
-    const on = (sv) => !e.todos && e.elegidos.includes(sv);
     cuerpo = (
       <>
         <p className="evp-ok">Este dispositivo recibe los avisos.</p>
         {e.svs.length > 1 ? (
           <>
-            <p className="evp-tx">¿De qué servidores?</p>
-            <div className="evp-chips" role="group" aria-label="Servidores de los avisos">
-              <button type="button" className={e.todos ? 'on' : ''} aria-pressed={e.todos} onClick={() => C.elegir('')}>Todos</button>
-              {e.svs.map((s) => (
-                <button type="button" key={s.sv} className={on(s.sv) ? 'on' : ''} aria-pressed={on(s.sv)} title={s.n} onClick={() => C.elegir(s.sv)}>
-                  <img alt="" src={liga.logo(s.sv)} />{siglaDe(s.sv)}</button>
-              ))}
-            </div>
+            <p className="evp-tx">Elige de cuáles servidores.</p>
+            <CampanaServidores liga={liga} e={e} C={C} />
           </>
         ) : null}
         <div className="evp-acc">
@@ -155,10 +181,6 @@ function Calendario() {
   );
 }
 
-// ── una tarjeta por evento: la hora grande, el servidor, lo que es y qué se puede hacer ─────────────────────────────
-function Hora({ t }) {
-  return isNaN(utc(t)) ? null : <span className="evp-h">{hora(t)}</span>;
-}
 // ── el campeón como imagen para historias (Dlx, 02/10/2026: «me gusta»): el evento, la carta de verdad del campeón —las
 // dos, si ganó una pareja— y su escalón, con el mismo marco que «Mi puesto» del Ranking (historia.js) ────────────────
 function partir(g, texto, ancho) {
@@ -332,7 +354,30 @@ function TuProximo({ liga, s }) {
   );
 }
 
-function Evento({ liga, e, est, L, abierto, arriba, campVivo, sig }) {
+// la hora de la columna: «21:30», o «9:30» con el «p. m.» debajo (la hora de 12, de los Ajustes, no entra en una línea)
+function HoraCol({ t }) {
+  if (isNaN(utc(t))) return <time className="evp-tlh" />;
+  const [h, ...r] = hora(t).split(' ');
+  return <time className="evp-tlh" dateTime={utc(t).toISOString()}><b>{h}</b>{r.length ? <small>{r.join(' ')}</small> : null}</time>;
+}
+// 👥 las caras del campeón, apiladas, y +N si son más (las pandillas). «Avatar Stack» de 21st (Dlx eligió la maqueta A)
+function Pila({ liga, filas, n = 2 }) {
+  const vis = filas.slice(0, n);
+  const mas = filas.length - vis.length;
+  return (
+    <span className="evp-pila" aria-hidden="true">
+      {vis.map((r, i) => { const f = r[3] ? liga.T[r[3]] : liga.fila(r[0]); return <Cara key={i} liga={liga} k={f ? f.k : ''} nombre={r[0]} cls="cara evp-pila-c" />; })}
+      {mas > 0 ? <em>+{mas}</em> : null}
+    </span>
+  );
+}
+// el ancla de cada evento, para bajar hasta él desde la semana
+const idEv = (c) => 'ev-' + slug((c.link || '').replace(/\D+/g, '').slice(-12) || (c.sv + '-' + c.n + '-' + c.t));
+
+// 🕒 LA AGENDA DEL DÍA (Dlx, 21/10/2026, a la maqueta: «Me gusta más A»): una línea de tiempo, la hora a la izquierda y
+// un punto con el color del servidor; cada evento, una tarjeta con su borde de ese color. Es la misma tarjeta de antes
+// —el estado, el dorado, el multiplicador, «TÚ», tu próximo, los anotados y los botones—, que ahora se abre y se cierra
+function Evento({ liga, e, est, L, abierto, arriba, campVivo, sig, foco }) {
   const ll = e.ll ? (liga.d.llaves || {})[e.ll] : null;
   const inf = (ll && ll.info) || {};
   const x = e.px || {};
@@ -351,45 +396,65 @@ function Evento({ liga, e, est, L, abierto, arriba, campVivo, sig }) {
     (() => { const os = liga.orgsDe(x.org || x.os ? x : inf); return os.length ? 'organiza ' + os.map((o) => limpio(o.f ? o.f.n : o.n)).join(', ') : ''; })()]
     .filter(Boolean).join(' · ');
   const camp = ll ? liga.campeon(ll) : [];
+  const filasCamp = ll ? (ll.tabla || []).filter((r) => r[1] === 'Campeón') : [];
   const mia = est === 'hecho' ? miFila(liga, ll) : null;
+  // 📂 abierto: lo que viene y lo en vivo (tienen sus botones), el primero que terminó y el que se tocó en la semana. Lo
+  // demás, cerrado: la cara del campeón y «Ver la llave». «Discord ↗» vive adentro (Dlx, 21/10/2026, la maqueta A)
+  const [ab, setAb] = useState(() => !!(abierto || foco || est === 'prox' || est === 'vivo' || est === 'pausa'));
+  const verLlave = e.ll ? () => accion.llave(e.ll) : L ? () => accion.llave('v:' + L.id) : null;
   // ⚠️ por `e.ll` y no por la llave del payload, que trae las 12 más nuevas: 21 de 33 decían «SIN LLAVE» al lado de
   // un «Ver la llave» que andaba (revisión del 03/10/2026)
   // 📢 lo que el organizador avisó después —en pausa, atrasado, cancelado— (ver `liga.estado()`): lo jugado no
   const st = ll || e.ll ? null : liga.estado({ link: e.link, t: e.t, sv: e.sv, n: e.n });
   const etq = st && st.tipo === 'pausado' ? '⏸ EN PAUSA' : st && st.tipo === 'atrasado' && est !== 'hecho' ? '⏰ SE ATRASÓ'
     : est === 'vivo' ? '● EN VIVO' : est === 'prox' ? 'POR JUGARSE' : est === 'cancelado' ? 'CANCELADO' : ll || e.ll || (L && L.terminada) ? 'TERMINÓ' : 'SIN LLAVE';
+  const color = (liga.svs[e.sv] || {}).color || '#29B298';
   return (
-    // 🔴 `es-prox` Y NO `prox`: `.prox` es una clase global del Inicio (estilo.css, una grilla de 44px | 1fr | auto) y
-    // las tarjetas «por jugarse» salían con el nombre en una columna angosta (encontrado con los anotados, 03/10/2026)
-    <article className={'t-ev evp-ev ' + (est === 'prox' ? 'es-prox' : est) + (dor ? ' dorado' : '') + (est === 'vivo' ? ' es-vivo' : '')} style={{ '--c': (liga.svs[e.sv] || {}).color || '#29B298' }}>
-      <header>
-        <img alt="" src={liga.logo(e.sv)} />
-        <div className="evp-nm">
-          <Hora t={e.t} />
-          <b>{limpio(e.n)}</b>
-          <small>{det}</small>
-        </div>
-        <span className="t-est">{etq}</span>
-      </header>
-      {dor || multTx || x.premios || (e.ct && est !== 'hecho') ? (
-        <div className="evp-xtra">
-          {dor ? <span className="evp-dor">EVENTO DORADO · {est === 'hecho' ? 'VALIÓ' : 'VALE'} ×3</span> : multTx ? <span className="evp-mult">{multTx}</span> : null}
-          {/* ⏰ anunciado con tiempo (Dlx, 12/10/2026, «5. C»): +10 % para quien lo juega (`multiplicadores.ANTICIPO_X`) */}
-          {e.ct && est !== 'hecho' ? <span className="evp-mult">ANUNCIADO CON TIEMPO · +10 %</span> : null}
-          {x.premios ? <span className="evp-premio">Premio: {recorte(x.premios, 90)}</span> : null}
-        </div>
-      ) : null}
-      {st ? <p className="evp-aviso"><b>{liga.estadoTexto(st, { cuando: e.t, t: e.t, sv: e.sv, n: e.n, link: e.link })}</b>{st.texto ? <span>«{recorte(st.texto.replace(/<a?:\w+:\d+>/g, '').replace(/\s+/g, ' ').trim(), 140)}»</span> : null}</p> : null}
-      {mia ? <p className="evp-vos"><em className="rk-vos">TÚ</em><b>{resultado(mia[1])}</b><span>· +{num(mia[2])}</span></p> : null}
-      {mia && sig && sig.e ? <TuProximo liga={liga} s={sig} /> : null}
-      {camp.length && !abierto ? <p className="evp-camp">{camp.length > 1 ? 'Campeones' : 'Campeón'}: <b>{camp.join(' y ')}</b></p> : null}
-      {!camp.length && campVivo ? <p className="evp-camp">Campeón: <b>{campVivo}</b></p> : null}
-      {abierto && ll ? <Abierto liga={liga} ll={ll} /> : null}
-      {est === 'vivo' && L && !arriba ? <CuadroLleno liga={liga} ll={L} /> : null}
-      {est === 'vivo' && !L ? <p className="t-nota evp-tx">La llave aparece acá apenas la carguen, cruce por cruce.</p> : null}
-      {est === 'prox' || (est === 'vivo' && !L) ? <Anotados liga={liga} e={e} /> : null}
-      <Acciones liga={liga} e={e} L={L} fut={est === 'prox'} ll={est === 'hecho' && camp.length ? ll : null} est={est} />
-    </article>
+    <li className={'evp-nd nd-' + est + (dor ? ' dorado' : '')} style={{ '--c': color }} id={idEv(e)}>
+      <HoraCol t={e.t} />
+      <span className="evp-pt" aria-hidden="true" />
+      {/* 🔴 `es-prox` Y NO `prox`: `.prox` es una clase global del Inicio (estilo.css, una grilla de 44px | 1fr | auto) y
+          las tarjetas «por jugarse» salían con el nombre en una columna angosta (encontrado con los anotados, 03/10/2026) */}
+      <article className={'t-ev evp-ev ' + (est === 'prox' ? 'es-prox' : est) + (dor ? ' dorado' : '') + (est === 'vivo' ? ' es-vivo' : '') + (ab ? ' ab' : '')}>
+        <button type="button" className="evp-hd" aria-expanded={ab} onClick={() => setAb(!ab)}>
+          <img alt="" src={liga.logo(e.sv)} />
+          <span className="evp-nm"><b>{limpio(e.n)}</b><small>{det}</small></span>
+          <span className="t-est">{etq}</span>
+          <Ico n="flecha" t={14} />
+        </button>
+        {/* cerrado: la cara del campeón y su llave, nada más */}
+        {!ab && (camp.length || campVivo) ? (
+          <div className="evp-cmp">
+            {filasCamp.length ? <Pila liga={liga} filas={filasCamp} /> : null}
+            <span><small>{camp.length > 1 ? 'CAMPEONES' : 'CAMPEÓN'}</small><b>{camp.length ? camp.join(' y ') : campVivo}</b></span>
+            {verLlave ? <button type="button" className="btn verde chico" onClick={verLlave}>Ver la llave</button> : null}
+          </div>
+        ) : null}
+        {/* «TÚ» y tu próximo se ven siempre: son lo tuyo (ver `TuProximo`) */}
+        {mia ? <p className="evp-vos"><em className="rk-vos">TÚ</em><b>{resultado(mia[1])}</b><span>· +{num(mia[2])}</span></p> : null}
+        {mia && sig && sig.e ? <TuProximo liga={liga} s={sig} /> : null}
+        {ab ? (
+          <>
+            {dor || multTx || x.premios || (e.ct && est !== 'hecho') ? (
+              <div className="evp-xtra">
+                {dor ? <span className="evp-dor">EVENTO DORADO · {est === 'hecho' ? 'VALIÓ' : 'VALE'} ×3</span> : multTx ? <span className="evp-mult">{multTx}</span> : null}
+                {/* ⏰ anunciado con tiempo (Dlx, 12/10/2026, «5. C»): +10 % para quien lo juega (`multiplicadores.ANTICIPO_X`) */}
+                {e.ct && est !== 'hecho' ? <span className="evp-mult">ANUNCIADO CON TIEMPO · +10 %</span> : null}
+                {x.premios ? <span className="evp-premio">Premio: {recorte(x.premios, 90)}</span> : null}
+              </div>
+            ) : null}
+            {st ? <p className="evp-aviso"><b>{liga.estadoTexto(st, { cuando: e.t, t: e.t, sv: e.sv, n: e.n, link: e.link })}</b>{st.texto ? <span>«{recorte(st.texto.replace(/<a?:\w+:\d+>/g, '').replace(/\s+/g, ' ').trim(), 140)}»</span> : null}</p> : null}
+            {/* abierto, el podio y el cuadro de la llave (lo que antes tenía sólo el primero) */}
+            {ll ? <Abierto liga={liga} ll={ll} /> : null}
+            {!ll && campVivo ? <p className="evp-camp">Campeón: <b>{campVivo}</b></p> : null}
+            {est === 'vivo' && L && !arriba ? <CuadroLleno liga={liga} ll={L} /> : null}
+            {est === 'vivo' && !L ? <p className="t-nota evp-tx">La llave aparece acá apenas la carguen, cruce por cruce.</p> : null}
+            {est === 'prox' || (est === 'vivo' && !L) ? <Anotados liga={liga} e={e} /> : null}
+            <Acciones liga={liga} e={e} L={L} fut={est === 'prox'} ll={est === 'hecho' && camp.length ? ll : null} est={est} />
+          </>
+        ) : null}
+      </article>
+    </li>
   );
 }
 
@@ -492,6 +557,34 @@ function diasEnPalabras(dias) {
   const ds = SEMANA_P.filter((_, i) => dias[i]);
   return ds.length === 7 ? 'todos los días' : 'los ' + (ds.length > 1 ? ds.slice(0, -1).join(', ') + ' y ' + ds[ds.length - 1] : ds[0]);
 }
+// 📊 los eventos de la temporada por día de la semana, apilados con el color de cada servidor («Activity Heatmap» de 21st
+// pasado a barras; Dlx eligió la maqueta A el 21/10/2026). Arriba de la lista de cada servidor, que se queda
+function Barras({ P, color }) {
+  const por = SEMANA.map(() => ({}));
+  P.todos.forEach((x) => { por[x.dow][x.sv] = (por[x.dow][x.sv] || 0) + 1; });
+  const tot = por.map((c) => Object.values(c).reduce((s, v) => s + v, 0));
+  const tope = Math.max(...tot);
+  if (!tope) return null;
+  const top = [0, 1, 2, 3, 4, 5, 6].filter((i) => tot[i]).sort((a, b) => tot[b] - tot[a]).slice(0, 2);
+  return (
+    <>
+      <p className="evp-tx">{top.length > 1 ? <>Los <b>{SEMANA_P[top[0]]}</b> y los <b>{SEMANA_P[top[1]]}</b> son los días con más eventos.</>
+        : <>Los <b>{SEMANA_P[top[0]]}</b> son los días con más eventos.</>}</p>
+      <div className="evp-cjb" role="img" aria-label={SEMANA_P.map((d, i) => d + ': ' + tot[i]).join(', ')}>
+        {SEMANA.map((d, i) => (
+          <div key={i} className="evp-cjb-d">
+            <span className="evp-cjb-col">
+              {Object.entries(por[i]).sort((a, b) => b[1] - a[1]).map(([sv, v]) => (
+                <i key={sv} title={siglaDe(sv) + ': ' + v} style={{ height: ((100 * v) / tope).toFixed(1) + '%', background: color(sv) }} />
+              ))}
+            </span>
+            <b>{tot[i] || ''}</b><small>{d}</small>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
 function CuandoJuega({ liga, cal, dia, color, et }) {
   const P = useMemo(() => patrones(liga, cal), [liga, cal]);
   // 📅 y quiénes organizan en cada uno (Dlx, 12/10/2026, «5. A»: «cuándo cada sv organiza usualmente y quiénes»), del
@@ -516,6 +609,7 @@ function CuandoJuega({ liga, cal, dia, color, et }) {
   return (
     <div className="evp-cuando">
       {et ? <span className="evp-et">{et}</span> : null}
+      {antes ? null : <Barras P={P} color={color} />}
       {antes ? (antes.length ? (
         <>
           <p className="evp-tx">Los {SEMANA_P[dow]} anteriores hubo:</p>
@@ -628,6 +722,61 @@ function nombreDia(k, hoyK) {
   return DIAS[new Date(Date.UTC(y, m - 1, d, 12)).getUTCDay()].slice(0, 3);
 }
 
+// 🗓️ LA SEMANA (Dlx, 21/10/2026: «que se pueda alternar el calendario por semana, por mes y por día»): de lunes a
+// domingo, la semana del día elegido. En la compu, siete columnas como una guía de TV; en el teléfono, los días uno
+// abajo del otro con una fila corta por evento. Tocar un evento abre el día con ese evento abierto
+function Semana({ liga, porDia, dia, hoyK, color, estado, onDia, onEvento, mover }) {
+  const lunes = diaMas(dia, -dowDe(dia));
+  const ks = [0, 1, 2, 3, 4, 5, 6].map((i) => diaMas(lunes, i));
+  const fecha = (k) => { const [, m, d] = k.split('-').map(Number); return [d, MESES[m - 1]]; };
+  const [d1, m1] = fecha(ks[0]);
+  const [d7, m7] = fecha(ks[6]);
+  const rango = m1 === m7 ? d1 + ' – ' + d7 + ' de ' + m7 : d1 + ' de ' + m1 + ' – ' + d7 + ' de ' + m7;
+  return (
+    <div className="evp-sem">
+      <div className="evp-sem-top">
+        <button type="button" className="evp-fl" aria-label="Semana anterior" onClick={() => mover(-7)}><Ico n="flecha" t={16} /></button>
+        <b>{rango}</b>
+        <button type="button" className="evp-fl der" aria-label="Semana siguiente" onClick={() => mover(7)}><Ico n="flecha" t={16} /></button>
+      </div>
+      <div className="evp-sem-g">
+        {ks.map((k) => {
+          const evs = (porDia[k] || []).slice().sort((a, b) => (a.t < b.t ? -1 : 1));
+          return (
+            <section key={k} className={'evp-sem-c' + (k === hoyK ? ' hoy' : '') + (k === dia ? ' sel' : '') + (evs.length ? '' : ' vacia')}>
+              <button type="button" className="evp-sem-h" onClick={() => onDia(k)} aria-label={'Ver el ' + tituloLargo(liga, k, hoyK)}>
+                <small>{nombreDia(k, hoyK)}</small><b>{fecha(k)[0]}</b><em>{evs.length ? evs.length + (evs.length === 1 ? ' evento' : ' eventos') : '—'}</em>
+              </button>
+              {evs.length ? (
+                <ul>
+                  {evs.map((c, i) => {
+                    const ll = c.ll ? (liga.d.llaves || {})[c.ll] : null;
+                    const fc = ll ? (ll.tabla || []).filter((r) => r[1] === 'Campeón') : [];
+                    const s = estado(c);
+                    return (
+                      <li key={c.link || c.n + i}>
+                        <button type="button" className={'evp-sem-e se-' + s.cls} style={{ '--c': color(c.sv) }} onClick={() => onEvento(k, c)}>
+                          <time>{hora(c.t)}</time>
+                          <img alt="" src={liga.logo(c.sv)} />
+                          <b>{limpio(c.n)}</b>
+                          {fc.length ? <Pila liga={liga} filas={fc} /> : <small>{s.txt}</small>}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : <p className="evp-sem-nada">{k >= hoyK ? 'Nada anunciado todavía' : 'Sin eventos'}</p>}
+            </section>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+function tituloLargo(liga, k, hoyK) {
+  return k === hoyK ? 'día de hoy' : liga.fechaLarga(k + 'T16:00:00Z');
+}
+
 export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   // 🔔 con la campana ya prendida en este dispositivo, el día vacío no la pide (19/10/2026, como el Inicio)
   const camp = useCampana();
@@ -667,7 +816,11 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
   const [dia, setDia] = useState(() => (/^\d{4}-\d\d-\d\d$/.test(diaRuta || '') ? diaRuta : porDefecto));
   useEffect(() => { if (/^\d{4}-\d\d-\d\d$/.test(diaRuta || '')) setDia(diaRuta); }, [diaRuta]);
   const [ym, setYm] = useState(() => { const [y, m] = dia.split('-').map(Number); return [y, m - 1]; });
-  const [verMes, setVerMes] = useState(false);
+  // 🗓️ Día · Semana · Mes (Dlx, 21/10/2026). Se recuerda en este navegador: es una comodidad, no un dato
+  const [vista, setVistaS] = useState(() => { try { const v = localStorage.getItem('lg:ev-vista'); return ['dia', 'semana', 'mes'].includes(v) ? v : 'dia'; } catch (e) { return 'dia'; } });
+  const setVista = (v) => { setVistaS(v); try { localStorage.setItem('lg:ev-vista', v); } catch (e) { /* sin guardar */ } };
+  // el evento que se tocó en la semana: se abre y se baja hasta él
+  const [foco, setFoco] = useState('');
   const tira = useRef(null);
   const grupos = useRef(null);
 
@@ -685,6 +838,18 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
     try { history.replaceState(history.state, '', window.urlLG ? window.urlLG('#/eventos/' + k) : '#/eventos/' + k); } catch (e) { /* queda */ }
     if (bajar && grupos.current) grupos.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
+  const bajarA = () => setTimeout(() => { if (grupos.current) grupos.current.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30);
+  const cambiarVista = (v) => { setVista(v); setFoco(''); };
+  // de la semana o del mes al día: con el evento tocado abierto
+  const abrirDia = (k, c) => { setFoco(c ? idEv(c) : ''); setVista('dia'); elegir(k); if (!c) bajarA(); };
+  useEffect(() => {
+    if (!foco || vista !== 'dia') return undefined;
+    const t = setTimeout(() => {
+      const el = grupos.current && grupos.current.querySelector('#' + foco);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 60);
+    return () => clearTimeout(t);
+  }, [foco, vista]);
   // el día elegido, a la vista en la tira
   useEffect(() => {
     const t = tira.current;
@@ -754,17 +919,33 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
       </div>
     );
   } else if (proximo) {
-    const pi = (proximo.px || {}).ins ? aDiscord(liga, { sv: proximo.sv, ins: proximo.px.ins }, false) : null;
+    // 🎟️ EL BOLETO (Dlx, 21/10/2026, eligió la maqueta A; «Admit One Ticket» y «Event RSVP Card» de 21st): la cuenta
+    // atrás, cuántos se anotaron contra los cupos —cuando el anuncio dice un número—, y el talón con la hora y los botones
+    const px = proximo.px || {};
+    const pi = px.ins ? aDiscord(liga, { sv: proximo.sv, ins: px.ins }, false) : null;
+    const nAn = liga.anotados({ link: proximo.link }).length;
+    const cup = parseInt((/\d+/.exec(String(px.cupos || '')) || [''])[0], 10);
+    const orgs = liga.orgsDe(px.org || px.os ? px : {}).map((o) => limpio(o.f ? o.f.n : o.n));
+    const [hh, ...ampm] = hora(proximo.t).split(' ');
     momento = (
-      <div className="evp-mo">
-        <span className="tag">LO PRÓXIMO · {liga.dia(proximo.t).toUpperCase()}</span>
-        <div className="evp-mo-n"><img alt="" src={liga.logo(proximo.sv)} /><b>{limpio(proximo.n)}</b></div>
-        <small className="evp-mo-s">{[siglaDe(proximo.sv), formato(proximo.mod || (proximo.px || {}).modalidad)].filter(Boolean).join(' · ')}</small>
-        <div className="mo-cuenta"><small>EMPIEZA EN</small><b>{liga.falta(proximo.t)}</b></div>
-        <div className="hero-acc">
-          {pi ? <a className="btn verde" href={pi.url} target="_blank" rel="noopener noreferrer">{pi.txt} ↗</a> : null}
-          <button type="button" className={'btn ' + (pi ? 'borde' : 'verde')} onClick={() => accion.ir('ev-campana')}><Ico n="campana" t={18} />Quiero aviso</button>
-          {pi ? null : <a className="btn borde" href={gcal({ nombre: proximo.n, sv: proximo.sv, cuando: proximo.t, link: proximo.link })} target="_blank" rel="noopener noreferrer">+ Calendario</a>}
+      <div className="evp-mo evp-bol">
+        <div className="evp-bol-a">
+          <span className="tag">LO PRÓXIMO · EMPIEZA EN {liga.falta(proximo.t).toUpperCase()}</span>
+          <div className="evp-mo-n"><img alt="" src={liga.logo(proximo.sv)} /><b>{limpio(proximo.n)}</b></div>
+          <small className="evp-mo-s">{[siglaDe(proximo.sv), formato(proximo.mod || px.modalidad), orgs.length ? 'organiza ' + orgs.join(', ') : ''].filter(Boolean).join(' · ')}</small>
+          {cup > 0 ? (
+            <div className="evp-bol-cup">
+              <span><u style={{ width: Math.min(100, Math.round((100 * nAn) / cup)) + '%' }} /></span>
+              <small>{nAn} de {cup} cupos{String(px.cupos).trim() !== String(cup) ? ' · ' + String(px.cupos).toLowerCase() : ''}</small>
+            </div>
+          ) : px.cupos ? <small className="evp-mo-s">Cupos: {String(px.cupos).toLowerCase()}</small> : null}
+        </div>
+        <div className="evp-bol-t">
+          <small>{(nombreDia(liga.diaClave(proximo.t), hoyK) || '').toUpperCase()}</small>
+          <b>{hh}{ampm.length ? <em>{ampm.join(' ')}</em> : null}</b>
+          {pi ? <a className="btn verde chico" href={pi.url} target="_blank" rel="noopener noreferrer">{pi.txt} ↗</a> : null}
+          <button type="button" className={'btn chico ' + (pi ? 'evp-bol-av' : 'verde')} onClick={() => accion.ir('ev-campana')}><Ico n="campana" t={16} />Avísame</button>
+          {pi ? null : <a className="evp-bol-cal" href={gcal({ nombre: proximo.n, sv: proximo.sv, cuando: proximo.t, link: proximo.link })} target="_blank" rel="noopener noreferrer">+ Calendario</a>}
         </div>
       </div>
     );
@@ -792,6 +973,15 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
       </div>
     );
   }
+  // 🔢 los filtros con cuántos eventos tiene cada servidor en lo que se está mirando: el día, la semana o el mes
+  const rangoK = vista === 'dia' ? [dia] : vista === 'semana' ? [0, 1, 2, 3, 4, 5, 6].map((i) => diaMas(diaMas(dia, -dowDe(dia)), i)) : null;
+  const ymK = ym[0] + '-' + String(ym[1] + 1).padStart(2, '0');
+  const cuentaSv = {};
+  cal.forEach((c) => { const k = liga.diaClave(c.t); if (k && (rangoK ? rangoK.includes(k) : k.startsWith(ymK))) cuentaSv[c.sv] = (cuentaSv[c.sv] || 0) + 1; });
+  const cuentaTot = Object.values(cuentaSv).reduce((s, v) => s + v, 0);
+  // en la semana, lo que dice cada evento sin campeón
+  const estadoCorto = (c) => (esVivo(c) && !c.ll ? { cls: 'vivo', txt: '● en vivo' } : liga.canceladoCal(c) ? { cls: 'canc', txt: 'cancelado' }
+    : utc(c.t).getTime() > ahora ? { cls: 'prox', txt: 'por jugarse' } : { cls: 'sin', txt: c.ll ? 'terminó' : 'sin llave' });
   const tituloDe = (k) => (k === hoyK ? 'Hoy' : k === diaMas(hoyK, -1) ? 'Ayer' : k === diaMas(hoyK, 1) ? 'Mañana' : liga.fechaLarga(k + 'T16:00:00Z'));
   const tituloDia = tituloDe(dia);
   const nada = !vivos.length && !prox.length && !hechos.length && !cancelados.length;
@@ -827,54 +1017,69 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
       <nav className="evp-dias" aria-label="Días">
         <div className="evp-dias-in" ref={tira}>
           {tiraDias.map((k) => {
-            const n = (porDia[k] || []).length;
+            const xs = porDia[k] || [];
+            const n = xs.length;
             const [, , d] = k.split('-').map(Number);
             return (
-              <button type="button" key={k} className={(k === dia ? 'on' : '') + (k === hoyK ? ' hoy' : '') + (n ? '' : ' sin')} aria-pressed={k === dia} onClick={() => elegir(k)}>
-                <span>{nombreDia(k, hoyK)}</span><b>{d}</b><i>{n ? n + (n === 1 ? ' evento' : ' eventos') : '—'}</i>
+              <button type="button" key={k} className={(k === dia ? 'on' : '') + (k === hoyK ? ' hoy' : '') + (n ? '' : ' sin')} aria-pressed={k === dia}
+                aria-label={nombreDia(k, hoyK) + ' ' + d + ': ' + (n ? n + (n === 1 ? ' evento' : ' eventos') : 'sin eventos')} onClick={() => elegir(k)}>
+                <span>{nombreDia(k, hoyK)}</span><b>{d}</b>
+                {/* 🔵 un punto por evento, del color de su servidor (la maqueta A, 21/10/2026), en vez de «5 eventos» */}
+                <i className="evp-pts" aria-hidden="true">{n ? <>{xs.slice(0, 8).map((c, j) => <u key={j} style={{ background: color(c.sv) }} />)}{n > 8 ? <em>+{n - 8}</em> : null}</> : '—'}</i>
                 {misDias.has(k) ? <em className="evp-dyo" title="Jugaste" aria-label="jugaste" /> : null}
               </button>
             );
           })}
         </div>
-        {/* el mes, FUERA de la tira y siempre a la vista: al final de la tira quedaba detrás de nueve días y había que
-            deslizar hasta el fondo para encontrarlo (Dlx, 03/10/2026: «hacer el acceso al calendario vista por mes más
-            sencillo en celular»). Al abrirlo, baja hasta él */}
-        <button type="button" className={'evp-mes-b' + (verMes ? ' on' : '')} aria-expanded={verMes}
-          onClick={() => { const v = !verMes; setVerMes(v); if (v) setTimeout(() => { if (grupos.current) grupos.current.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 30); }}>
-          <span>Mes</span><Ico n="eventos" t={18} /></button>
       </nav>
       <div className="evp-t3">
         <main className="evp-centro" ref={grupos}>
-          {verMes ? <div className="evp-mes-movil"><Mes liga={liga} porDia={porDia} dia={dia} onDia={(k) => { elegir(k); setVerMes(false); }} ym={ym} setYm={setYm} color={color} /></div> : null}
-          {svsCal.length > 1 ? (
-            <div className="evp-chips evp-filtro" role="group" aria-label="Filtrar por servidor">
-              <button type="button" className={!svFil ? 'on' : ''} aria-pressed={!svFil} onClick={() => setSvFil('')}>Todos</button>
-              {svsCal.map((s) => (
-                <button type="button" key={s} className={svFil === s ? 'on' : ''} aria-pressed={svFil === s} onClick={() => setSvFil(svFil === s ? '' : s)}>
-                  <img alt="" src={liga.logo(s)} />{siglaDe(s)}</button>
+          {/* 🗓️ Día · Semana · Mes (Dlx, 21/10/2026). Reemplaza el botón «Mes» que estaba al lado de la tira */}
+          <div className="evp-barra">
+            <div className="evp-vista" role="group" aria-label="Ver los eventos por">
+              {[['dia', 'Día'], ['semana', 'Semana'], ['mes', 'Mes']].map(([v, t]) => (
+                <button type="button" key={v} className={vista === v ? 'on' : ''} aria-pressed={vista === v} onClick={() => cambiarVista(v)}>{t}</button>
               ))}
             </div>
+            {svsCal.length > 1 ? (
+              <div className="evp-chips evp-filtro" role="group" aria-label="Filtrar por servidor">
+                <button type="button" className={!svFil ? 'on' : ''} aria-pressed={!svFil} onClick={() => setSvFil('')}>Todos{cuentaTot ? <u>{cuentaTot}</u> : null}</button>
+                {svsCal.map((s) => (
+                  <button type="button" key={s} className={svFil === s ? 'on' : ''} aria-pressed={svFil === s} onClick={() => setSvFil(svFil === s ? '' : s)}>
+                    <img alt="" src={liga.logo(s)} />{siglaDe(s)}{cuentaSv[s] ? <u>{cuentaSv[s]}</u> : null}</button>
+                ))}
+              </div>
+            ) : null}
+          </div>
+          {vista === 'semana' ? (
+            <Semana liga={liga} porDia={porDia} dia={dia} hoyK={hoyK} color={color} estado={estadoCorto}
+              onDia={(k) => abrirDia(k)} onEvento={(k, c) => abrirDia(k, c)} mover={(n) => elegir(diaMas(dia, n))} />
           ) : null}
-          <h2 className="evp-dia">{tituloDia}<small>{evs.length ? evs.length + (evs.length === 1 ? ' evento' : ' eventos') : ''}</small></h2>
-          {vivos.length ? (
-            <section className="grupo"><h3 className="g-t vivo">● En vivo</h3>{vivos.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="vivo" L={enVivo(c)} arriba={esArriba(c)} />)}</section>
+          {vista === 'mes' ? (
+            <div className="evp-mes-v">
+              <Mes liga={liga} porDia={porDia} dia={dia} onDia={(k) => abrirDia(k)} ym={ym} setYm={setYm} color={color} />
+              <div className="evp-ley">{svsCal.map((s) => <span key={s}><i style={{ background: color(s) }} />{siglaDe(s)}</span>)}</div>
+            </div>
           ) : null}
-          {pausa.length ? (
-            <section className="grupo"><h3 className="g-t">⏸ En pausa</h3>{pausa.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="pausa" L={enVivo(c)} />)}</section>
+          {vista === 'dia' ? <h2 className="evp-dia">{tituloDia}<small>{evs.length ? evs.length + (evs.length === 1 ? ' evento' : ' eventos') : ''}</small></h2> : null}
+          {vista === 'dia' && vivos.length ? (
+            <section className="grupo"><h3 className="g-t vivo">● En vivo</h3><ol className="evp-tl">{vivos.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="vivo" L={enVivo(c)} arriba={esArriba(c)} foco={foco === idEv(c)} />)}</ol></section>
           ) : null}
-          {prox.length ? (
-            <section className="grupo"><h3 className="g-t">{dia === hoyK ? 'Más tarde' : 'Por jugarse'}</h3>{prox.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="prox" />)}</section>
+          {vista === 'dia' && pausa.length ? (
+            <section className="grupo"><h3 className="g-t">⏸ En pausa</h3><ol className="evp-tl">{pausa.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="pausa" L={enVivo(c)} foco={foco === idEv(c)} />)}</ol></section>
           ) : null}
-          {hechos.length ? (
+          {vista === 'dia' && prox.length ? (
+            <section className="grupo"><h3 className="g-t">{dia === hoyK ? 'Más tarde' : 'Por jugarse'}</h3><ol className="evp-tl">{prox.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="prox" foco={foco === idEv(c)} />)}</ol></section>
+          ) : null}
+          {vista === 'dia' && hechos.length ? (
             <section className="grupo"><h3 className="g-t">Terminados</h3>
-              {hechos.map((c, i) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={i === 0 && !!c.ll} L={termDe(c) ? termDe(c).L : undefined} campVivo={termDe(c) ? termDe(c).camp : ''} sig={sigDe(c, prox.length + vivos.length)} />)}</section>
+              <ol className="evp-tl">{hechos.map((c, i) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={c === hechos.find((h) => h.ll)} foco={foco === idEv(c)} L={termDe(c) ? termDe(c).L : undefined} campVivo={termDe(c) ? termDe(c).camp : ''} sig={sigDe(c, prox.length + vivos.length)} />)}</ol></section>
           ) : null}
-          {cancelados.length ? (
+          {vista === 'dia' && cancelados.length ? (
             <section className="grupo"><h3 className="g-t">Cancelados</h3>
-              {cancelados.map((c) => <Evento key={c.id} liga={liga} e={{ n: c.n, sv: c.sv, t: c.ini }} est="cancelado" />)}</section>
+              <ol className="evp-tl">{cancelados.map((c) => <Evento key={c.id} liga={liga} e={{ n: c.n, sv: c.sv, t: c.ini }} est="cancelado" foco={foco === idEv({ n: c.n, sv: c.sv, t: c.ini })} />)}</ol></section>
           ) : null}
-          {nada ? (
+          {vista === 'dia' && nada ? (
             <div className="evp-nada">
               <p>{dia === hoyK ? 'Hoy todavía no se anunció ningún evento. Los servidores los anuncian unos 15 minutos antes: con la campana te llega al minuto.'
                 : dia > hoyK ? 'Para ese día todavía no hay nada anunciado.' : 'Ese día no hubo eventos.'}</p>
@@ -884,15 +1089,16 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
           ) : null}
           {/* un día sin nada no es un callejón: abajo, lo último que se jugó (era media página en blanco en la compu). Y
               un día CORTO tampoco (19/10/2026): con dos eventos, la columna terminaba ~1.000 px antes que la de al lado */}
-          {(nada || evs.length < 3) && ultimoDia ? (
+          {vista === 'dia' && (nada || evs.length < 3) && ultimoDia ? (
             <section className="grupo evp-ultdia"><h3 className="g-t">Lo último que se jugó · {tituloDe(ultimoDia)}</h3>
-              {(porDia[ultimoDia] || []).slice().sort((a, b) => (a.t < b.t ? 1 : -1)).slice(0, 3)
-                .map((c, i) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={i === 0 && !!c.ll} sig={sigDe(c, 0)} />)}
+              <ol className="evp-tl">{(porDia[ultimoDia] || []).slice().sort((a, b) => (a.t < b.t ? 1 : -1)).slice(0, 3)
+                .map((c, i, xs) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={c === xs.find((h) => h.ll)} sig={sigDe(c, 0)} />)}</ol>
             </section>
           ) : null}
         </main>
         <aside className="evp-der">
-          <section className="evp-bloque evp-mes-pc"><h2 className="evp-h2">El mes</h2>
+          {/* en la vista Mes, el mes ya está en el centro: al costado sería el mismo dos veces */}
+          <section className={'evp-bloque evp-mes-pc' + (vista === 'mes' ? ' fuera' : '')}><h2 className="evp-h2">El mes</h2>
             <Mes liga={liga} porDia={porDia} dia={dia} onDia={(k) => elegir(k, false)} ym={ym} setYm={setYm} color={color} />
             <div className="evp-ley">{svsCal.map((s) => <span key={s}><i style={{ background: color(s) }} />{siglaDe(s)}</span>)}</div>
           </section>
