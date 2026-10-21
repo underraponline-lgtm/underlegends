@@ -755,7 +755,11 @@
 },
 "zaik": {
 "rg": "E",
-"c": []
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "emilioalva": {
 "rg": "",
@@ -767,6 +771,10 @@
 "servidor",
 "temporada"
 ]
+},
+"nmb": {
+"rg": "",
+"c": []
 },
 "crk": {
 "rg": "E",
@@ -824,10 +832,6 @@
 "c": [
 "servidor"
 ]
-},
-"nmb": {
-"rg": "",
-"c": []
 },
 "tusicario": {
 "rg": "",
@@ -2443,30 +2447,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Tuca"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Tuca"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"rayito"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5764,6 +5744,30 @@
 ],
 "rg": "C",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-21T18:29:34Z",
+"quien": [
+"Zaik"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-21T18:29:34Z",
+"quien": [
+"Zaik"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-21T18:41:36Z",
+"quien": [
+"Zaik"
+],
+"carta": "temporada"
 }
 ]
 }

@@ -1,45 +1,45 @@
 {
  "v": 1,
- "cuando": "2026-10-21T18:29:39Z",
+ "cuando": "2026-10-21T18:41:41Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1651.0,
+ "dur_s": 683.8,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.4
+   "s": 8.5
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.2
+   "s": 7.6
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 23.4
+   "s": 49.2
   },
   {
    "n": "5",
-   "que": "tanda 1 de 5 · 40 persona(s)",
+   "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 1495.0
+   "s": 547.0
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 9.3
+   "s": 9.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 95.9
+   "s": 61.0
   }
  ],
  "fallas": [
@@ -50,30 +50,6 @@
   {
    "paso": "5",
    "que": "03_Servidor/generar.py ARDEAN"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Ezias🥈✒️🧢🐍"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Filozico"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py LAST"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py LAST"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py OKAM"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py OKAM"
   },
   {
    "paso": "5",
@@ -92,20 +68,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 308,
-   "read": 32274
+   "write": 319,
+   "read": 33811
   },
   "objeto": {
-   "leidas": 2524436,
-   "escritas": 28231,
-   "pedidos": 8121
+   "leidas": 2552135,
+   "escritas": 29111,
+   "pedidos": 8159
   },
   "worker": {
-   "pedidos": 9891,
+   "pedidos": 9905,
    "errores": 0,
-   "sub": 12131,
+   "sub": 12147,
    "p50_ms": 1.4,
-   "p99_ms": 11.41
+   "p99_ms": 11.39
   },
   "r2": {
    "objetos": 4731,
