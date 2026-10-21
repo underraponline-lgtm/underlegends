@@ -1,21 +1,21 @@
 {
  "v": 1,
- "cuando": "2026-10-21T21:29:35Z",
+ "cuando": "2026-10-21T21:41:49Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1730.0,
+ "dur_s": 686.5,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.3
+   "s": 11.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.4
+   "s": 7.2
   },
   {
    "n": "4",
@@ -25,21 +25,21 @@
   },
   {
    "n": "5",
-   "que": "tanda 1 de 5 · 40 persona(s)",
+   "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 1575.9
+   "s": 571.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 11.3
+   "s": 9.5
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 102.3
+   "s": 61.4
   }
  ],
  "fallas": [
@@ -53,35 +53,11 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Ezias🥈✒️🧢🐍"
+   "que": "03_Servidor/generar.py Teito"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Filozico"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py LAST"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py LAST"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py OKAM"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py OEP"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Trot"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py TøKīØ🦠🧠"
+   "que": "03_Servidor/generar.py Teito"
   }
  ],
  "ultimo_evento": {
@@ -92,18 +68,18 @@
  },
  "cuotas": {
   "kv": {
-   "write": 408,
-   "read": 42462
+   "write": 435,
+   "read": 43872
   },
   "objeto": {
-   "leidas": 3083649,
-   "escritas": 36738,
-   "pedidos": 9958
+   "leidas": 3124044,
+   "escritas": 37746,
+   "pedidos": 10014
   },
   "worker": {
-   "pedidos": 9948,
+   "pedidos": 9842,
    "errores": 0,
-   "sub": 12216,
+   "sub": 12085,
    "p50_ms": 1.37,
    "p99_ms": 11.41
   },
