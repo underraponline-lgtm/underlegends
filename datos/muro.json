@@ -755,10 +755,7 @@
 },
 "zaik": {
 "rg": "E",
-"c": [
-"competitivo",
-"servidor"
-]
+"c": []
 },
 "emilioalva": {
 "rg": "",
@@ -2446,6 +2443,22 @@
 }
 },
 "cambios": [
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Tuca"
+],
+"carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Tuca"
+],
+"carta": "temporada"
+},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5751,22 +5764,6 @@
 ],
 "rg": "C",
 "primero": false
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-21T18:29:34Z",
-"quien": [
-"Zaik"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-21T18:29:34Z",
-"quien": [
-"Zaik"
-],
-"carta": "servidor"
 }
 ]
 }
