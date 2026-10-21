@@ -11,6 +11,23 @@
  ],
  "cambios": [
   {
+   "version": "3.94",
+   "dia": "2026-10-21",
+   "cuando": "2026-10-21T03:36:10-04:00",
+   "titulo": "El perfil, rehecho",
+   "items": [
+    "🖼️ **Arriba, tu fondo y tu carta**, con «Seguir» a la derecha. Tu crew va en su pastilla, con la sigla, y al lado tus **emblemas**.",
+    "🔰 **Emblemas de tu cuenta**: Antigüedad, Fundador, Pase de rapero, Racha diaria, Seguidores, Coleccionista, Promotor, Líder de crew y los roles. El nivel se ve en el dibujo, de Inicial a Rubí; toca uno para ver tu progreso.",
+    "🔢 **Los números en una barra**: tu OVR y tu rango a un lado, tus puntos, eventos y win al otro. En la compu, también tus seguidores y **a cuántos sigues**.",
+    "🚪 **Dos puertas: Tarjetas y Vitrina.** La Vitrina, con los trofeos de tus eventos, llega pronto.",
+    "⋯ **Un menú en la esquina**: compartir el perfil, comparar conmigo, copiar el link, invitar a tu crew y **reportar usuario**.",
+    "🔒 **Para seguir a alguien hay que estar verificado**, y para que te sigan también. Si no lo estás, la página te dice cómo.",
+    "⚡ **Lo último**: lo más reciente que hizo cada uno. Y **Sus eventos** con una gráfica de la temporada, filtros y la lista por mes.",
+    "🎒 **Inventario**, al lado de Logros: todavía vacío, es para lo que viene.",
+    "🖥️ En la compu, **dos columnas que terminan juntas**, sin huecos abajo."
+   ]
+  },
+  {
    "version": "3.93",
    "dia": "2026-10-21",
    "cuando": "2026-10-21T01:54:00-04:00",

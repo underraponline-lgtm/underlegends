@@ -3063,6 +3063,9 @@ export function validarVotoLiga(defs, d, id, ahora) {
 export const QUE_REPORTE = {
   ganador: 'El ganador está mal', gente: 'Falta o sobra alguien',
   nombre: 'Un nombre está mal', otro: 'Otra cosa',
+  // 🚩 REPORTAR USUARIO (Dlx, 21/10/2026, al remake del perfil: «que se pueda reportar… en los 3 puntos, o sea reportar
+  // usuario»): su frase, su foto, su nombre o lo que publicó. Llave `perfil:<clave>`, siempre con texto
+  perfil: 'Algo de su perfil',
 };
 //: cuántos reportes puede mandar una persona en 24 h
 export const REPORTE_TOPE = 5;
@@ -3079,14 +3082,17 @@ export const REPORTE_VIDA_DIAS = 14;
 export function validarReporte(d, id, ahora) {
   const llave = String((d && d.llave) || '');
   // 🏟️ y `liga:<id>`, un nombre de una liga (14/10/2026, Dlx: «Sí, a Reportes»): sólo «un nombre» u «otra cosa»
-  if (!/^(\d{1,6}|v:\d{15,22}|liga:[a-z0-9-]{2,40})$/.test(llave)) return { error: 'llave', estado: 400 };
+  // 🚩 y `perfil:<clave>` (21/10/2026): un usuario, sólo con `que: 'perfil'`
+  const perfil = llave.startsWith('perfil:');
+  if (perfil ? !claveValida(llave.slice(7)) : !/^(\d{1,6}|v:\d{15,22}|liga:[a-z0-9-]{2,40})$/.test(llave)) return { error: 'llave', estado: 400 };
   const que = String((d && d.que) || '');
   if (!Object.prototype.hasOwnProperty.call(QUE_REPORTE, que)) return { error: 'que', estado: 400 };
   if (llave.startsWith('liga:') && que !== 'nombre' && que !== 'otro') return { error: 'que', estado: 400 };
+  if (perfil !== (que === 'perfil')) return { error: 'que', estado: 400 };
   const texto = String((d && d.texto) || '').replace(/\s+/g, ' ').trim();
   if (texto.length > 300) return { error: 'largo', estado: 413 };
-  // «otra cosa» sin decir qué no se puede revisar
-  if (que === 'otro' && texto.length < 3) return { error: 'texto', estado: 400 };
+  // «otra cosa» —y un usuario— sin decir qué no se puede revisar
+  if ((que === 'otro' || perfil) && texto.length < 3) return { error: 'texto', estado: 400 };
   const batalla = String((d && d.batalla) || '').replace(/\s+/g, ' ').trim().slice(0, 120);
   const creada = creadaEn(id);
   if (!creada || ahora - creada < EDAD_MIN_DIAS * DIA_MS) {
@@ -4604,6 +4610,9 @@ export async function rutaAvisos(req, env, ruta) {
     // para que la lista de quién te sigue diga que sos vos
     let de = '';
     try { de = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { de = ''; }
+    // 🔒 PARA SEGUIR HAY QUE ESTAR VERIFICADO (Dlx, 21/10/2026: «para seguir o que te sigan necesitas estar 100 %
+    // verificado en la página»): `d:` es de los verificados (`dn:` no abre la cuenta). Dejar de seguir, siempre
+    if (ruta === '/avisos/seguir' && d.si !== false && !claveValida(de)) return json({ error: 'sin_verificar' }, 403);
     return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
       method: 'POST', body: JSON.stringify({ quien: q.id, de: claveValida(de) ? de : '', a: as, si: d.si !== false }),
       headers: { 'content-type': 'application/json' },
@@ -9885,12 +9894,16 @@ export class Avisos {
     return json({ ok: true, sigo: this.sigoDe(quien), yo: de, me_siguen: meSiguen });
   }
 
-  /** Lo público: cuántos siguen a cada perfil (sólo los que tienen alguno). */
+  /**
+   * Lo público: cuántos siguen a cada perfil (sólo los que tienen alguno), y 👥 a cuántos sigue cada perfil (`s`, Dlx,
+   * 21/10/2026, al remake del perfil: «seguidores y seguidos»). Sigue quien entró con Discord, y su perfil es `de`.
+   */
   seguidores() {
-    const ahora = Date.now(), n = {};
+    const ahora = Date.now(), n = {}, s = {};
     for (const r of this.sql.exec('SELECT a, COUNT(*) AS n FROM sigue WHERE creada > 0 AND creada < ? GROUP BY a',
       ahora - EDAD_MIN_DIAS * DIA_MS).toArray()) n[r.a] = r.n;
-    return { t: ahora, n };
+    for (const r of this.sql.exec("SELECT de, COUNT(*) AS n FROM sigue WHERE de != '' GROUP BY de").toArray()) s[r.de] = r.n;
+    return { t: ahora, n, s };
   }
 
   /**

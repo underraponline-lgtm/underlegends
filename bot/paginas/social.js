@@ -196,6 +196,9 @@ var SIGO = leerLS('lg:sigo', []);
 if (!Array.isArray(SIGO)) SIGO = [];
 var SIGO_SRV = leerLS('lg:sigo_srv', false) === true;
 var SIGO_EST = {}, ME_SIGUEN = null, SEGUIDORES = null, SEGUIDORES_T = 0;
+/* 👥 a cuántos sigue cada perfil (`s` de /avisos/seguidores, 21/10/2026: el remake del perfil, «seguidores y seguidos») */
+var SIGUIENDO = null;
+function siguiendoDe(k) { return SIGUIENDO ? SIGUIENDO[k] || 0 : null; }
 function sigoA(k) { return !!k && SIGO.indexOf(k) >= 0; }
 function guardarSigo(lista) {
   SIGO = (lista || []).slice(0, SIGO_TOPE);
@@ -267,6 +270,7 @@ function pedirSeguidores() {
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (j) {
       if (j && j.n) { SEGUIDORES = j.n; SEGUIDORES_T = Date.now(); }
+      if (j && j.s) SIGUIENDO = j.s;
       return SEGUIDORES;
     })
     .catch(function () { return SEGUIDORES; });

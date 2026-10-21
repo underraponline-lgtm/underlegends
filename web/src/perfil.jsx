@@ -10,12 +10,12 @@
 // —seguir, el precio por cabeza, el visor de cartas y de llaves— son las de app.js.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
-import { useDesliza } from './anima.js';
-import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, GrillaDias, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, SinCarta, accion, diaET, enlace, https, nombrePais, semanasEntre, usePerfiles } from './piezas.jsx';
+import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, SinCarta, accion, diaET, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
+import { PanelEmblemas, PildoraEmblemas, emblemasDe } from './emblemas.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
 import { usePaseDe } from './pase.js';
-import { ROL, textoRol, useRoles } from './roles.js';
+import { textoRol, useRoles } from './roles.js';
 import { urlFondo, useFondos } from './fondos.js';
 import { svElegido, useElegidos } from './elegidos.js';
 import * as RQ from './requisitos.js';
@@ -65,14 +65,6 @@ function useSeguidores(k) {
   }, [k]);
   return n;
 }
-function Seguir({ si, onSeguir }) {
-  return (
-    <button type="button" className={'btn chico pf-sigo ' + (si ? 'borde on' : 'verde')} aria-pressed={si} onClick={onSeguir}>
-      <Ico n="seguir" t={16} />{si ? 'Siguiendo' : 'Seguir'}
-    </button>
-  );
-}
-
 // ── el precio por su cabeza: el de la Tienda de app.js (`ponerPrecio()`), con su cuenta y sus errores; las
 // cabezas van por NOMBRE. Sólo a quien juega la temporada y no es «fuera de concurso» (`puedeCabeza()`) ──
 const sinEtiquetas = (h) => String(h || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
@@ -97,7 +89,7 @@ function Precio({ liga, f, esYo, dc }) {
       : est.error ? sinEtiquetas(typeof window.errorPrecio === 'function' ? window.errorPrecio(est) : 'No pude ponerlo.')
         : dc ? 'Elige cuánto ponerle.' : 'Para poner un precio entras con Discord: toca un monto.';
   return (
-    <section className="sec pf-sec negra">
+    <section className="sec pf-sec pf8-pr">
       <div className="sec-t"><h2>Precio por su cabeza</h2><a href="#/tienda">Cómo funciona <Ico n="flecha" t={16} /></a></div>
       <p className="pf-bajada">El primero que le gane en un evento de la Liga se lleva lo que vale, en Puntos de Tienda y en su Temporada.</p>
       <p className="pf-pr"><b>{limpio(f.n)}</b> vale <span className="pf-pr-v">{num(v)}</span>
@@ -126,141 +118,394 @@ export function textoVerificado(vd) {
   return 'Verificado el ' + Number(m[3]) + ' de ' + MESES[Number(m[2]) - 1].slice(0, 3) + (m[1] !== '2026' ? ' de ' + m[1] : '');
 }
 
-// ── arriba: quién es, sus números y su tarjeta (con sus cuatro para cambiar) ──
-function Cabeza({ liga, f, k, p, dc, esYo, resumen }) {
+// ── arriba: quién es, sus números y sus dos puertas ──
+// 🎨 EL REMAKE DEL 21/10/2026 (la maqueta B, versiones 1 a 11, `scratchpad/maqueta_pf/gen_pf11.py`). Dlx eligió «portada
+// y barra, B3» para la compu y la B para el celular, y la última versión se aplica ENTERA:
+// · arriba su fondo (el del nivel 10 del Pase, «en mi perfil»; sin fondo, el color de su servidor) y la carta chica
+//   apoyada en el borde; «Seguir» a la derecha, donde lo ponen X, Twitch y Discord;
+// · su nombre, la crew en su pastilla (como la etiqueta de clan) y sus emblemas; el rol, el país, su nivel, su Pase y su
+//   frase entre comillas;
+// · los números en una barra: lo que es (OVR y rango, con el color del rango) separado de lo que hizo (puntos, eventos,
+//   win), y en la compu sus seguidores como dos números más;
+// · dos puertas, Tarjetas y Vitrina (la Vitrina, trofeos de eventos: «ahí ya veremos»);
+// · Comparar, Compartir, Copiar el link, Invitar a mi crew y Reportar usuario, en «⋯» (Dlx: «comparar conmigo está bien
+//   pero el perfil no es el lugar»).
+
+// 🌐 las redes con su ícono de verdad, en blanco (Dlx, a la v6: «hacer los íconos más reales… en blanco o en colores del
+// tema»). Una que no está acá sale con su nombre
+const RED_SVG = {
+  youtube: <><rect x="1.5" y="5" width="21" height="14" rx="4" fill="currentColor" /><polygon points="10,9 15.5,12 10,15" fill="#030304" /></>,
+  instagram: <><rect x="3" y="3" width="18" height="18" rx="5.2" fill="none" stroke="currentColor" strokeWidth="2" /><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" strokeWidth="2" /><circle cx="17.3" cy="6.7" r="1.3" fill="currentColor" /></>,
+  tiktok: <path d="M14 3v11a3.4 3.4 0 1 1-2.6-3.3V7.6A6.6 6.6 0 1 0 17.1 14V8.7a7 7 0 0 0 4 1.3V6.9A4.2 4.2 0 0 1 17 3Z" fill="currentColor" />,
+  spotify: <><circle cx="12" cy="12" r="10" fill="currentColor" /><path d="M6.5 9.3c3.7-1.1 7.8-.8 11 1M7.2 12.5c3-.8 6.2-.5 8.8.9M7.9 15.5c2.3-.6 4.6-.4 6.6.7" fill="none" stroke="#030304" strokeWidth="1.7" strokeLinecap="round" /></>,
+  x: <path d="M3.5 3h4.6l4.1 5.6L17 3h3.2l-6.5 7.5L21 21h-4.6l-4.5-6.1L6.6 21H3.4l7-8.1Z" fill="currentColor" />,
+  twitch: <path d="M5 3h16v11l-5 5h-4l-3 3H7v-3H3V7l2-4Zm3 4v7M13 7v7" fill="none" stroke="currentColor" strokeWidth="2" />,
+  kick: <path d="M4 3h5v5h2V6h2V4h6v5h-2v2h-2v2h2v2h2v5h-6v-2h-2v-2H9v5H4Z" fill="currentColor" />,
+};
+RED_SVG.twitter = RED_SVG.x;
+function Redes({ redes, cls = '' }) {
+  const rs = (redes || []).filter((r) => r && https(r[1]));
+  if (!rs.length) return null;
+  return (
+    <span className={'pf8-redes ' + cls}>
+      {rs.map((r) => (
+        <a key={r[1]} href={https(r[1])} target="_blank" rel="noopener noreferrer" title={REDES[r[0]] || r[0]} aria-label={REDES[r[0]] || r[0]}>
+          {RED_SVG[r[0]] ? <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">{RED_SVG[r[0]]}</svg> : <b>{REDES[r[0]] || r[0]}</b>}
+        </a>
+      ))}
+    </span>
+  );
+}
+
+// 👥 seguidores y 👤 a cuántos sigue (`s` de /avisos/seguidores, 21/10/2026). Desde 10.000 se abrevia como Instagram,
+// cortando y sin redondear: 12.480 es «12,4 mil» (Dlx, a la v10: «¿y si alguien tiene 1000 seguidores? ejemplo drástico»)
+const abreviar = (n) => (n >= 10000 ? (Math.floor(n / 100) / 10).toLocaleString('es', { maximumFractionDigits: 1 }) + ' mil' : num(n));
+function useSiguiendo(k, seg) {
+  return useMemo(() => (seg == null || typeof window.siguiendoDe !== 'function' ? null : window.siguiendoDe(k)), [k, seg]);
+}
+
+// 🔒 PARA SEGUIR HAY QUE ESTAR VERIFICADO, y para que te sigan también (Dlx, 21/10/2026: «para seguir o que te sigan
+// necesitas estar 100 % verificado en la página», y «que le salga un pop up diciendo no estás verificado o el usuario no
+// está verificado, dependiendo»). Verificado es tener tu clave de la Liga (`dc.rapero`, la de `d:`), como en Tu cuenta.
+// Dejar de seguir se puede siempre
+function AvisoVerificar({ cual, nombre, onCerrar }) {
+  const t = cual === 'otro' ? [limpio(nombre) + ' no está verificado', 'Para que te puedan seguir hay que estar verificado en la Liga. Cuando se verifique, vas a poder seguirlo.']
+    : cual === 'entrar' ? ['Entra para seguir', 'Para seguir a alguien tienes que entrar con Discord y estar verificado.']
+      : ['No estás verificado', 'Para seguir a alguien tienes que estar verificado: es estar en Discord Rap Español, con tu país y el rol de Miembro.'];
+  return (
+    <div className="emb-velo" role="presentation" onClick={onCerrar}>
+      <div className="pf8-aviso" role="alertdialog" aria-modal="true" aria-label={t[0]} onClick={(e) => e.stopPropagation()}>
+        <span className="pf8-aviso-ic" aria-hidden="true"><Ico n="candado" t={26} /></span>
+        <h3>{t[0]}</h3>
+        <p>{t[1]}</p>
+        <div className="pf8-aviso-b">
+          {cual === 'entrar' ? <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button> : null}
+          {cual === 'yo' ? <a className="btn verde chico" href="#/cuenta/verificar" onClick={onCerrar}>Verificarme</a> : null}
+          <button type="button" className="btn borde chico" onClick={onCerrar}>{cual === 'otro' ? 'Entendido' : 'Ahora no'}</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 🚩 REPORTAR USUARIO (Dlx, 21/10/2026: «que se pueda reportar… en los 3 puntos, o sea reportar usuario»): va a los
+// reportes, como un error de una llave (`/avisos/reportar`, llave `perfil:<clave>`): al Dashboard y a ✅ Decidir
+function ReportarUsuario({ k, nombre, dc, onCerrar }) {
+  const [t, setT] = useState('');
+  const [est, setEst] = useState('');
+  const mandar = () => {
+    if (!dc) { accion.entrar(); return; }
+    if (t.trim().length < 3 || typeof window.conCuenta !== 'function') return;
+    setEst('va');
+    window.conCuenta('/api/avisos/reportar', { llave: 'perfil:' + k, que: 'perfil', texto: t.trim() }).then((j) => {
+      if (!j) { setEst(''); return; }
+      setEst(j.status === 200 ? 'ok' : j.error === 'nueva' ? 'Tu cuenta de Discord es muy nueva para reportar.'
+        : j.error === 'tope' ? 'Ya mandaste varios reportes hoy: prueba mañana.' : 'No pude mandarlo. Prueba de nuevo en un rato.');
+    }).catch(() => setEst('Sin conexión: prueba de nuevo.'));
+  };
+  return (
+    <div className="emb-velo" role="presentation" onClick={onCerrar}>
+      <div className="pf8-aviso pf8-rep" role="dialog" aria-modal="true" aria-label={'Reportar a ' + limpio(nombre)} onClick={(e) => e.stopPropagation()}>
+        <h3>Reportar a {limpio(nombre)}</h3>
+        {est === 'ok' ? <p>Gracias: lo vamos a mirar.</p> : <>
+          <p>¿Qué está mal? Su frase, su foto, su nombre o algo que publicó.</p>
+          <textarea value={t} maxLength={300} rows={3} onChange={(e) => setT(e.target.value)} placeholder="Cuéntanos qué viste" aria-label="Qué está mal" />
+          {est && est !== 'va' ? <p className="pf8-mal">{est}</p> : null}
+        </>}
+        <div className="pf8-aviso-b">
+          {est === 'ok' ? null : <button type="button" className="btn verde chico" disabled={est === 'va' || (dc && t.trim().length < 3)} onClick={mandar}>{dc ? 'Mandar el reporte' : 'Entrar con Discord'}</button>}
+          <button type="button" className="btn borde chico" onClick={onCerrar}>{est === 'ok' ? 'Listo' : 'Cancelar'}</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ⋯ EL MENÚ DE LA ESQUINA (Dlx, a la v10: «los 3 puntos de arriba a la derecha es un detallazo»). A un visitante:
+// Compartir, Comparar conmigo, Copiar el link, Invitar a mi crew y Reportar usuario. En tu perfil, atajos a lo tuyo
+function MenuMas({ liga, f, k, esYo, dc, onEmblemas, onReportar }) {
+  const [ab, setAb] = useState(false);
+  const [dijo, setDijo] = useState('');
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!ab) return undefined;
+    const fuera = (e) => { if (ref.current && !ref.current.contains(e.target)) setAb(false); };
+    const esc = (e) => { if (e.key === 'Escape') setAb(false); };
+    document.addEventListener('pointerdown', fuera, true);
+    window.addEventListener('keydown', esc);
+    return () => { document.removeEventListener('pointerdown', fuera, true); window.removeEventListener('keydown', esc); };
+  }, [ab]);
+  const url = enlace('#/r/' + encodeURIComponent(k));
+  const copiar = async () => {
+    try { await navigator.clipboard.writeText(url); setDijo('Link copiado'); } catch (e) { setDijo('No pude copiarlo'); }
+    setTimeout(() => { setDijo(''); setAb(false); }, 1400);
+  };
+  const comparar = !esYo && liga.yo && liga.yo.k !== f.k && enComparar(liga.yo) && enComparar(f);
+  return (
+    <div className="pf8-mas" ref={ref}>
+      <button type="button" className="pf8-mas-b" aria-haspopup="menu" aria-expanded={ab} aria-label="Más opciones" onClick={() => setAb(!ab)}>⋯</button>
+      {ab ? (
+        <div className="pf8-menu" role="menu">
+          {esYo ? <>
+            <span className="pf8-menu-t">TU PERFIL</span>
+            <button type="button" role="menuitem" onClick={() => { setAb(false); onEmblemas(); }}>◆ Ver mis emblemas</button>
+            <a role="menuitem" href="#/cuenta/fondo">🖼 Cambiar mi fondo</a>
+            <a role="menuitem" href="#/cuenta/perfil">＠ Mi foto y mis redes</a>
+          </> : null}
+          <Compartir cls="pf8-menu-i" url={url} texto={limpio(f.n) + ' en la Liga Global'} etiqueta={esYo ? 'Compartir mi perfil' : 'Compartir el perfil'} />
+          {comparar ? <a role="menuitem" href={'#/tarjetas?a=' + encodeURIComponent(liga.yo.k) + '&b=' + encodeURIComponent(f.k)}>⇄ Comparar conmigo</a> : null}
+          <button type="button" role="menuitem" onClick={copiar}>🔗 {dijo || 'Copiar el link'}</button>
+          {!esYo ? <div className="pf8-menu-crew"><InvitarACrew k={k} nombre={f.n} /></div> : null}
+          {!esYo ? <button type="button" role="menuitem" className="rojo" onClick={() => { setAb(false); onReportar(); }}>⚑ Reportar usuario<small>su frase, su foto, su nombre o lo que publicó</small></button> : null}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+// 🏆 LA VITRINA, DIBUJADA (Dlx, a la v8: «la de vitrina podría ser mejor su imagen»): tres copas en un estante con su luz
+function CopasVitrina() {
+  const copa = (cx, s, g) => (
+    <g transform={`translate(${cx} ${38 - 18.6 * s}) scale(${s})`} fill={`url(#${g})`}>
+      <path d="M-7 0H7L6.2 6Q5 11.5 0 12Q-5 11.5-6.2 6Z" />
+      <path d="M-6.6 1.5Q-11 1.5-10 5.5Q-9 8.5-5.6 8.6" fill="none" stroke={`url(#${g})`} strokeWidth="1.6" />
+      <path d="M6.6 1.5Q11 1.5 10 5.5Q9 8.5 5.6 8.6" fill="none" stroke={`url(#${g})`} strokeWidth="1.6" />
+      <rect x="-1.3" y="11.5" width="2.6" height="4.5" /><rect x="-5" y="15.6" width="10" height="3" rx=".8" />
+    </g>
+  );
+  return (
+    <svg viewBox="0 0 56 44" aria-hidden="true">
+      <defs>
+        <linearGradient id="pf8o" x1="0" x2="1"><stop offset="0" stopColor="#9A6B00" /><stop offset=".45" stopColor="#FFE38A" /><stop offset="1" stopColor="#C8920F" /></linearGradient>
+        <linearGradient id="pf8p" x1="0" x2="1"><stop offset="0" stopColor="#6E747D" /><stop offset=".45" stopColor="#F4F6F8" /><stop offset="1" stopColor="#9AA0A8" /></linearGradient>
+        <linearGradient id="pf8b" x1="0" x2="1"><stop offset="0" stopColor="#7A3A10" /><stop offset=".45" stopColor="#F2B27A" /><stop offset="1" stopColor="#B25E22" /></linearGradient>
+        <radialGradient id="pf8l" cx=".5" cy="0" r="1"><stop offset="0" stopColor="#FFE9A8" stopOpacity=".42" /><stop offset=".7" stopColor="#FFE9A8" stopOpacity="0" /></radialGradient>
+      </defs>
+      <rect width="56" height="44" rx="4" fill="#121216" /><path d="M18 0H38L52 38H4Z" fill="url(#pf8l)" />
+      {copa(14, 0.82, 'pf8p')}{copa(42, 0.78, 'pf8b')}{copa(28, 1.15, 'pf8o')}
+      <rect x="3" y="38" width="50" height="3" rx="1" fill="#3A3A40" /><rect x="3" y="38" width="50" height=".8" fill="#5A5A62" />
+    </svg>
+  );
+}
+
+// 🚪 LAS DOS PUERTAS (Dlx, a la v4: «eso de las tarjetas ocupa bastante… podríamos hacer un espacio que diga ver
+// tarjetas»): sus tarjetas (las suyas y las de servidor) en el visor, y la Vitrina, que llega después
+function Puertas({ liga, f, k, cs, svc }) {
+  const [pronto, setPronto] = useState(false);
+  const total = cs.length + svc.length;
+  const prev = cs.slice(0, 3);
+  return (
+    <div className="pf8-puertas">
+      <button type="button" className="pf8-pu" onClick={() => accion.carta(k)} disabled={!cs.length} aria-label={'Ver las tarjetas de ' + limpio(f.n)}>
+        <span className="pf8-pu-tj" aria-hidden="true">{prev.map((c) => <img key={c} alt="" src={liga.cartaUrl(k, c)} loading="lazy" />)}</span>
+        <span className="pf8-pu-tx"><b>Tarjetas</b><small>{!total ? 'todavía ninguna' : total + (svc.length ? ' · las suyas y ' + svc.length + ' de servidor' : total === 1 ? ' tarjeta' : ' tarjetas')}</small></span>
+        <em aria-hidden="true">›</em>
+      </button>
+      <button type="button" className="pf8-pu" aria-expanded={pronto} onClick={() => setPronto(!pronto)}>
+        <span className="pf8-pu-vt" aria-hidden="true"><CopasVitrina /></span>
+        <span className="pf8-pu-tx"><b>Vitrina</b><small>{pronto ? 'los trofeos de sus eventos · llega pronto' : (f.oro || 0) + ((f.oro || 0) === 1 ? ' trofeo' : ' trofeos') + ' · pronto'}</small></span>
+        <em aria-hidden="true">›</em>
+      </button>
+    </div>
+  );
+}
+
+// 🔢 LA LÍNEA DE NÚMEROS, la B (Dlx, a la v8: «se ve algo rara», y a la v10: «B3, pero centra más lo de 75k puntos»):
+// lo que es —OVR y rango, con el borde del color de su rango— separado de lo que hizo, cada número centrado en su
+// columna. «50,0» pasa a «50 %»
+function NumerosB({ liga, f, q }) {
+  const wr = f.wr ? String(Math.round(parseFloat(String(f.wr).replace(',', '.')) || 0)) + ' %' : '—';
+  return (
+    <div className="pf8-num">
+      <div className="pf8-yo" style={{ '--rc': f.rg ? liga.colorRg(f.rg) : 'var(--esc-linea)' }}>
+        <b>{f.ovr || '—'}</b><Rango liga={liga} rg={f.rg} /><small>OVR {q('ovr')}</small>
+      </div>
+      <div className="pf8-tres">
+        <div><b className={num(f.pts || 0).length > 7 ? 'largo' : undefined}>{num(f.pts || 0)}</b><small>PUNTOS {q('puntos')}</small></div>
+        <div><b>{f.ev || 0}</b><small>EVENTOS {q('eventos')}</small></div>
+        <div title={f.wr ? undefined : 'El Win% aparece con 10 eventos'}><b>{wr}</b><small>WIN {q('win')}</small></div>
+      </div>
+    </div>
+  );
+}
+
+function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros }) {
   const si = (liga.sigue || []).includes(k);
   const n0 = useSeguidores(k);
   const [si0, setSi0] = useState(si);
   useEffect(() => { setSi0((liga.sigue || []).includes(k)); }, [k]); // eslint-disable-line react-hooks/exhaustive-deps
   const segs = n0 == null ? null : Math.max(0, n0 + (si ? 1 : 0) - (si0 ? 1 : 0));
-  const redes = ((p && p.redes) || []).filter((r) => r && r[1]);
+  const sigue = useSiguiendo(k, n0);
   const cs = ORDEN.filter((c) => (f.c || []).includes(c));
-  const [cual, setCual] = useState(cs[0] || 'temporada');
-  useEffect(() => { setCual(cs[0] || 'temporada'); setOtroSv(''); }, [k]); // eslint-disable-line react-hooks/exhaustive-deps
-  // 🃏 LA SERVIDOR DE SUS OTROS SERVIDORES (Dlx, 07/10/2026: *«en la opción de tarjetas servidor, que se vea la opción
-  // para ver sus otros servidores también»*): la misma carta con la camiseta de otro, `<clave>/sv-<sv>.webp` (`svc`)
-  const [otroSv, setOtroSv] = useState('');
   const propio = String(f.sv || '').toLowerCase();
   const svc = ((p && p.svc) || []).filter((x) => x !== propio);
-  // 🃏 cambiar de tarjeta la da vuelta, hacia el lado de la pestaña (anima.js)
-  const vuelta = useDesliza(cs.indexOf(cual) * 50 + [''].concat(svc).indexOf(otroSv), null, 'carta');
-  // 🏠 de dónde es, sólo si lo eligió (Dlx, 12/10/2026: «quitá de dónde son todos… a menos que lo hayan elegido»): ni
-  // el chip ni el color de arriba salen del servidor donde más jugó. Ver elegidos.js
+  // 🏠 de dónde es, sólo si lo eligió (Dlx, 12/10/2026): el color de arriba, sin fondo propio
   const svE = svElegido(liga, useElegidos(), k);
   const sv = svE && liga.svs[svE];
   const crew = liga.crewDe(f);
   useCrews();
   const cv = crewDe(k);
-  // 🔥 su nivel y su racha diaria (04/10/2026): por la clave del perfil, nunca por cuenta. Sin Discord no hay
   const nvs = useNiveles();
   const nv = nvs && nvs[k];
-  // 🎟️ y su Pase de rapero (05/10/2026): el nivel, el título y el color de su nombre, por la clave del perfil
   const pa = usePaseDe(k);
-  // 🏷️ y sus roles en la Liga (13/10/2026): los que pone Dlx primero, después los que salen solos de Discord
   const rls = (useRoles() || {})[k] || [];
-  // 🖼️ y su fondo, si lo puso en su perfil y está aprobado (13/10/2026)
   const fo = (useFondos() || {})[k];
   const fondoPf = fo && fo[1] ? urlFondo(fo[0]) : '';
-  // ❔ cuál de sus números está explicado abajo (uno a la vez)
   const [qe, setQe] = useState('');
-  useEffect(() => { setQe(''); }, [k]);
+  const [aviso, setAviso] = useState('');
+  const [rep, setRep] = useState(false);
+  useEffect(() => { setQe(''); setAviso(''); setRep(false); }, [k]);
   const q = (id) => <QueEsBoton k={id} abierto={qe === id} onToggle={() => setQe(qe === id ? '' : id)} />;
+  // 🏷️ el rol: el primero de los suyos (el que pone Dlx antes que los de Discord). El de DRA (Freestyler, Rapero…), cuando viaje
+  const rol = rls.length ? textoRol(rls[0]) : '';
+  // 👥 la crew en su pastilla: la sigla siempre, el nombre se corta (Dlx, a la v8: «¿o el nombre de la crew es muy largo?»)
+  const cn = cv ? cv.c.nombre : crew ? crew.crew : f.crew || '';
+  const csig = (cv && cv.c.sigla) || cn.split(/\s+/).filter(Boolean).map((w) => w[0]).join('').slice(0, 4).toUpperCase();
+  const chref = cv ? '#/crew/' + encodeURIComponent(cv.c.id) : crew ? '#/crew/' + encodeURIComponent(crew.clave || crew.crew) : '';
+  const seguir = () => {
+    if (!si) {
+      if (!dc) { setAviso('entrar'); return; }
+      if (!dc.rapero) { setAviso('yo'); return; }
+      if (f.nv) { setAviso('otro'); return; }
+    }
+    window.alternarSigo(k);
+  };
+  const frase = p && p.fr ? <q className="pf8-frase">{p.fr}</q> : null;
   return (
-    <div className={'escena pf-esc' + (fondoPf ? ' con-fondo' : '')} style={{ '--mo-c': (sv && sv.color) || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298', ...silueta(sv && svE, sv && sv.color), ...(fondoPf ? { '--pf-fondo': fondoPf } : {}) }}>
-      <section className={'rk-cab pf-cab' + (resumen ? '' : ' sin-carta')}>
-        <div className="rk-tx pf-tx">
+    <>
+    <div className={'escena pf8' + (fondoPf ? ' con-fondo' : '')} style={{ '--mo-c': (sv && sv.color) || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298', ...silueta(sv && svE, sv && sv.color), ...(fondoPf ? { '--pf-fondo': fondoPf } : {}) }}>
+      <div className="pf8-cover" />
+      <MenuMas liga={liga} f={f} k={k} esYo={esYo} dc={dc} onEmblemas={() => onEmblemas('')} onReportar={() => setRep(true)} />
+      <section className="pf8-cab">
+        <div className="pf8-carta">
+          {cs.length ? <Carta liga={liga} k={k} cual={cs[0]} cls="tj-c" /> : <SinCarta liga={liga} k={k} nombre={f.n} cc={f.cc} cls="tj-c" />}
+        </div>
+        <div className="pf8-tx">
           <span className="tag">{f.solo ? 'EN LA LIGA' : f.pos ? '#' + f.pos + ' DE LA TEMPORADA' : 'FUERA DE CONCURSO'} · {liga.temp}</span>
-          <div className="pf-quien">
-            <Cara liga={liga} k={k} nombre={f.n} cls="cara pf-cara" />
+          <div className="pf8-nom">
             <h1 className="hero-ev largo" style={pa && pa.color ? { color: pa.color } : undefined}>{limpio(f.n)}</h1>
-          </div>
-          {segs ? <p className="pf-segs"><b>{num(segs)}</b> {segs === 1 ? 'seguidor' : 'seguidores'}</p> : null}
-          <ul className="pf-chips">
-            {f.cc ? <li><a href={'#/pais/' + f.cc}><Bandera cc={f.cc} cls="pf-flag" />{nombrePais(f.cc)}</a></li> : null}
-            {svE ? <li><a href={'#/sv/' + siglaDe(svE)} title="Eligió este servidor"><img alt="" src={liga.logo(svE)} />{(sv && sv.nombre) || siglaDe(svE)}</a></li> : null}
-            {/* 👥 la crew en vivo (la que arma la gente, con su rango), y si no, la del payload */}
-            {cv ? <li><a href={'#/crew/' + encodeURIComponent(cv.c.id)}>{limpio(cv.c.nombre)}{cv.rol !== 'miembro' ? <RolCrew rol={cv.rol} /> : null}</a></li>
-              : crew ? <li><a href={'#/crew/' + encodeURIComponent(crew.clave || crew.crew)}>{limpio(crew.crew)}</a></li>
-              : f.crew ? <li><span>{limpio(f.crew)}</span></li> : null}
-            {p && textoVerificado(p.vd) ? <li><span className="pf-con pf-vd" title="Tiene el rol de Miembro en Discord Rap Español"><Ico n="ok" t={15} />{textoVerificado(p.vd)}</span></li> : null}
-            {nv ? <li><span className="pf-nivel" title="Sube jugando, entrando cada día y con lo que hace en la Liga">Nivel {nv[0]}</span></li> : null}
-            {nv && nv[1] >= 2 ? <li><span className="pf-con" title={nv[1] + ' días seguidos en la Liga'}><Ico n="fuego" t={15} />{nv[1]} días</span></li> : null}
-            {pa ? <li><a className="pf-pase" href="#/pase" title="Su nivel en el Pase de rapero de la temporada"><Ico n="pase" t={15} />Pase {pa.nivel}{pa.titulo ? ' · ' + pa.titulo : ''}</a></li> : null}
-          </ul>
-          {rls.length ? (
-            <ul className="pf-roles" aria-label="Sus roles en la Liga">
-              {rls.map((x) => <li key={x[0]} className={(ROL[x[0]] || [])[1] ? 'mano' : x[0] === 'socio' ? 'socio' : ''}>{textoRol(x)}</li>)}
-            </ul>
-          ) : null}
-          {redes.length ? (
-            <ul className="pf-redes" aria-label="Sus redes">
-              {redes.filter((r) => https(r[1])).map((r) => <li key={r[1]}><a href={https(r[1])} target="_blank" rel="noopener noreferrer">{REDES[r[0]] || r[0]} ↗</a></li>)}
-            </ul>
-          ) : null}
-          {f.solo ? null : <dl className="pf-num">
-            <div><dt>OVR {q('ovr')}</dt><dd className="ovr">{f.ovr || '—'}</dd></div>
-            <div><dt>RANGO {q('rango')}</dt><dd><Rango liga={liga} rg={f.rg} /></dd></div>
-            {/* ⚠️ seis cifras («271.108») no entran a 26 px en un tercio de un celular de 375: se salían por la derecha */}
-            <div><dt>PUNTOS {q('puntos')}</dt><dd className={num(f.pts || 0).length > 6 ? 'largo' : undefined}>{num(f.pts || 0)}</dd></div>
-            <div><dt>EVENTOS {q('eventos')}</dt><dd>{f.ev || 0}</dd></div>
-            <div><dt>WIN% {q('win')}</dt><dd title={f.wr ? undefined : 'El Win% aparece con 10 eventos'}>{f.wr ? String(f.wr).replace('.', ',') : '—'}</dd></div>
-          </dl>}
-          <QueEsTexto k={qe} />
-          <div className="hero-acc pf-acc">
-            {!esYo && typeof window.alternarSigo === 'function' ? <Seguir si={si} onSeguir={() => window.alternarSigo(k)} /> : null}
-            {esYo && dc ? <button type="button" className="btn borde chico" onClick={accion.foto}>Cambiar mi foto</button> : null}
-            {!esYo && liga.yo && liga.yo.k !== f.k && enComparar(liga.yo) && enComparar(f) ? (
-              <a className="btn borde chico" href={'#/tarjetas?a=' + encodeURIComponent(liga.yo.k) + '&b=' + encodeURIComponent(f.k)}>Comparar conmigo</a>
+            {cn || ems.length ? (
+              <div className="pf8-pills">
+                {cn ? (chref ? <a className="pf8-crew" href={chref} title={limpio(cn)}><b>{csig || '?'}</b><span>{limpio(cn)}</span>{cv && cv.rol !== 'miembro' ? <RolCrew rol={cv.rol} /> : null}</a>
+                  : <span className="pf8-crew" title={limpio(cn)}><b>{csig || '?'}</b><span>{limpio(cn)}</span></span>) : null}
+                <PildoraEmblemas xs={ems} onAbrir={onEmblemas} />
+              </div>
             ) : null}
-            {!esYo ? <InvitarACrew k={k} nombre={f.n} /> : null}
-            <Compartir cls="btn borde chico" url={enlace('#/r/' + encodeURIComponent(k))} texto={limpio(f.n) + ' en la Liga Global'} etiqueta="Compartir" />
           </div>
+          <p className="pf8-segs">
+            {rol ? <span>{rol}</span> : null}
+            {f.cc ? <a href={'#/pais/' + f.cc}><Bandera cc={f.cc} cls="pf-flag" />{nombrePais(f.cc)}</a> : null}
+            {svE ? <a href={'#/sv/' + siglaDe(svE)} title="Eligió este servidor"><img alt="" src={liga.logo(svE)} />{siglaDe(svE)}</a> : null}
+            {nv ? <span title="Sube jugando, entrando cada día y con lo que hace en la Liga">Nivel {nv[0]}</span> : null}
+            {pa ? <a href="#/pase" title="Su nivel en el Pase de rapero de la temporada">Pase {pa.nivel}</a> : null}
+            {frase}
+          </p>
           {f.nv ? <p className="pf-nv"><b>Sin verificar.</b> {RQ.sinVerificar(f.nv, esYo)}{esYo ? <> <a href="#/cuenta/verificar">Verificarme</a></> : null}</p> : null}
         </div>
-        <div className="pf-carta">
-          {cs.length > 1 ? (
-            <div className={'pf-cartas' + (cs.length > 3 ? ' cuatro' : '')} role="tablist" aria-label="Sus tarjetas">
-              {cs.map((c) => <button key={c} type="button" role="tab" aria-selected={c === cual} className={c === cual ? 'on' : ''} onClick={() => setCual(c)}>{NOMBRE[c]}</button>)}
-            </div>
-          ) : null}
-          {cual === 'servidor' && svc.length ? (
-            <div className="pf-svs" role="tablist" aria-label="La carta de Servidor en cada servidor">
-              {[''].concat(svc).map((x) => (
-                <button key={x || 'propio'} type="button" role="tab" aria-selected={x === otroSv} className={x === otroSv ? 'on' : ''}
-                  onClick={() => setOtroSv(x)}>
-                  <img alt="" src={liga.logo((x || propio).toUpperCase())} />{siglaDe((x || propio).toUpperCase())}
-                </button>
-              ))}
-            </div>
-          ) : null}
-          <div className={'pf-carta-c tj-' + cual} ref={vuelta}>
-            {cs.length && cual === 'servidor' && otroSv ? (
-              <button type="button" className="sin-boton" onClick={() => accion.carta(k)} aria-label={'Ver las cartas de ' + f.n}>
-                <img className="tj-c" alt={'Carta de Servidor de ' + f.n + ' en ' + siglaDe(otroSv.toUpperCase())}
-                  src={liga.d.r2 + '/' + k + '/sv-' + otroSv + '.webp'} loading="lazy" />
-              </button>
-            ) : cs.length ? <Carta liga={liga} k={k} cual={cual} cls="tj-c" /> : <SinCarta liga={liga} k={k} nombre={f.n} cc={f.cc} cls="tj-c" />}
-          </div>
+        <div className="pf8-acc">
+          {esYo ? <a className="btn borde pf8-seguir" href="#/cuenta/perfil">Editar mi perfil</a>
+            : typeof window.alternarSigo === 'function' ? (
+              <button type="button" className={'btn pf8-seguir ' + (si ? 'borde on' : 'verde')} aria-pressed={si} onClick={seguir}>
+                {si ? 'Siguiendo' : 'Seguir'}</button>
+            ) : null}
+          <Redes redes={p && p.redes} cls="pc" />
         </div>
+        <div className="pf8-bar">
+          {numeros ? <NumerosB liga={liga} f={f} q={q} /> : null}
+          <div className="pf8-soc">
+            <div><b>{segs == null ? '—' : abreviar(segs)}</b><small>{segs === 1 ? 'seguidor' : 'seguidores'}</small></div>
+            <div><b>{sigue == null ? '—' : abreviar(sigue)}</b><small>siguiendo</small></div>
+            <Redes redes={p && p.redes} cls="tel" />
+          </div>
+          <Puertas liga={liga} f={f} k={k} cs={cs} svc={svc} />
+        </div>
+        <QueEsTexto k={qe} />
       </section>
     </div>
+    {/* (afuera de la escena, que corta lo que se le sale) */}
+    {aviso ? <AvisoVerificar cual={aviso} nombre={f.n} onCerrar={() => setAviso('')} /> : null}
+    {rep ? <ReportarUsuario k={k} nombre={f.n} dc={dc} onCerrar={() => setRep(false)} /> : null}
+    </>
   );
 }
 
 // ── Resumen ──
-function Numeros({ f, p }) {
+// 👀 DE UN VISTAZO (Dlx, a la v2: «De un vistazo está incompleto, le falta detalle»): seis números, cada uno con una línea
+// que dice qué significa. Los duelos, en negro, con la tira de los últimos. `ev` y `du` vienen del más nuevo al más viejo
+const SEMIS_O_MAS = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal'];
+function DeUnVistazo({ f, p }) {
+  const ev = (p && p.ev) || [];
   const du = (p && p.du) || [];
   const g = du.filter((d) => d[2]).length;
   const rd = (p && p.rd) || null;
+  const rch = Array.isArray(f.rch) ? f.rch : null;
+  const pod = (f.oro || 0) + (f.seg || 0) + (f.ter || 0);
+  const semisMas = ev.filter((x) => SEMIS_O_MAS.includes(x[1])).length;
+  const ult = du[0];
+  // quién le cortó la racha de duelos: la última que perdió
+  const corto = rd && !rd[0] ? du.find((d) => !d[2]) : null;
+  const tira = du.slice(0, 16).reverse();
   return (
-    <section className="sec pf-sec">
-      <div className="sec-t"><h2>Sus números</h2></div>
-      <dl className="pf-tiles">
-        <div><dd className="pf-med"><span title="Campeón"><Medalla p={1} />{f.oro || 0}</span><span title="Subcampeón"><Medalla p={2} />{f.seg || 0}</span><span title="Tercero"><Medalla p={3} />{f.ter || 0}</span></dd><dt>PODIOS</dt></div>
-        <div><dd>{f.sem || 0}</dd><dt>QUEDÓ EN SEMIS</dt></div>
-        <div><dd>{g}<small>/{du.length}</small></dd><dt>DUELOS GANADOS</dt></div>
-        <div><dd>{rd ? rd[0] : 0}{rd ? <small> · máx {rd[1]}</small> : null}</dd><dt>RACHA DE DUELOS</dt></div>
-      </dl>
+    <section className="sec pf-sec pf8-vz">
+      <div className="sec-t"><h2>De un vistazo</h2></div>
+      <div className="pf8-bento">
+        <div><small>PODIOS</small>
+          <b className="pf-med"><span title="Campeón"><Medalla p={1} />{f.oro || 0}</span><span title="Subcampeón"><Medalla p={2} />{f.seg || 0}</span><span title="Tercero"><Medalla p={3} />{f.ter || 0}</span></b>
+          <em>{pod ? 'en ' + pod + ' de sus ' + ev.length + ' eventos' + (f.oro ? ' · campeón ' + (f.oro === 1 ? 'una vez' : f.oro + ' veces') : '') : 'todavía sin podio'}</em></div>
+        <div><small>QUEDÓ EN SEMIS</small><b>{f.sem || 0}</b>
+          <em>{ev.length ? semisMas + ' de ' + ev.length + ' terminó en semis o más' : 'sin eventos todavía'}</em></div>
+        <div className="negro"><small>DUELOS GANADOS</small><b>{g}<span>/{du.length}</span></b>
+          {tira.length ? <span className="pf8-wl" aria-label={'Sus últimos duelos: ' + tira.map((d) => (d[2] ? 'ganó' : 'perdió')).join(', ')}>
+            {tira.map((d, i) => <i key={i} className={d[2] ? 'g' : 'p'} />)}</span> : null}
+          <em>{du.length ? Math.round((100 * g) / du.length) + ' % ganados · el último lo ' + (ult && ult[2] ? 'ganó' : 'perdió') : 'cuentan los 1vs1 de las llaves'}</em></div>
+        <div className="negro"><small>RACHA DE DUELOS</small><b>{rd ? rd[0] : 0}{rd ? <span> · máx {rd[1]}</span> : null}</b>
+          <em>{corto ? 'ganados seguidos: la cortó ' + limpio(corto[1]) : rd && rd[0] ? 'ganados seguidos, y sigue' : 'ganados seguidos'}</em></div>
+        <div><small>RACHA DE EVENTOS</small><b>{rch ? rch[0] : 0}{rch ? <span>{rch[0] && rch[0] >= rch[1] ? ' · y sigue' : ' · máx ' + rch[1]}</span> : null}</b>
+          <em>eventos seguidos en semifinal o más{rch && rch[0] && rch[0] >= rch[1] ? ': es su mejor racha' : ''}</em></div>
+        <div><small>MISIONES</small><b>+{num(f.mis || 0)}</b><em>lo que le sumaron sus misiones esta temporada</em></div>
+      </div>
+    </section>
+  );
+}
+
+// ⚡ LO ÚLTIMO (Dlx, a la v1: «algo negro entre De un vistazo y Publicaciones… las 2 o 3 cosas recientes que hizo»):
+// sus tres eventos más nuevos, dichos como lo que hizo —campeón de, llegó a la final de, le ganó a—, con lo que sumó y su
+// llave. ⚠️ Dlx, a la v10, «sí cuenta» lo que hace en la página (felicitar, seguir, votar): eso entra cuando viaje
+function cuandoFue(iso) {
+  const d = haceDias(iso);
+  return d === 'hoy' ? 'HOY' : d === 'ayer' ? 'ANOCHE' : fecha(iso);
+}
+function LoUltimo({ liga, p, e }) {
+  const ev = ((p && p.ev) || []).slice(0, 3);
+  const du = (p && p.du) || [];
+  if (!ev.length) return null;
+  return (
+    <section className="sec pf-sec negra pf8-ult">
+      <div className="sec-t"><h2>Lo último</h2><span className="tj-n">lo que hizo</span></div>
+      <ol className="pf8-ult-l">
+        {ev.map(([n, puesto, pts]) => {
+          const x = (e || {})[n] || (e || {})[String(n)] || [];
+          const nom = limpio(x[0] || 'Evento ' + n);
+          const ds = du.filter((d) => d[0] === n);
+          const gano = ds.filter((d) => d[2]).map((d) => limpio(d[1]));
+          const perdio = ds.find((d) => !d[2]);
+          const lista = (xs) => (xs.length > 1 ? xs.slice(0, -1).join(', ') + ' y ' + xs[xs.length - 1] : xs[0]);
+          const que = puesto === 'Campeón' ? <>Campeón de <b>{nom}</b></>
+            : puesto === 'Subcampeón' && perdio ? <>Llegó a la final de <b>{nom}</b> y la perdió con {limpio(perdio[1])}</>
+              : gano.length ? <>En <b>{nom}</b> le ganó a {lista(gano.slice(0, 3))}{perdio ? ' y lo sacó ' + limpio(perdio[1]) : ''}</>
+                : <>{puesto} en <b>{nom}</b></>;
+          return (
+            <li key={n}>
+              <time>{x[2] ? cuandoFue(x[2]) : x[4] || ''}</time>
+              <span className="pf8-ult-ic" aria-hidden="true">{MEDALLA[puesto] ? <Medalla p={MEDALLA[puesto]} /> : <Ico n="cruce" t={20} />}</span>
+              <span className="pf8-ult-tx"><span>{que}</span>
+                <small>{x[1] ? siglaDe(x[1]) : ''}{x[3] ? ' · ' + x[3] + ' raperos' : ''}{puesto !== 'Campeón' && puesto !== 'Subcampeón' && (gano.length || perdio) ? ' · ' + puesto : ''}</small></span>
+              <strong>+{num(pts)}</strong>
+              <button type="button" className="pf8-ult-ll" onClick={() => accion.llave(String(n))}>Ver la llave</button>
+            </li>
+          );
+        })}
+      </ol>
     </section>
   );
 }
@@ -280,7 +525,7 @@ function haceDias(iso) {
   const n = Math.round((new Date(diaISO(new Date()) + 'T12:00:00Z') - new Date(diaISO(new Date(iso)) + 'T12:00:00Z')) / DIA_MS);
   return n <= 0 ? 'hoy' : n === 1 ? 'ayer' : 'hace ' + n + ' días';
 }
-function Datos({ liga, p, e }) {
+function Datos({ liga, p, e, f }) {
   const filas = [];
   const ev = (p && p.ev) || [];
   const de = (n) => (e || {})[n] || [];
@@ -325,6 +570,19 @@ function Datos({ liga, p, e }) {
       limpio(x[0] || 'Evento ' + n) + (x[2] ? ' · ' + fecha(x[2]).toLowerCase() : '')
       + (esos.length > 1 ? ' · y ' + (esos.length - 1) + (esos.length === 2 ? ' vez más' : ' veces más') : '')]);
   }
+  // 🏁 sus finales, 🏟️ su evento más grande y 🔥 su mejor racha (Dlx, a la v1: «ser más específicos con los datos»)
+  const fin = ev.filter(([, pu]) => pu === 'Campeón' || pu === 'Subcampeón');
+  if (fin.length) {
+    const gan = fin.filter(([, pu]) => pu === 'Campeón').length;
+    filas.push(['copa', 'Finales', gan + ' de ' + fin.length + (fin.length === 1 ? ' ganada' : ' ganadas'),
+      'llegó a la final en ' + fin.length + ' de sus ' + ev.length + ' eventos']);
+  }
+  const grande = ev.filter(([n]) => de(n)[3]).sort((a, b) => de(b[0])[3] - de(a[0])[3])[0];
+  if (grande && ev.length >= 2) {
+    filas.push(['mundo', 'Su evento más grande', limpio(de(grande[0])[0] || 'Evento ' + grande[0]),
+      de(grande[0])[3] + ' raperos · ' + (grande[1] === 'Campeón' ? 'lo ganó' : String(grande[1]).toLowerCase())]);
+  }
+  if (f && Array.isArray(f.rch) && f.rch[1] >= 2) filas.push(['fuego', 'Su mejor racha', f.rch[1] + ' seguidos', 'en semifinal o más']);
   // 📈 cuánto hace por evento
   if (ev.length >= 2) {
     const tot = ev.reduce((s, x) => s + (Number(x[2]) || 0), 0);
@@ -371,11 +629,11 @@ function Datos({ liga, p, e }) {
     filas.push(['brote', 'Debutó', fecha(de(n0)[2]).toLowerCase(), limpio(de(n0)[0] || 'Evento ' + n0)]);
     if (orden.length > 1) filas.push(['reloj', 'Su último evento', haceDias(de(n1)[2]), limpio(de(n1)[0] || 'Evento ' + n1)]);
   }
+  if (p && textoVerificado(p.vd)) filas.push(['ok', 'Verificado', p.vd === 'pre' ? 'antes de la T1' : textoVerificado(p.vd).replace(/^Verificado /, ''), 'es Miembro de Discord Rap Español']);
   if (!filas.length) return null;
   return (
-    <section className="sec pf-sec">
-      <div className="sec-t"><h2>Sus datos</h2></div>
-      <ul className="pf-datos">
+    <>
+      <ul className="pf-datos pf8-datos">
         {filas.map(([ic, et, v, sub]) => (
           <li key={et}>
             {/* el ícono: el nombre de uno de `Ico`, o el puesto (1 a 3) para la medalla */}
@@ -389,6 +647,20 @@ function Datos({ liga, p, e }) {
           </li>
         ))}
       </ul>
+    </>
+  );
+}
+
+// 🗂️ SUS DATOS, TODO JUNTO (Dlx, a la v1: «poner ligas en la sección de datos… y ser más específicos»): sus ligas, sus
+// datos, en cada ranking y lo que le falta, en una sola sección blanca. Cada parte se apaga sola si no tiene con qué
+function SusDatos({ liga, f, k, p, e, esYo }) {
+  return (
+    <section className="sec pf-sec pf8-sd">
+      <div className="sec-t"><h2>{esYo ? 'Tus datos' : 'Sus datos'}</h2></div>
+      <SusLigas liga={liga} k={k} esYo={esYo} p={p} dentro />
+      <Datos liga={liga} p={p} e={e} f={f} />
+      <EnCadaRanking liga={liga} f={f} p={p} dentro />
+      <LoQueFalta f={f} p={p} esYo={esYo} dentro />
     </section>
   );
 }
@@ -429,7 +701,7 @@ function FortalezasBloq({ dims, f, pide, esYo }) {
   const pct = Math.max(0, Math.min(100, Math.round((100 * ev) / pide)));
   const llego = ev >= pide;
   return (
-    <section className="sec pf-sec negra">
+    <section className="sec pf-sec pf8-fz">
       <div className="sec-t"><h2>Sus fortalezas</h2><span className="pf-bloq"><Ico n="candado" t={14} />Bloqueada</span></div>
       <div className="pf-fz">
         <div className="pf-fz-prev">
@@ -471,7 +743,7 @@ function Fortalezas({ liga, f, p, dmp, esYo }) {
   const mx = val.indexOf(Math.max(...val));
   const mn = val.indexOf(Math.min(...val));
   return (
-    <section className="sec pf-sec negra">
+    <section className="sec pf-sec pf8-fz">
       <div className="sec-t"><h2>Sus fortalezas</h2></div>
       <div className="pf-fz">
         <Radar dims={dims} val={val} prom={dmp} />
@@ -520,18 +792,22 @@ function ProximaMeta({ liga, f, esYo }) {
   else t = (esYo ? 'Estás pegado a ' : 'Está pegado a ') + n(arriba) + ', el #' + arriba.pos + ': el próximo evento los separa';
   const sub = corte ? (ovr(corte) > ovr(f) ? 'Y ' + D_OVR(ovr(corte) - ovr(f)) + ' para entrar a los 16 de la Clausura' : '')
     : (esYo ? 'Si la temporada terminara hoy, juegas la Clausura' : 'Si la temporada terminara hoy, juega la Clausura');
+  // la barra: de quien tiene abajo a quien tiene arriba, dónde está él (la v2 de la maqueta)
+  const base = abajo ? ovr(abajo) : 0;
+  const pct = arriba && ovr(arriba) > base ? Math.max(4, Math.min(100, Math.round((100 * (ovr(f) - base)) / (ovr(arriba) - base)))) : 100;
   return (
-    <section className="sec pf-sec pf-meta-sec">
+    <section className="sec pf-sec negra pf-meta-sec pf8-meta">
       <a className="pf-meta" href="#/ranking/temporada">
         <span className="pf-meta-et">{esYo ? 'TU PRÓXIMA META' : 'SU PRÓXIMA META'} · #{f.pos} DE LA TEMPORADA</span>
         <b>{t}</b>
+        {arriba ? <span className="pf8-meta-bar"><u style={{ width: pct + '%' }} /><i>#{f.pos}</i><i>#{arriba.pos}</i></span> : null}
         {sub ? <small>{sub}</small> : null}
       </a>
     </section>
   );
 }
 
-function EnCadaRanking({ liga, f, p }) {
+function EnCadaRanking({ liga, f, p, dentro }) {
   const rk = (p && p.rk) || {};
   const filas = [];
   const total = liga.oficiales().length;
@@ -541,17 +817,17 @@ function EnCadaRanking({ liga, f, p }) {
   if (rk.pa && f.cc) filas.push([<><Bandera cc={f.cc} cls="pf-flag" />{nombrePais(f.cc)}</>, '#' + rk.pa[0] + ' de ' + rk.pa[1], '#/pais/' + f.cc]);
   const crew = liga.crewDe(f);
   if (rk.cr && rk.cr[0] && rk.cr[1]) filas.push([limpio(rk.cr[0]), '#' + rk.cr[1] + ' de ' + rk.cr[2], crew ? '#/crew/' + encodeURIComponent(crew.clave || crew.crew) : '#/ranking/crews']);
+  const lista = <ul className="pf-rk">{filas.map((x, i) => <li key={i}><a href={x[2]}><span>{x[0]}</span><b>{x[1]}</b></a></li>)}</ul>;
+  if (dentro) return <><h3 className="pf8-h3">En cada ranking</h3>{lista}</>;
   return (
     <section className="sec pf-sec">
       <div className="sec-t"><h2>En cada ranking</h2></div>
-      <ul className="pf-rk">
-        {filas.map((x, i) => <li key={i}><a href={x[2]}><span>{x[0]}</span><b>{x[1]}</b></a></li>)}
-      </ul>
+      {lista}
     </section>
   );
 }
 
-function LoQueFalta({ f, p, esYo }) {
+function LoQueFalta({ f, p, esYo, dentro }) {
   const pa = usePaseDe(f.k);
   const nivel = (pa && pa.nivel) || 0;
   const req = (p && p.req) || {};
@@ -564,9 +840,9 @@ function LoQueFalta({ f, p, esYo }) {
   };
   const cs = ['temporada', 'competitivo', 'pais'].filter((c) => (req[c] || (f.c || []).includes(c)) && !listaDe(c));
   if (!cs.length) return null;
-  return (
-    <section className="sec pf-sec">
-      <div className="sec-t"><h2>{esYo ? 'Lo que te falta' : 'Lo que le falta'}</h2></div>
+  const cont = (
+    <>
+      {dentro ? <h3 className="pf8-h3">{esYo ? 'Lo que te falta' : 'Lo que le falta'}</h3> : <div className="sec-t"><h2>{esYo ? 'Lo que te falta' : 'Lo que le falta'}</h2></div>}
       <ul className="pf-falta">
         {cs.map((c) => {
           const q = req[c] || [];
@@ -586,96 +862,137 @@ function LoQueFalta({ f, p, esYo }) {
           );
         })}
       </ul>
-    </section>
+    </>
   );
+  return dentro ? cont : <section className="sec pf-sec">{cont}</section>;
 }
 
 // ── Eventos: todos los que jugó en la temporada, con su puesto, sus puntos y la llave ──
-// 🔎 AL FINAL, CON BUSCADOR Y FILTRO POR RESULTADO (Dlx, 07/10/2026: «poner eventos en lo último y con la opción de
-// buscar evento y filtrar, ya sea que fue campeón, subcampeón, etc.»). Los filtros son los puestos que tiene, con cuántos
+// 📈 LAS DOS JUNTAS (Dlx, a la v10: «E1 y E2 me gustan ambas… me gusta la gráfica del E1»): arriba la temporada en una
+// tira —cada palito es un evento en su fecha, el color dice cómo le fue y la altura cuánto sumó— y debajo los filtros y la
+// lista por mes, cada uno con su medalla y sus puntos. Reemplaza al mapa de días (Dlx: «lo de eventos participados de
+// abajo a la izquierda puede ser mejor»). El buscador se queda (Dlx, 07/10/2026: «con la opción de buscar evento»)
 const PUESTO_ORDEN = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos', 'R32', 'Dieciseisavos'];
 const ordenPuesto = (x) => (PUESTO_ORDEN.indexOf(x) < 0 ? 99 : PUESTO_ORDEN.indexOf(x));
-// 📅 LOS DÍAS QUE JUGÓ (Dlx, 19/10/2026, «me gustan todas», a «Activity Heatmap» de 21st): una columna por semana de la
-// temporada, desde la semana de su primer evento hasta hoy; cada día que jugó, pintado (más oscuro con dos o más). Dice
-// de un vistazo si alguien juega seguido o de a ráfagas, que la lista de eventos no muestra
-function DiasJugados({ liga, ev, e }) {
+const COLOR_PUESTO = { Campeón: '#E7B622', Subcampeón: '#A9AEB6', Tercero: '#D9782F', Cuarto: '#D9782F', Semifinal: '#D9782F', Cuartos: '#4FA89A', Octavos: '#9DD3C9' };
+const colorPuesto = (x) => COLOR_PUESTO[x] || '#C9C9C4';
+const MEDALLA_TX = { Campeón: '1º', Subcampeón: '2º', Tercero: '3º', Cuarto: '4º', Semifinal: 'SEMI', Cuartos: 'CUAR', Octavos: 'OCT' };
+const PODIO = ['Campeón', 'Subcampeón', 'Tercero'];
+const MES_LARGO = ['ENERO', 'FEBRERO', 'MARZO', 'ABRIL', 'MAYO', 'JUNIO', 'JULIO', 'AGOSTO', 'SEPTIEMBRE', 'OCTUBRE', 'NOVIEMBRE', 'DICIEMBRE'];
+const MES_CORTO = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'];
+const diaN = (iso) => Date.parse(iso + 'T12:00:00Z');
+
+function TiraTemporada({ liga, ev, e }) {
+  const fase = liga.d.fase || {};
   const hoy = diaET();
-  const porDia = {};
-  ev.forEach(([n]) => { const x = (e || {})[n] || (e || {})[String(n)]; if (x && x[2]) { const d = diaET(Date.parse(x[2])); porDia[d] = (porDia[d] || 0) + 1; } });
-  const dias = Object.keys(porDia).sort();
-  if (!dias.length) return null;
-  const semanas = semanasEntre(dias[0], hoy);
-  const marca = (iso) => (porDia[iso] ? { cls: porDia[iso] > 1 ? 'jugo2' : 'jugo', t: porDia[iso] + (porDia[iso] === 1 ? ' evento' : ' eventos') } : null);
-  // el día de la semana que más juega, si uno se despega (con tres días jugados o más)
-  const DIAS = ['los lunes', 'los martes', 'los miércoles', 'los jueves', 'los viernes', 'los sábados', 'los domingos'];
-  const porSem = [0, 0, 0, 0, 0, 0, 0];
-  dias.forEach((d) => { porSem[(new Date(d + 'T12:00:00Z').getUTCDay() + 6) % 7] += porDia[d]; });
-  const top = porSem.indexOf(Math.max(...porSem));
-  const masQue = dias.length >= 3 && porSem.filter((x) => x === porSem[top]).length === 1 ? ' · más ' + DIAS[top] : '';
+  const ini = fase.arranca || hoy;
+  // lo jugado y diez días más: el resto de la temporada sería un hueco (la v10)
+  const fin = new Date(Math.min(diaN(fase.termina || hoy), diaN(hoy) + 10 * DIA_MS)).toISOString().slice(0, 10);
+  const W = 860, base = 118, x0 = 10, x1 = W - 10;
+  const x = (d) => x0 + ((diaN(d) - diaN(ini)) / Math.max(DIA_MS, diaN(fin) - diaN(ini))) * (x1 - x0);
+  const pts = ev.map((r) => Number(r[2]) || 0);
+  const mx = Math.max(1, ...pts);
+  const pila = {};
+  const palos = ev.slice().reverse().map(([n, puesto, p]) => {
+    const it = (e || {})[n] || (e || {})[String(n)] || [];
+    if (!it[2]) return null;
+    const d = diaET(Date.parse(it[2]));
+    const i = pila[d] || 0;
+    pila[d] = i + 1;
+    const h = 14 + ((Number(p) || 0) / mx) * 84;
+    return <rect key={n} x={x(d) - 3 + i * 7} y={base - h} width="6" height={h} rx="1.5" fill={colorPuesto(puesto)}><title>{limpio(it[0] || '') + ' · ' + puesto + ' · +' + num(p)}</title></rect>;
+  });
+  const marcas = [];
+  for (let t = diaN(ini); t <= diaN(fin); t += DIA_MS) {
+    const d = new Date(t).toISOString().slice(0, 10);
+    if (d === ini || d.endsWith('-01') || d.endsWith('-15')) marcas.push(d);
+  }
+  const quedan = fase.termina ? Math.max(0, Math.round((diaN(fase.termina) - diaN(hoy)) / DIA_MS)) : 0;
   return (
-    <div className="pf-dias">
-      <span className="pf-dias-t">DÍAS QUE JUGÓ · {dias.length} en {semanas.length} {semanas.length === 1 ? 'semana' : 'semanas'}{masQue}</span>
-      <GrillaDias semanas={semanas} marca={marca} hoy={hoy} vertical={false} etiqueta={'Días que jugó en la ' + liga.temp} />
-    </div>
+    <svg className="pf8-tira" viewBox={`0 -8 ${W} 152`} role="img" aria-label={'Sus ' + ev.length + ' eventos de la ' + liga.temp + ', por fecha'}>
+      <rect x={x(hoy)} y="10" width={Math.max(0, x1 - x(hoy))} height={base - 10} className="pf8-tira-fut" />
+      {marcas.map((d, i) => (
+        <g key={d}><line x1={x(d)} x2={x(d)} y1="10" y2={base} className="pf8-tira-l" />
+          {i === 0 || x(d) - x(marcas[i - 1]) > 70
+            ? <text x={x(d) + 4} y={base + 18}>{d === ini ? Number(d.slice(8)) + ' ' + MES_CORTO[Number(d.slice(5, 7)) - 1] + ' · ARRANCA LA ' + liga.temp : d.endsWith('-01') ? MES_CORTO[Number(d.slice(5, 7)) - 1] : '15 ' + MES_CORTO[Number(d.slice(5, 7)) - 1]}</text> : null}
+        </g>
+      ))}
+      {quedan ? <text x={x1} y={base + 18} textAnchor="end">QUEDAN {quedan} DÍAS DE LA {liga.temp} →</text> : null}
+      {palos}
+      <line x1={x0} x2={x1} y1={base} y2={base} className="pf8-tira-base" />
+      <line x1={x(hoy)} x2={x(hoy)} y1="6" y2={base} className="pf8-tira-hoy" />
+      <text x={x(hoy)} y="2" textAnchor="middle" className="pf8-tira-hoyt">HOY</text>
+    </svg>
   );
 }
 
-function Eventos({ liga, p, e }) {
+function Eventos({ liga, p, e, n = 5 }) {
   const ev = (p && p.ev) || [];
   const [q, setQ] = useState('');
-  const [pu, setPu] = useState('');
+  const [fil, setFil] = useState('');
   const [todos, setTodos] = useState(false);
   if (!ev.length) return <section className="sec pf-sec"><p className="rk-vacio">Todavía no jugó ningún evento en la {liga.temp}.</p></section>;
-  const cuenta = {};
-  ev.forEach(([, x]) => { cuenta[x] = (cuenta[x] || 0) + 1; });
-  const puestos = Object.keys(cuenta).sort((a, b) => ordenPuesto(a) - ordenPuesto(b));
+  const de = (x) => (e || {})[x] || (e || {})[String(x)] || [];
+  const tot = ev.reduce((s, r) => s + (Number(r[2]) || 0), 0);
+  const mx = Math.max(1, ...ev.map((r) => Number(r[2]) || 0));
+  const cuenta = (f) => ev.filter(f).length;
+  const svs = {};
+  ev.forEach(([x]) => { const s = de(x)[1]; if (s) svs[s] = (svs[s] || 0) + 1; });
+  const pasa = ([x, pu]) => !fil || (fil === 'Campeón' ? pu === 'Campeón' : fil === 'podio' ? PODIO.includes(pu) : de(x)[1] === fil);
   const nq = norm(q);
-  const vis0 = ev.filter(([n, x]) => (!pu || x === pu) && (!nq || norm(((e || {})[n] || [])[0] || '').includes(nq)));
-  // (los últimos 8 y el resto a un toque; con un filtro o una búsqueda, todos los que cumplen — 19/10/2026)
-  const corta = !todos && !q && !pu && vis0.length > VER_PRIMEROS;
-  const vis = corta ? vis0.slice(0, VER_PRIMEROS) : vis0;
+  const vis0 = ev.filter((r) => pasa(r) && (!nq || norm(de(r[0])[0] || '').includes(nq)));
+  // los primeros y el resto a un toque; con un filtro o una búsqueda, todos los que cumplen
+  const corta = !todos && !q && !fil && vis0.length > n;
+  const vis = corta ? vis0.slice(0, n) : vis0;
+  let mes = '';
+  const chip = (id, txt, c, img) => (
+    <button type="button" key={id || 'todos'} className={fil === id ? 'on' : ''} aria-pressed={fil === id} onClick={() => setFil(fil === id ? '' : id)}>
+      {img ? <img alt="" src={img} /> : null}{txt} <small>{c}</small></button>
+  );
   return (
-    <section className="sec pf-sec">
-      <div className="sec-t"><h2>Sus eventos</h2><span className="tj-n">{vis0.length === ev.length ? ev.length + ' en la ' + liga.temp : vis0.length + ' de ' + ev.length}</span></div>
-      <DiasJugados liga={liga} ev={ev} e={e} />
-      {ev.length > 3 ? (
-        <div className="rk-fil pf-ev-fil">
-          <label className="rk-buscar"><Ico n="buscar" t={18} />
-            <input type="search" value={q} onChange={(ev2) => setQ(ev2.target.value)} placeholder="Buscar evento" aria-label="Buscar evento" enterKeyHint="search" />
-          </label>
-          {puestos.length > 1 ? (
-            <div className="rk-chips" role="group" aria-label="Filtrar por resultado">
-              <button type="button" className={!pu ? 'on' : ''} aria-pressed={!pu} onClick={() => setPu('')}>Todos · {ev.length}</button>
-              {puestos.map((x) => (
-                <button type="button" key={x} className={pu === x ? 'on' : ''} aria-pressed={pu === x} onClick={() => setPu(pu === x ? '' : x)}>
-                  <Medalla p={MEDALLA[x]} />{x} · {cuenta[x]}
-                </button>
-              ))}
-            </div>
-          ) : null}
+    <section className="sec pf-sec pf8-ev">
+      <div className="sec-t"><h2>Sus eventos</h2><span className="tj-n">{vis0.length === ev.length ? ev.length + ' en la ' + liga.temp + ' · +' + num(tot) + ' pts' : vis0.length + ' de ' + ev.length}</span></div>
+      <TiraTemporada liga={liga} ev={ev} e={e} />
+      <div className="pf8-ley">
+        {PUESTO_ORDEN.slice(0, 7).filter((x) => x !== 'Tercero' && x !== 'Cuarto').map((x) => <span key={x}><i style={{ background: colorPuesto(x) }} />{x}</span>)}
+        <span>la altura = los puntos que sumó</span>
+      </div>
+      <div className="pf8-ev-fil">
+        <div className="pf8-chips" role="group" aria-label="Filtrar sus eventos">
+          {chip('', 'Todos', ev.length)}
+          {cuenta((r) => r[1] === 'Campeón') ? chip('Campeón', 'Campeón', cuenta((r) => r[1] === 'Campeón')) : null}
+          {cuenta((r) => PODIO.includes(r[1])) ? chip('podio', 'Podio', cuenta((r) => PODIO.includes(r[1]))) : null}
+          {Object.keys(svs).length > 1 ? Object.entries(svs).sort((a, b) => b[1] - a[1]).map(([s, c]) => chip(s, siglaDe(s), c, liga.logo(s))) : null}
         </div>
-      ) : null}
+        {ev.length > 5 ? (
+          <label className="rk-buscar"><Ico n="buscar" t={18} />
+            <input type="search" value={q} onChange={(x) => setQ(x.target.value)} placeholder="Buscar evento" aria-label="Buscar evento" enterKeyHint="search" />
+          </label>
+        ) : null}
+      </div>
       {!vis.length ? <p className="rk-vacio">Ningún evento con ese filtro.</p> : null}
-      <ol className="pf-ev">
-        {vis.map(([n, puesto, pts]) => {
-          const x = (e || {})[n] || [];
+      <ol className="pf8-evl">
+        {vis.map(([x, puesto, pts]) => {
+          const it = de(x);
+          const m = it[2] ? MES_LARGO[Number(diaET(Date.parse(it[2])).slice(5, 7)) - 1] : '';
+          const titulo = m && m !== mes ? (mes = m) : '';
           return (
-            <li key={n} style={{ '--c': (liga.svs[x[1]] || {}).color || '#29B298' }}>
-              <span className="pf-ev-f">{x[2] ? fecha(x[2]) : x[4] || ''}</span>
-              <div className="pf-ev-tx">
-                <b>{limpio(x[0] || 'Evento ' + n)}</b>
-                <small>{x[1] ? <img alt="" src={liga.logo(x[1])} /> : null}{x[1] ? siglaDe(x[1]) : ''}{x[3] ? ' · ' + x[3] + ' raperos' : ''}</small>
-              </div>
-              <span className="pf-ev-p"><Medalla p={MEDALLA[puesto]} />{puesto}</span>
-              <b className="pf-ev-pts">{num(pts)}</b>
-              <button type="button" className="pf-ev-ll" onClick={() => accion.llave(String(n))}>Ver llave</button>
+            <li key={x}>
+              {titulo ? <span className="pf8-mes">{titulo}</span> : null}
+              <button type="button" className="pf8-evb" onClick={() => accion.llave(String(x))} aria-label={'Ver la llave de ' + limpio(it[0] || 'Evento ' + x)}>
+                <span className={'pf8-med' + (ordenPuesto(puesto) <= 4 ? '' : ' gris')} style={{ '--c': colorPuesto(puesto) }}>{MEDALLA_TX[puesto] || String(puesto).slice(0, 4).toUpperCase()}</span>
+                <span className="pf8-evt"><b>{limpio(it[0] || 'Evento ' + x)}</b>
+                  <small>{it[2] ? fecha(it[2]) : it[4] || ''}{it[1] ? <> · <img alt="" src={liga.logo(it[1])} />{siglaDe(it[1])}</> : null}{it[3] ? ' · ' + it[3] + ' raperos' : ''}</small></span>
+                <span className="pf8-evp"><u><i style={{ width: Math.max(3, (100 * (Number(pts) || 0)) / mx) + '%' }} /></u><small>{puesto}</small></span>
+                <strong>+{num(pts)}</strong>
+              </button>
             </li>
           );
         })}
       </ol>
-      {corta || (todos && !q && !pu && vis0.length > VER_PRIMEROS) ? (
+      {corta || (todos && !q && !fil && vis0.length > n) ? (
         <button type="button" className="btn borde chico pf-ver-mas" aria-expanded={todos} onClick={() => setTodos(!todos)}>
-          {todos ? 'Ver menos' : 'Ver los ' + vis0.length + ' eventos'}</button>
+          {todos ? 'Ver menos' : 'Ver los ' + vis0.length}</button>
       ) : null}
     </section>
   );
@@ -711,13 +1028,33 @@ function VideoPropio({ v: [vid, tit, cn], k, esYo, dc }) {
   );
 }
 
+// 🎛️ CON MUCHOS, UN FILTRO (Dlx, al remake del perfil: «filtrar batallas de videos, porque Makma tiene más de 10»): de
+// los canales de la Liga o de plazas y otras ligas. Con pocos no hace falta
+const VIDEOS_FILTRO = 4;
+// y los primeros cuatro, el resto a un toque: con los de Makmah el bloque medía 2.531 px en la compu (21/10/2026)
+const VIDEOS_VER = 4;
 function Videos({ liga, p, k, esYo, dc }) {
-  const vs = (p && p.vid) || [];
-  const vp = (p && p.vp) || [];
-  if (!vs.length && !vp.length) return null;
+  const [fil, setFil] = useState('');
+  const [todos, setTodos] = useState(false);
+  const vs0 = (p && p.vid) || [];
+  const vp0 = (p && p.vp) || [];
+  if (!vs0.length && !vp0.length) return null;
+  const con = vs0.length && vp0.length && vs0.length + vp0.length > VIDEOS_FILTRO;
+  const vs1 = fil === 'otras' ? [] : vs0;
+  const vp1 = fil === 'liga' ? [] : vp0;
+  const hay = vs1.length + vp1.length;
+  const vs = todos ? vs1 : vs1.slice(0, VIDEOS_VER);
+  const vp = todos ? vp1 : vp1.slice(0, Math.max(0, VIDEOS_VER - vs.length));
   return (
-    <section className="sec pf-sec negra">
-      <div className="sec-t"><h2>Sus batallas en video</h2><span className="tj-n">{vs.length + vp.length === 1 ? 'una' : vs.length + vp.length}</span></div>
+    <section className="sec pf-sec pf8-vid">
+      <div className="sec-t"><h2>Sus batallas en video</h2><span className="tj-n">{vs0.length + vp0.length === 1 ? 'una' : vs0.length + vp0.length}</span></div>
+      {con ? (
+        <div className="pf8-chips" role="group" aria-label="Filtrar sus videos">
+          {[['', 'Todos', vs0.length + vp0.length], ['liga', 'De la Liga', vs0.length], ['otras', 'Plazas y otras ligas', vp0.length]].map(([id, t, c]) => (
+            <button key={id || 'todos'} type="button" className={fil === id ? 'on' : ''} aria-pressed={fil === id} onClick={() => setFil(id)}>{t} <small>{c}</small></button>
+          ))}
+        </div>
+      ) : null}
       {vs.length ? <p className="pf-bajada">De los canales de YouTube de los servidores de la Liga. Toca una para verla acá.</p> : null}
       {vs.length ? <ul className="pf-vid">
         {vs.map(([vid, tit, sv]) => (
@@ -736,6 +1073,10 @@ function Videos({ liga, p, k, esYo, dc }) {
           <p className="pf-bajada">Las sumó {esYo ? 'tú' : 'él'}: entran solas si el título es una batalla con su nombre.{esYo ? ' Las tuyas se suman en Mi cuenta → Mi perfil.' : ''}</p>
           <ul className="pf-vid">{vp.map((v) => <VideoPropio key={v[0]} v={v} k={k} esYo={esYo} dc={dc} />)}</ul>
         </>
+      ) : null}
+      {hay > VIDEOS_VER ? (
+        <button type="button" className="btn borde chico pf-ver-mas" aria-expanded={todos} onClick={() => setTodos(!todos)}>
+          {todos ? 'Ver menos' : 'Ver los ' + hay + ' videos'}</button>
       ) : null}
     </section>
   );
@@ -767,6 +1108,9 @@ function Duelos({ liga, p, e }) {
   return (
     <section className="sec pf-sec negra">
       <div className="sec-t"><h2>Cara a cara</h2><span className="tj-n">{g} ganados de {du.length}{rd ? ' · racha ' + rd[0] + ' (máx ' + rd[1] + ')' : ''}</span></div>
+      {/* 🟩🟥 sus últimos duelos, del más viejo al más nuevo (la v2 de la maqueta) */}
+      <span className="pf8-wl grande" aria-label={'Sus últimos duelos: ' + du.slice(0, 24).reverse().map((d) => (d[2] ? 'ganó' : 'perdió')).join(', ')}>
+        {du.slice(0, 24).reverse().map((d, i) => <i key={i} className={d[2] ? 'g' : 'p'} />)}</span>
       <p className="pf-bajada">Contra cada rival: cuántas veces se cruzaron y cómo le fue. Toca uno para ver sus duelos.</p>
       <ul className="pf-cc">
         {vis.map((r) => {
@@ -811,7 +1155,7 @@ function Duelos({ liga, p, e }) {
 // 🏟️ SUS LIGAS (ForceGP, 14/10/2026, por Dlx: «no sale mis partes»): las ligas de los servidores donde juega, con su
 // puesto y su récord. Sale de lo que ya viaja en el lobby (`ligas`, con el perfil de cada nombre en `ks`): sirve también
 // para el staff que no juega eventos y sí ligas
-export function SusLigas({ liga, k, esYo, p }) {
+export function SusLigas({ liga, k, esYo, p, dentro }) {
   const ls = ((liga.d.ligas || {}).ligas) || [];
   const mias = [];
   for (const L of ls) {
@@ -821,9 +1165,11 @@ export function SusLigas({ liga, k, esYo, p }) {
   // 📈 y dónde está en el ascenso de algún servidor (17/10/2026): `[sv, liga, puesto, pts, a cuánto, id, ¿sube?]`
   const asc = p && p.asc;
   if (!mias.length && !asc) return null;
-  return (
-    <section className="sec pf-sec pf-ligas">
-      <div className="sec-t"><h2>{esYo ? 'Tus ligas' : 'Sus ligas'}</h2><a href="#/ligas">Ligas <Ico n="flecha" t={16} /></a></div>
+  // 🗂️ adentro de «Sus datos» (21/10/2026): la misma lista, con su título chico
+  const cont = (
+    <>
+      {dentro ? <h3 className="pf8-h3">{esYo ? 'Tus ligas' : 'Sus ligas'} <a href="#/ligas">Ligas <Ico n="flecha" t={14} /></a></h3>
+        : <div className="sec-t"><h2>{esYo ? 'Tus ligas' : 'Sus ligas'}</h2><a href="#/ligas">Ligas <Ico n="flecha" t={16} /></a></div>}
       <ul className="pf-lg">{mias.map(([L, i, [, pj, pg, pts]]) => (
         <li key={L.id}>
           <b><a href={'#/ligas/' + encodeURIComponent(L.id)}>{L.n}</a></b><small>{siglaDe(L.sv)}</small>
@@ -839,8 +1185,9 @@ export function SusLigas({ liga, k, esYo, p }) {
         </li>
       ) : null}</ul>
       {mias.length ? <p className="pronto-p">Las batallas de liga suman a {esYo ? 'tus' : 'sus'} duelos (el Ranking Duelos y el Win%); al Score, no.</p> : null}
-    </section>
+    </>
   );
+  return dentro ? cont : <section className="sec pf-sec pf-ligas">{cont}</section>;
 }
 
 // 📰 SUS PUBLICACIONES (Dlx, 13/10/2026: «pon ahí las publicaciones de cada uno que el bot publica también en alguna
@@ -880,11 +1227,14 @@ function SusPromos({ liga, p, esYo }) {
   );
 }
 
-function Insignias({ liga, p }) {
+// 🏅 LOGROS (las insignias de la Liga), EN NEGRO, y al lado 🎒 INVENTARIO (Dlx, a la v11: «pon al costado de Logros
+// Inventario: esto será para otra cosa»): una pestaña más del mismo bloque, vacía hasta que tenga qué guardar
+function Logros({ liga, p, esYo }) {
   const [faltan, setFaltan] = useState(false);
+  const [pest, setPest] = useState('logros');
   const cat = liga.d.insignias || [];
   const tiene = new Map(((p && p.ins) || []).map((x) => [x[0], x[1]]));
-  const mw = (p && p.mw) || {};
+  if (!cat.length) return null;
   // 🏅 LAS QUE TIENE, A LA VISTA; LAS QUE FALTAN, A UN TOQUE (19/10/2026): eran 49 en grilla —38 bloqueadas— y lo más
   // largo del perfil era lo que NO tenía (~1.700 px en la compu, ~3.500 en el teléfono). No se saca ninguna
   const fila = ([id, ic, n, desc]) => {
@@ -900,38 +1250,52 @@ function Insignias({ liga, p }) {
   const si = cat.filter((x) => tiene.has(x[0]));
   const no = cat.filter((x) => !tiene.has(x[0]));
   return (
-    <>
-      {cat.length ? (
-        <section className="sec pf-sec">
-          <div className="sec-t"><h2>Insignias</h2><span className="tj-n">{tiene.size} de {cat.length}</span></div>
-          {si.length ? <ul className="pf-ins">{si.map(fila)}</ul> : <p className="pf-ins-nada">Todavía ninguna.</p>}
-          {no.length ? (
-            <>
-              <button type="button" className="btn borde chico pf-ins-mas" aria-expanded={faltan} onClick={() => setFaltan(!faltan)}>
-                {faltan ? 'Esconder las que faltan' : 'Ver las ' + no.length + ' que faltan'}</button>
-              {faltan ? <ul className="pf-ins pf-ins-no">{no.map(fila)}</ul> : null}
-            </>
-          ) : null}
-        </section>
-      ) : null}
-      <section className="sec pf-sec">
-        <div className="sec-t"><h2>Su cacería</h2><a href="#/ranking/mw">Most Wanted <Ico n="flecha" t={16} /></a></div>
-        <dl className="pf-tiles pf-caza">
-          <div><dd>{(mw.caz || []).length}</dd><dt>CAZÓ</dt></div>
-          <div><dd>{(mw.czd || []).length}</dd><dt>LO CAZARON</dt></div>
-          <div><dd>{mw.sob || 0}</dd><dt>SOBREVIVIÓ</dt></div>
-          <div><dd>{mw.esc || 0}</dd><dt>SE ESCONDIÓ</dt></div>
-        </dl>
-        {(mw.czd || []).length || (mw.caz || []).length ? (
-          <ul className="pf-czd">
-            {/* 🔴 `caz` es [período, buscado, categoría, evento, cobró] y NO el orden de `czd` [período, categoría, evento,
-                [cazadores]]: copiado de la línea de abajo, decía «Cazó a P» —la primera letra del evento— (19/10/2026) */}
-            {(mw.caz || []).map((x, i) => <li key={'a' + i}><b>Cazó a {limpio(x[1] || '')}</b><small>{limpio(x[2] || '')} · {limpio(x[3] || '')}</small></li>)}
-            {(mw.czd || []).map((x, i) => <li key={'b' + i}><b>Lo cazó {limpio((x[3] || [])[0] || '')}</b><small>{x[1]} · {limpio(x[2] || '')}</small></li>)}
-          </ul>
+    <section className="sec pf-sec negra pf8-logros">
+      <div className="pf8-pest" role="tablist" aria-label="Logros e inventario">
+        <button type="button" role="tab" aria-selected={pest === 'logros'} className={pest === 'logros' ? 'on' : ''} onClick={() => setPest('logros')}>
+          Logros <small>{tiene.size} de {cat.length}</small></button>
+        <button type="button" role="tab" aria-selected={pest === 'inv'} className={pest === 'inv' ? 'on' : ''} onClick={() => setPest('inv')}>
+          Inventario <small>pronto</small></button>
+      </div>
+      {pest === 'inv' ? (
+        <div className="pf8-inv"><span aria-hidden="true">🎒</span><b>{esYo ? 'Tu inventario' : 'Su inventario'}</b>
+          <p>Acá se van a guardar las cosas que {esYo ? 'consigas' : 'consiga'} en Under Legends. Llega pronto.</p></div>
+      ) : <>
+        {si.length ? <ul className="pf-ins">{si.map(fila)}</ul> : <p className="pf-ins-nada">Todavía ninguna.</p>}
+        {no.length ? (
+          <>
+            <button type="button" className="btn borde chico pf-ins-mas" aria-expanded={faltan} onClick={() => setFaltan(!faltan)}>
+              {faltan ? 'Esconder las que faltan' : 'Ver las ' + no.length + ' que faltan'}</button>
+            {faltan ? <ul className="pf-ins pf-ins-no">{no.map(fila)}</ul> : null}
+          </>
         ) : null}
-      </section>
-    </>
+      </>}
+    </section>
+  );
+}
+
+// 🎯 SU CACERÍA (Most Wanted), en negro; en la compu va al costado, junto al precio por su cabeza (las dos son del Most
+// Wanted: Dlx, a la v11, «se ha abierto una grieta a la derecha abajo»)
+function Caceria({ p }) {
+  const mw = (p && p.mw) || {};
+  return (
+    <section className="sec pf-sec negra pf8-caza">
+      <div className="sec-t"><h2>Su cacería</h2><a href="#/ranking/mw">Most Wanted <Ico n="flecha" t={16} /></a></div>
+      <dl className="pf-tiles pf-caza">
+        <div><dd>{(mw.caz || []).length}</dd><dt>CAZÓ</dt></div>
+        <div><dd>{(mw.czd || []).length}</dd><dt>LO CAZARON</dt></div>
+        <div><dd>{mw.sob || 0}</dd><dt>SOBREVIVIÓ</dt></div>
+        <div><dd>{mw.esc || 0}</dd><dt>SE ESCONDIÓ</dt></div>
+      </dl>
+      {(mw.czd || []).length || (mw.caz || []).length ? (
+        <ul className="pf-czd">
+          {/* 🔴 `caz` es [período, buscado, categoría, evento, cobró] y NO el orden de `czd` [período, categoría, evento,
+              [cazadores]]: copiado de la línea de abajo, decía «Cazó a P» —la primera letra del evento— (19/10/2026) */}
+          {(mw.caz || []).map((x, i) => <li key={'a' + i}><b>Cazó a {limpio(x[1] || '')}</b><small>{limpio(x[2] || '')} · {limpio(x[3] || '')}</small></li>)}
+          {(mw.czd || []).map((x, i) => <li key={'b' + i}><b>Lo cazó {limpio((x[3] || [])[0] || '')}</b><small>{x[1]} · {limpio(x[2] || '')}</small></li>)}
+        </ul>
+      ) : null}
+    </section>
   );
 }
 
@@ -939,6 +1303,54 @@ function Insignias({ liga, p }) {
 function filaDeCuenta(dc, k) {
   if (!dc || dc.clave !== k) return null;
   return { k, n: dc.rapero || dc.n, cc: dc.cc, sv: dc.sv, pos: null, ovr: null, pts: 0, ev: dc.ev || 0, wr: '', c: dc.cs || [], fuera: true };
+}
+
+// 🧭 EL ÍNDICE DE ARRIBA (la maqueta B): baja hasta cada parte. Una parte que no se dibujó no tiene botón
+const INDICE = [['videos', 'Videos'], ['ultimo', 'Lo último'], ['datos', 'Datos'], ['duelos', 'Duelos'], ['insignias', 'Logros'], ['eventos', 'Eventos']];
+function Indice({ raiz }) {
+  const [hay, setHay] = useState('');
+  useEffect(() => {
+    const r = setTimeout(() => {
+      const el = raiz.current;
+      if (!el) return;
+      const xs = INDICE.filter(([id]) => { const x = el.querySelector('#pf-' + id); return x && x.firstElementChild; }).map(([id]) => id).join(',');
+      setHay((h) => (h === xs ? h : xs));
+    }, 80);
+    return () => clearTimeout(r);
+  });
+  const ir = (id) => {
+    const el = raiz.current && raiz.current.querySelector(id ? '#pf-' + id : '.pf8');
+    if (el) window.scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + window.scrollY - 64), behavior: 'smooth' });
+  };
+  const ids = hay ? hay.split(',') : [];
+  if (!ids.length) return null;
+  return (
+    <nav className="pf8-ind" aria-label="Partes del perfil">
+      <button type="button" className="on" onClick={() => ir('')}>Resumen</button>
+      {INDICE.filter(([id]) => ids.includes(id)).map(([id, n]) => <button key={id} type="button" onClick={() => ir(id)}>{n}</button>)}
+    </nav>
+  );
+}
+
+// 🔰 sus emblemas, de lo que la página ya tiene (emblemas.jsx)
+function useEmblemas(f, k, p, e) {
+  const nvs = useNiveles();
+  const pa = usePaseDe(k);
+  const rls = (useRoles() || {})[k] || [];
+  const seg = useSeguidores(k);
+  useCrews();
+  const cv = crewDe(k);
+  if (!f) return [];
+  const ev = (p && p.ev) || [];
+  const ts = ev.map(([n]) => Date.parse(((e || {})[n] || (e || {})[String(n)] || [])[2] || '')).filter((x) => !isNaN(x));
+  const dias = ts.length ? Math.max(0, Math.floor((Date.now() - Math.min(...ts)) / DIA_MS)) : null;
+  const propio = String(f.sv || '').toLowerCase();
+  const cartas = ORDEN.filter((c) => (f.c || []).includes(c)).length + ((p && p.svc) || []).filter((x) => x !== propio).length;
+  const promos = ((p && p.mu) || []).filter((it) => it.tipo === 'promo').length;
+  return emblemasDe({
+    dias, vd: p && p.vd, pase: pa ? pa.nivel : null, racha: nvs && nvs[k] ? nvs[k][1] : null, seg,
+    crewRol: cv && cv.rol, cartas, promos, roles: rls.map((x) => x[0]),
+  });
 }
 
 export function Perfil({ liga, dc, k: k0, tab }) {
@@ -953,6 +1365,9 @@ export function Perfil({ liga, dc, k: k0, tab }) {
   const esYo = !!((dc && dc.clave === k) || (liga.yo && liga.yo.k === k));
   const p = (P && P.p && P.p[k]) || null;
   const t = SECCIONES.includes(tab) ? tab : '';
+  const ems = useEmblemas(f, k, p, P && P.e);
+  const [emb, setEmb] = useState(null);
+  useEffect(() => { setEmb(null); }, [k]);
   useEffect(() => { window.scrollTo(0, 0); }, [k]);
   useEffect(() => {
     if (!f) return undefined;
@@ -973,6 +1388,38 @@ export function Perfil({ liga, dc, k: k0, tab }) {
     }, 60);
     return () => clearTimeout(r);
   }, [t, k, !!P]); // eslint-disable-line react-hooks/exhaustive-deps
+  // 📏 LAS DOS COLUMNAS DE LA COMPU TERMINAN JUNTAS (Dlx, a la v11: «se ha abierto una grieta a la derecha abajo»): la lista
+  // de sus eventos crece o se achica hasta que la columna ancha llegue a donde termina la de al lado, a cualquier ancho
+  // —lo que se aprendió en Eventos (3.93): una cantidad fija medida a 1333 px volvía a dejar el hueco en un iPad—
+  const raiz = useRef(null);
+  const [nEv, setNEv] = useState({ k: '', n: 5 });
+  const [medida, setMedida] = useState(0);
+  const n = nEv.k === k ? nEv.n : 5;
+  // y si con todos sus eventos el costado sigue más largo, «Sus fortalezas» pasa a la ancha (una vez por perfil: así no
+  // salta de un lado al otro)
+  const [fzM, setFzM] = useState('');
+  const fzAncha = fzM === k;
+  useEffect(() => {
+    const el = raiz.current;
+    if (!el || typeof ResizeObserver !== 'function') return undefined;
+    const ro = new ResizeObserver(() => setMedida((x) => x + 1));
+    el.querySelectorAll('.pf8-main, .pf8-lat').forEach((x) => ro.observe(x));
+    return () => ro.disconnect();
+  }, [k, !!P]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const el = raiz.current;
+    if (!el || !window.matchMedia || !window.matchMedia('(min-width: 900px)').matches) return;
+    const main = el.querySelector('.pf8-main');
+    const lat = el.querySelector('.pf8-lat');
+    const fila = el.querySelector('.pf8-evl > li');
+    const total = ((p && p.ev) || []).length;
+    if (!main || !lat || !fila || !total) return;
+    const alto = Math.max(40, fila.getBoundingClientRect().height + 8);
+    const dif = lat.getBoundingClientRect().bottom - main.getBoundingClientRect().bottom;
+    if (dif > alto && n < total) setNEv({ k, n: Math.min(total, n + Math.floor(dif / alto)) });
+    else if (dif > alto * 3 && !fzAncha) setFzM(k);
+    else if (dif < -alto && n > 3) setNEv({ k, n: Math.max(3, n - Math.floor(-dif / alto)) });
+  }, [medida, n, k, p, fzAncha]); // eslint-disable-line react-hooks/exhaustive-deps
   if (!f) {
     // sin la tabla no se sabe todavía: puede venir en los perfiles, que bajan después
     if (!P) return <div className="cargando">Cargando…</div>;
@@ -983,49 +1430,53 @@ export function Perfil({ liga, dc, k: k0, tab }) {
       </section>
     );
   }
+  const panel = emb != null && ems.length ? <PanelEmblemas xs={ems} sel0={emb} nombre={limpio(f.n)} esYo={esYo} onCerrar={() => setEmb(null)} /> : null;
   // 🏷️ el staff que no compite: quién es y su rol, sin números ni tarjetas
   if (f.solo) {
     return (
       <>
-        <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} resumen={false} />
+        <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} ems={ems} onEmblemas={(x) => setEmb(x || '')} numeros={false} />
         <section className="sec pf-sec"><p className="pronto-p">{esYo ? 'No jugaste eventos esta temporada: estás en la Liga por tu rol.' : 'No jugó eventos esta temporada: está en la Liga por su rol.'}</p></section>
         <SusLigas liga={liga} k={k} esYo={esYo} p={p} />
+        {panel}
       </>
     );
   }
-  // 🎨 BLANCO Y NEGRO, COMO EL INICIO (Dlx, 07/10/2026: *«no todos los lugares son blancos sino intercala con el
-  // negro»*): la cabeza, Sus batallas en video, Sus fortalezas, Cara a cara y el Precio van en `.sec.negra` (estilo.css),
-  // con blancas entre cada una. El Precio en negro como el Most Wanted del Inicio
+  // 🎨 BLANCO Y NEGRO, INTERCALADOS (Dlx, 07/10/2026, y la maqueta B del 21/10): en el teléfono una columna, en este
+  // orden —videos, la meta, de un vistazo, lo último, publicaciones, fortalezas, cara a cara, sus datos, logros, cacería,
+  // precio y eventos—; en la compu, la columna ancha y la del costado, que terminan juntas. El orden del teléfono lo da
+  // `order` (las dos columnas son `display: contents` ahí)
   return (
-    <>
-      <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} resumen />
+    <div className="pf8-pag" ref={raiz}>
+      <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} ems={ems} onEmblemas={(x) => setEmb(x || '')} numeros />
       <div ref={abajo} />
+      {P ? <Indice raiz={raiz} /> : null}
       {/* 🤝 en tu perfil y sin crew: las que te aceptan, debajo de la cabecera (sale sola sólo si estás verificado y sin
           crew: ver `CrewsParaVos` de crewpanel.jsx) */}
       {esYo && !crewDe(k) ? <CrewsParaVos liga={liga} seccion="sec pf-sec" /> : null}
       {f.fuera ? <section className="sec pf-sec"><p className="pronto-p">Tu historial todavía no está en la página: aparece cuando entras entre los 200 de la tabla.</p></section> : null}
       {!P ? <div className="cargando">Cargando…</div> : (
-        <>
-          <ProximaMeta liga={liga} f={f} esYo={esYo} />
-          <Numeros f={f} p={p} />
-          {/* 🎬 arriba, debajo de sus números (Dlx, 12/10/2026: «que esto esté más arriba… debajo de sus números») */}
-          <div id="pf-videos"><Videos liga={liga} p={p} k={k} esYo={esYo} dc={dc} /></div>
-          <div id="pf-publicaciones"><SusPublicaciones liga={liga} p={p} esYo={esYo} /></div>
-          <SusPromos liga={liga} p={p} esYo={esYo} />
-          <SusLigas liga={liga} k={k} esYo={esYo} p={p} />
-          <Datos liga={liga} p={p} e={P.e} />
-          <Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} />
-          <div className="pf-dos">
-            <EnCadaRanking liga={liga} f={f} p={p} />
-            <LoQueFalta f={f} p={p} esYo={esYo} />
+        <div className="pf8-cuerpo">
+          <div className="pf8-main">
+            <div id="pf-videos" className="o1"><Videos liga={liga} p={p} k={k} esYo={esYo} dc={dc} /></div>
+            <div id="pf-ultimo" className="o4"><LoUltimo liga={liga} p={p} e={P.e} /></div>
+            <div id="pf-publicaciones" className="o5"><SusPublicaciones liga={liga} p={p} esYo={esYo} /><SusPromos liga={liga} p={p} esYo={esYo} /></div>
+            <div id="pf-duelos" className="o7"><Duelos liga={liga} p={p} e={P.e} /></div>
+            {fzAncha ? <div className="o6"><Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} /></div> : null}
+            <div id="pf-insignias" className="o9"><Logros liga={liga} p={p} esYo={esYo} /></div>
+            <div id="pf-eventos" className="o12"><Eventos liga={liga} p={p} e={P.e} n={n} /></div>
           </div>
-          <div id="pf-duelos"><Duelos liga={liga} p={p} e={P.e} /></div>
-          <div id="pf-insignias"><Insignias liga={liga} p={p} /></div>
-          <Precio liga={liga} f={f} esYo={esYo} dc={dc} />
-          {/* sus eventos, al final y con buscador (Dlx, 07/10/2026: «poner eventos en lo último») */}
-          <div id="pf-eventos"><Eventos liga={liga} p={p} e={P.e} /></div>
-        </>
+          <aside className="pf8-lat">
+            <div className="o2"><ProximaMeta liga={liga} f={f} esYo={esYo} /></div>
+            <div className="o3"><DeUnVistazo f={f} p={p} /></div>
+            {fzAncha ? null : <div className="o6"><Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} /></div>}
+            <div id="pf-datos" className="o8"><SusDatos liga={liga} f={f} k={k} p={p} e={P.e} esYo={esYo} /></div>
+            <div className="o10"><Caceria p={p} /></div>
+            <div className="o11"><Precio liga={liga} f={f} esYo={esYo} dc={dc} /></div>
+          </aside>
+        </div>
       )}
-    </>
+      {panel}
+    </div>
   );
 }

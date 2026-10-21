@@ -2560,6 +2560,12 @@ console.log('\nLAS ENCUESTAS\n');
   ok('un nombre de una liga vale; el ganador de una liga, no (eso lo dicen sus veredictos)',
      !rep({ llave: 'liga:fmh-carimex', que: 'nombre', texto: 'FORCE soy yo', batalla: 'FORCE' }).error &&
      rep({ llave: 'liga:fmh-carimex', que: 'ganador' }).error === 'que' && rep({ llave: 'liga:../x', que: 'nombre' }).error === 'llave');
+  // 🚩 reportar usuario (21/10/2026): `perfil:<clave>` sólo con «algo de su perfil», y siempre diciendo qué
+  ok('un perfil se reporta con «algo de su perfil» y diciendo qué; sin texto, con otra razón o una clave rara, no',
+     !rep({ llave: 'perfil:abyssus', que: 'perfil', texto: 'su frase insulta' }).error &&
+     rep({ llave: 'perfil:abyssus', que: 'perfil', texto: ' ' }).error === 'texto' &&
+     rep({ llave: 'perfil:abyssus', que: 'ganador' }).error === 'que' && rep({ llave: '370', que: 'perfil', texto: 'xxx' }).error === 'que' &&
+     rep({ llave: 'perfil:../x', que: 'perfil', texto: 'xxx' }).error === 'llave');
   ok('y una cuenta de hace 5 días, no, como el voto',
      rep({ llave: '370', que: 'ganador' }, NUEVO).error === 'nueva');
 

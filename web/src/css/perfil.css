@@ -124,6 +124,298 @@
 .pf-meta b{font:900 22px/1.15 Archivo,sans-serif;font-stretch:108%;overflow-wrap:anywhere}
 .pf-meta small{font:600 16px/1.25 "Barlow Condensed",sans-serif;color:#3A3A3E}
 
-/* 📅 los días que jugó, arriba de la lista de eventos (20/10/2026) */
-.pf-dias{display:grid;gap:8px;margin:0 0 14px}
-.pf-dias-t{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:0.06em;color:var(--gris)}
+/* ══ 🎨 EL REMAKE DEL PERFIL (21/10/2026, la maqueta B, versión 11): portada y barra (B3) en la compu, la B en el
+   celular. Radios de 4 px como máximo (los círculos aparte), y ningún color de rango ni de servidor escrito acá: el del
+   rango llega en línea (`--rc`) y el del servidor es el de la escena (`--mo-c`) ══ */
+.pf8{padding:0}
+.pf8-cover{position:relative;height:150px;background:color-mix(in srgb,var(--mo-c) 55%,#030304)}
+.pf8.con-fondo .pf8-cover{background:linear-gradient(0deg,rgba(3,3,4,.6),rgba(3,3,4,0) 55%),var(--pf-fondo) center 35%/cover no-repeat}
+.pf8-cab{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"carta acc" "tx tx" "bar bar" "qe qe";gap:12px 14px;
+  padding:0 16px 20px;margin-top:-64px}
+.pf8-carta{grid-area:carta;width:96px}
+.pf8-carta img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 14px rgba(0,0,0,.6))}
+.pf8-acc{grid-area:acc;justify-self:end;align-self:end;display:grid;gap:8px;justify-items:end}
+.pf8-seguir{min-width:124px;text-align:center}
+.pf8-tx{grid-area:tx;display:grid;gap:9px;min-width:0}
+.pf8-tx .tag{justify-self:start}
+.pf8-nom{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;min-width:0}
+.pf8-nom h1{margin:0;font-size:clamp(26px,8.6vw,34px);line-height:.95;overflow-wrap:anywhere}
+.pf8-pills{display:flex;flex-wrap:wrap;gap:6px;min-width:0;max-width:100%}
+/* 👥 la crew, como la etiqueta de clan: la sigla siempre, el nombre se corta (Dlx, a la v8) */
+.pf8-crew{display:inline-flex;align-items:center;gap:6px;height:30px;max-width:100%;min-width:0;padding:0 9px 0 4px;border-radius:4px;background:#1A1A1F;
+  box-shadow:inset 0 0 0 1px #2E2E34;color:var(--esc-tinta);font:700 12.5px/1 Archivo,sans-serif;text-decoration:none}
+.pf8-crew > b{display:grid;place-items:center;flex:none;height:22px;padding:0 5px;border-radius:3px;background:#F6F6F6;color:#030304;font:900 11px/1 Archivo,sans-serif}
+.pf8-crew > span{min-width:0;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (hover: hover) and (pointer: fine){a.pf8-crew:hover{box-shadow:inset 0 0 0 1px var(--esc-tinta)}}
+.pf8-segs{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 0;font:700 12.5px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--esc-gris)}
+.pf8-segs > :not(:first-child):not(.pf8-frase)::before{content:"·";margin:0 7px}
+.pf8-segs a{display:inline-flex;align-items:center;gap:5px;color:inherit;text-decoration:none}
+.pf8-segs .pf-flag{width:16px;height:11px}
+.pf8-segs img:not(.pf-flag){width:16px;height:16px;border-radius:50%;object-fit:cover}
+/* 💬 su frase, entre comillas y en blanco (Dlx, a la v11: «en corchetes no, en "esto", y que no sea amarillo») */
+.pf8-frase{flex-basis:100%;margin-top:4px;font:600 italic 15px/1.35 Archivo,sans-serif;letter-spacing:0;text-transform:none;color:#F6F6F6;quotes:"“" "”"}
+/* 🔢 la línea de números, la B: lo que es (OVR y rango) y lo que hizo, cada número centrado en su columna */
+.pf8-bar{grid-area:bar;display:grid;gap:12px}
+.pf8-bar > .pf8-soc{order:-1}
+.pf8-num{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:stretch}
+.pf8-yo{display:grid;grid-template-columns:auto auto;align-items:center;gap:2px 8px;padding:8px 12px 8px 10px;border-radius:4px;background:#121216;box-shadow:inset 0 0 0 1.5px var(--rc)}
+.pf8-yo > b{grid-row:1 / 3;font:900 34px/.9 Archivo,sans-serif;color:#F6F6F6;font-variant-numeric:tabular-nums}
+.pf8-yo .rg{justify-self:start}
+.pf8-yo small,.pf8-tres small,.pf8-soc small{font:700 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:var(--esc-gris);text-transform:uppercase}
+.pf8-tres{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center}
+.pf8-tres > div{display:grid;justify-items:center;gap:6px;padding:0 6px;text-align:center;box-shadow:-1px 0 0 #26262C}
+.pf8-tres b{font:900 20px/1 Archivo,sans-serif;color:var(--esc-tinta);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pf8-tres b.largo{font-size:16px}
+/* el «?» de cada número (QUE_ES_NUM), chico y en el mismo renglón: «EVENTOS ?» se partía en dos a 375 px */
+.pf8-num small{white-space:nowrap}
+.pf8-num .qe-b{width:15px;height:15px;margin-left:3px;font-size:10px}
+/* 👥 seguidores · siguiendo, y las redes: en el celular una línea; en la compu, dos números más de la barra */
+.pf8-soc{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.pf8-soc > div{display:inline-flex;align-items:baseline;gap:5px;font:600 14px/1 Archivo,sans-serif;color:var(--esc-gris)}
+.pf8-soc > div + div::before{content:"·";margin-right:1px}
+.pf8-soc b{font:900 14px/1 Archivo,sans-serif;color:var(--esc-tinta)}
+.pf8-soc small{font:600 14px/1 Archivo,sans-serif;letter-spacing:0;text-transform:none}
+.pf8-redes{display:flex;gap:2px;margin-left:auto}
+.pf8-redes a{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;color:var(--esc-tinta)}
+.pf8-redes b{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
+@media (hover: hover) and (pointer: fine){.pf8-redes a:hover{background:#1E1E24}}
+.pf8-redes.pc{display:none}
+/* 🚪 las dos puertas: Tarjetas y Vitrina */
+.pf8-puertas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pf8-pu{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:9px;min-height:62px;padding:8px 10px;border:1.5px solid #3A3A40;
+  border-radius:4px;background:#121216;color:var(--esc-tinta);text-align:left;cursor:pointer}
+.pf8-pu:disabled{cursor:default;opacity:.6}
+@media (hover: hover) and (pointer: fine){.pf8-pu:not(:disabled):hover{border-color:var(--esc-tinta)}}
+.pf8-pu-tj{position:relative;display:block;width:44px;height:44px;flex:none}
+.pf8-pu-tj img{position:absolute;top:2px;width:26px;height:auto;border-radius:2px;box-shadow:0 2px 6px rgba(0,0,0,.5)}
+.pf8-pu-tj img:nth-child(1){left:0;transform:rotate(-10deg)}
+.pf8-pu-tj img:nth-child(2){left:9px;top:0;z-index:2}
+.pf8-pu-tj img:nth-child(3){left:18px;transform:rotate(10deg)}
+.pf8-pu-vt svg{display:block;width:56px;height:44px}
+.pf8-pu-tx{display:grid;gap:3px;min-width:0}
+.pf8-pu-tx b{font:900 14px/1 Archivo,sans-serif;text-transform:uppercase}
+.pf8-pu-tx small{font:700 10.5px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--esc-gris)}
+.pf8-pu em{font:900 18px/1 Archivo,sans-serif;font-style:normal;color:var(--esc-gris)}
+.pf8-cab > .que-es,.pf8-cab > p:last-child{grid-area:qe}
+/* ⋯ el menú de la esquina */
+.pf8-mas{position:absolute;top:10px;right:10px;z-index:4}
+.pf8-mas-b{display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;background:rgba(3,3,4,.62);color:#F6F6F6;font:900 18px/1 Archivo,sans-serif;letter-spacing:1px;cursor:pointer}
+.pf8-menu{position:absolute;top:44px;right:0;display:grid;min-width:240px;padding:6px;border-radius:4px;background:#F6F6F6;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.pf8-menu > a,.pf8-menu > button,.pf8-menu .compartir{display:flex;align-items:center;gap:8px;width:100%;min-height:42px;padding:10px 12px;border:0;border-radius:3px;
+  background:none;color:#030304;font:700 14px/1.2 Archivo,sans-serif;text-align:left;text-decoration:none;cursor:pointer}
+.pf8-menu .compartir span{font:inherit}
+@media (hover: hover) and (pointer: fine){.pf8-menu > a:hover,.pf8-menu > button:hover,.pf8-menu .compartir:hover{background:#E9E9E5}}
+.pf8-menu .rojo{display:grid;gap:3px;margin-top:4px;border-top:1px solid #DDDDD8;border-radius:0;color:#C0124F}
+.pf8-menu .rojo small{font:600 11.5px/1.2 Archivo,sans-serif;color:#8A8A90}
+.pf8-menu-t{padding:8px 12px 6px;font:700 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;color:#6E6E74}
+.pf8-menu-crew{padding:4px 12px}
+.pf8-menu-crew:empty{display:none}
+/* 🔒 los avisos (no estás verificado, reportar): sobre un velo, como el panel de los emblemas */
+.emb-velo{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:16px;background:rgba(3,3,4,.72)}
+.pf8-aviso{width:min(400px,100%);display:grid;gap:10px;justify-items:center;padding:24px 20px 20px;border-radius:4px;background:#F6F6F6;color:#030304;text-align:center}
+.pf8-aviso h3{margin:0;font:900 20px/1.15 Archivo,sans-serif}
+.pf8-aviso p{margin:0;max-width:34ch;font-size:14.5px;line-height:1.45;color:#3A3A3E}
+.pf8-aviso-ic{display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:#030304;color:#F6F6F6}
+.pf8-aviso-b{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:6px}
+.pf8-rep{justify-items:stretch;text-align:left}
+.pf8-rep textarea{width:100%;min-height:84px;padding:10px;border:2px solid #030304;border-radius:4px;font:500 15px/1.4 Archivo,sans-serif;resize:vertical;box-sizing:border-box}
+.pf8-mal{color:#C0124F !important}
+/* 🧭 el índice */
+.pf8-ind{display:flex;gap:8px;overflow-x:auto;padding:12px 16px;border-bottom:2px solid var(--linea);background:var(--fondo);scrollbar-width:none}
+.pf8-ind button{flex:none;min-height:38px;padding:0 14px;border:1.5px solid var(--suave);border-radius:4px;background:var(--fondo);color:var(--tinta);
+  font:800 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.pf8-ind button.on{background:var(--tinta);border-color:var(--tinta);color:var(--fondo)}
+/* ── el cuerpo: en el teléfono una columna con el orden de la maqueta; en la compu, dos que terminan juntas ── */
+.pf8-cuerpo{display:flex;flex-direction:column}
+.pf8-main,.pf8-lat{display:contents}
+.pf8-cuerpo .o1{order:1}.pf8-cuerpo .o2{order:2}.pf8-cuerpo .o3{order:3}.pf8-cuerpo .o4{order:4}.pf8-cuerpo .o5{order:5}.pf8-cuerpo .o6{order:6}
+.pf8-cuerpo .o7{order:7}.pf8-cuerpo .o8{order:8}.pf8-cuerpo .o9{order:9}.pf8-cuerpo .o10{order:10}.pf8-cuerpo .o11{order:11}.pf8-cuerpo .o12{order:12}
+/* 🎯 la meta, en negro y con su barra */
+.pf8-meta .pf-meta{padding:0;border:0;background:none;box-shadow:none;color:var(--tinta)}
+.pf8-meta .pf-meta-et{color:#FF5FA2}
+.pf8-meta .pf-meta small{color:var(--gris)}
+.pf8-meta-bar{position:relative;display:block;height:8px;margin:6px 0 18px;background:#2A2A2E}
+.pf8-meta-bar u{display:block;height:100%;background:#E41373;text-decoration:none}
+.pf8-meta-bar i{position:absolute;top:13px;font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;font-style:normal;color:var(--gris)}
+.pf8-meta-bar i:first-of-type{left:0}
+.pf8-meta-bar i:last-of-type{right:0}
+/* 👀 de un vistazo */
+.pf8-bento{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pf8-bento > div{display:grid;gap:7px;align-content:start;padding:12px;border:2px solid var(--linea)}
+.pf8-bento > div.negro{border-color:#030304;background:#030304;color:#F6F6F6}
+.pf8-bento small{font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;color:var(--gris)}
+.pf8-bento > div > b{font:900 26px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.pf8-bento > div > b span{font:700 14px/1 Archivo,sans-serif;color:var(--gris)}
+.pf8-bento > div > b.pf-med{font-size:18px}
+.pf8-bento em{font:500 12.5px/1.35 Archivo,sans-serif;font-style:normal;color:var(--gris)}
+.pf8-bento .negro small,.pf8-bento .negro em,.pf8-bento .negro b span{color:#A5A5A0}
+.pf8-wl{display:flex;flex-wrap:wrap;gap:3px}
+.pf8-wl i{width:10px;height:10px;border-radius:2px;background:#E41373}
+.pf8-wl i.g{background:#29B298}
+.pf8-wl.grande{margin:0 0 10px}
+.pf8-wl.grande i{width:14px;height:14px}
+/* ⚡ lo último */
+.pf8-ult-l{list-style:none;margin:0;padding:0;display:grid}
+.pf8-ult-l li{display:grid;grid-template-columns:52px 24px minmax(0,1fr) auto;grid-template-areas:"t i x p" "t i x l";gap:4px 10px;align-items:center;padding:12px 0;border-top:1px solid #2A2A2E}
+.pf8-ult-l time{grid-area:t;font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--gris)}
+.pf8-ult-ic{grid-area:i;display:grid;place-items:center}
+.pf8-ult-tx{grid-area:x;display:grid;gap:4px;min-width:0;font:600 14.5px/1.3 Archivo,sans-serif}
+.pf8-ult-tx b{font-weight:900}
+.pf8-ult-tx small{font:700 11.5px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.pf8-ult-l strong{grid-area:p;justify-self:end;font:900 17px/1 Archivo,sans-serif;color:#29B298;font-variant-numeric:tabular-nums}
+.pf8-ult-ll{grid-area:l;justify-self:end;padding:0;border:0;background:none;color:var(--tinta);font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;
+  text-transform:uppercase;text-decoration:underline;text-underline-offset:3px;cursor:pointer;white-space:nowrap}
+/* 🎛️ los filtros (videos y eventos) */
+.pf8-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.pf8-chips button{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border:1.5px solid var(--suave);border-radius:4px;background:var(--fondo);
+  color:var(--tinta);font:800 13px/1 Archivo,sans-serif;cursor:pointer}
+.pf8-chips button small{font:700 11px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+.pf8-chips button img{width:16px;height:16px;border-radius:3px;object-fit:contain}
+.pf8-chips button.on{border-color:var(--tinta);background:var(--tinta);color:var(--fondo)}
+.pf8-chips button.on small{color:inherit;opacity:.7}
+/* 📈 sus eventos: la tira, la leyenda, los filtros y la lista por mes */
+.pf8-tira{display:block;width:100%;height:auto;margin:2px 0 6px;overflow:visible}
+.pf8-tira text{font:700 10.5px "Barlow Condensed",sans-serif;letter-spacing:.12em;fill:var(--gris)}
+.pf8-tira-fut{fill:var(--caja)}
+.pf8-tira-l{stroke:var(--suave);stroke-width:1}
+.pf8-tira-base{stroke:var(--tinta);stroke-width:1.5}
+.pf8-tira-hoy{stroke:#C0124F;stroke-width:1.5;stroke-dasharray:3 3}
+.pf8-tira .pf8-tira-hoyt{fill:#C0124F;font-weight:800}
+.pf8-ley{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 0 12px;font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.pf8-ley span{display:inline-flex;align-items:center;gap:6px}
+.pf8-ley i{width:10px;height:10px;border-radius:2px}
+.pf8-ev-fil{display:grid;gap:4px;margin-bottom:6px}
+.pf8-ev-fil .pf8-chips{margin:0}
+.pf8-ev-fil .rk-buscar{max-width:360px}
+.pf8-evl{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.pf8-mes{display:block;margin:8px 0;font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.16em;color:var(--gris)}
+.pf8-evb{width:100%;display:grid;grid-template-columns:44px minmax(0,1fr) auto;grid-template-areas:"m t s" "m b b";gap:6px 12px;align-items:center;
+  padding:10px 12px 10px 10px;border:0;border-radius:4px;background:var(--caja);color:var(--tinta);text-align:left;cursor:pointer}
+@media (hover: hover) and (pointer: fine){.pf8-evb:hover{box-shadow:inset 0 0 0 2px var(--linea)}}
+.pf8-med{grid-area:m;display:grid;place-items:center;width:44px;height:44px;border-radius:4px;background:var(--c);color:#030304;font:900 12px/1 Archivo,sans-serif}
+.pf8-med.gris{background:var(--suave);color:var(--gris)}
+.pf8-evt{grid-area:t;display:grid;gap:4px;min-width:0}
+.pf8-evt b{font:800 14px/1.15 Archivo,sans-serif;text-transform:uppercase;overflow-wrap:anywhere}
+.pf8-evt small{display:flex;flex-wrap:wrap;align-items:center;gap:4px;font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.pf8-evt small img{width:14px;height:14px;border-radius:3px}
+.pf8-evp{grid-area:b;display:grid;gap:5px}
+.pf8-evp u{display:block;height:6px;border-radius:2px;background:var(--suave);overflow:hidden;text-decoration:none}
+.pf8-evp i{display:block;height:100%;background:#2BB39A}
+.pf8-evp small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.pf8-evb strong{grid-area:s;justify-self:end;font:900 17px/1 Archivo,sans-serif;color:var(--tj-gana);font-variant-numeric:tabular-nums}
+/* 🗂️ sus datos, todo junto */
+.pf8-h3{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:18px 0 10px;font:800 15px/1.2 Archivo,sans-serif;text-transform:uppercase}
+.pf8-h3 a{display:inline-flex;align-items:center;gap:4px;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:inherit}
+.pf8-sd > .pf8-h3:first-of-type,.pf8-sd > .sec-t + .pf8-h3{margin-top:0}
+/* las filas de sus datos, en lista y no en cajas (la maqueta: una columna, renglones con su ícono) */
+.pf8-datos{grid-template-columns:minmax(0,1fr);gap:0}
+.pf8-datos li{grid-template-columns:30px minmax(0,1fr);row-gap:3px;padding:10px 0;border:0;border-bottom:1px solid var(--suave)}
+.pf8-datos li:first-child{border-top:1px solid var(--suave)}
+.pf8-datos small{font-size:12.5px}
+.pf8-datos b,.pf8-datos .pf-dt-q{font-size:16px}
+.pf8-datos em{font-size:13px}
+.pf8-datos .pf-dt-ic{font-size:20px}
+/* 🏅 logros e inventario */
+.pf8-pest{display:flex;gap:6px;margin:0 0 14px}
+.pf8-pest button{display:inline-flex;align-items:baseline;gap:7px;padding:9px 14px;border:0;border-radius:4px;background:none;box-shadow:inset 0 0 0 1.5px #2E2E34;
+  color:#9A9AA0;font:900 15px/1 Archivo,sans-serif;text-transform:uppercase;cursor:pointer}
+.pf8-pest button small{font:700 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em}
+.pf8-pest button.on{background:#F6F6F6;color:#030304;box-shadow:none}
+.pf8-inv{display:grid;justify-items:center;gap:6px;padding:28px 16px 18px;text-align:center}
+.pf8-inv span{font-size:34px}
+.pf8-inv b{font:900 18px/1 Archivo,sans-serif;text-transform:uppercase}
+.pf8-inv p{margin:0;max-width:340px;font-size:13.5px;color:var(--gris)}
+
+/* 🔰 los emblemas (emblemas.jsx) */
+.emb-arte{display:block;flex:none}
+.emb-arte text{font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif}
+.emb-arte.bloq{opacity:.38;filter:saturate(.7)}
+.emb-pild{display:inline-flex;align-items:center;gap:4px;height:30px;padding:0 6px;border:0;border-radius:4px;background:#1A1A1F;box-shadow:inset 0 0 0 1px #2E2E34;cursor:pointer}
+.emb-pild > span{display:grid}
+@media (hover: hover) and (pointer: fine){.emb-pild:hover{box-shadow:inset 0 0 0 1px var(--esc-tinta)}}
+.emb-mas{display:grid;place-items:center;height:22px;min-width:26px;padding:0 5px;border-radius:3px;background:#2A2A30;color:#F6F6F6;font:800 11.5px/1 Archivo,sans-serif;font-style:normal}
+.emb-panel{position:relative;display:grid;width:min(920px,100%);max-height:calc(100dvh - 32px);overflow:auto;border-radius:4px;background:#0E0E11;color:#F6F6F6}
+.emb-x{position:absolute;top:12px;right:12px;z-index:2;display:grid;place-items:center;width:36px;height:36px;border:0;border-radius:50%;background:#2A2A30;color:#F6F6F6;cursor:pointer}
+.emb-izq{display:grid;gap:10px;align-content:start;padding:22px;background:#141418}
+.emb-izq h3{margin:0;padding-right:40px;font:900 18px/1.15 Archivo,sans-serif}
+.emb-izq p{margin:0;font-size:13px;line-height:1.4;color:#A5A5A0}
+.emb-izq h4{margin:6px 0 0;font:800 13px/1 Archivo,sans-serif;color:#A5A5A0}
+.emb-grid{display:flex;flex-wrap:wrap;gap:8px}
+.emb-c{display:grid;place-items:center;width:56px;height:56px;border:0;border-radius:4px;background:#1A1A1F;box-shadow:inset 0 0 0 1px #2E2E34;cursor:pointer}
+.emb-c.on{background:#1C2034;box-shadow:inset 0 0 0 2px #6B8FE8}
+.emb-faltan{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.emb-faltan li{display:flex;align-items:center;gap:10px}
+.emb-faltan span{display:grid;gap:2px}
+.emb-faltan b{font:700 13px/1.15 Archivo,sans-serif}
+.emb-faltan small{font-size:12px;color:#A5A5A0}
+.emb-det{display:grid;justify-items:center;align-content:start;gap:8px;padding:28px 22px;text-align:center}
+.emb-det h4{margin:4px 0 0;font:900 24px/1.05 Archivo,sans-serif;font-style:italic;text-transform:uppercase}
+.emb-sub{margin:0;font-size:13px;color:#A5A5A0}
+.emb-uno{margin:6px 0 0;font-size:13px;color:#A5A5A0}
+.emb-prog{width:100%;display:grid;gap:12px;padding:14px;border-radius:4px;background:#17171C;text-align:left}
+.emb-pt{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 8px}
+.emb-pt small{font:700 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:#A5A5A0}
+.emb-pt b{font:800 13px/1.2 Archivo,sans-serif}
+.emb-bar{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px}
+.emb-bar > span{display:block;height:8px;border-radius:2px;background:#2A2A2E;overflow:hidden}
+.emb-bar u{display:block;height:100%;background:#6B8FE8;text-decoration:none}
+.emb-esc{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px 6px}
+.emb-esc li{display:grid;justify-items:center;gap:3px;text-align:center}
+.emb-esc b{font:800 12px/1.1 Archivo,sans-serif}
+.emb-esc small{font:600 10.5px/1.2 Archivo,sans-serif;color:#A5A5A0}
+.emb-esc li.falta b{color:#6E6E74}
+@media (max-width: 899.98px){
+  .emb-velo{place-items:end center;padding:0}
+  .emb-panel{max-height:88dvh;border-radius:4px 4px 0 0}
+  .pf8-aviso{margin:16px}
+}
+
+/* 🖥️ LA COMPU: portada y barra (B3) */
+@media (min-width: 900px){
+  .app .pf8-cover{height:250px}
+  .app .pf8-mas{top:16px;right:var(--gut)}
+  .app .pf8-mas-b{width:42px;height:42px}
+  .app .pf8-cab{grid-template-columns:160px minmax(0,1fr) 220px;grid-template-areas:"carta tx acc" "bar bar bar" "qe qe qe";gap:20px 28px;padding:0 var(--gut) 26px;margin-top:-118px}
+  .app .pf8-carta{width:160px;align-self:end}
+  .app .pf8-tx{align-self:end;padding-top:126px}
+  .app .pf8-nom h1{font-size:50px}
+  .app .pf8-crew > span{max-width:240px}
+  .app .pf8-frase{flex-basis:auto;margin:0 0 0 12px}
+  .app .pf8-acc{align-self:end;justify-self:stretch;justify-items:stretch;padding-bottom:2px}
+  .app .pf8-seguir{width:100%;min-height:48px}
+  .app .pf8-redes.pc{display:flex;justify-content:center;margin:0}
+  .app .pf8-redes.tel{display:none}
+  .app .pf8-bar{grid-template-columns:minmax(0,1.25fr) auto minmax(0,1.1fr);align-items:center;gap:0;border-radius:4px;background:#101014;box-shadow:inset 0 0 0 1px #24242A}
+  .app .pf8-bar > *{padding:16px 22px}
+  .app .pf8-bar > * + *{box-shadow:-1px 0 0 #24242A}
+  .app .pf8-bar > .pf8-soc{order:0;display:grid;grid-template-columns:auto auto;gap:0}
+  .app .pf8-soc > div{display:grid;justify-items:center;gap:6px;padding:0 20px;text-align:center}
+  .app .pf8-soc > div + div{box-shadow:-1px 0 0 #24242A}
+  .app .pf8-soc > div + div::before{content:none}
+  .app .pf8-soc b{font-size:24px}
+  .app .pf8-soc small{font:700 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase}
+  .app .pf8-yo > b{font-size:42px}
+  .app .pf8-tres{margin-left:18px}
+  .app .pf8-tres > div{padding:0 10px}
+  .app .pf8-tres b{font-size:24px}
+  .app .pf8-ind{padding:12px var(--gut)}
+  /* las dos columnas */
+  .app .pf8-cuerpo{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:16px;align-items:start;padding:16px var(--gut) 40px}
+  .app .pf8-main,.app .pf8-lat{display:grid;gap:16px;align-content:start;min-width:0}
+  .app .pf8-main > div:empty,.app .pf8-lat > div:empty{display:none}
+  .app .pf8-cuerpo .sec{margin:0;padding:18px 20px 20px;border:2px solid var(--linea)}
+  .app .pf8-cuerpo .sec.negra{border-color:var(--fondo)}
+  .app .pf8-cuerpo .sec + .sec{margin-top:16px}
+  /* adentro de una tarjeta, el título sin la raya de arriba y más chico: la tarjeta ya separa */
+  .app .pf8-cuerpo .sec-t{border-top:0;padding-top:0;margin-bottom:12px}
+  .app .pf8-cuerpo .sec-t h2{font-size:21px}
+  .app .pf8-lat .pf-tiles,.app .pf8-lat .pf-caza{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .app .pf8-lat .pf-fz{grid-template-columns:minmax(0,1fr);gap:18px}
+  .app .pf8-lat .pf-datos{grid-template-columns:minmax(0,1fr)}
+  .app .pf8-ult-l{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+  .app .pf8-ult-l li{grid-template-columns:auto minmax(0,1fr);grid-template-areas:"i t" "x x" "p l";align-content:start;padding:14px;border:1px solid #2A2A2E}
+  .app .pf8-ult-l strong{justify-self:start}
+  .app .pf8-evb{grid-template-columns:44px minmax(0,1fr) 150px 90px;grid-template-areas:"m t b s"}
+  .app .emb-panel{grid-template-columns:320px minmax(0,1fr);min-height:560px}
+}

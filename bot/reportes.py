@@ -41,7 +41,9 @@ except AttributeError:
 COLA = 'reportes'
 #: qué se puede reportar: las mismas claves que `QUE_REPORTE` del Worker
 QUE = {'ganador': 'El ganador está mal', 'gente': 'Falta o sobra alguien',
-       'nombre': 'Un nombre está mal', 'otro': 'Otra cosa'}
+       'nombre': 'Un nombre está mal', 'otro': 'Otra cosa',
+       # 🚩 reportar usuario (21/10/2026): `perfil:<clave>`, ver `validarReporte()` de avisos.js
+       'perfil': 'Algo de su perfil'}
 
 
 def leer():
@@ -93,7 +95,7 @@ def filas(cola, nombres):
         llave = str(r.get('llave') or '')
         # 🏟️ y las ligas (14/10/2026): «liga fmh-carimex»
         origen = ('evento #%s' % llave if llave.isdigit() else 'liga %s' % llave[5:] if llave.startswith('liga:')
-                  else 'llave en vivo')
+                  else 'perfil de %s' % llave[7:] if llave.startswith('perfil:') else 'llave en vivo')
         texto = str(r.get('texto') or '').strip()
         bat = str(r.get('batalla') or '').strip()
         det = '%s%s%s · #%s' % (QUE.get(r.get('que'), QUE['otro']), (': ' + texto) if texto else '',

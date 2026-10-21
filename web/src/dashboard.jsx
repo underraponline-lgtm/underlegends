@@ -1902,7 +1902,7 @@ const ESTADO_REP = {
   corregir: ['⏳ en la próxima corrida', ''], aplicado: ['✅ corregido', 'ok'], no_pude: ['⚠️ no se pudo', 'ojo'],
   listo: ['listo', ''], prueba: ['era una prueba', ''],
 };
-const QUE_REP = { ganador: 'el ganador', gente: 'falta o sobra alguien', nombre: 'un nombre', otro: 'otra cosa' };
+const QUE_REP = { ganador: 'el ganador', gente: 'falta o sobra alguien', nombre: 'un nombre', otro: 'otra cosa', perfil: 'su perfil' };
 // las partes de un lado: «Presagio, NC, Agus» son tres
 const partes = (x) => String(x || '').split(/\s*[,+&]\s*/).map((s) => s.trim()).filter(Boolean);
 
@@ -2195,7 +2195,9 @@ function Reportes({ rep, liga, alCambiar, corrige = true }) {
         return (
           <li key={r.id}>
             <div className="db-l1"><b>{/^\d+$/.test(r.llave) ? <a href={'#/llave/' + r.llave}>Llave #{r.llave}</a>
-              : String(r.llave).startsWith('liga:') ? <a href={'#/ligas/' + encodeURIComponent(String(r.llave).slice(5))}>Liga {(ligaDe(liga, r.llave) || {}).n || String(r.llave).slice(5)}</a> : 'Llave en vivo'}</b>
+              : String(r.llave).startsWith('liga:') ? <a href={'#/ligas/' + encodeURIComponent(String(r.llave).slice(5))}>Liga {(ligaDe(liga, r.llave) || {}).n || String(r.llave).slice(5)}</a>
+                // 🚩 reportar usuario (21/10/2026): `perfil:<clave>`
+                : String(r.llave).startsWith('perfil:') ? <a href={'#/r/' + encodeURIComponent(String(r.llave).slice(7))}>Perfil de {limpio(((liga.T || {})[String(r.llave).slice(7)] || {}).n || String(r.llave).slice(7))}</a> : 'Llave en vivo'}</b>
               <span className="db-chip">{QUE_REP[r.que] || r.que}</span>{est ? <span className={'db-chip ' + est[1]}>{est[0]}</span> : null}</div>
             {/* 👤 quién lo mandó: el nombre de la Lista que pone el ciclo (`evid.quien`), aunque no tenga perfil en la página
                 (Dlx, 13/10/2026: «¿pero quién lo dice?») */}
