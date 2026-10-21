@@ -67,3 +67,25 @@ búsquedas, vacías). **Temas**: nada por «dark neon magenta» (y ya tenemos pa
   remake prohíbe animar por animar—), «Activity Heatmap Calendar» (resalta **el día de la semana que más pesa**: de ahí
   el «más los sábados» del perfil). Magic UI: sólo progresos circulares (ya tenemos el anillo). shadcn: sin registro
   configurado, nada. Ningún código traído: la grilla es `GrillaDias` en piezas.jsx, CSS propio.
+
+## 21/10/2026 · Eventos (3.91; 17 búsquedas, 0 del cupo)
+
+- Dlx, a la primera maqueta con 3 búsquedas: «¿Por qué buscaste 2 o 3? Puedes buscar más, tómate tu tiempo». Desde acá,
+  15 o más por página, una por pieza.
+- Tomado: «Timeline» y «Calendar With Event List» (la agenda del día como línea de tiempo), «Calendar with Event
+  Indicators» (la semana como guía de TV), «Admit One Ticket» y «Event RSVP Card» (el boleto de lo próximo), «Avatar
+  Stack» (las caras del campeón con +N), «Grouped Notification Toggles» (la campana por servidor), «Activity Heatmap
+  Calendar» (las barras por día de la semana). Dlx eligió la A con un selector Día · Semana · Mes.
+- No aplica: «Drawer» (la hoja que sube, de la opción B) quedó sin usar.
+
+## 21/10/2026 · Perfil (maqueta; 20 búsquedas, 0 del cupo)
+
+- Una por pieza: cabecera de perfil, carta de jugador, pestañas, historial de partidas, logros, radar, cara a cara,
+  bento, meta con barra, índice que sigue, videos, precio, trayectoria, rango, contra el promedio, mapa de días,
+  perfil de juego en el teléfono; Magic UI: Avatar Circles, Number Ticker, Bento Grid.
+- Tomado para la maqueta: «Telegram Profile Header» (la carta a la vista que se achica al bajar), «Card Tabs» (A),
+  «Scroll Spy» (el índice de B), «Bento Grid» (de un vistazo), «Leaderboard Bars» y «Performance Benchmark Card»
+  (contra quién, con su barra), «Radar Chart» de dos series (la Liga punteada), «Achievement badge» con progreso (lo
+  que le falta poco), «Activity Heatmap», «8-bit XP Bar» (la meta), «Thumbnail Carousel» y «Linear Carousel» (las tres
+  cartas en abanico).
+- No aplica: las tarjetas con brillo 3D y glass («ProfileCard» con tilt): el remake prohíbe blur y degradés.
