@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-21T22:54:34+00:00",
+ "cuando": "2026-10-21T23:24:31+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -6928,6 +6928,51 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Soul B 🇨🇱",
+   "quien": "sj.2008_",
+   "discord_id": "645308964141137952",
+   "msg_id": "1562606351400566785",
+   "cuando": "2026-10-21T23:19:45"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Stan🇨🇱",
+   "quien": "algoritmokrt",
+   "discord_id": "1359316127901024357",
+   "msg_id": "1562606329988644867",
+   "cuando": "2026-10-21T23:19:40"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Lvel 🇻🇪",
+   "quien": "soycoma__42587",
+   "discord_id": "1241407042195816459",
+   "msg_id": "1562606264574414940",
+   "cuando": "2026-10-21T23:19:25"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Pichulamc 🇦🇷",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1562606226800513065",
+   "cuando": "2026-10-21T23:19:16"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Teo 🇨🇴(último xfa)",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1562606205891780671",
+   "cuando": "2026-10-21T23:19:11"
+  },
   {
    "servidor": "SR",
    "canal": "[📝]inscripciones",
