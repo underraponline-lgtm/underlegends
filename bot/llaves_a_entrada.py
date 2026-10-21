@@ -87,6 +87,23 @@ MIN_PLANTEL = 4
 IGUAL = 0.6
 
 
+def no_suman(hallazgos, fuera=None):
+    """🤝 `(los que suman, los que no)`: las llaves de un servidor que no suma al ranking (Tier 2 y 3, o `suma` apagado
+    en el Dashboard: `tiers.guilds_sin('suma')`) se leen y se siguen en vivo, pero NO entran a `Entrada` (Dlx,
+    20/10/2026: «tier 2 y 3 no cuentan para el ranking»). Es la única puerta: lo que no pasa por acá no llega al ranking.
+    Sin poder leer los niveles, no entra ninguna de las que ya se sabía que no suman: la lista de antes."""
+    if fuera is None:
+        try:
+            import tiers as _TI
+            fuera = _TI.guilds_sin('suma')
+        except Exception:                                # noqa: BLE001
+            fuera = set()
+    si, no = [], []
+    for h in hallazgos:
+        (no if str(h.get('guild') or '') in fuera else si).append(h)
+    return si, no
+
+
 def _ddmm(iso):
     """`2026-09-21T05:31:00+00:00` -> `21/09`, que es como lo escribe la hoja.
 
@@ -3239,6 +3256,11 @@ def _self_check():
     c = ('`[ OCTAVOS ]`\n⌞Eze⌝ 🆚 ⌞Fer⌝\n⌞Gala⌝ 🆚 ⌞Hugo⌝\n'
          '`[ FINAL ]`\n⌞Eze⌝ 🆚 ⌞Gala⌝')
     mal = 0
+    # 🤝 las llaves de un servidor que no suma no pasan a Entrada (20/10/2026)
+    si, no = no_suman([{'guild': '1'}, {'guild': '2'}, {'guild': 3}], fuera={'2', '3'})
+    ok = [h['guild'] for h in si] == ['1'] and len(no) == 2
+    mal += not ok
+    print('\n  %s las llaves de los servidores que no suman se leen y no entran al ranking' % ('✅' if ok else '🔴'))
     print('\n  la huella del plantel')
     casos = [('una republicada se reconoce', a, b, True),
              ('un evento distinto NO', a, c, False)]
@@ -4134,6 +4156,11 @@ def main():
     # que este paso entre en un ciclo por hora. Ver `escuchar.conocidos()`.
     # Llamar a `barrer` directo anda igual y cuesta 48 s todas las veces.
     hallazgos, info = E.escuchar(s)
+    # 🤝 las de los servidores que no suman: leídas (y seguidas en vivo), afuera del ranking. Ver `no_suman()`
+    hallazgos, sin_sumar = no_suman(hallazgos)
+    if sin_sumar:
+        print('   🤝 %d llave(s) de servidores que no suman (Tier 2 y 3): se leen, no entran al ranking'
+              % len(sin_sumar))
     # las batallas y las llaves de #veredictos de esta lectura, también si vino guardada (`comparar_lector.py`): ver
     # `escuchar.ganador_por_veredicto()` y `llave_de_veredictos_para()`
     E._VER_BATALLAS[0] = info.get('ver_batallas') or E._VER_BATALLAS[0] or []

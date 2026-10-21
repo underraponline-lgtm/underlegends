@@ -2660,15 +2660,12 @@ def _guilds_liga():
             svs = (json.load(f) or {}).get('servidores') or {}
     except (OSError, ValueError):
         return set()
-    # 🤝 menos los que no suman (`bot/tiers.py`, Dlx 18/10/2026: «el Tier 2 no suma»; desde el 20/10 es un beneficio
-    # que se apaga por servidor en el Dashboard, `suma`): sus llaves no se leen
-    try:
-        import tiers as _TI
-        fuera = _TI.guilds_sin('suma', svs)
-    except Exception:                                    # noqa: BLE001
-        fuera = set()
+    # 🤝 TAMBIÉN LOS QUE NO SUMAN (Tier 2 y 3, o `suma` apagado en el Dashboard). Hasta el 20/10/2026 sus llaves no se
+    # leían; Dlx: «asegúrate que el bot pueda leer las llaves de ambos servidores TIER 3». Se LEEN —así sus canales de
+    # llaves entran a la memoria y el vigía las sigue en vivo en la página— y NO SUMAN: `llaves_a_entrada.py` las saca
+    # antes de `Entrada` (`no_suman()`), que es la única puerta al ranking
     return {str(d.get('guild_id')) for d in svs.values()
-            if d.get('confirmado') and d.get('guild_id')} - fuera
+            if d.get('confirmado') and d.get('guild_id')}
 
 
 def _canales(s, solo=None, guilds=None):
@@ -2682,16 +2679,9 @@ def _canales(s, solo=None, guilds=None):
     no habria ahorrado nada.
     """
     if solo:
-        # 🤝 los canales conocidos de un servidor que pasó a Tier 2 o 3 tampoco: la memoria es de cuando sumaba
-        try:
-            import tiers as _TI
-            bajos = _TI.guilds_sin('suma')
-        except Exception:                                # noqa: BLE001
-            bajos = set()
+        # 🤝 los de un servidor que no suma también se leen (20/10/2026): los saca `llaves_a_entrada.no_suman()`
         for cid in sorted(solo):
             d = solo[cid] or {}
-            if str(d.get('guild') or '') in bajos:
-                continue
             yield (cid, d.get('canal') or '?', d.get('servidor') or '?',
                    d.get('guild') or '')
         return
