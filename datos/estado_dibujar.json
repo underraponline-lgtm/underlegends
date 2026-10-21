@@ -1,45 +1,45 @@
 {
  "v": 1,
- "cuando": "2026-10-21T07:10:12Z",
+ "cuando": "2026-10-21T15:57:51Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 590.2,
+ "dur_s": 1543.4,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.1
+   "s": 7.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 4.6
+   "s": 7.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 35.5
+   "s": 25.2
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": false,
-   "s": 473.7
+   "s": 1437.7
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.8
+   "s": 9.3
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 53.9
+   "s": 55.1
   }
  ],
  "fallas": [
@@ -53,11 +53,35 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py MathiasMC"
+   "que": "03_Servidor/generar.py Ezias🥈✒️🧢🐍"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Mathhias"
+   "que": "03_Servidor/generar.py Filozico"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py LAST"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py LAST"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py OKAM"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py OKAM"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Trot"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Walker"
   }
  ],
  "ultimo_evento": {
@@ -68,20 +92,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 243,
-   "read": 23188
+   "write": 255,
+   "read": 24872
   },
   "objeto": {
-   "leidas": 1834292,
-   "escritas": 19107,
-   "pedidos": 5268
+   "leidas": 2205029,
+   "escritas": 21614,
+   "pedidos": 7190
   },
   "worker": {
-   "pedidos": 9727,
+   "pedidos": 9878,
    "errores": 0,
-   "sub": 12037,
-   "p50_ms": 1.48,
-   "p99_ms": 11.4
+   "sub": 12097,
+   "p50_ms": 1.41,
+   "p99_ms": 11.36
   },
   "r2": {
    "objetos": 4699,
