@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-10-21T00:58:23Z",
+ "t": "2026-10-21T01:30:24Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -6342,7 +6342,7 @@
     ],
     [
      "206800559372632064",
-     "dj shakira",
+     "EL CREADOR DEL FLEIVA",
      0,
      1,
      "2026-10-03T02:33:51Z"
@@ -7196,6 +7196,496 @@
      1,
      0,
      "2026-10-17T01:25:58Z"
+    ]
+   ]
+  },
+  "lkr-champions": {
+   "n": "Champions League LKR",
+   "sv": "LKR",
+   "jornada": null,
+   "batallas": [
+    [
+     "1560753405037912216",
+     "2026-10-16T20:36:49Z",
+     null,
+     "Emi",
+     "Kassie",
+     "Emi",
+     "directa",
+     ""
+    ],
+    [
+     "1560755210970861589",
+     "2026-10-16T20:43:59Z",
+     null,
+     "L",
+     "Shadow",
+     "L",
+     "directa",
+     ""
+    ],
+    [
+     "1560758098270883882",
+     "2026-10-16T20:55:28Z",
+     null,
+     "Emi",
+     "L",
+     "",
+     "",
+     ""
+    ],
+    [
+     "1560770017849778208",
+     "2026-10-16T21:42:49Z",
+     null,
+     "Martinez",
+     "Miniboy",
+     "Martinez",
+     "directa",
+     ""
+    ],
+    [
+     "1560771415735533629",
+     "2026-10-16T21:48:23Z",
+     null,
+     "Last",
+     "Teito",
+     "Last",
+     "directa",
+     ""
+    ],
+    [
+     "1561084395513708655",
+     "2026-10-17T18:32:03Z",
+     null,
+     "Mr.Kude",
+     "Martinez",
+     "Martinez",
+     "replica",
+     ""
+    ],
+    [
+     "1561087663929565276",
+     "2026-10-17T18:45:02Z",
+     null,
+     "Mr.Kude",
+     "Marcos",
+     "Mr.Kude",
+     "directa",
+     ""
+    ],
+    [
+     "1561089440871358575",
+     "2026-10-17T18:52:06Z",
+     null,
+     "Martinez",
+     "Kusoh",
+     "Martinez",
+     "replica",
+     ""
+    ],
+    [
+     "1561093267674636339",
+     "2026-10-17T19:07:18Z",
+     null,
+     "Marcos",
+     "Mc_Glock",
+     "Marcos",
+     "directa",
+     ""
+    ],
+    [
+     "1561097124861579346",
+     "2026-10-17T19:22:38Z",
+     null,
+     "Shadow",
+     "Mc_Glock",
+     "Mc_Glock",
+     "replica",
+     ""
+    ],
+    [
+     "1561101143344685097",
+     "2026-10-17T19:38:36Z",
+     null,
+     "Marcos",
+     "Leyenda",
+     "Marcos",
+     "directa",
+     ""
+    ],
+    [
+     "1561178200325758987",
+     "2026-10-18T00:44:48Z",
+     null,
+     "Monet",
+     "Matthias",
+     "Matthias",
+     "directa",
+     ""
+    ],
+    [
+     "1561180663569186867",
+     "2026-10-18T00:54:35Z",
+     null,
+     "KUSOH",
+     "CRK",
+     "KUSOH",
+     "directa",
+     ""
+    ],
+    [
+     "1561181543097962597",
+     "2026-10-18T00:58:05Z",
+     null,
+     "Monet",
+     "Sin límites",
+     "Monet",
+     "directa",
+     ""
+    ],
+    [
+     "1561183122467323935",
+     "2026-10-18T01:04:21Z",
+     null,
+     "Leonar t",
+     "Sin límites",
+     "Leonar t",
+     "directa",
+     ""
+    ],
+    [
+     "1561184713757036695",
+     "2026-10-18T01:10:41Z",
+     null,
+     "SHADOW",
+     "KUSOH",
+     "KUSOH",
+     "directa",
+     ""
+    ],
+    [
+     "1561186230832603247",
+     "2026-10-18T01:16:42Z",
+     null,
+     "Matthias",
+     "Leonar t",
+     "Matthias",
+     "directa",
+     ""
+    ],
+    [
+     "1561186848221569086",
+     "2026-10-18T01:19:10Z",
+     null,
+     "Soul B",
+     "Matthias",
+     "Matthias",
+     "replica",
+     ""
+    ],
+    [
+     "1561210899216470107",
+     "2026-10-18T02:54:44Z",
+     null,
+     "SOL",
+     "Leyenda",
+     "SOL",
+     "directa",
+     ""
+    ],
+    [
+     "1561213177432252457",
+     "2026-10-18T03:03:47Z",
+     null,
+     "Last",
+     "KUDE",
+     "KUDE",
+     "directa",
+     ""
+    ],
+    [
+     "1561922638681604169",
+     "2026-10-20T02:02:56Z",
+     null,
+     "Leonar-T",
+     "Mosqui",
+     "Mosqui",
+     "replica",
+     ""
+    ],
+    [
+     "1561928381317255212",
+     "2026-10-20T02:25:45Z",
+     null,
+     "Soul B",
+     "Dios",
+     "Soul B",
+     "replica",
+     ""
+    ],
+    [
+     "1562263804996493364",
+     "2026-10-21T00:38:36Z",
+     null,
+     "LAST",
+     "MATTHIAS",
+     "MATTHIAS",
+     "directa",
+     ""
+    ]
+   ],
+   "tabla": [
+    [
+     "Matthias",
+     4,
+     4,
+     11
+    ],
+    [
+     "Martinez",
+     3,
+     3,
+     7
+    ],
+    [
+     "Kusoh",
+     3,
+     2,
+     7
+    ],
+    [
+     "Marcos",
+     3,
+     2,
+     6
+    ],
+    [
+     "Mr.Kude",
+     2,
+     1,
+     4
+    ],
+    [
+     "Leonar t",
+     3,
+     1,
+     4
+    ],
+    [
+     "Emi",
+     1,
+     1,
+     3
+    ],
+    [
+     "KUDE",
+     1,
+     1,
+     3
+    ],
+    [
+     "L",
+     1,
+     1,
+     3
+    ],
+    [
+     "SOL",
+     1,
+     1,
+     3
+    ],
+    [
+     "Monet",
+     2,
+     1,
+     3
+    ],
+    [
+     "Soul B",
+     2,
+     1,
+     3
+    ],
+    [
+     "Last",
+     3,
+     1,
+     3
+    ],
+    [
+     "Mosqui",
+     1,
+     1,
+     2
+    ],
+    [
+     "Mc_Glock",
+     2,
+     1,
+     2
+    ],
+    [
+     "Dios",
+     1,
+     0,
+     1
+    ],
+    [
+     "Shadow",
+     3,
+     0,
+     1
+    ],
+    [
+     "CRK",
+     1,
+     0,
+     0
+    ],
+    [
+     "Kassie",
+     1,
+     0,
+     0
+    ],
+    [
+     "Miniboy",
+     1,
+     0,
+     0
+    ],
+    [
+     "Teito",
+     1,
+     0,
+     0
+    ],
+    [
+     "Leyenda",
+     2,
+     0,
+     0
+    ],
+    [
+     "Sin límites",
+     2,
+     0,
+     0
+    ]
+   ],
+   "flyer": {
+    "id": "1561934276310863952",
+    "t": "2026-10-20T02:49:10Z",
+    "tit": "Por temas, Btrece se baja de la liga y sube",
+    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-champions/1561934276310863952.webp",
+    "w": 720,
+    "h": 962
+   },
+   "ptb": {},
+   "flyers": [
+    {
+     "id": "1561934276310863952",
+     "t": "2026-10-20T02:49:10Z",
+     "tit": "Por temas, Btrece se baja de la liga y sube",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-champions/1561934276310863952.webp",
+     "w": 720,
+     "h": 962
+    },
+    {
+     "id": "1561932692545736796",
+     "msg": "1561932692545736796",
+     "t": "2026-10-20T02:42:53Z",
+     "tit": "Por temas, CRK se baja de la liga y sube",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-champions/1561932692545736796.webp",
+     "w": 720,
+     "h": 962
+    },
+    {
+     "id": "1559788457713205290",
+     "msg": "1559788457713205290",
+     "t": "2026-10-14T04:42:27Z",
+     "tit": "Organizador del gran evento y el mas guapo del server",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-champions/1559788457713205290.webp",
+     "w": 720,
+     "h": 962
+    },
+    {
+     "id": "1559788218478633020",
+     "msg": "1559788218478633020",
+     "t": "2026-10-14T04:41:30Z",
+     "tit": "Ultimo participante de la Champios Legue desde Uruguay 🇺🇾",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-champions/1559788218478633020.webp",
+     "w": 720,
+     "h": 962
+    },
+    {
+     "id": "1559787472999817246",
+     "msg": "1559787472999817246",
+     "t": "2026-10-14T04:38:33Z",
+     "tit": "Veintitresavo confirmado desde México 🇲🇽",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-champions/1559787472999817246.webp",
+     "w": 720,
+     "h": 962
+    }
+   ],
+   "staff": [
+    [
+     "1546111597343146044",
+     "#22 | Calíz",
+     46,
+     38,
+     "2026-10-20T02:49:10Z"
+    ],
+    [
+     "1548906948307451906",
+     "#99 |DJ SHADOW🐉",
+     15,
+     28,
+     "2026-10-21T00:43:04Z"
+    ],
+    [
+     "950011515434573824",
+     "👾🫟 ⟅U⟆⟅Z⟆⟅I⟆(• ◡•)🫟👾",
+     0,
+     2,
+     "2026-10-18T01:11:07Z"
+    ]
+   ]
+  },
+  "lkr-fms-plaza": {
+   "n": "FMS Plaza Underground",
+   "sv": "LKR",
+   "jornada": null,
+   "batallas": [
+    [
+     "1562275372987453451",
+     "2026-10-21T01:24:34Z",
+     null,
+     "LAST",
+     "MASINO",
+     "",
+     "",
+     ""
+    ]
+   ],
+   "tabla": [],
+   "ptb": {},
+   "staff": [
+    [
+     "1555067257376346122",
+     "Zaik",
+     20,
+     2,
+     "2026-10-21T01:29:40Z"
+    ],
+    [
+     "1548906948307451906",
+     "#99 |DJ SHADOW🐉",
+     3,
+     0,
+     "2026-10-21T00:26:05Z"
     ]
    ]
   }
