@@ -1,51 +1,87 @@
 {
  "v": 1,
- "cuando": "2026-10-21T01:03:48Z",
+ "cuando": "2026-10-21T01:59:19Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 212.1,
+ "dur_s": 1628.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.3
+   "s": 5.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.2
+   "s": 7.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 17.6
+   "s": 22.1
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 16 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": false,
-   "s": 119.4
+   "s": 1509.5
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.6
+   "s": 9.1
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 54.7
+   "s": 74.0
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Artezzy"
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py ARDEAN"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Ezias🥈✒️🧢🐍"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Filozico"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py LAST"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py LAST"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py SOL"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Panchok"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Trot"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Walker"
   }
  ],
  "ultimo_evento": {
@@ -56,19 +92,19 @@
  },
  "cuotas": {
   "kv": {
-   "write": 24,
-   "read": 3394
+   "write": 53,
+   "read": 5235
   },
   "objeto": {
-   "leidas": 370177,
-   "escritas": 3373,
-   "pedidos": 943
+   "leidas": 629363,
+   "escritas": 6402,
+   "pedidos": 1716
   },
   "worker": {
-   "pedidos": 9675,
+   "pedidos": 9272,
    "errores": 0,
-   "sub": 12136,
-   "p50_ms": 1.48,
+   "sub": 11693,
+   "p50_ms": 1.52,
    "p99_ms": 11.3
   },
   "r2": {
