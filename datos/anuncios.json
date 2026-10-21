@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-21T22:24:36+00:00",
+ "cuando": "2026-10-21T22:54:34+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -429,40 +429,6 @@
     ],
     "dj": [
      "LEWITO"
-    ]
-   },
-   "autor": "Lewito",
-   "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "DESGRACIAS EN TOKYO VOL 30 1 VS 1",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1562537444526526618",
-   "cuando": "2026-10-21T18:45:57",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "LEWITO",
-   "orgs": [],
-   "autor_h": "211322958af20ae2",
-   "cupos_texto": "16 / 24",
-   "inscriptos": 16,
-   "cupo_total": 24,
-   "rango": "PLATA 3",
-   "modalidad": "",
-   "horario": "EN 1 HORA",
-   "fecha": "",
-   "premios": "RESPETO",
-   "staff": {
-    "jurado": [
-     "LEWITO"
-    ],
-    "host": [
-     "LEWITO"
-    ],
-    "dj": [
-     "TOKIO"
     ]
    },
    "autor": "Lewito",

@@ -561,5 +561,34 @@
   "sin_permiso": true,
   "sv": "ACAD"
  },
+ "1562573563859304573": {
+  "autor": "1345454905325781012",
+  "canal": "1470097588635176960",
+  "cuando": "2026-10-21T21:09:28.837000+00:00",
+  "evento": "19 CUP - FUTCARD EDITION VOL.3",
+  "fecha": "21/10",
+  "llave": "1562573563859304573",
+  "pregunta": "1562599688388223019",
+  "preguntada": "2026-10-21 6:53 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "🟢 Batalla 1: Carlos",
+     "Drexx"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "🟢 Batalla 3: Desio",
+     "Dominick🇵🇪"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "DDF"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

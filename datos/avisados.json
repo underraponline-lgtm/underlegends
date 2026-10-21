@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "4ad47cc65e045a6f",
+  "firma": "69996f2dd31e4c1f",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -5081,7 +5081,7 @@
    "Xclusivo": 10
   },
   "fecha": "09/10",
-  "firma": "f18018d821fef1fa",
+  "firma": "86b9227ac3410fd6",
   "msg": "1558334120172462091",
   "nombre": "PROYECTO X VOL.2",
   "num": 440,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "d6bb1da6fb23d9de",
+  "firma": "a61b3a81338d0347",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -10413,7 +10413,7 @@
    "Tenor": 3
   },
   "fecha": "13/10",
-  "firma": "838d38771601e210",
+  "firma": "5161cf949369edc6",
   "msg": "1559459229411057705",
   "nombre": "QCYO RAPEEN",
   "num": 465,
@@ -10839,7 +10839,7 @@
    "Verc": 8
   },
   "fecha": "13/10",
-  "firma": "aaf92f51bdbc1e84",
+  "firma": "643045a81f214474",
   "msg": "1559705366705475605",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL5 __",
   "num": 467,
@@ -11183,7 +11183,7 @@
    "Zignos": 20
   },
   "fecha": "13/10",
-  "firma": "e33ac4c6e470fcde",
+  "firma": "34236f7476115bc1",
   "msg": "1559752028111114252",
   "nombre": "DEM UZBEKISTAN FECHA 2",
   "num": 468,
@@ -17628,6 +17628,7 @@
   "v": 2
  },
  "494": {
+  "al_dia": true,
   "antes": {
    "1200": [
     208,
@@ -17916,7 +17917,7 @@
    "Velatz": 37
   },
   "fecha": "21/10",
-  "firma": "50e0ad8dd3f6c0b5",
+  "firma": "74e9b32b4b2eef02",
   "msg": "1562578019472773131",
   "nombre": "__ DESGRACIAS EN TOKYO VOL 30 1 VS 1 __",
   "num": 494,
@@ -18056,6 +18057,7 @@
   "v": 2
  },
  "495": {
+  "al_dia": true,
   "antes": {
    "Carlosss": [
     36,
@@ -18102,7 +18104,7 @@
    ],
    [
     "MaYeuTyK",
-    "🔴 Semi 2: DESIO",
+    "Desio",
     "MaYeuTyK"
    ],
    [
@@ -18118,7 +18120,7 @@
    "Xclusivo": 17
   },
   "fecha": "21/10",
-  "firma": "5e3197e2d5c9995c",
+  "firma": "79346c693e759504",
   "msg": "1562582559702130758",
   "nombre": "19 CUP - FUTCARD EDITION VOL.3",
   "num": 495,
@@ -18160,7 +18162,7 @@
     2000
    ],
    [
-    "🔴 Semi 2: DESIO",
+    "Desio",
     "Semifinal",
     1750
    ]
