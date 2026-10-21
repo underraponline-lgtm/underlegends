@@ -1,45 +1,45 @@
 {
  "v": 1,
- "cuando": "2026-10-21T19:39:58Z",
+ "cuando": "2026-10-21T20:12:49Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 592.9,
+ "dur_s": 627.7,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 9.7
+   "s": 6.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.7
+   "s": 8.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 57.4
+   "s": 30.4
   },
   {
    "n": "5",
    "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 454.8
+   "s": 519.2
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.3
+   "s": 6.5
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 57.9
+   "s": 55.4
   }
  ],
  "fallas": [
@@ -53,11 +53,11 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Soulb"
+   "que": "03_Servidor/generar.py Trot"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Soulb"
+   "que": "03_Servidor/generar.py Walker"
   }
  ],
  "ultimo_evento": {
@@ -68,18 +68,18 @@
  },
  "cuotas": {
   "kv": {
-   "write": 351,
-   "read": 37376
+   "write": 367,
+   "read": 39014
   },
   "objeto": {
-   "leidas": 2736063,
-   "escritas": 31632,
-   "pedidos": 8788
+   "leidas": 2863763,
+   "escritas": 33121,
+   "pedidos": 9217
   },
   "worker": {
-   "pedidos": 9982,
+   "pedidos": 10055,
    "errores": 0,
-   "sub": 12229,
+   "sub": 12348,
    "p50_ms": 1.37,
    "p99_ms": 11.31
   },
