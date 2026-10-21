@@ -2764,6 +2764,24 @@
      ],
      "organizador": "@Cu?",
      "cuentas": {}
+    },
+    "1562283432698978447": {
+     "sv": "FDS",
+     "nombre": "RAP SIN GROSERIAS (Venezuela version)",
+     "mo": "2026-10-21T01:56:36Z",
+     "staff": {
+      "jurado": [
+       "artezzy"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "artezzy",
+       "id": ""
+      }
+     ],
+     "organizador": "artezzy",
+     "cuentas": {}
     }
    },
    "ver": {

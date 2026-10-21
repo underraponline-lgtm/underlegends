@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-10-21T01:58:12Z",
+ "t": "2026-10-21T02:06:00Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -6347,16 +6347,6 @@
      1,
      "2026-10-03T02:33:51Z"
     ]
-   ],
-   "nov": [
-    {
-     "id": "r:snake-new-chapter:1561557330129190923",
-     "t": "2026-10-19T01:58:10Z",
-     "que": "res",
-     "ids": [
-      "1561557330129190923"
-     ]
-    }
    ]
   },
   "fzl": {
@@ -7664,6 +7654,33 @@
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-champions/1559784662501433414.webp",
      "w": 720,
      "h": 958
+    },
+    {
+     "id": "1559784197063974953",
+     "msg": "1559784197063974953",
+     "t": "2026-10-14T04:25:31Z",
+     "tit": "decimoctavo invitado desde Mexico 🇲🇽",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-champions/1559784197063974953.webp",
+     "w": 720,
+     "h": 958
+    },
+    {
+     "id": "1559783874891091980",
+     "msg": "1559783874891091980",
+     "t": "2026-10-14T04:24:15Z",
+     "tit": "Diecisieteavo invitado desde Argentina 🇦🇷",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-champions/1559783874891091980.webp",
+     "w": 720,
+     "h": 958
+    },
+    {
+     "id": "1559783390859755532",
+     "msg": "1559783390859755532",
+     "t": "2026-10-14T04:22:19Z",
+     "tit": "Dieciseisavo confirmado desde Peru 🇵🇪",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-champions/1559783390859755532.webp",
+     "w": 720,
+     "h": 958
     }
    ],
    "staff": [
@@ -7711,28 +7728,51 @@
      null,
      "LAST",
      "MOSQUITRAP",
-     "",
-     "",
+     "MOSQUITRAP",
+     "directa",
      ""
     ]
    ],
-   "tabla": [],
+   "tabla": [
+    [
+     "MOSQUITRAP",
+     1,
+     1,
+     3
+    ],
+    [
+     "LAST",
+     1,
+     0,
+     0
+    ]
+   ],
    "ptb": {},
    "staff": [
     [
      "1555067257376346122",
      "Zaik",
      20,
-     3,
-     "2026-10-21T01:39:12Z"
+     4,
+     "2026-10-21T01:58:21Z"
     ],
     [
      "1548906948307451906",
      "#99 |DJ SHADOW🐉",
      3,
-     1,
-     "2026-10-21T01:38:30Z"
+     2,
+     "2026-10-21T01:59:09Z"
     ]
+   ],
+   "nov": [
+    {
+     "id": "r:lkr-fms-plaza:1562279053757780071",
+     "t": "2026-10-21T02:06:00Z",
+     "que": "res",
+     "ids": [
+      "1562279053757780071"
+     ]
+    }
    ]
   }
  }
