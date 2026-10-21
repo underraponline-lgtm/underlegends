@@ -16,7 +16,8 @@
   "DDF": "#00ADEC",
   "ACAD": "#EACB0C",
   "FVS": "#C9CDD4",
-  "FDS": "#662EAC"
+  "FDS": "#662EAC",
+  "LKR": "#1A5FFF"
  },
  "de_donde_sale": {
   "TFC": "del logo · rojo vino",
@@ -33,7 +34,8 @@
   "DDF": "azul eléctrico, el del borde del planeta de su logo, ELEGIDO con Dlx (03/10/2026: «Me gusta el B pero… el morado ese es el mismo que FFA»). Su logo es una galaxia violeta y el violeta ya está tomado: medido el marco de la carta (`comun.marco.claro()`), el violeta de DDF quedaba a ΔE 2,6 del de FFA. #00ADEC es el claro de la base #005E80 y queda a 18 o más de los otros diez marcos, y a 20 o más de los colores de marca, del magenta de FFA y de los dos de Under Legends. El violeta queda en la nebulosa de su camiseta (03_Servidor/disenos/los_nueve.py).",
   "ACAD": "del logo: la mediana del amarillo del círculo con las columnas (#EACB0C), del archivo que pasó Dlx el 04/10/2026 («colores amarillo y negro para la tarjeta»). Ver la distancia a los otros en el commit que la sumó.",
   "FVS": "su logo es blanco y negro —el escudo negro con «VS», la corona y el laurel—: la plata del acento de su carta (#D7DBE2), un punto más apagada. Como el amarillo de la ACADEMIA, se lee sobre fondo oscuro. Ninguno de los otros es gris (12/10/2026)",
-  "FDS": "del logo · violeta: la mediana de lo saturado de su ícono de Discord (un escudo negro y gris con un violeta de acento, 9 % de los píxeles). ΔE 23,7 de DRA y 29,6 de FFA, el más cercano; de los demás, 35 o más (20/10/2026)."
+  "FDS": "del logo · violeta: la mediana de lo saturado de su ícono de Discord (un escudo negro y gris con un violeta de acento, 9 % de los píxeles). ΔE 23,7 de DRA y 29,6 de FFA, el más cercano; de los demás, 35 o más (20/10/2026).",
+  "LKR": "del logo · azul eléctrico: el azul de su ícono de Discord (la mediana de lo saturado da #0E53C3, a ΔE 12,5 de DRA, el mismo color a simple vista), más vivo para separarse: queda a 21 de DRA y a 31 o más del resto (21/10/2026)."
  },
  "_pendiente_sr": "Se acordo que Snake Rap va en VERDE, pero no hay ningun logo verde: los dos archivos que hay son dorado (Logo_Ciclo_8, el actual) y naranja (SR.png, el viejo). Tres salidas: (a) que Dlx pase la version verde, (b) usar el verde de marca #33BF5A y teñir la silueta blanca, que ya existe en comun/logos_sv/, (c) aceptar el dorado, que es el color real del logo actual. Hasta que se decida queda el dorado.",
  "marca_original_svColors": {

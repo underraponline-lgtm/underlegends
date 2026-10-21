@@ -122,7 +122,7 @@ DEBUFF, DEBUFF_X = 0.6, 0.5
 #: los demás
 RESTO = ((1, 50), (1.5, 35), (2, 15))
 #: si el bot no dice en qué servidores está, estos
-SERVIDORES = ('DRA', 'FFA', 'SR', 'URBF', 'FFS', 'DDF', 'ACAD', 'FVS', 'FRZ', 'FDS')
+SERVIDORES = ('DRA', 'FFA', 'SR', 'URBF', 'FFS', 'DDF', 'ACAD', 'FVS', 'FRZ', 'FDS', 'LKR')
 #: una semana que empieza a menos de esto después del arranque se junta con la anterior
 JUNTAR = dt.timedelta(days=3)
 #: el evento dorado, encima del multiplicador de su servidor

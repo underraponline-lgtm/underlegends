@@ -208,6 +208,9 @@ export const SERVIDORES = [
   // eventos promocionados, SIN carta de Servidor —por eso `sinCarta`: no va en el menú de /card, donde saldría bloqueada
   // para todo el mundo—. La invitación permanente la creó el bot (`bot/invitaciones.py`)
   { sv: 'FDS', nombre: 'Freestyle Discord Series', guild: '1489848581203689535', invita: 'https://discord.gg/uTpFjBYEDR', sigla: 'FDS', sinCarta: true },
+  // 👑 LKR (21/10/2026): socio Tier 3, dado de alta por Dlx desde el Dashboard y completado a mano como FDS: su página,
+  // sus dos ligas (Champions League y FMS Plaza Underground) y el panel de su dueño, SIN carta de Servidor (`sinCarta`)
+  { sv: 'LKR', nombre: 'LATÍN KING RAP', guild: '1558611504046153750', invita: 'https://discord.gg/sxjg9uaM26', sigla: 'LKR', sinCarta: true },
 ];
 
 const SV_DE = (sv) => SERVIDORES.find(s => s.sv === String(sv || '').toUpperCase());

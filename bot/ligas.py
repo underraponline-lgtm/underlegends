@@ -20,6 +20,8 @@ DIEZ LIGAS EN TRES SERVIDORES, Y CADA SERVIDOR ESCRIBE A SU MANERA (relevado el 
     FD  FDS, Perú y México (20/10/2026)  un mensaje por batalla: el título, los puntos de cada patrón, el `Total:` y el
                                         PTB del cierre (+500 directo, +300 y +100 con réplica); o «## Gana X» a secas.
                                         «por df» (no se presentó) no es una batalla. Tier 3: no cuentan como duelos
+    K   LKR, Champions League y FMS     el título `# A vs B`, los puntos en otro mensaje y «GANADOR X» en otro más;
+        Plaza Underground (21/10/2026)  «GANADOR Replica» o «Replica» abre la réplica. Tier 3: no cuentan como duelos
 
 🔴 SÓLO CUENTA UNA BATALLA CON UN CIERRE QUE NO DEJA DUDAS. Los jurados deforman los nombres, votan con «# X» en la
 misma conversación en que se discute, hay réplicas de réplicas y un cierre puede llegar horas después como respuesta a
@@ -114,6 +116,12 @@ LIGAS = {
                  'tabla': '1540180092058210414', 'an': '1540179843017080845', 'cc': 'PE'},
     'fds-mexico': {'n': 'FDS México', 'sv': 'FDS', 'fam': 'FD', 'vre': r'FDS\s*M[EÉ]XICO', 'ver': '1558967211820065239',
                    'tabla': '1558967354946363513', 'an': '1558967030777126922', 'cc': 'MX'},
+    # 👑 LKR, dado de alta desde el Dashboard el 21/10/2026 (Tier 3): sus dos ligas, con la familia K. `ver` es su canal de
+    # veredictos; `an`, el de anuncios (la Champions) o el de batallas confirmadas (la FMS, que publica ahí)
+    'lkr-champions': {'n': 'Champions League LKR', 'sv': 'LKR', 'fam': 'K', 'vre': r'CHAMPI?ONS?\s*LE(A)?GUE',
+                      'ver': '1560753316768653343', 'tabla': '1559772874183540786', 'an': '1559772764704084128', 'cc': 'MX'},
+    'lkr-fms-plaza': {'n': 'FMS Plaza Underground', 'sv': 'LKR', 'fam': 'K', 'vre': r'PLAZA\s*U[BN]DERGROUND',
+                      'ver': '1561974380341497867', 'tabla': '', 'an': '1561974281041092638', 'cc': 'MX'},
 }
 #: 🗳️ la encuesta «¿quién gana la liga?» cierra a los tantos días sin batallas (y sin una fecha anunciada por delante):
 #: es lo único que dice que una liga terminó. Ver `vota()`
@@ -642,6 +650,49 @@ def _fd(msgs):
     return bats
 
 
+# ── familia K: LKR, la Champions League y la FMS Plaza Underground (21/10/2026) ───────────────────────────────────
+# Cada batalla en varios mensajes de su canal de veredictos: el título `# Shadow 🇨🇴 vs Mc_Glock 🇲🇽`, los puntos de cada
+# jurado («Shadow - X - I - X: 3.5», «Matthias🇻🇪 : 4») y el cierre, «GANADOR GLOCK» o «Ganador Matthias 🇻🇪». «Replica»
+# solo, o «GANADOR Replica», abre la réplica, que se cierra con otro «GANADOR». Y al cierre también le dicen por el apodo
+# («GLOCK» por Mc_Glock, «SOUL» por Soul B): lo resuelve `_cual()`, como en FDS. Sin cierre, la batalla queda pendiente.
+def _lk(msgs):
+    """Las batallas de una liga de LKR: `[{id, t, a, b, ea, eb, j, gana, como}]`."""
+    bats = []
+    for m in msgs:
+        for l in (m.get('content') or '').splitlines():
+            if not l.strip():
+                continue
+            ls = lados(l)
+            if ls:
+                bats.append({'id': m['id'], 't': m['t'], 'a': ls[0], 'b': ls[1], 'ea': ls[2], 'eb': ls[3], 'j': None,
+                             'gana': '', 'como': '', 'rep': False})
+                continue
+            if not bats or bats[-1]['gana']:
+                continue
+            b = bats[-1]
+            pl = EMOJI.sub(' ', _plano(l)).replace('*', '').strip()
+            if marca_replica(l):
+                b['rep'] = True
+                continue
+            g = GANADOR.match(pl)
+            if g:
+                quien = (g.group(2) or '').strip()
+                if g.group(1) or re.fullmatch(r'r[eé]plica', quien, re.I):
+                    b['rep'] = True
+                    if not quien or re.fullmatch(r'r[eé]plica', quien, re.I):
+                        continue
+                lado = _cual(quien, b['a'], b['b'])
+                if lado:
+                    b['gana'], b['como'] = b[lado], 'replica' if b['rep'] else 'directa'
+                continue
+            # el cierre con el nombre solo, como en su canal de eventos: `# SOUL B 🇨🇱`
+            if l.strip().startswith('#'):
+                lado = _quien(pl, b['a'], b['b'])
+                if lado and len(clave(pl)) <= len(clave(b[lado])) + 2:
+                    b['gana'], b['como'] = b[lado], 'replica' if b['rep'] else 'directa'
+    return bats
+
+
 def leer_liga(lid, msgs, ptb=None):
     """Las batallas de una liga, de sus mensajes en orden: `[[id, iso, jornada, a, b, gana, como, extras]]`.
 
@@ -651,7 +702,7 @@ def leer_liga(lid, msgs, ptb=None):
     L = LIGAS[lid]
     f = L['fam']
     bats = _u(msgs) if f == 'U' else _d1(msgs) if f == 'D1' else _d2(msgs) if f == 'D2' else \
-        _f(msgs, L['tit']) if f == 'F' else _fd(msgs) if f == 'FD' else _s(msgs, L['emoji'])
+        _f(msgs, L['tit']) if f == 'F' else _fd(msgs) if f == 'FD' else _lk(msgs) if f == 'K' else _s(msgs, L['emoji'])
     out = []
     for i, b in enumerate(bats):
         if b.get('df') or b.get('nulo'):
@@ -1760,6 +1811,21 @@ def _self_check():
        'los apodos del cierre: el principio del nombre o un parecido claro, nunca con los dos lados parecidos')
     ok(lados('# <:FDSPERU:1> SIN LIMITES <:vs:2> SOL| Jornada 2 <:FDSPERU:1>')[:2] == ('SIN LIMITES', 'SOL'),
        'el «| Jornada 2» del título de FDS no es parte del nombre')
+
+    # 👑 LKR (21/10/2026): el título, los puntos y el «GANADOR» en mensajes separados; la réplica, y los apodos del cierre
+    lk = leer_liga('lkr-champions', ms(
+        '# Shadow 🇨🇴 vs Mc_Glock 🇲🇽', 'Shadow - X - I - X - X - I - I.5: 3.5\nGlock - 0.5 - 0.5 - I.5 - 0.5 - X - 0.5: 3.5\n\nReplica',
+        'Glock - 0.5 - X - I: 1.5\nShadow - X - 0.5 - X: 0.5\n\nGANADOR GLOCK',
+        '# Monet🇲🇽 vs Matthias🇻🇪', 'Matthias🇻🇪 : 4\nMonet🇲🇽 : 2.5\nGanador Matthias 🇻🇪',
+        '# Soul B 🇨🇱 vs Dios 🇲🇽', 'Soul - 1.5 - 1 - 1.5: 4\nDios - 1 - 1.5 - 1: 3.5\n\nGANADOR Replica',
+        'Dios - I - X - 0.5: 1.5\nSoul - 0.5 - I - I: 2.5\n\nGANADOR SOUL',
+        '# SHADOW<a:Colombia:1> VS KUSOH<a:mexico:2>', 'SHADOW<a:COLOMBIA:3>\n.5 - .5 - .5= 1.5\n\nKUSOH<a:MEXICO:4>\n1 - 1 - .5 =2.5\nGANADOR: KUSOH<a:MEXICO:4>',
+        '# Last🇺🇾 VS KUDE🇦🇷', 'Last🇺🇾 = 3\nKude🇦🇷 = 4'))
+    ok([x[3:7] for x in lk] == [['Shadow', 'Mc_Glock', 'Mc_Glock', 'replica'], ['Monet', 'Matthias', 'Matthias', 'directa'],
+                                ['Soul B', 'Dios', 'Soul B', 'replica'], ['SHADOW', 'KUSOH', 'KUSOH', 'directa'],
+                                ['Last', 'KUDE', '', '']],
+       'LKR: «GANADOR X» en otro mensaje, «Replica» y «GANADOR Replica» abren la réplica, el apodo del cierre (GLOCK, '
+       'SOUL) y sin cierre queda pendiente', str([x[3:7] for x in lk]))
 
     # 🖼️ el flyer: un afiche, no un separador
     ok(es_flyer({'ct': 'image/jpeg', 'w': 1080, 'h': 1350}) and not es_flyer({'ct': 'image/jpeg', 'w': 1400, 'h': 200})

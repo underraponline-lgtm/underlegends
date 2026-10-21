@@ -174,5 +174,22 @@
    "Quien queda inactivo y no responde se reemplaza por otro MC."
   ],
   "fuente": "Lo que publicó FDS en los canales de cada liga (anuncios, fechas y resultados), relevado el 20/10/2026"
+ },
+ "lkr-champions": {
+  "fmt": [
+   "La liga de LATÍN KING RAP: 24 competidores, entre confirmados e invitados de México, Argentina, Uruguay, Perú, Colombia, Chile, Venezuela y España. Arrancó el 16 de octubre.",
+   "Se juega por batallas numeradas (Batalla 1, 2, 3…) según su calendario oficial, y cada una la deciden los jurados por puntos; si quedan parejos, hay réplica.",
+   "Los cuatro primeros de la tabla pasan directo; los que siguen van a play off.",
+   "Quien se baja de la liga lo reemplaza otro competidor, que entra en su lugar."
+  ],
+  "fuente": "Lo que publicó LKR en los canales de cada liga (anuncios, tabla, enfrentamientos, formato y roster), relevado el 21/10/2026"
+ },
+ "lkr-fms-plaza": {
+  "fmt": [
+   "La segunda liga de LATÍN KING RAP: 10 competidores de Chile, Colombia, México, Uruguay, Venezuela, Honduras y Argentina, más extra players que se juegan los puntos de un competidor oficial. Arrancó el 21 de octubre.",
+   "Cada batalla tiene tres rondas: temáticas (dos, de 4x4), minutos a sangre de ida y vuelta (60 segundos de ataque y 60 de respuesta) y deluxe (a capela y con beat).",
+   "Si empatan, una réplica de 4x4 a sangre de 120 segundos con beat. El que gana suma 3 puntos."
+  ],
+  "fuente": "Lo que publicó LKR en los canales de cada liga (anuncios, tabla, enfrentamientos, formato y roster), relevado el 21/10/2026"
  }
 }

@@ -600,7 +600,7 @@
    "sigla": "LKR",
    "tier": 3,
    "alta": "dashboard",
-   "nota": "dado de alta desde el Dashboard el 21/10/2026 (bot/tiers.py `altas()`)",
+   "nota": "21/10/2026: dado de alta por Dlx desde el Dashboard (Tier 3, etiqueta EXPERIMENTAL) y completado a mano como FDS (Dlx: «debería agregar bien todo… fíjate cómo se agregó FDS»). En Discord se llama «🔥LKR (Champios Legue)🐉» (87 miembros). Sus ligas: la CHAMPIONS LEAGUE (24 competidores, desde el 16/10) y la FMS PLAZA UNDERGROUND (10, desde el 21/10), en Ligas con la familia K de bot/ligas.py; la RED BULL es un torneo con llaves (nacionales e inter). Tier 3: no suma al ranking ni sus ligas cuentan como duelos. Sin carta de Servidor.",
    "tag": "EXPERIMENTAL",
    "invitacion": "https://discord.gg/sxjg9uaM26",
    "invitacion_liga": {
@@ -608,6 +608,14 @@
     "canal": "bienvenida-y-normas",
     "canal_id": "1558611505040064603",
     "creada": "2026-10-21"
+   },
+   "categorias_fuera": {
+    "_por_que": "Sus dos ligas van a Ligas (bot/ligas.py), no al calendario de eventos: una jornada leída como evento entraba como llave.",
+    "ids": [
+     "1559772707258769478",
+     "1561972817166209135"
+    ],
+    "_ids": "las categorías «⛧・CHAMPIONS LEAGUE» y «🏆 FMS Plaza Ubderground»"
    }
   }
  },
