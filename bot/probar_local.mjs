@@ -358,6 +358,13 @@ console.log('\nDE DÓNDE TE CONVOCARON\n');
   META.svs = [];
 }
 {
+  // 🎙️ en un servidor sin carta de Servidor (FDS, LKR: `sinCarta`), /card abre en la Temporada (Dlx, 20/10/2026)
+  const fds = (await import('./worker.js')).SERVIDORES.find((s) => s.sinCarta);
+  const r = await pedir({ type: 2, guild_id: fds.guild, member: { user: { id: '999111' } }, data: { name: 'card' } });
+  const u = galeria(r.json?.data?.components)?.items?.[0]?.media?.url || '';
+  ok('en un servidor sin carta de Servidor abre en la Temporada', u.includes('/temporada.webp'), u);
+}
+{
   // ⚠️ Y SIN ESAS CARTAS CAE EN LA PROPIA, que es la única que existe hoy en
   // R2. Sin esta pregunta el menú devolvería una URL que no está: Discord
   // muestra un hueco y no avisa.

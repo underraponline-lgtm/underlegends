@@ -3522,8 +3522,13 @@ const COMANDOS = {
                    'dibujadas.\nSe generan solas en la próxima vuelta del ' +
                    'ciclo; prueba de nuevo en un rato.');
     }
-    const abre = ((g.cs || []).indexOf('competitivo') >= 0)
-      ? 'competitivo' : 'servidor';
+    // 🎙️ EN UN SERVIDOR SIN CARTA DE SERVIDOR (`sinCarta`: FDS, LKR), LA TEMPORADA (Dlx, 20/10/2026: «los servidores sin
+    // tarjeta de servidor, su tarjeta default debería ser temporada… aunque éstas no cuenten para ello»). Abrir ahí la
+    // Servidor mostraría la de OTRO servidor, y la Competitiva pide 10 eventos que en un Tier 3 no se juegan
+    const aquiSv = SV_DE(aquiEs(i.guild_id));
+    const temp = sinCs || (g.cs || []).indexOf('temporada') >= 0;
+    const abre = aquiSv && aquiSv.sinCarta && temp ? 'temporada'
+      : ((g.cs || []).indexOf('competitivo') >= 0) ? 'competitivo' : 'servidor';
     // 📸 tu carta sin tu foto: un aviso que ves sólo vos (ver `avisoFoto()`)
     if (comoDije === 'tú' || (porUsuario && String(porUsuario.value) === String(idDe(i)))) {
       luego(ctx, avisoFoto(env, i, quien, g));
