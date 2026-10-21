@@ -2,50 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1560050530431270963": {
-   "id": "1560050530431270963",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1792015430792,
-   "a": "Shadow🇨🇴",
-   "b": "TROT🇪🇸",
-   "ganador": "TROT🇪🇸",
-   "votos": "1–0"
-  },
-  "1560051614860189768": {
-   "id": "1560051614860189768",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1792015689340,
-   "a": "Vargas🇨🇴",
-   "b": "Motera🇪🇸",
-   "ganador": "Motera🇪🇸",
-   "votos": "1–0"
-  },
-  "1560052945092091955": {
-   "id": "1560052945092091955",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1792016006492,
-   "a": "Vacile🇪🇸",
-   "b": "Ortiz🇪🇸",
-   "ganador": "Vacile🇪🇸",
-   "votos": "1–0"
-  },
-  "1560054236111446128": {
-   "id": "1560054236111446128",
-   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
-   "g": "1467763447117778989",
-   "canal": "1540223675146707045",
-   "pub": 1792016314295,
-   "a": "TROT🇪🇸",
-   "b": "Motera🇪🇸",
-   "ganador": "Motera🇪🇸",
-   "votos": "1–0"
-  },
   "1560056154413998212": {
    "id": "1560056154413998212",
    "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
@@ -869,6 +825,28 @@
    "a": "VELATZ",
    "b": "NUEVE7",
    "ganador": "NUEVE7",
+   "votos": "1–0"
+  },
+  "1562589298585501717": {
+   "id": "1562589298585501717",
+   "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
+   "g": "492346406976356374",
+   "canal": "863208026508623883",
+   "pub": 1792620720288,
+   "a": "MASINO",
+   "b": "NUEVE7",
+   "ganador": "MASINO",
+   "votos": "2–0"
+  },
+  "1562590702490353706": {
+   "id": "1562590702490353706",
+   "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
+   "g": "492346406976356374",
+   "canal": "863208026508623883",
+   "pub": 1792621055005,
+   "a": "ROAD",
+   "b": "GUS",
+   "ganador": "ROAD",
    "votos": "1–0"
   }
  },

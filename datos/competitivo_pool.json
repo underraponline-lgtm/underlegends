@@ -7729,7 +7729,8 @@
    "venc": 1
   },
   "tg_p": {
-   "paises": 2
+   "paises": 3,
+   "paisesg": 1
   }
  },
  {
@@ -9353,10 +9354,10 @@
   "arc_sv": 0,
   "tg_c": {
    "clasico": 1,
-   "riv": 1
+   "riv": 2
   },
   "tg_p": {
-   "paises": 1
+   "paises": 2
   }
  },
  {
