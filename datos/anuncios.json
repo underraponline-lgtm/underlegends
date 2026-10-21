@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-21T16:24:28+00:00",
+ "cuando": "2026-10-21T16:54:45+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -555,7 +555,7 @@
     "jurado": [
      "Kravitz",
      "Zaik",
-     "krish",
+     "Krish",
      "Lewito",
      "Flennzs | ⛩️"
     ],
@@ -570,7 +570,7 @@
    "staff_cuentas": {
     "Kravitz": "1345962362615894027",
     "Zaik": "1555067257376346122",
-    "krish": "1513620494199558295",
+    "Krish": "1513620494199558295",
     "Lewito": "1086485696572817418",
     "Flennzs | ⛩️": "1414431452346581052"
    },
@@ -832,7 +832,7 @@
     "jurado": [
      "Flennzs | ⛩️",
      "l3wito",
-     "krish"
+     "Krish"
     ],
     "host": [
      "l3wito"
@@ -844,7 +844,7 @@
    "autor": "Flennzs | ⛩️",
    "staff_cuentas": {
     "Flennzs | ⛩️": "1414431452346581052",
-    "krish": "1513620494199558295"
+    "Krish": "1513620494199558295"
    },
    "categoria_id": "1468478330826260500"
   },
