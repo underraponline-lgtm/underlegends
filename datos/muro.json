@@ -203,10 +203,7 @@
 },
 "mrstillballin": {
 "rg": "",
-"c": [
-"servidor",
-"temporada"
-]
+"c": []
 },
 "delux": {
 "rg": "C",
@@ -775,10 +772,6 @@
 "temporada"
 ]
 },
-"nmb": {
-"rg": "",
-"c": []
-},
 "crk": {
 "rg": "E",
 "c": [
@@ -835,6 +828,10 @@
 "c": [
 "servidor"
 ]
+},
+"nmb": {
+"rg": "",
+"c": []
 },
 "tusicario": {
 "rg": "",
@@ -2450,6 +2447,22 @@
 }
 },
 "cambios": [
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"rayito"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-09-29T21:54:55Z",
+"quien": [
+"Saz"
+],
+"carta": "servidor"
+},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5753,22 +5766,6 @@
 "t": "2026-10-21T18:41:36Z",
 "quien": [
 "Zaik"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-21T21:29:31Z",
-"quien": [
-"Mr Still Ballin"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-21T21:29:31Z",
-"quien": [
-"Mr Still Ballin"
 ],
 "carta": "temporada"
 }
