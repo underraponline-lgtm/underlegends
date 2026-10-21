@@ -1,45 +1,45 @@
 {
  "v": 1,
- "cuando": "2026-10-21T03:54:39Z",
+ "cuando": "2026-10-21T04:27:43Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1224.6,
+ "dur_s": 1598.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.8
+   "s": 8.5
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.1
+   "s": 6.0
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.5
+   "s": 21.2
   },
   {
    "n": "5",
-   "que": "tanda 1 de 5 · 40 persona(s)",
+   "que": "tanda 1 de 9 · 40 persona(s)",
    "ok": false,
-   "s": 1124.6
+   "s": 1501.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 10.3
+   "s": 5.8
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 54.4
+   "s": 54.6
   }
  ],
  "fallas": [
@@ -53,27 +53,67 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py LAST"
+   "que": "03_Servidor/generar.py Cinexfilo"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Joshema"
+   "que": "03_Servidor/generar.py Chase"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py MCO"
+   "que": "03_Servidor/generar.py Ezias🥈✒️🧢🐍"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py MaYeuTyK"
+   "que": "03_Servidor/generar.py Filozico"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py SOL"
+   "que": "03_Servidor/generar.py Itohimo"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py SOL"
+   "que": "03_Servidor/generar.py JEIXDER"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py LRS"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Leonart"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Miniboy"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Miniboy"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Raezer"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Panchok"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Sin Limites"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Sin Limites"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py ZTR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py ZTR"
   }
  ],
  "ultimo_evento": {
@@ -84,20 +124,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 149,
-   "read": 12733
+   "write": 170,
+   "read": 14345
   },
   "objeto": {
-   "leidas": 1098090,
-   "escritas": 11568,
-   "pedidos": 3189
+   "leidas": 1268791,
+   "escritas": 12772,
+   "pedidos": 3670
   },
   "worker": {
-   "pedidos": 9188,
+   "pedidos": 9351,
    "errores": 0,
-   "sub": 11416,
+   "sub": 11614,
    "p50_ms": 1.5,
-   "p99_ms": 11.4
+   "p99_ms": 11.46
   },
   "r2": {
    "objetos": 4633,
