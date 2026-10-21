@@ -16,7 +16,8 @@ import { Elegido, X2 } from './encuestas.jsx';
 // 🖼️ el flyer de una liga es un anuncio (14/10/2026): lo publica su servidor, no es un logro de nadie
 const ANUNCIOS = { anuncio: 1, liga: 1, flyer: 1 };
 // 📣 las promociones de los servidores (bot/promos.py, 16/10/2026): su pestaña, y no van en «En la Liga»
-export const PLATAFORMA = { yt: 'YouTube', sp: 'Spotify', sc: 'SoundCloud', ig: 'Instagram', tt: 'TikTok' };
+// `dc` y `web` sólo los agrega Dlx a mano (bot/promos.py `a_mano()`, 20/10/2026)
+export const PLATAFORMA = { yt: 'YouTube', sp: 'Spotify', sc: 'SoundCloud', ig: 'Instagram', tt: 'TikTok', dc: 'Discord', web: 'la página' };
 // los logros: lo que se puede felicitar (una carta nueva le toca a todo el que juega una vez: no es un logro)
 const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, ligahito: 1, mesaward: 1 };
 // 🏆 las categorías de los MES AWARDS (bot/mes_awards.py)
@@ -146,14 +147,17 @@ export function Pub({ liga, it, A }) {
     // acá; lo demás abre en su plataforma. El título es el de la plataforma, no el texto del mensaje
     const plat = PLATAFORMA[it.plat] || 'su link';
     // 📣 la Liga también promociona: los videos de nuestros participantes (`o: 'liga'`, bot/promos.py `de_la_liga()`)
-    const deLiga = it.o === 'liga';
+    const deLiga = it.o === 'liga' || it.o === 'mano';
     cat = deLiga ? 'LA LIGA PROMOCIONA' : 'PROMO · ' + siglaDe(it.sv);
     vis = it.vid ? (
       <button type="button" className="pub-promo-v" onClick={() => { promoAbierta(it.id); abrirVideo({ vid: it.vid, tit: limpio(it.tit || ''), link: it.url }); }}
         aria-label={'Mirar ' + (it.tit ? limpio(it.tit) : 'el video')}><Miniatura vid={it.vid} cls="pub-promo-img" /><span aria-hidden="true">▶</span></button>
     ) : it.img ? <a className="pub-promo-v" href={it.url} target="_blank" rel="noopener noreferrer" aria-label={'Abrir en ' + plat} onClick={() => promoAbierta(it.id)}><img className="pub-promo-img" alt="" src={it.img} loading="lazy" /></a>
       : <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
-    txt = deLiga ? <>{nombres} en <b>{limpio(it.tit || plat)}</b></>
+    // ✋ una de Dlx sin «de quién» (un servidor de Discord, una página): el título o, sin él, el sitio
+    const sitio = String(it.url || '').replace(/^https:\/\/(www\.)?/, '').split('/')[0];
+    txt = deLiga && !(it.quien || []).filter(Boolean).length ? <b>{limpio(it.tit || sitio)}</b>
+      : deLiga ? <>{nombres} en <b>{limpio(it.tit || plat)}</b></>
       : it.tit ? <>{nombres} comparte <b>{limpio(it.tit)}</b></> : <>{nombres} comparte algo en <b>{plat}</b></>;
     det = plat + (it.de && it.de !== it.tit ? ' · ' + it.de : '');
     acc = <a className="pub-a" href={it.url} target="_blank" rel="noopener noreferrer" onClick={() => promoAbierta(it.id)}>{it.plat === 'sp' || it.plat === 'sc' ? 'Escuchar' : 'Ver'} en {plat} ↗</a>;

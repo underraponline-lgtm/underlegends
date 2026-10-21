@@ -664,7 +664,7 @@ export function gruposHistorias(liga) {
   // Liga (`o: 'liga'`: «nosotros promocionar los videos de nuestros participantes»). Cada una está hasta su `hasta` —una
   // semana, o más si se alargó en la Tienda—, y el círculo está SIEMPRE (*«que siempre esté ahí»*: si en la semana no
   // hubo, el ciclo deja las más nuevas, `bot/promos.py`). Hasta doce; el video se mira acá
-  const PL = { yt: 'YouTube', sp: 'Spotify', sc: 'SoundCloud', ig: 'Instagram', tt: 'TikTok' };
+  const PL = { yt: 'YouTube', sp: 'Spotify', sc: 'SoundCloud', ig: 'Instagram', tt: 'TikTok', dc: 'Discord', web: 'la página' };
   const proms = (liga.muro || []).filter((it) => it.tipo === 'promo' && (it.hasta ? utc(it.hasta) > liga.ahora : liga.ahora - utc(it.t) < 7 * 86400000)).slice(0, 12);
   if (proms.length) {
     const slides = proms.map((it) => {
@@ -672,7 +672,8 @@ export function gruposHistorias(liga) {
       const q = qs[0] || '';
       const vis = it.vid ? <img className="st-promo" alt="" src={'https://i.ytimg.com/vi/' + it.vid + '/hqdefault.jpg'} />
         : it.img ? <img className="st-promo" alt="" src={it.img} /> : <Cara liga={liga} k={ksDe(it)[0] || ''} nombre={q} cls="st-cara" />;
-      const deLiga = it.o === 'liga';
+      // ✋ las que agrega Dlx a mano (`o: 'mano'`) se presentan como las de la Liga
+      const deLiga = it.o === 'liga' || it.o === 'mano';
       // 📏 los títulos de YouTube vienen largos y sin espacios («MAKMA VS TRUST/SEMIFINAL/LIGA…»): se cortan en las barras
       // (un espacio invisible después de cada una) y, pasados los 48 caracteres, van más chicos
       const tit = it.tit ? limpio(it.tit).replace(/([/|·_])/g, '$1\u200b') : q + ' en ' + (PL[it.plat] || 'su link');

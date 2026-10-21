@@ -511,7 +511,8 @@ function Beneficios({ x, tier, aj, hacer, ocup }) {
 // ✋ LAS PROMOS A MANO (Dlx, 20/10/2026: «yo debería tener la opción de agregar y qué cosas añadir o borrar manualmente
 // en PROMO»). Dos ajustes que aplica bot/promos.py en la vuelta siguiente: `promos_mano` (las que agregas, con sus días; van
 // primero y sin el tope por persona) y `promos_quitar` (los links que sacas, vengan de donde vengan)
-const PLATS = /^https:\/\/(www\.|m\.)?(youtube\.com|youtu\.be|open\.spotify\.com|spotify\.link|soundcloud\.com|on\.soundcloud\.com|instagram\.com|tiktok\.com|vm\.tiktok\.com)\//i;
+// a mano, cualquier link (Dlx, 20/10/2026: «servidores de Discord, cualquier link… sólo si es manual, o sea por mí»)
+const PLATS = /^https:\/\/\S{6,300}$/;
 function PromosMano({ aj, hacer, ocup }) {
   const mano = aj.promos_mano || [], quitar = aj.promos_quitar || [];
   const [f, setF] = useState({ u: '', quien: '', sv: '', dias: 7 });
@@ -521,7 +522,7 @@ function PromosMano({ aj, hacer, ocup }) {
   const agregar = async (e) => {
     e.preventDefault();
     const u = f.u.trim();
-    if (!PLATS.test(u)) return setMal('El link tiene que ser de YouTube, Spotify, SoundCloud, Instagram o TikTok (como las demás promos).');
+    if (!PLATS.test(u)) return setMal('Pega un link que empiece con https://.');
     if (mano.some((x) => x.u === u)) return setMal('Esa ya está.');
     setMal('');
     const sv = f.sv.trim().toUpperCase();
@@ -546,7 +547,7 @@ function PromosMano({ aj, hacer, ocup }) {
       <form className="ti-alta" onSubmit={agregar}>
         <b>Agregar una promo</b>
         <div className="ti-alta-g">
-          <input value={f.u} onChange={set('u')} placeholder="Link (YouTube, Spotify, SoundCloud, Instagram, TikTok)" aria-label="Link" />
+          <input value={f.u} onChange={set('u')} placeholder="Cualquier link: un tema, un video, un servidor de Discord…" aria-label="Link" />
           <input value={f.quien} onChange={set('quien')} placeholder="De quién (nombre en la Lista, opcional)" maxLength={40} aria-label="De quién" />
           <input value={f.sv} onChange={set('sv')} placeholder="Servidor (sigla, opcional)" maxLength={6} aria-label="Servidor" />
           <select value={f.dias} onChange={set('dias')} aria-label="Cuántos días">{[1, 3, 7, 14, 30].map((d) => <option key={d} value={d}>{d} {d === 1 ? 'día' : 'días'}</option>)}</select>

@@ -245,15 +245,18 @@ def _clave_url(u):
 
 
 def a_mano(lista, ahora, cache=None, s=None):
-    """Las promos que agregó Dlx, con la forma de las demás (`o: 'mano'`, `hasta`). Sin plataforma conocida, no entra."""
+    """Las promos que agregó Dlx, con la forma de las demás (`o: 'mano'`, `hasta`).
+
+    🔓 CUALQUIER LINK, SÓLO A MANO (Dlx, 20/10/2026: «que pueda ser servidores de Discord, cualquier link… OJO, esto sólo
+    si es manual, o sea por mí»): la regla de «sólo música y video» sigue para lo que se lee de los canales de promoción;
+    lo que agrega Dlx puede ser una invitación de Discord (`dc`) o cualquier página (`web`)."""
     import hashlib
     out = []
     for x in lista or []:
         u = str((x or {}).get('u') or '').strip()
-        p = plataforma(u)
-        if not p:
-            print('   ⚠️ promo a mano sin plataforma conocida, no entra: %s' % u[:80])
+        if not re.match(r'^https://\S{6,300}$', u):
             continue
+        p = plataforma(u) or ('dc' if re.match(r'https://(www\.)?(discord\.gg|discord\.com/invite)/', u, re.I) else 'web')
         t = _de_iso(x.get('t')) or ahora
         dias = x.get('dias') if isinstance(x.get('dias'), int) and 1 <= x.get('dias') <= 30 else SEMANA
         y = {'id': 'm-' + hashlib.sha1(u.encode('utf-8')).hexdigest()[:12], 'o': 'mano', 'por': 'Dlx', 't': _iso(t),
@@ -499,12 +502,14 @@ def _self_check():
     t0 = dt.datetime(2026, 10, 20, 20, tzinfo=dt.timezone.utc)
     mm = a_mano([{'u': 'https://youtu.be/abcdefghijk', 'quien': 'SOL', 'dias': 3, 't': '2026-10-20T20:00:00Z'},
                  {'u': 'https://discord.gg/x'}], t0)
-    ok(len(mm) == 1 and mm[0]['o'] == 'mano' and mm[0]['hasta'] == '2026-10-23T20:00:00Z' and mm[0]['vid'] == 'abcdefghijk',
-       'a mano: entra con sus días; un link que no es de música ni video, no', str(mm))
+    ok(len(mm) == 2 and mm[0]['o'] == 'mano' and mm[0]['hasta'] == '2026-10-23T20:00:00Z' and mm[0]['vid'] == 'abcdefghijk'
+       and mm[1]['plat'] == 'dc' and a_mano([{'u': 'https://ejemplo.com/x'}], t0)[0]['plat'] == 'web' and not links('https://discord.gg/x'),
+       'a mano: entra con sus días, y cualquier link (Discord, una página); de los canales, sigue sólo música y video', str(mm))
     dd = {'mano': mm, 'quitar': [_clave_url('https://youtu.be/zzzzzzzzzzz?si=abc')],
           'items': [{'id': 'a', 't': '2026-10-20T10:00:00Z', 'sv': 'FFA', 'quien': 'SOL', 'url': 'https://youtu.be/zzzzzzzzzzz', 'plat': 'yt'},
                     {'id': 'b', 't': '2026-10-20T11:00:00Z', 'sv': 'FFA', 'quien': 'SOL', 'url': 'https://youtu.be/yyyyyyyyyyy', 'plat': 'yt'},
                     {'id': 'c', 't': '2026-10-20T12:00:00Z', 'sv': 'FFA', 'quien': 'SOL', 'url': 'https://youtu.be/xxxxxxxxxxx', 'plat': 'yt'}]}
+    dd['mano'] = mm[:1]
     pm = para_muro(dd, t0, respaldo=False)
     ok([y['pid'] for y in pm][:1] == [mm[0]['id']] and 'a' not in [y['pid'] for y in pm] and len(pm) == 2,
        'la de Dlx entra primera (y cuenta en el tope de dos de esa persona); la sacada no sale aunque su link traiga ?si=', str([y['pid'] for y in pm]))
