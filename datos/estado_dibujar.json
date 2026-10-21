@@ -1,45 +1,45 @@
 {
  "v": 1,
- "cuando": "2026-10-21T22:27:41Z",
+ "cuando": "2026-10-21T22:40:32Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1470.0,
+ "dur_s": 735.6,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.5
+   "s": 7.6
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.1
+   "s": 7.7
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.7
+   "s": 25.1
   },
   {
    "n": "5",
-   "que": "tanda 1 de 5 · 40 persona(s)",
+   "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 1364.1
+   "s": 628.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 12.2
+   "s": 5.0
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 57.3
+   "s": 60.5
   }
  ],
  "fallas": [
@@ -53,35 +53,11 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Krish"
+   "que": "03_Servidor/generar.py NXUZ"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py JEIXDER"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py MCO"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Leonart"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py SOL"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py PichulaMc"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Vandu"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Walker"
+   "que": "03_Servidor/generar.py NXUZ"
   }
  ],
  "ultimo_evento": {
@@ -96,15 +72,15 @@
    "read": 46270
   },
   "objeto": {
-   "leidas": 3272000,
-   "escritas": 40287,
-   "pedidos": 10458
+   "leidas": 3299745,
+   "escritas": 40486,
+   "pedidos": 10522
   },
   "worker": {
-   "pedidos": 9640,
+   "pedidos": 9510,
    "errores": 0,
-   "sub": 11810,
-   "p50_ms": 1.38,
+   "sub": 11656,
+   "p50_ms": 1.39,
    "p99_ms": 11.72
   },
   "r2": {
