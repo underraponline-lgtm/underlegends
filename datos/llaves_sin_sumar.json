@@ -1,0 +1,3 @@
+{
+ "_leeme": "Las llaves de los servidores que no suman al ranking (Tier 2 y 3), SÓLO para verlas en la página: el calendario y «Ver llave». Lo escribe bot/llaves_a_entrada.py (`para_ver()`) y lo lee bot/subir_web.py. No las lee nada más: ni el ranking, ni las Misiones, ni el Pase, ni el Most Wanted (Dlx, 20/10/2026: «No cuenta para nada»). Los puntos van en 0."
+}
