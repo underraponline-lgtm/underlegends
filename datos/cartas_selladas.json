@@ -117,9 +117,9 @@
    "servidor": "4af907e5d349:2d5142698a31:055f77"
   },
   "Astral": {
-   "competitivo": "a17fc4c05c53:a62fb156b44f",
-   "pais": "701b0d20f9b1:351b86d66ea6",
-   "servidor": "751688be7e60:2d5142698a31:055f77"
+   "competitivo": "069f9bed9bf9:a62fb156b44f",
+   "pais": "0b5a2fd99d28:351b86d66ea6",
+   "servidor": "0ec45007f36c:2d5142698a31:055f77"
   },
   "Axinu": {
    "competitivo": "2eb2d49c0154:a62fb156b44f",
@@ -562,9 +562,9 @@
    "servidor": "fd2b25f1012d:2d5142698a31:948362"
   },
   "Guty": {
-   "competitivo": "78669f1ed437:a62fb156b44f",
-   "pais": "d1aefbc1bdf1:351b86d66ea6",
-   "servidor": "8560f4b2e9df:2d5142698a31:43d041"
+   "competitivo": "eba37fcbb757:a62fb156b44f",
+   "pais": "6a241eb8879d:351b86d66ea6",
+   "servidor": "16683e759ebb:2d5142698a31:43d041"
   },
   "Gwynyth": {},
   "HH": {
@@ -1615,7 +1615,7 @@
    "temporada": "1ecae5c49fca:a001e7b21e4d"
   },
   "Vilca": {
-   "competitivo": "bd2e7d942be7:a62fb156b44f",
+   "competitivo": "3d315930f7ef:a62fb156b44f",
    "pais": "e4714e553f19:17e4aabb8008",
    "servidor": "5a3220d260fd:b8c1c7c39e87:12faed"
   },
@@ -1815,10 +1815,10 @@
    "servidor": "131cd3a9e63c:2d5142698a31:15af16"
   },
   "stormed": {
-   "competitivo": "854e826d7ce9:a62fb156b44f",
+   "competitivo": "2378781267a8:a62fb156b44f",
    "pais": "f876ade56269:351b86d66ea6",
    "servidor": "514e514820db:2d5142698a31:b49e39",
-   "temporada": "6ab793b8895d:a001e7b21e4d"
+   "temporada": "81814bb697ad:a001e7b21e4d"
   },
   "tito calderon": {
    "competitivo": "83e61ab10366:a62fb156b44f",
@@ -1843,5 +1843,5 @@
    "servidor": "7f8885a35a6d:2d5142698a31:93a344"
   }
  },
- "cuando": "2026-10-21T18:27:54+00:00"
+ "cuando": "2026-10-21T19:38:55+00:00"
 }
