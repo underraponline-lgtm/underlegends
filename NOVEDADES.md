@@ -2679,6 +2679,10 @@ inglés, y `/borrar-mis-datos`.
   Discord?»*): los amigos no (Discord no se los da a ninguna app común); los servidores sí, pidiendo el permiso `guilds`
   al entrar. Dlx: *«Sí, dale, me gusta»* → **anotado como idea**, para las crews recomendadas y los perfiles. Pide un
   permiso más en «Entrar con Discord» y guardar por persona en qué servidores de la Liga está: se hace cuando toque.
+- **✍️ Trono Lírico, batallas improescritas** (20/10): 465 miembros y mucha vida (30–100 reacciones); batallas escritas,
+  muchas en Roblox; llaves y resultados en sus canales de Discord; el dueño está de acuerdo. Dlx: si cuenta para la Liga,
+  *«supongo que sí, pero no quiero decidir nada aún»*; quién gana, *«los jurados… creo que los 2»*. **Sin decidir nada todavía.**
+  Lo propuesto, sin aprobar: Tier 2 con su propio ranking de escritas, y primero el bot adentro para leer sus canales.
 - **🤝 FDS: cómo asciende la gente en sus ligas** (20/10): no está publicado en sus canales y en la llamada dijo «votos o
   favoritos»; Dlx: *«Ahí te explicaré luego»*. Lo demás de FDS quedó hecho en la 3.84–3.86 (tag OPORTUNIDADES; las redes,
   cuando el dueño las pase; el Tier 3 sigue siendo el más bajo).
