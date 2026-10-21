@@ -668,14 +668,14 @@
    },
    "organizadores": [
     [
-     "Kravitz",
-     42,
+     "LEWITO",
+     51,
      2
     ],
     [
-     "LEWITO",
-     26,
-     1
+     "Kravitz",
+     42,
+     2
     ],
     [
      "Velatz",
@@ -686,19 +686,21 @@
    "semillero": {
     "nuevos": {
      "FFA": 5,
-     "ACAD": 1
+     "ACAD": 1,
+     "DDF": 2
     },
     "gente": {
-     "FFA": 68,
-     "ACAD": 21
+     "FFA": 76,
+     "ACAD": 21,
+     "DDF": 7
     },
     "gana": "FFA"
    },
    "meta_va": {
     "ACAD": 21,
-    "DDF": 0,
+    "DDF": 7,
     "DRA": 0,
-    "FFA": 68,
+    "FFA": 76,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,

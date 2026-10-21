@@ -277,6 +277,7 @@
     "pts": 51056,
     "racha": "5/5",
     "tg": {
+     "dv": true,
      "fin": 5
     }
    },
@@ -1706,6 +1707,18 @@
    }
   },
   "Desio": {
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 1750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "0/1",
     "ev": 1,
@@ -5166,7 +5179,7 @@
     "oro": 3,
     "ovr": 62,
     "pod": 5,
-    "pts": 133313,
+    "pts": 134438,
     "racha": "1/4",
     "tg": {
      "fin": 5
@@ -7783,7 +7796,7 @@
     "oro": 1,
     "ovr": 74,
     "pod": 8,
-    "pts": 161103,
+    "pts": 161778,
     "racha": "3/4",
     "tg": {
      "bcasa": true,
@@ -8703,20 +8716,6 @@
     "pod": 0,
     "pts": 1875,
     "racha": "0/0"
-   }
-  },
-  "🔴 Semi 2: DESIO": {
-   "DDF": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 1750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "🟢 Batalla 2: Mco": {
