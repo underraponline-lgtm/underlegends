@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-21T19:24:54+00:00",
+ "cuando": "2026-10-21T19:57:03+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -400,6 +400,40 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "DESGRACIAS EN TOKYO VOL 30 1 VS 1",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1562551092947062825",
+   "cuando": "2026-10-21T19:40:11",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "LEWITO",
+   "orgs": [],
+   "autor_h": "211322958af20ae2",
+   "cupos_texto": "16 / 24",
+   "inscriptos": 16,
+   "cupo_total": 24,
+   "rango": "PLATA 3",
+   "modalidad": "",
+   "horario": "EN 5 MINUTOS",
+   "fecha": "",
+   "premios": "RESPETO",
+   "staff": {
+    "jurado": [
+     "LEWITO"
+    ],
+    "host": [
+     "LEWITO"
+    ],
+    "dj": [
+     "TOKIO"
+    ]
+   },
+   "autor": "Lewito",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 30 1 VS 1",
@@ -7000,6 +7034,96 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "agus🇦🇷",
+   "quien": "agusdcab",
+   "discord_id": "494965289042182164",
+   "msg_id": "1562554393847406754",
+   "cuando": "2026-10-21T19:53:18"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tenor",
+   "quien": "tenor_25499",
+   "discord_id": "1370860602972569632",
+   "msg_id": "1562554195159027833",
+   "cuando": "2026-10-21T19:52:30"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "lewito votame 1 por favor🇮🇱",
+   "quien": "colesito",
+   "discord_id": "790016013680771102",
+   "msg_id": "1562551992092598403",
+   "cuando": "2026-10-21T19:43:45"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Colo el rojito 🇦🇬",
+   "quien": "colo_zcr",
+   "discord_id": "972537790921338960",
+   "msg_id": "1562551655990431787",
+   "cuando": "2026-10-21T19:42:25"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "KRAVITZ 🇨🇷 VS OKAM",
+   "quien": "thekravitz777",
+   "discord_id": "1345962362615894027",
+   "msg_id": "1562551341174227005",
+   "cuando": "2026-10-21T19:41:10"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "DarnBless 🇨🇴",
+   "quien": "juanclaudio0959",
+   "discord_id": "1508771760709963930",
+   "msg_id": "1562551051242963005",
+   "cuando": "2026-10-21T19:40:01"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Sultán 🇨🇱",
+   "quien": "svlt4n.",
+   "discord_id": "1560477107598008355",
+   "msg_id": "1562550979042353355",
+   "cuando": "2026-10-21T19:39:44"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Fin 🇦🇷",
+   "quien": "finallnme",
+   "discord_id": "1247102577573625856",
+   "msg_id": "1562550969143926855",
+   "cuando": "2026-10-21T19:39:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "warap🇦🇷",
+   "quien": "waraplug",
+   "discord_id": "587789294731526144",
+   "msg_id": "1562549274263158836",
+   "cuando": "2026-10-21T19:32:57"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Dyzz🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1562547198737260617",
+   "cuando": "2026-10-21T19:24:42"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",

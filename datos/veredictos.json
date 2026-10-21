@@ -804,6 +804,94 @@
    "b": "ANDRES🇨🇱+TAM🇻🇪",
    "ganador": "SNOW🇨🇴+PICHULA🇦🇷",
    "votos": "1–0"
+  },
+  "1562275267026882622": {
+   "id": "1562275267026882622",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792545849330,
+   "a": "ABRAHAM",
+   "b": "MARK",
+   "ganador": "ABRAHAM",
+   "votos": "1–0"
+  },
+  "1562278050585120769": {
+   "id": "1562278050585120769",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792546512982,
+   "a": "REPLICA CRISZJ",
+   "b": "BENJI",
+   "ganador": "BENJI",
+   "votos": "1–0"
+  },
+  "1562279323761901704": {
+   "id": "1562279323761901704",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792546816531,
+   "a": "2DA REPLICA CRISZJ",
+   "b": "BENJI",
+   "ganador": "BENJI",
+   "votos": "1–0"
+  },
+  "1562287446161498224": {
+   "id": "1562287446161498224",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792548753062,
+   "a": "CHOP",
+   "b": "VANDU",
+   "ganador": "CHOP",
+   "votos": "1–0"
+  },
+  "1562292722453446669": {
+   "id": "1562292722453446669",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792550011028,
+   "a": "last",
+   "b": "artezzy",
+   "ganador": "artezzy",
+   "votos": "1–0"
+  },
+  "1562295299685486705": {
+   "id": "1562295299685486705",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792550625488,
+   "a": "replica lrs",
+   "b": "last",
+   "ganador": "last",
+   "votos": "2–0"
+  },
+  "1562298084828905585": {
+   "id": "1562298084828905585",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792551289518,
+   "a": "artezzy",
+   "b": "lrs",
+   "ganador": "lrs",
+   "votos": "1–0"
+  },
+  "1562300822241681553": {
+   "id": "1562300822241681553",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792551942168,
+   "a": "sin viejo",
+   "b": "lrs",
+   "ganador": "sin viejo",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5007,6 +5095,77 @@
      ],
      "SNOW🇨🇴+PICHULA🇦🇷",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1562285332039475261": {
+   "id": "1562285332039475261",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1500675902042931280",
+   "pub": 1792548249016,
+   "ed": 1792554282940,
+   "texto": "`[ CUARTOS ]`\n⌞ChozaDeChop🇭🇳⌝ 🆚 ⌞vandu⌝\n⌞sin limites 🇵🇪⌝ 🆚 ⌞Nxuz 🇵🇪⌝\n⌞Zaza B🇭🇹⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Lrs🇦🇷⌝ 🆚 ⌞Paja lenta🇬🇩⌝\n`[ SEMIFINALES ]`\n⌞ChozaDeChop🇭🇳⌝ 🆚 ⌞sin limites 🇵🇪⌝\n⌞Artezzy 🇵🇪⌝ 🆚 ⌞Lrs 🇦🇷⌝\n`[ FINAL ]`",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "ChozaDeChop🇭🇳",
+      "vandu"
+     ],
+     "ChozaDeChop🇭🇳",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "sin limites 🇵🇪",
+      "Nxuz 🇵🇪"
+     ],
+     "sin limites 🇵🇪",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Zaza B🇭🇹",
+      "Artezzy 🇵🇪"
+     ],
+     "Artezzy 🇵🇪",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Lrs🇦🇷",
+      "Paja lenta🇬🇩"
+     ],
+     "Lrs🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "ChozaDeChop🇭🇳",
+      "sin limites 🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Artezzy 🇵🇪",
+      "Lrs 🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

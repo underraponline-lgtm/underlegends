@@ -1,3 +1,1345 @@
 {
+ "106793002": {
+  "dia": "2026-10-11",
+  "escala": "8-15",
+  "fecha": "11/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1558965596106793002"
+  ],
+  "n": 106793002,
+  "nombre": "RAP SIN GROSERIAS 1",
+  "ns": 1,
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Mato yt 🇵🇪🤡",
+       "Raizer"
+      ],
+      "Mato yt 🇵🇪🤡",
+      ""
+     ],
+     [
+      [
+       "Artezzy",
+       "NXUZ"
+      ],
+      "Artezzy",
+      ""
+     ],
+     [
+      [
+       "Chop",
+       "Abraham 🇻🇪"
+      ],
+      "Chop",
+      ""
+     ],
+     [
+      [
+       "Vilca conchatumare🇵🇪",
+       "Leyenda"
+      ],
+      "Vilca conchatumare🇵🇪",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mato yt 🇵🇪🤡",
+       "Artezzy"
+      ],
+      "Mato yt 🇵🇪🤡",
+      ""
+     ],
+     [
+      [
+       "Chop",
+       "Vilca conchatumare🇵🇪"
+      ],
+      "Chop",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "Artezzy",
+    "Semifinal",
+    0
+   ],
+   [
+    "Vilca conchatumare🇵🇪",
+    "Semifinal",
+    0
+   ],
+   [
+    "Abraham 🇻🇪",
+    "Cuartos",
+    0
+   ],
+   [
+    "Leyenda",
+    "Cuartos",
+    0
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    0
+   ],
+   [
+    "Raizer",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
+ "108217355": {
+  "dia": "2026-09-25",
+  "escala": "8-15",
+  "fecha": "25/09",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1553215852508217355"
+  ],
+  "n": 108217355,
+  "nombre": "2v2 1",
+  "ns": 1,
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Habraham 🇭🇳, Raizer",
+       "Cinexfilo, Mato 🇵🇪"
+      ],
+      "Habraham 🇭🇳, Raizer",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "Cinexfilo",
+    "Semifinal",
+    0
+   ],
+   [
+    "Mato 🇵🇪",
+    "Semifinal",
+    0
+   ]
+  ]
+ },
+ "139475261": {
+  "dia": "2026-10-20",
+  "escala": "8-15",
+  "fecha": "20/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1562285332039475261"
+  ],
+  "n": 139475261,
+  "nombre": "RAP SIN GROSERIAS 2",
+  "ns": 1,
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "ChozaDeChop🇭🇳",
+       "Vandu"
+      ],
+      "ChozaDeChop🇭🇳",
+      ""
+     ],
+     [
+      [
+       "Sin Limites",
+       "NXUZ"
+      ],
+      "Sin Limites",
+      ""
+     ],
+     [
+      [
+       "Artezzy",
+       "Zaza B🇭🇹"
+      ],
+      "Artezzy",
+      ""
+     ],
+     [
+      [
+       "LRS",
+       "Paja lenta🇬🇩"
+      ],
+      "LRS",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Sin Limites",
+       "ChozaDeChop🇭🇳"
+      ],
+      "Sin Limites",
+      ""
+     ],
+     [
+      [
+       "LRS",
+       "Artezzy"
+      ],
+      "LRS",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Artezzy",
+       "ChozaDeChop🇭🇳"
+      ],
+      "Artezzy",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Sin Limites",
+       "LRS"
+      ],
+      "Sin Limites",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "Sin Limites",
+    "Campeón",
+    0
+   ],
+   [
+    "LRS",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Artezzy",
+    "Tercero",
+    0
+   ],
+   [
+    "ChozaDeChop🇭🇳",
+    "Cuarto",
+    0
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    0
+   ],
+   [
+    "Paja lenta🇬🇩",
+    "Cuartos",
+    0
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    0
+   ],
+   [
+    "Zaza B🇭🇹",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
+ "139974737": {
+  "dia": "2026-10-14",
+  "escala": "16+",
+  "fecha": "14/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1560067204139974737"
+  ],
+  "n": 139974737,
+  "nombre": "GG SANGRERAP 1",
+  "ns": 1,
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Luck",
+       "Artezzy"
+      ],
+      "Luck",
+      ""
+     ],
+     [
+      [
+       "Sin Limites",
+       "Abraham 🇻🇪"
+      ],
+      "Sin Limites",
+      ""
+     ],
+     [
+      [
+       "ChopAntiTrans🇭🇳",
+       "Mato 🇧🇴"
+      ],
+      "ChopAntiTrans🇭🇳",
+      ""
+     ],
+     [
+      [
+       "Abraham 🇻🇪",
+       "Leyenda"
+      ],
+      "Abraham 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "Vilca",
+       "NXUZ"
+      ],
+      "Vilca",
+      ""
+     ],
+     [
+      [
+       "Soulb",
+       "Miniboy"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "Poxe 🇵🇪"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "Evanlyne 🇧🇴",
+       "Shadow"
+      ],
+      "Evanlyne 🇧🇴",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Sin Limites",
+       "Luck"
+      ],
+      "Sin Limites",
+      ""
+     ],
+     [
+      [
+       "ChopAntiTrans🇭🇳",
+       "Abraham 🇻🇪"
+      ],
+      "ChopAntiTrans🇭🇳",
+      ""
+     ],
+     [
+      [
+       "Soulb",
+       "Vilca"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "Evanlyne 🇧🇴"
+      ],
+      "CrisZJ",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "ChopAntiTrans🇭🇳",
+       "Sin Limites"
+      ],
+      "ChopAntiTrans🇭🇳",
+      ""
+     ],
+     [
+      [
+       "Soulb",
+       "CrisZJ"
+      ],
+      "Soulb",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Soulb",
+       "ChopAntiTrans🇭🇳"
+      ],
+      "Soulb",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "Soulb",
+    "Campeón",
+    0
+   ],
+   [
+    "ChopAntiTrans🇭🇳",
+    "Subcampeón",
+    0
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    0
+   ],
+   [
+    "Sin Limites",
+    "Semifinal",
+    0
+   ],
+   [
+    "Abraham 🇻🇪",
+    "Cuartos",
+    0
+   ],
+   [
+    "Evanlyne 🇧🇴",
+    "Cuartos",
+    0
+   ],
+   [
+    "Luck",
+    "Cuartos",
+    0
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    0
+   ],
+   [
+    "Artezzy",
+    "Octavos",
+    0
+   ],
+   [
+    "Leyenda",
+    "Octavos",
+    0
+   ],
+   [
+    "Mato 🇧🇴",
+    "Octavos",
+    0
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    0
+   ],
+   [
+    "NXUZ",
+    "Octavos",
+    0
+   ],
+   [
+    "Poxe 🇵🇪",
+    "Octavos",
+    0
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    0
+   ]
+  ]
+ },
+ "154151752": {
+  "dia": "2026-09-29",
+  "escala": "8-15",
+  "fecha": "29/09",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1554640551054151752"
+  ],
+  "n": 154151752,
+  "nombre": "Shaoling Battles 1v1 3",
+  "ns": 1,
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Abraham 🇻🇪",
+       "SOL"
+      ],
+      "Abraham 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "Sol 2da 🇵🇪"
+      ],
+      "CrisZJ",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Abraham 🇻🇪",
+       "Artezzy"
+      ],
+      "Abraham 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "NXUZ"
+      ],
+      "CrisZJ",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "Artezzy",
+    "Semifinal",
+    0
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    0
+   ],
+   [
+    "SOL",
+    "Cuartos",
+    0
+   ],
+   [
+    "Sol 2da 🇵🇪",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
+ "171238925": {
+  "dia": "2026-10-19",
+  "escala": "8-15",
+  "fecha": "19/10",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1558611505040064607/1561924413971238925"
+  ],
+  "n": 171238925,
+  "nombre": "PLAZA UNDERGROUND BRACKET CLASIFICATORIO",
+  "ns": 1,
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Soulb",
+       "Calíz"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "Leonart",
+       "Chop"
+      ],
+      "Leonart",
+      ""
+     ],
+     [
+      [
+       "Shadow",
+       "Hedorah 🇨🇱"
+      ],
+      "Shadow",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Leonart",
+       "Soulb"
+      ],
+      "Leonart",
+      ""
+     ],
+     [
+      [
+       "Mosquitrap 🦟",
+       "Shadow"
+      ],
+      "Mosquitrap 🦟",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Shadow",
+    "Semifinal",
+    0
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    0
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    0
+   ],
+   [
+    "Chop",
+    "Cuartos",
+    0
+   ],
+   [
+    "Hedorah 🇨🇱",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
+ "181649676": {
+  "dia": "2026-10-18",
+  "escala": "16+",
+  "fecha": "18/10",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1560645507095728278/1561476508881649676"
+  ],
+  "n": 181649676,
+  "nombre": "RED BULL",
+  "ns": 1,
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NXUZ",
+       "POXE"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "BTRX",
+       "CrisZJ"
+      ],
+      "BTRX",
+      ""
+     ],
+     [
+      [
+       "Dominick",
+       "ARDEAN"
+      ],
+      "Dominick",
+      ""
+     ],
+     [
+      [
+       "Hedorah 🇨🇱",
+       "Joshema"
+      ],
+      "Hedorah 🇨🇱",
+      ""
+     ],
+     [
+      [
+       "Leonart",
+       "Miniboy"
+      ],
+      "Leonart",
+      ""
+     ],
+     [
+      [
+       "LAST",
+       "Fisics"
+      ],
+      "LAST",
+      ""
+     ],
+     [
+      [
+       "Soulb",
+       "EmiZor"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "Mr.Kude",
+       "Chop"
+      ],
+      "Mr.Kude",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "BTRX",
+       "NXUZ"
+      ],
+      "BTRX",
+      ""
+     ],
+     [
+      [
+       "Hedorah 🇨🇱",
+       "Dominick"
+      ],
+      "Hedorah 🇨🇱",
+      ""
+     ],
+     [
+      [
+       "Leonart",
+       "LAST"
+      ],
+      "Leonart",
+      ""
+     ],
+     [
+      [
+       "Soulb",
+       "Mr.Kude"
+      ],
+      "Soulb",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "BTRX",
+       "Hedorah 🇨🇱"
+      ],
+      "BTRX",
+      ""
+     ],
+     [
+      [
+       "Leonart",
+       "Soulb"
+      ],
+      "Leonart",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Hedorah 🇨🇱",
+    "Semifinal",
+    0
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    0
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    0
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    0
+   ],
+   [
+    "Mr.Kude",
+    "Cuartos",
+    0
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    0
+   ],
+   [
+    "ARDEAN",
+    "Octavos",
+    0
+   ],
+   [
+    "Chop",
+    "Octavos",
+    0
+   ],
+   [
+    "CrisZJ",
+    "Octavos",
+    0
+   ],
+   [
+    "EmiZor",
+    "Octavos",
+    0
+   ],
+   [
+    "Fisics",
+    "Octavos",
+    0
+   ],
+   [
+    "Joshema",
+    "Octavos",
+    0
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    0
+   ],
+   [
+    "POXE",
+    "Octavos",
+    0
+   ]
+  ]
+ },
+ "182616747": {
+  "dia": "2026-10-04",
+  "escala": "16+",
+  "fecha": "04/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1555684961250451617/1556445215982616747"
+  ],
+  "n": 182616747,
+  "nombre": "- RED BULL NACIONAL PERÚ 2026 -",
+  "ns": 1,
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "SOL",
+       "Pepe Mujica"
+      ],
+      "SOL",
+      ""
+     ],
+     [
+      [
+       "Cinexfilo",
+       "Ezias🥈✒️🧢🐍"
+      ],
+      "Cinexfilo",
+      ""
+     ],
+     [
+      [
+       "Sosa",
+       "Mato 🇧🇴"
+      ],
+      "Sosa",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Chente"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "giansito🇵🇪",
+       "Eseeka 🇵🇪"
+      ],
+      "giansito🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Raizer",
+       "FABRI 🇵🇪"
+      ],
+      "Raizer",
+      ""
+     ],
+     [
+      [
+       "Artezzy",
+       "Vilca"
+      ],
+      "Artezzy",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "Abraham 🇻🇪"
+      ],
+      "CrisZJ",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "SOL",
+       "Cinexfilo"
+      ],
+      "SOL",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Sosa"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "giansito🇵🇪",
+       "Raizer"
+      ],
+      "giansito🇵🇪",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "Artezzy"
+      ],
+      "CrisZJ",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "SOL",
+       "NXUZ"
+      ],
+      "SOL",
+      ""
+     ],
+     [
+      [
+       "giansito🇵🇪",
+       "CrisZJ"
+      ],
+      "giansito🇵🇪",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "SOL",
+       "giansito🇵🇪"
+      ],
+      "SOL",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "SOL",
+    "Campeón",
+    0
+   ],
+   [
+    "giansito🇵🇪",
+    "Subcampeón",
+    0
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    0
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    0
+   ],
+   [
+    "Artezzy",
+    "Cuartos",
+    0
+   ],
+   [
+    "Cinexfilo",
+    "Cuartos",
+    0
+   ],
+   [
+    "Raizer",
+    "Cuartos",
+    0
+   ],
+   [
+    "Sosa",
+    "Cuartos",
+    0
+   ],
+   [
+    "Abraham 🇻🇪",
+    "Octavos",
+    0
+   ],
+   [
+    "Chente",
+    "Octavos",
+    0
+   ],
+   [
+    "Eseeka 🇵🇪",
+    "Octavos",
+    0
+   ],
+   [
+    "Ezias🥈✒️🧢🐍",
+    "Octavos",
+    0
+   ],
+   [
+    "FABRI 🇵🇪",
+    "Octavos",
+    0
+   ],
+   [
+    "Mato 🇧🇴",
+    "Octavos",
+    0
+   ],
+   [
+    "Pepe Mujica",
+    "Octavos",
+    0
+   ],
+   [
+    "Vilca",
+    "Octavos",
+    0
+   ]
+  ]
+ },
+ "185139743": {
+  "dia": "2026-10-01",
+  "escala": "8-15",
+  "fecha": "01/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1555372515185139743"
+  ],
+  "n": 185139743,
+  "nombre": "Shaoling Battles 1v1 4",
+  "ns": 1,
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "CrisZJ",
+       "Dinamight"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "Pepe Mujica",
+       "Artezzy"
+      ],
+      "Pepe Mujica",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "silence papá de nexus 🇵🇪"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Xplicit",
+       "Cinexfilo"
+      ],
+      "Xplicit",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "Artezzy",
+    "Cuartos",
+    0
+   ],
+   [
+    "Cinexfilo",
+    "Cuartos",
+    0
+   ],
+   [
+    "Dinamight",
+    "Cuartos",
+    0
+   ],
+   [
+    "silence papá de nexus 🇵🇪",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
+ "189770322": {
+  "dia": "2026-09-27",
+  "escala": "8-15",
+  "fecha": "27/09",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1553896018389770322"
+  ],
+  "n": 189770322,
+  "nombre": "Shaoling Battles 1v1 2",
+  "ns": 1,
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "nzux 🇵🇪",
+       "Mc Glock"
+      ],
+      "nzux 🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Leyenda",
+       "Artezzy"
+      ],
+      "Leyenda",
+      ""
+     ],
+     [
+      [
+       "Vilca",
+       "Raizer"
+      ],
+      "Vilca",
+      ""
+     ],
+     [
+      [
+       "Abraham 🇻🇪",
+       "TøKīØ🦠🧠"
+      ],
+      "Abraham 🇻🇪",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "nzux 🇵🇪",
+       "Leyenda"
+      ],
+      "nzux 🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Vilca",
+       "Abraham 🇻🇪"
+      ],
+      "Vilca",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "nzux 🇵🇪",
+       "Vilca"
+      ],
+      "nzux 🇵🇪",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "nzux 🇵🇪",
+    "Campeón",
+    0
+   ],
+   [
+    "Vilca",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Abraham 🇻🇪",
+    "Semifinal",
+    0
+   ],
+   [
+    "Leyenda",
+    "Semifinal",
+    0
+   ],
+   [
+    "Artezzy",
+    "Cuartos",
+    0
+   ],
+   [
+    "Mc Glock",
+    "Cuartos",
+    0
+   ],
+   [
+    "Raizer",
+    "Cuartos",
+    0
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
  "_leeme": "Las llaves de los servidores que no suman al ranking (Tier 2 y 3), SÓLO para verlas en la página: el calendario y «Ver llave». Lo escribe bot/llaves_a_entrada.py (`para_ver()`) y lo lee bot/subir_web.py. No las lee nada más: ni el ranking, ni las Misiones, ni el Pase, ni el Most Wanted (Dlx, 20/10/2026: «No cuenta para nada»). Los puntos van en 0."
 }

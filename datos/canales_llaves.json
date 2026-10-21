@@ -60,6 +60,16 @@
    "guild": "1468472442925092958",
    "servidor": "[FFA] Freestyle For All 👾"
   },
+  "1490847227432665161": {
+   "canal": "📟・fmsday",
+   "guild": "1489848581203689535",
+   "servidor": "#FDS ╏FREESTYLE DISCORD SERIES"
+  },
+  "1500675902042931280": {
+   "canal": "💹╏resultados-express",
+   "guild": "1489848581203689535",
+   "servidor": "#FDS ╏FREESTYLE DISCORD SERIES"
+  },
   "1501999226945667142": {
    "canal": "📢˚┊contenido-rap",
    "guild": "841017460341604382",
@@ -115,10 +125,25 @@
    "guild": "1283205153624952975",
    "servidor": "╔═══ஜ𝕍.𝕊ஜ═══╗"
   },
+  "1555684961250451617": {
+   "canal": "│🔵✅╏llaves",
+   "guild": "1489848581203689535",
+   "servidor": "#FDS ╏FREESTYLE DISCORD SERIES"
+  },
   "1557583344638623754": {
    "canal": "✦🗳️︱votaciones-2",
    "guild": "1468472442925092958",
    "servidor": "[FFA] Freestyle For All 👾"
+  },
+  "1558611505040064607": {
+   "canal": "✦・𝗘𝗩𝗘𝗡𝗧𝗢𝗦",
+   "guild": "1558611504046153750",
+   "servidor": "🔥LKR (Champios Legue)🐉"
+  },
+  "1560645507095728278": {
+   "canal": "llaves",
+   "guild": "1558611504046153750",
+   "servidor": "🔥LKR (Champios Legue)🐉"
   },
   "838595860275003402": {
    "canal": "➣「🔑」llaves",
@@ -149,7 +174,7 @@
   "838593179187544064": "Freestyle Zone",
   "841017460341604382": "[DRA] Discord Rap En Español | Freestyle • Batallas Online • Cypher 24/7 • Ligas • Aprende"
  },
- "ultimo_completo": "2026-10-20T23:24:28+00:00",
+ "ultimo_completo": "2026-10-21T19:55:25+00:00",
  "veredictos": {
   "1309238412976590908": {
    "canal": "✅┇votaciones",
@@ -256,6 +281,11 @@
    "guild": "1469009547971526659",
    "servidor": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌"
   },
+  "1500675902042931280": {
+   "canal": "💹╏resultados-express",
+   "guild": "1489848581203689535",
+   "servidor": "#FDS ╏FREESTYLE DISCORD SERIES"
+  },
   "1504946278029725897": {
    "canal": "「🌴」Resultados",
    "guild": "1283205153624952975",
@@ -270,6 +300,11 @@
    "canal": "「👑」RESULTADOS",
    "guild": "1367688812892913774",
    "servidor": "𝐅𝐅𝐒 𝐋𝐄𝐀𝐆𝐔𝐄"
+  },
+  "1536574435761332334": {
+   "canal": "🗳️╏veredictos",
+   "guild": "1489848581203689535",
+   "servidor": "#FDS ╏FREESTYLE DISCORD SERIES"
   },
   "1540223675146707045": {
    "canal": "‣「⚔️」Veredictos",
@@ -290,6 +325,16 @@
    "canal": "✦🗳️—votaciones-2",
    "guild": "1468472442925092958",
    "servidor": "[FFA] Freestyle For All 👾"
+  },
+  "1560448027490001067": {
+   "canal": "veredicto",
+   "guild": "1558611504046153750",
+   "servidor": "🔥LKR (Champios Legue)🐉"
+  },
+  "1560645560015519834": {
+   "canal": "veredictos",
+   "guild": "1558611504046153750",
+   "servidor": "🔥LKR (Champios Legue)🐉"
   },
   "838749975621533757": {
    "canal": "➣「📝」veredictos",
