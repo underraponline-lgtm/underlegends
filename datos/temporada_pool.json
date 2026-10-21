@@ -3027,8 +3027,7 @@
   "total": 191,
   "rango": "D",
   "tg_t": {
-   "dobles": 3,
-   "reciente": true
+   "dobles": 3
   }
  },
  {
@@ -3393,7 +3392,6 @@
   "tg_t": {
    "busc": 1,
    "dcor": true,
-   "reciente": true,
    "suelto": true,
    "svc": 1,
    "svtag": "campeon"
@@ -4262,6 +4260,42 @@
   }
  },
  {
+  "full": "Nmb",
+  "raw": "Nmb",
+  "cc": "cl",
+  "sv": "FFA",
+  "crew": "",
+  "discord_id": "1239047152462987335",
+  "verificado": false,
+  "pts": 22250,
+  "ev": 1,
+  "wr": "",
+  "pod": 1,
+  "oro": 0,
+  "sem": 0,
+  "seg": 1,
+  "ter": 0,
+  "caz": 1,
+  "czd": 0,
+  "sob": 0,
+  "mis": 1,
+  "srv": 1,
+  "racha": 1,
+  "racha_act": 1,
+  "score": 0.0,
+  "av": "",
+  "ovr": 51,
+  "o": 113,
+  "pos": 223,
+  "fc": true,
+  "total": 191,
+  "rango": "E",
+  "tg_t": {
+   "reciente": true,
+   "solo": 1
+  }
+ },
+ {
   "full": "Crk",
   "raw": "Crk",
   "cc": "mx",
@@ -4287,7 +4321,7 @@
   "score": 4.6,
   "av": "",
   "ovr": 51,
-  "o": 113,
+  "o": 114,
   "pos": 82,
   "total": 191,
   "rango": "E",
@@ -4322,8 +4356,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 51,
-  "o": 114,
-  "pos": 223,
+  "o": 115,
+  "pos": 224,
   "fc": true,
   "total": 191,
   "rango": "E"
@@ -4354,8 +4388,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 51,
-  "o": 115,
-  "pos": 224,
+  "o": 116,
+  "pos": 225,
   "fc": true,
   "total": 191,
   "rango": "E",
@@ -4390,7 +4424,7 @@
   "score": 12.6,
   "av": "",
   "ovr": 51,
-  "o": 116,
+  "o": 117,
   "pos": 83,
   "total": 191,
   "rango": "E",
@@ -4424,7 +4458,7 @@
   "score": 0.0,
   "av": "",
   "ovr": 50,
-  "o": 117,
+  "o": 118,
   "pos": 84,
   "total": 191,
   "rango": "E",
@@ -4459,8 +4493,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 50,
-  "o": 118,
-  "pos": 225,
+  "o": 119,
+  "pos": 226,
   "fc": true,
   "total": 191,
   "rango": "E",
@@ -4495,7 +4529,7 @@
   "score": 0.0,
   "av": "",
   "ovr": 50,
-  "o": 119,
+  "o": 120,
   "pos": 85,
   "total": 191,
   "rango": "E",
@@ -4530,8 +4564,8 @@
   "score": 0.0,
   "av": "",
   "ovr": 50,
-  "o": 120,
-  "pos": 226,
+  "o": 121,
+  "pos": 227,
   "fc": true,
   "total": 191,
   "rango": "E",
@@ -4566,7 +4600,7 @@
   "score": 0.0,
   "av": "",
   "ovr": 50,
-  "o": 121,
+  "o": 122,
   "pos": 86,
   "total": 191,
   "rango": "E",
@@ -4602,48 +4636,12 @@
   "score": 0.0,
   "av": "",
   "ovr": 50,
-  "o": 122,
+  "o": 123,
   "pos": 87,
   "total": 191,
   "rango": "E",
   "tg_t": {
    "dobles": 3
-  }
- },
- {
-  "full": "Nmb",
-  "raw": "Nmb",
-  "cc": "cl",
-  "sv": "FFA",
-  "crew": "",
-  "discord_id": "1239047152462987335",
-  "verificado": false,
-  "pts": 21250,
-  "ev": 1,
-  "wr": "",
-  "pod": 1,
-  "oro": 0,
-  "sem": 0,
-  "seg": 1,
-  "ter": 0,
-  "caz": 1,
-  "czd": 0,
-  "sob": 0,
-  "mis": 1,
-  "srv": 1,
-  "racha": 1,
-  "racha_act": 1,
-  "score": 0.0,
-  "av": "",
-  "ovr": 50,
-  "o": 123,
-  "pos": 227,
-  "fc": true,
-  "total": 191,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true,
-   "solo": 1
   }
  },
  {
@@ -4957,7 +4955,6 @@
   "rango": "E",
   "tg_t": {
    "dobles": 1,
-   "reciente": true,
    "trios": 1
   }
  },
@@ -5172,7 +5169,6 @@
   "tg_t": {
    "dcor": true,
    "perf": 1,
-   "reciente": true,
    "svc": 1
   }
  },
@@ -5281,7 +5277,6 @@
   "rango": "E",
   "tg_t": {
    "dcor": true,
-   "reciente": true,
    "svc": 1
   }
  },
@@ -6159,10 +6154,7 @@
   "pos": 255,
   "fc": true,
   "total": 191,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Krtman",
@@ -6530,10 +6522,7 @@
   "pos": 263,
   "fc": true,
   "total": 191,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "setesfifi",
@@ -6567,8 +6556,7 @@
   "total": 191,
   "rango": "E",
   "tg_t": {
-   "dobles": 1,
-   "reciente": true
+   "dobles": 1
   }
  },
  {
@@ -6637,8 +6625,7 @@
   "total": 191,
   "rango": "E",
   "tg_t": {
-   "dobles": 1,
-   "reciente": true
+   "dobles": 1
   }
  },
  {
@@ -7108,10 +7095,7 @@
   "pos": 276,
   "fc": true,
   "total": 191,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Senticide",
@@ -8199,10 +8183,7 @@
   "pos": 294,
   "fc": true,
   "total": 191,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Carlos",
@@ -9009,7 +8990,6 @@
   "total": 191,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
    "trios": 1
   }
  },
@@ -9279,10 +9259,7 @@
   "o": 258,
   "pos": 137,
   "total": 191,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Choka",
@@ -10170,10 +10147,7 @@
   "pos": 330,
   "fc": true,
   "total": 191,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Julix🇧🇴",
@@ -10205,10 +10179,7 @@
   "pos": 331,
   "fc": true,
   "total": 191,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "V-zir 🇻🇪",
@@ -10558,10 +10529,7 @@
   "pos": 337,
   "fc": true,
   "total": 191,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "DAVIJUAN",
@@ -10972,10 +10940,7 @@
   "pos": 346,
   "fc": true,
   "total": 191,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Mito",
@@ -11606,10 +11571,7 @@
   "pos": 360,
   "fc": true,
   "total": 191,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Gerox",

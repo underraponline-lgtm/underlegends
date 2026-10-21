@@ -3366,10 +3366,7 @@
     "ovr": 47,
     "pod": 0,
     "pts": 10875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Jotap": {
@@ -3696,10 +3693,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 1875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Korey": {
@@ -3849,10 +3843,7 @@
     "ovr": 46,
     "pod": 0,
     "pts": 13125,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Kwl": {
@@ -4643,10 +4634,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 1874,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "SR": {
     "duelos": "",
@@ -6260,10 +6248,7 @@
     "ovr": 46,
     "pod": 0,
     "pts": 13125,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Ram": {
@@ -7024,10 +7009,7 @@
     "ovr": 46,
     "pod": 0,
     "pts": 13125,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "SR": {
     "duelos": "0/1",
@@ -7101,10 +7083,7 @@
     "ovr": 46,
     "pod": 0,
     "pts": 9750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Snow": {
@@ -7758,8 +7737,7 @@
     "pts": 18750,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -7932,8 +7910,7 @@
     "pts": 13875,
     "racha": "2/2",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -8420,10 +8397,7 @@
     "ovr": 48,
     "pod": 0,
     "pts": 18750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "gibraltar 🇦🇨": {
