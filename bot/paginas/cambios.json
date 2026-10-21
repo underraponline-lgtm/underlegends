@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.92",
+   "dia": "2026-10-21",
+   "cuando": "2026-10-21T01:46:00-04:00",
+   "titulo": "Eventos en la compu, sin huecos",
+   "items": [
+    "🧱 **Debajo de la semana y del mes, lo que viene y lo último que se jugó**, con su fecha: en la compu ya no queda un espacio vacío al lado de la campana.",
+    "📅 **Un día sin eventos muestra los dos últimos días que tuvieron algo**, y un día con pocos, cinco eventos del día anterior."
+   ]
+  },
+  {
    "version": "3.91",
    "dia": "2026-10-21",
    "cuando": "2026-10-21T00:45:00-04:00",

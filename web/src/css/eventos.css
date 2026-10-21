@@ -96,6 +96,8 @@
 .evp-tlh{display:grid;justify-items:start;gap:2px;padding-top:15px;font-variant-numeric:tabular-nums}
 .evp-tlh b{font:700 17px/1 "Barlow Condensed",sans-serif;letter-spacing:.02em}
 .evp-tlh small{font:700 13px/1 "Barlow Condensed",sans-serif;color:var(--gris);text-transform:uppercase}
+.evp-tlh em{font:700 12px/1 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.04em;color:var(--gris);text-transform:uppercase;white-space:nowrap}
+.evp-mas{padding-top:18px}
 .evp-pt{position:relative;align-self:stretch}
 .evp-pt::before{content:"";position:absolute;left:9px;top:0;bottom:0;width:2px;background:var(--suave)}
 .evp-pt::after{content:"";position:absolute;left:3px;top:15px;width:14px;height:14px;border-radius:50%;background:var(--c);box-shadow:0 0 0 3px var(--fondo),0 0 0 4px var(--suave)}

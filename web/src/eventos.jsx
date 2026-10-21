@@ -355,10 +355,11 @@ function TuProximo({ liga, s }) {
 }
 
 // la hora de la columna: «21:30», o «9:30» con el «p. m.» debajo (la hora de 12, de los Ajustes, no entra en una línea)
-function HoraCol({ t }) {
+// `dia`: en las listas que juntan varios días (debajo de la semana y del mes), la fecha arriba de la hora
+function HoraCol({ t, dia }) {
   if (isNaN(utc(t))) return <time className="evp-tlh" />;
   const [h, ...r] = hora(t).split(' ');
-  return <time className="evp-tlh" dateTime={utc(t).toISOString()}><b>{h}</b>{r.length ? <small>{r.join(' ')}</small> : null}</time>;
+  return <time className="evp-tlh" dateTime={utc(t).toISOString()}>{dia ? <em>{dia}</em> : null}<b>{h}</b>{r.length ? <small>{r.join(' ')}</small> : null}</time>;
 }
 // 👥 las caras del campeón, apiladas, y +N si son más (las pandillas). «Avatar Stack» de 21st (Dlx eligió la maqueta A)
 function Pila({ liga, filas, n = 2 }) {
@@ -377,7 +378,7 @@ const idEv = (c) => 'ev-' + slug((c.link || '').replace(/\D+/g, '').slice(-12) |
 // 🕒 LA AGENDA DEL DÍA (Dlx, 21/10/2026, a la maqueta: «Me gusta más A»): una línea de tiempo, la hora a la izquierda y
 // un punto con el color del servidor; cada evento, una tarjeta con su borde de ese color. Es la misma tarjeta de antes
 // —el estado, el dorado, el multiplicador, «TÚ», tu próximo, los anotados y los botones—, que ahora se abre y se cierra
-function Evento({ liga, e, est, L, abierto, arriba, campVivo, sig, foco }) {
+function Evento({ liga, e, est, L, abierto, arriba, campVivo, sig, foco, conDia }) {
   const ll = e.ll ? (liga.d.llaves || {})[e.ll] : null;
   const inf = (ll && ll.info) || {};
   const x = e.px || {};
@@ -411,7 +412,7 @@ function Evento({ liga, e, est, L, abierto, arriba, campVivo, sig, foco }) {
   const color = (liga.svs[e.sv] || {}).color || '#29B298';
   return (
     <li className={'evp-nd nd-' + est + (dor ? ' dorado' : '')} style={{ '--c': color }} id={idEv(e)}>
-      <HoraCol t={e.t} />
+      <HoraCol t={e.t} dia={conDia ? fechaFija(liga, e.t) : ''} />
       <span className="evp-pt" aria-hidden="true" />
       {/* 🔴 `es-prox` Y NO `prox`: `.prox` es una clase global del Inicio (estilo.css, una grilla de 44px | 1fr | auto) y
           las tarjetas «por jugarse» salían con el nombre en una columna angosta (encontrado con los anotados, 03/10/2026) */}
@@ -1061,6 +1062,24 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
               <div className="evp-ley">{svsCal.map((s) => <span key={s}><i style={{ background: color(s) }} />{siglaDe(s)}</span>)}</div>
             </div>
           ) : null}
+          {/* 🧱 debajo de la semana y del mes, lo que viene y lo último que se jugó: en la compu la columna de al lado es más
+              larga y quedaba un hueco grande (Dlx, 21/10/2026: «debajo hay un espacio vacío que se ve feo») */}
+          {vista !== 'dia' ? (() => {
+            const fut = filtrado.filter((c) => utc(c.t).getTime() > ahora && !liga.canceladoCal(c)).sort((a, b) => (a.t < b.t ? -1 : 1)).slice(0, 3);
+            const pas = filtrado.filter((c) => c.ll && utc(c.t).getTime() <= ahora).sort((a, b) => (a.t < b.t ? 1 : -1)).slice(0, 4);
+            return (
+              <>
+                {fut.length ? (
+                  <section className="grupo evp-mas"><h3 className="g-t">Lo que viene</h3>
+                    <ol className="evp-tl">{fut.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="prox" conDia />)}</ol></section>
+                ) : null}
+                {pas.length ? (
+                  <section className="grupo evp-mas"><h3 className="g-t">Lo último que se jugó</h3>
+                    <ol className="evp-tl">{pas.map((c, i) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={i === 0} conDia />)}</ol></section>
+                ) : null}
+              </>
+            );
+          })() : null}
           {vista === 'dia' ? <h2 className="evp-dia">{tituloDia}<small>{evs.length ? evs.length + (evs.length === 1 ? ' evento' : ' eventos') : ''}</small></h2> : null}
           {vista === 'dia' && vivos.length ? (
             <section className="grupo"><h3 className="g-t vivo">● En vivo</h3><ol className="evp-tl">{vivos.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="vivo" L={enVivo(c)} arriba={esArriba(c)} foco={foco === idEv(c)} />)}</ol></section>
@@ -1089,12 +1108,20 @@ export function Eventos({ liga, vivoL, dia: diaRuta, avisos }) {
           ) : null}
           {/* un día sin nada no es un callejón: abajo, lo último que se jugó (era media página en blanco en la compu). Y
               un día CORTO tampoco (19/10/2026): con dos eventos, la columna terminaba ~1.000 px antes que la de al lado */}
-          {vista === 'dia' && (nada || evs.length < 3) && ultimoDia ? (
-            <section className="grupo evp-ultdia"><h3 className="g-t">Lo último que se jugó · {tituloDe(ultimoDia)}</h3>
-              <ol className="evp-tl">{(porDia[ultimoDia] || []).slice().sort((a, b) => (a.t < b.t ? 1 : -1)).slice(0, 3)
-                .map((c, i, xs) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={c === xs.find((h) => h.ll)} sig={sigDe(c, 0)} />)}</ol>
+          {vista === 'dia' && dia >= hoyK ? (() => {
+            const fut = filtrado.filter((c) => utc(c.t).getTime() > ahora && liga.diaClave(c.t) !== dia && !liga.canceladoCal(c)).sort((a, b) => (a.t < b.t ? -1 : 1)).slice(0, 3);
+            return fut.length ? (
+              <section className="grupo evp-mas"><h3 className="g-t">Lo que viene</h3>
+                <ol className="evp-tl">{fut.map((c) => <Evento key={c.link || c.n} liga={liga} e={c} est="prox" conDia />)}</ol></section>
+            ) : null;
+          })() : null}
+          {/* con el día vacío, los dos últimos días que tuvieron algo; si no, el último (y tres eventos) */}
+          {vista === 'dia' && ultimoDia ? conDias.filter((k) => k < dia).slice(nada ? -2 : -1).reverse().map((k, j) => (
+            <section key={k} className="grupo evp-ultdia"><h3 className="g-t">{j ? tituloDe(k) : 'Lo último que se jugó · ' + tituloDe(k)}</h3>
+              <ol className="evp-tl">{(porDia[k] || []).slice().sort((a, b) => (a.t < b.t ? 1 : -1)).slice(0, nada ? 8 : 5)
+                .map((c, i, xs) => <Evento key={c.link || c.n + i} liga={liga} e={c} est="hecho" abierto={!j && c === xs.find((h) => h.ll)} sig={sigDe(c, 0)} />)}</ol>
             </section>
-          ) : null}
+          )) : null}
         </main>
         <aside className="evp-der">
           {/* en la vista Mes, el mes ya está en el centro: al costado sería el mismo dos veces */}
