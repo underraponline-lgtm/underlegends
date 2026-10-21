@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "3.95",
+   "dia": "2026-10-21",
+   "cuando": "2026-10-21T19:18:24-04:00",
+   "titulo": "Tu foto arriba del perfil",
+   "items": [
+    "👤 **Arriba del perfil va tu foto, en un círculo**, montada en el borde de tu fondo. Tus tarjetas siguen en la puerta de Tarjetas.",
+    "📐 **La cabecera ya no se corre**: el nombre arranca siempre justo debajo del fondo, sin el hueco que quedaba en algunos perfiles."
+   ]
+  },
+  {
    "version": "3.94",
    "dia": "2026-10-21",
    "cuando": "2026-10-21T03:36:10-04:00",

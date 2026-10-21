@@ -131,9 +131,11 @@
 .pf8-cover{position:relative;height:150px;background:color-mix(in srgb,var(--mo-c) 55%,#030304)}
 .pf8.con-fondo .pf8-cover{background:linear-gradient(0deg,rgba(3,3,4,.6),rgba(3,3,4,0) 55%),var(--pf-fondo) center 35%/cover no-repeat}
 .pf8-cab{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"carta acc" "tx tx" "bar bar" "qe qe";gap:12px 14px;
-  padding:0 16px 20px;margin-top:-64px}
-.pf8-carta{grid-area:carta;width:96px}
-.pf8-carta img{display:block;width:100%;height:auto;filter:drop-shadow(0 6px 14px rgba(0,0,0,.6))}
+  padding:0 16px 20px;margin-top:-48px}
+/* 👤 su foto en un círculo, montada en el borde de la portada (la mitad arriba, la mitad abajo), con un aro del color de
+   la escena para que se despegue del fondo */
+.pf8-carta{grid-area:carta;align-self:start;width:96px}
+.pf8-cara{width:96px;height:96px;font:900 40px/1 Archivo,sans-serif;box-shadow:0 0 0 4px var(--escenario)}
 .pf8-acc{grid-area:acc;justify-self:end;align-self:end;display:grid;gap:8px;justify-items:end}
 .pf8-seguir{min-width:124px;text-align:center}
 .pf8-tx{grid-area:tx;display:grid;gap:9px;min-width:0}
@@ -166,7 +168,7 @@
 .pf8-tres{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center}
 .pf8-tres > div{display:grid;justify-items:center;gap:6px;padding:0 6px;text-align:center;box-shadow:-1px 0 0 #26262C}
 .pf8-tres b{font:900 20px/1 Archivo,sans-serif;color:var(--esc-tinta);font-variant-numeric:tabular-nums;white-space:nowrap}
-.pf8-tres b.largo{font-size:16px}
+.pf8-tres b.largo{font-size:17px}
 /* el «?» de cada número (QUE_ES_NUM), chico y en el mismo renglón: «EVENTOS ?» se partía en dos a 375 px */
 .pf8-num small{white-space:nowrap}
 .pf8-num .qe-b{width:15px;height:15px;margin-left:3px;font-size:10px}
@@ -376,9 +378,14 @@
   .app .pf8-cover{height:250px}
   .app .pf8-mas{top:16px;right:var(--gut)}
   .app .pf8-mas-b{width:42px;height:42px}
-  .app .pf8-cab{grid-template-columns:160px minmax(0,1fr) 220px;grid-template-areas:"carta tx acc" "bar bar bar" "qe qe qe";gap:20px 28px;padding:0 var(--gut) 26px;margin-top:-118px}
-  .app .pf8-carta{width:160px;align-self:end}
-  .app .pf8-tx{align-self:end;padding-top:126px}
+  /* 📐 LA POSICIÓN, FIJA (Dlx, 21/10/2026, con una captura de Oasis: «arregla el posicionamiento»): la foto monta el
+     borde de la portada (75 px arriba, 75 abajo) y el texto arranca SIEMPRE 16 px debajo de la portada. Antes el texto se
+     alineaba abajo de la fila, así que su altura movía todo: un tag más o una línea de «Sin verificar» corría la carta
+     hacia abajo y dejaba un hueco entre la portada y el nombre */
+  .app .pf8-cab{grid-template-columns:150px minmax(0,1fr) 220px;grid-template-areas:"carta tx acc" "bar bar bar" "qe qe qe";gap:20px 28px;padding:0 var(--gut) 26px;margin-top:-75px}
+  .app .pf8-carta{width:150px}
+  .app .pf8-cara{width:150px;height:150px;font-size:60px;box-shadow:0 0 0 5px var(--escenario)}
+  .app .pf8-tx{align-self:start;padding-top:91px}
   .app .pf8-nom h1{font-size:50px}
   .app .pf8-crew > span{max-width:240px}
   .app .pf8-frase{flex-basis:auto;margin:0 0 0 12px}

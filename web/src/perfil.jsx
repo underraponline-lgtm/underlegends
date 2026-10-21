@@ -10,7 +10,7 @@
 // —seguir, el precio por cabeza, el visor de cartas y de llaves— son las de app.js.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
-import { Bandera, Cara, Carta, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, SinCarta, accion, diaET, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
+import { Bandera, Cara, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, accion, diaET, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
 import { PanelEmblemas, PildoraEmblemas, emblemasDe } from './emblemas.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
@@ -321,7 +321,7 @@ function NumerosB({ liga, f, q }) {
         <b>{f.ovr || '—'}</b><Rango liga={liga} rg={f.rg} /><small>OVR {q('ovr')}</small>
       </div>
       <div className="pf8-tres">
-        <div><b className={num(f.pts || 0).length > 7 ? 'largo' : undefined}>{num(f.pts || 0)}</b><small>PUNTOS {q('puntos')}</small></div>
+        <div><b className={num(f.pts || 0).length > 6 ? 'largo' : undefined}>{num(f.pts || 0)}</b><small>PUNTOS {q('puntos')}</small></div>
         <div><b>{f.ev || 0}</b><small>EVENTOS {q('eventos')}</small></div>
         <div title={f.wr ? undefined : 'El Win% aparece con 10 eventos'}><b>{wr}</b><small>WIN {q('win')}</small></div>
       </div>
@@ -377,9 +377,9 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros }) {
       <div className="pf8-cover" />
       <MenuMas liga={liga} f={f} k={k} esYo={esYo} dc={dc} onEmblemas={() => onEmblemas('')} onReportar={() => setRep(true)} />
       <section className="pf8-cab">
-        <div className="pf8-carta">
-          {cs.length ? <Carta liga={liga} k={k} cual={cs[0]} cls="tj-c" /> : <SinCarta liga={liga} k={k} nombre={f.n} cc={f.cc} cls="tj-c" />}
-        </div>
+        {/* 👤 SU FOTO, EN UN CÍRCULO, en vez de la carta (Dlx, 21/10/2026: «en vez de la tarjeta que sea la foto elegida en
+            mi perfil… en un círculo»): la de /foto, o la inicial si no tiene. Las cartas siguen en la puerta de Tarjetas */}
+        <div className="pf8-carta"><Cara liga={liga} k={k} nombre={f.n} cls="cara pf8-cara" /></div>
         <div className="pf8-tx">
           <span className="tag">{f.solo ? 'EN LA LIGA' : f.pos ? '#' + f.pos + ' DE LA TEMPORADA' : 'FUERA DE CONCURSO'} · {liga.temp}</span>
           <div className="pf8-nom">
