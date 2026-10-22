@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-22T06:55:01+00:00",
+ "cuando": "2026-10-22T15:24:46+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -399,16 +399,14 @@
    "staff": {},
    "autor": "Geronimo",
    "staff_cuentas": {},
-   "categoria_id": "1497457390637809837",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1497457390637809837"
   },
   {
    "nombre": "LA ISLA DE OKINAWA V.3",
    "servidor": "FFA",
    "canal": "✦🏆—eventos",
-   "msg_id": "1562708235482570773",
-   "cuando": "2026-10-22T06:04:37",
+   "msg_id": "1562848088069242921",
+   "cuando": "2026-10-22T15:20:20",
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "KRAVITZ",
@@ -429,22 +427,24 @@
    "premios": "ROL CAMPEON Y PUNTOS RANKING",
    "staff": {
     "jurado": [
-     "🧑‍⚖️ KRAVITZ 🇨🇷"
+     "Kravitz",
+     "mats"
     ],
     "host": [
      "🎤 KRAVITZ 🇨🇷"
     ],
     "dj": [
-     "Kravitz"
+     "Kravitz",
+     "♾️.DarnBlessMC"
     ]
    },
    "autor": "Kravitz",
    "staff_cuentas": {
-    "Kravitz": "1345962362615894027"
+    "Kravitz": "1345962362615894027",
+    "mats": "597240876573392946",
+    "♾️.DarnBlessMC": "1508771760709963930"
    },
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "qcyo rapeen",
@@ -473,9 +473,7 @@
    "staff": {},
    "autor": "Nc",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 30 1 VS 1",
@@ -509,9 +507,7 @@
    },
    "autor": "Lewito",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS",
@@ -545,9 +541,7 @@
    },
    "autor": "Lewito",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "LA ISLA DE OKINAWA V.2 🗾☯️ (DUPLAS)",
@@ -590,9 +584,7 @@
     "Kravitz": "1345962362615894027",
     "Zaik": "1555067257376346122"
    },
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "LA REDENCION VOL.6",
@@ -641,9 +633,7 @@
     "Zaik": "1555067257376346122",
     "𓂀": "1071185986366742630"
    },
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "ME QUISIERA MORIR, PERO NO MULTIVERSE VOL.2",
@@ -692,9 +682,7 @@
     "Lewito": "1086485696572817418",
     "Flennzs | ⛩️": "1414431452346581052"
    },
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "FREESTYLE LEAGUE N°3",
@@ -723,9 +711,7 @@
    "staff": {},
    "autor": "LRS la sustancia  💫",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "FREESTYLE LEAGUE N°2",
@@ -754,9 +740,7 @@
    "staff": {},
    "autor": "LRS la sustancia  💫",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "LA ISLA DE OKINAWA V.1",
@@ -799,9 +783,7 @@
     "Bootrax Humilde": "1122273746099638354",
     "PolloSport": "716016310202400848"
    },
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 7",
@@ -844,9 +826,7 @@
    },
    "autor": "Lewito",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "TRIBIA",
@@ -887,9 +867,7 @@
    "staff_cuentas": {
     "Velatz": "1426686911908675628"
    },
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL 28 PANDILLAS",
@@ -928,9 +906,7 @@
    },
    "autor": "Lewito",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "DESGRACIAS EN TOKYO VOL27 PANDILLAS",
@@ -978,9 +954,7 @@
     "Flennzs | ⛩️": "1414431452346581052",
     "Krish": "1513620494199558295"
    },
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "LA REDENCION VOL.5",
@@ -1021,9 +995,7 @@
    "staff_cuentas": {
     "Velatz": "1426686911908675628"
    },
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 6",
@@ -1070,9 +1042,7 @@
    },
    "autor": "Lewito",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "DEM UZBEKISTAN FECHA 3",
@@ -1101,9 +1071,7 @@
    "staff": {},
    "autor": "HERYIETEERJOUKATEITHORER",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "FREESTYLE LEAGUE",
@@ -1132,9 +1100,7 @@
    "staff": {},
    "autor": "LRS la sustancia  💫",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "PRITTY FREE",
@@ -1163,9 +1129,7 @@
    "staff": {},
    "autor": "Nc",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "DEM UZBEKISTAN FECHA 2",
@@ -1194,9 +1158,7 @@
    "staff": {},
    "autor": "HERYIETEERJOUKATEITHORER",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 5",
@@ -1239,9 +1201,7 @@
    },
    "autor": "Lewito",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "qcyo rapeen",
@@ -1270,9 +1230,7 @@
    "staff": {},
    "autor": "Nc",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "T1 63",
@@ -1297,9 +1255,7 @@
    "autor": "Dlxmouche",
    "staff_cuentas": {},
    "de_imagen": true,
-   "categoria_id": "1468472443843776657",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-22T06:16:05"
+   "categoria_id": "1468472443843776657"
   },
   {
    "nombre": "FLEIVA FREE",
@@ -6972,6 +6928,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "<@1462602972197556237> 🇪🇨",
+   "quien": "thekravitz777",
+   "discord_id": "1345962362615894027",
+   "msg_id": "1562848848643227649",
+   "cuando": "2026-10-22T15:23:21"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "mats🇺🇾",
+   "quien": "matttt.15",
+   "discord_id": "597240876573392946",
+   "msg_id": "1562721101891772519",
+   "cuando": "2026-10-22T06:55:44"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",

@@ -1723,6 +1723,75 @@
     "233"
    ],
    "escribio": {}
+  },
+  {
+   "id": "9cfd01891e",
+   "tipo": "Batalla sin ganador",
+   "sec": "LA ISLA DE OKINAWA V.3 · FFA · 22/10 · #498",
+   "que": "¿Quién ganó en semifinales?\nDarnBless 🇨🇴 🆚 Sultán🇧🇴",
+   "r": "No se jugó",
+   "regla": "R4 · una batalla que es copia de otra ya cargada",
+   "rk": "R4",
+   "por": "el ciclo",
+   "porque": "es la misma batalla que «DarnBless vs SULTAN» (ganó DarnBless), ya cargada en el #498: contestar «Ganó» la contaría dos veces",
+   "t": 1792683194314,
+   "filas": [
+    794
+   ],
+   "variantes": [
+    "__ LA ISLA DE OKINAWA V.3 __ · FFA · 22/10 · semifinales · DarnBless 🇨🇴 🆚 Sultán🇧🇴"
+   ],
+   "escribio": {
+    "batalla": "__ LA ISLA DE OKINAWA V.3 __ · FFA · 22/10 · semifinales · DarnBless 🇨🇴 🆚 Sultán🇧🇴"
+   }
+  },
+  {
+   "id": "00d212c04f",
+   "tipo": "Batalla sin ganador",
+   "sec": "LA ISLA DE OKINAWA V.3 · FFA · 22/10 · #498",
+   "que": "¿Quién ganó en final?\nokam 🇨🇷 🆚 Aldre 🇦🇷",
+   "r": "No se jugó",
+   "regla": "R4 · una batalla que es copia de otra ya cargada",
+   "rk": "R4",
+   "por": "el ciclo",
+   "porque": "es la misma batalla que «OKAM vs Aldre» (ganó OKAM), ya cargada en el #498: contestar «Ganó» la contaría dos veces",
+   "t": 1792683194314,
+   "filas": [
+    795
+   ],
+   "variantes": [
+    "__ LA ISLA DE OKINAWA V.3 __ · FFA · 22/10 · final · okam 🇨🇷 🆚 Aldre 🇦🇷"
+   ],
+   "escribio": {
+    "batalla": "__ LA ISLA DE OKINAWA V.3 __ · FFA · 22/10 · final · okam 🇨🇷 🆚 Aldre 🇦🇷"
+   }
+  },
+  {
+   "id": "0854be450e",
+   "tipo": "Nombre desconocido",
+   "sec": "LA ISLA DE OKINAWA V.3 · FFA · 22/10 · #498",
+   "que": "¿Quién es «reenkharnazhion 🇨🇱»?",
+   "r": "Es Cronox",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Cronox: la misma cuenta de Discord",
+   "t": 1792683194314,
+   "filas": [
+    797
+   ],
+   "variantes": [
+    "reenkharnazhion 🇨🇱"
+   ],
+   "escribio": {
+    "alias": [
+     "reenkharnazhion",
+     "Cronox"
+    ],
+    "filas": [
+     302
+    ]
+   }
   }
  ],
  "deshechas": []

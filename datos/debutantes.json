@@ -78,12 +78,12 @@
    "chat": "2026-10-19",
    "con": null,
    "cumplido": "",
-   "debut": "2026-10-18T21:01:38+00:00",
+   "debut": "2026-10-18T21:59:50+00:00",
    "did": "",
    "evento": "LA ISLA DE OKINAWA V.1",
    "n": 485,
    "sv": "FFA",
-   "vence": "2026-10-25T21:01:38+00:00",
+   "vence": "2026-10-25T21:59:50+00:00",
    "vencido": false
   },
   "Chente": {
@@ -235,7 +235,7 @@
    "avisado_cumplido": "2026-10-18",
    "chat": "2026-10-16",
    "con": 485,
-   "cumplido": "2026-10-18T21:01:38+00:00",
+   "cumplido": "2026-10-18T21:59:50+00:00",
    "debut": "2026-10-16T20:31:59+00:00",
    "did": "1282772759902162954",
    "evento": "PRADERAP VOL.1",
@@ -249,13 +249,24 @@
    "avisado_cumplido": "2026-10-18",
    "chat": "2026-10-18",
    "con": 485,
-   "cumplido": "2026-10-18T21:01:38+00:00",
+   "cumplido": "2026-10-18T21:59:50+00:00",
    "debut": "2026-10-18T20:57:26+00:00",
    "did": "1203061395814350918",
    "evento": "LA BELLA ARTE DE LA DESGRACIA VOL7",
    "n": 484,
    "sv": "FFA",
    "vence": "2026-10-25T20:57:26+00:00",
+   "vencido": false
+  },
+  "Ineedrubbers": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-22T06:18:00+00:00",
+   "did": "",
+   "evento": "LA ISLA DE OKINAWA V.3",
+   "n": 498,
+   "sv": "FFA",
+   "vence": "2026-10-29T06:18:00+00:00",
    "vencido": false
   },
   "J.r": {
@@ -302,7 +313,7 @@
    "avisado_cumplido": "2026-10-18",
    "chat": "2026-10-18",
    "con": 485,
-   "cumplido": "2026-10-18T21:01:38+00:00",
+   "cumplido": "2026-10-18T21:59:50+00:00",
    "debut": "2026-10-18T20:57:26+00:00",
    "did": "1095893775383023708",
    "evento": "LA BELLA ARTE DE LA DESGRACIA VOL7",
@@ -449,12 +460,12 @@
    "chat": "2026-10-19",
    "con": 492,
    "cumplido": "2026-10-20T00:57:30+00:00",
-   "debut": "2026-10-18T21:01:38+00:00",
+   "debut": "2026-10-18T21:59:50+00:00",
    "did": "1373340031413911624",
    "evento": "LA ISLA DE OKINAWA V.1",
    "n": 485,
    "sv": "FFA",
-   "vence": "2026-10-25T21:01:38+00:00",
+   "vence": "2026-10-25T21:59:50+00:00",
    "vencido": false
   },
   "Milo": {
@@ -762,6 +773,17 @@
    "n": 496,
    "sv": "SR",
    "vence": "2026-10-28T21:05:52+00:00",
+   "vencido": false
+  },
+  "reenkharnazhion": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-22T06:18:00+00:00",
+   "did": "",
+   "evento": "LA ISLA DE OKINAWA V.3",
+   "n": 498,
+   "sv": "FFA",
+   "vence": "2026-10-29T06:18:00+00:00",
    "vencido": false
   },
   "tomyhilfiger": {

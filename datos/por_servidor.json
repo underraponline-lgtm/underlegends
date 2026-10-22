@@ -470,13 +470,16 @@
   },
   "Aldre": {
    "FFA": {
-    "duelos": "5/6",
-    "ev": 1,
+    "duelos": "6/8",
+    "ev": 2,
     "oro": 0,
-    "ovr": 45,
-    "pod": 0,
-    "pts": 9900,
-    "racha": "0/0"
+    "ovr": 49,
+    "pod": 1,
+    "pts": 17400,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
    }
   },
   "Alexi": {
@@ -527,12 +530,12 @@
     }
    },
    "FFA": {
-    "duelos": "2/6",
-    "ev": 11,
+    "duelos": "2/7",
+    "ev": 12,
     "oro": 2,
     "ovr": 60,
     "pod": 3,
-    "pts": 49674,
+    "pts": 52674,
     "racha": "0/3",
     "tg": {
      "fin": 3
@@ -1639,12 +1642,12 @@
     }
    },
    "FFA": {
-    "duelos": "",
-    "ev": 7,
+    "duelos": "2/4",
+    "ev": 8,
     "oro": 0,
-    "ovr": 50,
+    "ovr": 51,
     "pod": 0,
-    "pts": 22876,
+    "pts": 30751,
     "racha": "0/0"
    }
   },
@@ -3182,6 +3185,20 @@
     "pod": 0,
     "pts": 4400,
     "racha": "0/0"
+   }
+  },
+  "Ineedrubbers🇮🇱": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 3000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Infecte": {
@@ -5745,13 +5762,16 @@
   },
   "OKAM": {
    "FFA": {
-    "duelos": "1/2",
-    "ev": 3,
-    "oro": 0,
-    "ovr": 46,
-    "pod": 0,
-    "pts": 8063,
-    "racha": "0/1"
+    "duelos": "4/5",
+    "ev": 4,
+    "oro": 1,
+    "ovr": 50,
+    "pod": 1,
+    "pts": 19313,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
    },
    "SR": {
     "duelos": "",
@@ -6892,12 +6912,12 @@
   },
   "SULTAN": {
    "FFA": {
-    "duelos": "",
-    "ev": 2,
+    "duelos": "1/2",
+    "ev": 3,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 46,
     "pod": 0,
-    "pts": 4687,
+    "pts": 9937,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -7153,12 +7173,12 @@
     "racha": "0/0"
    },
    "FFA": {
-    "duelos": "4/8",
-    "ev": 13,
+    "duelos": "4/9",
+    "ev": 14,
     "oro": 0,
     "ovr": 61,
     "pod": 1,
-    "pts": 49258,
+    "pts": 52258,
     "racha": "0/1",
     "tg": {
      "fund": true
@@ -8778,6 +8798,20 @@
     "pod": 0,
     "pts": 2000,
     "racha": "0/0"
+   }
+  },
+  "reenkharnazhion 🇨🇱": {
+   "FFA": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 3000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "rodrilp": {

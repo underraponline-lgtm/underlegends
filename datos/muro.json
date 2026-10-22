@@ -129,19 +129,19 @@
 "temporada"
 ]
 },
-"abyssus": {
-"rg": "A",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "og": {
 "rg": "B",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"abyssus": {
+"rg": "A",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -672,6 +672,13 @@
 "servidor"
 ]
 },
+"darnbless": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "deluxe": {
 "rg": "",
 "c": [
@@ -776,13 +783,6 @@
 "rg": "",
 "c": []
 },
-"darnbless": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "pomberito": {
 "rg": "",
 "c": []
@@ -813,6 +813,13 @@
 "assuan": {
 "rg": "",
 "c": []
+},
+"okam": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "corvo": {
 "rg": "",
@@ -944,6 +951,13 @@
 "korey": {
 "rg": "",
 "c": []
+},
+"aldre": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "elsoolar": {
 "rg": "",
@@ -1159,16 +1173,13 @@
 "rg": "",
 "c": []
 },
-"saz": {
+"sultan": {
 "rg": "",
 "c": []
 },
-"okam": {
+"saz": {
 "rg": "",
-"c": [
-"servidor",
-"temporada"
-]
+"c": []
 },
 "gus": {
 "rg": "",
@@ -1357,13 +1368,6 @@
 "natsuki": {
 "rg": "",
 "c": []
-},
-"aldre": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "ragnar": {
 "rg": "",

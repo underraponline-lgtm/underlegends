@@ -26502,7 +26502,6 @@
   "escala": "16+",
   "fecha": "18/10",
   "links": [
-   "https://discord.com/channels/1468472442925092958/1557583344638623754/1561484428012818537",
    "https://discord.com/channels/1468472442925092958/1487207377601040516/1561499073217830963"
   ],
   "n": 485,
@@ -26589,14 +26588,6 @@
       ],
       "Tam, Liberia, Andres",
       ""
-     ],
-     [
-      [
-       "Tam, Liberia, Andres",
-       "Warap, Polosport, Panchok"
-      ],
-      "Tam, Liberia, Andres",
-      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Final"
@@ -29394,6 +29385,159 @@
     "Revo",
     "Octavos",
     625
+   ]
+  ]
+ },
+ "498": {
+  "dia": "2026-10-22",
+  "escala": "8-15",
+  "fecha": "22/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487206164864438513/1562711604339155016",
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1562844657770176552"
+  ],
+  "n": 498,
+  "nombre": "LA ISLA DE OKINAWA V.3",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "OKAM",
+       "Sin Limites"
+      ],
+      "OKAM",
+      ""
+     ],
+     [
+      [
+       "Aldre",
+       "Ineedrubbers🇮🇱",
+       "Andres"
+      ],
+      "Aldre",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "SULTAN",
+       "Andres"
+      ],
+      "SULTAN",
+      ""
+     ],
+     [
+      [
+       "DarnBless",
+       "reenkharnazhion 🇨🇱"
+      ],
+      "DarnBless",
+      "Revivido: DarnBless 🇨🇴"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "OKAM",
+       "DarnBless"
+      ],
+      "OKAM",
+      ""
+     ],
+     [
+      [
+       "Aldre",
+       "DarnBless"
+      ],
+      "Aldre",
+      ""
+     ],
+     [
+      [
+       "DarnBless",
+       "SULTAN"
+      ],
+      "DarnBless",
+      ""
+     ],
+     [
+      [
+       "DarnBless 🇨🇴",
+       "Sultán🇧🇴"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "OKAM",
+       "Aldre"
+      ],
+      "OKAM",
+      ""
+     ],
+     [
+      [
+       "okam 🇨🇷",
+       "Aldre 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "OKAM",
+    "Campeón",
+    7500
+   ],
+   [
+    "DarnBless",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Aldre",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "SULTAN",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Andres",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Ineedrubbers🇮🇱",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "reenkharnazhion 🇨🇱",
+    "Cuartos",
+    2000
    ]
   ]
  }

@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "f3dd1fa0ce3c1791",
+  "firma": "942152446e4051dc",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -5081,7 +5081,7 @@
    "Xclusivo": 10
   },
   "fecha": "09/10",
-  "firma": "0f0c6970248ec36b",
+  "firma": "81d639cee361e78b",
   "msg": "1558334120172462091",
   "nombre": "PROYECTO X VOL.2",
   "num": 440,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "271dcc55670babeb",
+  "firma": "72c6c9a9475eda57",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -11183,7 +11183,7 @@
    "Zignos": 20
   },
   "fecha": "13/10",
-  "firma": "34236f7476115bc1",
+  "firma": "f20aa98a8b8a63ce",
   "msg": "1559752028111114252",
   "nombre": "DEM UZBEKISTAN FECHA 2",
   "num": 468,
@@ -11549,7 +11549,7 @@
    "Verc": 10
   },
   "fecha": "13/10",
-  "firma": "f53bfea6c4af47ab",
+  "firma": "eb75998407b89910",
   "msg": "1559769924178804738",
   "nombre": "PRITTY FREE",
   "num": 469,
@@ -11964,7 +11964,7 @@
    "Vandu": 20
   },
   "fecha": "14/10",
-  "firma": "340a5e95836f0187",
+  "firma": "2016b59f156a8d5f",
   "msg": "1560019837609050254",
   "nombre": "DEM UZBEKISTAN FECHA 3",
   "num": 471,
@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "d62addfb9896bbc9",
+  "firma": "5e8e2afd046f71d2",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -17917,7 +17917,7 @@
    "Velatz": 37
   },
   "fecha": "21/10",
-  "firma": "3564143f68576fb5",
+  "firma": "17ff874ab91343b0",
   "msg": "1562578019472773131",
   "nombre": "__ DESGRACIAS EN TOKYO VOL 30 1 VS 1 __",
   "num": 494,
@@ -18130,7 +18130,7 @@
    "Xclusivo": 17
   },
   "fecha": "21/10",
-  "firma": "43331789d49591bc",
+  "firma": "cd1bea473f3f8cdf",
   "msg": "1562582559702130758",
   "nombre": "19 CUP - FUTCARD EDITION VOL.3",
   "num": 495,
@@ -18438,7 +18438,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "007541ad3426bb1b",
+  "firma": "3110c916a33e3826",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -18884,6 +18884,151 @@
     "Agente sombra",
     "Octavos",
     625
+   ]
+  ],
+  "v": 2
+ },
+ "498": {
+  "al_dia": true,
+  "antes": {
+   "Aldre": [
+    139,
+    249,
+    false
+   ],
+   "Andres": [
+    206,
+    39,
+    true
+   ],
+   "DarnBless": [
+    82,
+    109,
+    false
+   ],
+   "OKAM": [
+    112,
+    184,
+    false
+   ],
+   "SULTAN": [
+    323,
+    272,
+    true
+   ],
+   "Sin Limites": [
+    30,
+    36,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "OKAM",
+    "Sin Limites",
+    "OKAM"
+   ],
+   [
+    "Aldre",
+    "Ineedrubbers🇮🇱",
+    "Aldre"
+   ],
+   [
+    "Aldre",
+    "Andres",
+    "Aldre"
+   ],
+   [
+    "SULTAN",
+    "Andres",
+    "SULTAN"
+   ],
+   [
+    "DarnBless",
+    "reenkharnazhion 🇨🇱",
+    "DarnBless"
+   ],
+   [
+    "OKAM",
+    "DarnBless",
+    "OKAM"
+   ],
+   [
+    "Aldre",
+    "DarnBless",
+    "Aldre"
+   ],
+   [
+    "DarnBless",
+    "SULTAN",
+    "DarnBless"
+   ],
+   [
+    "OKAM",
+    "Aldre",
+    "OKAM"
+   ]
+  ],
+  "ev_antes": {
+   "Aldre": 1,
+   "Andres": 13,
+   "DarnBless": 8,
+   "OKAM": 4,
+   "SULTAN": 2,
+   "Sin Limites": 21
+  },
+  "fecha": "22/10",
+  "firma": "9f7315eaf22a4735",
+  "msg": "1562845541493374976",
+  "nombre": "__ LA ISLA DE OKINAWA V.3 __",
+  "num": 498,
+  "participantes": 10,
+  "sello": {
+   "OKAM": ""
+  },
+  "sv": "FFA",
+  "t": "2026-10-22T15:23:50Z",
+  "tabla": [
+   [
+    "OKAM",
+    "Campeón",
+    7500
+   ],
+   [
+    "DarnBless",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Aldre",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "SULTAN",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Ineedrubbers🇮🇱",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Andres",
+    "Cuartos",
+    2000
+   ],
+   [
+    "reenkharnazhion 🇨🇱",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2

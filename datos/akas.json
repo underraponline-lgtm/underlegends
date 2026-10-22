@@ -295,6 +295,7 @@
   "sebitas": "Liberia",
   "semi2desio": "Desio",
   "batalla3desio": "Desio",
+  "reenkharnazhion": "Cronox",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1521,6 +1522,10 @@
   [
    "🟢 Batalla 3: Desio",
    "Desio"
+  ],
+  [
+   "reenkharnazhion",
+   "Cronox"
   ],
   [
    "Nexus",
