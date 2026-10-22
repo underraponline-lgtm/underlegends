@@ -251,6 +251,8 @@
 .pf8-sw:disabled{cursor:wait;opacity:.7}
 @media (prefers-reduced-motion: reduce){.pf8-sw i{transition:none}}
 .pf8-aj-b{display:flex;flex-wrap:wrap;gap:8px}
+/* el panel es claro siempre: los botones de borde toman su tinta de la página (blanca en la escena) y no se veían */
+.pf8-aviso .btn.borde{border-color:#030304;color:#030304;background:#F6F6F6}
 /* 🧭 el índice */
 .pf8-ind{display:flex;gap:8px;overflow-x:auto;padding:12px 16px;border-bottom:2px solid var(--linea);background:var(--fondo);scrollbar-width:none}
 .pf8-ind button{flex:none;min-height:38px;padding:0 14px;border:1.5px solid var(--suave);border-radius:4px;background:var(--fondo);color:var(--tinta);
