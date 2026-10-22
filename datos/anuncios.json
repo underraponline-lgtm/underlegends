@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-22T03:24:27+00:00",
+ "cuando": "2026-10-22T03:54:17+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -2269,30 +2269,6 @@
    "modalidad": "",
    "horario": "🇦🇷🇧🇷 — 9:00 p.m.",
    "fecha": "",
-   "premios": "",
-   "staff": {},
-   "autor": "B.M",
-   "staff_cuentas": {},
-   "categoria_id": "1076324234588082206"
-  },
-  {
-   "nombre": "7 jul 2026",
-   "servidor": "FRZ",
-   "canal": "➣「📩」anuncios",
-   "msg_id": "1519207200336252949",
-   "cuando": "2026-06-24T05:07:02",
-   "canal_id": "850777668386291712",
-   "guild_id": "838593179187544064",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "62134e35e5b6d209",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "",
-   "fecha": "CONFIRMADA PARA LA PRIMERA JORNADA DE FMS",
    "premios": "",
    "staff": {},
    "autor": "B.M",
@@ -6318,6 +6294,35 @@
    "categoria_id": "1283208296714600560"
   },
   {
+   "nombre": "GG SANGRERAP",
+   "servidor": "FDS",
+   "canal": "🎉╏eventos",
+   "msg_id": "1562668298313924619",
+   "cuando": "2026-10-22T03:25:55",
+   "canal_id": "1536569364659044402",
+   "guild_id": "1489848581203689535",
+   "organizador": "@Cu?",
+   "orgs": [
+    {
+     "n": "Cu?",
+     "id": "1452005860493492335"
+    }
+   ],
+   "autor_h": "d637fa8d09166f5f",
+   "cupos_texto": "0/8-16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "Artezzy",
+   "staff_cuentas": {},
+   "categoria_id": "1489848582189224103"
+  },
+  {
    "nombre": "RAP SIN GROSERIAS (Venezuela version)",
    "servidor": "FDS",
    "canal": "🎉╏eventos",
@@ -6952,42 +6957,90 @@
     "Artezzy": "1435531540472795240"
    },
    "categoria_id": "1489848582189224103"
-  },
-  {
-   "nombre": "ULTIMO VERSO 1v1",
-   "servidor": "FDS",
-   "canal": "🎉╏eventos",
-   "msg_id": "1536858204217286758",
-   "cuando": "2026-08-11T22:05:49",
-   "canal_id": "1536569364659044402",
-   "guild_id": "1489848581203689535",
-   "organizador": "@Artezzy",
-   "orgs": [
-    {
-     "n": "Artezzy",
-     "id": "1435531540472795240"
-    }
-   ],
-   "autor_h": "d637fa8d09166f5f",
-   "cupos_texto": "8/8-16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "<t:1786502700:F>",
-   "fecha": "",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "mas rato info"
-    ]
-   },
-   "autor": "Artezzy",
-   "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1562673734224183518",
+   "cuando": "2026-10-22T03:47:31"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Nerick 🇵🇪",
+   "quien": "erickrdz12",
+   "discord_id": "1129597963421888593",
+   "msg_id": "1562670430530183189",
+   "cuando": "2026-10-22T03:34:23"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Vilca🇵🇪",
+   "quien": "vilca_16",
+   "discord_id": "846870712950194196",
+   "msg_id": "1562670360455807108",
+   "cuando": "2026-10-22T03:34:06"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "giansito🇵🇪",
+   "quien": "gian_075",
+   "discord_id": "664288438563897354",
+   "msg_id": "1562669542348562495",
+   "cuando": "2026-10-22T03:30:51"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "OKAM🇨🇷",
+   "quien": "okam77_25976",
+   "discord_id": "1512148565890306153",
+   "msg_id": "1562668681899679808",
+   "cuando": "2026-10-22T03:27:26"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1562668483743850540",
+   "cuando": "2026-10-22T03:26:39"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Artezzy 🇵🇪",
+   "quien": "h6itam29",
+   "discord_id": "1435531540472795240",
+   "msg_id": "1562668440039460904",
+   "cuando": "2026-10-22T03:26:29"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Sosa",
+   "quien": "sosaatrz",
+   "discord_id": "1471153954254622774",
+   "msg_id": "1562668426969751625",
+   "cuando": "2026-10-22T03:26:25"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Soul B 🇨🇱",
+   "quien": "sj.2008_",
+   "discord_id": "645308964141137952",
+   "msg_id": "1562668352583901185",
+   "cuando": "2026-10-22T03:26:08"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones-2",

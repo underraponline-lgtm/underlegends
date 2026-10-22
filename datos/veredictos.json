@@ -958,6 +958,28 @@
    "b": "PICHULITA POLLO",
    "ganador": "ZA TENOR",
    "votos": "1–0"
+  },
+  "1562671924377682001": {
+   "id": "1562671924377682001",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792640419812,
+   "a": "SOUL B",
+   "b": "SOSATR",
+   "ganador": "SOUL B",
+   "votos": "1–0"
+  },
+  "1562674307887398992": {
+   "id": "1562674307887398992",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792640988085,
+   "a": "nerick",
+   "b": "SOSATR",
+   "ganador": "SOSATR",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5426,6 +5448,70 @@
      ],
      "ZA TENOR",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1562670298824704092": {
+   "id": "1562670298824704092",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1500675902042931280",
+   "pub": 1792640032250,
+   "ed": 1792641027337,
+   "texto": "`[ CUARTOS ]`\n⌞Soul B 🇨🇱⌝ 🆚 ⌞SosaTR 🇺🇾⌝\n⌞Nerick 🇵🇪⌝ 🆚 ⌞SosaTR 🇺🇾 2da vida⌝\n⌞OKAM 🇨🇷⌝ 🆚 ⌞MC Arepa 🇻🇪⌝\n⌞Giansito 🇵🇪⌝ 🆚 ⌞Vilca 🇵🇪⌝\n`[ SEMIFINALES ]`\n⌞Soul B 🇨🇱⌝ 🆚 ⌞SosaTR 🇺🇾⌝\n`[ FINAL ]`",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "Soul B 🇨🇱",
+      "SosaTR 🇺🇾"
+     ],
+     null,
+     "pasan 2, no hay un ganador",
+     [
+      "Soul B 🇨🇱",
+      "SosaTR 🇺🇾"
+     ]
+    ],
+    [
+     "CUARTOS",
+     [
+      "Nerick 🇵🇪",
+      "SosaTR 🇺🇾 2da vida"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "OKAM 🇨🇷",
+      "MC Arepa 🇻🇪"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Giansito 🇵🇪",
+      "Vilca 🇵🇪"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Soul B 🇨🇱",
+      "SosaTR 🇺🇾"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
