@@ -216,6 +216,44 @@ def clasificar_duelos(filas, pais_de):
     return ({k: (gan.get(k, 0), n) for k, n in jug.items()}, nac, inter)
 
 
+def cruces_triples(llaves, pais_de, alias=None):
+    """Los cruces de los TRIPLES, por persona: `{k: [nacionales, internacionales]}`.
+
+    🔑 Dlx, 21/10/2026, por Kravitz —le ganó un triple a J19 y OKAM, los dos de Costa Rica, y su carta de País seguía
+    en 0 nacionales—: *«debería contar, pero no para # de duelos»*. Un triple NO es un duelo (Dlx, 21/09: «sólo vale
+    cuando el formato es 1v1») y por eso no entra a `1v1`, al Ranking Duelos ni al Win%; pero SÍ te cruzaste con cada
+    uno de los otros dos. Esto cuenta esos cruces para el REQUISITO de la carta de País (`crn_t`/`cri_t`, ver
+    `comun/requisitos.py`), y nada más.
+
+    Una batalla cuenta si tiene tres lados o más, NINGUNO es un equipo (`equipos.es_equipo`: un triple de pandillas
+    son tres equipos, no tres personas) y tiene ganador (una que espera en ✅ Decidir puede ser alguien que no se
+    presentó). Cada uno suma un cruce con cada uno de los otros, gane o pierda: el requisito pide haber jugado. Sin
+    país de los dos lados no cuenta para ninguno, como en `clasificar_duelos()`.
+    """
+    from equipos import es_equipo
+    alias = alias or {}
+    out = defaultdict(lambda: [0, 0])
+    for ev in (llaves or {}).values():
+        if not isinstance(ev, dict):
+            continue
+        for R in ev.get('rondas') or []:
+            for b in (R.get('b') if isinstance(R, dict) else None) or []:
+                lados = b[0] if b and isinstance(b[0], list) else []
+                if len(lados) < 3 or len(b) < 2 or not str(b[1] or '').strip():
+                    continue
+                if any(es_equipo(x) for x in lados):
+                    continue
+                ks = [norm(alias.get(norm(x), x)) for x in lados]
+                for i, a in enumerate(ks):
+                    for j, c in enumerate(ks):
+                        if i == j or a == c:
+                            continue
+                        pa, pc = pais_de.get(a, ''), pais_de.get(c, '')
+                        if pa and pc:
+                            out[a][0 if pa == pc else 1] += 1
+    return out
+
+
 def hechos_tags(pool, D=None, temp=None):
     """🏷️ Le pone a cada fila su `tg_c` (Competitiva) y su `tg_p` (País). Pura: no lee el Sheet —la temporada sale de
     `datos/temporada_pool.json`, que este ciclo ya escribió— y se prueba con `python sheet/hechos_tags.py`.
@@ -285,13 +323,26 @@ def _self_check():
     # que este modulo llena sean los que el requisito mira. Mirar solo
     # el primero dejaria `din_t` sin cubrir, que es donde un typo se
     # esconde mejor: daria 0 para todos y la carta no saldria nunca.
+    # 🤝 los triples (21/10/2026): Kravitz le gana a J19 y OKAM, los tres de Costa Rica → dos cruces nacionales
+    # cada uno; uno de pandillas no cuenta, ni uno sin ganador
+    pais3 = {'kravitz': 'Costa Rica', 'j19': 'Costa Rica', 'okam': 'Costa Rica', 'ana': 'Argentina'}
+    ll3 = {'488': {'rondas': [{'b': [[['Kravitz', 'J19', 'OKAM'], 'Kravitz', 'triple (3 bandas)']]},
+                              {'b': [[['Kravitz', 'Ana', 'J19'], '', 'sin ganador']]},
+                              {'b': [[['Kravitz, Ana', 'J19, OKAM', 'Ana, OKAM'], 'Kravitz, Ana', 'triple (3 bandas)']]}]},
+           '489': {'rondas': [{'b': [[['Ana', 'OKAM', 'J19'], 'Ana', 'triple']]}]}}
+    tri = cruces_triples(ll3, pais3)
+    for que, ok in (('un triple con dos de su país son dos cruces nacionales, gane o pierda', tri['kravitz'] == [2, 0] and tri['j19'][0] == 3),
+                    ('y con otros dos de otro país, dos internacionales', tri['ana'] == [0, 2]),
+                    ('uno sin ganador o de equipos no cuenta', tri['okam'] == [3, 1])):
+        mal += not ok
+        print('   %s %s' % ('✅' if ok else '🔴', que))
     campos = [c for _m, c, _q in condiciones('pais')]
-    for c in ('dna_t', 'din_t'):
+    for c in ('crn_t', 'cri_t'):
         ok = c in campos
         mal += not ok
         print('\n   %s el requisito de País mira %r' % ('✅' if ok else '🔴', c))
     for dna, din, esp in ((2, 9, False), (3, 2, False), (3, 3, True)):
-        fila = {'dna_t': dna, 'din_t': din, 'cc': 'ar'}
+        fila = {'crn_t': dna, 'cri_t': din, 'cc': 'ar'}
         libre = falta('pais', fila) is None
         ok = libre == esp
         mal += not ok
@@ -423,6 +474,7 @@ def main():
     # de dónde es el rival»: meterlo en internacional infla el
     # denominador de gente cuyo rival simplemente no está en el padrón.
     DE_1V1, NAC, INT = {}, defaultdict(lambda: [0, 0]), defaultdict(lambda: [0, 0])
+    TRI = defaultdict(lambda: [0, 0])
     try:
         from padron import seguro as _pad_seguro          # noqa: F401
         from escribir import Hoja as _Hoja
@@ -431,6 +483,19 @@ def main():
                    for x in _PAD.cargar()}
         h1 = _Hoja('1v1')
         DE_1V1, NAC, INT = clasificar_duelos(h1.filas(), pais_de)
+        # 🤝 y los cruces de los triples, para el requisito de País (ver `cruces_triples()`)
+        try:
+            with open(os.path.join(RAIZ, 'datos', 'llaves_t1.json'), encoding='utf-8') as _f:
+                _ll = json.load(_f)
+            try:
+                with open(os.path.join(RAIZ, 'datos', 'akas.json'), encoding='utf-8') as _f:
+                    _al = {norm(a): v for a, v in (json.load(_f).get('alias') or {}).items()}
+            except (OSError, ValueError):
+                _al = {}
+            TRI = cruces_triples(_ll, pais_de, _al)
+            print('   los triples suman cruces a %d persona(s)' % sum(1 for v in TRI.values() if v[0] or v[1]))
+        except (OSError, ValueError) as e:
+            print('   ⚠️ sin los triples (%s): el requisito de País cuenta sólo duelos' % str(e)[:60])
         if DE_1V1:
             print('   la hoja `1v1` tiene duelos de %d persona(s): mandan ella'
                   % len(DE_1V1))
@@ -534,6 +599,9 @@ def main():
             # de la carta: Dlx pidió mínimo 3 duelos nacionales.
             'dna_v': NAC[k][0], 'dna_t': NAC[k][1],
             'din_v': INT[k][0], 'din_t': INT[k][1],
+            # 🤝 los CRUCES (duelos + los triples) son el requisito de la carta de País desde el 21/10/2026; DNA y DIN
+            # siguen siendo sólo duelos, que es lo que la carta muestra. Ver `cruces_triples()`
+            'crn_t': NAC[k][1] + TRI[k][0], 'cri_t': INT[k][1] + TRI[k][1],
             'pos': int(num(r[cc('#')])), 'total': len(filas),
             # 🔴 SIN 10 EVENTOS NO HAY LETRA, TAMPOCO ACÁ. Dlx, 23/09/2026:
             # *«sin 10 eventos no hay letra en ninguna carta»*. La Temporada

@@ -16,8 +16,9 @@ const plural = (n, uno, varios) => (n === 1 ? uno : varios);
 export function tipo(et) {
   const s = String(et || '').toUpperCase();
   if (/BANDERA/.test(s)) return 'pais';
-  if (/DUELOS? NACIONAL/.test(s)) return 'dnac';
-  if (/DUELOS? INTERNACIONAL/.test(s)) return 'dint';
+  // 🤝 «CRUCES» desde el 22/10/2026 (un duelo 1v1 o cada rival de un triple); «DUELOS» es la etiqueta de antes
+  if (/(DUELOS?|CRUCES?) NACIONAL/.test(s)) return 'dnac';
+  if (/(DUELOS?|CRUCES?) INTERNACIONAL/.test(s)) return 'dint';
   if (/EVENTO/.test(s)) return 'ev';
   if (/PARTICIPACI/.test(s)) return 'part';
   return '';
@@ -33,8 +34,8 @@ export function falta(et, lleva, pide, tu) {
   if (!resto) return null;
   const L = tu ? 'Te falta' : 'Le falta';
   const su = tu ? 'tu' : 'su';
-  const duelo = (que, contra) => L + ' jugar ' + resto + ' ' + plural(resto, 'duelo ' + que, 'duelos ' + que + 'es') + ' más: '
-    + plural(resto, 'una batalla', 'batallas') + ' 1 contra 1, en la llave de cualquier evento de la Liga, contra alguien ' + contra + '.';
+  const duelo = (que, contra) => L + (tu ? ' cruzarte' : ' cruzarse') + ' con ' + resto + ' ' + plural(resto, 'rival', 'rivales') + ' más ' + contra
+    + ' (' + plural(resto, 'un cruce ' + que, 'cruces ' + que + 'es') + '): en un 1 contra 1 o en un triple, en la llave de cualquier evento de la Liga.';
   switch (tipo(et)) {
     case 'ev':
     case 'part':
@@ -61,9 +62,9 @@ export function queEs(et, pide) {
     case 'pais':
       return 'Tener tu país: lo eliges en «Verificarme», en Mi cuenta.';
     case 'dnac':
-      return 'Jugar ' + n + ' ' + plural(n, 'duelo nacional', 'duelos nacionales') + ': batallas 1 contra 1, en la llave de un evento, contra alguien de tu mismo país.';
+      return 'Cruzarte con ' + n + ' ' + plural(n, 'rival', 'rivales') + ' de tu mismo país (' + plural(n, 'cruce nacional', 'cruces nacionales') + '): en un 1 contra 1 o en un triple, en la llave de un evento.';
     case 'dint':
-      return 'Jugar ' + n + ' ' + plural(n, 'duelo internacional', 'duelos internacionales') + ': batallas 1 contra 1, en la llave de un evento, contra alguien de otro país.';
+      return 'Cruzarte con ' + n + ' ' + plural(n, 'rival', 'rivales') + ' de otro país (' + plural(n, 'cruce internacional', 'cruces internacionales') + '): en un 1 contra 1 o en un triple, en la llave de un evento.';
     default:
       return n + ' ' + String(et || '').toLowerCase();
   }

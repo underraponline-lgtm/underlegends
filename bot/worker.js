@@ -1019,7 +1019,7 @@ const QUE_PIDE = '1️⃣ **Verifícate en la página**: se desbloquea tu **Serv
   'la de cada servidor donde estás.\n' +
   '2️⃣ **Cumplí tu primera Tarea del Pase de rapero** y se desbloquea tu **Temporada**. Si todavía no jugaste, ' +
   'sale con «—» y se llena con tu primer evento.\n' +
-  'La **Competitiva** pide 10 eventos y la de **País**, 3 duelos nacionales y 3 internacionales.';
+  'La **Competitiva** pide 10 eventos y la de **País**, 3 cruces nacionales y 3 internacionales (en un 1 contra 1 o en un triple).';
 // 🎟️ el Pase, donde están las Tareas de la semana
 const URL_PASE = 'https://underlegends.pages.dev/freestyle-rap/pase';
 const botonPase = () => ({ type: 2, style: 5, label: 'Ver el Pase', url: URL_PASE });

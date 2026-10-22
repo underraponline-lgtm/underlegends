@@ -12,7 +12,7 @@ rango competitivo y la carta»*. Dlx lo partió en cuatro:
 |---|---|
 | **Temporada** | 1 **participación** |
 | **Competitivo** | 10 eventos |
-| **País** | 1 bandera asignada + 3 duelos nacionales + 3 internacionales |
+| **País** | 1 bandera asignada + 3 cruces nacionales + 3 internacionales (duelos o triples) |
 | **Servidor** | nada |
 
 ⚠️ **ESTA TABLA SE MOVIO DOS VECES Y LA DE ACÁ ARRIBA QUEDÓ VIEJA LAS DOS.**
@@ -162,10 +162,14 @@ REQUISITOS = {
     # carta», que es cierto y no es lo que decide acá.
     'pais':        [(1,  'tiene_cc',  ('BANDERA ASIGNADA',
                                        'BANDERAS ASIGNADAS')),
-                    (3,  'dna_t',     ('DUELO NACIONAL',
-                                       'DUELOS NACIONALES')),
-                    (3,  'din_t',     ('DUELO INTERNACIONAL',
-                                       'DUELOS INTERNACIONALES'))],
+                    # 🤝 CRUCES Y NO DUELOS, desde el 21/10/2026 (Dlx, por Kravitz, que le ganó un triple a dos de
+                    # su país y seguía en 0: «debería contar, pero no para # de duelos»). Un cruce es un duelo 1v1
+                    # o cada rival de un triple; los duelos solos siguen siendo DNA/DIN en la carta. Ver
+                    # `cruces_triples()` de sheet/construir_pool_competitivo.py
+                    (3,  'crn_t',     ('CRUCE NACIONAL',
+                                       'CRUCES NACIONALES')),
+                    (3,  'cri_t',     ('CRUCE INTERNACIONAL',
+                                       'CRUCES INTERNACIONALES'))],
     'servidor':    [],
 }
 
@@ -299,7 +303,15 @@ def cuanto(p, campo, sv=None):
         return actividad(p)
     if campo == 'tiene_cc':
         return tiene_pais(p)
+    # 🤝 los cruces: con un pool de antes del 21/10/2026, que no los trae, valen los duelos (nadie pierde una carta
+    # mientras el pool se recalcula)
+    if campo in CRUCES and campo not in p:
+        return int(p.get(CRUCES[campo]) or 0)
     return int(p.get(campo) or 0)
+
+
+#: los cruces y el campo de duelos que los respalda en un pool viejo
+CRUCES = {'crn_t': 'dna_t', 'cri_t': 'din_t'}
 
 
 def falta(carta, p, sv=None):
@@ -355,24 +367,28 @@ def _check_compuesto():
     mal = 0
     print('\n  las tres de País, y cuál se muestra')
     casos = [
-        ('con las tres, sale', {'dna_t': 3, 'din_t': 3, 'cc': 'ar'}, None),
+        ('con las tres, sale', {'crn_t': 3, 'cri_t': 3, 'cc': 'ar'}, None),
         ('con bandera y sin duelos, pide los nacionales',
-         {'dna_t': 0, 'din_t': 0, 'cc': 'ar'}, 'DUELOS NACIONALES'),
+         {'crn_t': 0, 'cri_t': 0, 'cc': 'ar'}, 'CRUCES NACIONALES'),
         # 🔴 EL CASO QUE ORDENO LA LISTA: sin país, un duelo nacional
         # ni siquiera está definido. Pedirle duelos es pedirle algo
         # que no puede hacer.
         ('sin bandera, lo primero que pide es la bandera',
-         {'dna_t': 0, 'din_t': 0, 'cc': ''}, 'BANDERA ASIGNADA'),
+         {'crn_t': 0, 'cri_t': 0, 'cc': ''}, 'BANDERA ASIGNADA'),
         ('con las nacionales, pasa a pedir las internacionales',
-         {'dna_t': 3, 'din_t': 1, 'cc': 'ar'}, 'DUELOS INTERNACIONALES'),
+         {'crn_t': 3, 'cri_t': 1, 'cc': 'ar'}, 'CRUCES INTERNACIONALES'),
         # 🔴 EL CASO QUE UN `and` MAL ESCRITO DEJA PASAR: cumple los
         # duelos de las dos clases y **no tiene bandera**.
         ('con los seis duelos pero sin bandera, NO sale',
-         {'dna_t': 5, 'din_t': 9, 'cc': ''}, 'BANDERA ASIGNADA'),
+         {'crn_t': 5, 'cri_t': 9, 'cc': ''}, 'BANDERA ASIGNADA'),
+        # (estos dos, con un pool de antes de los cruces: valen sus duelos)
         ('y de a uno no alcanza', {'dna_t': 3, 'din_t': 0, 'cc': 'ar'},
-         'DUELOS INTERNACIONALES'),
+         'CRUCES INTERNACIONALES'),
         ('2 nacionales no son 3', {'dna_t': 2, 'din_t': 9, 'cc': 'ar'},
-         'DUELOS NACIONALES'),
+         'CRUCES NACIONALES'),
+        # 🤝 los cruces mandan sobre los duelos: Kravitz, con 0 duelos nacionales y un triple contra dos de su país
+        ('con un triple, los cruces cuentan aunque los duelos no', {'dna_t': 0, 'din_t': 5, 'crn_t': 3, 'cri_t': 5, 'cc': 'cr'},
+         None),
     ]
     for que, fila, esp in casos:
         r = falta('pais', fila)
@@ -524,7 +540,7 @@ def _self_check():
     #
     #     cuanto(p, 'ev')   -> 95
     #     cuanto(p, 'evv')  -> 0     <- el typo no se distingue del dato
-    DERIVADOS = ('ev_nac', 'ev_sv', 'actividad', 'tiene_cc')
+    DERIVADOS = ('ev_nac', 'ev_sv', 'actividad', 'tiene_cc', 'crn_t', 'cri_t')
     malos = []
     # 🔴 CON EL POOL VACIO ESTE CHEQUEO NO PUEDE CONTESTAR, Y DECIA QUE
     # SI. `any(campo in x for x in [])` es `False`, o sea que sobre cero

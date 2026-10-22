@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "3.98",
+   "dia": "2026-10-22",
+   "cuando": "2026-10-22T02:18:40-04:00",
+   "titulo": "Los triples cuentan para la tarjeta de País",
+   "items": [
+    "🤝 **La tarjeta de País pide «cruces»**: un duelo 1 contra 1 o cada rival de un triple. Si en un triple te tocan dos de tu país, son dos cruces nacionales, ganes o pierdas.",
+    "⚔️ **Un triple sigue sin ser un duelo**: no suma al Ranking Duelos ni al Win%, y las stats de duelos de la tarjeta siguen siendo sólo de 1 contra 1.",
+    "🏳️ Los triples entre equipos (pandillas) no cuentan: ahí te enfrentas a un equipo, no a una persona."
+   ]
+  },
+  {
    "version": "3.97",
    "dia": "2026-10-21",
    "cuando": "2026-10-21T20:03:11-04:00",

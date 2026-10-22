@@ -457,7 +457,7 @@ partió en cuatro:
 |---|---|
 | **Temporada** | 1 **participación** |
 | **Competitivo** | **10** eventos |
-| **País** | **3 duelos nacionales + 3 internacionales + bandera asignada** |
+| **País** | **3 cruces nacionales + 3 internacionales + bandera asignada** (un cruce = un duelo 1v1 o cada rival de un triple, desde el 22/10/2026; ver `cruces_triples()`) |
 | **Servidor** | nada |
 
 Vive en **`comun/requisitos.py`**, con su self-check — **y esa es la fuente**.

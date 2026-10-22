@@ -67,7 +67,7 @@ const PALABRAS = [
   ['Racha', 'Eventos seguidos llegando arriba de la llave: la final si es de menos de 16, la semifinal de 16 a 31, cuartos de 32 a 63 y octavos de 64 o más. En Duelos, duelos ganados seguidos.'],
   ['Evento', 'Un torneo de cualquier servidor asociado a la Liga Global, con su llave. Cada uno en el que participas cuenta, ganes o pierdas: son los que pide la Competitiva.'],
   ['Duelo', 'Una batalla uno contra uno. Los triples, los de cuatro y los de equipos no cuentan: ahí no hay un solo rival.'],
-  ['Duelo nacional', 'Un duelo contra alguien de tu mismo país; contra alguien de otro país es internacional. La tarjeta de País pide jugar de los dos.'],
+  ['Cruce nacional', 'Cruzarte con alguien de tu mismo país en una llave: en un 1 contra 1 o en un triple (cada rival del triple es un cruce). Con alguien de otro país es internacional. La tarjeta de País pide de los dos; un triple no cuenta como duelo para el Ranking Duelos ni el Win%.'],
   ['Win%', 'Duelos ganados sobre duelos jugados.'],
   ['Podio', 'Terminar primero, segundo o tercero en un evento.'],
   ['Walk-in', 'Entrar a una llave ya empezada, salteando rondas. Cobra menos, porque se saltó camino.'],
