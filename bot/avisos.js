@@ -3820,7 +3820,7 @@ export async function sesionFin(env, req) {
  * sesión. `{id}` o `{error, estado}`: 401 si hay que entrar con Discord, 503
  * si Discord no contesta (y entonces NO se manda a nadie a autorizar).
  */
-async function quienPide(req, env, d) {
+export async function quienPide(req, env, d) {
   const t = String((d && d.token) || '');
   const q = t ? await discordDe(t) : { id: await sesionDe(env, req) };
   if (q.id) { await anotarUso(env, q.id, 'web'); return { id: q.id }; }

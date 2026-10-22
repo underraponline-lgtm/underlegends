@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "3.97",
+   "dia": "2026-10-21",
+   "cuando": "2026-10-21T20:03:11-04:00",
+   "titulo": "Ajustes de tu perfil",
+   "items": [
+    "⚙️ **En tu perfil, «Editar mi perfil» abre tus ajustes**: también desde el menú «⋯».",
+    "🏷️ **Tu #N en el apodo de Discord, en todos los servidores, en ninguno o de a uno**, con un interruptor por servidor. Lo que elijas le gana a lo que diga cada servidor y se aplica en la próxima vuelta del bot. Es lo mismo que `/numeral`, pero de todos a la vez.",
+    "🔗 Y atajos a tu foto y tus redes, tu fondo y tus emblemas."
+   ]
+  },
+  {
    "version": "3.96",
    "dia": "2026-10-21",
    "cuando": "2026-10-21T19:24:04-04:00",

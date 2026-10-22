@@ -37,7 +37,7 @@
 // Object— y porque Node los prueba sin levantar el Worker entero. Ver
 // `bot/avisos.js`. La clase TIENE que exportarse desde el módulo principal:
 // Cloudflare busca ahí las clases de los Durable Objects.
-import { anotarUso, DUENO, NIVELES_CHAT, CFG_BASE, claveMedida, claveFoto, claveCiclo, APP_ID, claveValida } from './avisos.js';
+import { anotarUso, DUENO, NIVELES_CHAT, CFG_BASE, claveMedida, claveFoto, claveCiclo, APP_ID, claveValida, quienPide } from './avisos.js';
 import { Avisos, CRON_VIGIA, rutaAvisos, vigilar, marcarDisparo, olvidarAvisos, discordDe, sesionNueva,
   sesionFin, cookieSesion, SESION_DIAS } from './avisos.js';
 // 🛡️ el anti-raid (18/10/2026): `/antiraid` y sus botones. La vuelta de cada minuto vive en el objeto (avisos.js)
@@ -2072,6 +2072,50 @@ async function eleccionNick(env, gid, uid) {
   } catch (e) {
     return null;
   }
+}
+
+// 🏷️ TU «#N» EN EL APODO, DESDE TU PERFIL (Dlx, 21/10/2026: «haz que en mi perfil estén configuraciones extras, por
+// ejemplo activar el numeral en X servidores, o activarlo generalmente, o desactivarlo»). Lo mismo que `/numeral`, pero
+// de todos los servidores a la vez y desde la página: escribe la MISMA clave (`pnick:<guild>:<id>`, `{on}`), así que
+// `herramientas/sincronizar_puesto.py --ciclo` la aplica en la próxima vuelta y tu elección le sigue ganando a la del
+// servidor. Quién pide lo dice Discord (`quienPide`); sólo verificados (`d:`), porque el «#» es del Competitivo.
+// ⚠️ NO TOCA EL APODO ACÁ: sin el apodo de hoy de cada servidor (un pedido a Discord por servidor) se lo pondría a
+// ciegas; lo hace el ciclo, que ya los baja. Y sólo escribe lo que cambia: cada clave es una escritura del cupo de KV
+async function numeralPagina(req, env) {
+  const h = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' };
+  const json = (o, status) => new Response(JSON.stringify(o), { status: status || 200, headers: h });
+  if (req.method !== 'POST') return json({ error: 'metodo' }, 405);
+  const crudo = await req.text();
+  if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+  let d = null;
+  try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+  if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) return json({ error: 'faltan datos' }, 400);
+  const q = await quienPide(req, env, d);
+  if (!q.id) return json({ error: q.error }, q.estado);
+  let de = '';
+  try { de = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { de = ''; }
+  if (!claveValida(de)) return json({ error: 'sin_verificar' }, 403);
+  const svs = SERVIDORES.filter((s) => s.guild);
+  // cambiar: `{guild: true|false}`, sólo guilds de la Liga
+  if (d.cambiar && typeof d.cambiar === 'object') {
+    for (const [gid, on] of Object.entries(d.cambiar).slice(0, svs.length)) {
+      if (!aquiEs(gid) || typeof on !== 'boolean') continue;
+      const prev = await eleccionNick(env, gid, q.id);
+      if (prev && !!prev.on === on) continue;
+      try {
+        await env.KV.put(claveNick(gid, q.id), JSON.stringify({ on, antes: (prev && prev.antes) || '', ts: Date.now() }));
+      } catch (e) {
+        return json({ error: 'kv', detalle: String(e).slice(0, 60) }, 503);
+      }
+    }
+  }
+  let numero = 0;
+  try { numero = ((JSON.parse((await leerP(env, de)) || '{}').vs || {}).c || {}).n || 0; } catch (e) { numero = 0; }
+  const out = await Promise.all(svs.map(async (s) => {
+    const [mio, cfg] = await Promise.all([eleccionNick(env, s.guild, q.id), ajustes(env, s.guild)]);
+    return { sv: s.sv, n: s.nombre, gid: s.guild, mio: mio ? !!mio.on : null, sv_on: cfg.nick !== false };
+  }));
+  return json({ ok: true, numero, svs: out });
 }
 
 // ── /help ─────────────────────────────────────────────────────────────────
@@ -4309,6 +4353,7 @@ export default {
       && await frenoIP(env0, claveIP)) return muchos();
     // 📏 cada lectura de KV, contada por ruta (ver `kvMedido()`)
     const env = kvMedido(env0, ctx, req.method === 'POST' && camino === '/' ? 'interaccion' : camino);
+    if (camino === '/avisos/numeral') return numeralPagina(req, env);
     if (camino.startsWith('/avisos/')) return rutaAvisos(req, env, camino);
     // 🔑 «MI CUENTA» CON DISCORD: ver `cuentaDiscord()`
     if (camino === '/cuenta' && req.method === 'POST') return cuentaDiscord(req, env);

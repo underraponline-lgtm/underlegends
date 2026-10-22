@@ -221,9 +221,84 @@ function ReportarUsuario({ k, nombre, dc, onCerrar }) {
   );
 }
 
+// ⚙️ AJUSTES DE TU PERFIL (Dlx, 21/10/2026: «haz que en mi perfil estén configuraciones también extras, por ejemplo
+// activar el numeral en X servidores, o activarlo generalmente, o desactivarlo»). El «#N» de tu apodo en Discord, en
+// todos los servidores, en ninguno o de a uno —lo mismo que `/numeral`, que es de a un servidor—, y los atajos a lo
+// demás tuyo. Lo guarda el Worker (`numeralPagina()`) y lo aplica el ciclo en su próxima vuelta
+function AjustesPerfil({ onCerrar, onEmblemas }) {
+  const [est, setEst] = useState(null);
+  const [va, setVa] = useState(false);
+  const [elegir, setElegir] = useState(false);
+  const pedir = (cambiar) => {
+    if (typeof window.conCuenta !== 'function') { setEst({ error: 'sin_sesion' }); return; }
+    setVa(true);
+    window.conCuenta('/api/avisos/numeral', cambiar ? { cambiar } : {}).then((j) => {
+      setVa(false);
+      if (j) setEst(j.status === 200 ? j : { error: j.error || 'mal' });
+    }).catch(() => { setVa(false); setEst({ error: 'red' }); });
+  };
+  useEffect(() => {
+    pedir(null);
+    const f = (e) => { if (e.key === 'Escape') onCerrar(); };
+    window.addEventListener('keydown', f);
+    return () => window.removeEventListener('keydown', f);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const svs = (est && est.svs) || [];
+  // lo que rige en cada uno: lo tuyo si elegiste; si no, lo del servidor
+  const vale = (s) => (s.mio == null ? s.sv_on : s.mio);
+  const modo = !svs.length ? '' : svs.every(vale) ? 'todos' : svs.every((s) => !vale(s)) ? 'ninguno' : 'algunos';
+  const todos = (on) => { setElegir(false); pedir(Object.fromEntries(svs.map((s) => [s.gid, on]))); };
+  const err = est && est.error;
+  return (
+    <div className="emb-velo" role="presentation" onClick={onCerrar}>
+      <div className="pf8-aviso pf8-aj" role="dialog" aria-modal="true" aria-label="Ajustes de tu perfil" onClick={(e) => e.stopPropagation()}>
+        <button type="button" className="emb-x" onClick={onCerrar} aria-label="Cerrar"><Ico n="cerrar" t={18} /></button>
+        <h3>Ajustes de tu perfil</h3>
+        <section className="pf8-aj-s">
+          <h4>Tu #N en el apodo</h4>
+          <p>Tu puesto del Ranking Competitivo delante de tu apodo en Discord, por ejemplo «#21 | Tu nombre». Lo que elijas le gana a lo que diga cada servidor, y se aplica en la próxima vuelta del bot.</p>
+          {!est ? <p className="pf8-aj-nota">Cargando…</p>
+            : err === 'sin_verificar' ? <p className="pf8-mal">Para esto tienes que estar verificado. <a href="#/cuenta/verificar" onClick={onCerrar}>Verificarme</a></p>
+              : err === 'sin_sesion' || err === 'discord' ? <p className="pf8-aj-nota">Entra con Discord para cambiarlo. <button type="button" className="btn verde chico" onClick={accion.entrar}>Entrar con Discord</button></p>
+                : err ? <p className="pf8-mal">{errorCuentaTx(err)}</p> : <>
+                  {!est.numero ? <p className="pf8-aj-nota">Todavía no tienes número: aparece cuando entras al Competitivo (10 eventos). Lo que elijas acá queda guardado para ese día.</p> : <p className="pf8-aj-nota">Hoy eres el <b>#{est.numero}</b> del Competitivo.</p>}
+                  <div className="pf8-seg" role="radiogroup" aria-label="Dónde se ve tu número">
+                    <button type="button" role="radio" aria-checked={modo === 'todos' && !elegir} className={modo === 'todos' && !elegir ? 'on' : ''} disabled={va} onClick={() => todos(true)}>En todos</button>
+                    <button type="button" role="radio" aria-checked={modo === 'ninguno' && !elegir} className={modo === 'ninguno' && !elegir ? 'on' : ''} disabled={va} onClick={() => todos(false)}>En ninguno</button>
+                    <button type="button" role="radio" aria-checked={modo === 'algunos' || elegir} className={modo === 'algunos' || elegir ? 'on' : ''} disabled={va} onClick={() => setElegir(true)}>Elegir</button>
+                  </div>
+                  {modo === 'algunos' || elegir ? (
+                    <ul className="pf8-aj-l">
+                      {svs.map((s) => (
+                        <li key={s.gid}>
+                          <span><b>{s.n}</b><small>{s.mio == null ? 'lo decide el servidor' : 'lo elegiste tú'}</small></span>
+                          <button type="button" role="switch" aria-checked={vale(s)} aria-label={s.n} className={'pf8-sw' + (vale(s) ? ' on' : '')} disabled={va}
+                            onClick={() => pedir({ [s.gid]: !vale(s) })}><i /></button>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                  <p className="pf8-aj-nota">{va ? 'Guardando…' : 'Sólo cambia en los servidores donde estás.'}</p>
+                </>}
+        </section>
+        <section className="pf8-aj-s">
+          <h4>Lo demás de tu perfil</h4>
+          <div className="pf8-aj-b">
+            <a className="btn borde chico" href="#/cuenta/perfil" onClick={onCerrar}>Foto y redes</a>
+            <a className="btn borde chico" href="#/cuenta/fondo" onClick={onCerrar}>Tu fondo</a>
+            <button type="button" className="btn borde chico" onClick={() => { onCerrar(); onEmblemas(); }}>Tus emblemas</button>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+}
+const errorCuentaTx = (e) => (e === 'discord_ocupado' ? 'Discord no contesta ahora: prueba de nuevo en un minuto.'
+  : e === 'kv' ? 'No pude guardarlo ahora. Prueba de nuevo en un rato.' : 'No pude cargarlo. Prueba de nuevo en un rato.');
+
 // ⋯ EL MENÚ DE LA ESQUINA (Dlx, a la v10: «los 3 puntos de arriba a la derecha es un detallazo»). A un visitante:
 // Compartir, Comparar conmigo, Copiar el link, Invitar a mi crew y Reportar usuario. En tu perfil, atajos a lo tuyo
-function MenuMas({ liga, f, k, esYo, dc, onEmblemas, onReportar }) {
+function MenuMas({ liga, f, k, esYo, dc, onEmblemas, onReportar, onAjustes }) {
   const [ab, setAb] = useState(false);
   const [dijo, setDijo] = useState('');
   const ref = useRef(null);
@@ -248,6 +323,7 @@ function MenuMas({ liga, f, k, esYo, dc, onEmblemas, onReportar }) {
         <div className="pf8-menu" role="menu">
           {esYo ? <>
             <span className="pf8-menu-t">TU PERFIL</span>
+            <button type="button" role="menuitem" onClick={() => { setAb(false); onAjustes(); }}>⚙ Ajustes de mi perfil</button>
             <button type="button" role="menuitem" onClick={() => { setAb(false); onEmblemas(); }}>◆ Ver mis emblemas</button>
             <a role="menuitem" href="#/cuenta/fondo">🖼 Cambiar mi fondo</a>
             <a role="menuitem" href="#/cuenta/perfil">＠ Mi foto y mis redes</a>
@@ -354,7 +430,8 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros }) {
   const [qe, setQe] = useState('');
   const [aviso, setAviso] = useState('');
   const [rep, setRep] = useState(false);
-  useEffect(() => { setQe(''); setAviso(''); setRep(false); }, [k]);
+  const [aj, setAj] = useState(false);
+  useEffect(() => { setQe(''); setAviso(''); setRep(false); setAj(false); }, [k]);
   const q = (id) => <QueEsBoton k={id} abierto={qe === id} onToggle={() => setQe(qe === id ? '' : id)} />;
   // 🏷️ el rol: el primero de los suyos (el que pone Dlx antes que los de Discord). El de DRA (Freestyler, Rapero…), cuando viaje
   const rol = rls.length ? textoRol(rls[0]) : '';
@@ -375,7 +452,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros }) {
     <>
     <div className={'escena pf8' + (fondoPf ? ' con-fondo' : '')} style={{ '--mo-c': (sv && sv.color) || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298', ...silueta(sv && svE, sv && sv.color), ...(fondoPf ? { '--pf-fondo': fondoPf } : {}) }}>
       <div className="pf8-cover" />
-      <MenuMas liga={liga} f={f} k={k} esYo={esYo} dc={dc} onEmblemas={() => onEmblemas('')} onReportar={() => setRep(true)} />
+      <MenuMas liga={liga} f={f} k={k} esYo={esYo} dc={dc} onEmblemas={() => onEmblemas('')} onReportar={() => setRep(true)} onAjustes={() => setAj(true)} />
       <section className="pf8-cab">
         {/* 👤 SU FOTO, EN UN CÍRCULO, en vez de la carta (Dlx, 21/10/2026: «en vez de la tarjeta que sea la foto elegida en
             mi perfil… en un círculo»): la de /foto, o la inicial si no tiene. Las cartas siguen en la puerta de Tarjetas */}
@@ -403,7 +480,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros }) {
           {f.nv ? <p className="pf-nv"><b>Sin verificar.</b> {RQ.sinVerificar(f.nv, esYo)}{esYo ? <> <a href="#/cuenta/verificar">Verificarme</a></> : null}</p> : null}
         </div>
         <div className="pf8-acc">
-          {esYo ? <a className="btn borde pf8-seguir" href="#/cuenta/perfil">Editar mi perfil</a>
+          {esYo ? <button type="button" className="btn borde pf8-seguir" onClick={() => setAj(true)}>Editar mi perfil</button>
             : typeof window.alternarSigo === 'function' ? (
               <button type="button" className={'btn pf8-seguir ' + (si ? 'borde on' : 'verde')} aria-pressed={si} onClick={seguir}>
                 {si ? 'Siguiendo' : 'Seguir'}</button>
@@ -425,6 +502,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros }) {
     {/* (afuera de la escena, que corta lo que se le sale) */}
     {aviso ? <AvisoVerificar cual={aviso} nombre={f.n} onCerrar={() => setAviso('')} /> : null}
     {rep ? <ReportarUsuario k={k} nombre={f.n} dc={dc} onCerrar={() => setRep(false)} /> : null}
+    {aj ? <AjustesPerfil onCerrar={() => setAj(false)} onEmblemas={() => onEmblemas('')} /> : null}
     </>
   );
 }

@@ -65,6 +65,8 @@ const AVISOS = {
   '/api/avisos/liga-votar': 'POST',
   // un error en una llave (28/09/2026): con la sesión, como el voto
   '/api/avisos/reportar': 'POST',
+  // 🏷️ tu «#N» en el apodo, servidor por servidor, desde tu perfil (21/10/2026): ver `numeralPagina()` en bot/worker.js
+  '/api/avisos/numeral': 'POST',
   // 🔑 el precio por cabeza (28/09/2026): cuánto vale cada cabeza, poner un
   // precio y ver tu billetera. Ver `validarPrecio()` en bot/avisos.js
   '/api/avisos/precios': 'GET',

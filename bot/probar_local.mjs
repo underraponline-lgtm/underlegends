@@ -2595,6 +2595,22 @@ console.log('\nLAS ENCUESTAS\n');
   ok('uno bueno llega al objeto con el ID que dijo Discord, no con el que mandó la página',
      r.status === 200 && alObjeto.length === 1 && alObjeto[0][0].endsWith('/votar') &&
      alObjeto[0][1].quien === VIEJO && alObjeto[0][1].op === 'SR', JSON.stringify(alObjeto));
+  // 🏷️ tu «#N» en el apodo desde el perfil (21/10/2026): la misma clave que `/numeral`, sólo verificados y sólo guilds
+  // de la Liga; lo que ya está así no se vuelve a escribir
+  const numR = async (cuerpo) => {
+    const x = await worker.fetch(new Request('https://x/avisos/numeral', { method: 'POST', body: JSON.stringify(cuerpo) }), env, ctx);
+    return { status: x.status, json: JSON.parse(await x.text()) };
+  };
+  r = await numR({ token: 'permisoBueno1234567890' });
+  ok('el #N desde el perfil: sin verificar, no', r.status === 403 && r.json.error === 'sin_verificar', JSON.stringify(r.json));
+  PUESTO['d:' + VIEJO] = 'konan';
+  r = await numR({ token: 'permisoBueno1234567890', cambiar: { '841017460341604382': false, '123': true } });
+  const dra = (r.json.svs || []).find((s) => s.gid === '841017460341604382') || {};
+  ok('verificado: lo apaga en DRA con la clave de /numeral, ignora un guild que no es de la Liga y dice cómo está cada uno',
+     r.status === 200 && JSON.parse(PUESTO['pnick:841017460341604382:' + VIEJO] || '{}').on === false && !('pnick:123:' + VIEJO in PUESTO) &&
+     dra.mio === false && (r.json.svs || []).length >= 10, JSON.stringify(r.json).slice(0, 200));
+  delete PUESTO['pnick:841017460341604382:' + VIEJO];
+  delete PUESTO['d:' + VIEJO];
   globalThis.fetch = async () => new Response('{"message":"401: Unauthorized"}', { status: 401 });
   r = await votarR({ token: 'permisoFalso1234567890', enc: 'x2:2026-10-05', op: 'SR' });
   ok('un permiso que Discord no reconoce: 401', r.status === 401 && r.json.error === 'discord');
