@@ -870,6 +870,17 @@
    "b": "MASINO",
    "ganador": "AGUS",
    "votos": "2–0"
+  },
+  "1562623973043339427": {
+   "id": "1562623973043339427",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792628987323,
+   "a": "UZI",
+   "b": "LEYENDA.X5",
+   "ganador": "UZI",
+   "votos": "2–0"
   }
  },
  "llaves": {
@@ -5203,6 +5214,37 @@
      [
       "PICHULA",
       "MAKMA"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1562623933079883777": {
+   "id": "1562623933079883777",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792628977795,
+   "ed": 1792629204577,
+   "texto": "`[ CUARTOS ]`\n⌞UZI⌝ 🆚 ⌞LEYENDA.X5⌝\n⌞CRISZJ⌝ 🆚 ⌞NOONE⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "UZI",
+      "LEYENDA.X5"
+     ],
+     "UZI",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "CRISZJ",
+      "NOONE"
      ],
      null,
      "última ronda y no dice campeón",

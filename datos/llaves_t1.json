@@ -28737,6 +28737,14 @@
      ],
      [
       [
+       "Desio",
+       "Dominick"
+      ],
+      "Desio",
+      ""
+     ],
+     [
+      [
        "MaYeuTyK",
        "🟢 Batalla 4: GHV",
        "Xclusivo"
@@ -28750,14 +28758,6 @@
        "Drexx"
       ],
       "🟢 Batalla 1: Carlos",
-      "ganador: ✅ Decidir"
-     ],
-     [
-      [
-       "🟢 Batalla 3: Desio",
-       "Dominick"
-      ],
-      "🟢 Batalla 3: Desio",
       "ganador: ✅ Decidir"
      ]
     ],
@@ -28779,7 +28779,7 @@
        "Desio"
       ],
       "MaYeuTyK",
-      "Walk-in 1: 🔴 Semi 2: DESIO"
+      ""
      ]
     ],
     "r": "Semifinales"
@@ -28811,6 +28811,11 @@
     3750
    ],
    [
+    "Desio",
+    "Semifinal",
+    3500
+   ],
+   [
     "Miniboy",
     "Semifinal",
     3500
@@ -28839,11 +28844,6 @@
     "🟢 Batalla 4: GHV",
     "Cuartos",
     2000
-   ],
-   [
-    "Desio",
-    "Semifinal",
-    1750
    ]
   ]
  },

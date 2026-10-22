@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "69996f2dd31e4c1f",
+  "firma": "f3dd1fa0ce3c1791",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -5081,7 +5081,7 @@
    "Xclusivo": 10
   },
   "fecha": "09/10",
-  "firma": "86b9227ac3410fd6",
+  "firma": "1c120416e28b1606",
   "msg": "1558334120172462091",
   "nombre": "PROYECTO X VOL.2",
   "num": 440,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "a61b3a81338d0347",
+  "firma": "271dcc55670babeb",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -11549,7 +11549,7 @@
    "Verc": 10
   },
   "fecha": "13/10",
-  "firma": "23d035810eedef0e",
+  "firma": "f53bfea6c4af47ab",
   "msg": "1559769924178804738",
   "nombre": "PRITTY FREE",
   "num": 469,
@@ -11964,7 +11964,7 @@
    "Vandu": 20
   },
   "fecha": "14/10",
-  "firma": "563e10db6a12acb8",
+  "firma": "b68637d57904ceab",
   "msg": "1560019837609050254",
   "nombre": "DEM UZBEKISTAN FECHA 3",
   "num": 471,
@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "181d983d067d8fbd",
+  "firma": "d62addfb9896bbc9",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -13346,7 +13346,7 @@
    "Xubaru": 7
   },
   "fecha": "16/10",
-  "firma": "47b403ebef540387",
+  "firma": "63b01fbe8a66f0a8",
   "msg": "1560725555203014688",
   "nombre": "__ DESGRACIAS EN TOKYO VOL27 __",
   "num": 477,
@@ -17917,7 +17917,7 @@
    "Velatz": 37
   },
   "fecha": "21/10",
-  "firma": "74e9b32b4b2eef02",
+  "firma": "c060cb84cdfff6a0",
   "msg": "1562578019472773131",
   "nombre": "__ DESGRACIAS EN TOKYO VOL 30 1 VS 1 __",
   "num": 494,
@@ -18088,6 +18088,11 @@
     "Miniboy"
    ],
    [
+    "Desio",
+    "Dominick",
+    "Desio"
+   ],
+   [
     "MaYeuTyK",
     "🟢 Batalla 4: GHV",
     "MaYeuTyK"
@@ -18116,11 +18121,6 @@
     "🟢 Batalla 1: Carlos",
     "Drexx",
     "🟢 Batalla 1: Carlos"
-   ],
-   [
-    "🟢 Batalla 3: Desio",
-    "Dominick",
-    "🟢 Batalla 3: Desio"
    ]
   ],
   "ev_antes": {
@@ -18130,7 +18130,7 @@
    "Xclusivo": 17
   },
   "fecha": "21/10",
-  "firma": "9b336e307ecf5fa8",
+  "firma": "1dcd7ab67c3ee3a7",
   "msg": "1562582559702130758",
   "nombre": "19 CUP - FUTCARD EDITION VOL.3",
   "num": 495,
@@ -18157,7 +18157,17 @@
     3500
    ],
    [
+    "Desio",
+    "Semifinal",
+    3500
+   ],
+   [
     "🟢 Batalla 2: Mco",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
     "Cuartos",
     2000
    ],
@@ -18175,16 +18185,6 @@
     "Drexx",
     "Cuartos",
     2000
-   ],
-   [
-    "Dominick",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Desio",
-    "Semifinal",
-    1750
    ]
   ],
   "v": 2
@@ -18437,7 +18437,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "e60a9dd79859e003",
+  "firma": "2e878dba0e4f4984",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,

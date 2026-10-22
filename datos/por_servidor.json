@@ -1721,12 +1721,12 @@
   },
   "Desio": {
    "DDF": {
-    "duelos": "0/1",
+    "duelos": "1/2",
     "ev": 1,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 1750,
+    "pts": 3500,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -8904,17 +8904,6 @@
     "tg": {
      "nuevo": true
     }
-   }
-  },
-  "🟢 Batalla 3: Desio": {
-   "DDF": {
-    "duelos": "1/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
    }
   },
   "🟢 Batalla 4: GHV": {

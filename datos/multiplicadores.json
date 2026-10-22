@@ -702,20 +702,20 @@
     "nuevos": {
      "FFA": 5,
      "DDF": 2,
-     "ACAD": 1,
-     "SR": 4
+     "SR": 4,
+     "ACAD": 1
     },
     "gente": {
      "FFA": 76,
      "ACAD": 21,
-     "DDF": 7,
+     "DDF": 9,
      "SR": 24
     },
     "gana": "SR"
    },
    "meta_va": {
     "ACAD": 21,
-    "DDF": 7,
+    "DDF": 9,
     "DRA": 0,
     "FFA": 76,
     "FFS": 0,

@@ -144,6 +144,41 @@
    ]
   ]
  },
+ "122629999": {
+  "dia": "2026-10-21",
+  "escala": "8-15",
+  "fecha": "21/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1555684961250451617/1562620645022629999"
+  ],
+  "n": 122629999,
+  "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
+  "ns": 1,
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Miniboy",
+       "Leyenda"
+      ],
+      "Miniboy",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "Leyenda",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
  "139475261": {
   "dia": "2026-10-20",
   "escala": "8-15",
