@@ -140,18 +140,18 @@
 "temporada"
 ]
 },
-"hassan": {
-"rg": "A",
-"c": []
-},
 "mco": {
-"rg": "C",
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
 "servidor",
 "temporada"
 ]
+},
+"hassan": {
+"rg": "A",
+"c": []
 },
 "provenza": {
 "rg": "C",
@@ -229,6 +229,15 @@
 "temporada"
 ]
 },
+"majiztral": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "xclusivo": {
 "rg": "C",
 "c": []
@@ -237,15 +246,6 @@
 "rg": "C",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"majiztral": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -260,7 +260,7 @@
 ]
 },
 "bna": {
-"rg": "C",
+"rg": "D",
 "c": []
 },
 "lordviruzz": {
@@ -288,6 +288,10 @@
 "rg": "E",
 "c": []
 },
+"andres": {
+"rg": "B",
+"c": []
+},
 "drexx": {
 "rg": "C",
 "c": [
@@ -296,10 +300,6 @@
 "servidor",
 "temporada"
 ]
-},
-"andres": {
-"rg": "B",
-"c": []
 },
 "polosport": {
 "rg": "C",
@@ -754,6 +754,13 @@
 "rg": "",
 "c": []
 },
+"darnbless": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "pomberito": {
 "rg": "",
 "c": []
@@ -790,13 +797,6 @@
 "c": []
 },
 "keider": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"darnbless": {
 "rg": "",
 "c": [
 "servidor",
@@ -1147,6 +1147,10 @@
 "temporada"
 ]
 },
+"agentesombra": {
+"rg": "",
+"c": []
+},
 "malboro": {
 "rg": "",
 "c": []
@@ -1162,6 +1166,14 @@
 ]
 },
 "camila": {
+"rg": "",
+"c": []
+},
+"ed": {
+"rg": "",
+"c": []
+},
+"eddyeddy": {
 "rg": "",
 "c": []
 },
@@ -2460,14 +2472,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Elinge_TIMP"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5784,6 +5788,15 @@
 "Gus"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-10-22T03:30:44Z",
+"quien": [
+"MCO"
+],
+"rg": "B",
+"primero": false
 }
 ]
 }

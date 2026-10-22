@@ -29144,5 +29144,247 @@
     1250
    ]
   ]
+ },
+ "497": {
+  "dia": "2026-10-21",
+  "escala": "16+",
+  "fecha": "21/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1562624048771502153"
+  ],
+  "n": 497,
+  "nombre": "qcyo rapeen 2",
+  "participantes": 25,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "BLUE BURKA🇦🇪",
+       "Polosport, PichulaMc, BNA",
+       "Majiztral"
+      ],
+      "BLUE BURKA🇦🇪, Polosport, PichulaMc, BNA",
+      "triple (3 bandas, pasan 2); también pasa: pollo sport+pichulita+bna🇮🇶 🇦🇷🇦🇷"
+     ],
+     [
+      [
+       "MCO",
+       "223 🇦🇩",
+       "Drexx",
+       "DarnBless"
+      ],
+      "MCO, 223 🇦🇩",
+      "triple (4 bandas, pasan 2); también pasa: 223 🇦🇩"
+     ],
+     [
+      [
+       "Andres",
+       "Lizeninn",
+       "Ariaxer",
+       "Revo, Agente sombra"
+      ],
+      "Andres, Lizeninn",
+      "triple (4 bandas, pasan 2); también pasa: Lizeninn🇦🇷"
+     ],
+     [
+      [
+       "Ed, Edd y Eddy 🇻🇪",
+       "Guess",
+       "BTRX"
+      ],
+      "Ed, Edd y Eddy 🇻🇪, Guess",
+      "triple (3 bandas, pasan 2); también pasa: Guess 🇦🇷"
+     ],
+     [
+      [
+       "Makmah",
+       "Gian",
+       "Vandu",
+       "npk"
+      ],
+      "Makmah, Gian",
+      "triple (4 bandas, pasan 2); también pasa: gian🇦🇷"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Ed, Edd y Eddy 🇻🇪",
+       "Polosport, PichulaMc, BNA"
+      ],
+      "Ed, Edd y Eddy 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "Lizeninn",
+       "Guess"
+      ],
+      "MCO",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Gian",
+       "Andres"
+      ],
+      "Gian",
+      ""
+     ],
+     [
+      [
+       "223 🇦🇩",
+       "BLUE BURKA🇦🇪",
+       "makmah 🇻🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Ed, Edd y Eddy 🇻🇪",
+       "MCO"
+      ],
+      "Ed, Edd y Eddy 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "233",
+       "Gian"
+      ],
+      "233",
+      "Walk-in 2: 233"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Ed, Edd y Eddy 🇻🇪",
+       "233"
+      ],
+      "Ed, Edd y Eddy 🇻🇪",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Gian",
+    "Semifinal",
+    5250
+   ],
+   [
+    "MCO",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Ed",
+    "Campeón",
+    5000
+   ],
+   [
+    "Edd y Eddy 🇻🇪",
+    "Campeón",
+    5000
+   ],
+   [
+    "Andres",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Guess",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lizeninn",
+    "Cuartos",
+    2500
+   ],
+   [
+    "233",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "BTRX",
+    "Octavos",
+    1250
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "npk",
+    "Octavos",
+    1250
+   ],
+   [
+    "BNA",
+    "Cuartos",
+    833
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    833
+   ],
+   [
+    "Polosport",
+    "Cuartos",
+    833
+   ],
+   [
+    "Agente sombra",
+    "Octavos",
+    625
+   ],
+   [
+    "Revo",
+    "Octavos",
+    625
+   ]
+  ]
  }
 }

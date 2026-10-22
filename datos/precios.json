@@ -479,7 +479,27 @@
    "monto": 1000,
    "t": "2026-10-20T01:52:21Z",
    "fin": "2026-10-26T15:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "BNA",
+     334
+    ],
+    [
+     "PichulaMc",
+     333
+    ],
+    [
+     "Polosport",
+     333
+    ]
+   ],
+   "ev": {
+    "n": 497,
+    "nombre": "qcyo rapeen 2",
+    "sv": "FFA",
+    "t": "2026-10-22T00:30:05Z"
+   }
   },
   {
    "id": 29,
@@ -487,7 +507,27 @@
    "monto": 500,
    "t": "2026-10-21T01:23:50Z",
    "fin": "2026-10-26T15:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "BNA",
+     167
+    ],
+    [
+     "PichulaMc",
+     167
+    ],
+    [
+     "Polosport",
+     166
+    ]
+   ],
+   "ev": {
+    "n": 497,
+    "nombre": "qcyo rapeen 2",
+    "sv": "FFA",
+    "t": "2026-10-22T00:30:05Z"
+   }
   }
  ],
  "suma": {
@@ -495,7 +535,7 @@
   "NXUZ": 1000,
   "Abyssus": 1000,
   "Lambroggini": 1000,
-  "PichulaMc": 3500,
+  "PichulaMc": 4000,
   "SGB": 500,
   "Snow": 250,
   "Velatz": 250,
@@ -505,6 +545,8 @@
   "Emilio Alva": 2500,
   "Tuca": 1000,
   "1200": 3000,
-  "Guess": 5000
+  "Guess": 5000,
+  "BNA": 501,
+  "Polosport": 499
  }
 }

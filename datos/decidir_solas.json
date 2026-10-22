@@ -1623,6 +1623,49 @@
     "🟢 Batalla 1: Carlos"
    ],
    "escribio": {}
+  },
+  {
+   "id": "1461e120b6",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen 2 · FFA · 21/10 · #497",
+   "que": "¿Quién es «npk»?",
+   "r": "Es alguien nuevo: alta con su cuenta 308675581308829698",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (308675581308829698)",
+   "t": 1792639870047,
+   "filas": [
+    791
+   ],
+   "variantes": [
+    "npk"
+   ],
+   "escribio": {
+    "alta": [
+     "npk",
+     "308675581308829698"
+    ]
+   }
+  },
+  {
+   "id": "efb98830a1",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen 2 · FFA · 21/10 · #497",
+   "que": "¿Quién es «BLUE BURKA🇦🇪»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792639870047,
+   "filas": [
+    788
+   ],
+   "variantes": [
+    "BLUE BURKA🇦🇪"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

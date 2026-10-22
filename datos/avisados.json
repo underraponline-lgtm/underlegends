@@ -18570,5 +18570,300 @@
    ]
   ],
   "v": 2
+ },
+ "497": {
+  "antes": {
+   "Agente sombra": [
+    294,
+    228,
+    true
+   ],
+   "Andres": [
+    203,
+    40,
+    true
+   ],
+   "Ariaxer": [
+    40,
+    51,
+    false
+   ],
+   "BNA": [
+    200,
+    34,
+    true
+   ],
+   "BTRX": [
+    216,
+    89,
+    true
+   ],
+   "DarnBless": [
+    85,
+    117,
+    false
+   ],
+   "Drexx": [
+    31,
+    39,
+    false
+   ],
+   "Gian": [
+    416,
+    399,
+    true
+   ],
+   "Guess": [
+    19,
+    21,
+    false
+   ],
+   "Lizeninn": [
+    431,
+    419,
+    true
+   ],
+   "MCO": [
+    17,
+    19,
+    false
+   ],
+   "Majiztral": [
+    27,
+    32,
+    false
+   ],
+   "PichulaMc": [
+    4,
+    5,
+    false
+   ],
+   "Polosport": [
+    32,
+    41,
+    false
+   ],
+   "Revo": [
+    189,
+    445,
+    false
+   ],
+   "Vandu": [
+    13,
+    14,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "BLUE BURKA🇦🇪",
+    "Majiztral",
+    "BLUE BURKA🇦🇪"
+   ],
+   [
+    "MCO",
+    "Drexx",
+    "MCO"
+   ],
+   [
+    "MCO",
+    "DarnBless",
+    "MCO"
+   ],
+   [
+    "Andres",
+    "Ariaxer",
+    "Andres"
+   ],
+   [
+    "Andres",
+    "Revo, Agente sombra",
+    "Andres"
+   ],
+   [
+    "Ed, Edd y Eddy 🇻🇪",
+    "BTRX",
+    "Ed, Edd y Eddy 🇻🇪"
+   ],
+   [
+    "Makmah",
+    "Vandu",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "npk",
+    "Makmah"
+   ],
+   [
+    "Ed, Edd y Eddy 🇻🇪",
+    "Polosport, PichulaMc, BNA",
+    "Ed, Edd y Eddy 🇻🇪"
+   ],
+   [
+    "MCO",
+    "Lizeninn",
+    "MCO"
+   ],
+   [
+    "MCO",
+    "Guess",
+    "MCO"
+   ],
+   [
+    "Gian",
+    "Andres",
+    "Gian"
+   ],
+   [
+    "Ed, Edd y Eddy 🇻🇪",
+    "MCO",
+    "Ed, Edd y Eddy 🇻🇪"
+   ],
+   [
+    "233",
+    "Gian",
+    "233"
+   ],
+   [
+    "Ed, Edd y Eddy 🇻🇪",
+    "233",
+    "Ed, Edd y Eddy 🇻🇪"
+   ]
+  ],
+  "ev_antes": {
+   "Agente sombra": 3,
+   "Andres": 12,
+   "Ariaxer": 11,
+   "BNA": 10,
+   "BTRX": 7,
+   "DarnBless": 7,
+   "Drexx": 21,
+   "Gian": 1,
+   "Guess": 15,
+   "Lizeninn": 1,
+   "MCO": 19,
+   "Majiztral": 21,
+   "PichulaMc": 39,
+   "Polosport": 10,
+   "Revo": 1,
+   "Vandu": 29
+  },
+  "fecha": "21/10",
+  "firma": "3f7c37e70e6c1ed4",
+  "msg": "1562665100169445427",
+  "nombre": "__ qcyo rapeen 2 __",
+  "num": 497,
+  "participantes": 25,
+  "sello": {
+   "Ed": "",
+   "Edd y Eddy 🇻🇪": ""
+  },
+  "sv": "FFA",
+  "t": "2026-10-22T03:23:36Z",
+  "tabla": [
+   [
+    "MCO",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Gian",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Ed",
+    "Campeón",
+    5000
+   ],
+   [
+    "Edd y Eddy 🇻🇪",
+    "Campeón",
+    5000
+   ],
+   [
+    "Lizeninn",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Guess",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Andres",
+    "Cuartos",
+    2500
+   ],
+   [
+    "233",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Majiztral",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "BTRX",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "npk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Polosport",
+    "Cuartos",
+    833
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    833
+   ],
+   [
+    "BNA",
+    "Cuartos",
+    833
+   ],
+   [
+    "Revo",
+    "Octavos",
+    625
+   ],
+   [
+    "Agente sombra",
+    "Octavos",
+    625
+   ]
+  ],
+  "v": 2
  }
 }

@@ -10,6 +10,18 @@
   "URBF": "2026-10-15"
  },
  "retos": {
+  "233": {
+   "avisado": "2026-10-21",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-22T00:30:05+00:00",
+   "did": "",
+   "evento": "qcyo rapeen 2",
+   "n": 497,
+   "sv": "FFA",
+   "vence": "2026-10-29T00:30:05+00:00",
+   "vencido": false
+  },
   "AKARK": {
    "avisado": "2026-10-12",
    "chat": "2026-10-12",
@@ -165,6 +177,30 @@
    "n": 486,
    "sv": "DDF",
    "vence": "2026-10-26T01:35:44+00:00",
+   "vencido": false
+  },
+  "Ed": {
+   "avisado": "2026-10-21",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-22T00:30:05+00:00",
+   "did": "",
+   "evento": "qcyo rapeen 2",
+   "n": 497,
+   "sv": "FFA",
+   "vence": "2026-10-29T00:30:05+00:00",
+   "vencido": false
+  },
+  "Edd y Eddy": {
+   "avisado": "2026-10-21",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-22T00:30:05+00:00",
+   "did": "",
+   "evento": "qcyo rapeen 2",
+   "n": 497,
+   "sv": "FFA",
+   "vence": "2026-10-29T00:30:05+00:00",
    "vencido": false
   },
   "FOTOSÍNTESIS": {
@@ -513,9 +549,10 @@
   },
   "Revo": {
    "avisado": "2026-10-19",
+   "avisado_cumplido": "2026-10-21",
    "chat": "2026-10-20",
-   "con": null,
-   "cumplido": "",
+   "con": 497,
+   "cumplido": "2026-10-22T00:30:05+00:00",
    "debut": "2026-10-19T20:40:51+00:00",
    "did": "1505463269530402896",
    "evento": "LA REDENCIÓN",
@@ -698,6 +735,18 @@
    "n": 483,
    "sv": "FFA",
    "vence": "2026-10-25T02:26:23+00:00",
+   "vencido": false
+  },
+  "npk": {
+   "avisado": "2026-10-21",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-22T00:30:05+00:00",
+   "did": "",
+   "evento": "qcyo rapeen 2",
+   "n": 497,
+   "sv": "FFA",
+   "vence": "2026-10-29T00:30:05+00:00",
    "vencido": false
   },
   "nueve7": {
