@@ -1,48 +1,54 @@
 {
  "v": 1,
- "cuando": "2026-10-22T23:12:37Z",
+ "cuando": "2026-10-22T23:38:03Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 790.8,
+ "dur_s": 334.3,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.4
+   "s": 7.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.9
+   "s": 7.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 34.1
+   "s": 242.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": false,
-   "s": 681.4
+   "s": 70.7
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": false,
-   "s": 5.0
-  },
-  {
-   "n": "6",
-   "que": "refrescar KV",
-   "ok": true,
-   "s": 56.0
+   "s": 4.7
   }
  ],
  "fallas": [
+  {
+   "paso": "5",
+   "que": "02_Competitivo/exportar_png.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "04_Pais/exportar_png.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
   {
    "paso": "5",
    "que": "03_Servidor/generar.py .SosaATR"
@@ -53,39 +59,87 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py SOL"
+   "que": "03_Servidor/generar.py .SosaATR"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Panchok"
+   "que": "03_Servidor/generar.py .SosaATR"
   },
   {
-   "paso": "5b",
-   "que": "bot/bloqueadas.py --generar"
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Agus"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py ARDEAN"
+  },
+  {
+   "paso": "5",
+   "que": "01_Temporada/exportar_png.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "02_Competitivo/exportar_png.py Focox"
+  },
+  {
+   "paso": "5",
+   "que": "04_Pais/exportar_png.py GP"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Focox"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Focox"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py GP"
   }
  ],
  "ultimo_evento": {
-  "n": "498",
-  "nombre": "LA ISLA DE OKINAWA V.3",
+  "n": "499",
+  "nombre": "SI NO SOS FOURBAR NO QUIERO NADA VOL.1",
   "sv": "FFA",
   "dia": "2026-10-22"
  },
  "cuotas": {
   "kv": {
-   "write": 642,
-   "read": 53481
+   "write": 663,
+   "read": 55052
   },
   "objeto": {
-   "leidas": 3098377,
-   "escritas": 36220,
-   "pedidos": 10324
+   "leidas": 3164092,
+   "escritas": 37564,
+   "pedidos": 10513
   },
   "worker": {
-   "pedidos": 9169,
+   "pedidos": 8970,
    "errores": 1,
-   "sub": 11204,
+   "sub": 10976,
    "p50_ms": 1.38,
-   "p99_ms": 11.12
+   "p99_ms": 11.16
   },
   "r2": {
    "objetos": 4807,
