@@ -282,8 +282,45 @@
   "n": 124704092,
   "nombre": "GG SANGRERAP 3",
   "ns": 1,
-  "participantes": 8,
+  "participantes": 9,
   "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Soulb",
+       "Vandu"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "SosaTR 🇺🇾",
+       "Nerick🇵🇪"
+      ],
+      "SosaTR 🇺🇾",
+      ""
+     ],
+     [
+      [
+       "OKAM",
+       "Mc arepa"
+      ],
+      "OKAM",
+      ""
+     ],
+     [
+      [
+       "giansito🇵🇪",
+       "Vilca"
+      ],
+      "giansito🇵🇪",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
    {
     "b": [
      [
@@ -292,7 +329,15 @@
        "SosaTR 🇺🇾"
       ],
       "Soulb",
-      "ganador según #veredictos"
+      ""
+     ],
+     [
+      [
+       "giansito🇵🇪",
+       "OKAM"
+      ],
+      "giansito🇵🇪",
+      ""
      ]
     ],
     "r": "Semifinales"
@@ -301,8 +346,33 @@
   "sv": "FDS",
   "tabla": [
    [
+    "OKAM",
+    "Semifinal",
+    0
+   ],
+   [
     "SosaTR 🇺🇾",
     "Semifinal",
+    0
+   ],
+   [
+    "Mc arepa",
+    "Cuartos",
+    0
+   ],
+   [
+    "Nerick🇵🇪",
+    "Cuartos",
+    0
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    0
+   ],
+   [
+    "Vilca",
+    "Cuartos",
     0
    ]
   ]

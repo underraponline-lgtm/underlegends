@@ -980,6 +980,28 @@
    "b": "SOSATR",
    "ganador": "SOSATR",
    "votos": "1–0"
+  },
+  "1562677822516887624": {
+   "id": "1562677822516887624",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792641826038,
+   "a": "SOUL B",
+   "b": "SOSATR",
+   "ganador": "SOUL B",
+   "votos": "1–0"
+  },
+  "1562680241258762312": {
+   "id": "1562680241258762312",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792642402711,
+   "a": "okam",
+   "b": "giansito",
+   "ganador": "giansito",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5458,21 +5480,18 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1792640032250,
-   "ed": 1792641027337,
-   "texto": "`[ CUARTOS ]`\n⌞Soul B 🇨🇱⌝ 🆚 ⌞SosaTR 🇺🇾⌝\n⌞Nerick 🇵🇪⌝ 🆚 ⌞SosaTR 🇺🇾 2da vida⌝\n⌞OKAM 🇨🇷⌝ 🆚 ⌞MC Arepa 🇻🇪⌝\n⌞Giansito 🇵🇪⌝ 🆚 ⌞Vilca 🇵🇪⌝\n`[ SEMIFINALES ]`\n⌞Soul B 🇨🇱⌝ 🆚 ⌞SosaTR 🇺🇾⌝\n`[ FINAL ]`",
+   "ed": 1792642639934,
+   "texto": "`[ CUARTOS ]`\n⌞Soul B 🇨🇱⌝ 🆚 ⌞Vandu 🇨🇦⌝\n⌞Nerick 🇵🇪⌝ 🆚 ⌞SosaTR 🇺🇾 2da vida⌝\n⌞OKAM 🇨🇷⌝ 🆚 ⌞MC Arepa 🇻🇪⌝\n⌞Giansito 🇵🇪⌝ 🆚 ⌞Vilca 🇵🇪⌝\n`[ SEMIFINALES ]`\n⌞Soul B 🇨🇱⌝ 🆚 ⌞SosaTR 🇺🇾⌝\n⌞OKAM 🇨🇷⌝ 🆚 ⌞Giansito 🇵🇪⌝\n`[ FINAL ]`",
    "batallas": [
     [
      "CUARTOS",
      [
       "Soul B 🇨🇱",
-      "SosaTR 🇺🇾"
+      "Vandu 🇨🇦"
      ],
-     null,
-     "pasan 2, no hay un ganador",
-     [
-      "Soul B 🇨🇱",
-      "SosaTR 🇺🇾"
-     ]
+     "Soul B 🇨🇱",
+     "ronda siguiente",
+     []
     ],
     [
      "CUARTOS",
@@ -5490,8 +5509,8 @@
       "OKAM 🇨🇷",
       "MC Arepa 🇻🇪"
      ],
-     null,
-     "no aparece nadie después",
+     "OKAM 🇨🇷",
+     "ronda siguiente",
      []
     ],
     [
@@ -5500,8 +5519,8 @@
       "Giansito 🇵🇪",
       "Vilca 🇵🇪"
      ],
-     null,
-     "no aparece nadie después",
+     "Giansito 🇵🇪",
+     "ronda siguiente",
      []
     ],
     [
@@ -5509,6 +5528,16 @@
      [
       "Soul B 🇨🇱",
       "SosaTR 🇺🇾"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "OKAM 🇨🇷",
+      "Giansito 🇵🇪"
      ],
      null,
      "última ronda y no dice campeón",

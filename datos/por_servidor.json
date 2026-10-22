@@ -252,10 +252,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 2000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Aby": {
@@ -1283,10 +1280,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 1875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Choka": {
@@ -1980,10 +1974,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 2000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "SR": {
     "duelos": "0/2",
@@ -2415,8 +2406,7 @@
     "pts": 5000,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    },
    "SR": {
@@ -3523,8 +3513,7 @@
     "pts": 7500,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    },
    "SR": {
@@ -5123,10 +5112,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 2000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Miniboy": {
@@ -5420,10 +5406,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 2000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "SR": {
     "duelos": "0/1",
@@ -7060,10 +7043,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 5250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "SR": {
     "duelos": "1/2",
@@ -7149,10 +7129,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 6000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Silence": {
@@ -7195,10 +7172,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 2000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FVS": {
     "duelos": "",
@@ -7865,8 +7839,7 @@
     "pts": 15000,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -7968,10 +7941,7 @@
     "ovr": 45,
     "pod": 0,
     "pts": 9000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Velatz": {
