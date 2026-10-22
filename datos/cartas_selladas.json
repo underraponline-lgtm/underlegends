@@ -168,9 +168,6 @@
   "Blue": {
    "servidor": "5ed67a7d8b87:2d5142698a31:403ba8"
   },
-  "Blurnoise": {
-   "servidor": "f84b47dcc80a:2d5142698a31:055f77"
-  },
   "Bocamio": {
    "servidor": "9b68c9ca721c:2d5142698a31:e729e9"
   },
@@ -1279,7 +1276,7 @@
    "competitivo": "5ac707c40bad:a62fb156b44f",
    "pais": "4406bb553145:351b86d66ea6",
    "servidor": "dfd0209ee0f3:2d5142698a31:c589ca",
-   "temporada": "f0f64b9cff9e:a001e7b21e4d"
+   "temporada": "fbac6352970d:a001e7b21e4d"
   },
   "Pomberito": {},
   "Presagio": {
@@ -1355,7 +1352,8 @@
   "Revo": {
    "competitivo": "a4794afdd9ce:a62fb156b44f",
    "pais": "79c614fa0303:351b86d66ea6",
-   "servidor": "48acc8785ef1:2d5142698a31:71cf5a"
+   "servidor": "48acc8785ef1:2d5142698a31:71cf5a",
+   "temporada": "cdc0a610eb8c:a001e7b21e4d"
   },
   "Reyes": {},
   "Reyes Mc": {
@@ -1851,5 +1849,5 @@
    "servidor": "7f8885a35a6d:2d5142698a31:93a344"
   }
  },
- "cuando": "2026-10-22T03:50:40+00:00"
+ "cuando": "2026-10-22T04:10:05+00:00"
 }
