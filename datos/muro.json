@@ -129,19 +129,19 @@
 "temporada"
 ]
 },
+"abyssus": {
+"rg": "A",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "og": {
 "rg": "B",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"abyssus": {
-"rg": "A",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
