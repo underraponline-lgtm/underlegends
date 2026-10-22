@@ -702,6 +702,13 @@
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deluxe/sv-fvs.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/deluxe/sv-sr.webp"
  },
+ "denik": {
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/denik/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/denik/pais.webp",
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/denik/servidor.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/denik/sv-dra.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/denik/sv-ffa.webp"
+ },
  "derates": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/derates/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/derates/sv-dra.webp",
@@ -3076,6 +3083,15 @@
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saiko/sv-fvs.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saiko/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saiko/temporada.webp"
+ },
+ "sami": {
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sami/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sami/pais.webp",
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sami/servidor.webp",
+  "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sami/sv-acad.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sami/sv-dra.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sami/sv-ffa.webp",
+  "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sami/sv-fvs.webp"
  },
  "sando": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/sando/servidor.webp",
