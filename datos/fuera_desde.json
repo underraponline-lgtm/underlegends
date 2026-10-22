@@ -21,6 +21,10 @@
    "sv-urbf": "2026-10-20",
    "temporada": "2026-10-20"
   },
+  "mrpuyosa": {
+   "servidor": "2026-10-22",
+   "sv-dra": "2026-10-22"
+  },
   "softdrink": {
    "servidor": "2026-10-18",
    "sv-dra": "2026-10-18",
@@ -28,8 +32,8 @@
    "sv-sr": "2026-10-18"
   }
  },
- "pasaban": 399,
- "cuando": "2026-10-22T21:29:12Z",
+ "pasaban": 398,
+ "cuando": "2026-10-22T21:58:44Z",
  "borradas": [
   [
    "emi",
