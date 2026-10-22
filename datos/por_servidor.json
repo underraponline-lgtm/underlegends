@@ -1518,12 +1518,12 @@
     }
    },
    "FFA": {
-    "duelos": "2/5",
-    "ev": 18,
+    "duelos": "2/6",
+    "ev": 19,
     "oro": 0,
     "ovr": 63,
     "pod": 1,
-    "pts": 77043,
+    "pts": 80043,
     "racha": "0/1",
     "tg": {
      "fin": 1
@@ -8798,20 +8798,6 @@
     "pod": 0,
     "pts": 2000,
     "racha": "0/0"
-   }
-  },
-  "reenkharnazhion 🇨🇱": {
-   "FFA": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 3000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "rodrilp": {

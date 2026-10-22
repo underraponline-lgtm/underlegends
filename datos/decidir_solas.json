@@ -1792,6 +1792,25 @@
      302
     ]
    }
+  },
+  {
+   "id": "44d1a3ac93",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«reenkharnazhion» es Cronox? La cuenta de Cronox en la Lista se anotó como «reenkharnazhion», y en el ranking suman aparte. Si es la misma persona, los puntos de «reenkharnazhion» pasan a Cronox.\nLa cuenta: https://discord.com/users/1487658663148785734",
+   "r": "Es la misma persona",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "la misma persona: «reenkharnazhion» ya es alias de Cronox",
+   "t": 1792683862367,
+   "filas": [
+    798
+   ],
+   "variantes": [
+    "DOS NOMBRES: «reenkharnazhion» → «Cronox» · cuenta 1487658663148785734"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

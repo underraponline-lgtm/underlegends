@@ -674,8 +674,8 @@
     ],
     [
      "Kravitz",
-     42,
-     2
+     50,
+     3
     ],
     [
      "Velatz",
@@ -705,13 +705,13 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 10,
+     "FFA": 11,
      "DDF": 2,
      "SR": 4,
      "ACAD": 1
     },
     "gente": {
-     "FFA": 87,
+     "FFA": 89,
      "ACAD": 21,
      "DDF": 9,
      "SR": 24
@@ -722,7 +722,7 @@
     "ACAD": 21,
     "DDF": 9,
     "DRA": 0,
-    "FFA": 87,
+    "FFA": 89,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,
