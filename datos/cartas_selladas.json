@@ -33,10 +33,10 @@
   "AREZ": {},
   "Aby": {},
   "Abyssus": {
-   "competitivo": "944b323608c0:8259c7ce67a9",
-   "pais": "39129c2dcf3a:1478cbe7c727",
-   "servidor": "ed91de4f4744:dc2ca95eb024:3ce074",
-   "temporada": "838b7862b98a:e8f4f15f7e3a"
+   "competitivo": "61ef4c76759c:8259c7ce67a9",
+   "pais": "c7ebdf78d1e3:1478cbe7c727",
+   "servidor": "d4e712ff47b2:dc2ca95eb024:3ce074",
+   "temporada": "887bc0af7748:e8f4f15f7e3a"
   },
   "Ac3nto": {
    "servidor": "03c350320fda:dc2ca95eb024:948362"
@@ -250,8 +250,8 @@
    "temporada": "c7ce06038bf4:e8f4f15f7e3a"
   },
   "Cronox": {
-   "competitivo": "ac4a9ba9a4c8:8259c7ce67a9",
-   "pais": "e1e88827fd64:1478cbe7c727",
+   "competitivo": "0d7ff85bf60e:8259c7ce67a9",
+   "pais": "98dd6fbf9ce7:1478cbe7c727",
    "servidor": "14083f338158:dc2ca95eb024:3e2e7c",
    "temporada": "f033fd4498bf:e8f4f15f7e3a"
   },
@@ -894,9 +894,6 @@
    "temporada": "1a3d5d46ca3f:e8f4f15f7e3a"
   },
   "Lizeninn": {},
-  "LoKK": {
-   "servidor": "ad1f2ba512e0:dc2ca95eb024:055f77"
-  },
   "Longsun Zhao": {
    "servidor": "c1078f7aec71:dc2ca95eb024:948362"
   },
@@ -1203,10 +1200,10 @@
   },
   "OEP": {},
   "OG": {
-   "competitivo": "2bfb01db0bf1:8259c7ce67a9",
+   "competitivo": "90a23f6329e8:8259c7ce67a9",
    "pais": "95ef53ba36b6:1478cbe7c727",
    "servidor": "c86d14e8912c:dc2ca95eb024:3ce074",
-   "temporada": "765c51937a66:e8f4f15f7e3a"
+   "temporada": "fb01c59bfb5a:e8f4f15f7e3a"
   },
   "OKAM": {},
   "OKTA": {
@@ -1857,5 +1854,5 @@
    "servidor": "7f8885a35a6d:dc2ca95eb024:93a344"
   }
  },
- "cuando": "2026-10-22T16:06:59+00:00"
+ "cuando": "2026-10-22T16:13:55+00:00"
 }
