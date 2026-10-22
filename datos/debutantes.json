@@ -34,7 +34,7 @@
    "n": 475,
    "sv": "FRZ",
    "vence": "2026-10-22T01:41:57+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Abysuss": {
    "avisado": "2026-10-12",
@@ -431,7 +431,7 @@
    "n": 475,
    "sv": "FRZ",
    "vence": "2026-10-22T01:41:57+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Misterioso": {
    "avisado": "2026-10-18",

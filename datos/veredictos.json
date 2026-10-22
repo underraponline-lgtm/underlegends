@@ -947,6 +947,17 @@
    "b": "BILKA CABRO",
    "ganador": "BILKA CABRO",
    "votos": "1–0"
+  },
+  "1562641766329491487": {
+   "id": "1562641766329491487",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1792633229573,
+   "a": "ZA TENOR",
+   "b": "PICHULITA POLLO",
+   "ganador": "ZA TENOR",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5394,6 +5405,27 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1562640008630763575": {
+   "id": "1562640008630763575",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1792632810505,
+   "ed": 1792633278177,
+   "texto": "`[ CUARTOS ]`\n⌞ZA TENOR⌝ 🆚 ⌞PICHULITA POLLO⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "ZA TENOR",
+      "PICHULITA POLLO"
+     ],
+     "ZA TENOR",
+     "veredicto",
      []
     ]
    ]
