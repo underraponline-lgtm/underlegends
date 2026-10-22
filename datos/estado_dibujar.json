@@ -1,48 +1,54 @@
 {
  "v": 1,
- "cuando": "2026-10-22T20:42:34Z",
+ "cuando": "2026-10-22T21:04:20Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 753.4,
+ "dur_s": 286.7,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 11.7
+   "s": 8.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.6
+   "s": 6.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.4
+   "s": 242.7
   },
   {
    "n": "5",
    "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 649.5
+   "s": 22.9
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": false,
    "s": 4.9
-  },
-  {
-   "n": "6",
-   "que": "refrescar KV",
-   "ok": true,
-   "s": 57.1
   }
  ],
  "fallas": [
+  {
+   "paso": "5",
+   "que": "02_Competitivo/exportar_png.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "04_Pais/exportar_png.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
   {
    "paso": "5",
    "que": "03_Servidor/generar.py .SosaATR"
@@ -53,15 +59,63 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py SOL"
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Andy"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py ARDEAN"
+  },
+  {
+   "paso": "5",
+   "que": "01_Temporada/exportar_png.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "02_Competitivo/exportar_png.py Panchok"
+  },
+  {
+   "paso": "5",
+   "que": "04_Pais/exportar_png.py Panchok"
   },
   {
    "paso": "5",
    "que": "03_Servidor/generar.py Panchok"
   },
   {
-   "paso": "5b",
-   "que": "bot/bloqueadas.py --generar"
+   "paso": "5",
+   "que": "03_Servidor/generar.py Panchok"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Panchok"
   }
  ],
  "ultimo_evento": {
@@ -72,20 +126,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 566,
-   "read": 45361
+   "write": 578,
+   "read": 46762
   },
   "objeto": {
-   "leidas": 2737666,
-   "escritas": 29274,
-   "pedidos": 9230
+   "leidas": 2788150,
+   "escritas": 30222,
+   "pedidos": 9383
   },
   "worker": {
-   "pedidos": 9419,
+   "pedidos": 9375,
    "errores": 1,
-   "sub": 11463,
-   "p50_ms": 1.41,
-   "p99_ms": 11.58
+   "sub": 11411,
+   "p50_ms": 1.39,
+   "p99_ms": 11.35
   },
   "r2": {
    "objetos": 4807,
