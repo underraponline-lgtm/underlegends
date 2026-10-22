@@ -1,22 +1,29 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-10-21T23:29:37Z",
+ "t": "2026-10-22T00:02:43Z",
  "sv": {
   "SR": {
    "filas": [
+    [
+     "OVER",
+     "uy",
+     12000,
+     9000,
+     "Over"
+    ],
+    [
+     "AGUS",
+     "ar",
+     10500,
+     9000,
+     "Agus"
+    ],
     [
      "ABYSSUS",
      "pa",
      9350,
      2250,
      "Abyssus"
-    ],
-    [
-     "OVER",
-     "uy",
-     9000,
-     6000,
-     "Over"
     ],
     [
      "JUASMIO",
@@ -47,6 +54,13 @@
      "Colesito"
     ],
     [
+     "MASINO",
+     "cl",
+     5250,
+     4500,
+     "Masino"
+    ],
+    [
      "HASSAN",
      "ar",
      4500,
@@ -66,13 +80,6 @@
      4500,
      0,
      "Juanpa"
-    ],
-    [
-     "AGUS",
-     "ar",
-     4500,
-     3000,
-     "Agus"
     ],
     [
      "GLOBAL HUSTLER",
@@ -278,13 +285,6 @@
      "Velatz"
     ],
     [
-     "MASINO",
-     "cl",
-     750,
-     0,
-     "Masino"
-    ],
-    [
      "ACRY",
      "ve",
      750,
@@ -473,6 +473,30 @@
       ],
       [
        "Agus",
+       "Tercero",
+       3000
+      ]
+     ],
+     "fuera": []
+    },
+    {
+     "n": 496,
+     "evento": "SNAKE INSIGNIA 6 8",
+     "dia": "2026-10-21",
+     "rango": "2",
+     "puntos": [
+      [
+       "Agus",
+       "Campeón",
+       6000
+      ],
+      [
+       "Masino",
+       "Subcampeón",
+       4500
+      ],
+      [
+       "Over",
        "Tercero",
        3000
       ]
@@ -687,7 +711,8 @@
  "rangos_llave": {
   "430": "2",
   "460": "3",
-  "478": "2"
+  "478": "2",
+  "496": "2"
  },
  "nombres": {
   "1476311763912757420": "SCazulo",

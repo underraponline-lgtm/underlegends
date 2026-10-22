@@ -15773,7 +15773,7 @@
    "Molusco": 16
   },
   "fecha": "19/10",
-  "firma": "fc0fb40410271c07",
+  "firma": "2efddc0e80d6ced9",
   "msg": "1561607804798898179",
   "nombre": "__ FREESTYLE LEAGUE __",
   "num": 487,
@@ -15936,7 +15936,7 @@
    "Tenor": 5
   },
   "fecha": "19/10",
-  "firma": "fef24a148e1c8d21",
+  "firma": "41119c115aa66019",
   "msg": "1561761975514697891",
   "nombre": "FREESTYLE LEAGUE N3",
   "num": 488,
@@ -18165,6 +18165,388 @@
     "Desio",
     "Semifinal",
     1750
+   ]
+  ],
+  "v": 2
+ },
+ "496": {
+  "antes": {
+   "Agus": [
+    10,
+    11,
+    false
+   ],
+   "Desio": [
+    320,
+    271,
+    true
+   ],
+   "Efimero": [
+    218,
+    105,
+    true
+   ],
+   "Erian": [
+    7,
+    8,
+    false
+   ],
+   "Fazer": [
+    225,
+    114,
+    true
+   ],
+   "GP": [
+    150,
+    291,
+    false
+   ],
+   "Gus": [
+    131,
+    233,
+    false
+   ],
+   "Kravitz": [
+    62,
+    83,
+    false
+   ],
+   "MCO": [
+    18,
+    20,
+    false
+   ],
+   "Masino": [
+    54,
+    73,
+    false
+   ],
+   "Molt": [
+    176,
+    387,
+    false
+   ],
+   "Neo": [
+    212,
+    67,
+    true
+   ],
+   "OKAM": [
+    125,
+    224,
+    false
+   ],
+   "Road": [
+    283,
+    207,
+    true
+   ],
+   "Rubik": [
+    171,
+    350,
+    false
+   ],
+   "Six": [
+    12,
+    13,
+    false
+   ],
+   "Sosa": [
+    52,
+    70,
+    false
+   ],
+   "Valen": [
+    447,
+    442,
+    true
+   ],
+   "Velatz": [
+    11,
+    12,
+    false
+   ]
+  },
+  "canal": "863207986264932372",
+  "duelos": [
+   [
+    "Road",
+    "Sosa",
+    "Road"
+   ],
+   [
+    "Road",
+    "Molt",
+    "Road"
+   ],
+   [
+    "Gus",
+    "David 🇨🇴",
+    "Gus"
+   ],
+   [
+    "Gus",
+    "GP",
+    "Gus"
+   ],
+   [
+    "Masino",
+    "METRA",
+    "Masino"
+   ],
+   [
+    "Masino",
+    "Desio",
+    "Masino"
+   ],
+   [
+    "Agus",
+    "Six",
+    "Agus"
+   ],
+   [
+    "Agus",
+    "Erian",
+    "Agus"
+   ],
+   [
+    "MCO",
+    "Valen",
+    "MCO"
+   ],
+   [
+    "MCO",
+    "Neo",
+    "MCO"
+   ],
+   [
+    "nueve7🇨🇴",
+    "Velatz",
+    "nueve7🇨🇴"
+   ],
+   [
+    "nueve7🇨🇴",
+    "Kravitz",
+    "nueve7🇨🇴"
+   ],
+   [
+    "Fazer",
+    "OKAM",
+    "Fazer"
+   ],
+   [
+    "Fazer",
+    "MAGMAHK",
+    "Fazer"
+   ],
+   [
+    "Over",
+    "Rubik",
+    "Over"
+   ],
+   [
+    "Over",
+    "Efimero",
+    "Over"
+   ],
+   [
+    "Over",
+    "Molt",
+    "Over"
+   ],
+   [
+    "Road",
+    "Gus",
+    "Road"
+   ],
+   [
+    "Masino",
+    "nueve7🇨🇴",
+    "Masino"
+   ],
+   [
+    "Agus",
+    "Fazer",
+    "Agus"
+   ],
+   [
+    "Over",
+    "MCO",
+    "Over"
+   ],
+   [
+    "Masino",
+    "Road",
+    "Masino"
+   ],
+   [
+    "Agus",
+    "Over",
+    "Agus"
+   ],
+   [
+    "Over",
+    "Road",
+    "Over"
+   ],
+   [
+    "Agus",
+    "Masino",
+    "Agus"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 17,
+   "Desio": 2,
+   "Efimero": 7,
+   "Erian": 41,
+   "Fazer": 3,
+   "GP": 1,
+   "Gus": 5,
+   "Kravitz": 9,
+   "MCO": 18,
+   "Masino": 6,
+   "Molt": 1,
+   "Neo": 9,
+   "OKAM": 3,
+   "Road": 1,
+   "Rubik": 2,
+   "Six": 24,
+   "Sosa": 15,
+   "Valen": 1,
+   "Velatz": 38
+  },
+  "fecha": "21/10",
+  "firma": "e60a9dd79859e003",
+  "msg": "1562607463755161734",
+  "nombre": "SNAKE INSIGNIA 6 8",
+  "num": 496,
+  "participantes": 25,
+  "sello": {
+   "Agus": "f857a0c0a500:a001e7b21e4d"
+  },
+  "sv": "SR",
+  "t": "2026-10-21T23:53:58Z",
+  "tabla": [
+   [
+    "Agus",
+    "Campeón",
+    10000
+   ],
+   [
+    "Masino",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Over",
+    "Tercero",
+    6000
+   ],
+   [
+    "Road",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Gus",
+    "Cuartos",
+    2500
+   ],
+   [
+    "nueve7🇨🇴",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Fazer",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Molt",
+    "Octavos",
+    1875
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    1250
+   ],
+   [
+    "David 🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "GP",
+    "Octavos",
+    1250
+   ],
+   [
+    "METRA",
+    "Octavos",
+    1250
+   ],
+   [
+    "Desio",
+    "Octavos",
+    1250
+   ],
+   [
+    "Six",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Valen",
+    "Octavos",
+    1250
+   ],
+   [
+    "Neo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Velatz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kravitz",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "MAGMAHK",
+    "Octavos",
+    1250
+   ],
+   [
+    "Rubik",
+    "Octavos",
+    1250
+   ],
+   [
+    "Efimero",
+    "Octavos",
+    1250
    ]
   ],
   "v": 2

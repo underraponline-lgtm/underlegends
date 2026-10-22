@@ -436,14 +436,15 @@
     }
    },
    "SR": {
-    "duelos": "3/4",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 51,
-    "pod": 1,
-    "pts": 31250,
-    "racha": "1/1",
+    "duelos": "6/7",
+    "ev": 3,
+    "oro": 1,
+    "ovr": 53,
+    "pod": 2,
+    "pts": 41250,
+    "racha": "2/2",
     "tg": {
+     "fin": 1,
      "fund": true
     }
    }
@@ -1438,8 +1439,7 @@
     "pts": 19375,
     "racha": "0/1",
     "tg": {
-     "fin": 1,
-     "llave": true
+     "fin": 1
     }
    }
   },
@@ -1654,6 +1654,20 @@
     }
    }
   },
+  "David 🇨🇴": {
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Dcet": {
    "ACAD": {
     "duelos": "0/1",
@@ -1690,8 +1704,7 @@
     "racha": "0/1",
     "tg": {
      "bcasa": true,
-     "fin": 1,
-     "llave": true
+     "fin": 1
     }
    }
   },
@@ -1727,6 +1740,18 @@
     "pod": 0,
     "pts": 2062,
     "racha": "0/0"
+   },
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Desu": {
@@ -2144,6 +2169,18 @@
     "pod": 0,
     "pts": 31375,
     "racha": "0/0"
+   },
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "El Hombre Eyau": {
@@ -2339,11 +2376,11 @@
    },
    "SR": {
     "duelos": "0/1",
-    "ev": 5,
+    "ev": 6,
     "oro": 0,
-    "ovr": 49,
+    "ovr": 50,
     "pod": 0,
-    "pts": 22625,
+    "pts": 23875,
     "racha": "0/0",
     "tg": {
      "llave": true
@@ -2503,13 +2540,13 @@
   },
   "Fazer": {
    "SR": {
-    "duelos": "7/13",
-    "ev": 3,
+    "duelos": "7/14",
+    "ev": 4,
     "oro": 0,
-    "ovr": 51,
+    "ovr": 52,
     "pod": 3,
-    "pts": 20000,
-    "racha": "1/1",
+    "pts": 22500,
+    "racha": "0/1",
     "tg": {
      "fin": 1
     }
@@ -2643,11 +2680,11 @@
   "GP": {
    "SR": {
     "duelos": "0/1",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
-    "pts": 5625,
+    "pts": 6875,
     "racha": "0/0"
    }
   },
@@ -2880,6 +2917,18 @@
     "pod": 0,
     "pts": 6594,
     "racha": "0/0"
+   },
+   "SR": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 2500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Guty": {
@@ -3767,6 +3816,18 @@
     "tg": {
      "fin": 1
     }
+   },
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Krinkross🇪🇸": {
@@ -4357,6 +4418,20 @@
     "racha": "0/0"
    }
   },
+  "MAGMAHK": {
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "MALBORO": {
    "FFA": {
     "duelos": "2/3",
@@ -4491,13 +4566,13 @@
     "racha": "0/0"
    },
    "SR": {
-    "duelos": "3/6",
-    "ev": 4,
+    "duelos": "3/7",
+    "ev": 5,
     "oro": 1,
     "ovr": 52,
     "pod": 1,
-    "pts": 31250,
-    "racha": "1/1",
+    "pts": 33750,
+    "racha": "0/1",
     "tg": {
      "bcasa": true,
      "fin": 1,
@@ -4526,6 +4601,20 @@
     "pod": 0,
     "pts": 688,
     "racha": "0/0"
+   }
+  },
+  "METRA": {
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "METRO": {
@@ -4856,6 +4945,19 @@
     "tg": {
      "fin": 1
     }
+   },
+   "SR": {
+    "duelos": "2/3",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 47,
+    "pod": 1,
+    "pts": 7500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
    }
   },
   "Mathhias": {
@@ -5042,11 +5144,11 @@
   "Molt": {
    "SR": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 1875,
+    "pts": 3750,
     "racha": "0/0"
    }
   },
@@ -5186,13 +5288,13 @@
     }
    },
    "SR": {
-    "duelos": "4/4",
-    "ev": 1,
+    "duelos": "6/7",
+    "ev": 2,
     "oro": 1,
-    "ovr": 52,
-    "pod": 1,
-    "pts": 50000,
-    "racha": "1/1"
+    "ovr": 54,
+    "pod": 2,
+    "pts": 56000,
+    "racha": "2/2"
    }
   },
   "Mr.Kude": {
@@ -5287,8 +5389,7 @@
     "pts": 7625,
     "racha": "0/0",
     "tg": {
-     "fund": true,
-     "llave": true
+     "fund": true
     }
    },
    "URBF": {
@@ -5406,6 +5507,18 @@
     "tg": {
      "fin": 5,
      "fund": true
+    }
+   },
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },
@@ -5612,6 +5725,18 @@
     "pod": 0,
     "pts": 8063,
     "racha": "0/1"
+   },
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "ONDADISKO": {
@@ -6473,13 +6598,13 @@
   },
   "Road": {
    "SR": {
-    "duelos": "1/2",
-    "ev": 1,
+    "duelos": "2/5",
+    "ev": 2,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 47,
     "pod": 0,
-    "pts": 12500,
-    "racha": "0/0",
+    "pts": 19250,
+    "racha": "1/1",
     "tg": {
      "dv": true,
      "nuevo": true
@@ -6555,6 +6680,18 @@
     "racha": "0/0",
     "tg": {
      "fund": true
+    }
+   },
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 1250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },
@@ -7057,11 +7194,11 @@
    },
    "SR": {
     "duelos": "4/6",
-    "ev": 3,
+    "ev": 4,
     "oro": 1,
     "ovr": 51,
     "pod": 1,
-    "pts": 25000,
+    "pts": 26250,
     "racha": "0/1",
     "tg": {
      "fin": 1,
@@ -7225,11 +7362,11 @@
    },
    "SR": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 1250,
+    "pts": 2500,
     "racha": "0/0",
     "tg": {
      "fund": true
@@ -7720,6 +7857,18 @@
     "tg": {
      "nuevo": true
     }
+   },
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 1875,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Vandu": {
@@ -7806,12 +7955,12 @@
    },
    "SR": {
     "duelos": "1/2",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 46,
     "pod": 0,
-    "pts": 6500,
-    "racha": "1/1",
+    "pts": 7750,
+    "racha": "0/1",
     "tg": {
      "fund": true
     }
@@ -8562,6 +8711,20 @@
     "pod": 0,
     "pts": 8250,
     "racha": "0/0"
+   }
+  },
+  "nueve7🇨🇴": {
+   "SR": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 2500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "papa": {

@@ -6,7 +6,7 @@
   "FFA": "2026-10-21",
   "FRZ": "2026-10-15",
   "FVS": "2026-10-15",
-  "SR": "2026-10-16",
+  "SR": "2026-10-21",
   "URBF": "2026-10-15"
  },
  "retos": {
@@ -126,6 +126,19 @@
    "n": 484,
    "sv": "FFA",
    "vence": "2026-10-25T20:57:26+00:00",
+   "vencido": false
+  },
+  "David": {
+   "avisado": "2026-10-21",
+   "chat": "2026-10-21",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-21T21:05:52+00:00",
+   "did": "",
+   "evento": "SNAKE INSIGNIA 6 8",
+   "n": 496,
+   "sv": "SR",
+   "vence": "2026-10-28T21:05:52+00:00",
    "vencido": false
   },
   "Desu": {
@@ -340,6 +353,19 @@
    "vence": "2026-10-27T00:57:30+00:00",
    "vencido": false
   },
+  "MAGMAHK": {
+   "avisado": "2026-10-21",
+   "chat": "2026-10-21",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-21T21:05:52+00:00",
+   "did": "",
+   "evento": "SNAKE INSIGNIA 6 8",
+   "n": 496,
+   "sv": "SR",
+   "vence": "2026-10-28T21:05:52+00:00",
+   "vencido": false
+  },
   "MALBORO": {
    "avisado": "2026-10-19",
    "chat": "2026-10-20",
@@ -351,6 +377,19 @@
    "n": 487,
    "sv": "FFA",
    "vence": "2026-10-26T04:19:55+00:00",
+   "vencido": false
+  },
+  "METRA": {
+   "avisado": "2026-10-21",
+   "chat": "2026-10-21",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-21T21:05:52+00:00",
+   "did": "",
+   "evento": "SNAKE INSIGNIA 6 8",
+   "n": 496,
+   "sv": "SR",
+   "vence": "2026-10-28T21:05:52+00:00",
    "vencido": false
   },
   "Magic": {
@@ -487,9 +526,10 @@
   },
   "Road": {
    "avisado": "2026-10-16",
+   "avisado_cumplido": "2026-10-21",
    "chat": "2026-10-16",
-   "con": null,
-   "cumplido": "",
+   "con": 496,
+   "cumplido": "2026-10-21T21:05:52+00:00",
    "debut": "2026-10-16T17:34:15+00:00",
    "did": "777912333611434004",
    "evento": "SNAKE INSIGNIA 5 8",
@@ -594,9 +634,10 @@
   },
   "Valen": {
    "avisado": "2026-10-19",
+   "avisado_cumplido": "2026-10-21",
    "chat": "2026-10-20",
-   "con": null,
-   "cumplido": "",
+   "con": 496,
+   "cumplido": "2026-10-21T21:05:52+00:00",
    "debut": "2026-10-19T16:52:32+00:00",
    "did": "894017160756736091",
    "evento": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2",
@@ -657,6 +698,19 @@
    "n": 483,
    "sv": "FFA",
    "vence": "2026-10-25T02:26:23+00:00",
+   "vencido": false
+  },
+  "nueve7": {
+   "avisado": "2026-10-21",
+   "chat": "2026-10-21",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-21T21:05:52+00:00",
+   "did": "",
+   "evento": "SNAKE INSIGNIA 6 8",
+   "n": 496,
+   "sv": "SR",
+   "vence": "2026-10-28T21:05:52+00:00",
    "vencido": false
   },
   "tomyhilfiger": {

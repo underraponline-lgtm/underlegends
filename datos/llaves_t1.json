@@ -28836,5 +28836,303 @@
     1750
    ]
   ]
+ },
+ "496": {
+  "dia": "2026-10-21",
+  "escala": "16+",
+  "fecha": "21/10",
+  "links": [
+   "https://discord.com/channels/492346406976356374/863208023857823785/1562572657474412687"
+  ],
+  "n": 496,
+  "nombre": "SNAKE INSIGNIA 6 8",
+  "participantes": 25,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Road",
+       "Sosa",
+       "Molt"
+      ],
+      "Road",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Gus",
+       "David 🇨🇴",
+       "GP"
+      ],
+      "Gus",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Masino",
+       "METRA",
+       "Desio"
+      ],
+      "Masino",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Agus",
+       "Six",
+       "Erian"
+      ],
+      "Agus",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "MCO",
+       "Valen",
+       "Neo"
+      ],
+      "MCO",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "nueve7🇨🇴",
+       "Velatz",
+       "Kravitz"
+      ],
+      "nueve7🇨🇴",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Fazer",
+       "OKAM",
+       "MAGMAHK"
+      ],
+      "Fazer",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Over",
+       "Rubik",
+       "Efimero",
+       "Molt"
+      ],
+      "Over",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Road",
+       "Gus"
+      ],
+      "Road",
+      ""
+     ],
+     [
+      [
+       "Masino",
+       "nueve7🇨🇴"
+      ],
+      "Masino",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "Fazer"
+      ],
+      "Agus",
+      ""
+     ],
+     [
+      [
+       "Over",
+       "MCO"
+      ],
+      "Over",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Masino",
+       "Road"
+      ],
+      "Masino",
+      ""
+     ],
+     [
+      [
+       "Agus",
+       "Over"
+      ],
+      "Agus",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Over",
+       "Road"
+      ],
+      "Over",
+      ""
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Agus",
+       "Masino"
+      ],
+      "Agus",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "SR",
+  "tabla": [
+   [
+    "Agus",
+    "Campeón",
+    10000
+   ],
+   [
+    "Masino",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Over",
+    "Tercero",
+    6000
+   ],
+   [
+    "Road",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Fazer",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Gus",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2500
+   ],
+   [
+    "nueve7🇨🇴",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Molt",
+    "Octavos",
+    1875
+   ],
+   [
+    "David 🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Desio",
+    "Octavos",
+    1250
+   ],
+   [
+    "Efimero",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "GP",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kravitz",
+    "Octavos",
+    1250
+   ],
+   [
+    "MAGMAHK",
+    "Octavos",
+    1250
+   ],
+   [
+    "METRA",
+    "Octavos",
+    1250
+   ],
+   [
+    "Neo",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "Rubik",
+    "Octavos",
+    1250
+   ],
+   [
+    "Six",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    1250
+   ],
+   [
+    "Valen",
+    "Octavos",
+    1250
+   ],
+   [
+    "Velatz",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }
