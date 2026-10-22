@@ -1,48 +1,54 @@
 {
  "v": 1,
- "cuando": "2026-10-22T07:48:54Z",
+ "cuando": "2026-10-22T15:40:00Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1830.2,
+ "dur_s": 348.2,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.9
+   "s": 7.6
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.5
+   "s": 8.0
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 23.7
+   "s": 243.9
   },
   {
    "n": "5",
-   "que": "tanda 1 de 6 · 40 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": false,
-   "s": 1729.2
+   "s": 80.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": false,
-   "s": 5.1
-  },
-  {
-   "n": "6",
-   "que": "refrescar KV",
-   "ok": true,
-   "s": 57.1
+   "s": 6.9
   }
  ],
  "fallas": [
+  {
+   "paso": "5",
+   "que": "02_Competitivo/exportar_png.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "04_Pais/exportar_png.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
   {
    "paso": "5",
    "que": "03_Servidor/generar.py .SosaATR"
@@ -53,66 +59,86 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py EZCO"
+   "que": "03_Servidor/generar.py .SosaATR"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Dyzz"
+   "que": "03_Servidor/generar.py .SosaATR"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Krish"
+   "que": "03_Servidor/generar.py .SosaATR"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Kravitz"
+   "que": "03_Servidor/generar.py .SosaATR"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py NXUZ"
+   "que": "03_Servidor/generar.py .SosaATR"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py NXUZ"
+   "que": "03_Servidor/generar.py Andy"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Scritura"
+   "que": "03_Servidor/generar.py ARDEAN"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Sin Limites"
+   "que": "01_Temporada/exportar_png.py .SosaATR"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py ajoel08"
+   "que": "03_Servidor/generar.py .SosaATR"
   },
   {
-   "paso": "5b",
-   "que": "bot/bloqueadas.py --generar"
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "02_Competitivo/exportar_png.py Focox"
+  },
+  {
+   "paso": "5",
+   "que": "04_Pais/exportar_png.py Freestyle4AllmyNiggaz 🌏🌏"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py GP"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Freestyle4AllmyNiggaz 🌏🌏"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py GP"
   }
  ],
  "ultimo_evento": {
-  "n": "497",
-  "nombre": "qcyo rapeen 2",
+  "n": "498",
+  "nombre": "LA ISLA DE OKINAWA V.3",
   "sv": "FFA",
-  "dia": "2026-10-21"
+  "dia": "2026-10-22"
  },
  "cuotas": {
   "kv": {
-   "write": 364,
-   "read": 26859
+   "write": 402,
+   "read": 28799
   },
   "objeto": {
-   "leidas": 1839108,
-   "escritas": 14244,
-   "pedidos": 5313
+   "leidas": 2081968,
+   "escritas": 17185,
+   "pedidos": 7147
   },
   "worker": {
-   "pedidos": 9010,
+   "pedidos": 9580,
    "errores": 0,
-   "sub": 11105,
-   "p50_ms": 1.41,
+   "sub": 11796,
+   "p50_ms": 1.43,
    "p99_ms": 11.58
   },
   "r2": {
