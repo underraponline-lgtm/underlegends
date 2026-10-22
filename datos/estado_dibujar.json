@@ -1,45 +1,45 @@
 {
  "v": 1,
- "cuando": "2026-10-22T03:09:24Z",
+ "cuando": "2026-10-22T03:51:46Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 613.5,
+ "dur_s": 1181.1,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.6
+   "s": 7.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.4
+   "s": 7.5
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 28.2
+   "s": 22.0
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": false,
-   "s": 511.1
+   "s": 1077.5
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.1
+   "s": 9.1
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 55.8
+   "s": 56.7
   }
  ],
  "fallas": [
@@ -53,6 +53,22 @@
   },
   {
    "paso": "5",
+   "que": "03_Servidor/generar.py Krish"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py JEIXDER"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py MCO"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Lvel"
+  },
+  {
+   "paso": "5",
    "que": "03_Servidor/generar.py SOL"
   },
   {
@@ -61,27 +77,27 @@
   }
  ],
  "ultimo_evento": {
-  "n": "496",
-  "nombre": "SNAKE INSIGNIA 6 8",
-  "sv": "SR",
+  "n": "497",
+  "nombre": "qcyo rapeen 2",
+  "sv": "FFA",
   "dia": "2026-10-21"
  },
  "cuotas": {
   "kv": {
-   "write": 154,
-   "read": 12368
+   "write": 177,
+   "read": 14185
   },
   "objeto": {
-   "leidas": 635282,
-   "escritas": 4429,
-   "pedidos": 1912
+   "leidas": 795447,
+   "escritas": 6356,
+   "pedidos": 2348
   },
   "worker": {
-   "pedidos": 8773,
+   "pedidos": 8789,
    "errores": 0,
-   "sub": 10722,
-   "p50_ms": 1.39,
-   "p99_ms": 11.63
+   "sub": 10776,
+   "p50_ms": 1.38,
+   "p99_ms": 11.58
   },
   "r2": {
    "objetos": 4731,
