@@ -48,19 +48,19 @@
 "temporada"
 ]
 },
+"erian": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "colesito": {
 "rg": "B",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"erian": {
-"rg": "B",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -124,6 +124,14 @@
 "temporada"
 ]
 },
+"abyssus": {
+"rg": "A",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "og": {
 "rg": "B",
 "c": [
@@ -132,13 +140,9 @@
 "temporada"
 ]
 },
-"abyssus": {
+"hassan": {
 "rg": "A",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
+"c": []
 },
 "mco": {
 "rg": "B",
@@ -148,10 +152,6 @@
 "servidor",
 "temporada"
 ]
-},
-"hassan": {
-"rg": "A",
-"c": []
 },
 "provenza": {
 "rg": "C",
@@ -170,15 +170,6 @@
 "temporada"
 ]
 },
-"nc": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "yinn": {
 "rg": "C",
 "c": []
@@ -186,6 +177,15 @@
 "mrstillballin": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"nc": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -342,14 +342,6 @@
 "temporada"
 ]
 },
-"dyzz": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "miniboy": {
 "rg": "D",
 "c": [
@@ -360,6 +352,14 @@
 },
 "player": {
 "rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
+"dyzz": {
+"rg": "E",
 "c": [
 "competitivo",
 "servidor",
@@ -384,14 +384,6 @@
 },
 "dynoco": {
 "rg": "C",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"cinexfilo": {
-"rg": "E",
 "c": [
 "competitivo",
 "servidor",
@@ -434,6 +426,14 @@
 "jj": {
 "rg": "",
 "c": []
+},
+"cinexfilo": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "1200": {
 "rg": "E",
@@ -496,14 +496,6 @@
 "rg": "",
 "c": []
 },
-"gocho": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "catarsis": {
 "rg": "",
 "c": [
@@ -534,6 +526,14 @@
 "c": []
 },
 "soneto": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
+"gocho": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -576,10 +576,6 @@
 "temporada"
 ]
 },
-"tuca": {
-"rg": "",
-"c": []
-},
 "teito": {
 "rg": "E",
 "c": [
@@ -620,6 +616,10 @@
 "temporada"
 ]
 },
+"tuca": {
+"rg": "",
+"c": []
+},
 "kochi": {
 "rg": "",
 "c": [
@@ -651,10 +651,6 @@
 "servidor"
 ]
 },
-"hotaruadeyemi": {
-"rg": "",
-"c": []
-},
 "deluxe": {
 "rg": "",
 "c": [
@@ -675,10 +671,6 @@
 "servidor",
 "temporada"
 ]
-},
-"efimero": {
-"rg": "",
-"c": []
 },
 "krish": {
 "rg": "E",
@@ -740,11 +732,19 @@
 "temporada"
 ]
 },
+"hotaruadeyemi": {
+"rg": "",
+"c": []
+},
 "carlosmo": {
 "rg": "",
 "c": [
 "servidor"
 ]
+},
+"efimero": {
+"rg": "",
+"c": []
 },
 "badterne": {
 "rg": "",
@@ -1189,14 +1189,6 @@
 "rg": "",
 "c": []
 },
-"julix-x": {
-"rg": "",
-"c": []
-},
-"senticide": {
-"rg": "",
-"c": []
-},
 "reyexxmc": {
 "rg": "",
 "c": [
@@ -1216,12 +1208,6 @@
 "servidor"
 ]
 },
-"acry": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
 "greyfitsh": {
 "rg": "",
 "c": []
@@ -1229,6 +1215,20 @@
 "newcharacter": {
 "rg": "",
 "c": []
+},
+"julix-x": {
+"rg": "",
+"c": []
+},
+"senticide": {
+"rg": "",
+"c": []
+},
+"acry": {
+"rg": "",
+"c": [
+"servidor"
+]
 },
 "zaza": {
 "rg": "",

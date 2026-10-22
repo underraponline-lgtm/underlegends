@@ -482,16 +482,20 @@
    "e": "cazado",
    "por": [
     [
+     "BLUE BURKA",
+     250
+    ],
+    [
      "BNA",
-     334
+     250
     ],
     [
      "PichulaMc",
-     333
+     250
     ],
     [
      "Polosport",
-     333
+     250
     ]
    ],
    "ev": {
@@ -510,16 +514,20 @@
    "e": "cazado",
    "por": [
     [
+     "BLUE BURKA",
+     125
+    ],
+    [
      "BNA",
-     167
+     125
     ],
     [
      "PichulaMc",
-     167
+     125
     ],
     [
      "Polosport",
-     166
+     125
     ]
    ],
    "ev": {
@@ -535,7 +543,7 @@
   "NXUZ": 1000,
   "Abyssus": 1000,
   "Lambroggini": 1000,
-  "PichulaMc": 4000,
+  "PichulaMc": 3875,
   "SGB": 500,
   "Snow": 250,
   "Velatz": 250,
@@ -546,7 +554,8 @@
   "Tuca": 1000,
   "1200": 3000,
   "Guess": 5000,
-  "BNA": 501,
-  "Polosport": 499
+  "BLUE BURKA": 375,
+  "BNA": 375,
+  "Polosport": 375
  }
 }

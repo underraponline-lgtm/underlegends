@@ -612,7 +612,9 @@
     "ronda": "CUARTOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "223 🇦🇩"
+  },
   "sin_permiso": false,
   "sv": "FFA"
  },
