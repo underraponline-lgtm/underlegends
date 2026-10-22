@@ -1143,7 +1143,8 @@
 "gus": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "malboro": {
@@ -2459,14 +2460,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Elinge_TIMP"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5783,6 +5776,14 @@
 "Kravitz"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-22T00:45:12Z",
+"quien": [
+"Gus"
+],
+"carta": "temporada"
 }
 ]
 }

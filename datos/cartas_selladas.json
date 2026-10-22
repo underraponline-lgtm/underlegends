@@ -61,10 +61,10 @@
   },
   "Agre": {},
   "Agus": {
-   "competitivo": "33ef107c1eb9:a62fb156b44f",
+   "competitivo": "b0f4cbbf4dff:a62fb156b44f",
    "pais": "f74c1955bf1f:351b86d66ea6",
-   "servidor": "09e30fa5f136:2d5142698a31:3580af",
-   "temporada": "bd19a4c8cb08:a001e7b21e4d"
+   "servidor": "5443c4eedb21:2d5142698a31:3580af",
+   "temporada": "6f544c325143:a001e7b21e4d"
   },
   "Aktybo": {
    "competitivo": "48d10c0b7908:a62fb156b44f",
@@ -205,8 +205,8 @@
   "Carlosss": {
    "competitivo": "9ce97919a3b2:a62fb156b44f",
    "pais": "cd17e0ee22e2:351b86d66ea6",
-   "servidor": "59407af26bd7:2d5142698a31:abdb4a",
-   "temporada": "c3f3dadca154:a001e7b21e4d"
+   "servidor": "5422b2f7250d:2d5142698a31:abdb4a",
+   "temporada": "4787682209f5:a001e7b21e4d"
   },
   "Catarsis": {
    "competitivo": "28aa544daa64:c896d13a6eea",
@@ -357,10 +357,10 @@
    "servidor": "7bd2c254f145:2d5142698a31:c589ca"
   },
   "Drexx": {
-   "competitivo": "a5ad1a308c7f:a62fb156b44f",
-   "pais": "0a64ee5d0d3e:351b86d66ea6",
-   "servidor": "f8eede02ff05:2d5142698a31:3580af",
-   "temporada": "8bb7cd840c66:a001e7b21e4d"
+   "competitivo": "486be2c464fc:a62fb156b44f",
+   "pais": "a84862c171a3:351b86d66ea6",
+   "servidor": "b94ebdf5b80f:2d5142698a31:3580af",
+   "temporada": "18789cbb8e03:a001e7b21e4d"
   },
   "Dyminuto": {
    "servidor": "fd4581683589:2d5142698a31:15af16"
@@ -557,9 +557,10 @@
    "temporada": "b47edc5429e1:a001e7b21e4d"
   },
   "Gus": {
-   "competitivo": "f2b5277a5c55:a62fb156b44f",
-   "pais": "8177452b54d5:351b86d66ea6",
-   "servidor": "18364a61226f:2d5142698a31:948362"
+   "competitivo": "fa529836161c:a62fb156b44f",
+   "pais": "1397e5f93a2b:351b86d66ea6",
+   "servidor": "18364a61226f:2d5142698a31:948362",
+   "temporada": "6b8f602f3c78:a001e7b21e4d"
   },
   "Guty": {
    "competitivo": "189dba2440fa:a62fb156b44f",
@@ -1073,7 +1074,8 @@
   "Molt": {
    "competitivo": "430f9902b663:a62fb156b44f",
    "pais": "67180b0a2cfb:351b86d66ea6",
-   "servidor": "e46d914a629f:2d5142698a31:2ac9f1"
+   "servidor": "e46d914a629f:2d5142698a31:2ac9f1",
+   "temporada": "080c61c49b50:a001e7b21e4d"
   },
   "Molusco": {
    "competitivo": "0a476ecd5c35:a62fb156b44f",
@@ -1849,5 +1851,5 @@
    "servidor": "7f8885a35a6d:2d5142698a31:93a344"
   }
  },
- "cuando": "2026-10-22T00:22:17+00:00"
+ "cuando": "2026-10-22T00:40:29+00:00"
 }
