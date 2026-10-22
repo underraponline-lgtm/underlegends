@@ -5081,7 +5081,7 @@
    "Xclusivo": 10
   },
   "fecha": "09/10",
-  "firma": "c1c38981862a0da9",
+  "firma": "0f0c6970248ec36b",
   "msg": "1558334120172462091",
   "nombre": "PROYECTO X VOL.2",
   "num": 440,
@@ -11964,7 +11964,7 @@
    "Vandu": 20
   },
   "fecha": "14/10",
-  "firma": "b510ac5a1e6a0a9c",
+  "firma": "340a5e95836f0187",
   "msg": "1560019837609050254",
   "nombre": "DEM UZBEKISTAN FECHA 3",
   "num": 471,
@@ -13346,7 +13346,7 @@
    "Xubaru": 7
   },
   "fecha": "16/10",
-  "firma": "63b01fbe8a66f0a8",
+  "firma": "3155b8bb233f9e64",
   "msg": "1560725555203014688",
   "nombre": "__ DESGRACIAS EN TOKYO VOL27 __",
   "num": 477,
@@ -15100,7 +15100,7 @@
    "Xubaru": 8
   },
   "fecha": "18/10",
-  "firma": "e73453aeb935c134",
+  "firma": "0a3edb9d957822ba",
   "msg": "1561498207572205609",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL7 __",
   "num": 484,
@@ -17917,7 +17917,7 @@
    "Velatz": 37
   },
   "fecha": "21/10",
-  "firma": "c060cb84cdfff6a0",
+  "firma": "3564143f68576fb5",
   "msg": "1562578019472773131",
   "nombre": "__ DESGRACIAS EN TOKYO VOL 30 1 VS 1 __",
   "num": 494,
@@ -18190,6 +18190,7 @@
   "v": 2
  },
  "496": {
+  "al_dia": true,
   "antes": {
    "Agus": [
     10,
@@ -18437,7 +18438,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "b3b0a7556973ffaf",
+  "firma": "007541ad3426bb1b",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -18572,6 +18573,7 @@
   "v": 2
  },
  "497": {
+  "al_dia": true,
   "antes": {
    "Agente sombra": [
     294,
