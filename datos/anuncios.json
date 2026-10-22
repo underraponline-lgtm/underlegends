@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-22T22:24:28+00:00",
+ "cuando": "2026-10-22T22:43:10+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -473,14 +473,14 @@
     ],
     "dj": [
      "Kravitz",
-     "♾️.DarnBlessMC"
+     "DarnBlessMC"
     ]
    },
    "autor": "Kravitz",
    "staff_cuentas": {
     "Kravitz": "1345962362615894027",
     "mats": "597240876573392946",
-    "♾️.DarnBlessMC": "1508771760709963930"
+    "DarnBlessMC": "1508771760709963930"
    },
    "categoria_id": "1468478330826260500",
    "inscripciones": "abiertas",
@@ -7006,6 +7006,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "reenkharnazhion 🇨🇱",
+   "quien": "cronoxzito",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1562956292803534879",
+   "cuando": "2026-10-22T22:30:18"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
