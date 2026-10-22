@@ -1577,6 +1577,52 @@
      300
     ]
    }
+  },
+  {
+   "id": "b7e6bea3d5",
+   "tipo": "Nombre desconocido",
+   "sec": "19 CUP - FUTCARD EDITION VOL.3 · DDF · 21/10 · #495",
+   "que": "¿Quién es «🟢 Batalla 3: Desio»?",
+   "r": "Es Desio",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Desio: estaba en la llamada del evento con un nombre parecido",
+   "t": 1792629101939,
+   "filas": [
+    783
+   ],
+   "variantes": [
+    "🟢 Batalla 3: Desio"
+   ],
+   "escribio": {
+    "alias": [
+     "🟢 Batalla 3: Desio",
+     "Desio"
+    ],
+    "filas": [
+     301
+    ]
+   }
+  },
+  {
+   "id": "dc54b0db51",
+   "tipo": "Nombre desconocido",
+   "sec": "19 CUP - FUTCARD EDITION VOL.3 · DDF · 21/10 · #495",
+   "que": "¿Quién es «🟢 Batalla 1: Carlos»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792629101939,
+   "filas": [
+    782
+   ],
+   "variantes": [
+    "🟢 Batalla 1: Carlos"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

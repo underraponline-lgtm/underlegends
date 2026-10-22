@@ -441,7 +441,7 @@
     "oro": 1,
     "ovr": 53,
     "pod": 2,
-    "pts": 41250,
+    "pts": 42250,
     "racha": "2/2",
     "tg": {
      "fin": 1,
@@ -1187,7 +1187,7 @@
     "oro": 6,
     "ovr": 61,
     "pod": 7,
-    "pts": 94275,
+    "pts": 90525,
     "racha": "9/9",
     "tg": {
      "bcasa": true,
@@ -1824,12 +1824,12 @@
     }
    },
    "DDF": {
-    "duelos": "2/7",
-    "ev": 5,
+    "duelos": "2/8",
+    "ev": 6,
     "oro": 0,
     "ovr": 51,
     "pod": 1,
-    "pts": 19362,
+    "pts": 21362,
     "racha": "0/1",
     "tg": {
      "fin": 1
@@ -1880,12 +1880,12 @@
     }
    },
    "DDF": {
-    "duelos": "4/7",
-    "ev": 3,
+    "duelos": "4/8",
+    "ev": 4,
     "oro": 0,
-    "ovr": 49,
+    "ovr": 50,
     "pod": 1,
-    "pts": 14275,
+    "pts": 16275,
     "racha": "0/1",
     "tg": {
      "fin": 1
@@ -8881,6 +8881,17 @@
     "racha": "0/0"
    }
   },
+  "🟢 Batalla 1: Carlos": {
+   "DDF": {
+    "duelos": "1/1",
+    "ev": 0,
+    "oro": 0,
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
+    "racha": "0/0"
+   }
+  },
   "🟢 Batalla 2: Mco": {
    "DDF": {
     "duelos": "0/1",
@@ -8893,6 +8904,17 @@
     "tg": {
      "nuevo": true
     }
+   }
+  },
+  "🟢 Batalla 3: Desio": {
+   "DDF": {
+    "duelos": "1/1",
+    "ev": 0,
+    "oro": 0,
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
+    "racha": "0/0"
    }
   },
   "🟢 Batalla 4: GHV": {

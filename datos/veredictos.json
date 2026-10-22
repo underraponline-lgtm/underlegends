@@ -5168,6 +5168,47 @@
      []
     ]
    ]
+  },
+  "1562618287572127767": {
+   "id": "1562618287572127767",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1792627631801,
+   "ed": 1792628239568,
+   "texto": "`[ SEMIFINALES ]`\n⌞LAST⌝ 🆚 ⌞PICHULA⌝\n⌞MAKMA⌝ 🆚 ⌞MATTHIAS⌝\n`[ FINAL ]`\n⌞PICHULA⌝ 🆚 ⌞MAKMA⌝",
+   "batallas": [
+    [
+     "SEMIFINALES",
+     [
+      "LAST",
+      "PICHULA"
+     ],
+     "PICHULA",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "MAKMA",
+      "MATTHIAS"
+     ],
+     "MAKMA",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PICHULA",
+      "MAKMA"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
   }
  }
 }

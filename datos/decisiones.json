@@ -503,6 +503,20 @@
    "cuando": "2026-10-19 10:32 PM ET",
    "por": "el ciclo (R4)",
    "nota": "es la misma batalla que «Snow, Velatz vs Luz, Dyzz vs Makmah, Molusco» (ganó Snow, Velatz), ya cargada en el #492: contestar «Ganó» la contaría dos veces"
+  },
+  "19cupfutcardeditionvol3|DDF|21/10|cuartos|batalla1carlos|drexx": {
+   "ganador": "🟢 Batalla 1: Carlos",
+   "batalla": "19 CUP - FUTCARD EDITION VOL.3 · DDF · 21/10 · cuartos · 🟢 Batalla 1: Carlos 🆚 Drexx",
+   "cuando": "2026-10-21 8:22 PM ET",
+   "por": "el organizador, con el menú (<@1150099153238630410>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
+  },
+  "19cupfutcardeditionvol3|DDF|21/10|cuartos|batalla3desio|dominick": {
+   "ganador": "🟢 Batalla 3: Desio",
+   "batalla": "19 CUP - FUTCARD EDITION VOL.3 · DDF · 21/10 · cuartos · 🟢 Batalla 3: Desio 🆚 Dominick🇵🇪",
+   "cuando": "2026-10-21 8:22 PM ET",
+   "por": "el organizador, con el menú (<@1150099153238630410>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   }
  },
  "anuncios_fuera": {

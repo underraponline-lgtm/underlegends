@@ -681,20 +681,37 @@
      "Velatz",
      25,
      1
+    ],
+    [
+     "d l o z c o r i a",
+     8,
+     1
+    ],
+    [
+     "Jothaze",
+     8,
+     1
+    ],
+    [
+     "Zeta",
+     8,
+     1
     ]
    ],
    "semillero": {
     "nuevos": {
      "FFA": 5,
      "DDF": 2,
-     "ACAD": 1
+     "ACAD": 1,
+     "SR": 4
     },
     "gente": {
      "FFA": 76,
      "ACAD": 21,
-     "DDF": 7
+     "DDF": 7,
+     "SR": 24
     },
-    "gana": "FFA"
+    "gana": "SR"
    },
    "meta_va": {
     "ACAD": 21,
@@ -704,7 +721,7 @@
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,
-    "SR": 0,
+    "SR": 24,
     "URBF": 0
    }
   }

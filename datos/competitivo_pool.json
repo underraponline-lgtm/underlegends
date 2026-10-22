@@ -295,12 +295,12 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 3,
-   "dg": 27,
+   "dg": 30,
    "fg": 4,
    "fp": 2,
-   "riv": 32,
-   "venc": 26,
-   "vengo": 1
+   "riv": 34,
+   "venc": 29,
+   "vengo": 2
   },
   "tg_p": {
    "paises": 10,
@@ -712,15 +712,15 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
-   "dg": 5,
+   "dg": 7,
    "fg": 1,
    "fp": 1,
-   "riv": 6,
-   "venc": 5
+   "riv": 9,
+   "venc": 7
   },
   "tg_p": {
-   "paises": 5,
-   "paisesg": 4,
+   "paises": 6,
+   "paisesg": 5,
    "primer": true
   }
  },
@@ -1350,7 +1350,7 @@
   "Dm": 21,
   "T": 15,
   "V": 50,
-  "wr": "56.7%",
+  "wr": "54.8%",
   "rch_act": 0,
   "rch_max": 2,
   "duel_v": 13,
@@ -1376,7 +1376,7 @@
    "clasico": 1,
    "dg": 13,
    "fg": 2,
-   "riv": 24,
+   "riv": 25,
    "venc": 13
   },
   "tg_p": {
@@ -2046,56 +2046,6 @@
   }
  },
  {
-  "full": "Drexx",
-  "raw": "Drexx",
-  "cc": "pe",
-  "sv": "FFA",
-  "crew": "",
-  "discord_id": "1150099153238630410",
-  "verificado": true,
-  "ev": 20,
-  "score": 28.6,
-  "conf": 1.0,
-  "E": 33,
-  "C": 35,
-  "Dm": 0,
-  "T": 23,
-  "V": 48,
-  "wr": "39.1%",
-  "rch_act": 0,
-  "rch_max": 2,
-  "duel_v": 8,
-  "duel_t": 17,
-  "duel_real": true,
-  "dna_v": 2,
-  "dna_t": 3,
-  "din_v": 6,
-  "din_t": 14,
-  "pos": 21,
-  "total": 57,
-  "rango": "C",
-  "subrango": "C-",
-  "ovr": 0,
-  "av": "",
-  "pos_pais": "1/18",
-  "arc_pais": 100,
-  "pos_sv": "26/141",
-  "arc_sv": 82,
-  "tg_c": {
-   "bestia": 1,
-   "clasico": 2,
-   "dg": 8,
-   "fp": 1,
-   "riv": 16,
-   "venc": 8,
-   "vengo": 1
-  },
-  "tg_p": {
-   "paises": 8,
-   "paisesg": 5
-  }
- },
- {
   "full": "Majiztral",
   "raw": "Majiztral",
   "cc": "co",
@@ -2121,7 +2071,7 @@
   "dna_t": 3,
   "din_v": 7,
   "din_t": 15,
-  "pos": 22,
+  "pos": 21,
   "total": 57,
   "rango": "C",
   "subrango": "C-",
@@ -2129,7 +2079,7 @@
   "av": "",
   "pos_pais": "7/24",
   "arc_pais": 75,
-  "pos_sv": "27/141",
+  "pos_sv": "26/141",
   "arc_sv": 82,
   "tg_c": {
    "bestia": 1,
@@ -2143,6 +2093,56 @@
   "tg_p": {
    "paises": 9,
    "paisesg": 7
+  }
+ },
+ {
+  "full": "Drexx",
+  "raw": "Drexx",
+  "cc": "pe",
+  "sv": "FFA",
+  "crew": "",
+  "discord_id": "1150099153238630410",
+  "verificado": true,
+  "ev": 21,
+  "score": 28.3,
+  "conf": 1.0,
+  "E": 33,
+  "C": 34,
+  "Dm": 0,
+  "T": 23,
+  "V": 48,
+  "wr": "37.5%",
+  "rch_act": 0,
+  "rch_max": 2,
+  "duel_v": 8,
+  "duel_t": 18,
+  "duel_real": true,
+  "dna_v": 2,
+  "dna_t": 3,
+  "din_v": 6,
+  "din_t": 14,
+  "pos": 22,
+  "total": 57,
+  "rango": "C",
+  "subrango": "C-",
+  "ovr": 0,
+  "av": "",
+  "pos_pais": "1/18",
+  "arc_pais": 100,
+  "pos_sv": "27/141",
+  "arc_sv": 82,
+  "tg_c": {
+   "bestia": 1,
+   "clasico": 2,
+   "dg": 8,
+   "fp": 1,
+   "riv": 16,
+   "venc": 8,
+   "vengo": 1
+  },
+  "tg_p": {
+   "paises": 8,
+   "paisesg": 5
   }
  },
  {
@@ -4166,7 +4166,7 @@
    "bestia": 1,
    "clasico": 5,
    "dg": 7,
-   "riv": 7,
+   "riv": 8,
    "venc": 6,
    "vengo": 3
   },
@@ -4939,23 +4939,23 @@
   "full": "Dominick",
   "raw": "Dominick",
   "cc": "pe",
-  "sv": "FFA",
+  "sv": "DDF",
   "crew": "",
   "discord_id": "1439048698142134436",
   "verificado": false,
-  "ev": 13,
-  "score": 16.5,
-  "conf": 0.88,
+  "ev": 14,
+  "score": 16.3,
+  "conf": 0.9,
   "E": 27,
-  "C": 9,
+  "C": 8,
   "Dm": 0,
   "T": 8,
-  "V": 45,
-  "wr": "25.0%",
+  "V": 43,
+  "wr": "24.0%",
   "rch_act": 0,
   "rch_max": 1,
   "duel_v": 2,
-  "duel_t": 8,
+  "duel_t": 9,
   "duel_real": true,
   "dna_v": 1,
   "dna_t": 2,
@@ -8069,13 +8069,13 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 1,
-   "riv": 2,
-   "venc": 1
+   "dg": 2,
+   "riv": 5,
+   "venc": 2
   },
   "tg_p": {
-   "paises": 1,
-   "paisesg": 1
+   "paises": 3,
+   "paisesg": 2
   }
  },
  {
@@ -10152,10 +10152,10 @@
   "pos_crew": "",
   "tg_c": {
    "clasico": 1,
-   "riv": 1
+   "riv": 2
   },
   "tg_p": {
-   "paises": 1,
+   "paises": 2,
    "pionero": true
   }
  },
@@ -13453,7 +13453,14 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  }
  },
  {
   "full": "Selek",

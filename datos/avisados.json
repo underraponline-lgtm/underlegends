@@ -18111,6 +18111,16 @@
     "Carlosss",
     "MaYeuTyK",
     "Carlosss"
+   ],
+   [
+    "🟢 Batalla 1: Carlos",
+    "Drexx",
+    "🟢 Batalla 1: Carlos"
+   ],
+   [
+    "🟢 Batalla 3: Desio",
+    "Dominick",
+    "🟢 Batalla 3: Desio"
    ]
   ],
   "ev_antes": {
@@ -18120,7 +18130,7 @@
    "Xclusivo": 17
   },
   "fecha": "21/10",
-  "firma": "79346c693e759504",
+  "firma": "9b336e307ecf5fa8",
   "msg": "1562582559702130758",
   "nombre": "19 CUP - FUTCARD EDITION VOL.3",
   "num": 495,
@@ -18132,14 +18142,14 @@
   "t": "2026-10-21T21:53:40Z",
   "tabla": [
    [
-    "Carlosss",
-    "Campeón",
-    7500
-   ],
-   [
     "MaYeuTyK",
     "Subcampeón",
     5000
+   ],
+   [
+    "Carlosss",
+    "Campeón",
+    3750
    ],
    [
     "Miniboy",
@@ -18158,6 +18168,16 @@
    ],
    [
     "Xclusivo",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
     "Cuartos",
     2000
    ],

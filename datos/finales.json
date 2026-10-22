@@ -586,7 +586,10 @@
     "ronda": "CUARTOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "🟢 Batalla 1: Carlos",
+   "1": "🟢 Batalla 3: Desio"
+  },
   "sin_permiso": false,
   "sv": "DDF"
  },

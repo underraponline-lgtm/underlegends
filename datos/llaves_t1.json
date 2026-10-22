@@ -28749,16 +28749,16 @@
        "🟢 Batalla 1: Carlos",
        "Drexx"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "🟢 Batalla 1: Carlos",
+      "ganador: ✅ Decidir"
      ],
      [
       [
        "🟢 Batalla 3: Desio",
-       "Dominick🇵🇪"
+       "Dominick"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "🟢 Batalla 3: Desio",
+      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -28771,7 +28771,7 @@
        "Miniboy"
       ],
       "Carlosss",
-      ""
+      "Walk-in 1: Carlosss"
      ],
      [
       [
@@ -28801,19 +28801,29 @@
   "sv": "DDF",
   "tabla": [
    [
-    "Carlosss",
-    "Campeón",
-    7500
-   ],
-   [
     "MaYeuTyK",
     "Subcampeón",
     5000
    ],
    [
+    "Carlosss",
+    "Campeón",
+    3750
+   ],
+   [
     "Miniboy",
     "Semifinal",
     3500
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    2000
    ],
    [
     "Xclusivo",
