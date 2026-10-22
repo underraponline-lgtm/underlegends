@@ -4981,7 +4981,7 @@
    "venc": 2
   },
   "tg_p": {
-   "paises": 6,
+   "paises": 7,
    "paisesg": 2
   }
  },
@@ -8404,11 +8404,15 @@
   "pos_sv": "",
   "arc_sv": 0,
   "tg_c": {
+   "bestia": 1,
    "clasico": 1,
-   "riv": 2
+   "dg": 1,
+   "riv": 3,
+   "venc": 1
   },
   "tg_p": {
-   "paises": 2
+   "paises": 3,
+   "paisesg": 1
   }
  },
  {

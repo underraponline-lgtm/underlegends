@@ -881,6 +881,39 @@
    "b": "LEYENDA.X5",
    "ganador": "UZI",
    "votos": "2–0"
+  },
+  "1562624884272795691": {
+   "id": "1562624884272795691",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792629204577,
+   "a": "CRISZJ",
+   "b": "NOONE",
+   "ganador": "NOONE",
+   "votos": "2–0"
+  },
+  "1562626193482584105": {
+   "id": "1562626193482584105",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792629516717,
+   "a": "ARTEZZY",
+   "b": "RAIZER",
+   "ganador": "RAIZER",
+   "votos": "1–0"
+  },
+  "1562629132100046871": {
+   "id": "1562629132100046871",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792630217338,
+   "a": "VILCA",
+   "b": "SHADOW",
+   "ganador": "VILCA",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5227,8 +5260,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1792628977795,
-   "ed": 1792629204577,
-   "texto": "`[ CUARTOS ]`\n⌞UZI⌝ 🆚 ⌞LEYENDA.X5⌝\n⌞CRISZJ⌝ 🆚 ⌞NOONE⌝",
+   "ed": 1792630240143,
+   "texto": "`[ CUARTOS ]`\n⌞UZI⌝ 🆚 ⌞LEYENDA.X5⌝\n⌞CRISZJ⌝ 🆚 ⌞NOONE⌝\n⌞ARTEZZY⌝ 🆚 ⌞RAIZER⌝\n⌞replica : artezzy⌝ 🆚 ⌞raizer⌝\n⌞VILCA⌝ 🆚 ⌞SHADOW⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5246,8 +5279,38 @@
       "CRISZJ",
       "NOONE"
      ],
+     "NOONE",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "ARTEZZY",
+      "RAIZER"
+     ],
+     "RAIZER",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "replica : artezzy",
+      "raizer"
+     ],
      null,
      "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "VILCA",
+      "SHADOW"
+     ],
+     "VILCA",
+     "veredicto",
      []
     ]
    ]

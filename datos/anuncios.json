@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-22T00:37:55+00:00",
+ "cuando": "2026-10-22T00:54:29+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -7006,6 +7006,24 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones-2",
+   "texto": "Bloody",
+   "quien": "bloodypintor",
+   "discord_id": "692881329573986317",
+   "msg_id": "1562629170763145227",
+   "cuando": "2026-10-22T00:50:26"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones-2",
+   "texto": "DarnBless 🇨🇴",
+   "quien": "juanclaudio0959",
+   "discord_id": "1508771760709963930",
+   "msg_id": "1562626717397557399",
+   "cuando": "2026-10-22T00:40:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones-2",
    "texto": "Majiztral 🇨🇴",
    "quien": "majiztral",
    "discord_id": "1492228152691396720",
@@ -7321,19 +7339,19 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "Ardean 🇵🇪",
-   "quien": "ardean_rap373",
-   "discord_id": "879849220352393266",
-   "msg_id": "1562619172884717619",
+   "texto": "imagy🇵🇪",
+   "quien": "imagy_1_53690",
+   "discord_id": "1546937434028380264",
+   "msg_id": "1562619171089416315",
    "cuando": "2026-10-22T00:10:42"
   },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "imagy🇵🇪",
-   "quien": "imagy_1_53690",
-   "discord_id": "1546937434028380264",
-   "msg_id": "1562619171089416315",
+   "texto": "Ardean 🇵🇪",
+   "quien": "ardean_rap373",
+   "discord_id": "879849220352393266",
+   "msg_id": "1562619172884717619",
    "cuando": "2026-10-22T00:10:42"
   },
   {
