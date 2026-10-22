@@ -33,10 +33,10 @@
   "AREZ": {},
   "Aby": {},
   "Abyssus": {
-   "competitivo": "a7540414ba2b:a62fb156b44f",
-   "pais": "bc0d6e4d7158:351b86d66ea6",
-   "servidor": "75f73ad5a507:2d5142698a31:3ce074",
-   "temporada": "887bc0af7748:a001e7b21e4d"
+   "competitivo": "a37fb8377bb5:a62fb156b44f",
+   "pais": "3954e6f334ad:351b86d66ea6",
+   "servidor": "c7b625a5874b:2d5142698a31:3ce074",
+   "temporada": "838b7862b98a:a001e7b21e4d"
   },
   "Ac3nto": {
    "servidor": "03c350320fda:2d5142698a31:948362"
@@ -1199,10 +1199,10 @@
   },
   "OEP": {},
   "OG": {
-   "competitivo": "62c34944a057:a62fb156b44f",
+   "competitivo": "675d5572e89c:a62fb156b44f",
    "pais": "a17d210c1552:351b86d66ea6",
    "servidor": "92834744ec74:2d5142698a31:3ce074",
-   "temporada": "708dddf782df:a001e7b21e4d"
+   "temporada": "096a181df864:a001e7b21e4d"
   },
   "OKAM": {},
   "OKTA": {
@@ -1849,5 +1849,5 @@
    "servidor": "7f8885a35a6d:2d5142698a31:93a344"
   }
  },
- "cuando": "2026-10-22T06:01:10+00:00"
+ "cuando": "2026-10-22T06:16:11+00:00"
 }
