@@ -593,5 +593,28 @@
   "sin_permiso": false,
   "sv": "DDF"
  },
+ "1562624048771502153": {
+  "autor": "1523082259870257315",
+  "canal": "1487207377601040516",
+  "cuando": "2026-10-22T00:30:05.378000+00:00",
+  "evento": "__ qcyo rapeen 2 __",
+  "fecha": "21/10",
+  "llave": "1562624048771502153",
+  "pregunta": "1562690282997424159",
+  "preguntada": "2026-10-22 12:53 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "223 🇦🇩",
+     "BLUE BURKA🇦🇪",
+     "makmah 🇻🇪"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
