@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-22T00:54:29+00:00",
+ "cuando": "2026-10-22T01:24:29+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -7006,6 +7006,24 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones-2",
+   "texto": "vandu 🇨🇦",
+   "quien": "dfelipetor",
+   "discord_id": "613552853302378527",
+   "msg_id": "1562636036163510323",
+   "cuando": "2026-10-22T01:17:43"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones-2",
+   "texto": "nmb 🇨🇱",
+   "quien": "060804b",
+   "discord_id": "909898638677926038",
+   "msg_id": "1562630208006127638",
+   "cuando": "2026-10-22T00:54:33"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones-2",
    "texto": "Bloody",
    "quien": "bloodypintor",
    "discord_id": "692881329573986317",
@@ -7690,19 +7708,19 @@
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
-   "texto": "Carlos",
-   "quien": "carlosss.mc23",
-   "discord_id": "958103803616444528",
-   "msg_id": "1562572107781775431",
+   "texto": "Dominick🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1562572105315524699",
    "cuando": "2026-10-21T21:03:41"
   },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
-   "texto": "Dominick🇵🇪",
-   "quien": "equisde_xd23",
-   "discord_id": "1439048698142134436",
-   "msg_id": "1562572105315524699",
+   "texto": "Carlos",
+   "quien": "carlosss.mc23",
+   "discord_id": "958103803616444528",
+   "msg_id": "1562572107781775431",
    "cuando": "2026-10-21T21:03:41"
   },
   {

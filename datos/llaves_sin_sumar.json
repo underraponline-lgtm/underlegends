@@ -188,14 +188,45 @@
        "Shadow"
       ],
       "Vilca",
-      "ganador según #veredictos"
+      ""
      ]
     ],
     "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Miniboy",
+       "Noone"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Vilca",
+       "Artezzy"
+      ],
+      "Vilca",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
    }
   ],
   "sv": "FDS",
   "tabla": [
+   [
+    "Artezzy",
+    "Semifinal",
+    0
+   ],
+   [
+    "Noone",
+    "Semifinal",
+    0
+   ],
    [
     "CrisZJ",
     "Cuartos",

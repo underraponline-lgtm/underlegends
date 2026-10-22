@@ -914,6 +914,39 @@
    "b": "SHADOW",
    "ganador": "VILCA",
    "votos": "1–0"
+  },
+  "1562630228646436936": {
+   "id": "1562630228646436936",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792630478775,
+   "a": "REPLICA : VILCA",
+   "b": "SHADOW",
+   "ganador": "SHADOW",
+   "votos": "1–0"
+  },
+  "1562632364184838249": {
+   "id": "1562632364184838249",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792630987927,
+   "a": "UZI",
+   "b": "NOONE",
+   "ganador": "UZI",
+   "votos": "2–0"
+  },
+  "1562633368334770277": {
+   "id": "1562633368334770277",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792631227335,
+   "a": "ARTESI CABRO",
+   "b": "BILKA CABRO",
+   "ganador": "BILKA CABRO",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5260,8 +5293,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1792628977795,
-   "ed": 1792630240143,
-   "texto": "`[ CUARTOS ]`\n⌞UZI⌝ 🆚 ⌞LEYENDA.X5⌝\n⌞CRISZJ⌝ 🆚 ⌞NOONE⌝\n⌞ARTEZZY⌝ 🆚 ⌞RAIZER⌝\n⌞replica : artezzy⌝ 🆚 ⌞raizer⌝\n⌞VILCA⌝ 🆚 ⌞SHADOW⌝",
+   "ed": 1792631624208,
+   "texto": "`[ CUARTOS ]`\n⌞UZI⌝ 🆚 ⌞LEYENDA.X5⌝\n⌞CRISZJ⌝ 🆚 ⌞NOONE⌝\n⌞ARTEZZY⌝ 🆚 ⌞RAIZER⌝\n⌞replica : artezzy⌝ 🆚 ⌞raizer⌝\n⌞VILCA⌝ 🆚 ⌞SHADOW⌝\n⌞REPLICA : VILCA⌝ 🆚 ⌞SHADOW⌝\n⌞NOONE⌝ 🆚 ⌞UZI⌝\n⌞UZI⌝ 🆚 ⌞NOONE⌝\n⌞ARTESI CABRO⌝ 🆚 ⌞BILKA CABRO⌝\n⌞CHILENO CABRO⌝ 🆚 ⌞BILKA CABRO⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5311,6 +5344,56 @@
      ],
      "VILCA",
      "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "REPLICA : VILCA",
+      "SHADOW"
+     ],
+     "SHADOW",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "NOONE",
+      "UZI"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "UZI",
+      "NOONE"
+     ],
+     "UZI",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "ARTESI CABRO",
+      "BILKA CABRO"
+     ],
+     "BILKA CABRO",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "CHILENO CABRO",
+      "BILKA CABRO"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
