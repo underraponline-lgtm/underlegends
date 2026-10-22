@@ -29523,5 +29523,254 @@
     2000
    ]
   ]
+ },
+ "499": {
+  "dia": "2026-10-22",
+  "escala": "16+",
+  "fecha": "22/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1562944033515507773"
+  ],
+  "n": 499,
+  "nombre": "SI NO SOS FOURBAR NO QUIERO NADA VOL.1",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Kravitz",
+       "NC"
+      ],
+      "Kravitz",
+      ""
+     ],
+     [
+      [
+       "OKAM",
+       "Zaik 🇪🇸"
+      ],
+      "OKAM",
+      ""
+     ],
+     [
+      [
+       "Mito",
+       "Verc"
+      ],
+      "Mito",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "PichulaMc"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "DO-C"
+      ],
+      "Vandu",
+      ""
+     ],
+     [
+      [
+       "Sin Limites",
+       "Panchok"
+      ],
+      "Sin Limites",
+      ""
+     ],
+     [
+      [
+       "Crk",
+       "Scritura"
+      ],
+      "Crk",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "Zignos"
+      ],
+      "MCO",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "OKAM",
+       "Kravitz"
+      ],
+      "OKAM",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Mito"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "MCO"
+      ],
+      "Vandu",
+      ""
+     ],
+     [
+      [
+       "Crk",
+       "Sin Limites"
+      ],
+      "Crk",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "OKAM",
+       "Makmah"
+      ],
+      "OKAM",
+      ""
+     ],
+     [
+      [
+       "Crk",
+       "Vandu"
+      ],
+      "Crk",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "Vandu"
+      ],
+      "Makmah",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "OKAM",
+       "Crk"
+      ],
+      "OKAM",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "OKAM",
+    "Campeón",
+    10000
+   ],
+   [
+    "Crk",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Tercero",
+    6000
+   ],
+   [
+    "Vandu",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Kravitz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2500
+   ],
+   [
+    "DO-C",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Panchok",
+    "Octavos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    1250
+   ],
+   [
+    "Scritura",
+    "Octavos",
+    1250
+   ],
+   [
+    "Verc",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zignos",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

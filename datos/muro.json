@@ -121,6 +121,15 @@
 "temporada"
 ]
 },
+"mco": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "zignos": {
 "rg": "B",
 "c": [
@@ -146,19 +155,6 @@
 "temporada"
 ]
 },
-"hassan": {
-"rg": "A",
-"c": []
-},
-"mco": {
-"rg": "B",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "provenza": {
 "rg": "C",
 "c": [
@@ -167,6 +163,10 @@
 "servidor",
 "temporada"
 ]
+},
+"hassan": {
+"rg": "A",
+"c": []
 },
 "guess": {
 "rg": "C",
@@ -180,13 +180,6 @@
 "yinn": {
 "rg": "C",
 "c": []
-},
-"mrstillballin": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "nc": {
 "rg": "D",
@@ -202,6 +195,13 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"mrstillballin": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -237,6 +237,15 @@
 "temporada"
 ]
 },
+"bloody": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "majiztral": {
 "rg": "C",
 "c": [
@@ -249,24 +258,6 @@
 "xclusivo": {
 "rg": "C",
 "c": []
-},
-"bloody": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"trot": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "bna": {
 "rg": "D",
@@ -289,12 +280,17 @@
 "temporada"
 ]
 },
+"trot": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "chop": {
 "rg": "D",
-"c": []
-},
-"onzass": {
-"rg": "E",
 "c": []
 },
 "andres": {
@@ -319,19 +315,14 @@
 "temporada"
 ]
 },
+"onzass": {
+"rg": "E",
+"c": []
+},
 "jupiter": {
 "rg": "D",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"nxuz": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -347,6 +338,15 @@
 "carlosss": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"nxuz": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -458,11 +458,19 @@
 "rg": "E",
 "c": []
 },
-"jult": {
+"kravitz": {
 "rg": "E",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"crk": {
+"rg": "E",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -489,17 +497,14 @@
 "temporada"
 ]
 },
-"kravitz": {
+"jult": {
 "rg": "E",
 "c": [
 "competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
-},
-"benjixo": {
-"rg": "",
-"c": []
 },
 "tenor": {
 "rg": "",
@@ -513,13 +518,9 @@
 "rg": "",
 "c": []
 },
-"catarsis": {
+"benjixo": {
 "rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
+"c": []
 },
 "sosa": {
 "rg": "D",
@@ -554,6 +555,14 @@
 "rg": "E",
 "c": [
 "competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"catarsis": {
+"rg": "",
+"c": [
 "pais",
 "servidor",
 "temporada"
@@ -598,6 +607,14 @@
 "rg": "E",
 "c": [
 "competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"okam": {
+"rg": "",
+"c": [
 "pais",
 "servidor",
 "temporada"
@@ -722,19 +739,6 @@
 "temporada"
 ]
 },
-"mtz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"zekha": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
 "leonart": {
 "rg": "",
 "c": [
@@ -787,10 +791,6 @@
 "rg": "",
 "c": []
 },
-"valdoza": {
-"rg": "",
-"c": []
-},
 "zaik": {
 "rg": "E",
 "c": [
@@ -799,22 +799,24 @@
 "temporada"
 ]
 },
-"emilioalva": {
-"rg": "",
-"c": []
-},
-"andy": {
+"mtz": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"assuan": {
+"zekha": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
+"emilioalva": {
 "rg": "",
 "c": []
 },
-"okam": {
+"andy": {
 "rg": "",
 "c": [
 "servidor",
@@ -833,11 +835,15 @@
 "temporada"
 ]
 },
+"valdoza": {
+"rg": "",
+"c": []
+},
 "ortiz": {
 "rg": "",
 "c": []
 },
-"ikonoxx": {
+"doc": {
 "rg": "",
 "c": []
 },
@@ -847,21 +853,13 @@
 "servidor"
 ]
 },
-"doc": {
+"assuan": {
 "rg": "",
 "c": []
 },
 "nmb": {
 "rg": "",
 "c": []
-},
-"crk": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "dxg": {
 "rg": "",
@@ -895,10 +893,6 @@
 "rg": "",
 "c": []
 },
-"warap": {
-"rg": "",
-"c": []
-},
 "marto": {
 "rg": "",
 "c": []
@@ -909,6 +903,10 @@
 "servidor",
 "temporada"
 ]
+},
+"ikonoxx": {
+"rg": "",
+"c": []
 },
 "riolu": {
 "rg": "",
@@ -975,17 +973,14 @@
 "rg": "",
 "c": []
 },
+"warap": {
+"rg": "",
+"c": []
+},
 "agustin51k": {
 "rg": "",
 "c": [
 "pais",
-"servidor",
-"temporada"
-]
-},
-"saiko": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -1056,13 +1051,6 @@
 "temporada"
 ]
 },
-"ezias": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "sami": {
 "rg": "",
 "c": [
@@ -1088,12 +1076,6 @@
 "temporada"
 ]
 },
-"melomaniaco": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
 "malva": {
 "rg": "",
 "c": []
@@ -1116,15 +1098,16 @@
 "rg": "",
 "c": []
 },
-"noone": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
 "betelguese": {
 "rg": "",
 "c": []
+},
+"saiko": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "cj": {
 "rg": "",
@@ -1137,6 +1120,13 @@
 "liam": {
 "rg": "",
 "c": []
+},
+"ezias": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "setesfifi": {
 "rg": "",
@@ -1151,6 +1141,12 @@
 "c": [
 "servidor",
 "temporada"
+]
+},
+"melomaniaco": {
+"rg": "",
+"c": [
+"servidor"
 ]
 },
 "vr": {
@@ -1169,11 +1165,20 @@
 "servidor"
 ]
 },
-"mhs": {
+"scritura": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
-"sultan": {
+"noone": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
+"mhs": {
 "rg": "",
 "c": []
 },
@@ -1187,10 +1192,6 @@
 "servidor",
 "temporada"
 ]
-},
-"agentesombra": {
-"rg": "",
-"c": []
 },
 "ed": {
 "rg": "",
@@ -1253,6 +1254,14 @@
 "rg": "",
 "c": []
 },
+"sultan": {
+"rg": "",
+"c": []
+},
+"agentesombra": {
+"rg": "",
+"c": []
+},
 "newcharacter": {
 "rg": "",
 "c": []
@@ -1289,13 +1298,6 @@
 "rg": "",
 "c": [
 "servidor"
-]
-},
-"scritura": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
 ]
 },
 "rodrilp": {
@@ -2506,22 +2508,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Jotap"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Jotap"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5831,6 +5817,22 @@
 "Denik"
 ],
 "carta": "servidor"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-22T23:31:27Z",
+"quien": [
+"Kravitz"
+],
+"carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-22T23:31:27Z",
+"quien": [
+"OKAM"
+],
+"carta": "pais"
 }
 ]
 }

@@ -2,6 +2,7 @@
  "_leeme": "Cuántas veces el público votó a cada uno como ganador en el bot en vivo, en la temporada (`favoritos()` del objeto). Lo escribe bot/hechos_vivo.py; lo lee sheet/hechos_tags.py",
  "temporada": "t1",
  "n": {
+  "CRK 🇲🇽": 1,
   "MAKMAH 🇻🇪": 1,
   "MR STILL BALLIN 🇺🇾": 2,
   "PARK JI SUNG 🇨🇱": 1,

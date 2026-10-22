@@ -13346,7 +13346,7 @@
    "Xubaru": 7
   },
   "fecha": "16/10",
-  "firma": "84efa6f43caa0c43",
+  "firma": "ad053db6872cc796",
   "msg": "1560725555203014688",
   "nombre": "__ DESGRACIAS EN TOKYO VOL27 __",
   "num": 477,
@@ -17917,7 +17917,7 @@
    "Velatz": 37
   },
   "fecha": "21/10",
-  "firma": "17ff874ab91343b0",
+  "firma": "1adb05a8dce7fa23",
   "msg": "1562578019472773131",
   "nombre": "__ DESGRACIAS EN TOKYO VOL 30 1 VS 1 __",
   "num": 494,
@@ -19029,6 +19029,279 @@
     "reenkharnazhion 🇨🇱",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "499": {
+  "antes": {
+   "Crk": [
+    88,
+    124,
+    false
+   ],
+   "DO-C": [
+    232,
+    122,
+    true
+   ],
+   "Kravitz": [
+    50,
+    66,
+    false
+   ],
+   "MCO": [
+    17,
+    19,
+    false
+   ],
+   "Makmah": [
+    3,
+    3,
+    false
+   ],
+   "Mito": [
+    160,
+    316,
+    false
+   ],
+   "NC": [
+    21,
+    24,
+    false
+   ],
+   "OKAM": [
+    85,
+    116,
+    false
+   ],
+   "Panchok": [
+    5,
+    6,
+    false
+   ],
+   "PichulaMc": [
+    4,
+    5,
+    false
+   ],
+   "Scritura": [
+    125,
+    220,
+    false
+   ],
+   "Sin Limites": [
+    30,
+    36,
+    false
+   ],
+   "Vandu": [
+    13,
+    14,
+    false
+   ],
+   "Verc": [
+    9,
+    10,
+    false
+   ],
+   "Zignos": [
+    14,
+    15,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Kravitz",
+    "NC",
+    "Kravitz"
+   ],
+   [
+    "OKAM",
+    "Zaik 🇪🇸",
+    "OKAM"
+   ],
+   [
+    "Mito",
+    "Verc",
+    "Mito"
+   ],
+   [
+    "Makmah",
+    "PichulaMc",
+    "Makmah"
+   ],
+   [
+    "Vandu",
+    "DO-C",
+    "Vandu"
+   ],
+   [
+    "Sin Limites",
+    "Panchok",
+    "Sin Limites"
+   ],
+   [
+    "Crk",
+    "Scritura",
+    "Crk"
+   ],
+   [
+    "MCO",
+    "Zignos",
+    "MCO"
+   ],
+   [
+    "OKAM",
+    "Kravitz",
+    "OKAM"
+   ],
+   [
+    "Makmah",
+    "Mito",
+    "Makmah"
+   ],
+   [
+    "Vandu",
+    "MCO",
+    "Vandu"
+   ],
+   [
+    "Crk",
+    "Sin Limites",
+    "Crk"
+   ],
+   [
+    "OKAM",
+    "Makmah",
+    "OKAM"
+   ],
+   [
+    "Crk",
+    "Vandu",
+    "Crk"
+   ],
+   [
+    "OKAM",
+    "Crk",
+    "OKAM"
+   ],
+   [
+    "Makmah",
+    "Vandu",
+    "Makmah"
+   ]
+  ],
+  "ev_antes": {
+   "Crk": 10,
+   "DO-C": 7,
+   "Kravitz": 10,
+   "MCO": 20,
+   "Makmah": 59,
+   "Mito": 1,
+   "NC": 33,
+   "OKAM": 5,
+   "Panchok": 20,
+   "PichulaMc": 40,
+   "Scritura": 3,
+   "Sin Limites": 22,
+   "Vandu": 30,
+   "Verc": 18,
+   "Zignos": 24
+  },
+  "fecha": "22/10",
+  "firma": "9bfbf1a11e5fc813",
+  "msg": "1562967842851266610",
+  "nombre": "__ SI NO SOS FOURBAR NO QUIERO NADA VOL.1 __",
+  "num": 499,
+  "participantes": 16,
+  "sello": {
+   "OKAM": ""
+  },
+  "sv": "FFA",
+  "t": "2026-10-22T23:23:31Z",
+  "tabla": [
+   [
+    "OKAM",
+    "Campeón",
+    10000
+   ],
+   [
+    "Crk",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Tercero",
+    6000
+   ],
+   [
+    "Vandu",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Kravitz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mito",
+    "Cuartos",
+    2500
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "Verc",
+    "Octavos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    1250
+   ],
+   [
+    "DO-C",
+    "Octavos",
+    1250
+   ],
+   [
+    "Panchok",
+    "Octavos",
+    1250
+   ],
+   [
+    "Scritura",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zignos",
+    "Octavos",
+    1250
    ]
   ],
   "v": 2
