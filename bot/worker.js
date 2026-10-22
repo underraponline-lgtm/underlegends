@@ -2063,6 +2063,8 @@ const responderPanel = (tipo, p) => new Response(JSON.stringify({
 // sin esa distinción la regla de Dlx no se puede escribir. Ahora la clave
 // guarda `on: true|false` y NO EXISTIR es el tercer estado.
 const claveNick = (gid, uid) => `pnick:${gid}:${uid}`;
+// cuánto queda a la vista la pregunta de una llave después de contestada la última batalla (ver `dud`)
+const BORRAR_PREGUNTA_MS = 20000;
 
 async function eleccionNick(env, gid, uid) {
   try {
@@ -4604,6 +4606,20 @@ export default {
         const linea = `✅ ${cual ? cual + ' → ' : ''}**${j.ya || nombre}** — lo marcó <@${j.quien || did}>.`;
         const texto = `${String((i.message && i.message.content) || '')}\n${linea}`
           + (quedan.length ? '' : '\n¡Gracias! Ya está: en un rato los resultados entran al ranking de la Liga.');
+        // 🧹 CONTESTADA LA ÚLTIMA, LA PREGUNTA SE VA SOLA (Dlx, 22/10/2026: «este mensaje debería desaparecer una vez que
+        // la respuesta ya está»). Unos segundos después, para que quien la marcó alcance a ver el «¡Gracias!». Es un
+        // mensaje del bot y lo borra el bot; lo marcado ya quedó en el objeto, y de ahí va a `datos/decisiones.json`
+        if (!quedan.length && env.DISCORD_TOKEN && i.channel_id && i.message && i.message.id && ctx && ctx.waitUntil) {
+          ctx.waitUntil((async () => {
+            await new Promise((r) => setTimeout(r, BORRAR_PREGUNTA_MS));
+            try {
+              await fetch(`https://discord.com/api/v10/channels/${i.channel_id}/messages/${i.message.id}`, {
+                method: 'DELETE',
+                headers: { Authorization: `Bot ${env.DISCORD_TOKEN}`, 'X-Audit-Log-Reason': 'Liga Global: pregunta contestada' },
+              });
+            } catch (e) { /* si no se pudo, queda tachada como antes */ }
+          })());
+        }
         return new Response(JSON.stringify({
           type: RESPONDE.ACTUALIZAR,
           data: { content: texto.slice(0, 1990), components: quedan, allowed_mentions: { parse: [] } },
