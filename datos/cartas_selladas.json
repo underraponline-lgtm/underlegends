@@ -33,10 +33,10 @@
   "AREZ": {},
   "Aby": {},
   "Abyssus": {
-   "competitivo": "a37fb8377bb5:a62fb156b44f",
-   "pais": "3954e6f334ad:351b86d66ea6",
-   "servidor": "c7b625a5874b:2d5142698a31:3ce074",
-   "temporada": "838b7862b98a:a001e7b21e4d"
+   "competitivo": "a7540414ba2b:a62fb156b44f",
+   "pais": "bc0d6e4d7158:351b86d66ea6",
+   "servidor": "75f73ad5a507:2d5142698a31:3ce074",
+   "temporada": "887bc0af7748:a001e7b21e4d"
   },
   "Ac3nto": {
    "servidor": "03c350320fda:2d5142698a31:948362"
@@ -1199,10 +1199,10 @@
   },
   "OEP": {},
   "OG": {
-   "competitivo": "675d5572e89c:a62fb156b44f",
+   "competitivo": "62c34944a057:a62fb156b44f",
    "pais": "a17d210c1552:351b86d66ea6",
    "servidor": "92834744ec74:2d5142698a31:3ce074",
-   "temporada": "096a181df864:a001e7b21e4d"
+   "temporada": "708dddf782df:a001e7b21e4d"
   },
   "OKAM": {},
   "OKTA": {
@@ -1276,7 +1276,7 @@
    "competitivo": "13c9da902a4d:a62fb156b44f",
    "pais": "7a3a407468ac:351b86d66ea6",
    "servidor": "e662f622fd9d:2d5142698a31:c589ca",
-   "temporada": "fbac6352970d:a001e7b21e4d"
+   "temporada": "dbcb3d3789ec:a001e7b21e4d"
   },
   "Pomberito": {},
   "Presagio": {
@@ -1849,5 +1849,5 @@
    "servidor": "7f8885a35a6d:2d5142698a31:93a344"
   }
  },
- "cuando": "2026-10-22T05:45:42+00:00"
+ "cuando": "2026-10-22T06:01:10+00:00"
 }
