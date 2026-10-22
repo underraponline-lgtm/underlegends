@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-22T21:54:33+00:00",
+ "cuando": "2026-10-22T22:24:28+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -5265,6 +5265,31 @@
    "categoria_id": "868218509975498805"
   },
   {
+   "nombre": "RED BULL CREW",
+   "servidor": "ACAD",
+   "canal": "🥇┇torneos",
+   "msg_id": "1562948585241186364",
+   "cuando": "2026-10-22T21:59:40",
+   "canal_id": "1309243940448243856",
+   "guild_id": "765045834647339038",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "33b8d394b34980ad",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "25 DE OCTUBRE",
+   "premios": "",
+   "staff": {},
+   "autor": "Leonar-T",
+   "staff_cuentas": {},
+   "de_imagen": true,
+   "categoria_id": "1309234419525222477"
+  },
+  {
    "nombre": "PRADE RAP VOL.1 | LACREW",
    "servidor": "ACAD",
    "canal": "🥇┇torneos",
@@ -6981,6 +7006,51 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "delux🇦🇷",
+   "quien": "delux.13",
+   "discord_id": "729809358627536938",
+   "msg_id": "1562953053223649302",
+   "cuando": "2026-10-22T22:17:26"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1562951436810190879",
+   "cuando": "2026-10-22T22:11:00"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "kyss 🇦🇱",
+   "quien": "ominouspoetry",
+   "discord_id": "1190746928774922311",
+   "msg_id": "1562950439597514876",
+   "cuando": "2026-10-22T22:07:03"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Zignos 🇩🇴",
+   "quien": "emekultra",
+   "discord_id": "1071185986366742630",
+   "msg_id": "1562949652901527764",
+   "cuando": "2026-10-22T22:03:55"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Scritura 🇻🇪",
+   "quien": "scritura",
+   "discord_id": "1559007314126704653",
+   "msg_id": "1562949241045917787",
+   "cuando": "2026-10-22T22:02:17"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
