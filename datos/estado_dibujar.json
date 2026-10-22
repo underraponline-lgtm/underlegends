@@ -1,56 +1,50 @@
 {
  "v": 1,
- "cuando": "2026-10-22T15:40:00Z",
+ "cuando": "2026-10-22T16:08:04Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 348.2,
+ "dur_s": 1366.4,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.6
+   "s": 8.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.0
+   "s": 8.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 243.9
+   "s": 31.5
   },
   {
    "n": "5",
    "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": false,
-   "s": 80.3
+   "s": 1252.0
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": false,
-   "s": 6.9
+   "s": 6.1
+  },
+  {
+   "n": "6",
+   "que": "refrescar KV",
+   "ok": true,
+   "s": 59.2
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "02_Competitivo/exportar_png.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "04_Pais/exportar_png.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
    "que": "03_Servidor/generar.py .SosaATR"
   },
   {
@@ -59,63 +53,35 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Andy"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py ARDEAN"
-  },
-  {
-   "paso": "5",
-   "que": "01_Temporada/exportar_png.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "02_Competitivo/exportar_png.py Focox"
-  },
-  {
-   "paso": "5",
-   "que": "04_Pais/exportar_png.py Freestyle4AllmyNiggaz 🌏🌏"
-  },
-  {
-   "paso": "5",
    "que": "03_Servidor/generar.py GP"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Freestyle4AllmyNiggaz 🌏🌏"
+   "que": "03_Servidor/generar.py JEIXDER"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py GP"
+   "que": "03_Servidor/generar.py MCO"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Lvel"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py SOL"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Richard"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py npk"
+  },
+  {
+   "paso": "5b",
+   "que": "bot/bloqueadas.py --generar"
   }
  ],
  "ultimo_evento": {
@@ -126,18 +92,18 @@
  },
  "cuotas": {
   "kv": {
-   "write": 402,
-   "read": 28799
+   "write": 420,
+   "read": 30430
   },
   "objeto": {
-   "leidas": 2081968,
-   "escritas": 17185,
-   "pedidos": 7147
+   "leidas": 2189189,
+   "escritas": 19094,
+   "pedidos": 7394
   },
   "worker": {
-   "pedidos": 9580,
+   "pedidos": 9686,
    "errores": 0,
-   "sub": 11796,
+   "sub": 11895,
    "p50_ms": 1.43,
    "p99_ms": 11.58
   },
