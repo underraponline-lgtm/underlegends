@@ -2874,6 +2874,32 @@
      ],
      "organizador": "@Cu?",
      "cuentas": {}
+    },
+    "1562708235482570773": {
+     "sv": "FFA",
+     "nombre": "LA ISLA DE OKINAWA V.3",
+     "mo": "2026-10-22T06:04:37Z",
+     "staff": {
+      "jurado": [
+       "🧑‍⚖️ KRAVITZ 🇨🇷"
+      ],
+      "host": [
+       "🎤 KRAVITZ 🇨🇷"
+      ],
+      "dj": [
+       "Kravitz"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "KRAVITZ",
+       "id": ""
+      }
+     ],
+     "organizador": "KRAVITZ",
+     "cuentas": {
+      "Kravitz": "1345962362615894027"
+     }
     }
    },
    "ver": {
@@ -3396,6 +3422,13 @@
       "#44 | Soulb",
       "Soul B",
       "sj.2008_"
+     ]
+    },
+    "FFA|2026-10-22": {
+     "1345962362615894027": [
+      "#45 | Kravitz",
+      "Kravitz",
+      "thekravitz777"
      ]
     }
    }

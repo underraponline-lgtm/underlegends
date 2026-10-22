@@ -38,21 +38,6 @@
     }
    }
   },
-  "233": {
-   "FFA": {
-    "duelos": "1/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 1,
-    "pts": 2812,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1,
-     "nuevo": true
-    }
-   }
-  },
   "27 🇺🇸": {
    "FFA": {
     "duelos": "",
@@ -7212,16 +7197,16 @@
   },
   "Six": {
    "FFA": {
-    "duelos": "8/12",
-    "ev": 21,
+    "duelos": "9/13",
+    "ev": 22,
     "oro": 3,
-    "ovr": 71,
-    "pod": 6,
-    "pts": 116781,
-    "racha": "2/2",
+    "ovr": 73,
+    "pod": 7,
+    "pts": 128031,
+    "racha": "3/3",
     "tg": {
      "dv": true,
-     "fin": 6,
+     "fin": 7,
      "fund": true
     }
    },
