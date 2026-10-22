@@ -213,10 +213,33 @@
      ]
     ],
     "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Vilca",
+       "Miniboy"
+      ],
+      "Vilca",
+      ""
+     ]
+    ],
+    "r": "Final"
    }
   ],
   "sv": "FDS",
   "tabla": [
+   [
+    "Vilca",
+    "Campeón",
+    0
+   ],
+   [
+    "Miniboy",
+    "Subcampeón",
+    0
+   ],
    [
     "Artezzy",
     "Semifinal",
