@@ -319,6 +319,15 @@
 "rg": "E",
 "c": []
 },
+"tenor": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "jupiter": {
 "rg": "D",
 "c": [
@@ -501,14 +510,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"tenor": {
-"rg": "",
-"c": [
 "pais",
 "servidor",
 "temporada"
@@ -739,6 +740,10 @@
 "temporada"
 ]
 },
+"cj": {
+"rg": "",
+"c": []
+},
 "leonart": {
 "rg": "",
 "c": [
@@ -804,10 +809,6 @@
 "c": [
 "servidor"
 ]
-},
-"cj": {
-"rg": "",
-"c": []
 },
 "andy": {
 "rg": "",
@@ -951,15 +952,16 @@
 "rg": "",
 "c": []
 },
-"fleivaman": {
-"rg": "",
-"c": []
-},
 "j19": {
 "rg": "",
 "c": [
+"pais",
 "servidor"
 ]
+},
+"fleivaman": {
+"rg": "",
+"c": []
 },
 "elsoolar": {
 "rg": "",
@@ -2524,30 +2526,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"MvA"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"SMAFF"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"SMAFF"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5848,6 +5826,31 @@
 "t": "2026-10-23T07:01:31Z",
 "quien": [
 "Aldre"
+],
+"carta": "pais"
+},
+{
+"tipo": "rango",
+"t": "2026-10-23T15:38:46Z",
+"quien": [
+"Tenor"
+],
+"rg": "D",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-23T15:38:46Z",
+"quien": [
+"Tenor"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-23T15:38:46Z",
+"quien": [
+"J19"
 ],
 "carta": "pais"
 }

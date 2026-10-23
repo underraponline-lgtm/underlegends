@@ -7578,12 +7578,12 @@
   },
   "Tenor": {
    "FFA": {
-    "duelos": "3/6",
-    "ev": 9,
+    "duelos": "4/8",
+    "ev": 10,
     "oro": 1,
-    "ovr": 56,
+    "ovr": 61,
     "pod": 2,
-    "pts": 54207,
+    "pts": 57957,
     "racha": "0/2",
     "tg": {
      "fin": 2
@@ -8720,7 +8720,7 @@
     "racha": "0/0"
    }
   },
-  "mats🇺🇾": {
+  "mats": {
    "FFA": {
     "duelos": "0/1",
     "ev": 1,
@@ -8885,20 +8885,6 @@
     "pod": 0,
     "pts": 625,
     "racha": "0/0"
-   }
-  },
-  "tnor🇻🇪": {
-   "FFA": {
-    "duelos": "1/2",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 3750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "tomyhilfiger🇾🇹": {

@@ -1,81 +1,81 @@
 {
  "v": 1,
- "cuando": "2026-10-23T07:02:02Z",
+ "cuando": "2026-10-23T15:39:22Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 561.1,
+ "dur_s": 993.1,
  "pasos": [
   {
    "n": "0a",
    "que": "los nombres de Discord de la Lista, del Operativo",
    "ok": true,
-   "s": 1.5
+   "s": 1.8
   },
   {
    "n": "0a2",
    "que": "las crews, del objeto",
    "ok": true,
-   "s": 1.1
+   "s": 1.4
   },
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 1.0
+   "s": 0.9
   },
   {
    "n": "0c",
    "que": "lo corregido desde los reportes",
    "ok": true,
-   "s": 2.1
+   "s": 3.8
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 56.6
+   "s": 241.2
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 55.5
+   "s": 55.8
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 0.5
+   "s": 0.6
   },
   {
    "n": "1a2",
    "que": "el país y el Miembro de DRA, solos",
    "ok": true,
-   "s": 0.2
+   "s": 74.3
   },
   {
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 43.6
+   "s": 43.2
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 1.7
+   "s": 1.4
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 8.2
+   "s": 14.6
   },
   {
    "n": "2b0",
    "que": "el Writing Challenge de FFA",
    "ok": true,
-   "s": 0.5
+   "s": 0.6
   },
   {
    "n": "2b",
@@ -87,19 +87,19 @@
    "n": "2b2",
    "que": "las insignias",
    "ok": true,
-   "s": 1.0
+   "s": 1.2
   },
   {
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.1
+   "s": 0.6
   },
   {
    "n": "2b3d",
    "que": "los paneles de DRA",
    "ok": true,
-   "s": 22.9
+   "s": 0.3
   },
   {
    "n": "2b3b",
@@ -111,85 +111,85 @@
    "n": "2b3c",
    "que": "el reto del debut",
    "ok": true,
-   "s": 0.8
+   "s": 0.1
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.9
+   "s": 1.8
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.5
+   "s": 0.7
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 5.7
+   "s": 4.2
   },
   {
    "n": "2b5b",
    "que": "los pedidos de la gente",
    "ok": true,
-   "s": 0.2
+   "s": 0.3
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 177.6
+   "s": 254.1
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 3.9
+   "s": 5.2
   },
   {
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 3.0
+   "s": 91.0
   },
   {
    "n": "2b8c",
    "que": "las promociones",
    "ok": true,
-   "s": 2.9
+   "s": 3.2
   },
   {
    "n": "2b8d",
    "que": "los MES AWARDS",
    "ok": false,
-   "s": 50.8
+   "s": 52.6
   },
   {
    "n": "2b8e",
    "que": "las semanas",
    "ok": true,
-   "s": 0.0
+   "s": 0.1
   },
   {
    "n": "2b8f",
    "que": "los tiers",
    "ok": true,
-   "s": 8.2
+   "s": 8.7
   },
   {
    "n": "2b8b",
    "que": "la agenda",
    "ok": true,
-   "s": 0.2
+   "s": 0.3
   },
   {
    "n": "2b9",
    "que": "las ligas",
-   "ok": false,
-   "s": 17.9
+   "ok": true,
+   "s": 39.8
   },
   {
    "n": "2b9b",
@@ -201,31 +201,31 @@
    "n": "2b10",
    "que": "los roles de la página",
    "ok": true,
-   "s": 0.3
+   "s": 0.4
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 60.0
+   "s": 55.4
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 0.3
+   "s": 0.4
   },
   {
    "n": "2c3",
    "que": "el anuncio que sale solo a su hora",
    "ok": true,
-   "s": 0.0
+   "s": 0.1
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 14.8
+   "s": 13.8
   },
   {
    "n": "2e",
@@ -237,26 +237,22 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.6
+   "s": 7.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.6
+   "s": 7.4
   }
  ],
  "fallas": [
   {
    "paso": "2b8d",
    "que": "bot/mes_awards.py --aplicar"
-  },
-  {
-   "paso": "2b9",
-   "que": "bot/ligas.py --aplicar"
   }
  ],
- "decidir": 93,
+ "decidir": 91,
  "ultimo_evento": {
   "n": "501",
   "nombre": "LA ISLA DE OKINAWA V.4",
@@ -265,11 +261,11 @@
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-23T06:53:49Z",
+  "cuando": "2026-10-23T15:27:04Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 504,
-  "un_evento": 237,
-  "diez_o_mas": 72,
+  "jugadores": 503,
+  "un_evento": 236,
+  "diez_o_mas": 73,
   "cohortes": [
    {
     "semana": "2026-09-21",
@@ -297,7 +293,7 @@
    },
    {
     "semana": "2026-10-19",
-    "nuevos": 27,
+    "nuevos": 26,
     "volvieron": 4,
     "completa": false
    }
@@ -305,20 +301,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 208,
-   "read": 23850
+   "write": 257,
+   "read": 25547
   },
   "objeto": {
-   "leidas": 969491,
-   "escritas": 7430,
-   "pedidos": 3455
+   "leidas": 1195820,
+   "escritas": 10919,
+   "pedidos": 5120
   },
   "worker": {
-   "pedidos": 7457,
+   "pedidos": 7007,
    "errores": 1,
-   "sub": 9329,
-   "p50_ms": 1.35,
-   "p99_ms": 10.96
+   "sub": 8745,
+   "p50_ms": 1.33,
+   "p99_ms": 10.93
   },
   "r2": {
    "objetos": 4854,

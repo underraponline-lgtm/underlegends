@@ -759,7 +759,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-23T04:48:58+00:00",
-   "did": "",
+   "did": "597240876573392946",
    "evento": "LA ISLA DE OKINAWA V.4",
    "n": 501,
    "sv": "FFA",
@@ -790,18 +790,6 @@
    "n": 496,
    "sv": "SR",
    "vence": "2026-10-28T21:05:52+00:00",
-   "vencido": false
-  },
-  "tnor": {
-   "avisado": "2026-10-23",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-23T04:48:58+00:00",
-   "did": "",
-   "evento": "LA ISLA DE OKINAWA V.4",
-   "n": 501,
-   "sv": "FFA",
-   "vence": "2026-10-30T04:48:58+00:00",
    "vencido": false
   },
   "tomyhilfiger": {
