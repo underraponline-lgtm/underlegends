@@ -900,10 +900,64 @@
      ]
     ],
     "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Vilca",
+       "Artezzy"
+      ],
+      "Vilca",
+      ""
+     ],
+     [
+      [
+       "LAST",
+       "Soulb"
+      ],
+      "LAST",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "LAST",
+       "Vilca"
+      ],
+      "LAST",
+      ""
+     ]
+    ],
+    "r": "Final"
    }
   ],
   "sv": "FDS",
   "tabla": [
+   [
+    "LAST",
+    "Campeón",
+    0
+   ],
+   [
+    "Vilca",
+    "Subcampeón",
+    0
+   ],
+   [
+    "Artezzy",
+    "Semifinal",
+    0
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    0
+   ],
    [
     "LRS",
     "Cuartos",

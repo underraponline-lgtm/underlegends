@@ -1057,6 +1057,83 @@
    "b": "soul B",
    "ganador": "soul B",
    "votos": "2–0"
+  },
+  "1563022037151391835": {
+   "id": "1563022037151391835",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792723893202,
+   "a": "VILCA",
+   "b": "ARTEZZY",
+   "ganador": "VILCA",
+   "votos": "1–0"
+  },
+  "1563025240756326501": {
+   "id": "1563025240756326501",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792724657001,
+   "a": "soul B",
+   "b": "last",
+   "ganador": "soul B",
+   "votos": "1–0"
+  },
+  "1563025925464137749": {
+   "id": "1563025925464137749",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792724820248,
+   "a": "replica : soul b",
+   "b": "last",
+   "ganador": "last",
+   "votos": "2–0"
+  },
+  "1563026559562944574": {
+   "id": "1563026559562944574",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1792724971429,
+   "a": "HEDORAH 🇨🇱",
+   "b": "CALÍZ🇲🇽",
+   "ganador": "HEDORAH 🇨🇱",
+   "votos": "1–0"
+  },
+  "1563027342119534686": {
+   "id": "1563027342119534686",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792725158005,
+   "a": "ARTEZZY",
+   "b": "soul B",
+   "ganador": "soul B",
+   "votos": "1–0"
+  },
+  "1563027736220668017": {
+   "id": "1563027736220668017",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1792725251966,
+   "a": "LRS 🇦🇷",
+   "b": "SHADOW 🇨🇴",
+   "ganador": "LRS 🇦🇷",
+   "votos": "1–0"
+  },
+  "1563027739315806269": {
+   "id": "1563027739315806269",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792725252704,
+   "a": "VILCA",
+   "b": "last",
+   "ganador": "last",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5355,7 +5432,7 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1792721315136,
-   "ed": 1792723862690,
+   "ed": 1792725756267,
    "texto": "`[ CUARTOS ]`\n⌞SHADOW 🇨🇴⌝ 🆚 ⌞Vilca🇵🇪👑⌝\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Tokio🇬🇩⌝ 🆚 ⌞Last 🇺🇾⌝\n⌞Lrs 🇦🇷⌝ 🆚 ⌞Soul B 🇨🇱⌝\n`[ SEMIFINALES ]`\n⌞Vilca🇵🇪👑⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Last 🇺🇾⌝ 🆚 ⌞Soul B 🇨🇱⌝\n`[ FINAL ]`",
    "batallas": [
     [
@@ -5413,6 +5490,47 @@
      [
       "Last 🇺🇾",
       "Soul B 🇨🇱"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1563025630545838173": {
+   "id": "1563025630545838173",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1792724749934,
+   "ed": 1792725646094,
+   "texto": "`[ CUARTOS ]`\n⌞HEDORAH 🇨🇱⌝ 🆚 ⌞CALÍZ🇲🇽⌝\n⌞LRS 🇦🇷⌝ 🆚 ⌞SHADOW 🇨🇴⌝\n⌞CALÍZ 🇲🇽⌝ 🆚 ⌞SHADOW 🇨🇴⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "HEDORAH 🇨🇱",
+      "CALÍZ🇲🇽"
+     ],
+     "HEDORAH 🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "LRS 🇦🇷",
+      "SHADOW 🇨🇴"
+     ],
+     "LRS 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "CALÍZ 🇲🇽",
+      "SHADOW 🇨🇴"
      ],
      null,
      "última ronda y no dice campeón",

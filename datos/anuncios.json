@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-23T02:54:43+00:00",
+ "cuando": "2026-10-23T03:24:26+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -4862,7 +4862,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "Adriagner[GDF]",
+     "n": "1 | Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4877,18 +4877,18 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "Adriagner[GDF]"
+     "1 | Adriagner"
     ],
     "host": [
-     "Adriagner[GDF]"
+     "1 | Adriagner"
     ],
     "dj": [
-     "Adriagner[GDF]"
+     "1 | Adriagner"
     ]
    },
-   "autor": "Adriagner[GDF]",
+   "autor": "1 | Adriagner",
    "staff_cuentas": {
-    "Adriagner[GDF]": "1316490165836972104"
+    "1 | Adriagner": "1316490165836972104"
    },
    "categoria_id": "1469944166137073857",
    "inscripciones": "cerradas",
@@ -4957,7 +4957,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "Adriagner[GDF]",
+     "n": "1 | Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -4972,18 +4972,18 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "Adriagner[GDF]"
+     "1 | Adriagner"
     ],
     "host": [
-     "Adriagner[GDF]"
+     "1 | Adriagner"
     ],
     "dj": [
-     "Adriagner[GDF]"
+     "1 | Adriagner"
     ]
    },
-   "autor": "Adriagner[GDF]",
+   "autor": "1 | Adriagner",
    "staff_cuentas": {
-    "Adriagner[GDF]": "1316490165836972104"
+    "1 | Adriagner": "1316490165836972104"
    },
    "categoria_id": "1469944166137073857",
    "inscripciones": "cerradas",
@@ -5038,7 +5038,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "Adriagner[GDF]",
+     "n": "1 | Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -5053,18 +5053,18 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "Adriagner[GDF]"
+     "1 | Adriagner"
     ],
     "host": [
-     "Adriagner[GDF]"
+     "1 | Adriagner"
     ],
     "dj": [
-     "Adriagner[GDF]"
+     "1 | Adriagner"
     ]
    },
-   "autor": "Adriagner[GDF]",
+   "autor": "1 | Adriagner",
    "staff_cuentas": {
-    "Adriagner[GDF]": "1316490165836972104"
+    "1 | Adriagner": "1316490165836972104"
    },
    "categoria_id": "1469944166137073857",
    "inscripciones": "cerradas",
@@ -5138,7 +5138,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "Adriagner[GDF]",
+     "n": "1 | Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -5153,18 +5153,18 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "Adriagner[GDF]"
+     "1 | Adriagner"
     ],
     "host": [
-     "Adriagner[GDF]"
+     "1 | Adriagner"
     ],
     "dj": [
-     "Adriagner[GDF]"
+     "1 | Adriagner"
     ]
    },
-   "autor": "Adriagner[GDF]",
+   "autor": "1 | Adriagner",
    "staff_cuentas": {
-    "Adriagner[GDF]": "1316490165836972104"
+    "1 | Adriagner": "1316490165836972104"
    },
    "categoria_id": "1469944166137073857",
    "inscripciones": "cerradas",
@@ -5181,7 +5181,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "Adriagner[GDF]",
+     "n": "1 | Adriagner",
      "id": "1316490165836972104"
     }
    ],
@@ -5196,18 +5196,18 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "Adriagner[GDF]"
+     "1 | Adriagner"
     ],
     "host": [
-     "Adriagner[GDF]"
+     "1 | Adriagner"
     ],
     "dj": [
-     "Adriagner[GDF]"
+     "1 | Adriagner"
     ]
    },
-   "autor": "Adriagner[GDF]",
+   "autor": "1 | Adriagner",
    "staff_cuentas": {
-    "Adriagner[GDF]": "1316490165836972104"
+    "1 | Adriagner": "1316490165836972104"
    },
    "categoria_id": "1469944166137073857",
    "inscripciones": "cerradas",
@@ -6973,6 +6973,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Walker",
+   "quien": "walker2706",
+   "discord_id": "1247306019839938754",
+   "msg_id": "1563023723827695680",
+   "cuando": "2026-10-23T02:58:15"
+  },
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Adriagner🇳🇮",
+   "quien": "adriagner",
+   "discord_id": "1316490165836972104",
+   "msg_id": "1563023700658229329",
+   "cuando": "2026-10-23T02:58:09"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
