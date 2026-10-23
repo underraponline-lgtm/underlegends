@@ -2968,6 +2968,29 @@
      "orgs": [],
      "organizador": "LEWITO",
      "cuentas": {}
+    },
+    "1563004850659139666": {
+     "sv": "DDF",
+     "nombre": "GRISELDA RECORDS",
+     "mo": "2026-10-23T01:48:15Z",
+     "staff": {},
+     "orgs": [],
+     "organizador": "Lízeninn",
+     "cuentas": {}
+    },
+    "1563007604219715615": {
+     "sv": "FDS",
+     "nombre": "GG SANGRERAP",
+     "mo": "2026-10-23T01:54:12Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "Cu?",
+       "id": "1452005860493492335"
+      }
+     ],
+     "organizador": "@Cu?",
+     "cuentas": {}
     }
    },
    "ver": {

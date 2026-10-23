@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-23T01:31:46+00:00",
+ "cuando": "2026-10-23T01:54:20+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -4658,6 +4658,32 @@
    "categoria_id": "1373343272482902127"
   },
   {
+   "nombre": "GRISELDA RECORDS",
+   "servidor": "DDF",
+   "canal": "『📢』Eventos",
+   "msg_id": "1563004850659139666",
+   "cuando": "2026-10-23T01:43:15",
+   "canal_id": "1470097121284980736",
+   "guild_id": "1469009547971526659",
+   "organizador": "Lízeninn",
+   "orgs": [],
+   "autor_h": "62528949becb0707",
+   "cupos_texto": "16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "MULTIVERSE",
+   "horario": "AHORA EN 5",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "Lízeninn",
+   "staff_cuentas": {},
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
+  },
+  {
    "nombre": "19 (EDICIÓN FUTCARD VOL 4)",
    "servidor": "DDF",
    "canal": "『📢』Eventos",
@@ -4680,7 +4706,9 @@
    "autor": "₁₉",
    "staff_cuentas": {},
    "de_imagen": true,
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "19 CUP",
@@ -4705,7 +4733,9 @@
    "autor": "₁₉",
    "staff_cuentas": {},
    "de_imagen": true,
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "LA MISIÓN DEL MONJE",
@@ -4729,7 +4759,9 @@
    "staff": {},
    "autor": "Drexx💭",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "PROYECTO X VOL.3",
@@ -4753,7 +4785,9 @@
    "staff": {},
    "autor": "Drexx💭",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "UNDER FMS WORLD SERIES",
@@ -4782,7 +4816,9 @@
    "staff": {},
    "autor": "99 |DJ SHADOW🐉",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "MORTAL KOMBAT MAPACHE CUP",
@@ -4811,7 +4847,9 @@
    "staff": {},
    "autor": "WOLKI TOKI",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
@@ -4852,7 +4890,9 @@
    "staff_cuentas": {
     "Adriagner[GDF]": "1316490165836972104"
    },
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "PROYECTO X VOL.2",
@@ -4876,7 +4916,9 @@
    "staff": {},
    "autor": "Drexx💭",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "PROYECTO X",
@@ -4900,7 +4942,9 @@
    "staff": {},
    "autor": "Drexx💭",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.10",
@@ -4941,7 +4985,9 @@
    "staff_cuentas": {
     "Adriagner[GDF]": "1316490165836972104"
    },
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "STEVEN UNIVERSE",
@@ -4977,7 +5023,9 @@
    },
    "autor": "pipi94",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.9",
@@ -5018,7 +5066,9 @@
    "staff_cuentas": {
     "Adriagner[GDF]": "1316490165836972104"
    },
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "MORTAL KOMBAT MAPACHE CUP",
@@ -5047,7 +5097,9 @@
    "staff": {},
    "autor": "₁₉",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "NOCHE DE BOOMBAP",
@@ -5071,7 +5123,9 @@
    "staff": {},
    "autor": "Drexx💭",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.8",
@@ -5112,7 +5166,9 @@
    "staff_cuentas": {
     "Adriagner[GDF]": "1316490165836972104"
    },
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.7",
@@ -5153,7 +5209,9 @@
    "staff_cuentas": {
     "Adriagner[GDF]": "1316490165836972104"
    },
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "MINI CUP GOD 110",
@@ -5182,7 +5240,9 @@
    "staff": {},
    "autor": "👾🫟 ⟅U⟆⟅Z⟆⟅I⟆(• ◡•)🫟👾",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - MAÑANA )",
@@ -6287,6 +6347,35 @@
    "nombre": "GG SANGRERAP",
    "servidor": "FDS",
    "canal": "🎉╏eventos",
+   "msg_id": "1563007604219715615",
+   "cuando": "2026-10-23T01:54:12",
+   "canal_id": "1536569364659044402",
+   "guild_id": "1489848581203689535",
+   "organizador": "@Cu?",
+   "orgs": [
+    {
+     "n": "Cu?",
+     "id": "1452005860493492335"
+    }
+   ],
+   "autor_h": "d637fa8d09166f5f",
+   "cupos_texto": "0/8-16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "Artezzy",
+   "staff_cuentas": {},
+   "categoria_id": "1489848582189224103"
+  },
+  {
+   "nombre": "GG SANGRERAP",
+   "servidor": "FDS",
+   "canal": "🎉╏eventos",
    "msg_id": "1562668298313924619",
    "cuando": "2026-10-22T03:25:55",
    "canal_id": "1536569364659044402",
@@ -6912,44 +7001,171 @@
    "autor": "Artezzy",
    "staff_cuentas": {},
    "categoria_id": "1489848582189224103"
-  },
-  {
-   "nombre": "LIMITE ZERO 1v1",
-   "servidor": "FDS",
-   "canal": "🎉╏eventos",
-   "msg_id": "1537239030792716368",
-   "cuando": "2026-08-12T23:19:05",
-   "canal_id": "1536569364659044402",
-   "guild_id": "1489848581203689535",
-   "organizador": "@Artezzy",
-   "orgs": [
-    {
-     "n": "Artezzy",
-     "id": "1435531540472795240"
-    }
-   ],
-   "autor_h": "d637fa8d09166f5f",
-   "cupos_texto": "8/8-16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "<t:1787107500:F>",
-   "fecha": "",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "Artezzy"
-    ]
-   },
-   "autor": "Artezzy",
-   "staff_cuentas": {
-    "Artezzy": "1435531540472795240"
-   },
-   "categoria_id": "1489848582189224103"
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "GHV🇨🇷",
+   "quien": "jeffrywoods20088161",
+   "discord_id": "848995686098927677",
+   "msg_id": "1563006578905448540",
+   "cuando": "2026-10-23T01:50:07"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Adriagner🇬🇸 + Carlos🇪🇨 + xclusivo🇬🇵 + Drexx🇲🇳 / plapla",
+   "quien": "manuxxx0789_78781",
+   "discord_id": "1150099153238630410",
+   "msg_id": "1563005952993792091",
+   "cuando": "2026-10-23T01:47:38"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "MCNADIE🇦🇷",
+   "quien": "mcnadie5",
+   "discord_id": "792195339717312512",
+   "msg_id": "1563005666099077251",
+   "cuando": "2026-10-23T01:46:30"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "carlos",
+   "quien": "adriagner",
+   "discord_id": "1316490165836972104",
+   "msg_id": "1563005550667497514",
+   "cuando": "2026-10-23T01:46:02"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1563005271402614905",
+   "cuando": "2026-10-23T01:44:55"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "gfgdffgv🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1563005220508930203",
+   "cuando": "2026-10-23T01:44:43"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Caliz 🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1563005218742861875",
+   "cuando": "2026-10-23T01:44:43"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Last🇬🇶",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1563005180969226311",
+   "cuando": "2026-10-23T01:44:34"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Bloody 🇨🇴 + CJ 🇻🇪 + Volk 🇲🇽",
+   "quien": "bloodypintor",
+   "discord_id": "692881329573986317",
+   "msg_id": "1563005150510063638",
+   "cuando": "2026-10-23T01:44:27"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1563005106310348902",
+   "cuando": "2026-10-23T01:44:16"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Joba 🇨🇱",
+   "quien": "jobains",
+   "discord_id": "1095893775383023708",
+   "msg_id": "1563005093547085915",
+   "cuando": "2026-10-23T01:44:13"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "SHADOW🇨🇴 última",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1563005081790578761",
+   "cuando": "2026-10-23T01:44:10"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Pichulamc 🇦🇷",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1563005075423756329",
+   "cuando": "2026-10-23T01:44:09"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "waxo🇮🇨",
+   "quien": "wackmc1",
+   "discord_id": "1493013247488430202",
+   "msg_id": "1563005074773377126",
+   "cuando": "2026-10-23T01:44:09"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Stan🇨🇱",
+   "quien": "algoritmokrt",
+   "discord_id": "1359316127901024357",
+   "msg_id": "1563005070805704786",
+   "cuando": "2026-10-23T01:44:08"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Drexx🇬🇵",
+   "quien": "manuxxx0789_78781",
+   "discord_id": "1150099153238630410",
+   "msg_id": "1563005066661597245",
+   "cuando": "2026-10-23T01:44:07"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Bootrax Humilde🇵🇪 🇦🇷",
+   "quien": "gianfraxruizescor11",
+   "discord_id": "1122273746099638354",
+   "msg_id": "1563005067924348989",
+   "cuando": "2026-10-23T01:44:07"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Adriagner🇳🇮",
+   "quien": "adriagner",
+   "discord_id": "1316490165836972104",
+   "msg_id": "1563005068238651443",
+   "cuando": "2026-10-23T01:44:07"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
