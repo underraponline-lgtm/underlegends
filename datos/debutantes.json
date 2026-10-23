@@ -127,6 +127,28 @@
    "vence": "2026-10-26T22:24:26+00:00",
    "vencido": false
   },
+  "DARK ANGEL": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-23T20:26:11+00:00",
+   "did": "",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800",
+   "n": 503,
+   "sv": "FFA",
+   "vence": "2026-10-30T20:26:11+00:00",
+   "vencido": false
+  },
+  "DARKO": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-23T20:26:11+00:00",
+   "did": "",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800",
+   "n": 503,
+   "sv": "FFA",
+   "vence": "2026-10-30T20:26:11+00:00",
+   "vencido": false
+  },
   "DarkoMC": {
    "avisado": "2026-10-18",
    "avisado_cumplido": "2026-10-19",
@@ -445,6 +467,17 @@
    "vence": "2026-10-28T21:05:52+00:00",
    "vencido": false
   },
+  "MR STLL BALLIN": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-23T20:26:11+00:00",
+   "did": "",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800",
+   "n": 503,
+   "sv": "FFA",
+   "vence": "2026-10-30T20:26:11+00:00",
+   "vencido": false
+  },
   "Magic": {
    "avisado": "2026-10-12",
    "avisado_cumplido": "2026-10-12",
@@ -752,6 +785,17 @@
    "n": 491,
    "sv": "ACAD",
    "vence": "2026-10-26T22:24:26+00:00",
+   "vencido": false
+  },
+  "familiafortunaexito": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-23T20:26:11+00:00",
+   "did": "",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800",
+   "n": 503,
+   "sv": "FFA",
+   "vence": "2026-10-30T20:26:11+00:00",
    "vencido": false
   },
   "lil": {

@@ -19859,5 +19859,458 @@
    ]
   ],
   "v": 2
+ },
+ "503": {
+  "antes": {
+   "BLITZ": [
+    236,
+    128,
+    true
+   ],
+   "BNA": [
+    205,
+    36,
+    true
+   ],
+   "BTRX": [
+    221,
+    90,
+    true
+   ],
+   "Calíz": [
+    74,
+    96,
+    false
+   ],
+   "Chente": [
+    414,
+    394,
+    true
+   ],
+   "Colesito": [
+    7,
+    8,
+    false
+   ],
+   "Delux": [
+    25,
+    28,
+    false
+   ],
+   "Erian": [
+    6,
+    7,
+    false
+   ],
+   "Kourier": [
+    129,
+    225,
+    false
+   ],
+   "Kyss": [
+    95,
+    138,
+    false
+   ],
+   "Liberia": [
+    8,
+    9,
+    false
+   ],
+   "MCO": [
+    17,
+    18,
+    false
+   ],
+   "Makmah": [
+    3,
+    3,
+    false
+   ],
+   "Marcos": [
+    120,
+    199,
+    false
+   ],
+   "Mito": [
+    141,
+    257,
+    false
+   ],
+   "NC": [
+    21,
+    24,
+    false
+   ],
+   "Neo": [
+    210,
+    47,
+    true
+   ],
+   "OG": [
+    15,
+    16,
+    false
+   ],
+   "OKAM": [
+    60,
+    80,
+    false
+   ],
+   "Panchok": [
+    5,
+    6,
+    false
+   ],
+   "Provenza": [
+    18,
+    19,
+    false
+   ],
+   "SULTAN": [
+    287,
+    212,
+    true
+   ],
+   "Sin Limites": [
+    29,
+    34,
+    false
+   ],
+   "Teo": [
+    71,
+    93,
+    false
+   ],
+   "Trot": [
+    30,
+    35,
+    false
+   ],
+   "Valen": [
+    373,
+    343,
+    true
+   ],
+   "Vandu": [
+    13,
+    14,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "NC",
+    "SULTAN",
+    "NC"
+   ],
+   [
+    "NC",
+    "OG",
+    "NC"
+   ],
+   [
+    "Liberia",
+    "DARKO 🇲🇽",
+    "Liberia"
+   ],
+   [
+    "Liberia",
+    "Trot",
+    "Liberia"
+   ],
+   [
+    "Panchok",
+    "Sin Limites",
+    "Panchok"
+   ],
+   [
+    "Panchok",
+    "Kourier",
+    "Panchok"
+   ],
+   [
+    "Marcos",
+    "OKAM",
+    "Marcos"
+   ],
+   [
+    "Marcos",
+    "Teo",
+    "Marcos"
+   ],
+   [
+    "Delux",
+    "BTRX",
+    "Delux"
+   ],
+   [
+    "Delux",
+    "Makmah",
+    "Delux"
+   ],
+   [
+    "Neo",
+    "Colesito",
+    "Neo"
+   ],
+   [
+    "Neo",
+    "Erian",
+    "Neo"
+   ],
+   [
+    "BNA",
+    "Chente",
+    "BNA"
+   ],
+   [
+    "BNA",
+    "DARK ANGEL 🇨🇴",
+    "BNA"
+   ],
+   [
+    "Kyss",
+    "BLITZ",
+    "Kyss"
+   ],
+   [
+    "Kyss",
+    "familiafortunaexito 🇫🇷",
+    "Kyss"
+   ],
+   [
+    "NC, Valen",
+    "Vandu, Delux",
+    "NC, Valen"
+   ],
+   [
+    "MCO, Panchok",
+    "BNA, Calíz",
+    "MCO, Panchok"
+   ],
+   [
+    "Kyss, Provenza",
+    "Mito, Marcos",
+    "Kyss, Provenza"
+   ],
+   [
+    "Valen, NC, Delux",
+    "Provenza, Kyss, Mito",
+    "Valen, NC, Delux"
+   ],
+   [
+    "Panchok, MCO, BNA",
+    "MR STLL BALLIN 🇺🇾, Neo, Liberia",
+    "Panchok, MCO, BNA"
+   ],
+   [
+    "MCO, Panchok, BNA, Neo",
+    "Valen, NC, Delux, Kyss",
+    "MCO, Panchok, BNA, Neo"
+   ]
+  ],
+  "ev_antes": {
+   "BLITZ": 5,
+   "BNA": 11,
+   "BTRX": 8,
+   "Calíz": 9,
+   "Chente": 1,
+   "Colesito": 34,
+   "Delux": 10,
+   "Erian": 43,
+   "Kourier": 4,
+   "Kyss": 7,
+   "Liberia": 18,
+   "MCO": 21,
+   "Makmah": 63,
+   "Marcos": 2,
+   "Mito": 2,
+   "NC": 35,
+   "Neo": 10,
+   "OG": 14,
+   "OKAM": 7,
+   "Panchok": 21,
+   "Provenza": 28,
+   "SULTAN": 3,
+   "Sin Limites": 24,
+   "Teo": 12,
+   "Trot": 24,
+   "Valen": 2,
+   "Vandu": 32
+  },
+  "fecha": "23/10",
+  "firma": "804cbec6ba89f869",
+  "msg": "1563335636134531224",
+  "nombre": "__ FREESTYLE FOR ALL ESPECIAL 1800 __",
+  "num": 503,
+  "participantes": 33,
+  "sello": {
+   "BNA": "",
+   "MCO": "31a4c0ef2e20:84b47cf43136",
+   "Neo": "",
+   "Panchok": "24078831544a:84b47cf43136"
+  },
+  "sv": "FFA",
+  "t": "2026-10-23T23:37:40Z",
+  "tabla": [
+   [
+    "Neo",
+    "Campeón",
+    4250
+   ],
+   [
+    "BNA",
+    "Campeón",
+    3750
+   ],
+   [
+    "Kyss",
+    "Subcampeón",
+    3625
+   ],
+   [
+    "Delux",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Mito",
+    "Semifinal",
+    3000
+   ],
+   [
+    "MCO",
+    "Campeón",
+    2500
+   ],
+   [
+    "Panchok",
+    "Campeón",
+    2500
+   ],
+   [
+    "Valen",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "NC",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1750
+   ],
+   [
+    "MR STLL BALLIN 🇺🇾",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Marcos",
+    "Cuartos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "OG",
+    "Octavos",
+    1250
+   ],
+   [
+    "DARKO 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kourier",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "BTRX",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chente",
+    "Octavos",
+    1250
+   ],
+   [
+    "DARK ANGEL 🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "BLITZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "familiafortunaexito 🇫🇷",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

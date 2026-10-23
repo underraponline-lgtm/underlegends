@@ -30268,5 +30268,332 @@
     2000
    ]
   ]
+ },
+ "503": {
+  "dia": "2026-10-23",
+  "escala": "16+",
+  "fecha": "23/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1563287445708083244"
+  ],
+  "n": 503,
+  "nombre": "FREESTYLE FOR ALL ESPECIAL 1800",
+  "participantes": 33,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NC",
+       "Valen",
+       "SULTAN",
+       "OG"
+      ],
+      "NC, Valen",
+      "triple (4 bandas, pasan 2); también pasa: Kibak"
+     ],
+     [
+      [
+       "Liberia",
+       "Velatz",
+       "DARKO 🇲🇽",
+       "Trot"
+      ],
+      "Liberia, Velatz",
+      "triple (4 bandas, pasan 2); también pasa: Velatz"
+     ],
+     [
+      [
+       "Panchok",
+       "MCO",
+       "Sin Limites",
+       "Kourier"
+      ],
+      "Panchok, MCO",
+      "triple (4 bandas, pasan 2); también pasa: Mco"
+     ],
+     [
+      [
+       "Marcos",
+       "Mito",
+       "OKAM",
+       "Teo"
+      ],
+      "Marcos, Mito",
+      "triple (4 bandas, pasan 2); también pasa: Mitosis🇦🇷"
+     ],
+     [
+      [
+       "Delux",
+       "Vandu",
+       "BTRX",
+       "Makmah"
+      ],
+      "Delux, Vandu",
+      "triple (4 bandas, pasan 2); también pasa: vandu🇨🇦; Drafteado: delux🇦🇷"
+     ],
+     [
+      [
+       "Neo",
+       "Mr Still Ballin",
+       "Colesito",
+       "Erian"
+      ],
+      "Neo, Mr Still Ballin",
+      "triple (4 bandas, pasan 2); también pasa: mr still ballin 🇳🇴; Drafteado: Neo🇦🇷"
+     ],
+     [
+      [
+       "BNA",
+       "Calíz",
+       "Chente",
+       "DARK ANGEL 🇨🇴"
+      ],
+      "BNA, Calíz",
+      "triple (4 bandas, pasan 2); también pasa: Caliz🇲🇽; Drafteado: Bna"
+     ],
+     [
+      [
+       "Kyss",
+       "Provenza",
+       "BLITZ",
+       "familiafortunaexito 🇫🇷"
+      ],
+      "Kyss, Provenza",
+      "triple (4 bandas, pasan 2); también pasa: PROVENZA 🇦🇷; Drafteado: kyss"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "NC, Valen",
+       "Vandu, Delux"
+      ],
+      "NC, Valen",
+      ""
+     ],
+     [
+      [
+       "MCO, Panchok",
+       "BNA, Calíz"
+      ],
+      "MCO, Panchok",
+      ""
+     ],
+     [
+      [
+       "Kyss, Provenza",
+       "Mito, Marcos"
+      ],
+      "Kyss, Provenza",
+      "Drafteado: MITOSIS 🇦🇷"
+     ],
+     [
+      [
+       "VELATZ 🇨🇱 + LIBERIA",
+       "NEO 🇦🇷 + MR STILL BALLIN 🇺🇾"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Valen, NC, Delux",
+       "Provenza, Kyss, Mito"
+      ],
+      "Valen, NC, Delux",
+      ""
+     ],
+     [
+      [
+       "Panchok, MCO, BNA",
+       "MR STLL BALLIN 🇺🇾, Neo, Liberia"
+      ],
+      "Panchok, MCO, BNA",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "MCO, Panchok, BNA, Neo",
+       "Valen, NC, Delux, Kyss"
+      ],
+      "MCO, Panchok, BNA, Neo",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Neo",
+    "Campeón",
+    4250
+   ],
+   [
+    "BNA",
+    "Campeón",
+    3750
+   ],
+   [
+    "Kyss",
+    "Subcampeón",
+    3625
+   ],
+   [
+    "Delux",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Mito",
+    "Semifinal",
+    3000
+   ],
+   [
+    "MCO",
+    "Campeón",
+    2500
+   ],
+   [
+    "Panchok",
+    "Campeón",
+    2500
+   ],
+   [
+    "NC",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Valen",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    1750
+   ],
+   [
+    "MR STLL BALLIN 🇺🇾",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1750
+   ],
+   [
+    "BLITZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "BTRX",
+    "Octavos",
+    1250
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Chente",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "DARK ANGEL 🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "DARKO 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kourier",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Marcos",
+    "Cuartos",
+    1250
+   ],
+   [
+    "OG",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "familiafortunaexito 🇫🇷",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

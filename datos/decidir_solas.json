@@ -1875,6 +1875,87 @@
      "597240876573392946"
     ]
    }
+  },
+  {
+   "id": "dd06319cb1",
+   "tipo": "Nombre desconocido",
+   "sec": "FREESTYLE FOR ALL ESPECIAL 1800 · FFA · 23/10 · #503",
+   "que": "¿Quién es «DARKO 🇲🇽»?",
+   "r": "Es DarkoMC",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de DarkoMC: estaba en la llamada del evento con ese nombre",
+   "t": 1792799263991,
+   "filas": [
+    806
+   ],
+   "variantes": [
+    "DARKO 🇲🇽"
+   ],
+   "escribio": {
+    "alias": [
+     "DARKO",
+     "DarkoMC"
+    ],
+    "filas": [
+     304
+    ]
+   }
+  },
+  {
+   "id": "d1225c837b",
+   "tipo": "Nombre desconocido",
+   "sec": "FREESTYLE FOR ALL ESPECIAL 1800 · FFA · 23/10 · #503",
+   "que": "¿Quién es «MR STLL BALLIN 🇺🇾»?",
+   "r": "Es Mr Still Ballin",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Mr Still Ballin: estaba en la llamada del evento con un nombre parecido",
+   "t": 1792799263991,
+   "filas": [
+    807
+   ],
+   "variantes": [
+    "MR STLL BALLIN 🇺🇾"
+   ],
+   "escribio": {
+    "alias": [
+     "MR STLL BALLIN",
+     "Mr Still Ballin"
+    ],
+    "filas": [
+     305
+    ]
+   }
+  },
+  {
+   "id": "7da2883f79",
+   "tipo": "Nombre desconocido",
+   "sec": "FREESTYLE FOR ALL ESPECIAL 1800 · FFA · 23/10 · #503",
+   "que": "¿Quién es «familiafortunaexito 🇫🇷»?",
+   "r": "Es Deuxs",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Deuxs: estaba en la llamada del evento con un nombre parecido",
+   "t": 1792799263991,
+   "filas": [
+    808
+   ],
+   "variantes": [
+    "familiafortunaexito 🇫🇷"
+   ],
+   "escribio": {
+    "alias": [
+     "familiafortunaexito",
+     "Deuxs"
+    ],
+    "filas": [
+     306
+    ]
+   }
   }
  ],
  "deshechas": []
