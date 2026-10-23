@@ -1,56 +1,50 @@
 {
  "v": 1,
- "cuando": "2026-10-23T01:47:48Z",
+ "cuando": "2026-10-23T02:11:29Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 295.9,
+ "dur_s": 740.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.1
+   "s": 5.5
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.8
+   "s": 7.6
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 243.3
+   "s": 23.2
   },
   {
    "n": "5",
    "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 31.0
+   "s": 638.5
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": false,
-   "s": 5.2
+   "s": 5.3
+  },
+  {
+   "n": "6",
+   "que": "refrescar KV",
+   "ok": true,
+   "s": 59.4
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "02_Competitivo/exportar_png.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "04_Pais/exportar_png.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
    "que": "03_Servidor/generar.py .SosaATR"
   },
   {
@@ -59,63 +53,15 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py ARDEAN"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Andy"
-  },
-  {
-   "paso": "5",
-   "que": "01_Temporada/exportar_png.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "02_Competitivo/exportar_png.py Rbk"
-  },
-  {
-   "paso": "5",
-   "que": "04_Pais/exportar_png.py Richard"
+   "que": "03_Servidor/generar.py SOL"
   },
   {
    "paso": "5",
    "que": "03_Servidor/generar.py Rbk"
   },
   {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Rbk"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Rbk"
+   "paso": "5b",
+   "que": "bot/bloqueadas.py --generar"
   }
  ],
  "ultimo_evento": {
@@ -126,20 +72,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 54,
-   "read": 6864
+   "write": 66,
+   "read": 8058
   },
   "objeto": {
-   "leidas": 255182,
-   "escritas": 1696,
-   "pedidos": 845
+   "leidas": 328676,
+   "escritas": 2245,
+   "pedidos": 1060
   },
   "worker": {
-   "pedidos": 8663,
+   "pedidos": 8599,
    "errores": 1,
-   "sub": 10667,
-   "p50_ms": 1.42,
-   "p99_ms": 11.04
+   "sub": 10607,
+   "p50_ms": 1.41,
+   "p99_ms": 11.07
   },
   "r2": {
    "objetos": 4807,
