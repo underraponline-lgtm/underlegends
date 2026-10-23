@@ -1,121 +1,91 @@
 {
  "v": 1,
- "cuando": "2026-10-23T00:07:28Z",
+ "cuando": "2026-10-23T00:51:09Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 324.3,
+ "dur_s": 1315.8,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.3
+   "s": 5.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.2
+   "s": 6.5
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 242.8
+   "s": 23.3
   },
   {
    "n": "5",
    "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": false,
-   "s": 62.3
+   "s": 1221.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": false,
-   "s": 5.6
+   "s": 4.9
+  },
+  {
+   "n": "6",
+   "que": "refrescar KV",
+   "ok": true,
+   "s": 52.9
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "02_Competitivo/exportar_png.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "04_Pais/exportar_png.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
    "que": "03_Servidor/generar.py .SosaATR"
   },
   {
    "paso": "5",
    "que": "03_Servidor/generar.py ARDEAN"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py ARDEAN"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Agus"
-  },
-  {
-   "paso": "5",
-   "que": "01_Temporada/exportar_png.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "02_Competitivo/exportar_png.py Focox"
-  },
-  {
-   "paso": "5",
-   "que": "04_Pais/exportar_png.py Focox"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Focox"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Focox"
   },
   {
    "paso": "5",
    "que": "03_Servidor/generar.py GP"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py JEIXDER"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py MCO"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Lvel"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py SOL"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Rbk"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py ZTR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py ZTR"
+  },
+  {
+   "paso": "5b",
+   "que": "bot/bloqueadas.py --generar"
   }
  ],
  "ultimo_evento": {
@@ -126,20 +96,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 12,
-   "read": 836
+   "write": 22,
+   "read": 2205
   },
   "objeto": {
-   "leidas": 16554,
-   "escritas": 181,
-   "pedidos": 62
+   "leidas": 107949,
+   "escritas": 860,
+   "pedidos": 318
   },
   "worker": {
-   "pedidos": 8878,
+   "pedidos": 8669,
    "errores": 1,
-   "sub": 10895,
-   "p50_ms": 1.4,
-   "p99_ms": 11.16
+   "sub": 10677,
+   "p50_ms": 1.42,
+   "p99_ms": 11.11
   },
   "r2": {
    "objetos": 4807,
