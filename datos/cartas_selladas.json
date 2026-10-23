@@ -1425,7 +1425,8 @@
   "Sami": {
    "competitivo": "18a6b9f246de:8259c7ce67a9",
    "pais": "19d924887530:1478cbe7c727",
-   "servidor": "f77b8a550323:dc2ca95eb024:001d6f"
+   "servidor": "f77b8a550323:dc2ca95eb024:001d6f",
+   "temporada": "2b42a1696f81:e8f4f15f7e3a"
   },
   "Sando": {
    "servidor": "cbd939dd506b:dc2ca95eb024:27d4a9"
@@ -1856,5 +1857,5 @@
    "servidor": "7f8885a35a6d:dc2ca95eb024:93a344"
   }
  },
- "cuando": "2026-10-23T05:28:33+00:00"
+ "cuando": "2026-10-23T06:43:51+00:00"
 }
