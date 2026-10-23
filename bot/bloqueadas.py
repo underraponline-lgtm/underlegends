@@ -280,6 +280,12 @@ def plan():
         nom = p.get('raw') or per.get('raw') or k
         cc = p.get('cc') or mapa_cc.get((per.get('pais') or '').strip()) or ''
         ev = int(p.get('ev') or 0)
+        # 🔴 UNA SOLA FILA PARA DECIDIR Y PARA DIBUJAR, con el `cc` ya resuelto (22/10/2026). Se preguntaba `falta()`
+        # con la fila cruda del pool y se dibujaba con `dict(p, cc=cc)`: a lvel —`cc` vacío en el pool, Venezuela en
+        # el padrón— la primera le decía «bloqueada» (sin bandera) y la segunda «cumple todo», y `bloqueada.html()`
+        # tiraba ValueError. Tumbó el paso 5b en cada corrida desde la 3.98, cuando los cruces le completaron las otras
+        # dos condiciones: ninguna Bloqueada se redibujó en 11 horas (Kravitz seguía viendo «0/3 DUELOS»)
+        fila = dict(p, cc=cc)
         for c in CARTAS:
             # 🔑 SIN LA CARTA NO VA SU BLOQUEADA (las LIBRES, 29/09/2026). A
             # quien no pasa el portón la Competitiva y la de País no le
@@ -330,7 +336,7 @@ def plan():
             #
             # `falta(c, {})` da 0 en todos los campos, o sea bloqueada,
             # que es la respuesta correcta para quien no compitió.
-            if REQ.falta(c, p) is None:
+            if REQ.falta(c, fila) is None:
                 continue                      # la cumple: le toca la normal
             # 🔴 PAIS SIN PAIS **SI** SE BLOQUEA, DESDE EL 22/09/2026, y
             # el que cambió fue el requisito. Acá decía «se omite» con
@@ -357,7 +363,7 @@ def plan():
             # condición falta, y `bloqueada.html()` terminaba mostrando
             # la primera: «0/1 BANDERA ASIGNADA» a gente con bandera.
             # Ver `comun/requisitos.cual_falta()`.
-            out.append((k, nom, cc, ev, c, dict(p, cc=cc)))
+            out.append((k, nom, cc, ev, c, fila))
     return out, sin_pais
 
 
@@ -515,7 +521,13 @@ def main():
     faltan = []
     for t, d in pend:
         nombre = os.path.basename(d)[:-4]        # sin el .png
-        sello = _sello_de(t, css)
+        # ⚠️ UNA PERSONA QUE NO SE PUEDE SELLAR NO APAGA A LAS DEMÁS: se salta y se dice. Hasta el 22/10/2026 un
+        # ValueError de una sola (lvel) dejaba sin redibujar las Bloqueadas de todo el mundo
+        try:
+            sello = _sello_de(t, css)
+        except ValueError as e:
+            print('   ⚠️ %s · %s: %s — se salta' % (t[1], t[4], e))
+            continue
         hoy[nombre] = sello
         publicada = ('bloq-' + t[4]) in (inv.get(t[0]) or {})
         if not publicada and not os.path.exists(d):
