@@ -2,39 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1560759759836020878": {
-   "id": "1560759759836020878",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792184524259,
-   "a": "VANDU 🇨🇴",
-   "b": "EMILIO ALVA 🇲🇽",
-   "ganador": "EMILIO ALVA 🇲🇽",
-   "votos": "1–0"
-  },
-  "1560762036701499493": {
-   "id": "1560762036701499493",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792185067106,
-   "a": "HOTARU ADEYEMI 🏳️‍⚧️🇦🇷",
-   "b": "MAKMA 🇻🇪",
-   "ganador": "HOTARU ADEYEMI 🏳️‍⚧️🇦🇷",
-   "votos": "1–0"
-  },
-  "1560763956401012848": {
-   "id": "1560763956401012848",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792185524798,
-   "a": "JOSHEMA 🇵🇪",
-   "b": "SHADOW 🇨🇴",
-   "ganador": "SHADOW 🇨🇴",
-   "votos": "1–0"
-  },
   "1560766372739289169": {
    "id": "1560766372739289169",
    "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
@@ -5476,6 +5443,47 @@
      ],
      "HEDORAH 🇨🇱",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1563297808834895945": {
+   "id": "1563297808834895945",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560645560015519834",
+   "pub": 1792789642295,
+   "ed": 1792790572809,
+   "texto": "`[ OCTAVOS ]`\n⌞MARTÍNEZ 🇺🇾⌝ 🆚 ⌞CÁLIZ🇲🇽⌝\n⌞TOKIO 🇦🇷⌝ 🆚 ⌞TEÍTO🇨🇴⌝\n⌞ZAFK 🇻🇪⌝ 🆚 ⌞FISICS🇵🇪⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "MARTÍNEZ 🇺🇾",
+      "CÁLIZ🇲🇽"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "TOKIO 🇦🇷",
+      "TEÍTO🇨🇴"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ZAFK 🇻🇪",
+      "FISICS🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
