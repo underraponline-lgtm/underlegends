@@ -1,21 +1,21 @@
 {
  "v": 1,
- "cuando": "2026-10-22T23:38:03Z",
+ "cuando": "2026-10-23T00:07:28Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 334.3,
+ "dur_s": 324.3,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.4
+   "s": 6.3
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.3
+   "s": 6.2
   },
   {
    "n": "4",
@@ -27,13 +27,13 @@
    "n": "5",
    "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": false,
-   "s": 70.7
+   "s": 62.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": false,
-   "s": 4.7
+   "s": 5.6
   }
  ],
  "fallas": [
@@ -79,11 +79,11 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Agus"
+   "que": "03_Servidor/generar.py ARDEAN"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py ARDEAN"
+   "que": "03_Servidor/generar.py Agus"
   },
   {
    "paso": "5",
@@ -103,7 +103,7 @@
   },
   {
    "paso": "5",
-   "que": "04_Pais/exportar_png.py GP"
+   "que": "04_Pais/exportar_png.py Focox"
   },
   {
    "paso": "5",
@@ -119,26 +119,26 @@
   }
  ],
  "ultimo_evento": {
-  "n": "499",
-  "nombre": "SI NO SOS FOURBAR NO QUIERO NADA VOL.1",
-  "sv": "FFA",
+  "n": "500",
+  "nombre": "19 (EDICIÓN FUTCARD VOL 4)",
+  "sv": "DDF",
   "dia": "2026-10-22"
  },
  "cuotas": {
   "kv": {
-   "write": 663,
-   "read": 55052
+   "write": 12,
+   "read": 836
   },
   "objeto": {
-   "leidas": 3164092,
-   "escritas": 37564,
-   "pedidos": 10513
+   "leidas": 16554,
+   "escritas": 181,
+   "pedidos": 62
   },
   "worker": {
-   "pedidos": 8970,
+   "pedidos": 8878,
    "errores": 1,
-   "sub": 10976,
-   "p50_ms": 1.38,
+   "sub": 10895,
+   "p50_ms": 1.4,
    "p99_ms": 11.16
   },
   "r2": {
