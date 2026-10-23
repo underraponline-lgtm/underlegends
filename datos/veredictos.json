@@ -947,6 +947,50 @@
    "b": "MOLUSCO 🇦🇷 + MATHIAS 🇻🇪",
    "ganador": "MOLUSCO 🇦🇷 + MATHIAS 🇻🇪",
    "votos": "1–0"
+  },
+  "1563326306647674981": {
+   "id": "1563326306647674981",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792796436703,
+   "a": "DANCOLL 🇻🇪 + SIN LIMITES 🇵🇪",
+   "b": "CARLOS 🇪🇨 + MAKMA 🇻🇪",
+   "ganador": "CARLOS 🇪🇨 + MAKMA 🇻🇪",
+   "votos": "1–0"
+  },
+  "1563327904606199910": {
+   "id": "1563327904606199910",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792796817686,
+   "a": "ERIAN 🇩🇴 + VANDU 🇨🇦",
+   "b": "BNA 🇦🇷 + VELATZ 🇨🇱",
+   "ganador": "BNA 🇦🇷 + VELATZ 🇨🇱",
+   "votos": "1–0"
+  },
+  "1563329016621039697": {
+   "id": "1563329016621039697",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560645560015519834",
+   "pub": 1792797082811,
+   "a": "TOKIO 🇦🇷",
+   "b": "HOTU 🇦🇷",
+   "ganador": "HOTU 🇦🇷",
+   "votos": "1–0"
+  },
+  "1563329926646730833": {
+   "id": "1563329926646730833",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792797299778,
+   "a": "CALIZ 🇲🇽 + LIZENNIN 🇦🇷",
+   "b": "MATHIAS 🇻🇪 + MOLUSCO 🇦🇷",
+   "ganador": "MATHIAS 🇻🇪 + MOLUSCO 🇦🇷",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5387,8 +5431,8 @@
    "g": "1558611504046153750",
    "canal": "1560645560015519834",
    "pub": 1792789642295,
-   "ed": 1792795751515,
-   "texto": "`[ OCTAVOS ]`\n⌞MARTÍNEZ 🇺🇾⌝ 🆚 ⌞CÁLIZ🇲🇽⌝\n⌞TOKIO 🇦🇷⌝ 🆚 ⌞TEÍTO🇨🇴⌝\n⌞ZAFK 🇻🇪⌝ 🆚 ⌞FISICS🇵🇪⌝\n⌞ISMEL 🇻🇪⌝ 🆚 ⌞LAST🇺🇾⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞MATTHIAS🇻🇪⌝\n⌞HOTU 🇦🇷⌝ 🆚 ⌞RICARD🇪🇨⌝\n⌞BOOTRAX 🇵🇪⌝ 🆚 ⌞DYZZ🇨🇱⌝\n⌞ZAIK 🇬🇹⌝ 🆚 ⌞MAKMA🇻🇪⌝\n`[ CUARTOS ]`\n⌞TOKIO 🇦🇷⌝ 🆚 ⌞CÁLIZ🇲🇽⌝\n⌞FISICS 🇵🇪⌝ 🆚 ⌞ISMEL🇻🇪⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞HOTU🇦🇷⌝\n⌞BOOTRAX 🇵🇪⌝ 🆚 ⌞MAKMA🇻🇪⌝\n`[ SEMIFINALES ]`\n⌞FISICS 🇵🇪⌝ 🆚 ⌞TOKIO🇦🇷⌝\n⌞MAKMA 🇻🇪⌝ 🆚 ⌞HOTU🇦🇷⌝",
+   "ed": 1792797105927,
+   "texto": "`[ OCTAVOS ]`\n⌞MARTÍNEZ 🇺🇾⌝ 🆚 ⌞CÁLIZ🇲🇽⌝\n⌞TOKIO 🇦🇷⌝ 🆚 ⌞TEÍTO🇨🇴⌝\n⌞ZAFK 🇻🇪⌝ 🆚 ⌞FISICS🇵🇪⌝\n⌞ISMEL 🇻🇪⌝ 🆚 ⌞LAST🇺🇾⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞MATTHIAS🇻🇪⌝\n⌞HOTU 🇦🇷⌝ 🆚 ⌞RICARD🇪🇨⌝\n⌞BOOTRAX 🇵🇪⌝ 🆚 ⌞DYZZ🇨🇱⌝\n⌞ZAIK 🇬🇹⌝ 🆚 ⌞MAKMA🇻🇪⌝\n`[ CUARTOS ]`\n⌞TOKIO 🇦🇷⌝ 🆚 ⌞CÁLIZ🇲🇽⌝\n⌞FISICS 🇵🇪⌝ 🆚 ⌞ISMEL🇻🇪⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞HOTU🇦🇷⌝\n⌞BOOTRAX 🇵🇪⌝ 🆚 ⌞MAKMA🇻🇪⌝\n`[ SEMIFINALES ]`\n⌞FISICS 🇵🇪⌝ 🆚 ⌞TOKIO🇦🇷⌝\n⌞MAKMA 🇻🇪⌝ 🆚 ⌞HOTU🇦🇷⌝\n`[ FINAL ]`\n⌞TOKIO 🇦🇷⌝ 🆚 ⌞HOTU🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5516,14 +5560,24 @@
       "FISICS 🇵🇪",
       "TOKIO🇦🇷"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "TOKIO🇦🇷",
+     "ronda siguiente",
      []
     ],
     [
      "SEMIFINALES",
      [
       "MAKMA 🇻🇪",
+      "HOTU🇦🇷"
+     ],
+     "HOTU🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "TOKIO 🇦🇷",
       "HOTU🇦🇷"
      ],
      null,
@@ -5538,8 +5592,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1792795038927,
-   "ed": 1792795742536,
-   "texto": "`[ CUARTOS ]`\n⌞ECLIPSE⌝ 🆚 ⌞DOMINICK⌝\n⌞MINIBOY⌝ 🆚 ⌞SIN LIMITES⌝\n⌞MAKMAH⌝ 🆚 ⌞PIPE⌝\n⌞CARLOS⌝ 🆚 ⌞LIZENIN⌝",
+   "ed": 1792796992750,
+   "texto": "`[ CUARTOS ]`\n⌞ECLIPSE⌝ 🆚 ⌞DOMINICK⌝\n⌞MINIBOY⌝ 🆚 ⌞SIN LIMITES⌝\n⌞MAKMAH⌝ 🆚 ⌞PIPE⌝\n⌞CARLOS⌝ 🆚 ⌞LIZENIN⌝\n`[ SEMIFINALES ]`\n⌞MINIBOY⌝ 🆚 ⌞ECLIPSE⌝\n⌞REPLICA: MINIBOY⌝ 🆚 ⌞ECLIPSE⌝\n⌞CARLOS⌝ 🆚 ⌞MAKMA⌝\n`[ FINAL ]`\n⌞MAKMA⌝ 🆚 ⌞ECLIPSE⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5547,8 +5601,8 @@
       "ECLIPSE",
       "DOMINICK"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "ECLIPSE",
+     "ronda siguiente",
      []
     ],
     [
@@ -5557,8 +5611,8 @@
       "MINIBOY",
       "SIN LIMITES"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "MINIBOY",
+     "ronda siguiente",
      []
     ],
     [
@@ -5568,7 +5622,7 @@
       "PIPE"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -5576,6 +5630,46 @@
      [
       "CARLOS",
       "LIZENIN"
+     ],
+     "CARLOS",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "MINIBOY",
+      "ECLIPSE"
+     ],
+     "ECLIPSE",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "REPLICA: MINIBOY",
+      "ECLIPSE"
+     ],
+     "ECLIPSE",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "CARLOS",
+      "MAKMA"
+     ],
+     "MAKMA",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MAKMA",
+      "ECLIPSE"
      ],
      null,
      "última ronda y no dice campeón",

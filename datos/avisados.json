@@ -19713,5 +19713,151 @@
    ]
   ],
   "v": 2
+ },
+ "502": {
+  "antes": {
+   "Carlosss": [
+    35,
+    46,
+    false
+   ],
+   "Dominick": [
+    211,
+    53,
+    true
+   ],
+   "Eclipsito": [
+    212,
+    56,
+    true
+   ],
+   "Makmah": [
+    3,
+    3,
+    false
+   ],
+   "Miniboy": [
+    37,
+    48,
+    false
+   ],
+   "Pipe": [
+    177,
+    360,
+    false
+   ],
+   "Shadow": [
+    54,
+    72,
+    false
+   ],
+   "Sin Limites": [
+    28,
+    33,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Eclipsito",
+    "Dominick",
+    "Eclipsito"
+   ],
+   [
+    "Miniboy",
+    "Sin Limites",
+    "Miniboy"
+   ],
+   [
+    "Carlosss",
+    "Shadow",
+    "Carlosss"
+   ],
+   [
+    "Makmah",
+    "Pipe",
+    "Makmah"
+   ],
+   [
+    "Eclipsito",
+    "Miniboy",
+    "Eclipsito"
+   ],
+   [
+    "Makmah",
+    "Carlosss",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Eclipsito",
+    "Makmah"
+   ]
+  ],
+  "ev_antes": {
+   "Carlosss": 9,
+   "Dominick": 15,
+   "Eclipsito": 10,
+   "Makmah": 62,
+   "Miniboy": 18,
+   "Pipe": 1,
+   "Shadow": 11,
+   "Sin Limites": 23
+  },
+  "fecha": "23/10",
+  "firma": "0511bdd54680f960",
+  "msg": "1563330231442604132",
+  "nombre": "ZONA MORTAL",
+  "num": 502,
+  "participantes": 8,
+  "sello": {
+   "Makmah": "fa6061c50715:a001e7b21e4d"
+  },
+  "sv": "DDF",
+  "t": "2026-10-23T23:23:49Z",
+  "tabla": [
+   [
+    "Makmah",
+    "Campeón",
+    7500
+   ],
+   [
+    "Eclipsito",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Carlosss",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Pipe",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

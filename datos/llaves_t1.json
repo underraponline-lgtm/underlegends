@@ -30141,5 +30141,132 @@
     1250
    ]
   ]
+ },
+ "502": {
+  "dia": "2026-10-23",
+  "escala": "8-15",
+  "fecha": "23/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1563318517535870987"
+  ],
+  "n": 502,
+  "nombre": "ZONA MORTAL",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Eclipsito",
+       "Dominick"
+      ],
+      "Eclipsito",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "Sin Limites"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Carlosss",
+       "Shadow"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Pipe"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Eclipsito",
+       "Miniboy"
+      ],
+      "Eclipsito",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Carlosss"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "Eclipsito"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Makmah",
+    "Campeón",
+    7500
+   ],
+   [
+    "Eclipsito",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Carlosss",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Pipe",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

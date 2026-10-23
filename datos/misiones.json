@@ -2874,7 +2874,7 @@
     ],
     "Carlosss": [
      0,
-     2,
+     3,
      1,
      0,
      0
@@ -2993,7 +2993,7 @@
     ],
     "Eclipsito": [
      0,
-     0,
+     1,
      2,
      0,
      0
@@ -3238,7 +3238,7 @@
     ],
     "Makmah": [
      0,
-     1,
+     3,
      1,
      0,
      0
@@ -3259,7 +3259,7 @@
     ],
     "Miniboy": [
      0,
-     0,
+     1,
      4,
      0,
      0
@@ -3366,6 +3366,13 @@
      0,
      1,
      1,
+     0,
+     0
+    ],
+    "Pipe": [
+     0,
+     0,
+     8,
      0,
      0
     ],
@@ -3677,7 +3684,7 @@
     "Aldre": 1000,
     "Andres": 1000,
     "CJ": 1800,
-    "Carlosss": 1000,
+    "Carlosss": 1600,
     "Colesito": 1000,
     "Corvo": 1000,
     "Crk": 1600,
@@ -3690,7 +3697,7 @@
     "Lord Viruzz": 1000,
     "MCO": 1000,
     "MaYeuTyK": 1000,
-    "Makmah": 1000,
+    "Makmah": 1600,
     "Masino": 1000,
     "Mr Still Ballin": 1000,
     "NC": 1000,
@@ -3748,7 +3755,7 @@
   "Cajita": 300,
   "Calíz": 900,
   "Carlosmo": 1600,
-  "Carlosss": 3200,
+  "Carlosss": 3800,
   "Catarsis": 1700,
   "Chop": 2200,
   "Cinexfilo": 900,
@@ -3846,7 +3853,7 @@
   "MaYeuTyK": 1000,
   "Magic": 300,
   "Majiztral": 1200,
-  "Makmah": 4800,
+  "Makmah": 5400,
   "Malva": 300,
   "Marto": 300,
   "Masino": 1900,
