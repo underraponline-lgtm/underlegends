@@ -1134,6 +1134,39 @@
    "b": "last",
    "ganador": "last",
    "votos": "1–0"
+  },
+  "1563029363862011936": {
+   "id": "1563029363862011936",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1792725640026,
+   "a": "CALÍZ🇲🇽",
+   "b": "SHADOW 🇨🇴",
+   "ganador": "CALÍZ🇲🇽",
+   "votos": "1–0"
+  },
+  "1563033471335538720": {
+   "id": "1563033471335538720",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1792726619324,
+   "a": "HEDORAH 🇨🇱",
+   "b": "LRS 🇦🇷",
+   "ganador": "HEDORAH 🇨🇱",
+   "votos": "1–0"
+  },
+  "1563035637936955504": {
+   "id": "1563035637936955504",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1792727135882,
+   "a": "CALÍZ🇲🇽",
+   "b": "MR.KUDE 🇦🇷",
+   "ganador": "CALÍZ🇲🇽",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5503,8 +5536,8 @@
    "g": "1558611504046153750",
    "canal": "1560448027490001067",
    "pub": 1792724749934,
-   "ed": 1792725646094,
-   "texto": "`[ CUARTOS ]`\n⌞HEDORAH 🇨🇱⌝ 🆚 ⌞CALÍZ🇲🇽⌝\n⌞LRS 🇦🇷⌝ 🆚 ⌞SHADOW 🇨🇴⌝\n⌞CALÍZ 🇲🇽⌝ 🆚 ⌞SHADOW 🇨🇴⌝",
+   "ed": 1792727152379,
+   "texto": "`[ CUARTOS ]`\n⌞HEDORAH 🇨🇱⌝ 🆚 ⌞CALÍZ🇲🇽⌝\n⌞LRS 🇦🇷⌝ 🆚 ⌞SHADOW 🇨🇴⌝\n⌞CALÍZ 🇲🇽⌝ 🆚 ⌞SHADOW 🇨🇴⌝\n`[ SEMIFINALES ]`\n⌞HEDORAH 🇨🇱⌝ 🆚 ⌞LRS 🇦🇷⌝\n⌞CALÍZ 🇲🇽⌝ 🆚 ⌞MR.KUDE 🇦🇷⌝\n`[ FINAL ]`",
    "batallas": [
     [
      "CUARTOS",
@@ -5532,8 +5565,28 @@
       "CALÍZ 🇲🇽",
       "SHADOW 🇨🇴"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "CALÍZ 🇲🇽",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "HEDORAH 🇨🇱",
+      "LRS 🇦🇷"
+     ],
+     "HEDORAH 🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "CALÍZ 🇲🇽",
+      "MR.KUDE 🇦🇷"
+     ],
+     "CALÍZ 🇲🇽",
+     "veredicto",
      []
     ]
    ]

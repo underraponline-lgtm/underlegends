@@ -400,6 +400,77 @@
    ]
   ]
  },
+ "133386008": {
+  "dia": "2026-10-22",
+  "escala": "4-7",
+  "fecha": "22/10",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1558611505040064607/1563025123433386008"
+  ],
+  "n": 133386008,
+  "nombre": "ZAIK CUP",
+  "ns": 1,
+  "participantes": 4,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Hedorah 🇨🇱",
+       "LRS"
+      ],
+      "Hedorah 🇨🇱",
+      ""
+     ],
+     [
+      [
+       "Calíz",
+       "Mr.Kude"
+      ],
+      "Calíz",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Hedorah 🇨🇱",
+       "Calíz"
+      ],
+      "Hedorah 🇨🇱",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Hedorah 🇨🇱",
+    "Campeón",
+    0
+   ],
+   [
+    "Calíz",
+    "Subcampeón",
+    0
+   ],
+   [
+    "LRS",
+    "Semifinal",
+    0
+   ],
+   [
+    "Mr.Kude",
+    "Semifinal",
+    0
+   ]
+  ]
+ },
  "139475261": {
   "dia": "2026-10-20",
   "escala": "8-15",
