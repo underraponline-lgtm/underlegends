@@ -1074,7 +1074,8 @@
 "denik": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "deuxs": {
@@ -2526,14 +2527,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"Soft"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5853,6 +5846,14 @@
 "J19"
 ],
 "carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-23T16:47:17Z",
+"quien": [
+"Denik"
+],
+"carta": "temporada"
 }
 ]
 }
