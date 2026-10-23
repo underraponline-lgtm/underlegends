@@ -3038,6 +3038,49 @@
      "orgs": [],
      "organizador": "LEWITO",
      "cuentas": {}
+    },
+    "1563281564958335141": {
+     "sv": "FFA",
+     "nombre": "FREESTYLE FOR ALL ESPECIAL 1.800 MIEMBROS",
+     "mo": "2026-10-23T20:02:49Z",
+     "staff": {
+      "jurado": [
+       "LEWITO",
+       "REVO",
+       "XUBARU"
+      ],
+      "host": [
+       "LEWITO"
+      ],
+      "dj": [
+       "LEWITO"
+      ]
+     },
+     "orgs": [],
+     "organizador": "LEWITO",
+     "cuentas": {}
+    },
+    "1563283919330086934": {
+     "sv": "LKR",
+     "nombre": "WORLD OF FREE",
+     "mo": "2026-10-23T20:12:10Z",
+     "staff": {
+      "jurado": [
+       "ACTIVOS"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "compromiso",
+       "id": ""
+      },
+      {
+       "n": "visión de crecimiento",
+       "id": ""
+      }
+     ],
+     "organizador": "COMPROMISO Y VISION DE CRECIMIENTO",
+     "cuentas": {}
     }
    },
    "ver": {
