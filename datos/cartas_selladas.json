@@ -36,7 +36,7 @@
    "competitivo": "61ef4c76759c:8259c7ce67a9",
    "pais": "357154494cb8:1478cbe7c727",
    "servidor": "ad201ad7e2c8:dc2ca95eb024:3ce074",
-   "temporada": "49b9a4de18fa:e8f4f15f7e3a"
+   "temporada": "5d623104d3e5:e8f4f15f7e3a"
   },
   "Ac3nto": {
    "servidor": "03c350320fda:dc2ca95eb024:948362"
@@ -117,7 +117,7 @@
    "servidor": "4af907e5d349:dc2ca95eb024:055f77"
   },
   "Astral": {
-   "competitivo": "73438c7f00b5:8259c7ce67a9",
+   "competitivo": "34234504aa04:8259c7ce67a9",
    "pais": "84689434c484:1478cbe7c727",
    "servidor": "a92ba39c2c59:dc2ca95eb024:055f77"
   },
@@ -1851,5 +1851,5 @@
    "servidor": "7f8885a35a6d:dc2ca95eb024:93a344"
   }
  },
- "cuando": "2026-10-23T02:59:45+00:00"
+ "cuando": "2026-10-23T03:37:10+00:00"
 }
