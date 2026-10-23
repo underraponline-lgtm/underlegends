@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-22T23:54:17+00:00",
+ "cuando": "2026-10-23T00:24:26+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -400,40 +400,6 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
-  },
-  {
-   "nombre": "DESGRACIAS EN TOKYO VOL 31 PANDILLAS",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1562973580189499533",
-   "cuando": "2026-10-22T23:39:00",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "LEWITO",
-   "orgs": [],
-   "autor_h": "211322958af20ae2",
-   "cupos_texto": "24",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "PLATA 3",
-   "modalidad": ": PANDILLAS",
-   "horario": "EN 1 HORA",
-   "fecha": "",
-   "premios": "RESPETO",
-   "staff": {
-    "jurado": [
-     "LEWITO"
-    ],
-    "host": [
-     "LEWITO"
-    ],
-    "dj": [
-     "LEWITO"
-    ]
-   },
-   "autor": "Lewito",
-   "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "SI NO SOS FOURBAR NO QUIERO NADA VOL.1",
@@ -1225,6 +1191,49 @@
    "premios": "700k dólares discordianos",
    "staff": {},
    "autor": "HERYIETEERJOUKATEITHORER",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
+  },
+  {
+   "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 5",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1559657026202898483",
+   "cuando": "2026-10-13T20:00:12",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "FLENNZS LEWITO",
+   "orgs": [
+    {
+     "n": "FLENNZS",
+     "id": ""
+    },
+    {
+     "n": "LEWITO",
+     "id": ""
+    }
+   ],
+   "autor_h": "211322958af20ae2",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "PLATA III",
+   "modalidad": "",
+   "horario": "EN 1 HORA",
+   "fecha": "HOY",
+   "premios": "ROL CAMPEÓN +  CUPO PARA COMPE POR PLATA RANGO ORO II",
+   "staff": {
+    "jurado": [
+     "FLENNZS"
+    ],
+    "host": [
+     "LEWITO  FLENNZS"
+    ],
+    "dj": [
+     "💿 ZAIK"
+    ]
+   },
+   "autor": "Lewito",
    "staff_cuentas": {},
    "categoria_id": "1468478330826260500"
   },
@@ -6975,6 +6984,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones-2",
+   "texto": "six",
+   "quien": "ivanjajaa",
+   "discord_id": "639232575461654538",
+   "msg_id": "1562981170197565472",
+   "cuando": "2026-10-23T00:09:09"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones-2",
+   "texto": "Aldre 🇦🇷",
+   "quien": "aldrebxjd",
+   "discord_id": "515712116381188097",
+   "msg_id": "1562980271492567112",
+   "cuando": "2026-10-23T00:05:35"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones-2",
