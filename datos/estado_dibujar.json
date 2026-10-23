@@ -1,45 +1,45 @@
 {
  "v": 1,
- "cuando": "2026-10-23T03:43:25Z",
+ "cuando": "2026-10-23T04:12:13Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 845.5,
+ "dur_s": 747.8,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.2
+   "s": 5.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.9
+   "s": 7.8
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 29.9
+   "s": 29.4
   },
   {
    "n": "5",
    "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 659.6
+   "s": 643.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 85.9
+   "s": 5.8
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 54.6
+   "s": 54.9
   }
  ],
  "fallas": [
@@ -53,11 +53,11 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py OKAM"
+   "que": "03_Servidor/generar.py SOL"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py OKAM"
+   "que": "03_Servidor/generar.py PichulaMc"
   }
  ],
  "ultimo_evento": {
@@ -68,20 +68,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 122,
-   "read": 12361
+   "write": 133,
+   "read": 13898
   },
   "objeto": {
-   "leidas": 509384,
-   "escritas": 4251,
-   "pedidos": 1635
+   "leidas": 556715,
+   "escritas": 4540,
+   "pedidos": 1850
   },
   "worker": {
-   "pedidos": 8237,
+   "pedidos": 8207,
    "errores": 1,
-   "sub": 10190,
-   "p50_ms": 1.39,
-   "p99_ms": 11.0
+   "sub": 10165,
+   "p50_ms": 1.4,
+   "p99_ms": 11.06
   },
   "r2": {
    "objetos": 4807,
