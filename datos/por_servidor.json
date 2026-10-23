@@ -1838,12 +1838,12 @@
     }
    },
    "DDF": {
-    "duelos": "2/8",
-    "ev": 6,
+    "duelos": "3/10",
+    "ev": 7,
     "oro": 0,
-    "ovr": 51,
+    "ovr": 52,
     "pod": 1,
-    "pts": 21362,
+    "pts": 24862,
     "racha": "0/1",
     "tg": {
      "fin": 1
@@ -1894,12 +1894,12 @@
     }
    },
    "DDF": {
-    "duelos": "4/8",
-    "ev": 4,
+    "duelos": "4/9",
+    "ev": 5,
     "oro": 0,
     "ovr": 50,
     "pod": 1,
-    "pts": 16275,
+    "pts": 18275,
     "racha": "0/1",
     "tg": {
      "fin": 1
@@ -2377,16 +2377,16 @@
     }
    },
    "DDF": {
-    "duelos": "3/8",
-    "ev": 7,
+    "duelos": "5/11",
+    "ev": 8,
     "oro": 1,
-    "ovr": 54,
-    "pod": 2,
-    "pts": 40285,
-    "racha": "1/1",
+    "ovr": 55,
+    "pod": 3,
+    "pts": 45285,
+    "racha": "2/2",
     "tg": {
      "dv": true,
-     "fin": 2
+     "fin": 3
     }
    },
    "FFA": {
@@ -3438,6 +3438,18 @@
    }
   },
   "Jobaking": {
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "",
     "ev": 4,
@@ -4891,7 +4903,7 @@
     "oro": 4,
     "ovr": 81,
     "pod": 12,
-    "pts": 251450,
+    "pts": 252350,
     "racha": "1/3",
     "tg": {
      "bcasa": true,
@@ -5732,10 +5744,7 @@
     "ovr": 53,
     "pod": 0,
     "pts": 37575,
-    "racha": "0/0",
-    "tg": {
-     "llave": true
-    }
+    "racha": "0/0"
    }
   },
   "OEP": {
@@ -6093,15 +6102,15 @@
   },
   "PichulaMc": {
    "DDF": {
-    "duelos": "4/5",
-    "ev": 2,
-    "oro": 1,
-    "ovr": 49,
-    "pod": 1,
-    "pts": 15875,
-    "racha": "1/1",
+    "duelos": "5/6",
+    "ev": 3,
+    "oro": 2,
+    "ovr": 51,
+    "pod": 2,
+    "pts": 23375,
+    "racha": "2/2",
     "tg": {
-     "fin": 1
+     "fin": 2
     }
    },
    "FFA": {

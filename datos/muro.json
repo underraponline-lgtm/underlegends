@@ -405,6 +405,10 @@
 "temporada"
 ]
 },
+"dominick": {
+"rg": "D",
+"c": []
+},
 "geoka": {
 "rg": "E",
 "c": [
@@ -451,10 +455,6 @@
 ]
 },
 "1200": {
-"rg": "E",
-"c": []
-},
-"dominick": {
 "rg": "E",
 "c": []
 },
@@ -603,18 +603,18 @@
 "temporada"
 ]
 },
-"teito": {
-"rg": "E",
+"okam": {
+"rg": "",
 "c": [
-"competitivo",
 "pais",
 "servidor",
 "temporada"
 ]
 },
-"okam": {
-"rg": "",
+"teito": {
+"rg": "E",
 "c": [
+"competitivo",
 "pais",
 "servidor",
 "temporada"
@@ -874,10 +874,6 @@
 "servidor"
 ]
 },
-"fleivaman": {
-"rg": "",
-"c": []
-},
 "blitz": {
 "rg": "",
 "c": []
@@ -956,6 +952,10 @@
 "servidor",
 "temporada"
 ]
+},
+"fleivaman": {
+"rg": "",
+"c": []
 },
 "elsoolar": {
 "rg": "",
@@ -1181,6 +1181,14 @@
 "mhs": {
 "rg": "",
 "c": []
+},
+"jobaking": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
 },
 "saz": {
 "rg": "",
@@ -2508,14 +2516,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"maldita enfermedad"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5833,6 +5833,15 @@
 "OKAM"
 ],
 "carta": "pais"
+},
+{
+"tipo": "rango",
+"t": "2026-10-23T00:00:41Z",
+"quien": [
+"Dominick"
+],
+"rg": "D",
+"primero": false
 }
 ]
 }

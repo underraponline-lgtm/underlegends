@@ -29772,5 +29772,109 @@
     1250
    ]
   ]
+ },
+ "500": {
+  "dia": "2026-10-22",
+  "escala": "8-15",
+  "fecha": "22/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1562968222418862144"
+  ],
+  "n": 500,
+  "nombre": "19 (EDICIÓN FUTCARD VOL 4)",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Dominick",
+       "Drexx"
+      ],
+      "Dominick",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "Jobaking"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "Uzi",
+       "makmah 🇻🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "el sheke",
+       "Pichulamc"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "Dominick"
+      ],
+      "Erian",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Erian"
+      ],
+      "PichulaMc",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "PichulaMc",
+    "Campeón",
+    7500
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Dominick",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jobaking",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

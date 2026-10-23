@@ -19305,5 +19305,103 @@
    ]
   ],
   "v": 2
+ },
+ "500": {
+  "antes": {
+   "Dominick": [
+    213,
+    61,
+    true
+   ],
+   "Drexx": [
+    31,
+    39,
+    false
+   ],
+   "Erian": [
+    6,
+    7,
+    false
+   ],
+   "Jobaking": [
+    129,
+    228,
+    false
+   ],
+   "PichulaMc": [
+    4,
+    5,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Dominick",
+    "Drexx",
+    "Dominick"
+   ],
+   [
+    "Erian",
+    "Jobaking",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "Dominick",
+    "Erian"
+   ],
+   [
+    "PichulaMc",
+    "Erian",
+    "PichulaMc"
+   ]
+  ],
+  "ev_antes": {
+   "Dominick": 14,
+   "Drexx": 22,
+   "Erian": 42,
+   "Jobaking": 4,
+   "PichulaMc": 41
+  },
+  "fecha": "22/10",
+  "firma": "c216c68f2bc53293",
+  "msg": "1562977225790459957",
+  "nombre": "19 (EDICIÓN FUTCARD VOL 4)",
+  "num": 500,
+  "participantes": 9,
+  "sello": {
+   "PichulaMc": "a80304bdbefd:84b47cf43136"
+  },
+  "sv": "DDF",
+  "t": "2026-10-22T23:53:28Z",
+  "tabla": [
+   [
+    "PichulaMc",
+    "Campeón",
+    7500
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Dominick",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jobaking",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }
