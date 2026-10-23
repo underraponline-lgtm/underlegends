@@ -296,6 +296,7 @@
   "semi2desio": "Desio",
   "batalla3desio": "Desio",
   "reenkharnazhion": "Cronox",
+  "tnor": "Tenor",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1526,6 +1527,10 @@
   [
    "reenkharnazhion",
    "Cronox"
+  ],
+  [
+   "tnor",
+   "Tenor"
   ],
   [
    "Nexus",

@@ -19403,5 +19403,315 @@
    ]
   ],
   "v": 2
+ },
+ "501": {
+  "antes": {
+   "Aldre": [
+    96,
+    140,
+    false
+   ],
+   "Andres": [
+    207,
+    38,
+    true
+   ],
+   "Bloody": [
+    25,
+    29,
+    false
+   ],
+   "CJ": [
+    263,
+    171,
+    true
+   ],
+   "Denik": [
+    112,
+    181,
+    false
+   ],
+   "J19": [
+    194,
+    449,
+    false
+   ],
+   "Jult": [
+    51,
+    67,
+    false
+   ],
+   "LAST": [
+    137,
+    245,
+    false
+   ],
+   "LRS": [
+    42,
+    54,
+    false
+   ],
+   "Makmah": [
+    3,
+    3,
+    false
+   ],
+   "NC": [
+    20,
+    23,
+    false
+   ],
+   "OKAM": [
+    62,
+    82,
+    false
+   ],
+   "Provenza": [
+    18,
+    19,
+    false
+   ],
+   "Sosa": [
+    57,
+    76,
+    false
+   ],
+   "Vandu": [
+    13,
+    14,
+    false
+   ],
+   "Volk": [
+    160,
+    322,
+    false
+   ],
+   "yinn": [
+    202,
+    22,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "NC",
+    "Aldre",
+    "NC"
+   ],
+   [
+    "Vandu",
+    "yinn",
+    "Vandu"
+   ],
+   [
+    "Vandu",
+    "Andres",
+    "Vandu"
+   ],
+   [
+    "J19",
+    "OKAM",
+    "J19"
+   ],
+   [
+    "mats🇺🇾",
+    "Sosa",
+    "mats🇺🇾"
+   ],
+   [
+    "mats🇺🇾",
+    "LAST",
+    "mats🇺🇾"
+   ],
+   [
+    "Denik",
+    "Provenza",
+    "Denik"
+   ],
+   [
+    "Denik",
+    "LRS",
+    "Denik"
+   ],
+   [
+    "Bloody",
+    "Jult",
+    "Bloody"
+   ],
+   [
+    "tnor🇻🇪",
+    "Volk",
+    "tnor🇻🇪"
+   ],
+   [
+    "CJ",
+    "Makmah",
+    "CJ"
+   ],
+   [
+    "Vandu",
+    "NC",
+    "Vandu"
+   ],
+   [
+    "J19",
+    "mats🇺🇾",
+    "J19"
+   ],
+   [
+    "Bloody",
+    "Denik",
+    "Bloody"
+   ],
+   [
+    "CJ",
+    "tnor🇻🇪",
+    "CJ"
+   ],
+   [
+    "J19",
+    "Vandu",
+    "J19"
+   ],
+   [
+    "CJ",
+    "Bloody",
+    "CJ"
+   ],
+   [
+    "CJ",
+    "J19",
+    "CJ"
+   ]
+  ],
+  "ev_antes": {
+   "Aldre": 2,
+   "Andres": 14,
+   "Bloody": 20,
+   "CJ": 3,
+   "Denik": 3,
+   "J19": 1,
+   "Jult": 13,
+   "LAST": 5,
+   "LRS": 17,
+   "Makmah": 61,
+   "NC": 34,
+   "OKAM": 6,
+   "Provenza": 27,
+   "Sosa": 16,
+   "Vandu": 31,
+   "Volk": 2,
+   "yinn": 21
+  },
+  "fecha": "23/10",
+  "firma": "71416619ef35af4c",
+  "msg": "1563081833472856125",
+  "nombre": "__ LA ISLA DE OKINAWA V.4 __",
+  "num": 501,
+  "participantes": 19,
+  "sello": {
+   "CJ": ""
+  },
+  "sv": "FFA",
+  "t": "2026-10-23T06:53:37Z",
+  "tabla": [
+   [
+    "CJ",
+    "Campeón",
+    10000
+   ],
+   [
+    "J19",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Vandu",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Bloody",
+    "Semifinal",
+    5250
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "mats🇺🇾",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Denik",
+    "Cuartos",
+    2500
+   ],
+   [
+    "tnor🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Aldre",
+    "Octavos",
+    1250
+   ],
+   [
+    "yinn",
+    "Octavos",
+    1250
+   ],
+   [
+    "Andres",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    1250
+   ],
+   [
+    "LAST",
+    "Octavos",
+    1250
+   ],
+   [
+    "Provenza",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jult",
+    "Octavos",
+    1250
+   ],
+   [
+    "Volk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

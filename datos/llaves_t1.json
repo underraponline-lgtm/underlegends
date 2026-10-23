@@ -29886,5 +29886,261 @@
     2000
    ]
   ]
+ },
+ "501": {
+  "dia": "2026-10-23",
+  "escala": "16+",
+  "fecha": "23/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1563051587235090503",
+   "https://discord.com/channels/1468472442925092958/1557583344638623754/1563053367142514780",
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1563082750884454453"
+  ],
+  "n": 501,
+  "nombre": "LA ISLA DE OKINAWA V.4",
+  "participantes": 19,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NC",
+       "Aldre"
+      ],
+      "NC",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "yinn",
+       "Andres"
+      ],
+      "Vandu",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "J19",
+       "OKAM"
+      ],
+      "J19",
+      ""
+     ],
+     [
+      [
+       "mats🇺🇾",
+       "Sosa",
+       "LAST"
+      ],
+      "mats🇺🇾",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Denik",
+       "Provenza",
+       "LRS"
+      ],
+      "Denik",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Bloody",
+       "Jult"
+      ],
+      "Bloody",
+      ""
+     ],
+     [
+      [
+       "tnor🇻🇪",
+       "Volk"
+      ],
+      "tnor🇻🇪",
+      ""
+     ],
+     [
+      [
+       "CJ",
+       "Makmah"
+      ],
+      "CJ",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Vandu",
+       "NC"
+      ],
+      "Vandu",
+      ""
+     ],
+     [
+      [
+       "J19",
+       "mats🇺🇾"
+      ],
+      "J19",
+      ""
+     ],
+     [
+      [
+       "Bloody",
+       "Denik"
+      ],
+      "Bloody",
+      ""
+     ],
+     [
+      [
+       "CJ",
+       "tnor🇻🇪"
+      ],
+      "CJ",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "J19",
+       "Vandu"
+      ],
+      "J19",
+      ""
+     ],
+     [
+      [
+       "CJ",
+       "Bloody"
+      ],
+      "CJ",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "CJ",
+       "J19"
+      ],
+      "CJ",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "CJ",
+    "Campeón",
+    10000
+   ],
+   [
+    "J19",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Bloody",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Vandu",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Denik",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "mats🇺🇾",
+    "Cuartos",
+    2500
+   ],
+   [
+    "tnor🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Aldre",
+    "Octavos",
+    1250
+   ],
+   [
+    "Andres",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jult",
+    "Octavos",
+    1250
+   ],
+   [
+    "LAST",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "Provenza",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    1250
+   ],
+   [
+    "Volk",
+    "Octavos",
+    1250
+   ],
+   [
+    "yinn",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

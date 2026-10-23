@@ -28,10 +28,6 @@
 "temporada"
 ]
 },
-"praiseriza": {
-"rg": "S",
-"c": []
-},
 "pichulamc": {
 "rg": "B",
 "c": [
@@ -40,6 +36,10 @@
 "servidor",
 "temporada"
 ]
+},
+"praiseriza": {
+"rg": "S",
+"c": []
 },
 "panchok": {
 "rg": "S",
@@ -103,8 +103,8 @@
 "temporada"
 ]
 },
-"velatz": {
-"rg": "C",
+"vandu": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -112,8 +112,8 @@
 "temporada"
 ]
 },
-"vandu": {
-"rg": "D",
+"velatz": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -215,6 +215,15 @@
 "temporada"
 ]
 },
+"bloody": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "delux": {
 "rg": "C",
 "c": [
@@ -227,15 +236,6 @@
 "tam": {
 "rg": "B",
 "c": []
-},
-"bloody": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "xubaru": {
 "rg": "C",
@@ -259,15 +259,6 @@
 "rg": "C",
 "c": []
 },
-"lordviruzz": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "sinlimites": {
 "rg": "D",
 "c": [
@@ -288,6 +279,15 @@
 "bna": {
 "rg": "D",
 "c": []
+},
+"lordviruzz": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "chop": {
 "rg": "D",
@@ -331,15 +331,6 @@
 "rg": "C",
 "c": []
 },
-"miniboy": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "neo": {
 "rg": "C",
 "c": []
@@ -360,7 +351,7 @@
 "temporada"
 ]
 },
-"player": {
+"miniboy": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -396,11 +387,20 @@
 "temporada"
 ]
 },
+"player": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "dominick": {
 "rg": "D",
 "c": []
 },
-"geoka": {
+"lrs": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -409,7 +409,7 @@
 "temporada"
 ]
 },
-"lrs": {
+"geoka": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -428,10 +428,6 @@
 "servidor",
 "temporada"
 ]
-},
-"jj": {
-"rg": "",
-"c": []
 },
 "dynoco": {
 "rg": "C",
@@ -483,6 +479,10 @@
 "temporada"
 ]
 },
+"jj": {
+"rg": "",
+"c": []
+},
 "walker": {
 "rg": "",
 "c": [
@@ -517,6 +517,15 @@
 "benjixo": {
 "rg": "",
 "c": []
+},
+"sosa": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "eidp": {
 "rg": "",
@@ -559,15 +568,6 @@
 "temporada"
 ]
 },
-"sosa": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "tøkiø": {
 "rg": "",
 "c": [
@@ -586,6 +586,14 @@
 "temporada"
 ]
 },
+"okam": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "numberve": {
 "rg": "E",
 "c": [
@@ -596,14 +604,6 @@
 ]
 },
 "juasmio": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
-"okam": {
 "rg": "",
 "c": [
 "pais",
@@ -805,6 +805,10 @@
 "servidor"
 ]
 },
+"cj": {
+"rg": "",
+"c": []
+},
 "andy": {
 "rg": "",
 "c": [
@@ -867,6 +871,14 @@
 "servidor"
 ]
 },
+"aldre": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "richard": {
 "rg": "E",
 "c": [
@@ -892,13 +904,6 @@
 "marto": {
 "rg": "",
 "c": []
-},
-"prodigy": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "ikonoxx": {
 "rg": "",
@@ -946,16 +951,15 @@
 "rg": "",
 "c": []
 },
-"aldre": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "fleivaman": {
 "rg": "",
 "c": []
+},
+"j19": {
+"rg": "",
+"c": [
+"servidor"
+]
 },
 "elsoolar": {
 "rg": "",
@@ -986,6 +990,13 @@
 ]
 },
 "mayeutyk": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"prodigy": {
 "rg": "",
 "c": [
 "servidor",
@@ -1058,6 +1069,12 @@
 "temporada"
 ]
 },
+"denik": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "deuxs": {
 "rg": "",
 "c": [
@@ -1106,10 +1123,6 @@
 "temporada"
 ]
 },
-"cj": {
-"rg": "",
-"c": []
-},
 "road": {
 "rg": "",
 "c": []
@@ -1155,12 +1168,6 @@
 "flama": {
 "rg": "",
 "c": []
-},
-"denik": {
-"rg": "",
-"c": [
-"servidor"
-]
 },
 "scritura": {
 "rg": "",
@@ -2517,14 +2524,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-29T21:54:55Z",
-"quien": [
-"MvA"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-29T21:54:55Z",
@@ -5843,6 +5842,14 @@
 "Sami"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-23T07:01:31Z",
+"quien": [
+"Aldre"
+],
+"carta": "pais"
 }
 ]
 }
