@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-10-23T18:58:35Z",
+ "t": "2026-10-23T19:28:34Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -742,6 +742,16 @@
      "ZETRYCO",
      "replica",
      "b"
+    ],
+    [
+     "1563268164417233049",
+     "2026-10-23T19:09:34Z",
+     3,
+     "DEUXS",
+     "MAKMA",
+     "",
+     "",
+     ""
     ]
    ],
    "tabla": [
@@ -906,6 +916,10 @@
     "1562604889832423435": [
      35.0,
      34.0
+    ],
+    "1563268164417233049": [
+     31.0,
+     29.5
     ]
    },
    "flyers": [
@@ -1016,8 +1030,8 @@
      "472896251424276500",
      "Bocamio",
      29,
-     31,
-     "2026-10-21T23:41:59Z"
+     34,
+     "2026-10-23T19:26:45Z"
     ],
     [
      "1513243793116102867",
@@ -5258,7 +5272,7 @@
   "fms-world-series": {
    "n": "FMS World Series",
    "sv": "DDF",
-   "jornada": 2,
+   "jornada": 3,
    "batallas": [
     [
      "1559713123630456983",
@@ -5489,6 +5503,16 @@
      "",
      "",
      ""
+    ],
+    [
+     "1563266129772810465",
+     "2026-10-23T19:01:29Z",
+     3,
+     "MARTÍNEZ",
+     "BOOTRAX",
+     "",
+     "",
+     ""
     ]
    ],
    "tabla": [],
@@ -5614,8 +5638,8 @@
      "1548906948307451906",
      "#99 |DJ SHADOW🐉",
      57,
-     115,
-     "2026-10-23T07:21:55Z"
+     121,
+     "2026-10-23T19:02:02Z"
     ],
     [
      "1544902851975843900",

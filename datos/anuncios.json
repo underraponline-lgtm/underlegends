@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-23T18:55:02+00:00",
+ "cuando": "2026-10-23T19:24:53+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -400,6 +400,42 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "FREESTYLE FOR ALL ESPECIAL 1.800 MIEMBROS",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1563265801941680278",
+   "cuando": "2026-10-23T19:00:11",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "LEWITO",
+   "orgs": [],
+   "autor_h": "211322958af20ae2",
+   "cupos_texto": "16 / 24",
+   "inscriptos": 16,
+   "cupo_total": 24,
+   "rango": "PLATA 3",
+   "modalidad": ":  PANDILLAS",
+   "horario": "1 HORA",
+   "fecha": "",
+   "premios": "RESPETO",
+   "staff": {
+    "jurado": [
+     "LEWITO",
+     "REVO",
+     "XUBARU"
+    ],
+    "host": [
+     "LEWITO"
+    ],
+    "dj": [
+     "LEWITO"
+    ]
+   },
+   "autor": "Lewito",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "LA ISLA DE OKINAWA V.4",
