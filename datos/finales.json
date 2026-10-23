@@ -618,5 +618,34 @@
   "sin_permiso": false,
   "sv": "FFA"
  },
+ "1562968222418862144": {
+  "autor": "1345454905325781012",
+  "canal": "1470097588635176960",
+  "cuando": "2026-10-22T23:17:42.770000+00:00",
+  "evento": "19 (EDICIÓN FUTCARD VOL 4)",
+  "fecha": "22/10",
+  "llave": "1562968222418862144",
+  "pregunta": "1562999885051990067",
+  "preguntada": "2026-10-22 9:23 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "el sheke",
+     "Pichulamc"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "Uzi",
+     "makmah 🇻🇪"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "DDF"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
