@@ -3362,14 +3362,14 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 3,
+   "dg": 4,
    "fg": 1,
-   "riv": 6,
-   "venc": 3
+   "riv": 8,
+   "venc": 4
   },
   "tg_p": {
-   "paises": 4,
-   "paisesg": 3
+   "paises": 5,
+   "paisesg": 4
   }
  },
  {
@@ -10540,6 +10540,9 @@
   "tg_c": {
    "clasico": 1,
    "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
   }
  },
  {
