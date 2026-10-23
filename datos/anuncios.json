@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-23T01:54:20+00:00",
+ "cuando": "2026-10-23T02:24:26+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -5128,123 +5128,6 @@
    "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
-   "nombre": "GALACTICOS DEL FREESTYLE VOL.8",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1557067516210319391",
-   "cuando": "2026-10-06T16:30:24",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Adriagner[GDF]",
-     "id": "1316490165836972104"
-    }
-   ],
-   "autor_h": "0f624d80ff313923",
-   "cupos_texto": "8 16",
-   "inscriptos": 8,
-   "cupo_total": 16,
-   "rango": "",
-   "modalidad": "CUARTOS:",
-   "horario": "EN 5 MINS",
-   "fecha": "EN 5 MINS",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "Adriagner[GDF]"
-    ],
-    "host": [
-     "Adriagner[GDF]"
-    ],
-    "dj": [
-     "Adriagner[GDF]"
-    ]
-   },
-   "autor": "Adriagner[GDF]",
-   "staff_cuentas": {
-    "Adriagner[GDF]": "1316490165836972104"
-   },
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-23T01:51:09"
-  },
-  {
-   "nombre": "GALACTICOS DEL FREESTYLE VOL.7",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1556841665589944352",
-   "cuando": "2026-10-06T01:32:57",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Adriagner[GDF]",
-     "id": "1316490165836972104"
-    }
-   ],
-   "autor_h": "0f624d80ff313923",
-   "cupos_texto": "8 16",
-   "inscriptos": 8,
-   "cupo_total": 16,
-   "rango": "",
-   "modalidad": "CUARTOS:",
-   "horario": "EN 5 MINS",
-   "fecha": "EN 5 MINS",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "Adriagner[GDF]"
-    ],
-    "host": [
-     "Adriagner[GDF]"
-    ],
-    "dj": [
-     "Adriagner[GDF]"
-    ]
-   },
-   "autor": "Adriagner[GDF]",
-   "staff_cuentas": {
-    "Adriagner[GDF]": "1316490165836972104"
-   },
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-23T01:51:09"
-  },
-  {
-   "nombre": "MINI CUP GOD 110",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1556822349016211497",
-   "cuando": "2026-10-06T00:16:12",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "MINIBOY 🇨🇱",
-   "orgs": [
-    {
-     "n": "️: MINIBOY",
-     "id": ""
-    }
-   ],
-   "autor_h": "94e00e4c825499db",
-   "cupos_texto": "8",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "EN EVENTOS",
-   "horario": "YAYAYAYAYAYAAAAAA",
-   "fecha": "",
-   "premios": "🥇RECONOCIMIENTO🥇",
-   "staff": {},
-   "autor": "👾🫟 ⟅U⟆⟅Z⟆⟅I⟆(• ◡•)🫟👾",
-   "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-23T01:51:09"
-  },
-  {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - MAÑANA )",
    "servidor": "ACAD",
    "canal": "📢┇anuncios・",
@@ -7007,6 +6890,105 @@
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
+   "texto": "Mosquitrap 🦟🇦🇷",
+   "quien": "3decopas.",
+   "discord_id": "1494178897908990136",
+   "msg_id": "1563014651787091989",
+   "cuando": "2026-10-23T02:22:12"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "sosa🇺🇾",
+   "quien": "sosaatrz",
+   "discord_id": "1471153954254622774",
+   "msg_id": "1563012711200202846",
+   "cuando": "2026-10-23T02:14:29"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "delux🇦🇷",
+   "quien": "delux.13",
+   "discord_id": "729809358627536938",
+   "msg_id": "1563010832668037174",
+   "cuando": "2026-10-23T02:07:01"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1563010425061122059",
+   "cuando": "2026-10-23T02:05:24"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1563010198614970430",
+   "cuando": "2026-10-23T02:04:30"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Last🇨🇴",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1563009851963998372",
+   "cuando": "2026-10-23T02:03:08"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Tokio🇬🇩",
+   "quien": "paratimiringuicaro",
+   "discord_id": "1249980492951060561",
+   "msg_id": "1563009742702518407",
+   "cuando": "2026-10-23T02:02:41"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Artezzy 🇵🇪",
+   "quien": "h6itam29",
+   "discord_id": "1435531540472795240",
+   "msg_id": "1563008959244271639",
+   "cuando": "2026-10-23T01:59:35"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1563008143435501659",
+   "cuando": "2026-10-23T01:56:20"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Vilca🇵🇪👑\nSOSA mi cachorro",
+   "quien": "vilca_16",
+   "discord_id": "846870712950194196",
+   "msg_id": "1563007677058129931",
+   "cuando": "2026-10-23T01:54:29"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "SHADOW 🇨🇴",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1563007673857876080",
+   "cuando": "2026-10-23T01:54:28"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
    "texto": "GHV🇨🇷",
    "quien": "jeffrywoods20088161",
    "discord_id": "848995686098927677",
@@ -7043,7 +7025,7 @@
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
-   "texto": "Makmah 🇻🇪",
+   "texto": "Makmah 🇦🇼+ Revo 🇦🇼",
    "quien": "makmah_g",
    "discord_id": "897942226955563068",
    "msg_id": "1563005271402614905",

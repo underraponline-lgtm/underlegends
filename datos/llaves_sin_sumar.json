@@ -852,6 +852,41 @@
    ]
   ]
  },
+ "158585405": {
+  "dia": "2026-10-22",
+  "escala": "8-15",
+  "fecha": "22/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1563011223958585405"
+  ],
+  "n": 158585405,
+  "nombre": "GG SANGRERAP 4",
+  "ns": 1,
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Vilca",
+       "Shadow"
+      ],
+      "Vilca",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "Shadow",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
  "171238925": {
   "dia": "2026-10-19",
   "escala": "8-15",

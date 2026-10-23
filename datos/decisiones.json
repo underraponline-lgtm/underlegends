@@ -538,6 +538,20 @@
    "cuando": "2026-10-22 11:33 AM ET",
    "por": "el ciclo (R4)",
    "nota": "es la misma batalla que «OKAM vs Aldre» (ganó OKAM), ya cargada en el #498: contestar «Ganó» la contaría dos veces"
+  },
+  "19edicionfutcardvol4|DDF|22/10|cuartos|elsheke|pichulamc": {
+   "ganador": "el sheke",
+   "batalla": "19 (EDICIÓN FUTCARD VOL 4) · DDF · 22/10 · cuartos · el sheke 🆚 Pichulamc",
+   "cuando": "2026-10-22 10:22 PM ET",
+   "por": "el organizador, con el menú (<@1548906948307451906>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
+  },
+  "19edicionfutcardvol4|DDF|22/10|cuartos|makmah|uzi": {
+   "ganador": "(nadie siguió)",
+   "batalla": "19 (EDICIÓN FUTCARD VOL 4) · DDF · 22/10 · cuartos · Uzi 🆚 makmah 🇻🇪",
+   "cuando": "2026-10-22 10:22 PM ET",
+   "por": "el organizador, con el menú (<@1548906948307451906>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   }
  },
  "anuncios_fuera": {

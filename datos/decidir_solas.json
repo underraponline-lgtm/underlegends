@@ -1811,6 +1811,25 @@
     "DOS NOMBRES: «reenkharnazhion» → «Cronox» · cuenta 1487658663148785734"
    ],
    "escribio": {}
+  },
+  {
+   "id": "399579d6fc",
+   "tipo": "Nombre desconocido",
+   "sec": "19 (EDICIÓN FUTCARD VOL 4) · DDF · 22/10 · #500",
+   "que": "¿Quién es «el sheke»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792722616418,
+   "filas": [
+    801
+   ],
+   "variantes": [
+    "el sheke"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

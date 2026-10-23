@@ -643,7 +643,10 @@
     "ronda": "CUARTOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "el sheke",
+   "1": "(nadie siguió)"
+  },
   "sin_permiso": false,
   "sv": "DDF"
  },

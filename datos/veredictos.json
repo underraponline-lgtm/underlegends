@@ -1013,6 +1013,17 @@
    "b": "giansito",
    "ganador": "giansito",
    "votos": "2–0"
+  },
+  "1563012544619090004": {
+   "id": "1563012544619090004",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792721630006,
+   "a": "VILCA",
+   "b": "SHADOW",
+   "ganador": "SHADOW",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5298,6 +5309,57 @@
      [
       "OKAM 🇨🇷",
       "Giansito 🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1563011223958585405": {
+   "id": "1563011223958585405",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1500675902042931280",
+   "pub": 1792721315136,
+   "ed": 1792722065750,
+   "texto": "`[ CUARTOS ]`\n⌞SHADOW 🇨🇴⌝ 🆚 ⌞Vilca🇵🇪👑⌝\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞Artezzy 🇵🇪⌝\n⌞Tokio🇬🇩⌝ 🆚 ⌞Last🇨🇴⌝\n⌞Lrs 🇦🇷⌝ 🆚 ⌞delux🇦🇷⌝\n`[ SEMIFINALES ]`\n`[ FINAL ]`",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "SHADOW 🇨🇴",
+      "Vilca🇵🇪👑"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Sin límites 🇵🇪",
+      "Artezzy 🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Tokio🇬🇩",
+      "Last🇨🇴"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Lrs 🇦🇷",
+      "delux🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",
