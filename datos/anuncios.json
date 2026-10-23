@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-23T21:54:20+00:00",
+ "cuando": "2026-10-23T22:24:43+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -4742,6 +4742,32 @@
    "categoria_id": "1373343272482902127"
   },
   {
+   "nombre": "ZONA MORTAL",
+   "servidor": "DDF",
+   "canal": "『📢』Eventos",
+   "msg_id": "1563317191766712461",
+   "cuando": "2026-10-23T22:24:23",
+   "canal_id": "1470097121284980736",
+   "guild_id": "1469009547971526659",
+   "organizador": "KEIDER",
+   "orgs": [],
+   "autor_h": "20ac21df9a0694b1",
+   "cupos_texto": "8",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1 VS 1",
+   "horario": "AHORA",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "KEIDER",
+   "staff_cuentas": {},
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T01:51:09"
+  },
+  {
    "nombre": "GRISELDA RECORDS",
    "servidor": "DDF",
    "canal": "『📢』Eventos",
@@ -5255,49 +5281,6 @@
    "inscripciones_cuando": "2026-10-23T01:51:09"
   },
   {
-   "nombre": "GALACTICOS DEL FREESTYLE VOL.7",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1556841665589944352",
-   "cuando": "2026-10-06T01:32:57",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Adriagner",
-     "id": "1316490165836972104"
-    }
-   ],
-   "autor_h": "0f624d80ff313923",
-   "cupos_texto": "8 16",
-   "inscriptos": 8,
-   "cupo_total": 16,
-   "rango": "",
-   "modalidad": "CUARTOS:",
-   "horario": "EN 5 MINS",
-   "fecha": "EN 5 MINS",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "Adriagner"
-    ],
-    "host": [
-     "Adriagner"
-    ],
-    "dj": [
-     "Adriagner"
-    ]
-   },
-   "autor": "Adriagner",
-   "staff_cuentas": {
-    "Adriagner": "1316490165836972104"
-   },
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-23T01:51:09"
-  },
-  {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - MAÑANA )",
    "servidor": "ACAD",
    "canal": "📢┇anuncios・",
@@ -5321,7 +5304,7 @@
    "staff_cuentas": {},
    "categoria_id": "868218509975498805",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-23T21:53:44"
+   "inscripciones_cuando": "2026-10-23T22:03:54"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 8",
@@ -5347,7 +5330,7 @@
    "staff_cuentas": {},
    "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-23T21:53:44"
+   "inscripciones_cuando": "2026-10-23T22:03:54"
   },
   {
    "nombre": "RED BULL CREW",
@@ -5374,7 +5357,7 @@
    "de_imagen": true,
    "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-23T21:53:44"
+   "inscripciones_cuando": "2026-10-23T22:03:54"
   },
   {
    "nombre": "PRADE RAP VOL.1 | LACREW",
@@ -5412,7 +5395,7 @@
    "staff_cuentas": {},
    "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-23T21:53:44"
+   "inscripciones_cuando": "2026-10-23T22:03:54"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 5",
@@ -5438,7 +5421,7 @@
    "staff_cuentas": {},
    "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-23T21:53:44"
+   "inscripciones_cuando": "2026-10-23T22:03:54"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - HOY )",
@@ -5464,7 +5447,7 @@
    "staff_cuentas": {},
    "categoria_id": "1309234419525222477",
    "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-23T21:53:44"
+   "inscripciones_cuando": "2026-10-23T22:03:54"
   },
   {
    "nombre": "ASTRAL NO SIRVES PARA NADA CUP",
@@ -7131,6 +7114,51 @@
  ],
  "inscripciones": [
   {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Pichula mc 🇦🇷",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1563313560774250617",
+   "cuando": "2026-10-23T22:09:57"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Pichulamc 🇦🇷 + mco 🇦🇷",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1563312302885969991",
+   "cuando": "2026-10-23T22:04:57"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "VR 🇨🇴 + MCO 🇦🇷",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1563312105711476847",
+   "cuando": "2026-10-23T22:04:10"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MCO 🇦🇷 + makmah 🇻🇪",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1563310212390195231",
+   "cuando": "2026-10-23T21:56:39"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Last🇪🇸+pichula🇦🇷",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1563310021775724625",
+   "cuando": "2026-10-23T21:55:54"
+  },
+  {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
    "texto": "Dyzz🇨🇱+MetriOdin 🇪🇸",
@@ -7286,7 +7314,7 @@
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
-   "texto": "Hotaru Adeyemi 🏳️‍⚧️🇮🇹 X chop 🇭🇳",
+   "texto": "Hotaru Adeyemi 🏳️‍⚧️🇮🇹 X Tokio 🇦🇷",
    "quien": "hotaruadeyemi",
    "discord_id": "1282772759902162954",
    "msg_id": "1563303876810121367",

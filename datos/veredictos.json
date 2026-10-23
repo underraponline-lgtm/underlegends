@@ -2,50 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1560773161522298941": {
-   "id": "1560773161522298941",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792187719470,
-   "a": "MCO 🇦🇷",
-   "b": "CALIZ 🇲🇽",
-   "ganador": "MCO 🇦🇷",
-   "votos": "1–0"
-  },
-  "1560775237539201147": {
-   "id": "1560775237539201147",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792188214431,
-   "a": "PANCHOK 🇨🇱",
-   "b": "CHOP 🇸🇲",
-   "ganador": "PANCHOK 🇨🇱",
-   "votos": "1–0"
-  },
-  "1560777990902644777": {
-   "id": "1560777990902644777",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792188870884,
-   "a": "MCO 🇦🇷",
-   "b": "HOTARU 🏳️‍⚧️🇦🇷",
-   "ganador": "HOTARU 🏳️‍⚧️🇦🇷",
-   "votos": "1–0"
-  },
-  "1560779537963548765": {
-   "id": "1560779537963548765",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792189239732,
-   "a": "HOTARU 🏳️‍⚧️🇦🇷",
-   "b": "PANCHOK 🇨🇱",
-   "ganador": "PANCHOK 🇨🇱",
-   "votos": "1–0"
-  },
   "1560839811705733221": {
    "id": "1560839811705733221",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -957,6 +913,17 @@
    "a": "J19🇨🇷",
    "b": "CJ🇻🇪",
    "ganador": "CJ🇻🇪",
+   "votos": "1–0"
+  },
+  "1563314719518101586": {
+   "id": "1563314719518101586",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792793674116,
+   "a": "BLOODY 🇨🇴 + VOLK 🇲🇽",
+   "b": "DYZZ 🇨🇱 + METRIODIN 🇪🇸",
+   "ganador": "BLOODY 🇨🇴 + VOLK 🇲🇽",
    "votos": "1–0"
   }
  },
@@ -5398,8 +5365,8 @@
    "g": "1558611504046153750",
    "canal": "1560645560015519834",
    "pub": 1792789642295,
-   "ed": 1792792367071,
-   "texto": "`[ OCTAVOS ]`\n⌞MARTÍNEZ 🇺🇾⌝ 🆚 ⌞CÁLIZ🇲🇽⌝\n⌞TOKIO 🇦🇷⌝ 🆚 ⌞TEÍTO🇨🇴⌝\n⌞ZAFK 🇻🇪⌝ 🆚 ⌞FISICS🇵🇪⌝\n⌞ISMEL 🇻🇪⌝ 🆚 ⌞LAST🇺🇾⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞MATTHIAS🇻🇪⌝\n⌞HOTU 🇦🇷⌝ 🆚 ⌞RICARD🇪🇨⌝\n⌞BOOTRAX 🇵🇪⌝ 🆚 ⌞DYZZ🇨🇱⌝\n⌞ZAIK 🇬🇹⌝ 🆚 ⌞MAKMA🇻🇪⌝",
+   "ed": 1792793823070,
+   "texto": "`[ OCTAVOS ]`\n⌞MARTÍNEZ 🇺🇾⌝ 🆚 ⌞CÁLIZ🇲🇽⌝\n⌞TOKIO 🇦🇷⌝ 🆚 ⌞TEÍTO🇨🇴⌝\n⌞ZAFK 🇻🇪⌝ 🆚 ⌞FISICS🇵🇪⌝\n⌞ISMEL 🇻🇪⌝ 🆚 ⌞LAST🇺🇾⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞MATTHIAS🇻🇪⌝\n⌞HOTU 🇦🇷⌝ 🆚 ⌞RICARD🇪🇨⌝\n⌞BOOTRAX 🇵🇪⌝ 🆚 ⌞DYZZ🇨🇱⌝\n⌞ZAIK 🇬🇹⌝ 🆚 ⌞MAKMA🇻🇪⌝\n`[ CUARTOS ]`\n⌞TOKIO 🇦🇷⌝ 🆚 ⌞CÁLIZ🇲🇽⌝\n⌞FISICS 🇵🇪⌝ 🆚 ⌞ISMEL🇻🇪⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞HOTU🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5407,8 +5374,8 @@
       "MARTÍNEZ 🇺🇾",
       "CÁLIZ🇲🇽"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "CÁLIZ🇲🇽",
+     "ronda siguiente",
      []
     ],
     [
@@ -5417,8 +5384,8 @@
       "TOKIO 🇦🇷",
       "TEÍTO🇨🇴"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "TOKIO 🇦🇷",
+     "ronda siguiente",
      []
     ],
     [
@@ -5427,8 +5394,8 @@
       "ZAFK 🇻🇪",
       "FISICS🇵🇪"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "FISICS🇵🇪",
+     "ronda siguiente",
      []
     ],
     [
@@ -5437,8 +5404,8 @@
       "ISMEL 🇻🇪",
       "LAST🇺🇾"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "ISMEL 🇻🇪",
+     "ronda siguiente",
      []
     ],
     [
@@ -5447,8 +5414,8 @@
       "MINIBOY 🇨🇱",
       "MATTHIAS🇻🇪"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "MINIBOY 🇨🇱",
+     "ronda siguiente",
      []
     ],
     [
@@ -5457,8 +5424,8 @@
       "HOTU 🇦🇷",
       "RICARD🇪🇨"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "HOTU 🇦🇷",
+     "ronda siguiente",
      []
     ],
     [
@@ -5468,7 +5435,7 @@
       "DYZZ🇨🇱"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -5476,6 +5443,36 @@
      [
       "ZAIK 🇬🇹",
       "MAKMA🇻🇪"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "TOKIO 🇦🇷",
+      "CÁLIZ🇲🇽"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "FISICS 🇵🇪",
+      "ISMEL🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MINIBOY 🇨🇱",
+      "HOTU🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",
