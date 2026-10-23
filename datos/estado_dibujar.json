@@ -1,48 +1,54 @@
 {
  "v": 1,
- "cuando": "2026-10-23T18:09:39Z",
+ "cuando": "2026-10-23T18:34:35Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 577.8,
+ "dur_s": 282.1,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 14.9
+   "s": 7.2
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.0
+   "s": 6.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.5
+   "s": 243.0
   },
   {
    "n": "5",
    "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 470.1
+   "s": 18.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.6
-  },
-  {
-   "n": "6",
-   "que": "refrescar KV",
-   "ok": true,
-   "s": 59.2
+   "s": 5.8
   }
  ],
  "fallas": [
+  {
+   "paso": "5",
+   "que": "02_Competitivo/exportar_png.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "04_Pais/exportar_png.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
   {
    "paso": "5",
    "que": "03_Servidor/generar.py .SosaATR"
@@ -53,11 +59,63 @@
   },
   {
    "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Andy"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py ARDEAN"
+  },
+  {
+   "paso": "5",
+   "que": "01_Temporada/exportar_png.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "02_Competitivo/exportar_png.py OKAM"
+  },
+  {
+   "paso": "5",
+   "que": "04_Pais/exportar_png.py OKAM"
+  },
+  {
+   "paso": "5",
    "que": "03_Servidor/generar.py OKAM"
   },
   {
    "paso": "5",
    "que": "03_Servidor/generar.py OKAM"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Panchok"
   }
  ],
  "ultimo_evento": {
@@ -68,20 +126,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 305,
-   "read": 33736
+   "write": 310,
+   "read": 35151
   },
   "objeto": {
-   "leidas": 1419954,
-   "escritas": 12275,
-   "pedidos": 6046
+   "leidas": 1450023,
+   "escritas": 12469,
+   "pedidos": 6172
   },
   "worker": {
-   "pedidos": 6894,
+   "pedidos": 6842,
    "errores": 0,
-   "sub": 8686,
+   "sub": 8624,
    "p50_ms": 1.35,
-   "p99_ms": 11.06
+   "p99_ms": 10.95
   },
   "r2": {
    "objetos": 4862,
