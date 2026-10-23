@@ -2,17 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1560740436639883386": {
-   "id": "1560740436639883386",
-   "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
-   "g": "492346406976356374",
-   "canal": "863208026508623883",
-   "pub": 1792179917250,
-   "a": "BLOODY 🇨🇴",
-   "b": "AGUS 🇦🇷",
-   "ganador": "AGUS 🇦🇷",
-   "votos": "1–0"
-  },
   "1560756214709625036": {
    "id": "1560756214709625036",
    "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
