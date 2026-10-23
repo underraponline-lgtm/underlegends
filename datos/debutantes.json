@@ -112,7 +112,7 @@
    "n": 478,
    "sv": "SR",
    "vence": "2026-10-23T17:34:15+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Chuwin": {
    "avisado": "2026-10-19",
@@ -352,7 +352,7 @@
    "n": 478,
    "sv": "SR",
    "vence": "2026-10-23T17:34:15+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Konan": {
    "avisado": "2026-10-13",
