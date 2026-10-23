@@ -2,61 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1560766372739289169": {
-   "id": "1560766372739289169",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792186100898,
-   "a": "MCO 🇦🇷",
-   "b": "NATSUKI 🇦🇷",
-   "ganador": "MCO 🇦🇷",
-   "votos": "1–0"
-  },
-  "1560767564898897961": {
-   "id": "1560767564898897961",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792186385131,
-   "a": "CALIZ 🇲🇽",
-   "b": "TEITO 🇨🇴",
-   "ganador": "CALIZ 🇲🇽",
-   "votos": "1–0"
-  },
-  "1560769117869572239": {
-   "id": "1560769117869572239",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792186755388,
-   "a": "LORD 🇨🇴",
-   "b": "CHOP 🇸🇲",
-   "ganador": "CHOP 🇸🇲",
-   "votos": "1–0"
-  },
-  "1560770308187754649": {
-   "id": "1560770308187754649",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792187039182,
-   "a": "PANCHOK 🇨🇱",
-   "b": "VECA 🇧🇱",
-   "ganador": "PANCHOK 🇨🇱",
-   "votos": "1–0"
-  },
-  "1560771794992894073": {
-   "id": "1560771794992894073",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792187393664,
-   "a": "SHADOW 🇨🇴",
-   "b": "HOTARU 🏳️‍⚧️🇦🇷",
-   "ganador": "HOTARU 🏳️‍⚧️🇦🇷",
-   "votos": "1–0"
-  },
   "1560773161522298941": {
    "id": "1560773161522298941",
    "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
@@ -5453,8 +5398,8 @@
    "g": "1558611504046153750",
    "canal": "1560645560015519834",
    "pub": 1792789642295,
-   "ed": 1792790572809,
-   "texto": "`[ OCTAVOS ]`\n⌞MARTÍNEZ 🇺🇾⌝ 🆚 ⌞CÁLIZ🇲🇽⌝\n⌞TOKIO 🇦🇷⌝ 🆚 ⌞TEÍTO🇨🇴⌝\n⌞ZAFK 🇻🇪⌝ 🆚 ⌞FISICS🇵🇪⌝",
+   "ed": 1792792367071,
+   "texto": "`[ OCTAVOS ]`\n⌞MARTÍNEZ 🇺🇾⌝ 🆚 ⌞CÁLIZ🇲🇽⌝\n⌞TOKIO 🇦🇷⌝ 🆚 ⌞TEÍTO🇨🇴⌝\n⌞ZAFK 🇻🇪⌝ 🆚 ⌞FISICS🇵🇪⌝\n⌞ISMEL 🇻🇪⌝ 🆚 ⌞LAST🇺🇾⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞MATTHIAS🇻🇪⌝\n⌞HOTU 🇦🇷⌝ 🆚 ⌞RICARD🇪🇨⌝\n⌞BOOTRAX 🇵🇪⌝ 🆚 ⌞DYZZ🇨🇱⌝\n⌞ZAIK 🇬🇹⌝ 🆚 ⌞MAKMA🇻🇪⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5481,6 +5426,56 @@
      [
       "ZAFK 🇻🇪",
       "FISICS🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ISMEL 🇻🇪",
+      "LAST🇺🇾"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "MINIBOY 🇨🇱",
+      "MATTHIAS🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "HOTU 🇦🇷",
+      "RICARD🇪🇨"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "BOOTRAX 🇵🇪",
+      "DYZZ🇨🇱"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ZAIK 🇬🇹",
+      "MAKMA🇻🇪"
      ],
      null,
      "última ronda y no dice campeón",
