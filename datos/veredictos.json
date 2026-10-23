@@ -925,6 +925,28 @@
    "b": "DYZZ 🇨🇱 + METRIODIN 🇪🇸",
    "ganador": "BLOODY 🇨🇴 + VOLK 🇲🇽",
    "votos": "1–0"
+  },
+  "1563317115119734805": {
+   "id": "1563317115119734805",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792794245272,
+   "a": "CARLOS 🇪🇨 + MAKMA 🇻🇪",
+   "b": "TEO 🇨🇴 + EDD 🇮🇹",
+   "ganador": "CARLOS 🇪🇨 + MAKMA 🇻🇪",
+   "votos": "1–0"
+  },
+  "1563322411217330329": {
+   "id": "1563322411217330329",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792795507960,
+   "a": "HOTARU 🇦🇷 + TOKIO 🇦🇷",
+   "b": "MOLUSCO 🇦🇷 + MATHIAS 🇻🇪",
+   "ganador": "MOLUSCO 🇦🇷 + MATHIAS 🇻🇪",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5365,8 +5387,8 @@
    "g": "1558611504046153750",
    "canal": "1560645560015519834",
    "pub": 1792789642295,
-   "ed": 1792793823070,
-   "texto": "`[ OCTAVOS ]`\n⌞MARTÍNEZ 🇺🇾⌝ 🆚 ⌞CÁLIZ🇲🇽⌝\n⌞TOKIO 🇦🇷⌝ 🆚 ⌞TEÍTO🇨🇴⌝\n⌞ZAFK 🇻🇪⌝ 🆚 ⌞FISICS🇵🇪⌝\n⌞ISMEL 🇻🇪⌝ 🆚 ⌞LAST🇺🇾⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞MATTHIAS🇻🇪⌝\n⌞HOTU 🇦🇷⌝ 🆚 ⌞RICARD🇪🇨⌝\n⌞BOOTRAX 🇵🇪⌝ 🆚 ⌞DYZZ🇨🇱⌝\n⌞ZAIK 🇬🇹⌝ 🆚 ⌞MAKMA🇻🇪⌝\n`[ CUARTOS ]`\n⌞TOKIO 🇦🇷⌝ 🆚 ⌞CÁLIZ🇲🇽⌝\n⌞FISICS 🇵🇪⌝ 🆚 ⌞ISMEL🇻🇪⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞HOTU🇦🇷⌝",
+   "ed": 1792795751515,
+   "texto": "`[ OCTAVOS ]`\n⌞MARTÍNEZ 🇺🇾⌝ 🆚 ⌞CÁLIZ🇲🇽⌝\n⌞TOKIO 🇦🇷⌝ 🆚 ⌞TEÍTO🇨🇴⌝\n⌞ZAFK 🇻🇪⌝ 🆚 ⌞FISICS🇵🇪⌝\n⌞ISMEL 🇻🇪⌝ 🆚 ⌞LAST🇺🇾⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞MATTHIAS🇻🇪⌝\n⌞HOTU 🇦🇷⌝ 🆚 ⌞RICARD🇪🇨⌝\n⌞BOOTRAX 🇵🇪⌝ 🆚 ⌞DYZZ🇨🇱⌝\n⌞ZAIK 🇬🇹⌝ 🆚 ⌞MAKMA🇻🇪⌝\n`[ CUARTOS ]`\n⌞TOKIO 🇦🇷⌝ 🆚 ⌞CÁLIZ🇲🇽⌝\n⌞FISICS 🇵🇪⌝ 🆚 ⌞ISMEL🇻🇪⌝\n⌞MINIBOY 🇨🇱⌝ 🆚 ⌞HOTU🇦🇷⌝\n⌞BOOTRAX 🇵🇪⌝ 🆚 ⌞MAKMA🇻🇪⌝\n`[ SEMIFINALES ]`\n⌞FISICS 🇵🇪⌝ 🆚 ⌞TOKIO🇦🇷⌝\n⌞MAKMA 🇻🇪⌝ 🆚 ⌞HOTU🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5434,8 +5456,8 @@
       "BOOTRAX 🇵🇪",
       "DYZZ🇨🇱"
      ],
-     null,
-     "no aparece nadie después",
+     "BOOTRAX 🇵🇪",
+     "ronda siguiente",
      []
     ],
     [
@@ -5444,8 +5466,8 @@
       "ZAIK 🇬🇹",
       "MAKMA🇻🇪"
      ],
-     null,
-     "no aparece nadie después",
+     "MAKMA🇻🇪",
+     "ronda siguiente",
      []
     ],
     [
@@ -5454,8 +5476,8 @@
       "TOKIO 🇦🇷",
       "CÁLIZ🇲🇽"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "TOKIO 🇦🇷",
+     "ronda siguiente",
      []
     ],
     [
@@ -5464,8 +5486,8 @@
       "FISICS 🇵🇪",
       "ISMEL🇻🇪"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "FISICS 🇵🇪",
+     "ronda siguiente",
      []
     ],
     [
@@ -5473,6 +5495,87 @@
      [
       "MINIBOY 🇨🇱",
       "HOTU🇦🇷"
+     ],
+     "HOTU🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "BOOTRAX 🇵🇪",
+      "MAKMA🇻🇪"
+     ],
+     "MAKMA🇻🇪",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "FISICS 🇵🇪",
+      "TOKIO🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "MAKMA 🇻🇪",
+      "HOTU🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1563320443950071973": {
+   "id": "1563320443950071973",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1792795038927,
+   "ed": 1792795742536,
+   "texto": "`[ CUARTOS ]`\n⌞ECLIPSE⌝ 🆚 ⌞DOMINICK⌝\n⌞MINIBOY⌝ 🆚 ⌞SIN LIMITES⌝\n⌞MAKMAH⌝ 🆚 ⌞PIPE⌝\n⌞CARLOS⌝ 🆚 ⌞LIZENIN⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "ECLIPSE",
+      "DOMINICK"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MINIBOY",
+      "SIN LIMITES"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MAKMAH",
+      "PIPE"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "CARLOS",
+      "LIZENIN"
      ],
      null,
      "última ronda y no dice campeón",
