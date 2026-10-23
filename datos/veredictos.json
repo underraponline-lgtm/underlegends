@@ -1167,6 +1167,17 @@
    "b": "MR.KUDE 🇦🇷",
    "ganador": "CALÍZ🇲🇽",
    "votos": "1–0"
+  },
+  "1563040321074372640": {
+   "id": "1563040321074372640",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560448027490001067",
+   "pub": 1792728252429,
+   "a": "HEDORAH 🇨🇱",
+   "b": "CALÍZ🇲🇽",
+   "ganador": "HEDORAH 🇨🇱",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5536,8 +5547,8 @@
    "g": "1558611504046153750",
    "canal": "1560448027490001067",
    "pub": 1792724749934,
-   "ed": 1792727152379,
-   "texto": "`[ CUARTOS ]`\n⌞HEDORAH 🇨🇱⌝ 🆚 ⌞CALÍZ🇲🇽⌝\n⌞LRS 🇦🇷⌝ 🆚 ⌞SHADOW 🇨🇴⌝\n⌞CALÍZ 🇲🇽⌝ 🆚 ⌞SHADOW 🇨🇴⌝\n`[ SEMIFINALES ]`\n⌞HEDORAH 🇨🇱⌝ 🆚 ⌞LRS 🇦🇷⌝\n⌞CALÍZ 🇲🇽⌝ 🆚 ⌞MR.KUDE 🇦🇷⌝\n`[ FINAL ]`",
+   "ed": 1792728335907,
+   "texto": "`[ CUARTOS ]`\n⌞HEDORAH 🇨🇱⌝ 🆚 ⌞CALÍZ🇲🇽⌝\n⌞LRS 🇦🇷⌝ 🆚 ⌞SHADOW 🇨🇴⌝\n⌞CALÍZ 🇲🇽⌝ 🆚 ⌞SHADOW 🇨🇴⌝\n`[ SEMIFINALES ]`\n⌞HEDORAH 🇨🇱⌝ 🆚 ⌞LRS 🇦🇷⌝\n⌞CALÍZ 🇲🇽⌝ 🆚 ⌞MR.KUDE 🇦🇷⌝\n`[ FINAL ]`\n⌞HEDORAH 🇨🇱⌝ 🆚 ⌞CÁLIZ🇲🇽⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5586,6 +5597,16 @@
       "MR.KUDE 🇦🇷"
      ],
      "CALÍZ 🇲🇽",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "HEDORAH 🇨🇱",
+      "CÁLIZ🇲🇽"
+     ],
+     "HEDORAH 🇨🇱",
      "veredicto",
      []
     ]
