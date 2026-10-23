@@ -2,39 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1560722191497306314": {
-   "id": "1560722191497306314",
-   "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
-   "g": "492346406976356374",
-   "canal": "863208026508623883",
-   "pub": 1792175567269,
-   "a": "ROAD 🇪🇸",
-   "b": "PROSU 🇨🇴",
-   "ganador": "ROAD 🇪🇸",
-   "votos": "1–0"
-  },
-  "1560723263733239839": {
-   "id": "1560723263733239839",
-   "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
-   "g": "492346406976356374",
-   "canal": "863208026508623883",
-   "pub": 1792175822910,
-   "a": "PANCHOK 🇨🇱",
-   "b": "BLOODY 🇨🇴",
-   "ganador": "BLOODY 🇨🇴",
-   "votos": "1–0"
-  },
-  "1560726011446820876": {
-   "id": "1560726011446820876",
-   "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
-   "g": "492346406976356374",
-   "canal": "863208026508623883",
-   "pub": 1792176478016,
-   "a": "NATSUKI 🇦🇷",
-   "b": "COLESITO 🇨🇴",
-   "ganador": "NATSUKI 🇦🇷",
-   "votos": "1–0"
-  },
   "1560727459505111062": {
    "id": "1560727459505111062",
    "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
