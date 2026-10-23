@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-23T15:54:47+00:00",
+ "cuando": "2026-10-23T16:24:34+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -3134,7 +3134,7 @@
    "organizador": "",
    "orgs": [
     {
-     "n": "DSM-5 (MTZ)",
+     "n": "MTZ",
      "id": "794733304729436212"
     }
    ],
@@ -3149,18 +3149,18 @@
    "premios": "",
    "staff": {
     "jurado": [
-     "DSM-5 (MTZ)"
+     "MTZ"
     ],
     "host": [
-     "DSM-5 (MTZ)"
+     "MTZ"
     ],
     "dj": [
      "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧"
     ]
    },
-   "autor": "DSM-5 (MTZ)",
+   "autor": "MTZ",
    "staff_cuentas": {
-    "DSM-5 (MTZ)": "794733304729436212",
+    "MTZ": "794733304729436212",
     "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧": "1344825963669749804"
    },
    "categoria_id": "1511963280128868504"
