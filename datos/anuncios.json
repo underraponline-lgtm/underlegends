@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-24T18:58:58+00:00",
+ "cuando": "2026-10-24T19:10:59+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -6977,6 +6977,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "DarkoMC 🇲🇽",
+   "quien": "alamosza_95845",
+   "discord_id": "1375578701302857738",
+   "msg_id": "1563630256462626817",
+   "cuando": "2026-10-24T19:08:23"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
