@@ -1,45 +1,45 @@
 {
  "v": 1,
- "cuando": "2026-10-24T00:01:44Z",
+ "cuando": "2026-10-24T00:28:36Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1499.4,
+ "dur_s": 1583.2,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.7
+   "s": 6.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.6
+   "s": 8.0
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 61.8
+   "s": 22.3
   },
   {
    "n": "5",
    "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": false,
-   "s": 1349.7
+   "s": 1476.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 9.7
+   "s": 11.4
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 62.8
+   "s": 56.8
   }
  ],
  "fallas": [
@@ -85,22 +85,26 @@
   }
  ],
  "ultimo_evento": {
-  "n": "502",
-  "nombre": "ZONA MORTAL",
-  "sv": "DDF",
+  "n": "503",
+  "nombre": "FREESTYLE FOR ALL ESPECIAL 1800",
+  "sv": "FFA",
   "dia": "2026-10-23"
  },
  "cuotas": {
+  "kv": {
+   "write": 31,
+   "read": 1712
+  },
   "objeto": {
-   "leidas": 23009,
-   "escritas": 862,
-   "pedidos": 9
+   "leidas": 139057,
+   "escritas": 2342,
+   "pedidos": 346
   },
   "worker": {
-   "pedidos": 7073,
+   "pedidos": 7177,
    "errores": 0,
-   "sub": 8929,
-   "p50_ms": 1.37,
+   "sub": 9039,
+   "p50_ms": 1.35,
    "p99_ms": 11.08
   },
   "r2": {
