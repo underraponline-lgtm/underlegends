@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "4f7c292734a68e20",
+  "firma": "8aca88cd6bba453c",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -13064,7 +13064,7 @@
    "Zignos": 22
   },
   "fecha": "15/10",
-  "firma": "cefff86e84483542",
+  "firma": "c48884a153728b57",
   "msg": "1560502933315915857",
   "nombre": "LA REDENCIÓN",
   "num": 476,
@@ -13346,7 +13346,7 @@
    "Xubaru": 7
   },
   "fecha": "16/10",
-  "firma": "ad053db6872cc796",
+  "firma": "70d42c7eec0ef51e",
   "msg": "1560725555203014688",
   "nombre": "__ DESGRACIAS EN TOKYO VOL27 __",
   "num": 477,
@@ -15100,7 +15100,7 @@
    "Xubaru": 8
   },
   "fecha": "18/10",
-  "firma": "9f5c98f4449199dd",
+  "firma": "291ccd6e9f8bfcf4",
   "msg": "1561498207572205609",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL7 __",
   "num": 484,
@@ -18438,7 +18438,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "3110c916a33e3826",
+  "firma": "92dcb203182e06e6",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -20309,6 +20309,405 @@
     "familiafortunaexito 🇫🇷",
     "Octavos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "504": {
+  "antes": {
+   "BNA": [
+    204,
+    33,
+    true
+   ],
+   "Bloody": [
+    26,
+    29,
+    false
+   ],
+   "Calíz": [
+    53,
+    69,
+    false
+   ],
+   "Carlos": [
+    298,
+    229,
+    true
+   ],
+   "Dyzz": [
+    38,
+    50,
+    false
+   ],
+   "Eclipsito": [
+    211,
+    49,
+    true
+   ],
+   "Erian": [
+    6,
+    7,
+    false
+   ],
+   "LAST": [
+    134,
+    237,
+    false
+   ],
+   "Leonart": [
+    78,
+    100,
+    false
+   ],
+   "Lizeninn": [
+    325,
+    275,
+    true
+   ],
+   "Lord Viruzz": [
+    31,
+    37,
+    false
+   ],
+   "MCO": [
+    15,
+    16,
+    false
+   ],
+   "Makmah": [
+    2,
+    2,
+    false
+   ],
+   "Mathhias": [
+    93,
+    130,
+    false
+   ],
+   "MetriOdin": [
+    168,
+    339,
+    false
+   ],
+   "Molusco": [
+    23,
+    26,
+    false
+   ],
+   "Panchok": [
+    5,
+    6,
+    false
+   ],
+   "PichulaMc": [
+    4,
+    5,
+    false
+   ],
+   "Sin Limites": [
+    29,
+    35,
+    false
+   ],
+   "Teo": [
+    66,
+    86,
+    false
+   ],
+   "TøKīØ🦠🧠": [
+    59,
+    78,
+    false
+   ],
+   "VR": [
+    114,
+    183,
+    false
+   ],
+   "Vandu": [
+    14,
+    15,
+    false
+   ],
+   "Velatz": [
+    13,
+    14,
+    false
+   ],
+   "Volk": [
+    148,
+    271,
+    false
+   ]
+  },
+  "canal": "925213294703300649",
+  "duelos": [
+   [
+    "LAST, PichulaMc",
+    "Calíz, Lizeninn",
+    "LAST, PichulaMc"
+   ],
+   [
+    "Bloody, Volk",
+    "Dyzz, MetriOdin",
+    "Bloody, Volk"
+   ],
+   [
+    "DANCOLL🇻🇪, Sin Limites",
+    "BELIKKO 🇻🇪, Luck",
+    "DANCOLL🇻🇪, Sin Limites"
+   ],
+   [
+    "Carlos, MATKMA 🇻🇪",
+    "Teo, Edd🇮🇹",
+    "Carlos, MATKMA 🇻🇪"
+   ],
+   [
+    "Erian, Vandu",
+    "Eclipsito, Panchok",
+    "Erian, Vandu"
+   ],
+   [
+    "BNA, Velatz",
+    "VR, MCO",
+    "BNA, Velatz"
+   ],
+   [
+    "Calíz, Lizeninn",
+    "Leonart, Lord Viruzz",
+    "Calíz, Lizeninn"
+   ],
+   [
+    "Mathhias, LUIS 🇦🇷",
+    "HOTARU 🇦🇷, TøKīØ🦠🧠",
+    "Mathhias, LUIS 🇦🇷"
+   ],
+   [
+    "LAST, PichulaMc",
+    "Bloody, Volk",
+    "LAST, PichulaMc"
+   ],
+   [
+    "Carlos, Makmah",
+    "DANCOLL🇻🇪, Sin Limites",
+    "Carlos, Makmah"
+   ],
+   [
+    "BNA, Velatz",
+    "Erian, Vandu",
+    "BNA, Velatz"
+   ],
+   [
+    "Mathhias, Molusco",
+    "Calíz, Lizeninn",
+    "Mathhias, Molusco"
+   ],
+   [
+    "Carlos, Makmah",
+    "LAST, PichulaMc",
+    "Carlos, Makmah"
+   ],
+   [
+    "Mathhias, Molusco",
+    "BNA, Velatz",
+    "Mathhias, Molusco"
+   ],
+   [
+    "Mathhias, Molusco",
+    "Carlos, Makmah",
+    "Mathhias, Molusco"
+   ]
+  ],
+  "ev_antes": {
+   "BNA": 12,
+   "Bloody": 21,
+   "Calíz": 10,
+   "Carlos": 4,
+   "Dyzz": 13,
+   "Eclipsito": 11,
+   "Erian": 44,
+   "LAST": 6,
+   "Leonart": 9,
+   "Lizeninn": 2,
+   "Lord Viruzz": 17,
+   "MCO": 22,
+   "Makmah": 64,
+   "Mathhias": 5,
+   "MetriOdin": 2,
+   "Molusco": 19,
+   "Panchok": 22,
+   "PichulaMc": 42,
+   "Sin Limites": 25,
+   "Teo": 13,
+   "TøKīØ🦠🧠": 4,
+   "VR": 3,
+   "Vandu": 33,
+   "Velatz": 39,
+   "Volk": 3
+  },
+  "fecha": "23/10",
+  "firma": "5338aa5ba470c659",
+  "msg": "1563339799069331628",
+  "nombre": "FATS BATTLES PALOOZA FECHA 8",
+  "num": 504,
+  "participantes": 34,
+  "sello": {
+   "Mathhias": "838aea9f7301:84b47cf43136",
+   "Molusco": "3102e57670e6:e8f4f15f7e3a"
+  },
+  "sv": "ACAD",
+  "t": "2026-10-24T00:23:38Z",
+  "tabla": [
+   [
+    "Mathhias",
+    "Campeón",
+    5000
+   ],
+   [
+    "Molusco",
+    "Campeón",
+    5000
+   ],
+   [
+    "Carlos",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "LAST",
+    "Semifinal",
+    2625
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    2625
+   ],
+   [
+    "BNA",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Velatz",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Bloody",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Volk",
+    "Cuartos",
+    1250
+   ],
+   [
+    "DANCOLL🇻🇪",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Lizeninn",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    625
+   ],
+   [
+    "MetriOdin",
+    "Octavos",
+    625
+   ],
+   [
+    "BELIKKO 🇻🇪",
+    "Octavos",
+    625
+   ],
+   [
+    "Luck",
+    "Octavos",
+    625
+   ],
+   [
+    "Teo",
+    "Octavos",
+    625
+   ],
+   [
+    "Edd🇮🇹",
+    "Octavos",
+    625
+   ],
+   [
+    "Eclipsito",
+    "Octavos",
+    625
+   ],
+   [
+    "Panchok",
+    "Octavos",
+    625
+   ],
+   [
+    "VR",
+    "Octavos",
+    625
+   ],
+   [
+    "MCO",
+    "Octavos",
+    625
+   ],
+   [
+    "Leonart",
+    "Octavos",
+    625
+   ],
+   [
+    "Lord Viruzz",
+    "Octavos",
+    625
+   ],
+   [
+    "HOTARU 🇦🇷",
+    "Octavos",
+    625
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Octavos",
+    625
    ]
   ],
   "v": 2

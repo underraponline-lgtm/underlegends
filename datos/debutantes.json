@@ -1,7 +1,7 @@
 {
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
-  "ACAD": "2026-10-19",
+  "ACAD": "2026-10-23",
   "DDF": "2026-10-23",
   "FFA": "2026-10-23",
   "FRZ": "2026-10-15",
@@ -60,6 +60,19 @@
    "n": 484,
    "sv": "FFA",
    "vence": "2026-10-25T20:57:26+00:00",
+   "vencido": false
+  },
+  "BELIKKO": {
+   "avisado": "2026-10-23",
+   "chat": "2026-10-23",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-23T22:07:27+00:00",
+   "did": "",
+   "evento": "FATS BATTLES PALOOZA FECHA 8",
+   "n": 504,
+   "sv": "ACAD",
+   "vence": "2026-10-30T22:07:27+00:00",
    "vencido": false
   },
   "BLUE BURKA": {
@@ -128,6 +141,7 @@
    "vencido": false
   },
   "DARK ANGEL": {
+   "avisado": "2026-10-23",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-23T20:26:11+00:00",
@@ -204,6 +218,19 @@
    "vence": "2026-10-29T00:30:05+00:00",
    "vencido": false
   },
+  "Edd": {
+   "avisado": "2026-10-23",
+   "chat": "2026-10-23",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-23T22:07:27+00:00",
+   "did": "",
+   "evento": "FATS BATTLES PALOOZA FECHA 8",
+   "n": 504,
+   "sv": "ACAD",
+   "vence": "2026-10-30T22:07:27+00:00",
+   "vencido": false
+  },
   "Edd y Eddy": {
    "avisado": "2026-10-21",
    "chat": "2026-10-22",
@@ -242,6 +269,19 @@
    "sv": "FFA",
    "vence": "2026-10-20T02:35:27+00:00",
    "vencido": true
+  },
+  "HOTARU": {
+   "avisado": "2026-10-23",
+   "chat": "2026-10-23",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-23T22:07:27+00:00",
+   "did": "",
+   "evento": "FATS BATTLES PALOOZA FECHA 8",
+   "n": 504,
+   "sv": "ACAD",
+   "vence": "2026-10-30T22:07:27+00:00",
+   "vencido": false
   },
   "Hotaru Adeyemi 🏳️‍⚧️": {
    "avisado": "2026-10-16",
@@ -402,6 +442,19 @@
    "n": 489,
    "sv": "FFA",
    "vence": "2026-10-26T16:52:32+00:00",
+   "vencido": false
+  },
+  "Luck": {
+   "avisado": "2026-10-23",
+   "chat": "2026-10-23",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-23T22:07:27+00:00",
+   "did": "1485072095900860466",
+   "evento": "FATS BATTLES PALOOZA FECHA 8",
+   "n": 504,
+   "sv": "ACAD",
+   "vence": "2026-10-30T22:07:27+00:00",
    "vencido": false
   },
   "Luz": {

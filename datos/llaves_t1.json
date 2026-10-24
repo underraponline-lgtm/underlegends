@@ -30595,5 +30595,311 @@
     1250
    ]
   ]
+ },
+ "504": {
+  "dia": "2026-10-23",
+  "escala": "16+",
+  "fecha": "23/10",
+  "links": [
+   "https://discord.com/channels/765045834647339038/1309234583023124531/1563312932111126631"
+  ],
+  "n": 504,
+  "nombre": "FATS BATTLES PALOOZA FECHA 8",
+  "participantes": 34,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "LAST, PichulaMc",
+       "Calíz, Lizeninn"
+      ],
+      "LAST, PichulaMc",
+      "Revivido: Calíz 🇲🇽; Revivido: Lízeninn 🇦🇷"
+     ],
+     [
+      [
+       "Bloody, Volk",
+       "Dyzz, MetriOdin"
+      ],
+      "Bloody, Volk",
+      ""
+     ],
+     [
+      [
+       "DANCOLL🇻🇪, Sin Limites",
+       "BELIKKO 🇻🇪, Luck"
+      ],
+      "DANCOLL🇻🇪, Sin Limites",
+      ""
+     ],
+     [
+      [
+       "Carlos, MATKMA 🇻🇪",
+       "Teo, Edd🇮🇹"
+      ],
+      "Carlos, MATKMA 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "Erian, Vandu",
+       "Eclipsito, Panchok"
+      ],
+      "Erian, Vandu",
+      ""
+     ],
+     [
+      [
+       "BNA, Velatz",
+       "VR, MCO"
+      ],
+      "BNA, Velatz",
+      ""
+     ],
+     [
+      [
+       "Calíz, Lizeninn",
+       "Leonart, Lord Viruzz"
+      ],
+      "Calíz, Lizeninn",
+      ""
+     ],
+     [
+      [
+       "Mathhias, LUIS 🇦🇷",
+       "HOTARU 🇦🇷, TøKīØ🦠🧠"
+      ],
+      "Mathhias, LUIS 🇦🇷",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "LAST, PichulaMc",
+       "Bloody, Volk"
+      ],
+      "LAST, PichulaMc",
+      ""
+     ],
+     [
+      [
+       "Carlos, Makmah",
+       "DANCOLL🇻🇪, Sin Limites"
+      ],
+      "Carlos, Makmah",
+      ""
+     ],
+     [
+      [
+       "BNA, Velatz",
+       "Erian, Vandu"
+      ],
+      "BNA, Velatz",
+      ""
+     ],
+     [
+      [
+       "Mathhias, Molusco",
+       "Calíz, Lizeninn"
+      ],
+      "Mathhias, Molusco",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlos, Makmah",
+       "LAST, PichulaMc"
+      ],
+      "Carlos, Makmah",
+      ""
+     ],
+     [
+      [
+       "Mathhias, Molusco",
+       "BNA, Velatz"
+      ],
+      "Mathhias, Molusco",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mathhias, Molusco",
+       "Carlos, Makmah"
+      ],
+      "Mathhias, Molusco",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "ACAD",
+  "tabla": [
+   [
+    "Mathhias",
+    "Campeón",
+    5000
+   ],
+   [
+    "Molusco",
+    "Campeón",
+    5000
+   ],
+   [
+    "Carlos",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "BNA",
+    "Semifinal",
+    2625
+   ],
+   [
+    "LAST",
+    "Semifinal",
+    2625
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Velatz",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Bloody",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "DANCOLL🇻🇪",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Lizeninn",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Volk",
+    "Cuartos",
+    1250
+   ],
+   [
+    "BELIKKO 🇻🇪",
+    "Octavos",
+    625
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    625
+   ],
+   [
+    "Eclipsito",
+    "Octavos",
+    625
+   ],
+   [
+    "Edd🇮🇹",
+    "Octavos",
+    625
+   ],
+   [
+    "HOTARU 🇦🇷",
+    "Octavos",
+    625
+   ],
+   [
+    "Leonart",
+    "Octavos",
+    625
+   ],
+   [
+    "Lord Viruzz",
+    "Octavos",
+    625
+   ],
+   [
+    "Luck",
+    "Octavos",
+    625
+   ],
+   [
+    "MCO",
+    "Octavos",
+    625
+   ],
+   [
+    "MetriOdin",
+    "Octavos",
+    625
+   ],
+   [
+    "Panchok",
+    "Octavos",
+    625
+   ],
+   [
+    "Teo",
+    "Octavos",
+    625
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Octavos",
+    625
+   ],
+   [
+    "VR",
+    "Octavos",
+    625
+   ]
+  ]
  }
 }

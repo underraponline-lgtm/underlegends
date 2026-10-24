@@ -1956,6 +1956,154 @@
      306
     ]
    }
+  },
+  {
+   "id": "0e9304c107",
+   "tipo": "Nombre desconocido",
+   "sec": "FATS BATTLES PALOOZA FECHA 8 · ACAD · 23/10 · #504",
+   "que": "¿Quién es «Edd🇮🇹»?",
+   "r": "Es Dominick",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Dominick: estaba en la llamada del evento con ese nombre",
+   "t": 1792802013844,
+   "filas": [
+    811
+   ],
+   "variantes": [
+    "Edd🇮🇹"
+   ],
+   "escribio": {
+    "alias": [
+     "Edd",
+     "Dominick"
+    ],
+    "filas": [
+     307
+    ]
+   }
+  },
+  {
+   "id": "4040f1b25c",
+   "tipo": "Nombre desconocido",
+   "sec": "FATS BATTLES PALOOZA FECHA 8 · ACAD · 23/10 · #504",
+   "que": "¿Quién es «HOTARU 🇦🇷»?",
+   "r": "Es Hotaru Adeyemi 🏳️‍⚧️",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Hotaru Adeyemi 🏳️‍⚧️: estaba en la llamada del evento con un nombre parecido",
+   "t": 1792802013844,
+   "filas": [
+    812
+   ],
+   "variantes": [
+    "HOTARU 🇦🇷"
+   ],
+   "escribio": {
+    "alias": [
+     "HOTARU",
+     "Hotaru Adeyemi 🏳️‍⚧️"
+    ],
+    "filas": [
+     308
+    ]
+   }
+  },
+  {
+   "id": "c4073c3e5a",
+   "tipo": "Nombre desconocido",
+   "sec": "FATS BATTLES PALOOZA FECHA 8 · ACAD · 23/10 · #504",
+   "que": "¿Quién es «MATKMA 🇻🇪»?",
+   "r": "Es Makmah",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Makmah: estaba en la llamada del evento con un nombre parecido",
+   "t": 1792802013844,
+   "filas": [
+    814
+   ],
+   "variantes": [
+    "MATKMA 🇻🇪"
+   ],
+   "escribio": {
+    "alias": [
+     "MATKMA",
+     "Makmah"
+    ],
+    "filas": [
+     309
+    ]
+   }
+  },
+  {
+   "id": "8937afafc4",
+   "tipo": "Nombre desconocido",
+   "sec": "FATS BATTLES PALOOZA FECHA 8 · ACAD · 23/10 · #504",
+   "que": "¿Quién es «BELIKKO 🇻🇪»?",
+   "r": "Es alguien nuevo: alta con su cuenta 989702187523407903",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (989702187523407903)",
+   "t": 1792802013844,
+   "filas": [
+    809
+   ],
+   "variantes": [
+    "BELIKKO 🇻🇪"
+   ],
+   "escribio": {
+    "alta": [
+     "BELIKKO",
+     "989702187523407903"
+    ]
+   }
+  },
+  {
+   "id": "1d5b94e6b5",
+   "tipo": "Nombre desconocido",
+   "sec": "FATS BATTLES PALOOZA FECHA 8 · ACAD · 23/10 · #504",
+   "que": "¿Quién es «DANCOLL🇻🇪»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1316585510625607742",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1316585510625607742)",
+   "t": 1792802013844,
+   "filas": [
+    810
+   ],
+   "variantes": [
+    "DANCOLL🇻🇪"
+   ],
+   "escribio": {
+    "alta": [
+     "DANCOLL",
+     "1316585510625607742"
+    ]
+   }
+  },
+  {
+   "id": "2a214e97d6",
+   "tipo": "Nombre desconocido",
+   "sec": "FATS BATTLES PALOOZA FECHA 8 · ACAD · 23/10 · #504",
+   "que": "¿Quién es «LUIS 🇦🇷»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792802013844,
+   "filas": [
+    813
+   ],
+   "variantes": [
+    "LUIS 🇦🇷"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []
