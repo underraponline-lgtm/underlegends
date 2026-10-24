@@ -102,15 +102,6 @@
 "temporada"
 ]
 },
-"velatz": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "six": {
 "rg": "B",
 "c": [
@@ -122,6 +113,15 @@
 },
 "vandu": {
 "rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"velatz": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -176,8 +176,8 @@
 "rg": "A",
 "c": []
 },
-"guess": {
-"rg": "C",
+"nc": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -185,8 +185,8 @@
 "temporada"
 ]
 },
-"nc": {
-"rg": "D",
+"guess": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -233,6 +233,10 @@
 "temporada"
 ]
 },
+"tam": {
+"rg": "B",
+"c": []
+},
 "cronox": {
 "rg": "D",
 "c": [
@@ -254,10 +258,6 @@
 "servidor",
 "temporada"
 ]
-},
-"tam": {
-"rg": "B",
-"c": []
 },
 "sinlimites": {
 "rg": "D",
@@ -307,20 +307,21 @@
 "temporada"
 ]
 },
-"andres": {
-"rg": "B",
-"c": []
+"nxuz": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "chop": {
 "rg": "D",
 "c": []
 },
-"onzass": {
-"rg": "E",
-"c": []
-},
-"criszj": {
-"rg": "C",
+"andres": {
+"rg": "B",
 "c": []
 },
 "polosport": {
@@ -332,18 +333,21 @@
 "temporada"
 ]
 },
+"criszj": {
+"rg": "C",
+"c": []
+},
 "neo": {
 "rg": "C",
 "c": []
 },
-"nxuz": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
+"onzass": {
+"rg": "E",
+"c": []
+},
+"dominick": {
+"rg": "D",
+"c": []
 },
 "tenor": {
 "rg": "D",
@@ -353,10 +357,6 @@
 "servidor",
 "temporada"
 ]
-},
-"dominick": {
-"rg": "D",
-"c": []
 },
 "jupiter": {
 "rg": "D",
@@ -437,14 +437,6 @@
 "temporada"
 ]
 },
-"cinexfilo": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "geoka": {
 "rg": "E",
 "c": [
@@ -468,6 +460,14 @@
 "jj": {
 "rg": "",
 "c": []
+},
+"cinexfilo": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "1200": {
 "rg": "E",
@@ -554,10 +554,6 @@
 "rg": "",
 "c": []
 },
-"alexi": {
-"rg": "",
-"c": []
-},
 "gocho": {
 "rg": "E",
 "c": [
@@ -599,20 +595,23 @@
 "temporada"
 ]
 },
+"alexi": {
+"rg": "",
+"c": []
+},
 "19": {
 "rg": "",
 "c": []
 },
-"numberve": {
+"soneto": {
 "rg": "E",
 "c": [
 "competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
 },
-"soneto": {
+"rodas": {
 "rg": "E",
 "c": [
 "competitivo",
@@ -629,17 +628,18 @@
 "temporada"
 ]
 },
-"rodas": {
-"rg": "E",
+"rt": {
+"rg": "",
 "c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
 },
-"rt": {
-"rg": "",
+"numberve": {
+"rg": "E",
 "c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -669,13 +669,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"mathhias": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -711,6 +704,13 @@
 ]
 },
 "kochi": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"mathhias": {
 "rg": "",
 "c": [
 "servidor",
@@ -848,10 +848,6 @@
 "temporada"
 ]
 },
-"doc": {
-"rg": "",
-"c": []
-},
 "bastyretro": {
 "rg": "",
 "c": [
@@ -881,6 +877,10 @@
 "rg": "",
 "c": []
 },
+"noa": {
+"rg": "",
+"c": []
+},
 "blitz": {
 "rg": "",
 "c": []
@@ -891,10 +891,6 @@
 "competitivo",
 "servidor"
 ]
-},
-"noa": {
-"rg": "",
-"c": []
 },
 "mosquitrap": {
 "rg": "",
@@ -907,6 +903,10 @@
 "servidor",
 "temporada"
 ]
+},
+"doc": {
+"rg": "",
+"c": []
 },
 "ikonoxx": {
 "rg": "",
@@ -974,6 +974,13 @@
 "temporada"
 ]
 },
+"marcos": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "marto": {
 "rg": "",
 "c": []
@@ -1018,13 +1025,6 @@
 "luzzano": {
 "rg": "",
 "c": []
-},
-"joshema": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "vr": {
 "rg": "",
@@ -1094,13 +1094,6 @@
 "temporada"
 ]
 },
-"marcos": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "cajita": {
 "rg": "",
 "c": []
@@ -1120,6 +1113,13 @@
 "liam": {
 "rg": "",
 "c": []
+},
+"joshema": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "emilyfamily": {
 "rg": "",
@@ -1215,10 +1215,6 @@
 "servidor"
 ]
 },
-"mhs": {
-"rg": "",
-"c": []
-},
 "jobaking": {
 "rg": "",
 "c": [
@@ -1227,12 +1223,20 @@
 "temporada"
 ]
 },
+"mhs": {
+"rg": "",
+"c": []
+},
 "kourier": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
+},
+"fandabel": {
+"rg": "",
+"c": []
 },
 "gus": {
 "rg": "",
@@ -1250,10 +1254,6 @@
 "c": []
 },
 "eddyeddy": {
-"rg": "",
-"c": []
-},
-"fandabel": {
 "rg": "",
 "c": []
 },

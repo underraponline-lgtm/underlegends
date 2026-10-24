@@ -8278,7 +8278,7 @@
   "escala": "8-15",
   "fecha": "03/10",
   "links": [
-   "https://discord.com/channels/1467763447117778989/1540224373309444257/1556080092994609204"
+   "https://discord.com/channels/1467763447117778989/1511968721491722413/1556069922470367236"
   ],
   "n": 389,
   "nombre": "RED BULL NACIONAL ALBICELESTE",
@@ -8313,7 +8313,7 @@
      [
       [
        "Catarsis",
-       "Velatz"
+       "Polosport"
       ],
       "Catarsis",
       ""
@@ -8389,7 +8389,7 @@
     2000
    ],
    [
-    "Velatz",
+    "Polosport",
     "Cuartos",
     2000
    ],
@@ -31455,10 +31455,10 @@
      [
       [
        "Aby",
-       "MCO 🇦🇷"
+       "MCO"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Aby",
+      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -31531,9 +31531,141 @@
     2000
    ],
    [
+    "MCO",
+    "Cuartos",
+    2000
+   ],
+   [
     "Marcos",
     "Cuartos",
     2000
+   ]
+  ]
+ },
+ "510": {
+  "dia": "2026-10-24",
+  "escala": "8-15",
+  "fecha": "24/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1563643939146174495"
+  ],
+  "n": 510,
+  "nombre": "GRISELDA RECORDS VOL. 4",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "Marcos"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "Tam",
+       "Makmah"
+      ],
+      "Tam",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "Elbesaabuelas"
+      ],
+      "CrisZJ",
+      "ganador: ✅ Decidir"
+     ],
+     [
+      [
+       "Misterioso",
+       "MCNadie"
+      ],
+      "Misterioso",
+      "ganador: ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Tam",
+       "Erian"
+      ],
+      "Tam",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Dominick"
+      ],
+      "NXUZ",
+      "Walk-in 1: Nexuz; Walk-in 1: Dominick🇵🇪"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "NXUZ",
+       "Tam"
+      ],
+      "NXUZ",
+      "ganador: ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Tam",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "NXUZ",
+    "Campeón",
+    3750
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Elbesaabuelas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MCNadie",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Marcos",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Semifinal",
+    1750
    ]
   ]
  }

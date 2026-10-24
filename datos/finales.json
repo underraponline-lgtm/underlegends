@@ -762,7 +762,11 @@
     "ronda": "CUARTOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "Nexuz",
+   "1": "CrisZJ🇵🇪",
+   "2": "Misterioso🇨🇴"
+  },
   "sin_permiso": false,
   "sv": "DDF"
  },
@@ -784,7 +788,9 @@
     "ronda": "CUARTOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "Aby"
+  },
   "sin_permiso": false,
   "sv": "DDF"
  },

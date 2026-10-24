@@ -21357,5 +21357,151 @@
    ]
   ],
   "v": 2
+ },
+ "510": {
+  "antes": {
+   "Dominick": [
+    212,
+    47,
+    true
+   ],
+   "Elbesaabuelas": [
+    318,
+    257,
+    true
+   ],
+   "Erian": [
+    6,
+    7,
+    false
+   ],
+   "MCNadie": [
+    134,
+    236,
+    false
+   ],
+   "Makmah": [
+    2,
+    2,
+    false
+   ],
+   "Marcos": [
+    108,
+    167,
+    false
+   ],
+   "NXUZ": [
+    34,
+    45,
+    false
+   ],
+   "Tam": [
+    205,
+    32,
+    true
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Erian",
+    "Marcos",
+    "Erian"
+   ],
+   [
+    "Tam",
+    "Makmah",
+    "Tam"
+   ],
+   [
+    "Tam",
+    "Erian",
+    "Tam"
+   ],
+   [
+    "NXUZ",
+    "Dominick",
+    "NXUZ"
+   ],
+   [
+    "CrisZJ",
+    "Elbesaabuelas",
+    "CrisZJ"
+   ],
+   [
+    "Misterioso",
+    "MCNadie",
+    "Misterioso"
+   ],
+   [
+    "NXUZ",
+    "Tam",
+    "NXUZ"
+   ]
+  ],
+  "ev_antes": {
+   "Dominick": 19,
+   "Elbesaabuelas": 2,
+   "Erian": 47,
+   "MCNadie": 2,
+   "Makmah": 68,
+   "Marcos": 4,
+   "NXUZ": 15,
+   "Tam": 12
+  },
+  "fecha": "24/10",
+  "firma": "c95ae2064f7b5dd8",
+  "msg": "1563694518920814593",
+  "nombre": "GRISELDA RECORDS VOL. 4",
+  "num": 510,
+  "participantes": 10,
+  "sello": {
+   "NXUZ": "9081c86acb78:84b47cf43136"
+  },
+  "sv": "DDF",
+  "t": "2026-10-24T23:23:44Z",
+  "tabla": [
+   [
+    "Tam",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "NXUZ",
+    "Campeón",
+    3750
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Marcos",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Elbesaabuelas",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MCNadie",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Semifinal",
+    1750
+   ]
+  ],
+  "v": 2
  }
 }

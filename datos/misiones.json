@@ -1521,11 +1521,11 @@
     ],
     [
      "caza",
-     "Ganale un duelo a Colesito",
+     "Ganale un duelo a Oasis",
      "caza",
      1,
      800,
-     "Colesito"
+     "Oasis"
     ]
    ],
    "prog": {
@@ -1623,7 +1623,7 @@
      3,
      1,
      1,
-     1
+     0
     ],
     "BTRX": [
      1,
@@ -1665,7 +1665,7 @@
      2,
      2,
      2,
-     1
+     0
     ],
     "Cazafla anti cazanova🇭🇹": [
      1,
@@ -2055,7 +2055,7 @@
      2,
      1,
      1,
-     1
+     0
     ],
     "MTZ": [
      2,
@@ -2439,7 +2439,7 @@
      3,
      4,
      4,
-     1
+     0
     ],
     "Tusicario": [
      1,
@@ -2603,12 +2603,12 @@
     "Agus": 2900,
     "Andres": 1600,
     "Ariaxer": 300,
-    "BNA": 3700,
+    "BNA": 2900,
     "Benjixo": 900,
     "Bloody": 900,
     "Calíz": 900,
     "Carlosss": 600,
-    "Catarsis": 1700,
+    "Catarsis": 900,
     "Chop": 900,
     "Cinexfilo": 900,
     "Colesito": 2900,
@@ -2647,7 +2647,7 @@
     "Luzzano": 600,
     "Lvel": 300,
     "MALBORO": 600,
-    "MCO": 3700,
+    "MCO": 2900,
     "MTZ": 300,
     "Magic": 300,
     "Majiztral": 300,
@@ -2689,7 +2689,7 @@
     "Tenor": 2900,
     "Teo": 300,
     "Trot": 900,
-    "Tuca": 1700,
+    "Tuca": 900,
     "TøKīØ🦠🧠": 600,
     "Under": 300,
     "Vacile🇪🇸": 600,
@@ -2764,6 +2764,13 @@
      0,
      0,
      4,
+     0,
+     0
+    ],
+    "Aby": [
+     0,
+     0,
+     99,
      0,
      0
     ],
@@ -2937,7 +2944,7 @@
     ],
     "CrisZJ": [
      0,
-     0,
+     1,
      8,
      0,
      0
@@ -3089,6 +3096,13 @@
      0,
      0
     ],
+    "Elbesaabuelas": [
+     0,
+     0,
+     8,
+     0,
+     0
+    ],
     "Emily Family": [
      0,
      0,
@@ -3098,7 +3112,7 @@
     ],
     "Erian": [
      0,
-     3,
+     4,
      1,
      1,
      0
@@ -3306,6 +3320,13 @@
      0,
      0
     ],
+    "MCNadie": [
+     0,
+     0,
+     8,
+     0,
+     0
+    ],
     "MCO": [
      0,
      1,
@@ -3390,6 +3411,13 @@
      0,
      0
     ],
+    "Misterioso": [
+     0,
+     1,
+     99,
+     0,
+     0
+    ],
     "Mito": [
      0,
      1,
@@ -3441,8 +3469,8 @@
     ],
     "NXUZ": [
      0,
-     0,
-     4,
+     1,
+     1,
      0,
      0
     ],
@@ -3637,9 +3665,9 @@
     ],
     "Tam": [
      0,
-     0,
+     1,
      2,
-     0,
+     1,
      0
     ],
     "Teito": [
@@ -3902,6 +3930,7 @@
     "Molusco": 1000,
     "Mr Still Ballin": 1000,
     "NC": 1000,
+    "NXUZ": 1000,
     "Neo": 1000,
     "Nmb": 1000,
     "OG": 1000,
@@ -3913,7 +3942,7 @@
     "Provenza": 1000,
     "Six": 1000,
     "Snow": 1000,
-    "Tam": 1000,
+    "Tam": 1800,
     "Valen": 1000,
     "Vandu": 1000,
     "Velatz": 800,
@@ -3947,7 +3976,7 @@
   "Assuan": 1300,
   "Axinu": 300,
   "BLITZ": 300,
-  "BNA": 6000,
+  "BNA": 5200,
   "BTRX": 300,
   "Badterne": 300,
   "BastyRetro": 2900,
@@ -3959,7 +3988,7 @@
   "Carlos": 1000,
   "Carlosmo": 1600,
   "Carlosss": 3800,
-  "Catarsis": 1700,
+  "Catarsis": 900,
   "Chop": 2200,
   "Cinexfilo": 900,
   "Colesito": 4800,
@@ -4052,7 +4081,7 @@
   "MALBORO": 600,
   "MATICERNA": 300,
   "MAU KC 🇨🇴": 300,
-  "MCO": 7600,
+  "MCO": 6800,
   "MHS": 300,
   "MTZ": 600,
   "MaYeuTyK": 1000,
@@ -4072,7 +4101,7 @@
   "Musicdum": 300,
   "N1k": 300,
   "NC": 4800,
-  "NXUZ": 600,
+  "NXUZ": 1600,
   "NYCO": 300,
   "Nemi": 1200,
   "Neo": 3200,
@@ -4131,13 +4160,13 @@
   "Soneto": 300,
   "Sosa": 1200,
   "Soulb": 1200,
-  "Tam": 5200,
+  "Tam": 6000,
   "Teito": 300,
   "Tenor": 3200,
   "Teo": 600,
   "Tier": 300,
   "Trot": 1200,
-  "Tuca": 2000,
+  "Tuca": 1200,
   "Tusicario": 300,
   "TøKīØ🦠🧠": 3500,
   "Under": 600,

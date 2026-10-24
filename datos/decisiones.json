@@ -580,6 +580,34 @@
    "cuando": "2026-10-24 1:52 AM ET",
    "por": "el organizador, con el botón (<@1548906948307451906>)",
    "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
+  },
+  "griseldarecordsvol4|DDF|24/10|final|nexuz|tam": {
+   "ganador": "Nexuz",
+   "batalla": "GRISELDA RECORDS VOL. 4 · DDF · 24/10 · final · tam🇻🇪 🆚 Nexuz",
+   "cuando": "2026-10-24 7:22 PM ET",
+   "por": "el organizador, con el menú (<@1493416945037611140>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
+  },
+  "griseldarecordsvol4|DDF|24/10|cuartos|criszj|elbesaabuelas": {
+   "ganador": "CrisZJ🇵🇪",
+   "batalla": "GRISELDA RECORDS VOL. 4 · DDF · 24/10 · cuartos · Elbesaabuelas 🇦🇷 🆚 CrisZJ🇵🇪",
+   "cuando": "2026-10-24 7:22 PM ET",
+   "por": "el organizador, con el menú (<@1493416945037611140>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
+  },
+  "griseldarecordsvol4|DDF|24/10|cuartos|mcnadie|misterioso": {
+   "ganador": "Misterioso🇨🇴",
+   "batalla": "GRISELDA RECORDS VOL. 4 · DDF · 24/10 · cuartos · Misterioso🇨🇴 🆚 MCNADIE🇦🇷",
+   "cuando": "2026-10-24 7:22 PM ET",
+   "por": "el organizador, con el menú (<@1493416945037611140>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
+  },
+  "griseldarecordsvol5|DDF|24/10|cuartos|aby|mco": {
+   "ganador": "Aby",
+   "batalla": "GRISELDA RECORDS VOL. 5 · DDF · 24/10 · cuartos · Aby 🆚 MCO 🇦🇷",
+   "cuando": "2026-10-24 7:22 PM ET",
+   "por": "el organizador, con el botón (<@1493416945037611140>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   }
  },
  "anuncios_fuera": {
