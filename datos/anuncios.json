@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-24T16:57:30+00:00",
+ "cuando": "2026-10-24T17:28:42+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -5149,42 +5149,6 @@
    "categoria_id": "1469944166137073857"
   },
   {
-   "nombre": "STEVEN UNIVERSE",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1557849532300001293",
-   "cuando": "2026-10-08T20:17:51",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "@Pipas",
-   "orgs": [
-    {
-     "n": "Pipas",
-     "id": ""
-    }
-   ],
-   "autor_h": "656c27885fd775f7",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "OCTAVOS:",
-   "horario": "",
-   "fecha": "",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "Pipas"
-    ],
-    "host": [
-     "Pipas"
-    ]
-   },
-   "autor": "pipi94",
-   "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
-  },
-  {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - MAÑANA )",
    "servidor": "ACAD",
    "canal": "📢┇anuncios・",
@@ -7013,6 +6977,60 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1563605013505507490",
+   "cuando": "2026-10-24T17:28:05"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Elbesaabuelas 🇦🇷",
+   "quien": "xnoah_12341",
+   "discord_id": "1544902851975843900",
+   "msg_id": "1563604200175304827",
+   "cuando": "2026-10-24T17:24:51"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Carlos",
+   "quien": "carlosss.mc23",
+   "discord_id": "958103803616444528",
+   "msg_id": "1563604074522222713",
+   "cuando": "2026-10-24T17:24:21"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Criszj",
+   "quien": "criszjono",
+   "discord_id": "1462237816829513971",
+   "msg_id": "1563603820578340906",
+   "cuando": "2026-10-24T17:23:21"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "SHADOW 🇨🇴 primera",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1563603815930794035",
+   "cuando": "2026-10-24T17:23:20"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Ya gane🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1563603751443497021",
+   "cuando": "2026-10-24T17:23:04"
+  },
   {
    "servidor": "FDS",
    "canal": "✅╏inscripciones-express",
