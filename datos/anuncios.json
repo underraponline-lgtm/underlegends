@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-24T21:55:45+00:00",
+ "cuando": "2026-10-24T22:24:47+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -5132,9 +5132,7 @@
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
-   "categoria_id": "868218509975498805",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-23T22:03:54"
+   "categoria_id": "868218509975498805"
   },
   {
    "nombre": "PRADERAP VOL.2",
@@ -5165,9 +5163,7 @@
    },
    "autor": "Ardean",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-23T22:03:54"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 8",
@@ -5191,9 +5187,7 @@
    "staff": {},
    "autor": "Leonar-T",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-23T22:03:54"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "RED BULL CREW",
@@ -5218,9 +5212,7 @@
    "autor": "Leonar-T",
    "staff_cuentas": {},
    "de_imagen": true,
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-23T22:03:54"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "PRADE RAP VOL.1 | LACREW",
@@ -5256,9 +5248,7 @@
    },
    "autor": "Ardean",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-23T22:03:54"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 5",
@@ -5282,9 +5272,7 @@
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-23T22:03:54"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - HOY )",
@@ -5308,9 +5296,7 @@
    "staff": {},
    "autor": "Mosquitrap 🦟🇦🇷",
    "staff_cuentas": {},
-   "categoria_id": "1309234419525222477",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-23T22:03:54"
+   "categoria_id": "1309234419525222477"
   },
   {
    "nombre": "ASTRAL NO SIRVES PARA NADA CUP",
@@ -6972,6 +6958,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "DarnBless 🇨🇴",
+   "quien": "juanclaudio0959",
+   "discord_id": "1508771760709963930",
+   "msg_id": "1563672822868480131",
+   "cuando": "2026-10-24T21:57:32"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Molusco",
+   "quien": "moluscoanvriento_79058",
+   "discord_id": "1363285354442133778",
+   "msg_id": "1563672324861984779",
+   "cuando": "2026-10-24T21:55:33"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
