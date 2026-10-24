@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-24T22:24:47+00:00",
+ "cuando": "2026-10-24T22:54:45+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -6958,6 +6958,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Nxuz",
+   "quien": "elinzano1009",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1563683005736685611",
+   "cuando": "2026-10-24T22:38:00"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "BELTRAN🇨🇱",
+   "quien": "faloperro0746",
+   "discord_id": "1474632108700864534",
+   "msg_id": "1563680744356974704",
+   "cuando": "2026-10-24T22:29:01"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1563679923976147015",
+   "cuando": "2026-10-24T22:25:45"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",

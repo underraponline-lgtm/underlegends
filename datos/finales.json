@@ -730,5 +730,63 @@
   "sin_permiso": false,
   "sv": "DDF"
  },
+ "1563643939146174495": {
+  "autor": "1493416945037611140",
+  "canal": "1470097588635176960",
+  "cuando": "2026-10-24T20:02:46.192000+00:00",
+  "evento": "GRISELDA RECORDS VOL. 4",
+  "fecha": "24/10",
+  "llave": "1563643939146174495",
+  "pregunta": "1563686877716938828",
+  "preguntada": "2026-10-24 6:53 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "tam🇻🇪",
+     "Nexuz"
+    ],
+    "ronda": "FINAL"
+   },
+   {
+    "lados": [
+     "Elbesaabuelas 🇦🇷",
+     "CrisZJ🇵🇪"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "Misterioso🇨🇴",
+     "MCNADIE🇦🇷"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "DDF"
+ },
+ "1563658833543434243": {
+  "autor": "1493416945037611140",
+  "canal": "1470097588635176960",
+  "cuando": "2026-10-24T21:01:57.293000+00:00",
+  "evento": "GRISELDA RECORDS VOL. 5",
+  "fecha": "24/10",
+  "llave": "1563658833543434243",
+  "pregunta": "1563686873778618420",
+  "preguntada": "2026-10-24 6:53 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Aby",
+     "MCO 🇦🇷"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "DDF"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
