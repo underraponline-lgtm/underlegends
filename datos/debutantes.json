@@ -68,7 +68,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-23T22:07:27+00:00",
-   "did": "",
+   "did": "989702187523407903",
    "evento": "FATS BATTLES PALOOZA FECHA 8",
    "n": 504,
    "sv": "ACAD",
@@ -218,19 +218,6 @@
    "vence": "2026-10-29T00:30:05+00:00",
    "vencido": false
   },
-  "Edd": {
-   "avisado": "2026-10-23",
-   "chat": "2026-10-23",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-23T22:07:27+00:00",
-   "did": "",
-   "evento": "FATS BATTLES PALOOZA FECHA 8",
-   "n": 504,
-   "sv": "ACAD",
-   "vence": "2026-10-30T22:07:27+00:00",
-   "vencido": false
-  },
   "Edd y Eddy": {
    "avisado": "2026-10-21",
    "chat": "2026-10-22",
@@ -269,19 +256,6 @@
    "sv": "FFA",
    "vence": "2026-10-20T02:35:27+00:00",
    "vencido": true
-  },
-  "HOTARU": {
-   "avisado": "2026-10-23",
-   "chat": "2026-10-23",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-23T22:07:27+00:00",
-   "did": "",
-   "evento": "FATS BATTLES PALOOZA FECHA 8",
-   "n": 504,
-   "sv": "ACAD",
-   "vence": "2026-10-30T22:07:27+00:00",
-   "vencido": false
   },
   "Hotaru Adeyemi 🏳️‍⚧️": {
    "avisado": "2026-10-16",

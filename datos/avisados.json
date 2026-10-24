@@ -204,7 +204,7 @@
   "msg": "1556552837842997270"
  },
  "400": {
-  "firma": "VALHALLA VOL1|04/10|78|15|3|0",
+  "firma": "VALHALLA VOL1|04/10|78|15|2|0",
   "msg": "1556552839642357822"
  },
  "401": {
@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "9bc38ebff850b37e",
+  "firma": "4ecb6ef0bf0e8f5c",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "8982a7d919f09edf",
+  "firma": "2dce49d8fe394295",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "8aca88cd6bba453c",
+  "firma": "bf2c44c9be0386aa",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -13346,7 +13346,7 @@
    "Xubaru": 7
   },
   "fecha": "16/10",
-  "firma": "70d42c7eec0ef51e",
+  "firma": "6b3b5912ab4f9ba2",
   "msg": "1560725555203014688",
   "nombre": "__ DESGRACIAS EN TOKYO VOL27 __",
   "num": 477,
@@ -15100,7 +15100,7 @@
    "Xubaru": 8
   },
   "fecha": "18/10",
-  "firma": "291ccd6e9f8bfcf4",
+  "firma": "9c742b014164d58e",
   "msg": "1561498207572205609",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL7 __",
   "num": 484,
@@ -15773,7 +15773,7 @@
    "Molusco": 16
   },
   "fecha": "19/10",
-  "firma": "2d69e6f7aaa4560c",
+  "firma": "4b80ba98812e52bf",
   "msg": "1561607804798898179",
   "nombre": "__ FREESTYLE LEAGUE __",
   "num": 487,

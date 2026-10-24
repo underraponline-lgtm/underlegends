@@ -713,18 +713,18 @@
      "FFA": 13,
      "DDF": 2,
      "SR": 4,
-     "ACAD": 1
+     "ACAD": 3
     },
     "gente": {
      "FFA": 108,
-     "ACAD": 21,
+     "ACAD": 42,
      "DDF": 17,
      "SR": 24
     },
     "gana": "SR"
    },
    "meta_va": {
-    "ACAD": 21,
+    "ACAD": 42,
     "DDF": 17,
     "DRA": 0,
     "FFA": 108,

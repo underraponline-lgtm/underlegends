@@ -650,5 +650,27 @@
   "sin_permiso": false,
   "sv": "DDF"
  },
+ "1563287445708083244": {
+  "autor": "1086485696572817418",
+  "canal": "1487207377601040516",
+  "cuando": "2026-10-23T20:26:11.533000+00:00",
+  "evento": "__ FREESTYLE FOR ALL ESPECIAL 1800 __",
+  "fecha": "23/10",
+  "llave": "1563287445708083244",
+  "pregunta": "1563354687271608382",
+  "preguntada": "2026-10-23 8:53 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "VELATZ 🇨🇱 + LIBERIA",
+     "NEO 🇦🇷 + MR STILL BALLIN 🇺🇾"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

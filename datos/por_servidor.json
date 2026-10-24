@@ -650,7 +650,7 @@
     "racha": "0/0"
    }
   },
-  "BELIKKO 🇻🇪": {
+  "BELIKKO": {
    "ACAD": {
     "duelos": "",
     "ev": 1,
@@ -1580,7 +1580,7 @@
     "racha": "0/0"
    }
   },
-  "DANCOLL 🇻🇪": {
+  "DANCOLL": {
    "ACAD": {
     "duelos": "",
     "ev": 2,
@@ -1870,11 +1870,11 @@
   "Dominick": {
    "ACAD": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
-    "pts": 3750,
+    "pts": 5625,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -2231,20 +2231,6 @@
     "racha": "1/1",
     "tg": {
      "fin": 1,
-     "nuevo": true
-    }
-   }
-  },
-  "Edd🇮🇹": {
-   "ACAD": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 1875,
-    "racha": "0/0",
-    "tg": {
      "nuevo": true
     }
    }
@@ -3061,20 +3047,6 @@
     "racha": "1/1"
    }
   },
-  "HOTARU 🇦🇷": {
-   "ACAD": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 1875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "Hardcore": {
    "FFA": {
     "duelos": "0/1",
@@ -3168,12 +3140,12 @@
   "Hotaru Adeyemi 🏳️‍⚧️": {
    "ACAD": {
     "duelos": "3/4",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 50,
+    "ovr": 51,
     "pod": 1,
-    "pts": 37500,
-    "racha": "1/1",
+    "pts": 39375,
+    "racha": "0/1",
     "tg": {
      "fin": 1,
      "nuevo": true
