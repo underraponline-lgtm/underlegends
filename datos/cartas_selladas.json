@@ -117,7 +117,7 @@
    "servidor": "4af907e5d349:dc2ca95eb024:055f77"
   },
   "Astral": {
-   "competitivo": "932abb633dcf:8259c7ce67a9",
+   "competitivo": "4c18cb7a3c98:8259c7ce67a9",
    "pais": "84689434c484:1478cbe7c727",
    "servidor": "a92ba39c2c59:dc2ca95eb024:055f77"
   },
@@ -1829,10 +1829,10 @@
    "servidor": "131cd3a9e63c:dc2ca95eb024:15af16"
   },
   "stormed": {
-   "competitivo": "c77943519142:8259c7ce67a9",
+   "competitivo": "13376ced05e5:8259c7ce67a9",
    "pais": "f876ade56269:1478cbe7c727",
    "servidor": "514e514820db:dc2ca95eb024:b49e39",
-   "temporada": "586745c62ac2:e8f4f15f7e3a"
+   "temporada": "940aaba55fa1:e8f4f15f7e3a"
   },
   "tito calderon": {
    "competitivo": "81e455e550bd:8259c7ce67a9",
@@ -1857,5 +1857,5 @@
    "servidor": "7f8885a35a6d:dc2ca95eb024:93a344"
   }
  },
- "cuando": "2026-10-24T19:16:50+00:00"
+ "cuando": "2026-10-24T20:44:21+00:00"
 }
