@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-24T15:57:39+00:00",
+ "cuando": "2026-10-24T16:17:23+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -6320,6 +6320,35 @@
    "categoria_id": "1283208296714600560"
   },
   {
+   "nombre": "GG SANGRERAP",
+   "servidor": "FDS",
+   "canal": "🎉╏eventos",
+   "msg_id": "1563584299612242062",
+   "cuando": "2026-10-24T16:05:47",
+   "canal_id": "1536569364659044402",
+   "guild_id": "1489848581203689535",
+   "organizador": "@Cu?",
+   "orgs": [
+    {
+     "n": "Cu?",
+     "id": "1452005860493492335"
+    }
+   ],
+   "autor_h": "d637fa8d09166f5f",
+   "cupos_texto": "0/8-16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "Artezzy",
+   "staff_cuentas": {},
+   "categoria_id": "1489848582189224103"
+  },
+  {
    "nombre": "GOD LEVEL 2v2",
    "servidor": "FDS",
    "canal": "🎉╏eventos",
@@ -6946,35 +6975,6 @@
    "categoria_id": "1489848582189224103"
   },
   {
-   "nombre": "ULTIMO VERSO 1v1",
-   "servidor": "FDS",
-   "canal": "🎉╏eventos",
-   "msg_id": "1537976962881036290",
-   "cuando": "2026-08-15T00:11:22",
-   "canal_id": "1536569364659044402",
-   "guild_id": "1489848581203689535",
-   "organizador": "@Mate",
-   "orgs": [
-    {
-     "n": "Mate",
-     "id": "702969188121313352"
-    }
-   ],
-   "autor_h": "d637fa8d09166f5f",
-   "cupos_texto": "7/8-16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "",
-   "fecha": "",
-   "premios": "",
-   "staff": {},
-   "autor": "Artezzy",
-   "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
-  },
-  {
    "nombre": "WORLD OF FREE",
    "servidor": "LKR",
    "canal": "anuncios",
@@ -7013,6 +7013,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Btrece🇺🇾",
+   "quien": "btrece_",
+   "discord_id": "1490902626970239088",
+   "msg_id": "1563584430356832318",
+   "cuando": "2026-10-24T16:06:18"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Artezzy 🇵🇪",
+   "quien": "h6itam29",
+   "discord_id": "1435531540472795240",
+   "msg_id": "1563584367920550062",
+   "cuando": "2026-10-24T16:06:03"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",

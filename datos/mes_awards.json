@@ -3131,6 +3131,20 @@
      "orgs": [],
      "organizador": "Lízeninn",
      "cuentas": {}
+    },
+    "1563584299612242062": {
+     "sv": "FDS",
+     "nombre": "GG SANGRERAP",
+     "mo": "2026-10-24T16:05:47Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "Cu?",
+       "id": "1452005860493492335"
+      }
+     ],
+     "organizador": "@Cu?",
+     "cuentas": {}
     }
    },
    "ver": {
