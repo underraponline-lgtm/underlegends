@@ -255,7 +255,7 @@
    "dg": 20,
    "fg": 6,
    "fp": 1,
-   "riv": 21,
+   "riv": 22,
    "venc": 18
   },
   "tg_p": {
@@ -2536,7 +2536,7 @@
    "dg": 8,
    "fg": 1,
    "fp": 1,
-   "riv": 14,
+   "riv": 15,
    "venc": 8
   },
   "tg_p": {
@@ -2793,14 +2793,14 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 3,
+   "dg": 4,
    "fp": 1,
-   "riv": 6,
-   "venc": 3
+   "riv": 7,
+   "venc": 4
   },
   "tg_p": {
-   "paises": 3,
-   "paisesg": 3
+   "paises": 4,
+   "paisesg": 4
   }
  },
  {

@@ -5357,6 +5357,7 @@
     "pts": 11000,
     "racha": "0/1",
     "tg": {
+     "dv": true,
      "fin": 1,
      "nuevo": true
     }
