@@ -162,7 +162,7 @@
   "Bloody": {
    "competitivo": "20cf2a90f173:8259c7ce67a9",
    "pais": "97f53db8edc7:1478cbe7c727",
-   "servidor": "19cb624e994a:dc2ca95eb024:25c183",
+   "servidor": "72fa6b8cac94:dc2ca95eb024:25c183",
    "temporada": "f64315d2f985:e8f4f15f7e3a"
   },
   "Blue": {
@@ -305,7 +305,7 @@
   "DarnBless": {
    "competitivo": "24ed1c4ce976:8259c7ce67a9",
    "pais": "6e7a953be653:1478cbe7c727",
-   "servidor": "2917b54b123b:dc2ca95eb024:a672ab",
+   "servidor": "750c7bba2264:dc2ca95eb024:a672ab",
    "temporada": "bdd310234dee:e8f4f15f7e3a"
   },
   "Dash": {
@@ -1103,7 +1103,7 @@
   "Mr Still Ballin": {
    "competitivo": "5f68e186a82e:8259c7ce67a9",
    "pais": "d8f5def9facd:1478cbe7c727",
-   "servidor": "935ef583b0d6:dc2ca95eb024:039304",
+   "servidor": "4b3ab514b637:dc2ca95eb024:039304",
    "temporada": "5bed4c8f5117:e8f4f15f7e3a"
   },
   "Mspedrito": {
@@ -1379,8 +1379,8 @@
    "temporada": "f5ba0c3ec07a:e8f4f15f7e3a"
   },
   "Rodas": {
-   "competitivo": "066f0743b35f:8259c7ce67a9",
-   "pais": "56627cc29c44:1478cbe7c727",
+   "competitivo": "445e09929db9:8259c7ce67a9",
+   "pais": "24b6f2e41e69:1478cbe7c727",
    "servidor": "0bc42093879b:dc2ca95eb024:0a3db8",
    "temporada": "81eeb14437ef:e8f4f15f7e3a"
   },
@@ -1453,7 +1453,7 @@
   },
   "Sexo": {},
   "Shadow": {
-   "competitivo": "a620f2e367a1:8259c7ce67a9",
+   "competitivo": "3d406a9785dd:8259c7ce67a9",
    "pais": "7e1db52cc077:1478cbe7c727",
    "servidor": "ed7f1c0fce7b:dc2ca95eb024:4975e5",
    "temporada": "5ac8e094027e:e8f4f15f7e3a"
@@ -1495,7 +1495,7 @@
   "Sombra": {
    "competitivo": "54294ad32193:8259c7ce67a9",
    "pais": "a51f5cf70516:1478cbe7c727",
-   "servidor": "d494589db94a:dc2ca95eb024:a672ab"
+   "servidor": "854c9d822cbe:dc2ca95eb024:a672ab"
   },
   "Soneto": {
    "competitivo": "6b7fbb52a4ba:8259c7ce67a9",
@@ -1626,7 +1626,7 @@
    "competitivo": "a17322d59805:8259c7ce67a9",
    "pais": "405892b158d5:1478cbe7c727",
    "servidor": "5488fc82c438:dc2ca95eb024:c43f56",
-   "temporada": "507e2ebd03ac:e8f4f15f7e3a"
+   "temporada": "fefa3516f3a6:e8f4f15f7e3a"
   },
   "Vilca": {
    "competitivo": "b51c796d4cd8:a62fb156b44f",
@@ -1765,7 +1765,7 @@
    "competitivo": "05ce6d23c2d8:8259c7ce67a9",
    "pais": "44e48b1f0688:1478cbe7c727",
    "servidor": "1db8ba31f9c9:dc2ca95eb024:be5547",
-   "temporada": "4ff2a9c959df:e8f4f15f7e3a"
+   "temporada": "5d8ded3ffcf6:e8f4f15f7e3a"
   },
   "doble h": {
    "competitivo": "432a77522ced:8259c7ce67a9",
@@ -1857,5 +1857,5 @@
    "servidor": "7f8885a35a6d:dc2ca95eb024:93a344"
   }
  },
- "cuando": "2026-10-24T04:20:33+00:00"
+ "cuando": "2026-10-24T04:44:29+00:00"
 }
