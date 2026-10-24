@@ -1576,20 +1576,6 @@
     }
    }
   },
-  "DARKO 🇲🇽": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 1875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "DAVIJUAN": {
    "FFA": {
     "duelos": "0/1",
@@ -1648,11 +1634,11 @@
   "DarkoMC": {
    "FFA": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
-    "pts": 3281,
+    "pts": 5156,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -1813,11 +1799,11 @@
   "Deuxs": {
    "FFA": {
     "duelos": "1/3",
-    "ev": 4,
+    "ev": 5,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 48,
     "pod": 0,
-    "pts": 15558,
+    "pts": 17433,
     "racha": "0/0"
    }
   },
@@ -4751,20 +4737,6 @@
     }
    }
   },
-  "MR STLL BALLIN 🇺🇾": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 2625,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "MR.LABURO🇨🇴": {
    "DDF": {
     "duelos": "",
@@ -5389,12 +5361,12 @@
    },
    "FFA": {
     "duelos": "11/12",
-    "ev": 6,
+    "ev": 7,
     "oro": 3,
     "ovr": 61,
     "pod": 5,
-    "pts": 134438,
-    "racha": "1/4",
+    "pts": 137063,
+    "racha": "2/4",
     "tg": {
      "fin": 5
     }
@@ -8655,20 +8627,6 @@
     "pod": 0,
     "pts": 0,
     "racha": "0/0"
-   }
-  },
-  "familiafortunaexito 🇫🇷": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 1875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "fleivaman": {
