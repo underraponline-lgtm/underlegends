@@ -31287,5 +31287,132 @@
     2000
    ]
   ]
+ },
+ "508": {
+  "dia": "2026-10-24",
+  "escala": "8-15",
+  "fecha": "24/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1563604607240896570"
+  ],
+  "n": 508,
+  "nombre": "19 FUTCARD EDITION - 6 COMPE GAY",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Adriagner",
+       "Shadow"
+      ],
+      "Adriagner",
+      ""
+     ],
+     [
+      [
+       "Noa",
+       "JULIX"
+      ],
+      "Noa",
+      ""
+     ],
+     [
+      [
+       "Carlosss",
+       "Miniboy"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Dominick",
+       "CrisZJ"
+      ],
+      "Dominick",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Adriagner",
+       "Noa"
+      ],
+      "Adriagner",
+      ""
+     ],
+     [
+      [
+       "Dominick",
+       "Carlosss"
+      ],
+      "Dominick",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Adriagner",
+       "Dominick"
+      ],
+      "Adriagner",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Adriagner",
+    "Campeón",
+    7500
+   ],
+   [
+    "Dominick",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Carlosss",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Noa",
+    "Semifinal",
+    3500
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "JULIX",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

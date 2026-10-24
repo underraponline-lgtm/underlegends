@@ -21087,5 +21087,151 @@
    ]
   ],
   "v": 2
+ },
+ "508": {
+  "antes": {
+   "Adriagner": [
+    86,
+    113,
+    false
+   ],
+   "Carlosss": [
+    23,
+    25,
+    false
+   ],
+   "CrisZJ": [
+    211,
+    47,
+    true
+   ],
+   "Dominick": [
+    214,
+    53,
+    true
+   ],
+   "JULIX": [
+    296,
+    228,
+    true
+   ],
+   "Miniboy": [
+    37,
+    48,
+    false
+   ],
+   "Noa": [
+    245,
+    142,
+    true
+   ],
+   "Shadow": [
+    52,
+    69,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Adriagner",
+    "Shadow",
+    "Adriagner"
+   ],
+   [
+    "Noa",
+    "JULIX",
+    "Noa"
+   ],
+   [
+    "Carlosss",
+    "Miniboy",
+    "Carlosss"
+   ],
+   [
+    "Dominick",
+    "CrisZJ",
+    "Dominick"
+   ],
+   [
+    "Adriagner",
+    "Noa",
+    "Adriagner"
+   ],
+   [
+    "Dominick",
+    "Carlosss",
+    "Dominick"
+   ],
+   [
+    "Adriagner",
+    "Dominick",
+    "Adriagner"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 5,
+   "Carlosss": 11,
+   "CrisZJ": 11,
+   "Dominick": 18,
+   "JULIX": 1,
+   "Miniboy": 20,
+   "Noa": 3,
+   "Shadow": 13
+  },
+  "fecha": "24/10",
+  "firma": "dec1cd733eb3c502",
+  "msg": "1563613115495489728",
+  "nombre": "19 FUTCARD EDITION - 6 COMPE GAY",
+  "num": 508,
+  "participantes": 9,
+  "sello": {
+   "Adriagner": "fb88ab1529b5:e8f4f15f7e3a"
+  },
+  "sv": "DDF",
+  "t": "2026-10-24T18:24:48Z",
+  "tabla": [
+   [
+    "Adriagner",
+    "Campeón",
+    7500
+   ],
+   [
+    "Dominick",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Noa",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Carlosss",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2000
+   ],
+   [
+    "JULIX",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

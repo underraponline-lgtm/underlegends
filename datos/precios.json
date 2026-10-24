@@ -543,7 +543,19 @@
    "monto": 1000,
    "t": "2026-10-24T00:14:40Z",
    "fin": "2026-10-26T15:00:00Z",
-   "e": "activo"
+   "e": "cazado",
+   "por": [
+    [
+     "Carlosss",
+     1000
+    ]
+   ],
+   "ev": {
+    "n": 508,
+    "nombre": "19 FUTCARD EDITION - 6 COMPE GAY",
+    "sv": "DDF",
+    "t": "2026-10-24T17:26:28Z"
+   }
   }
  ],
  "suma": {
@@ -564,6 +576,7 @@
   "Guess": 5000,
   "BLUE BURKA": 375,
   "BNA": 375,
-  "Polosport": 375
+  "Polosport": 375,
+  "Carlosss": 1000
  }
 }
