@@ -914,155 +914,20 @@
    "b": "TAYO - NXUZ",
    "ganador": "MC AREPA - VLOG",
    "votos": "1–0"
+  },
+  "1563407278361542677": {
+   "id": "1563407278361542677",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792815741864,
+   "a": "sosatr - okam",
+   "b": "MC AREPA - VLOG",
+   "ganador": "sosatr - okam",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1555795277485711422": {
-   "id": "1555795277485711422",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1791000899431,
-   "ed": 1791006608707,
-   "texto": "`[ OCTAVOS ]`\n⌞# ECLIPCITO⌝ 🆚 ⌞HASSAN⌝\n⌞# NUMBER⌝ 🆚 ⌞SCOT⌝ 🆚 ⌞ZAIK⌝\n⌞# MONET⌝ 🆚 ⌞KURLW⌝\n⌞# MOSQUITRAP⌝ 🆚 ⌞NHP⌝\n⌞# MD⌝ 🆚 ⌞LORD⌝ 🆚 ⌞ERIAN⌝\n⌞# ZA⌝ 🆚 ⌞CRK⌝ 🆚 ⌞CINEXFILO⌝ 🆚 ⌞RUVI⌝\n⌞# G8⌝ 🆚 ⌞PARTIM⌝ 🆚 ⌞COLESITO⌝\n⌞# COLESITO⌝ 🆚 ⌞G8⌝\n`[ CUARTOS ]`\n⌞# NUMBER⌝ 🆚 ⌞KURLW⌝\n⌞# G8⌝ 🆚 ⌞ZA⌝\n⌞# NUMBER⌝ 🆚 ⌞G8⌝\n⌞# HASSAN⌝ 🆚 ⌞SONETO⌝\n⌞# HASSAN⌝ 🆚 ⌞G8⌝",
-   "batallas": [
-    [
-     "OCTAVOS",
-     [
-      "# ECLIPCITO",
-      "HASSAN"
-     ],
-     "HASSAN",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "# NUMBER",
-      "SCOT",
-      "ZAIK"
-     ],
-     "# NUMBER",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "# MONET",
-      "KURLW"
-     ],
-     "KURLW",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "# MOSQUITRAP",
-      "NHP"
-     ],
-     "NHP",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "# MD",
-      "LORD",
-      "ERIAN"
-     ],
-     "ERIAN",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "# ZA",
-      "CRK",
-      "CINEXFILO",
-      "RUVI"
-     ],
-     "# ZA",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "# G8",
-      "PARTIM",
-      "COLESITO"
-     ],
-     "COLESITO",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "# COLESITO",
-      "G8"
-     ],
-     "G8",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "# NUMBER",
-      "KURLW"
-     ],
-     "# NUMBER",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "# G8",
-      "ZA"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "# NUMBER",
-      "G8"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "# HASSAN",
-      "SONETO"
-     ],
-     "# HASSAN",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "# HASSAN",
-      "G8"
-     ],
-     "# HASSAN",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1556036991823650907": {
    "id": "1556036991823650907",
    "sv": "[FFA] Freestyle For All 👾",
@@ -5606,7 +5471,7 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1792810248431,
-   "ed": 1792813466517,
+   "ed": 1792814970348,
    "texto": "`[ CUARTOS ]`\n⌞Sin límites 🇵🇪 + Vilca🇵🇪⌝ 🆚 ⌞okam🇨🇷 -sosa🇺🇾⌝\n⌞Millonari-O 🇵🇾 + Last 🇺🇾⌝ 🆚 ⌞Lrs🇦🇷 + Artezzy 🇵🇪⌝\n⌞Revo🇻🇪 + xubaru🇻🇪⌝ 🆚 ⌞Scot 🇵🇪 - Sosa 🇺🇾 + mientras⌝",
    "batallas": [
     [

@@ -434,7 +434,6 @@
    "cab": 1,
    "dobles": 4,
    "perf": 2,
-   "reciente": true,
    "relampago": true,
    "solo": 1,
    "sube": true,
@@ -1099,7 +1098,7 @@
   "crew": "",
   "discord_id": "1397110475594010700",
   "verificado": true,
-  "pts": 66113,
+  "pts": 66463,
   "ev": 13,
   "wr": "60.0%",
   "pod": 6,
@@ -1969,7 +1968,7 @@
   "crew": "",
   "discord_id": "1385452830684614697",
   "verificado": true,
-  "pts": 50910,
+  "pts": 51910,
   "ev": 19,
   "wr": "45.5%",
   "pod": 1,
@@ -4930,8 +4929,7 @@
   "total": 200,
   "rango": "E",
   "tg_t": {
-   "dobles": 2,
-   "reciente": true
+   "dobles": 2
   }
  },
  {
@@ -5590,7 +5588,6 @@
   "total": 200,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
    "trios": 1
   }
  },
@@ -7588,8 +7585,7 @@
   "total": 200,
   "rango": "E",
   "tg_t": {
-   "cohete": true,
-   "reciente": true
+   "cohete": true
   }
  },
  {
@@ -8660,10 +8656,7 @@
   "o": 240,
   "pos": 136,
   "total": 200,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "VECA 🇧🇱",
@@ -9462,10 +9455,7 @@
   "pos": 322,
   "fc": true,
   "total": 200,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "GP",
@@ -10790,10 +10780,7 @@
   "pos": 345,
   "fc": true,
   "total": 200,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Drezz🇵🇪",
@@ -10921,10 +10908,7 @@
   "pos": 349,
   "fc": true,
   "total": 200,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Gero",
@@ -11116,10 +11100,7 @@
   "pos": 352,
   "fc": true,
   "total": 200,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "LKS 🇨🇱",
@@ -11247,10 +11228,7 @@
   "pos": 356,
   "fc": true,
   "total": 200,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Faso",
@@ -13260,10 +13238,7 @@
   "pos": 403,
   "fc": true,
   "total": 200,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Abraham 🇻🇪",
@@ -14140,10 +14115,7 @@
   "pos": 423,
   "fc": true,
   "total": 200,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Redstonita",

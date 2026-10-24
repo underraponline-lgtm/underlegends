@@ -2,8 +2,8 @@
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
   "ACAD": "2026-10-23",
-  "DDF": "2026-10-23",
-  "FFA": "2026-10-23",
+  "DDF": "2026-10-24",
+  "FFA": "2026-10-24",
   "FRZ": "2026-10-15",
   "FVS": "2026-10-15",
   "SR": "2026-10-21",
@@ -142,6 +142,7 @@
   },
   "DARK ANGEL": {
    "avisado": "2026-10-23",
+   "chat": "2026-10-24",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-23T20:26:11+00:00",
@@ -193,6 +194,7 @@
    "vencido": false
   },
   "Dom": {
+   "chat": "2026-10-24",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-24T02:52:18+00:00",
@@ -818,6 +820,7 @@
   },
   "mats": {
    "avisado": "2026-10-23",
+   "chat": "2026-10-24",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-23T04:48:58+00:00",
@@ -868,6 +871,7 @@
    "vencido": false
   },
   "💥 SF2: ISAC": {
+   "chat": "2026-10-24",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-24T01:11:48+00:00",
@@ -879,6 +883,7 @@
    "vencido": false
   },
   "🔹 C3: ISAC": {
+   "chat": "2026-10-24",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-24T01:11:48+00:00",
