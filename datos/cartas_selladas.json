@@ -1617,10 +1617,10 @@
    "servidor": "6c8ac408bbf5:dc2ca95eb024:055f77"
   },
   "Velatz": {
-   "competitivo": "ddf3234d662c:8259c7ce67a9",
-   "pais": "bd25e61a33e0:1478cbe7c727",
-   "servidor": "b785180219cd:dc2ca95eb024:039304",
-   "temporada": "dac3ad1b39d7:e8f4f15f7e3a"
+   "competitivo": "f289adbeb56f:8259c7ce67a9",
+   "pais": "fbe32872d212:1478cbe7c727",
+   "servidor": "80c0c984fde9:dc2ca95eb024:039304",
+   "temporada": "404b95e203f3:e8f4f15f7e3a"
   },
   "Verc": {
    "competitivo": "df5dfcbfe9a7:8259c7ce67a9",
@@ -1857,5 +1857,5 @@
    "servidor": "7f8885a35a6d:dc2ca95eb024:93a344"
   }
  },
- "cuando": "2026-10-24T01:28:21+00:00"
+ "cuando": "2026-10-24T01:43:12+00:00"
 }
