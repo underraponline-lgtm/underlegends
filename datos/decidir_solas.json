@@ -2198,6 +2198,25 @@
      311
     ]
    }
+  },
+  {
+   "id": "47a49427b7",
+   "tipo": "Nombre desconocido",
+   "sec": "19 CUP FUTCARD EDICIÓN 5 · DDF · 23/10 · #505",
+   "que": "¿Quién es «🔹 C2: UZI»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792821535341,
+   "filas": [
+    828
+   ],
+   "variantes": [
+    "🔹 C2: UZI"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

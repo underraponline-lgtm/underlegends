@@ -766,12 +766,12 @@
   },
   "BTRX": {
    "DDF": {
-    "duelos": "4/9",
-    "ev": 5,
+    "duelos": "4/10",
+    "ev": 6,
     "oro": 0,
     "ovr": 50,
     "pod": 1,
-    "pts": 18275,
+    "pts": 20275,
     "racha": "0/1",
     "tg": {
      "fin": 1,
@@ -1219,12 +1219,12 @@
   },
   "Carlosss": {
    "DDF": {
-    "duelos": "20/23",
-    "ev": 10,
+    "duelos": "20/24",
+    "ev": 11,
     "oro": 6,
     "ovr": 69,
     "pod": 7,
-    "pts": 94025,
+    "pts": 96025,
     "racha": "0/9",
     "tg": {
      "bcasa": true,
@@ -5349,7 +5349,7 @@
   },
   "Mosquitrap 🦟": {
    "DDF": {
-    "duelos": "1/2",
+    "duelos": "2/3",
     "ev": 2,
     "oro": 1,
     "ovr": 48,
@@ -9147,6 +9147,17 @@
     "tg": {
      "nuevo": true
     }
+   }
+  },
+  "🔹 C2: UZI": {
+   "DDF": {
+    "duelos": "1/1",
+    "ev": 0,
+    "oro": 0,
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
+    "racha": "0/0"
    }
   },
   "🔹 C3: ISAC": {

@@ -700,6 +700,7 @@
    }
   ],
   "respondidas": {
+   "0": "🔹 C2: UZI",
    "1": "SHADOW 🇨🇴"
   },
   "sin_permiso": false,
@@ -723,7 +724,9 @@
     "ronda": "CUARTOS"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "Mosquitrap 🦟🇦🇷"
+  },
   "sin_permiso": false,
   "sv": "DDF"
  },
