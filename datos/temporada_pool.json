@@ -578,8 +578,8 @@
   "crew": "Sentinelense",
   "discord_id": "1426686911908675628",
   "verificado": true,
-  "pts": 202428,
-  "ev": 40,
+  "pts": 204303,
+  "ev": 41,
   "wr": "40.6%",
   "pod": 8,
   "oro": 1,
@@ -593,7 +593,7 @@
   "srv": 4,
   "racha": 4,
   "racha_act": 1,
-  "score": 34.1,
+  "score": 33.6,
   "av": "",
   "ovr": 75,
   "o": 14,
@@ -603,11 +603,10 @@
   "tg_t": {
    "busc": 2,
    "cobro": 1,
-   "dobles": 11,
+   "dobles": 12,
    "infalt": true,
    "perf": 1,
    "svc": 1,
-   "svtag": "llamas",
    "trios": 7
   }
  },

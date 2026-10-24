@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-24T00:54:53+00:00",
+ "cuando": "2026-10-24T01:25:00+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -4742,6 +4742,33 @@
    "categoria_id": "1373343272482902127"
   },
   {
+   "nombre": "19 CUP FUTCARD EDICIÓN 5 ??",
+   "servidor": "DDF",
+   "canal": "『📢』Eventos",
+   "msg_id": "1563358538238009454",
+   "cuando": "2026-10-24T01:08:41",
+   "canal_id": "1470097121284980736",
+   "guild_id": "1469009547971526659",
+   "organizador": "EJFACUP HALLOWEENGAMING FUTCARD FIFA19",
+   "orgs": [],
+   "autor_h": "b360fced798207fd",
+   "cupos_texto": "8    INSCRIPCIONES YA",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "[Fecha de Octubre]    FORMATO: ELIMINATORIA DIRECTA",
+   "fecha": "",
+   "premios": "¡INSCRÍBETE YA! PREMIO:",
+   "staff": {},
+   "autor": "₁₉",
+   "staff_cuentas": {},
+   "de_imagen": true,
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "cerradas",
+   "inscripciones_cuando": "2026-10-23T22:25:02"
+  },
+  {
    "nombre": "ZONA MORTAL",
    "servidor": "DDF",
    "canal": "『📢』Eventos",
@@ -5233,49 +5260,6 @@
    "staff": {},
    "autor": "Drexx💭",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-23T22:25:02"
-  },
-  {
-   "nombre": "GALACTICOS DEL FREESTYLE VOL.8",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1557067516210319391",
-   "cuando": "2026-10-06T16:30:24",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Adriagner",
-     "id": "1316490165836972104"
-    }
-   ],
-   "autor_h": "0f624d80ff313923",
-   "cupos_texto": "8 16",
-   "inscriptos": 8,
-   "cupo_total": 16,
-   "rango": "",
-   "modalidad": "CUARTOS:",
-   "horario": "EN 5 MINS",
-   "fecha": "EN 5 MINS",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "Adriagner"
-    ],
-    "host": [
-     "Adriagner"
-    ],
-    "dj": [
-     "Adriagner"
-    ]
-   },
-   "autor": "Adriagner",
-   "staff_cuentas": {
-    "Adriagner": "1316490165836972104"
-   },
    "categoria_id": "1469944166137073857",
    "inscripciones": "cerradas",
    "inscripciones_cuando": "2026-10-23T22:25:02"
@@ -7113,6 +7097,105 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Erian",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1563359572700176516",
+   "cuando": "2026-10-24T01:12:47"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Oe🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1563359412331090111",
+   "cuando": "2026-10-24T01:12:09"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1563359057094639667",
+   "cuando": "2026-10-24T01:10:45"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1563358893164335165",
+   "cuando": "2026-10-24T01:10:05"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Pichulamc 🇦🇷",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1563358688121716767",
+   "cuando": "2026-10-24T01:09:17"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "VR🇨🇴",
+   "quien": "1mrvargas",
+   "discord_id": "1456416455405863038",
+   "msg_id": "1563358651811373127",
+   "cuando": "2026-10-24T01:09:08"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Messi🇷🇼",
+   "quien": "carlosss.mc23",
+   "discord_id": "958103803616444528",
+   "msg_id": "1563358616130551820",
+   "cuando": "2026-10-24T01:08:59"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Isax 🇬🇪",
+   "quien": "isac_16__45369",
+   "discord_id": "1409587624364081272",
+   "msg_id": "1563358611999301838",
+   "cuando": "2026-10-24T01:08:58"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "SHADOW 🇨🇴",
+   "quien": "tenacious_dragon_23394",
+   "discord_id": "1548906948307451906",
+   "msg_id": "1563358602339549268",
+   "cuando": "2026-10-24T01:08:56"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Martynez 🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1563358595981250728",
+   "cuando": "2026-10-24T01:08:55"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Bootrax Humilde🇵🇪",
+   "quien": "gianfraxruizescor11",
+   "discord_id": "1122273746099638354",
+   "msg_id": "1563358592344658002",
+   "cuando": "2026-10-24T01:08:54"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
