@@ -629,13 +629,13 @@
   "pos_crew": "",
   "tg_c": {
    "bestia": 1,
-   "clasico": 3,
-   "dg": 28,
+   "clasico": 4,
+   "dg": 30,
    "fg": 4,
    "fp": 6,
-   "riv": 43,
-   "venc": 27,
-   "vengo": 4
+   "riv": 44,
+   "venc": 28,
+   "vengo": 5
   },
   "tg_p": {
    "paises": 10,
@@ -1456,18 +1456,18 @@
   "Dm": 15,
   "T": 23,
   "V": 33,
-  "wr": "48.5%",
+  "wr": "49.3%",
   "rch_act": 3,
   "rch_max": 3,
-  "duel_v": 33,
-  "duel_t": 67,
+  "duel_v": 34,
+  "duel_t": 68,
   "duel_real": true,
   "dna_v": 4,
   "dna_t": 8,
-  "din_v": 28,
-  "din_t": 58,
+  "din_v": 29,
+  "din_t": 59,
   "crn_t": 13,
-  "cri_t": 116,
+  "cri_t": 117,
   "pos": 18,
   "total": 62,
   "rango": "C",
@@ -1480,13 +1480,13 @@
   "arc_sv": 87,
   "tg_c": {
    "bestia": 2,
-   "clasico": 3,
-   "dg": 32,
+   "clasico": 4,
+   "dg": 33,
    "fg": 3,
    "fp": 7,
    "mata": 2,
-   "riv": 55,
-   "venc": 29,
+   "riv": 56,
+   "venc": 30,
    "vengo": 3
   },
   "tg_p": {
@@ -2900,7 +2900,7 @@
    "clasico": 1,
    "dg": 5,
    "fp": 1,
-   "riv": 14,
+   "riv": 15,
    "venc": 5
   },
   "tg_p": {
@@ -7390,10 +7390,10 @@
   "arc_sv": 57,
   "tg_c": {
    "clasico": 1,
-   "riv": 3
+   "riv": 4
   },
   "tg_p": {
-   "paises": 3
+   "paises": 4
   }
  },
  {
@@ -7654,9 +7654,9 @@
   "dna_v": 0,
   "dna_t": 0,
   "din_v": 1,
-  "din_t": 3,
+  "din_t": 4,
   "crn_t": 0,
-  "cri_t": 14,
+  "cri_t": 15,
   "pos": 164,
   "total": 62,
   "rango": "",
@@ -7672,7 +7672,7 @@
    "clasico": 1,
    "dg": 1,
    "fp": 1,
-   "riv": 3,
+   "riv": 4,
    "venc": 1
   },
   "tg_p": {
@@ -9857,7 +9857,14 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  }
  },
  {
   "full": "fleivaman",

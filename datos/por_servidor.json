@@ -4948,7 +4948,7 @@
     }
    },
    "DDF": {
-    "duelos": "10/14",
+    "duelos": "11/15",
     "ev": 6,
     "oro": 1,
     "ovr": 55,
@@ -6197,7 +6197,7 @@
     "oro": 3,
     "ovr": 52,
     "pod": 3,
-    "pts": 30875,
+    "pts": 31625,
     "racha": "3/3",
     "tg": {
      "fin": 3
@@ -9151,17 +9151,6 @@
     "tg": {
      "nuevo": true
     }
-   }
-  },
-  "🔹 C4: MAKMA": {
-   "DDF": {
-    "duelos": "1/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
    }
   },
   "🟢 Batalla 1: Carlos": {
