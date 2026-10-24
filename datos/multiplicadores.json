@@ -678,6 +678,11 @@
      4
     ],
     [
+     "Lizeninn",
+     32,
+     4
+    ],
+    [
      "Velatz",
      25,
      1
@@ -686,11 +691,6 @@
      "NC",
      22,
      1
-    ],
-    [
-     "Lizeninn",
-     16,
-     2
     ],
     [
      "d l o z c o r i a",
@@ -728,14 +728,14 @@
     "gente": {
      "FFA": 108,
      "ACAD": 42,
-     "DDF": 35,
+     "DDF": 39,
      "SR": 24
     },
     "gana": "DDF"
    },
    "meta_va": {
     "ACAD": 42,
-    "DDF": 35,
+    "DDF": 39,
     "DRA": 0,
     "FFA": 108,
     "FFS": 0,

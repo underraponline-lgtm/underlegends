@@ -246,10 +246,6 @@
 "temporada"
 ]
 },
-"bna": {
-"rg": "C",
-"c": []
-},
 "bloody": {
 "rg": "C",
 "c": [
@@ -258,6 +254,10 @@
 "servidor",
 "temporada"
 ]
+},
+"bna": {
+"rg": "C",
+"c": []
 },
 "sinlimites": {
 "rg": "D",
@@ -652,10 +652,6 @@
 "temporada"
 ]
 },
-"tuca": {
-"rg": "",
-"c": []
-},
 "teito": {
 "rg": "E",
 "c": [
@@ -664,6 +660,10 @@
 "servidor",
 "temporada"
 ]
+},
+"tuca": {
+"rg": "",
+"c": []
 },
 "soulb": {
 "rg": "E",
