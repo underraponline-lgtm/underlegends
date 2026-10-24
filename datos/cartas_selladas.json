@@ -1453,8 +1453,8 @@
   },
   "Sexo": {},
   "Shadow": {
-   "competitivo": "3d406a9785dd:8259c7ce67a9",
-   "pais": "7e1db52cc077:1478cbe7c727",
+   "competitivo": "52b32f155eb9:8259c7ce67a9",
+   "pais": "387a977ce68e:1478cbe7c727",
    "servidor": "ed7f1c0fce7b:dc2ca95eb024:4975e5",
    "temporada": "5ac8e094027e:e8f4f15f7e3a"
   },
@@ -1857,5 +1857,5 @@
    "servidor": "7f8885a35a6d:dc2ca95eb024:93a344"
   }
  },
- "cuando": "2026-10-24T15:46:52+00:00"
+ "cuando": "2026-10-24T16:14:54+00:00"
 }
