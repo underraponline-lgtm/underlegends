@@ -1,45 +1,45 @@
 {
  "v": 1,
- "cuando": "2026-10-23T23:13:24Z",
+ "cuando": "2026-10-24T00:01:44Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 802.3,
+ "dur_s": 1499.4,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 15.5
+   "s": 6.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.7
+   "s": 7.6
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 54.7
+   "s": 61.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": false,
-   "s": 661.7
+   "s": 1349.7
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.2
+   "s": 9.7
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 54.3
+   "s": 62.8
   }
  ],
  "fallas": [
@@ -53,35 +53,55 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py OKAM"
+   "que": "03_Servidor/generar.py Ezias🥈✒️🧢🐍"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py OKAM"
+   "que": "03_Servidor/generar.py Filozico"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Krish"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Krish"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Noone"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py OEP"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Soulb"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Soulb"
   }
  ],
  "ultimo_evento": {
-  "n": "501",
-  "nombre": "LA ISLA DE OKINAWA V.4",
-  "sv": "FFA",
+  "n": "502",
+  "nombre": "ZONA MORTAL",
+  "sv": "DDF",
   "dia": "2026-10-23"
  },
  "cuotas": {
-  "kv": {
-   "write": 442,
-   "read": 50010
-  },
   "objeto": {
-   "leidas": 1992162,
-   "escritas": 17141,
-   "pedidos": 8138
+   "leidas": 23009,
+   "escritas": 862,
+   "pedidos": 9
   },
   "worker": {
-   "pedidos": 6752,
+   "pedidos": 7073,
    "errores": 0,
-   "sub": 8570,
-   "p50_ms": 1.41,
-   "p99_ms": 11.22
+   "sub": 8929,
+   "p50_ms": 1.37,
+   "p99_ms": 11.08
   },
   "r2": {
    "objetos": 4862,
