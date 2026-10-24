@@ -705,5 +705,27 @@
   "sin_permiso": false,
   "sv": "DDF"
  },
+ "1563384616549744641": {
+  "autor": "1493416945037611140",
+  "canal": "1470097588635176960",
+  "cuando": "2026-10-24T02:52:18.867000+00:00",
+  "evento": "GRISELDA RECORDS VOL. 3",
+  "fecha": "23/10",
+  "llave": "1563384616549744641",
+  "pregunta": "1563422658849280061",
+  "preguntada": "2026-10-24 1:23 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Mosquitrap 🦟🇦🇷",
+     "Carlos"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "DDF"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
