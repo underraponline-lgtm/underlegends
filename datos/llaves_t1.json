@@ -30278,7 +30278,7 @@
   ],
   "n": 503,
   "nombre": "FREESTYLE FOR ALL ESPECIAL 1800",
-  "participantes": 33,
+  "participantes": 32,
   "rondas": [
    {
     "b": [
@@ -30300,7 +30300,7 @@
        "Trot"
       ],
       "Liberia, Velatz",
-      "triple (4 bandas, pasan 2); también pasa: Velatz"
+      "triple (4 bandas, pasan 2); también pasa: Velatz; Drafteado: LIBERIA"
      ],
      [
       [
@@ -30377,6 +30377,14 @@
      ],
      [
       [
+       "Neo, Mr Still Ballin",
+       "Velatz, Liberia"
+      ],
+      "Neo, Mr Still Ballin",
+      ""
+     ],
+     [
+      [
        "MCO, Panchok",
        "BNA, Calíz"
       ],
@@ -30390,14 +30398,6 @@
       ],
       "Kyss, Provenza",
       "Drafteado: MITOSIS 🇦🇷"
-     ],
-     [
-      [
-       "Neo, Mr Still Ballin",
-       "Velatz, Liberia"
-      ],
-      "Neo, Mr Still Ballin",
-      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -30460,6 +30460,11 @@
     3125
    ],
    [
+    "Liberia",
+    "Semifinal",
+    3000
+   ],
+   [
     "Mito",
     "Semifinal",
     3000
@@ -30483,11 +30488,6 @@
     "Valen",
     "Subcampeón",
     1875
-   ],
-   [
-    "Liberia",
-    "Semifinal",
-    1750
    ],
    [
     "Mr Still Ballin",
@@ -31146,6 +31146,128 @@
    ],
    [
     "LAST",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "507": {
+  "dia": "2026-10-23",
+  "escala": "8-15",
+  "fecha": "23/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1563384616549744641"
+  ],
+  "n": 507,
+  "nombre": "GRISELDA RECORDS VOL. 3",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Shadow",
+       "Dom 🇵🇪"
+      ],
+      "Shadow",
+      ""
+     ],
+     [
+      [
+       "Xubaru",
+       "Sin Limites"
+      ],
+      "Xubaru",
+      ""
+     ],
+     [
+      [
+       "Rodas",
+       "BTRX"
+      ],
+      "Rodas",
+      ""
+     ],
+     [
+      [
+       "Mosquitrap 🦟🇦🇷",
+       "Carlos"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Xubaru",
+       "Shadow"
+      ],
+      "Xubaru",
+      ""
+     ],
+     [
+      [
+       "LRS",
+       "Rodas"
+      ],
+      "LRS",
+      "Walk-in 1: Lrs🇦🇷"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Xubaru",
+       "LRS"
+      ],
+      "Xubaru",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Xubaru",
+    "Campeón",
+    7500
+   ],
+   [
+    "Rodas",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Shadow",
+    "Semifinal",
+    3500
+   ],
+   [
+    "LRS",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "BTRX",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dom 🇵🇪",
     "Cuartos",
     2000
    ],

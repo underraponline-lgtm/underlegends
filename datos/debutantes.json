@@ -192,6 +192,17 @@
    "vence": "2026-10-28T01:13:25+00:00",
    "vencido": false
   },
+  "Dom": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-24T02:52:18+00:00",
+   "did": "",
+   "evento": "GRISELDA RECORDS VOL. 3",
+   "n": 507,
+   "sv": "DDF",
+   "vence": "2026-10-31T02:52:18+00:00",
+   "vencido": false
+  },
   "EVANGELINE": {
    "avisado": "2026-10-18",
    "chat": "2026-10-18",

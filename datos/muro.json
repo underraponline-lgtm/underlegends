@@ -215,6 +215,15 @@
 "rg": "C",
 "c": []
 },
+"xubaru": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "delux": {
 "rg": "C",
 "c": [
@@ -249,15 +258,6 @@
 "tam": {
 "rg": "B",
 "c": []
-},
-"xubaru": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "sinlimites": {
 "rg": "D",
@@ -375,6 +375,15 @@
 "rg": "C",
 "c": []
 },
+"lrs": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "dyzz": {
 "rg": "E",
 "c": [
@@ -432,15 +441,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"lrs": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -512,6 +512,14 @@
 "temporada"
 ]
 },
+"shadow": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "caliz": {
 "rg": "E",
 "c": [
@@ -545,14 +553,6 @@
 "eidp": {
 "rg": "",
 "c": []
-},
-"shadow": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "alexi": {
 "rg": "",
@@ -625,6 +625,14 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"rodas": {
+"rg": "E",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -736,13 +744,6 @@
 ]
 },
 "zeta": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"rodas": {
 "rg": "",
 "c": [
 "servidor",
@@ -2549,23 +2550,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-09-30T20:55:23Z",
-"quien": [
-"Bloody"
-],
-"rg": "C",
-"primero": false
-},
-{
-"tipo": "tarjeta",
-"t": "2026-09-30T21:05:28Z",
-"quien": [
-"Noxvell"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-09-30T21:05:28Z",
@@ -5885,6 +5869,23 @@
 ],
 "rg": "C",
 "primero": true
+},
+{
+"tipo": "rango",
+"t": "2026-10-24T04:03:22Z",
+"quien": [
+"Rodas"
+],
+"rg": "E",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-24T04:03:22Z",
+"quien": [
+"Rodas"
+],
+"carta": "competitivo"
 }
 ]
 }

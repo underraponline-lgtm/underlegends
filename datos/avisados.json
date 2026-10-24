@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "78acdffb154ccfed",
+  "firma": "9c9bcad0d6399b32",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "b6edfae5dbce9a06",
+  "firma": "95860092fd77ca61",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "3b049f83c4a6374f",
+  "firma": "5598241a6241b70b",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -13064,7 +13064,7 @@
    "Zignos": 22
   },
   "fecha": "15/10",
-  "firma": "c48884a153728b57",
+  "firma": "7de46cca4d748aac",
   "msg": "1560502933315915857",
   "nombre": "LA REDENCIÓN",
   "num": 476,
@@ -15936,7 +15936,7 @@
    "Tenor": 5
   },
   "fecha": "19/10",
-  "firma": "fdbfd639b5f06767",
+  "firma": "4f26ff2a7a812af9",
   "msg": "1561761975514697891",
   "nombre": "FREESTYLE LEAGUE N3",
   "num": 488,
@@ -18438,7 +18438,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "d49aeda7d71c9dc4",
+  "firma": "e4b31dd8bf7bcff4",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -20012,7 +20012,7 @@
    ],
    [
     "Liberia",
-    "DARKO 🇲🇽",
+    "DarkoMC",
     "Liberia"
    ],
    [
@@ -20077,13 +20077,18 @@
    ],
    [
     "Kyss",
-    "familiafortunaexito 🇫🇷",
+    "Deuxs",
     "Kyss"
    ],
    [
     "NC, Valen",
     "Vandu, Delux",
     "NC, Valen"
+   ],
+   [
+    "Neo, Mr Still Ballin",
+    "Velatz, Liberia",
+    "Neo, Mr Still Ballin"
    ],
    [
     "MCO, Panchok",
@@ -20102,7 +20107,7 @@
    ],
    [
     "Panchok, MCO, BNA",
-    "MR STLL BALLIN 🇺🇾, Neo, Liberia",
+    "Mr Still Ballin, Neo, Liberia",
     "Panchok, MCO, BNA"
    ],
    [
@@ -20141,11 +20146,11 @@
    "Vandu": 32
   },
   "fecha": "23/10",
-  "firma": "804cbec6ba89f869",
+  "firma": "62962b4027d6ae7e",
   "msg": "1563335636134531224",
   "nombre": "__ FREESTYLE FOR ALL ESPECIAL 1800 __",
   "num": 503,
-  "participantes": 33,
+  "participantes": 32,
   "sello": {
    "BNA": "",
    "MCO": "31a4c0ef2e20:84b47cf43136",
@@ -20181,6 +20186,11 @@
     3000
    ],
    [
+    "Liberia",
+    "Semifinal",
+    3000
+   ],
+   [
     "MCO",
     "Campeón",
     2500
@@ -20206,17 +20216,17 @@
     1750
    ],
    [
-    "MR STLL BALLIN 🇺🇾",
-    "Semifinal",
-    1750
-   ],
-   [
-    "Liberia",
+    "Mr Still Ballin",
     "Semifinal",
     1750
    ],
    [
     "Vandu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Velatz",
     "Cuartos",
     1250
    ],
@@ -20241,7 +20251,7 @@
     1250
    ],
    [
-    "DARKO 🇲🇽",
+    "DarkoMC",
     "Octavos",
     1250
    ],
@@ -20306,7 +20316,7 @@
     1250
    ],
    [
-    "familiafortunaexito 🇫🇷",
+    "Deuxs",
     "Octavos",
     1250
    ]
@@ -20862,7 +20872,7 @@
    ],
    [
     "Mosquitrap 🦟",
-    "Bootrax humildee🇵🇪",
+    "BTRX",
     "Mosquitrap 🦟"
    ],
    [
@@ -20877,7 +20887,7 @@
    ],
    [
     "Makmah",
-    "Mosqui",
+    "Mosquitrap 🦟",
     "Makmah"
    ],
    [
@@ -20900,7 +20910,7 @@
    "Sin Limites": 26
   },
   "fecha": "23/10",
-  "firma": "5e468b3533be76ee",
+  "firma": "57c3e2c8c8de2ca4",
   "msg": "1563384839284195339",
   "nombre": "GRISELDA RECORDS VOL. 2",
   "num": 506,
@@ -20922,7 +20932,7 @@
     5000
    ],
    [
-    "Mosqui",
+    "Mosquitrap 🦟",
     "Semifinal",
     3500
    ],
@@ -20937,7 +20947,7 @@
     2000
    ],
    [
-    "Bootrax humildee🇵🇪",
+    "BTRX",
     "Cuartos",
     2000
    ],
@@ -20948,6 +20958,130 @@
    ],
    [
     "LAST",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "507": {
+  "antes": {
+   "BTRX": [
+    213,
+    51,
+    true
+   ],
+   "LRS": [
+    44,
+    58,
+    false
+   ],
+   "Rodas": [
+    78,
+    101,
+    false
+   ],
+   "Shadow": [
+    55,
+    74,
+    false
+   ],
+   "Sin Limites": [
+    28,
+    33,
+    false
+   ],
+   "Xubaru": [
+    27,
+    32,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Shadow",
+    "Dom 🇵🇪",
+    "Shadow"
+   ],
+   [
+    "Xubaru",
+    "Sin Limites",
+    "Xubaru"
+   ],
+   [
+    "Rodas",
+    "BTRX",
+    "Rodas"
+   ],
+   [
+    "Xubaru",
+    "Shadow",
+    "Xubaru"
+   ],
+   [
+    "LRS",
+    "Rodas",
+    "LRS"
+   ],
+   [
+    "Xubaru",
+    "LRS",
+    "Xubaru"
+   ]
+  ],
+  "ev_antes": {
+   "BTRX": 10,
+   "LRS": 18,
+   "Rodas": 9,
+   "Shadow": 12,
+   "Sin Limites": 27,
+   "Xubaru": 12
+  },
+  "fecha": "23/10",
+  "firma": "2013e9667f522120",
+  "msg": "1563392896890179584",
+  "nombre": "GRISELDA RECORDS VOL. 3",
+  "num": 507,
+  "participantes": 9,
+  "sello": {
+   "Xubaru": "30f501765fe9:84b47cf43136"
+  },
+  "sv": "DDF",
+  "t": "2026-10-24T03:53:50Z",
+  "tabla": [
+   [
+    "Xubaru",
+    "Campeón",
+    7500
+   ],
+   [
+    "Shadow",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Rodas",
+    "Semifinal",
+    3500
+   ],
+   [
+    "LRS",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Dom 🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "BTRX",
     "Cuartos",
     2000
    ]

@@ -471,6 +471,46 @@
    ]
   ]
  },
+ "133676330": {
+  "dia": "2026-10-23",
+  "escala": "16+",
+  "fecha": "23/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1563384237233676330"
+  ],
+  "n": 133676330,
+  "nombre": "2v2 2",
+  "ns": 1,
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Mc arepa, roda mc 🇵🇦",
+       "NXUZ, Tayo"
+      ],
+      "Mc arepa, roda mc 🇵🇦",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "NXUZ",
+    "Cuartos",
+    0
+   ],
+   [
+    "Tayo",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
  "139475261": {
   "dia": "2026-10-20",
   "escala": "8-15",
