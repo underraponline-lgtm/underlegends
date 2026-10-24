@@ -17917,7 +17917,7 @@
    "Velatz": 37
   },
   "fecha": "21/10",
-  "firma": "3e840a8755d65eb6",
+  "firma": "133e110aeb894e4d",
   "msg": "1562578019472773131",
   "nombre": "__ DESGRACIAS EN TOKYO VOL 30 1 VS 1 __",
   "num": 494,
@@ -20816,6 +20816,140 @@
     "💥 SF2: ISAC",
     "Semifinal",
     1750
+   ]
+  ],
+  "v": 2
+ },
+ "506": {
+  "antes": {
+   "Dominick": [
+    213,
+    51,
+    true
+   ],
+   "Erian": [
+    6,
+    7,
+    false
+   ],
+   "LAST": [
+    106,
+    164,
+    false
+   ],
+   "Makmah": [
+    2,
+    2,
+    false
+   ],
+   "Masino": [
+    52,
+    68,
+    false
+   ],
+   "Sin Limites": [
+    29,
+    35,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Makmah",
+    "Sin Limites",
+    "Makmah"
+   ],
+   [
+    "Mosquitrap 🦟",
+    "Bootrax humildee🇵🇪",
+    "Mosquitrap 🦟"
+   ],
+   [
+    "Erian",
+    "Dominick",
+    "Erian"
+   ],
+   [
+    "Masino",
+    "LAST",
+    "Masino"
+   ],
+   [
+    "Makmah",
+    "Mosqui",
+    "Makmah"
+   ],
+   [
+    "Erian",
+    "Masino",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "Makmah",
+    "Erian"
+   ]
+  ],
+  "ev_antes": {
+   "Dominick": 17,
+   "Erian": 45,
+   "LAST": 7,
+   "Makmah": 66,
+   "Masino": 7,
+   "Sin Limites": 26
+  },
+  "fecha": "23/10",
+  "firma": "5e468b3533be76ee",
+  "msg": "1563384839284195339",
+  "nombre": "GRISELDA RECORDS VOL. 2",
+  "num": 506,
+  "participantes": 10,
+  "sello": {
+   "Erian": "7fa81fc03c56:e8f4f15f7e3a"
+  },
+  "sv": "DDF",
+  "t": "2026-10-24T02:53:47Z",
+  "tabla": [
+   [
+    "Erian",
+    "Campeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Mosqui",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Masino",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Bootrax humildee🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2

@@ -88,6 +88,17 @@
    "vence": "2026-10-29T00:30:05+00:00",
    "vencido": false
   },
+  "Bootrax humildee": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-24T02:08:12+00:00",
+   "did": "",
+   "evento": "GRISELDA RECORDS VOL. 2",
+   "n": 506,
+   "sv": "DDF",
+   "vence": "2026-10-31T02:08:12+00:00",
+   "vencido": false
+  },
   "Cazafla anti cazanova": {
    "avisado": "2026-10-18",
    "chat": "2026-10-19",
@@ -535,6 +546,17 @@
    "n": 486,
    "sv": "DDF",
    "vence": "2026-10-26T01:35:44+00:00",
+   "vencido": false
+  },
+  "Mosqui": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-24T02:08:12+00:00",
+   "did": "",
+   "evento": "GRISELDA RECORDS VOL. 2",
+   "n": 506,
+   "sv": "DDF",
+   "vence": "2026-10-31T02:08:12+00:00",
    "vencido": false
   },
   "Nmb": {

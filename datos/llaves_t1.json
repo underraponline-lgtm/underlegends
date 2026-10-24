@@ -31023,5 +31023,132 @@
     1750
    ]
   ]
+ },
+ "506": {
+  "dia": "2026-10-23",
+  "escala": "8-15",
+  "fecha": "23/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1563373516747972719"
+  ],
+  "n": 506,
+  "nombre": "GRISELDA RECORDS VOL. 2",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "Sin Limites"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Mosquitrap 🦟",
+       "Bootrax humildee🇵🇪"
+      ],
+      "Mosquitrap 🦟",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "Dominick"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "Masino",
+       "LAST"
+      ],
+      "Masino",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "Mosqui"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "Masino"
+      ],
+      "Erian",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "Makmah"
+      ],
+      "Erian",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Erian",
+    "Campeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Masino",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mosqui",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Bootrax humildee🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LAST",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

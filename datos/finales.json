@@ -674,5 +674,34 @@
   "sin_permiso": false,
   "sv": "FFA"
  },
+ "1563359321998491730": {
+  "autor": "1345454905325781012",
+  "canal": "1470097588635176960",
+  "cuando": "2026-10-24T01:11:48.176000+00:00",
+  "evento": "19 CUP FUTCARD EDICIÓN 5",
+  "fecha": "23/10",
+  "llave": "1563359321998491730",
+  "pregunta": "1563384889770774559",
+  "preguntada": "2026-10-23 10:53 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "🔹 C2: UZI",
+     "Bootrax🇵🇪"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "🔹 C3: ISAC",
+     "SHADOW 🇨🇴"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "DDF"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

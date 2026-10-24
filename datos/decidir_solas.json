@@ -2150,6 +2150,54 @@
     "💥 SF1: PICHULA"
    ],
    "escribio": {}
+  },
+  {
+   "id": "95b3299d87",
+   "tipo": "Nombre desconocido",
+   "sec": "GRISELDA RECORDS VOL. 2 · DDF · 23/10 · #506",
+   "que": "¿Quién es «Bootrax humildee🇵🇪»?",
+   "r": "Es BTRX (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @gianfraxruizescor11 (en Discord: «Bootrax Humilde») · en la Lista: BTRX se anotó como «Bootrax humildee» para ese evento, no es staff de DDF y esa noche no jugó con su nombre",
+   "t": 1792810927955,
+   "filas": [
+    821
+   ],
+   "variantes": [
+    "Bootrax humildee🇵🇪"
+   ],
+   "escribio": {
+    "quien": "GRISELDA RECORDS VOL. 2 · DDF · 23/10 · Bootrax humildee🇵🇪"
+   }
+  },
+  {
+   "id": "9ffcb7dffe",
+   "tipo": "Nombre desconocido",
+   "sec": "GRISELDA RECORDS VOL. 2 · DDF · 23/10 · #506",
+   "que": "¿Quién es «Mosqui»?",
+   "r": "Es Mosquitrap 🦟",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Mosquitrap 🦟: estaba en la llamada del evento con un nombre parecido",
+   "t": 1792810927955,
+   "filas": [
+    822
+   ],
+   "variantes": [
+    "Mosqui"
+   ],
+   "escribio": {
+    "alias": [
+     "Mosqui",
+     "Mosquitrap 🦟"
+    ],
+    "filas": [
+     311
+    ]
+   }
   }
  ],
  "deshechas": []
