@@ -721,21 +721,21 @@
    "semillero": {
     "nuevos": {
      "FFA": 13,
-     "DDF": 6,
+     "DDF": 7,
      "ACAD": 3,
      "SR": 4
     },
     "gente": {
      "FFA": 108,
      "ACAD": 42,
-     "DDF": 32,
+     "DDF": 35,
      "SR": 24
     },
     "gana": "DDF"
    },
    "meta_va": {
     "ACAD": 42,
-    "DDF": 32,
+    "DDF": 35,
     "DRA": 0,
     "FFA": 108,
     "FFS": 0,
