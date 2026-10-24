@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-24T02:54:40+00:00",
+ "cuando": "2026-10-24T03:24:39+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -7045,6 +7045,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Revo🇻🇪 xubaru🇻🇪",
+   "quien": "mcarepita",
+   "discord_id": "1528203989152174110",
+   "msg_id": "1563391471061700720",
+   "cuando": "2026-10-24T03:19:33"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1563386418976391209",
+   "cuando": "2026-10-24T02:59:28"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Revo",
+   "quien": "mcarepita",
+   "discord_id": "1528203989152174110",
+   "msg_id": "1563386093523570719",
+   "cuando": "2026-10-24T02:58:11"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",

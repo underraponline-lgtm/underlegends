@@ -766,12 +766,12 @@
   },
   "BTRX": {
    "DDF": {
-    "duelos": "4/7",
-    "ev": 3,
+    "duelos": "4/8",
+    "ev": 4,
     "oro": 0,
     "ovr": 49,
     "pod": 1,
-    "pts": 14275,
+    "pts": 16275,
     "racha": "0/1",
     "tg": {
      "fin": 1,
@@ -1011,20 +1011,6 @@
     "pod": 0,
     "pts": 3300,
     "racha": "0/0"
-   }
-  },
-  "Bootrax humildee🇵🇪": {
-   "DDF": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 2000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "Btrece": {
@@ -5377,29 +5363,15 @@
     "racha": "0/0"
    }
   },
-  "Mosqui": {
-   "DDF": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 3500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "Mosquitrap 🦟": {
    "DDF": {
-    "duelos": "1/1",
-    "ev": 1,
+    "duelos": "1/2",
+    "ev": 2,
     "oro": 1,
-    "ovr": 46,
+    "ovr": 48,
     "pod": 1,
-    "pts": 7500,
-    "racha": "1/1",
+    "pts": 11000,
+    "racha": "0/1",
     "tg": {
      "fin": 1,
      "nuevo": true
@@ -7278,7 +7250,7 @@
     "racha": "0/0"
    },
    "DDF": {
-    "duelos": "0/5",
+    "duelos": "1/6",
     "ev": 7,
     "oro": 0,
     "ovr": 49,
@@ -9187,6 +9159,20 @@
     "ovr": 43,
     "pod": 0,
     "pts": 1750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
+  "🔹 C3: ISAC": {
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 2000,
     "racha": "0/0",
     "tg": {
      "nuevo": true

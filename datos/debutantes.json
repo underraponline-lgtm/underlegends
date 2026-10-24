@@ -88,17 +88,6 @@
    "vence": "2026-10-29T00:30:05+00:00",
    "vencido": false
   },
-  "Bootrax humildee": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-24T02:08:12+00:00",
-   "did": "",
-   "evento": "GRISELDA RECORDS VOL. 2",
-   "n": 506,
-   "sv": "DDF",
-   "vence": "2026-10-31T02:08:12+00:00",
-   "vencido": false
-  },
   "Cazafla anti cazanova": {
    "avisado": "2026-10-18",
    "chat": "2026-10-19",
@@ -548,17 +537,6 @@
    "vence": "2026-10-26T01:35:44+00:00",
    "vencido": false
   },
-  "Mosqui": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-24T02:08:12+00:00",
-   "did": "",
-   "evento": "GRISELDA RECORDS VOL. 2",
-   "n": 506,
-   "sv": "DDF",
-   "vence": "2026-10-31T02:08:12+00:00",
-   "vencido": false
-  },
   "Nmb": {
    "avisado": "2026-10-19",
    "chat": "2026-10-20",
@@ -879,6 +857,17 @@
    "vencido": false
   },
   "💥 SF2: ISAC": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-24T01:11:48+00:00",
+   "did": "",
+   "evento": "19 CUP FUTCARD EDICIÓN 5",
+   "n": 505,
+   "sv": "DDF",
+   "vence": "2026-10-31T01:11:48+00:00",
+   "vencido": false
+  },
+  "🔹 C3: ISAC": {
    "con": null,
    "cumplido": "",
    "debut": "2026-10-24T01:11:48+00:00",

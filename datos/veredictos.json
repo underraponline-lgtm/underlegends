@@ -2,50 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1560848731455361035": {
-   "id": "1560848731455361035",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1792205736746,
-   "a": "MCO",
-   "b": "SIN LÍMITES",
-   "ganador": "MCO",
-   "votos": "1–0"
-  },
-  "1560850645345370234": {
-   "id": "1560850645345370234",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1792206193053,
-   "a": "BLOODY",
-   "b": "CALIZ",
-   "ganador": "BLOODY",
-   "votos": "1–0"
-  },
-  "1560852039289012275": {
-   "id": "1560852039289012275",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1792206525395,
-   "a": "CALIZ",
-   "b": "COLESITO",
-   "ganador": "COLESITO",
-   "votos": "1–0"
-  },
-  "1560854274844663921": {
-   "id": "1560854274844663921",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1792207058393,
-   "a": "MCO",
-   "b": "BLOODY",
-   "ganador": "MCO",
-   "votos": "1–0"
-  },
   "1560857266658353165": {
    "id": "1560857266658353165",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -924,6 +880,28 @@
    "a": "CARLOS 🇪🇨 + MAKMA 🇻🇪",
    "b": "MATHIAS 🇻🇪 + MOLUSCO 🇦🇷",
    "ganador": "MATHIAS 🇻🇪 + MOLUSCO 🇦🇷",
+   "votos": "1–0"
+  },
+  "1563388733506719840": {
+   "id": "1563388733506719840",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792811320426,
+   "a": "SIN LIMITES - VILCA",
+   "b": "OKAM - SOSATR",
+   "ganador": "OKAM - SOSATR",
+   "votos": "1–0"
+  },
+  "1563391353499418675": {
+   "id": "1563391353499418675",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1792811945081,
+   "a": "MILLONARIO",
+   "b": "ARTEZZY",
+   "ganador": "ARTEZZY",
    "votos": "1–0"
   }
  },
@@ -5617,14 +5595,44 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1792810248431,
-   "ed": 1792810248431,
-   "texto": "`[ CUARTOS ]`\n⌞MCAREPA 🇻🇪 + roda mc 🇵🇦⌝ 🆚 ⌞okam🇨🇷 -sosa🇺🇾⌝\n`[ SEMIFINALES ]`\n`[ FINAL ]`",
+   "ed": 1792811472870,
+   "texto": "`[ CUARTOS ]`\n⌞Sin límites 🇵🇪 + Vilca🇵🇪⌝ 🆚 ⌞okam🇨🇷 -sosa🇺🇾⌝\n⌞Millonari-O 🇵🇾 + Last 🇺🇾⌝ 🆚 ⌞Lrs🇦🇷 + Artezzy 🇵🇪⌝\n⌞Eseeka 🇵🇪 + Raizer 🇵🇪⌝ 🆚 ⌞Scot 🇵🇪 -⌝\n⌞MCAREPA 🇻🇪 + roda mc 🇵🇦⌝ 🆚 ⌞Nxuz - tayo 🇵🇪⌝",
    "batallas": [
     [
      "CUARTOS",
      [
-      "MCAREPA 🇻🇪 + roda mc 🇵🇦",
+      "Sin límites 🇵🇪 + Vilca🇵🇪",
       "okam🇨🇷 -sosa🇺🇾"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Millonari-O 🇵🇾 + Last 🇺🇾",
+      "Lrs🇦🇷 + Artezzy 🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Eseeka 🇵🇪 + Raizer 🇵🇪",
+      "Scot 🇵🇪 -"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MCAREPA 🇻🇪 + roda mc 🇵🇦",
+      "Nxuz - tayo 🇵🇪"
      ],
      null,
      "última ronda y no dice campeón",

@@ -384,6 +384,10 @@
 "temporada"
 ]
 },
+"btrx": {
+"rg": "C",
+"c": []
+},
 "dominick": {
 "rg": "D",
 "c": []
@@ -667,10 +671,6 @@
 "servidor",
 "temporada"
 ]
-},
-"btrx": {
-"rg": "",
-"c": []
 },
 "hotaruadeyemi": {
 "rg": "",
@@ -2549,14 +2549,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-09-30T15:48:12Z",
-"quien": [
-"Luffy"
-],
-"carta": "temporada"
-},
 {
 "tipo": "rango",
 "t": "2026-09-30T20:55:23Z",
@@ -5884,6 +5876,15 @@
 ],
 "rg": "C",
 "primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-24T03:29:28Z",
+"quien": [
+"BTRX"
+],
+"rg": "C",
+"primero": true
 }
 ]
 }
