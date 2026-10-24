@@ -1,45 +1,45 @@
 {
  "v": 1,
- "cuando": "2026-10-24T04:45:32Z",
+ "cuando": "2026-10-24T05:14:25Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 950.5,
+ "dur_s": 891.1,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.4
+   "s": 6.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.3
+   "s": 7.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 24.2
+   "s": 29.4
   },
   {
    "n": "5",
-   "que": "tanda 1 de 3 · 40 persona(s)",
+   "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 847.7
+   "s": 786.0
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.3
+   "s": 5.4
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 57.7
+   "s": 54.1
   }
  ],
  "fallas": [
@@ -53,19 +53,11 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py MCO"
+   "que": "03_Servidor/generar.py Majiztral"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py MaYeuTyK"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py ajoel08"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Xubaru"
+   "que": "03_Servidor/generar.py Majiztral"
   }
  ],
  "ultimo_evento": {
@@ -76,18 +68,18 @@
  },
  "cuotas": {
   "kv": {
-   "write": 288,
-   "read": 19419
+   "write": 306,
+   "read": 21048
   },
   "objeto": {
-   "leidas": 1154978,
-   "escritas": 11075,
-   "pedidos": 2969
+   "leidas": 1233530,
+   "escritas": 11401,
+   "pedidos": 3175
   },
   "worker": {
-   "pedidos": 7722,
+   "pedidos": 7720,
    "errores": 0,
-   "sub": 9648,
+   "sub": 9633,
    "p50_ms": 1.32,
    "p99_ms": 10.6
   },
