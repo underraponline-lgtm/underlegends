@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "3.99",
+   "dia": "2026-10-24",
+   "cuando": "2026-10-24T10:38:57-04:00",
+   "titulo": "Tarjetas nueva: tu álbum y los estantes",
+   "items": [
+    "🗂️ **Tu álbum** arriba: tus tarjetas en la mano, las que te faltan en gris con lo que te falta, y cuántas llevas (3 de 4). Con «Mi álbum para historias» armas una imagen con todas.",
+    "🃏 **La colección de la Liga en cuatro estantes** que se deslizan de costado. Cada uno se ordena por lo que mide su tarjeta: la Competitiva por Score, y la de Servidor y la de País con el #1 de cada uno (toca un servidor o un país para ver a los suyos).",
+    "👆 **Toca una tarjeta** y se abre en grande; desliza para pasar a la siguiente, o compárala contigo.",
+    "⇄ **Comparar**: tú contra el que tienes justo adelante, con una barra por lado. En la compu va debajo de tu álbum."
+   ]
+  },
+  {
    "version": "3.98",
    "dia": "2026-10-22",
    "cuando": "2026-10-22T02:18:40-04:00",

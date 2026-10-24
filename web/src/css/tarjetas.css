@@ -20,3 +20,121 @@
 .tj-pie small{font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:0.025em;text-transform:uppercase;color:var(--gris)}
 .tj-pie small.tj-dib{display:flex;align-items:center;gap:4px;color:var(--magenta-tx)}
 .tj-mas{margin:22px 0 4px}
+
+/* 🗂️ EL REMAKE «A · EL ÁLBUM» (Dlx, 24/10/2026: «Me gusta más A la verdad»). `ta-` porque `tj-` ya lo usan vivo.css y la
+   galería de «Ver todas». En el celular va tu álbum, los cuatro estantes y Comparar, en ese orden; en la compu, tu álbum
+   y Comparar en la columna negra de la izquierda y los estantes a la derecha. */
+.ta-g{display:flex;flex-direction:column}
+.ta-izq{display:contents}
+.ta-alb{order:1}
+.ta-der{order:2}
+.ta-cmp-w{order:3}
+/* tu álbum */
+.ta-alb{display:grid;gap:12px;margin-top:0;padding-top:20px}
+.ta-alb .tag{justify-self:start}
+.ta-h{margin:0;font:900 28px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;overflow-wrap:anywhere}
+.ta-p{margin:0;color:var(--gris);font-size:15px;line-height:1.5;max-width:62ch}
+.ta-p code{font:700 .9em/1 "Space Mono",monospace;padding:2px 5px;background:rgba(127,127,127,.18)}
+.ta-q{display:flex;gap:12px;align-items:center;min-width:0}
+.ta-q > div{min-width:0}
+.ta-mini{width:46px;flex:none}
+.ta-n{margin:5px 0 0;font:700 15px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--gris)}
+.ta-n b{color:var(--tinta)}
+.ta-fl{width:20px;height:14px;object-fit:cover;vertical-align:-2px;margin-right:4px;border-radius:0}
+.ta-seg{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.ta-seg i{height:6px;background:var(--suave)}
+.ta-seg i.ok{background:#29B298}
+/* la mano: las cuatro abiertas en abanico, las que faltan en gris con el candado */
+.ta-mano{--w:92px;list-style:none;margin:6px 0 0;padding:0;position:relative;height:calc(var(--w) * 1.62 + 26px)}
+.ta-mn{position:absolute;left:50%;bottom:0;width:var(--w);transform-origin:50% 100%;--c:calc(var(--i) - (var(--n) - 1) / 2);
+  transform:translateX(calc(-50% + var(--c) * var(--w) * .8)) rotate(calc(var(--c) * 6deg)) translateY(calc(var(--d, 0) * 1px));
+  transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.ta-mn:first-child,.ta-mn:last-child{--d:10}
+.ta-mn .sin-boton{display:block;width:100%}
+.ta-mn .tj-c{filter:drop-shadow(0 6px 12px rgba(0,0,0,.55))}
+.ta-mn.bloq .tj-c{opacity:.5;filter:grayscale(1)}
+.ta-cand{position:absolute;inset:0;display:grid;place-items:center;color:#F6F6F6;pointer-events:none}
+.ta-hueco{display:grid;place-items:center;border:2px dashed #5A5A60;color:#A5A5A0;background:#101012}
+@media (hover: hover) and (pointer: fine){.ta-mn:not(.bloq):hover{--d:-10;z-index:2}}
+.ta-falta{display:grid;gap:8px;padding:12px;border:1.5px dashed #5A5A60}
+.ta-falta small{display:flex;align-items:center;gap:6px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em}
+.ta-falta p{margin:0;font-size:14px;line-height:1.45;color:var(--gris)}
+.ta-falta .tj-falta li{color:var(--tinta)}
+.ta-acc{display:flex;flex-wrap:wrap;gap:8px}
+.ta-bh{display:inline-flex;align-items:center;gap:6px}
+.ta-t2{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.ta-t2 span{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;color:var(--gris)}
+.ta-t2 i{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;font-style:normal;padding:7px 10px;border:1.5px dashed #5A5A60;color:var(--gris)}
+/* los estantes */
+.ta-der{display:grid;gap:30px;min-width:0;padding-bottom:10px}
+.ta-est{display:grid;gap:10px;min-width:0}
+.ta-est-t{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px;border-top:2px solid var(--linea);padding-top:12px}
+.ta-est-t h2{margin:0;font:900 22px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase}
+.ta-est-t h2 small{margin-left:4px;font:700 14px/1 "Barlow Condensed",sans-serif;font-stretch:100%;letter-spacing:.06em;color:var(--gris)}
+.ta-est-t a{display:inline-flex;align-items:center;gap:6px;font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.ta-est-p{margin:0;color:var(--gris);font-size:14px}
+.ta-chips{flex-wrap:nowrap}
+.ta-chips .ta-fl{width:22px;height:15px;margin:0}
+.ta-riel{list-style:none;margin:0 -16px;padding:2px 16px 8px;display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 16px;scrollbar-width:none;overscroll-behavior-x:contain}
+.ta-riel::-webkit-scrollbar{display:none}
+.ta-fc{flex:none;width:128px;display:grid;gap:4px;align-content:start;position:relative;scroll-snap-align:start;min-width:0}
+.ta-fc .sin-boton{display:block;width:100%}
+.ta-fc b{font:800 14px/1.15 Archivo,sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ta-fc small{font:700 14px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.03em;text-transform:uppercase;color:var(--gris)}
+.ta-mas a{display:grid;place-items:center;align-content:center;gap:6px;min-height:186px;border:1.5px solid var(--suave);background:var(--caja);text-align:center}
+.ta-mas b{font:900 26px/1 Archivo,sans-serif}
+.ta-nueva{position:absolute;top:6px;left:6px;padding:4px 6px;background:#E41373;color:#fff;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;font-style:normal;pointer-events:none}
+.tj-grilla li{position:relative}
+/* Comparar: las dos cartas, VS, y una barra por lado que mide su propio valor */
+.ta-cmp{display:grid;gap:12px;min-width:0}
+.ta-cmp-el{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.ta-vs{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:10px}
+.ta-vs figure{margin:0;display:grid;gap:6px;justify-items:center;min-width:0}
+.ta-vs .sin-boton,.ta-vs .tj-c{max-width:150px;width:100%}
+.ta-vs figcaption{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.ta-vs-x{font:900 26px/1 Archivo,sans-serif;font-stretch:125%;color:var(--magenta-tx)}
+.ta-barras{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.ta-barras li{display:grid;grid-template-columns:62px minmax(0,1fr) 70px minmax(0,1fr) 62px;align-items:center;gap:6px}
+.ta-barras li.ta-cara{grid-template-columns:62px minmax(0,1fr) 62px;padding:8px 0;border-top:1px solid var(--suave);border-bottom:1px solid var(--suave)}
+.ta-barras em{font:700 13px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;text-align:center;font-style:normal;color:var(--gris)}
+.ta-barras i{display:flex;height:9px;background:var(--caja)}
+.ta-barras i.ba{justify-content:flex-end}
+.ta-barras u{display:block;height:100%;background:#8A8A86;text-decoration:none}
+.ta-barras u.g{background:#29B298}
+.ta-barras span{font:900 15px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ta-barras li > span:last-child{text-align:right}
+.ta-barras span.gana{color:var(--tj-gana)}
+/* la hoja: abajo en el celular, al centro en la compu */
+.ta-velo{position:fixed;inset:0;z-index:120;display:flex;align-items:flex-end;justify-content:center;background:rgba(3,3,4,.78);overscroll-behavior:contain}
+.ta-hoja{width:100%;max-width:480px;max-height:94vh;max-height:94dvh;overflow:auto;display:grid;gap:10px;justify-items:center;
+  padding:8px 16px calc(18px + env(safe-area-inset-bottom, 0px));background:#030304;color:#F6F6F6;border-radius:4px 4px 0 0;--gris:#A5A5A0;--tinta:#F6F6F6;--linea:#F6F6F6}
+.ta-asa{width:44px;height:4px;border-radius:2px;background:#5A5A60}
+.ta-h-top{width:100%;display:flex;justify-content:space-between;align-items:center}
+.ta-h-top small{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;color:#A5A5A0}
+.ta-x{width:40px;height:40px;border:0;background:none;color:#F6F6F6;font:400 30px/1 Archivo,sans-serif;cursor:pointer}
+.ta-h-c{display:grid;grid-template-columns:40px minmax(0,1fr) 40px;align-items:center;gap:8px;width:100%}
+.ta-h-c .tj-c{width:min(240px,100%);justify-self:center;max-height:52vh;max-height:52dvh}
+.ta-fl-n{width:40px;height:40px;display:grid;place-items:center;border:1.5px solid #5A5A60;background:none;color:#F6F6F6;font:800 20px/1 Archivo,sans-serif;cursor:pointer}
+.ta-h-n{font:900 22px/1 Archivo,sans-serif;font-stretch:125%;text-transform:uppercase;text-align:center;overflow-wrap:anywhere}
+.ta-h-d{margin:0;color:#A5A5A0;font-size:14px;text-align:center}
+.ta-h-d.tj-dib{color:#FF6FB0;display:flex;gap:4px;align-items:center}
+.ta-h-acc{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.ta-h-acc .btn.borde2{color:#F6F6F6;border-color:#F6F6F6}
+@media (hover: hover) and (pointer: fine){.ta-h-t{display:none}}
+.ta-h-t{margin:0;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#A5A5A0}
+@media (min-width: 900px){
+  .app .ta-g{display:grid;grid-template-columns:400px minmax(0,1fr);align-items:stretch}
+  .app .ta-izq{display:block;--magenta-tx:#E41373;--fondo:#030304;--tinta:#F6F6F6;--linea:#F6F6F6;--suave:#2A2A2E;--gris:#A5A5A0;--caja:#101012;
+    --inv:#F6F6F6;--inv-tinta:#030304;--tj-gana:#29B298;background:var(--fondo);color:var(--tinta)}
+  .noche .ta-izq{--fondo:#121214}
+  .app .ta-izq .sec{padding:26px 28px 30px;margin-top:0}
+  .app .ta-cmp-w{padding-top:6px}
+  .app .ta-mano{--w:88px}
+  .app .ta-der{padding:26px var(--gut) 40px 40px}
+  .app .ta-riel{margin:0;padding:2px 0 8px;scroll-padding:0}
+  .app .ta-fc{width:152px}
+  .app .ta-mas a{min-height:220px}
+  .app .ta-velo{align-items:center}
+  .app .ta-hoja{border-radius:4px;max-width:440px;padding-bottom:22px}
+  .app .ta-asa{display:none}
+}
