@@ -1,27 +1,27 @@
 {
  "v": 1,
- "cuando": "2026-10-24T21:32:59Z",
+ "cuando": "2026-10-24T21:45:44Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 617.3,
+ "dur_s": 732.4,
  "pasos": [
   {
    "n": "0a",
    "que": "los nombres de Discord de la Lista, del Operativo",
    "ok": true,
-   "s": 1.7
+   "s": 1.0
   },
   {
    "n": "0a2",
    "que": "las crews, del objeto",
    "ok": true,
-   "s": 1.2
+   "s": 1.4
   },
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.7
+   "s": 0.8
   },
   {
    "n": "0c",
@@ -33,13 +33,13 @@
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 122.6
+   "s": 110.8
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 194.3
+   "s": 141.4
   },
   {
    "n": "1a",
@@ -57,7 +57,7 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 43.3
+   "s": 45.8
   },
   {
    "n": "1b2",
@@ -69,13 +69,13 @@
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.7
+   "s": 6.1
   },
   {
    "n": "2b0",
    "que": "el Writing Challenge de FFA",
    "ok": true,
-   "s": 0.6
+   "s": 0.7
   },
   {
    "n": "2b",
@@ -99,7 +99,7 @@
    "n": "2b3d",
    "que": "los paneles de DRA",
    "ok": true,
-   "s": 0.3
+   "s": 25.1
   },
   {
    "n": "2b3b",
@@ -117,19 +117,19 @@
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.7
+   "s": 1.2
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.6
+   "s": 0.7
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 4.3
+   "s": 7.7
   },
   {
    "n": "2b5b",
@@ -141,43 +141,43 @@
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 45.5
+   "s": 187.1
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 4.5
+   "s": 6.1
   },
   {
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 3.3
+   "s": 3.4
   },
   {
    "n": "2b8c",
    "que": "las promociones",
    "ok": true,
-   "s": 5.9
+   "s": 3.0
   },
   {
    "n": "2b8d",
    "que": "los MES AWARDS",
    "ok": false,
-   "s": 49.6
+   "s": 54.2
   },
   {
    "n": "2b8e",
    "que": "las semanas",
    "ok": true,
-   "s": 0.1
+   "s": 0.0
   },
   {
    "n": "2b8f",
    "que": "los tiers",
    "ok": true,
-   "s": 7.7
+   "s": 9.4
   },
   {
    "n": "2b8b",
@@ -189,13 +189,13 @@
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 35.0
+   "s": 29.9
   },
   {
    "n": "2b9b",
    "que": "el ascenso de cada servidor",
    "ok": true,
-   "s": 2.3
+   "s": 2.4
   },
   {
    "n": "2b10",
@@ -207,13 +207,13 @@
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 50.3
+   "s": 55.1
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 0.3
+   "s": 0.4
   },
   {
    "n": "2c3",
@@ -225,7 +225,7 @@
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 12.5
+   "s": 14.5
   },
   {
    "n": "2e",
@@ -237,13 +237,13 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.2
+   "s": 7.6
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.9
+   "s": 7.7
   }
  ],
  "fallas": [
@@ -252,19 +252,19 @@
    "que": "bot/mes_awards.py --aplicar"
   }
  ],
- "decidir": 97,
+ "decidir": 100,
  "ultimo_evento": {
-  "n": "508",
-  "nombre": "19 FUTCARD EDITION - 6 COMPE GAY",
+  "n": "509",
+  "nombre": "GRISELDA RECORDS VOL. 5",
   "sv": "DDF",
   "dia": "2026-10-24"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-24T21:24:56Z",
+  "cuando": "2026-10-24T21:35:32Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 509,
-  "un_evento": 238,
+  "jugadores": 510,
+  "un_evento": 239,
   "diez_o_mas": 79,
   "cohortes": [
    {
@@ -293,7 +293,7 @@
    },
    {
     "semana": "2026-10-19",
-    "nuevos": 32,
+    "nuevos": 33,
     "volvieron": 4,
     "completa": false
    }
@@ -301,20 +301,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 513,
-   "read": 49465
+   "write": 522,
+   "read": 50506
   },
   "objeto": {
-   "leidas": 2336620,
-   "escritas": 19903,
-   "pedidos": 7907
+   "leidas": 2381004,
+   "escritas": 21016,
+   "pedidos": 8026
   },
   "worker": {
-   "pedidos": 7678,
+   "pedidos": 7751,
    "errores": 0,
-   "sub": 9541,
+   "sub": 9611,
    "p50_ms": 1.29,
-   "p99_ms": 10.03
+   "p99_ms": 10.07
   },
   "r2": {
    "objetos": 4912,

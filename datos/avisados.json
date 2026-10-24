@@ -21233,5 +21233,129 @@
    ]
   ],
   "v": 2
+ },
+ "509": {
+  "antes": {
+   "CrisZJ": [
+    212,
+    49,
+    true
+   ],
+   "Drexx": [
+    32,
+    41,
+    false
+   ],
+   "Erian": [
+    6,
+    7,
+    false
+   ],
+   "Makmah": [
+    2,
+    2,
+    false
+   ],
+   "Marcos": [
+    121,
+    199,
+    false
+   ],
+   "NXUZ": [
+    37,
+    48,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Makmah",
+    "Marcos",
+    "Makmah"
+   ],
+   [
+    "NXUZ",
+    "CrisZJ",
+    "NXUZ"
+   ],
+   [
+    "Drexx",
+    "Erian",
+    "Drexx"
+   ],
+   [
+    "FanDeAbel",
+    "Makmah",
+    "FanDeAbel"
+   ],
+   [
+    "Drexx",
+    "NXUZ",
+    "Drexx"
+   ],
+   [
+    "FanDAbel",
+    "Drexx",
+    "FanDAbel"
+   ]
+  ],
+  "ev_antes": {
+   "CrisZJ": 12,
+   "Drexx": 23,
+   "Erian": 46,
+   "Makmah": 67,
+   "Marcos": 3,
+   "NXUZ": 14
+  },
+  "fecha": "24/10",
+  "firma": "d389824406b82771",
+  "msg": "1563665697198973123",
+  "nombre": "GRISELDA RECORDS VOL. 5",
+  "num": 509,
+  "participantes": 12,
+  "sello": {
+   "FanDAbel": ""
+  },
+  "sv": "DDF",
+  "t": "2026-10-24T21:35:16Z",
+  "tabla": [
+   [
+    "FanDAbel",
+    "Campeón",
+    7500
+   ],
+   [
+    "Drexx",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Marcos",
+    "Cuartos",
+    2000
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

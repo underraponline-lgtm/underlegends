@@ -257,6 +257,17 @@
    "vence": "2026-10-24T02:20:02+00:00",
    "vencido": true
   },
+  "FanDAbel": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-24T21:01:57+00:00",
+   "did": "",
+   "evento": "GRISELDA RECORDS VOL. 5",
+   "n": 509,
+   "sv": "DDF",
+   "vence": "2026-10-31T21:01:57+00:00",
+   "vencido": false
+  },
   "Guty": {
    "avisado": "2026-10-12",
    "chat": "2026-10-12",

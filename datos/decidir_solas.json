@@ -2217,6 +2217,25 @@
     "🔹 C2: UZI"
    ],
    "escribio": {}
+  },
+  {
+   "id": "b8d75692fb",
+   "tipo": "Nombre desconocido",
+   "sec": "GRISELDA RECORDS VOL. 5 · DDF · 24/10 · #509",
+   "que": "¿Quién es «FanDeAbel»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792878324330,
+   "filas": [
+    831
+   ],
+   "variantes": [
+    "FanDeAbel"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

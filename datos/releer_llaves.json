@@ -7,7 +7,7 @@
    "evento": "FMS UNDER",
    "fecha": "12/10",
    "sv": "DDF",
-   "vistas": 193
+   "vistas": 194
   },
   "1561594726019375135": {
    "canal": "1487207377601040516",
@@ -15,7 +15,7 @@
    "evento": "__ FREESTYLE LEAGUE __",
    "fecha": "19/10",
    "sv": "FFA",
-   "vistas": 201
+   "vistas": 202
   },
   "1561867654464012369": {
    "canal": "1309234583023124531",
@@ -23,7 +23,23 @@
    "evento": "FATS BATTLES PALOOZA FECHA 7",
    "fecha": "19/10",
    "sv": "ACAD",
-   "vistas": 176
+   "vistas": 177
+  },
+  "1563643939146174495": {
+   "canal": "1470097588635176960",
+   "desde": "2026-10-24T21:34:37+00:00",
+   "evento": "GRISELDA RECORDS VOL. 4",
+   "fecha": "24/10",
+   "sv": "DDF",
+   "vistas": 1
+  },
+  "1563658833543434243": {
+   "canal": "1470097588635176960",
+   "desde": "2026-10-24T21:34:37+00:00",
+   "evento": "GRISELDA RECORDS VOL. 5",
+   "fecha": "24/10",
+   "sv": "DDF",
+   "vistas": 1
   }
  }
 }

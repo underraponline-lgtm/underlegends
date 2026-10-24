@@ -31414,5 +31414,127 @@
     2000
    ]
   ]
+ },
+ "509": {
+  "dia": "2026-10-24",
+  "escala": "8-15",
+  "fecha": "24/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1563658833543434243"
+  ],
+  "n": 509,
+  "nombre": "GRISELDA RECORDS VOL. 5",
+  "participantes": 12,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "Marcos"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "CrisZJ"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "Drexx",
+       "Erian"
+      ],
+      "Drexx",
+      ""
+     ],
+     [
+      [
+       "Aby",
+       "MCO 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "FanDeAbel",
+       "Makmah"
+      ],
+      "FanDeAbel",
+      "Walk-in 1: FanDeAbel"
+     ],
+     [
+      [
+       "Drexx",
+       "NXUZ"
+      ],
+      "Drexx",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "FanDAbel",
+       "Drexx"
+      ],
+      "FanDAbel",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "FanDAbel",
+    "Campeón",
+    7500
+   ],
+   [
+    "Drexx",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Marcos",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }
