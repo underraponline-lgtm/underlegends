@@ -7,7 +7,7 @@
    "evento": "FMS UNDER",
    "fecha": "12/10",
    "sv": "DDF",
-   "vistas": 166
+   "vistas": 167
   },
   "1561594726019375135": {
    "canal": "1487207377601040516",
@@ -15,7 +15,7 @@
    "evento": "__ FREESTYLE LEAGUE __",
    "fecha": "19/10",
    "sv": "FFA",
-   "vistas": 174
+   "vistas": 175
   },
   "1561867654464012369": {
    "canal": "1309234583023124531",
@@ -23,7 +23,15 @@
    "evento": "FATS BATTLES PALOOZA FECHA 7",
    "fecha": "19/10",
    "sv": "ACAD",
-   "vistas": 149
+   "vistas": 150
+  },
+  "1563359321998491730": {
+   "canal": "1470097588635176960",
+   "desde": "2026-10-24T01:53:11+00:00",
+   "evento": "19 CUP FUTCARD EDICIÓN 5",
+   "fecha": "23/10",
+   "sv": "DDF",
+   "vistas": 1
   }
  }
 }

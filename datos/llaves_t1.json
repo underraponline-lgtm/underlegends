@@ -25706,10 +25706,10 @@
      ],
      [
       [
-       "MARTYNEZ",
+       "Martynez 🇺🇾",
        "Sin Limites"
       ],
-      "MARTYNEZ",
+      "Martynez 🇺🇾",
       "Revivido: Sin límites 🇵🇪"
      ],
      [
@@ -30904,6 +30904,123 @@
     "VR",
     "Octavos",
     625
+   ]
+  ]
+ },
+ "505": {
+  "dia": "2026-10-23",
+  "escala": "8-15",
+  "fecha": "23/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1563359321998491730"
+  ],
+  "n": 505,
+  "nombre": "19 CUP FUTCARD EDICIÓN 5",
+  "participantes": 14,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "VR"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "🔹 C4: MAKMA",
+       "MaYeuTyK"
+      ],
+      "🔹 C4: MAKMA",
+      ""
+     ],
+     [
+      [
+       "🔹 C2: UZI",
+       "Bootrax🇵🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "🔹 C3: ISAC",
+       "SHADOW 🇨🇴"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "💥 SF1: PICHULA",
+       "Miniboy"
+      ],
+      "💥 SF1: PICHULA",
+      "Walk-in 1: MINIBOY"
+     ],
+     [
+      [
+       "Makmah",
+       "💥 SF2: ISAC"
+      ],
+      "Makmah",
+      "Walk-in 1: 💥 SF2: ISAC"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Makmah"
+      ],
+      "PichulaMc",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "PichulaMc",
+    "Campeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2000
+   ],
+   [
+    "VR",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    1750
+   ],
+   [
+    "💥 SF2: ISAC",
+    "Semifinal",
+    1750
    ]
   ]
  }

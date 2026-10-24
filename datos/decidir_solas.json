@@ -2104,6 +2104,52 @@
     "LUIS 🇦🇷"
    ],
    "escribio": {}
+  },
+  {
+   "id": "8ebd46daab",
+   "tipo": "Nombre desconocido",
+   "sec": "19 CUP FUTCARD EDICIÓN 5 · DDF · 23/10 · #505",
+   "que": "¿Quién es «🔹 C4: MAKMA»?",
+   "r": "Es Makmah",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Makmah: estaba en la llamada del evento con un nombre parecido",
+   "t": 1792807303219,
+   "filas": [
+    820
+   ],
+   "variantes": [
+    "🔹 C4: MAKMA"
+   ],
+   "escribio": {
+    "alias": [
+     "🔹 C4: MAKMA",
+     "Makmah"
+    ],
+    "filas": [
+     310
+    ]
+   }
+  },
+  {
+   "id": "79d2b66a9f",
+   "tipo": "Nombre desconocido",
+   "sec": "19 CUP FUTCARD EDICIÓN 5 · DDF · 23/10 · #505",
+   "que": "¿Quién es «💥 SF1: PICHULA»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1792807303219,
+   "filas": [
+    818
+   ],
+   "variantes": [
+    "💥 SF1: PICHULA"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []
