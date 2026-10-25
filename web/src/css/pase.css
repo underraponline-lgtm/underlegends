@@ -68,7 +68,10 @@
 .ps-filas span{writing-mode:vertical-rl;transform:rotate(180deg);display:grid;place-items:center;font:800 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;color:var(--esc-gris)}
 .ps-filas .fp{grid-row:1;color:#FF6FB0}
 .ps-filas .fg{grid-row:3}
-.ps-cols{list-style:none;margin:0;padding:10px 16px 4px 0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x mandatory;overscroll-behavior-x:contain}
+.ps-cols{list-style:none;margin:0;padding:10px 16px 4px 0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:none;
+  overscroll-behavior-x:contain;touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch;cursor:grab}
+/* 👆 mientras se arrastra con el mouse: sin encaje (si no, pelea con la mano) y sin seleccionar texto */
+.ps-cols.arrastra{scroll-snap-type:none;cursor:grabbing;user-select:none;-webkit-user-select:none}
 .ps-cols::-webkit-scrollbar{display:none}
 .ps-co{flex:none;width:116px;display:grid;grid-template-rows:auto 34px auto;scroll-snap-align:start;position:relative}
 .ps-co::before{content:"";position:absolute;left:-8px;right:0;top:calc(50% - 2px);height:4px;background:#2A2A2E}

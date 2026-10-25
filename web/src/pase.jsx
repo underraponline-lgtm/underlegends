@@ -91,6 +91,29 @@ function Pista({ libres, prem, nivel, tiene, tienda, min, compu }) {
   // abre en tu nivel: el de antes a la izquierda (tres antes en la compu)
   useEffect(() => { ir(Math.max(1, nivel - (compu ? 3 : 1))); medir(); }, [nivel, compu, libres.length]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { window.addEventListener('resize', medir); return () => window.removeEventListener('resize', medir); }, []);
+  // 👆 ARRASTRAR CON EL MOUSE, como con el dedo (Dlx, 25/10/2026: «deslizar arrastrando sin la necesidad de presionar las
+  // flechas, principalmente en el celular»). En el celular desliza el navegador solo (sin encaje obligatorio, que hacía
+  // volver los deslizamientos cortos); en la compu, esto. Si arrastró, el clic de soltar no cuenta
+  const arr = useRef(null);
+  const baja = (e) => {
+    if (e.pointerType !== 'mouse' || e.button !== 0) return;
+    const el = caja.current;
+    if (!el) return;
+    arr.current = { x: e.clientX, s: el.scrollLeft, movio: false, id: e.pointerId };
+  };
+  const mueve = (e) => {
+    const a = arr.current, el = caja.current;
+    if (!a || !el) return;
+    const dx = e.clientX - a.x;
+    if (!a.movio && Math.abs(dx) > 4) { a.movio = true; try { el.setPointerCapture(a.id); } catch (err) { /* nada */ } el.classList.add('arrastra'); }
+    if (a.movio) el.scrollLeft = a.s - dx;
+  };
+  const suelta = () => {
+    const a = arr.current, el = caja.current;
+    arr.current = null;
+    if (el) el.classList.remove('arrastra');
+    if (a && a.movio && el) el.addEventListener('click', (ev) => { ev.stopPropagation(); ev.preventDefault(); }, { capture: true, once: true });
+  };
   if (!libres.length) return null;
   const mover = (k) => { const el = caja.current; if (el) el.scrollBy({ left: k * Math.max(120, el.clientWidth * 0.8), behavior: 'smooth' }); };
   const ult = libres.length;
@@ -106,7 +129,8 @@ function Pista({ libres, prem, nivel, tiene, tienda, min, compu }) {
       </div>
       <div className="ps-pista">
         <div className="ps-filas" aria-hidden="true"><span className="fp">PREMIUM {tiene ? '' : '🔒'}</span><span className="fg">GRATIS</span></div>
-        <ol className="ps-cols" ref={caja} onScroll={medir} aria-label="Los niveles del Pase y lo que da cada uno">
+        <ol className="ps-cols" ref={caja} onScroll={medir} aria-label="Los niveles del Pase y lo que da cada uno"
+          onPointerDown={baja} onPointerMove={mueve} onPointerUp={suelta} onPointerCancel={suelta}>
           {libres.map((p) => {
             const n = p[0];
             const est = n <= nivel ? 'cob' : n === nivel + 1 ? 'sgt' : '';
