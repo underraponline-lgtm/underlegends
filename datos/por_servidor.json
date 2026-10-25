@@ -4136,12 +4136,12 @@
   },
   "Krtman": {
    "DDF": {
-    "duelos": "3/4",
-    "ev": 2,
+    "duelos": "3/5",
+    "ev": 3,
     "oro": 1,
     "ovr": 48,
     "pod": 1,
-    "pts": 12450,
+    "pts": 14650,
     "racha": "0/1",
     "tg": {
      "fin": 1
@@ -7875,20 +7875,6 @@
     "pod": 0,
     "pts": 7012,
     "racha": "0/0"
-   }
-  },
-  "Stan🇨🇱": {
-   "DDF": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 2200,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "Steven🇨🇴": {
