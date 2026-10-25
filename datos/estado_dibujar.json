@@ -1,51 +1,51 @@
 {
  "v": 1,
- "cuando": "2026-10-25T20:59:45Z",
+ "cuando": "2026-10-25T21:15:52Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1761.2,
+ "dur_s": 933.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 9.6
+   "s": 42.6
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 0.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.7
+   "s": 35.9
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 39.3
+   "s": 20.9
   },
   {
    "n": "5",
-   "que": "tanda 1 de 5 · 40 persona(s)",
+   "que": "tanda 1 de 3 · 40 persona(s)",
    "ok": false,
-   "s": 1603.9
+   "s": 764.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 8.0
+   "s": 8.7
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 89.6
+   "s": 59.8
   }
  ],
  "fallas": [
@@ -59,35 +59,19 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Ezias🥈✒️🧢🐍"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Filozico"
-  },
-  {
-   "paso": "5",
    "que": "03_Servidor/generar.py LAST"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py LAST"
+   "que": "03_Servidor/generar.py Krtman"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py OKAM"
+   "que": "03_Servidor/generar.py Teito"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py OKAM"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Trot"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py TøKīØ🦠🧠"
+   "que": "03_Servidor/generar.py Teito"
   }
  ],
  "ultimo_evento": {
@@ -98,20 +82,20 @@
  },
  "cuotas": {
   "kv": {
-   "write": 371,
-   "read": 45269
+   "write": 390,
+   "read": 46736
   },
   "objeto": {
-   "leidas": 2610044,
-   "escritas": 15492,
-   "pedidos": 8010
+   "leidas": 2740415,
+   "escritas": 16687,
+   "pedidos": 8225
   },
   "worker": {
-   "pedidos": 7827,
+   "pedidos": 7911,
    "errores": 0,
-   "sub": 9447,
-   "p50_ms": 1.31,
-   "p99_ms": 10.44
+   "sub": 9550,
+   "p50_ms": 1.3,
+   "p99_ms": 10.43
   },
   "r2": {
    "objetos": 4940,
