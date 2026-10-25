@@ -2602,6 +2602,8 @@ const RUTAS = {
   // 📣 qué hacer con un reporte de una llave (13/10/2026, Dlx: «Sí, todas»): lo decide Dlx desde el Dashboard y el
   // ciclo, con su clave, avisa lo que aplicó. Ver `validarDecisionReporte()`, `duenoReporte()` y `reportesEstados()`
   '/avisos/dueno/reporte': 'POST', '/avisos/reportes-estados': 'POST',
+  // 👀 quién está mirando qué caso de Pendientes (25/10/2026). Ver `duenoViendo()`
+  '/avisos/dueno/viendo': 'POST',
   // ✅ Decidir en el Dashboard (13/10/2026, Dlx: «Sí, con Reportes»): el ciclo publica las preguntas y lee lo
   // contestado, con su clave; Dlx contesta. Ver `validarRespuestaDecidir()`, `decidirEstados()` y `duenoDecidir()`
   '/avisos/decidir-ciclo': 'GET', '/avisos/decidir-estados': 'POST', '/avisos/dueno/decidir': 'POST',
@@ -3121,6 +3123,20 @@ export function validarReporte(d, id, ahora) {
  * Lo aplica el ciclo (`bot/reportes.py --corregir`), que valida además contra la Lista y la llave de verdad.
  */
 export function validarDecisionReporte(d) {
+  const v = decisionReporte0(d);
+  if (v.error) return v;
+  // 🔎 POR QUÉ SE CIERRA (25/10/2026, el research del Dashboard: el motivo de cierre de Battlefy, para saber qué parte del
+  // bot falla más). Una de una lista fija; sin causa vale igual (un Dashboard viejo abierto en otro navegador), y la
+  // corrección la trae sola: un nombre es un nombre mal leído; un ganador, la llave mal leída, salvo que se diga otra
+  const c = String((d && d.causa) || '');
+  if (c && !CAUSAS_REPORTE.includes(c)) return { error: 'causa' };
+  const causa = v.accion === 'prueba' ? 'prueba' : c || (v.accion === 'nombre' ? 'nombre_bot' : v.accion === 'ganador' ? 'llave_bot' : '');
+  return Object.assign({}, v, { causa });
+}
+//: por qué se cerró un reporte: el bot leyó mal un nombre, el bot leyó mal la llave, se equivocó el organizador, estaba bien
+// o era una prueba. El Dashboard los cuenta (`causasDueno()`): cuál sube primero es lo que hay que arreglar primero
+export const CAUSAS_REPORTE = ['nombre_bot', 'llave_bot', 'organizador', 'no_corresponde', 'prueba'];
+function decisionReporte0(d) {
   const id = Number(d && d.id);
   if (!Number.isInteger(id) || id < 1) return { error: 'falta el reporte' };
   const accion = String((d && d.accion) || '');
@@ -5119,6 +5135,19 @@ export async function rutaAvisos(req, env, ruta) {
     });
   }
   // ✅ Y CONTESTAR UNA: sólo Dlx, como los reportes
+  if (ruta === '/avisos/dueno/viendo') {
+    const crudo = await req.text();
+    if (crudo.length > 512) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object') return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (!(await puede(q.id, 'panel'))) return json({ error: 'no' }, 403);
+    return elObjeto(env).fetch('https://avisos/dueno-viendo', {
+      method: 'POST', body: JSON.stringify({ k: String(d.k || '').slice(0, 90), quien: q.id }), headers: { 'content-type': 'application/json' },
+    });
+  }
   if (ruta === '/avisos/dueno/decidir') {
     const crudo = await req.text();
     if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
@@ -5649,6 +5678,11 @@ export class Avisos {
         't INTEGER NOT NULL)');
       // 🔐 y quién la contestó (13/10/2026: los permisos)
       try { this.sql.exec("ALTER TABLE decidir_resp ADD COLUMN por TEXT NOT NULL DEFAULT ''"); } catch (e) { /* ya estaba */ }
+      // 🔎 por qué se cerró cada reporte (25/10/2026): aparte de `reportes`, que se borra a los días, para que el conteo de
+      // «qué falla más» dure 120. Ver `causasDueno()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS reportes_causas (id INTEGER PRIMARY KEY, causa TEXT NOT NULL, t INTEGER NOT NULL)');
+      // 👀 quién está mirando qué en Pendientes (25/10/2026): `k` es la clave del caso; dura 10 minutos. Ver `duenoViendo()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS viendo (k TEXT PRIMARY KEY, por TEXT NOT NULL, quien TEXT NOT NULL, t INTEGER NOT NULL)');
       for (const c of ["estado TEXT NOT NULL DEFAULT ''", "fix TEXT NOT NULL DEFAULT ''",
         "resultado TEXT NOT NULL DEFAULT ''", 't_estado INTEGER NOT NULL DEFAULT 0', "evid TEXT NOT NULL DEFAULT ''",
         "por TEXT NOT NULL DEFAULT ''"]) {
@@ -6240,6 +6274,7 @@ export class Avisos {
       if (ruta === '/videos-estados') return json(this.videosEstados(d));
       if (ruta === '/dueno-video') return json(this.duenoVideo(d));
       if (ruta === '/dueno-reporte') return json(await this.duenoReporte(d));
+      if (ruta === '/dueno-viendo') return json(this.duenoViendo(d));
       if (ruta === '/decidir-estados') return json(this.decidirEstados(d));
       if (ruta === '/roles-estados') return json(this.rolesEstados(d));
       if (ruta === '/rol-de') return json({ roles: this.rolesPanelDe(String(d.quien || '')) });
@@ -9232,8 +9267,33 @@ export class Avisos {
     const por = this.nombrePor(d.por);
     this.sql.exec('UPDATE reportes SET estado = ?, fix = ?, resultado = ?, t_estado = ?, por = ? WHERE id = ?',
       d.fix ? 'corregir' : String(d.accion), d.fix ? JSON.stringify(Object.assign({}, d.fix, { por })) : '', '', ahora, por, Number(d.id));
+    if (d.causa) this.sql.exec('INSERT OR REPLACE INTO reportes_causas (id, causa, t) VALUES (?, ?, ?)', Number(d.id), String(d.causa), ahora);
+    this.sql.exec('DELETE FROM reportes_causas WHERE t < ?', ahora - 120 * DIA_MS);
     await this.colaReportes(ahora);
-    return { ok: true, reportes: this.reportesDueno(ahora) };
+    return { ok: true, reportes: this.reportesDueno(ahora), reportes_causas: this.causasDueno(ahora) };
+  }
+
+  /** 🔎 Por qué se cerraron los reportes: cuántos de cada causa en 7, 30 y 120 días (sin quién: sólo cuántos). */
+  causasDueno(ahora) {
+    return this.sql.exec('SELECT causa, SUM(t > ?) AS n7, SUM(t > ?) AS n30, COUNT(*) AS n120 FROM reportes_causas GROUP BY causa',
+      ahora - 7 * DIA_MS, ahora - 30 * DIA_MS).toArray().map((f) => ({ causa: f.causa, n7: f.n7 || 0, n30: f.n30 || 0, n120: f.n120 || 0 }));
+  }
+
+  /**
+   * 👀 «LO ESTOY VIENDO» (25/10/2026, el research: Battlefy y Help Scout). Quien abre un caso en Pendientes lo anota acá
+   * (`k`, la clave del caso en la bandeja); los demás ven su nombre en la fila. Dura 10 minutos sin volver a anotarlo. Sin
+   * `k` sólo lee. Devuelve los de los otros: el propio no hace falta verlo
+   */
+  duenoViendo(d) {
+    const ahora = Date.now();
+    const quien = String(d.quien || '');
+    this.sql.exec('DELETE FROM viendo WHERE t < ?', ahora - 10 * 60000);
+    const k = String(d.k || '');
+    if (k && /^[a-z][0-9A-Za-z:_.-]{1,80}$/.test(k)) {
+      this.sql.exec('DELETE FROM viendo WHERE quien = ?', quien);
+      this.sql.exec('INSERT OR REPLACE INTO viendo (k, por, quien, t) VALUES (?, ?, ?, ?)', k, this.nombrePor(quien), quien, ahora);
+    }
+    return { viendo: this.sql.exec('SELECT k, por, t FROM viendo WHERE quien != ?', quien).toArray() };
   }
 
   /**
@@ -12831,6 +12891,7 @@ export class Avisos {
       const ve = (k) => permisos.includes(k);
       return { limitado: true, permisos, mis_roles: roles, yo: this.nombrePor(d && d.quien),
         reportes: ve('reportes') || ve('reportes_cerrar') ? this.reportesDueno(ahora) : [],
+        reportes_causas: ve('reportes') || ve('reportes_cerrar') ? this.causasDueno(ahora) : [],
         decidir: ve('decidir') ? this.decidirDueno() : {}, videos: ve('videos') ? (this.leer('videos_revisar') || []) : [],
         fondos: ve('fondos') ? this.fondosDueno() : [], filtro: ve('fondos') ? this.filtroDueno() : null,
         fotos_carta: ve('fondos') ? this.fotosCartaDueno() : [],
@@ -12874,6 +12935,7 @@ export class Avisos {
       // conoce. Las postulaciones de /sumate se fueron con la página (13/10/2026)
       // 📣 con qué decidió Dlx y qué hizo el ciclo (13/10/2026): ver `reportesDueno()`
       reportes: this.reportesDueno(ahora),
+      reportes_causas: this.causasDueno(ahora),
       // ✅ las preguntas de ✅ Decidir y lo contestado desde el Dashboard (13/10/2026)
       decidir: this.decidirDueno(),
       // 🔐 qué puede quien lo pide (Admin: todo menos Roles)

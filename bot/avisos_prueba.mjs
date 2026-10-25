@@ -1162,6 +1162,22 @@ const ok = (cond, que, det) => {
       && fin.find((x) => x.id === r1).estado === 'aplicado' && (await o.duenoReporte(V({ id: r1, accion: 'listo' }))).error,
     'un reporte: Dlx elige qué corregir, el ciclo dice que lo aplicó y a quien lo mandó le llega a su campana (sólo lo '
     + 'que se corrigió, y lo aplicado ya no se cambia)', JSON.stringify([d1.reportes, e1, band]));
+    // 🔎 por qué se cerró cada reporte (25/10/2026): la corrección trae su causa, la prueba también, y una que no es de la
+    // lista no vale. El conteo dura aunque el reporte se borre
+    const cz = o.causasDueno(Date.now());
+    const vc = V({ id: 9, accion: 'listo', causa: 'organizador' });
+    ok(vn.causa === 'nombre_bot' && vg.causa === 'llave_bot' && V({ id: 1, accion: 'prueba' }).causa === 'prueba'
+      && vc.causa === 'organizador' && V({ id: 9, accion: 'listo' }).causa === '' && V({ id: 9, accion: 'listo', causa: 'x' }).error
+      && cz.find((x) => x.causa === 'nombre_bot').n7 === 1 && cz.find((x) => x.causa === 'prueba').n120 === 1 && Array.isArray(d1.reportes_causas),
+    'cada reporte cerrado guarda por qué (de una lista fija) y el Dashboard cuenta cuál falla más', JSON.stringify([cz, vc]));
+    // 👀 «lo estoy viendo»: cada uno ve lo que miran los otros, no lo suyo; un caso por persona; vence a los 10 minutos
+    const vv1 = o.duenoViendo({ quien: '100000021', k: 'r12' });
+    const vv2 = o.duenoViendo({ quien: '100000022', k: 'qn1' });
+    const vv3 = o.duenoViendo({ quien: '100000021', k: 'r13' });
+    const vv4 = o.duenoViendo({ quien: '100000022', k: '<x>' });
+    ok(!vv1.viendo.length && vv2.viendo.length === 1 && vv2.viendo[0].k === 'r12' && vv3.viendo.length === 1 && vv3.viendo[0].k === 'qn1'
+      && vv4.viendo.length === 1 && vv4.viendo[0].k === 'r13',
+    '«lo estoy viendo»: se ven los casos que miran los otros, uno por persona, y una clave rara no se guarda', JSON.stringify([vv2, vv3, vv4]));
     // ✅ Decidir en el Dashboard (13/10/2026, «Sí, con Reportes»)
     const PS = [{ id: 'n1', tipo: 'Nombre desconocido', sec: 'COPA · FFA · 07/10', que: '¿Quién es ZORRO?', pistas: '—',
       opciones: ['Es alguien nuevo', 'Es un troll (no cuenta)'], link: 'javascript:x', libre: true },

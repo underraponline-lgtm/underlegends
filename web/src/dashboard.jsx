@@ -233,6 +233,60 @@ function useRetencion(activo) {
   }, [activo]);
   return r;
 }
+// 📈 LA VUELTA AL SEGUNDO EVENTO (25/10/2026, el research del Dashboard: «el número del problema central, mostrado sin
+// trampa»). De los que debutan en una semana, cuántos juegan otro evento, otro día, dentro de 14 días: la misma cuenta que
+// `MetaLobby`, del ciclo. Cuatro reglas para no engañarse con pocos datos: cada porcentaje con su cantidad de personas;
+// con menos de 30, el rango en que puede estar de verdad (Wilson, 95 %); la semana que todavía no cerró dice «abierta» y
+// no suma; y el número grande junta las últimas 4 cerradas, porque una sola semana tiene muy poca gente
+function wilson(k, n) {
+  if (!n) return [0, 0];
+  const z = 1.96, p = k / n, d = 1 + (z * z) / n;
+  const c = (p + (z * z) / (2 * n)) / d, m = (z * Math.sqrt((p * (1 - p)) / n + (z * z) / (4 * n * n))) / d;
+  return [Math.max(0, c - m), Math.min(1, c + m)];
+}
+function VueltaSegundo({ r }) {
+  if (r === null) return <p className="pronto-p">Midiendo…</p>;
+  if (!r || !(r.cohortes || []).length) return <p className="pronto-p">Todavía no hay una medición del ciclo.</p>;
+  const cs = [...r.cohortes].sort((a, b) => String(a.semana).localeCompare(String(b.semana)));
+  // ⚠️ LA PRIMERA SEMANA DE LA TEMPORADA NO CUENTA: ahí «debuta» todo el que ya jugaba antes del arranque, y la vuelta
+  // sale inflada (71 % la del 21/9, contra 41 % la siguiente). Se ve en la lista, marcada, pero no entra al número grande
+  const arranque = cs[0] && cs[0].semana;
+  const cerradas = cs.filter((c) => c.completa && c.nuevos && c.semana !== arranque);
+  const ult = cerradas.slice(-4);
+  const n = ult.reduce((t, c) => t + c.nuevos, 0), k = ult.reduce((t, c) => t + c.volvieron, 0);
+  const [lo, hi] = wilson(k, n);
+  const ant = cerradas.slice(-8, -4);
+  const na = ant.reduce((t, c) => t + c.nuevos, 0), ka = ant.reduce((t, c) => t + c.volvieron, 0);
+  const [loA, hiA] = wilson(ka, na);
+  // un cambio cuenta si los dos rangos no se pisan; si se pisan, «sin cambio claro»
+  const claro = na >= 30 && n >= 30 && (lo > hiA || hi < loA);
+  const pc = (x) => Math.round(100 * x);
+  return (
+    <div className="dz-vuelta">
+      {n ? (
+        <div className="dz-vuelta-c">
+          <b>{pc(k / n)} %</b>
+          <div>
+            <p><b>{num(k)} de {num(n)}</b> que debutaron {ult.length === 1 ? 'en la última semana cerrada' : 'en las últimas ' + ult.length + ' semanas cerradas'} volvieron a jugar en 14 días.</p>
+            <small>De verdad puede estar entre {pc(lo)} % y {pc(hi)} %{na ? '. Las 4 de antes: ' + pc(ka / na) + ' % (' + num(na) + ' personas)' + (claro ? (k / n > ka / na ? ': subió.' : ': bajó.') : ': sin cambio claro.') : '.'}</small>
+          </div>
+        </div>
+      ) : <p className="db-tx">Todavía no cerró ninguna semana: la primera se sabe 14 días después del debut.</p>}
+      <ol className="dz-vuelta-l" aria-label="Semana por semana">{cs.slice(-8).map((c) => {
+        const p = c.nuevos ? c.volvieron / c.nuevos : 0, [a, b] = wilson(c.volvieron, c.nuevos);
+        return (
+          <li key={c.semana} className={!c.completa ? 'abierta' : c.semana === arranque ? 'arranque' : ''}>
+            <span>{corto(c.semana)}</span>
+            <i aria-hidden="true">{c.nuevos ? <><em style={{ left: pc(a) + '%', width: Math.max(1, pc(b) - pc(a)) + '%' }} /><u style={{ left: pc(p) + '%' }} /></> : null}</i>
+            <b>{c.nuevos ? pc(p) + ' %' : '—'}</b>
+            <small>{num(c.volvieron)} de {num(c.nuevos)}{!c.completa ? ' · abierta' : c.semana === arranque ? ' · arranque, no cuenta' : c.nuevos < 30 ? ' · pocos' : ''}</small>
+          </li>
+        );
+      })}</ol>
+      <p className="db-tx">La barra gris es el rango; la raya, lo medido. «Abierta»: todavía no pasaron los 14 días, así que va a subir. «Pocos»: menos de 30 personas, el rango es ancho. La semana del arranque no cuenta: ahí «debutaron» también los que ya jugaban antes.</p>
+    </div>
+  );
+}
 function MetaLobby({ r }) {
   if (r === null) return <p className="pronto-p">Midiendo…</p>;
   if (!r) return <p className="pronto-p">Todavía no hay una medición del ciclo.</p>;
@@ -2918,6 +2972,21 @@ function DetalleVideo({ it, alCambiar }) {
   );
 }
 
+// 🔎 POR QUÉ SE CIERRA UN REPORTE (25/10/2026, el research: el motivo de cierre de Battlefy). La misma lista que
+// `CAUSAS_REPORTE` de bot/avisos.js: cerrar pide una, y el Dashboard cuenta cuál falla más (`CausasLinea`)
+const CAUSAS = [['nombre_bot', 'El bot leyó mal un nombre', 'nombres mal leídos'], ['llave_bot', 'El bot leyó mal la llave', 'llaves mal leídas'],
+  ['organizador', 'Se equivocó el organizador', 'del organizador'], ['no_corresponde', 'Estaba bien', 'estaban bien'], ['prueba', 'Era una prueba', 'pruebas']];
+// «qué falla más», en una línea: los últimos 30 días, de más a menos (sin quién: sólo cuántos)
+function CausasLinea({ cs }) {
+  const xs = (cs || []).filter((c) => c.n30 && c.causa !== 'prueba').sort((a, b) => b.n30 - a.n30);
+  if (!xs.length) return null;
+  return (
+    <p className="dz-causas"><b>Qué falló en 30 días:</b> {xs.map((c, i) => (
+      <span key={c.causa} className={i ? '' : 'top'}>{num(c.n30)} {(CAUSAS.find((x) => x[0] === c.causa) || [0, 0, c.causa])[2]}</span>
+    ))}</p>
+  );
+}
+
 // 📣 un error en una llave: lo que dice, la evidencia del bot y corregir ahí mismo
 function DetalleLlave({ it, liga, d, alCambiar, corrige }) {
   const r = it.r;
@@ -2925,9 +2994,16 @@ function DetalleLlave({ it, liga, d, alCambiar, corrige }) {
   const [msg, setMsg] = useState('');
   const [ocup, setOcup] = useState(false);
   const setLista = (l) => alCambiar({ reportes: l });
-  const cerrar = async (accion) => {
+  // cerrar sin corregir: con su causa, que vuelve al conteo
+  const cerrar = async (accion, causa) => {
     setOcup(true); setMsg('');
-    try { setLista(await decidirReporte({ id: r.id, accion })); } catch (e) { setMsg('No se pudo: ' + e.message); setOcup(false); }
+    try {
+      const rq = await fetch('/api/avisos/dueno/reporte', { method: 'POST', credentials: 'same-origin',
+        headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: r.id, accion, causa }) });
+      const j = await rq.json().catch(() => ({}));
+      if (!rq.ok || j.error) throw new Error(rq.status === 401 ? 'la sesión venció: entra de nuevo' : j.error || String(rq.status));
+      alCambiar(Object.assign({ reportes: j.reportes || [] }, j.reportes_causas ? { reportes_causas: j.reportes_causas } : {}));
+    } catch (e) { setMsg('No se pudo: ' + e.message); setOcup(false); }
   };
   const hermanos = (d.reportes || []).filter((x) => x.id !== r.id && x.llave === r.llave && (x.estado === '' || x.estado === 'no_pude'));
   const enlace = /^\d+$/.test(r.llave) ? '#/llave/' + r.llave : String(r.llave).startsWith('liga:') ? '#/ligas/' + encodeURIComponent(String(r.llave).slice(5))
@@ -2942,8 +3018,13 @@ function DetalleLlave({ it, liga, d, alCambiar, corrige }) {
         : <Corregir r={r} liga={liga} alListo={setLista} hermanos={hermanos} />) : null}
       <div className="dz-acc">
         {corrige && !abierto && (/^\d+$/.test(r.llave) || String(r.llave).startsWith('liga:')) ? <button type="button" className="btn verde" onClick={() => setAbierto(true)}>Corregir</button> : null}
-        <button type="button" className="btn borde2" disabled={ocup} onClick={() => cerrar('listo')}>Listo, está bien</button>
-        <button type="button" className="btn borde2" disabled={ocup} onClick={() => cerrar('prueba')}>Era una prueba</button>
+      </div>
+      {/* cerrarlo sin corregir dice por qué: es lo que arma «qué falló» */}
+      <div className="dz-cerrar" role="group" aria-label="Cerrarlo sin corregir: por qué">
+        <span>Cerrarlo sin corregir, porque…</span>
+        {CAUSAS.map(([c, t]) => (
+          <button key={c} type="button" className="btn borde2 chico" disabled={ocup} onClick={() => cerrar(c === 'prueba' ? 'prueba' : 'listo', c)}>{t}</button>
+        ))}
       </div>
       {msg ? <p className="dz-dt-msg" role="status">{msg}</p> : null}
     </>
@@ -2996,6 +3077,18 @@ function DetalleQuien({ it, d, alCambiar }) {
   );
 }
 
+// 💤 POSPONER «HASTA QUE CAMBIE» (25/10/2026, el research: Linear y Sentry). Un caso pospuesto se va de la lista hasta
+// que cambia lo que dice (su firma: la llave que vuelve con un nombre nuevo, un fondo nuevo, otra respuesta) o hasta 24
+// horas, lo que pase primero. Es de cada uno: vive en este navegador (`lg:db-pospuesto`), y nunca borra nada
+const POSP = 'lg:db-pospuesto';
+const firmaDe = (x) => JSON.stringify([x.titulo, x.sub, x.r && [x.r.estado, x.r.texto, x.r.evid && (x.r.evid.lineas || []).length],
+  x.p && x.p.opciones, x.img && (x.img.f ? x.img.f.pend : x.img.x && x.img.x.url), x.ped && x.ped.estado]);
+const leerPosp = () => { try { return JSON.parse(localStorage.getItem(POSP) || '{}') || {}; } catch (e) { return {}; } };
+// la clave de un caso para «lo está viendo»: la misma de la bandeja, sin lo que el Worker no guarda
+const kViendo = (k) => String(k).replace(/[^0-9A-Za-z:_.-]/g, '_').slice(0, 80);
+// ⏳ la edad de un caso: un día ya es para mirar, tres es viejo
+const edadDe = (t) => (!t ? '' : Date.now() - t > 3 * 864e5 ? 'mal' : Date.now() - t > 864e5 ? 'ojo' : '');
+
 function Bandeja({ d, liga, ve, cambiarD, sub }) {
   const ver = { quien: ve('decidir'), llave: ve('reportes') || ve('reportes_cerrar'), imagen: ve('fondos'), video: ve('videos') || ve('fondos'), pedido: ve('reportes_cerrar') };
   // el cuadrado del Resumen que se tocó abre la bandeja con su filtro puesto
@@ -3008,12 +3101,38 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
   const det = useRef(null), buscar = useRef(null);
   // lo sacado a mano (un logo, un video): el servidor no devuelve la lista entera de esos
   const [fuera, setFuera] = useState({});
-  const todos = itemsBandeja(d, ver).filter((x) => !fuera[x.k]);
+  const [posp, setPosp0] = useState(leerPosp);
+  const setPosp = (o) => { setPosp0(o); try { localStorage.setItem(POSP, JSON.stringify(o)); } catch (e) { /* vuelve al recargar */ } };
+  const todos0 = itemsBandeja(d, ver).filter((x) => !fuera[x.k]);
+  // lo pospuesto sigue pospuesto mientras no cambie y no pasen 24 h
+  const dormido = (x) => { const p0 = posp[x.k]; return !!p0 && p0.f === firmaDe(x) && Date.now() < p0.hasta; };
+  const todos = todos0.filter((x) => !dormido(x));
+  const pospuestos = todos0.filter(dormido);
   const cuenta = {};
   for (const x of todos) cuenta[x.tipo] = (cuenta[x.tipo] || 0) + 1;
-  const xs = todos.filter((x) => (!filtro || x.tipo === filtro) && contiene([x.titulo, x.sub], q));
+  const xs = (filtro === 'posp' ? pospuestos : todos).filter((x) => (!filtro || filtro === 'posp' || x.tipo === filtro) && contiene([x.titulo, x.sub], q));
+  const viejo = todos.reduce((m, x) => (x.t && (!m || x.t < m) ? x.t : m), 0);
   const i0 = Math.max(0, xs.findIndex((x) => x.k === sel));
   const it = xs[i0] || null;
+  // 👀 «LO ESTÁ VIENDO» (25/10/2026, el research: Battlefy y Help Scout): el caso que tienes abierto se anota en el
+  // objeto, y cada 30 s se lee lo que tienen abierto los demás. Un caso por persona; vence a los 10 minutos
+  const [viendo, setViendo] = useState([]);
+  const kAbierto = it ? kViendo(it.k) : '';
+  useEffect(() => {
+    let vivo = true;
+    const avisar = () => fetch('/api/avisos/dueno/viendo', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ k: kAbierto }) }).then((r) => (r.ok ? r.json() : null)).then((j) => { if (vivo && j && j.viendo) setViendo(j.viendo); }).catch(() => {});
+    avisar();
+    const id = setInterval(() => { if (typeof document === 'undefined' || document.visibilityState === 'visible') avisar(); }, 30000);
+    return () => { vivo = false; clearInterval(id); };
+  }, [kAbierto]);
+  const quienVe = (x) => (viendo.find((v) => v.k === kViendo(x.k)) || {}).por;
+  const posponer = (x) => {
+    const sig = xs[i0 + 1] || xs[i0 - 1];
+    setPosp(Object.assign({}, Object.fromEntries(Object.entries(posp).filter(([, v]) => Date.now() < v.hasta)), { [x.k]: { f: firmaDe(x), hasta: Date.now() + 864e5 } }));
+    setSel(sig ? sig.k : '');
+  };
+  const despertar = (x) => { const o = Object.assign({}, posp); delete o[x.k]; setPosp(o); };
   // decidir uno: vuelve lo nuevo al panel, y el siguiente queda elegido (el que ocupa su lugar)
   const alCambiar = (o) => {
     const sig = xs[i0 + 1] || xs[i0 - 1];
@@ -3031,6 +3150,7 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
       const k = e.key.toLowerCase();
       if (k === 'j' || k === 'k') { const n = xs[i0 + (k === 'j' ? 1 : -1)]; if (n) { e.preventDefault(); setSel(n.k); } }
       else if (k === '/') { e.preventDefault(); if (buscar.current) buscar.current.focus(); }
+      else if (k === 'h' && it && filtro !== 'posp') { e.preventDefault(); posponer(it); }
       else if ((k === 'a' || k === 'r') && it && (it.tipo === 'imagen' || it.tipo === 'video')) {
         const b = det.current && det.current.querySelectorAll('.dz-acc .btn')[k === 'a' ? 0 : 1];
         if (b && !b.disabled) { e.preventDefault(); b.click(); }
@@ -3052,14 +3172,21 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
         <div className="dz-subs" role="tablist" aria-label="Qué mirar">{FILTROS_B.filter(([k]) => !k || ver[k]).map(([k, t]) => (
           <button key={k || 'todo'} type="button" role="tab" aria-selected={filtro === k} className={'dz-sub' + (filtro === k ? ' on' : '')}
             onClick={() => { setFiltro(k); setSel(''); setListaDec(false); }}>{t}{(k ? cuenta[k] : todos.length) ? <i>{k ? cuenta[k] : todos.length}</i> : null}</button>
-        ))}</div>
+        ))}{pospuestos.length ? <button type="button" role="tab" aria-selected={filtro === 'posp'} className={'dz-sub dz-sub-posp' + (filtro === 'posp' ? ' on' : '')}
+          onClick={() => { setFiltro('posp'); setSel(''); setListaDec(false); }}>💤 Pospuestos<i>{pospuestos.length}</i></button> : null}</div>
         <label className="db-buscar dz-band-q"><Ico n="buscar" t={16} />
           <input ref={buscar} type="search" value={q} placeholder="Buscar un nombre o una llave ( / )" aria-label="Buscar en los pendientes" onChange={(e) => setQ(e.target.value)} /></label>
       </div>
+      {viejo || (d.reportes_causas || []).length ? (
+        <div className="dz-band-meta">
+          {viejo ? <p className={'dz-viejo ' + edadDe(viejo)}>El caso más viejo espera desde <b>{hace(viejo)}</b>.</p> : null}
+          <CausasLinea cs={d.reportes_causas} />
+        </div>
+      ) : null}
       {filtro === 'quien' && listaDec ? (
         <><button type="button" className="dz-lnk" onClick={() => setListaDec(false)}>← Volver a la bandeja</button>
           <Decisiones dec={d.decidir} liga={liga} alCambiar={(y) => cambiarD({ decidir: y })} /></>
-      ) : !todos.length ? (
+      ) : !todos.length && filtro !== 'posp' ? (
         <div className="dz-vacio"><b>✓ Al día</b><span>No hay nada esperando una decisión tuya.</span></div>
       ) : (
         <div className="dz-band-g">
@@ -3068,19 +3195,24 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
               <span className={'dz-tipo ' + TIPO_B[x.tipo][1]}>{TIPO_B[x.tipo][0]}</span>
               <b>{x.titulo}</b>
               {x.sub ? <small>{x.sub}</small> : null}
-              {x.t ? <small className="dz-it-t">{hace(x.t)}</small> : null}
+              {x.t ? <small className={'dz-it-t ' + edadDe(x.t)}>{hace(x.t)}{edadDe(x.t) === 'mal' ? ' · VIEJO' : ''}</small> : null}
+              {quienVe(x) ? <small className="dz-it-ve">👀 {quienVe(x)} lo está viendo</small> : null}
             </button></li>
           ))}{!xs.length ? <li className="dz-it-nada">Nada con este filtro{q ? ' y «' + q + '»' : ''}.</li> : null}</ol>
           <article className="dz-det" ref={det} aria-live="polite">
             {it ? <>
               <span className={'dz-tipo ' + TIPO_B[it.tipo][1]}>{TIPO_B[it.tipo][0]} · {i0 + 1} DE {xs.length}</span>
               <h3 className="dz-det-t">{it.titulo}</h3>
+              {quienVe(it) ? <p className="dz-ve">👀 <b>{quienVe(it)}</b> también lo tiene abierto: fíjate antes de decidir para no hacerlo dos veces.</p> : null}
               {it.tipo === 'quien' ? <DetalleQuien key={it.k} it={it} d={d} alCambiar={alCambiar} /> : null}
               {it.tipo === 'llave' ? <DetalleLlave key={it.k} it={it} liga={liga} d={d} alCambiar={alCambiar} corrige={ve('reportes')} /> : null}
               {it.tipo === 'imagen' ? <DetalleImagen key={it.k} it={it} alCambiar={alCambiar} motivo={motivo} setMotivo={setMotivo} /> : null}
               {it.tipo === 'video' ? <DetalleVideo key={it.k} it={it} alCambiar={alCambiar} /> : null}
               {it.tipo === 'pedido' ? <DetallePedido key={it.k} p={it.ped} liga={liga} alCambiar={(y) => alCambiar({ pedidos: y })} /> : null}
-              <p className="dz-teclas">J / K para moverte · A aprobar · R rechazar · / buscar</p>
+              <div className="dz-acc dz-acc-pos">{filtro === 'posp'
+                ? <button type="button" className="dz-lnk" onClick={() => despertar(it)}>Devolverlo a la lista</button>
+                : <button type="button" className="dz-lnk" onClick={() => posponer(it)}>💤 Posponer hasta que cambie (o 24 h)</button>}</div>
+              <p className="dz-teclas">J / K para moverte · A aprobar · R rechazar · H posponer · / buscar</p>
             </> : <p className="db-tx">Elige algo de la lista.</p>}
           </article>
         </div>
@@ -3368,7 +3500,7 @@ function SaludPiezas({ d, q, logs, ir }) {
         <button key={t} type="button" className={'dz-pieza ' + e} onClick={() => ir('salud', an)}>
           <span className="dz-pieza-t"><i aria-hidden="true" />{t}</span>
           <small>{s}</small>
-          <em className="rk-sr">{e === 'ok' ? 'anda' : e === 'ojo' ? 'para mirar' : 'anda mal'}</em>
+          {e === 'ok' ? <em className="rk-sr">anda</em> : <em className="dz-pieza-e">{e === 'ojo' ? 'OJO' : 'MAL'}</em>}
         </button>
       ))}</div>
       <Cupo q={q} />
@@ -3604,16 +3736,18 @@ export function Dashboard({ dc, liga }) {
         {/* 🟥 lo prioritario primero, en cuadrados (Dlx: «lo que me gusta de B es que aparece lo prioritario primero… en cuadrados») */}
         <section className="dz-dec" aria-label="Para decidir">
           <h3 className="dz-h">Para decidir{total ? <span> · {total}</span> : null}</h3>
-          <div className="dz-cuadros">{CUADROS.map(([k, c, t, s, urg, a]) => (
+          <div className="dz-cuadros">{CUADROS.filter((x) => x[1]).map(([k, c, t, s, urg, a]) => (
             <button key={k} type="button" className={'dz-cuadro' + (c ? (urg ? ' urg' : ' ojo') : ' cero')} onClick={() => ir('pendientes', '', a)}>
               <b>{c || '✓'}</b><span>{t}</span><small>{c ? s : 'al día'}</small>
             </button>
           ))}</div>
+          {/* lo que está en cero no ocupa un cuadrado: una línea */}
+          {CUADROS.some((x) => !x[1]) ? <p className="dz-aldia">✓ Al día: {CUADROS.filter((x) => !x[1]).map((x) => x[2]).join(' · ')}</p> : null}
         </section>
         {/* lo que pide atención, con un botón que lleva a donde se arregla */}
         {at.length ? (
           <ul className="dz-at">{at.map(([ic, t, s, a, an]) => (
-            <li key={t}><span aria-hidden="true">{ic}</span><div><b>{t}</b>{s ? <small>{s}</small> : null}</div>
+            <li key={t} className={ic === '🔴' ? 'mal' : 'ojo'}><span aria-hidden="true">{ic}</span><div><em>{ic === '🔴' ? 'URGENTE' : ic === '⏸' ? 'EN PAUSA' : 'OJO'}</em><b>{t}</b>{s ? <small>{s}</small> : null}</div>
               {a ? <button type="button" className="btn borde2 chico" onClick={() => ir(a, an)}>Ir</button> : null}</li>
           ))}</ul>
         ) : null}
@@ -3634,7 +3768,6 @@ export function Dashboard({ dc, liga }) {
           </section>
         </div>
         {(d.vivo || []).length ? sec('', 'EN VIVO AHORA', 'se pone al día solo', <EnVivo vivo={d.vivo} liga={liga} aj={aj} chat={d.chat} />) : null}
-        {sec('', 'ESTA SEMANA', u.desde ? 'contra la anterior · desde el ' + corto(u.desde) : 'contra la anterior', <Cajas u={u} />)}
       </>
     );
   } else if (areaV === 'pendientes') {
@@ -3661,6 +3794,7 @@ export function Dashboard({ dc, liga }) {
     vista = (
       <NumerosTabs tabs={[
         ['gente', 'La gente', <>
+          {sec('nu-vuelta', 'LA VUELTA AL SEGUNDO EVENTO', 'el número del 42 %', <VueltaSegundo r={retencion} />)}
           {sec('nu-uso', 'ESTA SEMANA · EL BOT Y LA PÁGINA', u.desde ? 'se cuenta desde el ' + corto(u.desde) : null, <Cajas u={u} />)}
           {sec('nu-lobby', '¿VUELVE LA GENTE?', 'la meta del research', <MetaLobby r={retencion} />)}
           {sec('nu-semanas', 'COMPARAR SEMANAS', 'de lunes a domingo, en hora del este', <CompararSemanas S={semanas} uso={d.uso_semanas} liga={liga} />)}

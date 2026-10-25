@@ -151,6 +151,8 @@ const AVISOS = {
   '/api/avisos/dueno/video': 'POST',
   // 📣 qué hacer con un reporte de una llave (13/10/2026, sólo Dlx). ⚠️ `reportes-estados` NO va acá: es del ciclo
   '/api/avisos/dueno/reporte': 'POST',
+  // 👀 quién está mirando qué caso de Pendientes (25/10/2026)
+  '/api/avisos/dueno/viendo': 'POST',
   // ✅ contestar ✅ Decidir desde el Dashboard (13/10/2026, sólo Dlx). ⚠️ `decidir-ciclo` y `decidir-estados` NO van acá
   '/api/avisos/dueno/decidir': 'POST',
   // 🏷️ los roles de cada perfil (cualquiera) y ponerlos (sólo Dlx), 13/10/2026. ⚠️ `roles-estados` NO va acá
