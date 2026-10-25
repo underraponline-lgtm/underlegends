@@ -12,6 +12,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
 import { Bandera, Cara, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, accion, diaET, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
 import { PanelEmblemas, PildoraEmblemas, emblemasDe } from './emblemas.jsx';
+import { TusTags } from './tags_inv.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
 import { usePaseDe } from './pase.js';
@@ -1339,12 +1340,14 @@ function Logros({ liga, p, esYo }) {
         <button type="button" role="tab" aria-selected={pest === 'logros'} className={pest === 'logros' ? 'on' : ''} onClick={() => setPest('logros')}>
           Logros <small>{tiene.size} de {cat.length}</small></button>
         <button type="button" role="tab" aria-selected={pest === 'inv'} className={pest === 'inv' ? 'on' : ''} onClick={() => setPest('inv')}>
-          Inventario <small>pronto</small></button>
+          Inventario{esYo ? <small>tus TAGs</small> : null}</button>
       </div>
-      {pest === 'inv' ? (
-        <div className="pf8-inv"><span aria-hidden="true">🎒</span><b>{esYo ? 'Tu inventario' : 'Su inventario'}</b>
-          <p>Acá se van a guardar las cosas que {esYo ? 'consigas' : 'consiga'} en Under Legends. Llega pronto.</p></div>
-      ) : <>
+      {/* 🏷️ el inventario (25/10/2026): en el tuyo, el TAG de cada carta (`tags_inv.jsx`); en el de otro, lo que eligió se
+          ve en sus cartas */}
+      {pest === 'inv' ? (esYo ? <TusTags /> : (
+        <div className="pf8-inv"><span aria-hidden="true">🎒</span><b>Su inventario</b>
+          <p>Los TAGs que eligió para sus cartas se ven abajo de cada una. El inventario lo ve cada uno en su perfil.</p></div>
+      )) : <>
         {si.length ? <ul className="pf-ins">{si.map(fila)}</ul> : <p className="pf-ins-nada">Todavía ninguna.</p>}
         {no.length ? (
           <>

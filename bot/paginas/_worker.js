@@ -124,6 +124,9 @@ const AVISOS = {
   // 🖼️ tus marcos de carta y elegir cuál llevar (25/10/2026)
   '/api/avisos/marcos': 'POST',
   '/api/avisos/marco-elige': 'POST',
+  // 🏷️ tus TAGs y elegir cuál lleva cada carta (25/10/2026)
+  '/api/avisos/tags-mios': 'POST',
+  '/api/avisos/tag-elige': 'POST',
   '/api/avisos/pases': 'GET',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026): ver `visita()` en bot/avisos.js
   '/api/avisos/visita': 'POST',

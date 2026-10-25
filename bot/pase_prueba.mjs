@@ -240,6 +240,22 @@ try {
   ok(!!o.pasePremium(A.DUENO, Cd.temp) && md.tienes.length === 3 && elD.ok && prD.premium && prD.marco
     && prD.titulo === (Cd.premium.filter((p) => p[2] === 'titulo').pop() || [])[3],
   'el dueño: premium siempre, los tres marcos para elegir y lo del nivel más alto', JSON.stringify({ md, elD, prD }));
+
+  // ── 🏷️ los TAGs: el inventario del ciclo, elegir uno que tienes (o un título del Pase) y de vuelta al ciclo ──
+  o.sql.exec("INSERT OR REPLACE INTO idk (id, k, t) VALUES (?, 'bea', 1)", BEA);
+  o.tagsCiclo({ temp: 't1', ganados: { bea: { temporada: { '💀 REGICIDA': ['💀 REGICIDA', 't1', 1] } } } });
+  const t1 = o.tagElige({ quien: BEA, carta: 'temporada', tag: '💀 REGICIDA' });
+  const t2 = o.tagElige({ quien: BEA, carta: 'servidor', tag: '🏛️ PILAR' });
+  const t3 = o.tagElige({ quien: BEA, carta: 'pais', tag: 'pase:Pilar de UL' });
+  const t4 = o.tagElige({ quien: A.DUENO, carta: 'servidor', tag: '🏛️ PILAR' });
+  const titD = o.titulosDe(A.DUENO);
+  const t5 = o.tagElige({ quien: A.DUENO, carta: 'pais', tag: 'pase:' + titD[titD.length - 1] });
+  const vuelta = o.tagsCiclo({ temp: 't1', ganados: {} });
+  ok(t1.ok && t1.elegidos.temporada === '💀 REGICIDA' && t2.error && t3.error && t4.ok && titD.length && t5.ok
+    && vuelta.elegidos.bea.temporada === '💀 REGICIDA' && vuelta.elegidos[A.DUENO_K].servidor === '🏛️ PILAR'
+    && o.tagElige({ quien: BEA, carta: 'temporada', tag: 'auto' }).ok && !o.tagsMios(BEA).elegidos.temporada,
+  'los TAGs: se elige uno que tienes, no uno que no; los títulos del Pase sólo si llegaste (el dueño, todos); «auto» lo saca',
+  JSON.stringify({ t1, t2, t3, t4, t5, vuelta }));
 } finally {
   Date.now = relojReal;
 }

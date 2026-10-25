@@ -358,6 +358,26 @@
 .pf8-inv span{font-size:34px}
 .pf8-inv b{font:900 18px/1 Archivo,sans-serif;text-transform:uppercase}
 .pf8-inv p{margin:0;max-width:340px;font-size:13.5px;color:var(--gris)}
+/* 🏷️ tus TAGs (25/10/2026, `tags_inv.jsx`): una fila de fichas por carta, el elegido lleno */
+.iv{display:grid;gap:16px;padding:6px 0 4px;min-width:0}
+.iv > *{min-width:0}
+.iv-p{margin:0;font-size:14px;line-height:1.5;color:var(--esc-gris);max-width:70ch}
+.iv-p b{color:var(--esc-tinta)}
+.iv-nota{margin:0;font-size:13.5px;color:var(--esc-gris)}
+.iv-msg{margin:0;padding:10px 12px;border:1.5px solid var(--verde);border-radius:4px;font-size:14px;color:var(--esc-tinta)}
+.iv-c{display:grid;gap:8px}
+.iv-c h4{display:flex;align-items:baseline;gap:8px;margin:0;font:900 16px/1 Archivo,sans-serif;text-transform:uppercase;color:var(--esc-tinta)}
+.iv-c h4 small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:var(--esc-gris)}
+.iv-l{display:flex;flex-wrap:wrap;gap:8px}
+.iv-t{display:grid;gap:3px;justify-items:start;padding:8px 11px;border:1.5px solid #3A3A42;border-radius:4px;background:#121216;color:var(--esc-tinta);
+  font:800 13.5px/1.1 Archivo,sans-serif;text-transform:uppercase;cursor:pointer;text-align:left}
+.iv-t small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:none;color:var(--esc-gris)}
+/* ⚠️ `iv-t1` y no `t1`: `.t1`… son clases globales del shadow root (estiraban las fichas) */
+.iv-t.iv-t1{border-color:#8A6A1E}.iv-t.iv-t2{border-color:#5B3A8A}.iv-t.iv-t3{border-color:#2B4E7A}
+.iv-t.on{background:var(--esc-tinta);border-color:var(--esc-tinta);color:#030304}
+.iv-t.on small{color:#3A3A42}
+.iv-t:disabled{cursor:progress;opacity:.7}
+@media (hover: hover) and (pointer: fine){.iv-t:not(.on):hover{border-color:var(--esc-tinta)}}
 
 /* 🔰 los emblemas (emblemas.jsx) */
 .emb-arte{display:block;flex:none}

@@ -437,6 +437,7 @@ def huellas():
             caras = {}
 
     from comun.claves import clave as _CL
+    from comun import tag_elegido as _TE
     # 🙈 Y QUIEN OCULTÓ SU FOTO VA CON LA INICIAL (Dlx, 02/10/2026: «1. A»). Su cara en el sello es «oculta», así la
     # carta se vuelve a dibujar al ocultarla y al volver a mostrarla. La lista sale de KV (`fotos.ocultas()`), que
     # además deja la copia que leen los generadores (`comun/respaldo.oculta()`): por eso se pide acá, antes de dibujar
@@ -544,6 +545,10 @@ def huellas():
             # y el servidor que elegiste, en las tres personales: ver arriba
             if carta in ('temporada', 'competitivo', 'pais') and elegidos.get(_CL(quien)):
                 crudo.append('sve=%s' % elegidos[_CL(quien)])
+            # 🏷️ y el TAG que eligió de su inventario (25/10/2026, `comun/tag_elegido.py`): elegir otro la redibuja
+            _te = _TE.para(carta, _CL(quien))
+            if _te:
+                crudo.append('tag=%r' % (_te,))
             # y lo de cada servidor, en la de Servidor: ver arriba
             if carta == 'servidor' and psv.get(quien):
                 crudo.append('psv=%r' % (sorted((k, tuple(sorted(v.items()))) for k, v in psv[quien].items()),))

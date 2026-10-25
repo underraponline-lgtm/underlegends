@@ -165,6 +165,8 @@ def logo_de(sv):
 # que quité eso de los servidores para todos a menos que se lo pongan manualmente en la tarjeta»). Era `c['sv']`, el
 # argmax del pool: Erian eligió Urban y su carta decía FFA. Sin elegir, no va ninguno. Ver `comun/servidor_elegido.py`
 from comun import servidor_elegido as _SE  # noqa: E402
+from comun import tag_elegido as _TE  # noqa: E402
+from comun.claves import clave as _K  # noqa: E402
 
 
 def chip_servidor(nombre):
@@ -345,7 +347,8 @@ def card(c):
                  pos=0)
     rg = '—' if c.get('sinjugar') else letra_rango(c)
     g, bright = GRAD_SIN_JUGAR if c.get('sinjugar') else GRAD[tier_color(c['ovr'])]   # el COLOR sale del OVR de temporada
-    tg = ('🎟️ PRIMER EVENTO PENDIENTE', 't4') if c.get('sinjugar') else tag(c)
+    # 🏷️ el TAG que eligió de su inventario, si eligió uno (Dlx, 25/10/2026); si no, la cascada
+    tg = ('🎟️ PRIMER EVENTO PENDIENTE', 't4') if c.get('sinjugar') else (_TE.para('temporada', _K(c.get('raw') or '')) or tag(c))
     # 📏 EL TAG LARGO APRIETA LAS LETRAS, NO LA FILA (14/10/2026). La pastilla vive entre la temporada y el UL en una
     # fila flex: medido, «🏁 SEMIFINALISTA SERIAL» dejaba 3.7 px de cada lado y «🎟️ PRIMER EVENTO PENDIENTE» 0 —se
     # tocaban—. Desde 21 caracteres va con menos espaciado (`.c-band.largo`), desde 25 con casi nada (`.muylargo`), y

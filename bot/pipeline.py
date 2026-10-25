@@ -1506,6 +1506,17 @@ def main():
         except Exception as e:                           # noqa: BLE001
             print('      ⚠️ las fotos: %s — sigo con las que hay' % str(e)[:70])
 
+    # ── 2f2 · 🏷️ el inventario de TAGs y lo que eligió cada uno (Dlx, 25/10/2026) ──
+    # «que los tags de abajo sean personalizables en cada tarjeta… desde el inventario». Suma al inventario lo que hoy
+    # muestra cada carta, se lo manda al objeto y trae lo elegido, revisado, para las cartas (`datos/tags_elegidos.json`).
+    # ⚠️ VA ANTES DE «QUÉ CAMBIÓ»: el TAG elegido entra al sello y la carta sale con él en esta misma corrida. Nunca frena
+    # el ciclo: sin esto, cada carta lleva el TAG de su cascada, como siempre. Ver `bot/tags_inventario.py`
+    paso('2f2', 'los TAGs elegidos')
+    if not correr:
+        print('      sumaría el inventario de TAGs y traería lo elegido (`bot/tags_inventario.py --aplicar`)')
+    elif not corre(['bot/tags_inventario.py', '--aplicar'], callado=False):
+        print('      ⚠️ los TAGs elegidos fallaron: queda lo de la corrida anterior')
+
     # ── 2 · que cambio ──────────────────────────────────────────────
     paso(3, 'qué cambió')
     import que_cambio as QC

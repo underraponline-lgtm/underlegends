@@ -615,6 +615,8 @@ TOTALES_PAIS = None
 # de su propio servidor}. En la hoja valen None: sin hechos y todas propias, la cascada de `comun/titulos.py`
 HECHOS = None
 CASA = None
+# 🏷️ {i: (texto, nivel)} el TAG que eligió de su inventario (25/10/2026, `comun/tag_elegido.py`); None en las hojas
+ELEGIDO = None
 
 
 def estilo_img(k):
@@ -1126,7 +1128,8 @@ def carta(i, sufijo):
   {pst}{tmp}
   {TIT.div(dict(pos_sv=p, total_sv=tot, titulos=tit, podios=pod,
                 racha=rch, duelos=duel, eventos=evt,
-                hechos=(HECHOS or {}).get(i, {}), casa=(CASA or {}).get(i, True)), A, B,
+                hechos=(HECHOS or {}).get(i, {}), casa=(CASA or {}).get(i, True),
+                elegido=(ELEGIDO or {}).get(i)), A, B,
            y=y(PIE.tag_centrado(d, cuelga, Y_FILA)))}
   <div class="t1">{TEMPORADA}</div>
   <img class="ul" src="{UL}">

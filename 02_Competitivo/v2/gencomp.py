@@ -31,6 +31,8 @@ ACC = {
 sys.path.insert(0, _osruta.path.dirname(RAIZ))
 from comun.escudos import LOGO, escudo
 from comun import servidor_elegido as _SE
+from comun import tag_elegido as _TE
+from comun.claves import clave as _K
 DIMS = ['EFI','CON','DOM','RCH','DIV','WR']    # RCH = Racha (rework A5: era TCH/Techo; el calculo no cambia)
 # 🔁 WR abajo y EV arriba (Dlx, 14/10/2026: «en la tarjeta competitivo intercambiar lugares el # eventos y el # de
 # winrate… simplemente cambiar los lugares esos labels»). Ver `_wr()` y `BLOQUE_TR()`
@@ -355,14 +357,18 @@ def TAG(c):
 
 # El número grande de ESTA carta es el SCORE, no el OVR mapeado.
 # El OVR pertenece a la carta de Temporada: cada carta muestra lo que mide.
+def _TAG_ELEGIDO(c):
+    # 🏷️ el TAG que eligió de su inventario (Dlx, 25/10/2026); si no eligió, la cascada
+    return _TE.para('competitivo', _K(c.get('raw') or '')) or TAG(c)
+
 def TAG_ABAJO(c):
     if VAR != '2': return ''
-    t, k = TAG(c)
+    t, k = _TAG_ELEGIDO(c)
     return '<div class="tagbot %s">%s</div>' % (k, t)
 
 def TAG_CORONA(c):
     if VAR != '3': return ''
-    t, k = TAG(c)
+    t, k = _TAG_ELEGIDO(c)
     return '<div class="tagtop %s">%s</div>' % (k, t)
 
 def BLOQUE_TL(c):

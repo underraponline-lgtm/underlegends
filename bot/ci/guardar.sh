@@ -79,7 +79,7 @@ set -euo pipefail
 # que nadie actualiza es el caso que este proyecto ya se comio
 # con `servidores_de.json` a los 3 dias: 19 entraban, 11 salian
 # y 5 habian cambiado de servidor.
-ARCHIVOS="datos/cartas_selladas.json datos/releer_llaves.json datos/promos.json datos/mes_awards.json datos/semanas.json datos/niveles.json datos/cartas_r2.json datos/dra_hub.json \
+ARCHIVOS="datos/tags_ganados.json datos/tags_elegidos.json datos/cartas_selladas.json datos/releer_llaves.json datos/promos.json datos/mes_awards.json datos/semanas.json datos/niveles.json datos/cartas_r2.json datos/dra_hub.json \
           datos/competitivo_pool.json datos/temporada_pool.json \
           datos/bloqueados.json datos/canales_llaves.json \
           datos/padron.json datos/verificados.json datos/verificados_desde.json datos/akas_a_mano.json \

@@ -333,6 +333,8 @@ FOTOS = None
 #   TAGP   {nombre: hechos del TAG}               lo de afuera de la fila (`tg_p` + `srv`, ver `tag()`); None en
 #                                                 las hojas, que dibujan la cascada de antes
 TAGP = None
+#   TAGE   {nombre: (texto, nivel)} el TAG que eligió de su inventario (`comun/tag_elegido.py`); None en la maqueta
+TAGE = None
 
 # ⚠️ DNI: DUELOS GANADOS CONTRA COMPATRIOTAS / CONTRA EXTRANJEROS. Dlx:
 # "cuantos duelos del mismo pais gano e internacional con el /". Es la unica
@@ -1925,8 +1927,8 @@ def carta(i, LW, marco, tag_centro=True, acorta=0, remate='punta',
     # Centrado en la carta no pisa el panel: el TAG mas largo mide ~95 px, o
     # sea que va de 102 a 198, y el panel termina en 68.
     TAGCLS = '' if tag_centro else ' der'
-    TAGTXT, TAGN = tag(pos, _tro[0][2], _tro[1][2], evt, pod, win, rch,
-                       VAL.get('DNA', ''), VAL.get('DIN', ''), (TAGP or {}).get(nom))
+    TAGTXT, TAGN = (TAGE or {}).get(nom) or tag(pos, _tro[0][2], _tro[1][2], evt, pod, win, rch,
+                                                 VAL.get('DNA', ''), VAL.get('DIN', ''), (TAGP or {}).get(nom))
     TAGN = TAGN[1]
 
     # ⚠️ LOS CHIPS VAN AFUERA DEL RECORTE, en un envoltorio. .card tiene

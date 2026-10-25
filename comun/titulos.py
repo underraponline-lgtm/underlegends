@@ -187,7 +187,9 @@ def div(d, propio, acento, y=None):
     distintas: el titulo sale del OVR y el TAG de combinaciones.
     """
     from comun.emblema import tono
-    t, k = cascada(d)
+    # 🏷️ el TAG que eligió de su inventario (25/10/2026, `comun/tag_elegido.py`): sólo en su propia Servidor
+    el = d.get('elegido') if d.get('casa') is not False else None
+    t, k = el if el else cascada(d)
     # ⚠️ t4, el piso, más apagado que t3: un nivel que se ve igual que otro
     # es el mismo TAG con otras palabras (ver `.tag.t1` de la de País)
     borde = {'t1': f'1.4px solid {acento}',

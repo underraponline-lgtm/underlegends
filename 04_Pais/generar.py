@@ -375,6 +375,10 @@ def montar(gente, cols=0):
     MQ.NAC = {p['nombre'].upper(): p['stats'] for p in gente}
     MQ.FOTOS = [p['foto'] for p in gente]
     MQ.TAGP = {p['nombre'].upper(): p.get('tagp') or {} for p in gente}
+    # 🏷️ el TAG que eligió de su inventario (Dlx, 25/10/2026): ver `comun/tag_elegido.py`
+    from comun import tag_elegido as _TE
+    from comun.claves import clave as _K
+    MQ.TAGE = {p['nombre'].upper(): _TE.para('pais', _K(p['nombre'])) for p in gente}
     # ⚠️ TODO SALE DE MQ.PRESET, NADA ESCRITO A MANO. Antes esta llamada
     # repetia los trece valores elegidos, o sea que eran DOS copias de la
     # misma decision. En la Servidor esa forma ya costo una carta mal

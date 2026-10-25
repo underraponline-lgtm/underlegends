@@ -158,6 +158,62 @@ CATALOGO = {
     ],
 }
 
+
+# 🗂️ LOS CUATRO GRUPOS (Dlx, 25/10/2026: «creo que deberían haber cosas por temporada, cosas edición limitada, cosas para
+# siempre y cosas de estado… en llamas simplemente refleja el estado en el que está», y a la propuesta, «sí, sirve así»):
+#   · 'siempre'   ♾️ pasó una vez y nadie te lo quita: queda en tu inventario para siempre
+#   · 'temporada' 📅 se mide dentro de la temporada: se pone hasta que termina, en la siguiente se vuelve a ganar
+#   · 'estado'    🎯 dice cómo estás hoy: no se guarda, sale solo mientras se cumple (si no, la carta mentiría)
+# La edición limitada ✨ son los títulos del Pase de cada temporada: no están acá, salen de `bot/pase.py`.
+# ⚠️ Un TAG sin grupo pone CI en rojo (el self-check): uno nuevo tiene que decir a cuál va.
+GRUPO_DE = {
+    'siempre': [
+        # temporada
+        '💀 REGICIDA', '🛡️ INTOCABLE', '🗺️ CONQUISTADOR', '🎯 CAZADOR CAZADO', '🐺 LOBO SOLITARIO', '🚪 DEBUT CON CORONA',
+        '🐦‍🔥 FÉNIX', '🗳️ FAVORITO DEL PÚBLICO', '⚡ RELÁMPAGO', '👥 FUNDADOR DE CREW', '🧟 RESUCITADO', '👑 CAMPEÓN x%d',
+        '📈 EN ASCENSO', '🥉 AL PODIO', '🔺 REY DE LOS TRÍOS', '🌱 PROMESA',
+        # competitivo
+        '🗡️ MATAGIGANTES', '😈 BESTIA NEGRA', '🔁 VENGADOR', '🧊 SANGRE FRÍA',
+        # servidor
+        '🪓 VERDUGO DEL DUEÑO', '🏆 CAMPEÓN', '🧱 FUNDADOR', '🏅 PODIOS', '🏰 FORTALEZA', '🏟️ FINALISTA DE CASA',
+        # país
+        'INMORTAL', 'LEYENDA MUNDIAL', 'DOBLE CORONA', 'CAMPEÓN DEL MUNDO', 'DINASTÍA NACIONAL', 'BICAMPEÓN NACIONAL',
+        'CAMPEÓN NACIONAL', 'PRIMER CAMPEÓN', 'PIONERO',
+    ],
+    'temporada': [
+        # temporada
+        '👑 DINASTÍA', '💯 BICENTENARIO', '⭐ DECACAMPEÓN', '📋 SEMANA PERFECTA x%d', '🎯 CAZARRECOMPENSAS', '🏃 FUGITIVO',
+        '💯 CENTENARIO', '⭐ PENTACAMPEÓN', '🥈 SIEMPRE EN LA FINAL', '📆 PODIO CADA SEMANA', '⚡ MARATONISTA',
+        '🏁 SEMIFINALISTA SERIAL', '📋 SEMANA PERFECTA', '🌍 TROTAMUNDOS', '🎖️ CURTIDO', '📅 INFALTABLE', '🧳 VIAJERO',
+        '🔟 DOBLE DÍGITO',
+        # competitivo
+        '🎯 FRANCOTIRADOR', '🤜 CLÁSICO', '🥈 A UN PASO', '⚔️ DUELISTA', '🎯 COMPLETO', '🤝 SIN MIEDO',
+        # servidor
+        '🏛️ PILAR', '🔑 LLAVE DE LA CASA', '📆 HABITUÉ', '🧳 VISITANTE ILUSTRE',
+        # país
+        'ORGULLO NACIONAL', 'REY DEL DERBI', 'CONQUISTA AFUERA', 'SIN FRONTERAS', 'INTERNACIONAL', 'EMBAJADOR',
+        'GANA AFUERA', 'BANDERA VIVA', 'KILÓMETROS', 'DA LA CARA',
+    ],
+    'estado': [
+        # temporada
+        '🔥 EN LLAMAS', '📜 SE BUSCA', '💰 CABEZA CON PRECIO', '💎 CREW DE ÉLITE', '🚀 COHETE', '🆕 DEBUTANTE', '🎤 COMPETIDOR',
+        # competitivo
+        '🏆 #1 COMPETITIVO', '🥇 TOP 3', '⭐ TOP 10', '🧭 REGULAR', '⚡ EFICIENTE', '🌐 TODOTERRENO', '👊 DOMINADOR',
+        '🔥 RACHERO', '🎟️ RECIÉN CLASIFICADO', '🎤 CLASIFICADO',
+        # servidor
+        '🎟️ DE VISITA', '👑 DUEÑO DE CASA', '⭐ TOP DEL SERVIDOR', '🛡️ INVICTO EN CASA', '🔥 EN LLAMAS', '📜 BUSCADO EN CASA',
+        '🌱 RECIÉN LLEGADO', '🎤 DE LA CASA',
+        # país
+        'REY DE SU PAÍS', 'EL MEJOR DE %d', 'INTRATABLE', 'Nº1 DEL PAÍS', 'INVICTO NACIONAL', 'PODIO Y PUNTERÍA',
+        'PODIO NACIONAL', 'MEJOR AFUERA', 'FUERTE EN CASA', 'TITULAR FIJO', 'EN RACHA', 'SELECCIONABLE', 'MEDIA TABLA',
+        'SIN RANKING', 'REPRESENTANTE',
+    ],
+}
+#: `{texto: grupo}` (un mismo texto en dos cartas, como 🔥 EN LLAMAS, es del mismo grupo en las dos)
+GRUPO = {t: g for g, ts in GRUPO_DE.items() for t in ts}
+#: los que se guardan en el inventario
+GUARDA = ('siempre', 'temporada')
+
 #: de dónde sale cada cascada: (archivo, función, si sus `return` son `(id, texto, nivel)`)
 CASCADAS = {
     'temporada': ('01_Temporada/normal_v3.py', 'tag', False),
@@ -211,9 +267,12 @@ def indices():
     return {c: {t: i for i, (t, _n, _p) in enumerate(xs)} for c, xs in CATALOGO.items()}
 
 
-def de_cada_uno():
+def de_cada_uno(textos=None):
     """`{clave: [temporada, competitivo, servidor, país]}`: el lugar en el catálogo del TAG que hoy muestra cada carta de
-    cada uno, o -1. Corre las cuatro cascadas de verdad sobre `datos/`, como `hechos_tags.contar()`."""
+    cada uno, o -1. Corre las cuatro cascadas de verdad sobre `datos/`, como `hechos_tags.contar()`.
+
+    `textos`: un dict que se llena con `{clave: [texto, texto, texto, texto]}` (el TAG tal como sale, con su número:
+    «👑 CAMPEÓN x2»), para el inventario (`bot/tags_inventario.py`)."""
     import importlib.util
     import hechos_tags as H
     from comun.claves import clave as K
@@ -247,11 +306,15 @@ def de_cada_uno():
         if f.get('ev'):
             t, _n = nv3.tag(dict(f, tg_t=ht.get(K(f['raw']), {})))
             out[K(f['raw'])][0] = ix['temporada'].get(clave_tag(t), -1)
+            if textos is not None:
+                textos.setdefault(K(f['raw']), ['', '', '', ''])[0] = t
     gc = mod(os.path.join('02_Competitivo', 'v2'), 'gencomp.py', '_cat_gc')
     for f in C:
         if f.get('rango'):
             t, _n = gc.TAG(dict(f, tg_c=hc.get(K(f['raw']), {})))
             out[K(f['raw'])][1] = ix['competitivo'].get(clave_tag(t), -1)
+            if textos is not None:
+                textos.setdefault(K(f['raw']), ['', '', '', ''])[1] = t
     from comun import titulos as TIT
     ps = H.con_hechos(D['ps'], C, D)
     for f in C:
@@ -263,6 +326,8 @@ def de_cada_uno():
                                     titulos=x.get('oro', 0), podios=x.get('pod', 0), racha=x.get('racha') or '0/0',
                                     duelos=x.get('duelos') or '0/0', eventos=x.get('ev', 0), hechos=x.get('tg') or {}, casa=True))
         out[K(f['raw'])][2] = ix['servidor'].get(clave_tag(t), -1)
+        if textos is not None:
+            textos.setdefault(K(f['raw']), ['', '', '', ''])[2] = t
     from comun.requisitos import falta
     mq = mod('04_Pais', 'maqueta.py', '_cat_mq')
     tt = {x['raw']: x for x in T}
@@ -275,6 +340,8 @@ def de_cada_uno():
                          f.get('rch_max', 0), '%d/%d' % (f.get('dna_v', 0), f.get('dna_t', 0)),
                          '%d/%d' % (f.get('din_v', 0), f.get('din_t', 0)), h)
         out[K(f['raw'])][3] = ix['pais'].get(clave_tag(txt), -1)
+        if textos is not None:
+            textos.setdefault(K(f['raw']), ['', '', '', ''])[3] = txt
     return dict(out)
 
 
@@ -286,7 +353,8 @@ WEB = os.path.join(RAIZ, 'web', 'src', 'tags_catalogo.json')
 def web_json():
     return json.dumps({'_leeme': 'Copia de CATALOGO de sheet/catalogo_tags.py: se rehace con `python sheet/catalogo_tags.py --web`. '
                                  'No se edita a mano: el self-check la compara.', 'niveles': NIVELES,
-                       'cat': {c: [list(x) for x in xs] for c, xs in CATALOGO.items()}}, ensure_ascii=False, indent=1) + '\n'
+                       'cat': {c: [list(x) + [GRUPO.get(x[0], '')] for x in xs] for c, xs in CATALOGO.items()}},
+                      ensure_ascii=False, indent=1) + '\n'
 
 
 def para_web(de=None):
@@ -313,6 +381,11 @@ def _self_check():
             carta, len(cat), ('  · faltan en el catálogo: %s' % falta) if falta else '', ('  · ya no existen: %s' % sobra) if sobra else ''))
         ok(len({t for t, _n, _p in CATALOGO[carta]}) == len(CATALOGO[carta]), '%s: ningún TAG dos veces' % carta)
         ok(all(p.endswith('.') and len(p) <= 110 for _t, _n, p in CATALOGO[carta]), '%s: lo que pide cada uno, en una frase corta' % carta)
+    sin = sorted({t for xs in CATALOGO.values() for t, _n, _p in xs} - set(GRUPO))
+    ok(not sin, 'cada TAG tiene su grupo (siempre / temporada / estado)%s' % ('  · sin grupo: %s' % sin if sin else ''))
+    otro = sorted(set(GRUPO) - {t for xs in CATALOGO.values() for t, _n, _p in xs})
+    ok(not otro, 'ningún grupo nombra un TAG que no existe%s' % ('  · %s' % otro if otro else ''))
+    ok(sum(len(v) for v in GRUPO_DE.values()) - 1 == len(GRUPO), 'ningún TAG en dos grupos (🔥 EN LLAMAS está en dos cartas)')
     ok(clave_tag('📋 SEMANA PERFECTA x3') == '📋 SEMANA PERFECTA x%d' and clave_tag('EL MEJOR DE 25') == 'EL MEJOR DE %d'
        and clave_tag('👑 CAMPEÓN x2') == '👑 CAMPEÓN x%d' and clave_tag('🎤 COMPETIDOR') == '🎤 COMPETIDOR', 'los TAGs con número')
     w = para_web({'ana': [0, -1, 2, -1], 'bea': [-1, -1, -1, -1]})

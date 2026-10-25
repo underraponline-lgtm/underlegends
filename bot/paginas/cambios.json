@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "4.06",
+   "dia": "2026-10-25",
+   "cuando": "2026-10-25T14:45:46-04:00",
+   "titulo": "Elige el TAG de tus cartas",
+   "items": [
+    "🏷️ **El TAG de abajo de cada carta lo eliges tú**, desde la pestaña **Inventario** de tu perfil. Cada carta, el suyo.",
+    "🗂️ **Hay cuatro tipos de TAG**: ♾️ **para siempre** (REGICIDA, CAMPEÓN, FUNDADOR…: nadie te los quita), 📅 **de temporada** (DINASTÍA, PILAR, HABITUÉ…: valen hasta que termina), ✨ **edición limitada** (tus títulos del Pase) y 🎯 **de estado** (EN LLAMAS, TOP DEL SERVIDOR…: salen solos mientras se cumplen).",
+    "🎒 **Tu inventario se llena solo**: cada TAG que tu carta muestra se guarda. Empieza hoy, así que lo de antes no está.",
+    "🃏 **Tu carta se redibuja con el TAG elegido** en la próxima vuelta del ciclo. Con «Automático», muestra el que te toca, como siempre."
+   ]
+  },
+  {
    "version": "4.05",
    "dia": "2026-10-25",
    "cuando": "2026-10-25T14:25:17-04:00",

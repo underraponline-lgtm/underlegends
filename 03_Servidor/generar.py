@@ -349,6 +349,10 @@ def montar(gente):
     # 🏷️ el TAG: los hechos de ese servidor y si es la propia o una camiseta (ver `con_camiseta()`)
     TS.HECHOS = {i: p.get('hechos') or {} for i, p in enumerate(gente)}
     TS.CASA = {i: p.get('casa', True) for i, p in enumerate(gente)}
+    # 🏷️ el TAG que eligió de su inventario, en su propia Servidor (Dlx, 25/10/2026): ver `comun/tag_elegido.py`
+    from comun import tag_elegido as _TE
+    from comun.claves import clave as _K
+    TS.ELEGIDO = {i: _TE.para('servidor', _K(p.get('nombre') or '')) for i, p in enumerate(gente)}
     TS.avatares = _Fotos(gente)
 
 

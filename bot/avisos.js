@@ -2574,6 +2574,8 @@ const RUTAS = {
   '/avisos/pase-avisos': 'POST', '/avisos/pase-color': 'POST', '/avisos/sorteo': 'POST', '/avisos/sorteo-entrar': 'POST',
   // 🖼️ tus marcos de carta y elegir cuál llevar, con tu sesión
   '/avisos/marcos': 'POST', '/avisos/marco-elige': 'POST',
+  // 🏷️ tus TAGs y elegir cuál lleva cada carta (con tu sesión), y el inventario del ciclo (con su clave)
+  '/avisos/tags-mios': 'POST', '/avisos/tag-elige': 'POST', '/avisos/tags-ciclo': 'POST',
   // 🎟️ quién tiene nivel en el Pase, para el ciclo (la Temporada es el premio del nivel 1): con `claveCiclo()`
   '/avisos/pase-niveles': 'GET',
   // 🧠 los datos de cada persona para /card, que viven en el objeto desde el 06/10/2026: los escribe y los lee el
@@ -3194,6 +3196,8 @@ export const FONDO_NIVEL = 5;
 // 🖼️ los marcos de carta, de menos a más, y los estilos de la carta de Servidor (Dlx, 25/10/2026: «Las 2. Una elige»)
 export const MARCOS = ['premium', 'plata', 'oro'];
 export const MARCO_ESTILOS = ['camiseta', 'cadena'];
+// 🏷️ las cartas que llevan TAG elegible (25/10/2026)
+export const TAG_CARTAS = ['temporada', 'competitivo', 'servidor', 'pais'];
 /** El mejor marco de una lista `['t1:premium', 't1:oro']`: el de más nivel y, a igual nivel, el de la temporada más nueva */
 export function mejorMarco(xs) {
   return (xs || []).slice().sort((a, b) => (MARCOS.indexOf(b.split(':')[1]) - MARCOS.indexOf(a.split(':')[1])) || (b < a ? -1 : 1))[0] || '';
@@ -4868,7 +4872,8 @@ export async function rutaAvisos(req, env, ruta) {
   // 🎟️ EL PASE: el tuyo (pedirlo ya revisa tus Tareas) y «miré una llave en vivo», con tu sesión. ⚠️ Nunca por el
   // reenvío de abajo: ese pasa el cuerpo tal cual, y acá el `quien` lo pone la sesión
   if (ruta === '/avisos/pase' || ruta === '/avisos/pase-vivo' || ruta === '/avisos/pase-avisos' || ruta === '/avisos/pase-color' ||
-    ruta === '/avisos/sorteo' || ruta === '/avisos/sorteo-entrar' || ruta === '/avisos/marcos' || ruta === '/avisos/marco-elige') {
+    ruta === '/avisos/sorteo' || ruta === '/avisos/sorteo-entrar' || ruta === '/avisos/marcos' || ruta === '/avisos/marco-elige'
+    || ruta === '/avisos/tags-mios' || ruta === '/avisos/tag-elige') {
     const crudo = await req.text();
     if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
     let d = null;
@@ -4882,7 +4887,8 @@ export async function rutaAvisos(req, env, ruta) {
     const q = await quienPide(req, env, d);
     if (!q.id && ruta !== '/avisos/sorteo') return json({ error: q.error }, q.estado);
     return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
-      method: 'POST', body: JSON.stringify({ quien: q.id || '', llave, si: d.si, color: d.color, marco: d.marco, estilo: d.estilo }),
+      method: 'POST', body: JSON.stringify({ quien: q.id || '', llave, si: d.si, color: d.color, marco: d.marco, estilo: d.estilo,
+        carta: d.carta, tag: d.tag }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -5192,6 +5198,17 @@ export async function rutaAvisos(req, env, ruta) {
     const crudo = await req.text();
     if (crudo.length > 4000000) return json({ error: 'demasiado grande' }, 413);
     return elObjeto(env).fetch('https://avisos/personas-ciclo', {
+      method: 'POST', body: crudo, headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 🏷️ EL INVENTARIO DE TAGS, DEL CICLO (`bot/tags_inventario.py`): con su clave. Lo que hoy muestra la carta de cada uno,
+  // sumado; de vuelta, lo que eligió cada uno
+  if (ruta === '/avisos/tags-ciclo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 900000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/tags-ciclo', {
       method: 'POST', body: crudo, headers: { 'content-type': 'application/json' },
     });
   }
@@ -5726,6 +5743,11 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS marcos (quien TEXT NOT NULL, marco TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, marco))');
       this.sql.exec("CREATE TABLE IF NOT EXISTS marco_elige (quien TEXT PRIMARY KEY, marco TEXT NOT NULL DEFAULT '', " +
         "estilo TEXT NOT NULL DEFAULT 'camiseta', t INTEGER NOT NULL)");
+      // 🏷️ EL TAG QUE CADA UNO ELIGE PARA CADA CARTA (Dlx, 25/10/2026: «que los tags de abajo sean personalizables en cada
+      // tarjeta… desde el inventario»). `tag` es la clave del catálogo (`sheet/catalogo_tags.py`) o `pase:<título>`. El
+      // inventario lo trae el ciclo (`/avisos/tags-ciclo`, en `estado` como `tags_ganados`)
+      this.sql.exec('CREATE TABLE IF NOT EXISTS tag_elige (quien TEXT NOT NULL, carta TEXT NOT NULL, tag TEXT NOT NULL, ' +
+        't INTEGER NOT NULL, PRIMARY KEY (quien, carta))');
       // 🎟️ EL SORTEO DEL PASE PREMIUM (Dlx, 25/10/2026: «algo interactivo en la página»): quién entró y con cuántos
       // boletos (1 + las semanas con las cinco semanales, hasta 3). Lo programa Dlx (`pase_sorteo` de los ajustes)
       this.sql.exec('CREATE TABLE IF NOT EXISTS sorteo_part (sorteo TEXT NOT NULL, quien TEXT NOT NULL, boletos INTEGER NOT NULL, ' +
@@ -6319,6 +6341,9 @@ export class Avisos {
       if (ruta === '/sorteo-entrar') { const v = this.sorteoEntrar(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/marcos') return json(this.marcosDe(String(d.quien || '')));
       if (ruta === '/marco-elige') { const v = this.marcoElige(d); return json(v, v.error ? 400 : 200); }
+      if (ruta === '/tags-mios') return json(this.tagsMios(String(d.quien || '')));
+      if (ruta === '/tag-elige') { const v = this.tagElige(d); return json(v, v.error ? 400 : 200); }
+      if (ruta === '/tags-ciclo') { const v = this.tagsCiclo(d); return json(v, v.error ? 400 : 200); }
       // 🧠 lo que manda el ciclo: las personas de esta corrida (`bot/subir_datos.py`)
       if (ruta === '/personas-ciclo') {
         const v = this.personasCiclo(d);
@@ -9096,7 +9121,7 @@ export class Avisos {
     this.sql.exec('DELETE FROM pase_log WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM pase_hito WHERE quien = ?', String(d.quien));
     // 💎🖼️ y lo del 25/10/2026: el premium, sus avisos, su color, sus marcos y lo del sorteo
-    for (const t of ['pase_premium', 'pase_aviso', 'pase_color', 'marcos', 'marco_elige', 'sorteo_part']) {
+    for (const t of ['pase_premium', 'pase_aviso', 'pase_color', 'marcos', 'marco_elige', 'sorteo_part', 'tag_elige']) {
       this.sql.exec('DELETE FROM ' + t + ' WHERE quien = ?', String(d.quien));
     }
     // ⭐ y lo que le sumaba nivel
@@ -10358,7 +10383,9 @@ export class Avisos {
       'uso', 'bandeja', 'fondos', 'fotos_carta', 'postulaciones', 'sigue_org', 'org_cola', 'videos_pedidos',
       'videos_reportes', 'agenda', 'cambios_dia', 'apostado', 'qg_voto', 'roles_manual', 'liga_sigue',
       // 💎🖼️ lo del 25/10/2026: el premium, sus avisos, su color, sus marcos y lo del sorteo
-      'pase_premium', 'pase_aviso', 'pase_color', 'marcos', 'marco_elige', 'sorteo_part'];
+      'pase_premium', 'pase_aviso', 'pase_color', 'marcos', 'marco_elige', 'sorteo_part',
+      // 🏷️ y el TAG que eligió para cada carta
+      'tag_elige'];
     const movidas = {}, fallas = [];
     // 🔴 LAS CLAVES DE LA TIENDA LLEVAN EL ID ADENTRO (pasada del 19/10/2026): `rhito:<id>:…`, `racha:<id>:…`,
     // `rdia:<día>:<id>`, `bien:<id>:<paso>`, `pase:…:<id>:<nivel>`… Pasaba la fila a la cuenta nueva con la clave vieja,
@@ -12435,6 +12462,63 @@ export class Avisos {
       }
     } catch (err) { /* sin marcos: las cartas salen como siempre */ }
     return out;
+  }
+
+  /**
+   * 🏷️ EL INVENTARIO DE TAGS, DEL CICLO (`/avisos/tags-ciclo`, con su clave): `{temp, ganados: {clave: {carta: {tag:
+   * [texto, temporada, ms]}}}}` (sólo los que se guardan: ♾️ para siempre y 📅 de temporada, ver `bot/tags_inventario.py`).
+   * Se guarda entero y se contesta con lo que eligió cada uno: `{elegidos: {clave: {carta: tag}}}`
+   */
+  tagsCiclo(d) {
+    const g = d && d.ganados;
+    if (!g || typeof g !== 'object' || Array.isArray(g) || !/^[a-z0-9]{1,12}$/.test(String(d.temp || ''))) return { error: 'faltan datos' };
+    this.guardar('tags_ganados', { temp: String(d.temp), t: Date.now(), g });
+    const elegidos = {};
+    for (const r of this.sql.exec('SELECT quien, carta, tag FROM tag_elige').toArray()) {
+      const k = this.claveDe(r.quien) || (r.quien === DUENO ? DUENO_K : '');
+      if (k) (elegidos[k] = elegidos[k] || {})[r.carta] = r.tag;
+    }
+    return { ok: true, elegidos };
+  }
+
+  /** 🏷️ Los títulos del Pase que tiene alguien (✨ edición limitada): los de la fila gratis hasta su nivel y, con el
+   *  premium, los de la premium. El dueño, todos */
+  titulosDe(quien) {
+    const P = this.paseDatos();
+    if (!P.cfg) return [];
+    const nivel = quien === DUENO ? P.cfg.niveles || 30 : P.miembros.has(quien) ? this.paseNivel(quien, P.cfg) : 0;
+    const filas = [...(P.cfg.premios || [])];
+    if (this.pasePremium(quien, P.cfg.temp)) filas.push(...(P.cfg.premium || []));
+    return [...new Set(filas.filter((p) => p[2] === 'titulo' && p[0] <= nivel).map((p) => String(p[3])))];
+  }
+
+  /** 🏷️ Tus TAGs (`/avisos/tags-mios`, con tu sesión): lo que ganó tu carta, tus títulos del Pase y lo que elegiste */
+  tagsMios(quien) {
+    if (!/^[0-9]{5,25}$/.test(quien)) return { error: 'faltan datos' };
+    const k = this.claveDe(quien) || (quien === DUENO ? DUENO_K : '');
+    const G = this.leer('tags_ganados') || {};
+    const elegidos = {};
+    for (const r of this.sql.exec('SELECT carta, tag FROM tag_elige WHERE quien = ?', quien).toArray()) elegidos[r.carta] = r.tag;
+    return { k, temp: G.temp || '', ganados: (k && G.g && G.g[k]) || {}, titulos: this.titulosDe(quien), elegidos, dueno: quien === DUENO };
+  }
+
+  /** 🏷️ Elegir el TAG de una carta (`/avisos/tag-elige`, con tu sesión): uno que tengas, un título tuyo o `auto` */
+  tagElige(d) {
+    const quien = String(d.quien || ''), carta = String(d.carta || ''), tag = String(d.tag || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !TAG_CARTAS.includes(carta) || !tag || tag.length > 60) return { error: 'faltan datos' };
+    if (tag === 'auto') {
+      this.sql.exec('DELETE FROM tag_elige WHERE quien = ? AND carta = ?', quien, carta);
+      return Object.assign({ ok: true }, this.tagsMios(quien));
+    }
+    if (tag.startsWith('pase:')) {
+      if (!this.titulosDe(quien).includes(tag.slice(5))) return { error: 'no lo tienes' };
+    } else if (quien !== DUENO) {
+      const yo = this.tagsMios(quien);
+      if (!((yo.ganados || {})[carta] || {})[tag]) return { error: 'no lo tienes' };
+    }
+    this.sql.exec('INSERT INTO tag_elige (quien, carta, tag, t) VALUES (?, ?, ?, ?) ON CONFLICT(quien, carta) DO UPDATE SET ' +
+      'tag = excluded.tag, t = excluded.t', quien, carta, tag, Date.now());
+    return Object.assign({ ok: true }, this.tagsMios(quien));
   }
 
   /** 👑 los marcos del dueño: los tres de la temporada que corre */
