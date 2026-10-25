@@ -68,6 +68,12 @@ DESDE = '2026-10-05'
 NIVELES = 30
 #: la XP de cada nivel: los primeros, baratos (el arranque tiene que sentirse), y después todos iguales
 XP_PRIMEROS, PRIMEROS, XP_NIVEL = 300, 3, 1000
+#: 🎯 LA CURVA SIN LA PARED DEL 4 (Dlx, 25/10/2026: «dale», al informe «Pase de rapero enganche», cambio 2). Del 3 al 4 el
+#: costo saltaba de 300 a 1.000 (×3,3) y el 56 % del Pase estaba trabado entre el 1 y el 3. Ahora sube de a poco: lo que
+#: cuesta cada nivel hasta el 8, y `XP_NIVEL` desde el 9. ⚠️ NINGÚN UMBRAL SUBE (el self-check lo exige): nadie baja de
+#: nivel, y quien queda por encima del suyo sube y cobra solo. Desde la semana del lunes `CURVA_DESDE`, no a mitad de una
+XP_COSTOS = (300, 300, 300, 500, 600, 700, 800, 900)
+CURVA_DESDE = '2026-10-26'
 #: después del último nivel: cada `COLA[0]` de XP paga `COLA[1]` Puntos de Tienda
 COLA = (1000, 300)
 #: lo que el objeto sabe contar. `activo`: días de la racha · `fel`: felicitaciones · `vivo`: llaves en vivo
@@ -151,7 +157,8 @@ ESPECIALES = {
     # 🎟️ la Temporada es la recompensa del nivel 1 (Dlx, 05/10/2026: «C», «nivel 1»): la desbloquea `verificados.puede()`
     1: ('tarjeta', 'Temporada'),
     5: ('insignia', 'Pase Bronce'),
-    # ✨ tu carta brilla en las llaves (Dlx, 18/10/2026: «carta chica + Pase»): la página la dibuja con brillo dorado
+    # ✨ tu carta brilla en las llaves (Dlx, 18/10/2026: «carta chica + Pase»): la página la dibuja con brillo dorado.
+    # Con la curva nueva pasa al 4 (`NIVEL_BRILLO`): el primer nivel caro, como premio de la pared
     8: ('llave', 'Tu carta brilla en las llaves'),
     10: ('titulo', 'De la casa'),
     15: ('insignia', 'Pase Plata'),
@@ -159,8 +166,9 @@ ESPECIALES = {
     25: ('titulo', 'Pilar de DRA'),
     30: ('insignia', 'Pase Oro'),
 }
-#: ✨ desde qué nivel brilla tu carta en las llaves (lo lee `subir_web.py` para la página)
-NIVEL_BRILLO = 8
+#: ✨ desde qué nivel brilla tu carta en las llaves (lo lee `subir_web.py` para la página, con `nivel_brillo()`): el 8
+#: con la curva de antes; el 4 desde `CURVA_DESDE` (Dlx, 25/10/2026: «dale», el informe, cambio 7)
+NIVEL_BRILLO_VIEJO, NIVEL_BRILLO = 8, 4
 #: los niveles que salen en Publicaciones para que te feliciten (Dlx, 06/10/2026: «5. c»). El último, además, es el
 #: Salón del Pase (Dlx, 06/10: «4. B»)
 PUBLICAR = (10, 30)
@@ -168,20 +176,39 @@ PUBLICAR = (10, 30)
 WORKER = 'https://liga-global-bot.liga-global-ul.workers.dev'
 
 
-def umbrales():
-    """La XP total que pide cada nivel, del 1 al último: `[300, 600, 900, 1900, …]`."""
+def umbrales(curva=True):
+    """La XP total que pide cada nivel, del 1 al último: `[300, 600, 900, 1400, 2000, …]` con la curva nueva;
+    `[300, 600, 900, 1900, …]` con la de antes (`curva=False`)."""
     out, t = [], 0
     for n in range(1, NIVELES + 1):
-        t += XP_PRIMEROS if n <= PRIMEROS else XP_NIVEL
+        if curva:
+            t += XP_COSTOS[n - 1] if n <= len(XP_COSTOS) else XP_NIVEL
+        else:
+            t += XP_PRIMEROS if n <= PRIMEROS else XP_NIVEL
         out.append(t)
     return out
 
 
-def premios():
-    """`[[nivel, tienda, tipo, valor], …]` de los `NIVELES`: lo que da cada uno. `tipo` vacío: sólo Tienda."""
+def curva_activa(ahora=None):
+    """¿Ya corre la curva nueva? Desde la semana del lunes `CURVA_DESDE` (la del Pase, la de las semanales)."""
+    import multiplicadores as MU
+    return MU.periodo(ahora or dt.datetime.now(dt.timezone.utc))[0] >= CURVA_DESDE
+
+
+def nivel_brillo(ahora=None):
+    """✨ El nivel desde el que brilla tu carta en las llaves: el 4 con la curva nueva, el 8 antes."""
+    return NIVEL_BRILLO if curva_activa(ahora) else NIVEL_BRILLO_VIEJO
+
+
+def premios(curva=True):
+    """`[[nivel, tienda, tipo, valor], …]` de los `NIVELES`: lo que da cada uno. `tipo` vacío: sólo Tienda. Con la
+    curva nueva, el brillo en las llaves está en el `NIVEL_BRILLO` y no en el 8."""
+    esp = dict(ESPECIALES)
+    if curva:
+        esp[NIVEL_BRILLO] = esp.pop(NIVEL_BRILLO_VIEJO)
     out = []
     for n in range(1, NIVELES + 1):
-        tipo, valor = ESPECIALES.get(n, ('', ''))
+        tipo, valor = esp.get(n, ('', ''))
         out.append([n, TIENDA_NIVEL, tipo, valor])
     return out
 
@@ -206,7 +233,7 @@ def dra_activo(evs, ahora):
     return any(ev.get('sv') == 'DRA' and ev.get('t') and desde <= ev['t'] <= ahora for ev in evs or [])
 
 
-def config(temp, dra=True, nuevas=True):
+def config(temp, dra=True, nuevas=True, curva=True):
     """Lo que lee el objeto: los números y los textos. La temporada (`temp`) separa un Pase del siguiente. Sin `dra`
     (DRA no está organizando), sus Tareas van cambiadas por las de `SIN_DRA`. Sin `nuevas` (antes de `TAREAS_DESDE`),
     las diarias y las de temporada de antes.
@@ -215,9 +242,9 @@ def config(temp, dra=True, nuevas=True):
     (`paseRevisar()`), así que una semanal nueva se pagaría también en las semanas que ya pasaron. Para sumar una sin
     eso, el objeto tiene que saber desde qué semana vale cada una: es un cambio del Worker, y se despliega aparte."""
     lista = lambda xs: [list(SIN_DRA[t[0]]) if not dra and t[0] in SIN_DRA else list(t) for t in xs]
-    out = {'temp': temp or 'prueba', 'niveles': NIVELES, 'umbrales': umbrales(), 'cola': list(COLA),
+    out = {'temp': temp or 'prueba', 'niveles': NIVELES, 'umbrales': umbrales(curva), 'cola': list(COLA),
            'diarias': lista(DIARIAS_NUEVAS if nuevas else DIARIAS), 'por_dia': POR_DIA, 'semanales': lista(SEMANALES),
-           'temporada': lista(TEMPORADA + (TEMPORADA_NUEVAS if nuevas else ())), 'premios': premios(),
+           'temporada': lista(TEMPORADA + (TEMPORADA_NUEVAS if nuevas else ())), 'premios': premios(curva),
            'publicar': list(PUBLICAR)}
     # ⚠️ LA SEMANA DE PRUEBA TENÍA «Completá tus misiones», que ya no es una Tarea: lo que se cumplió sigue valiendo lo
     # que vale una semanal (si no, a quien sólo tenía ésa se le iba el nivel 1, y con él la tarjeta de Temporada)
@@ -326,7 +353,9 @@ def armar(ahora=None):
     h = hechas(sems, evs, _cazas(MW.leer()), buscador(PR.discords(pool)), set(miembros))
     # 🆕 las Tareas nuevas entran con la semana del 19/10 (`TAREAS_DESDE`), no a mitad de ésta
     nuevas = MU.periodo(ahora)[0] >= TAREAS_DESDE
-    out = {'cfg': config(MU.temporada_actual(ahora), dra=dra_activo(evs, ahora), nuevas=nuevas), 'sem': sems,
+    # 🎯 la curva nueva y el brillo en el 4, desde la semana del 26/10 (`CURVA_DESDE`)
+    out = {'cfg': config(MU.temporada_actual(ahora), dra=dra_activo(evs, ahora), nuevas=nuevas, curva=curva_activa(ahora)),
+           'sem': sems,
            'miembros': miembros, 'hechas': h}
     out['v'] = hashlib.sha256(json.dumps(out, sort_keys=True, ensure_ascii=False).encode('utf-8')).hexdigest()[:16]
     return out
@@ -443,12 +472,21 @@ def _self_check():
     u = umbrales()
     ok(len(ps) == NIVELES and [p[0] for p in ps] == list(range(1, NIVELES + 1)) and len(u) == NIVELES,
        'treinta niveles, cada uno con su XP')
-    ok(u[:4] == [300, 600, 900, 1900] and all(b > a for a, b in zip(u, u[1:])),
-       'los tres primeros cuestan 300 y después 1.000: la XP pedida sólo crece  %s' % u[:5])
+    ok(u[:8] == [300, 600, 900, 1400, 2000, 2700, 3500, 4400] and u[8] - u[7] == XP_NIVEL
+       and all(b > a for a, b in zip(u, u[1:])),
+       'la curva nueva: 300 tres veces, del 4 al 8 de 500 a 900, y 1.000 desde el 9; la XP pedida sólo crece  %s' % u[:9])
+    viejos = umbrales(False)
+    ok(viejos[:4] == [300, 600, 900, 1900] and all(a <= b for a, b in zip(u, viejos)),
+       'ningún umbral sube con la curva nueva: nadie baja de nivel (antes: %s)' % viejos[:5])
+    _lun = dt.datetime(2026, 10, 26, 15, 30, tzinfo=dt.timezone.utc)
+    ok(not curva_activa(_lun - dt.timedelta(hours=1)) and curva_activa(_lun) and nivel_brillo(_lun) == 4
+       and nivel_brillo(_lun - dt.timedelta(hours=1)) == 8 and premios(False)[7][2] == 'llave' and premios()[3][2] == 'llave'
+       and premios()[7][2] == '',
+       'la curva y el brillo en el 4 arrancan con la semana del lunes 26/10, no a mitad de una')
     ok(ps[-1][2] == 'insignia' and all(p[1] > 0 for p in ps), 'todos pagan Tienda y el último es una insignia')
     ok({p[2] for p in ps if p[2]} == {'tarjeta', 'insignia', 'titulo', 'color', 'llave'} and ps[0][2] == 'tarjeta'
        and ps[NIVEL_BRILLO - 1][2] == 'llave',
-       'el nivel 1 es la tarjeta de Temporada; los demás premios: insignias, títulos, color y el brillo en las llaves (el 8)')
+       'el nivel 1 es la tarjeta de Temporada; los demás premios: insignias, títulos, color y el brillo en las llaves (el 4)')
     todas = DIARIAS_NUEVAS + SEMANALES + TEMPORADA + TEMPORADA_NUEVAS
     ids = [t[0] for t in todas]
     ok(len(ids) == len(set(ids)) and all(t[3] in MIDE and t[4] >= 1 and t[5] > 0 for t in todas),

@@ -807,7 +807,8 @@ def _brillan(tabla, pid_k):
             niv = (json.load(f) or {}).get('niveles') or {}
     except (OSError, ValueError, ImportError):
         return []
-    tope = getattr(PA, 'NIVEL_BRILLO', 8)
+    # 🎯 el 4 desde la curva nueva (26/10/2026), el 8 antes: lo decide `pase.nivel_brillo()`
+    tope = PA.nivel_brillo() if hasattr(PA, 'nivel_brillo') else getattr(PA, 'NIVEL_BRILLO', 8)
     out = []
     for f in tabla or []:
         did = str((pid_k.get(f.get('k')) or ('', ''))[1] or '')

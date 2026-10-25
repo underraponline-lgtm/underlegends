@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "4.00",
+   "dia": "2026-10-25",
+   "cuando": "2026-10-25T10:36:02-04:00",
+   "titulo": "El Pase de rapero, más fácil de subir",
+   "items": [
+    "🎟️ **Desde el lunes 26/10, los niveles del 4 al 8 cuestan menos**: 500, 600, 700, 800 y 900 XP (antes, 1.000 cada uno). Del 9 en adelante, igual que siempre.",
+    "⬆️ **Nadie baja de nivel**: si tu XP ya alcanza para uno más, subes solo y cobras sus Puntos de Tienda.",
+    "✨ **Tu carta brilla en las llaves desde el nivel 4** (antes, el 8)."
+   ]
+  },
+  {
    "version": "3.99",
    "dia": "2026-10-24",
    "cuando": "2026-10-24T10:38:57-04:00",
