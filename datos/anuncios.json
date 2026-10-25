@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-25T22:54:52+00:00",
+ "cuando": "2026-10-25T23:24:49+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -4912,33 +4912,6 @@
    "inscripciones_cuando": "2026-10-25T22:53:21"
   },
   {
-   "nombre": "19 (EDICIÓN FUTCARD VOL 4)",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1562967428563079298",
-   "cuando": "2026-10-22T23:14:33",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "b360fced798207fd",
-   "cupos_texto": "8",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "YA",
-   "fecha": "",
-   "premios": "",
-   "staff": {},
-   "autor": "₁₉",
-   "staff_cuentas": {},
-   "de_imagen": true,
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-25T22:53:21"
-  },
-  {
    "nombre": "LA MISIÓN DEL MONJE",
    "servidor": "DDF",
    "canal": "『📢』Eventos",
@@ -6875,6 +6848,96 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "KEIDER",
+   "quien": "mc.luisito",
+   "discord_id": "1437913232407920770",
+   "msg_id": "1564054598451339276",
+   "cuando": "2026-10-25T23:14:35"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Artezzy",
+   "quien": "elinzano1009",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1564051362462048289",
+   "cuando": "2026-10-25T23:01:43"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Nxuz",
+   "quien": "elinzano1009",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1564051353133649941",
+   "cuando": "2026-10-25T23:01:41"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Elbesaabuelas",
+   "quien": "xnoah_12341",
+   "discord_id": "1544902851975843900",
+   "msg_id": "1564050872126930947",
+   "cuando": "2026-10-25T22:59:46"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Carlos",
+   "quien": "carlosss.mc23",
+   "discord_id": "958103803616444528",
+   "msg_id": "1564050330184982569",
+   "cuando": "2026-10-25T22:57:37"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "DarnBless 🇨🇴",
+   "quien": "juanclaudio0959",
+   "discord_id": "1508771760709963930",
+   "msg_id": "1564050237733998724",
+   "cuando": "2026-10-25T22:57:15"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "EDD🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1564050161230151752",
+   "cuando": "2026-10-25T22:56:57"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Majiztral 🇨🇴",
+   "quien": "majiztral",
+   "discord_id": "1492228152691396720",
+   "msg_id": "1564050096750854316",
+   "cuando": "2026-10-25T22:56:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "** 🇨🇴",
+   "quien": "juanclaudio0959",
+   "discord_id": "1508771760709963930",
+   "msg_id": "1564049832799371436",
+   "cuando": "2026-10-25T22:55:38"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Dev 🇦🇷",
+   "quien": ".gatitodev",
+   "discord_id": "1028631611685740684",
+   "msg_id": "1564049622807220286",
+   "cuando": "2026-10-25T22:54:48"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -42784,96 +42847,6 @@
    "discord_id": "1223701976655859805",
    "msg_id": "1532541629594996850",
    "cuando": "2026-07-31T00:13:17"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Lso 🇦🇷 Izaya🇨🇱",
-   "quien": "dragun0994",
-   "discord_id": "1150044918216130636",
-   "msg_id": "1532540895470158024",
-   "cuando": "2026-07-31T00:10:22"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Mosquitrap 🦟🇦🇷 + Dios 🇲🇽",
-   "quien": "3decopas.",
-   "discord_id": "1494178897908990136",
-   "msg_id": "1532540862431494316",
-   "cuando": "2026-07-31T00:10:14"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Adachi 🇻🇪+",
-   "quien": "adachit_332",
-   "discord_id": "1445803811758276660",
-   "msg_id": "1532540817426878505",
-   "cuando": "2026-07-31T00:10:04"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Dios 🇲🇽",
-   "quien": "dan666._",
-   "discord_id": "1204164715350196284",
-   "msg_id": "1532540690524012624",
-   "cuando": "2026-07-31T00:09:33"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Ros 🇦🇷 + <@559068959845122048>",
-   "quien": "ros81",
-   "discord_id": "1498545536708382722",
-   "msg_id": "1532540681019461783",
-   "cuando": "2026-07-31T00:09:31"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Bloody 🇨🇴 + MCO 🇦🇷",
-   "quien": "bloodypintor",
-   "discord_id": "692881329573986317",
-   "msg_id": "1532540335635300432",
-   "cuando": "2026-07-31T00:08:09"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Dios 🇲🇽",
-   "quien": "dan666._",
-   "discord_id": "1204164715350196284",
-   "msg_id": "1532539728295886969",
-   "cuando": "2026-07-31T00:05:44"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Osa🇦🇷",
-   "quien": "faloperro0746",
-   "discord_id": "1474632108700864534",
-   "msg_id": "1532539676500426882",
-   "cuando": "2026-07-31T00:05:32"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Ros 🇦🇷",
-   "quien": "ros81",
-   "discord_id": "1498545536708382722",
-   "msg_id": "1532539562545381536",
-   "cuando": "2026-07-31T00:05:04"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "19 🇵🇪+ JVO 🇭🇳",
-   "quien": "19.emece",
-   "discord_id": "1087195409685954561",
-   "msg_id": "1532539503439511632",
-   "cuando": "2026-07-31T00:04:50"
   }
  ]
 }

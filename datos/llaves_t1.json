@@ -13588,7 +13588,7 @@
       [
        "Carlosss",
        "Miniboy",
-       "Dm🇵🇪"
+       "Dominick"
       ],
       "Carlosss",
       "triple (3 bandas)"
@@ -13687,7 +13687,7 @@
     3500
    ],
    [
-    "Dm🇵🇪",
+    "Dominick",
     "Cuartos",
     2000
    ],
@@ -31177,7 +31177,7 @@
      [
       [
        "Shadow",
-       "Dom 🇵🇪"
+       "Dominick"
       ],
       "Shadow",
       ""
@@ -31277,7 +31277,7 @@
     2000
    ],
    [
-    "Dom 🇵🇪",
+    "Dominick",
     "Cuartos",
     2000
    ],
@@ -31685,7 +31685,7 @@
      [
       [
        "Fix 17",
-       "Pepito el come pito🇵🇪"
+       "Dominick"
       ],
       "Fix 17",
       ""
@@ -31775,17 +31775,17 @@
     3500
    ],
    [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
     "LSO",
     "Cuartos",
     2000
    ],
    [
     "Lizeninn",
-    "Cuartos",
-    2000
-   ],
-   [
-    "Pepito el come pito🇵🇪",
     "Cuartos",
     2000
    ]
@@ -32355,6 +32355,224 @@
     "Senticide",
     "Cuartos",
     2000
+   ]
+  ]
+ },
+ "515": {
+  "dia": "2026-10-25",
+  "escala": "8-15",
+  "fecha": "25/10",
+  "links": [
+   "https://discord.com/channels/765045834647339038/1309238412976590908/1564021566189346929"
+  ],
+  "n": 515,
+  "nombre": "REDBULL CREW ARGENTINA 2026",
+  "participantes": 15,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Zekha",
+       "Mr.Kude"
+      ],
+      "Zekha",
+      ""
+     ],
+     [
+      [
+       "Hotaru Adeyemi 🏳️‍⚧️",
+       "Flama"
+      ],
+      "Hotaru Adeyemi 🏳️‍⚧️",
+      ""
+     ],
+     [
+      [
+       "BNA",
+       "Guess"
+      ],
+      "BNA",
+      "Revivido: GUESS 🇦🇷"
+     ],
+     [
+      [
+       "Geoka",
+       "Ariaxer"
+      ],
+      "Geoka",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "El Wachin"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "Deluxe",
+       "Eze"
+      ],
+      "Deluxe",
+      ""
+     ],
+     [
+      [
+       "Kuni",
+       "Dev"
+      ],
+      "Kuni",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Zekha",
+       "Hotaru Adeyemi 🏳️‍⚧️"
+      ],
+      "Zekha",
+      ""
+     ],
+     [
+      [
+       "Deluxe",
+       "Geoka"
+      ],
+      "Deluxe",
+      ""
+     ],
+     [
+      [
+       "Guess",
+       "Kuni"
+      ],
+      "Guess",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "BYSHOP 🇦🇷"
+      ],
+      "MCO",
+      "Walk-in 1: BYSHOP 🇦🇷"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Deluxe",
+       "MCO"
+      ],
+      "Deluxe",
+      ""
+     ],
+     [
+      [
+       "Zekha",
+       "Guess"
+      ],
+      "Zekha",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Deluxe",
+       "Zekha"
+      ],
+      "Deluxe",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "ACAD",
+  "tabla": [
+   [
+    "Deluxe",
+    "Campeón",
+    7500
+   ],
+   [
+    "Zekha",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "MCO",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Guess",
+    "Semifinal",
+    2375
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Hotaru Adeyemi 🏳️‍⚧️",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Kuni",
+    "Cuartos",
+    2000
+   ],
+   [
+    "BYSHOP 🇦🇷",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    625
+   ],
+   [
+    "Dev",
+    "Octavos",
+    625
+   ],
+   [
+    "El Wachin",
+    "Octavos",
+    625
+   ],
+   [
+    "Eze",
+    "Octavos",
+    625
+   ],
+   [
+    "Flama",
+    "Octavos",
+    625
+   ],
+   [
+    "Mr.Kude",
+    "Octavos",
+    625
    ]
   ]
  }

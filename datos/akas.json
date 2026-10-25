@@ -306,6 +306,7 @@
   "c4makma": "Makmah",
   "mosqui": "Mosquitrap 🦟",
   "stan": "Krtman",
+  "byshop": "Bishop",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1576,6 +1577,10 @@
   [
    "Stan",
    "Krtman"
+  ],
+  [
+   "BYSHOP",
+   "Bishop"
   ],
   [
    "Nexus",

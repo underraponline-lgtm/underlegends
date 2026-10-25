@@ -686,6 +686,13 @@
   }
  },
  "deluxe": {
+  "pais": {
+   "REY DEL DERBI": [
+    "REY DEL DERBI",
+    "t1",
+    1792971176169
+   ]
+  },
   "servidor": {
    "⚔️ DUELISTA": [
     "⚔️ DUELISTA",
@@ -698,6 +705,11 @@
     "👑 CAMPEÓN x1",
     "t1",
     1792953978519
+   ],
+   "🗺️ CONQUISTADOR": [
+    "🗺️ CONQUISTADOR",
+    "t1",
+    1792971176169
    ]
   }
  },
@@ -1020,6 +1032,15 @@
    ]
   }
  },
+ "flama": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1792971176169
+   ]
+  }
+ },
  "fleivaman": {
   "temporada": {
    "🥉 AL PODIO": [
@@ -1210,6 +1231,13 @@
   }
  },
  "juanpa": {
+  "servidor": {
+   "🪓 VERDUGO DEL DUEÑO": [
+    "🪓 VERDUGO DEL DUEÑO",
+    "t1",
+    1792971176169
+   ]
+  },
   "temporada": {
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -2897,6 +2925,15 @@
    ]
   }
  },
+ "veca": {
+  "temporada": {
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1792971176169
+   ]
+  }
+ },
  "velatz": {
   "competitivo": {
    "😈 BESTIA NEGRA": [
@@ -2920,6 +2957,11 @@
    ]
   },
   "temporada": {
+   "💯 BICENTENARIO": [
+    "💯 BICENTENARIO",
+    "t1",
+    1792971176169
+   ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
     "t1",

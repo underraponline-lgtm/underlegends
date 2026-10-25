@@ -22237,5 +22237,240 @@
    ]
   ],
   "v": 2
+ },
+ "515": {
+  "antes": {
+   "Ariaxer": [
+    42,
+    56,
+    false
+   ],
+   "Deluxe": [
+    78,
+    102,
+    false
+   ],
+   "El Wachin": [
+    420,
+    394,
+    true
+   ],
+   "Eze": [
+    101,
+    152,
+    false
+   ],
+   "Flama": [
+    116,
+    186,
+    false
+   ],
+   "Geoka": [
+    44,
+    58,
+    false
+   ],
+   "Guess": [
+    21,
+    23,
+    false
+   ],
+   "Hotaru Adeyemi 🏳️‍⚧️": [
+    228,
+    99,
+    true
+   ],
+   "Kuni": [
+    191,
+    444,
+    false
+   ],
+   "MCO": [
+    15,
+    16,
+    false
+   ],
+   "Mr.Kude": [
+    401,
+    373,
+    true
+   ],
+   "Zekha": [
+    84,
+    109,
+    false
+   ]
+  },
+  "canal": "925213294703300649",
+  "duelos": [
+   [
+    "Zekha",
+    "Mr.Kude",
+    "Zekha"
+   ],
+   [
+    "Hotaru Adeyemi 🏳️‍⚧️",
+    "Flama",
+    "Hotaru Adeyemi 🏳️‍⚧️"
+   ],
+   [
+    "BNA",
+    "Guess",
+    "BNA"
+   ],
+   [
+    "Geoka",
+    "Ariaxer",
+    "Geoka"
+   ],
+   [
+    "MCO",
+    "El Wachin",
+    "MCO"
+   ],
+   [
+    "Deluxe",
+    "Eze",
+    "Deluxe"
+   ],
+   [
+    "Kuni",
+    "Dev",
+    "Kuni"
+   ],
+   [
+    "Zekha",
+    "Hotaru Adeyemi 🏳️‍⚧️",
+    "Zekha"
+   ],
+   [
+    "Deluxe",
+    "Geoka",
+    "Deluxe"
+   ],
+   [
+    "Guess",
+    "Kuni",
+    "Guess"
+   ],
+   [
+    "MCO",
+    "BYSHOP 🇦🇷",
+    "MCO"
+   ],
+   [
+    "Deluxe",
+    "MCO",
+    "Deluxe"
+   ],
+   [
+    "Zekha",
+    "Guess",
+    "Zekha"
+   ],
+   [
+    "Deluxe",
+    "Zekha",
+    "Deluxe"
+   ]
+  ],
+  "ev_antes": {
+   "Ariaxer": 12,
+   "Deluxe": 4,
+   "El Wachin": 1,
+   "Eze": 5,
+   "Flama": 4,
+   "Geoka": 16,
+   "Guess": 17,
+   "Hotaru Adeyemi 🏳️‍⚧️": 3,
+   "Kuni": 1,
+   "MCO": 24,
+   "Mr.Kude": 1,
+   "Zekha": 4
+  },
+  "fecha": "25/10",
+  "firma": "0e296f8412811eda",
+  "msg": "1564056930748469309",
+  "nombre": "REDBULL CREW ARGENTINA 2026",
+  "num": 515,
+  "participantes": 15,
+  "sello": {
+   "Deluxe": ""
+  },
+  "sv": "ACAD",
+  "t": "2026-10-25T23:23:49Z",
+  "tabla": [
+   [
+    "Deluxe",
+    "Campeón",
+    7500
+   ],
+   [
+    "Zekha",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "MCO",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Guess",
+    "Semifinal",
+    2375
+   ],
+   [
+    "Hotaru Adeyemi 🏳️‍⚧️",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Kuni",
+    "Cuartos",
+    2000
+   ],
+   [
+    "BYSHOP 🇦🇷",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Mr.Kude",
+    "Octavos",
+    625
+   ],
+   [
+    "Flama",
+    "Octavos",
+    625
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    625
+   ],
+   [
+    "El Wachin",
+    "Octavos",
+    625
+   ],
+   [
+    "Eze",
+    "Octavos",
+    625
+   ],
+   [
+    "Dev",
+    "Octavos",
+    625
+   ]
+  ],
+  "v": 2
  }
 }

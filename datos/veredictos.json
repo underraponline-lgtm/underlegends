@@ -1145,6 +1145,17 @@
    "b": "MCO 🇦🇷",
    "ganador": "DELUXE 🇦🇷",
    "votos": "2–0"
+  },
+  "1564050162886905878": {
+   "id": "1564050162886905878",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792969017479,
+   "a": "SEKKA 🇦🇷",
+   "b": "DELUXE 🇦🇷",
+   "ganador": "DELUXE 🇦🇷",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5609,8 +5620,8 @@
    "g": "765045834647339038",
    "canal": "1309238412976590908",
    "pub": 1792962199495,
-   "ed": 1792968624082,
-   "texto": "`[ OCTAVOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞KUDE 🇦🇷⌝\n⌞FLAMA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞BNA 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝\n⌞GEOKA 🇦🇷⌝ 🆚 ⌞ARIAXER 🇦🇷⌝\n⌞WACHIN 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n⌞EZEE 🇦🇷⌝ 🆚 ⌞DELUXE 🇦🇷⌝\n⌞DEV 🇦🇷⌝ 🆚 ⌞KUNI 🇦🇷⌝\n`[ CUARTOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞DELUXE 🇦🇷⌝ 🆚 ⌞GEOKA 🇦🇷⌝\n⌞KUNI 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝\n⌞BYSHOP 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞DELUXE 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝",
+   "ed": 1792969299520,
+   "texto": "`[ OCTAVOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞KUDE 🇦🇷⌝\n⌞FLAMA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞BNA 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝\n⌞GEOKA 🇦🇷⌝ 🆚 ⌞ARIAXER 🇦🇷⌝\n⌞WACHIN 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n⌞EZEE 🇦🇷⌝ 🆚 ⌞DELUXE 🇦🇷⌝\n⌞DEV 🇦🇷⌝ 🆚 ⌞KUNI 🇦🇷⌝\n`[ CUARTOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞DELUXE 🇦🇷⌝ 🆚 ⌞GEOKA 🇦🇷⌝\n⌞KUNI 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝\n⌞BYSHOP 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞DELUXE 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝\n`[ FINAL ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞DELUXE 🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5738,8 +5749,18 @@
       "SEKKA 🇦🇷",
       "GUESS 🇦🇷"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "SEKKA 🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "SEKKA 🇦🇷",
+      "DELUXE 🇦🇷"
+     ],
+     "DELUXE 🇦🇷",
+     "veredicto",
      []
     ]
    ]

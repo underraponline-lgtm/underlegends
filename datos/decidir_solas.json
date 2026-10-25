@@ -2416,6 +2416,52 @@
    "escribio": {
     "quien": "GRISELDA RECORDS VOL. 6 · DDF · 25/10 · Pepito el come pito🇵🇪"
    }
+  },
+  {
+   "id": "88eb6ef212",
+   "tipo": "Nombre desconocido",
+   "sec": "REDBULL CREW ARGENTINA 2026 · ACAD · 25/10 · #515",
+   "que": "¿Quién es «BYSHOP 🇦🇷»?",
+   "r": "Es Bishop",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Bishop: estaba en la llamada del evento con ese nombre",
+   "t": 1792971158690,
+   "filas": [
+    845
+   ],
+   "variantes": [
+    "BYSHOP 🇦🇷"
+   ],
+   "escribio": {
+    "alias": [
+     "BYSHOP",
+     "Bishop"
+    ],
+    "filas": [
+     313
+    ]
+   }
+  },
+  {
+   "id": "6b2222a18d",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«Dom» es Dominick? La cuenta de Dominick en la Lista se anotó como «Dom», y en el ranking suman aparte. Si es la misma persona, los puntos de «Dom» pasan a Dominick.\nLa cuenta: https://discord.com/users/1439048698142134436",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no hace falta: «Dom» ya no suma aparte en el ranking",
+   "t": 1792971158690,
+   "filas": [
+    827
+   ],
+   "variantes": [
+    "DOS NOMBRES: «Dom» → «Dominick» · cuenta 1439048698142134436"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

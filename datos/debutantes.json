@@ -1,7 +1,7 @@
 {
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
-  "ACAD": "2026-10-23",
+  "ACAD": "2026-10-25",
   "DDF": "2026-10-25",
   "FFA": "2026-10-25",
   "FRZ": "2026-10-15",
@@ -126,6 +126,19 @@
    "n": 497,
    "sv": "FFA",
    "vence": "2026-10-29T00:30:05+00:00",
+   "vencido": false
+  },
+  "BYSHOP": {
+   "avisado": "2026-10-25",
+   "chat": "2026-10-25",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T21:03:19+00:00",
+   "did": "",
+   "evento": "REDBULL CREW ARGENTINA 2026",
+   "n": 515,
+   "sv": "ACAD",
+   "vence": "2026-11-01T21:03:19+00:00",
    "vencido": false
   },
   "Bull12r": {
@@ -272,17 +285,17 @@
    "vence": "2026-10-28T01:13:25+00:00",
    "vencido": false
   },
-  "Dom": {
+  "Dev": {
    "avisado": "2026-10-25",
-   "chat": "2026-10-24",
+   "chat": "2026-10-25",
    "con": null,
    "cumplido": "",
-   "debut": "2026-10-24T02:52:18+00:00",
-   "did": "",
-   "evento": "GRISELDA RECORDS VOL. 3",
-   "n": 507,
-   "sv": "DDF",
-   "vence": "2026-10-31T02:52:18+00:00",
+   "debut": "2026-10-25T21:03:19+00:00",
+   "did": "1028631611685740684",
+   "evento": "REDBULL CREW ARGENTINA 2026",
+   "n": 515,
+   "sv": "ACAD",
+   "vence": "2026-11-01T21:03:19+00:00",
    "vencido": false
   },
   "EVANGELINE": {
@@ -771,18 +784,6 @@
    "vence": "2026-10-23T02:35:47+00:00",
    "vencido": true
   },
-  "Pepito el come pito": {
-   "avisado": "2026-10-25",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-25T04:08:34+00:00",
-   "did": "",
-   "evento": "GRISELDA RECORDS VOL. 6",
-   "n": 511,
-   "sv": "DDF",
-   "vence": "2026-11-01T04:08:34+00:00",
-   "vencido": false
-  },
   "Pipe": {
    "avisado": "2026-10-23",
    "chat": "2026-10-23",
@@ -893,6 +894,7 @@
   },
   "Senticide": {
    "avisado": "2026-10-19",
+   "avisado_cumplido": "2026-10-25",
    "chat": "2026-10-20",
    "con": 514,
    "cumplido": "2026-10-25T19:28:36+00:00",
