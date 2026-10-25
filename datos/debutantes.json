@@ -894,8 +894,8 @@
   "Senticide": {
    "avisado": "2026-10-19",
    "chat": "2026-10-20",
-   "con": null,
-   "cumplido": "",
+   "con": 514,
+   "cumplido": "2026-10-25T19:28:36+00:00",
    "debut": "2026-10-19T04:19:55+00:00",
    "did": "",
    "evento": "FREESTYLE LEAGUE",
@@ -916,6 +916,17 @@
    "n": 468,
    "sv": "FFA",
    "vence": "2026-10-20T23:50:48+00:00",
+   "vencido": false
+  },
+  "Stan": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T19:28:36+00:00",
+   "did": "",
+   "evento": "IDENTITY V",
+   "n": 514,
+   "sv": "DDF",
+   "vence": "2026-11-01T19:28:36+00:00",
    "vencido": false
   },
   "VECA": {

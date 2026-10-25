@@ -32230,5 +32230,132 @@
     2000
    ]
   ]
+ },
+ "514": {
+  "dia": "2026-10-25",
+  "escala": "8-15",
+  "fecha": "25/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1563997731314475099"
+  ],
+  "n": 514,
+  "nombre": "IDENTITY V",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "Marcos"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "Mosquitrap 🦟",
+       "Senticide"
+      ],
+      "Mosquitrap 🦟",
+      ""
+     ],
+     [
+      [
+       "Carlosss",
+       "Stan🇨🇱"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Evangeline🇵🇪"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mosquitrap 🦟",
+       "Erian"
+      ],
+      "Mosquitrap 🦟",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Carlosss"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mosquitrap 🦟",
+       "Makmah"
+      ],
+      "Mosquitrap 🦟",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Mosquitrap 🦟",
+    "Campeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Carlosss",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Evangeline🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Marcos",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Senticide",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Stan🇨🇱",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

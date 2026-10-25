@@ -2332,6 +2332,27 @@
      "867079478860709898"
     ]
    }
+  },
+  {
+   "id": "d681c1b442",
+   "tipo": "Nombre desconocido",
+   "sec": "IDENTITY V · DDF · 25/10 · #514",
+   "que": "¿Quién es «Stan🇨🇱»?",
+   "r": "Es Krtman (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @algoritmokrt (en Discord: «🐉 | KRT», «El_Stan») · en la Lista: Krtman se anotó como «Stan» para ese evento, no es staff de DDF y esa noche no jugó con su nombre",
+   "t": 1792960134599,
+   "filas": [
+    844
+   ],
+   "variantes": [
+    "Stan🇨🇱"
+   ],
+   "escribio": {
+    "quien": "IDENTITY V · DDF · 25/10 · Stan🇨🇱"
+   }
   }
  ],
  "deshechas": []

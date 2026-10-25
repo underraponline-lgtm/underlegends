@@ -22103,5 +22103,139 @@
    ]
   ],
   "v": 2
+ },
+ "514": {
+  "antes": {
+   "Carlosss": [
+    23,
+    25,
+    false
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Makmah": [
+    2,
+    2,
+    false
+   ],
+   "Marcos": [
+    86,
+    113,
+    false
+   ],
+   "Mosquitrap 🦟": [
+    241,
+    129,
+    true
+   ],
+   "Senticide": [
+    299,
+    228,
+    true
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Erian",
+    "Marcos",
+    "Erian"
+   ],
+   [
+    "Mosquitrap 🦟",
+    "Senticide",
+    "Mosquitrap 🦟"
+   ],
+   [
+    "Carlosss",
+    "Stan🇨🇱",
+    "Carlosss"
+   ],
+   [
+    "Makmah",
+    "Evangeline🇵🇪",
+    "Makmah"
+   ],
+   [
+    "Mosquitrap 🦟",
+    "Erian",
+    "Mosquitrap 🦟"
+   ],
+   [
+    "Makmah",
+    "Carlosss",
+    "Makmah"
+   ],
+   [
+    "Mosquitrap 🦟",
+    "Makmah",
+    "Mosquitrap 🦟"
+   ]
+  ],
+  "ev_antes": {
+   "Carlosss": 12,
+   "Erian": 50,
+   "Makmah": 71,
+   "Marcos": 6,
+   "Mosquitrap 🦟": 4,
+   "Senticide": 1
+  },
+  "fecha": "25/10",
+  "firma": "5d5f10b00e18145d",
+  "msg": "1564008211395387534",
+  "nombre": "IDENTITY V",
+  "num": 514,
+  "participantes": 8,
+  "sello": {
+   "Mosquitrap 🦟": ""
+  },
+  "sv": "DDF",
+  "t": "2026-10-25T20:23:33Z",
+  "tabla": [
+   [
+    "Mosquitrap 🦟",
+    "Campeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Carlosss",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Marcos",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Senticide",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Stan🇨🇱",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Evangeline🇵🇪",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }
