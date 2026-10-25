@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-25T19:35:04+00:00",
+ "cuando": "2026-10-25T19:55:40+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -6912,6 +6912,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Calíz 🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1564003316839616684",
+   "cuando": "2026-10-25T19:50:48"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "KEIDER",
+   "quien": "mc.luisito",
+   "discord_id": "1437913232407920770",
+   "msg_id": "1564000376624119869",
+   "cuando": "2026-10-25T19:39:07"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
