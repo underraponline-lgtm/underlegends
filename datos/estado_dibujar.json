@@ -1,21 +1,21 @@
 {
  "v": 1,
- "cuando": "2026-10-25T22:25:17Z",
+ "cuando": "2026-10-25T22:42:00Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 760.6,
+ "dur_s": 783.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.9
+   "s": 9.3
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.7
+   "s": 0.8
   },
   {
    "n": "3",
@@ -27,25 +27,25 @@
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.4
+   "s": 30.6
   },
   {
    "n": "5",
    "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 662.1
+   "s": 669.4
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.9
+   "s": 5.1
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 53.4
+   "s": 59.0
   }
  ],
  "fallas": [
@@ -74,20 +74,26 @@
  },
  "cuotas": {
   "kv": {
-   "write": 451,
-   "read": 51553
+   "write": 465,
+   "read": 53097
   },
   "objeto": {
-   "leidas": 2884872,
-   "escritas": 17958,
-   "pedidos": 8811
+   "leidas": 2959315,
+   "escritas": 18358,
+   "pedidos": 9024
   },
   "worker": {
-   "pedidos": 7911,
+   "pedidos": 7946,
    "errores": 0,
-   "sub": 9547,
-   "p50_ms": 1.32,
-   "p99_ms": 10.75
+   "sub": 9584,
+   "cortados": 0,
+   "p50_ms": 1.33,
+   "p99_ms": 10.87,
+   "cpu": {
+    "total": 17529,
+    "objeto_10": 1655,
+    "worker_10": 121
+   }
   },
   "r2": {
    "objetos": 4940,
