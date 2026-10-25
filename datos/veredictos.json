@@ -2,17 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1561501903190237377": {
-   "id": "1561501903190237377",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1557583344638623754",
-   "pub": 1792361465023,
-   "a": "TAM🇻🇪",
-   "b": "MAILEN🇳🇴",
-   "ganador": "TAM🇻🇪",
-   "votos": "1–0"
-  },
   "1561564498043605066": {
    "id": "1561564498043605066",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -1090,6 +1079,28 @@
    "b": "DELUXE 🇦🇷",
    "ganador": "DELUXE 🇦🇷",
    "votos": "1–0"
+  },
+  "1564036937843613918": {
+   "id": "1564036937843613918",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792965864383,
+   "a": "DEV 🇦🇷",
+   "b": "KUNI 🇦🇷",
+   "ganador": "KUNI 🇦🇷",
+   "votos": "2–1"
+  },
+  "1564038422627229860": {
+   "id": "1564038422627229860",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792966218383,
+   "a": "SEKKA 🇦🇷",
+   "b": "HOTARU 🇦🇷🏳️‍⚧",
+   "ganador": "SEKKA 🇦🇷",
+   "votos": "2–0"
   }
  },
  "llaves": {
@@ -5554,8 +5565,8 @@
    "g": "765045834647339038",
    "canal": "1309238412976590908",
    "pub": 1792962199495,
-   "ed": 1792965538741,
-   "texto": "`[ OCTAVOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞KUDE 🇦🇷⌝\n⌞FLAMA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞BNA 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝\n⌞GEOKA 🇦🇷⌝ 🆚 ⌞ARIAXER 🇦🇷⌝\n⌞WACHIN 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n⌞EZEE 🇦🇷⌝ 🆚 ⌞DELUXE 🇦🇷⌝",
+   "ed": 1792966642269,
+   "texto": "`[ OCTAVOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞KUDE 🇦🇷⌝\n⌞FLAMA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞BNA 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝\n⌞GEOKA 🇦🇷⌝ 🆚 ⌞ARIAXER 🇦🇷⌝\n⌞WACHIN 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n⌞EZEE 🇦🇷⌝ 🆚 ⌞DELUXE 🇦🇷⌝\n⌞DEV 🇦🇷⌝ 🆚 ⌞KUNI 🇦🇷⌝\n`[ CUARTOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞DELUXE 🇦🇷⌝ 🆚 ⌞GEOKA 🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5615,6 +5626,36 @@
      ],
      "DELUXE 🇦🇷",
      "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "DEV 🇦🇷",
+      "KUNI 🇦🇷"
+     ],
+     "KUNI 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "SEKKA 🇦🇷",
+      "HOTARU 🇦🇷🏳️‍⚧"
+     ],
+     "SEKKA 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "DELUXE 🇦🇷",
+      "GEOKA 🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
