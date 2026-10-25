@@ -2808,6 +2808,460 @@ function programado(aj, liga) {
   ].filter(Boolean);
 }
 
+// ── 📥 LA BANDEJA (25/10/2026). Dlx, al Dashboard por áreas: «está bien que cambiaste el layout, pero me refería a que
+// remakees todo… el diseño me gusta pero faltan las funciones». Las cinco colas eran cinco listas largas una abajo de la
+// otra, cada una con sus botones a su manera. Ahora es UNA bandeja, como en la maqueta: a la izquierda todo lo que
+// espera, con filtros y buscar; a la derecha el detalle grande y sus botones. Al decidir pasa solo al siguiente.
+// ⌨️ En la compu: J y K para moverse, A aprobar y R rechazar (imágenes y videos), / para buscar
+// Lo que ya revisó el filtro automático y lo que se resolvió solo quedan abajo, plegado
+const TIPO_B = {
+  quien: ['¿QUIÉN ES QUIÉN?', 'urg'], llave: ['ERROR EN UNA LLAVE', 'urg'], imagen: ['IMAGEN', 'ojo'], video: ['VIDEO', 'ojo'], pedido: ['PEDIDO', 'ojo'],
+};
+const SUB_A_FILTRO = { quien: 'quien', llaves: 'llave', imagenes: 'imagen', videos: 'video', pedidos: 'pedido' };
+const FILTROS_B = [['', 'Todo'], ['quien', '¿Quién es quién?'], ['llave', 'Llaves'], ['imagen', 'Imágenes'], ['video', 'Videos'], ['pedido', 'Pedidos']];
+const linea1 = (s) => String(s || '').split('\n').map((x) => x.trim()).find(Boolean) || '';
+
+// todo lo que espera algo de ti, de las cinco colas, en una sola lista: lo urgente primero y, adentro, lo más nuevo
+function itemsBandeja(d, ver) {
+  const xs = [];
+  const dec = d.decidir || {}, rs = dec.respuestas || {};
+  if (ver.quien) for (const p of dec.preguntas || []) if (!rs[p.id]) xs.push({ k: 'q' + p.id, tipo: 'quien', t: msDe(dec.t), titulo: linea1(p.que), sub: p.sec || p.tipo, p });
+  if (ver.llave) for (const r of d.reportes || []) if (r.estado === '' || r.estado === 'no_pude') {
+    const llave = /^\d+$/.test(r.llave) ? 'Llave #' + r.llave : String(r.llave).startsWith('liga:') ? 'Una liga' : String(r.llave).startsWith('perfil:') ? 'Un perfil' : 'Una llave en vivo';
+    xs.push({ k: 'r' + r.id, tipo: 'llave', t: msDe(r.t), titulo: llave + ' · ' + (QUE_REP[r.que] || r.que), sub: r.texto || (r.de ? 'lo mandó ' + r.de : ''), r });
+  }
+  if (ver.imagen) {
+    for (const f of d.fondos || []) xs.push({ k: 'f' + f.quien, tipo: 'imagen', t: msDe(f.t), titulo: 'Fondo de ' + (f.k || 'una cuenta'), sub: 'el filtro no estuvo seguro', img: { cual: 'fondo', f } });
+    for (const f of d.fotos_carta || []) xs.push({ k: 'p' + f.quien, tipo: 'imagen', t: msDe(f.t), titulo: 'Foto de tarjeta de ' + (f.k || 'una cuenta'), sub: 'para ' + (f.cartas || []).join(', '), img: { cual: 'foto', f } });
+    for (const x of (d.crews_logos || {}).pend || []) xs.push({ k: 'l' + x.id, tipo: 'imagen', t: msDe(x.t), titulo: 'Logo de la crew ' + x.nombre, sub: 'el filtro no estuvo seguro', img: { cual: 'logo', x } });
+  }
+  if (ver.video) for (const v of d.videos || []) xs.push({ k: 'v' + v[0], tipo: 'video', t: 0, titulo: v[2] || v[3], sub: 'lo reclama ' + limpio(v[1]) + ' · ' + v[4], v });
+  if (ver.pedido) for (const p of d.pedidos || []) if (p.estado === '') xs.push({ k: 'd' + p.id, tipo: 'pedido', t: msDe(p.t), titulo: PED_TIPO[p.tipo] || p.tipo, sub: p.k ? 'de ' + p.k : '', ped: p });
+  const urg = (x) => (TIPO_B[x.tipo][1] === 'urg' ? 0 : 1);
+  return xs.sort((a, b) => urg(a) - urg(b) || b.t - a.t);
+}
+
+// 🖼️ una imagen para revisar: aprobar, o no con su motivo (el mismo pedido que hacían las tres cajas de antes)
+function DetalleImagen({ it, alCambiar, motivo, setMotivo }) {
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  const { cual } = it.img;
+  const decidir = async (si) => {
+    setOcup(true); setMsg('');
+    try {
+      let r, j;
+      if (cual === 'logo') {
+        const x = it.img.x;
+        r = await fetch('/api/avisos/dueno/crew', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ que: 'logo', crew: x.id, url: x.url, si, motivo: si ? '' : motivo }) });
+        j = await r.json().catch(() => ({}));
+        if (j.error === 'cambio') throw new Error('el logo cambió mientras lo mirabas: recarga');
+        if (!r.ok || j.error) throw new Error(j.error || String(r.status));
+        alCambiar({ crews_logos: { pend: [], vistos: [] }, _sacarLogo: x.id });
+      } else {
+        const f = it.img.f;
+        r = await fetch(cual === 'foto' ? '/api/avisos/dueno/foto-carta' : '/api/avisos/dueno/fondo', { method: 'POST', credentials: 'same-origin',
+          headers: { 'content-type': 'application/json' }, body: JSON.stringify({ quien: f.quien, si, motivo: si ? '' : motivo }) });
+        j = await r.json().catch(() => ({}));
+        if (!r.ok || j.error) throw new Error(j.error || String(r.status));
+        const o = {};
+        if (j.fondos) o.fondos = j.fondos;
+        if (j.fotos_carta) o.fotos_carta = j.fotos_carta;
+        if (j.filtro) o.filtro = j.filtro;
+        alCambiar(o);
+      }
+    } catch (e) { setMsg('No se pudo: ' + e.message); setOcup(false); }
+  };
+  const f = it.img.f, x = it.img.x;
+  return (
+    <>
+      {cual === 'logo' ? <img className="dz-img logo" src={x.url} alt={'El logo de ' + x.nombre} />
+        : <div className={'dz-img ' + cual} style={{ backgroundImage: (cual === 'foto' ? urlFoto(f.pend) : urlFondo(f.pend)) || 'none' }} role="img" aria-label="La imagen que subió" />}
+      <p className="dz-dt-tx">No se ve en la página hasta que la apruebes. Si no, a quien la subió le llega a su campana con el motivo.
+        {f && f.k ? <> · <a href={'#/r/' + f.k}>su perfil</a></> : x ? <> · <a href={'#/crew/' + encodeURIComponent(x.id)}>la crew</a></> : null}</p>
+      <div className="dz-acc">
+        <button type="button" className="btn verde" disabled={ocup} onClick={() => decidir(true)}>Aprobar <kbd>A</kbd></button>
+        <select className="db-sel db-sel-corto" value={motivo} aria-label="El motivo si no" onChange={(e) => setMotivo(e.target.value)}>
+          {MOTIVOS_FONDO.map((m) => <option key={m}>{m}</option>)}</select>
+        <button type="button" className="btn borde2" disabled={ocup} onClick={() => decidir(false)}>No <kbd>R</kbd></button>
+      </div>
+      {msg ? <p className="dz-dt-msg" role="status">{msg}</p> : null}
+    </>
+  );
+}
+
+// 🎬 un video que alguien reclama
+function DetalleVideo({ it, alCambiar }) {
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  const [id, raw, tit, url, motivo, resp] = it.v;
+  const decidir = async (si) => {
+    setOcup(true); setMsg('');
+    try {
+      const r = await fetch('/api/avisos/dueno/video', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id, si }) });
+      if (!r.ok) throw new Error(String(r.status));
+      alCambiar({ _sacarVideo: id });
+    } catch (e) { setMsg('No se pudo: ' + e.message); setOcup(false); }
+  };
+  return (
+    <>
+      <p className="dz-dt-tx"><b>{limpio(raw)}</b> dice que este video es suyo. No entró solo porque: <b>{motivo}</b>.</p>
+      <a className="dz-video" href={url} target="_blank" rel="noopener noreferrer"><Ico n="flecha" t={14} /> {tit || url}</a>
+      {resp ? <p className="dz-dt-tx">Dice que aparece como <b>«{limpio(resp.nombre)}»</b>, en el <b>{resp.minuto}</b>. Cómo reconocerlo: {limpio(resp.como)}</p> : null}
+      <div className="dz-acc">
+        <button type="button" className="btn verde" disabled={ocup} onClick={() => decidir(true)}>Es suyo <kbd>A</kbd></button>
+        <button type="button" className="btn borde2" disabled={ocup} onClick={() => decidir(false)}>No es suyo <kbd>R</kbd></button>
+      </div>
+      <p className="dz-dt-tx">Lo aplica el ciclo en su próxima vuelta.</p>
+      {msg ? <p className="dz-dt-msg" role="status">{msg}</p> : null}
+    </>
+  );
+}
+
+// 📣 un error en una llave: lo que dice, la evidencia del bot y corregir ahí mismo
+function DetalleLlave({ it, liga, d, alCambiar, corrige }) {
+  const r = it.r;
+  const [abierto, setAbierto] = useState(false);
+  const [msg, setMsg] = useState('');
+  const [ocup, setOcup] = useState(false);
+  const setLista = (l) => alCambiar({ reportes: l });
+  const cerrar = async (accion) => {
+    setOcup(true); setMsg('');
+    try { setLista(await decidirReporte({ id: r.id, accion })); } catch (e) { setMsg('No se pudo: ' + e.message); setOcup(false); }
+  };
+  const hermanos = (d.reportes || []).filter((x) => x.id !== r.id && x.llave === r.llave && (x.estado === '' || x.estado === 'no_pude'));
+  const enlace = /^\d+$/.test(r.llave) ? '#/llave/' + r.llave : String(r.llave).startsWith('liga:') ? '#/ligas/' + encodeURIComponent(String(r.llave).slice(5))
+    : String(r.llave).startsWith('perfil:') ? '#/r/' + encodeURIComponent(String(r.llave).slice(7)) : '';
+  return (
+    <>
+      {r.texto ? <blockquote className="dz-cita">«{r.texto}»</blockquote> : null}
+      <p className="dz-dt-tx">{r.batalla ? r.batalla + ' · ' : ''}{r.evid && r.evid.quien ? 'lo mandó ' + r.evid.quien : r.de ? 'lo mandó ' + r.de : 'quién lo mandó: lo dice el ciclo en su próxima vuelta'}
+        {enlace ? <> · <a href={enlace}>abrirla</a></> : null}{r.estado === 'no_pude' && r.resultado ? <> · <b className="db-mal">no se pudo: {r.resultado}</b></> : null}</p>
+      {r.evid && (r.evid.lineas || []).length > 1 ? <Evidencia r={r} alListo={setLista} corrige={corrige} /> : null}
+      {abierto ? (String(r.llave).startsWith('liga:') ? <CorregirLiga r={r} liga={liga} alListo={setLista} />
+        : <Corregir r={r} liga={liga} alListo={setLista} hermanos={hermanos} />) : null}
+      <div className="dz-acc">
+        {corrige && !abierto && (/^\d+$/.test(r.llave) || String(r.llave).startsWith('liga:')) ? <button type="button" className="btn verde" onClick={() => setAbierto(true)}>Corregir</button> : null}
+        <button type="button" className="btn borde2" disabled={ocup} onClick={() => cerrar('listo')}>Listo, está bien</button>
+        <button type="button" className="btn borde2" disabled={ocup} onClick={() => cerrar('prueba')}>Era una prueba</button>
+      </div>
+      {msg ? <p className="dz-dt-msg" role="status">{msg}</p> : null}
+    </>
+  );
+}
+
+// ❓ una pregunta de ✅ Decidir, con la llave al lado
+function DetalleQuien({ it, d, alCambiar }) {
+  const p = it.p;
+  return (
+    <div className="db-dec-cuerpo dz-quien">
+      <ul className="dz-solo"><Pregunta p={p} r={null} alListo={(y) => alCambiar({ decidir: y })} /></ul>
+      <LlaveAlCostado s={{ sec: p.sec, ps: [p] }} />
+    </div>
+  );
+}
+
+function Bandeja({ d, liga, ve, cambiarD, sub }) {
+  const ver = { quien: ve('decidir'), llave: ve('reportes') || ve('reportes_cerrar'), imagen: ve('fondos'), video: ve('videos') || ve('fondos'), pedido: ve('reportes_cerrar') };
+  // el cuadrado del Resumen que se tocó abre la bandeja con su filtro puesto
+  const [filtro, setFiltro] = useState(SUB_A_FILTRO[sub] || '');
+  useEffect(() => { if (sub) { setFiltro(SUB_A_FILTRO[sub] || ''); setSel(''); } }, [sub]);
+  const [q, setQ] = useState('');
+  const [sel, setSel] = useState('');
+  const [motivo, setMotivo] = useState(MOTIVOS_FONDO[0]);
+  const [listaDec, setListaDec] = useState(false);
+  const det = useRef(null), buscar = useRef(null);
+  // lo sacado a mano (un logo, un video): el servidor no devuelve la lista entera de esos
+  const [fuera, setFuera] = useState({});
+  const todos = itemsBandeja(d, ver).filter((x) => !fuera[x.k]);
+  const cuenta = {};
+  for (const x of todos) cuenta[x.tipo] = (cuenta[x.tipo] || 0) + 1;
+  const xs = todos.filter((x) => (!filtro || x.tipo === filtro) && contiene([x.titulo, x.sub], q));
+  const i0 = Math.max(0, xs.findIndex((x) => x.k === sel));
+  const it = xs[i0] || null;
+  // decidir uno: vuelve lo nuevo al panel, y el siguiente queda elegido (el que ocupa su lugar)
+  const alCambiar = (o) => {
+    const sig = xs[i0 + 1] || xs[i0 - 1];
+    if (o._sacarLogo) setFuera((f) => Object.assign({}, f, { ['l' + o._sacarLogo]: 1 }));
+    if (o._sacarVideo != null) setFuera((f) => Object.assign({}, f, { ['v' + o._sacarVideo]: 1 }));
+    const limpio0 = Object.assign({}, o); delete limpio0._sacarLogo; delete limpio0._sacarVideo; delete limpio0.crews_logos;
+    if (Object.keys(limpio0).length) cambiarD(limpio0);
+    setSel(sig ? sig.k : '');
+  };
+  // ⌨️ J/K, A/R y /
+  useEffect(() => {
+    const f = (e) => {
+      const tg = e.target && e.target.tagName;
+      if (e.ctrlKey || e.metaKey || e.altKey || tg === 'INPUT' || tg === 'TEXTAREA' || tg === 'SELECT') return;
+      const k = e.key.toLowerCase();
+      if (k === 'j' || k === 'k') { const n = xs[i0 + (k === 'j' ? 1 : -1)]; if (n) { e.preventDefault(); setSel(n.k); } }
+      else if (k === '/') { e.preventDefault(); if (buscar.current) buscar.current.focus(); }
+      else if ((k === 'a' || k === 'r') && it && (it.tipo === 'imagen' || it.tipo === 'video')) {
+        const b = det.current && det.current.querySelectorAll('.dz-acc .btn')[k === 'a' ? 0 : 1];
+        if (b && !b.disabled) { e.preventDefault(); b.click(); }
+      }
+    };
+    W.addEventListener && W.addEventListener('keydown', f);
+    return () => { W.removeEventListener && W.removeEventListener('keydown', f); };
+  });
+  const elegir = (x) => {
+    setSel(x.k);
+    // en el teléfono el detalle va abajo: se baja hasta él
+    if (W.innerWidth < 900 && det.current) setTimeout(() => det.current.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  };
+  const vivos = (d.filtro && d.filtro.vivos) || [];
+  const clv = (d.crews_logos || {}).vistos || [];
+  return (
+    <div className="dz-band">
+      <div className="dz-band-f">
+        <div className="dz-subs" role="tablist" aria-label="Qué mirar">{FILTROS_B.filter(([k]) => !k || ver[k]).map(([k, t]) => (
+          <button key={k || 'todo'} type="button" role="tab" aria-selected={filtro === k} className={'dz-sub' + (filtro === k ? ' on' : '')}
+            onClick={() => { setFiltro(k); setSel(''); setListaDec(false); }}>{t}{(k ? cuenta[k] : todos.length) ? <i>{k ? cuenta[k] : todos.length}</i> : null}</button>
+        ))}</div>
+        <label className="db-buscar dz-band-q"><Ico n="buscar" t={16} />
+          <input ref={buscar} type="search" value={q} placeholder="Buscar un nombre o una llave ( / )" aria-label="Buscar en los pendientes" onChange={(e) => setQ(e.target.value)} /></label>
+      </div>
+      {filtro === 'quien' && listaDec ? (
+        <><button type="button" className="dz-lnk" onClick={() => setListaDec(false)}>← Volver a la bandeja</button>
+          <Decisiones dec={d.decidir} liga={liga} alCambiar={(y) => cambiarD({ decidir: y })} /></>
+      ) : !todos.length ? (
+        <div className="dz-vacio"><b>✓ Al día</b><span>No hay nada esperando una decisión tuya.</span></div>
+      ) : (
+        <div className="dz-band-g">
+          <ol className="dz-band-l" aria-label="Lo que espera">{xs.map((x) => (
+            <li key={x.k}><button type="button" className={'dz-it' + (it && x.k === it.k ? ' on' : '')} aria-current={it && x.k === it.k ? 'true' : undefined} onClick={() => elegir(x)}>
+              <span className={'dz-tipo ' + TIPO_B[x.tipo][1]}>{TIPO_B[x.tipo][0]}</span>
+              <b>{x.titulo}</b>
+              {x.sub ? <small>{x.sub}</small> : null}
+              {x.t ? <small className="dz-it-t">{hace(x.t)}</small> : null}
+            </button></li>
+          ))}{!xs.length ? <li className="dz-it-nada">Nada con este filtro{q ? ' y «' + q + '»' : ''}.</li> : null}</ol>
+          <article className="dz-det" ref={det} aria-live="polite">
+            {it ? <>
+              <span className={'dz-tipo ' + TIPO_B[it.tipo][1]}>{TIPO_B[it.tipo][0]} · {i0 + 1} DE {xs.length}</span>
+              <h3 className="dz-det-t">{it.titulo}</h3>
+              {it.tipo === 'quien' ? <DetalleQuien key={it.k} it={it} d={d} alCambiar={alCambiar} /> : null}
+              {it.tipo === 'llave' ? <DetalleLlave key={it.k} it={it} liga={liga} d={d} alCambiar={alCambiar} corrige={ve('reportes')} /> : null}
+              {it.tipo === 'imagen' ? <DetalleImagen key={it.k} it={it} alCambiar={alCambiar} motivo={motivo} setMotivo={setMotivo} /> : null}
+              {it.tipo === 'video' ? <DetalleVideo key={it.k} it={it} alCambiar={alCambiar} /> : null}
+              {it.tipo === 'pedido' ? <Pedidos key={it.k} ps={[it.ped]} liga={liga} alCambiar={(y) => alCambiar({ pedidos: y })} /> : null}
+              <p className="dz-teclas">J / K para moverte · A aprobar · R rechazar · / buscar</p>
+            </> : <p className="db-tx">Elige algo de la lista.</p>}
+          </article>
+        </div>
+      )}
+      {filtro === 'quien' && !listaDec && (d.decidir || {}).preguntas && d.decidir.preguntas.length ? (
+        <button type="button" className="dz-lnk" onClick={() => setListaDec(true)}>Ver todas las preguntas juntas (con filtros y para contestar varias a la vez)</button>
+      ) : null}
+      {/* lo que ya pasó por el filtro automático o se resolvió solo: para quitar o deshacer, plegado */}
+      {(vivos.length || clv.length || ((d.decidir || {}).solas || []).length) ? (
+        <details className="dz-plegado">
+          <summary>Lo que ya se ve o se resolvió solo · {vivos.length + clv.length + ((d.decidir || {}).solas || []).length}</summary>
+          <div className="db-llego">
+            {vivos.length ? <FondosRevisar fs={[]} fcs={[]} filtro={d.filtro} alCambiar={(fs) => cambiarD({ fondos: fs })} alFiltro={(fl) => cambiarD({ filtro: fl })} alFotos={(x) => cambiarD({ fotos_carta: x })} /> : null}
+            {clv.length ? <LogosCrews cl={{ pend: [], vistos: clv }} /> : null}
+          </div>
+          {((d.decidir || {}).solas || []).length ? <Solas x={d.decidir} alListo={(y) => cambiarD({ decidir: y })} /> : null}
+        </details>
+      ) : null}
+    </div>
+  );
+}
+
+// ── 🏟️ LOS SERVIDORES, EN UNA TABLA (la maqueta: «todo lo de cada servidor en una fila: se cambia ahí mismo»). Eran
+// tarjetas sueltas con seis selectores cada una, y el tier y el dueño vivían en otra pestaña. Ahora una fila por servidor
+// —tier, multiplicador, bot en vivo, cuánto habla, apuestas, aviso de cada evento y eventos de Discord— y «Ficha» abre
+// debajo lo que mide el puntaje, lo que recibe y quién es su dueño. Guardan lo mismo que guardaban las tarjetas
+function ServidoresTabla({ liga, aj, hacer, ocup, chat, T }) {
+  const [ficha, setFicha] = useState('');
+  const fichaRef = useRef(null);
+  const c = chat || {};
+  const tiersT = (T && T.servidores) || [];
+  const svs = [...new Set([...svsDe(chat, aj), ...tiersT.map((x) => x.sv)])];
+  if (!svs.length) return <p className="db-tx">Todavía no sé el chat general de ningún servidor: lo busca el lector de anuncios en su próxima vuelta.</p>;
+  const dash = aj.en_vivo || {}, dashNivel = aj.en_vivo_nivel || {};
+  const niveles = c.niveles || NIVELES_VIVO;
+  const admin = c.admin || {};
+  const nivelAdmin = (sv) => (c.nivel || {})[sv] || 'normal';
+  const prendido = (sv) => dash[sv] !== false && (!!admin[sv] || dash[sv] === true);
+  const defAp = (c.def || {}).apuestas || DEF_AP;
+  const ap = aj.apuestas || null;
+  const apBase = { montos: (ap || defAp).montos, minutos: (ap || defAp).minutos, tope: (ap || defAp).tope,
+    apagadas: (ap && ap.apagadas) || {}, prendidas: (ap && ap.prendidas) || {} };
+  const apDe = (sv) => (apBase.apagadas[sv] ? 'no' : apBase.prendidas[sv] ? 'si' : '');
+  const ae = aj.aviso_evento || {};
+  const porSv = ae.sv || {};
+  const m = liga.d.mult || {};
+  const man = aj.multiplicadores && aj.multiplicadores.semana === m.id ? aj.multiplicadores.sv || {} : null;
+  const ref = Object.assign({}, m.sv || {}, man || {});
+  const elegidos = aj.tiers || {};
+  const tierDe = (sv) => { const x = tiersT.find((y) => y.sv === sv); return elegidos[sv] || (x && x.tier) || 0; };
+  const YA = 'Guardado: vale desde el próximo minuto.';
+  const cambiar = (cual, obj, sv, v) => { const n = Object.assign({}, obj); if (v === '') delete n[sv]; else n[sv] = v; return hacer(cual, n, siglaDe(sv) + ': ' + YA); };
+  const cambiarAp = (sv, v) => {
+    const ag = Object.assign({}, apBase.apagadas), pr = Object.assign({}, apBase.prendidas);
+    delete ag[sv]; delete pr[sv];
+    if (v === 'no') ag[sv] = true; else if (v === 'si') pr[sv] = true;
+    return hacer('apuestas', Object.assign({}, apBase, { apagadas: ag, prendidas: pr }), siglaDe(sv) + ': vale para la próxima apuesta.');
+  };
+  const cambiarAviso = (sv, v) => { const n = Object.assign({}, porSv); if (v) n[sv] = v; else delete n[sv]; return hacer('aviso_evento', { sv: n, resto: ae.resto || '' }, siglaDe(sv) + ': vale desde el próximo evento.'); };
+  const cambiarMult = (sv, x) => hacer('multiplicadores', { semana: m.id, sv: Object.assign({}, ref, { [sv]: x }) }, siglaDe(sv) + ' pasa a ' + mult(x) + ': entra en la próxima vuelta del ciclo.');
+  const cambiarTier = (sv, t) => hacer('tiers', Object.assign({}, elegidos, { [sv]: t }),
+    siglaDe(sv) + ' pasa a Tier ' + t + (t === 1 ? ': vuelve a sumar al ranking.' : ': sus llaves dejan de sumar.'));
+  const xFicha = tiersT.find((y) => y.sv === ficha);
+  return (
+    <div className="dz-svt">
+      {m.id ? (
+        <div className="dz-svt-c">
+          <span className={'db-est' + (man ? ' ojo' : '')}>{man ? '✍ El multiplicador de esta semana va a mano' : 'El multiplicador de esta semana salió del sorteo del lunes'}</span>
+          {man ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo para volver al sorteo"
+            onClick={() => hacer('multiplicadores', null, 'Vuelve el sorteo en la próxima vuelta del ciclo.')}>Volver al sorteo</DosToques> : null}
+        </div>
+      ) : null}
+      <div className="dz-tabla">
+        <table>
+          <thead><tr>
+            <th scope="col">Servidor</th><th scope="col">Tier</th>{m.id ? <th scope="col">Multiplicador</th> : null}<th scope="col">Bot en vivo</th>
+            <th scope="col">Cuánto habla</th><th scope="col">Apuestas</th><th scope="col">Aviso de evento</th><th scope="col">Eventos Discord</th><th scope="col"><span className="rk-sr">Ficha</span></th>
+          </tr></thead>
+          <tbody>{svs.map((sv) => {
+            const vm = ref[sv] == null ? 1 : ref[sv];
+            const ops = FACTORES.indexOf(vm) < 0 ? [...FACTORES, vm].sort((a, b) => a - b) : FACTORES;
+            const evd = (c.evd || {})[sv];
+            const t = tierDe(sv);
+            return (
+              <Fragment key={sv}>
+                <tr className={ficha === sv ? 'on' : ''}>
+                  <th scope="row"><span className="dz-svt-n"><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b><i className={prendido(sv) ? 'ok' : ''} title={prendido(sv) ? 'el bot habla ahí' : 'el bot no habla ahí'} /></span></th>
+                  <td><select aria-label={'El tier de ' + siglaDe(sv)} value={t ? String(t) : ''} disabled={ocup} onChange={(e) => cambiarTier(sv, Number(e.target.value))}>
+                    {!t ? <option value="">—</option> : null}{[1, 2, 3].map((n) => <option key={n} value={String(n)}>Tier {n}</option>)}</select></td>
+                  {m.id ? <td><select aria-label={'El multiplicador de ' + siglaDe(sv)} value={String(vm)} disabled={ocup} onChange={(e) => cambiarMult(sv, Number(e.target.value))}>
+                    {ops.map((x) => <option key={x} value={String(x)}>{mult(x)}</option>)}</select></td> : null}
+                  <td><select aria-label={'El bot en vivo en ' + siglaDe(sv)} value={dash[sv] === true ? 'si' : dash[sv] === false ? 'no' : ''} disabled={ocup}
+                    onChange={(e) => cambiar('en_vivo', dash, sv, e.target.value === '' ? '' : e.target.value === 'si')}>
+                    <option value="">{admin[sv] ? 'Admin: sí' : 'Admin: no'}</option><option value="si">Prendido</option><option value="no">Apagado</option></select></td>
+                  <td><select aria-label={'Cuánto habla el bot en ' + siglaDe(sv)} value={niveles[dashNivel[sv]] ? dashNivel[sv] : ''} disabled={ocup || !prendido(sv)}
+                    onChange={(e) => cambiar('en_vivo_nivel', dashNivel, sv, e.target.value)}>
+                    <option value="">{'Admin: ' + ((niveles[nivelAdmin(sv)] || ['normal'])[0]).toLowerCase()}</option>
+                    {Object.keys(niveles).map((k) => <option key={k} value={k}>{niveles[k][0]}</option>)}</select></td>
+                  <td><select aria-label={'Las apuestas en ' + siglaDe(sv)} value={apDe(sv)} disabled={ocup} onChange={(e) => cambiarAp(sv, e.target.value)}>
+                    <option value="">Sólo «A full»</option><option value="si">Siempre</option><option value="no">Apagadas</option></select></td>
+                  <td><select aria-label={'El aviso de cada evento en ' + siglaDe(sv)} value={porSv[sv] || ''} disabled={ocup} onChange={(e) => cambiarAviso(sv, e.target.value)}>
+                    <option value="">Donde habla</option><option value="chat">Chat general</option><option value="no">Apagado</option></select></td>
+                  <td><select aria-label={'Los eventos de Discord de ' + siglaDe(sv)} value={(aj.eventos_discord || {})[sv] === true ? 'si' : ''} disabled={ocup}
+                    onChange={(e) => cambiar('eventos_discord', aj.eventos_discord || {}, sv, e.target.value === 'si' ? true : '')}>
+                    <option value="">Apagados</option><option value="si">Prendidos</option></select>
+                    {evd ? <small className={evd.error ? 'db-mal' : ''}>{(evd.creados || 0) + ' en 7 días' + (evd.error === 'permiso' ? ' · falta permiso' : evd.error ? ' · ' + evd.error : '')}</small> : null}</td>
+                  <td><button type="button" className="dz-lnk" aria-expanded={ficha === sv} disabled={!tiersT.some((y) => y.sv === sv)}
+                    onClick={() => {
+                      setFicha(ficha === sv ? '' : sv);
+                      if (ficha !== sv) setTimeout(() => { if (fichaRef.current) fichaRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 60);
+                    }}>{ficha === sv ? 'Cerrar' : 'Ficha'}</button></td>
+                </tr>
+              </Fragment>
+            );
+          })}</tbody>
+        </table>
+      </div>
+      {/* la ficha va abajo de la tabla y no adentro: adentro heredaba el ancho de las nueve columnas y quedaba corrida de costado */}
+      {ficha && xFicha ? (
+        <div className="dz-svt-ficha" ref={fichaRef}>
+          <div className="dz-svt-c"><b>La ficha de {siglaDe(ficha)}</b><button type="button" className="dz-lnk" onClick={() => setFicha('')}>Cerrar</button></div>
+          <TierCaja x={xFicha} liga={liga} tier={tierDe(ficha) || 1} cambiar={cambiarTier} ocup={ocup} i={0} aj={aj} hacer={hacer} />
+        </div>
+      ) : null}
+      <p className="db-tx">El punto al lado de la sigla es verde si el bot habla en su chat. Tier 1 suma al ranking; Tier 2 sale en el calendario y la campana, sin sumar; Tier 3 tiene su página y sus ligas.</p>
+    </div>
+  );
+}
+
+// ── 🎛️ LA PÁGINA Y EL BOT, EN FILAS (25/10/2026, la maqueta: «cada ajuste en una fila: qué hace en una línea, cómo está
+// hoy y su control»). Eran once cajas con su título, un párrafo largo y el formulario abierto, todas iguales de altas:
+// para saber cómo estaba algo había que leerlas enteras. Ahora la fila dice cómo está; «Cambiar» abre el formulario de
+// siempre debajo (el mismo componente, sin su cabecera). Lo de un toque —pausar la campana— se hace en la fila misma
+const corte = (s, n) => (String(s || '').length > n ? String(s).slice(0, n - 1) + '…' : String(s || ''));
+function Fila({ id, t, que, val, tono, abierta, alAbrir, accion, children }) {
+  return (
+    <li className={'dz-fila' + (abierta ? ' on' : '')} id={id}>
+      <div className="dz-fila-c">
+        <div className="dz-fila-t"><b>{t}</b><small>{que}</small></div>
+        <span className={'dz-fila-v' + (tono ? ' ' + tono : '')}>{val}</span>
+        <div className="dz-fila-a">
+          {accion}
+          {children ? <button type="button" className="btn borde2 chico" aria-expanded={!!abierta} onClick={alAbrir}>{abierta ? 'Cerrar' : 'Cambiar'}</button> : null}
+        </div>
+      </div>
+      {abierta && children ? <div className="dz-fila-ed">{children}</div> : null}
+    </li>
+  );
+}
+
+function AjustesFilas({ liga, aj, hacer, ocup, chat, ir, abrir }) {
+  const [ab, setAb] = useState(abrir || '');
+  useEffect(() => { if (abrir) setAb(abrir); }, [abrir]);
+  const f = (id) => ({ id, abierta: ab === id, alAbrir: () => setAb(ab === id ? '' : id) });
+  const c = chat || {};
+  const p = !!aj.campana_pausada;
+  const vig = avisoVigente(aj);
+  const nv = NIVELES_AVISO[aj.avisos_nivel] ? aj.avisos_nivel : 'normal';
+  const dash = aj.en_vivo || {}, admin = c.admin || {};
+  const svs = svsDe(chat, aj);
+  const prendidos = svs.filter((sv) => dash[sv] !== false && (!!admin[sv] || dash[sv] === true)).length;
+  const defR = (c.def || {}).ritmo || DEF_RIT, r = aj.ritmo || null;
+  const s = aj.silencio || null;
+  const defA = (c.def || {}).apuestas || DEF_AP, a = aj.apuestas || null;
+  const S = aj.pase_sorteo || null;
+  const ms = aj.mes_sacar || null;
+  const promos = (aj.promos_mano || []).length;
+  return (
+    <div className="dz-filas">
+      <h3 className="dz-h">Avisos</h3>
+      <ul>
+        <Fila {...f('aj-campana')} t="La campana" que="Avisa a los celulares cuando un servidor anuncia un evento."
+          val={p ? '⏸ En pausa' : '● Suena'} tono={p ? 'ojo' : 'ok'}
+          accion={p ? <button type="button" className="btn verde chico" disabled={ocup} onClick={() => hacer('campana_pausada', false, 'La campana vuelve a sonar.')}>Reanudar</button>
+            : <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo para pausar" onClick={() => hacer('campana_pausada', true, 'La campana quedó en pausa.')}>Pausar</DosToques>} />
+        <Fila {...f('aj-aviso')} t="Aviso en la página" que="Un mensaje arriba de todas las páginas, hasta la hora que elijas."
+          val={vig ? '«' + corte(vig.texto, 34) + '» · hasta ' + liga.dia(vig.hasta) : 'Ninguno'} tono={vig ? 'ojo' : ''}>
+          <AjAviso liga={liga} aj={aj} hacer={hacer} ocup={ocup} /></Fila>
+        <Fila {...f('aj-avisos')} t="El aviso de cada evento" que="Lo que cuenta el bot en el chat cuando el ciclo carga un evento."
+          val={NIVELES_AVISO[nv][0]} tono="ok">
+          <AjAvisos liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} general /></Fila>
+      </ul>
+      <h3 className="dz-h">El bot en vivo</h3>
+      <ul>
+        <Fila id="aj-vivo" t="El bot en vivo" que="Cuenta en el chat cómo va un evento. Se prende servidor por servidor."
+          val={prendidos + ' de ' + svs.length + ' servidores'} tono={prendidos ? 'ok' : ''}
+          accion={<button type="button" className="btn borde2 chico" onClick={() => ir('servidores', 'sv-cada')}>Ir a Servidores</button>} />
+        <Fila {...f('aj-ritmo')} t="El ritmo" que="Cada cuánto puede mandar un mensaje nuevo en un mismo chat."
+          val={'Uno cada ' + (r || defR).normal + ' min · ' + (r || defR).batalla + ' en «Cada batalla»' + (r ? ' · ✍' : '')} tono={r ? 'ojo' : ''}>
+          <AjRitmo aj={aj} hacer={hacer} ocup={ocup} chat={chat} /></Fila>
+        <Fila {...f('aj-silencio')} t="Horario de silencio" que="Horas (en hora del este) en que el bot en vivo no habla en ningún chat."
+          val={s ? '🌙 De ' + s.desde + ' a ' + s.hasta : 'Sin silencio'} tono={s ? 'ojo' : ''}>
+          <AjSilencio aj={aj} hacer={hacer} ocup={ocup} /></Fila>
+        <Fila {...f('aj-apuestas')} t="Las apuestas" que="Los botones, cuánto quedan abiertas y el tope por batalla."
+          val={(a || defA).montos.map(num).join(' · ') + ' · tope ' + num((a || defA).tope) + (a ? ' · ✍' : '')} tono={a ? 'ojo' : ''}>
+          <AjApuestas liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} general /></Fila>
+      </ul>
+      <h3 className="dz-h">El Pase, las crews y el Salón</h3>
+      <ul>
+        <Fila {...f('aj-sorteo')} t="El sorteo del premium" que="La gente entra gratis desde el Pase y se sortea solo a la hora."
+          val={S ? 'Se sortea ' + liga.dia(S.sorteo) : 'Sin sorteo'} tono={S ? 'ok' : ''}>
+          <AjSorteo liga={liga} aj={aj} hacer={hacer} ocup={ocup} /></Fila>
+        <Fila {...f('aj-crews')} t="Las crews" que="Cuánto cuesta crear una, cómo se arma su ranking y quién es el líder."
+          val={'Crear: ' + num(aj.crew_precio ?? 2500) + ' PdT'}>
+          <AjCrews liga={liga} aj={aj} hacer={hacer} ocup={ocup} /></Fila>
+        <Fila {...f('aj-mes')} t="MES AWARDS" que="Los nominados salen solos el día 1; hasta las 6 PM puedes sacar a alguno."
+          val={ms && (ms.quitar || []).length ? 'Sacaste ' + ms.quitar.length : 'Sin cambios'}>
+          <MesAwardsDueno aj={aj} hacer={hacer} ocup={ocup} /></Fila>
+        <Fila {...f('aj-promos')} t="Promos a mano" que="Agregar una promo que el lector no vio, o sacar una que no va."
+          val={promos ? promos + ' a mano' : 'Ninguna'}>
+          <PromosMano aj={aj} hacer={hacer} ocup={ocup} /></Fila>
+      </ul>
+    </div>
+  );
+}
+
 export function Dashboard({ dc, liga }) {
   const [st, setSt] = useState({ cargando: true });
   // la visita anterior: se lee una vez al abrir y se anota la de ahora
@@ -2836,12 +3290,14 @@ export function Dashboard({ dc, liga }) {
   const [area, setArea0] = useState(leerArea);
   // la cola que se abre: la que se eligió, o sola la primera que tiene algo
   const [sub, setSub] = useState('');
+  const [abrir, setAbrir] = useState('');
   const [buscar, setBuscar] = useState(false);
   const raiz = useRef(null);
   // ir a un área (y bajar hasta un ajuste, o abrir una cola de Pendientes)
   const ir = (a, ancla, s) => {
     setArea0(a); ponerArea(a);
-    if (s) setSub(s);
+    setSub(s || '');
+    setAbrir(ancla || '');
     setTimeout(() => {
       const el = ancla && raiz.current ? raiz.current.querySelector('#' + ancla) : null;
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -2887,7 +3343,7 @@ export function Dashboard({ dc, liga }) {
   const nSub0 = (k) => ({ quien: sinContestar(d.decidir), llaves: (d.reportes || []).filter((x) => x.estado === '' || x.estado === 'no_pude').length,
     imagenes: (d.fondos || []).length + (d.fotos_carta || []).length + (cl0.pend || []).length + (d.videos || []).length,
     pedidos: (d.pedidos || []).filter((x) => x.estado === '').length })[k] || 0;
-  const verSub = { quien: ve('decidir'), llaves: ve('reportes') || ve('reportes_cerrar'), imagenes: ve('fondos') || ve('videos'), pedidos: ve('reportes_cerrar') };
+  const verSub = { quien: ve('decidir'), llaves: ve('reportes') || ve('reportes_cerrar'), imagenes: ve('fondos'), videos: ve('videos') || ve('fondos'), pedidos: ve('reportes_cerrar') };
   const visibles = { resumen: true, pendientes: Object.values(verSub).some(Boolean), servidores: ve('ajustes'), web: ve('ajustes'),
     numeros: ve('ajustes'), salud: ve('ajustes'), historial: ve('ajustes') };
   const areaV = visibles[area] ? area : 'resumen';
@@ -2914,7 +3370,7 @@ export function Dashboard({ dc, liga }) {
     ['quien', n.quien, '¿Quién es quién?', 'nombres que el bot no reconoció', true, 'quien'],
     ['llaves', n.llaves, 'Errores en las llaves', primeroRep ? 'llave #' + primeroRep.llave + (primeroRep.de ? ' · lo reportó ' + primeroRep.de : '') : 'reportados por la gente', true, 'llaves'],
     ['imagenes', n.imagenes, 'Imágenes', 'fondos, fotos de carta y logos', false, 'imagenes'],
-    ['videos', n.videos, 'Videos', 'alguien dice «es mío»', false, 'imagenes'],
+    ['videos', n.videos, 'Videos', 'alguien dice «es mío»', false, 'videos'],
     ['pedidos', n.pedidos, 'Pedidos', primerPed ? PED_TIPO[primerPed.tipo] || primerPed.tipo : 'cuenta perdida, país, un video', false, 'pedidos'],
   ].filter((x) => verSub[x[5]]);
   const hora0 = new Date();
@@ -2970,52 +3426,22 @@ export function Dashboard({ dc, liga }) {
       </>
     );
   } else if (areaV === 'pendientes') {
-    vista = (
-      <>
-        <div className="dz-subs" role="tablist" aria-label="Las colas">{SUBP.filter(([k]) => verSub[k]).map(([k, t]) => (
-          <button key={k} type="button" role="tab" aria-selected={subV === k} className={'dz-sub' + (subV === k ? ' on' : '')} onClick={() => setSub(k)}>
-            {t}{nSub[k] ? <i>{nSub[k]}</i> : null}</button>
-        ))}</div>
-        {subV === 'quien' ? sec('', '¿QUIÉN ES QUIÉN?', 'las preguntas de ✅ Decidir', <Decisiones dec={d.decidir} liga={liga} alCambiar={(y) => cambiarD({ decidir: y })} />) : null}
-        {/* sin cabecera propia: `Reportes` ya trae la suya («Errores en las llaves») */}
-        {subV === 'llaves' ? <section className="act">
-          {(d.reportes || []).length ? <div className="db-llego"><Reportes rep={d.reportes} liga={liga} alCambiar={(l) => cambiarD({ reportes: l })} corrige={ve('reportes')} /></div>
-            : <p className="pronto-p">Nadie reportó nada en los últimos 14 días.</p>}</section> : null}
-        {subV === 'imagenes' ? sec('', 'IMÁGENES Y VIDEOS', 'fondos, fotos de carta, logos de crews y videos',
-          <Llego d={d} alFondos={(fs) => cambiarD({ fondos: fs })} alFiltro={(fl) => cambiarD({ filtro: fl })} alFotos={(x) => cambiarD({ fotos_carta: x })} />) : null}
-        {subV === 'pedidos' ? sec('', 'PEDIDOS DE LA GENTE', 'perdí mi cuenta, mi país, un video…',
-          <Pedidos ps={d.pedidos || []} liga={liga} alCambiar={(y) => cambiarD({ pedidos: y })} />) : null}
-      </>
-    );
+    vista = <Bandeja d={d} liga={liga} ve={ve} cambiarD={cambiarD} sub={sub} />;
   } else if (areaV === 'servidores') {
     vista = (
       <>
-        {sec('sv-cada', 'CADA SERVIDOR', 'el multiplicador, el bot en vivo, las apuestas y el aviso de cada uno',
-          <><AjServidores liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} />{msg ? <p className="db-msg" role="status">{msg}</p> : null}</>)}
-        {sec('sv-tiers', 'LOS TIERS · CÓMO TRABAJA CADA SERVIDOR', 'recomienda; tú eliges', <Tiers T={d.tiers} aj={aj} hacer={hacer} ocup={ocup} msg={msg} liga={liga} />)}
+        {msg ? <p className="db-msg dz-msg" role="status">{msg}</p> : null}
+        {sec('sv-cada', 'LOS SERVIDORES', 'una fila cada uno: se cambia ahí mismo',
+          <ServidoresTabla liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} T={d.tiers} />)}
+        {d.tiers ? sec('sv-sumar', 'SUMAR UN SERVIDOR', d.tiers.t ? 'el puntaje, medido ' + hace(d.tiers.t) : null,
+          <SumarServidor T={d.tiers} aj={aj} hacer={hacer} ocup={ocup} />) : null}
       </>
     );
   } else if (areaV === 'web') {
     vista = (
       <>
         {msg ? <p className="db-msg dz-msg" role="status">{msg}</p> : null}
-        {sec('', 'AVISOS', null, <div className="db-ajs">
-          <div id="aj-campana"><AjCampana aj={aj} hacer={hacer} ocup={ocup} /></div>
-          <div id="aj-aviso"><AjAviso liga={liga} aj={aj} hacer={hacer} ocup={ocup} /></div>
-          <div id="aj-avisos" className="db-aj-ancho"><AjAvisos liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} general /></div>
-        </div>)}
-        {sec('', 'EL BOT EN VIVO', 'lo de cada servidor está en Servidores', <div className="db-ajs">
-          <div id="aj-vivo"><AjVivo liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} general /></div>
-          <div id="aj-ritmo"><AjRitmo aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} /></div>
-          <div id="aj-silencio"><AjSilencio aj={aj} hacer={hacer} ocup={ocup} /></div>
-          <div id="aj-apuestas"><AjApuestas liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} general /></div>
-        </div>)}
-        {sec('', 'EL PASE Y LAS CREWS', null, <div className="db-ajs">
-          <div id="aj-sorteo"><AjSorteo liga={liga} aj={aj} hacer={hacer} ocup={ocup} /></div>
-          <div id="aj-crews" className="db-aj-ancho"><AjCrews liga={liga} aj={aj} hacer={hacer} ocup={ocup} /></div>
-        </div>)}
-        {sec('aj-mes', 'MES AWARDS', 'los nominados del mes', <MesAwardsDueno aj={aj} hacer={hacer} ocup={ocup} />)}
-        {sec('aj-promos', 'PROMOS A MANO', 'agregar y sacar', <PromosMano aj={aj} hacer={hacer} ocup={ocup} />)}
+        <AjustesFilas liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} ir={ir} abrir={abrir} />
       </>
     );
   } else if (areaV === 'numeros') {

@@ -510,3 +510,81 @@
 .db-mes{display:grid;gap:10px;padding:14px}
 .db-mes-sv h4{margin:8px 0 4px;font:900 15px/1.1 Archivo,sans-serif;text-transform:uppercase}
 .db-mes-gano{color:var(--gris);font-style:normal}
+/* 📥 la bandeja de Pendientes: la lista a la izquierda, el detalle a la derecha (25/10/2026) */
+.dz-band{display:grid;gap:14px}
+.dz-band-f{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.dz-band-q{flex:1 1 240px;max-width:340px}
+.dz-band-g{display:grid;grid-template-columns:minmax(260px,340px) minmax(0,1fr);gap:16px;align-items:start}
+.dz-band-l{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-height:72vh;overflow:auto;padding-right:2px}
+.dz-it{width:100%;display:grid;gap:3px;justify-items:start;padding:10px 12px;border:1.5px solid var(--suave);border-left:4px solid var(--suave);border-radius:4px;
+  background:var(--caja);color:var(--tinta);text-align:left;cursor:pointer}
+.dz-it b{font:800 14.5px/1.25 Archivo,sans-serif;overflow-wrap:anywhere}
+.dz-it small{font-size:12.5px;line-height:1.35;color:var(--gris);overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dz-it .dz-it-t{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em}
+.dz-it.on{border-color:var(--tinta);border-left-color:var(--magenta);background:var(--fondo)}
+@media (hover: hover) and (pointer: fine){.dz-it:not(.on):hover{border-color:var(--linea)}}
+.dz-it:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+.dz-it-nada{padding:12px;color:var(--gris);font-size:14px}
+.dz-tipo{justify-self:start;display:inline-block;padding:3px 6px;border-radius:3px;font:800 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;background:var(--suave);color:var(--tinta)}
+.dz-tipo.urg{background:var(--magenta);color:#fff}
+.dz-tipo.ojo{background:#F2C230;color:#030304}
+.dz-det{display:grid;gap:12px;align-content:start;min-width:0;padding:16px 18px;border:2px solid var(--tinta);border-radius:4px;background:var(--caja)}
+.dz-det-t{margin:0;font:900 22px/1.15 Archivo,sans-serif;overflow-wrap:anywhere}
+.dz-dt-tx{margin:0;font-size:14.5px;line-height:1.5}
+.dz-dt-msg{margin:0;font-weight:800;color:var(--magenta-tx)}
+.dz-cita{margin:0;padding:10px 14px;border-left:4px solid var(--linea);font:600 16px/1.45 Archivo,sans-serif}
+.dz-acc{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.dz-acc .btn{min-height:44px}
+.dz-acc kbd{margin-left:6px;padding:2px 5px;border:1px solid currentColor;border-radius:3px;font:700 11px/1 "Barlow Condensed",sans-serif;opacity:.75}
+.dz-img{width:100%;max-width:520px;aspect-ratio:16/9;border:1.5px solid var(--suave);border-radius:4px;background:#030304 center/contain no-repeat}
+.dz-img.foto{max-width:300px;aspect-ratio:3/4;background-size:cover}
+.dz-img.logo{max-width:220px;aspect-ratio:1;object-fit:contain}
+.dz-video{display:inline-flex;align-items:center;gap:8px;font:800 15px/1.3 Archivo,sans-serif;color:var(--tinta);overflow-wrap:anywhere}
+.dz-teclas{margin:4px 0 0;font:700 12.5px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--gris)}
+.dz-solo{list-style:none;margin:0;padding:0}
+.dz-quien{grid-template-columns:minmax(0,1fr)}
+.dz-vacio{display:grid;gap:4px;padding:28px 18px;border:2px solid var(--verde);border-radius:4px;background:var(--caja);text-align:center}
+.dz-vacio b{font:900 22px/1.1 Archivo,sans-serif;color:var(--verde)}
+.dz-plegado{border-top:1.5px solid var(--suave);padding-top:10px}
+.dz-plegado summary{cursor:pointer;font:800 14px/1.3 Archivo,sans-serif;min-height:40px;display:flex;align-items:center}
+@media (hover: none){.dz-teclas{display:none}.dz-acc kbd{display:none}}
+@media (max-width: 899px){.dz-band-g{grid-template-columns:minmax(0,1fr)}.dz-band-l{max-height:46vh}}
+/* 🏟️ los servidores, en una tabla */
+.dz-svt{display:grid;gap:10px;padding:14px}
+.dz-svt-c{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.dz-tabla{overflow-x:auto;border:2px solid var(--linea);border-radius:4px;background:var(--caja)}
+.dz-tabla table{width:100%;border-collapse:collapse;font-size:13.5px}
+.dz-tabla th,.dz-tabla td{padding:7px 6px;border-bottom:1px solid var(--suave);text-align:left;vertical-align:middle;white-space:nowrap}
+.dz-tabla thead th{white-space:normal;font:800 12px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris);background:var(--fondo);position:sticky;top:0}
+.dz-tabla tbody tr.on>*{background:var(--fondo)}
+.dz-tabla tbody th,.dz-tabla thead th:first-child{position:sticky;left:0;z-index:2;background:var(--caja)}
+.dz-tabla thead th:first-child{background:var(--fondo);z-index:3}
+.dz-tabla select{min-height:36px;padding:0 2px;border:1.5px solid var(--suave);border-radius:3px;background:var(--caja);color:var(--tinta);font:600 12.5px/1 Archivo,sans-serif}
+.dz-tabla select:disabled{opacity:.5}
+.dz-tabla td small{display:block;margin-top:3px;font-size:11.5px;color:var(--gris)}
+.dz-svt-n{display:flex;align-items:center;gap:8px}
+.dz-svt-n img{width:26px;height:26px;border-radius:3px;object-fit:cover}
+.dz-svt-n b{font:900 15px/1 Archivo,sans-serif}
+.dz-svt-n i{width:8px;height:8px;border-radius:50%;background:var(--suave)}
+.dz-svt-n i.ok{background:var(--verde)}
+.dz-svt-ficha{display:grid;gap:8px;max-width:640px}
+/* 🎛️ la página y el bot, en filas: qué hace, cómo está hoy y su control */
+.dz-filas{display:grid;gap:8px}
+.dz-filas .dz-h{margin:14px 0 4px}
+.dz-filas .dz-h:first-child{margin-top:0}
+.dz-filas ul{list-style:none;margin:0;padding:0;border:2px solid var(--linea);border-radius:4px;background:var(--caja)}
+.dz-fila{border-bottom:1px solid var(--suave)}
+.dz-fila:last-child{border-bottom:0}
+.dz-fila-c{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) auto;gap:8px 16px;align-items:center;padding:12px 14px}
+.dz-fila-t{display:grid;gap:2px}
+.dz-fila-t b{font:800 15.5px/1.2 Archivo,sans-serif}
+.dz-fila-t small{font-size:13px;line-height:1.4;color:var(--gris)}
+.dz-fila-v{font:700 14px/1.3 Archivo,sans-serif;overflow-wrap:anywhere}
+.dz-fila-v.ok{color:var(--verde)}
+.dz-fila-v.ojo{color:#8A6400}
+.dz-fila-a{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+.dz-fila.on>.dz-fila-c{background:var(--fondo)}
+.dz-fila-ed{padding:0 14px 6px;background:var(--fondo);border-top:1px solid var(--suave)}
+.dz-fila-ed .db-aj{padding:12px 0;border-bottom:0}
+.dz-fila-ed .db-aj-c{display:none}
+@media (max-width: 640px){.dz-fila-c{grid-template-columns:minmax(0,1fr) auto}.dz-fila-t{grid-column:1 / -1}}
