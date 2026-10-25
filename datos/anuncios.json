@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-25T02:24:54+00:00",
+ "cuando": "2026-10-25T02:54:56+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -1275,31 +1275,6 @@
    "autor": "Nc",
    "staff_cuentas": {},
    "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "T1 63",
-   "servidor": "FFA",
-   "canal": "✦⚡—novedades",
-   "msg_id": "1562653057123221566",
-   "cuando": "2026-10-22T02:25:21",
-   "canal_id": "1531832189187264543",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "797ecd0ceee716c6",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "S",
-   "modalidad": "",
-   "horario": "",
-   "fecha": "28/37 D",
-   "premios": "",
-   "staff": {},
-   "autor": "Dlxmouche",
-   "staff_cuentas": {},
-   "de_imagen": true,
-   "categoria_id": "1468472443843776657"
   },
   {
    "nombre": "FLEIVA FREE",
