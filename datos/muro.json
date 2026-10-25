@@ -1062,7 +1062,8 @@
 "krtman": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "agustin51k": {
@@ -2552,14 +2553,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-01T01:55:21Z",
-"quien": [
-"Snow"
-],
-"carta": "competitivo"
-},
 {
 "tipo": "rango",
 "t": "2026-10-01T01:55:21Z",
@@ -5886,6 +5879,14 @@
 "t": "2026-10-25T16:21:51Z",
 "quien": [
 "BastyRetro"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-25T21:40:59Z",
+"quien": [
+"Krtman"
 ],
 "carta": "temporada"
 }
