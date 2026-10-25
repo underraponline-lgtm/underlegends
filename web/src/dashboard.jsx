@@ -3262,6 +3262,181 @@ function AjustesFilas({ liga, aj, hacer, ocup, chat, ir, abrir }) {
   );
 }
 
+// ── 💚 LA SALUD, PIEZA POR PIEZA (25/10/2026, la maqueta). Antes eran cinco cajas de texto y para saber si algo andaba mal
+// había que leerlas todas. Ahora cada pieza es un cuadro con su punto —verde anda, amarillo ojo, rojo mal— y lo que
+// mide en una línea; tocarlo baja al detalle, que sigue siendo el de antes. Arriba, el cupo de escrituras de KV con su
+// ritmo: lo que va, a dónde llega al ritmo de hoy y a qué hora se renueva
+function piezasDe(d, q, logs) {
+  const s = d.sistema || {};
+  const aj = d.ajustes || {};
+  const ult = (d.corridas || [])[0];
+  const xs = [];
+  if (ult) {
+    const t = ult.empezo || ult.creada;
+    const fallo = ult.estado === 'completed' && ult.fin && ult.fin !== 'success' && ult.fin !== 'skipped';
+    const trabada = ult.estado !== 'completed' && t && Date.now() - Date.parse(t) > 20 * 60000;
+    xs.push(['El ciclo', fallo ? 'mal' : trabada ? 'ojo' : 'ok', (ult.estado === 'completed' ? (FIN_CORRIDA[ult.fin] || 'terminó').replace(/^\S+\s/, '') : (ESTADO_CORRIDA[ult.estado] || ult.estado).replace(/^\S+\s/, '')) + (t ? ' · ' + hora(new Date(t)) : ''), 'sa-corridas']);
+  }
+  if (s.vigia || s.ok === false) xs.push(['El lector de anuncios', s.ok === false ? 'mal' : 'ok', (s.ok === false ? 'no contesta · ' : 'leyó ') + hace(s.vigia), 'sa-corridas']);
+  xs.push(['GitHub', d.github ? 'ojo' : 'ok', d.github ? (d.github.incidente || 'anda lento') : 'normal', 'sa-corridas']);
+  const w = q && q.kv ? q.kv.write : null;
+  if (w != null) {
+    const p = proyeccion(q);
+    xs.push(['KV · escrituras', w >= 900 || (p != null && p >= 1000) ? 'mal' : w >= 700 || (p != null && p >= 850) ? 'ojo' : 'ok', num(w) + ' de 1.000' + (p != null ? ' · llega a ~' + num(p) : ''), 'sa-cuotas']);
+  }
+  const ob = q && q.objeto;
+  if (ob) {
+    const pc = Math.max(...TOPES.filter(([g]) => g === 'objeto').map(([, k, , tope]) => (100 * (ob[k] || 0)) / tope));
+    xs.push(['El objeto', pc >= 90 ? 'mal' : pc >= 70 ? 'ojo' : 'ok', Math.round(pc) + ' % de lo más usado', 'sa-cuotas']);
+  }
+  const wk = q && q.worker;
+  if (wk && wk.p99_ms != null) xs.push(['El Worker', wk.p99_ms >= 9 ? 'mal' : wk.p99_ms >= 7 ? 'ojo' : 'ok', 'CPU p99 ' + String(wk.p99_ms).replace('.', ',') + ' ms de 10', 'sa-cuotas']);
+  xs.push(['La campana', aj.campana_pausada ? 'ojo' : 'ok', aj.campana_pausada ? 'en pausa' : num(s.suscripciones || 0) + ' dispositivos · ' + num((s.ultimas_24h || {}).enviados || 0) + ' envíos en 24 h', 'sa-corridas']);
+  if (logs && !logs.error) {
+    const v = logsVistos();
+    const rojos = (logs.xs || []).filter((x) => x.nivel === 'rojo' && !v.includes(x.id)).length;
+    const amar = (logs.xs || []).filter((x) => x.nivel !== 'rojo' && !v.includes(x.id)).length;
+    xs.push(['Logs', rojos ? 'mal' : amar ? 'ojo' : 'ok', rojos ? rojos + ' en rojo sin ver' : amar ? amar + ' en amarillo sin ver' : 'nada sin ver', 'sa-logs']);
+  }
+  const ep = (d.errores_pag || []).reduce((n, x) => n + (x.n || 0), 0);
+  xs.push(['Errores de la página', ep >= 20 ? 'mal' : ep ? 'ojo' : 'ok', ep ? num(ep) + ' en 7 días' : 'ninguno en 7 días', 'sa-errores']);
+  return xs;
+}
+
+function Cupo({ q }) {
+  const w = q && q.kv ? q.kv.write : null;
+  if (w == null) return null;
+  const p = proyeccion(q);
+  const ahora = new Date();
+  const renueva = new Date(Date.UTC(ahora.getUTCFullYear(), ahora.getUTCMonth(), ahora.getUTCDate() + 1));
+  const hasta = (x) => Math.min(100, x / 10).toFixed(1) + '%';
+  const mal = p != null && p >= 1000;
+  return (
+    <div className={'dz-cupo' + (mal ? ' mal' : w >= 700 ? ' ojo' : '')}>
+      <div className="dz-cupo-c"><b>El cupo de hoy · KV</b><span>{num(w)} <small>de 1.000 escrituras</small></span></div>
+      <div className="dz-cupo-b" role="img" aria-label={num(w) + ' de 1.000' + (p != null ? ', al ritmo de hoy ~' + num(p) : '')}>
+        {p != null ? <i className="dz-cupo-p" style={{ width: hasta(p) }} /> : null}
+        <u style={{ width: hasta(w) }} />
+      </div>
+      <p className="db-tx">{p != null ? (mal ? '⚠️ Al ritmo de hoy llega a ~' + num(p) + ': no alcanza. Si se llena, la página y /card se quedan quietos hasta que se renueve.' : 'Al ritmo de hoy llega a ~' + num(p) + ': alcanza.') : 'Recién se renovó: todavía no hay ritmo.'} Se renueva a las {hora(renueva)}.</p>
+    </div>
+  );
+}
+
+function SaludPiezas({ d, q, logs, ir }) {
+  const xs = piezasDe(d, q, logs);
+  const malas = xs.filter((x) => x[1] === 'mal').length, ojos = xs.filter((x) => x[1] === 'ojo').length;
+  return (
+    <div className="dz-sal">
+      <p className={'dz-sal-r' + (malas ? ' mal' : ojos ? ' ojo' : '')}>{malas ? malas + (malas === 1 ? ' pieza anda mal' : ' piezas andan mal') : ojos ? 'Todo anda; ' + ojos + (ojos === 1 ? ' pieza para mirar' : ' piezas para mirar') : 'Todo anda.'}</p>
+      <div className="dz-piezas">{xs.map(([t, e, s, an]) => (
+        <button key={t} type="button" className={'dz-pieza ' + e} onClick={() => ir('salud', an)}>
+          <span className="dz-pieza-t"><i aria-hidden="true" />{t}</span>
+          <small>{s}</small>
+          <em className="rk-sr">{e === 'ok' ? 'anda' : e === 'ojo' ? 'para mirar' : 'anda mal'}</em>
+        </button>
+      ))}</div>
+      <Cupo q={q} />
+    </div>
+  );
+}
+
+// ── 🕓 EL HISTORIAL, CON «DE → A» (25/10/2026, la maqueta). Decía «cambió» y nada más: para saber qué había que
+// deshacer había que acordarse. Ahora cada fila dice cómo estaba y cómo quedó, en palabras; en los ajustes por servidor
+// sólo los servidores que cambiaron. `enPalabras()` es corto a propósito: un valor que no conoce lo cuenta, no lo inventa
+const VAL_SV = {
+  en_vivo: (v) => (v === true ? 'prendido' : v === false ? 'apagado' : 'su admin'),
+  en_vivo_nivel: (v) => ((NIVELES_VIVO[v] || [v])[0] || '').toLowerCase(),
+  eventos_discord: (v) => (v ? 'prendidos' : 'apagados'),
+  tiers: (v) => 'Tier ' + v,
+  beneficios: () => 'a mano',
+};
+function enPalabras(cual, v, liga) {
+  if (v === null || v === undefined) return 'lo de siempre';
+  if (cual === 'campana_pausada') return v ? 'en pausa' : 'suena';
+  if (cual === 'avisos_nivel') return ((NIVELES_AVISO[v] || [v])[0] || '').toLowerCase();
+  if (cual === 'silencio') return 'de ' + v.desde + ' a ' + v.hasta;
+  if (cual === 'aviso_web') return '«' + corte(v.texto, 40) + '»';
+  if (cual === 'ritmo') return 'uno cada ' + v.normal + ' min · ' + v.batalla + ' en «Cada batalla»';
+  if (cual === 'apuestas') return (v.montos || []).map(num).join(' · ') + ' · tope ' + num(v.tope || 0);
+  if (cual === 'pase_sorteo') return v.id + (v.sorteo && liga ? ' · se sortea ' + liga.dia(v.sorteo) : '');
+  if (typeof v === 'boolean') return v ? 'sí' : 'no';
+  if (typeof v === 'number') return num(v);
+  if (typeof v === 'string') return corte(v, 40);
+  if (Array.isArray(v)) return v.length === 1 ? '1 cosa' : v.length + ' cosas';
+  const n = Object.keys(v).length;
+  return n === 1 ? '1 ajuste' : n + ' ajustes';
+}
+// lo que cambió, como líneas «de → a»
+function deA(x, liga) {
+  const { cual } = x;
+  let a = x.antes, d = x.despues;
+  if (cual === 'multiplicadores') { a = a && a.sv; d = d && d.sv; }
+  if (cual === 'aviso_evento') { a = a && a.sv; d = d && d.sv; }
+  const porSv = VAL_SV[cual] || (cual === 'multiplicadores' ? mult : cual === 'aviso_evento' ? (v) => ({ chat: 'chat general', no: 'apagado' }[v] || v) : null);
+  if (porSv && (a == null || typeof a === 'object') && (d == null || typeof d === 'object')) {
+    const A = a || {}, D = d || {};
+    const ks = [...new Set([...Object.keys(A), ...Object.keys(D)])].filter((k) => JSON.stringify(A[k]) !== JSON.stringify(D[k]));
+    if (ks.length && ks.length <= 6) {
+      const ver = (o, k) => (o[k] === undefined ? (cual === 'multiplicadores' ? '×1' : 'lo de siempre') : porSv(o[k]));
+      return ks.map((k) => [siglaDe(k), ver(A, k), ver(D, k)]);
+    }
+  }
+  return [['', enPalabras(cual, x.antes, liga), enPalabras(cual, x.despues, liga)]];
+}
+
+function HistorialDeA({ hist, hacer, ocup, liga }) {
+  const [q, setQ] = useState('');
+  const [mas, setMas] = useState(false);
+  const todos = hist || [];
+  if (!todos.length) return <p className="db-tx">Todavía no hay cambios anotados: el historial empezó el 13/10/2026.</p>;
+  // sólo el último cambio de cada ajuste se puede deshacer: deshacer uno más viejo pisaría lo que vino después
+  const ultimo = new Set();
+  const filas = todos.map((x) => { const puede = !ultimo.has(x.cual); ultimo.add(x.cual); return [x, puede]; })
+    .filter(([x]) => contiene([NOMBRE_AJ[x.cual] || x.cual, x.por], q));
+  const ver = mas ? filas : filas.slice(0, 15);
+  return (
+    <div className="dz-hi">
+      <label className="db-buscar dz-band-q"><Ico n="buscar" t={16} />
+        <input type="search" value={q} placeholder="Buscar un ajuste o quién lo cambió" aria-label="Buscar en el historial" onChange={(e) => setQ(e.target.value)} /></label>
+      <ol className="dz-hi-l">{ver.map(([x, puede]) => (
+        <li key={x.t + x.cual}>
+          <span className="dz-hora">{hace(x.t)}</span>
+          <div className="dz-hi-q">
+            <b>{NOMBRE_AJ[x.cual] || x.cual}{x.por && x.por !== 'Dlx' ? <small> · lo cambió {x.por}</small> : null}</b>
+            <ul>{deA(x, liga).map(([k, de, a]) => (
+              <li key={k + de + a}>{k ? <em>{k}</em> : null}<s>{de}</s><span aria-hidden="true">→</span><span className="rk-sr">pasó a</span><strong>{a}</strong></li>
+            ))}</ul>
+          </div>
+          {puede ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo: vuelve a como estaba"
+            onClick={() => hacer(x.cual, volverA(x.cual, x.antes), 'Deshecho: volvió a como estaba.')}>Deshacer</DosToques> : <small className="dz-hi-no">cambió después</small>}
+        </li>
+      ))}{!ver.length ? <li className="dz-it-nada">Nada con «{q}».</li> : null}</ol>
+      {filas.length > 15 ? <button type="button" className="dz-lnk" onClick={() => setMas(!mas)}>{mas ? 'Ver menos' : 'Ver los ' + filas.length}</button> : null}
+    </div>
+  );
+}
+
+// ── 📊 LOS NÚMEROS, EN PESTAÑAS (25/10/2026, la maqueta: «la gente · la página · el Pase · las crews»). Eran diez
+// secciones una abajo de la otra y la que importaba quedaba al final. Cada pestaña es una pregunta; la que no tiene
+// datos no aparece (sin dato no hay pieza). La elegida se recuerda en este navegador
+const NUM_TAB = 'lg:db-num';
+function NumerosTabs({ tabs }) {
+  const [t, setT0] = useState(() => { try { return localStorage.getItem(NUM_TAB) || ''; } catch (e) { return ''; } });
+  const setT = (k) => { setT0(k); try { localStorage.setItem(NUM_TAB, k); } catch (e) { /* sin guardar */ } };
+  const xs = tabs.filter(Boolean);
+  const actual = xs.find(([k]) => k === t) || xs[0];
+  if (!actual) return <p className="pronto-p">Todavía no hay números.</p>;
+  return (
+    <>
+      <div className="dz-subs" role="tablist" aria-label="Qué números">{xs.map(([k, tt]) => (
+        <button key={k} type="button" role="tab" aria-selected={actual[0] === k} className={'dz-sub' + (actual[0] === k ? ' on' : '')} onClick={() => setT(k)}>{tt}</button>
+      ))}</div>
+      {actual[2]}
+    </>
+  );
+}
+
 export function Dashboard({ dc, liga }) {
   const [st, setSt] = useState({ cargando: true });
   // la visita anterior: se lee una vez al abrir y se anota la de ahora
@@ -3445,28 +3620,31 @@ export function Dashboard({ dc, liga }) {
       </>
     );
   } else if (areaV === 'numeros') {
+    const S = d.secciones && Object.keys(d.secciones.n || {}).length ? d.secciones : null;
     vista = (
-      <>
-        {sec('nu-uso', 'EL BOT Y LA PÁGINA · 7 DÍAS', u.desde ? 'se cuenta desde el ' + corto(u.desde) : null, <Cajas u={u} />)}
-        {sec('nu-semanas', 'COMPARAR SEMANAS', 'de lunes a domingo, en hora del este', <CompararSemanas S={semanas} uso={d.uso_semanas} liga={liga} />)}
-        {(d.dias || []).length ? sec('', 'DÍA POR DÍA · DOS SEMANAS', null, <Dias dias={d.dias} />) : null}
-        {sec('nu-lobby', '¿EL LOBBY HACE VOLVER A LA GENTE?', 'la meta del research', <MetaLobby r={retencion} />)}
-        {d.pase ? sec('nu-pase', 'EL PASE DE RAPERO', d.pase.semana ? 'la semana del ' + corto(d.pase.semana) : null, <PaseNumeros p={d.pase} liga={liga} />) : null}
-        {d.crews_num ? sec('nu-crews', 'LAS CREWS · 7 DÍAS', 'contra los 7 de antes', <CrewsNumeros c={d.crews_num} />) : null}
-        {d.tutorial && Object.keys(d.tutorial.n || {}).length ? sec('nu-tuto', 'EL TUTORIAL · DOS SEMANAS',
-          d.tutorial.desde ? 'se cuenta desde el ' + corto(d.tutorial.desde) : null, <TutorialNumeros t={d.tutorial} />) : null}
-        {d.secciones && Object.keys(d.secciones.n || {}).length ? sec('nu-clics', 'QUÉ SECCIONES SE ABREN · 7 DÍAS',
-          d.secciones.desde ? 'se cuenta desde el ' + corto(d.secciones.desde) : null, <SeccionesNumeros s={d.secciones} />) : null}
-        {d.secciones && Object.keys(d.secciones.n || {}).some((k) => /^[ip]-/.test(k)) ? sec('', 'QUÉ SE TOCA EN EL INICIO · 7 DÍAS', null,
-          <SeccionesNumeros s={d.secciones} toques />) : null}
-        {d.clics ? sec('', 'QUÉ SE TOCA EN TODA LA PÁGINA · 7 DÍAS', d.clics.desde ? 'se cuenta desde el ' + corto(d.clics.desde) : null,
-          <ClicsNumeros c={d.clics} />) : null}
-      </>
+      <NumerosTabs tabs={[
+        ['gente', 'La gente', <>
+          {sec('nu-uso', 'ESTA SEMANA · EL BOT Y LA PÁGINA', u.desde ? 'se cuenta desde el ' + corto(u.desde) : null, <Cajas u={u} />)}
+          {sec('nu-lobby', '¿VUELVE LA GENTE?', 'la meta del research', <MetaLobby r={retencion} />)}
+          {sec('nu-semanas', 'COMPARAR SEMANAS', 'de lunes a domingo, en hora del este', <CompararSemanas S={semanas} uso={d.uso_semanas} liga={liga} />)}
+          {(d.dias || []).length ? sec('', 'DÍA POR DÍA · DOS SEMANAS', 'hasta hoy', <Dias dias={d.dias} />) : null}
+        </>],
+        S || d.clics || (d.tutorial && Object.keys(d.tutorial.n || {}).length) ? ['pagina', 'La página', <>
+          {S ? sec('nu-clics', 'QUÉ SECCIONES SE ABREN · 7 DÍAS', S.desde ? 'se cuenta desde el ' + corto(S.desde) : null, <SeccionesNumeros s={S} />) : null}
+          {S && Object.keys(S.n || {}).some((k) => /^[ip]-/.test(k)) ? sec('', 'QUÉ SE TOCA EN EL INICIO · 7 DÍAS', S.desde ? 'se cuenta desde el ' + corto(S.desde) : null, <SeccionesNumeros s={S} toques />) : null}
+          {d.clics ? sec('', 'QUÉ SE TOCA EN TODA LA PÁGINA · 7 DÍAS', d.clics.desde ? 'se cuenta desde el ' + corto(d.clics.desde) : null, <ClicsNumeros c={d.clics} />) : null}
+          {d.tutorial && Object.keys(d.tutorial.n || {}).length ? sec('nu-tuto', 'EL TUTORIAL · DOS SEMANAS',
+            d.tutorial.desde ? 'se cuenta desde el ' + corto(d.tutorial.desde) : null, <TutorialNumeros t={d.tutorial} />) : null}
+        </>] : null,
+        d.pase ? ['pase', 'El Pase', sec('nu-pase', 'EL PASE DE RAPERO', d.pase.semana ? 'la semana del ' + corto(d.pase.semana) : null, <PaseNumeros p={d.pase} liga={liga} />)] : null,
+        d.crews_num ? ['crews', 'Las crews', sec('nu-crews', 'LAS CREWS · 7 DÍAS', 'contra los 7 de antes', <CrewsNumeros c={d.crews_num} />)] : null,
+      ]} />
     );
   } else if (areaV === 'salud') {
     vista = (
       <>
-        {sec('sa-corridas', 'CÓMO ANDA TODO', 'se pone al día solo', <><Corridas corridas={d.corridas} s={d.sistema || {}} github={d.github} /><Sistema s={d.sistema || {}} sesiones={d.sesiones} /></>)}
+        <SaludPiezas d={d} q={cuotas} logs={logs} ir={ir} />
+        {sec('sa-corridas', 'EL CICLO Y EL LECTOR', 'se pone al día solo', <><Corridas corridas={d.corridas} s={d.sistema || {}} github={d.github} /><Sistema s={d.sistema || {}} sesiones={d.sesiones} /></>)}
         {sec('sa-cuotas', 'LO QUE GASTA CLOUDFLARE HOY', 'el plan gratis · se renueva a las 8 PM', <Cuotas q={cuotas} />)}
         {sec('sa-logs', 'LO QUE AVISÓ LOGS', 'los 🔴 y ⚠️ de los últimos 3 días', <Logs l={logs} />)}
         {sec('sa-errores', 'ERRORES DE LA PÁGINA · 7 DÍAS', 'nunca de quién', <ErroresPagina e={d.errores_pag} />)}
@@ -3478,7 +3656,7 @@ export function Dashboard({ dc, liga }) {
   } else {
     vista = (
       <>
-        {sec('hi-hist', 'LOS ÚLTIMOS CAMBIOS', 'deshacer vuelve a como estaba', <Historial hist={d.ajustes_hist} hacer={hacer} ocup={ocup} />)}
+        {sec('hi-hist', 'LOS ÚLTIMOS CAMBIOS', 'deshacer vuelve a como estaba', <HistorialDeA hist={d.ajustes_hist} hacer={hacer} ocup={ocup} liga={liga} />)}
         {ve('roles') ? sec('hi-roles', 'ROLES DE LA PÁGINA', 'sólo tú los pones', <Roles roles={d.roles} alCambiar={(y) => cambiarD({ roles: y })} />) : null}
       </>
     );
