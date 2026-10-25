@@ -419,7 +419,7 @@
    "temporada": "b599081a92bf:e8f4f15f7e3a"
   },
   "Erian": {
-   "competitivo": "a7254ee9a47f:8259c7ce67a9",
+   "competitivo": "85de5ec50ff0:8259c7ce67a9",
    "pais": "a928f45f0eb8:1478cbe7c727",
    "servidor": "8254174eb5fc:dc2ca95eb024:25c183",
    "temporada": "b1562e0f3737:e8f4f15f7e3a"
@@ -942,8 +942,8 @@
   "MATICERNA": {},
   "MAXIMILIANO CALVO": {},
   "MCNadie": {
-   "competitivo": "27b8de01de6c:8259c7ce67a9",
-   "pais": "e25ff8d81c93:1478cbe7c727",
+   "competitivo": "30d5ed5f2429:8259c7ce67a9",
+   "pais": "5d4d00c0ffc1:1478cbe7c727",
    "servidor": "9c84de650494:dc2ca95eb024:15af16"
   },
   "MCO": {
@@ -1276,7 +1276,7 @@
    "temporada": "da85e13b7173:e8f4f15f7e3a"
   },
   "Polosport": {
-   "competitivo": "33bd99b67913:8259c7ce67a9",
+   "competitivo": "381f3fc6f229:8259c7ce67a9",
    "pais": "63010592c15f:1478cbe7c727",
    "servidor": "0c2ecc73940d:dc2ca95eb024:c589ca",
    "temporada": "ec02718d7c26:e8f4f15f7e3a"
@@ -1617,7 +1617,7 @@
    "servidor": "6c8ac408bbf5:dc2ca95eb024:055f77"
   },
   "Velatz": {
-   "competitivo": "10171223175d:8259c7ce67a9",
+   "competitivo": "f5332a74cf93:8259c7ce67a9",
    "pais": "dc94fbe93a8c:1478cbe7c727",
    "servidor": "faa036f404fc:dc2ca95eb024:039304",
    "temporada": "bd60b1372f18:e8f4f15f7e3a"
@@ -1857,5 +1857,5 @@
    "servidor": "7f8885a35a6d:dc2ca95eb024:93a344"
   }
  },
- "cuando": "2026-10-24T23:45:28+00:00"
+ "cuando": "2026-10-24T23:58:58+00:00"
 }
