@@ -569,6 +569,57 @@ def retencion(filas, ahora=None):
     }
 
 
+#: cuántos días sin jugar hacen a alguien «enfriado» (jugó 2 o más eventos y no volvió): tres semanas, porque la Liga
+#: juega varios eventos por semana y quien falta una semana puede estar de viaje
+ENFRIA_DIAS = 21
+
+
+def primerizos(filas, ahora=None):
+    """🔁 Quién jugó UNA sola vez y quién se enfrió, CON NOMBRE, para la lista del Dashboard.
+
+    El research del Dashboard (25/10/2026, Dlx: *«arranco con todo lo demás»*): el número de la vuelta no dice a
+    quién mirar; una lista sí (TopDeck la llama «oportunidad de retención»). Mismas `filas` que `retencion()`.
+
+    `una`: `[nombre, servidor de su evento, día del evento]`, lo más nuevo primero (a quien debutó ayer todavía se lo
+    puede traer). `frio`: `[nombre, servidor del último, primer día, último día, eventos]`, quien más jugó primero.
+    `hist`: cuántos jugaron 1, 2… 9 y 10 o más eventos (la barra «1» es el 42 %).
+
+    ⚠️ CON NOMBRES: va a `.cache/` (no se commitea) y de ahí al objeto (`bot/primerizos.py`), NUNCA al repo público.
+    """
+    try:
+        from zoneinfo import ZoneInfo
+        et = ZoneInfo('America/New_York')
+    except Exception:                                    # noqa: BLE001
+        et = _dt.timezone(_dt.timedelta(hours=-4))
+    ahora = ahora or _dt.datetime.now(_dt.timezone.utc)
+    hoy = ahora.astimezone(et).date()
+    por = defaultdict(dict)                 # rapero -> {evento: (instante, servidor)}
+    for num, sv, t, quien, _pts in filas:
+        if t is None or not quien:
+            continue
+        viejo = por[quien].get(num)
+        if viejo is None or t < viejo[0]:
+            por[quien][num] = (t, sv or '')
+    una, frio, hist = [], [], defaultdict(int)
+    for quien, evs in por.items():
+        xs = sorted(evs.values(), key=lambda x: x[0])
+        hist[min(len(xs), 10)] += 1
+        d1, du = xs[0][0].astimezone(et).date(), xs[-1][0].astimezone(et).date()
+        if len(xs) == 1:
+            una.append([quien, xs[0][1], d1.isoformat()])
+        elif (hoy - du).days >= ENFRIA_DIAS:
+            frio.append([quien, xs[-1][1], d1.isoformat(), du.isoformat(), len(xs)])
+    una.sort(key=lambda f: f[2], reverse=True)
+    frio.sort(key=lambda f: (-f[4], f[3]))
+    return {'v': 1, 'cuando': ahora.astimezone(_dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
+            'enfria_dias': ENFRIA_DIAS, 'jugadores': len(por), 'hist': {str(k): v for k, v in sorted(hist.items())},
+            'n_una': len(una), 'n_frio': len(frio), 'una': una[:500], 'frio': frio[:250]}
+
+
+#: donde la deja para `bot/primerizos.py` (`.cache/`: tiene nombres y no se commitea)
+PRIMERIZOS = os.path.join(BASE, '.cache', 'primerizos.json')
+
+
 #: donde la deja para `pipeline._estado_final`, que la mete en
 #: `datos/estado_escuchar.json`. En `.cache/` (no se commitea) para no tener
 #: el mismo dato en dos archivos del repo.
@@ -583,6 +634,9 @@ def escribir_retencion(filas):
         with io.open(RETENCION, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(r, f, ensure_ascii=False, indent=1)
         ult = [c for c in r['cohortes'] if c['completa']]
+        # 🔁 y quiénes son, con nombre: para la lista del Dashboard (ver `primerizos()`)
+        with io.open(PRIMERIZOS, 'w', encoding='utf-8', newline='\n') as f:
+            json.dump(primerizos(filas), f, ensure_ascii=False)
         print('   🗺️ quién vuelve a jugar: %d jugadores, %d con un solo evento%s'
               % (r['jugadores'], r['un_evento'],
                  (' · semana del %s: volvieron %d de %d' % (ult[-1]['semana'], ult[-1]['volvieron'], ult[-1]['nuevos']))

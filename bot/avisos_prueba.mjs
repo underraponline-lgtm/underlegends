@@ -1178,6 +1178,17 @@ const ok = (cond, que, det) => {
     ok(!vv1.viendo.length && vv2.viendo.length === 1 && vv2.viendo[0].k === 'r12' && vv3.viendo.length === 1 && vv3.viendo[0].k === 'qn1'
       && vv4.viendo.length === 1 && vv4.viendo[0].k === 'r13',
     '«lo estoy viendo»: se ven los casos que miran los otros, uno por persona, y una clave rara no se guarda', JSON.stringify([vv2, vv3, vv4]));
+    // 🔁 avisarle a uno de la lista de primerizos que vuelva: a su campana, con un texto fijo; sin cuenta no; una vez
+    // cada 7 días; y queda quién lo mandó
+    o.sql.exec("INSERT OR REPLACE INTO idk (id, k, t) VALUES ('100000031', 'primerizo', 1)");
+    const av1 = o.avisoVuelve({ k: 'primerizo', que: 'evento', por: '100000021' });
+    const av2 = o.avisoVuelve({ k: 'primerizo', que: 'pase', por: '100000021' });
+    const av3 = o.avisoVuelve({ k: 'nadie', que: 'evento', por: '100000021' });
+    const av4 = o.avisoVuelve({ k: 'primerizo', que: 'gratis', por: '100000021' });
+    const bv = o.sql.exec("SELECT titulo, url FROM bandeja WHERE quien = '100000031'").toArray();
+    ok(av1.ok && av1.avisados.primerizo[1] === 'evento' && av2.error === 'reciente' && av3.error === 'sin_cuenta' && av4.error
+      && bv.length === 1 && bv[0].url === '/freestyle-rap/eventos',
+    'avisarle a un primerizo que vuelva: a su campana, texto fijo, sólo con cuenta y una vez por semana', JSON.stringify([av1, av2, av3, bv]));
     // ✅ Decidir en el Dashboard (13/10/2026, «Sí, con Reportes»)
     const PS = [{ id: 'n1', tipo: 'Nombre desconocido', sec: 'COPA · FFA · 07/10', que: '¿Quién es ZORRO?', pistas: '—',
       opciones: ['Es alguien nuevo', 'Es un troll (no cuenta)'], link: 'javascript:x', libre: true },

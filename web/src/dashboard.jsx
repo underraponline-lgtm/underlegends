@@ -244,7 +244,33 @@ function wilson(k, n) {
   const c = (p + (z * z) / (2 * n)) / d, m = (z * Math.sqrt((p * (1 - p)) / n + (z * z) / (4 * n * n))) / d;
   return [Math.max(0, c - m), Math.min(1, c + m)];
 }
-function VueltaSegundo({ r }) {
+// 📌 LO QUE SALIÓ CADA SEMANA, para leer un salto con su causa (25/10/2026, el research: las marcas de Grafana). Las
+// versiones de la página (`/cambios.json`, el mismo changelog público) y los ajustes del Dashboard que mueven a la gente
+// (multiplicadores, campana, sorteo, promos), por el lunes de su semana en hora del este
+let cambiosP = null;
+const pedirCambios = () => (cambiosP = cambiosP || fetch('/cambios.json', { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null));
+function useCambios(activo) {
+  const [c, setC] = useState(null);
+  useEffect(() => { if (activo) pedirCambios().then((x) => setC((x && x.cambios) || [])); }, [activo]);
+  return c;
+}
+const lunesDe = (dia) => { const d = new Date(String(dia).slice(0, 10) + 'T12:00:00Z'); d.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); return d.toISOString().slice(0, 10); };
+const MARCA_AJ = { multiplicadores: 'multiplicador a mano', campana_pausada: 'campana', pase_sorteo: 'sorteo', promos_mano: 'promos', aviso_web: 'aviso en la web' };
+// ⚠️ LAS VERSIONES VAN CONTADAS, NO UNA POR UNA: hay semanas con 30 a 100, y una lista así no se lee. Los títulos
+// quedan al pasar el mouse; los ajustes a mano, que son pocos, van con su nombre
+function marcasPorSemana(cambios, hist) {
+  const v = {}, a = {}, m = {};
+  for (const c of cambios || []) if (c.dia && c.version) { const k = lunesDe(c.dia); (v[k] = v[k] || []).push(c.version + ' ' + (c.titulo || '')); }
+  for (const h of hist || []) if (MARCA_AJ[h.cual]) { const k = lunesDe(new Date(msDe(h.t)).toISOString()); (a[k] = a[k] || new Set()).add('✍ ' + MARCA_AJ[h.cual]); }
+  for (const k of new Set([...Object.keys(v), ...Object.keys(a)])) {
+    const xs = (v[k] || []);
+    m[k] = { corto: [xs.length ? num(xs.length) + (xs.length === 1 ? ' versión' : ' versiones') + ' de la página' : '', ...(a[k] || [])].filter(Boolean),
+      largo: xs.concat([...(a[k] || [])]) };
+  }
+  return m;
+}
+
+function VueltaSegundo({ r, marcas }) {
   if (r === null) return <p className="pronto-p">Midiendo…</p>;
   if (!r || !(r.cohortes || []).length) return <p className="pronto-p">Todavía no hay una medición del ciclo.</p>;
   const cs = [...r.cohortes].sort((a, b) => String(a.semana).localeCompare(String(b.semana)));
@@ -280,13 +306,84 @@ function VueltaSegundo({ r }) {
             <i aria-hidden="true">{c.nuevos ? <><em style={{ left: pc(a) + '%', width: Math.max(1, pc(b) - pc(a)) + '%' }} /><u style={{ left: pc(p) + '%' }} /></> : null}</i>
             <b>{c.nuevos ? pc(p) + ' %' : '—'}</b>
             <small>{num(c.volvieron)} de {num(c.nuevos)}{!c.completa ? ' · abierta' : c.semana === arranque ? ' · arranque, no cuenta' : c.nuevos < 30 ? ' · pocos' : ''}</small>
+            {(marcas || {})[c.semana] ? <em className="dz-marcas" title={marcas[c.semana].largo.join(' · ')}>📌 {marcas[c.semana].corto.join(' · ')}</em> : null}
           </li>
         );
       })}</ol>
-      <p className="db-tx">La barra gris es el rango; la raya, lo medido. «Abierta»: todavía no pasaron los 14 días, así que va a subir. «Pocos»: menos de 30 personas, el rango es ancho. La semana del arranque no cuenta: ahí «debutaron» también los que ya jugaban antes.</p>
+      <p className="db-tx">La barra gris es el rango; la raya, lo medido. «Abierta»: todavía no pasaron los 14 días, así que va a subir. «Pocos»: menos de 30 personas, el rango es ancho. La semana del arranque no cuenta: ahí «debutaron» también los que ya jugaban antes. 📌 Lo que salió esa semana (versiones de la página y ajustes a mano): sirve para leer un salto con su causa, no prueba que la causa sea ésa.</p>
     </div>
   );
 }
+// 🔁 LOS PRIMERIZOS Y LOS ENFRIADOS, CON NOMBRE (25/10/2026, el research del Dashboard: «un número no dice a quién
+// mirar; una lista sí»). Los arma el ciclo (`bot/primerizos.py`) y llegan sólo acá. La acción es avisarle por su campana
+// con un texto fijo (`PLANTILLAS_VUELVE` de bot/avisos.js): nunca un DM. Sólo le llega a quien tiene cuenta
+const VUELVE = [['evento', 'Te esperamos en el próximo evento'], ['pase', 'Tu Pase de rapero te espera'], ['crew', 'Súmate a una crew']];
+function PrimerizosLista({ P, vuelve, liga, alVuelve }) {
+  const [pest, setPest] = useState('una');
+  const [sv, setSv] = useState('');
+  const [q, setQ] = useState('');
+  const [mas, setMas] = useState(false);
+  const [que, setQue] = useState('evento');
+  const [res, setRes] = useState({});
+  if (!P) return <p className="pronto-p">La lista llega con la próxima vuelta del ciclo.</p>;
+  const xs0 = pest === 'una' ? P.una || [] : P.frio || [];
+  const svs = [...new Set(xs0.map((f) => f[1]).filter(Boolean))].sort();
+  const xs = xs0.filter((f) => (!sv || f[1] === sv) && contiene([f[0]], q));
+  const ver = mas ? xs.slice(0, 200) : xs.slice(0, 25);
+  const hoy = Date.now();
+  const dias = (d) => Math.max(0, Math.round((hoy - Date.parse(d + 'T12:00:00Z')) / 864e5));
+  const haceDias = (d) => { const n = dias(d); return n === 0 ? 'hoy' : n === 1 ? 'ayer' : 'hace ' + n + ' días'; };
+  const avisar = async (k) => {
+    setRes((r) => Object.assign({}, r, { [k]: '…' }));
+    try {
+      const r = await fetch('/api/avisos/dueno/vuelve', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ k, que }) });
+      const j = await r.json().catch(() => ({}));
+      if (j.ok) { alVuelve(j.avisados || {}); setRes((x) => Object.assign({}, x, { [k]: '' })); return; }
+      setRes((x) => Object.assign({}, x, { [k]: j.error === 'sin_cuenta' ? 'No tiene cuenta en la página: no le llega.' : j.error === 'reciente' ? 'Ya se le avisó esta semana.'
+        : j.error === 'tope' ? 'Llegaron a 40 avisos hoy: mañana.' : 'No se pudo: ' + (j.error || r.status) }));
+    } catch (e) { setRes((x) => Object.assign({}, x, { [k]: 'No se pudo: sin red.' })); }
+  };
+  const h = P.hist || {}, hmax = Math.max(1, ...Object.values(h));
+  return (
+    <div className="dz-prim">
+      {Object.keys(h).length ? (
+        <div className="dz-hist" role="img" aria-label={'Cuántos eventos jugó cada uno: ' + Object.entries(h).map(([k, v]) => v + ' jugaron ' + (k === '10' ? '10 o más' : k)).join(', ')}>
+          {Object.entries(h).map(([k, v]) => (
+            <div key={k} className={k === '1' ? 'uno' : ''}><b>{num(v)}</b><i><u style={{ height: (100 * v / hmax).toFixed(1) + '%' }} /></i><span>{k === '10' ? '10+' : k}</span></div>
+          ))}
+          <small>eventos jugados · {num(P.jugadores || 0)} personas en la temporada</small>
+        </div>
+      ) : null}
+      <div className="dz-subs" role="tablist" aria-label="Qué lista">
+        <button type="button" role="tab" aria-selected={pest === 'una'} className={'dz-sub' + (pest === 'una' ? ' on' : '')} onClick={() => { setPest('una'); setSv(''); }}>Jugaron una sola vez<i>{num(P.n_una || 0)}</i></button>
+        <button type="button" role="tab" aria-selected={pest === 'frio'} className={'dz-sub' + (pest === 'frio' ? ' on' : '')} onClick={() => { setPest('frio'); setSv(''); }}>Se enfriaron<i>{num(P.n_frio || 0)}</i></button>
+      </div>
+      <p className="db-tx">{pest === 'una' ? 'Jugaron un evento y no volvieron: los más nuevos arriba, porque a quien debutó hace poco todavía se lo puede traer.'
+        : 'Jugaron dos o más y hace ' + (P.enfria_dias || 21) + ' días o más que no vuelven: los que más jugaron arriba.'} Lo midió el ciclo {hace(P.cuando)}.</p>
+      <div className="dz-prim-f">
+        <label className="db-buscar"><Ico n="buscar" t={16} /><input type="search" value={q} placeholder="Buscar un nombre" aria-label="Buscar en la lista" onChange={(e) => setQ(e.target.value)} /></label>
+        {svs.length > 1 ? <select value={sv} aria-label="Servidor" onChange={(e) => setSv(e.target.value)}><option value="">Todos los servidores</option>{svs.map((x) => <option key={x} value={x}>{siglaDe(x)}</option>)}</select> : null}
+        <select value={que} aria-label="Qué le llega" onChange={(e) => setQue(e.target.value)}>{VUELVE.map(([k, t]) => <option key={k} value={k}>Le llega: «{t}»</option>)}</select>
+      </div>
+      <ol className="dz-prim-l">{ver.map((f) => {
+        const k = f[f.length - 1], av = (vuelve || {})[k];
+        return (
+          <li key={pest + k}>
+            <div><b><Quien liga={liga} n={f[0]} /></b>
+              <small>{siglaDe(f[1] || '—')} · {pest === 'una' ? 'jugó el ' + corto(f[2]) + ', ' + haceDias(f[2])
+                : num(f[4]) + ' eventos · el último el ' + corto(f[3]) + ', ' + haceDias(f[3])}</small></div>
+            {av ? <span className="dz-prim-ya">✓ Se le avisó {hace(av[0])}{av[2] ? ' (' + av[2] + ')' : ''}</span>
+              : <button type="button" className="btn borde2 chico" disabled={res[k] === '…'} onClick={() => avisar(k)}>Avisarle</button>}
+            {res[k] && res[k] !== '…' ? <small className="dz-prim-msg" role="status">{res[k]}</small> : null}
+          </li>
+        );
+      })}{!ver.length ? <li className="dz-it-nada">Nadie{q ? ' con «' + q + '»' : ''}.</li> : null}</ol>
+      {xs.length > 25 ? <button type="button" className="dz-lnk" onClick={() => setMas(!mas)}>{mas ? 'Ver menos' : 'Ver ' + Math.min(200, xs.length) + ' de ' + num(xs.length)}</button> : null}
+      <p className="db-tx">«Avisarle» le deja una notificación en la página (y en el celular, si prendió la campana): nunca un mensaje directo. Uno por persona cada 7 días; sólo a quien tiene cuenta.</p>
+    </div>
+  );
+}
+
 function MetaLobby({ r }) {
   if (r === null) return <p className="pronto-p">Midiendo…</p>;
   if (!r) return <p className="pronto-p">Todavía no hay una medición del ciclo.</p>;
@@ -3630,6 +3727,8 @@ export function Dashboard({ dc, liga }) {
   // lo que cambia un área (un reporte, una respuesta) vuelve al panel: así los números de los cuadrados están al día
   const cambiarD = (o) => setSt((x) => (x.d ? { d: Object.assign({}, x.d, o) } : x));
   const [area, setArea0] = useState(leerArea);
+  // 📌 lo que salió cada semana, para las marcas de Números (sólo se pide al abrir Números)
+  const cambios = useCambios(!!st.d && area === 'numeros');
   // la cola que se abre: la que se eligió, o sola la primera que tiene algo
   const [sub, setSub] = useState('');
   const [abrir, setAbrir] = useState('');
@@ -3794,7 +3893,9 @@ export function Dashboard({ dc, liga }) {
     vista = (
       <NumerosTabs tabs={[
         ['gente', 'La gente', <>
-          {sec('nu-vuelta', 'LA VUELTA AL SEGUNDO EVENTO', 'el número del 42 %', <VueltaSegundo r={retencion} />)}
+          {sec('nu-vuelta', 'LA VUELTA AL SEGUNDO EVENTO', 'el número del 42 %', <VueltaSegundo r={retencion} marcas={marcasPorSemana(cambios, d.ajustes_hist)} />)}
+          {d.primerizos !== undefined ? sec('nu-primerizos', 'A QUIÉN TRAER DE VUELTA', 'con nombre: sólo lo ve el staff',
+            <PrimerizosLista P={d.primerizos} vuelve={d.vuelve} liga={liga} alVuelve={(v) => cambiarD({ vuelve: v })} />) : null}
           {sec('nu-uso', 'ESTA SEMANA · EL BOT Y LA PÁGINA', u.desde ? 'se cuenta desde el ' + corto(u.desde) : null, <Cajas u={u} />)}
           {sec('nu-lobby', '¿VUELVE LA GENTE?', 'la meta del research', <MetaLobby r={retencion} />)}
           {sec('nu-semanas', 'COMPARAR SEMANAS', 'de lunes a domingo, en hora del este', <CompararSemanas S={semanas} uso={d.uso_semanas} liga={liga} />)}

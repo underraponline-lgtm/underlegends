@@ -1295,6 +1295,13 @@ def _lo_barato(correr):
         paso('2b8f', 'los tiers')
         if not corre(['bot/tiers.py', '--aplicar'], callado=True, mostrar=('🤝', '⚠️')):
             print('      ⚠️ los tiers fallaron: quedan los niveles de antes')
+    # ── 2b8g · 🔁 los primerizos y los enfriados (`bot/primerizos.py`, 25/10/2026, el research del Dashboard): quién jugó
+    # una sola vez y quién dejó de venir, CON NOMBRE, al Dashboard y nunca al repo. La lista la dejó el paso 1c en
+    # `.cache/` (mismo trabajo). Nunca frena el ciclo
+    if correr:
+        paso('2b8g', 'los primerizos')
+        if not corre(['bot/primerizos.py', '--aplicar'], callado=True, mostrar=('🔁', '⚠️')):
+            print('      ⚠️ los primerizos fallaron: el Dashboard muestra la lista de antes')
     # ── 2b9 · 🏟️ las ligas de los servidores (`bot/ligas.py`, Dlx 12/10/2026: «1. A», «2. Me gusta»): cada batalla con
     # su resultado, para la pestaña «Ligas» de la web y como duelos (Ranking Duelos y Win%: los toma el paso 1c de la
     # corrida siguiente, como las misiones). Nunca frena el ciclo

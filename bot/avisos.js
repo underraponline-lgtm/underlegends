@@ -2541,6 +2541,10 @@ const RUTAS = {
   '/avisos/pedidos-prueba': 'POST',
   // 🤝 el puntaje de cada servidor para «Los tiers» del Dashboard (`bot/tiers.py`): lo manda el ciclo, con su clave
   '/avisos/tiers-ciclo': 'POST',
+  // 🔁 quién jugó una sola vez y quién se enfrió, con nombre (`bot/primerizos.py`, con su clave): sólo al Dashboard
+  '/avisos/primerizos-ciclo': 'POST',
+  // 🔁 y avisarle a uno de ésos por su campana, con un texto de la lista (`PLANTILLAS_VUELVE`): ver `avisoVuelve()`
+  '/avisos/dueno/vuelve': 'POST',
   // 🤝 el anti-raid que prende Dlx en un servidor (con la clave del ciclo): ver `antiraidDlx()`
   '/avisos/antiraid-dlx': 'POST',
   // ⚙️ un ajuste del Dashboard (sólo Dlx) y los ajustes para el ciclo (con su clave)
@@ -3136,6 +3140,13 @@ export function validarDecisionReporte(d) {
 //: por qué se cerró un reporte: el bot leyó mal un nombre, el bot leyó mal la llave, se equivocó el organizador, estaba bien
 // o era una prueba. El Dashboard los cuenta (`causasDueno()`): cuál sube primero es lo que hay que arreglar primero
 export const CAUSAS_REPORTE = ['nombre_bot', 'llave_bot', 'organizador', 'no_corresponde', 'prueba'];
+//: 🔁 LO QUE LE LLEGA A QUIEN SE AVISA QUE VUELVA (25/10/2026, el research del Dashboard: la lista de primerizos y
+// enfriados, con una acción que nunca es un DM). Textos fijos: el staff elige uno, no lo escribe. `[título, cuerpo, link]`
+export const PLANTILLAS_VUELVE = {
+  evento: ['🎤 Te esperamos en el próximo evento', 'Esta semana hay eventos en los servidores de la Liga: mira el calendario y anótate.', '/freestyle-rap/eventos'],
+  pase: ['🎟️ Tu Pase de rapero te espera', 'Juega un evento esta semana y suma XP en tu Pase: las tareas diarias y semanales también suman.', '/freestyle-rap/pase'],
+  crew: ['👥 Súmate a una crew', 'Las crews juegan juntas, se apoyan en las llaves y suben de tier cada semana.', '/freestyle-rap/crews'],
+};
 function decisionReporte0(d) {
   const id = Number(d && d.id);
   if (!Number.isInteger(id) || id < 1) return { error: 'falta el reporte' };
@@ -5135,6 +5146,28 @@ export async function rutaAvisos(req, env, ruta) {
     });
   }
   // ✅ Y CONTESTAR UNA: sólo Dlx, como los reportes
+  // 🔁 la lista de primerizos y enfriados, del ciclo: con nombres, así que sólo con su clave y sólo al objeto
+  if (ruta === '/avisos/primerizos-ciclo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 100000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/primerizos-ciclo', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
+  }
+  // 🔁 avisarle a alguien de esa lista que vuelva: por su campana, con un texto fijo. Lo hace quien puede cerrar reportes
+  if (ruta === '/avisos/dueno/vuelve') {
+    const crudo = await req.text();
+    if (crudo.length > 512) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || !/^[a-z0-9]{1,40}$/.test(String(d.k || '')) || !PLANTILLAS_VUELVE[d.que]) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (!(await puede(q.id, 'reportes_cerrar'))) return json({ error: 'no' }, 403);
+    return elObjeto(env).fetch('https://avisos/dueno-vuelve', {
+      method: 'POST', body: JSON.stringify({ k: String(d.k), que: String(d.que), por: q.id }), headers: { 'content-type': 'application/json' },
+    });
+  }
   if (ruta === '/avisos/dueno/viendo') {
     const crudo = await req.text();
     if (crudo.length > 512) return json({ error: 'demasiado grande' }, 413);
@@ -5683,6 +5716,8 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS reportes_causas (id INTEGER PRIMARY KEY, causa TEXT NOT NULL, t INTEGER NOT NULL)');
       // 👀 quién está mirando qué en Pendientes (25/10/2026): `k` es la clave del caso; dura 10 minutos. Ver `duenoViendo()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS viendo (k TEXT PRIMARY KEY, por TEXT NOT NULL, quien TEXT NOT NULL, t INTEGER NOT NULL)');
+      // 🔁 a quién se le avisó que vuelva, cuándo y quién (25/10/2026): uno por persona cada 7 días. Ver `avisoVuelve()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS vuelve (k TEXT PRIMARY KEY, que TEXT NOT NULL, por TEXT NOT NULL, t INTEGER NOT NULL)');
       for (const c of ["estado TEXT NOT NULL DEFAULT ''", "fix TEXT NOT NULL DEFAULT ''",
         "resultado TEXT NOT NULL DEFAULT ''", 't_estado INTEGER NOT NULL DEFAULT 0', "evid TEXT NOT NULL DEFAULT ''",
         "por TEXT NOT NULL DEFAULT ''"]) {
@@ -6275,6 +6310,13 @@ export class Avisos {
       if (ruta === '/dueno-video') return json(this.duenoVideo(d));
       if (ruta === '/dueno-reporte') return json(await this.duenoReporte(d));
       if (ruta === '/dueno-viendo') return json(this.duenoViendo(d));
+      if (ruta === '/dueno-vuelve') return json(this.avisoVuelve(d));
+      // 🔁 la lista de primerizos y enfriados: sólo la guarda, tal cual, para el Dashboard (nunca sale a la página)
+      if (ruta === '/primerizos-ciclo') {
+        if (!d || !Array.isArray(d.una) || !Array.isArray(d.frio) || d.una.length > 600 || d.frio.length > 300) return json({ error: 'datos' }, 400);
+        this.guardar('primerizos', d);
+        return json({ ok: true });
+      }
       if (ruta === '/decidir-estados') return json(this.decidirEstados(d));
       if (ruta === '/roles-estados') return json(this.rolesEstados(d));
       if (ruta === '/rol-de') return json({ roles: this.rolesPanelDe(String(d.quien || '')) });
@@ -9271,6 +9313,31 @@ export class Avisos {
     this.sql.exec('DELETE FROM reportes_causas WHERE t < ?', ahora - 120 * DIA_MS);
     await this.colaReportes(ahora);
     return { ok: true, reportes: this.reportesDueno(ahora), reportes_causas: this.causasDueno(ahora) };
+  }
+
+  /**
+   * 🔁 AVISARLE A UNO QUE VUELVA (25/10/2026): a su campana, con un texto fijo (`PLANTILLAS_VUELVE`). Sólo a quien tiene
+   * cuenta (se entera por la página); uno por persona cada 7 días y 40 por día entre todo el staff, para que la lista no
+   * se vuelva una ametralladora. Queda quién lo mandó
+   */
+  avisoVuelve(d) {
+    const ahora = Date.now();
+    const k = String(d.k || ''), P = PLANTILLAS_VUELVE[d.que];
+    if (!P || !/^[a-z0-9]{1,40}$/.test(k)) return { error: 'faltan datos' };
+    const ids = this.sql.exec('SELECT id FROM idk WHERE k = ?', k).toArray().map((x) => x.id);
+    if (!ids.length) return { error: 'sin_cuenta' };
+    const ya = this.sql.exec('SELECT t FROM vuelve WHERE k = ?', k).toArray()[0];
+    if (ya && ahora - ya.t < 7 * DIA_MS) return { error: 'reciente', t: ya.t };
+    if ((this.sql.exec('SELECT COUNT(*) AS n FROM vuelve WHERE t > ?', ahora - DIA_MS).toArray()[0] || {}).n >= 40) return { error: 'tope' };
+    for (const id of ids) this.aBandeja(id, 'vuelve:' + d.que, 'liga', P[0], P[1], P[2], '', ahora);
+    this.sql.exec('INSERT OR REPLACE INTO vuelve (k, que, por, t) VALUES (?, ?, ?, ?)', k, String(d.que), this.nombrePor(d.por), ahora);
+    this.sql.exec('DELETE FROM vuelve WHERE t < ?', ahora - 60 * DIA_MS);
+    return { ok: true, avisados: this.vuelveDueno() };
+  }
+
+  /** 🔁 A quién se le avisó que vuelva en los últimos 60 días: `{k: [t, qué, quién]}`. */
+  vuelveDueno() {
+    return Object.fromEntries(this.sql.exec('SELECT k, que, por, t FROM vuelve').toArray().map((f) => [f.k, [f.t, f.que, f.por]]));
   }
 
   /** 🔎 Por qué se cerraron los reportes: cuántos de cada causa en 7, 30 y 120 días (sin quién: sólo cuántos). */
@@ -12936,6 +13003,9 @@ export class Avisos {
       // 📣 con qué decidió Dlx y qué hizo el ciclo (13/10/2026): ver `reportesDueno()`
       reportes: this.reportesDueno(ahora),
       reportes_causas: this.causasDueno(ahora),
+      // 🔁 quién jugó una sola vez y quién se enfrió (`bot/primerizos.py`), y a quién ya se le avisó
+      primerizos: this.leer('primerizos'),
+      vuelve: this.vuelveDueno(),
       // ✅ las preguntas de ✅ Decidir y lo contestado desde el Dashboard (13/10/2026)
       decidir: this.decidirDueno(),
       // 🔐 qué puede quien lo pide (Admin: todo menos Roles)

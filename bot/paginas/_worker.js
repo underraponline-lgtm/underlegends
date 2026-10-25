@@ -153,6 +153,8 @@ const AVISOS = {
   '/api/avisos/dueno/reporte': 'POST',
   // 👀 quién está mirando qué caso de Pendientes (25/10/2026)
   '/api/avisos/dueno/viendo': 'POST',
+  // 🔁 avisarle a alguien de la lista de primerizos que vuelva (25/10/2026). ⚠️ `primerizos-ciclo` NO va acá: es del ciclo
+  '/api/avisos/dueno/vuelve': 'POST',
   // ✅ contestar ✅ Decidir desde el Dashboard (13/10/2026, sólo Dlx). ⚠️ `decidir-ciclo` y `decidir-estados` NO van acá
   '/api/avisos/dueno/decidir': 'POST',
   // 🏷️ los roles de cada perfil (cualquiera) y ponerlos (sólo Dlx), 13/10/2026. ⚠️ `roles-estados` NO va acá
