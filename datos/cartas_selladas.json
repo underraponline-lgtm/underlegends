@@ -422,8 +422,8 @@
    "temporada": "5a51a1fb2f0c:e8f4f15f7e3a"
   },
   "Erian": {
-   "competitivo": "b5480822e7cf:b20f39c90905",
-   "pais": "e9a5ce1e242b:8b6e4dab1a70",
+   "competitivo": "09bd502f47ce:b20f39c90905",
+   "pais": "462cf85bbe5e:8b6e4dab1a70",
    "servidor": "dec3ded244d7:adfd7a2cce1e:25c183",
    "temporada": "7266aadd944a:be3f6aea2456"
   },
@@ -912,7 +912,7 @@
    "competitivo": "2cc9edc656fd:b20f39c90905",
    "pais": "4e3fb47688b8:8b6e4dab1a70",
    "servidor": "7dbd8a0e0b58:dc2ca95eb024:531696",
-   "temporada": "590696d9df15:be3f6aea2456"
+   "temporada": "00c13a68590b:be3f6aea2456"
   },
   "Luck": {
    "competitivo": "d037589a5012:8259c7ce67a9",
@@ -1007,10 +1007,10 @@
   },
   "Malva": {},
   "Marcos": {
-   "competitivo": "9a4e288e29fb:5402d758d79a",
-   "pais": "0932335c4598:17e4aabb8008",
-   "servidor": "05328aca3d89:b8c1c7c39e87:25c183",
-   "temporada": "9f037777fabf:a883a3be167d"
+   "competitivo": "fbbeb13b173a:b20f39c90905",
+   "pais": "a5c44b1437ba:8b6e4dab1a70",
+   "servidor": "0471286b3291:adfd7a2cce1e:25c183",
+   "temporada": "6c6f0222026e:be3f6aea2456"
   },
   "Marto": {},
   "Masino": {
@@ -1656,10 +1656,10 @@
    "servidor": "272f38d5acf6:dc2ca95eb024:055f77"
   },
   "Walker": {
-   "competitivo": "674d853cfe63:b20f39c90905",
-   "pais": "3116def5cda7:8b6e4dab1a70",
+   "competitivo": "83d050590e4b:b20f39c90905",
+   "pais": "0edfd640b231:8b6e4dab1a70",
    "servidor": "c163e5d9bec0:adfd7a2cce1e:324686",
-   "temporada": "7b4fd3bcafe4:be3f6aea2456"
+   "temporada": "4fe667588efe:be3f6aea2456"
   },
   "Warriorvid": {},
   "Xclusivo": {},
@@ -1862,5 +1862,5 @@
    "servidor": "7f8885a35a6d:dc2ca95eb024:93a344"
   }
  },
- "cuando": "2026-10-25T19:19:32+00:00"
+ "cuando": "2026-10-25T19:43:24+00:00"
 }
