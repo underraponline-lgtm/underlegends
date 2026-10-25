@@ -31668,5 +31668,127 @@
     1750
    ]
   ]
+ },
+ "511": {
+  "dia": "2026-10-25",
+  "escala": "8-15",
+  "fecha": "25/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1563766194366844972"
+  ],
+  "n": 511,
+  "nombre": "GRISELDA RECORDS VOL. 6",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Fix 17🇦🇷",
+       "Pepito el come pito🇵🇪"
+      ],
+      "Fix 17🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Bloody",
+       "Sin Limites"
+      ],
+      "Bloody",
+      "Revivido: Sin límites 🇵🇪"
+     ],
+     [
+      [
+       "Erian",
+       "LSO"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "Sin Limites",
+       "Lizeninn"
+      ],
+      "Sin Limites",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Bloody",
+       "Fix"
+      ],
+      "Bloody",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "Sin Limites"
+      ],
+      "Erian",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "Bloody"
+      ],
+      "Erian",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Erian",
+    "Campeón",
+    7500
+   ],
+   [
+    "Bloody",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Sin Limites",
+    "Semifinal",
+    3750
+   ],
+   [
+    "Fix",
+    "Semifinal",
+    3500
+   ],
+   [
+    "LSO",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lizeninn",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Pepito el come pito🇵🇪",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

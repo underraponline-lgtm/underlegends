@@ -963,13 +963,16 @@
     }
    },
    "DDF": {
-    "duelos": "2/3",
-    "ev": 1,
+    "duelos": "4/6",
+    "ev": 2,
     "oro": 0,
-    "ovr": 46,
-    "pod": 0,
-    "pts": 15750,
-    "racha": "1/1"
+    "ovr": 49,
+    "pod": 1,
+    "pts": 21250,
+    "racha": "2/2",
+    "tg": {
+     "fin": 1
+    }
    },
    "FFA": {
     "duelos": "3/6",
@@ -2422,16 +2425,16 @@
     }
    },
    "DDF": {
-    "duelos": "9/17",
-    "ev": 11,
-    "oro": 2,
-    "ovr": 63,
-    "pod": 4,
-    "pts": 60085,
-    "racha": "0/3",
+    "duelos": "12/20",
+    "ev": 12,
+    "oro": 3,
+    "ovr": 65,
+    "pod": 5,
+    "pts": 68335,
+    "racha": "1/3",
     "tg": {
      "dv": true,
-     "fin": 4
+     "fin": 5
     }
    },
    "FFA": {
@@ -2702,6 +2705,31 @@
     "ovr": 42,
     "pod": 0,
     "pts": 688,
+    "racha": "0/0"
+   }
+  },
+  "Fix": {
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 3850,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
+  "Fix 17🇦🇷": {
+   "DDF": {
+    "duelos": "1/1",
+    "ev": 0,
+    "oro": 0,
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
     "racha": "0/0"
    }
   },
@@ -4222,6 +4250,20 @@
     "racha": "0/0"
    }
   },
+  "LSO": {
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 2200,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "LV": {
    "ACAD": {
     "duelos": "",
@@ -4449,6 +4491,18 @@
     "ovr": 44,
     "pod": 0,
     "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 2200,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -6204,6 +6258,20 @@
     "racha": "0/0"
    }
   },
+  "Pepito el come pito🇵🇪": {
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 2200,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Perrin": {
    "FFA": {
     "duelos": "0/1",
@@ -7346,12 +7414,12 @@
     }
    },
    "DDF": {
-    "duelos": "1/8",
-    "ev": 6,
+    "duelos": "2/11",
+    "ev": 7,
     "oro": 0,
-    "ovr": 48,
+    "ovr": 49,
     "pod": 0,
-    "pts": 20900,
+    "pts": 25025,
     "racha": "0/0"
    },
    "FFA": {

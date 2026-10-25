@@ -21503,5 +21503,122 @@
    ]
   ],
   "v": 2
+ },
+ "511": {
+  "antes": {
+   "Bloody": [
+    27,
+    31,
+    false
+   ],
+   "Erian": [
+    6,
+    7,
+    false
+   ],
+   "Lizeninn": [
+    292,
+    224,
+    true
+   ],
+   "Sin Limites": [
+    28,
+    33,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Fix 17🇦🇷",
+    "Pepito el come pito🇵🇪",
+    "Fix 17🇦🇷"
+   ],
+   [
+    "Bloody",
+    "Sin Limites",
+    "Bloody"
+   ],
+   [
+    "Erian",
+    "LSO",
+    "Erian"
+   ],
+   [
+    "Sin Limites",
+    "Lizeninn",
+    "Sin Limites"
+   ],
+   [
+    "Bloody",
+    "Fix",
+    "Bloody"
+   ],
+   [
+    "Erian",
+    "Sin Limites",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "Bloody",
+    "Erian"
+   ]
+  ],
+  "ev_antes": {
+   "Bloody": 22,
+   "Erian": 48,
+   "Lizeninn": 3,
+   "Sin Limites": 28
+  },
+  "fecha": "25/10",
+  "firma": "77afa8fea8667bcb",
+  "msg": "1563774195693916281",
+  "nombre": "GRISELDA RECORDS VOL. 6",
+  "num": 511,
+  "participantes": 9,
+  "sello": {
+   "Erian": "b1562e0f3737:e8f4f15f7e3a"
+  },
+  "sv": "DDF",
+  "t": "2026-10-25T04:53:43Z",
+  "tabla": [
+   [
+    "Erian",
+    "Campeón",
+    7500
+   ],
+   [
+    "Bloody",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Sin Limites",
+    "Semifinal",
+    3750
+   ],
+   [
+    "Fix",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Pepito el come pito🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LSO",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lizeninn",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

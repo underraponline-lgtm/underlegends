@@ -1915,7 +1915,7 @@
   "n": 195217675,
   "nombre": "Chupame un huevo CUP",
   "ns": 1,
-  "participantes": 9,
+  "participantes": 10,
   "rondas": [
    {
     "b": [
@@ -1935,13 +1935,65 @@
       ],
       "Dominick",
       ""
+     ],
+     [
+      [
+       "Julix🇧🇴",
+       "Calíz"
+      ],
+      "Julix🇧🇴",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "Terry 🇦🇷"
+      ],
+      "Dios",
+      "ganador según #veredictos"
      ]
     ],
     "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Tuca",
+       "Dominick"
+      ],
+      "Tuca",
+      ""
+     ],
+     [
+      [
+       "Julix🇧🇴",
+       "LRS"
+      ],
+      "Julix🇧🇴",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
    }
   ],
   "sv": "LKR",
   "tabla": [
+   [
+    "Dominick",
+    "Semifinal",
+    0
+   ],
+   [
+    "LRS",
+    "Semifinal",
+    0
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    0
+   ],
    [
     "Liam",
     "Cuartos",
@@ -1954,6 +2006,11 @@
    ],
    [
     "Sin Limites",
+    "Cuartos",
+    0
+   ],
+   [
+    "Terry 🇦🇷",
     "Cuartos",
     0
    ]

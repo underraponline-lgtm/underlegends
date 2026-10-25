@@ -2236,6 +2236,30 @@
     "FanDeAbel"
    ],
    "escribio": {}
+  },
+  {
+   "id": "9168051904",
+   "tipo": "Nombre desconocido",
+   "sec": "GRISELDA RECORDS VOL. 6 · DDF · 25/10 · #511",
+   "que": "¿Quién es «Fix 17🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1079533414530678814",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1079533414530678814)",
+   "t": 1792904522594,
+   "filas": [
+    833
+   ],
+   "variantes": [
+    "Fix 17🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Fix 17",
+     "1079533414530678814"
+    ]
+   }
   }
  ],
  "deshechas": []

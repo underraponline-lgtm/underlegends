@@ -41,19 +41,19 @@
 "rg": "S",
 "c": []
 },
+"erian": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "panchok": {
 "rg": "S",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"erian": {
-"rg": "B",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -215,6 +215,15 @@
 "rg": "C",
 "c": []
 },
+"bloody": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "xubaru": {
 "rg": "C",
 "c": [
@@ -239,15 +248,6 @@
 },
 "cronox": {
 "rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"bloody": {
-"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -1187,6 +1187,10 @@
 "c": []
 },
 "flama": {
+"rg": "",
+"c": []
+},
+"lizeninn": {
 "rg": "",
 "c": []
 },
@@ -2188,13 +2192,6 @@
 "l": {
 "rg": "",
 "c": []
-},
-"lizeninn": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "paradoja": {
 "rg": "",
