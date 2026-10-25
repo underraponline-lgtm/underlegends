@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "4.05",
+   "dia": "2026-10-25",
+   "cuando": "2026-10-25T14:25:17-04:00",
+   "titulo": "La pista del Pase, en grande",
+   "items": [
+    "🎟️ **La pista del Pase de rapero, nueva**: casillas grandes, una barra que se llena con tu cara en tu nivel, lo que sigue late y lo cobrado lleva su sello. Los premios grandes se ven con lo tuyo: tu carta con el marco que vas a ganar, tu nombre en dorado, el título escrito.",
+    "🏆 **Arriba, el próximo gran premio**: qué es, en qué nivel y cuántos niveles y XP te faltan, con un botón para verlo en la pista.",
+    "🏛️ **El título del nivel 25 ahora es «Pilar de UL».**"
+   ]
+  },
+  {
    "version": "4.04",
    "dia": "2026-10-25",
    "cuando": "2026-10-25T14:02:40-04:00",

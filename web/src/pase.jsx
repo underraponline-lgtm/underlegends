@@ -79,82 +79,6 @@ function Ficha({ p, prem, est, tiene, tienda }) {
   );
 }
 
-function Pista({ libres, prem, nivel, tiene, tienda, min, compu }) {
-  const caja = useRef(null);
-  const [puntas, setPuntas] = useState([true, false]);
-  const medir = () => {
-    const el = caja.current;
-    if (el) setPuntas([el.scrollLeft < 4, el.scrollLeft + el.clientWidth > el.scrollWidth - 4]);
-  };
-  const ir = (n, suave) => {
-    const el = caja.current;
-    const li = el && el.querySelector('[data-n="' + n + '"]');
-    if (li) el.scrollTo({ left: Math.max(0, li.offsetLeft - 4), behavior: suave ? 'smooth' : 'auto' });
-  };
-  // abre en tu nivel: el de antes a la izquierda (tres antes en la compu)
-  useEffect(() => { ir(Math.max(1, nivel - (compu ? 3 : 1))); medir(); }, [nivel, compu, libres.length]); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => { window.addEventListener('resize', medir); return () => window.removeEventListener('resize', medir); }, []);
-  // 👆 ARRASTRAR CON EL MOUSE, como con el dedo (Dlx, 25/10/2026: «deslizar arrastrando sin la necesidad de presionar las
-  // flechas, principalmente en el celular»). En el celular desliza el navegador solo (sin encaje obligatorio, que hacía
-  // volver los deslizamientos cortos); en la compu, esto. Si arrastró, el clic de soltar no cuenta
-  const arr = useRef(null);
-  const baja = (e) => {
-    if (e.pointerType !== 'mouse' || e.button !== 0) return;
-    const el = caja.current;
-    if (!el) return;
-    arr.current = { x: e.clientX, s: el.scrollLeft, movio: false, id: e.pointerId };
-  };
-  const mueve = (e) => {
-    const a = arr.current, el = caja.current;
-    if (!a || !el) return;
-    const dx = e.clientX - a.x;
-    if (!a.movio && Math.abs(dx) > 4) { a.movio = true; try { el.setPointerCapture(a.id); } catch (err) { /* nada */ } el.classList.add('arrastra'); }
-    if (a.movio) el.scrollLeft = a.s - dx;
-  };
-  const suelta = () => {
-    const a = arr.current, el = caja.current;
-    arr.current = null;
-    if (el) el.classList.remove('arrastra');
-    if (a && a.movio && el) el.addEventListener('click', (ev) => { ev.stopPropagation(); ev.preventDefault(); }, { capture: true, once: true });
-  };
-  if (!libres.length) return null;
-  const mover = (k) => { const el = caja.current; if (el) el.scrollBy({ left: k * Math.max(120, el.clientWidth * 0.8), behavior: 'smooth' }); };
-  const ult = libres.length;
-  return (
-    <div className="ps-pista-w">
-      <div className="ps-pista-cab">
-        <span>{nivel ? 'VAS EN EL NIVEL ' + nivel + ' DE ' + ult : 'LOS ' + ult + ' NIVELES Y SUS PREMIOS'}</span>
-        <div className="ps-flechas">
-          {nivel && nivel < ult ? <button type="button" className="ps-ir" onClick={() => ir(nivel + 1, true)}>▶ {nivel + 1}</button> : null}
-          <button type="button" onClick={() => mover(-1)} disabled={puntas[0]} aria-label="Niveles anteriores">‹</button>
-          <button type="button" onClick={() => mover(1)} disabled={puntas[1]} aria-label="Niveles siguientes">›</button>
-        </div>
-      </div>
-      <div className="ps-pista">
-        <div className="ps-filas" aria-hidden="true"><span className="fp">PREMIUM {tiene ? '' : '🔒'}</span><span className="fg">GRATIS</span></div>
-        <ol className="ps-cols" ref={caja} onScroll={medir} aria-label="Los niveles del Pase y lo que da cada uno"
-          onPointerDown={baja} onPointerMove={mueve} onPointerUp={suelta} onPointerCancel={suelta}>
-          {libres.map((p) => {
-            const n = p[0];
-            const est = n <= nivel ? 'cob' : n === nivel + 1 ? 'sgt' : '';
-            const pp = prem[n - 1] || [n, tienda, '', ''];
-            return (
-              <li key={n} data-n={n} className={'ps-co' + (n < nivel ? ' cob' : n === nivel ? ' yo' : '')}>
-                <Ficha p={pp} prem tiene={tiene} est={est} tienda={tienda} />
-                <span className="ps-nn">{n}</span>
-                <Ficha p={p} est={est} tienda={tienda} />
-              </li>
-            );
-          })}
-        </ol>
-      </div>
-      {tienda ? (
-        <p className="ps-pdt"><b>{num(tienda)} por nivel.</b> Con {Math.ceil(min / tienda)} niveles le pones precio a una cabeza (desde {num(min)}) · con {Math.ceil(2500 / tienda)} armas tu crew ({num(2500)}).</p>
-      ) : null}
-    </div>
-  );
-}
-
 // ── LAS TAREAS: tarjetas en lo blanco, con un ícono por lo que miden ──
 function Tarea({ x, mide, cuando, cls = '' }) {
   const ok = !!x.hecha;
@@ -717,12 +641,12 @@ export function Pase({ liga, dc }) {
     </div>
   ) : null;
   // en lo negro: la pista (Premios), lo exclusivo de la T1 (Tareas, al lado de tu carta) o lo que cobras (Premium)
-  // 🎟️ la pista grande, a prueba (`?prev=pistaa` / `?prev=pistab`) hasta que Dlx elija
-  const pk = prevDe('pistab') ? 'b' : prevDe('pistaa') ? 'a' : '';
+  // 🎟️ LA PISTA GRANDE, CON «EL PRÓXIMO GRAN PREMIO» ARRIBA (Dlx, 25/10/2026, a las dos opciones: «me gusta B»).
+  // `?prev=pistaa` deja ver la A (sin el premio de arriba)
+  const pk = prevDe('pistaa') ? 'a' : 'b';
   const pct = P && P.hasta > P.desde ? (100 * (P.xp - P.desde)) / (P.hasta - P.desde) : 0;
-  const arriba = tab === 'premios' && pk ? <PistaGrande libres={libres} prem={prem} nivel={nivel} tiene={tiene} tienda={tienda} min={min} compu={compu}
+  const arriba = tab === 'premios' ? <PistaGrande libres={libres} prem={prem} nivel={nivel} tiene={tiene} tienda={tienda} min={min} compu={compu}
     pct={pct} liga={liga} yo={miembro ? yo : null} opcion={pk} umbrales={cfg.umbrales} xp={P ? P.xp : null} />
-    : tab === 'premios' ? <Pista libres={libres} prem={prem} nivel={nivel} tiene={tiene} tienda={tienda} min={min} compu={compu} />
     : tab === 'tareas' && compu ? <Exclusivos libres={libres} prem={prem} oscuro /> : null;
   let abajo;
   if (tab === 'premios') {

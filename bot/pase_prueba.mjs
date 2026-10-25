@@ -231,6 +231,15 @@ try {
   // ── el fondo: el nivel 5 del perfil, el premium desde su 5, o quien ya lo tenía ──
   sql.exec("INSERT INTO fondos (quien, estado, t) VALUES (?, 'ok', 1)", CAMI);
   ok(A.FONDO_NIVEL === 5 && o.puedeFondo(CAMI).si && !o.puedeFondo(DANI).si, 'el fondo: quien ya lo tenía lo conserva; sin nada, no');
+
+  // ── 👑 el dueño de UL, con todo desbloqueado (Dlx, 25/10/2026) ──
+  const Cd = o.paseDatos().cfg;
+  const md = o.marcosDe(A.DUENO);
+  const elD = o.marcoElige({ quien: A.DUENO, marco: Cd.temp + ':oro', estilo: 'cadena' });
+  const prD = o.pasePremios(Cd, 0, A.DUENO);
+  ok(!!o.pasePremium(A.DUENO, Cd.temp) && md.tienes.length === 3 && elD.ok && prD.premium && prD.marco
+    && prD.titulo === (Cd.premium.filter((p) => p[2] === 'titulo').pop() || [])[3],
+  'el dueño: premium siempre, los tres marcos para elegir y lo del nivel más alto', JSON.stringify({ md, elD, prD }));
 } finally {
   Date.now = relojReal;
 }

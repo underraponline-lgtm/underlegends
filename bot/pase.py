@@ -219,7 +219,8 @@ ESPECIALES = {
     10: ('titulo', 'De la casa'),
     15: ('insignia', 'Pase Plata'),
     20: ('color', COLOR),
-    25: ('titulo', 'Pilar de DRA'),
+    # 🏛️ «Pilar de UL» y no «de DRA» (Dlx, 25/10/2026: «cambiemos el título de PILAR DE DRA a PILAR DE UL»)
+    25: ('titulo', 'Pilar de UL'),
     30: ('insignia', 'Pase Oro'),
 }
 #: ✨ desde qué nivel brilla tu carta en las llaves (lo lee `subir_web.py` para la página, con `nivel_brillo()`): el 8

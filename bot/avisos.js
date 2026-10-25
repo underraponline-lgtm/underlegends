@@ -3491,6 +3491,8 @@ export const APP_ID = '1550026808404217926';
 // 🔒 EL DUEÑO DE LA LIGA: su Discord ID. Abre el Dashboard (`/avisos/dueno`) y los comandos `/owner`. Es público —es
 // un ID— y vive acá para que el Worker y el objeto lean el mismo
 export const DUENO = '739338101603696681';
+// 👑 y su perfil (/r/dlx, sus cartas en R2 bajo `dlx/`): no juega, así que `claveDe()` no siempre lo encuentra
+export const DUENO_K = 'dlx';
 // ⚙️ LOS AJUSTES DEL DASHBOARD (Dlx, 04/10/2026: «todo y muchas más cosas»): lo que sólo cambia el dueño. Viven en el
 // objeto (`ajustes()`), los escribe `/avisos/dueno/ajuste` (sólo Dlx) y los leen el vigía, el ciclo (`/avisos/ajustes`,
 // con su clave) y la página (sólo el aviso, adentro de `/avisos/vivo`)
@@ -11875,6 +11877,8 @@ export class Avisos {
 
   /** 💎 `[desde, hasta]` del premium de alguien en la temporada, o `null` */
   pasePremium(quien, temp) {
+    // 👑 el dueño de UL tiene todo desbloqueado (Dlx, 25/10/2026), desde siempre y sin vencer
+    if (quien === DUENO) return [0, null];
     const r = this.sql.exec('SELECT desde, hasta FROM pase_premium WHERE quien = ? AND temp = ?', quien, temp).toArray()[0];
     return r ? [r.desde, r.hasta] : null;
   }
@@ -12057,6 +12061,8 @@ export class Avisos {
 
   /** Lo que ganó alguien hasta su nivel: el último título, el color y las insignias (`[[nivel, valor], …]`) */
   pasePremios(cfg, nivel, quien) {
+    // 👑 el dueño: lo que da cada nivel, como si los tuviera todos (el título, el color y el marco del más alto)
+    if (quien === DUENO) nivel = Math.max(nivel, cfg.niveles || 30);
     const hasta = (cfg.premios || []).filter((p) => p[0] <= nivel);
     const ult = (tipo) => (hasta.filter((p) => p[2] === tipo).pop() || [])[3] || '';
     const out = { titulo: ult('titulo'), color: ult('color'), insignias: hasta.filter((p) => p[2] === 'insignia').map((p) => [p[0], p[3]]),
@@ -12165,7 +12171,7 @@ export class Avisos {
     const P = this.paseDatos();
     if (!P.cfg || !this.pasePremium(quien, P.cfg.temp)) return { error: 'premium' };
     const n7 = ((P.cfg.premium || []).find((p) => p[2] === 'color') || [7])[0];
-    if (this.paseNivel(quien, P.cfg) < n7) return { error: 'nivel', falta: n7 };
+    if (quien !== DUENO && this.paseNivel(quien, P.cfg) < n7) return { error: 'nivel', falta: n7 };
     this.sql.exec('INSERT INTO pase_color (quien, color, t) VALUES (?, ?, ?) ON CONFLICT(quien) DO UPDATE SET color = excluded.color, t = excluded.t',
       quien, color, Date.now());
     return { ok: true, color };
@@ -12384,6 +12390,12 @@ export class Avisos {
       // 💎 el cuarto y el quinto: si tiene el premium (1) y el marco de su carta ('' sin)
       out[k] = pr.premium ? [nivel, pr.titulo, pr.color, 1, pr.marco, pr.emblema ? 1 : 0] : [nivel, pr.titulo, pr.color];
     }
+    // 👑 el dueño sale aunque no juegue el Pase: con su nivel de verdad (0 si no tiene) y todo lo que se ve desbloqueado
+    const kd = this.claveDe(DUENO) || DUENO_K;
+    if (kd && !out[kd]) {
+      const pr = this.pasePremios(c, 0, DUENO);
+      out[kd] = [0, pr.titulo, pr.color, 1, pr.marco, pr.emblema ? 1 : 0];
+    }
     // 🏛️ EL SALÓN DEL PASE (Dlx, 06/10/2026: «4. B»): los que lo completaron, temporada por temporada y en el orden en
     // que llegaron. Por clave de perfil, como todo lo de acá: quien no tiene perfil no sale
     const salon = {};
@@ -12408,10 +12420,13 @@ export class Avisos {
         (tiene[r.quien] = tiene[r.quien] || []).push(r.marco);
         if (!(r.quien in primera)) primera[r.quien] = Object.keys(primera).length + 1;
       }
+      // 👑 el dueño los tiene todos
+      if (this.marcosDueno().length) tiene[DUENO] = [...new Set([...(tiene[DUENO] || []), ...this.marcosDueno()])];
+      if (tiene[DUENO] && !(DUENO in primera)) primera[DUENO] = 0;
       const elige = {};
       for (const r of this.sql.exec('SELECT quien, marco, estilo FROM marco_elige').toArray()) elige[r.quien] = r;
       for (const [quien, xs] of Object.entries(tiene)) {
-        const k = this.claveDe(quien);
+        const k = this.claveDe(quien) || (quien === DUENO ? DUENO_K : '');
         if (!k) continue;
         const e = elige[quien];
         if (e && e.marco === 'ninguno') continue;
@@ -12422,9 +12437,17 @@ export class Avisos {
     return out;
   }
 
+  /** 👑 los marcos del dueño: los tres de la temporada que corre */
+  marcosDueno() {
+    const P = this.paseDatos();
+    return P.cfg && P.cfg.temp ? MARCOS.map((m) => P.cfg.temp + ':' + m) : [];
+  }
+
   /** 🖼️ Tus marcos (`/avisos/marcos`, con tu sesión): los que tienes, cuál elegiste y el estilo de la Servidor */
   marcosDe(quien) {
     const tienes = this.sql.exec('SELECT marco, t FROM marcos WHERE quien = ? ORDER BY t', quien).toArray().map((r) => [r.marco, r.t]);
+    // 👑 el dueño: los tres de la temporada que corre, aunque no los haya cobrado
+    if (quien === DUENO) for (const m of this.marcosDueno()) if (!tienes.some((x) => x[0] === m)) tienes.push([m, 0]);
     const e = this.sql.exec('SELECT marco, estilo FROM marco_elige WHERE quien = ?', quien).toArray()[0];
     return { tienes, elegido: e ? e.marco : '', estilo: e ? e.estilo : 'camiseta', estilos: MARCO_ESTILOS };
   }
@@ -12434,7 +12457,8 @@ export class Avisos {
     const quien = String(d.quien || '');
     const marco = String(d.marco || ''), estilo = String(d.estilo || 'camiseta');
     if (!/^[0-9]{5,25}$/.test(quien) || !MARCO_ESTILOS.includes(estilo)) return { error: 'faltan datos' };
-    if (marco && marco !== 'ninguno' && !this.sql.exec('SELECT 1 FROM marcos WHERE quien = ? AND marco = ?', quien, marco).toArray()[0]) {
+    if (marco && marco !== 'ninguno' && !(quien === DUENO && this.marcosDueno().includes(marco))
+      && !this.sql.exec('SELECT 1 FROM marcos WHERE quien = ? AND marco = ?', quien, marco).toArray()[0]) {
       return { error: 'no lo tienes' };
     }
     this.sql.exec('INSERT INTO marco_elige (quien, marco, estilo, t) VALUES (?, ?, ?, ?) ON CONFLICT(quien) DO UPDATE SET ' +
