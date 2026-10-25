@@ -19,6 +19,7 @@ import { DIAS, MESES, limpio, num, siglaDe, utc } from './liga.js';
 import { Bandera, Cara, Compartir, Ico, Sec, accion, enlace, silueta } from './piezas.jsx';
 import { Numero, useDesliza } from './anima.js';
 import { Miniatura, abrirVideo } from './video.jsx';
+import { pedirLigas } from './ligas_datos.js';
 
 // 🏟️ ¿UN NOMBRE ESTÁ MAL? (Dlx, 14/10/2026: «Sí, a Reportes», a ForceGP: «¿no hay manera de que uno pueda corregir
 // eso?»). Elegís el nombre, contás quién es, y le llega a la Liga en Reportes del Dashboard con tu cuenta; lo decide la
@@ -75,8 +76,8 @@ const DET = { d: null, t: null, pedido: 0, oyentes: new Set() };
 function pedirDetalle(t) {
   if ((DET.d && DET.t === t) || Date.now() - DET.pedido < 20000) return;
   DET.pedido = Date.now();
-  fetch('/api/ligas', { headers: { accept: 'application/json' } })
-    .then((r) => (r.ok ? r.json() : null))
+  // el mismo pedido que trae lo de la portada (web/src/ligas_datos.js): uno solo por lobby
+  pedirLigas(t)
     .then((d) => {
       if (!d || !d.ligas) return;
       DET.d = d.ligas;

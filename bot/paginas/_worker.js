@@ -487,7 +487,10 @@ async function vistaLiga(req, env, id, url) {
       desc: fijas[id][1], img: url.origin + '/og/p/ligas.png', alt: fijas[id][0] });
   }
   const L = await pedirJson('/lobby?json=1');
-  const x = L && ((L.ligas || {}).ligas || []).find((l) => l && l.id === id);
+  // 🏟️ las ligas ya no viajan en el lobby (25/10/2026): van en `/ligas`, con lo del Inicio en `lobby`. El lobby viejo,
+  // mientras el ciclo no haya subido uno nuevo, todavía las trae
+  const LG = L && L.ligas ? null : await pedirJson('/ligas');
+  const x = L && (((L.ligas || (LG && LG.lobby)) || {}).ligas || []).find((l) => l && l.id === id);
   if (!x || !x.n) return null;
   const s = (L.svs || []).find((y) => y && y.sv === x.sv);
   const nombre = String(x.n).trim();

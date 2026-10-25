@@ -3,6 +3,7 @@
 // pide a ella (ver `accion` en piezas.jsx); lo que el Inicio muestra lo lee de sus mismos datos.
 import { Component, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DUENO, Liga, aQuienSigo, limpio, quienMira } from './liga.js';
+import { pedirLigas } from './ligas_datos.js';
 import { AvisoPromo, nombrePais } from './piezas.jsx';
 import { Cabecera, Hero, Historias, Instalar, IrA, MENU, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
 import { LosQueMandan, Noticias } from './medio.jsx';
@@ -516,8 +517,18 @@ export default function App() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cuentaId, vistos === null]);
 
+  // 🏟️ LAS LIGAS LLEGAN APARTE (25/10/2026, ver web/src/ligas_datos.js): con cada lobby nuevo se piden una vez y se ponen
+  // en `liga.d.ligas`, así quien las lee no cambia. Mientras no llegan, cada sección de ligas se apaga sola
+  const [ligasL, setLigasL] = useState(null);
+  useEffect(() => {
+    if (!D || D.ligas) return undefined;
+    let vivo = true;
+    pedirLigas(D.sello).then((x) => { if (vivo && x && x.lobby) setLigasL(x.lobby); });
+    return () => { vivo = false; };
+  }, [D && D.sello]); // eslint-disable-line react-hooks/exhaustive-deps
+  const D2 = useMemo(() => (D && !D.ligas && ligasL ? Object.assign({}, D, { ligas: ligasL }) : D), [D, ligasL]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const liga = useMemo(() => (D ? new Liga(D, muro, ahora, yo.k, aQuienSigo()) : null), [D, muro, ahora, yo, sigoV]);
+  const liga = useMemo(() => (D2 ? new Liga(D2, muro, ahora, yo.k, aQuienSigo()) : null), [D2, muro, ahora, yo, sigoV]);
   // ⏳ con los datos, se va la pantalla de carga del HTML (`#lg-carga`, web/montar.py)
   useEffect(() => { if (liga) document.documentElement.classList.add('lg-listo'); }, [!!liga]);
   // el perfil de un servidor (#/sv/<SIGLA>): app.js no conoce la ruta y la deja en el Inicio, y acá se dibuja el perfil

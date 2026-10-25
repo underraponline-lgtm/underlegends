@@ -655,6 +655,11 @@ def armar():
     # mostrar «Ascensos»; las tablas las pide al abrirlo, con el detalle de las ligas
     if _lg_lobby is not None and (_asc_json().get('sv')):
         _lg_lobby['asc'] = {sv: [X.get('n'), X.get('destino')] for sv, X in _asc_json()['sv'].items()}
+    # 🏟️ Y LO DEL INICIO TAMPOCO VIAJA EN EL LOBBY, DESDE EL 25/10/2026: el lobby se pasó del tope de peso (ver «y pesa
+    # poco» en `_self_check()`) y su comentario lo había decidido. Va dentro del detalle, en `lobby`, a `ligas.CLAVE_WEB`:
+    # la página lo pide aparte (web/src/ligas_datos.js) y lo vuelve a poner en `liga.d.ligas`
+    if _lg_det is not None and _lg_lobby is not None:
+        _lg_det['lobby'] = _lg_lobby
     return {
         'temporada': SELLO,
         'fase': {'arranca': _f[0], 'termina': _f[1]} if _f else None,
@@ -731,9 +736,8 @@ def armar():
         # 🎯 LAS MISIONES DE LA SEMANA (05/10/2026): las tres, el progreso y lo sumado. Ver `_mis()`
         'mis': _mis(),
         # 🏟️ LAS LIGAS DE LOS SERVIDORES (12/10/2026, Dlx: «2. Me gusta»): la tabla de cada una y sus últimos resultados.
-        # Ver `bot/ligas.py`
-        'ligas': _lg_lobby,
-        # ⚠️ EL DETALLE DE CADA LIGA NO VIAJA EN EL LOBBY: `main()` lo sube aparte, a `ligas.CLAVE_WEB` (`/api/ligas`)
+        # ⚠️ NO VIAJAN EN EL LOBBY (25/10/2026): ni el detalle ni lo del Inicio; `main()` las sube aparte, a
+        # `ligas.CLAVE_WEB` (`/api/ligas`), con lo del Inicio en `lobby`. Ver `bot/ligas.py`
         '_ligas': _lg_det,
         # 📅 QUIÉNES ORGANIZAN EN CADA SERVIDOR (12/10/2026, Dlx «5. A»: «uno donde diga cuándo cada sv organiza
         # usualmente y quiénes»). El cuándo ya lo saca la página del calendario; el quiénes, de acá. Ver `_agenda()`
@@ -3802,9 +3806,9 @@ def _self_check():
     _lgd = p.pop('_ligas', None)
     p.pop('_tags', None)
     p.pop('_semanas', None)
-    ok(not any('fechas' in x for x in ((p.get('ligas') or {}).get('ligas') or []))
-       and (_lgd is None) == (p.get('ligas') is None),
-       'las fechas de cada liga no viajan en el lobby: van aparte, a `web:ligas`')
+    ok('ligas' not in p and not any('fechas' in x for x in (((_lgd or {}).get('lobby') or {}).get('ligas') or []))
+       and (_lgd is None or (_lgd.get('lobby') is not None) == bool(_lgd.get('ligas') is not None)),
+       'las ligas no viajan en el lobby: van aparte, a `web:ligas` (lo del Inicio en `lobby`, sin las fechas)')
     ok(isinstance(p.get('tabla'), list), 'arma la tabla  (%d)'
        % len(p.get('tabla') or []))
     # ▲▼ y «NUEVO» contra la foto del lunes (Dlx, 02/10/2026: «1. me gusta · 3. me gusta»)
@@ -4159,7 +4163,7 @@ def main():
     # cambia cuando entra una batalla. Ver `ligas.para_kv()` y `validarVotoLiga()` en bot/avisos.js
     try:
         import ligas as _LG
-        ok8 = subir(_LG.para_kv(p.get('ligas')), solo_si_cambio='--siempre' not in sys.argv, clave=_LG.CLAVE_KV)
+        ok8 = subir(_LG.para_kv((ligas_det or {}).get('lobby')), solo_si_cambio='--siempre' not in sys.argv, clave=_LG.CLAVE_KV)
         print('   %s' % ('✓ quién gana las ligas: igual' if ok8 is None else '✅ quién gana las ligas, subido'
                          if ok8 else '🔴 no pude subir quién gana las ligas'))
         # 🔔 lo nuevo de cada liga, para quien la sigue (17/10/2026): aparte, para el vigía (`ligasSeguidas()`). Sólo si
