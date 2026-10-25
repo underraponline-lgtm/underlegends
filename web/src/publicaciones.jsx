@@ -106,7 +106,7 @@ export function Pub({ liga, it, A }) {
     // cómo se eligió, con la semilla para repetir la cuenta (`sortear()` de bot/avisos.js; `sorteos()` de bot/muro.py)
     cat = 'SORTEO DEL PASE PREMIUM';
     vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
-    txt = <>{nombres} ganó el sorteo y se lleva el rol <b>«Pase de temporada»</b> de DRA</>;
+    txt = <>{nombres} ganó el sorteo y se lleva el rol <b>«Pase Premium»</b> de DRA</>;
     det = num(it.personas) + ' entraron gratis · ' + num(it.boletos) + ' boletos · semilla ' + String(it.semilla || '').slice(0, 12) + '…';
     acc = <a className="pub-a" href="#/pase">Ver el Pase</a>;
   } else if (it.tipo === 'precio') {

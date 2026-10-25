@@ -180,10 +180,16 @@ GRACIA_DESDE = '2026-10-19'
 #: 👥 LA META DE LA CREW (Dlx, 25/10/2026: «dale»): si entre todos los de la crew con Pase cumplen `CREW[1]` Tareas por
 #: cabeza en la semana (con piso y techo), cada uno gana `CREW[0]` XP
 CREW = (300, 5, 10, 60)
-#: 💎 EL PASE PREMIUM (Dlx, 25/10/2026). En la T1 lo desbloquea el rol «Pase T» de DRA (`ROL_PREMIUM`), que Dlx sortea y
-#: da en eventos; desbloquearlo paga de una vez lo de los niveles ya pasados, y mientras lo tengas tus Tareas dan
-#: `BOOST`% más de XP. Lo que da la fila es de cómo te ves: nunca suma al ranking. ⚠️ El precio no va en ningún lado
+#: 💎 EL PASE PREMIUM (Dlx, 25/10/2026). Lo desbloquea cualquiera de DOS roles de DRA: desbloquearlo paga de una vez lo de
+#: los niveles ya pasados, y mientras lo tengas tus Tareas dan `BOOST`% más de XP. Lo que da la fila es de cómo te ves:
+#: nunca suma al ranking. ⚠️ El precio no va en ningún lado
+#:   · `ROL_PREMIUM`, «Pase T»: el de la SUSCRIPCIÓN DEL SERVIDOR (integración `guild_subscription`). Discord se lo da a
+#:     quien la paga y NADIE más puede ponerlo, ni el bot ni un admin: por eso no sirve para sortear.
+#:   · `ROL_REGALO`, «Pase Premium» (creado el 25/10/2026; Dlx: «otra forma y otro rol de conseguir el temporada»): el que
+#:     el bot le pone al ganador del sorteo (`sortear()` en bot/avisos.js) y el que Dlx da en los eventos.
 ROL_PREMIUM = '1054496803548049463'
+ROL_REGALO = '1563941336531607575'
+ROLES_PREMIUM = (ROL_PREMIUM, ROL_REGALO)
 BOOST = 20
 PREMIUM = {
     1: ('marco', 'Premium'),
@@ -325,7 +331,7 @@ def config(temp, dra=True, nuevas=True, curva=True):
     # especiales dependen de la hora: las pone `armar()`
     out.update({'bienvenida': [list(t) for t in BIENVENIDA], 'especiales': [],
                 'doble': [[_ms_et(a), _ms_et(b), m] for a, b, m in XP_DOBLE], 'gracia_desde': GRACIA_DESDE,
-                'crew': list(CREW), 'boost': BOOST, 'premium': premios_premium()})
+                'crew': list(CREW), 'boost': BOOST, 'premium': premios_premium(), 'rol_regalo': ROL_REGALO})
     # ⚠️ LA SEMANA DE PRUEBA TENÍA «Completá tus misiones», que ya no es una Tarea: lo que se cumplió sigue valiendo lo
     # que vale una semanal (si no, a quien sólo tenía ésa se le iba el nivel 1, y con él la tarjeta de Temporada)
     if out['temp'] == 'prueba':
@@ -446,7 +452,8 @@ def armar(ahora=None):
 
 
 def premium_ids():
-    """💎 Los Discord IDs con el rol del Pase premium (`ROL_PREMIUM`), de datos/pase_premium.json. Vacío si no está."""
+    """💎 Los Discord IDs con alguno de los roles del Pase premium (`ROLES_PREMIUM`), de datos/pase_premium.json. Vacío
+    si no está."""
     try:
         with io.open(os.path.join(BASE, 'datos', 'pase_premium.json'), encoding='utf-8') as f:
             return sorted(str(x) for x in (json.load(f) or {}).get('ids') or [])

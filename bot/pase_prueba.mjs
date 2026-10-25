@@ -191,6 +191,33 @@ try {
   const esperado = [[ANA, 2], [BEA, 1]].sort((a, b) => (a[0] < b[0] ? -1 : 1)).find(([, n]) => (i < n ? true : ((i -= n), false)))[0];
   ok(sd.resultado.semilla === hex && g === esperado, 'cualquiera puede repetir la cuenta con la semilla y la lista');
 
+  // 🎟️ el rol al ganador lo pone el bot (`sorteoRol()`): sólo con `rol_regalo` en la configuración, una vez, y con
+  // Discord caído se reintenta en la vuelta siguiente del vigía
+  const antesF = globalThis.fetch;
+  const pedidos = [];
+  let estado = 500;
+  globalThis.fetch = async (u, op = {}) => { pedidos.push([String(u), op.method]); return new Response(null, { status: estado }); };
+  o.env.DISCORD_TOKEN = 'x';
+  try {
+    ok(await o.sorteoRol(AHORA) === 0 && !pedidos.length, 'sin `rol_regalo` en la configuración, no toca Discord');
+    CFG.rol_regalo = '1563941336531607575';
+    ciclo({ premium: [ANA] });
+    await o.sorteoRol(AHORA);
+    const rol0 = o.sorteoDe('').resultado.rol;
+    estado = 204;
+    await o.sorteoRol(AHORA);
+    const n = pedidos.length;
+    await o.sorteoRol(AHORA);
+    const bG = sql.exec("SELECT titulo FROM bandeja WHERE quien = ? AND clave = 'sorteo:premium-t1'", g).toArray();
+    ok(rol0 === 0 && o.sorteoDe('').resultado.rol === 1 && n === 2 && pedidos.length === 2
+      && pedidos[1][0].endsWith('/guilds/841017460341604382/members/' + g + '/roles/1563941336531607575') && pedidos[1][1] === 'PUT'
+      && bG.length === 1,
+    'el bot le pone el rol «Pase Premium» al ganador: reintenta si Discord falla, una sola vez si sale, y le avisa por la campana',
+    JSON.stringify({ rol0, pedidos, bG }));
+  } finally {
+    globalThis.fetch = antesF;
+  }
+
   // ── el fondo: el nivel 5 del perfil, el premium desde su 5, o quien ya lo tenía ──
   sql.exec("INSERT INTO fondos (quien, estado, t) VALUES (?, 'ok', 1)", CAMI);
   ok(A.FONDO_NIVEL === 5 && o.puedeFondo(CAMI).si && !o.puedeFondo(DANI).si, 'el fondo: quien ya lo tenía lo conserva; sin nada, no');

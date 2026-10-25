@@ -6718,6 +6718,7 @@ export class Avisos {
     // 🎟️ el aviso semanal del Pase (sólo a quien lo prendió) y el sorteo del premium cuando llega su hora
     try { await this.avisarPase(ahora); } catch (e) { /* nunca frena al vigía */ }
     try { await this.sortear(ahora); } catch (e) { /* nunca frena al vigía */ }
+    try { await this.sorteoRol(ahora); } catch (e) { /* nunca frena al vigía */ }
     try { await this.recordarRacha(ahora); } catch (e) {
       this.guardar('racha_aviso', { t: ahora, error: String(e).slice(0, 120) });
     }
@@ -11736,6 +11737,7 @@ export class Avisos {
       gracia_desde: /^\d{4}-\d{2}-\d{2}$/.test(String(c.gracia_desde || '')) ? String(c.gracia_desde) : '',
       crew: Array.isArray(c.crew) && c.crew.every((x) => Number.isInteger(x) && x >= 0 && x <= 100000) && c.crew.length === 4 ? c.crew : null,
       boost: entero(c.boost, 0, 100, 0),
+      rol_regalo: /^[0-9]{5,25}$/.test(String(c.rol_regalo || '')) ? String(c.rol_regalo) : '',
       premium: (Array.isArray(c.premium) ? c.premium : []).filter((p) => Array.isArray(p) && Number.isInteger(p[0]))
         .slice(0, niveles).map((p) => [p[0], entero(p[1], 0, 100000, 0),
           ['marco', 'reaccion', 'fondo', 'color', 'titulo', 'emblema', 'carta'].includes(p[2]) ? p[2] : '', String(p[3] || '').slice(0, 40)]),
@@ -12195,13 +12197,13 @@ export class Avisos {
     const S = this.ajustes().pase_sorteo;
     if (!S) return { sorteo: null };
     const parts = this.sql.exec('SELECT COUNT(*) AS n, COALESCE(SUM(boletos), 0) AS b FROM sorteo_part WHERE sorteo = ?', S.id).toArray()[0];
-    const r = this.sql.exec('SELECT ganador, semilla, n, boletos, t FROM sorteo_res WHERE sorteo = ?', S.id).toArray()[0];
+    const r = this.sql.exec('SELECT ganador, semilla, n, boletos, rol, t FROM sorteo_res WHERE sorteo = ?', S.id).toArray()[0];
     const mio = quien ? this.sql.exec('SELECT boletos FROM sorteo_part WHERE sorteo = ? AND quien = ?', S.id, quien).toArray()[0] : null;
     const out = { sorteo: { id: S.id, cierra: Date.parse(S.cierra), cuando: Date.parse(S.sorteo), personas: parts.n, boletos: parts.b },
       mio: mio ? mio.boletos : 0 };
     if (r) {
       out.resultado = { k: this.claveDe(r.ganador), semilla: r.semilla, personas: r.n, boletos: r.boletos, t: r.t,
-        yo: quien === r.ganador };
+        yo: quien === r.ganador, rol: r.rol };
       // los nombres que pasan en la animación: los perfiles que entraron (sin cuentas ni IDs)
       out.nombres = this.sql.exec('SELECT quien FROM sorteo_part WHERE sorteo = ? ORDER BY t LIMIT 60', S.id).toArray()
         .map((x) => this.claveDe(x.quien)).filter(Boolean);
@@ -12250,6 +12252,38 @@ export class Avisos {
     this.sql.exec('INSERT OR IGNORE INTO sorteo_res (sorteo, ganador, semilla, n, boletos, t) VALUES (?, ?, ?, ?, ?, ?)',
       S.id, ganador, hex, ps.length, total, ahora);
     return ganador;
+  }
+
+  /**
+   * 🎟️ EL ROL AL GANADOR, LO PONE EL BOT (Dlx, 25/10/2026: «¿tú le puedes dar el rol mejor?»). «Pase T» es el rol de
+   * la suscripción del servidor y nadie puede ponerlo a mano: por eso existe `cfg.rol_regalo` («Pase Premium», de
+   * `pase.ROL_REGALO`). `sorteo_res.rol`: 0 falta, 1 puesto, -1 no se puede (ya no está en DRA). Lo llama el vigía cada
+   * minuto hasta que sale; con el rol, el ciclo siguiente le prende el premium (`verificados.guardar_premium()`)
+   */
+  async sorteoRol(ahora) {
+    const P = this.paseDatos();
+    const rol = P.cfg && /^[0-9]{5,25}$/.test(String(P.cfg.rol_regalo || '')) ? String(P.cfg.rol_regalo) : '';
+    if (!rol || !this.env.DISCORD_TOKEN) return 0;
+    let puestos = 0;
+    for (const r of this.sql.exec('SELECT sorteo, ganador FROM sorteo_res WHERE rol = 0 ORDER BY t LIMIT 3').toArray()) {
+      let st = 0;
+      try {
+        st = (await fetch(`${DC}/guilds/${GUILD_LOGS}/members/${r.ganador}/roles/${rol}`, { method: 'PUT',
+          headers: { Authorization: 'Bot ' + this.env.DISCORD_TOKEN, 'User-Agent': UA,
+            'X-Audit-Log-Reason': encodeURIComponent('Ganó el sorteo del Pase premium (' + r.sorteo + ')') } })).status;
+      } catch (e) { st = 0; }
+      if (st === 204 || st === 200) {
+        this.sql.exec('UPDATE sorteo_res SET rol = 1 WHERE sorteo = ?', r.sorteo);
+        this.aBandeja(r.ganador, 'sorteo:' + r.sorteo, 'pase', '🎟️ Ganaste el sorteo del Pase premium',
+          'Ya tienes el rol «Pase Premium» en DRA: en la próxima vuelta del ciclo se te desbloquea la fila premium.',
+          HUB + '/freestyle-rap/pase', '', ahora);
+        puestos++;
+      } else if (st === 404) {
+        // ya no está en DRA (o se borró la cuenta): no se reintenta, y el Dashboard lo dice
+        this.sql.exec('UPDATE sorteo_res SET rol = -1 WHERE sorteo = ?', r.sorteo);
+      }
+    }
+    return puestos;
   }
 
   /**

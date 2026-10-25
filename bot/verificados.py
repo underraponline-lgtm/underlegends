@@ -457,17 +457,17 @@ def refrescar(s=None):
 
 
 def guardar_premium(ms):
-    """💎 Quiénes tienen el rol del Pase premium (`pase.ROL_PREMIUM`, Dlx 25/10/2026: el que sortea en DRA), en
-    datos/pase_premium.json. Lo lee `pase.armar()` y va al objeto aparte de lo público. Con la misma lista de miembros
-    que ya se pidió: no suma ningún pedido a Discord."""
+    """💎 Quiénes tienen alguno de los roles del Pase premium (`pase.ROLES_PREMIUM`: la suscripción del servidor y el
+    que da el sorteo, Dlx 25/10/2026), en datos/pase_premium.json. Lo lee `pase.armar()` y va al objeto aparte de lo
+    público. Con la misma lista de miembros que ya se pidió: no suma ningún pedido a Discord."""
     try:
         import pase as _PA
-        rol = _PA.ROL_PREMIUM
+        rs = set(_PA.ROLES_PREMIUM)
     except Exception:                                      # noqa: BLE001
         return
-    ids = sorted(d for d, roles in ms.items() if rol in roles)
+    ids = sorted(d for d, roles in ms.items() if rs & set(roles))
     with io.open(os.path.join(os.path.dirname(SALIDA), 'pase_premium.json'), 'w', encoding='utf-8') as f:
-        json.dump({'rol': rol, 'cuando': time.strftime('%Y-%m-%dT%H:%M:%S+00:00', time.gmtime()), 'ids': ids},
+        json.dump({'roles': sorted(rs), 'cuando': time.strftime('%Y-%m-%dT%H:%M:%S+00:00', time.gmtime()), 'ids': ids},
                   f, ensure_ascii=False, indent=1)
 
 

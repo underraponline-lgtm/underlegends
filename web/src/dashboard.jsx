@@ -952,7 +952,8 @@ function AjCampana({ aj, hacer, ocup }) {
 // ── 🎟️ EL SORTEO DEL PASE PREMIUM (Dlx, 25/10/2026: «voy a sortear el rol de Pase de temporada en DRA», y «algo
 // interactivo en la página»). Se programa acá: un nombre, cuándo cierra y cuándo se sortea (tu hora). La gente entra
 // gratis desde el Pase; a la hora, el vigía elige al ganador con una cuenta que cualquiera repite, la página lo muestra
-// en vivo y sale en Publicaciones. El rol lo das tú en DRA ──
+// en vivo y sale en Publicaciones. El rol «Pase Premium» se lo pone el bot (`sorteoRol()`): «Pase T» es de la
+// suscripción del servidor y nadie puede ponerlo a mano ──
 const aLocal = (iso) => { if (!iso) return ''; const d = new Date(iso); const z = (n) => String(n).padStart(2, '0');
   return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate()) + 'T' + z(d.getHours()) + ':' + z(d.getMinutes()); };
 function AjSorteo({ liga, aj, hacer, ocup }) {
@@ -973,9 +974,9 @@ function AjSorteo({ liga, aj, hacer, ocup }) {
   return (
     <div className="db-aj">
       <div className="db-aj-c"><h3>El sorteo del premium</h3><span className={'db-est' + (S ? ' ok' : '')}>{res ? '✓ Sorteado' : S ? '● Programado' : 'Sin sorteo'}</span></div>
-      <p className="db-tx">La gente entra gratis desde la pestaña Premium del Pase: 1 boleto, y uno más por cada semana con las cinco semanales (hasta 3). A la hora se sortea solo, se ve en vivo en la página y sale en Publicaciones. El rol «Pase de temporada» lo das tú en DRA.</p>
+      <p className="db-tx">La gente entra gratis desde la pestaña Premium del Pase: 1 boleto, y uno más por cada semana con las cinco semanales (hasta 3). A la hora se sortea solo, se ve en vivo en la página y sale en Publicaciones. El bot le pone el rol «Pase Premium» al ganador.</p>
       {s ? <p className="db-tx"><b>{num(s.personas)}</b> {s.personas === 1 ? 'entró' : 'entraron'} · <b>{num(s.boletos)}</b> boletos.
-        {res ? <> Ganó <b>{nom(res.k)}</b>: dale el rol en DRA.</> : null}</p> : null}
+        {res ? <> Ganó <b>{nom(res.k)}</b>{res.rol === 1 ? ': ya tiene el rol «Pase Premium».' : res.rol === -1 ? ': ya no está en DRA, el bot no pudo ponerle el rol.' : ': el bot le está poniendo el rol.'}</> : null}</p> : null}
       <div className="db-sorteo">
         <label>Nombre<input type="text" value={f.id} onChange={(e) => setF({ ...f, id: e.target.value.toLowerCase() })} maxLength={30} placeholder="premium-t1" /></label>
         <label>Cierra (tu hora)<input type="datetime-local" value={f.cierra} onChange={(e) => setF({ ...f, cierra: e.target.value })} /></label>

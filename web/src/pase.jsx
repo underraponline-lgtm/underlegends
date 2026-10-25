@@ -280,7 +280,7 @@ function CtaPremium({ onIr }) {
     <section className="ps-cta">
       <span className="ps-tag2">PREMIUM</span>
       <b>Desbloquea la fila de arriba</b>
-      <p>En la T1 se desbloquea con el rol «Pase de temporada» de DRA: se sortea acá en la página, y se gana en eventos.</p>
+      <p>En la T1 se desbloquea con el rol «Pase Premium» de DRA: se sortea acá en la página, y se gana en eventos.</p>
       <button type="button" className="btn borde chico" onClick={onIr}>Cómo se desbloquea →</button>
     </section>
   );
@@ -435,7 +435,7 @@ function Sorteo({ liga, dc, miembro }) {
             {rueda ? <><Cara liga={liga} k={rueda.k} nombre={nombre(rueda.k)} cls="cara ps-c40" /><b>{nombre(rueda.k)}</b></>
               : <button type="button" className="btn verde" onClick={girar}>▶ Ver el sorteo</button>}
           </div>
-          {rueda && rueda.fin ? <p className="ps-srt-gano"><span className="ps-tag2">GANÓ</span> <b>{nombre(res.k)}</b>{res.yo ? ': ¡eres tú! Dlx te da el rol en DRA.' : ' se lleva el rol «Pase de temporada» de DRA.'}</p> : null}
+          {rueda && rueda.fin ? <p className="ps-srt-gano"><span className="ps-tag2">GANÓ</span> <b>{nombre(res.k)}</b>{res.yo ? (res.rol === 1 ? ': ¡eres tú! Ya tienes el rol «Pase Premium» en DRA.' : ': ¡eres tú! El bot te pone el rol «Pase Premium» en DRA en un minuto.') : ' se lleva el rol «Pase Premium» de DRA.'}</p> : null}
           <ul className="ps-srt-d">
             <li><b>{num(res.personas)} entraron</b>, con {num(res.boletos)} boletos en total.</li>
             <li><b>Cómo se eligió</b>: la semilla es el SHA-256 del sorteo y de la lista de boletos; el ganador, la semilla dividida por los boletos (lo que sobra). Cualquiera con la lista repite la cuenta.</li>
@@ -490,7 +490,7 @@ function Premium({ liga, dc, P, prem, nivel, miembro }) {
       <section className="ps-pasos-w">
         <div className="ps-blk"><h3>Cómo se desbloquea<small>T1</small></h3></div>
         <ol className="ps-pasos">
-          <li><b>1</b><div><strong>El rol «Pase de temporada» de DRA</strong><span>Es lo que lo desbloquea en la T1. Lo tienes o no lo tienes: el Pase se entera solo, en la próxima vuelta del ciclo.</span></div></li>
+          <li><b>1</b><div><strong>El rol «Pase Premium» de DRA</strong><span>Es lo que lo desbloquea en la T1. Lo tienes o no lo tienes: el Pase se entera solo, en la próxima vuelta del ciclo.</span></div></li>
           <li><b>2</b><div><strong>Se sortea acá</strong><span>Entrar es gratis y se sortea en vivo en esta página. Más abajo.</span></div></li>
           <li><b>3</b><div><strong>Se gana en eventos</strong><span>Algunos eventos de la Liga lo dan como premio.</span></div></li>
         </ol>
