@@ -138,7 +138,8 @@
   "BastyRetro": {
    "competitivo": "739a96eff3fa:8259c7ce67a9",
    "pais": "5d2c2b0fe019:1478cbe7c727",
-   "servidor": "d2285e236dd8:dc2ca95eb024:5bc8b2"
+   "servidor": "d2285e236dd8:dc2ca95eb024:5bc8b2",
+   "temporada": "9dbf86c3d36d:e8f4f15f7e3a"
   },
   "Bau": {
    "servidor": "f43d5839a0c5:dc2ca95eb024:6a5f1a"
@@ -1861,5 +1862,5 @@
    "servidor": "7f8885a35a6d:dc2ca95eb024:93a344"
   }
  },
- "cuando": "2026-10-25T16:10:22+00:00"
+ "cuando": "2026-10-25T16:17:52+00:00"
 }
