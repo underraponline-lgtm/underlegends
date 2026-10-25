@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-25T17:54:24+00:00",
+ "cuando": "2026-10-25T18:25:51+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -5065,32 +5065,6 @@
    "inscripciones_cuando": "2026-10-25T04:06:56"
   },
   {
-   "nombre": "PROYECTO X VOL.2",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1558302266933645423",
-   "cuando": "2026-10-10T02:16:52",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "LA NOCHE NUNCA PERDONA🇬🇵",
-   "orgs": [],
-   "autor_h": "e0acf3adfb0d85f0",
-   "cupos_texto": "16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "1 vs 1",
-   "horario": "25 Minutos",
-   "fecha": "",
-   "premios": "",
-   "staff": {},
-   "autor": "Dr3xx",
-   "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "cerradas",
-   "inscripciones_cuando": "2026-10-25T04:06:56"
-  },
-  {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - MAÑANA )",
    "servidor": "ACAD",
    "canal": "📢┇anuncios・",
@@ -6938,6 +6912,87 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Cabecé 🇨🇱",
+   "quien": "un_random0077",
+   "discord_id": "1144100773844766811",
+   "msg_id": "1563977361819566152",
+   "cuando": "2026-10-25T18:07:40"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "🇨🇱",
+   "quien": "marcosq_14",
+   "discord_id": "1294600140815990858",
+   "msg_id": "1563977269809250476",
+   "cuando": "2026-10-25T18:07:18"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "qn de este hp server no esta funado 🇵🇸",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1563977085314269285",
+   "cuando": "2026-10-25T18:06:34"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "marcos🇪🇦",
+   "quien": "marcosq_14",
+   "discord_id": "1294600140815990858",
+   "msg_id": "1563976402154295407",
+   "cuando": "2026-10-25T18:03:51"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Evangeline 🇧🇴",
+   "quien": "vibesfly7",
+   "discord_id": "552121423804628995",
+   "msg_id": "1563975593517912115",
+   "cuando": "2026-10-25T18:00:38"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Adriagner🇳🇮",
+   "quien": "adriagner",
+   "discord_id": "1316490165836972104",
+   "msg_id": "1563975516929663059",
+   "cuando": "2026-10-25T18:00:20"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Edd🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1563975431776899143",
+   "cuando": "2026-10-25T18:00:00"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1563975270971478247",
+   "cuando": "2026-10-25T17:59:21"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Pablo Emilio Escobar Gaviria🇨🇴",
+   "quien": "walker2706",
+   "discord_id": "1247306019839938754",
+   "msg_id": "1563975252751683677",
+   "cuando": "2026-10-25T17:59:17"
+  },
   {
    "servidor": "LKR",
    "canal": "⟡・INSCRIPCIONES",
