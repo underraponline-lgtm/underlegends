@@ -74,7 +74,7 @@
   "Aldre": {
    "competitivo": "e419763661b3:8259c7ce67a9",
    "pais": "b903b360f99e:1478cbe7c727",
-   "servidor": "09ba79db2fe5:dc2ca95eb024:980594",
+   "servidor": "09ba79db2fe5:dc2ca95eb024:fbc56e",
    "temporada": "81a056a71761:e8f4f15f7e3a"
   },
   "Ale": {
@@ -550,7 +550,7 @@
   "Gosu Z": {
    "competitivo": "45316075f6c5:8259c7ce67a9",
    "pais": "0347264bede3:1478cbe7c727",
-   "servidor": "846de2ba46f6:dc2ca95eb024:948362"
+   "servidor": "100cb2a7bcbf:dc2ca95eb024:948362"
   },
   "Guess": {
    "competitivo": "6cb1ab3eeec8:8259c7ce67a9",
@@ -1418,7 +1418,7 @@
   "Saiko": {
    "competitivo": "f371bbc22f04:8259c7ce67a9",
    "pais": "14d8f11f87d9:1478cbe7c727",
-   "servidor": "c9e599ac2196:dc2ca95eb024:5f639c",
+   "servidor": "c9e599ac2196:dc2ca95eb024:3214ae",
    "temporada": "837c17574d26:e8f4f15f7e3a"
   },
   "Saito": {},
@@ -1857,5 +1857,5 @@
    "servidor": "7f8885a35a6d:dc2ca95eb024:93a344"
   }
  },
- "cuando": "2026-10-25T01:04:34+00:00"
+ "cuando": "2026-10-25T04:44:08+00:00"
 }
