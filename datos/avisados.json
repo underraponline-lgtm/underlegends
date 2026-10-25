@@ -21620,5 +21620,337 @@
    ]
   ],
   "v": 2
+ },
+ "512": {
+  "antes": {
+   "Apolo": [
+    420,
+    398,
+    true
+   ],
+   "BastyRetro": [
+    88,
+    120,
+    false
+   ],
+   "Dynoco": [
+    43,
+    57,
+    false
+   ],
+   "Guess": [
+    21,
+    23,
+    false
+   ],
+   "LRS": [
+    38,
+    51,
+    false
+   ],
+   "Lizeninn": [
+    270,
+    185,
+    true
+   ],
+   "Makmah": [
+    2,
+    2,
+    false
+   ],
+   "Marto": [
+    247,
+    145,
+    true
+   ],
+   "Molusco": [
+    22,
+    24,
+    false
+   ],
+   "NC": [
+    20,
+    22,
+    false
+   ],
+   "NXUZ": [
+    33,
+    39,
+    false
+   ],
+   "Paria": [
+    215,
+    59,
+    true
+   ],
+   "PichulaMc": [
+    4,
+    4,
+    false
+   ],
+   "Six": [
+    12,
+    13,
+    false
+   ],
+   "Soneto": [
+    61,
+    82,
+    false
+   ],
+   "Teo": [
+    63,
+    84,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "MATUK 🇦🇷, Six",
+    "Makmah, Paria",
+    "MATUK 🇦🇷, Six"
+   ],
+   [
+    "EL TERROR DE TU WA 🇦🇷",
+    "Jeisy, Apolo",
+    "EL TERROR DE TU WA 🇦🇷"
+   ],
+   [
+    "Zack🇺🇸, Cody🇺🇸",
+    "Teo, NILS 🇵🇪",
+    "Zack🇺🇸, Cody🇺🇸"
+   ],
+   [
+    "NXUZ, BENJI 🇵🇪",
+    "LOS LAPICES DEL EXAMEN CHUNIN 🇦🇷",
+    "NXUZ, BENJI 🇵🇪"
+   ],
+   [
+    "Marto, Guess",
+    "Lizeninn, Molusco",
+    "Marto, Guess"
+   ],
+   [
+    "PichulaMc, Bull12r",
+    "LRS, AKKAMARU 🇪🇸",
+    "PichulaMc, Bull12r"
+   ],
+   [
+    "NC, Lukas",
+    "BastyRetro, GGWAN 🇦🇷",
+    "NC, Lukas"
+   ],
+   [
+    "MATUK 🇦🇷, Six",
+    "NXUZ, BENJI 🇵🇪",
+    "MATUK 🇦🇷, Six"
+   ],
+   [
+    "EL TERROR DE TU WA 🇦🇷",
+    "Marto, Guess",
+    "EL TERROR DE TU WA 🇦🇷"
+   ],
+   [
+    "Colo, Dynoco",
+    "PichulaMc, Bull12r",
+    "Colo, Dynoco"
+   ],
+   [
+    "Zack🇺🇸, Cody🇺🇸",
+    "NC, Lukas",
+    "Zack🇺🇸, Cody🇺🇸"
+   ],
+   [
+    "MATUK 🇦🇷, Six",
+    "Colo, Dynoco",
+    "MATUK 🇦🇷, Six"
+   ],
+   [
+    "EL TERROR DE TU WA 🇦🇷",
+    "Zack🇺🇸, Cody🇺🇸",
+    "EL TERROR DE TU WA 🇦🇷"
+   ],
+   [
+    "Colo el rojito 🇦🇬, Dynoco",
+    "Artezzy, Soneto",
+    "Colo el rojito 🇦🇬, Dynoco"
+   ],
+   [
+    "EL TERROR DE TU WA 🇦🇷",
+    "Six, MATUK 🇦🇷",
+    "EL TERROR DE TU WA 🇦🇷"
+   ]
+  ],
+  "ev_antes": {
+   "Apolo": 1,
+   "BastyRetro": 3,
+   "Dynoco": 13,
+   "Guess": 16,
+   "LRS": 19,
+   "Lizeninn": 4,
+   "Makmah": 69,
+   "Marto": 7,
+   "Molusco": 20,
+   "NC": 36,
+   "NXUZ": 16,
+   "Paria": 10,
+   "PichulaMc": 44,
+   "Six": 26,
+   "Soneto": 10,
+   "Teo": 14
+  },
+  "fecha": "24/10",
+  "firma": "08c4ba9102cbafbe",
+  "msg": "1563937413024325643",
+  "nombre": "__ FREESTYLE FOR ALL ESPECIAL 1800 2v2 __",
+  "num": 512,
+  "participantes": 33,
+  "sello": {},
+  "sv": "FFA",
+  "t": "2026-10-25T15:28:54Z",
+  "tabla": [
+   [
+    "Six",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "MATUK 🇦🇷",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Colo",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Dynoco",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Zack🇺🇸",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Cody🇺🇸",
+    "Semifinal",
+    2625
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    1250
+   ],
+   [
+    "BENJI 🇵🇪",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Marto",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Guess",
+    "Cuartos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Bull12r",
+    "Cuartos",
+    1250
+   ],
+   [
+    "NC",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Lukas",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    625
+   ],
+   [
+    "Paria",
+    "Octavos",
+    625
+   ],
+   [
+    "Jeisy",
+    "Octavos",
+    625
+   ],
+   [
+    "Apolo",
+    "Octavos",
+    625
+   ],
+   [
+    "Teo",
+    "Octavos",
+    625
+   ],
+   [
+    "NILS 🇵🇪",
+    "Octavos",
+    625
+   ],
+   [
+    "Lizeninn",
+    "Octavos",
+    625
+   ],
+   [
+    "Molusco",
+    "Octavos",
+    625
+   ],
+   [
+    "LRS",
+    "Octavos",
+    625
+   ],
+   [
+    "AKKAMARU 🇪🇸",
+    "Octavos",
+    625
+   ],
+   [
+    "BastyRetro",
+    "Octavos",
+    625
+   ],
+   [
+    "GGWAN 🇦🇷",
+    "Octavos",
+    625
+   ],
+   [
+    "Artezzy",
+    "Octavos",
+    625
+   ],
+   [
+    "Soneto",
+    "Octavos",
+    625
+   ]
+  ],
+  "v": 2
  }
 }

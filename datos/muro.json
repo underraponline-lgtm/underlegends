@@ -176,15 +176,6 @@
 "rg": "A",
 "c": []
 },
-"nc": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "guess": {
 "rg": "C",
 "c": [
@@ -194,8 +185,17 @@
 "temporada"
 ]
 },
+"nc": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "molusco": {
-"rg": "B",
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -375,10 +375,6 @@
 "temporada"
 ]
 },
-"eclipsito": {
-"rg": "C",
-"c": []
-},
 "lrs": {
 "rg": "E",
 "c": [
@@ -387,6 +383,10 @@
 "servidor",
 "temporada"
 ]
+},
+"eclipsito": {
+"rg": "C",
+"c": []
 },
 "dyzz": {
 "rg": "E",
@@ -611,19 +611,19 @@
 "temporada"
 ]
 },
-"rodas": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "teo": {
 "rg": "E",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"rodas": {
+"rg": "E",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -731,13 +731,6 @@
 "temporada"
 ]
 },
-"kyss": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "hotaruadeyemi": {
 "rg": "",
 "c": []
@@ -780,6 +773,13 @@
 "c": []
 },
 "number": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"kyss": {
 "rg": "",
 "c": [
 "servidor",
@@ -896,6 +896,10 @@
 "rg": "",
 "c": []
 },
+"marto": {
+"rg": "",
+"c": []
+},
 "keider": {
 "rg": "",
 "c": [
@@ -949,12 +953,6 @@
 "rg": "",
 "c": []
 },
-"last": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
 "rayo": {
 "rg": "",
 "c": []
@@ -980,10 +978,6 @@
 "servidor",
 "temporada"
 ]
-},
-"marto": {
-"rg": "",
-"c": []
 },
 "prodigy": {
 "rg": "",
@@ -1022,10 +1016,6 @@
 "rg": "",
 "c": []
 },
-"luzzano": {
-"rg": "",
-"c": []
-},
 "vr": {
 "rg": "",
 "c": [
@@ -1059,6 +1049,12 @@
 "c": [
 "servidor",
 "temporada"
+]
+},
+"last": {
+"rg": "",
+"c": [
+"servidor"
 ]
 },
 "elsoolar": {
@@ -1107,6 +1103,10 @@
 "c": []
 },
 "maticerna": {
+"rg": "",
+"c": []
+},
+"luzzano": {
 "rg": "",
 "c": []
 },
@@ -1178,6 +1178,10 @@
 "servidor"
 ]
 },
+"lizeninn": {
+"rg": "",
+"c": []
+},
 "malva": {
 "rg": "",
 "c": []
@@ -1187,10 +1191,6 @@
 "c": []
 },
 "flama": {
-"rg": "",
-"c": []
-},
-"lizeninn": {
 "rg": "",
 "c": []
 },

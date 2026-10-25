@@ -3,7 +3,7 @@
  "chats": {
   "ACAD": "2026-10-23",
   "DDF": "2026-10-25",
-  "FFA": "2026-10-24",
+  "FFA": "2026-10-25",
   "FRZ": "2026-10-15",
   "FVS": "2026-10-15",
   "SR": "2026-10-21",
@@ -22,6 +22,19 @@
    "sv": "FFA",
    "vence": "2026-10-20T02:35:27+00:00",
    "vencido": true
+  },
+  "AKKAMARU": {
+   "avisado": "2026-10-25",
+   "chat": "2026-10-25",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T00:48:12+00:00",
+   "did": "",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",
+   "n": 512,
+   "sv": "FFA",
+   "vence": "2026-11-01T00:48:12+00:00",
+   "vencido": false
   },
   "Abraham": {
    "avisado": "2026-10-15",
@@ -51,15 +64,29 @@
   },
   "Apolo": {
    "avisado": "2026-10-18",
+   "avisado_cumplido": "2026-10-25",
    "chat": "2026-10-18",
-   "con": null,
-   "cumplido": "",
+   "con": 512,
+   "cumplido": "2026-10-25T00:48:12+00:00",
    "debut": "2026-10-18T20:57:26+00:00",
    "did": "",
    "evento": "LA BELLA ARTE DE LA DESGRACIA VOL7",
    "n": 484,
    "sv": "FFA",
    "vence": "2026-10-25T20:57:26+00:00",
+   "vencido": false
+  },
+  "Artezzy": {
+   "avisado": "2026-10-25",
+   "chat": "2026-10-25",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T00:48:12+00:00",
+   "did": "1435531540472795240",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",
+   "n": 512,
+   "sv": "FFA",
+   "vence": "2026-11-01T00:48:12+00:00",
    "vencido": false
   },
   "BELIKKO": {
@@ -75,6 +102,19 @@
    "vence": "2026-10-30T22:07:27+00:00",
    "vencido": false
   },
+  "BENJI": {
+   "avisado": "2026-10-25",
+   "chat": "2026-10-25",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T00:48:12+00:00",
+   "did": "",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",
+   "n": 512,
+   "sv": "FFA",
+   "vence": "2026-11-01T00:48:12+00:00",
+   "vencido": false
+  },
   "BLUE BURKA": {
    "avisado": "2026-10-23",
    "chat": "2026-10-23",
@@ -86,6 +126,19 @@
    "n": 497,
    "sv": "FFA",
    "vence": "2026-10-29T00:30:05+00:00",
+   "vencido": false
+  },
+  "Bull12r": {
+   "avisado": "2026-10-25",
+   "chat": "2026-10-25",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T00:48:12+00:00",
+   "did": "696598268259336222",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",
+   "n": 512,
+   "sv": "FFA",
+   "vence": "2026-11-01T00:48:12+00:00",
    "vencido": false
   },
   "Cazafla anti cazanova": {
@@ -138,6 +191,32 @@
    "n": 491,
    "sv": "ACAD",
    "vence": "2026-10-26T22:24:26+00:00",
+   "vencido": false
+  },
+  "Cody": {
+   "avisado": "2026-10-25",
+   "chat": "2026-10-25",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T00:48:12+00:00",
+   "did": "",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",
+   "n": 512,
+   "sv": "FFA",
+   "vence": "2026-11-01T00:48:12+00:00",
+   "vencido": false
+  },
+  "Colo": {
+   "avisado": "2026-10-25",
+   "chat": "2026-10-25",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T00:48:12+00:00",
+   "did": "",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",
+   "n": 512,
+   "sv": "FFA",
+   "vence": "2026-11-01T00:48:12+00:00",
    "vencido": false
   },
   "DARK ANGEL": {
@@ -283,6 +362,19 @@
    "vence": "2026-11-01T04:08:34+00:00",
    "vencido": false
   },
+  "GGWAN": {
+   "avisado": "2026-10-25",
+   "chat": "2026-10-25",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T00:48:12+00:00",
+   "did": "",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",
+   "n": 512,
+   "sv": "FFA",
+   "vence": "2026-11-01T00:48:12+00:00",
+   "vencido": false
+  },
   "Guty": {
    "avisado": "2026-10-12",
    "chat": "2026-10-12",
@@ -362,6 +454,19 @@
    "n": 488,
    "sv": "FFA",
    "vence": "2026-10-26T06:14:16+00:00",
+   "vencido": false
+  },
+  "Jeisy": {
+   "avisado": "2026-10-25",
+   "chat": "2026-10-25",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T00:48:12+00:00",
+   "did": "868896089233838120",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",
+   "n": 512,
+   "sv": "FFA",
+   "vence": "2026-11-01T00:48:12+00:00",
    "vencido": false
   },
   "Joaquín La Profecia 👨🏻‍🍳": {
@@ -482,6 +587,19 @@
    "vence": "2026-10-30T22:07:27+00:00",
    "vencido": false
   },
+  "Lukas": {
+   "avisado": "2026-10-25",
+   "chat": "2026-10-25",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T00:48:12+00:00",
+   "did": "1497258340172959815",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",
+   "n": 512,
+   "sv": "FFA",
+   "vence": "2026-11-01T00:48:12+00:00",
+   "vencido": false
+  },
   "Luz": {
    "avisado": "2026-10-19",
    "chat": "2026-10-20",
@@ -519,6 +637,19 @@
    "n": 487,
    "sv": "FFA",
    "vence": "2026-10-26T04:19:55+00:00",
+   "vencido": false
+  },
+  "MATUK": {
+   "avisado": "2026-10-25",
+   "chat": "2026-10-25",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T00:48:12+00:00",
+   "did": "",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",
+   "n": 512,
+   "sv": "FFA",
+   "vence": "2026-11-01T00:48:12+00:00",
    "vencido": false
   },
   "METRA": {
@@ -586,6 +717,19 @@
    "n": 486,
    "sv": "DDF",
    "vence": "2026-10-26T01:35:44+00:00",
+   "vencido": false
+  },
+  "NILS": {
+   "avisado": "2026-10-25",
+   "chat": "2026-10-25",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T00:48:12+00:00",
+   "did": "",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",
+   "n": 512,
+   "sv": "FFA",
+   "vence": "2026-11-01T00:48:12+00:00",
    "vencido": false
   },
   "Nmb": {
@@ -853,6 +997,19 @@
    "n": 491,
    "sv": "ACAD",
    "vence": "2026-10-26T22:24:26+00:00",
+   "vencido": false
+  },
+  "Zack": {
+   "avisado": "2026-10-25",
+   "chat": "2026-10-25",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T00:48:12+00:00",
+   "did": "",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",
+   "n": 512,
+   "sv": "FFA",
+   "vence": "2026-11-01T00:48:12+00:00",
    "vencido": false
   },
   "lil": {

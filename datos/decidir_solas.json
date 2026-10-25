@@ -2260,6 +2260,78 @@
      "1079533414530678814"
     ]
    }
+  },
+  {
+   "id": "c19dc6986d",
+   "tipo": "Nombre desconocido",
+   "sec": "FREESTYLE FOR ALL ESPECIAL 1800 2v2 · FFA · 24/10 · #512",
+   "que": "¿Quién es «Colo el rojito 🇦🇬»?",
+   "r": "Es alguien nuevo: alta con su cuenta 972537790921338960",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (972537790921338960)",
+   "t": 1792942807210,
+   "filas": [
+    839
+   ],
+   "variantes": [
+    "Colo el rojito 🇦🇬"
+   ],
+   "escribio": {
+    "alta": [
+     "Colo el rojito",
+     "972537790921338960"
+    ]
+   }
+  },
+  {
+   "id": "7d86e86c15",
+   "tipo": "Nombre desconocido",
+   "sec": "FREESTYLE FOR ALL ESPECIAL 1800 2v2 · FFA · 24/10 · #512",
+   "que": "¿Quién es «GGWAN 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 999724029210542101",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (999724029210542101)",
+   "t": 1792942807210,
+   "filas": [
+    840
+   ],
+   "variantes": [
+    "GGWAN 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "GGWAN",
+     "999724029210542101"
+    ]
+   }
+  },
+  {
+   "id": "c5063dbc3d",
+   "tipo": "Nombre desconocido",
+   "sec": "FREESTYLE FOR ALL ESPECIAL 1800 2v2 · FFA · 24/10 · #512",
+   "que": "¿Quién es «NILS 🇵🇪»?",
+   "r": "Es alguien nuevo: alta con su cuenta 867079478860709898",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (867079478860709898)",
+   "t": 1792942807210,
+   "filas": [
+    842
+   ],
+   "variantes": [
+    "NILS 🇵🇪"
+   ],
+   "escribio": {
+    "alta": [
+     "NILS",
+     "867079478860709898"
+    ]
+   }
   }
  ],
  "deshechas": []

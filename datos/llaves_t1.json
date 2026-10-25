@@ -31790,5 +31790,305 @@
     2000
    ]
   ]
+ },
+ "512": {
+  "dia": "2026-10-24",
+  "escala": "16+",
+  "fecha": "24/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1563715773439017072"
+  ],
+  "n": 512,
+  "nombre": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",
+  "participantes": 33,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "MATUK 🇦🇷, Six",
+       "Makmah, Paria"
+      ],
+      "MATUK 🇦🇷, Six",
+      ""
+     ],
+     [
+      [
+       "EL TERROR DE TU WA 🇦🇷",
+       "Jeisy, Apolo"
+      ],
+      "EL TERROR DE TU WA 🇦🇷",
+      "Sin integrantes: EL TERROR DE TU WA 🇦🇷"
+     ],
+     [
+      [
+       "Zack🇺🇸, Cody🇺🇸",
+       "Teo, NILS 🇵🇪"
+      ],
+      "Zack🇺🇸, Cody🇺🇸",
+      ""
+     ],
+     [
+      [
+       "NXUZ, BENJI 🇵🇪",
+       "LOS LAPICES DEL EXAMEN CHUNIN 🇦🇷"
+      ],
+      "NXUZ, BENJI 🇵🇪",
+      "Sin integrantes: LOS LAPICES DEL EXAMEN CHUNIN 🇦🇷"
+     ],
+     [
+      [
+       "Marto, Guess",
+       "Lizeninn, Molusco"
+      ],
+      "Marto, Guess",
+      ""
+     ],
+     [
+      [
+       "PichulaMc, Bull12r",
+       "LRS, AKKAMARU 🇪🇸"
+      ],
+      "PichulaMc, Bull12r",
+      ""
+     ],
+     [
+      [
+       "NC, Lukas",
+       "BastyRetro, GGWAN 🇦🇷"
+      ],
+      "NC, Lukas",
+      ""
+     ],
+     [
+      [
+       "Colo el rojito 🇦🇬, Dynoco",
+       "Artezzy, Soneto"
+      ],
+      "Colo el rojito 🇦🇬, Dynoco",
+      "ganador: ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "MATUK 🇦🇷, Six",
+       "NXUZ, BENJI 🇵🇪"
+      ],
+      "MATUK 🇦🇷, Six",
+      ""
+     ],
+     [
+      [
+       "EL TERROR DE TU WA 🇦🇷",
+       "Marto, Guess"
+      ],
+      "EL TERROR DE TU WA 🇦🇷",
+      "Sin integrantes: EL TERROR DE TU WA 🇦🇷"
+     ],
+     [
+      [
+       "Colo, Dynoco",
+       "PichulaMc, Bull12r"
+      ],
+      "Colo, Dynoco",
+      ""
+     ],
+     [
+      [
+       "Zack🇺🇸, Cody🇺🇸",
+       "NC, Lukas"
+      ],
+      "Zack🇺🇸, Cody🇺🇸",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "MATUK 🇦🇷, Six",
+       "Colo, Dynoco"
+      ],
+      "MATUK 🇦🇷, Six",
+      ""
+     ],
+     [
+      [
+       "EL TERROR DE TU WA 🇦🇷",
+       "Zack🇺🇸, Cody🇺🇸"
+      ],
+      "EL TERROR DE TU WA 🇦🇷",
+      "Sin integrantes: EL TERROR DE TU WA 🇦🇷"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "EL TERROR DE TU WA 🇦🇷",
+       "Six, MATUK 🇦🇷"
+      ],
+      "EL TERROR DE TU WA 🇦🇷",
+      "ganador: ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sin": [
+   "EL TERROR DE TU WA 🇦🇷",
+   "LOS LAPICES DEL EXAMEN CHUNIN 🇦🇷"
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "MATUK 🇦🇷",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Six",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Cody🇺🇸",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Colo",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Dynoco",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Zack🇺🇸",
+    "Semifinal",
+    2625
+   ],
+   [
+    "BENJI 🇵🇪",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Bull12r",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Guess",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Lukas",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Marto",
+    "Cuartos",
+    1250
+   ],
+   [
+    "NC",
+    "Cuartos",
+    1250
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    1250
+   ],
+   [
+    "AKKAMARU 🇪🇸",
+    "Octavos",
+    625
+   ],
+   [
+    "Apolo",
+    "Octavos",
+    625
+   ],
+   [
+    "Artezzy",
+    "Octavos",
+    625
+   ],
+   [
+    "BastyRetro",
+    "Octavos",
+    625
+   ],
+   [
+    "GGWAN 🇦🇷",
+    "Octavos",
+    625
+   ],
+   [
+    "Jeisy",
+    "Octavos",
+    625
+   ],
+   [
+    "LRS",
+    "Octavos",
+    625
+   ],
+   [
+    "Lizeninn",
+    "Octavos",
+    625
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    625
+   ],
+   [
+    "Molusco",
+    "Octavos",
+    625
+   ],
+   [
+    "NILS 🇵🇪",
+    "Octavos",
+    625
+   ],
+   [
+    "Paria",
+    "Octavos",
+    625
+   ],
+   [
+    "Soneto",
+    "Octavos",
+    625
+   ],
+   [
+    "Teo",
+    "Octavos",
+    625
+   ]
+  ]
  }
 }

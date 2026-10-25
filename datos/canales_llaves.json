@@ -174,7 +174,7 @@
   "838593179187544064": "Freestyle Zone",
   "841017460341604382": "[DRA] Discord Rap En Español | Freestyle • Batallas Online • Cypher 24/7 • Ligas • Aprende"
  },
- "ultimo_completo": "2026-10-24T15:26:34+00:00",
+ "ultimo_completo": "2026-10-25T15:25:13+00:00",
  "veredictos": {
   "1309238412976590908": {
    "canal": "✅┇votaciones",
@@ -333,6 +333,11 @@
   },
   "1560645560015519834": {
    "canal": "veredictos",
+   "guild": "1558611504046153750",
+   "servidor": "🔥LKR (Champios Legue)🐉"
+  },
+  "1563658616098263132": {
+   "canal": "💤VEREDICTOS",
    "guild": "1558611504046153750",
    "servidor": "🔥LKR (Champios Legue)🐉"
   },
