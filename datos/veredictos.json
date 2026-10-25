@@ -1046,6 +1046,39 @@
    "b": "HOTARU 🇦🇷🏳️‍⚧",
    "ganador": "HOTARU 🇦🇷🏳️‍⚧",
    "votos": "4–0"
+  },
+  "1564025551860138075": {
+   "id": "1564025551860138075",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792963149753,
+   "a": "BNA 🇦🇷",
+   "b": "GUESS 🇦🇷",
+   "ganador": "GUESS 🇦🇷",
+   "votos": "3–2"
+  },
+  "1564028924617564169": {
+   "id": "1564028924617564169",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792963953881,
+   "a": "GEOKA 🇦🇷",
+   "b": "ARIAXER 🇦🇷",
+   "ganador": "GEOKA 🇦🇷",
+   "votos": "3–0"
+  },
+  "1564032039047401696": {
+   "id": "1564032039047401696",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792964696419,
+   "a": "WACHIN 🇦🇷",
+   "b": "MCO 🇦🇷",
+   "ganador": "MCO 🇦🇷",
+   "votos": "3–0"
   }
  },
  "llaves": {
@@ -5510,8 +5543,8 @@
    "g": "765045834647339038",
    "canal": "1309238412976590908",
    "pub": 1792962199495,
-   "ed": 1792963149753,
-   "texto": "`[ OCTAVOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞KUDE 🇦🇷⌝\n⌞FLAMA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞BNA 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝",
+   "ed": 1792965001946,
+   "texto": "`[ OCTAVOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞KUDE 🇦🇷⌝\n⌞FLAMA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞BNA 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝\n⌞GEOKA 🇦🇷⌝ 🆚 ⌞ARIAXER 🇦🇷⌝\n⌞WACHIN 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n⌞EZEE 🇦🇷⌝ 🆚 ⌞DELUXE 🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5538,6 +5571,36 @@
      [
       "BNA 🇦🇷",
       "GUESS 🇦🇷"
+     ],
+     "BNA 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "GEOKA 🇦🇷",
+      "ARIAXER 🇦🇷"
+     ],
+     "GEOKA 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "WACHIN 🇦🇷",
+      "MCO 🇦🇷"
+     ],
+     "MCO 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "EZEE 🇦🇷",
+      "DELUXE 🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",
