@@ -1953,6 +1953,8 @@ function Roles({ roles, alCambiar }) {
   const setX = (y) => { setX0(y); if (alCambiar) alCambiar(y); };
   const [busca, setBusca] = useState('');
   const [sel, setSel] = useState(null);
+  const [pide, setPide] = useState(null);
+  const [escrito, setEscrito] = useState('');
   const [ocup, setOcup] = useState(false);
   const [msg, setMsg] = useState('');
   const dir = x.dir || [], man = x.manual || {};
@@ -1962,9 +1964,17 @@ function Roles({ roles, alCambiar }) {
   const p = sel && dir.find((y) => y[2] === sel);
   const conMano = dir.filter((y) => man[y[2]] && Object.keys(man[y[2]]).length);
   const cambiar = async (rol, si) => {
-    setOcup(true); setMsg('');
+    setOcup(true); setMsg(''); setPide(null); setEscrito('');
     try { setX(await ponerRol({ id: p[2], rol, si })); } catch (e) { setMsg('No se pudo: ' + e.message); }
     setOcup(false);
+  };
+  // 🛑 DAR UN ROL ALTO PIDE ESCRIBIR SU NOMBRE (25/10/2026, el research: «el freno se mide por el daño»). Admin,
+  // Asistente y Moderador abren el Dashboard a esa persona; sacarlo, o los roles que no abren nada, van directo
+  const ALTOS = { admin: 'todo el Dashboard menos los roles', asistente: 'decidir y corregir, con historial', moderador: 'cerrar lo que no mueve puntos' };
+  const elegir = (rol, v) => {
+    const si = v === 'si' ? true : v === 'no' ? false : null;
+    if (si === true && ALTOS[rol]) { setPide(rol); setEscrito(''); return; }
+    cambiar(rol, si);
   };
   const chips = (l) => (l || []).map((r) => <span key={r[0]} className="db-chip">{nombreRol(r[0])}{r[1] ? ' · ' + r[1].join(', ') : ''}</span>);
   return (
@@ -1985,8 +1995,8 @@ function Roles({ roles, alCambiar }) {
               <li key={rol}>
                 <b>{n}</b>
                 <small>{solo ? 'sale solo' + (solo.length ? ' (' + solo.join(', ') + ')' : '') : ['admin', 'asistente', 'moderador'].includes(rol) ? '' : 'no sale solo'}</small>
-                <select className="db-sel" disabled={ocup} value={m === 1 ? 'si' : m === 0 ? 'no' : 'auto'}
-                  onChange={(e) => cambiar(rol, e.target.value === 'si' ? true : e.target.value === 'no' ? false : null)}>
+                <select className="db-sel" disabled={ocup} value={pide === rol ? 'si' : m === 1 ? 'si' : m === 0 ? 'no' : 'auto'}
+                  onChange={(e) => elegir(rol, e.target.value)}>
                   <option value="auto">{['admin', 'asistente', 'moderador'].includes(rol) ? 'No' : 'Como sale solo'}</option>
                   <option value="si">Sí</option>
                   {['admin', 'asistente', 'moderador'].includes(rol) ? null : <option value="no">No, aunque salga solo</option>}
@@ -1994,6 +2004,16 @@ function Roles({ roles, alCambiar }) {
               </li>
             );
           })}</ul>
+          {pide ? (
+            <div className="dz-freno" role="group" aria-label="Confirmar el rol">
+              <p>Darle <b>{nombreRol(pide)}</b> a <b>{p[1]}</b> le abre {ALTOS[pide]}. Para confirmar, escribe su nombre:</p>
+              <div className="dz-freno-f">
+                <input type="text" value={escrito} aria-label={'Escribe ' + p[1] + ' para confirmar'} placeholder={p[1]} onChange={(e) => setEscrito(e.target.value)} />
+                <button type="button" className="btn verde chico" disabled={ocup || normN(escrito) !== normN(p[1])} onClick={() => cambiar(pide, true)}>Darle {nombreRol(pide)}</button>
+                <button type="button" className="dz-lnk" onClick={() => { setPide(null); setEscrito(''); }}>Cancelar</button>
+              </div>
+            </div>
+          ) : null}
           {msg ? <small role="status">{msg}</small> : null}
         </div>
       ) : null}
@@ -3336,8 +3356,17 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
 // tarjetas sueltas con seis selectores cada una, y el tier y el dueño vivían en otra pestaña. Ahora una fila por servidor
 // —tier, multiplicador, bot en vivo, cuánto habla, apuestas, aviso de cada evento y eventos de Discord— y «Ficha» abre
 // debajo lo que mide el puntaje, lo que recibe y quién es su dueño. Guardan lo mismo que guardaban las tarjetas
-function ServidoresTabla({ liga, aj, hacer, ocup, chat, T }) {
+function ServidoresTabla({ liga, aj, hacer, ocup, chat, T, origen }) {
   const [ficha, setFicha] = useState('');
+  // 🛑 bajar de Tier 1 deja de sumar sus llaves al ranking: se confirma (el resto vuelve con «Deshacer»)
+  const [bajar, setBajar] = useState(null);
+  // la ficha, al costado: se cierra con Esc
+  useEffect(() => {
+    if (!ficha) return undefined;
+    const f = (e) => { if (e.key === 'Escape') setFicha(''); };
+    W.addEventListener && W.addEventListener('keydown', f);
+    return () => { W.removeEventListener && W.removeEventListener('keydown', f); };
+  }, [ficha]);
   const fichaRef = useRef(null);
   const c = chat || {};
   const tiersT = (T && T.servidores) || [];
@@ -3386,7 +3415,7 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T }) {
         <table>
           <thead><tr>
             <th scope="col">Servidor</th><th scope="col">Tier</th>{m.id ? <th scope="col">Multiplicador</th> : null}<th scope="col">Bot en vivo</th>
-            <th scope="col">Cuánto habla</th><th scope="col">Apuestas</th><th scope="col">Aviso de evento</th><th scope="col">Eventos Discord</th><th scope="col"><span className="rk-sr">Ficha</span></th>
+            <th scope="col">Cuánto habla</th><th scope="col">Apuestas</th><th scope="col">Aviso de evento</th><th scope="col">Eventos Discord</th><th scope="col" title="De los que debutaron ahí, cuántos volvieron a jugar en 14 días">Vuelven</th><th scope="col"><span className="rk-sr">Ficha</span></th>
           </tr></thead>
           <tbody>{svs.map((sv) => {
             const vm = ref[sv] == null ? 1 : ref[sv];
@@ -3397,7 +3426,8 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T }) {
               <Fragment key={sv}>
                 <tr className={ficha === sv ? 'on' : ''}>
                   <th scope="row"><span className="dz-svt-n"><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b><i className={prendido(sv) ? 'ok' : ''} title={prendido(sv) ? 'el bot habla ahí' : 'el bot no habla ahí'} /></span></th>
-                  <td><select aria-label={'El tier de ' + siglaDe(sv)} value={t ? String(t) : ''} disabled={ocup} onChange={(e) => cambiarTier(sv, Number(e.target.value))}>
+                  <td><select aria-label={'El tier de ' + siglaDe(sv)} value={bajar && bajar[0] === sv ? String(bajar[1]) : t ? String(t) : ''} disabled={ocup}
+                    onChange={(e) => { const n = Number(e.target.value); if (t === 1 && n !== 1) setBajar([sv, n]); else { setBajar(null); cambiarTier(sv, n); } }}>
                     {!t ? <option value="">—</option> : null}{[1, 2, 3].map((n) => <option key={n} value={String(n)}>Tier {n}</option>)}</select></td>
                   {m.id ? <td><select aria-label={'El multiplicador de ' + siglaDe(sv)} value={String(vm)} disabled={ocup} onChange={(e) => cambiarMult(sv, Number(e.target.value))}>
                     {ops.map((x) => <option key={x} value={String(x)}>{mult(x)}</option>)}</select></td> : null}
@@ -3416,6 +3446,8 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T }) {
                     onChange={(e) => cambiar('eventos_discord', aj.eventos_discord || {}, sv, e.target.value === 'si' ? true : '')}>
                     <option value="">Apagados</option><option value="si">Prendidos</option></select>
                     {evd ? <small className={evd.error ? 'db-mal' : ''}>{(evd.creados || 0) + ' en 7 días' + (evd.error === 'permiso' ? ' · falta permiso' : evd.error ? ' · ' + evd.error : '')}</small> : null}</td>
+                  <td className="dz-num-c">{(origen || {})[sv] && origen[sv][0] ? <b>{Math.round((100 * origen[sv][1]) / origen[sv][0])} %</b> : '—'}
+                    {(origen || {})[sv] && origen[sv][0] ? <small>{num(origen[sv][1])}/{num(origen[sv][0])}</small> : null}</td>
                   <td><button type="button" className="dz-lnk" aria-expanded={ficha === sv} disabled={!tiersT.some((y) => y.sv === sv)}
                     onClick={() => {
                       setFicha(ficha === sv ? '' : sv);
@@ -3428,10 +3460,26 @@ function ServidoresTabla({ liga, aj, hacer, ocup, chat, T }) {
         </table>
       </div>
       {/* la ficha va abajo de la tabla y no adentro: adentro heredaba el ancho de las nueve columnas y quedaba corrida de costado */}
+      {bajar ? (
+        <div className="dz-freno" role="alert">
+          <p><b>{siglaDe(bajar[0])} pasa a Tier {bajar[1]}</b>: sus llaves dejan de sumar al ranking desde la próxima vuelta del ciclo{(origen || {})[bajar[0]] ? ' (ahí debutaron ' + num(origen[bajar[0]][0]) + ' personas esta temporada)' : ''}.</p>
+          <div className="dz-freno-f">
+            <button type="button" className="btn verde chico" disabled={ocup} onClick={() => { cambiarTier(bajar[0], bajar[1]); setBajar(null); }}>Sí, pasarlo a Tier {bajar[1]}</button>
+            <button type="button" className="dz-lnk" onClick={() => setBajar(null)}>Cancelar</button>
+          </div>
+        </div>
+      ) : null}
+      {/* la ficha, en un panel al costado (el research: un registro se abre al lado, no en un acordeón que empuja la tabla) */}
       {ficha && xFicha ? (
-        <div className="dz-svt-ficha" ref={fichaRef}>
-          <div className="dz-svt-c"><b>La ficha de {siglaDe(ficha)}</b><button type="button" className="dz-lnk" onClick={() => setFicha('')}>Cerrar</button></div>
-          <TierCaja x={xFicha} liga={liga} tier={tierDe(ficha) || 1} cambiar={cambiarTier} ocup={ocup} i={0} aj={aj} hacer={hacer} />
+        <div className="dz-lado-velo" onClick={(e) => { if (e.target === e.currentTarget) setFicha(''); }}>
+          <aside className="dz-lado" ref={fichaRef} aria-label={'La ficha de ' + siglaDe(ficha)}>
+            <div className="dz-svt-c"><b>La ficha de {siglaDe(ficha)}</b><button type="button" className="btn borde2 chico" onClick={() => setFicha('')}>Cerrar · Esc</button></div>
+            {(origen || {})[ficha] ? (
+              <p className="dz-origen">De la gente que <b>debutó en {siglaDe(ficha)}</b> esta temporada, <b>{num(origen[ficha][1])} de {num(origen[ficha][0])}</b>
+                {' '}({Math.round((100 * origen[ficha][1]) / Math.max(1, origen[ficha][0]))} %) volvió a jugar en 14 días{origen[ficha][0] < 30 ? ' · pocos: el número se mueve mucho' : ''}.</p>
+            ) : null}
+            <TierCaja x={xFicha} liga={liga} tier={tierDe(ficha) || 1} cambiar={cambiarTier} ocup={ocup} i={0} aj={aj} hacer={hacer} />
+          </aside>
         </div>
       ) : null}
       <p className="db-tx">El punto al lado de la sigla es verde si el bot habla en su chat. Tier 1 suma al ranking; Tier 2 sale en el calendario y la campana, sin sumar; Tier 3 tiene su página y sus ligas.</p>
@@ -3460,7 +3508,7 @@ function Fila({ id, t, que, val, tono, abierta, alAbrir, accion, children }) {
   );
 }
 
-function AjustesFilas({ liga, aj, hacer, ocup, chat, ir, abrir }) {
+function AjustesFilas({ liga, aj, hacer, ocup, chat, ir, abrir, sis }) {
   const [ab, setAb] = useState(abrir || '');
   useEffect(() => { if (abrir) setAb(abrir); }, [abrir]);
   const f = (id) => ({ id, abierta: ab === id, alAbrir: () => setAb(ab === id ? '' : id) });
@@ -3484,7 +3532,8 @@ function AjustesFilas({ liga, aj, hacer, ocup, chat, ir, abrir }) {
         <Fila {...f('aj-campana')} t="La campana" que="Avisa a los celulares cuando un servidor anuncia un evento."
           val={p ? '⏸ En pausa' : '● Suena'} tono={p ? 'ojo' : 'ok'}
           accion={p ? <button type="button" className="btn verde chico" disabled={ocup} onClick={() => hacer('campana_pausada', false, 'La campana vuelve a sonar.')}>Reanudar</button>
-            : <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo para pausar" onClick={() => hacer('campana_pausada', true, 'La campana quedó en pausa.')}>Pausar</DosToques>} />
+            : <DosToques className="btn borde2 chico" disabled={ocup} confirmar={sis && sis.suscripciones ? 'Toca de nuevo: ' + num(sis.suscripciones) + ' dispositivos dejan de recibir avisos' : 'Toca de nuevo para pausar'}
+              onClick={() => hacer('campana_pausada', true, 'La campana quedó en pausa.')}>Pausar</DosToques>} />
         <Fila {...f('aj-aviso')} t="Aviso en la página" que="Un mensaje arriba de todas las páginas, hasta la hora que elijas."
           val={vig ? '«' + corte(vig.texto, 34) + '» · hasta ' + liga.dia(vig.hasta) : 'Ninguno'} tono={vig ? 'ojo' : ''}>
           <AjAviso liga={liga} aj={aj} hacer={hacer} ocup={ocup} /></Fila>
@@ -3764,6 +3813,7 @@ export function Dashboard({ dc, liga }) {
   const [, tic] = useState(0);
   useEffect(() => { const id = setInterval(() => tic((n) => n + 1), 30000); return () => clearInterval(id); }, []);
   const [panel, setPanel] = useState(() => !panelCerrado());
+  const [masNav, setMasNav] = useState(false);
 
   let cuerpo;
   if (st.cargando) cuerpo = <p className="pronto-p">Cargando…</p>;
@@ -3876,7 +3926,7 @@ export function Dashboard({ dc, liga }) {
       <>
         {msg ? <p className="db-msg dz-msg" role="status">{msg}</p> : null}
         {sec('sv-cada', 'LOS SERVIDORES', 'una fila cada uno: se cambia ahí mismo',
-          <ServidoresTabla liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} T={d.tiers} />)}
+          <ServidoresTabla liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} T={d.tiers} origen={(d.primerizos || {}).por_sv} />)}
         {d.tiers ? sec('sv-sumar', 'SUMAR UN SERVIDOR', d.tiers.t ? 'el puntaje, medido ' + hace(d.tiers.t) : null,
           <SumarServidor T={d.tiers} aj={aj} hacer={hacer} ocup={ocup} />) : null}
       </>
@@ -3885,7 +3935,7 @@ export function Dashboard({ dc, liga }) {
     vista = (
       <>
         {msg ? <p className="db-msg dz-msg" role="status">{msg}</p> : null}
-        <AjustesFilas liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} ir={ir} abrir={abrir} />
+        <AjustesFilas liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} ir={ir} abrir={abrir} sis={d.sistema} />
       </>
     );
   } else if (areaV === 'numeros') {
@@ -3943,13 +3993,16 @@ export function Dashboard({ dc, liga }) {
           <div className="dz-marca"><small>UNDER LEGENDS · {liga.temp}</small><b>Dashboard</b></div>
           {AREAS.filter(([k]) => visibles[k]).map(([k, t, ic]) => {
             const c = k === 'pendientes' ? total : 0;
+            // 📱 en el teléfono se ven cuatro (las del día a día) y la que está abierta; el resto, detrás de «Más»
+            const extra = !['resumen', 'pendientes', 'servidores', 'salud'].includes(k) && areaV !== k;
             return (
-              <button key={k} type="button" className={'dz-a' + (areaV === k ? ' on' : '')} aria-current={areaV === k ? 'page' : undefined} onClick={() => ir(k)}>
+              <button key={k} type="button" className={'dz-a' + (areaV === k ? ' on' : '') + (extra ? ' dz-a-extra' + (masNav ? ' ver' : '') : '')} aria-current={areaV === k ? 'page' : undefined} onClick={() => ir(k)}>
                 <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" aria-hidden="true"><path d={ic} /></svg>{t}</span>
                 {c ? <i>{c}</i> : null}
               </button>
             );
           })}
+          <button type="button" className="dz-a dz-a-mas" aria-expanded={masNav} onClick={() => setMasNav(!masNav)}><span>{masNav ? 'Menos' : 'Más…'}</span></button>
         </nav>
         <div className="dz-der">
           <div className="dz-top">

@@ -73,6 +73,7 @@ def _self_check():
     ver([f[0] for f in x['frio']] == ['Ana'] and x['frio'][0][4] == 2, 'enfriado: dos o más eventos y 21 días sin volver')
     ver(x['hist'] == {'1': 2, '2': 2} and x['n_una'] == 2 and x['jugadores'] == 4, 'cuántos jugaron cuántos eventos')
     ver(x['una'][0][-1] == 'caro' and x['frio'][0][-1] == 'ana', 'cada uno lleva su clave de perfil al final')
+    ver(x['por_sv'] == {'FFA': [2, 2]}, 'de dónde viene la gente: el servidor del debut, sólo debuts de hace 14 días o más, y quién volvió')
     return ok
 
 

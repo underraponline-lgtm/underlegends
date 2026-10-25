@@ -601,9 +601,18 @@ def primerizos(filas, ahora=None):
         if viejo is None or t < viejo[0]:
             por[quien][num] = (t, sv or '')
     una, frio, hist = [], [], defaultdict(int)
+    # 🏟️ de qué servidor viene cada uno (el de su debut) y si volvió en 14 días: sólo los debuts que ya cumplieron los 14
+    # días, para que el número no baje solo por la gente recién llegada
+    origen = defaultdict(lambda: [0, 0])
     for quien, evs in por.items():
         xs = sorted(evs.values(), key=lambda x: x[0])
         hist[min(len(xs), 10)] += 1
+        t1 = xs[0][0]
+        if xs[0][1] and (ahora - t1).days >= VUELVE_DIAS:
+            o = origen[xs[0][1]]
+            o[0] += 1
+            o[1] += any(x[0].astimezone(et).date() > t1.astimezone(et).date() and x[0] - t1 <= _dt.timedelta(days=VUELVE_DIAS)
+                        for x in xs[1:])
         d1, du = xs[0][0].astimezone(et).date(), xs[-1][0].astimezone(et).date()
         if len(xs) == 1:
             una.append([quien, xs[0][1], d1.isoformat()])
@@ -613,7 +622,8 @@ def primerizos(filas, ahora=None):
     frio.sort(key=lambda f: (-f[4], f[3]))
     return {'v': 1, 'cuando': ahora.astimezone(_dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
             'enfria_dias': ENFRIA_DIAS, 'jugadores': len(por), 'hist': {str(k): v for k, v in sorted(hist.items())},
-            'n_una': len(una), 'n_frio': len(frio), 'una': una[:500], 'frio': frio[:250]}
+            'n_una': len(una), 'n_frio': len(frio), 'una': una[:500], 'frio': frio[:250],
+            'por_sv': {sv: o for sv, o in sorted(origen.items())}}
 
 
 #: donde la deja para `bot/primerizos.py` (`.cache/`: tiene nombres y no se commitea)

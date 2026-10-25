@@ -755,3 +755,21 @@
 .dz-prim-ya{font:700 12.5px/1.3 Archivo,sans-serif;color:var(--verde)}
 .dz-prim-msg{flex:1 0 100%;color:var(--magenta-tx)!important}
 .dz-marcas{grid-column:2 / -1;font-size:12px;font-style:normal;line-height:1.3;color:var(--gris);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+/* 🛑 tanda 3: el freno según el daño, la ficha al costado, el menú del teléfono */
+.dz-freno{display:grid;gap:8px;padding:12px 14px;border:2px solid #F2C230;border-radius:4px;background:var(--fondo)}
+.dz-freno p{margin:0;font-size:14px;line-height:1.45}
+.dz-freno-f{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.dz-freno-f input{flex:1 1 200px}
+.dz-lado-velo{position:fixed;inset:0;z-index:55;display:flex;justify-content:flex-end;background:rgba(3,3,4,.45)}
+.dz-lado{width:min(460px,100%);height:100%;overflow:auto;display:grid;gap:12px;align-content:start;padding:18px 16px 28px;border-left:2px solid var(--linea);background:var(--caja);color:var(--tinta)}
+.dz-origen{margin:0;padding:10px 12px;border:1.5px solid var(--suave);border-radius:4px;font-size:14px;line-height:1.45}
+.dz-tabla td.dz-num-c b{display:block;font:800 13px/1.1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.dz-der .dz-tabla th,.dz-der .dz-tabla td{padding:6px 3px}
+.dz-der :focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+.dz-a-mas{display:none}
+@media (max-width:760px){
+  .dz-a-extra{display:none}
+  .dz-a-extra.ver{display:flex}
+  .dz-a-mas{display:flex;justify-content:center;border:1.5px dashed #3A3A42}
+  .dz-lado{width:100%}
+}
