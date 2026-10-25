@@ -124,9 +124,9 @@
     "base": 6000,
     "o": 58,
     "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 6000
+    "ev": 1,
+    "fase": "Campeón",
+    "valor": 7250
    },
    {
     "n": "Colesito",
@@ -156,7 +156,7 @@
       },
       {
        "n": "Xubaru",
-       "cobra": 4500
+       "cobra": 4250
       }
      ]
     }
@@ -239,7 +239,7 @@
       },
       {
        "n": "Lord Viruzz",
-       "cobra": 2500
+       "cobra": 2250
       },
       {
        "n": "Masino",

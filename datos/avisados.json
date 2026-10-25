@@ -21952,5 +21952,156 @@
    ]
   ],
   "v": 2
+ },
+ "513": {
+  "antes": {
+   "Adriagner": [
+    69,
+    91,
+    false
+   ],
+   "Cabece": [
+    415,
+    388,
+    true
+   ],
+   "Dominick": [
+    215,
+    46,
+    true
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "JULIX": [
+    279,
+    196,
+    true
+   ],
+   "Makmah": [
+    2,
+    2,
+    false
+   ],
+   "Marcos": [
+    97,
+    144,
+    false
+   ],
+   "Walker": [
+    52,
+    69,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Walker",
+    "Makmah",
+    "Walker"
+   ],
+   [
+    "JULIX",
+    "Erian",
+    "JULIX"
+   ],
+   [
+    "Adriagner",
+    "Cabece",
+    "Adriagner"
+   ],
+   [
+    "Marcos",
+    "Dominick",
+    "Marcos"
+   ],
+   [
+    "Walker",
+    "JULIX",
+    "Walker"
+   ],
+   [
+    "Adriagner",
+    "Marcos",
+    "Adriagner"
+   ],
+   [
+    "Walker",
+    "Adriagner",
+    "Walker"
+   ],
+   [
+    "Marcos",
+    "JULIX",
+    "Marcos"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 6,
+   "Cabece": 1,
+   "Dominick": 20,
+   "Erian": 49,
+   "JULIX": 2,
+   "Makmah": 70,
+   "Marcos": 5,
+   "Walker": 5
+  },
+  "fecha": "25/10",
+  "firma": "e7564cdc246b9363",
+  "msg": "1563988074583564319",
+  "nombre": "19 CUP FUTCARD - EDICIÓN 7",
+  "num": 513,
+  "participantes": 8,
+  "sello": {
+   "Walker": "fdc918e48a50:e8f4f15f7e3a"
+  },
+  "sv": "DDF",
+  "t": "2026-10-25T18:53:38Z",
+  "tabla": [
+   [
+    "Walker",
+    "Campeón",
+    7500
+   ],
+   [
+    "Adriagner",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Marcos",
+    "Tercero",
+    4000
+   ],
+   [
+    "JULIX",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Cabece",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

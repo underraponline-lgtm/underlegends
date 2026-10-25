@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-25T18:25:51+00:00",
+ "cuando": "2026-10-25T18:55:39+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -6912,6 +6912,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Uzi",
+   "quien": "min_g16m",
+   "discord_id": "950011515434573824",
+   "msg_id": "1563982079891611689",
+   "cuando": "2026-10-25T18:26:25"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",

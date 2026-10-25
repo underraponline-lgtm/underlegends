@@ -32090,5 +32090,145 @@
     625
    ]
   ]
+ },
+ "513": {
+  "dia": "2026-10-25",
+  "escala": "8-15",
+  "fecha": "25/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1563976902014673009"
+  ],
+  "n": 513,
+  "nombre": "19 CUP FUTCARD - EDICIÓN 7",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Walker",
+       "Makmah"
+      ],
+      "Walker",
+      ""
+     ],
+     [
+      [
+       "JULIX",
+       "Erian"
+      ],
+      "JULIX",
+      ""
+     ],
+     [
+      [
+       "Adriagner",
+       "Cabece"
+      ],
+      "Adriagner",
+      ""
+     ],
+     [
+      [
+       "Marcos",
+       "Dominick"
+      ],
+      "Marcos",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Walker",
+       "JULIX"
+      ],
+      "Walker",
+      ""
+     ],
+     [
+      [
+       "Adriagner",
+       "Marcos"
+      ],
+      "Adriagner",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Marcos",
+       "JULIX"
+      ],
+      "Marcos",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Walker",
+       "Adriagner"
+      ],
+      "Walker",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Walker",
+    "Campeón",
+    7500
+   ],
+   [
+    "Adriagner",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Marcos",
+    "Tercero",
+    4000
+   ],
+   [
+    "JULIX",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Cabece",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

@@ -215,7 +215,7 @@
 "rg": "C",
 "c": []
 },
-"bloody": {
+"xubaru": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -224,7 +224,7 @@
 "temporada"
 ]
 },
-"xubaru": {
+"bloody": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -276,15 +276,6 @@
 "temporada"
 ]
 },
-"trot": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "xclusivo": {
 "rg": "C",
 "c": []
@@ -300,6 +291,15 @@
 },
 "drexx": {
 "rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"trot": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -461,6 +461,13 @@
 "rg": "",
 "c": []
 },
+"walker": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "cinexfilo": {
 "rg": "E",
 "c": [
@@ -509,13 +516,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"walker": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -603,6 +603,13 @@
 "rg": "",
 "c": []
 },
+"adriagner": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "soneto": {
 "rg": "E",
 "c": [
@@ -661,21 +668,10 @@
 "temporada"
 ]
 },
-"tuca": {
-"rg": "",
-"c": []
-},
 "soulb": {
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"adriagner": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -709,6 +705,10 @@
 "servidor",
 "temporada"
 ]
+},
+"tuca": {
+"rg": "",
+"c": []
 },
 "mathhias": {
 "rg": "",
@@ -768,10 +768,6 @@
 "temporada"
 ]
 },
-"emizor": {
-"rg": "",
-"c": []
-},
 "number": {
 "rg": "",
 "c": [
@@ -818,6 +814,13 @@
 "rg": "",
 "c": []
 },
+"marcos": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "carlosmo": {
 "rg": "",
 "c": [
@@ -825,6 +828,10 @@
 ]
 },
 "badterne": {
+"rg": "",
+"c": []
+},
+"emizor": {
 "rg": "",
 "c": []
 },
@@ -875,10 +882,6 @@
 "c": []
 },
 "carlos": {
-"rg": "",
-"c": []
-},
-"noa": {
 "rg": "",
 "c": []
 },
@@ -939,7 +942,7 @@
 "temporada"
 ]
 },
-"korey": {
+"noa": {
 "rg": "",
 "c": []
 },
@@ -967,13 +970,6 @@
 "c": []
 },
 "mayeutyk": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"marcos": {
 "rg": "",
 "c": [
 "servidor",
@@ -1014,6 +1010,10 @@
 "c": []
 },
 "joshu": {
+"rg": "",
+"c": []
+},
+"korey": {
 "rg": "",
 "c": []
 },
@@ -1079,6 +1079,10 @@
 "servidor",
 "temporada"
 ]
+},
+"julix-x": {
+"rg": "",
+"c": []
 },
 "betelguese": {
 "rg": "",
@@ -1249,10 +1253,6 @@
 "servidor",
 "temporada"
 ]
-},
-"julix-x": {
-"rg": "",
-"c": []
 },
 "ed": {
 "rg": "",
