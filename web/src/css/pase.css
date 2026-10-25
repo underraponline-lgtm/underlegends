@@ -281,3 +281,102 @@
   .ps-pv-l{grid-template-columns:repeat(3,minmax(0,1fr))}
   .ps-pv-ya .ps-ti{width:124px;height:140px}
 }
+
+/* ── 🎟️ LA PISTA GRANDE (25/10/2026, a prueba con ?prev=pistaa / pistab): casillas grandes, una barra gruesa que se
+   llena, tu cara donde vas, y los premios de verdad más anchos y con lo tuyo. Plana, una tinta, radios de 4 ── */
+.pk-w{display:grid;gap:12px;min-width:0}
+.pk-cab{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pk-cab > span{font:800 16px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;color:var(--esc-gris)}
+.pk-cab > span b{color:var(--esc-tinta);font-size:22px}
+.pk-flechas{display:flex;gap:6px}
+.pk-flechas button{display:grid;place-items:center;min-width:40px;height:40px;padding:0 10px;border:1.5px solid var(--esc-tinta);background:none;color:var(--esc-tinta);
+  cursor:pointer;font:900 18px/1 Archivo,sans-serif;border-radius:4px}
+.pk-flechas button:disabled{opacity:.3;cursor:default}
+.pk-flechas .pk-irn{background:var(--verde);border-color:var(--verde);color:#030304;font-size:15px}
+.pk-pista{display:grid;grid-template-columns:22px minmax(0,1fr);gap:6px;margin-right:-16px}
+.pk-filas{display:grid;grid-template-rows:1fr 54px 1fr;padding-top:14px}
+.pk-filas span{writing-mode:vertical-rl;transform:rotate(180deg);display:grid;place-items:center;font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.16em;color:var(--esc-gris)}
+.pk-filas .fp{grid-row:1;color:#FF6FB0}
+.pk-filas .fg{grid-row:3}
+.pk-cols{position:relative;list-style:none;margin:0;padding:14px 16px 6px 0;display:flex;gap:0;overflow-x:auto;scrollbar-width:none;touch-action:pan-x pan-y;cursor:grab}
+.pk-cols.arrastra{cursor:grabbing;user-select:none;-webkit-user-select:none}
+.pk-cols::-webkit-scrollbar{display:none}
+.pk-co{flex:none;width:150px;display:grid;grid-template-rows:184px 54px 184px;padding:0 5px}
+.pk-co.ancha{width:200px}
+/* la barra: gruesa, de punta a punta de la columna, se llena con lo que llevas */
+.pk-riel{position:relative;display:grid;place-items:center}
+.pk-barra{position:absolute;left:0;right:0;top:calc(50% - 7px);height:14px;background:#1F1F24;box-shadow:inset 0 0 0 1.5px #2E2E34}
+.pk-co:first-child .pk-barra{left:5px}
+.pk-barra u{position:absolute;left:0;top:0;bottom:0;background:var(--verde)}
+.pk-n{position:relative;display:grid;place-items:center;min-width:38px;height:38px;padding:0 4px;background:#030304;border:2px solid #3A3A42;border-radius:4px;
+  color:var(--esc-tinta);font:900 18px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.pk-co.cob .pk-n{background:var(--verde);border-color:var(--verde);color:#030304}
+.pk-co.sgt .pk-n{border-color:var(--esc-tinta)}
+/* tú: tu cara sobre la barra, con tu número */
+.pk-tu{position:relative;display:grid;justify-items:center;gap:0}
+.pk-tu-c{width:46px;height:46px;border-radius:50%;box-shadow:0 0 0 3px var(--verde),0 0 0 6px #030304;font:900 18px/1 Archivo,sans-serif}
+.pk-tu b{position:absolute;bottom:-9px;padding:2px 6px;background:var(--verde);color:#030304;font:900 13px/1 Archivo,sans-serif;border-radius:3px}
+/* la casilla */
+.pk-ti{position:relative;height:100%;display:grid;grid-template-rows:minmax(0,1fr) auto auto;justify-items:center;align-items:center;gap:4px;padding:12px 8px 12px;
+  background:#101012;border:2px solid #2A2A2E;border-radius:4px;text-align:center}
+.pk-arte{display:grid;place-items:center;min-height:0}
+.pk-q{font:900 20px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;color:var(--esc-tinta)}
+.pk-q.n{color:#F5C542;font-size:24px}
+.pk-ti small{font:700 13px/1.15 "Barlow Condensed",sans-serif;letter-spacing:.02em;color:var(--esc-gris)}
+.pk-ti.g.esp{border-color:#6E6E78;background:#15151A}
+.pk-ti.g.esp .pk-q{font-size:18px}
+.pk-ti.p{background:#16070F;border-color:#4A1530}
+.pk-ti.p.esp{border-color:#B0246B;background:#1F0A15}
+.pk-ti.p .pk-q{color:#FFB3D5}
+.pk-ti.p .pk-q.n{color:#FFB3D5}
+.pk-ti.p small{color:#C98AAA}
+.pk-ti.bloq .pk-arte,.pk-ti.bloq .pk-q{opacity:.55}
+.pk-cand{position:absolute;top:6px;right:7px;font-style:normal;font-size:14px}
+/* cobrado: el sello y apagado; lo siguiente: borde blanco que late */
+.pk-ti.cob{opacity:.62}
+.pk-sello{position:absolute;top:-2px;left:-2px;display:grid;place-items:center;width:28px;height:28px;background:var(--verde);color:#030304;
+  font:900 16px/1 Archivo,sans-serif;font-style:normal;border-radius:4px 0 4px 0}
+.pk-ti.p .pk-sello{background:#E41373;color:#fff}
+.pk-ti.sgt{border-color:var(--esc-tinta);box-shadow:0 0 0 2px var(--esc-tinta)}
+.pk-ti.sgt::after{content:"SIGUIENTE";position:absolute;top:-11px;left:50%;transform:translateX(-50%);padding:3px 7px;background:var(--esc-tinta);color:#030304;
+  font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;border-radius:3px;white-space:nowrap}
+.pk-ti.p.sgt::after{content:none}
+@keyframes pk-late{0%,100%{box-shadow:0 0 0 2px var(--esc-tinta)}50%{box-shadow:0 0 0 5px var(--esc-tinta)}}
+.pk-ti.g.sgt{animation:pk-late 1.8s ease-in-out infinite}
+.app.calma .pk-ti.g.sgt,.app.tapado .pk-ti.g.sgt{animation:none}
+@media (prefers-reduced-motion: reduce){.pk-ti.g.sgt{animation:none}}
+/* los dibujos con lo tuyo */
+.pk-carta{display:block;line-height:0}
+.pk-carta .mk{margin-inline:0}
+.pk-carta-img{display:block;height:auto}
+.pk-dorado{font:900 20px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;color:#F5C542;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* el color que elijas: tu nombre en tu color (acá, el magenta del premium) */
+.pk-tuyo{color:#FF6FB0}
+.pk-titulo{display:inline-block;max-width:100%;padding:7px 9px;border:2px solid var(--esc-tinta);color:var(--esc-tinta);font:900 13px/1.1 Archivo,sans-serif;
+  text-transform:uppercase;border-radius:3px}
+.pk-titulo.p{border-color:#FF6FB0;color:#FFB3D5}
+.pk-emo{line-height:1;font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif}
+.pk-pdt{margin:0;font-size:13.5px;color:var(--esc-gris)}
+.pk-pdt b{color:#F5C542}
+/* 🏆 opción B: el próximo gran premio */
+.pk-esc{display:grid;grid-template-columns:minmax(0,1fr);justify-items:center;text-align:center;gap:12px;min-width:0;align-items:center;padding:14px;border:2px solid var(--esc-tinta);border-radius:4px;background:#101012}
+.pk-esc.p{border-color:#E41373;background:#16070F}
+.pk-esc-arte{display:grid;place-items:center;max-width:100%;min-width:0}
+.pk-esc-tx{display:grid;gap:6px;justify-items:center;min-width:0;max-width:100%}
+.pk-esc-tx > *{max-width:100%;overflow-wrap:anywhere}
+.pk-esc-t{font:800 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:var(--verde)}
+.pk-esc.p .pk-esc-t{color:#FF6FB0}
+.pk-esc-tx > b{font:900 22px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;color:var(--esc-tinta)}
+.pk-esc-f{font:700 16px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:#F5C542}
+.pk-esc-b{font-size:13.5px;color:var(--esc-gris)}
+@media (min-width: 900px){
+  .pk-pista{margin-right:0}
+  .pk-cols{padding-right:0}
+  .pk-co{width:172px;grid-template-rows:206px 58px 206px}
+  .pk-co.ancha{width:236px}
+  .pk-filas{grid-template-rows:1fr 58px 1fr}
+  .pk-esc{grid-template-columns:auto minmax(0,1fr);justify-items:start;text-align:left;padding:18px 22px;gap:24px}
+  .pk-esc-tx{justify-items:start}
+  .pk-esc-arte{min-width:120px}
+  .pk-esc-tx > b{font-size:28px}
+}

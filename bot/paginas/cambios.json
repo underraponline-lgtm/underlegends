@@ -11,6 +11,15 @@
  ],
  "cambios": [
   {
+   "version": "4.04",
+   "dia": "2026-10-25",
+   "cuando": "2026-10-25T14:02:40-04:00",
+   "titulo": "La barra de abajo, con aire",
+   "items": [
+    "📐 **En el celular, la barra de abajo**: la sección que asoma en la punta ya no queda pegada a «Tu cuenta» (se leía «LIGTU CUENTA»)."
+   ]
+  },
+  {
    "version": "4.03",
    "dia": "2026-10-25",
    "cuando": "2026-10-25T13:49:58-04:00",

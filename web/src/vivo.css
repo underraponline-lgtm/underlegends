@@ -119,6 +119,9 @@ button.destacada{width:100%;font:inherit;color:inherit;text-align:left;cursor:po
 /* sin la raya negra que la separaba de la tira (Dlx, 03/10/2026: «eliminá la línea negra que hay en los íconos de abajo
    y la cuenta») */
 .tabbar .tb-yo{flex:0 0 auto;min-width:64px}
+/* 📐 y con aire a la izquierda (25/10/2026): la sección que asoma cortada en la punta de la tira quedaba pegada a «Tu
+   cuenta» y se leía «LIGTU CUENTA». Sin línea (Dlx, 03/10): sólo espacio */
+.tabbar .tb-yo{margin-left:12px}
 /* «Yo», con tu cara (02/10/2026): del tamaño de los íconos de al lado, y con borde si la pestaña está marcada */
 .tabbar .tb-cara{width:24px;height:24px;border-radius:50%;overflow:hidden;display:grid;place-items:center;
   background:var(--inv);color:var(--inv-tinta);font:900 12px/1 Archivo,sans-serif}

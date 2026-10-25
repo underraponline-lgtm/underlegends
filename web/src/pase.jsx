@@ -15,12 +15,14 @@ import { avance, multAhora, pasePost, pedirPase, refrescarPases, usePase, usePas
 import { nombreMarco } from './marcos.jsx';
 import { PREMIUM_VIVO, PaseIcono, TareaIcono, premioCorto, premioLargo } from './pase_iconos.jsx';
 import { PopPase } from './pase_pop.jsx';
+import { PistaGrande } from './pase_pista.jsx';
 import CSS_PAGINA from './css/pase.css?inline';
 import { usarCss } from './css.js';
 
 usarCss('pase', CSS_PAGINA);
 
 const DIA = 86400000;
+const prevDe = (x) => { try { return localStorage.getItem('lg:prev-' + x) === '1'; } catch (e) { return false; } };
 // la curva nueva (`CURVA_DESDE` de bot/pase.py: el lunes 26/10 a las 11 AM ET) y una semana para contarlo
 const CURVA = [Date.UTC(2026, 9, 26, 15, 0), Date.UTC(2026, 10, 2, 16, 0)];
 
@@ -715,7 +717,12 @@ export function Pase({ liga, dc }) {
     </div>
   ) : null;
   // en lo negro: la pista (Premios), lo exclusivo de la T1 (Tareas, al lado de tu carta) o lo que cobras (Premium)
-  const arriba = tab === 'premios' ? <Pista libres={libres} prem={prem} nivel={nivel} tiene={tiene} tienda={tienda} min={min} compu={compu} />
+  // 🎟️ la pista grande, a prueba (`?prev=pistaa` / `?prev=pistab`) hasta que Dlx elija
+  const pk = prevDe('pistab') ? 'b' : prevDe('pistaa') ? 'a' : '';
+  const pct = P && P.hasta > P.desde ? (100 * (P.xp - P.desde)) / (P.hasta - P.desde) : 0;
+  const arriba = tab === 'premios' && pk ? <PistaGrande libres={libres} prem={prem} nivel={nivel} tiene={tiene} tienda={tienda} min={min} compu={compu}
+    pct={pct} liga={liga} yo={miembro ? yo : null} opcion={pk} umbrales={cfg.umbrales} xp={P ? P.xp : null} />
+    : tab === 'premios' ? <Pista libres={libres} prem={prem} nivel={nivel} tiene={tiene} tienda={tienda} min={min} compu={compu} />
     : tab === 'tareas' && compu ? <Exclusivos libres={libres} prem={prem} oscuro /> : null;
   let abajo;
   if (tab === 'premios') {
