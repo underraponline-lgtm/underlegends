@@ -5677,6 +5677,11 @@ export class Avisos {
         'ref TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, temp, que, ref)) WITHOUT ROWID');
       this.sql.exec('CREATE TABLE IF NOT EXISTS pase_hito (quien TEXT NOT NULL, temp TEXT NOT NULL, ' +
         'nivel INTEGER NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, temp, nivel))');
+      // 📊 EL TABLERO DEL PASE (25/10/2026, el informe «Pase de rapero enganche», cambio 1; Dlx: «dale»): una foto de
+      // cuántos hay en cada nivel por semana, la primera vez que se mira esa semana. Para comparar antes y después de
+      // tocar el Pase (la curva, la gracia…): sin la foto del antes no se puede decir si algo sirvió
+      this.sql.exec('CREATE TABLE IF NOT EXISTS pase_foto (temp TEXT NOT NULL, sem TEXT NOT NULL, dist TEXT NOT NULL, ' +
+        't INTEGER NOT NULL, PRIMARY KEY (temp, sem))');
       // ⭐ LO QUE SUBE EL NIVEL ADEMÁS DE JUGAR (14/10/2026): cada cosa hecha, una vez cada una (`que` de `XP_FUENTES`,
       // `ref` qué fue). No se borra con el tiempo —los aplausos se van a los 30 días y la XP no tiene que bajar—: sólo
       // con «olvidarme». Ver `xpVio()` y `xpDe()`
@@ -12412,9 +12417,39 @@ export class Avisos {
     const nombre = Object.fromEntries([].concat(c.diarias || [], c.semanales || [], c.temporada || []).map((t) => [t[0], t[1]]));
     const cuenta = (s) => this.sql.exec('SELECT tarea, COUNT(*) AS n FROM pase_hecho WHERE temp = ? AND sem = ? ' +
       'GROUP BY tarea ORDER BY n DESC', c.temp, s).toArray().map((f) => [nombre[f.tarea] || f.tarea, f.n]);
+    // 📊 el tablero (25/10/2026, ver `pase_foto`): la foto de esta semana, si todavía no estaba. ⚠️ Todo lo del tablero
+    // va en su `try`: si algo falla, el resto del Dashboard sale igual (sin las tres piezas nuevas)
+    let fotos = [], trabados = {}, conVivo = 0, sinNadie = 0;
+    try {
+      if (sem) {
+        this.sql.exec('INSERT OR IGNORE INTO pase_foto (temp, sem, dist, t) VALUES (?, ?, ?, ?)', c.temp, sem[0],
+          JSON.stringify(dist), ahora);
+      }
+      fotos = this.sql.exec('SELECT sem, dist FROM pase_foto WHERE temp = ? ORDER BY sem', c.temp).toArray()
+        .map((f) => { let x = {}; try { x = JSON.parse(f.dist); } catch (e) { x = {}; } return [f.sem, x]; });
+      // quién está trabado y dónde: por nivel, cuántos no cumplen una Tarea hace 7 días o más
+      const ultima = Object.fromEntries(this.sql.exec('SELECT quien, MAX(t) AS t FROM pase_hecho WHERE temp = ? GROUP BY quien',
+        c.temp).toArray().map((f) => [String(f.quien), f.t]));
+      for (const [q, n] of Object.entries(niveles)) {
+        const x = trabados[n] || (trabados[n] = [0, 0]);
+        x[0]++;
+        if (!ultima[q] || ahora - ultima[q] >= 7 * DIA_MS) x[1]++;
+      }
+      // los días que la diaria tocó «mirar una llave en vivo» y nadie miró ninguna: casi seguro, un día sin evento
+      // (aproximado: el Pase no sabe del calendario, sabe quién miró)
+      const vivoDias = new Set(this.sql.exec("SELECT t FROM pase_log WHERE temp = ? AND que = 'vivo'", c.temp).toArray()
+        .map((f) => diaET(f.t)));
+      const ini = P.sem.length ? P.sem[0][1] : ahora;
+      for (let t = ini; t <= ahora; t += DIA_MS) {
+        const dia = diaET(t);
+        if (!paseDelDia(c, dia).some((x) => x[3] === 'vivo')) continue;
+        conVivo++;
+        if (!vivoDias.has(dia)) sinNadie++;
+      }
+    } catch (e) { /* sin el tablero: el resto del resumen igual */ }
     return { temp: c.temp, niveles: c.niveles, miembros: P.miembros.size, con_nivel: Object.keys(niveles).length,
       dist, semana: sem ? sem[0] : '', hasta: sem ? sem[2] : null, tareas: sem ? cuenta(sem[0]) : [],
-      hoy: cuenta('d:' + diaET(ahora)), temporada: cuenta('temp'),
+      hoy: cuenta('d:' + diaET(ahora)), temporada: cuenta('temp'), fotos, trabados, vivo: [conVivo, sinNadie],
       salon: this.sql.exec('SELECT COUNT(*) AS n FROM pase_hito WHERE temp = ? AND nivel = ?', c.temp, c.niveles).toArray()[0].n };
   }
 

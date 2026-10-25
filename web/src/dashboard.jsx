@@ -873,6 +873,31 @@ function ClicsNumeros({ c }) {
   );
 }
 
+// 📊 EL TABLERO DEL PASE (25/10/2026; el informe «Pase de rapero enganche», cambio 1, y Dlx: «dale»): una fila por semana
+// con cuántos había y qué parte estaba entre el 1 y el 3 —es la foto del antes para cada cambio del Pase—, y los días que
+// la diaria tocó «mirar una llave en vivo» sin que nadie mirara ninguna (casi seguro, un día sin evento)
+function FotosPase({ p }) {
+  const fotos = p.fotos || [];
+  const v = p.vivo || [0, 0];
+  if (!fotos.length && !v[0]) return null;
+  return (
+    <>
+      {fotos.length ? (
+        <div className="db-tabla"><table><thead><tr><th>Semana</th><th>Con nivel</th><th>Del 1 al 3</th><th>Del 4 al 9</th><th>10 o más</th><th>El más alto</th></tr></thead>
+          <tbody>{fotos.map(([s, d]) => {
+            const xs = Object.entries(d || {}).map(([n, k]) => [Number(n), k]);
+            const tot = xs.reduce((a, x) => a + x[1], 0) || 1;
+            const de = (a, b) => xs.filter((x) => x[0] >= a && x[0] <= b).reduce((m, x) => m + x[1], 0);
+            const pct = (k) => Math.round((100 * k) / tot) + ' %';
+            return <tr key={s}><td>{s}</td><td>{num(tot)}</td><td>{pct(de(1, 3))}</td><td>{pct(de(4, 9))}</td><td>{pct(de(10, 999))}</td>
+              <td>{xs.length ? Math.max(...xs.map((x) => x[0])) : '—'}</td></tr>;
+          })}</tbody></table></div>
+      ) : null}
+      {v[0] ? <p className="db-tx">La diaria «Mira una llave en vivo» tocó <b>{v[0]}</b> {v[0] === 1 ? 'día' : 'días'}; en <b>{v[1]}</b> nadie miró ninguna (casi seguro, sin evento). Tiene que dar 0.</p> : null}
+    </>
+  );
+}
+
 function PaseNumeros({ p, liga }) {
   const dist = Object.entries(p.dist || {}).map(([n, k]) => [Number(n), k]).sort((a, b) => a[0] - b[0]);
   const tope = Math.max(1, ...dist.map((x) => x[1]));
@@ -887,14 +912,22 @@ function PaseNumeros({ p, liga }) {
     <>
       <div className="act-4">{cajas.map(([t, v, d]) => <div key={t}><span>{t}</span><b>{num(v || 0)}</b><small>{d}</small></div>)}</div>
       {dist.length ? (
-        <div className="db-aj"><div className="db-q">{dist.map(([n, k]) => (
-          <div key={n} className="db-q-f"><span>Nivel {n}</span><i><u style={{ width: ((100 * k) / tope).toFixed(1) + '%' }} /></i><b>{num(k)} <small>{k === 1 ? 'persona' : 'personas'}</small></b></div>
-        ))}</div>
-        {/* las Tareas de hoy, de la semana y de la temporada (con XP desde el 06/10/2026) */}
+        <div className="db-aj"><div className="db-q">{dist.map(([n, k]) => {
+          // 📊 trabados: de los de ese nivel, cuántos no cumplen una Tarea hace 7 días o más (25/10/2026)
+          const tr = (p.trabados || {})[n];
+          return (
+            <div key={n} className="db-q-f"><span>Nivel {n}</span><i><u style={{ width: ((100 * k) / tope).toFixed(1) + '%' }} /></i>
+              <b>{num(k)} <small>{k === 1 ? 'persona' : 'personas'}{tr && tr[1] ? ' · ' + tr[1] + ' trabad' + (tr[1] === 1 ? 'o' : 'os') : ''}</small></b></div>
+          );
+        })}</div>
+        <p className="db-tx">«Trabados»: sin cumplir una Tarea hace 7 días o más. Es dónde se cae la gente del Pase.</p>
+        {/* las Tareas de hoy, de la semana y de la temporada (con XP desde el 06/10/2026), con el % de los que tienen nivel */}
         {[['hoy', p.hoy], ['esta semana', p.tareas], ['en la temporada', p.temporada]].some(([, xs]) => (xs || []).length) ? (
           <ul className="db-corr">{[['hoy', p.hoy], ['esta semana', p.tareas], ['en la temporada', p.temporada]].flatMap(([cu, xs]) =>
-            (xs || []).map(([t, k]) => <li key={cu + t}><b>{limpio(t)}</b><span>{num(k)} {k === 1 ? 'vez' : 'veces'} {cu}</span></li>))}</ul>
+            (xs || []).map(([t, k]) => <li key={cu + t}><b>{limpio(t)}</b><span>{num(k)} {k === 1 ? 'vez' : 'veces'} {cu}
+              {p.con_nivel ? ' · ' + Math.round((100 * k) / p.con_nivel) + ' %' : ''}</span></li>))}</ul>
         ) : null}
+        <FotosPase p={p} />
         </div>
       ) : <p className="pronto-p">Todavía nadie cumplió una Tarea.</p>}
     </>
