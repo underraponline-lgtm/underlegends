@@ -2755,6 +2755,31 @@ a.rk-z:hover{border-color:var(--linea)}
 }
 
 /* 🎟️ el Pase de rapero (pase.jsx): vive en pase.css, que carga su propio pedazo (05/10/2026) */
+/* 🎉 «¡SUBISTE!» (pase_pop.jsx, 25/10/2026): sale en el Pase y en el Inicio, por eso vive acá y no en css/pase.css. Los
+   premios entran de a uno; con «Menos animaciones» (`.app.calma`) o el sistema en reducido, quieto */
+.ps-velo{position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:16px;background:rgba(3,3,4,.72)}
+.ps-pop{width:min(360px,100%);display:grid;gap:8px;justify-items:center;text-align:center;padding:20px 16px 12px;background:#030304;color:#F6F6F6;
+  border:2px solid #29B298;animation:ps-pop-in .45s cubic-bezier(.2,.9,.3,1.2) both}
+.ps-pop-tag{font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:#29B298}
+.ps-pop-n{display:flex;align-items:center;gap:8px;font:900 22px/1 Archivo,sans-serif;color:#A5A5A0}
+.ps-pop-n i{font-style:normal;display:grid;place-items:center;width:46px;height:46px;border:2px solid #2A2A2E}
+.ps-pop-n i:last-child{background:#29B298;border-color:#29B298;color:#030304;animation:ps-pop-num .5s .2s cubic-bezier(.2,.9,.3,1.4) both}
+.ps-pop h2{margin:2px 0 0;font:900 23px/1.05 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
+.ps-pop p{margin:0;font-size:14px;color:#A5A5A0}
+.ps-pop-l{list-style:none;margin:4px 0 6px;padding:0;display:grid;gap:6px;width:100%}
+.ps-pop-l li{display:grid;grid-template-columns:36px minmax(0,1fr);grid-template-rows:auto auto;column-gap:8px;align-items:center;text-align:left;padding:8px;
+  background:#101012;border:1.5px solid #2A2A2E;animation:ps-pop-li .35s var(--d) ease-out both}
+.ps-pop-l li.prem{border-color:#8A1E55}
+.ps-pop-l li svg{grid-row:1/3}
+.ps-pop-l b{font:800 14px/1.1 Archivo,sans-serif}
+.ps-pop-l small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:#A5A5A0}
+.ps-pop .ps-ancho{width:100%}
+.ps-pop-x{border:0;background:none;cursor:pointer;font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#A5A5A0;padding:10px}
+@keyframes ps-pop-in{from{opacity:0;transform:scale(.9) translateY(10px)}to{opacity:1;transform:none}}
+@keyframes ps-pop-num{from{transform:scale(.4)}to{transform:none}}
+@keyframes ps-pop-li{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.app.calma .ps-pop,.app.calma .ps-pop-n i,.app.calma .ps-pop-l li{animation:none}
+@media (prefers-reduced-motion: reduce){.ps-pop,.ps-pop-n i,.ps-pop-l li{animation:none}}
 /* las Misiones y el Pase del Inicio (medio.jsx), vivos desde el 05/10/2026: el pie de las misiones y el texto del Pase */
 .mis-pie{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 14px;border-top:2px solid var(--linea)}
 .mis-pie small{font:700 15px/1.3 "Barlow Condensed",sans-serif;color:var(--gris)}
@@ -2974,6 +2999,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .lb-racha-tx{display:grid;gap:3px;flex:1 1 180px;min-width:0}
 .lb-racha-tx b{font:900 15px/1.1 Archivo,sans-serif;font-stretch:112%;letter-spacing:.02em;color:#F5C542}
 .lb-racha-tx small{font:600 14px/1.25 "Barlow Condensed",sans-serif;color:#C4C4BE}
+.lb-racha-tx .lb-racha-gr{color:#8FE8FF}
 .lb-semana{display:flex;gap:6px}
 .lb-semana i{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;border:2px solid #3A3A3E;font:800 12px/1 Archivo,sans-serif;font-style:normal;color:#A5A5A0}
 .lb-semana i.si{border-color:#E8742A;background:#E8742A;color:#0E0E11}

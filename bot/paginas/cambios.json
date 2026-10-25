@@ -11,6 +11,24 @@
  ],
  "cambios": [
   {
+   "version": "4.01",
+   "dia": "2026-10-25",
+   "cuando": "2026-10-25T11:15:36-04:00",
+   "titulo": "El Pase de rapero, nuevo",
+   "items": [
+    "🎟️ **El Pase tiene página nueva**: tres pestañas —Premios, Tareas y Premium—, tu carta, la barra de XP con lo que te falta y una pista con dos filas de premios.",
+    "🎉 **Cuando subes de nivel, te lo mostramos** al volver, en el Pase o en el Inicio, con lo que ganaste.",
+    "💎 **El Pase premium**: una fila de premios de cómo te ves (marcos, fondos, color de nombre, un título) y **+20 % de XP** mientras lo tengas. En la T1 se desbloquea con el rol «Pase de temporada» de DRA, y al desbloquearlo cobras de una vez lo de los niveles que ya pasaste.",
+    "🎲 **Se sortea en la página**: entrar es gratis, tienes 1 boleto y uno más por cada semana con las cinco semanales completas (hasta 3). Se sortea en vivo y el ganador sale en Publicaciones.",
+    "🛟 **La semana de gracia**: la semanal que se te pasó sigue abierta una semana más.",
+    "👋 **Para empezar**: tres Tareas de bienvenida, una sola vez. Y ⭐ **Tareas especiales** que duran poco: la primera, la Noche de Halloween.",
+    "👥 **La meta de tu crew**: si entre todos llegan a las Tareas de la semana, cada uno gana +300 XP.",
+    "🔔 **Avisos del Pase**, si los prendes: uno por semana, el domingo, con lo que te falta para el siguiente nivel.",
+    "🔥 **Tu racha muestra su día de gracia**: si un día no entras, no se corta (uno por semana).",
+    "🖼️ **El fondo de perfil** ahora se gana con el nivel 5 de tu perfil (o con el premium). Si ya tenías uno, lo conservas."
+   ]
+  },
+  {
    "version": "4.00",
    "dia": "2026-10-25",
    "cuando": "2026-10-25T10:36:02-04:00",

@@ -15,6 +15,8 @@ import { useEffect, useState } from 'react';
 import { limpio, mult, num, siglaDe, utc } from './liga.js';
 import { Cara, Ico, aDiscord, accion, useCampana } from './piezas.jsx';
 import { avance, usePase } from './pase.js';
+// 🎉 «¡Subiste!» también en el Inicio (Dlx, 25/10/2026: «como un pop up incluso en la página principal»)
+import { PopPase } from './pase_pop.jsx';
 import { cobrarRacha, useRacha } from './racha.js';
 import { esDoble, eventoDelBoton, ganador, lados, llaveEnVivo, momentosLlave } from './arriba.jsx';
 
@@ -190,7 +192,10 @@ function Racha({ R }) {
         <span className="lb-racha-n"><Ico n="fuego" t={26} /><b>{actual}</b></span>
         <span className="lb-racha-tx"><b>{actual === 1 ? '1 DÍA SEGUIDO' : actual + ' DÍAS SEGUIDOS'}</b>
           <small>{R.hito ? 'A los ' + R.hito[0] + ' días: +' + num(R.hito[1]) : 'Entra todos los días: la página, el bot o un evento'}
-            {r.maxima > actual ? ' · tu mejor: ' + r.maxima : ''}</small></span>
+            {r.maxima > actual ? ' · tu mejor: ' + r.maxima : ''}</small>
+          {/* 🛡 el día de gracia de la semana (Dlx, 25/10/2026): si un día no entras, la racha no se corta */}
+          {actual && typeof r.gracia === 'boolean' ? <small className="lb-racha-gr">{r.gracia
+            ? '🛡 1 día de gracia esta semana: si un día no entras, no se corta' : '🛡 Ya usaste el día de gracia de esta semana'}</small> : null}</span>
         {hoy && hoy[3] ? <button type="button" className="btn verde chico" disabled={ocup} onClick={cobrar}>{ocup ? '…' : 'Cobrar ' + num(hoy[1])}</button>
           : msg ? <small className="lb-racha-ok" role="status">{msg}</small> : null}
       </div>
@@ -581,6 +586,7 @@ export function Lobby({ liga, dc }) {
   return (
     <section className="lobby" aria-label="Tu lobby">
       <TuBarra liga={liga} dc={dc} P={P} R={R} saldo={saldo} />
+      {dc && P && P.listo ? <PopPase P={P} /> : null}
       {/* 🔥 la racha (o 🌱 la bienvenida, si sos nuevo) reemplaza al premio de la semana (Dlx: «La racha lo reemplaza») */}
       {dc && R ? (R.bienvenida ? <Bienvenida B={R.bienvenida} /> : <Racha R={R} />) : null}
       <ElBoton liga={liga} />
@@ -647,7 +653,9 @@ export function Lobby({ liga, dc }) {
             ))}</span> : <span className="lb-vis lb-ticket" aria-hidden="true"><Ico n="pase" t={34} /></span>}
           </span>
           <i className="lb-barra"><u style={{ width: (a && hoy ? Math.round((100 * hechas) / hoy.length) : 0) + '%' }} /></i>
-          <small>{a && hoy ? (hechas === hoy.length ? 'Mañana vienen otras' : 'Cada una te da XP')
+          {/* 🎟️ la línea del Pase (Dlx, 25/10/2026): cuánto te falta para el siguiente nivel; el nivel ya está en tu barra */}
+          <small>{a && a.falta ? 'Te faltan ' + num(a.falta) + ' XP para el nivel ' + (P.nivel + 1) + (hechas < (hoy || []).length ? ': las de hoy te acercan' : '')
+            : a && hoy ? (hechas === hoy.length ? 'Mañana vienen otras' : 'Cada una te da XP')
             : sinVerif ? 'Es de los miembros de DRA: verifícate para subir de nivel' : 'Tareas que dan premios'}</small>
         </a>
         <a className="pu lb lb-ti" href="#/tienda">

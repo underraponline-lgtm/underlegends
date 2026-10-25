@@ -116,6 +116,11 @@ const AVISOS = {
   // `paseDe()`, `paseVivo()` y `pases()` en bot/avisos.js. ⚠️ `pase-ciclo` NO va acá: es sólo del ciclo, con su clave
   '/api/avisos/pase': 'POST',
   '/api/avisos/pase-vivo': 'POST',
+  // 🎟️ (25/10/2026) tus avisos del Pase, tu color premium, el sorteo del premium y entrar a él
+  '/api/avisos/pase-avisos': 'POST',
+  '/api/avisos/pase-color': 'POST',
+  '/api/avisos/sorteo': 'POST',
+  '/api/avisos/sorteo-entrar': 'POST',
   '/api/avisos/pases': 'GET',
   // 📊 una visita sin cuenta, una vez por día y por navegador (04/10/2026): ver `visita()` en bot/avisos.js
   '/api/avisos/visita': 'POST',

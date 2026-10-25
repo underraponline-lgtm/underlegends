@@ -399,3 +399,8 @@
 .db-tiers th,.db-tiers td{padding:4px 6px;text-align:left;border-bottom:1px solid var(--suave)}
 .db-tiers thead th{font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.05em;color:var(--gris);text-transform:uppercase}
 .db-tiers input{width:100%;min-width:80px;font-variant-numeric:tabular-nums}
+
+/* 🎟️ el sorteo del premium (25/10/2026): tres campos que se apilan en el celular */
+.db-sorteo{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:8px 0}
+.db-sorteo label{display:grid;gap:4px;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em}
+.db-sorteo input{min-height:40px;padding:0 8px;border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);font:600 14px/1 Archivo,sans-serif}

@@ -474,7 +474,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros }) {
             {f.cc ? <a href={'#/pais/' + f.cc}><Bandera cc={f.cc} cls="pf-flag" />{nombrePais(f.cc)}</a> : null}
             {svE ? <a href={'#/sv/' + siglaDe(svE)} title="Eligió este servidor"><img alt="" src={liga.logo(svE)} />{siglaDe(svE)}</a> : null}
             {nv ? <span title="Sube jugando, entrando cada día y con lo que hace en la Liga">Nivel {nv[0]}</span> : null}
-            {pa ? <a href="#/pase" title="Su nivel en el Pase de rapero de la temporada">Pase {pa.nivel}</a> : null}
+            {pa ? <a href="#/pase" title={'Su nivel en el Pase de rapero de la temporada' + (pa.premium ? ', con el premium' : '')}>Pase {pa.nivel}{pa.premium ? ' ◆' : ''}</a> : null}
             {frase}
           </p>
           {f.nv ? <p className="pf-nv"><b>Sin verificar.</b> {RQ.sinVerificar(f.nv, esYo)}{esYo ? <> <a href="#/cuenta/verificar">Verificarme</a></> : null}</p> : null}

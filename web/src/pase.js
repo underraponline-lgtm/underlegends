@@ -67,7 +67,26 @@ export function usePases() {
 export function usePaseDe(k) {
   const pub = usePases();
   const x = pub && pub.n && pub.n[k];
-  return x ? { nivel: x[0], titulo: x[1] || '', color: x[2] || '' } : null;
+  // 💎 desde el 25/10/2026, si tiene el premium: el cuarto (1) y el marco de su carta, el quinto
+  return x ? { nivel: x[0], titulo: x[1] || '', color: x[2] || '', premium: !!x[3], marco: x[4] || '' } : null;
+}
+
+/** POST a una ruta del Pase con tu sesión: lo que contesta, o `null` */
+export function pasePost(ruta, cuerpo) {
+  return fetch('/api/avisos/' + ruta, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo || {}) })
+    .then((r) => r.json().catch(() => null).then((d) => (d ? Object.assign({ _ok: r.ok }, d) : null)))
+    .catch(() => null);
+}
+
+/**
+ * ×2 💎 Por cuánto se multiplica lo que cumplas ahora: la semana de XP doble (`doble`) y el +`boost`% del premium.
+ * `{x, doble}`: `doble` es la ventana activa (`[ini, fin, m]`) o `null`
+ */
+export function multAhora(P, ahora = Date.now()) {
+  if (!P) return { x: 1, doble: null };
+  const d = (P.doble || []).find((w) => ahora >= w[0] && ahora < w[1]) || null;
+  const pr = P.premium && (P.premium.hasta == null || ahora < P.premium.hasta) ? 1 + (P.boost || 0) / 100 : 1;
+  return { x: (d ? d[2] : 1) * pr, doble: d };
 }
 
 const vistas = new Set();

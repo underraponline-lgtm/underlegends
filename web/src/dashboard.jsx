@@ -949,6 +949,47 @@ function AjCampana({ aj, hacer, ocup }) {
   );
 }
 
+// ── 🎟️ EL SORTEO DEL PASE PREMIUM (Dlx, 25/10/2026: «voy a sortear el rol de Pase de temporada en DRA», y «algo
+// interactivo en la página»). Se programa acá: un nombre, cuándo cierra y cuándo se sortea (tu hora). La gente entra
+// gratis desde el Pase; a la hora, el vigía elige al ganador con una cuenta que cualquiera repite, la página lo muestra
+// en vivo y sale en Publicaciones. El rol lo das tú en DRA ──
+const aLocal = (iso) => { if (!iso) return ''; const d = new Date(iso); const z = (n) => String(n).padStart(2, '0');
+  return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate()) + 'T' + z(d.getHours()) + ':' + z(d.getMinutes()); };
+function AjSorteo({ liga, aj, hacer, ocup }) {
+  const S = aj.pase_sorteo || null;
+  const [f, setF] = useState({ id: (S && S.id) || 'premium-t1', cierra: aLocal(S && S.cierra), sorteo: aLocal(S && S.sorteo) });
+  const [est, setEst] = useState(null);
+  useEffect(() => { setF({ id: (S && S.id) || 'premium-t1', cierra: aLocal(S && S.cierra), sorteo: aLocal(S && S.sorteo) }); }, [S && S.id, S && S.cierra, S && S.sorteo]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (!S) { setEst(null); return; }
+    fetch('/api/avisos/sorteo', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{}' })
+      .then((r) => (r.ok ? r.json() : null)).then(setEst).catch(() => setEst(null));
+  }, [S && S.id, ocup]); // eslint-disable-line react-hooks/exhaustive-deps
+  const ok = /^[a-z0-9-]{3,30}$/.test(f.id) && f.cierra && f.sorteo && Date.parse(f.cierra) <= Date.parse(f.sorteo);
+  const guardar = () => hacer('pase_sorteo', { id: f.id, cierra: new Date(f.cierra).toISOString(), sorteo: new Date(f.sorteo).toISOString() },
+    'El sorteo quedó programado: la gente ya puede entrar desde el Pase.');
+  const s = est && est.sorteo, res = est && est.resultado;
+  const nom = (k) => (liga.T && liga.T[k] ? limpio(liga.T[k].n) : k);
+  return (
+    <div className="db-aj">
+      <div className="db-aj-c"><h3>El sorteo del premium</h3><span className={'db-est' + (S ? ' ok' : '')}>{res ? '✓ Sorteado' : S ? '● Programado' : 'Sin sorteo'}</span></div>
+      <p className="db-tx">La gente entra gratis desde la pestaña Premium del Pase: 1 boleto, y uno más por cada semana con las cinco semanales (hasta 3). A la hora se sortea solo, se ve en vivo en la página y sale en Publicaciones. El rol «Pase de temporada» lo das tú en DRA.</p>
+      {s ? <p className="db-tx"><b>{num(s.personas)}</b> {s.personas === 1 ? 'entró' : 'entraron'} · <b>{num(s.boletos)}</b> boletos.
+        {res ? <> Ganó <b>{nom(res.k)}</b>: dale el rol en DRA.</> : null}</p> : null}
+      <div className="db-sorteo">
+        <label>Nombre<input type="text" value={f.id} onChange={(e) => setF({ ...f, id: e.target.value.toLowerCase() })} maxLength={30} placeholder="premium-t1" /></label>
+        <label>Cierra (tu hora)<input type="datetime-local" value={f.cierra} onChange={(e) => setF({ ...f, cierra: e.target.value })} /></label>
+        <label>Se sortea (tu hora)<input type="datetime-local" value={f.sorteo} onChange={(e) => setF({ ...f, sorteo: e.target.value })} /></label>
+      </div>
+      <div className="cu-btns">
+        <button type="button" className="btn verde chico" disabled={ocup || !ok} onClick={guardar}>{S ? 'Guardar cambios' : 'Programar'}</button>
+        {S ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo para sacarlo" onClick={() => hacer('pase_sorteo', null, 'El sorteo se sacó de la página.')}>Sacar el sorteo</DosToques> : null}
+      </div>
+      {!ok && (f.cierra || f.sorteo) ? <p className="db-tx">El nombre va en minúsculas, números y guiones; y tiene que cerrar antes de sortearse.</p> : null}
+    </div>
+  );
+}
+
 // ── ⚙️ el multiplicador de la semana, a mano: vale desde que se guarda (ver `a_mano()` de bot/multiplicadores.py) ────
 function AjMult({ liga, aj, hacer, ocup }) {
   const m = liga.d.mult || {};
@@ -1758,7 +1799,7 @@ function AjServidores({ liga, aj, hacer, ocup, chat }) {
 
 // ── 🕓 LOS ÚLTIMOS CAMBIOS, CON «DESHACER» (13/10/2026): lo anota el objeto en cada ajuste (`ajuste()` en avisos.js), con
 // lo que había antes. «Deshacer» sólo en el último cambio de cada ajuste: deshacer uno más viejo pisaría los de después
-const NOMBRE_AJ = { campana_pausada: 'La campana', multiplicadores: 'El multiplicador de la semana', aviso_web: 'El aviso en la página',
+const NOMBRE_AJ = { campana_pausada: 'La campana', pase_sorteo: 'El sorteo del premium', multiplicadores: 'El multiplicador de la semana', aviso_web: 'El aviso en la página',
   en_vivo: 'El bot en vivo', en_vivo_nivel: 'Cuánto habla el bot en vivo', ritmo: 'El ritmo del bot en vivo', silencio: 'El horario de silencio',
   apuestas: 'Las apuestas', aviso_evento: 'Dónde va el aviso de cada evento', avisos_nivel: 'Cuánto dice el aviso de cada evento' };
 function Historial({ hist, hacer, ocup }) {
@@ -1867,6 +1908,7 @@ function Ajustes({ liga, aj, chat, hist, hacer, msg, ocup, roles, alRoles, conRo
       <h2 className="db-h">Para todos</h2>
       <div className="db-ajs">
         <AjCampana aj={aj} hacer={hacer} ocup={ocup} />
+        <AjSorteo liga={liga} aj={aj} hacer={hacer} ocup={ocup} />
         <AjAviso liga={liga} aj={aj} hacer={hacer} ocup={ocup} />
         <AjVivo liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={chat} general />
         <AjRitmo aj={aj} hacer={hacer} ocup={ocup} chat={chat} />

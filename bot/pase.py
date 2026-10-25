@@ -100,6 +100,15 @@ DIARIAS_NUEVAS = (
     ('sigue1', 'Sigue a un rapero', 'Desde su perfil, con ⭐ Seguir.', 'sigue', 1, 150),
     DIARIAS[1],
 )
+#: 🎯 LAS DIARIAS QUE SIEMPRE SE PUEDEN CUMPLIR (Dlx, 25/10/2026: «agregar todas las 5», el informe, cambio 4): «Mira una
+#: llave en vivo» se iba de la rotación diaria —un día sin evento era una Tarea imposible— y queda en las semanales y las
+#: de temporada. Desde la semana del 26/10 (`CURVA_DESDE`), con la curva. ⚠️ EN ESTE ORDEN A PROPÓSITO: con él, el lunes
+#: 26/10 da la misma Tarea que con la lista de antes («Sigue a un rapero»), así que no cambia un día empezado
+DIARIAS_SIEMPRE = (
+    DIARIAS[0],
+    DIARIAS_NUEVAS[2],
+    DIARIAS[1],
+)
 #: cuántas diarias hay cada día: la primera siempre, y las demás se turnan día por día
 POR_DIA = 2
 SEMANALES = (
@@ -148,6 +157,47 @@ SIN_DRA = {
     'dra5': ('sigue5', 'Sigue a 5 raperos', 'Desde su perfil, con ⭐ Seguir.', 'sigue', 5, 3000),
 }
 DRA_DIAS = 14
+#: 👋 LA BIENVENIDA (Dlx, 25/10/2026: el informe, cambio 6): tres Tareas de una sola vez que enseñan la página. Como las de
+#: temporada, cuentan desde el arranque: quien ya las hizo las cobra al aparecer
+BIENVENIDA = (
+    ('bfel', 'Felicita a alguien', 'Con 👏 en una publicación de Publicaciones.', 'fel', 1, 200),
+    ('bsigue3', 'Sigue a 3 raperos', 'Desde su perfil, con ⭐ Seguir.', 'sigue', 3, 200),
+    ('bvoto', 'Vota en una encuesta', 'El Elegido del Most Wanted o el ×2 de la semana, en la página.', 'voto', 1, 200),
+)
+#: ⭐ LAS TAREAS ESPECIALES (Dlx, 25/10/2026: «sí dale»): cortas y con su ventana de tiempo (hora del este). Se muestran
+#: desde `ESPECIAL_ANTES` días antes, con su cuenta atrás, y hasta una semana después de terminar
+ESPECIALES_TAREAS = (
+    ('halloween', 'Noche de Halloween: mira 2 llaves en vivo', 'El sábado 31/10, de 6 PM a medianoche (hora del este), en '
+     'cualquier servidor de la Liga.', 'vivo', 2, 1000, '2026-10-31T18:00', '2026-11-01T00:00'),
+)
+ESPECIAL_ANTES = 7
+#: ×2 LAS SEMANAS DE XP DOBLE (Dlx, 25/10/2026: el informe, cambio 8): las Tareas cumplidas adentro valen el doble. Se
+#: anuncian con tiempo en la página. De lunes a lunes, 11 AM ET, como las semanas del Pase
+XP_DOBLE = (('2026-11-23T11:00', '2026-11-30T11:00', 2), ('2026-12-21T11:00', '2026-12-28T11:00', 2))
+#: 🛟 LA SEMANA DE GRACIA (Dlx, 25/10/2026: el informe, cambio 5): la semanal que no cumpliste sigue abierta una semana
+#: más y paga en su semana. Desde la del 19/10: lo de antes no se paga para atrás
+GRACIA_DESDE = '2026-10-19'
+#: 👥 LA META DE LA CREW (Dlx, 25/10/2026: «dale»): si entre todos los de la crew con Pase cumplen `CREW[1]` Tareas por
+#: cabeza en la semana (con piso y techo), cada uno gana `CREW[0]` XP
+CREW = (300, 5, 10, 60)
+#: 💎 EL PASE PREMIUM (Dlx, 25/10/2026). En la T1 lo desbloquea el rol «Pase T» de DRA (`ROL_PREMIUM`), que Dlx sortea y
+#: da en eventos; desbloquearlo paga de una vez lo de los niveles ya pasados, y mientras lo tengas tus Tareas dan
+#: `BOOST`% más de XP. Lo que da la fila es de cómo te ves: nunca suma al ranking. ⚠️ El precio no va en ningún lado
+ROL_PREMIUM = '1054496803548049463'
+BOOST = 20
+PREMIUM = {
+    1: ('marco', 'Premium'),
+    3: ('reaccion', '🔥'),
+    5: ('fondo', 'perfil'),
+    7: ('color', 'elegir'),
+    10: ('titulo', 'Del Pase'),
+    12: ('reaccion', '🎤'),
+    15: ('marco', 'Plata'),
+    18: ('fondo', 'pagina'),
+    20: ('emblema', 'Pase premium'),
+    25: ('marco', 'Oro'),
+    30: ('carta', 'Edición premium'),
+}
 #: Puntos de Tienda por cada nivel (la billetera arranca con 5.000: `precios.INICIAL`)
 TIENDA_NIVEL = 150
 #: el color del nombre: el dorado del Pase
@@ -213,13 +263,37 @@ def premios(curva=True):
     return out
 
 
+def _ms_et(iso):
+    """`AAAA-MM-DDTHH:MM` en hora del este -> ms UTC."""
+    import zoneinfo
+    t = dt.datetime.fromisoformat(iso).replace(tzinfo=zoneinfo.ZoneInfo('America/New_York'))
+    return int(t.timestamp() * 1000)
+
+
+def especiales(ahora):
+    """⭐ Las especiales para mostrar ahora: las que empiezan en `ESPECIAL_ANTES` días o menos y las que terminaron hace
+    una semana o menos. `[[id, texto, cómo, mide, meta, xp, ini_ms, fin_ms], …]`"""
+    t = int(ahora.timestamp() * 1000)
+    out = []
+    for e in ESPECIALES_TAREAS:
+        ini, fin = _ms_et(e[6]), _ms_et(e[7])
+        if ini - ESPECIAL_ANTES * 86400000 <= t <= fin + 7 * 86400000:
+            out.append(list(e[:6]) + [ini, fin])
+    return out
+
+
+def premios_premium():
+    """`[[nivel, tienda, tipo, valor], …]` de la fila premium: los 30, con lo de `PREMIUM` donde lo hay."""
+    return [[n, TIENDA_NIVEL] + list(PREMIUM.get(n, ('', ''))) for n in range(1, NIVELES + 1)]
+
+
 def diarias_de(dia, lista=None):
     """Las diarias de un día `AAAA-MM-DD` (hora del este): la primera siempre, y las demás se turnan. `lista`, las
     diarias de donde salen; sin ella, las de ese día (`DIARIAS_NUEVAS` desde `TAREAS_DESDE`).
 
     ⚠️ LA MISMA CUENTA QUE `paseDelDia()` DE `bot/avisos.js`: el día como número (días desde 1970) elige."""
     if lista is None:
-        lista = DIARIAS_NUEVAS if dia >= TAREAS_DESDE else DIARIAS
+        lista = DIARIAS_SIEMPRE if dia >= CURVA_DESDE else DIARIAS_NUEVAS if dia >= TAREAS_DESDE else DIARIAS
     n = (dt.date.fromisoformat(dia) - dt.date(1970, 1, 1)).days
     resto = lista[1:]
     if not resto:
@@ -243,9 +317,15 @@ def config(temp, dra=True, nuevas=True, curva=True):
     eso, el objeto tiene que saber desde qué semana vale cada una: es un cambio del Worker, y se despliega aparte."""
     lista = lambda xs: [list(SIN_DRA[t[0]]) if not dra and t[0] in SIN_DRA else list(t) for t in xs]
     out = {'temp': temp or 'prueba', 'niveles': NIVELES, 'umbrales': umbrales(curva), 'cola': list(COLA),
-           'diarias': lista(DIARIAS_NUEVAS if nuevas else DIARIAS), 'por_dia': POR_DIA, 'semanales': lista(SEMANALES),
+           'diarias': lista(DIARIAS_SIEMPRE if nuevas and curva else DIARIAS_NUEVAS if nuevas else DIARIAS), 'por_dia': POR_DIA,
+           'semanales': lista(SEMANALES),
            'temporada': lista(TEMPORADA + (TEMPORADA_NUEVAS if nuevas else ())), 'premios': premios(curva),
            'publicar': list(PUBLICAR)}
+    # 🎟️ lo del 25/10/2026 (Dlx: «haz todo de una»): la bienvenida, la XP doble, la gracia, la crew y la fila premium. Las
+    # especiales dependen de la hora: las pone `armar()`
+    out.update({'bienvenida': [list(t) for t in BIENVENIDA], 'especiales': [],
+                'doble': [[_ms_et(a), _ms_et(b), m] for a, b, m in XP_DOBLE], 'gracia_desde': GRACIA_DESDE,
+                'crew': list(CREW), 'boost': BOOST, 'premium': premios_premium()})
     # ⚠️ LA SEMANA DE PRUEBA TENÍA «Completá tus misiones», que ya no es una Tarea: lo que se cumplió sigue valiendo lo
     # que vale una semanal (si no, a quien sólo tenía ésa se le iba el nivel 1, y con él la tarjeta de Temporada)
     if out['temp'] == 'prueba':
@@ -354,11 +434,24 @@ def armar(ahora=None):
     # 🆕 las Tareas nuevas entran con la semana del 19/10 (`TAREAS_DESDE`), no a mitad de ésta
     nuevas = MU.periodo(ahora)[0] >= TAREAS_DESDE
     # 🎯 la curva nueva y el brillo en el 4, desde la semana del 26/10 (`CURVA_DESDE`)
-    out = {'cfg': config(MU.temporada_actual(ahora), dra=dra_activo(evs, ahora), nuevas=nuevas, curva=curva_activa(ahora)),
+    cfg = config(MU.temporada_actual(ahora), dra=dra_activo(evs, ahora), nuevas=nuevas, curva=curva_activa(ahora))
+    cfg['especiales'] = especiales(ahora)
+    # 💎 quién tiene el premium: los del rol `ROL_PREMIUM` de DRA (`verificados.refrescar()` los deja en
+    # datos/pase_premium.json). Son Discord IDs: van aparte, nunca en `cfg` (que es público)
+    out = {'cfg': cfg, 'premium': premium_ids(),
            'sem': sems,
            'miembros': miembros, 'hechas': h}
     out['v'] = hashlib.sha256(json.dumps(out, sort_keys=True, ensure_ascii=False).encode('utf-8')).hexdigest()[:16]
     return out
+
+
+def premium_ids():
+    """💎 Los Discord IDs con el rol del Pase premium (`ROL_PREMIUM`), de datos/pase_premium.json. Vacío si no está."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'pase_premium.json'), encoding='utf-8') as f:
+            return sorted(str(x) for x in (json.load(f) or {}).get('ids') or [])
+    except (OSError, ValueError):
+        return []
 
 
 def mandar(d):
@@ -413,9 +506,12 @@ def traer_niveles():
         if (isinstance(h, list) and len(h) >= 3 and str(h[0]).isdigit() and isinstance(h[1], int)
                 and isinstance(h[2], int)):
             hitos.append([str(h[0]), h[1], h[2], str(h[3] if len(h) > 3 else '')[:80]])
+    # 🎟️ los sorteos del premium (25/10/2026): `[id, clave del ganador, ms, personas, boletos, semilla]`, sin Discord IDs
+    sorteos = [[str(x[0])[:30], str(x[1] or '')[:80], x[2], x[3], x[4], str(x[5])[:64]] for x in d.get('sorteos') or []
+               if isinstance(x, list) and len(x) >= 6 and isinstance(x[2], int) and isinstance(x[3], int) and isinstance(x[4], int)]
     return {'temp': str(d.get('temp') or ''), 'niveles': {str(q): int(n) for q, n in d['niveles'].items()
                                                          if str(q).isdigit() and isinstance(n, int)},
-            'hitos': sorted(hitos, key=lambda h: (h[2], h[0], h[1]))}
+            'hitos': sorted(hitos, key=lambda h: (h[2], h[0], h[1])), 'sorteos': sorteos}
 
 
 def guardar_niveles(d):
@@ -431,8 +527,9 @@ def guardar_niveles(d):
         print('   ⚠️ el objeto no tiene el Pase cargado: no toco los niveles guardados')
         return False
     hitos = d.get('hitos') or []
+    sorteos = d.get('sorteos') or []
     if (previo is not None and previo.get('temp') == d['temp'] and previo.get('niveles') == d['niveles']
-            and (previo.get('hitos') or []) == hitos):
+            and (previo.get('hitos') or []) == hitos and (previo.get('sorteos') or []) == sorteos):
         return False
     if (previo is not None and previo.get('temp') == d['temp'] and len(previo.get('niveles') or {}) >= 6
             and len(d['niveles']) < len(previo['niveles']) / 2):
@@ -443,7 +540,7 @@ def guardar_niveles(d):
                      'niveles que se publican (hitos: Discord ID, nivel, cuándo en ms y la clave de su perfil). Lo trae '
                      'bot/pase.py del objeto en cada corrida; lo leen verificados.puede() (la Temporada es el premio '
                      'del nivel 1) y bot/muro.py (Publicaciones).',
-           'temp': d['temp'], 'niveles': dict(sorted(d['niveles'].items())), 'hitos': hitos}
+           'temp': d['temp'], 'niveles': dict(sorted(d['niveles'].items())), 'hitos': hitos, 'sorteos': sorteos}
     with io.open(NIVELES_ARCHIVO, 'w', encoding='utf-8', newline='\n') as f:
         json.dump(out, f, ensure_ascii=False, indent=1)
         f.write('\n')
@@ -455,7 +552,8 @@ def leer_niveles(ruta=None):
     try:
         with io.open(ruta or NIVELES_ARCHIVO, encoding='utf-8') as f:
             d = json.load(f) or {}
-        return {'temp': d.get('temp') or '', 'niveles': d.get('niveles') or {}, 'hitos': d.get('hitos') or []}
+        return {'temp': d.get('temp') or '', 'niveles': d.get('niveles') or {}, 'hitos': d.get('hitos') or [],
+                'sorteos': d.get('sorteos') or []}
     except (OSError, ValueError):
         return None
 
@@ -545,6 +643,26 @@ def _self_check():
                for t in x['diarias'] + x['semanales'] + x['temporada']),
        'las nuevas miden cosas que el objeto ya cuenta, y ningún id se repite (con DRA y sin DRA): el objeto rechaza '
        'un Pase con una Tarea repetida')
+    # 🎟️ lo del 25/10/2026: las diarias siempre cumplibles, la bienvenida, las especiales, la XP doble y el premium
+    _d26 = lambda dia: [x[0] for x in diarias_de(dia)]                                   # noqa: E731
+    ok(_d26('2026-10-26') == [x[0] for x in diarias_de('2026-10-26', DIARIAS_NUEVAS)]
+       and all('vivo1' not in _d26('2026-10-%d' % k) for k in range(26, 32))
+       and {_d26('2026-10-%d' % k)[1] for k in (27, 28)} == {'sigue1', 'felicitar1'},
+       'desde el 26/10 la diaria ya no pide una llave en vivo (un día sin evento era imposible), y el 26 da lo mismo que antes')
+    ok([t[0] for t in config('t1')['diarias']] == ['entrar', 'sigue1', 'felicitar1']
+       and [t[0] for t in config('t1', curva=False)['diarias']] == [t[0] for t in DIARIAS_NUEVAS],
+       'y la lista que va al objeto es la nueva desde la curva (el objeto turna con ésa, no con la fecha)')
+    c2 = config('t1')
+    ids2 = [t[0] for t in c2['diarias'] + c2['semanales'] + c2['temporada'] + c2['bienvenida']]
+    ok(len(ids2) == len(set(ids2)) and all(t[3] in MIDE for t in c2['bienvenida']) and sum(t[5] for t in c2['bienvenida']) == 600,
+       'la bienvenida: tres Tareas de 200 XP que miden lo que el objeto cuenta, sin repetir ids')
+    _hw = dt.datetime(2026, 10, 30, 12, tzinfo=dt.timezone.utc)
+    es = especiales(_hw)
+    ok(len(es) == 1 and es[0][0] == 'halloween' and es[0][7] - es[0][6] == 6 * 3600000 and not especiales(_hw + dt.timedelta(days=40)),
+       'la especial de Halloween: seis horas, se muestra con tiempo y se va después')
+    ok(all(b - a == 7 * 86400000 and m == 2 for a, b, m in c2['doble']) and c2['boost'] == 20 and len(c2['premium']) == NIVELES
+       and c2['premium'][0][2] == 'marco' and c2['premium'][29][2] == 'carta' and c2['crew'] == [300, 5, 10, 60],
+       'la XP doble son semanas enteras; el premium: 30 niveles, +20 %, del marco a la carta; la crew: 300 XP')
     # 🔴 los frenos de los niveles (revisión del 05/10/2026): sobre una copia, nunca sobre el archivo de verdad
     global NIVELES_ARCHIVO
     import tempfile
@@ -560,7 +678,7 @@ def _self_check():
         h = [['10000', 10, 1760000000000, 'ana']]
         ok(guardar_niveles({'temp': 'prueba', 'niveles': diez, 'hitos': h}) and leer_niveles()['hitos'] == h,
            'un hito nuevo, con los mismos niveles, también se guarda (es lo que lee Publicaciones)')
-        ok(guardar_niveles({'temp': 't1', 'niveles': {}}) and leer_niveles() == {'temp': 't1', 'niveles': {}, 'hitos': []},
+        ok(guardar_niveles({'temp': 't1', 'niveles': {}}) and leer_niveles() == {'temp': 't1', 'niveles': {}, 'hitos': [], 'sorteos': []},
            'la temporada nueva sí arranca de cero')
     finally:
         NIVELES_ARCHIVO = _real

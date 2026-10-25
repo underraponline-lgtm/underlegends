@@ -112,6 +112,8 @@ jobs:
           node bot/crews_logo_prueba.mjs
           # 🔴 las llaves en vivo: el lector de la página contra el de Python
           node bot/llave_vivo_prueba.mjs
+          # 🎟️ el Pase del 25/10: gracia, bienvenida, especiales, XP doble, crew, premium y sorteo
+          node bot/pase_prueba.mjs
 
       - name: los self-checks
         if: success() || failure()

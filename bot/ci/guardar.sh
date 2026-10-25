@@ -102,7 +102,7 @@ ARCHIVOS="datos/cartas_selladas.json datos/releer_llaves.json datos/promos.json 
           datos/estado_escuchar.json datos/estado_dibujar.json \
           datos/por_servidor.json datos/cancelados.json datos/divisiones.json datos/crews_tiers.json datos/anuncio_programado.json datos/crews.json datos/crews_vivas.json datos/favoritos.json \
           datos/ocr_anuncios.json datos/ocr_llaves.json datos/misiones.json \
-          datos/pase_niveles.json datos/conservan.json datos/fases_llaves.json datos/debutantes.json datos/videos.json datos/ligas.json datos/ascenso.json datos/ascenso_msgs.json datos/videos_propios.json datos/agenda.json datos/decidir_solas.json datos/writing.json"
+          datos/pase_niveles.json datos/pase_premium.json datos/conservan.json datos/fases_llaves.json datos/debutantes.json datos/videos.json datos/ligas.json datos/ascenso.json datos/ascenso_msgs.json datos/videos_propios.json datos/agenda.json datos/decidir_solas.json datos/writing.json"
 # 🔴 CADA PALABRA DE LA LISTA TIENE QUE SER UN `datos/*.json`, Y SE MIRA.
 # El 24/09/2026 a las 5:22 PM ET entró un `\n` literal —una edición con
 # heredoc se comió la barra— y `bash -n` dio bien, porque es sintaxis

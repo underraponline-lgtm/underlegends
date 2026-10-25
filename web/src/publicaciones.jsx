@@ -19,7 +19,7 @@ const ANUNCIOS = { anuncio: 1, liga: 1, flyer: 1 };
 // `dc` y `web` sólo los agrega Dlx a mano (bot/promos.py `a_mano()`, 20/10/2026)
 export const PLATAFORMA = { yt: 'YouTube', sp: 'Spotify', sc: 'SoundCloud', ig: 'Instagram', tt: 'TikTok', dc: 'Discord', web: 'la página' };
 // los logros: lo que se puede felicitar (una carta nueva le toca a todo el que juega una vez: no es un logro)
-const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, ligahito: 1, mesaward: 1 };
+const LOGROS = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, sorteo: 1, ligahito: 1, mesaward: 1 };
 // 🏆 las categorías de los MES AWARDS (bot/mes_awards.py)
 const MES_CAT = { rapero: 'el Rapero del mes', revelacion: 'la Revelación del mes', batalla: 'la Batalla del mes', servidor: 'el Servidor del mes' };
 // 🏆 las de «Ver las demás nominaciones», en una sola publicación por mes (`cat: 'otras'`, `lista: [[cat, nombre, ganador]]`)
@@ -100,6 +100,14 @@ export function Pub({ liga, it, A }) {
     vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
     txt = it.completo ? <>{nombres} completó el <b>Pase de rapero</b> y entra al Salón del Pase</>
       : <>{nombres} llegó al nivel <b>{it.nivel}</b> del Pase de rapero{it.premio ? <>: <b>«{it.premio}»</b></> : null}</>;
+    acc = <a className="pub-a" href="#/pase">Ver el Pase</a>;
+  } else if (it.tipo === 'sorteo') {
+    // 🎟️ el sorteo del Pase premium (Dlx, 25/10/2026: «dale pero en publicaciones»): quién ganó, que entrar era gratis y
+    // cómo se eligió, con la semilla para repetir la cuenta (`sortear()` de bot/avisos.js; `sorteos()` de bot/muro.py)
+    cat = 'SORTEO DEL PASE PREMIUM';
+    vis = <Cara liga={liga} k={ks[0] || ''} nombre={q[0] || '?'} cls="cara pub-cara" />;
+    txt = <>{nombres} ganó el sorteo y se lleva el rol <b>«Pase de temporada»</b> de DRA</>;
+    det = num(it.personas) + ' entraron gratis · ' + num(it.boletos) + ' boletos · semilla ' + String(it.semilla || '').slice(0, 12) + '…';
     acc = <a className="pub-a" href="#/pase">Ver el Pase</a>;
   } else if (it.tipo === 'precio') {
     cat = 'PRECIO POR SU CABEZA';
@@ -263,7 +271,7 @@ function MasFelicitado({ liga, pubs, A }) {
         const k = ksDe(it)[0];
         const quien = (it.quien || []).map(limpio).join(' y ');
         const que = it.tipo === 'campeon' ? limpio(it.ev) : it.tipo === 'rango' ? 'rango ' + it.rg
-          : it.tipo === 'pase' ? 'Pase de rapero' : it.tipo === 'ligahito' ? limpio(it.ln) : 'Most Wanted';
+          : it.tipo === 'pase' || it.tipo === 'sorteo' ? 'Pase de rapero' : it.tipo === 'ligahito' ? limpio(it.ln) : 'Most Wanted';
         return (
           <li key={it.id}><Cara liga={liga} k={k || ''} nombre={quien} cls="cara pub-top-cara" />
             <span><b>{quien}</b><small>{que}</small></span><em>👏 {num(cu(it))}</em></li>

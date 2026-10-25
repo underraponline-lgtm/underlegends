@@ -181,6 +181,20 @@ def pase(niv, tabla):
     return out
 
 
+def sorteos(niv, tabla):
+    """🎟️ el ganador de cada sorteo del Pase premium (Dlx, 25/10/2026: «dale pero en publicaciones»), con lo que hace
+    falta para repetir la cuenta: cuántos entraron, cuántos boletos y la semilla. Sólo con perfil, como `pase()`."""
+    nombres = {f['k']: f['n'] for f in tabla or [] if f.get('k') and f.get('n')}
+    out = []
+    for s in (niv or {}).get('sorteos') or []:
+        if not isinstance(s, list) or len(s) < 6 or not isinstance(s[2], int) or s[1] not in nombres:
+            continue
+        t = dt.datetime.fromtimestamp(s[2] / 1000, dt.timezone.utc)
+        out.append({'tipo': 'sorteo', 't': _iso(t), 'quien': [nombres[s[1]]], 'ks': [s[1]], 'sorteo': s[0],
+                    'personas': s[3], 'boletos': s[4], 'semilla': s[5]})
+    return out
+
+
 def premios(mult):
     """🥇 los premios de cada semana que cerró."""
     out = []
@@ -359,6 +373,9 @@ def id_de(x):
     elif tipo == 'crewtier':
         # 🏆 qué crew, qué semana y a qué tier: una por cierre
         partes = [tipo, x.get('crew') or '', x.get('sem') or '', str(x.get('tier') or '')]
+    elif tipo == 'sorteo':
+        # 🎟️ un sorteo tiene un solo ganador: el id del sorteo alcanza
+        partes = [tipo, x.get('sorteo') or '']
     elif tipo == 'pase':
         # 🎟️ de quién (su perfil), de qué temporada y qué nivel: llega una sola vez
         partes = [tipo, x.get('temp') or '', str(x.get('nivel') or ''), (x.get('ks') or [''])[0] or '|'.join(x.get('quien') or [])]
@@ -382,7 +399,7 @@ def con_ids(items):
 
 # ── de quién es cada publicación: para los seguidores ────────────────────
 #: las publicaciones que son de alguien. Los anuncios y las novedades no son de nadie
-DE_ALGUIEN = ('campeon', 'rango', 'tarjeta', 'caza', 'sobrevivio', 'elegido', 'precio', 'premios', 'pase', 'ligahito',
+DE_ALGUIEN = ('campeon', 'rango', 'tarjeta', 'caza', 'sobrevivio', 'elegido', 'precio', 'premios', 'pase', 'sorteo', 'ligahito',
               'promo', 'mesaward')
 #: los premios de la semana que son de una persona (el de servidor no)
 PREMIOS = ('figura', 'revelacion', 'cazador')
@@ -530,7 +547,8 @@ def _todo(p, guardado, ahora, fuentes, promos_por=None):
     todo = (anotados + campeones(fuentes.get('llaves'), fuentes.get('instantes'))
             + most_wanted(fuentes.get('mw')) + precios_cobrados(fuentes.get('precios'))
             + premios(fuentes.get('mult')) + anuncios(fuentes.get('anuncios'))
-            + pase(fuentes.get('pase'), p.get('tabla')) + novedades(p.get('novedades'))
+            + pase(fuentes.get('pase'), p.get('tabla')) + sorteos(fuentes.get('pase'), p.get('tabla'))
+            + novedades(p.get('novedades'))
             + flyers(fuentes.get('ligas'), fuentes.get('svs')) + ligas_hitos(fuentes.get('ligas'))
             + promos_muro(fuentes.get('promos'), ahora, promos_por) + mes_muro()
             + crews_suben(fuentes.get('crews_tiers'), fuentes.get('crews_vivas')))
@@ -663,7 +681,8 @@ def _self_check():
         'anuncios': {'anuncios': [{'nombre': 'SNAKE ARENA', 'servidor': 'SR', 'cuando': '2026-10-14T12:00:00',
                                    'guild_id': '1', 'canal_id': '2', 'msg_id': '3', 'organizador': 'Nacho'}]},
         'pase': {'temp': 't1', 'hitos': [['111', 10, ms(13, 20), 'ana'], ['222', 30, ms(13, 21), 'nadie'],
-                                         ['333', 10, ms(13, 22), '']]},
+                                         ['333', 10, ms(13, 22), '']],
+                 'sorteos': [['premium-t1', 'ana', ms(13, 23), 12, 20, 'ab' * 32], ['otro', 'nadie', ms(13, 23), 1, 1, 'c']]},
         # 🖼️ el flyer de una liga: sólo el que está en R2
         'ligas': {'ligas': {'fmh-espana': {'n': 'FMH España', 'sv': 'URBF', 'flyer': {
             'id': '55', 't': '2026-10-14T13:47:43Z', 'tit': 'MTZ vs ORTIZ', 'url': 'https://r2/ligas/fmh-espana/55.webp',
@@ -684,7 +703,7 @@ def _self_check():
                           guardado={'estado': antes, 'cambios': []}, ahora=ahora, fuentes=fuentes)
     ts = [x['tipo'] for x in muro['items']]
     ok(set(ts) == {'rango', 'tarjeta', 'campeon', 'caza', 'elegido', 'precio', 'premios', 'anuncio', 'liga', 'pase',
-                   'flyer', 'crewtier'},
+                   'flyer', 'crewtier', 'sorteo'},
        'entra todo: rango, tarjeta, campeón, caza, El Elegido, precio, premios, anuncio, novedades, el Pase y los flyers  %s'
        % sorted(set(ts)))
     fy = [x for x in muro['items'] if x['tipo'] == 'flyer']
@@ -700,6 +719,10 @@ def _self_check():
     ok(len(pa) == 1 and pa[0]['quien'] == ['Ana'] and pa[0]['ks'] == ['ana'] and pa[0]['nivel'] == 10
        and pa[0]['premio'] == 'De la casa' and pa[0]['completo'] is False and pa[0]['t'] == '2026-10-13T20:00:00Z',
        '🎟️ el Pase: Ana llegó al 10 («De la casa»); quien no tiene perfil (o no está en la tabla) no sale  %s' % pa)
+    so = [x for x in muro['items'] if x['tipo'] == 'sorteo']
+    ok(len(so) == 1 and so[0]['quien'] == ['Ana'] and so[0]['ks'] == ['ana'] and so[0]['personas'] == 12
+       and so[0]['boletos'] == 20 and so[0]['semilla'] == 'ab' * 32,
+       '🎟️ el sorteo del premium: el ganador con su perfil, cuántos entraron y la semilla; sin perfil no sale  %s' % so)
     ok(id_de(dict(pa[0], quien=['Ana 🇦🇷'], t='otra')) == pa[0]['id'],
        'y su id sale de su perfil, la temporada y el nivel: un nombre corregido no le borra los aplausos')
     ok([x['t'] for x in muro['items']] == sorted((x['t'] for x in muro['items']), reverse=True),

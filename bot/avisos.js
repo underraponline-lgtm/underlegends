@@ -2071,7 +2071,9 @@ export function rachaDeDias(dias, hoy) {
   const h = diaNum(hoy);
   const viva = prev !== null && (prev === h || prev === h - 1
     || (prev === h - 2 && (perdon === null || h - perdon > RACHA_PERDON)));
-  return { actual: viva ? run : 0, maxima, total: dias.length, inicio: viva ? inicio : '', hoy: prev === h };
+  // 🛡 `gracia`: si el día de perdón de esta semana sigue libre (Dlx, 25/10/2026: «ya existe, sólo mostrarlo»)
+  return { actual: viva ? run : 0, maxima, total: dias.length, inicio: viva ? inicio : '', hoy: prev === h,
+    gracia: viva && (perdon === null || h - perdon > RACHA_PERDON) };
 }
 /**
  * 🔥 «TU RACHA SE CORTA HOY» (Dlx, 13/10/2026: «hacer todo», del research de enganche: el recordatorio de la racha es
@@ -2568,6 +2570,8 @@ const RUTAS = {
   // 🎟️ el Pase de rapero: el tuyo y «miré una llave en vivo», con tu sesión; el nivel de cada perfil; y lo del ciclo,
   // con su clave. Ver `paseDe()`, `paseVivo()`, `pases()` y `paseCiclo()`
   '/avisos/pase': 'POST', '/avisos/pase-vivo': 'POST', '/avisos/pases': 'GET', '/avisos/pase-ciclo': 'POST',
+  // 🎟️ (25/10/2026) tus avisos del Pase y tu color premium, con tu sesión; el sorteo del premium (público) y entrar a él
+  '/avisos/pase-avisos': 'POST', '/avisos/pase-color': 'POST', '/avisos/sorteo': 'POST', '/avisos/sorteo-entrar': 'POST',
   // 🎟️ quién tiene nivel en el Pase, para el ciclo (la Temporada es el premio del nivel 1): con `claveCiclo()`
   '/avisos/pase-niveles': 'GET',
   // 🧠 los datos de cada persona para /card, que viven en el objeto desde el 06/10/2026: los escribe y los lee el
@@ -2813,7 +2817,7 @@ export function paraSeguidores(items, ahora) {
 // ante la duda no se avisa, porque «te felicitaron» a otro es peor que nada.
 
 //: lo que se puede felicitar. Una carta nueva le toca a todo el que juega una vez: no es un logro
-export const APLAUDIBLES = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, ligahito: 1, mesaward: 1 };
+export const APLAUDIBLES = { campeon: 1, rango: 1, caza: 1, sobrevivio: 1, pase: 1, sorteo: 1, ligahito: 1, mesaward: 1 };
 //: 🏆 las categorías de los MES AWARDS, como las dice un aviso (`bot/mes_awards.py`)
 export const MES_CAT = { rapero: 'el Rapero del mes', revelacion: 'la Revelación del mes', batalla: 'la Batalla del mes',
   servidor: 'el Servidor del mes',
@@ -2851,6 +2855,7 @@ export function motivoAplauso(x) {
         : x.tipo === 'sobrevivio' ? 'sobrevivir al Most Wanted'
           : x.tipo === 'pase' ? (x.completo ? 'completar el Pase de rapero'
             : `llegar al nivel ${x.nivel} del Pase${x.premio ? ': «' + String(x.premio).slice(0, 40) + '»' : ''}`)
+          : x.tipo === 'sorteo' ? 'ganar el sorteo del Pase premium'
             // 🏟️ lo de las ligas de los servidores (`bot/ligas.py`, 16/10/2026)
             : x.tipo === 'mesaward' ? (String(x.cat || '').startsWith('sv:') ? `ganar los MES AWARDS de ${String(x.cat).slice(3, 9)}`
               : `ganar ${MES_CAT[x.cat] || 'los MES AWARDS'}`)
@@ -3183,7 +3188,11 @@ const ROLES_PANEL = ['admin', 'asistente', 'moderador'];
 // gratis», y dónde se ve, «ambos pero que sea personalizable… que él decida, pero por default en ambos». Se desbloquea con
 // el nivel `FONDO_NIVEL` del Pase de rapero; se ve recién cuando lo aprueba Dlx (hay menores en la Liga); y cada uno elige
 // si va en su perfil, de fondo de su propia página, o los dos
-export const FONDO_NIVEL = 10;
+export const FONDO_NIVEL = 5;
+// 🎨 los colores de nombre que puede elegir quien tiene el premium (el nivel 7 de su fila): los de la Liga y el dorado
+export const PASE_COLORES = ['#F5C542', '#29B298', '#E41373', '#8FE8FF', '#B98CFF', '#FF7A45', '#F6F6F6'];
+// 🔔 desde qué hora del domingo (este) sale el aviso semanal del Pase
+export const PASE_AVISO_HORA = '17:00';
 //: el tope de cada imagen (la página la achica a 1600×640 en webp antes de mandarla) y cuántas por día
 export const FONDO_TOPE = 600 * 1024;
 
@@ -3526,6 +3535,13 @@ export const BENEFICIOS_SV = ['pagina', 'calendario', 'ligas', 'panel', 'suma', 
 
 export function ajusteValido(cual, valor) {
   if (cual === 'campana_pausada') return typeof valor === 'boolean' ? valor : undefined;
+  // 🎟️ el sorteo del Pase premium (25/10/2026): `{id, cierra, sorteo}` (ISO), o `null` para sacarlo. Cierra antes de sortear
+  if (cual === 'pase_sorteo') {
+    if (valor === null) return null;
+    const id = String((valor && valor.id) || ''), c = Date.parse((valor && valor.cierra) || ''), so = Date.parse((valor && valor.sorteo) || '');
+    if (!/^[a-z0-9-]{3,30}$/.test(id) || !Number.isFinite(c) || !Number.isFinite(so) || c > so) return undefined;
+    return { id, cierra: new Date(c).toISOString(), sorteo: new Date(so).toISOString() };
+  }
   // 👥 las crews (19/10/2026): cuánto cuesta crear una (Puntos de Tienda) y cómo se arma su ranking (`{modo, n}`)
   if (cual === 'crew_precio') return CW.precioValido(valor);
   // 💸 y cuánto cuesta cambiarle el nombre (o la sigla) y el logo (Dlx, 19/10/2026: «cuesta plata»)
@@ -4840,7 +4856,8 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // 🎟️ EL PASE: el tuyo (pedirlo ya revisa tus Tareas) y «miré una llave en vivo», con tu sesión. ⚠️ Nunca por el
   // reenvío de abajo: ese pasa el cuerpo tal cual, y acá el `quien` lo pone la sesión
-  if (ruta === '/avisos/pase' || ruta === '/avisos/pase-vivo') {
+  if (ruta === '/avisos/pase' || ruta === '/avisos/pase-vivo' || ruta === '/avisos/pase-avisos' || ruta === '/avisos/pase-color' ||
+    ruta === '/avisos/sorteo' || ruta === '/avisos/sorteo-entrar') {
     const crudo = await req.text();
     if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
     let d = null;
@@ -4850,10 +4867,12 @@ export async function rutaAvisos(req, env, ruta) {
     }
     const llave = String(d.llave || '');
     if (ruta === '/avisos/pase-vivo' && !/^[A-Za-z0-9:_-]{1,60}$/.test(llave)) return json({ error: 'falta la llave' }, 400);
+    // 🎟️ el sorteo se puede mirar sin cuenta (entonces no dice si entraste)
     const q = await quienPide(req, env, d);
-    if (!q.id) return json({ error: q.error }, q.estado);
+    if (!q.id && ruta !== '/avisos/sorteo') return json({ error: q.error }, q.estado);
     return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
-      method: 'POST', body: JSON.stringify({ quien: q.id, llave }), headers: { 'content-type': 'application/json' },
+      method: 'POST', body: JSON.stringify({ quien: q.id || '', llave, si: d.si, color: d.color }),
+      headers: { 'content-type': 'application/json' },
     });
   }
   // 🎬 TUS BATALLAS EN VIDEO (Dlx, 12/10/2026: «las 2, pero asegurate que haya restricciones…»): pedir un link o un
@@ -5682,6 +5701,20 @@ export class Avisos {
       // tocar el Pase (la curva, la gracia…): sin la foto del antes no se puede decir si algo sirvió
       this.sql.exec('CREATE TABLE IF NOT EXISTS pase_foto (temp TEXT NOT NULL, sem TEXT NOT NULL, dist TEXT NOT NULL, ' +
         't INTEGER NOT NULL, PRIMARY KEY (temp, sem))');
+      // 💎 EL PASE PREMIUM (Dlx, 25/10/2026): desde cuándo y hasta cuándo tuvo cada uno el rol de DRA que lo desbloquea
+      // (`pase.ROL_PREMIUM`). El +20 % de XP vale para las Tareas cumplidas en ese rato: sacarle el rol no le baja el nivel
+      this.sql.exec('CREATE TABLE IF NOT EXISTS pase_premium (quien TEXT NOT NULL, temp TEXT NOT NULL, desde INTEGER NOT NULL, ' +
+        'hasta INTEGER, PRIMARY KEY (quien, temp))');
+      // 🔔 los avisos del Pase (apagados de entrada: sólo quien los prende) y el color de nombre que eligió quien tiene el
+      // premium (el nivel 7 de su fila)
+      this.sql.exec('CREATE TABLE IF NOT EXISTS pase_aviso (quien TEXT PRIMARY KEY, si INTEGER NOT NULL, t INTEGER NOT NULL)');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS pase_color (quien TEXT PRIMARY KEY, color TEXT NOT NULL, t INTEGER NOT NULL)');
+      // 🎟️ EL SORTEO DEL PASE PREMIUM (Dlx, 25/10/2026: «algo interactivo en la página»): quién entró y con cuántos
+      // boletos (1 + las semanas con las cinco semanales, hasta 3). Lo programa Dlx (`pase_sorteo` de los ajustes)
+      this.sql.exec('CREATE TABLE IF NOT EXISTS sorteo_part (sorteo TEXT NOT NULL, quien TEXT NOT NULL, boletos INTEGER NOT NULL, ' +
+        't INTEGER NOT NULL, PRIMARY KEY (sorteo, quien))');
+      this.sql.exec('CREATE TABLE IF NOT EXISTS sorteo_res (sorteo TEXT PRIMARY KEY, ganador TEXT NOT NULL, semilla TEXT NOT NULL, ' +
+        'n INTEGER NOT NULL, boletos INTEGER NOT NULL, rol INTEGER NOT NULL DEFAULT 0, t INTEGER NOT NULL)');
       // ⭐ LO QUE SUBE EL NIVEL ADEMÁS DE JUGAR (14/10/2026): cada cosa hecha, una vez cada una (`que` de `XP_FUENTES`,
       // `ref` qué fue). No se borra con el tiempo —los aplausos se van a los 30 días y la XP no tiene que bajar—: sólo
       // con «olvidarme». Ver `xpVio()` y `xpDe()`
@@ -6263,6 +6296,10 @@ export class Avisos {
         return json(this.paseDe(String(d.quien)));
       }
       if (ruta === '/pase-vivo') return json(this.paseVivo(d));
+      if (ruta === '/pase-avisos') { const v = this.paseAvisoPoner(d); return json(v, v.error ? 400 : 200); }
+      if (ruta === '/pase-color') { const v = this.paseColorPoner(d); return json(v, v.error ? 400 : 200); }
+      if (ruta === '/sorteo') return json(this.sorteoDe(/^[0-9]{5,25}$/.test(String(d.quien || '')) ? String(d.quien) : ''));
+      if (ruta === '/sorteo-entrar') { const v = this.sorteoEntrar(d); return json(v, v.error ? 400 : 200); }
       // 🧠 lo que manda el ciclo: las personas de esta corrida (`bot/subir_datos.py`)
       if (ruta === '/personas-ciclo') {
         const v = this.personasCiclo(d);
@@ -6678,6 +6715,9 @@ export class Avisos {
       this.guardar('aplausos', { t: ahora, error: String(e).slice(0, 120) });
     }
     // 🔥 y la racha que se corta hoy, a la noche. Nunca frena al vigía: ver `recordarRacha()`
+    // 🎟️ el aviso semanal del Pase (sólo a quien lo prendió) y el sorteo del premium cuando llega su hora
+    try { await this.avisarPase(ahora); } catch (e) { /* nunca frena al vigía */ }
+    try { await this.sortear(ahora); } catch (e) { /* nunca frena al vigía */ }
     try { await this.recordarRacha(ahora); } catch (e) {
       this.guardar('racha_aviso', { t: ahora, error: String(e).slice(0, 120) });
     }
@@ -9192,9 +9232,15 @@ export class Avisos {
   /** ¿Puede subir un fondo? El nivel `FONDO_NIVEL` del Pase; Dlx siempre (para probarlo). */
   puedeFondo(quien) {
     if (quien === DUENO) return { si: true, nivel: null, falta: FONDO_NIVEL };
+    // 🖼️ DESDE EL 25/10/2026 (Dlx: «hazlo como te dije del pase premium… pero un nivel de experiencia en general en tu
+    // perfil»): el NIVEL `FONDO_NIVEL` DE TU PERFIL (el general, no el del Pase), o el premium desde su nivel 5. Quien ya
+    // tenía su fondo aprobado lo conserva
     const P = this.paseDatos();
-    const nivel = P.cfg ? this.paseNivel(quien, P.cfg) : 0;
-    return { si: nivel >= FONDO_NIVEL, nivel, falta: FONDO_NIVEL };
+    const nivel = this.rachaDe(quien).nivel.n;
+    const pNivel = P.cfg ? this.paseNivel(quien, P.cfg) : 0;
+    const prem = P.cfg && this.pasePremium(quien, P.cfg.temp) && pNivel >= (((P.cfg.premium || []).find((p) => p[2] === 'fondo') || [5])[0]);
+    const tenia = !!this.sql.exec("SELECT 1 AS x FROM fondos WHERE quien = ? AND estado = 'ok' LIMIT 1", quien).toArray()[0];
+    return { si: nivel >= FONDO_NIVEL || !!prem || tenia, nivel, falta: FONDO_NIVEL };
   }
 
   /** Cómo está el fondo de alguien, para su Mi cuenta. */
@@ -11600,7 +11646,10 @@ export class Avisos {
     if (cfg) {
       // la XP de cada Tarea, por id; y las de la semana de prueba que ya no existen, lo que valían (`legado`)
       cfg.xp = Object.assign({}, cfg.legado || {});
-      for (const t of [].concat(cfg.diarias || [], cfg.semanales || [], cfg.temporada || [])) cfg.xp[t[0]] = t[5];
+      for (const t of [].concat(cfg.diarias || [], cfg.semanales || [], cfg.temporada || [], cfg.bienvenida || [],
+        cfg.especiales || [])) cfg.xp[t[0]] = t[5];
+      // 👥 la meta de la crew paga como una Tarea más (`crew`)
+      if (cfg.crew) cfg.xp.crew = cfg.crew[0];
       this.paseHeredar(cfg, this._pase.sem);
     }
     return this._pase;
@@ -11676,15 +11725,54 @@ export class Avisos {
           String(p[3] || '').slice(0, 40)]),
       publicar: (Array.isArray(c.publicar) ? c.publicar : []).filter((n) => Number.isInteger(n) && n >= 1 && n <= niveles)
         .slice(0, 10),
+      // 🎟️ lo del 25/10/2026 (`bot/pase.py`): la bienvenida, las especiales (con su ventana), las semanas de XP doble, desde
+      // qué semana hay gracia, la meta de la crew y la fila premium (lo que da: nunca puntos del ranking)
+      bienvenida: tareas(c.bienvenida).slice(0, 5),
+      especiales: (Array.isArray(c.especiales) ? c.especiales : []).filter((t) => Array.isArray(t) && Number.isFinite(t[6]) &&
+        Number.isFinite(t[7]) && t[6] < t[7]).slice(0, 8).map((t) => tareas([t.slice(0, 6)])[0] && tareas([t.slice(0, 6)])[0].concat([t[6], t[7]]))
+        .filter(Boolean),
+      doble: (Array.isArray(c.doble) ? c.doble : []).filter((x) => Array.isArray(x) && Number.isFinite(x[0]) && Number.isFinite(x[1]) &&
+        x[0] < x[1]).slice(0, 10).map((x) => [x[0], x[1], [2, 3].includes(x[2]) ? x[2] : 2]),
+      gracia_desde: /^\d{4}-\d{2}-\d{2}$/.test(String(c.gracia_desde || '')) ? String(c.gracia_desde) : '',
+      crew: Array.isArray(c.crew) && c.crew.every((x) => Number.isInteger(x) && x >= 0 && x <= 100000) && c.crew.length === 4 ? c.crew : null,
+      boost: entero(c.boost, 0, 100, 0),
+      premium: (Array.isArray(c.premium) ? c.premium : []).filter((p) => Array.isArray(p) && Number.isInteger(p[0]))
+        .slice(0, niveles).map((p) => [p[0], entero(p[1], 0, 100000, 0),
+          ['marco', 'reaccion', 'fondo', 'color', 'titulo', 'emblema', 'carta'].includes(p[2]) ? p[2] : '', String(p[3] || '').slice(0, 40)]),
     };
-    // ⚠️ un id repetido entre las tres listas sumaría la XP de una Tarea en la otra: no se toma
-    const ids = [].concat(cfg.diarias, cfg.semanales, cfg.temporada).map((t) => t[0]);
-    if (new Set(ids).size !== ids.length) return { error: 'tareas repetidas' };
+    // ⚠️ un id repetido entre las listas sumaría la XP de una Tarea en la otra: no se toma
+    const ids = [].concat(cfg.diarias, cfg.semanales, cfg.temporada, cfg.bienvenida, cfg.especiales).map((t) => t[0]);
+    if (new Set(ids).size !== ids.length || ids.includes('crew')) return { error: 'tareas repetidas' };
+    // 💎 quién tiene el rol del premium ahora: el que llega, desde ahora; el que ya no está, hasta ahora (no se borra: su XP
+    // de ese rato sigue valiendo lo que valió). ⚠️ Discord IDs: nunca en `cfg`, que es público
+    const llegan = [];
+    if (Array.isArray(d.premium)) {
+      const ahoraP = Date.now();
+      const hay = new Set(d.premium.map(String).filter(id));
+      for (const q of hay) {
+        const r0 = this.sql.exec('SELECT hasta FROM pase_premium WHERE quien = ? AND temp = ?', q, cfg.temp).toArray()[0];
+        if (!r0) llegan.push(q);
+        this.sql.exec('INSERT INTO pase_premium (quien, temp, desde, hasta) VALUES (?, ?, ?, NULL) ON CONFLICT(quien, temp) ' +
+          'DO UPDATE SET hasta = NULL WHERE hasta IS NOT NULL', q, cfg.temp, ahoraP);
+      }
+      for (const r of this.sql.exec('SELECT quien FROM pase_premium WHERE temp = ? AND hasta IS NULL', cfg.temp).toArray()) {
+        if (!hay.has(String(r.quien))) this.sql.exec('UPDATE pase_premium SET hasta = ? WHERE quien = ? AND temp = ?', ahoraP, r.quien, cfg.temp);
+      }
+    }
     this.guardar('pase', { cfg, sem, miembros: d.miembros.map(String).filter(id), hechas });
     this.guardar('pase_v', d.v);
     this._pase = null;
     let nuevas = 0;
     for (const q of Object.keys(hechas)) nuevas += this.paseRevisar(q);
+    // 💎 quien recién desbloqueó el premium cobra ya lo de los niveles que pasó (sin esperar a su próxima Tarea), y se
+    // entera por la campana
+    for (const q of llegan) {
+      if (!d.miembros.map(String).includes(q)) continue;
+      const { nivel } = this.premiarPase(q);
+      this.aBandeja(q, 'pase-premium:' + cfg.temp, 'pase', '💎 Desbloqueaste el Pase premium',
+        (nivel ? 'Ya cobraste lo de tus ' + nivel + ' niveles de la fila premium. ' : '') + 'Desde ahora tus Tareas dan +' +
+        (cfg.boost || 0) + ' % de XP.', HUB + '/freestyle-rap/pase', '', Date.now());
+    }
     return { ok: true, cambio: true, niveles: nuevas };
   }
 
@@ -11749,20 +11837,68 @@ export class Avisos {
     });
   }
 
-  /** La XP de alguien en el Pase de la temporada: lo que dan sus Tareas anotadas */
+  /**
+   * ×2 💎 Cuánto vale una Tarea anotada en `t`: lo de siempre, por 2 si cayó en una semana de XP doble (`cfg.doble`) y un
+   * `cfg.boost`% más si en ese momento tenía el premium (`premium`: `[desde, hasta]` o `null`)
+   */
+  paseVale(cfg, base, t, premium) {
+    let x = base;
+    for (const d of cfg.doble || []) if (t >= d[0] && t < d[1]) { x *= d[2]; break; }
+    if (premium && cfg.boost && t >= premium[0] && (premium[1] == null || t < premium[1])) x = x * (100 + cfg.boost) / 100;
+    return Math.round(x);
+  }
+
+  /** 💎 `[desde, hasta]` del premium de alguien en la temporada, o `null` */
+  pasePremium(quien, temp) {
+    const r = this.sql.exec('SELECT desde, hasta FROM pase_premium WHERE quien = ? AND temp = ?', quien, temp).toArray()[0];
+    return r ? [r.desde, r.hasta] : null;
+  }
+
+  /** La XP de alguien en el Pase de la temporada: lo que dan sus Tareas anotadas (con la XP doble y el premium) */
   paseXP(quien, cfg) {
+    const pr = this.pasePremium(quien, cfg.temp);
     let xp = 0;
-    for (const r of this.sql.exec('SELECT tarea, COUNT(*) AS n FROM pase_hecho WHERE quien = ? AND temp = ? GROUP BY tarea',
-      quien, cfg.temp).toArray()) xp += (cfg.xp[r.tarea] || 0) * r.n;
+    for (const r of this.sql.exec('SELECT tarea, t FROM pase_hecho WHERE quien = ? AND temp = ?', quien, cfg.temp).toArray()) {
+      xp += this.paseVale(cfg, cfg.xp[r.tarea] || 0, r.t, pr);
+    }
     return xp;
   }
 
   /** `{quien: xp}` de todos los que tienen algo anotado en la temporada */
   paseXPs(cfg) {
+    const prs = {};
+    for (const r of this.sql.exec('SELECT quien, desde, hasta FROM pase_premium WHERE temp = ?', cfg.temp).toArray()) {
+      prs[r.quien] = [r.desde, r.hasta];
+    }
     const out = {};
-    for (const r of this.sql.exec('SELECT quien, tarea, COUNT(*) AS n FROM pase_hecho WHERE temp = ? GROUP BY quien, tarea',
-      cfg.temp).toArray()) out[r.quien] = (out[r.quien] || 0) + (cfg.xp[r.tarea] || 0) * r.n;
+    for (const r of this.sql.exec('SELECT quien, tarea, t FROM pase_hecho WHERE temp = ?', cfg.temp).toArray()) {
+      out[r.quien] = (out[r.quien] || 0) + this.paseVale(cfg, cfg.xp[r.tarea] || 0, r.t, prs[r.quien] || null);
+    }
     return out;
+  }
+
+  /**
+   * 👥 LA META DE LA CREW de alguien en la semana `s` (`[id, ini, fin]`): `{crew, nombre, meta, hechas, mias, n}` o `null`
+   * si no está en una crew con al menos otro del Pase. Cuentan las Tareas de los de la crew que son del Pase, sin la
+   * de la meta misma
+   */
+  paseCrew(quien, s, P) {
+    if (!P.cfg || !P.cfg.crew) return null;
+    const m = this.sql.exec('SELECT crew FROM crew_miembros WHERE quien = ? AND pend = 0', quien).toArray()[0];
+    if (!m) return null;
+    const qs = this.sql.exec("SELECT quien FROM crew_miembros WHERE crew = ? AND pend = 0 AND quien != ''", m.crew).toArray()
+      .map((r) => String(r.quien)).filter((q) => P.miembros.has(q));
+    if (qs.length < 2) return null;
+    const [xp, porCabeza, piso, techo] = P.cfg.crew;
+    const meta = Math.max(piso, Math.min(techo, porCabeza * qs.length));
+    let hechas = 0, mias = 0;
+    for (const r of this.sql.exec("SELECT quien, COUNT(*) AS n FROM pase_hecho WHERE temp = ? AND t >= ? AND t < ? AND tarea != 'crew' " +
+      'AND quien IN (' + qs.map(() => '?').join(',') + ') GROUP BY quien', P.cfg.temp, s[1], s[2], ...qs).toArray()) {
+      hechas += r.n;
+      if (String(r.quien) === quien) mias = r.n;
+    }
+    const c = this.sql.exec('SELECT nombre FROM crews WHERE id = ?', m.crew).toArray()[0];
+    return { crew: m.crew, nombre: c ? c.nombre : '', meta, hechas, mias, n: qs.length, xp, miembros: qs };
   }
 
   /** El nivel de alguien en el Pase de la temporada */
@@ -11809,11 +11945,32 @@ export class Avisos {
       if (s[1] > ahora) continue;
       const ya = this.paseYa(quien, cfg.temp, s[0]);
       if ((cfg.semanales || []).every((t) => ya.has(t[0]))) continue;
-      anotar(s[0], this.paseLista(quien, cfg.semanales, s[1], s[2], P, ya, true));
+      // 🛟 LA SEMANA DE GRACIA (25/10/2026): la semana que acaba de terminar sigue abierta siete días más (desde
+      // `gracia_desde`): lo que hagas esta semana también le cumple las que te faltaron. Paga en SU semana
+      const fin = cfg.gracia_desde && s[0] >= cfg.gracia_desde && s[2] <= ahora && ahora < s[2] + 7 * DIA_MS ? s[2] + 7 * DIA_MS : s[2];
+      anotar(s[0], this.paseLista(quien, cfg.semanales, s[1], fin, P, ya, true));
     }
     const yaT = this.paseYa(quien, cfg.temp, 'temp');
     if (!(cfg.temporada || []).every((t) => yaT.has(t[0]))) {
       anotar('temp', this.paseLista(quien, cfg.temporada, P.sem[0][1], SIEMPRE, P, yaT, true));
+    }
+    // 👋 la bienvenida: una sola vez, contando desde el arranque (quien ya lo hizo, la cobra al aparecer)
+    const yaB = this.paseYa(quien, cfg.temp, 'bien');
+    if ((cfg.bienvenida || []).length && !cfg.bienvenida.every((t) => yaB.has(t[0]))) {
+      anotar('bien', this.paseLista(quien, cfg.bienvenida, P.sem[0][1], SIEMPRE, P, yaB, true));
+    }
+    // ⭐ las especiales: cada una sólo adentro de su ventana
+    for (const e of cfg.especiales || []) {
+      if (e[6] > ahora) continue;
+      const yaE = this.paseYa(quien, cfg.temp, 'e:' + e[0]);
+      if (yaE.has(e[0])) continue;
+      anotar('e:' + e[0], this.paseLista(quien, [e.slice(0, 6)], e[6], e[7], P, yaE, true));
+    }
+    // 👥 la meta de la crew, de esta semana y de la que acaba de terminar: si la crew llegó, la cobra cada uno
+    for (const s of P.sem.filter((x) => x[1] <= ahora).slice(-2)) {
+      if (this.paseYa(quien, cfg.temp, s[0]).has('crew')) continue;
+      const c = this.paseCrew(quien, s, P);
+      if (c && c.hechas >= c.meta) anotar(s[0], [{ id: 'crew', hecha: true }]);
     }
     if (!nuevas) return 0;
     const { nivel, cola } = this.premiarPase(quien);
@@ -11859,14 +12016,36 @@ export class Avisos {
       if (p) pagar(n, p[1]);
     }
     for (let j = 1; j <= cola; j++) pagar('c' + j, cfg.cola[1]);
+    // 💎 y la fila premium, si la tiene: al desbloquearla cobra de una vez lo de los niveles que ya pasó
+    if (this.pasePremium(quien, cfg.temp)) {
+      for (let n = 1; n <= nivel; n++) {
+        const p = (cfg.premium || [])[n - 1];
+        if (p) pagar('p' + n, p[1]);
+      }
+    }
     return { nivel, xp, cola };
   }
 
   /** Lo que ganó alguien hasta su nivel: el último título, el color y las insignias (`[[nivel, valor], …]`) */
-  pasePremios(cfg, nivel) {
+  pasePremios(cfg, nivel, quien) {
     const hasta = (cfg.premios || []).filter((p) => p[0] <= nivel);
     const ult = (tipo) => (hasta.filter((p) => p[2] === tipo).pop() || [])[3] || '';
-    return { titulo: ult('titulo'), color: ult('color'), insignias: hasta.filter((p) => p[2] === 'insignia').map((p) => [p[0], p[3]]) };
+    const out = { titulo: ult('titulo'), color: ult('color'), insignias: hasta.filter((p) => p[2] === 'insignia').map((p) => [p[0], p[3]]),
+      premium: false, marco: '', emblema: false };
+    // 💎 con el premium: su título (si llegó), el color que eligió (el nivel 7), el marco de su carta y el emblema
+    if (quien && this.pasePremium(quien, cfg.temp)) {
+      const ph = (cfg.premium || []).filter((p) => p[0] <= nivel);
+      const pu = (tipo) => ph.filter((p) => p[2] === tipo).pop() || null;
+      out.premium = true;
+      if (pu('titulo')) out.titulo = pu('titulo')[3];
+      if (pu('color')) {
+        const c = this.sql.exec('SELECT color FROM pase_color WHERE quien = ?', quien).toArray()[0];
+        if (c) out.color = c.color;
+      }
+      out.marco = pu('marco') ? pu('marco')[3] : '';
+      out.emblema = !!pu('emblema');
+    }
+    return out;
   }
 
   /**
@@ -11906,7 +12085,171 @@ export class Avisos {
     return Object.assign({ listo: true, miembro, temp: cfg.temp, niveles: cfg.niveles, nivel, xp,
       desde: nivel ? u[nivel - 1] : 0, hasta: nivel < cfg.niveles ? u[nivel] : null, cola: paseCola(cfg, xp),
       cada: cfg.cola ? cfg.cola : null, cobrado, completos, salon, hoy, semana, temporada, premios: cfg.premios || [] },
-    this.pasePremios(cfg, nivel));
+    this.pasePremios(cfg, nivel, quien), this.paseExtras(quien, cfg, P, miembro, nivel, ya));
+  }
+
+  /**
+   * 🎟️ Lo del 25/10/2026 para la página de cada uno: la semana de gracia, la bienvenida, las especiales, la crew, el
+   * premium (si lo tiene y desde cuándo), sus avisos, las semanas de XP doble y la fila premium
+   */
+  paseExtras(quien, cfg, P, miembro, nivel, ya) {
+    const ahora = Date.now();
+    const out = { bienvenida: [], especiales: [], gracia: null, crew: null, doble: cfg.doble || [], boost: cfg.boost || 0,
+      fila_premium: cfg.premium || [], premium: null, aviso: false, color_premium: '', colores: PASE_COLORES };
+    try {
+      if (P.sem.length) out.bienvenida = this.paseLista(quien, cfg.bienvenida || [], P.sem[0][1], SIEMPRE, P, ya('bien'), miembro);
+      out.especiales = (cfg.especiales || []).map((e) => Object.assign(this.paseLista(quien, [e.slice(0, 6)], e[6], e[7], P,
+        ya('e:' + e[0]), miembro && e[6] <= ahora)[0], { ini: e[6], fin: e[7] }));
+      // 🛟 la semana que terminó, si todavía está en su semana de gracia y le falta alguna
+      const prev = P.sem.filter((x) => x[2] <= ahora).slice(-1)[0];
+      if (prev && cfg.gracia_desde && prev[0] >= cfg.gracia_desde && ahora < prev[2] + 7 * DIA_MS) {
+        const ts = this.paseLista(quien, cfg.semanales, prev[1], prev[2] + 7 * DIA_MS, P, ya(prev[0]), miembro).filter((t) => !t.hecha);
+        if (ts.length) out.gracia = { id: prev[0], fin: prev[2] + 7 * DIA_MS, tareas: ts };
+      }
+      const s = P.sem.filter((x) => x[1] <= ahora).slice(-1)[0];
+      if (s && miembro) {
+        const c = this.paseCrew(quien, s, P);
+        if (c) out.crew = { nombre: c.nombre, meta: c.meta, hechas: c.hechas, mias: c.mias, n: c.n, xp: c.xp, fin: s[2],
+          cobrada: ya(s[0]).has('crew') };
+      }
+      const pr = this.pasePremium(quien, cfg.temp);
+      if (pr) out.premium = { desde: pr[0], hasta: pr[1] };
+      out.aviso = !!(this.sql.exec('SELECT si FROM pase_aviso WHERE quien = ?', quien).toArray()[0] || {}).si;
+      out.color_premium = (this.sql.exec('SELECT color FROM pase_color WHERE quien = ?', quien).toArray()[0] || {}).color || '';
+    } catch (e) { /* lo nuevo no tapa el Pase */ }
+    return out;
+  }
+
+  /** 🔔 Prender o apagar los avisos del Pase (`/avisos/pase-avisos`, con su sesión) */
+  paseAvisoPoner(d) {
+    const quien = String(d.quien || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || typeof d.si !== 'boolean') return { error: 'faltan datos' };
+    this.sql.exec('INSERT INTO pase_aviso (quien, si, t) VALUES (?, ?, ?) ON CONFLICT(quien) DO UPDATE SET si = excluded.si, t = excluded.t',
+      quien, d.si ? 1 : 0, Date.now());
+    return { ok: true, si: d.si };
+  }
+
+  /** 🎨 El color de nombre de quien tiene el premium y llegó a su nivel 7 (`/avisos/pase-color`, con su sesión) */
+  paseColorPoner(d) {
+    const quien = String(d.quien || ''), color = String(d.color || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !PASE_COLORES.includes(color)) return { error: 'faltan datos' };
+    const P = this.paseDatos();
+    if (!P.cfg || !this.pasePremium(quien, P.cfg.temp)) return { error: 'premium' };
+    const n7 = ((P.cfg.premium || []).find((p) => p[2] === 'color') || [7])[0];
+    if (this.paseNivel(quien, P.cfg) < n7) return { error: 'nivel', falta: n7 };
+    this.sql.exec('INSERT INTO pase_color (quien, color, t) VALUES (?, ?, ?) ON CONFLICT(quien) DO UPDATE SET color = excluded.color, t = excluded.t',
+      quien, color, Date.now());
+    return { ok: true, color };
+  }
+
+  /**
+   * 🔔 EL AVISO SEMANAL DEL PASE (Dlx, 25/10/2026: el informe, cambio 9): el domingo desde `PASE_AVISO_HORA` del este,
+   * una vez por semana y SÓLO a quien lo prendió (`pase_aviso`), qué le falta para el siguiente nivel y cuánto le dan las
+   * semanales que todavía tiene. Al teléfono, con el mismo tope por minuto que los demás. Nunca por DM
+   */
+  async avisarPase(ahora) {
+    if (this.pausada()) return 0;
+    const P = this.paseDatos();
+    if (!P.cfg || !P.sem.length) return 0;
+    const dow = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'short' }).format(new Date(ahora));
+    const s = P.sem.filter((x) => x[1] <= ahora).slice(-1)[0];
+    if (dow !== 'Sun' || horaET(ahora) < PASE_AVISO_HORA || !s || this.leer('pase_aviso_sem') === s[0]) return 0;
+    const cands = this.sql.exec('SELECT DISTINCT a.quien FROM pase_aviso a JOIN subs s ON s.quien = a.quien WHERE a.si = 1').toArray()
+      .map((x) => String(x.quien)).filter((q) => P.miembros.has(q));
+    let enviados = 0, pedidos = 0, quedan = 0;
+    for (const quien of cands) {
+      const id = 'pase-aviso:' + quien + ':' + s[0];
+      if (this.sql.exec('SELECT id FROM hechos WHERE id = ?', id).toArray()[0]) continue;
+      const xp = this.paseXP(quien, P.cfg), nivel = nivelDeXP(P.cfg, xp);
+      if (nivel >= P.cfg.niveles) continue;
+      const falta = P.cfg.umbrales[nivel] - xp;
+      const pend = this.paseLista(quien, P.cfg.semanales, s[1], s[2], P, this.paseYa(quien, P.cfg.temp, s[0]), true).filter((t) => !t.hecha);
+      const subs = this.sql.exec('SELECT id, endpoint, p256dh, auth FROM subs WHERE quien = ?', quien).toArray();
+      if (!subs.length) continue;
+      if (pedidos + subs.length > TOPE_PERSONALES && pedidos) { quedan++; continue; }
+      this.sql.exec('INSERT OR IGNORE INTO hechos (id, t) VALUES (?, ?)', id, ahora);
+      pedidos += subs.length;
+      const cuerpo = cuerpoPersonal({ id: 'pase' + s[0].replace(/-/g, ''),
+        titulo: '🎟️ Te faltan ' + falta.toLocaleString('es') + ' XP para el nivel ' + (nivel + 1),
+        cuerpo: pend.length ? 'Te quedan ' + pend.length + ' semanales (+' + pend.reduce((a, t) => a + t.xp, 0).toLocaleString('es') +
+          ' XP) hasta el lunes a las 11 AM.' : 'Ya cumpliste las semanales: las diarias de mañana te acercan.',
+        url: HUB + '/freestyle-rap/pase' });
+      const estados = await Promise.all(subs.map((x) => empujar(x, cuerpo, { ttl: 12 * 3600, topic: 'pase' }, this.env, new Map())));
+      let llego = 0, reintentar = false;
+      estados.forEach((e, i) => {
+        if (e >= 200 && e < 300) { enviados++; llego++; }
+        else if (MUERTA(e)) this.sql.exec('DELETE FROM subs WHERE id = ?', subs[i].id);
+        else if (e === 0 || e === 429 || e >= 500) reintentar = true;
+      });
+      if (reintentar && !llego) this.sql.exec('DELETE FROM hechos WHERE id = ?', id);
+    }
+    if (!quedan) this.guardar('pase_aviso_sem', s[0]);
+    return enviados;
+  }
+
+  /**
+   * 🎟️ EL SORTEO DEL PASE PREMIUM (Dlx, 25/10/2026): el que programó Dlx (`pase_sorteo`: `{id, cierra, sorteo}`), quién
+   * entró (cuántos, nunca quién, salvo el ganador) y el resultado. `quien`: si esa cuenta entró y con cuántos boletos
+   */
+  sorteoDe(quien) {
+    const S = this.ajustes().pase_sorteo;
+    if (!S) return { sorteo: null };
+    const parts = this.sql.exec('SELECT COUNT(*) AS n, COALESCE(SUM(boletos), 0) AS b FROM sorteo_part WHERE sorteo = ?', S.id).toArray()[0];
+    const r = this.sql.exec('SELECT ganador, semilla, n, boletos, t FROM sorteo_res WHERE sorteo = ?', S.id).toArray()[0];
+    const mio = quien ? this.sql.exec('SELECT boletos FROM sorteo_part WHERE sorteo = ? AND quien = ?', S.id, quien).toArray()[0] : null;
+    const out = { sorteo: { id: S.id, cierra: Date.parse(S.cierra), cuando: Date.parse(S.sorteo), personas: parts.n, boletos: parts.b },
+      mio: mio ? mio.boletos : 0 };
+    if (r) {
+      out.resultado = { k: this.claveDe(r.ganador), semilla: r.semilla, personas: r.n, boletos: r.boletos, t: r.t,
+        yo: quien === r.ganador };
+      // los nombres que pasan en la animación: los perfiles que entraron (sin cuentas ni IDs)
+      out.nombres = this.sql.exec('SELECT quien FROM sorteo_part WHERE sorteo = ? ORDER BY t LIMIT 60', S.id).toArray()
+        .map((x) => this.claveDe(x.quien)).filter(Boolean);
+    }
+    return out;
+  }
+
+  /** Entrar al sorteo (`/avisos/sorteo-entrar`, con su sesión): gratis, una vez; boletos = 1 + semanas con las 5 semanales, hasta 3 */
+  sorteoEntrar(d) {
+    const quien = String(d.quien || '');
+    if (!/^[0-9]{5,25}$/.test(quien)) return { error: 'faltan datos' };
+    const S = this.ajustes().pase_sorteo, ahora = Date.now();
+    if (!S || ahora >= Date.parse(S.cierra)) return { error: 'cerrado' };
+    const P = this.paseDatos();
+    if (!P.cfg || !P.miembros.has(quien)) return { error: 'miembro' };
+    const nSem = (P.cfg.semanales || []).length;
+    let llenas = 0;
+    for (const s of P.sem) {
+      if (s[2] > ahora) continue;
+      const ya = this.paseYa(quien, P.cfg.temp, s[0]);
+      if (nSem && (P.cfg.semanales || []).every((t) => ya.has(t[0]))) llenas++;
+    }
+    const boletos = Math.min(3, 1 + llenas);
+    this.sql.exec('INSERT INTO sorteo_part (sorteo, quien, boletos, t) VALUES (?, ?, ?, ?) ON CONFLICT(sorteo, quien) DO UPDATE SET ' +
+      'boletos = excluded.boletos', S.id, quien, boletos, ahora);
+    return Object.assign({ ok: true }, this.sorteoDe(quien));
+  }
+
+  /**
+   * 🎲 Sortea cuando llega la hora (lo llama el vigía). Transparente: la semilla es el SHA-256 del id del sorteo y de la
+   * lista de boletos en orden (`quien×boletos`), y el ganador es esa semilla módulo el total de boletos. Cualquiera con la
+   * lista puede repetir la cuenta. Va al muro por el ciclo (`bot/muro.py` lee `/avisos/sorteo`)
+   */
+  async sortear(ahora) {
+    const S = this.ajustes().pase_sorteo;
+    if (!S || ahora < Date.parse(S.sorteo)) return null;
+    if (this.sql.exec('SELECT 1 FROM sorteo_res WHERE sorteo = ?', S.id).toArray()[0]) return null;
+    const ps = this.sql.exec('SELECT quien, boletos FROM sorteo_part WHERE sorteo = ? ORDER BY quien', S.id).toArray();
+    if (!ps.length) return null;
+    const lista = ps.map((p) => p.quien + 'x' + p.boletos).join(',');
+    const dig = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(S.id + ':' + lista));
+    const hex = [...new Uint8Array(dig)].map((b) => b.toString(16).padStart(2, '0')).join('');
+    const total = ps.reduce((a, p) => a + p.boletos, 0);
+    let i = Number(BigInt('0x' + hex) % BigInt(total)), ganador = ps[0].quien;
+    for (const p of ps) { if (i < p.boletos) { ganador = p.quien; break; } i -= p.boletos; }
+    this.sql.exec('INSERT OR IGNORE INTO sorteo_res (sorteo, ganador, semilla, n, boletos, t) VALUES (?, ?, ?, ?, ?, ?)',
+      S.id, ganador, hex, ps.length, total, ahora);
+    return ganador;
   }
 
   /**
@@ -11954,7 +12297,10 @@ export class Avisos {
     }
     const hitos = this.sql.exec('SELECT quien, nivel, t FROM pase_hito WHERE temp = ? ORDER BY t', P.cfg.temp).toArray()
       .map((h) => [h.quien, h.nivel, h.t, this.claveDe(h.quien)]);
-    return { t: Date.now(), temp: P.cfg.temp, niveles: out, hitos };
+    // 🎟️ los sorteos del premium ya hechos, para Publicaciones (`bot/muro.py`): `[id, clave, ms, personas, boletos, semilla]`
+    const sorteos = this.sql.exec('SELECT sorteo, ganador, t, n, boletos, semilla FROM sorteo_res ORDER BY t').toArray()
+      .map((r) => [r.sorteo, this.claveDe(r.ganador), r.t, r.n, r.boletos, r.semilla]);
+    return { t: Date.now(), temp: P.cfg.temp, niveles: out, hitos, sorteos };
   }
 
   /**
@@ -11967,13 +12313,15 @@ export class Avisos {
     if (!P.cfg) return { t: Date.now(), n: out };
     const c = P.cfg;
     const cfg = { temp: c.temp, niveles: c.niveles, umbrales: c.umbrales, cola: c.cola, diarias: c.diarias,
-      por_dia: c.por_dia, semanales: c.semanales, temporada: c.temporada, premios: c.premios || [], publicar: c.publicar || [] };
+      por_dia: c.por_dia, semanales: c.semanales, temporada: c.temporada, premios: c.premios || [], publicar: c.publicar || [],
+      bienvenida: c.bienvenida || [], especiales: c.especiales || [], doble: c.doble || [], boost: c.boost || 0, premium: c.premium || [] };
     for (const [quien, xp] of Object.entries(this.paseXPs(c))) {
       const nivel = nivelDeXP(c, xp);
       const k = nivel ? this.claveDe(quien) : '';
       if (!k) continue;
-      const pr = this.pasePremios(c, nivel);
-      out[k] = [nivel, pr.titulo, pr.color];
+      const pr = this.pasePremios(c, nivel, quien);
+      // 💎 el cuarto y el quinto: si tiene el premium (1) y el marco de su carta ('' sin)
+      out[k] = pr.premium ? [nivel, pr.titulo, pr.color, 1, pr.marco, pr.emblema ? 1 : 0] : [nivel, pr.titulo, pr.color];
     }
     // 🏛️ EL SALÓN DEL PASE (Dlx, 06/10/2026: «4. B»): los que lo completaron, temporada por temporada y en el orden en
     // que llegaron. Por clave de perfil, como todo lo de acá: quien no tiene perfil no sale
