@@ -366,7 +366,7 @@ def _estado_final(codigo, destino=None, cuotas=True):
             q = {}
             try:
                 from subir_cartas import sesion
-                from cuotas import kv_hoy, worker_24h, r2_total, objeto_hoy
+                from cuotas import kv_hoy, worker_24h, r2_total, objeto_hoy, cpu_24h
                 s = sesion()
                 kv = kv_hoy(s)
                 if kv:
@@ -377,7 +377,9 @@ def _estado_final(codigo, destino=None, cuotas=True):
                     q['objeto'] = ob
                 w = worker_24h(s)
                 if w:
-                    q['worker'] = w
+                    # 🧮 y cuánto pasó los 10 ms, el Worker aparte del objeto (`cpu_24h()`, 25/10/2026)
+                    c = cpu_24h(s)
+                    q['worker'] = dict(w, **({'cpu': c} if c else {}))
                 # R2 cuesta ~9 pedidos: como mucho cada 12 h
                 r2 = (viejo.get('cuotas') or {}).get('r2')
                 if not r2 or time.time() - (r2.get('ts') or 0) > 12 * 3600:

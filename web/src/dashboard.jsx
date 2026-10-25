@@ -936,7 +936,8 @@ function Cuotas({ q }) {
         );
       })}</div>
       <dl className="db-sis">
-        {w.pedidos != null ? <div><dt>El Worker · 24 h</dt><dd>{num(w.pedidos)} pedidos · CPU p99 {String(w.p99_ms).replace('.', ',')} ms de 10</dd></div> : null}
+        {w.pedidos != null ? <div><dt>El Worker · 24 h</dt><dd>{num(w.pedidos)} pedidos · {w.cortados ? num(w.cortados) + ' cortados' : 'ninguno cortado'}{w.cpu ? ' · ' + num(w.cpu.worker_10) + ' pasaron los 10 ms' : ''}</dd></div> : null}
+        {w.cpu ? <div><dt>El objeto · 24 h</dt><dd>{num(w.cpu.objeto_10)} pasaron los 10 ms (no tiene ese tope)</dd></div> : null}
         {r2.objetos != null ? <div><dt>R2 · las tarjetas y las fotos</dt><dd>{num(r2.objetos)} archivos · {String(r2.gb).replace('.', ',')} GB de 10</dd></div> : null}
       </dl>
       <p className="db-tx">{deAyer ? 'Esto es de antes de las ' + hora(new Date(Date.UTC(ahora.getUTCFullYear(), ahora.getUTCMonth(), ahora.getUTCDate()))) + ', cuando se renovó: la próxima corrida lo mide de nuevo. ' : ''}Lo midió el ciclo {hace(q.cuando)}. Se renueva todos los días a las {hora(renueva)}; si KV se llena, la página y /card se quedan quietos hasta esa hora.</p>
@@ -3673,7 +3674,13 @@ function piezasDe(d, q, logs) {
     xs.push(['El objeto', pc >= 90 ? 'mal' : pc >= 70 ? 'ojo' : 'ok', Math.round(pc) + ' % de lo más usado', 'sa-cuotas']);
   }
   const wk = q && q.worker;
-  if (wk && wk.p99_ms != null) xs.push(['El Worker', wk.p99_ms >= 9 ? 'mal' : wk.p99_ms >= 7 ? 'ojo' : 'ok', 'CPU p99 ' + String(wk.p99_ms).replace('.', ',') + ' ms de 10', 'sa-cuotas']);
+  // 🧮 EL WORKER, POR LO QUE DE VERDAD CUENTA (25/10/2026): los pedidos que Cloudflare cortó y cuántos del Worker —no del
+  // objeto, que no tiene el tope— pasaron los 10 ms. El p99 de antes mezclaba los dos y daba rojo con cero cortados
+  if (wk && wk.pedidos) {
+    const c = wk.cpu || null, pc = c && wk.pedidos ? (100 * c.worker_10) / wk.pedidos : null;
+    xs.push(['El Worker', wk.cortados ? 'mal' : pc != null && pc >= 5 ? 'ojo' : 'ok',
+      (wk.cortados ? num(wk.cortados) + ' cortados en 24 h' : 'ninguno cortado en 24 h') + (c ? ' · ' + num(c.worker_10) + ' pasaron 10 ms (' + String(Math.round(pc * 10) / 10).replace('.', ',') + ' %)' : ''), 'sa-cuotas']);
+  }
   xs.push(['La campana', aj.campana_pausada ? 'ojo' : 'ok', aj.campana_pausada ? 'en pausa' : num(s.suscripciones || 0) + ' dispositivos · ' + num((s.ultimas_24h || {}).enviados || 0) + ' envíos en 24 h', 'sa-corridas']);
   if (logs && !logs.error) {
     const v = logsVistos();

@@ -182,21 +182,56 @@ def worker_24h(s):
          ' workersInvocationsAdaptive(limit:100, filter:{datetime_geq:"%s"}) {'
          ' sum { requests errors subrequests }'
          ' quantiles { cpuTimeP50 cpuTimeP99 }'
-         ' dimensions { scriptName } } } } }' % (CUENTA, desde))
+         ' dimensions { scriptName status } } } } }' % (CUENTA, desde))
     try:
         g = requests.post('https://api.cloudflare.com/client/v4/graphql',
                           headers=dict(s.headers), json={'query': q}, timeout=40)
         filas = g.json()['data']['viewer']['accounts'][0]['workersInvocationsAdaptive']
     except Exception:                                    # noqa: BLE001
         return None
-    for f in filas or []:
-        if f['dimensions']['scriptName'] == WORKER:
-            # ⚠️ `cpuTimeP50` viene en MICROSEGUNDOS (ver el encabezado)
-            return {'pedidos': f['sum']['requests'], 'errores': f['sum']['errors'],
-                    'sub': f['sum']['subrequests'],
-                    'p50_ms': round(f['quantiles']['cpuTimeP50'] / 1000.0, 2),
-                    'p99_ms': round(f['quantiles']['cpuTimeP99'] / 1000.0, 2)}
-    return {}
+    # 🔴 POR ESTADO (25/10/2026): el p99 de acá MEZCLA el Worker con el objeto —el Durable Object es el mismo script—, y el
+    # objeto no tiene el tope de 10 ms. Salud lo marcaba en rojo (10,4 ms) con cero pedidos cortados. Lo que de verdad
+    # cuenta es `cortados`: los que Cloudflare no dejó terminar (`exceededResources` y parecidos). El reparto de la CPU
+    # entre Worker y objeto lo da `cpu_24h()`
+    mios = [f for f in filas or [] if f['dimensions']['scriptName'] == WORKER]
+    if not mios:
+        return {}
+    ok = [f for f in mios if f['dimensions'].get('status') in ('success', None)] or mios
+    f = max(ok, key=lambda x: x['sum']['requests'])
+    # ⚠️ `cpuTimeP50` viene en MICROSEGUNDOS (ver el encabezado)
+    return {'pedidos': sum(x['sum']['requests'] for x in mios), 'errores': sum(x['sum']['errors'] for x in mios),
+            'sub': sum(x['sum']['subrequests'] for x in mios),
+            'cortados': sum(x['sum']['requests'] for x in mios if x['dimensions'].get('status') not in ('success', 'clientDisconnected', None)),
+            'p50_ms': round(f['quantiles']['cpuTimeP50'] / 1000.0, 2),
+            'p99_ms': round(f['quantiles']['cpuTimeP99'] / 1000.0, 2)}
+
+
+def cpu_24h(s):
+    """🧮 Cuántas ejecuciones pasaron los 10 ms de CPU en 24 h, separando el Worker (el tope de 10 ms del plan gratis) del
+    objeto (que no lo tiene), de Workers Logs (`observability`, prendido en `desplegar.py`). `{'total', 'worker_10',
+    'objeto_10'}` o `None`. Tres consultas de conteo: el objeto se reconoce porque su pedido va a `https://avisos/…`.
+
+    Medido el 25/10/2026: 17.439 ejecuciones, 1.764 pasaron los 10 ms, 1.650 del objeto (la vuelta del anti-raid, cada
+    minuto) y 114 del Worker (1,4 %: el arranque de un script grande), con 0 cortadas.
+    """
+    ahora = int(datetime.datetime.now(datetime.timezone.utc).timestamp() * 1000)
+    url = 'https://api.cloudflare.com/client/v4/accounts/%s/workers/observability/telemetry/query' % CUENTA
+
+    def cuenta(filtros):
+        c = {'queryId': 'cpu-24h', 'timeframe': {'from': ahora - 24 * 3600000, 'to': ahora}, 'view': 'calculations', 'limit': 5,
+             'parameters': {'datasets': ['cloudflare-workers'], 'calculations': [{'operator': 'count'}],
+                            'filters': [{'key': '$workers.scriptName', 'operation': 'eq', 'type': 'string', 'value': WORKER}] + filtros}}
+        j = requests.post(url, headers=dict(s.headers), json=c, timeout=40).json()
+        if not j.get('success'):
+            raise ValueError('telemetry')
+        return sum(a.get('value') or 0 for C in j['result'].get('calculations') or [] for a in C.get('aggregates') or [])
+    try:
+        diez = {'key': '$workers.cpuTimeMs', 'operation': 'gte', 'type': 'number', 'value': 10}
+        obj = {'key': '$workers.event.request.url', 'type': 'string', 'value': 'https://avisos/'}
+        return {'total': cuenta([]), 'objeto_10': cuenta([diez, dict(obj, operation='starts_with')]),
+                'worker_10': cuenta([diez, dict(obj, operation='not_includes')])}
+    except Exception:                                    # noqa: BLE001
+        return None
 
 
 def r2_total(s):
