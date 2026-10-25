@@ -808,3 +808,15 @@
 .dz-lado textarea,.dz-lado select,.dz-lado input:not([type=checkbox]){min-height:40px;padding:8px 10px;border:1.5px solid var(--linea);border-radius:4px;background:var(--fondo);color:var(--tinta);font:600 14px/1.4 Archivo,sans-serif;max-width:100%}
 .dz-lado textarea{width:100%;resize:vertical}
 .dz-lado :focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+/* 🔁 el embudo, ¿sirve avisar?, las sanciones a la vista y la semana en cuatro líneas */
+.dz-embudo,.dz-prueba{display:grid;gap:10px}
+.dz-emb-l{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.dz-emb-l li{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr) 52px 44px;gap:10px;align-items:center;font-size:13.5px}
+.dz-emb-l li>i{position:relative;height:14px;border-radius:2px;background:var(--fondo);border:1px solid var(--suave)}
+.dz-emb-l li>i u{position:absolute;left:0;top:0;bottom:0;background:var(--verde)}
+.dz-emb-l li>b{font:900 15px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums;text-align:right}
+.dz-emb-l li>small{color:var(--gris);font-variant-numeric:tabular-nums}
+.dz-prim-ctl{font:700 12px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--gris);border:1px dashed var(--suave);border-radius:3px;padding:4px 6px}
+.dz-san{display:inline-flex;align-items:center;min-height:22px;padding:0 6px;margin-right:4px;border-radius:3px;background:var(--magenta);color:#fff;font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
+.dz-semana .dz-lista li span b{font-weight:800}
+@media (max-width:640px){.dz-emb-l li{grid-template-columns:minmax(0,1fr) 46px 40px}.dz-emb-l li>i{grid-column:1 / -1;order:3}}

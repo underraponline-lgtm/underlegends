@@ -1211,6 +1211,22 @@ const ok = (cond, que, det) => {
       && b1.error === 'no' && b2.ok && b2.notas.length === 1 && b2.notas[0].id === id1
       && fi.cuenta && fi.saldo >= 11000 && fi.notas.length === 1 && fi.vuelve && fi.vuelve.que === 'evento' && !JSON.stringify(fi).includes('100000031'),
     'la ficha y las notas del staff: etiqueta fija, sanción con fin, borrar la propia (o un Admin), y sin Discord IDs', JSON.stringify(fi).slice(0, 300));
+    // 🧪 el grupo sin aviso: ~15 % por sorteo fijo de la clave, nunca recibe «Avisarle», y se anota al llegar la lista
+    const ks = Array.from({ length: 2000 }, (_, i) => 'r' + i);
+    const enC = ks.filter((x) => A.enControlVuelve(x));
+    const kc = enC[0];
+    o.sql.exec("INSERT OR REPLACE INTO idk (id, k, t) VALUES ('100000041', ?, 1)", kc);
+    const avc = o.avisoVuelve({ k: kc, que: 'evento', por: '100000021' });
+    const vcl = o.vuelveCiclo();
+    ok(enC.length > 2000 * 0.11 && enC.length < 2000 * 0.19 && A.enControlVuelve(kc) === A.enControlVuelve(kc) && avc.error === 'control'
+      && vcl.lista.some((x) => x[0] === 'primerizo' && x[2] === 'aviso'),
+    'el grupo sin aviso: uno de cada ~7 por sorteo fijo, no se le puede avisar, y el ciclo lee quién avisado y quién no', String(enC.length));
+    // 🗂️ las sanciones activas y 📊 los números del propio Dashboard
+    const sa = o.sancionesActivas(Date.now());
+    o.dashMed('deshacer', 1); o.dashMed('deshacer', 1);
+    const dm = o.dashMedResumen(Date.now());
+    ok(sa.primerizo > Date.now() && dm.deshacer === 2 && dm.reportes && dm.reportes.n >= 1,
+    'las sanciones en pie por perfil, y los números del Dashboard (lo que tarda un reporte, los deshacer)', JSON.stringify([sa, dm]));
     // ✅ Decidir en el Dashboard (13/10/2026, «Sí, con Reportes»)
     const PS = [{ id: 'n1', tipo: 'Nombre desconocido', sec: 'COPA · FFA · 07/10', que: '¿Quién es ZORRO?', pistas: '—',
       opciones: ['Es alguien nuevo', 'Es un troll (no cuenta)'], link: 'javascript:x', libre: true },

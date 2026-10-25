@@ -40,8 +40,8 @@ function pedirDueno() {
     .catch(() => ({ error: 'red' }));
 }
 
-async function ajustar(cual, valor) {
-  const r = await fetch('/api/avisos/dueno/ajuste', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ cual, valor }) });
+async function ajustar(cual, valor, deshacer) {
+  const r = await fetch('/api/avisos/dueno/ajuste', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(deshacer ? { cual, valor, deshacer: true } : { cual, valor }) });
   const j = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(r.status === 401 ? 'la sesión venció: entra de nuevo' : j.error || String(r.status));
   return { ajustes: j.ajustes || {}, hist: j.hist };
@@ -318,6 +318,45 @@ function VueltaSegundo({ r, marcas }) {
 // mirar; una lista sí»). Los arma el ciclo (`bot/primerizos.py`) y llegan sólo acá. La acción es avisarle por su campana
 // con un texto fijo (`PLANTILLAS_VUELVE` de bot/avisos.js): nunca un DM. Sólo le llega a quien tiene cuenta
 const VUELVE = [['evento', 'Te esperamos en el próximo evento'], ['pase', 'Tu Pase de rapero te espera'], ['crew', 'Súmate a una crew']];
+// un porcentaje con su cantidad y su rango (Wilson): «41 % · 54 de 131» y, si son pocos, el rango
+const pctN = ([n, k]) => (n ? Math.round((100 * k) / n) + ' %' : '—');
+function RangoTxt({ par }) {
+  const [n, k] = par || [0, 0];
+  if (!n) return <small>nadie todavía</small>;
+  const [a, b] = wilson(k, n);
+  return <small>{num(k)} de {num(n)}{n < 30 ? ' · pocos: entre ' + Math.round(100 * a) + ' y ' + Math.round(100 * b) + ' %' : ''}</small>;
+}
+// dos grupos: ¿la diferencia es clara (los rangos no se pisan) o no?
+function veredicto(a, b) {
+  const [na, ka] = a || [0, 0], [nb, kb] = b || [0, 0];
+  if (na < 10 || nb < 10) return 'Todavía hay muy poca gente para comparar.';
+  const [a1, a2] = wilson(ka, na), [b1, b2] = wilson(kb, nb);
+  return a1 > b2 ? 'La diferencia es clara.' : a2 < b1 ? 'La diferencia es clara, al revés.' : 'Sin diferencia clara por ahora: los rangos se pisan.';
+}
+
+// 🔁 EL EMBUDO DEL PRIMERIZO (25/10/2026, el research; Dlx: «haz todas»). De los que debutaron hace 14 días o más (fuera
+// de la semana del arranque), cuántos ganaron alguna batalla, cuántos volvieron, y la vuelta según cómo les fue en su
+// primera. Lo arma el ciclo (`rankings._embudo()`): sólo conteos
+function Embudo({ e }) {
+  if (!e || !e.n) return <p className="pronto-p">El embudo se arma con los que debutaron hace 14 días o más: llega con el ciclo.</p>;
+  const pasos = [['Debutaron', e.n], ['Ganaron alguna batalla en su debut', e.gano], ['Volvieron en 14 días', e.volvio], ['Llegaron a 3 eventos', e.tres], ['Llegaron a 5', e.cinco]];
+  return (
+    <div className="dz-embudo">
+      <ol className="dz-emb-l">{pasos.map(([t, v]) => (
+        <li key={t}><span>{t}</span><i><u style={{ width: (100 * v / e.n).toFixed(1) + '%' }} /></i><b>{num(v)}</b><small>{Math.round((100 * v) / e.n)} %</small></li>
+      ))}</ol>
+      <div className="dz-nums">
+        <div className="dz-num"><span>si ganó alguna en su debut</span><b>{pctN(e.si_gano)}</b><RangoTxt par={e.si_gano} /></div>
+        <div className="dz-num"><span>si no ganó ninguna</span><b>{pctN(e.no_gano)}</b><RangoTxt par={e.no_gano} /></div>
+        <div className="dz-num"><span>cayó en la primera con uno de los fuertes</span><b>{pctN(e.cayo_fuerte)}</b><RangoTxt par={e.cayo_fuerte} /></div>
+        <div className="dz-num"><span>cayó en la primera con otro</span><b>{pctN(e.cayo_otro)}</b><RangoTxt par={e.cayo_otro} /></div>
+      </div>
+      <p className="db-tx">Cada número es «volvió a jugar en 14 días». {veredicto(e.si_gano, e.no_gano).replace('La diferencia', 'Entre ganar alguna y no ganar ninguna, la diferencia')}
+        {' '}Los fuertes son el cuarto que más eventos jugó ({num(e.corte_fuerte || 0)} o más). {e.sin_duelos && e.sin_duelos[0] ? num(e.sin_duelos[0]) + ' debutaron en eventos sin duelos leídos (por equipos o sin batallas) y no entran en esas cuentas.' : ''}</p>
+    </div>
+  );
+}
+
 function PrimerizosLista({ P, vuelve, liga, alVuelve }) {
   const [pest, setPest] = useState('una');
   const [sv, setSv] = useState('');
@@ -340,7 +379,7 @@ function PrimerizosLista({ P, vuelve, liga, alVuelve }) {
       const j = await r.json().catch(() => ({}));
       if (j.ok) { alVuelve(j.avisados || {}); setRes((x) => Object.assign({}, x, { [k]: '' })); return; }
       setRes((x) => Object.assign({}, x, { [k]: j.error === 'sin_cuenta' ? 'No tiene cuenta en la página: no le llega.' : j.error === 'reciente' ? 'Ya se le avisó esta semana.'
-        : j.error === 'tope' ? 'Llegaron a 40 avisos hoy: mañana.' : 'No se pudo: ' + (j.error || r.status) }));
+        : j.error === 'tope' ? 'Llegaron a 40 avisos hoy: mañana.' : j.error === 'control' ? 'Es del grupo sin aviso: no se le avisa, para comparar.' : 'No se pudo: ' + (j.error || r.status) }));
     } catch (e) { setRes((x) => Object.assign({}, x, { [k]: 'No se pudo: sin red.' })); }
   };
   const h = P.hist || {}, hmax = Math.max(1, ...Object.values(h));
@@ -352,6 +391,16 @@ function PrimerizosLista({ P, vuelve, liga, alVuelve }) {
             <div key={k} className={k === '1' ? 'uno' : ''}><b>{num(v)}</b><i><u style={{ height: (100 * v / hmax).toFixed(1) + '%' }} /></i><span>{k === '10' ? '10+' : k}</span></div>
           ))}
           <small>eventos jugados · {num(P.jugadores || 0)} personas en la temporada</small>
+        </div>
+      ) : null}
+      {P.prueba_aviso ? (
+        <div className="dz-prueba">
+          <h4 className="dz-h4">¿Sirve avisar? · volvieron en 14 días</h4>
+          <div className="dz-nums">
+            <div className="dz-num"><span>a los que se les avisó</span><b>{pctN(P.prueba_aviso.aviso)}</b><RangoTxt par={P.prueba_aviso.aviso} /></div>
+            <div className="dz-num"><span>el grupo sin aviso</span><b>{pctN(P.prueba_aviso.control)}</b><RangoTxt par={P.prueba_aviso.control} /></div>
+          </div>
+          <p className="db-tx">{veredicto(P.prueba_aviso.aviso, P.prueba_aviso.control)} Sólo cuentan los de hace 14 días o más; el grupo sin aviso es uno de cada ~7, por sorteo fijo.</p>
         </div>
       ) : null}
       <div className="dz-subs" role="tablist" aria-label="Qué lista">
@@ -366,14 +415,15 @@ function PrimerizosLista({ P, vuelve, liga, alVuelve }) {
         <select value={que} aria-label="Qué le llega" onChange={(e) => setQue(e.target.value)}>{VUELVE.map(([k, t]) => <option key={k} value={k}>Le llega: «{t}»</option>)}</select>
       </div>
       <ol className="dz-prim-l">{ver.map((f) => {
-        const k = f[f.length - 1], av = (vuelve || {})[k];
+        const k = f[f.length - 1], av = (vuelve || {})[k], ctl = (P.control || []).includes(k);
         return (
           <li key={pest + k}>
             <div><b><Quien liga={liga} n={f[0]} /> <BotonFicha k={k} n={f[0]} /></b>
               <small>{siglaDe(f[1] || '—')} · {pest === 'una' ? 'jugó el ' + corto(f[2]) + ', ' + haceDias(f[2])
                 : num(f[4]) + ' eventos · el último el ' + corto(f[3]) + ', ' + haceDias(f[3])}</small></div>
             {av ? <span className="dz-prim-ya">✓ Se le avisó {hace(av[0])}{av[2] ? ' (' + av[2] + ')' : ''}</span>
-              : <button type="button" className="btn borde2 chico" disabled={res[k] === '…'} onClick={() => avisar(k)}>Avisarle</button>}
+              : ctl ? <span className="dz-prim-ctl" title="Uno de cada ~7, por sorteo fijo: sin aviso, para comparar cuántos vuelven solos">grupo sin aviso</span>
+                : <button type="button" className="btn borde2 chico" disabled={res[k] === '…'} onClick={() => avisar(k)}>Avisarle</button>}
             {res[k] && res[k] !== '…' ? <small className="dz-prim-msg" role="status">{res[k]}</small> : null}
           </li>
         );
@@ -1707,12 +1757,13 @@ function useHacer(onAj, getAj) {
   const [aviso, setAviso] = useState(null);
   const tm = useRef(0);
   const mostrar = (a) => { clearTimeout(tm.current); setAviso(a); tm.current = setTimeout(() => setAviso(null), 8000); };
-  const hacer = async (cual, valor, ok, sinDeshacer) => {
+  // `esDeshacer`: vuelve algo a como estaba (el aviso de 8 s o el Historial): se cuenta en los números del Dashboard
+  const hacer = async (cual, valor, ok, sinDeshacer, esDeshacer) => {
     const antes = getAj ? getAj()[cual] : undefined;
     setOcup(true); setMsg('');
     let bien = false;
     try {
-      onAj(await ajustar(cual, valor));
+      onAj(await ajustar(cual, valor, esDeshacer));
       setMsg('✅ ' + ok); bien = true;
       mostrar({ ok: '✅ ' + ok, cual, antes: antes === undefined ? null : antes, puede: !sinDeshacer });
     } catch (e) {
@@ -1726,7 +1777,7 @@ function useHacer(onAj, getAj) {
     const a = aviso;
     if (!a || !a.puede) return;
     setAviso(null);
-    await hacer(a.cual, volverA(a.cual, a.antes), 'Deshecho: volvió a como estaba.', true);
+    await hacer(a.cual, volverA(a.cual, a.antes), 'Deshecho: volvió a como estaba.', true, true);
   };
   return { hacer, msg, ocup, aviso, deshacer, cerrarAviso: () => setAviso(null) };
 }
@@ -3713,6 +3764,53 @@ function Cupo({ q }) {
   );
 }
 
+// 📊 EL PROPIO DASHBOARD (25/10/2026, el research: «medir la operación, no las visitas»): cuánto tarda en cerrarse lo que
+// llega, cuántas veces dos del staff miraban el mismo caso y cuántos «Deshacer» (`dashMedResumen()` del objeto)
+const horasTxt = (ms) => (ms == null ? '—' : ms < 3600000 ? Math.max(1, Math.round(ms / 60000)) + ' min' : ms < 2 * 864e5 ? Math.round(ms / 3600000) + ' h' : Math.round(ms / 864e5) + ' días');
+function DashMed({ m }) {
+  if (!m) return <p className="pronto-p">Se empieza a medir con lo que se cierre desde hoy.</p>;
+  return (
+    <div className="dz-nums">
+      <div className="dz-num"><span>un reporte, hasta cerrarse</span><b>{m.reportes ? horasTxt(m.reportes.mitad) : '—'}</b><small>{m.reportes ? 'la mitad; el peor 10 %: ' + horasTxt(m.reportes.p90) + ' · ' + num(m.reportes.n) + ' en 30 días' : 'ninguno cerrado con causa todavía'}</small></div>
+      <div className="dz-num"><span>un pedido, hasta contestarse</span><b>{m.pedidos ? horasTxt(m.pedidos.mitad) : '—'}</b><small>{m.pedidos ? 'la mitad; el peor 10 %: ' + horasTxt(m.pedidos.p90) + ' · ' + num(m.pedidos.n) + ' en 30 días' : 'ninguno en 30 días'}</small></div>
+      <div className="dz-num"><span>casos que dos miraban a la vez</span><b>{num(m.doble || 0)}</b><small>en 7 días</small></div>
+      <div className="dz-num"><span>«Deshacer» usados</span><b>{num(m.deshacer || 0)}</b><small>en 7 días</small></div>
+    </div>
+  );
+}
+
+// 🗓️ LA SEMANA EN CUATRO LÍNEAS (25/10/2026; Dlx: «haz todas»). Sólo lunes y martes (hora del este): el resto de la
+// semana ya está en Números y el Resumen es para lo que pide acción. La vuelta de la última semana cerrada, qué falló
+// del bot, cuántos debutaron y no volvieron, y a cuántos se les avisó
+function SemanaCorta({ d, retencion, ir }) {
+  const dow = new Date().toLocaleDateString('en-US', { timeZone: 'America/New_York', weekday: 'short' });
+  if (dow !== 'Mon' && dow !== 'Tue') return null;
+  const cs = ((retencion && retencion.cohortes) || []).filter((c) => c.completa && c.nuevos);
+  const ult = cs[cs.length - 1];
+  const P = d.primerizos || {};
+  const hoy = new Date(new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' }) + 'T12:00:00Z');
+  const lun = new Date(hoy); lun.setUTCDate(lun.getUTCDate() - ((lun.getUTCDay() + 6) % 7) - 7);
+  const dom = new Date(lun); dom.setUTCDate(dom.getUTCDate() + 6);
+  const enSemana = (x) => x >= lun.toISOString().slice(0, 10) && x <= dom.toISOString().slice(0, 10);
+  const nuevosSolos = (P.una || []).filter((f) => enSemana(f[2])).length;
+  const avisados = Object.values(d.vuelve || {}).filter((v) => Date.now() - v[0] < 7 * 864e5).length;
+  const top = (d.reportes_causas || []).filter((c) => c.n7 && c.causa !== 'prueba').sort((a, b) => b.n7 - a.n7)[0];
+  const lineas = [
+    ult ? ['La vuelta al segundo evento', Math.round((100 * ult.volvieron) / ult.nuevos) + ' % (' + num(ult.volvieron) + ' de ' + num(ult.nuevos) + ', los que debutaron la semana del ' + corto(ult.semana) + ')', 'numeros', 'nu-vuelta'] : null,
+    ['Lo que más falló del bot', top ? num(top.n7) + ' ' + (CAUSAS.find((x) => x[0] === top.causa) || [0, 0, top.causa])[2] : 'nada reportado', 'pendientes', ''],
+    ['Jugaron una sola vez', num(nuevosSolos) + ' de los que debutaron la semana pasada', 'numeros', 'nu-primerizos'],
+    ['Se les avisó que vuelvan', num(avisados) + ' en 7 días', 'numeros', 'nu-primerizos'],
+  ].filter(Boolean);
+  return (
+    <section className="dz-caja dz-semana">
+      <h3 className="dz-h">La semana pasada<small>los lunes y martes</small></h3>
+      <ul className="dz-lista">{lineas.map(([t, v, a, an]) => (
+        <li key={t}><span><b>{t}:</b> {v}</span><button type="button" className="dz-lnk" onClick={() => ir(a, an)}>Ver</button></li>
+      ))}</ul>
+    </section>
+  );
+}
+
 function SaludPiezas({ d, q, logs, ir }) {
   const xs = piezasDe(d, q, logs);
   const malas = xs.filter((x) => x[1] === 'mal').length, ojos = xs.filter((x) => x[1] === 'ojo').length;
@@ -3799,7 +3897,7 @@ function HistorialDeA({ hist, hacer, ocup, liga }) {
             ))}</ul>
           </div>
           {puede ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo: vuelve a como estaba"
-            onClick={() => hacer(x.cual, volverA(x.cual, x.antes), 'Deshecho: volvió a como estaba.')}>Deshacer</DosToques> : <small className="dz-hi-no">cambió después</small>}
+            onClick={() => hacer(x.cual, volverA(x.cual, x.antes), 'Deshecho: volvió a como estaba.', false, true)}>Deshacer</DosToques> : <small className="dz-hi-no">cambió después</small>}
         </li>
       ))}{!ver.length ? <li className="dz-it-nada">Nada con «{q}».</li> : null}</ol>
       {filas.length > 15 ? <button type="button" className="dz-lnk" onClick={() => setMas(!mas)}>{mas ? 'Ver menos' : 'Ver los ' + filas.length}</button> : null}
@@ -3841,9 +3939,16 @@ function useCallbackFicha(setFicha) {
 const ETIQUETAS = [['nota', 'Nota'], ['ayuda', 'Ayuda'], ['aviso', 'Aviso'], ['sancion', 'Sanción']];
 const PED_EST_C = { '': 'esperando', si: 'aprobado', hecho: 'hecho', no: 'no', no_pude: 'no se pudo' };
 function BotonFicha({ k, n }) {
-  const abrir = useContext(FichaCtx);
-  if (!abrir || !k) return null;
-  return <button type="button" className="dz-fbtn" onClick={() => abrir(k, n)} aria-label={'La ficha de ' + (n || k)}>ficha</button>;
+  const ctx = useContext(FichaCtx);
+  if (!ctx || !k) return null;
+  // 🗂️ con una sanción en pie, se ve al lado del nombre (no hace falta abrir la ficha para saberlo)
+  const san = (ctx.sanciones || {})[k];
+  return (
+    <>
+      {san !== undefined ? <span className="dz-san" title={san ? 'Sanción hasta el ' + corto(new Date(san).toISOString().slice(0, 10)) : 'Sanción sin fecha de fin'}>⚠ sanción</span> : null}
+      <button type="button" className="dz-fbtn" onClick={() => ctx.abrir(k, n)} aria-label={'La ficha de ' + (n || k)}>ficha</button>
+    </>
+  );
 }
 async function pedirFicha(cuerpo, ruta) {
   const r = await fetch('/api/avisos/dueno/' + ruta, { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
@@ -4090,6 +4195,7 @@ export function Dashboard({ dc, liga }) {
           {/* lo que está en cero no ocupa un cuadrado: una línea */}
           {CUADROS.some((x) => !x[1]) ? <p className="dz-aldia">✓ Al día: {CUADROS.filter((x) => !x[1]).map((x) => x[2]).join(' · ')}</p> : null}
         </section>
+        <SemanaCorta d={d} retencion={retencion} ir={ir} />
         {/* lo que pide atención, con un botón que lleva a donde se arregla */}
         {at.length ? (
           <ul className="dz-at">{at.map(([ic, t, s, a, an]) => (
@@ -4141,6 +4247,7 @@ export function Dashboard({ dc, liga }) {
       <NumerosTabs tabs={[
         ['gente', 'La gente', <>
           {sec('nu-vuelta', 'LA VUELTA AL SEGUNDO EVENTO', 'el número del 42 %', <VueltaSegundo r={retencion} marcas={marcasPorSemana(cambios, d.ajustes_hist)} />)}
+          {d.primerizos ? sec('nu-embudo', 'EL EMBUDO DEL PRIMERIZO', 'dónde se queda la gente nueva', <Embudo e={d.primerizos.embudo} />) : null}
           {d.primerizos !== undefined ? sec('nu-primerizos', 'A QUIÉN TRAER DE VUELTA', 'con nombre: sólo lo ve el staff',
             <PrimerizosLista P={d.primerizos} vuelve={d.vuelve} liga={liga} alVuelve={(v) => cambiarD({ vuelve: v })} />) : null}
           {sec('nu-uso', 'ESTA SEMANA · EL BOT Y LA PÁGINA', u.desde ? 'se cuenta desde el ' + corto(u.desde) : null, <Cajas u={u} />)}
@@ -4168,6 +4275,7 @@ export function Dashboard({ dc, liga }) {
         {sec('sa-cuotas', 'LO QUE GASTA CLOUDFLARE HOY', 'el plan gratis · se renueva a las 8 PM', <Cuotas q={cuotas} />)}
         {sec('sa-logs', 'LO QUE AVISÓ LOGS', 'los 🔴 y ⚠️ de los últimos 3 días', <Logs l={logs} />)}
         {sec('sa-errores', 'ERRORES DE LA PÁGINA · 7 DÍAS', 'nunca de quién', <ErroresPagina e={d.errores_pag} />)}
+        {d.dash_med !== undefined ? sec('sa-dash', 'EL PROPIO DASHBOARD', 'cuánto tarda lo que llega', <DashMed m={d.dash_med} />) : null}
         {sec('sa-atajos', 'ATAJOS', null, <ul className="db-atajos">{ATAJOS.map(([t, h]) => (
           <li key={h}><a href={h} target={h[0] === '/' ? undefined : '_blank'} rel={h[0] === '/' ? undefined : 'noopener noreferrer'}>{t} ↗</a></li>
         ))}</ul>)}
@@ -4183,7 +4291,7 @@ export function Dashboard({ dc, liga }) {
   }
   const titulo = (AREAS.find(([k]) => k === areaV) || [])[1];
   return (
-    <FichaCtx.Provider value={abrirFicha}>
+    <FichaCtx.Provider value={{ abrir: abrirFicha, sanciones: d.sanciones }}>
     <section className="sec db dz" ref={raiz}>
       <style>{ESTILO}</style>
       {d.mis_roles && !d.mis_roles.includes('owner') ? <p className="db-rol">Entraste como <b>{(d.mis_roles || []).map((r) => ({ admin: 'Admin', asistente: 'Asistente', moderador: 'Moderador de la página' }[r] || r)).join(' y ')}</b>{d.yo ? ' (' + d.yo + ')' : ''}: lo que hagas queda con tu nombre.</p> : null}

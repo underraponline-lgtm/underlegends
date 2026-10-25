@@ -2543,6 +2543,8 @@ const RUTAS = {
   '/avisos/tiers-ciclo': 'POST',
   // 🔁 quién jugó una sola vez y quién se enfrió, con nombre (`bot/primerizos.py`, con su clave): sólo al Dashboard
   '/avisos/primerizos-ciclo': 'POST',
+  // 🧪 y a quién se avisó y quién quedó sin aviso, para medir si sirve (con su clave)
+  '/avisos/vuelve-ciclo': 'GET',
   // 🔁 y avisarle a uno de ésos por su campana, con un texto de la lista (`PLANTILLAS_VUELVE`): ver `avisoVuelve()`
   '/avisos/dueno/vuelve': 'POST',
   // 🤝 el anti-raid que prende Dlx en un servidor (con la clave del ciclo): ver `antiraidDlx()`
@@ -3160,6 +3162,15 @@ export function validarNota(d) {
 }
 //: 🔁 LO QUE LE LLEGA A QUIEN SE AVISA QUE VUELVA (25/10/2026, el research del Dashboard: la lista de primerizos y
 // enfriados, con una acción que nunca es un DM). Textos fijos: el staff elige uno, no lo escribe. `[título, cuerpo, link]`
+// 🧪 EL GRUPO SIN AVISO (25/10/2026, el research: «contra un grupo de 10–20 % elegido al azar que no la recibe»; Dlx:
+// «haz todas»). A uno de cada ~7 de la lista no se le avisa nunca, para comparar cuántos vuelven solos. Por sorteo FIJO
+// de su clave (no cambia de un día al otro, ni depende de quién mire): si no, «el grupo» se rearmaría en cada vuelta
+export const CONTROL_VUELVE = 15;
+export function enControlVuelve(k) {
+  let h = 2166136261;
+  for (const c of String(k || '')) h = Math.imul(h ^ c.codePointAt(0), 16777619) >>> 0;
+  return h % 100 < CONTROL_VUELVE;
+}
 export const PLANTILLAS_VUELVE = {
   evento: ['🎤 Te esperamos en el próximo evento', 'Esta semana hay eventos en los servidores de la Liga: mira el calendario y anótate.', '/freestyle-rap/eventos'],
   pase: ['🎟️ Tu Pase de rapero te espera', 'Juega un evento esta semana y suma XP en tu Pase: las tareas diarias y semanales también suman.', '/freestyle-rap/pase'],
@@ -4282,7 +4293,7 @@ export async function rutaAvisos(req, env, ruta) {
     const v = ajusteValido(String(d.cual || ''), d.valor);
     if (v === undefined) return json({ error: 'valor' }, 400);
     return elObjeto(env).fetch('https://avisos/ajuste', {
-      method: 'POST', body: JSON.stringify({ cual: d.cual, valor: v, por: q.id }), headers: { 'content-type': 'application/json' },
+      method: 'POST', body: JSON.stringify(Object.assign({ cual: d.cual, valor: v, por: q.id }, d.deshacer === true ? { deshacer: true } : {})), headers: { 'content-type': 'application/json' },
     });
   }
   // ▶️ CORRER EL CICLO AHORA: la misma puerta que el Dashboard (ver `cicloAMano()` del objeto)
@@ -5168,6 +5179,11 @@ export async function rutaAvisos(req, env, ruta) {
     });
   }
   // ✅ Y CONTESTAR UNA: sólo Dlx, como los reportes
+  if (ruta === '/avisos/vuelve-ciclo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    return elObjeto(env).fetch('https://avisos/vuelve-ciclo');
+  }
   // 🔁 la lista de primerizos y enfriados, del ciclo: con nombres, así que sólo con su clave y sólo al objeto
   if (ruta === '/avisos/primerizos-ciclo') {
     const k = req.headers.get('x-lg-ciclo') || '';
@@ -5763,10 +5779,16 @@ export class Avisos {
       // 🔎 por qué se cerró cada reporte (25/10/2026): aparte de `reportes`, que se borra a los días, para que el conteo de
       // «qué falla más» dure 120. Ver `causasDueno()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS reportes_causas (id INTEGER PRIMARY KEY, causa TEXT NOT NULL, t INTEGER NOT NULL)');
+      // 📊 y cuánto esperó cada uno desde que llegó hasta que se cerró (`dashMedResumen()`)
+      try { this.sql.exec('ALTER TABLE reportes_causas ADD COLUMN espera INTEGER NOT NULL DEFAULT 0'); } catch (e) { /* ya estaba */ }
       // 👀 quién está mirando qué en Pendientes (25/10/2026): `k` es la clave del caso; dura 10 minutos. Ver `duenoViendo()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS viendo (k TEXT PRIMARY KEY, por TEXT NOT NULL, quien TEXT NOT NULL, t INTEGER NOT NULL)');
       // 🔁 a quién se le avisó que vuelva, cuándo y quién (25/10/2026): uno por persona cada 7 días. Ver `avisoVuelve()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS vuelve (k TEXT PRIMARY KEY, que TEXT NOT NULL, por TEXT NOT NULL, t INTEGER NOT NULL)');
+      // 🧪 el grupo sin aviso: cuándo entró cada uno a la lista (para medir si volvió en 14 días). Ver `enControlVuelve()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS vuelve_control (k TEXT PRIMARY KEY, t INTEGER NOT NULL)');
+      // 📊 los números del propio Dashboard por día: casos que dos miraban a la vez, deshacer usados. Ver `dashMed()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS dash_med (dia TEXT NOT NULL, k TEXT NOT NULL, n INTEGER NOT NULL, PRIMARY KEY (dia, k))');
       // 🗂️ las notas del staff sobre una persona (25/10/2026): por su perfil (`k`), con etiqueta y, la sanción, con fecha
       // de fin. Quedan quién la escribió y cuándo. Ver `duenoNota()` y `duenoFicha()`
       this.sql.exec("CREATE TABLE IF NOT EXISTS notas (id INTEGER PRIMARY KEY AUTOINCREMENT, k TEXT NOT NULL, et TEXT NOT NULL, " +
@@ -6347,6 +6369,8 @@ export class Avisos {
       if (ruta === '/agenda-ciclo') return json(this.agendaCiclo(), 200, 0);
       if (ruta === '/hinchas') return json(this.hinchas(), 200, 0);
       if (ruta === '/pedidos-ciclo') return json(this.pedidosCiclo(), 200, 0);
+      // 🧪 para el ciclo (`bot/primerizos.py`): a quién se avisó y quién quedó sin aviso (es un GET: va antes del cuerpo)
+      if (ruta === '/vuelve-ciclo') return json(this.vuelveCiclo(), 200, 0);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
       if (ruta === '/final') return json(this.finalElegir(d));
@@ -6369,7 +6393,13 @@ export class Avisos {
       // 🔁 la lista de primerizos y enfriados: sólo la guarda, tal cual, para el Dashboard (nunca sale a la página)
       if (ruta === '/primerizos-ciclo') {
         if (!d || !Array.isArray(d.una) || !Array.isArray(d.frio) || d.una.length > 600 || d.frio.length > 300) return json({ error: 'datos' }, 400);
-        this.guardar('primerizos', d);
+        // 🧪 los del grupo sin aviso se anotan la primera vez que aparecen (desde ahí se mide si volvieron solos), y la
+        // lista lleva cuáles son: la página no les ofrece «Avisarle»
+        const ahora = Date.now();
+        const ctl = [...d.una, ...d.frio].map((f) => String(f[f.length - 1] || '')).filter((k) => k && enControlVuelve(k));
+        for (const k of ctl) this.sql.exec('INSERT OR IGNORE INTO vuelve_control (k, t) VALUES (?, ?)', k, ahora);
+        this.sql.exec('DELETE FROM vuelve_control WHERE t < ?', ahora - 90 * DIA_MS);
+        this.guardar('primerizos', Object.assign({}, d, { control: ctl }));
         return json({ ok: true });
       }
       if (ruta === '/decidir-estados') return json(this.decidirEstados(d));
@@ -9364,7 +9394,10 @@ export class Avisos {
     const por = this.nombrePor(d.por);
     this.sql.exec('UPDATE reportes SET estado = ?, fix = ?, resultado = ?, t_estado = ?, por = ? WHERE id = ?',
       d.fix ? 'corregir' : String(d.accion), d.fix ? JSON.stringify(Object.assign({}, d.fix, { por })) : '', '', ahora, por, Number(d.id));
-    if (d.causa) this.sql.exec('INSERT OR REPLACE INTO reportes_causas (id, causa, t) VALUES (?, ?, ?)', Number(d.id), String(d.causa), ahora);
+    if (d.causa) {
+      const t0 = (this.sql.exec('SELECT t FROM reportes WHERE id = ?', Number(d.id)).toArray()[0] || {}).t || 0;
+      this.sql.exec('INSERT OR REPLACE INTO reportes_causas (id, causa, t, espera) VALUES (?, ?, ?, ?)', Number(d.id), String(d.causa), ahora, t0 ? ahora - t0 : 0);
+    }
     this.sql.exec('DELETE FROM reportes_causas WHERE t < ?', ahora - 120 * DIA_MS);
     await this.colaReportes(ahora);
     return { ok: true, reportes: this.reportesDueno(ahora), reportes_causas: this.causasDueno(ahora) };
@@ -9381,12 +9414,13 @@ export class Avisos {
     if (!P || !/^[a-z0-9]{1,40}$/.test(k)) return { error: 'faltan datos' };
     const ids = this.sql.exec('SELECT id FROM idk WHERE k = ?', k).toArray().map((x) => x.id);
     if (!ids.length) return { error: 'sin_cuenta' };
+    if (enControlVuelve(k)) return { error: 'control' };
     const ya = this.sql.exec('SELECT t FROM vuelve WHERE k = ?', k).toArray()[0];
     if (ya && ahora - ya.t < 7 * DIA_MS) return { error: 'reciente', t: ya.t };
     if ((this.sql.exec('SELECT COUNT(*) AS n FROM vuelve WHERE t > ?', ahora - DIA_MS).toArray()[0] || {}).n >= 40) return { error: 'tope' };
     for (const id of ids) this.aBandeja(id, 'vuelve:' + d.que, 'liga', P[0], P[1], P[2], '', ahora);
     this.sql.exec('INSERT OR REPLACE INTO vuelve (k, que, por, t) VALUES (?, ?, ?, ?)', k, String(d.que), this.nombrePor(d.por), ahora);
-    this.sql.exec('DELETE FROM vuelve WHERE t < ?', ahora - 60 * DIA_MS);
+    this.sql.exec('DELETE FROM vuelve WHERE t < ?', ahora - 90 * DIA_MS);
     return { ok: true, avisados: this.vuelveDueno() };
   }
 
@@ -9455,6 +9489,37 @@ export class Avisos {
     };
   }
 
+  /** 🗂️ Las sanciones que siguen en pie: con fecha de fin que no pasó, o sin fecha y de los últimos 30 días. `{k: hasta}`. */
+  sancionesActivas(ahora) {
+    return Object.fromEntries(this.sql.exec("SELECT k, MAX(hasta) AS h FROM notas WHERE et = 'sancion' AND (hasta > ? OR (hasta = 0 AND t > ?)) GROUP BY k",
+      ahora, ahora - 30 * DIA_MS).toArray().map((f) => [f.k, f.h]));
+  }
+
+  /** 📊 Suma uno a un número del Dashboard en el día de hoy (hora del este). */
+  dashMed(k, n) {
+    const dia = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    this.sql.exec('INSERT INTO dash_med (dia, k, n) VALUES (?, ?, ?) ON CONFLICT(dia, k) DO UPDATE SET n = n + excluded.n', dia, k, n || 1);
+  }
+
+  /**
+   * 📊 LOS NÚMEROS DEL PROPIO DASHBOARD (25/10/2026, el research: «para el Dashboard, medir la operación del dueño, no las
+   * visitas»). Cuánto tarda en cerrarse un reporte y un pedido (la mitad y el peor 10 %, en 30 días), cuántas veces dos
+   * del staff miraban el mismo caso y cuántos «Deshacer» se usaron (7 días). Sólo números
+   */
+  dashMedResumen(ahora) {
+    const q = (xs) => {
+      if (!xs.length) return null;
+      const s = [...xs].sort((a, b) => a - b);
+      return { n: s.length, mitad: s[Math.floor(s.length / 2)], p90: s[Math.min(s.length - 1, Math.floor(s.length * 0.9))] };
+    };
+    const rep = q(this.sql.exec('SELECT espera FROM reportes_causas WHERE t > ? AND espera > 0', ahora - 30 * DIA_MS).toArray().map((f) => f.espera));
+    const ped = q(this.sql.exec("SELECT resuelto - t AS e FROM pedidos WHERE resuelto > ? AND estado != ''", ahora - 30 * DIA_MS).toArray().map((f) => f.e).filter((e) => e > 0));
+    const desde = new Date(ahora - 7 * DIA_MS).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    const c = Object.fromEntries(this.sql.exec('SELECT k, SUM(n) AS n FROM dash_med WHERE dia > ? GROUP BY k', desde).toArray().map((f) => [f.k, f.n]));
+    this.sql.exec('DELETE FROM dash_med WHERE dia < ?', new Date(ahora - 120 * DIA_MS).toISOString().slice(0, 10));
+    return { reportes: rep, pedidos: ped, doble: c.doble || 0, deshacer: c.deshacer || 0 };
+  }
+
   notasDe(k) {
     return this.sql.exec('SELECT id, et, texto, hasta, por, t FROM notas WHERE k = ? ORDER BY t DESC LIMIT 50', k).toArray();
   }
@@ -9476,6 +9541,13 @@ export class Avisos {
     this.sql.exec('INSERT INTO notas (k, et, texto, hasta, por, por_id, t) VALUES (?, ?, ?, ?, ?, ?, ?)', d.k, d.et, d.texto,
       d.dias ? ahora + d.dias * DIA_MS : 0, this.nombrePor(d.por), String(d.por), ahora);
     return { ok: true, notas: this.notasDe(d.k) };
+  }
+
+  /** 🧪 Para el ciclo: `{lista: [[clave, día del este, 'aviso' | 'control']]}`, los avisados y el grupo sin aviso. */
+  vuelveCiclo() {
+    const dia = (t) => new Date(t).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    return { lista: [...this.sql.exec('SELECT k, t FROM vuelve').toArray().map((f) => [f.k, dia(f.t), 'aviso']),
+      ...this.sql.exec('SELECT k, t FROM vuelve_control').toArray().map((f) => [f.k, dia(f.t), 'control'])] };
   }
 
   /** 🔁 A quién se le avisó que vuelva en los últimos 60 días: `{k: [t, qué, quién]}`. */
@@ -9500,6 +9572,9 @@ export class Avisos {
     this.sql.exec('DELETE FROM viendo WHERE t < ?', ahora - 10 * 60000);
     const k = String(d.k || '');
     if (k && /^[a-z][0-9A-Za-z:_.-]{1,80}$/.test(k)) {
+      // 📊 si otro ya lo tenía abierto (y no era yo un rato antes), cuenta como un caso mirado por dos
+      const otro = this.sql.exec('SELECT quien FROM viendo WHERE k = ?', k).toArray()[0];
+      if (otro && otro.quien !== quien) this.dashMed('doble', 1);
       this.sql.exec('DELETE FROM viendo WHERE quien = ?', quien);
       this.sql.exec('INSERT OR REPLACE INTO viendo (k, por, quien, t) VALUES (?, ?, ?, ?)', k, this.nombrePor(quien), quien, ahora);
     }
@@ -13056,6 +13131,8 @@ export class Avisos {
 
   /** ⚙️ Uno, ya validado por la ruta. `null` lo saca */
   ajuste(d) {
+    // 📊 un «Deshacer» del Dashboard (`dashMedResumen()`)
+    if (d && d.deshacer === true) this.dashMed('deshacer', 1);
     const a = this.ajustes();
     // 🕓 EL HISTORIAL (13/10/2026, Dlx a las ideas del Dashboard: «me gustan todas»): qué había antes de cada cambio, así
     // «Deshacer» lo vuelve a poner por el MISMO camino validado (`/avisos/dueno/ajuste`). Los 30 últimos; lo que no
@@ -13106,7 +13183,8 @@ export class Avisos {
         fondos: ve('fondos') ? this.fondosDueno() : [], filtro: ve('fondos') ? this.filtroDueno() : null,
         fotos_carta: ve('fondos') ? this.fotosCartaDueno() : [],
         crews_logos: ve('fondos') ? CW.crewLogosDueno(this) : null,
-        pedidos: ve('reportes') || ve('reportes_cerrar') ? this.pedidosDueno() : [] };
+        pedidos: ve('reportes') || ve('reportes_cerrar') ? this.pedidosDueno() : [],
+        sanciones: this.sancionesActivas(ahora) };
     }
     const dias = [];
     for (let i = 13; i >= 0; i--) {
@@ -13148,6 +13226,10 @@ export class Avisos {
       reportes_causas: this.causasDueno(ahora),
       // 🔁 quién jugó una sola vez y quién se enfrió (`bot/primerizos.py`), y a quién ya se le avisó
       primerizos: this.leer('primerizos'),
+      // 🗂️ las sanciones activas (`{k: hasta}`, 0 sin fecha): la página las marca al lado del nombre
+      sanciones: this.sancionesActivas(ahora),
+      // 📊 los números del propio Dashboard
+      dash_med: this.dashMedResumen(ahora),
       // 💰 los Puntos de Tienda: qué entra, qué sale y quién tiene cuánto (`economiaDueno()`)
       economia: d && d.billetera ? this.economiaDueno(ahora, Number(d.billetera.desde) || 0, Number(d.billetera.inicial)) : null,
       vuelve: this.vuelveDueno(),

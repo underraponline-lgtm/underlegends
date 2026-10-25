@@ -574,7 +574,7 @@ def retencion(filas, ahora=None):
 ENFRIA_DIAS = 21
 
 
-def primerizos(filas, ahora=None):
+def primerizos(filas, ahora=None, duelos=None):
     """🔁 Quién jugó UNA sola vez y quién se enfrió, CON NOMBRE, para la lista del Dashboard.
 
     El research del Dashboard (25/10/2026, Dlx: *«arranco con todo lo demás»*): el número de la vuelta no dice a
@@ -620,10 +620,66 @@ def primerizos(filas, ahora=None):
             frio.append([quien, xs[-1][1], d1.isoformat(), du.isoformat(), len(xs)])
     una.sort(key=lambda f: f[2], reverse=True)
     frio.sort(key=lambda f: (-f[4], f[3]))
+    embudo = _embudo(por, duelos or [], ahora, et)
+    # 📅 los días en que jugó cada uno (hora del este): con esto `bot/primerizos.py` mide si los avisados volvieron más
+    # que los que no. ⚠️ Se queda en `.cache/`: no viaja al objeto
+    jugo = {q: sorted({x[0].astimezone(et).date().isoformat() for x in evs.values()}) for q, evs in por.items()}
     return {'v': 1, 'cuando': ahora.astimezone(_dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
             'enfria_dias': ENFRIA_DIAS, 'jugadores': len(por), 'hist': {str(k): v for k, v in sorted(hist.items())},
             'n_una': len(una), 'n_frio': len(frio), 'una': una[:500], 'frio': frio[:250],
-            'por_sv': {sv: o for sv, o in sorted(origen.items())}}
+            'por_sv': {sv: o for sv, o in sorted(origen.items())}, 'embudo': embudo, 'jugo': jugo}
+
+
+def _embudo(por, duelos, ahora, et):
+    """🔁 EL EMBUDO DEL PRIMERIZO (25/10/2026, el research: «muestra en personas dónde muerden las cuatro victorias
+    seguidas»). De los que debutaron hace 14 días o más —fuera de la semana del arranque, donde «debuta» todo el que ya
+    jugaba—: cuántos ganaron al menos una batalla en su debut, cuántos volvieron (otro evento, otro día, en 14 días) y
+    cuántos llegaron a 3 y a 5 eventos. Y la vuelta según cómo les fue: ganó alguna o no; y su primera batalla —la ganó,
+    la perdió con uno de los fuertes (el cuarto de arriba en eventos jugados en la temporada: quien ya sabe competir) o con otro—.
+
+    `[n, volvieron]` en cada corte. Sin duelos de su debut (un evento por equipos, o la llave sin batallas), cae en
+    `sin_duelos`. Sólo conteos."""
+    debut = {}
+    for q, evs in por.items():
+        xs = sorted(evs.items(), key=lambda kv: kv[1][0])
+        debut[q] = (xs[0][0], xs[0][1][0], [x[1][0] for x in xs])
+    if not debut:
+        return None
+    arranque = min(v[1] for v in debut.values()).astimezone(et).date()
+    arranque -= _dt.timedelta(days=arranque.weekday())
+    # los fuertes: el cuarto de arriba en eventos jugados (proxy de quién ya sabe competir; los puntos no llegan acá)
+    evs_n = sorted((len(v[2]) for v in debut.values()), reverse=True)
+    corte = evs_n[max(0, len(evs_n) // 4 - 1)] if evs_n else 0
+    fuerte = {q for q, v in debut.items() if len(v[2]) >= max(2, corte)}
+    por_ev = defaultdict(list)
+    for num, a, b, gan in duelos:
+        por_ev[num].append((a, b, gan))
+    e = {'n': 0, 'gano': 0, 'volvio': 0, 'tres': 0, 'cinco': 0, 'si_gano': [0, 0], 'no_gano': [0, 0],
+         'paso': [0, 0], 'cayo_fuerte': [0, 0], 'cayo_otro': [0, 0], 'sin_duelos': [0, 0], 'corte_fuerte': corte}
+    for q, (num, t1, ts) in debut.items():
+        d1 = t1.astimezone(et).date()
+        if (ahora - t1).days < VUELVE_DIAS or d1 - _dt.timedelta(days=d1.weekday()) == arranque:
+            continue
+        volvio = any(t.astimezone(et).date() > d1 and t - t1 <= _dt.timedelta(days=VUELVE_DIAS) for t in ts[1:])
+        mios = [x for x in por_ev.get(num, []) if q in (x[0], x[1])]
+        gano = any(x[2] == q for x in mios)
+        e['n'] += 1
+        e['volvio'] += volvio
+        e['tres'] += len(ts) >= 3
+        e['cinco'] += len(ts) >= 5
+        e['gano'] += gano
+        c = e['si_gano'] if gano else e['no_gano']
+        c[0] += 1
+        c[1] += volvio
+        if not mios:
+            k = 'sin_duelos'
+        elif mios[0][2] == q:
+            k = 'paso'
+        else:
+            k = 'cayo_fuerte' if (mios[0][1] if mios[0][0] == q else mios[0][0]) in fuerte else 'cayo_otro'
+        e[k][0] += 1
+        e[k][1] += volvio
+    return e
 
 
 #: donde la deja para `bot/primerizos.py` (`.cache/`: tiene nombres y no se commitea)
@@ -636,7 +692,7 @@ PRIMERIZOS = os.path.join(BASE, '.cache', 'primerizos.json')
 RETENCION = os.path.join(BASE, '.cache', 'retencion.json')
 
 
-def escribir_retencion(filas):
+def escribir_retencion(filas, duelos=None):
     """Quién vuelve a jugar, en `RETENCION`, para el mapa en vivo."""
     try:
         r = retencion(filas)
@@ -646,7 +702,7 @@ def escribir_retencion(filas):
         ult = [c for c in r['cohortes'] if c['completa']]
         # 🔁 y quiénes son, con nombre: para la lista del Dashboard (ver `primerizos()`)
         with io.open(PRIMERIZOS, 'w', encoding='utf-8', newline='\n') as f:
-            json.dump(primerizos(filas), f, ensure_ascii=False)
+            json.dump(primerizos(filas, duelos=duelos), f, ensure_ascii=False)
         print('   🗺️ quién vuelve a jugar: %d jugadores, %d con un solo evento%s'
               % (r['jugadores'], r['un_evento'],
                  (' · semana del %s: volvieron %d de %d' % (ult[-1]['semana'], ult[-1]['volvieron'], ult[-1]['nuevos']))
@@ -835,6 +891,9 @@ def agregar(filas_res, filas_uno, instantes=None, factor=None, duelos_extra=None
     # falla: da una racha plausible y equivocada.
     g, j = defaultdict(int), defaultdict(int)
     hist = defaultdict(list)
+    # 🔁 y los duelos de las llaves, en el orden de la llave, con su evento: para el embudo del primerizo
+    # (`primerizos()`: ¿ganó alguna en su debut?, ¿con quién cayó?). Los de las ligas no: no son un debut
+    duelos_ev = []
     orden = []
     for i, f in enumerate(filas_uno):
         f = list(f) + [''] * 9
@@ -857,6 +916,11 @@ def agregar(filas_res, filas_uno, instantes=None, factor=None, duelos_extra=None
         # `x == gan` da False y la persona pierde un duelo que ganó — un
         # Win% plausible y equivocado, que no falla en ningún lado.
         a, b, gan = canon(a), canon(b), canon(gan)
+        if _i not in liga:
+            try:
+                duelos_ev.append((int(float(str(f[0]).strip() or 0)), a, b, gan))
+            except ValueError:
+                pass
         # ⚠️ EL TROLL SALE, SU RIVAL NO: el que le ganó conserva el duelo
         # ganado y el que le perdió, el perdido. Sólo no se le cuentan al
         # troll, que no tiene fila.
@@ -889,6 +953,7 @@ def agregar(filas_res, filas_uno, instantes=None, factor=None, duelos_extra=None
             d[quien]['_dj'] = j[quien]
             d[quien]['_dp'] = j[quien] - g.get(quien, 0)
     agregar.filas = filas_ev
+    agregar.duelos = duelos_ev
     return {k: dict(v) for k, v in d.items()}
 
 
@@ -3378,7 +3443,7 @@ def main():
             return 0
 
         # 🗺️ quién vuelve a jugar, con las mismas filas: no se lee nada más
-        escribir_retencion(getattr(agregar, 'filas', None) or [])
+        escribir_retencion(getattr(agregar, 'filas', None) or [], getattr(agregar, 'duelos', None))
         # 🏟️ las divisiones y 🎯 las misiones de la semana, también con las mismas filas
         _semanales(getattr(agregar, 'filas', None) or [])
 
