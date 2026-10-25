@@ -846,12 +846,12 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
-   "dg": 25,
+   "dg": 28,
    "fg": 5,
    "fp": 2,
    "mata": 1,
-   "riv": 42,
-   "venc": 23,
+   "riv": 44,
+   "venc": 25,
    "vengo": 2
   },
   "tg_p": {
@@ -1537,12 +1537,12 @@
   "pos_crew": "4/9",
   "tg_c": {
    "bestia": 1,
-   "clasico": 1,
-   "dg": 10,
+   "clasico": 2,
+   "dg": 12,
    "fp": 2,
    "mata": 1,
-   "riv": 18,
-   "venc": 10
+   "riv": 20,
+   "venc": 12
   },
   "tg_p": {
    "paises": 9,
@@ -3156,13 +3156,13 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
-   "dg": 6,
+   "dg": 7,
    "mata": 2,
-   "riv": 18,
-   "venc": 6
+   "riv": 21,
+   "venc": 7
   },
   "tg_p": {
-   "paises": 8,
+   "paises": 9,
    "paisesg": 5,
    "pionero": true
   }
@@ -8375,7 +8375,14 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  }
  },
  {
   "full": "MR.LABURO🇨🇴",
@@ -11017,7 +11024,14 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  }
  },
  {
   "full": "Korey",
@@ -16298,7 +16312,11 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  }
  },
  {
   "full": "LSO",
@@ -16337,7 +16355,14 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  }
  },
  {
   "full": "Infecte",
