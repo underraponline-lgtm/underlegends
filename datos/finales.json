@@ -794,5 +794,34 @@
   "sin_permiso": false,
   "sv": "DDF"
  },
+ "1563715773439017072": {
+  "autor": "1086485696572817418",
+  "canal": "1487207377601040516",
+  "cuando": "2026-10-25T00:48:12.822000+00:00",
+  "evento": "__ FREESTYLE FOR ALL ESPECIAL 1800 2v2 __",
+  "fecha": "24/10",
+  "llave": "1563715773439017072",
+  "pregunta": "1563792591827505283",
+  "preguntada": "2026-10-25 1:53 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "SIX 🇦🇷 + MATUK 🇦🇷",
+     "EL TERROR DE TU WA 🇦🇷"
+    ],
+    "ronda": "FINAL"
+   },
+   {
+    "lados": [
+     "ARTEZZY 🇵🇪 + SONETO 🇪🇨",
+     "Colo el rojito 🇦🇬 + Dynoco 🇦🇷"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
