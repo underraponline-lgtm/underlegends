@@ -786,3 +786,25 @@
 .dz-eco-d small{grid-column:1 / -1;font-size:12px;color:var(--gris)}
 .dz-h4{margin:0 0 6px;font:800 12.5px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--gris)}
 .dz-eco-top a{color:inherit}
+/* 🗂️ la ficha de una persona y las notas del staff */
+.dz-fbtn{display:inline-flex;align-items:center;min-height:24px;padding:0 6px;border:1px solid var(--suave);border-radius:3px;background:none;color:var(--gris);
+  font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;vertical-align:middle}
+@media (hover: hover) and (pointer: fine){.dz-fbtn:hover{border-color:var(--tinta);color:var(--tinta)}}
+.dz-ficha .dz-ficha-n{font:900 22px/1.1 Archivo,sans-serif;overflow-wrap:anywhere}
+.dz-ficha .dz-nums{grid-template-columns:repeat(3,minmax(0,1fr))}
+.dz-ficha .dz-num b{font-size:24px}
+.dz-notas{display:grid;gap:8px}
+.dz-notas-l{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.dz-notas-l li{display:grid;gap:3px;padding:8px 10px;border:1.5px solid var(--suave);border-radius:4px;background:var(--fondo)}
+.dz-notas-l p{margin:0;font-size:14px;line-height:1.45;overflow-wrap:anywhere}
+.dz-notas-l small{font-size:12px;color:var(--gris)}
+.dz-notas-l .dz-lnk{justify-self:start;font-size:12.5px}
+.dz-et{justify-self:start;padding:2px 6px;border-radius:3px;font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;background:var(--suave);color:var(--tinta)}
+.dz-et.ayuda{background:var(--verde);color:#fff}
+.dz-et.aviso{background:#F2C230;color:#030304}
+.dz-et.sancion{background:var(--magenta);color:#fff}
+.dz-nota-f{display:grid;gap:8px}
+@media (max-width:560px){.dz-ficha .dz-nums{grid-template-columns:minmax(0,1fr)}}
+.dz-lado textarea,.dz-lado select,.dz-lado input:not([type=checkbox]){min-height:40px;padding:8px 10px;border:1.5px solid var(--linea);border-radius:4px;background:var(--fondo);color:var(--tinta);font:600 14px/1.4 Archivo,sans-serif;max-width:100%}
+.dz-lado textarea{width:100%;resize:vertical}
+.dz-lado :focus-visible{outline:2px solid var(--verde);outline-offset:2px}

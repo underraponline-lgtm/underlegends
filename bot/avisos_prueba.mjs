@@ -1197,6 +1197,20 @@ const ok = (cond, que, det) => {
     ok(eco && eco.origen.ap[0] >= 6000 && eco.origen.crew[1] >= 2500 && yo31 && yo31[1] >= 11000
       && eco.raros.some((x) => x[0] === 'primerizo') && eco.personas >= 2 && o.economiaDueno(ah, 0, null) === null,
     'los Puntos de Tienda: qué entra y sale por origen, quién tiene cuánto (con su perfil) y quién sumó mucho en 24 h', JSON.stringify(eco).slice(0, 400));
+    // 🗂️ la ficha de una persona y las notas del staff: etiqueta fija, fecha de fin sólo en la sanción, sin HTML; la propia
+    // la borra quien la escribió, cualquiera un Admin; la ficha dice si tiene cuenta, sus Puntos y sus notas
+    const VN = A.validarNota;
+    const n1 = o.duenoNota(Object.assign(VN({ k: 'primerizo', et: 'sancion', texto: '  insultó   en el chat ', dias: 7 }), { por: '100000021' }));
+    const n2 = o.duenoNota(Object.assign(VN({ k: 'primerizo', et: 'ayuda', texto: 'perdió su cuenta' }), { por: '100000022' }));
+    const id1 = n1.notas.find((x) => x.et === 'sancion').id, id2 = n2.notas.find((x) => x.et === 'ayuda').id;
+    const b1 = o.duenoNota(Object.assign(VN({ borrar: id2 }), { por: '100000021' }));
+    const b2 = o.duenoNota(Object.assign(VN({ borrar: id2 }), { por: '100000021', jefe: true }));
+    const fi = o.duenoFicha({ k: 'primerizo', billetera: { desde: ah - 30 * 864e5, inicial: 5000 } });
+    ok(n1.notas[0].texto === 'insultó en el chat' && n1.notas[0].hasta > Date.now() && VN({ k: 'x', et: 'nota', texto: 'a', dias: 7 }).error
+      && VN({ k: 'x', et: 'gratis', texto: 'a' }).error && VN({ k: 'x', et: 'nota', texto: '<b>' }).error
+      && b1.error === 'no' && b2.ok && b2.notas.length === 1 && b2.notas[0].id === id1
+      && fi.cuenta && fi.saldo >= 11000 && fi.notas.length === 1 && fi.vuelve && fi.vuelve.que === 'evento' && !JSON.stringify(fi).includes('100000031'),
+    'la ficha y las notas del staff: etiqueta fija, sanción con fin, borrar la propia (o un Admin), y sin Discord IDs', JSON.stringify(fi).slice(0, 300));
     // ✅ Decidir en el Dashboard (13/10/2026, «Sí, con Reportes»)
     const PS = [{ id: 'n1', tipo: 'Nombre desconocido', sec: 'COPA · FFA · 07/10', que: '¿Quién es ZORRO?', pistas: '—',
       opciones: ['Es alguien nuevo', 'Es un troll (no cuenta)'], link: 'javascript:x', libre: true },

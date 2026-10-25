@@ -5,9 +5,9 @@
 // es y contesta 403 a cualquiera que no sea Dlx. Acá sólo se dibuja lo que el servidor manda. Sin cuenta, el botón de
 // entrar; con otra cuenta, «esta página es del dueño» y nada más. Los ajustes pasan por la misma puerta
 // (`/avisos/dueno/ajuste`), y el servidor valida cada valor antes de guardarlo.
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, createContext, useContext, useEffect, useRef, useState } from 'react';
 import { diaISO, hora, limpio, mult, num, siglaDe } from './liga.js';
-import { DosToques, Ico } from './piezas.jsx';
+import { DosToques, Ico, usePerfiles } from './piezas.jsx';
 import { urlFondo } from './fondos.js';
 import { pedirCrews, useCrews } from './crews.js';
 import { useNumero } from './anima.js';
@@ -369,7 +369,7 @@ function PrimerizosLista({ P, vuelve, liga, alVuelve }) {
         const k = f[f.length - 1], av = (vuelve || {})[k];
         return (
           <li key={pest + k}>
-            <div><b><Quien liga={liga} n={f[0]} /></b>
+            <div><b><Quien liga={liga} n={f[0]} /> <BotonFicha k={k} n={f[0]} /></b>
               <small>{siglaDe(f[1] || '—')} · {pest === 'una' ? 'jugó el ' + corto(f[2]) + ', ' + haceDias(f[2])
                 : num(f[4]) + ' eventos · el último el ' + corto(f[3]) + ', ' + haceDias(f[3])}</small></div>
             {av ? <span className="dz-prim-ya">✓ Se le avisó {hace(av[0])}{av[2] ? ' (' + av[2] + ')' : ''}</span>
@@ -424,14 +424,14 @@ function Economia({ e, liga }) {
         <div>
           <h4 className="dz-h4">Los que más tienen</h4>
           <ol className="dz-lista dz-eco-top">{e.top.slice(0, 10).map(([k, n], i) => (
-            <li key={k + i}><span>{i + 1}. {k ? <Quien liga={liga} n={(liga.T[k] || {}).n || k} /> : 'sin perfil'}</span><b>{num(n)}</b></li>
+            <li key={k + i}><span>{i + 1}. {k ? <><Quien liga={liga} n={(liga.T[k] || {}).n || k} /> <BotonFicha k={k} /></> : 'sin perfil'}</span><b>{num(n)}</b></li>
           ))}</ol>
         </div>
       </div>
       {(e.raros || []).length ? (
         <div className="dz-freno">
           <p><b>Para mirar:</b> sumaron 5.000 o más en 24 horas. Puede ser un premio grande; si no, mira de dónde vino en su perfil.</p>
-          <ul className="dz-lista">{e.raros.map(([k, n]) => <li key={k}><span>{k ? <Quien liga={liga} n={(liga.T[k] || {}).n || k} /> : 'sin perfil'}</span><b>+{num(n)}</b></li>)}</ul>
+          <ul className="dz-lista">{e.raros.map(([k, n]) => <li key={k}><span>{k ? <><Quien liga={liga} n={(liga.T[k] || {}).n || k} /> <BotonFicha k={k} /></> : 'sin perfil'}</span><b>+{num(n)}</b></li>)}</ul>
         </div>
       ) : null}
       <p className="db-tx">Sólo números de la billetera: no se ve qué apostó cada uno. Se mide en cada visita al Dashboard.</p>
@@ -2040,7 +2040,7 @@ function Roles({ roles, alCambiar }) {
         <button key={y[2]} type="button" className={sel === y[2] ? 'on' : ''} onClick={() => setSel(y[2])}>{y[1]}</button>))}</div> : null}
       {p ? (
         <div className="db-rep-form">
-          <span className="db-rep-p">{p[1]}{p[0] ? <> · <a href={'#/r/' + p[0]}>su perfil</a></> : null}</span>
+          <span className="db-rep-p">{p[1]}{p[0] ? <> · <a href={'#/r/' + p[0]}>su perfil</a> · <BotonFicha k={p[0]} n={p[1]} /></> : null}</span>
           <div className="db-l1">{p[3].length ? chips(p[3]) : <small>Sin roles.</small>}</div>
           {p[2] === '739338101603696681' ? <small>Owner: sólo tú, siempre.</small> : null}
           <ul className="db-roles-l">{ROLES_MANO.map(([rol, n]) => {
@@ -2940,14 +2940,29 @@ const BUSCABLES = [
   ['Historial de cambios (deshacer)', 'historial', 'hi-hist'], ['Roles de la página', 'historial', 'hi-roles'],
 ];
 
-function BuscarTodo({ abierto, cerrar, ir, visibles }) {
+function BuscarTodo({ abierto, cerrar, ir, visibles, liga, abrirFicha, extra }) {
   const [q, setQ] = useState('');
   const [i, setI] = useState(0);
   if (!abierto) return null;
   const n = normN(q);
-  const xs = [...AREAS.filter(([k]) => visibles[k]).map(([k, t]) => [t, k, '']), ...BUSCABLES.filter((x) => visibles[x[1]])]
-    .filter((x) => !n || normN(x[0]).includes(n)).slice(0, 12);
-  const elegir = (x) => { if (x) { ir(x[1], x[2], x[3]); setQ(''); setI(0); cerrar(); } };
+  const xs0 = [...AREAS.filter(([k]) => visibles[k]).map(([k, t]) => [t, k, '']), ...BUSCABLES.filter((x) => visibles[x[1]])]
+    .filter((x) => !n || normN(x[0]).includes(n)).slice(0, 10);
+  // 🗂️ y la gente (25/10/2026): con dos letras o más, los del ranking y los de la lista de primerizos; abre su ficha
+  const gente = [];
+  if (n.length >= 2 && abrirFicha) {
+    const vistos = new Set();
+    for (const [nom, k] of [...Object.values((liga && liga.T) || {}).map((f) => [f.n, f.k]), ...(extra || [])]) {
+      if (!k || vistos.has(k) || !normN(nom).includes(n)) continue;
+      vistos.add(k); gente.push([limpio(nom), 'ficha', k]);
+      if (gente.length >= 6) break;
+    }
+  }
+  const xs = [...xs0, ...gente];
+  const elegir = (x) => {
+    if (!x) return;
+    if (x[1] === 'ficha') abrirFicha(x[2], x[0]); else ir(x[1], x[2], x[3]);
+    setQ(''); setI(0); cerrar();
+  };
   const tecla = (e) => {
     if (e.key === 'Escape') cerrar();
     else if (e.key === 'ArrowDown') { e.preventDefault(); setI(Math.min(xs.length - 1, i + 1)); }
@@ -2958,10 +2973,10 @@ function BuscarTodo({ abierto, cerrar, ir, visibles }) {
     <div className="dz-velo" role="presentation" onClick={cerrar}>
       <div className="dz-buscar" role="dialog" aria-modal="true" aria-label="Buscar en el Dashboard" onClick={(e) => e.stopPropagation()}>
         <label className="dz-bq"><Ico n="buscar" t={18} />
-          <input autoFocus value={q} placeholder="Busca un ajuste, un lugar o una acción" onChange={(e) => { setQ(e.target.value); setI(0); }} onKeyDown={tecla} /></label>
+          <input autoFocus value={q} placeholder="Busca un ajuste, una acción o a alguien" onChange={(e) => { setQ(e.target.value); setI(0); }} onKeyDown={tecla} /></label>
         {xs.length ? <ul>{xs.map((x, j) => (
           <li key={x[0] + x[1]}><button type="button" className={j === i ? 'on' : ''} onMouseEnter={() => setI(j)} onClick={() => elegir(x)}>
-            <b>{x[0]}</b><small>{(AREAS.find((a) => a[0] === x[1]) || [])[1]}</small></button></li>
+            <b>{x[1] === 'ficha' ? '👤 ' + x[0] : x[0]}</b><small>{x[1] === 'ficha' ? 'su ficha' : (AREAS.find((a) => a[0] === x[1]) || [])[1]}</small></button></li>
         ))}</ul> : <p className="db-tx">Nada con «{q}».</p>}
       </div>
     </div>
@@ -3184,7 +3199,7 @@ function DetalleLlave({ it, liga, d, alCambiar, corrige }) {
     <>
       {r.texto ? <blockquote className="dz-cita">«{r.texto}»</blockquote> : null}
       <p className="dz-dt-tx">{r.batalla ? r.batalla + ' · ' : ''}{r.evid && r.evid.quien ? 'lo mandó ' + r.evid.quien : r.de ? 'lo mandó ' + r.de : 'quién lo mandó: lo dice el ciclo en su próxima vuelta'}
-        {enlace ? <> · <a href={enlace}>abrirla</a></> : null}{r.estado === 'no_pude' && r.resultado ? <> · <b className="db-mal">no se pudo: {r.resultado}</b></> : null}</p>
+        {r.de ? <> · <BotonFicha k={r.de} n={r.de} /></> : null}{enlace ? <> · <a href={enlace}>abrirla</a></> : null}{r.estado === 'no_pude' && r.resultado ? <> · <b className="db-mal">no se pudo: {r.resultado}</b></> : null}</p>
       {r.evid && (r.evid.lineas || []).length > 1 ? <Evidencia r={r} alListo={setLista} corrige={corrige} /> : null}
       {abierto ? (String(r.llave).startsWith('liga:') ? <CorregirLiga r={r} liga={liga} alListo={setLista} />
         : <Corregir r={r} liga={liga} alListo={setLista} hermanos={hermanos} />) : null}
@@ -3217,7 +3232,7 @@ function DetallePedido({ p, liga, alCambiar }) {
       .catch(() => { setOcup(false); setMsg('No pude: la red.'); });
   };
   const filas = [
-    ['Quién', f ? <a key="q" href={'#/r/' + p.k}>{limpio(f.n)}</a> : p.k || '—'],
+    ['Quién', f ? <Fragment key="q"><a href={'#/r/' + p.k}>{limpio(f.n)}</a> <BotonFicha k={p.k} n={f.n} /></Fragment> : p.k ? <Fragment key="q">{p.k} <BotonFicha k={p.k} /></Fragment> : '—'],
     p.cc ? ['País que pide', p.cc.toUpperCase()] : null,
     p.tipo === 'cuenta' ? ['La cuenta que pide', <Fragment key="c">{pr.usuario ? '@' + pr.usuario : 'sin nombre'}{pr.creada ? ' · creada el ' + pr.creada : ''} · {pr.en_dra === false ? 'no está en DRA'
       : 'en DRA' + (pr.apodo_dra ? ' como «' + pr.apodo_dra + '»' : '') + (pr.miembro ? ', con el Miembro' : ', sin el Miembro')}</Fragment>] : null,
@@ -3805,6 +3820,123 @@ function NumerosTabs({ tabs }) {
   );
 }
 
+// ── 🗂️ LA FICHA DE UNA PERSONA (25/10/2026, el research del Dashboard: «junta en un lugar lo que hoy está en varias
+// áreas»; Dlx: «constrúyelo»). Se abre al costado desde cualquier nombre del Dashboard (`BotonFicha`) o buscándolo con
+// Ctrl+K. Lo público —su puesto, sus eventos, sus duelos— sale de lo que la página ya tiene (`liga.T`, `/api/perfiles`);
+// lo del staff —su cuenta, sus roles, sus Puntos, lo que mandó y las notas— del objeto (`duenoFicha()` de bot/avisos.js)
+const FichaCtx = createContext(null);
+// la función que abre una ficha, la misma en cada render (así los `BotonFicha` no se redibujan por nada)
+function useCallbackFicha(setFicha) {
+  const r = useRef(null);
+  if (!r.current) r.current = (k, n) => setFicha([k, n || '']);
+  return r.current;
+}
+const ETIQUETAS = [['nota', 'Nota'], ['ayuda', 'Ayuda'], ['aviso', 'Aviso'], ['sancion', 'Sanción']];
+const PED_EST_C = { '': 'esperando', si: 'aprobado', hecho: 'hecho', no: 'no', no_pude: 'no se pudo' };
+function BotonFicha({ k, n }) {
+  const abrir = useContext(FichaCtx);
+  if (!abrir || !k) return null;
+  return <button type="button" className="dz-fbtn" onClick={() => abrir(k, n)} aria-label={'La ficha de ' + (n || k)}>ficha</button>;
+}
+async function pedirFicha(cuerpo, ruta) {
+  const r = await fetch('/api/avisos/dueno/' + ruta, { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' }, body: JSON.stringify(cuerpo) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || j.error) throw new Error(r.status === 401 ? 'la sesión venció: entra de nuevo' : j.error === 'no' ? 'no tienes permiso' : j.error || String(r.status));
+  return j;
+}
+function FichaPersona({ k, n, liga, cerrar, puedeNotas }) {
+  const [F, setF] = useState(null);
+  const [err, setErr] = useState('');
+  const [et, setEt] = useState('nota');
+  const [txt, setTxt] = useState('');
+  const [dias, setDias] = useState(0);
+  const [ocup, setOcup] = useState(false);
+  const P = usePerfiles();
+  useEffect(() => {
+    let vivo = true;
+    setF(null); setErr('');
+    pedirFicha({ k }, 'ficha').then((j) => { if (vivo) setF(j); }).catch((e) => { if (vivo) setErr(e.message); });
+    return () => { vivo = false; };
+  }, [k]);
+  useEffect(() => {
+    const f = (e) => { if (e.key === 'Escape') cerrar(); };
+    W.addEventListener && W.addEventListener('keydown', f);
+    return () => { W.removeEventListener && W.removeEventListener('keydown', f); };
+  }, [cerrar]);
+  const p = P && P.p ? P.p[k] : null;
+  const f = liga.T[k] || (p && p.f) || null;
+  const nombre = limpio((f && f.n) || n || k);
+  const evs = ((p && p.ev) || []).slice(0, 8);
+  const du = (p && p.du) || [];
+  const nota = async (cuerpo) => {
+    setOcup(true); setErr('');
+    try { const j = await pedirFicha(cuerpo, 'nota'); setF((x) => Object.assign({}, x, { notas: j.notas })); setTxt(''); setDias(0); }
+    catch (e) { setErr('No se pudo: ' + e.message); }
+    setOcup(false);
+  };
+  return (
+    <div className="dz-lado-velo" onClick={(e) => { if (e.target === e.currentTarget) cerrar(); }}>
+      <aside className="dz-lado dz-ficha" aria-label={'La ficha de ' + nombre}>
+        <div className="dz-svt-c"><b className="dz-ficha-n">{nombre}</b><button type="button" className="btn borde2 chico" onClick={cerrar}>Cerrar · Esc</button></div>
+        <p className="dz-dt-tx"><a href={'#/r/' + encodeURIComponent(k)}>Su perfil ↗</a>{f && f.sv ? ' · juega más en ' + siglaDe(f.sv) : ''}{f && f.cc ? ' · ' + String(f.cc).toUpperCase() : ''}</p>
+        {f ? (
+          <div className="dz-nums">
+            <div className="dz-num"><span>temporada</span><b>{f.o || f.pos ? '#' + (f.pos || f.o) : '—'}</b><small>{num(f.pts || 0)} pts</small></div>
+            <div className="dz-num"><span>eventos</span><b>{num(f.ev || 0)}</b><small>{f.ult && f.ult[0] ? 'el último el ' + corto(f.ult[0]) : 'en la T1'}</small></div>
+            <div className="dz-num"><span>rango</span><b>{f.rg || '—'}</b><small>{f.rg ? 'Score ' + String(f.sc || 0).replace('.', ',') : 'pide 10 eventos'}</small></div>
+          </div>
+        ) : <p className="db-tx">No está en el ranking de la temporada.</p>}
+        {evs.length ? (
+          <div><h4 className="dz-h4">Sus últimos eventos</h4>
+            <ul className="dz-lista">{evs.map(([en, puesto, pts]) => {
+              const x = ((P && P.e) || {})[en] || ((P && P.e) || {})[String(en)] || [];
+              const ds = du.filter((y) => y[0] === en);
+              return <li key={en}><span>{limpio(x[0] || 'Evento ' + en)}{ds.length ? ' · ' + ds.filter((y) => y[2]).length + '–' + ds.filter((y) => !y[2]).length + ' en duelos' : ''}</span><b>{puesto}{pts ? ' · ' + num(pts) : ''}</b></li>;
+            })}</ul></div>
+        ) : null}
+        {err && !F ? <p className="dz-dt-msg">No pude leer su ficha: {err}</p> : !F ? <p className="pronto-p">Leyendo su ficha…</p> : (
+          <>
+            <dl className="dz-dl">
+              <div><dt>Cuenta en la página</dt><dd>{F.cuenta ? 'Sí, desde el ' + corto(new Date(F.cuenta.desde).toISOString().slice(0, 10)) : 'No: no le llegan avisos de la página'}</dd></div>
+              {F.roles && F.roles.length ? <div><dt>En el Dashboard</dt><dd>{F.roles.map(nombreRol).join(', ')}</dd></div> : null}
+              {F.saldo != null ? <div><dt>Puntos de Tienda</dt><dd>{num(F.saldo)}</dd></div> : null}
+              {F.vuelve ? <div><dt>Se le avisó que vuelva</dt><dd>{hace(F.vuelve.t)} · {F.vuelve.por}</dd></div> : null}
+              {(F.reportes || []).length ? <div><dt>Reportes que mandó</dt><dd>{F.reportes.map((r) => (/^\d+$/.test(r.llave) ? '#' + r.llave : 'una liga') + ' (' + (QUE_REP[r.que] || r.que) + ', ' + (r.estado || 'abierto') + ')').join(' · ')}</dd></div> : null}
+              {(F.pedidos || []).length ? <div><dt>Pedidos</dt><dd>{F.pedidos.map((x) => (PED_TIPO[x.tipo] || x.tipo) + ' · ' + (PED_EST_C[x.estado] || x.estado)).join(' · ')}</dd></div> : null}
+            </dl>
+            <div className="dz-notas">
+              <h4 className="dz-h4">Notas del staff · {(F.notas || []).length}</h4>
+              {(F.notas || []).length ? <ul className="dz-notas-l">{F.notas.map((x) => (
+                <li key={x.id}>
+                  <span className={'dz-et ' + x.et}>{(ETIQUETAS.find((y) => y[0] === x.et) || [0, x.et])[1]}</span>
+                  <p>{x.texto}</p>
+                  <small>{x.por} · {hace(x.t)}{x.hasta ? (x.hasta > Date.now() ? ' · vence ' + corto(new Date(x.hasta).toISOString().slice(0, 10)) : ' · venció') : ''}</small>
+                  {puedeNotas ? <DosToques className="dz-lnk" disabled={ocup} confirmar="Toca de nuevo para borrarla" onClick={() => nota({ borrar: x.id })}>Borrar</DosToques> : null}
+                </li>
+              ))}</ul> : <p className="db-tx">Todavía nadie anotó nada.</p>}
+              {puedeNotas ? (
+                <form className="dz-nota-f" onSubmit={(e) => { e.preventDefault(); if (txt.trim()) nota({ k, et, texto: txt, dias: et === 'sancion' ? dias : 0 }); }}>
+                  <div className="dz-subs" role="radiogroup" aria-label="Qué es">{ETIQUETAS.map(([c, t]) => (
+                    <button key={c} type="button" role="radio" aria-checked={et === c} className={'dz-sub' + (et === c ? ' on' : '')} onClick={() => setEt(c)}>{t}</button>
+                  ))}</div>
+                  <textarea rows={2} maxLength={300} value={txt} placeholder="Qué pasó, en una o dos frases" aria-label="La nota" onChange={(e) => setTxt(e.target.value)} />
+                  <div className="dz-acc">
+                    {et === 'sancion' ? <select value={dias} aria-label="Hasta cuándo" onChange={(e) => setDias(Number(e.target.value))}>
+                      {[[0, 'Sin fecha de fin'], [1, '1 día'], [3, '3 días'], [7, '7 días'], [30, '30 días']].map(([v, t]) => <option key={v} value={v}>{t}</option>)}</select> : null}
+                    <button type="submit" className="btn verde chico" disabled={ocup || !txt.trim()}>Anotar</button>
+                  </div>
+                  <p className="db-tx">La ve todo el staff, con tu nombre. La sanción con fecha es para recordarla: no frena nada sola.</p>
+                </form>
+              ) : null}
+              {err && F ? <p className="dz-dt-msg" role="alert">{err}</p> : null}
+            </div>
+          </>
+        )}
+      </aside>
+    </div>
+  );
+}
+
 export function Dashboard({ dc, liga }) {
   const [st, setSt] = useState({ cargando: true });
   // la visita anterior: se lee una vez al abrir y se anota la de ahora
@@ -3869,6 +4001,9 @@ export function Dashboard({ dc, liga }) {
   useEffect(() => { const id = setInterval(() => tic((n) => n + 1), 30000); return () => clearInterval(id); }, []);
   const [panel, setPanel] = useState(() => !panelCerrado());
   const [masNav, setMasNav] = useState(false);
+  // 🗂️ la ficha abierta: `[clave, nombre]`
+  const [ficha, setFicha] = useState(null);
+  const abrirFicha = useCallbackFicha(setFicha);
 
   let cuerpo;
   if (st.cargando) cuerpo = <p className="pronto-p">Cargando…</p>;
@@ -4041,6 +4176,7 @@ export function Dashboard({ dc, liga }) {
   }
   const titulo = (AREAS.find(([k]) => k === areaV) || [])[1];
   return (
+    <FichaCtx.Provider value={abrirFicha}>
     <section className="sec db dz" ref={raiz}>
       <style>{ESTILO}</style>
       {d.mis_roles && !d.mis_roles.includes('owner') ? <p className="db-rol">Entraste como <b>{(d.mis_roles || []).map((r) => ({ admin: 'Admin', asistente: 'Asistente', moderador: 'Moderador de la página' }[r] || r)).join(' y ')}</b>{d.yo ? ' (' + d.yo + ')' : ''}: lo que hagas queda con tu nombre.</p> : null}
@@ -4070,7 +4206,9 @@ export function Dashboard({ dc, liga }) {
           {vista}
         </div>
       </div>
-      <BuscarTodo abierto={buscar} cerrar={() => setBuscar(false)} ir={ir} visibles={visibles} />
+      <BuscarTodo abierto={buscar} cerrar={() => setBuscar(false)} ir={ir} visibles={visibles} liga={liga} abrirFicha={abrirFicha}
+        extra={[...((d.primerizos || {}).una || []), ...((d.primerizos || {}).frio || [])].map((x) => [x[0], x[x.length - 1]])} />
+      {ficha ? <FichaPersona k={ficha[0]} n={ficha[1]} liga={liga} cerrar={() => setFicha(null)} puedeNotas={ve('reportes_cerrar')} /> : null}
       {aviso ? (
         <div className="dz-toast" role="status">
           <span>{aviso.ok}</span>
@@ -4079,6 +4217,7 @@ export function Dashboard({ dc, liga }) {
         </div>
       ) : null}
     </section>
+    </FichaCtx.Provider>
   );
 }
 

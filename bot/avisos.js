@@ -2608,6 +2608,8 @@ const RUTAS = {
   '/avisos/dueno/reporte': 'POST', '/avisos/reportes-estados': 'POST',
   // 👀 quién está mirando qué caso de Pendientes (25/10/2026). Ver `duenoViendo()`
   '/avisos/dueno/viendo': 'POST',
+  // 🗂️ la ficha de una persona para el staff, y las notas del staff sobre ella (25/10/2026). Ver `duenoFicha()`
+  '/avisos/dueno/ficha': 'POST', '/avisos/dueno/nota': 'POST',
   // ✅ Decidir en el Dashboard (13/10/2026, Dlx: «Sí, con Reportes»): el ciclo publica las preguntas y lee lo
   // contestado, con su clave; Dlx contesta. Ver `validarRespuestaDecidir()`, `decidirEstados()` y `duenoDecidir()`
   '/avisos/decidir-ciclo': 'GET', '/avisos/decidir-estados': 'POST', '/avisos/dueno/decidir': 'POST',
@@ -3140,6 +3142,22 @@ export function validarDecisionReporte(d) {
 //: por qué se cerró un reporte: el bot leyó mal un nombre, el bot leyó mal la llave, se equivocó el organizador, estaba bien
 // o era una prueba. El Dashboard los cuenta (`causasDueno()`): cuál sube primero es lo que hay que arreglar primero
 export const CAUSAS_REPORTE = ['nombre_bot', 'llave_bot', 'organizador', 'no_corresponde', 'prueba'];
+//: 🗂️ LAS ETIQUETAS DE UNA NOTA DEL STAFF (25/10/2026, el research: «notas con pocas etiquetas fijas», como las Mod Notes
+// de Reddit). La sanción puede tener fecha de fin: es informativa, no frena nada sola
+export const NOTA_ETIQUETAS = ['nota', 'ayuda', 'aviso', 'sancion'];
+/** 🗂️ ¿Vale una nota nueva? `{k, et, texto, dias}` o `{error}`. Pura (`bot/avisos_prueba.mjs`). Borrar es `{borrar: id}`. */
+export function validarNota(d) {
+  if (d && Number.isInteger(Number(d.borrar)) && Number(d.borrar) > 0 && !d.texto) return { borrar: Number(d.borrar) };
+  const k = String((d && d.k) || '');
+  if (!/^[a-z0-9]{1,40}$/.test(k)) return { error: 'falta quién' };
+  const et = String((d && d.et) || 'nota');
+  if (!NOTA_ETIQUETAS.includes(et)) return { error: 'etiqueta' };
+  const texto = String((d && d.texto) || '').replace(/\s+/g, ' ').trim();
+  if (!texto || texto.length > 300 || /[<>]/.test(texto)) return { error: 'el texto: de 1 a 300 letras, sin < >' };
+  const dias = Number((d && d.dias) || 0);
+  if (![0, 1, 3, 7, 30].includes(dias) || (dias && et !== 'sancion')) return { error: 'la fecha de fin' };
+  return { k, et, texto, dias };
+}
 //: 🔁 LO QUE LE LLEGA A QUIEN SE AVISA QUE VUELVA (25/10/2026, el research del Dashboard: la lista de primerizos y
 // enfriados, con una acción que nunca es un DM). Textos fijos: el staff elige uno, no lo escribe. `[título, cuerpo, link]`
 export const PLANTILLAS_VUELVE = {
@@ -5172,6 +5190,33 @@ export async function rutaAvisos(req, env, ruta) {
       method: 'POST', body: JSON.stringify({ k: String(d.k), que: String(d.que), por: q.id }), headers: { 'content-type': 'application/json' },
     });
   }
+  // 🗂️ la ficha de alguien (cualquiera que abre el Dashboard) y las notas del staff (quien puede cerrar reportes)
+  if (ruta === '/avisos/dueno/ficha' || ruta === '/avisos/dueno/nota') {
+    const crudo = await req.text();
+    if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object') return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    const roles = await rolesPanel(q.id);
+    if (!puedeRol(roles, ruta === '/avisos/dueno/nota' ? 'reportes_cerrar' : 'panel')) return json({ error: 'no' }, 403);
+    let cuerpo;
+    if (ruta === '/avisos/dueno/nota') {
+      const v = validarNota(d);
+      if (v.error) return json(v, 400);
+      cuerpo = Object.assign({}, v, { por: q.id, jefe: puedeRol(roles, 'ajustes') });
+    } else {
+      if (!/^[a-z0-9]{1,40}$/.test(String(d.k || ''))) return json({ error: 'falta quién' }, 400);
+      let pcfg = null;
+      try { pcfg = JSON.parse((await env.KV.get('precios', { cacheTtl: 60 })) || 'null'); } catch (e) { pcfg = null; }
+      cuerpo = { k: String(d.k), quien: q.id,
+        billetera: pcfg && Number.isInteger(pcfg.inicial) ? { desde: Date.parse(pcfg.desde || '') || 0, inicial: pcfg.inicial } : null };
+    }
+    return elObjeto(env).fetch('https://avisos' + ruta.replace('/avisos/dueno/', '/dueno-'), {
+      method: 'POST', body: JSON.stringify(cuerpo), headers: { 'content-type': 'application/json' },
+    });
+  }
   if (ruta === '/avisos/dueno/viendo') {
     const crudo = await req.text();
     if (crudo.length > 512) return json({ error: 'demasiado grande' }, 413);
@@ -5722,6 +5767,10 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS viendo (k TEXT PRIMARY KEY, por TEXT NOT NULL, quien TEXT NOT NULL, t INTEGER NOT NULL)');
       // 🔁 a quién se le avisó que vuelva, cuándo y quién (25/10/2026): uno por persona cada 7 días. Ver `avisoVuelve()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS vuelve (k TEXT PRIMARY KEY, que TEXT NOT NULL, por TEXT NOT NULL, t INTEGER NOT NULL)');
+      // 🗂️ las notas del staff sobre una persona (25/10/2026): por su perfil (`k`), con etiqueta y, la sanción, con fecha
+      // de fin. Quedan quién la escribió y cuándo. Ver `duenoNota()` y `duenoFicha()`
+      this.sql.exec("CREATE TABLE IF NOT EXISTS notas (id INTEGER PRIMARY KEY AUTOINCREMENT, k TEXT NOT NULL, et TEXT NOT NULL, " +
+        "texto TEXT NOT NULL, hasta INTEGER NOT NULL DEFAULT 0, por TEXT NOT NULL, por_id TEXT NOT NULL DEFAULT '', t INTEGER NOT NULL)");
       for (const c of ["estado TEXT NOT NULL DEFAULT ''", "fix TEXT NOT NULL DEFAULT ''",
         "resultado TEXT NOT NULL DEFAULT ''", 't_estado INTEGER NOT NULL DEFAULT 0', "evid TEXT NOT NULL DEFAULT ''",
         "por TEXT NOT NULL DEFAULT ''"]) {
@@ -6315,6 +6364,8 @@ export class Avisos {
       if (ruta === '/dueno-reporte') return json(await this.duenoReporte(d));
       if (ruta === '/dueno-viendo') return json(this.duenoViendo(d));
       if (ruta === '/dueno-vuelve') return json(this.avisoVuelve(d));
+      if (ruta === '/dueno-ficha') return json(this.duenoFicha(d));
+      if (ruta === '/dueno-nota') return json(this.duenoNota(d));
       // 🔁 la lista de primerizos y enfriados: sólo la guarda, tal cual, para el Dashboard (nunca sale a la página)
       if (ruta === '/primerizos-ciclo') {
         if (!d || !Array.isArray(d.una) || !Array.isArray(d.frio) || d.una.length > 600 || d.frio.length > 300) return json({ error: 'datos' }, 400);
@@ -9375,6 +9426,56 @@ export class Avisos {
     return { inicial, personas: xs.length, total, mediana: xs.length ? xs[Math.floor(xs.length / 2)][1] : 0,
       top, top_parte: total > 0 ? top.reduce((t, x) => t + Math.max(0, x[1]), 0) / total : 0,
       dias: Object.entries(dias).sort().map(([d, [e, sa]]) => [d, e, sa]), origen, raros };
+  }
+
+  /**
+   * 🗂️ LA FICHA DE UNA PERSONA PARA EL STAFF (25/10/2026, el research del Dashboard: «junta en un lugar lo que hoy está en
+   * varias áreas»). Lo que sabe el objeto de ese perfil: si tiene cuenta y desde cuándo, sus roles del Dashboard, sus
+   * Puntos, los reportes y pedidos que mandó, si se le avisó que vuelva y las notas del staff. Lo público (sus eventos,
+   * sus duelos, su puesto) lo pone la página, que ya lo tiene. Sin Discord IDs: la cuenta es «sí, desde tal día»
+   */
+  duenoFicha(d) {
+    const ahora = Date.now();
+    const k = String(d.k || '');
+    const ids = this.sql.exec('SELECT id, t FROM idk WHERE k = ?', k).toArray();
+    const lista = ids.map((x) => x.id);
+    const enIds = (tabla, cols, extra) => (lista.length ? this.sql.exec('SELECT ' + cols + ' FROM ' + tabla + ' WHERE quien IN (' + lista.map(() => '?').join(',') + ')' + (extra || ''), ...lista).toArray() : []);
+    const b = d.billetera;
+    const saldo = b && lista.length ? lista.reduce((t, id) => t + this.saldo(id, Number(b.desde) || 0, 0), Number(b.inicial)) : null;
+    const v = this.sql.exec('SELECT que, por, t FROM vuelve WHERE k = ?', k).toArray()[0] || null;
+    return {
+      k,
+      cuenta: lista.length ? { desde: Math.min(...ids.map((x) => x.t || ahora)) } : null,
+      roles: [...new Set(lista.flatMap((id) => this.rolesPanelDe(id)))],
+      saldo,
+      reportes: enIds('reportes', 'id, llave, que, estado, t', ' ORDER BY t DESC LIMIT 10'),
+      pedidos: this.sql.exec("SELECT id, tipo, estado, t FROM pedidos WHERE k = ? ORDER BY t DESC LIMIT 10", k).toArray(),
+      vuelve: v,
+      notas: this.notasDe(k),
+    };
+  }
+
+  notasDe(k) {
+    return this.sql.exec('SELECT id, et, texto, hasta, por, t FROM notas WHERE k = ? ORDER BY t DESC LIMIT 50', k).toArray();
+  }
+
+  /**
+   * 🗂️ Una nota del staff sobre alguien, o borrar una: la propia la borra quien la escribió; cualquiera, Dlx o un Admin
+   * (`jefe`). Ya validada por `validarNota()`. Devuelve las notas de esa persona.
+   */
+  duenoNota(d) {
+    const ahora = Date.now();
+    if (d.borrar) {
+      const n = this.sql.exec('SELECT k, por_id FROM notas WHERE id = ?', Number(d.borrar)).toArray()[0];
+      if (!n) return { error: 'ya no está' };
+      if (n.por_id !== String(d.por) && !d.jefe) return { error: 'no' };
+      this.sql.exec('DELETE FROM notas WHERE id = ?', Number(d.borrar));
+      return { ok: true, notas: this.notasDe(n.k) };
+    }
+    if ((this.sql.exec('SELECT COUNT(*) AS n FROM notas WHERE k = ?', d.k).toArray()[0] || {}).n >= 200) return { error: 'demasiadas' };
+    this.sql.exec('INSERT INTO notas (k, et, texto, hasta, por, por_id, t) VALUES (?, ?, ?, ?, ?, ?, ?)', d.k, d.et, d.texto,
+      d.dias ? ahora + d.dias * DIA_MS : 0, this.nombrePor(d.por), String(d.por), ahora);
+    return { ok: true, notas: this.notasDe(d.k) };
   }
 
   /** 🔁 A quién se le avisó que vuelva en los últimos 60 días: `{k: [t, qué, quién]}`. */
