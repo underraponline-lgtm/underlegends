@@ -1235,6 +1235,30 @@
     "ev": 1
    },
    "fund": "dlx"
+  },
+  {
+   "id": "La Crew Anti Gay",
+   "nombre": "La Crew Anti Gay",
+   "sigla": "CAG",
+   "entrada": "pedido",
+   "oficial": false,
+   "creada": 1792968095105,
+   "reps": [],
+   "gente": [
+    [
+     "dev",
+     "lider",
+     1792968095105
+    ]
+   ],
+   "vence": 1793572895105,
+   "logo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/logos-crews/a26f97dc47a189bec882e672.webp",
+   "desc": "TRES ARGENTINOS WACHO",
+   "req": {
+    "rg": "",
+    "ev": 0
+   },
+   "fund": "dev"
   }
  ]
 }

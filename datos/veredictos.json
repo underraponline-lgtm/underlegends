@@ -1101,6 +1101,50 @@
    "b": "HOTARU 🇦🇷🏳️‍⚧",
    "ganador": "SEKKA 🇦🇷",
    "votos": "2–0"
+  },
+  "1564040200534098061": {
+   "id": "1564040200534098061",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792966642269,
+   "a": "DELUXE 🇦🇷",
+   "b": "GEOKA 🇦🇷",
+   "ganador": "DELUXE 🇦🇷",
+   "votos": "2–0"
+  },
+  "1564043044515356843": {
+   "id": "1564043044515356843",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792967320327,
+   "a": "KUNI 🇦🇷",
+   "b": "GUESS 🇦🇷",
+   "ganador": "GUESS 🇦🇷",
+   "votos": "2–1"
+  },
+  "1564044082194546841": {
+   "id": "1564044082194546841",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792967567729,
+   "a": "BYSHOP 🇦🇷",
+   "b": "MCO 🇦🇷",
+   "ganador": "MCO 🇦🇷",
+   "votos": "3–0"
+  },
+  "1564045603686584332": {
+   "id": "1564045603686584332",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792967930481,
+   "a": "DELUXE 🇦🇷",
+   "b": "MCO 🇦🇷",
+   "ganador": "DELUXE 🇦🇷",
+   "votos": "2–0"
   }
  },
  "llaves": {
@@ -5565,8 +5609,8 @@
    "g": "765045834647339038",
    "canal": "1309238412976590908",
    "pub": 1792962199495,
-   "ed": 1792966642269,
-   "texto": "`[ OCTAVOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞KUDE 🇦🇷⌝\n⌞FLAMA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞BNA 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝\n⌞GEOKA 🇦🇷⌝ 🆚 ⌞ARIAXER 🇦🇷⌝\n⌞WACHIN 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n⌞EZEE 🇦🇷⌝ 🆚 ⌞DELUXE 🇦🇷⌝\n⌞DEV 🇦🇷⌝ 🆚 ⌞KUNI 🇦🇷⌝\n`[ CUARTOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞DELUXE 🇦🇷⌝ 🆚 ⌞GEOKA 🇦🇷⌝",
+   "ed": 1792968624082,
+   "texto": "`[ OCTAVOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞KUDE 🇦🇷⌝\n⌞FLAMA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞BNA 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝\n⌞GEOKA 🇦🇷⌝ 🆚 ⌞ARIAXER 🇦🇷⌝\n⌞WACHIN 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n⌞EZEE 🇦🇷⌝ 🆚 ⌞DELUXE 🇦🇷⌝\n⌞DEV 🇦🇷⌝ 🆚 ⌞KUNI 🇦🇷⌝\n`[ CUARTOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞DELUXE 🇦🇷⌝ 🆚 ⌞GEOKA 🇦🇷⌝\n⌞KUNI 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝\n⌞BYSHOP 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞DELUXE 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5653,6 +5697,46 @@
      [
       "DELUXE 🇦🇷",
       "GEOKA 🇦🇷"
+     ],
+     "DELUXE 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "KUNI 🇦🇷",
+      "GUESS 🇦🇷"
+     ],
+     "GUESS 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "BYSHOP 🇦🇷",
+      "MCO 🇦🇷"
+     ],
+     "MCO 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "DELUXE 🇦🇷",
+      "MCO 🇦🇷"
+     ],
+     "DELUXE 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "SEKKA 🇦🇷",
+      "GUESS 🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",

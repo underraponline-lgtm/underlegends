@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-25T22:24:08+00:00",
+ "cuando": "2026-10-25T22:54:52+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -4677,6 +4677,32 @@
    "categoria_id": "1373343272482902127"
   },
   {
+   "nombre": "DIVINE ERROR 444",
+   "servidor": "DDF",
+   "canal": "『📢』Eventos",
+   "msg_id": "1564049209857146961",
+   "cuando": "2026-10-25T22:53:10",
+   "canal_id": "1470097121284980736",
+   "guild_id": "1469009547971526659",
+   "organizador": "Dr3xx🇬🇵",
+   "orgs": [],
+   "autor_h": "e0acf3adfb0d85f0",
+   "cupos_texto": "16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "PANDILLAS",
+   "horario": "30 minutos",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "Dr3xx",
+   "staff_cuentas": {},
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-25T22:53:21"
+  },
+  {
    "nombre": "GRISELDA RECORDS VOL. 5",
    "servidor": "DDF",
    "canal": "『📢』Eventos",
@@ -4698,7 +4724,9 @@
    "staff": {},
    "autor": "Lízeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-25T22:53:21"
   },
   {
    "nombre": "GRISELDA RECORDS VOL. 5",
@@ -4722,7 +4750,9 @@
    "staff": {},
    "autor": "Lízeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-25T22:53:21"
   },
   {
    "nombre": "GRISELDA RECORDS VOL. 4",
@@ -4746,7 +4776,9 @@
    "staff": {},
    "autor": "Lízeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-25T22:53:21"
   },
   {
    "nombre": "GRISELDA RECORDS VOL. 3",
@@ -4770,7 +4802,9 @@
    "staff": {},
    "autor": "Lízeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-25T22:53:21"
   },
   {
    "nombre": "GRISELDA RECORDS VOL. 2",
@@ -4794,7 +4828,9 @@
    "staff": {},
    "autor": "Lízeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-25T22:53:21"
   },
   {
    "nombre": "19 CUP FUTCARD EDICIÓN 5 ??",
@@ -4819,7 +4855,9 @@
    "autor": "₁₉",
    "staff_cuentas": {},
    "de_imagen": true,
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-25T22:53:21"
   },
   {
    "nombre": "ZONA MORTAL",
@@ -4843,7 +4881,9 @@
    "staff": {},
    "autor": "KEIDER",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-25T22:53:21"
   },
   {
    "nombre": "GRISELDA RECORDS",
@@ -4867,7 +4907,9 @@
    "staff": {},
    "autor": "Lízeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-25T22:53:21"
   },
   {
    "nombre": "19 (EDICIÓN FUTCARD VOL 4)",
@@ -4892,7 +4934,9 @@
    "autor": "₁₉",
    "staff_cuentas": {},
    "de_imagen": true,
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-25T22:53:21"
   },
   {
    "nombre": "LA MISIÓN DEL MONJE",
@@ -4916,7 +4960,9 @@
    "staff": {},
    "autor": "Dr3xx",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-25T22:53:21"
   },
   {
    "nombre": "PROYECTO X VOL.3",
@@ -4940,7 +4986,9 @@
    "staff": {},
    "autor": "Dr3xx",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-25T22:53:21"
   },
   {
    "nombre": "UNDER FMS WORLD SERIES",
@@ -4969,7 +5017,9 @@
    "staff": {},
    "autor": "99 |DJ SHADOW🐉",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-25T22:53:21"
   },
   {
    "nombre": "MORTAL KOMBAT MAPACHE CUP",
@@ -4998,48 +5048,9 @@
    "staff": {},
    "autor": "WOLKI TOKI",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
-  },
-  {
-   "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1558542438962831436",
-   "cuando": "2026-10-10T18:11:13",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Adriagner",
-     "id": "1316490165836972104"
-    }
-   ],
-   "autor_h": "0f624d80ff313923",
-   "cupos_texto": "16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "1V1",
-   "horario": "YAAAA",
-   "fecha": "AHORIIITA",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "Adriagner"
-    ],
-    "host": [
-     "Adriagner"
-    ],
-    "dj": [
-     "Adriagner"
-    ]
-   },
-   "autor": "Adriagner",
-   "staff_cuentas": {
-    "Adriagner": "1316490165836972104"
-   },
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-25T22:53:21"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - MAÑANA )",
@@ -6864,6 +6875,69 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1564049546361966724",
+   "cuando": "2026-10-25T22:54:30"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1564049421505798156",
+   "cuando": "2026-10-25T22:54:00"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "**Son todas putas** 🇦🇷",
+   "quien": "takubot_95134",
+   "discord_id": "1448692821170061374",
+   "msg_id": "1564049372164128910",
+   "cuando": "2026-10-25T22:53:48"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Richard 🇪🇨",
+   "quien": "ricardflex",
+   "discord_id": "750718442050551858",
+   "msg_id": "1564049295727132817",
+   "cuando": "2026-10-25T22:53:30"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "lizeninn 🇦🇷⛽",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1564049291696152607",
+   "cuando": "2026-10-25T22:53:29"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Snx🇻🇪",
+   "quien": "ismel_0555",
+   "discord_id": "1458603256292053037",
+   "msg_id": "1564043345276174442",
+   "cuando": "2026-10-25T22:29:52"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "dev",
+   "quien": ".gatitodev",
+   "discord_id": "1028631611685740684",
+   "msg_id": "1564042116110229505",
+   "cuando": "2026-10-25T22:24:58"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
@@ -42800,69 +42874,6 @@
    "discord_id": "1087195409685954561",
    "msg_id": "1532539503439511632",
    "cuando": "2026-07-31T00:04:50"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "kochi🇨🇱 +mco🇦🇷",
-   "quien": "ricardocortes0758",
-   "discord_id": "1357885526404894870",
-   "msg_id": "1532539393024327801",
-   "cuando": "2026-07-31T00:04:24"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "19 🇭🇳🏳️‍🌈🇻🇪",
-   "quien": "19.emece",
-   "discord_id": "1087195409685954561",
-   "msg_id": "1532539368709816492",
-   "cuando": "2026-07-31T00:04:18"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "El indígena del parque 🇺🇾",
-   "quien": "fabrythenoob7n76687",
-   "discord_id": "595648807920861205",
-   "msg_id": "1532539310006603988",
-   "cuando": "2026-07-31T00:04:04"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Drexx🇨🇻 + mauzz🇻🇪",
-   "quien": "manuxxx0789_78781",
-   "discord_id": "1150099153238630410",
-   "msg_id": "1532539284165234698",
-   "cuando": "2026-07-31T00:03:58"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "ZD🏴󠁧󠁢󠁥󠁮󠁧󠁿 + Marcos 🇪🇸",
-   "quien": "equisde_xd23",
-   "discord_id": "1439048698142134436",
-   "msg_id": "1532539274346369044",
-   "cuando": "2026-07-31T00:03:56"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Geoka 🇦🇩 + Erian 🇦🇬",
-   "quien": "goksito_8",
-   "discord_id": "1325042155819106324",
-   "msg_id": "1532539248933212301",
-   "cuando": "2026-07-31T00:03:50"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Playervolamosmegustasbb 🇻🇪🏳️‍🌈🇭🇳",
-   "quien": "19.emece",
-   "discord_id": "1087195409685954561",
-   "msg_id": "1532539044926324866",
-   "cuando": "2026-07-31T00:03:01"
   }
  ]
 }

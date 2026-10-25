@@ -2353,6 +2353,69 @@
    "escribio": {
     "quien": "IDENTITY V · DDF · 25/10 · Stan🇨🇱"
    }
+  },
+  {
+   "id": "ada284be32",
+   "tipo": "Nombre desconocido",
+   "sec": "NOCHE DE BOOMBAP · DDF · 06/10 · #415",
+   "que": "¿Quién es «Dm🇵🇪»?",
+   "r": "Es Dominick (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @equisde_xd23 (en Discord: «ZD🇧🇷») · en la Lista: Dominick se anotó como «Dm» para ese evento, no es staff de DDF y esa noche no jugó con su nombre",
+   "t": 1792969211740,
+   "filas": [
+    388
+   ],
+   "variantes": [
+    "Dm🇵🇪"
+   ],
+   "escribio": {
+    "quien": "NOCHE DE BOOMBAP · DDF · 06/10 · Dm🇵🇪"
+   }
+  },
+  {
+   "id": "c52a6cd5fc",
+   "tipo": "Nombre desconocido",
+   "sec": "GRISELDA RECORDS VOL. 3 · DDF · 23/10 · #507",
+   "que": "¿Quién es «Dom 🇵🇪»?",
+   "r": "Es Dominick (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @equisde_xd23 (en Discord: «ZD🇧🇷») · en la Lista: Dominick se anotó como «Dom» para ese evento, no es staff de DDF y esa noche no jugó con su nombre",
+   "t": 1792969211740,
+   "filas": [
+    825
+   ],
+   "variantes": [
+    "Dom 🇵🇪"
+   ],
+   "escribio": {
+    "quien": "GRISELDA RECORDS VOL. 3 · DDF · 23/10 · Dom 🇵🇪"
+   }
+  },
+  {
+   "id": "8c3d19f8fb",
+   "tipo": "Nombre desconocido",
+   "sec": "GRISELDA RECORDS VOL. 6 · DDF · 25/10 · #511",
+   "que": "¿Quién es «Pepito el come pito🇵🇪»?",
+   "r": "Es Dominick (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @equisde_xd23 (en Discord: «ZD🇧🇷») · en la Lista: Dominick se anotó como «Pepito el come pito» para ese evento, no es staff de DDF y esa noche no jugó con su nombre",
+   "t": 1792969211740,
+   "filas": [
+    834
+   ],
+   "variantes": [
+    "Pepito el come pito🇵🇪"
+   ],
+   "escribio": {
+    "quien": "GRISELDA RECORDS VOL. 6 · DDF · 25/10 · Pepito el come pito🇵🇪"
+   }
   }
  ],
  "deshechas": []
