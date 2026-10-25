@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-25T19:25:35+00:00",
+ "cuando": "2026-10-25T19:35:04+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -6912,6 +6912,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1563998481318809781",
+   "cuando": "2026-10-25T19:31:35"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
