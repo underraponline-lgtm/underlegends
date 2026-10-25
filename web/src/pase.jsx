@@ -10,8 +10,9 @@
 // ve qué es. ⚠️ EL PREMIUM NO TIENE PRECIO EN NINGÚN LADO: en la T1 lo desbloquea el rol de DRA, que se sortea acá.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { aQuienSigo, limpio, num } from './liga.js';
-import { Cara, accion } from './piezas.jsx';
-import { avance, multAhora, pasePost, pedirPase, usePase, usePases } from './pase.js';
+import { Cara, Carta, accion } from './piezas.jsx';
+import { avance, multAhora, pasePost, pedirPase, refrescarPases, usePase, usePases } from './pase.js';
+import { nombreMarco } from './marcos.jsx';
 import { PREMIUM_VIVO, PaseIcono, TareaIcono, premioCorto, premioLargo } from './pase_iconos.jsx';
 import { PopPase } from './pase_pop.jsx';
 import CSS_PAGINA from './css/pase.css?inline';
@@ -481,6 +482,51 @@ function Sorteo({ liga, dc, miembro }) {
   );
 }
 
+// 🖼️ TUS MARCOS (Dlx, 25/10/2026: «se quedan permanentemente en el inventario de uno… así la gente puede personalizar su
+// tarjeta poco a poco»): los que ganaste, cuál lleva tu carta y si la de Servidor va con la camiseta o con la cadena
+function TusMarcos({ liga, dc }) {
+  const [M, setM] = useState(null);
+  const [ocup, setOcup] = useState(false);
+  useEffect(() => { if (dc) pasePost('marcos', {}).then((d) => setM(d && d._ok ? d : null)); }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  if (!M || !(M.tienes || []).length) return null;
+  const yo = liga.yo;
+  const elegir = async (marco, estilo) => {
+    setOcup(true);
+    const d = await pasePost('marco-elige', { marco, estilo });
+    if (d && d._ok) { setM(d); await refrescarPases(); }
+    setOcup(false);
+  };
+  const actual = M.elegido || '';
+  return (
+    <section className="ps-mk">
+      <div className="ps-blk"><h3>Tus marcos<small>son tuyos para siempre</small></h3></div>
+      <p className="ps-sub">El marco va alrededor de tus cartas en toda la página. Elige cuál llevar; sin elegir, va el mejor que tengas.</p>
+      <div className="ps-mk-op" role="radiogroup" aria-label="El marco de tus cartas">
+        {M.tienes.map(([id]) => (
+          <button key={id} type="button" role="radio" aria-checked={actual === id} disabled={ocup} className={actual === id ? 'on' : ''}
+            onClick={() => elegir(id, M.estilo)}><i className={'ps-mk-c ' + id.split(':')[1]} />{nombreMarco(id)}</button>
+        ))}
+        <button type="button" role="radio" aria-checked={!actual} disabled={ocup} className={!actual ? 'on' : ''} onClick={() => elegir('', M.estilo)}>El mejor</button>
+        <button type="button" role="radio" aria-checked={actual === 'ninguno'} disabled={ocup} className={actual === 'ninguno' ? 'on' : ''} onClick={() => elegir('ninguno', M.estilo)}>Sin marco</button>
+      </div>
+      <div className="ps-mk-op" role="radiogroup" aria-label="El estilo de tu carta de Servidor">
+        <span>Tu carta de Servidor:</span>
+        {(M.estilos || ['camiseta', 'cadena']).map((e) => (
+          <button key={e} type="button" role="radio" aria-checked={M.estilo === e} disabled={ocup} className={M.estilo === e ? 'on' : ''}
+            onClick={() => elegir(actual, e)}>{e === 'cadena' ? 'La cadena' : 'La camiseta'}</button>
+        ))}
+      </div>
+      {yo ? (
+        <div className="ps-mk-ver">
+          {['temporada', 'competitivo', 'servidor', 'pais'].filter((c) => liga.cartaUrl(yo.k, c)).map((c) => (
+            <div key={c} className="ps-mk-c1"><Carta liga={liga} k={yo.k} cual={c} cls="ps-mk-img" abre={false} /></div>
+          ))}
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
 function Premium({ liga, dc, P, prem, nivel, miembro }) {
   const tiene = !!(P && P.premium && P.premium.hasta == null);
   const [col, setCol] = useState((P && P.color_premium) || '');
@@ -519,6 +565,7 @@ function Premium({ liga, dc, P, prem, nivel, miembro }) {
           <li><b>3</b><div><strong>Se gana en eventos</strong><span>Algunos eventos de la Liga lo dan como premio.</span></div></li>
         </ol>
       </section>
+      <TusMarcos liga={liga} dc={dc} />
       <Sorteo liga={liga} dc={dc} miembro={miembro} />
       {miembro && !tiene && ya.length ? (
         <section className="ps-pv-b">
@@ -662,7 +709,7 @@ export function Pase({ liga, dc }) {
   const skin = miembro && yo ? (
     <div className="ps-skin">
       <span className="ps-sk-t">TU CARTA · {liga.temp}</span>
-      {carta ? <img src={carta} alt="Tu carta de Temporada" /> : null}
+      {carta ? <Carta liga={liga} k={yo.k} cual="temporada" cls="ps-sk-img" abre={false} /> : null}
       <div className="ps-sk-p"><b>{limpio(yo.n)}</b><span>Nivel {nivel} · {num(P.cobrado)} Puntos de Tienda cobrados</span>
         {dias != null ? <span className="ps-sk-d">⏱ La {liga.temp} termina en {dias} {dias === 1 ? 'día' : 'días'}</span> : null}</div>
     </div>

@@ -134,6 +134,16 @@ try {
   ciclo({ premium: [ANA] });
   ok(o.paseDe(ANA).premium.hasta === null && sql.exec("SELECT COUNT(*) AS n FROM bandeja WHERE quien = ? AND clave = 'pase-premium:prueba'",
     ANA).toArray()[0].n === 1, 'y si vuelve, vuelve el +20 % (sin otro aviso)');
+  // 🖼️ los marcos: el del nivel 1 entró al inventario al cobrar la fila premium, y se queda aunque le saquen el rol
+  sql.exec("INSERT OR IGNORE INTO idk (id, k, t) VALUES (?, 'ana', 1)", ANA);
+  ok(o.marcosDe(ANA).tienes.map((x) => x[0]).join() === 'prueba:premium' && o.marcosPublicos().ana
+    && o.marcosPublicos().ana[0] === 'prueba:premium' && o.marcosPublicos().ana[1] === 'camiseta' && o.marcosPublicos().ana[2] === 1,
+  'el marco Premium entra al inventario de Ana, y su carta lo lleva (camiseta por defecto, serie 1)', JSON.stringify(o.marcosPublicos()));
+  ok(o.marcoElige({ quien: ANA, marco: 'prueba:oro', estilo: 'cadena' }).error === 'no lo tienes'
+    && o.marcoElige({ quien: ANA, marco: 'prueba:premium', estilo: 'cadena' }).ok && o.marcosPublicos().ana[1] === 'cadena'
+    && o.marcoElige({ quien: ANA, marco: 'ninguno', estilo: 'cadena' }).ok && !o.marcosPublicos().ana
+    && o.marcoElige({ quien: ANA, marco: '', estilo: 'cadena' }).ok && o.marcosPublicos().ana && A.mejorMarco(['t1:plata', 't1:oro', 't2:premium']) === 't1:oro',
+  'elegir: sólo un marco que tengas, el estilo de la Servidor, o «ninguno»; sin elegir, el mejor');
   const pr = o.pasePremios(o.paseDatos().cfg, 8, ANA);
   ok(pr.premium && pr.marco === 'Premium' && !pr.titulo, 'en el nivel 8 con premium: el marco Premium, todavía sin el título');
   ok(A.PASE_COLORES.includes('#29B298') && o.paseColorPoner({ quien: BEA, color: '#29B298' }).error === 'premium',
@@ -168,7 +178,7 @@ try {
   ok(A.ajusteValido('pase_sorteo', { id: 'x y', cierra: '2026-10-30', sorteo: '2026-10-31' }) === undefined
     && A.ajusteValido('pase_sorteo', { id: 'abc', cierra: '2026-11-01', sorteo: '2026-10-31' }) === undefined
     && A.ajusteValido('pase_sorteo', null) === null, 'el ajuste del sorteo: id limpio y cierra antes de sortear');
-  sql.exec("INSERT INTO idk (id, k, t) VALUES (?, 'ana', 1)", ANA);
+  sql.exec("INSERT OR IGNORE INTO idk (id, k, t) VALUES (?, 'ana', 1)", ANA);
   sql.exec("INSERT INTO idk (id, k, t) VALUES (?, 'bea', 1)", BEA);
   const eA = o.sorteoEntrar({ quien: ANA }), eB = o.sorteoEntrar({ quien: BEA });
   ok(eA.ok && eA.mio === 2 && eB.mio === 1 && eB.sorteo.personas === 2 && eB.sorteo.boletos === 3

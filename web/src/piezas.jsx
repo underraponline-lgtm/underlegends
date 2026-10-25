@@ -3,6 +3,9 @@
 import { Children, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { PAIS, limpio, num } from './liga.js';
 import * as RQ from './requisitos.js';
+// 🖼️ el marco de carta del Pase premium, donde se vea tu carta (25/10/2026)
+import { usePases } from './pase.js';
+import { ConMarco } from './marcos.jsx';
 
 const TRAZOS = {
   inicio: <path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z" />,
@@ -311,6 +314,7 @@ export function SinCarta({ liga, k, nombre, cc, cls = 'ci' }) {
 // una carta de verdad (de R2) o, si esa persona no la tiene, su cara con «SIN CARTA». Nunca una carta inventada.
 export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true }) {
   const [fallo, setFallo] = useState({ src: null, n: 0 });
+  const pub = usePases();
   // el ancho en que se dibuja, en píxeles de pantalla: 0 todavía no se midió, -1 no se pudo (va la grande)
   const [ancho, setAncho] = useState(0);
   const ref = useRef(null);
@@ -336,8 +340,13 @@ export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true }) 
   const chica = fallas ? null : liga.cartaUrl(k, cual, true);
   const src = !ancho ? undefined : chica && ancho > 0 && ancho <= 300 ? chica : grande;
   // (sin `src`, el alt vacío: si no, el navegador dibuja el texto y lo que se mide es el texto)
-  const img = <img ref={ref} className={cls} alt={src ? 'Carta ' + cual + ' de ' + f.n : ''} src={src} loading="lazy"
+  const img0 = <img ref={ref} className={cls} alt={src ? 'Carta ' + cual + ' de ' + f.n : ''} src={src} loading="lazy"
     onError={() => setTimeout(() => setFallo((x) => ({ src: src0, n: (x.src === src0 ? x.n : 0) + 1 })), fallas ? 0 : 1200)} />;
+  // 🖼️ su marco, si lo tiene (sólo con el ancho ya medido: chica o completa sale de eso)
+  const mk = pub && pub.m && pub.m[k];
+  const css = ancho > 0 ? ancho / Math.max(1, window.devicePixelRatio || 1) : 0;
+  const svc = f.sv && liga.svs && liga.svs[f.sv] ? liga.svs[f.sv].color : '';
+  const img = mk && css ? <ConMarco m={mk} cual={cual} ancho={css} svColor={svc} cc={f.cc} src={src}>{img0}</ConMarco> : img0;
   if (!abre) return img;
   return <button type="button" className="sin-boton" onClick={() => accion.carta(k)} aria-label={'Ver la carta de ' + f.n}>{img}</button>;
 }

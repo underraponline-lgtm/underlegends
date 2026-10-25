@@ -2572,6 +2572,8 @@ const RUTAS = {
   '/avisos/pase': 'POST', '/avisos/pase-vivo': 'POST', '/avisos/pases': 'GET', '/avisos/pase-ciclo': 'POST',
   // 🎟️ (25/10/2026) tus avisos del Pase y tu color premium, con tu sesión; el sorteo del premium (público) y entrar a él
   '/avisos/pase-avisos': 'POST', '/avisos/pase-color': 'POST', '/avisos/sorteo': 'POST', '/avisos/sorteo-entrar': 'POST',
+  // 🖼️ tus marcos de carta y elegir cuál llevar, con tu sesión
+  '/avisos/marcos': 'POST', '/avisos/marco-elige': 'POST',
   // 🎟️ quién tiene nivel en el Pase, para el ciclo (la Temporada es el premio del nivel 1): con `claveCiclo()`
   '/avisos/pase-niveles': 'GET',
   // 🧠 los datos de cada persona para /card, que viven en el objeto desde el 06/10/2026: los escribe y los lee el
@@ -3189,6 +3191,13 @@ const ROLES_PANEL = ['admin', 'asistente', 'moderador'];
 // el nivel `FONDO_NIVEL` del Pase de rapero; se ve recién cuando lo aprueba Dlx (hay menores en la Liga); y cada uno elige
 // si va en su perfil, de fondo de su propia página, o los dos
 export const FONDO_NIVEL = 5;
+// 🖼️ los marcos de carta, de menos a más, y los estilos de la carta de Servidor (Dlx, 25/10/2026: «Las 2. Una elige»)
+export const MARCOS = ['premium', 'plata', 'oro'];
+export const MARCO_ESTILOS = ['camiseta', 'cadena'];
+/** El mejor marco de una lista `['t1:premium', 't1:oro']`: el de más nivel y, a igual nivel, el de la temporada más nueva */
+export function mejorMarco(xs) {
+  return (xs || []).slice().sort((a, b) => (MARCOS.indexOf(b.split(':')[1]) - MARCOS.indexOf(a.split(':')[1])) || (b < a ? -1 : 1))[0] || '';
+}
 // 🎨 los colores de nombre que puede elegir quien tiene el premium (el nivel 7 de su fila): los de la Liga y el dorado
 export const PASE_COLORES = ['#F5C542', '#29B298', '#E41373', '#8FE8FF', '#B98CFF', '#FF7A45', '#F6F6F6'];
 // 🔔 desde qué hora del domingo (este) sale el aviso semanal del Pase
@@ -4857,7 +4866,7 @@ export async function rutaAvisos(req, env, ruta) {
   // 🎟️ EL PASE: el tuyo (pedirlo ya revisa tus Tareas) y «miré una llave en vivo», con tu sesión. ⚠️ Nunca por el
   // reenvío de abajo: ese pasa el cuerpo tal cual, y acá el `quien` lo pone la sesión
   if (ruta === '/avisos/pase' || ruta === '/avisos/pase-vivo' || ruta === '/avisos/pase-avisos' || ruta === '/avisos/pase-color' ||
-    ruta === '/avisos/sorteo' || ruta === '/avisos/sorteo-entrar') {
+    ruta === '/avisos/sorteo' || ruta === '/avisos/sorteo-entrar' || ruta === '/avisos/marcos' || ruta === '/avisos/marco-elige') {
     const crudo = await req.text();
     if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
     let d = null;
@@ -4871,7 +4880,7 @@ export async function rutaAvisos(req, env, ruta) {
     const q = await quienPide(req, env, d);
     if (!q.id && ruta !== '/avisos/sorteo') return json({ error: q.error }, q.estado);
     return elObjeto(env).fetch('https://avisos' + ruta.slice('/avisos'.length), {
-      method: 'POST', body: JSON.stringify({ quien: q.id || '', llave, si: d.si, color: d.color }),
+      method: 'POST', body: JSON.stringify({ quien: q.id || '', llave, si: d.si, color: d.color, marco: d.marco, estilo: d.estilo }),
       headers: { 'content-type': 'application/json' },
     });
   }
@@ -5709,6 +5718,12 @@ export class Avisos {
       // premium (el nivel 7 de su fila)
       this.sql.exec('CREATE TABLE IF NOT EXISTS pase_aviso (quien TEXT PRIMARY KEY, si INTEGER NOT NULL, t INTEGER NOT NULL)');
       this.sql.exec('CREATE TABLE IF NOT EXISTS pase_color (quien TEXT PRIMARY KEY, color TEXT NOT NULL, t INTEGER NOT NULL)');
+      // 🖼️ LOS MARCOS DE CARTA, EN EL INVENTARIO (Dlx, 25/10/2026: «se quedan permanentemente en el inventario de uno»):
+      // `marco` es `<temporada>:<nivel>` (`t1:oro`). Se ganan con la fila premium y NO se pierden: ni al sacarle el rol ni
+      // al cambiar la temporada. Y lo que eligió cada uno: qué marco lleva su carta y el estilo de la de Servidor
+      this.sql.exec('CREATE TABLE IF NOT EXISTS marcos (quien TEXT NOT NULL, marco TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, marco))');
+      this.sql.exec("CREATE TABLE IF NOT EXISTS marco_elige (quien TEXT PRIMARY KEY, marco TEXT NOT NULL DEFAULT '', " +
+        "estilo TEXT NOT NULL DEFAULT 'camiseta', t INTEGER NOT NULL)");
       // 🎟️ EL SORTEO DEL PASE PREMIUM (Dlx, 25/10/2026: «algo interactivo en la página»): quién entró y con cuántos
       // boletos (1 + las semanas con las cinco semanales, hasta 3). Lo programa Dlx (`pase_sorteo` de los ajustes)
       this.sql.exec('CREATE TABLE IF NOT EXISTS sorteo_part (sorteo TEXT NOT NULL, quien TEXT NOT NULL, boletos INTEGER NOT NULL, ' +
@@ -6300,6 +6315,8 @@ export class Avisos {
       if (ruta === '/pase-color') { const v = this.paseColorPoner(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/sorteo') return json(this.sorteoDe(/^[0-9]{5,25}$/.test(String(d.quien || '')) ? String(d.quien) : ''));
       if (ruta === '/sorteo-entrar') { const v = this.sorteoEntrar(d); return json(v, v.error ? 400 : 200); }
+      if (ruta === '/marcos') return json(this.marcosDe(String(d.quien || '')));
+      if (ruta === '/marco-elige') { const v = this.marcoElige(d); return json(v, v.error ? 400 : 200); }
       // 🧠 lo que manda el ciclo: las personas de esta corrida (`bot/subir_datos.py`)
       if (ruta === '/personas-ciclo') {
         const v = this.personasCiclo(d);
@@ -9076,6 +9093,10 @@ export class Avisos {
     this.sql.exec('DELETE FROM pase_vivo WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM pase_log WHERE quien = ?', String(d.quien));
     this.sql.exec('DELETE FROM pase_hito WHERE quien = ?', String(d.quien));
+    // 💎🖼️ y lo del 25/10/2026: el premium, sus avisos, su color, sus marcos y lo del sorteo
+    for (const t of ['pase_premium', 'pase_aviso', 'pase_color', 'marcos', 'marco_elige', 'sorteo_part']) {
+      this.sql.exec('DELETE FROM ' + t + ' WHERE quien = ?', String(d.quien));
+    }
     // ⭐ y lo que le sumaba nivel
     this.sql.exec('DELETE FROM xp_log WHERE quien = ?', String(d.quien));
     // 🙋 y sus pedidos
@@ -10333,7 +10354,9 @@ export class Avisos {
     const tablas = ['subs', 'votos', 'liga_voto', 'tienda', 'precios', 'sigue', 'servidor', 'activo', 'jugo_temp', 'foto_oculta',
       'reportes', 'aplausos', 'pase_hecho', 'pase_vivo', 'pase_log', 'pase_hito', 'xp_log', 'promo_visto', 'promo_extra',
       'uso', 'bandeja', 'fondos', 'fotos_carta', 'postulaciones', 'sigue_org', 'org_cola', 'videos_pedidos',
-      'videos_reportes', 'agenda', 'cambios_dia', 'apostado', 'qg_voto', 'roles_manual', 'liga_sigue'];
+      'videos_reportes', 'agenda', 'cambios_dia', 'apostado', 'qg_voto', 'roles_manual', 'liga_sigue',
+      // 💎🖼️ lo del 25/10/2026: el premium, sus avisos, su color, sus marcos y lo del sorteo
+      'pase_premium', 'pase_aviso', 'pase_color', 'marcos', 'marco_elige', 'sorteo_part'];
     const movidas = {}, fallas = [];
     // 🔴 LAS CLAVES DE LA TIENDA LLEVAN EL ID ADENTRO (pasada del 19/10/2026): `rhito:<id>:…`, `racha:<id>:…`,
     // `rdia:<día>:<id>`, `bien:<id>:<paso>`, `pase:…:<id>:<nivel>`… Pasaba la fila a la cuenta nueva con la clave vieja,
@@ -12023,6 +12046,10 @@ export class Avisos {
       for (let n = 1; n <= nivel; n++) {
         const p = (cfg.premium || [])[n - 1];
         if (p) pagar('p' + n, p[1]);
+        // 🖼️ el marco de ese nivel, al inventario, para siempre
+        if (p && p[2] === 'marco' && MARCOS.includes(String(p[3]).toLowerCase())) {
+          this.sql.exec('INSERT OR IGNORE INTO marcos (quien, marco, t) VALUES (?, ?, ?)', quien, cfg.temp + ':' + String(p[3]).toLowerCase(), Date.now());
+        }
       }
     }
     return { nivel, xp, cola };
@@ -12364,7 +12391,55 @@ export class Avisos {
       const k = this.claveDe(h.quien);
       if (k) (salon[h.temp] = salon[h.temp] || []).push([k, h.t]);
     }
-    return { t: Date.now(), n: out, cfg, salon };
+    return { t: Date.now(), n: out, cfg, salon, m: this.marcosPublicos() };
+  }
+
+  /**
+   * 🖼️ El marco que lleva la carta de cada perfil: `{clave: [marco, estilo, serie]}`. El elegido si todavía lo tiene; si
+   * no eligió, el mejor que tiene. `serie`: en qué orden entró al premium (el talón de la Temporada: «N.º 012»). Por
+   * clave, nunca por cuenta
+   */
+  marcosPublicos() {
+    const out = {};
+    try {
+      const tiene = {};
+      const primera = {};
+      for (const r of this.sql.exec('SELECT quien, marco, t FROM marcos ORDER BY t').toArray()) {
+        (tiene[r.quien] = tiene[r.quien] || []).push(r.marco);
+        if (!(r.quien in primera)) primera[r.quien] = Object.keys(primera).length + 1;
+      }
+      const elige = {};
+      for (const r of this.sql.exec('SELECT quien, marco, estilo FROM marco_elige').toArray()) elige[r.quien] = r;
+      for (const [quien, xs] of Object.entries(tiene)) {
+        const k = this.claveDe(quien);
+        if (!k) continue;
+        const e = elige[quien];
+        if (e && e.marco === 'ninguno') continue;
+        const marco = e && xs.includes(e.marco) ? e.marco : mejorMarco(xs);
+        out[k] = [marco, e ? e.estilo : 'camiseta', primera[quien]];
+      }
+    } catch (err) { /* sin marcos: las cartas salen como siempre */ }
+    return out;
+  }
+
+  /** 🖼️ Tus marcos (`/avisos/marcos`, con tu sesión): los que tienes, cuál elegiste y el estilo de la Servidor */
+  marcosDe(quien) {
+    const tienes = this.sql.exec('SELECT marco, t FROM marcos WHERE quien = ? ORDER BY t', quien).toArray().map((r) => [r.marco, r.t]);
+    const e = this.sql.exec('SELECT marco, estilo FROM marco_elige WHERE quien = ?', quien).toArray()[0];
+    return { tienes, elegido: e ? e.marco : '', estilo: e ? e.estilo : 'camiseta', estilos: MARCO_ESTILOS };
+  }
+
+  /** 🖼️ Elegir tu marco y el estilo de la Servidor (`/avisos/marco-elige`): sólo uno que tengas, o «ninguno» */
+  marcoElige(d) {
+    const quien = String(d.quien || '');
+    const marco = String(d.marco || ''), estilo = String(d.estilo || 'camiseta');
+    if (!/^[0-9]{5,25}$/.test(quien) || !MARCO_ESTILOS.includes(estilo)) return { error: 'faltan datos' };
+    if (marco && marco !== 'ninguno' && !this.sql.exec('SELECT 1 FROM marcos WHERE quien = ? AND marco = ?', quien, marco).toArray()[0]) {
+      return { error: 'no lo tienes' };
+    }
+    this.sql.exec('INSERT INTO marco_elige (quien, marco, estilo, t) VALUES (?, ?, ?, ?) ON CONFLICT(quien) DO UPDATE SET ' +
+      'marco = excluded.marco, estilo = excluded.estilo, t = excluded.t', quien, marco, estilo, Date.now());
+    return Object.assign({ ok: true }, this.marcosDe(quien));
   }
 
   /** Una visita sin cuenta: el navegador avisa una vez por día. ⚠️ Con tope: es un número que cualquiera puede

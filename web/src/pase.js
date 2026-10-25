@@ -52,6 +52,12 @@ let pases = null, pasesT = 0, pasesP = null;
  */
 export function usePases() {
   const [n, setN] = useState(pases);
+  // 🖼️ cuando alguien cambia su marco, la página lo vuelve a pedir y avisa (`refrescarPases()`)
+  useEffect(() => {
+    const f = () => setN(pases);
+    W.addEventListener('lg:pases', f);
+    return () => W.removeEventListener('lg:pases', f);
+  }, []);
   useEffect(() => {
     if (pases && Date.now() - pasesT < 300000) return undefined;
     let vivo = true;
@@ -61,6 +67,13 @@ export function usePases() {
     return () => { vivo = false; };
   }, []);
   return n;
+}
+
+/** Vuelve a pedir lo público del Pase ya mismo (después de elegir un marco) y avisa `lg:pases` */
+export function refrescarPases() {
+  pasesT = 0;
+  return fetch('/api/avisos/pases').then((r) => (r.ok ? r.json() : null)).catch(() => null)
+    .then((d) => { if (d && d.n) { pases = d; pasesT = Date.now(); } try { W.dispatchEvent(new Event('lg:pases')); } catch (e) { /* nada */ } return pases; });
 }
 
 /** El nivel, el título y el color del Pase de un perfil, para su nombre; `null` si no tiene */

@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "4.02",
+   "dia": "2026-10-25",
+   "cuando": "2026-10-25T13:03:27-04:00",
+   "titulo": "Marcos para tus cartas",
+   "items": [
+    "🖼️ **Los marcos de carta del Pase premium**: cada carta tiene el suyo —el boleto en la Temporada, el rango en la Competitiva, la bandera en País y, en la Servidor, la camiseta o la cadena— y crecen con el nivel: Premium, Plata y Oro, con la corona en las cuatro.",
+    "🎒 **Son tuyos para siempre**: quedan en tu inventario aunque termine la temporada. En la pestaña Premium del Pase eliges cuál llevar y el estilo de tu carta de Servidor.",
+    "👆 **La pista del Pase se arrastra** con el dedo y con el mouse, sin las flechas.",
+    "🎟️ **El premium tiene su rol en DRA**: «Pase Premium». El bot se lo da a quien gana el sorteo."
+   ]
+  },
+  {
    "version": "4.01",
    "dia": "2026-10-25",
    "cuando": "2026-10-25T11:15:36-04:00",

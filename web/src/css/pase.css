@@ -241,6 +241,19 @@
 .ps-srt-d li::marker{color:#E41373}
 .ps-semilla code{font-size:12.5px;word-break:break-all}
 
+/* 🖼️ tus marcos: los botones para elegir y tus cartas con el marco puesto */
+.ps-mk{display:grid;gap:10px}
+.ps-mk-op{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.ps-mk-op > span{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.03em;color:var(--gris)}
+.ps-mk-op button{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:0 12px;border:1.5px solid var(--linea);background:var(--fondo);
+  color:var(--tinta);cursor:pointer;font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.ps-mk-op button.on{background:var(--inv);color:var(--inv-tinta)}
+.ps-mk-c{width:10px;height:10px;transform:rotate(45deg)}
+.ps-mk-c.premium{background:#E41373}.ps-mk-c.plata{background:#C9CDD4}.ps-mk-c.oro{background:#F5C542}
+.ps-mk-ver{display:flex;flex-wrap:wrap;gap:46px 40px;justify-content:center;align-items:flex-end;padding:56px 16px 64px;background:#030304}
+.ps-mk-c1{width:150px}
+.ps-mk-img{display:block;width:100%;height:auto}
+
 /* ── la compu: tu carta a la izquierda, lo demás a lo ancho ── */
 @media (min-width: 900px){
   .app .ps-esc{padding:28px var(--gut) 30px;gap:16px}
@@ -252,7 +265,9 @@
   .ps-ti{height:144px}
   .ps-skin{display:grid;gap:10px;border:1.5px solid #2A2A2E;padding:12px;background:#101012}
   .ps-sk-t{font:800 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:var(--verde)}
-  .ps-skin img{display:block;width:100%}
+  .ps-skin img,.ps-skin .ps-sk-img{display:block;width:100%;height:auto}
+  /* 🖼️ con marco: aire arriba para la corona y a la derecha para el talón */
+  .ps-skin .mk{margin:46px 34px 22px 0}
   .ps-sk-p b{display:block;font:900 20px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase}
   .ps-sk-p span{display:block;margin-top:5px;font-size:13.5px;color:var(--esc-gris)}
   .ps-sk-p .ps-sk-d{color:#F5C542;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em}

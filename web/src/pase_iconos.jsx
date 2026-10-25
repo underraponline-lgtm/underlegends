@@ -84,7 +84,7 @@ export function premioLargo(p, prem = false) {
 }
 
 //: 💎 lo de la fila premium que ya funciona; lo demás dice «pronto» (Dlx lo sabe: se arma después)
-export const PREMIUM_VIVO = new Set(['fondo', 'color', 'titulo']);
+export const PREMIUM_VIVO = new Set(['fondo', 'color', 'titulo', 'marco']);
 
 // ── el ícono de cada Tarea, por lo que mide (`MIDE` de bot/pase.py) ──
 const T = {

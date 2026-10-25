@@ -3471,3 +3471,50 @@ a.rk-z:hover{border-color:var(--linea)}
 .gd-ley .gd-c{--gd:12px;border-radius:3px}
 .gd-ley .gd-c.hoy{box-shadow:0 0 0 2px var(--tinta)}
 .gd-ley b{color:var(--tinta);font-weight:800}
+
+/* 🖼️ LOS MARCOS DE CARTA DEL PASE PREMIUM (marcos.jsx, 25/10/2026; maqueta v8). Van donde se vea tu carta, por eso viven
+   acá y no en el CSS de una página. El envoltorio toma el ancho de la carta (`fit-content`, nunca más del 100 %): así las
+   piezas quedan pegadas a ella, sea una carta de grilla al 100 % o la del visor, que va por alto. La carta mide 20 em
+   (el `font-size` lo pone el componente con el ancho medido) */
+.mk{position:relative;display:block;width:fit-content;max-width:100%;line-height:0}
+.mk-img{display:block}
+.mk-defs{position:absolute;width:0;height:0;overflow:hidden}
+.mk .mk-p{position:absolute;overflow:visible;pointer-events:none}
+.mk .mk-bri{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;object-fit:contain;
+  -webkit-mask-image:linear-gradient(110deg,transparent 0 44%,#000 44% 50%,transparent 50% 100%);
+          mask-image:linear-gradient(110deg,transparent 0 44%,#000 44% 50%,transparent 50% 100%);
+  -webkit-mask-size:320% 100%;mask-size:320% 100%;animation:mk-barre 5.5s cubic-bezier(.5,0,.3,1) infinite}
+@keyframes mk-barre{0%{-webkit-mask-position:120% 0;mask-position:120% 0}55%,100%{-webkit-mask-position:-20% 0;mask-position:-20% 0}}
+.mk .mk-des{width:1.4em;height:1.4em;opacity:0;animation:mk-brilla 2.4s ease-in-out infinite;z-index:4}
+.mk .mk-des.d0{left:22%;top:-4.4em}.mk .mk-des.d1{right:22%;top:-3.4em;animation-delay:.8s}.mk .mk-des.d2{left:-2.8em;bottom:12%;animation-delay:1.6s}
+@keyframes mk-brilla{0%,100%{opacity:0;transform:scale(.3)}45%{opacity:1;transform:scale(1)}70%{opacity:0;transform:scale(.4)}}
+.app.calma .mk .mk-bri,.app.calma .mk .mk-des,.app.tapado .mk .mk-bri,.app.tapado .mk .mk-des{animation:none}
+.app.calma .mk .mk-des{opacity:.9}
+@media (prefers-reduced-motion: reduce){.mk .mk-bri,.mk .mk-des{animation:none !important}.mk .mk-des{opacity:.9}}
+/* la corona en las cuatro, arriba al centro; los galones de la Competitiva */
+.mk .mk-cor{width:6.4em;left:50%;transform:translateX(-50%);bottom:calc(100% + .7em);z-index:3}
+.mk.mk-s .mk-cor{bottom:calc(100% - .3em)}
+.mk .mk-gal{width:3.4em;left:50%;transform:translateX(-50%);bottom:calc(100% + 1.5em)}
+.mk .mk-hom{width:2.9em;top:-3%}
+/* chica (130 a 200 px): la corona y los galones bajan y se apoyan en el borde, para no meterse en lo de arriba */
+.mk.chica .mk-cor{width:5em;bottom:calc(100% - 1em)}
+.mk.chica.mk-s .mk-cor{bottom:calc(100% - 1.6em)}
+.mk.chica .mk-gal{bottom:calc(100% + .3em)}
+/* en el abanico del álbum las cartas se pisan: sólo el contorno */
+.ta-mano .mk .mk-p,.ta-mano .mk .mk-esq,.ta-mano .mk .mk-tal-t,.ta-mano .mk .mk-bri{display:none}
+.mk .mk-hom.iz{left:-2.6em}
+.mk .mk-hom.de{right:-1.5em;transform:scaleX(-1)}
+/* Temporada: esquinas de visor y el talón */
+.mk .mk-esq{position:absolute;width:2em;height:2em;border:0 solid var(--mk-c)}
+.mk .mk-esq.a{top:-1.2em;left:-1.2em;border-top-width:.3em;border-left-width:.3em}
+.mk .mk-esq.b{top:-1.2em;right:-1.2em;border-top-width:.3em;border-right-width:.3em}
+.mk .mk-esq.c{bottom:-1.2em;left:-1.2em;border-bottom-width:.3em;border-left-width:.3em}
+.mk .mk-esq.d{bottom:-1.2em;right:-1.2em;border-bottom-width:.3em;border-right-width:.3em}
+/* el talón, pegado al canto: arranca adentro del contorno, así no queda aire entre la carta y el talón */
+.mk .mk-tal{right:-3.3em;top:18%;width:3.4em;height:64%}
+.mk .mk-tal-t{position:absolute;right:-2.5em;top:18%;height:64%;display:grid;place-items:center;writing-mode:vertical-rl;
+  font:800 1.25em/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;color:var(--mk-c);pointer-events:none}
+/* País: el estandarte, colgando abajo */
+.mk .mk-est{width:21em;left:50%;transform:translateX(-50%);top:calc(100% + 1em)}
+/* Servidor: el brazalete de capitán */
+.mk .mk-bra{width:7em;left:-2.6em;top:50%;transform:rotate(-6deg);z-index:3}
