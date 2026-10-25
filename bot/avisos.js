@@ -4308,8 +4308,12 @@ export async function rutaAvisos(req, env, ruta) {
       console.warn('[seguridad] el Dashboard lo pidió alguien que no puede');
       return json({ error: 'no' }, 403);
     }
-    // 🔐 con sus roles: el objeto le arma sólo lo que puede ver (ver `panelDueno()`)
-    return elObjeto(env).fetch('https://avisos/dueno', { method: 'POST', body: JSON.stringify({ quien: q.id, roles: rs }),
+    // 🔐 con sus roles: el objeto le arma sólo lo que puede ver (ver `panelDueno()`). 💰 Y la billetera de la temporada
+    // (desde cuándo y con cuánto arranca), para los números de los Puntos de Tienda (`economiaDueno()`)
+    let pcfg = null;
+    try { pcfg = JSON.parse((await env.KV.get('precios', { cacheTtl: 60 })) || 'null'); } catch (e) { pcfg = null; }
+    const billetera = pcfg && Number.isInteger(pcfg.inicial) ? { desde: Date.parse(pcfg.desde || '') || 0, inicial: pcfg.inicial } : null;
+    return elObjeto(env).fetch('https://avisos/dueno', { method: 'POST', body: JSON.stringify({ quien: q.id, roles: rs, billetera }),
       headers: { 'content-type': 'application/json' } });
   }
   // 🔴 LO QUE AVISÓ EL CANAL DE LOGS, EN EL DASHBOARD (Dlx, 17/10/2026: «en el canal de registros aparecen cosas que
@@ -9335,6 +9339,44 @@ export class Avisos {
     return { ok: true, avisados: this.vuelveDueno() };
   }
 
+  /**
+   * 💰 LOS PUNTOS DE TIENDA, PARA EL DASHBOARD (25/10/2026, el research: «la economía mínima»: las apuestas y lo que se
+   * compra son lo más expuesto y no se veían). Sale de las dos tablas de la billetera —`tienda` (lo que entra y sale, con
+   * el origen al principio del id: `ap:`, `rdia:`, `crew:`…) y `precios` (lo puesto en una cabeza)—, igual que `saldo()`:
+   * · `dias`: los últimos 14 días en hora del este, `[día, entró, salió]`;
+   * · `origen`: de esos 14 días, por origen, `{origen: [entró, salió]}`;
+   * · `personas`, `mediana`, `total` y `top`: quién tiene cuánto (los 20 de arriba, por su perfil) y qué parte es de ellos;
+   * · `raros`: quien sumó 5.000 o más en 24 h, para mirarlo (no es una acusación: puede ser un premio grande).
+   * Lee filas, no escribe nada.
+   */
+  economiaDueno(ahora, desde, inicial) {
+    if (!Number.isInteger(inicial)) return null;
+    const dia = (t) => new Date(t).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    const d14 = Math.max(desde, ahora - 14 * DIA_MS);
+    const dias = {}, origen = {};
+    const anotar = (o, t, m) => {
+      const d = dias[dia(t)] = dias[dia(t)] || [0, 0];
+      const x = origen[o] = origen[o] || [0, 0];
+      if (m >= 0) { d[0] += m; x[0] += m; } else { d[1] -= m; x[1] -= m; }
+    };
+    for (const f of this.sql.exec('SELECT id, monto, t FROM tienda WHERE t >= ?', d14).toArray()) anotar(String(f.id).split(':')[0], f.t, f.monto);
+    for (const f of this.sql.exec("SELECT monto, t FROM precios WHERE t >= ? AND estado != 'devuelto'", d14).toArray()) anotar('precio', f.t, -f.monto);
+    const saldo = new Map();
+    for (const f of this.sql.exec('SELECT quien, SUM(monto) AS n FROM tienda WHERE t >= ? GROUP BY quien', desde).toArray()) saldo.set(f.quien, inicial + f.n);
+    for (const f of this.sql.exec("SELECT quien, SUM(monto) AS n FROM precios WHERE t >= ? AND estado != 'devuelto' GROUP BY quien", desde).toArray()) {
+      saldo.set(f.quien, (saldo.has(f.quien) ? saldo.get(f.quien) : inicial) - f.n);
+    }
+    const xs = [...saldo.entries()].sort((a, b) => b[1] - a[1]);
+    const total = xs.reduce((t, x) => t + x[1], 0);
+    const k = (id) => ((this.sql.exec('SELECT k FROM idk WHERE id = ?', id).toArray()[0] || {}).k || '');
+    const top = xs.slice(0, 20).map(([id, n]) => [k(id), n]);
+    const raros = this.sql.exec('SELECT quien, SUM(monto) AS n FROM tienda WHERE t > ? AND monto > 0 GROUP BY quien HAVING n >= 5000 ORDER BY n DESC LIMIT 10',
+      ahora - DIA_MS).toArray().map((f) => [k(f.quien), f.n]);
+    return { inicial, personas: xs.length, total, mediana: xs.length ? xs[Math.floor(xs.length / 2)][1] : 0,
+      top, top_parte: total > 0 ? top.reduce((t, x) => t + Math.max(0, x[1]), 0) / total : 0,
+      dias: Object.entries(dias).sort().map(([d, [e, sa]]) => [d, e, sa]), origen, raros };
+  }
+
   /** 🔁 A quién se le avisó que vuelva en los últimos 60 días: `{k: [t, qué, quién]}`. */
   vuelveDueno() {
     return Object.fromEntries(this.sql.exec('SELECT k, que, por, t FROM vuelve').toArray().map((f) => [f.k, [f.t, f.que, f.por]]));
@@ -13005,6 +13047,8 @@ export class Avisos {
       reportes_causas: this.causasDueno(ahora),
       // 🔁 quién jugó una sola vez y quién se enfrió (`bot/primerizos.py`), y a quién ya se le avisó
       primerizos: this.leer('primerizos'),
+      // 💰 los Puntos de Tienda: qué entra, qué sale y quién tiene cuánto (`economiaDueno()`)
+      economia: d && d.billetera ? this.economiaDueno(ahora, Number(d.billetera.desde) || 0, Number(d.billetera.inicial)) : null,
       vuelve: this.vuelveDueno(),
       // ✅ las preguntas de ✅ Decidir y lo contestado desde el Dashboard (13/10/2026)
       decidir: this.decidirDueno(),

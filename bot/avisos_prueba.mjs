@@ -1189,6 +1189,14 @@ const ok = (cond, que, det) => {
     ok(av1.ok && av1.avisados.primerizo[1] === 'evento' && av2.error === 'reciente' && av3.error === 'sin_cuenta' && av4.error
       && bv.length === 1 && bv[0].url === '/freestyle-rap/eventos',
     'avisarle a un primerizo que vuelva: a su campana, texto fijo, sólo con cuenta y una vez por semana', JSON.stringify([av1, av2, av3, bv]));
+    // 💰 la economía de los Puntos de Tienda: entra, sale (los precios también salen), quién tiene cuánto y lo raro
+    const ah = Date.now();
+    o.sql.exec("INSERT OR REPLACE INTO tienda (id, ref, quien, monto, t) VALUES ('ap:x:100000031', 0, '100000031', 6000, ?), ('crew:100000032:1', 0, '100000032', -2500, ?)", ah - 3600000, ah - 3600000);
+    const eco = o.economiaDueno(ah, ah - 30 * 864e5, 5000);
+    const yo31 = eco.top.find((x) => x[0] === 'primerizo');
+    ok(eco && eco.origen.ap[0] >= 6000 && eco.origen.crew[1] >= 2500 && yo31 && yo31[1] >= 11000
+      && eco.raros.some((x) => x[0] === 'primerizo') && eco.personas >= 2 && o.economiaDueno(ah, 0, null) === null,
+    'los Puntos de Tienda: qué entra y sale por origen, quién tiene cuánto (con su perfil) y quién sumó mucho en 24 h', JSON.stringify(eco).slice(0, 400));
     // ✅ Decidir en el Dashboard (13/10/2026, «Sí, con Reportes»)
     const PS = [{ id: 'n1', tipo: 'Nombre desconocido', sec: 'COPA · FFA · 07/10', que: '¿Quién es ZORRO?', pistas: '—',
       opciones: ['Es alguien nuevo', 'Es un troll (no cuenta)'], link: 'javascript:x', libre: true },

@@ -384,6 +384,61 @@ function PrimerizosLista({ P, vuelve, liga, alVuelve }) {
   );
 }
 
+// 💰 LOS PUNTOS DE TIENDA (25/10/2026, el research: «la economía mínima»). Qué entra y qué sale cada día y de dónde, quién
+// tiene cuánto y lo raro de 24 h, del objeto (`economiaDueno()` de bot/avisos.js). El origen es el principio del id de
+// cada movimiento: lo que no está en la lista se muestra tal cual
+const ORIGEN_PDT = { ap: 'apuestas', precio: 'precios por cabeza', semana: 'premio de la semana', rdia: 'racha diaria', rhito: 'hitos de racha',
+  bien: 'bienvenida', crew: 'crear una crew', 'crew-nombre': 'nombre de crew', 'crew-logo': 'logo de crew', mw: 'Most Wanted', div: 'divisiones',
+  mis: 'misiones', caza: 'cazas', mes: 'MES AWARDS', promo: 'promos', salon: 'Salón' };
+function Economia({ e, liga }) {
+  if (!e) return <p className="pronto-p">La billetera de la temporada todavía no está configurada.</p>;
+  const ent = e.dias.reduce((t, x) => t + x[1], 0), sal = e.dias.reduce((t, x) => t + x[2], 0);
+  const max = Math.max(1, ...e.dias.map((x) => Math.max(x[1], x[2])));
+  const os = Object.entries(e.origen || {}).sort((a, b) => (b[1][0] + b[1][1]) - (a[1][0] + a[1][1]));
+  return (
+    <div className="dz-eco">
+      <div className="dz-nums">
+        <div className="dz-num"><span>personas con billetera</span><b>{num(e.personas)}</b><small>arrancan con {num(e.inicial)}</small></div>
+        <div className="dz-num"><span>la persona del medio</span><b>{num(e.mediana)}</b><small>la mitad tiene menos que esto</small></div>
+        <div className="dz-num"><span>los 20 de arriba</span><b>{Math.round(100 * e.top_parte)} %</b><small>de todos los puntos que hay</small></div>
+        <div className="dz-num"><span>14 días</span><b>{ent >= sal ? '+' : '−'}{num(Math.abs(ent - sal))}</b><small>entraron {num(ent)} · salieron {num(sal)}</small></div>
+      </div>
+      {e.dias.length ? (
+        <div className="dz-eco-d" role="img" aria-label={'Día por día, lo que entró y lo que salió en 14 días'}>
+          {e.dias.map(([d, a, b]) => (
+            <div key={d} title={corto(d) + ': entró ' + num(a) + ' · salió ' + num(b)}>
+              <i><u className="e" style={{ height: (100 * a / max).toFixed(1) + '%' }} /><u className="s" style={{ height: (100 * b / max).toFixed(1) + '%' }} /></i>
+              <span>{corto(d).split('/')[0]}</span>
+            </div>
+          ))}
+          <small><b className="e">■</b> entró · <b className="s">■</b> salió</small>
+        </div>
+      ) : null}
+      <div className="dz-dos">
+        <div>
+          <h4 className="dz-h4">De dónde entra y a dónde sale · 14 días</h4>
+          <ul className="dz-lista">{os.map(([o, [a, b]]) => (
+            <li key={o}><span>{ORIGEN_PDT[o] || o}</span><b>{a ? '+' + num(a) : ''}{a && b ? ' · ' : ''}{b ? '−' + num(b) : ''}</b></li>
+          ))}</ul>
+        </div>
+        <div>
+          <h4 className="dz-h4">Los que más tienen</h4>
+          <ol className="dz-lista dz-eco-top">{e.top.slice(0, 10).map(([k, n], i) => (
+            <li key={k + i}><span>{i + 1}. {k ? <Quien liga={liga} n={(liga.T[k] || {}).n || k} /> : 'sin perfil'}</span><b>{num(n)}</b></li>
+          ))}</ol>
+        </div>
+      </div>
+      {(e.raros || []).length ? (
+        <div className="dz-freno">
+          <p><b>Para mirar:</b> sumaron 5.000 o más en 24 horas. Puede ser un premio grande; si no, mira de dónde vino en su perfil.</p>
+          <ul className="dz-lista">{e.raros.map(([k, n]) => <li key={k}><span>{k ? <Quien liga={liga} n={(liga.T[k] || {}).n || k} /> : 'sin perfil'}</span><b>+{num(n)}</b></li>)}</ul>
+        </div>
+      ) : null}
+      <p className="db-tx">Sólo números de la billetera: no se ve qué apostó cada uno. Se mide en cada visita al Dashboard.</p>
+    </div>
+  );
+}
+
 function MetaLobby({ r }) {
   if (r === null) return <p className="pronto-p">Midiendo…</p>;
   if (!r) return <p className="pronto-p">Todavía no hay una medición del ciclo.</p>;
@@ -3959,6 +4014,7 @@ export function Dashboard({ dc, liga }) {
             d.tutorial.desde ? 'se cuenta desde el ' + corto(d.tutorial.desde) : null, <TutorialNumeros t={d.tutorial} />) : null}
         </>] : null,
         d.pase ? ['pase', 'El Pase', sec('nu-pase', 'EL PASE DE RAPERO', d.pase.semana ? 'la semana del ' + corto(d.pase.semana) : null, <PaseNumeros p={d.pase} liga={liga} />)] : null,
+        d.economia !== undefined ? ['puntos', 'Los Puntos', sec('nu-puntos', 'LOS PUNTOS DE TIENDA', 'qué entra, qué sale y quién tiene cuánto', <Economia e={d.economia} liga={liga} />)] : null,
         d.crews_num ? ['crews', 'Las crews', sec('nu-crews', 'LAS CREWS · 7 DÍAS', 'contra los 7 de antes', <CrewsNumeros c={d.crews_num} />)] : null,
       ]} />
     );

@@ -773,3 +773,16 @@
   .dz-a-mas{display:flex;justify-content:center;border:1.5px dashed #3A3A42}
   .dz-lado{width:100%}
 }
+/* 💰 tanda 4: los Puntos de Tienda */
+.dz-eco{display:grid;gap:14px}
+.dz-eco-d{display:grid;grid-template-columns:repeat(14,minmax(0,1fr));gap:4px;align-items:end;max-width:640px}
+.dz-eco-d>div{display:grid;gap:3px;justify-items:center}
+.dz-eco-d i{display:flex;gap:1px;align-items:flex-end;width:100%;height:80px;border-bottom:1.5px solid var(--linea)}
+.dz-eco-d u{flex:1;display:block}
+.dz-eco-d u.e,.dz-eco-d b.e{background:var(--verde);color:var(--verde)}
+.dz-eco-d u.s,.dz-eco-d b.s{background:var(--magenta);color:var(--magenta)}
+.dz-eco-d b{background:none!important}
+.dz-eco-d span{font:700 11px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
+.dz-eco-d small{grid-column:1 / -1;font-size:12px;color:var(--gris)}
+.dz-h4{margin:0 0 6px;font:800 12.5px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--gris)}
+.dz-eco-top a{color:inherit}
