@@ -3549,7 +3549,9 @@ export function socioAjusteValido(cual, valor, canales) {
 export const BENEFICIOS_SV = ['pagina', 'calendario', 'ligas', 'panel', 'suma', 'duelos'];
 
 export function ajusteValido(cual, valor) {
-  if (cual === 'campana_pausada') return typeof valor === 'boolean' ? valor : undefined;
+  // ↩️ `null` vale en todos (25/10/2026): «Deshacer» del historial vuelve a poner lo de antes, y antes de tocarlo por
+  // primera vez lo de antes es `null`; estos cuatro lo rechazaban con un 400 «valor»
+  if (cual === 'campana_pausada') return valor === null ? null : typeof valor === 'boolean' ? valor : undefined;
   // 🎟️ el sorteo del Pase premium (25/10/2026): `{id, cierra, sorteo}` (ISO), o `null` para sacarlo. Cierra antes de sortear
   if (cual === 'pase_sorteo') {
     if (valor === null) return null;
@@ -3658,7 +3660,7 @@ export function ajusteValido(cual, valor) {
     for (const [k, f] of Object.entries(valor.sv || {})) {
       // los de `FACTORES` y también el que ya tenía la semana (×2,25 con la guerra): de ×0,5 a ×5, hasta 3 decimales
       const x = Number(f);
-      if (!/^[A-Z]{2,5}$/.test(k) || !(x >= 0.5 && x <= 5) || Math.abs(Math.round(x * 1000) - x * 1000) > 1e-6) return undefined;
+      if (!/^[A-Z]{2,6}$/.test(k) || !(x >= 0.5 && x <= 5) || Math.abs(Math.round(x * 1000) - x * 1000) > 1e-6) return undefined;
       sv[k] = Math.round(x * 1000) / 1000;
     }
     if (Object.keys(sv).length > 20) return undefined;
@@ -3673,15 +3675,17 @@ export function ajusteValido(cual, valor) {
     return { texto, hasta: new Date(Math.min(hasta, Date.now() + 30 * DIA_MS)).toISOString() };
   }
   if (cual === 'en_vivo') {
+    if (valor === null) return null;
     if (!valor || typeof valor !== 'object') return undefined;
     const out = {};
     for (const [k, v] of Object.entries(valor)) {
-      if (!/^[A-Z]{2,5}$/.test(k) || typeof v !== 'boolean') return undefined;
+      if (!/^[A-Z]{2,6}$/.test(k) || typeof v !== 'boolean') return undefined;
       out[k] = v;
     }
     return out;
   }
   if (cual === 'eventos_discord') {
+    if (valor === null) return null;
     if (!valor || typeof valor !== 'object') return undefined;
     const out = {};
     for (const [k, v] of Object.entries(valor)) {
@@ -3695,10 +3699,11 @@ export function ajusteValido(cual, valor) {
     return Object.prototype.hasOwnProperty.call(NIVELES_AVISO, valor) ? valor : undefined;
   }
   if (cual === 'en_vivo_nivel') {
+    if (valor === null) return null;
     if (!valor || typeof valor !== 'object') return undefined;
     const out = {};
     for (const [k, v] of Object.entries(valor)) {
-      if (!/^[A-Z]{2,5}$/.test(k) || !Object.prototype.hasOwnProperty.call(NIVELES_CHAT, v)) return undefined;
+      if (!/^[A-Z]{2,6}$/.test(k) || !Object.prototype.hasOwnProperty.call(NIVELES_CHAT, v)) return undefined;
       out[k] = v;
     }
     return out;
@@ -3717,12 +3722,12 @@ export function ajusteValido(cual, valor) {
     if (!Number.isInteger(tope) || tope < montos[montos.length - 1] || tope > 20000) return undefined;
     const apagadas = {}, prendidas = {};
     for (const [k, v] of Object.entries(valor.apagadas || {})) {
-      if (!/^[A-Z]{2,5}$/.test(k) || v !== true) return undefined;
+      if (!/^[A-Z]{2,6}$/.test(k) || v !== true) return undefined;
       apagadas[k] = true;
     }
     // 🎲 prendidas a mano, en cualquier nivel del bot en vivo (13/10/2026, ver `hayApuestas()`)
     for (const [k, v] of Object.entries(valor.prendidas || {})) {
-      if (!/^[A-Z]{2,5}$/.test(k) || v !== true) return undefined;
+      if (!/^[A-Z]{2,6}$/.test(k) || v !== true) return undefined;
       prendidas[k] = true;
     }
     return { montos, minutos, tope, apagadas, prendidas };
@@ -3732,11 +3737,11 @@ export function ajusteValido(cual, valor) {
     if (!valor || typeof valor !== 'object') return undefined;
     const sv = {};
     for (const [k, v] of Object.entries(valor.sv || {})) {
-      if (!/^[A-Z]{2,5}$/.test(k) || (v !== 'no' && v !== 'chat')) return undefined;
+      if (!/^[A-Z]{2,6}$/.test(k) || (v !== 'no' && v !== 'chat')) return undefined;
       sv[k] = v;
     }
     const resto = String(valor.resto || '');
-    if (resto && !/^[A-Z]{2,5}$/.test(resto)) return undefined;
+    if (resto && !/^[A-Z]{2,6}$/.test(resto)) return undefined;
     return { sv, resto };
   }
   if (cual === 'silencio') {
@@ -4216,7 +4221,8 @@ export async function rutaAvisos(req, env, ruta) {
   // ⚙️ UN AJUSTE DEL DASHBOARD: la misma puerta que el Dashboard, y el valor se valida antes de llegar al objeto
   if (ruta === '/avisos/dueno/ajuste') {
     const crudo = await req.text();
-    if (crudo.length > 2048) return json({ error: 'demasiado grande' }, 413);
+    // 📏 16 KB y no 2: las promos a mano (30 links de hasta 300) y los beneficios de 60 servidores no entraban (25/10/2026)
+    if (crudo.length > 16384) return json({ error: 'demasiado grande' }, 413);
     let d = null;
     try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
     if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))) {

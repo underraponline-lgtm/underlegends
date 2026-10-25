@@ -241,6 +241,12 @@ try {
     && prD.titulo === (Cd.premium.filter((p) => p[2] === 'titulo').pop() || [])[3],
   'el dueño: premium siempre, los tres marcos para elegir y lo del nivel más alto', JSON.stringify({ md, elD, prD }));
 
+  // ── ↩️ el Dashboard (25/10/2026): «Deshacer» vuelve a `null` en todos, y las siglas de 6 letras valen en todos ──
+  ok(['campana_pausada', 'en_vivo', 'en_vivo_nivel', 'eventos_discord'].every((k) => A.ajusteValido(k, null) === null)
+    && A.ajusteValido('en_vivo', { FVSUND: true }).FVSUND === true && A.ajusteValido('aviso_evento', { sv: { FVSUND: 'chat' } }).sv.FVSUND === 'chat'
+    && A.ajusteValido('multiplicadores', { semana: '2026-10-26', sv: { FVSUND: 2 } }).sv.FVSUND === 2,
+  'los ajustes del Dashboard: null vuelve a lo de siempre y una sigla de 6 letras no traba el guardado de todos');
+
   // ── 🏷️ los TAGs: el inventario del ciclo, elegir uno que tienes (o un título del Pase) y de vuelta al ciclo ──
   o.sql.exec("INSERT OR REPLACE INTO idk (id, k, t) VALUES (?, 'bea', 1)", BEA);
   o.tagsCiclo({ temp: 't1', ganados: { bea: { temporada: { '💀 REGICIDA': ['💀 REGICIDA', 't1', 1] } } } });

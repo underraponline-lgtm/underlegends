@@ -404,3 +404,109 @@
 .db-sorteo{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:8px 0}
 .db-sorteo label{display:grid;gap:4px;font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em}
 .db-sorteo input{min-height:40px;padding:0 8px;border:1.5px solid var(--linea);background:var(--fondo);color:var(--tinta);font:600 14px/1 Archivo,sans-serif}
+
+/* 🧭 EL DASHBOARD POR ÁREAS (25/10/2026, Dlx: «de A el lado izquierdo, de B que aparece lo prioritario primero… en
+   cuadrados»). La barra de la izquierda (arriba en el teléfono) y a la derecha el área elegida. Plano: radios de 4 como
+   mucho, una tinta por pieza, sin degradés */
+.dz .act{margin-top:0}
+.dz-marco{display:flex;flex-wrap:wrap;align-items:stretch;margin-top:12px;border:2px solid var(--linea);background:var(--fondo)}
+.dz-nav{flex:1 1 230px;max-width:260px;display:flex;flex-direction:column;gap:4px;padding:18px 12px;background:#030304;color:#F6F6F6}
+.dz-marca{display:grid;gap:3px;padding:0 8px 14px}
+.dz-marca small{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.14em;color:#29B298}
+.dz-marca b{font:900 24px/1.05 Archivo,sans-serif;text-transform:uppercase}
+.dz-a{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:44px;padding:0 12px;border:0;border-radius:3px;
+  background:none;color:#F6F6F6;font:800 15px/1.1 Archivo,sans-serif;text-align:left;cursor:pointer}
+.dz-a span{display:flex;align-items:center;gap:10px}
+.dz-a i{display:grid;place-items:center;min-width:24px;height:22px;padding:0 6px;border-radius:3px;background:#E41373;color:#fff;font:800 12px/1 Archivo,sans-serif;font-style:normal}
+.dz-a.on{background:#F6F6F6;color:#030304}
+@media (hover: hover) and (pointer: fine){.dz-a:not(.on):hover{background:#1C1C22}}
+.dz-a:focus-visible{outline:2px solid #29B298;outline-offset:2px}
+.dz-der{flex:999 1 560px;min-width:0;display:grid;gap:18px;align-content:start;padding:18px 22px 28px}
+.dz-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.dz-bbtn{flex:1 1 260px;max-width:460px;display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;border:1.5px solid var(--linea);border-radius:4px;
+  background:var(--caja);color:var(--gris);font:500 14px/1 Archivo,sans-serif;cursor:pointer;text-align:left}
+.dz-bbtn span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dz-bbtn kbd{font:700 12px/1 "Barlow Condensed",sans-serif;padding:4px 6px;border:1px solid var(--suave);border-radius:3px;color:var(--gris)}
+.dz-act{font-size:13px;color:var(--gris)}
+.dz-cab{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px}
+.dz-h1{margin:0;font:900 30px/1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.01em}
+.dz-h{display:flex;align-items:baseline;gap:8px;margin:0 0 10px;font:900 18px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.dz-h span{color:var(--magenta-tx)}
+.dz-h small{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--gris);text-transform:none}
+.dz-lnk{padding:0;border:0;background:none;color:var(--tinta);font:700 13.5px/1.35 Archivo,sans-serif;text-align:left;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+/* 💚 la salud en una frase */
+.dz-salud{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:12px 14px;border:2px solid var(--verde);border-radius:4px;background:var(--caja)}
+.dz-salud.mal{border-color:var(--magenta)}
+.dz-pt{flex:none;width:12px;height:12px;border-radius:50%;background:var(--verde)}
+.dz-salud.mal .dz-pt{background:var(--magenta)}
+.dz-salud p{flex:1 1 300px;margin:0;font-size:14.5px;line-height:1.45}
+.dz-salud p b{font-weight:800}
+/* 🟥 para decidir, en cuadrados */
+.dz-cuadros{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.dz-cuadro{display:grid;gap:6px;justify-items:start;align-content:start;min-height:124px;padding:14px;border:2px solid var(--linea);border-radius:4px;
+  background:var(--caja);color:var(--tinta);text-align:left;cursor:pointer}
+.dz-cuadro b{font:900 42px/1 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.dz-cuadro span{font:800 15px/1.15 Archivo,sans-serif;text-transform:uppercase}
+.dz-cuadro small{font-size:12.5px;line-height:1.35;color:var(--gris);overflow-wrap:anywhere}
+.dz-cuadro.urg{border-color:var(--magenta)}
+.dz-cuadro.urg b{color:var(--magenta-tx)}
+.dz-cuadro.ojo b{color:#8A6400}
+.dz-cuadro.cero{border-color:var(--suave)}
+.dz-cuadro.cero b{color:var(--verde)}
+@media (hover: hover) and (pointer: fine){.dz-cuadro:hover{background:var(--tinta);color:var(--fondo);border-color:var(--tinta)}.dz-cuadro:hover b,.dz-cuadro:hover small{color:inherit}}
+.dz-cuadro:focus-visible{outline:2px solid var(--verde);outline-offset:2px}
+/* lo que pide atención, con su botón */
+.dz-at{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.dz-at li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;border:2px solid var(--magenta-tx);border-radius:4px;background:var(--caja)}
+.dz-at li>span{font-size:18px;line-height:1}
+.dz-at b{display:block;font:800 15px/1.2 Archivo,sans-serif}
+.dz-at small{display:block;margin-top:2px;color:var(--gris)}
+.dz-dos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:18px;align-items:start}
+.dz-caja{padding:14px;border:2px solid var(--linea);border-radius:4px;background:var(--caja)}
+.dz-lista{list-style:none;margin:0;padding:0;display:grid}
+.dz-lista li{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid var(--suave);font-size:14px;line-height:1.4}
+.dz-lista li:last-child{border-bottom:0}
+.dz-lista b{font-weight:800}
+.dz-hora{flex:none;width:68px;font:700 14px/1.3 "Barlow Condensed",sans-serif;color:var(--gris)}
+.dz-lista li .dz-lnk{flex:1}
+/* las colas de Pendientes */
+.dz-subs{display:flex;flex-wrap:wrap;gap:8px}
+.dz-sub{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 12px;border:1.5px solid var(--linea);border-radius:4px;background:var(--caja);
+  color:var(--tinta);font:800 14px/1 Archivo,sans-serif;cursor:pointer}
+.dz-sub i{display:grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:3px;background:var(--magenta);color:#fff;font:800 12px/1 Archivo,sans-serif;font-style:normal}
+.dz-sub.on{background:var(--tinta);border-color:var(--tinta);color:var(--fondo)}
+.dz-msg{border:2px solid var(--verde);border-radius:4px}
+/* 🔎 el buscador (Ctrl+K) */
+.dz-velo{position:fixed;inset:0;z-index:60;display:grid;justify-items:center;align-items:start;padding:10vh 16px 16px;background:rgba(3,3,4,.55)}
+.dz-buscar{width:min(560px,100%);max-height:70vh;display:flex;flex-direction:column;border:2px solid var(--tinta);border-radius:4px;background:var(--caja);color:var(--tinta)}
+.dz-bq{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1.5px solid var(--suave)}
+.dz-bq input{flex:1;min-width:0;border:0;outline:0;background:none;color:var(--tinta);font:600 16px/1.2 Archivo,sans-serif}
+.dz-buscar ul{list-style:none;margin:0;padding:6px;overflow:auto}
+.dz-buscar li button{width:100%;display:flex;justify-content:space-between;align-items:baseline;gap:12px;min-height:44px;padding:8px 10px;border:0;border-radius:3px;
+  background:none;color:var(--tinta);text-align:left;cursor:pointer;font:700 14.5px/1.2 Archivo,sans-serif}
+.dz-buscar li button small{flex:none;font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--gris)}
+.dz-buscar li button.on{background:var(--tinta);color:var(--fondo)}
+.dz-buscar li button.on small{color:inherit;opacity:.8}
+.dz-buscar .db-tx{padding:14px}
+/* ↩️ deshacer por 8 segundos */
+.dz-toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:70;display:flex;align-items:center;gap:14px;max-width:min(560px,calc(100vw - 32px));
+  padding:10px 12px 10px 16px;border-radius:4px;background:#030304;color:#F6F6F6;font:700 14px/1.35 Archivo,sans-serif}
+.dz-toast button{flex:none;padding:6px 8px;border:0;background:none;color:#F6F6F6;font:900 13.5px/1 Archivo,sans-serif;text-transform:uppercase;text-decoration:underline;cursor:pointer}
+.dz-toast .dz-tx{display:grid;place-items:center;text-decoration:none}
+/* 📱 en el teléfono la barra va arriba, en dos columnas, y el aviso queda encima de la barra de abajo de la página */
+@media (max-width:760px){
+  .dz-nav{flex-basis:100%;max-width:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;padding:14px 12px}
+  .dz-marca{grid-column:1 / -1;padding-bottom:8px}
+  .dz-a{font-size:14px;padding:0 10px}
+  .dz-der{padding:16px 14px 24px}
+  .dz-h1{font-size:24px}
+  .dz-cuadros{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .dz-cuadro{min-height:108px;padding:12px}
+  .dz-cuadro b{font-size:34px}
+  .dz-toast{bottom:92px}
+  .dz-bbtn kbd{display:none}
+}
+/* 🏆 los MES AWARDS: clases que el JSX usaba y no tenían regla (lo encontró el inventario del 25/10/2026) */
+.db-mes{display:grid;gap:10px;padding:14px}
+.db-mes-sv h4{margin:8px 0 4px;font:900 15px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.db-mes-gano{color:var(--gris);font-style:normal}

@@ -5,7 +5,7 @@
 // es y contesta 403 a cualquiera que no sea Dlx. Acá sólo se dibuja lo que el servidor manda. Sin cuenta, el botón de
 // entrar; con otra cuenta, «esta página es del dueño» y nada más. Los ajustes pasan por la misma puerta
 // (`/avisos/dueno/ajuste`), y el servidor valida cada valor antes de guardarlo.
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { diaISO, hora, limpio, mult, num, siglaDe } from './liga.js';
 import { DosToques, Ico } from './piezas.jsx';
 import { urlFondo } from './fondos.js';
@@ -991,48 +991,6 @@ function AjSorteo({ liga, aj, hacer, ocup }) {
   );
 }
 
-// ── ⚙️ el multiplicador de la semana, a mano: vale desde que se guarda (ver `a_mano()` de bot/multiplicadores.py) ────
-function AjMult({ liga, aj, hacer, ocup }) {
-  const m = liga.d.mult || {};
-  const base = m.sv || {};
-  const man = aj.multiplicadores && aj.multiplicadores.semana === m.id ? aj.multiplicadores.sv || {} : null;
-  const ref = Object.assign({}, base, man || {});
-  const [sel, setSel] = useState(ref);
-  const firma = JSON.stringify(ref);
-  useEffect(() => { setSel(JSON.parse(firma)); }, [firma]);
-  const svs = Object.keys(base).sort((a, b) => (base[b] - base[a]) || (a < b ? -1 : 1));
-  if (!m.id || !svs.length) {
-    return <div className="db-aj"><div className="db-aj-c"><h3>El multiplicador de la semana</h3></div><p className="db-tx">No hay una semana sorteada ahora.</p></div>;
-  }
-  const cambio = svs.some((sv) => sel[sv] !== ref[sv]);
-  return (
-    <div className="db-aj">
-      <div className="db-aj-c"><h3>El multiplicador de la semana</h3><span className={'db-est' + (man ? ' ojo' : '')}>{man ? '✍ Elegido a mano' : 'El del sorteo'}</span></div>
-      <div className="db-mult">
-        {svs.map((sv) => {
-          const ops = FACTORES.indexOf(ref[sv]) < 0 ? [...FACTORES, ref[sv]].sort((a, b) => a - b) : FACTORES;
-          return (
-            <label key={sv} className="db-sv">
-              <span><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b></span>
-              <select value={String(sel[sv])} disabled={ocup} aria-label={'Multiplicador de ' + siglaDe(sv)}
-                onChange={(e) => setSel(Object.assign({}, sel, { [sv]: Number(e.target.value) }))}>
-                {ops.map((x) => <option key={x} value={String(x)}>{mult(x)}</option>)}
-              </select>
-            </label>
-          );
-        })}
-      </div>
-      <p className="db-tx">Vale desde que lo guardás: lo que ya se jugó esta semana se queda con el de antes. El ciclo lo pone en su próxima corrida (a las :22 y a las :52) y ahí lo ve todo el mundo.</p>
-      <div className="cu-btns">
-        <button type="button" className="btn verde chico" disabled={ocup || !cambio}
-          onClick={() => hacer('multiplicadores', { semana: m.id, sv: sel }, 'Guardado. Entra en la próxima corrida del ciclo.')}>Guardar</button>
-        {man ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo para volver al sorteo"
-          onClick={() => hacer('multiplicadores', null, 'Vuelve el sorteo en la próxima corrida del ciclo.')}>Volver al sorteo</DosToques> : null}
-        {cambio ? <button type="button" className="evp-lnk" onClick={() => setSel(ref)}>Deshacer</button> : null}
-      </div>
-    </div>
-  );
-}
 
 // ── 📣 un aviso arriba de la página, para todos, hasta una hora ──────────────────────────────────────────────────────
 function AjAviso({ liga, aj, hacer, ocup }) {
@@ -1101,7 +1059,7 @@ function AjVivo({ liga, aj, hacer, ocup, chat, general }) {
     <div className="db-aj">
       <div className="db-aj-c"><h3>El bot en vivo</h3><span className={'db-est' + (svs.some(prendido) ? ' ok' : '')}>{svs.filter(prendido).length} prendido(s)</span></div>
       <p className="db-tx">Durante un evento cuenta en el chat cómo va, y cuánto habla se elige: <b>lo justo</b> (el arranque y el campeón), <b>normal</b> (además quién pasa cada ronda y la final, como mucho un mensaje cada 10 minutos) o <b>cada batalla</b> (quién gana cada una apenas se sabe, como mucho uno cada 2 minutos). No menciona a nadie. Lo prende el admin de cada servidor con /settings; desde acá lo prendes en el chat general, lo apagas o le cambias cuánto habla aunque su admin haya elegido otra cosa.</p>
-      {general ? <p className="db-tx">Si habla y cuánto, servidor por servidor, en su tarjeta de arriba.</p> : svs.length ? (
+      {general ? <p className="db-tx">Si habla y cuánto, servidor por servidor, en Servidores.</p> : svs.length ? (
         <div className="db-mult db-mult-vivo">{svs.map((sv) => (
           <label key={sv} className="db-sv db-sv-vivo" title={estado(sv)}>
             <span><img alt="" src={liga.logo(sv)} /><b>{siglaDe(sv)}</b></span>
@@ -1151,7 +1109,7 @@ function AjAvisos({ liga, aj, hacer, ocup, chat, general }) {
           onChange={(e) => hacer('avisos_nivel', e.target.value, 'Guardado: vale desde el próximo evento.')}>
           {Object.keys(NIVELES_AVISO).map((k) => <option key={k} value={k}>{NIVELES_AVISO[k][0]}</option>)}
         </select></label>
-      {general ? <p className="db-tx">Dónde va el de cada servidor, en su tarjeta de arriba.</p> : null}
+      {general ? <p className="db-tx">Dónde va el de cada servidor, en Servidores.</p> : null}
       {!general && svs.length ? (
         <div className="db-mult db-mult-vivo">{svs.map((sv) => (
           <label key={sv} className="db-sv">
@@ -1460,15 +1418,6 @@ function AjRitmo({ aj, hacer, ocup, chat }) {
 }
 
 
-// ── 🧭 EL DASHBOARD, ORDENADO (13/10/2026, Dlx a las ideas: «me gustan todas»). Eran catorce bloques uno abajo del
-// otro; ahora cuatro pestañas —Hoy, Ajustes, Números, Sistema—, la de Hoy con lo que pide atención; los ajustes de cada
-// servidor juntos en su tarjeta; las flechas contra la semana anterior; y el historial de cambios con «Deshacer».
-// La pestaña elegida se recuerda en este navegador (`lg:db-tab`)
-// 📣✅ Reportes y Decisiones, desde el 13/10/2026 (Dlx: «agregar quizás reportes y una ventana de decisiones»)
-const PESTANAS = [['hoy', 'Hoy'], ['reportes', 'Reportes'], ['decisiones', 'Decisiones'], ['ajustes', 'Ajustes'], ['numeros', 'Números'], ['sistema', 'Sistema']];
-const TAB = 'lg:db-tab';
-const leerTab = () => { try { const t = localStorage.getItem(TAB); return PESTANAS.some(([k]) => k === t) ? t : 'hoy'; } catch (e) { return 'hoy'; } };
-const ponerTab = (t) => { try { localStorage.setItem(TAB, t); } catch (e) { /* sin almacenamiento */ } };
 
 // 🏆 LOS MES AWARDS (16/10/2026, Dlx a «¿de dónde salen los nominados?»: «solos, de los números», y vos podés sacar
 // alguno antes de que abra la votación). Los nominados salen el día 1 a las 11 AM ET y la votación abre a las 6 PM: en
@@ -1543,18 +1492,39 @@ function MesAwardsDueno({ aj, hacer, ocup }) {
 }
 
 // el `hacer` de los ajustes: guarda, avisa y dice si salió. Lo comparten los ajustes y el historial
-function useHacer(onAj) {
+// ↩️ Y DESHACER POR 8 SEGUNDOS (25/10/2026, la maqueta: «cada cambio se puede deshacer»): guarda lo que había antes y
+// el aviso de abajo lo vuelve a poner con un toque, sin ir al historial
+function useHacer(onAj, getAj) {
   const [msg, setMsg] = useState('');
   const [ocup, setOcup] = useState(false);
-  const hacer = async (cual, valor, ok) => {
+  const [aviso, setAviso] = useState(null);
+  const tm = useRef(0);
+  const mostrar = (a) => { clearTimeout(tm.current); setAviso(a); tm.current = setTimeout(() => setAviso(null), 8000); };
+  const hacer = async (cual, valor, ok, sinDeshacer) => {
+    const antes = getAj ? getAj()[cual] : undefined;
     setOcup(true); setMsg('');
     let bien = false;
-    try { onAj(await ajustar(cual, valor)); setMsg('✅ ' + ok); bien = true; } catch (e) { setMsg('⚠️ No se pudo: ' + e.message + '.'); }
+    try {
+      onAj(await ajustar(cual, valor));
+      setMsg('✅ ' + ok); bien = true;
+      mostrar({ ok: '✅ ' + ok, cual, antes: antes === undefined ? null : antes, puede: !sinDeshacer });
+    } catch (e) {
+      setMsg('⚠️ No se pudo: ' + e.message + '.');
+      mostrar({ ok: '⚠️ No se pudo: ' + e.message + '.', puede: false });
+    }
     setOcup(false);
     return bien;
   };
-  return { hacer, msg, ocup };
+  const deshacer = async () => {
+    const a = aviso;
+    if (!a || !a.puede) return;
+    setAviso(null);
+    await hacer(a.cual, volverA(a.cual, a.antes), 'Deshecho: volvió a como estaba.', true);
+  };
+  return { hacer, msg, ocup, aviso, deshacer, cerrarAviso: () => setAviso(null) };
 }
+// lo que había antes, tal como se puede volver a poner: un aviso que ya venció no se republica (el servidor lo rechaza)
+const volverA = (cual, v) => (cual === 'aviso_web' && v && Date.parse(v.hasta) <= Date.now() ? null : v);
 
 // 🔔 lo que pide atención: lo mismo que marca el panel del Inicio, y la última corrida del ciclo si salió mal
 // 🔴 LO QUE AVISÓ EL CANAL DE LOGS (Dlx, 17/10/2026: «en el canal de registros aparecen cosas que están malas, en 🔴…
@@ -1613,7 +1583,7 @@ function Vieja({ v }) {
   const quien = v.usuario ? '@' + v.usuario : 'sin nombre';
   if (v.en_dra) {
     return <p className="db-ped-pr db-ped-ojo">⚠️ La cuenta vieja (<b>{quien}</b>{v.creada ? ', creada el ' + v.creada : ''}) <b>sigue en DRA</b>
-      {v.apodo_dra ? ' como «' + v.apodo_dra + '»' : ''}{v.miembro ? ', con el Miembro' : ''}. Preguntale por ahí antes de aprobar.</p>;
+      {v.apodo_dra ? ' como «' + v.apodo_dra + '»' : ''}{v.miembro ? ', con el Miembro' : ''}. Pregúntale por ahí antes de aprobar.</p>;
   }
   return <p className="db-ped-pr">La cuenta vieja: <b>{quien}</b>{v.creada ? ', creada el ' + v.creada : ''} · {v.en_dra === false ? 'ya no está en DRA' : 'no se pudo ver si sigue en DRA'}.</p>;
 }
@@ -1657,42 +1627,24 @@ function Pedidos({ ps, liga, alCambiar }) {
   );
 }
 
+// 🔔 LO QUE PIDE ATENCIÓN y no es una cola (las colas son los cuadrados de «Para decidir»): `[ícono, título, detalle,
+// área, ancla]`, y el botón «Ir» lleva a donde se arregla (antes decía «Abajo, en…» o «Mira Sistema.» sin link)
 function atencion(d, liga, q, logs) {
   const aj = d.ajustes || {};
-  const m = liga.d.mult || {};
   const ult = (d.corridas || [])[0];
-  const av = avisoVigente(aj);
   return [
-    aj.campana_pausada ? ['⏸', 'La campana está en pausa', 'No sale ningún aviso de evento hasta que la reanudes (Ajustes).'] : null,
-    av ? ['📣', 'Hay un aviso publicado en la página', av.texto] : null,
-    aj.multiplicadores && aj.multiplicadores.semana === m.id ? ['✍', 'El multiplicador de esta semana va a mano', 'No es el del sorteo.'] : null,
-    d.sistema && d.sistema.ok === false ? ['⚠️', 'El vigía no contesta', 'Los avisos al minuto y el bot en vivo pueden estar quietos.'] : null,
+    aj.campana_pausada ? ['⏸', 'La campana está en pausa', 'No sale ningún aviso de evento hasta que la reanudes.', 'web', 'aj-campana'] : null,
+    d.sistema && d.sistema.ok === false ? ['⚠️', 'El lector de anuncios no contesta', 'Los avisos al minuto y el bot en vivo pueden estar quietos.', 'salud', 'sa-corridas'] : null,
     ult && ult.estado === 'completed' && ult.fin && ult.fin !== 'success' && ult.fin !== 'skipped'
-      ? ['⚠️', 'La última corrida del ciclo ' + String(FIN_CORRIDA[ult.fin] || ult.fin).replace(/^\S+\s/, ''), 'Mira Sistema.'] : null,
-    ...cuotasEnRojo(q).map(([, , t]) => ['⚠️', t + ' casi llenas hoy', 'Se renuevan a las 8 PM ET.']),
-    // 📣 los reportes de las llaves sin mirar, y una corrección que no se pudo (13/10/2026)
-    ...(() => { const r = (d.reportes || []).filter((x) => x.estado === ''); return r.length ? [['📣', r.length === 1 ? 'Un reporte de una llave sin mirar' : r.length + ' reportes de llaves sin mirar', 'En la pestaña Reportes: corregilo o márcalo como listo.']] : []; })(),
-    ...(d.reportes || []).filter((x) => x.estado === 'no_pude').map((x) => ['⚠️', 'No se pudo corregir la llave #' + x.llave, x.resultado]),
-    // 🖼️ y los fondos que esperan (13/10/2026)
-    ...((d.fondos || []).length ? [['🖼️', (d.fondos.length === 1 ? 'Un fondo' : d.fondos.length + ' fondos') + ' para revisar', 'Abajo, en Lo que te llegó.']] : []),
-    // 📸 y las fotos de tarjeta que esperan (13/10/2026)
-    ...((d.crews_logos && d.crews_logos.pend || []).length ? [['👥', (d.crews_logos.pend.length === 1 ? 'Un logo de crew' : d.crews_logos.pend.length + ' logos de crew') + ' para revisar', 'Abajo, en Lo que te llegó.']] : []),
-    ...((d.fotos_carta || []).length ? [['📸', (d.fotos_carta.length === 1 ? 'Una foto de tarjeta' : d.fotos_carta.length + ' fotos de tarjeta') + ' para revisar', 'Abajo, en Lo que te llegó.']] : []),
-    // ✅ y lo de ✅ Decidir sin contestar (13/10/2026)
-    ...(sinContestar(d.decidir) ? [['✅', sinContestar(d.decidir) === 1 ? 'Una pregunta de ✅ Decidir sin contestar' : sinContestar(d.decidir) + ' preguntas de ✅ Decidir sin contestar', 'En la pestaña Decisiones.']] : []),
-    // 🙋 y los pedidos de la gente sin contestar (17/10/2026)
-    ...(() => { const n = (d.pedidos || []).filter((x) => x.estado === '').length; return n ? [['🙋', n === 1 ? 'Un pedido de la gente sin contestar' : n + ' pedidos de la gente sin contestar', 'En la pestaña Reportes.']] : []; })(),
-    // 🔴 y lo que Logs avisó en rojo y todavía no viste (17/10/2026)
+      ? ['⚠️', 'La última vuelta del ciclo ' + String(FIN_CORRIDA[ult.fin] || ult.fin).replace(/^\S+\s/, ''), 'Puedes correrlo de nuevo desde Salud.', 'salud', 'sa-corridas'] : null,
+    ...cuotasEnRojo(q).map(([, , t]) => ['⚠️', t + ' casi llenas hoy', 'Se renuevan a las 8 PM ET.', 'salud', 'sa-cuotas']),
+    ...(d.reportes || []).filter((x) => x.estado === 'no_pude').map((x) => ['⚠️', 'No se pudo corregir la llave #' + x.llave, x.resultado, 'pendientes', '']),
     ...(() => {
       const v = logsVistos();
       const n = ((logs && logs.xs) || []).filter((x) => x.nivel === 'rojo' && !v.includes(x.id)).length;
-      return n ? [['🔴', n === 1 ? 'Un aviso en rojo en Logs' : n + ' avisos en rojo en Logs', 'Abajo, en Lo que avisó Logs.']] : [];
+      return n ? [['🔴', n === 1 ? 'Un aviso en rojo en Logs' : n + ' avisos en rojo en Logs', 'Lo que avisó el canal de Logs y no viste.', 'salud', 'sa-logs']] : [];
     })(),
   ].filter(Boolean);
-}
-function Atencion({ xs }) {
-  if (!xs.length) return <p className="db-ok">✅ Todo en orden: nada pide tu atención ahora.</p>;
-  return <ul className="db-at">{xs.map(([ic, t, s]) => <li key={t}><span aria-hidden="true">{ic}</span><div><b>{t}</b>{s ? <small>{s}</small> : null}</div></li>)}</ul>;
 }
 
 // ── 🏟️ AJUSTES POR SERVIDOR: todo lo de cada uno en su tarjeta —el bot en vivo y cuánto habla, las apuestas, el aviso de
@@ -1802,7 +1754,12 @@ function AjServidores({ liga, aj, hacer, ocup, chat }) {
 // lo que había antes. «Deshacer» sólo en el último cambio de cada ajuste: deshacer uno más viejo pisaría los de después
 const NOMBRE_AJ = { campana_pausada: 'La campana', pase_sorteo: 'El sorteo del premium', multiplicadores: 'El multiplicador de la semana', aviso_web: 'El aviso en la página',
   en_vivo: 'El bot en vivo', en_vivo_nivel: 'Cuánto habla el bot en vivo', ritmo: 'El ritmo del bot en vivo', silencio: 'El horario de silencio',
-  apuestas: 'Las apuestas', aviso_evento: 'Dónde va el aviso de cada evento', avisos_nivel: 'Cuánto dice el aviso de cada evento' };
+  apuestas: 'Las apuestas', aviso_evento: 'Dónde va el aviso de cada evento', avisos_nivel: 'Cuánto dice el aviso de cada evento',
+  // 🏷️ y los que salían con el código crudo (25/10/2026)
+  eventos_discord: 'Los eventos de Discord', tiers: 'El tier de los servidores', beneficios: 'Lo que recibe cada servidor', altas: 'Sumar un servidor',
+  socios_duenos: 'El dueño de un servidor socio', promos_mano: 'Las promos a mano', promos_quitar: 'Las promos sacadas', mes_sacar: 'Los nominados de los MES AWARDS',
+  crew_precio: 'Lo que cuesta crear una crew', crew_precio_nombre: 'Lo que cuesta cambiarle el nombre a una crew', crew_precio_logo: 'Lo que cuesta cambiarle el logo a una crew',
+  crews_ranking: 'El ranking de crews', crews_tiers_num: 'Los tiers de las crews' };
 function Historial({ hist, hacer, ocup }) {
   const xs = (hist || []).slice(0, 15);
   if (!xs.length) return <p className="db-tx">Todavía no hay cambios anotados: el historial empezó el 13/10/2026.</p>;
@@ -1816,7 +1773,7 @@ function Historial({ hist, hacer, ocup }) {
           <div><b>{NOMBRE_AJ[x.cual] || x.cual}</b>
             <small>{hace(x.t)} · {x.despues === null ? 'volvió a lo de siempre' : x.antes === null ? 'pasó a tu gusto' : 'cambió'}{x.por && x.por !== 'Dlx' ? ' · lo cambió ' + x.por : ''}</small></div>
           {puede ? <DosToques className="btn borde2 chico" disabled={ocup} confirmar="Toca de nuevo: vuelve a como estaba"
-            onClick={() => hacer(x.cual, x.antes, 'Deshecho: volvió a como estaba.')}>Deshacer</DosToques> : null}
+            onClick={() => hacer(x.cual, volverA(x.cual, x.antes), 'Deshecho: volvió a como estaba.')}>Deshacer</DosToques> : null}
         </li>
       );
     })}</ul>
@@ -2447,10 +2404,10 @@ export const sinContestar = (dec) => ((dec && dec.preguntas) || []).filter((p) =
 const QUE_ES = {
   'Bracket incompleto': 'La llave no dice quién ganó y nadie la terminó. Si sabes quién salió campeón, toca «Ganó…». Si era de prueba o no se jugó, «No cuenta».',
   'Batalla sin ganador': 'La llave no dice quién ganó esta batalla. Elige al que pasó; si nadie siguió (no se presentó o lo reemplazaron), «Nadie siguió».',
-  'Evento dudoso': 'Algo de este evento no le cierra al bot. Mira la llave al costado: si está bien así, confirmalo; si no, márcalo para revisar.',
+  'Evento dudoso': 'Algo de este evento no le cierra al bot. Mira la llave al costado: si está bien así, confírmalo; si no, márcalo para revisar.',
   'Nombre desconocido': 'Este nombre está en una llave y el bot no sabe de quién es. Elige la cuenta, escribe quién es, o márcalo como nuevo.',
   'Alias posible': 'Una misma cuenta de Discord usó dos nombres. Di si son la misma persona: así suma todo junto.',
-  'alta': 'Alguien que no está en la Lista apareció en el bot. Si es alguien nuevo de verdad, sumalo; si no, ciérralo.',
+  'alta': 'Alguien que no está en la Lista apareció en el bot. Si es alguien nuevo de verdad, súmalo; si no, ciérralo.',
   'conflicto': 'Una cuenta de Discord apareció con un nombre que en la Lista ya tiene otra cuenta. Revísalo y ciérralo.',
   'ambiguo': 'Esta cuenta se parece a más de una persona de la Lista.',
   'Vidas cargado': 'El bot cargó solo un 5 vidas desde #veredictos. Confirma que está bien o sácalo.',
@@ -2718,12 +2675,148 @@ function Decisiones({ dec, alCambiar, liga }) {
   );
 }
 
+// ── 🧭 EL DASHBOARD, POR ÁREAS (25/10/2026). Dlx: «quisiera que lo remakees completamente… siento que está todo tirado
+// pero no necesariamente organizado», y a la maqueta (artifact 9W34gdd8BspxH3A5QyDLxj), «una mezcla… de A el lado
+// izquierdo, de B que aparece lo prioritario primero, en cuadrados». Siete áreas en la barra de la izquierda (arriba en el
+// teléfono) y cada cosa vive en UNA sola: los ajustes de los servidores estaban repartidos entre Ajustes, Números (los
+// tiers) y Hoy (los MES AWARDS). El Resumen abre con lo que hay que decidir, en cuadrados.
+// El área elegida se recuerda en este navegador (`lg:db-area`)
+const AREAS = [
+  ['resumen', 'Resumen', 'M3 12l9-8 9 8M5 10v10h14V10'],
+  ['pendientes', 'Pendientes', 'M4 4h16v12H14l-4 4v-4H4z'],
+  ['servidores', 'Servidores', 'M4 5h16v5H4zM4 14h16v5H4zM7 7.5h.01M7 16.5h.01'],
+  ['web', 'La página y el bot', 'M4 7h10M18 7h2M4 17h2M10 17h10M14 5v4M6 15v4'],
+  ['numeros', 'Números', 'M5 20V11M12 20V5M19 20v-7'],
+  ['salud', 'Salud', 'M3 12h4l3-7 4 14 3-7h4'],
+  ['historial', 'Historial y roles', 'M12 7v5l3 3M4 12a8 8 0 1 0 2.3-5.7M4 4v4h4'],
+];
+// las cuatro colas de Pendientes
+const SUBP = [['quien', '¿Quién es quién?'], ['llaves', 'Errores en las llaves'], ['imagenes', 'Imágenes y videos'], ['pedidos', 'Pedidos']];
+const AREA = 'lg:db-area';
+const leerArea = () => { try { const t = localStorage.getItem(AREA); return AREAS.some(([k]) => k === t) ? t : 'resumen'; } catch (e) { return 'resumen'; } };
+const ponerArea = (t) => { try { localStorage.setItem(AREA, t); } catch (e) { /* sin almacenamiento */ } };
+const msDe = (t) => (typeof t === 'number' ? t : Date.parse(t || '') || 0);
+
+// 🔎 LO QUE ENCUENTRA «BUSCAR» (Ctrl+K): cada ajuste y cada lugar, con el área donde vive y el ancla a la que baja
+const BUSCABLES = [
+  ['La campana (pausar los avisos)', 'web', 'aj-campana'], ['El sorteo del premium', 'web', 'aj-sorteo'],
+  ['Aviso arriba de la página', 'web', 'aj-aviso'], ['El bot en vivo', 'web', 'aj-vivo'], ['Cada cuánto habla el bot en vivo', 'web', 'aj-ritmo'],
+  ['Horario de silencio', 'web', 'aj-silencio'], ['Las apuestas', 'web', 'aj-apuestas'], ['El aviso de cada evento', 'web', 'aj-avisos'],
+  ['Las crews: precios, ranking y tiers', 'web', 'aj-crews'], ['MES AWARDS: sacar un nominado', 'web', 'aj-mes'], ['Promos a mano', 'web', 'aj-promos'],
+  ['El multiplicador de la semana', 'servidores', 'sv-cada'], ['Bot en vivo, apuestas y aviso de cada servidor', 'servidores', 'sv-cada'],
+  ['Los tiers de los servidores', 'servidores', 'sv-tiers'], ['Sumar un servidor', 'servidores', 'sv-tiers'], ['El dueño de un servidor socio', 'servidores', 'sv-tiers'],
+  ['¿Quién es quién? (✅ Decidir)', 'pendientes', '', 'quien'], ['Errores en las llaves', 'pendientes', '', 'llaves'],
+  ['Fondos, fotos de carta, logos y videos', 'pendientes', '', 'imagenes'], ['Pedidos de la gente', 'pendientes', '', 'pedidos'],
+  ['Comparar semanas', 'numeros', 'nu-semanas'], ['El bot y la página, 7 días', 'numeros', 'nu-uso'], ['El tutorial', 'numeros', 'nu-tuto'],
+  ['Qué se toca en la página', 'numeros', 'nu-clics'], ['¿El lobby hace volver a la gente?', 'numeros', 'nu-lobby'], ['Las crews (números)', 'numeros', 'nu-crews'],
+  ['El Pase de rapero (números)', 'numeros', 'nu-pase'], ['Correr el ciclo ahora', 'salud', 'sa-corridas'], ['Lo que gasta Cloudflare hoy', 'salud', 'sa-cuotas'],
+  ['Lo que avisó Logs', 'salud', 'sa-logs'], ['Errores de la página', 'salud', 'sa-errores'], ['El mapa en vivo y los atajos', 'salud', 'sa-atajos'],
+  ['Historial de cambios (deshacer)', 'historial', 'hi-hist'], ['Roles de la página', 'historial', 'hi-roles'],
+];
+
+function BuscarTodo({ abierto, cerrar, ir, visibles }) {
+  const [q, setQ] = useState('');
+  const [i, setI] = useState(0);
+  if (!abierto) return null;
+  const n = normN(q);
+  const xs = [...AREAS.filter(([k]) => visibles[k]).map(([k, t]) => [t, k, '']), ...BUSCABLES.filter((x) => visibles[x[1]])]
+    .filter((x) => !n || normN(x[0]).includes(n)).slice(0, 12);
+  const elegir = (x) => { if (x) { ir(x[1], x[2], x[3]); setQ(''); setI(0); cerrar(); } };
+  const tecla = (e) => {
+    if (e.key === 'Escape') cerrar();
+    else if (e.key === 'ArrowDown') { e.preventDefault(); setI(Math.min(xs.length - 1, i + 1)); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setI(Math.max(0, i - 1)); }
+    else if (e.key === 'Enter') { e.preventDefault(); elegir(xs[i]); }
+  };
+  return (
+    <div className="dz-velo" role="presentation" onClick={cerrar}>
+      <div className="dz-buscar" role="dialog" aria-modal="true" aria-label="Buscar en el Dashboard" onClick={(e) => e.stopPropagation()}>
+        <label className="dz-bq"><Ico n="buscar" t={18} />
+          <input autoFocus value={q} placeholder="Busca un ajuste, un lugar o una acción" onChange={(e) => { setQ(e.target.value); setI(0); }} onKeyDown={tecla} /></label>
+        {xs.length ? <ul>{xs.map((x, j) => (
+          <li key={x[0] + x[1]}><button type="button" className={j === i ? 'on' : ''} onMouseEnter={() => setI(j)} onClick={() => elegir(x)}>
+            <b>{x[0]}</b><small>{(AREAS.find((a) => a[0] === x[1]) || [])[1]}</small></button></li>
+        ))}</ul> : <p className="db-tx">Nada con «{q}».</p>}
+      </div>
+    </div>
+  );
+}
+
+// 💚 LA SALUD EN UNA FRASE (la maqueta: «Todo anda»), y sólo si algo anda mal, qué. El cupo de escrituras con su ritmo:
+// el día de Cloudflare es UTC, así que lo medido se proyecta a las 24 h desde la última medianoche UTC
+function proyeccion(q) {
+  const w = q && q.kv && q.kv.write;
+  if (w == null || !q.cuando) return null;
+  const t = Date.parse(q.cuando);
+  const h = ((t % 86400000) + 86400000) % 86400000 / 3600000;
+  return h >= 1 ? Math.round((w / h) * 24) : null;
+}
+function saludDe(d, q) {
+  const s = d.sistema || {};
+  const ult = (d.corridas || [])[0];
+  const mal = [];
+  if (s.ok === false) mal.push('el lector de anuncios no contesta (los avisos al minuto y el bot en vivo pueden estar quietos)');
+  if (ult && ult.estado === 'completed' && ult.fin && ult.fin !== 'success' && ult.fin !== 'skipped') mal.push('la última vuelta del ciclo ' + String(FIN_CORRIDA[ult.fin] || ult.fin).replace(/^\S+\s/, ''));
+  if (d.github) mal.push('GitHub anda lento: las vueltas del ciclo pueden atrasarse');
+  for (const [, , t] of cuotasEnRojo(q)) mal.push(t.toLowerCase() + ' casi llenas hoy');
+  const w = q && q.kv ? q.kv.write : null;
+  const p = proyeccion(q);
+  const partes = [
+    ult ? 'la última vuelta del ciclo: ' + (ult.empezo || ult.creada ? hora(new Date(ult.empezo || ult.creada)) : '—') : '',
+    s.vigia ? 'el lector de anuncios leyó ' + hace(s.vigia) : '',
+    w != null ? 'escrituras del día: ' + num(w) + ' de 1.000' + (p != null ? (p < 1000 ? ', al ritmo de hoy alcanzan' : ', al ritmo de hoy no alcanzan (~' + num(p) + ')') : '') : '',
+  ].filter(Boolean);
+  return { ok: !mal.length, mal, partes };
+}
+
+// 🕓 «DESDE TU ÚLTIMA VISITA» (la maqueta): lo que pasó mientras no estabas, de lo que el Dashboard ya trae. La última
+// visita se guarda en este navegador (`lg:db-visita`): no gasta nada del servidor
+const VISITA = 'lg:db-visita';
+// ⚠️ UNA VEZ POR CARGA DE LA PÁGINA, no por montaje: la página monta el Dashboard más de una vez al abrirlo (el lazy y el
+// respaldo), y el segundo montaje leía la visita que acababa de anotar el primero («desde tu última visita: recién»)
+let visitaPrevia = null;
+function leerVisita() {
+  if (visitaPrevia === null) {
+    try { visitaPrevia = Number(localStorage.getItem(VISITA)) || 0; localStorage.setItem(VISITA, String(Date.now())); } catch (e) { visitaPrevia = 0; }
+  }
+  return visitaPrevia;
+}
+function desdeVisita(d, prev, logs) {
+  if (!prev) return null;
+  const xs = [];
+  for (const h of d.ajustes_hist || []) if (msDe(h.t) > prev) xs.push([msDe(h.t), (NOMBRE_AJ[h.cual] || h.cual) + ' cambió' + (h.por && h.por !== 'Dlx' ? ' (lo cambió ' + h.por + ')' : ''), 'historial']);
+  for (const r of d.reportes || []) if (msDe(r.t) > prev) xs.push([msDe(r.t), 'Un reporte nuevo de la llave #' + r.llave + (r.de ? ', de ' + r.de : ''), 'pendientes', 'llaves']);
+  for (const p of d.pedidos || []) if (msDe(p.t) > prev) xs.push([msDe(p.t), 'Un pedido nuevo: ' + (PED_TIPO[p.tipo] || p.tipo).toLowerCase(), 'pendientes', 'pedidos']);
+  for (const f of d.fondos || []) if (msDe(f.t) > prev) xs.push([msDe(f.t), 'Un fondo nuevo para revisar', 'pendientes', 'imagenes']);
+  for (const c of d.corridas || []) if (msDe(c.creada) > prev && c.fin && c.fin !== 'success' && c.fin !== 'skipped') xs.push([msDe(c.creada), 'Una vuelta del ciclo ' + String(FIN_CORRIDA[c.fin] || c.fin).replace(/^\S+\s/, ''), 'salud']);
+  for (const e of d.errores_pag || []) if (msDe(e.primero) > prev) xs.push([msDe(e.primero), 'Un error nuevo en la página: ' + e.donde, 'salud']);
+  for (const l of (logs && logs.xs) || []) if (l.nivel === 'rojo' && msDe(l.t) > prev) xs.push([msDe(l.t), 'Logs, en rojo: ' + l.tit, 'salud']);
+  return xs.sort((a, b) => b[0] - a[0]).slice(0, 8);
+}
+
+// 📅 LO QUE ESTÁ PROGRAMADO O PRENDIDO A MANO (la maqueta), con el área donde se cambia
+function programado(aj, liga) {
+  const fecha = (t) => { const x = new Date(t); return diaISO(x).slice(8, 10).replace(/^0/, '') + '/' + diaISO(x).slice(5, 7).replace(/^0/, '') + ' a las ' + hora(x); };
+  const m = liga.d.mult || {};
+  const av = avisoVigente(aj);
+  return [
+    aj.pase_sorteo ? ['El sorteo del premium', 'cierra el ' + fecha(aj.pase_sorteo.cierra) + ' y se sortea el ' + fecha(aj.pase_sorteo.sorteo), 'web', 'aj-sorteo'] : null,
+    av ? ['Aviso en la página', '«' + av.texto.slice(0, 80) + (av.texto.length > 80 ? '…' : '') + '» hasta el ' + fecha(av.hasta), 'web', 'aj-aviso'] : null,
+    aj.silencio ? ['Horario de silencio', 'el bot en vivo calla de ' + aj.silencio.desde + ' a ' + aj.silencio.hasta, 'web', 'aj-silencio'] : null,
+    aj.multiplicadores && aj.multiplicadores.semana === m.id ? ['El multiplicador de esta semana', 'va a mano, no es el del sorteo', 'servidores', 'sv-cada'] : null,
+    aj.campana_pausada ? ['La campana', 'está en pausa: no sale ningún aviso', 'web', 'aj-campana'] : null,
+  ].filter(Boolean);
+}
+
 export function Dashboard({ dc, liga }) {
   const [st, setSt] = useState({ cargando: true });
+  // la visita anterior: se lee una vez al abrir y se anota la de ahora
+  const [prev] = useState(leerVisita);
+  const [actualizado, setActualizado] = useState(0);
   useEffect(() => {
     if (!dc) { setSt({ sinCuenta: true }); return undefined; }
     let vivo = true;
-    pedirDueno().then((x) => { if (vivo) setSt(x); });
+    pedirDueno().then((x) => { if (vivo) { setSt(x); setActualizado(Date.now()); } });
     return () => { vivo = false; };
   // ⚠️ por el id y no por el objeto: `dc` es uno nuevo en cada evento de la página (`quienMira()`), y el Dashboard
   // se volvía a pedir —con GitHub y lo en vivo— cada vez (revisión del 05/10/2026)
@@ -2737,11 +2830,44 @@ export function Dashboard({ dc, liga }) {
   const semanas = useSemanas(!!st.d);
   // `ajustar()` devuelve los ajustes y el historial (ver `ajuste()` en avisos.js)
   const onAj = (r) => setSt((x) => (x.d ? { d: Object.assign({}, x.d, { ajustes: r.ajustes }, r.hist ? { ajustes_hist: r.hist } : {}) } : x));
-  const { hacer, msg, ocup } = useHacer(onAj);
-  // lo que cambia una pestaña (un reporte, una respuesta) vuelve al panel: así el número de cada pestaña está al día
+  const { hacer, msg, ocup, aviso, deshacer, cerrarAviso } = useHacer(onAj, () => (st.d && st.d.ajustes) || {});
+  // lo que cambia un área (un reporte, una respuesta) vuelve al panel: así los números de los cuadrados están al día
   const cambiarD = (o) => setSt((x) => (x.d ? { d: Object.assign({}, x.d, o) } : x));
-  const [tab, setTab] = useState(leerTab);
-  const elegir = (t) => { setTab(t); ponerTab(t); };
+  const [area, setArea0] = useState(leerArea);
+  // la cola que se abre: la que se eligió, o sola la primera que tiene algo
+  const [sub, setSub] = useState('');
+  const [buscar, setBuscar] = useState(false);
+  const raiz = useRef(null);
+  // ir a un área (y bajar hasta un ajuste, o abrir una cola de Pendientes)
+  const ir = (a, ancla, s) => {
+    setArea0(a); ponerArea(a);
+    if (s) setSub(s);
+    setTimeout(() => {
+      const el = ancla && raiz.current ? raiz.current.querySelector('#' + ancla) : null;
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      else if (raiz.current) raiz.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 60);
+  };
+  // ⌨️ Ctrl+K (o Cmd+K) abre el buscador
+  useEffect(() => {
+    const f = (e) => { if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); setBuscar((b) => !b); } };
+    W.addEventListener && W.addEventListener('keydown', f);
+    return () => { W.removeEventListener && W.removeEventListener('keydown', f); };
+  }, []);
+  // 🔄 SE PONE AL DÍA SOLO en el Resumen y en Salud, cada 2 minutos y sólo con la pestaña a la vista. En las áreas donde
+  // se escribe no: un formulario a medio llenar se pisaría con lo que llega
+  useEffect(() => {
+    if (!st.d || (area !== 'resumen' && area !== 'salud')) return undefined;
+    const id = setInterval(() => {
+      if (typeof document !== 'undefined' && document.visibilityState !== 'visible') return;
+      pedirDueno().then((x) => { if (x.d) { setSt(x); setActualizado(Date.now()); } });
+    }, 120000);
+    return () => clearInterval(id);
+  }, [area, !!st.d]); // eslint-disable-line react-hooks/exhaustive-deps
+  const [, tic] = useState(0);
+  useEffect(() => { const id = setInterval(() => tic((n) => n + 1), 30000); return () => clearInterval(id); }, []);
+  const [panel, setPanel] = useState(() => !panelCerrado());
+
   let cuerpo;
   if (st.cargando) cuerpo = <p className="pronto-p">Cargando…</p>;
   else if (st.sinCuenta) {
@@ -2749,83 +2875,224 @@ export function Dashboard({ dc, liga }) {
       <div className="cu-btns"><button type="button" className="btn verde chico" onClick={entrar}>Entrar con Discord</button></div></>);
   } else if (st.no) cuerpo = <p className="pronto-p">Esta página es sólo del dueño de la Liga.</p>;
   else if (st.error) cuerpo = <p className="pronto-p">No pude leerlo ({st.error}). Prueba en un rato.</p>;
-  else {
-    const d = st.d || {};
-    const u = d.uso || {};
-    // 🔐 QUÉ PUEDE QUIEN MIRA (13/10/2026): el objeto lo dice (`permisos`); sin eso es Dlx con todo (un Worker de antes)
-    const pm = d.permisos || ['panel', 'ajustes', 'ciclo', 'reportes', 'reportes_cerrar', 'decidir', 'videos', 'fondos', 'roles'];
-    const ve = (k) => pm.includes(k);
-    const verTab = { hoy: true, reportes: ve('reportes') || ve('reportes_cerrar'), decisiones: ve('decidir'), ajustes: ve('ajustes'),
-      numeros: ve('ajustes'), sistema: ve('ajustes') };
-    const tabV = verTab[tab] ? tab : 'hoy';
-    const at = atencion(d, liga, cuotas, logs);
-    // el número de cada pestaña: lo que espera algo de vos
-    const cuenta = { hoy: at.length, reportes: (d.reportes || []).filter((x) => x.estado === '' || x.estado === 'no_pude').length
-      + (d.pedidos || []).filter((x) => x.estado === '').length,
-      decisiones: sinContestar(d.decidir) };
-    const sec = (titulo, em, hijo) => <section className="act"><div className="mis-cab"><span>{titulo}</span>{em ? <em>{em}</em> : null}</div>{hijo}</section>;
-    cuerpo = (
+  if (cuerpo) return <section className="sec db"><style>{ESTILO}</style><div className="sec-t"><h1>Dashboard</h1></div>{cuerpo}</section>;
+
+  const d = st.d || {};
+  const aj = d.ajustes || {};
+  const u = d.uso || {};
+  // 🔐 QUÉ PUEDE QUIEN MIRA (13/10/2026): el objeto lo dice (`permisos`); sin eso es Dlx con todo (un Worker de antes)
+  const pm = d.permisos || ['panel', 'ajustes', 'ciclo', 'reportes', 'reportes_cerrar', 'decidir', 'videos', 'fondos', 'roles'];
+  const ve = (k) => pm.includes(k);
+  const cl0 = d.crews_logos || {};
+  const nSub0 = (k) => ({ quien: sinContestar(d.decidir), llaves: (d.reportes || []).filter((x) => x.estado === '' || x.estado === 'no_pude').length,
+    imagenes: (d.fondos || []).length + (d.fotos_carta || []).length + (cl0.pend || []).length + (d.videos || []).length,
+    pedidos: (d.pedidos || []).filter((x) => x.estado === '').length })[k] || 0;
+  const verSub = { quien: ve('decidir'), llaves: ve('reportes') || ve('reportes_cerrar'), imagenes: ve('fondos') || ve('videos'), pedidos: ve('reportes_cerrar') };
+  const visibles = { resumen: true, pendientes: Object.values(verSub).some(Boolean), servidores: ve('ajustes'), web: ve('ajustes'),
+    numeros: ve('ajustes'), salud: ve('ajustes'), historial: ve('ajustes') };
+  const areaV = visibles[area] ? area : 'resumen';
+  const subV = verSub[sub] ? sub : (SUBP.find(([k]) => verSub[k] && nSub0(k)) || SUBP.find(([k]) => verSub[k]) || ['quien'])[0];
+  // lo que espera algo de ti, por cola
+  const cl = d.crews_logos || {};
+  const n = {
+    quien: sinContestar(d.decidir),
+    llaves: (d.reportes || []).filter((x) => x.estado === '' || x.estado === 'no_pude').length,
+    imagenes: (d.fondos || []).length + (d.fotos_carta || []).length + (cl.pend || []).length,
+    videos: (d.videos || []).length,
+    pedidos: (d.pedidos || []).filter((x) => x.estado === '').length,
+  };
+  const total = n.quien + n.llaves + n.imagenes + n.videos + n.pedidos;
+  const nSub = { quien: n.quien, llaves: n.llaves, imagenes: n.imagenes + n.videos, pedidos: n.pedidos };
+  const sec = (id, titulo, em, hijo) => <section className="act" id={id || undefined}><div className="mis-cab"><span>{titulo}</span>{em ? <em>{em}</em> : null}</div>{hijo}</section>;
+  const at = atencion(d, liga, cuotas, logs);
+  const sal = saludDe(d, cuotas);
+  const nuevo = desdeVisita(d, prev, logs);
+  const prog = programado(aj, liga);
+  const primeroRep = (d.reportes || []).find((x) => x.estado === '');
+  const primerPed = (d.pedidos || []).find((x) => x.estado === '');
+  const CUADROS = [
+    ['quien', n.quien, '¿Quién es quién?', 'nombres que el bot no reconoció', true, 'quien'],
+    ['llaves', n.llaves, 'Errores en las llaves', primeroRep ? 'llave #' + primeroRep.llave + (primeroRep.de ? ' · lo reportó ' + primeroRep.de : '') : 'reportados por la gente', true, 'llaves'],
+    ['imagenes', n.imagenes, 'Imágenes', 'fondos, fotos de carta y logos', false, 'imagenes'],
+    ['videos', n.videos, 'Videos', 'alguien dice «es mío»', false, 'imagenes'],
+    ['pedidos', n.pedidos, 'Pedidos', primerPed ? PED_TIPO[primerPed.tipo] || primerPed.tipo : 'cuenta perdida, país, un video', false, 'pedidos'],
+  ].filter((x) => verSub[x[5]]);
+  const hora0 = new Date();
+  const saludo = hora0.getHours() < 12 ? 'Buenos días' : hora0.getHours() < 20 ? 'Buenas tardes' : 'Buenas noches';
+
+  let vista;
+  if (areaV === 'resumen') {
+    vista = (
       <>
-        {d.mis_roles && !d.mis_roles.includes('owner') ? <p className="db-rol">Entraste como <b>{(d.mis_roles || []).map((r) => ({ admin: 'Admin', asistente: 'Asistente', moderador: 'Moderador de la página' }[r] || r)).join(' y ')}</b>{d.yo ? ' (' + d.yo + ')' : ''}: ves {ve('ajustes') ? 'todo menos los roles' : [ve('reportes') ? 'los reportes' : ve('reportes_cerrar') ? 'los reportes (cerrarlos)' : '', ve('decidir') ? '✅ Decidir' : '', ve('fondos') ? 'los fondos y los videos' : ''].filter(Boolean).join(', ')}. Lo que hagas queda con tu nombre.</p> : null}
-        <nav className="db-tabs" role="tablist" aria-label="El Dashboard">{PESTANAS.filter(([k]) => verTab[k]).map(([k, n]) => (
-          <button key={k} type="button" role="tab" aria-selected={tabV === k} className={'db-tab' + (tabV === k ? ' on' : '')} onClick={() => elegir(k)}>
-            {n}{cuenta[k] ? <i aria-label={cuenta[k] === 1 ? 'una cosa' : cuenta[k] + ' cosas'}>{cuenta[k]}</i> : null}
-          </button>
-        ))}</nav>
-        {tabV === 'hoy' ? <>
-          {sec('LO QUE PIDE ATENCIÓN', null, <Atencion xs={at} />)}
-          {ve('ajustes') ? sec('LO QUE AVISÓ LOGS', 'los 🔴 y ⚠️ de los últimos 3 días', <Logs l={logs} />) : null}
-          {ve('ajustes') ? sec('MES AWARDS', 'los nominados del mes', <MesAwardsDueno aj={d.ajustes || {}} hacer={hacer} ocup={ocup} />) : null}
-          {(d.vivo || []).length ? sec('EN VIVO AHORA', 'se actualiza al abrir el Dashboard',
-            <EnVivo vivo={d.vivo} liga={liga} aj={d.ajustes || {}} chat={d.chat} />) : null}
-          {sec('LO QUE TE LLEGÓ', null, <Llego d={d} alFondos={(fs) => cambiarD({ fondos: fs })} alFiltro={(fl) => cambiarD({ filtro: fl })} alFotos={(x) => cambiarD({ fotos_carta: x })} />)}
-          {ve('ajustes') ? sec('ATAJOS', null, <ul className="db-atajos">{ATAJOS.map(([t, h]) => (
-            <li key={h}><a href={h} target={h[0] === '/' ? undefined : '_blank'} rel={h[0] === '/' ? undefined : 'noopener noreferrer'}>{t} ↗</a></li>
-          ))}</ul>) : null}
-        </> : null}
-        {tabV === 'reportes' ? sec('PEDIDOS DE LA GENTE', 'perdí mi cuenta, mi país, un video…',
+        <div className="dz-cab"><h2 className="dz-h1">{saludo}{d.yo ? ', ' + d.yo : ''}</h2></div>
+        {/* 💚 la salud en una frase */}
+        {ve('ajustes') ? (
+          <div className={'dz-salud' + (sal.ok ? '' : ' mal')}>
+            <span className="dz-pt" aria-hidden="true" />
+            <p>{sal.ok ? <b>Todo anda.</b> : <b>Ojo: {sal.mal.join(' · ')}.</b>} {sal.partes.join(' · ')}{sal.partes.length ? '.' : ''}</p>
+            <button type="button" className="dz-lnk" onClick={() => ir('salud')}>Ver la salud</button>
+          </div>
+        ) : null}
+        {/* 🟥 lo prioritario primero, en cuadrados (Dlx: «lo que me gusta de B es que aparece lo prioritario primero… en cuadrados») */}
+        <section className="dz-dec" aria-label="Para decidir">
+          <h3 className="dz-h">Para decidir{total ? <span> · {total}</span> : null}</h3>
+          <div className="dz-cuadros">{CUADROS.map(([k, c, t, s, urg, a]) => (
+            <button key={k} type="button" className={'dz-cuadro' + (c ? (urg ? ' urg' : ' ojo') : ' cero')} onClick={() => ir('pendientes', '', a)}>
+              <b>{c || '✓'}</b><span>{t}</span><small>{c ? s : 'al día'}</small>
+            </button>
+          ))}</div>
+        </section>
+        {/* lo que pide atención, con un botón que lleva a donde se arregla */}
+        {at.length ? (
+          <ul className="dz-at">{at.map(([ic, t, s, a, an]) => (
+            <li key={t}><span aria-hidden="true">{ic}</span><div><b>{t}</b>{s ? <small>{s}</small> : null}</div>
+              {a ? <button type="button" className="btn borde2 chico" onClick={() => ir(a, an)}>Ir</button> : null}</li>
+          ))}</ul>
+        ) : null}
+        <div className="dz-dos">
+          <section className="dz-caja">
+            <h3 className="dz-h">Desde tu última visita{prev ? <small>{hace(prev)}</small> : null}</h3>
+            {!nuevo ? <p className="db-tx">Es la primera vez que lo abres así: desde la próxima, acá aparece lo que pasó mientras no estabas.</p>
+              : !nuevo.length ? <p className="db-tx">Nada nuevo desde entonces.</p>
+                : <ul className="dz-lista">{nuevo.map(([t, tx, a, s]) => (
+                  <li key={t + tx}><span className="dz-hora">{hora(new Date(t))}</span><button type="button" className="dz-lnk" onClick={() => ir(a, '', s)}>{tx}</button></li>
+                ))}</ul>}
+          </section>
+          <section className="dz-caja">
+            <h3 className="dz-h">Lo que está programado</h3>
+            {prog.length ? <ul className="dz-lista">{prog.map(([t, s, a, an]) => (
+              <li key={t}><span><b>{t}</b> · {s}</span><button type="button" className="dz-lnk" onClick={() => ir(a, an)}>Cambiar</button></li>
+            ))}</ul> : <p className="db-tx">Nada programado ni prendido a mano.</p>}
+          </section>
+        </div>
+        {(d.vivo || []).length ? sec('', 'EN VIVO AHORA', 'se pone al día solo', <EnVivo vivo={d.vivo} liga={liga} aj={aj} chat={d.chat} />) : null}
+        {sec('', 'ESTA SEMANA', u.desde ? 'contra la anterior · desde el ' + corto(u.desde) : 'contra la anterior', <Cajas u={u} />)}
+      </>
+    );
+  } else if (areaV === 'pendientes') {
+    vista = (
+      <>
+        <div className="dz-subs" role="tablist" aria-label="Las colas">{SUBP.filter(([k]) => verSub[k]).map(([k, t]) => (
+          <button key={k} type="button" role="tab" aria-selected={subV === k} className={'dz-sub' + (subV === k ? ' on' : '')} onClick={() => setSub(k)}>
+            {t}{nSub[k] ? <i>{nSub[k]}</i> : null}</button>
+        ))}</div>
+        {subV === 'quien' ? sec('', '¿QUIÉN ES QUIÉN?', 'las preguntas de ✅ Decidir', <Decisiones dec={d.decidir} liga={liga} alCambiar={(y) => cambiarD({ decidir: y })} />) : null}
+        {/* sin cabecera propia: `Reportes` ya trae la suya («Errores en las llaves») */}
+        {subV === 'llaves' ? <section className="act">
+          {(d.reportes || []).length ? <div className="db-llego"><Reportes rep={d.reportes} liga={liga} alCambiar={(l) => cambiarD({ reportes: l })} corrige={ve('reportes')} /></div>
+            : <p className="pronto-p">Nadie reportó nada en los últimos 14 días.</p>}</section> : null}
+        {subV === 'imagenes' ? sec('', 'IMÁGENES Y VIDEOS', 'fondos, fotos de carta, logos de crews y videos',
+          <Llego d={d} alFondos={(fs) => cambiarD({ fondos: fs })} alFiltro={(fl) => cambiarD({ filtro: fl })} alFotos={(x) => cambiarD({ fotos_carta: x })} />) : null}
+        {subV === 'pedidos' ? sec('', 'PEDIDOS DE LA GENTE', 'perdí mi cuenta, mi país, un video…',
           <Pedidos ps={d.pedidos || []} liga={liga} alCambiar={(y) => cambiarD({ pedidos: y })} />) : null}
-        {tabV === 'reportes' ? sec('ERRORES REPORTADOS EN LAS LLAVES', 'se borran a los 14 días',
-          (d.reportes || []).length ? <div className="db-llego"><Reportes rep={d.reportes} liga={liga} alCambiar={(l) => cambiarD({ reportes: l })} corrige={ve('reportes')} /></div>
-            : <p className="pronto-p">Nadie reportó nada en los últimos 14 días.</p>) : null}
-        {tabV === 'decisiones' ? sec('✅ DECIDIR', 'las mismas preguntas que la hoja', <Decisiones dec={d.decidir} liga={liga} alCambiar={(y) => cambiarD({ decidir: y })} />) : null}
-        {tabV === 'ajustes' ? sec(ve('roles') ? 'CONFIGURACIÓN · SÓLO TÚ' : 'CONFIGURACIÓN', null,
-          <Ajustes liga={liga} aj={d.ajustes || {}} chat={d.chat} hist={d.ajustes_hist} hacer={hacer} msg={msg} ocup={ocup}
-            roles={d.roles} alRoles={(y) => cambiarD({ roles: y })} conRoles={ve('roles')} />) : null}
-        {tabV === 'ajustes' && ve('ajustes') ? sec('PROMOS A MANO', 'agregar y sacar', <PromosMano aj={d.ajustes || {}} hacer={hacer} ocup={ocup} />) : null}
-        {tabV === 'numeros' ? <>
-          {sec('COMPARAR SEMANAS', 'de lunes a domingo, en hora del este', <CompararSemanas S={semanas} uso={d.uso_semanas} liga={liga} />)}
-          {ve('ajustes') ? sec('LOS TIERS · CÓMO TRABAJA CADA SERVIDOR', 'recomienda; tú eliges', <Tiers T={d.tiers} aj={d.ajustes || {}} hacer={hacer} ocup={ocup} msg={msg} liga={liga} />) : null}
-          {sec('EL BOT Y LA PÁGINA · 7 DÍAS', u.desde ? 'se cuenta desde el ' + corto(u.desde) : null, <Cajas u={u} />)}
-          {(d.dias || []).length ? sec('DÍA POR DÍA · DOS SEMANAS', null, <Dias dias={d.dias} />) : null}
-          {d.tutorial && Object.keys(d.tutorial.n || {}).length ? sec('EL TUTORIAL · DOS SEMANAS',
-            d.tutorial.desde ? 'se cuenta desde el ' + corto(d.tutorial.desde) : null, <TutorialNumeros t={d.tutorial} />) : null}
-          {d.secciones && Object.keys(d.secciones.n || {}).length ? sec('QUÉ SECCIONES SE ABREN · 7 DÍAS',
-            d.secciones.desde ? 'se cuenta desde el ' + corto(d.secciones.desde) : null, <SeccionesNumeros s={d.secciones} />) : null}
-          {d.secciones && Object.keys(d.secciones.n || {}).some((k) => /^[ip]-/.test(k)) ? sec('QUÉ SE TOCA EN EL INICIO · 7 DÍAS', null,
-            <SeccionesNumeros s={d.secciones} toques />) : null}
-          {d.clics ? sec('QUÉ SE TOCA EN TODA LA PÁGINA · 7 DÍAS', d.clics.desde ? 'se cuenta desde el ' + corto(d.clics.desde) : null,
-            <ClicsNumeros c={d.clics} />) : null}
-          {sec('¿EL LOBBY HACE VOLVER A LA GENTE?', 'la meta del research', <MetaLobby r={retencion} />)}
-          {d.crews_num ? sec('LAS CREWS · 7 DÍAS', 'contra los 7 de antes', <CrewsNumeros c={d.crews_num} />) : null}
-          {d.pase ? sec('EL PASE DE RAPERO', d.pase.semana ? 'la semana del ' + corto(d.pase.semana) : null, <PaseNumeros p={d.pase} liga={liga} />) : null}
-        </> : null}
-        {tabV === 'sistema' ? <>
-          {sec('LO QUE GASTA CLOUDFLARE HOY', 'el plan gratis', <Cuotas q={cuotas} />)}
-          {sec('ERRORES DE LA PÁGINA · 7 DÍAS', 'nunca de quién', <ErroresPagina e={d.errores_pag} />)}
-          {sec('CÓMO ANDA TODO', null, <><Corridas corridas={d.corridas} s={d.sistema || {}} github={d.github} /><Sistema s={d.sistema || {}} sesiones={d.sesiones} /></>)}
-        </> : null}
+      </>
+    );
+  } else if (areaV === 'servidores') {
+    vista = (
+      <>
+        {sec('sv-cada', 'CADA SERVIDOR', 'el multiplicador, el bot en vivo, las apuestas y el aviso de cada uno',
+          <><AjServidores liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} />{msg ? <p className="db-msg" role="status">{msg}</p> : null}</>)}
+        {sec('sv-tiers', 'LOS TIERS · CÓMO TRABAJA CADA SERVIDOR', 'recomienda; tú eliges', <Tiers T={d.tiers} aj={aj} hacer={hacer} ocup={ocup} msg={msg} liga={liga} />)}
+      </>
+    );
+  } else if (areaV === 'web') {
+    vista = (
+      <>
+        {msg ? <p className="db-msg dz-msg" role="status">{msg}</p> : null}
+        {sec('', 'AVISOS', null, <div className="db-ajs">
+          <div id="aj-campana"><AjCampana aj={aj} hacer={hacer} ocup={ocup} /></div>
+          <div id="aj-aviso"><AjAviso liga={liga} aj={aj} hacer={hacer} ocup={ocup} /></div>
+          <div id="aj-avisos" className="db-aj-ancho"><AjAvisos liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} general /></div>
+        </div>)}
+        {sec('', 'EL BOT EN VIVO', 'lo de cada servidor está en Servidores', <div className="db-ajs">
+          <div id="aj-vivo"><AjVivo liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} general /></div>
+          <div id="aj-ritmo"><AjRitmo aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} /></div>
+          <div id="aj-silencio"><AjSilencio aj={aj} hacer={hacer} ocup={ocup} /></div>
+          <div id="aj-apuestas"><AjApuestas liga={liga} aj={aj} hacer={hacer} ocup={ocup} chat={d.chat} general /></div>
+        </div>)}
+        {sec('', 'EL PASE Y LAS CREWS', null, <div className="db-ajs">
+          <div id="aj-sorteo"><AjSorteo liga={liga} aj={aj} hacer={hacer} ocup={ocup} /></div>
+          <div id="aj-crews" className="db-aj-ancho"><AjCrews liga={liga} aj={aj} hacer={hacer} ocup={ocup} /></div>
+        </div>)}
+        {sec('aj-mes', 'MES AWARDS', 'los nominados del mes', <MesAwardsDueno aj={aj} hacer={hacer} ocup={ocup} />)}
+        {sec('aj-promos', 'PROMOS A MANO', 'agregar y sacar', <PromosMano aj={aj} hacer={hacer} ocup={ocup} />)}
+      </>
+    );
+  } else if (areaV === 'numeros') {
+    vista = (
+      <>
+        {sec('nu-uso', 'EL BOT Y LA PÁGINA · 7 DÍAS', u.desde ? 'se cuenta desde el ' + corto(u.desde) : null, <Cajas u={u} />)}
+        {sec('nu-semanas', 'COMPARAR SEMANAS', 'de lunes a domingo, en hora del este', <CompararSemanas S={semanas} uso={d.uso_semanas} liga={liga} />)}
+        {(d.dias || []).length ? sec('', 'DÍA POR DÍA · DOS SEMANAS', null, <Dias dias={d.dias} />) : null}
+        {sec('nu-lobby', '¿EL LOBBY HACE VOLVER A LA GENTE?', 'la meta del research', <MetaLobby r={retencion} />)}
+        {d.pase ? sec('nu-pase', 'EL PASE DE RAPERO', d.pase.semana ? 'la semana del ' + corto(d.pase.semana) : null, <PaseNumeros p={d.pase} liga={liga} />) : null}
+        {d.crews_num ? sec('nu-crews', 'LAS CREWS · 7 DÍAS', 'contra los 7 de antes', <CrewsNumeros c={d.crews_num} />) : null}
+        {d.tutorial && Object.keys(d.tutorial.n || {}).length ? sec('nu-tuto', 'EL TUTORIAL · DOS SEMANAS',
+          d.tutorial.desde ? 'se cuenta desde el ' + corto(d.tutorial.desde) : null, <TutorialNumeros t={d.tutorial} />) : null}
+        {d.secciones && Object.keys(d.secciones.n || {}).length ? sec('nu-clics', 'QUÉ SECCIONES SE ABREN · 7 DÍAS',
+          d.secciones.desde ? 'se cuenta desde el ' + corto(d.secciones.desde) : null, <SeccionesNumeros s={d.secciones} />) : null}
+        {d.secciones && Object.keys(d.secciones.n || {}).some((k) => /^[ip]-/.test(k)) ? sec('', 'QUÉ SE TOCA EN EL INICIO · 7 DÍAS', null,
+          <SeccionesNumeros s={d.secciones} toques />) : null}
+        {d.clics ? sec('', 'QUÉ SE TOCA EN TODA LA PÁGINA · 7 DÍAS', d.clics.desde ? 'se cuenta desde el ' + corto(d.clics.desde) : null,
+          <ClicsNumeros c={d.clics} />) : null}
+      </>
+    );
+  } else if (areaV === 'salud') {
+    vista = (
+      <>
+        {sec('sa-corridas', 'CÓMO ANDA TODO', 'se pone al día solo', <><Corridas corridas={d.corridas} s={d.sistema || {}} github={d.github} /><Sistema s={d.sistema || {}} sesiones={d.sesiones} /></>)}
+        {sec('sa-cuotas', 'LO QUE GASTA CLOUDFLARE HOY', 'el plan gratis · se renueva a las 8 PM', <Cuotas q={cuotas} />)}
+        {sec('sa-logs', 'LO QUE AVISÓ LOGS', 'los 🔴 y ⚠️ de los últimos 3 días', <Logs l={logs} />)}
+        {sec('sa-errores', 'ERRORES DE LA PÁGINA · 7 DÍAS', 'nunca de quién', <ErroresPagina e={d.errores_pag} />)}
+        {sec('sa-atajos', 'ATAJOS', null, <ul className="db-atajos">{ATAJOS.map(([t, h]) => (
+          <li key={h}><a href={h} target={h[0] === '/' ? undefined : '_blank'} rel={h[0] === '/' ? undefined : 'noopener noreferrer'}>{t} ↗</a></li>
+        ))}</ul>)}
+      </>
+    );
+  } else {
+    vista = (
+      <>
+        {sec('hi-hist', 'LOS ÚLTIMOS CAMBIOS', 'deshacer vuelve a como estaba', <Historial hist={d.ajustes_hist} hacer={hacer} ocup={ocup} />)}
+        {ve('roles') ? sec('hi-roles', 'ROLES DE LA PÁGINA', 'sólo tú los pones', <Roles roles={d.roles} alCambiar={(y) => cambiarD({ roles: y })} />) : null}
       </>
     );
   }
-  const [panel, setPanel] = useState(() => !panelCerrado());
+  const titulo = (AREAS.find(([k]) => k === areaV) || [])[1];
   return (
-    <section className="sec db">
+    <section className="sec db dz" ref={raiz}>
       <style>{ESTILO}</style>
-      <div className="sec-t"><h1>Dashboard</h1>
-        {st.d && !panel ? <button type="button" className="btn borde2 chico" onClick={() => { panelPoner(true); setPanel(true); }}>Mostrarlo en el Inicio</button> : null}
+      {d.mis_roles && !d.mis_roles.includes('owner') ? <p className="db-rol">Entraste como <b>{(d.mis_roles || []).map((r) => ({ admin: 'Admin', asistente: 'Asistente', moderador: 'Moderador de la página' }[r] || r)).join(' y ')}</b>{d.yo ? ' (' + d.yo + ')' : ''}: lo que hagas queda con tu nombre.</p> : null}
+      <div className="dz-marco">
+        <nav className="dz-nav" aria-label="Áreas del Dashboard">
+          <div className="dz-marca"><small>UNDER LEGENDS · {liga.temp}</small><b>Dashboard</b></div>
+          {AREAS.filter(([k]) => visibles[k]).map(([k, t, ic]) => {
+            const c = k === 'pendientes' ? total : 0;
+            return (
+              <button key={k} type="button" className={'dz-a' + (areaV === k ? ' on' : '')} aria-current={areaV === k ? 'page' : undefined} onClick={() => ir(k)}>
+                <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" aria-hidden="true"><path d={ic} /></svg>{t}</span>
+                {c ? <i>{c}</i> : null}
+              </button>
+            );
+          })}
+        </nav>
+        <div className="dz-der">
+          <div className="dz-top">
+            <button type="button" className="dz-bbtn" onClick={() => setBuscar(true)}><Ico n="buscar" t={16} /><span>Busca un ajuste o una acción</span><kbd>Ctrl K</kbd></button>
+            <span className="dz-act">{actualizado ? 'Actualizado ' + hace(actualizado) + ((areaV === 'resumen' || areaV === 'salud') ? ' · se pone al día solo' : '') : ''}</span>
+            {!panel ? <button type="button" className="btn borde2 chico" onClick={() => { panelPoner(true); setPanel(true); }}>Mostrarlo en el Inicio</button> : null}
+          </div>
+          {areaV !== 'resumen' ? <h2 className="dz-h1">{titulo}</h2> : null}
+          {vista}
+        </div>
       </div>
-      {cuerpo}
+      <BuscarTodo abierto={buscar} cerrar={() => setBuscar(false)} ir={ir} visibles={visibles} />
+      {aviso ? (
+        <div className="dz-toast" role="status">
+          <span>{aviso.ok}</span>
+          {aviso.puede ? <button type="button" onClick={deshacer}>Deshacer</button> : null}
+          <button type="button" className="dz-tx" aria-label="Cerrar" onClick={cerrarAviso}><Ico n="cerrar" t={14} /></button>
+        </div>
+      ) : null}
     </section>
   );
 }
