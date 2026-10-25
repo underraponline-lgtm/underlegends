@@ -1,45 +1,45 @@
 {
  "v": 1,
- "cuando": "2026-10-25T07:19:42Z",
+ "cuando": "2026-10-25T16:11:31Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 872.7,
+ "dur_s": 1835.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.3
+   "s": 8.4
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.6
+   "s": 7.9
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.8
+   "s": 30.0
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": false,
-   "s": 774.4
+   "s": 1719.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 4.3
+   "s": 12.0
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 55.3
+   "s": 57.5
   }
  ],
  "fallas": [
@@ -53,35 +53,59 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Majiztral"
+   "que": "03_Servidor/generar.py Ezias🥈✒️🧢🐍"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Majiztral"
+   "que": "03_Servidor/generar.py Filozico"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Krish"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Kravitz"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py NXUZ"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py NXUZ"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Soulb"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Soulb"
   }
  ],
  "ultimo_evento": {
-  "n": "511",
-  "nombre": "GRISELDA RECORDS VOL. 6",
-  "sv": "DDF",
-  "dia": "2026-10-25"
+  "n": "512",
+  "nombre": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",
+  "sv": "FFA",
+  "dia": "2026-10-24"
  },
  "cuotas": {
   "kv": {
-   "write": 198,
-   "read": 25740
+   "write": 226,
+   "read": 27866
   },
   "objeto": {
-   "leidas": 859435,
-   "escritas": 6481,
-   "pedidos": 3111
+   "leidas": 1180080,
+   "escritas": 10175,
+   "pedidos": 4655
   },
   "worker": {
-   "pedidos": 6700,
+   "pedidos": 6661,
    "errores": 0,
-   "sub": 8336,
-   "p50_ms": 1.31,
-   "p99_ms": 9.93
+   "sub": 8251,
+   "p50_ms": 1.29,
+   "p99_ms": 9.99
   },
   "r2": {
    "objetos": 4920,
