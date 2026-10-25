@@ -62,9 +62,9 @@ function Cajas({ u }) {
     ['ABRIERON LA PÁGINA', s.visitas_dia, antes(s.visitas_dia, a.visitas_dia) ?? 'celus o compus por día, en promedio'],
   ];
   return (
-    <div className="act-4">{cajas.map(([t, v, d]) => (
-      <div key={t}><span>{t}</span><b>{num(v || 0)}</b>
-        {typeof d === 'number' ? <small className={d > 0 ? 'db-sube' : d < 0 ? 'db-baja' : ''}>{d > 0 ? '▲ ' : d < 0 ? '▼ ' : '= '}{num(Math.abs(d))} contra la semana anterior</small>
+    <div className="dz-nums">{cajas.map(([t, v, d]) => (
+      <div key={t} className="dz-num"><span>{t.toLowerCase()}</span><b>{num(v || 0)}</b>
+        {typeof d === 'number' ? <small className={d > 0 ? 'sube' : d < 0 ? 'baja' : ''}>{d > 0 ? '▲ ' : d < 0 ? '▼ ' : '= '}{num(Math.abs(d))} contra la semana anterior</small>
           : <small>{d}</small>}</div>
     ))}</div>
   );
@@ -614,7 +614,7 @@ function SumarServidor({ T, aj, hacer, ocup }) {
         <input value={f.g} onChange={set('g')} placeholder="ID del servidor de Discord" inputMode="numeric" aria-label="ID del servidor" />
         <input value={f.tag} onChange={set('tag')} placeholder="Etiqueta (opcional)" maxLength={24} aria-label="Etiqueta" />
         <select value={f.t} onChange={set('t')} aria-label="Tier">{[1, 2, 3].map((t) => <option key={t} value={t}>Tier {t}</option>)}</select>
-        <button type="submit" className="btn chico" disabled={ocup}>Sumar</button>
+        <button type="submit" className="btn verde chico" disabled={ocup}>Sumar</button>
       </div>
       <small>Entra confirmado y con lo que da su tier; después le cambias los beneficios en su caja. Sumar al ranking pide sumarlo al
         código (pídeselo a Claude): hasta entonces sus llaves no suman. El bot tiene que estar adentro para leer sus anuncios.</small>
@@ -2950,6 +2950,41 @@ function DetalleLlave({ it, liga, d, alCambiar, corrige }) {
   );
 }
 
+// 🙋 un pedido: lo que pide, lo que el bot vio de las dos cuentas y Sí / No (el mismo pedido que la lista de antes)
+function DetallePedido({ p, liga, alCambiar }) {
+  const [ocup, setOcup] = useState(false);
+  const [msg, setMsg] = useState('');
+  const f = p.k ? liga.T[p.k] : null;
+  const pr = p.prueba || {};
+  const resolver = (si) => {
+    setOcup(true); setMsg('');
+    fetch('/api/avisos/dueno-pedido', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: p.id, si }) })
+      .then(async (r) => ({ r, j: await r.json().catch(() => ({})) }))
+      .then(({ r, j }) => { if (r.ok && j.pedidos) alCambiar(j.pedidos); else { setOcup(false); setMsg(j.error === 'no' ? 'No tienes permiso.' : 'No pude: ' + (j.error || r.status)); } })
+      .catch(() => { setOcup(false); setMsg('No pude: la red.'); });
+  };
+  const filas = [
+    ['Quién', f ? <a key="q" href={'#/r/' + p.k}>{limpio(f.n)}</a> : p.k || '—'],
+    p.cc ? ['País que pide', p.cc.toUpperCase()] : null,
+    p.tipo === 'cuenta' ? ['La cuenta que pide', <Fragment key="c">{pr.usuario ? '@' + pr.usuario : 'sin nombre'}{pr.creada ? ' · creada el ' + pr.creada : ''} · {pr.en_dra === false ? 'no está en DRA'
+      : 'en DRA' + (pr.apodo_dra ? ' como «' + pr.apodo_dra + '»' : '') + (pr.miembro ? ', con el Miembro' : ', sin el Miembro')}</Fragment>] : null,
+    p.vid ? ['El video', <a key="v" href={'https://youtu.be/' + p.vid} target="_blank" rel="noopener noreferrer">abrirlo ↗</a>] : null,
+  ].filter(Boolean);
+  return (
+    <>
+      {p.texto ? <blockquote className="dz-cita">«{p.texto}»</blockquote> : null}
+      <dl className="dz-dl">{filas.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
+      {p.tipo === 'cuenta' ? <Vieja v={pr.vieja} /> : null}
+      <div className="dz-acc">
+        <button type="button" className="btn verde" disabled={ocup} onClick={() => resolver(true)}>{PED_SI[p.tipo] || 'Sí'}</button>
+        <button type="button" className="btn borde2" disabled={ocup} onClick={() => resolver(false)}>No</button>
+      </div>
+      <p className="dz-dt-tx">{p.tipo === 'identidad' ? 'Éste lo arreglas tú: «Ya lo arreglé» es para cuando está hecho.' : p.tipo === 'video' ? 'El video se saca solo.' : 'Lo aplica el ciclo en su próxima vuelta.'}</p>
+      {msg ? <p className="dz-dt-msg" role="alert">{msg}</p> : null}
+    </>
+  );
+}
+
 // ❓ una pregunta de ✅ Decidir, con la llave al lado
 function DetalleQuien({ it, d, alCambiar }) {
   const p = it.p;
@@ -3044,7 +3079,7 @@ function Bandeja({ d, liga, ve, cambiarD, sub }) {
               {it.tipo === 'llave' ? <DetalleLlave key={it.k} it={it} liga={liga} d={d} alCambiar={alCambiar} corrige={ve('reportes')} /> : null}
               {it.tipo === 'imagen' ? <DetalleImagen key={it.k} it={it} alCambiar={alCambiar} motivo={motivo} setMotivo={setMotivo} /> : null}
               {it.tipo === 'video' ? <DetalleVideo key={it.k} it={it} alCambiar={alCambiar} /> : null}
-              {it.tipo === 'pedido' ? <Pedidos key={it.k} ps={[it.ped]} liga={liga} alCambiar={(y) => alCambiar({ pedidos: y })} /> : null}
+              {it.tipo === 'pedido' ? <DetallePedido key={it.k} p={it.ped} liga={liga} alCambiar={(y) => alCambiar({ pedidos: y })} /> : null}
               <p className="dz-teclas">J / K para moverte · A aprobar · R rechazar · / buscar</p>
             </> : <p className="db-tx">Elige algo de la lista.</p>}
           </article>
@@ -3534,7 +3569,9 @@ export function Dashboard({ dc, liga }) {
   };
   const total = n.quien + n.llaves + n.imagenes + n.videos + n.pedidos;
   const nSub = { quien: n.quien, llaves: n.llaves, imagenes: n.imagenes + n.videos, pedidos: n.pedidos };
-  const sec = (id, titulo, em, hijo) => <section className="act" id={id || undefined}><div className="mis-cab"><span>{titulo}</span>{em ? <em>{em}</em> : null}</div>{hijo}</section>;
+  // una sección del Dashboard: el mismo título y la misma caja que lo nuevo (antes la barrita fina del Inicio, con el
+  // subtítulo en magenta: dos estilos de título en la misma página)
+  const sec = (id, titulo, em, hijo) => <section className="dz-sec" id={id || undefined}><h3 className="dz-h">{titulo}{em ? <small>{em}</small> : null}</h3>{hijo}</section>;
   const at = atencion(d, liga, cuotas, logs);
   const sal = saludDe(d, cuotas);
   const nuevo = desdeVisita(d, prev, logs);
