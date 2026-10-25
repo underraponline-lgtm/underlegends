@@ -20,30 +20,43 @@ export const TIER = [
   ['Platino', '#39C6E8', 'hex', 4], ['Diamante', '#8B5CF6', 'hex', 4], ['Esmeralda', '#22C55E', 'oct', 4], ['Rubí', '#E11D48', 'oct', 4],
 ];
 const UNICO = ['Único', '#E7B622', 'oct', 4];
-const ROLES_UNO = 3; // los de un solo nivel (los roles, Fundador, Líder de crew) se dibujan en Oro
+const ROLES_UNO = 3; // los de un solo nivel (los roles, Fundador, Líder de crew) cuentan como Oro para ordenar
+// 🛡️ LOS DE UN SOLO NIVEL, CADA UNO CON SU COLOR Y EN ESCUDO (Dlx, 25/10/2026: «desde aquí lejos no puedo entender los
+// emblemas que tengo… simplemente que son dorados»). Todos salían en el Oro de los niveles, y cinco círculos dorados
+// iguales no dicen nada. El escudo no es ninguna forma de nivel: se lee como «rol», no como «llegó a Oro»
+const ROL_COLOR = {
+  admin: '#FF5A5F', moderador: '#3B82F6', asistente: '#29B298', socio: '#A78BFA', staff: '#F59E0B', organizador: '#22C55E',
+  jurado: '#CBD5E1', host: '#EC4899', fundador: '#A3E635', lider: '#E41373',
+};
 
 // 🎨 el dibujo de un emblema en su nivel: la forma y el color dicen el nivel, sin número
-export function Arte({ g, t, px = 28, lock = false, unico = false }) {
-  const [, c0, forma, gemas] = unico ? UNICO : TIER[Math.max(0, Math.min(TIER.length - 1, t))];
-  const c = lock && t === 0 ? '#4A4A50' : c0;
+export function Arte({ g, t, px = 28, lock = false, unico = false, rol = '' }) {
+  const [, c0, forma0, gemas0] = unico ? UNICO : TIER[Math.max(0, Math.min(TIER.length - 1, t))];
+  const forma = !unico && ROL_COLOR[rol] ? 'escudo' : forma0;
+  const gemas = forma === 'escudo' ? 0 : gemas0;
+  const c = lock && t === 0 ? '#4A4A50' : forma === 'escudo' ? ROL_COLOR[rol] : c0;
+  // el borde, finito: lo que se tiene que leer de lejos es el dibujo de adentro (antes el aro se comía la mitad)
   let base;
-  if (forma === 'circ') base = <><circle cx="20" cy="20" r="18" fill={c} /><circle cx="20" cy="20" r="14.5" fill="#15151A" /></>;
+  if (forma === 'circ') base = <><circle cx="20" cy="20" r="18.5" fill={c} /><circle cx="20" cy="20" r="15.5" fill="#15151A" /></>;
   else if (forma === 'anillo') {
-    base = <><circle cx="20" cy="20" r="18" fill="none" stroke={c} strokeWidth="2" /><circle cx="20" cy="20" r="15" fill={c} />
-      <circle cx="20" cy="20" r="11.5" fill="#15151A" /></>;
+    base = <><circle cx="20" cy="20" r="18.5" fill="none" stroke={c} strokeWidth="1.6" /><circle cx="20" cy="20" r="16" fill={c} />
+      <circle cx="20" cy="20" r="13.2" fill="#15151A" /></>;
   } else if (forma === 'hex') {
-    base = <><polygon points="20,2 35.6,11 35.6,29 20,38 4.4,29 4.4,11" fill={c} />
-      <polygon points="20,7 31.3,13.5 31.3,26.5 20,33 8.7,26.5 8.7,13.5" fill="#15151A" /></>;
+    base = <><polygon points="20,1.5 36,10.75 36,29.25 20,38.5 4,29.25 4,10.75" fill={c} />
+      <polygon points="20,5.5 32.5,12.75 32.5,27.25 20,34.5 7.5,27.25 7.5,12.75" fill="#15151A" /></>;
+  } else if (forma === 'escudo') {
+    base = <><path d="M20 1.5 L37 7 L37 19 C37 29 29.5 35.5 20 38.5 C10.5 35.5 3 29 3 19 L3 7 Z" fill={c} />
+      <path d="M20 5.2 L33.6 9.6 L33.6 19 C33.6 27 27.6 32.2 20 34.8 C12.4 32.2 6.4 27 6.4 19 L6.4 9.6 Z" fill="#15151A" /></>;
   } else {
     base = <><polygon points="13,2 27,2 38,13 38,27 27,38 13,38 2,27 2,13" fill={c} />
-      <polygon points="15,7 25,7 33,15 33,25 25,33 15,33 7,25 7,15" fill="#15151A" /></>;
+      <polygon points="14.5,5.5 25.5,5.5 34.5,14.5 34.5,25.5 25.5,34.5 14.5,34.5 5.5,25.5 5.5,14.5" fill="#15151A" /></>;
   }
   const pts = !gemas ? [] : gemas === 2 ? [[20, 1.5], [20, 38.5]] : [[20, 1.5], [38.5, 20], [20, 38.5], [1.5, 20]];
   return (
     <svg className={'emb-arte' + (lock ? ' bloq' : '')} viewBox="0 0 40 40" width={px} height={px} aria-hidden="true">
       {base}
       {pts.map(([x, y]) => <polygon key={x + '-' + y} points={`${x},${y - 3} ${x + 3},${y} ${x},${y + 3} ${x - 3},${y}`} fill="#F6F6F6" stroke={c} strokeWidth=".8" />)}
-      <text x="20" y="21.5" textAnchor="middle" dominantBaseline="central" fontSize="17">{g}</text>
+      <text x="20" y="21.5" textAnchor="middle" dominantBaseline="central" fontSize="21">{g}</text>
     </svg>
   );
 }
@@ -90,7 +103,7 @@ const nivelDe = (esc, v) => { let n = -1; esc.forEach(([u], i) => { if (v >= u) 
  */
 export function emblemasDe(d) {
   const out = [];
-  const uno = (id) => { const e = POR_ID[id]; if (e) out.push({ id, g: e[1], n: e[2], que: e[3], esc: null, t: ROLES_UNO, v: 1, unico: id === 'owner' }); };
+  const uno = (id) => { const e = POR_ID[id]; if (e) out.push({ id, g: e[1], n: e[2], que: e[3], esc: null, t: ROLES_UNO, v: 1, unico: id === 'owner', rol: id }); };
   for (const r of d.roles || []) if (POR_ID[r] && !POR_ID[r][4]) uno(r);
   if (d.vd === 'pre') uno('fundador');
   if (d.crewRol === 'lider') uno('lider');
@@ -119,7 +132,7 @@ export function PildoraEmblemas({ xs, onAbrir }) {
   return (
     <button type="button" className="emb-pild" onClick={() => onAbrir(xs[0].id)}
       aria-label={'Sus emblemas: ' + xs.map((x) => x.n).join(', ')}>
-      {xs.slice(0, VISIBLES).map((x) => <span key={x.id} title={x.n}><Arte g={x.g} t={x.t} px={22} unico={x.unico} /></span>)}
+      {xs.slice(0, VISIBLES).map((x) => <span key={x.id} title={x.n}><Arte g={x.g} t={x.t} px={30} unico={x.unico} rol={x.rol} /></span>)}
       {mas > 0 ? <i className="emb-mas">+{mas}</i> : null}
     </button>
   );
@@ -149,7 +162,7 @@ export function PanelEmblemas({ xs, sel0, nombre, esYo, onCerrar }) {
           <div className="emb-grid">
             {xs.map((x) => (
               <button key={x.id} type="button" className={'emb-c' + (x.id === (e && e.id) ? ' on' : '')} aria-pressed={x.id === (e && e.id)}
-                onClick={() => setSel(x.id)} title={x.n}><Arte g={x.g} t={x.t} px={34} unico={x.unico} /></button>
+                onClick={() => setSel(x.id)} title={x.n}><Arte g={x.g} t={x.t} px={34} unico={x.unico} rol={x.rol} /></button>
             ))}
           </div>
           {faltan.length ? <>
@@ -161,7 +174,7 @@ export function PanelEmblemas({ xs, sel0, nombre, esYo, onCerrar }) {
         </div>
         {e ? (
           <div className="emb-det">
-            <Arte g={e.g} t={e.t} px={96} unico={e.unico} />
+            <Arte g={e.g} t={e.t} px={96} unico={e.unico} rol={e.rol} />
             <h4>{e.n}{e.esc ? ' · ' + TIER[e.t][0] : ''}</h4>
             <p className="emb-sub">{e.que}</p>
             {e.esc ? (

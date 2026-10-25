@@ -37,10 +37,63 @@ function vivo(hex) {
 }
 
 const svg64 = (s) => 'data:image/svg+xml;base64,' + btoa(s);
-const costura = (m) => ['trama', 8, 4, '<svg xmlns="http://www.w3.org/2000/svg" width="8" height="4"><rect width="8" height="4" fill="#1A1410"/><rect x="1" y="1.4" width="4.5" height="1.2" fill="' + m + '"/></svg>'];
-const eslabones = (m, grueso) => grueso
-  ? ['trama', 14, 14, '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"><rect width="14" height="14" fill="#030304"/><rect x="1.5" y="1.5" width="11" height="11" rx="4.5" fill="none" stroke="' + m + '" stroke-width="3"/></svg>']
-  : ['trama', 9, 9, '<svg xmlns="http://www.w3.org/2000/svg" width="9" height="9"><rect width="9" height="9" fill="#030304"/><rect x="1" y="1" width="7" height="7" rx="3" fill="none" stroke="' + m + '" stroke-width="1.8"/></svg>'];
+// ⛓️ LA CADENA, ESLABÓN POR ESLABÓN SOBRE EL CONTORNO DE LA CARTA (Dlx, 25/10/2026: «esta última foto de la cadena se ve
+// rara… fíjate bien»). Antes era una trama de anillos pegada con `feTile` a la franja del filtro: la trama no sabe
+// hacia dónde va el borde, así que los anillos salían cortados al azar y se leía como una malla, no como una cadena.
+// Ahora es un trazo que RECORRE la silueta de la Servidor (el pico de comun/siluetas.py, corrido hacia afuera), con dos
+// guiones alternados: el eslabón de frente (un óvalo con su agujero) y el de canto (una barrita), como se dibuja una
+// cadena. La imagen de R2 mide 300 × 459.75 en esas unidades y la carta empieza 54.75 más abajo (el escudo sobresale
+// arriba): medido sobre las cartas de Kravitz, Oasis, Makmah y Erian, iguales las cuatro
+const PICO = [[129.2, 0], [170.8, 0], [296.7, 30.4], [300, 356.5], [292, 365.4], [281.5, 369.4], [150, 405],
+  [18.5, 369.4], [8, 365.4], [0, 356.5], [3.3, 30.4]];
+const PICO_Y = 54.75, PICO_H = 459.75;
+// 🛡️ el escudo del servidor, que sobresale arriba: la cadena llega hasta él y no lo cruza (Dlx, 25/10/2026: «la cadena
+// está encima del logo del servidor»). Medido igual que el pico: centro (150, 60.4), radio 37.6 con su borde
+const ESCUDO = [150, 60.4, 37.6];
+// el contorno corrido `d` hacia afuera: cada lado se desplaza por su normal y los vértices son los cruces (el pico es
+// convexo, así que alcanza)
+function afuera(pts, d) {
+  const n = pts.length;
+  const lados = pts.map((a, i) => {
+    const b = pts[(i + 1) % n];
+    const dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1;
+    return [[a[0] + (dy / L) * d, a[1] - (dx / L) * d], [dx, dy]];
+  });
+  return lados.map((l, i) => {
+    const [p, r] = lados[(i + n - 1) % n], [q, t] = l;
+    const den = r[0] * t[1] - r[1] * t[0];
+    if (Math.abs(den) < 1e-9) return q;
+    const k = ((q[0] - p[0]) * t[1] - (q[1] - p[1]) * t[0]) / den;
+    return [p[0] + r[0] * k, p[1] + r[1] * k];
+  });
+}
+const CADENA_D = {};
+const cadenaD = (d) => (CADENA_D[d] = CADENA_D[d] || 'M' + afuera(PICO, d).map(([x, y]) => x.toFixed(2) + ',' + (y + PICO_Y).toFixed(2)).join(' L') + ' Z');
+function Cadena({ c, grueso, id }) {
+  // en unidades de la carta de 300: el eslabón de frente mide `L` de largo y `A` de ancho; el de canto, `A2` de grosor
+  const L = grueso ? 13 : 9, A = grueso ? 7 : 5, A2 = grueso ? 2.6 : 2, hueco = grueso ? 2.6 : 1.8;
+  const paso = L + A; // un eslabón de frente + uno de canto
+  const d = cadenaD(5.6 + A / 2);
+  const g = { d, fill: 'none', strokeLinecap: 'round', strokeLinejoin: 'round' };
+  // con la punta redonda, el guion de largo `L - A` termina midiendo `L`
+  const frente = (L - A) + ' ' + (paso - L + A);
+  const canto = (A + 4) + ' ' + (L - 4);
+  return (
+    <svg className="mk-cad" viewBox={'0 0 300 ' + PICO_H} preserveAspectRatio="none" aria-hidden="true">
+      <mask id={id} maskUnits="userSpaceOnUse" x="-30" y="-30" width="360" height={PICO_H + 60}>
+        <rect x="-30" y="-30" width="360" height={PICO_H + 60} fill="#fff" />
+        <circle cx={ESCUDO[0]} cy={ESCUDO[1]} r={ESCUDO[2] + 2.5} fill="#000" />
+      </mask>
+      <g mask={'url(#' + id + ')'}>
+      <path {...g} stroke={NEGRO} strokeWidth={A2 + 2} strokeDasharray={canto} strokeDashoffset={-(L - 2)} />
+      <path {...g} stroke={c} strokeWidth={A2} strokeDasharray={canto} strokeDashoffset={-(L - 2)} />
+      <path {...g} stroke={NEGRO} strokeWidth={A + 1.6} strokeDasharray={frente} />
+      <path {...g} stroke={c} strokeWidth={A} strokeDasharray={frente} />
+      <path {...g} stroke={NEGRO} strokeWidth={hueco} strokeDasharray={frente} />
+      </g>
+    </svg>
+  );
+}
 
 /** Las capas del contorno, de afuera hacia adentro: `[radio, relleno]`. La línea negra de adentro separa el metal de la carta */
 function capas(cl, tier, estilo, sv, cc) {
@@ -48,7 +101,8 @@ function capas(cl, tier, estilo, sv, cc) {
   if (cl === 't') return [[5.5, m], [3.5, NEGRO]];
   if (cl === 'c') return [[10, m], [8.5, NEGRO], [6, m], [3.5, NEGRO]];
   if (cl === 'p') return [[13, m], [11, cc ? ['bandera', cc] : m], [3.5, NEGRO]];
-  if (estilo === 'cadena') return [[tier === 'premium' ? 12 : 16, eslabones(m, tier !== 'premium')], [3.5, NEGRO]];
+  // la cadena se dibuja aparte (`Cadena`): el filtro pone sólo la línea negra que la separa de la carta
+  if (estilo === 'cadena') return [[3.5, NEGRO]];
   // la camiseta: el nivel 1, la franja del servidor con un hilo de metal; Plata y Oro, metal · servidor · metal
   return tier === 'premium' ? [[9.5, m], [8, sv], [3.5, NEGRO]] : [[12, m], [9, sv], [6, m], [3.5, NEGRO]];
 }
@@ -151,7 +205,7 @@ function Destellos() {
   ));
 }
 
-const ANILLO = { t: [5.5, 3.5], c: [10, 8.5], p: [13, 11], 's-camiseta': [12, 9], 's-cadena': [16, 3.5] };
+const ANILLO = { t: [5.5, 3.5], c: [10, 8.5], p: [13, 11], 's-camiseta': [12, 9], 's-cadena': [9, 3.5] };
 
 /**
  * Le pone a `img` (la carta ya armada) el marco `m` (`[marco, estilo, serie]` de `/avisos/pases`, ver
@@ -169,7 +223,8 @@ export function ConMarco({ m, cual, ancho, svColor, cc, children, src }) {
   const escala = Math.max(0.35, Math.min(1.3, ancho / 200));
   const c = METAL[tier];
   const plata = tier !== 'premium', oro = tier === 'oro';
-  const lista = capas(cl, tier, estilo, vivo(svColor || '#8B3DFF'), cc);
+  // ⛓️ en la mini no se dibujan eslabones (serían de 4 px): un canto de metal, como las otras
+  const lista = cl === 's' && estilo === 'cadena' && mini ? [[6, c], [3.5, NEGRO]] : capas(cl, tier, estilo, vivo(svColor || '#8B3DFF'), cc);
   const anillo = ANILLO[cl === 's' ? 's-' + estilo : cl];
   const fid = 'mk' + uid, bid = 'mkb' + uid;
   const piezas = [];
@@ -195,6 +250,7 @@ export function ConMarco({ m, cual, ancho, svColor, cc, children, src }) {
         </defs>
       </svg>
       <span className="mk-img" style={{ filter: 'url(#' + fid + ')' }}>{children}</span>
+      {cl === 's' && estilo === 'cadena' ? <Cadena c={c} grueso={plata} id={'mkc' + uid} /> : null}
       {oro && !chica && src ? <img className="mk-bri" src={src} alt="" style={{ filter: 'url(#' + bid + ')' }} /> : null}
       {piezas}
       {oro && !chica ? <Destellos /> : null}

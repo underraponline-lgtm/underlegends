@@ -1125,7 +1125,11 @@ export function CuadroMini({ liga, ll, lugar }) {
   if (!regular) return <CuadroRondas ll={ll} />;
   const { G } = M;
   // el campeón sólo si se ve la Final: si no, el «campeón» sería el ganador de otra ronda
-  const CAMP = conFinal ? M.CAMP : 0;
+  // 📐 y si con su columna las casillas quedan más angostas que 104, el campeón no entra: en el teléfono, adentro de la
+  // tarjeta abierta de Eventos (~280 px), salía cortado a la derecha (Dlx, 25/10/2026: «que todo esté bien
+  // posicionado»). Ahí el podio de arriba ya dice quién ganó
+  const entra = !M.lugar || (M.lugar - M.CAMP - rondas.length * G) / rondas.length >= 104;
+  const CAMP = conFinal && entra ? M.CAMP : 0;
   const W = M.lugar ? Math.max(104, Math.min(220, Math.floor((M.lugar - CAMP - rondas.length * G) / rondas.length))) : M.W;
   const R = mitad(rondas[0]);
   const n0 = rondas[0].b.length;
@@ -1178,12 +1182,12 @@ export function CuadroMini({ liga, ll, lugar }) {
   // la cara del campeón, a la altura de la línea de la final; abajo, el sello y el nombre
   const altoCamp = 124;
   const top = Math.max(0, yc - 32);
-  const total = conFinal ? Math.max(alto + 8, top + altoCamp) : alto + 8;
+  const total = conFinal && CAMP ? Math.max(alto + 8, top + altoCamp) : alto + 8;
   return (
     <div className="cm" style={{ width: ancho, height: total }}>
       <svg className="cm-l" width={ancho} height={total} aria-hidden="true">{lineas}</svg>
       {etiquetas}{cajas}
-      {conFinal ? (
+      {conFinal && CAMP ? (
         <div className="cm-camp" style={{ left: xc, top, width: CAMP }}>
           {campeon ? <Cara liga={liga} k={f ? f.k : ''} nombre={campeon} cls="cm-cara" /> : <span className="cm-cara ini">?</span>}
           <small>{campeon ? 'CAMPEÓN' : 'EN JUEGO'}</small>{campeon ? <b>{campeon}</b> : null}

@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "4.03",
+   "dia": "2026-10-25",
+   "cuando": "2026-10-25T13:49:58-04:00",
+   "titulo": "La cadena, los emblemas y todo en su lugar",
+   "items": [
+    "⛓️ **La cadena de la carta de Servidor ahora es una cadena**: eslabones que recorren el borde de la carta, y llega hasta el escudo del servidor sin taparlo.",
+    "🛡️ **Los emblemas se leen de lejos**: más grandes, con el dibujo más grande adentro, y los de un solo nivel (Staff, Socio, Organizador…) en escudo y con su propio color, en vez de todos dorados.",
+    "🃏 **Tu álbum muestra tus cartas** aunque todavía no hayas jugado esta temporada (antes salía «SIN CARTA» encima de las que sí tenías).",
+    "📐 **Cosas que estaban fuera de lugar**: en el celular, el campeón de la llave chica de Eventos ya no se corta; el gráfico de tu temporada en el perfil ya no encima el mes con «quedan N días»; y en una fila de cartas con marco, el marco de una ya no pisa el de al lado."
+   ]
+  },
+  {
    "version": "4.02",
    "dia": "2026-10-25",
    "cuando": "2026-10-25T13:03:27-04:00",

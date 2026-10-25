@@ -986,16 +986,22 @@ function TiraTemporada({ liga, ev, e }) {
     if (d === ini || d.endsWith('-01') || d.endsWith('-15')) marcas.push(d);
   }
   const quedan = fase.termina ? Math.max(0, Math.round((diaN(fase.termina) - diaN(hoy)) / DIA_MS)) : 0;
+  const txQ = 'QUEDAN ' + quedan + ' DÍAS DE LA ' + liga.temp + ' →';
+  const rotulo = (d) => (d === ini ? Number(d.slice(8)) + ' ' + MES_CORTO[Number(d.slice(5, 7)) - 1] + ' · ARRANCA LA ' + liga.temp
+    : d.endsWith('-01') ? MES_CORTO[Number(d.slice(5, 7)) - 1] : '15 ' + MES_CORTO[Number(d.slice(5, 7)) - 1]);
+  // 📐 una marca cuyo rótulo cae encima de «QUEDAN N DÍAS» no se escribe (salía «NOV» adentro de esa frase, 25/10/2026).
+  // El ancho, a ojo de la letra condensada del gráfico: ~8 px por letra
+  const libreHasta = quedan ? x1 - txQ.length * 8 - 10 : Infinity;
   return (
     <svg className="pf8-tira" viewBox={`0 -8 ${W} 152`} role="img" aria-label={'Sus ' + ev.length + ' eventos de la ' + liga.temp + ', por fecha'}>
       <rect x={x(hoy)} y="10" width={Math.max(0, x1 - x(hoy))} height={base - 10} className="pf8-tira-fut" />
       {marcas.map((d, i) => (
         <g key={d}><line x1={x(d)} x2={x(d)} y1="10" y2={base} className="pf8-tira-l" />
-          {i === 0 || x(d) - x(marcas[i - 1]) > 70
-            ? <text x={x(d) + 4} y={base + 18}>{d === ini ? Number(d.slice(8)) + ' ' + MES_CORTO[Number(d.slice(5, 7)) - 1] + ' · ARRANCA LA ' + liga.temp : d.endsWith('-01') ? MES_CORTO[Number(d.slice(5, 7)) - 1] : '15 ' + MES_CORTO[Number(d.slice(5, 7)) - 1]}</text> : null}
+          {(i === 0 || x(d) - x(marcas[i - 1]) > 70) && x(d) + 4 + rotulo(d).length * 8 < libreHasta
+            ? <text x={x(d) + 4} y={base + 18}>{rotulo(d)}</text> : null}
         </g>
       ))}
-      {quedan ? <text x={x1} y={base + 18} textAnchor="end">QUEDAN {quedan} DÍAS DE LA {liga.temp} →</text> : null}
+      {quedan ? <text x={x1} y={base + 18} textAnchor="end">{txQ}</text> : null}
       {palos}
       <line x1={x0} x2={x1} y1={base} y2={base} className="pf8-tira-base" />
       <line x1={x(hoy)} x2={x(hoy)} y1="6" y2={base} className="pf8-tira-hoy" />

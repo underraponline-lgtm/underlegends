@@ -3478,6 +3478,11 @@ a.rk-z:hover{border-color:var(--linea)}
    (el `font-size` lo pone el componente con el ancho medido) */
 .mk{position:relative;display:block;width:fit-content;max-width:100%;line-height:0}
 .mk-img{display:block}
+/* 📐 el marco sale de la carta: en una fila apretada (la Servidor de Tarjetas, 10 px entre cartas) la cadena de una
+   pisaba la de al lado. Un margen del ancho del marco, salvo en la mini, donde es una línea */
+.mk:not(.mini){margin-inline:.6em}
+/* ⛓️ la cadena: el mismo cuadro que la carta, y lo que sale afuera se ve */
+.mk .mk-cad{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;pointer-events:none;z-index:1}
 .mk-defs{position:absolute;width:0;height:0;overflow:hidden}
 .mk .mk-p{position:absolute;overflow:visible;pointer-events:none}
 .mk .mk-bri{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;object-fit:contain;

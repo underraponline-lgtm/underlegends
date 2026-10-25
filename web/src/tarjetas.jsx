@@ -14,7 +14,7 @@
 // /api/perfiles), las filas de «Comparar» (`CMP_FILAS` de app.js) y «Comparar conmigo» del perfil (`?a=<tú>&b=<él>`).
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { limpio, norm, num, siglaDe, utc } from './liga.js';
-import { Bandera, Carta, Compartir, FaltaLista, Ico, accion, enlace, nombrePais, usePerfiles } from './piezas.jsx';
+import { Bandera, Carta, Compartir, FaltaLista, Ico, SinCarta, accion, enlace, nombrePais, usePerfiles } from './piezas.jsx';
 import { W, aPng, armarYCompartir, carta, lienzo, pie } from './historia.js';
 import { usePaseDe } from './pase.js';
 import { svElegido, useElegidos } from './elegidos.js';
@@ -146,7 +146,17 @@ function faltaDe(c, { cs, nv, nivel }) {
   return { cs: cs.filter((q) => q[0] < q[1]).slice(0, 1) };
 }
 
-function Mano({ liga, k, tiene, bl, onAbrir }) {
+// 🃏 TU CARTA AUNQUE NO ESTÉS EN LA TABLA (25/10/2026): `Carta` arma la dirección con la fila de la tabla, y quien
+// tiene cartas sin haber jugado esta temporada —la Servidor sale al verificarse— no tiene fila: el álbum le mostraba
+// «SIN CARTA» encima de cartas que sí existen. Sin fila, la de R2 directo; si tampoco está, recién ahí «SIN CARTA»
+function TuCarta({ liga, k, cual, cls, nombre }) {
+  const [mal, setMal] = useState(false);
+  if (liga.T[k]) return <Carta liga={liga} k={k} cual={cual} cls={cls} abre={false} />;
+  if (mal) return <SinCarta liga={liga} k={k} nombre={nombre || k} cc="" cls={cls} />;
+  return <img className={cls} alt={'Tu carta ' + cual} src={liga.d.r2 + '/' + encodeURIComponent(k) + '/' + cual + '.webp'} loading="lazy" onError={() => setMal(true)} />;
+}
+
+function Mano({ liga, k, tiene, bl, onAbrir, nombre }) {
   const n = ORDEN.length;
   // las que tienes primero; las que te faltan, al final de la mano
   const orden = ORDEN.filter((c) => tiene.includes(c)).concat(ORDEN.filter((c) => !tiene.includes(c)));
@@ -155,7 +165,7 @@ function Mano({ liga, k, tiene, bl, onAbrir }) {
       {orden.map((c, i) => {
         const la = tiene.includes(c);
         let img;
-        if (la) img = <Carta liga={liga} k={k} cual={c} cls="tj-c" abre={false} />;
+        if (la) img = <TuCarta liga={liga} k={k} cual={c} cls="tj-c" nombre={nombre} />;
         else if (bl.includes(c)) img = <img className="tj-c" alt="" src={liga.d.r2 + '/' + encodeURIComponent(k) + '/bloq-' + c + '.webp'} loading="lazy" />;
         else img = <span className="tj-c ta-hueco"><Ico n="candado" t={26} /></span>;
         return (
@@ -171,8 +181,10 @@ function Mano({ liga, k, tiene, bl, onAbrir }) {
 }
 
 function Album({ liga, dc, perf, onAbrir }) {
-  const f = liga.yo;
-  const k = (f && f.k) || (dc && dc.clave) || '';
+  const k = (liga.yo && liga.yo.k) || (dc && dc.clave) || '';
+  // 🔢 la fila de la tabla manda sobre lo que dijo la sesión al entrar: `dc.cs` es de ESE momento, y con la fila ya sin
+  // tarjetas el álbum decía «2 de 4» con dos «SIN CARTA» y el perfil «todavía ninguna» (Dlx, 25/10/2026)
+  const f = liga.yo || (k && liga.T[k]) || null;
   const tiene = (f ? f.c : dc && dc.cs) || [];
   const bl = (dc && dc.clave === k && dc.bl) || [];
   const p = (perf && perf.p && perf.p[k]) || null;
@@ -220,7 +232,7 @@ function Album({ liga, dc, perf, onAbrir }) {
     <section className="sec negra ta-alb">
       <span className="tag">TU ÁLBUM · {liga.temp}</span>
       <div className="ta-q">
-        {primera ? <Carta liga={liga} k={k} cual={primera} cls="tj-c ta-mini" abre={false} /> : null}
+        {primera ? <TuCarta liga={liga} k={k} cual={primera} cls="tj-c ta-mini" nombre={nombre} /> : null}
         <div>
           <h1 className="ta-h">{nombre}</h1>
           <p className="ta-n"><b>{tiene.length} de {ORDEN.length}</b> tarjetas
@@ -230,7 +242,7 @@ function Album({ liga, dc, perf, onAbrir }) {
       <div className="ta-seg" role="img" aria-label={tiene.length + ' de ' + ORDEN.length + ' tarjetas'}>
         {ORDEN.map((c) => <i key={c} className={tiene.includes(c) ? 'ok' : ''} />)}
       </div>
-      <Mano liga={liga} k={k} tiene={tiene} bl={bl} onAbrir={onAbrir} />
+      <Mano liga={liga} k={k} tiene={tiene} bl={bl} onAbrir={onAbrir} nombre={nombre} />
       {fc ? (
         <div className="ta-falta">
           <small><Ico n="candado" t={13} />TU {NOMBRE[fc].toUpperCase()}{faltan.length > 1 ? ' · Y ' + (faltan.length - 1) + ' MÁS' : ''}</small>
