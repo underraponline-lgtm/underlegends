@@ -669,8 +669,8 @@
    "organizadores": [
     [
      "LEWITO",
-     99,
-     4
+     127,
+     5
     ],
     [
      "Kravitz",
@@ -720,13 +720,13 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 13,
+     "FFA": 21,
      "DDF": 9,
      "ACAD": 3,
      "SR": 4
     },
     "gente": {
-     "FFA": 108,
+     "FFA": 126,
      "ACAD": 42,
      "DDF": 44,
      "SR": 24
@@ -737,7 +737,7 @@
     "ACAD": 42,
     "DDF": 44,
     "DRA": 0,
-    "FFA": 108,
+    "FFA": 126,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,
