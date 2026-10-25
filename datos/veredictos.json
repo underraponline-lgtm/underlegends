@@ -1024,6 +1024,28 @@
    "b": "SANT",
    "ganador": "CARLOS",
    "votos": "1–0"
+  },
+  "1564021629623861289": {
+   "id": "1564021629623861289",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792962214619,
+   "a": "SEKKA 🇦🇷",
+   "b": "KUDE 🇦🇷",
+   "ganador": "SEKKA 🇦🇷",
+   "votos": "3–1"
+  },
+  "1564023326526144614": {
+   "id": "1564023326526144614",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792962619192,
+   "a": "FLAMA 🇦🇷",
+   "b": "HOTARU 🇦🇷🏳️‍⚧",
+   "ganador": "HOTARU 🇦🇷🏳️‍⚧",
+   "votos": "4–0"
   }
  },
  "llaves": {
@@ -5475,6 +5497,47 @@
      [
       "Revo🇻🇪 + xubaru🇻🇪",
       "Scot 🇵🇪 - Sosa 🇺🇾 + mientras"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1564021566189346929": {
+   "id": "1564021566189346929",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792962199495,
+   "ed": 1792963149753,
+   "texto": "`[ OCTAVOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞KUDE 🇦🇷⌝\n⌞FLAMA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞BNA 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "SEKKA 🇦🇷",
+      "KUDE 🇦🇷"
+     ],
+     "SEKKA 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "FLAMA 🇦🇷",
+      "HOTARU 🇦🇷🏳️‍⚧"
+     ],
+     "HOTARU 🇦🇷🏳️‍⚧",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "BNA 🇦🇷",
+      "GUESS 🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",

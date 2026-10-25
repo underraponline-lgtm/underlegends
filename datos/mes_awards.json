@@ -551,6 +551,33 @@
      ],
      "Delux subió a C",
      "2026-10-20T02:32:27Z"
+    ],
+    "f28eb6f3c773": [
+     1,
+     [
+      "Oasis"
+     ],
+     "Oasis llegó al nivel 10 del Pase",
+     "2026-10-25T18:09:10Z"
+    ],
+    "313daa5c1805": [
+     1,
+     [
+      "Walker"
+     ],
+     "Walker, campeón de 19 CUP FUTCARD - EDICIÓN 7",
+     "2026-10-25T18:05:50Z"
+    ],
+    "011a3dd86705": [
+     1,
+     [
+      "Neo",
+      "BNA",
+      "MCO",
+      "Panchok"
+     ],
+     "Neo y BNA, campeón de FREESTYLE FOR ALL ESPECIAL 1800",
+     "2026-10-23T20:26:11Z"
     ]
    },
    "an": {
@@ -3207,6 +3234,25 @@
      "orgs": [],
      "organizador": "Lízeninn",
      "cuentas": {}
+    },
+    "1564020575314378844": {
+     "sv": "FFA",
+     "nombre": "AGUANTE EL ROJO Y EL BARCELONA Multiverse",
+     "mo": "2026-10-25T20:59:23Z",
+     "staff": {
+      "jurado": [
+       "MATS"
+      ],
+      "host": [
+       "LEWITO"
+      ],
+      "dj": [
+       "LEWITO"
+      ]
+     },
+     "orgs": [],
+     "organizador": "LEWITO",
+     "cuentas": {}
     }
    },
    "ver": {
@@ -3908,6 +3954,33 @@
       "",
       "#99 |DJ SHADOW🐉",
       "tenacious_dragon_23394"
+     ]
+    },
+    "ACAD|2026-10-25": {
+     "705827090708168714": [
+      "",
+      "Lic. Tortugardo Reptilio",
+      "emilioalvauwu"
+     ],
+     "1323444294534828104": [
+      "",
+      "Lord",
+      "kidbuu02124"
+     ],
+     "1440039366654165212": [
+      "",
+      "Leonar-T",
+      "leonart95."
+     ],
+     "1494178897908990136": [
+      "El Wachin",
+      "Mosquitrap 🦟🇦🇷",
+      "3decopas."
+     ],
+     "472896251424276500": [
+      "",
+      "Bocamio",
+      "bocamio"
      ]
     }
    }
