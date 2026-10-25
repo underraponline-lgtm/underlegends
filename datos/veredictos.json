@@ -1079,6 +1079,17 @@
    "b": "MCO 🇦🇷",
    "ganador": "MCO 🇦🇷",
    "votos": "3–0"
+  },
+  "1564033320520782038": {
+   "id": "1564033320520782038",
+   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
+   "g": "765045834647339038",
+   "canal": "1309238412976590908",
+   "pub": 1792965001946,
+   "a": "EZEE 🇦🇷",
+   "b": "DELUXE 🇦🇷",
+   "ganador": "DELUXE 🇦🇷",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5543,7 +5554,7 @@
    "g": "765045834647339038",
    "canal": "1309238412976590908",
    "pub": 1792962199495,
-   "ed": 1792965001946,
+   "ed": 1792965538741,
    "texto": "`[ OCTAVOS ]`\n⌞SEKKA 🇦🇷⌝ 🆚 ⌞KUDE 🇦🇷⌝\n⌞FLAMA 🇦🇷⌝ 🆚 ⌞HOTARU 🇦🇷🏳️‍⚧⌝\n⌞BNA 🇦🇷⌝ 🆚 ⌞GUESS 🇦🇷⌝\n⌞GEOKA 🇦🇷⌝ 🆚 ⌞ARIAXER 🇦🇷⌝\n⌞WACHIN 🇦🇷⌝ 🆚 ⌞MCO 🇦🇷⌝\n⌞EZEE 🇦🇷⌝ 🆚 ⌞DELUXE 🇦🇷⌝",
    "batallas": [
     [
@@ -5602,8 +5613,8 @@
       "EZEE 🇦🇷",
       "DELUXE 🇦🇷"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "DELUXE 🇦🇷",
+     "veredicto",
      []
     ]
    ]
