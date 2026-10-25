@@ -2,7 +2,7 @@
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
   "ACAD": "2026-10-23",
-  "DDF": "2026-10-24",
+  "DDF": "2026-10-25",
   "FFA": "2026-10-24",
   "FRZ": "2026-10-15",
   "FVS": "2026-10-15",
@@ -258,6 +258,7 @@
    "vencido": true
   },
   "FanDAbel": {
+   "chat": "2026-10-25",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-24T21:01:57+00:00",

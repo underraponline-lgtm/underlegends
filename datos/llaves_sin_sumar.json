@@ -1905,5 +1905,59 @@
    ]
   ]
  },
+ "195217675": {
+  "dia": "2026-10-24",
+  "escala": "8-15",
+  "fecha": "24/10",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1558611505040064607/1563763000895217675"
+  ],
+  "n": 195217675,
+  "nombre": "Chupame un huevo CUP",
+  "ns": 1,
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Tuca",
+       "Sin Limites",
+       "Liam"
+      ],
+      "Tuca",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Dominick",
+       "Mc dl 🇲🇽"
+      ],
+      "Dominick",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Liam",
+    "Cuartos",
+    0
+   ],
+   [
+    "Mc dl 🇲🇽",
+    "Cuartos",
+    0
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    0
+   ]
+  ]
+ },
  "_leeme": "Las llaves de los servidores que no suman al ranking (Tier 2 y 3), SÓLO para verlas en la página: el calendario y «Ver llave». Lo escribe bot/llaves_a_entrada.py (`para_ver()`) y lo lee bot/subir_web.py. No las lee nada más: ni el ranking, ni las Misiones, ni el Pase, ni el Most Wanted (Dlx, 20/10/2026: «No cuenta para nada»). Los puntos van en 0."
 }

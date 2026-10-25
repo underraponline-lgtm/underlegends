@@ -5874,7 +5874,6 @@
   "rango": "E",
   "tg_t": {
    "dcor": true,
-   "reciente": true,
    "svc": 1
   }
  },
@@ -8694,8 +8693,7 @@
   "total": 200,
   "rango": "E",
   "tg_t": {
-   "cobro": 1,
-   "reciente": true
+   "cobro": 1
   }
  },
  {
@@ -11007,10 +11005,7 @@
   "o": 312,
   "pos": 161,
   "total": 200,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Krinkross🇪🇸",
@@ -12321,10 +12316,7 @@
   "pos": 380,
   "fc": true,
   "total": 200,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "REPTILE JR",
@@ -12387,10 +12379,7 @@
   "o": 354,
   "pos": 173,
   "total": 200,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Axinu",

@@ -1,21 +1,13 @@
 {
  "_leeme": "Las llaves incompletas (sin campeón, sin subcampeón o con batallas sin ganador) que el ciclo vuelve a pedir a Discord en las corridas siguientes, aunque ya no estén entre los últimos mensajes de su canal; recién después de 3 relecturas se le pregunta al organizador. Lo escribe bot/llaves_a_entrada.py (marcar_releer) y lo lee bot/escuchar.py (a_releer). Dlx, 16/10/2026.",
  "llaves": {
-  "1559232620640870432": {
-   "canal": "1470097588635176960",
-   "desde": "2026-10-19T16:53:49+00:00",
-   "evento": "FMS UNDER",
-   "fecha": "12/10",
-   "sv": "DDF",
-   "vistas": 209
-  },
   "1561594726019375135": {
    "canal": "1487207377601040516",
    "desde": "2026-10-19T05:12:53+00:00",
    "evento": "__ FREESTYLE LEAGUE __",
    "fecha": "19/10",
    "sv": "FFA",
-   "vistas": 217
+   "vistas": 218
   },
   "1561867654464012369": {
    "canal": "1309234583023124531",
@@ -23,7 +15,15 @@
    "evento": "FATS BATTLES PALOOZA FECHA 7",
    "fecha": "19/10",
    "sv": "ACAD",
-   "vistas": 192
+   "vistas": 193
+  },
+  "1563715773439017072": {
+   "canal": "1487207377601040516",
+   "desde": "2026-10-25T04:23:19+00:00",
+   "evento": "__ FREESTYLE FOR ALL ESPECIAL 1800 2v2 __",
+   "fecha": "24/10",
+   "sv": "FFA",
+   "vistas": 1
   }
  }
 }

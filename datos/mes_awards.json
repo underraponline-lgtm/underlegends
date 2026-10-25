@@ -3198,6 +3198,15 @@
      "orgs": [],
      "organizador": "LEWITO",
      "cuentas": {}
+    },
+    "1563765376859250729": {
+     "sv": "DDF",
+     "nombre": "GRISELDA RECORDS VOL. 5",
+     "mo": "2026-10-25T04:15:19Z",
+     "staff": {},
+     "orgs": [],
+     "organizador": "Lízeninn",
+     "cuentas": {}
     }
    },
    "ver": {
@@ -3870,6 +3879,20 @@
       "",
       "Lewito",
       "l3wito"
+     ]
+    },
+    "DDF|2026-10-25": {
+     "1493416945037611140": [
+      "",
+      "Lízeninn",
+      "lizeninn."
+     ]
+    },
+    "LKR|2026-10-25": {
+     "1546111597343146044": [
+      "",
+      "#22 | Calíz",
+      "caliz123_"
      ]
     }
    }
