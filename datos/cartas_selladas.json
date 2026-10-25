@@ -160,10 +160,10 @@
    "servidor": "09b6aba527d2:dc2ca95eb024:874d2d"
   },
   "Bloody": {
-   "competitivo": "2d52ca70630b:8259c7ce67a9",
+   "competitivo": "d3aa6631bc48:8259c7ce67a9",
    "pais": "1cd13af60194:1478cbe7c727",
    "servidor": "ec16fb1af12c:dc2ca95eb024:25c183",
-   "temporada": "166ce0afcf1e:e8f4f15f7e3a"
+   "temporada": "918636d12906:e8f4f15f7e3a"
   },
   "Blue": {
    "servidor": "5ed67a7d8b87:dc2ca95eb024:403ba8"
@@ -419,7 +419,7 @@
    "temporada": "ba07df2f9ed8:e8f4f15f7e3a"
   },
   "Erian": {
-   "competitivo": "3d52b196b5ed:8259c7ce67a9",
+   "competitivo": "5b331997f7ae:8259c7ce67a9",
    "pais": "93dc5f4bf550:1478cbe7c727",
    "servidor": "46a73aba75c7:dc2ca95eb024:25c183",
    "temporada": "a46557401c52:e8f4f15f7e3a"
@@ -1857,5 +1857,5 @@
    "servidor": "7f8885a35a6d:dc2ca95eb024:93a344"
   }
  },
- "cuando": "2026-10-25T05:15:35+00:00"
+ "cuando": "2026-10-25T05:35:09+00:00"
 }
