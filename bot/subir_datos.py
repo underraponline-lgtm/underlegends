@@ -624,7 +624,8 @@ def armar():
                        or (c == 'servidor' and any(x.startswith('sv-')
                                                    for x in inventario.get(k, {}))))
                    and ((verif is None or VERIF.puede(p, verif, c)) if c == 'temporada'
-                        else REQ_FALTA(c, req_fila) is None)],
+                        # 👑 el dueño, sin requisito: tiene las cuatro aunque no juegue (Dlx, 25/10/2026)
+                        else (REQ_FALTA(c, req_fila) is None or str(p.get('discord_id') or '') == VERIF.DUENO))],
             # 🔴 QUE CARTAS DE SERVIDOR TIENE **ESTA** PERSONA, no cuáles hay
             # para todos. Antes esto vivía en `meta.svs`, que es la
             # INTERSECCIÓN: un servidor entraba sólo si lo tenían las 138. Con

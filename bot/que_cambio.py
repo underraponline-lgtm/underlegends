@@ -230,7 +230,10 @@ def estado():
                 svs = donde.get(str(p.get('discord_id') or '')) or []
                 # 🎟️ y la Temporada «sin jugar» de quien llegó al nivel 1 del Pase sin haber jugado (Dlx, 05/10/2026:
                 # «3. A»): la dibuja `01_Temporada/exportar_png.py` con «—» en los números
-                out[nom] = {'fuera': 1, 't': {}, 'cartas': [c for c in ('servidor', 'temporada') if _V.puede(p, verif, c)],
+                # 👑 el dueño, las cuatro aunque no juegue (Dlx, 25/10/2026: «I should have all the cards»): la Competitiva y la de
+                # País se dibujan «sin jugar» (`02_Competitivo/exportar_png._dueno_sin_jugar()`, `04_Pais/generar.cargar()`)
+                _todas = TODAS if str(p.get('discord_id') or '') == _V.DUENO else ('servidor', 'temporada')
+                out[nom] = {'fuera': 1, 't': {}, 'cartas': [c for c in _todas if _V.puede(p, verif, c)],
                             'c': {'raw': nom,
                                   'cc': _SD._cc_de(p.get('pais')),
                                   # ⚠️ el MISMO servidor que dibuja la Temporada «sin jugar»: el primero que no es DRA
@@ -646,7 +649,12 @@ def emitibles(quien, est=None):
     # puede producirlas**. Es la misma razón por la que se descarta
     # `pais` de quien no tiene país: «sin dato no hay pieza».
     if ent.get('fuera'):
-        return {'servidor'} | ({'temporada'} if 'temporada' in (ent.get('cartas') or ()) else set())
+        # 👑 la Competitiva y la de País, sólo el dueño (`estado()` se las pone en `cartas`): las dos saben dibujarlo
+        # «sin jugar». La de País, con país
+        out = {'servidor'} | (set(ent.get('cartas') or ()) & {'temporada', 'competitivo', 'pais'})
+        if not str((ent.get('c') or {}).get('cc') or '').strip():
+            out.discard('pais')
+        return out
 
     fila = ent.get('c') or {}
     out = set(TODAS)

@@ -24,6 +24,9 @@ ACC = {
  'C'  : ('#6B8FE8', ['#DDE6FF','#6B8FE8','#1A3A7A','#B8CBFF','#3A5FBF','#DDE6FF'], '#0A1230'),
  'D'  : ('#D8DEE8', ['#FFFFFF','#CED8E4','#5E6874','#EEF3F9','#909AA8','#FFFFFF'], '#12161C'),
  'E'  : ('#C98A4B', ['#F2DCC0','#C98A4B','#6B4318','#E4C39A','#9A6630','#F2DCC0'], '#1A1006'),
+ # 🎟️ «SIN JUGAR» (25/10/2026): la del dueño, que no juega (Dlx: «I should have all the cards»). Gris neutro, NO el
+ # bronce de E: no es el peor, es que no hay Score. Mismo gris que la Temporada «sin jugar» (`GRAD_SIN_JUGAR`)
+ '—'  : ('#9C9C97', ['#EDEDEB','#9C9C97','#3E3E3B','#D6D6D3','#6E6E6A','#EDEDEB'], '#121211'),
 }
 # El escudo vive en comun/escudos.py, compartido con las otras dos cartas.
 # Antes esta carta hacia LOGO[sv] directo y sin fallback: URBF tiraba KeyError
@@ -322,6 +325,8 @@ def _mejor_dim(c):
 
 
 def TAG(c):
+    if c.get('sinjugar'):
+        return ('🎟️ PRIMER EVENTO PENDIENTE', 't4')
     h = c.get('tg_c') or {}
     pos = c.get('pos') or 10 ** 6
     fg, fp = h.get('fg', 0), h.get('fp', 0)
@@ -374,6 +379,8 @@ def TAG_CORONA(c):
 def BLOQUE_TL(c):
     # La pastilla dice el RANGO, no el nombre del material. El material es
     # solo la paleta; lo que el rapero necesita leer es en que rango esta.
+    if c.get('sinjugar'):
+        return '<div class="ovr">—</div><div class="rkbox">RANGO —</div>'
     return ('<div class="ovr">%d</div><div class="rkbox">RANGO %s</div>'
             % (round(c['score']), subrango(c['score'])))
 
@@ -405,12 +412,14 @@ def BLOQUE_TR(c):
     #
     # 🔁 Y DESDE EL 14/10/2026 EL CHIP ES DE EVENTOS: el WR bajó a la fila de abajo (Dlx), y el `—` sin duelos va allá
     # (`_wr()`)
+    if c.get('sinjugar'):
+        return '<span class="chip on">#—</span><span class="chip cf">0<u>EV</u></span>'
     return ('<span class="chip on">#%d</span><span class="chip cf">%d<u>EV</u></span>'
             % (c['pos'], int(c.get('ev') or 0)))
 
 
 def card(c,i):
-    rg = rango_metal(c['score'])       # el rango del competitivo, con SSS/SS
+    rg = '—' if c.get('sinjugar') else rango_metal(c['score'])       # el rango del competitivo, con SSS/SS
     acc, met, base = ACC[rg]
     # 🔴 LA FOTO SE PIDE POR NOMBRE, NO SE LEE DEL POOL. Medido el
     # 20/09/2026: de los 82 del pool que YA tienen su foto guardada en
@@ -436,7 +445,7 @@ def card(c,i):
     foto = ('<img src="%s" onerror="%s">' % (av, _SF.onerror('sil', c['raw']))) if _hay_foto(av) else _SF.img('sil', c['raw'])
     stops = ''.join('<stop offset="%s" stop-color="%s"/>' % (o,c_)
                     for o,c_ in zip(['0','0.20','0.42','0.60','0.80','1'], met))
-    vals = [c['E'],c['C'],c['Dm'],c['T'],c['V'],_wr(c)]
+    vals = ['—'] * 6 if c.get('sinjugar') else [c['E'],c['C'],c['Dm'],c['T'],c['V'],_wr(c)]
     lbls = ''.join('<span>%s</span>' % d for d in DIMS)
     # un 100 en una dimension = lidera esa dimension en todo el pool -> .top
     # los primeros 5 son dimensiones normalizadas; el 6to (WR) es un porcentaje, o `—`: el 100 resalta sólo dimensiones

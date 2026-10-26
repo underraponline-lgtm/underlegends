@@ -302,6 +302,20 @@ def cargar():
     # carta ya sabe dibujar, igual que SEG, TER, DNA y DIN.
     porcomp = {x['raw']: x for x in comp}
     orden = list(comp) + [temp[n] for n in temp if n not in porcomp]
+    # 👑 EL DUEÑO, AUNQUE NO JUEGUE (Dlx, 25/10/2026: «I should have all the cards. Draw them now»): su fila sale del
+    # padrón con el país y nada más; el rango vacío y el OVR en «—» son el hueco que la carta ya dibuja
+    for _d in (os.path.join(BASE, 'bot'), os.path.join(BASE, 'sheet')):
+        if _d not in sys.path:
+            sys.path.insert(0, _d)
+    try:
+        import verificados as _V
+        import construir_padron as _PAD
+        import subir_datos as _SD
+        _yo = next((p for p in _PAD.cargar() if str(p.get('discord_id') or '') == _V.DUENO), None)
+        if _yo and (_yo.get('raw') or '') not in porcomp and (_yo.get('raw') or '') not in temp:
+            orden.append({'raw': _yo['raw'], 'cc': _SD._cc_de(_yo.get('pais')) or '', 'ev': 0, 'score': 0})
+    except ImportError:
+        pass
     for base in orden:
         # 🔴 `type(base)(base)` Y NO `dict(base)` (14/10/2026). `herramientas/que_pide_cada_carta.py` mide qué campos
         # pide esta carta envolviendo cada fila en un dict que anota lo que le piden —y `dict(base)` lo desenvolvía:

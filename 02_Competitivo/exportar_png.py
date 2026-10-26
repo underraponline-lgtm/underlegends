@@ -65,6 +65,26 @@ def _pool():
     return {d['raw']:d for d in json.load(open(_d('competitivo_pool.json'), encoding='utf-8'))}
 
 
+def _dueno_sin_jugar(quien):
+    """La fila del DUEÑO si no está en el pool, para su Competitiva «sin jugar» (Dlx, 25/10/2026: «I should have all
+    the cards. Draw them now»). Los números en «—» y sin rango (ver `sinjugar` en gencomp.py). `None` para cualquier
+    otro: la Competitiva de quien no está en el pool no se inventa"""
+    for d in (_o.path.dirname(RAIZ), _o.path.join(_o.path.dirname(RAIZ), 'bot'), _o.path.join(_o.path.dirname(RAIZ), 'sheet')):
+        if d not in _s.path:
+            _s.path.insert(0, d)
+    import construir_padron as PAD
+    import subir_datos as SD
+    import verificados as V
+    p = PAD.por_nombre().get(PAD.norm(quien))
+    if not p or str(p.get('discord_id') or '') != V.DUENO:
+        return None
+    n = p.get('raw') or quien
+    return {'full': p.get('full') or n, 'raw': n, 'cc': SD._cc_de(p.get('pais')) or '', 'sv': '', 'crew': '',
+            'discord_id': V.DUENO, 'ev': 0, 'score': 0, 'conf': 0, 'E': 0, 'C': 0, 'Dm': 0, 'T': 0, 'V': 0, 'wr': '',
+            'rch_act': 0, 'rch_max': 0, 'duel_v': 0, 'duel_t': 0, 'pos': 0, 'total': 0, 'rango': '', 'subrango': '',
+            'av': '', 'sinjugar': True}
+
+
 def armar_html(quien, D, callado=False):
     """Deja `_kn.html` listo para capturar. Devuelve su ruta.
 
@@ -97,6 +117,8 @@ def armar_html(quien, D, callado=False):
         # ⚠️ Y NO CAMBIA NINGUN REQUISITO. El de la Competitiva son 10
         # eventos y vive en `comun/requisitos.py`; esto solo distingue
         # «no cumple» de «el pool esta vacio», que se veian igual.
+        if quien not in D and _dueno_sin_jugar(quien):
+            D = dict(D, **{quien: _dueno_sin_jugar(quien)})
         if quien not in D:
             raise SystemExit(
                 '\n   %r no está en datos/competitivo_pool.json.\n'
