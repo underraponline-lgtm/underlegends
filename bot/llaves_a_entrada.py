@@ -87,7 +87,7 @@ MIN_PLANTEL = 4
 IGUAL = 0.6
 
 
-def no_suman(hallazgos, fuera=None):
+def no_suman(hallazgos, fuera=None, solo_temp=None):
     """🤝 `(los que suman, los que no)`: las llaves de un servidor que no suma al ranking (Tier 2 y 3, o `suma` apagado
     en el Dashboard: `tiers.guilds_sin('suma')`) se leen y se siguen en vivo, pero NO entran a `Entrada` (Dlx,
     20/10/2026: «tier 2 y 3 no cuentan para el ranking»). Es la única puerta: lo que no pasa por acá no llega al ranking.
@@ -101,6 +101,26 @@ def no_suman(hallazgos, fuera=None):
     si, no = [], []
     for h in hallazgos:
         (no if str(h.get('guild') or '') in fuera else si).append(h)
+    # 🏆 LOS QUE SUMAN SÓLO A LA TEMPORADA (T2 y T3 desde el 26/10/2026, `tiers.PRESET`) PIDEN 8 PARTICIPANTES: un evento
+    # chico no entra. Se cuenta por EVENTO y no por mensaje —una llave se postea por rondas, y la de la final sola son
+    # dos nombres—: las llaves del servidor se agrupan como el resto (`agrupar()`) y cuenta el plantel del grupo
+    if solo_temp is None:
+        try:
+            import tiers as _TI
+            solo_temp, minimo, desde = _TI.guilds_sin('competitivo'), _TI.MIN_SOLO_TEMPORADA, _TI.SOLO_TEMPORADA_DESDE
+        except Exception:                                # noqa: BLE001
+            solo_temp, minimo, desde = set(), 8, ''
+    else:
+        minimo, desde = 8, '2026-10-26T04:00:00+00:00'
+    # ⚠️ y sólo desde el 26/10/2026: lo de antes de que sumaran no entra de golpe (`tiers.SOLO_TEMPORADA_DESDE`)
+    chicas = {id(h) for h in si if str(h.get('guild') or '') in solo_temp and str(h.get('cuando') or '') < desde}
+    for g in set(str(h.get('guild') or '') for h in si) & set(solo_temp):
+        for grupo in agrupar([h for h in si if str(h.get('guild') or '') == g]):
+            if len(grupo['plantel']) < minimo:
+                chicas |= {id(h) for h in grupo['llaves']}
+    if chicas:
+        no += [h for h in si if id(h) in chicas]
+        si = [h for h in si if id(h) not in chicas]
     return si, no
 
 
@@ -3326,8 +3346,9 @@ def _self_check():
          '`[ FINAL ]`\n⌞Eze⌝ 🆚 ⌞Gala⌝')
     mal = 0
     # 🤝 las llaves de un servidor que no suma no pasan a Entrada (20/10/2026)
-    si, no = no_suman([{'guild': '1'}, {'guild': '2'}, {'guild': 3}], fuera={'2', '3'})
-    ok = [h['guild'] for h in si] == ['1'] and len(no) == 2
+    si, no = no_suman([{'guild': '1'}, {'guild': '2'}, {'guild': 3}], fuera={'2', '3'}, solo_temp=set())
+    _s2, _n2 = no_suman([{'guild': '7', 'cuando': '2026-10-20T01:00:00+00:00', 'texto': ''}], fuera=set(), solo_temp={'7'})
+    ok = [h['guild'] for h in si] == ['1'] and len(no) == 2 and not _s2 and len(_n2) == 1
     mal += not ok
     print('\n  %s las llaves de los servidores que no suman se leen y no entran al ranking' % ('✅' if ok else '🔴'))
     print('\n  la huella del plantel')

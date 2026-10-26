@@ -94,6 +94,11 @@ def _filas_res(ev, paises, clave):
 
 def _filas_uno(ev):
     out = []
+    # 🏆 un evento que suma sólo a la Temporada (T2 y T3, 26/10/2026) no escribe duelos: «para el ranking de temporada
+    # únicamente» (Dlx). Ver `competitivo.solo_temporada()`
+    from competitivo import solo_temporada
+    if str(ev.get('servidor') or '') in solo_temporada():
+        return out
     for b in ev.get('duelos', []):
         a, c = str(b.get('a', '')).strip(), str(b.get('b', '')).strip()
         g = str(b.get('ganador', '')).strip()

@@ -108,17 +108,27 @@ BENEFICIOS = (
     ('calendario', 'Sus eventos: calendario, campana y Publicaciones'),
     ('ligas', 'Sus ligas en Ligas'),
     ('panel', 'El panel de su dueño'),
-    ('suma', 'Sus llaves suman al ranking'),
+    ('suma', 'Sus llaves suman a la Temporada'),
+    ('competitivo', 'Sus llaves cuentan para el Competitivo y los duelos'),
     ('duelos', 'Sus ligas cuentan como duelos'),
 )
-#: lo que prende cada tier. Los eventos y la página son de todos (Dlx, 20/10: «a general benefit»); sumar, sólo el 1
-PRESET = {1: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'duelos'},
-          2: {'pagina', 'calendario', 'ligas', 'panel'},
-          3: {'pagina', 'calendario', 'ligas', 'panel'}}
+#: lo que prende cada tier. Los eventos y la página son de todos (Dlx, 20/10: «a general benefit»).
+#: 🏆 SUMAR A LA TEMPORADA, TODOS LOS SOCIOS (Dlx, 26/10/2026: «cada servidor que sea socio nuestro, automáticamente sus
+#: eventos cuenten para el ranking de temporada únicamente… así motivamos a los demás a CRECER SUS COMUNIDADES»). El
+#: Competitivo y los duelos, sólo el 1: es lo que mide calidad. Los que suman sólo a la Temporada piden 8 participantes
+#: (`MIN_SOLO_TEMPORADA`); sin tope semanal (Dlx: «quita eso de tope semanal… no me agrada esa idea»)
+PRESET = {1: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos'},
+          2: {'pagina', 'calendario', 'ligas', 'panel', 'suma'},
+          3: {'pagina', 'calendario', 'ligas', 'panel', 'suma'}}
+#: cuántos participantes pide un evento de un servidor que suma sólo a la Temporada (sin `competitivo`)
+MIN_SOLO_TEMPORADA = 8
+#: y desde cuándo: las llaves de antes siguen en Discord y el ciclo las relee; sin este corte entrarían de golpe y
+#: moverían el ranking de toda la T1. 00:00 ET del 26/10/2026 (en UTC, como `cuando` de cada llave)
+SOLO_TEMPORADA_DESDE = '2026-10-26T04:00:00+00:00'
 #: 🔴 sumar al ranking pide que el servidor esté en las listas del código (`sheet/rankings.py` y las demás, que llena
 #: `herramientas/sumar_servidor.py`): uno dado de alta desde el Dashboard no lo está, y sus llaves entrarían a medias.
 #: Hasta que se sume a mano, `suma` y `duelos` quedan apagados y el Dashboard dice por qué.
-PIDEN_CODIGO = ('suma', 'duelos')
+PIDEN_CODIGO = ('suma', 'competitivo', 'duelos')
 
 
 def en_el_codigo():
@@ -155,7 +165,7 @@ def sin(beneficio, guardado=None):
     g = guardado if guardado is not None else (_j('datos', 'niveles.json') or {})
     ben = g.get('beneficios')
     if not isinstance(ben, dict):
-        return {sv for sv, t in (g.get('niveles') or {}).items() if t != 1} if beneficio in PIDEN_CODIGO else set()
+        return {sv for sv, t in (g.get('niveles') or {}).items() if t != 1} if beneficio in ('competitivo', 'duelos') else set()
     return {sv for sv, b in ben.items() if isinstance(b, dict) and b.get(beneficio) is False}
 
 
@@ -697,12 +707,16 @@ def _self_check():
        'lo elegido manda; un número que no es tier no vale; los de Tier 2 y 3 son los «bajados»')
     # 🎛️ los beneficios y el alta
     bn, bq = beneficios({'AAA': 1, 'BBB': 3, 'CCC': 1}, {'BBB': {'ligas': False}, 'CCC': {'suma': True}}, codigo={'AAA', 'BBB'})
-    ok(bn['AAA']['suma'] and not bn['BBB']['suma'] and bn['BBB']['pagina'] and not bn['BBB']['ligas']
-       and not bn['CCC']['suma'] and bq == {'CCC': ['suma', 'duelos']},
-       'el tier es un preset, lo elegido manda; sumar pide estar en el código (CCC no, aunque lo prendan)')
+    ok(bn['AAA']['suma'] and bn['AAA']['competitivo'] and bn['BBB']['suma'] and not bn['BBB']['competitivo']
+       and bn['BBB']['pagina'] and not bn['BBB']['ligas']
+       and not bn['CCC']['suma'] and bq == {'CCC': ['suma', 'competitivo', 'duelos']},
+       'el tier es un preset (todos suman a la Temporada, el Competitivo sólo el 1), lo elegido manda; sumar pide estar '
+       'en el código (CCC no, aunque lo prendan)')
     sb = globals()['sin']   # (el self-check tiene su propio `sin`, más abajo)
-    ok(sb('suma', {'beneficios': {k: v for k, v in bn.items()}}) == {'BBB', 'CCC'}
-       and sb('suma', {'niveles': {'AAA': 1, 'BBB': 2}}) == {'BBB'} and sb('pagina', {'niveles': {'AAA': 1}}) == set(),
+    ok(sb('suma', {'beneficios': {k: v for k, v in bn.items()}}) == {'CCC'}
+       and sb('competitivo', {'beneficios': {k: v for k, v in bn.items()}}) == {'BBB', 'CCC'}
+       and sb('competitivo', {'niveles': {'AAA': 1, 'BBB': 2}}) == {'BBB'} and sb('suma', {'niveles': {'AAA': 1, 'BBB': 2}}) == set()
+       and sb('pagina', {'niveles': {'AAA': 1}}) == set(),
        'los lectores preguntan con sin(); sin beneficios guardados, lo de antes')
     sv2 = {'AAA': {'guild_id': '111111111111111111'}}
     nv = altas({'altas': {'NUE': {'n': 'Nuevo', 'g': '222222222222222222', 't': 3, 'tag': 'comunidad'},

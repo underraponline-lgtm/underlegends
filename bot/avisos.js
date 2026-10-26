@@ -3605,7 +3605,7 @@ export function socioAjusteValido(cual, valor, canales) {
 }
 
 /** 🎛️ los beneficios que se prenden y apagan por servidor (los mismos de `BENEFICIOS` en bot/tiers.py) */
-export const BENEFICIOS_SV = ['pagina', 'calendario', 'ligas', 'panel', 'suma', 'duelos'];
+export const BENEFICIOS_SV = ['pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos'];
 
 export function ajusteValido(cual, valor) {
   // ↩️ `null` vale en todos (25/10/2026): «Deshacer» del historial vuelve a poner lo de antes, y antes de tocarlo por

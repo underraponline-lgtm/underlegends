@@ -733,14 +733,15 @@ function CompararSemanas({ S, uso, liga }) {
 // ── 🤝 LOS TIERS (Dlx, 18/10/2026: «3 tier levels of association… el sistema recomienda y muestra qué tan bien los
 // servidores han hecho su trabajo»). Cada servidor con su nivel —que se elige acá: ajuste `tiers`, el ciclo lo copia a
 // datos/niveles.json—, su puntaje de las últimas 4 semanas y lo que recomienda `bot/tiers.py`. El puntaje no sale de acá
-const TIER_QUE = { 1: 'suma al ranking, todo', 2: 'el calendario, no suma', 3: 'su página y sus ligas, no suma' };
+const TIER_QUE = { 1: 'Temporada y Competitivo, todo', 2: 'el calendario y la Temporada', 3: 'su página, sus ligas y la Temporada' };
 // 🎛️ los beneficios de cada servidor (Dlx, 20/10/2026: «qué beneficio dar que no, qué tier, a cada servidor nuevo»). El
 // tier los prende en grupo (`PRESET` de bot/tiers.py); cada interruptor manda sobre el preset
 const BENEF = [['pagina', 'Su página en Socios'], ['calendario', 'Sus eventos (calendario, campana, Publicaciones)'],
-  ['ligas', 'Sus ligas en Ligas'], ['panel', 'El panel de su dueño'], ['suma', 'Sus llaves suman al ranking'],
-  ['duelos', 'Sus ligas cuentan como duelos']];
-const PRESET = { 1: ['pagina', 'calendario', 'ligas', 'panel', 'suma', 'duelos'], 2: ['pagina', 'calendario', 'ligas', 'panel'],
-  3: ['pagina', 'calendario', 'ligas', 'panel'] };
+  ['ligas', 'Sus ligas en Ligas'], ['panel', 'El panel de su dueño'], ['suma', 'Sus llaves suman a la Temporada (con 8 o más)'],
+  ['competitivo', 'Cuentan para el Competitivo y los duelos'], ['duelos', 'Sus ligas cuentan como duelos']];
+// 🏆 todos los socios suman a la Temporada desde el 26/10/2026; el Competitivo, sólo el Tier 1 (bot/tiers.py `PRESET`)
+const PRESET = { 1: ['pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', 'duelos'],
+  2: ['pagina', 'calendario', 'ligas', 'panel', 'suma'], 3: ['pagina', 'calendario', 'ligas', 'panel', 'suma'] };
 
 function Beneficios({ x, tier, aj, hacer, ocup }) {
   const mios = (aj.beneficios || {})[x.sv] || {};
@@ -953,9 +954,9 @@ function Tiers({ T, aj, hacer, ocup, msg, liga }) {
     siglaDe(sv) + ' pasa a Tier ' + t + '. El ciclo lo aplica en su próxima vuelta' + (t === 1 ? ': vuelve a sumar al ranking.' : ': sus llaves dejan de sumar.'));
   return (
     <div className="ti">
-      <p className="db-tx">Las últimas {T.semanas || 4} semanas. El puntaje recomienda; <b>el nivel lo eliges tú</b>. Tier 1 suma al ranking y
-        lleva todo; Tier 2 sale en el calendario y la campana, pero sus llaves no suman; Tier 3 tiene su página y sus ligas en Ligas,
-        sin sumar. Los eventos y las redes se promocionan en los tres. Para ser socio: 300 miembros como mínimo, se recomiendan 500.</p>
+      <p className="db-tx">Las últimas {T.semanas || 4} semanas. El puntaje recomienda; <b>el nivel lo eliges tú</b>. Tier 1 suma a la Temporada y
+        al Competitivo y lleva todo; Tier 2 sale en el calendario y la campana; Tier 3 tiene su página y sus ligas en Ligas. Los
+        tres suman a la Temporada, con 8 participantes o más; el Competitivo y los duelos son del Tier 1. Los eventos y las redes se promocionan en los tres. Para ser socio: 300 miembros como mínimo, se recomiendan 500.</p>
       {msg ? <p className="db-msg" role="status">{msg}</p> : null}
       <SumarServidor T={T} aj={aj} hacer={hacer} ocup={ocup} />
       <div className="ti-g">{T.servidores.map((x, i) => <TierCaja key={x.sv} x={x} liga={liga} tier={tierDe(x)} cambiar={cambiar} ocup={ocup} i={i} aj={aj} hacer={hacer} />)}</div>

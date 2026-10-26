@@ -217,6 +217,21 @@ def _entropia(cuentas):
     return h / math.log(len(cuentas)) if len(cuentas) > 1 else 0.0
 
 
+def solo_temporada():
+    """🏆 Las siglas cuyos eventos suman SÓLO a la Temporada (T2 y T3, 26/10/2026: `bot/tiers.py`): el Competitivo no
+    los ve. Sin poder leer los tiers, ninguna —como hasta ahora, que no entraban—."""
+    try:
+        import os as _os
+        import sys as _sys
+        _b = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), 'bot')
+        if _b not in _sys.path:
+            _sys.path.insert(0, _b)
+        import tiers as _TI
+        return _TI.sin('competitivo')
+    except Exception:                                    # noqa: BLE001
+        return set()
+
+
 def crudo(filas_res, filas_uno=(), servidores=None):
     """`{quien: {'E':…, 'C':…, 'Dm':…, 'T':…, 'V':…, 'ev':…}}` SIN normalizar.
 
@@ -233,10 +248,11 @@ def crudo(filas_res, filas_uno=(), servidores=None):
     # (num_evento, llego_a_sf) por persona, para la racha
     linea = defaultdict(list)
 
+    solo_temp = solo_temporada()
     for f in filas_res:
         f = list(f) + [''] * 11
         num, sv, quien = str(f[0]).strip(), str(f[2]).strip(), str(f[4]).strip()
-        if not quien:
+        if not quien or sv in solo_temp:
             continue
         pos = POS.get(_norm(f[6]), '')
         p = _puntos_base(f)
