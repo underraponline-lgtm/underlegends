@@ -14,6 +14,8 @@ const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
 // quien entró con Discord y no está en la tabla (no jugó la temporada): sus tarjetas y sus Bloqueadas (`filaCuenta()`)
 function filaDe(liga, dc, k) {
   const f = liga.T[k] || liga.X[k];
+  // 🃏 tus cartas: las del inventario y las de tu cuenta, juntas (ver perfil.jsx)
+  if (f && !liga.T[k] && dc && dc.clave === k && Array.isArray(dc.cs)) return Object.assign({}, f, { c: [...new Set([...(f.c || []), ...dc.cs])] });
   if (f) return f;
   if (!dc || dc.clave !== k) return null;
   return { k, n: dc.rapero || dc.n, cc: dc.cc, sv: dc.sv, pos: null, ovr: null, pts: 0, ev: dc.ev || 0, wr: '', c: dc.cs || [], bl: dc.bl || [], cuenta: true };
@@ -26,11 +28,31 @@ function filaDe(liga, dc, k) {
 // 🔴 Y SIN CACHÉ (26/10/2026, Dlx: «¿podríamos hacer que la función de descargar realmente funcione?»): la carta ya se
 // mostró como `<img>`, que la pide sin CORS, y el navegador le devolvía al fetch esa copia guardada sin el permiso:
 // fallaba SIEMPRE y caía en abrir otra pestaña. Medido: con caché «Failed to fetch», con `no-store` 200
+// 🖼️ EN PNG Y NO EN WEBP (26/10/2026, Dlx: «salió en formato webp y dice que no tengo ninguna app para abrir eso»). R2
+// sirve WEBP porque pesa un sexto; para guardar, se redibuja en un lienzo y sale PNG, que abre cualquier teléfono y
+// cualquier PC. El blob viene por fetch con CORS, así que el lienzo no queda «manchado». Si algo falla, el WEBP
+function aPng(bl) {
+  return new Promise((ok) => {
+    const u = URL.createObjectURL(bl);
+    const img = new Image();
+    img.onload = () => {
+      try {
+        const c = document.createElement('canvas');
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        c.getContext('2d').drawImage(img, 0, 0);
+        c.toBlob((p) => { URL.revokeObjectURL(u); ok(p || bl); }, 'image/png');
+      } catch (e) { URL.revokeObjectURL(u); ok(bl); }
+    };
+    img.onerror = () => { URL.revokeObjectURL(u); ok(bl); };
+    img.src = u;
+  });
+}
+
 function bajar(url, nombre, fin) {
   fetch(url, { mode: 'cors', cache: 'no-store' }).then((r) => {
     if (!r.ok) throw new Error(String(r.status));
     return r.blob();
-  }).then((bl) => {
+  }).then(aPng).then((bl) => {
     const u = URL.createObjectURL(bl);
     const a = document.createElement('a');
     a.href = u;
@@ -113,7 +135,7 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
         <div className="vc-acc">
           {url ? (
             <button type="button" className="btn verde chico" disabled={yendo}
-              onClick={() => { setYendo(true); bajar(url, nombre.replace(/[\\/:*?"<>|]/g, '') + ' - ' + (NOMBRE[tipo] || tipo) + (bloq ? ' (bloqueada)' : '') + '.webp', () => setYendo(false)); }}>
+              onClick={() => { setYendo(true); bajar(url, nombre.replace(/[\\/:*?"<>|]/g, '') + ' - ' + (NOMBRE[tipo] || tipo) + (bloq ? ' (bloqueada)' : '') + '.png', () => setYendo(false)); }}>
               {yendo ? 'Bajando…' : 'Descargar'}
             </button>
           ) : null}

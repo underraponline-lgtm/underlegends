@@ -1453,8 +1453,10 @@ export function Perfil({ liga, dc, k: k0, tab }) {
   // una mínima (`f.solo`). Dlx, 13/10/2026: «Todos los que jugaron y los del staff». Ver `_perfiles_extra()` en subir_web.py
   const f0 = liga.T[k] || (P && P.p && P.p[k] && P.p[k].f) || filaDeCuenta(dc, k);
   // 🃏 si es su propio perfil y no está en la tabla, las cartas de su cuenta (`cs`) mandan sobre las del perfil mínimo
-  const fc = !liga.T[k] && dc && dc.clave === k && Array.isArray(dc.cs) && dc.cs.length && f0 && !(f0.c || []).length
-    ? Object.assign({}, f0, { c: dc.cs }) : f0;
+  // ⚠️ JUNTAS, NO UNA U OTRA (26/10/2026, Dlx: «necesito la tarjeta competitivo ahora»): el perfil sale del inventario
+  // del ciclo y tu cuenta de tu registro de /card; si uno se atrasa, la otra igual la tiene
+  const fc = !liga.T[k] && dc && dc.clave === k && Array.isArray(dc.cs) && dc.cs.length && f0
+    ? Object.assign({}, f0, { c: [...new Set([...(f0.c || []), ...dc.cs])] }) : f0;
   const f = fc;
   liga.fuera(f);
   const esYo = !!((dc && dc.clave === k) || (liga.yo && liga.yo.k === k));
