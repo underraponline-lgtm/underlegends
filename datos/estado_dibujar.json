@@ -1,51 +1,51 @@
 {
  "v": 1,
- "cuando": "2026-10-26T03:21:20Z",
+ "cuando": "2026-10-26T03:43:38Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1270.9,
+ "dur_s": 798.8,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 12.9
+   "s": 6.8
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.8
+   "s": 0.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.3
+   "s": 8.6
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 22.5
+   "s": 24.6
   },
   {
    "n": "5",
-   "que": "tanda 1 de 6 · 40 persona(s)",
+   "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 1158.5
+   "s": 686.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 8.9
+   "s": 8.8
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 57.8
+   "s": 61.8
   }
  ],
  "fallas": [
@@ -59,39 +59,11 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Ezias🥈✒️🧢🐍"
+   "que": "03_Servidor/generar.py OKAM"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Dyzz"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Krish"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Kravitz"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py NXUZ"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py NXUZ"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Sin Limites"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Sin Limites"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py npk"
+   "que": "03_Servidor/generar.py OEP"
   }
  ],
  "ultimo_evento": {
@@ -102,25 +74,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 150,
-   "read": 13032
+   "write": 165,
+   "read": 14625
   },
   "objeto": {
-   "leidas": 635994,
-   "escritas": 6349,
-   "pedidos": 1391
+   "leidas": 716339,
+   "escritas": 6778,
+   "pedidos": 1627
   },
   "worker": {
-   "pedidos": 8744,
+   "pedidos": 8719,
    "errores": 0,
-   "sub": 10697,
+   "sub": 10680,
    "cortados": 0,
    "p50_ms": 1.41,
-   "p99_ms": 11.15,
+   "p99_ms": 11.2,
    "cpu": {
-    "total": 19371,
-    "objeto_10": 1705,
-    "worker_10": 162
+    "total": 19331,
+    "objeto_10": 1719,
+    "worker_10": 163
    }
   },
   "r2": {
