@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-10-26T04:09:16Z",
+ "cuando": "2026-10-26T05:10:29Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 594.1,
+ "dur_s": 2261.4,
  "pasos": [
   {
    "n": "2f",
@@ -15,37 +15,37 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.6
+   "s": 0.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.2
+   "s": 8.7
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 38.1
+   "s": 22.4
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 10 · 40 persona(s)",
    "ok": false,
-   "s": 481.7
+   "s": 2155.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.3
+   "s": 10.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 53.2
+   "s": 54.8
   }
  ],
  "fallas": [
@@ -59,46 +59,106 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Number"
+   "que": "03_Servidor/generar.py Catarsis"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py OEP"
+   "que": "03_Servidor/generar.py Chase"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py EZCO"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Dyzz"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Itohimo"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py JEIXDER"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Krish"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Kravitz"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py MCO"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Lvel"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py NXUZ"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py NXUZ"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Raezer"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Rbk"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Telmex"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py TøKīØ🦠🧠"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py ajoel08"
   }
  ],
  "ultimo_evento": {
-  "n": "516",
-  "nombre": "AGUANTE EL ROJO Y EL BARCELONA Multiverse",
+  "n": "517",
+  "nombre": "QCYO RAPEEN 3",
   "sv": "FFA",
   "dia": "2026-10-25"
  },
  "cuotas": {
   "kv": {
-   "write": 176,
-   "read": 16325
+   "write": 214,
+   "read": 19001
   },
   "objeto": {
-   "leidas": 802872,
-   "escritas": 7142,
-   "pedidos": 1867
+   "leidas": 1264926,
+   "escritas": 9923,
+   "pedidos": 2897
   },
   "worker": {
-   "pedidos": 8737,
+   "pedidos": 9270,
    "errores": 0,
-   "sub": 10696,
+   "sub": 11287,
    "cortados": 0,
-   "p50_ms": 1.41,
-   "p99_ms": 11.2,
+   "p50_ms": 1.4,
+   "p99_ms": 11.11,
    "cpu": {
-    "total": 19353,
-    "objeto_10": 1721,
-    "worker_10": 162
+    "total": 20445,
+    "objeto_10": 1743,
+    "worker_10": 167
    }
   },
   "r2": {
-   "objetos": 4940,
-   "gb": 0.444,
-   "ts": 1792947839
+   "objetos": 5025,
+   "gb": 0.451,
+   "ts": 1792991438
   }
  }
 }
