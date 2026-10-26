@@ -31,12 +31,6 @@
      1792404668196
     ],
     [
-     "saz",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ],
-    [
      "juasmio",
      "miembro",
      1792404668196
@@ -55,12 +49,6 @@
      "erian",
      "miembro",
      1792404668196
-    ],
-    [
-     "97",
-     "miembro",
-     1792404668196,
-     1793052424502
     ],
     [
      "colesito",
@@ -86,24 +74,6 @@
      "nfk",
      "miembro",
      1792404668196
-    ],
-    [
-     "kirito",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ],
-    [
-     "jj",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ],
-    [
-     "malacostumbre",
-     "miembro",
-     1792404668196,
-     1793052424502
     ]
    ],
    "vence": 0,
@@ -140,21 +110,9 @@
      1792404668196
     ],
     [
-     "christo",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ],
-    [
      "acry",
      "miembro",
      1792404668196
-    ],
-    [
-     "astaroth",
-     "miembro",
-     1792404668196,
-     1793052424502
     ],
     [
      "7po",
@@ -196,21 +154,9 @@
      1792404668196
     ],
     [
-     "jetix",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ],
-    [
      "vize",
      "miembro",
      1792404668196
-    ],
-    [
-     "kenzingle",
-     "miembro",
-     1792404668196,
-     1793052424502
     ],
     [
      "masino",
@@ -240,24 +186,6 @@
      "erik",
      "lider",
      1792404668196
-    ],
-    [
-     "betelguese",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ],
-    [
-     "klk",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ],
-    [
-     "bna",
-     "miembro",
-     1792404668196,
-     1793052424502
     ]
    ],
    "vence": 0,
@@ -284,12 +212,6 @@
      "gp",
      "lider",
      1792404668196
-    ],
-    [
-     "pablosky",
-     "veterano",
-     1792404668196,
-     1793052424502
     ],
     [
      "thiflow",
@@ -329,18 +251,6 @@
      "liberia",
      "lider",
      1792404668196
-    ],
-    [
-     "valen",
-     "colider",
-     1792404668196,
-     1793052424502
-    ],
-    [
-     "luzzano",
-     "miembro",
-     1792404668196,
-     1793052424502
     ],
     [
      "agus",
@@ -387,33 +297,9 @@
      1792404668196
     ],
     [
-     "heat",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ],
-    [
      "sombra",
      "miembro",
      1792404668196
-    ],
-    [
-     "jere",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ],
-    [
-     "kain",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ],
-    [
-     "zaylax",
-     "miembro",
-     1792404668196,
-     1793052424502
     ]
    ],
    "vence": 0,
@@ -445,33 +331,9 @@
      1792404668196
     ],
     [
-     "imagy",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ],
-    [
-     "camila",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ],
-    [
-     "andres",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ],
-    [
      "mcnadie",
      "miembro",
      1792404668196
-    ],
-    [
-     "messinegro",
-     "miembro",
-     1792404668196,
-     1793052424502
     ]
    ],
    "vence": 0,
@@ -501,18 +363,6 @@
      "humildad",
      "miembro",
      1792404668196
-    ],
-    [
-     "mika",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ],
-    [
-     "kc",
-     "miembro",
-     1792404668196,
-     1793052424502
     ]
    ],
    "vence": 0,
@@ -539,27 +389,9 @@
      1792404668196
     ],
     [
-     "nacidoenitalia",
-     "colider",
-     1792404668196,
-     1793052424502
-    ],
-    [
      "pipe",
      "miembro",
      1792404668196
-    ],
-    [
-     "kuasar",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ],
-    [
-     "brayan",
-     "miembro",
-     1792404668196,
-     1793052424502
     ]
    ],
    "vence": 0,
@@ -596,37 +428,6 @@
    "fund": ""
   },
   {
-   "id": "El Último Bastón",
-   "nombre": "El Último Bastón",
-   "sigla": "",
-   "entrada": "pedido",
-   "oficial": true,
-   "creada": 1792404668196,
-   "reps": [],
-   "gente": [
-    [
-     "fafax",
-     "lider",
-     1792404668196,
-     1793052424502
-    ],
-    [
-     "blackmagic",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ]
-   ],
-   "vence": 0,
-   "logo": "",
-   "desc": "",
-   "req": {
-    "rg": "",
-    "ev": 0
-   },
-   "fund": ""
-  },
-  {
    "id": "Guardia Nacional",
    "nombre": "Guardia Nacional",
    "sigla": "",
@@ -644,37 +445,6 @@
      "volk",
      "miembro",
      1792404668196
-    ],
-    [
-     "cj",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ]
-   ],
-   "vence": 0,
-   "logo": "",
-   "desc": "",
-   "req": {
-    "rg": "",
-    "ev": 0
-   },
-   "fund": ""
-  },
-  {
-   "id": "Argentina Crew",
-   "nombre": "Argentina Crew",
-   "sigla": "",
-   "entrada": "pedido",
-   "oficial": true,
-   "creada": 1792404668196,
-   "reps": [],
-   "gente": [
-    [
-     "franky",
-     "lider",
-     1792404668196,
-     1793052424502
     ]
    ],
    "vence": 0,
@@ -728,68 +498,6 @@
      "velatz",
      "lider",
      1792404668196
-    ],
-    [
-     "praiseriza",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ]
-   ],
-   "vence": 0,
-   "logo": "",
-   "desc": "",
-   "req": {
-    "rg": "",
-    "ev": 0
-   },
-   "fund": ""
-  },
-  {
-   "id": "Caypher",
-   "nombre": "Caypher",
-   "sigla": "",
-   "entrada": "pedido",
-   "oficial": true,
-   "creada": 1792404668196,
-   "reps": [],
-   "gente": [
-    [
-     "rayden",
-     "lider",
-     1792404668196,
-     1793052424502
-    ],
-    [
-     "rayo",
-     "miembro",
-     1792404668196,
-     1793052424502
-    ]
-   ],
-   "vence": 0,
-   "logo": "",
-   "desc": "",
-   "req": {
-    "rg": "",
-    "ev": 0
-   },
-   "fund": ""
-  },
-  {
-   "id": "Mafia Chilena",
-   "nombre": "Mafia Chilena",
-   "sigla": "",
-   "entrada": "pedido",
-   "oficial": true,
-   "creada": 1792404668196,
-   "reps": [],
-   "gente": [
-    [
-     "xerve",
-     "lider",
-     1792404668196,
-     1793052424502
     ]
    ],
    "vence": 0,
@@ -826,31 +534,6 @@
    "fund": ""
   },
   {
-   "id": "Dinoguay",
-   "nombre": "Dinoguay",
-   "sigla": "",
-   "entrada": "pedido",
-   "oficial": true,
-   "creada": 1792404668196,
-   "reps": [],
-   "gente": [
-    [
-     "elindigenadelparque",
-     "lider",
-     1792404668196,
-     1793052424502
-    ]
-   ],
-   "vence": 0,
-   "logo": "",
-   "desc": "",
-   "req": {
-    "rg": "",
-    "ev": 0
-   },
-   "fund": ""
-  },
-  {
    "id": "04",
    "nombre": "04",
    "sigla": "04",
@@ -863,31 +546,6 @@
      "molt",
      "lider",
      1792404668196
-    ]
-   ],
-   "vence": 0,
-   "logo": "",
-   "desc": "",
-   "req": {
-    "rg": "",
-    "ev": 0
-   },
-   "fund": ""
-  },
-  {
-   "id": "Mayas Crew",
-   "nombre": "Mayas Crew",
-   "sigla": "",
-   "entrada": "pedido",
-   "oficial": true,
-   "creada": 1792404668196,
-   "reps": [],
-   "gente": [
-    [
-     "mayanmc",
-     "lider",
-     1792404668196,
-     1793052424502
     ]
    ],
    "vence": 0,
@@ -1032,31 +690,6 @@
      "lewito",
      "lider",
      1792404668196
-    ]
-   ],
-   "vence": 0,
-   "logo": "",
-   "desc": "",
-   "req": {
-    "rg": "",
-    "ev": 0
-   },
-   "fund": ""
-  },
-  {
-   "id": "Yuta",
-   "nombre": "Yuta",
-   "sigla": "YUTA",
-   "entrada": "pedido",
-   "oficial": true,
-   "creada": 1792404668196,
-   "reps": [],
-   "gente": [
-    [
-     "kminant",
-     "lider",
-     1792404668196,
-     1793052424502
     ]
    ],
    "vence": 0,

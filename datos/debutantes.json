@@ -179,7 +179,7 @@
    "n": 491,
    "sv": "ACAD",
    "vence": "2026-10-26T22:24:26+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Cody": {
    "avisado": "2026-10-25",
@@ -1101,7 +1101,7 @@
    "n": 491,
    "sv": "ACAD",
    "vence": "2026-10-26T22:24:26+00:00",
-   "vencido": false
+   "vencido": true
   },
   "ZAFK": {
    "avisado": "2026-10-26",

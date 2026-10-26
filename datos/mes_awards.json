@@ -3325,6 +3325,32 @@
      "orgs": [],
      "organizador": "Lízeninn",
      "cuentas": {}
+    },
+    "1564400559778300125": {
+     "sv": "FFA",
+     "nombre": "DETALLES DEL EVENTO",
+     "mo": "2026-10-26T22:09:18Z",
+     "staff": {
+      "jurado": [
+       "Kravitz"
+      ],
+      "host": [
+       "🎤 KRAVITZ 🇨🇷"
+      ],
+      "dj": [
+       "Kravitz"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "KRAVITZ",
+       "id": ""
+      }
+     ],
+     "organizador": "KRAVITZ",
+     "cuentas": {
+      "Kravitz": "1345962362615894027"
+     }
     }
    },
    "ver": {
@@ -4079,6 +4105,13 @@
       "Leyenda.X5 🇦🇷",
       "LEYENDA.X5",
       "microcrack"
+     ]
+    },
+    "DDF|2026-10-26": {
+     "1493416945037611140": [
+      "",
+      "Lízeninn",
+      "lizeninn."
      ]
     }
    }
