@@ -122,9 +122,10 @@ PRESET = {1: {'pagina', 'calendario', 'ligas', 'panel', 'suma', 'competitivo', '
           3: {'pagina', 'calendario', 'ligas', 'panel', 'suma'}}
 #: cuántos participantes pide un evento de un servidor que suma sólo a la Temporada (sin `competitivo`)
 MIN_SOLO_TEMPORADA = 8
-#: y desde cuándo: las llaves de antes siguen en Discord y el ciclo las relee; sin este corte entrarían de golpe y
-#: moverían el ranking de toda la T1. 00:00 ET del 26/10/2026 (en UTC, como `cuando` de cada llave)
-SOLO_TEMPORADA_DESDE = '2026-10-26T04:00:00+00:00'
+#: y desde cuándo: DESDE EL ARRANQUE DE LA T1, como todos (Dlx, 26/10/2026: «haz que sus eventos cuenten desde el día que
+#: todos están contando sus eventos»). Vacío = sin corte propio: lo de antes de la temporada ya lo saca
+#: `temporada.de_esta_temporada()`. Se probó con el 26/10 y se sacó a pedido de Dlx
+SOLO_TEMPORADA_DESDE = ''
 #: 🔴 sumar al ranking pide que el servidor esté en las listas del código (`sheet/rankings.py` y las demás, que llena
 #: `herramientas/sumar_servidor.py`): uno dado de alta desde el Dashboard no lo está, y sus llaves entrarían a medias.
 #: Hasta que se sume a mano, `suma` y `duelos` quedan apagados y el Dashboard dice por qué.

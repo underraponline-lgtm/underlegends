@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "4.08",
+   "dia": "2026-10-26",
+   "cuando": "2026-10-26T01:05:27-04:00",
+   "titulo": "Tu carta principal",
+   "items": [
+    "🃏 **Elige tu carta principal** en tu perfil → **Inventario**: sale primero en `/card`, en tu perfil y cuando alguien abre tus cartas.",
+    "🏆 **Cada ranking con su carta**: el Competitivo y el de Duelos muestran la Competitiva, y la página de cada país las cartas de País.",
+    "⚔️ **`/versus` usa la Competitiva** si los dos la tienen (puedes elegir otra igual).",
+    "🤝 **Los eventos de todos los servidores socios suman a la Temporada**, con 8 participantes o más. El Competitivo sigue siendo de los Tier 1.",
+    "🪪 **Las cartas de quien todavía no jugó** se ven en su perfil."
+   ]
+  },
+  {
    "version": "4.07",
    "dia": "2026-10-25",
    "cuando": "2026-10-25T23:43:00-04:00",

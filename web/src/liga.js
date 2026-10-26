@@ -1,6 +1,7 @@
 // La Liga, leída del payload público (`/api/lobby`, el mismo `D` de app.js) y del muro (`/api/muro`).
 // Es la traducción de la clase `Liga` de docs/remake/reales.py, el prototipo que se miró con Dlx: si una regla cambia
 // allá, cambia acá.
+import { cartaPrincipalDe } from './pase.js';
 
 // 🔒 el Discord ID del dueño de la Liga (público: es un ID). Sólo muestra el atajo al Dashboard; quién entra lo decide
 // el servidor (`DUENO` de bot/avisos.js, el mismo número)
@@ -156,6 +157,8 @@ export class Liga {
     this.muro = (muro && muro.items) || [];
     this.ahora = ahora || new Date();
     this.T = {};
+    // 🃏 los que no están en la tabla y se abrieron (su perfil): ver `fuera()`
+    this.X = {};
     this.N = {};
     this.E = {};
     this.dobles = new Set();
@@ -185,8 +188,11 @@ export class Liga {
   // ── rutas de imágenes (todas públicas: R2, el CDN de Discord y la propia página) ──
   // 🃏 `chica`: la de 300 px de ancho (19/10/2026, `CHICA_ANCHO` de bot/subir_cartas.py), para donde se dibuja en chico
   // —las llaves—; ~22 KB en vez de ~150. Puede no existir todavía: quien la usa vuelve a la grande si no carga
+  // 🃏 quien no está en la tabla (no jugó, o quedó más allá del corte) y tiene cartas: su perfil lo anota acá para
+  // que sus cartas se vean (26/10/2026, Dlx: «aún no tengo mis tarjetas»)
+  fuera(f) { if (f && f.k && !this.T[f.k] && Array.isArray(f.c)) this.X[f.k] = f; }
   cartaUrl(k, cual, chica = false) {
-    const f = this.T[k];
+    const f = this.T[k] || this.X[k];
     if (!f || !(f.c || []).includes(cual)) return null;
     const i = (this.d.cartas || []).indexOf(cual);
     const v = typeof f.cv === 'string' && i >= 0 ? f.cv.split('.')[i] : '';
@@ -195,12 +201,17 @@ export class Liga {
   // 🃏 QUÉ CARTA REPRESENTA A CADA UNO, SEGÚN DÓNDE (Dlx, 18/10/2026: «según dónde»). En algo de un servidor —su llave,
   // su página, sus eventos— la de Servidor, si es la de ESE servidor; en lo competitivo (`comp`), la Competitiva; en lo
   // demás, la de Temporada. Si no tiene la que toca, la de Temporada; si tampoco, la que tenga; sin ninguna, `null`
+  // 🃏 Y DESDE EL 26/10/2026 (Dlx: «me gustan tus otras ideas»): en lo de un país (`pais`, su página), la de País; y donde
+  // ninguna toca, la CARTA PRINCIPAL que eligió (`cartaPrincipal()` del objeto), antes que la Temporada
   cartaDe(k, donde = {}) {
     const f = this.T[k];
     const c = (f && f.c) || [];
     if (!c.length) return null;
     if (donde.sv && c.includes('servidor') && String(f.sv || '').toUpperCase() === String(donde.sv).toUpperCase()) return 'servidor';
     if (donde.comp && c.includes('competitivo')) return 'competitivo';
+    if (donde.pais && c.includes('pais') && String(f.cc || '').toLowerCase() === String(donde.pais).toLowerCase()) return 'pais';
+    const cp = cartaPrincipalDe(k);
+    if (cp && c.includes(cp)) return cp;
     return c.includes('temporada') ? 'temporada' : c[0];
   }
   // ✨ ¿su carta brilla en las llaves? (el nivel 8 del Pase: `brillan` del payload)

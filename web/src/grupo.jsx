@@ -116,7 +116,7 @@ export function PaginaCrew({ liga, id }) {
       ) : null}
       {jugaron.length ? (
         <Sec id="gp-cartas" titulo={'Los que mandan en ' + nombre} extra="negra">
-          <div className="rail mcs2">{cartas(jugaron.slice().sort(porLugar)).map((f) => <McPersona key={f.k} liga={liga} f={f} />)}</div>
+          <div className="rail mcs2">{cartas(jugaron.slice().sort(porLugar)).map((f) => <McPersona key={f.k} liga={liga} f={f} cual={liga.cartaDe(f.k) || 'temporada'} />)}</div>
         </Sec>
       ) : null}
       <Sec id="gp-gente" titulo="Toda la crew">
@@ -156,7 +156,7 @@ export function PaginaPais({ liga, cc: cc0 }) {
           ['EL MEJOR', gente[0] ? <a className="te-link" href={'#/r/' + encodeURIComponent(gente[0].k)}>{limpio(gente[0].n)}</a> : '—']]} />
       {gente.length ? (
         <Sec id="gp-cartas" titulo={'Los que mandan en ' + nom} extra="negra">
-          <div className="rail mcs2">{cartas(gente).map((f) => <McPersona key={f.k} liga={liga} f={f} />)}</div>
+          <div className="rail mcs2">{cartas(gente).map((f) => <McPersona key={f.k} liga={liga} f={f} cual={liga.cartaDe(f.k, { pais: cc }) || 'temporada'} />)}</div>
         </Sec>
       ) : null}
       <Sec id="gp-gente" titulo={'Todo ' + nom}>

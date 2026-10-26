@@ -7,7 +7,7 @@
 // ciclo (`bot/tags_inventario.py`, que lo revisa otra vez contra tu inventario).
 import { useEffect, useState } from 'react';
 import CAT from './tags_catalogo.json';
-import { pasePost } from './pase.js';
+import { pasePost, refrescarPases } from './pase.js';
 
 const CARTAS = [['temporada', 'Temporada'], ['competitivo', 'Competitiva'], ['servidor', 'Servidor'], ['pais', 'País']];
 const GRUPO = { siempre: ['♾️', 'Para siempre'], temporada: ['📅', 'De temporada'], pase: ['✨', 'Edición limitada'] };
@@ -43,8 +43,27 @@ export function TusTags() {
     });
   };
   const total = CARTAS.reduce((s, [c]) => s + opciones(c, yo).filter((o) => o.grupo !== 'pase').length, 0);
+  // 🃏 tu carta principal (26/10/2026): la que sale primero en /card, en tu perfil y al abrir tus cartas
+  const principal = (carta) => {
+    setOcup('cp' + carta);
+    pasePost('carta-principal', { carta }).then((d) => {
+      setOcup('');
+      if (d && d._ok) { setYo(d); refrescarPases(); setMsg(carta ? 'Listo: ésa es tu carta principal.' : 'Listo: vuelve a lo de siempre.'); }
+      else setMsg('No se pudo guardar. Prueba de nuevo.');
+    });
+  };
   return (
     <div className="iv">
+      <section className="iv-c">
+        <h4>Tu carta principal<small>{yo.principal ? 'Elegida' : 'Automático'}</small></h4>
+        <p className="iv-p">La que te representa: sale primero en <b>/card</b>, en tu perfil y cuando alguien abre tus cartas.</p>
+        <div className="iv-l" role="radiogroup" aria-label="Tu carta principal">
+          {[['', 'Automático']].concat(CARTAS).map(([c, nombre]) => (
+            <button key={c || 'auto'} type="button" role="radio" aria-checked={(yo.principal || '') === c}
+              className={'iv-t' + (c ? '' : ' auto') + ((yo.principal || '') === c ? ' on' : '')} disabled={!!ocup} onClick={() => principal(c)}>{nombre}</button>
+          ))}
+        </div>
+      </section>
       <p className="iv-p">
         El TAG de abajo de cada carta lo eliges tú, de los que ganaste. <b>♾️ Para siempre</b> y <b>📅 de temporada</b> se
         guardan cuando tu carta los muestra; <b>✨ edición limitada</b> son tus títulos del Pase. Los <b>🎯 de estado</b> (EN

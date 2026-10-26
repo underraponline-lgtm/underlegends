@@ -3573,8 +3573,11 @@ const COMANDOS = {
     // Servidor mostraría la de OTRO servidor, y la Competitiva pide 10 eventos que en un Tier 3 no se juegan
     const aquiSv = SV_DE(aquiEs(i.guild_id));
     const temp = sinCs || (g.cs || []).indexOf('temporada') >= 0;
-    const abre = aquiSv && aquiSv.sinCarta && temp ? 'temporada'
-      : ((g.cs || []).indexOf('competitivo') >= 0) ? 'competitivo' : 'servidor';
+    // 🃏 Y SI ELIGIÓ SU CARTA PRINCIPAL (26/10/2026, `cartaPrincipal()` del objeto, viene en `cp`), ésa primero
+    const cp = String(g.cp || '');
+    const abre = cp && tiene(g, cp) && !bloqueada(g, cp) && !(cp === 'servidor' && aquiSv && aquiSv.sinCarta) ? cp
+      : aquiSv && aquiSv.sinCarta && temp ? 'temporada'
+        : ((g.cs || []).indexOf('competitivo') >= 0) ? 'competitivo' : 'servidor';
     // 📸 tu carta sin tu foto: un aviso que ves sólo vos (ver `avisoFoto()`)
     if (comoDije === 'tú' || (porUsuario && String(porUsuario.value) === String(idDe(i)))) {
       luego(ctx, avisoFoto(env, i, quien, g));
@@ -3648,7 +3651,9 @@ const COMANDOS = {
     const m = meta ? JSON.parse(meta) : {};
     const aqui = aquiEs(i.guild_id);
 
-    const cual = String(val('carta') || 'servidor');
+    // 🃏 SIN ELEGIR, LA COMPETITIVA SI LA TIENEN LOS DOS (26/10/2026: «el vs con la carta que corresponde»): un cruce se
+    // mide en el Competitivo, que es lo que esa carta muestra. Si no, la de Servidor, como siempre
+    const cual = String(val('carta') || (tieneReal(ga, 'competitivo') && tieneReal(gb, 'competitivo') ? 'competitivo' : 'servidor'));
     // ⚠️ SE DICE **QUIÉN** DE LOS DOS NO LA TIENE. «No se puede comparar esa
     // carta» deja a la persona probando las otras tres a ver cuál pega; con el
     // nombre, ya sabe. Es la misma lección del candado del selector: el

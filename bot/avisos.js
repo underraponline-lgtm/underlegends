@@ -2582,7 +2582,7 @@ const RUTAS = {
   // 🎟️ (25/10/2026) tus avisos del Pase y tu color premium, con tu sesión; el sorteo del premium (público) y entrar a él
   '/avisos/pase-avisos': 'POST', '/avisos/pase-color': 'POST', '/avisos/sorteo': 'POST', '/avisos/sorteo-entrar': 'POST',
   // 🖼️ tus marcos de carta y elegir cuál llevar, con tu sesión
-  '/avisos/marcos': 'POST', '/avisos/marco-elige': 'POST',
+  '/avisos/marcos': 'POST', '/avisos/marco-elige': 'POST', '/avisos/carta-principal': 'POST',
   // 🏷️ tus TAGs y elegir cuál lleva cada carta (con tu sesión), y el inventario del ciclo (con su clave)
   '/avisos/tags-mios': 'POST', '/avisos/tag-elige': 'POST', '/avisos/tags-ciclo': 'POST',
   // 🎟️ quién tiene nivel en el Pase, para el ciclo (la Temporada es el premio del nivel 1): con `claveCiclo()`
@@ -4952,7 +4952,7 @@ export async function rutaAvisos(req, env, ruta) {
   // reenvío de abajo: ese pasa el cuerpo tal cual, y acá el `quien` lo pone la sesión
   if (ruta === '/avisos/pase' || ruta === '/avisos/pase-vivo' || ruta === '/avisos/pase-avisos' || ruta === '/avisos/pase-color' ||
     ruta === '/avisos/sorteo' || ruta === '/avisos/sorteo-entrar' || ruta === '/avisos/marcos' || ruta === '/avisos/marco-elige'
-    || ruta === '/avisos/tags-mios' || ruta === '/avisos/tag-elige') {
+    || ruta === '/avisos/carta-principal' || ruta === '/avisos/tags-mios' || ruta === '/avisos/tag-elige') {
     const crudo = await req.text();
     if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
     let d = null;
@@ -5930,6 +5930,8 @@ export class Avisos {
       this.sql.exec('CREATE TABLE IF NOT EXISTS marcos (quien TEXT NOT NULL, marco TEXT NOT NULL, t INTEGER NOT NULL, PRIMARY KEY (quien, marco))');
       this.sql.exec("CREATE TABLE IF NOT EXISTS marco_elige (quien TEXT PRIMARY KEY, marco TEXT NOT NULL DEFAULT '', " +
         "estilo TEXT NOT NULL DEFAULT 'camiseta', t INTEGER NOT NULL)");
+      // 🃏 la carta que cada uno elige como principal (26/10/2026): ver `cartaPrincipal()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS carta_principal (quien TEXT PRIMARY KEY, carta TEXT NOT NULL, t INTEGER NOT NULL)');
       // 🏷️ EL TAG QUE CADA UNO ELIGE PARA CADA CARTA (Dlx, 25/10/2026: «que los tags de abajo sean personalizables en cada
       // tarjeta… desde el inventario»). `tag` es la clave del catálogo (`sheet/catalogo_tags.py`) o `pase:<título>`. El
       // inventario lo trae el ciclo (`/avisos/tags-ciclo`, en `estado` como `tags_ganados`)
@@ -6549,6 +6551,7 @@ export class Avisos {
       if (ruta === '/sorteo-entrar') { const v = this.sorteoEntrar(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/marcos') return json(this.marcosDe(String(d.quien || '')));
       if (ruta === '/marco-elige') { const v = this.marcoElige(d); return json(v, v.error ? 400 : 200); }
+      if (ruta === '/carta-principal') { const v = this.cartaPrincipal(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/tags-mios') return json(this.tagsMios(String(d.quien || '')));
       if (ruta === '/tag-elige') { const v = this.tagElige(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/tags-ciclo') { const v = this.tagsCiclo(d); return json(v, v.error ? 400 : 200); }
@@ -12071,7 +12074,11 @@ export class Avisos {
   persona(k) {
     if (!/^p:\S{1,100}$/.test(String(k || ''))) return null;
     const r = this.sql.exec('SELECT v FROM persona WHERE k = ?', String(k)).toArray()[0];
-    return r ? r.v : null;
+    if (!r) return null;
+    // 🃏 y su carta principal, si eligió una: /card abre ahí (`cp`)
+    const cp = this.cartasPrincipales()[String(k).slice(2)];
+    if (!cp) return r.v;
+    try { return JSON.stringify(Object.assign(JSON.parse(r.v), { cp })); } catch (e) { return r.v; }
   }
 
   /** Varias a la vez, para el ciclo: `{k: v}` de las que están (hasta 200) */
@@ -12867,7 +12874,7 @@ export class Avisos {
       const k = this.claveDe(h.quien);
       if (k) (salon[h.temp] = salon[h.temp] || []).push([k, h.t]);
     }
-    return { t: Date.now(), n: out, cfg, salon, m: this.marcosPublicos() };
+    return { t: Date.now(), n: out, cfg, salon, m: this.marcosPublicos(), cp: this.cartasPrincipales() };
   }
 
   /**
@@ -12936,7 +12943,38 @@ export class Avisos {
     const G = this.leer('tags_ganados') || {};
     const elegidos = {};
     for (const r of this.sql.exec('SELECT carta, tag FROM tag_elige WHERE quien = ?', quien).toArray()) elegidos[r.carta] = r.tag;
-    return { k, temp: G.temp || '', ganados: (k && G.g && G.g[k]) || {}, titulos: this.titulosDe(quien), elegidos, dueno: quien === DUENO };
+    const cp = this.sql.exec('SELECT carta FROM carta_principal WHERE quien = ?', quien).toArray()[0];
+    return { k, temp: G.temp || '', ganados: (k && G.g && G.g[k]) || {}, titulos: this.titulosDe(quien), elegidos, dueno: quien === DUENO,
+      principal: cp ? cp.carta : '' };
+  }
+
+  /**
+   * 🃏 TU CARTA PRINCIPAL (Dlx, 26/10/2026, a «que cada uno elija cuál carta lo representa: sale primero en /card, en el
+   * perfil y en el ranking» → «me gustan tus otras ideas»). Casi todo lo que se veía era la Temporada; con esto la
+   * Competitiva, la de País o la de Servidor pueden ser la cara de cada uno. `carta: ''` vuelve a lo de siempre
+   */
+  cartaPrincipal(d) {
+    const quien = String(d.quien || ''), carta = String(d.carta || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || (carta && !TAG_CARTAS.includes(carta))) return { error: 'faltan datos' };
+    if (carta) {
+      this.sql.exec('INSERT INTO carta_principal (quien, carta, t) VALUES (?, ?, ?) ON CONFLICT(quien) DO UPDATE SET ' +
+        'carta = excluded.carta, t = excluded.t', quien, carta, Date.now());
+    } else {
+      this.sql.exec('DELETE FROM carta_principal WHERE quien = ?', quien);
+    }
+    return Object.assign({ ok: true }, this.tagsMios(quien));
+  }
+
+  /** 🃏 La carta principal de cada perfil: `{clave: carta}`. Por clave, nunca por cuenta */
+  cartasPrincipales() {
+    const out = {};
+    try {
+      for (const r of this.sql.exec('SELECT quien, carta FROM carta_principal').toArray()) {
+        const k = this.claveDe(r.quien) || (r.quien === DUENO ? DUENO_K : '');
+        if (k) out[k] = r.carta;
+      }
+    } catch (e) { /* sin elegir: lo de siempre */ }
+    return out;
   }
 
   /** 🏷️ Elegir el TAG de una carta (`/avisos/tag-elige`, con tu sesión): uno que tengas, un título tuyo o `auto` */

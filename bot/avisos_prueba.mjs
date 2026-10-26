@@ -1236,6 +1236,12 @@ const ok = (cond, que, det) => {
       && A.pisaConNada('Gana X', ' . ') && !A.pisaConNada('Gana X', 'Gana Y') && !A.pisaConNada('', '.'),
     'los veredictos en tiempo real: con el nombre de la mención, un «.» no pisa, el borrado queda marcado y nada se pierde',
     JSON.stringify([vf, vh]));
+    // 🃏 la carta principal (26/10/2026): una de las cuatro o vacía; otra cosa no
+    const cp1 = o.cartaPrincipal({ quien: '100000041', carta: 'pais' });
+    const cp2 = o.cartaPrincipal({ quien: '100000041', carta: 'trucha' });
+    const cp3 = o.cartaPrincipal({ quien: '100000041', carta: '' });
+    ok(cp1.principal === 'pais' && cp2.error && cp3.principal === '' && typeof o.cartasPrincipales() === 'object',
+      'la carta principal: una de las cuatro, «Automático» la borra y otra cosa no vale', JSON.stringify([cp1.principal, cp2, cp3.principal]));
     // 🗂️ las sanciones activas y 📊 los números del propio Dashboard
     const sa = o.sancionesActivas(Date.now());
     o.dashMed('deshacer', 1); o.dashMed('deshacer', 1);

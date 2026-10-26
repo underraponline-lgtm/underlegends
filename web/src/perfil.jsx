@@ -15,7 +15,7 @@ import { PanelEmblemas, PildoraEmblemas, emblemasDe } from './emblemas.jsx';
 import { TusTags } from './tags_inv.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
-import { usePaseDe } from './pase.js';
+import { usePaseDe, usePases } from './pase.js';
 import { textoRol, useRoles } from './roles.js';
 import { urlFondo, useFondos } from './fondos.js';
 import { svElegido, useElegidos } from './elegidos.js';
@@ -413,7 +413,10 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros }) {
   useEffect(() => { setSi0((liga.sigue || []).includes(k)); }, [k]); // eslint-disable-line react-hooks/exhaustive-deps
   const segs = n0 == null ? null : Math.max(0, n0 + (si ? 1 : 0) - (si0 ? 1 : 0));
   const sigue = useSiguiendo(k, n0);
-  const cs = ORDEN.filter((c) => (f.c || []).includes(c));
+  // 🃏 su carta principal, primero (26/10/2026)
+  const pub = usePases();
+  const cp0 = (pub && pub.cp && pub.cp[k]) || '';
+  const cs = ORDEN.filter((c) => (f.c || []).includes(c)).sort((a, b) => (b === cp0) - (a === cp0));
   const propio = String(f.sv || '').toLowerCase();
   const svc = ((p && p.svc) || []).filter((x) => x !== propio);
   // 🏠 de dónde es, sólo si lo eligió (Dlx, 12/10/2026): el color de arriba, sin fondo propio
@@ -1448,7 +1451,12 @@ export function Perfil({ liga, dc, k: k0, tab }) {
   const P = usePerfiles();
   // 👤 y quien no entra en la tabla del lobby (corta en 200): su fila viaja en su perfil, y el staff que no compite trae
   // una mínima (`f.solo`). Dlx, 13/10/2026: «Todos los que jugaron y los del staff». Ver `_perfiles_extra()` en subir_web.py
-  const f = liga.T[k] || (P && P.p && P.p[k] && P.p[k].f) || filaDeCuenta(dc, k);
+  const f0 = liga.T[k] || (P && P.p && P.p[k] && P.p[k].f) || filaDeCuenta(dc, k);
+  // 🃏 si es su propio perfil y no está en la tabla, las cartas de su cuenta (`cs`) mandan sobre las del perfil mínimo
+  const fc = !liga.T[k] && dc && dc.clave === k && Array.isArray(dc.cs) && dc.cs.length && f0 && !(f0.c || []).length
+    ? Object.assign({}, f0, { c: dc.cs }) : f0;
+  const f = fc;
+  liga.fuera(f);
   const esYo = !!((dc && dc.clave === k) || (liga.yo && liga.yo.k === k));
   const p = (P && P.p && P.p[k]) || null;
   const t = SECCIONES.includes(tab) ? tab : '';

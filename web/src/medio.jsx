@@ -225,7 +225,7 @@ export function LosQueMandan({ liga, dc }) {
   }
   cats.push(['competitivo', 'Competitivo', compT.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} cual="competitivo" />), yoComp]);
   const duT = (liga.d.duelos || []).filter((d) => !d.fc && liga.T[d.k]);
-  cats.push(['duelos', 'Duelos', duT.slice(0, 5).map((d) => <McPersona key={d.k} liga={liga} f={liga.T[d.k]} dato={d.g + ' DE ' + d.t + ' DUELOS GANADOS'} />),
+  cats.push(['duelos', 'Duelos', duT.slice(0, 5).map((d) => <McPersona key={d.k} liga={liga} f={liga.T[d.k]} cual={liga.cartaDe(d.k, { comp: 1 }) || 'temporada'} dato={d.g + ' DE ' + d.t + ' DUELOS GANADOS'} />),
     yo ? fila(puestoDe(liga, duT, (d) => d.k === yo.k, (d) => d.g || 0, 'duelos ganados'), '#/ranking/duelos') : null]);
   const medT = T.filter((f) => (f.oro || 0) + (f.seg || 0) + (f.ter || 0))
     .sort((a, b) => (b.oro || 0) - (a.oro || 0) || (b.seg || 0) - (a.seg || 0) || (b.ter || 0) - (a.ter || 0) || a.pos - b.pos);

@@ -111,8 +111,8 @@ def no_suman(hallazgos, fuera=None, solo_temp=None):
         except Exception:                                # noqa: BLE001
             solo_temp, minimo, desde = set(), 8, ''
     else:
-        minimo, desde = 8, '2026-10-26T04:00:00+00:00'
-    # ⚠️ y sólo desde el 26/10/2026: lo de antes de que sumaran no entra de golpe (`tiers.SOLO_TEMPORADA_DESDE`)
+        minimo, desde = 8, ''
+    # (y un corte propio de fecha si `tiers.SOLO_TEMPORADA_DESDE` lo tiene; hoy no: cuentan desde el arranque de la T1)
     chicas = {id(h) for h in si if str(h.get('guild') or '') in solo_temp and str(h.get('cuando') or '') < desde}
     for g in set(str(h.get('guild') or '') for h in si) & set(solo_temp):
         for grupo in agrupar([h for h in si if str(h.get('guild') or '') == g]):
@@ -3347,7 +3347,7 @@ def _self_check():
     mal = 0
     # 🤝 las llaves de un servidor que no suma no pasan a Entrada (20/10/2026)
     si, no = no_suman([{'guild': '1'}, {'guild': '2'}, {'guild': 3}], fuera={'2', '3'}, solo_temp=set())
-    _s2, _n2 = no_suman([{'guild': '7', 'cuando': '2026-10-20T01:00:00+00:00', 'texto': ''}], fuera=set(), solo_temp={'7'})
+    _s2, _n2 = no_suman([{'guild': '7', 'cuando': '2026-10-20T01:00:00+00:00', 'texto': 'A vs B'}], fuera=set(), solo_temp={'7'})
     ok = [h['guild'] for h in si] == ['1'] and len(no) == 2 and not _s2 and len(_n2) == 1
     mal += not ok
     print('\n  %s las llaves de los servidores que no suman se leen y no entran al ranking' % ('✅' if ok else '🔴'))

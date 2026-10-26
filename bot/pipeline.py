@@ -1304,6 +1304,12 @@ def _lo_barato(correr):
         paso('2b8g', 'los primerizos')
         if not corre(['bot/primerizos.py', '--aplicar'], callado=True, mostrar=('🔁', '⚠️')):
             print('      ⚠️ los primerizos fallaron: el Dashboard muestra la lista de antes')
+    # ── 2b8h · ⭐ la nota de cada rapero en cada evento y el MVP (`bot/notas.py`, Dlx 26/10/2026: «un puntaje de cada
+    # rapero así como lo hace al final el partido de fútbol»). Sale de `datos/llaves_t1.json`. Nunca frena el ciclo
+    if correr:
+        paso('2b8h', 'las notas y el MVP')
+        if not corre(['bot/notas.py'], callado=True, mostrar=('⭐', '⚠️')):
+            print('      ⚠️ las notas fallaron: quedan las de antes')
     # ── 2b9 · 🏟️ las ligas de los servidores (`bot/ligas.py`, Dlx 12/10/2026: «1. A», «2. Me gusta»): cada batalla con
     # su resultado, para la pestaña «Ligas» de la web y como duelos (Ranking Duelos y Win%: los toma el paso 1c de la
     # corrida siguiente, como las misiones). Nunca frena el ciclo

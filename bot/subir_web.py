@@ -634,7 +634,7 @@ def armar():
     # 👤 de todos los que jugaron, no sólo de la tabla (13/10/2026: «Todos los que jugaron y los del staff»)
     _pf = _perfiles(todos, list(_comp.values()), regs)
     debutantes(tabla, _pf)
-    _perfiles_extra(_pf, filas_todas[TOPE:], _staff_rol, _avs, _vd_de())
+    _perfiles_extra(_pf, filas_todas[TOPE:], _staff_rol, _avs, _vd_de(), r2, _puede)
     # 👥 quién organiza, con su perfil —también el staff que no compite y los de fuera de la tabla— (14/10/2026)
     _orgs_pago = _orgs(ann, tabla, pool, staff=_staff_rol, perfiles=set(_pf or {}))
     _en_t = {f.get('k') for f in tabla}
@@ -1764,7 +1764,7 @@ def _solo_rol(pool):
     return out
 
 
-def _perfiles_extra(pf, filas, staff, avs, vdf=None):
+def _perfiles_extra(pf, filas, staff, avs, vdf=None, r2=None, puede=None):
     """Las filas de quien no entra en la tabla del lobby, adentro de su perfil (`p[k].f`), y un perfil mínimo para el
     staff que no compite (`f.solo`: nombre, bandera y cara, sin números). La página las usa cuando la persona no está en
     `liga.T` (web/src/perfil.jsx)."""
@@ -1776,11 +1776,40 @@ def _perfiles_extra(pf, filas, staff, avs, vdf=None):
         if x['k'] in pp:
             continue
         pp[x['k']] = {'f': {'n': x['raw'], 'k': x['k'], 'cc': x['cc'], 'solo': 1,
-                            'av': ('%s/%s' % (x['did'], avs[x['did']]) if avs.get(x['did']) else '')}}
+                            'av': ('%s/%s' % (x['did'], avs[x['did']]) if avs.get(x['did']) else ''),
+                            # 🃏 SUS CARTAS TAMBIÉN (26/10/2026, Dlx: «aún no tengo mis tarjetas»): el perfil mínimo no
+                            # traía la lista y la página decía «todavía ninguna» con tres en R2. Las que tiene
+                            # arriba y le tocan: el portón, y el requisito salvo el dueño (`_cartas_staff()`)
+                            'c': _cartas_staff(x, r2 or {}, puede)}}
         # 📅 desde cuándo está verificado, también del staff que no compite
         vd = vdf({'raw': x['raw'], 'discord_id': x['did']}) if vdf else ''
         if vd:
             pp[x['k']]['vd'] = vd
+
+
+def _cartas_staff(x, r2, puede):
+    """🃏 Las cartas de alguien del staff que no está en la tabla: las que están en R2, pasan el portón y cumplen su
+    requisito —sin jugar, casi siempre sólo la Servidor—. El dueño, todas las que tenga (`verificados.DUENO`)."""
+    tiene = r2.get(x['k']) or {}
+    p = {'raw': x['raw'], 'discord_id': x['did'], 'full': x.get('full') or x['raw']}
+    try:
+        _b = os.path.join(BASE, 'bot')
+        if _b not in sys.path:
+            sys.path.insert(0, _b)
+        import verificados as _VER
+        dueno = x['did'] == _VER.DUENO
+    except Exception:                                    # noqa: BLE001
+        dueno = False
+    out = []
+    for c in CARTAS:
+        if c not in tiene or (puede is not None and not puede(p, c)):
+            continue
+        try:
+            if dueno or RQ.falta(c, p, '') is None:
+                out.append(c)
+        except Exception:                                # noqa: BLE001
+            pass
+    return out
 
 
 def _vd_de():

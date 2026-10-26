@@ -6,13 +6,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { limpio, num, siglaDe } from './liga.js';
 import { Bandera, nombrePais } from './piezas.jsx';
+import { usePases } from './pase.js';
 
 const NOMBRE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País' };
 const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
 
 // quien entró con Discord y no está en la tabla (no jugó la temporada): sus tarjetas y sus Bloqueadas (`filaCuenta()`)
 function filaDe(liga, dc, k) {
-  const f = liga.T[k];
+  const f = liga.T[k] || liga.X[k];
   if (f) return f;
   if (!dc || dc.clave !== k) return null;
   return { k, n: dc.rapero || dc.n, cc: dc.cc, sv: dc.sv, pos: null, ovr: null, pts: 0, ev: dc.ev || 0, wr: '', c: dc.cs || [], bl: dc.bl || [], cuenta: true };
@@ -43,9 +44,13 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
   const cs = f ? ORDEN.filter((c) => (f.c || []).includes(c)) : [];
   const bl = f && f.cuenta ? ORDEN.filter((c) => (f.bl || []).includes(c) && !cs.includes(c)) : [];
   const pest = cs.map((c) => [c, NOMBRE[c]]).concat(bl.map((c) => ['bloq-' + c, NOMBRE[c] + ' · bloqueada']));
-  const primera = inicial && pest.some((p) => p[0] === inicial) ? inicial : (pest[0] ? pest[0][0] : '');
+  // 🃏 sin pedir una, abre en su carta principal (26/10/2026), si la eligió
+  const pub = usePases();
+  const cp = (pub && pub.cp && pub.cp[k]) || '';
+  const primera = inicial && pest.some((p) => p[0] === inicial) ? inicial
+    : cp && pest.some((p) => p[0] === cp) ? cp : (pest[0] ? pest[0][0] : '');
   const [cual, setCual] = useState(primera);
-  useEffect(() => { setCual(primera); }, [k, inicial]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { setCual(primera); }, [k, inicial, cp]); // eslint-disable-line react-hooks/exhaustive-deps
   const [yendo, setYendo] = useState(false);
   const cerrarB = useRef(null);
   // Escape cierra, la página de atrás no se mueve, y el foco vuelve a donde estaba

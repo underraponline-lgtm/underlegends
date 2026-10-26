@@ -25,6 +25,7 @@ import { Divisiones } from './divisiones.jsx';
 import { Misiones } from './misiones.jsx';
 import { svElegido, useElegidos } from './elegidos.js';
 import { Ascenso, useDetalle } from './ligas.jsx';
+import { usePases } from './pase.js';
 import { TierChip } from './crewpanel.jsx';
 import CSS_PAGINA from './css/ranking.css?inline';
 import { usarCss } from './css.js';
@@ -623,6 +624,7 @@ function clasificados(cfg, base) {
 // una vez, con `perfiles()` de app.js, la primera vez que se abre una fila ──────────────────────────────────────────
 function Detalle({ x, cfg, f, perf }) {
   const { liga } = x;
+  const pub = usePases();
   if (cfg.grupo) {
     const gente = cfg.grupo === 'pais' ? ((liga.paisDe(f.cc) || {}).gente || [])
       : (f.gente || []).map((n) => liga.fila(n)).filter(Boolean).sort((a, b) => (a.o || 999) - (b.o || 999));
@@ -649,7 +651,12 @@ function Detalle({ x, cfg, f, perf }) {
   const E = (perf && perf.e) || {};
   const evs = perf ? ((P && P.ev) || []).map(([n, puesto, pts]) => ({ n, puesto, pts, e: E[n] || E[String(n)] || [] }))
     .sort((a, b) => String(b.e[2] || '').localeCompare(String(a.e[2] || ''))) : null;
-  const cual = (t.c || []).includes('temporada') ? 'temporada' : (t.c || [])[0];
+  // 🃏 LA CARTA DE ESTE RANKING (26/10/2026: «cada página con su carta»): el Competitivo y los Duelos abren la Competitiva,
+  // la Temporada la de Temporada; en los demás, la carta principal que eligió, y si no eligió, la Temporada
+  const tiene = (c) => (t.c || []).includes(c);
+  const deAca = cfg.podio || (cfg.et === 'Duelos' ? 'competitivo' : '');
+  const cp = pub && pub.cp ? pub.cp[f.k] : '';
+  const cual = deAca && tiene(deAca) ? deAca : cp && tiene(cp) ? cp : tiene('temporada') ? 'temporada' : (t.c || [])[0];
   return (
     <div className="rk-det-in">
       {cual ? <div className="rk-det-carta"><Carta liga={liga} k={f.k} cual={cual} cls="rk-det-ci" /></div> : null}
