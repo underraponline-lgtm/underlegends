@@ -2516,7 +2516,7 @@
    "Zeta": 4
   },
   "fecha": "08/10",
-  "firma": "91669c939c19ceda",
+  "firma": "3c117371a5281b1a",
   "msg": "1557926456259248232",
   "nombre": "SNAKE INSIGNIA 4 8",
   "num": 430,
@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "4c43a023d170eb0c",
+  "firma": "1569a5f631f8df9d",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "cb0d222ebc0973b2",
+  "firma": "965ac3e76bac7856",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "19a6769ee1e086e5",
+  "firma": "a1b0a529e54e1f97",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -13865,7 +13865,7 @@
    "Vandu": 22
   },
   "fecha": "16/10",
-  "firma": "00a515791371c470",
+  "firma": "5b2e91e8d8a125fa",
   "msg": "1560779869497983097",
   "nombre": "PRADERAP VOL.1",
   "num": 479,
@@ -14395,9 +14395,9 @@
     "Solar"
    ],
    [
-    "MARTYNEZ",
+    "Martynez 🇺🇾",
     "Sin Limites",
-    "MARTYNEZ"
+    "Martynez 🇺🇾"
    ],
    [
     "MCO",
@@ -14464,7 +14464,7 @@
    "Sin Limites": 18
   },
   "fecha": "16/10",
-  "firma": "8aee41914c4e5428",
+  "firma": "6321b201af4e966c",
   "msg": "1560858617589272627",
   "nombre": "PROYECTO X VOL.3",
   "num": 481,
@@ -14591,7 +14591,7 @@
    "Panchok": 15
   },
   "fecha": "17/10",
-  "firma": "6208aa0a12e5065c",
+  "firma": "5f5a7f3509b3bbfc",
   "msg": "1561153562665558208",
   "nombre": "MUNDIALITO",
   "num": 482,
@@ -15100,7 +15100,7 @@
    "Xubaru": 8
   },
   "fecha": "18/10",
-  "firma": "4b473da15232d7a8",
+  "firma": "28edb4db81a8c398",
   "msg": "1561498207572205609",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL7 __",
   "num": 484,
@@ -15773,7 +15773,7 @@
    "Molusco": 16
   },
   "fecha": "19/10",
-  "firma": "edc5128f2bfaa94f",
+  "firma": "cb2fa4b6d0971939",
   "msg": "1561607804798898179",
   "nombre": "__ FREESTYLE LEAGUE __",
   "num": 487,
@@ -15936,7 +15936,7 @@
    "Tenor": 5
   },
   "fecha": "19/10",
-  "firma": "e6ac69661974082d",
+  "firma": "028ebb2024a7f73c",
   "msg": "1561761975514697891",
   "nombre": "FREESTYLE LEAGUE N3",
   "num": 488,
@@ -19355,6 +19355,16 @@
     "PichulaMc",
     "Erian",
     "PichulaMc"
+   ],
+   [
+    "el sheke",
+    "PichulaMc",
+    "el sheke"
+   ],
+   [
+    "Miniboy",
+    "Makmah",
+    ""
    ]
   ],
   "ev_antes": {
@@ -19365,7 +19375,7 @@
    "PichulaMc": 41
   },
   "fecha": "22/10",
-  "firma": "c216c68f2bc53293",
+  "firma": "4bec53ca94b21989",
   "msg": "1562977225790459957",
   "nombre": "19 (EDICIÓN FUTCARD VOL 4)",
   "num": 500,
@@ -19398,6 +19408,16 @@
    ],
    [
     "Jobaking",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Makmah",
     "Cuartos",
     2000
    ]
@@ -19806,7 +19826,7 @@
    "Sin Limites": 23
   },
   "fecha": "23/10",
-  "firma": "0511bdd54680f960",
+  "firma": "620fbf6e4b55c4fb",
   "msg": "1563330231442604132",
   "nombre": "ZONA MORTAL",
   "num": 502,
@@ -20758,9 +20778,9 @@
     "PichulaMc"
    ],
    [
-    "🔹 C4: MAKMA",
+    "Makmah",
     "MaYeuTyK",
-    "🔹 C4: MAKMA"
+    "Makmah"
    ],
    [
     "💥 SF1: PICHULA",
@@ -20776,6 +20796,16 @@
     "PichulaMc",
     "Makmah",
     "PichulaMc"
+   ],
+   [
+    "🔹 C2: UZI",
+    "BTRX",
+    "🔹 C2: UZI"
+   ],
+   [
+    "Shadow",
+    "🔹 C3: ISAC",
+    "Shadow"
    ]
   ],
   "ev_antes": {
@@ -20786,7 +20816,7 @@
    "VR": 4
   },
   "fecha": "23/10",
-  "firma": "a55d9a1bbc230c75",
+  "firma": "9b9f87c846457a18",
   "msg": "1563368240221257751",
   "nombre": "19 CUP FUTCARD EDICIÓN 5",
   "num": 505,
@@ -20814,6 +20844,16 @@
    ],
    [
     "MaYeuTyK",
+    "Cuartos",
+    2000
+   ],
+   [
+    "BTRX",
+    "Cuartos",
+    2000
+   ],
+   [
+    "🔹 C3: ISAC",
     "Cuartos",
     2000
    ],
@@ -22389,7 +22429,7 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "70a46285b9011642",
+  "firma": "c199597a9718f8a8",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
@@ -23244,7 +23284,7 @@
    "Vandu": 34
   },
   "fecha": "25/10",
-  "firma": "1e16c64334ae5b0f",
+  "firma": "a4be6a306dda81c1",
   "msg": "1564145050185891903",
   "nombre": "CHILL",
   "num": 518,
@@ -23819,7 +23859,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "de15aff9d29df9cb",
+  "firma": "ca6b37a905a97562",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -23939,9 +23979,9 @@
   "canal": "1489848582189224104",
   "duelos": [
    [
-    "ChozaDeChop🇭🇳",
+    "Chop",
     "Vandu",
-    "ChozaDeChop🇭🇳"
+    "Chop"
    ],
    [
     "Sin Limites",
@@ -23960,7 +24000,7 @@
    ],
    [
     "Sin Limites",
-    "ChozaDeChop🇭🇳",
+    "Chop",
     "Sin Limites"
    ],
    [
@@ -23975,7 +24015,7 @@
    ],
    [
     "Artezzy",
-    "ChozaDeChop🇭🇳",
+    "Chop",
     "Artezzy"
    ]
   ],
@@ -23987,7 +24027,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "761030acca5c5d69",
+  "firma": "5eedaeca73940478",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -24014,7 +24054,7 @@
     4000
    ],
    [
-    "ChozaDeChop🇭🇳",
+    "Chop",
     "Cuarto",
     3000
    ],
