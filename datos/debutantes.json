@@ -480,7 +480,7 @@
    "n": 489,
    "sv": "FFA",
    "vence": "2026-10-26T16:52:32+00:00",
-   "vencido": false
+   "vencido": true
   },
   "J19": {
    "avisado": "2026-10-19",
@@ -600,7 +600,7 @@
    "n": 489,
    "sv": "FFA",
    "vence": "2026-10-26T16:52:32+00:00",
-   "vencido": false
+   "vencido": true
   },
   "LA ORDEN DEL GRIAL": {
    "avisado": "2026-10-26",
