@@ -15,11 +15,11 @@ export function SemanaComp({ liga, dc }) {
   const cajas = d ? [
     d.liga ? ['LIGA ' + nombreLiga(C, d.liga.g).toUpperCase(), d.liga.pos + '.º', contra(d.liga.cruce)] : ['LIGAS', 'J' + L.jornada, 'Entras la temporada que viene'],
     d.elite ? ['ÉLITE', d.elite.pos + '.º', contra(d.elite.cruce)] : null,
-    d.copa ? ['COPA · GRUPO ' + d.copa.g.id, d.copa.pos + '.º', d.copa.falta ? 'Faltan ' + d.copa.falta + ' cruces' : 'Jugaste todos'] : ['COPA', '—', 'Esta semana no estás'],
+    d.copa ? ['COPA · LLAVE ' + d.copa.r.id, d.copa.campeon ? 'Campeón' : d.copa.fuera ? 'Afuera' : (d.copa.ronda || {}).r || '—', d.copa.fuera ? 'Quedaste en ' + ((d.copa.ronda || {}).r || 'octavos').toLowerCase() : 'Sigues en carrera'] : ['COPA', '—', 'Esta semana no estás'],
     d.rapid ? ['RAPID', d.rapid.campeon ? 'Campeón' : d.rapid.fuera ? 'Afuera' : (d.rapid.ronda || {}).r || '—', d.rapid.fuera ? 'Quedaste en ' + ((d.rapid.ronda || {}).r || 'cuartos').toLowerCase() : 'Sigues en carrera'] : null,
   ].filter(Boolean) : [
     ['LIGAS', 'J' + L.jornada, (L.g || []).length + ' ligas · de 9 jornadas'],
-    ['COPA', String(C.copa.length), 'grupos · ' + C.activos + ' activos'],
+    ['COPA', String(C.copa.length), 'llaves de 16 · ' + C.activos + ' activos'],
     ['RAPID', String((C.rapid || []).length), 'llaves de 8 esta semana'],
   ];
   return (

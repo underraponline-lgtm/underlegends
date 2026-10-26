@@ -3003,12 +3003,13 @@ def _competencias_web(pool=None):
         return [[K(x[0])] + list(x[1:]) for x in xs or []]
 
     def llave(r):
-        return {'id': r.get('id', ''), 'campeon': K(r.get('campeon')), 'r': [{'r': x['r'], 'hasta': x.get('hasta'),
+        return {'id': r.get('id', ''), 'campeon': K(r.get('campeon')), 'gente': [K(k) for k in r.get('gente') or []],
+                'r': [{'r': x['r'], 'hasta': x.get('hasta'),
                 'p': [par(m) for m in x['partidos']]} for x in r.get('rondas') or []]}
 
     def mini(x):
         o = {'id': x['id'], 'ic': x['ic'], 'nombre': x['nombre']}
-        if x['id'] == 'derbi':
+        if x['id'] in ('derbi', 'paises'):
             o.update(svs=x['svs'], score=x['score'], p=[par(m) for m in x['partidos']])
         elif x['id'] == 'meta':
             o.update(n=x['n'], objetivo=x['objetivo'])
@@ -3034,7 +3035,7 @@ def _competencias_web(pool=None):
                       'pr': f.get('propio'), 'mas': f.get('mas'), 'menos': f.get('menos'), 'nota': f.get('nota')}
     return {
         'sem': c.get('sem'), 'ini': c.get('ini'), 'fin': c.get('fin'), 'dia': c.get('dia'), 'activos': c.get('activos'),
-        'copa': [{'id': g['id'], 'div': g['div'], 't': t(g['tabla']), 'p': [par(m) for m in g['partidos']]} for g in c.get('copa') or []],
+        'copa': [dict(llave(g), div=g.get('div', 5)) for g in c.get('copa') or []],
         'ligas': {'temp': L.get('temp'), 'desde': L.get('desde'), 'hasta': L.get('hasta'), 'jornada': L.get('jornada'),
                   'cierres': L.get('cierres') or [],
                   'g': [{'id': g['id'], 'nv': g['nivel'], 't': t(g['tabla']),
@@ -3045,6 +3046,7 @@ def _competencias_web(pool=None):
         'rapid': [llave(r) for r in c.get('rapid') or []],
         'mini': [mini(x) for x in c.get('mini') or []],
         'pronto': c.get('pronto') or [],
+        'proxima': c.get('proxima') or [],
         'equipo': t(c.get('equipo')),
         'jur': jur,
         'n': nombres,

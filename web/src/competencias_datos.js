@@ -78,8 +78,29 @@ export function semanaTxt(C) {
   try { return f(C.ini, false) + ' al ' + f(C.fin, true); } catch (e) { return ''; }
 }
 
+/** En qué vas en una llave a eliminación: `{r, ronda, fuera, campeon}`, o null si no estás */
+export function enLlave(r, k) {
+  if (!r || !(r.r[0] || { p: [] }).p.some((m) => m[0] === k || m[1] === k)) return null;
+  let ronda = null, fuera = false;
+  for (const rd of r.r) {
+    const m = rd.p.find((x) => x[0] === k || x[1] === k);
+    if (!m) { fuera = true; break; }
+    ronda = rd;
+    if (m[2] && m[2] !== k) { fuera = true; break; }
+    if (!m[2]) break;
+  }
+  return { r, ronda, fuera, campeon: r.campeon === k };
+}
+
+/** El cruce por jugar de `k` en su ronda de una llave, para el panel de arriba */
+function porJugar(e, k) {
+  if (!e || !e.ronda || e.fuera) return null;
+  const m = e.ronda.p.find((x) => (x[0] === k || x[1] === k) && !x[2] && x[0] && x[1]);
+  return m ? { m, rival: m[0] === k ? m[1] : m[0], p: m[0] === k ? m[4] : 1 - m[4] } : null;
+}
+
 /**
- * Dónde estás tú: `{liga: {g, pos, n, cruce}, elite: {…}, copa: {g, pos, n, falta}, rapid: {r, ronda, fuera, campeon}, prox}`
+ * Dónde estás tú: `{liga: {g, pos, n, cruce}, elite: {…}, copa: {r, ronda, fuera, campeon}, rapid: {…}, prox}`
  * o null. `prox` es tu próximo cruce por jugar (el de la liga primero), para el panel de arriba.
  */
 export function dondeEstoy(C, k) {
@@ -91,37 +112,15 @@ export function dondeEstoy(C, k) {
     if (i < 0) continue;
     out[g.id === 'elite' ? 'elite' : 'liga'] = { g, pos: i + 1, n: g.t.length, cruce: cruceDe(g, L.jornada, k) };
   }
-  for (const g of C.copa || []) {
-    const i = g.t.findIndex((x) => x[0] === k);
-    if (i >= 0) {
-      out.copa = { g, pos: i + 1, n: g.t.length, falta: g.p.filter((m) => (m[0] === k || m[1] === k) && !m[2]).length };
-      break;
-    }
-  }
-  for (const r of C.rapid || []) {
-    if (!(r.r[0] || { p: [] }).p.some((m) => m[0] === k || m[1] === k)) continue;
-    let ronda = null, fuera = false;
-    for (const rd of r.r) {
-      const m = rd.p.find((x) => x[0] === k || x[1] === k);
-      if (!m) { fuera = true; break; }
-      if (m[2] && m[2] !== k) { fuera = true; ronda = rd; break; }
-      ronda = rd;
-      if (!m[2]) break;
-    }
-    out.rapid = { r, ronda, fuera, campeon: r.campeon === k };
-    break;
-  }
+  for (const r of C.copa || []) { const e = enLlave(r, k); if (e) { out.copa = e; break; } }
+  for (const r of C.rapid || []) { const e = enLlave(r, k); if (e) { out.rapid = e; break; } }
   const pend = [];
   if (out.liga && out.liga.cruce && !out.liga.cruce.m[2]) pend.push(['Liga ' + nombreLiga(C, out.liga.g) + ' · jornada ' + L.jornada, out.liga.cruce]);
   if (out.elite && out.elite.cruce && !out.elite.cruce.m[2]) pend.push(['Élite · jornada ' + L.jornada, out.elite.cruce]);
-  if (out.copa) {
-    const m = out.copa.g.p.find((x) => (x[0] === k || x[1] === k) && !x[2]);
-    if (m) pend.push(['Copa · grupo ' + out.copa.g.id, { m, rival: m[0] === k ? m[1] : m[0], p: m[0] === k ? m[4] : 1 - m[4] }]);
-  }
-  if (out.rapid && out.rapid.ronda && !out.rapid.fuera) {
-    const m = out.rapid.ronda.p.find((x) => (x[0] === k || x[1] === k) && !x[2] && x[0] && x[1]);
-    if (m) pend.push(['Rapid · ' + out.rapid.ronda.r, { m, rival: m[0] === k ? m[1] : m[0], p: m[0] === k ? m[4] : 1 - m[4] }]);
-  }
+  const pc = porJugar(out.copa, k);
+  if (pc) pend.push(['Copa ' + out.copa.r.id + ' · ' + out.copa.ronda.r, pc]);
+  const pr = porJugar(out.rapid, k);
+  if (pr) pend.push(['Rapid · ' + out.rapid.ronda.r, pr]);
   out.prox = pend[0] || null;
   return out.liga || out.elite || out.copa || out.rapid ? out : null;
 }

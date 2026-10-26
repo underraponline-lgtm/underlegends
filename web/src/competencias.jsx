@@ -12,7 +12,8 @@
 //   · los grupos de la Copa, con buscador
 // Lo arma `bot/competencias.py`; acá sólo se dibuja.
 import { useMemo, useRef, useState } from 'react';
-import { Carta } from './piezas.jsx';
+import { Carta, nombrePais } from './piezas.jsx';
+import { enLlave } from './competencias_datos.js';
 import {
   DIVISIONES, NIVEL, NIVELES, dondeEstoy, faltaTxt, nombreDe, nombreLiga, semanaTxt, todasLasLigas, ultimas, useCompetencias,
 } from './competencias_datos.js';
@@ -65,7 +66,13 @@ function Cruce({ liga, C, m, yo, jurado }) {
         <small>vs</small>
         <span className={g && g === b ? 'gana' : g ? 'pierde' : ''}><Nombre liga={liga} C={C} k={b} yo={yo} /></span>
       </span>
-      {como === 'pend' && a && b ? <b className="cm9-p" title={'Si se simula, ' + nombreDe(liga, C, a) + ' gana ' + pct(p)}>{pct(p)}</b> : null}
+      {como === 'pend' && a && b ? (
+        <span className="cm9-p" title={'Si no se cruzan antes del cierre, se simula: ' + nombreDe(liga, C, a) + ' gana ' + pct(p) + ' de las veces'}>
+          <small>Chances si se simula</small>
+          <span className="cm9-p-b"><i style={{ width: ancho(p) }} /></span>
+          <span className="cm9-p-n"><b>{pct(p)}</b><b>{pct(1 - p)}</b></span>
+        </span>
+      ) : null}
       {jurado ? <Jurado liga={liga} C={C} m={m} /> : null}
     </li>
   );
@@ -135,9 +142,9 @@ function Escena({ liga, C, yo, donde, onComo }) {
         <div className="cm9-vs">
           <div className="cm9-vs-t"><span className="cm9-tag real">{pr ? 'TU PRÓXIMO CRUCE' : 'EN LA ÉLITE'}</span><small>{pr ? pr[0] : 'Jornada ' + L.jornada}</small></div>
           <div className="cm9-vs-c">
-            <Carta liga={liga} k={a} cual={liga.cartaDe(a) || 'temporada'} cls="cm9-vs-img" />
+            <Carta liga={liga} k={a} cual={liga.cartaDe(a, { comp: true }) || 'temporada'} cls="cm9-vs-img" />
             <b>VS</b>
-            <Carta liga={liga} k={b} cual={liga.cartaDe(b) || 'temporada'} cls="cm9-vs-img" />
+            <Carta liga={liga} k={b} cual={liga.cartaDe(b, { comp: true }) || 'temporada'} cls="cm9-vs-img" />
           </div>
           <div className="cm9-barra" aria-hidden="true"><i style={{ width: ancho(p) }} /></div>
           <div className="cm9-vs-n"><span>{nombreDe(liga, C, a)} {pct(p)}</span><span>{pct(1 - p)} {nombreDe(liga, C, b)}</span></div>
@@ -189,7 +196,7 @@ function Ligas({ liga, C, yo, donde }) {
         <div className="cm9-pir">
           {L.e ? (
             <button type="button" className={'cm9-elite' + (nivelSel === 'elite' ? ' on' : '')} onClick={() => setSel('elite')}>
-              <b>⭐ LIGA ÉLITE</b><small>En paralelo · los 10 mejores del Competitivo{donde && donde.elite ? ' · tú' : ''}</small>
+              <b>⭐ LIGA ÉLITE</b><small>En paralelo · los 10 mejores del Competitivo con su carta Competitiva{donde && donde.elite ? ' · tú' : ''}</small>
             </button>
           ) : null}
           <span className="cm9-et">Los niveles</span>
@@ -203,8 +210,11 @@ function Ligas({ liga, C, yo, donde }) {
         </div>
         <article className="cm9-liga">
           <header style={{ '--c': g.id === 'elite' ? '#F5C542' : NIVEL[g.nv].c }}>
-            <div><h3>LIGA {nombreLiga(C, g).toUpperCase()}</h3><small>{g.id === 'elite' ? 'Los 10 mejores del Competitivo' : g.t.length + ' raperos'}</small></div>
-            <div className="cm9-jbar" aria-label={'Jornada ' + L.jornada + ' de 9'}>{[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => <i key={n} className={n < L.jornada ? 'ya' : n === L.jornada ? 'hoy' : ''} />)}</div>
+            <div><h3>LIGA {nombreLiga(C, g).toUpperCase()}</h3><small>{g.id === 'elite' ? 'Los 10 mejores del Competitivo · con carta Competitiva' : g.t.length + ' raperos'}{g.id === mia ? ' · tu liga' : ''}</small></div>
+            <div className="cm9-jder">
+              <div className="cm9-jbar" aria-label={'Jornada ' + L.jornada + ' de 9'}>{[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => <i key={n} className={n < L.jornada ? 'ya' : n === L.jornada ? 'hoy' : ''} />)}</div>
+              <a className="cm9-info" href="#/competencias/ligas">Más información</a>
+            </div>
           </header>
           {delNivel.length > 1 ? (
             <div className="cm9-sub" role="tablist" aria-label="Las ligas de este nivel">
@@ -224,35 +234,46 @@ function Ligas({ liga, C, yo, donde }) {
   );
 }
 
+/** Una llave a eliminación, en columnas: una por ronda */
+function Llave({ liga, C, r, yo }) {
+  return (
+    <div className="cm9-llave" style={{ '--n': r.r.length }}>
+      {r.r.map((rd) => (
+        <div key={rd.r}><small>{rd.r} · {faltaTxt(rd.hasta)}</small>
+          {rd.p.map((m, i) => (
+            <span key={i} className={(m[0] === yo || m[1] === yo ? 'tuyo' : '') || undefined}>
+              <b className={m[2] && m[2] === m[0] ? 'g' : ''}>{m[0] ? nombreDe(liga, C, m[0]) : m[3] === 'pase' ? 'pase libre' : '—'}</b>
+              <b className={m[2] && m[2] === m[1] ? 'g' : ''}>{m[1] ? nombreDe(liga, C, m[1]) : m[3] === 'pase' ? 'pase libre' : '—'}</b>
+            </span>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** «Octavos», «Afuera en cuartos», «Campeón»: en qué va alguien en una llave */
+const estado = (e) => (!e ? '' : e.campeon ? 'Campeón' : e.fuera ? 'Afuera en ' + ((e.ronda || {}).r || 'octavos').toLowerCase() : (e.ronda || {}).r || '');
+
 function CopaRapid({ liga, C, yo, donde, onGrupos }) {
-  const g = (donde && donde.copa && donde.copa.g) || (C.copa || [])[0];
+  const g = (donde && donde.copa && donde.copa.r) || (C.copa || [])[0];
   const r = (donde && donde.rapid && donde.rapid.r) || (C.rapid || [])[0];
   return (
     <section className="cm9-dos" aria-label="La Copa y la Rapid">
       {g ? (
         <article className="cm9-card">
-          <header className="mag"><h3>🏆 COPA</h3><small>Grupo {g.id}{donde && donde.copa ? ' · eres ' + donde.copa.pos + '.º' : ''}</small></header>
-          <p>Grupos de 4 cada semana, todos contra todos. Los 2 primeros cobran.</p>
-          <ol className="cm9-mini-t">{g.t.map(([k, , , pts], i) => <li key={k} className={(i < 2 ? 'pasa' : '') + (k === yo ? ' yo' : '')}><span>{i + 1} · <Nombre liga={liga} C={C} k={k} yo={yo} /></span><b>{pts}</b></li>)}</ol>
-          <button type="button" className="cm9-btn" onClick={onGrupos}>Ver los {(C.copa || []).length} grupos</button>
+          <header className="mag"><h3>🏆 COPA</h3><small>Llave {g.id}{donde && donde.copa ? ' · ' + estado(donde.copa) : ' · ' + DIVISIONES[g.div]}</small></header>
+          <p>Una llave de 16 cada lunes, por división: octavos, cuartos, semis y final, una ronda cada dos días.</p>
+          <Llave liga={liga} C={C} r={g} yo={yo} />
+          {g.campeon ? <p className="cm9-camp"><span className="cm9-tag mag">CAMPEÓN</span> <Nombre liga={liga} C={C} k={g.campeon} yo={yo} /></p> : null}
+          <button type="button" className="cm9-btn" onClick={onGrupos}>Ver las {(C.copa || []).length} llaves</button>
         </article>
       ) : null}
       {r ? (
         <article className="cm9-card">
           <header className="ver"><h3>⚡ RAPID</h3><small>{(C.rapid || []).length} llaves de 8 esta semana</small></header>
           <p>Una llave de 8 sorteada cada lunes: cuartos hasta el jueves, semis hasta el sábado, final hasta el lunes.</p>
-          <div className="cm9-llave">
-            {r.r.map((rd) => (
-              <div key={rd.r}><small>{rd.r} · {faltaTxt(rd.hasta)}</small>
-                {rd.p.map((m, i) => (
-                  <span key={i} className={m[0] === yo || m[1] === yo ? 'tuyo' : undefined}>
-                    <b className={m[2] && m[2] === m[0] ? 'g' : ''}>{m[0] ? nombreDe(liga, C, m[0]) : '—'}</b>
-                    <b className={m[2] && m[2] === m[1] ? 'g' : ''}>{m[1] ? nombreDe(liga, C, m[1]) : '—'}</b>
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
+          <Llave liga={liga} C={C} r={r} yo={yo} />
           {r.campeon ? <p className="cm9-camp"><span className="cm9-tag mag">CAMPEÓN</span> <Nombre liga={liga} C={C} k={r.campeon} yo={yo} /></p> : null}
         </article>
       ) : null}
@@ -260,30 +281,176 @@ function CopaRapid({ liga, C, yo, donde, onGrupos }) {
   );
 }
 
+/** 🎲 Cada mini evento explicado: qué es, quién juega y cómo se gana (la subpágina, #/competencias/mini) */
+const EXPLICA = {
+  derbi: ['Dos servidores sorteados entre los que tienen 5 o más activos. Sus 5 mejores se cruzan uno contra uno.', 'Los 5 mejores de cada servidor, por su nivel.', 'Gana el servidor que se lleve más cruces. Cuenta lo real si se cruzan en un evento; si no, se simula al cierre.'],
+  paises: ['Dos países sorteados entre los que tienen 5 o más activos. Sus 5 mejores se cruzan uno contra uno.', 'Los 5 mejores de cada país, por su nivel.', 'Gana el país que se lleve más cruces. Real si se cruzan, simulado si no.'],
+  meta: ['Una meta para toda la Liga: llegar a una cantidad de batallas en la semana entre todos.', 'Todos los que jueguen esa semana.', 'Si se llega, cobran todos los que jugaron. La meta sale de la semana anterior, un 10 % más.'],
+  supercopa: ['Una sola batalla al cierre: el que lidera la Élite contra el que lidera el Oro.', 'Los dos líderes.', 'Real si se cruzan durante la semana; si no, se simula.'],
+  duos: ['Parejas sorteadas entre los que juegan: suman los puntos de Temporada de los dos en la semana.', 'Todos los activos, de a dos.', 'Gana la pareja que más puntos sume.'],
+  pandillas: ['Grupos de 5 sorteados (no son las crews): suman los puntos de Temporada de todos en la semana.', 'Todos los activos, de a cinco.', 'Gana la pandilla que más puntos sume.'],
+  rey: ['Hay un rey: el de más nivel al arrancar. Quien le gane en un cruce real se queda con la corona.', 'Cualquiera que se cruce con el rey en un evento.', 'Es rey quien tenga la corona al cierre. Cada batalla que el rey gana es una defensa.'],
+  revancha: ['Te vuelve a tocar quien te ganó la última vez.', 'Todos los que perdieron algún 1v1 en los últimos 60 días.', 'Si esta semana le ganas a quien te ganó, revancha cumplida: vale doble.'],
+  racha: ['Victorias seguidas en la semana, en cualquier evento.', 'Todos los que juegan 1v1.', 'Gana la racha más larga de la semana.'],
+  novatos: ['Una llave de 8 sólo para quienes tienen menos de 5 eventos.', 'Los que recién empiezan.', 'Como la Rapid: cuartos, semis y final, real si se cruzan y simulado si no.'],
+  escalera: ['10 escalones: tu carta contra otra de tu nivel. Ganas subes, pierdes bajas, y de los escalones dorados no se baja.', 'Todos, con 3 intentos por día.', 'Se prepara: pide que juegues desde la página.'],
+  fantasy: ['Eliges 3 raperos y sumas las notas que saquen en la semana.', 'Todos los que armen su equipo.', 'Se prepara: pide elegir desde la página.'],
+  crews: ['Crew contra crew el fin de semana. Suma el que sube, el que se mantiene y hasta el que baja.', 'Las crews de la Liga.', 'Se prepara.'],
+};
+
 /** Lo de adentro de cada mini evento */
-function Mini({ liga, C, x, yo }) {
+function Mini({ liga, C, x, yo, completo }) {
   const N = (k) => nombreDe(liga, C, k);
   let cuerpo = null;
-  if (x.id === 'derbi') cuerpo = <><b className="cm9-big">{x.svs[0]} {x.score[0]} <small>vs</small> {x.score[1]} {x.svs[1]}</b><p>Los 5 mejores de cada servidor, uno contra uno. Cada cruce, real o simulado, suma.</p></>;
+  const lado = (s) => (x.id === 'paises' ? nombrePais(s) : s);
+  if (x.id === 'derbi' || x.id === 'paises') cuerpo = <><b className="cm9-big">{lado(x.svs[0])} {x.score[0]} <small>vs</small> {x.score[1]} {lado(x.svs[1])}</b><p>Los 5 mejores de cada {x.id === 'paises' ? 'país' : 'servidor'}, uno contra uno. Cada cruce, real o simulado, suma.</p></>;
   else if (x.id === 'meta') cuerpo = <><p>Si entre todos llegamos a {x.objetivo} batallas esta semana, cobran todos los que jugaron.</p><div className="cm9-meta"><i style={{ width: Math.min(100, Math.round(x.n / x.objetivo * 100)) + '%' }} /></div><small>{x.n >= x.objetivo ? '¡Cumplida! ' + x.n + ' batallas: cobran todos los que jugaron' : x.n + ' de ' + x.objetivo + ' batallas'}</small></>;
   else if (x.id === 'supercopa' && x.p) cuerpo = <><b className="cm9-big">{N(x.p[0])} <small>vs</small> {N(x.p[1])}</b><p>Una sola batalla: el que lidera la Élite contra el que lidera el Oro.</p></>;
-  else if (x.id === 'duos' || x.id === 'pandillas') cuerpo = <><p>{x.id === 'duos' ? 'Parejas sorteadas: suman los puntos de los dos en la semana.' : 'Grupos de 5 sorteados: suman los puntos de todos en la semana.'}</p><ol className="cm9-mini-t">{x.t.slice(0, 3).map(([g, pts], i) => <li key={i} className={g.includes(yo) ? 'yo' : undefined}><span>{g.map(N).join(' · ')}</span><b>{pts.toLocaleString('es')}</b></li>)}</ol></>;
+  else if (x.id === 'duos' || x.id === 'pandillas') cuerpo = <><p>{x.id === 'duos' ? 'Parejas sorteadas: suman los puntos de los dos en la semana.' : 'Grupos de 5 sorteados: suman los puntos de todos en la semana.'}</p>{completo ? null : <ol className="cm9-mini-t">{x.t.slice(0, 3).map(([g, pts], i) => <li key={i} className={g.includes(yo) ? 'yo' : undefined}><span>{g.map(N).join(' · ')}</span><b>{pts.toLocaleString('es')}</b></li>)}</ol>}</>;
   else if (x.id === 'rey') cuerpo = <><b className="cm9-big">👑 {N(x.rey)}</b><p>Quien le gane al rey en un cruce real se queda con la corona. {x.defensas ? 'Lleva ' + x.defensas + (x.defensas === 1 ? ' defensa.' : ' defensas.') : ''}</p></>;
   else if (x.id === 'revancha') cuerpo = <><p>Te vuelve a tocar quien te ganó la última vez: ganarle vale doble.</p><small>{x.hechas.length ? x.hechas.length + ' revanchas cumplidas · ' + x.hechas.slice(0, 2).map(([a, b]) => N(a) + ' a ' + N(b)).join(', ') : 'Nadie se cobró la revancha todavía'}</small></>;
   else if (x.id === 'racha') cuerpo = <><p>Gana quien encadene más victorias seguidas en la semana.</p><ol className="cm9-mini-t">{x.t.slice(0, 3).map(([k, n]) => <li key={k} className={k === yo ? 'yo' : undefined}><span>{N(k)}</span><b>{n}</b></li>)}</ol></>;
   else if (x.id === 'novatos') cuerpo = <><p>Una llave de 8 sólo para quienes tienen menos de 5 eventos.</p>{x.campeon ? <small>Campeón: {N(x.campeon)}</small> : <small>{(x.r[0] || { p: [] }).p.map((m) => N(m[0]) + ' vs ' + N(m[1])).slice(0, 2).join(' · ')}</small>}</>;
+  const ex = EXPLICA[x.id];
   return (
-    <article className="cm9-ev">
+    <article className={'cm9-ev' + (completo ? ' completo' : '')}>
       <div className="cm9-ev-t"><span aria-hidden="true">{x.ic}</span><span className="cm9-tag real">ABIERTO</span></div>
       <h3>{x.nombre.toUpperCase()}</h3>
       {cuerpo}
+      {completo && (x.id === 'derbi' || x.id === 'paises') ? <ul className="cm9-crus">{x.p.map((m) => <Cruce key={m[0] + m[1]} liga={liga} C={C} m={m} yo={yo} jurado />)}</ul> : null}
+      {completo && (x.id === 'duos' || x.id === 'pandillas') ? <ol className="cm9-mini-t">{x.t.map(([g, pts], i) => <li key={i} className={g.includes(yo) ? 'yo' : undefined}><span>{i + 1} · {g.map(N).join(' · ')}</span><b>{pts.toLocaleString('es')}</b></li>)}</ol> : null}
+      {completo && x.id === 'rey' && x.reyes.length > 1 ? <small>Pasó por {x.reyes.map(N).join(' → ')}</small> : null}
+      {completo && x.id === 'novatos' ? <Llave liga={liga} C={C} r={x} yo={yo} /> : null}
+      {completo && ex ? (
+        <dl className="cm9-ex"><div><dt>Quién juega</dt><dd>{ex[1]}</dd></div><div><dt>Cómo se gana</dt><dd>{ex[2]}</dd></div></dl>
+      ) : null}
     </article>
+  );
+}
+
+/** ⏳ «Abre en 7 h»: los que vienen la semana que viene, y los que se preparan */
+function Vienen({ C, completo }) {
+  if (!(C.proxima || []).length && !(C.pronto || []).length) return null;
+  return (
+    <div className="cm9-vienen">
+      {(C.proxima || []).map(([id, ic, n]) => (
+        <article key={id} className="cm9-ev viene">
+          <div className="cm9-ev-t"><span aria-hidden="true">{ic}</span><span className="cm9-tag pend">ABRE EN {faltaTxt(C.fin).toUpperCase()}</span></div>
+          <h3>{n.toUpperCase()}</h3>
+          {completo && EXPLICA[id] ? <p>{EXPLICA[id][0]}</p> : null}
+        </article>
+      ))}
+      {(C.pronto || []).map(([id, ic, n]) => (
+        <article key={id} className="cm9-ev prep">
+          <div className="cm9-ev-t"><span aria-hidden="true">{ic}</span><span className="cm9-tag pend">EN PREPARACIÓN</span></div>
+          <h3>{n.toUpperCase()}</h3>
+          {completo && EXPLICA[id] ? <p>{EXPLICA[id][0]}</p> : null}
+        </article>
+      ))}
+    </div>
+  );
+}
+
+/** 🥇 LAS LIGAS, EN DETALLE (#/competencias/ligas). Dlx, 26/10/2026: «un botón al costado de las barras que indican en
+ * qué jornada van… más información, y ahí se ve su propia página explicando más a detalle» */
+function LigasInfo({ liga, C, yo }) {
+  const L = C.ligas || {};
+  const donde = dondeEstoy(C, yo);
+  const fecha = (iso) => new Date(iso).toLocaleDateString('es', { timeZone: 'America/New_York', weekday: 'long', day: 'numeric', month: 'long' });
+  const todas = todasLasLigas(C);
+  return (
+    <div className="cm9">
+      <section className="cm9-esc corta" aria-label="Las ligas">
+        <div className="cm9-esc-t">
+          <a className="cm9-volver" href="#/competencias">← Competencias</a>
+          <span className="cm9-chip">LIGAS · TEMPORADA {L.temp}</span>
+          <h1>CÓMO FUNCIONAN LAS LIGAS</h1>
+          <p>Ligas de 10 por niveles, como en Top Eleven. Cada temporada dura <b>3 semanas</b> y tiene <b>9 jornadas</b>: al final, los 2 primeros de cada liga suben y los 2 últimos bajan.</p>
+          <dl className="cm9-stats">
+            <div><dt>Jornada</dt><dd>{L.jornada} / 9</dd></div>
+            <div><dt>Ligas</dt><dd>{(L.g || []).length}</dd></div>
+            <div><dt>Termina</dt><dd className="v">{faltaTxt(L.hasta)}</dd></div>
+          </dl>
+          {donde && (donde.liga || donde.elite) ? (
+            <p>Estás en la <b>Liga {nombreLiga(C, (donde.liga || donde.elite).g)}</b>, {(donde.liga || donde.elite).pos}.º{donde.liga && donde.elite ? ', y además en la Élite (' + donde.elite.pos + '.º)' : ''}.</p>
+          ) : null}
+        </div>
+      </section>
+
+      <section className="cm9-sec" aria-label="Las reglas">
+        <div className="cm9-cab"><div><h2>LAS REGLAS</h2></div></div>
+        <ol className="cm9-reglas">
+          <li><b>Los niveles</b><p>De arriba abajo: <b>Oro</b> (1 liga), <b>Plata</b> (2), <b>Bronce</b> (4) y <b>Ascenso</b> (las que hagan falta). Cada liga tiene unos 10 raperos.</p></li>
+          <li><b>Quién juega</b><p>Todos los que jugaron al menos un evento en las 2 semanas antes de que arranque la temporada. Quien entra después empieza en Ascenso la temporada siguiente.</p></li>
+          <li><b>Las jornadas</b><p>Todos contra todos: en cada jornada te toca un rival. Las jornadas cierran los <b>lunes, miércoles y viernes a las 11 AM</b> (hora del este).</p></li>
+          <li><b>Cómo sale cada cruce</b><p>Si te enfrentas a tu rival en un 1v1 de <b>cualquier evento de cualquier servidor</b> antes del cierre, cuenta esa batalla. Si no se cruzan, se simula con el nivel de cada uno (su Score y su forma), con un jurado sorteado.</p></li>
+          <li><b>Los puntos</b><p>Ganar da <b>3 puntos</b>. La tabla se ordena por puntos, después por victorias reales y después por nivel.</p></li>
+          <li><b>Subir y bajar</b><p>Al terminar las 9 jornadas, los <b>2 primeros suben</b> de nivel y los <b>2 últimos bajan</b>. En Oro no se sube más; en Ascenso no se baja.</p></li>
+          <li><b>⭐ La Élite</b><p>Se juega <b>además</b> de tu liga, con el mismo calendario. Es de los 10 mejores del Competitivo que estén activos y <b>tengan su carta Competitiva</b>: sin la carta no se entra.</p></li>
+          <li><b>Los premios</b><p>Subir de liga, y Puntos de Tienda según tu puesto.</p></li>
+        </ol>
+      </section>
+
+      <section className="cm9-sec" aria-label="El calendario">
+        <div className="cm9-cab"><div><h2>EL CALENDARIO</h2><p>Las 9 jornadas de esta temporada.</p></div></div>
+        <ol className="cm9-cal">
+          {(L.cierres || []).map((x, i) => (
+            <li key={x} className={i + 1 < L.jornada ? 'ya' : i + 1 === L.jornada ? 'hoy' : undefined}>
+              <b>J{i + 1}</b><span>Cierra el {fecha(x)}</span><small>{new Date(x).getTime() < Date.now() ? 'cerrada' : 'en ' + faltaTxt(x)}</small>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section className="cm9-sec" aria-label="Todas las ligas">
+        <div className="cm9-cab"><div><h2>TODAS LAS LIGAS</h2><p>El que va primero en cada una.</p></div></div>
+        <div className="cm9-todas">
+          {todas.map((g) => (
+            <a key={g.id} href="#/competencias" className={g.t.some((x) => x[0] === yo) ? 'yo' : undefined} style={{ '--c': g.id === 'elite' ? '#F5C542' : NIVEL[g.nv].c }}>
+              <b>{nombreLiga(C, g)}</b>
+              <span>{g.t[0] ? nombreDe(liga, C, g.t[0][0]) : '—'}</span>
+              <small>{g.t[0] ? g.t[0][3] + ' pts' : ''}</small>
+            </a>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+/** 🎲 LA SUBPÁGINA DE LOS MINI EVENTOS (#/competencias/mini). Dlx, 26/10/2026: «puedes crear una subpágina sobre ellos…
+ * y ahí explicar más… para lo que dice pronto crear un countdown… abre en X» */
+function MiniPagina({ liga, C, yo }) {
+  return (
+    <div className="cm9">
+      <section className="cm9-esc corta" aria-label="Mini eventos">
+        <div className="cm9-esc-t">
+          <a className="cm9-volver" href="#/competencias">← Competencias</a>
+          <span className="cm9-chip">MINI EVENTOS · T1</span>
+          <h1>CADA SEMANA, OTROS</h1>
+          <p>Cada lunes a las 11 AM se abren <b>{(C.mini || []).length || 4} mini eventos</b>, sorteados de un catálogo de {Object.keys(EXPLICA).length}. Duran la semana y se juegan solos con tus batallas, como todo en Competencias.</p>
+          <dl className="cm9-stats">
+            <div><dt>Abiertos</dt><dd>{(C.mini || []).length}</dd></div>
+            <div><dt>Los próximos abren en</dt><dd className="v">{faltaTxt(C.fin)}</dd></div>
+          </dl>
+        </div>
+      </section>
+      <section className="cm9-sec" aria-label="Abiertos esta semana">
+        <div className="cm9-cab"><div><h2>ABIERTOS ESTA SEMANA</h2><p>Cierran el lunes a las 11 AM.</p></div></div>
+        <div className="cm9-evs grande">{(C.mini || []).map((x) => <Mini key={x.id} liga={liga} C={C} x={x} yo={yo} completo />)}</div>
+      </section>
+      <section className="cm9-sec" aria-label="Los que vienen">
+        <div className="cm9-cab"><div><h2>LOS QUE VIENEN</h2><p>Los de la semana que viene ya están sorteados. Los que se preparan todavía no tienen fecha.</p></div></div>
+        <Vienen C={C} completo />
+      </section>
+    </div>
   );
 }
 
 function Simulada({ liga, C }) {
   // una simulada de verdad con su jurado: de la jornada que se cerró, o de la Copa
-  const todas = todasLasLigas(C).flatMap((g) => (g.j || []).flatMap((j) => j.p)).concat((C.copa || []).flatMap((g) => g.p));
+  const todas = todasLasLigas(C).flatMap((g) => (g.j || []).flatMap((j) => j.p))
+    .concat((C.copa || []).concat(C.rapid || []).flatMap((r) => r.r.flatMap((rd) => rd.p)));
   const m = todas.find((x) => x[3] === 'sim' && Array.isArray(x[5]));
   if (!m) return null;
   return (
@@ -321,12 +488,13 @@ function Equipo({ liga, C, yo }) {
 
 const PREGUNTAS = [
   ['¿Por qué no aparezco?', 'Entra quien jugó al menos un evento en las 2 semanas antes del lunes. En las ligas entras al arrancar la temporada que viene, en Ascenso.'],
+  ['¿Es sólo para los del Competitivo?', 'No: las ligas, la Copa, la Rapid y los mini eventos son para todos los que jugaron en las últimas 2 semanas. Sólo la Élite pide la carta Competitiva: es de los 10 mejores del Competitivo, y ellos juegan además su liga.'],
   ['¿Tengo que hacer algo?', 'No. No hay inscripción ni botón: tus batallas de siempre cuentan solas. Sólo mira quién te toca y búscalo en los eventos.'],
   ['¿Se puede arreglar una simulación?', 'No. Lo mismo da siempre el mismo resultado y cualquiera puede rehacer la cuenta. Un resultado real nunca se inventa.'],
-  ['¿Qué gano?', 'Subir de liga y Puntos de Tienda según tu puesto. Y la Élite: los 10 mejores del Competitivo la juegan además de su liga.'],
+  ['¿Qué gano?', 'Subir de liga y Puntos de Tienda según tu puesto. Y la Élite: los 10 mejores del Competitivo, con su carta Competitiva, la juegan además de su liga.'],
 ];
 
-export function Competencias({ liga, dc }) {
+export function Competencias({ liga, dc, sub = '' }) {
   const C = useCompetencias();
   const [busca, setBusca] = useState('');
   const [div, setDiv] = useState(-1);
@@ -337,10 +505,12 @@ export function Competencias({ liga, dc }) {
   const donde = useMemo(() => dondeEstoy(C, yo), [C, yo]);
   if (!C) return <div className="cargando">Cargando las competencias…</div>;
   if (!C.ligas) return <div className="cargando">Las competencias se están armando: vuelve en un rato.</div>;
+  if (sub === 'mini') return <MiniPagina liga={liga} C={C} yo={yo} />;
+  if (sub === 'ligas') return <LigasInfo liga={liga} C={C} yo={yo} />;
   const q = busca.trim().toLowerCase();
   const divs = [...new Set((C.copa || []).map((g) => g.div))].sort();
   const gs = (C.copa || []).filter((g) => (div < 0 || g.div === div)
-    && (!q || g.id.toLowerCase() === q || g.t.some(([k]) => nombreDe(liga, C, k).toLowerCase().includes(q))));
+    && (!q || g.id.toLowerCase() === q || g.gente.some((k) => nombreDe(liga, C, k).toLowerCase().includes(q))));
   const ir = (r) => r.current && r.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
   return (
     <div className="cm9">
@@ -351,12 +521,12 @@ export function Competencias({ liga, dc }) {
 
       {(C.mini || []).length ? (
         <section className="cm9-sec" aria-label="Más mini eventos">
-          <div className="cm9-cab"><div><h2>MÁS MINI EVENTOS</h2><p>Rotan cada semana: siempre hay algo abierto, nunca todo a la vez.</p></div><span className="cm9-et">Esta semana · {C.mini.length} abiertos</span></div>
+          <div className="cm9-cab"><div><h2>MÁS MINI EVENTOS</h2><p>Rotan cada semana: siempre hay algo abierto, nunca todo a la vez.</p></div><a className="cm9-ver" href="#/competencias/mini">Todos y cómo se juegan →</a></div>
           <div className="cm9-evs">
             {C.mini.map((x) => <Mini key={x.id} liga={liga} C={C} x={x} yo={yo} />)}
           </div>
-          {(C.pronto || []).length ? (
-            <p className="cm9-pronto"><span className="cm9-tag pend">PRONTO</span>{C.pronto.map(([id, ic, n]) => <span key={id}>{ic} {n}</span>)}</p>
+          {(C.proxima || []).length ? (
+            <p className="cm9-pronto"><span className="cm9-tag pend">ABREN EN {faltaTxt(C.fin).toUpperCase()}</span>{C.proxima.map(([id, ic, n]) => <span key={id}>{ic} {n}</span>)}</p>
           ) : null}
         </section>
       ) : null}
@@ -386,24 +556,32 @@ export function Competencias({ liga, dc }) {
         <div className="cm9-faq">{PREGUNTAS.map(([p, r]) => <div key={p}><h3>{p}</h3><p>{r}</p></div>)}</div>
       </section>
 
-      <section className="cm9-grupos" aria-label="Los grupos de la Copa" ref={grupos}>
+      <section className="cm9-grupos" aria-label="Las llaves de la Copa" ref={grupos}>
         <div className="cm9-gcab">
-          <h2>LOS {(C.copa || []).length} GRUPOS DE LA COPA</h2>
+          <h2>LAS {(C.copa || []).length} LLAVES DE LA COPA</h2>
           <div className="cm9-gfil" role="radiogroup" aria-label="División">
             <button type="button" role="radio" aria-checked={div < 0} className={div < 0 ? 'on' : ''} onClick={() => setDiv(-1)}>Todos {(C.copa || []).length}</button>
             {divs.map((d) => <button key={d} type="button" role="radio" aria-checked={div === d} className={div === d ? 'on' : ''} onClick={() => setDiv(d)}>{DIVISIONES[d]} {(C.copa || []).filter((g) => g.div === d).length}</button>)}
           </div>
-          <input type="search" placeholder="Buscar un rapero o grupo…" value={busca} onChange={(e) => { setBusca(e.target.value); setVer(15); }} aria-label="Buscar en la Copa" />
+          <input type="search" placeholder="Buscar un rapero o una llave…" value={busca} onChange={(e) => { setBusca(e.target.value); setVer(15); }} aria-label="Buscar en la Copa" />
         </div>
         <div className="cm9-gs">
-          {gs.slice(0, ver).map((g) => (
-            <article key={g.id} className={g.t.some(([k]) => k === yo) ? 'yo' : undefined}>
-              <header><b>GRUPO {g.id}</b><small>{DIVISIONES[g.div]}</small></header>
-              {g.t.map(([k, , , pts], i) => <span key={k} className={i < 2 ? 'pasa' : undefined}><Nombre liga={liga} C={C} k={k} yo={yo} /><b>{pts}</b></span>)}
-            </article>
-          ))}
+          {gs.slice(0, ver).map((g) => {
+            // los que siguen en carrera primero, y cada uno con en qué va
+            const est = g.gente.map((k) => [k, enLlave(g, k)]).sort((x, y) => (x[1].fuera - y[1].fuera) || (y[1].r.r.indexOf(y[1].ronda) - x[1].r.r.indexOf(x[1].ronda)));
+            return (
+              <article key={g.id} className={g.gente.includes(yo) ? 'yo' : undefined}>
+                <header><b>LLAVE {g.id}</b><small>{DIVISIONES[g.div]} · {g.gente.length}</small></header>
+                {g.campeon ? <span className="pasa"><b>🏆 <Nombre liga={liga} C={C} k={g.campeon} yo={yo} /></b><small>Campeón</small></span> : null}
+                {est.filter(([k]) => k !== g.campeon).slice(0, 6).map(([k, e]) => (
+                  <span key={k} className={e.fuera ? 'fuera' : 'pasa'}><Nombre liga={liga} C={C} k={k} yo={yo} /><small>{estado(e)}</small></span>
+                ))}
+                {g.gente.length > 7 ? <small className="cm9-mas">y {g.gente.length - 7} más</small> : null}
+              </article>
+            );
+          })}
         </div>
-        {gs.length > ver ? <button type="button" className="cm9-btn inv" onClick={() => setVer(ver + 30)}>Ver más grupos ({gs.length - ver})</button> : null}
+        {gs.length > ver ? <button type="button" className="cm9-btn inv" onClick={() => setVer(ver + 30)}>Ver más llaves ({gs.length - ver})</button> : null}
         {!gs.length ? <p className="cm9-nada">Nadie se llama así en la Copa de esta semana.</p> : null}
       </section>
     </div>

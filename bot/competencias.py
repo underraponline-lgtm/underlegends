@@ -26,8 +26,8 @@ LAS REGLAS
   viernes). Niveles `NIVELES` con su `CUPO`; Ascenso se abre en las ligas que hagan falta. Al terminar, suben los
   `SUBEN` primeros de cada liga y bajan los `BAJAN` últimos; quien entra nuevo arranca en Ascenso.
 - **⭐ La Élite**, en paralelo y con el mismo calendario: los 10 mejores del Competitivo activos al arrancar la
-  temporada. Quien está en la Élite juega también su liga.
-- **🏆 La Copa**: grupos de `GRUPO` cada semana, por división y fuerza.
+  temporada, y con la carta Competitiva (sin ella no se entra). Quien está en la Élite juega también su liga.
+- **🏆 La Copa**: cada lunes, llaves de `COPA` a eliminación por división y fuerza: octavos, cuartos, semis y final.
 - **⚡ Las Rapid**: cada lunes, todos los activos sorteados en llaves de `RAPID`; cuartos hasta el jueves, semis hasta el
   sábado, final hasta el lunes.
 - **🎲 Mini eventos**: `MINI` por semana, sorteados del `CATALOGO` con la semana de semilla.
@@ -65,6 +65,10 @@ ESCALA = 50.0
 #: sin Score competitivo, la fuerza sale del puesto en la Temporada: del primero al último, de PISO_ALTO a PISO_BAJO
 PISO_ALTO, PISO_BAJO = 55.0, 20.0
 LETRAS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+#: la Copa: llaves de 16, y el orden de siembra (el 1 contra el 16, el 8 contra el 9…), así los dos mejores sólo se
+#: cruzan en la final
+COPA = 16
+SIEMBRA = (0, 15, 7, 8, 4, 11, 3, 12, 2, 13, 5, 10, 6, 9, 1, 14)
 #: los niveles de las ligas, de arriba abajo, y cuánta gente entra en cada uno (Ascenso: todo el resto)
 NIVELES = ('oro', 'plata', 'bronce', 'ascenso')
 CUPO = {'oro': 10, 'plata': 20, 'bronce': 40}
@@ -218,20 +222,23 @@ def tabla(gente, partidos, fz):
     return [x[:4] for x in sorted(t.values(), key=lambda x: (-x[3], -x[4], -fz.get(x[0], 0), x[0]))]
 
 
-def copa(activos, niveles, fz, reales, cerrada, sem):
-    """Los grupos de la semana."""
+def copa(activos, niveles, fz, ini, fin, llaves, ahora, sem):
+    """🏆 LA COPA DE LA SEMANA, A ELIMINACIÓN (Dlx, 26/10/2026: «la copa es un torneo de octavos»): los activos, por su
+    división y su fuerza, en llaves de `COPA` (octavos, cuartos, semis y final, una ventana cada una). Las llaves salen
+    parejas en tamaño; las que no llegan a 16 llevan pases libres para los mejores sembrados, como en cualquier copa."""
     orden = sorted(activos, key=lambda k: (niveles.get(k, 5), -fz.get(k, PISO_BAJO), k))
-    grupos = [orden[i:i + GRUPO] for i in range(0, len(orden), GRUPO)]
-    # un grupo de uno o dos no es un grupo: se reparte en los de arriba
-    while len(grupos) > 1 and len(grupos[-1]) < 3:
-        sobra = grupos.pop()
-        for i, k in enumerate(sobra):
-            grupos[-1 - (i % len(grupos))].append(k)
+    if not orden:
+        return []
+    n = math.ceil(len(orden) / float(COPA))
+    tam = math.ceil(len(orden) / float(n))
+    lims = [ini, dias_despues(ini, 2), dias_despues(ini, 4), dias_despues(ini, 6), fin]
     out = []
-    for i, g in enumerate(grupos):
-        ps = [resolver(a, b, reales, cerrada, fz, sem, 'copa', i) for j, a in enumerate(g) for b in g[j + 1:]]
-        out.append({'id': LETRAS[i % 26] + ('' if i < 26 else str(i // 26)), 'div': min(niveles.get(k, 5) for k in g),
-                    'gente': g, 'partidos': ps, 'tabla': tabla(g, ps, fz)})
+    for i, x in enumerate(range(0, len(orden), tam)):
+        g = sorted(orden[x:x + tam], key=lambda k: (-fz.get(k, PISO_BAJO), k))
+        slots = [g[s_] if s_ < len(g) else '' for s_ in SIEMBRA]
+        r = llave(slots, lims, ('Octavos', 'Cuartos', 'Semifinal', 'Final'), llaves, fz, ahora, sem, 'copa', i)
+        r.update(id=LETRAS[i % 26] + ('' if i < 26 else str(i // 26)), div=min(niveles.get(k, 5) for k in g))
+        out.append(r)
     return out
 
 
@@ -334,9 +341,16 @@ def mover(grupos, tablas, activos, fz):
 
 
 def elite_de(activos):
-    comp = sorted(((norm(c['raw']), float(c.get('score') or 0)) for c in (_j('datos', 'competitivo_pool.json', defecto=[]) or [])
+    """⭐ La Élite: los `LIGA` mejores del Competitivo, activos y CON LA CARTA COMPETITIVA (Dlx, 26/10/2026: «para liga
+    élite uno tiene que tener la tarjeta competitiva sí o sí para participar»). La carta se mira en el inventario de R2
+    (`datos/cartas_r2.json`); sin inventario —un runner sin datos— no se filtra, antes que dejar la Élite vacía."""
+    from comun.claves import clave
+    r2 = _j('datos', 'cartas_r2.json', defecto={}) or {}
+    con = {k for k, cs in r2.items() if isinstance(cs, dict) and 'competitivo' in cs}
+    comp = sorted(((norm(c['raw']), float(c.get('score') or 0), clave(c['raw']))
+                   for c in (_j('datos', 'competitivo_pool.json', defecto=[]) or [])
                    if c.get('raw') and (c.get('ev') or 0) >= 10), key=lambda x: -x[1])
-    return [k for k, _s in comp if k in activos][:LIGA]
+    return [k for k, _s, kr in comp if k in activos and (not con or kr in con)][:LIGA]
 
 
 def ligas(viejo, llaves, fz, ahora):
@@ -376,23 +390,31 @@ def ligas(viejo, llaves, fz, ahora):
 
 # ── la Rapid de la semana ─────────────────────────────────────────────────────────────────────────────────────────
 
-def llave8(gente, ini, fin, llaves, fz, ahora, *semilla):
-    """Una llave de 8 con una ventana por ronda: cuartos hasta el jueves, semis hasta el sábado, final hasta el lunes."""
-    lims = [ini, dias_despues(ini, 3), dias_despues(ini, 5), fin]
+def llave(gente, lims, nombres, llaves, fz, ahora, *semilla):
+    """Una llave a eliminación con una ventana por ronda (`lims`: el arranque y el cierre de cada una). `gente` son los
+    lugares en orden; un lugar vacío es un pase libre (`como: 'pase'`)."""
     rondas, vivos = [], list(gente)
-    for r, nombre in enumerate(('Cuartos', 'Semifinal', 'Final')):
+    for r, nombre in enumerate(nombres):
         a0, a1 = lims[r], lims[r + 1]
         reales = cruces(llaves, a0, a1)
         ps = []
         for i in range(0, len(vivos), 2):
             a, b = vivos[i], vivos[i + 1]
-            if not a or not b:
+            if r == 0 and (not a or not b):
+                ps.append({'a': a, 'b': b, 'g': a or b, 'como': 'pase', 'p': 1.0 if a else 0.0})
+            elif not a or not b:
                 ps.append({'a': a, 'b': b, 'g': '', 'como': 'pend', 'p': 0.5})
-                continue
-            ps.append(resolver(a, b, reales, ahora >= a1, fz, *semilla, nombre))
+            else:
+                ps.append(resolver(a, b, reales, ahora >= a1, fz, *semilla, nombre))
         rondas.append({'r': nombre, 'hasta': a1.isoformat(), 'partidos': ps})
         vivos = [m['g'] for m in ps]
-    return {'gente': list(gente), 'rondas': rondas, 'campeon': vivos[0] if vivos and vivos[0] else ''}
+    return {'gente': [k for k in gente if k], 'rondas': rondas, 'campeon': vivos[0] if vivos and vivos[0] else ''}
+
+
+def llave8(gente, ini, fin, llaves, fz, ahora, *semilla):
+    """Una llave de 8 de la semana: cuartos hasta el jueves, semis hasta el sábado, final hasta el lunes."""
+    lims = [ini, dias_despues(ini, 3), dias_despues(ini, 5), fin]
+    return llave(gente, lims, ('Cuartos', 'Semifinal', 'Final'), llaves, fz, ahora, *semilla)
 
 
 def rapids(activos, ini, fin, llaves, fz, ahora, sid):
@@ -409,7 +431,8 @@ def rapids(activos, ini, fin, llaves, fz, ahora, sid):
 # ── los mini eventos que rotan ────────────────────────────────────────────────────────────────────────────────────
 
 #: el catálogo; `None` en la función es «pronto» (todavía no se puede calcular solo)
-CATALOGO = [('derbi', '⚔️', 'Derbi de servidores'), ('meta', '🤝', 'Meta de la Liga'), ('supercopa', '🏆', 'Supercopa'),
+CATALOGO = [('derbi', '⚔️', 'Guerra de servidores'), ('paises', '🌎', 'Guerra de países'), ('meta', '🤝', 'Meta de la Liga'),
+            ('supercopa', '🏆', 'Supercopa'),
             ('duos', '👯', 'Dúos'), ('pandillas', '👥', 'Pandillas'), ('rey', '👑', 'Rey de la colina'),
             ('revancha', '🔁', 'Revancha'), ('racha', '🔥', 'Racha'), ('novatos', '🌱', 'Copa de novatos'),
             ('escalera', '🪜', 'La Escalera'), ('fantasy', '🎯', 'Fantasy'), ('crews', '🛡️', 'Torneo de crews')]
@@ -435,19 +458,29 @@ def mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L):
     reales = cruces(llaves, ini, fin)
     cerrada = ahora >= fin
     pts = puntos_semana(llaves, ini, fin)
-    sv_de = {norm(x['raw']): x.get('sv') or '' for x in (_j('datos', 'temporada_pool.json', defecto=[]) or []) if x.get('raw')}
+    pool = _j('datos', 'temporada_pool.json', defecto=[]) or []
+    sv_de = {norm(x['raw']): x.get('sv') or '' for x in pool if x.get('raw')}
+    cc_de = {norm(x['raw']): str(x.get('cc') or '').lower() for x in pool if x.get('raw')}
 
-    def derbi():
+    def guerra(de, id_):
+        """⚔️ Dos bandos (servidores o países) sorteados entre los que tienen 5 activos: sus 5 mejores, uno contra uno.
+        Dlx, 26/10/2026: «eso de guerra de servidores está bueno… guerra de países también»."""
         por = {}
         for k in activos:
-            if sv_de.get(k):
-                por.setdefault(sv_de[k], []).append(k)
-        svs = sorted((s for s, xs in por.items() if len(xs) >= 5), key=lambda s: moneda('derbi', sid, s))[:2]
-        if len(svs) < 2:
+            if de.get(k):
+                por.setdefault(de[k], []).append(k)
+        lados = sorted((s for s, xs in por.items() if len(xs) >= 5), key=lambda s: moneda(id_, sid, s))[:2]
+        if len(lados) < 2:
             return None
-        a, b = [sorted(por[s], key=lambda k: -fz.get(k, PISO_BAJO))[:5] for s in svs]
-        ps = [resolver(x, y, reales, cerrada, fz, sid, 'derbi', i) for i, (x, y) in enumerate(zip(a, b))]
-        return {'svs': svs, 'partidos': ps, 'score': [sum(m['g'] == m['a'] for m in ps), sum(m['g'] == m['b'] for m in ps)]}
+        a, b = [sorted(por[s], key=lambda k: -fz.get(k, PISO_BAJO))[:5] for s in lados]
+        ps = [resolver(x, y, reales, cerrada, fz, sid, id_, i) for i, (x, y) in enumerate(zip(a, b))]
+        return {'svs': lados, 'partidos': ps, 'score': [sum(m['g'] == m['a'] for m in ps), sum(m['g'] == m['b'] for m in ps)]}
+
+    def derbi():
+        return guerra(sv_de, 'derbi')
+
+    def paises():
+        return guerra(cc_de, 'paises')
 
     def meta():
         antes = len(cruces(llaves, ini - dt.timedelta(days=7), ini))
@@ -506,7 +539,7 @@ def mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L):
             return None
         return llave8(nov[:RAPID], ini, fin, llaves, fz, ahora, sid, 'novatos')
 
-    hacer = {'derbi': derbi, 'meta': meta, 'supercopa': supercopa, 'duos': lambda: equipos(2), 'pandillas': lambda: equipos(5),
+    hacer = {'derbi': derbi, 'paises': paises, 'meta': meta, 'supercopa': supercopa, 'duos': lambda: equipos(2), 'pandillas': lambda: equipos(5),
              'rey': rey, 'revancha': revancha, 'racha': racha, 'novatos': novatos}
     out = []
     for id_, ic, nombre in sorted(CATALOGO, key=lambda c: moneda('mini', sid, c[0])):
@@ -516,6 +549,14 @@ def mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L):
         if x:
             out.append(dict(x, id=id_, ic=ic, nombre=nombre))
     return out, [[i, ic, n] for i, ic, n in CATALOGO if i in PRONTO]
+
+
+def proxima_semana(sid_prox, hoy):
+    """⏳ Los que abren la semana que viene (Dlx, 26/10/2026: «para lo que dice pronto, crear un countdown… abre en X»):
+    el mismo sorteo con la semilla de la semana que viene, sin los que ya están abiertos esta."""
+    ya = {x['id'] for x in hoy}
+    orden = [c for c in sorted(CATALOGO, key=lambda c: moneda('mini', sid_prox, c[0])) if c[0] not in PRONTO]
+    return [[i, ic, n] for i, ic, n in orden if i not in ya][:MINI]
 
 
 # ── el equipo de la semana y los jurados ──────────────────────────────────────────────────────────────────────────
@@ -602,13 +643,11 @@ def _con_jurado(res, jueces, J):
     """Le pone su jurado sorteado a cada batalla simulada del resultado (ver `jurado_sim()`)."""
     def pasar(ps, *sem):
         return [jurado_sim(m, jueces, J, *sem) for m in ps]
-    for g in res['copa']:
-        g['partidos'] = pasar(g['partidos'], res['sem'], 'copa', g['id'])
     L = res['ligas']
     for g in L['grupos'] + ([L['liga_elite']] if L.get('liga_elite') else []):
         for j in g['jornadas']:
             j['partidos'] = pasar(j['partidos'], L['temp'], g.get('id', 'elite'), j['n'])
-    for r in res['rapid'] + [x for x in res['mini'] if x['id'] == 'novatos']:
+    for r in res['copa'] + res['rapid'] + [x for x in res['mini'] if x['id'] == 'novatos']:
         for rd in r['rondas']:
             rd['partidos'] = pasar(rd['partidos'], res['sem'], r.get('id', 'novatos'), rd['r'])
     for x in res['mini']:
@@ -645,10 +684,11 @@ def calcular(ahora=None, llaves=None, notas=None, viejo=None):
         'sem': sid, 'ini': ini.isoformat(), 'fin': fin.isoformat(),
         'dia': min(7, max(1, int((ahora - ini).total_seconds() // 86400) + 1)),
         'activos': len(activos),
-        'copa': copa(activos, niveles, fz, reales, ahora >= fin, sid),
+        'copa': copa(activos, niveles, fz, ini, fin, llaves, ahora, sid),
         'ligas': L,
         'rapid': rapids(activos, ini, fin, llaves, fz, ahora, sid),
         'mini': mini, 'pronto': pronto,
+        'proxima': proxima_semana(str(MU.periodo(fin + dt.timedelta(hours=1))[0]), mini),
         'equipo': equipo_semana(llaves, notas, ini, fin),
         'jurados': J,
     }
@@ -678,8 +718,13 @@ def _self_check():
     ok(m['g'] == 'b' and m['como'] == 'real', 'si se cruzaron en cualquier evento, cuenta lo real (aunque el débil ganara)')
     ok(resolver('a', 'c', reales, False, fz, 's')['como'] == 'pend', 'sin cruzarse y con la ventana abierta: pendiente')
     ok(resolver('a', 'c', reales, True, fz, 's')['como'] == 'sim', 'sin cruzarse y con la ventana cerrada: simulado')
-    gs = copa({'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'}, {}, fz, [], False, 's')
-    ok(len(gs) == 2 and sorted(len(g['gente']) for g in gs) == [4, 5], 'nueve activos: dos grupos de Copa (4 y 5, sin grupos de uno)')
+    lunes0 = dt.datetime(2026, 10, 26, 15, 0, tzinfo=dt.timezone.utc)
+    gente = {'p%02d' % i for i in range(20)}
+    gs = copa(gente, {}, {k: 100 - int(k[1:]) for k in gente}, lunes0, dias_despues(lunes0, 7), {}, lunes0 + dt.timedelta(days=8), 's')
+    ok(len(gs) == 2 and sorted(len(g['gente']) for g in gs) == [10, 10] and [x['r'] for x in gs[0]['rondas']] == ['Octavos', 'Cuartos', 'Semifinal', 'Final'],
+       'la Copa: 20 activos, dos llaves parejas de 10, de octavos a la final')
+    ok(sum(1 for m in gs[0]['rondas'][0]['partidos'] if m['como'] == 'pase') == 6 and all(g['campeon'] for g in gs),
+       'con pases libres para los mejores sembrados, y cada llave con su campeón al cerrar')
     cal = calendario(10)
     ok(len(cal) == 9 and all(len(j) == 5 for j in cal) and len({tuple(sorted(p)) for j in cal for p in j}) == 45,
        'una liga de 10: 9 jornadas de 5, los 45 cruces una vez')
@@ -729,13 +774,13 @@ def main():
         print('\n🥇 Ligas, temporada %d (jornada %d de %d): %s' % (L['temp'], L['jornada'], JORNADAS,
               ', '.join('%s %d' % (nv, sum(1 for g in L['grupos'] if g['nivel'] == nv)) for nv in NIVELES)))
         print('⭐ Élite: %s' % ', '.join(n.get(k, k) for k in L.get('elite') or []))
-        print('🏆 Copa: %d grupos · ⚡ Rapid: %d llaves' % (len(res['copa']), len(res['rapid'])))
+        print('🏆 Copa: %d llaves · ⚡ Rapid: %d llaves' % (len(res['copa']), len(res['rapid'])))
         print('🎲 Mini: %s' % ', '.join(x['nombre'] for x in res['mini']))
         print('⚖️ Jurados con ficha: %d' % len(res['jurados']))
         return 0
     with io.open(SALIDA, 'w', encoding='utf-8') as f:
         json.dump(res, f, ensure_ascii=False, separators=(',', ':'), sort_keys=True)
-    print('🏆 semana %s, día %d/7: %d activos · %d ligas (temporada %d, jornada %d) · %d grupos de Copa · %d Rapid · mini: %s · %d jurados' % (
+    print('🏆 semana %s, día %d/7: %d activos · %d ligas (temporada %d, jornada %d) · %d llaves de Copa · %d Rapid · mini: %s · %d jurados' % (
         res['sem'], res['dia'], res['activos'], len(L['grupos']), L['temp'], L['jornada'], len(res['copa']), len(res['rapid']),
         ', '.join(x['id'] for x in res['mini']), len(res['jurados'])))
     return 0
