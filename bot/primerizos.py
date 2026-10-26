@@ -148,6 +148,12 @@ def main():
         return 0
     x = con_claves(x)
     print('   🔁 %d jugaron una sola vez · %d se enfriaron (de %d)' % (x.get('n_una', 0), x.get('n_frio', 0), x.get('jugadores', 0)))
+    # ⚠️ CON 🔁 AL PRINCIPIO: el paso del ciclo sólo deja ver en el log las líneas con 🔁 o ⚠️ (`mostrar` en
+    # pipeline.py), y la de «¿sirve avisar?» empezaba con 🧪: corría sin que se viera (25/10/2026)
+    e = x.get('embudo') or {}
+    if e.get('n'):
+        print('   🔁 el embudo: %d debutaron · %d ganaron alguna · %d volvieron · si ganó %d/%d, si no %d/%d · sin duelos leídos %d'
+              % (e['n'], e['gano'], e['volvio'], e['si_gano'][1], e['si_gano'][0], e['no_gano'][1], e['no_gano'][0], e['sin_duelos'][0]))
     jugo_k = x.pop('jugo_k', {})
     # 🧪 ¿sirve avisar?: con lo que el objeto anotó (quién recibió el aviso y quién quedó sin él) y los días de cada uno
     try:
@@ -156,7 +162,7 @@ def main():
             import zoneinfo
             hoy = dt.datetime.now(zoneinfo.ZoneInfo('America/New_York')).date()
             x['prueba_aviso'] = prueba_aviso(lista, jugo_k, hoy)
-            print('   🧪 ¿sirve avisar?: avisados %d/%d · sin aviso %d/%d' % tuple(x['prueba_aviso']['aviso'][::-1] + x['prueba_aviso']['control'][::-1]))
+            print('   🔁 🧪 ¿sirve avisar?: avisados %d/%d · sin aviso %d/%d' % tuple(x['prueba_aviso']['aviso'][::-1] + x['prueba_aviso']['control'][::-1]))
     except Exception as e:                               # noqa: BLE001
         print('   ⚠️ no pude medir si sirve avisar: %s' % str(e)[:80])
     if '--aplicar' in sys.argv:
