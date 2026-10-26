@@ -22799,5 +22799,346 @@
    ]
   ],
   "v": 2
+ },
+ "517": {
+  "antes": {
+   "Dyzz": [
+    39,
+    52,
+    false
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Focox": [
+    149,
+    269,
+    false
+   ],
+   "LEWITO": [
+    131,
+    219,
+    false
+   ],
+   "Lizeninn": [
+    275,
+    183,
+    true
+   ],
+   "MCNadie": [
+    122,
+    203,
+    false
+   ],
+   "Makmah": [
+    2,
+    2,
+    false
+   ],
+   "Miniboy": [
+    37,
+    49,
+    false
+   ],
+   "Oasis": [
+    1,
+    1,
+    false
+   ],
+   "Paria": [
+    222,
+    59,
+    true
+   ],
+   "Prodigy": [
+    97,
+    143,
+    false
+   ],
+   "SULTAN": [
+    278,
+    187,
+    true
+   ],
+   "Six": [
+    12,
+    13,
+    false
+   ],
+   "Tam": [
+    211,
+    30,
+    true
+   ],
+   "Tenor": [
+    35,
+    46,
+    false
+   ],
+   "Tuca": [
+    230,
+    97,
+    true
+   ],
+   "mats": [
+    391,
+    357,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Prodigy",
+    "Lizeninn",
+    "Prodigy"
+   ],
+   [
+    "Deko 🇦🇷",
+    "Dyzz",
+    "Deko 🇦🇷"
+   ],
+   [
+    "Deko 🇦🇷",
+    "Paria",
+    "Deko 🇦🇷"
+   ],
+   [
+    "gianlamaldad, Oasis",
+    "MCNadie, mats",
+    "gianlamaldad, Oasis"
+   ],
+   [
+    "Six",
+    "Sacro presagio 🇦🇷",
+    "Six"
+   ],
+   [
+    "Six",
+    "Miniboy",
+    "Six"
+   ],
+   [
+    "Eriz0 🇻🇪",
+    "SULTAN",
+    "Eriz0 🇻🇪"
+   ],
+   [
+    "Keider",
+    "dyss",
+    "Keider"
+   ],
+   [
+    "Tenor, 🇺🇸 x Za, Tam",
+    "Makmah",
+    "Tenor, 🇺🇸 x Za, Tam"
+   ],
+   [
+    "Tenor, 🇺🇸 x Za, Tam",
+    "Erian",
+    "Tenor, 🇺🇸 x Za, Tam"
+   ],
+   [
+    "Tuca",
+    "LEWITO, Agenda motta 🇨🇦 🇦🇷",
+    "Tuca"
+   ],
+   [
+    "Tuca",
+    "Focox",
+    "Tuca"
+   ],
+   [
+    "Deko 🇦🇷",
+    "Prodigy",
+    "Deko 🇦🇷"
+   ],
+   [
+    "gianlamaldad, Oasis",
+    "Six",
+    "gianlamaldad, Oasis"
+   ],
+   [
+    "LEWITO",
+    "Eriz0 🇻🇪",
+    "LEWITO"
+   ],
+   [
+    "Tuca",
+    "Tenor, 🇺🇸 x Za, Tam",
+    "Tuca"
+   ],
+   [
+    "gianlamaldad, Oasis",
+    "Deko 🇦🇷",
+    "gianlamaldad, Oasis"
+   ],
+   [
+    "Tuca",
+    "LEWITO",
+    "Tuca"
+   ],
+   [
+    "gianlamaldad, Oasis",
+    "Tuca",
+    "gianlamaldad, Oasis"
+   ]
+  ],
+  "ev_antes": {
+   "Dyzz": 14,
+   "Erian": 51,
+   "Focox": 4,
+   "LEWITO": 3,
+   "Lizeninn": 5,
+   "MCNadie": 3,
+   "Makmah": 73,
+   "Miniboy": 21,
+   "Oasis": 31,
+   "Paria": 11,
+   "Prodigy": 3,
+   "SULTAN": 4,
+   "Six": 28,
+   "Tam": 13,
+   "Tenor": 10,
+   "Tuca": 8,
+   "mats": 1
+  },
+  "fecha": "25/10",
+  "firma": "7cac83acf551d2b1",
+  "msg": "1564128739326038038",
+  "nombre": "QCYO RAPEEN 3",
+  "num": 517,
+  "participantes": 26,
+  "sello": {
+   "Oasis": "f377f67df19a:be3f6aea2456",
+   "gianlamaldad": ""
+  },
+  "sv": "FFA",
+  "t": "2026-10-26T04:23:34Z",
+  "tabla": [
+   [
+    "Tuca",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Deko 🇦🇷",
+    "Semifinal",
+    5250
+   ],
+   [
+    "gianlamaldad",
+    "Campeón",
+    5000
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    5000
+   ],
+   [
+    "LEWITO",
+    "Semifinal",
+    3250
+   ],
+   [
+    "Prodigy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Six",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Eriz0 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lizeninn",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Paria",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sacro presagio 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "dyss",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Erian",
+    "Octavos",
+    1250
+   ],
+   [
+    "Focox",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tenor",
+    "Cuartos",
+    833
+   ],
+   [
+    "🇺🇸 x Za",
+    "Cuartos",
+    833
+   ],
+   [
+    "Tam",
+    "Cuartos",
+    833
+   ],
+   [
+    "MCNadie",
+    "Octavos",
+    625
+   ],
+   [
+    "mats",
+    "Octavos",
+    625
+   ],
+   [
+    "Agenda motta 🇨🇦 🇦🇷",
+    "Octavos",
+    625
+   ]
+  ],
+  "v": 2
  }
 }

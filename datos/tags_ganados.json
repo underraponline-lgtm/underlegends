@@ -131,6 +131,13 @@
     "t1",
     1792953978519
    ]
+  },
+  "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1792989121293
+   ]
   }
  },
  "alexi": {
@@ -418,6 +425,13 @@
     "t1",
     1792953978519
    ]
+  },
+  "temporada": {
+   "🧟 RESUCITADO": [
+    "🧟 RESUCITADO",
+    "t1",
+    1792989121293
+   ]
   }
  },
  "camila": {
@@ -611,6 +625,13 @@
     "📆 HABITUÉ",
     "t1",
     1792953978519
+   ]
+  },
+  "temporada": {
+   "📅 INFALTABLE": [
+    "📅 INFALTABLE",
+    "t1",
+    1792989121293
    ]
   }
  },
@@ -832,6 +853,13 @@
     "t1",
     1792953978519
    ]
+  },
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1792989121293
+   ]
   }
  },
  "eclipsito": {
@@ -997,6 +1025,11 @@
     "🌱 PROMESA",
     "t1",
     1792960180764
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1792989121293
    ]
   }
  },
@@ -1050,6 +1083,15 @@
    ]
   }
  },
+ "focox": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1792989121293
+   ]
+  }
+ },
  "force": {
   "servidor": {
    "🧱 FUNDADOR": [
@@ -1072,6 +1114,22 @@
     "📆 HABITUÉ",
     "t1",
     1792953978519
+   ]
+  }
+ },
+ "gianlamaldad": {
+  "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1792989121293
+   ]
+  },
+  "temporada": {
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1792989121293
    ]
   }
  },
@@ -1344,6 +1402,13 @@
     "t1",
     1792953978519
    ]
+  },
+  "temporada": {
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1792989121293
+   ]
   }
  },
  "krish": {
@@ -1401,6 +1466,13 @@
     "t1",
     1792953978519
    ]
+  },
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1792989121293
+   ]
   }
  },
  "leonart": {
@@ -1416,6 +1488,13 @@
     "📆 HABITUÉ",
     "t1",
     1792953978519
+   ]
+  },
+  "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1792989121293
    ]
   }
  },
@@ -1434,6 +1513,15 @@
     "🚪 DEBUT CON CORONA",
     "t1",
     1792953978519
+   ]
+  }
+ },
+ "lewito": {
+  "temporada": {
+   "🧟 RESUCITADO": [
+    "🧟 RESUCITADO",
+    "t1",
+    1792989121293
    ]
   }
  },
@@ -1658,6 +1746,15 @@
    ]
   }
  },
+ "mayeutyk": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1792989121293
+   ]
+  }
+ },
  "mcnadie": {
   "temporada": {
    "🥉 AL PODIO": [
@@ -1813,6 +1910,11 @@
     "📅 INFALTABLE",
     "t1",
     1792953978519
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1792989121293
    ]
   }
  },
@@ -1831,6 +1933,11 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1792953978519
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1792989121293
    ]
   },
   "pais": {
@@ -2053,6 +2160,11 @@
     "🌱 PROMESA",
     "t1",
     1792953978519
+   ],
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1792989121293
    ]
   }
  },
@@ -2706,12 +2818,28 @@
    ]
   }
  },
+ "sultan": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1792989121293
+   ]
+  }
+ },
  "tam": {
   "pais": {
    "PIONERO": [
     "PIONERO",
     "t1",
     1792953978519
+   ]
+  },
+  "servidor": {
+   "🏟️ FINALISTA DE CASA": [
+    "🏟️ FINALISTA DE CASA",
+    "t1",
+    1792989121293
    ]
   },
   "temporada": {
@@ -2751,6 +2879,13 @@
     "🏆 CAMPEÓN",
     "t1",
     1792953978519
+   ]
+  },
+  "temporada": {
+   "📋 SEMANA PERFECTA": [
+    "📋 SEMANA PERFECTA",
+    "t1",
+    1792989121293
    ]
   }
  },
@@ -2792,6 +2927,11 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1792953978519
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1792989121293
    ]
   },
   "servidor": {
@@ -3158,6 +3298,11 @@
     "📅 INFALTABLE",
     "t1",
     1792953978519
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1792989121293
    ]
   }
  },

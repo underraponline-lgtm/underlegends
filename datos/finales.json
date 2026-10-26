@@ -826,5 +826,27 @@
   "sin_permiso": false,
   "sv": "FFA"
  },
+ "1564070696882147339": {
+  "autor": "1055474244089286706",
+  "canal": "1511963625793912892",
+  "cuando": "2026-10-26T00:18:33.165000+00:00",
+  "evento": "CHILL",
+  "fecha": "25/10",
+  "llave": "1564070696882147339",
+  "pregunta": "1564132281734668290",
+  "preguntada": "2026-10-26 12:23 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Liberia",
+     "vandu"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "URBF"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

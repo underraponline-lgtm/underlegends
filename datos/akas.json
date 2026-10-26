@@ -307,6 +307,7 @@
   "mosqui": "Mosquitrap 🦟",
   "stan": "Krtman",
   "byshop": "Bishop",
+  "gianlamaldad": "Badterne",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1581,6 +1582,10 @@
   [
    "BYSHOP",
    "Bishop"
+  ],
+  [
+   "gianlamaldad",
+   "Badterne"
   ],
   [
    "Nexus",

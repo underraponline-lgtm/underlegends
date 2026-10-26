@@ -1222,6 +1222,39 @@
    "b": "LEWITO",
    "ganador": "TUCA",
    "votos": "1–0"
+  },
+  "1564125219948601345": {
+   "id": "1564125219948601345",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1792986912477,
+   "a": "ZA",
+   "b": "GIAN",
+   "ganador": "GIAN",
+   "votos": "1–0"
+  },
+  "1564125918157340763": {
+   "id": "1564125918157340763",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1792987078943,
+   "a": "GIAN",
+   "b": "LEWITO",
+   "ganador": "GIAN",
+   "votos": "1–0"
+  },
+  "1564128109865730153": {
+   "id": "1564128109865730153",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1792987601487,
+   "a": "GIAN",
+   "b": "TUCA",
+   "ganador": "GIAN",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5702,6 +5735,47 @@
       "DELUXE 🇦🇷"
      ],
      "DELUXE 🇦🇷",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1564124759363682448": {
+   "id": "1564124759363682448",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1792986802665,
+   "ed": 1792987610194,
+   "texto": "`[ FINAL ]`\n⌞ZA⌝ 🆚 ⌞GIAN⌝\n⌞GIAN⌝ 🆚 ⌞LEWITO⌝\n⌞GIAN⌝ 🆚 ⌞TUCA⌝",
+   "batallas": [
+    [
+     "FINAL",
+     [
+      "ZA",
+      "GIAN"
+     ],
+     "GIAN",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "GIAN",
+      "LEWITO"
+     ],
+     "GIAN",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "GIAN",
+      "TUCA"
+     ],
+     "GIAN",
      "veredicto",
      []
     ]

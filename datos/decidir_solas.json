@@ -2486,6 +2486,99 @@
      "1529613468850716719"
     ]
    }
+  },
+  {
+   "id": "4705641bce",
+   "tipo": "Nombre desconocido",
+   "sec": "QCYO RAPEEN 3 · FFA · 25/10 · #517",
+   "que": "¿Quién es «Eriz0 🇻🇪»?",
+   "r": "Es Erizo (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @sendoproductions29 (en Discord: «✞ ꫀ᥅ﺃɀ0 ✞•°>𝐒𝐨𝐧𝐢𝐜 ✨») · en la Lista: Erizo se anotó como «Eriz0» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1792989109543,
+   "filas": [
+    850
+   ],
+   "variantes": [
+    "Eriz0 🇻🇪"
+   ],
+   "escribio": {
+    "quien": "QCYO RAPEEN 3 · FFA · 25/10 · Eriz0 🇻🇪"
+   }
+  },
+  {
+   "id": "753c978c59",
+   "tipo": "Nombre desconocido",
+   "sec": "QCYO RAPEEN 3 · FFA · 25/10 · #517",
+   "que": "¿Quién es «Sacro presagio 🇦🇷»?",
+   "r": "Es Geoka (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @goksito_8 (en Discord: «#40 | Geoka») · en la Lista: Geoka se anotó como «Sacro presagio» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1792989109543,
+   "filas": [
+    851
+   ],
+   "variantes": [
+    "Sacro presagio 🇦🇷"
+   ],
+   "escribio": {
+    "quien": "QCYO RAPEEN 3 · FFA · 25/10 · Sacro presagio 🇦🇷"
+   }
+  },
+  {
+   "id": "82df489c20",
+   "tipo": "Nombre desconocido",
+   "sec": "QCYO RAPEEN 3 · FFA · 25/10 · #517",
+   "que": "¿Quién es «gianlamaldad»?",
+   "r": "Es Badterne",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Badterne: la llave lo escribe con su mención",
+   "t": 1792989109543,
+   "filas": [
+    853
+   ],
+   "variantes": [
+    "gianlamaldad"
+   ],
+   "escribio": {
+    "alias": [
+     "gianlamaldad",
+     "Badterne"
+    ],
+    "filas": [
+     314
+    ]
+   }
+  },
+  {
+   "id": "d5dd8d7540",
+   "tipo": "Nombre desconocido",
+   "sec": "QCYO RAPEEN 3 · FFA · 25/10 · #517",
+   "que": "¿Quién es «Deko 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1525316933786927137",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1525316933786927137)",
+   "t": 1792989109543,
+   "filas": [
+    849
+   ],
+   "variantes": [
+    "Deko 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Deko",
+     "1525316933786927137"
+    ]
+   }
   }
  ],
  "deshechas": []

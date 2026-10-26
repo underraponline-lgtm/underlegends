@@ -1,9 +1,9 @@
 {
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
-  "ACAD": "2026-10-25",
-  "DDF": "2026-10-25",
-  "FFA": "2026-10-25",
+  "ACAD": "2026-10-26",
+  "DDF": "2026-10-26",
+  "FFA": "2026-10-26",
   "FRZ": "2026-10-15",
   "FVS": "2026-10-15",
   "SR": "2026-10-21",
@@ -61,6 +61,19 @@
    "sv": "FFA",
    "vence": "2026-10-20T02:35:27+00:00",
    "vencido": true
+  },
+  "Agenda motta": {
+   "avisado": "2026-10-26",
+   "chat": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-26T01:55:51+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 3",
+   "n": 517,
+   "sv": "FFA",
+   "vence": "2026-11-02T01:55:51+00:00",
+   "vencido": false
   },
   "Apolo": {
    "avisado": "2026-10-18",
@@ -130,6 +143,7 @@
   },
   "Bishop": {
    "avisado": "2026-10-25",
+   "chat": "2026-10-26",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-25T21:03:19+00:00",
@@ -271,6 +285,19 @@
    "vence": "2026-10-28T21:05:52+00:00",
    "vencido": false
   },
+  "Deko": {
+   "avisado": "2026-10-26",
+   "chat": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-26T01:55:51+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 3",
+   "n": 517,
+   "sv": "FFA",
+   "vence": "2026-11-02T01:55:51+00:00",
+   "vencido": false
+  },
   "Desu": {
    "avisado": "2026-10-20",
    "chat": "2026-10-21",
@@ -312,6 +339,7 @@
   },
   "Ed": {
    "avisado": "2026-10-21",
+   "avisado_cumplido": "2026-10-26",
    "chat": "2026-10-22",
    "con": 516,
    "cumplido": "2026-10-25T22:13:32+00:00",
@@ -325,6 +353,7 @@
   },
   "Edd y Eddy": {
    "avisado": "2026-10-21",
+   "avisado_cumplido": "2026-10-26",
    "chat": "2026-10-22",
    "con": 516,
    "cumplido": "2026-10-25T22:13:32+00:00",
@@ -337,6 +366,8 @@
    "vencido": false
   },
   "EddyLaSombra": {
+   "avisado": "2026-10-26",
+   "chat": "2026-10-26",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-25T22:13:32+00:00",
@@ -345,6 +376,19 @@
    "n": 516,
    "sv": "FFA",
    "vence": "2026-11-01T22:13:32+00:00",
+   "vencido": false
+  },
+  "Eriz0": {
+   "avisado": "2026-10-26",
+   "chat": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-26T01:55:51+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 3",
+   "n": 517,
+   "sv": "FFA",
+   "vence": "2026-11-02T01:55:51+00:00",
    "vencido": false
   },
   "FOTOSÍNTESIS": {
@@ -375,6 +419,7 @@
   },
   "Fix": {
    "avisado": "2026-10-25",
+   "chat": "2026-10-26",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-25T04:08:34+00:00",
@@ -586,6 +631,8 @@
    "vencido": false
   },
   "LA ORDEN DEL GRIAL": {
+   "avisado": "2026-10-26",
+   "chat": "2026-10-26",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-25T22:13:32+00:00",
@@ -598,6 +645,7 @@
   },
   "LSO": {
    "avisado": "2026-10-25",
+   "chat": "2026-10-26",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-25T04:08:34+00:00",
@@ -671,10 +719,11 @@
    "n": 487,
    "sv": "FFA",
    "vence": "2026-10-26T04:19:55+00:00",
-   "vencido": false
+   "vencido": true
   },
   "MATUK": {
    "avisado": "2026-10-25",
+   "avisado_cumplido": "2026-10-26",
    "chat": "2026-10-25",
    "con": 516,
    "cumplido": "2026-10-25T22:13:32+00:00",
@@ -899,6 +948,19 @@
    "vence": "2026-10-19T22:01:43+00:00",
    "vencido": true
   },
+  "Sacro presagio": {
+   "avisado": "2026-10-26",
+   "chat": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-26T01:55:51+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 3",
+   "n": 517,
+   "sv": "FFA",
+   "vence": "2026-11-02T01:55:51+00:00",
+   "vencido": false
+  },
   "Scritura": {
    "avisado": "2026-10-12",
    "avisado_cumplido": "2026-10-15",
@@ -1035,6 +1097,32 @@
    "vence": "2026-11-01T00:48:12+00:00",
    "vencido": false
   },
+  "dyss": {
+   "avisado": "2026-10-26",
+   "chat": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-26T01:55:51+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 3",
+   "n": 517,
+   "sv": "FFA",
+   "vence": "2026-11-02T01:55:51+00:00",
+   "vencido": false
+  },
+  "gianlamaldad": {
+   "avisado": "2026-10-26",
+   "chat": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-26T01:55:51+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 3",
+   "n": 517,
+   "sv": "FFA",
+   "vence": "2026-11-02T01:55:51+00:00",
+   "vencido": false
+  },
   "lil": {
    "avisado": "2026-10-18",
    "chat": "2026-10-17",
@@ -1050,9 +1138,10 @@
   },
   "mats": {
    "avisado": "2026-10-23",
+   "avisado_cumplido": "2026-10-26",
    "chat": "2026-10-24",
-   "con": null,
-   "cumplido": "",
+   "con": 517,
+   "cumplido": "2026-10-26T01:55:51+00:00",
    "debut": "2026-10-23T04:48:58+00:00",
    "did": "597240876573392946",
    "evento": "LA ISLA DE OKINAWA V.4",
@@ -1098,6 +1187,19 @@
    "n": 488,
    "sv": "FFA",
    "vence": "2026-10-26T06:14:16+00:00",
+   "vencido": false
+  },
+  "x Za": {
+   "avisado": "2026-10-26",
+   "chat": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-26T01:55:51+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 3",
+   "n": 517,
+   "sv": "FFA",
+   "vence": "2026-11-02T01:55:51+00:00",
    "vencido": false
   },
   "💥 SF2: ISAC": {
