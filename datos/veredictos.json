@@ -1134,6 +1134,39 @@
    "b": "miniboy",
    "ganador": "miniboy",
    "votos": "1–0"
+  },
+  "1564390652526207077": {
+   "id": "1564390652526207077",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793050196535,
+   "a": "VILCA",
+   "b": "SOSA",
+   "ganador": "SOSA",
+   "votos": "1–0"
+  },
+  "1564390995888439348": {
+   "id": "1564390995888439348",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793050278399,
+   "a": "REPLICA : VILCA",
+   "b": "SOSA",
+   "ganador": "SOSA",
+   "votos": "2–0"
+  },
+  "1564392170041905270": {
+   "id": "1564392170041905270",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793050558339,
+   "a": "NXUZ",
+   "b": "ARTEZZY",
+   "ganador": "NXUZ",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5306,8 +5339,8 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1793049122688,
-   "ed": 1793049564852,
-   "texto": "`[ CUARTOS ]`\n⌞Vilca 🇵🇪⌝ 🆚 ⌞sosa🇺🇾⌝\n⌞Artezzy 🇵🇪⌝ 🆚 ⌞Nxuz 🇵🇪⌝\n⌞okam🇨🇷⌝ 🆚 ⌞Luck 🇵🇾⌝\n⌞CrisZJ 🇵🇪⌝ 🆚 ⌞Leyenda.X5 🇦🇷⌝\n`[ SEMIFINALES ]`",
+   "ed": 1793051443406,
+   "texto": "`[ CUARTOS ]`\n⌞Vilca 🇵🇪⌝ 🆚 ⌞sosa🇺🇾⌝\n⌞Artezzy 🇵🇪⌝ 🆚 ⌞Nxuz 🇵🇪⌝\n⌞okam🇨🇷⌝ 🆚 ⌞Luck 🇵🇾⌝ 🆚 ⌞Raizer🇵🇪⌝\n⌞CrisZJ 🇵🇪⌝ 🆚 ⌞Leyenda.X5 🇦🇷⌝ 🆚 ⌞giansito🇵🇪⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5333,7 +5366,8 @@
      "CUARTOS",
      [
       "okam🇨🇷",
-      "Luck 🇵🇾"
+      "Luck 🇵🇾",
+      "Raizer🇵🇪"
      ],
      null,
      "última ronda y no dice campeón",
@@ -5343,7 +5377,8 @@
      "CUARTOS",
      [
       "CrisZJ 🇵🇪",
-      "Leyenda.X5 🇦🇷"
+      "Leyenda.X5 🇦🇷",
+      "giansito🇵🇪"
      ],
      null,
      "última ronda y no dice campeón",
