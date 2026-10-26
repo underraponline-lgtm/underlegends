@@ -1,62 +1,56 @@
 {
  "v": 1,
- "cuando": "2026-10-25T23:06:41Z",
+ "cuando": "2026-10-26T00:01:12Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 323.3,
+ "dur_s": 1649.8,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.5
+   "s": 8.4
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.8
+   "s": 0.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.0
+   "s": 9.0
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 242.7
+   "s": 22.5
   },
   {
    "n": "5",
    "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": false,
-   "s": 60.1
+   "s": 1522.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 4.6
+   "s": 12.6
+  },
+  {
+   "n": "6",
+   "que": "refrescar KV",
+   "ok": true,
+   "s": 72.6
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "02_Competitivo/exportar_png.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "04_Pais/exportar_png.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
    "que": "03_Servidor/generar.py .SosaATR"
   },
   {
@@ -65,92 +59,64 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
+   "que": "03_Servidor/generar.py Ezias🥈✒️🧢🐍"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
+   "que": "03_Servidor/generar.py Filozico"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
+   "que": "03_Servidor/generar.py Krish"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
+   "que": "03_Servidor/generar.py Kravitz"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
+   "que": "03_Servidor/generar.py NXUZ"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Agus"
+   "que": "03_Servidor/generar.py NXUZ"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py ARDEAN"
+   "que": "03_Servidor/generar.py Sin Limites"
   },
   {
    "paso": "5",
-   "que": "01_Temporada/exportar_png.py .SosaATR"
+   "que": "03_Servidor/generar.py Sin Limites"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "02_Competitivo/exportar_png.py Emily Family"
-  },
-  {
-   "paso": "5",
-   "que": "04_Pais/exportar_png.py Erik"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Erik"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Erik"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Eze"
+   "que": "03_Servidor/generar.py npk"
   }
  ],
  "ultimo_evento": {
-  "n": "514",
-  "nombre": "IDENTITY V",
-  "sv": "DDF",
+  "n": "515",
+  "nombre": "REDBULL CREW ARGENTINA 2026",
+  "sv": "ACAD",
   "dia": "2026-10-25"
  },
  "cuotas": {
-  "kv": {
-   "write": 505,
-   "read": 55150
-  },
   "objeto": {
-   "leidas": 3270864,
-   "escritas": 19578,
-   "pedidos": 10167
+   "leidas": 0,
+   "escritas": 0,
+   "pedidos": 1
   },
   "worker": {
-   "pedidos": 8698,
+   "pedidos": 8700,
    "errores": 0,
-   "sub": 10598,
+   "sub": 10627,
    "cortados": 0,
-   "p50_ms": 1.35,
-   "p99_ms": 10.64,
+   "p50_ms": 1.37,
+   "p99_ms": 10.91,
    "cpu": {
-    "total": 19261,
-    "objeto_10": 1690,
-    "worker_10": 127
+    "total": 19279,
+    "objeto_10": 1697,
+    "worker_10": 131
    }
   },
   "r2": {

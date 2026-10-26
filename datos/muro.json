@@ -642,18 +642,18 @@
 "rg": "",
 "c": []
 },
-"zekha": {
-"rg": "",
-"c": [
-"pais",
-"servidor"
-]
-},
 "rt": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
+]
+},
+"zekha": {
+"rg": "",
+"c": [
+"pais",
+"servidor"
 ]
 },
 "numberve": {
@@ -1167,7 +1167,10 @@
 },
 "flama": {
 "rg": "",
-"c": []
+"c": [
+"pais",
+"servidor"
+]
 },
 "jeixder": {
 "rg": "",
@@ -2555,22 +2558,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-01T06:36:18Z",
-"quien": [
-"JEIXDER"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-01T06:36:18Z",
-"quien": [
-"JEIXDER"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-01T23:39:49Z",
@@ -5891,6 +5878,22 @@
 "Eze"
 ],
 "carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-26T00:01:06Z",
+"quien": [
+"Flama"
+],
+"carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-26T00:01:06Z",
+"quien": [
+"Flama"
+],
+"carta": "servidor"
 }
 ]
 }
