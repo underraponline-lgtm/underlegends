@@ -153,7 +153,8 @@ export function Inventario({ liga, dc }) {
     }
     if ('marco' in bor || 'estilo' in bor) {
       const d = await pasePost('marco-elige', { marco: marcoAhora, estilo: estiloAhora });
-      if (d && d._ok) setMk(d); else { ok = false; avisos.push('El marco no se pudo guardar.'); }
+      // 🖼️ el marco va también en la imagen de /card: se redibuja como con el TAG (ver bot/con_marco.py)
+      if (d && d._ok) { setMk(d); if (d.redibujo) avisos.push(avisoRedibujo(d.redibujo).replace('tu carta se redibuja', 'tu carta con su marco sale en /card')); } else { ok = false; avisos.push('El marco no se pudo guardar.'); }
     }
     if ('principal' in bor) {
       const d = await pasePost('carta-principal', { carta: principalAhora });

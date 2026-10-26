@@ -520,13 +520,17 @@ function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
   const v = m && m.sello ? m.sello + (g && g.vr ? '-' + g.vr : '') : '';
   const svAhora = enSv ? svQueVa(g, sv, aqui, m) : ((g && g.sv) || '');
 
+  // 🖼️ con su marco en la imagen, si tiene la foto con el marco que lleva hoy (`mi`, ver bot/con_marco.py). La de
+  // Servidor, sólo la suya: la de otro servidor es otra carta
+  const conMarco = (c) => !!(g && Array.isArray(g.mi) && g.mi.includes(c));
+  const urlSv = enSv ? urlServidor(quien, svAhora, propiaDe(g), v) : '';
   const componentes = [
     {
       type: COMP.GALERIA,
       items: [{
         media: { url: bloqueada(g, cual) ? urlCarta(quien, 'bloq-' + cual, v)
-                      : enSv ? urlServidor(quien, svAhora, propiaDe(g), v)
-                             : urlCarta(quien, cual, v) },
+                      : enSv ? (conMarco('servidor') && urlSv === urlCarta(quien, 'servidor', v) ? urlCarta(quien, 'servidor-m', v) : urlSv)
+                             : urlCarta(quien, conMarco(cual) ? cual + '-m' : cual, v) },
         description: `Carta ${cual} de ${(g && g.n) || quien}`,
       }],
     },

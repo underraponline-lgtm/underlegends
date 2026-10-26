@@ -99,6 +99,13 @@ def correr(quienes, simulacro=False):
     r = subprocess.run([sys.executable, 'bot/subir_cartas.py'] + pngs, cwd=BASE, capture_output=True, text=True,
                        encoding='utf-8', errors='replace')
     print('   %s subidas' % ('✅' if r.returncode == 0 else '⚠️'))
+    # 🖼️ y la foto con su marco, para quien tiene uno puesto (ver bot/con_marco.py): después de subir, porque la foto
+    # se saca de la carta que está arriba
+    try:
+        import con_marco as CM
+        CM.avisar(CM.correr(quienes))
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ la foto con marco no salió (%s)' % str(e)[:70])
     ok = listo(quienes)
     print('   %s el objeto se enteró' % ('✅' if ok else '⚠️'))
     return 0 if r.returncode == 0 and ok else 1

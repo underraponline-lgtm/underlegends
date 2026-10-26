@@ -4022,6 +4022,8 @@ export function pareceLlave(texto) {
 }
 
 /** El texto con cada `<@id>` como `@Nombre`: Discord manda quién es cada mención. */
+/** 🖼️ las cartas que pueden llevar su marco en la imagen (`redibujoListo()`, bot/con_marco.py) */
+const MARCO_CARTAS = ['temporada', 'competitivo', 'pais', 'servidor'];
 /** ⚡ el freno del redibujo a pedido: uno cada 10 minutos por persona, 6 por día (ver `pedirRedibujo()`) */
 export const REDIBUJO_ESPERA = 10 * 60 * 1000;
 export const REDIBUJO_DIA = 6;
@@ -5945,6 +5947,8 @@ export class Avisos {
         "estilo TEXT NOT NULL DEFAULT 'camiseta', t INTEGER NOT NULL)");
       // 🃏 la carta que cada uno elige como principal (26/10/2026): ver `cartaPrincipal()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS carta_principal (quien TEXT PRIMARY KEY, carta TEXT NOT NULL, t INTEGER NOT NULL)');
+      // 🖼️ las cartas con su marco en la imagen (26/10/2026): ver `marcosEnImagen()` y bot/con_marco.py
+      this.sql.exec('CREATE TABLE IF NOT EXISTS marco_img (k TEXT PRIMARY KEY, firma TEXT NOT NULL, cartas TEXT NOT NULL, t INTEGER NOT NULL)');
       // ⚡ el redibujo a pedido (26/10/2026): ver `pedirRedibujo()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS redibujo (k TEXT PRIMARY KEY, n TEXT NOT NULL, pedido INTEGER NOT NULL, ' +
         'enviado INTEGER NOT NULL DEFAULT 0, hecho INTEGER NOT NULL DEFAULT 0, dia TEXT NOT NULL DEFAULT \'\', veces INTEGER NOT NULL DEFAULT 0)');
@@ -12098,8 +12102,10 @@ export class Avisos {
     const cp = this.cartasPrincipales()[String(k).slice(2)];
     // ⚡ y la versión de su último redibujo a pedido: /card la pone en la URL
     const vr = this.versionesRedibujo()[String(k).slice(2)];
-    if (!cp && !vr) return r.v;
-    try { return JSON.stringify(Object.assign(JSON.parse(r.v), cp ? { cp } : {}, vr ? { vr } : {})); } catch (e) { return r.v; }
+    // 🖼️ y qué cartas tienen su foto con el marco que lleva puesto: /card usa `<carta>-m.webp`
+    const mi = this.marcosEnImagen()[String(k).slice(2)];
+    if (!cp && !vr && !mi) return r.v;
+    try { return JSON.stringify(Object.assign(JSON.parse(r.v), cp ? { cp } : {}, vr ? { vr } : {}, mi ? { mi } : {})); } catch (e) { return r.v; }
   }
 
   /** Varias a la vez, para el ciclo: `{k: v}` de las que están (hasta 200) */
@@ -13060,13 +13066,39 @@ export class Avisos {
     this.guardar('redibujos', { t: ahora, estado: 204, n: xs.length });
   }
 
-  /** ⚡ `bot/redibujo.py` subió esas cartas: les cambia la versión (`vr`, que /card y la página ponen en la URL) */
+  /** ⚡ `bot/redibujo.py` subió esas cartas: les cambia la versión (`vr`, que /card y la página ponen en la URL). Y
+   *  🖼️ `marcos` (`{clave: {firma, cartas}}`, de bot/con_marco.py): qué cartas tienen su foto con marco, y con cuál */
   redibujoListo(d) {
     const ns = (d && Array.isArray(d.quienes) ? d.quienes : []).slice(0, 10).map(String);
     const ahora = Date.now();
     let n = 0;
     for (const x of ns) n += this.sql.exec('UPDATE redibujo SET hecho = ? WHERE n = ?', ahora, x).rowsWritten || 0;
+    const ms = d && d.marcos && typeof d.marcos === 'object' && !Array.isArray(d.marcos) ? Object.entries(d.marcos).slice(0, 50) : [];
+    for (const [k, x] of ms) {
+      const cartas = (x && Array.isArray(x.cartas) ? x.cartas : []).filter((c) => MARCO_CARTAS.includes(c));
+      if (!/^[a-z0-9-]{1,60}$/.test(k) || !x || typeof x.firma !== 'string' || !cartas.length) continue;
+      // las que ya tenía con la misma firma se suman: una tanda puede traer sólo algunas
+      const antes = this.sql.exec('SELECT firma, cartas FROM marco_img WHERE k = ?', k).toArray()[0];
+      const todas = antes && antes.firma === x.firma ? [...new Set(JSON.parse(antes.cartas).concat(cartas))] : cartas;
+      this.sql.exec('INSERT INTO marco_img (k, firma, cartas, t) VALUES (?, ?, ?, ?) ON CONFLICT(k) DO UPDATE SET ' +
+        'firma = excluded.firma, cartas = excluded.cartas, t = excluded.t', k, x.firma.slice(0, 80), JSON.stringify(todas), ahora);
+      n++;
+    }
     return { ok: true, n };
+  }
+
+  /** 🖼️ `{clave: [cartas]}` de las fotos con marco que siguen valiendo: las sacadas con el marco que lleva puesto hoy.
+   *  Si cambió de marco (o lo sacó), su foto vieja no se usa y /card vuelve a la carta sola hasta la nueva */
+  marcosEnImagen() {
+    const out = {};
+    try {
+      const pub = this.marcosPublicos();
+      for (const r of this.sql.exec('SELECT k, firma, cartas FROM marco_img').toArray()) {
+        const m = pub[r.k];
+        if (m && r.firma === m[0] + '|' + m[1]) out[r.k] = JSON.parse(r.cartas);
+      }
+    } catch (e) { /* sin fotos: la carta sola */ }
+    return out;
   }
 
   /** ⚡ `{clave: cuándo se redibujó}` de los que pidieron: la versión que va en la URL de sus cartas */
@@ -13100,9 +13132,12 @@ export class Avisos {
       && !this.sql.exec('SELECT 1 FROM marcos WHERE quien = ? AND marco = ?', quien, marco).toArray()[0]) {
       return { error: 'no lo tienes' };
     }
+    const antes = this.sql.exec('SELECT marco, estilo FROM marco_elige WHERE quien = ?', quien).toArray()[0];
     this.sql.exec('INSERT INTO marco_elige (quien, marco, estilo, t) VALUES (?, ?, ?, ?) ON CONFLICT(quien) DO UPDATE SET ' +
       'marco = excluded.marco, estilo = excluded.estilo, t = excluded.t', quien, marco, estilo, Date.now());
-    return Object.assign({ ok: true }, this.marcosDe(quien));
+    // 🖼️ el marco va en la imagen de /card (bot/con_marco.py): cambiarlo pide la foto nueva, con el mismo freno
+    const cambio = !antes || antes.marco !== marco || antes.estilo !== estilo;
+    return Object.assign({ ok: true, redibujo: cambio ? this.pedirRedibujo(quien) : null }, this.marcosDe(quien));
   }
 
   /** Una visita sin cuenta: el navegador avisa una vez por día. ⚠️ Con tope: es un número que cualquiera puede

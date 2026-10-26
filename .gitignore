@@ -227,3 +227,5 @@ datos/olvidados.json
 
 # los respaldos de apodos: Discord IDs y apodos de gente real (herramientas/sincronizar_puesto.py)
 docs/apodos_*.json
+# 🖼️ las fotos con marco antes de subir (bot/con_marco.py)
+salida_marcos/

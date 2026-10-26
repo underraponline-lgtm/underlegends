@@ -11,6 +11,7 @@ import { Menu, Merch, Pie, Subir, Tabbar, Visor } from './abajo.jsx';
 import { Encuestas } from './encuestas.jsx';
 import { Lobby } from './lobby.jsx';
 import { SemanaComp } from './semana_comp.jsx';
+import { MarcoSolo } from './marco_solo.jsx';
 // 🧭 el tutorial (Dlx, 12/10/2026, «A … B … C … D … E. Dale»): quién es nuevo se decide al cargar (primera.js, chico);
 // lo que se dibuja se baja sólo si hace falta
 import { pasosEnInicio, quiereBienvenida, quiereTutorial } from './primera.js';
@@ -680,6 +681,10 @@ export default function App() {
   if (!paso.current || paso.current.k !== claveVa) paso.current = { k: claveVa, i: iMenu, hondo, va };
   vaPagina = va;
   if (!liga) return <div className={'app ' + claseTema(tema, temaSv) + calma}><div className="barra-ul" /><div className="cargando">Cargando la Liga…</div></div>;
+  // 🖼️ la carta sola con su marco, para la foto de `bot/con_marco.py`: nada alrededor (ver marco_solo.jsx)
+  if (pagina === 'marco' && partes[1] && partes[2]) {
+    return <div className="app solo-marco"><MarcoSolo liga={liga} k={partes[1]} cual={partes[2]} sv={partes[3] || ''} cc={(partes[4] || '').toLowerCase()} /></div>;
+  }
   return (
     <div className={'app ' + claseTema(tema, temaSv) + calma + (miFondo ? ' con-fondo' : '')} ref={raiz} style={miFondo ? { '--mi-fondo': miFondo } : undefined}>
       {/* ♿ «saltar al contenido» (04/10/2026, de la lista de Dlx): no se ve hasta que se llega con el teclado, y salta

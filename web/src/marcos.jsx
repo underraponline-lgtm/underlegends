@@ -171,11 +171,13 @@ function Hombrera({ c, lado }) {
 function Talon({ c, n }) {
   return (
     <>
-      <Svg cls="mk-tal" vb="0 0 34 200">
-        <rect x="0" y="0" width="34" height="200" fill="#101012" stroke={c} strokeWidth="3" />
-        <line x1="2" y1="0" x2="2" y2="200" stroke={c} strokeWidth="2" strokeDasharray="3 5" />
+      {/* 🎟️ el talón, como el de una entrada numerada: corto y derecho (Dlx, 26/10/2026: «¿qué es eso de la derecha que
+          se ve así aplastado?» — era una tira de 64 % de alto con el texto de costado) */}
+      <Svg cls="mk-tal" vb="0 0 60 90">
+        <rect x="1.5" y="1.5" width="57" height="87" fill="#101012" stroke={c} strokeWidth="3" />
+        <line x1="4" y1="2" x2="4" y2="88" stroke={c} strokeWidth="2" strokeDasharray="3 4" />
       </Svg>
-      <span className="mk-tal-t">T1 · N.º {String(n || 0).padStart(3, '0')}</span>
+      <span className="mk-tal-t"><b>T1</b><small>N.º</small><b>{String(n || 0).padStart(3, '0')}</b></span>
     </>
   );
 }

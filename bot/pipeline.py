@@ -1864,6 +1864,13 @@ def main():
                   'próximo ciclo la reintenta.')
             continue
         subidas += len(frescos)
+        # 🖼️ y la foto con su marco de quien tiene uno puesto (bot/con_marco.py): con la carta nueva, la vieja con marco
+        # mostraría los números de antes. Sólo afecta a quien tiene marco
+        try:
+            import con_marco as CM
+            CM.avisar(CM.correr([q for q in lote if q not in malos]))
+        except Exception as e:                           # noqa: BLE001
+            print('      ⚠️ las fotos con marco no salieron (%s)' % str(e)[:70])
 
         # 🔴 SELLAR DESPUES DE SUBIR, Y SOLO A LOS QUE SALIERON BIEN. Al
         # reves, una corrida cortada deja el sello diciendo que todo se
