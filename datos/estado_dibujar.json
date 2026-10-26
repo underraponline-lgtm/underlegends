@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-10-26T00:17:53Z",
+ "cuando": "2026-10-26T00:31:38Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 967.6,
+ "dur_s": 787.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.6
+   "s": 8.1
   },
   {
    "n": "2f2",
@@ -21,31 +21,31 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.5
+   "s": 7.9
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.3
+   "s": 22.3
   },
   {
    "n": "5",
-   "que": "tanda 1 de 6 · 40 persona(s)",
+   "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 868.8
+   "s": 680.0
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 7.8
+   "s": 5.4
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 55.7
+   "s": 62.2
   }
  ],
  "fallas": [
@@ -59,39 +59,11 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Ezias🥈✒️🧢🐍"
+   "que": "03_Servidor/generar.py Number"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Dyzz"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Krish"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Kravitz"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py NXUZ"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py NXUZ"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Sin Limites"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Sin Limites"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py npk"
+   "que": "03_Servidor/generar.py OEP"
   }
  ],
  "ultimo_evento": {
@@ -102,24 +74,24 @@
  },
  "cuotas": {
   "kv": {
-   "write": 27,
-   "read": 1941
+   "write": 43,
+   "read": 3162
   },
   "objeto": {
-   "leidas": 105586,
-   "escritas": 1304,
-   "pedidos": 177
+   "leidas": 139577,
+   "escritas": 1525,
+   "pedidos": 310
   },
   "worker": {
-   "pedidos": 8778,
+   "pedidos": 8787,
    "errores": 0,
-   "sub": 10703,
+   "sub": 10710,
    "cortados": 0,
    "p50_ms": 1.38,
-   "p99_ms": 10.98,
+   "p99_ms": 10.99,
    "cpu": {
-    "total": 19435,
-    "objeto_10": 1702,
+    "total": 19463,
+    "objeto_10": 1703,
     "worker_10": 142
    }
   },
