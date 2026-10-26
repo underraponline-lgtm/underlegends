@@ -294,10 +294,6 @@
 "temporada"
 ]
 },
-"chop": {
-"rg": "D",
-"c": []
-},
 "xclusivo": {
 "rg": "C",
 "c": []
@@ -367,6 +363,10 @@
 "rg": "C",
 "c": []
 },
+"chop": {
+"rg": "D",
+"c": []
+},
 "onzass": {
 "rg": "E",
 "c": []
@@ -423,19 +423,19 @@
 "temporada"
 ]
 },
-"soulb": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "player": {
 "rg": "D",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"soulb": {
+"rg": "E",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -973,16 +973,16 @@
 "rg": "",
 "c": []
 },
-"giansito": {
-"rg": "",
-"c": []
-},
 "mayeutyk": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
+},
+"giansito": {
+"rg": "",
+"c": []
 },
 "warap": {
 "rg": "",
@@ -1107,12 +1107,6 @@
 "temporada"
 ]
 },
-"rbk": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
 "saiko": {
 "rg": "",
 "c": [
@@ -1162,13 +1156,6 @@
 ]
 },
 "joshema": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"sosaatr": {
 "rg": "",
 "c": [
 "servidor",
@@ -1265,10 +1252,6 @@
 "rg": "",
 "c": []
 },
-"julix-bo": {
-"rg": "",
-"c": []
-},
 "betelguese": {
 "rg": "",
 "c": []
@@ -1280,9 +1263,27 @@
 "temporada"
 ]
 },
+"julix-bo": {
+"rg": "",
+"c": []
+},
 "ed": {
 "rg": "",
 "c": []
+},
+"eddyeddy": {
+"rg": "",
+"c": []
+},
+"senticide": {
+"rg": "",
+"c": []
+},
+"rbk": {
+"rg": "",
+"c": [
+"servidor"
+]
 },
 "maukc": {
 "rg": "",
@@ -1304,14 +1305,6 @@
 ]
 },
 "mhs": {
-"rg": "",
-"c": []
-},
-"eddyeddy": {
-"rg": "",
-"c": []
-},
-"senticide": {
 "rg": "",
 "c": []
 },
@@ -1344,6 +1337,13 @@
 "fandabel": {
 "rg": "",
 "c": []
+},
+"sosaatr": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "reyexxmc": {
 "rg": "",
@@ -5920,7 +5920,7 @@
 },
 {
 "tipo": "tarjeta",
-"t": "2026-10-26T05:58:48Z",
+"t": "2026-10-26T06:24:49Z",
 "quien": [
 "OKAM"
 ],
@@ -5928,7 +5928,7 @@
 },
 {
 "tipo": "tarjeta",
-"t": "2026-10-26T05:58:48Z",
+"t": "2026-10-26T06:24:49Z",
 "quien": [
 "LAST"
 ],
