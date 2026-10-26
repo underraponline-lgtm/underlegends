@@ -856,12 +856,15 @@
   "Badterne": {
    "FFA": {
     "duelos": "0/1",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 0,
-    "pts": 6187,
-    "racha": "0/0"
+    "ev": 3,
+    "oro": 1,
+    "ovr": 48,
+    "pod": 1,
+    "pts": 13687,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
    },
    "SR": {
     "duelos": "2/4",
@@ -1829,7 +1832,7 @@
     "racha": "0/0"
    }
   },
-  "Deko 🇦🇷": {
+  "Deko": {
    "FFA": {
     "duelos": "1/1",
     "ev": 1,
@@ -2668,28 +2671,14 @@
     }
    }
   },
-  "Eriz0 🇻🇪": {
-   "FFA": {
-    "duelos": "1/2",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 3750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "Erizo": {
    "FFA": {
-    "duelos": "",
-    "ev": 1,
+    "duelos": "1/2",
+    "ev": 2,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
-    "pts": 4125,
+    "pts": 7875,
     "racha": "0/0"
    }
   },
@@ -3090,11 +3079,11 @@
    },
    "FFA": {
     "duelos": "3/9",
-    "ev": 13,
+    "ev": 14,
     "oro": 0,
     "ovr": 55,
     "pod": 0,
-    "pts": 36689,
+    "pts": 38564,
     "racha": "0/1"
    },
    "SR": {
@@ -7443,20 +7432,6 @@
     "racha": "0/0"
    }
   },
-  "Sacro presagio 🇦🇷": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 1875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "Saiko": {
    "ACAD": {
     "duelos": "3/4",
@@ -9253,21 +9228,6 @@
     "pod": 0,
     "pts": 18750,
     "racha": "0/0"
-   }
-  },
-  "gianlamaldad": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 1,
-    "ovr": 46,
-    "pod": 1,
-    "pts": 7500,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1,
-     "nuevo": true
-    }
    }
   },
   "gibraltar 🇦🇨": {

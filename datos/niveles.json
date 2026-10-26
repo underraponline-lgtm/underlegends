@@ -20,6 +20,7 @@
    "ligas": true,
    "panel": true,
    "suma": true,
+   "competitivo": true,
    "duelos": true
   },
   "DDF": {
@@ -28,6 +29,7 @@
    "ligas": true,
    "panel": true,
    "suma": true,
+   "competitivo": true,
    "duelos": true
   },
   "DRA": {
@@ -36,6 +38,7 @@
    "ligas": true,
    "panel": true,
    "suma": true,
+   "competitivo": true,
    "duelos": true
   },
   "FDS": {
@@ -43,7 +46,8 @@
    "calendario": true,
    "ligas": true,
    "panel": true,
-   "suma": false,
+   "suma": true,
+   "competitivo": false,
    "duelos": false
   },
   "FFA": {
@@ -52,6 +56,7 @@
    "ligas": true,
    "panel": true,
    "suma": true,
+   "competitivo": true,
    "duelos": true
   },
   "FFS": {
@@ -59,7 +64,8 @@
    "calendario": true,
    "ligas": true,
    "panel": true,
-   "suma": false,
+   "suma": true,
+   "competitivo": false,
    "duelos": false
   },
   "FRZ": {
@@ -68,6 +74,7 @@
    "ligas": true,
    "panel": true,
    "suma": true,
+   "competitivo": true,
    "duelos": true
   },
   "FVS": {
@@ -76,6 +83,7 @@
    "ligas": true,
    "panel": true,
    "suma": true,
+   "competitivo": true,
    "duelos": true
   },
   "LKR": {
@@ -83,7 +91,8 @@
    "calendario": true,
    "ligas": true,
    "panel": true,
-   "suma": false,
+   "suma": true,
+   "competitivo": false,
    "duelos": false
   },
   "SR": {
@@ -92,6 +101,7 @@
    "ligas": true,
    "panel": true,
    "suma": true,
+   "competitivo": true,
    "duelos": true
   },
   "URBF": {
@@ -100,6 +110,7 @@
    "ligas": true,
    "panel": true,
    "suma": true,
+   "competitivo": true,
    "duelos": true
   }
  },

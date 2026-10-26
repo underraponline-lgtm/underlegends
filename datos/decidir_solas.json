@@ -2579,6 +2579,25 @@
      "1525316933786927137"
     ]
    }
+  },
+  {
+   "id": "39e157f0e2",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«Eriz0» es Erizo? La cuenta de Erizo en la Lista se anotó como «Eriz0», y en el ranking suman aparte. Si es la misma persona, los puntos de «Eriz0» pasan a Erizo.\nLa cuenta: https://discord.com/users/1412192367628521502",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no hace falta: «Eriz0» ya no suma aparte en el ranking",
+   "t": 1792990882145,
+   "filas": [
+    855
+   ],
+   "variantes": [
+    "DOS NOMBRES: «Eriz0» → «Erizo» · cuenta 1412192367628521502"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

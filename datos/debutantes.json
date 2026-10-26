@@ -291,7 +291,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-26T01:55:51+00:00",
-   "did": "",
+   "did": "1525316933786927137",
    "evento": "QCYO RAPEEN 3",
    "n": 517,
    "sv": "FFA",
@@ -376,19 +376,6 @@
    "n": 516,
    "sv": "FFA",
    "vence": "2026-11-01T22:13:32+00:00",
-   "vencido": false
-  },
-  "Eriz0": {
-   "avisado": "2026-10-26",
-   "chat": "2026-10-26",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-26T01:55:51+00:00",
-   "did": "",
-   "evento": "QCYO RAPEEN 3",
-   "n": 517,
-   "sv": "FFA",
-   "vence": "2026-11-02T01:55:51+00:00",
    "vencido": false
   },
   "FOTOSÍNTESIS": {
@@ -948,19 +935,6 @@
    "vence": "2026-10-19T22:01:43+00:00",
    "vencido": true
   },
-  "Sacro presagio": {
-   "avisado": "2026-10-26",
-   "chat": "2026-10-26",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-26T01:55:51+00:00",
-   "did": "",
-   "evento": "QCYO RAPEEN 3",
-   "n": 517,
-   "sv": "FFA",
-   "vence": "2026-11-02T01:55:51+00:00",
-   "vencido": false
-  },
   "Scritura": {
    "avisado": "2026-10-12",
    "avisado_cumplido": "2026-10-15",
@@ -1098,19 +1072,6 @@
    "vencido": false
   },
   "dyss": {
-   "avisado": "2026-10-26",
-   "chat": "2026-10-26",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-26T01:55:51+00:00",
-   "did": "",
-   "evento": "QCYO RAPEEN 3",
-   "n": 517,
-   "sv": "FFA",
-   "vence": "2026-11-02T01:55:51+00:00",
-   "vencido": false
-  },
-  "gianlamaldad": {
    "avisado": "2026-10-26",
    "chat": "2026-10-26",
    "con": null,

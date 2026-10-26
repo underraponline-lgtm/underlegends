@@ -147,16 +147,16 @@
 "temporada"
 ]
 },
-"zignos": {
-"rg": "B",
+"abyssus": {
+"rg": "A",
 "c": [
 "competitivo",
 "servidor",
 "temporada"
 ]
 },
-"abyssus": {
-"rg": "A",
+"zignos": {
+"rg": "B",
 "c": [
 "competitivo",
 "servidor",
@@ -654,6 +654,10 @@
 "servidor"
 ]
 },
+"badterne": {
+"rg": "",
+"c": []
+},
 "rt": {
 "rg": "",
 "c": [
@@ -830,10 +834,6 @@
 ]
 },
 "efimero": {
-"rg": "",
-"c": []
-},
-"badterne": {
 "rg": "",
 "c": []
 },

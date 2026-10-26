@@ -678,6 +678,11 @@
      4
     ],
     [
+     "NC",
+     46,
+     2
+    ],
+    [
      "Lizeninn",
      32,
      4
@@ -685,11 +690,6 @@
     [
      "Velatz",
      25,
-     1
-    ],
-    [
-     "NC",
-     22,
      1
     ],
     [
@@ -720,24 +720,24 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 23,
+     "FFA": 29,
      "DDF": 9,
      "ACAD": 3,
      "SR": 4
     },
     "gente": {
-     "FFA": 133,
+     "FFA": 145,
      "ACAD": 53,
      "DDF": 47,
      "SR": 24
     },
-    "gana": "DDF"
+    "gana": "FFA"
    },
    "meta_va": {
     "ACAD": 53,
     "DDF": 47,
     "DRA": 0,
-    "FFA": 133,
+    "FFA": 145,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,

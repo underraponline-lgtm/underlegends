@@ -2907,6 +2907,13 @@
      0,
      0
     ],
+    "Badterne": [
+     0,
+     0,
+     1,
+     0,
+     0
+    ],
     "BastyRetro": [
      0,
      0,
@@ -3082,7 +3089,7 @@
      0,
      0
     ],
-    "Deko 🇦🇷": [
+    "Deko": [
      0,
      0,
      4,
@@ -3229,9 +3236,9 @@
      1,
      0
     ],
-    "Eriz0 🇻🇪": [
+    "Erizo": [
      0,
-     0,
+     1,
      8,
      0,
      0
@@ -3476,7 +3483,7 @@
     ],
     "LEWITO": [
      0,
-     0,
+     1,
      4,
      0,
      0
@@ -3901,13 +3908,6 @@
      0,
      0
     ],
-    "Sacro presagio 🇦🇷": [
-     0,
-     0,
-     16,
-     0,
-     0
-    ],
     "Saiko": [
      0,
      0,
@@ -4174,13 +4174,6 @@
      0,
      0
     ],
-    "gianlamaldad": [
-     0,
-     0,
-     1,
-     0,
-     0
-    ],
     "mats": [
      0,
      0,
@@ -4273,6 +4266,7 @@
     "Aldre": 1000,
     "Andres": 1000,
     "BNA": 1000,
+    "Badterne": 1000,
     "Bloody": 1000,
     "CJ": 1800,
     "Carlos": 1000,
@@ -4325,8 +4319,7 @@
     "Walker": 1800,
     "Xubaru": 1600,
     "YIN-SON 🇺🇸": 1000,
-    "Zekha": 1000,
-    "gianlamaldad": 1000
+    "Zekha": 1000
    }
   }
  },
@@ -4357,7 +4350,7 @@
   "BLITZ": 300,
   "BNA": 5200,
   "BTRX": 300,
-  "Badterne": 300,
+  "Badterne": 1300,
   "BastyRetro": 2900,
   "Benjixo": 2200,
   "Bloody": 2200,
@@ -4577,7 +4570,6 @@
   "dxg": 300,
   "fleivaman": 1300,
   "francis": 900,
-  "gianlamaldad": 1000,
   "ikonoxx": 600,
   "kerkoide": 300,
   "melomaniaco": 300,
