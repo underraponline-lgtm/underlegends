@@ -325,8 +325,6 @@ def _mejor_dim(c):
 
 
 def TAG(c):
-    if c.get('sinjugar'):
-        return ('🎟️ PRIMER EVENTO PENDIENTE', 't4')
     h = c.get('tg_c') or {}
     pos = c.get('pos') or 10 ** 6
     fg, fp = h.get('fg', 0), h.get('fp', 0)
@@ -364,7 +362,8 @@ def TAG(c):
 # El OVR pertenece a la carta de Temporada: cada carta muestra lo que mide.
 def _TAG_ELEGIDO(c):
     # 🏷️ el TAG que eligió de su inventario (Dlx, 25/10/2026); si no eligió, la cascada
-    return _TE.para('competitivo', _K(c.get('raw') or '')) or TAG(c)
+    # 🎟️ y la del dueño «sin jugar», fuera de la cascada como en la Temporada (`normal_v3.py`)
+    return _TE.para('competitivo', _K(c.get('raw') or '')) or (('🎟️ PRIMER EVENTO PENDIENTE', 't4') if c.get('sinjugar') else TAG(c))
 
 def TAG_ABAJO(c):
     if VAR != '2': return ''
