@@ -476,3 +476,36 @@
   .app .pf8-evb{grid-template-columns:44px minmax(0,1fr) 150px 90px;grid-template-areas:"m t b s"}
   .app .emb-panel{grid-template-columns:320px minmax(0,1fr);min-height:560px}
 }
+
+/* 🎒 EL INVENTARIO NUEVO (26/10/2026, Dlx: «organizarlo muchísimo mejor»): la carta que editas a la izquierda, con su marco;
+   a la derecha, TAG · Marco · Principal. En el teléfono, una columna: la carta arriba */
+.iv8{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:22px;align-items:start;padding:6px 0 4px;min-width:0}
+@media (max-width: 760px){.iv8{grid-template-columns:minmax(0,1fr)}}
+.iv8-ver{display:grid;gap:12px;justify-items:center;min-width:0}
+.iv8-cartas,.iv8-pest{display:flex;flex-wrap:wrap;gap:6px;width:100%}
+.iv8-cartas button,.iv8-pest button{flex:1 1 auto;padding:8px 10px;border:1.5px solid #3A3A42;border-radius:4px;background:#121216;color:var(--esc-gris);
+  font:800 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.iv8-cartas button.on,.iv8-pest button.on{background:var(--esc-tinta);border-color:var(--esc-tinta);color:#030304}
+.iv8-cartas button i{margin-left:4px;font-style:normal;color:#F5C542}
+.iv8-carta{width:100%;max-width:260px;display:grid;justify-items:center}
+.iv8-ci{width:100%;height:auto;display:block}
+.iv8-ahora{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;width:100%;margin:0}
+.iv8-ahora div{display:grid;gap:4px;padding:8px;border:1.5px solid #2A2A30;border-radius:4px;min-width:0}
+.iv8-ahora dt{font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--esc-gris)}
+.iv8-ahora dd{margin:0;font:800 13px/1.15 Archivo,sans-serif;color:var(--esc-tinta);overflow-wrap:anywhere}
+.iv8-ed{display:grid;gap:14px;min-width:0}
+.iv8-panel{display:grid;gap:14px;min-width:0}
+.iv8-grupo{display:grid;gap:8px}
+.iv8-grupo h4{display:flex;align-items:baseline;gap:8px;margin:0;font:900 14px/1 Archivo,sans-serif;text-transform:uppercase;color:var(--esc-tinta)}
+.iv8-grupo h4 small{font:700 13px/1 "Barlow Condensed",sans-serif;color:var(--esc-gris)}
+.iv8-busca{width:100%;max-width:340px;padding:9px 11px;border:1.5px solid #3A3A42;border-radius:4px;background:#121216;color:var(--esc-tinta);font:600 14px/1.2 Archivo,sans-serif}
+.iv8-marcos{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.iv8-mk{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:4px 10px;padding:12px;border:1.5px solid #3A3A42;border-radius:4px;
+  background:#121216;color:var(--esc-tinta);font:800 14px/1.1 Archivo,sans-serif;text-align:left;cursor:pointer}
+.iv8-mk small{grid-column:2;font:600 12px/1.2 Archivo,sans-serif;color:var(--esc-gris)}
+.iv8-mk.on{background:var(--esc-tinta);border-color:var(--esc-tinta);color:#030304}
+.iv8-mk.on small{color:#3A3A42}
+.iv8-mk:disabled{cursor:progress;opacity:.7}
+.iv8-sw{width:12px;height:12px;transform:rotate(45deg)}
+.iv8-sw.premium{background:#E41373}.iv8-sw.plata{background:#C9CDD4}.iv8-sw.oro{background:#F5C542}
+@media (hover: hover) and (pointer: fine){.iv8-cartas button:not(.on):hover,.iv8-pest button:not(.on):hover,.iv8-mk:not(.on):hover{border-color:var(--esc-tinta);color:var(--esc-tinta)}}

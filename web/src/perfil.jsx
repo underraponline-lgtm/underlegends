@@ -12,8 +12,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
 import { Bandera, Cara, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, accion, diaET, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
 import { PanelEmblemas, PildoraEmblemas, emblemasDe } from './emblemas.jsx';
-import { TusTags } from './tags_inv.jsx';
-import { TusMarcos } from './pase.jsx';
+import { Inventario } from './tags_inv.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
 import { usePaseDe, usePases } from './pase.js';
@@ -1349,7 +1348,7 @@ function Logros({ liga, p, esYo, dc }) {
       {/* 🏷️ el inventario (25/10/2026): en el tuyo, el TAG de cada carta (`tags_inv.jsx`); en el de otro, lo que eligió se
           ve en sus cartas */}
       {/* 🎒 TODO LO TUYO EN UN LUGAR (Dlx, 26/10/2026): los marcos —estaban en el Pase—, la carta principal y los TAGs */}
-      {pest === 'inv' ? (esYo ? <><TusMarcos liga={liga} dc={dc} /><TusTags /></> : (
+      {pest === 'inv' ? (esYo ? <Inventario liga={liga} dc={dc} /> : (
         <div className="pf8-inv"><span aria-hidden="true">🎒</span><b>Su inventario</b>
           <p>Los TAGs que eligió para sus cartas se ven abajo de cada una. El inventario lo ve cada uno en su perfil.</p></div>
       )) : <>

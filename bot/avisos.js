@@ -2547,6 +2547,8 @@ const RUTAS = {
   '/avisos/vuelve-ciclo': 'GET',
   // 🗳️ los veredictos en tiempo real (`bot/en_llamada.py --seguir`, con su clave): qué canales escuchar y lo que llegó
   '/avisos/veredictos-canales': 'GET',
+  // ⚡ el redibujo a pedido terminó (`bot/redibujo.py`, con su clave)
+  '/avisos/redibujo-listo': 'POST',
   '/avisos/veredictos-vivo': 'POST',
   // 🔁 y avisarle a uno de ésos por su campana, con un texto de la lista (`PLANTILLAS_VUELVE`): ver `avisoVuelve()`
   '/avisos/dueno/vuelve': 'POST',
@@ -4020,6 +4022,10 @@ export function pareceLlave(texto) {
 }
 
 /** El texto con cada `<@id>` como `@Nombre`: Discord manda quién es cada mención. */
+/** ⚡ el freno del redibujo a pedido: uno cada 10 minutos por persona, 6 por día (ver `pedirRedibujo()`) */
+export const REDIBUJO_ESPERA = 10 * 60 * 1000;
+export const REDIBUJO_DIA = 6;
+
 /** 🗳️ La marca de un veredicto borrado en `veredictos_hist`. */
 export const BORRADO = '⟨borrado⟩';
 
@@ -5199,6 +5205,13 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // 🗳️ LOS VEREDICTOS EN TIEMPO REAL (26/10/2026): la conexión de la llamada pide qué canales escuchar y manda cada
   // mensaje, edición y borrado al instante. Con la clave del ciclo
+  if (ruta === '/avisos/redibujo-listo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    const crudo = await req.text();
+    if (crudo.length > 4000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/redibujo-listo', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
+  }
   if (ruta === '/avisos/veredictos-canales' || ruta === '/avisos/veredictos-vivo') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
@@ -5932,6 +5945,9 @@ export class Avisos {
         "estilo TEXT NOT NULL DEFAULT 'camiseta', t INTEGER NOT NULL)");
       // 🃏 la carta que cada uno elige como principal (26/10/2026): ver `cartaPrincipal()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS carta_principal (quien TEXT PRIMARY KEY, carta TEXT NOT NULL, t INTEGER NOT NULL)');
+      // ⚡ el redibujo a pedido (26/10/2026): ver `pedirRedibujo()`
+      this.sql.exec('CREATE TABLE IF NOT EXISTS redibujo (k TEXT PRIMARY KEY, n TEXT NOT NULL, pedido INTEGER NOT NULL, ' +
+        'enviado INTEGER NOT NULL DEFAULT 0, hecho INTEGER NOT NULL DEFAULT 0, dia TEXT NOT NULL DEFAULT \'\', veces INTEGER NOT NULL DEFAULT 0)');
       // 🏷️ EL TAG QUE CADA UNO ELIGE PARA CADA CARTA (Dlx, 25/10/2026: «que los tags de abajo sean personalizables en cada
       // tarjeta… desde el inventario»). `tag` es la clave del catálogo (`sheet/catalogo_tags.py`) o `pase:<título>`. El
       // inventario lo trae el ciclo (`/avisos/tags-ciclo`, en `estado` como `tags_ganados`)
@@ -6432,6 +6448,7 @@ export class Avisos {
       if (ruta === '/dueno-ficha') return json(this.duenoFicha(d));
       if (ruta === '/dueno-nota') return json(this.duenoNota(d));
       if (ruta === '/veredictos-vivo') return json(this.veredictosVivo(d));
+      if (ruta === '/redibujo-listo') return json(this.redibujoListo(d));
       // 🔁 la lista de primerizos y enfriados: sólo la guarda, tal cual, para el Dashboard (nunca sale a la página)
       if (ruta === '/primerizos-ciclo') {
         if (!d || !Array.isArray(d.una) || !Array.isArray(d.frio) || d.una.length > 600 || d.frio.length > 300) return json({ error: 'datos' }, 400);
@@ -6866,6 +6883,8 @@ export class Avisos {
       try { await this.llamada(ahora); } catch (e) {
         this.guardar('llamada', { ...(this.leer('llamada') || {}), error: String(e).slice(0, 160) });
       }
+      // ⚡ y los redibujos a pedido. Nunca frena al vigía: ver `redibujos()`
+      try { await this.redibujos(ahora); } catch (e) { this.guardar('redibujos', { t: ahora, error: String(e).slice(0, 160) }); }
       // 🎤 y a quién le toca. Nunca frena al vigía: ver `turnos()`
       try { await this.turnos(ahora); } catch (e) {
         this.guardar('turnos', { t: ahora, error: String(e).slice(0, 160) });
@@ -12077,8 +12096,10 @@ export class Avisos {
     if (!r) return null;
     // 🃏 y su carta principal, si eligió una: /card abre ahí (`cp`)
     const cp = this.cartasPrincipales()[String(k).slice(2)];
-    if (!cp) return r.v;
-    try { return JSON.stringify(Object.assign(JSON.parse(r.v), { cp })); } catch (e) { return r.v; }
+    // ⚡ y la versión de su último redibujo a pedido: /card la pone en la URL
+    const vr = this.versionesRedibujo()[String(k).slice(2)];
+    if (!cp && !vr) return r.v;
+    try { return JSON.stringify(Object.assign(JSON.parse(r.v), cp ? { cp } : {}, vr ? { vr } : {})); } catch (e) { return r.v; }
   }
 
   /** Varias a la vez, para el ciclo: `{k: v}` de las que están (hasta 200) */
@@ -12874,7 +12895,7 @@ export class Avisos {
       const k = this.claveDe(h.quien);
       if (k) (salon[h.temp] = salon[h.temp] || []).push([k, h.t]);
     }
-    return { t: Date.now(), n: out, cfg, salon, m: this.marcosPublicos(), cp: this.cartasPrincipales() };
+    return { t: Date.now(), n: out, cfg, salon, m: this.marcosPublicos(), cp: this.cartasPrincipales(), vr: this.versionesRedibujo() };
   }
 
   /**
@@ -12981,9 +13002,10 @@ export class Avisos {
   tagElige(d) {
     const quien = String(d.quien || ''), carta = String(d.carta || ''), tag = String(d.tag || '');
     if (!/^[0-9]{5,25}$/.test(quien) || !TAG_CARTAS.includes(carta) || !tag || tag.length > 60) return { error: 'faltan datos' };
+    const antes = (this.sql.exec('SELECT tag FROM tag_elige WHERE quien = ? AND carta = ?', quien, carta).toArray()[0] || {}).tag || 'auto';
     if (tag === 'auto') {
       this.sql.exec('DELETE FROM tag_elige WHERE quien = ? AND carta = ?', quien, carta);
-      return Object.assign({ ok: true }, this.tagsMios(quien));
+      return Object.assign({ ok: true, redibujo: antes !== 'auto' ? this.pedirRedibujo(quien) : null }, this.tagsMios(quien));
     }
     if (tag.startsWith('pase:')) {
       if (!this.titulosDe(quien).includes(tag.slice(5))) return { error: 'no lo tienes' };
@@ -12993,7 +13015,65 @@ export class Avisos {
     }
     this.sql.exec('INSERT INTO tag_elige (quien, carta, tag, t) VALUES (?, ?, ?, ?) ON CONFLICT(quien, carta) DO UPDATE SET ' +
       'tag = excluded.tag, t = excluded.t', quien, carta, tag, Date.now());
-    return Object.assign({ ok: true }, this.tagsMios(quien));
+    return Object.assign({ ok: true, redibujo: antes !== tag ? this.pedirRedibujo(quien) : null }, this.tagsMios(quien));
+  }
+
+  /**
+   * ⚡ EL REDIBUJO A PEDIDO (Dlx, 26/10/2026: «intenta que esos cambios sean casi de inmediato… que tengan cooldown y
+   * filtro para evitar que abusen del sistema»). Un cambio que se ve en la carta (hoy, el TAG) anota un pedido; el vigía
+   * (`redibujos()`) larga `carta.yml` y `bot/redibujo.py` dibuja y sube SÓLO esas cartas. El freno: un redibujo cada
+   * `REDIBUJO_ESPERA` por persona y `REDIBUJO_DIA` por día; pedir de más no suma nada, el pedido es uno solo.
+   * Devuelve `{en: ms hasta que sale}` o `{limite: true}`.
+   */
+  pedirRedibujo(quien) {
+    const k = this.claveDe(quien) || (quien === DUENO ? DUENO_K : '');
+    if (!k) return null;
+    let n = '';
+    try { n = JSON.parse(this.persona('p:' + k) || '{}').n || ''; } catch (e) { n = ''; }
+    if (!n) return null;
+    const ahora = Date.now();
+    const hoy = new Date(ahora).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    const r = this.sql.exec('SELECT hecho, dia, veces FROM redibujo WHERE k = ?', k).toArray()[0];
+    if (r && r.dia === hoy && r.veces >= REDIBUJO_DIA) return { limite: true };
+    this.sql.exec('INSERT INTO redibujo (k, n, pedido) VALUES (?, ?, ?) ON CONFLICT(k) DO UPDATE SET n = excluded.n, ' +
+      'pedido = excluded.pedido', k, n, ahora);
+    return { en: Math.max(0, ((r && r.hecho) || 0) + REDIBUJO_ESPERA - ahora) };
+  }
+
+  /** ⚡ Cada minuto: los pedidos que ya cumplieron su espera, en un solo trabajo (`carta.yml`), si no hay otro andando */
+  async redibujos(ahora) {
+    if (!this.env.GH_TOKEN || !this.env.GH_REPO) return;
+    const xs = this.sql.exec('SELECT k, n, dia, veces FROM redibujo WHERE pedido > enviado AND ? - hecho >= ? ORDER BY pedido LIMIT 10',
+      ahora, REDIBUJO_ESPERA).toArray();
+    if (!xs.length) return;
+    for (const st of ['in_progress', 'queued']) {
+      const r = await this.gh(`/actions/workflows/carta.yml/runs?status=${st}&per_page=1`);
+      if (r.status === 200 && ((await r.json()).total_count || 0) > 0) return;
+    }
+    const r = await this.gh('/actions/workflows/carta.yml/dispatches', { method: 'POST',
+      body: JSON.stringify({ ref: 'main', inputs: { quienes: xs.map((x) => x.n.replace(/,/g, ' ')).join(',') } }) });
+    if (r.status !== 204) { this.guardar('redibujos', { t: ahora, estado: r.status }); return; }
+    const hoy = new Date(ahora).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+    for (const x of xs) {
+      this.sql.exec('UPDATE redibujo SET enviado = ?, dia = ?, veces = ? WHERE k = ?', ahora, hoy, x.dia === hoy ? x.veces + 1 : 1, x.k);
+    }
+    this.guardar('redibujos', { t: ahora, estado: 204, n: xs.length });
+  }
+
+  /** ⚡ `bot/redibujo.py` subió esas cartas: les cambia la versión (`vr`, que /card y la página ponen en la URL) */
+  redibujoListo(d) {
+    const ns = (d && Array.isArray(d.quienes) ? d.quienes : []).slice(0, 10).map(String);
+    const ahora = Date.now();
+    let n = 0;
+    for (const x of ns) n += this.sql.exec('UPDATE redibujo SET hecho = ? WHERE n = ?', ahora, x).rowsWritten || 0;
+    return { ok: true, n };
+  }
+
+  /** ⚡ `{clave: cuándo se redibujó}` de los que pidieron: la versión que va en la URL de sus cartas */
+  versionesRedibujo() {
+    const out = {};
+    try { for (const r of this.sql.exec('SELECT k, hecho FROM redibujo WHERE hecho > 0').toArray()) out[r.k] = r.hecho; } catch (e) { /* nada */ }
+    return out;
   }
 
   /** 👑 los marcos del dueño: los tres de la temporada que corre */

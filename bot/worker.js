@@ -516,7 +516,8 @@ async function quienPidieron(env, i, ops, optUsuario, optNombre) {
 // ⚠️ Y el flag V2 DESACTIVA `content` y `embeds`. Es uno o el otro.
 function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
   const enSv = cual === 'servidor';
-  const v = m && m.sello;
+  // ⚡ y la de su último redibujo a pedido (`vr`): sin esto Discord seguiría mostrando la de antes de su caché
+  const v = m && m.sello ? m.sello + (g && g.vr ? '-' + g.vr : '') : '';
   const svAhora = enSv ? svQueVa(g, sv, aqui, m) : ((g && g.sv) || '');
 
   const componentes = [

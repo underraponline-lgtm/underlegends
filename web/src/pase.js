@@ -47,6 +47,8 @@ export function usePase(activo, fresco) {
 let pases = null, pasesT = 0, pasesP = null;
 /** 🃏 la carta principal que eligió ese perfil, si ya llegaron los datos del Pase (`cp`), o '' */
 export function cartaPrincipalDe(k) { return (pases && pases.cp && pases.cp[k]) || ''; }
+/** ⚡ cuándo se redibujó a pedido (`vr`), para la URL de sus cartas, o 0 */
+export function versionRedibujo(k) { return (pases && pases.vr && pases.vr[k]) || 0; }
 /**
  * Lo público del Pase, cinco minutos en memoria: `{n: {clave: [nivel, título, color]}, cfg: {temp, niveles, umbrales,
  * cola, diarias, por_dia, semanales, temporada, premios}, salon: {temporada: [[clave, ms], …]}}`. Por clave de perfil,

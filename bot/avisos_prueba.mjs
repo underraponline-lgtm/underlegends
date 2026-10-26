@@ -1236,6 +1236,19 @@ const ok = (cond, que, det) => {
       && A.pisaConNada('Gana X', ' . ') && !A.pisaConNada('Gana X', 'Gana Y') && !A.pisaConNada('', '.'),
     'los veredictos en tiempo real: con el nombre de la mención, un «.» no pisa, el borrado queda marcado y nada se pierde',
     JSON.stringify([vf, vh]));
+    // ⚡ el redibujo a pedido (26/10/2026): un pedido por persona, la espera, el tope del día y la versión en /persona
+    o.sql.exec("INSERT OR REPLACE INTO persona (k, v, t) VALUES ('p:dlx', ?, 1)", JSON.stringify({ n: 'DLX', cs: ['temporada'] }));
+    const rd1 = o.pedirRedibujo(A.DUENO);
+    const rd2 = o.pedirRedibujo(A.DUENO);
+    const nrd = o.sql.exec("SELECT COUNT(*) AS n FROM redibujo WHERE k = 'dlx'").toArray()[0].n;
+    o.redibujoListo({ quienes: ['DLX'] });
+    const conVr = JSON.parse(o.persona('p:dlx'));
+    o.sql.exec("UPDATE redibujo SET dia = ?, veces = ? WHERE k = 'dlx'", new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' }), A.REDIBUJO_DIA);
+    const rd3 = o.pedirRedibujo(A.DUENO);
+    ok(rd1 && rd1.en === 0 && rd2 && nrd === 1 && conVr.vr > 0 && o.versionesRedibujo().dlx === conVr.vr && rd3.limite
+      && o.pedirRedibujo('100000099') === null,
+    'el redibujo a pedido: pedir dos veces es un pedido, «listo» le pone la versión a /persona, y con el tope del día no se pide más',
+    JSON.stringify([rd1, rd2, nrd, conVr.vr, rd3]));
     // 🃏 la carta principal (26/10/2026): una de las cuatro o vacía; otra cosa no
     const cp1 = o.cartaPrincipal({ quien: '100000041', carta: 'pais' });
     const cp2 = o.cartaPrincipal({ quien: '100000041', carta: 'trucha' });

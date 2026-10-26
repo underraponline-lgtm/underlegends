@@ -1,7 +1,7 @@
 // La Liga, leída del payload público (`/api/lobby`, el mismo `D` de app.js) y del muro (`/api/muro`).
 // Es la traducción de la clase `Liga` de docs/remake/reales.py, el prototipo que se miró con Dlx: si una regla cambia
 // allá, cambia acá.
-import { cartaPrincipalDe } from './pase.js';
+import { cartaPrincipalDe, versionRedibujo } from './pase.js';
 
 // 🔒 el Discord ID del dueño de la Liga (público: es un ID). Sólo muestra el atajo al Dashboard; quién entra lo decide
 // el servidor (`DUENO` de bot/avisos.js, el mismo número)
@@ -196,7 +196,10 @@ export class Liga {
     if (!f || !(f.c || []).includes(cual)) return null;
     const i = (this.d.cartas || []).indexOf(cual);
     const v = typeof f.cv === 'string' && i >= 0 ? f.cv.split('.')[i] : '';
-    return this.d.r2 + '/' + k + '/' + cual + (chica ? '.chica' : '') + '.webp' + (v ? '?v=' + v : '');
+    // ⚡ con la versión de su redibujo a pedido, si la hay: la imagen nueva y no la del caché
+    const vr = versionRedibujo(k);
+    const q = [v ? 'v=' + v : '', vr ? 'r=' + vr : ''].filter(Boolean).join('&');
+    return this.d.r2 + '/' + k + '/' + cual + (chica ? '.chica' : '') + '.webp' + (q ? '?' + q : '');
   }
   // 🃏 QUÉ CARTA REPRESENTA A CADA UNO, SEGÚN DÓNDE (Dlx, 18/10/2026: «según dónde»). En algo de un servidor —su llave,
   // su página, sus eventos— la de Servidor, si es la de ESE servidor; en lo competitivo (`comp`), la Competitiva; en lo

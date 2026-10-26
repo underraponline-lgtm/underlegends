@@ -1,0 +1,45 @@
+name: carta
+
+# ══════════════════════════════════════════════════════════════════
+# ⚡ EL REDIBUJO A PEDIDO: las cartas de unas pocas personas, ya.
+#
+# Dlx, 26/10/2026: «intenta que esos cambios sean casi de inmediato… que
+# tengan cooldown y filtro para evitar que abusen del sistema». Lo larga
+# el vigía del Worker (`redibujos()` en bot/avisos.js) cuando alguien
+# eligió un TAG nuevo y ya pasó su espera; el freno vive en el objeto.
+# Ver bot/redibujo.py.
+#
+# ⚠️ NO COMMITEA NADA: el sello es del ciclo. Dibuja, sube a R2 y avisa.
+# ⚠️ UNO POR VEZ (`concurrency`): el que llega espera, y junta a todos
+# los que pidieron mientras tanto.
+# ══════════════════════════════════════════════════════════════════
+
+on:
+  workflow_dispatch:
+    inputs:
+      quienes:
+        description: 'Los nombres, separados por coma (hasta 10)'
+        required: true
+
+concurrency:
+  group: carta
+  cancel-in-progress: false
+
+jobs:
+  redibujar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/preparar
+        with:
+          creds_json: ${{ secrets.CREDS_JSON }}
+          env_file: ${{ secrets.ENV_FILE }}
+
+      - name: redibujar
+        env:
+          QUIENES: ${{ github.event.inputs.quienes }}
+        run: python bot/redibujo.py --quienes "$QUIENES"
