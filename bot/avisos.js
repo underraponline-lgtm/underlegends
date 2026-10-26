@@ -6571,10 +6571,10 @@ export class Avisos {
       if (ruta === '/sorteo') return json(this.sorteoDe(/^[0-9]{5,25}$/.test(String(d.quien || '')) ? String(d.quien) : ''));
       if (ruta === '/sorteo-entrar') { const v = this.sorteoEntrar(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/marcos') return json(this.marcosDe(String(d.quien || '')));
-      if (ruta === '/marco-elige') { const v = this.marcoElige(d); return json(v, v.error ? 400 : 200); }
+      if (ruta === '/marco-elige') { const v = this.marcoElige(d); await this.redibujoYa(v); return json(v, v.error ? 400 : 200); }
       if (ruta === '/carta-principal') { const v = this.cartaPrincipal(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/tags-mios') return json(this.tagsMios(String(d.quien || '')));
-      if (ruta === '/tag-elige') { const v = this.tagElige(d); return json(v, v.error ? 400 : 200); }
+      if (ruta === '/tag-elige') { const v = this.tagElige(d); await this.redibujoYa(v); return json(v, v.error ? 400 : 200); }
       if (ruta === '/tags-ciclo') { const v = this.tagsCiclo(d); return json(v, v.error ? 400 : 200); }
       // 🧠 lo que manda el ciclo: las personas de esta corrida (`bot/subir_datos.py`)
       if (ruta === '/personas-ciclo') {
@@ -6786,6 +6786,11 @@ export class Avisos {
     // 👆 los toques juntados en memoria, a la base: una vez por minuto, también de madrugada
     try { this.clicsVolcar(); } catch (e) { this.medir('filas', 'clics-error', 1); }
     try { this.errVolcar(); } catch (e) { this.medir('filas', 'errores-error', 1); }
+    // ⚡ los redibujos a pedido, TAMBIÉN DE MADRUGADA (Dlx, 26/10/2026: «si cualquiera quiere personalizar su tarjeta…
+    // debe ser al o casi al instante… sin importar del vigía»). No avisan a nadie: es la carta que cada uno pidió.
+    // Guardar en el Inventario ya lo larga en el momento (`/tag-elige`, `/marco-elige`); esto recoge lo que quedó
+    // esperando el freno o un trabajo que estaba corriendo
+    try { await this.redibujos(ahora); } catch (e) { this.guardar('redibujos', { t: ahora, error: String(e).slice(0, 160) }); }
     if (d && d.dormido) {
       this.guardar('vigia', { t: ahora, dormido: true, canales: previo.canales, limpio: previo.limpio });
       return { ok: true, dormido: true };
@@ -6887,8 +6892,6 @@ export class Avisos {
       try { await this.llamada(ahora); } catch (e) {
         this.guardar('llamada', { ...(this.leer('llamada') || {}), error: String(e).slice(0, 160) });
       }
-      // ⚡ y los redibujos a pedido. Nunca frena al vigía: ver `redibujos()`
-      try { await this.redibujos(ahora); } catch (e) { this.guardar('redibujos', { t: ahora, error: String(e).slice(0, 160) }); }
       // 🎤 y a quién le toca. Nunca frena al vigía: ver `turnos()`
       try { await this.turnos(ahora); } catch (e) {
         this.guardar('turnos', { t: ahora, error: String(e).slice(0, 160) });
@@ -13044,6 +13047,13 @@ export class Avisos {
     this.sql.exec('INSERT INTO redibujo (k, n, pedido) VALUES (?, ?, ?) ON CONFLICT(k) DO UPDATE SET n = excluded.n, ' +
       'pedido = excluded.pedido', k, n, ahora);
     return { en: Math.max(0, ((r && r.hecho) || 0) + REDIBUJO_ESPERA - ahora) };
+  }
+
+  /** ⚡ Guardar en el Inventario larga el redibujo EN EL MOMENTO, sin esperar la vuelta del vigía (Dlx, 26/10/2026: «al o
+   *  casi al instante»). Con el mismo freno: si todavía no se cumplió la espera, queda anotado y sale cuando se cumpla */
+  async redibujoYa(v) {
+    if (!v || v.error || !v.redibujo || v.redibujo.en > 0) return;
+    try { await this.redibujos(Date.now()); } catch (e) { this.guardar('redibujos', { t: Date.now(), error: String(e).slice(0, 160) }); }
   }
 
   /** ⚡ Cada minuto: los pedidos que ya cumplieron su espera, en un solo trabajo (`carta.yml`), si no hay otro andando */

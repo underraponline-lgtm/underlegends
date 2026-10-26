@@ -168,19 +168,6 @@ function Hombrera({ c, lado }) {
     </Svg>
   );
 }
-function Talon({ c, n }) {
-  return (
-    <>
-      {/* 🎟️ el talón, como el de una entrada numerada: corto y derecho (Dlx, 26/10/2026: «¿qué es eso de la derecha que
-          se ve así aplastado?» — era una tira de 64 % de alto con el texto de costado) */}
-      <Svg cls="mk-tal" vb="0 0 60 90">
-        <rect x="1.5" y="1.5" width="57" height="87" fill="#101012" stroke={c} strokeWidth="3" />
-        <line x1="4" y1="2" x2="4" y2="88" stroke={c} strokeWidth="2" strokeDasharray="3 4" />
-      </Svg>
-      <span className="mk-tal-t"><b>T1</b><small>N.º</small><b>{String(n || 0).padStart(3, '0')}</b></span>
-    </>
-  );
-}
 function Estandarte({ c, nombre }) {
   const largo = Math.min(150, 14 * nombre.length);
   return (
@@ -237,12 +224,14 @@ export function ConMarco({ m, cual, ancho, svColor, cc, children, src }) {
     </span>
   );
   if (cl === 't' && !chica) piezas.push(<i key="a" className="mk-esq a" />, <i key="b" className="mk-esq b" />, <i key="c" className="mk-esq c" />, <i key="d" className="mk-esq d" />);
-  if (cl === 't' && plata && !chica) piezas.push(<Talon key="tal" c={c} n={m[2]} />);
+  // 🎟️ sin talón (Dlx, 26/10/2026: «ahí ya dice T1 y la posición dentro de la tarjeta»): repetía lo que la carta dice
   if (cl === 'c' && !oro) piezas.push(<Galones key="gal" n={plata ? 2 : 1} c={c} />);
   if (cl === 'c' && plata && !chica) piezas.push(<Hombrera key="hi" c={c} lado="iz" />, <Hombrera key="hd" c={c} lado="de" />);
   if (cl === 'p' && plata && !chica && cc) piezas.push(<Estandarte key="est" c={c} nombre={String(PAIS[cc] || cc).toUpperCase()} />);
   if (cl === 's' && estilo === 'camiseta' && plata && !chica) piezas.push(<Brazalete key="bra" c={c} />);
-  if (oro) piezas.push(<Corona key="cor" c={c} />);
+  // 👑 la corona, menos en la Servidor: arriba del escudo va la estrella de los Interserver, y la tapaba (Dlx, 26/10/2026:
+  // «¿por qué quitaste la estrella del servidor? Eso es muy importante»)
+  if (oro && cl !== 's') piezas.push(<Corona key="cor" c={c} />);
   return (
     <span className={'mk mk-' + cl + ' mk-' + tier + (chica ? ' chica' : '')} style={{ '--mk-c': c, fontSize: (ancho / 20) + 'px' }}>
       <svg className="mk-defs" width="0" height="0" aria-hidden="true">

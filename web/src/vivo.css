@@ -3501,8 +3501,6 @@ a.rk-z:hover{border-color:var(--linea)}
 @media (prefers-reduced-motion: reduce){.mk .mk-bri,.mk .mk-des{animation:none !important}.mk .mk-des{opacity:.9}}
 /* la corona en las cuatro, arriba al centro; los galones de la Competitiva */
 .mk .mk-cor{width:6.4em;left:50%;transform:translateX(-50%);bottom:calc(100% + .7em);z-index:3}
-/* 👑 en la Servidor, apoyada sobre el escudo y no flotando arriba (Dlx, 26/10/2026: «la corona en la del servidor no queda») */
-.mk.mk-s .mk-cor{width:5.2em;bottom:calc(100% - 2.3em)}
 .mk .mk-gal{width:3.4em;left:50%;transform:translateX(-50%);bottom:calc(100% + 1.5em)}
 .mk .mk-hom{width:2.9em;top:-3%}
 /* chica (130 a 200 px): la corona y los galones bajan y se apoyan en el borde, para no meterse en lo de arriba */
@@ -3519,12 +3517,6 @@ a.rk-z:hover{border-color:var(--linea)}
 .mk .mk-esq.b{top:-1.2em;right:-1.2em;border-top-width:.3em;border-right-width:.3em}
 .mk .mk-esq.c{bottom:-1.2em;left:-1.2em;border-bottom-width:.3em;border-left-width:.3em}
 .mk .mk-esq.d{bottom:-1.2em;right:-1.2em;border-bottom-width:.3em;border-right-width:.3em}
-/* el talón, pegado al canto: arranca adentro del contorno, así no queda aire entre la carta y el talón */
-.mk .mk-tal{right:-3.9em;top:50%;width:4.2em;height:6.3em;transform:translateY(-50%)}
-.mk .mk-tal-t{position:absolute;right:-3.9em;top:50%;width:4.2em;height:6.3em;transform:translateY(-50%);display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:.15em;padding-left:.3em;color:var(--mk-c);pointer-events:none;text-align:center}
-.mk .mk-tal-t b{font:900 1.35em/1 Archivo,sans-serif;letter-spacing:.02em}
-.mk .mk-tal-t small{font:800 .8em/1 "Barlow Condensed",sans-serif;letter-spacing:.12em}
 /* País: el estandarte, colgando abajo */
 .mk .mk-est{width:21em;left:50%;transform:translateX(-50%);top:calc(100% + 1em)}
 /* Servidor: el brazalete de capitán */
