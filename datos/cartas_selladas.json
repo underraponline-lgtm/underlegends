@@ -1,8 +1,8 @@
 {
  "cartas": {
   ".SosaATR": {
-   "competitivo": "fef55f3c1d1a:fe9366b7d22c",
-   "pais": "2d585226416d:0e7af6f027ad",
+   "competitivo": "7f450b0c7a74:fe9366b7d22c",
+   "pais": "2c6cab39f81b:0e7af6f027ad",
    "servidor": "047956fe1575:adfd7a2cce1e:5bc8b2",
    "temporada": "3b66367514cc:be3f6aea2456"
   },
@@ -843,7 +843,7 @@
   "L": {},
   "LAST": {
    "competitivo": "995155ac3abc:fe9366b7d22c",
-   "pais": "06de6def7f1b:0e7af6f027ad",
+   "pais": "5a59942e345d:0e7af6f027ad",
    "servidor": "08c9c67ac5ab:adfd7a2cce1e:88f477"
   },
   "LEWITO": {
@@ -1371,8 +1371,8 @@
   "Rayden": {},
   "Rayo": {},
   "Rbk": {
-   "competitivo": "dac8a3cd818b:fe9366b7d22c",
-   "pais": "2ec45f1c6a01:0e7af6f027ad",
+   "competitivo": "c14252aecf23:fe9366b7d22c",
+   "pais": "3c1ca3931ed8:0e7af6f027ad",
    "servidor": "93c5b8b3ffe4:adfd7a2cce1e:afeeb3"
   },
   "Redstonita": {},
@@ -1493,8 +1493,8 @@
    "servidor": "a7f2c6559975:adfd7a2cce1e:874d2d"
   },
   "Sin Limites": {
-   "competitivo": "04e09181a0e2:fe9366b7d22c",
-   "pais": "0d2438411a2b:0e7af6f027ad",
+   "competitivo": "4c8b93a4784f:fe9366b7d22c",
+   "pais": "381e4510c456:0e7af6f027ad",
    "servidor": "7d267109dd96:adfd7a2cce1e:25c183",
    "temporada": "68ca0006c601:be3f6aea2456"
   },
@@ -1542,7 +1542,7 @@
   },
   "Soulb": {
    "competitivo": "b96bc9b41c25:fe9366b7d22c",
-   "pais": "771c445d7946:0e7af6f027ad",
+   "pais": "937d87c6ce2a:0e7af6f027ad",
    "servidor": "da204e305483:adfd7a2cce1e:55e9bc",
    "temporada": "7c30e40a9121:be3f6aea2456"
   },
@@ -1640,7 +1640,7 @@
   "Valdoza": {},
   "Vandu": {
    "competitivo": "d5106e0b53df:fe9366b7d22c",
-   "pais": "3e49a1534837:0e7af6f027ad",
+   "pais": "14a389ddc9c9:0e7af6f027ad",
    "servidor": "388c8803f91a:adfd7a2cce1e:25c183",
    "temporada": "d89544aaee63:be3f6aea2456"
   },
@@ -1905,5 +1905,5 @@
    "servidor": "7f8885a35a6d:adfd7a2cce1e:93a344"
   }
  },
- "cuando": "2026-10-26T06:32:53+00:00"
+ "cuando": "2026-10-26T06:39:25+00:00"
 }
