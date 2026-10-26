@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-10-26T02:38:22Z",
+ "cuando": "2026-10-26T03:21:20Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 546.7,
+ "dur_s": 1270.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.8
+   "s": 12.9
   },
   {
    "n": "2f2",
@@ -21,31 +21,31 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.1
+   "s": 8.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 19.8
+   "s": 22.5
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": false,
-   "s": 452.3
+   "s": 1158.5
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 4.7
+   "s": 8.9
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 54.2
+   "s": 57.8
   }
  ],
  "fallas": [
@@ -59,11 +59,39 @@
   },
   {
    "paso": "5",
+   "que": "03_Servidor/generar.py Ezias🥈✒️🧢🐍"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Dyzz"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Krish"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Kravitz"
+  },
+  {
+   "paso": "5",
    "que": "03_Servidor/generar.py NXUZ"
   },
   {
    "paso": "5",
    "que": "03_Servidor/generar.py NXUZ"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Sin Limites"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Sin Limites"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py npk"
   }
  ],
  "ultimo_evento": {
@@ -74,25 +102,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 135,
-   "read": 11224
+   "write": 150,
+   "read": 13032
   },
   "objeto": {
-   "leidas": 537618,
-   "escritas": 5664,
-   "pedidos": 1155
+   "leidas": 635994,
+   "escritas": 6349,
+   "pedidos": 1391
   },
   "worker": {
-   "pedidos": 8788,
+   "pedidos": 8744,
    "errores": 0,
-   "sub": 10750,
+   "sub": 10697,
    "cortados": 0,
    "p50_ms": 1.41,
-   "p99_ms": 11.11,
+   "p99_ms": 11.15,
    "cpu": {
-    "total": 19445,
+    "total": 19371,
     "objeto_10": 1705,
-    "worker_10": 161
+    "worker_10": 162
    }
   },
   "r2": {
