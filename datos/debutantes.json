@@ -168,30 +168,6 @@
    "vence": "2026-10-23T17:34:15+00:00",
    "vencido": true
   },
-  "ChopAntiTrans": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-14T23:10:06+00:00",
-   "did": "",
-   "evento": "GG SANGRERAP 1",
-   "n": 521,
-   "sv": "FDS",
-   "vence": "2026-10-21T23:10:06+00:00",
-   "vencido": true
-  },
-  "ChozaDeChop": {
-   "avisado": "2026-10-26",
-   "chat": "2026-10-26",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-21T02:04:09+00:00",
-   "did": "",
-   "evento": "RAP SIN GROSERIAS 2",
-   "n": 522,
-   "sv": "FDS",
-   "vence": "2026-10-28T02:04:09+00:00",
-   "vencido": false
-  },
   "Chuwin": {
    "avisado": "2026-10-19",
    "chat": "2026-10-19",
@@ -464,18 +440,6 @@
    "n": 479,
    "sv": "ACAD",
    "vence": "2026-10-23T20:31:59+00:00",
-   "vencido": false
-  },
-  "ISMEL": {
-   "avisado": "2026-10-26",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-23T20:44:26+00:00",
-   "did": "",
-   "evento": "WORLD OF FREE",
-   "n": 526,
-   "sv": "LKR",
-   "vence": "2026-10-30T20:44:26+00:00",
    "vencido": false
   },
   "Imagy": {
@@ -787,7 +751,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-25T03:55:52+00:00",
-   "did": "",
+   "did": "1542676805826125926",
    "evento": "Chupame un huevo CUP",
    "n": 528,
    "sv": "LKR",
@@ -853,7 +817,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-22T03:33:52+00:00",
-   "did": "",
+   "did": "1129597963421888593",
    "evento": "GG SANGRERAP 3",
    "n": 524,
    "sv": "FDS",
@@ -1046,25 +1010,12 @@
    "vence": "2026-10-20T23:50:48+00:00",
    "vencido": false
   },
-  "SosaTR": {
-   "avisado": "2026-10-26",
-   "chat": "2026-10-26",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-22T03:33:52+00:00",
-   "did": "",
-   "evento": "GG SANGRERAP 3",
-   "n": 524,
-   "sv": "FDS",
-   "vence": "2026-10-29T03:33:52+00:00",
-   "vencido": false
-  },
   "Terry": {
    "avisado": "2026-10-26",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-25T03:55:52+00:00",
-   "did": "",
+   "did": "1562656457034440835",
    "evento": "Chupame un huevo CUP",
    "n": 528,
    "sv": "LKR",

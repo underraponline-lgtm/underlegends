@@ -2814,6 +2814,44 @@
      "1562656457034440835"
     ]
    }
+  },
+  {
+   "id": "9ce3edd63e",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«ChopAntiTrans» es Chop? La cuenta de Chop en la Lista se anotó como «ChopAntiTrans», y en el ranking suman aparte. Si es la misma persona, los puntos de «ChopAntiTrans» pasan a Chop.\nLa cuenta: https://discord.com/users/1364747464170668042",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no hace falta: «ChopAntiTrans» ya no suma aparte en el ranking",
+   "t": 1792994344217,
+   "filas": [
+    887
+   ],
+   "variantes": [
+    "DOS NOMBRES: «ChopAntiTrans» → «Chop» · cuenta 1364747464170668042"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "208a43459c",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«ChozaDeChop» es Chop? La cuenta de Chop en la Lista se anotó como «ChozaDeChop», y en el ranking suman aparte. Si es la misma persona, los puntos de «ChozaDeChop» pasan a Chop.\nLa cuenta: https://discord.com/users/1364747464170668042",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no hace falta: «ChozaDeChop» ya no suma aparte en el ranking",
+   "t": 1792994344217,
+   "filas": [
+    888
+   ],
+   "variantes": [
+    "DOS NOMBRES: «ChozaDeChop» → «Chop» · cuenta 1364747464170668042"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

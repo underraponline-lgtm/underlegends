@@ -1692,13 +1692,7 @@
      0
     ],
     "Chop": [
-     7,
-     4,
-     4,
-     0
-    ],
-    "ChopAntiTrans🇭🇳": [
-     1,
+     8,
      2,
      2,
      0
@@ -2653,7 +2647,6 @@
     "Carlosss": 600,
     "Catarsis": 900,
     "Chop": 900,
-    "ChopAntiTrans🇭🇳": 600,
     "Cinexfilo": 900,
     "Colesito": 2900,
     "CrisZJ": 900,
@@ -2801,6 +2794,13 @@
     ]
    ],
    "prog": {
+    ".SosaATR": [
+     0,
+     0,
+     4,
+     0,
+     0
+    ],
     "1200": [
      0,
      0,
@@ -3040,13 +3040,6 @@
      0
     ],
     "Chop": [
-     0,
-     0,
-     16,
-     0,
-     0
-    ],
-    "ChozaDeChop🇭🇳": [
      0,
      0,
      4,
@@ -3431,13 +3424,6 @@
      0,
      0
     ],
-    "ISMEL": [
-     0,
-     0,
-     8,
-     0,
-     0
-    ],
     "Ineedrubbers🇮🇱": [
      0,
      0,
@@ -3760,7 +3746,7 @@
      0,
      0
     ],
-    "Mc dl 🇲🇽": [
+    "Mc dl": [
      0,
      0,
      8,
@@ -3872,7 +3858,7 @@
      0,
      0
     ],
-    "Nerick🇵🇪": [
+    "Nerick": [
      0,
      0,
      8,
@@ -4138,13 +4124,6 @@
      0,
      0
     ],
-    "SosaTR 🇺🇾": [
-     0,
-     0,
-     4,
-     0,
-     0
-    ],
     "Soulb": [
      0,
      0,
@@ -4187,7 +4166,7 @@
      0,
      0
     ],
-    "Terry 🇦🇷": [
+    "Terry": [
      0,
      0,
      8,
@@ -4383,7 +4362,7 @@
      0,
      0
     ],
-    "giansito🇵🇪": [
+    "giansito": [
      0,
      0,
      1,
@@ -4557,7 +4536,7 @@
     "Xubaru": 1600,
     "YIN-SON 🇺🇸": 1000,
     "Zekha": 1000,
-    "giansito🇵🇪": 1000,
+    "giansito": 1000,
     "roda mc 🇵🇦": 1000
    }
   }
@@ -4602,7 +4581,6 @@
   "Carlosss": 3800,
   "Catarsis": 900,
   "Chop": 2200,
-  "ChopAntiTrans🇭🇳": 600,
   "Cinexfilo": 900,
   "Colesito": 4800,
   "Corvo": 1000,
@@ -4818,7 +4796,7 @@
   "dxg": 300,
   "fleivaman": 1300,
   "francis": 900,
-  "giansito🇵🇪": 1000,
+  "giansito": 1000,
   "ikonoxx": 600,
   "kerkoide": 300,
   "melomaniaco": 300,

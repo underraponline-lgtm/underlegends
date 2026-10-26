@@ -1486,12 +1486,12 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 4,
-   "dg": 40,
+   "dg": 42,
    "fg": 3,
    "fp": 9,
    "mata": 3,
-   "riv": 63,
-   "venc": 35,
+   "riv": 66,
+   "venc": 37,
    "vengo": 4
   },
   "tg_p": {
@@ -1911,16 +1911,16 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 3,
-   "dg": 13,
+   "dg": 15,
    "fg": 1,
    "fp": 1,
-   "riv": 22,
-   "venc": 12,
+   "riv": 27,
+   "venc": 14,
    "vengo": 1
   },
   "tg_p": {
-   "paises": 7,
-   "paisesg": 6
+   "paises": 8,
+   "paisesg": 7
   }
  },
  {
@@ -2121,17 +2121,17 @@
   "pos_sv": "25/148",
   "arc_sv": 84,
   "tg_c": {
-   "bestia": 1,
-   "clasico": 1,
-   "dg": 6,
+   "bestia": 2,
+   "clasico": 2,
+   "dg": 9,
    "fg": 1,
    "fp": 2,
-   "riv": 9,
-   "venc": 6
+   "riv": 14,
+   "venc": 8
   },
   "tg_p": {
-   "paises": 5,
-   "paisesg": 5
+   "paises": 7,
+   "paisesg": 6
   }
  },
  {
@@ -2230,11 +2230,11 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 8,
+   "dg": 9,
    "fg": 2,
-   "riv": 10,
+   "riv": 12,
    "svtag": "duelista",
-   "venc": 8
+   "venc": 9
   },
   "tg_p": {
    "paises": 7,
@@ -2286,7 +2286,7 @@
    "clasico": 1,
    "dg": 3,
    "fg": 1,
-   "riv": 5,
+   "riv": 6,
    "venc": 3
   },
   "tg_p": {
@@ -2335,14 +2335,14 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 7,
+   "dg": 9,
    "fg": 2,
-   "riv": 10,
-   "venc": 7
+   "riv": 12,
+   "venc": 9
   },
   "tg_p": {
-   "paises": 6,
-   "paisesg": 6
+   "paises": 7,
+   "paisesg": 7
   }
  },
  {
@@ -2489,15 +2489,15 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 3,
-   "dg": 10,
+   "dg": 14,
    "fg": 1,
    "fp": 1,
-   "riv": 15,
-   "venc": 10
+   "riv": 22,
+   "venc": 14
   },
   "tg_p": {
-   "paises": 9,
-   "paisesg": 7
+   "paises": 10,
+   "paisesg": 8
   }
  },
  {
@@ -2902,15 +2902,15 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 8,
+   "dg": 9,
    "fg": 1,
    "fp": 1,
-   "riv": 15,
-   "venc": 8
+   "riv": 17,
+   "venc": 9
   },
   "tg_p": {
    "paises": 5,
-   "paisesg": 3
+   "paisesg": 4
   }
  },
  {
@@ -3218,7 +3218,7 @@
    "clasico": 3,
    "dg": 18,
    "fp": 4,
-   "riv": 28,
+   "riv": 30,
    "venc": 17
   },
   "tg_p": {
@@ -3267,14 +3267,14 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
-   "dg": 5,
+   "dg": 8,
    "fp": 2,
-   "riv": 15,
-   "venc": 5
+   "riv": 21,
+   "venc": 8
   },
   "tg_p": {
-   "paises": 6,
-   "paisesg": 2
+   "paises": 7,
+   "paisesg": 3
   }
  },
  {
@@ -3318,15 +3318,15 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
-   "dg": 7,
+   "dg": 12,
    "fg": 1,
    "mata": 2,
-   "riv": 21,
-   "venc": 7
+   "riv": 28,
+   "venc": 12
   },
   "tg_p": {
-   "paises": 9,
-   "paisesg": 5,
+   "paises": 10,
+   "paisesg": 7,
    "pionero": true
   }
  },
@@ -3974,15 +3974,14 @@
    "bestia": 1,
    "clasico": 1,
    "dg": 4,
-   "fp": 1,
+   "fp": 2,
    "mata": 1,
    "riv": 9,
    "venc": 4
   },
   "tg_p": {
    "paises": 6,
-   "paisesg": 3,
-   "pionero": true
+   "paisesg": 3
   }
  },
  {
@@ -4218,16 +4217,16 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 3,
-   "dg": 5,
+   "dg": 6,
    "fp": 2,
    "mata": 1,
-   "riv": 15,
-   "venc": 5,
+   "riv": 17,
+   "venc": 6,
    "vengo": 1
   },
   "tg_p": {
-   "paises": 10,
-   "paisesg": 3
+   "paises": 12,
+   "paisesg": 4
   }
  },
  {
@@ -4810,11 +4809,15 @@
   "pos_sv": "46/148",
   "arc_sv": 70,
   "tg_c": {
+   "bestia": 1,
    "clasico": 1,
-   "riv": 6
+   "dg": 1,
+   "riv": 8,
+   "venc": 1
   },
   "tg_p": {
-   "paises": 4,
+   "paises": 6,
+   "paisesg": 1,
    "pionero": true
   }
  },
@@ -5631,15 +5634,15 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 5,
+   "dg": 7,
    "fp": 2,
    "mata": 1,
-   "riv": 11,
-   "venc": 5
+   "riv": 16,
+   "venc": 7
   },
   "tg_p": {
-   "paises": 8,
-   "paisesg": 5
+   "paises": 10,
+   "paisesg": 6
   }
  },
  {
@@ -5785,13 +5788,13 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
-   "dg": 3,
-   "riv": 8,
-   "venc": 2
+   "dg": 4,
+   "riv": 10,
+   "venc": 3
   },
   "tg_p": {
-   "paises": 5,
-   "paisesg": 2,
+   "paises": 7,
+   "paisesg": 3,
    "pionero": true
   }
  },
@@ -5835,13 +5838,13 @@
   "arc_sv": 47,
   "tg_c": {
    "bestia": 1,
-   "clasico": 1,
+   "clasico": 2,
    "dg": 3,
-   "riv": 13,
+   "riv": 15,
    "venc": 3
   },
   "tg_p": {
-   "paises": 8,
+   "paises": 9,
    "paisesg": 1
   }
  },
@@ -6077,14 +6080,14 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 3,
+   "dg": 4,
    "mata": 1,
-   "riv": 8,
-   "venc": 3
+   "riv": 11,
+   "venc": 4
   },
   "tg_p": {
-   "paises": 4,
-   "paisesg": 2
+   "paises": 7,
+   "paisesg": 3
   }
  },
  {
@@ -6541,11 +6544,11 @@
    "clasico": 1,
    "dg": 4,
    "mata": 2,
-   "riv": 9,
+   "riv": 10,
    "venc": 4
   },
   "tg_p": {
-   "paises": 4,
+   "paises": 5,
    "paisesg": 2
   }
  },
@@ -6691,14 +6694,14 @@
   "tg_c": {
    "bestia": 3,
    "clasico": 3,
-   "dg": 4,
+   "dg": 6,
    "fp": 1,
-   "riv": 7,
-   "venc": 2
+   "riv": 10,
+   "venc": 4
   },
   "tg_p": {
    "paises": 7,
-   "paisesg": 2
+   "paisesg": 4
   }
  },
  {
@@ -6740,12 +6743,16 @@
   "pos_sv": "58/148",
   "arc_sv": 61,
   "tg_c": {
+   "bestia": 1,
    "clasico": 1,
+   "dg": 3,
    "fg": 1,
-   "riv": 2
+   "riv": 6,
+   "venc": 3
   },
   "tg_p": {
-   "paises": 2
+   "paises": 4,
+   "paisesg": 3
   }
  },
  {
@@ -6989,7 +6996,7 @@
   "arc_sv": 61,
   "tg_c": {
    "bestia": 1,
-   "clasico": 1,
+   "clasico": 2,
    "dg": 1,
    "riv": 8,
    "venc": 1
@@ -7239,15 +7246,16 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 1,
+   "dg": 8,
    "fg": 1,
    "fp": 1,
-   "riv": 5,
-   "venc": 1
+   "mata": 2,
+   "riv": 14,
+   "venc": 8
   },
   "tg_p": {
-   "paises": 3,
-   "paisesg": 1
+   "paises": 5,
+   "paisesg": 4
   }
  },
  {
@@ -7994,11 +8002,11 @@
    "clasico": 1,
    "dg": 1,
    "fp": 1,
-   "riv": 4,
+   "riv": 5,
    "venc": 1
   },
   "tg_p": {
-   "paises": 4,
+   "paises": 5,
    "paisesg": 1
   }
  },
@@ -8387,14 +8395,14 @@
   "tg_c": {
    "bestia": 3,
    "clasico": 3,
-   "dg": 4,
+   "dg": 6,
    "fp": 1,
-   "riv": 7,
-   "venc": 2
+   "riv": 10,
+   "venc": 4
   },
   "tg_p": {
    "paises": 7,
-   "paisesg": 2
+   "paisesg": 4
   }
  },
  {
@@ -9116,11 +9124,15 @@
   "pos_sv": "",
   "arc_sv": 0,
   "tg_c": {
+   "bestia": 1,
    "clasico": 1,
-   "riv": 1
+   "dg": 1,
+   "riv": 5,
+   "venc": 1
   },
   "tg_p": {
-   "paises": 1
+   "paises": 2,
+   "paisesg": 1
   }
  },
  {
@@ -11498,14 +11510,14 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
-   "dg": 2,
+   "dg": 6,
    "fg": 1,
-   "riv": 4,
-   "venc": 2
+   "riv": 8,
+   "venc": 6
   },
   "tg_p": {
-   "paises": 3,
-   "paisesg": 2
+   "paises": 5,
+   "paisesg": 4
   }
  },
  {
@@ -11859,13 +11871,13 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 1,
-   "riv": 3,
-   "venc": 1
+   "dg": 2,
+   "riv": 5,
+   "venc": 2
   },
   "tg_p": {
-   "paises": 3,
-   "paisesg": 1
+   "paises": 5,
+   "paisesg": 2
   }
  },
  {
@@ -12191,10 +12203,10 @@
   "arc_sv": 32,
   "tg_c": {
    "clasico": 2,
-   "riv": 3
+   "riv": 4
   },
   "tg_p": {
-   "paises": 2
+   "paises": 3
   }
  },
  {
@@ -12793,11 +12805,15 @@
   "pos_sv": "14/15",
   "arc_sv": 13,
   "tg_c": {
+   "bestia": 1,
    "clasico": 1,
-   "riv": 1
+   "dg": 1,
+   "riv": 2,
+   "venc": 1
   },
   "tg_p": {
-   "paises": 1
+   "paises": 1,
+   "paisesg": 1
   }
  },
  {
@@ -13122,7 +13138,7 @@
    "bestia": 1,
    "clasico": 1,
    "dg": 1,
-   "riv": 2,
+   "riv": 3,
    "venc": 1
   },
   "tg_p": {
@@ -16017,8 +16033,18 @@
   "pos_sv": "",
   "arc_sv": 0,
   "tg_c": {
+   "bestia": 2,
+   "clasico": 3,
+   "dg": 8,
    "fg": 1,
-   "fp": 2
+   "fp": 2,
+   "riv": 10,
+   "venc": 6,
+   "vengo": 1
+  },
+  "tg_p": {
+   "paises": 5,
+   "paisesg": 4
   }
  },
  {
@@ -16421,11 +16447,15 @@
   "pos_sv": "",
   "arc_sv": 0,
   "tg_c": {
+   "bestia": 1,
    "clasico": 1,
-   "riv": 1
+   "dg": 2,
+   "riv": 7,
+   "venc": 2
   },
   "tg_p": {
-   "paises": 1
+   "paises": 4,
+   "paisesg": 2
   }
  },
  {
@@ -17538,7 +17568,14 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  }
  },
  {
   "full": "Damian",
@@ -18398,11 +18435,14 @@
   "pos_sv": "",
   "arc_sv": 0,
   "tg_c": {
+   "bestia": 1,
    "clasico": 1,
-   "riv": 1
+   "dg": 2,
+   "riv": 4,
+   "venc": 2
   },
   "tg_p": {
-   "paises": 1
+   "paises": 2
   }
  },
  {
@@ -21663,7 +21703,18 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "bestia": 1,
+   "clasico": 1,
+   "dg": 1,
+   "riv": 4,
+   "venc": 1
+  },
+  "tg_p": {
+   "paises": 3,
+   "paisesg": 1
+  }
  },
  {
   "full": "lil",
@@ -21908,7 +21959,14 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  }
  },
  {
   "full": "UDDIZIM",
@@ -23792,7 +23850,18 @@
   "pos_pais": "20/20",
   "arc_pais": 5,
   "pos_sv": "15/16",
-  "arc_sv": 12
+  "arc_sv": 12,
+  "tg_c": {
+   "bestia": 1,
+   "clasico": 1,
+   "dg": 1,
+   "riv": 2,
+   "venc": 1
+  },
+  "tg_p": {
+   "paises": 1,
+   "paisesg": 1
+  }
  },
  {
   "full": "Jeisy",
@@ -23987,7 +24056,18 @@
   "pos_pais": "20/20",
   "arc_pais": 5,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "bestia": 1,
+   "clasico": 3,
+   "dg": 4,
+   "riv": 8,
+   "venc": 4
+  },
+  "tg_p": {
+   "paises": 3,
+   "paisesg": 1
+  }
  },
  {
   "full": "Dev",

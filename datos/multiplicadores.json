@@ -693,6 +693,11 @@
      1
     ],
     [
+     "Cu",
+     16,
+     2
+    ],
+    [
      "d l o z c o r i a",
      8,
      1
@@ -711,28 +716,27 @@
      "Keider",
      8,
      1
-    ],
-    [
-     "Zeta",
-     8,
-     1
     ]
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 29,
+     "FFA": 28,
      "DDF": 9,
-     "ACAD": 3,
-     "SR": 4
+     "ACAD": 2,
+     "SR": 4,
+     "FDS": 6,
+     "LKR": 4
     },
     "gente": {
      "FFA": 145,
      "ACAD": 53,
      "DDF": 47,
      "SR": 24,
-     "URBF": 9
+     "URBF": 9,
+     "FDS": 27,
+     "LKR": 23
     },
-    "gana": "FFA"
+    "gana": "FDS"
    },
    "meta_va": {
     "ACAD": 53,
