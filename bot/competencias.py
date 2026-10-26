@@ -50,8 +50,9 @@ GRUPO = 4
 LIGA = 10
 RAPID = 8
 FORMA = 5
-#: cuántos puntos de fuerza son «10 a 1»
-ESCALA = 25.0
+#: cuántos puntos de fuerza son «10 a 1». Era 25 y daba 98 % a Oasis (80) contra Makmah (38): en el freestyle los
+#: batacazos pasan, así que 50 —el mismo cruce, ~88 %— (26/10/2026)
+ESCALA = 50.0
 #: sin Score competitivo, la fuerza sale del puesto en la Temporada: del primero al último, de PISO_ALTO a PISO_BAJO
 PISO_ALTO, PISO_BAJO = 55.0, 20.0
 LETRAS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -310,11 +311,11 @@ def _self_check():
 
     print('\n══ LAS COMPETENCIAS DE LA SEMANA ══\n')
     fz = {'a': 70, 'b': 40, 'c': 55, 'd': 30}
-    ok(abs(prob(50, 50) - 0.5) < 1e-9 and prob(75, 50) > 0.9, 'la probabilidad: pareja 50 %, 25 puntos de diferencia ~91 %')
+    ok(abs(prob(50, 50) - 0.5) < 1e-9 and 0.75 < prob(75, 50) < 0.77, 'la probabilidad: pareja 50 %, 25 puntos de diferencia ~76 %')
     s1 = simular('a', 'b', 70, 40, 'sem', 'x')
     ok(s1 == simular('a', 'b', 70, 40, 'sem', 'x') and s1[0] in ('a', 'b'), 'simular es repetible: la misma semilla, el mismo resultado')
     gana_a = sum(simular('a', 'b', 70, 40, 'sem', i)[0] == 'a' for i in range(400))
-    ok(330 < gana_a < 395, 'y respeta la probabilidad: el fuerte gana ~94 %% de 400 (%d)' % gana_a)
+    ok(285 < gana_a < 355, 'y respeta la probabilidad: el fuerte gana ~80 %% de 400 (%d)' % gana_a)
     reales = [('b', 'a', '500', '2026-10-20')]
     m = resolver('a', 'b', reales, False, fz, 's')
     ok(m['g'] == 'b' and m['como'] == 'real', 'si se cruzaron en cualquier evento, cuenta lo real (aunque el débil ganara)')
