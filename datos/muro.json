@@ -294,6 +294,10 @@
 "temporada"
 ]
 },
+"chop": {
+"rg": "D",
+"c": []
+},
 "xclusivo": {
 "rg": "C",
 "c": []
@@ -363,10 +367,6 @@
 "rg": "C",
 "c": []
 },
-"chop": {
-"rg": "D",
-"c": []
-},
 "onzass": {
 "rg": "E",
 "c": []
@@ -423,19 +423,19 @@
 "temporada"
 ]
 },
+"soulb": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "player": {
 "rg": "D",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"soulb": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -973,16 +973,16 @@
 "rg": "",
 "c": []
 },
+"giansito": {
+"rg": "",
+"c": []
+},
 "mayeutyk": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
-},
-"giansito": {
-"rg": "",
-"c": []
 },
 "warap": {
 "rg": "",
@@ -1107,6 +1107,12 @@
 "temporada"
 ]
 },
+"rbk": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
 "saiko": {
 "rg": "",
 "c": [
@@ -1156,6 +1162,13 @@
 ]
 },
 "joshema": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"sosaatr": {
 "rg": "",
 "c": [
 "servidor",
@@ -1252,6 +1265,10 @@
 "rg": "",
 "c": []
 },
+"julix-bo": {
+"rg": "",
+"c": []
+},
 "betelguese": {
 "rg": "",
 "c": []
@@ -1262,10 +1279,6 @@
 "servidor",
 "temporada"
 ]
-},
-"julix-bo": {
-"rg": "",
-"c": []
 },
 "ed": {
 "rg": "",
@@ -1278,12 +1291,6 @@
 "senticide": {
 "rg": "",
 "c": []
-},
-"rbk": {
-"rg": "",
-"c": [
-"servidor"
-]
 },
 "maukc": {
 "rg": "",
@@ -1337,13 +1344,6 @@
 "fandabel": {
 "rg": "",
 "c": []
-},
-"sosaatr": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "reyexxmc": {
 "rg": "",
