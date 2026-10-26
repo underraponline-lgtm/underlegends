@@ -3526,3 +3526,16 @@ a.rk-z:hover{border-color:var(--linea)}
 .mk .mk-est{width:21em;left:50%;transform:translateX(-50%);top:calc(100% + 1em)}
 /* Servidor: el brazalete de capitán */
 .mk .mk-bra{width:7em;left:-2.6em;top:50%;transform:rotate(-6deg);z-index:3}
+
+/* 🏆 la semana en el Inicio (26/10/2026): `semana_comp.jsx` */
+.sc8{display:grid;gap:12px}
+.sc8-dias{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;max-width:360px}
+.sc8-dias i{height:6px;background:var(--suave)}
+.sc8-dias i.ya{background:var(--tinta)}
+.sc8-dias i.hoy{background:var(--magenta)}
+.sc8-cajas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none}
+@media (max-width: 560px){.sc8-cajas{grid-template-columns:minmax(0,1fr)}}
+.sc8-cajas li{display:grid;gap:6px;padding:14px;border:1.5px solid var(--suave);border-radius:4px;background:var(--caja);min-width:0}
+.sc8-cajas span{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:var(--magenta-tx)}
+.sc8-cajas b{font:900 24px/1 Archivo,sans-serif;overflow-wrap:anywhere}
+.sc8-cajas small{font:600 13px/1.3 Archivo,sans-serif;color:var(--gris)}

@@ -2958,6 +2958,37 @@ def _rachas(gente, tope=8):
 CLAVE_TAGS = 'web:tags'
 #: 📈 la KV de las semanas de cada uno (`/api/semanas`), aparte del lobby
 CLAVE_SEMANAS = 'web:semanas'
+#: 🏆 las competencias de la semana (`bot/competencias.py`), aparte del lobby: las pide la página (Competencias y el Inicio)
+CLAVE_COMPETENCIAS = 'web:competencias'
+
+
+def _competencias_web(pool=None):
+    """🏆 `datos/competencias.json` para la página, con la clave de perfil de cada uno en vez del nombre normalizado
+    (así la página marca «tú» y abre perfiles). Lo de quien no está en el pool queda con su nombre. `None` sin datos."""
+    c = _json('datos', 'competencias.json')
+    if not c:
+        return None
+    _sh = os.path.join(BASE, 'sheet')
+    if _sh not in sys.path:
+        sys.path.append(_sh)
+    import construir_padron as _PAD
+    pool = pool if pool is not None else (_json('datos', 'temporada_pool.json') or [])
+    kde = {_PAD.norm(p.get('raw') or ''): _clave(p) for p in pool if p.get('raw')}
+    K = lambda x: kde.get(x, x)                          # noqa: E731
+    nombres = {K(k): v for k, v in (c.get('nombres') or {}).items()}
+    par = lambda m: [K(m['a']), K(m['b']), K(m['g']) if m.get('g') else '', m.get('como') or '', m.get('p') or 0]  # noqa: E731
+    L = c.get('liga') or {}
+    R = c.get('rapid') or None
+    return {
+        'sem': c.get('sem'), 'ini': c.get('ini'), 'fin': c.get('fin'), 'dia': c.get('dia'), 'activos': c.get('activos'),
+        'copa': [{'id': g['id'], 'div': g['div'], 't': [[K(x[0])] + list(x[1:]) for x in g['tabla']],
+                  'p': [par(m) for m in g['partidos']]} for g in c.get('copa') or []],
+        'liga': {'t': [[K(x[0])] + list(x[1:]) for x in L.get('tabla') or []], 'falta': L.get('falta') or 0,
+                 'j': [{'n': j['n'], 'p': [par(m) for m in j['partidos']]} for j in L.get('jornadas') or []]},
+        'rapid': {'dia': R['dia'], 'campeon': K(R['campeon']),
+                  'r': [{'r': r['r'], 'p': [par(m) for m in r['partidos']]} for r in R['rondas']]} if R else None,
+        'n': nombres,
+    }
 
 
 def _semanas_de(gente):
@@ -4214,6 +4245,15 @@ def main():
         okt = subir({'de': tags_det}, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_TAGS)
         print('   %s' % ('✓ los TAGs de cada uno: igual' if okt is None else '✅ los TAGs de cada uno, subidos'
                          if okt else '🔴 no pude subir los TAGs de cada uno'))
+    # 🏆 LAS COMPETENCIAS DE LA SEMANA, aparte del lobby: cambian con cada evento y cada cierre de semana
+    try:
+        _cw = _competencias_web()
+        if _cw:
+            okc = subir(_cw, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_COMPETENCIAS)
+            print('   %s' % ('✓ las competencias: igual' if okc is None else '✅ las competencias, subidas'
+                             if okc else '🔴 no pude subir las competencias'))
+    except Exception as e:                               # noqa: BLE001
+        print('   🔴 las competencias: %s' % str(e)[:80])
     # 📈 LAS SEMANAS DE CADA UNO, aparte del lobby (`_semanas_de()`): cambian con cada evento, como el lobby
     if sem_det:
         oks = subir(sem_det, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_SEMANAS)

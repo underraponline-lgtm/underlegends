@@ -7,7 +7,7 @@ import { Miniatura, abrirVideo } from './video.jsx';
 import { useRacha } from './racha.js';
 
 export const MENU = [
-  ['Inicio', '#/'], ['Eventos', '#/eventos'], ['Ranking', '#/ranking'], ['Pase rapero', '#/pase'],
+  ['Inicio', '#/'], ['Eventos', '#/eventos'], ['Ranking', '#/ranking'], ['Competencias', '#/competencias'], ['Pase rapero', '#/pase'],
   ['Ligas', '#/ligas'], ['Crews', '#/crews'], ['Tarjetas', '#/tarjetas'], ['Salón de la fama', '#/salon'], ['Publicaciones', '#/publicaciones'], ['Tienda', '#/tienda'], ['Socios', '#/socios'], ['Guía', '#/guia'],
 ];
 // «Socios» es lo que era «Mundo» (Dlx, 03/10/2026: «1. A»); `#/mundo` sigue abriéndolo (App.jsx). «Ligas», al lado de
@@ -20,7 +20,7 @@ export const MENU = [
 // el menú ☰ debajo del nombre, y arriba en la compu al pasar el mouse
 export const QUE_ES = {
   '#/': 'Lo que pasa ahora en la Liga', '#/eventos': 'Cuándo se juega, y la campana para enterarte',
-  '#/ranking': 'Las tablas de la temporada', '#/publicaciones': 'Campeones, rangos nuevos y anuncios',
+  '#/ranking': 'Las tablas de la temporada', '#/competencias': 'La Copa, la Liga de 10 y la Rapid de la semana', '#/publicaciones': 'Campeones, rangos nuevos y anuncios',
   '#/tarjetas': 'Las tarjetas de cada rapero', '#/ligas': 'Las ligas de los servidores, con su tabla',
   '#/crews': 'Arma tu crew o súmate a una, con su tier',
   '#/salon': 'Los campeones, los récords y lo más difícil de la Liga',

@@ -4402,9 +4402,12 @@ export default {
       // 🏛️ Y EL SALÓN DE LA FAMA (16/10/2026): los MES AWARDS —qué se vota, cómo va el mes y los ganadores—, al abrir
       // el Salón (`bot/mes_awards.py`)
       // 🏷️ Y LOS TAGS DE CADA UNO (19/10/2026), al abrir la Guía (`sheet/catalogo_tags.py`)
-      if (ruta === '/perfiles' || ruta === '/llaves' || ruta === '/muro' || ruta === '/ligas' || ruta === '/salon' || ruta === '/tags' || ruta === '/semanas') {
+      // 🏆 Y LAS COMPETENCIAS DE LA SEMANA (26/10/2026): la Copa, la Liga de 10 y la Rapid (`bot/competencias.py`)
+      if (ruta === '/perfiles' || ruta === '/llaves' || ruta === '/muro' || ruta === '/ligas' || ruta === '/salon' || ruta === '/tags' || ruta === '/semanas'
+        || ruta === '/competencias') {
         const crudo = await env.KV.get(ruta === '/llaves' ? 'web:llaves' : ruta === '/muro' ? 'web:muro'
-          : ruta === '/ligas' ? 'web:ligas' : ruta === '/salon' ? 'web:salon' : ruta === '/tags' ? 'web:tags' : ruta === '/semanas' ? 'web:semanas' : 'web:perfiles');
+          : ruta === '/ligas' ? 'web:ligas' : ruta === '/salon' ? 'web:salon' : ruta === '/tags' ? 'web:tags' : ruta === '/semanas' ? 'web:semanas'
+            : ruta === '/competencias' ? 'web:competencias' : 'web:perfiles');
         return new Response(crudo || '{}', {
           status: crudo ? 200 : 404,
           headers: {

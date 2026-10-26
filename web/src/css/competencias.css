@@ -1,0 +1,54 @@
+/* 🏆 LA PÁGINA DE COMPETENCIAS (26/10/2026): plana, una tinta, radios de 4 */
+.cmp{display:grid;gap:0}
+.cmp-cab{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,520px);gap:24px;align-items:center}
+@media (max-width: 860px){.cmp-cab{grid-template-columns:minmax(0,1fr)}}
+.cmp-cab-t{display:grid;gap:10px}
+.cmp-cab-t > span{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:var(--gris)}
+.cmp-cab-t h1{font:900 40px/1 Archivo,sans-serif}
+.cmp-cab-t h1 small{font-size:.6em;color:var(--gris)}
+.cmp-cab-t p{max-width:62ch;color:var(--gris);font-size:14.5px}
+.cmp-cab-t p b{color:var(--tinta)}
+.cmp-dias{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;max-width:360px}
+.cmp-dias i{height:8px;background:var(--suave)}
+.cmp-dias i.ya{background:var(--tinta)}
+.cmp-dias i.hoy{background:var(--magenta)}
+.cmp-voy{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0;padding:0;list-style:none}
+@media (max-width: 480px){.cmp-voy{grid-template-columns:minmax(0,1fr)}}
+.cmp-voy li{display:grid;gap:6px;padding:14px;border:1.5px solid var(--suave);border-radius:4px;background:var(--caja);min-width:0}
+.cmp-voy span{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:var(--magenta-tx)}
+.cmp-voy b{font:900 26px/1 Archivo,sans-serif;overflow-wrap:anywhere}
+.cmp-voy small{font:600 13px/1.3 Archivo,sans-serif;color:var(--gris)}
+.cmp-busca{width:100%;max-width:380px;margin:16px 0 12px;padding:10px 12px;border:1.5px solid var(--suave);border-radius:4px;background:var(--fondo);color:var(--tinta);font:600 15px/1.2 Archivo,sans-serif}
+.cmp-grupos{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.cmp-grupo{display:grid;gap:10px;padding:14px;border:1.5px solid var(--suave);border-radius:4px;min-width:0}
+.cmp-grupo.tuyo{border-color:var(--tinta);margin-bottom:4px}
+.cmp-grupo header{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.cmp-grupo header b{font:900 16px/1 Archivo,sans-serif;text-transform:uppercase}
+.cmp-grupo header small,.cmp h3{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--gris)}
+.cmp table{width:100%;border-collapse:collapse;font:700 14px/1.2 Archivo,sans-serif;font-variant-numeric:tabular-nums}
+.cmp th{padding:4px 0;font:700 11.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--gris);text-align:center}
+.cmp th:nth-child(2),.cmp td:nth-child(2){text-align:left}
+.cmp td{padding:7px 0;border-top:1px solid var(--suave);text-align:center}
+.cmp td:nth-child(2){max-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:6px}
+.cmp tr.yo td{background:var(--inv);color:var(--inv-tinta)}
+.cmp tr.yo td:first-child{padding-left:6px}
+.cmp a:hover{text-decoration:underline}
+.cmp-yo{font-weight:900}
+.cmp-cruces{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.cmp-cruce{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) 44px;gap:8px;align-items:center;padding:8px 10px;border:1.5px solid var(--suave);border-radius:4px;font:700 14px/1.2 Archivo,sans-serif}
+.cmp-cruce > span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--gris)}
+.cmp-cruce > span:nth-child(3){text-align:right}
+.cmp-cruce.pend > span{color:var(--tinta)}
+.cmp-cruce > span.gana{color:var(--tinta);font-weight:900}
+.cmp-cruce small{font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;color:var(--gris)}
+.cmp-cruce.real small{color:var(--verde)}
+.cmp-cruce b{text-align:right;color:var(--gris);font-variant-numeric:tabular-nums}
+.cmp-liga{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width: 860px){.cmp-liga{grid-template-columns:minmax(0,1fr)}}
+.cmp-liga h3,.cmp-rapid h3{margin-bottom:8px}
+.cmp-rapid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:center}
+@media (max-width: 860px){.cmp-rapid{grid-template-columns:minmax(0,1fr)}}
+.cmp-camp{display:grid;gap:6px;padding:16px;border:1.5px solid var(--tinta);border-radius:4px}
+.cmp-camp small{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:var(--magenta-tx)}
+.cmp-camp b{font:900 26px/1 Archivo,sans-serif;overflow-wrap:anywhere}
+.cmp-nada{color:var(--gris)}
