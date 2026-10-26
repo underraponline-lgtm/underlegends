@@ -319,7 +319,7 @@ function CopaRapid({ liga, C, yo, donde }) {
     <section className="cm9-dos cm9-dos-br" aria-label="La Copa y la Rapid">
       {g ? (
         <article className="cm9-card">
-          <header className="mag"><h3>🏆 COPA</h3><small>{ec ? 'Tu llave · ' + estado(ec) : 'Llave ' + g.id + ' · ' + DIVISIONES[g.div]}</small></header>
+          <header className="mag"><h3>🏆 COPA</h3><small>{ec ? 'Tu llave · ' + estado(ec) : 'Llave ' + g.id + ' · ' + ((liga.d.div && liga.d.div.m === 'elo' && liga.d.div.n) || DIVISIONES)[g.div]}</small></header>
           {ec ? <TuLlave liga={liga} C={C} e={ec} yo={yo} />
             : <p>Una llave de 16 cada lunes, con gente de tu división: octavos, cuartos, semis y final, una ronda cada dos días. Esta semana no estás en ninguna: entras jugando un evento.</p>}
           <Llave liga={liga} C={C} r={g} yo={yo} />

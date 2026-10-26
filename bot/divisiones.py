@@ -42,6 +42,11 @@ Desde `CORTE_ELO`:
   Con tramos fijos, alguien parado justo en un corte podía bajar y subir cada semana y cobrar 500 cada dos; con los
   grupos de 30 eso pedía terminar entre los cinco primeros.
 - **La tabla de cada división es una sola**, todos los que están en ella ordenados por ELO: ya no hay grupos de 30.
+- 💎 **Como Brawl Stars Ranked** (Dlx, 26/10/2026: subniveles, +/− por batalla, premio de fin de temporada y nombres
+  «de piedras»): las seis se llaman `PIEDRAS` (Hierro a Mítico) y cada una tiene tres subniveles I · II · III
+  (`subnivel()`). Cada escalón nuevo paga una vez: una piedra nueva `PREMIO`, un subnivel `PREMIO_SUB`. La primera
+  colocación de cada uno —la reubicación del corte, o salir de provisional— no paga. `mejor` guarda el escalón más
+  alto de la temporada: es lo que va a pagar el premio de fin de temporada (Puntos de Tienda + insignia, ⏳ al 31/12).
 """
 import datetime as dt
 import io
@@ -69,6 +74,14 @@ CORTE_ELO = '2026-11-02'
 #: el ELO mínimo de Primera, Segunda, Tercera, Cuarta y Quinta; menos que el último, Sexta. Medidos el 26/10/2026 sobre
 #: los 131 con 5 batallas o más: 6 · 7 · 24 · 33 · 46, y 15 en Sexta
 TRAMOS = (1150, 1100, 1050, 1000, 950)
+#: 💎 con el ELO las seis se llaman como piedras, de arriba abajo (Dlx, 26/10/2026, a «como Brawl Stars Ranked»: «de
+#: piedras»). Oro, Plata y Bronce no: son los niveles de las ligas de Competencias. El color es el de su insignia
+PIEDRAS = ('Mítico', 'Diamante', 'Rubí', 'Zafiro', 'Jade', 'Hierro')
+COLOR_PIEDRA = ('#B07CFF', '#56C8F0', '#D7263D', '#2F6FDB', '#2FAE7A', '#8A8F98')
+#: cada piedra en tres subniveles, I · II · III de abajo arriba como en Brawl: tercios del tramo de 50
+SUBS = ('I', 'II', 'III')
+#: llegar por primera vez a un subnivel (Jade I → Jade II) paga esto; a una piedra nueva, `PREMIO` (Dlx: «sí, un poco»)
+PREMIO_SUB = 150
 
 SALIDA = os.path.join(BASE, 'datos', 'divisiones.json')
 
@@ -141,6 +154,19 @@ def tramo(elo):
     return ENTRADA
 
 
+def subnivel(elo, d=None):
+    """0, 1 o 2 (I, II, III): en qué tercio del tramo de su división está un ELO. Sexta, que no tiene piso, se mide
+    desde 50 abajo de Quinta; Primera, que no tiene techo, sigue de a tercios y se queda en III."""
+    d = tramo(elo) if d is None else d
+    piso = TRAMOS[d] if d < len(TRAMOS) else TRAMOS[-1] - 50
+    return max(0, min(2, int((elo - piso) // (50 / 3.0))))
+
+
+def escalon(d, s=0):
+    """El escalón de la escalera entera, de 0 (Hierro I) a 17 (Mítico III): para saber qué es «llegar por primera vez»."""
+    return (ENTRADA - d) * 3 + s
+
+
 def calcular(semanas, actual, elo_al=None, raw_de=None):
     """Recorre las semanas cerradas en orden y arma la de ahora.
 
@@ -152,13 +178,13 @@ def calcular(semanas, actual, elo_al=None, raw_de=None):
     📈 Desde `CORTE_ELO`, `elo_al(semana)` da el ELO al CIERRE de esa semana (`{norm: {'elo', 'n'}}`; `None` = ahora,
     para la tabla en vivo) y `raw_de` pasa de esa clave al nombre de las filas. Ver `_semana_elo()`.
     """
-    nivel, subidas, ult, mejor = {}, [], None, {}
+    nivel, subidas, ult, mejor, subs = {}, [], None, {}, []
     cerradas = sorted(s for s in semanas if s < actual)
     if elo_al is not None:
         cerradas = sorted(set(cerradas) | {s for s in _lunes_desde(CORTE_ELO, actual)})
     for sem in cerradas:
         if elo_al is not None and sem >= CORTE_ELO:
-            ult = _semana_elo(sem, elo_al(sem), raw_de or {}, nivel, mejor, subidas, pagar=sem != CORTE_ELO)
+            ult = _semana_elo(sem, elo_al(sem), raw_de or {}, nivel, mejor, subidas, subs, pagar=sem != CORTE_ELO)
             continue
         gente = semanas.get(sem) or {}
         mov = {}
@@ -184,10 +210,11 @@ def calcular(semanas, actual, elo_al=None, raw_de=None):
             if q in sube:
                 subidas.append([sem, q, d])
         for q, d in nivel.items():
-            mejor[q] = min(d, mejor.get(q, ENTRADA))
+            mejor[q] = max(escalon(d), mejor.get(q, 0))
         ult = {'sem': sem, 'sube': sorted(sube), 'baja': sorted(baja)}
     if elo_al is not None and actual >= CORTE_ELO:
-        return {'nivel': nivel, 'divs': _tablas_elo(elo_al(None), raw_de or {}, nivel), 'ult': ult, 'subidas': subidas}
+        return {'nivel': nivel, 'divs': _tablas_elo(elo_al(None), raw_de or {}, nivel), 'ult': ult, 'subidas': subidas,
+                'subs': subs, 'mejor': mejor}
     gente = semanas.get(actual) or {}
     divs = [[] for _ in NOMBRES]
     for d, gs in sorted(_grupos(gente, nivel).items()):
@@ -210,13 +237,17 @@ def _lunes_desde(desde, hasta):
     return out
 
 
-def _semana_elo(sem, elos, raw_de, nivel, mejor, subidas, pagar=True):
+def _semana_elo(sem, elos, raw_de, nivel, mejor, subidas, subs, pagar=True):
     """📈 Cierra una semana por ELO: cada uno al tramo de su ELO —salvo los provisionales, que se quedan—, y anota
     como subida (que paga) sólo la primera vez que alguien llega a una división en la temporada.
 
     ⚠️ LA PRIMERA SEMANA POR ELO NO PAGA (`pagar=False`): es una reubicación, no una subida. Medido el 26/10/2026, con
     el ELO de ese día, cobrarían 75 personas a la vez —37.500 Puntos de Tienda— sólo por cambiar la regla. Cuenta igual
-    para `mejor`: quien quedó en Tercera cobra recién al llegar a Segunda."""
+    para `mejor`: quien quedó en Tercera cobra recién al llegar a Segunda.
+
+    💎 `mejor` es el ESCALÓN más alto (`escalon()`, de Hierro I a Mítico III). Cada escalón nuevo paga una vez: si es
+    el I de una piedra va a `subidas` (`PREMIO`, y la insignia de ascenso); si es II o III, a `subs` (`PREMIO_SUB`).
+    Saltar varios de una paga todos los del medio, como subir de a uno; la primera colocación no paga."""
     import elo as EL
     sube, baja = [], []
     for k, e in sorted(elos.items()):
@@ -225,21 +256,27 @@ def _semana_elo(sem, elos, raw_de, nivel, mejor, subidas, pagar=True):
             continue
         antes = nivel.get(q, ENTRADA)
         d = tramo(e['elo'])
+        nuevo = escalon(d, subnivel(e['elo'], d))
         nivel[q] = d
         if d < antes:
             sube.append(q)
-            if pagar and d < mejor.get(q, ENTRADA):
-                subidas.append([sem, q, d])
         elif d > antes:
             baja.append(q)
-        mejor[q] = min(d, mejor.get(q, ENTRADA))
+        # la primera vez que alguien queda ubicado (sale de provisional, o entra) es una COLOCACIÓN y no paga, igual que
+        # la reubicación: si no, quien entra fuerte cobraría de golpe todos los escalones desde Hierro I
+        if pagar and q in mejor:
+            for x in range(mejor.get(q, 0) + 1, nuevo + 1):
+                xd, xs = ENTRADA - x // 3, x % 3
+                (subidas if xs == 0 else subs).append([sem, q, xd] if xs == 0 else [sem, q, xd, xs])
+        mejor[q] = max(nuevo, mejor.get(q, 0))
     return {'sem': sem, 'sube': sorted(sube), 'baja': sorted(baja)}
 
 
 def _tablas_elo(elos, raw_de, nivel):
     """📈 Las tablas de ahora: una por división, con todos los que están en ella por ELO en vivo. Cada fila es
-    `[rapero, elo, batallas, división si cerrara ahora]`; la última es para «subirías» / «bajarías», y para un
-    provisional es la suya (no se mueve)."""
+    `[rapero, elo, batallas, división si cerrara ahora, subnivel, últimas]`: la división de si cerrara es para
+    «subirías» / «bajarías» (un provisional no se mueve), y `últimas` son sus `elo.ULTIMAS` batallas con su +/−
+    (`[cuánto, rival]`, la más nueva primero)."""
     import elo as EL
     divs = [[] for _ in NOMBRES]
     filas = {}
@@ -249,7 +286,8 @@ def _tablas_elo(elos, raw_de, nivel):
             continue
         d = nivel.get(q, ENTRADA)
         a = tramo(e['elo']) if e['n'] >= EL.PROVISIONAL else d
-        filas.setdefault(d, []).append([q, e['elo'], e['n'], a])
+        h = [[x[0], raw_de.get(x[1], x[1])] for x in e.get('h') or []]
+        filas.setdefault(d, []).append([q, e['elo'], e['n'], a, subnivel(e['elo'], a), h])
     for d, xs in filas.items():
         divs[d] = [sorted(xs, key=lambda f: (-f[1], -f[2], f[0]))]
     return divs
@@ -277,7 +315,8 @@ def correr(filas, ahora=None, aplicar=False):
            'divs': c['divs'], 'ult': c['ult'], 'subidas': c['subidas'], 'nivel': c['nivel']}
     if elo_al is not None:
         import elo as EL
-        out.update(modo='elo', tramos=list(TRAMOS), prov=EL.PROVISIONAL)
+        out.update(modo='elo', tramos=list(TRAMOS), prov=EL.PROVISIONAL, nombres=list(PIEDRAS), colores=list(COLOR_PIEDRA),
+                   premio_sub=PREMIO_SUB, subs=c.get('subs') or [], mejor=c.get('mejor') or {})
     if aplicar:
         with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(out, f, ensure_ascii=False, indent=1, sort_keys=True)
@@ -338,6 +377,17 @@ def tienda(d, dids):
             continue
         fin = MU.periodo(ini)[2]
         out['%s:%s' % (sem, quien)] = [did, PREMIO, int(fin.timestamp() * 1000)]
+    # 💎 los subniveles (II y III de cada piedra), cada uno una vez
+    for sem, quien, div, s in (d or {}).get('subs') or []:
+        did = dids.get(quien)
+        if not did or not PREMIO_SUB:
+            continue
+        try:
+            ini = dt.datetime.fromisoformat(sem).replace(hour=17, tzinfo=dt.timezone.utc)
+        except ValueError:
+            continue
+        fin = MU.periodo(ini)[2]
+        out['%s:%s:%d%d' % (sem, quien, div, s)] = [did, PREMIO_SUB, int(fin.timestamp() * 1000)]
     return out
 
 
@@ -354,7 +404,8 @@ def para_web(d):
     out = {'sem': d.get('sem'), 'fin': d.get('fin'), 'n': d.get('nombres') or list(NOMBRES), 'z': d.get('zona', ZONA),
            'p': d.get('premio', PREMIO), 'd': d.get('divs'), 'u': d.get('ult'), 'v': d.get('nivel') or {}}
     if d.get('modo') == 'elo':
-        out.update(m='elo', t=d.get('tramos') or list(TRAMOS), pv=d.get('prov'))
+        out.update(m='elo', t=d.get('tramos') or list(TRAMOS), pv=d.get('prov'), c=d.get('colores') or list(COLOR_PIEDRA),
+                   ps=d.get('premio_sub', PREMIO_SUB))
     return out
 
 
@@ -422,14 +473,22 @@ def _self_check():
     ce = calcular({'2026-10-26': {}}, '2026-11-23', ELOS.get, raw)
     ok(ce['nivel'] == {'A': 0, 'B': 1, 'C': 0}, 'cada uno en el tramo de su ELO al último cierre')
     pagas = [(x[0], x[1], x[2]) for x in ce['subidas']]
-    ok(not any(x[0] == CORTE_ELO for x in ce['subidas']) and ce['nivel']['A'] == 0,
+    ok(subnivel(1000) == 0 and subnivel(1016) == 0 and subnivel(1017) == 1 and subnivel(1049) == 2 and subnivel(1300) == 2
+       and subnivel(900) == 0 and subnivel(940) == 2, 'los subniveles: tercios del tramo; Mítico se queda en III, Hierro arranca en I')
+    ok(escalon(ENTRADA, 0) == 0 and escalon(0, 2) == 17, 'la escalera entera: de Hierro I (0) a Mítico III (17)')
+    ok(not any(x[0] == CORTE_ELO for x in ce['subidas'] + ce['subs']) and ce['nivel']['A'] == 0,
        'la primera semana por ELO reubica y no paga (A queda en Primera sin cobrar)')
     ok(('2026-11-09', 'B', 1) in pagas and ('2026-11-16', 'A', 0) not in pagas,
        'subir paga la primera vez que llegas (B a Segunda); volver a una a la que ya llegaste, no (A)')
-    ok(('2026-11-09', 'C', 0) in pagas,
-       'con 2 batallas es provisional y no se mueve; con 6 sube, y cobra')
+    ok(ce['nivel']['C'] == 0 and not any(x[1] == 'C' for x in ce['subidas'] + ce['subs']),
+       'con 2 batallas es provisional y no se mueve; con 6 queda en Mítico, y esa primera colocación no paga')
+    sb = [tuple(x) for x in ce['subs']]
+    ok(('2026-11-09', 'B', 2) in pagas and ('2026-11-09', 'B', 2, 1) in sb and ('2026-11-09', 'B', 2, 2) in sb,
+       'saltar varios escalones paga los del medio: B de Zafiro III a Diamante I cobra Rubí I, II, III y Diamante I')
+    t2 = tienda({'subs': [['2026-11-09', 'p00', 1, 2]]}, {'p00': '111'})
+    ok(list(t2.values())[0][:2] == ['111', PREMIO_SUB], 'un subnivel paga %d' % PREMIO_SUB)
     ok(ce['ult']['sem'] == '2026-11-16' and ce['ult']['sube'] == ['A'], 'cómo cerró la última semana')
-    ok([f[0] for f in ce['divs'][0][0]] == ['C', 'A'] and ce['divs'][1][0][0][:3] == ['B', 1101, 12],
+    ok([f[0] for f in ce['divs'][0][0]] == ['C', 'A'] and ce['divs'][1][0][0][:5] == ['B', 1101, 12, 1, 0],
        'la tabla de ahora: una por división, por ELO')
     print('\n  %s' % ('todo ok' if not fallas else '%d fallaron' % len(fallas)))
     return not fallas

@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "4.12",
+   "dia": "2026-10-26",
+   "cuando": "2026-10-26T19:29:05-04:00",
+   "titulo": "El Ranking ELO, como el Ranked de Brawl Stars",
+   "items": [
+    "Los rangos ahora son piedras: **Hierro, Jade, Zafiro, Rubí, Diamante y Mítico**, cada una con subniveles **I, II y III**. Subes y bajas con tu ELO.",
+    "La primera vez que llegas a una piedra cobras **500 Puntos de Tienda**, y a cada subnivel **150**.",
+    "Ves cuánto ELO te dio o te sacó cada una de tus **últimas batallas** (+15 vs …, −17 vs …).",
+    "Al final de la temporada hay **premio según el rango más alto** que alcanzaste: Puntos de Tienda e insignia.",
+    "Empieza el **lunes 2 de noviembre**. Ese lunes acomoda a todos según su ELO, sin pago; y quien sale de provisional se ubica sin cobrar todos los escalones de golpe."
+   ]
+  },
+  {
    "version": "4.11",
    "dia": "2026-10-26",
    "cuando": "2026-10-26T19:13:28-04:00",

@@ -51,16 +51,24 @@ def esperado(ea, eb):
     return 1.0 / (1.0 + 10 ** ((eb - ea) / ESCALA))
 
 
+#: cuántas batallas de cada uno viajan con su +/− (Dlx, 26/10/2026, a «como Brawl Stars Ranked»: «+/− ELO en cada batalla»)
+ULTIMAS = 3
+
+
 def correr(cruces):
-    """`cruces`: `[(ganador, perdedor, …)]` del más viejo al más nuevo -> `{k: {'elo', 'n'}}`."""
-    elo, n = {}, {}
+    """`cruces`: `[(ganador, perdedor, evento, …)]` del más viejo al más nuevo -> `{k: {'elo', 'n', 'h'}}`. `h` son sus
+    últimas `ULTIMAS` batallas, de la más nueva a la más vieja: `[cuánto ganó o perdió, rival, evento]`."""
+    elo, n, h = {}, {}, {}
     for c in cruces:
         g, p = c[0], c[1]
+        ev = c[2] if len(c) > 2 else ''
         eg, ep = elo.get(g, INI), elo.get(p, INI)
         d = K * (1 - esperado(eg, ep))
         elo[g], elo[p] = eg + d, ep - d
         n[g], n[p] = n.get(g, 0) + 1, n.get(p, 0) + 1
-    return {k: {'elo': round(v), 'n': n[k]} for k, v in elo.items()}
+        h.setdefault(g, []).append([round(d), p, ev])
+        h.setdefault(p, []).append([-round(d), g, ev])
+    return {k: {'elo': round(v), 'n': n[k], 'h': h[k][::-1][:ULTIMAS]} for k, v in elo.items()}
 
 
 def calcular(llaves, hasta=None):
@@ -95,6 +103,9 @@ def _self_check():
     ok(K * (1 - esperado(1400, 1000)) < 3.5,
        'ganarle a alguien 400 abajo suma menos de 3.5 («algo cerca» lo hace la cuenta)')
     ok(K * (1 - esperado(1000, 1400)) > 28, 'y ganarle a alguien 400 arriba suma más de 28')
+    e = correr([('a', 'b', '1'), ('c', 'a', '2')])
+    ok(e['a']['h'][0][1:] == ['c', '2'] and e['a']['h'][0][0] < 0 and e['a']['h'][1] == [16, 'b', '1'],
+       'el +/− de cada batalla, de la más nueva a la más vieja')
     tot = correr([('a', 'b'), ('c', 'a'), ('b', 'c'), ('a', 'c')])
     ok(abs(sum(v['elo'] for v in tot.values()) - 3 * INI) <= 2, 'lo que uno gana lo pierde el otro: el total no se mueve')
     print('\n   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))

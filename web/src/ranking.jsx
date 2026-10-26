@@ -371,7 +371,7 @@ const SUBS = {
 // `#/ranking/divisiones` —es la que circula— y `#/ranking/elo` lleva ahí
 const DIV_ELO = {
   et: 'Ranking ELO',
-  baj: <>Tu división sale de tu <b>ELO</b>: tu nivel según a quién le ganas y con quién pierdes en las batallas 1v1. Se mira cada lunes; llegar por primera vez a una división paga <b>Puntos de Tienda</b>.</>,
+  baj: <>Como el Ranked de Brawl Stars: tu rango sale de tu <b>ELO</b>, de Hierro a Mítico, y subes o bajas con cada batalla 1v1. Se mira cada lunes; llegar por primera vez a cada rango paga <b>Puntos de Tienda</b>.</>,
 };
 export const subDe = (liga, id) => (id === 'divisiones' && liga && liga.d.div && liga.d.div.m === 'elo' ? { ...SUBS.divisiones, ...DIV_ELO } : SUBS[id]);
 export const RANKINGS = ['temporada', 'divisiones', 'competitivo', 'duelos', 'podios', 'rachas', 'eventos', 'paises', 'crews', 'ascensos', 'mw', 'misiones'];

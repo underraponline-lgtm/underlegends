@@ -630,6 +630,15 @@ button.btn{background:transparent;cursor:pointer}
 .dv-vacia,.dv-tuyo{margin:0;font:700 14px/1.45 Archivo,sans-serif;max-width:70ch}
 /* 📈 el Ranking ELO (26/10/2026): una división puede tener cientos; se ven 50 y la tuya */
 .dv-mas{margin:8px 0 0;font:700 13px/1.4 Archivo,sans-serif;color:var(--gris)}
+/* 💎 la piedra de cada rango (el color viaja en el payload, `D.c`) y el ± de las últimas batallas */
+.dv-gema{display:inline-grid;place-items:center;width:16px;height:16px;margin-right:8px;vertical-align:-2px;transform:rotate(45deg);font-style:normal}
+b.dv-gema{width:24px;height:24px;margin:4px 0 2px 4px;transform:none;color:#030304;font:900 13px/1 Archivo,sans-serif;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.dv-ultb{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:10px 0 0;padding:0}
+.dv-ultb li{padding:4px 8px;border:1.5px solid var(--suave);font:600 13px/1.2 Archivo,sans-serif}
+.dv-ultb li b{font-weight:900;font-variant-numeric:tabular-nums}
+.dv-ultb li.sube b,.dv-ev em.sube{color:#17735f}
+.dv-ultb li.baja b,.dv-ev em.baja{color:#b3262b}
+.dv-ev em{font-style:normal;font-weight:800}
 /* 🪜 Divisiones rediseñada (14/10/2026): tu semana, la escalera con caras, las zonas como bandas y dos columnas */
 .dv2{grid-template-areas:"tu" "esc" "tab" "info";gap:16px}
 .dv2-tu{grid-area:tu;min-width:0}.dv2-esc{grid-area:esc;min-width:0;padding-top:16px}.dv2-tab{grid-area:tab;display:grid;gap:14px;min-width:0}.dv2-info{grid-area:info;display:grid;gap:10px;align-content:start;min-width:0}

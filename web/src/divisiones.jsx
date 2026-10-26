@@ -121,6 +121,22 @@ const esElo = (D) => !!D && D.m === 'elo';
 // el ELO desde el que se está en la división `d`: Sexta no tiene piso
 const pisoDe = (D, d) => (d < (D.t || []).length ? D.t[d] : null);
 const TOPE_FILAS = 50;
+// 💎 como Brawl Stars Ranked (Dlx, 26/10/2026): piedras de Hierro a Mítico (`D.n`, con su color en `D.c`) y tres
+// subniveles, I · II · III de abajo arriba (`divisiones.subnivel()`: tercios del tramo de 50)
+const SUBS = ['I', 'II', 'III'];
+const rango = (D, d, s) => (D.n || [])[d] + ' ' + SUBS[s || 0];
+const signo = (x) => (x > 0 ? '+' : x < 0 ? '−' : '±') + Math.abs(x);
+// el ELO desde el que empieza el subnivel `s` de la división `d` (Hierro se mide desde 50 abajo de su techo)
+function corteDe(D, d, s) {
+  const piso = d < D.t.length ? D.t[d] : D.t[D.t.length - 1] - 50;
+  return piso + Math.ceil((s * 50) / 3);
+}
+// el próximo escalón por encima de alguien: [su nombre, el ELO desde el que empieza], o null en Mítico III
+function proximo(D, d, s) {
+  if (s < 2) return [rango(D, d, s + 1), corteDe(D, d, s + 1)];
+  if (d > 0) return [rango(D, d - 1, 0), D.t[d - 1]];
+  return null;
+}
 
 function miFila(divs, esYo) {
   for (let i = 0; i < divs.length; i++) {
@@ -133,15 +149,16 @@ function miFila(divs, esYo) {
 
 // qué le pasa a cada uno si la semana cerrara ahora, en palabras
 function estadoElo(D, nombres, di, f) {
-  const [, elo, n, a] = f;
+  const [, elo, n, a, s] = f;
   if (n < (D.pv || 5)) {
     const faltan = (D.pv || 5) - n;
     return { msg: <>Tu ELO es <b>provisional</b>: te {faltan === 1 ? 'falta 1 batalla' : 'faltan ' + faltan + ' batallas'} 1v1 para que cuente. Hasta entonces no te mueve.</>, chip: 'provisional' };
   }
-  if (a < di) return { msg: <>Si la semana cierra así, <b className="sube">subes a {nombres[a]}</b>. Llegar por primera vez paga {num(D.p)} Puntos de Tienda.</>, chip: 'subirías' };
-  if (a > di) return { msg: <>Si la semana cierra así, <b className="baja">bajas a {nombres[a]}</b>: {nombres[di]} empieza en {num(pisoDe(D, di))}.</>, chip: 'bajarías' };
-  if (di === 0) return { msg: <>Estás en <b>Primera</b>: la cima.</>, chip: '' };
-  return { msg: <>Te faltan <b>{num(Math.max(1, D.t[di - 1] - elo))} de ELO</b> para subir a {nombres[di - 1]} ({num(D.t[di - 1])}).</>, chip: '' };
+  if (a < di) return { msg: <>Si la semana cierra así, <b className="sube">subes a {rango(D, a, s)}</b>. Cada piedra nueva paga {num(D.p)} Puntos de Tienda la primera vez, y cada subnivel {num(D.ps || 150)}.</>, chip: 'subirías' };
+  if (a > di) return { msg: <>Si la semana cierra así, <b className="baja">bajas a {rango(D, a, s)}</b>: {nombres[di]} empieza en {num(pisoDe(D, di))}.</>, chip: 'bajarías' };
+  const sig = proximo(D, di, s);
+  if (!sig) return { msg: <>Estás en <b>{rango(D, 0, 2)}</b>: la cima.</>, chip: '' };
+  return { msg: <>Te faltan <b>{num(Math.max(1, sig[1] - elo))} de ELO</b> para {sig[0]} ({num(sig[1])}). Llegar por primera vez paga {num(sig[0].endsWith(' I') ? D.p : (D.ps || 150))} Puntos de Tienda.</>, chip: '' };
 }
 
 function TuSemanaElo({ liga, D, nombres, divs, esYo }) {
@@ -151,7 +168,7 @@ function TuSemanaElo({ liga, D, nombres, divs, esYo }) {
   if (!yo) {
     return (
       <section className="dv-tu" aria-label="Tu ELO">
-        <div className="dv-tu-c"><b>Sexta División</b><small>todavía no tienes ELO</small></div>
+        <div className="dv-tu-c"><b>{rango(D, nombres.length - 1, 0)}</b><small>todavía no tienes ELO</small></div>
         <p>Tu ELO sale de tus batallas 1v1: juega una y entras en el ranking. Con {D.pv || 5} ya cuenta para subir de división.</p>
         <div className="dv-tu-chips">{reloj}</div>
       </section>
@@ -159,18 +176,26 @@ function TuSemanaElo({ liga, D, nombres, divs, esYo }) {
   }
   const { di, g, pos, f } = yo;
   const e = estadoElo(D, nombres, di, f);
-  // 📏 tu ELO entre el piso de tu división y el corte de la de arriba
-  const piso = pisoDe(D, di) || Math.min(...g.map((x) => x[1]));
-  const techo = di > 0 ? D.t[di - 1] : Math.max(f[1], g[0][1]);
+  // 📏 tu ELO entre el piso de tu subnivel y el próximo escalón
+  const s = f[4] || 0;
+  const piso = corteDe(D, di, s);
+  const sig = proximo(D, di, s);
+  const techo = sig ? sig[1] : Math.max(f[1], g[0][1]);
   const pct = techo > piso ? Math.max(0, Math.min(100, Math.round(100 * (f[1] - piso) / (techo - piso)))) : 100;
   return (
     <section className="dv-tu" aria-label="Tu ELO">
-      <div className="dv-tu-c"><b>{nombres[di]} División</b><small>ELO {num(f[1])} · vas {pos + 1}º de {g.length}</small></div>
+      <div className="dv-tu-c"><b><i className="dv-gema" style={{ background: (D.c || [])[di] }} aria-hidden="true" />{rango(D, di, s)}</b><small>ELO {num(f[1])} · vas {pos + 1}º de {g.length} en {nombres[di]}</small></div>
       <p>{e.msg}</p>
       <span className="dv-tu-barra" role="progressbar" aria-label={di > 0 ? 'Tu ELO hacia ' + nombres[di - 1] : 'Tu ELO'} aria-valuemin={piso} aria-valuemax={techo} aria-valuenow={f[1]}>
         <i style={{ width: pct + '%' }} />
       </span>
       <div className="dv-tu-chips">{reloj}{e.chip ? <span className="dv-tu-chip">{e.chip}</span> : null}<span className="dv-tu-chip">{f[2]} {f[2] === 1 ? 'batalla' : 'batallas'}</span></div>
+      {/* ± lo que te dio o te sacó cada batalla, como el +/− de Brawl después de cada partida */}
+      {(f[5] || []).length ? (
+        <ul className="dv-ultb" aria-label="Tus últimas batallas">
+          {f[5].map(([x, rival], i) => <li key={i} className={x > 0 ? 'sube' : x < 0 ? 'baja' : ''}><b>{signo(x)}</b> vs {limpio(rival)}</li>)}
+        </ul>
+      ) : null}
     </section>
   );
 }
@@ -181,10 +206,10 @@ function GrupoElo({ liga, g, sel, nombres, D, esYo }) {
   if (yo >= TOPE_FILAS) vis.push([g[yo], yo]);
   const piso = pisoDe(D, sel);
   return (
-    <section className="dv-g" aria-label={nombres[sel] + ' División'}>
-      <h3 className="dv-gt">{nombres[sel]} División<small>{piso ? 'desde ' + num(piso) + ' de ELO' : 'menos de ' + num(D.t[D.t.length - 1]) + ' de ELO'} · {g.length} {g.length === 1 ? 'rapero' : 'raperos'}</small></h3>
+    <section className="dv-g" aria-label={nombres[sel]}>
+      <h3 className="dv-gt"><i className="dv-gema" style={{ background: (D.c || [])[sel] }} aria-hidden="true" />{nombres[sel]}<small>{piso ? 'desde ' + num(piso) + ' de ELO' : 'menos de ' + num(D.t[D.t.length - 1]) + ' de ELO'} · {g.length} {g.length === 1 ? 'rapero' : 'raperos'}</small></h3>
       <ol className="dv-tabla dv-tabla2 elo">
-        {vis.map(([[raw, elo, n, a], i]) => {
+        {vis.map(([[raw, elo, n, a, s, h], i]) => {
           const f = liga.fila(raw);
           const prov = n < (D.pv || 5);
           const zona = prov ? '' : a < sel ? 'sube' : a > sel ? 'baja' : '';
@@ -193,7 +218,7 @@ function GrupoElo({ liga, g, sel, nombres, D, esYo }) {
               <span className="dv-i">{i + 1}</span>
               {f ? <Cara liga={liga} k={f.k} nombre={f.n} cls="cara dv-cara" /> : <span className="cara dv-cara ini">{limpio(raw).slice(0, 1).toUpperCase()}</span>}
               {f ? <a className="dv-n" href={'#/r/' + encodeURIComponent(f.k)}>{limpio(raw)}</a> : <span className="dv-n">{limpio(raw)}</span>}
-              <span className="dv-ev">{prov ? 'provisional' : n + ' batallas'}</span>
+              <span className="dv-ev">{SUBS[s || 0]} · {prov ? 'provisional' : n + ' batallas'}{(h || [])[0] ? <em className={h[0][0] > 0 ? 'sube' : h[0][0] < 0 ? 'baja' : ''}> {signo(h[0][0])}</em> : null}</span>
               {zona === 'sube' ? <i className="dv-z">SUBIRÍA</i> : zona === 'baja' ? <i className="dv-z">BAJARÍA</i> : <span />}
               <b className="dv-p">{num(elo)}</b>
             </li>
@@ -217,7 +242,7 @@ function PreviaElo({ liga, D, esYo }) {
   const e = yo ? estadoElo(D, nombres, di, yo.f) : null;
   return (
     <div className="dvp">
-      <p className="dvp-cab"><b>{nombres[di]} División</b> · {g.length} {g.length === 1 ? 'rapero' : 'raperos'} · cierra {liga.dia(D.fin)}</p>
+      <p className="dvp-cab"><b>{yo ? rango(D, di, yo.f[4]) : nombres[di]}</b> · {g.length} {g.length === 1 ? 'rapero' : 'raperos'} en {nombres[di]} · cierra {liga.dia(D.fin)}</p>
       <p className="dvp-yo">{e ? e.msg : 'Tu división sale de tu ELO: juega batallas 1v1 y entras en el ranking.'}</p>
       <ol className="dv-tabla dvp-tabla">
         {filas.map(([[raw, elo], i]) => {
@@ -244,7 +269,7 @@ function PreviaElo({ liga, D, esYo }) {
 // 🧑 Y DESDE EL 14/10/2026 CON CARAS Y «VOS» (Dlx, a la maqueta: «Escalera con caras y vos»): las caras de los primeros
 // tres de cada una, y la marca de la tuya ARRIBA del escalón —adentro se pisaba con el nombre: «CUARTA» encima de «7
 // jugando · la tuya» en la compu—
-function Escalera({ liga, nombres, divs, sel, setSel, mia, elo }) {
+function Escalera({ liga, nombres, divs, sel, setSel, mia, elo, colores }) {
   const orden = nombres.map((_n, i) => i).reverse();
   return (
     <div className="dv-esc" role="group" aria-label="Las divisiones, de Sexta a Primera">
@@ -257,7 +282,7 @@ function Escalera({ liga, nombres, divs, sel, setSel, mia, elo }) {
             className={'dv-esc-p' + (i === sel ? ' on' : '') + (i === mia ? ' mia' : '') + (n ? '' : ' vacia')}
             style={{ '--alto': (78 + k * 12) + 'px' }} title={nombres[i] + ' División'}>
             {i === mia ? <i className="dv-esc-vos" aria-hidden="true">TÚ</i> : null}
-            <b>{i + 1}ª</b>
+            {elo ? <b className="dv-gema" style={{ background: (colores || [])[i] }}>{nombres[i].slice(0, 1)}</b> : <b>{i + 1}ª</b>}
             <span>{nombres[i]}</span>
             {top.length ? (
               <i className="dv-esc-caras" aria-hidden="true">{top.map(([raw]) => {
@@ -394,10 +419,10 @@ export function Divisiones({ liga }) {
     <div className="dv dv2">
       <div className="dv2-tu">{elo ? <TuSemanaElo liga={liga} D={D} nombres={nombres} divs={divs} esYo={esYo} />
         : <TuSemana liga={liga} D={D} nombres={nombres} divs={divs} esYo={esYo} />}</div>
-      <div className="dv2-esc"><Escalera liga={liga} nombres={nombres} divs={divs} sel={sel} setSel={setSel} mia={mia} elo={elo} /></div>
+      <div className="dv2-esc"><Escalera liga={liga} nombres={nombres} divs={divs} sel={sel} setSel={setSel} mia={mia} elo={elo} colores={D && D.c} /></div>
       {elo ? (
         <div className="dv2-tab">
-          {!gs.length ? <p className="dv-vacia">{sel === 0 ? 'Nadie llegó todavía a Primera División: es la cima, desde ' + num(D.t[0]) + ' de ELO.' : 'Nadie está hoy en ' + nombres[sel] + ' División.'}</p> : null}
+          {!gs.length ? <p className="dv-vacia">{sel === 0 ? 'Nadie llegó todavía a ' + nombres[0] + ': es la cima, desde ' + num(D.t[0]) + ' de ELO.' : 'Nadie está hoy en ' + nombres[sel] + '.'}</p> : null}
           {gs.length ? <GrupoElo liga={liga} g={gs[0]} sel={sel} nombres={nombres} D={D} esYo={esYo} /> : null}
         </div>
       ) : <div className="dv2-tab">
@@ -411,9 +436,9 @@ export function Divisiones({ liga }) {
       <div className="dv2-info">
         <section className="dv-caja">
           <h4>Cómo funciona</h4>
-          {elo ? <p>Tu división sale de tu <b>ELO</b>: tu nivel según a quién le ganas y con quién pierdes en las batallas 1v1. Se mira cada lunes a las 11 AM.
-            {' '}{nombres.slice(0, D.t.length).map((x, i) => x + ' desde ' + num(D.t[i])).join(', ')}, y {nombres[nombres.length - 1]} abajo.
-            {' '}Llegar por primera vez a una división paga <b>{num(D.p)} Puntos de Tienda</b>. Con menos de {D.pv || 5} batallas tu ELO es provisional y no te mueve.</p> : <p>Semana del {fechaCorta(D.sem)} al {liga.dia(D.fin)}. Juegas un evento y entras en Sexta; los grupos son de 30.
+          {elo ? <p>Como el Ranked de Brawl Stars: tu rango sale de tu <b>ELO</b>, tu nivel según a quién le ganas y con quién pierdes en las batallas 1v1, y subes o bajas con él. Se mira cada lunes a las 11 AM.
+            {' '}{nombres.slice(0, D.t.length).map((x, i) => x + ' desde ' + num(D.t[i])).join(', ')}, y {nombres[nombres.length - 1]} abajo; cada uno con tres subniveles, I, II y III.
+            {' '}La primera vez que llegas a una piedra cobras <b>{num(D.p)} Puntos de Tienda</b>, y a un subnivel {num(D.ps || 150)}. Al final de la temporada hay premio según el rango más alto que alcanzaste. Con menos de {D.pv || 5} batallas tu ELO es provisional y no te mueve.</p> : <p>Semana del {fechaCorta(D.sem)} al {liga.dia(D.fin)}. Juegas un evento y entras en Sexta; los grupos son de 30.
             {' '}Al cierre, los {D.z} primeros de cada grupo suben y cobran <b>{num(D.p)} Puntos de Tienda</b>, y los {D.z} últimos bajan. En un grupo chico, un tercio.</p>}
         </section>
         {ult ? (
