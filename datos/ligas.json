@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-10-26T20:01:27Z",
+ "t": "2026-10-26T20:28:28Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -8270,15 +8270,41 @@
     ]
    ],
    "flyer": {
-    "id": "1564363395711500319",
-    "t": "2026-10-26T19:41:38Z",
-    "tit": "🔥 ¡SIGUE LA ACCIÓN EN LA JORNADA 2! 🔥",
-    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1564363395711500319.webp",
+    "id": "1564371911591461025",
+    "t": "2026-10-26T20:15:28Z",
+    "tit": "🔥 ¡JORNADA 2: BATALLA 4! 🔥",
+    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1564371911591461025.webp",
     "w": 720,
-    "h": 720
+    "h": 723
    },
    "ptb": {},
    "flyers": [
+    {
+     "id": "1564371911591461025",
+     "t": "2026-10-26T20:15:28Z",
+     "tit": "🔥 ¡JORNADA 2: BATALLA 4! 🔥",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1564371911591461025.webp",
+     "w": 720,
+     "h": 723
+    },
+    {
+     "id": "1564371520904634438",
+     "msg": "1564371520904634438",
+     "t": "2026-10-26T20:13:55Z",
+     "tit": "🔥 ¡JORNADA 2: BATALLA 3! 🔥",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1564371520904634438.webp",
+     "w": 720,
+     "h": 720
+    },
+    {
+     "id": "1564371452789137410",
+     "msg": "1564371452789137410",
+     "t": "2026-10-26T20:13:38Z",
+     "tit": "🔥 ¡JORNADA 2: BATALLA 2! 🔥",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1564371452789137410.webp",
+     "w": 720,
+     "h": 720
+    },
     {
      "id": "1564363395711500319",
      "t": "2026-10-26T19:41:38Z",
@@ -8309,9 +8335,9 @@
     [
      "1555067257376346122",
      "Zaik",
-     26,
+     28,
      20,
-     "2026-10-26T19:41:38Z"
+     "2026-10-26T20:15:28Z"
     ],
     [
      "1548906948307451906",
