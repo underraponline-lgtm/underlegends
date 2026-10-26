@@ -2,50 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1561565469889003623": {
-   "id": "1561565469889003623",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1792376620505,
-   "a": "ERIAN🇵🇦",
-   "b": "CARLOS🇪🇨",
-   "ganador": "CARLOS🇪🇨",
-   "votos": "1–0"
-  },
-  "1561566115140997234": {
-   "id": "1561566115140997234",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1792376774345,
-   "a": "CARLOS🇪🇨",
-   "b": "EVANGELINE🇧🇴",
-   "ganador": "CARLOS🇪🇨",
-   "votos": "1–0"
-  },
-  "1561566903191863420": {
-   "id": "1561566903191863420",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1792376962231,
-   "a": "MASINO🇨🇱",
-   "b": "CARLOS🇪🇨",
-   "ganador": "MASINO🇨🇱",
-   "votos": "1–0"
-  },
-  "1561567975809613895": {
-   "id": "1561567975809613895",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1792377217963,
-   "a": "MASINO🇨🇱",
-   "b": "MOSQUITORAP🇦🇷",
-   "ganador": "MOSQUITORAP🇦🇷",
-   "votos": "1–0"
-  },
   "1561596841496285316": {
    "id": "1561596841496285316",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1167,41 +1123,42 @@
    "b": "GIAN PARK JI SUNG",
    "ganador": "GIAN PARK JI SUNG",
    "votos": "1–0"
-  }
- },
- "llaves": {
-  "1556498233402986576": {
-   "id": "1556498233402986576",
+  },
+  "1564102068996669462": {
+   "id": "1564102068996669462",
    "sv": "[FFA] Freestyle For All 👾",
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
-   "pub": 1791168497182,
-   "ed": 1791172652748,
-   "texto": "`[ CUARTOS ]`\n⌞NC🇦🇷⌝ 🆚 ⌞BLITZ🇲🇽⌝ 🆚 ⌞ZA🇺🇸⌝\n`[ CUARTOS ]`\n`[ CUARTOS ]`\n`[ CUARTOS ]`\n`[ SEMIFINALES ]`\n`[ SEMIFINALES ]`\n`[ SEMIFINALES ]`\n`[ FINAL ]`\n⌞Blitz⌝ 🆚 ⌞Park-Ji Sung⌝",
-   "batallas": [
-    [
-     "CUARTOS",
-     [
-      "NC🇦🇷",
-      "BLITZ🇲🇽",
-      "ZA🇺🇸"
-     ],
-     "BLITZ🇲🇽",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "Blitz",
-      "Park-Ji Sung"
-     ],
-     "Park-Ji Sung",
-     "veredicto",
-     []
-    ]
-   ]
+   "pub": 1792981392860,
+   "a": "SIX",
+   "b": "SACRO PRESAGIO",
+   "ganador": "SIX",
+   "votos": "1–0"
   },
+  "1564103379674988566": {
+   "id": "1564103379674988566",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1792981705350,
+   "a": "ERIZO",
+   "b": "SULTAN",
+   "ganador": "ERIZO",
+   "votos": "1–0"
+  },
+  "1564105227437875292": {
+   "id": "1564105227437875292",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1792982145891,
+   "a": "KEIDER",
+   "b": "DYSS",
+   "ganador": "KEIDER",
+   "votos": "1–0"
+  }
+ },
+ "llaves": {
   "1556537614755037235": {
    "id": "1556537614755037235",
    "sv": "[FFA] Freestyle For All 👾",

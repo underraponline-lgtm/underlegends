@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-26T02:24:17+00:00",
+ "cuando": "2026-10-26T02:54:29+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -6951,6 +6951,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Agenda motta 🇨🇦",
+   "quien": "vipertapestry",
+   "discord_id": "768561204707983361",
+   "msg_id": "1564107443837866055",
+   "cuando": "2026-10-26T02:44:34"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Fokox🇲🇽",
+   "quien": "esometilin",
+   "discord_id": "881358841319682079",
+   "msg_id": "1564107333317955587",
+   "cuando": "2026-10-26T02:44:07"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42932,24 +42950,6 @@
    "discord_id": "846870712950194196",
    "msg_id": "1539378559599124640",
    "cuando": "2026-08-18T21:00:48"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "mayanmc🇲🇽",
-   "quien": "imnotmaya_yt.",
-   "discord_id": "1487886377923121243",
-   "msg_id": "1539061882793762816",
-   "cuando": "2026-08-18T00:02:27"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "MCO 🇦🇷",
-   "quien": "mcorap",
-   "discord_id": "1048744067313451050",
-   "msg_id": "1539059805254197288",
-   "cuando": "2026-08-17T23:54:11"
   }
  ]
 }
