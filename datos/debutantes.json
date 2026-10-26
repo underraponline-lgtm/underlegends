@@ -3,6 +3,7 @@
  "chats": {
   "ACAD": "2026-10-26",
   "DDF": "2026-10-26",
+  "FDS": "2026-10-26",
   "FFA": "2026-10-26",
   "FRZ": "2026-10-15",
   "FVS": "2026-10-15",
@@ -35,19 +36,6 @@
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
    "vencido": false
-  },
-  "Abraham": {
-   "avisado": "2026-10-15",
-   "chat": "2026-10-15",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-15T01:41:57+00:00",
-   "did": "",
-   "evento": "- IRLANDA FREESTYLE -",
-   "n": 475,
-   "sv": "FRZ",
-   "vence": "2026-10-22T01:41:57+00:00",
-   "vencido": true
   },
   "Abysuss": {
    "avisado": "2026-10-12",
@@ -87,19 +75,6 @@
    "n": 484,
    "sv": "FFA",
    "vence": "2026-10-25T20:57:26+00:00",
-   "vencido": false
-  },
-  "Artezzy": {
-   "avisado": "2026-10-25",
-   "chat": "2026-10-25",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-25T00:48:12+00:00",
-   "did": "1435531540472795240",
-   "evento": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",
-   "n": 512,
-   "sv": "FFA",
-   "vence": "2026-11-01T00:48:12+00:00",
    "vencido": false
   },
   "BELIKKO": {
@@ -180,19 +155,6 @@
    "vence": "2026-10-25T21:59:50+00:00",
    "vencido": true
   },
-  "Chente": {
-   "avisado": "2026-10-14",
-   "chat": "2026-10-15",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-14T20:32:37+00:00",
-   "did": "1485505764452728874",
-   "evento": "LA BELLA ARTE DE LA DESGRACIA VOL 6 PANDILLAS",
-   "n": 472,
-   "sv": "FFA",
-   "vence": "2026-10-21T20:32:37+00:00",
-   "vencido": true
-  },
   "Choka": {
    "avisado": "2026-10-16",
    "chat": "2026-10-16",
@@ -205,6 +167,30 @@
    "sv": "SR",
    "vence": "2026-10-23T17:34:15+00:00",
    "vencido": true
+  },
+  "ChopAntiTrans": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-14T23:10:06+00:00",
+   "did": "",
+   "evento": "GG SANGRERAP 1",
+   "n": 521,
+   "sv": "FDS",
+   "vence": "2026-10-21T23:10:06+00:00",
+   "vencido": true
+  },
+  "ChozaDeChop": {
+   "avisado": "2026-10-26",
+   "chat": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-21T02:04:09+00:00",
+   "did": "",
+   "evento": "RAP SIN GROSERIAS 2",
+   "n": 522,
+   "sv": "FDS",
+   "vence": "2026-10-28T02:04:09+00:00",
+   "vencido": false
   },
   "Chuwin": {
    "avisado": "2026-10-19",
@@ -378,6 +364,17 @@
    "vence": "2026-11-01T22:13:32+00:00",
    "vencido": false
   },
+  "Evanlyne": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-14T23:10:06+00:00",
+   "did": "",
+   "evento": "GG SANGRERAP 1",
+   "n": 521,
+   "sv": "FDS",
+   "vence": "2026-10-21T23:10:06+00:00",
+   "vencido": true
+  },
   "FOTOSÍNTESIS": {
    "avisado": "2026-10-17",
    "chat": "2026-10-16",
@@ -443,6 +440,18 @@
    "vence": "2026-10-20T02:35:27+00:00",
    "vencido": true
   },
+  "HOTU": {
+   "avisado": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-23T20:44:26+00:00",
+   "did": "",
+   "evento": "WORLD OF FREE",
+   "n": 526,
+   "sv": "LKR",
+   "vence": "2026-10-30T20:44:26+00:00",
+   "vencido": false
+  },
   "Hotaru Adeyemi 🏳️‍⚧️": {
    "avisado": "2026-10-16",
    "avisado_cumplido": "2026-10-18",
@@ -455,6 +464,18 @@
    "n": 479,
    "sv": "ACAD",
    "vence": "2026-10-23T20:31:59+00:00",
+   "vencido": false
+  },
+  "ISMEL": {
+   "avisado": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-23T20:44:26+00:00",
+   "did": "",
+   "evento": "WORLD OF FREE",
+   "n": 526,
+   "sv": "LKR",
+   "vence": "2026-10-30T20:44:26+00:00",
    "vencido": false
   },
   "Imagy": {
@@ -648,13 +669,13 @@
    "chat": "2026-10-23",
    "con": null,
    "cumplido": "",
-   "debut": "2026-10-23T22:07:27+00:00",
+   "debut": "2026-10-14T23:10:06+00:00",
    "did": "1485072095900860466",
-   "evento": "FATS BATTLES PALOOZA FECHA 8",
-   "n": 504,
-   "sv": "ACAD",
-   "vence": "2026-10-30T22:07:27+00:00",
-   "vencido": false
+   "evento": "GG SANGRERAP 1",
+   "n": 521,
+   "sv": "FDS",
+   "vence": "2026-10-21T23:10:06+00:00",
+   "vencido": true
   },
   "Lukas": {
    "avisado": "2026-10-25",
@@ -749,6 +770,30 @@
    "vence": "2026-10-19T22:01:43+00:00",
    "vencido": false
   },
+  "Mc arepa": {
+   "avisado_cumplido": "2026-10-26",
+   "con": 527,
+   "cumplido": "2026-10-24T02:50:48+00:00",
+   "debut": "2026-10-22T03:33:52+00:00",
+   "did": "1528203989152174110",
+   "evento": "GG SANGRERAP 3",
+   "n": 524,
+   "sv": "FDS",
+   "vence": "2026-10-29T03:33:52+00:00",
+   "vencido": false
+  },
+  "Mc dl": {
+   "avisado": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T03:55:52+00:00",
+   "did": "",
+   "evento": "Chupame un huevo CUP",
+   "n": 528,
+   "sv": "LKR",
+   "vence": "2026-11-01T03:55:52+00:00",
+   "vencido": false
+  },
   "Millonari-O": {
    "avisado": "2026-10-18",
    "avisado_cumplido": "2026-10-19",
@@ -802,6 +847,19 @@
    "vence": "2026-11-01T00:48:12+00:00",
    "vencido": false
   },
+  "Nerick": {
+   "avisado": "2026-10-26",
+   "chat": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-22T03:33:52+00:00",
+   "did": "",
+   "evento": "GG SANGRERAP 3",
+   "n": 524,
+   "sv": "FDS",
+   "vence": "2026-10-29T03:33:52+00:00",
+   "vencido": false
+  },
   "Nmb": {
    "avisado": "2026-10-19",
    "chat": "2026-10-20",
@@ -841,6 +899,19 @@
    "vence": "2026-10-23T02:35:47+00:00",
    "vencido": true
   },
+  "Paja lenta": {
+   "avisado": "2026-10-26",
+   "chat": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-21T02:04:09+00:00",
+   "did": "",
+   "evento": "RAP SIN GROSERIAS 2",
+   "n": 522,
+   "sv": "FDS",
+   "vence": "2026-10-28T02:04:09+00:00",
+   "vencido": false
+  },
   "Pipe": {
    "avisado": "2026-10-23",
    "chat": "2026-10-23",
@@ -854,6 +925,17 @@
    "vence": "2026-10-30T22:29:39+00:00",
    "vencido": false
   },
+  "Poxe": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-14T23:10:06+00:00",
+   "did": "",
+   "evento": "GG SANGRERAP 1",
+   "n": 521,
+   "sv": "FDS",
+   "vence": "2026-10-21T23:10:06+00:00",
+   "vencido": true
+  },
   "RC": {
    "avisado": "2026-10-18",
    "chat": "2026-10-18",
@@ -865,19 +947,6 @@
    "n": 486,
    "sv": "DDF",
    "vence": "2026-10-26T01:35:44+00:00",
-   "vencido": true
-  },
-  "Raizer": {
-   "avisado": "2026-10-13",
-   "chat": "2026-10-15",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-13T15:58:57+00:00",
-   "did": "",
-   "evento": "mathias cup",
-   "n": 466,
-   "sv": "FVS",
-   "vence": "2026-10-20T15:58:57+00:00",
    "vencido": true
   },
   "Revo": {
@@ -977,6 +1046,31 @@
    "vence": "2026-10-20T23:50:48+00:00",
    "vencido": false
   },
+  "SosaTR": {
+   "avisado": "2026-10-26",
+   "chat": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-22T03:33:52+00:00",
+   "did": "",
+   "evento": "GG SANGRERAP 3",
+   "n": 524,
+   "sv": "FDS",
+   "vence": "2026-10-29T03:33:52+00:00",
+   "vencido": false
+  },
+  "Terry": {
+   "avisado": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T03:55:52+00:00",
+   "did": "",
+   "evento": "Chupame un huevo CUP",
+   "n": 528,
+   "sv": "LKR",
+   "vence": "2026-11-01T03:55:52+00:00",
+   "vencido": false
+  },
   "VECA": {
    "avisado": "2026-10-16",
    "chat": "2026-10-16",
@@ -1058,6 +1152,18 @@
    "vence": "2026-10-26T22:24:26+00:00",
    "vencido": false
   },
+  "ZAFK": {
+   "avisado": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-23T20:44:26+00:00",
+   "did": "",
+   "evento": "WORLD OF FREE",
+   "n": 526,
+   "sv": "LKR",
+   "vence": "2026-10-30T20:44:26+00:00",
+   "vencido": false
+  },
   "Zack": {
    "avisado": "2026-10-25",
    "chat": "2026-10-25",
@@ -1069,6 +1175,19 @@
    "n": 512,
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
+   "vencido": false
+  },
+  "Zaza B": {
+   "avisado": "2026-10-26",
+   "chat": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-21T02:04:09+00:00",
+   "did": "",
+   "evento": "RAP SIN GROSERIAS 2",
+   "n": 522,
+   "sv": "FDS",
+   "vence": "2026-10-28T02:04:09+00:00",
    "vencido": false
   },
   "dyss": {
@@ -1135,6 +1254,19 @@
    "n": 496,
    "sv": "SR",
    "vence": "2026-10-28T21:05:52+00:00",
+   "vencido": false
+  },
+  "roda mc": {
+   "avisado": "2026-10-26",
+   "chat": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-24T02:50:48+00:00",
+   "did": "",
+   "evento": "2v2 2",
+   "n": 527,
+   "sv": "FDS",
+   "vence": "2026-10-31T02:50:48+00:00",
    "vencido": false
   },
   "tomyhilfiger": {

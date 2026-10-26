@@ -2598,6 +2598,222 @@
     "DOS NOMBRES: «Eriz0» → «Erizo» · cuenta 1412192367628521502"
    ],
    "escribio": {}
+  },
+  {
+   "id": "5bbb742134",
+   "tipo": "Nombre desconocido",
+   "sec": "GG SANGRERAP 1 · FDS · 14/10 · #521",
+   "que": "¿Quién es «ChopAntiTrans🇭🇳»?",
+   "r": "Es Chop (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @30fps30hz · en la Lista: Chop se anotó como «ChopAntiTrans» para ese evento, no es staff de FDS y esa noche no jugó con su nombre",
+   "t": 1792992714467,
+   "filas": [
+    873
+   ],
+   "variantes": [
+    "ChopAntiTrans🇭🇳"
+   ],
+   "escribio": {
+    "quien": "GG SANGRERAP 1 · FDS · 14/10 · ChopAntiTrans🇭🇳"
+   }
+  },
+  {
+   "id": "ab7d9b6809",
+   "tipo": "Nombre desconocido",
+   "sec": "RAP SIN GROSERIAS 2 · FDS · 20/10 · #522",
+   "que": "¿Quién es «ChozaDeChop🇭🇳»?",
+   "r": "Es Chop (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @30fps30hz · en la Lista: Chop se anotó como «ChozaDeChop» para ese evento, no es staff de FDS y esa noche no jugó con su nombre",
+   "t": 1792992714467,
+   "filas": [
+    876
+   ],
+   "variantes": [
+    "ChozaDeChop🇭🇳"
+   ],
+   "escribio": {
+    "quien": "RAP SIN GROSERIAS 2 · FDS · 20/10 · ChozaDeChop🇭🇳"
+   }
+  },
+  {
+   "id": "0cf11233b4",
+   "tipo": "Nombre desconocido",
+   "sec": "GG SANGRERAP 3 · FDS · 21/10 · #524",
+   "que": "¿Quién es «SosaTR 🇺🇾»?",
+   "r": "Es .SosaATR",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de .SosaATR: estaba en la llamada del evento con un nombre parecido",
+   "t": 1792992714467,
+   "filas": [
+    880
+   ],
+   "variantes": [
+    "SosaTR 🇺🇾"
+   ],
+   "escribio": {
+    "alias": [
+     "SosaTR",
+     ".SosaATR"
+    ],
+    "filas": [
+     315
+    ]
+   }
+  },
+  {
+   "id": "956eab95a9",
+   "tipo": "Nombre desconocido",
+   "sec": "WORLD OF FREE · LKR · 23/10 · #526",
+   "que": "¿Quién es «ISMEL»?",
+   "r": "Es Rbk",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Rbk: estaba en la llamada del evento con ese nombre",
+   "t": 1792992714467,
+   "filas": [
+    882
+   ],
+   "variantes": [
+    "ISMEL"
+   ],
+   "escribio": {
+    "alias": [
+     "ISMEL",
+     "Rbk"
+    ],
+    "filas": [
+     316
+    ]
+   }
+  },
+  {
+   "id": "d6089c1acb",
+   "tipo": "Nombre desconocido",
+   "sec": "- RED BULL NACIONAL PERÚ 2026 - · FDS · 04/10 · #520",
+   "que": "¿Quién es «Eseeka 🇵🇪»?",
+   "r": "Es alguien nuevo: alta con su cuenta 545406522356662310",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (545406522356662310)",
+   "t": 1792992714467,
+   "filas": [
+    869
+   ],
+   "variantes": [
+    "Eseeka 🇵🇪"
+   ],
+   "escribio": {
+    "alta": [
+     "Eseeka",
+     "545406522356662310"
+    ]
+   }
+  },
+  {
+   "id": "e99f754888",
+   "tipo": "Nombre desconocido",
+   "sec": "- RED BULL NACIONAL PERÚ 2026 - · FDS · 04/10 · #520",
+   "que": "¿Quién es «giansito🇵🇪»?",
+   "r": "Es alguien nuevo: alta con su cuenta 664288438563897354",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (664288438563897354)",
+   "t": 1792992714467,
+   "filas": [
+    872
+   ],
+   "variantes": [
+    "giansito🇵🇪"
+   ],
+   "escribio": {
+    "alta": [
+     "giansito",
+     "664288438563897354"
+    ]
+   }
+  },
+  {
+   "id": "414bfe150d",
+   "tipo": "Nombre desconocido",
+   "sec": "GG SANGRERAP 3 · FDS · 21/10 · #524",
+   "que": "¿Quién es «Nerick🇵🇪»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1129597963421888593",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1129597963421888593)",
+   "t": 1792992714467,
+   "filas": [
+    879
+   ],
+   "variantes": [
+    "Nerick🇵🇪"
+   ],
+   "escribio": {
+    "alta": [
+     "Nerick",
+     "1129597963421888593"
+    ]
+   }
+  },
+  {
+   "id": "c05691e12f",
+   "tipo": "Nombre desconocido",
+   "sec": "Chupame un huevo CUP · LKR · 24/10 · #528",
+   "que": "¿Quién es «Mc dl 🇲🇽»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1542676805826125926",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1542676805826125926)",
+   "t": 1792992714467,
+   "filas": [
+    885
+   ],
+   "variantes": [
+    "Mc dl 🇲🇽"
+   ],
+   "escribio": {
+    "alta": [
+     "Mc dl",
+     "1542676805826125926"
+    ]
+   }
+  },
+  {
+   "id": "5eaa7275bf",
+   "tipo": "Nombre desconocido",
+   "sec": "Chupame un huevo CUP · LKR · 24/10 · #528",
+   "que": "¿Quién es «Terry 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1562656457034440835",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1562656457034440835)",
+   "t": 1792992714467,
+   "filas": [
+    886
+   ],
+   "variantes": [
+    "Terry 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Terry",
+     "1562656457034440835"
+    ]
+   }
   }
  ],
  "deshechas": []

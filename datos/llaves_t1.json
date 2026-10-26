@@ -33259,5 +33259,1619 @@
     2000
    ]
   ]
+ },
+ "519": {
+  "dia": "2026-09-27",
+  "escala": "8-15",
+  "fecha": "27/09",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1553896018389770322"
+  ],
+  "n": 519,
+  "nombre": "Shaoling Battles 1v1 2",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "nzux 🇵🇪",
+       "Mc Glock"
+      ],
+      "nzux 🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Leyenda",
+       "Artezzy"
+      ],
+      "Leyenda",
+      ""
+     ],
+     [
+      [
+       "Vilca",
+       "Raizer"
+      ],
+      "Vilca",
+      ""
+     ],
+     [
+      [
+       "Abraham 🇻🇪",
+       "TøKīØ🦠🧠"
+      ],
+      "Abraham 🇻🇪",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "nzux 🇵🇪",
+       "Leyenda"
+      ],
+      "nzux 🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Vilca",
+       "Abraham 🇻🇪"
+      ],
+      "Vilca",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "nzux 🇵🇪",
+       "Vilca"
+      ],
+      "nzux 🇵🇪",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "nzux 🇵🇪",
+    "Campeón",
+    7500
+   ],
+   [
+    "Vilca",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Abraham 🇻🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Leyenda",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Artezzy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mc Glock",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Raizer",
+    "Cuartos",
+    2000
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "520": {
+  "dia": "2026-10-04",
+  "escala": "16+",
+  "fecha": "04/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1555684961250451617/1556445215982616747"
+  ],
+  "n": 520,
+  "nombre": "- RED BULL NACIONAL PERÚ 2026 -",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "SOL",
+       "Pepe Mujica"
+      ],
+      "SOL",
+      ""
+     ],
+     [
+      [
+       "Cinexfilo",
+       "Ezias🥈✒️🧢🐍"
+      ],
+      "Cinexfilo",
+      ""
+     ],
+     [
+      [
+       "Sosa",
+       "Mato 🇧🇴"
+      ],
+      "Sosa",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Chente"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "giansito🇵🇪",
+       "Eseeka 🇵🇪"
+      ],
+      "giansito🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Raizer",
+       "FABRI 🇵🇪"
+      ],
+      "Raizer",
+      ""
+     ],
+     [
+      [
+       "Artezzy",
+       "Vilca"
+      ],
+      "Artezzy",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "Abraham 🇻🇪"
+      ],
+      "CrisZJ",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "SOL",
+       "Cinexfilo"
+      ],
+      "SOL",
+      ""
+     ],
+     [
+      [
+       "NXUZ",
+       "Sosa"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "giansito🇵🇪",
+       "Raizer"
+      ],
+      "giansito🇵🇪",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "Artezzy"
+      ],
+      "CrisZJ",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "SOL",
+       "NXUZ"
+      ],
+      "SOL",
+      ""
+     ],
+     [
+      [
+       "giansito🇵🇪",
+       "CrisZJ"
+      ],
+      "giansito🇵🇪",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "SOL",
+       "giansito🇵🇪"
+      ],
+      "SOL",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "SOL",
+    "Campeón",
+    10000
+   ],
+   [
+    "giansito🇵🇪",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    5250
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Artezzy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Cinexfilo",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Raizer",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sosa",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Abraham 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chente",
+    "Octavos",
+    1250
+   ],
+   [
+    "Eseeka 🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ezias🥈✒️🧢🐍",
+    "Octavos",
+    1250
+   ],
+   [
+    "FABRI 🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mato 🇧🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Pepe Mujica",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vilca",
+    "Octavos",
+    1250
+   ]
+  ]
+ },
+ "521": {
+  "dia": "2026-10-14",
+  "escala": "16+",
+  "fecha": "14/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1560067204139974737"
+  ],
+  "n": 521,
+  "nombre": "GG SANGRERAP 1",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Luck",
+       "Artezzy"
+      ],
+      "Luck",
+      ""
+     ],
+     [
+      [
+       "Sin Limites",
+       "Abraham 🇻🇪"
+      ],
+      "Sin Limites",
+      "Revivido: Abraham 🇻🇪"
+     ],
+     [
+      [
+       "ChopAntiTrans🇭🇳",
+       "Mato 🇧🇴"
+      ],
+      "ChopAntiTrans🇭🇳",
+      ""
+     ],
+     [
+      [
+       "Abraham 🇻🇪",
+       "Leyenda"
+      ],
+      "Abraham 🇻🇪",
+      ""
+     ],
+     [
+      [
+       "Vilca",
+       "NXUZ"
+      ],
+      "Vilca",
+      ""
+     ],
+     [
+      [
+       "Soulb",
+       "Miniboy"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "Poxe 🇵🇪"
+      ],
+      "CrisZJ",
+      ""
+     ],
+     [
+      [
+       "Evanlyne 🇧🇴",
+       "Shadow"
+      ],
+      "Evanlyne 🇧🇴",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Sin Limites",
+       "Luck"
+      ],
+      "Sin Limites",
+      ""
+     ],
+     [
+      [
+       "ChopAntiTrans🇭🇳",
+       "Abraham 🇻🇪"
+      ],
+      "ChopAntiTrans🇭🇳",
+      ""
+     ],
+     [
+      [
+       "Soulb",
+       "Vilca"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "CrisZJ",
+       "Evanlyne 🇧🇴"
+      ],
+      "CrisZJ",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "ChopAntiTrans🇭🇳",
+       "Sin Limites"
+      ],
+      "ChopAntiTrans🇭🇳",
+      ""
+     ],
+     [
+      [
+       "Soulb",
+       "CrisZJ"
+      ],
+      "Soulb",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Soulb",
+       "ChopAntiTrans🇭🇳"
+      ],
+      "Soulb",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "Soulb",
+    "Campeón",
+    10000
+   ],
+   [
+    "ChopAntiTrans🇭🇳",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "CrisZJ",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Sin Limites",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Abraham 🇻🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Evanlyne 🇧🇴",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Luck",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Artezzy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Leyenda",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mato 🇧🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "NXUZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Poxe 🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Shadow",
+    "Octavos",
+    1250
+   ]
+  ]
+ },
+ "522": {
+  "dia": "2026-10-20",
+  "escala": "8-15",
+  "fecha": "20/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1562285332039475261"
+  ],
+  "n": 522,
+  "nombre": "RAP SIN GROSERIAS 2",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "ChozaDeChop🇭🇳",
+       "Vandu"
+      ],
+      "ChozaDeChop🇭🇳",
+      ""
+     ],
+     [
+      [
+       "Sin Limites",
+       "NXUZ"
+      ],
+      "Sin Limites",
+      ""
+     ],
+     [
+      [
+       "Artezzy",
+       "Zaza B🇭🇹"
+      ],
+      "Artezzy",
+      ""
+     ],
+     [
+      [
+       "LRS",
+       "Paja lenta🇬🇩"
+      ],
+      "LRS",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Sin Limites",
+       "ChozaDeChop🇭🇳"
+      ],
+      "Sin Limites",
+      ""
+     ],
+     [
+      [
+       "LRS",
+       "Artezzy"
+      ],
+      "LRS",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Artezzy",
+       "ChozaDeChop🇭🇳"
+      ],
+      "Artezzy",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Sin Limites",
+       "LRS"
+      ],
+      "Sin Limites",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "Sin Limites",
+    "Campeón",
+    7500
+   ],
+   [
+    "LRS",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Artezzy",
+    "Tercero",
+    4000
+   ],
+   [
+    "ChozaDeChop🇭🇳",
+    "Cuarto",
+    3000
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Paja lenta🇬🇩",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Zaza B🇭🇹",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "523": {
+  "dia": "2026-10-21",
+  "escala": "8-15",
+  "fecha": "21/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1555684961250451617/1562620645022629999"
+  ],
+  "n": 523,
+  "nombre": "- RED BULL TORNEO DE PLAZAS 2026 -",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Miniboy",
+       "Leyenda"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Noone",
+       "CrisZJ"
+      ],
+      "Noone",
+      ""
+     ],
+     [
+      [
+       "Artezzy",
+       "Raizer"
+      ],
+      "Artezzy",
+      ""
+     ],
+     [
+      [
+       "Vilca",
+       "Shadow"
+      ],
+      "Vilca",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Miniboy",
+       "Noone"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Vilca",
+       "Artezzy"
+      ],
+      "Vilca",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Vilca",
+       "Miniboy"
+      ],
+      "Vilca",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "Vilca",
+    "Campeón",
+    7500
+   ],
+   [
+    "Miniboy",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Artezzy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Noone",
+    "Semifinal",
+    3500
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Leyenda",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Raizer",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "524": {
+  "dia": "2026-10-21",
+  "escala": "8-15",
+  "fecha": "21/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1562670298824704092"
+  ],
+  "n": 524,
+  "nombre": "GG SANGRERAP 3",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Soulb",
+       "Vandu"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "SosaTR 🇺🇾",
+       "Nerick🇵🇪"
+      ],
+      "SosaTR 🇺🇾",
+      ""
+     ],
+     [
+      [
+       "OKAM",
+       "Mc arepa"
+      ],
+      "OKAM",
+      ""
+     ],
+     [
+      [
+       "giansito🇵🇪",
+       "Vilca"
+      ],
+      "giansito🇵🇪",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Soulb",
+       "SosaTR 🇺🇾"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "giansito🇵🇪",
+       "OKAM"
+      ],
+      "giansito🇵🇪",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "giansito🇵🇪",
+       "Soulb"
+      ],
+      "giansito🇵🇪",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "giansito🇵🇪",
+    "Campeón",
+    7500
+   ],
+   [
+    "Soulb",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "OKAM",
+    "Semifinal",
+    3500
+   ],
+   [
+    "SosaTR 🇺🇾",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Mc arepa",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Nerick🇵🇪",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "525": {
+  "dia": "2026-10-22",
+  "escala": "8-15",
+  "fecha": "22/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1563011223958585405"
+  ],
+  "n": 525,
+  "nombre": "GG SANGRERAP 4",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Vilca",
+       "Shadow"
+      ],
+      "Vilca",
+      ""
+     ],
+     [
+      [
+       "Artezzy",
+       "Sin Limites"
+      ],
+      "Artezzy",
+      ""
+     ],
+     [
+      [
+       "LAST",
+       "TøKīØ🦠🧠"
+      ],
+      "LAST",
+      ""
+     ],
+     [
+      [
+       "Soulb",
+       "LRS"
+      ],
+      "Soulb",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Vilca",
+       "Artezzy"
+      ],
+      "Vilca",
+      ""
+     ],
+     [
+      [
+       "LAST",
+       "Soulb"
+      ],
+      "LAST",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "LAST",
+       "Vilca"
+      ],
+      "LAST",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "LAST",
+    "Campeón",
+    7500
+   ],
+   [
+    "Vilca",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Artezzy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    3500
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Shadow",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "526": {
+  "dia": "2026-10-23",
+  "escala": "16+",
+  "fecha": "23/10",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1560645507095728278/1563292037246091265"
+  ],
+  "n": 526,
+  "nombre": "WORLD OF FREE",
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Calíz",
+       "MaYeuTyK"
+      ],
+      "Calíz",
+      ""
+     ],
+     [
+      [
+       "TøKīØ🦠🧠",
+       "Teito"
+      ],
+      "TøKīØ🦠🧠",
+      ""
+     ],
+     [
+      [
+       "Fisics",
+       "ZAFK"
+      ],
+      "Fisics",
+      ""
+     ],
+     [
+      [
+       "ISMEL",
+       "LAST"
+      ],
+      "ISMEL",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "Mathhias"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "BTRX",
+       "Dyzz"
+      ],
+      "BTRX",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Zaik 🇪🇸"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "BTRECE",
+       "RICARD"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "TøKīØ🦠🧠",
+       "Calíz"
+      ],
+      "TøKīØ🦠🧠",
+      ""
+     ],
+     [
+      [
+       "Fisics",
+       "ISMEL"
+      ],
+      "Fisics",
+      ""
+     ],
+     [
+      [
+       "HOTU",
+       "Miniboy"
+      ],
+      "HOTU",
+      "Walk-in 1: HOTU"
+     ],
+     [
+      [
+       "Makmah",
+       "BTRX"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "TøKīØ🦠🧠",
+       "Fisics"
+      ],
+      "TøKīØ🦠🧠",
+      ""
+     ],
+     [
+      [
+       "HOTU",
+       "Makmah"
+      ],
+      "HOTU",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "HOTU",
+       "TøKīØ🦠🧠"
+      ],
+      "HOTU",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "TøKīØ🦠🧠",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Fisics",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    5250
+   ],
+   [
+    "HOTU",
+    "Campeón",
+    5000
+   ],
+   [
+    "BTRX",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "ISMEL",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "LAST",
+    "Octavos",
+    1250
+   ],
+   [
+    "MaYeuTyK",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mathhias",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teito",
+    "Octavos",
+    1250
+   ],
+   [
+    "ZAFK",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zaik 🇪🇸",
+    "Octavos",
+    1250
+   ]
+  ]
+ },
+ "527": {
+  "dia": "2026-10-23",
+  "escala": "16+",
+  "fecha": "23/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1563384237233676330"
+  ],
+  "n": 527,
+  "nombre": "2v2 2",
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Mc arepa, roda mc 🇵🇦",
+       "NXUZ, Tayo"
+      ],
+      "Mc arepa, roda mc 🇵🇦",
+      ""
+     ],
+     [
+      [
+       "Millonari-O 🇵🇾 + Last 🇺🇾",
+       "Lrs🇦🇷 + Artezzy 🇵🇪"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Revo🇻🇪 + xubaru🇻🇪",
+       "Scot 🇵🇪 - Sosa 🇺🇾 + mientras"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Sin límites 🇵🇪 + Vilca🇵🇪",
+       "okam🇨🇷 -sosa🇺🇾"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "OKAM, Sosa",
+       "LRS, Artezzy"
+      ],
+      "OKAM, Sosa",
+      "Revivido: Artezzy 🇵🇪; Sin integrantes: okam🇨🇷 -sosa🇺🇾"
+     ],
+     [
+      [
+       "Mc arepa, roda mc 🇵🇦",
+       "Scot, Artezzy"
+      ],
+      "Mc arepa, roda mc 🇵🇦",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "OKAM, Sosa",
+       "Mc arepa, roda mc 🇵🇦"
+      ],
+      "OKAM, Sosa",
+      "Sin integrantes: okam🇨🇷 -sosa🇺🇾"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sin": [
+   "okam🇨🇷 -sosa🇺🇾"
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "OKAM",
+    "Campeón",
+    5000
+   ],
+   [
+    "Sosa",
+    "Campeón",
+    5000
+   ],
+   [
+    "Artezzy",
+    "Semifinal",
+    3937
+   ],
+   [
+    "Mc arepa",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "roda mc 🇵🇦",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "LRS",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Scot",
+    "Semifinal",
+    2625
+   ],
+   [
+    "NXUZ",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Tayo",
+    "Cuartos",
+    1250
+   ]
+  ]
+ },
+ "528": {
+  "dia": "2026-10-24",
+  "escala": "8-15",
+  "fecha": "24/10",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1558611505040064607/1563763000895217675"
+  ],
+  "n": 528,
+  "nombre": "Chupame un huevo CUP",
+  "participantes": 10,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Tuca",
+       "Sin Limites",
+       "Liam"
+      ],
+      "Tuca",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Dominick",
+       "Mc dl 🇲🇽"
+      ],
+      "Dominick",
+      ""
+     ],
+     [
+      [
+       "Julix🇧🇴",
+       "Calíz"
+      ],
+      "Julix🇧🇴",
+      ""
+     ],
+     [
+      [
+       "Dios",
+       "Terry 🇦🇷"
+      ],
+      "Dios",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Tuca",
+       "Dominick"
+      ],
+      "Tuca",
+      ""
+     ],
+     [
+      [
+       "Julix🇧🇴",
+       "LRS"
+      ],
+      "Julix🇧🇴",
+      "Walk-in 1: Lrs🇦🇷"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Tuca",
+       "Julix🇧🇴"
+      ],
+      "Tuca",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Tuca",
+    "Campeón",
+    7500
+   ],
+   [
+    "Julix🇧🇴",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Dominick",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Liam",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mc dl 🇲🇽",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Terry 🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LRS",
+    "Semifinal",
+    1750
+   ]
+  ]
  }
 }

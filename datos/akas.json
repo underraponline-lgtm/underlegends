@@ -308,6 +308,8 @@
   "stan": "Krtman",
   "byshop": "Bishop",
   "gianlamaldad": "Badterne",
+  "sosatr": ".SosaATR",
+  "ismel": "Rbk",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1586,6 +1588,14 @@
   [
    "gianlamaldad",
    "Badterne"
+  ],
+  [
+   "SosaTR",
+   ".SosaATR"
+  ],
+  [
+   "ISMEL",
+   "Rbk"
   ],
   [
    "Nexus",
