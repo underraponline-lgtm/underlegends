@@ -727,15 +727,15 @@
     },
     "gente": {
      "FFA": 126,
-     "ACAD": 42,
-     "DDF": 49,
+     "ACAD": 53,
+     "DDF": 47,
      "SR": 24
     },
     "gana": "DDF"
    },
    "meta_va": {
-    "ACAD": 42,
-    "DDF": 49,
+    "ACAD": 53,
+    "DDF": 47,
     "DRA": 0,
     "FFA": 126,
     "FFS": 0,

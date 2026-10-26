@@ -842,20 +842,6 @@
     }
    }
   },
-  "BYSHOP 🇦🇷": {
-   "ACAD": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 3300,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "Badterne": {
    "FFA": {
     "duelos": "0/1",
@@ -991,6 +977,20 @@
     "racha": "1/1",
     "tg": {
      "fin": 1
+    }
+   }
+  },
+  "Bishop": {
+   "ACAD": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3300,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },

@@ -1159,57 +1159,6 @@
   }
  },
  "llaves": {
-  "1556450549229027349": {
-   "id": "1556450549229027349",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1791157128389,
-   "ed": 1791158618666,
-   "texto": "`[ FINAL ]`\n⌞ZIGNOS🇩🇴⌝ 🆚 ⌞MAWS🇻🇪 ##⌝\n`[ FINAL ]`\n⌞SOL🇵🇪⌝ 🆚 ⌞SGB🇨🇴 ##⌝\n`[ FINAL ]`\n⌞CORVO🇧🇴⌝ 🆚 ⌞PANCHOK🇨🇱 ##⌝\n`[ FINAL ]`\n⌞MCO🇦🇷⌝ 🆚 ⌞ABYSSUS🇨🇦 ##⌝",
-   "batallas": [
-    [
-     "FINAL",
-     [
-      "ZIGNOS🇩🇴",
-      "MAWS🇻🇪 ##"
-     ],
-     "ZIGNOS🇩🇴",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "SOL🇵🇪",
-      "SGB🇨🇴 ##"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "CORVO🇧🇴",
-      "PANCHOK🇨🇱 ##"
-     ],
-     "PANCHOK🇨🇱 ##",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "MCO🇦🇷",
-      "ABYSSUS🇨🇦 ##"
-     ],
-     "ABYSSUS🇨🇦 ##",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1556457626496270450": {
    "id": "1556457626496270450",
    "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
