@@ -33126,5 +33126,138 @@
     625
    ]
   ]
+ },
+ "518": {
+  "dia": "2026-10-25",
+  "escala": "8-15",
+  "fecha": "25/10",
+  "links": [
+   "https://discord.com/channels/1467763447117778989/1511963625793912892/1564070696882147339"
+  ],
+  "n": 518,
+  "nombre": "CHILL",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "MCO"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "MTZ"
+      ],
+      "Vandu",
+      ""
+     ],
+     [
+      [
+       "AGUSTÍN51K",
+       "Millonari-O"
+      ],
+      "AGUSTÍN51K",
+      ""
+     ],
+     [
+      [
+       "Liberia",
+       "Sin Limites",
+       "Guess"
+      ],
+      "Liberia",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Vandu",
+       "Makmah"
+      ],
+      "Vandu",
+      ""
+     ],
+     [
+      [
+       "Liberia",
+       "AGUSTÍN51K"
+      ],
+      "Liberia",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Liberia",
+       "Vandu"
+      ],
+      "Liberia",
+      "ganador: ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "URBF",
+  "tabla": [
+   [
+    "Liberia",
+    "Campeón",
+    7500
+   ],
+   [
+    "Vandu",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "AGUSTÍN51K",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Guess",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MTZ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Millonari-O",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

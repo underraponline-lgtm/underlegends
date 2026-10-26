@@ -844,7 +844,9 @@
     "ronda": "FINAL"
    }
   ],
-  "respondidas": {},
+  "respondidas": {
+   "0": "Liberia"
+  },
   "sin_permiso": false,
   "sv": "URBF"
  },

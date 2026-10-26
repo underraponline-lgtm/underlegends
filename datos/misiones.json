@@ -2760,6 +2760,13 @@
      0,
      0
     ],
+    "AGUSTÍN51K": [
+     1,
+     1,
+     4,
+     0,
+     0
+    ],
     "AKARK": [
      0,
      0,
@@ -3335,7 +3342,7 @@
      0
     ],
     "Guess": [
-     0,
+     1,
      0,
      4,
      0,
@@ -3510,8 +3517,8 @@
      0
     ],
     "Liberia": [
-     0,
-     0,
+     1,
+     2,
      1,
      0,
      0
@@ -3573,7 +3580,7 @@
      0
     ],
     "MCO": [
-     0,
+     1,
      1,
      1,
      0,
@@ -3583,6 +3590,13 @@
      0,
      0,
      16,
+     0,
+     0
+    ],
+    "MTZ": [
+     1,
+     0,
+     8,
      0,
      0
     ],
@@ -3608,7 +3622,7 @@
      0
     ],
     "Makmah": [
-     0,
+     1,
      6,
      1,
      0,
@@ -3650,7 +3664,7 @@
      0
     ],
     "Millonari-O": [
-     0,
+     1,
      0,
      8,
      0,
@@ -3937,7 +3951,7 @@
      0
     ],
     "Sin Limites": [
-     0,
+     1,
      2,
      4,
      0,
@@ -4056,10 +4070,10 @@
      0
     ],
     "Vandu": [
-     0,
+     1,
+     4,
      2,
-     2,
-     0,
+     1,
      0
     ],
     "Velatz": [
@@ -4260,6 +4274,7 @@
     ]
    },
    "pts": {
+    "AGUSTÍN51K": 300,
     "Abyssus": 1000,
     "Adriagner": 1600,
     "Agus": 1600,
@@ -4284,17 +4299,20 @@
     "Erian": 2400,
     "FanDAbel": 1000,
     "FanDeAbel": 800,
+    "Guess": 300,
     "J19": 1000,
     "Kyss": 1000,
     "LRS": 1000,
-    "Liberia": 1000,
+    "Liberia": 1300,
     "Lord Viruzz": 1000,
     "MATUK 🇦🇷": 1000,
-    "MCO": 1000,
+    "MCO": 1300,
+    "MTZ": 300,
     "MaYeuTyK": 1000,
-    "Makmah": 1600,
+    "Makmah": 2900,
     "Masino": 1600,
     "Mathhias": 1000,
+    "Millonari-O": 300,
     "Molusco": 1000,
     "Mosquitrap 🦟": 2400,
     "Mr Still Ballin": 1000,
@@ -4309,12 +4327,13 @@
     "Panchok": 1000,
     "PichulaMc": 2400,
     "Provenza": 1000,
+    "Sin Limites": 300,
     "Six": 1000,
     "Snow": 1000,
     "Tam": 1800,
     "Tuca": 1000,
     "Valen": 1000,
-    "Vandu": 1000,
+    "Vandu": 3700,
     "Velatz": 800,
     "Walker": 1800,
     "Xubaru": 1600,
@@ -4327,7 +4346,7 @@
   ".SosaATR": 300,
   "1200": 1200,
   "19": 1600,
-  "AGUSTÍN51K": 1600,
+  "AGUSTÍN51K": 1900,
   "AKARK": 600,
   "ALESS": 300,
   "ALTER 🇨🇱": 300,
@@ -4410,7 +4429,7 @@
   "Global Hustler": 1000,
   "Gocho": 600,
   "Greyfitsh🇵🇦": 300,
-  "Guess": 4200,
+  "Guess": 4500,
   "HH": 300,
   "Hardcore": 300,
   "Hassan": 300,
@@ -4446,7 +4465,7 @@
   "Leonart": 300,
   "Letrao🇨🇱": 1300,
   "Liam": 300,
-  "Liberia": 6800,
+  "Liberia": 7100,
   "LitKunai": 300,
   "Lord Viruzz": 1600,
   "Luzzano": 900,
@@ -4455,17 +4474,18 @@
   "MATICERNA": 300,
   "MATUK 🇦🇷": 1000,
   "MAU KC 🇨🇴": 300,
-  "MCO": 6800,
+  "MCO": 7100,
   "MHS": 300,
-  "MTZ": 600,
+  "MTZ": 900,
   "MaYeuTyK": 1000,
   "Magic": 300,
   "Majiztral": 1200,
-  "Makmah": 5400,
+  "Makmah": 6700,
   "Malva": 300,
   "Marto": 300,
   "Masino": 2500,
   "Mathhias": 1300,
+  "Millonari-O": 300,
   "Miniboy": 300,
   "Mito": 300,
   "Molusco": 4200,
@@ -4528,7 +4548,7 @@
   "Selek": 300,
   "Senticide": 600,
   "Shadow": 300,
-  "Sin Limites": 1200,
+  "Sin Limites": 1500,
   "Six": 4800,
   "Snow": 6800,
   "Soneto": 300,
@@ -4547,7 +4567,7 @@
   "Vacile🇪🇸": 600,
   "Valdoza": 600,
   "Valen": 1000,
-  "Vandu": 4800,
+  "Vandu": 7500,
   "Vargas": 300,
   "Velatz": 4600,
   "Verc": 5800,

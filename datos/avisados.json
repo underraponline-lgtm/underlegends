@@ -13346,7 +13346,7 @@
    "Xubaru": 7
   },
   "fecha": "16/10",
-  "firma": "d5e0add6fe8a280e",
+  "firma": "92920ed2eebac8be",
   "msg": "1560725555203014688",
   "nombre": "__ DESGRACIAS EN TOKYO VOL27 __",
   "num": 477,
@@ -15100,7 +15100,7 @@
    "Xubaru": 8
   },
   "fecha": "18/10",
-  "firma": "dab0bfc42a982b67",
+  "firma": "6faa6db299e99ea5",
   "msg": "1561498207572205609",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL7 __",
   "num": 484,
@@ -15936,7 +15936,7 @@
    "Tenor": 5
   },
   "fecha": "19/10",
-  "firma": "fdbfd639b5f06767",
+  "firma": "e6ac69661974082d",
   "msg": "1561761975514697891",
   "nombre": "FREESTYLE LEAGUE N3",
   "num": 488,
@@ -20910,7 +20910,7 @@
    "Sin Limites": 26
   },
   "fecha": "23/10",
-  "firma": "c3ab28747b0c17b9",
+  "firma": "26803043296b9935",
   "msg": "1563384839284195339",
   "nombre": "GRISELDA RECORDS VOL. 2",
   "num": 506,
@@ -21572,7 +21572,7 @@
    "Sin Limites": 28
   },
   "fecha": "25/10",
-  "firma": "ed6506bf16788772",
+  "firma": "4d44c715179be83e",
   "msg": "1563774195693916281",
   "nombre": "GRISELDA RECORDS VOL. 6",
   "num": 511,
@@ -22389,7 +22389,7 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "ee8c79fff6a57d5d",
+  "firma": "70a46285b9011642",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
@@ -22671,7 +22671,7 @@
    "doble h": 2
   },
   "fecha": "25/10",
-  "firma": "b33d545891d456ed",
+  "firma": "912b8005d25ba8a1",
   "msg": "1564072873163890759",
   "nombre": "__ AGUANTE EL ROJO Y EL BARCELONA Multiverse __",
   "num": 516,
@@ -23137,6 +23137,168 @@
     "Agenda motta 🇨🇦 🇦🇷",
     "Octavos",
     625
+   ]
+  ],
+  "v": 2
+ },
+ "518": {
+  "antes": {
+   "AGUSTÍN51K": [
+    105,
+    163,
+    false
+   ],
+   "Guess": [
+    20,
+    22,
+    false
+   ],
+   "Liberia": [
+    8,
+    9,
+    false
+   ],
+   "MCO": [
+    15,
+    16,
+    false
+   ],
+   "MTZ": [
+    84,
+    110,
+    false
+   ],
+   "Makmah": [
+    2,
+    2,
+    false
+   ],
+   "Millonari-O": [
+    378,
+    334,
+    true
+   ],
+   "Sin Limites": [
+    28,
+    33,
+    false
+   ],
+   "Vandu": [
+    13,
+    14,
+    false
+   ]
+  },
+  "canal": "1511962554547703960",
+  "duelos": [
+   [
+    "Makmah",
+    "MCO",
+    "Makmah"
+   ],
+   [
+    "Vandu",
+    "MTZ",
+    "Vandu"
+   ],
+   [
+    "AGUSTÍN51K",
+    "Millonari-O",
+    "AGUSTÍN51K"
+   ],
+   [
+    "Liberia",
+    "Sin Limites",
+    "Liberia"
+   ],
+   [
+    "Liberia",
+    "Guess",
+    "Liberia"
+   ],
+   [
+    "Vandu",
+    "Makmah",
+    "Vandu"
+   ],
+   [
+    "Liberia",
+    "AGUSTÍN51K",
+    "Liberia"
+   ],
+   [
+    "Liberia",
+    "Vandu",
+    "Liberia"
+   ]
+  ],
+  "ev_antes": {
+   "AGUSTÍN51K": 3,
+   "Guess": 19,
+   "Liberia": 19,
+   "MCO": 26,
+   "MTZ": 6,
+   "Makmah": 74,
+   "Millonari-O": 2,
+   "Sin Limites": 29,
+   "Vandu": 34
+  },
+  "fecha": "25/10",
+  "firma": "9ca8268d85414909",
+  "msg": "1564145050185891903",
+  "nombre": "CHILL",
+  "num": 518,
+  "participantes": 9,
+  "sello": {
+   "Liberia": "64d29bae0009:be3f6aea2456"
+  },
+  "sv": "URBF",
+  "t": "2026-10-26T05:13:59Z",
+  "tabla": [
+   [
+    "Liberia",
+    "Campeón",
+    7500
+   ],
+   [
+    "Vandu",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3500
+   ],
+   [
+    "AGUSTÍN51K",
+    "Semifinal",
+    3500
+   ],
+   [
+    "MCO",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MTZ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Millonari-O",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Guess",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2

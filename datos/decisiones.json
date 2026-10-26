@@ -622,6 +622,13 @@
    "cuando": "2026-10-25 11:22 AM ET",
    "por": "el organizador, con el menú (<@1414431452346581052>)",
    "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
+  },
+  "chill|URBF|25/10|final|liberia|vandu": {
+   "ganador": "Liberia",
+   "batalla": "CHILL · URBF · 25/10 · final · Liberia 🆚 vandu",
+   "cuando": "2026-10-26 1:12 AM ET",
+   "por": "el organizador, con el botón (<@1055474244089286706>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   }
  },
  "anuncios_fuera": {
