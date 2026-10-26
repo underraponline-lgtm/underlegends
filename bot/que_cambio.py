@@ -87,7 +87,11 @@ TODAS = sorted(COMO_R2.values())
 #: las camisetas de la Servidor —diez desde FFS, 28/09/2026; once desde DDF, 03/10; doce desde la ACADEMIA, 04/10—. Una sola lista:
 #: `bot/pipeline.py` la importa de acá, porque el sello y el dibujo tienen que
 #: ver las mismas.
-SERVIDORES = ('ACAD', 'DDF', 'DRA', 'EFA', 'FDS', 'FFA', 'FFS', 'FRZ', 'FTN', 'FVS', 'LKR', 'SR', 'TFC', 'TWR', 'URBF')
+#: 🔴 SIN FDS NI LKR (26/10/2026): son socios SIN carta de Servidor (`sinCarta` en bot/worker.js) y no tienen fondo en
+#: `03_Servidor/disenos/todos_sv.DEFS`. Estaban acá desde que entraron (20/10), así que a quien juega en uno de los dos
+#: el generador le moría con «no conozco el servidor "FDS"» y se llevaba puesta su Servidor ENTERA, en cada vuelta: la
+#: vuelta del 26/10 a las 12:22 AM tuvo 36 fallas así. Un servidor sin carta no va en esta lista
+SERVIDORES = ('ACAD', 'DDF', 'DRA', 'EFA', 'FFA', 'FFS', 'FRZ', 'FTN', 'FVS', 'SR', 'TFC', 'TWR', 'URBF')
 
 
 def camisetas(quienes):

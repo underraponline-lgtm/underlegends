@@ -23,8 +23,11 @@ function filaDe(liga, dc, k) {
 // Se baja con fetch y se guarda un blob (R2 deja leer desde la página); si falla, se abre en otra pestaña: un botón que
 // no hace nada es peor que uno que hace algo parecido (`bajarCarta()` de app.js). El nombre lo pone la página: en R2
 // todas se llaman `temporada.webp`
+// 🔴 Y SIN CACHÉ (26/10/2026, Dlx: «¿podríamos hacer que la función de descargar realmente funcione?»): la carta ya se
+// mostró como `<img>`, que la pide sin CORS, y el navegador le devolvía al fetch esa copia guardada sin el permiso:
+// fallaba SIEMPRE y caía en abrir otra pestaña. Medido: con caché «Failed to fetch», con `no-store` 200
 function bajar(url, nombre, fin) {
-  fetch(url, { mode: 'cors' }).then((r) => {
+  fetch(url, { mode: 'cors', cache: 'no-store' }).then((r) => {
     if (!r.ok) throw new Error(String(r.status));
     return r.blob();
   }).then((bl) => {

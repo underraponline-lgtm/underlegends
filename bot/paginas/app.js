@@ -2418,7 +2418,8 @@ function bajarCarta(f, cual) {
   var url = urlCarta(f, cual);
   var b = $('#vBajar');
   if (b) b.classList.add('yendo');
-  fetch(url, { mode: 'cors' }).then(function (r) {
+  // sin caché: la copia que dejó el <img> no trae el permiso CORS y el fetch fallaba siempre (26/10/2026)
+  fetch(url, { mode: 'cors', cache: 'no-store' }).then(function (r) {
     if (!r.ok) throw new Error(r.status);
     return r.blob();
   }).then(function (bl) {

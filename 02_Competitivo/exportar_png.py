@@ -230,6 +230,10 @@ async def varias(quienes, patron):
     async with async_playwright() as p:
         b, pg = await _navegador(p)
         for q in quienes:
+            # 👑 el dueño, aunque no esté en el pool: su Competitiva «sin jugar» (`_dueno_sin_jugar()`). Faltaba acá, en el
+            # camino de varias —el del ciclo—, y su carta salía «no esta en el pool» todas las vueltas (26/10/2026)
+            if q not in D and _dueno_sin_jugar(q):
+                D[q] = _dueno_sin_jugar(q)
             if q not in D:
                 malas.append((q,'no esta en el pool')); continue
             sal = patron % q
