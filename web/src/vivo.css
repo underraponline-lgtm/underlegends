@@ -3500,7 +3500,8 @@ a.rk-z:hover{border-color:var(--linea)}
 .app.calma .mk .mk-des{opacity:.9}
 @media (prefers-reduced-motion: reduce){.mk .mk-bri,.mk .mk-des{animation:none !important}.mk .mk-des{opacity:.9}}
 /* la corona en las cuatro, arriba al centro; los galones de la Competitiva */
-.mk .mk-cor{width:6.4em;left:50%;transform:translateX(-50%);bottom:calc(100% + .7em);z-index:3}
+/* 👑 más chica y más pegada (Dlx, 26/10/2026: «quizás acortar la corona un poco»: con ella la carta pasaba el alto que Discord muestra) */
+.mk .mk-cor{width:5.2em;left:50%;transform:translateX(-50%);bottom:calc(100% + .25em);z-index:3}
 .mk .mk-gal{width:3.4em;left:50%;transform:translateX(-50%);bottom:calc(100% + 1.5em)}
 .mk .mk-hom{width:2.9em;top:-3%}
 /* chica (130 a 200 px): la corona y los galones bajan y se apoyan en el borde, para no meterse en lo de arriba */

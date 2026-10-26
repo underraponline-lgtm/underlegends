@@ -108,7 +108,14 @@ def fotos(trabajos):
                       if (r.width < 1 || r.height < 1) continue;
                       x0 = Math.min(x0, r.left); y0 = Math.min(y0, r.top); x1 = Math.max(x1, r.right); y1 = Math.max(y1, r.bottom);
                     }
-                    return { x: Math.max(0, x0 - 4), y: Math.max(0, y0 - 4), width: x1 - x0 + 8, height: y1 - y0 + 8 };
+                    // 📐 Y CON LA PROPORCIÓN DE LA CARTA SOLA, como mucho (Dlx, 26/10/2026: «la parte de abajo en el discord
+                    // se cortó un poco»): Discord recorta lo que pasa de cierto alto, y la corona hacía la Competitiva más
+                    // alta que la carta. Si el marco la estira hacia arriba o abajo, se agrega aire transparente a los costados
+                    const img = ms.querySelector('.ms-img').getBoundingClientRect();
+                    let x = x0 - 4, y = y0 - 4, w = x1 - x0 + 8, h = y1 - y0 + 8;
+                    const prop = img.height / img.width;
+                    if (h / w > prop) { const nw = h / prop; x -= (nw - w) / 2; w = nw; }
+                    return { x: Math.max(0, x), y: Math.max(0, y), width: w, height: h };
                 }""")
                 if not caja:
                     print('   · %s/%s: sin marco puesto' % (k, carta))
