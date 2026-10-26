@@ -5610,6 +5610,20 @@ export class Avisos {
           ed INTEGER NOT NULL,
           texto TEXT NOT NULL
         );
+        -- 🗳️ LOS VEREDICTOS, PARA SIEMPRE Y CON CADA VERSIÓN (Dlx, 26/10/2026: «Necesitamos guardar los veredictos de
+        -- los jurados a partir de ahora»). «veredictos» se pisa al editarse y se borra a las 12 h; ésta no: cada texto
+        -- distinto que se vio de un mensaje es una fila, así un veredicto editado o cambiado a «.» no se pierde
+        CREATE TABLE IF NOT EXISTS veredictos_hist (
+          id TEXT NOT NULL,
+          canal TEXT NOT NULL,
+          sv TEXT NOT NULL DEFAULT '',
+          autor TEXT NOT NULL DEFAULT '',
+          pub INTEGER NOT NULL,
+          ed INTEGER NOT NULL,
+          texto TEXT NOT NULL,
+          visto INTEGER NOT NULL,
+          UNIQUE (id, texto)
+        );
         CREATE TABLE IF NOT EXISTS posts (
           id TEXT PRIMARY KEY,
           cuerpo TEXT NOT NULL,
@@ -5941,6 +5955,7 @@ export class Avisos {
       // Los otros son las consultas «de las últimas horas» que el vigía y la página hacen cada minuto
       for (const [nombre, tabla, col] of [['inscritos_pub', 'inscritos', 'pub'], ['hechos_t', 'hechos', 't'],
         ['avisos_creado', 'avisos', 'creado'], ['veredictos_pub', 'veredictos', 'pub'], ['posts_creado', 'posts', 'creado'],
+        ['veredictos_hist_pub', 'veredictos_hist', 'pub'],
         ['bandeja_t', 'bandeja', 't'], ['vivo_ed', 'vivo', 'ed'], ['cancelados_t', 'cancelados', 't'],
         // 📏 y los de la revisión del 05/10/2026: los niveles del Pase de la temporada (`pases()`, `paseNiveles()`: cada
         // perfil los pedía recorriendo la tabla entera), la billetera de cada uno (`tienda` por `quien`) y el que más
@@ -7499,6 +7514,10 @@ export class Avisos {
           const ed = m.edited_timestamp ? Date.parse(String(m.edited_timestamp).slice(0, 19) + 'Z') : pub;
           if (Number.isNaN(pub) || ahora - pub > VIVO_HORAS * HORA) continue;
           const texto = conNombres(m).slice(0, 400);
+          // 🗳️ cada versión, entera y para siempre (ver `veredictos_hist`)
+          this.sql.exec('INSERT OR IGNORE INTO veredictos_hist (id, canal, sv, autor, pub, ed, texto, visto) ' +
+            'VALUES (?, ?, ?, ?, ?, ?, ?, ?)', m.id, c.id, c.sv || '', (m.author && m.author.id) || '', pub,
+          Math.max(pub, ed || 0), conNombres(m).slice(0, 4000), ahora);
           const fila = this.sql.exec('SELECT texto FROM veredictos WHERE id = ?', m.id).toArray()[0];
           if (fila && fila.texto === texto) continue;
           this.sql.exec('INSERT INTO veredictos (id, canal, sv, g, autor, pub, ed, texto) ' +
