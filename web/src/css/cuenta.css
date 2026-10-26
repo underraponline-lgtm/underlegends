@@ -139,3 +139,9 @@
 
 /* 📅 la racha como calendario, debajo del texto de la racha (20/10/2026) */
 .cu-cal{margin-top:10px}
+/* 🚪 Salir de tu cuenta (26/10/2026): una fila más de la lista, igual a las demás pero botón, y en rojo al pasar */
+.cu .cu-g .cu-salir{display:grid;grid-template-columns:30px minmax(0,1fr);align-items:center;gap:10px;width:100%;min-height:50px;padding:8px 10px;border:1.5px solid var(--suave);background:var(--caja);color:inherit;text-align:left;cursor:pointer;font:inherit}
+.cu .cu-g .cu-salir span{display:grid;gap:3px;min-width:0}
+.cu .cu-g .cu-salir b{font:700 15px/1.1 Archivo,sans-serif}
+.cu .cu-g .cu-salir small{font:500 12.5px/1.25 Archivo,sans-serif;color:var(--gris)}
+.cu .cu-g .cu-salir:hover,.cu .cu-g .cu-salir:focus-visible{border-color:var(--magenta)}

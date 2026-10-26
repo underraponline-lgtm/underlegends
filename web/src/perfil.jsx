@@ -1533,6 +1533,9 @@ export function Perfil({ liga, dc, k: k0, tab }) {
         <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} ems={ems} onEmblemas={(x) => setEmb(x || '')} numeros={false} />
         <section className="sec pf-sec"><p className="pronto-p">{esYo ? 'No jugaste eventos esta temporada: estás en la Liga por tu rol.' : 'No jugó eventos esta temporada: está en la Liga por su rol.'}</p></section>
         <SusLigas liga={liga} k={k} esYo={esYo} p={p} />
+        {/* 🏷️ tus Logros y tu Inventario también sin jugar (Dlx, 26/10/2026: «tampoco puedo ver mi inventario en mi
+            perfil»): el perfil mínimo cortaba antes de esta sección, y elegir tu carta principal y tus TAGs vive acá */}
+        {esYo ? <Logros liga={liga} p={p} esYo={esYo} /> : null}
         {panel}
       </>
     );

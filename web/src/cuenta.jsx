@@ -1239,6 +1239,13 @@ export function Cuenta({ liga, dc, parte, tema, onTema, temaSv, onTemaSv }) {
               {/NUEVO$/.test(v || '') ? <em className="cu-chip">NUEVO</em> : <Chevron />}</a></li>
           ))}</ul></div>
       ))}
+      {/* 🚪 SALIR, AL FINAL DE LA LISTA Y SIEMPRE A LA VISTA (Dlx, 26/10/2026: «no hay log out option»): el botón chico de
+          al lado de tu nombre no se veía, y en el teléfono se esconde con una sección abierta */}
+      {dc ? (
+        <div className="cu-g"><ul><li><button type="button" className="cu-salir" onClick={accion.salir}>
+          <i className="cu-ico" aria-hidden="true"><Ico n="salir" t={18} /></i>
+          <span><b>Salir de tu cuenta</b><small>vuelves a entrar con Discord cuando quieras</small></span></button></li></ul></div>
+      ) : null}
     </nav>
   );
   return (
