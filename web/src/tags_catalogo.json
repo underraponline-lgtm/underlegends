@@ -15,21 +15,9 @@
     "temporada"
    ],
    [
-    "💀 REGICIDA",
+    "🌐 IMPERIO",
     "t1",
-    "Cazar a El Rey del Most Wanted.",
-    "siempre"
-   ],
-   [
-    "🛡️ INTOCABLE",
-    "t1",
-    "Que te busquen en el Most Wanted y sobrevivir.",
-    "siempre"
-   ],
-   [
-    "🗺️ CONQUISTADOR",
-    "t1",
-    "Salir campeón en 2 servidores distintos.",
+    "Salir campeón en 3 servidores distintos.",
     "siempre"
    ],
    [
@@ -45,10 +33,16 @@
     "temporada"
    ],
    [
-    "🎯 CAZADOR CAZADO",
+    "🏃 FUGITIVO",
     "t1",
-    "Cazar a alguien en el Most Wanted y que también te cacen.",
-    "siempre"
+    "Que te busquen 2 veces o más y que nunca te cacen.",
+    "temporada"
+   ],
+   [
+    "🔋 INAGOTABLE",
+    "t1",
+    "10 días con 2 eventos o más.",
+    "temporada"
    ],
    [
     "🔥 EN LLAMAS",
@@ -57,8 +51,32 @@
     "estado"
    ],
    [
+    "💀 REGICIDA",
+    "t2",
+    "Cazar a El Rey del Most Wanted.",
+    "siempre"
+   ],
+   [
+    "🛡️ INTOCABLE",
+    "t2",
+    "Que te busquen en el Most Wanted y sobrevivir.",
+    "siempre"
+   ],
+   [
+    "🗺️ CONQUISTADOR",
+    "t2",
+    "Salir campeón en 2 servidores distintos.",
+    "siempre"
+   ],
+   [
+    "🎯 CAZADOR CAZADO",
+    "t2",
+    "Cazar a alguien en el Most Wanted y que también te cacen.",
+    "siempre"
+   ],
+   [
     "📋 SEMANA PERFECTA x%d",
-    "t1",
+    "t2",
     "Completar las Misiones de 2 semanas o más.",
     "temporada"
    ],
@@ -66,12 +84,6 @@
     "🎯 CAZARRECOMPENSAS",
     "t2",
     "Entre cazas y precios por cabeza cobrados, 2 o más.",
-    "temporada"
-   ],
-   [
-    "🏃 FUGITIVO",
-    "t2",
-    "Que te busquen 2 veces o más y que nunca te cacen.",
     "temporada"
    ],
    [
@@ -177,8 +189,14 @@
     "siempre"
    ],
    [
-    "📋 SEMANA PERFECTA",
+    "🛫 NÓMADA",
     "t2",
+    "Jugar en 6 servidores o más.",
+    "temporada"
+   ],
+   [
+    "📋 SEMANA PERFECTA",
+    "t3",
     "Completar las Misiones de una semana.",
     "temporada"
    ],
@@ -232,7 +250,7 @@
    ],
    [
     "🥉 AL PODIO",
-    "t3",
+    "t4",
     "Hacer un podio.",
     "siempre"
    ],
@@ -275,15 +293,27 @@
     "siempre"
    ],
    [
-    "⭐ TOP 10",
+    "🎯 INFALIBLE",
     "t1",
+    "Ganar el 75 % de tus duelos, con 25 o más jugados.",
+    "temporada"
+   ],
+   [
+    "🌪️ ARRASADOR",
+    "t1",
+    "30 duelos ganados.",
+    "temporada"
+   ],
+   [
+    "⭐ TOP 10",
+    "t2",
     "Estar en el top 10 del Competitivo.",
     "estado"
    ],
    [
-    "🗡️ MATAGIGANTES",
+    "🐉 MATADRAGONES",
     "t2",
-    "Ganarle un duelo a alguien con dos letras más que tú.",
+    "Ganarles 2 duelos a rivales con dos letras más que tú.",
     "siempre"
    ],
    [
@@ -317,14 +347,26 @@
     "temporada"
    ],
    [
-    "⚔️ DUELISTA",
+    "🦁 TEMERARIO",
     "t2",
+    "Enfrentar a 30 rivales distintos.",
+    "temporada"
+   ],
+   [
+    "🗡️ MATAGIGANTES",
+    "t3",
+    "Ganarle un duelo a alguien con dos letras más que tú.",
+    "siempre"
+   ],
+   [
+    "⚔️ DUELISTA",
+    "t3",
     "10 duelos ganados, contra 8 rivales distintos (si tu Servidor ya lo dice, acá va otro).",
     "temporada"
    ],
    [
     "🎯 COMPLETO",
-    "t2",
+    "t3",
     "Las cinco dimensiones en 20 o más.",
     "temporada"
    ],
@@ -360,7 +402,7 @@
    ],
    [
     "🤝 SIN MIEDO",
-    "t3",
+    "t4",
     "Enfrentar a 14 rivales distintos.",
     "temporada"
    ],
@@ -397,26 +439,32 @@
     "estado"
    ],
    [
-    "🏰 FORTALEZA",
+    "🏯 CIUDADELA",
     "t1",
+    "Ganar 5 eventos en tu servidor.",
+    "siempre"
+   ],
+   [
+    "🏰 FORTALEZA",
+    "t2",
     "Ganar 3 eventos en tu servidor.",
     "siempre"
    ],
    [
     "⭐ TOP DEL SERVIDOR",
-    "t1",
+    "t2",
     "Estar en el 10 % de arriba de tu servidor.",
     "estado"
    ],
    [
     "🪓 VERDUGO DEL DUEÑO",
-    "t1",
+    "t2",
     "Ganarle al #1 de tu servidor.",
     "siempre"
    ],
    [
     "🛡️ INVICTO EN CASA",
-    "t1",
+    "t2",
     "3 duelos o más en tu servidor, todos ganados.",
     "estado"
    ],
@@ -427,10 +475,16 @@
     "estado"
    ],
    [
-    "🏟️ FINALISTA DE CASA",
+    "🏅 VITRINA LLENA",
     "t2",
-    "Llegar a 3 finales en tu servidor.",
+    "10 podios en tu servidor.",
     "siempre"
+   ],
+   [
+    "📖 HISTORIA VIVA",
+    "t2",
+    "Jugar 30 eventos en tu servidor.",
+    "temporada"
    ],
    [
     "⚔️ DUELISTA",
@@ -458,8 +512,14 @@
    ],
    [
     "🏆 CAMPEÓN",
-    "t2",
+    "t3",
     "Ganar un evento en tu servidor.",
+    "siempre"
+   ],
+   [
+    "🏟️ FINALISTA DE CASA",
+    "t3",
+    "Llegar a 3 finales en tu servidor.",
     "siempre"
    ],
    [
@@ -476,7 +536,7 @@
    ],
    [
     "📆 HABITUÉ",
-    "t3",
+    "t4",
     "Jugar 5 eventos en tu servidor.",
     "temporada"
    ],
@@ -555,12 +615,6 @@
     "temporada"
    ],
    [
-    "PRIMER CAMPEÓN",
-    "t1",
-    "Ser el primero de tu país en salir campeón en la temporada.",
-    "siempre"
-   ],
-   [
     "INTRATABLE",
     "t1",
     "Ser el #1 de tu país con el 70 % de duelos ganados.",
@@ -573,8 +627,32 @@
     "estado"
    ],
    [
-    "INVICTO NACIONAL",
+    "AMO DEL DERBI",
     "t1",
+    "Ganar 10 duelos contra compatriotas.",
+    "temporada"
+   ],
+   [
+    "GANA AFUERA",
+    "t1",
+    "El 65 % de duelos ganados, con 25 eventos.",
+    "temporada"
+   ],
+   [
+    "BANDERA VIVA",
+    "t1",
+    "20 podios.",
+    "temporada"
+   ],
+   [
+    "PRIMER CAMPEÓN",
+    "t2",
+    "Ser el primero de tu país en salir campeón en la temporada.",
+    "siempre"
+   ],
+   [
+    "INVICTO NACIONAL",
+    "t2",
     "3 duelos o más contra compatriotas, todos ganados.",
     "estado"
    ],
@@ -603,57 +681,15 @@
     "temporada"
    ],
    [
-    "SIN FRONTERAS",
-    "t2",
-    "Enfrentar a rivales de 7 países.",
-    "temporada"
-   ],
-   [
-    "INTERNACIONAL",
-    "t2",
-    "Ganarle a rivales de 5 países.",
-    "temporada"
-   ],
-   [
-    "EMBAJADOR",
-    "t2",
-    "Jugar en 4 servidores o más.",
-    "temporada"
-   ],
-   [
-    "PIONERO",
-    "t2",
-    "Ser el primero de tu país en debutar en la temporada.",
-    "siempre"
-   ],
-   [
-    "MEJOR AFUERA",
-    "t2",
-    "Ganar 10 % más contra otros países que contra compatriotas.",
-    "estado"
-   ],
-   [
-    "FUERTE EN CASA",
-    "t2",
-    "Ganar 10 % más contra compatriotas que contra otros países.",
-    "estado"
-   ],
-   [
     "TITULAR FIJO",
     "t2",
     "Estar en el 25 % de arriba de tu país con el 60 % de duelos ganados.",
     "estado"
    ],
    [
-    "GANA AFUERA",
+    "MEDALLERO",
     "t2",
-    "El 65 % de duelos ganados, con 25 eventos.",
-    "temporada"
-   ],
-   [
-    "BANDERA VIVA",
-    "t2",
-    "20 podios.",
+    "10 podios.",
     "temporada"
    ],
    [
@@ -669,6 +705,42 @@
     "temporada"
    ],
    [
+    "SIN FRONTERAS",
+    "t3",
+    "Enfrentar a rivales de 7 países.",
+    "temporada"
+   ],
+   [
+    "INTERNACIONAL",
+    "t3",
+    "Ganarle a rivales de 5 países.",
+    "temporada"
+   ],
+   [
+    "EMBAJADOR",
+    "t3",
+    "Jugar en 4 servidores o más.",
+    "temporada"
+   ],
+   [
+    "PIONERO",
+    "t3",
+    "Ser el primero de tu país en debutar en la temporada.",
+    "siempre"
+   ],
+   [
+    "MEJOR AFUERA",
+    "t3",
+    "Ganar 10 % más contra otros países que contra compatriotas.",
+    "estado"
+   ],
+   [
+    "FUERTE EN CASA",
+    "t3",
+    "Ganar 10 % más contra compatriotas que contra otros países.",
+    "estado"
+   ],
+   [
     "SELECCIONABLE",
     "t3",
     "Estar en el 25 % de arriba de tu país.",
@@ -676,13 +748,13 @@
    ],
    [
     "MEDIA TABLA",
-    "t3",
+    "t4",
     "Estar en la mitad de arriba de tu país.",
     "estado"
    ],
    [
     "DA LA CARA",
-    "t3",
+    "t4",
     "Jugar 12 eventos.",
     "temporada"
    ],

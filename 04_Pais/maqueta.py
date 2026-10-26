@@ -1301,20 +1301,30 @@ def tag(pos, nac=0, mun=0, evt=0, pod=0, win='0%', rch=0, dna='', din='', h=None
         return ('CAMPEÓN NACIONAL', 't1')
     if p == 1 and t >= 20:
         return ('EL MEJOR DE %d' % t, 't1')
+    # ⚖️ LA RAREZA SALE DE CUÁNTOS LA TIENEN (26/10/2026, Dlx: «regicida no creo que sea tan legendario… hay cosas más
+    # difíciles que eso»). Medido sobre `datos/` con `catalogo_tags.de_cada_uno(todos_los=…)`: Legendario es lo que
+    # tiene ~2 % o menos y cuesta de verdad; Épico, hasta ~8 %; Raro, hasta ~25 %; Común, el resto. Los números de
+    # cada uno están en `sheet/catalogo_tags.py`.
     # el ÚNICO de su país que salió campeón en la temporada (país con 3 o más)
     if h.get('unico'):
         return ('ORGULLO NACIONAL', 't1')
-    # el primero de su país en salir campeón en la temporada
-    if h.get('primer'):
-        return ('PRIMER CAMPEÓN', 't1')
     if p == 1 and w >= 70:
         return ('INTRATABLE', 't1')
     if p == 1:
         return ('Nº1 DEL PAÍS', 't1')
+    if na_v >= 10:
+        return ('AMO DEL DERBI', 't1')
+    if w >= 65 and evt >= 25:
+        return ('GANA AFUERA', 't1')
+    if pod >= 20:
+        return ('BANDERA VIVA', 't1')
+    # ── t2 · lo que distingue ───────────────────────────────────────────
+    # el primero de su país en salir campeón en la temporada
+    if h.get('primer'):
+        return ('PRIMER CAMPEÓN', 't2')
     # 3 o más duelos contra compatriotas, todos ganados
     if na_t >= 3 and na_v == na_t:
-        return ('INVICTO NACIONAL', 't1')
-    # ── t2 · lo que distingue ───────────────────────────────────────────
+        return ('INVICTO NACIONAL', 't2')
     if (p == 2 or p == 3) and w >= 65:
         return ('PODIO Y PUNTERÍA', 't2')
     if p == 2 or p == 3:
@@ -1323,39 +1333,37 @@ def tag(pos, nac=0, mun=0, evt=0, pod=0, win='0%', rch=0, dna='', din='', h=None
         return ('REY DEL DERBI', 't2')
     if in_v >= 15:
         return ('CONQUISTA AFUERA', 't2')
-    # rivales de 7 países o más
-    if h.get('paises', 0) >= 7:
-        return ('SIN FRONTERAS', 't2')
-    # le ganó a rivales de 5 países o más (19/10/2026, Dlx). Enfrentarlos es SIN FRONTERAS; ganarles, esto
-    if h.get('paisesg', 0) >= 5:
-        return ('INTERNACIONAL', 't2')
-    if h.get('srv', 0) >= 4:
-        return ('EMBAJADOR', 't2')
-    # el primero de su país en debutar en la temporada
-    if h.get('pionero'):
-        return ('PIONERO', 't2')
-    if ca is not None and fu is not None and fu - ca >= 10:
-        return ('MEJOR AFUERA', 't2')
-    if ca is not None and fu is not None and ca - fu >= 10:
-        return ('FUERTE EN CASA', 't2')
     if p and t and p <= max(5, t * .25) and w >= 60:
         return ('TITULAR FIJO', 't2')
-    if w >= 65 and evt >= 25:
-        return ('GANA AFUERA', 't2')
-    if pod >= 20:
-        return ('BANDERA VIVA', 't2')
+    if pod >= 10:
+        return ('MEDALLERO', 't2')
     if rch >= 8:
         return ('EN RACHA', 't2')
     if evt >= 40:
         return ('KILÓMETROS', 't2')
     # ── t3 · lo que se ve ───────────────────────────────────────────────
+    # rivales de 7 países o más
+    if h.get('paises', 0) >= 7:
+        return ('SIN FRONTERAS', 't3')
+    # le ganó a rivales de 5 países o más (19/10/2026, Dlx). Enfrentarlos es SIN FRONTERAS; ganarles, esto
+    if h.get('paisesg', 0) >= 5:
+        return ('INTERNACIONAL', 't3')
+    if h.get('srv', 0) >= 4:
+        return ('EMBAJADOR', 't3')
+    # el primero de su país en debutar en la temporada
+    if h.get('pionero'):
+        return ('PIONERO', 't3')
+    if ca is not None and fu is not None and fu - ca >= 10:
+        return ('MEJOR AFUERA', 't3')
+    if ca is not None and fu is not None and ca - fu >= 10:
+        return ('FUERTE EN CASA', 't3')
     if p and t and p <= max(5, t * .25):
         return ('SELECCIONABLE', 't3')
-    if p and t and p <= t * .5:
-        return ('MEDIA TABLA', 't3')
-    if evt >= 12:
-        return ('DA LA CARA', 't3')
     # ── t4 · el piso ────────────────────────────────────────────────────
+    if p and t and p <= t * .5:
+        return ('MEDIA TABLA', 't4')
+    if evt >= 12:
+        return ('DA LA CARA', 't4')
     if not p:
         return ('SIN RANKING', 't4')
     return ('REPRESENTANTE', 't4')

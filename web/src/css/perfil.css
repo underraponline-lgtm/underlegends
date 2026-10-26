@@ -555,10 +555,11 @@
 .iv9-carta{position:relative}
 .iv9-vp{position:absolute;top:10px;left:10px;padding:4px 7px;border-radius:3px;background:#E41373;color:#FFFFFF;
   font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase}
-.iv9-tagprev{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);display:inline-flex;align-items:center;gap:7px;max-width:88%;
-  padding:7px 11px;border:1.5px solid #E41373;border-radius:4px;background:#030304;color:#F6F6F6;font:900 13px/1.1 Archivo,sans-serif;
-  text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.iv9-tagprev small{font:800 10px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;color:#E41373}
+/* 🏷️ la pastilla del TAG que se prueba: la MISMA de la carta (forma y nivel), encima de la suya. Radio 20 como la carta,
+   no el ≤4 del hub: es un pedazo de carta, no de la página. Tamaño, lugar y colores van en línea (ver PASTILLA) */
+.iv9-past{position:absolute;z-index:3;transform:translate(-50%,-50%);display:inline-block;box-sizing:border-box;border-radius:20px;
+  font-family:Archivo,sans-serif;font-weight:900;line-height:normal;text-align:center;text-transform:uppercase;white-space:nowrap;
+  pointer-events:none}
 .iv9-guardar{position:sticky;bottom:12px;z-index:5;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 14px;
   border:1.5px solid #E41373;border-radius:4px;background:#121216;color:var(--esc-tinta);font:500 14px/1.3 Archivo,sans-serif}
 .iv9-guardar>span{flex:1 1 220px}

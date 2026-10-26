@@ -223,6 +223,11 @@ ESPECIALES = {
     25: ('titulo', 'Pilar de UL'),
     30: ('insignia', 'Pase Oro'),
 }
+#: ✨ LA EDICIÓN LIMITADA TAMBIÉN VA POR CARTA (Dlx, 26/10/2026: «recuerda cada carta tiene sus tags, eso de edición
+#: limitada… en cada tarjeta no»). Cada título del Pase se pone en UNA carta, la que dice: `{título: carta}`. Lo leen el
+#: objeto (`tagElige()`, viaja en `cfg.titulo_carta`), el Inventario y `tags_inventario.revisar()`. Un título que no está
+#: acá no se puede poner en ninguna: uno nuevo tiene que decir su carta (el self-check lo pide).
+TITULO_CARTA = {'Del Pase': 'competitivo', 'De la casa': 'servidor', 'Pilar de UL': 'temporada'}
 #: ✨ desde qué nivel brilla tu carta en las llaves (lo lee `subir_web.py` para la página, con `nivel_brillo()`): el 8
 #: con la curva de antes; el 4 desde `CURVA_DESDE` (Dlx, 25/10/2026: «dale», el informe, cambio 7)
 NIVEL_BRILLO_VIEJO, NIVEL_BRILLO = 8, 4
@@ -332,7 +337,8 @@ def config(temp, dra=True, nuevas=True, curva=True):
     # especiales dependen de la hora: las pone `armar()`
     out.update({'bienvenida': [list(t) for t in BIENVENIDA], 'especiales': [],
                 'doble': [[_ms_et(a), _ms_et(b), m] for a, b, m in XP_DOBLE], 'gracia_desde': GRACIA_DESDE,
-                'crew': list(CREW), 'boost': BOOST, 'premium': premios_premium(), 'rol_regalo': ROL_REGALO})
+                'crew': list(CREW), 'boost': BOOST, 'premium': premios_premium(), 'rol_regalo': ROL_REGALO,
+                'titulo_carta': dict(TITULO_CARTA)})
     # ⚠️ LA SEMANA DE PRUEBA TENÍA «Completá tus misiones», que ya no es una Tarea: lo que se cumplió sigue valiendo lo
     # que vale una semanal (si no, a quien sólo tenía ésa se le iba el nivel 1, y con él la tarjeta de Temporada)
     if out['temp'] == 'prueba':
@@ -590,6 +596,9 @@ def _self_check():
        and premios()[7][2] == '',
        'la curva y el brillo en el 4 arrancan con la semana del lunes 26/10, no a mitad de una')
     ok(ps[-1][2] == 'insignia' and all(p[1] > 0 for p in ps), 'todos pagan Tienda y el último es una insignia')
+    _tits = {str(p[3]) for p in ps + premios_premium() if p[2] == 'titulo'}
+    ok(_tits == set(TITULO_CARTA) and set(TITULO_CARTA.values()) <= {'temporada', 'competitivo', 'servidor', 'pais'},
+       'cada título del Pase dice en qué carta va (✨ edición limitada, una carta cada uno)  %s' % sorted(_tits))
     ok({p[2] for p in ps if p[2]} == {'tarjeta', 'insignia', 'titulo', 'color', 'llave'} and ps[0][2] == 'tarjeta'
        and ps[NIVEL_BRILLO - 1][2] == 'llave',
        'el nivel 1 es la tarjeta de Temporada; los demás premios: insignias, títulos, color y el brillo en las llaves (el 4)')

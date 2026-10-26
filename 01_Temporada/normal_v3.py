@@ -232,21 +232,27 @@ def tag(c):
     oro, pts, ev, pod = c.get('oro', 0), c.get('pts', 0), c.get('ev', 0), c.get('pod', 0)
     caz, czd, srv = c.get('caz', 0), c.get('czd', 0), c.get('srv', 0)
     sv = h.get('svtag', '')
+    # ⚖️ LA RAREZA SALE DE CUÁNTOS LA TIENEN (26/10/2026, Dlx: «regicida no creo que sea tan legendario… hay cosas más
+    # difíciles que eso»). Medido sobre `datos/` con `catalogo_tags.de_cada_uno(todos_los=…)`: Legendario es lo que
+    # tiene ~2 % o menos y cuesta de verdad; Épico, hasta ~8 %; Raro, hasta ~25 %; Común, el resto. Los números de
+    # cada uno están en `sheet/catalogo_tags.py`.
     # ── t1 · lo que casi nadie tiene ────────────────────────────────────
     if oro >= 20:                           return ('👑 DINASTÍA', 't1')
-    if h.get('rey'):                        return ('💀 REGICIDA', 't1')          # cazó a El Rey del MW
-    if c.get('sob', 0) >= 1:                return ('🛡️ INTOCABLE', 't1')         # buscado y sobrevivió
-    if h.get('svc', 0) >= 2:                return ('🗺️ CONQUISTADOR', 't1')      # campeón en 2+ servidores
+    if h.get('svc', 0) >= 3:                return ('🌐 IMPERIO', 't1')           # campeón en 3+ servidores
     if pts >= 200000:                       return ('💯 BICENTENARIO', 't1')
     if oro >= 10:                           return ('⭐ DECACAMPEÓN', 't1')
-    # ⚠️ la combinación antes que sus partes: cazar y que te cacen es más raro que cualquiera de las dos
-    if caz >= 1 and czd >= 1:               return ('🎯 CAZADOR CAZADO', 't1')
+    if h.get('busc', 0) >= 2 and czd == 0:  return ('🏃 FUGITIVO', 't1')          # buscado 2+ veces, nunca cazado
+    if h.get('dobles', 0) >= 10:            return ('🔋 INAGOTABLE', 't1')        # 2+ eventos el mismo día, 10 días
     if c.get('racha_act', 0) >= 7 and sv != 'llamas':
         return ('🔥 EN LLAMAS', 't1')                                             # la ACTUAL, sin el número: va en RCH
-    if h.get('perf', 0) >= 2:               return ('📋 SEMANA PERFECTA x%d' % h['perf'], 't1')
     # ── t2 · lo que distingue ───────────────────────────────────────────
+    if h.get('rey'):                        return ('💀 REGICIDA', 't2')          # cazó a El Rey del MW
+    if c.get('sob', 0) >= 1:                return ('🛡️ INTOCABLE', 't2')         # buscado y sobrevivió
+    if h.get('svc', 0) >= 2:                return ('🗺️ CONQUISTADOR', 't2')      # campeón en 2+ servidores
+    # ⚠️ la combinación antes que sus partes: cazar y que te cacen es más raro que cualquiera de las dos
+    if caz >= 1 and czd >= 1:               return ('🎯 CAZADOR CAZADO', 't2')
+    if h.get('perf', 0) >= 2:               return ('📋 SEMANA PERFECTA x%d' % h['perf'], 't2')
     if caz + h.get('cobro', 0) >= 2:        return ('🎯 CAZARRECOMPENSAS', 't2')  # cazas + precios cobrados
-    if h.get('busc', 0) >= 2 and czd == 0:  return ('🏃 FUGITIVO', 't2')          # buscado 2+ veces, nunca cazado
     if h.get('suelto'):                     return ('📜 SE BUSCA', 't2')          # suelto en el MW de esta semana
     if h.get('cab', 0) >= 1:                return ('💰 CABEZA CON PRECIO', 't2')
     if h.get('solo', 0) >= 1:               return ('🐺 LOBO SOLITARIO', 't2')    # cazó sin ayuda
@@ -265,8 +271,9 @@ def tag(c):
     if h.get('trios', 0) >= 5:              return ('🔺 REY DE LOS TRÍOS', 't2')
     if c.get('sem', 0) >= 5:                return ('🏁 SEMIFINALISTA SERIAL', 't2')
     if h.get('reciente') and pod >= 1:      return ('🌱 PROMESA', 't2')           # debutó hace 14 días y ya hizo podio
-    if h.get('perf', 0) >= 1:               return ('📋 SEMANA PERFECTA', 't2')
+    if srv >= 6:                            return ('🛫 NÓMADA', 't2')
     # ── t3 · lo que se ve ───────────────────────────────────────────────
+    if h.get('perf', 0) >= 1:               return ('📋 SEMANA PERFECTA', 't3')
     if srv >= 4:                            return ('🌍 TROTAMUNDOS', 't3')
     # 👥 «DE CREW» porque el 🧱 FUNDADOR de la Servidor es otra cosa (jugó el primer evento del servidor)
     if h.get('fcrew'):                      return ('👥 FUNDADOR DE CREW', 't3')  # armó su crew y pasó la semana
@@ -276,8 +283,8 @@ def tag(c):
     if ev >= 20:                            return ('🎖️ CURTIDO', 't3')
     if h.get('infalt'):                     return ('📅 INFALTABLE', 't3')        # jugó todas las semanas
     if srv >= 3:                            return ('🧳 VIAJERO', 't3')
-    if pod >= 1:                            return ('🥉 AL PODIO', 't3')
     # ── t4 · el piso ────────────────────────────────────────────────────
+    if pod >= 1:                            return ('🥉 AL PODIO', 't4')
     if ev >= 10:                            return ('🔟 DOBLE DÍGITO', 't4')
     if h.get('reciente'):                   return ('🆕 DEBUTANTE', 't4')
     return ('🎤 COMPETIDOR', 't4')

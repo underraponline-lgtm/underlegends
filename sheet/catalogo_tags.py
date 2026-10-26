@@ -36,16 +36,18 @@ NIVELES = {'t1': 'Legendario', 't2': 'Épico', 't3': 'Raro', 't4': 'Común'}
 CATALOGO = {
     'temporada': [
         ('👑 DINASTÍA', 't1', 'Ganar 20 eventos en la temporada.'),
-        ('💀 REGICIDA', 't1', 'Cazar a El Rey del Most Wanted.'),
-        ('🛡️ INTOCABLE', 't1', 'Que te busquen en el Most Wanted y sobrevivir.'),
-        ('🗺️ CONQUISTADOR', 't1', 'Salir campeón en 2 servidores distintos.'),
+        ('🌐 IMPERIO', 't1', 'Salir campeón en 3 servidores distintos.'),
         ('💯 BICENTENARIO', 't1', '200.000 puntos en la temporada.'),
         ('⭐ DECACAMPEÓN', 't1', 'Ganar 10 eventos.'),
-        ('🎯 CAZADOR CAZADO', 't1', 'Cazar a alguien en el Most Wanted y que también te cacen.'),
+        ('🏃 FUGITIVO', 't1', 'Que te busquen 2 veces o más y que nunca te cacen.'),
+        ('🔋 INAGOTABLE', 't1', '10 días con 2 eventos o más.'),
         ('🔥 EN LLAMAS', 't1', 'Una racha de 7 o más (si tu Servidor ya lo dice, acá va otro).'),
-        ('📋 SEMANA PERFECTA x%d', 't1', 'Completar las Misiones de 2 semanas o más.'),
+        ('💀 REGICIDA', 't2', 'Cazar a El Rey del Most Wanted.'),
+        ('🛡️ INTOCABLE', 't2', 'Que te busquen en el Most Wanted y sobrevivir.'),
+        ('🗺️ CONQUISTADOR', 't2', 'Salir campeón en 2 servidores distintos.'),
+        ('🎯 CAZADOR CAZADO', 't2', 'Cazar a alguien en el Most Wanted y que también te cacen.'),
+        ('📋 SEMANA PERFECTA x%d', 't2', 'Completar las Misiones de 2 semanas o más.'),
         ('🎯 CAZARRECOMPENSAS', 't2', 'Entre cazas y precios por cabeza cobrados, 2 o más.'),
-        ('🏃 FUGITIVO', 't2', 'Que te busquen 2 veces o más y que nunca te cacen.'),
         ('📜 SE BUSCA', 't2', 'Estar suelto en el Most Wanted de esta semana.'),
         ('💰 CABEZA CON PRECIO', 't2', 'Que alguien ponga precio por tu cabeza.'),
         ('🐺 LOBO SOLITARIO', 't2', 'Cazar a un buscado sin ayuda.'),
@@ -63,7 +65,8 @@ CATALOGO = {
         ('🔺 REY DE LOS TRÍOS', 't2', 'Ganar 5 batallas de a tres.'),
         ('🏁 SEMIFINALISTA SERIAL', 't2', 'Llegar a 5 semifinales.'),
         ('🌱 PROMESA', 't2', 'Hacer podio en tus primeros 14 días.'),
-        ('📋 SEMANA PERFECTA', 't2', 'Completar las Misiones de una semana.'),
+        ('🛫 NÓMADA', 't2', 'Jugar en 6 servidores o más.'),
+        ('📋 SEMANA PERFECTA', 't3', 'Completar las Misiones de una semana.'),
         ('🌍 TROTAMUNDOS', 't3', 'Jugar en 4 servidores o más.'),
         ('👥 FUNDADOR DE CREW', 't3', 'Armar tu crew y que pase su primera semana.'),
         ('🧟 RESUCITADO', 't3', 'Que te revivan en una llave.'),
@@ -72,7 +75,7 @@ CATALOGO = {
         ('🎖️ CURTIDO', 't3', 'Jugar 20 eventos.'),
         ('📅 INFALTABLE', 't3', 'Jugar todas las semanas que ya terminaron.'),
         ('🧳 VIAJERO', 't3', 'Jugar en 3 servidores.'),
-        ('🥉 AL PODIO', 't3', 'Hacer un podio.'),
+        ('🥉 AL PODIO', 't4', 'Hacer un podio.'),
         ('🔟 DOBLE DÍGITO', 't4', 'Jugar 10 eventos.'),
         ('🆕 DEBUTANTE', 't4', 'Haber debutado hace 14 días o menos.'),
         ('🎤 COMPETIDOR', 't4', 'El de todos los que juegan.'),
@@ -81,21 +84,25 @@ CATALOGO = {
         ('🏆 #1 COMPETITIVO', 't1', 'Ser el #1 del Competitivo.'),
         ('🥇 TOP 3', 't1', 'Estar en el top 3 del Competitivo.'),
         ('🧊 SANGRE FRÍA', 't1', 'Ganar 3 finales o más, y 3 de cada 4.'),
-        ('⭐ TOP 10', 't1', 'Estar en el top 10 del Competitivo.'),
-        ('🗡️ MATAGIGANTES', 't2', 'Ganarle un duelo a alguien con dos letras más que tú.'),
+        ('🎯 INFALIBLE', 't1', 'Ganar el 75 % de tus duelos, con 25 o más jugados.'),
+        ('🌪️ ARRASADOR', 't1', '30 duelos ganados.'),
+        ('⭐ TOP 10', 't2', 'Estar en el top 10 del Competitivo.'),
+        ('🐉 MATADRAGONES', 't2', 'Ganarles 2 duelos a rivales con dos letras más que tú.'),
         ('🎯 FRANCOTIRADOR', 't2', 'Ganar el 65 % de tus duelos, con 15 o más jugados.'),
         ('😈 BESTIA NEGRA', 't2', 'Ganarle 3 veces al mismo rival sin perder nunca.'),
         ('🔁 VENGADOR', 't2', 'Perder con alguien y después ganarle (2 veces).'),
         ('🤜 CLÁSICO', 't2', 'Cruzarte 4 veces o más con el mismo rival.'),
         ('🥈 A UN PASO', 't2', 'Perder 3 finales o más, con 1 ganada como mucho.'),
-        ('⚔️ DUELISTA', 't2', '10 duelos ganados, contra 8 rivales distintos (si tu Servidor ya lo dice, acá va otro).'),
-        ('🎯 COMPLETO', 't2', 'Las cinco dimensiones en 20 o más.'),
+        ('🦁 TEMERARIO', 't2', 'Enfrentar a 30 rivales distintos.'),
+        ('🗡️ MATAGIGANTES', 't3', 'Ganarle un duelo a alguien con dos letras más que tú.'),
+        ('⚔️ DUELISTA', 't3', '10 duelos ganados, contra 8 rivales distintos (si tu Servidor ya lo dice, acá va otro).'),
+        ('🎯 COMPLETO', 't3', 'Las cinco dimensiones en 20 o más.'),
         ('🧭 REGULAR', 't3', 'Tu mejor dimensión es la Constancia, con 50 o más.'),
         ('⚡ EFICIENTE', 't3', 'Tu mejor dimensión es la Eficiencia, con 40 o más.'),
         ('🌐 TODOTERRENO', 't3', 'Tu mejor dimensión es la Diversidad, con 40 o más.'),
         ('👊 DOMINADOR', 't3', 'Tu mejor dimensión es el Dominio, con 40 o más.'),
         ('🔥 RACHERO', 't3', 'Tu mejor dimensión es la Racha, con 40 o más.'),
-        ('🤝 SIN MIEDO', 't3', 'Enfrentar a 14 rivales distintos.'),
+        ('🤝 SIN MIEDO', 't4', 'Enfrentar a 14 rivales distintos.'),
         ('🎟️ RECIÉN CLASIFICADO', 't4', 'Entrar al Competitivo (11 eventos o menos).'),
         ('🎤 CLASIFICADO', 't4', 'El de todos los del Competitivo.'),
     ],
@@ -103,20 +110,23 @@ CATALOGO = {
         ('🧳 VISITANTE ILUSTRE', 't3', 'En la carta de un servidor que no es el tuyo, con podio ahí.'),
         ('🎟️ DE VISITA', 't4', 'En la carta de un servidor que no es el tuyo.'),
         ('👑 DUEÑO DE CASA', 't1', 'Ser el #1 de tu servidor (con 3 o más).'),
-        ('🏰 FORTALEZA', 't1', 'Ganar 3 eventos en tu servidor.'),
-        ('⭐ TOP DEL SERVIDOR', 't1', 'Estar en el 10 % de arriba de tu servidor.'),
-        ('🪓 VERDUGO DEL DUEÑO', 't1', 'Ganarle al #1 de tu servidor.'),
-        ('🛡️ INVICTO EN CASA', 't1', '3 duelos o más en tu servidor, todos ganados.'),
+        ('🏯 CIUDADELA', 't1', 'Ganar 5 eventos en tu servidor.'),
+        ('🏰 FORTALEZA', 't2', 'Ganar 3 eventos en tu servidor.'),
+        ('⭐ TOP DEL SERVIDOR', 't2', 'Estar en el 10 % de arriba de tu servidor.'),
+        ('🪓 VERDUGO DEL DUEÑO', 't2', 'Ganarle al #1 de tu servidor.'),
+        ('🛡️ INVICTO EN CASA', 't2', '3 duelos o más en tu servidor, todos ganados.'),
         ('🔥 EN LLAMAS', 't2', 'Una racha de 3 o más en tu servidor.'),
-        ('🏟️ FINALISTA DE CASA', 't2', 'Llegar a 3 finales en tu servidor.'),
+        ('🏅 VITRINA LLENA', 't2', '10 podios en tu servidor.'),
+        ('📖 HISTORIA VIVA', 't2', 'Jugar 30 eventos en tu servidor.'),
         ('⚔️ DUELISTA', 't2', '8 duelos o más en tu servidor, con el 65 % ganados.'),
         ('🏛️ PILAR', 't2', 'Jugar 15 eventos en tu servidor.'),
         ('🔑 LLAVE DE LA CASA', 't2', 'Jugar la mitad o más de los eventos de tu servidor.'),
         ('📜 BUSCADO EN CASA', 't2', 'Ser el Dueño de Casa del Most Wanted.'),
-        ('🏆 CAMPEÓN', 't2', 'Ganar un evento en tu servidor.'),
+        ('🏆 CAMPEÓN', 't3', 'Ganar un evento en tu servidor.'),
+        ('🏟️ FINALISTA DE CASA', 't3', 'Llegar a 3 finales en tu servidor.'),
         ('🧱 FUNDADOR', 't3', 'Haber jugado el primer evento de tu servidor.'),
         ('🏅 PODIOS', 't3', '2 podios en tu servidor.'),
-        ('📆 HABITUÉ', 't3', 'Jugar 5 eventos en tu servidor.'),
+        ('📆 HABITUÉ', 't4', 'Jugar 5 eventos en tu servidor.'),
         ('🌱 RECIÉN LLEGADO', 't4', 'Tu primer evento en ese servidor fue hace 7 días o menos.'),
         ('🎤 DE LA CASA', 't4', 'El de todos los de ese servidor.'),
     ],
@@ -131,28 +141,30 @@ CATALOGO = {
         ('CAMPEÓN NACIONAL', 't1', 'Un título nacional (desde la T2).'),
         ('EL MEJOR DE %d', 't1', 'Ser el #1 de tu país, con 20 o más.'),
         ('ORGULLO NACIONAL', 't1', 'Ser el único campeón de tu país en la temporada.'),
-        ('PRIMER CAMPEÓN', 't1', 'Ser el primero de tu país en salir campeón en la temporada.'),
         ('INTRATABLE', 't1', 'Ser el #1 de tu país con el 70 % de duelos ganados.'),
         ('Nº1 DEL PAÍS', 't1', 'Ser el #1 de tu país.'),
-        ('INVICTO NACIONAL', 't1', '3 duelos o más contra compatriotas, todos ganados.'),
+        ('AMO DEL DERBI', 't1', 'Ganar 10 duelos contra compatriotas.'),
+        ('GANA AFUERA', 't1', 'El 65 % de duelos ganados, con 25 eventos.'),
+        ('BANDERA VIVA', 't1', '20 podios.'),
+        ('PRIMER CAMPEÓN', 't2', 'Ser el primero de tu país en salir campeón en la temporada.'),
+        ('INVICTO NACIONAL', 't2', '3 duelos o más contra compatriotas, todos ganados.'),
         ('PODIO Y PUNTERÍA', 't2', 'Ser #2 o #3 de tu país con el 65 % de duelos ganados.'),
         ('PODIO NACIONAL', 't2', 'Ser #2 o #3 de tu país.'),
         ('REY DEL DERBI', 't2', 'Ganar 5 duelos contra compatriotas.'),
         ('CONQUISTA AFUERA', 't2', 'Ganar 15 duelos contra rivales de otros países.'),
-        ('SIN FRONTERAS', 't2', 'Enfrentar a rivales de 7 países.'),
-        ('INTERNACIONAL', 't2', 'Ganarle a rivales de 5 países.'),
-        ('EMBAJADOR', 't2', 'Jugar en 4 servidores o más.'),
-        ('PIONERO', 't2', 'Ser el primero de tu país en debutar en la temporada.'),
-        ('MEJOR AFUERA', 't2', 'Ganar 10 % más contra otros países que contra compatriotas.'),
-        ('FUERTE EN CASA', 't2', 'Ganar 10 % más contra compatriotas que contra otros países.'),
         ('TITULAR FIJO', 't2', 'Estar en el 25 % de arriba de tu país con el 60 % de duelos ganados.'),
-        ('GANA AFUERA', 't2', 'El 65 % de duelos ganados, con 25 eventos.'),
-        ('BANDERA VIVA', 't2', '20 podios.'),
+        ('MEDALLERO', 't2', '10 podios.'),
         ('EN RACHA', 't2', 'Una racha de 8 o más.'),
         ('KILÓMETROS', 't2', 'Jugar 40 eventos.'),
+        ('SIN FRONTERAS', 't3', 'Enfrentar a rivales de 7 países.'),
+        ('INTERNACIONAL', 't3', 'Ganarle a rivales de 5 países.'),
+        ('EMBAJADOR', 't3', 'Jugar en 4 servidores o más.'),
+        ('PIONERO', 't3', 'Ser el primero de tu país en debutar en la temporada.'),
+        ('MEJOR AFUERA', 't3', 'Ganar 10 % más contra otros países que contra compatriotas.'),
+        ('FUERTE EN CASA', 't3', 'Ganar 10 % más contra compatriotas que contra otros países.'),
         ('SELECCIONABLE', 't3', 'Estar en el 25 % de arriba de tu país.'),
-        ('MEDIA TABLA', 't3', 'Estar en la mitad de arriba de tu país.'),
-        ('DA LA CARA', 't3', 'Jugar 12 eventos.'),
+        ('MEDIA TABLA', 't4', 'Estar en la mitad de arriba de tu país.'),
+        ('DA LA CARA', 't4', 'Jugar 12 eventos.'),
         ('SIN RANKING', 't4', 'Todavía sin puesto en tu país.'),
         ('REPRESENTANTE', 't4', 'El de todos los que tienen la de País.'),
     ],
@@ -171,11 +183,11 @@ GRUPO_DE = {
         # temporada
         '💀 REGICIDA', '🛡️ INTOCABLE', '🗺️ CONQUISTADOR', '🎯 CAZADOR CAZADO', '🐺 LOBO SOLITARIO', '🚪 DEBUT CON CORONA',
         '🐦‍🔥 FÉNIX', '🗳️ FAVORITO DEL PÚBLICO', '⚡ RELÁMPAGO', '👥 FUNDADOR DE CREW', '🧟 RESUCITADO', '👑 CAMPEÓN x%d',
-        '📈 EN ASCENSO', '🥉 AL PODIO', '🔺 REY DE LOS TRÍOS', '🌱 PROMESA',
+        '📈 EN ASCENSO', '🥉 AL PODIO', '🔺 REY DE LOS TRÍOS', '🌱 PROMESA', '🌐 IMPERIO',
         # competitivo
-        '🗡️ MATAGIGANTES', '😈 BESTIA NEGRA', '🔁 VENGADOR', '🧊 SANGRE FRÍA',
+        '🗡️ MATAGIGANTES', '😈 BESTIA NEGRA', '🔁 VENGADOR', '🧊 SANGRE FRÍA', '🐉 MATADRAGONES',
         # servidor
-        '🪓 VERDUGO DEL DUEÑO', '🏆 CAMPEÓN', '🧱 FUNDADOR', '🏅 PODIOS', '🏰 FORTALEZA', '🏟️ FINALISTA DE CASA',
+        '🪓 VERDUGO DEL DUEÑO', '🏆 CAMPEÓN', '🧱 FUNDADOR', '🏅 PODIOS', '🏰 FORTALEZA', '🏟️ FINALISTA DE CASA', '🏯 CIUDADELA', '🏅 VITRINA LLENA',
         # país
         'INMORTAL', 'LEYENDA MUNDIAL', 'DOBLE CORONA', 'CAMPEÓN DEL MUNDO', 'DINASTÍA NACIONAL', 'BICAMPEÓN NACIONAL',
         'CAMPEÓN NACIONAL', 'PRIMER CAMPEÓN', 'PIONERO',
@@ -185,14 +197,14 @@ GRUPO_DE = {
         '👑 DINASTÍA', '💯 BICENTENARIO', '⭐ DECACAMPEÓN', '📋 SEMANA PERFECTA x%d', '🎯 CAZARRECOMPENSAS', '🏃 FUGITIVO',
         '💯 CENTENARIO', '⭐ PENTACAMPEÓN', '🥈 SIEMPRE EN LA FINAL', '📆 PODIO CADA SEMANA', '⚡ MARATONISTA',
         '🏁 SEMIFINALISTA SERIAL', '📋 SEMANA PERFECTA', '🌍 TROTAMUNDOS', '🎖️ CURTIDO', '📅 INFALTABLE', '🧳 VIAJERO',
-        '🔟 DOBLE DÍGITO',
+        '🔟 DOBLE DÍGITO', '🔋 INAGOTABLE', '🛫 NÓMADA',
         # competitivo
-        '🎯 FRANCOTIRADOR', '🤜 CLÁSICO', '🥈 A UN PASO', '⚔️ DUELISTA', '🎯 COMPLETO', '🤝 SIN MIEDO',
+        '🎯 FRANCOTIRADOR', '🤜 CLÁSICO', '🥈 A UN PASO', '⚔️ DUELISTA', '🎯 COMPLETO', '🤝 SIN MIEDO', '🎯 INFALIBLE', '🌪️ ARRASADOR', '🦁 TEMERARIO',
         # servidor
-        '🏛️ PILAR', '🔑 LLAVE DE LA CASA', '📆 HABITUÉ', '🧳 VISITANTE ILUSTRE',
+        '🏛️ PILAR', '🔑 LLAVE DE LA CASA', '📆 HABITUÉ', '🧳 VISITANTE ILUSTRE', '📖 HISTORIA VIVA',
         # país
         'ORGULLO NACIONAL', 'REY DEL DERBI', 'CONQUISTA AFUERA', 'SIN FRONTERAS', 'INTERNACIONAL', 'EMBAJADOR',
-        'GANA AFUERA', 'BANDERA VIVA', 'KILÓMETROS', 'DA LA CARA',
+        'GANA AFUERA', 'BANDERA VIVA', 'KILÓMETROS', 'DA LA CARA', 'AMO DEL DERBI', 'MEDALLERO',
     ],
     'estado': [
         # temporada
@@ -267,12 +279,59 @@ def indices():
     return {c: {t: i for i, (t, _n, _p) in enumerate(xs)} for c, xs in CATALOGO.items()}
 
 
-def de_cada_uno(textos=None):
+def todos(fn):
+    """🎒 LA MISMA CASCADA, PERO CON TODOS LOS QUE SE CUMPLEN (26/10/2026). La cascada de cada carta corta en el primero
+    que se cumple —es lo que la carta muestra—, así que el inventario guardaba un solo TAG por carta y quien cumplía
+    cinco tenía uno para elegir. Esto lee la función de la carta con `ast`, cambia cada `return X` por «anotar X y
+    seguir», y la compila al lado: el MISMO código, sin tocar la carta (tocarla la redibujaría para todos).
+    Devuelve una función con la misma firma que da `[(texto, nivel)]` (o `[(id, texto, nivel)]`), en el orden de la
+    cascada: el primero es el que la carta muestra."""
+    import inspect
+    import textwrap
+    arbol = ast.parse(textwrap.dedent(inspect.getsource(fn)))
+    f = arbol.body[0]
+
+    class _Anotar(ast.NodeTransformer):
+        def visit_FunctionDef(self, n):
+            return self.generic_visit(n) if n is f else n     # una función de adentro no es la cascada
+
+        def visit_Return(self, n):
+            if n.value is None:
+                return n
+            llamada = ast.Call(ast.Attribute(ast.Name('_todos', ast.Load()), 'append', ast.Load()), [n.value], [])
+            return ast.copy_location(ast.Expr(llamada), n)
+
+    f = _Anotar().visit(f)
+    f.body.insert(0, ast.Assign([ast.Name('_todos', ast.Store())], ast.List([], ast.Load())))
+    f.body.append(ast.Return(ast.Name('_todos', ast.Load())))
+    f.name = fn.__name__ + '__todos'
+    f.decorator_list = []
+    ast.fix_missing_locations(arbol)
+    exec(compile(arbol, '<%s todos>' % fn.__name__, 'exec'), fn.__globals__)
+    g = fn.__globals__[f.name]
+
+    def correr(*a, **k):
+        # ⚠️ seguir de largo después de un `return` puede pasar por código que la cascada protegía con él: si revienta,
+        # queda lo que la carta muestra, que nunca es menos que antes
+        try:
+            xs = g(*a, **k)
+        except Exception:                                # noqa: BLE001
+            xs = []
+        if not xs:
+            r = fn(*a, **k)
+            xs = [r] if r else []
+        return xs
+    return correr
+
+
+def de_cada_uno(textos=None, todos_los=None):
     """`{clave: [temporada, competitivo, servidor, país]}`: el lugar en el catálogo del TAG que hoy muestra cada carta de
     cada uno, o -1. Corre las cuatro cascadas de verdad sobre `datos/`, como `hechos_tags.contar()`.
 
     `textos`: un dict que se llena con `{clave: [texto, texto, texto, texto]}` (el TAG tal como sale, con su número:
-    «👑 CAMPEÓN x2»), para el inventario (`bot/tags_inventario.py`)."""
+    «👑 CAMPEÓN x2»), para el inventario (`bot/tags_inventario.py`).
+    `todos_los`: lo mismo pero con TODOS los que cumple en cada carta, `{clave: [[texto…], [texto…], …]}` (ver `todos()`):
+    es lo que se suma al inventario."""
     import importlib.util
     import hechos_tags as H
     from comun.claves import clave as K
@@ -301,47 +360,68 @@ def de_cada_uno(textos=None):
 
     ix = indices()
     out = collections.defaultdict(lambda: [-1, -1, -1, -1])
+
+    def anotar(k, i, lista):
+        if todos_los is not None and lista:
+            todos_los.setdefault(k, [[], [], [], []])[i] = [x[-2] for x in lista]
+
     nv3 = mod('01_Temporada', 'normal_v3.py', '_cat_nv3')
+    nv3_t = todos(nv3.tag) if todos_los is not None else None
     for f in T:
         if f.get('ev'):
-            t, _n = nv3.tag(dict(f, tg_t=ht.get(K(f['raw']), {})))
+            fila = dict(f, tg_t=ht.get(K(f['raw']), {}))
+            t, _n = nv3.tag(fila)
             out[K(f['raw'])][0] = ix['temporada'].get(clave_tag(t), -1)
             if textos is not None:
                 textos.setdefault(K(f['raw']), ['', '', '', ''])[0] = t
+            if nv3_t:
+                anotar(K(f['raw']), 0, nv3_t(fila))
     gc = mod(os.path.join('02_Competitivo', 'v2'), 'gencomp.py', '_cat_gc')
+    gc_t = todos(gc.TAG) if todos_los is not None else None
     for f in C:
         if f.get('rango'):
-            t, _n = gc.TAG(dict(f, tg_c=hc.get(K(f['raw']), {})))
+            fila = dict(f, tg_c=hc.get(K(f['raw']), {}))
+            t, _n = gc.TAG(fila)
             out[K(f['raw'])][1] = ix['competitivo'].get(clave_tag(t), -1)
             if textos is not None:
                 textos.setdefault(K(f['raw']), ['', '', '', ''])[1] = t
+            if gc_t:
+                anotar(K(f['raw']), 1, gc_t(fila))
     from comun import titulos as TIT
+    tit_t = todos(TIT.elegir) if todos_los is not None else None
     ps = H.con_hechos(D['ps'], C, D)
     for f in C:
         x = (ps.get(f['raw']) or {}).get(f.get('sv'))
         if not x:
             continue
         a, _s, b = str(f.get('pos_sv') or '').partition('/')
-        _i, t, _n = TIT.elegir(dict(pos_sv=int(a) if a.isdigit() else 0, total_sv=int(b) if b.isdigit() else 0,
-                                    titulos=x.get('oro', 0), podios=x.get('pod', 0), racha=x.get('racha') or '0/0',
-                                    duelos=x.get('duelos') or '0/0', eventos=x.get('ev', 0), hechos=x.get('tg') or {}, casa=True))
+        dato = dict(pos_sv=int(a) if a.isdigit() else 0, total_sv=int(b) if b.isdigit() else 0,
+                    titulos=x.get('oro', 0), podios=x.get('pod', 0), racha=x.get('racha') or '0/0',
+                    duelos=x.get('duelos') or '0/0', eventos=x.get('ev', 0), hechos=x.get('tg') or {}, casa=True)
+        _i, t, _n = TIT.elegir(dato)
         out[K(f['raw'])][2] = ix['servidor'].get(clave_tag(t), -1)
         if textos is not None:
             textos.setdefault(K(f['raw']), ['', '', '', ''])[2] = t
+        if tit_t:
+            anotar(K(f['raw']), 2, tit_t(dato))
     from comun.requisitos import falta
     mq = mod('04_Pais', 'maqueta.py', '_cat_mq')
+    mq_t = todos(mq.tag) if todos_los is not None else None
     tt = {x['raw']: x for x in T}
     for f in C:
         if falta('pais', f) is not None:
             continue
         t0 = tt.get(f['raw'], {})
         h = dict(hp.get(K(f['raw']), {}), srv=t0.get('srv', 0))
-        txt, _n = mq.tag(f.get('pos_pais') or '', 0, 0, t0.get('ev', f.get('ev', 0)), t0.get('pod', 0), f.get('wr') or '0%',
-                         f.get('rch_max', 0), '%d/%d' % (f.get('dna_v', 0), f.get('dna_t', 0)),
-                         '%d/%d' % (f.get('din_v', 0), f.get('din_t', 0)), h)
+        args = (f.get('pos_pais') or '', 0, 0, t0.get('ev', f.get('ev', 0)), t0.get('pod', 0), f.get('wr') or '0%',
+                f.get('rch_max', 0), '%d/%d' % (f.get('dna_v', 0), f.get('dna_t', 0)),
+                '%d/%d' % (f.get('din_v', 0), f.get('din_t', 0)), h)
+        txt, _n = mq.tag(*args)
         out[K(f['raw'])][3] = ix['pais'].get(clave_tag(txt), -1)
         if textos is not None:
             textos.setdefault(K(f['raw']), ['', '', '', ''])[3] = txt
+        if mq_t:
+            anotar(K(f['raw']), 3, mq_t(*args))
     return dict(out)
 
 

@@ -64,12 +64,17 @@ def _escribir(p, d):
 
 
 def sumar(ganados, textos, temp, ahora_ms):
-    """Suma a `ganados` lo que hoy muestra cada carta (`textos`: `{clave: [t, c, s, p]}`), sólo lo que se guarda.
-    Devuelve cuántos nuevos."""
+    """Suma a `ganados` lo que hoy cumple cada uno en cada carta (`textos`: `{clave: [t, c, s, p]}`, donde cada uno es un
+    texto o una lista de textos), sólo lo que se guarda. Devuelve cuántos nuevos.
+
+    🎒 TODOS LOS QUE CUMPLE, NO SÓLO EL QUE SE VE (26/10/2026): antes se sumaba el TAG que mostraba cada carta —la
+    cascada corta en el primero—, así que quien cumplía cinco tenía uno para elegir. Ahora llegan todos
+    (`catalogo_tags.todos()`)."""
     import catalogo_tags as CAT
     nuevos = 0
     for k, ts in textos.items():
-        for carta, t in zip(CARTAS, ts):
+        for carta, lista in zip(CARTAS, ts):
+          for t in (lista if isinstance(lista, list) else [lista]):
             if not t:
                 continue
             tag = CAT.clave_tag(t)
@@ -100,6 +105,11 @@ def del_dueno(carta):
             if CAT.GRUPO.get(t) in CAT.GUARDA}
 
 
+def _titulo_carta():
+    import pase
+    return pase.TITULO_CARTA
+
+
 def revisar(elegidos_obj, ganados, temp):
     """`{clave: {carta: [texto, nivel]}}`: lo elegido que vale. `elegidos_obj`: `{clave: {carta: tag}}` del objeto (`tag`
     es la clave del catálogo, o `pase:<título>` ya revisado por el objeto)."""
@@ -113,7 +123,8 @@ def revisar(elegidos_obj, ganados, temp):
                 continue
             if tag.startswith('pase:'):
                 tit = tag[5:].strip()
-                if tit and len(tit) <= 40:
+                # ✨ cada título del Pase va en su carta (`pase.TITULO_CARTA`, Dlx 26/10/2026)
+                if tit and len(tit) <= 40 and _titulo_carta().get(tit, carta) == carta:
                     out.setdefault(k, {})[carta] = [PASE_PRE + tit.upper(), PASE_NIVEL]
                 continue
             grupo = CAT.GRUPO.get(tag)
@@ -154,9 +165,9 @@ def correr(aplicar):
     from comun import temporada as TM
     temp = TM.ACTUAL
     ganados = _leer(GANADOS)
-    textos = {}
-    CAT.de_cada_uno(textos)
-    nuevos = sumar(ganados, textos, temp, int(time.time() * 1000))
+    textos, todos = {}, {}
+    CAT.de_cada_uno(textos, todos)
+    nuevos = sumar(ganados, todos or textos, temp, int(time.time() * 1000))
     print('   🎒 inventario: %d personas · %d TAG(s) nuevos' % (len(ganados), nuevos))
     obj = traer(ganados, temp) if aplicar else None
     if obj is None:
@@ -185,14 +196,19 @@ def _self_check():
     n = sumar(g, {'ana': ['💀 REGICIDA', '', '👑 DUEÑO DE CASA', ''], 'bea': ['👑 CAMPEÓN x2', '', '🏛️ PILAR', '']}, 't1', 1)
     ok(n == 3 and '👑 DUEÑO DE CASA' not in g['ana'].get('servidor', {}) and g['bea']['temporada']['👑 CAMPEÓN x%d'][0] == '👑 CAMPEÓN x2',
        'al inventario van los para siempre y los de temporada, con su número; los de estado no')
+    h = {}
+    ok(sumar(h, {'ana': [['💀 REGICIDA', '👑 CAMPEÓN x2'], [], ['👑 DUEÑO DE CASA', '🏛️ PILAR'], []]}, 't1', 1) == 3,
+       'con todos los que cumple llegan todos (menos los de estado)')
     sumar(g, {'bea': ['👑 CAMPEÓN x3', '', '', '']}, 't1', 2)
     ok(g['bea']['temporada']['👑 CAMPEÓN x%d'] == ['👑 CAMPEÓN x3', 't1', 1], 'el número se pone al día y la fecha queda')
     el = revisar({'ana': {'temporada': '💀 REGICIDA', 'servidor': '👑 DUEÑO DE CASA'},
                   'bea': {'servidor': '🏛️ PILAR', 'temporada': 'pase:Pilar de UL', 'pais': 'auto'},
                   'cata': {'temporada': '💀 REGICIDA'}}, g, 't1')
-    ok(el.get('ana') == {'temporada': ['💀 REGICIDA', 't1']} and 'cata' not in el
+    ok(el.get('ana') == {'temporada': ['💀 REGICIDA', 't2']} and 'cata' not in el
        and el['bea'] == {'servidor': ['🏛️ PILAR', 't2'], 'temporada': ['✨ PILAR DE UL', 't1']},
        'lo elegido: el que tiene pasa, uno de estado o que no tiene no, y el título del Pase como edición limitada')
+    ok(revisar({'bea': {'temporada': 'pase:Del Pase', 'competitivo': 'pase:Del Pase'}}, g, 't1').get('bea')
+       == {'competitivo': ['✨ DEL PASE', 't1']}, 'un título del Pase va sólo en su carta (✨ edición limitada por carta)')
     ok('servidor' not in revisar({'bea': {'servidor': '🏛️ PILAR'}}, g, 't2').get('bea', {}),
        'uno de temporada de una temporada que terminó ya no se pone')
     d = revisar({DUENO_K: {'temporada': '👑 CAMPEÓN x%d', 'servidor': '👑 DUEÑO DE CASA'}}, {}, 't1')

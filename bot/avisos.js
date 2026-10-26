@@ -12976,7 +12976,10 @@ export class Avisos {
     const elegidos = {};
     for (const r of this.sql.exec('SELECT carta, tag FROM tag_elige WHERE quien = ?', quien).toArray()) elegidos[r.carta] = r.tag;
     const cp = this.sql.exec('SELECT carta FROM carta_principal WHERE quien = ?', quien).toArray()[0];
-    return { k, temp: G.temp || '', ganados: (k && G.g && G.g[k]) || {}, titulos: this.titulosDe(quien), elegidos, dueno: quien === DUENO,
+    // ✨ `titulo_carta`: en qué carta va cada título (`bot/pase.py` TITULO_CARTA): la edición limitada también es de una carta
+    const P = this.paseDatos();
+    return { k, temp: G.temp || '', ganados: (k && G.g && G.g[k]) || {}, titulos: this.titulosDe(quien),
+      titulo_carta: (P.cfg && P.cfg.titulo_carta) || {}, elegidos, dueno: quien === DUENO,
       principal: cp ? cp.carta : '' };
   }
 
@@ -13020,6 +13023,9 @@ export class Avisos {
     }
     if (tag.startsWith('pase:')) {
       if (!this.titulosDe(quien).includes(tag.slice(5))) return { error: 'no lo tienes' };
+      // ✨ cada título va en su carta (Dlx, 26/10/2026); un Pase guardado sin el mapa todavía deja ponerlo en cualquiera
+      const tc = (this.paseDatos().cfg || {}).titulo_carta;
+      if (tc && Object.keys(tc).length && tc[tag.slice(5)] !== carta) return { error: 'ese título va en otra carta' };
     } else if (quien !== DUENO) {
       const yo = this.tagsMios(quien);
       if (!((yo.ganados || {})[carta] || {})[tag]) return { error: 'no lo tienes' };

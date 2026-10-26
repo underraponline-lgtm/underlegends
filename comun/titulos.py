@@ -91,24 +91,32 @@ def elegir(d):
             return ('visitante', '\U0001F9F3 VISITANTE ILUSTRE', 't3')
         return ('visita', '\U0001F39F️ DE VISITA', 't4')
 
+    # ⚖️ LA RAREZA SALE DE CUÁNTOS LA TIENEN (26/10/2026, Dlx: «regicida no creo que sea tan legendario… hay cosas más
+    # difíciles que eso»). Medido sobre `datos/` con `catalogo_tags.de_cada_uno(todos_los=…)`: Legendario es lo que
+    # tiene ~2 % o menos y cuesta de verdad; Épico, hasta ~8 %; Raro, hasta ~25 %; Común, el resto. Los números de
+    # cada uno están en `sheet/catalogo_tags.py`.
     # ── t1 · lo que casi nadie tiene ────────────────────────────────────
     # ⚠️ el umbral de 3 vale igual que en los puestos: ser "1 de 2" no es
     # ser dueño de casa. Es la misma regla que deja pos_sv vacio.
     if pos == 1 and tot >= 3:
         return ('dueno', '\U0001F451 DUEÑO DE CASA', 't1')
-    if tit >= 3:
-        return ('fortaleza', '\U0001F3F0 FORTALEZA', 't1')
-    if pos and tot >= 3 and pos <= max(3, tot * 0.1):
-        return ('top', '⭐ TOP DEL SERVIDOR', 't1')
-    if h.get('dv'):
-        return ('verdugo', '\U0001FA93 VERDUGO DEL DUEÑO', 't1')
-    if dj >= 3 and dg == dj:
-        return ('invicto', '\U0001F6E1️ INVICTO EN CASA', 't1')
+    if tit >= 5:
+        return ('ciudadela', '\U0001F3EF CIUDADELA', 't1')
     # ── t2 · lo que distingue ───────────────────────────────────────────
+    if tit >= 3:
+        return ('fortaleza', '\U0001F3F0 FORTALEZA', 't2')
+    if pos and tot >= 3 and pos <= max(3, tot * 0.1):
+        return ('top', '⭐ TOP DEL SERVIDOR', 't2')
+    if h.get('dv'):
+        return ('verdugo', '\U0001FA93 VERDUGO DEL DUEÑO', 't2')
+    if dj >= 3 and dg == dj:
+        return ('invicto', '\U0001F6E1️ INVICTO EN CASA', 't2')
     if rch >= 3:
         return ('llamas', '\U0001F525 EN LLAMAS', 't2')
-    if (h.get('fin') or 0) >= 3:
-        return ('finalista', '\U0001F3DF️ FINALISTA DE CASA', 't2')
+    if pod >= 10:
+        return ('vitrina', '\U0001F3C5 VITRINA LLENA', 't2')
+    if evt >= 30:
+        return ('historia', '\U0001F4D6 HISTORIA VIVA', 't2')
     if dj >= 8 and dg / dj >= 0.65:
         return ('duelista', '⚔️ DUELISTA', 't2')
     if evt >= 15:
@@ -117,16 +125,18 @@ def elegir(d):
         return ('llave', '\U0001F511 LLAVE DE LA CASA', 't2')
     if h.get('bcasa'):
         return ('buscado', '\U0001F4DC BUSCADO EN CASA', 't2')
-    if tit >= 1:
-        return ('campeon', '\U0001F3C6 CAMPEÓN', 't2')
     # ── t3 · lo que se ve ───────────────────────────────────────────────
+    if tit >= 1:
+        return ('campeon', '\U0001F3C6 CAMPEÓN', 't3')
+    if (h.get('fin') or 0) >= 3:
+        return ('finalista', '\U0001F3DF️ FINALISTA DE CASA', 't3')
     if h.get('fund'):
         return ('fundador', '\U0001F9F1 FUNDADOR', 't3')
     if pod >= 2:
         return ('podios', '\U0001F3C5 PODIOS', 't3')
-    if evt >= 5:
-        return ('habitue', '\U0001F4C6 HABITUÉ', 't3')
     # ── t4 · el piso ────────────────────────────────────────────────────
+    if evt >= 5:
+        return ('habitue', '\U0001F4C6 HABITUÉ', 't4')
     if h.get('nuevo'):
         return ('nuevo', '\U0001F331 RECIÉN LLEGADO', 't4')
     return ('casa', '\U0001F3A4 DE LA CASA', 't4')

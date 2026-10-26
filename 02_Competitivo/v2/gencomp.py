@@ -333,28 +333,36 @@ def TAG(c):
     except ValueError:
         wr = 0.0
     dims = [c.get(d, 0) for d in ('E', 'C', 'Dm', 'T', 'V')]
+    # ⚖️ LA RAREZA SALE DE CUÁNTOS LA TIENEN (26/10/2026, Dlx: «regicida no creo que sea tan legendario… hay cosas más
+    # difíciles que eso»). Medido sobre `datos/` (sobre los del Competitivo, no sobre todos) con `catalogo_tags.de_cada_uno(todos_los=…)`: Legendario es lo que
+    # tiene ~2 % o menos y cuesta de verdad; Épico, hasta ~8 %; Raro, hasta ~25 %; Común, el resto. Los números de
+    # cada uno están en `sheet/catalogo_tags.py`.
     # ── t1 · lo que casi nadie tiene ──
     if pos == 1:   return ('🏆 #1 COMPETITIVO','t1')
     if pos <= 3:   return ('🥇 TOP 3','t1')
     if fg >= 3 and fg >= 3 * fp:                        return ('🧊 SANGRE FRÍA', 't1')   # 3+ finales, 75 %+ ganadas
-    if pos <= 10:  return ('⭐ TOP 10','t1')
+    if wr >= 75 and c.get('duel_t', 0) >= 25:           return ('🎯 INFALIBLE', 't1')
+    if h.get('dg', 0) >= 30:                            return ('🌪️ ARRASADOR', 't1')     # 30+ duelos ganados
     # ── t2 · lo que distingue ──
-    if h.get('mata', 0) >= 1:                           return ('🗡️ MATAGIGANTES', 't2')  # a alguien 2 tramos arriba
+    if pos <= 10:  return ('⭐ TOP 10','t2')
+    if h.get('mata', 0) >= 2:                           return ('🐉 MATADRAGONES', 't2')  # 2+ a alguien 2 tramos arriba
     if wr >= 65 and c.get('duel_t', 0) >= 15:           return ('🎯 FRANCOTIRADOR', 't2')
     if h.get('bestia', 0) >= 3:                         return ('😈 BESTIA NEGRA', 't2')  # 3+ a uno, sin perder
     if h.get('vengo', 0) >= 2:                          return ('🔁 VENGADOR', 't2')      # perdió con X y le ganó
     if h.get('clasico', 0) >= 4:                        return ('🤜 CLÁSICO', 't2')       # 4+ cruces con el mismo
     if fp >= 3 and fg <= 1:                             return ('🥈 A UN PASO', 't2')
+    if h.get('riv', 0) >= 30:                           return ('🦁 TEMERARIO', 't2')     # 30+ rivales distintos
+    # ── t3 · lo que se ve, y el arquetipo: tu mejor dimensión ──
+    if h.get('mata', 0) >= 1:                           return ('🗡️ MATAGIGANTES', 't3')  # a alguien 2 tramos arriba
     if (h.get('dg', 0) >= 10 and h.get('venc', 0) >= 8
-            and h.get('svtag') != 'duelista'):          return ('⚔️ DUELISTA', 't2')
-    if min(dims) >= 20:                                 return ('🎯 COMPLETO', 't2')      # las cinco ≥ 20
-    # ── t3 · el arquetipo: tu mejor dimensión ──
+            and h.get('svtag') != 'duelista'):          return ('⚔️ DUELISTA', 't3')
+    if min(dims) >= 20:                                 return ('🎯 COMPLETO', 't3')      # las cinco ≥ 20
     mejor = _mejor_dim(c)
     for d, umbral, texto in DIMS_TAG:
         if mejor == d and c.get(d, 0) >= umbral:
             return (texto, 't3')
-    if h.get('riv', 0) >= 14:                           return ('🤝 SIN MIEDO', 't3')     # 14+ rivales distintos
     # ── t4 · el piso ──
+    if h.get('riv', 0) >= 14:                           return ('🤝 SIN MIEDO', 't4')     # 14+ rivales distintos
     if c.get('ev', 0) <= 11:                            return ('🎟️ RECIÉN CLASIFICADO', 't4')
     return ('🎤 CLASIFICADO','t4')
 
