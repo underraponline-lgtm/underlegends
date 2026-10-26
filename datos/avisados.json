@@ -22472,5 +22472,332 @@
    ]
   ],
   "v": 2
+ },
+ "516": {
+  "antes": {
+   "Andres": [
+    214,
+    41,
+    true
+   ],
+   "Calíz": [
+    53,
+    70,
+    false
+   ],
+   "Delux": [
+    26,
+    29,
+    false
+   ],
+   "Deuxs": [
+    103,
+    158,
+    false
+   ],
+   "Dominick": [
+    213,
+    40,
+    true
+   ],
+   "Ed": [
+    295,
+    221,
+    true
+   ],
+   "Guess": [
+    20,
+    22,
+    false
+   ],
+   "Gus": [
+    120,
+    196,
+    false
+   ],
+   "MCO": [
+    15,
+    16,
+    false
+   ],
+   "Makmah": [
+    2,
+    2,
+    false
+   ],
+   "Neo": [
+    215,
+    43,
+    true
+   ],
+   "Oasis": [
+    1,
+    1,
+    false
+   ],
+   "Panchok": [
+    6,
+    7,
+    false
+   ],
+   "Rbk": [
+    121,
+    197,
+    false
+   ],
+   "Richard": [
+    95,
+    137,
+    false
+   ],
+   "Saiko": [
+    106,
+    165,
+    false
+   ],
+   "Six": [
+    12,
+    13,
+    false
+   ],
+   "Xubaru": [
+    24,
+    27,
+    false
+   ],
+   "doble h": [
+    138,
+    247,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Oasis",
+    "Ed, Edd y Eddy 🇻🇪",
+    "Oasis"
+   ],
+   [
+    "Delux, Panchok",
+    "Gus",
+    "Delux, Panchok"
+   ],
+   [
+    "MATUK 🇦🇷",
+    "LA ORDEN DEL GRIAL 🇵🇪 🇨🇱 🇦🇷",
+    "MATUK 🇦🇷"
+   ],
+   [
+    "Andres, Deuxs",
+    "doble h",
+    "Andres, Deuxs"
+   ],
+   [
+    "EddyLaSombra 🇱🇷",
+    "Saiko, Guess",
+    "EddyLaSombra 🇱🇷"
+   ],
+   [
+    "MCO",
+    "Six, Neo",
+    "MCO"
+   ],
+   [
+    "Rbk, Richard",
+    "Dominick",
+    "Rbk, Richard"
+   ],
+   [
+    "Makmah, Xubaru",
+    "Calíz",
+    "Makmah, Xubaru"
+   ],
+   [
+    "Oasis",
+    "EddyLaSombra 🇱🇷",
+    "Oasis"
+   ],
+   [
+    "MCO",
+    "Panchok, Delux",
+    "MCO"
+   ],
+   [
+    "MATUK 🇦🇷",
+    "Rbk, Richard",
+    "MATUK 🇦🇷"
+   ],
+   [
+    "Andres, Deuxs",
+    "Makmah, Xubaru",
+    "Andres, Deuxs"
+   ],
+   [
+    "Oasis",
+    "MATUK 🇦🇷",
+    "Oasis"
+   ],
+   [
+    "MCO",
+    "Andres, Deuxs",
+    "MCO"
+   ],
+   [
+    "Oasis",
+    "MCO",
+    "Oasis"
+   ]
+  ],
+  "ev_antes": {
+   "Andres": 15,
+   "Calíz": 11,
+   "Delux": 11,
+   "Deuxs": 5,
+   "Dominick": 24,
+   "Ed": 1,
+   "Guess": 18,
+   "Gus": 6,
+   "MCO": 25,
+   "Makmah": 72,
+   "Neo": 11,
+   "Oasis": 30,
+   "Panchok": 23,
+   "Rbk": 2,
+   "Richard": 12,
+   "Saiko": 3,
+   "Six": 27,
+   "Xubaru": 13,
+   "doble h": 2
+  },
+  "fecha": "25/10",
+  "firma": "31e91c718966bfbb",
+  "msg": "1564072873163890759",
+  "nombre": "__ AGUANTE EL ROJO Y EL BARCELONA Multiverse __",
+  "num": 516,
+  "participantes": 23,
+  "sello": {
+   "Oasis": "f83006df7e1c:e8f4f15f7e3a"
+  },
+  "sv": "FFA",
+  "t": "2026-10-26T00:53:48Z",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
+    "MCO",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "MATUK 🇦🇷",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Andres",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Deuxs",
+    "Semifinal",
+    2625
+   ],
+   [
+    "EddyLaSombra 🇱🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Panchok",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Delux",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Rbk",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Richard",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Xubaru",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Gus",
+    "Octavos",
+    1250
+   ],
+   [
+    "LA ORDEN DEL GRIAL 🇵🇪 🇨🇱 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "doble h",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ed",
+    "Octavos",
+    625
+   ],
+   [
+    "Edd y Eddy 🇻🇪",
+    "Octavos",
+    625
+   ],
+   [
+    "Saiko",
+    "Octavos",
+    625
+   ],
+   [
+    "Guess",
+    "Octavos",
+    625
+   ],
+   [
+    "Six",
+    "Octavos",
+    625
+   ],
+   [
+    "Neo",
+    "Octavos",
+    625
+   ]
+  ],
+  "v": 2
  }
 }

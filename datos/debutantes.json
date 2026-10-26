@@ -313,8 +313,8 @@
   "Ed": {
    "avisado": "2026-10-21",
    "chat": "2026-10-22",
-   "con": null,
-   "cumplido": "",
+   "con": 516,
+   "cumplido": "2026-10-25T22:13:32+00:00",
    "debut": "2026-10-22T00:30:05+00:00",
    "did": "",
    "evento": "qcyo rapeen 2",
@@ -326,14 +326,25 @@
   "Edd y Eddy": {
    "avisado": "2026-10-21",
    "chat": "2026-10-22",
-   "con": null,
-   "cumplido": "",
+   "con": 516,
+   "cumplido": "2026-10-25T22:13:32+00:00",
    "debut": "2026-10-22T00:30:05+00:00",
    "did": "",
    "evento": "qcyo rapeen 2",
    "n": 497,
    "sv": "FFA",
    "vence": "2026-10-29T00:30:05+00:00",
+   "vencido": false
+  },
+  "EddyLaSombra": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T22:13:32+00:00",
+   "did": "",
+   "evento": "AGUANTE EL ROJO Y EL BARCELONA Multiverse",
+   "n": 516,
+   "sv": "FFA",
+   "vence": "2026-11-01T22:13:32+00:00",
    "vencido": false
   },
   "FOTOSÍNTESIS": {
@@ -574,6 +585,17 @@
    "vence": "2026-10-26T16:52:32+00:00",
    "vencido": false
   },
+  "LA ORDEN DEL GRIAL": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-25T22:13:32+00:00",
+   "did": "",
+   "evento": "AGUANTE EL ROJO Y EL BARCELONA Multiverse",
+   "n": 516,
+   "sv": "FFA",
+   "vence": "2026-11-01T22:13:32+00:00",
+   "vencido": false
+  },
   "LSO": {
    "avisado": "2026-10-25",
    "con": null,
@@ -654,8 +676,8 @@
   "MATUK": {
    "avisado": "2026-10-25",
    "chat": "2026-10-25",
-   "con": null,
-   "cumplido": "",
+   "con": 516,
+   "cumplido": "2026-10-25T22:13:32+00:00",
    "debut": "2026-10-25T00:48:12+00:00",
    "did": "",
    "evento": "FREESTYLE FOR ALL ESPECIAL 1800 2v2",

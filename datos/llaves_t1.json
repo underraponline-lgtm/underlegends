@@ -32575,5 +32575,276 @@
     625
    ]
   ]
+ },
+ "516": {
+  "dia": "2026-10-25",
+  "escala": "16+",
+  "fecha": "25/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1564039237643411570"
+  ],
+  "n": 516,
+  "nombre": "AGUANTE EL ROJO Y EL BARCELONA Multiverse",
+  "participantes": 23,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Ed, Edd y Eddy 🇻🇪"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Delux, Panchok",
+       "Gus"
+      ],
+      "Delux, Panchok",
+      ""
+     ],
+     [
+      [
+       "MATUK 🇦🇷",
+       "LA ORDEN DEL GRIAL 🇵🇪 🇨🇱 🇦🇷"
+      ],
+      "MATUK 🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Andres, Deuxs",
+       "doble h"
+      ],
+      "Andres, Deuxs",
+      ""
+     ],
+     [
+      [
+       "EddyLaSombra 🇱🇷",
+       "Saiko, Guess"
+      ],
+      "EddyLaSombra 🇱🇷",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "Six, Neo"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "Rbk, Richard",
+       "Dominick"
+      ],
+      "Rbk, Richard",
+      ""
+     ],
+     [
+      [
+       "Makmah, Xubaru",
+       "Calíz"
+      ],
+      "Makmah, Xubaru",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "EddyLaSombra 🇱🇷"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "Panchok, Delux"
+      ],
+      "MCO",
+      ""
+     ],
+     [
+      [
+       "MATUK 🇦🇷",
+       "Rbk, Richard"
+      ],
+      "MATUK 🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Andres, Deuxs",
+       "Makmah, Xubaru"
+      ],
+      "Andres, Deuxs",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "MATUK 🇦🇷"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "MCO",
+       "Andres, Deuxs"
+      ],
+      "MCO",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "MCO"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
+    "MCO",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "MATUK 🇦🇷",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Andres",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Deuxs",
+    "Semifinal",
+    2625
+   ],
+   [
+    "EddyLaSombra 🇱🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Delux",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gus",
+    "Octavos",
+    1250
+   ],
+   [
+    "LA ORDEN DEL GRIAL 🇵🇪 🇨🇱 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Panchok",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Rbk",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Richard",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Xubaru",
+    "Cuartos",
+    1250
+   ],
+   [
+    "doble h",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ed",
+    "Octavos",
+    625
+   ],
+   [
+    "Edd y Eddy 🇻🇪",
+    "Octavos",
+    625
+   ],
+   [
+    "Guess",
+    "Octavos",
+    625
+   ],
+   [
+    "Neo",
+    "Octavos",
+    625
+   ],
+   [
+    "Saiko",
+    "Octavos",
+    625
+   ],
+   [
+    "Six",
+    "Octavos",
+    625
+   ]
+  ]
  }
 }
