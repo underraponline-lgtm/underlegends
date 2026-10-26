@@ -312,7 +312,7 @@ export function SinCarta({ liga, k, nombre, cc, cls = 'ci' }) {
 }
 
 // una carta de verdad (de R2) o, si esa persona no la tiene, su cara con «SIN CARTA». Nunca una carta inventada.
-export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true }) {
+export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true, marco }) {
   const [fallo, setFallo] = useState({ src: null, n: 0 });
   const pub = usePases();
   // el ancho en que se dibuja, en píxeles de pantalla: 0 todavía no se midió, -1 no se pudo (va la grande)
@@ -345,7 +345,8 @@ export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true }) 
   const img0 = <img ref={ref} className={cls} alt={src ? 'Carta ' + cual + ' de ' + f.n : ''} src={src} loading="lazy"
     onError={() => setTimeout(() => setFallo((x) => ({ src: src0, n: (x.src === src0 ? x.n : 0) + 1 })), fallas ? 0 : 1200)} />;
   // 🖼️ su marco, si lo tiene (sólo con el ancho ya medido: chica o completa sale de eso)
-  const mk = pub && pub.m && pub.m[k];
+  // `marco`: el que se está probando en el Inventario (`[marco, estilo, serie]`, o `null` sin marco); si no, el que tiene puesto
+  const mk = marco !== undefined ? marco : pub && pub.m && pub.m[k];
   const css = ancho > 0 ? ancho / Math.max(1, window.devicePixelRatio || 1) : 0;
   const svc = f.sv && liga.svs && liga.svs[f.sv] ? liga.svs[f.sv].color : '';
   const img = mk && css ? <ConMarco m={mk} cual={cual} ancho={css} svColor={svc} cc={f.cc} src={src}>{img0}</ConMarco> : img0;

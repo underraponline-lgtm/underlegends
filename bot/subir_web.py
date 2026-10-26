@@ -1772,10 +1772,15 @@ def _perfiles_extra(pf, filas, staff, avs, vdf=None, r2=None, puede=None):
     for f in filas:
         if f.get('k'):
             pp.setdefault(f['k'], {})['f'] = f
+    # 🖼️ el servidor de su carta de Servidor: el primero de `servidores_de.json`, el mismo que usa `03_Servidor/generar.py`
+    # para quien no está en el pool. Sin él, el marco de esa carta salía con el violeta de reserva (Dlx, 26/10/2026: «ese
+    # color lila de mi borde debería ser azulito como soy de DRA»)
+    donde = _json('datos', 'servidores_de.json') or {}
     for x in staff:
         if x['k'] in pp:
             continue
         pp[x['k']] = {'f': {'n': x['raw'], 'k': x['k'], 'cc': x['cc'], 'solo': 1,
+                            'sv': (donde.get(x['did']) or [''])[0],
                             'av': ('%s/%s' % (x['did'], avs[x['did']]) if avs.get(x['did']) else ''),
                             # 🃏 SUS CARTAS TAMBIÉN (26/10/2026, Dlx: «aún no tengo mis tarjetas»): el perfil mínimo no
                             # traía la lista y la página decía «todavía ninguna» con tres en R2. Las que tiene
