@@ -1,51 +1,51 @@
 {
  "v": 1,
- "cuando": "2026-10-26T00:45:12Z",
+ "cuando": "2026-10-26T01:33:27Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 774.6,
+ "dur_s": 1778.6,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.6
+   "s": 8.3
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.8
+   "s": 0.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.4
+   "s": 7.6
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 22.2
+   "s": 25.2
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": false,
-   "s": 669.6
+   "s": 1667.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 4.9
+   "s": 10.3
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 59.9
+   "s": 57.4
   }
  ],
  "fallas": [
@@ -59,40 +59,64 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py OKAM"
+   "que": "03_Servidor/generar.py Ezias🥈✒️🧢🐍"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py OEP"
+   "que": "03_Servidor/generar.py Filozico"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Krish"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Kravitz"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py NXUZ"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py NXUZ"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Teito"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Teito"
   }
  ],
  "ultimo_evento": {
-  "n": "515",
-  "nombre": "REDBULL CREW ARGENTINA 2026",
-  "sv": "ACAD",
+  "n": "516",
+  "nombre": "AGUANTE EL ROJO Y EL BARCELONA Multiverse",
+  "sv": "FFA",
   "dia": "2026-10-25"
  },
  "cuotas": {
   "kv": {
-   "write": 56,
-   "read": 4458
+   "write": 90,
+   "read": 6902
   },
   "objeto": {
-   "leidas": 164338,
-   "escritas": 1666,
-   "pedidos": 358
+   "leidas": 330434,
+   "escritas": 3455,
+   "pedidos": 720
   },
   "worker": {
-   "pedidos": 8787,
+   "pedidos": 8841,
    "errores": 0,
-   "sub": 10711,
+   "sub": 10770,
    "cortados": 0,
-   "p50_ms": 1.38,
-   "p99_ms": 10.99,
+   "p50_ms": 1.39,
+   "p99_ms": 11.02,
    "cpu": {
-    "total": 19467,
+    "total": 19563,
     "objeto_10": 1703,
-    "worker_10": 143
+    "worker_10": 153
    }
   },
   "r2": {
