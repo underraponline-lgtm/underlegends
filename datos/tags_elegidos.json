@@ -1,8 +1,12 @@
 {
  "dlx": {
   "competitivo": [
-   "✨ DEL PASE",
+   "🧊 SANGRE FRÍA",
    "t1"
+  ],
+  "servidor": [
+   "🏰 FORTALEZA",
+   "t2"
   ],
   "temporada": [
    "✨ PILAR DE UL",
@@ -12,11 +16,11 @@
  "liberia": {
   "servidor": [
    "🏰 FORTALEZA",
-   "t1"
+   "t2"
   ],
   "temporada": [
    "🗺️ CONQUISTADOR",
-   "t1"
+   "t2"
   ]
  }
 }

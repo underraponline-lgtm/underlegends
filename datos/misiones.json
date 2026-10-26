@@ -1,7 +1,7 @@
 {
  "_leeme": "Las misiones de la semana: las arma bot/misiones.py en el paso 1c, enteras en cada corrida. Las reglas y los números viven en ese archivo. `suma` es lo que cada uno lleva sumado a la Temporada; `semanas`, qué tocó cada semana y quién cumplió.",
  "bono": 1000,
- "sem": "2026-10-19",
+ "sem": "2026-10-26",
  "semanas": {
   "2026-10-05": {
    "fin": "2026-10-12T15:00:00Z",
@@ -4539,6 +4539,51 @@
     "giansito": 1000,
     "roda mc 🇵🇦": 1000
    }
+  },
+  "2026-10-26": {
+   "fin": "2026-11-02T16:00:00Z",
+   "lista": [
+    [
+     "formato",
+     "Juega un evento que no sea 1 vs 1: 2 vs 2, pandillas, multiverse, 5 vidas…",
+     "facil",
+     1,
+     300
+    ],
+    [
+     "cuartos2",
+     "Llega a cuartos de final en 2 eventos",
+     "media",
+     2,
+     600
+    ],
+    [
+     "arriba2",
+     "Ganale un duelo a alguien dos rangos más arriba que tú",
+     "dificil",
+     1,
+     1000
+    ],
+    [
+     "caza",
+     "Ganale un duelo a NC",
+     "caza",
+     1,
+     800,
+     "NC"
+    ],
+    [
+     "dorado",
+     "Juega el evento dorado de Freestyle Zone",
+     "dorado",
+     1,
+     600,
+     null,
+     "FRZ"
+    ]
+   ],
+   "prog": {},
+   "pts": {}
   }
  },
  "suma": {

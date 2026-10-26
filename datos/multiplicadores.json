@@ -628,6 +628,22 @@
       "ACAD",
       "DRA"
      ]
+    ],
+    "ppp": {
+     "FVS": 0,
+     "FFA": 4215.0,
+     "DDF": 6627.7,
+     "FFS": 0,
+     "URBF": 3277.8,
+     "FRZ": 0,
+     "ACAD": 2266.5,
+     "DRA": 0
+    },
+    "gana": [
+     "FFA",
+     "DDF",
+     "URBF",
+     "ACAD"
     ]
    },
    "metas": {
@@ -736,7 +752,8 @@
      "FDS": 27,
      "LKR": 23
     },
-    "gana": "FDS"
+    "gana": "FDS",
+    "final": true
    },
    "meta_va": {
     "ACAD": 53,
@@ -748,6 +765,128 @@
     "FVS": 0,
     "SR": 24,
     "URBF": 9
+   },
+   "organizadores_final": true,
+   "premios_semana": {
+    "figura": [
+     "Makmah",
+     118612
+    ],
+    "revelacion": [
+     "MATUK 🇦🇷",
+     17438
+    ],
+    "servidor": [
+     "FFA",
+     145
+    ]
+   }
+  },
+  {
+   "id": "2026-10-26",
+   "inicio": "2026-10-26T15:00:00Z",
+   "fin": "2026-11-02T16:00:00Z",
+   "temporada": "prueba",
+   "sorteado": "2026-10-26T15:22:48Z",
+   "sv": {
+    "DDF": 5,
+    "ACAD": 0.75,
+    "FFA": 3.0,
+    "SR": 1.5,
+    "URBF": 1.5,
+    "DRA": 1,
+    "FDS": 2.25,
+    "LKR": 1.5,
+    "FFS": 1,
+    "FRZ": 1,
+    "FVS": 1.5
+   },
+   "dorado": {
+    "sv": "FRZ",
+    "desde": "2026-10-29T04:00:00Z"
+   },
+   "guerra": {
+    "pares": [
+     [
+      "SR",
+      "FDS"
+     ],
+     [
+      "FRZ",
+      "FFA"
+     ],
+     [
+      "ACAD",
+      "FVS"
+     ],
+     [
+      "LKR",
+      "DDF"
+     ],
+     [
+      "URBF",
+      "FFS"
+     ]
+    ]
+   },
+   "metas": {
+    "ACAD": 52,
+    "DDF": 46,
+    "DRA": 8,
+    "FDS": 22,
+    "FFA": 168,
+    "FFS": 8,
+    "FRZ": 10,
+    "FVS": 8,
+    "LKR": 26,
+    "SR": 26,
+    "URBF": 21
+   },
+   "votado": {
+    "sv": "FFA",
+    "votos": 2,
+    "de": 4
+   },
+   "premios": {
+    "FFA": [
+     "votado",
+     "guerra"
+    ],
+    "DDF": [
+     "guerra"
+    ],
+    "URBF": [
+     "guerra"
+    ],
+    "ACAD": [
+     "guerra"
+    ],
+    "FDS": [
+     "semillero"
+    ]
+   },
+   "copa": {
+    "org": "LEWITO",
+    "clave": "lewito"
+   },
+   "organizadores": [],
+   "semillero": {
+    "nuevos": {},
+    "gente": {},
+    "gana": null
+   },
+   "meta_va": {
+    "ACAD": 0,
+    "DDF": 0,
+    "DRA": 0,
+    "FDS": 0,
+    "FFA": 0,
+    "FFS": 0,
+    "FRZ": 0,
+    "FVS": 0,
+    "LKR": 0,
+    "SR": 0,
+    "URBF": 0
    }
   }
  ]

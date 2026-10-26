@@ -1,266 +1,125 @@
 {
  "_leeme": "Los tiers de las crews: el de cada una, la semana en curso (la última foto de los puntos de cada persona) y los últimos cambios. Lo escribe bot/crews_tiers.py en el paso 1c; las reglas viven en ese archivo.",
- "hist": [],
- "pts": {
-  "1200": 1875,
-  "abyssus": 21375,
-  "adriagner": 17249,
-  "agendamotta": 938,
-  "agentesombra": 1875,
-  "agus": 20000,
-  "agustin51k": 15750,
-  "akark": 2625,
-  "akkamaru": 938,
-  "aldre": 9375,
-  "andres": 24812,
-  "andy": 938,
-  "apolo": 1406,
-  "ariaxer": 9062,
-  "artezzy": 16874,
-  "assuan": 1875,
-  "badterne": 7500,
-  "bastyretro": 938,
-  "batalla2mco": 2200,
-  "batalla4ghv": 2200,
-  "belikko": 2062,
-  "benji": 1875,
-  "bishop": 3300,
-  "blitz": 1875,
-  "bloody": 19000,
-  "blueburka": 3750,
-  "bna": 15537,
-  "btrx": 14350,
-  "bull12r": 1875,
-  "c3isac": 2200,
-  "cabece": 2200,
-  "caliz": 18625,
-  "carlos": 12375,
-  "carlosss": 18875,
-  "chente": 1875,
-  "chop": 3624,
-  "chuwin": 4125,
-  "cj": 15000,
-  "cody": 3938,
-  "colesito": 12250,
-  "colo": 3938,
-  "corvo": 12375,
-  "criszj": 6400,
-  "crk": 11250,
-  "cronox": 4875,
-  "dancoll": 4125,
-  "darkangel": 1875,
-  "darkomc": 1875,
-  "darnbless": 14500,
-  "david": 1250,
-  "deko": 7875,
-  "delux": 9438,
-  "deluxe": 24750,
-  "denik": 3750,
-  "desio": 5100,
-  "desu": 1875,
-  "deuxs": 5812,
-  "dev": 2062,
-  "dobleh": 1875,
-  "doc": 6625,
-  "dominick": 39162,
-  "drexx": 19024,
-  "dynoco": 3938,
-  "dyss": 1875,
-  "dyzz": 21188,
-  "eclipsito": 12512,
-  "ed": 8906,
-  "eddyeddy": 8906,
-  "eddylasombra": 3750,
-  "efimero": 1250,
-  "elbesaabuelas": 2200,
-  "elwachin": 2062,
-  "emilyfamily": 4125,
-  "erian": 54800,
-  "erizo": 3750,
-  "evangeline": 2200,
-  "eze": 2062,
-  "fandabel": 8250,
-  "fazer": 2500,
-  "fisics": 5250,
-  "fix": 3850,
-  "flama": 2062,
-  "focox": 1875,
-  "francis": 938,
-  "geoka": 8475,
-  "ggwan": 938,
-  "gian": 7875,
-  "giansito": 7500,
-  "gp": 1250,
-  "guess": 25900,
-  "gus": 4375,
-  "hotaruadeyemi": 8662,
-  "hotu": 5000,
-  "ineedrubbers": 3000,
-  "izaya": 3750,
-  "j19": 16875,
-  "jeisy": 938,
-  "jobaking": 6950,
-  "jr": 938,
-  "julix": 10500,
-  "jult": 1875,
-  "kourier": 8875,
-  "kravitz": 5000,
-  "krish": 1875,
-  "krtman": 2200,
-  "kuni": 6600,
-  "kwl": 938,
-  "kyss": 7312,
-  "laordendelgrial": 1875,
-  "last": 22988,
-  "leonart": 7838,
-  "lewito": 4875,
-  "leyenda": 2000,
-  "liam": 2000,
-  "liberia": 55975,
-  "lizeninn": 15388,
-  "lordviruzz": 22688,
-  "lrs": 23188,
-  "lso": 2200,
-  "luck": 2062,
-  "lukas": 1875,
-  "luz": 1875,
-  "magic": 468,
-  "magmahk": 1250,
-  "majiztral": 8588,
-  "makmah": 120137,
-  "marcos": 13875,
-  "marto": 1875,
-  "masino": 20450,
-  "mathhias": 17750,
-  "mats": 5156,
-  "matuk": 17438,
-  "mayeutyk": 8950,
-  "mcarepa": 7625,
-  "mcdl": 2000,
-  "mcnadie": 3138,
-  "mco": 69038,
-  "metra": 1250,
-  "metriodin": 2062,
-  "millonario": 11812,
-  "miniboy": 26524,
-  "mito": 8250,
-  "molt": 1875,
-  "molusco": 20312,
-  "mosquitrap": 12100,
-  "mrkude": 2062,
-  "mrstillballin": 21000,
-  "mtz": 9000,
-  "musicdum": 1875,
-  "nc": 19375,
-  "neo": 12375,
-  "nerick": 2000,
-  "nils": 938,
-  "nmb": 11250,
-  "noa": 3850,
-  "noone": 3500,
-  "npk": 1875,
-  "nueve7": 2500,
-  "nxuz": 16636,
-  "oasis": 31000,
-  "og": 6874,
-  "okam": 44125,
-  "pajalenta": 2000,
-  "panchok": 24100,
-  "paria": 2812,
-  "pichulamc": 48300,
-  "pipe": 2200,
-  "player": 1875,
-  "polosport": 1250,
-  "pomberito": 938,
-  "praiseriza": 15000,
-  "prodigy": 3750,
-  "provenza": 10188,
-  "raizer": 2000,
-  "rbk": 4375,
-  "revo": 2344,
-  "richard": 1875,
-  "road": 6750,
-  "rodamc": 3750,
-  "rodas": 3850,
-  "rubik": 1250,
-  "ruvick": 4125,
-  "saiko": 938,
-  "scot": 2625,
-  "scritura": 3750,
-  "senticide": 3300,
-  "sf2isac": 1925,
-  "shadow": 16625,
-  "sinlimites": 48350,
-  "six": 34312,
-  "snake": 7875,
-  "snow": 11250,
-  "soneto": 938,
-  "sosa": 13375,
-  "sosaatr": 3500,
-  "soulb": 8500,
-  "sultan": 14688,
-  "tam": 18062,
-  "tayo": 1250,
-  "teito": 5375,
-  "tenor": 13500,
-  "teo": 10562,
-  "terry": 2000,
-  "trot": 11625,
-  "tuca": 18750,
-  "tøkiø": 13062,
-  "under": 1875,
-  "valdoza": 1875,
-  "valen": 6625,
-  "vandu": 67250,
-  "velatz": 24338,
-  "verc": 4500,
-  "vilca": 15000,
-  "volk": 6000,
-  "vr": 4262,
-  "walker": 8250,
-  "warap": 2625,
-  "xclusivo": 2200,
-  "xubaru": 18000,
-  "xza": 1250,
-  "yinn": 6375,
-  "yinson": 4950,
-  "zack": 3938,
-  "zafk": 1250,
-  "zaik": 6000,
-  "zazab": 2000,
-  "zekha": 16500,
-  "zignos": 1875
- },
- "sem": "2026-10-19",
+ "avisado": "2026-10-19",
+ "hist": [
+  [
+   "2026-10-19",
+   "Follombia",
+   0,
+   1,
+   153300
+  ],
+  [
+   "2026-10-19",
+   "Sexosos",
+   0,
+   1,
+   17750
+  ],
+  [
+   "2026-10-19",
+   "NOBLESSE OBLIGE",
+   0,
+   1,
+   29012
+  ],
+  [
+   "2026-10-19",
+   "Fontana",
+   0,
+   1,
+   79725
+  ],
+  [
+   "2026-10-19",
+   "KS",
+   0,
+   1,
+   23250
+  ],
+  [
+   "2026-10-19",
+   "Lighting Force",
+   0,
+   1,
+   34112
+  ],
+  [
+   "2026-10-19",
+   "Blanca Perla",
+   0,
+   1,
+   34312
+  ],
+  [
+   "2026-10-19",
+   "La Pampa Crew",
+   0,
+   1,
+   69038
+  ],
+  [
+   "2026-10-19",
+   "Sentinelense",
+   0,
+   1,
+   24338
+  ],
+  [
+   "2026-10-19",
+   "Arte del Chakalaje",
+   0,
+   1,
+   48300
+  ],
+  [
+   "2026-10-19",
+   "Rosario",
+   0,
+   1,
+   19375
+  ],
+  [
+   "2026-10-19",
+   "Los ULEYES",
+   0,
+   1,
+   23625
+  ]
+ ],
+ "pts": {},
+ "sem": "2026-10-26",
  "tier": {
   "04": 0,
   "Argentina Crew": 0,
-  "Arte del Chakalaje": 0,
+  "Arte del Chakalaje": 1,
   "B.A.A": 0,
-  "Blanca Perla": 0,
+  "Blanca Perla": 1,
   "Caypher": 0,
   "Dinoguay": 0,
   "El Último Bastón": 0,
-  "Follombia": 0,
-  "Fontana": 0,
+  "Follombia": 1,
+  "Fontana": 1,
   "Fuera de Rango": 0,
   "Guardia Nacional": 0,
-  "KS": 0,
+  "KS": 1,
+  "La Crew Anti Gay": 0,
   "La Formula Crew": 0,
-  "La Pampa Crew": 0,
-  "Lighting Force": 0,
+  "La Pampa Crew": 1,
+  "Lighting Force": 1,
+  "Los ULEYES": 1,
   "Mafia Chilena": 0,
   "Mayas Crew": 0,
   "Mdk Crew": 0,
   "Miakamata": 0,
-  "NOBLESSE OBLIGE": 0,
+  "NOBLESSE OBLIGE": 1,
   "Peruvianleads": 0,
   "Podesta City": 0,
   "RKT Crew": 0,
-  "Rosario": 0,
+  "Rosario": 1,
   "Santa Trinidad": 0,
-  "Sentinelense": 0,
-  "Sexosos": 0,
+  "Sentinelense": 1,
+  "Sexosos": 1,
   "Underground Freestyle": 0,
   "Yuta": 0,
   "berazategui global hustlers": 0,
@@ -273,8 +132,8 @@
    "04": {
     "a": 0,
     "de": 0,
-    "jugaron": 0,
-    "pts": 0
+    "jugaron": 1,
+    "pts": 1875
    },
    "Argentina Crew": {
     "a": 0,
@@ -283,28 +142,28 @@
     "pts": 0
    },
    "Arte del Chakalaje": {
-    "a": 0,
+    "a": 1,
     "de": 0,
     "jugaron": 1,
-    "pts": 22375
+    "pts": 48300
    },
    "B.A.A": {
     "a": 0,
     "de": 0,
     "jugaron": 1,
-    "pts": 11124
+    "pts": 10188
    },
    "Blanca Perla": {
-    "a": 0,
+    "a": 1,
     "de": 0,
     "jugaron": 1,
-    "pts": 24062
+    "pts": 34312
    },
    "Caypher": {
     "a": 0,
     "de": 0,
-    "jugaron": 1,
-    "pts": 1875
+    "jugaron": 0,
+    "pts": 0
    },
    "Dinoguay": {
     "a": 0,
@@ -319,52 +178,64 @@
     "pts": 0
    },
    "Follombia": {
-    "a": 0,
-    "de": 0,
-    "jugaron": 8,
-    "pts": 286308
-   },
-   "Fontana": {
-    "a": 0,
+    "a": 1,
     "de": 0,
     "jugaron": 4,
-    "pts": 115562
+    "pts": 153300
+   },
+   "Fontana": {
+    "a": 1,
+    "de": 0,
+    "jugaron": 3,
+    "pts": 79725
    },
    "Fuera de Rango": {
     "a": 0,
     "de": 0,
     "jugaron": 2,
-    "pts": 83589
+    "pts": 6125
    },
    "Guardia Nacional": {
     "a": 0,
     "de": 0,
-    "jugaron": 1,
-    "pts": 1776
+    "jugaron": 2,
+    "pts": 14875
    },
    "KS": {
+    "a": 1,
+    "de": 0,
+    "jugaron": 2,
+    "pts": 23250
+   },
+   "La Crew Anti Gay": {
     "a": 0,
     "de": 0,
-    "jugaron": 4,
-    "pts": 63437
+    "jugaron": 1,
+    "pts": 2062
    },
    "La Formula Crew": {
     "a": 0,
     "de": 0,
-    "jugaron": 0,
-    "pts": 0
+    "jugaron": 2,
+    "pts": 8012
    },
    "La Pampa Crew": {
-    "a": 0,
+    "a": 1,
     "de": 0,
-    "jugaron": 2,
-    "pts": 58125
+    "jugaron": 1,
+    "pts": 69038
    },
    "Lighting Force": {
-    "a": 0,
+    "a": 1,
     "de": 0,
-    "jugaron": 4,
-    "pts": 149218
+    "jugaron": 3,
+    "pts": 34112
+   },
+   "Los ULEYES": {
+    "a": 1,
+    "de": 0,
+    "jugaron": 2,
+    "pts": 23625
    },
    "Mafia Chilena": {
     "a": 0,
@@ -388,25 +259,25 @@
     "a": 0,
     "de": 0,
     "jugaron": 1,
-    "pts": 1875
+    "pts": 11250
    },
    "NOBLESSE OBLIGE": {
-    "a": 0,
+    "a": 1,
     "de": 0,
-    "jugaron": 2,
-    "pts": 19373
+    "jugaron": 3,
+    "pts": 29012
    },
    "Peruvianleads": {
     "a": 0,
     "de": 0,
-    "jugaron": 0,
-    "pts": 0
+    "jugaron": 1,
+    "pts": 3500
    },
    "Podesta City": {
     "a": 0,
     "de": 0,
-    "jugaron": 0,
-    "pts": 0
+    "jugaron": 1,
+    "pts": 4875
    },
    "RKT Crew": {
     "a": 0,
@@ -415,28 +286,28 @@
     "pts": 0
    },
    "Rosario": {
-    "a": 0,
+    "a": 1,
     "de": 0,
     "jugaron": 1,
-    "pts": 37124
+    "pts": 19375
    },
    "Santa Trinidad": {
     "a": 0,
     "de": 0,
-    "jugaron": 1,
-    "pts": 6874
+    "jugaron": 0,
+    "pts": 0
    },
    "Sentinelense": {
-    "a": 0,
+    "a": 1,
     "de": 0,
     "jugaron": 1,
-    "pts": 34750
+    "pts": 24338
    },
    "Sexosos": {
-    "a": 0,
+    "a": 1,
     "de": 0,
-    "jugaron": 1,
-    "pts": 12750
+    "jugaron": 2,
+    "pts": 17750
    },
    "Underground Freestyle": {
     "a": 0,
@@ -447,35 +318,35 @@
    "Yuta": {
     "a": 0,
     "de": 0,
-    "jugaron": 1,
-    "pts": 3750
+    "jugaron": 0,
+    "pts": 0
    },
    "berazategui global hustlers": {
     "a": 0,
     "de": 0,
-    "jugaron": 3,
-    "pts": 38561
+    "jugaron": 0,
+    "pts": 0
    },
    "kzt": {
     "a": 0,
     "de": 0,
     "jugaron": 1,
-    "pts": 99874
+    "pts": 4500
    },
    "montevideo wanders": {
     "a": 0,
     "de": 0,
     "jugaron": 1,
-    "pts": 1875
+    "pts": 4375
    },
    "Área Limítrofe": {
     "a": 0,
     "de": 0,
-    "jugaron": 0,
-    "pts": 0
+    "jugaron": 2,
+    "pts": 2813
    }
   },
-  "cuenta": false,
-  "sem": "2026-10-12"
+  "cuenta": true,
+  "sem": "2026-10-19"
  }
 }
