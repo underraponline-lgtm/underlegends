@@ -1548,7 +1548,8 @@
 "341753322148986881": {
 "cs": [
 "pais",
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 100,
 "rg": ""
@@ -2355,7 +2356,8 @@
 "776271601221763103": {
 "cs": [
 "pais",
-"servidor"
+"servidor",
+"temporada"
 ],
 "pos": 57,
 "rg": ""

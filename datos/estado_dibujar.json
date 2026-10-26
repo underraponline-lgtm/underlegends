@@ -1,51 +1,51 @@
 {
  "v": 1,
- "cuando": "2026-10-26T00:01:12Z",
+ "cuando": "2026-10-26T00:17:53Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1649.8,
+ "dur_s": 967.6,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.4
+   "s": 6.6
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 0.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 9.0
+   "s": 5.5
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 22.5
+   "s": 21.3
   },
   {
    "n": "5",
    "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": false,
-   "s": 1522.6
+   "s": 868.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 12.6
+   "s": 7.8
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 72.6
+   "s": 55.7
   }
  ],
  "fallas": [
@@ -63,7 +63,7 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Filozico"
+   "que": "03_Servidor/generar.py Dyzz"
   },
   {
    "paso": "5",
@@ -101,22 +101,26 @@
   "dia": "2026-10-25"
  },
  "cuotas": {
+  "kv": {
+   "write": 27,
+   "read": 1941
+  },
   "objeto": {
-   "leidas": 0,
-   "escritas": 0,
-   "pedidos": 1
+   "leidas": 105586,
+   "escritas": 1304,
+   "pedidos": 177
   },
   "worker": {
-   "pedidos": 8700,
+   "pedidos": 8778,
    "errores": 0,
-   "sub": 10627,
+   "sub": 10703,
    "cortados": 0,
-   "p50_ms": 1.37,
-   "p99_ms": 10.91,
+   "p50_ms": 1.38,
+   "p99_ms": 10.98,
    "cpu": {
-    "total": 19279,
-    "objeto_10": 1697,
-    "worker_10": 131
+    "total": 19435,
+    "objeto_10": 1702,
+    "worker_10": 142
    }
   },
   "r2": {
