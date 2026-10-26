@@ -891,7 +891,8 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "carlos": {
@@ -2564,14 +2565,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-01T23:39:49Z",
-"quien": [
-"OEP"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-02T00:05:30Z",
@@ -5898,6 +5891,14 @@
 "t": "2026-10-26T00:17:49Z",
 "quien": [
 "Eze"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-26T01:47:09Z",
+"quien": [
+"Richard"
 ],
 "carta": "temporada"
 }
