@@ -318,8 +318,10 @@ export function Carta({ liga, k, cual = 'temporada', cls = 'ci', abre = true }) 
   // el ancho en que se dibuja, en píxeles de pantalla: 0 todavía no se midió, -1 no se pudo (va la grande)
   const [ancho, setAncho] = useState(0);
   const ref = useRef(null);
-  const f = liga.T[k];
-  const src0 = liga.cartaUrl(k, cual);
+  // 🔴 TAMBIÉN QUIEN NO ESTÁ EN LA TABLA (`liga.X`, 26/10/2026): `cartaUrl()` ya lo encontraba ahí, y con la imagen y
+  // sin la fila, `f.n` rompía la página entera (el Inventario de Dlx: «dice que no pudo cargar la página»)
+  const f = liga.T[k] || (liga.X && liga.X[k]) || null;
+  const src0 = f ? liga.cartaUrl(k, cual) : null;
   // las fallas cuentan para ESA dirección: una carta nueva (otra `?v=`) se vuelve a intentar
   const fallas = fallo.src === src0 ? fallo.n : 0;
   // 🃏 LA CHICA DONDE SE DIBUJA EN CHICO (Dlx, 19/10/2026: «dale»). Se mide ANTES de pintar (el img todavía sin `src`
