@@ -60,6 +60,13 @@ sys.path.insert(0, SCR)
 GATEWAY = 'wss://gateway.discord.gg/?v=10&encoding=json'
 #: GUILDS (1 << 0) y GUILD_VOICE_STATES (1 << 7): ninguno privilegiado
 INTENTS = (1 << 0) | (1 << 7)
+#: 🗳️ y la conexión que sigue lo en vivo, además GUILD_MESSAGES (1 << 9) y MESSAGE_CONTENT (1 << 15): los veredictos en
+#: tiempo real (Dlx, 26/10/2026, «1. si»). MESSAGE_CONTENT es privilegiado y ya está prendido en el portal —el vigía lee
+#: los veredictos por la API—: probado con un IDENTIFY ese día, llegó READY. La foto del ciclo sigue con `INTENTS`
+INTENTS_SEGUIR = INTENTS | (1 << 9) | (1 << 15)
+#: cada cuánto se vuelve a preguntar qué canales son de veredictos, y cada cuánto se manda lo que llegó
+CANALES_CADA_S = 10 * 60
+VEREDICTOS_CADA_S = 2
 #: la ventana del vigía: de 15 min antes del arranque a 5 h después…
 ANTES_MIN = 15
 DESPUES_H = 5
@@ -424,6 +431,26 @@ def seguir(token, aplicar=True, tope_s=TOPE_S):
     guardado_t, minuto_t = time.time(), 0.0
     reconectado = 0
     sucios = set()
+    # 🗳️ los veredictos: qué canales escuchar, lo que espera para salir, y cuántos se mandaron (sólo el número va al log)
+    canales, canales_t = (canales_veredictos() or set()), time.time()
+    pend, pend_t, mandados = [], time.time(), 0
+    print('   🗳️ escucho %d canal(es) de veredictos' % len(canales))
+
+    def _veredictos():
+        nonlocal pend, pend_t, mandados
+        pend_t = time.time()
+        if not pend:
+            return
+        if not aplicar:
+            print('   (simulacro) %d veredicto(s) no se mandan' % len(pend))
+            pend = []
+            return
+        r = _ciclo('POST', '/avisos/veredictos-vivo', {'ev': pend[:300]})
+        if r is not None:
+            mandados += len(pend[:300])
+            pend = pend[300:]
+        elif len(pend) > 1000:
+            pend = pend[-1000:]                # sin respuesta: se reintenta, con tope
 
     def _guardar(motivo):
         nonlocal guardado_t
@@ -445,7 +472,7 @@ def seguir(token, aplicar=True, tope_s=TOPE_S):
                 raise RuntimeError('el Gateway no saludó (op %s)' % hola.get('op'))
             latido = (hola.get('d') or {}).get('heartbeat_interval', 41250) / 1000.0
             ws.send(json.dumps({'op': 2, 'd': {
-                'token': token, 'intents': INTENTS,
+                'token': token, 'intents': INTENTS_SEGUIR,
                 'properties': {'os': 'linux', 'browser': 'liga-global', 'device': 'liga-global'}}}))
             seq, proximo_latido, ack = None, time.time() + latido * random.random(), True
             while True:
@@ -455,6 +482,11 @@ def seguir(token, aplicar=True, tope_s=TOPE_S):
                         raise RuntimeError('el Gateway no contestó el latido')
                     ws.send(json.dumps({'op': 1, 'd': seq}))
                     ack, proximo_latido = False, ahora + latido
+                if pend and ahora - pend_t >= VEREDICTOS_CADA_S:
+                    _veredictos()
+                if ahora - canales_t >= CANALES_CADA_S:
+                    canales_t = ahora
+                    canales = canales_veredictos() or canales
                 if ahora - minuto_t >= 60:
                     minuto_t = ahora
                     if ahora - anuncios_t > 10 * 60:
@@ -471,10 +503,11 @@ def seguir(token, aplicar=True, tope_s=TOPE_S):
                             sucios.add(sv)
                         cuantos.append('%s %d' % (sv, len(gente)))
                     # 🔒 cuántos, nunca quién: el log de Actions es público
-                    print('   %s · %s' % (time.strftime('%H:%M'), ', '.join(cuantos) or 'nada en vivo'))
+                    print('   %s · %s · 🗳️ %d' % (time.strftime('%H:%M'), ', '.join(cuantos) or 'nada en vivo', mandados))
                     if ahora - guardado_t >= GUARDAR_CADA_S:
                         _guardar('cada 10 minutos')
                     if ahora - ultimo_vivo >= QUIETO_S or ahora - inicio >= tope_s:
+                        _veredictos()
                         _guardar('fin')
                         print('   🎙️ termino: %s' % ('15 minutos sin nada en vivo' if ahora - ultimo_vivo >= QUIETO_S
                                                     else 'el tope de tiempo'))
@@ -495,10 +528,14 @@ def seguir(token, aplicar=True, tope_s=TOPE_S):
                     raise RuntimeError('el Gateway pidió reconectar (op %s)' % op)
                 elif op == 0:
                     evento_gateway(estados, m.get('t'), m.get('d'))
+                    v = evento_veredicto(m.get('t'), m.get('d'), canales)
+                    if v:
+                        pend.append(v)
         except Exception as e:                               # noqa: BLE001
             reconectado += 1
             print('   ⚠️ se cortó la conexión (%s); reconexión %d de %d' % (str(e)[:70], reconectado, RECONEXIONES))
             if reconectado > RECONEXIONES:
+                _veredictos()
                 _guardar('fin, sin conexión')
                 return 1
             time.sleep(5)
@@ -507,6 +544,57 @@ def seguir(token, aplicar=True, tope_s=TOPE_S):
                 ws.close()
             except Exception:                                # noqa: BLE001
                 pass
+
+
+# ── 5 · los veredictos en tiempo real ────────────────────────────────────────
+#
+# 🗳️ Dlx, 26/10/2026: «a veces se edita rápido, lo eliminan y pasan a los 5-10 s a la siguiente ronda… o lo cambian
+# a un . literalmente». El vigía del Worker lee los canales de veredictos por la API, hasta 6 por minuto, así que un
+# veredicto que vive 5 s puede no verse nunca. Esta conexión ya está abierta mientras hay algo en vivo: escucha los
+# mensajes de esos canales y manda cada creación, edición y borrado al objeto en un par de segundos
+# (`/avisos/veredictos-vivo`, `veredictosVivo()` en bot/avisos.js). 🔒 El log dice cuántos, nunca qué.
+
+def evento_veredicto(t, d, canales):
+    """Lo que se manda de un evento del Gateway, o `None` si no es de un canal de veredictos."""
+    if t not in ('MESSAGE_CREATE', 'MESSAGE_UPDATE', 'MESSAGE_DELETE') or not isinstance(d, dict):
+        return None
+    canal, mid = str(d.get('channel_id') or ''), str(d.get('id') or '')
+    if canal not in canales or not mid:
+        return None
+    if t == 'MESSAGE_DELETE':
+        return {'t': 'd', 'id': mid, 'canal': canal}
+    if 'content' not in d:
+        return None                       # una edición sin texto (un embed que se desplegó): no cambia el veredicto
+    return {'t': 'c' if t == 'MESSAGE_CREATE' else 'u', 'id': mid, 'canal': canal,
+            'autor': str((d.get('author') or {}).get('id') or ''), 'pub': _ms(d.get('timestamp')),
+            'ed': _ms(d.get('edited_timestamp')), 'texto': str(d.get('content') or ''),
+            'mentions': [{'id': str(u.get('id') or ''), 'username': u.get('username') or '',
+                          'global_name': u.get('global_name') or '',
+                          'member': {'nick': ((u.get('member') or {}).get('nick') or '')}}
+                         for u in (d.get('mentions') or [])[:50] if isinstance(u, dict)]}
+
+
+def _ciclo(metodo, ruta, cuerpo=None):
+    """Al objeto, con la clave del ciclo. La respuesta en JSON, o `None`."""
+    import requests
+    import fotos as F
+    import clave_ciclo as CC
+    tok = F.env('DISCORD_TOKEN', obligatorio=False)
+    if not tok:
+        return None
+    h = {'x-lg-ciclo': CC.clave(tok), 'content-type': 'application/json'}
+    try:
+        r = (requests.get(VIGIA + ruta, headers=h, timeout=10) if metodo == 'GET' else
+             requests.post(VIGIA + ruta, headers=h, data=json.dumps(cuerpo, ensure_ascii=False).encode('utf-8'), timeout=10))
+        return r.json() if r.status_code == 200 else None
+    except Exception:                                    # noqa: BLE001
+        return None
+
+
+def canales_veredictos():
+    """Los ids de los canales de veredictos que conoce el vigía, o `None` si no se pudo preguntar."""
+    r = _ciclo('GET', '/avisos/veredictos-canales')
+    return None if r is None else {str(c.get('id')) for c in r.get('lista') or [] if c.get('id')}
 
 
 # ── el paso del ciclo ────────────────────────────────────────────────────────
@@ -597,6 +685,22 @@ def _self_check():
     ok('9' not in fusionar(viejo, [], 1 + VENCE_S * 1000 + 1)['gente'], 'lo de hace más de 14 días se va')
     ok(en_la_ventana(e, 1500, 2500) and not en_la_ventana(e, 2500, 3000), 'se la vio entre tal y tal hora')
     ok(INTENTS == 129, 'pide sólo GUILDS y GUILD_VOICE_STATES (129), ninguno privilegiado')
+    ok(INTENTS_SEGUIR == 129 | 512 | 32768, 'y la conexión de lo en vivo, además los mensajes y su texto (los veredictos)')
+
+    # 5 · los veredictos en tiempo real
+    cv = {'55'}
+    v1 = evento_veredicto('MESSAGE_CREATE', {'id': '1', 'channel_id': '55', 'content': 'gana <@9>',
+                                             'author': {'id': '7'}, 'timestamp': '2026-10-26T04:00:00+00:00',
+                                             'mentions': [{'id': '9', 'username': 'zorro'}]}, cv)
+    ok(v1 and v1['t'] == 'c' and v1['texto'] == 'gana <@9>' and v1['mentions'][0]['username'] == 'zorro' and v1['pub'],
+       'un veredicto nuevo sale con su texto, su autor y las menciones')
+    ok(evento_veredicto('MESSAGE_CREATE', {'id': '2', 'channel_id': '56', 'content': 'x'}, cv) is None,
+       'un mensaje de otro canal no sale de esta máquina')
+    ok(evento_veredicto('MESSAGE_UPDATE', {'id': '1', 'channel_id': '55', 'content': '.'}, cv)['t'] == 'u'
+       and evento_veredicto('MESSAGE_UPDATE', {'id': '1', 'channel_id': '55', 'embeds': []}, cv) is None,
+       'una edición con texto sale (también un «.»: el objeto decide), una sin texto no')
+    ok(evento_veredicto('MESSAGE_DELETE', {'id': '1', 'channel_id': '55'}, cv) == {'t': 'd', 'id': '1', 'canal': '55'},
+       'un borrado sale como borrado')
 
     # 4 · minuto a minuto: el estado sigue cada entrada y salida
     est = {}

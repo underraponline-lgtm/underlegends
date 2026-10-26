@@ -2545,6 +2545,9 @@ const RUTAS = {
   '/avisos/primerizos-ciclo': 'POST',
   // 🧪 y a quién se avisó y quién quedó sin aviso, para medir si sirve (con su clave)
   '/avisos/vuelve-ciclo': 'GET',
+  // 🗳️ los veredictos en tiempo real (`bot/en_llamada.py --seguir`, con su clave): qué canales escuchar y lo que llegó
+  '/avisos/veredictos-canales': 'GET',
+  '/avisos/veredictos-vivo': 'POST',
   // 🔁 y avisarle a uno de ésos por su campana, con un texto de la lista (`PLANTILLAS_VUELVE`): ver `avisoVuelve()`
   '/avisos/dueno/vuelve': 'POST',
   // 🤝 el anti-raid que prende Dlx en un servidor (con la clave del ciclo): ver `antiraidDlx()`
@@ -4017,6 +4020,16 @@ export function pareceLlave(texto) {
 }
 
 /** El texto con cada `<@id>` como `@Nombre`: Discord manda quién es cada mención. */
+/** 🗳️ La marca de un veredicto borrado en `veredictos_hist`. */
+export const BORRADO = '⟨borrado⟩';
+
+/** 🗳️ ¿El texto nuevo es «nada» (vacío, «.», sólo signos) y el viejo decía algo? Entonces no lo pisa: un veredicto
+ *  cambiado a «.» para esconderlo sigue contando (Dlx, 26/10/2026). */
+export function pisaConNada(viejo, nuevo) {
+  const algo = (t) => /[\p{L}\p{N}]/u.test(String(t || ''));
+  return algo(viejo) && !algo(nuevo);
+}
+
 export function conNombres(m) {
   const n = {};
   for (const u of (m && m.mentions) || []) {
@@ -5183,6 +5196,16 @@ export async function rutaAvisos(req, env, ruta) {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     return elObjeto(env).fetch('https://avisos/vuelve-ciclo');
+  }
+  // 🗳️ LOS VEREDICTOS EN TIEMPO REAL (26/10/2026): la conexión de la llamada pide qué canales escuchar y manda cada
+  // mensaje, edición y borrado al instante. Con la clave del ciclo
+  if (ruta === '/avisos/veredictos-canales' || ruta === '/avisos/veredictos-vivo') {
+    const k = req.headers.get('x-lg-ciclo') || '';
+    if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
+    if (ruta === '/avisos/veredictos-canales') return elObjeto(env).fetch('https://avisos/veredictos-canales');
+    const crudo = await req.text();
+    if (crudo.length > 200000) return json({ error: 'demasiado grande' }, 413);
+    return elObjeto(env).fetch('https://avisos/veredictos-vivo', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
   }
   // 🔁 la lista de primerizos y enfriados, del ciclo: con nombres, así que sólo con su clave y sólo al objeto
   if (ruta === '/avisos/primerizos-ciclo') {
@@ -6386,6 +6409,7 @@ export class Avisos {
       if (ruta === '/pedidos-ciclo') return json(this.pedidosCiclo(), 200, 0);
       // 🧪 para el ciclo (`bot/primerizos.py`): a quién se avisó y quién quedó sin aviso (es un GET: va antes del cuerpo)
       if (ruta === '/vuelve-ciclo') return json(this.vuelveCiclo(), 200, 0);
+      if (ruta === '/veredictos-canales') return json({ lista: (this.leer('canales') || {}).veredictos || [] }, 200, 0);
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
       if (ruta === '/final') return json(this.finalElegir(d));
@@ -6405,6 +6429,7 @@ export class Avisos {
       if (ruta === '/dueno-vuelve') return json(this.avisoVuelve(d));
       if (ruta === '/dueno-ficha') return json(this.duenoFicha(d));
       if (ruta === '/dueno-nota') return json(this.duenoNota(d));
+      if (ruta === '/veredictos-vivo') return json(this.veredictosVivo(d));
       // 🔁 la lista de primerizos y enfriados: sólo la guarda, tal cual, para el Dashboard (nunca sale a la página)
       if (ruta === '/primerizos-ciclo') {
         if (!d || !Array.isArray(d.una) || !Array.isArray(d.frio) || d.una.length > 600 || d.frio.length > 300) return json({ error: 'datos' }, 400);
@@ -7483,6 +7508,48 @@ export class Avisos {
     return pedidos;
   }
 
+  /**
+   * 🗳️ LOS VEREDICTOS EN TIEMPO REAL (Dlx, 26/10/2026: «a veces se edita rápido, lo eliminan y pasan a los 5-10 s a la
+   * siguiente ronda… o lo cambian a un . literalmente»). El sondeo de `veredictos()` lee hasta `VER_TOPE` canales por
+   * minuto, así que un veredicto que vive 5 s puede no verse nunca. La conexión de la llamada (`bot/en_llamada.py
+   * --seguir`, que ya está abierta mientras hay algo en vivo) escucha los mensajes de estos canales y manda cada uno
+   * acá al instante: `{ev: [{t: 'c'|'u'|'d', id, canal, autor, pub, ed, texto, mentions}]}`.
+   * ⚠️ Un borrado NO borra: queda la fila con lo último que se vio, y en el historial la marca `BORRADO`. Y un texto
+   * vacío o «.» no pisa un veredicto que decía algo (`pisaConNada()`).
+   */
+  veredictosVivo(d) {
+    const por = new Map(((this.leer('canales') || {}).veredictos || []).map((c) => [String(c.id), c]));
+    const ahora = Date.now();
+    let n = 0;
+    for (const e of (d && Array.isArray(d.ev) ? d.ev : []).slice(0, 300)) {
+      const c = por.get(String((e && e.canal) || ''));
+      const id = String((e && e.id) || '');
+      if (!c || !/^[0-9]{5,25}$/.test(id)) continue;
+      if (e.t === 'd') {
+        const f = this.sql.exec('SELECT pub FROM veredictos WHERE id = ?', id).toArray()[0];
+        this.sql.exec('INSERT OR IGNORE INTO veredictos_hist (id, canal, sv, autor, pub, ed, texto, visto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+          id, c.id, c.sv || '', '', f ? f.pub : ahora, ahora, BORRADO, ahora);
+        n++;
+        continue;
+      }
+      if (typeof e.texto !== 'string') continue;
+      const largo = conNombres({ content: e.texto, mentions: Array.isArray(e.mentions) ? e.mentions.slice(0, 50) : [] });
+      const texto = largo.slice(0, 400);
+      const pub = Number(e.pub) || ahora;
+      const ed = Math.max(pub, Number(e.ed) || pub);
+      const autor = /^[0-9]{5,25}$/.test(String(e.autor || '')) ? String(e.autor) : '';
+      this.sql.exec('INSERT OR IGNORE INTO veredictos_hist (id, canal, sv, autor, pub, ed, texto, visto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        id, c.id, c.sv || '', autor, pub, ed, largo.slice(0, 4000), ahora);
+      const fila = this.sql.exec('SELECT texto FROM veredictos WHERE id = ?', id).toArray()[0];
+      if (fila && (fila.texto === texto || pisaConNada(fila.texto, texto))) continue;
+      this.sql.exec('INSERT INTO veredictos (id, canal, sv, g, autor, pub, ed, texto) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ' +
+        'ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, texto = excluded.texto', id, c.id, c.sv || '', c.g || '', autor, pub, ed, texto);
+      n++;
+    }
+    if (n) this.guardar('veredictos_vivo', { t: ahora, n });
+    return { ok: true, n };
+  }
+
   /** Los veredictos de los servidores con un evento en juego. Ver `PATRON_VEREDICTOS`. */
   async veredictos(ahora) {
     const lista = (this.leer('canales') || {}).veredictos || [];
@@ -7519,7 +7586,7 @@ export class Avisos {
             'VALUES (?, ?, ?, ?, ?, ?, ?, ?)', m.id, c.id, c.sv || '', (m.author && m.author.id) || '', pub,
           Math.max(pub, ed || 0), conNombres(m).slice(0, 4000), ahora);
           const fila = this.sql.exec('SELECT texto FROM veredictos WHERE id = ?', m.id).toArray()[0];
-          if (fila && fila.texto === texto) continue;
+          if (fila && (fila.texto === texto || pisaConNada(fila.texto, texto))) continue;
           this.sql.exec('INSERT INTO veredictos (id, canal, sv, g, autor, pub, ed, texto) ' +
             'VALUES (?, ?, ?, ?, ?, ?, ?, ?) ON CONFLICT(id) DO UPDATE SET ed = excluded.ed, ' +
             'texto = excluded.texto', m.id, c.id, c.sv || '', c.g || '',

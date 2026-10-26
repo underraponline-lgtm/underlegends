@@ -1221,6 +1221,21 @@ const ok = (cond, que, det) => {
     ok(enC.length > 2000 * 0.11 && enC.length < 2000 * 0.19 && A.enControlVuelve(kc) === A.enControlVuelve(kc) && avc.error === 'control'
       && vcl.lista.some((x) => x[0] === 'primerizo' && x[2] === 'aviso'),
     'el grupo sin aviso: uno de cada ~7 por sorteo fijo, no se le puede avisar, y el ciclo lee quién avisado y quién no', String(enC.length));
+    // 🗳️ los veredictos en tiempo real (26/10/2026): llegan de la conexión de la llamada; un «.» no pisa, un borrado no
+    // borra, cada versión queda en el historial, y un canal que no es de veredictos no entra
+    o.guardar('canales', Object.assign({}, o.leer('canales') || {}, { veredictos: [{ id: '9001', sv: 'FFA', g: '1' }] }));
+    const t0 = Date.now();
+    o.veredictosVivo({ ev: [{ t: 'c', id: '700001', canal: '9001', autor: '100000041', pub: t0, texto: 'Gana <@100000042>',
+      mentions: [{ id: '100000042', username: 'zorro' }] }, { t: 'c', id: '700002', canal: '9999', pub: t0, texto: 'otro canal' }] });
+    o.veredictosVivo({ ev: [{ t: 'u', id: '700001', canal: '9001', pub: t0, ed: t0 + 3000, texto: '.' }] });
+    o.veredictosVivo({ ev: [{ t: 'd', id: '700001', canal: '9001' }] });
+    const vf = o.sql.exec("SELECT texto FROM veredictos WHERE id = '700001'").toArray()[0];
+    const vh = o.sql.exec("SELECT texto FROM veredictos_hist WHERE id = '700001' ORDER BY rowid").toArray().map((r) => r.texto);
+    ok(vf && vf.texto === 'Gana @zorro' && vh.join('|') === 'Gana @zorro|.|' + A.BORRADO
+      && !o.sql.exec("SELECT 1 FROM veredictos WHERE id = '700002'").toArray().length
+      && A.pisaConNada('Gana X', ' . ') && !A.pisaConNada('Gana X', 'Gana Y') && !A.pisaConNada('', '.'),
+    'los veredictos en tiempo real: con el nombre de la mención, un «.» no pisa, el borrado queda marcado y nada se pierde',
+    JSON.stringify([vf, vh]));
     // 🗂️ las sanciones activas y 📊 los números del propio Dashboard
     const sa = o.sancionesActivas(Date.now());
     o.dashMed('deshacer', 1); o.dashMed('deshacer', 1);
