@@ -2718,7 +2718,6 @@
    "infalt": true,
    "perf": 1,
    "svc": 1,
-   "svtag": "campeon",
    "trios": 2
   }
  },
@@ -12725,12 +12724,12 @@
   }
  },
  {
-  "full": "Fix1🇦🇷",
-  "raw": "Fix1",
+  "full": "Fix 17",
+  "raw": "Fix 17",
   "cc": "ar",
   "sv": "DDF",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1079533414530678814",
   "verificado": false,
   "pts": 3850,
   "ev": 1,
@@ -16105,10 +16104,10 @@
  {
   "full": "KIRITO",
   "raw": "KIRITO",
-  "cc": "",
+  "cc": "co",
   "sv": "SR",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1131319147343659049",
   "verificado": false,
   "pts": 1250,
   "ev": 1,

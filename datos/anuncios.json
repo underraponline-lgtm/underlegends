@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-26T22:55:07+00:00",
+ "cuando": "2026-10-26T23:25:16+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -6895,6 +6895,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones-2",
+   "texto": "praiseriza",
+   "quien": "lein7426",
+   "discord_id": "1078792444080046271",
+   "msg_id": "1564418938845139025",
+   "cuando": "2026-10-26T23:22:20"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones-2",
+   "texto": "Joba 🇨🇱",
+   "quien": "jobains",
+   "discord_id": "1095893775383023708",
+   "msg_id": "1564416625308868710",
+   "cuando": "2026-10-26T23:13:08"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones-2",
+   "texto": "mark 🇨🇴",
+   "quien": "markcastillo_0",
+   "discord_id": "1471344428064178248",
+   "msg_id": "1564416395830239342",
+   "cuando": "2026-10-26T23:12:14"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones-2",
+   "texto": "Swid🇪🇸",
+   "quien": "swid420",
+   "discord_id": "380869870264254465",
+   "msg_id": "1564416179643224165",
+   "cuando": "2026-10-26T23:11:22"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones-2",
@@ -42858,42 +42894,6 @@
    "discord_id": "1358539185778327612",
    "msg_id": "1544090521197355008",
    "cuando": "2026-08-31T21:04:28"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "giansito🇵🇪",
-   "quien": "gian_075",
-   "discord_id": "664288438563897354",
-   "msg_id": "1544090506764615730",
-   "cuando": "2026-08-31T21:04:24"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Crk🇲🇽",
-   "quien": "user_mic",
-   "discord_id": "559068959845122048",
-   "msg_id": "1544090305077182514",
-   "cuando": "2026-08-31T21:03:36"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Pepe Mujica🇦🇷",
-   "quien": "lrs0378",
-   "discord_id": "1385452830684614697",
-   "msg_id": "1543800106610851880",
-   "cuando": "2026-08-31T01:50:27"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Eseeka",
-   "quien": "eseeka",
-   "discord_id": "545406522356662310",
-   "msg_id": "1543792703525883924",
-   "cuando": "2026-08-31T01:21:02"
   }
  ]
 }

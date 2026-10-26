@@ -377,11 +377,12 @@
    "vence": "2026-10-31T21:01:57+00:00",
    "vencido": false
   },
-  "Fix1": {
+  "Fix 17": {
+   "avisado": "2026-10-26",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-25T04:08:34+00:00",
-   "did": "",
+   "did": "1079533414530678814",
    "evento": "GRISELDA RECORDS VOL. 6",
    "n": 511,
    "sv": "DDF",

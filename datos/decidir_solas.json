@@ -2898,6 +2898,25 @@
     "Fix"
    ],
    "escribio": {}
+  },
+  {
+   "id": "3390b571d7",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«Fix1» es Fix 17? La cuenta de Fix 17 en la Lista se anotó como «Fix1», y en el ranking suman aparte. Si es la misma persona, los puntos de «Fix1» pasan a Fix 17.\nLa cuenta: https://discord.com/users/1079533414530678814",
+   "r": "Es la misma persona",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "la misma persona: «Fix1» ya es alias de Fix 17",
+   "t": 1793057427126,
+   "filas": [
+    891
+   ],
+   "variantes": [
+    "DOS NOMBRES: «Fix1» → «Fix 17» · cuenta 1079533414530678814"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

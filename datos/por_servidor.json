@@ -265,6 +265,7 @@
     "pts": 7250,
     "racha": "0/0",
     "tg": {
+     "dv": true,
      "fund": true
     }
    },
@@ -3064,18 +3065,7 @@
   },
   "Fix 17": {
    "DDF": {
-    "duelos": "1/1",
-    "ev": 0,
-    "oro": 0,
-    "ovr": 40,
-    "pod": 0,
-    "pts": 0,
-    "racha": "0/0"
-   }
-  },
-  "Fix1🇦🇷": {
-   "DDF": {
-    "duelos": "0/1",
+    "duelos": "1/2",
     "ev": 1,
     "oro": 0,
     "ovr": 43,
@@ -4600,6 +4590,7 @@
     "pts": 7500,
     "racha": "1/1",
     "tg": {
+     "dv": true,
      "fin": 1,
      "nuevo": true
     }

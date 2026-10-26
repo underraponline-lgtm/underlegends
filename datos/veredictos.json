@@ -5436,8 +5436,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793054536797,
-   "ed": 1793055066018,
-   "texto": "`[ OCTAVOS ]`\n⌞YINN🇲🇦⌝ 🆚 ⌞SOSA🇺🇾⌝ 🆚 ⌞STT🇮🇨⌝\n⌞MAKMAH 🇻🇪⌝ 🆚 ⌞NC🇰🇷⌝ 🆚 ⌞PICHULAMC🇦🇷⌝ 🆚 ⌞TAM🇻🇪⌝\n⌞SIX🇦🇱⌝ 🆚 ⌞DOMINICK🇵🇪⌝ 🆚 ⌞JAHNO MELOMANÍACO🇦🇷⌝\n⌞ANDY🇪🇨⌝ 🆚 ⌞1514914403101708⌝\n`[ OCTAVOS ]`\n⌞YINN🇲🇦⌝ 🆚 ⌞SOSA🇺🇾⌝ 🆚 ⌞STT🇮🇨⌝",
+   "ed": 1793056888960,
+   "texto": "`[ OCTAVOS ]`\n⌞YINN🇲🇦⌝ 🆚 ⌞SOSA🇺🇾⌝ 🆚 ⌞STT🇮🇨⌝\n⌞OKAM🇨🇷⌝ 🆚 ⌞LEWITO🇦🇷⌝ 🆚 ⌞PICHULAMC🇦🇷⌝ 🆚 ⌞TAM🇻🇪⌝\n⌞SWID🇪🇸⌝ 🆚 ⌞DOMINICK🇵🇪⌝ 🆚 ⌞JAHNO MELOMANÍACO🇦🇷⌝ 🆚 ⌞1514914⌝\n`[ OCTAVOS ]`\n⌞ANDY🇪🇨⌝ 🆚 ⌞KOREY🇨🇱⌝ 🆚 ⌞CALÍZ🇲🇽⌝ 🆚 ⌞AKKAMARRU🇪🇸⌝ 🆚 ⌞JOBA🇨🇱⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5453,8 +5453,8 @@
     [
      "OCTAVOS",
      [
-      "MAKMAH 🇻🇪",
-      "NC🇰🇷",
+      "OKAM🇨🇷",
+      "LEWITO🇦🇷",
       "PICHULAMC🇦🇷",
       "TAM🇻🇪"
      ],
@@ -5465,9 +5465,10 @@
     [
      "OCTAVOS",
      [
-      "SIX🇦🇱",
+      "SWID🇪🇸",
       "DOMINICK🇵🇪",
-      "JAHNO MELOMANÍACO🇦🇷"
+      "JAHNO MELOMANÍACO🇦🇷",
+      "1514914"
      ],
      null,
      "última ronda y no dice campeón",
@@ -5477,18 +5478,10 @@
      "OCTAVOS",
      [
       "ANDY🇪🇨",
-      "1514914403101708"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "YINN🇲🇦",
-      "SOSA🇺🇾",
-      "STT🇮🇨"
+      "KOREY🇨🇱",
+      "CALÍZ🇲🇽",
+      "AKKAMARRU🇪🇸",
+      "JOBA🇨🇱"
      ],
      null,
      "última ronda y no dice campeón",
