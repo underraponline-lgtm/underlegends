@@ -348,7 +348,9 @@ def card(c):
     rg = '—' if c.get('sinjugar') else letra_rango(c)
     g, bright = GRAD_SIN_JUGAR if c.get('sinjugar') else GRAD[tier_color(c['ovr'])]   # el COLOR sale del OVR de temporada
     # 🏷️ el TAG que eligió de su inventario, si eligió uno (Dlx, 25/10/2026); si no, la cascada
-    tg = ('🎟️ PRIMER EVENTO PENDIENTE', 't4') if c.get('sinjugar') else (_TE.para('temporada', _K(c.get('raw') or '')) or tag(c))
+    # 🔴 TAMBIÉN SIN JUGAR (26/10/2026): el «primer evento pendiente» pisaba lo elegido, así que el dueño elegía un TAG,
+    # la carta se redibujaba y salía igual. Como en la Competitiva (`gencomp.tag_de()`): primero lo elegido
+    tg = _TE.para('temporada', _K(c.get('raw') or '')) or (('🎟️ PRIMER EVENTO PENDIENTE', 't4') if c.get('sinjugar') else tag(c))
     # 📏 EL TAG LARGO APRIETA LAS LETRAS, NO LA FILA (14/10/2026). La pastilla vive entre la temporada y el UL en una
     # fila flex: medido, «🏁 SEMIFINALISTA SERIAL» dejaba 3.7 px de cada lado y «🎟️ PRIMER EVENTO PENDIENTE» 0 —se
     # tocaban—. Desde 21 caracteres va con menos espaciado (`.c-band.largo`), desde 25 con casi nada (`.muylargo`), y
