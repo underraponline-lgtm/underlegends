@@ -410,7 +410,7 @@ function Sorteo({ liga, dc, miembro }) {
 
 // 🖼️ TUS MARCOS (Dlx, 25/10/2026: «se quedan permanentemente en el inventario de uno… así la gente puede personalizar su
 // tarjeta poco a poco»): los que ganaste, cuál lleva tu carta y si la de Servidor va con la camiseta o con la cadena
-function TusMarcos({ liga, dc }) {
+export function TusMarcos({ liga, dc }) {
   const [M, setM] = useState(null);
   const [ocup, setOcup] = useState(false);
   useEffect(() => { if (dc) pasePost('marcos', {}).then((d) => setM(d && d._ok ? d : null)); }, [dc && dc.id]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -491,7 +491,8 @@ function Premium({ liga, dc, P, prem, nivel, miembro }) {
           <li><b>3</b><div><strong>Se gana en eventos</strong><span>Algunos eventos de la Liga lo dan como premio.</span></div></li>
         </ol>
       </section>
-      <TusMarcos liga={liga} dc={dc} />
+      {/* 🖼️ los marcos se eligen en tu Inventario (Dlx, 26/10/2026: «debería estar en inventario»): acá, el atajo */}
+      {dc ? <p className="ps-sub">🖼️ Tus marcos, tus TAGs y tu carta principal se eligen en <a href={'#/r/' + encodeURIComponent((liga.yo && liga.yo.k) || (dc && dc.clave) || '')}>tu perfil → Inventario</a>.</p> : null}
       <Sorteo liga={liga} dc={dc} miembro={miembro} />
       {miembro && !tiene && ya.length ? (
         <section className="ps-pv-b">

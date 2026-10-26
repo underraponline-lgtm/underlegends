@@ -13,6 +13,7 @@ import { MESES, diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga
 import { Bandera, Cara, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, accion, diaET, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
 import { PanelEmblemas, PildoraEmblemas, emblemasDe } from './emblemas.jsx';
 import { TusTags } from './tags_inv.jsx';
+import { TusMarcos } from './pase.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
 import { usePaseDe, usePases } from './pase.js';
@@ -1317,7 +1318,7 @@ function SusPromos({ liga, p, esYo }) {
 
 // 🏅 LOGROS (las insignias de la Liga), EN NEGRO, y al lado 🎒 INVENTARIO (Dlx, a la v11: «pon al costado de Logros
 // Inventario: esto será para otra cosa»): una pestaña más del mismo bloque, vacía hasta que tenga qué guardar
-function Logros({ liga, p, esYo }) {
+function Logros({ liga, p, esYo, dc }) {
   const [faltan, setFaltan] = useState(false);
   const [pest, setPest] = useState('logros');
   const cat = liga.d.insignias || [];
@@ -1343,11 +1344,12 @@ function Logros({ liga, p, esYo }) {
         <button type="button" role="tab" aria-selected={pest === 'logros'} className={pest === 'logros' ? 'on' : ''} onClick={() => setPest('logros')}>
           Logros <small>{tiene.size} de {cat.length}</small></button>
         <button type="button" role="tab" aria-selected={pest === 'inv'} className={pest === 'inv' ? 'on' : ''} onClick={() => setPest('inv')}>
-          Inventario{esYo ? <small>tus TAGs</small> : null}</button>
+          Inventario{esYo ? <small>marcos, TAGs y tu carta</small> : null}</button>
       </div>
       {/* 🏷️ el inventario (25/10/2026): en el tuyo, el TAG de cada carta (`tags_inv.jsx`); en el de otro, lo que eligió se
           ve en sus cartas */}
-      {pest === 'inv' ? (esYo ? <TusTags /> : (
+      {/* 🎒 TODO LO TUYO EN UN LUGAR (Dlx, 26/10/2026): los marcos —estaban en el Pase—, la carta principal y los TAGs */}
+      {pest === 'inv' ? (esYo ? <><TusMarcos liga={liga} dc={dc} /><TusTags /></> : (
         <div className="pf8-inv"><span aria-hidden="true">🎒</span><b>Su inventario</b>
           <p>Los TAGs que eligió para sus cartas se ven abajo de cada una. El inventario lo ve cada uno en su perfil.</p></div>
       )) : <>
@@ -1537,7 +1539,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
         <SusLigas liga={liga} k={k} esYo={esYo} p={p} />
         {/* 🏷️ tus Logros y tu Inventario también sin jugar (Dlx, 26/10/2026: «tampoco puedo ver mi inventario en mi
             perfil»): el perfil mínimo cortaba antes de esta sección, y elegir tu carta principal y tus TAGs vive acá */}
-        {esYo ? <Logros liga={liga} p={p} esYo={esYo} /> : null}
+        {esYo ? <Logros liga={liga} p={p} esYo={esYo} dc={dc} /> : null}
         {panel}
       </>
     );
@@ -1563,7 +1565,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
             <div id="pf-publicaciones" className="o5"><SusPublicaciones liga={liga} p={p} esYo={esYo} /><SusPromos liga={liga} p={p} esYo={esYo} /></div>
             <div id="pf-duelos" className="o7"><Duelos liga={liga} p={p} e={P.e} /></div>
             {fzAncha ? <div className="o6"><Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} /></div> : null}
-            <div id="pf-insignias" className="o9"><Logros liga={liga} p={p} esYo={esYo} /></div>
+            <div id="pf-insignias" className="o9"><Logros liga={liga} p={p} esYo={esYo} dc={dc} /></div>
             <div id="pf-eventos" className="o12"><Eventos liga={liga} p={p} e={P.e} n={n} /></div>
           </div>
           <aside className="pf8-lat">

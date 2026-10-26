@@ -1310,6 +1310,12 @@ def _lo_barato(correr):
         paso('2b8h', 'las notas y el MVP')
         if not corre(['bot/notas.py'], callado=True, mostrar=('⭐', '⚠️')):
             print('      ⚠️ las notas fallaron: quedan las de antes')
+    # ── 2b8i · 🏆 las competencias de la semana (`bot/competencias.py`, Dlx 26/10/2026): la Copa por grupos, la Liga de
+    # 10 y la Rapid del día, después de las notas (la simulación usa la forma). Nunca frena el ciclo
+    if correr:
+        paso('2b8i', 'las competencias de la semana')
+        if not corre(['bot/competencias.py'], callado=True, mostrar=('🏆', '⚠️')):
+            print('      ⚠️ las competencias fallaron: quedan las de antes')
     # ── 2b9 · 🏟️ las ligas de los servidores (`bot/ligas.py`, Dlx 12/10/2026: «1. A», «2. Me gusta»): cada batalla con
     # su resultado, para la pestaña «Ligas» de la web y como duelos (Ranking Duelos y Win%: los toma el paso 1c de la
     # corrida siguiente, como las misiones). Nunca frena el ciclo
