@@ -366,6 +366,14 @@ const SUBS = {
     baj: <>Una tabla por semana, de a 30: juegas un evento y entras. Los <b>primeros</b> de cada grupo suben de división y ganan <b>Puntos de Tienda</b>; los últimos bajan.</>,
   },
 };
+// 📈 DESDE EL 02/11/2026 LAS DIVISIONES SON EL RANKING ELO (Dlx, 26/10/2026: «divisiones ahora serían Ranking ELO»): el
+// ciclo lo avisa con `div.m === 'elo'` y acá cambian el nombre y la explicación. La ruta sigue siendo
+// `#/ranking/divisiones` —es la que circula— y `#/ranking/elo` lleva ahí
+const DIV_ELO = {
+  et: 'Ranking ELO',
+  baj: <>Tu división sale de tu <b>ELO</b>: tu nivel según a quién le ganas y con quién pierdes en las batallas 1v1. Se mira cada lunes; llegar por primera vez a una división paga <b>Puntos de Tienda</b>.</>,
+};
+export const subDe = (liga, id) => (id === 'divisiones' && liga && liga.d.div && liga.d.div.m === 'elo' ? { ...SUBS.divisiones, ...DIV_ELO } : SUBS[id]);
 export const RANKINGS = ['temporada', 'divisiones', 'competitivo', 'duelos', 'podios', 'rachas', 'eventos', 'paises', 'crews', 'ascensos', 'mw', 'misiones'];
 
 function req(L, id) {
@@ -751,9 +759,10 @@ const VER = 50;
 // `ver`: lo que va después del ranking en la dirección: qué abre su vista propia (lo usaban las Ligas, que desde el
 // 16/10/2026 son su propia sección: `#/ranking/ligas` lleva a `#/ligas`, en App.jsx)
 export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
-  const [sub, setSub] = useState(SUBS[subRuta] ? subRuta : 'temporada');
+  const ruta = subRuta === 'elo' ? 'divisiones' : subRuta;
+  const [sub, setSub] = useState(SUBS[ruta] ? ruta : 'temporada');
   const deslizaRk = useDesliza(sub, RANKINGS);
-  useEffect(() => { setSub(SUBS[subRuta] ? subRuta : 'temporada'); }, [subRuta]);
+  useEffect(() => { setSub(SUBS[ruta] ? ruta : 'temporada'); }, [ruta]);
   const [orden, setOrden] = useState(null);
   const [q, setQ] = useState('');
   const [sv, setSv] = useState('');
@@ -776,7 +785,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
 
   // 🏠 de dónde es cada uno, sólo si lo eligió (Dlx, 12/10/2026). Ver elegidos.js
   const eleg = useElegidos();
-  const cfg = SUBS[sub] || SUBS.temporada;
+  const cfg = subDe(liga, sub) || SUBS.temporada;
   const pronto = cfg.pronto || (cfg.hay && !cfg.hay(liga) ? cfg.siNo : null);
   const mwOn = !!((liga.d.mw && (liga.d.mw.b || []).length) || (liga.d.tabla || []).some((f) => f.caz || f.czd || f.sob));
   const yo = liga.yo;
@@ -987,7 +996,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
               puntos que chocan»): las «PRONTO» sumaban opciones sin nada detrás, contra la regla de no dibujar nada
               vacío. Aparecen solas con su primer dato. La que se abrió por un link se ve igual, con su explicación */}
           {RANKINGS.filter((id) => id === sub || !(SUBS[id].pronto || (SUBS[id].hay && !SUBS[id].hay(liga)))).map((id) => {
-            const s = SUBS[id];
+            const s = subDe(liga, id);
             const pr = s.pronto || (s.hay && !s.hay(liga));
             return (
               <a key={id} href={'#/ranking/' + id} className={(id === sub ? 'on' : '') + (pr ? ' pronto' : '')} aria-current={id === sub ? 'page' : undefined}
@@ -1002,8 +1011,8 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
         {/* las flechas, como las del escenario del Inicio (Dlx, 02/10/2026: «arrows… in the black space like we have in
             INICIO»): al ranking de al lado, salteando los que todavía no existen. Sólo en la compu */}
         {antes && despues && antes !== sub ? <>
-          <a className="mo-fl izq rk-flecha" href={'#/ranking/' + antes} aria-label={'Ranking anterior: ' + SUBS[antes].et} title={SUBS[antes].et}><Chevron /></a>
-          <a className="mo-fl der rk-flecha" href={'#/ranking/' + despues} aria-label={'Ranking siguiente: ' + SUBS[despues].et} title={SUBS[despues].et}><Chevron /></a>
+          <a className="mo-fl izq rk-flecha" href={'#/ranking/' + antes} aria-label={'Ranking anterior: ' + subDe(liga, antes).et} title={subDe(liga, antes).et}><Chevron /></a>
+          <a className="mo-fl der rk-flecha" href={'#/ranking/' + despues} aria-label={'Ranking siguiente: ' + subDe(liga, despues).et} title={subDe(liga, despues).et}><Chevron /></a>
         </> : null}
         <section className="rk-cab" id="rk-cab" ref={deslizaRk}>
           <div className="rk-tx">

@@ -361,3 +361,37 @@
 .cm9-llv-f.fuera{border-left-color:#3A3A42;opacity:.55}
 .cm9-llv-f small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--esc-gris);white-space:nowrap}
 .cm9-llv>.cm9-mas{margin:0 14px}
+/* 🏆 la llave como cuadro (26/10/2026, Dlx: «esto es muy simple»): una columna por ronda, los cruces centrados entre los
+   dos de los que vienen, caras, quién pasó, chances, tu camino y la copa al final; en el celular se desliza */
+/* una debajo de la otra y a todo el ancho: la Copa son cinco columnas y en media pantalla se deslizaba también en la compu */
+.cm9-dos-br{grid-template-columns:minmax(0,1fr)}
+.cm9-br{display:grid;grid-template-columns:repeat(var(--n,4),minmax(148px,1fr));gap:20px;padding:12px 16px 18px;overflow-x:auto;scroll-behavior:smooth}
+.cm9-br-c{display:flex;flex-direction:column;gap:8px;min-width:0}
+.cm9-br-t{display:flex;justify-content:space-between;gap:6px;padding-bottom:5px;border-bottom:2px solid var(--suave);font:700 13px/1.1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.cm9-br-t i{font-style:normal;font-weight:600}
+.cm9-br-c.hoy .cm9-br-t{color:var(--tinta);border-bottom-color:var(--magenta)}
+.cm9-br-ms{flex:1;display:flex;flex-direction:column;justify-content:space-around;gap:10px}
+.cm9-br-m{position:relative;display:flex;flex-direction:column;border:1.5px solid var(--suave);background:var(--fondo)}
+.cm9-br-c+.cm9-br-c .cm9-br-m::before,.cm9-br-c+.cm9-br-c .cm9-br-copa::before{content:"";position:absolute;left:-21px;top:50%;width:20px;border-top:1.5px solid var(--suave)}
+.cm9-br-m.tuyo{border-color:var(--magenta);box-shadow:inset 3px 0 0 var(--magenta)}
+.cm9-br-l{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;gap:7px;padding:5px 7px;min-height:32px}
+.cm9-br-l+.cm9-br-l{border-top:1px solid var(--suave)}
+.cm9-br-l b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 13px/1.1 Archivo,sans-serif}
+.cm9-br-l.g b{font-weight:900}
+.cm9-br-l.out{opacity:.45}
+.cm9-br-l.out b{text-decoration:line-through}
+.cm9-br-l.yo b{color:var(--magenta-tx,#D0106A)}
+.cm9-br-l.vacio{display:block;font:600 12px/32px Archivo,sans-serif;color:var(--gris);padding:0 8px;min-height:32px}
+.cm9-br-cara{width:22px;height:22px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:var(--caja);font:800 11px/1 Archivo,sans-serif}
+.cm9-br-cara img{width:100%;height:100%;object-fit:cover;display:block}
+.cm9-br-ok{font-style:normal;font:900 13px/1 Archivo,sans-serif;color:#29B298}
+.cm9-br-pc{font-style:normal;font:700 13px/1 "Barlow Condensed",sans-serif;color:var(--gris);font-variant-numeric:tabular-nums}
+.cm9-br-como{position:absolute;right:-1px;top:-9px;padding:1px 4px;font:700 10px/1.2 "Barlow Condensed",sans-serif;font-style:normal;letter-spacing:.06em;background:var(--inv);color:var(--inv-tinta)}
+.cm9-br-como.sim{background:#B07CFF;color:#030304}
+.cm9-br-copa{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border:2px dashed var(--suave);text-align:center}
+.cm9-br-copa>span{font-size:28px;line-height:1}
+.cm9-br-copa b{font:900 14px/1.1 Archivo,sans-serif;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cm9-br-copa.ok{border-style:solid;border-color:#F5C542;background:rgba(245,197,66,.12)}
+.cm9-br-copa.tuyo{border-color:var(--magenta)}
+.cm9-br-copa .cm9-br-cara{width:40px;height:40px}
+.cm9-br-tu{margin:0;padding:12px 16px 2px;font:500 14px/1.45 Archivo,sans-serif}

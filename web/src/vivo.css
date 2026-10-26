@@ -628,6 +628,8 @@ button.btn{background:transparent;cursor:pointer}
 .dv-esc-p.on{background:var(--inv);color:var(--inv-tinta)}
 .dv-esc-p.on small{color:inherit;opacity:.8}
 .dv-vacia,.dv-tuyo{margin:0;font:700 14px/1.45 Archivo,sans-serif;max-width:70ch}
+/* 📈 el Ranking ELO (26/10/2026): una división puede tener cientos; se ven 50 y la tuya */
+.dv-mas{margin:8px 0 0;font:700 13px/1.4 Archivo,sans-serif;color:var(--gris)}
 /* 🪜 Divisiones rediseñada (14/10/2026): tu semana, la escalera con caras, las zonas como bandas y dos columnas */
 .dv2{grid-template-areas:"tu" "esc" "tab" "info";gap:16px}
 .dv2-tu{grid-area:tu;min-width:0}.dv2-esc{grid-area:esc;min-width:0;padding-top:16px}.dv2-tab{grid-area:tab;display:grid;gap:14px;min-width:0}.dv2-info{grid-area:info;display:grid;gap:10px;align-content:start;min-width:0}
@@ -658,6 +660,8 @@ button.btn{background:transparent;cursor:pointer}
 .dv-esc-caras > :first-child{margin-left:0}
 .dv-esc-p.on .dv-esc-cara{border-color:var(--inv)}
 .dv-tabla.dv-tabla2 li{grid-template-columns:28px 32px minmax(0,1fr) auto auto}
+/* 📈 el Ranking ELO lleva una columna más: «subiría» / «bajaría» entre las batallas y el ELO */
+.dv-tabla.dv-tabla2.elo li{grid-template-columns:28px 32px minmax(0,1fr) auto auto auto}
 .dv-tabla.dv-tabla2 li.dv-banda{display:block;padding:6px 10px;border-left:4px solid transparent;font:700 15px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.04em;text-transform:uppercase}
 .dv-tabla.dv-tabla2 li.dv-banda.sube{color:#17735f;background:rgba(41,178,152,.12);border-left-color:#29B298}
 .dv-tabla.dv-tabla2 li.dv-banda.queda{color:var(--gris);background:var(--caja)}
@@ -669,7 +673,7 @@ button.btn{background:transparent;cursor:pointer}
 .dv-caja-caras{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
 .dv-caja-caras .dv-esc-cara{margin-left:0;width:28px;height:28px}
 .dv-caja-caras small{font:700 14px/1 "Barlow Condensed",sans-serif;color:var(--gris)}
-@media (max-width: 520px){.dv-tabla.dv-tabla2 li{grid-template-columns:24px 28px minmax(0,1fr) auto}.dv-esc-cara{width:16px;height:16px;font-size:8px;margin-left:-5px;border-width:1.5px}.dv-tu-c b{font-size:19px}}
+@media (max-width: 520px){.dv-tabla.dv-tabla2 li{grid-template-columns:24px 28px minmax(0,1fr) auto}.dv-tabla.dv-tabla2.elo li{grid-template-columns:24px 28px minmax(0,1fr) auto auto}.dv-esc-cara{width:16px;height:16px;font-size:8px;margin-left:-5px;border-width:1.5px}.dv-tu-c b{font-size:19px}}
 /* 🏟️ las ligas de los servidores (12/10/2026): su tabla y sus últimos resultados */
 .lg-pj{font:700 15px/1 "Barlow Condensed",sans-serif;color:var(--gris);font-variant-numeric:tabular-nums}
 .lg-st{margin:10px 0 0;font:900 14px/1.1 Archivo,sans-serif;text-transform:uppercase;letter-spacing:.02em}

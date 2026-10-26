@@ -11,6 +11,18 @@
  ],
  "cambios": [
   {
+   "version": "4.11",
+   "dia": "2026-10-26",
+   "cuando": "2026-10-26T19:13:28-04:00",
+   "titulo": "Las Divisiones pasan a ser el Ranking ELO",
+   "items": [
+    "Desde el **lunes 2 de noviembre**, tu división sale de tu **ELO**: Primera desde 1.150, Segunda desde 1.100, Tercera desde 1.050, Cuarta desde 1.000, Quinta desde 950 y Sexta abajo.",
+    "Se mira cada lunes a las 11 AM. **Llegar por primera vez** a una división paga 500 Puntos de Tienda; con menos de 5 batallas tu ELO es provisional y no te mueve.",
+    "Lo que ya cobraste e insignias que ganaste con las divisiones de antes **se quedan**. El primer lunes acomoda a todos según su ELO, sin pago.",
+    "En **Competencias**, la Copa y la Rapid muestran **tu llave** como un cuadro: caras, quién pasó, tus chances y la copa al final."
+   ]
+  },
+  {
    "version": "4.10",
    "dia": "2026-10-26",
    "cuando": "2026-10-26T13:47:07-04:00",

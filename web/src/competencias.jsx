@@ -9,11 +9,9 @@
 //   · la Copa y la Rapid
 //   · los MINI EVENTOS que rotan, el EQUIPO DE LA SEMANA y una simulada por dentro (con su jurado sorteado)
 //   · CÓMO SE JUEGA y las preguntas de quien entra nuevo
-//   · los grupos de la Copa, con buscador
 // Lo arma `bot/competencias.py`; acá sólo se dibuja.
-import { useMemo, useRef, useState } from 'react';
-import { Carta, nombrePais } from './piezas.jsx';
-import { enLlave } from './competencias_datos.js';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Cara, Carta, nombrePais } from './piezas.jsx';
 import {
   DIVISIONES, NIVEL, NIVELES, dondeEstoy, faltaTxt, nombreDe, nombreLiga, semanaTxt, todasLasLigas, ultimas, useCompetencias,
 } from './competencias_datos.js';
@@ -234,20 +232,60 @@ function Ligas({ liga, C, yo, donde }) {
   );
 }
 
-/** Una llave a eliminación, en columnas: una por ronda */
-function Llave({ liga, C, r, yo }) {
+/** Un lado de un cruce: cara, nombre y, según cómo va, la ✓ del que pasó o sus chances si se simula */
+function Lado({ liga, C, k, m, pos, yo }) {
+  const [a, b, g, como, p] = m;
+  if (!k) return <span className="cm9-br-l vacio">{como === 'pase' ? 'pase libre' : 'por definir'}</span>;
+  const n = nombreDe(liga, C, k);
+  const gano = g && g === k;
+  const chance = como === 'pend' && a && b ? (pos === 0 ? p : 1 - p) : null;
   return (
-    <div className="cm9-llave" style={{ '--n': r.r.length }}>
-      {r.r.map((rd) => (
-        <div key={rd.r}><small>{rd.r} · {faltaTxt(rd.hasta)}</small>
-          {rd.p.map((m, i) => (
-            <span key={i} className={(m[0] === yo || m[1] === yo ? 'tuyo' : '') || undefined}>
-              <b className={m[2] && m[2] === m[0] ? 'g' : ''}>{m[0] ? nombreDe(liga, C, m[0]) : m[3] === 'pase' ? 'pase libre' : '—'}</b>
-              <b className={m[2] && m[2] === m[1] ? 'g' : ''}>{m[1] ? nombreDe(liga, C, m[1]) : m[3] === 'pase' ? 'pase libre' : '—'}</b>
-            </span>
-          ))}
+    <span className={'cm9-br-l' + (gano ? ' g' : g ? ' out' : '') + (k === yo ? ' yo' : '')}>
+      <Cara liga={liga} k={k} nombre={n} cls="cara cm9-br-cara" lazy />
+      <b>{n}</b>
+      {gano ? <i className="cm9-br-ok" aria-label="pasó">✓</i> : chance != null ? <i className="cm9-br-pc">{pct(chance)}</i> : null}
+    </span>
+  );
+}
+
+/** 🏆 UNA LLAVE COMO CUADRO (Dlx, 26/10/2026: «esto es muy simple»): una columna por ronda con los cruces centrados entre
+ *  los dos de los que vienen, la cara de cada uno, quién pasó y las chances de lo que falta, tu camino marcado, y al
+ *  final la copa. En el celular se desliza de costado y abre en la ronda que se está jugando */
+function Llave({ liga, C, r, yo }) {
+  const caja = useRef(null);
+  const ia = r.campeon ? r.r.length : Math.max(0, r.r.findIndex((rd) => rd.p.some((m) => !m[2] && m[0] && m[1])));
+  useEffect(() => {
+    const el = caja.current;
+    const col = el && el.children[ia];
+    // ⚠️ por la caja y no por `offsetLeft`, que mide contra el padre posicionado y no contra el que se desliza
+    if (el && col && ia > 0 && el.scrollWidth > el.clientWidth) el.scrollLeft = Math.max(0, col.getBoundingClientRect().left - el.getBoundingClientRect().left + el.scrollLeft - 16);
+  }, [ia]);
+  return (
+    <div className="cm9-br" ref={caja} style={{ '--n': r.r.length + 1 }}>
+      {r.r.map((rd, ri) => (
+        <div key={rd.r} className={'cm9-br-c' + (ri === ia ? ' hoy' : ri < ia ? ' ya' : '')}>
+          <small className="cm9-br-t">{rd.r === 'Semifinal' ? 'Semis' : rd.r}<i>{ri < ia ? 'jugada' : faltaTxt(rd.hasta)}</i></small>
+          <div className="cm9-br-ms">
+            {rd.p.map((m, i) => (
+              <div key={i} className={'cm9-br-m ' + m[3] + (yo && (m[0] === yo || m[1] === yo) ? ' tuyo' : '')}
+                title={m[3] === 'real' ? 'Se cruzaron de verdad' + (m[5] && !Array.isArray(m[5]) ? ' en el #' + m[5] : '') : m[3] === 'sim' ? 'Simulado al cierre' : undefined}>
+                <Lado liga={liga} C={C} k={m[0]} m={m} pos={0} yo={yo} />
+                <Lado liga={liga} C={C} k={m[1]} m={m} pos={1} yo={yo} />
+                {m[3] === 'real' || m[3] === 'sim' ? <em className={'cm9-br-como ' + m[3]}>{m[3] === 'real' ? 'REAL' : 'SIM'}</em> : null}
+              </div>
+            ))}
+          </div>
         </div>
       ))}
+      <div className={'cm9-br-c fin' + (r.campeon ? ' hoy' : '')}>
+        <small className="cm9-br-t">Campeón</small>
+        <div className="cm9-br-ms">
+          <div className={'cm9-br-copa' + (r.campeon ? ' ok' : '') + (r.campeon && r.campeon === yo ? ' tuyo' : '')}>
+            <span aria-hidden="true">🏆</span>
+            {r.campeon ? <><Cara liga={liga} k={r.campeon} nombre={nombreDe(liga, C, r.campeon)} cls="cara cm9-br-cara" /><b><Nombre liga={liga} C={C} k={r.campeon} yo={yo} /></b></> : <b>por definir</b>}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -255,26 +293,44 @@ function Llave({ liga, C, r, yo }) {
 /** «Octavos», «Afuera en cuartos», «Campeón»: en qué va alguien en una llave */
 const estado = (e) => (!e ? '' : e.campeon ? 'Campeón' : e.fuera ? 'Afuera en ' + ((e.ronda || {}).r || 'octavos').toLowerCase() : (e.ronda || {}).r || '');
 
-function CopaRapid({ liga, C, yo, donde, onGrupos }) {
-  const g = (donde && donde.copa && donde.copa.r) || (C.copa || [])[0];
-  const r = (donde && donde.rapid && donde.rapid.r) || (C.rapid || [])[0];
+/** 🎯 Tu situación en una llave, en una línea: contra quién vas, tus chances y cuándo cierra */
+function TuLlave({ liga, C, e, yo }) {
+  if (e.campeon) return <p className="cm9-br-tu"><b>🏆 Campeón</b> de esta llave.</p>;
+  if (e.fuera) return <p className="cm9-br-tu">Quedaste <b>afuera en {((e.ronda || {}).r || 'octavos').toLowerCase()}</b>. El lunes arranca otra.</p>;
+  const m = ((e.ronda || {}).p || []).find((x) => x[0] === yo || x[1] === yo);
+  if (!m) return null;
+  const rival = m[0] === yo ? m[1] : m[0];
+  const mia = m[0] === yo ? m[4] : 1 - m[4];
   return (
-    <section className="cm9-dos" aria-label="La Copa y la Rapid">
+    <p className="cm9-br-tu">Vas en <b>{e.ronda.r === 'Semifinal' ? 'semis' : e.ronda.r.toLowerCase()}</b>
+      {rival ? <> contra <b><Nombre liga={liga} C={C} k={rival} yo={yo} /></b>: <b>{pct(mia)}</b> si se simula</> : <>: esperando rival</>}
+      {' '}· cierra en {faltaTxt(e.ronda.hasta)}. Si se cruzan en cualquier evento, cuenta esa batalla.</p>
+  );
+}
+
+/** 🏆⚡ LA COPA Y LA RAPID: SÓLO TU LLAVE (Dlx, 26/10/2026: «no es necesario ver las 19 llaves si no estás tú»). Quien
+ *  no está en ninguna —el dueño, o quien no jugó— ve la de más arriba, para saber cómo es */
+function CopaRapid({ liga, C, yo, donde }) {
+  const ec = donde && donde.copa;
+  const er = donde && donde.rapid;
+  const g = (ec && ec.r) || (C.copa || [])[0];
+  const r = (er && er.r) || (C.rapid || [])[0];
+  return (
+    <section className="cm9-dos cm9-dos-br" aria-label="La Copa y la Rapid">
       {g ? (
         <article className="cm9-card">
-          <header className="mag"><h3>🏆 COPA</h3><small>Llave {g.id}{donde && donde.copa ? ' · ' + estado(donde.copa) : ' · ' + DIVISIONES[g.div]}</small></header>
-          <p>Una llave de 16 cada lunes, por división: octavos, cuartos, semis y final, una ronda cada dos días.</p>
+          <header className="mag"><h3>🏆 COPA</h3><small>{ec ? 'Tu llave · ' + estado(ec) : 'Llave ' + g.id + ' · ' + DIVISIONES[g.div]}</small></header>
+          {ec ? <TuLlave liga={liga} C={C} e={ec} yo={yo} />
+            : <p>Una llave de 16 cada lunes, con gente de tu división: octavos, cuartos, semis y final, una ronda cada dos días. Esta semana no estás en ninguna: entras jugando un evento.</p>}
           <Llave liga={liga} C={C} r={g} yo={yo} />
-          {g.campeon ? <p className="cm9-camp"><span className="cm9-tag mag">CAMPEÓN</span> <Nombre liga={liga} C={C} k={g.campeon} yo={yo} /></p> : null}
-          <button type="button" className="cm9-btn" onClick={onGrupos}>Ver las {(C.copa || []).length} llaves</button>
         </article>
       ) : null}
       {r ? (
         <article className="cm9-card">
-          <header className="ver"><h3>⚡ RAPID</h3><small>{(C.rapid || []).length} llaves de 8 esta semana</small></header>
-          <p>Una llave de 8 con gente de tu mismo nivel, armada cada lunes: cuartos hasta el jueves, semis hasta el sábado, final hasta el lunes.</p>
+          <header className="ver"><h3>⚡ RAPID</h3><small>{er ? 'Tu llave · ' + estado(er) : 'Llave de 8 de esta semana'}</small></header>
+          {er ? <TuLlave liga={liga} C={C} e={er} yo={yo} />
+            : <p>Una llave de 8 con gente de tu mismo nivel, armada cada lunes: cuartos hasta el jueves, semis hasta el sábado, final hasta el lunes.</p>}
           <Llave liga={liga} C={C} r={r} yo={yo} />
-          {r.campeon ? <p className="cm9-camp"><span className="cm9-tag mag">CAMPEÓN</span> <Nombre liga={liga} C={C} k={r.campeon} yo={yo} /></p> : null}
         </article>
       ) : null}
     </section>
@@ -569,28 +625,20 @@ const PREGUNTAS = [
 
 export function Competencias({ liga, dc, sub = '' }) {
   const C = useCompetencias();
-  const [busca, setBusca] = useState('');
-  const [div, setDiv] = useState(-1);
-  const [ver, setVer] = useState(15);
   const como = useRef(null);
-  const grupos = useRef(null);
   const yo = (liga && liga.yo && liga.yo.k) || (dc && dc.clave) || '';
   const donde = useMemo(() => dondeEstoy(C, yo), [C, yo]);
   if (!C) return <div className="cargando">Cargando las competencias…</div>;
   if (!C.ligas) return <div className="cargando">Las competencias se están armando: vuelve en un rato.</div>;
   if (sub === 'mini') return <MiniPagina liga={liga} C={C} yo={yo} />;
   if (sub === 'ligas') return <LigasInfo liga={liga} C={C} yo={yo} />;
-  const q = busca.trim().toLowerCase();
-  const divs = [...new Set((C.copa || []).map((g) => g.div))].sort();
-  const gs = (C.copa || []).filter((g) => (div < 0 || g.div === div)
-    && (!q || g.id.toLowerCase() === q || g.gente.some((k) => nombreDe(liga, C, k).toLowerCase().includes(q))));
   const ir = (r) => r.current && r.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
   return (
     <div className="cm9">
       <Escena liga={liga} C={C} yo={yo} donde={donde} onComo={() => ir(como)} />
       <Dias C={C} />
       <Ligas liga={liga} C={C} yo={yo} donde={donde} />
-      <CopaRapid liga={liga} C={C} yo={yo} donde={donde} onGrupos={() => ir(grupos)} />
+      <CopaRapid liga={liga} C={C} yo={yo} donde={donde} />
 
       {(C.mini || []).length ? (
         <section className="cm9-sec" aria-label="Más mini eventos">
@@ -629,46 +677,6 @@ export function Competencias({ liga, dc, sub = '' }) {
         <div className="cm9-faq">{PREGUNTAS.map(([p, r]) => <div key={p}><h3>{p}</h3><p>{r}</p></div>)}</div>
       </section>
 
-      <section className="cm9-grupos" aria-label="Las llaves de la Copa" ref={grupos}>
-        <div className="cm9-gcab">
-          <h2>LAS {(C.copa || []).length} LLAVES DE LA COPA</h2>
-          <div className="cm9-gfil" role="radiogroup" aria-label="División">
-            <button type="button" role="radio" aria-checked={div < 0} className={div < 0 ? 'on' : ''} onClick={() => setDiv(-1)}>Todos {(C.copa || []).length}</button>
-            {divs.map((d) => <button key={d} type="button" role="radio" aria-checked={div === d} className={div === d ? 'on' : ''} onClick={() => setDiv(d)}>{DIVISIONES[d]} {(C.copa || []).filter((g) => g.div === d).length}</button>)}
-          </div>
-          <input type="search" placeholder="Buscar un rapero o una llave…" value={busca} onChange={(e) => { setBusca(e.target.value); setVer(15); }} aria-label="Buscar en la Copa" />
-        </div>
-        <div className="cm9-gs">
-          {gs.slice(0, ver).map((g) => {
-            // los que siguen en carrera primero, y cada uno con en qué va
-            const est = g.gente.map((k) => [k, enLlave(g, k)]).sort((x, y) => (x[1].fuera - y[1].fuera) || (y[1].r.r.indexOf(y[1].ronda) - x[1].r.r.indexOf(x[1].ronda)));
-            const vivos = est.filter(([, e]) => !e.fuera).length;
-            // en qué ronda va la llave: la primera con algo por jugar
-            const ia = g.campeon ? g.r.length : Math.max(0, g.r.findIndex((rd) => rd.p.some((m) => !m[2] && m[0] && m[1])));
-            const color = ['#F5C542', '#C9CDD4', '#C77B4A', '#E41373', '#29B298', '#56A2F2'][g.div] || '#29B298';
-            return (
-              <article key={g.id} className={'cm9-llv' + (g.gente.includes(yo) ? ' yo' : '')} style={{ '--c': color }}>
-                <header>
-                  <span className="cm9-llv-tr" aria-hidden="true">🏆</span>
-                  <div><b>LLAVE {g.id}</b><small>{DIVISIONES[g.div]} · {g.gente.length} raperos</small></div>
-                </header>
-                <ol className="cm9-llv-cam" aria-label="Las rondas">
-                  {g.r.map((rd, i) => <li key={rd.r} className={i < ia ? 'ya' : i === ia ? 'hoy' : ''}>{rd.r === 'Semifinal' ? 'Semis' : rd.r}</li>)}
-                </ol>
-                {g.campeon ? (
-                  <p className="cm9-llv-camp"><span aria-hidden="true">🏆</span><Nombre liga={liga} C={C} k={g.campeon} yo={yo} /><small>Campeón</small></p>
-                ) : <p className="cm9-llv-vivos"><b>{vivos}</b> siguen en carrera</p>}
-                {est.filter(([k]) => k !== g.campeon).slice(0, 5).map(([k, e]) => (
-                  <span key={k} className={'cm9-llv-f ' + (e.fuera ? 'fuera' : 'vivo')}><Nombre liga={liga} C={C} k={k} yo={yo} /><small>{estado(e)}</small></span>
-                ))}
-                {g.gente.length > 6 ? <small className="cm9-mas">y {g.gente.length - 6} más</small> : null}
-              </article>
-            );
-          })}
-        </div>
-        {gs.length > ver ? <button type="button" className="cm9-btn inv" onClick={() => setVer(ver + 30)}>Ver más llaves ({gs.length - ver})</button> : null}
-        {!gs.length ? <p className="cm9-nada">Nadie se llama así en la Copa de esta semana.</p> : null}
-      </section>
     </div>
   );
 }

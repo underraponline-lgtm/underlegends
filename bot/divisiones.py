@@ -28,6 +28,20 @@ que se procesa tarde o se corrige cambia la tabla, y nada se arrastra. Lo calcul
 Tienda y las insignias.
 
 ⚠️ ARRANCAN EN CERO CON LA TEMPORADA: las filas de antes del arranque no cuentan.
+
+📈 DESDE LA SEMANA DEL 02/11/2026 SON EL RANKING ELO (Dlx, 26/10/2026: *«divisiones ahora serían Ranking ELO»*, y a
+cómo, *«por tramos de ELO»*). Lo de arriba vale para las semanas de ANTES de `CORTE_ELO`, que se siguen calculando
+igual —ahí se cobraron subidas e insignias, y como todo se recalcula entero, cambiarles la regla se las borraría—.
+Desde `CORTE_ELO`:
+
+- **Tu división es el tramo de tu ELO** (`bot/elo.py`) al cierre de cada semana: `TRAMOS`, de Primera a Quinta; abajo
+  de todo, Sexta. Se mira el lunes a las 11 AM, como antes: en el medio la tabla muestra tu ELO en vivo y si subirías.
+- **Con menos de `elo.PROVISIONAL` batallas tu ELO es provisional y no te mueve**: te quedas donde estabas (o en
+  Sexta si entras nuevo). Un número con dos batallas no es un nivel.
+- **Subir paga `PREMIO` y la insignia, pero sólo la PRIMERA VEZ que llegas a cada división en la temporada** (`mejor`).
+  Con tramos fijos, alguien parado justo en un corte podía bajar y subir cada semana y cobrar 500 cada dos; con los
+  grupos de 30 eso pedía terminar entre los cinco primeros.
+- **La tabla de cada división es una sola**, todos los que están en ella ordenados por ELO: ya no hay grupos de 30.
 """
 import datetime as dt
 import io
@@ -50,6 +64,11 @@ TAM = 30
 ZONA = 5
 #: Puntos de Tienda por subir
 PREMIO = 500
+#: 📈 la primera semana que se arma por ELO (el id de `multiplicadores.periodo()`): las de antes, con la regla vieja
+CORTE_ELO = '2026-11-02'
+#: el ELO mínimo de Primera, Segunda, Tercera, Cuarta y Quinta; menos que el último, Sexta. Medidos el 26/10/2026 sobre
+#: los 131 con 5 batallas o más: 6 · 7 · 24 · 33 · 46, y 15 en Sexta
+TRAMOS = (1150, 1100, 1050, 1000, 950)
 
 SALIDA = os.path.join(BASE, 'datos', 'divisiones.json')
 
@@ -114,17 +133,34 @@ def _orden(grupo, gente):
     return sorted(grupo, key=lambda q: (-round(gente[q][0], 2), -gente[q][1], gente[q][2], q))
 
 
-def calcular(semanas, actual):
+def tramo(elo):
+    """La división de un ELO: 0 es Primera, `ENTRADA` es Sexta."""
+    for i, c in enumerate(TRAMOS):
+        if elo >= c:
+            return i
+    return ENTRADA
+
+
+def calcular(semanas, actual, elo_al=None, raw_de=None):
     """Recorre las semanas cerradas en orden y arma la de ahora.
 
     `semanas` es lo de `puntos_por_semana()`; `actual`, el id de la semana en curso. Devuelve
     `{nivel, divs, ult, subidas}`: la división de cada uno para esta semana, las tablas de esta semana
     (`[división][grupo] = [[rapero, puntos, eventos], …]`), cómo cerró la última y cada subida
     (`[semana, rapero, división nueva]`).
+
+    📈 Desde `CORTE_ELO`, `elo_al(semana)` da el ELO al CIERRE de esa semana (`{norm: {'elo', 'n'}}`; `None` = ahora,
+    para la tabla en vivo) y `raw_de` pasa de esa clave al nombre de las filas. Ver `_semana_elo()`.
     """
-    nivel, subidas, ult = {}, [], None
-    for sem in sorted(s for s in semanas if s < actual):
-        gente = semanas[sem]
+    nivel, subidas, ult, mejor = {}, [], None, {}
+    cerradas = sorted(s for s in semanas if s < actual)
+    if elo_al is not None:
+        cerradas = sorted(set(cerradas) | {s for s in _lunes_desde(CORTE_ELO, actual)})
+    for sem in cerradas:
+        if elo_al is not None and sem >= CORTE_ELO:
+            ult = _semana_elo(sem, elo_al(sem), raw_de or {}, nivel, mejor, subidas, pagar=sem != CORTE_ELO)
+            continue
+        gente = semanas.get(sem) or {}
         mov = {}
         sube, baja = [], []
         for d, gs in _grupos(gente, nivel).items():
@@ -147,13 +183,76 @@ def calcular(semanas, actual):
             nivel[q] = d
             if q in sube:
                 subidas.append([sem, q, d])
+        for q, d in nivel.items():
+            mejor[q] = min(d, mejor.get(q, ENTRADA))
         ult = {'sem': sem, 'sube': sorted(sube), 'baja': sorted(baja)}
+    if elo_al is not None and actual >= CORTE_ELO:
+        return {'nivel': nivel, 'divs': _tablas_elo(elo_al(None), raw_de or {}, nivel), 'ult': ult, 'subidas': subidas}
     gente = semanas.get(actual) or {}
     divs = [[] for _ in NOMBRES]
     for d, gs in sorted(_grupos(gente, nivel).items()):
         for g in gs:
             divs[d].append([[q, round(gente[q][0]), gente[q][1]] for q in _orden(g, gente)])
     return {'nivel': nivel, 'divs': divs, 'ult': ult, 'subidas': subidas}
+
+
+def _lunes_desde(desde, hasta):
+    """Los ids de semana (lunes, `AAAA-MM-DD`) desde `desde` hasta antes de `hasta`: con el ELO, una semana sin
+    ningún evento también cierra (el ELO no se movió, pero quien estaba provisional puede haber dejado de estarlo)."""
+    try:
+        d, h = dt.date.fromisoformat(desde), dt.date.fromisoformat(hasta)
+    except (TypeError, ValueError):
+        return []
+    out = []
+    while d < h:
+        out.append(d.isoformat())
+        d += dt.timedelta(days=7)
+    return out
+
+
+def _semana_elo(sem, elos, raw_de, nivel, mejor, subidas, pagar=True):
+    """📈 Cierra una semana por ELO: cada uno al tramo de su ELO —salvo los provisionales, que se quedan—, y anota
+    como subida (que paga) sólo la primera vez que alguien llega a una división en la temporada.
+
+    ⚠️ LA PRIMERA SEMANA POR ELO NO PAGA (`pagar=False`): es una reubicación, no una subida. Medido el 26/10/2026, con
+    el ELO de ese día, cobrarían 75 personas a la vez —37.500 Puntos de Tienda— sólo por cambiar la regla. Cuenta igual
+    para `mejor`: quien quedó en Tercera cobra recién al llegar a Segunda."""
+    import elo as EL
+    sube, baja = [], []
+    for k, e in sorted(elos.items()):
+        q = raw_de.get(k)
+        if not q or e['n'] < EL.PROVISIONAL:
+            continue
+        antes = nivel.get(q, ENTRADA)
+        d = tramo(e['elo'])
+        nivel[q] = d
+        if d < antes:
+            sube.append(q)
+            if pagar and d < mejor.get(q, ENTRADA):
+                subidas.append([sem, q, d])
+        elif d > antes:
+            baja.append(q)
+        mejor[q] = min(d, mejor.get(q, ENTRADA))
+    return {'sem': sem, 'sube': sorted(sube), 'baja': sorted(baja)}
+
+
+def _tablas_elo(elos, raw_de, nivel):
+    """📈 Las tablas de ahora: una por división, con todos los que están en ella por ELO en vivo. Cada fila es
+    `[rapero, elo, batallas, división si cerrara ahora]`; la última es para «subirías» / «bajarías», y para un
+    provisional es la suya (no se mueve)."""
+    import elo as EL
+    divs = [[] for _ in NOMBRES]
+    filas = {}
+    for k, e in elos.items():
+        q = raw_de.get(k)
+        if not q:
+            continue
+        d = nivel.get(q, ENTRADA)
+        a = tramo(e['elo']) if e['n'] >= EL.PROVISIONAL else d
+        filas.setdefault(d, []).append([q, e['elo'], e['n'], a])
+    for d, xs in filas.items():
+        divs[d] = [sorted(xs, key=lambda f: (-f[1], -f[2], f[0]))]
+    return divs
 
 
 def correr(filas, ahora=None, aplicar=False):
@@ -167,17 +266,48 @@ def correr(filas, ahora=None, aplicar=False):
         desde = None
     sem, ini, fin = MU.periodo(ahora)
     semanas = puntos_por_semana(filas, MU.factor_de(filas=filas), MU.bonos(filas), MU.periodo, desde)
-    c = calcular(semanas, sem)
+    elo_al = raw_de = None
+    if sem >= CORTE_ELO:
+        elo_al, raw_de = _elo_de(filas, ahora)
+    c = calcular(semanas, sem, elo_al, raw_de)
     out = {'_leeme': 'Las divisiones de la semana: las arma bot/divisiones.py en el paso 1c, enteras en cada corrida. '
                      'Las reglas y los números viven en ese archivo.',
            'sem': sem, 'fin': fin.astimezone(dt.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
            'nombres': list(NOMBRES), 'zona': ZONA, 'premio': PREMIO,
            'divs': c['divs'], 'ult': c['ult'], 'subidas': c['subidas'], 'nivel': c['nivel']}
+    if elo_al is not None:
+        import elo as EL
+        out.update(modo='elo', tramos=list(TRAMOS), prov=EL.PROVISIONAL)
     if aplicar:
         with io.open(SALIDA, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(out, f, ensure_ascii=False, indent=1, sort_keys=True)
             f.write('\n')
     return out
+
+
+def _elo_de(filas, ahora):
+    """`(elo_al, raw_de)` para `calcular()`: el ELO al cierre de cada semana (con las llaves de `datos/llaves_t1.json`) y
+    de la clave del ELO al nombre que traen las filas."""
+    import competencias as CO
+    import elo as EL
+    import multiplicadores as MU
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'llaves_t1.json'), encoding='utf-8') as f:
+            llaves = json.load(f) or {}
+    except (OSError, ValueError):
+        llaves = {}
+    raw_de = {}
+    for f in filas or []:
+        if f[3]:
+            raw_de.setdefault(CO.norm(f[3]), f[3])
+    cache = {}
+
+    def elo_al(sem):
+        if sem not in cache:
+            hasta = ahora if sem is None else MU.periodo(dt.datetime.fromisoformat(sem).replace(hour=17, tzinfo=dt.timezone.utc))[2]
+            cache[sem] = EL.calcular(llaves, hasta)
+        return cache[sem]
+    return elo_al, raw_de
 
 
 def leer(ruta=None):
@@ -221,8 +351,11 @@ def para_web(d):
     cerró la anterior y la división de cada uno; `None` sólo si nunca hubo nada."""
     if not d or not (any(d.get('divs') or []) or d.get('ult') or d.get('nivel')):
         return None
-    return {'sem': d.get('sem'), 'fin': d.get('fin'), 'n': d.get('nombres') or list(NOMBRES), 'z': d.get('zona', ZONA),
-            'p': d.get('premio', PREMIO), 'd': d.get('divs'), 'u': d.get('ult'), 'v': d.get('nivel') or {}}
+    out = {'sem': d.get('sem'), 'fin': d.get('fin'), 'n': d.get('nombres') or list(NOMBRES), 'z': d.get('zona', ZONA),
+           'p': d.get('premio', PREMIO), 'd': d.get('divs'), 'u': d.get('ult'), 'v': d.get('nivel') or {}}
+    if d.get('modo') == 'elo':
+        out.update(m='elo', t=d.get('tramos') or list(TRAMOS), pv=d.get('prov'))
+    return out
 
 
 # ── self-check ───────────────────────────────────────────────────────────
@@ -278,6 +411,26 @@ def _self_check():
        'un último grupo chico se suma al anterior, sin repetir a nadie')
     t = tienda({'subidas': [['2026-10-05', 'p00', 4], ['2026-10-05', 'nadie', 4]]}, {'p00': '111'})
     ok(list(t) == ['2026-10-05:p00'] and t['2026-10-05:p00'][:2] == ['111', PREMIO], 'subir paga, a quien tiene Discord')
+    # 📈 por ELO: dos semanas cerradas y la de ahora
+    ok(tramo(1200) == 0 and tramo(1150) == 0 and tramo(1149) == 1 and tramo(999) == 4 and tramo(800) == ENTRADA,
+       'el tramo: 1150 es Primera, 1149 Segunda, 999 Quinta, menos de 950 Sexta')
+    ELOS = {'2026-11-02': {'a': {'elo': 1160, 'n': 9}, 'b': {'elo': 1040, 'n': 9}, 'c': {'elo': 1200, 'n': 2}},
+            '2026-11-09': {'a': {'elo': 1090, 'n': 12}, 'b': {'elo': 1101, 'n': 12}, 'c': {'elo': 1200, 'n': 6}},
+            '2026-11-16': {'a': {'elo': 1155, 'n': 14}, 'b': {'elo': 1101, 'n': 12}, 'c': {'elo': 1190, 'n': 7}},
+            None: {'a': {'elo': 1155, 'n': 14}, 'b': {'elo': 1101, 'n': 12}, 'c': {'elo': 1190, 'n': 7}}}
+    raw = {'a': 'A', 'b': 'B', 'c': 'C'}
+    ce = calcular({'2026-10-26': {}}, '2026-11-23', ELOS.get, raw)
+    ok(ce['nivel'] == {'A': 0, 'B': 1, 'C': 0}, 'cada uno en el tramo de su ELO al último cierre')
+    pagas = [(x[0], x[1], x[2]) for x in ce['subidas']]
+    ok(not any(x[0] == CORTE_ELO for x in ce['subidas']) and ce['nivel']['A'] == 0,
+       'la primera semana por ELO reubica y no paga (A queda en Primera sin cobrar)')
+    ok(('2026-11-09', 'B', 1) in pagas and ('2026-11-16', 'A', 0) not in pagas,
+       'subir paga la primera vez que llegas (B a Segunda); volver a una a la que ya llegaste, no (A)')
+    ok(('2026-11-09', 'C', 0) in pagas,
+       'con 2 batallas es provisional y no se mueve; con 6 sube, y cobra')
+    ok(ce['ult']['sem'] == '2026-11-16' and ce['ult']['sube'] == ['A'], 'cómo cerró la última semana')
+    ok([f[0] for f in ce['divs'][0][0]] == ['C', 'A'] and ce['divs'][1][0][0][:3] == ['B', 1101, 12],
+       'la tabla de ahora: una por división, por ELO')
     print('\n  %s' % ('todo ok' if not fallas else '%d fallaron' % len(fallas)))
     return not fallas
 
