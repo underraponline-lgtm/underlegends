@@ -34,10 +34,15 @@ LAS REGLAS
 - **⚖️ Jurados**: la ficha de cada uno sale de quién votó a quién (`datos/jurados.json`), y en las simuladas se sortean
   tres que votan según su ficha (`jurado_sim()`).
 
-⚖️ LA SIMULACIÓN ES REPETIBLE Y EXPLICABLE. La fuerza de cada uno es su Score competitivo (o, sin Score, un piso según
-su puesto en la Temporada), más su forma (el promedio de sus últimas `FORMA` notas, `bot/notas.py`). La probabilidad de
-que A le gane a B es logística en la diferencia (`ESCALA`), y la moneda sale de un SHA-256 de la semilla y el cruce: lo
-mismo da siempre lo mismo, y cualquiera puede rehacer la cuenta. Nunca se inventa un resultado real.
+⚖️ LA SIMULACIÓN ES REPETIBLE Y EXPLICABLE. La fuerza de cada uno es su ELO (`bot/elo.py`) AL ARRANQUE de la semana
+—el de la temporada de ligas, para las ligas—, así no cambia a mitad de semana. La probabilidad de que A le gane a B es
+logística en la diferencia (`ESCALA`), y la moneda sale de un SHA-256 de la semilla y el cruce: lo mismo da siempre lo
+mismo, y cualquiera puede rehacer la cuenta. Nunca se inventa un resultado real.
+
+📈 POR QUÉ EL ELO (Dlx, 26/10/2026: *«la idea es que ahí sólo se enfrenten gente de su propio nivel»*, *«siii»*). Era el
+Score competitivo, que pide 10 eventos y dejaba al resto en un piso según su puesto en la Temporada: Walker, Deluxe y
+Juasmio están en el top 12 del ELO sin rango. Y las Rapid eran un sorteo entre todos los activos; ahora son grupos de
+ELO parecido (`rapids()`).
 """
 import datetime as dt
 import hashlib
@@ -58,12 +63,14 @@ ACTIVO_DIAS = 14
 GRUPO = 4
 LIGA = 10
 RAPID = 8
-FORMA = 5
-#: cuántos puntos de fuerza son «10 a 1». Era 25 y daba 98 % a Oasis (80) contra Makmah (38): en el freestyle los
-#: batacazos pasan, así que 50 —el mismo cruce, ~88 %— (26/10/2026)
-ESCALA = 50.0
-#: sin Score competitivo, la fuerza sale del puesto en la Temporada: del primero al último, de PISO_ALTO a PISO_BAJO
-PISO_ALTO, PISO_BAJO = 55.0, 20.0
+#: cuántos puntos de fuerza son «10 a 1». Con el Score era 50 (25 daba 98 % a Oasis contra Makmah: en el freestyle los
+#: batacazos pasan); con el ELO es la escala de siempre, 400 (26/10/2026). En la T1 el ELO va de ~890 a ~1240, así que
+#: el cruce más disparejo queda en ~88 %, lo mismo que con el Score
+ESCALA = 400.0
+#: quien no tiene ni un 1v1 todavía: con lo que arranca cualquiera
+SIN_ELO = 1000.0
+#: las 8 de una Rapid: el 1 contra el 8, el 4 contra el 5…, así los dos mejores sólo se cruzan en la final
+SIEMBRA8 = (0, 7, 3, 4, 2, 5, 1, 6)
 LETRAS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 #: la Copa: llaves de 16, y el orden de siembra (el 1 contra el 16, el 8 contra el 9…), así los dos mejores sólo se
 #: cruzan en la final
@@ -149,27 +156,10 @@ def cruces(llaves, desde, hasta):
     return out
 
 
-def fuerzas(llaves, notas):
-    """`{norm: fuerza}`: el Score competitivo, o el piso por su puesto en la Temporada; más su forma."""
-    comp = {norm(c['raw']): float(c.get('score') or 0) for c in (_j('datos', 'competitivo_pool.json', defecto=[]) or [])
-            if c.get('raw') and (c.get('ev') or 0) >= 10}
-    temp = sorted(_j('datos', 'temporada_pool.json', defecto=[]) or [], key=lambda x: -(x.get('pts') or 0))
-    n = max(1, len(temp) - 1)
-    base = {}
-    for i, x in enumerate(temp):
-        if x.get('raw'):
-            base[norm(x['raw'])] = PISO_ALTO - (PISO_ALTO - PISO_BAJO) * i / n
-    base.update(comp)
-    # la forma: el promedio de sus últimas notas, contra el 6 («jugó»)
-    hist = {}
-    for k in sorted(llaves, key=lambda k: (llaves[k].get('dia') or '', int(k) if str(k).isdigit() else 0)):
-        for nombre, nota in ((notas.get(str(k)) or {}).get('notas') or {}).items():
-            hist.setdefault(norm(nombre), []).append(nota)
-    out = {}
-    for k, f in base.items():
-        xs = hist.get(k, [])[-FORMA:]
-        out[k] = round(f + (sum(xs) / len(xs) - 6.0) * 3 if xs else f, 1)
-    return out
+def fuerzas(llaves, hasta):
+    """`{norm: fuerza}`: el ELO de cada uno con los 1v1 de antes de `hasta` (`bot/elo.py`). Quien no está, `SIN_ELO`."""
+    import elo as EL
+    return {k: float(v['elo']) for k, v in EL.calcular(llaves, hasta).items()}
 
 
 def prob(fa, fb):
@@ -196,7 +186,7 @@ def simular(a, b, fa, fb, *semilla):
 
 def resolver(a, b, reales, cerrada, fz, *semilla):
     """Un cruce: `{'a','b','g' (ganador o ''),'como' ('real'|'sim'|'pend'),'p' (prob de a),'ev'}`."""
-    fa, fb = fz.get(a, PISO_BAJO), fz.get(b, PISO_BAJO)
+    fa, fb = fz.get(a, SIN_ELO), fz.get(b, SIN_ELO)
     real = [x for x in reales if {x[0], x[1]} == {a, b}]
     if real:
         g, _pe, n, _d = real[-1]
@@ -222,20 +212,50 @@ def tabla(gente, partidos, fz):
     return [x[:4] for x in sorted(t.values(), key=lambda x: (-x[3], -x[4], -fz.get(x[0], 0), x[0]))]
 
 
-def copa(activos, niveles, fz, ini, fin, llaves, ahora, sem):
+def partir(orden, maximo):
+    """`orden` en grupos de hasta `maximo`, PAREJOS: 300 en grupos de 8 son 34 de 8 y 4 de 7, no 37 de 8 y uno de 4
+    (que era lo que daba cortar de a `ceil(300 / 38)`: el último grupo, con la mitad de pases libres)."""
+    if not orden:
+        return []
+    n = math.ceil(len(orden) / float(maximo))
+    base, sobra = divmod(len(orden), n)
+    out, i = [], 0
+    for j in range(n):
+        t = base + (1 if j < sobra else 0)
+        out.append(orden[i:i + t])
+        i += t
+    return out
+
+
+def armadas(viejo, sem, que):
+    """Las llaves de `que` ('copa' | 'rapid') que esta semana YA tiene armadas: `[[lugares]]`, sacados de la primera
+    ronda (con los pases libres como ''). Una llave publicada no se rearma a mitad de semana aunque cambie la fuerza
+    —el ELO, o la regla para armarla—: se rearma el lunes siguiente."""
+    if str((viejo or {}).get('sem')) != str(sem):
+        return None
+    out = []
+    for r in viejo.get(que) or []:
+        ps = ((r.get('rondas') or [{}])[0]).get('partidos') or []
+        out.append([x for m in ps for x in (m.get('a') or '', m.get('b') or '')])
+    return out or None
+
+
+def copa(activos, niveles, fz, ini, fin, llaves, ahora, sem, fijas=None):
     """🏆 LA COPA DE LA SEMANA, A ELIMINACIÓN (Dlx, 26/10/2026: «la copa es un torneo de octavos»): los activos, por su
     división y su fuerza, en llaves de `COPA` (octavos, cuartos, semis y final, una ventana cada una). Las llaves salen
     parejas en tamaño; las que no llegan a 16 llevan pases libres para los mejores sembrados, como en cualquier copa."""
-    orden = sorted(activos, key=lambda k: (niveles.get(k, 5), -fz.get(k, PISO_BAJO), k))
-    if not orden:
-        return []
-    n = math.ceil(len(orden) / float(COPA))
-    tam = math.ceil(len(orden) / float(n))
+    if fijas:
+        todas = fijas
+    else:
+        orden = sorted(activos, key=lambda k: (niveles.get(k, 5), -fz.get(k, SIN_ELO), k))
+        todas = []
+        for g in partir(orden, COPA):
+            g = sorted(g, key=lambda k: (-fz.get(k, SIN_ELO), k))
+            todas.append([g[s_] if s_ < len(g) else '' for s_ in SIEMBRA])
     lims = [ini, dias_despues(ini, 2), dias_despues(ini, 4), dias_despues(ini, 6), fin]
     out = []
-    for i, x in enumerate(range(0, len(orden), tam)):
-        g = sorted(orden[x:x + tam], key=lambda k: (-fz.get(k, PISO_BAJO), k))
-        slots = [g[s_] if s_ < len(g) else '' for s_ in SIEMBRA]
+    for i, slots in enumerate(todas):
+        g = [k for k in slots if k]
         r = llave(slots, lims, ('Octavos', 'Cuartos', 'Semifinal', 'Final'), llaves, fz, ahora, sem, 'copa', i)
         r.update(id=LETRAS[i % 26] + ('' if i < 26 else str(i // 26)), div=min(niveles.get(k, 5) for k in g))
         out.append(r)
@@ -334,9 +354,9 @@ def mover(grupos, tablas, activos, fz):
                 obj = i - 1
             elif n >= 6 and pos > n - BAJAN and i < len(NIVELES) - 1:
                 obj = i + 1
-            clave[k] = (obj, pos, -fila[3], -fz.get(k, PISO_BAJO))
+            clave[k] = (obj, pos, -fila[3], -fz.get(k, SIN_ELO))
     for k in activos:
-        clave.setdefault(k, (len(NIVELES) - 1, 99, 0, -fz.get(k, PISO_BAJO)))
+        clave.setdefault(k, (len(NIVELES) - 1, 99, 0, -fz.get(k, SIN_ELO)))
     return [k for k in sorted(clave, key=lambda k: (clave[k], k)) if k in activos]
 
 
@@ -353,20 +373,23 @@ def elite_de(activos):
     return [k for k, _s, kr in comp if k in activos and (not con or kr in con)][:LIGA]
 
 
-def ligas(viejo, llaves, fz, ahora):
+def ligas(viejo, llaves, ahora):
     """La temporada de ligas: las ligas por niveles y la Élite en paralelo. Las arma la primera vez (por fuerza) y al
-    terminar cada temporada (con las subidas y bajadas de la anterior); en el medio, la gente queda fija."""
+    terminar cada temporada (con las subidas y bajadas de la anterior); en el medio, la gente queda fija. La fuerza es
+    el ELO al arranque de ESA temporada: con el de la semana, una jornada simulada ya cerrada podía cambiar de ganador."""
     import multiplicadores as MU
     v = viejo or {}
     if v.get('desde') and v.get('grupos'):
         desde = dt.datetime.fromisoformat(v['desde'])
         grupos, elite, temp = v['grupos'], v.get('elite') or [], int(v.get('temp') or 1)
+        fz = fuerzas(llaves, desde)
     else:
         # la primera: con la semana en curso si arrancó hace menos de un día, si no con la que viene
         _s, ini, fin = MU.periodo(ahora)
         desde = ini if ahora - ini < dt.timedelta(days=1) else fin
         act = set(jugaron(llaves, desde - dt.timedelta(days=ACTIVO_DIAS), desde))
-        grupos = armar_grupos(sorted(act, key=lambda k: (-fz.get(k, PISO_BAJO), k)))
+        fz = fuerzas(llaves, desde)
+        grupos = armar_grupos(sorted(act, key=lambda k: (-fz.get(k, SIN_ELO), k)))
         elite, temp = elite_de(act), 1
     while ahora >= dias_despues(desde, 7 * TEMP_SEMANAS):
         tablas = {g['id']: jugar_liga(g['gente'], desde, llaves, fz, desde + dt.timedelta(days=99), 'liga', temp, g['id'])[1]
@@ -375,6 +398,7 @@ def ligas(viejo, llaves, fz, ahora):
         act = set(jugaron(llaves, desde - dt.timedelta(days=ACTIVO_DIAS), desde))
         grupos = armar_grupos(mover(grupos, tablas, act, fz))
         elite, temp = elite_de(act), temp + 1
+        fz = fuerzas(llaves, desde)
     out = {'temp': temp, 'desde': desde.isoformat(), 'hasta': dias_despues(desde, 7 * TEMP_SEMANAS).isoformat(),
            'cierres': [c.isoformat() for c in cierres(desde)],
            'jornada': min(JORNADAS, 1 + sum(1 for c in cierres(desde) if ahora >= c)),
@@ -417,13 +441,20 @@ def llave8(gente, ini, fin, llaves, fz, ahora, *semilla):
     return llave(gente, lims, ('Cuartos', 'Semifinal', 'Final'), llaves, fz, ahora, *semilla)
 
 
-def rapids(activos, ini, fin, llaves, fz, ahora, sid):
-    """Las Rapid de la semana: todos los activos sorteados en llaves de `RAPID`; los que sobran, la semana que viene."""
-    orden = sorted(activos, key=lambda k: moneda('rapid', sid, k))
+def rapids(activos, ini, fin, llaves, fz, ahora, sid, fijas=None):
+    """Las Rapid de la semana, EN GRUPOS DE NIVEL (Dlx, 26/10/2026: *«que ahí sólo se enfrenten gente de su propio
+    nivel»*): los activos por ELO, de a `RAPID` parecidos, sembrados para que los dos mejores del grupo sólo se crucen en
+    la final. Los grupos salen parejos en tamaño y el que no llega a 8 lleva pases libres para los mejores sembrados:
+    antes era un sorteo entre todos, un E podía caer contra un SS, y los que sobraban esperaban a la semana siguiente."""
+    if fijas:
+        todas = fijas
+    else:
+        orden = sorted(activos, key=lambda k: (-fz.get(k, SIN_ELO), k))
+        todas = [[g[s_] if s_ < len(g) else '' for s_ in SIEMBRA8] for g in partir(orden, RAPID)] if len(orden) >= 2 else []
     out = []
-    for i in range(0, len(orden) - RAPID + 1, RAPID):
-        r = llave8(orden[i:i + RAPID], ini, fin, llaves, fz, ahora, sid, 'rapid', i // RAPID)
-        r['id'] = 'R%d' % (i // RAPID + 1)
+    for i, slots in enumerate(todas):
+        r = llave8(slots, ini, fin, llaves, fz, ahora, sid, 'rapid', i)
+        r['id'] = 'R%d' % (i + 1)
         out.append(r)
     return out
 
@@ -472,7 +503,7 @@ def mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L):
         lados = sorted((s for s, xs in por.items() if len(xs) >= 5), key=lambda s: moneda(id_, sid, s))[:2]
         if len(lados) < 2:
             return None
-        a, b = [sorted(por[s], key=lambda k: -fz.get(k, PISO_BAJO))[:5] for s in lados]
+        a, b = [sorted(por[s], key=lambda k: -fz.get(k, SIN_ELO))[:5] for s in lados]
         ps = [resolver(x, y, reales, cerrada, fz, sid, id_, i) for i, (x, y) in enumerate(zip(a, b))]
         return {'svs': lados, 'partidos': ps, 'score': [sum(m['g'] == m['a'] for m in ps), sum(m['g'] == m['b'] for m in ps)]}
 
@@ -502,7 +533,7 @@ def mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L):
         return {'tabla': t[:10], 'n': len(gs)}
 
     def rey():
-        r = max(activos, key=lambda k: (fz.get(k, PISO_BAJO), k)) if activos else ''
+        r = max(activos, key=lambda k: (fz.get(k, SIN_ELO), k)) if activos else ''
         defensas, hist = 0, [r]
         for g, p, _n, _d in reales:
             if p == r:
@@ -666,11 +697,11 @@ def calcular(ahora=None, llaves=None, notas=None, viejo=None):
     viejo = viejo if viejo is not None else (_j('datos', 'competencias.json', defecto={}) or {})
     sid, ini, fin = MU.periodo(ahora)
     sid = str(sid)
-    fz = fuerzas(llaves, notas)
+    fz = fuerzas(llaves, ini)
     activos = set(jugaron(llaves, ini - dt.timedelta(days=ACTIVO_DIAS), ini))
     niveles = {norm(k): v for k, v in ((_j('datos', 'divisiones.json', defecto={}) or {}).get('nivel') or {}).items()}
     reales = cruces(llaves, ini, fin)
-    L = ligas(viejo.get('ligas'), llaves, fz, ahora)
+    L = ligas(viejo.get('ligas'), llaves, ahora)
     mini, pronto = mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L)
     J = jurados(fz)
     jueces = sorted(q for q, s in J.items() if s['votos'] >= 3)
@@ -684,9 +715,9 @@ def calcular(ahora=None, llaves=None, notas=None, viejo=None):
         'sem': sid, 'ini': ini.isoformat(), 'fin': fin.isoformat(),
         'dia': min(7, max(1, int((ahora - ini).total_seconds() // 86400) + 1)),
         'activos': len(activos),
-        'copa': copa(activos, niveles, fz, ini, fin, llaves, ahora, sid),
+        'copa': copa(activos, niveles, fz, ini, fin, llaves, ahora, sid, armadas(viejo, sid, 'copa')),
         'ligas': L,
-        'rapid': rapids(activos, ini, fin, llaves, fz, ahora, sid),
+        'rapid': rapids(activos, ini, fin, llaves, fz, ahora, sid, armadas(viejo, sid, 'rapid')),
         'mini': mini, 'pronto': pronto,
         'proxima': proxima_semana(str(MU.periodo(fin + dt.timedelta(hours=1))[0]), mini),
         'equipo': equipo_semana(llaves, notas, ini, fin),
@@ -708,10 +739,10 @@ def _self_check():
 
     print('\n══ LAS COMPETENCIAS ══\n')
     fz = {'a': 70, 'b': 40, 'c': 55, 'd': 30}
-    ok(abs(prob(50, 50) - 0.5) < 1e-9 and 0.75 < prob(75, 50) < 0.77, 'la probabilidad: pareja 50 %, 25 puntos de diferencia ~76 %')
-    s1 = simular('a', 'b', 70, 40, 'sem', 'x')
-    ok(s1 == simular('a', 'b', 70, 40, 'sem', 'x') and s1[0] in ('a', 'b'), 'simular es repetible: la misma semilla, el mismo resultado')
-    gana_a = sum(simular('a', 'b', 70, 40, 'sem', i)[0] == 'a' for i in range(400))
+    ok(abs(prob(1000, 1000) - 0.5) < 1e-9 and 0.75 < prob(1200, 1000) < 0.77, 'la probabilidad: pareja 50 %, 200 de ELO de diferencia ~76 %')
+    s1 = simular('a', 'b', 1240, 1000, 'sem', 'x')
+    ok(s1 == simular('a', 'b', 1240, 1000, 'sem', 'x') and s1[0] in ('a', 'b'), 'simular es repetible: la misma semilla, el mismo resultado')
+    gana_a = sum(simular('a', 'b', 1240, 1000, 'sem', i)[0] == 'a' for i in range(400))
     ok(285 < gana_a < 355, 'y respeta la probabilidad: el fuerte gana ~80 %% de 400 (%d)' % gana_a)
     reales = [('b', 'a', '500', '2026-10-20')]
     m = resolver('a', 'b', reales, False, fz, 's')
@@ -753,6 +784,21 @@ def _self_check():
     r2 = llave8(list('abcdefgh'), lunes, dias_despues(lunes, 7), {}, fz, lunes + dt.timedelta(days=1), 's')
     ok(all(m['como'] == 'pend' for m in r2['rondas'][0]['partidos']) and not r2['campeon'],
        'y el martes, con los cuartos abiertos: todo pendiente, sin campeón')
+    ok([len(g) for g in partir(list(range(300)), 8)] == [8] * 34 + [7] * 4 and [len(g) for g in partir(list(range(20)), 8)] == [7, 7, 6],
+       'partir sale parejo: 300 en grupos de 8 son 34 de 8 y 4 de 7 (no 37 de 8 y uno de 4)')
+    elo20 = {'p%02d' % i: 1200 - 10 * i for i in range(20)}
+    rs = rapids(set(elo20), lunes, dias_despues(lunes, 7), {}, elo20, lunes + dt.timedelta(days=8), 's')
+    ok(len(rs) == 3 and sorted(len(x['gente']) for x in rs) == [6, 7, 7] and all(x['campeon'] for x in rs),
+       'las Rapid: 20 activos, tres grupos parejos (7, 7 y 6), nadie se queda afuera')
+    ok(set(rs[0]['gente']) == {'p%02d' % i for i in range(7)} and set(rs[-1]['gente']) == {'p%02d' % i for i in range(14, 20)},
+       'y por nivel: el primer grupo son los 7 de más ELO, el último los 6 de menos')
+    q = rs[0]['rondas'][0]['partidos']
+    ok({q[0]['a'], q[0]['b']} == {'p00', ''} and {q[1]['a'], q[1]['b']} == {'p03', 'p04'},
+       'sembrados: el 1 contra el 8 (acá un pase libre), el 4 contra el 5')
+    fij = armadas({'sem': 's', 'rapid': rs}, 's', 'rapid')
+    rs2 = rapids(set(elo20), lunes, dias_despues(lunes, 7), {}, {k: -v for k, v in elo20.items()}, lunes + dt.timedelta(days=8), 's', fij)
+    ok([x['gente'] for x in rs2] == [x['gente'] for x in rs] and armadas({'sem': 'otra', 'rapid': rs}, 's', 'rapid') is None,
+       'una semana ya armada no se rearma aunque cambie la fuerza; la semana siguiente sí')
     J = {'x': {'coincide': 0.9}, 'y': {'coincide': 0.4}, 'z': {'coincide': 0.7}}
     mm = jurado_sim({'a': 'a', 'b': 'b', 'g': 'a', 'como': 'sim', 'p': 0.5}, ['x', 'y', 'z'], J, 's')
     ok(len(mm['j']) == 3 and sum(1 for _q, v in mm['j'] if v == 'a') >= 2, 'el jurado simulado: tres jueces y el ganador con la mayoría')

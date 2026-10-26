@@ -272,7 +272,7 @@ function CopaRapid({ liga, C, yo, donde, onGrupos }) {
       {r ? (
         <article className="cm9-card">
           <header className="ver"><h3>⚡ RAPID</h3><small>{(C.rapid || []).length} llaves de 8 esta semana</small></header>
-          <p>Una llave de 8 sorteada cada lunes: cuartos hasta el jueves, semis hasta el sábado, final hasta el lunes.</p>
+          <p>Una llave de 8 con gente de tu mismo nivel, armada cada lunes: cuartos hasta el jueves, semis hasta el sábado, final hasta el lunes.</p>
           <Llave liga={liga} C={C} r={r} yo={yo} />
           {r.campeon ? <p className="cm9-camp"><span className="cm9-tag mag">CAMPEÓN</span> <Nombre liga={liga} C={C} k={r.campeon} yo={yo} /></p> : null}
         </article>
@@ -620,7 +620,7 @@ export function Competencias({ liga, dc, sub = '' }) {
         <ul className="cm9-glos">
           <li><span className="cm9-tag real">REAL</span>Se cruzaron de verdad en un evento: cuenta esa batalla, y dice en cuál.</li>
           <li><span className="cm9-tag sim">SIMULADO</span>No se cruzaron: decide el nivel de cada uno, con un jurado sorteado. Los batacazos pasan.</li>
-          <li><span className="cm9-tag pend">65 %</span>Tus chances si se simula. Salen de tu Score competitivo y tu forma de las últimas batallas.</li>
+          <li><span className="cm9-tag pend">65 %</span>Tus chances si se simula. Salen de tu nivel: a quién le ganaste y con quién perdiste en todas tus batallas 1v1 de la temporada.</li>
         </ul>
       </section>
 

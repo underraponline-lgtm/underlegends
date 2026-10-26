@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "4.10",
+   "dia": "2026-10-26",
+   "cuando": "2026-10-26T13:47:07-04:00",
+   "titulo": "Competencias con gente de tu nivel",
+   "items": [
+    "Las **Rapid** ya no son un sorteo: cada lunes se arman llaves de 8 con gente de **tu mismo nivel**, y nadie se queda afuera.",
+    "Tu nivel sale de **a quién le ganaste y con quién perdiste** en todas tus batallas 1v1 de la temporada. Ganarle a alguien mejor suma mucho; ganarle a alguien de mucho menos nivel, casi nada.",
+    "Las **simuladas** y la siembra de la **Copa** usan ese mismo nivel. Las llaves de esta semana quedan como están: el cambio se ve desde el lunes."
+   ]
+  },
+  {
    "version": "4.09",
    "dia": "2026-10-26",
    "cuando": "2026-10-26T11:37:02-04:00",
