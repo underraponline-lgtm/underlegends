@@ -615,15 +615,19 @@ def jurados(fz):
     sv_de = {norm(x['raw']): x.get('sv') or '' for x in (_j('datos', 'temporada_pool.json', defecto=[]) or []) if x.get('raw')}
     st = {}
     for b in (J.get('votos') or {}).values():
-        v = b.get('v') or {}
-        va = sum(1 for x in v.values() if x == 'a')
-        vb = len(v) - va
-        may = 'a' if va > vb else 'b' if vb > va else ''
-        na, nb = norm(b.get('a') or ''), norm(b.get('b') or '')
-        fa, fb = fz.get(na), fz.get(nb)
-        fav = '' if fa is None or fb is None or fa == fb else ('a' if fa > fb else 'b')
-        sa, sb = sv_de.get(na) == b.get('sv'), sv_de.get(nb) == b.get('sv')
-        casa = 'a' if sa and not sb else 'b' if sb and not sa else ''
+        # ⚖️ una batalla es `a`/`b` con votos 'a'|'b', o —las de 3 a 5 MCs de FFA, `escuchar.votos_en_vivo()`— `lados`
+        # con el nombre votado. Todo se lleva al nombre: así las dos se cuentan igual
+        lados = b.get('lados') or [b.get('a') or '', b.get('b') or '']
+        v = {q: (lados[0] if x == 'a' else lados[1] if x == 'b' else x) for q, x in (b.get('v') or {}).items()}
+        cuenta = {}
+        for x in v.values():
+            cuenta[x] = cuenta.get(x, 0) + 1
+        top = sorted(cuenta.items(), key=lambda kv: -kv[1])
+        may = top[0][0] if top and (len(top) == 1 or top[0][1] > top[1][1]) else ''
+        fs = [fz.get(norm(x)) for x in lados]
+        fav = lados[fs.index(max(fs))] if None not in fs and fs.count(max(fs)) == 1 else ''
+        casa_de = [x for x in lados if sv_de.get(norm(x)) == b.get('sv')]
+        casa = casa_de[0] if len(casa_de) == 1 else ''
         for quien, lado in v.items():
             s = st.setdefault(quien, {'votos': 0, 'may': [0, 0], 'fav': [0, 0], 'casa': [0, 0], 'por': {}, 'contra': {}})
             s['votos'] += 1
@@ -636,9 +640,10 @@ def jurados(fz):
             if casa:
                 s['casa'][1] += 1
                 s['casa'][0] += lado == casa
-            si, no = (b.get('a'), b.get('b')) if lado == 'a' else (b.get('b'), b.get('a'))
-            s['por'][si] = s['por'].get(si, 0) + 1
-            s['contra'][no] = s['contra'].get(no, 0) + 1
+            s['por'][lado] = s['por'].get(lado, 0) + 1
+            for no in lados:
+                if no != lado:
+                    s['contra'][no] = s['contra'].get(no, 0) + 1
     out = {}
     nombres = J.get('nombres') or {}
     for quien, s in st.items():

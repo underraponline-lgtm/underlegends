@@ -3669,6 +3669,82 @@ def votos_jurados(rows):
     return out, nombres
 
 
+#: 🗳️ un lado de una batalla en el mensaje de ronda de FFA: `⌞**YINN🇲🇦**⌝` (en negrita, el que ganó)
+_LADO_FFA = re.compile(r'⌞(.*?)⌝')
+
+
+def _batallas_de_ronda(texto):
+    """`[[lados], ganador]` de cada renglón de un mensaje de ronda con dos o más lados `⌞…⌝`: las batallas de 2 a 5 MCs
+    de FFA (`⌞YINN⌝ 🆚 ⌞SOSA⌝ 🆚 ⌞STT⌝`). El ganador es el lado en negrita, o `''` si todavía no se decidió. Un lado
+    vacío o sin letras (`⌞:⌝`, un lugar sin nadie) no cuenta."""
+    out = []
+    for ln in str(texto or '').split('\n'):
+        lados, gana = [], ''
+        for x in _LADO_FFA.findall(ln):
+            nombre = re.sub(r'\*+', '', x).strip()
+            if not re.search(r'[^\W_]', nombre):
+                continue
+            lados.append(nombre)
+            if '**' in x:
+                gana = nombre
+        if len(lados) >= 2:
+            out.append([lados, gana])
+    return out
+
+
+def votos_en_vivo(versiones, canales=None):
+    """⚖️ QUIÉN VOTÓ A QUIÉN, CON LOS VOTOS QUE SE BORRAN (Dlx, 26/10/2026: *«ahora hay 3 jurados, ¿puedes detectar eso?
+    además de lo que votan»*).
+
+    Así vota FFA, medido esa noche con una escucha de 3 s: el organizador pone la ronda entera en UN mensaje —una batalla
+    por renglón, de 2 a 5 MCs— y lo va editando con el ganador en negrita; cada jurado tiene SU mensaje, escribe el voto
+    («MATS X LA MÍNIMA», «# AGUS 🇦🇷») y a los segundos lo edita a «.», y para la batalla siguiente vuelve a editar el
+    mismo. En Discord nunca queda nada; en el vigía queda cada versión (`veredictos_ver`, ver `_con_el_vigia()`).
+
+    Cada versión de un jurado que nombra a un MC es un voto, y va a la batalla que se estaba jugando: con los mensajes de
+    ronda como estaban EN ESE MOMENTO, la primera sin ganador que tenga a ese MC; si no hay, la última que lo tenga.
+    `{id: {sv, canal, pub, lados, v: {jurado: lado}, g}}`, con `id` = `<mensaje de ronda>:<renglón>`; a igual jurado
+    en la misma batalla, vale el último voto."""
+    rondas = {}          # id del mensaje de ronda -> su última versión vista
+    orden = []           # los ids de ronda, por cuándo se publicaron
+    out = {}
+    for v in sorted(versiones or [], key=lambda v: (int(v.get('ed') or 0), str(v.get('id')))):
+        vid, texto = str(v.get('id') or ''), str(v.get('texto') or '')
+        bs = _batallas_de_ronda(texto)
+        if bs:
+            if vid not in rondas:
+                orden.append(vid)
+            rondas[vid] = (v, bs)
+            for i, (lados, gana) in enumerate(bs):
+                b = out.get('%s:%d' % (vid, i))
+                if b is not None:
+                    b['lados'], b['g'] = lados, gana
+            continue
+        voto = _voto_de(traducir(plano(texto)))
+        if not voto or voto.startswith('<') or not v.get('autor'):
+            continue
+        # la batalla de ese momento que tiene a ese MC: primero las abiertas, después la última que lo nombre
+        cand = []
+        for rid in sorted(orden, key=lambda r: int(rondas[r][0].get('pub') or 0)):
+            rv, bs = rondas[rid]
+            if str(rv.get('canal')) != str(v.get('canal')):
+                continue
+            for i, (lados, gana) in enumerate(bs):
+                hay = [x for x in lados if norm(x) and (norm(x) == voto or (len(norm(x)) > 2 and voto.startswith(norm(x))))]
+                if len(hay) == 1:
+                    cand.append((bool(gana), rid, i, lados, gana, hay[0], rv))
+        if not cand:
+            continue
+        abiertas = [c for c in cand if not c[0]]
+        _x, rid, i, lados, gana, quien, rv = (abiertas[0] if abiertas else cand[-1])
+        bid = '%s:%d' % (rid, i)
+        d = (canales or {}).get(str(v.get('canal'))) or {}
+        b = out.setdefault(bid, {'sv': d.get('servidor') or '', 'canal': str(v.get('canal') or ''),
+                                 'pub': int(rv.get('pub') or 0), 'lados': lados, 'v': {}, 'g': gana})
+        b['v'][str(v['autor'])] = quien
+    return {k: b for k, b in out.items() if b['v']}
+
+
 def tercero_sin_encabezado(batallas):
     """🥉 Las batallas `[ronda, [lados], ganador, …]` con la del TERCER PUESTO nombrada así, aunque se votó sin encabezado.
 
@@ -4012,6 +4088,58 @@ def leer_veredictos(s, canales, ahora_ms=None):
                 break
             antes = ms[-1]['id']
             time.sleep(0.05)
+    return _con_el_vigia(filas, canales, corte)
+
+
+#: 🗳️ cada versión de cada mensaje de #veredictos que guardó el vigía en la última lectura (`_con_el_vigia()`)
+_VERSIONES = [[]]
+
+
+def _con_el_vigia(filas, canales, corte):
+    """🗳️ LAS FILAS DE DISCORD CON LO QUE EL VIGÍA GUARDÓ DE CADA MENSAJE (Dlx, 26/10/2026: *«pensé que ya habías añadido
+    una función para que el bot detecte esos veredictos sin depender del vigía»*).
+
+    En FFA el jurado escribe su voto y en segundos lo edita a «.» o lo borra. La escucha en vivo (`bot/en_llamada.py
+    --seguir`) le manda cada mensaje al vigía en el momento, y el vigía se queda con lo último que DECÍA ALGO
+    (`pisaConNada()`); pero el ciclo leía sólo Discord, donde el voto ya era un punto. Medido esa noche: de los tres
+    jurados de la fecha, en Discord quedaba UN voto. Acá, si Discord dice nada y el vigía dice algo, manda el vigía; y un
+    mensaje borrado vuelve con lo que decía. Sin respuesta del vigía (sin clave, caído) quedan las de Discord, como antes."""
+    import en_llamada as EN
+    r = EN._ciclo('GET', '/avisos/veredictos-filas')
+    if not r or not isinstance(r.get('versiones'), list):
+        return filas
+    algo = lambda t: bool(re.search(r'[^\W_]', str(t or '')))   # noqa: E731
+    vers = {}
+    for v in r['versiones']:
+        if str(v.get('canal') or '') in (canales or {}):
+            vers[(str(v.get('id') or ''), int(v.get('ed') or 0))] = v
+    _VERSIONES[0] = sorted(vers.values(), key=lambda v: (int(v.get('ed') or 0), str(v.get('id'))))
+    # de cada mensaje, la última versión que decía algo (lo mismo que `pisaConNada()` en el vigía)
+    ultima = {}
+    for v in _VERSIONES[0]:
+        if algo(v.get('texto')):
+            ultima[str(v['id'])] = v
+    por = {f['id']: f for f in filas}
+    rescatados = 0
+    for v in ultima.values():
+        vid, cid = str(v.get('id') or ''), str(v.get('canal') or '')
+        if not vid or cid not in (canales or {}) or int(v.get('pub') or 0) < corte or not algo(v.get('texto')):
+            continue
+        f = por.get(vid)
+        if f is None:
+            d = canales[cid]
+            f = {'id': vid, 'canal': cid, 'sv': d.get('servidor') or '', 'g': d.get('guild') or '',
+                 'autor': str(v.get('autor') or ''), 'pub': int(v.get('pub') or 0), 'ed': int(v.get('ed') or 0),
+                 'texto': str(v.get('texto') or '')[:400], 'vigia': 1}
+            filas.append(f)
+            por[vid] = f
+            rescatados += 1
+        elif not algo(f.get('texto')):
+            f['texto'] = str(v.get('texto') or '')[:400]
+            f['vigia'] = 1
+            rescatados += 1
+    if rescatados:
+        print('   🗳️ %d veredicto(s) rescatados del vigía: en Discord ya estaban editados a «.» o borrados' % rescatados)
     return filas
 
 
@@ -4070,6 +4198,8 @@ def vidas(s, mem, guilds, completo):
         except (OSError, ValueError):
             J = {}
         vs, ns = votos_jurados(filas)
+        # ⚖️ y los que se votan editando un mensaje (FFA): de las versiones que guardó el vigía
+        vs.update(votos_en_vivo(_VERSIONES[0], canales))
         if vs or ns:
             J.setdefault('votos', {}).update(vs)
             J.setdefault('nombres', {}).update(ns)
@@ -4439,6 +4569,7 @@ def _self_check():
     mal += _check_dialectos()
     mal += _check_cadencia()
     mal += _check_veredicto_ganador()
+    mal += _check_votos_en_vivo()
     mal += _check_llave_veredictos()
     print('\n  la Parte 2 de la guía: cupo vacío, letras de fantasía')
     casos = [
@@ -4953,6 +5084,34 @@ def _check_llave_veredictos():
     ]:
         print('   %s %s' % ('✅' if ok else '❌', que))
         mal += 0 if ok else 1
+    return mal
+
+
+def _check_votos_en_vivo():
+    """⚖️ Los votos que se editan a «.» (FFA, 26/10/2026): cada versión de un jurado es un voto, a la batalla de ese
+    momento, y en las de 3 a 5 MCs."""
+    print('\n  los votos de FFA que se editan a «.», de las versiones del vigía')
+    ronda = '⌞MATS🇺🇾⌝ <:VSF:1>  ⌞ARIAXER🇦🇷⌝ <:VSF:1> ⌞AGUS🇦🇷⌝\n⌞SIX⌝ <:VSF:1> ⌞JOBA⌝'
+
+    def ver(i, ed, texto, autor):
+        return {'id': i, 'canal': 'c', 'autor': autor, 'pub': 1000, 'ed': ed, 'texto': texto}
+    vs = [ver('R', 1000, ronda, 'org'),
+          ver('L', 2000, 'MATS <a:URUGUAY:1> X LA MINIMA', 'lew'), ver('X', 2001, 'MATS🇺🇾', 'xub'),
+          ver('K', 2002, '# AGUS 🇦🇷', 'kra'), ver('L', 2100, '.', 'lew'), ver('X', 2101, '.', 'xub'),
+          ver('R', 2200, ronda.replace('⌞MATS', '⌞**MATS').replace('🇺🇾⌝', '🇺🇾**⌝', 1), 'org'),
+          ver('L', 3000, 'SIX', 'lew'), ver('X', 3001, 'SIX', 'xub'), ver('L', 3100, '.', 'lew')]
+    r = votos_en_vivo(vs, {'c': {'servidor': 'FFA'}})
+    b0, b1 = r.get('R:0') or {}, r.get('R:1') or {}
+    mal = 0
+    for que, ok in [
+        ('una batalla de tres: un voto por jurado, aunque después lo editó a «.»',
+         b0.get('v') == {'lew': 'MATS🇺🇾', 'xub': 'MATS🇺🇾', 'kra': 'AGUS🇦🇷'} and len(b0.get('lados') or []) == 3),
+        ('el ganador es el que el organizador puso en negrita', b0.get('g') == 'MATS🇺🇾'),
+        ('el mismo mensaje del jurado vota la batalla siguiente', b1.get('v') == {'lew': 'SIX', 'xub': 'SIX'}),
+        ('un «.» no es un voto', all('.' not in x for b in r.values() for x in b['v'].values())),
+    ]:
+        print('   %s %s' % ('✅' if ok else '🔴', que))
+        mal += not ok
     return mal
 
 

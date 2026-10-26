@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "4.13",
+   "dia": "2026-10-26",
+   "cuando": "2026-10-26T19:44:10-04:00",
+   "titulo": "Los votos de los jurados cuentan aunque los borren",
+   "items": [
+    "La ficha de cada **jurado** ahora junta también los votos que se editan a «.» o se borran a los segundos, como se vota en FFA.",
+    "Se leen las batallas de **3 a 5 MCs**, y cada voto va a la batalla que se estaba jugando en ese momento."
+   ]
+  },
+  {
    "version": "4.12",
    "dia": "2026-10-26",
    "cuando": "2026-10-26T19:29:05-04:00",

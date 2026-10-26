@@ -2547,6 +2547,8 @@ const RUTAS = {
   '/avisos/vuelve-ciclo': 'GET',
   // 🗳️ los veredictos en tiempo real (`bot/en_llamada.py --seguir`, con su clave): qué canales escuchar y lo que llegó
   '/avisos/veredictos-canales': 'GET',
+  // 🗳️ y lo que guardó de cada mensaje, para el ciclo (`escuchar._con_el_vigia()`): el voto que el jurado ya editó a «.»
+  '/avisos/veredictos-filas': 'GET',
   // ⚡ el redibujo a pedido terminó (`bot/redibujo.py`, con su clave)
   '/avisos/redibujo-listo': 'POST',
   '/avisos/veredictos-vivo': 'POST',
@@ -5214,10 +5216,11 @@ export async function rutaAvisos(req, env, ruta) {
     if (crudo.length > 4000) return json({ error: 'demasiado grande' }, 413);
     return elObjeto(env).fetch('https://avisos/redibujo-listo', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
   }
-  if (ruta === '/avisos/veredictos-canales' || ruta === '/avisos/veredictos-vivo') {
+  if (ruta === '/avisos/veredictos-canales' || ruta === '/avisos/veredictos-vivo' || ruta === '/avisos/veredictos-filas') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     if (ruta === '/avisos/veredictos-canales') return elObjeto(env).fetch('https://avisos/veredictos-canales');
+    if (ruta === '/avisos/veredictos-filas') return elObjeto(env).fetch('https://avisos/veredictos-filas');
     const crudo = await req.text();
     if (crudo.length > 200000) return json({ error: 'demasiado grande' }, 413);
     return elObjeto(env).fetch('https://avisos/veredictos-vivo', { method: 'POST', body: crudo, headers: { 'content-type': 'application/json' } });
@@ -5662,6 +5665,18 @@ export class Avisos {
           visto INTEGER NOT NULL,
           UNIQUE (id, texto)
         );
+        -- 🗳️ CADA VERSIÓN POR SU HORA (26/10/2026): en FFA cada jurado reusa SU mensaje para toda la noche —escribe el
+        -- voto, lo edita a «.», escribe el de la batalla siguiente—, así que el mismo «MATS» de octavos y de cuartos son
+        -- dos votos. \`veredictos_hist\` es único por texto y el segundo se perdía; acá es único por (mensaje, edición)
+        CREATE TABLE IF NOT EXISTS veredictos_ver (
+          id TEXT NOT NULL,
+          canal TEXT NOT NULL,
+          autor TEXT NOT NULL DEFAULT '',
+          pub INTEGER NOT NULL,
+          ed INTEGER NOT NULL,
+          texto TEXT NOT NULL,
+          UNIQUE (id, ed)
+        );
         CREATE TABLE IF NOT EXISTS posts (
           id TEXT PRIMARY KEY,
           cuerpo TEXT NOT NULL,
@@ -6000,7 +6015,7 @@ export class Avisos {
       // Los otros son las consultas «de las últimas horas» que el vigía y la página hacen cada minuto
       for (const [nombre, tabla, col] of [['inscritos_pub', 'inscritos', 'pub'], ['hechos_t', 'hechos', 't'],
         ['avisos_creado', 'avisos', 'creado'], ['veredictos_pub', 'veredictos', 'pub'], ['posts_creado', 'posts', 'creado'],
-        ['veredictos_hist_pub', 'veredictos_hist', 'pub'],
+        ['veredictos_hist_pub', 'veredictos_hist', 'pub'], ['veredictos_ver_ed', 'veredictos_ver', 'ed'],
         ['bandeja_t', 'bandeja', 't'], ['vivo_ed', 'vivo', 'ed'], ['cancelados_t', 'cancelados', 't'],
         // 📏 y los de la revisión del 05/10/2026: los niveles del Pase de la temporada (`pases()`, `paseNiveles()`: cada
         // perfil los pedía recorriendo la tabla entera), la billetera de cada uno (`tienda` por `quien`) y el que más
@@ -6432,6 +6447,17 @@ export class Avisos {
       // 🧪 para el ciclo (`bot/primerizos.py`): a quién se avisó y quién quedó sin aviso (es un GET: va antes del cuerpo)
       if (ruta === '/vuelve-ciclo') return json(this.vuelveCiclo(), 200, 0);
       if (ruta === '/veredictos-canales') return json({ lista: (this.leer('canales') || {}).veredictos || [] }, 200, 0);
+      // 🗳️ CADA VERSIÓN de cada mensaje de #veredictos de las últimas 12 h (Dlx, 26/10/2026: «pensé que ya habías
+      // añadido una función para que el bot detecte esos veredictos»): la escucha en vivo las guardaba, pero el ciclo leía
+      // Discord, y ahí el voto ya era un «.». Las lee `escuchar._con_el_vigia()` y `escuchar.votos_en_vivo()`
+      if (ruta === '/veredictos-filas') {
+        const desde = Date.now() - 12 * HORA;
+        const ver = this.sql.exec('SELECT id, canal, autor, pub, ed, texto FROM veredictos_ver WHERE ed > ? ORDER BY ed LIMIT 6000', desde).toArray();
+        // las de antes de que existiera `veredictos_ver` (la noche del 26/10): del historial único por texto
+        const hist = this.sql.exec('SELECT id, canal, autor, pub, ed, texto FROM veredictos_hist WHERE ed > ? AND texto != ? ORDER BY ed LIMIT 6000',
+          desde, BORRADO).toArray();
+        return json({ versiones: ver.concat(hist) }, 200, 0);
+      }
       const d = await req.json().catch(() => null);
       if (!d) return json({ error: 'no es JSON' }, 400);
       if (ruta === '/final') return json(this.finalElegir(d));
@@ -7569,6 +7595,7 @@ export class Avisos {
       const autor = /^[0-9]{5,25}$/.test(String(e.autor || '')) ? String(e.autor) : '';
       this.sql.exec('INSERT OR IGNORE INTO veredictos_hist (id, canal, sv, autor, pub, ed, texto, visto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
         id, c.id, c.sv || '', autor, pub, ed, largo.slice(0, 4000), ahora);
+      this.sql.exec('INSERT OR IGNORE INTO veredictos_ver (id, canal, autor, pub, ed, texto) VALUES (?, ?, ?, ?, ?, ?)', id, c.id, autor, pub, ed, largo.slice(0, 4000));
       const fila = this.sql.exec('SELECT texto FROM veredictos WHERE id = ?', id).toArray()[0];
       if (fila && (fila.texto === texto || pisaConNada(fila.texto, texto))) continue;
       this.sql.exec('INSERT INTO veredictos (id, canal, sv, g, autor, pub, ed, texto) VALUES (?, ?, ?, ?, ?, ?, ?, ?) ' +
@@ -7614,6 +7641,8 @@ export class Avisos {
           this.sql.exec('INSERT OR IGNORE INTO veredictos_hist (id, canal, sv, autor, pub, ed, texto, visto) ' +
             'VALUES (?, ?, ?, ?, ?, ?, ?, ?)', m.id, c.id, c.sv || '', (m.author && m.author.id) || '', pub,
           Math.max(pub, ed || 0), conNombres(m).slice(0, 4000), ahora);
+          this.sql.exec('INSERT OR IGNORE INTO veredictos_ver (id, canal, autor, pub, ed, texto) VALUES (?, ?, ?, ?, ?, ?)', m.id, c.id, (m.author && m.author.id) || '', pub, Math.max(pub, ed || 0),
+            conNombres(m).slice(0, 4000));
           const fila = this.sql.exec('SELECT texto FROM veredictos WHERE id = ?', m.id).toArray()[0];
           if (fila && (fila.texto === texto || pisaConNada(fila.texto, texto))) continue;
           this.sql.exec('INSERT INTO veredictos (id, canal, sv, g, autor, pub, ed, texto) ' +
@@ -7625,6 +7654,7 @@ export class Avisos {
       }
     }
     this.sql.exec('DELETE FROM veredictos WHERE pub < ?', ahora - 12 * HORA);
+    this.sql.exec('DELETE FROM veredictos_ver WHERE ed < ?', ahora - 14 * 24 * HORA);
     this.guardar('veredictos', { t: ahora, canales: leer.length, vivos: [...vivos], cambiaron: nuevos });
   }
 
