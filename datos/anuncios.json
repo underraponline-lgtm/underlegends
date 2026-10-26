@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-26T00:09:47+00:00",
+ "cuando": "2026-10-26T00:24:34+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -3025,11 +3025,11 @@
    "categoria_id": "867553625508282369"
   },
   {
-   "nombre": "COMPE CHILL",
+   "nombre": "COMPE CHILL 🥡 || (esta no la cancelo)",
    "servidor": "URBF",
    "canal": "⋆🏆│Eventos",
-   "msg_id": "1562215107549732935",
-   "cuando": "2026-10-20T21:25:06",
+   "msg_id": "1564069803474296968",
+   "cuando": "2026-10-26T00:15:00",
    "canal_id": "1511963470956990494",
    "guild_id": "1467763447117778989",
    "organizador": "Erian 恵理久",
@@ -3063,7 +3063,9 @@
    "staff_cuentas": {
     "Erian 恵理久": "1055474244089286706"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "FF Freestyle Clasico VOL. 1",
@@ -3101,7 +3103,9 @@
    "staff_cuentas": {
     "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧": "1344825963669749804"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "COMPE CHILL",
@@ -3142,7 +3146,9 @@
    "staff_cuentas": {
     "Erian 恵理久": "1055474244089286706"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "POESÍA CRUDA",
@@ -3184,7 +3190,9 @@
     "MTZ": "794733304729436212",
     "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧": "1344825963669749804"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "COMPE CHILL DE FASO",
@@ -3225,7 +3233,9 @@
    "staff_cuentas": {
     "FASOO": "1071915431696277504"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "CCFF V.3",
@@ -3266,7 +3276,9 @@
    "staff_cuentas": {
     "Carlos": "734172184737480745"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "COMPE DEL VACILE T2 #1",
@@ -3305,7 +3317,9 @@
    },
    "autor": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
    "staff_cuentas": {},
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "COMPE NOCTURNA",
@@ -3346,7 +3360,9 @@
    "staff_cuentas": {
     "Guty": "766366997117141022"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "CCFF V.2",
@@ -3387,7 +3403,9 @@
    "staff_cuentas": {
     "Carlos": "734172184737480745"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "COMPE SOLO 4X4",
@@ -3428,7 +3446,9 @@
    "staff_cuentas": {
     "Guty": "766366997117141022"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "CCFF V.1",
@@ -3469,7 +3489,9 @@
    "staff_cuentas": {
     "Carlos": "734172184737480745"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "PNC V.15",
@@ -3510,7 +3532,9 @@
    "staff_cuentas": {
     "Carlos": "734172184737480745"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "COMPE NOCTURNA",
@@ -3551,7 +3575,9 @@
    "staff_cuentas": {
     "Guty": "766366997117141022"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "PNC V.14",
@@ -3592,7 +3618,9 @@
    "staff_cuentas": {
     "Carlos": "734172184737480745"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "PNC V.13",
@@ -3633,7 +3661,9 @@
    "staff_cuentas": {
     "Carlos": "734172184737480745"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "WACHINTON",
@@ -3674,7 +3704,9 @@
    "staff_cuentas": {
     "Erian 恵理久": "1055474244089286706"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "STEVE JOSEO",
@@ -3715,7 +3747,9 @@
    "staff_cuentas": {
     "Erian 恵理久": "1055474244089286706"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "ISLA DE SOCOTRA",
@@ -3756,7 +3790,9 @@
    "staff_cuentas": {
     "Erian 恵理久": "1055474244089286706"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "PNC V.12",
@@ -3797,7 +3833,9 @@
    "staff_cuentas": {
     "Carlos": "734172184737480745"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "PNC V.11",
@@ -3838,7 +3876,9 @@
    "staff_cuentas": {
     "Carlos": "734172184737480745"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "Arima Kinen Triple Crown | Clasificatoria N°1",
@@ -3880,7 +3920,9 @@
     "💗ValenAdoratesJuan💗": "554330098812059679",
     "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧": "1344825963669749804"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "PNC V.10",
@@ -3921,7 +3963,9 @@
    "staff_cuentas": {
     "Carlos": "734172184737480745"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "COMPE INVITACIONAL PA LOS JAJAS",
@@ -3962,7 +4006,9 @@
    "staff_cuentas": {
     "Carlos": "734172184737480745"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "PNC V.9",
@@ -4004,7 +4050,9 @@
     "Carlos": "734172184737480745",
     "❤ MILIℂA ❤ | ♕ O.E.ℙ ♕|": "817432890807156756"
    },
-   "categoria_id": "1511963280128868504"
+   "categoria_id": "1511963280128868504",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "REGIONAL TRICOLOR RED BULL CABRANA",
@@ -4028,7 +4076,9 @@
    "staff": {},
    "autor": "❤️‍🔥예수-Jesus-예수❤️‍🔥",
    "staff_cuentas": {},
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "PINCHE MTZ Y FORCE OJALÁ TE ASALTEN LA TIENDA",
@@ -4052,7 +4102,9 @@
    "staff": {},
    "autor": "Christopher",
    "staff_cuentas": {},
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "RED BULL CABRANA 5 VIDAS ESTA DE VUELTA",
@@ -4076,7 +4128,9 @@
    "staff": {},
    "autor": "Christopher",
    "staff_cuentas": {},
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "REGIONAL TRICOLOR RED BULL CABRANA",
@@ -4100,7 +4154,9 @@
    "staff": {},
    "autor": "dxg",
    "staff_cuentas": {},
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "REGIONAL ESPAÑA RED BULL CABRANA",
@@ -4124,7 +4180,9 @@
    "staff": {},
    "autor": "dxg",
    "staff_cuentas": {},
-   "categoria_id": "1511967903329812651"
+   "categoria_id": "1511967903329812651",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "¡LA BÚSQUEDA DEL MEJOR MC COMIENZA AHORA!",
@@ -4148,7 +4206,9 @@
    "staff": {},
    "autor": "Suzuhara",
    "staff_cuentas": {},
-   "categoria_id": "1511961628500037662"
+   "categoria_id": "1511961628500037662",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "¡LA BÚSQUEDA DEL MEJOR MC COMIENZA AHORA!",
@@ -4172,7 +4232,9 @@
    "staff": {},
    "autor": "Suzuhara",
    "staff_cuentas": {},
-   "categoria_id": "1511961628500037662"
+   "categoria_id": "1511961628500037662",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "SPECIAL WEEKS X TFC CHAMPIONS UNDER",
@@ -4201,7 +4263,9 @@
    "staff": {},
    "autor": "💗ValenAdoratesJuan💗",
    "staff_cuentas": {},
-   "categoria_id": "1511964043647123527"
+   "categoria_id": "1511964043647123527",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-26T00:15:56"
   },
   {
    "nombre": "Dos barras",
@@ -6848,6 +6912,123 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Sebita🇱🇷",
+   "quien": "malasiafighter",
+   "discord_id": "1357796427191029932",
+   "msg_id": "1564071380067287091",
+   "cuando": "2026-10-26T00:21:16"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Jupiter",
+   "quien": "jupiter2417tj",
+   "discord_id": "1413305434881658960",
+   "msg_id": "1564071237121085523",
+   "cuando": "2026-10-26T00:20:41"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Lula da Silva 🇵🇾",
+   "quien": "pelotadel_10_68491",
+   "discord_id": "1373340031413911624",
+   "msg_id": "1564070875467354133",
+   "cuando": "2026-10-26T00:19:15"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "familiafortunayexito 🇫🇷",
+   "quien": "yatusabe_eldeuxss",
+   "discord_id": "1338567692239765617",
+   "msg_id": "1564070837039145103",
+   "cuando": "2026-10-26T00:19:06"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "player 🇻🇪",
+   "quien": "jesuslgamer31",
+   "discord_id": "817387658656874536",
+   "msg_id": "1564070237266247854",
+   "cuando": "2026-10-26T00:16:43"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "MTZ 🇲🇽",
+   "quien": "diego__mtz",
+   "discord_id": "794733304729436212",
+   "msg_id": "1564070229040963650",
+   "cuando": "2026-10-26T00:16:41"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1564070171964866681",
+   "cuando": "2026-10-26T00:16:28"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "O.E.P 🇨🇴",
+   "quien": "puto_si_me_mencionas.",
+   "discord_id": "817432890807156756",
+   "msg_id": "1564070154248392777",
+   "cuando": "2026-10-26T00:16:23"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Guess 🇦🇷",
+   "quien": "sinergiabreak",
+   "discord_id": "1515482513106272366",
+   "msg_id": "1564070109906079885",
+   "cuando": "2026-10-26T00:16:13"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Sin limites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1564070101781577770",
+   "cuando": "2026-10-26T00:16:11"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "no la canceles 🇨🇱",
+   "quien": "agustin51k",
+   "discord_id": "1114241587262783631",
+   "msg_id": "1564070086652862515",
+   "cuando": "2026-10-26T00:16:07"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Dyzz🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1564069914573152407",
+   "cuando": "2026-10-26T00:15:26"
+  },
+  {
+   "servidor": "URBF",
+   "canal": "《📑》Inscripciones",
+   "texto": "Millonari-O 🇵🇾",
+   "quien": "pelotadel_10_68491",
+   "discord_id": "1373340031413911624",
+   "msg_id": "1564069889860436090",
+   "cuando": "2026-10-26T00:15:20"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42730,123 +42911,6 @@
    "discord_id": "766366997117141022",
    "msg_id": "1535707753287262369",
    "cuando": "2026-08-08T17:54:20"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "‣《🗞️》Inscripciones",
-   "texto": "Bloody 🇨🇴",
-   "quien": "bloodypintor",
-   "discord_id": "692881329573986317",
-   "msg_id": "1535706853776826539",
-   "cuando": "2026-08-08T17:50:45"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "‣《🗞️》Inscripciones",
-   "texto": "Cinexfilo 🇻🇪",
-   "quien": "cinexfilosanity",
-   "discord_id": "781971857519804417",
-   "msg_id": "1535706659240808528",
-   "cuando": "2026-08-08T17:49:59"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "‣《🗞️》Inscripciones",
-   "texto": "Stickbarreto 🇨🇴",
-   "quien": "christopher_hongo",
-   "discord_id": "1403518820022222929",
-   "msg_id": "1535706472527306782",
-   "cuando": "2026-08-08T17:49:15"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "‣《🗞️》Inscripciones",
-   "texto": "Sne",
-   "quien": "sne_2.",
-   "discord_id": "1513243793116102867",
-   "msg_id": "1535706112362287104",
-   "cuando": "2026-08-08T17:47:49"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "‣《🗞️》Inscripciones",
-   "texto": "oep 🇨🇴",
-   "quien": "oscarestivenpalermorodriguez",
-   "discord_id": "1204158962480578603",
-   "msg_id": "1535706093618208828",
-   "cuando": "2026-08-08T17:47:44"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "‣《🗞️》Inscripciones",
-   "texto": "VR🇨🇴",
-   "quien": "1mrvargas",
-   "discord_id": "1456416455405863038",
-   "msg_id": "1535706066824994827",
-   "cuando": "2026-08-08T17:47:38"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "KERKOIDE🇪🇨",
-   "quien": "kerquita",
-   "discord_id": "937885067601141790",
-   "msg_id": "1532582183183843421",
-   "cuando": "2026-07-31T02:54:26"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Kuni 🇦🇷",
-   "quien": "kunilop",
-   "discord_id": "1266522892439650327",
-   "msg_id": "1532569936105439482",
-   "cuando": "2026-07-31T02:05:46"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Vize",
-   "quien": "vice6514",
-   "discord_id": "1017990627604041780",
-   "msg_id": "1532551179731734619",
-   "cuando": "2026-07-31T00:51:14"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Osa🇨🇱",
-   "quien": "faloperro0746",
-   "discord_id": "1474632108700864534",
-   "msg_id": "1532550721856340040",
-   "cuando": "2026-07-31T00:49:25"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Bloody 🇨🇴 + colesito 🇨🇴",
-   "quien": "bloodypintor",
-   "discord_id": "692881329573986317",
-   "msg_id": "1532548118246195272",
-   "cuando": "2026-07-31T00:39:04"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Snake🇦🇷",
-   "quien": "snakerap0492",
-   "discord_id": "1470819179509842235",
-   "msg_id": "1532548104249803045",
-   "cuando": "2026-07-31T00:39:01"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Adachi🇻🇪 +Osa🇦🇷",
-   "quien": "adachit_332",
-   "discord_id": "1445803811758276660",
-   "msg_id": "1532547263086329966",
-   "cuando": "2026-07-31T00:35:40"
   }
  ]
 }
