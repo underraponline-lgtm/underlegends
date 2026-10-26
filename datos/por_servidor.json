@@ -4797,7 +4797,10 @@
     "ovr": 47,
     "pod": 0,
     "pts": 14712,
-    "racha": "0/1"
+    "racha": "0/1",
+    "tg": {
+     "bcasa": true
+    }
    },
    "DDF": {
     "duelos": "0/1",
