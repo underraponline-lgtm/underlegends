@@ -3119,7 +3119,7 @@
  "giansito": {
   "temporada": {
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x1",
+    "👑 CAMPEÓN x2",
     "t1",
     1792992726322
    ],
@@ -8666,6 +8666,11 @@
     "t1",
     1792953978519
    ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1793055626497
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x1",
     "t1",
@@ -8930,6 +8935,11 @@
     "DA LA CARA",
     "t1",
     1792953978519
+   ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1793055626497
    ]
   },
   "servidor": {
@@ -8940,6 +8950,11 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1793055626497
+   ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
     "t1",
@@ -9131,6 +9146,11 @@
     "🏆 CAMPEÓN",
     "t1",
     1792953978519
+   ],
+   "🧱 FUNDADOR": [
+    "🧱 FUNDADOR",
+    "t1",
+    1793055626497
    ]
   },
   "temporada": {
@@ -9138,6 +9158,11 @@
     "🌍 TROTAMUNDOS",
     "t1",
     1793029252929
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1793055626497
    ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",

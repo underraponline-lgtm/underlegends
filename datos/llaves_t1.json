@@ -31722,7 +31722,7 @@
      [
       [
        "Bloody",
-       "Fix"
+       "Fix1🇦🇷"
       ],
       "Bloody",
       ""
@@ -31770,7 +31770,7 @@
     3750
    ],
    [
-    "Fix",
+    "Fix1🇦🇷",
     "Semifinal",
     3500
    ],
@@ -33419,7 +33419,7 @@
      [
       [
        "Sosa",
-       "Mato 🇧🇴"
+       "MATO 🇧🇴"
       ],
       "Sosa",
       ""
@@ -33607,7 +33607,7 @@
     1250
    ],
    [
-    "Mato 🇧🇴",
+    "MATO 🇧🇴",
     "Octavos",
     1250
    ],
@@ -33655,7 +33655,7 @@
      [
       [
        "Chop",
-       "Mato 🇧🇴"
+       "MATO 🇧🇴"
       ],
       "Chop",
       ""
@@ -33828,7 +33828,7 @@
     1250
    ],
    [
-    "Mato 🇧🇴",
+    "MATO 🇧🇴",
     "Octavos",
     1250
    ],
@@ -34871,6 +34871,182 @@
     "LRS",
     "Semifinal",
     1750
+   ]
+  ]
+ },
+ "529": {
+  "dia": "2026-10-26",
+  "escala": "8-15",
+  "fecha": "26/10",
+  "links": [
+   "https://discord.com/channels/1489848581203689535/1500675902042931280/1564386148485431439"
+  ],
+  "n": 529,
+  "nombre": "GG SANGRERAP 6",
+  "participantes": 13,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Raizer",
+       "Teo"
+      ],
+      "Raizer",
+      ""
+     ],
+     [
+      [
+       "giansito",
+       "TøKīØ🦠🧠",
+       "Miniboy"
+      ],
+      "giansito",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Sosa",
+       "Vilca"
+      ],
+      "Sosa",
+      "Walk-in 1: Sosa🇺🇾; Walk-in 1: Vilca🇵🇪"
+     ],
+     [
+      [
+       "NXUZ",
+       "Artezzy"
+      ],
+      "NXUZ",
+      "Walk-in 1: nxuz; Walk-in 1: Artezzy 🇵🇪"
+     ],
+     [
+      [
+       "OKAM",
+       "Luck",
+       "Raizer"
+      ],
+      "OKAM",
+      "triple (3 bandas); Walk-in 1: OKAM🇨🇷; Walk-in 1: Luck 🇵🇾"
+     ],
+     [
+      [
+       "giansito",
+       "CrisZJ",
+       "Leyenda"
+      ],
+      "giansito",
+      "triple (3 bandas); Walk-in 1: CrisZJ🇵🇪"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "NXUZ",
+       "Sosa"
+      ],
+      "NXUZ",
+      ""
+     ],
+     [
+      [
+       "giansito",
+       "OKAM"
+      ],
+      "giansito",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "giansito",
+       "NXUZ"
+      ],
+      "giansito",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FDS",
+  "tabla": [
+   [
+    "giansito",
+    "Campeón",
+    7500
+   ],
+   [
+    "NXUZ",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Raizer",
+    "Cuartos",
+    2000
+   ],
+   [
+    "OKAM",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Sosa",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Artezzy",
+    "Cuartos",
+    1000
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Leyenda",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Luck",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    625
+   ],
+   [
+    "Teo",
+    "Octavos",
+    625
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Octavos",
+    625
    ]
   ]
  }

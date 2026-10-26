@@ -1167,6 +1167,50 @@
    "b": "ARTEZZY",
    "ganador": "NXUZ",
    "votos": "1–0"
+  },
+  "1564404044955521137": {
+   "id": "1564404044955521137",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793053389539,
+   "a": "GIANSITO",
+   "b": "OKAM",
+   "ganador": "GIANSITO",
+   "votos": "1–0"
+  },
+  "1564404906440392725": {
+   "id": "1564404906440392725",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1793053594933,
+   "a": "Mcnadie",
+   "b": "Pichu (réplica)",
+   "ganador": "Mcnadie",
+   "votos": "1–0"
+  },
+  "1564406064412360828": {
+   "id": "1564406064412360828",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793053871015,
+   "a": "NXUZ",
+   "b": "GIANSITO",
+   "ganador": "GIANSITO",
+   "votos": "1–0"
+  },
+  "1564409977555263609": {
+   "id": "1564409977555263609",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1793054803981,
+   "a": "pichulitalinda",
+   "b": "Mcnadie",
+   "ganador": "Mcnadie",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5339,7 +5383,7 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1793049122688,
-   "ed": 1793052833341,
+   "ed": 1793053953488,
    "texto": "`[ CUARTOS ]`\n⌞Vilca 🇵🇪⌝ 🆚 ⌞sosa🇺🇾⌝\n⌞Artezzy 🇵🇪⌝ 🆚 ⌞Nxuz 🇵🇪⌝\n⌞okam🇨🇷⌝ 🆚 ⌞Luck 🇵🇾⌝ 🆚 ⌞Raizer🇵🇪⌝\n⌞CrisZJ 🇵🇪⌝ 🆚 ⌞Leyenda.X5 🇦🇷⌝ 🆚 ⌞giansito🇵🇪⌝",
    "batallas": [
     [
@@ -5379,6 +5423,72 @@
       "CrisZJ 🇵🇪",
       "Leyenda.X5 🇦🇷",
       "giansito🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1564408856904212531": {
+   "id": "1564408856904212531",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793054536797,
+   "ed": 1793055066018,
+   "texto": "`[ OCTAVOS ]`\n⌞YINN🇲🇦⌝ 🆚 ⌞SOSA🇺🇾⌝ 🆚 ⌞STT🇮🇨⌝\n⌞MAKMAH 🇻🇪⌝ 🆚 ⌞NC🇰🇷⌝ 🆚 ⌞PICHULAMC🇦🇷⌝ 🆚 ⌞TAM🇻🇪⌝\n⌞SIX🇦🇱⌝ 🆚 ⌞DOMINICK🇵🇪⌝ 🆚 ⌞JAHNO MELOMANÍACO🇦🇷⌝\n⌞ANDY🇪🇨⌝ 🆚 ⌞1514914403101708⌝\n`[ OCTAVOS ]`\n⌞YINN🇲🇦⌝ 🆚 ⌞SOSA🇺🇾⌝ 🆚 ⌞STT🇮🇨⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "YINN🇲🇦",
+      "SOSA🇺🇾",
+      "STT🇮🇨"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "MAKMAH 🇻🇪",
+      "NC🇰🇷",
+      "PICHULAMC🇦🇷",
+      "TAM🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "SIX🇦🇱",
+      "DOMINICK🇵🇪",
+      "JAHNO MELOMANÍACO🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ANDY🇪🇨",
+      "1514914403101708"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "YINN🇲🇦",
+      "SOSA🇺🇾",
+      "STT🇮🇨"
      ],
      null,
      "última ronda y no dice campeón",

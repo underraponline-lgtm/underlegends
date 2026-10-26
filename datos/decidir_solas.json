@@ -2852,6 +2852,52 @@
     "DOS NOMBRES: «ChozaDeChop» → «Chop» · cuenta 1364747464170668042"
    ],
    "escribio": {}
+  },
+  {
+   "id": "50c8158b39",
+   "tipo": "Nombre desconocido",
+   "sec": "GRISELDA RECORDS VOL. 6 · DDF · 25/10 · #511",
+   "que": "¿Quién es «Fix1🇦🇷»?",
+   "r": "Es Fix 17",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Fix 17: se anotó así en inscripciones",
+   "t": 1793055601481,
+   "filas": [
+    890
+   ],
+   "variantes": [
+    "Fix1🇦🇷"
+   ],
+   "escribio": {
+    "alias": [
+     "Fix1",
+     "Fix 17"
+    ],
+    "filas": [
+     317
+    ]
+   }
+  },
+  {
+   "id": "9ea6d98efb",
+   "tipo": "Nombre desconocido",
+   "sec": "GRISELDA RECORDS VOL. 6 · DDF · 25/10 · #511",
+   "que": "¿Quién es «Fix»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1793055601481,
+   "filas": [
+    832
+   ],
+   "variantes": [
+    "Fix"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

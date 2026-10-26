@@ -310,6 +310,7 @@
   "gianlamaldad": "Badterne",
   "sosatr": ".SosaATR",
   "ismel": "Rbk",
+  "fix1": "Fix 17",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1596,6 +1597,10 @@
   [
    "ISMEL",
    "Rbk"
+  ],
+  [
+   "Fix1",
+   "Fix 17"
   ],
   [
    "Nexus",

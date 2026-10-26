@@ -25009,5 +25009,231 @@
    ]
   ],
   "v": 2
+ },
+ "529": {
+  "antes": {
+   "Artezzy": [
+    87,
+    113,
+    false
+   ],
+   "CrisZJ": [
+    219,
+    46,
+    true
+   ],
+   "Leyenda": [
+    282,
+    196,
+    true
+   ],
+   "Luck": [
+    162,
+    314,
+    false
+   ],
+   "Miniboy": [
+    34,
+    41,
+    false
+   ],
+   "NXUZ": [
+    29,
+    34,
+    false
+   ],
+   "OKAM": [
+    35,
+    43,
+    false
+   ],
+   "Raizer": [
+    272,
+    174,
+    true
+   ],
+   "Sosa": [
+    52,
+    68,
+    false
+   ],
+   "Teo": [
+    72,
+    96,
+    false
+   ],
+   "TøKīØ🦠🧠": [
+    59,
+    77,
+    false
+   ],
+   "Vilca": [
+    79,
+    104,
+    false
+   ],
+   "giansito": [
+    250,
+    141,
+    true
+   ]
+  },
+  "canal": "1489848582189224104",
+  "duelos": [
+   [
+    "Raizer",
+    "Teo",
+    "Raizer"
+   ],
+   [
+    "giansito",
+    "TøKīØ🦠🧠",
+    "giansito"
+   ],
+   [
+    "giansito",
+    "Miniboy",
+    "giansito"
+   ],
+   [
+    "Sosa",
+    "Vilca",
+    "Sosa"
+   ],
+   [
+    "NXUZ",
+    "Artezzy",
+    "NXUZ"
+   ],
+   [
+    "OKAM",
+    "Luck",
+    "OKAM"
+   ],
+   [
+    "OKAM",
+    "Raizer",
+    "OKAM"
+   ],
+   [
+    "giansito",
+    "CrisZJ",
+    "giansito"
+   ],
+   [
+    "giansito",
+    "Leyenda",
+    "giansito"
+   ],
+   [
+    "NXUZ",
+    "Sosa",
+    "NXUZ"
+   ],
+   [
+    "giansito",
+    "OKAM",
+    "giansito"
+   ],
+   [
+    "giansito",
+    "NXUZ",
+    "giansito"
+   ]
+  ],
+  "ev_antes": {
+   "Artezzy": 8,
+   "CrisZJ": 16,
+   "Leyenda": 6,
+   "Luck": 2,
+   "Miniboy": 25,
+   "NXUZ": 21,
+   "OKAM": 10,
+   "Raizer": 4,
+   "Sosa": 19,
+   "Teo": 15,
+   "TøKīØ🦠🧠": 8,
+   "Vilca": 7,
+   "giansito": 2
+  },
+  "fecha": "26/10",
+  "firma": "81ccba53665bc48d",
+  "msg": "1564411815159402638",
+  "nombre": "GG SANGRERAP 6",
+  "num": 529,
+  "participantes": 13,
+  "sello": {
+   "giansito": ""
+  },
+  "sv": "FDS",
+  "t": "2026-10-26T22:54:00Z",
+  "tabla": [
+   [
+    "giansito",
+    "Campeón",
+    7500
+   ],
+   [
+    "NXUZ",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Raizer",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sosa",
+    "Semifinal",
+    1750
+   ],
+   [
+    "OKAM",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Artezzy",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Luck",
+    "Cuartos",
+    1000
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Leyenda",
+    "Cuartos",
+    1000
+   ],
+   [
+    "Teo",
+    "Octavos",
+    625
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Octavos",
+    625
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    625
+   ]
+  ],
+  "v": 2
  }
 }

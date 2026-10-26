@@ -276,6 +276,15 @@
 "temporada"
 ]
 },
+"okam": {
+"rg": "",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "majiztral": {
 "rg": "C",
 "c": [
@@ -311,6 +320,10 @@
 "temporada"
 ]
 },
+"criszj": {
+"rg": "C",
+"c": []
+},
 "drexx": {
 "rg": "C",
 "c": [
@@ -333,25 +346,12 @@
 "rg": "",
 "c": []
 },
-"okam": {
-"rg": "",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "dominick": {
 "rg": "D",
 "c": []
 },
 "andres": {
 "rg": "B",
-"c": []
-},
-"criszj": {
-"rg": "C",
 "c": []
 },
 "lrs": {
@@ -462,6 +462,15 @@
 "temporada"
 ]
 },
+"sosa": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "dynoco": {
 "rg": "C",
 "c": [
@@ -510,11 +519,9 @@
 "temporada"
 ]
 },
-"sosa": {
-"rg": "D",
+"tøkiø": {
+"rg": "",
 "c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -572,13 +579,6 @@
 "rg": "",
 "c": [
 "pais",
-"servidor",
-"temporada"
-]
-},
-"tøkiø": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -642,6 +642,15 @@
 "temporada"
 ]
 },
+"teo": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "rodas": {
 "rg": "E",
 "c": [
@@ -698,18 +707,16 @@
 "temporada"
 ]
 },
-"hotaruadeyemi": {
+"vilca": {
 "rg": "",
-"c": []
-},
-"teo": {
-"rg": "E",
 "c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
+},
+"hotaruadeyemi": {
+"rg": "",
+"c": []
 },
 "lvel": {
 "rg": "E",
@@ -755,16 +762,13 @@
 "temporada"
 ]
 },
-"mosquitrap": {
+"giansito": {
 "rg": "",
 "c": []
 },
-"vilca": {
+"mosquitrap": {
 "rg": "",
-"c": [
-"servidor",
-"temporada"
-]
+"c": []
 },
 "juanpa": {
 "rg": "",
@@ -813,14 +817,14 @@
 "rg": "",
 "c": []
 },
-"zeta": {
+"artezzy": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"artezzy": {
+"zeta": {
 "rg": "",
 "c": [
 "servidor",
@@ -973,10 +977,6 @@
 "rg": "",
 "c": []
 },
-"giansito": {
-"rg": "",
-"c": []
-},
 "mayeutyk": {
 "rg": "",
 "c": [
@@ -1000,6 +1000,10 @@
 ]
 },
 "ikonoxx": {
+"rg": "",
+"c": []
+},
+"raizer": {
 "rg": "",
 "c": []
 },
@@ -1139,10 +1143,6 @@
 "rg": "",
 "c": []
 },
-"raizer": {
-"rg": "",
-"c": []
-},
 "francis": {
 "rg": "",
 "c": []
@@ -1253,15 +1253,15 @@
 "rg": "",
 "c": []
 },
+"leyenda": {
+"rg": "",
+"c": []
+},
 "youngvlad": {
 "rg": "",
 "c": []
 },
 "globalhustler": {
-"rg": "",
-"c": []
-},
-"leyenda": {
 "rg": "",
 "c": []
 },
