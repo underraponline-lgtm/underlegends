@@ -301,8 +301,11 @@ console.log('\nLA CARTA\n');
   // ⚠️ tipo 7 = pisa el MISMO mensaje. Con tipo 4 saldría uno nuevo cada click.
   ok('el botón contesta con ACTUALIZAR (7)', r.json?.type === 7, `type ${r.json?.type}`);
   ok('ahora SÍ aparece el menú', select(c) !== null);
-  ok('el menú va en su propia fila', filas(c).length === 2,
+  // (tres filas: las cartas, el menú y la del Inventario, 26/10/2026)
+  ok('el menú va en su propia fila', filas(c).length === 3 && filas(c).some((f) => f.components.length === 1 && f.components[0].type === 3),
      'un select no comparte Action Row con botones');
+  const inv = filas(c).map((f) => f.components[0]).find((b) => b.style === 5 && /inventario\/servidor$/.test(b.url || ''));
+  ok('y abajo, «Personalizar la tuya» abre el Inventario en esa carta', !!inv && /Personalizar/.test(inv.label), inv && inv.url);
   // ⚠️ CUÁNTOS, DE LA TABLA Y NO ESCRITO: eran nueve hasta FFS (28/09/2026). 🚪 Menos los que no son de la Liga
   // (`fuera`: TFC y EFA, Dlx 04/10/2026), que no salen
   // (y desde el 05/10/2026 TWR, FTN y FRZ: el bot no está ahí). ⚠️ SALVO EL QUE SE ESTÁ MOSTRANDO: Konan tiene su

@@ -620,6 +620,11 @@ function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
       }],
     });
   }
+  // ✏️ LA PUERTA 4 DEL INVENTARIO (Dlx, 26/10/2026, a la maqueta: «cinco puertas, 1, 3, 4 y 5»): un link que abre el
+  // Inventario de la página en ESTA carta. La carta es pública, así que lo ve todo el canal: dice «la tuya» porque
+  // cada uno abre la suya (la página sabe quién eres por tu cuenta, no por el link)
+  componentes.push({ type: COMP.FILA, components: [Object.assign(botonLink('Personalizar la tuya', URL_INVENTARIO + '/' + cual),
+    { emoji: { name: '✏️' } })] });
   return componentes;
 }
 
@@ -1027,6 +1032,8 @@ const QUE_PIDE = '1️⃣ **Verifícate en la página**: se desbloquea tu **Serv
   'La **Competitiva** pide 10 eventos y la de **País**, 3 cruces nacionales y 3 internacionales (en un 1 contra 1 o en un triple).';
 // 🎟️ el Pase, donde están las Tareas de la semana
 const URL_PASE = 'https://underlegends.pages.dev/freestyle-rap/pase';
+// 🎒 el Inventario (26/10/2026): `/<carta>` lo abre en esa carta
+const URL_INVENTARIO = 'https://underlegends.pages.dev/freestyle-rap/inventario';
 const botonPase = () => ({ type: 2, style: 5, label: 'Ver el Pase', url: URL_PASE });
 
 // «Verificate…» -> «verificate…», para seguir una frase

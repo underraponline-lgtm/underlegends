@@ -158,6 +158,8 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
               ? <button type="button" className="btn borde2 chico" disabled={princ === '…'} onClick={() => hacerPrincipal('')}>★ Tu principal · quitar</button>
               : <button type="button" className="btn borde2 chico" disabled={princ === '…'} onClick={() => hacerPrincipal(tipo)}>☆ Hacer principal</button>
           ) : null}
+          {/* ✏️ la puerta 2 del Inventario (26/10/2026): de tu carta, directo a personalizarla */}
+          {esYo && url && !bloq ? <a className="btn verde chico" href={'#/inventario/' + tipo} onClick={onCerrar}>✏️ Personalizar</a> : null}
           {enTabla ? <a className="btn borde2 chico" href={'#/r/' + encodeURIComponent(k)} onClick={onCerrar}>Ver su perfil</a> : null}
         </div>
         {princ && princ !== '…' ? <p className="vc-aviso" role="status">{princ}</p> : null}

@@ -3540,3 +3540,23 @@ a.rk-z:hover{border-color:var(--linea)}
 .app.solo-marco{background:transparent!important;min-height:0}
 .solo-marco .ms{display:inline-block;padding:110px}
 .solo-marco .ms-img{display:block;width:300px;height:auto}
+
+/* 👤 EL MENÚ DE TU CARA (26/10/2026, yomenu.jsx): la puerta 1 del Inventario. Tu cara arriba (compu) y «Tu cuenta»
+   abajo (celular) ahora son botones: se ven igual que el link de antes */
+.yo-envol{position:relative;display:inline-flex}
+button.tb-yo{display:grid;justify-items:center;gap:4px;padding:10px 0 12px;border:0;background:none;color:inherit;cursor:pointer;
+  font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:0.02em;text-transform:uppercase}
+button.tb-yo.on{background:var(--inv);color:var(--inv-tinta);box-shadow:inset 0 -4px 0 var(--verde)}
+.yo-menu{position:absolute;top:calc(100% + 8px);right:0;z-index:70;width:270px;display:grid;gap:2px;padding:6px;
+  border:2px solid #F6F6F6;border-radius:4px;background:#0B0B0D;color:#F6F6F6;text-transform:none;letter-spacing:0}
+.yo-menu.abajo{position:fixed;top:auto;left:8px;right:8px;width:auto;bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+.yo-menu-cab{display:flex;align-items:center;gap:8px;padding:6px 8px 8px;border-bottom:1px solid #2A2A2E;font:900 14px/1 Archivo,sans-serif}
+.yo-menu a{display:grid;grid-template-columns:28px minmax(0,1fr);grid-template-rows:auto auto;column-gap:8px;row-gap:2px;align-items:center;
+  padding:9px 8px;border:1.5px solid transparent;border-radius:3px;color:#F6F6F6;text-decoration:none}
+.yo-menu a span{grid-row:1/3;font-size:18px;text-align:center}
+.yo-menu a b{font:800 14px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.yo-menu a small{font:500 12.5px/1.2 Archivo,sans-serif;color:#A5A5A0}
+.yo-menu a small.nv{color:#FF5BA3;font-weight:800}
+.yo-menu a.inv{border-color:#29B298}
+.yo-menu a:focus-visible{outline:2px solid #29B298;outline-offset:1px}
+@media (hover: hover) and (pointer: fine){.yo-menu a:hover{background:#1C1C21}}

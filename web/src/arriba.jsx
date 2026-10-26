@@ -5,6 +5,7 @@ import { MESES, capital, diaISO, ksDe, limpio, mult, norm, num, recorte, resulta
 import { Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, silueta, subirSiEsta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { useRacha } from './racha.js';
+import { YoMenu } from './yomenu.jsx';
 
 export const MENU = [
   ['Inicio', '#/'], ['Eventos', '#/eventos'], ['Ranking', '#/ranking'], ['Competencias', '#/competencias'], ['Pase rapero', '#/pase'],
@@ -197,6 +198,8 @@ function BuscarCelu({ liga, onCerrar }) {
 export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
   const yo = liga.yo;
   const [busca, setBusca] = useState(false);
+  // 👤 tu cara abre el menú de lo tuyo, con el Inventario primero (yomenu.jsx)
+  const [yoM, setYoM] = useState(false);
   const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} /> : (dc ? <CaraDc dc={dc} /> : null);
   const nombre = yo ? limpio(yo.n) : (dc ? limpio(dc.n) : '');
   // 🔥 tu racha diaria, al lado de tu cuenta (sólo si entraste con Discord: pedirla cuenta el día)
@@ -217,8 +220,12 @@ export function Cabecera({ liga, dc, onMenu, pagina = '' }) {
             el celular. En la PC que esté arriba, por supuesto») */}
         <a className="btn-ico ajustes-b" href="#/cuenta/apariencia" aria-label="La app: apariencia, hora y avisos"><Ico n="engranaje" t={20} /></a>
         {cara ? (
-          <a className="yo-chip" href="#/cuenta" aria-label={'Tu cuenta' + (fuego ? ' · ' + fuego + (fuego === 1 ? ' día seguido' : ' días seguidos') : '')}>
-            {cara}<span>{nombre}</span>{fuego ? <span className="yo-racha" aria-hidden="true"><Ico n="fuego" t={13} />{fuego}</span> : null}</a>
+          <span className="yo-envol">
+            <button type="button" className="yo-chip" aria-haspopup="menu" aria-expanded={yoM} onClick={() => setYoM((v) => !v)}
+              aria-label={'Lo tuyo: inventario, perfil y cuenta' + (fuego ? ' · ' + fuego + (fuego === 1 ? ' día seguido' : ' días seguidos') : '')}>
+              {cara}<span>{nombre}</span>{fuego ? <span className="yo-racha" aria-hidden="true"><Ico n="fuego" t={13} />{fuego}</span> : null}</button>
+            {yoM ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} onCerrar={() => setYoM(false)} /> : null}
+          </span>
         ) : (
           <button type="button" className="btn verde chico entrar" onClick={accion.entrar}>Entrar</button>
         )}

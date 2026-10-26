@@ -7,6 +7,7 @@ import { limpio, nuevaQue, num, srcLogo } from './liga.js';
 import { Cara, Chevron, Compartir, Ico, Poster, Sec, accion, enlace, promoAbierta, subirSiEsta } from './piezas.jsx';
 import { Buscar, CaraDc, CaraH, MENU, Orbe, QUE_ES } from './arriba.jsx';
 import { abrirVideo } from './video.jsx';
+import { YoMenu } from './yomenu.jsx';
 import { useAplausos } from './aplausos.js';
 
 
@@ -298,6 +299,7 @@ export function Tabbar({ liga, dc, pagina = '' }) {
   // sección nueva entra en las dos. Y tu cuenta, «Yo», fija a la derecha y fuera de la tira (02/10: «el engranaje en
   // vez de la cuenta»), como el «Tú» de Discord
   const yo = liga && liga.yo;
+  const [yoM, setYoM] = useState(false);
   const cara = yo ? <Cara liga={liga} k={yo.k} nombre={yo.n} cls="tb-cara" /> : (dc ? <CaraDc dc={dc} cls="tb-cara" /> : null);
   // 👉 QUE SE NOTE QUE SE DESLIZA (Dlx, 17/10/2026: «mejorar un poco el tutorial, específicamente para lo del celular:
   // enseñar que hay una barra abajo que se puede deslizar»): la primera vez, un globito «Deslizá» con la tira
@@ -373,7 +375,14 @@ export function Tabbar({ liga, dc, pagina = '' }) {
           return <a key={k} href={r} onClick={subirSiEsta(r)} className={(k === 'inicio' ? !pagina : pagina === k) ? 'on' : ''}><Ico n={k} t={22} /><span>{n}</span></a>;
         })}
       </div>
-      <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} aria-label="Tu cuenta">{cara || <Ico n="yo" t={22} />}<span>Tu cuenta</span></a>
+      {/* 👤 con tu cuenta, abre el menú de lo tuyo (yomenu.jsx: el Inventario primero); sin cuenta, Tu cuenta como siempre */}
+      {cara ? (
+        <button type="button" className={'tb-yo' + (pagina === 'cuenta' || pagina === 'inventario' ? ' on' : '')} aria-haspopup="menu" aria-expanded={yoM}
+          aria-label="Lo tuyo: inventario, perfil y cuenta" onClick={() => setYoM((v) => !v)}>{cara}<span>Tu cuenta</span></button>
+      ) : (
+        <a href="#/cuenta" className={'tb-yo' + (pagina === 'cuenta' ? ' on' : '')} aria-label="Tu cuenta"><Ico n="yo" t={22} /><span>Tu cuenta</span></a>
+      )}
+      {yoM ? <YoMenu k={yo ? yo.k : (dc && dc.clave) || ''} abajo onCerrar={() => setYoM(false)} /> : null}
     </nav>
   );
 }

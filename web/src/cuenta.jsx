@@ -339,7 +339,7 @@ async function pedirFondo(ruta, cuerpo) {
   return j;
 }
 
-function FondoCaja({ dc }) {
+export function FondoCaja({ dc }) {
   const [st, setSt] = useState(null);
   const [vista, setVista] = useState('');
   const [archivo, setArchivo] = useState(null);
@@ -425,7 +425,7 @@ async function pedirFotoCarta(ruta, cuerpo) {
   return j;
 }
 
-function FotoCartaCaja({ dc }) {
+export function FotoCartaCaja({ dc }) {
   const [st, setSt] = useState(null);
   const [vista, setVista] = useState('');
   const [archivo, setArchivo] = useState(null);

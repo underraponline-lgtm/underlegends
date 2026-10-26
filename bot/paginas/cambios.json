@@ -11,6 +11,20 @@
  ],
  "cambios": [
   {
+   "version": "4.09",
+   "dia": "2026-10-26",
+   "cuando": "2026-10-26T11:37:02-04:00",
+   "titulo": "Tu inventario, en un lugar",
+   "items": [
+    "🎒 **El Inventario tiene su página**: tus cartas arriba, la elegida en grande y sus ranuras (**TAG · Marco · Foto · Efecto**). Lo tuyo se elige en cuadrados y lo ves puesto en tu carta antes de guardar.",
+    "👤 **Toca tu cara** (arriba en la compu, «Tu cuenta» abajo en el celular): sale un menú con el Inventario primero y cuántas cosas nuevas tienes.",
+    "✏️ **«Personalizar»** al abrir una carta tuya, **«Ponérselo»** en lo que ganaste del Pase, y en Discord `/card` trae el botón **«Personalizar la tuya»**.",
+    "🏷️ **El TAG que pruebas se ve en tu carta**, en su lugar, y no como una etiqueta encima.",
+    "⚖️ **Las rarezas de los TAGs salen de cuánta gente los tiene**: Legendario es lo que casi nadie tiene. Llegaron **13 TAGs nuevos**, cada uno de una sola carta, y el Inventario guarda **todos** los que cumples, no sólo el que se ve.",
+    "✨ **Cada título del Pase va en su carta** (edición limitada por carta)."
+   ]
+  },
+  {
    "version": "4.08",
    "dia": "2026-10-26",
    "cuando": "2026-10-26T01:05:27-04:00",

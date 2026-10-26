@@ -380,3 +380,6 @@
   .pk-esc-arte{min-width:120px}
   .pk-esc-tx > b{font-size:28px}
 }
+/* 🎒 «Ponérselo» en lo que ya cobraste (26/10/2026): lleva al Inventario */
+.pk-poner{display:inline-block;margin-top:6px;padding:6px 9px;border-radius:3px;background:#29B298;color:#030304;
+  font:900 11.5px/1 Archivo,sans-serif;text-transform:uppercase;text-decoration:none}

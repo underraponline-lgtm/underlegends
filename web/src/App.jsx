@@ -17,7 +17,7 @@ import { MarcoSolo } from './marco_solo.jsx';
 import { pasosEnInicio, quiereBienvenida, quiereTutorial } from './primera.js';
 import { AvisoVersion } from './novedad.jsx';
 // 📊 las secciones que se cuentan: la misma lista que `SECC_EV` de bot/avisos.js
-const SECC = new Set(['inicio', 'eventos', 'ranking', 'competencias', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'socios', 'guia',
+const SECC = new Set(['inicio', 'eventos', 'ranking', 'competencias', 'inventario', 'publicaciones', 'tarjetas', 'ligas', 'salon', 'pase', 'tienda', 'socios', 'guia',
   'perfil', 'servidor', 'crew', 'crews', 'pais', 'cuenta', 'cambios',
   'i-historias', 'i-envivo', 'i-semana', 'i-ira', 'i-fechas', 'i-sebusca', 'i-noticias', 'i-encuestas', 'i-raperos',
   'i-panel', 'i-merch', 'i-numeros', 'p-eventos', 'p-ranking', 'p-mw', 'p-tarjetas', 'p-pase', 'p-tienda']);
@@ -126,6 +126,8 @@ const LigasPagina = lazy(() => import('./ligas.jsx').then((m) => ({ default: m.L
 const SalonFama = lazy(() => import('./salon.jsx').then((m) => ({ default: m.SalonFama })));
 // 🏆 las competencias de la semana (26/10/2026): ver competencias.jsx
 const Competencias = lazy(() => import('./competencias.jsx').then((m) => ({ default: m.Competencias })));
+// 🎒 el Inventario como página (26/10/2026): ver tags_inv.jsx
+const PaginaInventario = lazy(() => import('./tags_inv.jsx').then((m) => ({ default: m.PaginaInventario })));
 // 👥 las Crews, su propia sección desde el 19/10/2026 (eran una pestaña del Ranking): ver crewspagina.jsx
 const CrewsPagina = lazy(() => import('./crewspagina.jsx').then((m) => ({ default: m.CrewsPagina })));
 // 📊 el panel de los socios Tier 1 y 2, para el dueño de cada servidor (19/10/2026): ver socio.jsx
@@ -543,7 +545,7 @@ export default function App() {
   // 🔤 `/sv/SNK` es Snake Rap: la sigla que se lee abre el mismo perfil que el código (`Liga.codigo()`)
   if (sv && liga) sv = liga.codigo(sv);
   useEffect(() => { if (sv) window.scrollTo(0, 0); }, [sv]);
-  const enRanking = /^#\/(ranking|duelos|eventos|publicaciones|socios|mundo|guia|tarjetas|ligas|salon|crews|competencias)(\/|$|\?)/.test(hash || '');
+  const enRanking = /^#\/(ranking|duelos|eventos|publicaciones|socios|mundo|guia|tarjetas|ligas|salon|crews|competencias|inventario)(\/|$|\?)/.test(hash || '');
   useEffect(() => { if (enRanking) window.scrollTo(0, 0); }, [enRanking]);
   // qué página: '' es el Inicio; `cambios` (01/10/2026) la primera que el Inicio nuevo le sacó a la de hoy
   const partes = (hash || '').replace(/^#\/?/, '').split('?')[0].split('/');
@@ -605,6 +607,7 @@ export default function App() {
       : pagina === 'salon' ? 'Salón de la fama'
       : pagina === 'competencias' ? ({ mini: 'Mini eventos', ligas: 'Las ligas' }[partes[1]] || 'Competencias')
       : pagina === 'crews' ? 'Crews'
+      : pagina === 'inventario' ? 'Inventario'
       : pagina === 'socio' ? 'Panel de tu servidor'
       : pagina === 'ligas' ? ({ superliga: 'Superliga', clausura: 'Clausura' }[ligaId] || (ligaId && liga && (liga.ligas().find((x) => x.id === ligaId) || {}).n) || 'Ligas')
       : crewT ? limpio(crewT.crew)
@@ -714,6 +717,7 @@ export default function App() {
         : pagina === 'r' && partes[1] ? <Aislada key="Perfil" n="Perfil" pagina><Suspense fallback={<Cargando />}><Perfil liga={liga} dc={yo.dc} k={partes[1]} tab={partes[2] || ''} /></Suspense></Aislada>
         : pagina === 'salon' ? <Aislada key="Salon" n="Salon" pagina><Suspense fallback={<Cargando />}><SalonFama liga={liga} enc={enc} /></Suspense></Aislada>
         : pagina === 'competencias' ? <Aislada key="Competencias" n="Competencias" pagina><Suspense fallback={<Cargando />}><Competencias liga={liga} dc={yo.dc} sub={partes[1] || ''} /></Suspense></Aislada>
+        : pagina === 'inventario' ? <Aislada key="Inventario" n="Inventario" pagina><Suspense fallback={<Cargando />}><PaginaInventario liga={liga} dc={yo.dc} carta={partes[1] || ''} ranura={partes[2] || ''} /></Suspense></Aislada>
         : pagina === 'crews' ? <Aislada key="Crews" n="Crews" pagina><Suspense fallback={<Cargando />}><CrewsPagina liga={liga} dc={yo.dc} qs={(hash || '').split('?')[1] || ''} /></Suspense></Aislada>
         : pagina === 'socio' ? <Aislada key="Socio" n="Socio" pagina><Suspense fallback={<Cargando />}><PanelSocio liga={liga} q={(hash || '').split('?')[1] || ''} /></Suspense></Aislada>
         : pagina === 'ligas' ? <Aislada key="Ligas" n="Ligas" pagina><Suspense fallback={<Cargando />}><LigasPagina liga={liga} id={ligaId} /></Suspense></Aislada>

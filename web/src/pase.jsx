@@ -492,7 +492,7 @@ function Premium({ liga, dc, P, prem, nivel, miembro }) {
         </ol>
       </section>
       {/* 🖼️ los marcos se eligen en tu Inventario (Dlx, 26/10/2026: «debería estar en inventario»): acá, el atajo */}
-      {dc ? <p className="ps-sub">🖼️ Tus marcos, tus TAGs y tu carta principal se eligen en <a href={'#/r/' + encodeURIComponent((liga.yo && liga.yo.k) || (dc && dc.clave) || '')}>tu perfil → Inventario</a>.</p> : null}
+      {dc ? <p className="ps-sub">🖼️ Tus marcos, tus TAGs y tu carta principal se ponen en <a href="#/inventario">tu Inventario</a>.</p> : null}
       <Sorteo liga={liga} dc={dc} miembro={miembro} />
       {miembro && !tiene && ya.length ? (
         <section className="ps-pv-b">

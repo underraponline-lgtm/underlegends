@@ -12,7 +12,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga.js';
 import { Bandera, Cara, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, accion, diaET, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
 import { PanelEmblemas, PildoraEmblemas, emblemasDe } from './emblemas.jsx';
-import { Inventario } from './tags_inv.jsx';
 import { FichaJurado } from './jurado_ficha.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
@@ -1349,9 +1348,14 @@ function Logros({ liga, p, esYo, dc }) {
       {/* 🏷️ el inventario (25/10/2026): en el tuyo, el TAG de cada carta (`tags_inv.jsx`); en el de otro, lo que eligió se
           ve en sus cartas */}
       {/* 🎒 TODO LO TUYO EN UN LUGAR (Dlx, 26/10/2026): los marcos —estaban en el Pase—, la carta principal y los TAGs */}
-      {pest === 'inv' ? (esYo ? <Inventario liga={liga} dc={dc} /> : (
+      {pest === 'inv' ? (esYo ? (
+        // 🎒 el Inventario tiene su página desde el 26/10/2026 (tags_inv.jsx): acá, la puerta
+        <div className="pf8-inv"><span aria-hidden="true">🎒</span><b>Tu inventario</b>
+          <p>Tus TAGs, tus marcos, tu carta principal y tu fondo, en un solo lugar.</p>
+          <a className="btn verde chico" href="#/inventario">Abrir mi inventario</a></div>
+      ) : (
         <div className="pf8-inv"><span aria-hidden="true">🎒</span><b>Su inventario</b>
-          <p>Los TAGs que eligió para sus cartas se ven abajo de cada una. El inventario lo ve cada uno en su perfil.</p></div>
+          <p>Los TAGs que eligió para sus cartas se ven abajo de cada una. Cada uno arma el suyo en su Inventario.</p></div>
       )) : <>
         {si.length ? <ul className="pf-ins">{si.map(fila)}</ul> : <p className="pf-ins-nada">Todavía ninguna.</p>}
         {no.length ? (

@@ -62,6 +62,9 @@ function Casilla({ p, prem, est, tiene, tienda, liga, yo }) {
       <span className="pk-arte"><Arte p={p} prem={prem} liga={liga} yo={yo} /></span>
       {esp ? <><b className="pk-q">{premioCorto(p, prem)}</b><small>{premioLargo(p, prem)}</small></>
         : <><b className="pk-q n">+{num(p[1] || tienda)}</b><small>Puntos de Tienda</small></>}
+      {/* 🎒 la puerta 3 del Inventario (26/10/2026): lo que ya ganaste y se pone en tu carta, se pone desde acá */}
+      {yo && est === 'cob' && (!prem || tiene) && (p[2] === 'marco' || p[2] === 'titulo')
+        ? <a className="pk-poner" href={p[2] === 'marco' ? '#/inventario/temporada/marco' : '#/inventario'}>Ponérselo</a> : null}
     </div>
   );
 }
