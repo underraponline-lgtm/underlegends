@@ -88,7 +88,7 @@ html.ini-nuevo.lg-fuera #lg-carga{display:none}
 #lg-carga .lg-tip span{display:block;animation:lg-tip .3s ease-out}
 #lg-carga .lg-capa{display:none}
 html.lg-carga-js #lg-carga{background:none}
-html.lg-carga-js #lg-carga .lg-capa{display:block;position:absolute;left:50%;top:50%;width:130vmax;height:130vmax;margin:-65vmax 0 0 -65vmax;
+html.lg-carga-js #lg-carga .lg-capa{display:block;position:absolute;left:50%;top:50%;width:130vmax;height:130vmax;margin:-65vmax 0 0 -65vmax;will-change:transform;
   transform:rotate(30deg) translateY(-5vmax)}
 #lg-carga .lg-capa.n{z-index:2;background:#030304}
 #lg-carga .lg-capa.m{z-index:1;background:#E41373}
@@ -102,7 +102,7 @@ html.lg-sale #lg-carga .lg-capa.v{animation-delay:.55s}
 @keyframes lg-sombra{from{transform:none}to{transform:translate(7px,7px)}}
 @keyframes lg-onda{0%{transform:scale(1);opacity:.9}100%{transform:scale(1.7);opacity:0}}
 @keyframes lg-sube{from{transform:translateY(110%)}to{transform:none}}
-@keyframes lg-abre{from{letter-spacing:.9em;opacity:0}to{letter-spacing:.24em;opacity:1}}
+@keyframes lg-abre{from{transform:scaleX(1.9);opacity:0}to{transform:none;opacity:1}}
 @keyframes lg-aparece{from{opacity:0}to{opacity:1}}
 @keyframes lg-tip{from{transform:translateY(100%);opacity:0}to{transform:none;opacity:1}}
 @keyframes lg-fuera{to{transform:scale(1.14);opacity:0}}

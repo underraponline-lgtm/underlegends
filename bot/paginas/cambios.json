@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "4.07",
+   "dia": "2026-10-25",
+   "cuando": "2026-10-25T23:43:00-04:00",
+   "titulo": "La entrada, más suave",
+   "items": [
+    "🎬 **La animación de entrada ya no se traba** en la compu: lo de la página espera a que termine el corte para moverse.",
+    "💡 Si no ves la animación en Windows, revisa **Configuración → Accesibilidad → Efectos visuales → Efectos de animación**: con eso apagado, la página entra sin animar, a propósito."
+   ]
+  },
+  {
    "version": "4.06",
    "dia": "2026-10-25",
    "cuando": "2026-10-25T14:45:46-04:00",
