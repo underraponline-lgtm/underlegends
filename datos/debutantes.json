@@ -308,7 +308,7 @@
    "n": 486,
    "sv": "DDF",
    "vence": "2026-10-26T01:35:44+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Ed": {
    "avisado": "2026-10-21",
@@ -751,7 +751,7 @@
    "n": 486,
    "sv": "DDF",
    "vence": "2026-10-26T01:35:44+00:00",
-   "vencido": false
+   "vencido": true
   },
   "NILS": {
    "avisado": "2026-10-25",
@@ -829,7 +829,7 @@
    "n": 486,
    "sv": "DDF",
    "vence": "2026-10-26T01:35:44+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Raizer": {
    "avisado": "2026-10-13",
