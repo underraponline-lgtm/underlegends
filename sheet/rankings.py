@@ -668,9 +668,13 @@ def _embudo(por, duelos, ahora, et):
         e['tres'] += len(ts) >= 3
         e['cinco'] += len(ts) >= 5
         e['gano'] += gano
-        c = e['si_gano'] if gano else e['no_gano']
-        c[0] += 1
-        c[1] += volvio
+        # ⚠️ «GANÓ O NO» SÓLO ENTRE LOS QUE TIENEN DUELOS LEÍDOS (25/10/2026): con datos reales, 141 de 235 debutaron en
+        # eventos sin batallas leídas (por equipos, o la llave sin cruces) y caían en «no ganó», mezclando «perdió» con
+        # «no se sabe». Van aparte, en `sin_duelos`
+        if mios:
+            c = e['si_gano'] if gano else e['no_gano']
+            c[0] += 1
+            c[1] += volvio
         if not mios:
             k = 'sin_duelos'
         elif mios[0][2] == q:

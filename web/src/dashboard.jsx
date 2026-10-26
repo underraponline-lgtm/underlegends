@@ -339,7 +339,9 @@ function veredicto(a, b) {
 // primera. Lo arma el ciclo (`rankings._embudo()`): sólo conteos
 function Embudo({ e }) {
   if (!e || !e.n) return <p className="pronto-p">El embudo se arma con los que debutaron hace 14 días o más: llega con el ciclo.</p>;
-  const pasos = [['Debutaron', e.n], ['Ganaron alguna batalla en su debut', e.gano], ['Volvieron en 14 días', e.volvio], ['Llegaron a 3 eventos', e.tres], ['Llegaron a 5', e.cinco]];
+  // «ganaron alguna» sólo se puede saber de los que tienen duelos leídos: la etiqueta dice de cuántos
+  const conDuelos = e.n - ((e.sin_duelos || [0])[0] || 0);
+  const pasos = [['Debutaron', e.n], ['Ganaron alguna batalla en su debut (de ' + num(conDuelos) + ' con duelos leídos)', e.gano], ['Volvieron en 14 días', e.volvio], ['Llegaron a 3 eventos', e.tres], ['Llegaron a 5', e.cinco]];
   return (
     <div className="dz-embudo">
       <ol className="dz-emb-l">{pasos.map(([t, v]) => (
