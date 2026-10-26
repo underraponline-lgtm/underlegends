@@ -76,7 +76,10 @@ export function usePases() {
 /** Vuelve a pedir lo público del Pase ya mismo (después de elegir un marco) y avisa `lg:pases` */
 export function refrescarPases() {
   pasesT = 0;
-  return fetch('/api/avisos/pases').then((r) => (r.ok ? r.json() : null)).catch(() => null)
+  // 🔴 SIN LA COPIA DE 5 MINUTOS (26/10/2026): `/avisos/pases` sale con caché de 300 s, así que después de guardar un marco
+  // esto traía la lista vieja y la carta «se revertía» aunque el cambio estaba guardado (Dlx: «me mostró el preview, lo
+  // cambié pero no cambió en la página… dijo que los cambios fueron guardados»)
+  return fetch('/api/avisos/pases?r=' + Date.now(), { cache: 'no-store' }).then((r) => (r.ok ? r.json() : null)).catch(() => null)
     .then((d) => { if (d && d.n) { pases = d; pasesT = Date.now(); } try { W.dispatchEvent(new Event('lg:pases')); } catch (e) { /* nada */ } return pases; });
 }
 

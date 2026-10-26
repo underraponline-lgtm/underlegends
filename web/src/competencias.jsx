@@ -299,31 +299,104 @@ const EXPLICA = {
 };
 
 /** Lo de adentro de cada mini evento */
+/** El color de cada mini evento: el cuadro de su ícono y su barra */
+const COLOR_MINI = { derbi: '#E41373', paises: '#29B298', meta: '#E41373', supercopa: '#F5C542', duos: '#B07CFF', pandillas: '#56A2F2',
+  rey: '#F5C542', revancha: '#E41373', racha: '#FF7A2F', novatos: '#29B298' };
+const MEDALLA = ['🥇', '🥈', '🥉'];
+
+/** Un podio de 3 con barra (Dúos, Pandillas, Racha): el 1.º llena la barra y los demás en proporción */
+function Podio({ filas, yo, nombre, valor, sufijo = '' }) {
+  if (!filas.length) return <p className="cm9-ev-nada">Todavía nadie suma esta semana.</p>;
+  const tope = Math.max(1, ...filas.map(valor));
+  return (
+    <ol className="cm9-pod">
+      {filas.map((f, i) => (
+        <li key={i} className={nombre(f).yo ? 'yo' : undefined}>
+          <span className="cm9-pod-m" aria-hidden="true">{MEDALLA[i] || i + 1}</span>
+          <span className="cm9-pod-n">{nombre(f).t}</span>
+          <b>{valor(f).toLocaleString('es')}{sufijo}</b>
+          <i className="cm9-pod-b" style={{ width: Math.max(6, Math.round(valor(f) / tope * 100)) + '%' }} />
+        </li>
+      ))}
+    </ol>
+  );
+}
+
+/** Lo de adentro de cada mini evento: qué es en una línea, cómo va (con números que se leen de un vistazo) y tu lugar */
 function Mini({ liga, C, x, yo, completo }) {
   const N = (k) => nombreDe(liga, C, k);
-  let cuerpo = null;
   const lado = (s) => (x.id === 'paises' ? nombrePais(s) : s);
-  if (x.id === 'derbi' || x.id === 'paises') cuerpo = <><b className="cm9-big">{lado(x.svs[0])} {x.score[0]} <small>vs</small> {x.score[1]} {lado(x.svs[1])}</b><p>Los 5 mejores de cada {x.id === 'paises' ? 'país' : 'servidor'}, uno contra uno. Cada cruce, real o simulado, suma.</p></>;
-  else if (x.id === 'meta') cuerpo = <><p>Si entre todos llegamos a {x.objetivo} batallas esta semana, cobran todos los que jugaron.</p><div className="cm9-meta"><i style={{ width: Math.min(100, Math.round(x.n / x.objetivo * 100)) + '%' }} /></div><small>{x.n >= x.objetivo ? '¡Cumplida! ' + x.n + ' batallas: cobran todos los que jugaron' : x.n + ' de ' + x.objetivo + ' batallas'}</small></>;
-  else if (x.id === 'supercopa' && x.p) cuerpo = <><b className="cm9-big">{N(x.p[0])} <small>vs</small> {N(x.p[1])}</b><p>Una sola batalla: el que lidera la Élite contra el que lidera el Oro.</p></>;
-  else if (x.id === 'duos' || x.id === 'pandillas') cuerpo = <><p>{x.id === 'duos' ? 'Parejas sorteadas: suman los puntos de los dos en la semana.' : 'Grupos de 5 sorteados: suman los puntos de todos en la semana.'}</p>{completo ? null : <ol className="cm9-mini-t">{x.t.slice(0, 3).map(([g, pts], i) => <li key={i} className={g.includes(yo) ? 'yo' : undefined}><span>{g.map(N).join(' · ')}</span><b>{pts.toLocaleString('es')}</b></li>)}</ol>}</>;
-  else if (x.id === 'rey') cuerpo = <><b className="cm9-big">👑 {N(x.rey)}</b><p>Quien le gane al rey en un cruce real se queda con la corona. {x.defensas ? 'Lleva ' + x.defensas + (x.defensas === 1 ? ' defensa.' : ' defensas.') : ''}</p></>;
-  else if (x.id === 'revancha') cuerpo = <><p>Te vuelve a tocar quien te ganó la última vez: ganarle vale doble.</p><small>{x.hechas.length ? x.hechas.length + ' revanchas cumplidas · ' + x.hechas.slice(0, 2).map(([a, b]) => N(a) + ' a ' + N(b)).join(', ') : 'Nadie se cobró la revancha todavía'}</small></>;
-  else if (x.id === 'racha') cuerpo = <><p>Gana quien encadene más victorias seguidas en la semana.</p><ol className="cm9-mini-t">{x.t.slice(0, 3).map(([k, n]) => <li key={k} className={k === yo ? 'yo' : undefined}><span>{N(k)}</span><b>{n}</b></li>)}</ol></>;
-  else if (x.id === 'novatos') cuerpo = <><p>Una llave de 8 sólo para quienes tienen menos de 5 eventos.</p>{x.campeon ? <small>Campeón: {N(x.campeon)}</small> : <small>{(x.r[0] || { p: [] }).p.map((m) => N(m[0]) + ' vs ' + N(m[1])).slice(0, 2).join(' · ')}</small>}</>;
-  const ex = EXPLICA[x.id];
+  const ex = EXPLICA[x.id] || ['', '', ''];
+  let cuerpo = null, tuyo = null;
+  if (x.id === 'derbi' || x.id === 'paises') {
+    const [a, b] = x.score;
+    const t = a + b || 1;
+    cuerpo = (
+      <div className="cm9-guerra">
+        <div className="cm9-guerra-n"><span>{lado(x.svs[0])}</span><b>{a} – {b}</b><span>{lado(x.svs[1])}</span></div>
+        <div className="cm9-guerra-b" aria-hidden="true"><i style={{ width: Math.round(a / t * 100) + '%' }} /></div>
+        <small>{x.p.filter((m) => m[2]).length} de {x.p.length} cruces resueltos · {x.p.filter((m) => m[3] === 'real').length} reales</small>
+      </div>
+    );
+    const m = x.p.find((p) => p[0] === yo || p[1] === yo);
+    if (m) tuyo = 'Estás en la guerra: contra ' + N(m[0] === yo ? m[1] : m[0]);
+  } else if (x.id === 'meta') {
+    const pc = Math.min(100, Math.round(x.n / x.objetivo * 100));
+    cuerpo = (
+      <div className="cm9-meta-v">
+        <b>{x.n}<small> / {x.objetivo}</small></b>
+        <div className="cm9-meta"><i style={{ width: pc + '%' }} /></div>
+        <small>{x.n >= x.objetivo ? '¡Cumplida! Cobran todos los que jugaron.' : 'Faltan ' + (x.objetivo - x.n) + ' batallas · ' + pc + ' %'}</small>
+      </div>
+    );
+  } else if (x.id === 'supercopa' && x.p) {
+    cuerpo = (
+      <div className="cm9-guerra">
+        <div className="cm9-guerra-n"><span>{N(x.p[0])}</span><b>vs</b><span>{N(x.p[1])}</span></div>
+        <small>{x.p[2] ? 'Ganó ' + N(x.p[2]) + (x.p[3] === 'real' ? ' · real' : ' · simulado') : 'Por jugar · ' + Math.round(x.p[4] * 100) + ' % – ' + Math.round((1 - x.p[4]) * 100) + ' %'}</small>
+      </div>
+    );
+  } else if (x.id === 'duos' || x.id === 'pandillas') {
+    const filas = completo ? x.t : x.t.slice(0, 3);
+    cuerpo = <Podio filas={filas} yo={yo} nombre={([g]) => ({ t: g.map(N).join(' · '), yo: g.includes(yo) })} valor={([, p]) => p} />;
+    const i = x.t.findIndex(([g]) => g.includes(yo));
+    if (i >= 0) tuyo = 'Tu ' + (x.id === 'duos' ? 'pareja' : 'pandilla') + ' va ' + (i + 1) + '.ª de ' + x.n;
+  } else if (x.id === 'rey') {
+    cuerpo = (
+      <div className="cm9-rey">
+        <span className="cm9-rey-c" aria-hidden="true">👑</span>
+        <div><b>{N(x.rey)}</b><small>{x.defensas ? x.defensas + (x.defensas === 1 ? ' defensa' : ' defensas') : 'Todavía nadie lo desafió'}</small></div>
+        {x.reyes.length > 1 ? <p className="cm9-rey-h">{x.reyes.map(N).join(' → ')}</p> : null}
+      </div>
+    );
+    if (x.rey === yo) tuyo = 'Eres el rey: defiéndelo';
+  } else if (x.id === 'revancha') {
+    cuerpo = (
+      <div className="cm9-meta-v">
+        <b>{x.hechas.length}<small> cobradas</small></b>
+        <small>{x.hechas.length ? x.hechas.slice(0, 3).map(([a, b]) => N(a) + ' a ' + N(b)).join(' · ') : 'Nadie se cobró la revancha todavía'} · {x.pendientes} con una pendiente</small>
+      </div>
+    );
+  } else if (x.id === 'racha') {
+    cuerpo = <Podio filas={completo ? x.t : x.t.slice(0, 3)} yo={yo} nombre={([k]) => ({ t: N(k), yo: k === yo })} valor={([, n]) => n} sufijo=" 🔥" />;
+  } else if (x.id === 'novatos') {
+    cuerpo = x.campeon ? <div className="cm9-rey"><span className="cm9-rey-c" aria-hidden="true">🌱</span><div><b>{N(x.campeon)}</b><small>Campeón de los novatos</small></div></div>
+      : <small>{(x.r[0] || { p: [] }).p.map((m) => N(m[0]) + ' vs ' + N(m[1])).slice(0, 2).join(' · ')}</small>;
+  }
   return (
-    <article className={'cm9-ev' + (completo ? ' completo' : '')}>
-      <div className="cm9-ev-t"><span aria-hidden="true">{x.ic}</span><span className="cm9-tag real">ABIERTO</span></div>
+    <article className={'cm9-ev rico' + (completo ? ' completo' : '')} style={{ '--c': COLOR_MINI[x.id] || '#29B298' }}>
+      <div className="cm9-ev-t">
+        <span className="cm9-ev-ic" aria-hidden="true">{x.ic}</span>
+        <span className="cm9-ev-cierra"><span className="cm9-tag real">ABIERTO</span><small>cierra en {faltaTxt(C.fin)}</small></span>
+      </div>
       <h3>{x.nombre.toUpperCase()}</h3>
+      <p className="cm9-ev-q">{ex[0]}</p>
       {cuerpo}
+      {tuyo ? <p className="cm9-ev-tuyo">⭐ {tuyo}</p> : null}
       {completo && (x.id === 'derbi' || x.id === 'paises') ? <ul className="cm9-crus">{x.p.map((m) => <Cruce key={m[0] + m[1]} liga={liga} C={C} m={m} yo={yo} jurado />)}</ul> : null}
-      {completo && (x.id === 'duos' || x.id === 'pandillas') ? <ol className="cm9-mini-t">{x.t.map(([g, pts], i) => <li key={i} className={g.includes(yo) ? 'yo' : undefined}><span>{i + 1} · {g.map(N).join(' · ')}</span><b>{pts.toLocaleString('es')}</b></li>)}</ol> : null}
-      {completo && x.id === 'rey' && x.reyes.length > 1 ? <small>Pasó por {x.reyes.map(N).join(' → ')}</small> : null}
       {completo && x.id === 'novatos' ? <Llave liga={liga} C={C} r={x} yo={yo} /> : null}
-      {completo && ex ? (
-        <dl className="cm9-ex"><div><dt>Quién juega</dt><dd>{ex[1]}</dd></div><div><dt>Cómo se gana</dt><dd>{ex[2]}</dd></div></dl>
-      ) : null}
+      {completo ? <dl className="cm9-ex"><div><dt>Quién juega</dt><dd>{ex[1]}</dd></div><div><dt>Cómo se gana</dt><dd>{ex[2]}</dd></div></dl>
+        : <p className="cm9-ev-gana"><b>Cómo se gana:</b> {ex[2]}</p>}
     </article>
   );
 }
@@ -569,14 +642,26 @@ export function Competencias({ liga, dc, sub = '' }) {
           {gs.slice(0, ver).map((g) => {
             // los que siguen en carrera primero, y cada uno con en qué va
             const est = g.gente.map((k) => [k, enLlave(g, k)]).sort((x, y) => (x[1].fuera - y[1].fuera) || (y[1].r.r.indexOf(y[1].ronda) - x[1].r.r.indexOf(x[1].ronda)));
+            const vivos = est.filter(([, e]) => !e.fuera).length;
+            // en qué ronda va la llave: la primera con algo por jugar
+            const ia = g.campeon ? g.r.length : Math.max(0, g.r.findIndex((rd) => rd.p.some((m) => !m[2] && m[0] && m[1])));
+            const color = ['#F5C542', '#C9CDD4', '#C77B4A', '#E41373', '#29B298', '#56A2F2'][g.div] || '#29B298';
             return (
-              <article key={g.id} className={g.gente.includes(yo) ? 'yo' : undefined}>
-                <header><b>LLAVE {g.id}</b><small>{DIVISIONES[g.div]} · {g.gente.length}</small></header>
-                {g.campeon ? <span className="pasa"><b>🏆 <Nombre liga={liga} C={C} k={g.campeon} yo={yo} /></b><small>Campeón</small></span> : null}
-                {est.filter(([k]) => k !== g.campeon).slice(0, 6).map(([k, e]) => (
-                  <span key={k} className={e.fuera ? 'fuera' : 'pasa'}><Nombre liga={liga} C={C} k={k} yo={yo} /><small>{estado(e)}</small></span>
+              <article key={g.id} className={'cm9-llv' + (g.gente.includes(yo) ? ' yo' : '')} style={{ '--c': color }}>
+                <header>
+                  <span className="cm9-llv-tr" aria-hidden="true">🏆</span>
+                  <div><b>LLAVE {g.id}</b><small>{DIVISIONES[g.div]} · {g.gente.length} raperos</small></div>
+                </header>
+                <ol className="cm9-llv-cam" aria-label="Las rondas">
+                  {g.r.map((rd, i) => <li key={rd.r} className={i < ia ? 'ya' : i === ia ? 'hoy' : ''}>{rd.r === 'Semifinal' ? 'Semis' : rd.r}</li>)}
+                </ol>
+                {g.campeon ? (
+                  <p className="cm9-llv-camp"><span aria-hidden="true">🏆</span><Nombre liga={liga} C={C} k={g.campeon} yo={yo} /><small>Campeón</small></p>
+                ) : <p className="cm9-llv-vivos"><b>{vivos}</b> siguen en carrera</p>}
+                {est.filter(([k]) => k !== g.campeon).slice(0, 5).map(([k, e]) => (
+                  <span key={k} className={'cm9-llv-f ' + (e.fuera ? 'fuera' : 'vivo')}><Nombre liga={liga} C={C} k={k} yo={yo} /><small>{estado(e)}</small></span>
                 ))}
-                {g.gente.length > 7 ? <small className="cm9-mas">y {g.gente.length - 7} más</small> : null}
+                {g.gente.length > 6 ? <small className="cm9-mas">y {g.gente.length - 6} más</small> : null}
               </article>
             );
           })}

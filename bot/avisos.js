@@ -12904,7 +12904,9 @@ export class Avisos {
       const k = this.claveDe(h.quien);
       if (k) (salon[h.temp] = salon[h.temp] || []).push([k, h.t]);
     }
-    return { t: Date.now(), n: out, cfg, salon, m: this.marcosPublicos(), cp: this.cartasPrincipales(), vr: this.versionesRedibujo() };
+    return { t: Date.now(), n: out, cfg, salon, m: this.marcosPublicos(), cp: this.cartasPrincipales(), vr: this.versionesRedibujo(),
+      // 🖼️ qué cartas tienen su foto con marco: la descarga del visor baja ésa, como /card
+      mi: this.marcosEnImagen() };
   }
 
   /**

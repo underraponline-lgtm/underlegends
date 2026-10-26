@@ -172,11 +172,12 @@ export function Inventario({ liga, dc }) {
       cls={'r-' + o.nivel + (ic ? '' : ' letra')} disabled={!!ocup} onClick={() => probar('tag', o.tag, elG)} />;
   };
 
-  const PEST = [['tag', 'TAG', ops.length], ['marco', 'Marco', marcos.length], ['principal', 'Principal', cartas.length]];
+  // 🃏 la carta principal ya no va acá: se elige en el visor de tus cartas, mirándola (Dlx, 26/10/2026: «ponlo en otro
+  // lado porque puede ser confuso»)
+  const PEST = [['tag', 'TAG', ops.length], ['marco', 'Marco', marcos.length]];
   const puesto = [
     ['tag', 'TAG', tagAhora ? partir(tagAhora.texto)[1] : 'Automático', tagAhora ? (partir(tagAhora.texto)[0] || '🏷️') : '🎯'],
     ['marco', 'Marco', !marcoAhora ? 'El mejor' : marcoAhora === 'ninguno' ? 'Sin marco' : nombreMarco(marcoAhora), '🖼️'],
-    ['principal', 'Principal', principalAhora ? (CARTAS.find(([x]) => x === principalAhora) || [])[1] : 'Automático', '★'],
   ];
 
   return (
@@ -278,19 +279,6 @@ export function Inventario({ liga, dc }) {
             </div>
           ) : null}
 
-          {pest === 'principal' ? (
-            <div className="iv9-panel">
-              <p className="iv-p">La carta que te representa: sale primero en <b>/card</b>, en tu perfil y cuando alguien abre tus cartas.</p>
-              <div className="iv9-grid cartas" role="radiogroup" aria-label="Tu carta principal">
-                <Ficha on={!principalAhora} puesto={!principalG} ic="🎯" nombre="Automático" desc="La de siempre." cls="auto" disabled={!!ocup} onClick={() => probar('principal', '', principalG)} />
-                {cartas.map(([c, n]) => (
-                  <Ficha key={c} on={principalAhora === c} puesto={principalG === c} nombre={n} desc={c === carta ? 'La que estás editando.' : ''} disabled={!!ocup} onClick={() => probar('principal', c, principalG)}>
-                    <span className="iv9-mini" aria-hidden="true">{k ? <Carta liga={liga} k={k} cual={c} cls="iv9-mci" abre={false} /> : null}</span>
-                  </Ficha>
-                ))}
-              </div>
-            </div>
-          ) : null}
 
           {yo.dueno ? <p className="iv-nota">👑 Como dueño de Under Legends, tienes todo desbloqueado.</p> : null}
 

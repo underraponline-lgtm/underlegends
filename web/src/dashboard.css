@@ -493,6 +493,13 @@
   padding:10px 12px 10px 16px;border-radius:4px;background:#030304;color:#F6F6F6;font:700 14px/1.35 Archivo,sans-serif}
 .dz-toast button{flex:none;padding:6px 8px;border:0;background:none;color:#F6F6F6;font:900 13.5px/1 Archivo,sans-serif;text-transform:uppercase;text-decoration:underline;cursor:pointer}
 .dz-toast .dz-tx{display:grid;place-items:center;text-decoration:none}
+/* 🧭 la barra de la izquierda ACOMPAÑA al bajar (Dlx, 26/10/2026: «que el menú de izquierda se mueva cuando me muevo, así
+   no hay un gran espacio negro a mi costado»): pegada arriba y del alto de la pantalla, en vez de una columna negra tan
+   larga como el área */
+@media (min-width:761px){
+  .dz-marco{align-items:flex-start}
+  .dz-nav{position:sticky;top:8px;align-self:flex-start;height:calc(100vh - 16px);max-height:calc(100vh - 16px);overflow-y:auto}
+}
 /* 📱 en el teléfono la barra va arriba, en dos columnas, y el aviso queda encima de la barra de abajo de la página */
 @media (max-width:760px){
   .dz-nav{flex-basis:100%;max-width:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;padding:14px 12px}
@@ -575,7 +582,9 @@
 .dz-filas ul{list-style:none;margin:0;padding:0;border:2px solid var(--linea);border-radius:4px;background:var(--caja)}
 .dz-fila{border-bottom:1px solid var(--suave)}
 .dz-fila:last-child{border-bottom:0}
-.dz-fila-c{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) auto;gap:8px 16px;align-items:center;padding:12px 14px}
+/* 📏 las tres columnas iguales en TODAS las filas (Dlx, 26/10/2026: «que todo esté posicionado, que no esté forzado»): con
+   la de los botones en `auto` cada fila medía distinto y el estado del medio quedaba corrido de una fila a otra */
+.dz-fila-c{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) 210px;gap:8px 16px;align-items:center;padding:12px 14px}
 .dz-fila-t{display:grid;gap:2px}
 .dz-fila-t b{font:800 15.5px/1.2 Archivo,sans-serif}
 .dz-fila-t small{font-size:13px;line-height:1.4;color:var(--gris)}

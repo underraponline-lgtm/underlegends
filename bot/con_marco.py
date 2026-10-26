@@ -100,7 +100,10 @@ def fotos(trabajos):
                     const raiz = document.querySelector('#inicio-nuevo').shadowRoot;
                     const ms = raiz.querySelector('.ms');
                     if (ms.dataset.marco !== '1') return null;
-                    // la unión de todo lo que se pinta: la corona y el talón salen de la caja de la carta
+                    // la unión de todo lo que se pinta (la corona y las alas salen de la caja de la carta), CON MARGEN: el
+                    // contorno del marco es un filtro SVG que pinta por fuera de las cajas, y medir sólo las cajas cortaba
+                    // el pie (Dlx, 26/10/2026: «se sigue cortando un poquito el espacio de abajo»). El recorte justo lo
+                    // hace Python después, por el alfa de lo que de verdad se pintó
                     let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
                     for (const e of ms.querySelectorAll('*')) {
                       if (e.closest('.mk-defs')) continue;
@@ -108,26 +111,45 @@ def fotos(trabajos):
                       if (r.width < 1 || r.height < 1) continue;
                       x0 = Math.min(x0, r.left); y0 = Math.min(y0, r.top); x1 = Math.max(x1, r.right); y1 = Math.max(y1, r.bottom);
                     }
-                    // 📐 Y CON LA PROPORCIÓN DE LA CARTA SOLA, como mucho (Dlx, 26/10/2026: «la parte de abajo en el discord
-                    // se cortó un poco»): Discord recorta lo que pasa de cierto alto, y la corona hacía la Competitiva más
-                    // alta que la carta. Si el marco la estira hacia arriba o abajo, se agrega aire transparente a los costados
                     const img = ms.querySelector('.ms-img').getBoundingClientRect();
-                    let x = x0 - 4, y = y0 - 4, w = x1 - x0 + 8, h = y1 - y0 + 8;
-                    const prop = img.height / img.width;
-                    if (h / w > prop) { const nw = h / prop; x -= (nw - w) / 2; w = nw; }
-                    return { x: Math.max(0, x), y: Math.max(0, y), width: w, height: h };
+                    const M = 60;
+                    return { x: Math.max(0, x0 - M), y: Math.max(0, y0 - M), width: x1 - x0 + 2 * M, height: y1 - y0 + 2 * M,
+                             prop: img.height / img.width };
                 }""")
                 if not caja:
                     print('   · %s/%s: sin marco puesto' % (k, carta))
                     continue
                 ruta = os.path.join(SALIDA, '%s_%s.png' % (k, carta))
+                prop = caja.pop('prop')
                 pag.screenshot(path=ruta, clip=caja, omit_background=True)
+                recortar(ruta, prop)
                 out[(k, carta)] = ruta
                 print('   ✅ %s/%s' % (k, carta))
             except Exception as e:                       # noqa: BLE001
                 print('   ⚠️ %s/%s: %s' % (k, carta, str(e)[:90]))
         nav.close()
     return out
+
+
+def recortar(ruta, prop, aire=6):
+    """Recorta la foto a lo que de verdad se pintó (por el alfa) con `aire` px de margen, y si queda más alta que la
+    carta sola (`prop` = alto / ancho) le agrega aire transparente a los costados: Discord recorta lo que pasa de cierto
+    alto (Dlx, 26/10/2026: «la parte de abajo en el discord se cortó un poco»)."""
+    from PIL import Image
+    im = Image.open(ruta).convert('RGBA')
+    caja = im.getchannel('A').point(lambda a: 255 if a > 8 else 0).getbbox()
+    if not caja:
+        return
+    x0, y0, x1, y1 = max(0, caja[0] - aire), max(0, caja[1] - aire), min(im.width, caja[2] + aire), min(im.height, caja[3] + aire)
+    im = im.crop((x0, y0, x1, y1))
+    w = im.width
+    if prop and im.height / float(w) > prop:
+        w = int(round(im.height / prop))
+    if w != im.width:
+        lienzo = Image.new('RGBA', (w, im.height), (0, 0, 0, 0))
+        lienzo.alpha_composite(im, ((w - im.width) // 2, 0))
+        im = lienzo
+    im.save(ruta)
 
 
 def subir(hechas):

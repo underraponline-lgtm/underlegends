@@ -6,7 +6,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { limpio, num, siglaDe } from './liga.js';
 import { Bandera, nombrePais } from './piezas.jsx';
-import { usePases } from './pase.js';
+import { pasePost, refrescarPases, usePases } from './pase.js';
 
 const NOMBRE = { temporada: 'Temporada', competitivo: 'Competitiva', servidor: 'Servidor', pais: 'País' };
 const ORDEN = ['temporada', 'competitivo', 'servidor', 'pais'];
@@ -77,7 +77,18 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
   const [cual, setCual] = useState(primera);
   useEffect(() => { setCual(primera); }, [k, inicial, cp]); // eslint-disable-line react-hooks/exhaustive-deps
   const [yendo, setYendo] = useState(false);
+  const [princ, setPrinc] = useState('');
   const cerrarB = useRef(null);
+  // 🃏 TU CARTA PRINCIPAL SE ELIGE ACÁ, mirándola (Dlx, 26/10/2026: «eso de principal ponlo en otro lado porque puede ser
+  // confuso»: en el Inventario era una pestaña más al lado del TAG y el marco)
+  const esYo = !!((dc && dc.clave === k) || (liga.yo && liga.yo.k === k));
+  const hacerPrincipal = (c) => {
+    setPrinc('…');
+    pasePost('carta-principal', { carta: c }).then((d) => {
+      setPrinc(d && d._ok ? (c ? 'Listo: es tu carta principal. Sale primero en /card y en tu perfil.' : 'Listo: vuelve a lo de siempre.') : 'No se pudo guardar. Prueba de nuevo.');
+      refrescarPases();
+    });
+  };
   // Escape cierra, la página de atrás no se mueve, y el foco vuelve a donde estaba
   useEffect(() => {
     const antes = document.activeElement;
@@ -97,6 +108,9 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
   const bloq = cual.indexOf('bloq-') === 0;
   const tipo = bloq ? cual.slice(5) : cual;
   const url = !cual ? null : bloq ? liga.d.r2 + '/' + encodeURIComponent(k) + '/' + cual + '.webp' : liga.cartaUrl(k, cual);
+  // 🖼️ la descarga, con su marco si lo tiene en la imagen (bot/con_marco.py): lo mismo que manda /card
+  const conMarco = !bloq && pub && pub.mi && (pub.mi[k] || []).includes(tipo);
+  const urlBajar = conMarco ? url.replace('/' + tipo + '.webp', '/' + tipo + '-m.webp') : url;
   const vieja = !bloq && cual && liga.cartaVieja(k, cual);
   const crew = liga.crewDe ? liga.crewDe(f) : null;
   const sv = f.sv && liga.svs[f.sv];
@@ -135,12 +149,18 @@ export function VisorCarta({ liga, dc, k, inicial = '', onCerrar }) {
         <div className="vc-acc">
           {url ? (
             <button type="button" className="btn verde chico" disabled={yendo}
-              onClick={() => { setYendo(true); bajar(url, nombre.replace(/[\\/:*?"<>|]/g, '') + ' - ' + (NOMBRE[tipo] || tipo) + (bloq ? ' (bloqueada)' : '') + '.png', () => setYendo(false)); }}>
+              onClick={() => { setYendo(true); bajar(urlBajar, nombre.replace(/[\\/:*?"<>|]/g, '') + ' - ' + (NOMBRE[tipo] || tipo) + (bloq ? ' (bloqueada)' : '') + '.png', () => setYendo(false)); }}>
               {yendo ? 'Bajando…' : 'Descargar'}
             </button>
           ) : null}
+          {esYo && url && !bloq ? (
+            cp === tipo
+              ? <button type="button" className="btn borde2 chico" disabled={princ === '…'} onClick={() => hacerPrincipal('')}>★ Tu principal · quitar</button>
+              : <button type="button" className="btn borde2 chico" disabled={princ === '…'} onClick={() => hacerPrincipal(tipo)}>☆ Hacer principal</button>
+          ) : null}
           {enTabla ? <a className="btn borde2 chico" href={'#/r/' + encodeURIComponent(k)} onClick={onCerrar}>Ver su perfil</a> : null}
         </div>
+        {princ && princ !== '…' ? <p className="vc-aviso" role="status">{princ}</p> : null}
       </div>
     </div>
   );

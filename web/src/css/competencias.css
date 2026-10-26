@@ -306,3 +306,58 @@
   .cm9-niv:not(.on):hover,.cm9-elite:not(.on):hover{outline:2px solid var(--tinta);outline-offset:2px}
   .cm9-sub button:not(.on):hover,.cm9-gfil button:not(.on):hover{color:var(--magenta-tx)}
 }
+
+/* 🎲 los mini eventos, con más contenido (Dlx, 26/10/2026: «haz el contenido de esto mejor») */
+.cm9-ev.rico{position:relative;border-top:5px solid var(--c)}
+.cm9-ev-ic{display:grid;place-items:center;width:44px;height:44px;border:1.6px solid var(--c);background:color-mix(in srgb,var(--c) 14%,var(--fondo));font-size:24px}
+.cm9-ev-cierra{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.cm9-ev-cierra small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;color:var(--gris)}
+.cm9-ev-q{margin:0;font:500 13.5px/1.45 Archivo,sans-serif;color:var(--gris)}
+.cm9-ev-gana{margin:auto 0 0;padding-top:10px;border-top:1px solid var(--suave);font:500 12.5px/1.4 Archivo,sans-serif;color:var(--gris)}
+.cm9-ev-gana b{color:var(--tinta)}
+.cm9-ev-tuyo{margin:0;padding:7px 9px;background:var(--inv);color:var(--inv-tinta);font:800 13px/1.2 Archivo,sans-serif}
+.cm9-ev-nada{margin:0;font:600 13px/1.4 Archivo,sans-serif;color:var(--gris)}
+.cm9-pod{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.cm9-pod li{position:relative;display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 8px 9px;font:700 13.5px/1.2 Archivo,sans-serif}
+.cm9-pod li.yo{background:var(--inv);color:var(--inv-tinta)}
+.cm9-pod-m{font-size:17px;text-align:center}
+.cm9-pod-n{overflow-wrap:anywhere}
+.cm9-pod b{font:900 15px/1 Archivo,sans-serif}
+.cm9-pod-b{position:absolute;left:8px;bottom:3px;height:3px;background:var(--c);max-width:calc(100% - 16px)}
+.cm9-guerra{display:flex;flex-direction:column;gap:8px}
+.cm9-guerra-n{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:center;font:900 15px/1.1 Archivo,sans-serif;text-transform:uppercase}
+.cm9-guerra-n span:last-child{text-align:right}
+.cm9-guerra-n b{font:900 26px/1 Archivo,sans-serif;font-stretch:115%}
+.cm9-guerra-b{display:flex;height:10px;background:var(--suave)}
+.cm9-guerra-b i{display:block;background:var(--c)}
+.cm9-guerra small,.cm9-meta-v small,.cm9-rey small{font:700 12px/1.3 "Barlow Condensed",sans-serif;letter-spacing:.04em;color:var(--gris)}
+.cm9-meta-v{display:flex;flex-direction:column;gap:8px}
+.cm9-meta-v>b{font:900 34px/1 Archivo,sans-serif;font-stretch:115%}
+.cm9-meta-v>b small{font:800 15px/1 Archivo,sans-serif;color:var(--gris)}
+.cm9-meta-v .cm9-meta i{background:var(--c)}
+.cm9-rey{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:center}
+.cm9-rey-c{display:grid;place-items:center;width:52px;height:52px;background:color-mix(in srgb,var(--c) 18%,var(--fondo));font-size:30px;grid-row:span 1}
+.cm9-rey>div{display:flex;flex-direction:column;gap:4px}
+.cm9-rey>div b{font:900 21px/1.05 Archivo,sans-serif}
+.cm9-rey-h{grid-column:1/-1;margin:4px 0 0;font:600 12.5px/1.4 Archivo,sans-serif;color:var(--gris)}
+
+/* 🏆 las llaves de la Copa, decoradas (Dlx, 26/10/2026: «hazla más decorada») */
+.cm9-llv{display:flex;flex-direction:column;gap:8px;padding:0 0 14px;background:#121214;border:1.5px solid #2A2A2C;border-top:4px solid var(--c);font:700 14px/1.1 Archivo,sans-serif}
+.cm9-llv.yo{border-color:#E41373;border-top-color:#E41373}
+.cm9-llv header{display:flex;align-items:center;gap:10px;padding:12px 14px 4px}
+.cm9-llv-tr{display:grid;place-items:center;width:38px;height:38px;flex:none;background:color-mix(in srgb,var(--c) 22%,#121214);border:1.5px solid var(--c);font-size:20px}
+.cm9-llv header div{display:flex;flex-direction:column;gap:4px}
+.cm9-llv header b{font:900 16px/1 Archivo,sans-serif;font-stretch:115%}
+.cm9-llv header small{font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--esc-gris)}
+.cm9-llv-cam{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;margin:0 14px;padding:0;list-style:none}
+.cm9-llv-cam li{padding:5px 2px;background:#1E1E22;text-align:center;font:800 10.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--esc-gris)}
+.cm9-llv-cam li.ya{background:#2A2A2C;color:var(--esc-tinta)}
+.cm9-llv-cam li.hoy{background:#29B298;color:#030304}
+.cm9-llv-camp{display:flex;align-items:center;gap:8px;margin:2px 14px 0;padding:9px 10px;background:color-mix(in srgb,#F5C542 16%,#121214);border:1.5px solid #F5C542;font:900 15px/1 Archivo,sans-serif}
+.cm9-llv-camp small{margin-left:auto;font:800 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#F5C542}
+.cm9-llv-vivos{margin:2px 14px 0;font:600 13px/1 Archivo,sans-serif;color:var(--esc-gris)}
+.cm9-llv-vivos b{font:900 18px/1 Archivo,sans-serif;color:#29B298}
+.cm9-llv-f{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:0 14px;padding-left:9px;border-left:3px solid #29B298}
+.cm9-llv-f.fuera{border-left-color:#3A3A42;opacity:.55}
+.cm9-llv-f small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--esc-gris);white-space:nowrap}
+.cm9-llv>.cm9-mas{margin:0 14px}
