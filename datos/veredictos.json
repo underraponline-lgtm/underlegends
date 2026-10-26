@@ -1159,47 +1159,6 @@
   }
  },
  "llaves": {
-  "1556457626496270450": {
-   "id": "1556457626496270450",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1791158815741,
-   "ed": 1791159403617,
-   "texto": "`[ SEMIFINALES ]`\n⌞ZIGNOS🇩🇴⌝ 🆚 ⌞SGB🇨🇴 ##⌝\n`[ SEMIFINALES ]`\n⌞PANCHOK🇨🇱⌝ 🆚 ⌞ABYSSUS🇨🇦##⌝\n`[ FINAL ]`\n⌞SGB🇨🇴⌝ 🆚 ⌞ABYSSUS🇨🇦##⌝",
-   "batallas": [
-    [
-     "SEMIFINALES",
-     [
-      "ZIGNOS🇩🇴",
-      "SGB🇨🇴 ##"
-     ],
-     "SGB🇨🇴 ##",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "PANCHOK🇨🇱",
-      "ABYSSUS🇨🇦##"
-     ],
-     "ABYSSUS🇨🇦##",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "SGB🇨🇴",
-      "ABYSSUS🇨🇦##"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ]
-   ]
-  },
   "1556498233402986576": {
    "id": "1556498233402986576",
    "sv": "[FFA] Freestyle For All 👾",

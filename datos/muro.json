@@ -642,18 +642,18 @@
 "rg": "",
 "c": []
 },
-"rt": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "zekha": {
 "rg": "",
 "c": [
 "pais",
 "servidor"
+]
+},
+"rt": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
 ]
 },
 "numberve": {

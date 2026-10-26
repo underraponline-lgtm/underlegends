@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-25T23:54:54+00:00",
+ "cuando": "2026-10-26T00:09:47+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -6848,6 +6848,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "hola🇧🇾",
+   "quien": "pelotadel_10_68491",
+   "discord_id": "1373340031413911624",
+   "msg_id": "1564067980156084357",
+   "cuando": "2026-10-26T00:07:45"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "G7TREEZZ🇨🇴",
+   "quien": "worldwide198r_88288",
+   "discord_id": "1495574774137753642",
+   "msg_id": "1564067837184708740",
+   "cuando": "2026-10-26T00:07:11"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -42829,24 +42847,6 @@
    "discord_id": "1445803811758276660",
    "msg_id": "1532547263086329966",
    "cuando": "2026-07-31T00:35:40"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "Osa🇦🇷",
-   "quien": "faloperro0746",
-   "discord_id": "1474632108700864534",
-   "msg_id": "1532547162779553984",
-   "cuando": "2026-07-31T00:35:16"
-  },
-  {
-   "servidor": "FFS",
-   "canal": "「👑」INSCRIPCIONES",
-   "texto": "DXG🇲🇽",
-   "quien": "dxg_4018",
-   "discord_id": "1223701976655859805",
-   "msg_id": "1532541629594996850",
-   "cuando": "2026-07-31T00:13:17"
   }
  ]
 }

@@ -21490,7 +21490,14 @@
   "pos_pais": "42/44",
   "arc_pais": 7,
   "pos_sv": "12/17",
-  "arc_sv": 35
+  "arc_sv": 35,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  }
  },
  {
   "full": "Benshi",
