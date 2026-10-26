@@ -683,7 +683,6 @@
    "perf": 2,
    "sube": true,
    "svc": 3,
-   "svtag": "campeon",
    "trios": 6
   }
  },
@@ -734,7 +733,7 @@
   "crew": "",
   "discord_id": "768561204707983361",
   "verificado": true,
-  "pts": 110006,
+  "pts": 109756,
   "ev": 18,
   "wr": "57.9%",
   "pod": 9,

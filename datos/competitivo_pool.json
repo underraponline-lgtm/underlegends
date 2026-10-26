@@ -40,11 +40,11 @@
   "tg_c": {
    "bestia": 4,
    "clasico": 4,
-   "dg": 32,
+   "dg": 35,
    "fg": 8,
    "fp": 2,
-   "riv": 26,
-   "venc": 25,
+   "riv": 29,
+   "venc": 28,
    "vengo": 2
   },
   "tg_p": {
@@ -1011,7 +1011,7 @@
    "dg": 16,
    "fg": 2,
    "fp": 1,
-   "riv": 30,
+   "riv": 31,
    "venc": 16,
    "vengo": 1
   },
@@ -5629,7 +5629,18 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "bestia": 1,
+   "clasico": 1,
+   "dg": 1,
+   "riv": 2,
+   "venc": 1
+  },
+  "tg_p": {
+   "paises": 2,
+   "paisesg": 1
+  }
  },
  {
   "full": "Rodas",
@@ -14929,7 +14940,14 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  }
  },
  {
   "full": "Selek",
@@ -21114,7 +21132,14 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  }
  },
  {
   "full": "ISAIAS",
