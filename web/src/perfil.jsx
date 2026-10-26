@@ -13,6 +13,7 @@ import { MESES, diaISO, limpio, minutosDelDia, norm, num, siglaDe } from './liga
 import { Bandera, Cara, Compartir, DosToques, FaltaLista, Ico, Medalla, PUESTO_MEDALLA, QueEsBoton, silueta, QueEsTexto, Rango, accion, diaET, enlace, https, nombrePais, usePerfiles } from './piezas.jsx';
 import { PanelEmblemas, PildoraEmblemas, emblemasDe } from './emblemas.jsx';
 import { Inventario } from './tags_inv.jsx';
+import { FichaJurado } from './jurado_ficha.jsx';
 import { REDES } from './servidor.jsx';
 import { useNiveles } from './racha.js';
 import { usePaseDe, usePases } from './pase.js';
@@ -1536,6 +1537,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
         <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} ems={ems} onEmblemas={(x) => setEmb(x || '')} numeros={false} />
         <section className="sec pf-sec"><p className="pronto-p">{esYo ? 'No jugaste eventos esta temporada: estás en la Liga por tu rol.' : 'No jugó eventos esta temporada: está en la Liga por su rol.'}</p></section>
         <SusLigas liga={liga} k={k} esYo={esYo} p={p} />
+        <FichaJurado k={k} />
         {/* 🏷️ tus Logros y tu Inventario también sin jugar (Dlx, 26/10/2026: «tampoco puedo ver mi inventario en mi
             perfil»): el perfil mínimo cortaba antes de esta sección, y elegir tu carta principal y tus TAGs vive acá */}
         {esYo ? <Logros liga={liga} p={p} esYo={esYo} dc={dc} /> : null}
@@ -1563,6 +1565,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
             <div id="pf-ultimo" className="o4"><LoUltimo liga={liga} p={p} e={P.e} /></div>
             <div id="pf-publicaciones" className="o5"><SusPublicaciones liga={liga} p={p} esYo={esYo} /><SusPromos liga={liga} p={p} esYo={esYo} /></div>
             <div id="pf-duelos" className="o7"><Duelos liga={liga} p={p} e={P.e} /></div>
+            <div className="o7"><FichaJurado k={k} /></div>
             {fzAncha ? <div className="o6"><Fortalezas liga={liga} f={f} p={p} dmp={P.dmp} esYo={esYo} /></div> : null}
             <div id="pf-insignias" className="o9"><Logros liga={liga} p={p} esYo={esYo} dc={dc} /></div>
             <div id="pf-eventos" className="o12"><Eventos liga={liga} p={p} e={P.e} n={n} /></div>

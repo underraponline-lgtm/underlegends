@@ -95,7 +95,7 @@ ARCHIVOS="datos/tags_ganados.json datos/tags_elegidos.json datos/cartas_selladas
           datos/fuera_desde.json datos/mw.json \
           datos/multiplicadores.json datos/vistos.json \
           datos/rivales.json datos/insignias.json datos/lunes.json datos/precios.json datos/muro.json \
-          datos/batallas_sin_ganador.json datos/veredictos.json datos/vitrinas_diseno.json \
+          datos/batallas_sin_ganador.json datos/veredictos.json datos/jurados.json datos/vitrinas_diseno.json \
           datos/autores_llaves.json datos/podio_menciones.json datos/equipos_llaves.json \
           datos/identidad_llaves.json datos/nombres_llaves.json datos/formatos_llaves.json \
           datos/invitaciones.json datos/ranking_semana.json datos/finales.json datos/salud_lector.json datos/recalculados.json \

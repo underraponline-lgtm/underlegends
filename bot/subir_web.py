@@ -2969,7 +2969,11 @@ CLAVE_COMPETENCIAS = 'web:competencias'
 
 def _competencias_web(pool=None):
     """🏆 `datos/competencias.json` para la página, con la clave de perfil de cada uno en vez del nombre normalizado
-    (así la página marca «tú» y abre perfiles). Lo de quien no está en el pool queda con su nombre. `None` sin datos."""
+    (así la página marca «tú» y abre perfiles). Lo de quien no está en el pool queda con su nombre. `None` sin datos.
+
+    Cada cruce viaja como `[a, b, ganador, cómo, prob de a, extra]`: `extra` es el número del evento si fue real, o el
+    jurado sorteado si fue simulado (`[[jurado, 'a'|'b']]`, ver `competencias.jurado_sim()`). Los jurados van por su
+    clave de perfil si la tienen y si no por su Discord ID, con su nombre en `jur`."""
     c = _json('datos', 'competencias.json')
     if not c:
         return None
@@ -2979,19 +2983,70 @@ def _competencias_web(pool=None):
     import construir_padron as _PAD
     pool = pool if pool is not None else (_json('datos', 'temporada_pool.json') or [])
     kde = {_PAD.norm(p.get('raw') or ''): _clave(p) for p in pool if p.get('raw')}
-    K = lambda x: kde.get(x, x)                          # noqa: E731
+    K = lambda x: kde.get(x, x) if x else ''             # noqa: E731
+    # ⚖️ el jurado, de su Discord ID a su perfil (si compite) por el padrón
+    jk = {}
+    for x in _json('datos', 'padron.json') or []:
+        did, raw = str(x.get('discord_id') or ''), x.get('raw') or ''
+        if did and raw:
+            jk[did] = kde.get(_PAD.norm(raw)) or _clave({'raw': raw, 'cc': (_banderas(x.get('full') or '') or [''])[0]})
+    JK = lambda q: jk.get(q, q)                          # noqa: E731
     nombres = {K(k): v for k, v in (c.get('nombres') or {}).items()}
-    par = lambda m: [K(m['a']), K(m['b']), K(m['g']) if m.get('g') else '', m.get('como') or '', m.get('p') or 0]  # noqa: E731
-    L = c.get('liga') or {}
-    R = c.get('rapid') or None
+
+    def par(m):
+        if not m:
+            return None
+        ex = m.get('ev') or ([[JK(q), v] for q, v in m['j']] if m.get('j') else 0)
+        return [K(m['a']), K(m['b']), K(m.get('g')), m.get('como') or '', m.get('p') or 0, ex]
+
+    def t(xs):
+        return [[K(x[0])] + list(x[1:]) for x in xs or []]
+
+    def llave(r):
+        return {'id': r.get('id', ''), 'campeon': K(r.get('campeon')), 'r': [{'r': x['r'], 'hasta': x.get('hasta'),
+                'p': [par(m) for m in x['partidos']]} for x in r.get('rondas') or []]}
+
+    def mini(x):
+        o = {'id': x['id'], 'ic': x['ic'], 'nombre': x['nombre']}
+        if x['id'] == 'derbi':
+            o.update(svs=x['svs'], score=x['score'], p=[par(m) for m in x['partidos']])
+        elif x['id'] == 'meta':
+            o.update(n=x['n'], objetivo=x['objetivo'])
+        elif x['id'] == 'supercopa':
+            o.update(p=par(x['partido']))
+        elif x['id'] in ('duos', 'pandillas'):
+            o.update(t=[[[K(k) for k in g], pts] for g, pts in x['tabla']], n=x['n'])
+        elif x['id'] == 'rey':
+            o.update(rey=K(x['rey']), defensas=x['defensas'], reyes=[K(k) for k in x['reyes']])
+        elif x['id'] == 'revancha':
+            o.update(hechas=[[K(a), K(b)] for a, b in x['hechas']], pendientes=x['pendientes'])
+        elif x['id'] == 'racha':
+            o.update(t=t(x['tabla']))
+        elif x['id'] == 'novatos':
+            o.update(llave(x))
+        return o
+
+    L = c.get('ligas') or {}
+    E = L.get('liga_elite')
+    jur = {}
+    for q, f in (c.get('jurados') or {}).items():
+        jur[JK(q)] = {'n': f.get('n') or '', 'v': f.get('votos') or 0, 'co': f.get('coincide'), 'fa': f.get('favorito'),
+                      'pr': f.get('propio'), 'mas': f.get('mas'), 'menos': f.get('menos'), 'nota': f.get('nota')}
     return {
         'sem': c.get('sem'), 'ini': c.get('ini'), 'fin': c.get('fin'), 'dia': c.get('dia'), 'activos': c.get('activos'),
-        'copa': [{'id': g['id'], 'div': g['div'], 't': [[K(x[0])] + list(x[1:]) for x in g['tabla']],
-                  'p': [par(m) for m in g['partidos']]} for g in c.get('copa') or []],
-        'liga': {'t': [[K(x[0])] + list(x[1:]) for x in L.get('tabla') or []], 'falta': L.get('falta') or 0,
-                 'j': [{'n': j['n'], 'p': [par(m) for m in j['partidos']]} for j in L.get('jornadas') or []]},
-        'rapid': {'dia': R['dia'], 'campeon': K(R['campeon']),
-                  'r': [{'r': r['r'], 'p': [par(m) for m in r['partidos']]} for r in R['rondas']]} if R else None,
+        'copa': [{'id': g['id'], 'div': g['div'], 't': t(g['tabla']), 'p': [par(m) for m in g['partidos']]} for g in c.get('copa') or []],
+        'ligas': {'temp': L.get('temp'), 'desde': L.get('desde'), 'hasta': L.get('hasta'), 'jornada': L.get('jornada'),
+                  'cierres': L.get('cierres') or [],
+                  'g': [{'id': g['id'], 'nv': g['nivel'], 't': t(g['tabla']),
+                         'j': [{'n': j['n'], 'fin': j['fin'], 'p': [par(m) for m in j['partidos']]} for j in g['jornadas']]}
+                        for g in L.get('grupos') or []],
+                  'e': {'t': t(E['tabla']), 'j': [{'n': j['n'], 'fin': j['fin'], 'p': [par(m) for m in j['partidos']]}
+                                                   for j in E['jornadas']]} if E else None},
+        'rapid': [llave(r) for r in c.get('rapid') or []],
+        'mini': [mini(x) for x in c.get('mini') or []],
+        'pronto': c.get('pronto') or [],
+        'equipo': t(c.get('equipo')),
+        'jur': jur,
         'n': nombres,
     }
 

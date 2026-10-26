@@ -3652,6 +3652,23 @@ def batallas_veredicto(rows):
     return out
 
 
+def votos_jurados(rows):
+    """⚖️ `({id: {sv, canal, pub, a, b, v: {autor: 'a'|'b'}}}, {autor: nombre})`: QUIÉN VOTÓ A QUIÉN en cada batalla de
+    #veredictos, para la ficha pública de cada jurado (Dlx, 26/10/2026: «un score de cada jurado, basado en lo que ellos
+    votan… la data de los jurados es muy importante, a quién votan más, menos»; y a la pregunta de si era pública, «sí,
+    que sea para el público»). Los votos salen de `_tandas()`, los mismos que deciden `batallas_veredicto()`."""
+    out, nombres = {}, {}
+    for m in rows or ():
+        if m.get('autor') and m.get('an'):
+            nombres[str(m['autor'])] = m['an']
+    for T in _tandas(rows):
+        for b in T['bs']:
+            if b['votos']:
+                out[b['id']] = {'sv': T['sv'], 'canal': str(T.get('canal') or ''), 'pub': _ms(b['id']),
+                                'a': b['a'], 'b': b['b'], 'v': dict(b['votos'])}
+    return out, nombres
+
+
 def tercero_sin_encabezado(batallas):
     """🥉 Las batallas `[ronda, [lados], ganador, …]` con la del TERCER PUESTO nombrada así, aunque se votó sin encabezado.
 
@@ -3869,6 +3886,11 @@ def fila_de_mensaje(m, canal, sv='', guild=''):
     fila = {'id': str(m['id']), 'canal': str(canal), 'sv': sv, 'g': str(guild or ''),
             'autor': str((m.get('author') or {}).get('id') or ''),
             'pub': pub, 'ed': max(pub, ed), 'texto': con_nombres(m)[:400]}
+    # ⚖️ y cómo se llama, para la ficha de cada jurado (`votos_jurados()`)
+    au = m.get('author') or {}
+    an = str((m.get('member') or {}).get('nick') or au.get('global_name') or au.get('username') or '').strip()
+    if an:
+        fila['an'] = an[:60]
     # 🖼️ y su imagen, si trae: un juez que vota con una captura (ver `_voto_de_imagen()`)
     for x in (m.get('attachments') or []):
         if str(x.get('content_type') or '').startswith('image/') and x.get('width'):
@@ -4038,6 +4060,26 @@ def vidas(s, mem, guilds, completo):
     lls = {k: x for k, x in lls.items() if ahora_ms - int(x.get('pub') or 0) <= VER_DIAS * 86400000
            and (not vivos or not x.get('canal') or x['canal'] in vivos)}
     _VER_LLAVES[0] = [lls[k] for k in sorted(lls)]
+    # ⚖️ Y QUIÉN VOTÓ A QUIÉN, para la ficha de cada jurado: se acumula toda la temporada en `datos/jurados.json` (al
+    # lado de `VER_MEMORIA`, así la prueba de abajo escribe en su carpeta de mentira y no en la de verdad)
+    try:
+        jp = os.path.join(os.path.dirname(VER_MEMORIA), 'jurados.json')
+        try:
+            with io.open(jp, encoding='utf-8') as f:
+                J = json.load(f) or {}
+        except (OSError, ValueError):
+            J = {}
+        vs, ns = votos_jurados(filas)
+        if vs or ns:
+            J.setdefault('votos', {}).update(vs)
+            J.setdefault('nombres', {}).update(ns)
+            J['_leeme'] = ('Quién votó a quién en cada batalla de #veredictos (`votos`: {batalla: {a, b, v: {jurado: '
+                           "'a'|'b'}}}) y cómo se llama cada jurado. Público por decisión de Dlx (26/10/2026). Lo escribe "
+                           'bot/escuchar.py (votos_jurados()); la ficha la arma bot/competencias.py.')
+            with io.open(jp, 'w', encoding='utf-8', newline='\n') as f:
+                json.dump(J, f, ensure_ascii=False, sort_keys=True, separators=(',', ':'))
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ no pude guardar los votos de los jurados (%s)' % str(e)[:60])
     try:
         os.makedirs(os.path.dirname(VER_MEMORIA), exist_ok=True)
         with io.open(VER_MEMORIA, 'w', encoding='utf-8', newline='\n') as f:

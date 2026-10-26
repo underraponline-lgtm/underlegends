@@ -3533,7 +3533,7 @@ a.rk-z:hover{border-color:var(--linea)}
 .sc8-dias i{height:6px;background:var(--suave)}
 .sc8-dias i.ya{background:var(--tinta)}
 .sc8-dias i.hoy{background:var(--magenta)}
-.sc8-cajas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.sc8-cajas{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:0;padding:0;list-style:none}
 @media (max-width: 560px){.sc8-cajas{grid-template-columns:minmax(0,1fr)}}
 .sc8-cajas li{display:grid;gap:6px;padding:14px;border:1.5px solid var(--suave);border-radius:4px;background:var(--caja);min-width:0}
 .sc8-cajas span{font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;color:var(--magenta-tx)}
