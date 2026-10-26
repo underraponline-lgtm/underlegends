@@ -2,17 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1561845629699891323": {
-   "id": "1561845629699891323",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1792443415809,
-   "a": "SIX🇦🇷",
-   "b": "TROT🇪🇸",
-   "ganador": "SIX🇦🇷",
-   "votos": "2–0"
-  },
   "1561894410269229160": {
    "id": "1561894410269229160",
    "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
@@ -1123,240 +1112,31 @@
    "b": "TUCA",
    "ganador": "GIAN",
    "votos": "1–0"
+  },
+  "1564387151590981775": {
+   "id": "1564387151590981775",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793049361847,
+   "a": "TEO",
+   "b": "RAIZER",
+   "ganador": "RAIZER",
+   "votos": "1–0"
+  },
+  "1564387806283960361": {
+   "id": "1564387806283960361",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793049517938,
+   "a": "Ahora yo",
+   "b": "miniboy",
+   "ganador": "miniboy",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1556774662585712744": {
-   "id": "1556774662585712744",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1791234403035,
-   "ed": 1791241785162,
-   "texto": "`[ OCTAVOS ]`\n⌞LOS LOCOS DE AHI 🇦🇷⌝ 🆚 ⌞REYES 🇻🇪 + ROSMEL 🇻🇪⌝\n⌞CFM 🇻🇪⌝ 🆚 ⌞NC 🇦🇷⌝\n⌞ISAIAS 🇪🇸 + JJ 🇨🇴⌝ 🆚 ⌞SNOW 🇨🇴 + SHISUI 🇯🇵⌝\n⌞JJ 🇨🇴 + SAZ 🇨🇴⌝ 🆚 ⌞ARDEAN 🇵🇪 + NONNE 🇵🇪⌝\n⌞ONZASS 🇻🇪 + 1200 🇰🇷⌝ 🆚 ⌞PRAISERIZA 🇻🇪 + POLLOSPORT 🇦🇷⌝\n⌞IGUANA 🇵🇪 + NEO 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪 + VANDU 🇨🇦⌝\n⌞NEO 🇦🇷⌝ 🆚 ⌞MAKMA 🇻🇪⌝\n⌞LOS DUEÑOS DE TU BURRA 🇦🇷⌝ 🆚 ⌞ABYSSUS 🇮🇱 + PARK JI SUNG 🇮🇱⌝\n⌞ZAIK 🇪🇸 + QUEEN 🇦🇷⌝ 🆚 ⌞NHP 🇨🇱 + ANTORCHA 🇨🇱⌝\n⌞ANTORCHA 🇨🇱⌝ 🆚 ⌞QUEEN 🇦🇷⌝\n⌞ARIAXER 🇦🇷 + ALESS 🇻🇪⌝ 🆚 ⌞SIX 🇦🇷 + ZIGNOS 🇩🇴⌝\n⌞ZIGNOS 🇩🇴⌝ 🆚 ⌞ARIAXER 🇦🇷⌝\n`[ CUARTOS ]`\n⌞PRAISERIZA 🇻🇪 + POLLOSPORT 🇦🇷⌝ 🆚 ⌞JJ 🇨🇴 + SAZ 🇨🇴⌝\n⌞JJ 🇨🇴⌝ 🆚 ⌞RIZAS 🇻🇪⌝\n⌞PARK JI SUNG 🇮🇱 + ABYSSUS 🇮🇱⌝ 🆚 ⌞IGUANA 🇵🇪 + NEO 🇦🇷⌝\n⌞ZIGNOS 🇩🇴 + SIX 🇦🇷⌝ 🆚 ⌞NHP 🇨🇱 + ANTORCHA 🇨🇱⌝\n⌞NHP 🇨🇱⌝ 🆚 ⌞SIX 🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞SNOW 🇨🇴 + SHISUI 🇯🇵⌝ 🆚 ⌞NHP 🇨🇱 + ANTORCHA 🇨🇱⌝\n⌞SNOW 🇨🇴⌝ 🆚 ⌞NHP 🇨🇱⌝\n⌞SHISUI 🇯🇵⌝ 🆚 ⌞ANTORCHA 🇨🇱⌝\n`[ FINAL ]`\n⌞ABYSSUS 🇨🇦⌝ 🆚 ⌞SNOW 🇨🇴⌝\n⌞SHISUI 🇯🇵⌝ 🆚 ⌞POLLOSPORT 🇦🇷⌝",
-   "batallas": [
-    [
-     "OCTAVOS",
-     [
-      "LOS LOCOS DE AHI 🇦🇷",
-      "REYES 🇻🇪 + ROSMEL 🇻🇪"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "CFM 🇻🇪",
-      "NC 🇦🇷"
-     ],
-     "CFM 🇻🇪",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "ISAIAS 🇪🇸 + JJ 🇨🇴",
-      "SNOW 🇨🇴 + SHISUI 🇯🇵"
-     ],
-     "SNOW 🇨🇴 + SHISUI 🇯🇵",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "JJ 🇨🇴 + SAZ 🇨🇴",
-      "ARDEAN 🇵🇪 + NONNE 🇵🇪"
-     ],
-     "JJ 🇨🇴 + SAZ 🇨🇴",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "ONZASS 🇻🇪 + 1200 🇰🇷",
-      "PRAISERIZA 🇻🇪 + POLLOSPORT 🇦🇷"
-     ],
-     "PRAISERIZA 🇻🇪 + POLLOSPORT 🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "IGUANA 🇵🇪 + NEO 🇦🇷",
-      "MAKMA 🇻🇪 + VANDU 🇨🇦"
-     ],
-     "IGUANA 🇵🇪 + NEO 🇦🇷",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "NEO 🇦🇷",
-      "MAKMA 🇻🇪"
-     ],
-     "NEO 🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "LOS DUEÑOS DE TU BURRA 🇦🇷",
-      "ABYSSUS 🇮🇱 + PARK JI SUNG 🇮🇱"
-     ],
-     "ABYSSUS 🇮🇱 + PARK JI SUNG 🇮🇱",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "ZAIK 🇪🇸 + QUEEN 🇦🇷",
-      "NHP 🇨🇱 + ANTORCHA 🇨🇱"
-     ],
-     "NHP 🇨🇱 + ANTORCHA 🇨🇱",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "ANTORCHA 🇨🇱",
-      "QUEEN 🇦🇷"
-     ],
-     "ANTORCHA 🇨🇱",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "ARIAXER 🇦🇷 + ALESS 🇻🇪",
-      "SIX 🇦🇷 + ZIGNOS 🇩🇴"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "ZIGNOS 🇩🇴",
-      "ARIAXER 🇦🇷"
-     ],
-     "ZIGNOS 🇩🇴",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "PRAISERIZA 🇻🇪 + POLLOSPORT 🇦🇷",
-      "JJ 🇨🇴 + SAZ 🇨🇴"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "JJ 🇨🇴",
-      "RIZAS 🇻🇪"
-     ],
-     "RIZAS 🇻🇪",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "PARK JI SUNG 🇮🇱 + ABYSSUS 🇮🇱",
-      "IGUANA 🇵🇪 + NEO 🇦🇷"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "ZIGNOS 🇩🇴 + SIX 🇦🇷",
-      "NHP 🇨🇱 + ANTORCHA 🇨🇱"
-     ],
-     "NHP 🇨🇱 + ANTORCHA 🇨🇱",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "NHP 🇨🇱",
-      "SIX 🇦🇷"
-     ],
-     "NHP 🇨🇱",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "SNOW 🇨🇴 + SHISUI 🇯🇵",
-      "NHP 🇨🇱 + ANTORCHA 🇨🇱"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "SNOW 🇨🇴",
-      "NHP 🇨🇱"
-     ],
-     "SNOW 🇨🇴",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "SHISUI 🇯🇵",
-      "ANTORCHA 🇨🇱"
-     ],
-     "SHISUI 🇯🇵",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "ABYSSUS 🇨🇦",
-      "SNOW 🇨🇴"
-     ],
-     "ABYSSUS 🇨🇦",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "SHISUI 🇯🇵",
-      "POLLOSPORT 🇦🇷"
-     ],
-     "POLLOSPORT 🇦🇷",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1556825480324325427": {
    "id": "1556825480324325427",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -5516,6 +5296,57 @@
      ],
      "GIAN",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1564386148485431439": {
+   "id": "1564386148485431439",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1500675902042931280",
+   "pub": 1793049122688,
+   "ed": 1793049564852,
+   "texto": "`[ CUARTOS ]`\n⌞Vilca 🇵🇪⌝ 🆚 ⌞sosa🇺🇾⌝\n⌞Artezzy 🇵🇪⌝ 🆚 ⌞Nxuz 🇵🇪⌝\n⌞okam🇨🇷⌝ 🆚 ⌞Luck 🇵🇾⌝\n⌞CrisZJ 🇵🇪⌝ 🆚 ⌞Leyenda.X5 🇦🇷⌝\n`[ SEMIFINALES ]`",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "Vilca 🇵🇪",
+      "sosa🇺🇾"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Artezzy 🇵🇪",
+      "Nxuz 🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "okam🇨🇷",
+      "Luck 🇵🇾"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "CrisZJ 🇵🇪",
+      "Leyenda.X5 🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
