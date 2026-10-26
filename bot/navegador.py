@@ -65,6 +65,12 @@ def hace_falta():
     # línea —sin un error, sin una salida— hasta que GitHub la cortó en los 120 min del trabajo; y como `dibujar`
     # va de a uno, las tres corridas de atrás se cancelaron en la cola. Bajarlo tarda ~36 s: 4 min es de sobra.
     for intento in range(1, INTENTOS + 1):
+        # 🔴 EL REINTENTO, SIN `--with-deps` (26/10/2026): dos corridas de carta.yml seguidas se trabaron bajando las
+        # dependencias del sistema (el espejo de Ubuntu lento) y el segundo intento chocaba con el apt del primero,
+        # que seguía vivo («Unable to acquire the dpkg frontend lock»). La imagen de Ubuntu de GitHub ya trae lo que
+        # Chromium necesita; el `--with-deps` es la red de abajo, no algo sin lo que no ande
+        if intento > 1 and '--with-deps' in args:
+            args = [a for a in args if a != '--with-deps']
         try:
             r = subprocess.run(args, cwd=BASE, capture_output=True, text=True,
                                encoding='utf-8', errors='replace', timeout=TOPE_S)
@@ -76,8 +82,9 @@ def hace_falta():
                   % (intento, TOPE_S, (' (lo último: %s)' % ultima.splitlines()[-1][:90]) if ultima else ''))
             continue
         if r.returncode:
-            print('      ⚠️ no pude instalar el navegador: %s'
-                  % ((r.stderr or '').strip().splitlines() or [''])[-1][:90])
+            print('      ⚠️ intento %d: no pude instalar el navegador: %s'
+                  % (intento, ((r.stderr or '').strip().splitlines() or [''])[-1][:90]))
+            continue
         return
     print('      🔴 Chromium no bajó en %d intentos: no se dibuja en esta corrida' % INTENTOS)
     raise SystemExit(1)
@@ -85,4 +92,4 @@ def hace_falta():
 
 #: cuánto puede tardar `playwright install` y cuántas veces se prueba (ver `hace_falta()`)
 TOPE_S = 240
-INTENTOS = 2
+INTENTOS = 3
