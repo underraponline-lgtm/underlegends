@@ -5,12 +5,14 @@
    changelog, las horas de ayuda y el refresco de cada 5 minutos. Salió de
    app.js el 13/10/2026 (la tanda 3 de sacarlo; Dlx, a las ideas: «me
    gustan todas»), cortado tal cual. Se carga DESPUÉS de comun, cuenta,
-   tienda y social y ANTES de app.js.
-   ⚠️ Todavía llama a funciones de app.js que dibujan (`pintaVivo`,
-   `pintaMuro`, `puntoCambios`, `abrirLlave`, `pintaDatos`, `nombreSv`):
-   sólo cuando corre, y para entonces app.js ya cargó. Por eso el ARRANQUE
-   —`pinta()` y el primer `fetch('/api/lobby')`— se quedó al final de
-   app.js: acá podría contestar antes de que app.js termine de bajar.
+   tienda y social y ANTES de nucleo.js (lo que quedó de app.js, que se
+   fue el 27/10/2026: la tanda 4).
+   ⚠️ Llama a `pintaVivo`, `pintaMuro`, `puntoCambios`, `pintaDatos` y
+   `nombreSv`, de nucleo.js: sólo cuando corre, y para entonces ya cargó.
+   Por eso el ARRANQUE —`pinta()` y el primer `fetch('/api/lobby')`— vive
+   al final de nucleo.js: acá podría contestar antes de que termine de bajar.
+   (Las llaves viejas a pedido, `llaveVieja()`, se fueron con app.js: las
+   pide la página de la llave, web/src/llave.jsx.)
    ⚠️ Y todo con `var` y `function`, nunca `let`/`const`: React reemplaza
    `window.pintaVivo` y compañía (`envolver()` de App.jsx), y lee `D`,
    `VIVO_L`, `PERF`, `CAMBIOS`, `llaveDeEvento`, `kVivo` y `perfiles` de
@@ -183,25 +185,6 @@ function conVeredictos(L, lvs) {
   }
   L.conVeredictos = true;
   return true;
-}
-
-/* ── de app.js: las llaves viejas: LLAVES_TODAS y llaveVieja ── */
-/* 🔴 LOS LINKS DE LLAVES VIEJAS. `#/llave/<n>` se hizo para pegarlo en
-   Discord, y el lobby trae sólo las más nuevas: una llave de hace un mes caía
-   al calendario sin decir nada (auditoría del 27/09/2026). Las demás se piden
-   aparte (`/api/llaves`), una vez y sólo en ese caso. */
-var LLAVES_TODAS = null;
-function llaveVieja(n) {
-  var dic = function (t) {
-    var L = t && t[n];
-    if (L) { D.llaves = D.llaves || {}; D.llaves[n] = L; abrirLlave(n); return; }
-    avisoLlave('Esa llave no está: puede ser de otra temporada, o el link está mal copiado.');
-  };
-  if (LLAVES_TODAS) return dic(LLAVES_TODAS);
-  fetch('/api/llaves', { headers: { accept: 'application/json' } })
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (t) { LLAVES_TODAS = t || {}; dic(LLAVES_TODAS); })
-    .catch(function () { avisoLlave('No pude traer esa llave. Prueba de nuevo en un rato.'); });
 }
 
 /* ── de app.js: los perfiles: PERF y perfiles() ── */

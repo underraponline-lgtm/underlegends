@@ -1,6 +1,6 @@
 // El Ranking nuevo (`#/ranking/<sub>`). Dlx, 02/10/2026: «quiero que sigas con el remake de la página de… ranking»,
-// y al ver la preview, «me encanta» (1.90). La tabla de app.js sigue dibujada y escondida debajo, de respaldo, como
-// el changelog.
+// y al ver la preview, «me encanta» (1.90). (La tabla de app.js quedó escondida debajo, de respaldo, hasta que app.js
+// se borró el 27/10/2026.)
 //
 // 🔑 Y SUS CINCO IDEAS (Dlx, 02/10/2026: «1. me gusta … 5. listo»): las flechas de cuánto subió cada uno desde el
 // lunes (`mv`, del ciclo), «NUEVO» a quien debutó esta semana (`nu`), los que tenés cerca, la fila que se abre ahí

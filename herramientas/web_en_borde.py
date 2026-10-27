@@ -98,7 +98,6 @@ async def main():
                     await r.fulfill(status=200,
                                     content_type='application/json',
                                     body=cuerpo)
-            await pg.route('**/api/lobby*', ruta)
 
             # 🔴 LA PÁGINA PIDE MÁS QUE EL LOBBY, Y ESTA PRUEBA NO LO SABÍA.
             # Desde el 24/09/2026 también llama a `/api/avisos/estado` y
@@ -112,11 +111,16 @@ async def main():
                     await r.fulfill(status=503, body='no')
                 else:
                     await r.fulfill(status=200, content_type='application/json', body='{}')
-            await pg.route('**/api/avisos/**', avisos)
-            # 🛠️ Y EL INICIO NUEVO PIDE EL MURO AL ABRIR (29/09/2026, el
-            # remake): sin esto el 404 del servidor de la prueba salía como
-            # error de la página. Vacío o caído, igual que los avisos.
-            await pg.route('**/api/muro*', avisos)
+            # 🛠️ Y LA PÁGINA NUEVA PIDE MUCHO MÁS: el muro, las ligas, las
+            # competencias, las semanas, los perfiles, los TAGs… Se listaban
+            # de a una (`/api/avisos/**`, `/api/muro*`) y la lista se quedó
+            # vieja: los casos `vacio` y `uno_sin_carta` salían en rojo por
+            # los 404 de este servidor, no por la página (27/10/2026, la
+            # tanda 4). Ahora TODO `/api` contesta vacío —o caído— y el lobby
+            # va encima. ⚠️ Playwright prueba las rutas de la última
+            # registrada a la primera: la del lobby va después.
+            await pg.route('**/api/**', avisos)
+            await pg.route('**/api/lobby*', ruta)
             # ⚠️ POR HTTP Y NO POR `file://`: el navegador rechaza un
             # `fetch('/api/lobby')` desde un archivo local antes de que
             # Playwright pueda interceptarlo, así que la prueba probaba

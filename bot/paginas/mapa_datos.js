@@ -149,7 +149,7 @@ window.MAPA_DATOS = {
     { id: 'web', c: 5, y: 809, k: 'gente', t: 'La página', s: 'underlegends.pages.dev',
       donde: 'el navegador de quien mira', cada: 'cuando alguien la abre',
       que: 'Ranking, tarjetas, eventos, tienda, publicaciones. Buscar, filtrar, ordenar y comparar lo hace el navegador de quien mira: ordenar 200 filas ahí no le cuesta nada a la Liga. Entrar con Discord no guarda ningún permiso.',
-      arch: ['bot/paginas/app.js', 'bot/subir_web.py'] }
+      arch: ['web/src/App.jsx', 'bot/paginas/nucleo.js', 'bot/subir_web.py'] }
   ],
 
   /* de quien escribe a donde se escribe; `dos`: lee y escribe */

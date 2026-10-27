@@ -2,10 +2,11 @@
    LA CUENTA: entrar con Discord (`urlLogin`, `volverDeDiscord`, la sesión
    de `conCuenta`), verificarte, tu foto, tus redes, «tu servidor», salir y
    olvidar todo. Salió de app.js el 13/10/2026 (la tanda 2 de sacarlo),
-   cortado tal cual. ⚠️ Todavía dibuja con funciones de app.js
-   (`pintaPopCuenta`, `pintaCuenta`, `pintaEncuestas`…): mientras app.js
-   esté, son las suyas; el día que se borre, tienen que quedar como
-   funciones vacías o React deja de enterarse (`envolver()` de App.jsx).
+   cortado tal cual. ⚠️ Llama a `pintaPopCuenta`, `pintaCuenta`,
+   `pintaEncuestas`…: desde la tanda 4 (27/10/2026, app.js se fue) son
+   funciones vacías de nucleo.js que React envuelve para enterarse de cada
+   cambio (`envolver()` de App.jsx). No se borran: sin ellas, la página
+   queda sorda sin fallar.
    ═════════════════════════════════════════════════════════════════════ */
 'use strict';
 
@@ -72,30 +73,7 @@ function yo() { return YO ? porK(YO) : null; }
    voto. Se ve en tu perfil, en lugar del servidor donde más jugaste.
    ⚠️ LA TARJETA DE SERVIDOR NO CAMBIA: mide los datos del servidor donde
    jugaste, y uno elegido donde no jugaste la dejaría en cero. */
-var ELEGIDOS = null, ELEGIDOS_T = 0, MISV = null, MISV_EST = {}, MISV_PIDE = false;
-function pedirElegidos() {
-  if (ELEGIDOS && Date.now() - ELEGIDOS_T < 5 * 60000) return Promise.resolve(ELEGIDOS);
-  return fetch('/api/avisos/servidores', { headers: { accept: 'application/json' } })
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (j) {
-      if (j && j.n) { ELEGIDOS = j.n; ELEGIDOS_T = Date.now(); }
-      return ELEGIDOS;
-    })
-    .catch(function () { return ELEGIDOS; });
-}
-/* el que eligió, si es un servidor de la Liga; si no, '' */
-function svElegido(k) {
-  var s = (ELEGIDOS || {})[k];
-  return s && ((D && D.svs) || []).some(function (x) { return x.sv === s; }) ? s : '';
-}
-/* lo que va en la cabecera del perfil: el elegido, o donde más jugó */
-function svPerfil(k, f) {
-  var el = svElegido(k), sv = el || f.sv;
-  if (!sv) return '';
-  return (f.cc ? ' <i class="sep">·</i> ' : '') + '<span title="' +
-    esc(el ? 'Eligió ' + nombreSv(el) + ' como su servidor' : 'Donde más jugó esta temporada') + '">' +
-    chipSv(sv) + '</span>';
-}
+var MISV = null, MISV_EST = {}, MISV_PIDE = false;
 /* lo tuyo: cuál elegiste y si todavía se puede cambiar */
 function pedirMiServidor() {
   if (!DC || MISV || MISV_PIDE) return;
@@ -119,7 +97,6 @@ function elegirMiServidor(sv) {
     if (j.status === 200) {
       MISV = j;
       MISV_EST = { ok: true, sv: sv };
-      if (DC && DC.clave) { ELEGIDOS = ELEGIDOS || {}; ELEGIDOS[DC.clave] = j.sv; }
     } else if (j.status === 409) {
       MISV = Object.assign({}, MISV || {}, { sv: j.sv, fijo: true, puede: false, libre: false });
       MISV_EST = { error: 'Ya lo elegiste esta temporada: se vuelve a abrir en la que viene.' };
@@ -279,87 +256,12 @@ function pedirFoto(confirmar) {
     body: JSON.stringify({ token: DC_TOKEN, confirmar: !!confirmar }) })
     .then(function (r) { return r.json().then(function (j) { j.status = r.status; return j; }); });
 }
-/* 🔑 Dlx, 25/09/2026: «cambios ilimitados hasta el 9». La fecha viene del Worker. */
-function libreTexto(F) {
-  return F.libre_hasta ? 'Hasta el <b>' + esc(F.libre_hasta) + '</b> la puedes cambiar las veces que quieras.'
-    : 'Hasta que arranque la temporada la puedes cambiar las veces que quieras.';
-}
-function secFoto() {
-  if (!FOTO || !DC) return '';
-  var F = FOTO, cab = '<section class="pop-sec" id="secFoto"><h4>&#128247; Tu foto de la tarjeta</h4>';
-  var T = esc(F.temporada || 'temporada');
-  if (F.hecho) {
-    return cab + '<p class="nota">&#128248; <b>Listo</b>: ésa es tu foto de la ' + T + '. Tus tarjetas ' +
-      'se vuelven a dibujar en la próxima vuelta del ciclo (cada media hora; de 3 a 11 AM, hora del ' +
-      'este, no corre).' + (F.libre ? ' ' + libreTexto(F) : '') + '</p></section>';
-  }
-  if (F.error) {
-    var m = F.error === 'sin_foto' ? 'No tienes foto puesta en Discord: tu tarjeta va con la inicial, ' +
-      'que con el color de tu rango queda bien. Si te pones una, vuelve.'
-      : F.error === 'sin_perfil' ? 'Primero necesitas tu tarjeta: escribe <code>/verificar</code> en Discord.'
-      : F.error === 'usado' ? 'Ya elegiste tu foto de la ' + T + ': va una por temporada. Se vuelve a abrir ' +
-        'cuando arranque la que sigue.'
-      : F.error === 'cdn' ? 'Discord no me dio tu foto. Suele arreglarse volviéndotela a poner en Discord ' +
-        'y probando de nuevo.'
-      : F.error === 'espera' ? 'Espera un minuto y prueba de nuevo.'
-      : 'No pude cambiarla. Prueba de nuevo en un rato.';
-    return cab + '<p class="nota">' + m + '</p></section>';
-  }
-  if (F.estado === 'usado') {
-    return cab + '<p class="nota">Ya elegiste tu foto de la ' + T + ' y va <b>una por temporada</b>: ' +
-      'la Histórica necesita la cara que tenías en cada una. Se vuelve a abrir cuando arranque la que ' +
-      'sigue.</p></section>';
-  }
-  return cab + '<div class="foto-vista"><img src="' + esc(F.vista) + '" alt="Tu foto de Discord" ' +
-    'width="96" height="96"><p class="nota">Tu tarjeta de la ' + T + ' va a llevar ésta, la de tu ' +
-    'perfil de Discord. ' + (F.libre ? libreTexto(F) : F.pase ? 'Con el pase de DRA la puedes cambiar cuando quieras.'
-      : '<b>Va una por temporada</b>: después no se puede cambiar hasta la próxima.') + '</p></div>' +
-    '<button type="button" class="btn ancho" id="dcFotoSi">Usar esta foto</button>' +
-    '<button type="button" class="btn sec ancho" id="dcFotoNo">Cancelar</button></section>';
-}
 function pedirRedes(mostrar) {
   var cuerpo = { token: DC_TOKEN };
   if (mostrar) cuerpo.mostrar = mostrar;
   return fetch('/api/cuenta/redes', { method: 'POST', headers: { 'content-type': 'application/json' },
     body: JSON.stringify(cuerpo) })
     .then(function (r) { return r.json().then(function (j) { j.status = r.status; return j; }); });
-}
-function secRedes() {
-  if (!DC || !DC.clave) return '';
-  var R = REDES_MIAS;
-  // ⚠️ `secMisRedes` Y NO `secRedes`: ése es el feed de redes del Inicio, y
-  // con dos iguales `pintaFeed()` podía agarrar esta sección
-  var cab = '<section class="pop-sec" id="secMisRedes"><h4>&#128279; Mis redes en mi perfil</h4>';
-  if (!R || !DC_TOKEN) {
-    return cab + '<p class="nota">Muestra en tu perfil las redes que ya tienes conectadas en Discord ' +
-      '(Instagram, TikTok, YouTube…). Discord te pide permiso para leerlas.</p>' +
-      '<button type="button" class="btn sec ancho" id="dcRedes">Elegir mis redes</button></section>';
-  }
-  if (R.error) {
-    return cab + '<p class="nota">' + (R.error === 'sin_perfil' ? 'Primero necesitas tu tarjeta: escribe ' +
-      '<code>/verificar</code> en Discord.' : 'No pude leer tus redes. Prueba de nuevo.') + '</p>' +
-      '<button type="button" class="btn sec ancho" id="dcRedes">Probar de nuevo</button></section>';
-  }
-  if (!(R.publicas || []).length) {
-    return cab + '<p class="nota">No tienes redes públicas en Discord. Ve a <b>Ajustes → Conexiones</b>, ' +
-      'conecta tu Instagram, TikTok o YouTube y activa <b>«Mostrar en el perfil»</b>. Después vuelve acá.</p>' +
-      '<button type="button" class="btn sec ancho" id="dcRedes">Ya las conecté</button></section>';
-  }
-  var ya = {};
-  (R.guardadas || []).forEach(function (r) { ya[r.t + ':' + r.n] = 1; });
-  var nada = !(R.guardadas || []).length;
-  return cab + '<div class="redes-el">' + R.publicas.map(function (r) {
-    var id = r.t + ':' + r.n;
-    // ⚠️ NINGUNA MARCADA DE ENTRADA: se muestra lo que la persona elige, no lo que
-    // la página eligió por ella (auditoría legal del 01/10/2026)
-    return '<label><input type="checkbox" value="' + esc(id) + '"' + (ya[id] ? ' checked' : '') +
-      '><span class="red chica">' + (RED_ICONO[r.t] || '') + '</span><span>' + esc(RED_NOMBRE[r.t] || r.t) +
-      ' <small>' + esc(r.n) + '</small></span></label>';
-  }).join('') + '</div><button type="button" class="btn ancho" id="dcRedesGuardar">Guardar en mi perfil</button>' +
-    (nada ? '' : '<button type="button" class="btn sec ancho" id="dcRedesQuitar">Quitar todas</button>') +
-    '<p class="nota" id="redesNota">' + (nada ? 'Todavía no muestras ninguna.' : 'Tu perfil muestra ' +
-      R.guardadas.length + '.') + ' Los cambios aparecen en la próxima actualización (cada media hora).</p>' +
-    '</section>';
 }
 // ⚠️ ANTES DEL ENRUTADO: Discord vuelve con el permiso en el `#`, que es
 // justo lo que usa el enrutado de la página. Se lee, se limpia y recién
@@ -391,7 +293,6 @@ function volverDeDiscord() {
   // ventana encima del Inicio: ver `nuevaCuenta()`
   var aCuenta = nuevaCuenta() && (modo0 === 'i' || modo0 === 'f' || modo0 === 'r');
   // 🔒 y quien vino a su Dashboard vuelve al Dashboard, sin la ventana vieja de Mi cuenta encima (revisión del 05/10/2026)
-  var sinVentana = aCuenta || modo0 === 'o';
   var destino = '#/' + (aCuenta ? (modo0 === 'i' ? 'cuenta' : 'cuenta/perfil') : modo0 === 'o' ? 'dashboard' : modo0 === 'v' ? 'avisos'
     : modo0 === 'd' ? 'cuenta/verificar' : modo0 === 'p' ? 'publicaciones' : modo0 === 't'
     ? String((pp && pp.volver) || 'tienda').replace(/^#?\/?/, '') : '');
@@ -467,43 +368,35 @@ function volverDeDiscord() {
       pintaPaneles();
       pintaPopCuenta();
       // con Mi cuenta nueva no hay ventana: ya se volvió a `#/cuenta` (ver `aCuenta`)
-      if (!sinVentana) $('#popCuenta').hidden = false;
       if (porAvisos) {
         vincularAvisos(q.access_token);
-        $('#popCuenta').hidden = true;
       }
       // quien vino a votar se queda donde votó; ahora se sabe quién es («el tuyo»)
       if (porVoto) {
-        $('#popCuenta').hidden = true;
         if (D) pintaEncuestas();
       }
       // y quien vino a felicitar, en Publicaciones (y ahora se sabe cuáles son suyas)
       if (porAplauso) {
-        $('#popCuenta').hidden = true;
         avisarAplausos();
       }
       // y quien vino a la tienda, también («sos vos» en su propio perfil)
       if (porTienda) {
-        $('#popCuenta').hidden = true;
         if (D) pintaPrecios();
       }
       // y quien vino a verificarse se queda en su página de verificarse
       if (porVerif) {
-        $('#popCuenta').hidden = true;
         avisarVerif();
       }
       if (porFoto) {
         pedirFoto(false).then(function (R) {
           FOTO = R;
           pintaPopCuenta();
-          if (!sinVentana) $('#popCuenta').hidden = false;
         }).catch(function () { FOTO = { error: 'red' }; pintaPopCuenta(); });
       }
       if (porRedes) {
         pedirRedes(null).then(function (R) {
           REDES_MIAS = R;
           pintaPopCuenta();
-          if (!sinVentana) $('#popCuenta').hidden = false;
         }).catch(function () { REDES_MIAS = { error: 'red' }; pintaPopCuenta(); });
       }
     })

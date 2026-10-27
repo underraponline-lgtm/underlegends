@@ -208,15 +208,10 @@ function marcarSigoSrv(si) {
   SIGO_SRV = si;
   guardarLS('lg:sigo_srv', si || null);
 }
-/* lo que cambia en la página cuando cambia a quién seguís */
-function repintarSigo(k) {
-  $$('[data-segw]').forEach(function (b) {
-    if (!k || b.dataset.segw === k) b.outerHTML = botonSigo(b.dataset.segw);
-  });
-  if (k) pintaSeguidores(k);
-  var pop = $('#popCuenta');
-  if (pop && !pop.hidden) pintaPopCuenta();
-  try { pintaMuroFiltros(); } catch (e) { console.error('[pintaMuroFiltros]', e); }
+/* lo que cambia en la página cuando cambia a quién seguís: se le avisa (`lg:sigo`, lo mismo que manda `guardarSigo()`
+   envuelto por App.jsx), también con lo que llega DESPUÉS de guardar —los seguidores, «guardando…», el error— */
+function repintarSigo() {
+  try { window.dispatchEvent(new Event('lg:sigo')); } catch (e) { /* navegador viejo */ }
 }
 function alternarSigo(k) {
   var i = SIGO.indexOf(k), si = i < 0, antes = SIGO.slice();

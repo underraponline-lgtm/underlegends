@@ -3,7 +3,7 @@
 // muro de siempre (bot/muro.py: lo que pasa en la Liga, contado solo, y los anuncios de todos los servidores), ahora
 // día por día y con lo de verdad de cada cosa —la carta, la letra, el logo—; las encuestas de la semana para votar ahí
 // mismo; y 👏 Felicitar en los logros, que le llega al teléfono a quien felicitan. Para todos desde la 1.99 (`PROPIAS`
-// de App.jsx y web/montar.py): la vista de app.js sigue escondida, de respaldo.
+// de App.jsx y web/montar.py, hasta que app.js se borró el 27/10/2026).
 //
 // ⚠️ NO SOBRECARGAR (Dlx, 02/10: «la cosa no es sobrecargar las cosas»): las cartas nuevas de un mismo día van en UNA
 // publicación —eran 46 de 80 renglones—, y Felicitar va sólo en los logros de verdad (campeón, rango, Most Wanted).

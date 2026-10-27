@@ -101,20 +101,18 @@ export function Chevron() {
   );
 }
 
-// ── lo que el Inicio le pide a la página de hoy (app.js): abrir la cuenta, una carta, una llave, votar ──
-// ⚠️ CON setTimeout: app.js cierra sus ventanas con cualquier clic que llegue al documento, y el clic de acá llega
-// (retargeteado al host del shadow root). Abriendo después, ese mismo clic no la cierra.
+// ── lo que la página le pide a la cañería (cuenta.js, social.js): abrir la cuenta, una carta, una llave, votar ──
 const luego = (f) => setTimeout(f, 0);
 export const accion = {
-  // Mi cuenta (desde el 02/10/2026 es una página: el botón de app.js lleva a `#/cuenta`, y abre su ventana sólo si
-  // el Inicio nuevo no se montó)
-  cuenta: () => luego(() => { const b = document.getElementById('bCuenta'); if (b) b.click(); }),
-  // lo que pasa por Discord: entrar, la foto y las redes (`urlLogin()` de app.js; al volver, a `#/cuenta`)
+  // Tu cuenta es una página (desde el 02/10/2026; hasta la tanda 4 se llegaba tocando el botón escondido de app.js)
+  cuenta: () => { location.hash = '#/cuenta'; },
+  // lo que pasa por Discord: entrar, la foto y las redes (`urlLogin()` de cuenta.js; al volver, a `#/cuenta`)
   entrar: () => { if (window.urlLogin) location.href = window.urlLogin(); },
   foto: () => { if (window.urlLogin) location.href = window.urlLogin('f'); },
   redes: () => { if (window.urlLogin) location.href = window.urlLogin(true); },
   salir: () => luego(() => { if (window.cuentaSalir) window.cuentaSalir(); }),
-  ajustes: () => luego(() => { const b = document.getElementById('bAjustes2'); if (b) b.click(); }),
+  // los ajustes son una sección de Tu cuenta (la hora, la zona, «menos animaciones»)
+  ajustes: () => { location.hash = '#/cuenta/hora'; },
   // la tarjeta, en la ventana nueva (`visor.jsx`, 2.10): la abre App.jsx con `lg:carta`
   // con `cual`, abre en esa carta (la historia de una carta nueva de País abría la de Temporada, revisión del 04/10/2026)
   carta: (k, cual) => { window.dispatchEvent(new CustomEvent('lg:carta', { detail: cual ? k + '|' + cual : k })); },

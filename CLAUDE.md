@@ -931,39 +931,28 @@ Lo que Dlx decidió (ver `NOVEDADES.md`):
 | `web/src/vivo.css` | lo que es sólo de la página de verdad: botones, votos, el menú ☰ |
 | `web/src/css/<página>.css` | **desde el 19/10/2026**, lo que usa UNA sola página que se baja aparte (Ranking, Perfil, Eventos…): la página lo inyecta al bajarse con `usarCss()` (`web/src/css.js`), así el Inicio no lo carga. ⚠️ Una regla se mudó sólo si **ninguna** de sus clases aparece en una regla que se quedó: al quedar última, `.rk-t td.c-pos` le ganó a `.rk-tw.todas td` y la columna cambió de ancho |
 | **`bot/paginas/inicio/`** | lo construido (`npx vite build`, en `web/`). **Se commitea**: el ciclo no construye nada, sube lo que hay |
-| `web/montar.py` | engancha la app en `index.html`: el CSS que apaga el marco de hoy, `#inicio-nuevo` y el script. Ya está hecho; se usa sólo si el HTML se rehace |
+| `web/montar.py` | arma `bot/paginas/index.html` **entero** (desde la tanda 4, 27/10/2026): el CSS de la cáscara, el script del principio, la pantalla de carga, `#inicio-nuevo`, el aviso de «no pude cargar» y los scripts. `python web/montar.py` |
 
-⚠️ **VIVE ADENTRO DE LA PÁGINA DE HOY, NO LA REEMPLAZA.** Se monta en
-`#inicio-nuevo`, en un **shadow root** —así el CSS de las dos no se pisa— y
-sólo se ve en el Inicio: cualquier otra ruta saca la clase `ini-nuevo` y
-vuelve el marco de `app.js`. **Qué es una vista sale del HTML y del `ALIAS` de
-`app.js`**, así que una vista nueva entra sola.
+🗑️ **`app.js` SE FUE EL 27/10/2026 (la tanda 4 del remake; Dlx: *«Borra la
+tanda 4 entonces»*)**, y con él `estilo.css` y todas las vistas viejas de
+`index.html` (de 66 a 20 KB). La página es la app entera, montada en
+`#inicio-nuevo` en un **shadow root**. `index.html` lo arma **entero**
+`web/montar.py` (sólo conserva las metas del `<head>`): no se edita a mano.
 
-⚠️ **SE ENTERA DE LOS DATOS POR `app.js`**: envuelve `pintaDatos`,
-`pintaEncuestas`, `pintaVivo` e `ir`, lee `window.D`, `VIVO_L`, `ENC_*` y
-`DC`, y le pide a `app.js` la cuenta, los visores de cartas y llaves y el
-voto. **Si alguna de esas funciones o variables cambia de nombre, el Inicio
-deja de enterarse sin fallar.** Se busca en `web/src/` antes de renombrar.
+⚠️ **SE ENTERA DE LOS DATOS POR LA CAÑERÍA**, que sigue en scripts clásicos:
+`comun`, `cuenta`, `tienda`, `social`, `datos` y **`nucleo.js`** (lo que quedó
+de app.js: el arranque —bajar el lobby, volver de Discord, refrescar— y
+funciones como `pintaDatos`, `pintaVivo`, `pintaEncuestas`, `ir`,
+`pintaCuenta`, `pintaPopCuenta`, `pintaPrecios`). Ésas **ya no dibujan nada**:
+existen para que `envolver()` de `App.jsx` las reemplace y avise (`lg:datos`,
+`lg:vivo`…). **Si alguna cambia de nombre, la página deja de enterarse sin
+fallar.** Se busca en `web/src/` antes de renombrar.
 
-⚠️ **EL INICIO VIEJO SIGUE EN EL DOM, ESCONDIDO: es el respaldo.** Si la app no
-se monta en 8 s, si se rompe entera o si `/api/lobby` no contesta, vuelve el
-de hoy con su «No pude cargar los datos» —que es lo que mira
-`herramientas/web_en_borde.py`—. Cada sección va aislada, como en
-`pintaDatos()`: una rota no apaga las demás.
-
-🔑 **Y DIBUJA RUTAS QUE `app.js` NO CONOCE**: `#/sv/<SIGLA>` es el perfil de cada
-servidor (30/09/2026). `app.js` deja cualquier ruta desconocida en el Inicio, así que
-el Inicio nuevo queda a la vista y mira la dirección (`App.jsx`, `servidor.jsx`). Una
-página nueva del remake puede nacer así, sin tocar `app.js`.
-
-🔑 **Y SE QUEDA CON VISTAS QUE `app.js` SÍ CONOCE** (01/10/2026: `#/cambios`). Van en
-`PROPIAS`, la misma lista en `web/montar.py` y en `App.jsx`: el script del principio las trata
-como del Inicio, el CSS esconde **todas** las vistas viejas mientras manda el Inicio nuevo, y
-`app.js` las sigue dibujando escondidas, así que si la app se rompe vuelve la vieja sola.
-⚠️ Lo que `app.js` hace al abrir esa vista pasa ANTES que el Inicio nuevo (el changelog se da
-por visto): lo que haga falta saber de antes lo guarda el script del principio
-(`__cambiosVisto`). **El bloque de `index.html` sale de `montar.py`**: si se cambia a mano, se
-cambia también ahí.
+⚠️ **YA NO HAY RESPALDO VIEJO.** Si la app no se monta en 8 s, si se rompe
+entera o si `/api/lobby` no contesta, sale **«No pude cargar los datos»** con
+**«Reintentar»** (`__sinPagina()`, del script del principio) —que es lo que
+mira `herramientas/web_en_borde.py`—. Cada sección va aislada (`Aislada` en
+`App.jsx`): una rota no apaga las demás.
 
 ⚠️ **LAS CLASES DEL PROTOTIPO SON GLOBALES ADENTRO DEL SHADOW ROOT**, y ya
 chocaron cuatro veces: `.llave` y `.prox` le cambiaban la forma a los tags del

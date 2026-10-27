@@ -2,7 +2,8 @@
    LA TIENDA: la billetera (`BILL`, `pedirBilletera`), lo que vale cada
    cabeza (`valorCabezas`) y ponerle precio (`ponerPrecio`, `errorPrecio`).
    Salió de app.js el 13/10/2026 (la tanda 2 de sacarlo), cortado tal cual.
-   ⚠️ `pintaPrecios` se quedó en app.js: reparte a las vistas viejas.
+   ⚠️ `pintaPrecios` es de nucleo.js y no dibuja nada: React lo envuelve
+   para enterarse de cada cambio (`envolver()` de App.jsx).
    ═════════════════════════════════════════════════════════════════════ */
 'use strict';
 

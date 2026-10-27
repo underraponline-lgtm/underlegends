@@ -27,6 +27,16 @@ function esc(s) {
    ⚠️ UN PAIS QUE NO ESTA EN `PAIS` SIGUE SALIENDO COMO SIGLA. Una imagen
    que no existe dibuja el ícono de imagen rota, que es peor que dos
    letras; por eso sólo se pide la de los que se sabe que están. */
+/* Los nombres de país, para que no diga «AR». Sólo los que la liga usa; el resto cae a la sigla en mayúsculas, que es
+   la verdad. Vivía en app.js hasta la tanda 4 (27/10/2026). */
+var PAIS = {
+  ar: 'Argentina', cl: 'Chile', co: 'Colombia', ve: 'Venezuela',
+  mx: 'México', pe: 'Perú', es: 'España', ec: 'Ecuador', us: 'Estados Unidos',
+  uy: 'Uruguay', py: 'Paraguay', bo: 'Bolivia', cr: 'Costa Rica',
+  gt: 'Guatemala', hn: 'Honduras', ni: 'Nicaragua', pa: 'Panamá',
+  pr: 'Puerto Rico', do: 'Rep. Dominicana', sv: 'El Salvador', cu: 'Cuba',
+  no: 'Noruega', br: 'Brasil', ae: 'Emiratos'
+};
 function bandera(cc) {
   cc = String(cc || '').trim().toLowerCase();
   if (!/^[a-z]{2}$/.test(cc) || !PAIS[cc]) return '';
