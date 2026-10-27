@@ -5096,8 +5096,7 @@
   "total": 209,
   "rango": "E",
   "tg_t": {
-   "dobles": 1,
-   "reciente": true
+   "dobles": 1
   }
  },
  {
@@ -7990,8 +7989,7 @@
   "total": 209,
   "rango": "E",
   "tg_t": {
-   "dobles": 1,
-   "reciente": true
+   "dobles": 1
   }
  },
  {
@@ -8092,7 +8090,6 @@
   "total": 209,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
    "trios": 1
   }
  },
@@ -8433,10 +8430,7 @@
   "pos": 306,
   "fc": true,
   "total": 209,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "MALBORO",
@@ -8705,10 +8699,7 @@
   "pos": 313,
   "fc": true,
   "total": 209,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "HOTU",
@@ -8850,7 +8841,6 @@
   "rango": "E",
   "tg_t": {
    "dcor": true,
-   "reciente": true,
    "svc": 1,
    "svtag": "campeon"
   }
@@ -9115,10 +9105,7 @@
   "pos": 322,
   "fc": true,
   "total": 209,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "araya",
@@ -9283,10 +9270,7 @@
   "pos": 326,
   "fc": true,
   "total": 209,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Campoy",
@@ -10402,10 +10386,7 @@
   "pos": 347,
   "fc": true,
   "total": 209,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "NYCO",
@@ -11728,10 +11709,7 @@
   "o": 332,
   "pos": 167,
   "total": 209,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Apolo",
@@ -12771,10 +12749,7 @@
   "o": 364,
   "pos": 174,
   "total": 209,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "EddyLaSombra 🇱🇷",
@@ -13269,10 +13244,7 @@
   "o": 379,
   "pos": 180,
   "total": 209,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Ineedrubbers🇮🇱",
@@ -13631,7 +13603,6 @@
   "total": 209,
   "rango": "E",
   "tg_t": {
-   "reciente": true,
    "trios": 1
   }
  },
@@ -16836,10 +16807,7 @@
   "pos": 498,
   "fc": true,
   "total": 209,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "WILLY",

@@ -1266,6 +1266,39 @@
    "b": "SIN LIMITES",
    "ganador": "SIN LIMITES",
    "votos": "1–0"
+  },
+  "1564487402993750049": {
+   "id": "1564487402993750049",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793073263644,
+   "a": "AL3",
+   "b": "OKAM",
+   "ganador": "AL3",
+   "votos": "1–0"
+  },
+  "1564489422970556468": {
+   "id": "1564489422970556468",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793073745244,
+   "a": "LUCK",
+   "b": "ESEKA",
+   "ganador": "LUCK",
+   "votos": "1–0"
+  },
+  "1564493023880937546": {
+   "id": "1564493023880937546",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793074603768,
+   "a": "SIX YINN",
+   "b": "MAKMAH PART",
+   "ganador": "SIX YINN",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5419,7 +5452,7 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1793066705749,
-   "ed": 1793072648032,
+   "ed": 1793073300929,
    "texto": "`[ OCTAVOS ]`\n⌞Chente 🇻🇪⌝ 🆚 ⌞MCAREPA 🇻🇪⌝\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞mats🇺🇾⌝\n⌞Artezzy 🇵🇪⌝ 🆚 ⌞Vilca 🇵🇪⌝\n⌞Gary🇨🇺⌝ 🆚 ⌞Shitka🇲🇽⌝\n⌞okam🇨🇷⌝ 🆚 ⌞jazi 🇦🇸⌝\n⌞lizeninn 🇦🇷⌝ 🆚 ⌞AL3 🇨🇺⌝\n⌞DarnBless 🇨🇴⌝ 🆚 ⌞Luck 🇵🇾⌝\n⌞Nxuz 🇵🇪⌝ 🆚 ⌞Eseeka 🇵🇪⌝\n`[ CUARTOS ]`",
    "batallas": [
     [
@@ -5510,8 +5543,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1793067851324,
-   "ed": 1793072619964,
-   "texto": "`[ OCTAVOS ]`\n⌞MC AREPA⌝ 🆚 ⌞CHENTE⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MATS⌝\n⌞ARTEZZY⌝ 🆚 ⌞MCAREPA⌝\n⌞GARY⌝ 🆚 ⌞SHIKTA⌝\n⌞OKAM⌝ 🆚 ⌞JAZI⌝\n⌞MCAREPA⌝ 🆚 ⌞GARI⌝\n⌞CHENTE⌝ 🆚 ⌞SIN LIMITES⌝\n⌞CHENTE⌝ 🆚 ⌞SIN LÍMITES⌝",
+   "ed": 1793074828487,
+   "texto": "`[ OCTAVOS ]`\n⌞MC AREPA⌝ 🆚 ⌞CHENTE⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MATS⌝\n⌞ARTEZZY⌝ 🆚 ⌞MCAREPA⌝\n⌞GARY⌝ 🆚 ⌞SHIKTA⌝\n⌞OKAM⌝ 🆚 ⌞JAZI⌝\n⌞MCAREPA⌝ 🆚 ⌞GARI⌝\n⌞CHENTE⌝ 🆚 ⌞SIN LIMITES⌝\n⌞CHENTE⌝ 🆚 ⌞SIN LÍMITES⌝\n⌞OKAM⌝ 🆚 ⌞AL3⌝\n⌞AL3⌝ 🆚 ⌞OKAM⌝\n⌞LUCK⌝ 🆚 ⌞ESEKA⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MCAREPA⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5591,6 +5624,46 @@
      ],
      "SIN LÍMITES",
      "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "OKAM",
+      "AL3"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "AL3",
+      "OKAM"
+     ],
+     "AL3",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "LUCK",
+      "ESEKA"
+     ],
+     "LUCK",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "SIN LIMITES",
+      "MCAREPA"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
@@ -5682,6 +5755,118 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1564489599374463087": {
+   "id": "1564489599374463087",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1500675902042931280",
+   "pub": 1793073787302,
+   "ed": 1793073787302,
+   "texto": "`[ OCTAVOS ]`\n⌞Chente 🇻🇪⌝ 🆚 ⌞MCAREPA 🇻🇪⌝\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞mats🇺🇾⌝\n⌞Artezzy 🇵🇪⌝ 🆚 ⌞Vilca 🇵🇪⌝\n⌞Gary🇨🇺⌝ 🆚 ⌞Shitka🇲🇽⌝\n⌞okam🇨🇷⌝ 🆚 ⌞jazi 🇦🇸⌝\n⌞lizeninn 🇦🇷⌝ 🆚 ⌞AL3 🇨🇺⌝\n⌞DarnBless 🇨🇴⌝ 🆚 ⌞Luck 🇵🇾⌝\n⌞Nxuz 🇵🇪⌝ 🆚 ⌞Eseeka 🇵🇪⌝\n`[ CUARTOS ]`",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "Chente 🇻🇪",
+      "MCAREPA 🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Sin límites 🇵🇪",
+      "mats🇺🇾"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Artezzy 🇵🇪",
+      "Vilca 🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Gary🇨🇺",
+      "Shitka🇲🇽"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "okam🇨🇷",
+      "jazi 🇦🇸"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "lizeninn 🇦🇷",
+      "AL3 🇨🇺"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "DarnBless 🇨🇴",
+      "Luck 🇵🇾"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Nxuz 🇵🇪",
+      "Eseeka 🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1564492802258116610": {
+   "id": "1564492802258116610",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793074550929,
+   "ed": 1793074834909,
+   "texto": "`[ SEMIFINALES ]`\n⌞SIX YINN⌝ 🆚 ⌞MAKMAH PART⌝",
+   "batallas": [
+    [
+     "SEMIFINALES",
+     [
+      "SIX YINN",
+      "MAKMAH PART"
+     ],
+     "SIX YINN",
+     "veredicto",
      []
     ]
    ]
