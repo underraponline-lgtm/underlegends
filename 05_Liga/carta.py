@@ -467,15 +467,14 @@ h2 small{display:block;margin-top:4px;font:500 14px/1.4 Archivo,sans-serif;text-
 .v6{position:relative;width:calc(340px * var(--s));height:calc(470px * var(--s))}
 .v6-esc{position:absolute;left:0;top:0;width:340px;height:470px;transform:scale(var(--s)) rotate(-1.2deg);transform-origin:0 0}
 /* el sticker: un borde blanco de 8 px que abraza la unión del papel, la pestaña y el nombre, con su sombra */
+/* ⚠️ SIN LA SOMBRA DIFUSA (CLAUDE.md, «Exportar PNG»: se apaga antes de capturar): sobre transparencia no tiene con qué
+   fundirse, y el marco del Pase (feMorphology) la engordaba en un anillo borroso */
 .v6-sil{position:absolute;inset:0;filter:drop-shadow(4px 0 0 #F6F6F6) drop-shadow(-4px 0 0 #F6F6F6) drop-shadow(0 4px 0 #F6F6F6) drop-shadow(0 -4px 0 #F6F6F6)
-  drop-shadow(4px 0 0 #F6F6F6) drop-shadow(-4px 0 0 #F6F6F6) drop-shadow(0 4px 0 #F6F6F6) drop-shadow(0 -4px 0 #F6F6F6)
-  drop-shadow(0 8px 6px rgba(0,0,0,.45))}
+  drop-shadow(4px 0 0 #F6F6F6) drop-shadow(-4px 0 0 #F6F6F6) drop-shadow(0 4px 0 #F6F6F6) drop-shadow(0 -4px 0 #F6F6F6)}
 .v6.pod .v6-sil{filter:drop-shadow(5px 0 0 #F6F6F6) drop-shadow(-5px 0 0 #F6F6F6) drop-shadow(0 5px 0 #F6F6F6) drop-shadow(0 -5px 0 #F6F6F6)
-  drop-shadow(5px 0 0 #F6F6F6) drop-shadow(-5px 0 0 #F6F6F6) drop-shadow(0 5px 0 #F6F6F6) drop-shadow(0 -5px 0 #F6F6F6)
-  drop-shadow(0 8px 6px rgba(0,0,0,.45))}
+  drop-shadow(5px 0 0 #F6F6F6) drop-shadow(-5px 0 0 #F6F6F6) drop-shadow(0 5px 0 #F6F6F6) drop-shadow(0 -5px 0 #F6F6F6)}
 .v6.n1 .v6-sil{filter:drop-shadow(3px 0 0 #030304) drop-shadow(-3px 0 0 #030304) drop-shadow(0 3px 0 #030304) drop-shadow(0 -3px 0 #030304)
-  drop-shadow(5px 0 0 NEON) drop-shadow(-5px 0 0 NEON) drop-shadow(0 5px 0 NEON) drop-shadow(0 -5px 0 NEON)
-  drop-shadow(0 8px 6px rgba(0,0,0,.45))}
+  drop-shadow(5px 0 0 NEON) drop-shadow(-5px 0 0 NEON) drop-shadow(0 5px 0 NEON) drop-shadow(0 -5px 0 NEON)}
 .v6-detras{position:absolute;left:22px;top:30px;width:300px;height:420px;background:var(--h);clip-path:path("AFUERA");
   transform:translate(var(--x),var(--y)) rotate(var(--r))}
 .v6-papel{position:absolute;left:22px;top:30px;width:300px;height:420px}

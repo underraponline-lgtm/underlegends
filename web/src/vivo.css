@@ -3535,6 +3535,15 @@ a.rk-z:hover{border-color:var(--linea)}
 .mk .mk-est{width:21em;left:50%;transform:translateX(-50%);top:calc(100% + 1em)}
 /* Servidor: el brazalete de capitán */
 .mk .mk-bra{width:7em;left:-2.6em;top:50%;transform:rotate(-6deg);z-index:3}
+/* 🏟️ Liga (27/10/2026): la PNG trae su margen —el papel empieza 2.4 em a la derecha y 2.8 em abajo y mide 15.5 × 21.7
+   em—, así que las piezas se ubican contra el papel y no contra la imagen. Las chinches, en las dos puntas de arriba (la
+   de la derecha antes de la pestaña de la franja); la pegatina, centrada en la esquina de abajo a la izquierda, lejos
+   del TAG; la corona, apoyada en el borde de arriba del papel */
+.mk.mk-l .mk-chi{width:2.2em;top:1.9em;z-index:3}
+.mk.mk-l .mk-chi.a{left:3.2em}.mk.mk-l .mk-chi.b{left:11.6em}
+.mk.mk-l .mk-peg{width:4em;left:.4em;top:22.4em;transform:rotate(-12deg);z-index:3}
+.mk.mk-l .mk-cor{bottom:auto;top:-.4em}
+.mk.mk-l.chica .mk-chi{width:2.6em}
 
 /* 🏆 la semana en el Inicio (26/10/2026): `semana_comp.jsx` */
 .sc8{display:grid;gap:12px}

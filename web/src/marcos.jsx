@@ -9,6 +9,9 @@
 //   · Servidor, a elegir: la CAMISETA (el puño del color del servidor → + el brazalete de capitán → + la corona) o la
 //     CADENA (fina → gruesa → + la corona)
 //   · País (la bandera): la cinta con tu bandera → + el estandarte con tu país → + la corona
+//   · Liga (el afiche pegado, 27/10/2026): el canto y dos chinches que la sostienen → + la cinta de rayas y la pegatina
+//     con la sigla de la liga en la esquina de abajo → + la corona. Dlx, a la maqueta: «está bien… ese círculo con el
+//     nombre del sv está bueno pero asegúrate que esté bien posicionado»: va centrada en la esquina, lejos del TAG
 // Todo sigue la forma de la carta con UN filtro SVG (`feMorphology`: veinte sombras colgaban el navegador), plano y de una
 // tinta. El Oro brilla con una franja dura (no un degradé) y se queda quieto con «Menos animaciones» o el sistema en
 // reducido. Chica (menos de 200 px de ancho): sólo el anillo y la pieza principal.
@@ -19,7 +22,7 @@ import { PAIS } from './liga.js';
 
 const METAL = { premium: '#E41373', plata: '#C9CDD4', oro: '#F5C542' };
 const NEGRO = '#030304';
-const CL = { temporada: 't', competitivo: 'c', servidor: 's', pais: 'p' };
+const CL = { temporada: 't', competitivo: 'c', servidor: 's', pais: 'p', liga: 'l' };
 
 // el color del servidor para la franja: los del payload son oscuros a propósito (fondos), y contra el negro no se ven.
 // Se aclara hasta que se lea, sin cambiarle el tono
@@ -101,6 +104,8 @@ function capas(cl, tier, estilo, sv, cc) {
   if (cl === 't') return [[5.5, m], [3.5, NEGRO]];
   if (cl === 'c') return [[10, m], [8.5, NEGRO], [6, m], [3.5, NEGRO]];
   if (cl === 'p') return [[13, m], [11, cc ? ['bandera', cc] : m], [3.5, NEGRO]];
+  // 🏟️ la de liga: Premium, el canto; Plata y Oro, la cinta de rayas en metal y negro (la del afiche pegado)
+  if (cl === 'l') return tier === 'premium' ? [[6, m], [4, NEGRO]] : [[13, m], [11, rayas(m)], [6, m], [4, NEGRO]];
   // la cadena se dibuja aparte (`Cadena`): el filtro pone sólo la línea negra que la separa de la carta
   if (estilo === 'cadena') return [[3.5, NEGRO]];
   // la camiseta: el nivel 1, la franja del servidor con un hilo de metal; Plata y Oro, metal · servidor · metal
@@ -188,19 +193,43 @@ function Brazalete({ c }) {
     </Svg>
   );
 }
+// 🏟️ la cinta de rayas de la carta de liga: una baldosa de 12 que el filtro repite (`feTile`)
+const rayas = (c) => ['rayas', 12, 12, '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">' +
+  '<rect width="12" height="12" fill="' + c + '"/><path d="M-3 3 L3 -3 M0 12 L12 0 M9 15 L15 9" stroke="' + NEGRO + '" stroke-width="3.6"/></svg>'];
+function Chinche({ c, lado }) {
+  return (
+    <Svg cls={'mk-chi ' + lado} vb="0 0 30 30">
+      <ellipse cx="17" cy="19" rx="9" ry="6" fill="rgba(0,0,0,.45)" />
+      <circle cx="14" cy="13" r="10" fill={c} stroke={NEGRO} strokeWidth="2.4" />
+      <circle cx="14" cy="13" r="5" fill="none" stroke={NEGRO} strokeWidth="1.6" opacity=".55" />
+      <path d="M8 9 A7 7 0 0 1 14 6" fill="none" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" opacity=".8" />
+    </Svg>
+  );
+}
+function Pegatina({ c, sigla }) {
+  const s = String(sigla || '').toUpperCase().slice(0, 4);
+  return (
+    <Svg cls="mk-peg" vb="0 0 70 70">
+      <circle cx="35" cy="35" r="33" fill="#F6F6F6" />
+      <circle cx="35" cy="35" r="28" fill={c} stroke={NEGRO} strokeWidth="2.4" />
+      <text x="35" y="41" textAnchor="middle" fontFamily="Anton, Archivo, sans-serif" fontWeight="900" fontSize={s.length <= 3 ? 19 : 15} fill={NEGRO}>{s}</text>
+      <text x="35" y="53" textAnchor="middle" fontFamily="'Barlow Condensed', sans-serif" fontWeight="800" fontSize="7" textLength="30" lengthAdjust="spacingAndGlyphs" fill={NEGRO}>LIGA · T1</text>
+    </Svg>
+  );
+}
 function Destellos() {
   return [0, 1, 2].map((i) => (
     <Svg key={i} cls={'mk-des d' + i} vb="0 0 20 20"><path d="M10 0 L12.5 7.5 L20 10 L12.5 12.5 L10 20 L7.5 12.5 L0 10 L7.5 7.5 Z" fill="#FFF7D1" /></Svg>
   ));
 }
 
-const ANILLO = { t: [5.5, 3.5], c: [10, 8.5], p: [13, 11], 's-camiseta': [12, 9], 's-cadena': [9, 3.5] };
+const ANILLO = { t: [5.5, 3.5], c: [10, 8.5], p: [13, 11], 's-camiseta': [12, 9], 's-cadena': [9, 3.5], l: [13, 11] };
 
 /**
  * Le pone a `img` (la carta ya armada) el marco `m` (`[marco, estilo, serie]` de `/avisos/pases`, ver
  * `marcosPublicos()` en bot/avisos.js). `ancho`: cuánto mide en pantalla (px CSS); decide chica o completa
  */
-export function ConMarco({ m, cual, ancho, svColor, cc, children, src }) {
+export function ConMarco({ m, cual, ancho, svColor, cc, children, src, sigla }) {
   const uid = useId().replace(/[^a-zA-Z0-9]/g, '');
   const cl = CL[cual];
   const tier = m && String(m[0] || '').split(':')[1];
@@ -229,6 +258,9 @@ export function ConMarco({ m, cual, ancho, svColor, cc, children, src }) {
   if (cl === 'c' && plata && !chica) piezas.push(<Hombrera key="hi" c={c} lado="iz" />, <Hombrera key="hd" c={c} lado="de" />);
   if (cl === 'p' && plata && !chica && cc) piezas.push(<Estandarte key="est" c={c} nombre={String(PAIS[cc] || cc).toUpperCase()} />);
   if (cl === 's' && estilo === 'camiseta' && plata && !chica) piezas.push(<Brazalete key="bra" c={c} />);
+  // 🏟️ la de liga: las chinches siempre (son la pieza principal, también en chico); la pegatina desde Plata
+  if (cl === 'l') piezas.push(<Chinche key="ca" c={c} lado="a" />, <Chinche key="cb" c={c} lado="b" />);
+  if (cl === 'l' && plata && !chica && sigla) piezas.push(<Pegatina key="peg" c={c} sigla={sigla} />);
   // 👑 la corona, menos en la Servidor: arriba del escudo va la estrella de los Interserver, y la tapaba (Dlx, 26/10/2026:
   // «¿por qué quitaste la estrella del servidor? Eso es muy importante»)
   if (oro && cl !== 's') piezas.push(<Corona key="cor" c={c} />);

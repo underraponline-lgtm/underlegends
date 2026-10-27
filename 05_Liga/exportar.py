@@ -44,7 +44,9 @@ def pagina(pares, hoja=False):
     cajas = ''.join("<div class='w' id='c%d'>%s</div>" % (k, C.carta(l, i)) for k, (l, i) in enumerate(pares))
     fondo = '#0B0B0D' if hoja else 'transparent'
     return ("<!doctype html><meta charset='utf-8'><style>%s\n%s\nhtml,body{background:%s!important;margin:0}"
-            ".w{display:inline-block;padding:%dpx;vertical-align:top}</style>%s%s") % (
+            # ⚠️ UNA DEBAJO DE LA OTRA Y SEPARADAS: la corona y la estrella del 1.º sobresalen hacia arriba, y pegadas
+            # entraban en la foto de la carta de antes (salía un pedazo suelto abajo de la carta)
+            ".w{display:block;width:max-content;padding:%dpx;margin:0 0 90px}</style>%s%s") % (
         fuentes(), C.armar_css(), fondo, MARGEN, C.DEFS.replace('DUOS', duos), cajas)
 
 

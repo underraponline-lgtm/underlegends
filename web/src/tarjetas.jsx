@@ -22,6 +22,8 @@ import * as RQ from './requisitos.js';
 import CSS_PAGINA from './css/tarjetas.css?inline';
 import { usarCss } from './css.js';
 import { pedirLigas } from './ligas_datos.js';
+import { ConMarco } from './marcos.jsx';
+import { usePases } from './pase.js';
 
 // 🎨 su CSS, con su pedazo (web/src/css/tarjetas.css)
 usarCss('tarjetas', CSS_PAGINA);
@@ -188,6 +190,7 @@ function Mano({ liga, k, tiene, bl, onAbrir, nombre }) {
 function TusLigas({ liga, k }) {
   const [x, setX] = useState(null);
   const [sel, setSel] = useState(0);
+  const pub = usePases();
   useEffect(() => {
     let vivo = true;
     pedirLigas(liga.d.sello).then((d) => { if (vivo) setX(d); });
@@ -195,11 +198,15 @@ function TusLigas({ liga, k }) {
   }, [liga.d.sello]);
   const mias = (x && x.cartas && x.cartas[k]) || [];
   if (!mias.length) return null;
-  const nom = {};
-  ((x.lobby && x.lobby.ligas) || []).forEach((L) => { nom[L.id] = L.n; });
+  const nom = {}, svDe = {};
+  ((x.lobby && x.lobby.ligas) || []).forEach((L) => { nom[L.id] = L.n; svDe[L.id] = L.sv; });
   const c = mias[Math.min(sel, mias.length - 1)];
   const de = nom[c[0]] || c[0];
   const txt = (m) => (nom[m[0]] || m[0]) + ' · ' + m[3] + '.º · OVR ' + m[2];
+  // 🖼️ con su marco del Pase, si lo tiene («el afiche pegado», web/src/marcos.jsx)
+  const mk = pub && pub.m && pub.m[k];
+  const src = liga.d.r2 + '/' + encodeURIComponent(k) + '/liga-' + c[0] + '.webp?v=' + c[1];
+  const img = <img src={src} alt={'Tu carta de liga de ' + de} loading="lazy" />;
   return (
     <div className="ta-ligas">
       <small>TUS CARTAS DE LIGA · {mias.length}</small>
@@ -211,7 +218,7 @@ function TusLigas({ liga, k }) {
         </label>
       ) : <p className="ta-p">{txt(c)}</p>}
       <a className="ta-lcarta" href={'#/ligas/' + encodeURIComponent(c[0])} aria-label={'Tu carta de ' + de + ': ver la liga'}>
-        <img src={liga.d.r2 + '/' + encodeURIComponent(k) + '/liga-' + c[0] + '.webp?v=' + c[1]} alt={'Tu carta de liga de ' + de} loading="lazy" />
+        {mk ? <ConMarco m={mk} cual="liga" ancho={240} src={src} sigla={siglaDe(svDe[c[0]] || '')}>{img}</ConMarco> : img}
       </a>
     </div>
   );
