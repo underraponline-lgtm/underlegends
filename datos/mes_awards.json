@@ -3449,6 +3449,24 @@
      "orgs": [],
      "organizador": "LEWITO",
      "cuentas": {}
+    },
+    "1564721141698793585": {
+     "sv": "FRZ",
+     "nombre": "IRLANDA FREESTYLE",
+     "mo": "2026-10-27T19:23:11Z",
+     "staff": {
+      "jurado": [
+       "cekohh"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "cekohh",
+       "id": ""
+      }
+     ],
+     "organizador": "@cekohh",
+     "cuentas": {}
     }
    },
    "ver": {
