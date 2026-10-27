@@ -5610,7 +5610,7 @@
    "canal": "1536574435761332334",
    "pub": 1793067851324,
    "ed": 1793076352506,
-   "texto": "`[ OCTAVOS ]`\n⌞MC AREPA⌝ 🆚 ⌞CHENTE⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MATS⌝\n⌞ARTEZZY⌝ 🆚 ⌞MCAREPA⌝\n⌞GARY⌝ 🆚 ⌞SHIKTA⌝\n⌞OKAM⌝ 🆚 ⌞JAZI⌝\n⌞MCAREPA⌝ 🆚 ⌞GARI⌝\n⌞CHENTE⌝ 🆚 ⌞SIN LIMITES⌝\n⌞CHENTE⌝ 🆚 ⌞SIN LÍMITES⌝\n⌞OKAM⌝ 🆚 ⌞AL3⌝\n⌞AL3⌝ 🆚 ⌞OKAM⌝\n⌞LUCK⌝ 🆚 ⌞ESEKA⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MCAREPA⌝\n⌞LUCK⌝ 🆚 ⌞MCAREPA⌝",
+   "texto": "`[ OCTAVOS ]`\n⌞MC AREPA⌝ 🆚 ⌞CHENTE⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MATS⌝\n⌞ARTEZZY⌝ 🆚 ⌞MCAREPA⌝\n⌞GARY⌝ 🆚 ⌞SHIKTA⌝\n⌞OKAM⌝ 🆚 ⌞JAZI⌝\n⌞MCAREPA⌝ 🆚 ⌞GARI⌝\n⌞CHENTE⌝ 🆚 ⌞SIN LIMITES⌝\n⌞CHENTE⌝ 🆚 ⌞SIN LÍMITES⌝\n⌞AL3⌝ 🆚 ⌞OKAM⌝\n⌞LUCK⌝ 🆚 ⌞ESEKA⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MCAREPA⌝\n⌞LUCK⌝ 🆚 ⌞MCAREPA⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5690,16 +5690,6 @@
      ],
      "SIN LÍMITES",
      "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "OKAM",
-      "AL3"
-     ],
-     null,
-     "última ronda y no dice campeón",
      []
     ],
     [
