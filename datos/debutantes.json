@@ -496,18 +496,6 @@
    "vence": "2026-10-26T06:14:16+00:00",
    "vencido": false
   },
-  "Jahno Melomaníaco": {
-   "avisado": "2026-10-26",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-26T22:39:00+00:00",
-   "did": "",
-   "evento": "DETALLES DEL EVENTO",
-   "n": 531,
-   "sv": "FFA",
-   "vence": "2026-11-02T22:39:00+00:00",
-   "vencido": false
-  },
   "Jeisy": {
    "avisado": "2026-10-25",
    "chat": "2026-10-25",
@@ -1063,7 +1051,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-26T22:39:00+00:00",
-   "did": "",
+   "did": "380869870264254465",
    "evento": "DETALLES DEL EVENTO",
    "n": 531,
    "sv": "FFA",

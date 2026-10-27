@@ -877,19 +877,22 @@
     ]
    ],
    "semillero": {
-    "nuevos": {},
+    "nuevos": {
+     "FFA": 5
+    },
     "gente": {
      "FDS": 13,
-     "DDF": 11
+     "DDF": 11,
+     "FFA": 32
     },
-    "gana": null
+    "gana": "FFA"
    },
    "meta_va": {
     "ACAD": 0,
     "DDF": 11,
     "DRA": 0,
     "FDS": 13,
-    "FFA": 0,
+    "FFA": 32,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,

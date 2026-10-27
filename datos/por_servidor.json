@@ -3879,20 +3879,6 @@
     }
    }
   },
-  "Jahno Melomaníaco 🇦🇷": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 3750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "Jayden": {
    "ACAD": {
     "duelos": "0/1",
@@ -8741,7 +8727,7 @@
     }
    }
   },
-  "Swid🇪🇸": {
+  "Swid": {
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -10306,11 +10292,11 @@
   "melomaniaco": {
    "FFA": {
     "duelos": "",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 46,
     "pod": 0,
-    "pts": 8333,
+    "pts": 12083,
     "racha": "0/0",
     "tg": {
      "fund": true
