@@ -117,7 +117,9 @@ def duo(lid, col):
     """El duotono de la foto: las sombras en la tinta del papel, las luces en el color de la liga aclarado."""
     osc, med, luz = (0x0E, 0x0E, 0x10), tuple(int(mix(col, '#000000', .55)[i:i + 2], 16) for i in (1, 3, 5)), \
         tuple(int(mix(col, '#FFFFFF', .8)[i:i + 2], 16) for i in (1, 3, 5))
-    f = lambda k: ' '.join('%.3f' % (v[k] / 255) for v in (osc, osc, med, luz, luz))   # noqa: E731
+    # con medios tonos (27/10/2026: «que se vea el avatar»): antes las sombras se aplastaban en dos pasos de negro
+    mid = tuple(int(mix(col, '#FFFFFF', .25)[i:i + 2], 16) for i in (1, 3, 5))
+    f = lambda k: ' '.join('%.3f' % (v[k] / 255) for v in (osc, med, mid, luz, (0xF6, 0xF6, 0xF4)))   # noqa: E731
     return ("<filter id='duo-%s' color-interpolation-filters='sRGB'><feColorMatrix type='saturate' values='0'/>"
             "<feComponentTransfer><feFuncR type='table' tableValues='%s'/><feFuncG type='table' tableValues='%s'/>"
             "<feFuncB type='table' tableValues='%s'/></feComponentTransfer></filter>") % (lid, f(0), f(1), f(2))
@@ -162,7 +164,7 @@ def nombre_css(n):
     esta carta. Si aun así un nombre muy largo pasara de los 236 px que hay hasta la franja, se achica un poco más, nunca
     se aprieta."""
     from comun import nombre as NM
-    f = NM.rem(n) / NM.ESCALONES[0][1] * 62
+    f = NM.rem(n) / NM.ESCALONES[0][1] * 56
     ancho = len(n) * .43 * f
     if ancho > 236:
         f = 236 / (len(n) * .43)
@@ -303,7 +305,10 @@ def liga_corta(L):
         n = ' '.join([sv] + n.split()[1:])
     if len(n) > 14:   # «SNK LEAGUE GENERATIONS» -> «SNK GENERATIONS»: la palabra «liga» sobra en una carta de liga
         n = ' '.join(w for w in n.split() if w not in ('LEAGUE', 'LIGA', 'DE', 'LA'))
-    return n
+    ws = n.split()
+    while len(' '.join(ws)) > 16 and len(ws) > 2:   # «LKR PLAZA UNDERGROUND» -> «LKR UNDERGROUND»
+        ws.pop(1)
+    return ' '.join(ws)
 
 
 def tag_de(lid, i, n, pj, g, d, ptb):
@@ -403,7 +408,7 @@ def carta(lid, i, s=1.0, est='eA'):
               % (fsz, sx, n.upper(), n.upper(), n.upper()))
     extras = ''
     if nivel == 'n1':
-        extras = CORONA_AEROSOL + ESTRELLA
+        extras = CORONA_AEROSOL   # sin la estrella (Dlx, 27/10/2026: «quizás quitar esa estrella… que se vea el avatar»)
     elif nivel == 'pod':
         extras = "<span class='v6-cinta-pod'>PODIO</span>"
     solapas = ("<svg class='v6-solapa a' viewBox='0 0 40 40' aria-hidden='true'><defs><linearGradient id='sg%d' x1='0' y1='0' x2='1' y2='1'>"
@@ -495,14 +500,14 @@ h2 small{display:block;margin-top:4px;font:500 14px/1.4 Archivo,sans-serif;text-
 .v6-pin svg{width:100%;height:100%}
 .v6-gigante{left:-6px;top:-30px;font:900 400px/1 "Big Shoulders Stencil Display",Anton,sans-serif;color:NEON;opacity:.11}
 /* la foto impresa: duotono, corrimiento de registro y trama gruesa */
-.v6-foto{left:14px;top:46px;width:220px;height:248px;
+.v6-foto{left:14px;top:44px;width:220px;height:268px;
   -webkit-mask:url("MASCARA") center / 100% 100% no-repeat;mask:url("MASCARA") center / 100% 100% no-repeat}
 .v6-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .v6-foto img.a{filter:contrast(1.2)}
-.v6-foto img.reg{mix-blend-mode:screen;opacity:.18;transform:translate(3px,1px)}
+.v6-foto img.reg{mix-blend-mode:screen;opacity:.1;transform:translate(3px,1px)}
 .v6-foto.sin img{inset:auto;left:50%;bottom:0;height:86%;width:auto;max-width:none;object-fit:initial;transform:translateX(-50%)}
 .v6-foto.sin img.reg{transform:translate(calc(-50% + 3px),1px)}
-.v6-trama{position:absolute;inset:0;background:radial-gradient(circle,#0E0E10 1.3px,transparent 2px) 0 0 / 6px 6px;mix-blend-mode:multiply;opacity:.3}
+.v6-trama{position:absolute;inset:0;background:radial-gradient(circle,#0E0E10 1px,transparent 1.6px) 0 0 / 5px 5px;mix-blend-mode:multiply;opacity:.16}
 /* LA GRILLA (papel 300 × 420): el contenido va de 16 a 226; la franja empieza en 234.
    arriba la etiqueta (16–40) · el PTB (50–104) · la foto (46–294) · el nombre apoyado en 322 · la fila de abajo (346–372) */
 /* LA ETIQUETA DE ARRIBA: la misma tira de papel que el TAG, de punta a punta. Arriba y abajo, las dos tiras cierran
@@ -518,17 +523,17 @@ h2 small{display:block;margin-top:4px;font:500 14px/1.4 Archivo,sans-serif;text-
 
 /* EL OVR: pintado igual que el nombre (contorno negro, el color de la liga en el medio y la tinta con grano), así el
    número y el nombre se leen como una pareja. Debajo, en cinta negra, la sigla y el PTB promedio de donde sale */
-.v6-ovr{left:12px;top:58px;transform:rotate(-5deg);transform-origin:left top}
+.v6-ovr{left:12px;top:56px;transform:rotate(-5deg);transform-origin:left top}
 .v6-ovr .n{display:block;position:relative}
 .v6-ovr b{white-space:nowrap}
-.v6-ovr .n b{font:400 70px/.9 Anton,sans-serif;letter-spacing:.01em}
+.v6-ovr .n b{font:400 54px/.9 Anton,sans-serif;letter-spacing:.01em}
 .v6-ovr .o,.v6-ovr .m{position:absolute;left:0;top:0}
 .v6-ovr .f{position:relative;display:block}
-.v6-ovr .o{color:#030304;-webkit-text-stroke:12px #030304;text-shadow:6px 6px 0 #030304}
-.v6-ovr .m{color:var(--c);-webkit-text-stroke:6px var(--c)}
+.v6-ovr .o{color:#030304;-webkit-text-stroke:10px #030304;text-shadow:5px 5px 0 #030304}
+.v6-ovr .m{color:var(--c);-webkit-text-stroke:5px var(--c)}
 .v6-ovr .f{color:#F6F6F6;-webkit-mask:url("GRANO_T") 0 0 / 180px 180px;mask:url("GRANO_T") 0 0 / 180px 180px}
 .v6.n1 .v6-ovr .f{color:NEON}
-.v6-ovr small{display:inline-flex;align-items:center;gap:6px;margin:9px 0 0 4px;padding:3px 8px 3px 4px;background:#030304;color:#D9D9D4;
+.v6-ovr small{display:inline-flex;align-items:center;gap:6px;margin:7px 0 0 4px;padding:3px 8px 3px 4px;background:#030304;color:#D9D9D4;
   font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;box-shadow:2px 2px 0 var(--c)}
 .v6-ovr small b{padding:2px 5px;background:var(--c);color:var(--ink);font:400 12px/1 Anton,sans-serif;letter-spacing:.14em}
 .v6.n1 .v6-ovr small{box-shadow:2px 2px 0 NEON}.v6.n1 .v6-ovr small b{background:NEON;color:#030304}
@@ -601,8 +606,8 @@ h2 small{display:block;margin-top:4px;font:500 14px/1.4 Archivo,sans-serif;text-
   background-image:linear-gradient(90deg,transparent 30%,rgba(255,255,255,.35) 32%,transparent 36%,transparent 62%,rgba(0,0,0,.08) 64%,transparent 68%)}
 .v6-cinta.a{left:226px;top:2px;width:84px;transform:rotate(14deg)}
 .v6-cinta.b{left:150px;top:438px;width:66px;transform:rotate(-7deg)}
-.v6-cinta-pod{position:absolute;left:166px;top:268px;padding:4px 22px;background:#F6F6F6;color:#030304;font:400 16px/1 Anton,sans-serif;letter-spacing:.2em;
-  transform:rotate(-14deg);box-shadow:0 2px 0 #030304}
+.v6-cinta-pod{position:absolute;left:44px;top:404px;padding:4px 22px;background:#F6F6F6;color:#030304;font:400 16px/1 Anton,sans-serif;letter-spacing:.2em;
+  transform:rotate(-4deg);box-shadow:0 2px 0 #030304}
 .v6-corona{position:absolute;left:262px;top:-30px;width:90px;transform:rotate(9deg)}
 .v6.n1 .v6-cinta.a{display:none}
 /* la estrella del 1.º: pegada al lado del OVR, como una calcomanía sobre la foto */
