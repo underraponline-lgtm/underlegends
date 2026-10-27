@@ -2625,6 +2625,10 @@ const RUTAS = {
   // 🏷️ los roles de cada uno en la página (13/10/2026): los ve cualquiera; el ciclo manda los que salen solos, con su
   // clave, y Dlx pone o saca. Ver `roles()`, `rolesEstados()` y `duenoRol()`
   '/avisos/roles': 'GET', '/avisos/roles-estados': 'POST', '/avisos/dueno/rol': 'POST',
+  // 👤 LA TANDA 2 DEL PERFIL (27/10/2026): tu frase y los emblemas que elegiste (con tu sesión), lo público de un perfil
+  // —su frase, sus emblemas, su rol de DRA y lo que hizo en la página, en números— y quitar una frase reportada. Ver
+  // `perfilMio()`, `perfilExtra()` y `duenoFrase()` del objeto
+  '/avisos/perfil-mio': 'POST', '/avisos/perfil-extra': 'POST', '/avisos/dueno/frase': 'POST',
   // 🖼️ tu fondo (13/10/2026): subirlo y elegir dónde se ve (con tu sesión), los aprobados (cualquiera) y revisarlos (Dlx).
   // Ver `fondo()`, `fondos()` y `duenoFondo()`
   '/avisos/fondo': 'POST', '/avisos/mi-fondo': 'POST', '/avisos/fondos': 'GET', '/avisos/dueno/fondo': 'POST',
@@ -3261,6 +3265,32 @@ export const MARCOS = ['premium', 'plata', 'oro'];
 export const MARCO_ESTILOS = ['camiseta', 'cadena'];
 // 🏷️ las cartas que llevan TAG elegible (25/10/2026)
 export const TAG_CARTAS = ['temporada', 'competitivo', 'servidor', 'pais'];
+
+// 💬 LA FRASE DEL PERFIL (la tanda 2 del perfil, 27/10/2026; estaba en la maqueta B desde la v1: «su frase entre
+// comillas»). Hasta `FRASE_MAX` caracteres en una línea, con la regla de la descripción de una crew (`descCrew()`): sin
+// `<>`, sin menciones (@) y sin links —una frase no es un aviso ni una invitación a otro servidor—. `''` es «quitarla».
+// `null` si no vale. Se reporta con «Reportar usuario» y el Dashboard la quita (`duenoFrase()`)
+export const FRASE_MAX = 80;
+export function fraseValida(s) {
+  const t = String(s == null ? '' : s).normalize('NFC').replace(/\s+/g, ' ').trim();
+  if (!t) return '';
+  if (t.length < 2 || t.length > FRASE_MAX) return null;
+  if (/[<>@]/.test(t) || /(https?:|www\.|discord\.gg|\.(com|gg|net|org|ly|io)\b)/i.test(t)) return null;
+  return t;
+}
+// 🔰 los emblemas que cada uno elige para que se vean al lado de su nombre (los cinco de `VISIBLES` en emblemas.jsx): los ids
+// del catálogo de la página. El objeto sólo mira la forma; la página muestra los que de verdad tiene
+export const EMBLEMAS_MAX = 5;
+export function emblemasValidos(xs) {
+  if (!Array.isArray(xs)) return null;
+  const out = [...new Set(xs.map(String))].slice(0, EMBLEMAS_MAX);
+  return out.every((x) => /^[a-z]{2,12}$/.test(x)) ? out : null;
+}
+// 🏷️ EL ROL DE DRA (Freestyler, Rapero, M.C…): el que eligió cada uno al entrar a DRA, en su perfil. Lo manda el ciclo en el
+// directorio (`bot/roles.py`, `dra`); sólo estos nombres, así nada que no sea un rol de DRA llega a la página
+export const ROLES_DRA = ['Freestyler', 'M.C', 'Rapero', 'Artista', 'Productor', 'Fanático'];
+// 📅 lo que hizo en la página que entra en «Lo último» de su perfil: los últimos `ULTIMO_DIAS` días
+export const ULTIMO_DIAS = 14;
 /** El mejor marco de una lista `['t1:premium', 't1:oro']`: el de más nivel y, a igual nivel, el de la temporada más nueva */
 export function mejorMarco(xs) {
   return (xs || []).slice().sort((a, b) => (MARCOS.indexOf(b.split(':')[1]) - MARCOS.indexOf(a.split(':')[1])) || (b < a ? -1 : 1))[0] || '';
@@ -4814,6 +4844,37 @@ export async function rutaAvisos(req, env, ruta) {
       headers: { 'content-type': 'application/json' },
     });
   }
+  // 👤 TU FRASE Y TUS EMBLEMAS A LA VISTA (la tanda 2 del perfil, 27/10/2026): quién es lo dice Discord o la sesión, y tu
+  // perfil sale de `d:` —sólo los verificados tienen un perfil que se edita—. Ver `perfilMio()`
+  if (ruta === '/avisos/perfil-mio') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))
+        || (d.frase !== undefined && (typeof d.frase !== 'string' || d.frase.length > 300))
+        || (d.emb !== undefined && emblemasValidos(d.emb) === null)) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    let de = '';
+    try { de = (await env.KV.get('d:' + q.id)) || ''; } catch (e) { de = ''; }
+    if (!claveValida(de)) return json({ error: 'sin_verificar' }, 403);
+    return elObjeto(env).fetch('https://avisos/perfil-mio', {
+      method: 'POST', body: JSON.stringify({ quien: q.id, de, frase: d.frase, emb: d.emb }),
+      headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 👤 lo público de un perfil, por su clave (sin cuenta). Ver `perfilExtra()`
+  if (ruta === '/avisos/perfil-extra') {
+    const crudo = await req.text();
+    if (crudo.length > 256) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || !claveValida(String(d.k || ''))) return json({ error: 'faltan datos' }, 400);
+    return elObjeto(env).fetch('https://avisos/perfil-extra', {
+      method: 'POST', body: JSON.stringify({ k: String(d.k) }), headers: { 'content-type': 'application/json' },
+    });
+  }
   // 🙈 «OCULTAR MI FOTO»: como «tu servidor», quién es lo dice Discord (o la sesión). Ver `miFoto()`
   if (ruta === '/avisos/mi-foto') {
     const crudo = await req.text();
@@ -5169,6 +5230,24 @@ export async function rutaAvisos(req, env, ruta) {
     return elObjeto(env).fetch('https://avisos/dueno-fondo', {
       method: 'POST', body: JSON.stringify({ quien: String(d.quien), si: d.si, motivo: String(d.motivo || '').slice(0, 120), por: q.id }),
       headers: { 'content-type': 'application/json' },
+    });
+  }
+  // 🚩 QUITAR UNA FRASE REPORTADA (la tanda 2 del perfil): quien puede cerrar reportes
+  if (ruta === '/avisos/dueno/frase') {
+    const crudo = await req.text();
+    if (crudo.length > 1024) return json({ error: 'demasiado grande' }, 413);
+    let d = null;
+    try { d = JSON.parse(crudo || '{}'); } catch (e) { d = null; }
+    if (!d || typeof d !== 'object' || (d.token && !/^[A-Za-z0-9._-]{10,300}$/.test(String(d.token)))
+        || !claveValida(String(d.k || ''))) return json({ error: 'faltan datos' }, 400);
+    const q = await quienPide(req, env, d);
+    if (!q.id) return json({ error: q.error }, q.estado);
+    if (!(await puede(q.id, 'reportes'))) {
+      console.warn('[seguridad] quitar una frase lo pidió alguien que no puede');
+      return json({ error: 'no' }, 403);
+    }
+    return elObjeto(env).fetch('https://avisos/dueno-frase', {
+      method: 'POST', body: JSON.stringify({ k: String(d.k), por: q.id }), headers: { 'content-type': 'application/json' },
     });
   }
   // 🏷️ LOS ROLES QUE SALEN SOLOS: del ciclo, con su clave
@@ -5962,6 +6041,14 @@ export class Avisos {
         "estilo TEXT NOT NULL DEFAULT 'camiseta', t INTEGER NOT NULL)");
       // 🃏 la carta que cada uno elige como principal (26/10/2026): ver `cartaPrincipal()`
       this.sql.exec('CREATE TABLE IF NOT EXISTS carta_principal (quien TEXT PRIMARY KEY, carta TEXT NOT NULL, t INTEGER NOT NULL)');
+      // 👤 LA TANDA 2 DEL PERFIL (27/10/2026): su frase y los emblemas que eligió para que se vean (`emb`, JSON), con la
+      // clave del perfil de cuando lo guardó (`k`). Ver `perfilMio()` y `perfilExtra()`
+      this.sql.exec("CREATE TABLE IF NOT EXISTS perfil_mio (quien TEXT PRIMARY KEY, k TEXT NOT NULL DEFAULT '', " +
+        "frase TEXT NOT NULL DEFAULT '', emb TEXT NOT NULL DEFAULT '[]', t INTEGER NOT NULL)");
+      // 👏 los aplausos que RECIBIÓ cada publicación, para siempre (el emblema Aplausos): `aplausos` se borra a los 21 días,
+      // así que antes de borrar se guarda acá cuántos llegó a tener (`guardarAplausosRec()`). `ks`: de quién es (JSON)
+      this.sql.exec("CREATE TABLE IF NOT EXISTS aplausos_rec (id TEXT PRIMARY KEY, ks TEXT NOT NULL DEFAULT '[]', " +
+        'n INTEGER NOT NULL DEFAULT 0)');
       // 🖼️ las cartas con su marco en la imagen (26/10/2026): ver `marcosEnImagen()` y bot/con_marco.py
       this.sql.exec('CREATE TABLE IF NOT EXISTS marco_img (k TEXT PRIMARY KEY, firma TEXT NOT NULL, cartas TEXT NOT NULL, t INTEGER NOT NULL)');
       // ⚡ el redibujo a pedido (26/10/2026): ver `pedirRedibujo()`
@@ -6599,6 +6686,10 @@ export class Avisos {
       if (ruta === '/marcos') return json(this.marcosDe(String(d.quien || '')));
       if (ruta === '/marco-elige') { const v = this.marcoElige(d); await this.redibujoYa(v); return json(v, v.error ? 400 : 200); }
       if (ruta === '/carta-principal') { const v = this.cartaPrincipal(d); return json(v, v.error ? 400 : 200); }
+      // 👤 la tanda 2 del perfil (27/10/2026): tu frase y tus emblemas a la vista, lo público de un perfil, y quitar una frase
+      if (ruta === '/perfil-mio') { const v = this.perfilMio(d); return json(v, v.error ? (v.estado || 400) : 200); }
+      if (ruta === '/perfil-extra') { const v = this.perfilExtra(String((d && d.k) || '')); return json(v, v.error ? 400 : 200, 60); }
+      if (ruta === '/dueno-frase') { const v = this.duenoFrase(d); return json(v, v.error ? 400 : 200); }
       if (ruta === '/tags-mios') return json(this.tagsMios(String(d.quien || '')));
       if (ruta === '/tag-elige') { const v = this.tagElige(d); await this.redibujoYa(v); return json(v, v.error ? 400 : 200); }
       if (ruta === '/tags-ciclo') { const v = this.tagsCiclo(d); return json(v, v.error ? 400 : 200); }
@@ -6962,6 +7053,7 @@ export class Avisos {
       this.sql.exec('DELETE FROM pase_vivo WHERE t < ?', ahora - 14 * 24 * HORA);
       // 👏 los aplausos, con su publicación: para entonces ya salió del muro (21 días)
       const viejo = ahora - APLAUSOS_DIAS * DIA_MS;
+      this.guardarAplausosRec();
       this.sql.exec('DELETE FROM aplausos WHERE t < ? OR id IN (SELECT id FROM aplaudidas WHERE primero < ?)', viejo, viejo);
       this.sql.exec('DELETE FROM aplaudidas WHERE primero < ?', viejo);
       // 🔔 y la bandeja de cada uno: 30 días
@@ -10143,10 +10235,14 @@ export class Avisos {
       for (const [r, svs] of Object.entries(x.a || {})) {
         if (ORDEN_ROLES.includes(r)) a[r] = (Array.isArray(svs) ? svs : []).slice(0, 10).map((s) => String(s).slice(0, 8));
       }
-      return { k: x.k, n: String(x.n || '').slice(0, 60), id: String(x.id), a };
+      const p = { k: x.k, n: String(x.n || '').slice(0, 60), id: String(x.id), a };
+      // 🏷️ su rol de DRA (la tanda 2 del perfil): sólo uno de `ROLES_DRA`
+      if (ROLES_DRA.includes(x.dra)) p.dra = x.dra;
+      return p;
     });
     this.guardar('roles_dir', { t: Date.now(), dir });
     this._roles = null;
+    this._pex = null;
     return { ok: true, n: dir.length };
   }
 
@@ -13045,6 +13141,135 @@ export class Avisos {
       }
     } catch (e) { /* sin elegir: lo de siempre */ }
     return out;
+  }
+
+  // ── 👤 la tanda 2 del perfil (27/10/2026) ───────────────────────────
+  /** Las cuentas detrás de una clave de perfil: las temporadas en que jugó con ella y su cuenta (`idk`); el dueño, siempre */
+  cuentasDeClave(k) {
+    const ids = new Set(this.sql.exec('SELECT quien FROM jugo_temp WHERE k = ?', k).toArray().map((r) => r.quien));
+    for (const r of this.sql.exec('SELECT id FROM idk WHERE k = ?', k).toArray()) ids.add(r.id);
+    if (k === DUENO_K) ids.add(DUENO);
+    return [...ids].filter((x) => /^[0-9]{5,25}$/.test(x));
+  }
+
+  /**
+   * 💬 TU FRASE Y TUS EMBLEMAS A LA VISTA (`/avisos/perfil-mio`, con tu sesión y verificado: el perfil es el de `d:`).
+   * Sin `frase` ni `emb`, sólo dice lo que tienes. La frase cambia como mucho `FRASE_POR_DIA` veces por día
+   */
+  perfilMio(d) {
+    const quien = String((d && d.quien) || ''), k = String((d && d.de) || '');
+    if (!/^[0-9]{5,25}$/.test(quien) || !claveValida(k)) return { error: 'faltan datos' };
+    const antes = this.sql.exec('SELECT frase, emb FROM perfil_mio WHERE quien = ?', quien).toArray()[0] || { frase: '', emb: '[]' };
+    let frase = antes.frase, emb = [];
+    try { emb = JSON.parse(antes.emb) || []; } catch (e) { emb = []; }
+    let cambio = false;
+    if (d.frase !== undefined) {
+      const f = fraseValida(d.frase);
+      if (f === null) return { error: 'frase', max: FRASE_MAX };
+      if (f !== frase) {
+        if (!this.cuentaCambio(quien, 'frase', 10)) return { error: 'tope', estado: 429 };
+        frase = f;
+        cambio = true;
+      }
+    }
+    if (d.emb !== undefined) {
+      const e = emblemasValidos(d.emb);
+      if (e === null) return { error: 'emb' };
+      emb = e;
+      cambio = true;
+    }
+    if (cambio) {
+      this.sql.exec('INSERT INTO perfil_mio (quien, k, frase, emb, t) VALUES (?, ?, ?, ?, ?) ON CONFLICT(quien) DO UPDATE SET ' +
+        'k = excluded.k, frase = excluded.frase, emb = excluded.emb, t = excluded.t', quien, k, frase, JSON.stringify(emb), Date.now());
+      this._pex = null;
+    }
+    return { ok: true, k, frase, emb, max: FRASE_MAX, emb_max: EMBLEMAS_MAX };
+  }
+
+  /** 👏 Antes de borrar los aplausos viejos, cuántos llegó a tener cada publicación (el emblema Aplausos es para siempre) */
+  guardarAplausosRec() {
+    try {
+      this.sql.exec('INSERT INTO aplausos_rec (id, ks, n) SELECT a.id, p.ks, COUNT(*) FROM aplausos a JOIN aplaudidas p ON p.id = a.id ' +
+        'WHERE true GROUP BY a.id ON CONFLICT(id) DO UPDATE SET n = MAX(aplausos_rec.n, excluded.n), ks = excluded.ks');
+    } catch (e) { /* sin aplausos: nada que guardar */ }
+  }
+
+  /**
+   * 👤 LO PÚBLICO DE UN PERFIL (`/avisos/perfil-extra`, sin cuenta): `{k, fr, em, dra, apl, voz, act}`.
+   * · `fr` su frase y `em` los emblemas que eligió para que se vean;
+   * · `dra` su rol de DRA (Freestyler, Rapero…), del directorio del ciclo;
+   * · `apl` las felicitaciones que recibieron sus publicaciones (todas, también las que ya se borraron: `aplausos_rec`) y
+   *   `voz` en cuántos meses votó en los MES AWARDS: los dos emblemas que no tenían dato;
+   * · `act`, LO QUE HIZO EN LA PÁGINA los últimos `ULTIMO_DIAS` días, para «Lo último» (Dlx, a la v10 del perfil: «sí
+   *   cuenta» felicitar, seguir, votar): `[[qué, cuántos, cuándo el último, nivel]]`. ⚠️ SÓLO CUÁNTOS, NUNCA A QUIÉN NI
+   *   QUÉ: a quién sigues, a quién felicitaste y qué votaste no son públicos en ningún lado de la Liga, y acá tampoco.
+   * Por clave de perfil, nunca por cuenta, con un minuto de memoria
+   */
+  perfilExtra(k) {
+    if (!claveValida(k)) return { error: 'faltan datos' };
+    if (!this._pex || Date.now() - this._pex.t > 60000) this._pex = { t: Date.now(), m: new Map() };
+    if (this._pex.m.has(k)) return this._pex.m.get(k);
+    const ids = this.cuentasDeClave(k);
+    const out = { k, fr: '', em: [], dra: '', apl: 0, voz: 0, act: [] };
+    const p = ((this.leer('roles_dir') || {}).dir || []).find((x) => x.k === k && x.dra);
+    if (p) out.dra = p.dra;
+    if (ids.length) {
+      const q = ids.map(() => '?').join(',');
+      const pm = this.sql.exec('SELECT frase, emb FROM perfil_mio WHERE quien IN (' + q + ') ORDER BY t DESC LIMIT 1', ...ids).toArray()[0];
+      if (pm) {
+        out.fr = pm.frase || '';
+        try { out.em = JSON.parse(pm.emb) || []; } catch (e) { out.em = []; }
+      }
+      // 🗳️ Voz del pueblo: los meses distintos en que votó en los MES AWARDS (`mes:AAAA-MM:categoría`)
+      const meses = new Set();
+      for (const r of this.sql.exec("SELECT enc FROM votos WHERE quien IN (" + q + ") AND enc LIKE 'mes:%'", ...ids).toArray()) {
+        const m = String(r.enc).split(':')[1] || '';
+        if (/^\d{4}-\d{2}$/.test(m)) meses.add(m);
+      }
+      out.voz = meses.size;
+      const desde = Date.now() - ULTIMO_DIAS * DIA_MS;
+      const una = (que, sql, ...args) => {
+        const r = this.sql.exec(sql, ...ids, ...args).toArray()[0];
+        if (r && r.n) out.act.push([que, r.n, r.t]);
+      };
+      una('fel', 'SELECT COUNT(*) AS n, MAX(t) AS t FROM aplausos WHERE quien IN (' + q + ') AND t > ?', desde);
+      una('sigue', 'SELECT COUNT(*) AS n, MAX(t) AS t FROM sigue WHERE quien IN (' + q + ') AND t > ?', desde);
+      una('mes', "SELECT COUNT(DISTINCT substr(enc, 1, 11)) AS n, MAX(t) AS t FROM votos WHERE quien IN (" + q + ") AND t > ? AND enc LIKE 'mes:%'", desde);
+      una('enc', "SELECT COUNT(*) AS n, MAX(t) AS t FROM votos WHERE quien IN (" + q + ") AND t > ? AND enc NOT LIKE 'mes:%'", desde);
+      una('liga', 'SELECT COUNT(*) AS n, MAX(t) AS t FROM liga_voto WHERE quien IN (' + q + ') AND t > ?', desde);
+      una('vivo', 'SELECT COUNT(*) AS n, MAX(t) AS t FROM pase_vivo WHERE quien IN (' + q + ') AND t > ?', desde);
+      // 🎟️ el nivel más alto del Pase al que llegó en esos días (ya sale en Publicaciones: es público)
+      const h = this.sql.exec('SELECT MAX(nivel) AS n, MAX(t) AS t FROM pase_hito WHERE quien IN (' + q + ') AND t > ?', ...ids, desde).toArray()[0];
+      if (h && h.n) out.act.push(['pase', 1, h.t, h.n]);
+      out.act.sort((a, b) => b[2] - a[2]);
+    }
+    // 👏 las felicitaciones que recibió: las guardadas y las de ahora, la mayor de las dos por publicación
+    try {
+      const like = '%"' + k + '"%';
+      const r = this.sql.exec('SELECT SUM(n) AS n FROM (SELECT r.id, MAX(r.n, COALESCE(l.c, 0)) AS n FROM aplausos_rec r ' +
+        'LEFT JOIN (SELECT id, COUNT(*) AS c FROM aplausos GROUP BY id) l ON l.id = r.id WHERE r.ks LIKE ? ' +
+        'UNION ALL SELECT p.id, COUNT(*) AS n FROM aplausos a JOIN aplaudidas p ON p.id = a.id WHERE p.ks LIKE ? ' +
+        'AND p.id NOT IN (SELECT id FROM aplausos_rec) GROUP BY p.id)', like, like).toArray()[0];
+      out.apl = (r && r.n) || 0;
+    } catch (e) { out.apl = 0; }
+    if (this._pex.m.size > 300) this._pex.m.clear();
+    this._pex.m.set(k, out);
+    return out;
+  }
+
+  /** 🚩 QUITAR UNA FRASE (`/avisos/dueno/frase`, desde un reporte en el Dashboard): la de todas las cuentas de esa clave */
+  duenoFrase(d) {
+    const k = String((d && d.k) || '');
+    if (!claveValida(k)) return { error: 'faltan datos' };
+    const ids = this.cuentasDeClave(k);
+    let n = 0;
+    for (const id of ids) n += this.sql.exec("UPDATE perfil_mio SET frase = '', t = ? WHERE quien = ? AND frase != ''", Date.now(), id).rowsWritten || 0;
+    // y por la clave que tenía al guardarla, por si cambió de perfil
+    n += this.sql.exec("UPDATE perfil_mio SET frase = '', t = ? WHERE k = ? AND frase != ''", Date.now(), k).rowsWritten || 0;
+    const h = [{ k, por: this.nombrePor(d.por), t: Date.now() }].concat(this.leer('frases_hist') || []).slice(0, 40);
+    this.guardar('frases_hist', h);
+    this._pex = null;
+    return { ok: true, quitadas: n };
   }
 
   /** 🏷️ Elegir el TAG de una carta (`/avisos/tag-elige`, con tu sesión): uno que tengas, un título tuyo o `auto` */

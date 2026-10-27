@@ -9,8 +9,10 @@
 // · Los que suma Dlx a la v10 («me gusta»): Líder de crew, Coleccionista, Aplausos, Embajador y Promotor.
 //
 // ⚠️ SALEN DE LO QUE LA PÁGINA YA TIENE: sus eventos, su verificación, su Pase, su racha, sus seguidores, su crew, sus
-// tarjetas, sus promos y sus roles. Los que todavía no tienen dato (Aplausos, Embajador, Voz del pueblo) van en «Para
-// desbloquear» con lo que piden, y se encienden solos el día que su número viaje.
+// tarjetas, sus promos y sus roles. Desde la tanda 2 del perfil (27/10/2026) también Aplausos (las felicitaciones que
+// recibió, guardadas para siempre) y Voz del pueblo (los meses que votó en los MES AWARDS), de `perfilExtra()` del objeto.
+// Embajador sigue sin dato —la Liga no anota quién invitó a quién— y queda en «Para desbloquear» hasta que lo tenga.
+// 👁️ Y CADA UNO ELIGE CUÁLES SE VEN al lado de su nombre (hasta `VISIBLES`): sin elegir, los cinco de más nivel.
 import { useEffect, useState } from 'react';
 import { Ico } from './piezas.jsx';
 
@@ -107,7 +109,8 @@ export function emblemasDe(d) {
   for (const r of d.roles || []) if (POR_ID[r] && !POR_ID[r][4]) uno(r);
   if (d.vd === 'pre') uno('fundador');
   if (d.crewRol === 'lider') uno('lider');
-  const val = { antig: d.dias, pase: d.pase, racha: d.racha, seguidores: d.seg, coleccion: d.cartas, promotor: d.promos };
+  const val = { antig: d.dias, pase: d.pase, racha: d.racha, seguidores: d.seg, coleccion: d.cartas, promotor: d.promos,
+    aplausos: d.aplausos, voz: d.voz };
   for (const [id, v] of Object.entries(val)) {
     const e = POR_ID[id];
     if (v == null || !e) continue;
@@ -115,7 +118,12 @@ export function emblemasDe(d) {
     if (t >= 0) out.push({ id, g: e[1], n: e[2], que: e[3], esc: e[4], u: e[5], t, v });
   }
   const orden = (x) => (x.unico ? -100 : x.esc ? -x.t : -50);
-  return out.sort((a, b) => orden(a) - orden(b));
+  out.sort((a, b) => orden(a) - orden(b));
+  // 👁️ los que eligió, primero y en su orden (sólo los que de verdad tiene)
+  const ele = (d.elegidos || []).filter((id) => out.some((x) => x.id === id)).slice(0, VISIBLES);
+  if (!ele.length) return out;
+  for (const x of out) x.ele = ele.includes(x.id);
+  return out.sort((a, b) => (ele.includes(b.id) - ele.includes(a.id)) || (ele.indexOf(a.id) - ele.indexOf(b.id)));
 }
 
 // los que le faltan, con lo que pide el primero
@@ -128,19 +136,24 @@ export function faltanDe(tiene) {
 export const VISIBLES = 5;
 export function PildoraEmblemas({ xs, onAbrir }) {
   if (!xs.length) return null;
-  const mas = xs.length - VISIBLES;
+  // si eligió cuáles se ven, sólo ésos; el resto, en «+N»
+  const nEle = xs.filter((x) => x.ele).length;
+  const ver = nEle ? nEle : VISIBLES;
+  const mas = xs.length - ver;
   return (
     <button type="button" className="emb-pild" onClick={() => onAbrir(xs[0].id)}
       aria-label={'Sus emblemas: ' + xs.map((x) => x.n).join(', ')}>
-      {xs.slice(0, VISIBLES).map((x) => <span key={x.id} title={x.n}><Arte g={x.g} t={x.t} px={30} unico={x.unico} rol={x.rol} /></span>)}
+      {xs.slice(0, ver).map((x) => <span key={x.id} title={x.n}><Arte g={x.g} t={x.t} px={30} unico={x.unico} rol={x.rol} /></span>)}
       {mas > 0 ? <i className="emb-mas">+{mas}</i> : null}
     </button>
   );
 }
 
 // 🪟 el panel, como el de Discord: la grilla, el elegido grande, su progreso y su escalera, y lo que falta
-export function PanelEmblemas({ xs, sel0, nombre, esYo, onCerrar }) {
+export function PanelEmblemas({ xs, sel0, nombre, esYo, onCerrar, onElegir }) {
   const [sel, setSel] = useState(sel0 || (xs[0] && xs[0].id));
+  const [msg, setMsg] = useState('');
+  const ele = xs.filter((x) => x.ele).map((x) => x.id);
   useEffect(() => {
     const f = (e) => { if (e.key === 'Escape') onCerrar(); };
     window.addEventListener('keydown', f);
@@ -152,6 +165,14 @@ export function PanelEmblemas({ xs, sel0, nombre, esYo, onCerrar }) {
   const de = e && e.esc ? e.esc[e.t][0] : 0;
   const pct = sig ? Math.max(3, Math.min(100, Math.round((100 * (e.v - de)) / Math.max(1, sig[0] - de)))) : 100;
   const falta = sig ? sig[0] - e.v : 0;
+  // 👁️ elegir si se ve al lado de tu nombre (sólo en tu perfil): hasta `VISIBLES`
+  const esta = e && ele.includes(e.id);
+  const alternar = () => {
+    if (!e || !onElegir) return;
+    if (!esta && ele.length >= VISIBLES) { setMsg('Ya elegiste ' + VISIBLES + ': saca uno para poner otro.'); return; }
+    setMsg('Guardando…');
+    Promise.resolve(onElegir(esta ? ele.filter((x) => x !== e.id) : [...ele, e.id])).then((err) => setMsg(err || ''));
+  };
   return (
     <div className="emb-velo" role="presentation" onClick={onCerrar}>
       <div className="emb-panel" role="dialog" aria-modal="true" aria-label={'Los emblemas de ' + nombre} onClick={(ev) => ev.stopPropagation()}>
@@ -159,10 +180,11 @@ export function PanelEmblemas({ xs, sel0, nombre, esYo, onCerrar }) {
         <div className="emb-izq">
           <h3>{esYo ? 'Tus emblemas' : 'Los emblemas de ' + nombre}</h3>
           <p>Son de {esYo ? 'tu' : 'su'} cuenta en Under Legends, no de la competencia (eso son {esYo ? 'tus' : 'sus'} logros). Toca uno.</p>
+          {esYo && onElegir ? <p className="emb-ele-n">{ele.length ? (ele.length === 1 ? 'Al lado de tu nombre se ve el que elegiste (●).' : 'Al lado de tu nombre se ven los ' + ele.length + ' que elegiste (●).') : 'Al lado de tu nombre se ven los de más nivel. Toca uno y elige si se ve.'}</p> : null}
           <div className="emb-grid">
             {xs.map((x) => (
               <button key={x.id} type="button" className={'emb-c' + (x.id === (e && e.id) ? ' on' : '')} aria-pressed={x.id === (e && e.id)}
-                onClick={() => setSel(x.id)} title={x.n}><Arte g={x.g} t={x.t} px={34} unico={x.unico} rol={x.rol} /></button>
+                onClick={() => setSel(x.id)} title={x.n}><Arte g={x.g} t={x.t} px={34} unico={x.unico} rol={x.rol} />{x.ele ? <i className="emb-ele" aria-label="se ve al lado del nombre" /> : null}</button>
             ))}
           </div>
           {faltan.length ? <>
@@ -177,6 +199,11 @@ export function PanelEmblemas({ xs, sel0, nombre, esYo, onCerrar }) {
             <Arte g={e.g} t={e.t} px={96} unico={e.unico} rol={e.rol} />
             <h4>{e.n}{e.esc ? ' · ' + TIER[e.t][0] : ''}</h4>
             <p className="emb-sub">{e.que}</p>
+            {esYo && onElegir ? <>
+              <button type="button" className={'btn chico ' + (esta ? 'borde2' : 'verde')} aria-pressed={esta} onClick={alternar}>
+                {esta ? 'Quitar de al lado de mi nombre' : 'Mostrar al lado de mi nombre'}</button>
+              {msg ? <small className="emb-ele-m" role="status">{msg}</small> : null}
+            </> : null}
             {e.esc ? (
               <div className="emb-prog">
                 <div className="emb-pt"><small>{esYo ? 'TU PROGRESO' : 'SU PROGRESO'}</small>

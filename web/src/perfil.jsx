@@ -23,6 +23,8 @@ import * as RQ from './requisitos.js';
 import { Cartas, Pub, useAplausos } from './publicaciones.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { crewDe, useCrews } from './crews.js';
+import { errorPerfilTx, guardarPerfilMio, usePerfilExtra } from './perfil_extra.js';
+import { FraseEditor } from './frase.jsx';
 import { CrewsParaVos, InvitarACrew, RolCrew } from './crewpanel.jsx';
 import CSS_PAGINA from './css/perfil.css?inline';
 import { usarCss } from './css.js';
@@ -226,7 +228,7 @@ function ReportarUsuario({ k, nombre, dc, onCerrar }) {
 // activar el numeral en X servidores, o activarlo generalmente, o desactivarlo»). El «#N» de tu apodo en Discord, en
 // todos los servidores, en ninguno o de a uno —lo mismo que `/numeral`, que es de a un servidor—, y los atajos a lo
 // demás tuyo. Lo guarda el Worker (`numeralPagina()`) y lo aplica el ciclo en su próxima vuelta
-function AjustesPerfil({ onCerrar, onEmblemas }) {
+function AjustesPerfil({ k, onCerrar, onEmblemas }) {
   const [est, setEst] = useState(null);
   const [va, setVa] = useState(false);
   const [elegir, setElegir] = useState(false);
@@ -255,6 +257,12 @@ function AjustesPerfil({ onCerrar, onEmblemas }) {
       <div className="pf8-aviso pf8-aj" role="dialog" aria-modal="true" aria-label="Ajustes de tu perfil" onClick={(e) => e.stopPropagation()}>
         <button type="button" className="emb-x" onClick={onCerrar} aria-label="Cerrar"><Ico n="cerrar" t={18} /></button>
         <h3>Ajustes de tu perfil</h3>
+        {/* 💬 tu frase entre comillas (la tanda 2 del perfil, 27/10/2026) */}
+        <section className="pf8-aj-s">
+          <h4>Tu frase</h4>
+          <p>Sale entre comillas debajo de tu nombre. Hasta 80 caracteres, sin links ni @.</p>
+          <FraseEditor k={k} />
+        </section>
         <section className="pf8-aj-s">
           <h4>Tu #N en el apodo</h4>
           <p>Tu puesto del Ranking Competitivo delante de tu apodo en Discord, por ejemplo «#21 | Tu nombre». Lo que elijas le gana a lo que diga cada servidor, y se aplica en la próxima vuelta del bot.</p>
@@ -406,7 +414,7 @@ function NumerosB({ liga, f, q }) {
   );
 }
 
-function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros }) {
+function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros, ex }) {
   const si = (liga.sigue || []).includes(k);
   const n0 = useSeguidores(k);
   const [si0, setSi0] = useState(si);
@@ -437,8 +445,10 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros }) {
   const [aj, setAj] = useState(false);
   useEffect(() => { setQe(''); setAviso(''); setRep(false); setAj(false); }, [k]);
   const q = (id) => <QueEsBoton k={id} abierto={qe === id} onToggle={() => setQe(qe === id ? '' : id)} />;
-  // 🏷️ el rol: el primero de los suyos (el que pone Dlx antes que los de Discord). El de DRA (Freestyler, Rapero…), cuando viaje
+  // 🏷️ el rol: el primero de los suyos (el que pone Dlx antes que los de Discord); y al lado, el que eligió al entrar a DRA
+  // (Freestyler, Rapero…: la tanda 2 del perfil, `perfilExtra()` del objeto)
   const rol = rls.length ? textoRol(rls[0]) : '';
+  const dra = (ex && ex.dra) || '';
   // 👥 la crew en su pastilla: la sigla siempre, el nombre se corta (Dlx, a la v8: «¿o el nombre de la crew es muy largo?»)
   const cn = cv ? cv.c.nombre : crew ? crew.crew : f.crew || '';
   const csig = (cv && cv.c.sigla) || cn.split(/\s+/).filter(Boolean).map((w) => w[0]).join('').slice(0, 4).toUpperCase();
@@ -451,7 +461,9 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros }) {
     }
     window.alternarSigo(k);
   };
-  const frase = p && p.fr ? <q className="pf8-frase">{p.fr}</q> : null;
+  // 💬 su frase entre comillas (la tanda 2 del perfil): la escribe cada uno en Tu cuenta o en los ajustes de su perfil
+  const fr = (ex && ex.fr) || (p && p.fr) || '';
+  const frase = fr ? <q className="pf8-frase">{fr}</q> : null;
   return (
     <>
     <div className={'escena pf8' + (fondoPf ? ' con-fondo' : '')} style={{ '--mo-c': (sv && sv.color) || '#E41373', '--mo-o': 0.85, '--mo-c2': '#29B298', ...silueta(sv && svE, sv && sv.color), ...(fondoPf ? { '--pf-fondo': fondoPf } : {}) }}>
@@ -475,6 +487,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros }) {
           </div>
           <p className="pf8-segs">
             {rol ? <span>{rol}</span> : null}
+            {dra ? <span title="Su rol en DRA">{dra} en DRA</span> : null}
             {f.cc ? <a href={'#/pais/' + f.cc}><Bandera cc={f.cc} cls="pf-flag" />{nombrePais(f.cc)}</a> : null}
             {svE ? <a href={'#/sv/' + siglaDe(svE)} title="Eligió este servidor"><img alt="" src={liga.logo(svE)} />{siglaDe(svE)}</a> : null}
             {nv ? <span title="Sube jugando, entrando cada día y con lo que hace en la Liga">Nivel {nv[0]}</span> : null}
@@ -506,7 +519,7 @@ function Cabeza({ liga, f, k, p, dc, esYo, onEmblemas, ems, numeros }) {
     {/* (afuera de la escena, que corta lo que se le sale) */}
     {aviso ? <AvisoVerificar cual={aviso} nombre={f.n} onCerrar={() => setAviso('')} /> : null}
     {rep ? <ReportarUsuario k={k} nombre={f.n} dc={dc} onCerrar={() => setRep(false)} /> : null}
-    {aj ? <AjustesPerfil onCerrar={() => setAj(false)} onEmblemas={() => onEmblemas('')} /> : null}
+    {aj ? <AjustesPerfil k={k} onCerrar={() => setAj(false)} onEmblemas={() => onEmblemas('')} /> : null}
     </>
   );
 }
@@ -552,20 +565,47 @@ function DeUnVistazo({ f, p }) {
 
 // ⚡ LO ÚLTIMO (Dlx, a la v1: «algo negro entre De un vistazo y Publicaciones… las 2 o 3 cosas recientes que hizo»):
 // sus tres eventos más nuevos, dichos como lo que hizo —campeón de, llegó a la final de, le ganó a—, con lo que sumó y su
-// llave. ⚠️ Dlx, a la v10, «sí cuenta» lo que hace en la página (felicitar, seguir, votar): eso entra cuando viaje
+// llave. Y desde la tanda 2 (27/10/2026) lo que hace en la página (Dlx, a la v10: «sí cuenta» felicitar, seguir, votar),
+// mezclado por fecha con lo que jugó (ver `ACT`)
 function cuandoFue(iso) {
   const d = haceDias(iso);
   return d === 'hoy' ? 'HOY' : d === 'ayer' ? 'ANOCHE' : fecha(iso);
 }
-function LoUltimo({ liga, p, e }) {
+// 🖱️ LO QUE HIZO EN LA PÁGINA (la tanda 2 del perfil, 27/10/2026), de `perfilExtra()`: sólo cuántos, nunca a quién ni qué
+// —a quién sigues, a quién felicitaste y qué votaste no son públicos en ningún lado de la Liga—. `[qué, cuántos, ms, nivel]`
+const pl = (n, uno, varios) => (n === 1 ? uno : n + ' ' + varios);
+const ACT = {
+  fel: ['👏', (n, yo) => (yo ? 'Felicitaste ' : 'Felicitó ') + pl(n, 'una publicación', 'publicaciones')],
+  sigue: ['⭐', (n, yo) => (yo ? 'Empezaste a seguir a ' : 'Empezó a seguir a ') + pl(n, 'un rapero', 'raperos')],
+  mes: ['🏆', (n, yo) => (yo ? 'Votaste' : 'Votó') + ' en los MES AWARDS'],
+  enc: ['🗳️', (n, yo) => (yo ? 'Votaste en ' : 'Votó en ') + pl(n, 'una encuesta', 'encuestas')],
+  liga: ['🗳️', (n, yo) => (yo ? 'Votaste' : 'Votó') + ' quién gana ' + pl(n, 'una liga', 'ligas')],
+  vivo: ['👀', (n, yo) => (yo ? 'Miraste ' : 'Miró ') + pl(n, 'una llave', 'llaves') + ' en vivo'],
+  pase: ['🎟️', (n, yo, nivel) => (yo ? 'Llegaste' : 'Llegó') + ' al nivel ' + nivel + ' del Pase'],
+};
+// ⚡ «las 2 o 3 cosas recientes que hizo» (Dlx, a la v1): tres en total, y de la página como mucho dos, así lo que jugó
+// no se va por haber felicitado (en la compu son tres columnas: con más, quedaba un hueco)
+const ULT_MAX = 3, ULT_PAGINA = 2;
+
+function LoUltimo({ liga, p, e, act, esYo }) {
   const ev = ((p && p.ev) || []).slice(0, 3);
   const du = (p && p.du) || [];
-  if (!ev.length) return null;
-  return (
-    <section className="sec pf-sec negra pf8-ult">
-      <div className="sec-t"><h2>Lo último</h2><span className="tj-n">lo que hizo</span></div>
-      <ol className="pf8-ult-l">
-        {ev.map(([n, puesto, pts]) => {
+  const pag = (act || []).filter((a) => ACT[a[0]]).slice(0, ULT_PAGINA);
+  if (!ev.length && !pag.length) return null;
+  const items = [];
+  for (const a of pag) {
+    const [ic, tx] = ACT[a[0]];
+    items.push({ t: a[2] || 0, el: (
+      <li key={'a-' + a[0]} className="pf8-ult-pag">
+        <time>{a[2] ? cuandoFue(new Date(a[2]).toISOString()) : ''}</time>
+        <span className="pf8-ult-ic" aria-hidden="true">{ic}</span>
+        <span className="pf8-ult-tx"><span>{tx(a[1], esYo, a[3])}</span><small>en la página</small></span>
+      </li>
+    ) });
+  }
+  ev.forEach(([n, puesto, pts]) => {
+    const x0 = (e || {})[n] || (e || {})[String(n)] || [];
+    items.push({ t: Date.parse(x0[2] || '') || 0, el: (() => {
           const x = (e || {})[n] || (e || {})[String(n)] || [];
           const nom = limpio(x[0] || 'Evento ' + n);
           const ds = du.filter((d) => d[0] === n);
@@ -586,8 +626,14 @@ function LoUltimo({ liga, p, e }) {
               <button type="button" className="pf8-ult-ll" onClick={() => accion.llave(String(n))}>Ver la llave</button>
             </li>
           );
-        })}
-      </ol>
+    })() });
+  });
+  // del más nuevo al más viejo; a igual instante, lo de la competencia primero
+  const ver = items.sort((a, b) => b.t - a.t).slice(0, ULT_MAX);
+  return (
+    <section className="sec pf-sec negra pf8-ult">
+      <div className="sec-t"><h2>Lo último</h2><span className="tj-n">{esYo ? 'lo que hiciste' : 'lo que hizo'}</span></div>
+      <ol className="pf8-ult-l">{ver.map((x) => x.el)}</ol>
     </section>
   );
 }
@@ -1429,7 +1475,7 @@ function Indice({ raiz }) {
 }
 
 // 🔰 sus emblemas, de lo que la página ya tiene (emblemas.jsx)
-function useEmblemas(f, k, p, e) {
+function useEmblemas(f, k, p, e, ex) {
   const nvs = useNiveles();
   const pa = usePaseDe(k);
   const rls = (useRoles() || {})[k] || [];
@@ -1446,6 +1492,7 @@ function useEmblemas(f, k, p, e) {
   return emblemasDe({
     dias, vd: p && p.vd, pase: pa ? pa.nivel : null, racha: nvs && nvs[k] ? nvs[k][1] : null, seg,
     crewRol: cv && cv.rol, cartas, promos, roles: rls.map((x) => x[0]),
+    aplausos: ex ? ex.apl : null, voz: ex ? ex.voz : null, elegidos: (ex && ex.em) || [],
   });
 }
 
@@ -1468,7 +1515,9 @@ export function Perfil({ liga, dc, k: k0, tab }) {
   const esYo = !!((dc && dc.clave === k) || (liga.yo && liga.yo.k === k));
   const p = (P && P.p && P.p[k]) || null;
   const t = SECCIONES.includes(tab) ? tab : '';
-  const ems = useEmblemas(f, k, p, P && P.e);
+  // 👤 su frase, sus emblemas elegidos, su rol de DRA y lo que hizo en la página (la tanda 2 del perfil)
+  const ex = usePerfilExtra(k);
+  const ems = useEmblemas(f, k, p, P && P.e, ex);
   const [emb, setEmb] = useState(null);
   useEffect(() => { setEmb(null); }, [k]);
   useEffect(() => { window.scrollTo(0, 0); }, [k]);
@@ -1533,12 +1582,14 @@ export function Perfil({ liga, dc, k: k0, tab }) {
       </section>
     );
   }
-  const panel = emb != null && ems.length ? <PanelEmblemas xs={ems} sel0={emb} nombre={limpio(f.n)} esYo={esYo} onCerrar={() => setEmb(null)} /> : null;
+  // 👁️ en tu perfil, elegir cuáles se ven al lado de tu nombre: devuelve el error para el panel, o nada
+  const elegir = esYo ? (ids) => guardarPerfilMio({ emb: ids }).then((j) => (j.error ? errorPerfilTx(j.error) : '')) : null;
+  const panel = emb != null && ems.length ? <PanelEmblemas xs={ems} sel0={emb} nombre={limpio(f.n)} esYo={esYo} onElegir={elegir} onCerrar={() => setEmb(null)} /> : null;
   // 🏷️ el staff que no compite: quién es y su rol, sin números ni tarjetas
   if (f.solo) {
     return (
       <>
-        <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} ems={ems} onEmblemas={(x) => setEmb(x || '')} numeros={false} />
+        <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} ems={ems} ex={ex} onEmblemas={(x) => setEmb(x || '')} numeros={false} />
         <section className="sec pf-sec"><p className="pronto-p">{esYo ? 'No jugaste eventos esta temporada: estás en la Liga por tu rol.' : 'No jugó eventos esta temporada: está en la Liga por su rol.'}</p></section>
         <SusLigas liga={liga} k={k} esYo={esYo} p={p} />
         <FichaJurado k={k} />
@@ -1555,7 +1606,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
   // `order` (las dos columnas son `display: contents` ahí)
   return (
     <div className="pf8-pag" ref={raiz}>
-      <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} ems={ems} onEmblemas={(x) => setEmb(x || '')} numeros />
+      <Cabeza liga={liga} f={f} k={k} p={p} dc={dc} esYo={esYo} ems={ems} ex={ex} onEmblemas={(x) => setEmb(x || '')} numeros />
       <div ref={abajo} />
       {P ? <Indice raiz={raiz} /> : null}
       {/* 🤝 en tu perfil y sin crew: las que te aceptan, debajo de la cabecera (sale sola sólo si estás verificado y sin
@@ -1566,7 +1617,7 @@ export function Perfil({ liga, dc, k: k0, tab }) {
         <div className="pf8-cuerpo">
           <div className="pf8-main">
             <div id="pf-videos" className="o1"><Videos liga={liga} p={p} k={k} esYo={esYo} dc={dc} /></div>
-            <div id="pf-ultimo" className="o4"><LoUltimo liga={liga} p={p} e={P.e} /></div>
+            <div id="pf-ultimo" className="o4"><LoUltimo liga={liga} p={p} e={P.e} act={ex && ex.act} esYo={esYo} /></div>
             <div id="pf-publicaciones" className="o5"><SusPublicaciones liga={liga} p={p} esYo={esYo} /><SusPromos liga={liga} p={p} esYo={esYo} /></div>
             <div id="pf-duelos" className="o7"><Duelos liga={liga} p={p} e={P.e} /></div>
             <div className="o7"><FichaJurado k={k} /></div>

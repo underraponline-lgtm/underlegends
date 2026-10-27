@@ -3582,3 +3582,14 @@ button.tb-yo.on{background:var(--inv);color:var(--inv-tinta);box-shadow:inset 0 
 .yo-menu a.inv{border-color:#29B298}
 .yo-menu a:focus-visible{outline:2px solid #29B298;outline-offset:1px}
 @media (hover: hover) and (pointer: fine){.yo-menu a:hover{background:#1C1C21}}
+
+/* 💬 el editor de tu frase (web/src/frase.jsx): en Tu cuenta y en los ajustes de tu perfil, sobre fondo claro u oscuro */
+.fr-ed{display:grid;gap:8px}
+.fr-ed-c{display:flex;align-items:center;gap:6px;padding:0 10px;border:1px solid color-mix(in srgb,currentColor 35%,transparent);border-radius:4px}
+.fr-ed-c span{font:900 20px/1 Archivo,sans-serif;opacity:.55}
+.fr-ed-c input{flex:1;min-width:0;padding:10px 0;border:0;background:none;color:inherit;font:italic 600 15px/1.3 Archivo,sans-serif;outline:none}
+.fr-ed-c:focus-within{border-color:currentColor}
+.fr-ed-b{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.fr-ed-b small{margin-right:auto;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;opacity:.7;font-variant-numeric:tabular-nums}
+.fr-ed-b small.mal{color:#E5484D;opacity:1}
+.fr-ed-e{margin:0;font-size:13px}
