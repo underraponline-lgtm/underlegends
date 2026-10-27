@@ -1007,10 +1007,10 @@
    "servidor": "70fbb8574a0b:99e0c0179dbe:0ab0a0"
   },
   "Makmah": {
-   "competitivo": "dcf6f047e56b:d6ce253b432a",
-   "pais": "d8d47186e7c3:263a27e40647",
-   "servidor": "382733741f69:99e0c0179dbe:3580af",
-   "temporada": "4a6919bab3c2:6ec1a5248de8"
+   "competitivo": "c8669ea3a809:0a48057cb351",
+   "pais": "6495dedb2abf:263a27e40647",
+   "servidor": "7f260e421d9b:99e0c0179dbe:3580af",
+   "temporada": "d0bbef5c2ff1:6ec1a5248de8"
   },
   "Malova": {
    "servidor": "671a7c56b92d:99e0c0179dbe:15af16"
@@ -1915,5 +1915,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-27T06:23:24+00:00"
+ "cuando": "2026-10-27T06:38:02+00:00"
 }
