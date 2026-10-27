@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-27T20:54:45+00:00",
+ "cuando": "2026-10-27T21:25:06+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -381,8 +381,8 @@
    "nombre": "FREESTYLE FOR ALL ESPECIAL 1.800 MIEMBROS Pandillas",
    "servidor": "FFA",
    "canal": "✦🏆—eventos",
-   "msg_id": "1564715417426206770",
-   "cuando": "2026-10-27T19:00:26",
+   "msg_id": "1564745349044633661",
+   "cuando": "2026-10-27T20:59:22",
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "LEWITO",
@@ -4174,7 +4174,7 @@
    "guild_id": "1467763447117778989",
    "organizador": "",
    "orgs": [],
-   "autor_h": "b30426e2616f0d12",
+   "autor_h": "a091e4492df659dd",
    "cupos_texto": "",
    "inscriptos": null,
    "cupo_total": null,
@@ -4184,7 +4184,7 @@
    "fecha": "[PRÓXIMAMENTE]",
    "premios": "",
    "staff": {},
-   "autor": "Suzuhara",
+   "autor": "Deleted User",
    "staff_cuentas": {},
    "categoria_id": "1511961628500037662"
   },
@@ -4198,7 +4198,7 @@
    "guild_id": "1467763447117778989",
    "organizador": "",
    "orgs": [],
-   "autor_h": "b30426e2616f0d12",
+   "autor_h": "a091e4492df659dd",
    "cupos_texto": "",
    "inscriptos": null,
    "cupo_total": null,
@@ -4208,7 +4208,7 @@
    "fecha": "[PRÓXIMAMENTE]",
    "premios": "",
    "staff": {},
-   "autor": "Suzuhara",
+   "autor": "Deleted User",
    "staff_cuentas": {},
    "categoria_id": "1511961628500037662"
   },
@@ -6705,43 +6705,6 @@
    "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
-   "nombre": "LIGA VENOM 1v1",
-   "servidor": "FDS",
-   "canal": "🎉╏eventos",
-   "msg_id": "1543752741099278436",
-   "cuando": "2026-08-30T22:42:15",
-   "canal_id": "1536569364659044402",
-   "guild_id": "1489848581203689535",
-   "organizador": "@Artezzy",
-   "orgs": [
-    {
-     "n": "Artezzy",
-     "id": "1435531540472795240"
-    }
-   ],
-   "autor_h": "d637fa8d09166f5f",
-   "cupos_texto": "0/8-16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "<t:1788705900:F>",
-   "fecha": "",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "Artezzy"
-    ]
-   },
-   "autor": "Artezzy",
-   "staff_cuentas": {
-    "Artezzy": "1435531540472795240"
-   },
-   "categoria_id": "1489848582189224103",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-27T01:46:02"
-  },
-  {
    "nombre": "WORLD OF FREE",
    "servidor": "LKR",
    "canal": "anuncios",
@@ -6780,6 +6743,60 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "familiafortunayexito 🇫🇷",
+   "quien": "yatusabe_eldeuxss",
+   "discord_id": "1338567692239765617",
+   "msg_id": "1564749803026653327",
+   "cuando": "2026-10-27T21:17:04"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Calíz 🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1564748468428341299",
+   "cuando": "2026-10-27T21:11:46"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "sosa🇺🇾",
+   "quien": "sosaatrz",
+   "discord_id": "1471153954254622774",
+   "msg_id": "1564747418388529173",
+   "cuando": "2026-10-27T21:07:36"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "sosa",
+   "quien": "sosaatrz",
+   "discord_id": "1471153954254622774",
+   "msg_id": "1564746841667403837",
+   "cuando": "2026-10-27T21:05:18"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Trot🇪🇸",
+   "quien": "eresmatrot",
+   "discord_id": "1347663033949880360",
+   "msg_id": "1564745478837375058",
+   "cuando": "2026-10-27T20:59:53"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "223 🇧🇫",
+   "quien": "ivanjajaa",
+   "discord_id": "639232575461654538",
+   "msg_id": "1564745347774029915",
+   "cuando": "2026-10-27T20:59:22"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42725,60 +42742,6 @@
    "discord_id": "1485505764452728874",
    "msg_id": "1548190842114547773",
    "cuando": "2026-09-12T04:37:40"
-  },
-  {
-   "servidor": "FVS",
-   "canal": "「📜」Inscripciones",
-   "texto": "Zignos",
-   "quien": "emekultra",
-   "discord_id": "1071185986366742630",
-   "msg_id": "1548122388049305681",
-   "cuando": "2026-09-12T00:05:40"
-  },
-  {
-   "servidor": "FVS",
-   "canal": "「📜」Inscripciones",
-   "texto": "snow",
-   "quien": "snowzzzzzzzz",
-   "discord_id": "1097714486795849748",
-   "msg_id": "1548115885644849184",
-   "cuando": "2026-09-11T23:39:49"
-  },
-  {
-   "servidor": "FVS",
-   "canal": "「📜」Inscripciones",
-   "texto": "Mco 🇦🇷",
-   "quien": "mcorap",
-   "discord_id": "1048744067313451050",
-   "msg_id": "1548107223518027869",
-   "cuando": "2026-09-11T23:05:24"
-  },
-  {
-   "servidor": "FVS",
-   "canal": "「📜」Inscripciones",
-   "texto": "Praiseriza",
-   "quien": "lein7426",
-   "discord_id": "1078792444080046271",
-   "msg_id": "1548103487101997059",
-   "cuando": "2026-09-11T22:50:33"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Crk🇲🇽",
-   "quien": "user_mic",
-   "discord_id": "559068959845122048",
-   "msg_id": "1548093388102828063",
-   "cuando": "2026-09-11T22:10:25"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Snx🇻🇪",
-   "quien": "ismel_0555",
-   "discord_id": "1458603256292053037",
-   "msg_id": "1548086258654249022",
-   "cuando": "2026-09-11T21:42:06"
   }
  ]
 }
