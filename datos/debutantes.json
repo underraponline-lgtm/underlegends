@@ -785,6 +785,17 @@
    "vence": "2026-10-22T01:41:57+00:00",
    "vencido": true
   },
+  "Miniboy:CL:": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-26T22:03:17+00:00",
+   "did": "",
+   "evento": "NOMBRE DE LA COMPETENCIA",
+   "n": 530,
+   "sv": "DDF",
+   "vence": "2026-11-02T22:03:17+00:00",
+   "vencido": false
+  },
   "Misterioso": {
    "avisado": "2026-10-18",
    "chat": "2026-10-18",

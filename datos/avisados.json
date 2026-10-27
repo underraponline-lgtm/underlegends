@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "f281da0d6f97c84f",
+  "firma": "42a936dd62b05b11",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -15936,7 +15936,7 @@
    "Tenor": 5
   },
   "fecha": "19/10",
-  "firma": "06efb097aa7b274c",
+  "firma": "b39af684c07af282",
   "msg": "1561761975514697891",
   "nombre": "FREESTYLE LEAGUE N3",
   "num": 488,
@@ -18438,7 +18438,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "048d44524dc92d31",
+  "firma": "6263754f1d87335a",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -18979,7 +18979,7 @@
    "Sin Limites": 21
   },
   "fecha": "22/10",
-  "firma": "4f68811b457deee6",
+  "firma": "19c31f3b8a8ea8b7",
   "msg": "1562845541493374976",
   "nombre": "__ LA ISLA DE OKINAWA V.3 __",
   "num": 498,
@@ -19212,7 +19212,7 @@
    "Zignos": 24
   },
   "fecha": "22/10",
-  "firma": "9703569fffde83d7",
+  "firma": "c2858c0ccfe79bf2",
   "msg": "1562967842851266610",
   "nombre": "__ SI NO SOS FOURBAR NO QUIERO NADA VOL.1 __",
   "num": 499,
@@ -19375,7 +19375,7 @@
    "PichulaMc": 41
   },
   "fecha": "22/10",
-  "firma": "5670a10b0e0de85d",
+  "firma": "1059442598eeaf3a",
   "msg": "1562977225790459957",
   "nombre": "19 (EDICIÓN FUTCARD VOL 4)",
   "num": 500,
@@ -20816,7 +20816,7 @@
    "VR": 4
   },
   "fecha": "23/10",
-  "firma": "b29e8cfbf02dd955",
+  "firma": "509f8e81a50614c1",
   "msg": "1563368240221257751",
   "nombre": "19 CUP FUTCARD EDICIÓN 5",
   "num": 505,
@@ -21230,7 +21230,7 @@
    "Shadow": 13
   },
   "fecha": "24/10",
-  "firma": "c7f44b59f7a2a0c7",
+  "firma": "238231b1c12d8ea6",
   "msg": "1563613115495489728",
   "nombre": "19 FUTCARD EDITION - 6 COMPE GAY",
   "num": 508,
@@ -22439,7 +22439,7 @@
    "Zekha": 4
   },
   "fecha": "25/10",
-  "firma": "e2ed89ac69535885",
+  "firma": "435a0d40e6a7c389",
   "msg": "1564056930748469309",
   "nombre": "REDBULL CREW ARGENTINA 2026",
   "num": 515,
@@ -22721,7 +22721,7 @@
    "doble h": 2
   },
   "fecha": "25/10",
-  "firma": "53993a027d0ce937",
+  "firma": "0ce50656136d304d",
   "msg": "1564072873163890759",
   "nombre": "__ AGUANTE EL ROJO Y EL BARCELONA Multiverse __",
   "num": 516,
@@ -24037,7 +24037,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "7a23054183562b48",
+  "firma": "30a6c6e5fb12f6b4",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -25011,6 +25011,7 @@
   "v": 2
  },
  "529": {
+  "al_dia": true,
   "antes": {
    "Artezzy": [
     87,
@@ -25237,6 +25238,7 @@
   "v": 2
  },
  "530": {
+  "al_dia": true,
   "antes": {
    "Calíz": [
     49,
@@ -25355,7 +25357,7 @@
    "Tam": 14
   },
   "fecha": "26/10",
-  "firma": "5782071ea3a27451",
+  "firma": "6cc70bbef17cde28",
   "msg": "1564439290107265104",
   "nombre": "NOMBRE DE LA COMPETENCIA",
   "num": 530,
@@ -25425,6 +25427,7 @@
   "v": 2
  },
  "531": {
+  "al_dia": true,
   "antes": {
    "Agus": [
     11,

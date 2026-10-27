@@ -6100,6 +6100,20 @@
     }
    }
   },
+  "Miniboy:CL:": {
+   "DDF": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 0,
+    "pts": 10000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Misterioso": {
    "DDF": {
     "duelos": "1/1",

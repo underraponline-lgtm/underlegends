@@ -3041,6 +3041,52 @@
     "DOS NOMBRES: «Jahno Melomaníaco» → «melomaniaco» · cuenta 653011056184000513"
    ],
    "escribio": {}
+  },
+  {
+   "id": "729ead9298",
+   "tipo": "Nombre desconocido",
+   "sec": "NOMBRE DE LA COMPETENCIA · DDF · 26/10 · #530",
+   "que": "¿Quién es «Miniboy:CL:»?",
+   "r": "Es Miniboy",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Miniboy: estaba en la llamada del evento con un nombre parecido",
+   "t": 1793068185227,
+   "filas": [
+    902
+   ],
+   "variantes": [
+    "Miniboy:CL:"
+   ],
+   "escribio": {
+    "alias": [
+     "Miniboy:CL:",
+     "Miniboy"
+    ],
+    "filas": [
+     320
+    ]
+   }
+  },
+  {
+   "id": "6a03978e5c",
+   "tipo": "Nombre desconocido",
+   "sec": "NOMBRE DE LA COMPETENCIA · DDF · 26/10 · #530",
+   "que": "¿Quién es «Wackmc🇪🇸»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1793068185227,
+   "filas": [
+    903
+   ],
+   "variantes": [
+    "Wackmc🇪🇸"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []
