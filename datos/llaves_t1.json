@@ -10048,7 +10048,7 @@
        "Yio"
       ],
       "Eclipsito, SOL, MAWS🇻🇪, Miniboy, Corvo",
-      "triple (12 bandas, pasan 5); también pasa: SOL🇵🇪 / MAWS🇻🇪 / miniboy / Corvo 🇧🇴"
+      "triple (12 bandas, pasan 5); también pasa: SOL🇵🇪 / MAWS🇻🇪 / Miniboy / Corvo 🇧🇴"
      ],
      [
       [
@@ -35721,6 +35721,133 @@
     "yinn",
     "Subcampeón",
     2500
+   ]
+  ]
+ },
+ "533": {
+  "dia": "2026-10-27",
+  "escala": "8-15",
+  "fecha": "27/10",
+  "links": [
+   "https://discord.com/channels/838593179187544064/838595860275003402/1564709089240551455"
+  ],
+  "n": 533,
+  "nombre": "- IRLANDA FREESTYLE -",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "EmiZor"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "MTZ",
+       "Mr.Kude"
+      ],
+      "MTZ",
+      ""
+     ],
+     [
+      [
+       "Dynoco",
+       "J.r"
+      ],
+      "Dynoco",
+      ""
+     ],
+     [
+      [
+       "Luck",
+       "Cinexfilo"
+      ],
+      "Luck",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "MTZ",
+       "Erian"
+      ],
+      "MTZ",
+      ""
+     ],
+     [
+      [
+       "Dynoco",
+       "Luck"
+      ],
+      "Dynoco",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Dynoco",
+       "MTZ"
+      ],
+      "Dynoco",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FRZ",
+  "tabla": [
+   [
+    "Dynoco",
+    "Campeón",
+    7500
+   ],
+   [
+    "MTZ",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Luck",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Cinexfilo",
+    "Cuartos",
+    2000
+   ],
+   [
+    "EmiZor",
+    "Cuartos",
+    2000
+   ],
+   [
+    "J.r",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mr.Kude",
+    "Cuartos",
+    2000
    ]
   ]
  }

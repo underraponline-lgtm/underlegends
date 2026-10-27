@@ -371,6 +371,15 @@
 "rg": "E",
 "c": []
 },
+"dynoco": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "dyzz": {
 "rg": "E",
 "c": [
@@ -475,15 +484,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"dynoco": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -674,6 +674,13 @@
 "temporada"
 ]
 },
+"mtz": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "juasmio": {
 "rg": "",
 "c": [
@@ -782,13 +789,6 @@
 "temporada"
 ]
 },
-"mtz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "prosu": {
 "rg": "",
 "c": [
@@ -864,7 +864,7 @@
 "c": []
 },
 "emizor": {
-"rg": "",
+"rg": "E",
 "c": []
 },
 "pomberito": {
@@ -1010,6 +1010,13 @@
 "temporada"
 ]
 },
+"luck": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "ikonoxx": {
 "rg": "",
 "c": []
@@ -1028,13 +1035,6 @@
 "santi": {
 "rg": "",
 "c": []
-},
-"luck": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "sintext": {
 "rg": "",
@@ -2604,14 +2604,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-02T00:25:20Z",
-"quien": [
-"SHULIOT"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-02T02:40:30Z",
@@ -5944,6 +5936,15 @@
 "Kyss"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "rango",
+"t": "2026-10-27T20:02:56Z",
+"quien": [
+"EmiZor"
+],
+"rg": "E",
+"primero": true
 }
 ]
 }

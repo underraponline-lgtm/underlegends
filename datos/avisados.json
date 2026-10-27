@@ -26210,5 +26210,151 @@
    ]
   ],
   "v": 2
+ },
+ "533": {
+  "antes": {
+   "Cinexfilo": [
+    49,
+    65,
+    false
+   ],
+   "Dynoco": [
+    48,
+    64,
+    false
+   ],
+   "EmiZor": [
+    239,
+    120,
+    true
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "J.r": [
+    204,
+    506,
+    false
+   ],
+   "Luck": [
+    105,
+    151,
+    false
+   ],
+   "MTZ": [
+    82,
+    107,
+    false
+   ],
+   "Mr.Kude": [
+    368,
+    320,
+    true
+   ]
+  },
+  "canal": "838593179744731229",
+  "duelos": [
+   [
+    "Erian",
+    "EmiZor",
+    "Erian"
+   ],
+   [
+    "MTZ",
+    "Mr.Kude",
+    "MTZ"
+   ],
+   [
+    "Dynoco",
+    "J.r",
+    "Dynoco"
+   ],
+   [
+    "Luck",
+    "Cinexfilo",
+    "Luck"
+   ],
+   [
+    "MTZ",
+    "Erian",
+    "MTZ"
+   ],
+   [
+    "Dynoco",
+    "Luck",
+    "Dynoco"
+   ],
+   [
+    "Dynoco",
+    "MTZ",
+    "Dynoco"
+   ]
+  ],
+  "ev_antes": {
+   "Cinexfilo": 15,
+   "Dynoco": 14,
+   "EmiZor": 9,
+   "Erian": 54,
+   "J.r": 1,
+   "Luck": 5,
+   "MTZ": 7,
+   "Mr.Kude": 2
+  },
+  "fecha": "27/10",
+  "firma": "41fb94d5aebb46a7",
+  "msg": "1564725192360464586",
+  "nombre": "- IRLANDA FREESTYLE -",
+  "num": 533,
+  "participantes": 8,
+  "sello": {
+   "Dynoco": "c83f6b048b4b:6ec1a5248de8"
+  },
+  "sv": "FRZ",
+  "t": "2026-10-27T19:54:05Z",
+  "tabla": [
+   [
+    "Dynoco",
+    "Campeón",
+    7500
+   ],
+   [
+    "MTZ",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Luck",
+    "Semifinal",
+    3500
+   ],
+   [
+    "EmiZor",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mr.Kude",
+    "Cuartos",
+    2000
+   ],
+   [
+    "J.r",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Cinexfilo",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

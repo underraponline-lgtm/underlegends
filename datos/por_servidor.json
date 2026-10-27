@@ -1576,6 +1576,18 @@
      "fund": true
     }
    },
+   "FRZ": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "URBF": {
     "duelos": "2/4",
     "ev": 2,
@@ -2269,13 +2281,16 @@
     }
    },
    "FRZ": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 2000,
-    "racha": "0/0"
+    "duelos": "3/4",
+    "ev": 2,
+    "oro": 1,
+    "ovr": 47,
+    "pod": 1,
+    "pts": 9500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
    },
    "SR": {
     "duelos": "0/2",
@@ -2649,6 +2664,18 @@
     "pod": 0,
     "pts": 24406,
     "racha": "0/1"
+   },
+   "FRZ": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Emilio Alva": {
@@ -2738,13 +2765,13 @@
     }
    },
    "FRZ": {
-    "duelos": "2/3",
-    "ev": 1,
+    "duelos": "3/5",
+    "ev": 2,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 47,
     "pod": 1,
-    "pts": 5000,
-    "racha": "1/1",
+    "pts": 8500,
+    "racha": "0/1",
     "tg": {
      "fin": 1
     }
@@ -3742,6 +3769,18 @@
     "pod": 0,
     "pts": 938,
     "racha": "0/0"
+   },
+   "FRZ": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "J19": {
@@ -5132,6 +5171,18 @@
     "tg": {
      "nuevo": true
     }
+   },
+   "FRZ": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Luffy": {
@@ -5522,6 +5573,19 @@
     "racha": "0/1",
     "tg": {
      "fin": 1
+    }
+   },
+   "FRZ": {
+    "duelos": "2/3",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 5000,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
     }
    },
    "URBF": {
@@ -6287,6 +6351,18 @@
     "pod": 0,
     "pts": 4562,
     "racha": "0/1"
+   },
+   "FRZ": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Musicdum": {
