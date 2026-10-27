@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-10-27T00:41:27Z",
+ "cuando": "2026-10-27T01:29:44Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 508.1,
+ "dur_s": 1679.5,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 9.3
+   "s": 9.6
   },
   {
    "n": "2f2",
@@ -21,70 +21,78 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.6
+   "s": 8.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 22.6
+   "s": 250.1
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": false,
-   "s": 396.5
+   "s": 1340.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 10.4
+   "s": 10.5
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 59.2
+   "s": 58.7
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Artezzy"
+   "que": "03_Servidor/generar.py Adriagner"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py TøKīØ🦠🧠"
+   "que": "03_Servidor/generar.py Krish"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Partim"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Vandu"
   }
  ],
  "ultimo_evento": {
-  "n": "529",
-  "nombre": "GG SANGRERAP 6",
-  "sv": "FDS",
+  "n": "530",
+  "nombre": "NOMBRE DE LA COMPETENCIA",
+  "sv": "DDF",
   "dia": "2026-10-26"
  },
  "cuotas": {
   "kv": {
-   "write": 18,
-   "read": 2656
+   "write": 47,
+   "read": 4661
   },
   "objeto": {
-   "leidas": 111787,
-   "escritas": 1109,
-   "pedidos": 356
+   "leidas": 379836,
+   "escritas": 3317,
+   "pedidos": 878
   },
   "worker": {
-   "pedidos": 10490,
+   "pedidos": 10645,
    "errores": 0,
-   "sub": 12381,
+   "sub": 12539,
    "cortados": 0,
-   "p50_ms": 1.39,
-   "p99_ms": 12.14,
+   "p50_ms": 1.37,
+   "p99_ms": 12.22,
    "cpu": {
-    "total": 22823,
-    "objeto_10": 1920,
-    "worker_10": 232
+    "total": 23152,
+    "objeto_10": 1944,
+    "worker_10": 235
    }
   },
   "r2": {
