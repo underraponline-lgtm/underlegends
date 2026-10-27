@@ -25935,5 +25935,284 @@
    ]
   ],
   "v": 2
+ },
+ "532": {
+  "antes": {
+   "Agus": [
+    10,
+    11,
+    false
+   ],
+   "Andres": [
+    220,
+    46,
+    true
+   ],
+   "Badterne": [
+    231,
+    88,
+    true
+   ],
+   "Dyzz": [
+    40,
+    53,
+    false
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Jult": [
+    56,
+    74,
+    false
+   ],
+   "Kyss": [
+    78,
+    102,
+    false
+   ],
+   "Makmah": [
+    2,
+    2,
+    false
+   ],
+   "PRAISERIZA": [
+    210,
+    5,
+    true
+   ],
+   "PichulaMc": [
+    3,
+    3,
+    false
+   ],
+   "Pipe": [
+    160,
+    313,
+    false
+   ],
+   "Six": [
+    11,
+    12,
+    false
+   ],
+   "Zignos": [
+    16,
+    17,
+    false
+   ],
+   "yinn": [
+    212,
+    20,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "yinn",
+    "Pipe",
+    "yinn"
+   ],
+   [
+    "yinn",
+    "Agus",
+    "yinn"
+   ],
+   [
+    "Makmah",
+    "Lautaro la sinceridad 🇨🇨",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Dyzz",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "ANG 🇺🇸",
+    "Makmah"
+   ],
+   [
+    "Badterne",
+    "PichulaMc",
+    "Badterne"
+   ],
+   [
+    "Badterne",
+    "Andres",
+    "Badterne"
+   ],
+   [
+    "Badterne",
+    "Jult",
+    "Badterne"
+   ],
+   [
+    "Zignos",
+    "Erian",
+    "Zignos"
+   ],
+   [
+    "Zignos",
+    "Trelok",
+    "Zignos"
+   ],
+   [
+    "Zignos",
+    "Agus",
+    "Zignos"
+   ],
+   [
+    "Zignos",
+    "PichulaMc",
+    "Zignos"
+   ],
+   [
+    "yinn, Six",
+    "parttt🇨🇨, Makmah",
+    "yinn, Six"
+   ],
+   [
+    "PRAISERIZA, Badterne",
+    "Kyss, Zignos",
+    "PRAISERIZA, Badterne"
+   ],
+   [
+    "PRAISERIZA, Badterne, Zignos",
+    "yinn, Six, parttt🇧🇫",
+    "PRAISERIZA, Badterne, Zignos"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 19,
+   "Andres": 16,
+   "Badterne": 4,
+   "Dyzz": 17,
+   "Erian": 53,
+   "Jult": 14,
+   "Kyss": 9,
+   "Makmah": 78,
+   "PRAISERIZA": 14,
+   "PichulaMc": 47,
+   "Pipe": 2,
+   "Six": 30,
+   "Zignos": 25,
+   "yinn": 23
+  },
+  "fecha": "26/10",
+  "firma": "a4ee55c8743e5ee1",
+  "msg": "1564502462986190889",
+  "nombre": "__ qcyo rapeen 4 __",
+  "num": 532,
+  "participantes": 22,
+  "sello": {
+   "Badterne": "",
+   "PRAISERIZA": "",
+   "Zignos": "77e8f84e2cb5:6ec1a5248de8"
+  },
+  "sv": "FFA",
+  "t": "2026-10-27T05:23:44Z",
+  "tabla": [
+   [
+    "Zignos",
+    "Campeón",
+    5958
+   ],
+   [
+    "Agus",
+    "Cuartos",
+    3750
+   ],
+   [
+    "PRAISERIZA",
+    "Campeón",
+    3333
+   ],
+   [
+    "Badterne",
+    "Campeón",
+    3333
+   ],
+   [
+    "parttt🇨🇨",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Kyss",
+    "Semifinal",
+    2625
+   ],
+   [
+    "yinn",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Six",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "parttt🇧🇫",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Pipe",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lautaro la sinceridad 🇨🇨",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dyzz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "ANG 🇺🇸",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Andres",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Jult",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Trelok",
+    "Cuartos",
+    2500
+   ]
+  ],
+  "v": 2
  }
 }

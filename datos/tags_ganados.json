@@ -485,6 +485,11 @@
     "t1",
     1793029252929
    ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1793079194391
+   ],
    "🐺 LOBO SOLITARIO": [
     "🐺 LOBO SOLITARIO",
     "t1",
@@ -648,6 +653,11 @@
     "t1",
     1793029252929
    ],
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1793079194391
+   ],
    "🏟️ FINALISTA DE CASA": [
     "🏟️ FINALISTA DE CASA",
     "t1",
@@ -660,6 +670,11 @@
    ]
   },
   "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x3",
+    "t1",
+    1793079194391
+   ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
     "t1",
@@ -806,6 +821,11 @@
  },
  "badterne": {
   "servidor": {
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1793079194391
+   ],
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",
     "t1",
@@ -2477,6 +2497,11 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1793079194391
+   ],
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
     "t1",
@@ -3959,6 +3984,11 @@
     "📈 EN ASCENSO",
     "t1",
     1792992726322
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1793079194391
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -7271,6 +7301,13 @@
     "t1",
     1792953978519
    ]
+  },
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1793079194391
+   ]
   }
  },
  "piyi": {
@@ -7470,6 +7507,11 @@
     "t1",
     1793029252929
    ],
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1793079194391
+   ],
    "🏟️ FINALISTA DE CASA": [
     "🏟️ FINALISTA DE CASA",
     "t1",
@@ -7497,6 +7539,11 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1793079194391
+   ],
    "⚡ RELÁMPAGO": [
     "⚡ RELÁMPAGO",
     "t1",
@@ -7518,7 +7565,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x8",
+    "👑 CAMPEÓN x9",
     "t1",
     1793029252929
    ],
@@ -8305,6 +8352,11 @@
     "INTERNACIONAL",
     "t1",
     1793029252929
+   ],
+   "MEDALLERO": [
+    "MEDALLERO",
+    "t1",
+    1793079194391
    ],
    "PIONERO": [
     "PIONERO",
@@ -10499,6 +10551,11 @@
     "t1",
     1793029252929
    ],
+   "🏯 CIUDADELA": [
+    "🏯 CIUDADELA",
+    "t1",
+    1793079194391
+   ],
    "🏰 FORTALEZA": [
     "🏰 FORTALEZA",
     "t1",
@@ -10521,6 +10578,11 @@
     "t1",
     1793029252929
    ],
+   "⭐ PENTACAMPEÓN": [
+    "⭐ PENTACAMPEÓN",
+    "t1",
+    1793079194391
+   ],
    "🎖️ CURTIDO": [
     "🎖️ CURTIDO",
     "t1",
@@ -10532,7 +10594,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x4",
+    "👑 CAMPEÓN x5",
     "t1",
     1793029252929
    ],
