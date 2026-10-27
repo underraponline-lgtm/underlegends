@@ -3359,6 +3359,24 @@
       "Xubaru": "1397110475594010700",
       "tenor": "1370860602972569632"
      }
+    },
+    "1564454644393054311": {
+     "sv": "FDS",
+     "nombre": "RAP SIN GROSERIAS (Venezuela version)",
+     "mo": "2026-10-27T01:44:13Z",
+     "staff": {
+      "jurado": [
+       "artezzy"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "artezzy",
+       "id": ""
+      }
+     ],
+     "organizador": "artezzy",
+     "cuentas": {}
     }
    },
    "ver": {

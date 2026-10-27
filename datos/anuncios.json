@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-27T01:35:30+00:00",
+ "cuando": "2026-10-27T01:54:41+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -4718,9 +4718,7 @@
    "staff": {},
    "autor": "Lízeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-26T22:00:22"
+   "categoria_id": "1469944166137073857"
   },
   {
    "nombre": "GRISELDA RECORDS VOL. 5",
@@ -4744,9 +4742,7 @@
    "staff": {},
    "autor": "Lízeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-26T22:00:22"
+   "categoria_id": "1469944166137073857"
   },
   {
    "nombre": "GRISELDA RECORDS VOL. 5",
@@ -4770,9 +4766,7 @@
    "staff": {},
    "autor": "Lízeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-26T22:00:22"
+   "categoria_id": "1469944166137073857"
   },
   {
    "nombre": "GRISELDA RECORDS VOL. 4",
@@ -4796,9 +4790,7 @@
    "staff": {},
    "autor": "Lízeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-26T22:00:22"
+   "categoria_id": "1469944166137073857"
   },
   {
    "nombre": "GRISELDA RECORDS VOL. 3",
@@ -4822,9 +4814,7 @@
    "staff": {},
    "autor": "Lízeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-26T22:00:22"
+   "categoria_id": "1469944166137073857"
   },
   {
    "nombre": "GRISELDA RECORDS VOL. 2",
@@ -4848,9 +4838,7 @@
    "staff": {},
    "autor": "Lízeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-26T22:00:22"
+   "categoria_id": "1469944166137073857"
   },
   {
    "nombre": "ZONA MORTAL",
@@ -4874,9 +4862,7 @@
    "staff": {},
    "autor": "KEIDER",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-26T22:00:22"
+   "categoria_id": "1469944166137073857"
   },
   {
    "nombre": "GRISELDA RECORDS",
@@ -4900,9 +4886,7 @@
    "staff": {},
    "autor": "Lízeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-26T22:00:22"
+   "categoria_id": "1469944166137073857"
   },
   {
    "nombre": "LA MISIÓN DEL MONJE",
@@ -4926,9 +4910,7 @@
    "staff": {},
    "autor": "Dr3xx",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-26T22:00:22"
+   "categoria_id": "1469944166137073857"
   },
   {
    "nombre": "PROYECTO X VOL.3",
@@ -4952,9 +4934,7 @@
    "staff": {},
    "autor": "Dr3xx",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-26T22:00:22"
+   "categoria_id": "1469944166137073857"
   },
   {
    "nombre": "UNDER FMS WORLD SERIES",
@@ -4983,9 +4963,7 @@
    "staff": {},
    "autor": "99 |DJ SHADOW🐉",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-26T22:00:22"
+   "categoria_id": "1469944166137073857"
   },
   {
    "nombre": "MORTAL KOMBAT MAPACHE CUP",
@@ -5014,9 +4992,7 @@
    "staff": {},
    "autor": "WOLKI TOKI",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-26T22:00:22"
+   "categoria_id": "1469944166137073857"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - MAÑANA )",
@@ -6148,6 +6124,41 @@
    "categoria_id": "1283208296714600560"
   },
   {
+   "nombre": "RAP SIN GROSERIAS (Venezuela version)",
+   "servidor": "FDS",
+   "canal": "🎉╏eventos",
+   "msg_id": "1564454644393054311",
+   "cuando": "2026-10-27T01:44:13",
+   "canal_id": "1536569364659044402",
+   "guild_id": "1489848581203689535",
+   "organizador": "artezzy",
+   "orgs": [
+    {
+     "n": "artezzy",
+     "id": ""
+    }
+   ],
+   "autor_h": "6d7af7e9ef9d76b7",
+   "cupos_texto": "0/8-16",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "",
+   "fecha": "",
+   "premios": "",
+   "staff": {
+    "jurado": [
+     "artezzy"
+    ]
+   },
+   "autor": "Abraham",
+   "staff_cuentas": {},
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
+  },
+  {
    "nombre": "GG SANGRERAP",
    "servidor": "FDS",
    "canal": "🎉╏eventos",
@@ -6174,7 +6185,9 @@
    "staff": {},
    "autor": "Artezzy",
    "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "GG SANGRERAP",
@@ -6203,7 +6216,9 @@
    "staff": {},
    "autor": "Artezzy",
    "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "GOD LEVEL 2v2",
@@ -6232,7 +6247,9 @@
    "staff": {},
    "autor": "Artezzy",
    "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "GG SANGRERAP",
@@ -6261,7 +6278,9 @@
    "staff": {},
    "autor": "Artezzy",
    "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "GG SANGRERAP",
@@ -6290,7 +6309,9 @@
    "staff": {},
    "autor": "Artezzy",
    "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "RAP SIN GROSERIAS (Venezuela version)",
@@ -6323,7 +6344,9 @@
    },
    "autor": "Abraham",
    "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "GG SANGRERAP",
@@ -6352,7 +6375,9 @@
    "staff": {},
    "autor": "Artezzy",
    "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "GG SANGRERAP",
@@ -6381,7 +6406,9 @@
    "staff": {},
    "autor": "Artezzy",
    "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "RAP SIN GROSERIAA FDS",
@@ -6410,7 +6437,9 @@
    "staff": {},
    "autor": "Artezzy",
    "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "5 VIDAS FDS",
@@ -6439,7 +6468,9 @@
    "staff": {},
    "autor": "Artezzy",
    "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "SHAOLING BATTLES 1v1",
@@ -6474,7 +6505,9 @@
    "staff_cuentas": {
     "Alessan": "1399930746918928527"
    },
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "SHAOLING BATTLES 1v1",
@@ -6509,7 +6542,9 @@
    "staff_cuentas": {
     "Alessan": "1399930746918928527"
    },
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "SHAOLING BATTLES 1v1",
@@ -6544,7 +6579,9 @@
    "staff_cuentas": {
     "Artezzy": "1435531540472795240"
    },
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "GOD LEVEL 2v2",
@@ -6573,7 +6610,9 @@
    "staff": {},
    "autor": "Artezzy",
    "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "SHAOLING BATTLES 1v1",
@@ -6606,7 +6645,9 @@
    },
    "autor": "Artezzy",
    "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "LIGA VENOM 1v1",
@@ -6641,7 +6682,9 @@
    "staff_cuentas": {
     "Artezzy": "1435531540472795240"
    },
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "LIGA VENOM 1v1",
@@ -6676,7 +6719,9 @@
    "staff_cuentas": {
     "Artezzy": "1435531540472795240"
    },
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "ULTIMO VERSO 1v1",
@@ -6713,65 +6758,9 @@
     "ZackChess-": "837752358812254218",
     "zyrak": "966339388340568135"
    },
-   "categoria_id": "1489848582189224103"
-  },
-  {
-   "nombre": "ULTIMO VERSO 1v1",
-   "servidor": "FDS",
-   "canal": "🎉╏eventos",
-   "msg_id": "1539414531976069230",
-   "cuando": "2026-08-18T23:23:45",
-   "canal_id": "1536569364659044402",
-   "guild_id": "1489848581203689535",
-   "organizador": "@Artezzy",
-   "orgs": [
-    {
-     "n": "Artezzy",
-     "id": "1435531540472795240"
-    }
-   ],
-   "autor_h": "d637fa8d09166f5f",
-   "cupos_texto": "0/8-16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "<t:1787107500:F>",
-   "fecha": "",
-   "premios": "",
-   "staff": {},
-   "autor": "Artezzy",
-   "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
-  },
-  {
-   "nombre": "LIMITE ZERO 1v1",
-   "servidor": "FDS",
-   "canal": "🎉╏eventos",
-   "msg_id": "1539378425930846208",
-   "cuando": "2026-08-18T21:00:17",
-   "canal_id": "1536569364659044402",
-   "guild_id": "1489848581203689535",
-   "organizador": "@Artezzy",
-   "orgs": [
-    {
-     "n": "Artezzy",
-     "id": "1435531540472795240"
-    }
-   ],
-   "autor_h": "d637fa8d09166f5f",
-   "cupos_texto": "0/8-16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "<t:1787094000:F>",
-   "fecha": "",
-   "premios": "",
-   "staff": {},
-   "autor": "Artezzy",
-   "staff_cuentas": {},
-   "categoria_id": "1489848582189224103"
+   "categoria_id": "1489848582189224103",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
    "nombre": "WORLD OF FREE",
@@ -6812,6 +6801,60 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Shitka🇲🇽",
+   "quien": "pablito838_71595",
+   "discord_id": "1173299039115157625",
+   "msg_id": "1564457084148388031",
+   "cuando": "2026-10-27T01:53:55"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Gary🇨🇺",
+   "quien": "garouhlg",
+   "discord_id": "928059886762356767",
+   "msg_id": "1564457083838009415",
+   "cuando": "2026-10-27T01:53:54"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Artezzy 🇵🇪 :",
+   "quien": "h6itam29",
+   "discord_id": "1435531540472795240",
+   "msg_id": "1564456402175393917",
+   "cuando": "2026-10-27T01:51:12"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "mats🇺🇾",
+   "quien": "matttt.15",
+   "discord_id": "597240876573392946",
+   "msg_id": "1564456143663800452",
+   "cuando": "2026-10-27T01:50:10"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1564456064764616856",
+   "cuando": "2026-10-27T01:49:52"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Chente 🇻🇪",
+   "quien": "diegopalma0722",
+   "discord_id": "1485505764452728874",
+   "msg_id": "1564455197928063099",
+   "cuando": "2026-10-27T01:46:25"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones-2",
@@ -7256,19 +7299,19 @@
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
-   "texto": "Dominick 🇵🇪",
-   "quien": "equisde_xd23",
-   "discord_id": "1439048698142134436",
-   "msg_id": "1564398372939497593",
+   "texto": "CrisZJ🇵🇪",
+   "quien": "criszjono",
+   "discord_id": "1462237816829513971",
+   "msg_id": "1564398372473933955",
    "cuando": "2026-10-26T22:00:37"
   },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
-   "texto": "CrisZJ🇵🇪",
-   "quien": "criszjono",
-   "discord_id": "1462237816829513971",
-   "msg_id": "1564398372473933955",
+   "texto": "Dominick 🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1564398372939497593",
    "cuando": "2026-10-26T22:00:37"
   },
   {
@@ -42757,60 +42800,6 @@
    "discord_id": "1385452830684614697",
    "msg_id": "1544173962056040499",
    "cuando": "2026-09-01T02:36:01"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Luck 🇵🇾",
-   "quien": "luck.vc",
-   "discord_id": "1367919102382964878",
-   "msg_id": "1544173288438235167",
-   "cuando": "2026-09-01T02:33:21"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Ezias🇵🇾",
-   "quien": "ezias_ak",
-   "discord_id": "1335430983343804497",
-   "msg_id": "1544109957916401815",
-   "cuando": "2026-08-31T22:21:42"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Trot 🇪🇸",
-   "quien": "eresmatrot",
-   "discord_id": "1347663033949880360",
-   "msg_id": "1544108454606544957",
-   "cuando": "2026-08-31T22:15:43"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Eseeka",
-   "quien": "eseeka",
-   "discord_id": "545406522356662310",
-   "msg_id": "1544100648809922670",
-   "cuando": "2026-08-31T21:44:42"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Showsero🇦🇼",
-   "quien": "vilca_16",
-   "discord_id": "846870712950194196",
-   "msg_id": "1544099802504110090",
-   "cuando": "2026-08-31T21:41:20"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Soul B 🇨🇱",
-   "quien": "sj.2008_",
-   "discord_id": "645308964141137952",
-   "msg_id": "1544099783075958914",
-   "cuando": "2026-08-31T21:41:16"
   }
  ]
 }

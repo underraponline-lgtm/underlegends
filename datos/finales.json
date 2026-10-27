@@ -850,5 +850,28 @@
   "sin_permiso": false,
   "sv": "URBF"
  },
+ "1564399046649708647": {
+  "autor": "1493416945037611140",
+  "canal": "1470097588635176960",
+  "cuando": "2026-10-26T22:03:17.850000+00:00",
+  "evento": "NOMBRE DE LA COMPETENCIA",
+  "fecha": "26/10",
+  "llave": "1564399046649708647",
+  "pregunta": "1564456933287796759",
+  "preguntada": "2026-10-26 9:53 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "tam🇻🇪",
+     "Wackmc🇪🇸",
+     "Miniboy:CL:"
+    ],
+    "ronda": "CUARTOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "DDF"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
