@@ -1,90 +1,94 @@
 {
  "v": 1,
- "cuando": "2026-10-27T23:13:10Z",
+ "cuando": "2026-10-27T23:47:59Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 550.6,
+ "dur_s": 1837.0,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 10.0
+   "s": 7.5
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.8
+   "s": 0.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.3
+   "s": 8.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 24.0
+   "s": 19.5
   },
   {
    "n": "5",
-   "que": "tanda 1 de 3 · 40 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": false,
-   "s": 430.6
+   "s": 1719.0
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 9.1
+   "s": 13.0
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 68.8
+   "s": 67.5
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Artezzy"
+   "que": "03_Servidor/generar.py .SosaATR"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Lord Viruzz"
+   "que": "03_Servidor/generar.py Kenny"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Selek"
   }
  ],
  "ultimo_evento": {
-  "n": "535",
-  "nombre": "PRADERAP VOL.2",
-  "sv": "ACAD",
+  "n": "536",
+  "nombre": "FREESTYLE FOR ALL ESPECIAL 1800 PANDILLAS",
+  "sv": "FFA",
   "dia": "2026-10-27"
  },
  "cuotas": {
   "kv": {
-   "write": 610,
-   "read": 55514
+   "write": 646,
+   "read": 57366
   },
   "objeto": {
    "leidas": 5091259,
    "escritas": 25488,
-   "pedidos": 15048
+   "pedidos": 16285
   },
   "worker": {
-   "pedidos": 13959,
-   "errores": 3222,
-   "sub": 15656,
-   "cortados": 3222,
+   "pedidos": 14927,
+   "errores": 4369,
+   "sub": 16615,
+   "cortados": 4369,
    "p50_ms": 1.26,
-   "p99_ms": 11.87,
+   "p99_ms": 11.81,
    "cpu": {
-    "total": 39638,
-    "objeto_10": 1697,
-    "worker_10": 292
+    "total": 45060,
+    "objeto_10": 1640,
+    "worker_10": 289
    }
   },
   "r2": {
