@@ -867,9 +867,16 @@
    },
    "copa": {
     "org": "LEWITO",
-    "clave": "lewito"
+    "clave": "lewito",
+    "n": 536,
+    "nombre": "FREESTYLE FOR ALL ESPECIAL 1800 PANDILLAS"
    },
    "organizadores": [
+    [
+     "LEWITO",
+     30,
+     1
+    ],
     [
      "NC",
      18,
@@ -894,7 +901,7 @@
     "gente": {
      "FDS": 13,
      "DDF": 12,
-     "FFA": 42,
+     "FFA": 59,
      "FRZ": 10,
      "ACAD": 16
     },
@@ -905,7 +912,7 @@
     "DDF": 12,
     "DRA": 0,
     "FDS": 13,
-    "FFA": 42,
+    "FFA": 59,
     "FFS": 0,
     "FRZ": 10,
     "FVS": 0,
