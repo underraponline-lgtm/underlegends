@@ -3256,6 +3256,25 @@
      "757267093162033253"
     ]
    }
+  },
+  {
+   "id": "bdf0d61048",
+   "tipo": "Nombre desconocido",
+   "sec": "COMPE DE UDDI · ACAD · 22/09 · #398",
+   "que": "¿Quién es «<:3_KYS:1262380343139241994>»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1793142184052,
+   "filas": [
+    918
+   ],
+   "variantes": [
+    "<:3_KYS:1262380343139241994>"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

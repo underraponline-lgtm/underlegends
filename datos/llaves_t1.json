@@ -9815,11 +9815,11 @@
     "b": [
      [
       [
-       "Lord Viruzz, <:3_KYS:1262380343139241994>",
+       "Lord Viruzz",
        "Trot",
        "Camila"
       ],
-      "Lord Viruzz, <:3_KYS:1262380343139241994>, Trot",
+      "Lord Viruzz, Trot",
       "triple (3 bandas, pasan 2); también pasa: Trot🇪🇸"
      ],
      [
@@ -9857,7 +9857,7 @@
      [
       [
        "Bloody",
-       "Lord Viruzz, <:3_KYS:1262380343139241994>"
+       "Lord Viruzz"
       ],
       "Bloody",
       ""
@@ -9952,6 +9952,11 @@
     2000
    ],
    [
+    "Lord Viruzz",
+    "Cuartos",
+    2000
+   ],
+   [
     "Sosa",
     "Cuartos",
     2000
@@ -9960,16 +9965,6 @@
     "Trot",
     "Cuartos",
     2000
-   ],
-   [
-    "<:3_KYS:1262380343139241994>",
-    "Cuartos",
-    1000
-   ],
-   [
-    "Lord Viruzz",
-    "Cuartos",
-    1000
    ],
    [
     "Camila",
@@ -10120,7 +10115,7 @@
      ],
      [
       [
-       "Lord Viruzz, <:3_KYS:1262380343139241994>",
+       "Lord Viruzz",
        "Zignos",
        "Heat",
        "Hassan",
@@ -10131,7 +10126,7 @@
        "G-MC",
        "Acry"
       ],
-      "Lord Viruzz, <:3_KYS:1262380343139241994>, Zignos, Heat",
+      "Lord Viruzz, Zignos, Heat",
       "triple (10 bandas, pasan 3); también pasa: ZIGNOS 🇩🇴 / HEAT🇨🇺"
      ]
     ],
@@ -10174,7 +10169,7 @@
      [
       [
        "MCO",
-       "Lord Viruzz, <:3_KYS:1262380343139241994>"
+       "Lord Viruzz"
       ],
       "MCO",
       ""
@@ -10336,6 +10331,11 @@
     1250
    ],
    [
+    "Lord Viruzz",
+    "Octavos",
+    1250
+   ],
+   [
     "Miniboy",
     "Octavos",
     1250
@@ -10359,11 +10359,6 @@
     "JEIXDER",
     "R32",
     937
-   ],
-   [
-    "<:3_KYS:1262380343139241994>",
-    "Octavos",
-    625
    ],
    [
     "ARDEAN",
@@ -10488,11 +10483,6 @@
    [
     "Leyenda",
     "R32",
-    625
-   ],
-   [
-    "Lord Viruzz",
-    "Octavos",
     625
    ],
    [
@@ -18009,10 +17999,10 @@
      ],
      [
       [
-       "Lord Viruzz, <:3_KYS:1262380343139241994>",
+       "Lord Viruzz",
        "Dynoco"
       ],
-      "Lord Viruzz, <:3_KYS:1262380343139241994>",
+      "Lord Viruzz",
       ""
      ],
      [
@@ -18071,7 +18061,7 @@
      [
       [
        "Eclipsito",
-       "Lord Viruzz, <:3_KYS:1262380343139241994>"
+       "Lord Viruzz"
       ],
       "Eclipsito",
       ""
@@ -18160,9 +18150,9 @@
     2500
    ],
    [
-    "<:3_KYS:1262380343139241994>",
+    "Lord Viruzz",
     "Cuartos",
-    1250
+    2500
    ],
    [
     "Calíz",
@@ -18182,11 +18172,6 @@
    [
     "Geoka",
     "Octavos",
-    1250
-   ],
-   [
-    "Lord Viruzz",
-    "Cuartos",
     1250
    ],
    [
@@ -25174,10 +25159,10 @@
     "b": [
      [
       [
-       "Lord Viruzz, <:3_KYS:1262380343139241994>",
+       "Lord Viruzz",
        "DarnBless"
       ],
-      "Lord Viruzz, <:3_KYS:1262380343139241994>",
+      "Lord Viruzz",
       ""
      ],
      [
@@ -25244,7 +25229,7 @@
      [
       [
        "Chop",
-       "Lord Viruzz, <:3_KYS:1262380343139241994>"
+       "Lord Viruzz"
       ],
       "Chop",
       ""
@@ -25339,6 +25324,11 @@
     2500
    ],
    [
+    "Lord Viruzz",
+    "Cuartos",
+    2500
+   ],
+   [
     "Shadow",
     "Cuartos",
     2500
@@ -25347,11 +25337,6 @@
     "VECA 🇧🇱",
     "Cuartos",
     2500
-   ],
-   [
-    "<:3_KYS:1262380343139241994>",
-    "Cuartos",
-    1250
    ],
    [
     "Catarsis",
@@ -25371,11 +25356,6 @@
    [
     "Joshema",
     "Octavos",
-    1250
-   ],
-   [
-    "Lord Viruzz",
-    "Cuartos",
     1250
    ],
    [
@@ -27707,7 +27687,7 @@
       [
        "Leonart",
        "Corvo",
-       "Lord Viruzz, <:3_KYS:1262380343139241994>"
+       "Lord Viruzz"
       ],
       "Leonart, Corvo",
       "triple (3 bandas, pasan 2); también pasa: Corvo 🇧🇴"
@@ -27810,7 +27790,7 @@
    [
     "Lord Viruzz",
     "Campeón",
-    5625
+    6250
    ],
    [
     "Corvo",
@@ -27911,11 +27891,6 @@
     "Trot",
     "Octavos",
     1250
-   ],
-   [
-    "<:3_KYS:1262380343139241994>",
-    "Octavos",
-    625
    ]
   ]
  },

@@ -87,20 +87,6 @@
     "racha": "0/0"
    }
   },
-  "<:3_KYS:1262380343139241994>": {
-   "ACAD": {
-    "duelos": "",
-    "ev": 5,
-    "oro": 0,
-    "ovr": 46,
-    "pod": 0,
-    "pts": 11812,
-    "racha": "0/1",
-    "tg": {
-     "fund": true
-    }
-   }
-  },
   "AFR": {
    "FFA": {
     "duelos": "",
@@ -1109,7 +1095,7 @@
   },
   "Bloody": {
    "ACAD": {
-    "duelos": "0/1",
+    "duelos": "1/2",
     "ev": 3,
     "oro": 0,
     "ovr": 45,
@@ -1517,7 +1503,7 @@
   },
   "Chop": {
    "ACAD": {
-    "duelos": "1/2",
+    "duelos": "2/3",
     "ev": 1,
     "oro": 0,
     "ovr": 46,
@@ -1921,7 +1907,7 @@
   },
   "DarnBless": {
    "ACAD": {
-    "duelos": "",
+    "duelos": "0/1",
     "ev": 1,
     "oro": 0,
     "ovr": 44,
@@ -2277,7 +2263,7 @@
   },
   "Dynoco": {
    "ACAD": {
-    "duelos": "",
+    "duelos": "0/1",
     "ev": 1,
     "oro": 0,
     "ovr": 43,
@@ -2471,7 +2457,7 @@
   },
   "Eclipsito": {
    "ACAD": {
-    "duelos": "2/5",
+    "duelos": "3/6",
     "ev": 6,
     "oro": 0,
     "ovr": 50,
@@ -5128,12 +5114,12 @@
   },
   "Lord Viruzz": {
    "ACAD": {
-    "duelos": "",
+    "duelos": "2/6",
     "ev": 7,
     "oro": 1,
-    "ovr": 51,
+    "ovr": 52,
     "pod": 1,
-    "pts": 31191,
+    "pts": 43004,
     "racha": "0/1",
     "tg": {
      "fin": 1,
@@ -5441,7 +5427,7 @@
   },
   "MCO": {
    "ACAD": {
-    "duelos": "5/9",
+    "duelos": "6/10",
     "ev": 6,
     "oro": 0,
     "ovr": 52,

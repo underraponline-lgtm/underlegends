@@ -196,7 +196,7 @@
   "msg": "1556522264164311072"
  },
  "398": {
-  "firma": "COMPE DE UDDI|22/09|13|6|2|1",
+  "firma": "COMPE DE UDDI|22/09|12|7|1|0",
   "msg": "1556552836395835533"
  },
  "399": {
@@ -204,7 +204,7 @@
   "msg": "1556552837842997270"
  },
  "400": {
-  "firma": "VALHALLA VOL1|04/10|79|14|2|1",
+  "firma": "VALHALLA VOL1|04/10|78|15|2|0",
   "msg": "1556552839642357822"
  },
  "401": {
@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "a014a369bf3b02ec",
+  "firma": "a1409aa92925d981",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "e521e364b92fba91",
+  "firma": "e0319e445f7edd65",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "ca9f406f7dbe75ed",
+  "firma": "c59d288eccd46dc3",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -13865,7 +13865,7 @@
    "Vandu": 22
   },
   "fecha": "16/10",
-  "firma": "95fec7210c54a8da",
+  "firma": "e238140eae8bb0c1",
   "msg": "1560779869497983097",
   "nombre": "PRADERAP VOL.1",
   "num": 479,
@@ -14591,7 +14591,7 @@
    "Panchok": 15
   },
   "fecha": "17/10",
-  "firma": "c1ac110eb3f382d7",
+  "firma": "e763b9f92ebba37e",
   "msg": "1561153562665558208",
   "nombre": "MUNDIALITO",
   "num": 482,
@@ -15936,7 +15936,7 @@
    "Tenor": 5
   },
   "fecha": "19/10",
-  "firma": "34ec5cba0f1c6928",
+  "firma": "0ee581174f0e8e6d",
   "msg": "1561761975514697891",
   "nombre": "FREESTYLE LEAGUE N3",
   "num": 488,
@@ -16770,7 +16770,7 @@
    ],
    [
     "Leonart",
-    "Lord Viruzz, <:3_KYS:1262380343139241994>",
+    "Lord Viruzz",
     "Leonart"
    ],
    [
@@ -16826,7 +16826,7 @@
    "Trot": 23
   },
   "fecha": "19/10",
-  "firma": "5b3ffe257321f360",
+  "firma": "e069fe08997fedef",
   "msg": "1561897867122184213",
   "nombre": "FATS BATTLES PALOOZA FECHA 7",
   "num": 491,
@@ -16844,7 +16844,7 @@
    [
     "Lord Viruzz",
     "Campeón",
-    5625
+    6250
    ],
    [
     "Corvo",
@@ -16945,11 +16945,6 @@
     "Dyzz",
     "Octavos",
     1250
-   ],
-   [
-    "<:3_KYS:1262380343139241994>",
-    "Octavos",
-    625
    ]
   ],
   "v": 2
@@ -19380,7 +19375,7 @@
    "PichulaMc": 41
   },
   "fecha": "22/10",
-  "firma": "e4f2ebaba776316b",
+  "firma": "2b3a8579927629b8",
   "msg": "1562977225790459957",
   "nombre": "19 (EDICIÓN FUTCARD VOL 4)",
   "num": 500,
@@ -19831,7 +19826,7 @@
    "Sin Limites": 23
   },
   "fecha": "23/10",
-  "firma": "1222f726581b4ef9",
+  "firma": "8518966c58c0ac93",
   "msg": "1563330231442604132",
   "nombre": "ZONA MORTAL",
   "num": 502,
@@ -20821,7 +20816,7 @@
    "VR": 4
   },
   "fecha": "23/10",
-  "firma": "abaadbd2182e2176",
+  "firma": "9a1c590585f29de6",
   "msg": "1563368240221257751",
   "nombre": "19 CUP FUTCARD EDICIÓN 5",
   "num": 505,
@@ -23874,7 +23869,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "88c2edfde7d72ec8",
+  "firma": "3e85de38b592261d",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -24042,7 +24037,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "30a6c6e5fb12f6b4",
+  "firma": "ab091b2a44b8f391",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -25372,7 +25367,7 @@
    "Tam": 14
   },
   "fecha": "26/10",
-  "firma": "23732bf797463bfb",
+  "firma": "66313535ce175176",
   "msg": "1564439290107265104",
   "nombre": "NOMBRE DE LA COMPETENCIA",
   "num": 530,

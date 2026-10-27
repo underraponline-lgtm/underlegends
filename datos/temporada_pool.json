@@ -1625,7 +1625,7 @@
   "srv": 3,
   "racha": 2,
   "racha_act": 0,
-  "score": 22.2,
+  "score": 23.4,
   "av": "",
   "ovr": 63,
   "o": 40,
@@ -2221,7 +2221,7 @@
   "caz": 0,
   "czd": 0,
   "sob": 0,
-  "mis": 3,
+  "mis": 4,
   "srv": 4,
   "racha": 2,
   "racha_act": 1,
@@ -2234,7 +2234,8 @@
   "total": 210,
   "rango": "C",
   "tg_t": {
-   "dobles": 3
+   "dobles": 3,
+   "perf": 1
   }
  },
  {
@@ -7932,10 +7933,7 @@
   "pos": 297,
   "fc": true,
   "total": 210,
-  "rango": "E",
-  "tg_t": {
-   "infalt": true
-  }
+  "rango": "E"
  },
  {
   "full": "Kourier",
