@@ -387,7 +387,7 @@ def carta(lid, i, s=1.0, est='eA'):
         "<div class='v6-foto%s'><img class='a' src='%s' alt='' style='filter:url(#duo-%s)'>"
         "<img class='reg' src='%s' alt='' style='filter:url(#duo-%s)'><span class='v6-trama'></span></div>"
         "<span class='v6-jor' style='clip-path:%s'>%s<b>%s</b><small>%s · J%d</small></span>"
-        "<div class='v6-ovr'><span class='n'><b class='o'>%s</b><b class='m'>%s</b><b class='f'>%s</b></span></div>"
+        "<div class='v6-ovr'><span class='n'><b class='o'>%s</b><b class='m'>%s</b><b class='f'>%s</b></span><small>%s</small></div>"
         "<div class='v6-fila'><span class='v6-tag %s' style='clip-path:%s'>%s</span><span class='v6-cinta c'></span></div>"
         "<svg class='v6-capa v6-arruga' viewBox='0 0 %d %d' preserveAspectRatio='none' aria-hidden='true'><rect width='%d' height='%d' filter='url(#arruga)'/></svg>"
         "<span class='v6-pliegue'></span><span class='v6-luz'></span><span class='v6-vin'></span>"
@@ -395,7 +395,7 @@ def carta(lid, i, s=1.0, est='eA'):
         TINTA, W, H, W, H,
         "<span class='v6-gigante'>1</span>" if nivel == 'n1' else '',
         col, AF.PINCEL, W, H, chorreado(seed, 40, 200, 232, col), aerosol(seed + 9, 70, 300, 120, 34, 70, col),
-        ' sin' if sin else '', av, lid, av, lid, tira(seed + 5, 18), G.logo(L['sv'], 18), liga_corta(L), TEMP, fecha, ovr, ovr, ovr, tag[1], tira(seed), tag[0], W, H, W, H)
+        ' sin' if sin else '', av, lid, av, lid, tira(seed + 5, 18), G.logo(L['sv'], 18), liga_corta(L), TEMP, fecha, ovr, ovr, ovr, ptb_txt, tag[1], tira(seed), tag[0], W, H, W, H)
     franja = (
         "<div class='v6-fr' style='--ink:%s'><span class='v6-foil'></span>"
         "<small>PUESTO</small><b class='v6-num%s'>%s</b><em class='%s'>%s</em>%s"
@@ -533,8 +533,9 @@ h2 small{display:block;margin-top:4px;font:500 14px/1.4 Archivo,sans-serif;text-
 .v6-ovr .m{color:var(--c);-webkit-text-stroke:5px var(--c)}
 .v6-ovr .f{color:#F6F6F6;-webkit-mask:url("GRANO_T") 0 0 / 180px 180px;mask:url("GRANO_T") 0 0 / 180px 180px}
 .v6.n1 .v6-ovr .f{color:NEON}
-.v6-ovr small{display:inline-flex;align-items:center;gap:6px;margin:7px 0 0 4px;padding:3px 8px 3px 4px;background:#030304;color:#D9D9D4;
-  font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.12em;box-shadow:2px 2px 0 var(--c)}
+.v6-ovr small:empty{display:none}
+.v6-ovr small{display:inline-flex;align-items:center;gap:6px;margin:7px 0 0 4px;padding:4px 8px;background:#030304;color:#F6F6F6;
+  font:800 12.5px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;box-shadow:2px 2px 0 var(--c)}
 .v6-ovr small b{padding:2px 5px;background:var(--c);color:var(--ink);font:400 12px/1 Anton,sans-serif;letter-spacing:.14em}
 .v6.n1 .v6-ovr small{box-shadow:2px 2px 0 NEON}.v6.n1 .v6-ovr small b{background:NEON;color:#030304}
 
