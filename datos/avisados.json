@@ -26257,6 +26257,46 @@
   "canal": "838593179744731229",
   "duelos": [
    [
+    "Dynoco",
+    "Scritura",
+    "Dynoco"
+   ],
+   [
+    "MTZ",
+    "Vilca",
+    "MTZ"
+   ],
+   [
+    "Scritura",
+    "Vilca",
+    "Scritura"
+   ],
+   [
+    "Erian",
+    "Mr.Kude",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "J.r",
+    "Erian"
+   ],
+   [
+    "Dynoco",
+    "MTZ",
+    "Dynoco"
+   ],
+   [
+    "Erian",
+    "Scritura",
+    "Erian"
+   ],
+   [
+    "Dynoco",
+    "Erian",
+    "Dynoco"
+   ],
+   [
     "Erian",
     "EmiZor",
     "Erian"
@@ -26303,11 +26343,11 @@
    "Mr.Kude": 2
   },
   "fecha": "27/10",
-  "firma": "41fb94d5aebb46a7",
+  "firma": "36c0d16e5164dd22",
   "msg": "1564725192360464586",
   "nombre": "- IRLANDA FREESTYLE -",
   "num": 533,
-  "participantes": 8,
+  "participantes": 9,
   "sello": {
    "Dynoco": "c83f6b048b4b:6ec1a5248de8"
   },
@@ -26315,17 +26355,22 @@
   "t": "2026-10-27T19:54:05Z",
   "tabla": [
    [
+    "Erian",
+    "Semifinal",
+    8500
+   ],
+   [
     "Dynoco",
     "Campeón",
     7500
    ],
    [
-    "MTZ",
-    "Subcampeón",
-    5000
+    "Scritura",
+    "Semifinal",
+    3750
    ],
    [
-    "Erian",
+    "MTZ",
     "Semifinal",
     3500
    ],
@@ -26335,9 +26380,9 @@
     3500
    ],
    [
-    "EmiZor",
+    "Vilca",
     "Cuartos",
-    2000
+    3000
    ],
    [
     "Mr.Kude",
@@ -26350,9 +26395,251 @@
     2000
    ],
    [
+    "EmiZor",
+    "Cuartos",
+    2000
+   ],
+   [
     "Cinexfilo",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "534": {
+  "antes": {
+   "Bloody": [
+    27,
+    31,
+    false
+   ],
+   "Colesito": [
+    8,
+    9,
+    false
+   ],
+   "Delux": [
+    24,
+    28,
+    false
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Makmah": [
+    2,
+    2,
+    false
+   ],
+   "Mr Still Ballin": [
+    12,
+    13,
+    false
+   ],
+   "Neo": [
+    222,
+    48,
+    true
+   ],
+   "OG": [
+    17,
+    19,
+    false
+   ],
+   "Oasis": [
+    1,
+    1,
+    false
+   ],
+   "Provenza": [
+    19,
+    22,
+    false
+   ],
+   "Six": [
+    10,
+    11,
+    false
+   ],
+   "Snow": [
+    4,
+    4,
+    false
+   ],
+   "Trot": [
+    35,
+    44,
+    false
+   ],
+   "Verc": [
+    11,
+    12,
+    false
+   ],
+   "Zignos": [
+    16,
+    17,
+    false
+   ],
+   "yinn": [
+    212,
+    18,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Makmah, Bloody",
+    "yinn, Delux",
+    "Makmah, Bloody"
+   ],
+   [
+    "Colesito, OG",
+    "Snow, Verc",
+    "Colesito, OG"
+   ],
+   [
+    "Oasis, Trot",
+    "Neo, Mr Still Ballin",
+    "Oasis, Trot"
+   ],
+   [
+    "Zignos, Provenza",
+    "Erian, Six",
+    "Zignos, Provenza"
+   ],
+   [
+    "Trot, Oasis, Neo",
+    "Makmah, Bloody, Delux",
+    "Trot, Oasis, Neo"
+   ],
+   [
+    "Colesito, OG, Verc",
+    "Zignos, Six, Provenza",
+    "Colesito, OG, Verc"
+   ],
+   [
+    "Verc, OG, Colesito, Zignos",
+    "Oasis, Trot, Neo, Delux",
+    "Verc, OG, Colesito, Zignos"
+   ]
+  ],
+  "ev_antes": {
+   "Bloody": 23,
+   "Colesito": 35,
+   "Delux": 12,
+   "Erian": 55,
+   "Makmah": 79,
+   "Mr Still Ballin": 10,
+   "Neo": 12,
+   "OG": 15,
+   "Oasis": 33,
+   "Provenza": 30,
+   "Six": 31,
+   "Snow": 39,
+   "Trot": 25,
+   "Verc": 19,
+   "Zignos": 26,
+   "yinn": 24
+  },
+  "fecha": "16/10",
+  "firma": "7268279ea4635fea",
+  "msg": "1564736386664243243",
+  "nombre": "DESGRACIAS EN TOKYO VOL 28 PANDILLAS",
+  "num": 534,
+  "participantes": 16,
+  "sello": {
+   "Colesito": "6be31b83066b:5832e3f3f78a",
+   "OG": "32736d66479d:6ec1a5248de8",
+   "Verc": "e0a7c32e45fc:6ec1a5248de8",
+   "Zignos": "e13d87eacaf3:6ec1a5248de8"
+  },
+  "sv": "FFA",
+  "t": "2026-10-27T20:23:44Z",
+  "tabla": [
+   [
+    "Delux",
+    "Subcampeón",
+    4875
+   ],
+   [
+    "Zignos",
+    "Campeón",
+    4250
+   ],
+   [
+    "Verc",
+    "Campeón",
+    3750
+   ],
+   [
+    "Neo",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Six",
+    "Semifinal",
+    3000
+   ],
+   [
+    "OG",
+    "Campeón",
+    2500
+   ],
+   [
+    "Colesito",
+    "Campeón",
+    2500
+   ],
+   [
+    "Oasis",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Trot",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Bloody",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1750
+   ],
+   [
+    "yinn",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Mr Still Ballin",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    1250
    ]
   ],
   "v": 2

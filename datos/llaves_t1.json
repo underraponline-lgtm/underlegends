@@ -29892,8 +29892,7 @@
   "escala": "16+",
   "fecha": "23/10",
   "links": [
-   "https://discord.com/channels/1468472442925092958/1487207377601040516/1563051587235090503",
-   "https://discord.com/channels/1468472442925092958/1557583344638623754/1563053367142514780"
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1563051587235090503"
   ],
   "n": 501,
   "nombre": "LA ISLA DE OKINAWA V.4",
@@ -35733,10 +35732,43 @@
   ],
   "n": 533,
   "nombre": "- IRLANDA FREESTYLE -",
-  "participantes": 8,
+  "participantes": 9,
   "rondas": [
    {
     "b": [
+     [
+      [
+       "Dynoco",
+       "Scritura"
+      ],
+      "Dynoco",
+      "Revivido: Scritura"
+     ],
+     [
+      [
+       "MTZ",
+       "Vilca"
+      ],
+      "MTZ",
+      "Revivido: Vilca🇺🇸"
+     ],
+     [
+      [
+       "Scritura",
+       "Vilca"
+      ],
+      "Scritura",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "Mr.Kude",
+       "J.r"
+      ],
+      "Erian",
+      "triple (3 bandas)"
+     ],
      [
       [
        "Erian",
@@ -35776,6 +35808,22 @@
     "b": [
      [
       [
+       "Dynoco",
+       "MTZ"
+      ],
+      "Dynoco",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "Scritura"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
        "MTZ",
        "Erian"
       ],
@@ -35798,6 +35846,14 @@
      [
       [
        "Dynoco",
+       "Erian"
+      ],
+      "Dynoco",
+      ""
+     ],
+     [
+      [
+       "Dynoco",
        "MTZ"
       ],
       "Dynoco",
@@ -35810,24 +35866,34 @@
   "sv": "FRZ",
   "tabla": [
    [
+    "Erian",
+    "Semifinal",
+    8500
+   ],
+   [
     "Dynoco",
     "Campeón",
     7500
    ],
    [
-    "MTZ",
-    "Subcampeón",
-    5000
-   ],
-   [
-    "Erian",
+    "Scritura",
     "Semifinal",
-    3500
+    3750
    ],
    [
     "Luck",
     "Semifinal",
     3500
+   ],
+   [
+    "MTZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Vilca",
+    "Cuartos",
+    3000
    ],
    [
     "Cinexfilo",
@@ -35848,6 +35914,173 @@
     "Mr.Kude",
     "Cuartos",
     2000
+   ]
+  ]
+ },
+ "534": {
+  "dia": "2026-10-16",
+  "escala": "16+",
+  "fecha": "16/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1560797391702200342"
+  ],
+  "n": 534,
+  "nombre": "DESGRACIAS EN TOKYO VOL 28 PANDILLAS",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Makmah, Bloody",
+       "yinn, Delux"
+      ],
+      "Makmah, Bloody",
+      "Drafteado: DELUX 🇦🇷"
+     ],
+     [
+      [
+       "Colesito, OG",
+       "Snow, Verc"
+      ],
+      "Colesito, OG",
+      "Drafteado: VERC 🇨🇱"
+     ],
+     [
+      [
+       "Oasis, Trot",
+       "Neo, Mr Still Ballin"
+      ],
+      "Oasis, Trot",
+      "Drafteado: NEO 🇦🇷"
+     ],
+     [
+      [
+       "Zignos, Provenza",
+       "Erian, Six"
+      ],
+      "Zignos, Provenza",
+      "Drafteado: ZIGNOS 🇩🇴; Drafteado: SIX 🇦🇷"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Trot, Oasis, Neo",
+       "Makmah, Bloody, Delux"
+      ],
+      "Trot, Oasis, Neo",
+      ""
+     ],
+     [
+      [
+       "Colesito, OG, Verc",
+       "Zignos, Six, Provenza"
+      ],
+      "Colesito, OG, Verc",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc, OG, Colesito, Zignos",
+       "Oasis, Trot, Neo, Delux"
+      ],
+      "Verc, OG, Colesito, Zignos",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Delux",
+    "Subcampeón",
+    4875
+   ],
+   [
+    "Zignos",
+    "Campeón",
+    4250
+   ],
+   [
+    "Verc",
+    "Campeón",
+    3750
+   ],
+   [
+    "Neo",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Six",
+    "Semifinal",
+    3000
+   ],
+   [
+    "Colesito",
+    "Campeón",
+    2500
+   ],
+   [
+    "OG",
+    "Campeón",
+    2500
+   ],
+   [
+    "Oasis",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Trot",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Bloody",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Mr Still Ballin",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    1250
+   ],
+   [
+    "yinn",
+    "Cuartos",
+    1250
    ]
   ]
  }

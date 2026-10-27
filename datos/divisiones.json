@@ -20,7 +20,7 @@
     ],
     [
      "Erian",
-     22500,
+     28350,
      3
     ],
     [
@@ -55,6 +55,11 @@
     [
      "Andres",
      7500,
+     1
+    ],
+    [
+     "TøKīØ🦠🧠",
+     1406,
      1
     ]
    ]
@@ -122,8 +127,13 @@
      1
     ],
     [
+     "Vilca",
+     5550,
+     2
+    ],
+    [
      "MTZ",
-     5000,
+     3850,
      1
     ],
     [
@@ -157,23 +167,13 @@
      1
     ],
     [
-     "Vilca",
-     2250,
-     1
-    ],
-    [
      "Cinexfilo",
-     2000,
+     2200,
      1
     ],
     [
      "EmiZor",
-     2000,
-     1
-    ],
-    [
-     "TøKīØ🦠🧠",
-     1406,
+     2200,
      1
     ]
    ]
@@ -186,14 +186,14 @@
      2
     ],
     [
+     "Luck",
+     21350,
+     4
+    ],
+    [
      "MCNadie",
      21250,
      2
-    ],
-    [
-     "Luck",
-     21000,
-     4
     ],
     [
      "Zignos",
@@ -213,6 +213,11 @@
     [
      "Fix 17",
      10000,
+     1
+    ],
+    [
+     "Dynoco",
+     8250,
      1
     ],
     [
@@ -251,13 +256,13 @@
      1
     ],
     [
-     "Dynoco",
-     7500,
+     "Raizer",
+     4500,
      1
     ],
     [
-     "Raizer",
-     4500,
+     "Scritura",
+     4125,
      1
     ],
     [
@@ -307,12 +312,12 @@
     ],
     [
      "J.r",
-     2000,
+     2200,
      1
     ],
     [
      "Mr.Kude",
-     2000,
+     2200,
      1
     ],
     [
@@ -395,7 +400,7 @@
   "Campoy": 5,
   "Carlos": 4,
   "Carlosmo": 4,
-  "Carlosss": 3,
+  "Carlosss": 4,
   "Catarsis": 3,
   "Cazafla anti cazanova🇭🇹": 5,
   "Char": 5,
@@ -406,7 +411,7 @@
   "Cinexfilo": 4,
   "Clitax": 5,
   "Cody🇺🇸": 4,
-  "Colesito": 4,
+  "Colesito": 3,
   "Colo": 5,
   "Corvo": 5,
   "CrisZJ": 4,
@@ -700,7 +705,7 @@
   "Polosport": 5,
   "Pomberito": 5,
   "Poxe 🇵🇪": 5,
-  "Presagio": 3,
+  "Presagio": 4,
   "Prodigy": 5,
   "Prosu": 4,
   "Provenza": 4,
@@ -783,7 +788,7 @@
   "Trot": 4,
   "Tuca": 4,
   "Tusicario": 5,
-  "TøKīØ🦠🧠": 4,
+  "TøKīØ🦠🧠": 3,
   "UDDIZIM": 5,
   "Under": 5,
   "V-zir 🇻🇪": 5,
@@ -1582,12 +1587,12 @@
   ],
   [
    "2026-10-12",
-   "Vacile🇪🇸",
+   "Neo",
    4
   ],
   [
    "2026-10-12",
-   "Neo",
+   "Vacile🇪🇸",
    4
   ],
   [
@@ -1637,17 +1642,17 @@
   ],
   [
    "2026-10-12",
+   "Colesito",
+   3
+  ],
+  [
+   "2026-10-12",
    "Guess",
    3
   ],
   [
    "2026-10-12",
    "Agus",
-   3
-  ],
-  [
-   "2026-10-12",
-   "Colesito",
    3
   ],
   [
@@ -1887,17 +1892,17 @@
   ],
   [
    "2026-10-19",
-   "Carlosss",
-   3
-  ],
-  [
-   "2026-10-19",
    "Zekha",
    3
   ],
   [
    "2026-10-19",
    "BNA",
+   3
+  ],
+  [
+   "2026-10-19",
+   "TøKīØ🦠🧠",
    3
   ],
   [
@@ -1911,13 +1916,13 @@
    "1200",
    "BastyRetro",
    "Chop",
-   "Colesito",
    "Cronox",
    "Fazer",
    "Noa",
    "Panchok",
    "Pomberito",
    "Prodigy",
+   "Provenza",
    "Raizer",
    "Road",
    "Snow",
@@ -1936,7 +1941,6 @@
    "Bloody",
    "CJ",
    "Carlos",
-   "Carlosss",
    "Cody🇺🇸",
    "DarnBless",
    "Deko",
@@ -1968,6 +1972,7 @@
    "Six",
    "Tam",
    "Tuca",
+   "TøKīØ🦠🧠",
    "Vandu",
    "Vilca",
    "Zekha"
