@@ -11,6 +11,17 @@
  ],
  "cambios": [
   {
+   "version": "4.15",
+   "dia": "2026-10-27",
+   "cuando": "2026-10-27T00:23:48-04:00",
+   "titulo": "Ligas, renovada",
+   "items": [
+    "Arriba, **las flechas**: los que mandan en cada liga (con su carta de liga), los países que más ganan y la carrera de todos, sumando todas las ligas.",
+    "Las ligas **por cómo van**: las que se deciden ahora y las que están en juego, con su flyer y los dos primeros. Las demás, en **Ver todas**.",
+    "Cada liga tiene su **Álbum**: la carta de liga de todos los que la juegan."
+   ]
+  },
+  {
    "version": "4.14",
    "dia": "2026-10-27",
    "cuando": "2026-10-27T00:13:36-04:00",

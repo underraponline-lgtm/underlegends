@@ -16,10 +16,15 @@
 // La oficial de cada liga puede tener sanciones o defaults que acá no están; por eso va el link a la suya.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DIAS, MESES, limpio, num, siglaDe, utc } from './liga.js';
-import { Bandera, Cara, Compartir, Ico, Sec, accion, enlace, silueta } from './piezas.jsx';
+import { Bandera, Cara, Compartir, Ico, Sec, accion, enlace, nombrePais, silueta } from './piezas.jsx';
 import { Numero, useDesliza } from './anima.js';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { pedirLigas } from './ligas_datos.js';
+import CSS_PAGINA from './css/ligas.css?inline';
+import { usarCss } from './css.js';
+
+// 🎨 lo del remake (web/src/css/ligas.css): la portada nueva y el Álbum
+usarCss('ligas', CSS_PAGINA);
 
 // 🏟️ ¿UN NOMBRE ESTÁ MAL? (Dlx, 14/10/2026: «Sí, a Reportes», a ForceGP: «¿no hay manera de que uno pueda corregir
 // eso?»). Elegís el nombre, contás quién es, y le llega a la Liga en Reportes del Dashboard con tu cuenta; lo decide la
@@ -72,7 +77,7 @@ function AvisarLiga({ L }) {
 // ── 🏟️ el detalle de cada liga: las fechas y el flyer entero ───────────────────────────────────────────────────────────
 // No viajan en el lobby —ya estaba al tope de lo que pesa—: se piden al abrir Ligas (`/api/ligas`, `ligas.separar()` en
 // bot/ligas.py), una vez, y otra cuando el ciclo trae un lobby nuevo (`t`). Mientras tanto, la tabla y la encuesta ya están
-const DET = { d: null, t: null, pedido: 0, oyentes: new Set() };
+const DET = { d: null, c: {}, t: null, pedido: 0, oyentes: new Set() };
 function pedirDetalle(t) {
   if ((DET.d && DET.t === t) || Date.now() - DET.pedido < 20000) return;
   DET.pedido = Date.now();
@@ -81,6 +86,8 @@ function pedirDetalle(t) {
     .then((d) => {
       if (!d || !d.ligas) return;
       DET.d = d.ligas;
+      // 🏟️ y quién tiene carta de liga (`cartas`, de 05_Liga/ciclo.py): «Los que mandan» y el Álbum
+      DET.c = d.cartas || {};
       DET.t = t;
       DET.oyentes.forEach((f) => f());
     })
@@ -676,10 +683,10 @@ function SeguirLiga({ L }) {
 
 // ── 🗂️ LAS PESTAÑAS DE CADA LIGA (Dlx, 17/10/2026, a «¿qué le sumamos?»: las ocho). Una sola página larga con todo
 // sería demasiado: van en pestañas, y cada una sólo si tiene con qué ────────────────────────────────────────────────────
-const PEST = [['tabla', 'La tabla'], ['ascenso', 'Ascenso'], ['fechas', 'Fechas'], ['numeros', 'Números'], ['staff', 'Staff'], ['flyers', 'Flyers'],
+const PEST = [['tabla', 'La tabla'], ['album', 'Álbum'], ['ascenso', 'Ascenso'], ['fechas', 'Fechas'], ['numeros', 'Números'], ['staff', 'Staff'], ['flyers', 'Flyers'],
   ['videos', 'Videos'], ['como', 'Cómo funciona']];
 function hay(L, k) {
-  return k === 'tabla' ? true : k === 'ascenso' ? !!(L.asc && (L.asc.filas || []).length) : k === 'fechas' ? (L.fechas || []).length > 0 : k === 'numeros' ? (L.fechas || []).some((f) => f.b.some((b) => b[2]))
+  return k === 'tabla' ? true : k === 'album' ? (L.album || []).length > 0 : k === 'ascenso' ? !!(L.asc && (L.asc.filas || []).length) : k === 'fechas' ? (L.fechas || []).length > 0 : k === 'numeros' ? (L.fechas || []).some((f) => f.b.some((b) => b[2]))
     : k === 'staff' ? (L.staff || []).some((x) => x[2] >= 2 || x[3] >= 3) : k === 'flyers' ? (L.flyers || []).length > 0
       : k === 'videos' ? (L.vids || []).length > 0 : k === 'como' ? !!(L.info || (L.fin && L.fin.c)) : false;
 }
@@ -697,6 +704,9 @@ function LigaPerfil({ liga, id }) {
   const L = conDetalle(ls.find((x) => x.id === id), det);
   if (!L) return <LigasInicio liga={liga} falta={id} />;
   const h = herramientas(liga, L);
+  // 🃏 el álbum: la carta de liga de cada uno de la tabla que la tiene, en el orden de la tabla
+  L.album = (L.tabla || []).map((f, i) => [f, i, h.kDe(f[0])]).map(([f, i, k]) => [f, i, k, k ? cartaLiga(liga, L.id, k) : ''])
+    .filter((x) => x[3]);
   const s = liga.svs[L.sv] || {};
   const sig = siglaDe(L.sv);
   const color = s.color || '#E41373';
@@ -744,6 +754,17 @@ function LigaPerfil({ liga, id }) {
         <>
           <Sec id="lgp-tabla" titulo="La tabla" extra="lgp-sec"><Torneo liga={liga} L={L} h={h} /></Sec>
         </>
+      ) : null}
+      {tv === 'album' ? (
+        <Sec id="lgp-album" titulo="El álbum" extra="lgp-sec">
+          <ul className="lq-alb">{L.album.map(([f, i, k, u]) => (
+            <li key={k}>
+              <a href={'#/r/' + encodeURIComponent(k)} aria-label={'El perfil de ' + limpio(f[0])}><img src={u} alt={'Carta de liga de ' + limpio(f[0])} loading="lazy" decoding="async" /></a>
+              <small>{i + 1}º · {limpio(f[0])}</small>
+            </li>
+          ))}</ul>
+          <p className="pronto-p">Cada uno que juega la liga tiene su carta, y se pone al día con cada jornada.</p>
+        </Sec>
       ) : null}
       {tv === 'ascenso' ? (
         <Sec id="lgp-asc" titulo={'Ascenso a la ' + L.asc.n} extra="lgp-sec"><Ascenso A={L.asc} h={h} desde={L.id} /></Sec>
@@ -831,10 +852,148 @@ function TarjetaLiga({ liga, L, est }) {
   );
 }
 
+// ── 🏟️ EL REMAKE (v7, 27/10/2026). Dlx, a la maqueta (https://claude.ai/artifact/HyEpS9oPxD37BUSb8sZV6t): «el REMAKE
+// SUBELO». Lo negro de arriba con FLECHAS entre «Los que mandan» (la carta de liga de cada líder), «Los países» y «La
+// carrera de todos» (Dlx a la v5: «podemos poner flechas en la sección negra… países y carrera entre todos»), y las ligas
+// POR ESTADO, en cartelera (Dlx a la v4: «me gusta por estado, pero… estilo cartelera»; a la v5: «no pongas quietas o
+// paradas»: las que no se juegan salen en «Ver todas»). Lo que ya estaba abajo —tus ligas, lo mejor, el salón, lo que
+// viene y lo que pasó— se queda: se movió, no se sacó (Dlx, 13/10/2026: «remover al final y con los números»)
+const corto = (n) => String(n || '').replace('FMH ', '').replace('FMS ', '').replace('Snake League ', '').replace('Champions League ', 'Champions ').replace('Snake ', '');
+// la carta de liga de esa clave en esa liga (la chica: se dibuja en chico), o '' si no tiene
+function cartaLiga(liga, lid, k, grande = false) {
+  const x = ((DET.c || {})[k] || []).find((y) => y[0] === lid);
+  return x ? liga.d.r2 + '/' + encodeURIComponent(k) + '/liga-' + lid + (grande ? '' : '.chica') + '.webp?v=' + x[1] : '';
+}
+const SLIDES = [['Los que mandan', 'el líder de cada liga'], ['Los países', 'quién gana más batallas en las ligas'],
+  ['La carrera de todos', 'los que más ganaron, sumando todas las ligas']];
+// 🌎 los países y 🏃 la carrera de todos: las batallas con ganador de todas las ligas (las fechas del detalle)
+function cuentas(liga, ls, hs, det) {
+  const pais = {}, gente = {};
+  ls.forEach((L) => {
+    const h = hs[L.id];
+    ((det[L.id] || {}).fechas || []).forEach((f) => f.b.forEach((b) => {
+      if (!b[2]) return;
+      [b[0], b[1]].forEach((raw) => {
+        const k = h.kDe(raw);
+        const g = b[2] === raw ? 1 : 0;
+        const id = k || limpio(raw).toLowerCase();
+        const q = gente[id] = gente[id] || { raw, L, g: 0, j: 0 };
+        q.g += g;
+        q.j += 1;
+        const fi = k && (liga.T[k] || (liga.X && liga.X[k]));
+        const cc = fi && fi.cc;
+        if (!cc) return;
+        const P = pais[cc] = pais[cc] || { g: 0, j: 0, ks: new Set() };
+        P.g += g;
+        P.j += 1;
+        P.ks.add(k);
+      });
+    }));
+  });
+  const ps = Object.entries(pais).filter(([, P]) => P.g).sort((a, b) => b[1].g - a[1].g).slice(0, 8);
+  const cs = Object.values(gente).filter((q) => q.g).sort((a, b) => b.g - a.g || a.j - b.j).slice(0, 8);
+  return { ps, cs };
+}
+function HeroLigas({ liga, ls, hs, est, det, onComo }) {
+  const [i, setI] = useState(0);
+  const { ps, cs } = useMemo(() => cuentas(liga, ls, hs, det), [liga, ls, hs, det]);
+  const vivas = ls.filter((L) => est[L.id].c !== 'quieta' && est[L.id].c !== 'fin').length;
+  const ult = ls.reduce((m, L) => (L.ult_t && L.ult_t > m ? L.ult_t : m), '');
+  const gente = new Set();
+  ls.forEach((L) => (L.tabla || []).forEach(([raw]) => gente.add(hs[L.id].kDe(raw) || limpio(raw).toLowerCase())));
+  const n = SLIDES.length;
+  const mx0 = ps.length ? ps[0][1].g : 1;
+  const mx1 = cs.length ? cs[0].g : 1;
+  let cuerpo;
+  if (i === 0) {
+    cuerpo = (
+      <ul className="lq-lds" aria-label="El líder de cada liga">{ls.filter((L) => (L.tabla || []).length).map((L) => {
+        const a = L.tabla[0];
+        const k = hs[L.id].kDe(a[0]);
+        const u = k ? cartaLiga(liga, L.id, k) : '';
+        const v = L.tabla.length > 1 ? a[3] - L.tabla[1][3] : 0;
+        return (
+          <li key={L.id}><a className="lq-ld" href={aLiga(L)}>
+            <span className="lq-ld-l"><img alt="" src={liga.logo(L.sv)} /><b>{corto(L.n)}</b></span>
+            {u ? <img className="lq-ld-c" src={u} alt={'Carta de liga de ' + limpio(a[0])} loading="lazy" decoding="async" />
+              : <span className="lq-ld-h">{hs[L.id].cara(a[0], 'cara lq-cara')}</span>}
+            <b className="lq-ld-n">{limpio(a[0])}</b>
+            <small>{a[3]} pts · {v ? '+' + v : 'empatado'}</small>
+          </a></li>
+        );
+      })}</ul>
+    );
+  } else if (i === 1) {
+    cuerpo = ps.length ? (
+      <ol className="lq-bs">{ps.map(([cc, P], j) => (
+        <li key={cc}><i>{j + 1}</i><Bandera cc={cc} /><span className="lq-n"><b>{nombrePais(cc)}</b>
+          <small>{P.ks.size} {P.ks.size === 1 ? 'rapero' : 'raperos'} · {Math.round((100 * P.g) / P.j)}% ganadas</small></span>
+          <span className="lq-b"><u style={{ width: (100 * P.g) / mx0 + '%' }} /></span><em>{P.g}</em></li>
+      ))}</ol>
+    ) : <p className="pronto-p">Aparece con las primeras batallas.</p>;
+  } else {
+    cuerpo = cs.length ? (
+      <ol className="lq-bs">{cs.map((q, j) => (
+        <li key={q.raw + j}><i>{j + 1}</i>{hs[q.L.id].cara(q.raw, 'cara lq-cara')}<span className="lq-n"><b>{limpio(q.raw)}</b><small>{corto(q.L.n)}</small></span>
+          <span className="lq-b"><u style={{ width: (100 * q.g) / mx1 + '%' }} /></span><em>{q.g}<small>de {q.j}</small></em></li>
+      ))}</ol>
+    ) : <p className="pronto-p">Aparece con las primeras batallas.</p>;
+  }
+  return (
+    <section className="lq-h">
+      <div className="lq-h-i">
+        <span className="tag">LIGAS · {liga.temp}</span>
+        <h1 className="lq-h-t">Las ligas</h1>
+        <p>Las de cada servidor, con su tabla, sus jornadas y sus flyers. <b>Cada batalla suma a tus duelos.</b></p>
+        <dl className="lq-nums">
+          <div><dt>EN JUEGO</dt><dd>{vivas}</dd></div>
+          <div><dt>ÚLTIMA BATALLA</dt><dd className="v">{ult ? liga.cuando(ult) : '—'}</dd></div>
+          <div><dt>RAPEROS</dt><dd>{num(gente.size)}</dd></div>
+        </dl>
+        <button type="button" className="lq-como" onClick={onComo}>¿Primera vez? Cómo funcionan ↓</button>
+      </div>
+      <div className="lq-h-l">
+        <div className="lq-sl-t">
+          <button type="button" aria-label="Anterior" onClick={() => setI((i + n - 1) % n)}>‹</button>
+          <span aria-live="polite"><b>{SLIDES[i][0]}</b><small>{SLIDES[i][1]}</small></span>
+          <span className="lq-pts" aria-hidden="true">{SLIDES.map((x, j) => <i key={x[0]} className={j === i ? 'on' : ''} />)}</span>
+          <button type="button" aria-label="Siguiente" onClick={() => setI((i + 1) % n)}>›</button>
+        </div>
+        {cuerpo}
+      </div>
+    </section>
+  );
+}
+// 🎟️ cada liga en cartelera: el flyer arriba, cómo va y la carrera de los dos primeros abajo
+function Cuadro({ liga, L, est }) {
+  const t = L.tabla || [];
+  const mx = (t[0] && t[0][3]) || 1;
+  const c = (liga.svs[L.sv] || {}).color || '#E41373';
+  return (
+    <a className="lq-cq" href={aLiga(L)} style={{ '--c': c }}>
+      {L.fl ? <img className="lq-cq-f" src={L.fl} alt="" loading="lazy" decoding="async" />
+        : <span className="lq-cq-f sin"><img alt="" src={liga.logo(L.sv, true)} /></span>}
+      <span className={'lq-est lgx-' + est.c}>{est.t}</span>
+      <span className="lq-cq-i">
+        <span className="lq-cq-n"><img alt="" src={liga.logo(L.sv)} /><b>{L.n}</b></span>
+        {t.length > 1 ? (
+          <span className="lq-r2">
+            <span><i className="c1" style={{ width: '100%' }} /><b>{limpio(t[0][0])}</b><em>{t[0][3]}</em></span>
+            <span><i className="c2" style={{ width: (100 * t[1][3]) / mx + '%' }} /><b>{limpio(t[1][0])}</b><em>{t[1][3]}</em></span>
+          </span>
+        ) : null}
+        <small>{L.j ? 'J' + L.j + ' · ' : ''}{num(L.bat)} {L.bat === 1 ? 'batalla' : 'batallas'} · {t.length} raperos</small>
+      </span>
+    </a>
+  );
+}
+
 // ── 🏟️ LA PORTADA (`#/ligas`): todas, cómo va cada una, las tuyas, las próximas fechas y lo último que pasó ─────────────
 function LigasInicio({ liga, falta = '' }) {
   const ls = liga.ligas();
   const [sv, setSv] = useState('');
+  const [todas, setTodas] = useState(false);
+  const det = useDetalle(liga.d.ligas ? liga.d.ligas.t : null);
   const svs = useMemo(() => {
     const c = {};
     ls.forEach((L) => { c[L.sv] = (c[L.sv] || 0) + 1; });
@@ -861,31 +1020,10 @@ function LigasInicio({ liga, falta = '' }) {
   const fls = ls.filter((L) => L.fl).slice(0, 3);
   return (
     <>
-      <div className="escena lgh-esc" style={{ '--mo-c': '#E41373', '--mo-o': 0.9, '--mo-c2': '#29B298' }}>
-        <section className="rk-cab lgh-cab">
-          <div className="rk-tx">
-            <span className="tag">LIGAS · {liga.temp}</span>
-            <h1 className="hero-ev largo">Ligas</h1>
-            <p className="hero-p">Las ligas de los servidores, como torneos: cada una con su tabla, sus jornadas y su flyer. Arrancan y terminan cuando
-              las organiza su servidor, y sus batallas suman a tus <b>duelos</b>.</p>
-            {ls.length ? (
-              <dl className="svp-num lgh-num">
-                <div><dt>EN JUEGO</dt><dd>{enJuego}</dd></div>
-                <div><dt>BATALLAS</dt><dd>{num(bat)}</dd></div>
-                <div><dt>RAPEROS</dt><dd>{num(gente.size)}</dd></div>
-                <div><dt>SERVIDORES</dt><dd>{svs.length}</dd></div>
-              </dl>
-            ) : null}
-          </div>
-          {fls.length >= 3 ? (
-            <ol className="lgh-abanico" aria-label="Los últimos flyers">
-              {[fls[1], fls[0], fls[2]].map((L, i) => (
-                <li key={L.id} className={['izq', 'centro', 'der'][i]}><a href={aLiga(L)} aria-label={'Ver ' + L.n}><img alt="" src={L.fl} /></a></li>
-              ))}
-            </ol>
-          ) : null}
-        </section>
-      </div>
+      <HeroLigas liga={liga} ls={ls} hs={hs} est={est} det={det} onComo={(e) => {
+        const el = e.currentTarget.getRootNode().getElementById('lgh-como');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }} />
       {/* 🏆 las dos de la Liga Global, arriba de las de los servidores */}
       <section className="sec lgf-dsec" aria-label="Las de la Liga Global"><Destacadas liga={liga} /></section>
       {falta ? <p className="sec lgh-falta" role="status">Esa liga no está: puede que todavía no tenga batallas, o que haya cambiado de nombre. Acá están todas.</p> : null}
@@ -904,7 +1042,7 @@ function LigasInicio({ liga, falta = '' }) {
         </Sec>
       ) : null}
       {ls.length ? (
-        <Sec id="lgh-todas" titulo="Todas las ligas">
+        <Sec id="lgh-todas" titulo={'Las ligas · ' + ls.length} enlace={todas ? 'Por estado' : 'Ver todas'} onEnlace={() => setTodas(!todas)}>
           {svs.length > 1 ? (
             <div className="rk-chips lgh-fil" role="group" aria-label="Filtrar por servidor">
               <button type="button" className={!sv ? 'on' : ''} aria-pressed={!sv} onClick={() => setSv('')}>Todas · {ls.length}</button>
@@ -915,7 +1053,20 @@ function LigasInicio({ liga, falta = '' }) {
               ))}
             </div>
           ) : null}
-          <ul className="lgh-grid aparece">{ver.map((L) => <li key={L.id}><TarjetaLiga liga={liga} L={L} est={est[L.id]} /></li>)}</ul>
+          {todas ? <ul className="lgh-grid aparece">{ver.map((L) => <li key={L.id}><TarjetaLiga liga={liga} L={L} est={est[L.id]} /></li>)}</ul> : (() => {
+            // 🔥 las que se deciden ahora (el 1.º le saca 2 o menos) y 🎤 las demás que se juegan; las que no, en «Ver todas»
+            const vivas = ver.filter((L) => est[L.id].c !== 'quieta' && est[L.id].c !== 'fin');
+            const parejas = vivas.filter((L) => (L.tabla || []).length > 1 && L.tabla[0][3] - L.tabla[1][3] <= 2);
+            const juego = vivas.filter((L) => parejas.indexOf(L) < 0);
+            const filas = [['🔥 Se deciden ahora', 'el 1.º le saca 2 o menos', parejas], ['🎤 En juego', 'las demás que se están jugando', juego]];
+            if (!vivas.length) return <p className="pronto-p">Ahora no se está jugando ninguna{sv ? ' de ' + siglaDe(sv) : ''}: están en «Ver todas».</p>;
+            return filas.filter((f) => f[2].length).map(([t, b, xs]) => (
+              <div key={t} className="lq-fila">
+                <div className="lq-fila-t"><b>{t}</b><small>{b} · {xs.length}</small></div>
+                <ul className="lq-cqs">{xs.map((L) => <li key={L.id}><Cuadro liga={liga} L={L} est={est[L.id]} /></li>)}</ul>
+              </div>
+            ));
+          })()}
         </Sec>
       ) : null}
       {ls.length ? <LoMejor liga={liga} ls={ls} hs={hs} /> : null}
