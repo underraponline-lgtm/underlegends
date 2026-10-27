@@ -1681,9 +1681,9 @@
    "servidor": "6b9c01d13c8d:99e0c0179dbe:552866"
   },
   "Volk": {
-   "competitivo": "221ed1e8232b:0a48057cb351",
-   "pais": "ba6054d159ce:263a27e40647",
-   "servidor": "431ff8600403:99e0c0179dbe:055f77"
+   "competitivo": "c28def350d4f:0a48057cb351",
+   "pais": "687e74ff013d:263a27e40647",
+   "servidor": "0f64f9a9f8a2:99e0c0179dbe:055f77"
   },
   "WILLY": {},
   "Wachiwa": {
@@ -1711,10 +1711,10 @@
    "servidor": "30c3f9c6805d:99e0c0179dbe:f1c33e"
   },
   "Xubaru": {
-   "competitivo": "130380b53fd6:0a48057cb351",
-   "pais": "17713efd203d:263a27e40647",
-   "servidor": "0f8ea2971833:99e0c0179dbe:a29fa0",
-   "temporada": "8a7c3f0b36ba:6ec1a5248de8"
+   "competitivo": "4a0eaa073c3b:0a48057cb351",
+   "pais": "543bf672a501:263a27e40647",
+   "servidor": "644daf182814:99e0c0179dbe:a29fa0",
+   "temporada": "24ad7ff8f9e2:6ec1a5248de8"
   },
   "YACO": {
    "servidor": "8dc17afd358c:99e0c0179dbe:980594"
@@ -1734,10 +1734,10 @@
    "servidor": "c2767db846db:99e0c0179dbe:15af16"
   },
   "ZTR": {
-   "competitivo": "2d08f2e81fad:0a48057cb351",
-   "pais": "8e837890ab62:263a27e40647",
-   "servidor": "60e514cb4dc6:99e0c0179dbe:5bc8b2",
-   "temporada": "5f82ccf283cd:6ec1a5248de8"
+   "competitivo": "aa0e8cf0a3b9:0a48057cb351",
+   "pais": "c3d8a48cce00:263a27e40647",
+   "servidor": "fca19910540f:99e0c0179dbe:5bc8b2",
+   "temporada": "8665fc9abaae:6ec1a5248de8"
   },
   "Zaamei": {
    "servidor": "b1642589051e:99e0c0179dbe:403ba8"
@@ -1748,18 +1748,18 @@
    "servidor": "954ddc608829:99e0c0179dbe:2a03f7"
   },
   "Zaik": {
-   "competitivo": "36dc1379a90d:0a48057cb351",
-   "servidor": "47b0f99359b6:99e0c0179dbe:284dc1",
-   "temporada": "5650bd74a6b7:6ec1a5248de8"
+   "competitivo": "6a61ef5fc0a9:0a48057cb351",
+   "servidor": "6be5176b687a:99e0c0179dbe:284dc1",
+   "temporada": "c10c6508ca6c:6ec1a5248de8"
   },
   "Zamo": {
    "servidor": "f78f4273cc58:99e0c0179dbe:4b46a6"
   },
   "Zanet": {},
   "Zekha": {
-   "competitivo": "57dc6185fb6c:0a48057cb351",
-   "pais": "6abd9f2501cb:263a27e40647",
-   "servidor": "9ce22692d772:99e0c0179dbe:610cd5"
+   "competitivo": "050e1308f56b:0a48057cb351",
+   "pais": "c5304dce695b:263a27e40647",
+   "servidor": "0e04fb97615d:99e0c0179dbe:610cd5"
   },
   "Zekki": {
    "servidor": "d2b86c0bbfd9:99e0c0179dbe:055f77"
@@ -1771,20 +1771,20 @@
    "temporada": "08bb079d6ada:6ec1a5248de8"
   },
   "Zetryko": {
-   "competitivo": "1bdfa8e80d6b:0a48057cb351",
-   "pais": "9b2c7fde252e:263a27e40647",
-   "servidor": "05c653e87776:99e0c0179dbe:786002",
-   "temporada": "e4645077f053:6ec1a5248de8"
+   "competitivo": "26d0f4abf5bc:0a48057cb351",
+   "pais": "61afc98379f8:263a27e40647",
+   "servidor": "a46b62de9e2b:99e0c0179dbe:786002",
+   "temporada": "39316ac0f198:6ec1a5248de8"
   },
   "ZiarKI": {},
   "Ziggy": {
    "servidor": "95727acb7156:99e0c0179dbe:055f77"
   },
   "Zignos": {
-   "competitivo": "a2151cfc72a7:0a48057cb351",
-   "pais": "29e5a73906bb:263a27e40647",
-   "servidor": "ecbb5b63cecb:99e0c0179dbe:3580af",
-   "temporada": "e13d87eacaf3:6ec1a5248de8"
+   "competitivo": "028fec63394c:0a48057cb351",
+   "pais": "579a038c35e9:263a27e40647",
+   "servidor": "d2b3611ac9aa:99e0c0179dbe:3580af",
+   "temporada": "d324855e09c9:6ec1a5248de8"
   },
   "Zkalefa": {
    "servidor": "f7db99f48cc8:99e0c0179dbe:15af16"
@@ -1916,5 +1916,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-27T21:09:33+00:00"
+ "cuando": "2026-10-27T21:39:56+00:00"
 }
