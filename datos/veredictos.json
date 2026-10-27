@@ -2,17 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1561894410269229160": {
-   "id": "1561894410269229160",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792455046003,
-   "a": "PANCHOK 🇨🇱",
-   "b": "ECLIPSE 🇨🇱",
-   "ganador": "PANCHOK 🇨🇱",
-   "votos": "1–0"
-  },
   "1561908262516039742": {
    "id": "1561908262516039742",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1210,6 +1199,17 @@
    "a": "pichulitalinda",
    "b": "Mcnadie",
    "ganador": "Mcnadie",
+   "votos": "1–0"
+  },
+  "1564411076617965689": {
+   "id": "1564411076617965689",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793055066018,
+   "a": "YINN🇲🇦",
+   "b": "MATS🇺🇾",
+   "ganador": "YINN🇲🇦",
    "votos": "1–0"
   }
  },
@@ -5436,8 +5436,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793054536797,
-   "ed": 1793058487821,
-   "texto": "`[ OCTAVOS ]`\n⌞YINN🇲🇦⌝ 🆚 ⌞SOSA🇺🇾⌝ 🆚 ⌞STT🇮🇨⌝\n⌞OKAM🇨🇷⌝ 🆚 ⌞LEWITO🇦🇷⌝ 🆚 ⌞PICHULAMC🇦🇷⌝ 🆚 ⌞TAM🇻🇪⌝\n⌞SWID🇪🇸⌝ 🆚 ⌞DOMINICK🇵🇪⌝ 🆚 ⌞JAHNO MELOMANÍACO🇦🇷⌝ 🆚 ⌞1514914⌝\n`[ OCTAVOS ]`\n⌞LUCK🇵🇾⌝ 🆚 ⌞PARK-JI SUNG🇰🇷⌝ 🆚 ⌞DYZZ🇨🇱⌝ 🆚 ⌞MCNADIE🇦🇷⌝",
+   "ed": 1793060165952,
+   "texto": "`[ OCTAVOS ]`\n⌞YINN🇲🇦⌝ 🆚 ⌞SOSA🇺🇾⌝ 🆚 ⌞STT🇮🇨⌝\n⌞OKAM🇨🇷⌝ 🆚 ⌞LEWITO🇦🇷⌝ 🆚 ⌞PICHULAMC🇦🇷⌝ 🆚 ⌞TAM🇻🇪⌝\n⌞SWID🇪🇸⌝ 🆚 ⌞DOMINICK🇵🇪⌝ 🆚 ⌞JAHNO MELOMANÍACO🇦🇷⌝ 🆚 ⌞1514914⌝\n`[ CUARTOS ]`\n⌞YINN🇲🇦⌝ 🆚 ⌞MATS🇺🇾⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5446,8 +5446,8 @@
       "SOSA🇺🇾",
       "STT🇮🇨"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "YINN🇲🇦",
+     "ronda siguiente",
      []
     ],
     [
@@ -5459,7 +5459,7 @@
       "TAM🇻🇪"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -5471,19 +5471,17 @@
       "1514914"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
-     "OCTAVOS",
+     "CUARTOS",
      [
-      "LUCK🇵🇾",
-      "PARK-JI SUNG🇰🇷",
-      "DYZZ🇨🇱",
-      "MCNADIE🇦🇷"
+      "YINN🇲🇦",
+      "MATS🇺🇾"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "YINN🇲🇦",
+     "veredicto",
      []
     ]
    ]
