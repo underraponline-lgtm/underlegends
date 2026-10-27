@@ -98,10 +98,22 @@
     "nivel": "B",
     "base": 6000,
     "o": 75,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 6000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Octavos",
+    "valor": 6000,
+    "caza": {
+     "n": 535,
+     "evento": "PRADERAP VOL.2",
+     "sv": "ACAD",
+     "t": "2026-10-27T20:02:54Z",
+     "por": [
+      {
+       "n": "Makmah",
+       "cobra": 6000
+      }
+     ]
+    }
    },
    {
     "n": "Deluxe",

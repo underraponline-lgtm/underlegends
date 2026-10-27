@@ -3184,6 +3184,78 @@
      "1560897903042764943"
     ]
    }
+  },
+  {
+   "id": "e944fd4956",
+   "tipo": "Nombre desconocido",
+   "sec": "PRADERAP VOL.2 · ACAD · 27/10 · #535",
+   "que": "¿Quién es «Infected🇨🇴»?",
+   "r": "Es Infecte (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @mxrio_xtz (en Discord: «Infected») · en la Lista: Infecte se anotó como «Infected» para ese evento, no es staff de ACAD y esa noche no jugó con su nombre",
+   "t": 1793138554516,
+   "filas": [
+    915
+   ],
+   "variantes": [
+    "Infected🇨🇴"
+   ],
+   "escribio": {
+    "quien": "PRADERAP VOL.2 · ACAD · 27/10 · Infected🇨🇴"
+   }
+  },
+  {
+   "id": "d45b08223b",
+   "tipo": "Nombre desconocido",
+   "sec": "PRADERAP VOL.2 · ACAD · 27/10 · #535",
+   "que": "¿Quién es «Dreex 🇵🇪»?",
+   "r": "Es Drexx",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Drexx: estaba en la llamada del evento con un nombre parecido",
+   "t": 1793138554516,
+   "filas": [
+    914
+   ],
+   "variantes": [
+    "Dreex 🇵🇪"
+   ],
+   "escribio": {
+    "alias": [
+     "Dreex",
+     "Drexx"
+    ],
+    "filas": [
+     322
+    ]
+   }
+  },
+  {
+   "id": "10c27f5a82",
+   "tipo": "Nombre desconocido",
+   "sec": "PRADERAP VOL.2 · ACAD · 27/10 · #535",
+   "que": "¿Quién es «Ryuk 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 757267093162033253",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (757267093162033253)",
+   "t": 1793138554516,
+   "filas": [
+    916
+   ],
+   "variantes": [
+    "Ryuk 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Ryuk",
+     "757267093162033253"
+    ]
+   }
   }
  ],
  "deshechas": []

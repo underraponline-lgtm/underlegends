@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-27T21:25:06+00:00",
+ "cuando": "2026-10-27T21:54:40+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6743,6 +6743,51 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "mats🇺🇾",
+   "quien": "matttt.15",
+   "discord_id": "597240876573392946",
+   "msg_id": "1564757312781029427",
+   "cuando": "2026-10-27T21:46:55"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "sosa",
+   "quien": "sosaatrz",
+   "discord_id": "1471153954254622774",
+   "msg_id": "1564756657206993071",
+   "cuando": "2026-10-27T21:44:18"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Kravitz 🇨🇷",
+   "quien": "thekravitz777",
+   "discord_id": "1345962362615894027",
+   "msg_id": "1564755983970865204",
+   "cuando": "2026-10-27T21:41:38"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "yo mc 🇨🇱",
+   "quien": "cronoxzito",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1564755258637549579",
+   "cuando": "2026-10-27T21:38:45"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "FRANCIS 🇨🇷",
+   "quien": "franciscoegipto",
+   "discord_id": "1517014246087589923",
+   "msg_id": "1564752320766677013",
+   "cuando": "2026-10-27T21:27:04"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42697,51 +42742,6 @@
    "discord_id": "1497026847504990218",
    "msg_id": "1548451728054296732",
    "cuando": "2026-09-12T21:54:20"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Leonar-t conquista irán aka pexx🇳🇱",
-   "quien": "manuxxx0789_78781",
-   "discord_id": "1150099153238630410",
-   "msg_id": "1548451627348922490",
-   "cuando": "2026-09-12T21:53:56"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "kude🇦🇷",
-   "quien": "mr.kude",
-   "discord_id": "832626921538846790",
-   "msg_id": "1548451564622975017",
-   "cuando": "2026-09-12T21:53:41"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Sebita🇱🇷",
-   "quien": "malasiafighter",
-   "discord_id": "1357796427191029932",
-   "msg_id": "1548451552363028531",
-   "cuando": "2026-09-12T21:53:38"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Lord 🇨🇴 +",
-   "quien": "kidbuu02124",
-   "discord_id": "1323444294534828104",
-   "msg_id": "1548450824609472553",
-   "cuando": "2026-09-12T21:50:45"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "DOGGY Chrono 🇻🇪",
-   "quien": "diegopalma0722",
-   "discord_id": "1485505764452728874",
-   "msg_id": "1548190842114547773",
-   "cuando": "2026-09-12T04:37:40"
   }
  ]
 }

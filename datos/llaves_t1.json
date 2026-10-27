@@ -36083,5 +36083,241 @@
     1250
    ]
   ]
+ },
+ "535": {
+  "dia": "2026-10-27",
+  "escala": "16+",
+  "fecha": "27/10",
+  "links": [
+   "https://discord.com/channels/765045834647339038/1309234583023124531/1564731138705072290"
+  ],
+  "n": 535,
+  "nombre": "PRADERAP VOL.2",
+  "participantes": 17,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "1200"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "Infected🇨🇴",
+       "Turbo 🇪🇦"
+      ],
+      "Infected🇨🇴",
+      ""
+     ],
+     [
+      [
+       "Ryuk 🇦🇷",
+       "Number"
+      ],
+      "Ryuk 🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "Dreex 🇵🇪"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Jobaking",
+       "Teo"
+      ],
+      "Jobaking",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "Efimero"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "Lvel 🇻🇪"
+      ],
+      "Panchok",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Leonart"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Infected🇨🇴"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "Miniboy",
+       "Ryuk 🇦🇷"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "Jobaking"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "Makmah"
+      ],
+      "Panchok",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Miniboy",
+       "PichulaMc"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Panchok",
+       "Erian"
+      ],
+      "Panchok",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Panchok",
+       "Miniboy"
+      ],
+      "Panchok",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "ACAD",
+  "tabla": [
+   [
+    "Panchok",
+    "Campeón",
+    10000
+   ],
+   [
+    "Miniboy",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    5250
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Infected🇨🇴",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Jobaking",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ryuk 🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "1200",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dreex 🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Efimero",
+    "Octavos",
+    1250
+   ],
+   [
+    "Leonart",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Number",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Turbo 🇪🇦",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

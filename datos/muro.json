@@ -11,7 +11,7 @@
 ]
 },
 "makmah": {
-"rg": "B",
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -254,6 +254,19 @@
 "temporada"
 ]
 },
+"bna": {
+"rg": "C",
+"c": []
+},
+"miniboy": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "cronox": {
 "rg": "D",
 "c": [
@@ -263,21 +276,8 @@
 "temporada"
 ]
 },
-"bna": {
-"rg": "C",
-"c": []
-},
 "nxuz": {
 "rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"miniboy": {
-"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -303,10 +303,6 @@
 "temporada"
 ]
 },
-"dominick": {
-"rg": "D",
-"c": []
-},
 "trot": {
 "rg": "D",
 "c": [
@@ -329,17 +325,12 @@
 "temporada"
 ]
 },
-"drexx": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "tuca": {
 "rg": "",
+"c": []
+},
+"dominick": {
+"rg": "D",
 "c": []
 },
 "chop": {
@@ -363,6 +354,15 @@
 "temporada"
 ]
 },
+"drexx": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "lrs": {
 "rg": "E",
 "c": [
@@ -376,10 +376,6 @@
 "rg": "C",
 "c": []
 },
-"onzass": {
-"rg": "E",
-"c": []
-},
 "dyzz": {
 "rg": "E",
 "c": [
@@ -389,8 +385,8 @@
 "temporada"
 ]
 },
-"tenor": {
-"rg": "D",
+"polosport": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -398,8 +394,12 @@
 "temporada"
 ]
 },
-"polosport": {
-"rg": "C",
+"onzass": {
+"rg": "E",
+"c": []
+},
+"tenor": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -463,15 +463,6 @@
 "temporada"
 ]
 },
-"sosa": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "caliz": {
 "rg": "E",
 "c": [
@@ -492,6 +483,15 @@
 "rg": "E",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"sosa": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -522,16 +522,16 @@
 "rg": "",
 "c": []
 },
+"1200": {
+"rg": "E",
+"c": []
+},
 "masino": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
-},
-"1200": {
-"rg": "E",
-"c": []
 },
 "jult": {
 "rg": "E",
@@ -567,15 +567,6 @@
 "temporada"
 ]
 },
-"leonart": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "motera": {
 "rg": "",
 "c": [
@@ -598,6 +589,15 @@
 "servidor"
 ]
 },
+"leonart": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "benjixo": {
 "rg": "",
 "c": []
@@ -615,17 +615,6 @@
 "c": []
 },
 "badterne": {
-"rg": "",
-"c": []
-},
-"mcnadie": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"alexi": {
 "rg": "",
 "c": []
 },
@@ -653,6 +642,17 @@
 "servidor",
 "temporada"
 ]
+},
+"mcnadie": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"alexi": {
+"rg": "",
+"c": []
 },
 "19": {
 "rg": "",
@@ -714,6 +714,14 @@
 "temporada"
 ]
 },
+"lvel": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "rt": {
 "rg": "",
 "c": [
@@ -751,21 +759,6 @@
 "rg": "",
 "c": []
 },
-"juanpa": {
-"rg": "",
-"c": [
-"pais",
-"servidor"
-]
-},
-"lvel": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "zetryko": {
 "rg": "",
 "c": [
@@ -800,6 +793,13 @@
 "rg": "",
 "c": []
 },
+"number": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "erik": {
 "rg": "",
 "c": [
@@ -825,14 +825,14 @@
 "rg": "",
 "c": []
 },
-"darnbless": {
+"juanpa": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
+"pais",
+"servidor"
 ]
 },
-"ardean": {
+"darnbless": {
 "rg": "",
 "c": [
 "servidor",
@@ -843,16 +843,16 @@
 "rg": "",
 "c": []
 },
-"emizor": {
-"rg": "E",
-"c": []
-},
-"number": {
+"ardean": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
+},
+"emizor": {
+"rg": "E",
+"c": []
 },
 "pomberito": {
 "rg": "",
@@ -1094,6 +1094,14 @@
 "rg": "",
 "c": []
 },
+"jobaking": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "elsoolar": {
 "rg": "",
 "c": []
@@ -1260,14 +1268,6 @@
 "scot": {
 "rg": "",
 "c": []
-},
-"jobaking": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
 },
 "sultan": {
 "rg": "",
@@ -2604,15 +2604,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-02T02:55:29Z",
-"quien": [
-"Oasis"
-],
-"rg": "A",
-"primero": true
-},
 {
 "tipo": "rango",
 "t": "2026-10-02T02:55:29Z",
@@ -5946,6 +5937,15 @@
 "Verc"
 ],
 "rg": "S",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-27T22:02:13Z",
+"quien": [
+"Miniboy"
+],
+"rg": "C",
 "primero": false
 }
 ]

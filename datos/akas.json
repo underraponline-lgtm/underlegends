@@ -315,6 +315,8 @@
   "jahnomelomaniaco": "melomaniaco",
   "miniboycl": "Miniboy",
   "parttt": "Provenza",
+  "dreex": "Drexx",
+  "infected": "Infecte",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1621,6 +1623,14 @@
   [
    "parttt",
    "Provenza"
+  ],
+  [
+   "Dreex",
+   "Drexx"
+  ],
+  [
+   "Infected",
+   "Infecte"
   ],
   [
    "Nexus",

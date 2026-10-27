@@ -3682,6 +3682,13 @@
     "t1",
     1793064764072
    ]
+  },
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1793138568927
+   ]
   }
  },
  "joshu": {
@@ -4502,6 +4509,11 @@
  },
  "lrs": {
   "competitivo": {
+   "🐉 MATADRAGONES": [
+    "🐉 MATADRAGONES",
+    "t1",
+    1793138568927
+   ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
     "t1",
@@ -4897,6 +4909,11 @@
     "🐦‍🔥 FÉNIX",
     "t1",
     1793029252929
+   ],
+   "🐺 LOBO SOLITARIO": [
+    "🐺 LOBO SOLITARIO",
+    "t1",
+    1793138568927
    ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x5",
@@ -5373,6 +5390,11 @@
     "🤝 SIN MIEDO",
     "t1",
     1792953978519
+   ],
+   "🥈 A UN PASO": [
+    "🥈 A UN PASO",
+    "t1",
+    1793138568927
    ]
   },
   "pais": {
@@ -6810,6 +6832,11 @@
     "🦁 TEMERARIO",
     "t1",
     1793029252929
+   ],
+   "🧊 SANGRE FRÍA": [
+    "🧊 SANGRE FRÍA",
+    "t1",
+    1793138568927
    ]
   },
   "pais": {
@@ -6827,6 +6854,11 @@
     "EMBAJADOR",
     "t1",
     1793029252929
+   ],
+   "GANA AFUERA": [
+    "GANA AFUERA",
+    "t1",
+    1793138568927
    ],
    "INTERNACIONAL": [
     "INTERNACIONAL",
@@ -6923,7 +6955,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x8",
+    "👑 CAMPEÓN x9",
     "t1",
     1793029252929
    ],
