@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-10-27T19:39:08Z",
+ "cuando": "2026-10-27T20:31:52Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 494.7,
+ "dur_s": 1643.5,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.9
+   "s": 10.4
   },
   {
    "n": "2f2",
@@ -21,66 +21,78 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.5
+   "s": 9.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 32.7
+   "s": 250.1
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 40 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": false,
-   "s": 373.9
+   "s": 1295.0
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 7.2
+   "s": 12.2
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 61.4
+   "s": 64.5
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Artezzy"
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Kyss"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Polosport"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Vilca"
   }
  ],
  "ultimo_evento": {
-  "n": "532",
-  "nombre": "qcyo rapeen 4",
-  "sv": "FFA",
-  "dia": "2026-10-26"
+  "n": "533",
+  "nombre": "- IRLANDA FREESTYLE -",
+  "sv": "FRZ",
+  "dia": "2026-10-27"
  },
  "cuotas": {
   "kv": {
-   "write": 448,
-   "read": 44111
+   "write": 480,
+   "read": 46216
   },
   "objeto": {
-   "leidas": 4501299,
-   "escritas": 20404,
-   "pedidos": 10279
+   "leidas": 4757907,
+   "escritas": 23570,
+   "pedidos": 10745
   },
   "worker": {
-   "pedidos": 11501,
+   "pedidos": 11312,
    "errores": 0,
-   "sub": 13366,
+   "sub": 13144,
    "cortados": 0,
    "p50_ms": 1.25,
-   "p99_ms": 11.74,
+   "p99_ms": 11.77,
    "cpu": {
-    "total": 24928,
-    "objeto_10": 1841,
-    "worker_10": 237
+    "total": 24531,
+    "objeto_10": 1836,
+    "worker_10": 246
    }
   },
   "r2": {
