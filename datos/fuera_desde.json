@@ -5,6 +5,16 @@
    "servidor": "2026-10-21",
    "sv-dra": "2026-10-21"
   },
+  "denik": {
+   "bloq-competitivo": "2026-10-26",
+   "bloq-pais": "2026-10-26",
+   "competitivo": "2026-10-26",
+   "pais": "2026-10-26",
+   "servidor": "2026-10-26",
+   "sv-dra": "2026-10-26",
+   "sv-ffa": "2026-10-26",
+   "temporada": "2026-10-26"
+  },
   "kuni": {
    "temporada": "2026-10-26"
   },
@@ -34,8 +44,8 @@
    "sv-dra": "2026-10-22"
   }
  },
- "pasaban": 404,
- "cuando": "2026-10-27T03:00:36Z",
+ "pasaban": 403,
+ "cuando": "2026-10-27T03:30:17Z",
  "borradas": [
   [
    "kude",

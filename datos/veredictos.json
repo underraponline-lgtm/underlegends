@@ -1222,6 +1222,28 @@
    "b": "MC AREPA",
    "ganador": "MC AREPA",
    "votos": "1–0"
+  },
+  "1564473331497832581": {
+   "id": "1564473331497832581",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793069908738,
+   "a": "GARY",
+   "b": "SHIKTA",
+   "ganador": "GARY",
+   "votos": "1–0"
+  },
+  "1564476998011846699": {
+   "id": "1564476998011846699",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793070782903,
+   "a": "OKAM",
+   "b": "JAZI",
+   "ganador": "OKAM",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5527,8 +5549,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1793067851324,
-   "ed": 1793069504173,
-   "texto": "`[ OCTAVOS ]`\n⌞MC AREPA⌝ 🆚 ⌞CHENTE⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MATS⌝\n⌞ARTEZZY⌝ 🆚 ⌞MCAREPA⌝",
+   "ed": 1793071027614,
+   "texto": "`[ OCTAVOS ]`\n⌞MC AREPA⌝ 🆚 ⌞CHENTE⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MATS⌝\n⌞ARTEZZY⌝ 🆚 ⌞MCAREPA⌝\n⌞GARY⌝ 🆚 ⌞SHIKTA⌝\n⌞OKAM⌝ 🆚 ⌞JAZI⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5557,6 +5579,26 @@
       "MCAREPA"
      ],
      "MCAREPA",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "GARY",
+      "SHIKTA"
+     ],
+     "GARY",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "OKAM",
+      "JAZI"
+     ],
+     "OKAM",
      "veredicto",
      []
     ]
