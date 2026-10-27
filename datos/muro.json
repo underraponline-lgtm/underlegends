@@ -1195,7 +1195,8 @@
 "melomaniaco": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "sosaatr": {
@@ -2605,14 +2606,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-02T00:05:30Z",
-"quien": [
-"ONZASS"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-02T00:05:30Z",
@@ -5944,6 +5937,14 @@
 "LAST"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-27T02:26:49Z",
+"quien": [
+"melomaniaco"
+],
+"carta": "temporada"
 }
 ]
 }
