@@ -182,7 +182,7 @@
     "racha": "0/0"
    }
   },
-  "ANG 🇺🇸": {
+  "ANG": {
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -7393,12 +7393,12 @@
   "Provenza": {
    "FFA": {
     "duelos": "11/22",
-    "ev": 29,
+    "ev": 30,
     "oro": 2,
-    "ovr": 69,
+    "ovr": 70,
     "pod": 6,
-    "pts": 140926,
-    "racha": "1/2",
+    "pts": 156301,
+    "racha": "0/2",
     "tg": {
      "fin": 6
     }
@@ -10397,36 +10397,6 @@
     "racha": "0/0",
     "tg": {
      "fund": true
-    }
-   }
-  },
-  "parttt🇧🇫": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 46,
-    "pod": 1,
-    "pts": 7500,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1,
-     "nuevo": true
-    }
-   }
-  },
-  "parttt🇨🇨": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 7875,
-    "racha": "0/0",
-    "tg": {
-     "fin": 1,
-     "nuevo": true
     }
    }
   },

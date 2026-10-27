@@ -219,15 +219,6 @@
 "temporada"
 ]
 },
-"bloody": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "delux": {
 "rg": "C",
 "c": [
@@ -250,6 +241,15 @@
 "rg": "D",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"bloody": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
