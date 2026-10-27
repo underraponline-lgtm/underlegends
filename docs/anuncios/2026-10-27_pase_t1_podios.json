@@ -1,0 +1,90 @@
+{
+ "_leeme": "El Pase de rapero T1 para los podios de la pre-temporada (27/10/2026), en FFA (✦⚡︱novedades). Dlx: «anuncia que los 3 podios de temporada y competitivo tienen el pase de t1. Y sólo Bloody y Konan lo tendrán permanente por ser #1s de los rankings en la pre temporada (liga global versión 1)» y «que Kibak tiene 1 semana para entrar a DRA y reclamar su pase». Kibak es Valen (datos/akas.json). Componentes V2, el formato de la v1.07. Se publica con herramientas/anunciar.py --servidor FFA --everyone.",
+ "flags": 32768,
+ "components": [
+  {
+   "type": 17,
+   "accent_color": 15269690,
+   "components": [
+    {
+     "type": 9,
+     "components": [
+      {
+       "type": 10,
+       "content": "# 🎫 EL PASE DE RAPERO T1, PARA LOS PODIOS DE LA PRE-TEMPORADA\n**Los 3 primeros del Ranking de Temporada y del Ranking Competitivo de la pre-temporada —la Liga Global versión 1— ya tienen el Pase de rapero premium de la T1.**"
+      }
+     ],
+     "accessory": {
+      "type": 11,
+      "media": {
+       "url": "https://underlegends.pages.dev/ul.png"
+      }
+     }
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🏆 Ranking Competitivo\n🎫 **Konan** 🇦🇷 — #1\n🎫 **Axinu** 🇨🇴 — #2\n🎫 **Abyssus** 🇵🇦 — #3"
+    },
+    {
+     "type": 10,
+     "content": "## 📈 Ranking Temporada\n🎫 **Bloody** 🇨🇴 — #1\n🎫 **Valen** 🇦🇷 — #2\n🎫 **MCO** 🇦🇷 — #3"
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 👑 Para siempre: Konan y Bloody\nPor ser **#1** de cada ranking en la pre-temporada, **Konan** y **Bloody** tienen el Pase premium **permanente**: en la T1 y en todas las temporadas que vengan."
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## ⏳ Kibak, tienes una semana\n**Kibak** tiene **hasta el martes 03/11** para entrar a **DRA** y reclamar su Pase de la T1. Si no entra, no se le dará.\n> El Pase premium es un rol de DRA: sin estar en DRA no se puede dar."
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 2
+    },
+    {
+     "type": 1,
+     "components": [
+      {
+       "type": 2,
+       "style": 5,
+       "label": "Entrar a DRA",
+       "emoji": {
+        "name": "🏠"
+       },
+       "url": "https://discord.gg/5jUM3WXDXe"
+      },
+      {
+       "type": 2,
+       "style": 5,
+       "label": "Ver el Pase",
+       "emoji": {
+        "name": "🎫"
+       },
+       "url": "https://underlegends.pages.dev/freestyle-rap/pase"
+      }
+     ]
+    },
+    {
+     "type": 10,
+     "content": "-# Liga Global de Freestyle en Español · Under Legends · v4.17"
+    }
+   ]
+  }
+ ]
+}

@@ -190,6 +190,15 @@ CREW = (300, 5, 10, 60)
 ROL_PREMIUM = '1054496803548049463'
 ROL_REGALO = '1563941336531607575'
 ROLES_PREMIUM = (ROL_PREMIUM, ROL_REGALO)
+#: 🎫 LOS PODIOS DE LA PRE-TEMPORADA (la Liga Global versión 1), con el Pase de la T1 (Dlx, 27/10/2026: «no será t2 sino
+#: t1»): el top 3 del Competitivo y de la Temporada, por `herramientas/pase_regalo.py`. `PERMANENTE`, los dos #1 —Konan y
+#: Bloody—: «sólo Bloody y Konan lo tendrán permanente». ⚠️ Al arrancar la T2, si `ROL_REGALO` se limpia, a estos dos
+#: NO se les saca: es para todas las temporadas. Los otros cuatro, sólo la T1. Valen (Kibak) no estaba en DRA: tiene
+#: hasta el 03/11/2026 para entrar y reclamarlo, si no, no se le da (`REGALO_PLAZO`)
+PERMANENTE = {'680268290962227243': 'Konan', '692881329573986317': 'Bloody'}
+REGALO_T1 = {'513409344512065580': 'Axinu', '768561204707983361': 'Abyssus', '1048744067313451050': 'MCO',
+             '894017160756736091': 'Valen'}
+REGALO_PLAZO = {'894017160756736091': '2026-11-03'}
 BOOST = 20
 PREMIUM = {
     1: ('marco', 'Premium'),
