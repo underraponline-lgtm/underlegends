@@ -387,7 +387,7 @@ def carta(lid, i, s=1.0, est='eA'):
         "<div class='v6-foto%s'><img class='a' src='%s' alt='' style='filter:url(#duo-%s)'>"
         "<img class='reg' src='%s' alt='' style='filter:url(#duo-%s)'><span class='v6-trama'></span></div>"
         "<span class='v6-jor' style='clip-path:%s'>%s<b>%s</b><small>%s · J%d</small></span>"
-        "<div class='v6-ovr'><span class='n'><b class='o'>%s</b><b class='m'>%s</b><b class='f'>%s</b></span><small><b>OVR</b>%s</small></div>"
+        "<div class='v6-ovr'><span class='n'><b class='o'>%s</b><b class='m'>%s</b><b class='f'>%s</b></span></div>"
         "<div class='v6-fila'><span class='v6-tag %s' style='clip-path:%s'>%s</span><span class='v6-cinta c'></span></div>"
         "<svg class='v6-capa v6-arruga' viewBox='0 0 %d %d' preserveAspectRatio='none' aria-hidden='true'><rect width='%d' height='%d' filter='url(#arruga)'/></svg>"
         "<span class='v6-pliegue'></span><span class='v6-luz'></span><span class='v6-vin'></span>"
@@ -395,7 +395,7 @@ def carta(lid, i, s=1.0, est='eA'):
         TINTA, W, H, W, H,
         "<span class='v6-gigante'>1</span>" if nivel == 'n1' else '',
         col, AF.PINCEL, W, H, chorreado(seed, 40, 200, 232, col), aerosol(seed + 9, 70, 300, 120, 34, 70, col),
-        ' sin' if sin else '', av, lid, av, lid, tira(seed + 5, 18), G.logo(L['sv'], 18), liga_corta(L), TEMP, fecha, ovr, ovr, ovr, ptb_txt, tag[1], tira(seed), tag[0], W, H, W, H)
+        ' sin' if sin else '', av, lid, av, lid, tira(seed + 5, 18), G.logo(L['sv'], 18), liga_corta(L), TEMP, fecha, ovr, ovr, ovr, tag[1], tira(seed), tag[0], W, H, W, H)
     franja = (
         "<div class='v6-fr' style='--ink:%s'><span class='v6-foil'></span>"
         "<small>PUESTO</small><b class='v6-num%s'>%s</b><em class='%s'>%s</em>%s"
@@ -512,12 +512,12 @@ h2 small{display:block;margin-top:4px;font:500 14px/1.4 Archivo,sans-serif;text-
    arriba la etiqueta (16–40) · el PTB (50–104) · la foto (46–294) · el nombre apoyado en 322 · la fila de abajo (346–372) */
 /* LA ETIQUETA DE ARRIBA: la misma tira de papel que el TAG, de punta a punta. Arriba y abajo, las dos tiras cierran
    el afiche como un rótulo; adentro, el logo de la liga, su nombre y a la derecha cuándo (T1 · J5) */
-.v6-jor{left:10px;top:20px;width:208px;height:30px;display:flex;align-items:center;gap:7px;padding:0 10px 0 12px;
+.v6-jor{left:32px;top:16px;width:max-content;max-width:196px;height:27px;display:flex;align-items:center;gap:6px;padding:0 7px 0 9px;
   background:#EFE9DA linear-gradient(180deg,rgba(255,255,255,.35),transparent 45%,rgba(0,0,0,.06));color:#030304;
-  font:400 13.5px/1 Anton,sans-serif;letter-spacing:.05em;white-space:nowrap;transform:rotate(-1.5deg)}
-.v6-jor img,.v6-jor svg{flex:none;width:18px;height:18px;object-fit:contain}
+  font:400 12.5px/1 Anton,sans-serif;letter-spacing:.03em;white-space:nowrap;transform:rotate(-1deg)}
+.v6-jor img,.v6-jor svg{flex:none;width:16px;height:16px;object-fit:contain}
 .v6-jor b{flex:1;min-width:0;font-weight:400;overflow:hidden;text-overflow:ellipsis}
-.v6-jor small{flex:none;padding:3px 6px;background:#030304;color:#F6F6F6;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em}
+.v6-jor small{flex:none;padding:3px 5px;background:#030304;color:#F6F6F6;font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em}
 /* LA GRILLA (papel 300 × 420). El contenido va de 14 a 222; la franja empieza en 234.
    arriba la etiqueta (14–40) · el OVR (48–122) · la foto (46–294) · el nombre hasta 312 · la tira del TAG (326–358) */
 
@@ -614,9 +614,9 @@ h2 small{display:block;margin-top:4px;font:500 14px/1.4 Archivo,sans-serif;text-
 .v6-estrella{position:absolute;left:126px;top:90px;width:56px;transform:rotate(14deg);filter:drop-shadow(2px 3px 0 rgba(0,0,0,.55))}
 .v6-num.sin{font-size:40px;margin:18px 0 14px}
 .v6-num.dos{font-size:64px;letter-spacing:-.02em;margin:12px 0 8px}
-.v6-solapa{position:absolute;width:44px;height:44px;filter:drop-shadow(2px 3px 2px rgba(0,0,0,.45))}
+.v6-solapa{position:absolute;width:30px;height:30px;filter:drop-shadow(2px 3px 2px rgba(0,0,0,.45))}
 .v6-solapa.a{left:24px;top:34px}
-.v6.n1 .v6-solapa.a{width:62px;height:62px}
+.v6.n1 .v6-solapa.a{width:40px;height:40px}
 '''
 
 
