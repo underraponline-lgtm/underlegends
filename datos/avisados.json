@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "087ba8d5b0369fd0",
+  "firma": "49f18cb55d87513a",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "42a936dd62b05b11",
+  "firma": "5f9fb516cf5d769d",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "ed9ea620ed5ee207",
+  "firma": "d8d32784230c05ae",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -15773,7 +15773,7 @@
    "Molusco": 16
   },
   "fecha": "19/10",
-  "firma": "a051328ca1c57542",
+  "firma": "ff05ed59d3d7ca56",
   "msg": "1561607804798898179",
   "nombre": "__ FREESTYLE LEAGUE __",
   "num": 487,
@@ -15936,7 +15936,7 @@
    "Tenor": 5
   },
   "fecha": "19/10",
-  "firma": "b39af684c07af282",
+  "firma": "281112f48d8b1d93",
   "msg": "1561761975514697891",
   "nombre": "FREESTYLE LEAGUE N3",
   "num": 488,
@@ -18438,7 +18438,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "6263754f1d87335a",
+  "firma": "b0a85fb2fb12914a",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -18979,7 +18979,7 @@
    "Sin Limites": 21
   },
   "fecha": "22/10",
-  "firma": "19c31f3b8a8ea8b7",
+  "firma": "d44b39dce1d8cb34",
   "msg": "1562845541493374976",
   "nombre": "__ LA ISLA DE OKINAWA V.3 __",
   "num": 498,
@@ -19375,7 +19375,7 @@
    "PichulaMc": 41
   },
   "fecha": "22/10",
-  "firma": "1750d250611156fa",
+  "firma": "da9c6f86ea34c302",
   "msg": "1562977225790459957",
   "nombre": "19 (EDICIÓN FUTCARD VOL 4)",
   "num": 500,
@@ -20816,7 +20816,7 @@
    "VR": 4
   },
   "fecha": "23/10",
-  "firma": "5317bd502415883b",
+  "firma": "ca65a08410cfbbc0",
   "msg": "1563368240221257751",
   "nombre": "19 CUP FUTCARD EDICIÓN 5",
   "num": 505,
@@ -20950,7 +20950,7 @@
    "Sin Limites": 26
   },
   "fecha": "23/10",
-  "firma": "43a24552348925d7",
+  "firma": "54efb20374175d7e",
   "msg": "1563384839284195339",
   "nombre": "GRISELDA RECORDS VOL. 2",
   "num": 506,
@@ -23792,7 +23792,7 @@
    ],
    [
     "Chop",
-    "Mato 🇧🇴",
+    "MATO 🇧🇴",
     "Chop"
    ],
    [
@@ -23869,7 +23869,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "23bec151bccf3b91",
+  "firma": "ef816e41a30e067b",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -23926,7 +23926,7 @@
     1250
    ],
    [
-    "Mato 🇧🇴",
+    "MATO 🇧🇴",
     "Octavos",
     1250
    ],
@@ -25367,7 +25367,7 @@
    "Tam": 14
   },
   "fecha": "26/10",
-  "firma": "d6287ad7d601fed3",
+  "firma": "c6ad76b17c064220",
   "msg": "1564439290107265104",
   "nombre": "NOMBRE DE LA COMPETENCIA",
   "num": 530,
@@ -25937,6 +25937,7 @@
   "v": 2
  },
  "532": {
+  "al_dia": true,
   "antes": {
    "Agus": [
     10,
