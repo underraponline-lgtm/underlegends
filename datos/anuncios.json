@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-26T23:25:16+00:00",
+ "cuando": "2026-10-26T23:55:05+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -6895,6 +6895,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones-2",
+   "texto": "Park-Ji Sung🇰🇷",
+   "quien": "fullylo4ded",
+   "discord_id": "979878316846768139",
+   "msg_id": "1564424569240944743",
+   "cuando": "2026-10-26T23:44:42"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones-2",
+   "texto": "agus",
+   "quien": "agusdcab",
+   "discord_id": "494965289042182164",
+   "msg_id": "1564420039568789525",
+   "cuando": "2026-10-26T23:26:42"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones-2",
@@ -42876,24 +42894,6 @@
    "discord_id": "645308964141137952",
    "msg_id": "1544099783075958914",
    "cuando": "2026-08-31T21:41:16"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "MAYANMC🇲🇽 🇨🇺",
-   "quien": "imnotmaya_yt.",
-   "discord_id": "1487886377923121243",
-   "msg_id": "1544090691762659431",
-   "cuando": "2026-08-31T21:05:08"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Leyenda.X5 🇦🇷",
-   "quien": "microcrack",
-   "discord_id": "1358539185778327612",
-   "msg_id": "1544090521197355008",
-   "cuando": "2026-08-31T21:04:28"
   }
  ]
 }
