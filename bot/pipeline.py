@@ -1337,6 +1337,15 @@ def _lo_barato(correr):
         paso('2b9b', 'el ascenso de cada servidor')
         if not corre(['bot/ascenso.py', '--aplicar'], callado=True, mostrar=('📈', '⏳', '⚠️')):
             print('      ⚠️ el ascenso falló: queda lo de la corrida anterior')
+    # ── 2b9c · 🏟️ las cartas de liga (`05_Liga/ciclo.py`, Dlx 26/10/2026: «que todas las personas de las ligas tengan
+    # su tarjeta de ligas»): una por persona y por liga, dibujada sólo si cambió (el sello es el hash de la carta, como el
+    # de la Bloqueada) y subida a R2. Después de las ligas (2b9) y ANTES de la web (2c): el índice que deja,
+    # `datos/cartas_liga.json`, es lo que la página y `/card` leen para saber quién tiene cuál. Con tope por vuelta —una
+    # carta tarda ~3 s y esto corre en `escuchar`—: lo que no entra sale en la próxima. Nunca frena el ciclo
+    if correr:
+        paso('2b9c', 'las cartas de liga')
+        if not corre(['05_Liga/ciclo.py', '--aplicar', '--tope', '60'], callado=False):
+            print('      ⚠️ las cartas de liga fallaron: quedan las de la corrida anterior')
     # ── 2b10 · los roles de la página ─────────────────────────────────
     # 🔑 Dlx, 13/10/2026: «en cada perfil aparezca el rol de cada uno». Los que salen solos —Competidor, del pool;
     # Socio, Staff, Organizador, Jurado y Host, de Discord (`datos/roles_discord.json`, paso 1b)— al objeto, que les

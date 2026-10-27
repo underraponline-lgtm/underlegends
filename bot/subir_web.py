@@ -651,6 +651,8 @@ def armar():
     _lg_lobby, _lg_det = _ligas(_cl_lg)
     # 📈 y el ascenso de cada servidor, al día, en la liga a la que se asciende (`bot/ascenso.py`, 17/10/2026)
     _lg_det = _con_ascenso(_lg_det, _cl_lg)
+    # 🏟️ y quién tiene carta de liga (`05_Liga/ciclo.py`, 27/10/2026), para «Tus cartas de liga» y el álbum de cada liga
+    _lg_det = _con_cartas_liga(_lg_det)
     # 📈 y en el lobby, sólo QUÉ servidores tienen ascenso y a qué liga (`{sv: [liga, id]}`): con eso el Ranking sabe si
     # mostrar «Ascensos»; las tablas las pide al abrirlo, con el detalle de las ligas
     if _lg_lobby is not None and (_asc_json().get('sv')):
@@ -3238,6 +3240,32 @@ def _asc_json():
     if '_' not in _ASC:
         _ASC['_'] = _json('datos', 'ascenso.json') or {}
     return _ASC['_']
+
+
+def _con_cartas_liga(det):
+    """🏟️ Las cartas de liga subidas (`datos/cartas_liga.json`, de `05_Liga/ciclo.py`) en el detalle de las ligas, como
+    `cartas: {clave: [[liga, sello, ovr, puesto], …]}` con LA MEJOR PRIMERO (el OVR de liga más alto; a igual OVR, el
+    mejor puesto). Dlx, 26/10/2026: la carta de liga la ve sólo su dueño, y «aquellas personas que tengan más de 1 tarjeta
+    de liga… un dropdown… pero por defecto verían la mejor». La imagen: `<r2>/<clave>/liga-<liga>.webp?v=<sello>`.
+    Viaja con `/api/ligas`, no en el lobby. Nunca frena el lobby."""
+    try:
+        if not det or det.get('ligas') is None:
+            return det
+        x = _json('datos', 'cartas_liga.json') or {}
+        por = {}
+        for lid, v in (x.get('cartas') or {}).items():
+            if lid not in det['ligas']:
+                continue
+            for k, (sello, ovr, puesto) in v.items():
+                por.setdefault(k, []).append([lid, sello, ovr, puesto])
+        for k in por:
+            por[k].sort(key=lambda c: (-c[2], c[3], c[0]))
+        if por:
+            det['cartas'] = dict(sorted(por.items()))
+        return det
+    except Exception as e:                               # noqa: BLE001
+        print('   ⚠️ las cartas de liga no entran a la web: %s' % str(e)[:120])
+        return det
 
 
 def _con_ascenso(det, claves):

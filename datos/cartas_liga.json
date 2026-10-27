@@ -1,0 +1,755 @@
+{
+ "_leeme": "Las cartas de liga subidas a R2: {liga: {clave: [sello, ovr, puesto desde 1]}}. Lo escribe 05_Liga/ciclo.py (paso 2b9c) y lo lee subir_web.py. La imagen: <r2>/<clave>/liga-<liga>.webp?v=<sello>.",
+ "cartas": {
+  "fds-mexico": {
+   "leyenda": [
+    "c16342ed59",
+    37,
+    2
+   ],
+   "soulb": [
+    "aee9b99d39",
+    99,
+    1
+   ]
+  },
+  "fds-peru": {
+   "cinexfilo": [
+    "f6a47e9cf1",
+    57,
+    4
+   ],
+   "giansito": [
+    "45de9c9737",
+    69,
+    2
+   ],
+   "mcarepa": [
+    "f541405cbb",
+    49,
+    5
+   ],
+   "pepemujica": [
+    "f6bf442d46",
+    99,
+    1
+   ],
+   "sinlimites": [
+    "9b5ab3dabb",
+    59,
+    3
+   ],
+   "sol": [
+    "000cb5f351",
+    49,
+    6
+   ],
+   "telmex": [
+    "61520b1435",
+    39,
+    7
+   ]
+  },
+  "fmh-albiceleste": {
+   "benjixo": [
+    "344ffa466d",
+    60,
+    6
+   ],
+   "bna": [
+    "3ce2198cd8",
+    83,
+    3
+   ],
+   "erik": [
+    "a95b1bd211",
+    97,
+    1
+   ],
+   "faso": [
+    "caea38b779",
+    34,
+    9
+   ],
+   "indigena": [
+    "975b7f1cb9",
+    37,
+    10
+   ],
+   "melomaniaco": [
+    "0f72ea8f9e",
+    36,
+    8
+   ],
+   "sol": [
+    "dcd171f995",
+    56,
+    7
+   ],
+   "velatz": [
+    "fd14eac9b3",
+    75,
+    5
+   ],
+   "zignos": [
+    "32581b9345",
+    92,
+    2
+   ]
+  },
+  "fmh-andes": {
+   "bastyretro": [
+    "e36d9bb4fc",
+    87,
+    2
+   ],
+   "deuxs": [
+    "ab0fe86124",
+    28,
+    13
+   ],
+   "kochi": [
+    "200a8329e0",
+    63,
+    4
+   ],
+   "makmah": [
+    "04f30d0afc",
+    63,
+    5
+   ],
+   "mayeutyk": [
+    "cd5549c1f5",
+    28,
+    11
+   ],
+   "mknoli": [
+    "ef6df2c684",
+    56,
+    7
+   ],
+   "oep": [
+    "031913624f",
+    53,
+    8
+   ],
+   "panchok": [
+    "e84451b428",
+    54,
+    9
+   ],
+   "xervoe": [
+    "6aeabc62be",
+    31,
+    12
+   ]
+  },
+  "fmh-carimex": {
+   "agustin51k": [
+    "b5bdbdfe88",
+    28,
+    9
+   ],
+   "campoy": [
+    "6092d8a288",
+    83,
+    2
+   ],
+   "forcegp": [
+    "04a5e28746",
+    58,
+    6
+   ],
+   "guess": [
+    "085b683aba",
+    69,
+    3
+   ],
+   "kasaatx": [
+    "d6620d7042",
+    37,
+    8
+   ],
+   "mco": [
+    "8383ea9024",
+    94,
+    1
+   ],
+   "yeyox": [
+    "2bb5e65ed7",
+    57,
+    4
+   ]
+  },
+  "fmh-espana": {
+   "carlosmo": [
+    "719af4c36d",
+    80,
+    2
+   ],
+   "efe": [
+    "bbcec0a0ad",
+    66,
+    4
+   ],
+   "jj": [
+    "6e889fd8cf",
+    45,
+    9
+   ],
+   "joseliyo": [
+    "8dab7bda0b",
+    67,
+    3
+   ],
+   "motera": [
+    "fa025ab627",
+    57,
+    5
+   ],
+   "mtz": [
+    "23b4cb6e56",
+    45,
+    8
+   ],
+   "og": [
+    "f8ee48666e",
+    39,
+    10
+   ],
+   "ortiz": [
+    "1f1a5a8a4b",
+    99,
+    1
+   ],
+   "stormed": [
+    "031fcba629",
+    57,
+    6
+   ],
+   "trot": [
+    "b378960226",
+    56,
+    7
+   ]
+  },
+  "fmh-tricolor": {
+   "bloody": [
+    "cc21516ed2",
+    92,
+    1
+   ],
+   "catarsis": [
+    "08a708e419",
+    66,
+    5
+   ],
+   "colesito": [
+    "4d3a54578c",
+    99,
+    2
+   ],
+   "juasmio": [
+    "ec76aca0bb",
+    91,
+    3
+   ],
+   "jupiter": [
+    "b85090c8b0",
+    96,
+    4
+   ],
+   "majiztral": [
+    "b0ef61ddc0",
+    30,
+    7
+   ],
+   "player": [
+    "0718a1bb33",
+    32,
+    9
+   ],
+   "prosu": [
+    "5bc656c41b",
+    61,
+    6
+   ],
+   "vargas": [
+    "c366068701",
+    34,
+    10
+   ]
+  },
+  "fmh-under": {
+   "cinexfilo": [
+    "fd921bade9",
+    45,
+    7
+   ],
+   "erian": [
+    "a8dbd161f3",
+    98,
+    1
+   ],
+   "guty": [
+    "51b6531c64",
+    65,
+    4
+   ],
+   "majiztral": [
+    "24d8acb5e3",
+    82,
+    3
+   ],
+   "sne": [
+    "ae1eeeaf8b",
+    33,
+    8
+   ],
+   "tøkiø": [
+    "cca9149184",
+    81,
+    2
+   ],
+   "xowee": [
+    "bb653e2d42",
+    33,
+    9
+   ]
+  },
+  "fms-peru": {
+   "btrx": [
+    "5d7070c804",
+    51,
+    6
+   ],
+   "carlosss": [
+    "a173ad4bd1",
+    34,
+    12
+   ],
+   "criszj": [
+    "a4389f4bb7",
+    85,
+    3
+   ],
+   "dominick": [
+    "6597a35935",
+    47,
+    7
+   ],
+   "drexx": [
+    "71e10189fa",
+    43,
+    10
+   ],
+   "fisics": [
+    "9978a8d2a2",
+    36,
+    13
+   ],
+   "jeixder": [
+    "4dd44f2bb6",
+    87,
+    2
+   ],
+   "miniboy": [
+    "736dadd945",
+    50,
+    8
+   ],
+   "numberve": [
+    "86f06b8842",
+    30,
+    14
+   ],
+   "nxuz": [
+    "cb82989c4d",
+    54,
+    5
+   ],
+   "s1lence": [
+    "eff58a6f9e",
+    44,
+    11
+   ],
+   "silence": [
+    "eefc677856",
+    51,
+    9
+   ],
+   "sol": [
+    "795d6db3bb",
+    76,
+    4
+   ]
+  },
+  "fms-titans": {
+   "adriagner": [
+    "51f1957637",
+    99,
+    1
+   ],
+   "btrece": [
+    "b458ff98ad",
+    32,
+    17
+   ],
+   "carlosss": [
+    "63ff8d8003",
+    50,
+    13
+   ],
+   "criszj": [
+    "1fcb94eb08",
+    55,
+    8
+   ],
+   "cronox": [
+    "4f1aee5a33",
+    48,
+    10
+   ],
+   "dominick": [
+    "94cf99e110",
+    69,
+    6
+   ],
+   "keider": [
+    "efebec7b65",
+    88,
+    2
+   ],
+   "krtman": [
+    "de1dc175cb",
+    85,
+    3
+   ],
+   "last": [
+    "3e701b34e9",
+    69,
+    7
+   ],
+   "mathhias": [
+    "f0665a42e8",
+    75,
+    5
+   ],
+   "mayeutyk": [
+    "2bb9c8a287",
+    34,
+    18
+   ],
+   "numberve": [
+    "03b2518f15",
+    52,
+    9
+   ],
+   "nxuz": [
+    "21c964c631",
+    74,
+    4
+   ],
+   "shadow": [
+    "f3e9a0ac5a",
+    44,
+    12
+   ],
+   "tøkiø": [
+    "ed1bcddb05",
+    49,
+    11
+   ]
+  },
+  "fzl": {
+   "bm": [
+    "bc4907f862",
+    42,
+    6
+   ],
+   "ceim": [
+    "f25901cff3",
+    38,
+    7
+   ],
+   "ceko": [
+    "96b6d9975b",
+    99,
+    1
+   ],
+   "juasmio": [
+    "b1b637f149",
+    88,
+    2
+   ],
+   "konan": [
+    "8c22bfc19e",
+    23,
+    9
+   ],
+   "mrkude": [
+    "ec17b9f317",
+    53,
+    3
+   ],
+   "raezer": [
+    "a302a2722b",
+    50,
+    4
+   ],
+   "sol": [
+    "bf2e11f53a",
+    34,
+    8
+   ],
+   "tøkiø": [
+    "289bd09e12",
+    19,
+    10
+   ],
+   "venus": [
+    "459af4a52e",
+    46,
+    5
+   ]
+  },
+  "lkr-champions": {
+   "crk": [
+    "038f3184c2",
+    0,
+    17
+   ],
+   "dios": [
+    "a239a39778",
+    9,
+    15
+   ],
+   "emizor": [
+    "14105f7cb7",
+    27,
+    7
+   ],
+   "kusoh": [
+    "42d4b0ae3c",
+    63,
+    3
+   ],
+   "last": [
+    "d035932a04",
+    27,
+    12
+   ],
+   "leonart": [
+    "426a0def0a",
+    36,
+    6
+   ],
+   "leyenda": [
+    "27ba00f330",
+    0,
+    21
+   ],
+   "marcos": [
+    "ad4c2909a1",
+    54,
+    5
+   ],
+   "mathhias": [
+    "888f9c656d",
+    99,
+    1
+   ],
+   "mayeutyk": [
+    "fa411b9d15",
+    63,
+    2
+   ],
+   "mcglock": [
+    "61c8c8f44e",
+    18,
+    14
+   ],
+   "miniboy": [
+    "b53799e52d",
+    0,
+    19
+   ],
+   "monet": [
+    "735ac74274",
+    27,
+    10
+   ],
+   "mosquitrap": [
+    "c6be29958c",
+    18,
+    13
+   ],
+   "mrkude": [
+    "f400b94f60",
+    63,
+    4
+   ],
+   "shadow": [
+    "a654110973",
+    9,
+    16
+   ],
+   "sinlimites": [
+    "8a3fad789b",
+    0,
+    22
+   ],
+   "sol": [
+    "6a58c0268e",
+    27,
+    9
+   ],
+   "soulb": [
+    "4a39f2b530",
+    27,
+    11
+   ],
+   "teito": [
+    "3e86dfd25f",
+    0,
+    20
+   ]
+  },
+  "lkr-fms-plaza": {
+   "chop": [
+    "c4cba51623",
+    99,
+    1
+   ],
+   "dominick": [
+    "fb933ee5f9",
+    0,
+    4
+   ],
+   "last": [
+    "7f593d5984",
+    0,
+    5
+   ],
+   "lvel": [
+    "c4f6fc80ec",
+    0,
+    6
+   ],
+   "masino": [
+    "15de4b8452",
+    99,
+    2
+   ],
+   "mosquitrap": [
+    "50ae51e9f2",
+    99,
+    3
+   ]
+  },
+  "snake-generations": {
+   "arama": [
+    "122ad74c67",
+    51,
+    10
+   ],
+   "deluxe": [
+    "a5d7d81d56",
+    37,
+    11
+   ],
+   "fazer": [
+    "e91ff086e3",
+    55,
+    8
+   ],
+   "kyss": [
+    "d12cf6e424",
+    64,
+    5
+   ],
+   "liberia": [
+    "a3c82c9372",
+    96,
+    1
+   ],
+   "mco": [
+    "23bbe25b3e",
+    60,
+    7
+   ],
+   "partim": [
+    "198e3deb77",
+    88,
+    3
+   ],
+   "road": [
+    "0ec802bf7c",
+    99,
+    2
+   ],
+   "rubik": [
+    "100cc45a1a",
+    64,
+    6
+   ],
+   "six": [
+    "1873cc2251",
+    54,
+    9
+   ],
+   "zeta": [
+    "73e102a58c",
+    70,
+    4
+   ]
+  },
+  "snake-new-chapter": {
+   "deluxe": [
+    "1f401ae027",
+    72,
+    3
+   ],
+   "dloscoria": [
+    "62d04224cf",
+    35,
+    10
+   ],
+   "gus": [
+    "4016c2e6e6",
+    42,
+    9
+   ],
+   "humildad": [
+    "ebd906e363",
+    74,
+    4
+   ],
+   "jothaze": [
+    "ce8abe2dd5",
+    68,
+    5
+   ],
+   "juanpa": [
+    "e6f4bc7d9b",
+    99,
+    1
+   ],
+   "lhyon": [
+    "7c677dcfd5",
+    42,
+    8
+   ],
+   "number": [
+    "859d8322fe",
+    59,
+    7
+   ],
+   "zignos": [
+    "80650c0266",
+    78,
+    2
+   ]
+  }
+ }
+}

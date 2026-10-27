@@ -52,6 +52,9 @@ const KV_FALSO = {
                                  svc: ['DRA', 'EFA', 'FFA', 'FRZ', 'FTN', 'SR',
                                        'TFC', 'TWR', 'URBF'] }),
   'p:mingo':  JSON.stringify({ n: 'Mingo', sv: 'DRA', svp: 'DRA', cc: 'ar', ev: 4 }),
+  // 🏟️ quien juega dos ligas (27/10/2026): `lg` = [[liga, nombre, sello, ovr, puesto]], la mejor primero
+  'p:ligero': JSON.stringify({ n: 'Ligero', sv: 'DRA', svp: 'DRA', cc: 'pe', ev: 3, cs: ['temporada', 'competitivo', 'servidor', 'pais'],
+                               lg: [['fms-peru', 'FMS Perú', 'aaa111', 76, 4], ['fzl', 'FZ League', 'bbb222', 34, 8]] }),
   // ⚠️ Mark es el caso de verdad: no tiene pais, asi que no tiene carta de
   // Pais. Su `cs` no la lleva, y el bot no puede dibujarle ese boton.
   'p:mark':   JSON.stringify({ n: 'Mark', sv: 'TFC', svp: 'TFC', cc: '', ev: 8,
@@ -285,6 +288,28 @@ console.log('\nLA CARTA\n');
      // la Liga vive en /freestyle-rap desde el 01/10/2026 (ver `rutaLG()` en web/montar.py)
      cp?.url === 'https://underlegends.pages.dev/freestyle-rap/avisos', cp?.url || '');
   ok('la fila no pasa de cinco', (filaBotones(c)?.components || []).length <= 5);
+}
+
+{
+  // 🏟️ LA CARTA DE LIGA: el botón sólo a quien tiene alguna, abre la mejor, y con más de una el menú
+  const r = await pedir({ type: 3, guild_id: G.FFA, data: { custom_id: 'c:ligero:liga:999111' }, member: { user: { id: '999111' } } });
+  const c = r.json?.data?.components;
+  const u = galeria(c)?.items?.[0]?.media?.url || '';
+  ok('la carta de liga abre la MEJOR', u.includes('/ligero/liga-fms-peru.webp?v=aaa111'), u);
+  const sl = select(c);
+  ok('con dos ligas, el menú de ligas', !!sl && sl.custom_id === 'l:ligero::999111' && sl.options.length === 2, JSON.stringify(sl || {}).slice(0, 120));
+  ok('la mejor va elegida', !!sl && sl.options[0].default === true && sl.options[1].default === false);
+  ok('con «Liga», la fila no pasa de cinco', (filaBotones(c)?.components || []).length <= 5);
+  ok('el botón «Liga» está, apagado porque es la que ves',
+     (filaBotones(c)?.components || []).some((b) => b.label === 'Liga' && b.disabled));
+  const r2 = await pedir({ type: 3, guild_id: G.FFA, data: { custom_id: 'l:ligero::999111', values: ['fzl'] }, member: { user: { id: '999111' } } });
+  const u2 = galeria(r2.json?.data?.components)?.items?.[0]?.media?.url || '';
+  ok('el menú cambia a la elegida', r2.json?.type === 7 && u2.includes('/ligero/liga-fzl.webp?v=bbb222'), u2);
+  const r3 = await pedir({ type: 3, guild_id: G.FFA, data: { custom_id: 'c:konan:pais:999111' }, member: { user: { id: '999111' } } });
+  ok('quien no juega ligas NO tiene el botón «Liga»',
+     !(filaBotones(r3.json?.data?.components)?.components || []).some((b) => b.label === 'Liga'));
+  const r4 = await pedir({ type: 3, guild_id: G.FFA, data: { custom_id: 'c:konan:liga:999111' }, member: { user: { id: '999111' } } });
+  ok('un botón «Liga» de alguien sin carta de liga avisa, no rompe', /no tiene esa carta de liga/.test(JSON.stringify(r4.json || {})));
 }
 
 {

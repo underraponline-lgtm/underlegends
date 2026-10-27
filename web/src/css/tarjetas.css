@@ -69,6 +69,14 @@
 .ta-falta p{margin:0;font-size:14px;line-height:1.45;color:var(--gris)}
 .ta-falta .tj-falta li{color:var(--tinta)}
 .ta-acc{display:flex;flex-wrap:wrap;gap:8px}
+/* 🏟️ tus cartas de liga (27/10/2026): sólo si tienes alguna; con más de una, el menú (la mejor primero) */
+.ta-ligas{display:grid;gap:8px;padding:12px;border:1.5px solid #3A3A40}
+.ta-ligas small{font:700 15px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em}
+.ta-lsel{display:grid;gap:5px}
+.ta-lsel span{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;color:var(--gris)}
+.ta-lsel select{min-height:44px;padding:0 10px;border:2px solid #F6F6F6;border-radius:4px;background:#030304;color:#F6F6F6;font:700 15px/1.2 Archivo,sans-serif;max-width:100%}
+.ta-lcarta{justify-self:center;display:block;width:min(240px,100%)}
+.ta-lcarta img{display:block;width:100%;height:auto}
 .ta-bh{display:inline-flex;align-items:center;gap:6px}
 .ta-t2{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
 .ta-t2 span{font:700 14px/1 "Barlow Condensed",sans-serif;letter-spacing:.1em;color:var(--gris)}

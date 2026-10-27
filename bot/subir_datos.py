@@ -381,8 +381,32 @@ def _porton(padron):
     return out
 
 
+def _cartas_liga():
+    """🏟️ `{clave: [[liga, nombre de la liga, sello, ovr, puesto], …]}` con la mejor primero (el OVR de liga más alto; a
+    igual OVR, el mejor puesto): `datos/cartas_liga.json` (de `05_Liga/ciclo.py`) con el nombre de `datos/ligas.json`."""
+    try:
+        with io.open(os.path.join(BASE, 'datos', 'cartas_liga.json'), encoding='utf-8') as f:
+            cl = json.load(f).get('cartas') or {}
+        with io.open(os.path.join(BASE, 'datos', 'ligas.json'), encoding='utf-8') as f:
+            nom = {lid: (L.get('n') or lid) for lid, L in (json.load(f).get('ligas') or {}).items()}
+    except (OSError, ValueError):
+        return {}
+    por = {}
+    for lid, v in cl.items():
+        for k, (sello, ovr, puesto) in v.items():
+            por.setdefault(k, []).append([lid, nom.get(lid, lid), sello, ovr, puesto])
+    for k in por:
+        por[k].sort(key=lambda c: (-c[3], c[4], c[0]))
+    return por
+
+
+_LIGA_CARTAS = {}
+
+
 def armar():
     import construir_padron as PAD
+    _LIGA_CARTAS.clear()
+    _LIGA_CARTAS.update(_cartas_liga())
     with open(os.path.join(BASE, 'datos', 'competitivo_pool.json'),
               encoding='utf-8') as f:
         comp = json.load(f)
@@ -680,6 +704,11 @@ def armar():
         # caer al comportamiento viejo en vez de decidir sobre nada.
         if svs:
             valor['svs'] = svs
+        # 🏟️ SUS CARTAS DE LIGA (`05_Liga/ciclo.py`, 27/10/2026), la mejor primero: el botón «Liga» de `/card` sale sólo
+        # si hay alguna, y con más de una, el menú (Dlx, 26/10/2026: «únicamente ellos… les aparezca el botón», «un
+        # dropdown… por default verían la mejor»). `[[liga, nombre, sello, ovr, puesto]]`
+        if _LIGA_CARTAS.get(k):
+            valor['lg'] = _LIGA_CARTAS[k]
         # 🔴 LOS NÚMEROS QUE COMPARA `/versus`. Dlx, 20/09/2026: *«la idea es
         # que no muestre las tarjetas. La cosa es hacer quién gana»*.
         #

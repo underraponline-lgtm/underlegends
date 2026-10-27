@@ -514,8 +514,16 @@ async function quienPidieron(env, i, ops, optUsuario, optNombre) {
 // lado sería el mismo dato en dos lugares.
 //
 // ⚠️ Y el flag V2 DESACTIVA `content` y `embeds`. Es uno o el otro.
+// 🏟️ LA CARTA DE LIGA (27/10/2026): una por liga que juega, la mejor primero en `g.lg` = `[[liga, nombre, sello, ovr,
+// puesto]]` (`bot/subir_datos.py`, de `05_Liga/ciclo.py`). Dlx: «que únicamente ellos… les aparezca el botón» y «más de 1
+// tarjeta de liga… un dropdown… por default verían la mejor». La imagen: `<clave>/liga-<liga>.webp?v=<sello>`
+const ligasDe = (g) => (g && Array.isArray(g.lg) ? g.lg : []);
+const ligaDe = (g, lid) => { const l = ligasDe(g); return l.find(x => x[0] === lid) || l[0] || null; };
+
 function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
   const enSv = cual === 'servidor';
+  const enLiga = cual === 'liga';
+  const lg = enLiga ? ligaDe(g, sv) : null;
   // ⚡ y la de su último redibujo a pedido (`vr`): sin esto Discord seguiría mostrando la de antes de su caché
   const v = m && m.sello ? m.sello + (g && g.vr ? '-' + g.vr : '') : '';
   const svAhora = enSv ? svQueVa(g, sv, aqui, m) : ((g && g.sv) || '');
@@ -528,10 +536,10 @@ function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
     {
       type: COMP.GALERIA,
       items: [{
-        media: { url: bloqueada(g, cual) ? urlCarta(quien, 'bloq-' + cual, v)
+        media: { url: lg ? urlCarta(quien, 'liga-' + lg[0], lg[2]) : bloqueada(g, cual) ? urlCarta(quien, 'bloq-' + cual, v)
                       : enSv ? (conMarco('servidor') && urlSv === urlCarta(quien, 'servidor', v) ? urlCarta(quien, 'servidor-m', v) : urlSv)
                              : urlCarta(quien, conMarco(cual) ? cual + '-m' : cual, v) },
-        description: `Carta ${cual} de ${(g && g.n) || quien}`,
+        description: lg ? `Carta de liga de ${(g && g.n) || quien} en ${lg[1]}` : `Carta ${cual} de ${(g && g.n) || quien}`,
       }],
     },
     {
@@ -556,9 +564,30 @@ function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
         custom_id: `c:${quien}:${c.id}:${dueno}`,
         disabled: apagado || c.id === cual,
       }, sinVerificar(g, c.id) ? { emoji: { name: '🔒' } } : {}))
-        .concat(botonAvisos(CARTAS.filter(c => tiene(g, c.id) || sinVerificar(g, c.id)).length)),
+        // 🏟️ «Liga», sólo si tiene alguna (sin carta de liga, el botón no existe: sin dato no hay pieza)
+        .concat(ligasDe(g).length ? [{ type: COMP.BOTON, style: enLiga ? ESTILO.SECUNDARIO : ESTILO.PRIMARIO, label: 'Liga',
+          custom_id: `c:${quien}:liga:${dueno}`, disabled: apagado || enLiga }] : [])
+        .concat(botonAvisos(CARTAS.filter(c => tiene(g, c.id) || sinVerificar(g, c.id)).length + (ligasDe(g).length ? 1 : 0))),
     },
   ];
+  // 🏟️ con más de una carta de liga, el menú para elegir cuál; la mejor primero (y elegida si no se eligió otra)
+  if (enLiga && lg && ligasDe(g).length > 1) {
+    componentes.push({
+      type: COMP.FILA,
+      components: [{
+        type: COMP.SELECT,
+        custom_id: `l:${quien}::${dueno}`,
+        disabled: !!apagado,
+        placeholder: 'Elige una liga',
+        options: ligasDe(g).slice(0, 25).map((x, k) => ({
+          label: String(x[1]).slice(0, 100),
+          value: x[0],
+          description: (x[4] + '.º · OVR ' + x[3] + (k === 0 ? ' · la mejor' : '')).slice(0, 100),
+          default: x[0] === lg[0],
+        })),
+      }],
+    });
+  }
 
   // ⚠️ EL MENÚ APARECE SÓLO CON LA SERVIDOR ACTIVA. En las otras tres no se
   // dibuja, así que los componentes del mensaje cambian según la carta — con
@@ -623,8 +652,10 @@ function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
   // ✏️ LA PUERTA 4 DEL INVENTARIO (Dlx, 26/10/2026, a la maqueta: «cinco puertas, 1, 3, 4 y 5»): un link que abre el
   // Inventario de la página en ESTA carta. La carta es pública, así que lo ve todo el canal: dice «la tuya» porque
   // cada uno abre la suya (la página sabe quién eres por tu cuenta, no por el link)
-  componentes.push({ type: COMP.FILA, components: [Object.assign(botonLink('Personalizar la tuya', URL_INVENTARIO + '/' + cual),
-    { emoji: { name: '✏️' } })] });
+  if (!enLiga) {
+    componentes.push({ type: COMP.FILA, components: [Object.assign(botonLink('Personalizar la tuya', URL_INVENTARIO + '/' + cual),
+      { emoji: { name: '✏️' } })] });
+  }
   return componentes;
 }
 
@@ -3573,7 +3604,9 @@ const COMANDOS = {
     // rompio fue **la guardia**: 29 pruebas en rojo durante horas, que
     // es todo cambio posterior al Worker viajando sin red.
     const sinCs = !Array.isArray(g.cs);
-    const algunaCarta = sinCs || g.cs.length || (g.bl && g.bl.length);
+    // 🏟️ quien sólo tiene carta de liga (la tiene todo el que juega una, 27/10/2026) también tiene /card: abre ésa
+    const soloLiga = !sinCs && !g.cs.length && !(g.bl && g.bl.length) && ligasDe(g).length > 0;
+    const algunaCarta = sinCs || g.cs.length || (g.bl && g.bl.length) || soloLiga;
     if (!algunaCarta) {
       return aviso(`${comoDije === 'tú' ? 'Ya estás' : comoDije + ' ya está'}` +
                    ' en la Liga ✅ — pero las cartas todavía no están ' +
@@ -3587,7 +3620,8 @@ const COMANDOS = {
     const temp = sinCs || (g.cs || []).indexOf('temporada') >= 0;
     // 🃏 Y SI ELIGIÓ SU CARTA PRINCIPAL (26/10/2026, `cartaPrincipal()` del objeto, viene en `cp`), ésa primero
     const cp = String(g.cp || '');
-    const abre = cp && tiene(g, cp) && !bloqueada(g, cp) && !(cp === 'servidor' && aquiSv && aquiSv.sinCarta) ? cp
+    const abre = soloLiga ? 'liga'
+      : cp && tiene(g, cp) && !bloqueada(g, cp) && !(cp === 'servidor' && aquiSv && aquiSv.sinCarta) ? cp
       : aquiSv && aquiSv.sinCarta && temp ? 'temporada'
         : ((g.cs || []).indexOf('competitivo') >= 0) ? 'competitivo' : 'servidor';
     // 📸 tu carta sin tu foto: un aviso que ves sólo vos (ver `avisoFoto()`)
@@ -4778,7 +4812,7 @@ export default {
           versus(quien, ga, rival, gb, extra, dueno, m, aqui));
       }
 
-      if (que !== 'c' && que !== 's') {
+      if (que !== 'c' && que !== 's' && que !== 'l') {
         return aviso('No sé qué hacer con ese componente.');
       }
       // ⚠️ LOS BOTONES SON DEL QUE PIDIO LA CARTA, y el dueño viaja en el
@@ -4821,6 +4855,15 @@ export default {
           carta(quien, g, cual, svEnPantalla(i), dueno, m, aqui, true));
       }
 
+      // 🏟️ la carta de liga: el botón abre la mejor; el menú, la elegida. Un botón viejo puede pedir una que ya no está
+      if ((que === 'c' && extra === 'liga') || que === 'l') {
+        const lid = que === 'l' ? String((i.data.values || [])[0] || '') : '';
+        if (!ligasDe(g).length || (lid && !ligasDe(g).some(x => x[0] === lid))) {
+          return aviso(`${g.n || quien} no tiene esa carta de liga.\n` +
+                       'Tira `/card` de nuevo y te salen las que sí tiene.');
+        }
+        return responder(RESPONDE.ACTUALIZAR, carta(quien, g, 'liga', lid || null, dueno, m, aqui));
+      }
       if (que === 'c') {
         // 🔑 EL CANDADO DE LAS LIBRES (29/09/2026): la Competitiva y la de
         // País de quien no se verificó. No cambia la carta —no hay otra que

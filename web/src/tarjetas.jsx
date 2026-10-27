@@ -21,6 +21,7 @@ import { svElegido, useElegidos } from './elegidos.js';
 import * as RQ from './requisitos.js';
 import CSS_PAGINA from './css/tarjetas.css?inline';
 import { usarCss } from './css.js';
+import { pedirLigas } from './ligas_datos.js';
 
 // 🎨 su CSS, con su pedazo (web/src/css/tarjetas.css)
 usarCss('tarjetas', CSS_PAGINA);
@@ -180,6 +181,42 @@ function Mano({ liga, k, tiene, bl, onAbrir, nombre }) {
   );
 }
 
+// 🏟️ TUS CARTAS DE LIGA (27/10/2026). Dlx: «que todas las personas de las ligas tengan su tarjeta de ligas y que
+// únicamente ellos tengan acceso… que les aparezca el botón», y «aquellas personas que tengan más de 1 tarjeta de liga…
+// un dropdown menu para elegir… pero por default verían la mejor». Sale SÓLO si tienes alguna (`cartas` de /api/ligas,
+// que deja `05_Liga/ciclo.py`), la mejor primero (el OVR de liga más alto). Sin ninguna, no se dibuja nada
+function TusLigas({ liga, k }) {
+  const [x, setX] = useState(null);
+  const [sel, setSel] = useState(0);
+  useEffect(() => {
+    let vivo = true;
+    pedirLigas(liga.d.sello).then((d) => { if (vivo) setX(d); });
+    return () => { vivo = false; };
+  }, [liga.d.sello]);
+  const mias = (x && x.cartas && x.cartas[k]) || [];
+  if (!mias.length) return null;
+  const nom = {};
+  ((x.lobby && x.lobby.ligas) || []).forEach((L) => { nom[L.id] = L.n; });
+  const c = mias[Math.min(sel, mias.length - 1)];
+  const de = nom[c[0]] || c[0];
+  const txt = (m) => (nom[m[0]] || m[0]) + ' · ' + m[3] + '.º · OVR ' + m[2];
+  return (
+    <div className="ta-ligas">
+      <small>TUS CARTAS DE LIGA · {mias.length}</small>
+      {mias.length > 1 ? (
+        <label className="ta-lsel"><span>Elige la liga</span>
+          <select value={sel} onChange={(e) => setSel(+e.target.value)}>
+            {mias.map((m, i) => <option key={m[0]} value={i}>{txt(m) + (i === 0 ? ' · la mejor' : '')}</option>)}
+          </select>
+        </label>
+      ) : <p className="ta-p">{txt(c)}</p>}
+      <a className="ta-lcarta" href={'#/ligas/' + encodeURIComponent(c[0])} aria-label={'Tu carta de ' + de + ': ver la liga'}>
+        <img src={liga.d.r2 + '/' + encodeURIComponent(k) + '/liga-' + c[0] + '.webp?v=' + c[1]} alt={'Tu carta de liga de ' + de} loading="lazy" />
+      </a>
+    </div>
+  );
+}
+
 function Album({ liga, dc, perf, onAbrir }) {
   const k = (liga.yo && liga.yo.k) || (dc && dc.clave) || '';
   // 🔢 la fila de la tabla manda sobre lo que dijo la sesión al entrar: `dc.cs` es de ESE momento, y con la fila ya sin
@@ -250,6 +287,7 @@ function Album({ liga, dc, perf, onAbrir }) {
           {fx.ir ? <a className="tj-lnk" href={fx.ir[0]}>{fx.ir[1]}</a> : null}
         </div>
       ) : <p className="ta-p ta-todas">Tienes las cuatro de la {liga.temp}.</p>}
+      <TusLigas liga={liga} k={k} />
       <div className="ta-acc">
         {tiene.length ? <BotonHistoria liga={liga} k={k} album={ORDEN.filter((c) => tiene.includes(c))} cls="btn verde chico ta-bh" texto="Mi álbum para historias" /> : null}
         {liga.T[k] ? <a className="btn borde2 chico" href={'#/r/' + encodeURIComponent(k)}>Ver mi perfil</a> : null}
