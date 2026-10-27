@@ -1299,6 +1299,72 @@
    "b": "MAKMAH PART",
    "ganador": "SIX YINN",
    "votos": "1–0"
+  },
+  "1564495032466018476": {
+   "id": "1564495032466018476",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793075082652,
+   "a": "RIZAS GIANLAMALDAD",
+   "b": "KYSS ZIGNOS",
+   "ganador": "RIZAS GIANLAMALDAD",
+   "votos": "1–0"
+  },
+  "1564497223037882450": {
+   "id": "1564497223037882450",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793075604925,
+   "a": "YINN",
+   "b": "RIZAS",
+   "ganador": "RIZAS",
+   "votos": "1–0"
+  },
+  "1564497941845254177": {
+   "id": "1564497941845254177",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793075776302,
+   "a": "RIZAS",
+   "b": "PART",
+   "ganador": "RIZAS",
+   "votos": "1–0"
+  },
+  "1564498932392927285": {
+   "id": "1564498932392927285",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793076012467,
+   "a": "LUCK",
+   "b": "MC AREPA",
+   "ganador": "LUCK",
+   "votos": "1–0"
+  },
+  "1564499888987963433": {
+   "id": "1564499888987963433",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793076240537,
+   "a": "TRELOK",
+   "b": "PRAISERIZAS",
+   "ganador": "PRAISERIZAS",
+   "votos": "1–0"
+  },
+  "1564500997152313357": {
+   "id": "1564500997152313357",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793076504744,
+   "a": "GIANLAMALDAD",
+   "b": "SIX",
+   "ganador": "GIANLAMALDAD",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5452,7 +5518,7 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1793066705749,
-   "ed": 1793073300929,
+   "ed": 1793075214623,
    "texto": "`[ OCTAVOS ]`\n⌞Chente 🇻🇪⌝ 🆚 ⌞MCAREPA 🇻🇪⌝\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞mats🇺🇾⌝\n⌞Artezzy 🇵🇪⌝ 🆚 ⌞Vilca 🇵🇪⌝\n⌞Gary🇨🇺⌝ 🆚 ⌞Shitka🇲🇽⌝\n⌞okam🇨🇷⌝ 🆚 ⌞jazi 🇦🇸⌝\n⌞lizeninn 🇦🇷⌝ 🆚 ⌞AL3 🇨🇺⌝\n⌞DarnBless 🇨🇴⌝ 🆚 ⌞Luck 🇵🇾⌝\n⌞Nxuz 🇵🇪⌝ 🆚 ⌞Eseeka 🇵🇪⌝\n`[ CUARTOS ]`",
    "batallas": [
     [
@@ -5543,8 +5609,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1793067851324,
-   "ed": 1793074828487,
-   "texto": "`[ OCTAVOS ]`\n⌞MC AREPA⌝ 🆚 ⌞CHENTE⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MATS⌝\n⌞ARTEZZY⌝ 🆚 ⌞MCAREPA⌝\n⌞GARY⌝ 🆚 ⌞SHIKTA⌝\n⌞OKAM⌝ 🆚 ⌞JAZI⌝\n⌞MCAREPA⌝ 🆚 ⌞GARI⌝\n⌞CHENTE⌝ 🆚 ⌞SIN LIMITES⌝\n⌞CHENTE⌝ 🆚 ⌞SIN LÍMITES⌝\n⌞OKAM⌝ 🆚 ⌞AL3⌝\n⌞AL3⌝ 🆚 ⌞OKAM⌝\n⌞LUCK⌝ 🆚 ⌞ESEKA⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MCAREPA⌝",
+   "ed": 1793076352506,
+   "texto": "`[ OCTAVOS ]`\n⌞MC AREPA⌝ 🆚 ⌞CHENTE⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MATS⌝\n⌞ARTEZZY⌝ 🆚 ⌞MCAREPA⌝\n⌞GARY⌝ 🆚 ⌞SHIKTA⌝\n⌞OKAM⌝ 🆚 ⌞JAZI⌝\n⌞MCAREPA⌝ 🆚 ⌞GARI⌝\n⌞CHENTE⌝ 🆚 ⌞SIN LIMITES⌝\n⌞CHENTE⌝ 🆚 ⌞SIN LÍMITES⌝\n⌞OKAM⌝ 🆚 ⌞AL3⌝\n⌞AL3⌝ 🆚 ⌞OKAM⌝\n⌞LUCK⌝ 🆚 ⌞ESEKA⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MCAREPA⌝\n⌞LUCK⌝ 🆚 ⌞MCAREPA⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5664,6 +5730,16 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "LUCK",
+      "MCAREPA"
+     ],
+     "LUCK",
+     "veredicto",
      []
     ]
    ]
@@ -5856,8 +5932,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793074550929,
-   "ed": 1793074834909,
-   "texto": "`[ SEMIFINALES ]`\n⌞SIX YINN⌝ 🆚 ⌞MAKMAH PART⌝",
+   "ed": 1793076686124,
+   "texto": "`[ SEMIFINALES ]`\n⌞SIX YINN⌝ 🆚 ⌞MAKMAH PART⌝\n⌞RIZAS GIANLAMALDAD⌝ 🆚 ⌞KYSS ZIGNOS⌝\n`[ FINAL ]`\n⌞YINN⌝ 🆚 ⌞RIZAS⌝\n⌞RIZAS⌝ 🆚 ⌞PART⌝\n⌞TRELOK⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞GIANLAMALDAD⌝ 🆚 ⌞SIX⌝",
    "batallas": [
     [
      "SEMIFINALES",
@@ -5866,6 +5942,56 @@
       "MAKMAH PART"
      ],
      "SIX YINN",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "RIZAS GIANLAMALDAD",
+      "KYSS ZIGNOS"
+     ],
+     "RIZAS GIANLAMALDAD",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "YINN",
+      "RIZAS"
+     ],
+     "RIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "RIZAS",
+      "PART"
+     ],
+     "RIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "TRELOK",
+      "PRAISERIZAS"
+     ],
+     "PRAISERIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "GIANLAMALDAD",
+      "SIX"
+     ],
+     "GIANLAMALDAD",
      "veredicto",
      []
     ]
