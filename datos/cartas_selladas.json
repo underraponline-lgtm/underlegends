@@ -117,7 +117,7 @@
    "servidor": "4af907e5d349:99e0c0179dbe:055f77"
   },
   "Astral": {
-   "competitivo": "70b69e89845e:0a48057cb351",
+   "competitivo": "993a04c4af35:0a48057cb351",
    "pais": "2a8450c9bf2f:263a27e40647",
    "servidor": "0e96f9abd4a9:bb9ec1fd7809:055f77"
   },
@@ -329,10 +329,10 @@
    "temporada": "0647f4eaf682:84b47cf43136"
   },
   "Deluxe": {
-   "competitivo": "d7dcdabbfd8e:0a48057cb351",
+   "competitivo": "ec343740cbe6:0a48057cb351",
    "pais": "fe597f36d7e7:263a27e40647",
    "servidor": "a7de4c800eb3:bb9ec1fd7809:2fa902",
-   "temporada": "704f7ae9be8f:6ec1a5248de8"
+   "temporada": "075036ef063a:6ec1a5248de8"
   },
   "Denik": {},
   "Derates": {
@@ -1655,16 +1655,16 @@
    "servidor": "6c8ac408bbf5:99e0c0179dbe:055f77"
   },
   "Velatz": {
-   "competitivo": "4aa2816ba3f9:0a48057cb351",
-   "pais": "8e7693830ea2:263a27e40647",
-   "servidor": "7f1ab6e0f3c9:99e0c0179dbe:039304",
+   "competitivo": "f08df23a45fc:0a48057cb351",
+   "pais": "6d273dd3f7d2:263a27e40647",
+   "servidor": "f740dcf67a3e:99e0c0179dbe:039304",
    "temporada": "bf276d57c346:6ec1a5248de8"
   },
   "Verc": {
-   "competitivo": "317e8005302b:d6ce253b432a",
-   "pais": "e7731461ba21:263a27e40647",
-   "servidor": "446f289d7d93:99e0c0179dbe:c43f56",
-   "temporada": "e88f1d420792:6ec1a5248de8"
+   "competitivo": "c133f49d56c0:0a48057cb351",
+   "pais": "73ac379c9179:263a27e40647",
+   "servidor": "57013d921aea:99e0c0179dbe:c43f56",
+   "temporada": "e0a7c32e45fc:6ec1a5248de8"
   },
   "Vilca": {
    "competitivo": "b51c796d4cd8:a62fb156b44f",
@@ -1915,5 +1915,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-27T06:38:02+00:00"
+ "cuando": "2026-10-27T15:48:36+00:00"
 }
