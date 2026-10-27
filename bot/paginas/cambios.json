@@ -11,6 +11,33 @@
  ],
  "cambios": [
   {
+   "version": "4.17",
+   "dia": "2026-10-27",
+   "cuando": "2026-10-27T05:05:00-04:00",
+   "titulo": "Tu perfil: tu frase y tus emblemas",
+   "items": [
+    "Escribe **tu frase**: sale entre comillas en tu perfil. La cambias en **Tu cuenta** o en «Editar mi perfil».",
+    "Elige **qué emblemas** se ven al lado de tu nombre (hasta 5).",
+    "Tu **rol de DRA** sale en tu perfil.",
+    "**Lo último** de cada perfil cuenta también lo que hizo en la página: felicitar, votar, mirar llaves en vivo.",
+    "Dos emblemas que no se podían ganar ya cuentan: **Aplausos** y **Voz del pueblo**.",
+    "La página carga más liviana: se fue el código viejo."
+   ]
+  },
+  {
+   "version": "4.16",
+   "dia": "2026-10-27",
+   "cuando": "2026-10-27T05:00:00-04:00",
+   "titulo": "Competencias paga",
+   "items": [
+    "Las **ligas** pagan Puntos de Tienda a los 3 primeros de cada una al terminar la temporada: de **2.500** en la Élite a **500** en Ascenso.",
+    "La **Copa** paga 500 al campeón y 250 al finalista; la **Rapid** y cada **mini evento**, 300 al campeón.",
+    "Para cobrar hay que haber jugado **al menos una batalla de verdad** en esa competencia.",
+    "El **Ranking ELO** tiene premio de fin de temporada: según la piedra más alta a la que llegues, hasta **3.500** en Mítico, y su insignia.",
+    "La **nota** de cada batalla ahora cuenta cómo votó el jurado: ganar unánime suma, y perder por la mínima también."
+   ]
+  },
+  {
    "version": "4.15",
    "dia": "2026-10-27",
    "cuando": "2026-10-27T00:23:48-04:00",
