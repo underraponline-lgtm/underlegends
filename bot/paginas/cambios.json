@@ -11,6 +11,16 @@
  ],
  "cambios": [
   {
+   "version": "4.14",
+   "dia": "2026-10-27",
+   "cuando": "2026-10-27T00:13:36-04:00",
+   "titulo": "La carta de liga",
+   "items": [
+    "Si juegas una de las **15 ligas** de los socios, ya tienes tu **carta de liga**: tu puesto, tu **OVR de liga** (los puntos de la tabla y lo que te dio el jurado en cada batalla), tu rango y tus últimas batallas. Se pone al día con cada jornada.",
+    "La ves en **Tarjetas**, en tu álbum, y con `/card`, en el botón **Liga**. Si juegas más de una, eliges cuál con el menú; abre la mejor."
+   ]
+  },
+  {
    "version": "4.13",
    "dia": "2026-10-26",
    "cuando": "2026-10-26T19:44:10-04:00",

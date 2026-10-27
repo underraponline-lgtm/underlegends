@@ -1,0 +1,86 @@
+{
+ "_leeme": "El anuncio de las 15 ligas de los socios y la carta de liga (27/10/2026), en DRA y FFA con @everyone (Dlx lo pidió para éste). Componentes V2 (flags 32768), el formato de la v1.07. Se publica con herramientas/anunciar.py, con --everyone y --servidor FFA para el segundo.",
+ "flags": 32768,
+ "components": [
+  {
+   "type": 17,
+   "accent_color": 15269690,
+   "components": [
+    {
+     "type": 9,
+     "components": [
+      {
+       "type": 10,
+       "content": "# 🏟️ ¿SABÍAS QUE UNDER LEGENDS ESTÁ ASOCIADO CON 15 LIGAS DE NUESTROS SOCIOS?\nCada batalla de esas ligas ya cuenta en Under Legends: **tabla, jornadas, flyers y quién manda en cada una**, todo en un solo lugar."
+      }
+     ],
+     "accessory": {
+      "type": 11,
+      "media": {
+       "url": "https://underlegends.pages.dev/ul.png"
+      }
+     }
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🤝 Las 15 ligas\n🎤 **DDF** · FMS Titans · FMS Perú\n🔥 **Urban Freestyle** · FMH España · FMH Albiceleste · FMH Andes · FMH Tricolor · FMH Carimex · FMH Under\n🐍 **Snake Rap** · Snake League Generations · Snake New Chapter\n🏆 **LKR** · Champions League LKR · FMS Plaza Underground\n🎙️ **FDS** · FDS Perú · FDS México\n🌊 **Freestyle Zone** · FZ League"
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🃏 Nueva: tu carta de liga\nSi juegas una liga, **ya tienes tu carta de esa liga**: tu puesto, tu **OVR de liga** —los puntos de la tabla y lo que te dio el jurado en cada batalla—, tu rango y tus últimas batallas. Se pone al día con cada jornada.\n> 🔀 ¿Juegas más de una? Eliges cuál ver; por defecto sale **la mejor**.\n> 👀 Mírala con **`/card`** (botón **Liga**) o en la página, en **Tarjetas**.\n-# Para verla con /card o en tu cuenta, estar verificado: escribe `/verificar` y el bot te dice qué te falta."
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🌐 El catálogo de ligas\n### [underlegends.pages.dev/freestyle-rap/ligas](https://underlegends.pages.dev/freestyle-rap/ligas)\nLas 15, con su tabla, sus jornadas y sus flyers. Sigue la tuya con 🔔 y te avisamos cuando se juega."
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 2
+    },
+    {
+     "type": 1,
+     "components": [
+      {
+       "type": 2,
+       "style": 5,
+       "label": "Ver las ligas",
+       "emoji": {
+        "name": "🏟️"
+       },
+       "url": "https://underlegends.pages.dev/freestyle-rap/ligas"
+      },
+      {
+       "type": 2,
+       "style": 5,
+       "label": "Mis tarjetas",
+       "emoji": {
+        "name": "🃏"
+       },
+       "url": "https://underlegends.pages.dev/freestyle-rap/tarjetas"
+      }
+     ]
+    },
+    {
+     "type": 10,
+     "content": "-# Liga Global de Freestyle en Español · Under Legends · v4.14"
+    }
+   ]
+  }
+ ]
+}
