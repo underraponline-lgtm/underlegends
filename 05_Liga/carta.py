@@ -330,24 +330,32 @@ def tag_de(lid, i, n, pj, g, d, ptb):
 
 
 
+#: 👑 LA CARTA DEL DUEÑO (Dlx, 27/10/2026: «de todas y desbloqueado todo acuérdate»): una en CADA liga aunque no juegue
+#: ninguna. Sin batallas no hay número que poner, así que el puesto, el OVR y el TAG van en «—» y «DE LA LIGA»: se le
+#: desbloquea la carta, no se le inventa un puesto (sin dato no hay pieza). `carta(liga, None)` la dibuja
+DUENO = ('DLX', 'dlx')
+
+
 def carta(lid, i, s=1.0, est='eA'):
     L = G.POR[lid]
-    n, pj, g, pts = L['tabla'][i]
+    dueno = i is None
+    n, pj, g, pts = (DUENO[0], 0, 0, 0) if dueno else L['tabla'][i]
+    i = 0 if dueno else i
     col = G.COLOR.get(L['sv'], '#E41373')
     ink = tinta(col)
     antes, fecha = AF.puesto_antes(lid)
-    d = (antes[n] - i) if n in antes else None
-    fl = 'NUEVO' if d is None else ('▲%d' % d) if d > 0 else ('▼%d' % -d) if d < 0 else 'IGUAL'
+    d = (antes[n] - i) if n in antes and not dueno else None
+    fl = '—' if dueno else 'NUEVO' if d is None else ('▲%d' % d) if d > 0 else ('▼%d' % -d) if d < 0 else 'IGUAL'
     fc = 'nuevo' if d is None else 'sube' if d and d > 0 else 'baja' if d and d < 0 else ''
     av = AF.avatar(lid, n) or SF.uri(n)
     sin = not AF.avatar(lid, n)
     forma = ''.join("<i class='%s'>%s</i>" % ('g' if x == 'g' else 'p', 'G' if x == 'g' else 'P') for x in G.forma(lid, n, 5))
-    nivel = 'n1' if i == 0 else 'pod' if i < 3 else ''
+    nivel = '' if dueno else 'n1' if i == 0 else 'pod' if i < 3 else ''
     ptb = ptb_liga(lid)
     v = ptb.get(n, 0)
-    ovr, prom = ovr_liga(lid).get(n, (0, 0))
-    ptb_txt = ('%.1f PTB' % prom) if prom else ''   # una liga sin PTB cargado dice sólo «OVR»
-    tag = tag_de(lid, i, n, pj, g, d, ptb)
+    ovr, prom = ('', 0) if dueno else ovr_liga(lid).get(n, (0, 0))
+    ptb_txt = 'SIN BATALLAS' if dueno else ('%.1f PTB' % prom) if prom else ''   # una liga sin PTB cargado dice sólo «OVR»
+    tag = ('DE LA LIGA', 't4', '🏆') if dueno else tag_de(lid, i, n, pj, g, d, ptb)
     fsz, sx = nombre_css(n)
     seed = sum(map(ord, n)) + i
     viejo_col = ['#F2C14E', '#E9E2CF', '#F28C9B', '#9BD7C8'][seed % 4]
@@ -385,11 +393,11 @@ def carta(lid, i, s=1.0, est='eA'):
         ' sin' if sin else '', av, lid, av, lid, tira(seed + 5, 18), G.logo(L['sv'], 18), liga_corta(L), TEMP, fecha, ovr, ovr, ovr, ptb_txt, tag[1], tira(seed), tag[0], W, H, W, H)
     franja = (
         "<div class='v6-fr' style='--ink:%s'><span class='v6-foil'></span>"
-        "<small>PUESTO</small><b class='v6-num%s'>%d</b><em class='%s'>%s</em>%s"
+        "<small>PUESTO</small><b class='v6-num%s'>%s</b><em class='%s'>%s</em>%s"
         "<span class='v6-dt'><small>PTS</small><b>%d</b></span><span class='v6-dt'><small>V-D</small><b>%d-%d</b></span>"
         "<span class='v6-dt v6-u5'><small>ÚLTIMAS</small><span>%s</span></span>"
         "<span class='v6-logo'><img src='%s' alt='Under Legends' style='%s'></span></div>") % (
-        ink, ' dos' if i >= 9 else '', i + 1, fc, fl, celda_rango(n, 'r%d%s' % (seed, lid.replace('-', ''))), pts, g, pj - g, forma, UL, 'filter:brightness(0)' if lum(ink) < .3 else '')
+        ink, ' sin' if dueno else ' dos' if i >= 9 else '', '—' if dueno else i + 1, fc, fl, celda_rango(n, 'r%d%s' % (seed, lid.replace('-', ''))), pts, g, pj - g, forma, UL, 'filter:brightness(0)' if lum(ink) < .3 else '')
     sello = ''
     nombre = ("<div class='v6-nom' style='font-size:%.1fpx;--sx:%s'><b class='o'>%s</b><b class='m'>%s</b><b class='f'>%s</b></div>"
               % (fsz, sx, n.upper(), n.upper(), n.upper()))
@@ -599,6 +607,7 @@ h2 small{display:block;margin-top:4px;font:500 14px/1.4 Archivo,sans-serif;text-
 .v6.n1 .v6-cinta.a{display:none}
 /* la estrella del 1.º: pegada al lado del OVR, como una calcomanía sobre la foto */
 .v6-estrella{position:absolute;left:126px;top:90px;width:56px;transform:rotate(14deg);filter:drop-shadow(2px 3px 0 rgba(0,0,0,.55))}
+.v6-num.sin{font-size:40px;margin:18px 0 14px}
 .v6-num.dos{font-size:64px;letter-spacing:-.02em;margin:12px 0 8px}
 .v6-solapa{position:absolute;width:44px;height:44px;filter:drop-shadow(2px 3px 2px rgba(0,0,0,.45))}
 .v6-solapa.a{left:24px;top:34px}

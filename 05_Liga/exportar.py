@@ -116,6 +116,8 @@ def main():
         print('hoja con %d cartas: %s' % (len(pares), p))
         return
     trabajos = [(l, i, D.POR[l]['ks'].get(D.POR[l]['tabla'][i][0]) or 'sin-clave-%d' % i) for l, i in pares]
+    if '--dueno' in sys.argv:
+        trabajos = [(l, None, C.DUENO[1]) for l in sorted({l for l, _i in pares})]
     _h, malos = dibujar(trabajos)
     for l, k, m in malos:
         print('   ⚠️ %s · %s: %s' % (l, k, m))

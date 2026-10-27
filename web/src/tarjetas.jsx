@@ -202,7 +202,8 @@ function TusLigas({ liga, k }) {
   ((x.lobby && x.lobby.ligas) || []).forEach((L) => { nom[L.id] = L.n; svDe[L.id] = L.sv; });
   const c = mias[Math.min(sel, mias.length - 1)];
   const de = nom[c[0]] || c[0];
-  const txt = (m) => (nom[m[0]] || m[0]) + ' · ' + m[3] + '.º · OVR ' + m[2];
+  // 👑 la del dueño no tiene puesto ni OVR (no juega): va «—»
+  const txt = (m) => (nom[m[0]] || m[0]) + (m[3] ? ' · ' + m[3] + '.º · OVR ' + m[2] : ' · —');
   // 🖼️ con su marco del Pase, si lo tiene («el afiche pegado», web/src/marcos.jsx)
   const mk = pub && pub.m && pub.m[k];
   const src = liga.d.r2 + '/' + encodeURIComponent(k) + '/liga-' + c[0] + '.webp?v=' + c[1];

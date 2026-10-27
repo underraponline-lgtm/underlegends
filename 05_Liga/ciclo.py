@@ -67,6 +67,9 @@ def quienes():
             k = L['ks'].get(f[0])
             if k:
                 out.append((lid, i, k))
+        # 👑 y la del dueño, en todas (`carta.DUENO`), salvo que ya juegue esa liga
+        if not any(k == C.DUENO[1] for l, _i, k in out if l == lid):
+            out.append((lid, None, C.DUENO[1]))
     return out
 
 
@@ -78,7 +81,7 @@ def sellos(trabajos):
         out = {}
         for lid, i, k in trabajos:
             h = hashlib.sha1((C.carta(lid, i) + cod).encode('utf-8')).hexdigest()[:10]
-            out[(lid, k)] = (h, C.ovr_liga(lid).get(D.POR[lid]['tabla'][i][0], (0, 0))[0], i + 1)
+            out[(lid, k)] = (h, 0, 0) if i is None else (h, C.ovr_liga(lid).get(D.POR[lid]['tabla'][i][0], (0, 0))[0], i + 1)
         return out
     finally:
         D.FOTO_FICHA[0] = False

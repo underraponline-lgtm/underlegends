@@ -582,7 +582,8 @@ function carta(quien, g, cual, sv, dueno, m, aqui, apagado) {
         options: ligasDe(g).slice(0, 25).map((x, k) => ({
           label: String(x[1]).slice(0, 100),
           value: x[0],
-          description: (x[4] + '.º · OVR ' + x[3] + (k === 0 ? ' · la mejor' : '')).slice(0, 100),
+          // 👑 la del dueño no tiene puesto ni OVR (no juega ninguna): «—»
+          description: (x[4] ? x[4] + '.º · OVR ' + x[3] + (k === 0 ? ' · la mejor' : '') : '—').slice(0, 100),
           default: x[0] === lg[0],
         })),
       }],
