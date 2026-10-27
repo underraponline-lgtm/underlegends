@@ -975,7 +975,7 @@
    "servidor": "52824a14b414:99e0c0179dbe:24d71d"
   },
   "MTZ": {
-   "competitivo": "a19535dc0e35:0a48057cb351",
+   "competitivo": "28667674dea2:0a48057cb351",
    "pais": "e923b680fd49:263a27e40647",
    "servidor": "7dcc7df4bcf1:99e0c0179dbe:d52d54",
    "temporada": "86a3c851071a:6ec1a5248de8"
@@ -1469,8 +1469,8 @@
   "Saz": {},
   "Scot": {},
   "Scritura": {
-   "competitivo": "d90c0d7c9170:0a48057cb351",
-   "pais": "eacad8764762:263a27e40647",
+   "competitivo": "838383249640:0a48057cb351",
+   "pais": "740707d41512:263a27e40647",
    "servidor": "e16c64b4a956:99e0c0179dbe:e729e9",
    "temporada": "1b8bcbf00541:6ec1a5248de8"
   },
@@ -1662,10 +1662,10 @@
    "temporada": "bf276d57c346:6ec1a5248de8"
   },
   "Verc": {
-   "competitivo": "c133f49d56c0:0a48057cb351",
-   "pais": "73ac379c9179:263a27e40647",
-   "servidor": "57013d921aea:99e0c0179dbe:c43f56",
-   "temporada": "e0a7c32e45fc:6ec1a5248de8"
+   "competitivo": "48bf37a720e6:0a48057cb351",
+   "pais": "bf4b75a2cb12:263a27e40647",
+   "servidor": "30e95fd89b32:99e0c0179dbe:c43f56",
+   "temporada": "210a679781de:6ec1a5248de8"
   },
   "Vilca": {
    "competitivo": "b51c796d4cd8:a62fb156b44f",
@@ -1916,5 +1916,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-27T20:57:58+00:00"
+ "cuando": "2026-10-27T21:09:33+00:00"
 }

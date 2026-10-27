@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-10-27T20:59:15Z",
+ "cuando": "2026-10-27T21:10:37Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1502.7,
+ "dur_s": 564.6,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 9.9
+   "s": 12.3
   },
   {
    "n": "2f2",
@@ -21,45 +21,41 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.1
+   "s": 8.5
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.3
+   "s": 20.7
   },
   {
    "n": "5",
-   "que": "tanda 1 de 5 · 40 persona(s)",
+   "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 1384.2
+   "s": 457.2
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 10.5
+   "s": 7.0
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 66.6
+   "s": 57.1
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Abyssus"
+   "que": "03_Servidor/generar.py Artezzy"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Focox"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py ReyexXMC"
+   "que": "03_Servidor/generar.py Verc"
   }
  ],
  "ultimo_evento": {
@@ -70,25 +66,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 504,
-   "read": 47993
+   "write": 520,
+   "read": 49412
   },
   "objeto": {
-   "leidas": 4881293,
-   "escritas": 24378,
-   "pedidos": 11030
+   "leidas": 4934315,
+   "escritas": 24747,
+   "pedidos": 11149
   },
   "worker": {
-   "pedidos": 11375,
+   "pedidos": 11356,
    "errores": 0,
-   "sub": 13199,
+   "sub": 13178,
    "cortados": 0,
    "p50_ms": 1.25,
-   "p99_ms": 11.77,
+   "p99_ms": 11.8,
    "cpu": {
-    "total": 24635,
-    "objeto_10": 1849,
-    "worker_10": 246
+    "total": 24599,
+    "objeto_10": 1853,
+    "worker_10": 249
    }
   },
   "r2": {
