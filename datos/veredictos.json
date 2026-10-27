@@ -1189,6 +1189,39 @@
    "b": "RIZAS🇻🇪",
    "ganador": "YINN🇲🇦",
    "votos": "2–1"
+  },
+  "1564464756541358110": {
+   "id": "1564464756541358110",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793067864309,
+   "a": "MC AREPA",
+   "b": "CHENTE",
+   "ganador": "CHENTE",
+   "votos": "1–0"
+  },
+  "1564466917929123983": {
+   "id": "1564466917929123983",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793068379624,
+   "a": "SIN LIMITES",
+   "b": "MATS",
+   "ganador": "SIN LIMITES",
+   "votos": "1–0"
+  },
+  "1564470444705456129": {
+   "id": "1564470444705456129",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793069220473,
+   "a": "ARTEZZY",
+   "b": "MC AREPA",
+   "ganador": "MC AREPA",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5403,7 +5436,7 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1793066705749,
-   "ed": 1793067529332,
+   "ed": 1793068415180,
    "texto": "`[ OCTAVOS ]`\n⌞Chente 🇻🇪⌝ 🆚 ⌞MCAREPA 🇻🇪⌝\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞mats🇺🇾⌝\n⌞Artezzy 🇵🇪⌝ 🆚 ⌞Vilca 🇵🇪⌝\n⌞Gary🇨🇺⌝ 🆚 ⌞Shitka🇲🇽⌝\n⌞okam🇨🇷⌝ 🆚 ⌞jazi 🇦🇸⌝\n⌞lizeninn 🇦🇷⌝ 🆚 ⌞AL3 🇨🇺⌝\n⌞DarnBless 🇨🇴⌝ 🆚 ⌞Luck 🇵🇾⌝\n⌞Nxuz 🇵🇪⌝ 🆚 ⌞Eseeka 🇵🇪⌝\n`[ CUARTOS ]`",
    "batallas": [
     [
@@ -5484,6 +5517,47 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1564464702078189679": {
+   "id": "1564464702078189679",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793067851324,
+   "ed": 1793069504173,
+   "texto": "`[ OCTAVOS ]`\n⌞MC AREPA⌝ 🆚 ⌞CHENTE⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MATS⌝\n⌞ARTEZZY⌝ 🆚 ⌞MCAREPA⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "MC AREPA",
+      "CHENTE"
+     ],
+     "CHENTE",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "SIN LIMITES",
+      "MATS"
+     ],
+     "SIN LIMITES",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "ARTEZZY",
+      "MCAREPA"
+     ],
+     "MCAREPA",
+     "veredicto",
      []
     ]
    ]

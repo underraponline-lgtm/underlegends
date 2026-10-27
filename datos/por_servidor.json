@@ -6055,11 +6055,11 @@
    },
    "DDF": {
     "duelos": "5/13",
-    "ev": 11,
+    "ev": 12,
     "oro": 0,
-    "ovr": 57,
+    "ovr": 58,
     "pod": 2,
-    "pts": 33575,
+    "pts": 43575,
     "racha": "0/2",
     "tg": {
      "fin": 2
@@ -6096,20 +6096,6 @@
     "racha": "0/0",
     "tg": {
      "fund": true,
-     "nuevo": true
-    }
-   }
-  },
-  "Miniboy:CL:": {
-   "DDF": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 0,
-    "pts": 10000,
-    "racha": "0/0",
-    "tg": {
      "nuevo": true
     }
    }

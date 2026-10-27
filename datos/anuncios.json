@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-27T02:24:56+00:00",
+ "cuando": "2026-10-27T02:55:05+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -6724,45 +6724,6 @@
    "inscripciones_cuando": "2026-10-27T01:46:02"
   },
   {
-   "nombre": "ULTIMO VERSO 1v1",
-   "servidor": "FDS",
-   "canal": "🎉╏eventos",
-   "msg_id": "1539489428894908529",
-   "cuando": "2026-08-19T04:21:22",
-   "canal_id": "1536569364659044402",
-   "guild_id": "1489848581203689535",
-   "organizador": "@Artezzy",
-   "orgs": [
-    {
-     "n": "Artezzy",
-     "id": "1435531540472795240"
-    }
-   ],
-   "autor_h": "d637fa8d09166f5f",
-   "cupos_texto": "9/8-16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "<t:1787193000:F>",
-   "fecha": "",
-   "premios": "",
-   "staff": {
-    "jurado": [
-     "ZackChess-",
-     "zyrak"
-    ]
-   },
-   "autor": "Artezzy",
-   "staff_cuentas": {
-    "ZackChess-": "837752358812254218",
-    "zyrak": "966339388340568135"
-   },
-   "categoria_id": "1489848582189224103",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-27T01:46:02"
-  },
-  {
    "nombre": "WORLD OF FREE",
    "servidor": "LKR",
    "canal": "anuncios",
@@ -6801,6 +6762,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1564470306381500490",
+   "cuando": "2026-10-27T02:46:27"
+  },
   {
    "servidor": "FDS",
    "canal": "✅╏inscripciones-express",
@@ -42791,15 +42761,6 @@
    "discord_id": "781971857519804417",
    "msg_id": "1545254462170341426",
    "cuando": "2026-09-04T02:09:33"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "Sin límites 🇵🇪",
-   "quien": "sinlimites2026",
-   "discord_id": "1508623564285149357",
-   "msg_id": "1545252321460625409",
-   "cuando": "2026-09-04T02:01:02"
   }
  ]
 }

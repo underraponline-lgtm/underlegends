@@ -285,6 +285,15 @@
 "temporada"
 ]
 },
+"miniboy": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "majiztral": {
 "rg": "C",
 "c": [
@@ -327,15 +336,6 @@
 "criszj": {
 "rg": "C",
 "c": []
-},
-"miniboy": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "drexx": {
 "rg": "C",

@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "071432ae7bbb987b",
+  "firma": "087ba8d5b0369fd0",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -19375,7 +19375,7 @@
    "PichulaMc": 41
   },
   "fecha": "22/10",
-  "firma": "1059442598eeaf3a",
+  "firma": "1750d250611156fa",
   "msg": "1562977225790459957",
   "nombre": "19 (EDICIÓN FUTCARD VOL 4)",
   "num": 500,
@@ -20816,7 +20816,7 @@
    "VR": 4
   },
   "fecha": "23/10",
-  "firma": "509f8e81a50614c1",
+  "firma": "5317bd502415883b",
   "msg": "1563368240221257751",
   "nombre": "19 CUP FUTCARD EDICIÓN 5",
   "num": 505,
@@ -25342,6 +25342,16 @@
     "PichulaMc",
     "Julix",
     "PichulaMc"
+   ],
+   [
+    "Wackmc🇪🇸",
+    "Tam",
+    "Wackmc🇪🇸"
+   ],
+   [
+    "Wackmc🇪🇸",
+    "Miniboy",
+    "Wackmc🇪🇸"
    ]
   ],
   "ev_antes": {
@@ -25357,7 +25367,7 @@
    "Tam": 14
   },
   "fecha": "26/10",
-  "firma": "6cc70bbef17cde28",
+  "firma": "d6287ad7d601fed3",
   "msg": "1564439290107265104",
   "nombre": "NOMBRE DE LA COMPETENCIA",
   "num": 530,
@@ -25420,6 +25430,11 @@
    ],
    [
     "Erian",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
     "Cuartos",
     2000
    ]
