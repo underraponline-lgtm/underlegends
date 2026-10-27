@@ -1244,70 +1244,31 @@
    "b": "JAZI",
    "ganador": "OKAM",
    "votos": "1–0"
+  },
+  "1564482899007250515": {
+   "id": "1564482899007250515",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793072189810,
+   "a": "MC AREPA",
+   "b": "GARI",
+   "ganador": "MC AREPA",
+   "votos": "1–0"
+  },
+  "1564484650213056554": {
+   "id": "1564484650213056554",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793072607330,
+   "a": "CHENTE",
+   "b": "SIN LIMITES",
+   "ganador": "SIN LIMITES",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1556874260939800577": {
-   "id": "1556874260939800577",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1791258149133,
-   "ed": 1791260308662,
-   "texto": "`[ CUARTOS ]`\n⌞RODA⌝ 🆚 ⌞RIZAS⌝\n⌞VELATZ SNOW⌝ 🆚 ⌞LIAM⌝\n`[ SEMIFINALES ]`\n⌞PICHULA⌝ 🆚 ⌞RIZAS⌝\n⌞VELATZ SNOW⌝ 🆚 ⌞MOLUSCO⌝\n⌞VELATZ SNOW⌝ 🆚 ⌞RIZAS⌝",
-   "batallas": [
-    [
-     "CUARTOS",
-     [
-      "RODA",
-      "RIZAS"
-     ],
-     "RIZAS",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "VELATZ SNOW",
-      "LIAM"
-     ],
-     "VELATZ SNOW",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "PICHULA",
-      "RIZAS"
-     ],
-     "RIZAS",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "VELATZ SNOW",
-      "MOLUSCO"
-     ],
-     "VELATZ SNOW",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "VELATZ SNOW",
-      "RIZAS"
-     ],
-     "RIZAS",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1557084790086303815": {
    "id": "1557084790086303815",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -5458,7 +5419,7 @@
    "g": "1489848581203689535",
    "canal": "1500675902042931280",
    "pub": 1793066705749,
-   "ed": 1793068415180,
+   "ed": 1793072648032,
    "texto": "`[ OCTAVOS ]`\n⌞Chente 🇻🇪⌝ 🆚 ⌞MCAREPA 🇻🇪⌝\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞mats🇺🇾⌝\n⌞Artezzy 🇵🇪⌝ 🆚 ⌞Vilca 🇵🇪⌝\n⌞Gary🇨🇺⌝ 🆚 ⌞Shitka🇲🇽⌝\n⌞okam🇨🇷⌝ 🆚 ⌞jazi 🇦🇸⌝\n⌞lizeninn 🇦🇷⌝ 🆚 ⌞AL3 🇨🇺⌝\n⌞DarnBless 🇨🇴⌝ 🆚 ⌞Luck 🇵🇾⌝\n⌞Nxuz 🇵🇪⌝ 🆚 ⌞Eseeka 🇵🇪⌝\n`[ CUARTOS ]`",
    "batallas": [
     [
@@ -5549,8 +5510,8 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1793067851324,
-   "ed": 1793071027614,
-   "texto": "`[ OCTAVOS ]`\n⌞MC AREPA⌝ 🆚 ⌞CHENTE⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MATS⌝\n⌞ARTEZZY⌝ 🆚 ⌞MCAREPA⌝\n⌞GARY⌝ 🆚 ⌞SHIKTA⌝\n⌞OKAM⌝ 🆚 ⌞JAZI⌝",
+   "ed": 1793072619964,
+   "texto": "`[ OCTAVOS ]`\n⌞MC AREPA⌝ 🆚 ⌞CHENTE⌝\n⌞SIN LIMITES⌝ 🆚 ⌞MATS⌝\n⌞ARTEZZY⌝ 🆚 ⌞MCAREPA⌝\n⌞GARY⌝ 🆚 ⌞SHIKTA⌝\n⌞OKAM⌝ 🆚 ⌞JAZI⌝\n⌞MCAREPA⌝ 🆚 ⌞GARI⌝\n⌞CHENTE⌝ 🆚 ⌞SIN LIMITES⌝\n⌞CHENTE⌝ 🆚 ⌞SIN LÍMITES⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5600,6 +5561,127 @@
      ],
      "OKAM",
      "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "MCAREPA",
+      "GARI"
+     ],
+     "MCAREPA",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "CHENTE",
+      "SIN LIMITES"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "CHENTE",
+      "SIN LÍMITES"
+     ],
+     "SIN LÍMITES",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1564480372513710131": {
+   "id": "1564480372513710131",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1500675902042931280",
+   "pub": 1793071587447,
+   "ed": 1793071746076,
+   "texto": "`[ OCTAVOS ]`\n⌞Chente 🇻🇪⌝ 🆚 ⌞MCAREPA 🇻🇪⌝\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞mats🇺🇾⌝\n⌞Artezzy 🇵🇪⌝ 🆚 ⌞Vilca 🇵🇪⌝\n⌞Gary🇨🇺⌝ 🆚 ⌞Shitka🇲🇽⌝\n⌞okam🇨🇷⌝ 🆚 ⌞jazi 🇦🇸⌝\n⌞lizeninn 🇦🇷⌝ 🆚 ⌞AL3 🇨🇺⌝\n⌞DarnBless 🇨🇴⌝ 🆚 ⌞Luck 🇵🇾⌝\n⌞Nxuz 🇵🇪⌝ 🆚 ⌞Eseeka 🇵🇪⌝\n`[ CUARTOS ]`",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "Chente 🇻🇪",
+      "MCAREPA 🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Sin límites 🇵🇪",
+      "mats🇺🇾"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Artezzy 🇵🇪",
+      "Vilca 🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Gary🇨🇺",
+      "Shitka🇲🇽"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "okam🇨🇷",
+      "jazi 🇦🇸"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "lizeninn 🇦🇷",
+      "AL3 🇨🇺"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "DarnBless 🇨🇴",
+      "Luck 🇵🇾"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Nxuz 🇵🇪",
+      "Eseeka 🇵🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
