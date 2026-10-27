@@ -25,7 +25,8 @@
 .lq-pts i.on{background:#29B298}
 /* los que mandan: la carta de liga de cada líder, de costado */
 .lq-lds{list-style:none;margin:0;padding:0 0 6px;display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin}
-.lq-ld{flex:0 0 122px;scroll-snap-align:start;display:grid;justify-items:center;gap:5px;text-align:center;min-width:0;color:inherit}
+.lq-lds>li{flex:0 0 122px;scroll-snap-align:start;min-width:0}
+.lq-ld{display:grid;justify-items:center;gap:5px;text-align:center;min-width:0;color:inherit}
 .lq-ld-l{display:flex;align-items:center;gap:5px;max-width:100%}
 .lq-ld-l img{width:16px;height:16px;border-radius:3px;flex:none}
 .lq-ld-l b{font:800 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#A5A5A0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -49,7 +50,7 @@
 @media (min-width:900px){
   .lq-h{grid-template-columns:380px minmax(0,1fr);align-items:center;gap:32px;padding:34px 40px}
   .lq-h-t{font-size:64px}
-  .lq-ld{flex-basis:140px}
+  .lq-lds>li{flex-basis:140px}
 }
 
 /* las ligas por estado, en cartelera: el flyer arriba y la carrera de los dos primeros abajo */
@@ -58,7 +59,8 @@
 .lq-fila-t b{font:900 16px/1 Archivo,sans-serif;text-transform:uppercase}
 .lq-fila-t small{font-size:13px;color:var(--gris)}
 .lq-cqs{list-style:none;margin:0;padding:0 0 6px;display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x proximity}
-.lq-cq{flex:0 0 172px;scroll-snap-align:start;position:relative;display:grid;align-content:start;border:2px solid var(--tinta);border-radius:4px;overflow:hidden;background:var(--fondo);color:inherit}
+.lq-cqs>li{flex:0 0 172px;scroll-snap-align:start;min-width:0;display:grid}
+.lq-cq{position:relative;display:grid;align-content:start;border:2px solid var(--tinta);border-radius:4px;overflow:hidden;background:var(--fondo);color:inherit}
 .lq-cq-f{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
 .lq-cq-f.sin{display:grid;place-items:center;background:var(--c)}
 .lq-cq-f.sin img{width:44%;height:auto}
@@ -76,7 +78,7 @@
 .lq-r2 b,.lq-r2 em{position:relative;font:800 12px/1 Archivo,sans-serif;font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lq-r2>span:first-child b,.lq-r2>span:first-child em{color:#fff}
 .lq-cq-i>small{font-size:12px;color:var(--gris)}
-@media (min-width:900px){.lq-cq{flex-basis:228px}}
+@media (min-width:900px){.lq-cqs>li{flex-basis:228px}}
 
 /* el álbum de cada liga: la carta de liga de cada uno */
 .lq-alb{list-style:none;margin:0;padding:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(140px,30%),1fr));gap:12px;background:#0B0B0D;border-radius:4px}
