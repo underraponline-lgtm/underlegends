@@ -3409,6 +3409,26 @@
      ],
      "organizador": "@nachonc_",
      "cuentas": {}
+    },
+    "1564708441950396437": {
+     "sv": "FRZ",
+     "nombre": "IRLANDA FREESTYLE",
+     "mo": "2026-10-27T18:32:43Z",
+     "staff": {
+      "jurado": [
+       "Ceko"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "ajoel",
+       "id": "563072268830244864"
+      }
+     ],
+     "organizador": "@ajoel",
+     "cuentas": {
+      "Ceko": "1162896927017414788"
+     }
     }
    },
    "ver": {
