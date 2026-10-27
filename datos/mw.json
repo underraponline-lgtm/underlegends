@@ -34,10 +34,34 @@
     "o": 10,
     "votos": 2,
     "de": 4,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 9000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Subcampeón",
+    "valor": 9000,
+    "caza": {
+     "n": 536,
+     "evento": "FREESTYLE FOR ALL ESPECIAL 1800 PANDILLAS",
+     "sv": "FFA",
+     "t": "2026-10-27T20:14:48Z",
+     "por": [
+      {
+       "n": "Erian",
+       "cobra": 2250
+      },
+      {
+       "n": "Mr Still Ballin",
+       "cobra": 2250
+      },
+      {
+       "n": "Polosport",
+       "cobra": 4000
+      },
+      {
+       "n": "Six",
+       "cobra": 2250
+      }
+     ]
+    }
    },
    {
     "n": "OG",
@@ -48,9 +72,9 @@
     "base": 9500,
     "o": 18,
     "estado": "suelto",
-    "ev": 0,
+    "ev": 1,
     "fase": "",
-    "valor": 9500
+    "valor": 11500
    },
    {
     "n": "Makmah",
@@ -86,9 +110,9 @@
     "base": 7250,
     "o": 12,
     "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 7250
+    "ev": 1,
+    "fase": "Campeón",
+    "valor": 8750
    },
    {
     "n": "Leonart",

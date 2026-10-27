@@ -575,6 +575,18 @@
    "vence": "2026-10-23T17:34:15+00:00",
    "vencido": true
   },
+  "Khalil": {
+   "avisado": "2026-10-27",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-27T20:14:48+00:00",
+   "did": "1131762620345634927",
+   "evento": "FREESTYLE FOR ALL ESPECIAL 1800 PANDILLAS",
+   "n": 536,
+   "sv": "FFA",
+   "vence": "2026-11-03T20:14:48+00:00",
+   "vencido": false
+  },
   "Konan": {
    "avisado": "2026-10-13",
    "chat": "2026-10-14",
@@ -629,9 +641,10 @@
   },
   "LSO": {
    "avisado": "2026-10-25",
+   "avisado_cumplido": "2026-10-27",
    "chat": "2026-10-26",
-   "con": null,
-   "cumplido": "",
+   "con": 536,
+   "cumplido": "2026-10-27T20:14:48+00:00",
    "debut": "2026-10-25T04:08:34+00:00",
    "did": "1375242152518357066",
    "evento": "GRISELDA RECORDS VOL. 6",
@@ -1113,8 +1126,9 @@
   },
   "Trelok": {
    "avisado": "2026-10-27",
-   "con": null,
-   "cumplido": "",
+   "avisado_cumplido": "2026-10-27",
+   "con": 536,
+   "cumplido": "2026-10-27T20:14:48+00:00",
    "debut": "2026-10-27T03:32:41+00:00",
    "did": "597257327464284163",
    "evento": "qcyo rapeen 4",

@@ -1,51 +1,51 @@
 {
  "v": 1,
- "cuando": "2026-10-27T23:03:29Z",
+ "cuando": "2026-10-27T23:16:50Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 649.7,
+ "dur_s": 765.3,
  "pasos": [
   {
    "n": "0a",
    "que": "los nombres de Discord de la Lista, del Operativo",
    "ok": true,
-   "s": 1.7
+   "s": 0.9
   },
   {
    "n": "0a2",
    "que": "las crews, del objeto",
    "ok": true,
-   "s": 1.5
+   "s": 1.2
   },
   {
    "n": "0b",
    "que": "los multiplicadores de la semana",
    "ok": true,
-   "s": 0.8
+   "s": 1.1
   },
   {
    "n": "0c",
    "que": "lo corregido desde los reportes",
    "ok": true,
-   "s": 2.5
+   "s": 2.9
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 86.1
+   "s": 78.0
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
-   "ok": false,
-   "s": 62.6
+   "ok": true,
+   "s": 50.4
   },
   {
    "n": "1a",
    "que": "la cola del bot (`/card` de quien no está), al Sheet",
    "ok": true,
-   "s": 1.8
+   "s": 0.5
   },
   {
    "n": "1a2",
@@ -57,19 +57,19 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 53.8
+   "s": 44.1
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 3.6
+   "s": 2.8
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.3
+   "s": 7.0
   },
   {
    "n": "2b0",
@@ -93,13 +93,13 @@
    "n": "2b3",
    "que": "el Lunes de la Liga",
    "ok": true,
-   "s": 0.1
+   "s": 0.5
   },
   {
    "n": "2b3d",
    "que": "los paneles de DRA",
    "ok": true,
-   "s": 0.3
+   "s": 29.8
   },
   {
    "n": "2b3b",
@@ -111,61 +111,61 @@
    "n": "2b3c",
    "que": "el reto del debut",
    "ok": true,
-   "s": 0.7
+   "s": 1.4
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 6.9
+   "s": 6.8
   },
   {
    "n": "2b4b",
    "que": "el Pase de rapero",
    "ok": true,
-   "s": 0.8
+   "s": 0.5
   },
   {
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 7.4
+   "s": 5.9
   },
   {
    "n": "2b5b",
    "que": "los pedidos de la gente",
    "ok": true,
-   "s": 0.3
+   "s": 0.2
   },
   {
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 177.0
+   "s": 332.1
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 5.0
+   "s": 10.0
   },
   {
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 2.8
+   "s": 1.7
   },
   {
    "n": "2b8c",
    "que": "las promociones",
    "ok": true,
-   "s": 3.3
+   "s": 2.4
   },
   {
    "n": "2b8d",
    "que": "los MES AWARDS",
    "ok": false,
-   "s": 67.3
+   "s": 48.4
   },
   {
    "n": "2b8e",
@@ -177,13 +177,13 @@
    "n": "2b8f",
    "que": "los tiers",
    "ok": true,
-   "s": 13.4
+   "s": 5.6
   },
   {
    "n": "2b8g",
    "que": "los primerizos",
    "ok": true,
-   "s": 0.7
+   "s": 0.4
   },
   {
    "n": "2b8h",
@@ -195,61 +195,61 @@
    "n": "2b8i",
    "que": "las competencias de la semana",
    "ok": true,
-   "s": 0.7
+   "s": 0.6
   },
   {
    "n": "2b8b",
    "que": "la agenda",
    "ok": true,
-   "s": 0.4
+   "s": 0.2
   },
   {
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 36.3
+   "s": 31.7
   },
   {
    "n": "2b9b",
    "que": "el ascenso de cada servidor",
    "ok": true,
-   "s": 2.3
+   "s": 2.1
   },
   {
    "n": "2b9c",
    "que": "las cartas de liga",
    "ok": true,
-   "s": 1.0
+   "s": 8.0
   },
   {
    "n": "2b10",
    "que": "los roles de la página",
    "ok": true,
-   "s": 0.4
+   "s": 0.3
   },
   {
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 60.6
+   "s": 55.7
   },
   {
    "n": "2c2",
    "que": "el aviso de cada evento, al día",
    "ok": true,
-   "s": 0.4
+   "s": 0.3
   },
   {
    "n": "2c3",
    "que": "el anuncio que sale solo a su hora",
    "ok": true,
-   "s": 0.1
+   "s": 0.0
   },
   {
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 18.2
+   "s": 14.6
   },
   {
    "n": "2e",
@@ -261,44 +261,40 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 10.3
+   "s": 6.6
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.7
+   "s": 0.6
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.3
+   "s": 6.7
   }
  ],
  "fallas": [
-  {
-   "paso": "1c",
-   "que": "sheet/rankings.py --escribir"
-  },
   {
    "paso": "2b8d",
    "que": "bot/mes_awards.py --aplicar"
   }
  ],
- "decidir": 131,
+ "decidir": 130,
  "ultimo_evento": {
-  "n": "535",
-  "nombre": "PRADERAP VOL.2",
-  "sv": "ACAD",
+  "n": "536",
+  "nombre": "FREESTYLE FOR ALL ESPECIAL 1800 PANDILLAS",
+  "sv": "FFA",
   "dia": "2026-10-27"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-27T22:54:17Z",
+  "cuando": "2026-10-27T23:05:34Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
-  "jugadores": 558,
-  "un_evento": 262,
+  "jugadores": 559,
+  "un_evento": 260,
   "diez_o_mas": 84,
   "cohortes": [
    {
@@ -328,37 +324,37 @@
    {
     "semana": "2026-10-19",
     "nuevos": 61,
-    "volvieron": 12,
+    "volvieron": 13,
     "completa": false
    },
    {
     "semana": "2026-10-26",
-    "nuevos": 10,
-    "volvieron": 0,
+    "nuevos": 11,
+    "volvieron": 1,
     "completa": false
    }
   ]
  },
  "cuotas": {
   "kv": {
-   "write": 598,
-   "read": 54588
+   "write": 615,
+   "read": 55961
   },
   "objeto": {
    "leidas": 5091259,
    "escritas": 25488,
-   "pedidos": 14671
+   "pedidos": 15195
   },
   "worker": {
-   "pedidos": 13741,
-   "errores": 2867,
-   "sub": 15414,
-   "cortados": 2867,
-   "p50_ms": 1.27,
-   "p99_ms": 11.87,
+   "pedidos": 14110,
+   "errores": 3352,
+   "sub": 15783,
+   "cortados": 3352,
+   "p50_ms": 1.26,
+   "p99_ms": 11.84,
    "cpu": {
-    "total": 38141,
-    "objeto_10": 1714,
+    "total": 40329,
+    "objeto_10": 1692,
     "worker_10": 291
    }
   },

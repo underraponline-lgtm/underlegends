@@ -178,6 +178,11 @@
     "t1",
     1793029252929
    ],
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1793143003505
+   ],
    "🏟️ FINALISTA DE CASA": [
     "🏟️ FINALISTA DE CASA",
     "t1",
@@ -1883,6 +1888,11 @@
     "t1",
     1792953978519
    ],
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1793143003505
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -2888,6 +2898,11 @@
     "t1",
     1793029252929
    ],
+   "🏰 FORTALEZA": [
+    "🏰 FORTALEZA",
+    "t1",
+    1793143003505
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
@@ -2946,7 +2961,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x7",
+    "👑 CAMPEÓN x8",
     "t1",
     1793029252929
    ],
@@ -4327,6 +4342,11 @@
     "t1",
     1793029252929
    ],
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1793143003505
+   ],
    "🏟️ FINALISTA DE CASA": [
     "🏟️ FINALISTA DE CASA",
     "t1",
@@ -4655,6 +4675,11 @@
    ]
   },
   "temporada": {
+   "⚡ MARATONISTA": [
+    "⚡ MARATONISTA",
+    "t1",
+    1793143003505
+   ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
     "t1",
@@ -5431,6 +5456,11 @@
     "t1",
     1793142200611
    ],
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1793143003505
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -5501,6 +5531,11 @@
     "📈 EN ASCENSO",
     "t1",
     1793029252929
+   ],
+   "📋 SEMANA PERFECTA": [
+    "📋 SEMANA PERFECTA",
+    "t1",
+    1793143003505
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
@@ -5806,13 +5841,18 @@
     "t1",
     1793029252929
    ],
+   "⭐ PENTACAMPEÓN": [
+    "⭐ PENTACAMPEÓN",
+    "t1",
+    1793143003505
+   ],
    "🐺 LOBO SOLITARIO": [
     "🐺 LOBO SOLITARIO",
     "t1",
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x4",
+    "👑 CAMPEÓN x5",
     "t1",
     1793029252929
    ],
@@ -6191,6 +6231,13 @@
   }
  },
  "number": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1793143003505
+   ]
+  },
   "temporada": {
    "🐺 LOBO SOLITARIO": [
     "🐺 LOBO SOLITARIO",
@@ -7552,6 +7599,11 @@
     "t1",
     1792953978519
    ],
+   "🏟️ FINALISTA DE CASA": [
+    "🏟️ FINALISTA DE CASA",
+    "t1",
+    1793143003505
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
@@ -7868,6 +7920,11 @@
     "⚔️ DUELISTA",
     "t1",
     1793029252929
+   ],
+   "🐉 MATADRAGONES": [
+    "🐉 MATADRAGONES",
+    "t1",
+    1793143003505
    ],
    "🗡️ MATAGIGANTES": [
     "🗡️ MATAGIGANTES",
@@ -8544,6 +8601,11 @@
     "t1",
     1793029252929
    ],
+   "🏅 VITRINA LLENA": [
+    "🏅 VITRINA LLENA",
+    "t1",
+    1793143003505
+   ],
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",
     "t1",
@@ -8586,6 +8648,11 @@
     "t1",
     1793029252929
    ],
+   "⭐ PENTACAMPEÓN": [
+    "⭐ PENTACAMPEÓN",
+    "t1",
+    1793143003505
+   ],
    "🎖️ CURTIDO": [
     "🎖️ CURTIDO",
     "t1",
@@ -8617,7 +8684,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x4",
+    "👑 CAMPEÓN x5",
     "t1",
     1793029252929
    ],
@@ -9312,6 +9379,20 @@
     "🧱 FUNDADOR",
     "t1",
     1792953978519
+   ]
+  }
+ },
+ "trelok": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1793143003505
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1793143003505
    ]
   }
  },
@@ -10052,6 +10133,11 @@
     "👑 CAMPEÓN x7",
     "t1",
     1793029252929
+   ],
+   "💯 BICENTENARIO": [
+    "💯 BICENTENARIO",
+    "t1",
+    1793143003505
    ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",

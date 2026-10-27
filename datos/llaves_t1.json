@@ -10096,7 +10096,7 @@
        "Calíz"
       ],
       "Abyssus, MCO, SGB",
-      "triple (11 bandas, pasan 3); también pasa: MCO 🇦🇷 / SGB 🇨🇴"
+      "triple (11 bandas, pasan 3); también pasa: Mco / SGB 🇨🇴"
      ],
      [
       [
@@ -27663,7 +27663,7 @@
        "Ruvick"
       ],
       "MCO, Ariaxer",
-      "triple (3 bandas, pasan 2); también pasa: Ariaxer🇦🇷; Drafteado: MCO 🇦🇷"
+      "triple (3 bandas, pasan 2); también pasa: Ariaxer🇦🇷; Drafteado: Mco"
      ],
      [
       [
@@ -36316,6 +36316,328 @@
    [
     "Turbo 🇪🇦",
     "Octavos",
+    1250
+   ]
+  ]
+ },
+ "536": {
+  "dia": "2026-10-27",
+  "escala": "16+",
+  "fecha": "27/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1564734133261832483"
+  ],
+  "n": 536,
+  "nombre": "FREESTYLE FOR ALL ESPECIAL 1800 PANDILLAS",
+  "participantes": 33,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "OG",
+       "Teo",
+       "Number",
+       "Miniboy"
+      ],
+      "OG, Teo",
+      "triple (4 bandas, pasan 2); también pasa: Teo🇨🇴"
+     ],
+     [
+      [
+       "Jobaking",
+       "Deuxs",
+       "Sosa",
+       "Scritura"
+      ],
+      "Jobaking, Deuxs",
+      "triple (4 bandas, pasan 2); también pasa: familiafortunaexito 🇫🇷; Drafteado: Joba 🇨🇱"
+     ],
+     [
+      [
+       "Polosport",
+       "Mr Still Ballin",
+       "Lvel 🇻🇪",
+       "KIRITO"
+      ],
+      "Polosport, Mr Still Ballin",
+      "triple (4 bandas, pasan 2); también pasa: mr still ballin 🇳🇴"
+     ],
+     [
+      [
+       "Verc",
+       "Liberia",
+       "OKAM",
+       "Calíz"
+      ],
+      "Verc, Liberia",
+      "triple (4 bandas, pasan 2); también pasa: Sebita🇱🇷"
+     ],
+     [
+      [
+       "Erian",
+       "Provenza",
+       "NC",
+       "LSO"
+      ],
+      "Erian, Provenza",
+      "triple (4 bandas, pasan 2); también pasa: PROVENZA 🇦🇷; Drafteado: Erian"
+     ],
+     [
+      [
+       "PichulaMc",
+       "Abyssus",
+       "Khalil",
+       "SULTAN"
+      ],
+      "PichulaMc, Abyssus",
+      "triple (4 bandas, pasan 2); también pasa: Abyssus 🇨🇦"
+     ],
+     [
+      [
+       "MATUK 🇦🇷",
+       "Trelok",
+       "Six",
+       "Makmah"
+      ],
+      "MATUK 🇦🇷, Trelok, Six",
+      "triple (4 bandas, pasan 3); también pasa: trelok / six"
+     ],
+     [
+      [
+       "francis",
+       "Vandu",
+       "Dyzz",
+       "Trot"
+      ],
+      "francis",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "OG, Teo",
+       "Erian, Provenza"
+      ],
+      "OG, Teo",
+      ""
+     ],
+     [
+      [
+       "Abyssus, PichulaMc",
+       "Deuxs, Jobaking"
+      ],
+      "Abyssus, PichulaMc",
+      "Drafteado: ABYSSUS 🇵🇦"
+     ],
+     [
+      [
+       "Polosport, Mr Still Ballin",
+       "Six, MATUK 🇦🇷"
+      ],
+      "Polosport, Mr Still Ballin",
+      "Drafteado: SIX 🇦🇷"
+     ],
+     [
+      [
+       "Verc, Liberia",
+       "francis, Trelok"
+      ],
+      "Verc, Liberia",
+      "Drafteado: TRELOK 🇨🇴"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc, Liberia, Trelok",
+       "Abyssus, PichulaMc, Jobaking"
+      ],
+      "Verc, Liberia, Trelok",
+      ""
+     ],
+     [
+      [
+       "OG 🇻🇪 + TEO 🇨🇴 + ERIAN 🇵🇦",
+       "MR STILL BALLIN 🇺🇾 + MAILEN 🇦🇷 + SIX 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Over, Polosport, Six, Erian",
+       "Liberia, Verc, Trelok, Abyssus"
+      ],
+      "Over, Polosport, Six, Erian",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Erian",
+    "Campeón",
+    3750
+   ],
+   [
+    "Six",
+    "Campeón",
+    3750
+   ],
+   [
+    "Abyssus",
+    "Subcampeón",
+    3625
+   ],
+   [
+    "Trelok",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Jobaking",
+    "Semifinal",
+    3000
+   ],
+   [
+    "Over",
+    "Campeón",
+    2500
+   ],
+   [
+    "Polosport",
+    "Campeón",
+    2500
+   ],
+   [
+    "Liberia",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Verc",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Deuxs",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "KIRITO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Khalil",
+    "Octavos",
+    1250
+   ],
+   [
+    "LSO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "MATUK 🇦🇷",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Number",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "Provenza",
+    "Cuartos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Scritura",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "francis",
+    "Cuartos",
     1250
    ]
   ]

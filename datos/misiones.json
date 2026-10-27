@@ -4590,6 +4590,13 @@
      0,
      0
     ],
+    "Abyssus": [
+     1,
+     1,
+     0,
+     0,
+     0
+    ],
     "Agus": [
      0,
      1,
@@ -4633,7 +4640,7 @@
      0
     ],
     "Calíz": [
-     0,
+     1,
      1,
      0,
      0,
@@ -4648,6 +4655,13 @@
     ],
     "CrisZJ": [
      0,
+     1,
+     0,
+     0,
+     0
+    ],
+    "Deuxs": [
+     1,
      1,
      0,
      0,
@@ -4675,7 +4689,7 @@
      0
     ],
     "Dyzz": [
-     0,
+     1,
      1,
      0,
      0,
@@ -4696,8 +4710,8 @@
      0
     ],
     "Erian": [
-     0,
-     4,
+     1,
+     5,
      0,
      0,
      0
@@ -4731,8 +4745,8 @@
      0
     ],
     "Jobaking": [
-     0,
      1,
+     2,
      0,
      0,
      0
@@ -4751,6 +4765,20 @@
      0,
      0
     ],
+    "KIRITO": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Khalil": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "Kyss": [
      0,
      2,
@@ -4760,6 +4788,13 @@
     ],
     "LEWITO": [
      0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "LSO": [
+     1,
      0,
      0,
      0,
@@ -4786,6 +4821,13 @@
      0,
      0
     ],
+    "Liberia": [
+     1,
+     1,
+     0,
+     0,
+     0
+    ],
     "Lizeninn": [
      0,
      0,
@@ -4801,8 +4843,15 @@
      0
     ],
     "Lvel": [
+     1,
      0,
      0,
+     0,
+     0
+    ],
+    "MATUK 🇦🇷": [
+     1,
+     1,
      0,
      0,
      0
@@ -4829,16 +4878,23 @@
      0
     ],
     "Makmah": [
-     0,
+     1,
      3,
      0,
      0,
      0
     ],
     "Miniboy": [
-     0,
+     1,
      2,
      1,
+     0,
+     0
+    ],
+    "Mr Still Ballin": [
+     1,
+     1,
+     0,
      0,
      0
     ],
@@ -4850,7 +4906,7 @@
      0
     ],
     "NC": [
-     0,
+     1,
      0,
      0,
      0,
@@ -4864,14 +4920,14 @@
      0
     ],
     "Number": [
-     0,
+     1,
      0,
      0,
      0,
      0
     ],
     "OKAM": [
-     0,
+     1,
      1,
      0,
      0,
@@ -4913,8 +4969,8 @@
      0
     ],
     "PichulaMc": [
-     0,
-     3,
+     1,
+     4,
      0,
      0,
      0
@@ -4926,9 +4982,16 @@
      0,
      0
     ],
-    "Provenza": [
-     0,
+    "Polosport": [
      1,
+     1,
+     0,
+     0,
+     0
+    ],
+    "Provenza": [
+     1,
+     2,
      0,
      0,
      0
@@ -4954,22 +5017,29 @@
      0,
      0
     ],
-    "Scritura": [
+    "SULTAN": [
+     1,
      0,
+     0,
+     0,
+     0
+    ],
+    "Scritura": [
+     1,
      1,
      0,
      0,
      0
     ],
     "Six": [
-     0,
-     2,
+     1,
+     3,
      0,
      0,
      0
     ],
     "Sosa": [
-     0,
+     1,
      1,
      0,
      0,
@@ -5004,8 +5074,15 @@
      0
     ],
     "Trelok": [
-     0,
      1,
+     2,
+     0,
+     0,
+     0
+    ],
+    "Trot": [
+     1,
+     0,
      0,
      0,
      0
@@ -5024,6 +5101,20 @@
      0,
      0
     ],
+    "Vandu": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Verc": [
+     1,
+     1,
+     0,
+     0,
+     0
+    ],
     "Vilca": [
      0,
      2,
@@ -5033,6 +5124,13 @@
     ],
     "Zignos": [
      0,
+     1,
+     0,
+     0,
+     0
+    ],
+    "francis": [
+     1,
      1,
      0,
      0,
@@ -5075,17 +5173,42 @@
     ]
    },
    "pts": {
-    "Erian": 600,
+    "Abyssus": 300,
+    "Calíz": 300,
+    "Deuxs": 300,
+    "Dyzz": 300,
+    "Erian": 900,
+    "Jobaking": 900,
+    "KIRITO": 300,
+    "Khalil": 300,
     "Kyss": 600,
+    "LSO": 300,
+    "Liberia": 300,
     "Luck": 600,
+    "Lvel": 300,
+    "MATUK 🇦🇷": 300,
     "MTZ": 1000,
-    "Makmah": 600,
-    "Miniboy": 1600,
+    "Makmah": 900,
+    "Miniboy": 2900,
+    "Mr Still Ballin": 300,
+    "NC": 300,
+    "Number": 300,
+    "OKAM": 300,
     "PRAISERIZA": 600,
-    "PichulaMc": 600,
-    "Six": 600,
+    "PichulaMc": 900,
+    "Polosport": 300,
+    "Provenza": 900,
+    "SULTAN": 300,
+    "Scritura": 300,
+    "Six": 900,
+    "Sosa": 300,
     "Tam": 600,
+    "Trelok": 900,
+    "Trot": 300,
+    "Vandu": 300,
+    "Verc": 300,
     "Vilca": 600,
+    "francis": 300,
     "yinn": 1600
    }
   }
@@ -5102,7 +5225,7 @@
   "ANTORCHA": 300,
   "ARDEAN": 300,
   "Abraham 🇻🇪": 300,
-  "Abyssus": 2200,
+  "Abyssus": 2500,
   "Abysuss": 1600,
   "Adriagner": 3200,
   "Agente sombra": 300,
@@ -5124,7 +5247,7 @@
   "Bloody": 2200,
   "CJ": 2100,
   "Cajita": 300,
-  "Calíz": 900,
+  "Calíz": 1200,
   "Carlos": 1000,
   "Carlosmo": 1600,
   "Carlosss": 3800,
@@ -5144,12 +5267,12 @@
   "Deluxe": 1000,
   "Denik": 300,
   "Desio": 300,
-  "Deuxs": 300,
+  "Deuxs": 600,
   "Dominick": 2300,
   "Drexx": 1600,
   "Drezz🇵🇪": 300,
   "Dynoco": 1600,
-  "Dyzz": 900,
+  "Dyzz": 1200,
   "EGI": 300,
   "EIDP": 2900,
   "EVANGELINE🇧🇴": 600,
@@ -5163,7 +5286,7 @@
   "Emilio Alva": 600,
   "Emily Family": 300,
   "Enkil 🇦🇷": 300,
-  "Erian": 8800,
+  "Erian": 9100,
   "Erik": 1900,
   "Erizo": 300,
   "Eze": 300,
@@ -5193,13 +5316,15 @@
   "JHEYSON": 300,
   "JJ": 2900,
   "JOSHU": 2900,
-  "Jobaking": 300,
+  "Jobaking": 1200,
   "Joshema": 300,
   "Juasmio": 1900,
   "Julix🇧🇴": 1000,
   "Jult": 600,
   "Jupiter": 2200,
+  "KIRITO": 300,
   "Keider": 1200,
+  "Khalil": 300,
   "Kminant": 300,
   "Kochi": 300,
   "Korey": 300,
@@ -5213,20 +5338,21 @@
   "LEWITO": 300,
   "LKS 🇨🇱": 300,
   "LRS": 2200,
+  "LSO": 300,
   "Launok": 300,
   "Leonart": 300,
   "Letrao🇨🇱": 1300,
   "Leyenda": 300,
   "Liam": 300,
-  "Liberia": 7100,
+  "Liberia": 7400,
   "LitKunai": 300,
   "Lord Viruzz": 1600,
   "Luck": 600,
   "Luzzano": 900,
-  "Lvel": 600,
+  "Lvel": 900,
   "MALBORO": 600,
   "MATICERNA": 300,
-  "MATUK 🇦🇷": 1000,
+  "MATUK 🇦🇷": 1300,
   "MAU KC 🇨🇴": 300,
   "MCO": 7100,
   "MHS": 300,
@@ -5234,22 +5360,22 @@
   "MaYeuTyK": 1000,
   "Magic": 300,
   "Majiztral": 1200,
-  "Makmah": 7300,
+  "Makmah": 7600,
   "Malva": 300,
   "Marto": 300,
   "Masino": 2500,
   "Mathhias": 1300,
   "Mc arepa": 1000,
   "Millonari-O": 300,
-  "Miniboy": 3200,
+  "Miniboy": 4500,
   "Mito": 300,
   "Molusco": 4200,
   "Mosquitrap 🦟": 4000,
   "Motera": 2600,
-  "Mr Still Ballin": 6800,
+  "Mr Still Ballin": 7100,
   "Musicdum": 300,
   "N1k": 300,
-  "NC": 4800,
+  "NC": 5100,
   "NXUZ": 1900,
   "NYCO": 300,
   "Nemi": 1200,
@@ -5258,9 +5384,9 @@
   "Nmb": 1000,
   "Noa": 1000,
   "Noone": 300,
-  "Number": 300,
+  "Number": 600,
   "OG": 6800,
-  "OKAM": 2400,
+  "OKAM": 2700,
   "ONDADISKO": 600,
   "ONZASS": 1200,
   "Oasis": 6800,
@@ -5271,14 +5397,14 @@
   "Panchok": 6800,
   "Paria": 600,
   "Personality": 300,
-  "PichulaMc": 8800,
+  "PichulaMc": 9100,
   "Player": 3200,
-  "Polosport": 2200,
+  "Polosport": 2500,
   "Pomberito": 2900,
   "Presagio": 4200,
   "Prodigy": 300,
   "Prosu": 3200,
-  "Provenza": 4800,
+  "Provenza": 5700,
   "RT": 1300,
   "Raizer": 600,
   "Ram": 300,
@@ -5293,28 +5419,30 @@
   "Ruvick": 300,
   "SAEVA": 300,
   "SINTEXT": 600,
+  "SULTAN": 300,
   "Saiko": 300,
   "Sami": 300,
   "Santi": 300,
   "Santo Trinidad 🇨🇴": 300,
   "Saz": 300,
   "Scot": 300,
-  "Scritura": 900,
+  "Scritura": 1200,
   "Selek": 300,
   "Senticide": 600,
   "Shadow": 300,
   "Sin Limites": 2500,
-  "Six": 5400,
+  "Six": 5700,
   "Snow": 6800,
   "Soneto": 300,
-  "Sosa": 2200,
+  "Sosa": 2500,
   "Soulb": 4200,
   "Tam": 6600,
   "Teito": 300,
   "Tenor": 3200,
   "Teo": 600,
   "Tier": 300,
-  "Trot": 1200,
+  "Trelok": 900,
+  "Trot": 1500,
   "Tuca": 2200,
   "Tusicario": 300,
   "TøKīØ🦠🧠": 4500,
@@ -5322,10 +5450,10 @@
   "Vacile🇪🇸": 600,
   "Valdoza": 600,
   "Valen": 1000,
-  "Vandu": 7500,
+  "Vandu": 7800,
   "Vargas": 300,
   "Velatz": 4600,
-  "Verc": 5800,
+  "Verc": 6100,
   "Vilca": 1600,
   "Walker": 6300,
   "Warap": 900,
@@ -5345,7 +5473,7 @@
   "doble h": 300,
   "dxg": 300,
   "fleivaman": 1300,
-  "francis": 900,
+  "francis": 1200,
   "giansito": 1000,
   "ikonoxx": 600,
   "kerkoide": 300,
