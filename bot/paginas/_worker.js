@@ -125,6 +125,8 @@ const AVISOS = {
   '/api/avisos/marcos': 'POST',
   '/api/avisos/marco-elige': 'POST',
   '/api/avisos/carta-principal': 'POST',
+  // 👤 la tanda 2 del perfil (27/10/2026): tu frase y tus emblemas, lo público de un perfil y quitar una frase reportada
+  '/api/avisos/perfil-mio': 'POST', '/api/avisos/perfil-extra': 'POST', '/api/avisos/dueno/frase': 'POST',
   // 🏷️ tus TAGs y elegir cuál lleva cada carta (25/10/2026)
   '/api/avisos/tags-mios': 'POST',
   '/api/avisos/tag-elige': 'POST',

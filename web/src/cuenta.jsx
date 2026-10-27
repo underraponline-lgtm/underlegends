@@ -21,6 +21,7 @@ import { useSocio } from './panelsocio.js';
 import { seguirOrg, useOrgs } from './orgs.js';
 
 import { PasosInstalar } from './instalar.jsx';
+import { FraseEditor } from './frase.jsx';
 import CSS_PAGINA from './css/cuenta.css?inline';
 import { usarCss } from './css.js';
 import { achicar as achicarImagen, aBase64 } from './imagen.js';
@@ -126,7 +127,7 @@ function grupos(liga, dc, tema, temaSv) {
   const crew = crewDe(dc && dc.clave);
   return [
     ['TU PERFIL', [
-      ['perfil', 'perfil', 'Foto y redes', yo ? 'tu foto, tus redes y tu servidor' : 'lo que los demás ven de ti'],
+      ['perfil', 'perfil', 'Foto y redes', yo ? 'tu foto, tu frase, tus redes y tu servidor' : 'lo que los demás ven de ti'],
       ['fondo', 'tema', 'Tu fondo', 'tu imagen, con el nivel 10 del Pase'],
     ]],
     ['TU GENTE', [
@@ -953,6 +954,10 @@ function Parte({ id, liga, dc, tema, onTema, temaSv, onTemaSv }) {
     return (
       <>
         <FotoCaja liga={liga} dc={dc} />
+        {/* 💬 tu frase entre comillas, debajo de tu nombre en tu perfil (la tanda 2 del perfil, 27/10/2026) */}
+        <Caja t="Tu frase" d={!dc ? 'Entra con Discord para escribirla.' : !dc.clave ? 'Primero necesitas estar verificado.' : 'Sale entre comillas debajo de tu nombre, en tu perfil.'}>
+          {dc && dc.clave ? <FraseEditor k={dc.clave} /> : !dc ? null : <a className="btn verde chico" href="#/cuenta/verificar">Verificarme</a>}
+        </Caja>
         <FotoCartaCaja dc={dc} />
         <RedesCaja dc={dc} />
         <VideosCaja dc={dc} />

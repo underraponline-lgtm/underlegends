@@ -122,10 +122,29 @@ def tipo_de_rol(nombre, perm, de_bot=False):
     return 'staff' if perm & PERM_STAFF else None
 
 
+#: 🏷️ LOS ROLES DE DRA QUE DICEN QUÉ ES CADA UNO (la tanda 2 del perfil, 27/10/2026: «el rol de DRA en el perfil»): los que
+#: se eligen al entrar —«🎤﹒Freestyler», «💞﹒ Fanatico»…—, en el orden en que se prefieren si tiene varios. «Competidor» no:
+#: eso ya lo dice la página (jugó en la temporada). La misma lista que `ROLES_DRA` de bot/avisos.js
+ROLES_DRA = ('Freestyler', 'M.C', 'Rapero', 'Artista', 'Productor', 'Fanático')
+_DRA_RX = (('Freestyler', r'freestyler'), ('M.C', r'm\.?\s?c'), ('Rapero', r'rapero'), ('Artista', r'artista'),
+           ('Productor', r'productor'), ('Fanático', r'fanatic[oa]'))
+
+
+def rol_dra(nombre):
+    """El rol de DRA que dice qué es alguien (`ROLES_DRA`), por el nombre del rol sin el adorno, o None."""
+    import unicodedata
+    n = ''.join(c for c in unicodedata.normalize('NFKD', str(nombre or '')) if not unicodedata.combining(c)).lower()
+    n = re.sub(r'^[^a-z0-9]*', '', n).strip()
+    for nombre_rol, rx in _DRA_RX:
+        if re.fullmatch(r'(?:%s)\W*' % rx, n):
+            return nombre_rol
+    return None
+
+
 def roles_por_servidor(s):
     """`{tipo: {did: [svs]}}` con 'organizador', 'jurado', 'host', 'staff' y 'socio' (el dueño), de los servidores de
     `GUILDS`. Un servidor que no contesta queda afuera (no frena nada)."""
-    out = {t: {} for t in ('organizador', 'jurado', 'host', 'staff', 'socio')}
+    out = {t: {} for t in ('organizador', 'jurado', 'host', 'staff', 'socio', 'dra')}
     for sv, gid in GUILDS:
         try:
             g = s.get('%s/guilds/%s' % (API, gid), timeout=30)
@@ -136,7 +155,7 @@ def roles_por_servidor(s):
             out['socio'].setdefault(str(g.json()['owner_id']), []).append(sv)
         if roles.status_code != 200:
             continue
-        tipo = {}
+        tipo, dra = {}, {}
         for r in roles.json() or []:
             if str(r.get('id')) == gid:                  # @everyone
                 continue
@@ -147,7 +166,14 @@ def roles_por_servidor(s):
             t = tipo_de_rol(r.get('name'), perm, de_bot=bool(r.get('managed') or (r.get('tags') or {}).get('bot_id')))
             if t:
                 tipo[str(r.get('id'))] = t
+            # 🏷️ y en DRA, el rol que eligió cada uno al entrar (Freestyler, Rapero…): va a su perfil (`rol_dra()`)
+            rd = rol_dra(r.get('name')) if sv == 'DRA' else None
+            if rd:
+                dra[str(r.get('id'))] = rd
         for did, rs in (_ROLES_DE.get(gid) or {}).items():
+            ds = sorted({dra[x] for x in map(str, rs) if x in dra}, key=ROLES_DRA.index)
+            if ds:
+                out['dra'][did] = ds
             for t in {tipo[x] for x in map(str, rs) if x in tipo}:
                 lst = out[t].setdefault(did, [])
                 if sv not in lst:

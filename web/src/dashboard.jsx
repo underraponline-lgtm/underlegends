@@ -2530,6 +2530,8 @@ function Reportes({ rep, liga, alCambiar, corrige = true }) {
                   hermanos={lista.filter((x) => x.id !== r.id && x.llave === r.llave && (x.estado === '' || x.estado === 'no_pude'))} />) : (
                 <div className="cu-btns">
                   {corrige && (/^\d+$/.test(r.llave) || String(r.llave).startsWith('liga:')) ? <button type="button" className="btn verde chico" onClick={() => setAbierto(r.id)}>{r.estado === 'corregir' ? 'Cambiar la corrección' : 'Corregir'}</button> : null}
+                  {/* 💬 un perfil reportado: su frase se puede quitar desde acá (la tanda 2 del perfil, 27/10/2026) */}
+                  {String(r.llave).startsWith('perfil:') ? <QuitarFrase k={String(r.llave).slice(7)} /> : null}
                   <button type="button" className="btn borde2 chico" disabled={msg[r.id] === '…'} onClick={() => cerrar(r, 'listo')}>Listo</button>
                   <button type="button" className="btn borde2 chico" disabled={msg[r.id] === '…'} onClick={() => cerrar(r, 'prueba')}>Era una prueba</button>
                   {msg[r.id] && msg[r.id] !== '…' ? <small role="status">{msg[r.id]}</small> : null}
@@ -2540,6 +2542,25 @@ function Reportes({ rep, liga, alCambiar, corrige = true }) {
       })}</ul>
     </div>
   );
+}
+
+// 💬 QUITAR LA FRASE DE UN PERFIL REPORTADO (la tanda 2 del perfil, 27/10/2026). La frase la escribe cada uno en su perfil;
+// esto la borra (`duenoFrase()` en avisos.js) y queda en el historial con quién lo hizo. Después la puede volver a escribir
+function QuitarFrase({ k }) {
+  const [est, setEst] = useState('');
+  const quitar = async () => {
+    setEst('…');
+    try {
+      const r = await fetch('/api/avisos/dueno/frase', { method: 'POST', credentials: 'same-origin', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ k }) });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || j.error) throw new Error(j.error || String(r.status));
+      setEst(j.quitadas ? 'Frase quitada' : 'No tenía frase');
+      window.dispatchEvent(new CustomEvent('lg:perfil-extra', { detail: k }));
+    } catch (e) { setEst('No se pudo: ' + e.message); }
+  };
+  return est && est !== '…' ? <small role="status">{est}</small>
+    : <button type="button" className="btn borde2 chico" disabled={est === '…'} onClick={quitar}>Quitar su frase</button>;
 }
 
 // 🖼️ LOS FONDOS PARA REVISAR (13/10/2026): la imagen que alguien subió como fondo no se ve hasta que la aprobás (hay

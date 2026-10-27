@@ -75,7 +75,12 @@ def armar(padron, pool, discord_roles, clave, dueno):
                 a[t] = list(svs)
         if fila and (fila.get('ev') or 0) >= 1:
             a['competidor'] = []
-        out.append({'k': k, 'n': x.get('full') or raw, 'id': did, 'a': a})
+        p = {'k': k, 'n': x.get('full') or raw, 'id': did, 'a': a}
+        # 🏷️ su rol de DRA (Freestyler, Rapero…: `servidores_de.rol_dra()`), el primero si tiene varios: va a su perfil
+        dra = (discord_roles.get('dra') or {}).get(did)
+        if dra:
+            p['dra'] = dra[0]
+        out.append(p)
     return out
 
 
@@ -122,9 +127,12 @@ def _self_check():
     pad = [{'raw': 'Konan', 'full': 'Konan 🇦🇷', 'discord_id': '1'}, {'raw': 'Org', 'full': 'Org 🇨🇱', 'discord_id': '2'},
            {'raw': 'Dlx', 'full': 'DLX 🇺🇸', 'discord_id': '9'}, {'raw': 'SinId', 'full': 'SinId'}]
     pool = [{'raw': 'Konan', 'cc': 'ar', 'discord_id': '1', 'ev': 4}, {'raw': 'Org', 'cc': 'cl', 'ev': 0}]
-    dr = {'organizador': {'2': ['FFA', 'DDF']}, 'staff': {'2': ['FFA']}, 'socio': {'9': ['DRA']}, 'jurado': {}}
+    dr = {'organizador': {'2': ['FFA', 'DDF']}, 'staff': {'2': ['FFA']}, 'socio': {'9': ['DRA']}, 'jurado': {},
+          'dra': {'1': ['Freestyler', 'Rapero']}}
     d = armar(pad, pool, dr, lambda p: p['raw'].lower(), '9')
     by = {x['n']: x for x in d}
+    ok(by['Konan 🇦🇷'].get('dra') == 'Freestyler' and 'dra' not in by['Org 🇨🇱'],
+       'el rol de DRA va aparte, el primero que tiene, y sólo a quien lo tiene')
     ok(len(d) == 3 and 'SinId' not in by, 'sólo la gente de la Lista con Discord ID')
     ok(by['Konan 🇦🇷']['a'] == {'competidor': []} and by['Konan 🇦🇷']['k'] == 'konan', 'jugó: Competidor, con su clave')
     ok(by['Org 🇨🇱']['a'] == {'organizador': ['FFA', 'DDF'], 'staff': ['FFA']}, 'el rol de cada servidor, con el servidor')
