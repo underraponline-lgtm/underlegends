@@ -35533,5 +35533,195 @@
     1250
    ]
   ]
+ },
+ "532": {
+  "dia": "2026-10-26",
+  "escala": "16+",
+  "fecha": "26/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1564481940592263259"
+  ],
+  "n": 532,
+  "nombre": "qcyo rapeen 4",
+  "participantes": 22,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "Six",
+       "Pipe",
+       "Agus"
+      ],
+      "yinn, Six",
+      "triple (4 bandas, pasan 2); también pasa: six"
+     ],
+     [
+      [
+       "Makmah",
+       "Zignos",
+       "Lautaro la sinceridad 🇨🇨",
+       "Dyzz",
+       "ANG"
+      ],
+      "Makmah, Zignos",
+      "triple (5 bandas, pasan 2); también pasa: Zignos"
+     ],
+     [
+      [
+       "Badterne",
+       "PRAISERIZA",
+       "PichulaMc",
+       "Andres",
+       "Jult"
+      ],
+      "Badterne, PRAISERIZA",
+      "triple (5 bandas, pasan 2); también pasa: praiseriza"
+     ],
+     [
+      [
+       "Zignos",
+       "Kyss",
+       "Parttttt🎅🏿",
+       "Erian",
+       "Trelok",
+       "Agus",
+       "PichulaMc"
+      ],
+      "Zignos, Kyss, Parttttt🎅🏿",
+      "triple (7 bandas, pasan 3); también pasa: kyss / Parttttt🎅🏿; Drafteado: Zignos"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn, Six",
+       "Provenza, Makmah"
+      ],
+      "yinn, Six",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA, Badterne",
+       "Kyss, Zignos"
+      ],
+      "PRAISERIZA, Badterne",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA, Badterne, Zignos",
+       "yinn, Six, Provenza"
+      ],
+      "PRAISERIZA, Badterne, Zignos",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Zignos",
+    "Campeón",
+    5958
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    5125
+   ],
+   [
+    "Agus",
+    "Cuartos",
+    3750
+   ],
+   [
+    "Badterne",
+    "Campeón",
+    3333
+   ],
+   [
+    "PRAISERIZA",
+    "Campeón",
+    3333
+   ],
+   [
+    "Kyss",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    2625
+   ],
+   [
+    "ANG",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Andres",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dyzz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Jult",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lautaro la sinceridad 🇨🇨",
+    "Cuartos",
+    2500
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Pipe",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Six",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Trelok",
+    "Cuartos",
+    2500
+   ],
+   [
+    "yinn",
+    "Subcampeón",
+    2500
+   ]
+  ]
  }
 }

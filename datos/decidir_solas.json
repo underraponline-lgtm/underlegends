@@ -3106,6 +3106,84 @@
     "GodfatherXoth = 1432915481651843195"
    ],
    "escribio": {}
+  },
+  {
+   "id": "54949dd3d1",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen 4 · FFA · 26/10 · #532",
+   "que": "¿Quién es «parttt🇧🇫»?",
+   "r": "Es Provenza",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Provenza: la llave lo escribe con su mención",
+   "t": 1793079182523,
+   "filas": [
+    908
+   ],
+   "variantes": [
+    "parttt🇧🇫"
+   ],
+   "escribio": {
+    "alias": [
+     "parttt",
+     "Provenza"
+    ],
+    "filas": [
+     321
+    ]
+   }
+  },
+  {
+   "id": "1bf7aa3db9",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen 4 · FFA · 26/10 · #532",
+   "que": "¿Quién es «parttt🇨🇨»?",
+   "r": "Es Provenza",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Provenza: la llave lo escribe con su mención",
+   "t": 1793079182523,
+   "filas": [
+    909
+   ],
+   "variantes": [
+    "parttt🇨🇨"
+   ],
+   "escribio": {
+    "alias": [
+     "parttt",
+     "Provenza"
+    ],
+    "filas": [
+     321
+    ]
+   }
+  },
+  {
+   "id": "fe6395fd9a",
+   "tipo": "Nombre desconocido",
+   "sec": "qcyo rapeen 4 · FFA · 26/10 · #532",
+   "que": "¿Quién es «ANG 🇺🇸»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1560897903042764943",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1560897903042764943)",
+   "t": 1793079182523,
+   "filas": [
+    906
+   ],
+   "variantes": [
+    "ANG 🇺🇸"
+   ],
+   "escribio": {
+    "alta": [
+     "ANG",
+     "1560897903042764943"
+    ]
+   }
   }
  ],
  "deshechas": []

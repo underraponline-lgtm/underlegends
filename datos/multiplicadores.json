@@ -871,6 +871,11 @@
    },
    "organizadores": [
     [
+     "NC",
+     18,
+     1
+    ],
+    [
      "Cu",
      13,
      1
@@ -878,12 +883,12 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 5
+     "FFA": 8
     },
     "gente": {
      "FDS": 13,
      "DDF": 12,
-     "FFA": 32
+     "FFA": 42
     },
     "gana": "FFA"
    },
@@ -892,7 +897,7 @@
     "DDF": 12,
     "DRA": 0,
     "FDS": 13,
-    "FFA": 32,
+    "FFA": 42,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,
