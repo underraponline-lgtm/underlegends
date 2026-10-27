@@ -3051,8 +3051,22 @@ def _competencias_web(pool=None):
         'proxima': c.get('proxima') or [],
         'equipo': t(c.get('equipo')),
         'jur': jur,
+        # 💰 los premios (Dlx, 27/10/2026): cuánto paga cada cosa, y quién cobró en el último cierre (el libro entero se
+        # queda en el repo: va al objeto por `precios.py`, no a la página)
+        'premios': _premios_web(c, K),
         'n': nombres,
     }
+
+
+def _premios_web(c, K):
+    """💰 `{m: montos, u: [[clave, monto, motivo], …]}`: lo que paga cada competencia y quiénes cobraron en el cierre más
+    reciente (la semana o la temporada de ligas que terminó última). `None` sin montos."""
+    if not c.get('montos'):
+        return None
+    lib = c.get('premios') or {}
+    ult = max((x[3] for x in lib.values()), default=0)
+    u = sorted(([K(x[0]), x[1], x[2]] for x in lib.values() if x[3] == ult), key=lambda x: (-x[1], x[2], x[0]))
+    return {'m': c['montos'], 'u': u[:40]}
 
 
 def _semanas_de(gente):

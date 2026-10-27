@@ -239,7 +239,7 @@ def tienda_mw(mw, dids):
     return out
 
 
-def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None, wr=None, mes=None):
+def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None, wr=None, mes=None, comp=None):
     """Lo que lee el objeto: `{v, r: {id: {e, t, por: [[discord_id, parte]]}}, mw: {…}, jugo, rcfg}`.
 
     Sólo lo resuelto (cazado o devuelto). Quien cazó sin Discord conocido no
@@ -264,7 +264,8 @@ def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None, wr
             r[str(x['id'])] = {'e': 'devuelto', 'por': []}
     m = tienda_mw(mw, dids) if mw is not None else {}
     v = hashlib.sha1(json.dumps([r, m, jugo, rcfg, div] + ([deb] if deb is not None else [])
-                                + ([wr] if wr is not None else []) + ([mes] if mes else []), sort_keys=True,
+                                + ([wr] if wr is not None else []) + ([mes] if mes else [])
+                                + ([comp] if comp else []), sort_keys=True,
                                 ensure_ascii=False).encode()).hexdigest()[:16]
     out = {'v': v, 'r': r, 'mw': m}
     if jugo is not None:
@@ -284,6 +285,9 @@ def para_objeto(res, dids, mw=None, jugo=None, rcfg=None, div=None, deb=None, wr
     # REEMPLAZA (`mes:`), como el Writing
     if mes is not None:
         out['mes'] = mes
+    # 💰 y los premios de Competencias (`competencias.tienda()`): el libro entero y se REEMPLAZA (`comp:`)
+    if comp is not None:
+        out['comp'] = comp
     return out
 
 
@@ -362,8 +366,15 @@ def correr(ahora=None, aplicar=False, precios=None, datos=None):
         except Exception as e:                           # noqa: BLE001
             print('   ⚠️ los MES AWARDS no viajan esta vez: %s' % str(e)[:80])
             mes = None
+        # 💰 los premios de Competencias (`bot/competencias.py`, Dlx 27/10/2026): el libro entero, sin su archivo no viaja
+        try:
+            import competencias as CO
+            comp = CO.tienda(CO.leer(), dids) if CO.leer().get('montos') else None
+        except Exception as e:                           # noqa: BLE001
+            print('   ⚠️ los premios de Competencias no viajan esta vez: %s' % str(e)[:80])
+            comp = None
         _subir(para_objeto(res, dids, MW.leer(), RA.jugo(evs, dids, o), RA.config(o, MU.temporada_actual(ahora)),
-                           DV.tienda(DV.leer(), dids), DB.tienda(DB._leer()), wr, mes),
+                           DV.tienda(DV.leer(), dids), DB.tienda(DB._leer()), wr, mes, comp),
                CLAVE_RES, 'lo cazado, lo devuelto, el MW, los días jugados, las divisiones, los debuts y el Writing')
     return out
 

@@ -11667,6 +11667,11 @@ export class Avisos {
     if (r.mes && typeof r.mes === 'object') {
       cambios += this.tiendaIgualar('mes:', r.mes, ahora);
     }
+    // 💰 LOS PREMIOS DE COMPETENCIAS (`bot/competencias.py`, Dlx 27/10/2026): ligas, Copa, Rapid y mini eventos. El libro
+    // entero, y se REEMPLAZA, como los MES AWARDS
+    if (r.comp && typeof r.comp === 'object') {
+      cambios += this.tiendaIgualar('comp:', r.comp, ahora);
+    }
     // 🔥 LA RACHA: los números y quién jugó qué días (`bot/racha.py`). Lo de la temporada en curso llega ENTERO y se
     // reemplaza (sólo esa temporada); los días se suman, y uno que ya contó no se borra
     if (r.rcfg && typeof r.rcfg === 'object') this.guardar('racha_cfg', r.rcfg);

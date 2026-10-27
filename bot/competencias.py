@@ -33,6 +33,17 @@ LAS REGLAS
 - **🎲 Mini eventos**: `MINI` por semana, sorteados del `CATALOGO` con la semana de semilla.
 - **⚖️ Jurados**: la ficha de cada uno sale de quién votó a quién (`datos/jurados.json`), y en las simuladas se sortean
   tres que votan según su ficha (`jurado_sim()`).
+- **💰 Premios** (Dlx, 27/10/2026, a las cuatro preguntas: «Moderado», «Poco, sólo el campeón», «Al menos 1 batalla
+  real»): en Puntos de Tienda. Las ligas, a los tres primeros de cada una al cerrar la temporada (`PREMIO_LIGA`); la
+  Copa al campeón y al finalista, la Rapid y cada mini evento al campeón, al cerrar la semana. **Sólo cobra quien jugó al
+  menos una batalla DE VERDAD en esa competencia**: nadie gana un premio entero con simulaciones (`jugo_real()`).
+
+💰 EL LIBRO DE PREMIOS NO SE PIERDE. `competencias.json` se rehace entero en cada corrida y sólo tiene la semana en curso,
+así que lo que se cobra va a `premios` (`{clave: [quien, monto, motivo, ms]}`), que cada corrida copia de la anterior y
+nunca borra. La semana que terminó se cierra UNA vez, en la primera corrida de la siguiente, rehaciendo sus llaves con
+`ahora` = su cierre (`cerrar_semana()`, con las llaves que ya estaban armadas); la temporada de ligas, en el mismo paso
+en que `ligas()` arma la que viene. La clave dice qué se pagó (`liga:1:oro-1:1`, `copa:2026-11-02:A:1`), así que volver
+a cerrar lo mismo no paga dos veces. Lo manda al objeto `precios.py` (`tienda()`), con el prefijo `comp:`.
 
 ⚖️ LA SIMULACIÓN ES REPETIBLE Y EXPLICABLE. La fuerza de cada uno es su ELO (`bot/elo.py`) AL ARRANQUE de la semana
 —el de la temporada de ligas, para las ligas—, así no cambia a mitad de semana. La probabilidad de que A le gane a B es
@@ -82,6 +93,13 @@ CUPO = {'oro': 10, 'plata': 20, 'bronce': 40}
 SUBEN = BAJAN = 2
 JORNADAS = 9
 TEMP_SEMANAS = 3
+#: 💰 los premios en Puntos de Tienda (Dlx, 27/10/2026): las ligas, 1.º · 2.º · 3.º de cada una al cerrar la temporada
+PREMIO_LIGA = {'elite': (2500, 1500, 1000), 'oro': (1500, 1000, 600), 'plata': (1000, 600, 400),
+               'bronce': (700, 400, 250), 'ascenso': (500, 300, 150)}
+#: la Copa (campeón, finalista), la Rapid y cada mini evento (el campeón), al cerrar la semana
+PREMIO_COPA = (500, 250)
+PREMIO_RAPID = 300
+PREMIO_MINI = 300
 #: los cierres de cada semana, en días desde el lunes: miércoles, viernes y el lunes siguiente
 CORTES = (2, 4, 7)
 #: cuántos mini eventos abiertos por semana
@@ -391,9 +409,18 @@ def ligas(viejo, llaves, ahora):
         fz = fuerzas(llaves, desde)
         grupos = armar_grupos(sorted(act, key=lambda k: (-fz.get(k, SIN_ELO), k)))
         elite, temp = elite_de(act), 1
+    cerradas = []
     while ahora >= dias_despues(desde, 7 * TEMP_SEMANAS):
-        tablas = {g['id']: jugar_liga(g['gente'], desde, llaves, fz, desde + dt.timedelta(days=99), 'liga', temp, g['id'])[1]
-                  for g in grupos}
+        final = desde + dt.timedelta(days=99)
+        jugadas = {g['id']: jugar_liga(g['gente'], desde, llaves, fz, final, 'liga', temp, g['id']) for g in grupos}
+        tablas = {k: v[1] for k, v in jugadas.items()}
+        # 💰 la tabla final de la temporada que termina, para los premios (`premios_liga()`)
+        c = {'temp': temp, 'fin': dias_despues(desde, 7 * TEMP_SEMANAS).isoformat(),
+             'grupos': [dict(id=g['id'], nivel=g['nivel'], jornadas=jugadas[g['id']][0], tabla=tablas[g['id']]) for g in grupos]}
+        if len(elite) >= 4:
+            js, t = jugar_liga(elite, desde, llaves, fz, final, 'elite', temp)
+            c['elite'] = {'jornadas': js, 'tabla': t}
+        cerradas.append(c)
         desde = dias_despues(desde, 7 * TEMP_SEMANAS)
         act = set(jugaron(llaves, desde - dt.timedelta(days=ACTIVO_DIAS), desde))
         grupos = armar_grupos(mover(grupos, tablas, act, fz))
@@ -403,6 +430,8 @@ def ligas(viejo, llaves, ahora):
            'cierres': [c.isoformat() for c in cierres(desde)],
            'jornada': min(JORNADAS, 1 + sum(1 for c in cierres(desde) if ahora >= c)),
            'grupos': [], 'elite': elite}
+    if cerradas:
+        out['cerradas'] = cerradas
     for g in grupos:
         js, t = jugar_liga(g['gente'], desde, llaves, fz, ahora, 'liga', temp, g['id'])
         out['grupos'].append(dict(g, jornadas=js, tabla=t))
@@ -670,6 +699,125 @@ def jurado_sim(m, jueces, J, *semilla):
     return dict(m, j=[[q, otro if q == contra else g] for q in tres])
 
 
+# ── 💰 los premios ────────────────────────────────────────────────────────────────────────────────────────────────
+
+def jugo_real(quien, partidos):
+    """¿Jugó `quien` al menos una de estas batallas de verdad? (Dlx, 27/10/2026: «al menos 1 batalla real»)."""
+    return any(m.get('como') == 'real' and quien in (m.get('a'), m.get('b')) for m in partidos or ())
+
+
+def _ms(iso):
+    return int(dt.datetime.fromisoformat(iso).timestamp() * 1000)
+
+
+def premios_liga(c):
+    """`{clave: [quien, monto, motivo, ms]}` de una temporada de ligas cerrada (`ligas()['cerradas']`): los tres
+    primeros de cada liga y de la Élite, si jugaron alguna de verdad."""
+    out = {}
+    grupos = [(g['id'], g['nivel'], g['jornadas'], g['tabla']) for g in c.get('grupos') or []]
+    if c.get('elite'):
+        grupos.append(('elite', 'elite', c['elite']['jornadas'], c['elite']['tabla']))
+    nombre = {'elite': 'Élite', 'oro': 'Oro', 'plata': 'Plata', 'bronce': 'Bronce', 'ascenso': 'Ascenso'}
+    for gid, nivel, js, t in grupos:
+        todos = [m for j in js for m in j.get('partidos') or ()]
+        for pos, fila in enumerate(t[:3], 1):
+            monto = (PREMIO_LIGA.get(nivel) or (0, 0, 0))[pos - 1]
+            if monto and fila[3] > 0 and jugo_real(fila[0], todos):
+                out['liga:%s:%s:%d' % (c['temp'], gid, pos)] = [fila[0], monto, 'Liga %s · %d.º' % (nombre[nivel], pos),
+                                                               _ms(c['fin'])]
+    return out
+
+
+def premios_semana(sid, fin, copas, rapids_, minis, sumaron=None):
+    """`{clave: [quien, monto, motivo, ms]}` de una semana cerrada: la Copa (campeón y finalista), la Rapid y los mini
+    eventos (el campeón), cada uno sólo si jugó alguna de esa competencia de verdad. En Dúos y Pandillas, que se ganan
+    con los puntos de los eventos, cobra el integrante que sumó esa semana (`sumaron`): el que no jugó no cobra por su
+    equipo."""
+    out, ms = {}, _ms(fin)
+
+    def poner(clave, quien, monto, motivo):
+        if quien and monto:
+            out[clave] = [quien, monto, motivo, ms]
+    for i, r in enumerate(copas or []):
+        todos = [m for rd in r['rondas'] for m in rd['partidos']]
+        fin_ = (r['rondas'][-1]['partidos'] or [{}])[0] if r.get('rondas') else {}
+        g = r.get('campeon') or ''
+        segundo = next((x for x in (fin_.get('a'), fin_.get('b')) if x and x != g), '') if g else ''
+        for pos, q in ((1, g), (2, segundo)):
+            if q and jugo_real(q, todos):
+                poner('copa:%s:%s:%d' % (sid, r.get('id', i), pos), q, PREMIO_COPA[pos - 1],
+                      'Copa %s · %s' % (r.get('id', ''), 'campeón' if pos == 1 else 'finalista'))
+    for r in rapids_ or []:
+        g = r.get('campeon') or ''
+        if g and jugo_real(g, [m for rd in r['rondas'] for m in rd['partidos']]):
+            poner('rapid:%s:%s' % (sid, r.get('id')), g, PREMIO_RAPID, 'Rapid %s · campeón' % r.get('id'))
+    for x in minis or []:
+        i, nom = x.get('id'), x.get('nombre') or x.get('id')
+        if i in ('derbi', 'paises') and x.get('score') and x['score'][0] != x['score'][1]:
+            lado = 'a' if x['score'][0] > x['score'][1] else 'b'
+            for m in x.get('partidos') or []:
+                if m.get('como') == 'real':
+                    poner('mini:%s:%s:%s' % (sid, i, m[lado]), m[lado], PREMIO_MINI, '%s · ganó su bando' % nom)
+        elif i == 'supercopa' and (x.get('partido') or {}).get('como') == 'real':
+            g = x['partido'].get('g')
+            poner('mini:%s:%s:%s' % (sid, i, g), g, PREMIO_MINI, '%s · campeón' % nom)
+        elif i in ('duos', 'pandillas') and x.get('tabla') and x['tabla'][0][1] > 0:
+            for q in x['tabla'][0][0]:
+                if sumaron is not None and q not in sumaron:
+                    continue
+                poner('mini:%s:%s:%s' % (sid, i, q), q, PREMIO_MINI, '%s · ganó su equipo' % nom)
+        elif i == 'rey' and x.get('rey') and (len(x.get('reyes') or []) > 1 or x.get('defensas')):
+            poner('mini:%s:%s:%s' % (sid, i, x['rey']), x['rey'], PREMIO_MINI, '%s · terminó la semana con la corona' % nom)
+        elif i == 'revancha':
+            for g, _p in x.get('hechas') or []:
+                poner('mini:%s:%s:%s' % (sid, i, g), g, PREMIO_MINI, '%s · se cobró la revancha' % nom)
+        elif i == 'racha' and x.get('tabla') and x['tabla'][0][1] >= 2:
+            q = x['tabla'][0][0]
+            poner('mini:%s:%s:%s' % (sid, i, q), q, PREMIO_MINI, '%s · la mejor racha' % nom)
+        elif i == 'novatos' and x.get('campeon'):
+            g = x['campeon']
+            if jugo_real(g, [m for rd in x.get('rondas') or [] for m in rd['partidos']]):
+                poner('mini:%s:%s:%s' % (sid, i, g), g, PREMIO_MINI, '%s · campeón' % nom)
+    return out
+
+
+def cerrar_semana(viejo, llaves):
+    """💰 Los premios de la semana de `viejo` (el `competencias.json` de la corrida anterior), con todas sus ventanas
+    cerradas: se rehacen sus llaves con `ahora` = su cierre, sobre las que ya estaban armadas (`armadas()`), así lo que
+    se paga es lo mismo que se vio."""
+    sid = str(viejo.get('sem') or '')
+    try:
+        ini, fin = dt.datetime.fromisoformat(viejo['ini']), dt.datetime.fromisoformat(viejo['fin'])
+    except (KeyError, TypeError, ValueError):
+        return {}
+    ahora = fin + dt.timedelta(seconds=1)
+    fz = fuerzas(llaves, ini)
+    activos = set(jugaron(llaves, ini - dt.timedelta(days=ACTIVO_DIAS), ini))
+    cp = copa(activos, {}, fz, ini, fin, llaves, ahora, sid, armadas(viejo, sid, 'copa'))
+    rp = rapids(activos, ini, fin, llaves, fz, ahora, sid, armadas(viejo, sid, 'rapid'))
+    mini, _p = mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, viejo.get('ligas') or {})
+    sumaron = {k for k, v in puntos_semana(llaves, ini, fin).items() if v > 0}
+    return premios_semana(sid, viejo['fin'], cp, rp, mini, sumaron)
+
+
+def leer():
+    """`datos/competencias.json`, o `{}`."""
+    return _j('datos', 'competencias.json', defecto={}) or {}
+
+
+def tienda(d, dids):
+    """`{clave: [discord_id, puntos, ms]}` del libro de premios, para el objeto (como `divisiones.tienda()`): entero en
+    cada corrida, y el objeto lo REEMPLAZA (`comp:`). `dids` es `{rapero: discord_id}` (`precios.discords()`); quien no
+    tiene Discord todavía no va: le llega cuando se sepa."""
+    por = {norm(r): did for r, did in (dids or {}).items()}
+    out = {}
+    for k, x in ((d or {}).get('premios') or {}).items():
+        did = por.get(x[0])
+        if did and x[1] > 0:
+            out[k] = [did, int(x[1]), int(x[3])]
+    return out
+
+
 # ── todo junto ────────────────────────────────────────────────────────────────────────────────────────────────────
 
 _SIMS = ('copa', 'grupos', 'elite', 'rapid', 'mini')
@@ -707,6 +855,12 @@ def calcular(ahora=None, llaves=None, notas=None, viejo=None):
     niveles = {norm(k): v for k, v in ((_j('datos', 'divisiones.json', defecto={}) or {}).get('nivel') or {}).items()}
     reales = cruces(llaves, ini, fin)
     L = ligas(viejo.get('ligas'), llaves, ahora)
+    # 💰 el libro de premios: lo de antes, más la temporada de ligas y la semana que se acaban de cerrar
+    premios = dict(viejo.get('premios') or {})
+    for c in L.pop('cerradas', None) or []:
+        premios.update(premios_liga(c))
+    if viejo.get('sem') and str(viejo.get('sem')) < sid:
+        premios.update(cerrar_semana(viejo, llaves))
     mini, pronto = mini_eventos(sid, ini, fin, activos, llaves, fz, ahora, L)
     J = jurados(fz)
     jueces = sorted(q for q, s in J.items() if s['votos'] >= 3)
@@ -727,11 +881,35 @@ def calcular(ahora=None, llaves=None, notas=None, viejo=None):
         'proxima': proxima_semana(str(MU.periodo(fin + dt.timedelta(hours=1))[0]), mini),
         'equipo': equipo_semana(llaves, notas, ini, fin),
         'jurados': J,
+        'premios': premios,
+        'montos': {'liga': PREMIO_LIGA, 'copa': list(PREMIO_COPA), 'rapid': PREMIO_RAPID, 'mini': PREMIO_MINI},
     }
     _con_jurado(res, jueces, J)
     usados = set(activos) | {k for g in L['grupos'] for k in g['gente']} | set(L.get('elite') or [])
     res['nombres'] = {k: nombres.get(k, k) for k in usados | {k for k, *_x in res['equipo']}}
     return res
+
+
+def _self_check_premios(ok):
+    real = lambda a, b, g: {'a': a, 'b': b, 'g': g, 'como': 'real', 'p': .5}   # noqa: E731
+    sim = lambda a, b, g: {'a': a, 'b': b, 'g': g, 'como': 'sim', 'p': .5}     # noqa: E731
+    c = {'temp': 1, 'fin': '2026-11-16T16:00:00+00:00',
+         'grupos': [{'id': 'oro-1', 'nivel': 'oro', 'jornadas': [{'partidos': [real('a', 'b', 'a'), sim('c', 'd', 'c')]}],
+                     'tabla': [['a', 1, 1, 3], ['c', 1, 1, 3], ['b', 1, 0, 0], ['d', 1, 0, 0]]}]}
+    pl = premios_liga(c)
+    ok(pl.get('liga:1:oro-1:1', [0, 0])[:2] == ['a', PREMIO_LIGA['oro'][0]] and 'liga:1:oro-1:2' not in pl
+       and 'liga:1:oro-1:3' not in pl,
+       'ligas: cobra el 1.º de Oro (jugó de verdad); el 2.º no (todo simulado) ni el 3.º (sin puntos)')
+    copa_ = {'id': 'A', 'campeon': 'a', 'rondas': [{'partidos': [real('a', 'c', 'a'), sim('b', 'd', 'b')]},
+                                                   {'partidos': [sim('a', 'b', 'a')]}]}
+    ps = premios_semana('s', '2026-11-02T16:00:00+00:00', [copa_], [], [
+        {'id': 'pandillas', 'nombre': 'Pandillas', 'tabla': [[['a', 'z'], 900]]}], sumaron={'a'})
+    ok(ps.get('copa:s:A:1', [0, 0])[1] == PREMIO_COPA[0] and 'copa:s:A:2' not in ps,
+       'Copa: el campeón cobra (jugó una de verdad), el finalista con todo simulado no')
+    ok('mini:s:pandillas:a' in ps and 'mini:s:pandillas:z' not in ps,
+       'Pandillas: cobra el integrante que sumó esa semana, no el que no jugó')
+    ok(tienda({'premios': ps}, {'A 🇦🇷': '123456'}).get('copa:s:A:1', [0])[0] == '123456',
+       'al objeto, con el Discord de cada uno')
 
 
 def _self_check():
@@ -743,6 +921,7 @@ def _self_check():
         print('   %s %s' % ('✅' if c else '🔴', t))
 
     print('\n══ LAS COMPETENCIAS ══\n')
+    _self_check_premios(ok)
     fz = {'a': 70, 'b': 40, 'c': 55, 'd': 30}
     ok(abs(prob(1000, 1000) - 0.5) < 1e-9 and 0.75 < prob(1200, 1000) < 0.77, 'la probabilidad: pareja 50 %, 200 de ELO de diferencia ~76 %')
     s1 = simular('a', 'b', 1240, 1000, 'sem', 'x')

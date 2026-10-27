@@ -82,6 +82,10 @@ COLOR_PIEDRA = ('#B07CFF', '#56C8F0', '#D7263D', '#2F6FDB', '#2FAE7A', '#8A8F98'
 SUBS = ('I', 'II', 'III')
 #: llegar por primera vez a un subnivel (Jade I → Jade II) paga esto; a una piedra nueva, `PREMIO` (Dlx: «sí, un poco»)
 PREMIO_SUB = 150
+#: 💎 EL PREMIO DE FIN DE TEMPORADA (Dlx, 27/10/2026: «Escalonado»): según la piedra MÁS ALTA a la que llegaste en la
+#: temporada (`mejor`, no donde terminaste: como el Ranked de Brawl), de Hierro a Mítico. Se paga una vez, cuando la
+#: temporada termina (`comun/temporada.py`), y trae la insignia de esa piedra (`bot/insignias.py`)
+PREMIO_FIN = (0, 300, 600, 1000, 2000, 3500)
 
 SALIDA = os.path.join(BASE, 'datos', 'divisiones.json')
 
@@ -358,7 +362,27 @@ def leer(ruta=None):
         return {}
 
 
-def tienda(d, dids):
+def fin_temporada(cual=None):
+    """El instante en que termina la temporada (la medianoche ET del día después del último), o `None` si no se sabe."""
+    import datetime as _dt
+    from comun import temporada as T
+    f = T.FECHAS.get(cual or T.ACTUAL)
+    if not f:
+        return None
+    return T._medianoche_et((_dt.date.fromisoformat(f[1]) + _dt.timedelta(days=1)).isoformat())
+
+
+def piedra_fin(d, ahora=None):
+    """`{quien: piedra}` (0 Hierro … 5 Mítico, de abajo arriba) de la temporada que TERMINÓ; `{}` antes de que termine.
+    Sale de `mejor`, el escalón más alto: el que llegó a Mítico y cayó a Diamante cobra Mítico."""
+    fin = fin_temporada()
+    ahora = ahora or dt.datetime.now(dt.timezone.utc)
+    if fin is None or ahora < fin:
+        return {}
+    return {q: min(len(PIEDRAS) - 1, int(e) // 3) for q, e in ((d or {}).get('mejor') or {}).items()}
+
+
+def tienda(d, dids, ahora=None):
     """`{id: [discord_id, puntos, ms]}`: lo que paga cada subida, para el objeto (como `precios.tienda_mw()`).
 
     Se manda entero en cada corrida y el objeto lo reemplaza entero: una llave corregida cambia quién subió.
@@ -388,6 +412,13 @@ def tienda(d, dids):
             continue
         fin = MU.periodo(ini)[2]
         out['%s:%s:%d%d' % (sem, quien, div, s)] = [did, PREMIO_SUB, int(fin.timestamp() * 1000)]
+    # 💎 el premio de fin de temporada, según la piedra más alta (`PREMIO_FIN`), una vez y recién al terminar
+    from comun.temporada import ACTUAL
+    ft = fin_temporada()
+    for quien, p in piedra_fin(d, ahora).items():
+        did, monto = dids.get(quien), PREMIO_FIN[p]
+        if did and monto and ft:
+            out['fin:%s:%s' % (ACTUAL, quien)] = [did, monto, int(ft.timestamp() * 1000)]
     return out
 
 
@@ -462,6 +493,13 @@ def _self_check():
        'un último grupo chico se suma al anterior, sin repetir a nadie')
     t = tienda({'subidas': [['2026-10-05', 'p00', 4], ['2026-10-05', 'nadie', 4]]}, {'p00': '111'})
     ok(list(t) == ['2026-10-05:p00'] and t['2026-10-05:p00'][:2] == ['111', PREMIO], 'subir paga, a quien tiene Discord')
+    # 💎 el premio de fin de temporada: por la piedra más alta, y recién cuando termina
+    fin_t = fin_temporada()
+    dm = {'mejor': {'m': 16, 'h': 1, 'z': 7}}
+    ok(not piedra_fin(dm, fin_t - dt.timedelta(minutes=1)), 'antes de que termine la temporada, no paga nada')
+    tf = tienda(dm, {'m': '1', 'h': '2', 'z': '3'}, fin_t + dt.timedelta(minutes=1))
+    ok(tf.get('fin:t1:m', [0, 0])[1] == PREMIO_FIN[5] and tf.get('fin:t1:z', [0, 0])[1] == PREMIO_FIN[2]
+       and 'fin:t1:h' not in tf, 'al terminar: Mítico 3.500, Zafiro 600, Hierro nada (paga 0)')
     # 📈 por ELO: dos semanas cerradas y la de ahora
     ok(tramo(1200) == 0 and tramo(1150) == 0 and tramo(1149) == 1 and tramo(999) == 4 and tramo(800) == ENTRADA,
        'el tramo: 1150 es Primera, 1149 Segunda, 999 Quinta, menos de 950 Sexta')

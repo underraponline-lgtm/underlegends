@@ -17,7 +17,14 @@ anotada (`--ver`): una nota sin porqué es un número que nadie discute y nadie 
     🔥 batacazo             ganarle a alguien bastante mejor rankeado: +0.3 a +0.9 según la distancia
     😬 tropiezo             perder con alguien bastante peor rankeado: −0.2 a −0.5 (salvo que ese día llegó a semis)
     🏆 el puesto            campeón +0.8, subcampeón +0.4, tercero +0.2
-    🗳️ los veredictos       (cuando se puedan leer por jurado: `veredictos_hist` del objeto, desde el 26/10/2026)
+    🗳️ los veredictos       con 2 jurados o más (`datos/jurados.json`): ganar unánime +0.2 y el que no se llevó ni un
+                            voto −0.1; ganar dividido no suma nada, y el que perdió con votos +0.2 («por la mínima»)
+
+🗳️ LOS VOTOS DE CADA JURADO (Dlx, 27/10/2026: «que los votos del jurado entren en las notas de cada batalla»). Un 3–0 y
+un 2–1 no son la misma batalla: el que pierde 2–1 estuvo ahí. El voto se cruza con la batalla de la llave por los
+NOMBRES de los lados (normalizados) y la FECHA (de un día antes a dos después del evento): `datos/jurados.json` no sabe
+de qué evento es cada batalla. Las de 3 a 5 MCs (FFA) cuentan igual, y desde esta versión también suman como batalla
+ganada o perdida (antes se salteaban).
 
 ⚠️ EL RANKING ES EL DE HOY, NO EL DE ESE DÍA. «Mejor rankeado» sale del pool de Temporada de ahora: para un evento de hace
 un mes, alguien que subió mucho después cuenta como fuerte desde antes. Es la versión 1; cuando haya historia de puestos por
@@ -50,6 +57,11 @@ BATACAZO_DESDE, BATACAZO_TOPE = 15, 0.9
 TROPIEZO_DESDE, TROPIEZO_TOPE = 30, -0.5
 #: lo que no fue una batalla de verdad, por la nota de la llave
 NO_PELEO = ('walk-in', 'sin batalla', 'pase libre', 'bye', 'no se presentó', 'no se presento')
+#: 🗳️ los veredictos: desde cuántos jurados cuentan, y lo que suman
+VOTOS_MIN = 2
+UNANIME, SIN_VOTOS, POR_LA_MINIMA = 0.2, -0.1, 0.2
+#: la ventana para cruzar un voto con un evento, en días desde el día del evento (ET)
+VOTO_ANTES, VOTO_DESPUES = 1, 2
 
 
 def _norm(s):
@@ -81,13 +93,58 @@ def puestos():
     return {_norm(x.get('raw') or ''): i + 1 for i, x in enumerate(orden) if x.get('raw')}
 
 
+def indice_votos(J=None):
+    """🗳️ `{frozenset(lados normalizados): [(día ET, {lado normalizado: votos})]}` de `datos/jurados.json`."""
+    import datetime as dt
+    if J is None:
+        try:
+            with io.open(os.path.join(BASE, 'datos', 'jurados.json'), encoding='utf-8') as f:
+                J = json.load(f)
+        except (OSError, ValueError):
+            return {}
+    out = {}
+    for b in (J.get('votos') or {}).values():
+        lados = b.get('lados') or [b.get('a') or '', b.get('b') or '']
+        ns = [_norm(x) for x in lados]
+        if len(ns) < 2 or not all(ns) or len(set(ns)) != len(ns):
+            continue
+        cuenta = {}
+        for x in (b.get('v') or {}).values():
+            n = ns[0] if x == 'a' else ns[1] if x == 'b' else _norm(x)
+            if n in ns:
+                cuenta[n] = cuenta.get(n, 0) + 1
+        try:
+            # el día en el este (UTC−4/−5): con −4 alcanza, la ventana es de días
+            dia = (dt.datetime.fromtimestamp(int(b['pub']) / 1000, dt.timezone.utc) - dt.timedelta(hours=4)).date()
+        except (KeyError, TypeError, ValueError, OSError):
+            continue
+        if cuenta:
+            out.setdefault(frozenset(ns), []).append((dia, cuenta))
+    return out
+
+
+def veredicto(votos, lados, dia):
+    """`{lado normalizado: votos}` de esa batalla, o `None` si no hay votos de jurado que se le puedan atribuir."""
+    import datetime as dt
+    if not votos or not dia:
+        return None
+    try:
+        d0 = dt.date.fromisoformat(dia)
+    except ValueError:
+        return None
+    cand = [c for d, c in votos.get(frozenset(_norm(x) for x in lados)) or ()
+            if -VOTO_ANTES <= (d - d0).days <= VOTO_DESPUES]
+    return cand[-1] if cand else None
+
+
 def _distancia(pg, pp):
     """Cuántos puestos más arriba estaba el que perdió (positivo = batacazo). `None` si no se sabe de alguno."""
     return None if pg is None or pp is None else pg - pp
 
 
-def nota_evento(ev, pos):
-    """`{nombre: {'nota': x, 'por': [(razón, delta), …]}}` y el MVP de un evento de `llaves_t1.json`."""
+def nota_evento(ev, pos, votos=None):
+    """`{nombre: {'nota': x, 'por': [(razón, delta), …]}}` y el MVP de un evento de `llaves_t1.json`. `votos`, el índice
+    de `indice_votos()`: sin él, la nota es la de antes (sin veredictos)."""
     out = {}
 
     def anotar(n, razon, d):
@@ -109,15 +166,35 @@ def nota_evento(ev, pos):
                 lados, gana, nota = b[0], b[1], str(b[2] or '').lower()
             except (IndexError, TypeError):
                 continue
-            if not gana or not isinstance(lados, list) or len(lados) != 2 or any(x in nota for x in NO_PELEO):
+            if not gana or not isinstance(lados, list) or len(lados) < 2 or gana not in lados \
+                    or any(x in nota for x in NO_PELEO):
                 continue
-            pierde = lados[1] if lados[0] == gana else lados[0]
-            if not pierde or pierde == gana:
+            pierden = [x for x in lados if x and x != gana]
+            if not pierden:
                 continue
             for p in personas(gana):
                 anotar(p, 'ganó en %s' % (rd.get('r') or 'la llave'), GANA + extra)
-            for p in personas(pierde):
-                anotar(p, 'perdió en %s' % (rd.get('r') or 'la llave'), PIERDE)
+            for x in pierden:
+                for p in personas(x):
+                    anotar(p, 'perdió en %s' % (rd.get('r') or 'la llave'), PIERDE)
+            # 🗳️ cómo votó el jurado
+            vs = veredicto(votos, lados, ev.get('dia'))
+            if vs and sum(vs.values()) >= VOTOS_MIN and vs.get(_norm(gana), 0) * 2 > sum(vs.values()):
+                tot, vg = sum(vs.values()), vs.get(_norm(gana), 0)
+                if vg == tot:
+                    for p in personas(gana):
+                        anotar(p, '🗳️ unánime %d–0' % tot, UNANIME)
+                for x in pierden:
+                    vx = vs.get(_norm(x), 0)
+                    for p in personas(x):
+                        if vx:
+                            anotar(p, '🗳️ perdió %d–%d%s' % (vg, vx, ', por la mínima' if vg - vx == 1 else ''),
+                                   POR_LA_MINIMA)
+                        elif vg == tot:
+                            anotar(p, '🗳️ ningún voto', SIN_VOTOS)
+            if len(lados) != 2:
+                continue
+            pierde = pierden[0]
             if es_equipo(gana) or es_equipo(pierde):
                 continue
             dist = _distancia(pos.get(_norm(gana)), pos.get(_norm(pierde)))
@@ -132,15 +209,16 @@ def nota_evento(ev, pos):
     return out, mvp
 
 
-def calcular(llaves=None, pos=None):
+def calcular(llaves=None, pos=None, votos=None):
     """`{n: {'mvp': nombre, 'notas': {nombre: nota}}}` de todos los eventos."""
     if llaves is None:
         with io.open(os.path.join(BASE, 'datos', 'llaves_t1.json'), encoding='utf-8') as f:
             llaves = json.load(f)
     pos = puestos() if pos is None else pos
+    votos = indice_votos() if votos is None else votos
     res = {}
     for n, ev in llaves.items():
-        notas, mvp = nota_evento(ev, pos)
+        notas, mvp = nota_evento(ev, pos, votos)
         if notas:
             res[str(n)] = {'mvp': mvp, 'notas': {k: v['nota'] for k, v in notas.items()}}
     return res
@@ -173,6 +251,26 @@ def _self_check():
     ok(set(eq) == {'a', 'b', 'c', 'd'} and eq['a']['nota'] == eq['b']['nota'] > eq['c']['nota'] and mvp_eq in ('a', 'b')
        and not any('batacazo' in r for r, _d in eq['a']['por']),
        'por equipos: cada integrante con la nota de su equipo, la pareja campeona arriba y sin batacazos entre parejas')
+    # 🗳️ los veredictos: 3–0, 2–1 y una de tres MCs
+    J = {'votos': {'1': {'a': 'A 🇦🇷', 'b': 'B', 'pub': 1792900000000, 'v': {'j1': 'a', 'j2': 'a', 'j3': 'a'}},
+                   '2': {'a': 'C', 'b': 'D', 'pub': 1792900000000, 'v': {'j1': 'a', 'j2': 'b', 'j3': 'a'}},
+                   '3:0': {'lados': ['E', 'F', 'G'], 'g': 'E', 'pub': 1792900000000,
+                           'v': {'j1': 'E', 'j2': 'G', 'j3': 'E'}}}}
+    vi = indice_votos(J)
+    import datetime as dt
+    dia = (dt.datetime.fromtimestamp(1792900000, dt.timezone.utc) - dt.timedelta(hours=4)).date().isoformat()
+    ev = {'dia': dia, 'tabla': [], 'rondas': [{'r': 'Octavos', 'b': [[['A', 'B'], 'A', ''], [['C', 'D'], 'C', ''],
+                                                                   [['E', 'F', 'G'], 'E', 'triple (3 bandas)']]}]}
+    nv, _m = nota_evento(ev, {}, vi)
+    sin, _m = nota_evento(ev, {})
+    ok(nv['A']['nota'] > sin['A']['nota'] and nv['B']['nota'] < sin['B']['nota'],
+       '3–0: el ganador suma por unánime y el que no se llevó ningún voto resta')
+    ok(nv['D']['nota'] > sin['D']['nota'] and nv['C']['nota'] == sin['C']['nota'],
+       '2–1: el que perdió con un voto suma («por la mínima»), el ganador no suma por eso')
+    ok(nv['G']['nota'] > nv['F']['nota'] and 'E' in sin and sin['F']['nota'] < 6.0,
+       'la de tres MCs cuenta como batalla, y G (con un voto) queda arriba de F (sin votos)')
+    lejos = dict(ev, dia='2026-01-01')
+    ok(nota_evento(lejos, {}, vi)[0]['A']['nota'] == sin['A']['nota'], 'un voto de otra fecha no se cruza con el evento')
     print('\n   %s' % ('todo bien' if not mal else '🔴 %d mal' % mal))
     return 1 if mal else 0
 
@@ -188,7 +286,7 @@ def main():
         if not ev:
             print('no hay evento #%s' % n)
             return 1
-        notas, mvp = nota_evento(ev, puestos())
+        notas, mvp = nota_evento(ev, puestos(), indice_votos())
         print('#%s %s · MVP: %s\n' % (n, ev.get('nombre', ''), mvp))
         for k, e in sorted(notas.items(), key=lambda x: -x[1]['nota']):
             print('  %4.1f  %-22s %s' % (e['nota'], k, ' · '.join('%s %+.1f' % (r, d) for r, d in e['por'])))

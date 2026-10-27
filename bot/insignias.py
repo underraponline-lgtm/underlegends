@@ -60,6 +60,14 @@ CATALOGO = (
     # 🏟️ las divisiones (04/10/2026, Dlx: «2. C»): subir da Puntos de Tienda y estas. Ver `bot/divisiones.py`
     ('ascenso', '⬆️', 'Ascenso', 'Subió de división al cerrar una semana'),
     ('primera', '🏟️', 'Primera División', 'Llegó a la Primera División'),
+    # 💎 el fin de temporada del Ranking ELO (27/10/2026, Dlx: «puntos de tienda e insignia»): la piedra más alta a la
+    # que llegó en la temporada, una por piedra. Ver `divisiones.piedra_fin()`
+    ('piedra_hierro', '⛓️', 'Hierro', 'Jugó el Ranking ELO de una temporada: su mejor piedra fue Hierro'),
+    ('piedra_jade', '🟢', 'Jade', 'Llegó a Jade en el Ranking ELO de una temporada'),
+    ('piedra_zafiro', '🔷', 'Zafiro', 'Llegó a Zafiro en el Ranking ELO de una temporada'),
+    ('piedra_rubi', '🔴', 'Rubí', 'Llegó a Rubí en el Ranking ELO de una temporada'),
+    ('piedra_diamante', '💠', 'Diamante', 'Llegó a Diamante en el Ranking ELO de una temporada'),
+    ('piedra_mitico', '🟣', 'Mítico', 'Llegó a Mítico en el Ranking ELO de una temporada'),
     # ✍️ el Writing Challenge de FFA (14/10/2026, Dlx: «cuenta para la Liga… y insignia»). Ver `bot/writing.py`
     ('pluma_oro', '✍️', 'Pluma de oro', 'Ganó una fecha del Writing Challenge'),
     ('pluma', '🖋️', 'Pluma', 'Sumó en 3 fechas del Writing Challenge'),
@@ -103,6 +111,8 @@ CATALOGO = (
     ('mes_momento', '✨', 'Momento del mes', 'Su batalla fue el Momento del mes de los MES AWARDS'),
 )
 IDS = [c[0] for c in CATALOGO]
+#: las de piedra, de abajo arriba como `divisiones.piedra_fin()`
+PIEDRA_IDS = ('piedra_hierro', 'piedra_jade', 'piedra_zafiro', 'piedra_rubi', 'piedra_diamante', 'piedra_mitico')
 
 
 def _n(x):
@@ -160,7 +170,8 @@ def cumple(pool, mw=None, reyes=None, duelos_g=None, clasicos_g=None, figuras=No
         if raw and ya:
             out.setdefault(raw, set()).update(ya)
     for raw, ya in (ligas or {}).items():
-        ya = set(ya) & ({'liga', 'invicto', 'liga_podio', 'liga_campeon'} | {i for i in IDS if i.startswith('mes_')})
+        ya = set(ya) & ({'liga', 'invicto', 'liga_podio', 'liga_campeon'} | {i for i in IDS if i.startswith('mes_')}
+                        | {i for i in IDS if i.startswith('piedra_')})
         if raw and ya:
             out.setdefault(raw, set()).update(ya)
     return out
@@ -253,8 +264,12 @@ def _datos():
     for q, n in cuenta_w.items():
         r = raw_de(q) or q
         plumas[r] = plumas.get(r, 0) + n
-    return (pool, mw, reyes, duelos_g, clasicos_g, figuras, revelaciones, subieron, primera, plumas_oro, plumas,
-            _ligas(raw_de))
+    # 💎 y la piedra de fin de temporada del Ranking ELO (sólo cuando la temporada terminó): va con las de liga, que
+    # tampoco piden el pool
+    lg = _ligas(raw_de)
+    for q, p in DV.piedra_fin(DV.leer()).items():
+        lg.setdefault(raw_de(q) or q, set()).add(PIEDRA_IDS[p])
+    return (pool, mw, reyes, duelos_g, clasicos_g, figuras, revelaciones, subieron, primera, plumas_oro, plumas, lg)
 
 
 def _ligas(raw_de):

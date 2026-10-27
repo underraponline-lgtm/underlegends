@@ -441,7 +441,7 @@ function PrimerizosLista({ P, vuelve, liga, alVuelve }) {
 // cada movimiento: lo que no está en la lista se muestra tal cual
 const ORIGEN_PDT = { ap: 'apuestas', precio: 'precios por cabeza', semana: 'premio de la semana', rdia: 'racha diaria', rhito: 'hitos de racha',
   bien: 'bienvenida', crew: 'crear una crew', 'crew-nombre': 'nombre de crew', 'crew-logo': 'logo de crew', mw: 'Most Wanted', div: 'divisiones',
-  mis: 'misiones', caza: 'cazas', mes: 'MES AWARDS', promo: 'promos', salon: 'Salón' };
+  mis: 'misiones', caza: 'cazas', mes: 'MES AWARDS', comp: 'Competencias', promo: 'promos', salon: 'Salón' };
 function Economia({ e, liga }) {
   if (!e) return <p className="pronto-p">La billetera de la temporada todavía no está configurada.</p>;
   const ent = e.dias.reduce((t, x) => t + x[1], 0), sal = e.dias.reduce((t, x) => t + x[2], 0);
