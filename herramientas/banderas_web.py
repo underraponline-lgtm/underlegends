@@ -10,7 +10,7 @@ Dlx, 25/09/2026: *«esto es una website, puedes poner literalmente una
 imagen pequeña de las banderas en vez de depender de los emojis no?»*.
 
 ⚠️ LA LISTA DE PAISES ES LA DEL HUB, no una nueva. Sale de `PAIS` en
-`bot/paginas/app.js`, que es con lo que la página pone el nombre de cada
+`bot/paginas/comun.js`, que es con lo que la página pone el nombre de cada
 país: si mañana entra uno, se agrega ahí y esto lo toma.
 
 ⚠️ LA FUENTE ES EL REPO: `04_Pais/banderas/`, las oficiales 3:2 que ya
@@ -41,11 +41,11 @@ GRANDE = (240, 160)
 
 
 def paises_del_hub():
-    with io.open(os.path.join(BASE, 'bot', 'paginas', 'app.js'), encoding='utf-8') as f:
+    with io.open(os.path.join(BASE, 'bot', 'paginas', 'comun.js'), encoding='utf-8') as f:
         js = f.read()
     m = re.search(r'var PAIS = \{(.*?)\};', js, re.S)
     if not m:
-        sys.exit('no encontré `var PAIS = {…}` en bot/paginas/app.js')
+        sys.exit('no encontré `var PAIS = {…}` en bot/paginas/comun.js')
     return sorted(set(re.findall(r'\b([a-z]{2}):\s*\'', m.group(1))))
 
 

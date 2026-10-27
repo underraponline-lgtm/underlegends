@@ -347,7 +347,7 @@ function Sorteo({ liga, dc, miembro }) {
   const girar = () => {
     if (!res) return;
     const ns = (S.nombres || []).length ? S.nombres : [res.k];
-    const calma = typeof document !== 'undefined' && (document.querySelector('.app.calma')
+    const calma = typeof document !== 'undefined' && (document.documentElement.classList.contains('calma')
       || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches));
     if (calma) { setRueda({ k: res.k, fin: true }); return; }
     let i = 0, paso = 60;

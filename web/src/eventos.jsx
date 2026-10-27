@@ -2,7 +2,7 @@
 // aprobó el 29/09 (*«sí, pero con una mezcla del actual, que podamos ver las llaves»*): los días arriba, lo que pasa
 // cada día en tres grupos —en vivo, lo que viene y lo que terminó, con su llave—, el mes, la campana y los últimos
 // campeones. Para todos desde la 1.93 (Dlx, 02/10/2026: «sí, publícalo»), con sus dos ideas: el campeón como imagen
-// para historias y cuándo suele jugar cada servidor. La vista de app.js queda escondida, de respaldo.
+// para historias y cuándo suele jugar cada servidor. (La de app.js fue el respaldo hasta la tanda 4, 27/10/2026.)
 //
 // ⚠️ TODO SALE DEL PAYLOAD (`calendario`, `proximos`, `llaves`, `actividad`, `orgs`) y de lo que app.js ya sabe en vivo
 // (`VIVO_L`): no hay ninguna llamada nueva. La campana la maneja campana.js (`window.Campana`); acá sólo se dibuja.

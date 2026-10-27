@@ -1,31 +1,25 @@
 # -*- coding: utf-8 -*-
-"""EL INICIO NUEVO, ENCHUFADO A LA PÁGINA DE HOY.
+"""INDEX.HTML, ENTERO: la cáscara donde se monta la página (React, `web/`).
 
-    python web/montar.py            arma bot/paginas/nuevo.html: la dirección de prueba (/nuevo)
-    python web/montar.py --inicio   lo mete en bot/paginas/index.html: el Inicio de verdad
-    python web/montar.py --script   rehace SÓLO el script del principio de index.html, que ya está montado
+    python web/montar.py            rehace bot/paginas/index.html desde acá (sus metas se conservan)
+    python web/montar.py --script   rehace SÓLO el script del principio (lo mismo, de a una parte)
 
-Dlx, 29/09/2026: «1. B. 2. B» — el Inicio nuevo reemplaza al de hoy ya, y en
-React. El resto de las vistas sigue siendo la página de hoy (`app.js`), así que
-no se reemplaza el archivo: se le agregan tres cosas.
+Nació el 29/09/2026 para ENCHUFAR el Inicio nuevo a la página de hoy (`app.js`): agregaba el CSS que apagaba el marco
+viejo, `#inicio-nuevo` y un script que decidía, antes de dibujar, si la ruta era del Inicio nuevo o de la vieja. El
+27/10/2026 se fue `app.js` (la tanda 4 del remake; Dlx: «Borra la tanda 4 entonces»), y con él las vistas viejas:
+desde entonces esto arma la página ENTERA, que es poco:
 
-1. En el `<head>`: las fuentes (`/inicio/inicio.css`), el CSS que apaga el
-   marco de hoy cuando se mira el Inicio, y un script que decide **antes de
-   dibujar nada** si la ruta es el Inicio. Sin eso, el Inicio viejo asomaba un
-   instante antes de que llegara el nuevo.
-2. `<div id="inicio-nuevo">` adelante en `<main>`: ahí se monta la app, en un
-   shadow root (ver `web/src/main.jsx`).
-3. `/inicio/inicio.js` después de `app.js`: se engancha a sus funciones
-   (`pintaDatos`, `ir`…), así que tiene que llegar después.
+1. El `<head>` de siempre (título, metas para Discord, manifiesto): se toma del index.html que hay, tal cual.
+2. Las fuentes (`/inicio/inicio.css`), el CSS de la cáscara (`CSS`: el fondo, la pantalla de carga y el aviso de
+   «no pude cargar») y el script del principio (`script()`): las rutas de verdad, el permiso de Discord fuera de la
+   dirección y el plan B.
+3. En el `<body>`: la pantalla de carga, `#inicio-nuevo` (ahí se monta la app, en un shadow root: web/src/main.jsx),
+   el aviso de «No pude cargar los datos» y los scripts — la cañería que la app escucha (comun, cuenta, tienda,
+   social, datos y nucleo.js, que es lo que quedó de app.js) y después la app.
 
-⚠️ **EL INICIO VIEJO SE QUEDA EN EL DOM, ESCONDIDO.** Es el respaldo: si la
-app no carga en 8 s, si se rompe entera o si la API no contesta, se saca la
-clase `ini-nuevo` y se ve el de hoy, con su «No pude cargar los datos» (que es
-lo que mira `herramientas/web_en_borde.py`).
-
-⚠️ **QUÉ ES UNA VISTA SALE DE LOS ARCHIVOS, no de una lista escrita acá**: las
-`data-vista` del HTML y el `ALIAS` de `app.js`. Una vista nueva entra sola; si
-la lista estuviera escrita, la vista nueva abriría el Inicio.
+⚠️ SIN DATOS NO HAY PÁGINA EN BLANCO: si `/api/lobby` no contesta, si la app no se monta en 8 s o se rompe entera,
+sale «No pude cargar los datos» con «Reintentar» (`__sinPagina()`). Antes eso lo hacía el Inicio viejo, que quedaba
+escondido de respaldo; es lo que mira `herramientas/web_en_borde.py`.
 """
 import io
 import os
@@ -37,34 +31,26 @@ BASE = os.path.dirname(WEB)
 PAG = os.path.join(BASE, 'bot', 'paginas')
 MARCA = 'inicio-nuevo'
 
-#: las vistas de la página de hoy que ya dibuja el Inicio nuevo: su ruta es suya, y la vieja se sigue dibujando
-#: escondida, de respaldo. `cambios` desde el 01/10/2026 (Dlx: «1. A»); `ranking` desde el 02/10/2026 (Dlx: «me
-#: encanta»), con `duelos`, el alias viejo que abre el de Duelos; `eventos` desde la 1.93 (Dlx: «sí, publícalo»),
-#: con `avisos`, el link de la campana; `publicaciones` desde la 1.99 (Dlx: «me gusta pero que lo de encuestas no sea
-#: lo primero que uno vea»); `socios` (lo que era Mundo; `mundo` lo sigue abriendo) y `guia` desde la 2.02 (Dlx,
-#: 03/10/2026: «1. A 2. A»); `tarjetas` desde la 2.08 (Dlx, 03/10/2026: «1. A 2. A 3. A»); `r`, el perfil, desde la
-#: 2.09 (Dlx, 03/10/2026: «1. A 2. A»); `llave` desde la 2.10 (Dlx: «1. A»); `tienda` y `pase` desde la 2.12 (Dlx: «A.»); `crew` y `pais` desde la 2.21 (Dlx, 04/10/2026: «si falta reworkear algo, reworkealo»).
-#: La misma lista que `PROPIAS` de App.jsx
-PROPIAS = ('cambios', 'ranking', 'duelos', 'eventos', 'avisos', 'publicaciones', 'socios', 'mundo', 'guia', 'tarjetas', 'r',
-           'llave', 'tienda', 'pase', 'crew', 'pais')
-
 try:
     sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 except AttributeError:
     pass
 
-CSS = '''#inicio-nuevo{display:none}
-html.ini-nuevo #inicio-nuevo{display:block;position:relative;z-index:4}
-html.ini-nuevo .aurora,html.ini-nuevo .trama,html.ini-nuevo .velo,html.ini-nuevo aside.menu{display:none}
-html.ini-nuevo .app{display:block;max-width:none}
-html.ini-nuevo main{padding:0}
-html.ini-nuevo main > section.vista{display:none}
-html.ini-nuevo .barra{position:fixed;top:0;right:0;height:0;margin:0;padding:0;border:0;background:none;z-index:80}
-html.ini-nuevo .barra > :not(.pop){visibility:hidden}
-html.ini-nuevo .barra .pop{top:64px;right:12px}
-html.ini-nuevo body{background:#030304}
-html.ini-nuevo.ini-noche body{background:#030304}
-html.ini-nuevo{scroll-padding-top:0}
+#: el CSS de la cáscara: lo que hay fuera de la app. La base del documento es la que ponía estilo.css (que se fue con
+#: app.js): lo que hereda la app adentro de su shadow root —el color y la letra— tiene que seguir siendo lo mismo
+CSS = '''*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:0}
+body{background:#030304;color:#EDEDF2;overflow-x:hidden;font:17px/1.55 Archivo,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+#inicio-nuevo{display:block;position:relative;z-index:4}
+html.sin-pagina #inicio-nuevo,html.sin-pagina #lg-carga{display:none!important}
+#sin-pagina{display:none}
+html.sin-pagina #sin-pagina{display:grid;min-height:100vh;min-height:100dvh;place-content:center;justify-items:center;gap:14px;padding:24px;text-align:center}
+#sin-pagina img{width:72px;height:72px}
+#sin-pagina h1{font:900 24px/1.15 Archivo,system-ui,sans-serif;font-stretch:118%;color:#F6F6F6;text-wrap:balance}
+#sin-pagina p{max-width:34em;color:#9CAAA7;font-size:16px}
+#sin-pagina button{margin-top:4px;padding:12px 22px;border:0;background:#E41373;color:#F6F6F6;font:800 15px/1 Archivo,system-ui,sans-serif;
+  letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+#sin-pagina button:focus-visible{outline:3px solid #29B298;outline-offset:3px}
 #lg-carga{display:none}
 html.ini-nuevo #lg-carga{display:grid;position:fixed;inset:0;z-index:1000;place-items:center;overflow:hidden;background:#030304;color:#F6F6F6;
   transition:opacity .35s ease,visibility 0s linear .35s}
@@ -119,7 +105,7 @@ html.calma.lg-sale #lg-carga{opacity:0;transition:opacity .25s ease}'''
 HTML_CARGA = """<body>
 <!-- ⏳ LA PANTALLA DE CARGA (Dlx, 17/10/2026: «¿y si hacemos una pestaña de carga?»). Va en el HTML y no en la app: se ve
      al instante, también con 3G lento (la app tarda ~7 s en bajar; ver el plan B de arriba). Se va cuando la app tiene
-     los datos (`lg-listo`, App.jsx) o cuando vuelve la página de antes (el plan B saca `ini-nuevo`). La pone
+     los datos (`lg-listo`, App.jsx) o cuando sale el aviso de «no pude cargar» (`sin-pagina`). La pone
      web/montar.py.
      ✂️ Y SE VA CON UN CORTE (Dlx, 18/10/2026: «la transición… es demasiado básica»; de tres, eligió el Corte): el logo
      cae como un sello, la barra se llena por partes y tres capas —negra, magenta, verde— se van en diagonal. Con
@@ -136,7 +122,7 @@ HTML_CARGA = """<body>
   h.classList.add('lg-carga-js');
   var t0 = Date.now(), quieto = false, primera = true;
   try { quieto = matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
-  // 🧘 y «Menos animaciones» de Mi cuenta, que app.js pone recién al llegar: acá se lee del navegador
+  // 🧘 y «Menos animaciones» de Tu cuenta, que nucleo.js pone recién al llegar: acá se lee del navegador
   try { if ((JSON.parse(localStorage.getItem('lg:ajustes') || 'null') || {}).calma) { quieto = true; h.classList.add('calma'); } } catch (e) {}
   try { primera = !sessionStorage.getItem('lg:intro'); sessionStorage.setItem('lg:intro', '1'); } catch (e) {}
   var MIN = quieto ? 0 : (primera ? 1900 : 0);
@@ -146,7 +132,7 @@ HTML_CARGA = """<body>
   var tt = setInterval(function () { k = (k + 1) % TIPS.length; tip.innerHTML = '<span>' + TIPS[k] + '</span>'; }, 1300);
   // la barra avanza sola hasta casi el final; el último tramo, cuando la app tiene los datos
   var tic = setInterval(function () {
-    if (!h.classList.contains('ini-nuevo')) { clearInterval(tic); clearInterval(tt); return; }
+    if (h.classList.contains('sin-pagina')) { clearInterval(tic); clearInterval(tt); return; }
     var listo = h.classList.contains('lg-listo');
     p = listo ? Math.min(1, p + (primera ? 0.14 : 0.34)) : p + (0.86 - p) * 0.06;
     for (var j = 0, n = Math.floor(p * 12 + 1e-6); j < 12; j++) segs[j].className = j < n ? 'on' : '';
@@ -164,15 +150,6 @@ HTML_CARGA = """<body>
 """
 
 
-def vistas(html, appjs):
-    v = sorted(set(re.findall(r'data-vista="([^"]*)"', html)) - {''})
-    m = re.search(r'var ALIAS = \{([^}]*)\}', appjs)
-    alias = re.findall(r'(\w+)\s*:', m.group(1)) if m else []
-    if not v or not alias:
-        raise SystemExit('🔴 no encontré las vistas (%d) o el ALIAS de app.js (%d)' % (len(v), len(alias)))
-    return [x for x in v + [a for a in alias if a not in v] if x not in PROPIAS]
-
-
 #: 🔑 LA LIGA VIVE EN `/freestyle-rap` (Dlx, 01/10/2026: «/freestyle-rap, put it like that, better»): Under Legends
 #: va a ser más cosas y la Liga Global es una sección, como Red Bull Batalla adentro de Red Bull. Tu cuenta y el
 #: changelog son de toda la marca y van en la raíz (`/cuenta`, `/cambios`); los Ajustes son parte de tu cuenta.
@@ -184,15 +161,8 @@ def vistas(html, appjs):
 PREFIJO = '/freestyle-rap'
 #: (`sumate` vivió acá del 03/10 al 13/10/2026: Dlx la descartó)
 EN_RAIZ = ('cuenta', 'cambios', 'ajustes', 'dashboard')
-#: 🔍 LAS VISTAS VIEJAS EN PREVIEW: con `lg:prev-<x>` (el link `?prev=<x>`) esa vista es del Inicio nuevo en ese
-#: navegador. La primera fue la llave (`ll`, 03/10/2026), publicada en la 2.10; la Tienda y el Pase (`ti`), en la 2.12.
-#: Cuando se publica, pasa a `PROPIAS`
-PREVIEWS = {}
 
-
-def script(nombres):
-    mapa = ','.join('"%s":1' % n for n in nombres)
-    prev = ','.join('"%s":"%s"' % (v, x) for v, x in sorted(PREVIEWS.items()) if v in nombres)
+def script():
     raiz = ','.join('"%s":1' % n for n in EN_RAIZ)
     return ('''(function () {
   // 🔑 LAS RUTAS DE VERDAD: /freestyle-rap/ranking en vez de #/ranking (ver web/montar.py). Todo el código de la
@@ -217,7 +187,7 @@ def script(nombres):
   window.urlLG = urlLG;
   // cada dirección pasa a la suya, en el mismo lugar del historial: un `#/…` —un link que ya circula, o un
   // `location.hash = …` del código—, la raíz sola (a la Liga), `/ranking` sin la Liga o `/freestyle-rap/cuenta`.
-  // ⚠️ Lo que vuelve de Discord (`#access_token=…`) no se toca: lo lee app.js antes de enrutar (`volverDeDiscord()`)
+  // ⚠️ Lo que vuelve de Discord (`#access_token=…`) no se toca: lo lee cuenta.js antes de enrutar (`volverDeDiscord()`)
   function limpiar() {
     var h = location.hash || '';
     if (/^#(access_token|error)=/.test(h)) return;
@@ -226,7 +196,7 @@ def script(nombres):
     try { history.replaceState(history.state, '', u); } catch (e) { /* queda como vino: rutaLG() la lee igual */ }
   }
   // 🛡️ EL PERMISO DE DISCORD SALE DE LA DIRECCIÓN YA (04/10/2026, la lista de seguridad de Dlx). Vuelve en el `#` y
-  // quedaba en la barra —y en el historial— hasta que app.js bajaba los datos; si `/api/lobby` fallaba, no salía
+  // quedaba en la barra —y en el historial— hasta que se bajaban los datos; si `/api/lobby` fallaba, no salía
   // nunca, y con ese permiso se vota y se gastan Puntos durante 7 días. Queda en memoria para `volverDeDiscord()`,
   // que decide adónde volver como siempre
   var hv = location.hash || '';
@@ -235,8 +205,8 @@ def script(nombres):
     try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* queda en la barra */ }
   }
   limpiar();
-  // 🔑 UN AVISO POR CAMBIO DE DIRECCIÓN: `lg:dir`, que escuchan app.js, la campana y el Inicio. 🔴 No alcanza con
-  // escuchar `popstate` y `hashchange`: un `location.hash = …` dispara LOS DOS (Chrome, primero popstate), y app.js
+  // 🔑 UN AVISO POR CAMBIO DE DIRECCIÓN: `lg:dir`, que escuchan nucleo.js, la campana y la app. 🔴 No alcanza con
+  // escuchar `popstate` y `hashchange`: un `location.hash = …` dispara LOS DOS (Chrome, primero popstate), y la página
   // enrutaba dos veces — la segunda cerraba la llave que la primera acababa de abrir. El hashchange que llega
   // detrás de su popstate, con la misma ruta, no avisa
   var porPop = null;
@@ -272,29 +242,11 @@ def script(nombres):
     var el = id && ((r.getElementById && r.getElementById(id)) || document.getElementById(id));
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
-  // ¿La ruta es el Inicio? La misma regla que ir() de app.js: vacío, lo que vuelve de Discord, o algo que no es una
-  // vista. Va acá y no en la app para que el Inicio viejo no llegue a asomarse.
-  var V = {%s};
-  // 🔍 UNA VISTA VIEJA EN PREVIEW (03/10/2026, la llave): `?prev=ll` deja `lg:prev-ll` en este navegador —lo mismo
-  // que App.jsx— y, con eso, esa vista es del Inicio nuevo. Va acá porque app.js lo tiene que saber antes de enrutar
-  var PREV = {%s};
-  try {
-    var mp = /[?&]prev=([a-z]{2,12})\\b/.exec(location.search), mn = /[?&]noprev=([a-z]{2,12})\\b/.exec(location.search);
-    if (mp) localStorage.setItem('lg:prev-' + mp[1], '1');
-    if (mn) localStorage.removeItem('lg:prev-' + mn[1]);
-  } catch (e) { /* sin almacenamiento, sin preview */ }
-  function nueva(p) {
-    if (!V[p]) return true;
-    try { return !!(PREV[p] && localStorage.getItem('lg:prev-' + PREV[p])); } catch (e) { return false; }
-  }
-  // ¿esa vista la dibuja el Inicio nuevo? app.js lo pregunta antes de abrir lo suyo encima (la llave)
-  window.__esNueva = nueva;
-  var h = location.hash || '', ini = /^#(access_token|error)=/.test(h);
-  if (!ini) { var p = rutaLG().split('?')[0].split('/')[0]; ini = !p || nueva(p); }
-  var c = document.documentElement.classList;''' % (PREFIJO, raiz, mapa, prev)) + '''
-  if (ini) c.add('ini-nuevo');
+  // 🔑 la página es siempre la nueva (desde la tanda 4, 27/10/2026): la clase la usan la pantalla de carga y la app
+  var c = document.documentElement.classList;''' % (PREFIJO, raiz)) + '''
+  c.add('ini-nuevo');
   try { var tm = localStorage.getItem('lg:tema'); if (tm && tm !== 'clara') c.add('ini-noche'); } catch (e) { /* sin guardar */ }
-  // la última versión del changelog que se vio, ANTES de que app.js la dé por vista (lo lee el Inicio nuevo)
+  // la última versión del changelog que se vio, ANTES de que nucleo.js la dé por vista (lo lee la app)
   try { window.__cambiosVisto = JSON.parse(localStorage.getItem('lg:cambios') || '""') || ''; } catch (e) { /* sin guardar */ }
   // «Instalar» (01/10/2026): Chrome avisa que la página se puede instalar una sola vez y puede ser antes de que el
   // Inicio monte. Se guarda acá y el Inicio pone su propio botón; sin esto, Chrome mostraba el suyo cuando quería
@@ -302,16 +254,22 @@ def script(nombres):
     e.preventDefault(); window.__instalar = e; window.dispatchEvent(new Event('lg:instalar'));
   });
   window.addEventListener('appinstalled', function () { window.__instalar = null; window.dispatchEvent(new Event('lg:instalar')); });
-  // si la app no llegó a montarse (un navegador viejo, o se rompió), vuelve el Inicio de hoy
+  // ⚠️ SIN PÁGINA, UN AVISO Y «REINTENTAR» (27/10/2026: el Inicio viejo, que era el respaldo, se fue con app.js). Lo
+  // llaman el plan B de acá abajo, nucleo.js si `/api/lobby` no contesta y la app si se rompe entera (`Respaldo`)
+  window.__sinPagina = function (por) {
+    var p = document.getElementById('sin-pagina-por');
+    if (p && por) p.textContent = por + ' Prueba de nuevo en un rato.';
+    c.add('sin-pagina');
+  };
+  // si la app no llegó a montarse (un navegador viejo, o se rompió)
   function planB() {
     var el = document.getElementById('inicio-nuevo');
-    // y lo viejo se dibuja recién ahora: mientras mandaba la página nueva, app.js no lo dibujó (`mandaLoNuevo()`)
-    if (!el || !el.shadowRoot) { window.__inicioSinDatos = true; c.remove('ini-nuevo'); if (window.__pintarViejo) window.__pintarViejo(); }
+    if (!el || !el.shadowRoot) window.__sinPagina('La página no terminó de cargar.');
   }
   // ⚠️ LOS 8 SEGUNDOS CUENTAN DESDE QUE BAJÓ TODO (`load`), NO DESDE QUE SE ABRIÓ LA PÁGINA. Dlx, 15/10/2026: «a Juan
   // no le carga la página a veces, y a mí me pasa lo mismo». Medido con un celular modesto y 3G lento: la app termina
-  // de bajar a los ~7 s y se arma a los 7,1; un poco peor y el plan B se adelantaba, dejaba el Inicio viejo —que ya
-  // casi no tiene nada— y la app, aunque llegara un segundo después, no volvía. Si su archivo NO baja, va al toque
+  // de bajar a los ~7 s y se arma a los 7,1; un poco peor y el plan B se adelantaba y la app, aunque llegara un
+  // segundo después, no volvía. Si su archivo NO baja, va al toque
   if (document.readyState === 'complete') setTimeout(planB, 8000);
   else window.addEventListener('load', function () { setTimeout(planB, 8000); });
   window.addEventListener('error', function (e) {
@@ -321,59 +279,69 @@ def script(nombres):
 })();'''
 
 
-def montar(html, appjs):
-    if MARCA in html:
-        raise SystemExit('🔴 ese HTML ya tiene el Inicio nuevo')
-    cab = ('<link rel="stylesheet" href="estilo.css">\n'
-           '<!-- 🛠️ EL INICIO NUEVO (el remake; Dlx, 29/09/2026: «1. B. 2. B»). Lo pone web/montar.py: no se edita a mano.\n'
-           '     La app vive en web/ y se construye a inicio/; se ve sólo en el Inicio y el resto sigue siendo esta página. -->\n'
-           '<link rel="stylesheet" href="/inicio/inicio.css">\n'
-           '<style id="ini-css">\n' + CSS + '\n</style>\n'
-           '<script>\n' + script(vistas(html, appjs)) + '\n</script>')
-    n0 = html.count('<link rel="stylesheet" href="estilo.css">')
-    n1 = html.count('  <div class="barra">')
-    n2 = html.count('<script src="app.js"></script>')
-    if (n0, n1, n2) != (1, 1, 1):
-        raise SystemExit('🔴 no encontré los tres lugares una sola vez: %s' % ((n0, n1, n2),))
-    html = html.replace('<link rel="stylesheet" href="estilo.css">', cab)
-    html = html.replace('  <div class="barra">',
-                        '  <!-- 🛠️ acá se monta el Inicio nuevo (web/src/main.jsx) -->\n'
-                        '  <div id="inicio-nuevo"></div>\n\n  <div class="barra">')
-    html = html.replace('<script src="app.js"></script>',
-                        '<script src="app.js"></script>\n<script type="module" src="/inicio/inicio.js"></script>')
-    # ⏳ la pantalla de carga, lo primero del <body> (17/10/2026)
-    html = html.replace('<body>\n', HTML_CARGA, 1)
-    return html
+#: ⚠️ SIN DATOS NO HAY PÁGINA EN BLANCO: el aviso (lo enciende `__sinPagina()`, del script del principio). El texto «No
+#: pude cargar los datos» es el que busca herramientas/web_en_borde.py
+SIN_PAGINA = """<div id="sin-pagina" role="alert">
+  <img src="/ul.png" alt="" width="72" height="72">
+  <h1>No pude cargar los datos</h1>
+  <p id="sin-pagina-por">La página no contestó. Prueba de nuevo en un rato.</p>
+  <button type="button" id="sin-pagina-otra">Reintentar</button>
+</div>
+<script>document.getElementById('sin-pagina-otra').addEventListener('click', function () { location.reload(); });</script>
+"""
+
+#: la cañería que la app escucha, en este orden (cada uno usa lo de los anteriores al correr; nucleo.js arranca), y
+#: después la app. `campana.js` va aparte: anota el dispositivo para los avisos
+SCRIPTS = """<script src="llave_vivo.js"></script>
+<script src="comun.js"></script>
+<script src="cuenta.js"></script>
+<script src="tienda.js"></script>
+<script src="social.js"></script>
+<script src="datos.js"></script>
+<script src="nucleo.js"></script>
+<script type="module" src="/inicio/inicio.js"></script>
+<script src="campana.js" defer></script>
+"""
 
 
-def rehacer_script(html, appjs):
-    """`index.html` YA montado, con el script del principio rehecho desde `script()`: el bloque de index.html sale de
-    acá, y cambiarlo a mano lo deja distinto de su fuente. `python web/montar.py --script`."""
-    m = re.search(r'<script>\n\(function \(\) \{\n.*?\n\}\)\(\);\n</script>\n</head>', html, re.S)
-    if not m or html.count('<script>\n(function () {\n') != 1:
+def cabeza(html):
+    """El `<head>` de index.html hasta las fuentes: título, metas para Discord, manifiesto. Se conserva tal cual."""
+    marca = '<link rel="preconnect" href="https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev" crossorigin>\n'
+    if html.count(marca) != 1:
+        raise SystemExit('🔴 no encontré el preconnect de R2 una sola vez: es donde termina la cabeza que se conserva')
+    return html[:html.index(marca) + len(marca)]
+
+
+def pagina(html):
+    return (cabeza(html) +
+            '<!-- 🛡️ SIN GOOGLE FONTS (04/10/2026, la lista de seguridad de Dlx): las fuentes salen de /inicio/inicio.css\n'
+            '     (web/src/fuentes.css). La IP de cada visita dejó de ir a Google. Todo lo de abajo lo arma web/montar.py:\n'
+            '     no se edita a mano -->\n'
+            '<link rel="stylesheet" href="/inicio/inicio.css">\n'
+            '<style id="ini-css">\n' + CSS + '\n</style>\n'
+            '<script>\n' + script() + '\n</script>\n</head>\n' +
+            HTML_CARGA +
+            '\n<!-- 🛠️ acá se monta la página (web/src/main.jsx) -->\n'
+            '<div id="inicio-nuevo"></div>\n\n' +
+            SIN_PAGINA + '\n' + SCRIPTS + '</body>\n</html>\n')
+
+
+def rehacer_script(html):
+    """`index.html` con el script del principio rehecho desde `script()`. `python web/montar.py --script`."""
+    # ⚠️ el de la pantalla de carga también empieza con `(function () {`: se busca por su primer renglón
+    ini = '<script>\n(function () {\n  // 🔑 LAS RUTAS DE VERDAD'
+    m = re.search(re.escape(ini) + r'.*?\n\}\)\(\);\n</script>\n</head>', html, re.S)
+    if not m or html.count(ini) != 1:
         raise SystemExit('🔴 no encontré el script del principio una sola vez')
-    return html[:m.start()] + '<script>\n' + script(vistas(html, appjs)) + '\n</script>\n</head>' + html[m.end():]
+    return html[:m.start()] + '<script>\n' + script() + '\n</script>\n</head>' + html[m.end():]
 
 
 def main():
     idx = os.path.join(PAG, 'index.html')
     html = io.open(idx, encoding='utf-8').read()
-    appjs = io.open(os.path.join(PAG, 'app.js'), encoding='utf-8').read()
-    if '--script' in sys.argv:
-        io.open(idx, 'w', encoding='utf-8', newline='\n').write(rehacer_script(html, appjs))
-        print('✓ el script del principio de %s, rehecho' % os.path.relpath(idx, BASE))
-        return
-    for f in ('inicio.js', 'inicio.css'):
-        if not os.path.exists(os.path.join(PAG, 'inicio', f)):
-            raise SystemExit('🔴 falta inicio/%s: correr `npx vite build` en web/' % f)
-    if '--inicio' in sys.argv:
-        dest = idx
-    else:
-        dest = os.path.join(PAG, 'nuevo.html')
-        # la de prueba no se indexa ni se comparte: es la misma página con otro Inicio
-        html = html.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta name="robots" content="noindex">', 1)
-    io.open(dest, 'w', encoding='utf-8', newline='\n').write(montar(html, appjs))
-    print('✓ %s' % os.path.relpath(dest, BASE))
+    nuevo = rehacer_script(html) if '--script' in sys.argv else pagina(html)
+    io.open(idx, 'w', encoding='utf-8', newline='\n').write(nuevo)
+    print('✓ %s%s' % (os.path.relpath(idx, BASE), ': el script del principio' if '--script' in sys.argv else ''))
 
 
 if __name__ == '__main__':

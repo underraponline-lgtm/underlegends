@@ -1,6 +1,7 @@
-// El Inicio nuevo (Dlx, 29/09/2026: «1. B. 2. B»): reemplaza al de hoy y convive con el resto de la página, que
-// sigue siendo app.js. Lo que sabe hacer la página de hoy —la cuenta, los visores de cartas y llaves, votar— se le
-// pide a ella (ver `accion` en piezas.jsx); lo que el Inicio muestra lo lee de sus mismos datos.
+// La página (Dlx, 29/09/2026: «1. B. 2. B»). Nació como el Inicio nuevo, al lado de la página de hoy (`app.js`), y se
+// fue quedando con todas las vistas; el 27/10/2026 app.js se borró (la tanda 4). La cañería —los datos, la cuenta,
+// votar, la Tienda— sigue en scripts clásicos (bot/paginas/comun, cuenta, tienda, social, datos y nucleo.js): esto
+// la lee de `window` y se entera de cada cambio envolviendo sus funciones (ver `envolver()`).
 import { Component, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DUENO, Liga, aQuienSigo, limpio, quienMira } from './liga.js';
 import { pedirLigas } from './ligas_datos.js';
@@ -140,7 +141,7 @@ const Dashboard = lazy(() => import('./dashboard.jsx').then((m) => ({ default: m
 // 🏠 y en el Inicio, sólo para Dlx (el mismo archivo: se baja una vez)
 const PanelDueno = lazy(() => import('./dashboard.jsx').then((m) => ({ default: m.PanelDueno })));
 
-// 📣 EL AVISO DE LA PÁGINA (el Dashboard de Dlx, 04/10/2026): viaja con `/api/avisos/vivo`, que app.js ya pide al
+// 📣 EL AVISO DE LA PÁGINA (el Dashboard de Dlx, 04/10/2026): viaja con `/api/avisos/vivo`, que datos.js ya pide al
 // abrir y cada pocos minutos (`window.VIVO.aviso`). Cada uno lo puede cerrar; uno nuevo vuelve a aparecer
 function avisoDe() {
   const a = window.VIVO && window.VIVO.aviso;
@@ -174,9 +175,10 @@ import { escucharErrores, reportarError } from './errores.js';
 
 escucharErrores();
 
-// ── el puente con app.js: cada vez que pinta, avisa ──────────────────────────────────────────────
-// ⚠️ Las funciones de app.js son globales (script clásico, sin módulo), y adentro se llaman por su nombre: si se
-// cambia `window.pintaDatos`, las llamadas de app.js pasan por el cambio. Se envuelven una sola vez.
+// ── el puente con la cañería (nucleo.js y compañía): cada vez que «pinta», avisa ──────────────────────────────
+// ⚠️ Sus funciones son globales (scripts clásicos, sin módulo), y adentro se llaman por su nombre: si se cambia
+// `window.pintaDatos`, las llamadas de los scripts pasan por el cambio. Se envuelven una sola vez. Desde la tanda 4
+// (27/10/2026) no dibujan nada: existen para que salga el aviso. ⚠️ Renombrarlas deja a la página sorda sin fallar
 function envolver(nombre, evento) {
   const f = window[nombre];
   if (typeof f !== 'function' || f.__inicio) return;
@@ -197,17 +199,17 @@ envolver('ir', 'lg:ruta');
 // Y a quién seguís lo guarda siempre `guardarSigo()`.
 envolver('pintaCuenta', 'lg:cuenta');
 envolver('guardarSigo', 'lg:sigo');
-// 👤 Y LO DE MI CUENTA (02/10/2026): la foto, las redes, «tu servidor». app.js vuelve a pintar su ventana después de
-// cada cambio —aunque esté cerrada—, así que ése es el aviso. Ver `nuevaCuenta()` en app.js
+// 👤 Y LO DE MI CUENTA (02/10/2026): la foto, las redes, «tu servidor». cuenta.js llama a `pintaPopCuenta()` después
+// de cada cambio, así que ése es el aviso
 envolver('pintaPopCuenta', 'lg:cuentaest');
 // 💰 Y EL PRECIO POR CABEZA (03/10/2026): el perfil nuevo muestra lo que vale cada cabeza y cómo salió tu precio, que
-// viven en app.js (`valorCabezas()`, `PR_EST`, `BILL`); `pintaPrecios()` corre después de cada cambio
+// viven en tienda.js (`valorCabezas()`, `PR_EST`, `BILL`); `pintaPrecios()` corre después de cada cambio
 envolver('pintaPrecios', 'lg:precios');
 
-// ── el changelog: qué versión habías visto ANTES de abrirlo. app.js la da por vista apenas dibuja el suyo, que sigue
-// dibujándose escondido, y lo hace antes que esto. Si la página se abrió en `#/cambios`, ya pasó antes de que cargara
+// ── el changelog: qué versión habías visto ANTES de abrirlo. nucleo.js la da por vista apenas lo abrís
+// (`pintaCambios()`), y lo hace antes que esto. Si la página se abrió en `#/cambios`, ya pasó antes de que cargara
 // este módulo: por eso el script del principio de index.html la guarda (`__cambiosVisto`, ver web/montar.py). Si se
-// llega navegando, se toma justo antes de que app.js vuelva a pintar el suyo
+// llega navegando, se toma justo antes de que nucleo.js la dé por vista
 let cambiosAntes = (() => {
   if (typeof window.__cambiosVisto === 'string') return window.__cambiosVisto;
   try { return JSON.parse(localStorage.getItem('lg:cambios')) || ''; } catch (e) { return ''; }
@@ -223,17 +225,6 @@ let cambiosAntes = (() => {
   window.pintaCambios = g;
 })();
 
-// las vistas de la página de hoy que ya dibuja el Inicio nuevo: la vieja sigue escondida, de respaldo. La misma lista
-// que `PROPIAS` de web/montar.py (el script del principio de index.html). `ranking` desde el 02/10/2026 (Dlx: «me
-// encanta»), con `duelos`, el alias viejo que abre el de Duelos; `eventos` desde la 1.93 (Dlx: «sí, publícalo»), con
-// `avisos`, el link de la campana, que baja hasta ella; `publicaciones` desde la 1.99 (Dlx, 02/10: «me gusta pero que
-// lo de encuestas no sea lo primero que uno vea»); `socios` (lo que era Mundo, y `mundo` lo sigue abriendo) y `guia`
-// desde la 2.02 (Dlx, 03/10/2026: «1. A 2. A»); `tarjetas` desde la 2.08 (Dlx, 03/10/2026: «1. A 2. A 3. A»); `r`, el
-// perfil de cada rapero, desde la 2.09 (Dlx, 03/10/2026: «1. A 2. A»)
-// `llave` desde la 2.10 (Dlx, 03/10/2026: «1. A»): la llave nueva es una página; `tienda` y `pase` desde la 2.12 («A.»)
-const PROPIAS = { cambios: 1, ranking: 1, duelos: 1, eventos: 1, avisos: 1, publicaciones: 1, socios: 1, mundo: 1, guia: 1, tarjetas: 1, r: 1, llave: 1,
-  tienda: 1, pase: 1, crew: 1, pais: 1 };
-const esPropia = (p) => !!PROPIAS[p];
 // 🔍 UNA PREVIEW SE PRENDE CON UN LINK: `?prev=sum` deja `lg:prev-sum` en este navegador (y `?noprev=sum` la apaga),
 // para que Dlx la pruebe sin tocar la consola. No es un secreto: las previews sólo esconden lo que falta aprobar
 try {
@@ -255,23 +246,7 @@ function rutaHash() {
   return '#/' + window.rutaLG();
 }
 
-// ── ¿la ruta es el Inicio? La misma regla que `ir()` de app.js: vacío, `#/` o algo que no es una vista ──
-function esInicio() {
-  const h = rutaHash();
-  if (/^#(access_token|error)=/.test(h)) return true;
-  const r = h.replace(/^#\/?/, '').split('?')[0];
-  const p = r.split('/')[0];
-  if (!p) return true;
-  if (esPropia(p)) return true;
-  const alias = { avisos: 1, duelos: 1, llave: 1 };
-  if (alias[p]) return false;
-  return !document.querySelector('section.vista[data-vista="' + p.replace(/"/g, '') + '"]');
-}
-function marcarRuta() {
-  document.documentElement.classList.toggle('ini-nuevo', esInicio() && !window.__inicioSinDatos);
-}
-
-// 🔴 CADA SECCIÓN, AISLADA — la regla de `pintaDatos()` de app.js: una que falla (un dato con otra forma) queda
+// 🔴 CADA SECCIÓN, AISLADA — la regla que tenía `pintaDatos()` de app.js: una que falla (un dato con otra forma) queda
 // sin dibujar y el resto del Inicio sale igual. El error queda en la consola con el nombre de la sección.
 // ➡️ hacia dónde entra la página que se está montando ('der', 'izq' o '' la primera vez): lo calcula el App en cada
 // dibujo (`vaHacia()`) y cada página lo toma UNA vez, al montarse —si lo leyera en cada dibujo, cambiar de pestaña
@@ -300,29 +275,20 @@ class Aislada extends Component {
   }
 }
 
-// si el Inicio entero no puede dibujarse, se vuelve al de la página de hoy, que sigue en el DOM
+// si la página entera no puede dibujarse, el aviso de index.html: «No pude cargar los datos» y «Reintentar»
+// (`__sinPagina()`, web/montar.py). Hasta la tanda 4 volvía la página vieja, que seguía escondida en el DOM
 export class Respaldo extends Component {
   constructor(p) { super(p); this.state = { roto: false }; }
   static getDerivedStateFromError() { return { roto: true }; }
   componentDidCatch(e) {
     console.error('[inicio]', e);
     reportarError('inicio', e);
-    window.__inicioSinDatos = true;
-    document.documentElement.classList.remove('ini-nuevo');
-    // lo viejo vuelve a la vista y hay que dibujarlo: mientras mandaba esto, app.js no lo dibujó (`mandaLoNuevo()`)
-    if (window.__pintarViejo) window.__pintarViejo();
+    if (window.__sinPagina) window.__sinPagina('Algo de la página se rompió.');
   }
   render() { return this.state.roto ? null : this.props.children; }
 }
 
-// ¿app.js ya dijo que no pudo cargar? Escribe su aviso en la primera vista (el Inicio de hoy)
-function fallaronLosDatos() {
-  const v = document.querySelector('main .vista');
-  return !!(v && /No pude cargar los datos/.test(v.textContent || ''));
-}
-
-
-// lo que las votaciones necesitan de app.js: los votos, el mío y el estado (guardando, error)
+// lo que las votaciones necesitan de social.js: los votos, el mío y el estado (guardando, error)
 function estadoEnc() {
   const w = window;
   const mio = w.ENC_MIO || {};
@@ -380,10 +346,10 @@ export default function App() {
   const paso = useRef(null);
 
   useEffect(() => {
-    const datos = () => { setD(window.D || null); setAhora(new Date()); setYo(quienMira()); setEnc(estadoEnc()); marcarRuta(); };
+    const datos = () => { setD(window.D || null); setAhora(new Date()); setYo(quienMira()); setEnc(estadoEnc()); };
     const votos = () => setEnc(estadoEnc());
     const vivo = () => { setVivoL(Object.assign({}, window.VIVO_L || {})); setAviso(avisoDe()); };
-    const ruta = () => { marcarRuta(); setYo(quienMira()); setHash(rutaHash()); };
+    const ruta = () => { setYo(quienMira()); setHash(rutaHash()); };
     const cuenta = () => setYo(quienMira());
     const sigo = () => setSigoV((v) => v + 1);
     // cambiar la hora, la zona o el formato en Ajustes: todo lo que tiene horas se vuelve a dibujar
@@ -399,20 +365,22 @@ export default function App() {
     // `lg:dir`: atrás/adelante y los links `#/…` que ataja el script del principio (la dirección cambia sin recargar)
     window.addEventListener('lg:dir', ruta);
     window.addEventListener('storage', ruta);
-    // 🔴 Y LA DIRECCIÓN TAMBIÉN: quien vuelve de Discord vuelve a `/#access_token=…` y app.js la cambia con
+    // 🔴 Y LA DIRECCIÓN TAMBIÉN: quien vuelve de Discord vuelve a `/#access_token=…` y cuenta.js la cambia con
     // replaceState (sin hashchange) al destino —`#/cuenta/verificar`—. Si eso pasó entre el primer dibujo y este
     // efecto, el Inicio se quedaba en la dirección vieja (01/10/2026, al probar «Cancelar» en Discord)
     ruta();
-    // ⚠️ app.js pudo pintar ENTRE que este módulo envolvió sus funciones y este efecto: el aviso salió sin nadie
+    // ⚠️ nucleo.js pudo pintar ENTRE que este módulo envolvió sus funciones y este efecto: el aviso salió sin nadie
     // escuchando. Se lee una vez lo que haya.
     if (window.D) datos();
     if (window.VIVO_L) vivo();
-    // si los datos no llegan, se vuelve a la página de hoy: su error («No pude cargar los datos») es el que se ve
+    // si los datos no llegan, el aviso de index.html («No pude cargar los datos»). Si `/api/lobby` contestó con un
+    // error ya lo puso nucleo.js (`__sinDatos`); esto es para el que no contesta nunca
     const t0 = Date.now();
     const plazo = setInterval(() => {
-      if (window.D) { clearInterval(plazo); return; }
-      if (fallaronLosDatos() || Date.now() - t0 > 15000) {
-        clearInterval(plazo); window.__inicioSinDatos = true; marcarRuta(); if (window.__pintarViejo) window.__pintarViejo();
+      if (window.D || window.__sinDatos) { clearInterval(plazo); return; }
+      if (Date.now() - t0 > 15000) {
+        clearInterval(plazo);
+        if (window.__sinPagina) window.__sinPagina('El servidor no contestó.');
       }
     }, 400);
     const reloj = setInterval(() => setAhora(new Date()), 60000);
@@ -537,7 +505,7 @@ export default function App() {
   const liga = useMemo(() => (D2 ? new Liga(D2, muro, ahora, yo.k, aQuienSigo()) : null), [D2, muro, ahora, yo, sigoV]);
   // ⏳ con los datos, se va la pantalla de carga del HTML (`#lg-carga`, web/montar.py)
   useEffect(() => { if (liga) document.documentElement.classList.add('lg-listo'); }, [!!liga]);
-  // el perfil de un servidor (#/sv/<SIGLA>): app.js no conoce la ruta y la deja en el Inicio, y acá se dibuja el perfil
+  // el perfil de un servidor (#/sv/<SIGLA>)
   const mSv = /^#\/sv\/([^/?#]+)/i.exec(hash || '');
   let sv = null;
   // ⚠️ con try: un `%` suelto en la dirección tiraba URIError y el Inicio entero se caía al de respaldo
@@ -595,11 +563,11 @@ export default function App() {
     window.addEventListener('click', f, true);
     return () => window.removeEventListener('click', f, true);
   }, [pagina, sv]);
-  // 🔑 EL TÍTULO DE LA PESTAÑA de lo que dibuja esta app y app.js no conoce: app.js lo pone con el <h1> de su vista
-  // vieja, así que /mundo decía «El mundo» abriendo Socios, y Socios, Sumate, cada servidor, Mi cuenta y Ajustes
-  // quedaban con el genérico (recorrido del 03/10/2026). Corre después de `ir()` de app.js, así que gana
+  // 🔑 EL TÍTULO DE LA PESTAÑA. Lo ponía app.js con el <h1> de su vista vieja (así /mundo decía «El mundo» abriendo
+  // Socios: recorrido del 03/10/2026); desde la tanda 4 (27/10/2026) lo pone esto, para todas. Los mismos nombres que
+  // tenían las vistas viejas. El perfil y la llave ponen el suyo (perfil.jsx, llave.jsx): acá no se tocan, porque
+  // este efecto corre DESPUÉS que el de ellas y lo pisaría
   const nombreSv = sv && liga && liga.svs[sv] ? liga.svs[sv].nombre || sv : sv;
-  // ⚠️ también cuando llegan los datos (`liga`), y un instante después: app.js vuelve a poner el suyo al pintarlos
   useEffect(() => {
     const crewT = pagina === 'crew' && liga ? (liga.d.crews || []).find((c) => (c.clave || c.crew) === crewId) : null;
     const t = sv ? nombreSv : pagina === 'socios' || pagina === 'mundo' ? 'Socios'
@@ -613,9 +581,14 @@ export default function App() {
       : crewT ? limpio(crewT.crew)
       : pagina === 'pais' && liga && (liga.d.tabla || []).some((f) => String(f.cc).toLowerCase() === String(partes[1]).toLowerCase())
         ? nombrePais(String(partes[1]).toLowerCase())
-      : pagina === 'cuenta' || pagina === 'ajustes' ? 'Tu cuenta' : pagina === 'dashboard' ? 'Dashboard' : '';
-    if (!t) return undefined;
-    const poner = () => { document.title = t + ' · Liga Global de Freestyle'; };
+      : pagina === 'cuenta' || pagina === 'ajustes' ? 'Tu cuenta' : pagina === 'dashboard' ? 'Dashboard'
+      : pagina === 'ranking' || pagina === 'duelos' ? 'Los rankings'
+      : pagina === 'eventos' || pagina === 'avisos' ? 'Los eventos'
+      : pagina === 'pase' ? 'Pase de rapero' : pagina === 'tienda' ? 'La tienda'
+      : pagina === 'publicaciones' ? 'Publicaciones' : pagina === 'guia' ? 'Cómo funciona'
+      : pagina === 'cambios' ? 'Changelog' : '';
+    if (!sv && (pagina === 'r' || pagina === 'llave')) return undefined;
+    const poner = () => { document.title = t ? t + ' · Liga Global de Freestyle' : 'Liga Global de Freestyle'; };
     poner();
     const r = setTimeout(poner, 0);
     return () => clearTimeout(r);

@@ -1687,7 +1687,7 @@ console.log('\nEL PROXY DE PAGES DEJA PASAR TODO LO QUE LA PÁGINA PIDE\n');
   // Con las dos comillas: el build escribe "…"
   const nuevos = readdirSync(new URL('paginas/inicio/', import.meta.url)).filter((f) => f.endsWith('.js')).map((f) => 'paginas/inicio/' + f);
   // y lo que salió de app.js el 13/10/2026 (la tanda 2): comun, cuenta, tienda y social
-  const src = ['paginas/comun.js', 'paginas/cuenta.js', 'paginas/tienda.js', 'paginas/social.js', 'paginas/datos.js', 'paginas/app.js',
+  const src = ['paginas/comun.js', 'paginas/cuenta.js', 'paginas/tienda.js', 'paginas/social.js', 'paginas/datos.js', 'paginas/nucleo.js',
     'paginas/campana.js', 'paginas/sw.js', ...nuevos]
     .map((f) => readFileSync(new URL(f, import.meta.url), 'utf8')).join('\n');
   const rutas = new Set((src.match(/['"]\/api\/[a-z0-9/._-]*[a-z0-9]['"]/gi) || []).map((x) => x.slice(1, -1)));
