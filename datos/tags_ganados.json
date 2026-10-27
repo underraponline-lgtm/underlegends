@@ -114,6 +114,27 @@
    ]
   }
  },
+ "3kys1262380343139241994": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1793140426100
+   ],
+   "🧱 FUNDADOR": [
+    "🧱 FUNDADOR",
+    "t1",
+    1793140426100
+   ]
+  },
+  "temporada": {
+   "📅 INFALTABLE": [
+    "📅 INFALTABLE",
+    "t1",
+    1793140426100
+   ]
+  }
+ },
  "abraham": {
   "temporada": {
    "🧟 RESUCITADO": [
@@ -3603,6 +3624,15 @@
    ]
   }
  },
+ "infecte": {
+  "servidor": {
+   "🧱 FUNDADOR": [
+    "🧱 FUNDADOR",
+    "t1",
+    1793140426100
+   ]
+  }
+ },
  "j19": {
   "temporada": {
    "🌱 PROMESA": [
@@ -4900,6 +4930,11 @@
     "t1",
     1793029252929
    ],
+   "🎯 CAZARRECOMPENSAS": [
+    "🎯 CAZARRECOMPENSAS",
+    "t1",
+    1793140426100
+   ],
    "🏁 SEMIFINALISTA SERIAL": [
     "🏁 SEMIFINALISTA SERIAL",
     "t1",
@@ -5386,6 +5421,11 @@
  },
  "miniboy": {
   "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1793140426100
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -6812,6 +6852,11 @@
     "⚔️ DUELISTA",
     "t1",
     1793029252929
+   ],
+   "🌪️ ARRASADOR": [
+    "🌪️ ARRASADOR",
+    "t1",
+    1793140426100
    ],
    "🎯 COMPLETO": [
     "🎯 COMPLETO",

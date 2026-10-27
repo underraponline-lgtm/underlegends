@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-27T21:54:40+00:00",
+ "cuando": "2026-10-27T22:25:20+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6743,6 +6743,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Richard 🇪🇨",
+   "quien": "ricardflex",
+   "discord_id": "750718442050551858",
+   "msg_id": "1564760747219746819",
+   "cuando": "2026-10-27T22:00:33"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -14221,6 +14230,15 @@
    "discord_id": "1558161903518228492",
    "msg_id": "1562270320897957911",
    "cuando": "2026-10-21T01:04:30"
+  },
+  {
+   "servidor": "FDS",
+   "canal": "✅╏inscripciones-express",
+   "texto": "Infected",
+   "quien": "mxrio_xtz",
+   "discord_id": "1174409397397631030",
+   "msg_id": "1562270033311305783",
+   "cuando": "2026-10-21T01:03:21"
   },
   {
    "servidor": "FDS",
@@ -42724,24 +42742,6 @@
    "discord_id": "1340452570807930880",
    "msg_id": "1548451939040362527",
    "cuando": "2026-09-12T21:55:11"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Lord 🇨🇴 <:3_KYS:1262380343139241994>",
-   "quien": "kidbuu02124",
-   "discord_id": "1323444294534828104",
-   "msg_id": "1548451778444525619",
-   "cuando": "2026-09-12T21:54:32"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "elreyes_mc<a:Chile:1495915902036607046>+ CJ🇲🇴",
-   "quien": "elreyes_mc",
-   "discord_id": "1497026847504990218",
-   "msg_id": "1548451728054296732",
-   "cuando": "2026-09-12T21:54:20"
   }
  ]
 }

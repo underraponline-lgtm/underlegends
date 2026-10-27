@@ -298,17 +298,6 @@
    "vence": "2026-11-01T21:03:19+00:00",
    "vencido": false
   },
-  "Dreex": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-27T20:02:54+00:00",
-   "did": "",
-   "evento": "PRADERAP VOL.2",
-   "n": 535,
-   "sv": "ACAD",
-   "vence": "2026-11-03T20:02:54+00:00",
-   "vencido": false
-  },
   "EVANGELINE": {
    "avisado": "2026-10-18",
    "chat": "2026-10-18",
@@ -490,17 +479,6 @@
    "n": 498,
    "sv": "FFA",
    "vence": "2026-10-29T15:06:42+00:00",
-   "vencido": false
-  },
-  "Infected": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-27T20:02:54+00:00",
-   "did": "",
-   "evento": "PRADERAP VOL.2",
-   "n": 535,
-   "sv": "ACAD",
-   "vence": "2026-11-03T20:02:54+00:00",
    "vencido": false
   },
   "J.r": {
@@ -1015,10 +993,11 @@
    "vencido": false
   },
   "Ryuk": {
+   "avisado": "2026-10-27",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-27T20:02:54+00:00",
-   "did": "",
+   "did": "757267093162033253",
    "evento": "PRADERAP VOL.2",
    "n": 535,
    "sv": "ACAD",
@@ -1145,6 +1124,7 @@
    "vencido": false
   },
   "Turbo": {
+   "avisado": "2026-10-27",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-27T20:02:54+00:00",

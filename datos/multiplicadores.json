@@ -888,18 +888,20 @@
    ],
    "semillero": {
     "nuevos": {
-     "FFA": 8
+     "FFA": 8,
+     "ACAD": 2
     },
     "gente": {
      "FDS": 13,
      "DDF": 12,
      "FFA": 42,
-     "FRZ": 10
+     "FRZ": 10,
+     "ACAD": 16
     },
     "gana": "FFA"
    },
    "meta_va": {
-    "ACAD": 0,
+    "ACAD": 16,
     "DDF": 12,
     "DRA": 0,
     "FDS": 13,

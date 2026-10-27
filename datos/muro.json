@@ -1,8 +1,8 @@
 {
 "_leeme": "El muro de Publicaciones: cómo estaba cada uno (rango y tarjetas) y los cambios que se anotaron. Lo escribe bot/muro.py; lo demás del muro se arma en cada corrida.",
 "estado": {
-"oasis": {
-"rg": "SS",
+"makmah": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -10,8 +10,8 @@
 "temporada"
 ]
 },
-"makmah": {
-"rg": "C",
+"oasis": {
+"rg": "SS",
 "c": [
 "competitivo",
 "pais",
@@ -146,6 +146,10 @@
 "temporada"
 ]
 },
+"yinn": {
+"rg": "C",
+"c": []
+},
 "og": {
 "rg": "B",
 "c": [
@@ -154,14 +158,6 @@
 "servidor",
 "temporada"
 ]
-},
-"yinn": {
-"rg": "C",
-"c": []
-},
-"tam": {
-"rg": "B",
-"c": []
 },
 "abyssus": {
 "rg": "A",
@@ -179,6 +175,10 @@
 "servidor",
 "temporada"
 ]
+},
+"tam": {
+"rg": "B",
+"c": []
 },
 "hassan": {
 "rg": "A",
@@ -219,15 +219,6 @@
 "temporada"
 ]
 },
-"bloody": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "delux": {
 "rg": "C",
 "c": [
@@ -238,6 +229,15 @@
 ]
 },
 "xubaru": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"bloody": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -325,10 +325,6 @@
 "temporada"
 ]
 },
-"tuca": {
-"rg": "",
-"c": []
-},
 "dominick": {
 "rg": "D",
 "c": []
@@ -345,7 +341,7 @@
 "rg": "C",
 "c": []
 },
-"dynoco": {
+"drexx": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -354,7 +350,7 @@
 "temporada"
 ]
 },
-"drexx": {
+"dynoco": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -371,6 +367,10 @@
 "servidor",
 "temporada"
 ]
+},
+"tuca": {
+"rg": "",
+"c": []
 },
 "neo": {
 "rg": "C",
@@ -415,11 +415,11 @@
 "temporada"
 ]
 },
-"eclipsito": {
+"btrx": {
 "rg": "C",
 "c": []
 },
-"btrx": {
+"eclipsito": {
 "rg": "C",
 "c": []
 },
@@ -598,10 +598,6 @@
 "temporada"
 ]
 },
-"benjixo": {
-"rg": "",
-"c": []
-},
 "deluxe": {
 "rg": "",
 "c": [
@@ -634,6 +630,10 @@
 "servidor",
 "temporada"
 ]
+},
+"benjixo": {
+"rg": "",
+"c": []
 },
 "catarsis": {
 "rg": "",
@@ -714,14 +714,6 @@
 "temporada"
 ]
 },
-"lvel": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "rt": {
 "rg": "",
 "c": [
@@ -759,6 +751,14 @@
 "rg": "",
 "c": []
 },
+"lvel": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "zetryko": {
 "rg": "",
 "c": [
@@ -770,14 +770,6 @@
 "kochi": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"krish": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -853,6 +845,14 @@
 "emizor": {
 "rg": "E",
 "c": []
+},
+"krish": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "pomberito": {
 "rg": "",
@@ -1047,10 +1047,6 @@
 "temporada"
 ]
 },
-"under": {
-"rg": "",
-"c": []
-},
 "tusicario": {
 "rg": "",
 "c": [
@@ -1144,6 +1140,10 @@
 "servidor",
 "temporada"
 ]
+},
+"under": {
+"rg": "",
+"c": []
 },
 "cajita": {
 "rg": "",
