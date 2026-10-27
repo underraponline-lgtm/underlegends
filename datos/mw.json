@@ -60,10 +60,22 @@
     "nivel": "A",
     "base": 12000,
     "o": 2,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 12000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Cuartos",
+    "valor": 12000,
+    "caza": {
+     "n": 530,
+     "evento": "NOMBRE DE LA COMPETENCIA",
+     "sv": "DDF",
+     "t": "2026-10-26T22:03:17Z",
+     "por": [
+      {
+       "n": "MCNadie",
+       "cobra": 20000
+      }
+     ]
+    }
    },
    {
     "n": "Mr Still Ballin",

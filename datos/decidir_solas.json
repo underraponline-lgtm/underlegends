@@ -2917,6 +2917,60 @@
     "DOS NOMBRES: «Fix1» → «Fix 17» · cuenta 1079533414530678814"
    ],
    "escribio": {}
+  },
+  {
+   "id": "d75663e5cb",
+   "tipo": "Nombre desconocido",
+   "sec": "NOMBRE DE LA COMPETENCIA · DDF · 26/10 · #530",
+   "que": "¿Quién es «Pichu»?",
+   "r": "Es PichulaMc",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de PichulaMc: estaba en la llamada del evento con un nombre parecido",
+   "t": 1793062835663,
+   "filas": [
+    894
+   ],
+   "variantes": [
+    "Pichu"
+   ],
+   "escribio": {
+    "alias": [
+     "Pichu",
+     "PichulaMc"
+    ],
+    "filas": [
+     318
+    ]
+   }
+  },
+  {
+   "id": "9372486c30",
+   "tipo": "Nombre desconocido",
+   "sec": "NOMBRE DE LA COMPETENCIA · DDF · 26/10 · #530",
+   "que": "¿Quién es «Pichu 🇦🇷»?",
+   "r": "Es PichulaMc",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de PichulaMc: estaba en la llamada del evento con un nombre parecido",
+   "t": 1793062835663,
+   "filas": [
+    895
+   ],
+   "variantes": [
+    "Pichu 🇦🇷"
+   ],
+   "escribio": {
+    "alias": [
+     "Pichu",
+     "PichulaMc"
+    ],
+    "filas": [
+     318
+    ]
+   }
   }
  ],
  "deshechas": []

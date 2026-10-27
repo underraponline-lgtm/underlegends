@@ -25235,5 +25235,193 @@
    ]
   ],
   "v": 2
+ },
+ "530": {
+  "antes": {
+   "Calíz": [
+    49,
+    65,
+    false
+   ],
+   "Dominick": [
+    218,
+    45,
+    true
+   ],
+   "Erian": [
+    5,
+    6,
+    false
+   ],
+   "Ezias🥈✒️🧢🐍": [
+    120,
+    189,
+    false
+   ],
+   "Fix 17": [
+    397,
+    364,
+    true
+   ],
+   "Julix": [
+    283,
+    197,
+    true
+   ],
+   "Luck": [
+    149,
+    275,
+    false
+   ],
+   "MCNadie": [
+    125,
+    205,
+    false
+   ],
+   "Makmah": [
+    2,
+    2,
+    false
+   ],
+   "Tam": [
+    213,
+    32,
+    true
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Ezias🥈✒️🧢🐍",
+    "Dominick",
+    "Ezias🥈✒️🧢🐍"
+   ],
+   [
+    "Ezias🥈✒️🧢🐍",
+    "Fix 17",
+    "Ezias🥈✒️🧢🐍"
+   ],
+   [
+    "Pichu 🇦🇷",
+    "Calíz",
+    "Pichu 🇦🇷"
+   ],
+   [
+    "MCNadie",
+    "Luck",
+    "MCNadie"
+   ],
+   [
+    "MCNadie",
+    "Makmah",
+    "MCNadie"
+   ],
+   [
+    "MCNadie",
+    "Tam",
+    "MCNadie"
+   ],
+   [
+    "MCNadie",
+    "Erian",
+    "MCNadie"
+   ],
+   [
+    "Julix",
+    "Ezias🥈✒️🧢🐍",
+    "Julix"
+   ],
+   [
+    "Pichu",
+    "MCNadie",
+    "Pichu"
+   ],
+   [
+    "Pichu",
+    "Julix",
+    "Pichu"
+   ]
+  ],
+  "ev_antes": {
+   "Calíz": 14,
+   "Dominick": 26,
+   "Erian": 52,
+   "Ezias🥈✒️🧢🐍": 4,
+   "Fix 17": 1,
+   "Julix": 2,
+   "Luck": 3,
+   "MCNadie": 4,
+   "Makmah": 76,
+   "Tam": 14
+  },
+  "fecha": "26/10",
+  "firma": "f2e35e1d0c497526",
+  "msg": "1564439290107265104",
+  "nombre": "NOMBRE DE LA COMPETENCIA",
+  "num": 530,
+  "participantes": 14,
+  "sello": {
+   "Pichu": ""
+  },
+  "sv": "DDF",
+  "t": "2026-10-27T00:53:46Z",
+  "tabla": [
+   [
+    "Pichu",
+    "Campeón",
+    7500
+   ],
+   [
+    "Ezias🥈✒️🧢🐍",
+    "Semifinal",
+    3500
+   ],
+   [
+    "MCNadie",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Julix",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Fix 17",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Luck",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Tam",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

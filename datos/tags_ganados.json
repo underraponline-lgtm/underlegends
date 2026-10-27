@@ -2955,6 +2955,11 @@
  },
  "ezias": {
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1793062856503
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",
@@ -3677,6 +3682,13 @@
   }
  },
  "julix": {
+  "servidor": {
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1793062856503
+   ]
+  },
   "temporada": {
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
@@ -4465,6 +4477,15 @@
    ]
   }
  },
+ "luck": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1793062856503
+   ]
+  }
+ },
  "lvel": {
   "servidor": {
    "📆 HABITUÉ": [
@@ -5052,6 +5073,16 @@
  },
  "mcnadie": {
   "temporada": {
+   "🐺 LOBO SOLITARIO": [
+    "🐺 LOBO SOLITARIO",
+    "t1",
+    1793062856503
+   ],
+   "💀 REGICIDA": [
+    "💀 REGICIDA",
+    "t1",
+    1793062856503
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -6898,6 +6929,32 @@
     "🧟 RESUCITADO",
     "t1",
     1792953978519
+   ]
+  }
+ },
+ "pichu": {
+  "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1793062856503
+   ]
+  },
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1793062856503
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1793062856503
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1793062856503
    ]
   }
  },

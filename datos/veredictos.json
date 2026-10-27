@@ -1208,170 +1208,12 @@
    "canal": "1487206164864438513",
    "pub": 1793055066018,
    "a": "YINN🇲🇦",
-   "b": "MATS🇺🇾",
+   "b": "RIZAS🇻🇪",
    "ganador": "YINN🇲🇦",
-   "votos": "1–0"
+   "votos": "2–1"
   }
  },
  "llaves": {
-  "1556825480324325427": {
-   "id": "1556825480324325427",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1791246518928,
-   "ed": 1791254090059,
-   "texto": "`[ CUARTOS ]`\n⌞MARTINEZ⌝ 🆚 ⌞CRIZJ⌝\n⌞DREXX⌝ 🆚 ⌞ARDEAN⌝\n⌞BOOTRAX⌝ 🆚 ⌞NUMBER⌝\n⌞ANDRES⌝ 🆚 ⌞SNAKE⌝ 🆚 ⌞SIN LIMITES⌝\n`[ SEMIFINALES ]`\n⌞CRIZJ⌝ 🆚 ⌞DREXX⌝\n⌞BOOTRAX⌝ 🆚 ⌞ANDRES⌝\n`[ FINAL ]`\n⌞ANDRES⌝ 🆚 ⌞CRIZJ⌝\n⌞CARLOS⌝ 🆚 ⌞TEITO⌝\n⌞ARDEAN⌝ 🆚 ⌞CRISZJ⌝\n⌞KRTMAN⌝ 🆚 ⌞PIPEPEQUEÑO⌝\n⌞NUMBER⌝ 🆚 ⌞XCLUSIVA⌝\n⌞XCLUSIVO⌝ 🆚 ⌞CHUTY⌝\n⌞V-zir⌝ 🆚 ⌞Carloss⌝\n⌞XCLUSIVO⌝ 🆚 ⌞CARLOS⌝",
-   "batallas": [
-    [
-     "CUARTOS",
-     [
-      "MARTINEZ",
-      "CRIZJ"
-     ],
-     "CRIZJ",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "DREXX",
-      "ARDEAN"
-     ],
-     null,
-     "pasan 2, no hay un ganador",
-     [
-      "DREXX",
-      "ARDEAN"
-     ]
-    ],
-    [
-     "CUARTOS",
-     [
-      "BOOTRAX",
-      "NUMBER"
-     ],
-     null,
-     "pasan 2, no hay un ganador",
-     [
-      "BOOTRAX",
-      "NUMBER"
-     ]
-    ],
-    [
-     "CUARTOS",
-     [
-      "ANDRES",
-      "SNAKE",
-      "SIN LIMITES"
-     ],
-     "ANDRES",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "CRIZJ",
-      "DREXX"
-     ],
-     "CRIZJ",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "BOOTRAX",
-      "ANDRES"
-     ],
-     "ANDRES",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "ANDRES",
-      "CRIZJ"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "CARLOS",
-      "TEITO"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "ARDEAN",
-      "CRISZJ"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "KRTMAN",
-      "PIPEPEQUEÑO"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "NUMBER",
-      "XCLUSIVA"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "XCLUSIVO",
-      "CHUTY"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "V-zir",
-      "Carloss"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "XCLUSIVO",
-      "CARLOS"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ]
-   ]
-  },
   "1556874260939800577": {
    "id": "1556874260939800577",
    "sv": "[FFA] Freestyle For All 👾",
@@ -5436,8 +5278,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793054536797,
-   "ed": 1793060165952,
-   "texto": "`[ OCTAVOS ]`\n⌞YINN🇲🇦⌝ 🆚 ⌞SOSA🇺🇾⌝ 🆚 ⌞STT🇮🇨⌝\n⌞OKAM🇨🇷⌝ 🆚 ⌞LEWITO🇦🇷⌝ 🆚 ⌞PICHULAMC🇦🇷⌝ 🆚 ⌞TAM🇻🇪⌝\n⌞SWID🇪🇸⌝ 🆚 ⌞DOMINICK🇵🇪⌝ 🆚 ⌞JAHNO MELOMANÍACO🇦🇷⌝ 🆚 ⌞1514914⌝\n`[ CUARTOS ]`\n⌞YINN🇲🇦⌝ 🆚 ⌞MATS🇺🇾⌝",
+   "ed": 1793062198172,
+   "texto": "`[ OCTAVOS ]`\n⌞YINN🇲🇦⌝ 🆚 ⌞SOSA🇺🇾⌝ 🆚 ⌞STT🇮🇨⌝\n⌞OKAM🇨🇷⌝ 🆚 ⌞LEWITO🇦🇷⌝ 🆚 ⌞PICHULAMC🇦🇷⌝ 🆚 ⌞TAM🇻🇪⌝\n⌞SWID🇪🇸⌝ 🆚 ⌞DOMINICK🇵🇪⌝ 🆚 ⌞JAHNO MELOMANÍACO🇦🇷⌝ 🆚 ⌞1514914⌝\n`[ SEMIFINALES ]`\n⌞YINN🇲🇦⌝ 🆚 ⌞RIZAS🇻🇪⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5475,10 +5317,10 @@
      []
     ],
     [
-     "CUARTOS",
+     "SEMIFINALES",
      [
       "YINN🇲🇦",
-      "MATS🇺🇾"
+      "RIZAS🇻🇪"
      ],
      "YINN🇲🇦",
      "veredicto",

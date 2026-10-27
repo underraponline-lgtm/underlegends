@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-10-27T00:30:46Z",
+ "t": "2026-10-27T00:59:25Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -4510,7 +4510,7 @@
    "staff": [
     [
      "950011515434573824",
-     "👾🫟 ⟅U⟆⟅Z⟆⟅I⟆(• ◡•)🫟👾",
+     "👾🫟 𝙼𝙸𝙽𝙸𝙱𝙾𝚈(• ◡•)🫟👾",
      13,
      185,
      "2026-10-25T20:25:48Z"
@@ -5308,7 +5308,7 @@
     ],
     [
      "950011515434573824",
-     "👾🫟 ⟅U⟆⟅Z⟆⟅I⟆(• ◡•)🫟👾",
+     "👾🫟 𝙼𝙸𝙽𝙸𝙱𝙾𝚈(• ◡•)🫟👾",
      0,
      41,
      "2026-10-14T20:48:26Z"
@@ -8102,7 +8102,7 @@
     ],
     [
      "950011515434573824",
-     "👾🫟 ⟅U⟆⟅Z⟆⟅I⟆(• ◡•)🫟👾",
+     "👾🫟 𝙼𝙸𝙽𝙸𝙱𝙾𝚈(• ◡•)🫟👾",
      0,
      2,
      "2026-10-18T01:11:07Z"
@@ -8222,6 +8222,16 @@
      "LVEL",
      "MASINO",
      "directa",
+     ""
+    ],
+    [
+     "1564440944307081268",
+     "2026-10-27T00:49:47Z",
+     null,
+     "TERRY",
+     "CÁLIZ",
+     "",
+     "",
      ""
     ]
    ],
@@ -8386,8 +8396,8 @@
      "1548906948307451906",
      "#99 |DJ SHADOW🐉",
      4,
-     3,
-     "2026-10-26T22:56:49Z"
+     9,
+     "2026-10-27T00:57:40Z"
     ],
     [
      "1237192883535216715",

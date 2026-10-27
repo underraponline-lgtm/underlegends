@@ -311,6 +311,7 @@
   "sosatr": ".SosaATR",
   "ismel": "Rbk",
   "fix1": "Fix 17",
+  "pichu": "PichulaMc",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1601,6 +1602,10 @@
   [
    "Fix1",
    "Fix 17"
+  ],
+  [
+   "Pichu",
+   "PichulaMc"
   ],
   [
    "Nexus",

@@ -35049,5 +35049,152 @@
     625
    ]
   ]
+ },
+ "530": {
+  "dia": "2026-10-26",
+  "escala": "8-15",
+  "fecha": "26/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1564399046649708647"
+  ],
+  "n": 530,
+  "nombre": "NOMBRE DE LA COMPETENCIA",
+  "participantes": 14,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Ezias🥈✒️🧢🐍",
+       "Dominick",
+       "Fix 17"
+      ],
+      "Ezias🥈✒️🧢🐍",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Pichu 🇦🇷",
+       "Calíz"
+      ],
+      "Pichu 🇦🇷",
+      ""
+     ],
+     [
+      [
+       "MCNadie",
+       "Luck",
+       "Makmah",
+       "Tam",
+       "Erian"
+      ],
+      "MCNadie",
+      "triple (5 bandas)"
+     ],
+     [
+      [
+       "tam🇻🇪",
+       "Wackmc🇪🇸",
+       "Miniboy:CL:"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Julix",
+       "Ezias🥈✒️🧢🐍"
+      ],
+      "Julix",
+      "Walk-in 1: Julix"
+     ],
+     [
+      [
+       "Pichu",
+       "MCNadie"
+      ],
+      "Pichu",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Pichu",
+       "Julix"
+      ],
+      "Pichu",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Pichu",
+    "Campeón",
+    7500
+   ],
+   [
+    "Ezias🥈✒️🧢🐍",
+    "Semifinal",
+    3500
+   ],
+   [
+    "MCNadie",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Julix",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Fix 17",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Luck",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Tam",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

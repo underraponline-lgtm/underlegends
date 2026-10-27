@@ -379,8 +379,9 @@
   },
   "Fix 17": {
    "avisado": "2026-10-26",
-   "con": null,
-   "cumplido": "",
+   "avisado_cumplido": "2026-10-26",
+   "con": 530,
+   "cumplido": "2026-10-26T22:03:17+00:00",
    "debut": "2026-10-25T04:08:34+00:00",
    "did": "1079533414530678814",
    "evento": "GRISELDA RECORDS VOL. 6",
@@ -873,6 +874,18 @@
    "n": 522,
    "sv": "FDS",
    "vence": "2026-10-28T02:04:09+00:00",
+   "vencido": false
+  },
+  "Pichu": {
+   "avisado": "2026-10-26",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-26T22:03:17+00:00",
+   "did": "",
+   "evento": "NOMBRE DE LA COMPETENCIA",
+   "n": 530,
+   "sv": "DDF",
+   "vence": "2026-11-02T22:03:17+00:00",
    "vencido": false
   },
   "Pipe": {
