@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-27T00:54:56+00:00",
+ "cuando": "2026-10-27T01:24:46+00:00",
  "anuncios": [
   {
    "nombre": "CAMINO A LA HERMANDAD",
@@ -409,11 +409,11 @@
    "cuando": "2026-10-26T22:09:18",
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
-   "organizador": "KRAVITZ",
+   "organizador": "",
    "orgs": [
     {
-     "n": "KRAVITZ",
-     "id": ""
+     "n": "Kravitz",
+     "id": "1345962362615894027"
     }
    ],
    "autor_h": "7cc3316a3e5f345f",
@@ -427,18 +427,26 @@
    "premios": "ROL CAMPEON Y PUNTOS RANKING",
    "staff": {
     "jurado": [
-     "Kravitz"
+     "Kravitz",
+     "Lewito",
+     "Xubaru",
+     "tenor"
     ],
     "host": [
-     "🎤 KRAVITZ 🇨🇷"
+     "Kravitz",
+     "Lewito"
     ],
     "dj": [
-     "Kravitz"
+     "Kravitz",
+     "Lewito"
     ]
    },
    "autor": "Kravitz",
    "staff_cuentas": {
-    "Kravitz": "1345962362615894027"
+    "Kravitz": "1345962362615894027",
+    "Lewito": "1086485696572817418",
+    "Xubaru": "1397110475594010700",
+    "tenor": "1370860602972569632"
    },
    "categoria_id": "1468478330826260500"
   },
@@ -4840,33 +4848,6 @@
    "staff": {},
    "autor": "Lízeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857",
-   "inscripciones": "abiertas",
-   "inscripciones_cuando": "2026-10-26T22:00:22"
-  },
-  {
-   "nombre": "19 CUP FUTCARD EDICIÓN 5 ??",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1563358538238009454",
-   "cuando": "2026-10-24T01:08:41",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "EJFACUP HALLOWEENGAMING FUTCARD FIFA19",
-   "orgs": [],
-   "autor_h": "b360fced798207fd",
-   "cupos_texto": "8    INSCRIPCIONES YA",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "[Fecha de Octubre]    FORMATO: ELIMINATORIA DIRECTA",
-   "fecha": "",
-   "premios": "¡INSCRÍBETE YA! PREMIO:",
-   "staff": {},
-   "autor": "₁₉",
-   "staff_cuentas": {},
-   "de_imagen": true,
    "categoria_id": "1469944166137073857",
    "inscripciones": "abiertas",
    "inscripciones_cuando": "2026-10-26T22:00:22"

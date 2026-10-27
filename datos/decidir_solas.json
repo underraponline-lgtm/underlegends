@@ -2971,6 +2971,57 @@
      318
     ]
    }
+  },
+  {
+   "id": "00c836a7ac",
+   "tipo": "Nombre desconocido",
+   "sec": "DETALLES DEL EVENTO · FFA · 26/10 · #531",
+   "que": "¿Quién es «Jahno Melomaníaco 🇦🇷»?",
+   "r": "Es melomaniaco",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de melomaniaco: estaba en la llamada del evento con un nombre parecido",
+   "t": 1793064750917,
+   "filas": [
+    896
+   ],
+   "variantes": [
+    "Jahno Melomaníaco 🇦🇷"
+   ],
+   "escribio": {
+    "alias": [
+     "Jahno Melomaníaco",
+     "melomaniaco"
+    ],
+    "filas": [
+     319
+    ]
+   }
+  },
+  {
+   "id": "18c408a650",
+   "tipo": "Nombre desconocido",
+   "sec": "DETALLES DEL EVENTO · FFA · 26/10 · #531",
+   "que": "¿Quién es «Swid🇪🇸»?",
+   "r": "Es alguien nuevo: alta con su cuenta 380869870264254465",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (380869870264254465)",
+   "t": 1793064750917,
+   "filas": [
+    900
+   ],
+   "variantes": [
+    "Swid🇪🇸"
+   ],
+   "escribio": {
+    "alta": [
+     "Swid",
+     "380869870264254465"
+    ]
+   }
   }
  ],
  "deshechas": []

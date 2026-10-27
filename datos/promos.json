@@ -73,18 +73,6 @@
 "tit": "INFLOX - OTRA ERA",
 "de": "Inflox",
 "img": "https://i.ytimg.com/vi/74DiqwHkaX8/hqdefault.jpg"
-},
-{
-"id": "1553577094414475407-0",
-"t": "2026-09-27T01:20:43Z",
-"sv": "FVS",
-"quien": "Saiko",
-"url": "https://youtu.be/zCsDJAXh9T4?si=7WTKtA_0QxaH7YbV",
-"plat": "yt",
-"vid": "zCsDJAXh9T4",
-"tit": "SAIKO VS LAIN | EXHIBICION RETRO | LMF CHILE T4 - J2",
-"de": "LMF TV",
-"img": "https://i.ytimg.com/vi/zCsDJAXh9T4/hqdefault.jpg"
 }
 ],
 "liga": [
@@ -676,11 +664,6 @@
 "tit": "Estaba Dicho.  (EP)",
 "de": "Geekto",
 "img": "https://i.ytimg.com/vi/BgPckuiHByg/hqdefault.jpg"
-},
-"https://youtu.be/zCsDJAXh9T4?si=7WTKtA_0QxaH7YbV": {
-"tit": "SAIKO VS LAIN | EXHIBICION RETRO | LMF CHILE T4 - J2",
-"de": "LMF TV",
-"img": "https://i.ytimg.com/vi/zCsDJAXh9T4/hqdefault.jpg"
 }
 }
 }

@@ -879,13 +879,14 @@
    "semillero": {
     "nuevos": {},
     "gente": {
-     "FDS": 13
+     "FDS": 13,
+     "DDF": 11
     },
     "gana": null
    },
    "meta_va": {
     "ACAD": 0,
-    "DDF": 0,
+    "DDF": 11,
     "DRA": 0,
     "FDS": 13,
     "FFA": 0,

@@ -374,6 +374,11 @@
     "t1",
     1793029252929
    ],
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1793064764072
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -3583,6 +3588,15 @@
    ]
   }
  },
+ "jobaking": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1793064764072
+   ]
+  }
+ },
  "joshu": {
   "servidor": {
    "🏆 CAMPEÓN": [
@@ -4304,6 +4318,13 @@
   }
  },
  "lizeninn": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1793064764072
+   ]
+  },
   "temporada": {
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
@@ -4479,6 +4500,11 @@
  },
  "luck": {
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1793064764072
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",
@@ -6523,6 +6549,11 @@
  },
  "okam": {
   "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1793064764072
+   ],
    "INTERNACIONAL": [
     "INTERNACIONAL",
     "t1",
@@ -7152,7 +7183,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x8",
+    "👑 CAMPEÓN x9",
     "t1",
     1793029252929
    ],
@@ -7515,6 +7546,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793029252929
+   ],
+   "🔺 REY DE LOS TRÍOS": [
+    "🔺 REY DE LOS TRÍOS",
+    "t1",
+    1793064764072
    ],
    "🚪 DEBUT CON CORONA": [
     "🚪 DEBUT CON CORONA",
@@ -8369,6 +8405,11 @@
     "t1",
     1793029252929
    ],
+   "💯 BICENTENARIO": [
+    "💯 BICENTENARIO",
+    "t1",
+    1793064764072
+   ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
     "t1",
@@ -8880,6 +8921,16 @@
    ]
   },
   "temporada": {
+   "🐺 LOBO SOLITARIO": [
+    "🐺 LOBO SOLITARIO",
+    "t1",
+    1793064764072
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1793064764072
+   ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
     "t1",
@@ -10089,6 +10140,11 @@
  },
  "yinn": {
   "competitivo": {
+   "🎯 FRANCOTIRADOR": [
+    "🎯 FRANCOTIRADOR",
+    "t1",
+    1793064764072
+   ],
    "🐉 MATADRAGONES": [
     "🐉 MATADRAGONES",
     "t1",
@@ -10098,9 +10154,19 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1792953978519
+   ],
+   "🧊 SANGRE FRÍA": [
+    "🧊 SANGRE FRÍA",
+    "t1",
+    1793064764072
    ]
   },
   "servidor": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1793064764072
+   ],
    "🏅 PODIOS": [
     "🏅 PODIOS",
     "t1",
@@ -10154,9 +10220,14 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x3",
+    "👑 CAMPEÓN x4",
     "t1",
     1793029252929
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1793064764072
    ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",

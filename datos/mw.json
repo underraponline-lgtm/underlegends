@@ -124,10 +124,22 @@
     "nivel": "B",
     "base": 9000,
     "o": 4,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 9000
+    "estado": "cazado",
+    "ev": 2,
+    "fase": "Campeón",
+    "valor": 10750,
+    "caza": {
+     "n": 531,
+     "evento": "DETALLES DEL EVENTO",
+     "sv": "FFA",
+     "t": "2026-10-26T22:39:00Z",
+     "por": [
+      {
+       "n": "Tam",
+       "cobra": 15000
+      }
+     ]
+    }
    },
    {
     "n": "Velatz",

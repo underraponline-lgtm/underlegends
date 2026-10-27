@@ -3332,24 +3332,32 @@
      "mo": "2026-10-26T22:09:18Z",
      "staff": {
       "jurado": [
-       "Kravitz"
+       "Kravitz",
+       "Lewito",
+       "Xubaru",
+       "tenor"
       ],
       "host": [
-       "🎤 KRAVITZ 🇨🇷"
+       "Kravitz",
+       "Lewito"
       ],
       "dj": [
-       "Kravitz"
+       "Kravitz",
+       "Lewito"
       ]
      },
      "orgs": [
       {
-       "n": "KRAVITZ",
-       "id": ""
+       "n": "Kravitz",
+       "id": "1345962362615894027"
       }
      ],
-     "organizador": "KRAVITZ",
+     "organizador": "",
      "cuentas": {
-      "Kravitz": "1345962362615894027"
+      "Kravitz": "1345962362615894027",
+      "Lewito": "1086485696572817418",
+      "Xubaru": "1397110475594010700",
+      "tenor": "1370860602972569632"
      }
     }
    },

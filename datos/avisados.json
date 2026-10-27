@@ -25302,9 +25302,9 @@
     "Ezias🥈✒️🧢🐍"
    ],
    [
-    "Pichu 🇦🇷",
+    "PichulaMc",
     "Calíz",
-    "Pichu 🇦🇷"
+    "PichulaMc"
    ],
    [
     "MCNadie",
@@ -25332,14 +25332,14 @@
     "Julix"
    ],
    [
-    "Pichu",
+    "PichulaMc",
     "MCNadie",
-    "Pichu"
+    "PichulaMc"
    ],
    [
-    "Pichu",
+    "PichulaMc",
     "Julix",
-    "Pichu"
+    "PichulaMc"
    ]
   ],
   "ev_antes": {
@@ -25355,7 +25355,7 @@
    "Tam": 14
   },
   "fecha": "26/10",
-  "firma": "f2e35e1d0c497526",
+  "firma": "5782071ea3a27451",
   "msg": "1564439290107265104",
   "nombre": "NOMBRE DE LA COMPETENCIA",
   "num": 530,
@@ -25367,7 +25367,7 @@
   "t": "2026-10-27T00:53:46Z",
   "tabla": [
    [
-    "Pichu",
+    "PichulaMc",
     "Campeón",
     7500
    ],
@@ -25420,6 +25420,500 @@
     "Erian",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "531": {
+  "antes": {
+   "Agus": [
+    11,
+    12,
+    false
+   ],
+   "Andy": [
+    95,
+    127,
+    false
+   ],
+   "Ariaxer": [
+    45,
+    61,
+    false
+   ],
+   "Calíz": [
+    47,
+    63,
+    false
+   ],
+   "Dominick": [
+    217,
+    44,
+    true
+   ],
+   "Dyzz": [
+    40,
+    53,
+    false
+   ],
+   "Jobaking": [
+    135,
+    224,
+    false
+   ],
+   "Kyss": [
+    84,
+    110,
+    false
+   ],
+   "LEWITO": [
+    123,
+    192,
+    false
+   ],
+   "Lizeninn": [
+    276,
+    186,
+    true
+   ],
+   "Luck": [
+    118,
+    185,
+    false
+   ],
+   "MCNadie": [
+    93,
+    124,
+    false
+   ],
+   "MCO": [
+    14,
+    15,
+    false
+   ],
+   "Makmah": [
+    2,
+    2,
+    false
+   ],
+   "Miniboy": [
+    35,
+    42,
+    false
+   ],
+   "NC": [
+    21,
+    23,
+    false
+   ],
+   "OKAM": [
+    30,
+    35,
+    false
+   ],
+   "Oasis": [
+    1,
+    1,
+    false
+   ],
+   "PRAISERIZA": [
+    209,
+    5,
+    true
+   ],
+   "Paria": [
+    224,
+    60,
+    true
+   ],
+   "PichulaMc": [
+    4,
+    4,
+    false
+   ],
+   "Six": [
+    12,
+    13,
+    false
+   ],
+   "Sosa": [
+    50,
+    66,
+    false
+   ],
+   "Tam": [
+    212,
+    27,
+    true
+   ],
+   "mats": [
+    360,
+    313,
+    true
+   ],
+   "yinn": [
+    211,
+    26,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "yinn",
+    "Sosa",
+    "yinn"
+   ],
+   [
+    "yinn",
+    "Stt🇮🇨",
+    "yinn"
+   ],
+   [
+    "Tam",
+    "OKAM",
+    "Tam"
+   ],
+   [
+    "Tam",
+    "LEWITO",
+    "Tam"
+   ],
+   [
+    "Tam",
+    "PichulaMc",
+    "Tam"
+   ],
+   [
+    "PRAISERIZA",
+    "Swid🇪🇸",
+    "PRAISERIZA"
+   ],
+   [
+    "PRAISERIZA",
+    "Dominick",
+    "PRAISERIZA"
+   ],
+   [
+    "PRAISERIZA",
+    "Jahno Melomaníaco 🇦🇷",
+    "PRAISERIZA"
+   ],
+   [
+    "Six",
+    "Andy",
+    "Six"
+   ],
+   [
+    "Six",
+    "Calíz",
+    "Six"
+   ],
+   [
+    "Six",
+    "QZ🇦🇷",
+    "Six"
+   ],
+   [
+    "Six",
+    "Jobaking",
+    "Six"
+   ],
+   [
+    "mats",
+    "Ariaxer",
+    "mats"
+   ],
+   [
+    "mats",
+    "gary",
+    "mats"
+   ],
+   [
+    "mats",
+    "Miniboy",
+    "mats"
+   ],
+   [
+    "mats",
+    "Agus",
+    "mats"
+   ],
+   [
+    "Olga de Kiev 🇩🇴",
+    "Paria",
+    "Olga de Kiev 🇩🇴"
+   ],
+   [
+    "Olga de Kiev 🇩🇴",
+    "MCO",
+    "Olga de Kiev 🇩🇴"
+   ],
+   [
+    "Oasis",
+    "Luck",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "Dyzz",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "MCNadie",
+    "Oasis"
+   ],
+   [
+    "Kyss",
+    "NC",
+    "Kyss"
+   ],
+   [
+    "Kyss",
+    "Lizeninn",
+    "Kyss"
+   ],
+   [
+    "Kyss",
+    "Makmah",
+    "Kyss"
+   ],
+   [
+    "yinn",
+    "mats",
+    "yinn"
+   ],
+   [
+    "Tam",
+    "Olga de Kiev 🇩🇴",
+    "Tam"
+   ],
+   [
+    "PRAISERIZA",
+    "Oasis",
+    "PRAISERIZA"
+   ],
+   [
+    "Six",
+    "Kyss",
+    "Six"
+   ],
+   [
+    "yinn",
+    "PRAISERIZA",
+    "yinn"
+   ],
+   [
+    "Tam",
+    "Six",
+    "Tam"
+   ],
+   [
+    "yinn",
+    "Tam",
+    "yinn"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 18,
+   "Andy": 5,
+   "Ariaxer": 13,
+   "Calíz": 15,
+   "Dominick": 27,
+   "Dyzz": 16,
+   "Jobaking": 5,
+   "Kyss": 8,
+   "LEWITO": 4,
+   "Lizeninn": 6,
+   "Luck": 4,
+   "MCNadie": 5,
+   "MCO": 27,
+   "Makmah": 77,
+   "Miniboy": 26,
+   "NC": 37,
+   "OKAM": 11,
+   "Oasis": 32,
+   "PRAISERIZA": 13,
+   "Paria": 12,
+   "PichulaMc": 45,
+   "Six": 29,
+   "Sosa": 20,
+   "Tam": 15,
+   "mats": 2,
+   "yinn": 22
+  },
+  "fecha": "26/10",
+  "firma": "c212e64f4f5b6893",
+  "msg": "1564445852464840767",
+  "nombre": "DETALLES DEL EVENTO",
+  "num": 531,
+  "participantes": 32,
+  "sello": {
+   "yinn": ""
+  },
+  "sv": "FFA",
+  "t": "2026-10-27T01:23:50Z",
+  "tabla": [
+   [
+    "yinn",
+    "Campeón",
+    10000
+   ],
+   [
+    "Tam",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "PRAISERIZA",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Six",
+    "Semifinal",
+    5250
+   ],
+   [
+    "mats",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Olga de Kiev 🇩🇴",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Oasis",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kyss",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    1250
+   ],
+   [
+    "Stt🇮🇨",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "LEWITO",
+    "Octavos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    1250
+   ],
+   [
+    "Swid🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jahno Melomaníaco 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Andy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    1250
+   ],
+   [
+    "QZ🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jobaking",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "gary",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Agus",
+    "Octavos",
+    1250
+   ],
+   [
+    "Paria",
+    "Octavos",
+    1250
+   ],
+   [
+    "MCO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Luck",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "MCNadie",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lizeninn",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
    ]
   ],
   "v": 2

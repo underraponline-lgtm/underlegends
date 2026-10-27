@@ -35074,10 +35074,10 @@
      ],
      [
       [
-       "Pichu 🇦🇷",
+       "PichulaMc",
        "Calíz"
       ],
-      "Pichu 🇦🇷",
+      "PichulaMc",
       ""
      ],
      [
@@ -35115,10 +35115,10 @@
      ],
      [
       [
-       "Pichu",
+       "PichulaMc",
        "MCNadie"
       ],
-      "Pichu",
+      "PichulaMc",
       ""
      ]
     ],
@@ -35128,10 +35128,10 @@
     "b": [
      [
       [
-       "Pichu",
+       "PichulaMc",
        "Julix"
       ],
-      "Pichu",
+      "PichulaMc",
       ""
      ]
     ],
@@ -35141,7 +35141,7 @@
   "sv": "DDF",
   "tabla": [
    [
-    "Pichu",
+    "PichulaMc",
     "Campeón",
     7500
    ],
@@ -35194,6 +35194,339 @@
     "Tam",
     "Cuartos",
     2000
+   ]
+  ]
+ },
+ "531": {
+  "dia": "2026-10-26",
+  "escala": "16+",
+  "fecha": "26/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1564408032534859868",
+   "https://discord.com/channels/1468472442925092958/1487206164864438513/1564408856904212531"
+  ],
+  "n": 531,
+  "nombre": "DETALLES DEL EVENTO",
+  "participantes": 32,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "Sosa",
+       "Stt🇮🇨"
+      ],
+      "yinn",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Tam",
+       "OKAM",
+       "LEWITO",
+       "PichulaMc"
+      ],
+      "Tam",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "Swid🇪🇸",
+       "Dominick",
+       "Jahno Melomaníaco 🇦🇷"
+      ],
+      "PRAISERIZA",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Six",
+       "Andy",
+       "Calíz",
+       "QZ🇦🇷",
+       "Jobaking"
+      ],
+      "Six",
+      "triple (5 bandas)"
+     ],
+     [
+      [
+       "mats",
+       "Ariaxer",
+       "gary",
+       "Miniboy",
+       "Agus"
+      ],
+      "mats",
+      "triple (5 bandas)"
+     ],
+     [
+      [
+       "Olga de Kiev 🇩🇴",
+       "Paria",
+       "MCO"
+      ],
+      "Olga de Kiev 🇩🇴",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Oasis",
+       "Luck",
+       "Dyzz",
+       "MCNadie"
+      ],
+      "Oasis",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Kyss",
+       "NC",
+       "Lizeninn",
+       "Makmah"
+      ],
+      "Kyss",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "mats"
+      ],
+      "yinn",
+      ""
+     ],
+     [
+      [
+       "Tam",
+       "Olga de Kiev 🇩🇴"
+      ],
+      "Tam",
+      ""
+     ],
+     [
+      [
+       "PRAISERIZA",
+       "Oasis"
+      ],
+      "PRAISERIZA",
+      ""
+     ],
+     [
+      [
+       "Six",
+       "Kyss"
+      ],
+      "Six",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "PRAISERIZA"
+      ],
+      "yinn",
+      ""
+     ],
+     [
+      [
+       "Tam",
+       "Six"
+      ],
+      "Tam",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "yinn",
+       "Tam"
+      ],
+      "yinn",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "yinn",
+    "Campeón",
+    10000
+   ],
+   [
+    "Tam",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "PRAISERIZA",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Six",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Kyss",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Oasis",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Olga de Kiev 🇩🇴",
+    "Cuartos",
+    2500
+   ],
+   [
+    "mats",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Agus",
+    "Octavos",
+    1250
+   ],
+   [
+    "Andy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ariaxer",
+    "Octavos",
+    1250
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jahno Melomaníaco 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jobaking",
+    "Octavos",
+    1250
+   ],
+   [
+    "LEWITO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lizeninn",
+    "Octavos",
+    1250
+   ],
+   [
+    "Luck",
+    "Octavos",
+    1250
+   ],
+   [
+    "MCNadie",
+    "Octavos",
+    1250
+   ],
+   [
+    "MCO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "Paria",
+    "Octavos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    1250
+   ],
+   [
+    "QZ🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    1250
+   ],
+   [
+    "Stt🇮🇨",
+    "Octavos",
+    1250
+   ],
+   [
+    "Swid🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "gary",
+    "Octavos",
+    1250
    ]
   ]
  }
