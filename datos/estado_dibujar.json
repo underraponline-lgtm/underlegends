@@ -1,86 +1,94 @@
 {
  "v": 1,
- "cuando": "2026-10-27T21:41:11Z",
+ "cuando": "2026-10-27T22:22:52Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 564.0,
+ "dur_s": 1161.8,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 13.7
+   "s": 11.6
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 1.5
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 9.9
+   "s": 9.0
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 24.9
+   "s": 20.6
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 4 · 40 persona(s)",
    "ok": false,
-   "s": 438.1
+   "s": 1037.0
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 8.2
+   "s": 9.8
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 67.4
+   "s": 71.1
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Artezzy"
+   "que": "03_Servidor/generar.py Andy"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Geoka"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Six"
   }
  ],
  "ultimo_evento": {
-  "n": "534",
-  "nombre": "DESGRACIAS EN TOKYO VOL 28 PANDILLAS",
-  "sv": "FFA",
-  "dia": "2026-10-16"
+  "n": "535",
+  "nombre": "PRADERAP VOL.2",
+  "sv": "ACAD",
+  "dia": "2026-10-27"
  },
  "cuotas": {
   "kv": {
-   "write": 541,
-   "read": 51180
+   "write": 566,
+   "read": 52586
   },
   "objeto": {
    "leidas": 5091259,
    "escritas": 25488,
-   "pedidos": 11653
+   "pedidos": 13050
   },
   "worker": {
-   "pedidos": 11671,
-   "errores": 181,
-   "sub": 13459,
-   "cortados": 181,
-   "p50_ms": 1.25,
-   "p99_ms": 11.97,
+   "pedidos": 12517,
+   "errores": 1468,
+   "sub": 14271,
+   "cortados": 1468,
+   "p50_ms": 1.26,
+   "p99_ms": 11.87,
    "cpu": {
-    "total": 25770,
-    "objeto_10": 1856,
-    "worker_10": 264
+    "total": 31400,
+    "objeto_10": 1789,
+    "worker_10": 279
    }
   },
   "r2": {
