@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-27T18:55:06+00:00",
+ "cuando": "2026-10-27T19:03:56+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -376,6 +376,41 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "FREESTYLE FOR ALL ESPECIAL 1.800 MIEMBROS Pandillas",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1564715417426206770",
+   "cuando": "2026-10-27T19:00:26",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "LEWITO",
+   "orgs": [],
+   "autor_h": "211322958af20ae2",
+   "cupos_texto": "24 / 32",
+   "inscriptos": 24,
+   "cupo_total": 32,
+   "rango": "PLATA 3",
+   "modalidad": ":  PANDILLAS",
+   "horario": "1 HORA",
+   "fecha": "",
+   "premios": "RESPETO",
+   "staff": {
+    "jurado": [
+     "LEWITO",
+     "XUBARU"
+    ],
+    "host": [
+     "LEWITO"
+    ],
+    "dj": [
+     "LEWITO"
+    ]
+   },
+   "autor": "Lewito",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "qcyo rapeen 4",
@@ -1215,47 +1250,6 @@
    "staff_cuentas": {
     "Flennzs | ⛩️": "1414431452346581052",
     "Krish": "1513620494199558295"
-   },
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "LA REDENCION VOL.5",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1560470094562467852",
-   "cuando": "2026-10-16T01:51:02",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Velatz",
-     "id": "1426686911908675628"
-    }
-   ],
-   "autor_h": "c36f9caea613c5c9",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Plata II 🥈",
-   "modalidad": "1v1",
-   "horario": "11:00",
-   "fecha": "",
-   "premios": "Clasificación + Campeonato 🏆",
-   "staff": {
-    "jurado": [
-     "Velatz"
-    ],
-    "host": [
-     "Velatz"
-    ],
-    "dj": [
-     "Velatz"
-    ]
-   },
-   "autor": "Velatz",
-   "staff_cuentas": {
-    "Velatz": "1426686911908675628"
    },
    "categoria_id": "1468478330826260500"
   },
@@ -6782,6 +6776,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "LKR",
+   "canal": "⟡・INSCRIPCIONES",
+   "texto": "Pichulamc 🇦🇷",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1564715876668936195",
+   "cuando": "2026-10-27T19:02:16"
+  },
   {
    "servidor": "FRZ",
    "canal": "➣「📝」inscripciones",
@@ -42772,15 +42775,6 @@
    "discord_id": "950011515434573824",
    "msg_id": "1547730893295325235",
    "cuando": "2026-09-10T22:10:00"
-  },
-  {
-   "servidor": "FVS",
-   "canal": "「📜」Inscripciones",
-   "texto": "Sosa 🇦🇷",
-   "quien": "sosa.1417",
-   "discord_id": "1338912904614903849",
-   "msg_id": "1547730655192948848",
-   "cuando": "2026-09-10T22:09:03"
   }
  ]
 }
