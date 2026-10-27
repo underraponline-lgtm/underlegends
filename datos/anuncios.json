@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-27T20:24:50+00:00",
+ "cuando": "2026-10-27T20:54:45+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6780,6 +6780,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Deko 🇦🇷",
+   "quien": "dekocwp",
+   "discord_id": "1525316933786927137",
+   "msg_id": "1564742728959524969",
+   "cuando": "2026-10-27T20:48:58"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Deko 🇦🇷",
+   "quien": "dekocwp",
+   "discord_id": "1525316933786927137",
+   "msg_id": "1564741871719293112",
+   "cuando": "2026-10-27T20:45:33"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lso🇦🇷",
+   "quien": "mixso.1",
+   "discord_id": "1375242152518357066",
+   "msg_id": "1564737330433097801",
+   "cuando": "2026-10-27T20:27:30"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42752,33 +42779,6 @@
    "discord_id": "1458603256292053037",
    "msg_id": "1548086258654249022",
    "cuando": "2026-09-11T21:42:06"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "El Wachin 🇦🇷",
-   "quien": "3decopas.",
-   "discord_id": "1494178897908990136",
-   "msg_id": "1548086102051651585",
-   "cuando": "2026-09-11T21:41:28"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "erian",
-   "quien": "deslanofthemind",
-   "discord_id": "1055474244089286706",
-   "msg_id": "1548085906605342771",
-   "cuando": "2026-09-11T21:40:42"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Mco 🇦🇷",
-   "quien": "mcorap",
-   "discord_id": "1048744067313451050",
-   "msg_id": "1548084994633629808",
-   "cuando": "2026-09-11T21:37:04"
   }
  ]
 }
