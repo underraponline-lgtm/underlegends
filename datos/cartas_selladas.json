@@ -20,8 +20,8 @@
   },
   "AGUSTÍN51K": {
    "competitivo": "0541f599dfde:0a48057cb351",
-   "pais": "84bfdf477c2e:a4cd0d071a2b",
-   "servidor": "ea027de839be:bb9ec1fd7809:4975e5",
+   "pais": "84bfdf477c2e:263a27e40647",
+   "servidor": "ea027de839be:99e0c0179dbe:4975e5",
    "temporada": "76c7a15d252e:6ec1a5248de8"
   },
   "ARDEAN": {
@@ -48,7 +48,7 @@
   },
   "Adriagner": {
    "competitivo": "0d8351124e4a:0a48057cb351",
-   "pais": "907ff4a1e8cf:0e7af6f027ad",
+   "pais": "907ff4a1e8cf:263a27e40647",
    "servidor": "06bdbeb043df:99e0c0179dbe:80c07f",
    "temporada": "45d397ef847b:6ec1a5248de8"
   },
@@ -757,7 +757,7 @@
   },
   "Keider": {
    "competitivo": "9e44077e6c7e:0a48057cb351",
-   "pais": "f45194bbc426:a4cd0d071a2b",
+   "pais": "f45194bbc426:263a27e40647",
    "servidor": "7bb550ba2308:99e0c0179dbe:be5547",
    "temporada": "3d965adf728a:6ec1a5248de8"
   },
@@ -1301,7 +1301,7 @@
    "competitivo": "4f9ff55553dc:0a48057cb351",
    "pais": "fe8c027d3303:263a27e40647",
    "servidor": "59ef831f35ec:99e0c0179dbe:ca38c9",
-   "temporada": "2b017c8d0571:5832e3f3f78a"
+   "temporada": "2b017c8d0571:6ec1a5248de8"
   },
   "Polosport": {
    "competitivo": "706c7e49a413:0a48057cb351",
@@ -1812,9 +1812,9 @@
    "temporada": "de9a71a0eccd:6ec1a5248de8"
   },
   "dxg": {
-   "competitivo": "44d836206bba:0a48057cb351",
-   "pais": "b6b29a44be59:263a27e40647",
-   "servidor": "e9d363f618c3:99e0c0179dbe:921520"
+   "competitivo": "4c3f35293edb:0a48057cb351",
+   "pais": "38ec99bab05c:263a27e40647",
+   "servidor": "87e4f83057ef:99e0c0179dbe:921520"
   },
   "elzurdo": {
    "servidor": "1af20ed484a1:99e0c0179dbe:055f77"
@@ -1911,5 +1911,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-27T03:57:14+00:00"
+ "cuando": "2026-10-27T04:08:07+00:00"
 }
