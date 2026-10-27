@@ -1,65 +1,61 @@
 {
  "v": 1,
- "cuando": "2026-10-27T22:46:34Z",
+ "cuando": "2026-10-27T23:13:10Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 727.5,
+ "dur_s": 550.6,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.2
+   "s": 10.0
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 0.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 9.0
+   "s": 6.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.4
+   "s": 24.0
   },
   {
    "n": "5",
    "que": "tanda 1 de 3 · 40 persona(s)",
    "ok": false,
-   "s": 608.9
+   "s": 430.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 10.0
+   "s": 9.1
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 67.9
+   "s": 68.8
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py AGUSTÍN51K"
+   "que": "03_Servidor/generar.py Artezzy"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Jupiter"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py TøKīØ🦠🧠"
+   "que": "03_Servidor/generar.py Lord Viruzz"
   }
  ],
  "ultimo_evento": {
@@ -70,25 +66,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 588,
-   "read": 54033
+   "write": 610,
+   "read": 55514
   },
   "objeto": {
    "leidas": 5091259,
    "escritas": 25488,
-   "pedidos": 14068
+   "pedidos": 15048
   },
   "worker": {
-   "pedidos": 13321,
-   "errores": 2310,
-   "sub": 15016,
-   "cortados": 2310,
+   "pedidos": 13959,
+   "errores": 3222,
+   "sub": 15656,
+   "cortados": 3222,
    "p50_ms": 1.26,
    "p99_ms": 11.87,
    "cpu": {
-    "total": 35579,
-    "objeto_10": 1745,
-    "worker_10": 288
+    "total": 39638,
+    "objeto_10": 1697,
+    "worker_10": 292
    }
   },
   "r2": {
