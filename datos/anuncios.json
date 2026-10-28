@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-28T02:54:42+00:00",
+ "cuando": "2026-10-28T03:24:37+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6810,6 +6810,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "trelok 🇨🇴",
+   "quien": "fibonacci_______________",
+   "discord_id": "597257327464284163",
+   "msg_id": "1564837574629916703",
+   "cuando": "2026-10-28T03:05:51"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "presagio 🇦🇷 🇦🇷 🇦🇷",
+   "quien": "eltractorjonshon",
+   "discord_id": "852667585593868288",
+   "msg_id": "1564837349597249598",
+   "cuando": "2026-10-28T03:04:57"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42791,24 +42809,6 @@
    "discord_id": "1508623564285149357",
    "msg_id": "1549438507599003820",
    "cuando": "2026-09-15T15:15:27"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Chuwin 🇪🇸",
-   "quien": "chuwin_",
-   "discord_id": "618818177073414144",
-   "msg_id": "1549438477563592767",
-   "cuando": "2026-09-15T15:15:20"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Leonar-T 🇲🇽",
-   "quien": "leonart95.",
-   "discord_id": "1440039366654165212",
-   "msg_id": "1549438473541255219",
-   "cuando": "2026-09-15T15:15:19"
   }
  ]
 }

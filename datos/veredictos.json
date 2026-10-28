@@ -2,28 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1562298084828905585": {
-   "id": "1562298084828905585",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1792551289518,
-   "a": "artezzy",
-   "b": "lrs",
-   "ganador": "lrs",
-   "votos": "1–0"
-  },
-  "1562300822241681553": {
-   "id": "1562300822241681553",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1792551942168,
-   "a": "sin viejo",
-   "b": "lrs",
-   "ganador": "sin viejo",
-   "votos": "1–0"
-  },
   "1562583812980875275": {
    "id": "1562583812980875275",
    "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
@@ -1562,6 +1540,50 @@
    "a": "MATS",
    "b": "LAUTARO LA SINCERIDAD",
    "ganador": "LAUTARO LA SINCERIDAD",
+   "votos": "1–0"
+  },
+  "1564834922856972419": {
+   "id": "1564834922856972419",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793156118836,
+   "a": "SIX",
+   "b": "LIZEN",
+   "ganador": "SIX",
+   "votos": "1–0"
+  },
+  "1564836395447492740": {
+   "id": "1564836395447492740",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793156469929,
+   "a": "JANHO",
+   "b": "GIANLAMALDAD",
+   "ganador": "GIANLAMALDAD",
+   "votos": "1–0"
+  },
+  "1564838197819875360": {
+   "id": "1564838197819875360",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793156899648,
+   "a": "LAUTARO LA SINCERIDAD",
+   "b": "PARK JI SUNG",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
+  },
+  "1564839435080568933": {
+   "id": "1564839435080568933",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793157194634,
+   "a": "SIX",
+   "b": "GIANLAMALDAD",
+   "ganador": "GIANLAMALDAD",
    "votos": "1–0"
   }
  },
@@ -5576,8 +5598,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793155379554,
-   "ed": 1793155698884,
-   "texto": "`[ CUARTOS ]`\n⌞EDDY LA SOMBRA⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞MATS⌝ 🆚 ⌞LAUTARO LA SINCERIDAD⌝",
+   "ed": 1793157599243,
+   "texto": "`[ CUARTOS ]`\n⌞EDDY LA SOMBRA⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞MATS⌝ 🆚 ⌞LAUTARO LA SINCERIDAD⌝\n⌞SIX⌝ 🆚 ⌞LIZEN⌝\n⌞JANHO⌝ 🆚 ⌞GIANLAMALDAD⌝\n`[ SEMIFINALES ]`\n⌞LAUTARO LA SINCERIDAD⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞SIX⌝ 🆚 ⌞GIAN LA MALDAD⌝\n`[ FINAL ]`\n⌞GIAN LA MALDAD (PRAISERIZAS)⌝ 🆚 ⌞PARK JI SUNG (PRESAGIO)⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5597,6 +5619,56 @@
      ],
      "LAUTARO LA SINCERIDAD",
      "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "SIX",
+      "LIZEN"
+     ],
+     "SIX",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "JANHO",
+      "GIANLAMALDAD"
+     ],
+     "GIANLAMALDAD",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "LAUTARO LA SINCERIDAD",
+      "PARK JI SUNG"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "SIX",
+      "GIAN LA MALDAD"
+     ],
+     "GIAN LA MALDAD",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "GIAN LA MALDAD (PRAISERIZAS)",
+      "PARK JI SUNG (PRESAGIO)"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
