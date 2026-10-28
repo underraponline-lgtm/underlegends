@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-28T02:09:43+00:00",
+ "cuando": "2026-10-28T02:24:53+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6810,6 +6810,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lautaro la sinceridad 🇨🇨",
+   "quien": "goksito_8",
+   "discord_id": "1325042155819106324",
+   "msg_id": "1564825941958721537",
+   "cuando": "2026-10-28T02:19:37"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "sin limites 🇵🇪  (suplente)",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1564825299210862665",
+   "cuando": "2026-10-28T02:17:04"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "mats🇺🇾",
+   "quien": "matttt.15",
+   "discord_id": "597240876573392946",
+   "msg_id": "1564825012823662695",
+   "cuando": "2026-10-28T02:15:56"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42782,33 +42809,6 @@
    "discord_id": "818314359218241567",
    "msg_id": "1549438461440958695",
    "cuando": "2026-09-15T15:15:16"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "senticide🇨🇱",
-   "quien": "pakelopakelo",
-   "discord_id": "1355393300672020570",
-   "msg_id": "1549438451848323186",
-   "cuando": "2026-09-15T15:15:14"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "# 🇱🇸 |INSCRIPCIONES ABIERTAS| 🇱🇸 \n@everyone",
-   "quien": "csgo47.",
-   "discord_id": "1493317254581063680",
-   "msg_id": "1549438405186683016",
-   "cuando": "2026-09-15T15:15:02"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "MaYeuTyK 🇺🇾",
-   "quien": "martinez4080",
-   "discord_id": "756958777126682674",
-   "msg_id": "1549199894013808754",
-   "cuando": "2026-09-14T23:27:17"
   }
  ]
 }
