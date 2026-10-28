@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-10-28T06:41:20Z",
+ "cuando": "2026-10-28T07:07:45Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 696.0,
+ "dur_s": 468.8,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.2
+   "s": 6.4
   },
   {
    "n": "2f2",
@@ -21,31 +21,25 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.2
+   "s": 6.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 25.4
+   "s": 21.9
   },
   {
    "n": "5",
    "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 588.4
+   "s": 427.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.3
-  },
-  {
-   "n": "6",
-   "que": "refrescar KV",
-   "ok": true,
-   "s": 57.7
+   "s": 5.5
   }
  ],
  "fallas": [
@@ -55,7 +49,15 @@
   },
   {
    "paso": "5",
+   "que": "bot/subir_cartas.py /home/runner/work/underlegends/underlegends/03_Servidor/salida/sv-acad_luz.png"
+  },
+  {
+   "paso": "5",
    "que": "03_Servidor/generar.py TøKīØ🦠🧠"
+  },
+  {
+   "paso": "5",
+   "que": "bot/subir_cartas.py /home/runner/work/underlegends/underlegends/03_Servidor/salida/sv-urbf_melomaniaco.png"
   }
  ],
  "ultimo_evento": {
@@ -66,25 +68,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 289,
-   "read": 24691
+   "write": 299,
+   "read": 26152
   },
   "objeto": {
-   "leidas": 2498168,
-   "escritas": 12616,
-   "pedidos": 5424
+   "leidas": 2536536,
+   "escritas": 12864,
+   "pedidos": 5621
   },
   "worker": {
-   "pedidos": 14888,
+   "pedidos": 14675,
    "errores": 5864,
-   "sub": 16325,
+   "sub": 16094,
    "cortados": 5864,
-   "p50_ms": 1.33,
-   "p99_ms": 11.99,
+   "p50_ms": 1.35,
+   "p99_ms": 12.0,
    "cpu": {
-    "total": 49365,
-    "objeto_10": 1463,
-    "worker_10": 271
+    "total": 48954,
+    "objeto_10": 1459,
+    "worker_10": 268
    }
   },
   "r2": {
