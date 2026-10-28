@@ -623,6 +623,15 @@
 "temporada"
 ]
 },
+"teo": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "eidp": {
 "rg": "",
 "c": []
@@ -663,15 +672,6 @@
 "catarsis": {
 "rg": "",
 "c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
-"teo": {
-"rg": "E",
-"c": [
-"competitivo",
 "pais",
 "servidor",
 "temporada"

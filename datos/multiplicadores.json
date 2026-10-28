@@ -883,6 +883,11 @@
      1
     ],
     [
+     "ajoel08",
+     15,
+     1
+    ],
+    [
      "Cu",
      13,
      1
@@ -891,26 +896,22 @@
      "Evan geline",
      12,
      1
-    ],
-    [
-     "ajoel08",
-     10,
-     1
     ]
    ],
    "semillero": {
     "nuevos": {
      "FFA": 8,
-     "ACAD": 2
+     "ACAD": 2,
+     "FRZ": 4
     },
     "gente": {
      "FDS": 13,
      "DDF": 21,
      "FFA": 59,
-     "FRZ": 10,
+     "FRZ": 15,
      "ACAD": 16
     },
-    "gana": "FFA"
+    "gana": "FRZ"
    },
    "meta_va": {
     "ACAD": 16,
@@ -919,7 +920,7 @@
     "FDS": 13,
     "FFA": 59,
     "FFS": 0,
-    "FRZ": 10,
+    "FRZ": 15,
     "FVS": 0,
     "LKR": 0,
     "SR": 0,

@@ -864,6 +864,63 @@
   }
  },
  {
+  "full": "Erian",
+  "raw": "Erian",
+  "cc": "pa",
+  "sv": "FFA",
+  "crew": "Follombia",
+  "discord_id": "1055474244089286706",
+  "verificado": true,
+  "ev": 58,
+  "score": 43.3,
+  "conf": 1.0,
+  "E": 48,
+  "C": 47,
+  "Dm": 28,
+  "T": 31,
+  "V": 55,
+  "wr": "53.8%",
+  "rch_act": 2,
+  "rch_max": 4,
+  "duel_v": 33,
+  "duel_t": 63,
+  "duel_real": true,
+  "dna_v": 0,
+  "dna_t": 0,
+  "din_v": 32,
+  "din_t": 60,
+  "crn_t": 1,
+  "cri_t": 119,
+  "pos": 12,
+  "total": 65,
+  "rango": "B",
+  "subrango": "B",
+  "ovr": 0,
+  "av": "",
+  "pos_pais": "",
+  "arc_pais": 0,
+  "pos_sv": "13/151",
+  "arc_sv": 92,
+  "pos_crew": "1/9",
+  "tg_c": {
+   "bestia": 2,
+   "clasico": 2,
+   "dg": 33,
+   "fg": 5,
+   "fp": 3,
+   "mata": 1,
+   "riv": 51,
+   "venc": 27,
+   "vengo": 2
+  },
+  "tg_p": {
+   "paises": 11,
+   "paisesg": 9,
+   "pionero": true,
+   "primer": true
+  }
+ },
+ {
   "full": "Tam",
   "raw": "Tam",
   "cc": "ve",
@@ -916,63 +973,6 @@
   }
  },
  {
-  "full": "Erian",
-  "raw": "Erian",
-  "cc": "pa",
-  "sv": "FFA",
-  "crew": "Follombia",
-  "discord_id": "1055474244089286706",
-  "verificado": true,
-  "ev": 58,
-  "score": 43.0,
-  "conf": 1.0,
-  "E": 47,
-  "C": 47,
-  "Dm": 28,
-  "T": 31,
-  "V": 55,
-  "wr": "53.8%",
-  "rch_act": 2,
-  "rch_max": 4,
-  "duel_v": 33,
-  "duel_t": 63,
-  "duel_real": true,
-  "dna_v": 0,
-  "dna_t": 0,
-  "din_v": 32,
-  "din_t": 60,
-  "crn_t": 1,
-  "cri_t": 119,
-  "pos": 12,
-  "total": 65,
-  "rango": "B",
-  "subrango": "B",
-  "ovr": 0,
-  "av": "",
-  "pos_pais": "",
-  "arc_pais": 0,
-  "pos_sv": "13/151",
-  "arc_sv": 92,
-  "pos_crew": "1/9",
-  "tg_c": {
-   "bestia": 2,
-   "clasico": 2,
-   "dg": 33,
-   "fg": 5,
-   "fp": 3,
-   "mata": 1,
-   "riv": 50,
-   "venc": 27,
-   "vengo": 2
-  },
-  "tg_p": {
-   "paises": 11,
-   "paisesg": 9,
-   "pionero": true,
-   "primer": true
-  }
- },
- {
   "full": "OG",
   "raw": "OG",
   "cc": "ve",
@@ -980,16 +980,16 @@
   "crew": "Lighting Force",
   "discord_id": "425356695309516810",
   "verificado": true,
-  "ev": 16,
-  "score": 41.3,
-  "conf": 0.93,
-  "E": 60,
-  "C": 66,
-  "Dm": 50,
+  "ev": 17,
+  "score": 41.8,
+  "conf": 0.95,
+  "E": 58,
+  "C": 69,
+  "Dm": 47,
   "T": 31,
   "V": 0,
   "wr": "68.8%",
-  "rch_act": 0,
+  "rch_act": 1,
   "rch_max": 5,
   "duel_v": 11,
   "duel_t": 16,
@@ -3692,7 +3692,7 @@
    "clasico": 2,
    "dg": 7,
    "mata": 1,
-   "riv": 19,
+   "riv": 20,
    "venc": 7,
    "vengo": 1
   },
@@ -3793,7 +3793,16 @@
   "pos_sv": "",
   "arc_sv": 0,
   "tg_c": {
-   "fg": 1
+   "bestia": 1,
+   "clasico": 1,
+   "dg": 3,
+   "fg": 1,
+   "riv": 3,
+   "venc": 3
+  },
+  "tg_p": {
+   "paises": 3,
+   "paisesg": 3
   }
  },
  {
@@ -3987,7 +3996,16 @@
   "pos_sv": "",
   "arc_sv": 0,
   "tg_c": {
-   "fg": 1
+   "bestia": 1,
+   "clasico": 1,
+   "dg": 3,
+   "fg": 1,
+   "riv": 3,
+   "venc": 3
+  },
+  "tg_p": {
+   "paises": 3,
+   "paisesg": 3
   }
  },
  {
@@ -7593,7 +7611,16 @@
   "pos_sv": "",
   "arc_sv": 0,
   "tg_c": {
-   "fp": 1
+   "bestia": 1,
+   "clasico": 1,
+   "dg": 2,
+   "fp": 1,
+   "riv": 3,
+   "venc": 2
+  },
+  "tg_p": {
+   "paises": 2,
+   "paisesg": 1
   }
  },
  {
@@ -7741,13 +7768,13 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 2,
-   "riv": 4,
-   "venc": 2
+   "dg": 3,
+   "riv": 6,
+   "venc": 3
   },
   "tg_p": {
-   "paises": 3,
-   "paisesg": 2
+   "paises": 4,
+   "paisesg": 3
   }
  },
  {
@@ -8942,7 +8969,18 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "bestia": 1,
+   "clasico": 1,
+   "dg": 1,
+   "riv": 2,
+   "venc": 1
+  },
+  "tg_p": {
+   "paises": 1,
+   "paisesg": 1
+  }
  },
  {
   "full": "MR.LABURO🇨🇴",
@@ -9073,6 +9111,52 @@
   }
  },
  {
+  "full": "Teo",
+  "raw": "Teo",
+  "cc": "co",
+  "sv": "FFA",
+  "crew": "",
+  "discord_id": "720123151819997245",
+  "verificado": true,
+  "ev": 17,
+  "score": 11.6,
+  "conf": 0.95,
+  "E": 22,
+  "C": 7,
+  "Dm": 0,
+  "T": 8,
+  "V": 21,
+  "wr": "0.0%",
+  "rch_act": 1,
+  "rch_max": 1,
+  "duel_v": 0,
+  "duel_t": 3,
+  "duel_real": true,
+  "dna_v": 0,
+  "dna_t": 1,
+  "din_v": 0,
+  "din_t": 2,
+  "crn_t": 5,
+  "cri_t": 20,
+  "pos": 57,
+  "total": 65,
+  "rango": "E",
+  "subrango": "E",
+  "ovr": 0,
+  "av": "",
+  "pos_pais": "16/28",
+  "arc_pais": 46,
+  "pos_sv": "75/151",
+  "arc_sv": 51,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 4
+  },
+  "tg_p": {
+   "paises": 4
+  }
+ },
+ {
   "full": "Saito",
   "raw": "Saito",
   "cc": "co",
@@ -9149,7 +9233,7 @@
   "din_t": 4,
   "crn_t": 10,
   "cri_t": 25,
-  "pos": 57,
+  "pos": 58,
   "total": 65,
   "rango": "E",
   "subrango": "E",
@@ -9157,8 +9241,8 @@
   "av": "",
   "pos_pais": "26/45",
   "arc_pais": 44,
-  "pos_sv": "75/151",
-  "arc_sv": 51,
+  "pos_sv": "76/151",
+  "arc_sv": 50,
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -9250,7 +9334,7 @@
   "din_t": 12,
   "crn_t": 1,
   "cri_t": 16,
-  "pos": 58,
+  "pos": 59,
   "total": 65,
   "rango": "E",
   "subrango": "E",
@@ -9258,7 +9342,7 @@
   "av": "",
   "pos_pais": "3/5",
   "arc_pais": 60,
-  "pos_sv": "76/151",
+  "pos_sv": "77/151",
   "arc_sv": 50,
   "tg_c": {
    "bestia": 1,
@@ -9361,8 +9445,8 @@
   "av": "",
   "pos_pais": "7/12",
   "arc_pais": 50,
-  "pos_sv": "77/151",
-  "arc_sv": 50,
+  "pos_sv": "78/151",
+  "arc_sv": 49,
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -9539,8 +9623,8 @@
   "av": "",
   "pos_pais": "19/36",
   "arc_pais": 50,
-  "pos_sv": "78/151",
-  "arc_sv": 49,
+  "pos_sv": "79/151",
+  "arc_sv": 48,
   "pos_crew": "",
   "tg_c": {
    "bestia": 1,
@@ -9841,9 +9925,9 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "16/28",
-  "arc_pais": 46,
-  "pos_sv": "79/151",
+  "pos_pais": "17/28",
+  "arc_pais": 43,
+  "pos_sv": "80/151",
   "arc_sv": 48,
   "tg_c": {
    "bestia": 1,
@@ -9936,7 +10020,7 @@
   "din_t": 7,
   "crn_t": 3,
   "cri_t": 11,
-  "pos": 59,
+  "pos": 60,
   "total": 65,
   "rango": "E",
   "subrango": "E",
@@ -10032,7 +10116,7 @@
   "din_t": 5,
   "crn_t": 12,
   "cri_t": 23,
-  "pos": 60,
+  "pos": 61,
   "total": 65,
   "rango": "E",
   "subrango": "E",
@@ -10040,8 +10124,8 @@
   "av": "",
   "pos_pais": "27/45",
   "arc_pais": 42,
-  "pos_sv": "80/151",
-  "arc_sv": 48,
+  "pos_sv": "81/151",
+  "arc_sv": 47,
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -10240,8 +10324,8 @@
   "av": "",
   "pos_pais": "9/20",
   "arc_pais": 60,
-  "pos_sv": "81/151",
-  "arc_sv": 47,
+  "pos_sv": "82/151",
+  "arc_sv": 46,
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -10290,7 +10374,7 @@
   "av": "",
   "pos_pais": "28/45",
   "arc_pais": 40,
-  "pos_sv": "82/151",
+  "pos_sv": "83/151",
   "arc_sv": 46,
   "pos_crew": "",
   "tg_c": {
@@ -10341,8 +10425,8 @@
   "av": "",
   "pos_pais": "7/19",
   "arc_pais": 68,
-  "pos_sv": "83/151",
-  "arc_sv": 46
+  "pos_sv": "84/151",
+  "arc_sv": 45
  },
  {
   "full": "Acry",
@@ -10418,10 +10502,10 @@
   "subrango": "",
   "ovr": 0,
   "av": "",
-  "pos_pais": "17/28",
-  "arc_pais": 43,
-  "pos_sv": "84/151",
-  "arc_sv": 45
+  "pos_pais": "18/28",
+  "arc_pais": 39,
+  "pos_sv": "85/151",
+  "arc_sv": 44
  },
  {
   "full": "Fix 17",
@@ -10763,7 +10847,7 @@
   "din_t": 8,
   "crn_t": 2,
   "cri_t": 20,
-  "pos": 61,
+  "pos": 62,
   "total": 65,
   "rango": "E",
   "subrango": "E",
@@ -10771,7 +10855,7 @@
   "av": "",
   "pos_pais": "10/20",
   "arc_pais": 55,
-  "pos_sv": "85/151",
+  "pos_sv": "86/151",
   "arc_sv": 44,
   "pos_crew": "",
   "tg_c": {
@@ -10908,8 +10992,8 @@
   "av": "",
   "pos_pais": "11/20",
   "arc_pais": 50,
-  "pos_sv": "86/151",
-  "arc_sv": 44,
+  "pos_sv": "87/151",
+  "arc_sv": 43,
   "pos_crew": "",
   "tg_c": {
    "clasico": 1,
@@ -10917,52 +11001,6 @@
   },
   "tg_p": {
    "paises": 1
-  }
- },
- {
-  "full": "Teo",
-  "raw": "Teo",
-  "cc": "co",
-  "sv": "FFA",
-  "crew": "",
-  "discord_id": "720123151819997245",
-  "verificado": true,
-  "ev": 16,
-  "score": 9.2,
-  "conf": 0.93,
-  "E": 22,
-  "C": 0,
-  "Dm": 0,
-  "T": 0,
-  "V": 22,
-  "wr": "0.0%",
-  "rch_act": 0,
-  "rch_max": 1,
-  "duel_v": 0,
-  "duel_t": 3,
-  "duel_real": true,
-  "dna_v": 0,
-  "dna_t": 1,
-  "din_v": 0,
-  "din_t": 2,
-  "crn_t": 5,
-  "cri_t": 20,
-  "pos": 62,
-  "total": 65,
-  "rango": "E",
-  "subrango": "E",
-  "ovr": 0,
-  "av": "",
-  "pos_pais": "18/28",
-  "arc_pais": 39,
-  "pos_sv": "87/151",
-  "arc_sv": 43,
-  "tg_c": {
-   "clasico": 1,
-   "riv": 4
-  },
-  "tg_p": {
-   "paises": 4
   }
  },
  {
@@ -12585,7 +12623,14 @@
   "arc_pais": 39,
   "pos_sv": "8/15",
   "arc_sv": 53,
-  "pos_crew": ""
+  "pos_crew": "",
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  },
+  "tg_p": {
+   "paises": 1
+  }
  },
  {
   "full": "Zaik",
@@ -17426,7 +17471,11 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "",
-  "arc_sv": 0
+  "arc_sv": 0,
+  "tg_c": {
+   "clasico": 1,
+   "riv": 1
+  }
  },
  {
   "full": "setesfifi",
@@ -22425,45 +22474,6 @@
   "arc_sv": 0
  },
  {
-  "full": "lil",
-  "raw": "lil",
-  "cc": "",
-  "sv": "FFA",
-  "crew": "",
-  "discord_id": "",
-  "verificado": false,
-  "ev": 1,
-  "score": 1.3,
-  "conf": 0.3,
-  "E": 17,
-  "C": 0,
-  "Dm": 0,
-  "T": 0,
-  "V": 0,
-  "wr": "",
-  "rch_act": 0,
-  "rch_max": 0,
-  "duel_v": 0,
-  "duel_t": 0,
-  "duel_real": false,
-  "dna_v": 0,
-  "dna_t": 0,
-  "din_v": 0,
-  "din_t": 0,
-  "crn_t": 0,
-  "cri_t": 0,
-  "pos": 486,
-  "total": 65,
-  "rango": "",
-  "subrango": "",
-  "ovr": 0,
-  "av": "",
-  "pos_pais": "",
-  "arc_pais": 0,
-  "pos_sv": "",
-  "arc_sv": 0
- },
- {
   "full": "Leyenda",
   "raw": "Leyenda",
   "cc": "ar",
@@ -22491,7 +22501,7 @@
   "din_t": 0,
   "crn_t": 0,
   "cri_t": 4,
-  "pos": 487,
+  "pos": 486,
   "total": 65,
   "rango": "",
   "subrango": "",
@@ -22512,6 +22522,45 @@
    "paises": 3,
    "paisesg": 1
   }
+ },
+ {
+  "full": "lil",
+  "raw": "lil",
+  "cc": "",
+  "sv": "FFA",
+  "crew": "",
+  "discord_id": "",
+  "verificado": false,
+  "ev": 1,
+  "score": 1.3,
+  "conf": 0.3,
+  "E": 17,
+  "C": 0,
+  "Dm": 0,
+  "T": 0,
+  "V": 0,
+  "wr": "",
+  "rch_act": 0,
+  "rch_max": 0,
+  "duel_v": 0,
+  "duel_t": 0,
+  "duel_real": false,
+  "dna_v": 0,
+  "dna_t": 0,
+  "din_v": 0,
+  "din_t": 0,
+  "crn_t": 0,
+  "cri_t": 0,
+  "pos": 487,
+  "total": 65,
+  "rango": "",
+  "subrango": "",
+  "ovr": 0,
+  "av": "",
+  "pos_pais": "",
+  "arc_pais": 0,
+  "pos_sv": "",
+  "arc_sv": 0
  },
  {
   "full": "Bishop",
