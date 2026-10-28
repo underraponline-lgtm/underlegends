@@ -1,21 +1,21 @@
 {
  "v": 1,
- "cuando": "2026-10-28T05:41:04Z",
+ "cuando": "2026-10-28T05:54:36Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1782.5,
+ "dur_s": 775.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.7
+   "s": 6.8
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 6.7
   },
   {
    "n": "3",
@@ -27,19 +27,19 @@
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.9
+   "s": 20.7
   },
   {
    "n": "5",
-   "que": "tanda 1 de 5 · 40 persona(s)",
+   "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 1673.9
+   "s": 665.2
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 7.1
+   "s": 5.2
   },
   {
    "n": "6",
@@ -51,15 +51,15 @@
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
+   "que": "03_Servidor/generar.py Artezzy"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Kochi"
+   "que": "03_Servidor/generar.py MetriOdin"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py TøKīØ🦠🧠"
+   "que": "bot/subir_cartas.py /home/runner/work/underlegends/underlegends/01_Temporada/salida/temporada_Vandu.png"
   }
  ],
  "ultimo_evento": {
@@ -70,25 +70,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 259,
-   "read": 20483
+   "write": 267,
+   "read": 21469
   },
   "objeto": {
-   "leidas": 2310376,
-   "escritas": 11911,
-   "pedidos": 5008
+   "leidas": 2354112,
+   "escritas": 12118,
+   "pedidos": 5124
   },
   "worker": {
-   "pedidos": 15245,
+   "pedidos": 15127,
    "errores": 5864,
-   "sub": 16733,
+   "sub": 16595,
    "cortados": 5864,
-   "p50_ms": 1.31,
+   "p50_ms": 1.32,
    "p99_ms": 11.87,
    "cpu": {
-    "total": 50118,
+    "total": 49859,
     "objeto_10": 1487,
-    "worker_10": 272
+    "worker_10": 273
    }
   },
   "r2": {
