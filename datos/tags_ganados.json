@@ -728,6 +728,20 @@
    ]
   }
  },
+ "andresito": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1793149367177
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1793149367177
+   ]
+  }
+ },
  "andy": {
   "temporada": {
    "🥉 AL PODIO": [
@@ -2506,7 +2520,7 @@
     1792953978519
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x2",
+    "👑 CAMPEÓN x1",
     "t1",
     1793029252929
    ],
@@ -4814,6 +4828,11 @@
     "t1",
     1792953978519
    ],
+   "😈 BESTIA NEGRA": [
+    "😈 BESTIA NEGRA",
+    "t1",
+    1793149367177
+   ],
    "🤜 CLÁSICO": [
     "🤜 CLÁSICO",
     "t1",
@@ -5992,6 +6011,11 @@
     "t1",
     1793029252929
    ],
+   "KILÓMETROS": [
+    "KILÓMETROS",
+    "t1",
+    1793149367177
+   ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
     "t1",
@@ -6060,6 +6084,11 @@
     "📋 SEMANA PERFECTA",
     "t1",
     1793029252929
+   ],
+   "🔋 INAGOTABLE": [
+    "🔋 INAGOTABLE",
+    "t1",
+    1793149367177
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
@@ -8091,10 +8120,20 @@
    ]
   },
   "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1793149367177
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x1",
     "t1",
     1792953978519
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1793149367177
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",

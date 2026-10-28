@@ -19212,7 +19212,7 @@
    "Zignos": 24
   },
   "fecha": "22/10",
-  "firma": "01be4c69fc43a236",
+  "firma": "0f0c22940c7eddd3",
   "msg": "1562967842851266610",
   "nombre": "__ SI NO SOS FOURBAR NO QUIERO NADA VOL.1 __",
   "num": 499,
@@ -21500,7 +21500,7 @@
    "Tam": 12
   },
   "fecha": "24/10",
-  "firma": "a6452b148107a94b",
+  "firma": "af0dce733350a4f3",
   "msg": "1563694518920814593",
   "nombre": "GRISELDA RECORDS VOL. 4",
   "num": 510,
@@ -21622,7 +21622,7 @@
    "Sin Limites": 28
   },
   "fecha": "25/10",
-  "firma": "9c8b69967573c6c8",
+  "firma": "d28705c2dee0d02b",
   "msg": "1563774195693916281",
   "nombre": "GRISELDA RECORDS VOL. 6",
   "num": 511,
@@ -22100,7 +22100,7 @@
    "Walker": 5
   },
   "fecha": "25/10",
-  "firma": "f45ba409d32a79d9",
+  "firma": "d1d04ce6dc47968a",
   "msg": "1563988074583564319",
   "nombre": "19 CUP FUTCARD - EDICIÓN 7",
   "num": 513,
@@ -26257,6 +26257,41 @@
   "canal": "838593179744731229",
   "duelos": [
    [
+    "Andresito🇦🇷",
+    "NC",
+    "Andresito🇦🇷"
+   ],
+   [
+    "Lizennin🇸🇴",
+    "Tiago Context 🇦🇷",
+    "Lizennin🇸🇴"
+   ],
+   [
+    "Luck",
+    "Molt",
+    "Luck"
+   ],
+   [
+    "Ragna 🇨🇱",
+    "Erian",
+    "Ragna 🇨🇱"
+   ],
+   [
+    "Andresito🇦🇷",
+    "Lizennin🇸🇴",
+    "Andresito🇦🇷"
+   ],
+   [
+    "Ragna 🇨🇱",
+    "Luck",
+    "Ragna 🇨🇱"
+   ],
+   [
+    "Ragna 🇨🇱",
+    "Andresito🇦🇷",
+    "Ragna 🇨🇱"
+   ],
+   [
     "Dynoco",
     "Scritura",
     "Dynoco"
@@ -26343,7 +26378,7 @@
    "Mr.Kude": 2
   },
   "fecha": "27/10",
-  "firma": "36c0d16e5164dd22",
+  "firma": "4176f0eaa3e3baeb",
   "msg": "1564725192360464586",
   "nombre": "- IRLANDA FREESTYLE -",
   "num": 533,
@@ -26355,14 +26390,19 @@
   "t": "2026-10-27T19:54:05Z",
   "tabla": [
    [
-    "Erian",
-    "Semifinal",
-    8500
-   ],
-   [
-    "Dynoco",
+    "Ragna 🇨🇱",
     "Campeón",
     7500
+   ],
+   [
+    "Luck",
+    "Semifinal",
+    7000
+   ],
+   [
+    "Andresito🇦🇷",
+    "Subcampeón",
+    5000
    ],
    [
     "Scritura",
@@ -26370,12 +26410,17 @@
     3750
    ],
    [
+    "Lizennin🇸🇴",
+    "Semifinal",
+    3500
+   ],
+   [
     "MTZ",
     "Semifinal",
     3500
    ],
    [
-    "Luck",
+    "Erian",
     "Semifinal",
     3500
    ],
@@ -26383,6 +26428,21 @@
     "Vilca",
     "Cuartos",
     3000
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Tiago Context 🇦🇷",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Molt",
+    "Cuartos",
+    2000
    ],
    [
     "Mr.Kude",
@@ -26640,6 +26700,926 @@
     "Erian",
     "Cuartos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "535": {
+  "antes": {
+   "1200": [
+    229,
+    76,
+    true
+   ],
+   "Drexx": [
+    35,
+    42,
+    false
+   ],
+   "Efimero": [
+    238,
+    114,
+    true
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "Infecte": [
+    384,
+    343,
+    true
+   ],
+   "Jobaking": [
+    85,
+    111,
+    false
+   ],
+   "Leonart": [
+    60,
+    78,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Miniboy": [
+    27,
+    31,
+    false
+   ],
+   "Number": [
+    79,
+    103,
+    false
+   ],
+   "Panchok": [
+    6,
+    7,
+    false
+   ],
+   "PichulaMc": [
+    3,
+    3,
+    false
+   ],
+   "Ryuk": [
+    466,
+    449,
+    true
+   ],
+   "Teo": [
+    69,
+    91,
+    false
+   ]
+  },
+  "canal": "925213294703300649",
+  "duelos": [
+   [
+    "PichulaMc",
+    "1200",
+    "PichulaMc"
+   ],
+   [
+    "Infecte",
+    "Turbo 🇪🇦",
+    "Infecte"
+   ],
+   [
+    "Ryuk",
+    "Number",
+    "Ryuk"
+   ],
+   [
+    "Miniboy",
+    "Drexx",
+    "Miniboy"
+   ],
+   [
+    "Jobaking",
+    "Teo",
+    "Jobaking"
+   ],
+   [
+    "Erian",
+    "Efimero",
+    "Erian"
+   ],
+   [
+    "Panchok",
+    "Lvel 🇻🇪",
+    "Panchok"
+   ],
+   [
+    "Makmah",
+    "Leonart",
+    "Makmah"
+   ],
+   [
+    "PichulaMc",
+    "Infecte",
+    "PichulaMc"
+   ],
+   [
+    "Miniboy",
+    "Ryuk",
+    "Miniboy"
+   ],
+   [
+    "Erian",
+    "Jobaking",
+    "Erian"
+   ],
+   [
+    "Panchok",
+    "Makmah",
+    "Panchok"
+   ],
+   [
+    "Miniboy",
+    "PichulaMc",
+    "Miniboy"
+   ],
+   [
+    "Panchok",
+    "Erian",
+    "Panchok"
+   ],
+   [
+    "Panchok",
+    "Miniboy",
+    "Panchok"
+   ]
+  ],
+  "ev_antes": {
+   "1200": 12,
+   "Drexx": 26,
+   "Efimero": 9,
+   "Erian": 58,
+   "Infecte": 3,
+   "Jobaking": 9,
+   "Leonart": 11,
+   "Makmah": 83,
+   "Miniboy": 31,
+   "Number": 9,
+   "Panchok": 25,
+   "PichulaMc": 51,
+   "Ryuk": 1,
+   "Teo": 17
+  },
+  "fecha": "27/10",
+  "firma": "a1c255dee0f601bd",
+  "msg": "1564804334967980113",
+  "nombre": "PRADERAP VOL.2",
+  "num": 535,
+  "participantes": 17,
+  "sello": {
+   "Panchok": "c1b309caa999:6ec1a5248de8"
+  },
+  "sv": "ACAD",
+  "t": "2026-10-28T00:53:44Z",
+  "tabla": [
+   [
+    "Panchok",
+    "Campeón",
+    10000
+   ],
+   [
+    "Miniboy",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Erian",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Infecte",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ryuk",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Jobaking",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2500
+   ],
+   [
+    "1200",
+    "Octavos",
+    1250
+   ],
+   [
+    "Turbo 🇪🇦",
+    "Octavos",
+    1250
+   ],
+   [
+    "Number",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Efimero",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Leonart",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "536": {
+  "antes": {
+   "Abyssus": [
+    17,
+    18,
+    false
+   ],
+   "Calíz": [
+    47,
+    63,
+    false
+   ],
+   "Deuxs": [
+    96,
+    132,
+    false
+   ],
+   "Dyzz": [
+    38,
+    50,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "Jobaking": [
+    85,
+    111,
+    false
+   ],
+   "KIRITO": [
+    330,
+    261,
+    true
+   ],
+   "Khalil": [
+    154,
+    300,
+    false
+   ],
+   "LSO": [
+    326,
+    256,
+    true
+   ],
+   "Liberia": [
+    7,
+    8,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Miniboy": [
+    27,
+    31,
+    false
+   ],
+   "NC": [
+    22,
+    26,
+    false
+   ],
+   "Number": [
+    79,
+    103,
+    false
+   ],
+   "OKAM": [
+    32,
+    37,
+    false
+   ],
+   "PichulaMc": [
+    3,
+    3,
+    false
+   ],
+   "Polosport": [
+    31,
+    36,
+    false
+   ],
+   "Provenza": [
+    19,
+    21,
+    false
+   ],
+   "SULTAN": [
+    260,
+    158,
+    true
+   ],
+   "Scritura": [
+    108,
+    156,
+    false
+   ],
+   "Six": [
+    8,
+    9,
+    false
+   ],
+   "Sosa": [
+    46,
+    62,
+    false
+   ],
+   "Trelok": [
+    106,
+    154,
+    false
+   ],
+   "Trot": [
+    33,
+    38,
+    false
+   ],
+   "Vandu": [
+    13,
+    14,
+    false
+   ],
+   "Verc": [
+    11,
+    12,
+    false
+   ],
+   "francis": [
+    257,
+    151,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "OG",
+    "Number",
+    "OG"
+   ],
+   [
+    "OG",
+    "Miniboy",
+    "OG"
+   ],
+   [
+    "Jobaking",
+    "Sosa",
+    "Jobaking"
+   ],
+   [
+    "Jobaking",
+    "Scritura",
+    "Jobaking"
+   ],
+   [
+    "Polosport",
+    "Lvel 🇻🇪",
+    "Polosport"
+   ],
+   [
+    "Polosport",
+    "KIRITO",
+    "Polosport"
+   ],
+   [
+    "Verc",
+    "OKAM",
+    "Verc"
+   ],
+   [
+    "Verc",
+    "Calíz",
+    "Verc"
+   ],
+   [
+    "Erian",
+    "NC",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "LSO",
+    "Erian"
+   ],
+   [
+    "PichulaMc",
+    "Khalil",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "SULTAN",
+    "PichulaMc"
+   ],
+   [
+    "MATUK 🇦🇷",
+    "Makmah",
+    "MATUK 🇦🇷"
+   ],
+   [
+    "MATUK 🇦🇷",
+    "Vandu",
+    "MATUK 🇦🇷"
+   ],
+   [
+    "Trelok",
+    "Dyzz",
+    "Trelok"
+   ],
+   [
+    "Trelok",
+    "Trot",
+    "Trelok"
+   ],
+   [
+    "OG, Teo",
+    "Erian, Provenza",
+    "OG, Teo"
+   ],
+   [
+    "Abyssus, PichulaMc",
+    "Deuxs, Jobaking",
+    "Abyssus, PichulaMc"
+   ],
+   [
+    "Polosport, Mr Still Ballin",
+    "Six, MATUK 🇦🇷",
+    "Polosport, Mr Still Ballin"
+   ],
+   [
+    "Verc, Liberia",
+    "francis, Trelok",
+    "Verc, Liberia"
+   ],
+   [
+    "Verc, Liberia, Trelok",
+    "Abyssus, PichulaMc, Jobaking",
+    "Verc, Liberia, Trelok"
+   ],
+   [
+    "Over, Polosport, Six, Erian",
+    "Liberia, Verc, Trelok, Abyssus",
+    "Over, Polosport, Six, Erian"
+   ]
+  ],
+  "ev_antes": {
+   "Abyssus": 19,
+   "Calíz": 17,
+   "Deuxs": 7,
+   "Dyzz": 19,
+   "Erian": 58,
+   "Jobaking": 9,
+   "KIRITO": 2,
+   "Khalil": 1,
+   "LSO": 2,
+   "Liberia": 21,
+   "Makmah": 83,
+   "Miniboy": 31,
+   "NC": 39,
+   "Number": 9,
+   "OKAM": 13,
+   "PichulaMc": 51,
+   "Polosport": 13,
+   "Provenza": 32,
+   "SULTAN": 6,
+   "Scritura": 6,
+   "Six": 33,
+   "Sosa": 22,
+   "Trelok": 2,
+   "Trot": 27,
+   "Vandu": 38,
+   "Verc": 21,
+   "francis": 4
+  },
+  "fecha": "27/10",
+  "firma": "a3148cf6065fc39f",
+  "msg": "1564804339644764164",
+  "nombre": "__ FREESTYLE FOR ALL ESPECIAL 1800 PANDILLAS __",
+  "num": 536,
+  "participantes": 33,
+  "sello": {
+   "Erian": "efc50a6102c0:6ec1a5248de8",
+   "Over": "",
+   "Polosport": "285a7e7dcab6:6ec1a5248de8",
+   "Six": "4a2a40a9b7c8:6ec1a5248de8"
+  },
+  "sv": "FFA",
+  "t": "2026-10-28T00:53:46Z",
+  "tabla": [
+   [
+    "Six",
+    "Campeón",
+    3750
+   ],
+   [
+    "Erian",
+    "Campeón",
+    3750
+   ],
+   [
+    "Abyssus",
+    "Subcampeón",
+    3625
+   ],
+   [
+    "Trelok",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Jobaking",
+    "Semifinal",
+    3000
+   ],
+   [
+    "Over",
+    "Campeón",
+    2500
+   ],
+   [
+    "Polosport",
+    "Campeón",
+    2500
+   ],
+   [
+    "Liberia",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Verc",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Provenza",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Deuxs",
+    "Cuartos",
+    1250
+   ],
+   [
+    "MATUK 🇦🇷",
+    "Cuartos",
+    1250
+   ],
+   [
+    "francis",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Number",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sosa",
+    "Octavos",
+    1250
+   ],
+   [
+    "Scritura",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "KIRITO",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    1250
+   ],
+   [
+    "NC",
+    "Octavos",
+    1250
+   ],
+   [
+    "LSO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Khalil",
+    "Octavos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Vandu",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Trot",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "537": {
+  "antes": {
+   "Carlosss": [
+    20,
+    22,
+    false
+   ],
+   "CrisZJ": [
+    218,
+    41,
+    true
+   ],
+   "Drexx": [
+    35,
+    42,
+    false
+   ],
+   "Eclipsito": [
+    225,
+    54,
+    true
+   ],
+   "Jobaking": [
+    85,
+    111,
+    false
+   ],
+   "Lizeninn": [
+    244,
+    128,
+    true
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Miniboy": [
+    27,
+    31,
+    false
+   ],
+   "NXUZ": [
+    29,
+    33,
+    false
+   ],
+   "PichulaMc": [
+    3,
+    3,
+    false
+   ],
+   "Sin Limites": [
+    28,
+    32,
+    false
+   ],
+   "Walker": [
+    48,
+    64,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "PichulaMc",
+    "CrisZJ",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "Miniboy",
+    "PichulaMc"
+   ],
+   [
+    "Carlosss",
+    "Eclipsito",
+    "Carlosss"
+   ],
+   [
+    "Carlosss",
+    "Jobaking",
+    "Carlosss"
+   ],
+   [
+    "Makmah",
+    "Sin Limites",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Lizeninn",
+    "Makmah"
+   ],
+   [
+    "NXUZ",
+    "Drexx",
+    "NXUZ"
+   ],
+   [
+    "NXUZ",
+    "Walker",
+    "NXUZ"
+   ],
+   [
+    "Carlosss",
+    "PichulaMc",
+    "Carlosss"
+   ],
+   [
+    "Makmah",
+    "NXUZ",
+    "Makmah"
+   ],
+   [
+    "Carlosss",
+    "Makmah",
+    "Carlosss"
+   ]
+  ],
+  "ev_antes": {
+   "Carlosss": 14,
+   "CrisZJ": 18,
+   "Drexx": 26,
+   "Eclipsito": 13,
+   "Jobaking": 9,
+   "Lizeninn": 8,
+   "Makmah": 83,
+   "Miniboy": 31,
+   "NXUZ": 23,
+   "PichulaMc": 51,
+   "Sin Limites": 35,
+   "Walker": 7
+  },
+  "fecha": "27/10",
+  "firma": "20eaaf87651d111d",
+  "msg": "1564804345529237504",
+  "nombre": "ROUSS CUP 1",
+  "num": 537,
+  "participantes": 12,
+  "sello": {
+   "Carlosss": "16402d2f46f0:e8f4f15f7e3a"
+  },
+  "sv": "DDF",
+  "t": "2026-10-28T00:53:47Z",
+  "tabla": [
+   [
+    "Carlosss",
+    "Campeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    3500
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Eclipsito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jobaking",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lizeninn",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Walker",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2

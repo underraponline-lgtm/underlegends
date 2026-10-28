@@ -35738,6 +35738,38 @@
     "b": [
      [
       [
+       "Andresito🇦🇷",
+       "NC"
+      ],
+      "Andresito🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Lizennin🇸🇴",
+       "Tiago Context 🇦🇷"
+      ],
+      "Lizennin🇸🇴",
+      ""
+     ],
+     [
+      [
+       "Luck",
+       "Molt"
+      ],
+      "Luck",
+      ""
+     ],
+     [
+      [
+       "Ragna 🇨🇱",
+       "Erian"
+      ],
+      "Ragna 🇨🇱",
+      ""
+     ],
+     [
+      [
        "Dynoco",
        "Scritura"
       ],
@@ -35808,6 +35840,22 @@
     "b": [
      [
       [
+       "Andresito🇦🇷",
+       "Lizennin🇸🇴"
+      ],
+      "Andresito🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Ragna 🇨🇱",
+       "Luck"
+      ],
+      "Ragna 🇨🇱",
+      ""
+     ],
+     [
+      [
        "Dynoco",
        "MTZ"
       ],
@@ -35845,6 +35893,14 @@
     "b": [
      [
       [
+       "Ragna 🇨🇱",
+       "Andresito🇦🇷"
+      ],
+      "Ragna 🇨🇱",
+      ""
+     ],
+     [
+      [
        "Dynoco",
        "Erian"
       ],
@@ -35866,14 +35922,19 @@
   "sv": "FRZ",
   "tabla": [
    [
-    "Erian",
-    "Semifinal",
-    8500
-   ],
-   [
-    "Dynoco",
+    "Ragna 🇨🇱",
     "Campeón",
     7500
+   ],
+   [
+    "Luck",
+    "Semifinal",
+    7000
+   ],
+   [
+    "Andresito🇦🇷",
+    "Subcampeón",
+    5000
    ],
    [
     "Scritura",
@@ -35881,7 +35942,12 @@
     3750
    ],
    [
-    "Luck",
+    "Erian",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Lizennin🇸🇴",
     "Semifinal",
     3500
    ],
@@ -35911,7 +35977,22 @@
     2000
    ],
    [
+    "Molt",
+    "Cuartos",
+    2000
+   ],
+   [
     "Mr.Kude",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Tiago Context 🇦🇷",
     "Cuartos",
     2000
    ]

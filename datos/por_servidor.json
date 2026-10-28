@@ -627,6 +627,21 @@
     }
    }
   },
+  "Andresito🇦🇷": {
+   "FRZ": {
+    "duelos": "2/3",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 5500,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   }
+  },
   "Andy": {
    "ACAD": {
     "duelos": "3/5",
@@ -1134,7 +1149,7 @@
     "duelos": "2/4",
     "ev": 2,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 46,
     "pod": 0,
     "pts": 23750,
     "racha": "1/1",
@@ -2294,15 +2309,12 @@
    },
    "FRZ": {
     "duelos": "6/7",
-    "ev": 2,
-    "oro": 1,
-    "ovr": 47,
-    "pod": 1,
-    "pts": 10250,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1
-    }
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 2000,
+    "racha": "0/0"
    },
    "SR": {
     "duelos": "0/2",
@@ -2766,7 +2778,7 @@
     "duelos": "7/17",
     "ev": 26,
     "oro": 3,
-    "ovr": 67,
+    "ovr": 66,
     "pod": 5,
     "pts": 137734,
     "racha": "1/3",
@@ -2776,12 +2788,12 @@
     }
    },
    "FRZ": {
-    "duelos": "4/7",
+    "duelos": "4/8",
     "ev": 2,
     "oro": 0,
     "ovr": 47,
     "pod": 1,
-    "pts": 14350,
+    "pts": 8850,
     "racha": "0/1",
     "tg": {
      "fin": 1
@@ -4614,7 +4626,7 @@
     "duelos": "0/1",
     "ev": 8,
     "oro": 0,
-    "ovr": 51,
+    "ovr": 50,
     "pod": 1,
     "pts": 27156,
     "racha": "0/1",
@@ -5150,6 +5162,20 @@
     "racha": "0/1"
    }
   },
+  "Lizennin🇸🇴": {
+   "FRZ": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3850,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Lord Viruzz": {
    "ACAD": {
     "duelos": "2/6",
@@ -5234,12 +5260,12 @@
     }
    },
    "FRZ": {
-    "duelos": "1/2",
+    "duelos": "2/4",
     "ev": 1,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 3850,
+    "pts": 7700,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -5319,7 +5345,7 @@
     "duelos": "0/2",
     "ev": 12,
     "oro": 0,
-    "ovr": 51,
+    "ovr": 50,
     "pod": 0,
     "pts": 39544,
     "racha": "0/0"
@@ -6184,7 +6210,7 @@
     "duelos": "5/13",
     "ev": 13,
     "oro": 0,
-    "ovr": 59,
+    "ovr": 58,
     "pod": 2,
     "pts": 53575,
     "racha": "0/2",
@@ -6250,6 +6276,18 @@
    }
   },
   "Molt": {
+   "FRZ": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 2200,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "SR": {
     "duelos": "",
     "ev": 2,
@@ -6488,12 +6526,12 @@
     }
    },
    "FRZ": {
-    "duelos": "",
-    "ev": 1,
+    "duelos": "0/1",
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 2000,
+    "pts": 4200,
     "racha": "0/0"
    },
    "SR": {
@@ -6562,7 +6600,7 @@
     "duelos": "",
     "ev": 5,
     "oro": 0,
-    "ovr": 49,
+    "ovr": 48,
     "pod": 1,
     "pts": 15375,
     "racha": "1/1",
@@ -7659,7 +7697,26 @@
     "ovr": 46,
     "pod": 1,
     "pts": 7500,
-    "racha": "1/1"
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   }
+  },
+  "Ragna 🇨🇱": {
+   "FRZ": {
+    "duelos": "3/3",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 46,
+    "pod": 1,
+    "pts": 8250,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
    }
   },
   "Raizer": {
@@ -8253,7 +8310,7 @@
     "duelos": "1/2",
     "ev": 2,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 44,
     "pod": 0,
     "pts": 7750,
     "racha": "1/1"
@@ -8338,7 +8395,7 @@
     "duelos": "0/1",
     "ev": 6,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 46,
     "pod": 0,
     "pts": 12138,
     "racha": "0/1"
@@ -9086,6 +9143,20 @@
     "ovr": 43,
     "pod": 0,
     "pts": 2000,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
+  "Tiago Context 🇦🇷": {
+   "FRZ": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 2200,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -10253,7 +10324,7 @@
     "duelos": "0/1",
     "ev": 3,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 45,
     "pod": 0,
     "pts": 11625,
     "racha": "0/0"
