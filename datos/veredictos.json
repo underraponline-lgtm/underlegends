@@ -2,28 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1562292722453446669": {
-   "id": "1562292722453446669",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1792550011028,
-   "a": "last",
-   "b": "artezzy",
-   "ganador": "artezzy",
-   "votos": "1–0"
-  },
-  "1562295299685486705": {
-   "id": "1562295299685486705",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1792550625488,
-   "a": "replica lrs",
-   "b": "last",
-   "ganador": "last",
-   "votos": "2–0"
-  },
   "1562298084828905585": {
    "id": "1562298084828905585",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
@@ -1562,6 +1540,28 @@
    "a": "CARLOS",
    "b": "MAKMA",
    "ganador": "CARLOS",
+   "votos": "1–0"
+  },
+  "1564831876055703574": {
+   "id": "1564831876055703574",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793155392422,
+   "a": "EDDY LA SOMBRA",
+   "b": "PARK JI SUNG",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
+  },
+  "1564832790443200653": {
+   "id": "1564832790443200653",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793155610429,
+   "a": "MATS",
+   "b": "LAUTARO LA SINCERIDAD",
+   "ganador": "LAUTARO LA SINCERIDAD",
    "votos": "1–0"
   }
  },
@@ -5565,6 +5565,37 @@
       "SIX"
      ],
      "GIANLAMALDAD",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1564831822083264553": {
+   "id": "1564831822083264553",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793155379554,
+   "ed": 1793155698884,
+   "texto": "`[ CUARTOS ]`\n⌞EDDY LA SOMBRA⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞MATS⌝ 🆚 ⌞LAUTARO LA SINCERIDAD⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "EDDY LA SOMBRA",
+      "PARK JI SUNG"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MATS",
+      "LAUTARO LA SINCERIDAD"
+     ],
+     "LAUTARO LA SINCERIDAD",
      "veredicto",
      []
     ]

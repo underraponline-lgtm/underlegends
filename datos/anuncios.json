@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-28T02:24:53+00:00",
+ "cuando": "2026-10-28T02:54:42+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6810,6 +6810,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "yo mc 🇨🇱",
+   "quien": "cronoxzito",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1564833585486364734",
+   "cuando": "2026-10-28T02:49:59"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "six",
+   "quien": "ivanjajaa",
+   "discord_id": "639232575461654538",
+   "msg_id": "1564827786735255635",
+   "cuando": "2026-10-28T02:26:57"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42791,24 +42809,6 @@
    "discord_id": "1440039366654165212",
    "msg_id": "1549438473541255219",
    "cuando": "2026-09-15T15:15:19"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Trot🇪🇸",
-   "quien": "eresmatrot",
-   "discord_id": "1347663033949880360",
-   "msg_id": "1549438472279031839",
-   "cuando": "2026-09-15T15:15:18"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Iguana 🇵🇪",
-   "quien": "iguanajoshua",
-   "discord_id": "818314359218241567",
-   "msg_id": "1549438461440958695",
-   "cuando": "2026-09-15T15:15:16"
   }
  ]
 }
