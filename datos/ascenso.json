@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-10-28T15:44:45Z",
+ "t": "2026-10-28T15:59:15Z",
  "sv": {
   "SR": {
    "filas": [
@@ -655,6 +655,13 @@
      "Dios"
     ],
     [
+     "Vacile",
+     "es",
+     1000,
+     1000,
+     ""
+    ],
+    [
      "Cuenta borrada",
      "ve",
      500,
@@ -662,8 +669,34 @@
      ""
     ]
    ],
-   "sumado": [],
-   "pendiente": [],
+   "sumado": [
+    {
+     "n": 473,
+     "evento": "FF Freestyle: Clasico VOL.1",
+     "dia": "2026-10-14",
+     "rango": "plata",
+     "puntos": [
+      [
+       "Vacile",
+       "Subcampeón",
+       1000
+      ]
+     ],
+     "fuera": [
+      "Motera",
+      "Ortiz",
+      "Trot"
+     ]
+    }
+   ],
+   "pendiente": [
+    {
+     "que": "rango",
+     "compe": "ccff",
+     "evento": "CCFF V.2",
+     "dia": "2026-09-28"
+    }
+   ],
    "oficial": {
     "dia": "2026-09-21",
     "nota": "",
