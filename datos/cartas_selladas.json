@@ -1659,14 +1659,14 @@
   },
   "Velatz": {
    "competitivo": "20127ace3a20:0a48057cb351",
-   "pais": "22cf3ea5c59d:263a27e40647",
-   "servidor": "aa20bc729ed5:99e0c0179dbe:039304",
+   "pais": "c97bb3d86aac:263a27e40647",
+   "servidor": "2d463ad4d6bf:99e0c0179dbe:039304",
    "temporada": "78e99b7bb0af:6ec1a5248de8"
   },
   "Verc": {
    "competitivo": "40f63c66ffc6:0a48057cb351",
-   "pais": "7af069ab5dc7:263a27e40647",
-   "servidor": "0d4393ca30bf:99e0c0179dbe:c43f56",
+   "pais": "932e9bb779ea:263a27e40647",
+   "servidor": "80091010a44e:99e0c0179dbe:c43f56",
    "temporada": "19807464cc38:6ec1a5248de8"
   },
   "Vilca": {
@@ -1921,5 +1921,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-28T06:12:11+00:00"
+ "cuando": "2026-10-28T15:45:28+00:00"
 }
