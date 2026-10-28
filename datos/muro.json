@@ -146,6 +146,14 @@
 "temporada"
 ]
 },
+"carlosss": {
+"rg": "S",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "og": {
 "rg": "B",
 "c": [
@@ -181,14 +189,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"carlosss": {
-"rg": "S",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -262,6 +262,10 @@
 "servidor",
 "temporada"
 ]
+},
+"tuca": {
+"rg": "C",
+"c": []
 },
 "nxuz": {
 "rg": "C",
@@ -367,10 +371,6 @@
 "servidor",
 "temporada"
 ]
-},
-"tuca": {
-"rg": "",
-"c": []
 },
 "neo": {
 "rg": "C",
@@ -606,6 +606,22 @@
 "rg": "",
 "c": []
 },
+"jobaking": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"adriagner": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "gocho": {
 "rg": "E",
 "c": [
@@ -636,6 +652,19 @@
 "temporada"
 ]
 },
+"emizor": {
+"rg": "E",
+"c": []
+},
+"teito": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "mcnadie": {
 "rg": "",
 "c": [
@@ -646,13 +675,6 @@
 "alexi": {
 "rg": "",
 "c": []
-},
-"adriagner": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "vilca": {
 "rg": "",
@@ -728,15 +750,6 @@
 "temporada"
 ]
 },
-"teito": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "mathhias": {
 "rg": "",
 "c": [
@@ -799,14 +812,6 @@
 "temporada"
 ]
 },
-"jobaking": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "juanpa": {
 "rg": "",
 "c": [
@@ -831,10 +836,6 @@
 "servidor",
 "temporada"
 ]
-},
-"emizor": {
-"rg": "E",
-"c": []
 },
 "krish": {
 "rg": "E",
@@ -1013,6 +1014,12 @@
 "pais",
 "servidor",
 "temporada"
+]
+},
+"vr": {
+"rg": "",
+"c": [
+"servidor"
 ]
 },
 "deuxs": {
@@ -1196,12 +1203,6 @@
 "luzzano": {
 "rg": "",
 "c": []
-},
-"vr": {
-"rg": "",
-"c": [
-"servidor"
-]
 },
 "joshema": {
 "rg": "",
@@ -2623,30 +2624,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-02T03:37:26Z",
-"quien": [
-"ACH"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-02T03:37:26Z",
-"quien": [
-"Dyzz"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-02T03:37:26Z",
-"quien": [
-"Dyzz"
-],
-"carta": "temporada"
-},
 {
 "tipo": "rango",
 "t": "2026-10-02T16:26:23Z",
@@ -5970,6 +5947,32 @@
 ],
 "rg": "B",
 "primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-28T19:04:13Z",
+"quien": [
+"Tuca"
+],
+"rg": "C",
+"primero": true
+},
+{
+"tipo": "rango",
+"t": "2026-10-28T19:04:13Z",
+"quien": [
+"Jobaking"
+],
+"rg": "E",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-28T19:04:13Z",
+"quien": [
+"Jobaking"
+],
+"carta": "competitivo"
 }
 ]
 }

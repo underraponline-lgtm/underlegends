@@ -37259,5 +37259,141 @@
     1250
    ]
   ]
+ },
+ "540": {
+  "dia": "2026-10-28",
+  "escala": "8-15",
+  "fecha": "28/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1565062232650416261",
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1565068590317572247"
+  ],
+  "n": 540,
+  "nombre": "ZONA MORTAL",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Lizenin",
+       "Teito"
+      ],
+      "Lizenin",
+      ""
+     ],
+     [
+      [
+       "Carlosss",
+       "Jobaking"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Tuca",
+       "Adriagner"
+      ],
+      "Tuca",
+      ""
+     ],
+     [
+      [
+       "EmiZor",
+       "VR"
+      ],
+      "EmiZor",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "Lizenin"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Tuca",
+       "EmiZor"
+      ],
+      "Tuca",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Tuca",
+       "Carlosss"
+      ],
+      "Tuca",
+      ""
+     ],
+     [
+      [
+       "Carlos",
+       "Tuca 🇦🇷"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Tuca",
+    "Campeón",
+    7500
+   ],
+   [
+    "Carlosss",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "EmiZor",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Lizenin",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jobaking",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Teito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "VR",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

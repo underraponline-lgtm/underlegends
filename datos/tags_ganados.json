@@ -1440,6 +1440,11 @@
     "t1",
     1793029252929
    ],
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1793214287084
+   ],
    "🏟️ FINALISTA DE CASA": [
     "🏟️ FINALISTA DE CASA",
     "t1",
@@ -3810,6 +3815,11 @@
    ]
   },
   "temporada": {
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1793214287084
+   ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
     "t1",
@@ -9709,6 +9719,13 @@
   }
  },
  "tuca": {
+  "competitivo": {
+   "🧊 SANGRE FRÍA": [
+    "🧊 SANGRE FRÍA",
+    "t1",
+    1793214287084
+   ]
+  },
   "pais": {
    "INTERNACIONAL": [
     "INTERNACIONAL",
@@ -9730,7 +9747,7 @@
   },
   "temporada": {
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x2",
+    "👑 CAMPEÓN x3",
     "t1",
     1792953978519
    ],

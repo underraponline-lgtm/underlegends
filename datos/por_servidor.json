@@ -413,13 +413,13 @@
   },
   "Adriagner": {
    "DDF": {
-    "duelos": "7/9",
-    "ev": 5,
+    "duelos": "7/10",
+    "ev": 6,
     "oro": 3,
-    "ovr": 52,
+    "ovr": 53,
     "pod": 4,
-    "pts": 31188,
-    "racha": "3/3",
+    "pts": 41188,
+    "racha": "0/3",
     "tg": {
      "fin": 4
     }
@@ -1414,16 +1414,16 @@
   },
   "Carlosss": {
    "DDF": {
-    "duelos": "24/30",
-    "ev": 14,
+    "duelos": "26/33",
+    "ev": 15,
     "oro": 7,
-    "ovr": 70,
-    "pod": 8,
-    "pts": 142150,
-    "racha": "1/9",
+    "ovr": 71,
+    "pod": 9,
+    "pts": 167150,
+    "racha": "2/9",
     "tg": {
      "bcasa": true,
-     "fin": 8
+     "fin": 9
     }
    }
   },
@@ -2653,12 +2653,12 @@
   },
   "EmiZor": {
    "DDF": {
-    "duelos": "0/2",
-    "ev": 3,
+    "duelos": "1/4",
+    "ev": 4,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 47,
     "pod": 0,
-    "pts": 7362,
+    "pts": 24862,
     "racha": "0/0"
    },
    "FFA": {
@@ -4006,12 +4006,12 @@
     }
    },
    "DDF": {
-    "duelos": "0/1",
-    "ev": 2,
+    "duelos": "0/2",
+    "ev": 3,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 47,
     "pod": 0,
-    "pts": 12200,
+    "pts": 22200,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -5117,6 +5117,20 @@
     "pod": 0,
     "pts": 10313,
     "racha": "0/0"
+   }
+  },
+  "Lizenin": {
+   "DDF": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 0,
+    "pts": 17500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Lizeninn": {
@@ -9034,12 +9048,12 @@
     "racha": "0/0"
    },
    "DDF": {
-    "duelos": "0/4",
-    "ev": 5,
+    "duelos": "0/5",
+    "ev": 6,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 48,
     "pod": 0,
-    "pts": 13600,
+    "pts": 23600,
     "racha": "0/0"
    },
    "FFA": {
@@ -9250,15 +9264,15 @@
   },
   "Tuca": {
    "DDF": {
-    "duelos": "3/4",
-    "ev": 2,
-    "oro": 1,
-    "ovr": 47,
-    "pod": 1,
-    "pts": 15375,
-    "racha": "0/1",
+    "duelos": "6/7",
+    "ev": 3,
+    "oro": 2,
+    "ovr": 52,
+    "pod": 2,
+    "pts": 52875,
+    "racha": "1/1",
     "tg": {
-     "fin": 1,
+     "fin": 2,
      "fund": true
     }
    },
@@ -9478,12 +9492,12 @@
     "racha": "0/0"
    },
    "DDF": {
-    "duelos": "0/1",
-    "ev": 1,
+    "duelos": "0/2",
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 45,
     "pod": 0,
-    "pts": 2200,
+    "pts": 12200,
     "racha": "0/0",
     "tg": {
      "nuevo": true

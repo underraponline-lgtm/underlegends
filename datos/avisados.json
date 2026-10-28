@@ -28104,5 +28104,145 @@
    ]
   ],
   "v": 2
+ },
+ "540": {
+  "antes": {
+   "Adriagner": [
+    66,
+    88,
+    false
+   ],
+   "Carlosss": [
+    21,
+    23,
+    false
+   ],
+   "EmiZor": [
+    239,
+    115,
+    true
+   ],
+   "Jobaking": [
+    84,
+    110,
+    false
+   ],
+   "Teito": [
+    76,
+    99,
+    false
+   ],
+   "Tuca": [
+    222,
+    48,
+    true
+   ],
+   "VR": [
+    119,
+    182,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Lizenin",
+    "Teito",
+    "Lizenin"
+   ],
+   [
+    "Carlosss",
+    "Jobaking",
+    "Carlosss"
+   ],
+   [
+    "Tuca",
+    "Adriagner",
+    "Tuca"
+   ],
+   [
+    "EmiZor",
+    "VR",
+    "EmiZor"
+   ],
+   [
+    "Carlosss",
+    "Lizenin",
+    "Carlosss"
+   ],
+   [
+    "Tuca",
+    "EmiZor",
+    "Tuca"
+   ],
+   [
+    "Tuca",
+    "Carlosss",
+    "Tuca"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 7,
+   "Carlosss": 14,
+   "EmiZor": 10,
+   "Jobaking": 9,
+   "Teito": 15,
+   "Tuca": 10,
+   "VR": 5
+  },
+  "fecha": "28/10",
+  "firma": "47a7eb39ed25291a",
+  "msg": "1565071354410049547",
+  "nombre": "ZONA MORTAL",
+  "num": 540,
+  "participantes": 8,
+  "sello": {
+   "Tuca": ""
+  },
+  "sv": "DDF",
+  "t": "2026-10-28T18:54:50Z",
+  "tabla": [
+   [
+    "Tuca",
+    "Campeón",
+    7500
+   ],
+   [
+    "Carlosss",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Lizenin",
+    "Semifinal",
+    3500
+   ],
+   [
+    "EmiZor",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Teito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jobaking",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    2000
+   ],
+   [
+    "VR",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }
