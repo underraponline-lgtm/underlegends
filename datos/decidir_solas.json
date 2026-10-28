@@ -3341,6 +3341,25 @@
      "674043115237015671"
     ]
    }
+  },
+  {
+   "id": "39099b05fb",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«Dyzz polla de 2 metros» es Dyzz? La cuenta de Dyzz en la Lista se anotó como «Dyzz polla de 2 metros», y en el ranking suman aparte. Si es la misma persona, los puntos de «Dyzz polla de 2 metros» pasan a Dyzz.\nLa cuenta: https://discord.com/users/1525996330042921081",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no hace falta: «Dyzz polla de 2 metros» ya no suma aparte en el ranking",
+   "t": 1793162103838,
+   "filas": [
+    931
+   ],
+   "variantes": [
+    "DOS NOMBRES: «Dyzz polla de 2 metros» → «Dyzz» · cuenta 1525996330042921081"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

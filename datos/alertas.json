@@ -21,6 +21,10 @@
   "t": "2026-10-07T22:42:58.996306+00:00",
   "texto": "2 corridas del ciclo se cancelaron esperando su turno de dibujar (07/10 6:42 PM ET): la anterior tardó de más. Lo que no dibujaron lo dibuja la próxima.\nhttps://github.com/underraponline-lgtm/underlegends/actions/runs/37695783015"
  },
+ "disparador": {
+  "t": "2026-10-28T04:35:59.770636+00:00",
+  "texto": "El disparador del ciclo no anda: su último intento fue 27/10 8:22 PM ET (ok). El ciclo queda sólo con el cron de GitHub, que dispara 1 de cada 9 veces."
+ },
  "recordado:a7": {
   "t": "2026-09-26T03:54:52.348453+00:00",
   "texto": "Lo que me pediste recordarte: **A7**, llevar el Score del Competitivo a 40–99. **PichulaMc ya tiene 8 eventos**: cuando alguien llega a 10 tiene letra, y cambiar la escala después se la mueve a mitad de temporada. Si va, decime y lo aplico junto con los umbrales de los 8 rangos."
