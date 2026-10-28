@@ -1,65 +1,61 @@
 {
  "v": 1,
- "cuando": "2026-10-28T00:01:11Z",
+ "cuando": "2026-10-28T00:13:03Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 756.1,
+ "dur_s": 674.6,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.5
+   "s": 9.2
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 1.0
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.5
+   "s": 8.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.1
+   "s": 22.0
   },
   {
    "n": "5",
-   "que": "tanda 1 de 4 · 40 persona(s)",
+   "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 638.7
+   "s": 556.2
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.5
+   "s": 5.9
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 74.0
+   "s": 71.1
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Abyssus"
+   "que": "03_Servidor/generar.py Artezzy"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Jobaking"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py OKAM"
+   "que": "03_Servidor/generar.py MetriOdin"
   }
  ],
  "ultimo_evento": {
@@ -69,22 +65,26 @@
   "dia": "2026-10-27"
  },
  "cuotas": {
+  "kv": {
+   "write": 11,
+   "read": 855
+  },
   "objeto": {
    "leidas": 0,
    "escritas": 0,
-   "pedidos": 0
+   "pedidos": 464
   },
   "worker": {
-   "pedidos": 15343,
-   "errores": 4924,
-   "sub": 17013,
-   "cortados": 4924,
-   "p50_ms": 1.27,
-   "p99_ms": 11.83,
+   "pedidos": 15662,
+   "errores": 5297,
+   "sub": 17323,
+   "cortados": 5297,
+   "p50_ms": 1.26,
+   "p99_ms": 11.8,
    "cpu": {
-    "total": 47570,
-    "objeto_10": 1613,
-    "worker_10": 290
+    "total": 49426,
+    "objeto_10": 1593,
+    "worker_10": 292
    }
   },
   "r2": {
