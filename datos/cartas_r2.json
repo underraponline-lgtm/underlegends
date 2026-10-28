@@ -571,11 +571,13 @@
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/sv-acad.webp",
+  "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/sv-ffa.webp",
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/sv-ffs.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/sv-frz.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/sv-fvs.webp",
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/crk/temporada.webp"
  },
  "cronox": {
@@ -3205,7 +3207,9 @@
  "santiagoyv": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/santiagoyv/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/santiagoyv/sv-dra.webp",
-  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/santiagoyv/sv-ffa.webp"
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/santiagoyv/sv-ffa.webp",
+  "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/santiagoyv/sv-frz.webp",
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/santiagoyv/sv-urbf.webp"
  },
  "saturb": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/saturb/servidor.webp",
