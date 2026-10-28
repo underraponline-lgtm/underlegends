@@ -76,19 +76,19 @@
 "temporada"
 ]
 },
+"mrstillballin": {
+"rg": "A",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "colesito": {
 "rg": "B",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"mrstillballin": {
-"rg": "A",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -276,8 +276,8 @@
 "rg": "C",
 "c": []
 },
-"cronox": {
-"rg": "D",
+"polosport": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -285,8 +285,8 @@
 "temporada"
 ]
 },
-"polosport": {
-"rg": "C",
+"cronox": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",

@@ -317,6 +317,7 @@
   "parttt": "Provenza",
   "dreex": "Drexx",
   "infected": "Infecte",
+  "eddylasombra": "Liberia",
   "nexus": "NXUZ",
   "nxus": "NXUZ",
   "crizj": "CrisZJ",
@@ -1631,6 +1632,10 @@
   [
    "Infected",
    "Infecte"
+  ],
+  [
+   "EddyLaSombra",
+   "Liberia"
   ],
   [
    "Nexus",
