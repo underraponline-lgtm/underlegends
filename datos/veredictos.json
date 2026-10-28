@@ -2,39 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1562592835960709223": {
-   "id": "1562592835960709223",
-   "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
-   "g": "492346406976356374",
-   "canal": "863208026508623883",
-   "pub": 1792621563664,
-   "a": "FAZER",
-   "b": "AGUS",
-   "ganador": "FAZER",
-   "votos": "1–0"
-  },
-  "1562594227907731488": {
-   "id": "1562594227907731488",
-   "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
-   "g": "492346406976356374",
-   "canal": "863208026508623883",
-   "pub": 1792621895530,
-   "a": "OVER",
-   "b": "MCO",
-   "ganador": "OVER",
-   "votos": "1–0"
-  },
-  "1562599585346752553": {
-   "id": "1562599585346752553",
-   "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
-   "g": "492346406976356374",
-   "canal": "863208026508623883",
-   "pub": 1792623172843,
-   "a": "AGUS",
-   "b": "OVER",
-   "ganador": "OVER",
-   "votos": "1–0"
-  },
   "1562601958588817539": {
    "id": "1562601958588817539",
    "sv": "ＳＮＡＫＥ 🐍 ＲＡＰ",
