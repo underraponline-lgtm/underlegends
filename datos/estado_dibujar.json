@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-10-27T23:47:59Z",
+ "cuando": "2026-10-28T00:01:11Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1837.0,
+ "dur_s": 756.1,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.5
+   "s": 8.5
   },
   {
    "n": "2f2",
@@ -21,45 +21,45 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.2
+   "s": 6.5
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 19.5
+   "s": 21.1
   },
   {
    "n": "5",
-   "que": "tanda 1 de 6 · 40 persona(s)",
+   "que": "tanda 1 de 4 · 40 persona(s)",
    "ok": false,
-   "s": 1719.0
+   "s": 638.7
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 13.0
+   "s": 5.5
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 67.5
+   "s": 74.0
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
+   "que": "03_Servidor/generar.py Abyssus"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Kenny"
+   "que": "03_Servidor/generar.py Jobaking"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Selek"
+   "que": "03_Servidor/generar.py OKAM"
   }
  ],
  "ultimo_evento": {
@@ -69,26 +69,22 @@
   "dia": "2026-10-27"
  },
  "cuotas": {
-  "kv": {
-   "write": 646,
-   "read": 57366
-  },
   "objeto": {
-   "leidas": 5091259,
-   "escritas": 25488,
-   "pedidos": 16285
+   "leidas": 0,
+   "escritas": 0,
+   "pedidos": 0
   },
   "worker": {
-   "pedidos": 14927,
-   "errores": 4369,
-   "sub": 16615,
-   "cortados": 4369,
-   "p50_ms": 1.26,
-   "p99_ms": 11.81,
+   "pedidos": 15343,
+   "errores": 4924,
+   "sub": 17013,
+   "cortados": 4924,
+   "p50_ms": 1.27,
+   "p99_ms": 11.83,
    "cpu": {
-    "total": 45060,
-    "objeto_10": 1640,
-    "worker_10": 289
+    "total": 47570,
+    "objeto_10": 1613,
+    "worker_10": 290
    }
   },
   "r2": {
