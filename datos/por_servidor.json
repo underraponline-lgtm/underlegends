@@ -9272,6 +9272,7 @@
     "pts": 52875,
     "racha": "1/1",
     "tg": {
+     "dv": true,
      "fin": 2,
      "fund": true
     }
