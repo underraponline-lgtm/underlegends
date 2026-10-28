@@ -1231,7 +1231,7 @@
    "competitivo": "f3de2fd15fe8:0a48057cb351",
    "pais": "262eacf37b19:263a27e40647",
    "servidor": "9bbdbd7942c2:99e0c0179dbe:3ce074",
-   "temporada": "bb6305a9f183:6ec1a5248de8"
+   "temporada": "53562a09ae5a:6ec1a5248de8"
   },
   "OKAM": {
    "competitivo": "90dc58d8315e:0a48057cb351",
@@ -1308,10 +1308,10 @@
    "temporada": "cf89dba0593c:6ec1a5248de8"
   },
   "Polosport": {
-   "competitivo": "122167ee8de9:0a48057cb351",
+   "competitivo": "f0bbef1e4324:0a48057cb351",
    "pais": "c433671686a7:263a27e40647",
-   "servidor": "431e8e4c39af:99e0c0179dbe:c589ca",
-   "temporada": "a9b5582ec206:6ec1a5248de8"
+   "servidor": "532099fbc890:99e0c0179dbe:c589ca",
+   "temporada": "e5c781fc042b:6ec1a5248de8"
   },
   "Pomberito": {},
   "Presagio": {
@@ -1503,8 +1503,8 @@
   "Six": {
    "competitivo": "67ff0d428663:0a48057cb351",
    "pais": "444c6e75aeae:263a27e40647",
-   "servidor": "ff56ed1430db:99e0c0179dbe:43d041",
-   "temporada": "4a2a40a9b7c8:6ec1a5248de8"
+   "servidor": "fd97c4a06365:99e0c0179dbe:43d041",
+   "temporada": "a418271f8297:6ec1a5248de8"
   },
   "Skamilla": {
    "servidor": "85cb92d45ca2:99e0c0179dbe:80c07f"
@@ -1591,7 +1591,7 @@
    "competitivo": "1f648f4057d5:0a48057cb351",
    "pais": "dd63ebc4233a:263a27e40647",
    "servidor": "609923d27c1d:99e0c0179dbe:055f77",
-   "temporada": "72fbd6b39012:6ec1a5248de8"
+   "temporada": "ebf68aa1561a:6ec1a5248de8"
   },
   "Thiflow": {
    "servidor": "cd644a37ea2b:99e0c0179dbe:a301f0"
@@ -1918,5 +1918,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-28T01:42:17+00:00"
+ "cuando": "2026-10-28T02:09:09+00:00"
 }

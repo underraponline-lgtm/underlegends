@@ -1,61 +1,61 @@
 {
  "v": 1,
- "cuando": "2026-10-28T01:43:23Z",
+ "cuando": "2026-10-28T02:10:11Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 519.8,
+ "dur_s": 427.0,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.5
+   "s": 7.1
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.7
+   "s": 1.0
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.2
+   "s": 5.9
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 36.8
+   "s": 18.9
   },
   {
    "n": "5",
    "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 402.4
+   "s": 329.7
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.8
+   "s": 5.7
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 59.3
+   "s": 56.7
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Ariaxer"
+   "que": "03_Servidor/generar.py Artezzy"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py MCO"
+   "que": "03_Servidor/generar.py Polosport"
   }
  ],
  "ultimo_evento": {
@@ -66,25 +66,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 96,
-   "read": 5982
+   "write": 118,
+   "read": 7779
   },
   "objeto": {
-   "leidas": 491991,
-   "escritas": 4263,
-   "pedidos": 1731
+   "leidas": 670189,
+   "escritas": 5070,
+   "pedidos": 2198
   },
   "worker": {
-   "pedidos": 15939,
+   "pedidos": 16011,
    "errores": 5864,
-   "sub": 17572,
+   "sub": 17660,
    "cortados": 5864,
-   "p50_ms": 1.27,
-   "p99_ms": 11.7,
+   "p50_ms": 1.28,
+   "p99_ms": 11.81,
    "cpu": {
-    "total": 51734,
-    "objeto_10": 1551,
-    "worker_10": 281
+    "total": 51836,
+    "objeto_10": 1555,
+    "worker_10": 286
    }
   },
   "r2": {
