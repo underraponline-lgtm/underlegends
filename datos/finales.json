@@ -875,5 +875,27 @@
   "sin_permiso": false,
   "sv": "DDF"
  },
+ "1564734133261832483": {
+  "autor": "1086485696572817418",
+  "canal": "1487207377601040516",
+  "cuando": "2026-10-27T20:14:48.724000+00:00",
+  "evento": "__ FREESTYLE FOR ALL ESPECIAL 1800 PANDILLAS __",
+  "fecha": "27/10",
+  "llave": "1564734133261832483",
+  "pregunta": "1564796736806064200",
+  "preguntada": "2026-10-27 8:23 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "OG 🇻🇪 + TEO 🇨🇴 + ERIAN 🇵🇦",
+     "MR STILL BALLIN 🇺🇾 + MAILEN 🇦🇷 + SIX 🇦🇷"
+    ],
+    "ronda": "SEMIFINALES"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

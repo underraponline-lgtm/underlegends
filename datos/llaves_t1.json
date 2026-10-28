@@ -36641,5 +36641,156 @@
     1250
    ]
   ]
+ },
+ "537": {
+  "dia": "2026-10-27",
+  "escala": "8-15",
+  "fecha": "27/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1564771043443474543"
+  ],
+  "n": 537,
+  "nombre": "ROUSS CUP 1",
+  "participantes": 12,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "CrisZJ",
+       "Miniboy"
+      ],
+      "PichulaMc",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Carlosss",
+       "Eclipsito",
+       "Jobaking"
+      ],
+      "Carlosss",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Makmah",
+       "Sin Limites",
+       "Lizeninn"
+      ],
+      "Makmah",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "NXUZ",
+       "Drexx",
+       "Walker"
+      ],
+      "NXUZ",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "PichulaMc"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "NXUZ"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "Makmah"
+      ],
+      "Carlosss",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Carlosss",
+    "Campeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "NXUZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    3500
+   ],
+   [
+    "CrisZJ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Eclipsito",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jobaking",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Lizeninn",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Walker",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

@@ -172,7 +172,7 @@
      "por": [
       {
        "n": "Tam",
-       "cobra": 14500
+       "cobra": 14750
       }
      ]
     }
@@ -263,10 +263,22 @@
     "nivel": "D",
     "base": 4750,
     "o": 30,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 5000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Cuartos",
+    "valor": 5000,
+    "caza": {
+     "n": 537,
+     "evento": "ROUSS CUP 1",
+     "sv": "DDF",
+     "t": "2026-10-27T22:41:28Z",
+     "por": [
+      {
+       "n": "Makmah",
+       "cobra": 5000
+      }
+     ]
+    }
    },
    {
     "n": "Krish",
