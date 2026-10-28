@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "a469c56f24c4cfe7",
+  "firma": "9400d775fe1d2d4d",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "9412b5aaee1fc2ca",
+  "firma": "908d66410009c1be",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -15100,7 +15100,7 @@
    "Xubaru": 8
   },
   "fecha": "18/10",
-  "firma": "eca76de5acfa3db1",
+  "firma": "584dbc0aba1d9d03",
   "msg": "1561498207572205609",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL7 __",
   "num": 484,
@@ -17917,7 +17917,7 @@
    "Velatz": 37
   },
   "fecha": "21/10",
-  "firma": "dd851db5954d6023",
+  "firma": "ace9eb86f9932e96",
   "msg": "1562578019472773131",
   "nombre": "__ DESGRACIAS EN TOKYO VOL 30 1 VS 1 __",
   "num": 494,
@@ -21230,7 +21230,7 @@
    "Shadow": 13
   },
   "fecha": "24/10",
-  "firma": "473eb0d7fc2cb2be",
+  "firma": "b23eee78c27881aa",
   "msg": "1563613115495489728",
   "nombre": "19 FUTCARD EDITION - 6 COMPE GAY",
   "num": 508,
@@ -23869,7 +23869,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "cd6243b532631a29",
+  "firma": "1606013dc9d96e23",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -27742,7 +27742,7 @@
    "Xubaru": 14
   },
   "fecha": "18/10",
-  "firma": "6c2ab9d0b7364df6",
+  "firma": "fc32e21da253f5d3",
   "msg": "1564823139979108383",
   "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 7",
   "num": 538,
@@ -28106,6 +28106,7 @@
   "v": 2
  },
  "540": {
+  "al_dia": true,
   "antes": {
    "Adriagner": [
     66,
