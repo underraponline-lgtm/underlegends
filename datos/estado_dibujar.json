@@ -1,51 +1,51 @@
 {
  "v": 1,
- "cuando": "2026-10-28T05:54:36Z",
+ "cuando": "2026-10-28T06:13:22Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 775.9,
+ "dur_s": 756.3,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.8
+   "s": 7.2
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 6.7
+   "s": 0.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.5
+   "s": 8.6
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.7
+   "s": 23.3
   },
   {
    "n": "5",
    "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 665.2
+   "s": 643.3
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.2
+   "s": 5.4
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 61.5
+   "s": 66.2
   }
  ],
  "fallas": [
@@ -56,10 +56,6 @@
   {
    "paso": "5",
    "que": "03_Servidor/generar.py MetriOdin"
-  },
-  {
-   "paso": "5",
-   "que": "bot/subir_cartas.py /home/runner/work/underlegends/underlegends/01_Temporada/salida/temporada_Vandu.png"
   }
  ],
  "ultimo_evento": {
@@ -70,31 +66,31 @@
  },
  "cuotas": {
   "kv": {
-   "write": 267,
-   "read": 21469
+   "write": 278,
+   "read": 23079
   },
   "objeto": {
-   "leidas": 2354112,
-   "escritas": 12118,
-   "pedidos": 5124
+   "leidas": 2421820,
+   "escritas": 12318,
+   "pedidos": 5235
   },
   "worker": {
-   "pedidos": 15127,
+   "pedidos": 15010,
    "errores": 5864,
-   "sub": 16595,
+   "sub": 16453,
    "cortados": 5864,
    "p50_ms": 1.32,
-   "p99_ms": 11.87,
+   "p99_ms": 11.89,
    "cpu": {
-    "total": 49859,
-    "objeto_10": 1487,
-    "worker_10": 273
+    "total": 49613,
+    "objeto_10": 1475,
+    "worker_10": 272
    }
   },
   "r2": {
-   "objetos": 5431,
-   "gb": 0.478,
-   "ts": 1793124630
+   "objetos": 5485,
+   "gb": 0.482,
+   "ts": 1793168010
   }
  }
 }
