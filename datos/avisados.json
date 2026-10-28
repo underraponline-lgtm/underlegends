@@ -27789,5 +27789,313 @@
    ]
   ],
   "v": 2
+ },
+ "539": {
+  "antes": {
+   "Badterne": [
+    230,
+    80,
+    true
+   ],
+   "Calíz": [
+    45,
+    61,
+    false
+   ],
+   "Drexx": [
+    35,
+    41,
+    false
+   ],
+   "EIDP": [
+    232,
+    85,
+    true
+   ],
+   "Jult": [
+    53,
+    69,
+    false
+   ],
+   "LRS": [
+    37,
+    47,
+    false
+   ],
+   "Liberia": [
+    7,
+    8,
+    false
+   ],
+   "Millonari-O": [
+    294,
+    210,
+    true
+   ],
+   "Molusco": [
+    23,
+    27,
+    false
+   ],
+   "OKAM": [
+    32,
+    37,
+    false
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "Sin Limites": [
+    28,
+    32,
+    false
+   ],
+   "Six": [
+    8,
+    9,
+    false
+   ],
+   "Tenor": [
+    40,
+    53,
+    false
+   ],
+   "mats": [
+    295,
+    213,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Oasis",
+    "Molusco",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "LRS",
+    "Oasis"
+   ],
+   [
+    "Liberia",
+    "Drexx",
+    "Liberia"
+   ],
+   [
+    "Liberia",
+    "Dyzz polla de 2 metros🇨🇱",
+    "Liberia"
+   ],
+   [
+    "Liberia",
+    "Millonari-O",
+    "Liberia"
+   ],
+   [
+    "mats",
+    "Rydo🇩🇪",
+    "mats"
+   ],
+   [
+    "mats",
+    "Calíz",
+    "mats"
+   ],
+   [
+    "mats",
+    "Sin Limites",
+    "mats"
+   ],
+   [
+    "Six",
+    "Jult",
+    "Six"
+   ],
+   [
+    "Six",
+    "Tenor",
+    "Six"
+   ],
+   [
+    "Six",
+    "EIDP",
+    "Six"
+   ],
+   [
+    "Six",
+    "OKAM",
+    "Six"
+   ],
+   [
+    "Oasis",
+    "Liberia",
+    "Oasis"
+   ],
+   [
+    "Lautaro la sinceridad 🇨🇨",
+    "mats",
+    "Lautaro la sinceridad 🇨🇨"
+   ],
+   [
+    "Six",
+    "Lizen🇦🇷",
+    "Six"
+   ],
+   [
+    "Badterne",
+    "Jahno Afrodisiaco 🇦🇷",
+    "Badterne"
+   ],
+   [
+    "Oasis",
+    "Lautaro la sinceridad 🇨🇨",
+    "Oasis"
+   ],
+   [
+    "Badterne",
+    "Six",
+    "Badterne"
+   ],
+   [
+    "Oasis",
+    "Badterne",
+    "Oasis"
+   ]
+  ],
+  "ev_antes": {
+   "Badterne": 5,
+   "Calíz": 17,
+   "Drexx": 26,
+   "EIDP": 8,
+   "Jult": 15,
+   "LRS": 24,
+   "Liberia": 22,
+   "Millonari-O": 3,
+   "Molusco": 22,
+   "OKAM": 13,
+   "Oasis": 34,
+   "Sin Limites": 35,
+   "Six": 34,
+   "Tenor": 11,
+   "mats": 3
+  },
+  "fecha": "27/10",
+  "firma": "f85f83a7191127d0",
+  "msg": "1564844210035757187",
+  "nombre": "__ QCYO RAPEEN 5 __",
+  "num": 539,
+  "participantes": 20,
+  "sello": {
+   "Oasis": "bcbf3be4ef07:6ec1a5248de8"
+  },
+  "sv": "FFA",
+  "t": "2026-10-28T03:53:59Z",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
+    "Badterne",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Lautaro la sinceridad 🇨🇨",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Six",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Liberia",
+    "Cuartos",
+    2500
+   ],
+   [
+    "mats",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lizen🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Jahno Afrodisiaco 🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Molusco",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz polla de 2 metros🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Millonari-O",
+    "Octavos",
+    1250
+   ],
+   [
+    "Rydo🇩🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jult",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tenor",
+    "Octavos",
+    1250
+   ],
+   [
+    "EIDP",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

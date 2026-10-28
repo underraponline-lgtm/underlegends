@@ -311,6 +311,17 @@
    "vence": "2026-11-01T21:03:19+00:00",
    "vencido": false
   },
+  "Dyzz polla de 2 metros": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T02:00:00+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 5",
+   "n": 539,
+   "sv": "FFA",
+   "vence": "2026-11-04T02:00:00+00:00",
+   "vencido": false
+  },
   "EVANGELINE": {
    "avisado": "2026-10-18",
    "chat": "2026-10-18",
@@ -508,6 +519,17 @@
    "vence": "2026-10-26T06:14:16+00:00",
    "vencido": false
   },
+  "Jahno Afrodisiaco": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T02:00:00+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 5",
+   "n": 539,
+   "sv": "FFA",
+   "vence": "2026-11-04T02:00:00+00:00",
+   "vencido": false
+  },
   "Jeisy": {
    "avisado": "2026-10-25",
    "chat": "2026-10-25",
@@ -655,14 +677,25 @@
   },
   "Lautaro la sinceridad": {
    "avisado": "2026-10-27",
-   "con": null,
-   "cumplido": "",
+   "con": 539,
+   "cumplido": "2026-10-28T02:00:00+00:00",
    "debut": "2026-10-27T03:32:41+00:00",
    "did": "",
    "evento": "qcyo rapeen 4",
    "n": 532,
    "sv": "FFA",
    "vence": "2026-11-03T03:32:41+00:00",
+   "vencido": false
+  },
+  "Lizen": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T02:00:00+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 5",
+   "n": 539,
+   "sv": "FFA",
+   "vence": "2026-11-04T02:00:00+00:00",
    "vencido": false
   },
   "Lizennin": {
@@ -1029,6 +1062,17 @@
    "n": 478,
    "sv": "SR",
    "vence": "2026-10-23T17:34:15+00:00",
+   "vencido": false
+  },
+  "Rydo": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-28T02:00:00+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 5",
+   "n": 539,
+   "sv": "FFA",
+   "vence": "2026-11-04T02:00:00+00:00",
    "vencido": false
   },
   "Ryuk": {

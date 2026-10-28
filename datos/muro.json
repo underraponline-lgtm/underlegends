@@ -58,8 +58,8 @@
 "temporada"
 ]
 },
-"liberia": {
-"rg": "SS",
+"six": {
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -67,8 +67,8 @@
 "temporada"
 ]
 },
-"six": {
-"rg": "B",
+"liberia": {
+"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -197,12 +197,8 @@
 "rg": "B",
 "c": []
 },
-"hassan": {
-"rg": "A",
-"c": []
-},
-"nc": {
-"rg": "D",
+"molusco": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -210,8 +206,12 @@
 "temporada"
 ]
 },
-"molusco": {
-"rg": "B",
+"hassan": {
+"rg": "A",
+"c": []
+},
+"nc": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -237,6 +237,14 @@
 "temporada"
 ]
 },
+"sinlimites": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "bloody": {
 "rg": "C",
 "c": [
@@ -251,14 +259,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"sinlimites": {
-"rg": "D",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -285,7 +285,7 @@
 "temporada"
 ]
 },
-"cronox": {
+"okam": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -294,8 +294,8 @@
 "temporada"
 ]
 },
-"okam": {
-"rg": "C",
+"cronox": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -312,7 +312,11 @@
 "temporada"
 ]
 },
-"majiztral": {
+"xclusivo": {
+"rg": "C",
+"c": []
+},
+"drexx": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -321,11 +325,7 @@
 "temporada"
 ]
 },
-"xclusivo": {
-"rg": "C",
-"c": []
-},
-"drexx": {
+"majiztral": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -389,8 +389,8 @@
 "rg": "E",
 "c": []
 },
-"dynoco": {
-"rg": "C",
+"tenor": {
+"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -398,8 +398,8 @@
 "temporada"
 ]
 },
-"tenor": {
-"rg": "D",
+"dynoco": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -422,6 +422,14 @@
 "btrx": {
 "rg": "C",
 "c": []
+},
+"caliz": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "geoka": {
 "rg": "D",
@@ -450,14 +458,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"caliz": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -503,12 +503,9 @@
 "temporada"
 ]
 },
-"presagio": {
+"badterne": {
 "rg": "",
-"c": [
-"servidor",
-"temporada"
-]
+"c": []
 },
 "shadow": {
 "rg": "E",
@@ -548,6 +545,13 @@
 "rg": "E",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"presagio": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -598,7 +602,7 @@
 "temporada"
 ]
 },
-"badterne": {
+"eidp": {
 "rg": "",
 "c": []
 },
@@ -631,10 +635,6 @@
 "servidor",
 "temporada"
 ]
-},
-"eidp": {
-"rg": "",
-"c": []
 },
 "mcnadie": {
 "rg": "",
@@ -728,13 +728,6 @@
 "temporada"
 ]
 },
-"mtz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "teito": {
 "rg": "E",
 "c": [
@@ -754,6 +747,13 @@
 "hotaruadeyemi": {
 "rg": "",
 "c": []
+},
+"mtz": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "number": {
 "rg": "",
@@ -852,14 +852,6 @@
 "temporada"
 ]
 },
-"agustin51k": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "andy": {
 "rg": "",
 "c": [
@@ -925,6 +917,14 @@
 "ortiz": {
 "rg": "",
 "c": []
+},
+"agustin51k": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
 },
 "matuk": {
 "rg": "",
@@ -1128,6 +1128,10 @@
 "temporada"
 ]
 },
+"lautarolasinceridad": {
+"rg": "",
+"c": []
+},
 "hh": {
 "rg": "",
 "c": [
@@ -1160,6 +1164,10 @@
 "c": []
 },
 "joshu": {
+"rg": "",
+"c": []
+},
+"mats": {
 "rg": "",
 "c": []
 },
@@ -1238,6 +1246,10 @@
 "servidor",
 "temporada"
 ]
+},
+"millonario": {
+"rg": "",
+"c": []
 },
 "elsoolar": {
 "rg": "",

@@ -27645,7 +27645,7 @@
        "Teito"
       ],
       "Erian, Chuwin",
-      "triple (3 bandas, pasan 2); también pasa: Chuwin 🇪🇸; Drafteado: Erian 🇦🇫"
+      "triple (3 bandas, pasan 2); también pasa: Chuwin 🇳🇮; Drafteado: Erian 🇦🇫"
      ],
      [
       [
@@ -37021,6 +37021,242 @@
     "Xubaru",
     "Cuartos",
     2000
+   ]
+  ]
+ },
+ "539": {
+  "dia": "2026-10-27",
+  "escala": "16+",
+  "fecha": "27/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1564821005719838861"
+  ],
+  "n": 539,
+  "nombre": "QCYO RAPEEN 5",
+  "participantes": 20,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Badterne",
+       "Molusco",
+       "LRS"
+      ],
+      "Oasis, Badterne",
+      "triple (4 bandas, pasan 2); también pasa: Gianlamaldad🇮🇶"
+     ],
+     [
+      [
+       "Liberia",
+       "Jahno Afrodisiaco 🇦🇷",
+       "Drexx",
+       "Dyzz polla de 2 metros🇨🇱",
+       "Millonari-O"
+      ],
+      "Liberia, Jahno Afrodisiaco 🇦🇷",
+      "triple (5 bandas, pasan 2); también pasa: Jahno Afrodisiaco 🇦🇷"
+     ],
+     [
+      [
+       "mats",
+       "Lizen🇦🇷",
+       "Rydo🇩🇪",
+       "Calíz",
+       "Sin Limites"
+      ],
+      "mats, Lizen🇦🇷",
+      "triple (5 bandas, pasan 2); también pasa: Lizen🇦🇷"
+     ],
+     [
+      [
+       "Six",
+       "Lautaro la sinceridad 🇨🇨",
+       "Jult",
+       "Tenor",
+       "EIDP",
+       "OKAM"
+      ],
+      "Six, Lautaro la sinceridad 🇨🇨",
+      "triple (6 bandas, pasan 2); también pasa: Lautaro la sinceridad 🇨🇨"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Liberia"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Lautaro la sinceridad 🇨🇨",
+       "mats"
+      ],
+      "Lautaro la sinceridad 🇨🇨",
+      ""
+     ],
+     [
+      [
+       "Six",
+       "Lizen🇦🇷"
+      ],
+      "Six",
+      ""
+     ],
+     [
+      [
+       "Badterne",
+       "Jahno Afrodisiaco 🇦🇷"
+      ],
+      "Badterne",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Lautaro la sinceridad 🇨🇨"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "Badterne",
+       "Six"
+      ],
+      "Badterne",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Badterne"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
+    "Badterne",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Lautaro la sinceridad 🇨🇨",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Six",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Jahno Afrodisiaco 🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Liberia",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lizen🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "mats",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz polla de 2 metros🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "EIDP",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jult",
+    "Octavos",
+    1250
+   ],
+   [
+    "LRS",
+    "Octavos",
+    1250
+   ],
+   [
+    "Millonari-O",
+    "Octavos",
+    1250
+   ],
+   [
+    "Molusco",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "Rydo🇩🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tenor",
+    "Octavos",
+    1250
    ]
   ]
  }

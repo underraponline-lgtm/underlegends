@@ -360,10 +360,6 @@
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/blue/sv-fvs.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/blue/sv-sr.webp"
  },
- "blurnoise": {
-  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/blurnoise/servidor.webp",
-  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/blurnoise/sv-dra.webp"
- },
  "bocamio": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bocamio/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bocamio/sv-acad.webp",

@@ -3275,6 +3275,72 @@
     "<:3_KYS:1262380343139241994>"
    ],
    "escribio": {}
+  },
+  {
+   "id": "65b010c671",
+   "tipo": "Nombre desconocido",
+   "sec": "QCYO RAPEEN 5 · FFA · 27/10 · #539",
+   "que": "¿Quién es «Dyzz polla de 2 metros🇨🇱»?",
+   "r": "Es Dyzz (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @dyzzmc (en Discord: «#51 | 📿», «Dyzzmzt») · en la Lista: Dyzz se anotó como «Dyzz polla de 2 metros» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1793160243984,
+   "filas": [
+    927
+   ],
+   "variantes": [
+    "Dyzz polla de 2 metros🇨🇱"
+   ],
+   "escribio": {
+    "quien": "QCYO RAPEEN 5 · FFA · 27/10 · Dyzz polla de 2 metros🇨🇱"
+   }
+  },
+  {
+   "id": "711b033316",
+   "tipo": "Nombre desconocido",
+   "sec": "QCYO RAPEEN 5 · FFA · 27/10 · #539",
+   "que": "¿Quién es «Lizen🇦🇷»?",
+   "r": "Es Mito (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @lizeninn. · en la Lista: Mito se anotó como «Lizen» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1793160243984,
+   "filas": [
+    929
+   ],
+   "variantes": [
+    "Lizen🇦🇷"
+   ],
+   "escribio": {
+    "quien": "QCYO RAPEEN 5 · FFA · 27/10 · Lizen🇦🇷"
+   }
+  },
+  {
+   "id": "f0d4281c1a",
+   "tipo": "Nombre desconocido",
+   "sec": "QCYO RAPEEN 5 · FFA · 27/10 · #539",
+   "que": "¿Quién es «Rydo🇩🇪»?",
+   "r": "Es alguien nuevo: alta con su cuenta 674043115237015671",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (674043115237015671)",
+   "t": 1793160243984,
+   "filas": [
+    930
+   ],
+   "variantes": [
+    "Rydo🇩🇪"
+   ],
+   "escribio": {
+    "alta": [
+     "Rydo",
+     "674043115237015671"
+    ]
+   }
   }
  ],
  "deshechas": []
