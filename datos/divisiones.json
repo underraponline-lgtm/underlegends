@@ -232,11 +232,6 @@
      1
     ],
     [
-     "LEWITO",
-     3750,
-     1
-    ],
-    [
      "Artezzy",
      2250,
      1
@@ -336,7 +331,7 @@
      1
     ],
     [
-     "Andresito🇦🇷",
+     "Andresito",
      5500,
      1
     ],
@@ -352,6 +347,11 @@
     ],
     [
      "Andy",
+     3750,
+     1
+    ],
+    [
+     "LEWITO",
      3750,
      1
     ],
@@ -397,11 +397,6 @@
     ],
     [
      "Molt",
-     2200,
-     1
-    ],
-    [
-     "Mr.Kude",
      2200,
      1
     ]
@@ -455,6 +450,11 @@
     [
      "francis",
      6250,
+     1
+    ],
+    [
+     "Mr.Kude",
+     2200,
      1
     ],
     [
@@ -573,12 +573,12 @@
   "Char": 5,
   "Chente": 5,
   "Choka": 5,
-  "Chop": 4,
+  "Chop": 5,
   "Chuwin": 5,
   "Cinexfilo": 4,
   "Clitax": 5,
   "Cody🇺🇸": 4,
-  "Colesito": 3,
+  "Colesito": 4,
   "Colo": 5,
   "Corvo": 5,
   "CrisZJ": 4,
@@ -621,7 +621,6 @@
   "Eclipsito": 4,
   "Ed": 5,
   "Edd y Eddy 🇻🇪": 5,
-  "EddyLaSombra 🇱🇷": 5,
   "Efimero": 5,
   "El Hombre Eyau": 5,
   "El Wachin": 5,
@@ -748,7 +747,7 @@
   "L 🇨🇴": 5,
   "LA ORDEN DEL GRIAL 🇵🇪 🇨🇱 🇦🇷": 5,
   "LAST": 4,
-  "LEWITO": 4,
+  "LEWITO": 5,
   "LKS 🇨🇱": 5,
   "LOLOELGAUCHO": 5,
   "LOLOELGAUCHO 🇦🇷": 5,
@@ -815,7 +814,7 @@
   "Misterioso": 5,
   "Mito": 5,
   "Molt": 5,
-  "Molusco": 4,
+  "Molusco": 3,
   "Monet": 5,
   "Mosquitrap 🦟": 4,
   "Motera": 3,
@@ -898,7 +897,7 @@
   "Richard": 5,
   "Riolu": 4,
   "Risa": 5,
-  "Road": 5,
+  "Road": 4,
   "Rodas": 4,
   "Rosmel 🇻🇪": 5,
   "Rubik": 5,
@@ -1744,12 +1743,12 @@
   ],
   [
    "2026-10-12",
-   "Soulb",
+   "1200",
    4
   ],
   [
    "2026-10-12",
-   "1200",
+   "Soulb",
    4
   ],
   [
@@ -1809,12 +1808,12 @@
   ],
   [
    "2026-10-12",
-   "Colesito",
+   "Guess",
    3
   ],
   [
    "2026-10-12",
-   "Guess",
+   "Colesito",
    3
   ],
   [
@@ -1824,7 +1823,7 @@
   ],
   [
    "2026-10-12",
-   "Chop",
+   "Molusco",
    3
   ],
   [
@@ -1999,11 +1998,6 @@
   ],
   [
    "2026-10-19",
-   "LEWITO",
-   4
-  ],
-  [
-   "2026-10-19",
    "MCO",
    2
   ],
@@ -2083,6 +2077,7 @@
    "1200",
    "BastyRetro",
    "Chop",
+   "Colesito",
    "Cronox",
    "Fazer",
    "Noa",
@@ -2091,7 +2086,6 @@
    "Prodigy",
    "Provenza",
    "Raizer",
-   "Road",
    "Snow",
    "Verc",
    "Zignos"
@@ -2119,7 +2113,6 @@
    "Julix🇧🇴",
    "Kuni",
    "LAST",
-   "LEWITO",
    "LRS",
    "Liberia",
    "Lizeninn",

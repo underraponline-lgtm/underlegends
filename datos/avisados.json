@@ -20950,7 +20950,7 @@
    "Sin Limites": 26
   },
   "fecha": "23/10",
-  "firma": "3e3e5185ba5e2c5a",
+  "firma": "6786f924d2caea95",
   "msg": "1563384839284195339",
   "nombre": "GRISELDA RECORDS VOL. 2",
   "num": 506,
@@ -21084,7 +21084,7 @@
    "Xubaru": 12
   },
   "fecha": "23/10",
-  "firma": "d04dd1212277eaae",
+  "firma": "7279f18dd5f60e5a",
   "msg": "1563392896890179584",
   "nombre": "GRISELDA RECORDS VOL. 3",
   "num": 507,
@@ -21230,7 +21230,7 @@
    "Shadow": 13
   },
   "fecha": "24/10",
-  "firma": "374431da4d30e732",
+  "firma": "473eb0d7fc2cb2be",
   "msg": "1563613115495489728",
   "nombre": "19 FUTCARD EDITION - 6 COMPE GAY",
   "num": 508,
@@ -26257,9 +26257,9 @@
   "canal": "838593179744731229",
   "duelos": [
    [
-    "Andresito🇦🇷",
+    "Andresito",
     "NC",
-    "Andresito🇦🇷"
+    "Andresito"
    ],
    [
     "Lizennin🇸🇴",
@@ -26277,9 +26277,9 @@
     "Ragna 🇨🇱"
    ],
    [
-    "Andresito🇦🇷",
+    "Andresito",
     "Lizennin🇸🇴",
-    "Andresito🇦🇷"
+    "Andresito"
    ],
    [
     "Ragna 🇨🇱",
@@ -26288,7 +26288,7 @@
    ],
    [
     "Ragna 🇨🇱",
-    "Andresito🇦🇷",
+    "Andresito",
     "Ragna 🇨🇱"
    ],
    [
@@ -26378,7 +26378,7 @@
    "Mr.Kude": 2
   },
   "fecha": "27/10",
-  "firma": "4176f0eaa3e3baeb",
+  "firma": "b7f2908cbc644f52",
   "msg": "1564725192360464586",
   "nombre": "- IRLANDA FREESTYLE -",
   "num": 533,
@@ -26400,7 +26400,7 @@
     7000
    ],
    [
-    "Andresito🇦🇷",
+    "Andresito",
     "Subcampeón",
     5000
    ],
@@ -27633,6 +27633,157 @@
    ],
    [
     "Walker",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "538": {
+  "antes": {
+   "1200": [
+    229,
+    75,
+    true
+   ],
+   "Chop": [
+    219,
+    43,
+    true
+   ],
+   "Guess": [
+    21,
+    25,
+    false
+   ],
+   "Molusco": [
+    23,
+    27,
+    false
+   ],
+   "Six": [
+    8,
+    9,
+    false
+   ],
+   "Velatz": [
+    15,
+    16,
+    false
+   ],
+   "Verc": [
+    11,
+    12,
+    false
+   ],
+   "Xubaru": [
+    25,
+    29,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Velatz",
+    "Chop",
+    "Velatz"
+   ],
+   [
+    "Molusco",
+    "1200",
+    "Molusco"
+   ],
+   [
+    "Guess",
+    "Xubaru",
+    "Guess"
+   ],
+   [
+    "Verc",
+    "Six",
+    "Verc"
+   ],
+   [
+    "Molusco",
+    "Velatz",
+    "Molusco"
+   ],
+   [
+    "Guess",
+    "Verc",
+    "Guess"
+   ],
+   [
+    "Guess",
+    "Molusco",
+    "Guess"
+   ],
+   [
+    "Verc",
+    "Velatz",
+    "Verc"
+   ]
+  ],
+  "ev_antes": {
+   "1200": 12,
+   "Chop": 17,
+   "Guess": 20,
+   "Molusco": 21,
+   "Six": 33,
+   "Velatz": 40,
+   "Verc": 21,
+   "Xubaru": 14
+  },
+  "fecha": "18/10",
+  "firma": "48ae90fe1f253abc",
+  "msg": "1564823139979108383",
+  "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 7",
+  "num": 538,
+  "participantes": 8,
+  "sello": {
+   "Guess": "2a6b9f2df4aa:6ec1a5248de8"
+  },
+  "sv": "FFA",
+  "t": "2026-10-28T02:08:28Z",
+  "tabla": [
+   [
+    "Guess",
+    "Campeón",
+    7500
+   ],
+   [
+    "Molusco",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Verc",
+    "Tercero",
+    4000
+   ],
+   [
+    "Velatz",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Chop",
+    "Cuartos",
+    2000
+   ],
+   [
+    "1200",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Xubaru",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Six",
     "Cuartos",
     2000
    ]

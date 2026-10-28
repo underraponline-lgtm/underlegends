@@ -76,11 +76,12 @@
    "vencido": false
   },
   "Andresito": {
+   "avisado": "2026-10-27",
    "chat": "2026-10-27",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-27T18:35:17+00:00",
-   "did": "",
+   "did": "1102713474947227818",
    "evento": "- IRLANDA FREESTYLE -",
    "n": 533,
    "sv": "FRZ",
@@ -349,19 +350,6 @@
    "n": 497,
    "sv": "FFA",
    "vence": "2026-10-29T00:30:05+00:00",
-   "vencido": false
-  },
-  "EddyLaSombra": {
-   "avisado": "2026-10-26",
-   "chat": "2026-10-26",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-25T22:13:32+00:00",
-   "did": "",
-   "evento": "AGUANTE EL ROJO Y EL BARCELONA Multiverse",
-   "n": 516,
-   "sv": "FFA",
-   "vence": "2026-11-01T22:13:32+00:00",
    "vencido": false
   },
   "Evanlyne": {
@@ -678,6 +666,7 @@
    "vencido": false
   },
   "Lizennin": {
+   "avisado": "2026-10-27",
    "chat": "2026-10-27",
    "con": null,
    "cumplido": "",
@@ -948,7 +937,7 @@
    "n": 522,
    "sv": "FDS",
    "vence": "2026-10-28T02:04:09+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Pipe": {
    "avisado": "2026-10-23",
@@ -1002,6 +991,7 @@
    "vencido": true
   },
   "Ragna": {
+   "avisado": "2026-10-27",
    "chat": "2026-10-27",
    "con": null,
    "cumplido": "",
@@ -1162,6 +1152,7 @@
    "vencido": false
   },
   "Tiago Context": {
+   "avisado": "2026-10-27",
    "chat": "2026-10-27",
    "con": null,
    "cumplido": "",
@@ -1316,7 +1307,7 @@
    "n": 522,
    "sv": "FDS",
    "vence": "2026-10-28T02:04:09+00:00",
-   "vencido": false
+   "vencido": true
   },
   "dyss": {
    "avisado": "2026-10-26",

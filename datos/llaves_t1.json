@@ -32622,10 +32622,10 @@
      ],
      [
       [
-       "EddyLaSombra 🇱🇷",
+       "Liberia",
        "Saiko, Guess"
       ],
-      "EddyLaSombra 🇱🇷",
+      "Liberia",
       ""
      ],
      [
@@ -32660,7 +32660,7 @@
      [
       [
        "Oasis",
-       "EddyLaSombra 🇱🇷"
+       "Liberia"
       ],
       "Oasis",
       ""
@@ -32755,7 +32755,7 @@
     2625
    ],
    [
-    "EddyLaSombra 🇱🇷",
+    "Liberia",
     "Cuartos",
     2500
    ],
@@ -35738,10 +35738,10 @@
     "b": [
      [
       [
-       "Andresito🇦🇷",
+       "Andresito",
        "NC"
       ],
-      "Andresito🇦🇷",
+      "Andresito",
       ""
      ],
      [
@@ -35840,10 +35840,10 @@
     "b": [
      [
       [
-       "Andresito🇦🇷",
+       "Andresito",
        "Lizennin🇸🇴"
       ],
-      "Andresito🇦🇷",
+      "Andresito",
       ""
      ],
      [
@@ -35894,7 +35894,7 @@
      [
       [
        "Ragna 🇨🇱",
-       "Andresito🇦🇷"
+       "Andresito"
       ],
       "Ragna 🇨🇱",
       ""
@@ -35932,7 +35932,7 @@
     7000
    ],
    [
-    "Andresito🇦🇷",
+    "Andresito",
     "Subcampeón",
     5000
    ],
@@ -36879,6 +36879,146 @@
    ],
    [
     "Walker",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "538": {
+  "dia": "2026-10-18",
+  "escala": "8-15",
+  "fecha": "18/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1561483378379853976"
+  ],
+  "n": 538,
+  "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 7",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Velatz",
+       "Chop"
+      ],
+      "Velatz",
+      ""
+     ],
+     [
+      [
+       "Molusco",
+       "1200"
+      ],
+      "Molusco",
+      ""
+     ],
+     [
+      [
+       "Guess",
+       "Xubaru"
+      ],
+      "Guess",
+      ""
+     ],
+     [
+      [
+       "Verc",
+       "Six"
+      ],
+      "Verc",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Molusco",
+       "Velatz"
+      ],
+      "Molusco",
+      ""
+     ],
+     [
+      [
+       "Guess",
+       "Verc"
+      ],
+      "Guess",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Verc",
+       "Velatz"
+      ],
+      "Verc",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Guess",
+       "Molusco"
+      ],
+      "Guess",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Guess",
+    "Campeón",
+    7500
+   ],
+   [
+    "Molusco",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Verc",
+    "Tercero",
+    4000
+   ],
+   [
+    "Velatz",
+    "Cuarto",
+    3000
+   ],
+   [
+    "1200",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Chop",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Six",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Xubaru",
     "Cuartos",
     2000
    ]

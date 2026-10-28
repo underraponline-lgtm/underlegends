@@ -94,7 +94,7 @@
 ]
 },
 "verc": {
-"rg": "S",
+"rg": "A",
 "c": [
 "competitivo",
 "pais",
@@ -120,8 +120,8 @@
 "temporada"
 ]
 },
-"mco": {
-"rg": "B",
+"velatz": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -129,8 +129,8 @@
 "temporada"
 ]
 },
-"velatz": {
-"rg": "C",
+"mco": {
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -176,6 +176,15 @@
 "temporada"
 ]
 },
+"guess": {
+"rg": "B",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "carlosss": {
 "rg": "S",
 "c": [
@@ -192,15 +201,6 @@
 "rg": "A",
 "c": []
 },
-"guess": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "nc": {
 "rg": "D",
 "c": [
@@ -211,7 +211,7 @@
 ]
 },
 "molusco": {
-"rg": "C",
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -2611,22 +2611,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-02T03:08:33Z",
-"quien": [
-"Emily Family"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-02T03:37:26Z",
-"quien": [
-"ACH"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-02T03:37:26Z",
@@ -5953,6 +5937,24 @@
 "t": "2026-10-28T00:33:35Z",
 "quien": [
 "Makmah"
+],
+"rg": "B",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-28T02:18:32Z",
+"quien": [
+"Guess"
+],
+"rg": "B",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-28T02:18:32Z",
+"quien": [
+"Molusco"
 ],
 "rg": "B",
 "primero": false
