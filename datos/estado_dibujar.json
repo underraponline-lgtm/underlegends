@@ -1,51 +1,51 @@
 {
  "v": 1,
- "cuando": "2026-10-28T00:54:39Z",
+ "cuando": "2026-10-28T01:22:33Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1183.3,
+ "dur_s": 1148.1,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 10.7
+   "s": 9.5
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.1
+   "s": 0.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.7
+   "s": 8.9
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 40.8
+   "s": 19.6
   },
   {
    "n": "5",
-   "que": "tanda 1 de 4 · 40 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": false,
-   "s": 1055.9
+   "s": 1044.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 8.5
+   "s": 8.8
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 56.0
+   "s": 55.3
   }
  ],
  "fallas": [
@@ -55,11 +55,11 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Focox"
+   "que": "03_Servidor/generar.py Kyss"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Snow"
+   "que": "03_Servidor/generar.py Player"
   }
  ],
  "ultimo_evento": {
@@ -70,25 +70,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 44,
-   "read": 2470
+   "write": 73,
+   "read": 4281
   },
   "objeto": {
-   "leidas": 132607,
-   "escritas": 1535,
-   "pedidos": 1307
+   "leidas": 330951,
+   "escritas": 3095,
+   "pedidos": 1494
   },
   "worker": {
-   "pedidos": 16121,
+   "pedidos": 16062,
    "errores": 5864,
-   "sub": 17765,
+   "sub": 17703,
    "cortados": 5864,
    "p50_ms": 1.27,
-   "p99_ms": 11.7,
+   "p99_ms": 11.74,
    "cpu": {
-    "total": 52089,
-    "objeto_10": 1560,
-    "worker_10": 284
+    "total": 51969,
+    "objeto_10": 1567,
+    "worker_10": 282
    }
   },
   "r2": {
