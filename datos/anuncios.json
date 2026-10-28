@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-28T17:55:30+00:00",
+ "cuando": "2026-10-28T18:26:02+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6781,6 +6781,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Nxuz",
+   "quien": "elinzano1009",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1565063071284723823",
+   "cuando": "2026-10-28T18:01:53"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Scritura",
+   "quien": "scritura",
+   "discord_id": "1559007314126704653",
+   "msg_id": "1565061738125074433",
+   "cuando": "2026-10-28T17:56:35"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Dominick 🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1565061521359507569",
+   "cuando": "2026-10-28T17:55:44"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -42753,33 +42780,6 @@
    "discord_id": "1317231402697363507",
    "msg_id": "1549901227414917151",
    "cuando": "2026-09-16T21:54:08"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Damián 🇵🇪",
-   "quien": "equisde_xd23",
-   "discord_id": "1439048698142134436",
-   "msg_id": "1549900741961850891",
-   "cuando": "2026-09-16T21:52:12"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "vandu 🇨🇦",
-   "quien": "dfelipetor",
-   "discord_id": "613552853302378527",
-   "msg_id": "1549900733682417786",
-   "cuando": "2026-09-16T21:52:10"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Panchok 🇨🇱",
-   "quien": "panchok0103",
-   "discord_id": "1400508144920170577",
-   "msg_id": "1549900452135575613",
-   "cuando": "2026-09-16T21:51:03"
   }
  ]
 }

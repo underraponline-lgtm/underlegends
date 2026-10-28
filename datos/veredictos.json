@@ -1552,6 +1552,17 @@
    "b": "GIANLAMALDAD",
    "ganador": "GIANLAMALDAD",
    "votos": "1–0"
+  },
+  "1565065950913364069": {
+   "id": "1565065950913364069",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1793211200217,
+   "a": "VR",
+   "b": "EMI",
+   "ganador": "EMI",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5582,6 +5593,77 @@
      [
       "GIAN LA MALDAD (PRAISERIZAS)",
       "PARK JI SUNG (PRESAGIO)"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1565063078868029583": {
+   "id": "1565063078868029583",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1793210515468,
+   "ed": 1793211811886,
+   "texto": "`[ CUARTOS ]`\n⌞TEITO🇨🇴⌝ 🆚 ⌞LIZENIN🇦🇷⌝\n⌞JOBAKING🇨🇱⌝ 🆚 ⌞CARLOS🇪🇨⌝\n⌞ADRIAGNER⌝ 🆚 ⌞TUCA⌝\n⌞VR⌝ 🆚 ⌞EMI⌝\n`[ SEMIFINALES ]`\n⌞CARLOS⌝ 🆚 ⌞LIZENIN⌝\n⌞TUCA⌝ 🆚 ⌞EMI⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "TEITO🇨🇴",
+      "LIZENIN🇦🇷"
+     ],
+     "LIZENIN🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "JOBAKING🇨🇱",
+      "CARLOS🇪🇨"
+     ],
+     "CARLOS🇪🇨",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "ADRIAGNER",
+      "TUCA"
+     ],
+     "TUCA",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "VR",
+      "EMI"
+     ],
+     "EMI",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "CARLOS",
+      "LIZENIN"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "TUCA",
+      "EMI"
      ],
      null,
      "última ronda y no dice campeón",
