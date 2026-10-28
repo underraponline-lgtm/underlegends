@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "5c865e41b19bf36c",
+  "firma": "a469c56f24c4cfe7",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "7424d7ac0a285e40",
+  "firma": "9412b5aaee1fc2ca",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -15100,7 +15100,7 @@
    "Xubaru": 8
   },
   "fecha": "18/10",
-  "firma": "bdf000309238a517",
+  "firma": "eca76de5acfa3db1",
   "msg": "1561498207572205609",
   "nombre": "__ LA BELLA ARTE DE LA DESGRACIA VOL7 __",
   "num": 484,
@@ -18979,7 +18979,7 @@
    "Sin Limites": 21
   },
   "fecha": "22/10",
-  "firma": "f1409ceb11353e01",
+  "firma": "ea2fed06837a9509",
   "msg": "1562845541493374976",
   "nombre": "__ LA ISLA DE OKINAWA V.3 __",
   "num": 498,
@@ -19212,7 +19212,7 @@
    "Zignos": 24
   },
   "fecha": "22/10",
-  "firma": "483a9bbebfb8d9d6",
+  "firma": "be3068d37021c2a2",
   "msg": "1562967842851266610",
   "nombre": "__ SI NO SOS FOURBAR NO QUIERO NADA VOL.1 __",
   "num": 499,
@@ -20950,7 +20950,7 @@
    "Sin Limites": 26
   },
   "fecha": "23/10",
-  "firma": "6786f924d2caea95",
+  "firma": "d45a6f8f71c836f8",
   "msg": "1563384839284195339",
   "nombre": "GRISELDA RECORDS VOL. 2",
   "num": 506,
@@ -21622,7 +21622,7 @@
    "Sin Limites": 28
   },
   "fecha": "25/10",
-  "firma": "74e24bafac34de9b",
+  "firma": "95a10f7c98f24653",
   "msg": "1563774195693916281",
   "nombre": "GRISELDA RECORDS VOL. 6",
   "num": 511,
@@ -22721,7 +22721,7 @@
    "doble h": 2
   },
   "fecha": "25/10",
-  "firma": "2b718e602e7110a0",
+  "firma": "92775ff0f5bbdf03",
   "msg": "1564072873163890759",
   "nombre": "__ AGUANTE EL ROJO Y EL BARCELONA Multiverse __",
   "num": 516,
@@ -23294,7 +23294,7 @@
    "Vandu": 34
   },
   "fecha": "25/10",
-  "firma": "09a63fccbd6b42a2",
+  "firma": "e023adfe3fe26be4",
   "msg": "1564145050185891903",
   "nombre": "CHILL",
   "num": 518,
@@ -24037,7 +24037,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "1449bc7f8ab06175",
+  "firma": "8e56e96c8be24c9c",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -26212,6 +26212,7 @@
   "v": 2
  },
  "533": {
+  "al_dia": true,
   "antes": {
    "Cinexfilo": [
     49,
@@ -26468,6 +26469,7 @@
   "v": 2
  },
  "534": {
+  "al_dia": true,
   "antes": {
    "Bloody": [
     27,
@@ -26705,6 +26707,7 @@
   "v": 2
  },
  "535": {
+  "al_dia": true,
   "antes": {
    "1200": [
     229,
@@ -26967,6 +26970,7 @@
   "v": 2
  },
  "536": {
+  "al_dia": true,
   "antes": {
    "Abyssus": [
     17,
@@ -27430,6 +27434,7 @@
   "v": 2
  },
  "537": {
+  "al_dia": true,
   "antes": {
    "Carlosss": [
     20,
@@ -27640,6 +27645,7 @@
   "v": 2
  },
  "538": {
+  "al_dia": true,
   "antes": {
    "1200": [
     229,
@@ -27736,7 +27742,7 @@
    "Xubaru": 14
   },
   "fecha": "18/10",
-  "firma": "5eb55aaf8b9d5ea8",
+  "firma": "6c2ab9d0b7364df6",
   "msg": "1564823139979108383",
   "nombre": "LA BELLA ARTE DE LA DESGRACIA VOL 7",
   "num": 538,
@@ -27791,6 +27797,7 @@
   "v": 2
  },
  "539": {
+  "al_dia": true,
   "antes": {
    "Badterne": [
     230,
@@ -27984,7 +27991,7 @@
    "mats": 3
   },
   "fecha": "27/10",
-  "firma": "f85f83a7191127d0",
+  "firma": "0f4bd1de32051c13",
   "msg": "1564844210035757187",
   "nombre": "__ QCYO RAPEEN 5 __",
   "num": 539,
