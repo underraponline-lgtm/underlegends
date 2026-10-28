@@ -662,17 +662,6 @@
    "ganador": "Tuca 🇦🇷",
    "votos": "1–0"
   },
-  "1563985601114538096": {
-   "id": "1563985601114538096",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1563658616098263132",
-   "pub": 1792953624753,
-   "a": "TERRY 🇦🇷",
-   "b": "MARCOS🇪🇸",
-   "ganador": "TERRY 🇦🇷",
-   "votos": "1–0"
-  },
   "1563999399833772208": {
    "id": "1563999399833772208",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -1163,9 +1152,9 @@
    "g": "1489848581203689535",
    "canal": "1536574435761332334",
    "pub": 1793072189810,
-   "a": "MC AREPA",
+   "a": "MCAREPA",
    "b": "GARI",
-   "ganador": "MC AREPA",
+   "ganador": "MCAREPA",
    "votos": "1–0"
   },
   "1564484650213056554": {
@@ -1252,7 +1241,7 @@
    "canal": "1536574435761332334",
    "pub": 1793076012467,
    "a": "LUCK",
-   "b": "MC AREPA",
+   "b": "MCAREPA",
    "ganador": "LUCK",
    "votos": "1–0"
   },
@@ -1454,17 +1443,6 @@
    "ganador": "PANCHOK 🇨🇱",
    "votos": "1–0"
   },
-  "1564756973205987399": {
-   "id": "1564756973205987399",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1563658616098263132",
-   "pub": 1793137534191,
-   "a": "ZAIK",
-   "b": "APOLO",
-   "ganador": "APOLO",
-   "votos": "1–0"
-  },
   "1564759262310310020": {
    "id": "1564759262310310020",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
@@ -1474,17 +1452,6 @@
    "a": "JORNADA 6 --> TELMEX",
    "b": "SOL",
    "ganador": "SOL",
-   "votos": "1–0"
-  },
-  "1564765565430661171": {
-   "id": "1564765565430661171",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1563658616098263132",
-   "pub": 1793139582737,
-   "a": "CARLOS",
-   "b": "LVEL",
-   "ganador": "CARLOS",
    "votos": "1–0"
   },
   "1564782969359437956": {
@@ -1588,57 +1555,6 @@
   }
  },
  "llaves": {
-  "1557365434666324079": {
-   "id": "1557365434666324079",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1791375254075,
-   "ed": 1791376796277,
-   "texto": "`[ SEMIFINALES ]`\n⌞JUPITER 🇲🇽⌝ 🆚 ⌞RAYO 🇵🇪⌝\n⌞ZA 🇮🇨⌝ 🆚 ⌞ALDRE 🇦🇷⌝\n⌞RAYO 🇵🇪⌝ 🆚 ⌞ALDRE 🇦🇷⌝\n`[ FINAL ]`\n⌞ZA 🇮🇨⌝ 🆚 ⌞JUPITER 🇲🇽⌝",
-   "batallas": [
-    [
-     "SEMIFINALES",
-     [
-      "JUPITER 🇲🇽",
-      "RAYO 🇵🇪"
-     ],
-     "JUPITER 🇲🇽",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "ZA 🇮🇨",
-      "ALDRE 🇦🇷"
-     ],
-     "ZA 🇮🇨",
-     "veredicto",
-     []
-    ],
-    [
-     "TERCER LUGAR",
-     [
-      "RAYO 🇵🇪",
-      "ALDRE 🇦🇷"
-     ],
-     "RAYO 🇵🇪",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "ZA 🇮🇨",
-      "JUPITER 🇲🇽"
-     ],
-     "ZA 🇮🇨",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1557527923865555057": {
    "id": "1557527923865555057",
    "sv": "[FFA] Freestyle For All 👾",
