@@ -1019,7 +1019,8 @@
 "vr": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "deuxs": {
@@ -2624,15 +2625,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-02T16:26:23Z",
-"quien": [
-"PichulaMc"
-],
-"rg": "B",
-"primero": false
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-02T16:38:08Z",
@@ -5973,6 +5965,14 @@
 "Jobaking"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-28T19:48:42Z",
+"quien": [
+"VR"
+],
+"carta": "temporada"
 }
 ]
 }

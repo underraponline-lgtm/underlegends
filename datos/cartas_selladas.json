@@ -47,7 +47,7 @@
    "servidor": "6b3c16e44c77:99e0c0179dbe:ca38c9"
   },
   "Adriagner": {
-   "competitivo": "593a442f7162:0a48057cb351",
+   "competitivo": "3b6c212decec:0a48057cb351",
    "pais": "cca1b94f62c6:263a27e40647",
    "servidor": "93474ce4a414:99e0c0179dbe:80c07f",
    "temporada": "a226e30279fd:6ec1a5248de8"
@@ -685,8 +685,8 @@
    "servidor": "4547e83a2c50:99e0c0179dbe:0355fe"
   },
   "Jobaking": {
-   "competitivo": "3b1bc36be785:0a48057cb351",
-   "pais": "daad428dd62a:263a27e40647",
+   "competitivo": "a1989ab491ec:0a48057cb351",
+   "pais": "a65aa0d65298:263a27e40647",
    "servidor": "4099541097ae:99e0c0179dbe:331c1e",
    "temporada": "cac64d32de13:6ec1a5248de8"
   },
@@ -1017,23 +1017,23 @@
   },
   "Malva": {},
   "Marcos": {
-   "competitivo": "1ccb4b24b92f:0a48057cb351",
-   "pais": "0a7923e54b32:263a27e40647",
-   "servidor": "4f1bb726ef68:99e0c0179dbe:25c183",
-   "temporada": "90ca88d57beb:6ec1a5248de8"
+   "competitivo": "83d1c60f0862:0a48057cb351",
+   "pais": "877a6a651300:263a27e40647",
+   "servidor": "f5072ad48766:99e0c0179dbe:25c183",
+   "temporada": "e939e0722ce7:6ec1a5248de8"
   },
   "Marto": {},
   "Masino": {
-   "competitivo": "b5dcc3985a79:0a48057cb351",
+   "competitivo": "14c2fd5b41aa:0a48057cb351",
    "pais": "693aa32c2eb4:263a27e40647",
-   "servidor": "96f056530d13:99e0c0179dbe:6ae78a",
-   "temporada": "bb6201f9eb06:6ec1a5248de8"
+   "servidor": "db68ad3631f9:99e0c0179dbe:6ae78a",
+   "temporada": "147fd53b6a85:6ec1a5248de8"
   },
   "Mathhias": {
-   "competitivo": "17ecefc6aa80:0a48057cb351",
-   "pais": "3bb2480e1668:263a27e40647",
-   "servidor": "f65bf7b8d726:99e0c0179dbe:284dc1",
-   "temporada": "0ecd8e421a4e:6ec1a5248de8"
+   "competitivo": "a14453ad9ad1:0a48057cb351",
+   "pais": "6e0ad68767f9:263a27e40647",
+   "servidor": "de6e7193207f:99e0c0179dbe:284dc1",
+   "temporada": "6a4ec05e1890:6ec1a5248de8"
   },
   "MathiasMC": {
    "servidor": "d0bfb45e3b88:99e0c0179dbe:9d9b02"
@@ -1067,24 +1067,24 @@
    "servidor": "9c7ea13f6285:99e0c0179dbe:ca38c9"
   },
   "MetriOdin": {
-   "competitivo": "156a28876fc7:0a48057cb351",
-   "pais": "9637b852788e:263a27e40647",
-   "servidor": "975365383266:99e0c0179dbe:6066c5"
+   "competitivo": "55452d781a94:0a48057cb351",
+   "pais": "c224449bfb4f:263a27e40647",
+   "servidor": "e6fb0452f345:99e0c0179dbe:6066c5"
   },
   "Miniboy": {
-   "competitivo": "327ce83c0333:0a48057cb351",
-   "pais": "3c72d85ab2a3:263a27e40647",
-   "servidor": "390bc3e95b00:99e0c0179dbe:25c183",
+   "competitivo": "4072f46ac016:0a48057cb351",
+   "pais": "e20534ca57f9:263a27e40647",
+   "servidor": "c98453c5d874:99e0c0179dbe:25c183",
    "temporada": "64b98c9e67a3:6ec1a5248de8"
   },
   "Minipekka505": {
    "servidor": "c3e39b4d3573:99e0c0179dbe:77728e"
   },
   "Mito": {
-   "competitivo": "9be34096b9fb:0a48057cb351",
-   "pais": "7c3b36ce4941:263a27e40647",
-   "servidor": "b4f9c9518d13:99e0c0179dbe:25c183",
-   "temporada": "6cf86e93f2cc:6ec1a5248de8"
+   "competitivo": "4945da48eec0:0a48057cb351",
+   "pais": "b4ab32291b34:263a27e40647",
+   "servidor": "010e7e62e5b8:99e0c0179dbe:25c183",
+   "temporada": "89209e0f9332:6ec1a5248de8"
   },
   "Mknoli": {
    "servidor": "0995b01c57e5:99e0c0179dbe:2619cd"
@@ -1099,9 +1099,9 @@
    "temporada": "f4ad3059a491:6ec1a5248de8"
   },
   "Molusco": {
-   "competitivo": "2bfbe02dc2c7:0a48057cb351",
-   "pais": "cdd1820c0d35:263a27e40647",
-   "servidor": "813a9252cd34:99e0c0179dbe:ca38c9",
+   "competitivo": "e23b2f88349c:0a48057cb351",
+   "pais": "e4964ad3edfa:263a27e40647",
+   "servidor": "f969af129e33:99e0c0179dbe:ca38c9",
    "temporada": "c368de282019:6ec1a5248de8"
   },
   "Monet": {},
@@ -1570,8 +1570,8 @@
   "TYPHLOSION": {},
   "Tam": {},
   "Teito": {
-   "competitivo": "27a4578c8fde:0a48057cb351",
-   "pais": "fc3a4fba32f7:263a27e40647",
+   "competitivo": "a31b34162309:0a48057cb351",
+   "pais": "8ab8fcb6fb43:263a27e40647",
    "servidor": "7fc2aabc07f6:99e0c0179dbe:18ae17",
    "temporada": "9db41c555b08:6ec1a5248de8"
   },
@@ -1918,5 +1918,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-28T19:34:39+00:00"
+ "cuando": "2026-10-28T19:47:37+00:00"
 }
