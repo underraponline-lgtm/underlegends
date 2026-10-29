@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-29T22:25:14+00:00",
+ "cuando": "2026-10-29T22:55:52+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6701,6 +6701,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "riolu🇪🇸",
+   "quien": "alvaroriolu03",
+   "discord_id": "522777983921029162",
+   "msg_id": "1565494635810259105",
+   "cuando": "2026-10-29T22:36:46"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "yinn 🇲🇦",
+   "quien": "yinnmtz",
+   "discord_id": "1538896358679908437",
+   "msg_id": "1565494236026249399",
+   "cuando": "2026-10-29T22:35:11"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Panchok 🇨🇱",
+   "quien": "panchok0103",
+   "discord_id": "1400508144920170577",
+   "msg_id": "1565493356216320011",
+   "cuando": "2026-10-29T22:31:41"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1565493292148330549",
+   "cuando": "2026-10-29T22:31:26"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42664,42 +42700,6 @@
    "discord_id": "1543456871518707793",
    "msg_id": "1551644740926046269",
    "cuando": "2026-09-21T17:22:14"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "SHADOW 🇨🇴 última",
-   "quien": "tenacious_dragon_23394",
-   "discord_id": "1548906948307451906",
-   "msg_id": "1551644481823055963",
-   "cuando": "2026-09-21T17:21:12"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Kude 🇦🇷",
-   "quien": "mr.kude",
-   "discord_id": "832626921538846790",
-   "msg_id": "1551644399816024226",
-   "cuando": "2026-09-21T17:20:53"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "TEITO 🇨🇴",
-   "quien": "teitomc.",
-   "discord_id": "1503540314948898937",
-   "msg_id": "1551644389686775853",
-   "cuando": "2026-09-21T17:20:50"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Lvel 🇻🇪",
-   "quien": "lvel_free",
-   "discord_id": "1526612644642160721",
-   "msg_id": "1551644348054110382",
-   "cuando": "2026-09-21T17:20:40"
   }
  ]
 }
