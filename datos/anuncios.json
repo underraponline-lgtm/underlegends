@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-29T03:55:55+00:00",
+ "cuando": "2026-10-29T04:26:07+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6748,6 +6748,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Akuseru 🇦🇷",
+   "quien": "akuseru_dionisio",
+   "discord_id": "1564834243039731832",
+   "msg_id": "1565215192302887014",
+   "cuando": "2026-10-29T04:06:22"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42738,15 +42747,6 @@
    "discord_id": "917207293496557578",
    "msg_id": "1550260905210679417",
    "cuando": "2026-09-17T21:43:22"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "colesito",
-   "quien": "colesito",
-   "discord_id": "790016013680771102",
-   "msg_id": "1550256087003828246",
-   "cuando": "2026-09-17T21:24:13"
   }
  ]
 }

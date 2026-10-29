@@ -2,39 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1562677822516887624": {
-   "id": "1562677822516887624",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1792641826038,
-   "a": "soul b",
-   "b": "sosatr",
-   "ganador": "soul b",
-   "votos": "1–0"
-  },
-  "1562680241258762312": {
-   "id": "1562680241258762312",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1792642402711,
-   "a": "okam",
-   "b": "giansito",
-   "ganador": "giansito",
-   "votos": "1–0"
-  },
-  "1562681605145886793": {
-   "id": "1562681605145886793",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1792642727887,
-   "a": "FINAL - SOUL B",
-   "b": "giansito",
-   "ganador": "giansito",
-   "votos": "2–0"
-  },
   "1563012544619090004": {
    "id": "1563012544619090004",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
@@ -1441,6 +1408,39 @@
    "a": "PICHULAMC🇲🇳",
    "b": "TUCA🇦🇷",
    "ganador": "PICHULAMC🇲🇳",
+   "votos": "1–0"
+  },
+  "1565212532346585160": {
+   "id": "1565212532346585160",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793246147954,
+   "a": "GUS",
+   "b": "YINN ZA TENOR",
+   "ganador": "YINN ZA TENOR",
+   "votos": "1–0"
+  },
+  "1565215376847933481": {
+   "id": "1565215376847933481",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793246826136,
+   "a": "SIX",
+   "b": "VERC",
+   "ganador": "SIX",
+   "votos": "1–0"
+  },
+  "1565218404296687627": {
+   "id": "1565218404296687627",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793247547936,
+   "a": "GEOKA LRS",
+   "b": "PARK JI SUNG",
+   "ganador": "PARK JI SUNG",
    "votos": "1–0"
   }
  },
@@ -5455,6 +5455,77 @@
      ],
      "PICHULAMC🇲🇳",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1565212437387677697": {
+   "id": "1565212437387677697",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793246125314,
+   "ed": 1793247832454,
+   "texto": "`[ CUARTOS ]`\n⌞GUS⌝ 🆚 ⌞YINN ZA TENOR⌝\n⌞VERC⌝ 🆚 ⌞PRESAGIO SIX⌝\n⌞PRESAGIO⌝ 🆚 ⌞VERC⌝\n⌞SIX⌝ 🆚 ⌞VERC⌝\n⌞GEOKA LRS⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞PICHULA MC⌝ 🆚 ⌞YO MC⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "GUS",
+      "YINN ZA TENOR"
+     ],
+     "YINN ZA TENOR",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "VERC",
+      "PRESAGIO SIX"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "PRESAGIO",
+      "VERC"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "SIX",
+      "VERC"
+     ],
+     "SIX",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "GEOKA LRS",
+      "PARK JI SUNG"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "PICHULA MC",
+      "YO MC"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

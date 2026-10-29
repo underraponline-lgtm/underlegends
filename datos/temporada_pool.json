@@ -5479,8 +5479,7 @@
   "rango": "E",
   "tg_t": {
    "cohete": true,
-   "dobles": 1,
-   "reciente": true
+   "dobles": 1
   }
  },
  {
@@ -7106,10 +7105,7 @@
   "pos": 280,
   "fc": true,
   "total": 211,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Flama",
@@ -13983,10 +13979,7 @@
   "pos": 428,
   "fc": true,
   "total": 211,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "Fol",
@@ -14918,10 +14911,7 @@
   "pos": 451,
   "fc": true,
   "total": 211,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "NAW",
@@ -17061,10 +17051,7 @@
   "pos": 504,
   "fc": true,
   "total": 211,
-  "rango": "E",
-  "tg_t": {
-   "reciente": true
-  }
+  "rango": "E"
  },
  {
   "full": "PUBLIC ENEMY",

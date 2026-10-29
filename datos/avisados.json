@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "908d66410009c1be",
+  "firma": "b8ef62b88df8b648",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -15773,7 +15773,7 @@
    "Molusco": 16
   },
   "fecha": "19/10",
-  "firma": "6852e136c7143bee",
+  "firma": "fa7f55e2d002bb84",
   "msg": "1561607804798898179",
   "nombre": "__ FREESTYLE LEAGUE __",
   "num": 487,
@@ -19375,7 +19375,7 @@
    "PichulaMc": 41
   },
   "fecha": "22/10",
-  "firma": "ddebeb1aabdd2619",
+  "firma": "9c471d1c4516846e",
   "msg": "1562977225790459957",
   "nombre": "19 (EDICIÓN FUTCARD VOL 4)",
   "num": 500,
@@ -19826,7 +19826,7 @@
    "Sin Limites": 23
   },
   "fecha": "23/10",
-  "firma": "12aae0f457a5abc4",
+  "firma": "70cc8b744ddea8b2",
   "msg": "1563330231442604132",
   "nombre": "ZONA MORTAL",
   "num": 502,
@@ -20816,7 +20816,7 @@
    "VR": 4
   },
   "fecha": "23/10",
-  "firma": "1b8f19259cbaf339",
+  "firma": "eeaa3de63294b81f",
   "msg": "1563368240221257751",
   "nombre": "19 CUP FUTCARD EDICIÓN 5",
   "num": 505,
@@ -23294,7 +23294,7 @@
    "Vandu": 34
   },
   "fecha": "25/10",
-  "firma": "e023adfe3fe26be4",
+  "firma": "f433580160750748",
   "msg": "1564145050185891903",
   "nombre": "CHILL",
   "num": 518,
@@ -23869,7 +23869,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "1606013dc9d96e23",
+  "firma": "f470ea893d273952",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -24037,7 +24037,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "8e56e96c8be24c9c",
+  "firma": "568037b8f6d898a7",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -25367,7 +25367,7 @@
    "Tam": 14
   },
   "fecha": "26/10",
-  "firma": "acfd602e7bf5210a",
+  "firma": "bdaf5e1378e11835",
   "msg": "1564439290107265104",
   "nombre": "NOMBRE DE LA COMPETENCIA",
   "num": 530,
@@ -28247,6 +28247,7 @@
   "v": 2
  },
  "541": {
+  "al_dia": true,
   "antes": {
    "Adriagner": [
     63,
@@ -28343,7 +28344,7 @@
    "Tuca": 11
   },
   "fecha": "28/10",
-  "firma": "222e94fdcff9bc88",
+  "firma": "350d5213d0e17021",
   "msg": "1565199021990092842",
   "nombre": "EL CAMINO DEL MONJE V.2",
   "num": 541,
