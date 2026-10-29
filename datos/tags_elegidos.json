@@ -23,9 +23,25 @@
    "t2"
   ]
  },
+ "lvel": {
+  "servidor": [
+   "✨ DE LA CASA",
+   "t1"
+  ],
+  "temporada": [
+   "🔟 DOBLE DÍGITO",
+   "t4"
+  ]
+ },
  "majiztral": {
   "temporada": [
    "⚡ MARATONISTA",
+   "t2"
+  ]
+ },
+ "trelok": {
+  "temporada": [
+   "🌱 PROMESA",
    "t2"
   ]
  }
