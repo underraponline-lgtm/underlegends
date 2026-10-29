@@ -120,7 +120,7 @@
 "temporada"
 ]
 },
-"mco": {
+"og": {
 "rg": "B",
 "c": [
 "competitivo",
@@ -131,6 +131,15 @@
 },
 "velatz": {
 "rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"mco": {
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -150,15 +159,6 @@
 "rg": "S",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"og": {
-"rg": "B",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -205,15 +205,6 @@
 "rg": "A",
 "c": []
 },
-"molusco": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "nc": {
 "rg": "D",
 "c": [
@@ -223,7 +214,7 @@
 "temporada"
 ]
 },
-"delux": {
+"molusco": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -232,15 +223,7 @@
 "temporada"
 ]
 },
-"sinlimites": {
-"rg": "D",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"bloody": {
+"delux": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -258,11 +241,28 @@
 "temporada"
 ]
 },
+"bloody": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "xubaru": {
 "rg": "C",
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"sinlimites": {
+"rg": "D",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -432,7 +432,7 @@
 "c": []
 },
 "geoka": {
-"rg": "D",
+"rg": "E",
 "c": [
 "competitivo",
 "pais",
@@ -457,13 +457,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"walker": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -500,6 +493,13 @@
 ]
 },
 "presagio": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"walker": {
 "rg": "",
 "c": [
 "servidor",
@@ -611,10 +611,6 @@
 "temporada"
 ]
 },
-"eidp": {
-"rg": "",
-"c": []
-},
 "last": {
 "rg": "",
 "c": [
@@ -651,6 +647,10 @@
 "servidor",
 "temporada"
 ]
+},
+"eidp": {
+"rg": "",
+"c": []
 },
 "emizor": {
 "rg": "E",
@@ -761,6 +761,14 @@
 "rg": "",
 "c": []
 },
+"krish": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "mtz": {
 "rg": "",
 "c": [
@@ -812,6 +820,10 @@
 "temporada"
 ]
 },
+"lizeninn": {
+"rg": "",
+"c": []
+},
 "juanpa": {
 "rg": "",
 "c": [
@@ -833,14 +845,6 @@
 "ardean": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"krish": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -910,10 +914,6 @@
 "temporada"
 ]
 },
-"lizeninn": {
-"rg": "",
-"c": []
-},
 "pomberito": {
 "rg": "",
 "c": []
@@ -966,16 +966,6 @@
 ]
 },
 "carlos": {
-"rg": "",
-"c": []
-},
-"sol": {
-"rg": "",
-"c": [
-"servidor"
-]
-},
-"noa": {
 "rg": "",
 "c": []
 },
@@ -1060,15 +1050,15 @@
 "temporada"
 ]
 },
+"ezze": {
+"rg": "",
+"c": []
+},
 "dxg": {
 "rg": "",
 "c": [
 "servidor"
 ]
-},
-"sultan": {
-"rg": "",
-"c": []
 },
 "aldre": {
 "rg": "",
@@ -1090,6 +1080,23 @@
 "rg": "",
 "c": []
 },
+"noone": {
+"rg": "",
+"c": [
+"pais",
+"servidor"
+]
+},
+"sol": {
+"rg": "",
+"c": [
+"servidor"
+]
+},
+"noa": {
+"rg": "",
+"c": []
+},
 "j19": {
 "rg": "",
 "c": [
@@ -1100,13 +1107,6 @@
 "fleivaman": {
 "rg": "",
 "c": []
-},
-"gus": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "rayo": {
 "rg": "",
@@ -1170,6 +1170,10 @@
 "rg": "",
 "c": []
 },
+"sultan": {
+"rg": "",
+"c": []
+},
 "melomaniaco": {
 "rg": "",
 "c": [
@@ -1185,10 +1189,6 @@
 "rg": "",
 "c": []
 },
-"cajita": {
-"rg": "",
-"c": []
-},
 "joshu": {
 "rg": "",
 "c": []
@@ -1201,6 +1201,14 @@
 ]
 },
 "eze": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
+"jeixder": {
 "rg": "",
 "c": [
 "pais",
@@ -1256,15 +1264,16 @@
 "rg": "",
 "c": []
 },
+"gus": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "elsoolar": {
 "rg": "",
 "c": []
-},
-"noone": {
-"rg": "",
-"c": [
-"servidor"
-]
 },
 "vacile": {
 "rg": "",
@@ -1275,14 +1284,6 @@
 "c": [
 "pais",
 "servidor"
-]
-},
-"jeixder": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
 ]
 },
 "scot": {
@@ -1298,6 +1299,10 @@
 "c": []
 },
 "julix-bo": {
+"rg": "",
+"c": []
+},
+"cajita": {
 "rg": "",
 "c": []
 },
@@ -2629,14 +2634,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-03T06:36:47Z",
-"quien": [
-"Alexi"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-03T06:36:47Z",
@@ -5978,6 +5975,14 @@
 ],
 "rg": "B",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-29T23:42:38Z",
+"quien": [
+"Noone"
+],
+"carta": "pais"
 }
 ]
 }

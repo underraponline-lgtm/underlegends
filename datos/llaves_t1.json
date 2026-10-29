@@ -37767,5 +37767,285 @@
     625
    ]
   ]
+ },
+ "543": {
+  "dia": "2026-10-29",
+  "escala": "16+",
+  "fecha": "29/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1565472961706594396"
+  ],
+  "n": 543,
+  "nombre": "Rap para Raperos #1",
+  "participantes": 24,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NC",
+       "Noone",
+       "Musicdum"
+      ],
+      "NC",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Erian",
+       "KIRITO"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "Ezze 🇦🇷",
+       "Geoka"
+      ],
+      "Ezze 🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Dantemx",
+       "Krish",
+       "Colesito"
+      ],
+      "Dantemx",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Lizen🇦🇷",
+       "Miniboy",
+       "Fear🇨🇴"
+      ],
+      "Lizen🇦🇷",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "OG",
+       "JEIXDER",
+       "La gonorrea del bajo 🇨🇴"
+      ],
+      "OG",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Dynoco",
+       "fenix 🇪🇸",
+       "Makmah",
+       "Tam"
+      ],
+      "Dynoco",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Joba 🇨🇱",
+       "Teo🇨🇴"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "NC",
+       "yinn"
+      ],
+      "NC",
+      "Walk-in 1: yinn"
+     ],
+     [
+      [
+       "Ezze 🇦🇷",
+       "Erian"
+      ],
+      "Ezze 🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Lizeninn",
+       "Dantemx"
+      ],
+      "Lizeninn",
+      ""
+     ],
+     [
+      [
+       "OG",
+       "Dynoco"
+      ],
+      "OG",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Ezze 🇦🇷",
+       "NC"
+      ],
+      "Ezze 🇦🇷",
+      ""
+     ],
+     [
+      [
+       "OG",
+       "Lizeninn"
+      ],
+      "OG",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "NC",
+       "Lizeninn"
+      ],
+      "NC",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "OG",
+       "Ezze 🇦🇷"
+      ],
+      "OG",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "OG",
+    "Campeón",
+    10000
+   ],
+   [
+    "Ezze 🇦🇷",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "NC",
+    "Tercero",
+    6000
+   ],
+   [
+    "Lizeninn",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Dantemx",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dynoco",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Fear🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Octavos",
+    1250
+   ],
+   [
+    "JEIXDER",
+    "Octavos",
+    1250
+   ],
+   [
+    "KIRITO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "La gonorrea del bajo 🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Musicdum",
+    "Octavos",
+    1250
+   ],
+   [
+    "Noone",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tam",
+    "Octavos",
+    1250
+   ],
+   [
+    "fenix 🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "yinn",
+    "Cuartos",
+    1250
+   ]
+  ]
  }
 }

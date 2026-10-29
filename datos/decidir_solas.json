@@ -2,44 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "2adb1e7f81",
-   "tipo": "Nombre desconocido",
-   "sec": "Cuentas Pendientes V.1 · FFA · 08/10 · #435",
-   "que": "¿Quién es «PROVENZA COLESITO XUBARU»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792079983217,
-   "filas": [
-    721
-   ],
-   "variantes": [
-    "PROVENZA COLESITO XUBARU"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "a86ea8c98b",
-   "tipo": "Nombre desconocido",
-   "sec": "FAT BATTLES PALOOZA T.3 FECHA 6 · ACAD · 09/10 · #438",
-   "que": "¿Quién es «ALVA 🇲🇽»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792079983217,
-   "filas": [
-    722
-   ],
-   "variantes": [
-    "ALVA 🇲🇽"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "863eff1a80",
    "tipo": "alta",
    "sec": "🪪 Identidad",
@@ -2468,6 +2430,99 @@
     "DOS NOMBRES: «Jahno El Melomaníaco» → «melomaniaco» · cuenta 653011056184000513"
    ],
    "escribio": {}
+  },
+  {
+   "id": "e118a4581b",
+   "tipo": "Nombre desconocido",
+   "sec": "Rap para Raperos #1 · FFA · 29/10 · #543",
+   "que": "¿Quién es «La gonorrea del bajo 🇨🇴»?",
+   "r": "Es LGBD (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @sblk2130 (en Discord: «La gonorrea del bajo») · en la Lista: LGBD se anotó como «La gonorrea del bajo» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1793317377394,
+   "filas": [
+    941
+   ],
+   "variantes": [
+    "La gonorrea del bajo 🇨🇴"
+   ],
+   "escribio": {
+    "quien": "Rap para Raperos #1 · FFA · 29/10 · La gonorrea del bajo 🇨🇴"
+   }
+  },
+  {
+   "id": "94b7ed96a0",
+   "tipo": "Nombre desconocido",
+   "sec": "Rap para Raperos #1 · FFA · 29/10 · #543",
+   "que": "¿Quién es «Ezze 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1564832348766343232",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1564832348766343232)",
+   "t": 1793317377394,
+   "filas": [
+    939
+   ],
+   "variantes": [
+    "Ezze 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Ezze",
+     "1564832348766343232"
+    ]
+   }
+  },
+  {
+   "id": "cdb20b57c6",
+   "tipo": "Nombre desconocido",
+   "sec": "Rap para Raperos #1 · FFA · 29/10 · #543",
+   "que": "¿Quién es «Fear🇨🇴»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1033742542967144509",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1033742542967144509)",
+   "t": 1793317377394,
+   "filas": [
+    940
+   ],
+   "variantes": [
+    "Fear🇨🇴"
+   ],
+   "escribio": {
+    "alta": [
+     "Fear",
+     "1033742542967144509"
+    ]
+   }
+  },
+  {
+   "id": "1430f5c8cb",
+   "tipo": "Nombre desconocido",
+   "sec": "Rap para Raperos #1 · FFA · 29/10 · #543",
+   "que": "¿Quién es «fenix 🇪🇸»?",
+   "r": "Es alguien nuevo: alta con su cuenta 913093970026987561",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (913093970026987561)",
+   "t": 1793317377394,
+   "filas": [
+    942
+   ],
+   "variantes": [
+    "fenix 🇪🇸"
+   ],
+   "escribio": {
+    "alta": [
+     "fenix",
+     "913093970026987561"
+    ]
+   }
   }
  ],
  "deshechas": []

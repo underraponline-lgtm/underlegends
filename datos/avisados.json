@@ -28729,5 +28729,334 @@
    ]
   ],
   "v": 2
+ },
+ "543": {
+  "antes": {
+   "Colesito": [
+    10,
+    11,
+    false
+   ],
+   "Dynoco": [
+    40,
+    53,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "Geoka": [
+    43,
+    58,
+    false
+   ],
+   "JEIXDER": [
+    127,
+    196,
+    false
+   ],
+   "KIRITO": [
+    353,
+    294,
+    true
+   ],
+   "Krish": [
+    88,
+    116,
+    false
+   ],
+   "Lizeninn": [
+    244,
+    128,
+    true
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Miniboy": [
+    27,
+    32,
+    false
+   ],
+   "Musicdum": [
+    156,
+    305,
+    false
+   ],
+   "NC": [
+    23,
+    28,
+    false
+   ],
+   "Noone": [
+    125,
+    193,
+    false
+   ],
+   "OG": [
+    18,
+    19,
+    false
+   ],
+   "Tam": [
+    214,
+    24,
+    true
+   ],
+   "yinn": [
+    213,
+    20,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "NC",
+    "Noone",
+    "NC"
+   ],
+   [
+    "NC",
+    "Musicdum",
+    "NC"
+   ],
+   [
+    "Erian",
+    "KIRITO",
+    "Erian"
+   ],
+   [
+    "Ezze 🇦🇷",
+    "Geoka",
+    "Ezze 🇦🇷"
+   ],
+   [
+    "Dantemx",
+    "Krish",
+    "Dantemx"
+   ],
+   [
+    "Dantemx",
+    "Colesito",
+    "Dantemx"
+   ],
+   [
+    "Lizen🇦🇷",
+    "Miniboy",
+    "Lizen🇦🇷"
+   ],
+   [
+    "Lizen🇦🇷",
+    "Fear🇨🇴",
+    "Lizen🇦🇷"
+   ],
+   [
+    "OG",
+    "JEIXDER",
+    "OG"
+   ],
+   [
+    "OG",
+    "La gonorrea del bajo 🇨🇴",
+    "OG"
+   ],
+   [
+    "Dynoco",
+    "fenix 🇪🇸",
+    "Dynoco"
+   ],
+   [
+    "Dynoco",
+    "Makmah",
+    "Dynoco"
+   ],
+   [
+    "Dynoco",
+    "Tam",
+    "Dynoco"
+   ],
+   [
+    "NC",
+    "yinn",
+    "NC"
+   ],
+   [
+    "Ezze 🇦🇷",
+    "Erian",
+    "Ezze 🇦🇷"
+   ],
+   [
+    "Lizeninn",
+    "Dantemx",
+    "Lizeninn"
+   ],
+   [
+    "OG",
+    "Dynoco",
+    "OG"
+   ],
+   [
+    "Ezze 🇦🇷",
+    "NC",
+    "Ezze 🇦🇷"
+   ],
+   [
+    "OG",
+    "Lizeninn",
+    "OG"
+   ],
+   [
+    "OG",
+    "Ezze 🇦🇷",
+    "OG"
+   ],
+   [
+    "NC",
+    "Lizeninn",
+    "NC"
+   ]
+  ],
+  "ev_antes": {
+   "Colesito": 36,
+   "Dynoco": 14,
+   "Erian": 58,
+   "Geoka": 19,
+   "JEIXDER": 5,
+   "KIRITO": 2,
+   "Krish": 12,
+   "Lizeninn": 8,
+   "Makmah": 84,
+   "Miniboy": 31,
+   "Musicdum": 2,
+   "NC": 40,
+   "Noone": 6,
+   "OG": 17,
+   "Tam": 16,
+   "yinn": 26
+  },
+  "fecha": "29/10",
+  "firma": "87664907803feee1",
+  "msg": "1565508537881198633",
+  "nombre": "Rap para Raperos #1",
+  "num": 543,
+  "participantes": 24,
+  "sello": {
+   "OG": "c70a06bf42d4:6ec1a5248de8"
+  },
+  "sv": "FFA",
+  "t": "2026-10-29T23:33:47Z",
+  "tabla": [
+   [
+    "OG",
+    "Campeón",
+    10000
+   ],
+   [
+    "Ezze 🇦🇷",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "NC",
+    "Tercero",
+    6000
+   ],
+   [
+    "Lizeninn",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dantemx",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dynoco",
+    "Cuartos",
+    2500
+   ],
+   [
+    "yinn",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Noone",
+    "Octavos",
+    1250
+   ],
+   [
+    "Musicdum",
+    "Octavos",
+    1250
+   ],
+   [
+    "KIRITO",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Octavos",
+    1250
+   ],
+   [
+    "Krish",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Fear🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "JEIXDER",
+    "Octavos",
+    1250
+   ],
+   [
+    "La gonorrea del bajo 🇨🇴",
+    "Octavos",
+    1250
+   ],
+   [
+    "fenix 🇪🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Tam",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

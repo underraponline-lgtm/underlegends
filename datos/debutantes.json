@@ -247,6 +247,18 @@
    "vence": "2026-10-30T20:26:11+00:00",
    "vencido": false
   },
+  "Dantemx": {
+   "avisado": "2026-10-29",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-29T21:10:39+00:00",
+   "did": "1491486652739092623",
+   "evento": "Rap para Raperos #1",
+   "n": 543,
+   "sv": "FFA",
+   "vence": "2026-11-05T21:10:39+00:00",
+   "vencido": false
+  },
   "DarkoMC": {
    "avisado": "2026-10-18",
    "avisado_cumplido": "2026-10-19",
@@ -365,6 +377,18 @@
    "vence": "2026-10-21T23:10:06+00:00",
    "vencido": true
   },
+  "Ezze": {
+   "avisado": "2026-10-29",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-29T21:10:39+00:00",
+   "did": "",
+   "evento": "Rap para Raperos #1",
+   "n": 543,
+   "sv": "FFA",
+   "vence": "2026-11-05T21:10:39+00:00",
+   "vencido": false
+  },
   "FOTOSÍNTESIS": {
    "avisado": "2026-10-17",
    "chat": "2026-10-16",
@@ -389,6 +413,18 @@
    "n": 509,
    "sv": "DDF",
    "vence": "2026-10-31T21:01:57+00:00",
+   "vencido": false
+  },
+  "Fear": {
+   "avisado": "2026-10-29",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-29T21:10:39+00:00",
+   "did": "",
+   "evento": "Rap para Raperos #1",
+   "n": 543,
+   "sv": "FFA",
+   "vence": "2026-11-05T21:10:39+00:00",
    "vencido": false
   },
   "Fix 17": {
@@ -667,6 +703,18 @@
    "n": 511,
    "sv": "DDF",
    "vence": "2026-11-01T04:08:34+00:00",
+   "vencido": false
+  },
+  "La gonorrea del bajo": {
+   "avisado": "2026-10-29",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-29T21:10:39+00:00",
+   "did": "",
+   "evento": "Rap para Raperos #1",
+   "n": 543,
+   "sv": "FFA",
+   "vence": "2026-11-05T21:10:39+00:00",
    "vencido": false
   },
   "Lautaro la sinceridad": {
@@ -1376,6 +1424,18 @@
    "n": 517,
    "sv": "FFA",
    "vence": "2026-11-02T01:55:51+00:00",
+   "vencido": false
+  },
+  "fenix": {
+   "avisado": "2026-10-29",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-29T21:10:39+00:00",
+   "did": "",
+   "evento": "Rap para Raperos #1",
+   "n": 543,
+   "sv": "FFA",
+   "vence": "2026-11-05T21:10:39+00:00",
    "vencido": false
   },
   "gary": {
