@@ -1442,6 +1442,28 @@
    "b": "PICHULAMC🇲🇳",
    "ganador": "PICHULAMC🇲🇳",
    "votos": "1–0"
+  },
+  "1565197044748914709": {
+   "id": "1565197044748914709",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1793242455423,
+   "a": "SOULB🇨🇱",
+   "b": "TUCA🇦🇷",
+   "ganador": "TUCA🇦🇷",
+   "votos": "1–0"
+  },
+  "1565197609503826031": {
+   "id": "1565197609503826031",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1793242590071,
+   "a": "PICHULAMC🇲🇳",
+   "b": "TUCA🇦🇷",
+   "ganador": "PICHULAMC🇲🇳",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5383,8 +5405,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1793240666431,
-   "ed": 1793242323745,
-   "texto": "`[ CUARTOS ]`\n⌞ADRIAGNER🇳🇮⌝ 🆚 ⌞EVANGELINE🇧🇴⌝\n⌞PICHULAMC🇲🇳⌝ 🆚 ⌞JOBA⌝ 🆚 ⌞DOMINIK🇵🇪⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞SOULB🇨🇱⌝\n⌞TUCA🇦🇷⌝ 🆚 ⌞NEXUZ🇵🇪⌝\n`[ SEMIFINALES ]`\n⌞EVANGELINE🇧🇴⌝ 🆚 ⌞PICHULAMC🇲🇳⌝",
+   "ed": 1793242843408,
+   "texto": "`[ CUARTOS ]`\n⌞ADRIAGNER🇳🇮⌝ 🆚 ⌞EVANGELINE🇧🇴⌝\n⌞PICHULAMC🇲🇳⌝ 🆚 ⌞JOBA⌝ 🆚 ⌞DOMINIK🇵🇪⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞SOULB🇨🇱⌝\n⌞TUCA🇦🇷⌝ 🆚 ⌞NEXUZ🇵🇪⌝\n`[ SEMIFINALES ]`\n⌞EVANGELINE🇧🇴⌝ 🆚 ⌞PICHULAMC🇲🇳⌝\n⌞SOUL B🇨🇱⌝ 🆚 ⌞TUCA🇦🇷⌝\n`[ FINAL ]`\n⌞PICHULAMC🇲🇳⌝ 🆚 ⌞TUCA🇦🇷⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5432,6 +5454,26 @@
      [
       "EVANGELINE🇧🇴",
       "PICHULAMC🇲🇳"
+     ],
+     "PICHULAMC🇲🇳",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "SOUL B🇨🇱",
+      "TUCA🇦🇷"
+     ],
+     "TUCA🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PICHULAMC🇲🇳",
+      "TUCA🇦🇷"
      ],
      "PICHULAMC🇲🇳",
      "veredicto",

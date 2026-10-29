@@ -10048,7 +10048,7 @@
        "Yio"
       ],
       "Eclipsito, SOL, MAWS🇻🇪, Miniboy, Corvo",
-      "triple (12 bandas, pasan 5); también pasa: SOL🇵🇪 / MAWS🇻🇪 / Miniboy / Corvo 🇧🇴"
+      "triple (12 bandas, pasan 5); también pasa: SOL🇵🇪 / MAWS🇻🇪 / miniboy / Corvo 🇧🇴"
      ],
      [
       [
@@ -27645,7 +27645,7 @@
        "Teito"
       ],
       "Erian, Chuwin",
-      "triple (3 bandas, pasan 2); también pasa: Chuwin 🇳🇮; Drafteado: Erian"
+      "triple (3 bandas, pasan 2); también pasa: Chuwin 🇳🇮; Drafteado: erian"
      ],
      [
       [
@@ -37383,6 +37383,139 @@
    ],
    [
     "VR",
+    "Cuartos",
+    2000
+   ]
+  ]
+ },
+ "541": {
+  "dia": "2026-10-28",
+  "escala": "8-15",
+  "fecha": "28/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1498009509036163173/1565189541172748311"
+  ],
+  "n": 541,
+  "nombre": "EL CAMINO DEL MONJE V.2",
+  "participantes": 9,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Evangeline🇵🇪",
+       "Adriagner"
+      ],
+      "Evangeline🇵🇪",
+      ""
+     ],
+     [
+      [
+       "PichulaMc",
+       "Jobaking",
+       "Dominick"
+      ],
+      "PichulaMc",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Soulb",
+       "Makmah"
+      ],
+      "Soulb",
+      ""
+     ],
+     [
+      [
+       "Tuca",
+       "NXUZ"
+      ],
+      "Tuca",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Evangeline🇵🇪"
+      ],
+      "PichulaMc",
+      ""
+     ],
+     [
+      [
+       "Tuca",
+       "Soulb"
+      ],
+      "Tuca",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Tuca"
+      ],
+      "PichulaMc",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "PichulaMc",
+    "Campeón",
+    7500
+   ],
+   [
+    "Tuca",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Evangeline🇵🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jobaking",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NXUZ",
     "Cuartos",
     2000
    ]

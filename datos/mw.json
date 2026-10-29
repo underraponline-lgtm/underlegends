@@ -270,10 +270,22 @@
     "nivel": "D",
     "base": 4000,
     "o": 57,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 5000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Semifinal",
+    "valor": 5000,
+    "caza": {
+     "n": 541,
+     "evento": "EL CAMINO DEL MONJE V.2",
+     "sv": "DDF",
+     "t": "2026-10-29T02:24:26Z",
+     "por": [
+      {
+       "n": "Tuca",
+       "cobra": 5000
+      }
+     ]
+    }
    },
    {
     "n": "Sin Limites",

@@ -196,7 +196,7 @@
   "msg": "1556522264164311072"
  },
  "398": {
-  "firma": "COMPE DE UDDI|22/09|12|7|1|0",
+  "firma": "COMPE DE UDDI|22/09|12|7|0|0",
   "msg": "1556552836395835533"
  },
  "399": {
@@ -28240,6 +28240,162 @@
    ],
    [
     "VR",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
+ },
+ "541": {
+  "antes": {
+   "Adriagner": [
+    63,
+    83,
+    false
+   ],
+   "Dominick": [
+    219,
+    43,
+    true
+   ],
+   "Jobaking": [
+    62,
+    82,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "NXUZ": [
+    29,
+    34,
+    false
+   ],
+   "PichulaMc": [
+    3,
+    3,
+    false
+   ],
+   "Soulb": [
+    47,
+    63,
+    false
+   ],
+   "Tuca": [
+    216,
+    33,
+    true
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Evangeline🇵🇪",
+    "Adriagner",
+    "Evangeline🇵🇪"
+   ],
+   [
+    "PichulaMc",
+    "Jobaking",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "Dominick",
+    "PichulaMc"
+   ],
+   [
+    "Soulb",
+    "Makmah",
+    "Soulb"
+   ],
+   [
+    "Tuca",
+    "NXUZ",
+    "Tuca"
+   ],
+   [
+    "PichulaMc",
+    "Evangeline🇵🇪",
+    "PichulaMc"
+   ],
+   [
+    "Tuca",
+    "Soulb",
+    "Tuca"
+   ],
+   [
+    "PichulaMc",
+    "Tuca",
+    "PichulaMc"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 8,
+   "Dominick": 28,
+   "Jobaking": 10,
+   "Makmah": 83,
+   "NXUZ": 23,
+   "PichulaMc": 51,
+   "Soulb": 15,
+   "Tuca": 11
+  },
+  "fecha": "28/10",
+  "firma": "222e94fdcff9bc88",
+  "msg": "1565199021990092842",
+  "nombre": "EL CAMINO DEL MONJE V.2",
+  "num": 541,
+  "participantes": 9,
+  "sello": {
+   "PichulaMc": "d7f480e8efde:6ec1a5248de8"
+  },
+  "sv": "DDF",
+  "t": "2026-10-29T03:24:47Z",
+  "tabla": [
+   [
+    "PichulaMc",
+    "Campeón",
+    7500
+   ],
+   [
+    "Tuca",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Evangeline🇵🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Soulb",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jobaking",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Makmah",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NXUZ",
     "Cuartos",
     2000
    ]
