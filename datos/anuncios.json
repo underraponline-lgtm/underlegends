@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-29T20:55:59+00:00",
+ "cuando": "2026-10-29T21:25:32+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6701,6 +6701,69 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Teo 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1565474176901324873",
+   "cuando": "2026-10-29T21:15:28"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "nc🇰🇷",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1565473228636295249",
+   "cuando": "2026-10-29T21:11:42"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Garxzii 🇲🇽🇦🇿",
+   "quien": "sebs._.fs",
+   "discord_id": "1217564137383526470",
+   "msg_id": "1565473187624517795",
+   "cuando": "2026-10-29T21:11:33"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Geoka 🇦🇷",
+   "quien": "goksito_8",
+   "discord_id": "1325042155819106324",
+   "msg_id": "1565471317376106629",
+   "cuando": "2026-10-29T21:04:07"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Dynoco 🇦🇷",
+   "quien": "dynoco.",
+   "discord_id": "588547235621371936",
+   "msg_id": "1565470524249743544",
+   "cuando": "2026-10-29T21:00:58"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "fenix 🇪🇸",
+   "quien": "franky.33.",
+   "discord_id": "913093970026987561",
+   "msg_id": "1565470513281896630",
+   "cuando": "2026-10-29T21:00:55"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "OG🇻🇪",
+   "quien": "the0g.",
+   "discord_id": "425356695309516810",
+   "msg_id": "1565470414442991627",
+   "cuando": "2026-10-29T21:00:31"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42637,69 +42700,6 @@
    "discord_id": "1237192883535216715",
    "msg_id": "1551347158995701883",
    "cuando": "2026-09-20T21:39:45"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Btrece🇺🇾",
-   "quien": "btrece_",
-   "discord_id": "1490902626970239088",
-   "msg_id": "1551347150347173990",
-   "cuando": "2026-09-20T21:39:43"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Filozico 🇲🇽",
-   "quien": "danix9827",
-   "discord_id": "1498441174728577025",
-   "msg_id": "1551344572439728151",
-   "cuando": "2026-09-20T21:29:28"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "MaYeuTyK 🇺🇾",
-   "quien": "martinez4080",
-   "discord_id": "756958777126682674",
-   "msg_id": "1551343665543258173",
-   "cuando": "2026-09-20T21:25:52"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Dyzz🇨🇱",
-   "quien": "dyzzmc",
-   "discord_id": "1525996330042921081",
-   "msg_id": "1551338347215986732",
-   "cuando": "2026-09-20T21:04:44"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "ANDY",
-   "quien": "andy._.2321",
-   "discord_id": "853130894663745549",
-   "msg_id": "1551335813327880345",
-   "cuando": "2026-09-20T20:54:40"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Carlos",
-   "quien": "carlosss.mc23",
-   "discord_id": "958103803616444528",
-   "msg_id": "1551335585128386581",
-   "cuando": "2026-09-20T20:53:45"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "VR🇨🇴",
-   "quien": "1mrvargas",
-   "discord_id": "1456416455405863038",
-   "msg_id": "1551335259684216833",
-   "cuando": "2026-09-20T20:52:28"
   }
  ]
 }
