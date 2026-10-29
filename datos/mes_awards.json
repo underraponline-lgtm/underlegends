@@ -3560,6 +3560,33 @@
      ],
      "organizador": "@nachonc_",
      "cuentas": {}
+    },
+    "1565464466961989734": {
+     "sv": "FFA",
+     "nombre": "Rap para Raperos #1",
+     "mo": "2026-10-29T20:36:53Z",
+     "staff": {
+      "jurado": [
+       "Kravitz"
+      ],
+      "host": [
+       "Okam"
+      ],
+      "dj": [
+       "Kravitz"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Okam",
+       "id": "1512148565890306153"
+      }
+     ],
+     "organizador": "",
+     "cuentas": {
+      "Kravitz": "1345962362615894027",
+      "Okam": "1512148565890306153"
+     }
     }
    },
    "ver": {
