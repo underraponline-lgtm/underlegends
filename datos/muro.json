@@ -197,6 +197,10 @@
 "rg": "B",
 "c": []
 },
+"tuca": {
+"rg": "B",
+"c": []
+},
 "hassan": {
 "rg": "A",
 "c": []
@@ -218,10 +222,6 @@
 "servidor",
 "temporada"
 ]
-},
-"tuca": {
-"rg": "B",
-"c": []
 },
 "delux": {
 "rg": "C",

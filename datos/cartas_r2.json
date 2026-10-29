@@ -2001,10 +2001,6 @@
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/litkunai/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/litkunai/temporada.webp"
  },
- "lokk": {
-  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lokk/servidor.webp",
-  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/lokk/sv-dra.webp"
- },
  "longsunzhao": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/longsunzhao/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/longsunzhao/sv-acad.webp",
@@ -2220,7 +2216,6 @@
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mathiasmc/sv-sr.webp"
  },
  "matias": {
-  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/matias/servidor.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/matias/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/matias/sv-ffa.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/matias/sv-sr.webp"
@@ -2471,10 +2466,6 @@
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/motera/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/motera/temporada.webp"
  },
- "mrpuyosa": {
-  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mrpuyosa/servidor.webp",
-  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mrpuyosa/sv-dra.webp"
- },
  "mrstillballin": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mrstillballin/bloq-competitivo.webp",
   "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mrstillballin/bloq-pais.webp",
@@ -2484,7 +2475,6 @@
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mrstillballin/sv-acad.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mrstillballin/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mrstillballin/sv-ffa.webp",
-  "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mrstillballin/sv-fvs.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mrstillballin/sv-sr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mrstillballin/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/mrstillballin/temporada.webp"

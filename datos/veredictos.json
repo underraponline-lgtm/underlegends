@@ -2,28 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1562671924377682001": {
-   "id": "1562671924377682001",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1792640419812,
-   "a": "SOUL B",
-   "b": "SOSATR",
-   "ganador": "SOUL B",
-   "votos": "1–0"
-  },
-  "1562674307887398992": {
-   "id": "1562674307887398992",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1792640988085,
-   "a": "nerick",
-   "b": "SOSATR",
-   "ganador": "SOSATR",
-   "votos": "1–0"
-  },
   "1562677822516887624": {
    "id": "1562677822516887624",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
@@ -5404,7 +5382,7 @@
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
-   "pub": 1793240666431,
+   "pub": 1793240666000,
    "ed": 1793242843408,
    "texto": "`[ CUARTOS ]`\n⌞ADRIAGNER🇳🇮⌝ 🆚 ⌞EVANGELINE🇧🇴⌝\n⌞PICHULAMC🇲🇳⌝ 🆚 ⌞JOBA⌝ 🆚 ⌞DOMINIK🇵🇪⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞SOULB🇨🇱⌝\n⌞TUCA🇦🇷⌝ 🆚 ⌞NEXUZ🇵🇪⌝\n`[ SEMIFINALES ]`\n⌞EVANGELINE🇧🇴⌝ 🆚 ⌞PICHULAMC🇲🇳⌝\n⌞SOUL B🇨🇱⌝ 🆚 ⌞TUCA🇦🇷⌝\n`[ FINAL ]`\n⌞PICHULAMC🇲🇳⌝ 🆚 ⌞TUCA🇦🇷⌝",
    "batallas": [
