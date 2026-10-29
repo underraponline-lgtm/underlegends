@@ -37520,5 +37520,252 @@
     2000
    ]
   ]
+ },
+ "542": {
+  "dia": "2026-10-28",
+  "escala": "16+",
+  "fecha": "28/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1565199698393047102"
+  ],
+  "n": 542,
+  "nombre": "QCYO RAPEEN 6",
+  "participantes": 24,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "PichulaMc",
+       "Cazafla anti cazanova🇭🇹",
+       "Manteca mantecosa 🇨🇾",
+       "Gus, Tuca"
+      ],
+      "PichulaMc",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "LRS",
+       "Tenor, Provenza, yinn",
+       "Cronox",
+       "Jobacastrado🇨🇱"
+      ],
+      "LRS, Tenor, Provenza, yinn, Cronox",
+      "triple (4 bandas, pasan 3); también pasa: Tenor🇻🇪, za🇺🇸, yinn🇲🇦 / Cronox"
+     ],
+     [
+      [
+       "Jahno El Melomaníaco 🇦🇷, LRS, Geoka",
+       "Six, Presagio",
+       "Andres",
+       "Luck, BELIKKO"
+      ],
+      "Jahno El Melomaníaco 🇦🇷, LRS, Geoka, Six, Presagio",
+      "triple (4 bandas, pasan 2); también pasa: Six+presagio🇦🇷"
+     ],
+     [
+      [
+       "Verc",
+       "Oasis",
+       "Drexx",
+       "Sin Limites"
+      ],
+      "Verc, Oasis",
+      "triple (4 bandas, pasan 2); también pasa: Park-Ji Sung🇰🇷"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Tenor, Provenza, yinn",
+       "Gus"
+      ],
+      "Tenor, Provenza, yinn",
+      ""
+     ],
+     [
+      [
+       "Six, Presagio",
+       "Verc"
+      ],
+      "Six, Presagio",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "Jahno El Melomaníaco 🇦🇷, LRS, Geoka"
+      ],
+      "Oasis",
+      ""
+     ],
+     [
+      [
+       "PichulaMc",
+       "Cronox"
+      ],
+      "PichulaMc",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Six, Presagio, Badterne",
+       "Tenor, Provenza, yinn"
+      ],
+      "Six, Presagio, Badterne",
+      ""
+     ],
+     [
+      [
+       "Oasis",
+       "PichulaMc"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis",
+       "Six, Presagio, Badterne"
+      ],
+      "Oasis",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Badterne",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Presagio",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Six",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Verc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Gus",
+    "Cuartos",
+    1875
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Tenor",
+    "Semifinal",
+    1750
+   ],
+   [
+    "yinn",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Andres",
+    "Octavos",
+    1250
+   ],
+   [
+    "Cazafla anti cazanova🇭🇹",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jobacastrado🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Manteca mantecosa 🇨🇾",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    833
+   ],
+   [
+    "Jahno El Melomaníaco 🇦🇷",
+    "Cuartos",
+    833
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    833
+   ],
+   [
+    "BELIKKO",
+    "Octavos",
+    625
+   ],
+   [
+    "Luck",
+    "Octavos",
+    625
+   ],
+   [
+    "Tuca",
+    "Octavos",
+    625
+   ]
+  ]
  }
 }

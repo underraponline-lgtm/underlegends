@@ -4605,7 +4605,7 @@
      0
     ],
     "Andres": [
-     0,
+     1,
      1,
      0,
      0,
@@ -4639,9 +4639,16 @@
      0,
      0
     ],
-    "Badterne": [
+    "BELIKKO": [
+     1,
      0,
-     2,
+     0,
+     0,
+     0
+    ],
+    "Badterne": [
+     1,
+     3,
      1,
      0,
      0
@@ -4660,6 +4667,13 @@
      0,
      0
     ],
+    "Cazafla anti cazanova🇭🇹": [
+     1,
+     0,
+     0,
+     0,
+     0
+    ],
     "Cinexfilo": [
      0,
      1,
@@ -4670,6 +4684,13 @@
     "CrisZJ": [
      0,
      2,
+     0,
+     0,
+     0
+    ],
+    "Cronox": [
+     1,
+     1,
      0,
      0,
      0
@@ -4689,7 +4710,7 @@
      0
     ],
     "Drexx": [
-     0,
+     1,
      1,
      0,
      0,
@@ -4765,6 +4786,20 @@
      0,
      0
     ],
+    "Geoka": [
+     1,
+     1,
+     0,
+     0,
+     0
+    ],
+    "Gus": [
+     1,
+     1,
+     0,
+     0,
+     0
+    ],
     "Infecte": [
      0,
      1,
@@ -4782,6 +4817,20 @@
     "Jahno Afrodisiaco 🇦🇷": [
      0,
      1,
+     0,
+     0,
+     0
+    ],
+    "Jahno El Melomaníaco 🇦🇷": [
+     1,
+     1,
+     0,
+     0,
+     0
+    ],
+    "Jobacastrado🇨🇱": [
+     1,
+     0,
      0,
      0,
      0
@@ -4836,8 +4885,8 @@
      0
     ],
     "LRS": [
-     0,
-     0,
+     1,
+     1,
      0,
      0,
      0
@@ -4899,7 +4948,7 @@
      0
     ],
     "Luck": [
-     0,
+     1,
      3,
      0,
      0,
@@ -4943,6 +4992,13 @@
     "Makmah": [
      1,
      5,
+     0,
+     0,
+     0
+    ],
+    "Manteca mantecosa 🇨🇾": [
+     1,
+     0,
      0,
      0,
      0
@@ -5032,8 +5088,8 @@
      0
     ],
     "Oasis": [
-     0,
-     2,
+     1,
+     3,
      0,
      0,
      0
@@ -5067,8 +5123,8 @@
      0
     ],
     "PichulaMc": [
-     1,
-     6,
+     2,
+     7,
      0,
      0,
      0
@@ -5087,9 +5143,16 @@
      0,
      0
     ],
-    "Provenza": [
+    "Presagio": [
      1,
+     1,
+     0,
+     0,
+     0
+    ],
+    "Provenza": [
      2,
+     3,
      0,
      0,
      0
@@ -5144,15 +5207,15 @@
      0
     ],
     "Sin Limites": [
-     0,
+     1,
      1,
      0,
      0,
      0
     ],
     "Six": [
-     1,
-     4,
+     2,
+     5,
      0,
      0,
      0
@@ -5200,8 +5263,8 @@
      0
     ],
     "Tenor": [
-     0,
-     0,
+     1,
+     1,
      0,
      0,
      0
@@ -5235,7 +5298,7 @@
      0
     ],
     "Tuca": [
-     0,
+     1,
      2,
      2,
      0,
@@ -5270,8 +5333,8 @@
      0
     ],
     "Verc": [
-     1,
-     1,
+     2,
+     2,
      0,
      0,
      0
@@ -5333,8 +5396,8 @@
      0
     ],
     "yinn": [
-     0,
-     2,
+     1,
+     3,
      1,
      0,
      0
@@ -5343,27 +5406,38 @@
    "pts": {
     "Abyssus": 300,
     "Adriagner": 600,
-    "Badterne": 1600,
+    "Andres": 300,
+    "BELIKKO": 300,
+    "Badterne": 2900,
     "Calíz": 300,
     "Carlosss": 600,
+    "Cazafla anti cazanova🇭🇹": 300,
     "CrisZJ": 600,
+    "Cronox": 300,
     "Deuxs": 300,
     "Dominick": 600,
+    "Drexx": 300,
     "Dyzz": 300,
     "EmiZor": 600,
     "Erian": 900,
+    "Geoka": 300,
+    "Gus": 300,
+    "Jahno El Melomaníaco 🇦🇷": 300,
+    "Jobacastrado🇨🇱": 300,
     "Jobaking": 900,
     "KIRITO": 300,
     "Khalil": 300,
     "Kyss": 600,
+    "LRS": 300,
     "LSO": 300,
     "Lautaro la sinceridad 🇨🇨": 600,
     "Liberia": 900,
-    "Luck": 600,
+    "Luck": 900,
     "Lvel": 300,
     "MATUK 🇦🇷": 300,
     "MTZ": 1000,
     "Makmah": 900,
+    "Manteca mantecosa 🇨🇾": 300,
     "Miniboy": 2900,
     "Mr Still Ballin": 300,
     "NC": 300,
@@ -5371,28 +5445,31 @@
     "Number": 300,
     "OG": 300,
     "OKAM": 300,
-    "Oasis": 600,
+    "Oasis": 900,
     "PRAISERIZA": 600,
     "PichulaMc": 900,
     "Polosport": 300,
+    "Presagio": 300,
     "Provenza": 900,
     "Ragna 🇨🇱": 1000,
     "SULTAN": 300,
     "Scritura": 300,
+    "Sin Limites": 300,
     "Six": 900,
     "Sosa": 300,
     "Soulb": 1000,
     "Tam": 600,
+    "Tenor": 300,
     "Teo": 300,
     "Trelok": 900,
     "Trot": 300,
-    "Tuca": 1600,
+    "Tuca": 2900,
     "Vandu": 300,
-    "Verc": 300,
+    "Verc": 900,
     "Vilca": 600,
     "francis": 300,
     "mats": 600,
-    "yinn": 1600
+    "yinn": 2900
    }
   }
  },
@@ -5416,15 +5493,16 @@
   "Akutagawa🇹🇼": 300,
   "Aldre": 1900,
   "Alexi": 300,
-  "Andres": 3900,
+  "Andres": 4200,
   "Andy": 300,
   "Ariaxer": 600,
   "Assuan": 1300,
   "Axinu": 300,
+  "BELIKKO": 300,
   "BLITZ": 300,
   "BNA": 5200,
   "BTRX": 300,
-  "Badterne": 2900,
+  "Badterne": 4200,
   "BastyRetro": 2900,
   "Benjixo": 2200,
   "Bloody": 2200,
@@ -5435,13 +5513,14 @@
   "Carlosmo": 1600,
   "Carlosss": 4400,
   "Catarsis": 900,
+  "Cazafla anti cazanova🇭🇹": 300,
   "Chop": 2200,
   "Cinexfilo": 900,
   "Colesito": 4800,
   "Corvo": 1000,
   "CrisZJ": 3100,
   "Crk": 1900,
-  "Cronox": 1600,
+  "Cronox": 1900,
   "DAVIJUAN": 300,
   "DO-C": 600,
   "DarkoMC": 300,
@@ -5452,7 +5531,7 @@
   "Desio": 300,
   "Deuxs": 600,
   "Dominick": 2900,
-  "Drexx": 1600,
+  "Drexx": 1900,
   "Drezz🇵🇪": 300,
   "Dynoco": 1600,
   "Dyzz": 1200,
@@ -5479,12 +5558,13 @@
   "FanDAbel": 1000,
   "FanDeAbel": 800,
   "Fin": 300,
-  "Geoka": 1200,
+  "Geoka": 1500,
   "Gero": 300,
   "Global Hustler": 1000,
   "Gocho": 600,
   "Greyfitsh🇵🇦": 300,
   "Guess": 4500,
+  "Gus": 300,
   "HH": 300,
   "HOTU": 1000,
   "Hardcore": 300,
@@ -5499,6 +5579,8 @@
   "JHEYSON": 300,
   "JJ": 2900,
   "JOSHU": 2900,
+  "Jahno El Melomaníaco 🇦🇷": 300,
+  "Jobacastrado🇨🇱": 300,
   "Jobaking": 1200,
   "Joshema": 300,
   "Juasmio": 1900,
@@ -5520,7 +5602,7 @@
   "LAST": 1000,
   "LEWITO": 300,
   "LKS 🇨🇱": 300,
-  "LRS": 2200,
+  "LRS": 2500,
   "LSO": 300,
   "Launok": 300,
   "Lautaro la sinceridad 🇨🇨": 600,
@@ -5531,7 +5613,7 @@
   "Liberia": 8000,
   "LitKunai": 300,
   "Lord Viruzz": 1600,
-  "Luck": 600,
+  "Luck": 900,
   "Luzzano": 900,
   "Lvel": 900,
   "MALBORO": 600,
@@ -5546,6 +5628,7 @@
   "Majiztral": 1200,
   "Makmah": 7600,
   "Malva": 300,
+  "Manteca mantecosa 🇨🇾": 300,
   "Marto": 300,
   "Masino": 2500,
   "Mathhias": 1300,
@@ -5573,7 +5656,7 @@
   "OKAM": 2700,
   "ONDADISKO": 600,
   "ONZASS": 1200,
-  "Oasis": 7400,
+  "Oasis": 7700,
   "Ortiz": 600,
   "PIERR🇵🇪": 300,
   "PRAISERIZA": 4500,
@@ -5585,7 +5668,7 @@
   "Player": 3200,
   "Polosport": 2500,
   "Pomberito": 2900,
-  "Presagio": 4200,
+  "Presagio": 4500,
   "Prodigy": 300,
   "Prosu": 3200,
   "Provenza": 5700,
@@ -5615,7 +5698,7 @@
   "Selek": 300,
   "Senticide": 600,
   "Shadow": 300,
-  "Sin Limites": 2500,
+  "Sin Limites": 2800,
   "Six": 5700,
   "Snow": 6800,
   "Soneto": 300,
@@ -5623,12 +5706,12 @@
   "Soulb": 5200,
   "Tam": 6600,
   "Teito": 300,
-  "Tenor": 3200,
+  "Tenor": 3500,
   "Teo": 900,
   "Tier": 300,
   "Trelok": 900,
   "Trot": 1500,
-  "Tuca": 3800,
+  "Tuca": 5100,
   "Tusicario": 300,
   "TøKīØ🦠🧠": 4500,
   "Under": 600,
@@ -5638,7 +5721,7 @@
   "Vandu": 7800,
   "Vargas": 300,
   "Velatz": 4600,
-  "Verc": 6100,
+  "Verc": 6700,
   "Vilca": 1600,
   "Walker": 6300,
   "Warap": 900,
@@ -5669,7 +5752,7 @@
   "rodrilp": 900,
   "setesfifi": 300,
   "wei shenlong": 300,
-  "yinn": 5800
+  "yinn": 7100
  },
  "temp": "prueba"
 }

@@ -28402,5 +28402,332 @@
    ]
   ],
   "v": 2
+ },
+ "542": {
+  "antes": {
+   "Andres": [
+    221,
+    46,
+    true
+   ],
+   "BELIKKO": [
+    446,
+    422,
+    true
+   ],
+   "Badterne": [
+    228,
+    67,
+    true
+   ],
+   "Cronox": [
+    32,
+    38,
+    false
+   ],
+   "Drexx": [
+    34,
+    40,
+    false
+   ],
+   "Geoka": [
+    43,
+    58,
+    false
+   ],
+   "Gus": [
+    127,
+    201,
+    false
+   ],
+   "LRS": [
+    37,
+    47,
+    false
+   ],
+   "Luck": [
+    102,
+    146,
+    false
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "PichulaMc": [
+    3,
+    3,
+    false
+   ],
+   "Presagio": [
+    55,
+    72,
+    false
+   ],
+   "Provenza": [
+    20,
+    22,
+    false
+   ],
+   "Sin Limites": [
+    28,
+    33,
+    false
+   ],
+   "Six": [
+    7,
+    8,
+    false
+   ],
+   "Tenor": [
+    39,
+    52,
+    false
+   ],
+   "Tuca": [
+    215,
+    25,
+    true
+   ],
+   "Verc": [
+    11,
+    12,
+    false
+   ],
+   "yinn": [
+    213,
+    21,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "PichulaMc",
+    "Cazafla anti cazanova🇭🇹",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "Manteca mantecosa 🇨🇾",
+    "PichulaMc"
+   ],
+   [
+    "PichulaMc",
+    "Gus, Tuca",
+    "PichulaMc"
+   ],
+   [
+    "LRS",
+    "Jobacastrado🇨🇱",
+    "LRS"
+   ],
+   [
+    "Jahno El Melomaníaco 🇦🇷, LRS, Geoka",
+    "Andres",
+    "Jahno El Melomaníaco 🇦🇷, LRS, Geoka"
+   ],
+   [
+    "Jahno El Melomaníaco 🇦🇷, LRS, Geoka",
+    "Luck, BELIKKO",
+    "Jahno El Melomaníaco 🇦🇷, LRS, Geoka"
+   ],
+   [
+    "Verc",
+    "Drexx",
+    "Verc"
+   ],
+   [
+    "Verc",
+    "Sin Limites",
+    "Verc"
+   ],
+   [
+    "Tenor, Provenza, yinn",
+    "Gus",
+    "Tenor, Provenza, yinn"
+   ],
+   [
+    "Six, Presagio",
+    "Verc",
+    "Six, Presagio"
+   ],
+   [
+    "Oasis",
+    "Jahno El Melomaníaco 🇦🇷, LRS, Geoka",
+    "Oasis"
+   ],
+   [
+    "PichulaMc",
+    "Cronox",
+    "PichulaMc"
+   ],
+   [
+    "Six, Presagio, Badterne",
+    "Tenor, Provenza, yinn",
+    "Six, Presagio, Badterne"
+   ],
+   [
+    "Oasis",
+    "PichulaMc",
+    "Oasis"
+   ],
+   [
+    "Oasis",
+    "Six, Presagio, Badterne",
+    "Oasis"
+   ]
+  ],
+  "ev_antes": {
+   "Andres": 17,
+   "BELIKKO": 1,
+   "Badterne": 6,
+   "Cronox": 29,
+   "Drexx": 27,
+   "Geoka": 18,
+   "Gus": 7,
+   "LRS": 25,
+   "Luck": 6,
+   "Oasis": 35,
+   "PichulaMc": 52,
+   "Presagio": 7,
+   "Provenza": 32,
+   "Sin Limites": 36,
+   "Six": 35,
+   "Tenor": 12,
+   "Tuca": 12,
+   "Verc": 22,
+   "yinn": 25
+  },
+  "fecha": "28/10",
+  "firma": "678c59a0ae53dc38",
+  "msg": "1565236518367264860",
+  "nombre": "__ QCYO RAPEEN 6 __",
+  "num": 542,
+  "participantes": 24,
+  "sello": {
+   "Oasis": "f3bc1473fc79:6ec1a5248de8"
+  },
+  "sv": "FFA",
+  "t": "2026-10-29T05:55:01Z",
+  "tabla": [
+   [
+    "Oasis",
+    "Campeón",
+    10000
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Six",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Presagio",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Badterne",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Verc",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Cronox",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Gus",
+    "Cuartos",
+    1875
+   ],
+   [
+    "Tenor",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Provenza",
+    "Semifinal",
+    1750
+   ],
+   [
+    "yinn",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Cazafla anti cazanova🇭🇹",
+    "Octavos",
+    1250
+   ],
+   [
+    "Manteca mantecosa 🇨🇾",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jobacastrado🇨🇱",
+    "Octavos",
+    1250
+   ],
+   [
+    "Andres",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jahno El Melomaníaco 🇦🇷",
+    "Cuartos",
+    833
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    833
+   ],
+   [
+    "Geoka",
+    "Cuartos",
+    833
+   ],
+   [
+    "Tuca",
+    "Octavos",
+    625
+   ],
+   [
+    "Luck",
+    "Octavos",
+    625
+   ],
+   [
+    "BELIKKO",
+    "Octavos",
+    625
+   ]
+  ],
+  "v": 2
  }
 }

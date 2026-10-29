@@ -2,309 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "1079a17e1a",
-   "tipo": "Nombre desconocido",
-   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
-   "que": "¿Quién es «05` Lrs 🇦🇷 - LRS»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792009759279,
-   "filas": [
-    697
-   ],
-   "variantes": [
-    "05` Lrs 🇦🇷 - LRS"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "6c53909ec9",
-   "tipo": "Nombre desconocido",
-   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
-   "que": "¿Quién es «07` Neo 🇦🇷 - Neo»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792009759279,
-   "filas": [
-    699
-   ],
-   "variantes": [
-    "07` Neo 🇦🇷 - Neo"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "c4b3d4ff7b",
-   "tipo": "Nombre desconocido",
-   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
-   "que": "¿Quién es «08` Tuca 🇦🇷 - Tuca»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792009759279,
-   "filas": [
-    700
-   ],
-   "variantes": [
-    "08` Tuca 🇦🇷 - Tuca"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "6adefc4a81",
-   "tipo": "Nombre desconocido",
-   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
-   "que": "¿Quién es «11` agus 🇦🇷 - Agus»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792009759279,
-   "filas": [
-    702
-   ],
-   "variantes": [
-    "11` agus 🇦🇷 - Agus"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "59825e16c7",
-   "tipo": "Nombre desconocido",
-   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
-   "que": "¿Quién es «13` vandu 🇨🇦 - Vandu»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792009759279,
-   "filas": [
-    704
-   ],
-   "variantes": [
-    "13` vandu 🇨🇦 - Vandu"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "0fac65c5d5",
-   "tipo": "Nombre desconocido",
-   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
-   "que": "¿Quién es «16` agre 🇦🇷 - Benjixo»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792015054348,
-   "filas": [
-    707
-   ],
-   "variantes": [
-    "16` agre 🇦🇷 - Benjixo"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "d7d4d82f3e",
-   "tipo": "Nombre desconocido",
-   "sec": "LA BELLA ARTE DE LA DESGRACIA VOL 6 PANDILLAS · FFA · 14/10 · #472",
-   "que": "¿Quién es «Chente 🇻🇪»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1485505764452728874",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (1485505764452728874)",
-   "t": 1792018765717,
-   "filas": [
-    708
-   ],
-   "variantes": [
-    "Chente 🇻🇪"
-   ],
-   "escribio": {
-    "alta": [
-     "Chente",
-     "1485505764452728874"
-    ]
-   }
-  },
-  {
-   "id": "b8f112880e",
-   "tipo": "Nombre desconocido",
-   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
-   "que": "¿Quién es «06` Trot 🇪🇸 - Trot»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792026038423,
-   "filas": [
-    698
-   ],
-   "variantes": [
-    "06` Trot 🇪🇸 - Trot"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "72d46586c7",
-   "tipo": "Nombre desconocido",
-   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
-   "que": "¿Quién es «09` erian 🇦🇷 - Erian»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792026038423,
-   "filas": [
-    701
-   ],
-   "variantes": [
-    "09` erian 🇦🇷 - Erian"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "69e4083e17",
-   "tipo": "Nombre desconocido",
-   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
-   "que": "¿Quién es «12` Krish 🇪🇸 - Krish»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792026038423,
-   "filas": [
-    703
-   ],
-   "variantes": [
-    "12` Krish 🇪🇸 - Krish"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "d1fd7ead71",
-   "tipo": "Nombre desconocido",
-   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
-   "que": "¿Quién es «14` Geoka 🇦🇷 - Geoka»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792026038423,
-   "filas": [
-    705
-   ],
-   "variantes": [
-    "14` Geoka 🇦🇷 - Geoka"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "ab78ebd1ee",
-   "tipo": "Nombre desconocido",
-   "sec": "DEM UZBEKISTAN FECHA 3 · FFA · 14/10 · #471",
-   "que": "¿Quién es «01` asuka la homosexual 🇪🇸 - Marcos»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792026038423,
-   "filas": [
-    706
-   ],
-   "variantes": [
-    "01` asuka la homosexual 🇪🇸 - Marcos"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "c3ce77f8b6",
-   "tipo": "Nombre desconocido",
-   "sec": "CIUDAD GOTICA · DDF · 27/09 · #428",
-   "que": "¿Quién es «SNX🇻🇪»?",
-   "r": "Es Rbk",
-   "regla": "R2 · una cuenta de la Lista que se anota con otro nombre donde su dueño no jugó",
-   "rk": "R2",
-   "por": "el ciclo",
-   "porque": "«SNX» se anotó 2 vez/veces sola desde la cuenta de Rbk («Snx», en ACAD, FRZ) y Rbk no jugó esos eventos con su nombre; nadie más usa ese nombre y Rbk no es organizador, staff, host ni socio ahí",
-   "t": 1792027740539,
-   "filas": [
-    438
-   ],
-   "variantes": [
-    "SNX🇻🇪"
-   ],
-   "escribio": {
-    "alias": [
-     "SNX",
-     "Rbk"
-    ],
-    "filas": [
-     279
-    ]
-   }
-  },
-  {
-   "id": "bfd1a4cc78",
-   "tipo": "Nombre desconocido",
-   "sec": "MULTIVERSE · FFA · 08/10 · #450",
-   "que": "¿Quién es «Respawm🇭🇳»?",
-   "r": "Ya no hace falta",
-   "regla": "cierre · ya no hacía falta preguntarlo",
-   "rk": "cierre",
-   "por": "el ciclo",
-   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
-   "t": 1792042077199,
-   "filas": [
-    718
-   ],
-   "variantes": [
-    "Respawm🇭🇳"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "28e8346551",
-   "tipo": "Nombre desconocido",
-   "sec": "- IRLANDA FREESTYLE - · FRZ · 14/10 · #475",
-   "que": "¿Quién es «Milo 🇨🇱»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1527545754946769026",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta que estaba en la llamada con ese nombre (1527545754946769026)",
-   "t": 1792042755477,
-   "filas": [
-    720
-   ],
-   "variantes": [
-    "Milo 🇨🇱"
-   ],
-   "escribio": {
-    "alta": [
-     "Milo",
-     "1527545754946769026"
-    ]
-   }
-  },
-  {
    "id": "2adb1e7f81",
    "tipo": "Nombre desconocido",
    "sec": "Cuentas Pendientes V.1 · FFA · 08/10 · #435",
@@ -2703,6 +2400,54 @@
    ],
    "escribio": {
     "batalla": "ZONA MORTAL · DDF · 28/10 · final · Carlos 🆚 Tuca 🇦🇷"
+   }
+  },
+  {
+   "id": "22e8a113ba",
+   "tipo": "Nombre desconocido",
+   "sec": "QCYO RAPEEN 6 · FFA · 28/10 · #542",
+   "que": "¿Quién es «Jobacastrado🇨🇱»?",
+   "r": "Es Jobaking (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @jobains (en Discord: «#51 | Jobaking», «𝐉𝐨𝐛𝐚𝐤𝟏𝐧𝐠 :v») · en la Lista: Jobaking se anotó como «Jobacastrado» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1793253916663,
+   "filas": [
+    935
+   ],
+   "variantes": [
+    "Jobacastrado🇨🇱"
+   ],
+   "escribio": {
+    "quien": "QCYO RAPEEN 6 · FFA · 28/10 · Jobacastrado🇨🇱"
+   }
+  },
+  {
+   "id": "479810593c",
+   "tipo": "Nombre desconocido",
+   "sec": "QCYO RAPEEN 6 · FFA · 28/10 · #542",
+   "que": "¿Quién es «Jahno El Melomaníaco 🇦🇷»?",
+   "r": "Es melomaniaco",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de melomaniaco: estaba en la llamada del evento con un nombre parecido",
+   "t": 1793253916663,
+   "filas": [
+    934
+   ],
+   "variantes": [
+    "Jahno El Melomaníaco 🇦🇷"
+   ],
+   "escribio": {
+    "alias": [
+     "Jahno El Melomaníaco",
+     "melomaniaco"
+    ],
+    "filas": [
+     325
+    ]
    }
   }
  ],

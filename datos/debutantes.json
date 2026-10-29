@@ -4,7 +4,7 @@
   "ACAD": "2026-10-27",
   "DDF": "2026-10-28",
   "FDS": "2026-10-26",
-  "FFA": "2026-10-28",
+  "FFA": "2026-10-29",
   "FRZ": "2026-10-27",
   "FVS": "2026-10-15",
   "SR": "2026-10-21",
@@ -105,9 +105,10 @@
   },
   "BELIKKO": {
    "avisado": "2026-10-23",
+   "avisado_cumplido": "2026-10-29",
    "chat": "2026-10-23",
-   "con": null,
-   "cumplido": "",
+   "con": 542,
+   "cumplido": "2026-10-29T03:04:48+00:00",
    "debut": "2026-10-23T22:07:27+00:00",
    "did": "989702187523407903",
    "evento": "FATS BATTLES PALOOZA FECHA 8",
@@ -522,6 +523,19 @@
    "vence": "2026-11-04T02:00:00+00:00",
    "vencido": false
   },
+  "Jahno El Melomaníaco": {
+   "avisado": "2026-10-29",
+   "chat": "2026-10-29",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-29T03:04:48+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 6",
+   "n": 542,
+   "sv": "FFA",
+   "vence": "2026-11-05T03:04:48+00:00",
+   "vencido": false
+  },
   "Jeisy": {
    "avisado": "2026-10-25",
    "chat": "2026-10-25",
@@ -547,6 +561,19 @@
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
    "vencido": true
+  },
+  "Jobacastrado": {
+   "avisado": "2026-10-29",
+   "chat": "2026-10-29",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-29T03:04:48+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 6",
+   "n": 542,
+   "sv": "FFA",
+   "vence": "2026-11-05T03:04:48+00:00",
+   "vencido": false
   },
   "Jobaking": {
    "avisado": "2026-10-18",
@@ -682,6 +709,7 @@
    "vencido": false
   },
   "Lizenin": {
+   "avisado": "2026-10-29",
    "chat": "2026-10-28",
    "con": null,
    "cumplido": "",
@@ -810,6 +838,19 @@
    "n": 460,
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
+   "vencido": false
+  },
+  "Manteca mantecosa": {
+   "avisado": "2026-10-29",
+   "chat": "2026-10-29",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-29T03:04:48+00:00",
+   "did": "",
+   "evento": "QCYO RAPEEN 6",
+   "n": 542,
+   "sv": "FFA",
+   "vence": "2026-11-05T03:04:48+00:00",
    "vencido": false
   },
   "Mc arepa": {

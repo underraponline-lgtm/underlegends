@@ -1519,6 +1519,17 @@
    "b": "GIAN",
    "ganador": "GIAN",
    "votos": "1–0"
+  },
+  "1565234371903103127": {
+   "id": "1565234371903103127",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793251354910,
+   "a": "PARK JI SUNG",
+   "b": "GIANLAMALDAD",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5511,7 +5522,7 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793246125314,
-   "ed": 1793251354910,
+   "ed": 1793251795595,
    "texto": "`[ CUARTOS ]`\n⌞GUS⌝ 🆚 ⌞YINN ZA TENOR⌝\n⌞VERC⌝ 🆚 ⌞PRESAGIO SIX⌝\n⌞PRESAGIO⌝ 🆚 ⌞VERC⌝\n⌞SIX⌝ 🆚 ⌞VERC⌝\n⌞GEOKA LRS⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞PICHULA MC⌝ 🆚 ⌞YO MC⌝\n`[ SEMIFINALES ]`\n⌞YINN ZA⌝ 🆚 ⌞GIANLAMALDAD SIX PRESAGIO⌝\n⌞PRESAGIO⌝ 🆚 ⌞YINN⌝\n⌞PICHULA⌝ 🆚 ⌞PARK JI SUNG⌝\n`[ FINAL ]`\n⌞YINN⌝ 🆚 ⌞GIANLAMALDAD⌝\n⌞YINN⌝ 🆚 ⌞VERC⌝\n⌞VERC⌝ 🆚 ⌞PICHULA MC⌝\n⌞VERC⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞SIX⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞GIAN⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞GIANLAMALDAD⌝",
    "batallas": [
     [
@@ -5670,8 +5681,8 @@
       "PARK JI SUNG",
       "GIANLAMALDAD"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "PARK JI SUNG",
+     "veredicto",
      []
     ]
    ]

@@ -903,6 +903,11 @@
     "t1",
     1793029252929
    ],
+   "📋 SEMANA PERFECTA": [
+    "📋 SEMANA PERFECTA",
+    "t1",
+    1793253930231
+   ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
@@ -3255,6 +3260,11 @@
    ]
   },
   "servidor": {
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1793253930231
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
@@ -6738,9 +6748,14 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x19",
+    "👑 CAMPEÓN x20",
     "t1",
     1793029252929
+   ],
+   "👑 DINASTÍA": [
+    "👑 DINASTÍA",
+    "t1",
+    1793253930231
    ],
    "💯 BICENTENARIO": [
     "💯 BICENTENARIO",
@@ -9826,6 +9841,11 @@
     "t1",
     1793029252929
    ],
+   "📋 SEMANA PERFECTA": [
+    "📋 SEMANA PERFECTA",
+    "t1",
+    1793253930231
+   ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
     "t1",
@@ -10900,6 +10920,11 @@
     "t1",
     1793029252929
    ],
+   "🏁 SEMIFINALISTA SERIAL": [
+    "🏁 SEMIFINALISTA SERIAL",
+    "t1",
+    1793253930231
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x4",
     "t1",
@@ -10919,6 +10944,11 @@
     "📋 SEMANA PERFECTA",
     "t1",
     1793029252929
+   ],
+   "📋 SEMANA PERFECTA x%d": [
+    "📋 SEMANA PERFECTA x2",
+    "t1",
+    1793253930231
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
