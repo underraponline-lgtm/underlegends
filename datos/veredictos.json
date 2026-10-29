@@ -1464,6 +1464,61 @@
    "b": "PARK JI SUNG",
    "ganador": "PARK JI SUNG",
    "votos": "1–0"
+  },
+  "1565227644818169957": {
+   "id": "1565227644818169957",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793249751048,
+   "a": "YINN",
+   "b": "GIANLAMALDAD",
+   "ganador": "YINN",
+   "votos": "1–0"
+  },
+  "1565228639476392077": {
+   "id": "1565228639476392077",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793249988193,
+   "a": "YINN",
+   "b": "VERC",
+   "ganador": "VERC",
+   "votos": "1–0"
+  },
+  "1565229610902233169": {
+   "id": "1565229610902233169",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793250219799,
+   "a": "VERC",
+   "b": "PICHULA MC",
+   "ganador": "VERC",
+   "votos": "1–0"
+  },
+  "1565232700468629566": {
+   "id": "1565232700468629566",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793250956409,
+   "a": "PRAISERIZAS",
+   "b": "SIX",
+   "ganador": "PRAISERIZAS",
+   "votos": "1–0"
+  },
+  "1565234120039342192": {
+   "id": "1565234120039342192",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793251294861,
+   "a": "PRAISERIZAS",
+   "b": "GIAN",
+   "ganador": "GIAN",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5456,8 +5511,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793246125314,
-   "ed": 1793249620125,
-   "texto": "`[ CUARTOS ]`\n⌞GUS⌝ 🆚 ⌞YINN ZA TENOR⌝\n⌞VERC⌝ 🆚 ⌞PRESAGIO SIX⌝\n⌞PRESAGIO⌝ 🆚 ⌞VERC⌝\n⌞SIX⌝ 🆚 ⌞VERC⌝\n⌞GEOKA LRS⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞PICHULA MC⌝ 🆚 ⌞YO MC⌝\n`[ SEMIFINALES ]`\n⌞YINN ZA⌝ 🆚 ⌞GIANLAMALDAD SIX PRESAGIO⌝\n⌞PRESAGIO⌝ 🆚 ⌞YINN⌝\n⌞PICHULA⌝ 🆚 ⌞PARK JI SUNG⌝\n`[ FINAL ]`",
+   "ed": 1793251354910,
+   "texto": "`[ CUARTOS ]`\n⌞GUS⌝ 🆚 ⌞YINN ZA TENOR⌝\n⌞VERC⌝ 🆚 ⌞PRESAGIO SIX⌝\n⌞PRESAGIO⌝ 🆚 ⌞VERC⌝\n⌞SIX⌝ 🆚 ⌞VERC⌝\n⌞GEOKA LRS⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞PICHULA MC⌝ 🆚 ⌞YO MC⌝\n`[ SEMIFINALES ]`\n⌞YINN ZA⌝ 🆚 ⌞GIANLAMALDAD SIX PRESAGIO⌝\n⌞PRESAGIO⌝ 🆚 ⌞YINN⌝\n⌞PICHULA⌝ 🆚 ⌞PARK JI SUNG⌝\n`[ FINAL ]`\n⌞YINN⌝ 🆚 ⌞GIANLAMALDAD⌝\n⌞YINN⌝ 🆚 ⌞VERC⌝\n⌞VERC⌝ 🆚 ⌞PICHULA MC⌝\n⌞VERC⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞SIX⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞GIAN⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞GIANLAMALDAD⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5475,8 +5530,8 @@
       "VERC",
       "PRESAGIO SIX"
      ],
-     null,
-     "no aparece nadie después",
+     "VERC",
+     "ronda siguiente",
      []
     ],
     [
@@ -5515,8 +5570,8 @@
       "PICHULA MC",
       "YO MC"
      ],
-     null,
-     "no aparece nadie después",
+     "PICHULA MC",
+     "ronda siguiente",
      []
     ],
     [
@@ -5526,7 +5581,7 @@
       "GIANLAMALDAD SIX PRESAGIO"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -5547,6 +5602,76 @@
      ],
      "PARK JI SUNG",
      "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "YINN",
+      "GIANLAMALDAD"
+     ],
+     "YINN",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "YINN",
+      "VERC"
+     ],
+     "VERC",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "VERC",
+      "PICHULA MC"
+     ],
+     "VERC",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "VERC",
+      "PRAISERIZAS"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PRAISERIZAS",
+      "SIX"
+     ],
+     "PRAISERIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PRAISERIZAS",
+      "GIAN"
+     ],
+     "GIAN",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PARK JI SUNG",
+      "GIANLAMALDAD"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
