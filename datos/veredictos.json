@@ -1442,40 +1442,31 @@
    "b": "PARK JI SUNG",
    "ganador": "PARK JI SUNG",
    "votos": "1–0"
-  }
- },
- "llaves": {
-  "1557614309645754429": {
-   "id": "1557614309645754429",
+  },
+  "1565223362249359441": {
+   "id": "1565223362249359441",
    "sv": "[FFA] Freestyle For All 👾",
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
-   "pub": 1791434590494,
-   "ed": 1791435075454,
-   "texto": "`[ FINAL ]`\n⌞MAKMA🇻🇪⌝ 🆚 ⌞PICHULITAMC🇦🇷⌝\n`[ FINAL ]`\n⌞MAKMA🇻🇪⌝ 🆚 ⌞PICHULITAMC🇦🇷⌝",
-   "batallas": [
-    [
-     "FINAL",
-     [
-      "MAKMA🇻🇪",
-      "PICHULITAMC🇦🇷"
-     ],
-     "MAKMA🇻🇪",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "MAKMA🇻🇪",
-      "PICHULITAMC🇦🇷"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ]
-   ]
+   "pub": 1793248730004,
+   "a": "PRESAGIO",
+   "b": "YINN",
+   "ganador": "PRESAGIO",
+   "votos": "1–0"
   },
+  "1565226249058517043": {
+   "id": "1565226249058517043",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793249418273,
+   "a": "PICHULA",
+   "b": "PARK JI SUNG",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
+  }
+ },
+ "llaves": {
   "1557932528847822859": {
    "id": "1557932528847822859",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -5465,8 +5456,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793246125314,
-   "ed": 1793247832454,
-   "texto": "`[ CUARTOS ]`\n⌞GUS⌝ 🆚 ⌞YINN ZA TENOR⌝\n⌞VERC⌝ 🆚 ⌞PRESAGIO SIX⌝\n⌞PRESAGIO⌝ 🆚 ⌞VERC⌝\n⌞SIX⌝ 🆚 ⌞VERC⌝\n⌞GEOKA LRS⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞PICHULA MC⌝ 🆚 ⌞YO MC⌝",
+   "ed": 1793249620125,
+   "texto": "`[ CUARTOS ]`\n⌞GUS⌝ 🆚 ⌞YINN ZA TENOR⌝\n⌞VERC⌝ 🆚 ⌞PRESAGIO SIX⌝\n⌞PRESAGIO⌝ 🆚 ⌞VERC⌝\n⌞SIX⌝ 🆚 ⌞VERC⌝\n⌞GEOKA LRS⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞PICHULA MC⌝ 🆚 ⌞YO MC⌝\n`[ SEMIFINALES ]`\n⌞YINN ZA⌝ 🆚 ⌞GIANLAMALDAD SIX PRESAGIO⌝\n⌞PRESAGIO⌝ 🆚 ⌞YINN⌝\n⌞PICHULA⌝ 🆚 ⌞PARK JI SUNG⌝\n`[ FINAL ]`",
    "batallas": [
     [
      "CUARTOS",
@@ -5485,7 +5476,7 @@
       "PRESAGIO SIX"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -5494,8 +5485,8 @@
       "PRESAGIO",
       "VERC"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "PRESAGIO",
+     "ronda siguiente",
      []
     ],
     [
@@ -5525,7 +5516,37 @@
       "YO MC"
      ],
      null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "YINN ZA",
+      "GIANLAMALDAD SIX PRESAGIO"
+     ],
+     null,
      "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "PRESAGIO",
+      "YINN"
+     ],
+     "PRESAGIO",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "PICHULA",
+      "PARK JI SUNG"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
      []
     ]
    ]
