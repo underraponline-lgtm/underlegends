@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-10-29T19:38:08Z",
+ "cuando": "2026-10-29T19:48:20Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 381.7,
+ "dur_s": 485.8,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.6
+   "s": 14.8
   },
   {
    "n": "2f2",
@@ -21,35 +21,37 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 9.1
+   "s": 9.0
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 38.8
+   "s": 23.4
   },
   {
    "n": "5",
    "que": "tanda 1 de 1 · 36 persona(s)",
    "ok": false,
-   "s": 317.8
+   "s": 365.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.1
+   "s": 7.0
+  },
+  {
+   "n": "6",
+   "que": "refrescar KV",
+   "ok": true,
+   "s": 63.6
   }
  ],
  "fallas": [
   {
    "paso": "5",
    "que": "03_Servidor/generar.py Artezzy"
-  },
-  {
-   "paso": "5",
-   "que": "bot/subir_cartas.py /home/runner/work/underlegends/underlegends/01_Temporada/salida/temporada_Velatz.png"
   }
  ],
  "ultimo_evento": {
@@ -64,21 +66,21 @@
    "read": 40160
   },
   "objeto": {
-   "leidas": 2111644,
-   "escritas": 13698,
-   "pedidos": 7071
+   "leidas": 2169277,
+   "escritas": 13786,
+   "pedidos": 7185
   },
   "worker": {
-   "pedidos": 7442,
+   "pedidos": 7472,
    "errores": 0,
-   "sub": 8973,
+   "sub": 9011,
    "cortados": 0,
    "p50_ms": 1.23,
-   "p99_ms": 12.3,
+   "p99_ms": 12.31,
    "cpu": {
-    "total": 16516,
+    "total": 16606,
     "objeto_10": 1767,
-    "worker_10": 196
+    "worker_10": 198
    }
   },
   "r2": {
