@@ -2443,7 +2443,7 @@
     },
     "1561550271279136869": {
      "sv": "DDF",
-     "nombre": "LA MISIÓN DEL MONJE",
+     "nombre": "EL CAMINO DEL MONJE",
      "mo": "2026-10-19T01:23:16Z",
      "staff": {},
      "orgs": [],
@@ -3537,6 +3537,15 @@
      "orgs": [],
      "organizador": "KEIDER",
      "cuentas": {}
+    },
+    "1565187405471027253": {
+     "sv": "DDF",
+     "nombre": "EL CAMINO DEL MONJE V.2",
+     "mo": "2026-10-29T02:15:57Z",
+     "staff": {},
+     "orgs": [],
+     "organizador": "ADRIAGNER🇬🇵",
+     "cuentas": {}
     }
    },
    "ver": {
@@ -4400,6 +4409,11 @@
       "",
       "Adriagner",
       "adriagner"
+     ],
+     "1150099153238630410": [
+      "",
+      "Drexx",
+      "manuxxx0789_78781"
      ]
     }
    }
