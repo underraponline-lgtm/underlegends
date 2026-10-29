@@ -150,7 +150,9 @@ PAGINAS, PAGINAS_PRIMERA = 2, 8
 EMOJI = re.compile(r'<a?:(\w+):\d+>')
 BANDERA = re.compile('[\U0001F1E6-\U0001F1FF]')
 #: el separador de los dos lados: ` VS `, 🆚, `<:VSAzul:…>`, `<:vs:…>`, `<:versus_:…>`, `<:VS8:…>`
-SEP = re.compile(r'\s(?:vs\.?|v/s|versus)\s|🆚|<a?:\w*(?:vs|versus)\w*:\d+>', re.I)
+#: 🏳️ y pegado a una bandera: «# MARTÍNEZ🇺🇾VS DEUX🇨🇱» (FMH Andes, J1) no se leía y la batalla no existía (29/10/2026)
+SEP = re.compile(r'(?:\s|(?<=[\U0001F1E6-\U0001F1FF]))(?:vs\.?|v/s|versus)(?:\s|(?=[\U0001F1E6-\U0001F1FF]))|🆚|'
+                 r'<a?:\w*(?:vs|versus)\w*:\d+>', re.I)
 JORNADA = re.compile(r'\bJORNADA\s*-?\s*(\d{1,2})\b|\bBATALLA\s+J\s*(\d{1,2})\b', re.I)
 REPLICA = re.compile(r'\bR[EÉ]PLICA\b', re.I)
 
@@ -229,8 +231,11 @@ def marca_replica(linea):
 
 
 # ── familia U: Urban Freestyle ────────────────────────────────────────────
-GANA = re.compile(r'^\W*(.+?)\s+GANA\s+(DIRECTO|DIRECTA|EN\s+(?:LA\s+)?R[EÉ]PLICA)', re.I)
-POR_PUNTOS = re.compile(r'^#+\s*(.+?)\s+POR\s+([\d]+(?:[.,]\d+)?)\s+PUNTOS?\b', re.I)
+#: «DEUXS GANA DESPUÉS DE DOS RÉPLICA» (FMH Andes, 23/10/2026) también es en réplica
+GANA = re.compile(r'^\W*(.+?)\s+GANA\s+(DIRECTO|DIRECTA|EN\s+(?:LA\s+)?R[EÉ]PLICA|DESPU[EÉ]S\s+DE\s+\w+\s+R[EÉ]PLICAS?)', re.I)
+#: «# X POR 5 PUNTOS» y, en las primeras jornadas de FMH Andes, «# 🎖️ GANADOR 🎖️ · ** ZETRYKO 🇨🇱 X 9 pts **»: el que
+#: gana y por cuánto (la victoria contra OEP de Zetryko quedaba pendiente, 29/10/2026)
+POR_PUNTOS = re.compile(r'^[#*\s]*(.+?)\s+(?:POR|X)\s+([\d]+(?:[.,]\d+)?)\s*(?:PUNTOS?|PTS?|PTOS?)\b', re.I)
 PTB_LINEA = re.compile(r'^\W*(.+?)\s*:\s*(\d+(?:[.,]\d+)?)\s*(?:\(\s*[\d.,]+\s*\))?\s*\**\s*(\+\s*[0-3])?', re.I)
 #: 📊 el PTB de un lado: «ZIGNOS 🇩🇴 : 36.5 (109.5)» (el total entre paréntesis, si está) o «CINEXFILO 🇻🇪: 117 +2»
 PTB_PAR = re.compile(r'^\W*(.+?)\s*:\s*(\d+(?:[.,]\d+)?)\s*(?:\(\s*(\d+(?:[.,]\d+)?)\s*\))?', re.I)
@@ -355,6 +360,46 @@ def _u_cierre(texto, bats):
                 lado = _quien(mm.group(1), b['a'], b['b'])
                 if lado:
                     b['por'] = (b[lado], float(mm.group(2).replace(',', '.')))
+
+
+#: 📋 el «RESUMEN DE RESULTADOS» que el host de FMH publica con la tabla: «- ZETRYCO 🇨🇱🌟 LE GANA A PANCHOK 🇨🇱 EN REPLICA.»
+LE_GANA = re.compile(r'^\W*(.+?)\s+LE\s+GANA\s+A\s+(.+?)\s+(DIRECT[OA]|EN\s+(?:LA\s+)?R[EÉ]PLICA)\b', re.I)
+
+
+def _lado_parecido(n, a, b):
+    """`_quien()` y, si no alcanza, la grafía parecida: el resumen escribe «MARTINEZ» y el título «MARTYNEZ». Sólo
+    entre los DOS de una batalla, así que no confunde a nadie más: el umbral es el de una letra cambiada."""
+    q = _quien(n, a, b)
+    if q:
+        return q
+    k = clave(n)
+    ra, rb = (difflib.SequenceMatcher(None, k, clave(x)).ratio() for x in (a, b))
+    if max(ra, rb) >= 0.8 and abs(ra - rb) >= 0.15:
+        return 'a' if ra > rb else 'b'
+    return None
+
+
+def u_resumen(msgs, bats):
+    """Completa con el RESUMEN del canal de la tabla las batallas que quedaron PENDIENTES. Es el cierre oficial del host
+    y no deja dudas: «MARTINEZ 🇺🇾 LE GANA A FORZA 🇻🇪🎮 DIRECTO» cerró Martynez vs Forza, cuyo veredicto era un
+    «# MARTYNEZ 🇺🇾» suelto (FMH Andes, 29/10/2026). Nunca pisa un resultado ya leído. Devuelve cuántas completó.
+    `bats`: las listas de `leer_liga()`; se tocan en su lugar. Gana la batalla MÁS NUEVA con esos dos nombres."""
+    n = 0
+    for m in msgs:
+        for l in (m.get('content') or '').splitlines():
+            g = LE_GANA.match(EMOJI.sub(' ', _plano(l)))
+            if not g:
+                continue
+            ga, pe, como = g.group(1), g.group(2), g.group(3)
+            for b in sorted(bats, key=lambda x: x[1], reverse=True):
+                la, lb = _lado_parecido(ga, b[3], b[4]), _lado_parecido(pe, b[3], b[4])
+                if la and lb and la != lb:
+                    if not b[5]:
+                        b[5] = b[3] if la == 'a' else b[4]
+                        b[6] = 'directa' if como.upper().startswith('DIRECT') else 'replica'
+                        n += 1
+                    break
+    return n
 
 
 # ── familia D1: FMS TITANS ────────────────────────────────────────────────
@@ -1080,7 +1125,7 @@ def correr(aplicar=False):
     import escuchar as E
     s = E.sesion()
     viejo = leer().get('ligas') or {}
-    por_canal, por_an = {}, {}
+    por_canal, por_an, por_tabla = {}, {}, {}
     out = {}
     # 🎛️ las de un servidor con el beneficio `ligas` apagado en el Dashboard no se leen ni se muestran (`bot/tiers.py`)
     try:
@@ -1109,6 +1154,12 @@ def correr(aplicar=False):
             # la que se vuelve a leer reemplaza a la guardada: pudo cerrarse después
             guardadas[b[0]] = b
         bats = [guardadas[k] for k in sorted(guardadas, key=_orden)]
+        # 📋 las FMH publican un RESUMEN con su tabla: cierra lo que el canal de veredictos dejó pendiente (`u_resumen()`)
+        if L['fam'] == 'U' and L.get('tabla') and any(not b[5] for b in bats):
+            if L['tabla'] not in por_tabla:
+                por_tabla[L['tabla']] = _mensajes(s, L['tabla'], 1, limite=30)
+                time.sleep(0.3)
+            u_resumen(por_tabla[L['tabla']], bats)
         js = [b[2] for b in bats if b[2]]
         # 📢 el canal de anuncios: el flyer y la próxima fecha (un pedido por canal; Snake Rap comparte el suyo)
         an = L.get('an')
@@ -1811,6 +1862,20 @@ def _self_check():
        'los apodos del cierre: el principio del nombre o un parecido claro, nunca con los dos lados parecidos')
     ok(lados('# <:FDSPERU:1> SIN LIMITES <:vs:2> SOL| Jornada 2 <:FDSPERU:1>')[:2] == ('SIN LIMITES', 'SOL'),
        'el «| Jornada 2» del título de FDS no es parte del nombre')
+    # 🏔️ FMH Andes, 29/10/2026 (Zetryko: «que no me detecta… y aparte los puntos»): tres cierres que no se leían
+    ok(lados('# MARTÍNEZ🇺🇾VS DEUX🇨🇱')[:2] == ('MARTÍNEZ', 'DEUX'), 'el VS pegado a la bandera abre la batalla')
+    _an = _u([{'id': '1', 't': 't1', 'content': '# OEP 🇨🇴 VS ZETRYKO 🇨🇱'},
+              {'id': '2', 't': 't2', 'content': '** OEP 🇨🇴 ** 20.5\n** ZETRYKO 🇨🇱 ** 29.5\n\n# 🎖️ GANADOR 🎖️ \n** ZETRYKO 🇨🇱 X 9 pts **'},
+              {'id': '3', 't': 't3', 'content': '# DEUXS 🇨🇱 <:VSAzul:1> MAKMA 🇻🇪'},
+              {'id': '4', 't': 't4', 'content': '# ⚔️ RÉPLICA ⚔️'},
+              {'id': '5', 't': 't5', 'content': '**DEUXS 🇨🇱 : 🟢 +2**\nMAKMA 🇻🇪 : 🔴 +1\n**DEUXS 🇨🇱 GANA DESPUES DE DOS REPLICA.**'}])
+    ok([(b['gana'], b['como']) for b in _an] == [('ZETRYKO', 'directa'), ('DEUXS', 'replica')],
+       '«GANADOR · ZETRYKO X 9 pts» es directa y «GANA DESPUÉS DE DOS RÉPLICA» es en réplica', _an)
+    _bs = [['9', '2026-09-16T02:27:51Z', 3, 'MARTYNEZ', 'FORZA', '', '', 'b'],
+           ['8', '2026-10-21T23:13:57Z', 3, 'ZETRYCO', 'MCO', 'ZETRYCO', 'replica', 'b']]
+    _n = u_resumen([{'content': '- MARTINEZ 🇺🇾 LE GANA A FORZA 🇻🇪🎮 DIRECTO.\n- MCO 🇦🇷 LE GANA A ZETRYCO 🇨🇱 DIRECTO.'}], _bs)
+    ok(_n == 1 and _bs[0][5:7] == ['MARTYNEZ', 'directa'] and _bs[1][5] == 'ZETRYCO',
+       'el RESUMEN del host cierra lo pendiente («MARTINEZ» es el «MARTYNEZ» del título) y nunca pisa lo leído', _bs)
 
     # 👑 LKR (21/10/2026): el título, los puntos y el «GANADOR» en mensajes separados; la réplica, y los apodos del cierre
     lk = leer_liga('lkr-champions', ms(
