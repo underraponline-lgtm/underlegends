@@ -2,7 +2,7 @@
  "_leeme": "El Writing Challenge de FFA: cada fecha, quién quedó dónde y de qué cuenta. Lo arma bot/writing.py en el ciclo (paso 2b0); las reglas y los números viven ahí. Sin las rimas: el repo es público. `res`: p puesto, n nombre como lo escribió el organizador, b banderas, pts, persona (vacío: sin resolver), did (para la Tienda), como (de dónde salió), rima/cuenta (el mensaje y la cuenta que lo publicó), x (tenía ❌). Una fecha por número: la más nueva gana.",
  "canal": "1551050637280673792",
  "sv": "FFA",
- "t": "2026-10-29T05:57:00Z",
+ "t": "2026-10-29T06:25:33Z",
  "fechas": {
   "1": {
    "fecha": "1 REPRISE",
@@ -121,7 +121,9 @@
      "rima": "1557547004559761509",
      "cuenta": "653011056184000513",
      "cn": false,
-     "como": "choque"
+     "persona": "melomaniaco",
+     "como": "nombre+cuenta",
+     "did": "653011056184000513"
     },
     {
      "p": 2,
@@ -339,8 +341,9 @@
       "ar"
      ],
      "pts": 5,
-     "persona": "Jahno El Melomaníaco",
-     "como": "nombre"
+     "persona": "melomaniaco",
+     "como": "nombre",
+     "did": "653011056184000513"
     },
     {
      "p": 3,
@@ -557,11 +560,6 @@
    "1 REPRISE",
    "LVEL",
    "el nombre es Lvel y la rima la publicó otra cuenta, que no está en la Lista"
-  ],
-  [
-   "2",
-   "JAHNO \"El MELOMANÍACO\"",
-   "el nombre es Jahno El Melomaníaco y la rima la publicó la cuenta de melomaniaco"
   ],
   [
    "2",

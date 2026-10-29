@@ -2449,6 +2449,25 @@
      325
     ]
    }
+  },
+  {
+   "id": "98d7e54f8d",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«Jahno El Melomaníaco» es melomaniaco? La cuenta de melomaniaco en la Lista se anotó como «Jahno El Melomaníaco», y en el ranking suman aparte. Si es la misma persona, los puntos de «Jahno El Melomaníaco» pasan a melomaniaco.\nLa cuenta: https://discord.com/users/653011056184000513",
+   "r": "Es la misma persona",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "la misma persona: «Jahno El Melomaníaco» ya es alias de melomaniaco",
+   "t": 1793255392455,
+   "filas": [
+    937
+   ],
+   "variantes": [
+    "DOS NOMBRES: «Jahno El Melomaníaco» → «melomaniaco» · cuenta 653011056184000513"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

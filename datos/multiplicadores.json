@@ -874,8 +874,8 @@
    "organizadores": [
     [
      "NC",
-     38,
-     2
+     61,
+     3
     ],
     [
      "LEWITO",
@@ -911,14 +911,14 @@
    "semillero": {
     "nuevos": {
      "FRZ": 4,
-     "FFA": 12,
+     "FFA": 14,
      "DDF": 1,
      "ACAD": 2
     },
     "gente": {
      "FDS": 13,
      "DDF": 29,
-     "FFA": 71,
+     "FFA": 80,
      "FRZ": 15,
      "ACAD": 16
     },
@@ -929,7 +929,7 @@
     "DDF": 29,
     "DRA": 0,
     "FDS": 13,
-    "FFA": 71,
+    "FFA": 80,
     "FFS": 0,
     "FRZ": 15,
     "FVS": 0,

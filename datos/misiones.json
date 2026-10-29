@@ -639,11 +639,6 @@
      0,
      8
     ],
-    "MARTYNEZ🇺🇾": [
-     0,
-     0,
-     16
-    ],
     "MATICERNA": [
      1,
      1,
@@ -2063,12 +2058,6 @@
      2,
      0
     ],
-    "MARTYNEZ🇺🇾": [
-     0,
-     99,
-     99,
-     0
-    ],
     "MATO 🇧🇴": [
      1,
      16,
@@ -2085,6 +2074,12 @@
      2,
      8,
      8,
+     0
+    ],
+    "MaYeuTyK": [
+     0,
+     99,
+     99,
      0
     ],
     "Magic": [
@@ -4821,22 +4816,8 @@
      0,
      0
     ],
-    "Jahno El Melomaníaco 🇦🇷": [
-     1,
-     1,
-     0,
-     0,
-     0
-    ],
-    "Jobacastrado🇨🇱": [
-     1,
-     0,
-     0,
-     0,
-     0
-    ],
     "Jobaking": [
-     1,
+     2,
      5,
      0,
      0,
@@ -5389,8 +5370,8 @@
      0
     ],
     "melomaniaco": [
-     0,
-     0,
+     1,
+     1,
      0,
      0,
      0
@@ -5422,8 +5403,6 @@
     "Erian": 900,
     "Geoka": 300,
     "Gus": 300,
-    "Jahno El Melomaníaco 🇦🇷": 300,
-    "Jobacastrado🇨🇱": 300,
     "Jobaking": 900,
     "KIRITO": 300,
     "Khalil": 300,
@@ -5469,6 +5448,7 @@
     "Vilca": 600,
     "francis": 300,
     "mats": 600,
+    "melomaniaco": 300,
     "yinn": 2900
    }
   }
@@ -5579,8 +5559,6 @@
   "JHEYSON": 300,
   "JJ": 2900,
   "JOSHU": 2900,
-  "Jahno El Melomaníaco 🇦🇷": 300,
-  "Jobacastrado🇨🇱": 300,
   "Jobaking": 1200,
   "Joshema": 300,
   "Juasmio": 1900,
@@ -5746,7 +5724,7 @@
   "ikonoxx": 600,
   "kerkoide": 300,
   "mats": 600,
-  "melomaniaco": 300,
+  "melomaniaco": 600,
   "nebu": 300,
   "roda mc 🇵🇦": 1000,
   "rodrilp": 900,
