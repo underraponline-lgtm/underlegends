@@ -1398,6 +1398,50 @@
    "b": "EMI",
    "ganador": "EMI",
    "votos": "1–0"
+  },
+  "1565189671418331247": {
+   "id": "1565189671418331247",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1793240697484,
+   "a": "ADRIAGNER🇳🇮",
+   "b": "EVANGELINE🇧🇴",
+   "ganador": "EVANGELINE🇧🇴",
+   "votos": "1–0"
+  },
+  "1565193191202889840": {
+   "id": "1565193191202889840",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1793241536666,
+   "a": "MAKMA🇻🇪",
+   "b": "SOULB🇨🇱",
+   "ganador": "SOULB🇨🇱",
+   "votos": "1–0"
+  },
+  "1565194308431249562": {
+   "id": "1565194308431249562",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1793241803034,
+   "a": "TUCA🇦🇷",
+   "b": "NEXUZ🇵🇪",
+   "ganador": "TUCA🇦🇷",
+   "votos": "1–0"
+  },
+  "1565195633588043878": {
+   "id": "1565195633588043878",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1793242118976,
+   "a": "EVANGELINE🇧🇴",
+   "b": "PICHULAMC🇲🇳",
+   "ganador": "PICHULAMC🇲🇳",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5329,6 +5373,68 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1565189541172748311": {
+   "id": "1565189541172748311",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1793240666431,
+   "ed": 1793242323745,
+   "texto": "`[ CUARTOS ]`\n⌞ADRIAGNER🇳🇮⌝ 🆚 ⌞EVANGELINE🇧🇴⌝\n⌞PICHULAMC🇲🇳⌝ 🆚 ⌞JOBA⌝ 🆚 ⌞DOMINIK🇵🇪⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞SOULB🇨🇱⌝\n⌞TUCA🇦🇷⌝ 🆚 ⌞NEXUZ🇵🇪⌝\n`[ SEMIFINALES ]`\n⌞EVANGELINE🇧🇴⌝ 🆚 ⌞PICHULAMC🇲🇳⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "ADRIAGNER🇳🇮",
+      "EVANGELINE🇧🇴"
+     ],
+     "EVANGELINE🇧🇴",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "PICHULAMC🇲🇳",
+      "JOBA",
+      "DOMINIK🇵🇪"
+     ],
+     "PICHULAMC🇲🇳",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MAKMA🇻🇪",
+      "SOULB🇨🇱"
+     ],
+     "SOULB🇨🇱",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "TUCA🇦🇷",
+      "NEXUZ🇵🇪"
+     ],
+     "TUCA🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "EVANGELINE🇧🇴",
+      "PICHULAMC🇲🇳"
+     ],
+     "PICHULAMC🇲🇳",
+     "veredicto",
      []
     ]
    ]
