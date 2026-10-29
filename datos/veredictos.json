@@ -5704,8 +5704,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793308993668,
-   "ed": 1793310782677,
-   "texto": "`[ OCTAVOS ]`\n⌞nc🇰🇷⌝ 🆚 ⌞noone🇵🇪⌝ 🆚 ⌞Musicdum 🇵🇪⌝\n⌞Joba 🇨🇱⌝ 🆚 ⌞Dyzz🇨🇱⌝ 🆚 ⌞Teo 🇨🇴⌝\n⌞Erian 🇵🇦⌝ 🆚 ⌞Kirito 🇨🇴⌝ 🆚 ⌞Luck 🇵🇾⌝\n`[ OCTAVOS ]`\n⌞Ezze 🇦🇷⌝ 🆚 ⌞Geoka 🇦🇷⌝",
+   "ed": 1793311447223,
+   "texto": "`[ OCTAVOS ]`\n⌞nc🇰🇷⌝ 🆚 ⌞noone🇵🇪⌝ 🆚 ⌞Musicdum 🇵🇪⌝\n⌞Joba 🇨🇱⌝ 🆚 ⌞Teo 🇨🇴⌝\n⌞Kirito 🇨🇴⌝ 🆚 ⌞erian 🇨🇺⌝\n⌞Ezze 🇦🇷⌝ 🆚 ⌞Geoka 🇦🇷⌝\n⌞Krish 🇪🇸⌝ 🆚 ⌞colesito🇨🇴⌝ 🆚 ⌞1514⌝\n`[ OCTAVOS ]`\n⌞Miniboy🇨🇱⌝ 🆚 ⌞Lizeninn 🇦🇷⌝ 🆚 ⌞Fear🇨🇴⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5722,7 +5722,6 @@
      "OCTAVOS",
      [
       "Joba 🇨🇱",
-      "Dyzz🇨🇱",
       "Teo 🇨🇴"
      ],
      null,
@@ -5732,9 +5731,8 @@
     [
      "OCTAVOS",
      [
-      "Erian 🇵🇦",
       "Kirito 🇨🇴",
-      "Luck 🇵🇾"
+      "erian 🇨🇺"
      ],
      null,
      "última ronda y no dice campeón",
@@ -5745,6 +5743,28 @@
      [
       "Ezze 🇦🇷",
       "Geoka 🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Krish 🇪🇸",
+      "colesito🇨🇴",
+      "1514"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "Miniboy🇨🇱",
+      "Lizeninn 🇦🇷",
+      "Fear🇨🇴"
      ],
      null,
      "última ronda y no dice campeón",

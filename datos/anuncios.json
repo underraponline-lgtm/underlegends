@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-29T21:55:24+00:00",
+ "cuando": "2026-10-29T22:25:14+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6701,6 +6701,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lizen🇦🇷",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1565485535865208832",
+   "cuando": "2026-10-29T22:00:37"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "La gonorrea del bajo 🇨🇴",
+   "quien": "sblk2130",
+   "discord_id": "729064766307434587",
+   "msg_id": "1565484270024261805",
+   "cuando": "2026-10-29T21:55:35"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Magic🇲🇽",
+   "quien": "soul011294",
+   "discord_id": "915051512575717457",
+   "msg_id": "1565484160188026944",
+   "cuando": "2026-10-29T21:55:09"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42673,33 +42700,6 @@
    "discord_id": "1526612644642160721",
    "msg_id": "1551644348054110382",
    "cuando": "2026-09-21T17:20:40"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Dios 🇲🇽",
-   "quien": "dan666._",
-   "discord_id": "1204164715350196284",
-   "msg_id": "1551644320057008198",
-   "cuando": "2026-09-21T17:20:34"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Belikko🇻🇪",
-   "quien": "davisssj10",
-   "discord_id": "989702187523407903",
-   "msg_id": "1551644209365389423",
-   "cuando": "2026-09-21T17:20:07"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Geoka 🇦🇷",
-   "quien": "goksito_8",
-   "discord_id": "1325042155819106324",
-   "msg_id": "1551644153417437210",
-   "cuando": "2026-09-21T17:19:54"
   }
  ]
 }
