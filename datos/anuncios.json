@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-29T19:34:04+00:00",
+ "cuando": "2026-10-29T19:55:43+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6698,6 +6698,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Teo 🇨🇴",
+   "quien": "teitomc.",
+   "discord_id": "1503540314948898937",
+   "msg_id": "1565451898344181851",
+   "cuando": "2026-10-29T19:46:57"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Infected🇩🇴🇨🇴",
+   "quien": "mxrio_xtz",
+   "discord_id": "1174409397397631030",
+   "msg_id": "1565451896888758394",
+   "cuando": "2026-10-29T19:46:56"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Dominick 🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1565451893298430133",
+   "cuando": "2026-10-29T19:46:56"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Elbesaabuelas🇦🇷",
+   "quien": "xnoah_12341",
+   "discord_id": "1544902851975843900",
+   "msg_id": "1565451861643763783",
+   "cuando": "2026-10-29T19:46:48"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42661,42 +42697,6 @@
    "discord_id": "1033600988373848166",
    "msg_id": "1551056521503309915",
    "cuando": "2026-09-20T02:24:51"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "ERA DE KG MIERDAS🇵🇪",
-   "quien": "equisde_xd23",
-   "discord_id": "1439048698142134436",
-   "msg_id": "1551056501466992742",
-   "cuando": "2026-09-20T02:24:47"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Lord 🇨🇴",
-   "quien": "kidbuu02124",
-   "discord_id": "1323444294534828104",
-   "msg_id": "1551056475722350713",
-   "cuando": "2026-09-20T02:24:41"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "MAYANMC🇲🇽",
-   "quien": "imnotmaya_yt.",
-   "discord_id": "1487886377923121243",
-   "msg_id": "1550886976960336013",
-   "cuando": "2026-09-19T15:11:09"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Partim 🇺🇲",
-   "quien": "essencesteez",
-   "discord_id": "917207293496557578",
-   "msg_id": "1550260905210679417",
-   "cuando": "2026-09-17T21:43:22"
   }
  ]
 }
