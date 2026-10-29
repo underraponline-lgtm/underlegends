@@ -1530,6 +1530,17 @@
    "b": "GIANLAMALDAD",
    "ganador": "PARK JI SUNG",
    "votos": "1–0"
+  },
+  "1565477103657554032": {
+   "id": "1565477103657554032",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793309226670,
+   "a": "VIDA O MUERTE  --> EVAN'GELINE",
+   "b": "TOKIO",
+   "ganador": "TOKIO",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5693,8 +5704,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793308993668,
-   "ed": 1793309014043,
-   "texto": "`[ OCTAVOS ]`\n⌞nc🇰🇷⌝ 🆚 ⌞noone🇵🇪⌝ 🆚 ⌞Musicdum 🇵🇪⌝\n⌞Joba 🇨🇱⌝ 🆚 ⌞Dyzz🇨🇱⌝ 🆚 ⌞Teo 🇨🇴⌝\n⌞Kirito 🇨🇴⌝ 🆚 ⌞Luck 🇵🇾⌝\n⌞Ezze 🇦🇷⌝ 🆚 ⌞O.E.P 🇨🇴⌝\n⌞Krish 🇪🇸⌝ 🆚 ⌞15149144⌝\n`[ OCTAVOS ]`\n⌞nc🇰🇷⌝ 🆚 ⌞noone🇵🇪⌝ 🆚 ⌞Musicdum 🇵🇪⌝",
+   "ed": 1793310782677,
+   "texto": "`[ OCTAVOS ]`\n⌞nc🇰🇷⌝ 🆚 ⌞noone🇵🇪⌝ 🆚 ⌞Musicdum 🇵🇪⌝\n⌞Joba 🇨🇱⌝ 🆚 ⌞Dyzz🇨🇱⌝ 🆚 ⌞Teo 🇨🇴⌝\n⌞Erian 🇵🇦⌝ 🆚 ⌞Kirito 🇨🇴⌝ 🆚 ⌞Luck 🇵🇾⌝\n`[ OCTAVOS ]`\n⌞Ezze 🇦🇷⌝ 🆚 ⌞Geoka 🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5721,6 +5732,7 @@
     [
      "OCTAVOS",
      [
+      "Erian 🇵🇦",
       "Kirito 🇨🇴",
       "Luck 🇵🇾"
      ],
@@ -5732,28 +5744,7 @@
      "OCTAVOS",
      [
       "Ezze 🇦🇷",
-      "O.E.P 🇨🇴"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "Krish 🇪🇸",
-      "15149144"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "nc🇰🇷",
-      "noone🇵🇪",
-      "Musicdum 🇵🇪"
+      "Geoka 🇦🇷"
      ],
      null,
      "última ronda y no dice campeón",

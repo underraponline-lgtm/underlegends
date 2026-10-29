@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-29T21:25:32+00:00",
+ "cuando": "2026-10-29T21:55:24+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6701,6 +6701,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Fear🇨🇴",
+   "quien": "hugonorrea4594",
+   "discord_id": "1033742542967144509",
+   "msg_id": "1565482566725935115",
+   "cuando": "2026-10-29T21:48:49"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tam🇻🇪",
+   "quien": "tuabuelamuerta12",
+   "discord_id": "505444041719021569",
+   "msg_id": "1565482466880389253",
+   "cuando": "2026-10-29T21:48:25"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "dante🇦🇷",
+   "quien": "delux.13",
+   "discord_id": "729809358627536938",
+   "msg_id": "1565482396017627170",
+   "cuando": "2026-10-29T21:48:08"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "erian 🇨🇺",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1565478291396235397",
+   "cuando": "2026-10-29T21:31:49"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42664,42 +42700,6 @@
    "discord_id": "1325042155819106324",
    "msg_id": "1551644153417437210",
    "cuando": "2026-09-21T17:19:54"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "colesito",
-   "quien": "colesito",
-   "discord_id": "790016013680771102",
-   "msg_id": "1551362687621922827",
-   "cuando": "2026-09-20T22:41:27"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "FOKOX🇲🇽",
-   "quien": "esometilin",
-   "discord_id": "881358841319682079",
-   "msg_id": "1551350321152790539",
-   "cuando": "2026-09-20T21:52:19"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Mitosis🇨🇻",
-   "quien": "lizeninn.",
-   "discord_id": "1493416945037611140",
-   "msg_id": "1551347166256173207",
-   "cuando": "2026-09-20T21:39:47"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "masino🇨🇱",
-   "quien": "martinv444",
-   "discord_id": "1237192883535216715",
-   "msg_id": "1551347158995701883",
-   "cuando": "2026-09-20T21:39:45"
   }
  ]
 }
