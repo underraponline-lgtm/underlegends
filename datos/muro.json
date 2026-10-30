@@ -1188,7 +1188,9 @@
 },
 "mats": {
 "rg": "",
-"c": []
+"c": [
+"servidor"
+]
 },
 "joshu": {
 "rg": "",
@@ -2642,15 +2644,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-03T15:54:42Z",
-"quien": [
-"yinn"
-],
-"rg": "D",
-"primero": true
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-03T15:54:42Z",
@@ -5991,6 +5984,14 @@
 "Dantemx"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-30T01:29:11Z",
+"quien": [
+"mats"
+],
+"carta": "servidor"
 }
 ]
 }
