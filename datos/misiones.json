@@ -4578,7 +4578,7 @@
      0,
      0
     ],
-    "19 FLEIVA WACK 🇦🇷": [
+    "19 FLEIVA WACK": [
      0,
      1,
      1,
@@ -4620,7 +4620,7 @@
      0,
      0
     ],
-    "Akuseru 🇦🇷": [
+    "Akuseru": [
      0,
      0,
      0,
@@ -4679,7 +4679,7 @@
     "BastyRetro": [
      0,
      1,
-     1,
+     0,
      0,
      0
     ],
@@ -4706,13 +4706,6 @@
     ],
     "Cazafla anti cazanova🇭🇹": [
      1,
-     0,
-     0,
-     0,
-     0
-    ],
-    "Chaz🇵🇪": [
-     0,
      0,
      0,
      0,
@@ -5005,13 +4998,6 @@
      0,
      0
     ],
-    "LAMBRO 🇦🇷": [
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
     "LEWITO": [
      0,
      0,
@@ -5035,6 +5021,13 @@
     ],
     "LSO": [
      1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Lambroggini": [
+     0,
      0,
      0,
      0,
@@ -5264,7 +5257,7 @@
      0,
      0
     ],
-    "Nain sdp🇦🇷": [
+    "Nain sdp": [
      0,
      0,
      0,
@@ -5649,13 +5642,6 @@
      0,
      0
     ],
-    "matias la flauta 🇦🇷": [
-     0,
-     0,
-     0,
-     0,
-     0
-    ],
     "mats": [
      1,
      2,
@@ -5686,13 +5672,12 @@
     ]
    },
    "pts": {
-    "19 FLEIVA WACK 🇦🇷": 1000,
+    "19 FLEIVA WACK": 1000,
     "Abyssus": 300,
     "Adriagner": 900,
     "Andres": 300,
     "BELIKKO": 300,
     "Badterne": 2900,
-    "BastyRetro": 1000,
     "Calíz": 900,
     "Carlosss": 600,
     "Cazafla anti cazanova🇭🇹": 300,
@@ -5775,7 +5760,7 @@
   ".SosaATR": 300,
   "1200": 1200,
   "19": 1600,
-  "19 FLEIVA WACK 🇦🇷": 1000,
+  "19 FLEIVA WACK": 1000,
   "AGUSTÍN51K": 1900,
   "AKARK": 600,
   "ALESS": 300,
@@ -5802,7 +5787,7 @@
   "BNA": 5200,
   "BTRX": 300,
   "Badterne": 4200,
-  "BastyRetro": 3900,
+  "BastyRetro": 2900,
   "Benjixo": 2200,
   "Bloody": 2200,
   "CJ": 2100,

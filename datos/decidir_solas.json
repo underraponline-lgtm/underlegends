@@ -2759,6 +2759,44 @@
      "434469958295093260"
     ]
    }
+  },
+  {
+   "id": "ae84daf418",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«Chaz» es Dominick? La cuenta de Dominick en la Lista se anotó como «Chaz», y en el ranking suman aparte. Si es la misma persona, los puntos de «Chaz» pasan a Dominick.\nLa cuenta: https://discord.com/users/1439048698142134436",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no hace falta: «Chaz» ya no suma aparte en el ranking",
+   "t": 1793403279724,
+   "filas": [
+    968
+   ],
+   "variantes": [
+    "DOS NOMBRES: «Chaz» → «Dominick» · cuenta 1439048698142134436"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "a4953203ce",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«matias la flauta» es Matias? La cuenta de Matias en la Lista se anotó como «matias la flauta», y en el ranking suman aparte. Si es la misma persona, los puntos de «matias la flauta» pasan a Matias.\nLa cuenta: https://discord.com/users/896877041704644618",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no hace falta: «matias la flauta» ya no suma aparte en el ranking",
+   "t": 1793403279724,
+   "filas": [
+    969
+   ],
+   "variantes": [
+    "DOS NOMBRES: «matias la flauta» → «Matias» · cuenta 896877041704644618"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

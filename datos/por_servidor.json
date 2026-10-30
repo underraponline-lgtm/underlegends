@@ -59,7 +59,7 @@
     }
    }
   },
-  "19 FLEIVA WACK 🇦🇷": {
+  "19 FLEIVA WACK": {
    "FFA": {
     "duelos": "1/2",
     "ev": 1,
@@ -567,7 +567,7 @@
     "racha": "0/0"
    }
   },
-  "Akuseru 🇦🇷": {
+  "Akuseru": {
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -1048,12 +1048,12 @@
     }
    },
    "FFA": {
-    "duelos": "3/3",
+    "duelos": "2/3",
     "ev": 3,
-    "oro": 1,
-    "ovr": 49,
+    "oro": 0,
+    "ovr": 48,
     "pod": 1,
-    "pts": 33000,
+    "pts": 25500,
     "racha": "1/1",
     "tg": {
      "fin": 1
@@ -1548,20 +1548,6 @@
     "pod": 0,
     "pts": 688,
     "racha": "0/0"
-   }
-  },
-  "Chaz🇵🇪": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 3750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "Chente": {
@@ -2269,11 +2255,11 @@
    },
    "FFA": {
     "duelos": "",
-    "ev": 8,
+    "ev": 9,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 48,
     "pod": 0,
-    "pts": 17968,
+    "pts": 21718,
     "racha": "0/0"
    },
    "LKR": {
@@ -2890,12 +2876,12 @@
     }
    },
    "FFA": {
-    "duelos": "10/22",
+    "duelos": "11/22",
     "ev": 28,
-    "oro": 3,
+    "oro": 4,
     "ovr": 68,
     "pod": 6,
-    "pts": 176484,
+    "pts": 183984,
     "racha": "1/3",
     "tg": {
      "fin": 5,
@@ -4840,20 +4826,6 @@
     }
    }
   },
-  "LAMBRO 🇦🇷": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 3750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "LAST": {
    "ACAD": {
     "duelos": "",
@@ -5080,11 +5052,11 @@
   "Lambroggini": {
    "FFA": {
     "duelos": "0/1",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 44,
     "pod": 0,
-    "pts": 1375,
+    "pts": 5125,
     "racha": "0/0"
    }
   },
@@ -6290,11 +6262,11 @@
   "Matias": {
    "FFA": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 44,
     "pod": 0,
-    "pts": 1875,
+    "pts": 7500,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -6889,7 +6861,7 @@
     "racha": "0/0"
    }
   },
-  "Nain sdp🇦🇷": {
+  "Nain sdp": {
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -10858,20 +10830,6 @@
     "pod": 0,
     "pts": 625,
     "racha": "0/0"
-   }
-  },
-  "matias la flauta 🇦🇷": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 3750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "mats": {

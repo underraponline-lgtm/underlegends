@@ -16,7 +16,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-30T20:59:18+00:00",
-   "did": "",
+   "did": "1345454905325781012",
    "evento": "LA ISLA DE OKINAWA V.4",
    "n": 547,
    "sv": "FFA",
@@ -105,7 +105,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-30T20:59:18+00:00",
-   "did": "",
+   "did": "1564834243039731832",
    "evento": "LA ISLA DE OKINAWA V.4",
    "n": 547,
    "sv": "FFA",
@@ -229,18 +229,6 @@
    "sv": "FFA",
    "vence": "2026-10-25T21:59:50+00:00",
    "vencido": true
-  },
-  "Chaz": {
-   "avisado": "2026-10-30",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-30T20:59:18+00:00",
-   "did": "",
-   "evento": "LA ISLA DE OKINAWA V.4",
-   "n": 547,
-   "sv": "FFA",
-   "vence": "2026-11-06T20:59:18+00:00",
-   "vencido": false
   },
   "Choka": {
    "avisado": "2026-10-16",
@@ -794,18 +782,6 @@
    "vence": "2026-11-01T22:13:32+00:00",
    "vencido": false
   },
-  "LAMBRO": {
-   "avisado": "2026-10-30",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-30T20:59:18+00:00",
-   "did": "",
-   "evento": "LA ISLA DE OKINAWA V.4",
-   "n": 547,
-   "sv": "FFA",
-   "vence": "2026-11-06T20:59:18+00:00",
-   "vencido": false
-  },
   "LGBD": {
    "avisado": "2026-10-29",
    "chat": "2026-10-30",
@@ -994,9 +970,10 @@
   },
   "Matias": {
    "avisado": "2026-10-29",
+   "avisado_cumplido": "2026-10-30",
    "chat": "2026-10-30",
-   "con": null,
-   "cumplido": "",
+   "con": 547,
+   "cumplido": "2026-10-30T20:59:18+00:00",
    "debut": "2026-10-30T00:12:24+00:00",
    "did": "896877041704644618",
    "evento": "qcyo rapeen 7",
@@ -1087,7 +1064,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-30T20:59:18+00:00",
-   "did": "",
+   "did": "434469958295093260",
    "evento": "LA ISLA DE OKINAWA V.4",
    "n": 547,
    "sv": "FFA",
@@ -1656,18 +1633,6 @@
    "sv": "FFA",
    "vence": "2026-10-25T02:26:23+00:00",
    "vencido": true
-  },
-  "matias la flauta": {
-   "avisado": "2026-10-30",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-30T20:59:18+00:00",
-   "did": "",
-   "evento": "LA ISLA DE OKINAWA V.4",
-   "n": 547,
-   "sv": "FFA",
-   "vence": "2026-11-06T20:59:18+00:00",
-   "vencido": false
   },
   "mats": {
    "avisado": "2026-10-23",

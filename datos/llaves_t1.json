@@ -38641,7 +38641,7 @@
       [
        "Erian",
        "Ezze",
-       "Chaz🇵🇪"
+       "Dominick"
       ],
       "Erian",
       "triple (3 bandas)"
@@ -38657,13 +38657,13 @@
      ],
      [
       [
-       "19 FLEIVA WACK 🇦🇷",
-       "LAMBRO 🇦🇷",
+       "19 FLEIVA WACK",
+       "Lambroggini",
        "Keider",
-       "Nain sdp🇦🇷",
+       "Nain sdp",
        "Lukas"
       ],
-      "19 FLEIVA WACK 🇦🇷",
+      "19 FLEIVA WACK",
       "triple (5 bandas)"
      ],
      [
@@ -38671,9 +38671,9 @@
        "Molusco",
        "SULTAN",
        "71",
-       "Akuseru 🇦🇷",
+       "Akuseru",
        "Number Laden 🇸🇦",
-       "matias la flauta 🇦🇷"
+       "Matias"
       ],
       "Molusco",
       "triple (6 bandas)"
@@ -38686,17 +38686,6 @@
        "Number Laden 🇸🇦",
        "matias la flauta 🇦🇷",
        "no aka 🇪🇸"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "LAMBRO 🇦🇷",
-       "19 FLEIVA WACK 🇦🇷",
-       "KEIDER🇧🇷",
-       "Nain sdp🇦🇷",
-       "Lukas sin escrupulos 🇦🇷"
       ],
       "",
       "sin ganador: espera en ✅ Decidir"
@@ -38724,10 +38713,10 @@
      ],
      [
       [
-       "19 FLEIVA WACK 🇦🇷",
+       "19 FLEIVA WACK",
        "Six"
       ],
-      "19 FLEIVA WACK 🇦🇷",
+      "19 FLEIVA WACK",
       ""
      ],
      [
@@ -38737,22 +38726,6 @@
       ],
       "Santi",
       ""
-     ],
-     [
-      [
-       "Black Dmon 🇪🇨🇺🇸",
-       "Erian 🇩🇴"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "Cannox🇩🇴",
-       "BastyRetro🇨🇱"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -38762,7 +38735,7 @@
      [
       [
        "Erian",
-       "19 FLEIVA WACK 🇦🇷"
+       "19 FLEIVA WACK"
       ],
       "Erian",
       ""
@@ -38782,10 +38755,10 @@
     "b": [
      [
       [
-       "BastyRetro",
-       "Erian"
+       "Erian",
+       "BastyRetro"
       ],
-      "BastyRetro",
+      "Erian",
       "ganador según #veredictos"
      ]
     ],
@@ -38795,17 +38768,17 @@
   "sv": "FFA",
   "tabla": [
    [
-    "BastyRetro",
+    "Erian",
     "Campeón",
     10000
    ],
    [
-    "Erian",
+    "BastyRetro",
     "Subcampeón",
     7500
    ],
    [
-    "19 FLEIVA WACK 🇦🇷",
+    "19 FLEIVA WACK",
     "Semifinal",
     5250
    ],
@@ -38845,17 +38818,17 @@
     1250
    ],
    [
-    "Akuseru 🇦🇷",
-    "Octavos",
-    1250
-   ],
-   [
-    "Chaz🇵🇪",
+    "Akuseru",
     "Octavos",
     1250
    ],
    [
     "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dominick",
     "Octavos",
     1250
    ],
@@ -38880,7 +38853,7 @@
     1250
    ],
    [
-    "LAMBRO 🇦🇷",
+    "Lambroggini",
     "Octavos",
     1250
    ],
@@ -38895,12 +38868,17 @@
     1250
    ],
    [
+    "Matias",
+    "Octavos",
+    1250
+   ],
+   [
     "Miniboy",
     "Octavos",
     1250
    ],
    [
-    "Nain sdp🇦🇷",
+    "Nain sdp",
     "Octavos",
     1250
    ],
@@ -38921,11 +38899,6 @@
    ],
    [
     "Teo",
-    "Octavos",
-    1250
-   ],
-   [
-    "matias la flauta 🇦🇷",
     "Octavos",
     1250
    ]

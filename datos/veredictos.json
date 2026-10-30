@@ -2,50 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1563326306647674981": {
-   "id": "1563326306647674981",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792796436703,
-   "a": "DANCOLL 🇻🇪 + SIN LIMITES 🇵🇪",
-   "b": "CARLOS 🇪🇨 + MAKMA 🇻🇪",
-   "ganador": "CARLOS 🇪🇨 + MAKMA 🇻🇪",
-   "votos": "1–0"
-  },
-  "1563327904606199910": {
-   "id": "1563327904606199910",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792796817686,
-   "a": "ERIAN 🇩🇴 + VANDU 🇨🇦",
-   "b": "BNA 🇦🇷 + VELATZ 🇨🇱",
-   "ganador": "BNA 🇦🇷 + VELATZ 🇨🇱",
-   "votos": "1–0"
-  },
-  "1563329016621039697": {
-   "id": "1563329016621039697",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1560645560015519834",
-   "pub": 1792797082811,
-   "a": "TOKIO 🇦🇷",
-   "b": "HOTU 🇦🇷",
-   "ganador": "HOTU 🇦🇷",
-   "votos": "1–0"
-  },
-  "1563329926646730833": {
-   "id": "1563329926646730833",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792797299778,
-   "a": "CALIZ 🇲🇽 + LIZENNIN 🇦🇷",
-   "b": "MATHIAS 🇻🇪 + MOLUSCO 🇦🇷",
-   "ganador": "MATHIAS 🇻🇪 + MOLUSCO 🇦🇷",
-   "votos": "1–0"
-  },
   "1563332609407320117": {
    "id": "1563332609407320117",
    "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
@@ -1517,7 +1473,7 @@
    "pub": 1793396933677,
    "a": "erian 🇩🇴",
    "b": "BastyRetro🇨🇱",
-   "ganador": "BastyRetro🇨🇱",
+   "ganador": "erian 🇩🇴",
    "votos": "1–0"
   }
  },

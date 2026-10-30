@@ -888,6 +888,11 @@
      3
     ],
     [
+     "Kravitz",
+     27,
+     1
+    ],
+    [
      "ajoel08",
      15,
      1
@@ -911,14 +916,14 @@
    "semillero": {
     "nuevos": {
      "FRZ": 4,
-     "FFA": 20,
+     "FFA": 27,
      "DDF": 5,
      "ACAD": 2
     },
     "gente": {
      "FDS": 13,
      "DDF": 41,
-     "FFA": 101,
+     "FFA": 116,
      "FRZ": 15,
      "ACAD": 16
     },
@@ -929,7 +934,7 @@
     "DDF": 41,
     "DRA": 0,
     "FDS": 13,
-    "FFA": 101,
+    "FFA": 116,
     "FFS": 0,
     "FRZ": 15,
     "FVS": 0,
