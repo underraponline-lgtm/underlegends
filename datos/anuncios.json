@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-30T21:55:20+00:00",
+ "cuando": "2026-10-30T22:25:43+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6803,6 +6803,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "nc🇰🇷",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1565853689296462005",
+   "cuando": "2026-10-30T22:23:31"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Pichulamc 🇦🇷",
+   "quien": "dariel.ivo",
+   "discord_id": "578697503130779649",
+   "msg_id": "1565852367344377898",
+   "cuando": "2026-10-30T22:18:16"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "yinn 🇲🇦",
+   "quien": "yinnmtz",
+   "discord_id": "1538896358679908437",
+   "msg_id": "1565848832015867995",
+   "cuando": "2026-10-30T22:04:13"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lizen🇦🇷",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1565848141746675853",
+   "cuando": "2026-10-30T22:01:29"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42766,42 +42802,6 @@
    "discord_id": "1172603146695094302",
    "msg_id": "1553211021731037235",
    "cuando": "2026-09-26T01:06:04"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Prodigy 🇦🇷",
-   "quien": "prodigy0608",
-   "discord_id": "748841088676003932",
-   "msg_id": "1553209753998725212",
-   "cuando": "2026-09-26T01:01:02"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Trot🇪🇸",
-   "quien": "eresmatrot",
-   "discord_id": "1347663033949880360",
-   "msg_id": "1553209338829734000",
-   "cuando": "2026-09-26T00:59:23"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "prrr🇦🇴",
-   "quien": "ndfue",
-   "discord_id": "1405241805733105704",
-   "msg_id": "1553209315282919536",
-   "cuando": "2026-09-26T00:59:17"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "rayito 🇲🇽",
-   "quien": "rayito69",
-   "discord_id": "479236151505321994",
-   "msg_id": "1553209014614098012",
-   "cuando": "2026-09-26T00:58:06"
   }
  ]
 }
