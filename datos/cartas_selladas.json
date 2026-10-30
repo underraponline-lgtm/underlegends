@@ -511,7 +511,7 @@
    "temporada": "13ee2b438912:6ec1a5248de8"
   },
   "Galileo": {
-   "competitivo": "f42ecabb61fc:0a48057cb351",
+   "competitivo": "97db1a72eebd:0a48057cb351",
    "pais": "92390f2d87f2:263a27e40647",
    "servidor": "3d1fd957a9ac:99e0c0179dbe:c914f9"
   },
@@ -648,7 +648,7 @@
    "temporada": "6c5814fe46ad:6ec1a5248de8"
   },
   "J19": {
-   "competitivo": "9a0f37a48eb5:0a48057cb351",
+   "competitivo": "7393d3957952:0a48057cb351",
    "pais": "7e8299df291d:263a27e40647",
    "servidor": "3ac6c2efe2f4:99e0c0179dbe:43d041"
   },
@@ -680,7 +680,7 @@
    "servidor": "f71852360a88:99e0c0179dbe:055f77"
   },
   "Joaco Zeo": {
-   "competitivo": "4774f884b869:0a48057cb351",
+   "competitivo": "523486a8d735:0a48057cb351",
    "pais": "5762aa40d6e2:263a27e40647",
    "servidor": "4547e83a2c50:99e0c0179dbe:0355fe"
   },
@@ -1065,7 +1065,7 @@
    "servidor": "02128fc165e7:99e0c0179dbe:67201a"
   },
   "Medster": {
-   "competitivo": "0ce51993e9d6:0a48057cb351",
+   "competitivo": "b489f6d49083:0a48057cb351",
    "pais": "fe0a95786e12:263a27e40647",
    "servidor": "7bd9d20164e8:99e0c0179dbe:0e0e03"
   },
@@ -1686,7 +1686,7 @@
    "servidor": "f878da4ea385:99e0c0179dbe:ba481e"
   },
   "Vlade": {
-   "competitivo": "7b5d61dc3f6c:0a48057cb351",
+   "competitivo": "0ddec0f525ac:0a48057cb351",
    "pais": "887c4d9bd2ed:263a27e40647",
    "servidor": "bcace3d06927:99e0c0179dbe:552866"
   },
@@ -1753,7 +1753,7 @@
    "servidor": "b1642589051e:99e0c0179dbe:403ba8"
   },
   "Zafka": {
-   "competitivo": "b86ef77faaae:0a48057cb351",
+   "competitivo": "56e1789ec45d:0a48057cb351",
    "pais": "59d1d184a0eb:263a27e40647",
    "servidor": "8f69e009f8f5:99e0c0179dbe:2a03f7"
   },
@@ -1935,5 +1935,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-30T21:10:24+00:00"
+ "cuando": "2026-10-30T21:38:04+00:00"
 }
