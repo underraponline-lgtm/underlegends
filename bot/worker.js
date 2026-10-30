@@ -4450,11 +4450,13 @@ export default {
       // 🏷️ Y LOS TAGS DE CADA UNO (19/10/2026), al abrir la Guía (`sheet/catalogo_tags.py`)
       // 🏆 Y LAS COMPETENCIAS DE LA SEMANA (26/10/2026): la Copa, la Liga de 10 y la Rapid (`bot/competencias.py`)
       // ⚔️ Y EL RANKING DE DUELOS (29/10/2026), al abrir Duelos: el lobby se pasó de su tope (`bot/subir_web.py`)
+      // 📅 Y LA TEMPORADA ENTERA DEL CALENDARIO (29/10/2026), al abrir Eventos o una llave: el lobby trae sólo 4 semanas
       if (ruta === '/perfiles' || ruta === '/llaves' || ruta === '/muro' || ruta === '/ligas' || ruta === '/salon' || ruta === '/tags' || ruta === '/semanas'
-        || ruta === '/competencias' || ruta === '/duelos') {
+        || ruta === '/competencias' || ruta === '/duelos' || ruta === '/calendario') {
         const crudo = await env.KV.get(ruta === '/llaves' ? 'web:llaves' : ruta === '/muro' ? 'web:muro'
           : ruta === '/ligas' ? 'web:ligas' : ruta === '/salon' ? 'web:salon' : ruta === '/tags' ? 'web:tags' : ruta === '/semanas' ? 'web:semanas'
-            : ruta === '/competencias' ? 'web:competencias' : ruta === '/duelos' ? 'web:duelos' : 'web:perfiles');
+            : ruta === '/competencias' ? 'web:competencias' : ruta === '/duelos' ? 'web:duelos'
+              : ruta === '/calendario' ? 'web:calendario' : 'web:perfiles');
         return new Response(crudo || '{}', {
           status: crudo ? 200 : 404,
           headers: {

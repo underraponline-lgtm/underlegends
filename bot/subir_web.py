@@ -98,6 +98,12 @@ VENTANA_VIVO = 90
 #: lobby pasaba los 120 KB que se bajan en cada visita.
 LLAVES_WEB = 12
 
+#: 📅 cuántos días de calendario viajan en el lobby (29/10/2026). Lo más atrás que mira la página fuera de Eventos es
+#: «suele organizar a esta hora» del Inicio (28 días, `sueleHoy()` de web/src/medio.jsx). La temporada entera va a
+#: `CLAVE_CALENDARIO` (`/api/calendario`) y la piden Eventos y la llave. Si alguien mira más atrás, se sube esto
+CAL_DIAS = 28
+CLAVE_CALENDARIO = 'web:calendario'
+
 
 def _nom(s):
     """El nombre sin el subrayado de Discord: `__RAP EXHIBITION__` es
@@ -430,6 +436,8 @@ def armar():
     _dt_ = __import__('datetime')
     _t = _dt_.datetime.now(_dt_.timezone.utc).replace(tzinfo=None)
     _ahora = _t.strftime('%Y-%m-%dT%H:%M:%S')
+    # 📅 desde dónde viaja el calendario en el lobby: la medianoche UTC de hace `CAL_DIAS` (ver `'calendario'` abajo)
+    _cal_desde = (_t - _dt_.timedelta(days=CAL_DIAS)).strftime('%Y-%m-%dT00:00:00Z')
     # 🔑 LOS ANUNCIADOS SIN UNA HORA QUE SE PUEDA LEER, UNAS HORAS EN «LO QUE
     # VIENE». Desde el lector ancho (25/09/2026) entran los de DRA, que dan
     # la hora por país —«🇲🇽 16:00 · 🇦🇷 19:00»— y ésa no se convierte en un
@@ -687,7 +695,13 @@ def armar():
         'llaves': llaves,
         # 🔑 LA TEMPORADA EN UN CALENDARIO: lo que pasó y lo que viene. Ver
         # `_calendario()`.
-        'calendario': calendario,
+        # 📅 EN EL LOBBY, SÓLO DESDE `cal_desde` (29/10/2026): era la única clave que crecía sin techo —toda la temporada,
+        # ~1,6 KB comprimidos por semana— y el lobby se pasaba de su tope. El corte es por DÍA, no por hora: si se moviera
+        # en cada corrida, el lobby cambiaría siempre y gastaría una escritura de KV por corrida. Lo de antes del corte
+        # va a `CLAVE_CALENDARIO` (ver `main()`) y la página lo junta: lo viejo de allá + esto
+        'calendario': [c for c in calendario if c['t'] >= _cal_desde],
+        'cal_desde': _cal_desde,
+        '_calendario': calendario,
         # 🔑 QUIÉN ORGANIZA, CON SU PERFIL: la página los dibuja con su cara
         # (Dlx, 28/09/2026). Ver `_orgs()`.
         'orgs': _orgs_pago,
@@ -3982,6 +3996,12 @@ def _self_check():
     p.pop('_tags', None)
     p.pop('_semanas', None)
     _due = p.pop('_duelos', None)
+    _calf = p.pop('_calendario', None)
+    # 📅 el calendario en el lobby, sólo desde `cal_desde`; la temporada entera, aparte (29/10/2026)
+    ok(isinstance(_calf, list) and p.get('cal_desde', '').endswith('T00:00:00Z')
+       and p.get('calendario') == [c for c in _calf if c['t'] >= p['cal_desde']],
+       'el calendario del lobby es el de la temporada desde %s  (%d de %d); el resto va a `web:calendario`'
+       % (p.get('cal_desde', '')[:10], len(p.get('calendario') or []), len(_calf or [])))
     # ⚔️ los duelos tampoco (29/10/2026): la lista va a `CLAVE_DUELOS` y la tabla lleva `du` para el Inicio
     _dk = {d['k']: d for d in (_due or [])}
     ok('duelos' not in p and isinstance(_due, list)
@@ -4078,7 +4098,7 @@ def _self_check():
        'y no más de %d aparte  (%d en total)' % (LLAVES_WEB, len(_ll)))
     ok(all(len(b) == 4 for L in _ll.values() for R in L['rondas'] for b in R['b']),
        'cada batalla trae de qué batallas viene (el árbol)')
-    _cal = p.get('calendario') or []
+    _cal = _calf if _calf is not None else (p.get('calendario') or [])
     ok(all(re_iso(c['t'][:19]) and c['t'].endswith('Z') for c in _cal),
        'el calendario viaja con instantes UTC  (%d)' % len(_cal))
     ok([c['t'] for c in _cal] == sorted(c['t'] for c in _cal),
@@ -4186,7 +4206,7 @@ def _self_check():
     ok(_i.startswith('BEGIN:VCALENDAR\r\n') and 'DTSTART:20260923T193500Z' in _i and
        'TOKYO\\; VOL\\, 11' in _i and _i.endswith('END:VCALENDAR\r\n'),
        'el calendario .ics sale bien armado y escapado')
-    ok(all(len(l.encode('utf-8')) <= 75 for l in _ics(p.get('calendario')).split('\r\n')),
+    ok(all(len(l.encode('utf-8')) <= 75 for l in _ics(_calf).split('\r\n')),
        'y ningún renglón pasa de 75 bytes (la regla de iCalendar)')
     ok(all(len(f.get('rch') or []) == 2 for f in p['tabla']), 'cada fila trae su racha actual/máxima')
     _rs = {'ʙʀᴏɴᴄᴇ ɪɪɪ 🥉': 'Bronce III', 'BRONCE': 'Bronce', '4': '', 'chill': '',
@@ -4265,6 +4285,8 @@ def _self_check():
     # ✅ Y SE MUDÓ EL 25/10/2026 (46,7 KB). ⚠️ SE PASÓ OTRA VEZ EL 29/10/2026 a las 8:45 PM ET (50,9 KB) y NO se subió:
     # se mudó `duelos` (4,7 KB, lo leían dos lugares). Lo que crece sin techo es el `calendario` —toda la temporada,
     # ~1,6 KB por semana—: si vuelve a pasarse, lo próximo es dejar en el lobby sólo sus últimas semanas
+    # ✅ Y SE HIZO ESA MISMA NOCHE: el lobby trae el calendario desde `cal_desde` (`CAL_DIAS`) y la temporada entera va a
+    # `web:calendario`. Con eso ya no queda ninguna clave que crezca sola con la temporada
     ok(comp < 52000, 'y pesa poco: %.1f KB comprimido (%.1f KB de JSON)' % (comp / 1024.0, tam / 1024.0))
     ok(_compactas({'temporada': 'a1', 'pais': 'd4'}) == 'a1...d4' and _compactas({}) == '',
        'las versiones de las cartas viajan compactas, en el orden de `CARTAS`')
@@ -4288,6 +4310,7 @@ def main():
     tags_det = p.pop('_tags', None)
     sem_det = p.pop('_semanas', None)
     due_det = p.pop('_duelos', None)
+    cal_det = p.pop('_calendario', None)
     redes_ok = _con_redes(perf) is not None
     print('\n══ LO QUE VA A LA WEB ══\n')
     print('   temporada %s · %d en el padrón del pool' % (p['temporada'],
@@ -4311,7 +4334,8 @@ def main():
         print('\n   %s' % ('✅ subido a KV como `%s`' % CLAVE if okk
                              else '🔴 no pude subirlo'))
     # 🔑 EL CALENDARIO PARA GOOGLE, tal cual: el Worker lo reenvía sin armarlo
-    ok3 = _subir_crudo('web:ics', _ics(p.get('calendario')))
+    # ⚠️ con la temporada entera (`cal_det`), no con lo que viaja en el lobby: quien lo sumó a Google ve todo
+    ok3 = _subir_crudo('web:ics', _ics(cal_det if cal_det is not None else p.get('calendario')))
     print('   %s' % ('✓ calendario .ics: igual' if ok3 is None else
                      '✅ calendario .ics subido' if ok3 else '🔴 no pude subir el .ics'))
     # 🔑 EL MURO DE PUBLICACIONES: lo que pasa en la Liga y los anuncios de
@@ -4385,6 +4409,12 @@ def main():
         oks = subir(sem_det, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_SEMANAS)
         print('   %s' % ('✓ las semanas de cada uno: igual' if oks is None else '✅ las semanas de cada uno, subidas'
                          if oks else '🔴 no pude subir las semanas de cada uno'))
+    # 📅 LA TEMPORADA ENTERA DEL CALENDARIO, aparte del lobby (que trae sólo desde `cal_desde`): sólo si cambió, que es
+    # cuando entra o cambia un evento
+    if cal_det is not None:
+        okk2 = subir({'calendario': cal_det}, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_CALENDARIO)
+        print('   %s' % ('✓ el calendario entero: igual' if okk2 is None else '✅ el calendario entero, subido (%d)'
+                         % len(cal_det) if okk2 else '🔴 no pude subir el calendario entero'))
     # ⚔️ EL RANKING DE DUELOS, aparte del lobby: sólo si cambió, que es cuando entra una llave con duelos. Aunque esté
     # vacío: así una lista que se vació no queda vieja arriba
     if due_det is not None:

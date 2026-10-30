@@ -5,6 +5,7 @@
 import { Component, Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DUENO, Liga, aQuienSigo, limpio, quienMira } from './liga.js';
 import { pedirLigas } from './ligas_datos.js';
+import { pedirCalendario, juntarCalendario } from './calendario_datos.js';
 import { AvisoPromo, nombrePais } from './piezas.jsx';
 import { Cabecera, Hero, Historias, Instalar, IrA, MENU, Tira, gruposHistorias, ordenHistorias } from './arriba.jsx';
 import { LosQueMandan, Noticias } from './medio.jsx';
@@ -500,7 +501,20 @@ export default function App() {
     pedirLigas(D.sello).then((x) => { if (vivo && x && x.lobby) setLigasL(x.lobby); });
     return () => { vivo = false; };
   }, [D && D.sello]); // eslint-disable-line react-hooks/exhaustive-deps
-  const D2 = useMemo(() => (D && !D.ligas && ligasL ? Object.assign({}, D, { ligas: ligasL }) : D), [D, ligasL]);
+  // 📅 Y LA TEMPORADA ENTERA DEL CALENDARIO (29/10/2026, ver web/src/calendario_datos.js): el lobby trae 4 semanas, y al
+  // abrir Eventos o una llave se pide el resto y se junta en `liga.d.calendario`. Una vez pedida, queda para toda la visita
+  const [calE, setCalE] = useState(null);
+  const pideCal = /^#\/(eventos|avisos|llave)(\/|\?|$)/.test(hash || '');
+  useEffect(() => {
+    if (!D || !D.cal_desde || (!pideCal && !calE)) return undefined;
+    let vivo = true;
+    pedirCalendario(D.sello).then((x) => { if (vivo && x) setCalE(x); });
+    return () => { vivo = false; };
+  }, [D && D.sello, pideCal]); // eslint-disable-line react-hooks/exhaustive-deps
+  const D2 = useMemo(() => {
+    const d = D && !D.ligas && ligasL ? Object.assign({}, D, { ligas: ligasL }) : D;
+    return juntarCalendario(d, calE);
+  }, [D, ligasL, calE]);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const liga = useMemo(() => (D2 ? new Liga(D2, muro, ahora, yo.k, aQuienSigo()) : null), [D2, muro, ahora, yo, sigoV]);
   // ⏳ con los datos, se va la pantalla de carga del HTML (`#lg-carga`, web/montar.py)
