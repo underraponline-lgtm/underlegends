@@ -2509,6 +2509,9 @@ const RUTAS = {
   // 34 de antes, una vez, con la clave del ciclo
   '/avisos/crews': 'GET', '/avisos/crew': 'POST', '/avisos/crew-mia': 'POST', '/avisos/dueno/crew': 'POST',
   '/avisos/crews-sembrar': 'POST',
+  // 🆕 el relanzamiento: cerrar varias y avisarle a su gente, con la clave del ciclo (`bot/crews_vivas.py --cerrar`).
+  // ⚠️ Sin esta línea la ruta da 404 aunque su manejador exista: pasó el 29/10/2026
+  '/avisos/crews-cerrar': 'POST',
   // 🪪 los de las crews que no están verificados, con la clave del ciclo (`bot/crews_verificar.py`)
   '/avisos/crews-verificar': 'POST',
   // 🏆 el cierre de los tiers de las crews, a la campana de su gente (`bot/crews_tiers.py`, con la clave del ciclo)
