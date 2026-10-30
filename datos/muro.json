@@ -1267,7 +1267,8 @@
 "dantemx": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "gus": {
@@ -2640,14 +2641,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-03T06:36:47Z",
-"quien": [
-"Eclipsito"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-03T06:36:47Z",
@@ -5989,6 +5982,14 @@
 "Noone"
 ],
 "carta": "pais"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-30T00:32:00Z",
+"quien": [
+"Dantemx"
+],
+"carta": "temporada"
 }
 ]
 }
