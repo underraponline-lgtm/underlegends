@@ -1592,8 +1592,8 @@
    "temporada": "b7913bd7dfb6:6ec1a5248de8"
   },
   "Teo": {
-   "competitivo": "0dbe7a71a65c:0a48057cb351",
-   "pais": "7b0c6790e1f3:263a27e40647",
+   "competitivo": "7cc28bffd2a4:0a48057cb351",
+   "pais": "4312ffc98f01:263a27e40647",
    "servidor": "612e7fd9aeb6:99e0c0179dbe:055f77",
    "temporada": "6d649cd8e271:6ec1a5248de8"
   },
@@ -1654,25 +1654,25 @@
   },
   "Valdoza": {},
   "Vandu": {
-   "competitivo": "051198002915:0a48057cb351",
-   "pais": "9b9a58ef74b8:263a27e40647",
-   "servidor": "71f39fb24c8e:99e0c0179dbe:25c183",
+   "competitivo": "7cae89d562b2:0a48057cb351",
+   "pais": "bf75a5d627da:263a27e40647",
+   "servidor": "cfd3db10ebb2:99e0c0179dbe:25c183",
    "temporada": "37fc21583378:6ec1a5248de8"
   },
   "Vanet": {
    "servidor": "6c8ac408bbf5:99e0c0179dbe:055f77"
   },
   "Velatz": {
-   "competitivo": "c59f95d8f6ef:0a48057cb351",
-   "pais": "9ab52f20958a:263a27e40647",
-   "servidor": "502371041280:99e0c0179dbe:039304",
-   "temporada": "2c76c813ae51:6ec1a5248de8"
+   "competitivo": "facff8448a11:0a48057cb351",
+   "pais": "60ac34e7cdfd:263a27e40647",
+   "servidor": "1df043a2cc02:99e0c0179dbe:039304",
+   "temporada": "d445c9b9abd9:6ec1a5248de8"
   },
   "Verc": {
-   "competitivo": "2f346d7ade6b:0a48057cb351",
-   "pais": "7af069ab5dc7:263a27e40647",
-   "servidor": "e535be6d9b97:99e0c0179dbe:c43f56",
-   "temporada": "19807464cc38:6ec1a5248de8"
+   "competitivo": "e7c5e410a744:0a48057cb351",
+   "pais": "b2a770673921:263a27e40647",
+   "servidor": "19755ec218a9:99e0c0179dbe:c43f56",
+   "temporada": "80cec628960c:6ec1a5248de8"
   },
   "Vilca": {
    "competitivo": "b51c796d4cd8:a62fb156b44f",
@@ -1931,5 +1931,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-30T01:40:25+00:00"
+ "cuando": "2026-10-30T02:06:55+00:00"
 }
