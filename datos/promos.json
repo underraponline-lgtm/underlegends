@@ -20,12 +20,24 @@
 "canales_t": "2026-10-29T17:57:46Z",
 "ult": {
 "1498327465251045418": "1563897006743883898",
-"937392432276992010": "1560157739794178188",
+"937392432276992010": "1565540543990075533",
 "1511963131880931338": "1540204032679743619",
 "1445948805710352514": "1530074145402912861",
 "1375099464183713823": "1560720259563130951"
 },
 "items": [
+{
+"id": "1565540543990075533-0",
+"t": "2026-10-30T01:39:12Z",
+"sv": "SR",
+"quien": "Jothaze",
+"url": "https://www.youtube.com/watch?v=-z5y4msW9xI",
+"plat": "yt",
+"vid": "-z5y4msW9xI",
+"tit": "Hawler x @kiorOnTheBeat - K vamo a hacer",
+"de": "Hawler16",
+"img": "https://i.ytimg.com/vi/-z5y4msW9xI/hqdefault.jpg"
+},
 {
 "id": "1560157739794178188-0",
 "t": "2026-10-15T05:09:51Z",
@@ -680,6 +692,11 @@
 "tit": "Estaba Dicho.  (EP)",
 "de": "Geekto",
 "img": "https://i.ytimg.com/vi/BgPckuiHByg/hqdefault.jpg"
+},
+"https://www.youtube.com/watch?v=-z5y4msW9xI": {
+"tit": "Hawler x @kiorOnTheBeat - K vamo a hacer",
+"de": "Hawler16",
+"img": "https://i.ytimg.com/vi/-z5y4msW9xI/hqdefault.jpg"
 }
 }
 }

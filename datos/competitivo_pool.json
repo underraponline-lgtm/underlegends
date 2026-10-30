@@ -6487,7 +6487,6 @@
   "pos_sv": "58/155",
   "arc_sv": 63,
   "tg_c": {
-   "bestia": 1,
    "clasico": 2,
    "dg": 1,
    "riv": 3,
@@ -9279,11 +9278,15 @@
   "pos_sv": "76/155",
   "arc_sv": 52,
   "tg_c": {
-   "clasico": 1,
-   "riv": 4
+   "clasico": 2,
+   "dg": 1,
+   "riv": 4,
+   "venc": 1,
+   "vengo": 1
   },
   "tg_p": {
-   "paises": 4
+   "paises": 4,
+   "paisesg": 1
   }
  },
  {

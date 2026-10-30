@@ -386,6 +386,16 @@
      "NWO5AIKRzHw",
      "https://i.ytimg.com/vi/NWO5AIKRzHw/hqdefault.jpg",
      "2026-10-27T02:26:52Z"
+    ],
+    "1565540543990075533-0": [
+     0,
+     [
+      "Jothaze"
+     ],
+     "Hawler x @kiorOnTheBeat - K vamo a hacer",
+     "-z5y4msW9xI",
+     "https://i.ytimg.com/vi/-z5y4msW9xI/hqdefault.jpg",
+     "2026-10-30T01:39:12Z"
     ]
    },
    "pub": {
@@ -3615,6 +3625,32 @@
      ],
      "organizador": "@nachonc_",
      "cuentas": {}
+    },
+    "1565538080210030683": {
+     "sv": "DDF",
+     "nombre": "GALACTICOS DEL FREESTYLE VOL.11",
+     "mo": "2026-10-30T01:29:24Z",
+     "staff": {
+      "jurado": [
+       "Adriagner la cuarta barra"
+      ],
+      "host": [
+       "Adriagner la cuarta barra"
+      ],
+      "dj": [
+       "Adriagner la cuarta barra"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Adriagner la cuarta barra",
+       "id": "1316490165836972104"
+      }
+     ],
+     "organizador": "",
+     "cuentas": {
+      "Adriagner la cuarta barra": "1316490165836972104"
+     }
     }
    },
    "ver": {
@@ -4539,6 +4575,13 @@
       "",
       "Lewito",
       "l3wito"
+     ]
+    },
+    "DDF|2026-10-29": {
+     "1316490165836972104": [
+      "",
+      "Adriagner la cuarta barra",
+      "adriagner"
      ]
     }
    }
