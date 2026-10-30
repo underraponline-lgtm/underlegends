@@ -59,6 +59,20 @@
     }
    }
   },
+  "19 FLEIVA WACK 🇦🇷": {
+   "FFA": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 0,
+    "pts": 15750,
+    "racha": "1/1",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "27 🇺🇸": {
    "FFA": {
     "duelos": "",
@@ -82,6 +96,20 @@
     "pod": 0,
     "pts": 4000,
     "racha": "0/0"
+   }
+  },
+  "71": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "AFR": {
@@ -250,7 +278,7 @@
     "duelos": "4/8",
     "ev": 5,
     "oro": 0,
-    "ovr": 48,
+    "ovr": 47,
     "pod": 0,
     "pts": 28074,
     "racha": "0/1"
@@ -423,11 +451,11 @@
    },
    "FFA": {
     "duelos": "",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
-    "pts": 4998,
+    "pts": 8748,
     "racha": "0/0"
    }
   },
@@ -539,6 +567,20 @@
     "racha": "0/0"
    }
   },
+  "Akuseru 🇦🇷": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Akutagawa🇹🇼": {
    "FFA": {
     "duelos": "",
@@ -644,7 +686,7 @@
     "duelos": "3/5",
     "ev": 2,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 46,
     "pod": 1,
     "pts": 11250,
     "racha": "0/1",
@@ -1006,13 +1048,16 @@
     }
    },
    "FFA": {
-    "duelos": "",
-    "ev": 2,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 3000,
-    "racha": "0/0"
+    "duelos": "3/3",
+    "ev": 3,
+    "oro": 1,
+    "ovr": 49,
+    "pod": 1,
+    "pts": 33000,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1
+    }
    }
   },
   "Benjixo": {
@@ -1380,6 +1425,20 @@
     "racha": "0/0"
    }
   },
+  "Cannox": {
+   "FFA": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 7500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Carlos": {
    "ACAD": {
     "duelos": "1/2",
@@ -1489,6 +1548,20 @@
     "pod": 0,
     "pts": 688,
     "racha": "0/0"
+   }
+  },
+  "Chaz🇵🇪": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Chente": {
@@ -1691,11 +1764,11 @@
    },
    "FFA": {
     "duelos": "12/23",
-    "ev": 30,
+    "ev": 31,
     "oro": 4,
     "ovr": 68,
     "pod": 7,
-    "pts": 152751,
+    "pts": 156501,
     "racha": "0/5",
     "tg": {
      "bcasa": true,
@@ -2817,15 +2890,15 @@
     }
    },
    "FFA": {
-    "duelos": "8/19",
-    "ev": 27,
+    "duelos": "10/22",
+    "ev": 28,
     "oro": 3,
-    "ovr": 66,
-    "pod": 5,
-    "pts": 153984,
-    "racha": "0/3",
+    "ovr": 68,
+    "pod": 6,
+    "pts": 176484,
+    "racha": "1/3",
     "tg": {
-     "fin": 4,
+     "fin": 5,
      "fund": true
     }
    },
@@ -3005,12 +3078,12 @@
   "Ezze": {
    "FFA": {
     "duelos": "3/4",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 48,
     "pod": 1,
-    "pts": 22500,
-    "racha": "1/1",
+    "pts": 28125,
+    "racha": "0/1",
     "tg": {
      "fin": 1,
      "nuevo": true
@@ -3560,12 +3633,12 @@
   },
   "Gus": {
    "FFA": {
-    "duelos": "0/1",
-    "ev": 7,
+    "duelos": "0/2",
+    "ev": 8,
     "oro": 0,
     "ovr": 47,
     "pod": 0,
-    "pts": 14094,
+    "pts": 17844,
     "racha": "0/0"
    },
    "SR": {
@@ -4422,11 +4495,11 @@
    },
    "FFA": {
     "duelos": "1/1",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
     "ovr": 45,
     "pod": 0,
-    "pts": 10000,
+    "pts": 13750,
     "racha": "0/0"
    }
   },
@@ -4501,11 +4574,11 @@
    },
    "FFA": {
     "duelos": "1/2",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
-    "pts": 7500,
+    "pts": 11250,
     "racha": "0/0"
    },
    "URBF": {
@@ -4761,6 +4834,20 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1875,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
+  "LAMBRO 🇦🇷": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -5231,12 +5318,12 @@
     }
    },
    "FFA": {
-    "duelos": "0/1",
-    "ev": 1,
+    "duelos": "1/3",
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 44,
     "pod": 0,
-    "pts": 1250,
+    "pts": 8750,
     "racha": "0/0"
    }
   },
@@ -5294,7 +5381,7 @@
     "duelos": "1/3",
     "ev": 6,
     "oro": 0,
-    "ovr": 48,
+    "ovr": 47,
     "pod": 0,
     "pts": 25063,
     "racha": "1/1"
@@ -5436,11 +5523,11 @@
   "Lukas": {
    "FFA": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 44,
     "pod": 0,
-    "pts": 1875,
+    "pts": 7500,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -5978,11 +6065,11 @@
    },
    "FFA": {
     "duelos": "23/49",
-    "ev": 58,
+    "ev": 59,
     "oro": 4,
     "ovr": 76,
     "pod": 12,
-    "pts": 288788,
+    "pts": 292538,
     "racha": "0/3",
     "tg": {
      "bcasa": true,
@@ -6391,12 +6478,12 @@
     }
    },
    "FFA": {
-    "duelos": "0/1",
-    "ev": 12,
+    "duelos": "0/2",
+    "ev": 13,
     "oro": 0,
-    "ovr": 49,
+    "ovr": 50,
     "pod": 0,
-    "pts": 30711,
+    "pts": 34461,
     "racha": "0/1"
    },
    "LKR": {
@@ -6472,12 +6559,12 @@
     }
    },
    "FFA": {
-    "duelos": "14/26",
-    "ev": 20,
+    "duelos": "14/27",
+    "ev": 21,
     "oro": 1,
     "ovr": 64,
     "pod": 4,
-    "pts": 106154,
+    "pts": 113654,
     "racha": "0/4",
     "tg": {
      "fin": 4
@@ -6802,6 +6889,20 @@
     "racha": "0/0"
    }
   },
+  "Nain sdp🇦🇷": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Nairda": {
    "ACAD": {
     "duelos": "0/1",
@@ -7041,6 +7142,20 @@
     "pod": 0,
     "pts": 625,
     "racha": "0/0"
+   }
+  },
+  "Number Laden 🇸🇦": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Number VE": {
@@ -7414,6 +7529,20 @@
     "racha": "0/0"
    }
   },
+  "Penescrotopene 🇰🇷⚫️": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Pepe Mujica": {
    "FDS": {
     "duelos": "",
@@ -7499,7 +7628,7 @@
     "duelos": "4/6",
     "ev": 2,
     "oro": 0,
-    "ovr": 49,
+    "ovr": 48,
     "pod": 2,
     "pts": 23100,
     "racha": "2/2",
@@ -7725,7 +7854,7 @@
     "duelos": "11/22",
     "ev": 33,
     "oro": 2,
-    "ovr": 69,
+    "ovr": 68,
     "pod": 6,
     "pts": 170426,
     "racha": "1/2",
@@ -8425,11 +8554,11 @@
   "SULTAN": {
    "FFA": {
     "duelos": "1/3",
-    "ev": 6,
+    "ev": 7,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 48,
     "pod": 0,
-    "pts": 19937,
+    "pts": 23687,
     "racha": "0/0"
    }
   },
@@ -8500,13 +8629,13 @@
   },
   "Santi": {
    "FFA": {
-    "duelos": "1/5",
-    "ev": 5,
+    "duelos": "2/7",
+    "ev": 6,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 49,
     "pod": 0,
-    "pts": 22563,
-    "racha": "0/0"
+    "pts": 38313,
+    "racha": "1/1"
    }
   },
   "Santo Trinidad 🇨🇴": {
@@ -8815,13 +8944,13 @@
   },
   "Six": {
    "FFA": {
-    "duelos": "11/18",
-    "ev": 32,
+    "duelos": "11/19",
+    "ev": 33,
     "oro": 4,
     "ovr": 72,
     "pod": 11,
-    "pts": 211094,
-    "racha": "5/5",
+    "pts": 218594,
+    "racha": "0/5",
     "tg": {
      "dv": true,
      "fin": 11,
@@ -9318,12 +9447,12 @@
    },
    "FFA": {
     "duelos": "1/2",
-    "ev": 14,
+    "ev": 15,
     "oro": 0,
-    "ovr": 56,
+    "ovr": 57,
     "pod": 0,
-    "pts": 46976,
-    "racha": "1/1"
+    "pts": 50726,
+    "racha": "0/1"
    }
   },
   "Terry": {
@@ -9396,7 +9525,7 @@
     "duelos": "0/1",
     "ev": 5,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 45,
     "pod": 0,
     "pts": 9343,
     "racha": "0/1",
@@ -9839,7 +9968,7 @@
     "duelos": "12/27",
     "ev": 33,
     "oro": 1,
-    "ovr": 69,
+    "ovr": 68,
     "pod": 8,
     "pts": 168153,
     "racha": "0/4",
@@ -10364,7 +10493,7 @@
     "duelos": "7/8",
     "ev": 3,
     "oro": 2,
-    "ovr": 50,
+    "ovr": 49,
     "pod": 2,
     "pts": 30000,
     "racha": "3/3",
@@ -10729,6 +10858,20 @@
     "pod": 0,
     "pts": 625,
     "racha": "0/0"
+   }
+  },
+  "matias la flauta 🇦🇷": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "mats": {

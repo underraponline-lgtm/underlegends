@@ -940,9 +940,16 @@
   }
  },
  "bastyretro": {
+  "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1793401476332
+   ]
+  },
   "temporada": {
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x1",
+    "👑 CAMPEÓN x2",
     "t1",
     1793029252929
    ],
@@ -950,6 +957,11 @@
     "📋 SEMANA PERFECTA",
     "t1",
     1792953978519
+   ],
+   "🗺️ CONQUISTADOR": [
+    "🗺️ CONQUISTADOR",
+    "t1",
+    1793401476332
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -9826,6 +9838,11 @@
    ]
   },
   "servidor": {
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1793401476332
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",

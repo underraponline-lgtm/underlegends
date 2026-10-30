@@ -4578,6 +4578,20 @@
      0,
      0
     ],
+    "19 FLEIVA WACK 🇦🇷": [
+     0,
+     1,
+     1,
+     0,
+     0
+    ],
+    "71": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "ANG": [
      0,
      1,
@@ -4602,6 +4616,13 @@
     "Agus": [
      0,
      1,
+     0,
+     0,
+     0
+    ],
+    "Akuseru 🇦🇷": [
+     0,
+     0,
      0,
      0,
      0
@@ -4655,9 +4676,23 @@
      0,
      0
     ],
+    "BastyRetro": [
+     0,
+     1,
+     1,
+     0,
+     0
+    ],
     "Calíz": [
      1,
      2,
+     0,
+     0,
+     0
+    ],
+    "Cannox": [
+     0,
+     1,
      0,
      0,
      0
@@ -4671,6 +4706,13 @@
     ],
     "Cazafla anti cazanova🇭🇹": [
      1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Chaz🇵🇪": [
+     0,
      0,
      0,
      0,
@@ -4804,7 +4846,7 @@
     ],
     "Erian": [
      1,
-     6,
+     7,
      0,
      0,
      0
@@ -4963,6 +5005,13 @@
      0,
      0
     ],
+    "LAMBRO 🇦🇷": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "LEWITO": [
      0,
      0,
@@ -5021,7 +5070,7 @@
     ],
     "Lilñaño": [
      0,
-     1,
+     2,
      0,
      0,
      0
@@ -5057,6 +5106,13 @@
     "Luck": [
      1,
      3,
+     0,
+     0,
+     0
+    ],
+    "Lukas": [
+     0,
+     0,
      0,
      0,
      0
@@ -5161,7 +5217,7 @@
     ],
     "Molusco": [
      1,
-     1,
+     2,
      0,
      0,
      0
@@ -5208,6 +5264,13 @@
      0,
      0
     ],
+    "Nain sdp🇦🇷": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "Noone": [
      0,
      0,
@@ -5217,6 +5280,13 @@
     ],
     "Number": [
      1,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Number Laden 🇸🇦": [
+     0,
      0,
      0,
      0,
@@ -5265,6 +5335,13 @@
      0
     ],
     "Paria": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "Penescrotopene 🇰🇷⚫️": [
      0,
      0,
      0,
@@ -5348,6 +5425,13 @@
      0,
      0
     ],
+    "Santi": [
+     0,
+     1,
+     1,
+     0,
+     0
+    ],
     "Scritura": [
      1,
      1,
@@ -5371,7 +5455,7 @@
     ],
     "Six": [
      2,
-     5,
+     6,
      0,
      0,
      0
@@ -5565,6 +5649,13 @@
      0,
      0
     ],
+    "matias la flauta 🇦🇷": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
     "mats": [
      1,
      2,
@@ -5595,11 +5686,13 @@
     ]
    },
    "pts": {
+    "19 FLEIVA WACK 🇦🇷": 1000,
     "Abyssus": 300,
     "Adriagner": 900,
     "Andres": 300,
     "BELIKKO": 300,
     "Badterne": 2900,
+    "BastyRetro": 1000,
     "Calíz": 900,
     "Carlosss": 600,
     "Cazafla anti cazanova🇭🇹": 300,
@@ -5626,6 +5719,7 @@
     "LSO": 300,
     "Lautaro la sinceridad 🇨🇨": 600,
     "Liberia": 900,
+    "Lilñaño": 600,
     "Lizeninn": 600,
     "Luck": 900,
     "Lvel": 300,
@@ -5636,7 +5730,7 @@
     "Manteca mantecosa 🇨🇾": 300,
     "Matias": 300,
     "Miniboy": 2900,
-    "Molusco": 300,
+    "Molusco": 900,
     "Mr Still Ballin": 300,
     "NC": 900,
     "NXUZ": 900,
@@ -5651,6 +5745,7 @@
     "Provenza": 900,
     "Ragna 🇨🇱": 1000,
     "SULTAN": 300,
+    "Santi": 1000,
     "Scritura": 300,
     "Sin Limites": 300,
     "Six": 900,
@@ -5680,6 +5775,7 @@
   ".SosaATR": 300,
   "1200": 1200,
   "19": 1600,
+  "19 FLEIVA WACK 🇦🇷": 1000,
   "AGUSTÍN51K": 1900,
   "AKARK": 600,
   "ALESS": 300,
@@ -5706,7 +5802,7 @@
   "BNA": 5200,
   "BTRX": 300,
   "Badterne": 4200,
-  "BastyRetro": 2900,
+  "BastyRetro": 3900,
   "Benjixo": 2200,
   "Bloody": 2200,
   "CJ": 2100,
@@ -5815,6 +5911,7 @@
   "Leyenda": 300,
   "Liam": 300,
   "Liberia": 8000,
+  "Lilñaño": 600,
   "LitKunai": 300,
   "Lizeninn": 600,
   "Lord Viruzz": 1600,
@@ -5842,7 +5939,7 @@
   "Millonari-O": 300,
   "Miniboy": 4500,
   "Mito": 300,
-  "Molusco": 4500,
+  "Molusco": 5100,
   "Mosquitrap 🦟": 4000,
   "Motera": 2600,
   "Mr Still Ballin": 7100,
@@ -5896,7 +5993,7 @@
   "SULTAN": 300,
   "Saiko": 300,
   "Sami": 300,
-  "Santi": 300,
+  "Santi": 1300,
   "Santo Trinidad 🇨🇴": 300,
   "Saz": 300,
   "Scot": 300,

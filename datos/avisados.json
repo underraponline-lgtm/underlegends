@@ -29738,5 +29738,395 @@
    ]
   ],
   "v": 2
+ },
+ "547": {
+  "antes": {
+   "Adriagner": [
+    38,
+    47,
+    false
+   ],
+   "BastyRetro": [
+    99,
+    131,
+    false
+   ],
+   "Colesito": [
+    10,
+    11,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "Ezze": [
+    270,
+    166,
+    true
+   ],
+   "Gus": [
+    120,
+    186,
+    false
+   ],
+   "Keider": [
+    91,
+    121,
+    false
+   ],
+   "Kochi": [
+    76,
+    100,
+    false
+   ],
+   "Lilñaño": [
+    97,
+    129,
+    false
+   ],
+   "Lukas": [
+    484,
+    466,
+    true
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Miniboy": [
+    24,
+    29,
+    false
+   ],
+   "Molusco": [
+    23,
+    26,
+    false
+   ],
+   "SULTAN": [
+    274,
+    171,
+    true
+   ],
+   "Santi": [
+    271,
+    168,
+    true
+   ],
+   "Six": [
+    7,
+    8,
+    false
+   ],
+   "Teo": [
+    57,
+    74,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Lilñaño",
+    "Miniboy",
+    "Lilñaño"
+   ],
+   [
+    "Cannox",
+    "Gus",
+    "Cannox"
+   ],
+   [
+    "Six",
+    "Colesito",
+    "Six"
+   ],
+   [
+    "Six",
+    "Penescrotopene 🇰🇷⚫️",
+    "Six"
+   ],
+   [
+    "Santi",
+    "Kochi",
+    "Santi"
+   ],
+   [
+    "Santi",
+    "Teo",
+    "Santi"
+   ],
+   [
+    "Erian",
+    "Ezze",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "Chaz🇵🇪",
+    "Erian"
+   ],
+   [
+    "BastyRetro",
+    "Adriagner",
+    "BastyRetro"
+   ],
+   [
+    "BastyRetro",
+    "Makmah",
+    "BastyRetro"
+   ],
+   [
+    "19 FLEIVA WACK 🇦🇷",
+    "LAMBRO 🇦🇷",
+    "19 FLEIVA WACK 🇦🇷"
+   ],
+   [
+    "19 FLEIVA WACK 🇦🇷",
+    "Keider",
+    "19 FLEIVA WACK 🇦🇷"
+   ],
+   [
+    "19 FLEIVA WACK 🇦🇷",
+    "Nain sdp🇦🇷",
+    "19 FLEIVA WACK 🇦🇷"
+   ],
+   [
+    "19 FLEIVA WACK 🇦🇷",
+    "Lukas",
+    "19 FLEIVA WACK 🇦🇷"
+   ],
+   [
+    "Molusco",
+    "SULTAN",
+    "Molusco"
+   ],
+   [
+    "Molusco",
+    "71",
+    "Molusco"
+   ],
+   [
+    "Molusco",
+    "Akuseru 🇦🇷",
+    "Molusco"
+   ],
+   [
+    "Molusco",
+    "Number Laden 🇸🇦",
+    "Molusco"
+   ],
+   [
+    "Molusco",
+    "matias la flauta 🇦🇷",
+    "Molusco"
+   ],
+   [
+    "Erian",
+    "Lilñaño",
+    "Erian"
+   ],
+   [
+    "BastyRetro",
+    "Cannox",
+    "BastyRetro"
+   ],
+   [
+    "19 FLEIVA WACK 🇦🇷",
+    "Six",
+    "19 FLEIVA WACK 🇦🇷"
+   ],
+   [
+    "Santi",
+    "Molusco",
+    "Santi"
+   ],
+   [
+    "Erian",
+    "19 FLEIVA WACK 🇦🇷",
+    "Erian"
+   ],
+   [
+    "BastyRetro",
+    "Santi",
+    "BastyRetro"
+   ],
+   [
+    "BastyRetro",
+    "Erian",
+    "BastyRetro"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 10,
+   "BastyRetro": 4,
+   "Colesito": 37,
+   "Erian": 59,
+   "Ezze": 1,
+   "Gus": 8,
+   "Keider": 7,
+   "Kochi": 8,
+   "Lilñaño": 3,
+   "Lukas": 1,
+   "Makmah": 88,
+   "Miniboy": 35,
+   "Molusco": 24,
+   "SULTAN": 6,
+   "Santi": 5,
+   "Six": 36,
+   "Teo": 18
+  },
+  "fecha": "30/10",
+  "firma": "915809abf18d8e6e",
+  "msg": "1565861597019111555",
+  "nombre": "__ LA ISLA DE OKINAWA V.4 __",
+  "num": 547,
+  "participantes": 28,
+  "sello": {
+   "BastyRetro": "1b8fd5e2df25:5832e3f3f78a"
+  },
+  "sv": "FFA",
+  "t": "2026-10-30T22:54:55Z",
+  "tabla": [
+   [
+    "BastyRetro",
+    "Campeón",
+    10000
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "19 FLEIVA WACK 🇦🇷",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Santi",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Lilñaño",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Cannox",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Six",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Molusco",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gus",
+    "Octavos",
+    1250
+   ],
+   [
+    "Colesito",
+    "Octavos",
+    1250
+   ],
+   [
+    "Penescrotopene 🇰🇷⚫️",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kochi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Teo",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ezze",
+    "Octavos",
+    1250
+   ],
+   [
+    "Chaz🇵🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Adriagner",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "LAMBRO 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Keider",
+    "Octavos",
+    1250
+   ],
+   [
+    "Nain sdp🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lukas",
+    "Octavos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "71",
+    "Octavos",
+    1250
+   ],
+   [
+    "Akuseru 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Number Laden 🇸🇦",
+    "Octavos",
+    1250
+   ],
+   [
+    "matias la flauta 🇦🇷",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

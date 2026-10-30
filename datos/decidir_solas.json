@@ -2,30 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "926218a268",
-   "tipo": "Nombre desconocido",
-   "sec": "PRADERAP VOL.1 · ACAD · 16/10 · #479",
-   "que": "¿Quién es «Hotaru Adeyemi 🏳️‍⚧️🇦🇷»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1282772759902162954",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1282772759902162954)",
-   "t": 1792189833600,
-   "filas": [
-    728
-   ],
-   "variantes": [
-    "Hotaru Adeyemi 🏳️‍⚧️🇦🇷"
-   ],
-   "escribio": {
-    "alta": [
-     "Hotaru Adeyemi 🏳️‍⚧️",
-     "1282772759902162954"
-    ]
-   }
-  },
-  {
    "id": "26736df03b",
    "tipo": "Nombre desconocido",
    "sec": "PROYECTO X VOL.3 · DDF · 16/10 · #481",
@@ -2579,6 +2555,210 @@
     "DOS NOMBRES: «Black dmon» → «Lilñaño» · cuenta 698611862031433779"
    ],
    "escribio": {}
+  },
+  {
+   "id": "0ffb93d137",
+   "tipo": "Batalla sin ganador",
+   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
+   "que": "¿Quién pasó en octavos?\nLAMBRO 🇦🇷 🆚 19 FLEIVA WACK 🇦🇷 🆚 KEIDER🇧🇷 🆚 Nain sdp🇦🇷 🆚 Lukas sin escrupulos 🇦🇷",
+   "r": "No se jugó",
+   "regla": "R4 · una batalla que es copia de otra ya cargada",
+   "rk": "R4",
+   "por": "el ciclo",
+   "porque": "es la misma batalla que «19 FLEIVA WACK 🇦🇷 vs LAMBRO 🇦🇷 vs Keider vs Nain sdp🇦🇷 vs Lukas» (ganó 19 FLEIVA WACK 🇦🇷), ya cargada en el #547: contestar «Ganó» la contaría dos veces",
+   "t": 1793401463776,
+   "filas": [
+    955
+   ],
+   "variantes": [
+    "__ LA ISLA DE OKINAWA V.4 __ · FFA · 30/10 · octavos · LAMBRO 🇦🇷 🆚 19 FLEIVA WACK 🇦🇷 🆚 KEIDER🇧🇷 🆚 Nain sdp🇦🇷 🆚 Lukas sin escrupulos 🇦🇷"
+   ],
+   "escribio": {
+    "batalla": "__ LA ISLA DE OKINAWA V.4 __ · FFA · 30/10 · octavos · LAMBRO 🇦🇷 🆚 19 FLEIVA WACK 🇦🇷 🆚 KEIDER🇧🇷 🆚 Nain sdp🇦🇷 🆚 Lukas sin escrupulos 🇦🇷"
+   }
+  },
+  {
+   "id": "0ff4b5deaf",
+   "tipo": "Batalla sin ganador",
+   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
+   "que": "¿Quién ganó en cuartos?\nBlack Dmon 🇪🇨🇺🇸 🆚 Erian 🇩🇴",
+   "r": "No se jugó",
+   "regla": "R4 · una batalla que es copia de otra ya cargada",
+   "rk": "R4",
+   "por": "el ciclo",
+   "porque": "es la misma batalla que «Erian vs Lilñaño» (ganó Erian), ya cargada en el #547: contestar «Ganó» la contaría dos veces",
+   "t": 1793401463776,
+   "filas": [
+    957
+   ],
+   "variantes": [
+    "__ LA ISLA DE OKINAWA V.4 __ · FFA · 30/10 · cuartos · Black Dmon 🇪🇨🇺🇸 🆚 Erian 🇩🇴"
+   ],
+   "escribio": {
+    "batalla": "__ LA ISLA DE OKINAWA V.4 __ · FFA · 30/10 · cuartos · Black Dmon 🇪🇨🇺🇸 🆚 Erian 🇩🇴"
+   }
+  },
+  {
+   "id": "bb6ea235be",
+   "tipo": "Batalla sin ganador",
+   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
+   "que": "¿Quién ganó en cuartos?\nCannox🇩🇴 🆚 BastyRetro🇨🇱",
+   "r": "No se jugó",
+   "regla": "R4 · una batalla que es copia de otra ya cargada",
+   "rk": "R4",
+   "por": "el ciclo",
+   "porque": "es la misma batalla que «BastyRetro vs Cannox» (ganó BastyRetro), ya cargada en el #547: contestar «Ganó» la contaría dos veces",
+   "t": 1793401463776,
+   "filas": [
+    958
+   ],
+   "variantes": [
+    "__ LA ISLA DE OKINAWA V.4 __ · FFA · 30/10 · cuartos · Cannox🇩🇴 🆚 BastyRetro🇨🇱"
+   ],
+   "escribio": {
+    "batalla": "__ LA ISLA DE OKINAWA V.4 __ · FFA · 30/10 · cuartos · Cannox🇩🇴 🆚 BastyRetro🇨🇱"
+   }
+  },
+  {
+   "id": "45c9d9cfa3",
+   "tipo": "Nombre desconocido",
+   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
+   "que": "¿Quién es «Chaz🇵🇪»?",
+   "r": "Es Dominick (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @equisde_xd23 (en Discord: «ZD🇧🇷») · en la Lista: Dominick se anotó como «Chaz» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1793401463776,
+   "filas": [
+    961
+   ],
+   "variantes": [
+    "Chaz🇵🇪"
+   ],
+   "escribio": {
+    "quien": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · Chaz🇵🇪"
+   }
+  },
+  {
+   "id": "56ff7ef52f",
+   "tipo": "Nombre desconocido",
+   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
+   "que": "¿Quién es «matias la flauta 🇦🇷»?",
+   "r": "Es Matias (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @matias999999999 · en la Lista: Matias se anotó como «matias la flauta» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1793401463776,
+   "filas": [
+    966
+   ],
+   "variantes": [
+    "matias la flauta 🇦🇷"
+   ],
+   "escribio": {
+    "quien": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · matias la flauta 🇦🇷"
+   }
+  },
+  {
+   "id": "0fb4006991",
+   "tipo": "Nombre desconocido",
+   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
+   "que": "¿Quién es «LAMBRO 🇦🇷»?",
+   "r": "Es Lambroggini",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Lambroggini: estaba en la llamada del evento con un nombre parecido",
+   "t": 1793401463776,
+   "filas": [
+    962
+   ],
+   "variantes": [
+    "LAMBRO 🇦🇷"
+   ],
+   "escribio": {
+    "alias": [
+     "LAMBRO",
+     "Lambroggini"
+    ],
+    "filas": [
+     327
+    ]
+   }
+  },
+  {
+   "id": "e53c1d957e",
+   "tipo": "Nombre desconocido",
+   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
+   "que": "¿Quién es «19 FLEIVA WACK 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1345454905325781012",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1345454905325781012)",
+   "t": 1793401463776,
+   "filas": [
+    959
+   ],
+   "variantes": [
+    "19 FLEIVA WACK 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "19 FLEIVA WACK",
+     "1345454905325781012"
+    ]
+   }
+  },
+  {
+   "id": "0fe4c295c2",
+   "tipo": "Nombre desconocido",
+   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
+   "que": "¿Quién es «Akuseru 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1564834243039731832",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1564834243039731832)",
+   "t": 1793401463776,
+   "filas": [
+    960
+   ],
+   "variantes": [
+    "Akuseru 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Akuseru",
+     "1564834243039731832"
+    ]
+   }
+  },
+  {
+   "id": "e8e9d66b2c",
+   "tipo": "Nombre desconocido",
+   "sec": "LA ISLA DE OKINAWA V.4 · FFA · 30/10 · #547",
+   "que": "¿Quién es «Nain sdp🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 434469958295093260",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (434469958295093260)",
+   "t": 1793401463776,
+   "filas": [
+    963
+   ],
+   "variantes": [
+    "Nain sdp🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Nain sdp",
+     "434469958295093260"
+    ]
+   }
   }
  ],
  "deshechas": []

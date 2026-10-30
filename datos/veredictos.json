@@ -2,28 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1563317115119734805": {
-   "id": "1563317115119734805",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792794245272,
-   "a": "CARLOS 🇪🇨 + MAKMA 🇻🇪",
-   "b": "TEO 🇨🇴 + EDD 🇮🇹",
-   "ganador": "CARLOS 🇪🇨 + MAKMA 🇻🇪",
-   "votos": "1–0"
-  },
-  "1563322411217330329": {
-   "id": "1563322411217330329",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792795507960,
-   "a": "HOTARU 🇦🇷 + TOKIO 🇦🇷",
-   "b": "MOLUSCO 🇦🇷 + MATHIAS 🇻🇪",
-   "ganador": "MOLUSCO 🇦🇷 + MATHIAS 🇻🇪",
-   "votos": "1–0"
-  },
   "1563326306647674981": {
    "id": "1563326306647674981",
    "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
@@ -1530,110 +1508,20 @@
    "b": "ÑI ÑAÑO🥵",
    "ganador": "XCLUSIVO",
    "votos": "1–0"
-  }
- },
- "llaves": {
-  "1558245449046171681": {
-   "id": "1558245449046171681",
+  },
+  "1565844973507715123": {
+   "id": "1565844973507715123",
    "sv": "[FFA] Freestyle For All 👾",
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
-   "pub": 1791585065853,
-   "ed": 1791588648281,
-   "texto": "`[ OCTAVOS ]`\n⌞santi🇦🇷⌝ 🆚 ⌞riolu🇪🇸⌝\n⌞ikonoxx🇺🇾⌝ 🆚 ⌞dynoco🇦🇷⌝\n⌞Mitosis🇦🇷⌝ 🆚 ⌞agus🇦🇷⌝\n⌞Kravitz🇫🇷⌝ 🆚 ⌞Za🇵🇪⌝\n⌞makmah 🇻🇪⌝ 🆚 ⌞delux🇦🇷⌝\n⌞CRK 🇲🇽⌝ 🆚 ⌞makmah 🇻🇪 (R)⌝\n⌞andy⌝ 🆚 ⌞Shisui🇯🇵⌝\n⌞Trot🇪🇸⌝ 🆚 ⌞Pich⌝\n⌞agus🇦🇷⌝ 🆚 ⌞Pichulamc🇦🇷⌝",
-   "batallas": [
-    [
-     "OCTAVOS",
-     [
-      "santi🇦🇷",
-      "riolu🇪🇸"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "ikonoxx🇺🇾",
-      "dynoco🇦🇷"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "Mitosis🇦🇷",
-      "agus🇦🇷"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "Kravitz🇫🇷",
-      "Za🇵🇪"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "makmah 🇻🇪",
-      "delux🇦🇷"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "CRK 🇲🇽",
-      "makmah 🇻🇪 (R)"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "andy",
-      "Shisui🇯🇵"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "Trot🇪🇸",
-      "Pich"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "agus🇦🇷",
-      "Pichulamc🇦🇷"
-     ],
-     "agus🇦🇷",
-     "veredicto",
-     []
-    ]
-   ]
-  },
+   "pub": 1793396933677,
+   "a": "erian 🇩🇴",
+   "b": "BastyRetro🇨🇱",
+   "ganador": "BastyRetro🇨🇱",
+   "votos": "1–0"
+  }
+ },
+ "llaves": {
   "1558311407332753469": {
    "id": "1558311407332753469",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
