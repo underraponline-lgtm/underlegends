@@ -382,7 +382,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-29T21:10:39+00:00",
-   "did": "",
+   "did": "1564832348766343232",
    "evento": "Rap para Raperos #1",
    "n": 543,
    "sv": "FFA",
@@ -420,7 +420,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-29T21:10:39+00:00",
-   "did": "",
+   "did": "1033742542967144509",
    "evento": "Rap para Raperos #1",
    "n": 543,
    "sv": "FFA",
@@ -691,6 +691,18 @@
    "vence": "2026-11-01T22:13:32+00:00",
    "vencido": false
   },
+  "LGBD": {
+   "avisado": "2026-10-29",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-29T21:10:39+00:00",
+   "did": "729064766307434587",
+   "evento": "Rap para Raperos #1",
+   "n": 543,
+   "sv": "FFA",
+   "vence": "2026-11-05T21:10:39+00:00",
+   "vencido": false
+  },
   "LSO": {
    "avisado": "2026-10-25",
    "avisado_cumplido": "2026-10-27",
@@ -703,18 +715,6 @@
    "n": 511,
    "sv": "DDF",
    "vence": "2026-11-01T04:08:34+00:00",
-   "vencido": false
-  },
-  "La gonorrea del bajo": {
-   "avisado": "2026-10-29",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-29T21:10:39+00:00",
-   "did": "",
-   "evento": "Rap para Raperos #1",
-   "n": 543,
-   "sv": "FFA",
-   "vence": "2026-11-05T21:10:39+00:00",
    "vencido": false
   },
   "Lautaro la sinceridad": {
@@ -1431,7 +1431,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-29T21:10:39+00:00",
-   "did": "",
+   "did": "913093970026987561",
    "evento": "Rap para Raperos #1",
    "n": 543,
    "sv": "FFA",

@@ -2948,7 +2948,7 @@
     "racha": "0/0"
    }
   },
-  "Ezze 🇦🇷": {
+  "Ezze": {
    "FFA": {
     "duelos": "3/4",
     "ev": 1,
@@ -3069,7 +3069,7 @@
     }
    }
   },
-  "Fear🇨🇴": {
+  "Fear": {
    "FFA": {
     "duelos": "",
     "ev": 1,
@@ -4772,6 +4772,20 @@
     }
    }
   },
+  "LGBD": {
+   "FFA": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "LKS 🇨🇱": {
    "FFA": {
     "duelos": "",
@@ -4898,20 +4912,6 @@
     "pod": 0,
     "pts": 625,
     "racha": "0/0"
-   }
-  },
-  "La gonorrea del bajo 🇨🇴": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 3750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "Lambroggini": {
@@ -10409,7 +10409,7 @@
     "racha": "0/0"
    }
   },
-  "fenix 🇪🇸": {
+  "fenix": {
    "FFA": {
     "duelos": "",
     "ev": 1,

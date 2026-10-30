@@ -1043,16 +1043,16 @@
 "temporada"
 ]
 },
+"ezze": {
+"rg": "",
+"c": []
+},
 "scritura": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
-},
-"ezze": {
-"rg": "",
-"c": []
 },
 "dxg": {
 "rg": "",
@@ -1263,6 +1263,12 @@
 "respawn": {
 "rg": "",
 "c": []
+},
+"dantemx": {
+"rg": "",
+"c": [
+"servidor"
+]
 },
 "gus": {
 "rg": "",
