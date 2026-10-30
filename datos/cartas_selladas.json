@@ -1741,10 +1741,10 @@
    "servidor": "c2767db846db:99e0c0179dbe:15af16"
   },
   "ZTR": {
-   "competitivo": "84a061b736ef:0a48057cb351",
-   "pais": "37fcaa37f257:263a27e40647",
-   "servidor": "bbca7dee0935:99e0c0179dbe:5bc8b2",
-   "temporada": "ca916fe25207:6ec1a5248de8"
+   "competitivo": "49c8364d0dd8:0a48057cb351",
+   "pais": "be88fe257424:263a27e40647",
+   "servidor": "f83c4ab33fe4:99e0c0179dbe:5bc8b2",
+   "temporada": "99093036a3e8:6ec1a5248de8"
   },
   "Zaamei": {
    "servidor": "b1642589051e:99e0c0179dbe:403ba8"
@@ -1755,8 +1755,8 @@
    "servidor": "8f69e009f8f5:99e0c0179dbe:2a03f7"
   },
   "Zaik": {
-   "competitivo": "cb81d01aebaa:0a48057cb351",
-   "servidor": "604652b36103:99e0c0179dbe:284dc1",
+   "competitivo": "422c2cd139d8:0a48057cb351",
+   "servidor": "b2d29386789b:99e0c0179dbe:284dc1",
    "temporada": "c77f891d0cc2:6ec1a5248de8"
   },
   "Zamo": {
@@ -1772,9 +1772,9 @@
    "servidor": "d2b86c0bbfd9:99e0c0179dbe:055f77"
   },
   "Zeta": {
-   "competitivo": "fff1db1b4ff2:0a48057cb351",
-   "pais": "5495b52813d6:263a27e40647",
-   "servidor": "58d0f32dd2e9:99e0c0179dbe:15af16",
+   "competitivo": "0072975552b2:0a48057cb351",
+   "pais": "44ff6b9f4a93:263a27e40647",
+   "servidor": "92ec29f4affe:99e0c0179dbe:15af16",
    "temporada": "d83ec2f7942c:6ec1a5248de8"
   },
   "Zetryko": {
@@ -1926,5 +1926,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-30T00:44:20+00:00"
+ "cuando": "2026-10-30T00:53:36+00:00"
 }
