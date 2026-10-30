@@ -2,27 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "308f8030d4",
-   "tipo": "Nombre desconocido",
-   "sec": "SNAKE INSIGNIA 5 8 · SR · 16/10 · #478",
-   "que": "¿Quién es «Natsuki 🇦🇷»?",
-   "r": "Es Catarsis (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @im_a_tsundere (en Discord: «!💗ValenAdoratesJuan💗») · en la Lista: Catarsis se anotó como «Natsuki» para ese evento, no es staff de SR y esa noche no jugó con su nombre",
-   "t": 1792182652996,
-   "filas": [
-    727
-   ],
-   "variantes": [
-    "Natsuki 🇦🇷"
-   ],
-   "escribio": {
-    "quien": "SNAKE INSIGNIA 5 8 · SR · 16/10 · Natsuki 🇦🇷"
-   }
-  },
-  {
    "id": "926218a268",
    "tipo": "Nombre desconocido",
    "sec": "PRADERAP VOL.1 · ACAD · 16/10 · #479",
@@ -2581,6 +2560,25 @@
      "1258968231809384470"
     ]
    }
+  },
+  {
+   "id": "29103e91a8",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«Black dmon» es Lilñaño? La cuenta de Lilñaño en la Lista se anotó como «Black dmon», y en el ranking suman aparte. Si es la misma persona, los puntos de «Black dmon» pasan a Lilñaño.\nLa cuenta: https://discord.com/users/698611862031433779",
+   "r": "Es la misma persona",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "la misma persona: «Black dmon» ya es alias de Lilñaño",
+   "t": 1793392255431,
+   "filas": [
+    954
+   ],
+   "variantes": [
+    "DOS NOMBRES: «Black dmon» → «Lilñaño» · cuenta 698611862031433779"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

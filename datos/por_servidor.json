@@ -1103,21 +1103,6 @@
     }
    }
   },
-  "Black dmon🇪🇨": {
-   "DDF": {
-    "duelos": "2/3",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 47,
-    "pod": 1,
-    "pts": 25000,
-    "racha": "1/1",
-    "tg": {
-     "fin": 1,
-     "nuevo": true
-    }
-   }
-  },
   "Blaxx": {
    "ACAD": {
     "duelos": "",
@@ -5232,6 +5217,19 @@
     "pts": 1250,
     "racha": "0/0"
    },
+   "DDF": {
+    "duelos": "2/3",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 47,
+    "pod": 1,
+    "pts": 25000,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   },
    "FFA": {
     "duelos": "0/1",
     "ev": 1,
@@ -8689,7 +8687,7 @@
     "racha": "0/0"
    }
   },
-  "SikoV 🇲🇽": {
+  "SikoV": {
    "DDF": {
     "duelos": "",
     "ev": 1,
@@ -8844,7 +8842,7 @@
     }
    }
   },
-  "Skiller🇨🇱": {
+  "Skiller": {
    "DDF": {
     "duelos": "0/1",
     "ev": 1,

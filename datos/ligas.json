@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-10-30T20:01:34Z",
+ "t": "2026-10-30T20:29:06Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -8547,6 +8547,16 @@
      "",
      "",
      ""
+    ],
+    [
+     "1565818737158783100",
+     "2026-10-30T20:04:38Z",
+     null,
+     "MARTYNEZ",
+     "MR.KUDE",
+     "MR.KUDE",
+     "replica",
+     ""
     ]
    ],
    "tabla": [
@@ -8579,6 +8589,18 @@
      1,
      1,
      3
+    ],
+    [
+     "MR.KUDE",
+     1,
+     1,
+     2
+    ],
+    [
+     "MARTYNEZ",
+     1,
+     0,
+     1
     ],
     [
      "DOMINICK",
@@ -8666,6 +8688,33 @@
      "h": 720
     },
     {
+     "id": "1565812018936676362",
+     "msg": "1565812018936676362",
+     "t": "2026-10-30T19:37:56Z",
+     "tit": "🔥 JORNADA 3: BUENOS AIRES 🔥",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1565812018936676362.webp",
+     "w": 720,
+     "h": 720
+    },
+    {
+     "id": "1565811867459522580",
+     "msg": "1565811867459522580",
+     "t": "2026-10-30T19:37:20Z",
+     "tit": "🔥 JORNADA 3: BUENOS AIRES 🔥",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1565811867459522580.webp",
+     "w": 720,
+     "h": 720
+    },
+    {
+     "id": "1565811773989454045",
+     "msg": "1565811773989454045",
+     "t": "2026-10-30T19:36:58Z",
+     "tit": "🔥 JORNADA 3: BUENOS AIRES 🔥",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1565811773989454045.webp",
+     "w": 720,
+     "h": 720
+    },
+    {
      "id": "1565809740385099886",
      "t": "2026-10-30T19:28:53Z",
      "tit": "🔥 JORNADA 3: BUENOS AIRES 🔥",
@@ -8699,30 +8748,6 @@
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1565805577760678119.webp",
      "w": 720,
      "h": 720
-    },
-    {
-     "id": "1564535069492645999",
-     "t": "2026-10-27T07:03:48Z",
-     "tit": "🔥 ¡JORNADA 2: BATALLA 11! 🔥",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1564535069492645999.webp",
-     "w": 720,
-     "h": 720
-    },
-    {
-     "id": "1564534213976526950",
-     "t": "2026-10-27T07:00:24Z",
-     "tit": "🔥 ¡JORNADA 2: BATALLA 11! 🔥",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1564534213976526950.webp",
-     "w": 720,
-     "h": 720
-    },
-    {
-     "id": "1564422190466859138",
-     "t": "2026-10-26T23:35:15Z",
-     "tit": "🔥 ¡JORNADA 2: BATALLA 11! 🔥",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/lkr-fms-plaza/1564422190466859138.webp",
-     "w": 720,
-     "h": 734
     }
    ],
    "staff": [
@@ -8739,6 +8764,13 @@
      4,
      24,
      "2026-10-28T01:19:40Z"
+    ],
+    [
+     "1414431452346581052",
+     "Flennzs | ⛩️",
+     0,
+     4,
+     "2026-10-30T20:24:31Z"
     ],
     [
      "1562656457034440835",
@@ -8775,6 +8807,16 @@
      1,
      "2026-10-29T21:22:33Z"
     ]
+   ],
+   "nov": [
+    {
+     "id": "r:lkr-fms-plaza:1565818737158783100",
+     "t": "2026-10-30T20:29:06Z",
+     "que": "res",
+     "ids": [
+      "1565818737158783100"
+     ]
+    }
    ]
   }
  }

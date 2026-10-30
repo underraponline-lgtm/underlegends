@@ -884,8 +884,8 @@
     ],
     [
      "Adriagner",
-     17,
-     2
+     28,
+     3
     ],
     [
      "ajoel08",
@@ -912,12 +912,12 @@
     "nuevos": {
      "FRZ": 4,
      "FFA": 20,
-     "DDF": 2,
+     "DDF": 5,
      "ACAD": 2
     },
     "gente": {
      "FDS": 13,
-     "DDF": 34,
+     "DDF": 41,
      "FFA": 101,
      "FRZ": 15,
      "ACAD": 16
@@ -926,7 +926,7 @@
    },
    "meta_va": {
     "ACAD": 16,
-    "DDF": 34,
+    "DDF": 41,
     "DRA": 0,
     "FDS": 13,
     "FFA": 101,

@@ -156,18 +156,6 @@
    "vence": "2026-11-01T21:03:19+00:00",
    "vencido": false
   },
-  "Black dmon": {
-   "chat": "2026-10-30",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-30T18:33:33+00:00",
-   "did": "",
-   "evento": "Galacticos del Freestyle vol.13",
-   "n": 546,
-   "sv": "DDF",
-   "vence": "2026-11-06T18:33:33+00:00",
-   "vencido": false
-  },
   "Bull12r": {
    "avisado": "2026-10-25",
    "chat": "2026-10-25",
@@ -257,7 +245,7 @@
    "n": 503,
    "sv": "FFA",
    "vence": "2026-10-30T20:26:11+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Dantemx": {
    "avisado": "2026-10-29",
@@ -1272,11 +1260,12 @@
    "vencido": false
   },
   "SikoV": {
+   "avisado": "2026-10-30",
    "chat": "2026-10-30",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-30T18:33:33+00:00",
-   "did": "",
+   "did": "855279570953437195",
    "evento": "Galacticos del Freestyle vol.13",
    "n": 546,
    "sv": "DDF",
@@ -1284,11 +1273,12 @@
    "vencido": false
   },
   "Skiller": {
+   "avisado": "2026-10-30",
    "chat": "2026-10-30",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-30T18:33:33+00:00",
-   "did": "",
+   "did": "1258968231809384470",
    "evento": "Galacticos del Freestyle vol.13",
    "n": 546,
    "sv": "DDF",
