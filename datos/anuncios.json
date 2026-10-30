@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-30T03:25:29+00:00",
+ "cuando": "2026-10-30T03:55:38+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6767,31 +6767,6 @@
    "autor": "99 |DJ SHADOW🐉",
    "staff_cuentas": {},
    "categoria_id": "1558611505040064602"
-  },
-  {
-   "nombre": "Red Bull",
-   "servidor": "LKR",
-   "canal": "🐉ANUNCIOS",
-   "msg_id": "1565532390171082773",
-   "cuando": "2026-10-30T01:06:48",
-   "canal_id": "1564463277348487219",
-   "guild_id": "1558611504046153750",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "9b8ac3f3f3f2d8e5",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "16 HRS MEX | 17 HRS COL | 19 HRS ARG | 23 HRS ESP",
-   "fecha": "7 DE FEBRERO",
-   "premios": "",
-   "staff": {},
-   "autor": "99 |DJ SHADOW🐉",
-   "staff_cuentas": {},
-   "de_imagen": true,
-   "categoria_id": "1564463238937186477"
   }
  ],
  "inscripciones": [
