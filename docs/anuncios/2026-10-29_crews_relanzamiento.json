@@ -1,0 +1,86 @@
+{
+ "_leeme": "El relanzamiento de las crews (4.18, 29/10/2026): fundar en una pantalla con el escudo armado, el mazo, «Buscan su 2.º» y la semana de cada crew; se quedan tres. Componentes V2, con @here (`--here`).",
+ "flags": 32768,
+ "components": [
+  {
+   "type": 17,
+   "accent_color": 14947187,
+   "components": [
+    {
+     "type": 9,
+     "components": [
+      {
+       "type": 10,
+       "content": "# 👥 LAS CREWS SE RELANZAN\n**Fundar tu crew ahora es un toque, y tu escudo lo armas ahí mismo.**"
+      }
+     ],
+     "accessory": {
+      "type": 11,
+      "media": {
+       "url": "https://underlegends.pages.dev/ul.png"
+      }
+     }
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🛡️ Funda la tuya en una pantalla\nNombre, sigla (sale sola), **tu escudo** —forma, símbolo y colores— y tu lema, con la vista previa en vivo. Si prefieres, sigues pudiendo subir tu imagen.\n> 💰 2.500 Puntos de Tienda · hasta 20 raperos · tú eres el Líder"
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## ⚡ O súmate a una\nEn **Crews** te salen las que más juegan, las que tienen gente de tu país y las que **buscan su 2.º**: tocas **Unirme** y estás adentro."
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 📊 La semana de tu crew\nCada crew muestra **cuántos de los suyos ya jugaron esta semana** y quién sumó. Cada lunes a las 11 AM (hora del este) sube, baja o se mantiene de tier."
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🆕 Arrancamos de nuevo\nSe quedan **Follombia, Knowledge Sombrío y Los ULEYES**. Las demás se cerraron: si estabas en una, **ya puedes fundar la tuya o sumarte a otra, sin esperar**.\n-# Las crews son de los Miembros verificados de DRA: escribe `/verificar` y el bot te dice qué te falta."
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 2
+    },
+    {
+     "type": 1,
+     "components": [
+      {
+       "type": 2,
+       "style": 5,
+       "label": "Ver las crews",
+       "emoji": {
+        "name": "👥"
+       },
+       "url": "https://underlegends.pages.dev/freestyle-rap/crews"
+      }
+     ]
+    },
+    {
+     "type": 10,
+     "content": "-# Liga Global de Freestyle en Español · Under Legends · v4.18"
+    }
+   ]
+  }
+ ]
+}

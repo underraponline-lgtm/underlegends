@@ -7,6 +7,7 @@
 
     --servidor FFA   en el canal de novedades de ese servidor (`canales.FFA.novedades`)
     --everyone       menciona a todos. SÓLO si Dlx lo pide para ese anuncio
+    --here           menciona a los que están conectados: el de siempre (Dlx, 29/09/2026: «QUE SUELTES ESE HERE!!»)
     --fijar          además lo fija en el canal (pide el permiso de fijar)
 
 🔑 Dlx, 25/09/2026: *«quiero que anuncies en DRA con el bot un mensaje así
@@ -69,7 +70,9 @@ def main():
     for k in [k for k in msg if k.startswith('_')]:
         msg.pop(k)
     sv = sys.argv[sys.argv.index('--servidor') + 1].upper() if '--servidor' in sys.argv else 'DRA'
-    everyone = '--everyone' in sys.argv
+    # 📣 @here y @everyone van por el mismo permiso de Discord (`parse: ['everyone']`); sin él, se ven azules y no suenan
+    mencion = '@everyone' if '--everyone' in sys.argv else '@here' if '--here' in sys.argv else ''
+    everyone = bool(mencion)
     msg['allowed_mentions'] = {'parse': ['everyone'] if everyone else []}
     if everyone:
         # en un mensaje V2 no hay `content`: la mención va arriba del primer texto
@@ -78,16 +81,16 @@ def main():
             while pila:
                 c = pila.pop(0)
                 if c.get('type') == 10:
-                    c['content'] = '@everyone\n' + (c.get('content') or '')
+                    c['content'] = mencion + '\n' + (c.get('content') or '')
                     break
                 pila = list(c.get('components') or []) + pila
         else:
-            msg['content'] = ('@everyone ' + (msg.get('content') or '')).strip()
+            msg['content'] = (mencion + ' ' + (msg.get('content') or '')).strip()
     ch = canal(sv)
     if not ch:
         print('  🔴 no hay canales.%s.novedades en datos/servidores.json' % sv)
         return 1
-    print('canal: %s (canales.%s.novedades)%s\n' % (ch, sv, ' · CON @everyone' if everyone else ''))
+    print('canal: %s (canales.%s.novedades)%s\n' % (ch, sv, ' · CON ' + mencion if everyone else ''))
     for e in msg.get('embeds') or []:
         print('  ' + (e.get('title') or ''))
         for l in (e.get('description') or '').split('\n'):
