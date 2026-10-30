@@ -1096,13 +1096,14 @@
 "rg": "",
 "c": []
 },
-"mats": {
+"riolu": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
-"riolu": {
+"mats": {
 "rg": "",
 "c": [
 "servidor",
@@ -2653,14 +2654,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-03T22:25:43Z",
-"quien": [
-"Abyssus"
-],
-"carta": "competitivo"
-},
 {
 "tipo": "rango",
 "t": "2026-10-03T22:25:43Z",
@@ -6002,6 +5995,14 @@
 "Adriagner"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-30T03:47:10Z",
+"quien": [
+"mats"
+],
+"carta": "temporada"
 }
 ]
 }
