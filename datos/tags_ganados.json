@@ -2825,6 +2825,20 @@
    ]
   }
  },
+ "eldinoco": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1793327725986
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1793327725986
+   ]
+  }
+ },
  "eliot": {
   "servidor": {
    "🏆 CAMPEÓN": [
@@ -4672,6 +4686,11 @@
     "t1",
     1793029252929
    ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1793327725986
+   ],
    "PIONERO": [
     "PIONERO",
     "t1",
@@ -4696,10 +4715,20 @@
    ]
   },
   "temporada": {
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1793327725986
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x1",
     "t1",
     1793029252929
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1793327725986
    ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
@@ -5152,7 +5181,7 @@
     1793138568927
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x5",
+    "👑 CAMPEÓN x6",
     "t1",
     1793029252929
    ],
@@ -5723,6 +5752,11 @@
     "t1",
     1793143003505
    ],
+   "🔋 INAGOTABLE": [
+    "🔋 INAGOTABLE",
+    "t1",
+    1793327725986
+   ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
     "t1",
@@ -5877,6 +5911,15 @@
     "🧳 VIAJERO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "monet": {
+  "temporada": {
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1793327725986
    ]
   }
  },

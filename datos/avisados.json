@@ -29058,5 +29058,145 @@
    ]
   ],
   "v": 2
+ },
+ "544": {
+  "antes": {
+   "Calíz": [
+    45,
+    61,
+    false
+   ],
+   "Crk": [
+    55,
+    72,
+    false
+   ],
+   "LRS": [
+    37,
+    47,
+    false
+   ],
+   "Lord Viruzz": [
+    36,
+    44,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Miniboy": [
+    25,
+    30,
+    false
+   ],
+   "Monet": [
+    390,
+    346,
+    true
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Miniboy",
+    "Calíz",
+    "Miniboy"
+   ],
+   [
+    "Eldinoco🇨🇩",
+    "LRS",
+    "Eldinoco🇨🇩"
+   ],
+   [
+    "Lord Viruzz",
+    "Monet",
+    "Lord Viruzz"
+   ],
+   [
+    "Makmah",
+    "Crk",
+    "Makmah"
+   ],
+   [
+    "Eldinoco🇦🇷",
+    "Miniboy",
+    "Eldinoco🇦🇷"
+   ],
+   [
+    "Makmah",
+    "Lord Viruzz",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Eldinoco🇦🇷",
+    "Makmah"
+   ]
+  ],
+  "ev_antes": {
+   "Calíz": 18,
+   "Crk": 11,
+   "LRS": 26,
+   "Lord Viruzz": 18,
+   "Makmah": 85,
+   "Miniboy": 32,
+   "Monet": 3
+  },
+  "fecha": "29/10",
+  "firma": "a980ead88c4c3282",
+  "msg": "1565551319597588561",
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.12",
+  "num": 544,
+  "participantes": 8,
+  "sello": {
+   "Makmah": "64adc8fbba68:6ec1a5248de8"
+  },
+  "sv": "DDF",
+  "t": "2026-10-30T02:24:47Z",
+  "tabla": [
+   [
+    "Makmah",
+    "Campeón",
+    7500
+   ],
+   [
+    "Eldinoco🇦🇷",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Lord Viruzz",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Monet",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Crk",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

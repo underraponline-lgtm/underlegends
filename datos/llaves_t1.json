@@ -30962,7 +30962,7 @@
        "Miniboy"
       ],
       "💥 SF1: PICHULA",
-      "Walk-in 1: MINIBOY"
+      "Walk-in 1: Miniboy"
      ],
      [
       [
@@ -38050,6 +38050,133 @@
     "yinn",
     "Cuartos",
     1250
+   ]
+  ]
+ },
+ "544": {
+  "dia": "2026-10-29",
+  "escala": "8-15",
+  "fecha": "29/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1565538423354294353"
+  ],
+  "n": 544,
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.12",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Miniboy",
+       "Calíz"
+      ],
+      "Miniboy",
+      ""
+     ],
+     [
+      [
+       "Eldinoco🇨🇩",
+       "LRS"
+      ],
+      "Eldinoco🇨🇩",
+      ""
+     ],
+     [
+      [
+       "Lord Viruzz",
+       "Monet"
+      ],
+      "Lord Viruzz",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Crk"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Eldinoco🇦🇷",
+       "Miniboy"
+      ],
+      "Eldinoco🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Lord Viruzz"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "Eldinoco🇦🇷"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Makmah",
+    "Campeón",
+    7500
+   ],
+   [
+    "Eldinoco🇦🇷",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Lord Viruzz",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Miniboy",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Crk",
+    "Cuartos",
+    2000
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Monet",
+    "Cuartos",
+    2000
    ]
   ]
  }

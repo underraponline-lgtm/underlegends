@@ -54,7 +54,7 @@
       },
       {
        "n": "Polosport",
-       "cobra": 3500
+       "cobra": 3250
       },
       {
        "n": "Six",
@@ -218,10 +218,22 @@
     "nivel": "C",
     "base": 5000,
     "o": 39,
-    "estado": "suelto",
-    "ev": 0,
-    "fase": "",
-    "valor": 5000
+    "estado": "cazado",
+    "ev": 1,
+    "fase": "Semifinal",
+    "valor": 5000,
+    "caza": {
+     "n": 544,
+     "evento": "GALACTICOS DEL FREESTYLE VOL.12",
+     "sv": "DDF",
+     "t": "2026-10-30T01:30:46Z",
+     "por": [
+      {
+       "n": "Makmah",
+       "cobra": 5000
+      }
+     ]
+    }
    },
    {
     "n": "J19",

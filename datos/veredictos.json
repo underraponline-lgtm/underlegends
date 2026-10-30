@@ -2,17 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1563012544619090004": {
-   "id": "1563012544619090004",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1792721630006,
-   "a": "VILCA",
-   "b": "SHADOW",
-   "ganador": "SHADOW",
-   "votos": "1–0"
-  },
   "1563015299823833099": {
    "id": "1563015299823833099",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
@@ -1662,158 +1651,53 @@
    "b": "LIBERIA KIBAK",
    "ganador": "GUAICURUS",
    "votos": "1–0"
-  }
- },
- "llaves": {
-  "1557935316378198067": {
-   "id": "1557935316378198067",
+  },
+  "1565547247436042321": {
+   "id": "1565547247436042321",
    "sv": "[FFA] Freestyle For All 👾",
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
-   "pub": 1791511124463,
-   "ed": 1791517878503,
-   "texto": "`[ OCTAVOS ]`\n⌞FLEIVAMAN BELLEZA⌝ 🆚 ⌞BLODDY HOLDEN⌝ 🆚 ⌞ZIGNOS PRESAGIO⌝\n⌞NEO⌝ 🆚 ⌞XCLUSIVO⌝ 🆚 ⌞SNOW⌝\n⌞ANDRES⌝ 🆚 ⌞CRONOX⌝\n⌞PERSONALITY NEMI⌝ 🆚 ⌞KURL ALEXIZ⌝ 🆚 ⌞SNOW RODRI LP⌝ 🆚 ⌞LUZZANO TAM⌝\n⌞PERSON⌝ 🆚 ⌞RODRI LP⌝ 🆚 ⌞TAM⌝\n`[ CUARTOS ]`\n⌞LUZZANO TAM⌝ 🆚 ⌞FAMILY AGUSTIN⌝\n⌞GIAN ZA⌝ 🆚 ⌞XCLUSIVO CRONOX⌝\n`[ SEMIFINALES ]`\n⌞PRESAGIO ZIGNOS⌝ 🆚 ⌞SNOW RODRILP⌝\n⌞GIAN ZA⌝ 🆚 ⌞LUZZANO TAM⌝\n`[ FINAL ]`\n⌞ZIGNOS⌝ 🆚 ⌞SNOW⌝\n⌞SIX⌝ 🆚 ⌞SNOW⌝\n⌞SIX⌝ 🆚 ⌞FLEIVAMAN⌝\n⌞PRESAGIO⌝ 🆚 ⌞FLEIVAMAN⌝",
-   "batallas": [
-    [
-     "OCTAVOS",
-     [
-      "FLEIVAMAN BELLEZA",
-      "BLODDY HOLDEN",
-      "ZIGNOS PRESAGIO"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "NEO",
-      "XCLUSIVO",
-      "SNOW"
-     ],
-     "NEO",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "ANDRES",
-      "CRONOX"
-     ],
-     "CRONOX",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "PERSONALITY NEMI",
-      "KURL ALEXIZ",
-      "SNOW RODRI LP",
-      "LUZZANO TAM"
-     ],
-     null,
-     "pasan 2, no hay un ganador",
-     [
-      "SNOW RODRI LP",
-      "LUZZANO TAM"
-     ]
-    ],
-    [
-     "OCTAVOS",
-     [
-      "PERSON",
-      "RODRI LP",
-      "TAM"
-     ],
-     "RODRI LP",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "LUZZANO TAM",
-      "FAMILY AGUSTIN"
-     ],
-     "LUZZANO TAM",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "GIAN ZA",
-      "XCLUSIVO CRONOX"
-     ],
-     "GIAN ZA",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "PRESAGIO ZIGNOS",
-      "SNOW RODRILP"
-     ],
-     "PRESAGIO ZIGNOS",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "GIAN ZA",
-      "LUZZANO TAM"
-     ],
-     "GIAN ZA",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "ZIGNOS",
-      "SNOW"
-     ],
-     "SNOW",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "SIX",
-      "SNOW"
-     ],
-     "SIX",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "SIX",
-      "FLEIVAMAN"
-     ],
-     "FLEIVAMAN",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "PRESAGIO",
-      "FLEIVAMAN"
-     ],
-     "PRESAGIO",
-     "veredicto",
-     []
-    ]
-   ]
+   "pub": 1793325950250,
+   "a": "ABBYSUS",
+   "b": "PARK JI SUNG",
+   "ganador": "ABBYSUS",
+   "votos": "1–0"
   },
+  "1565548470893281382": {
+   "id": "1565548470893281382",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793326241945,
+   "a": "ABBYSUS",
+   "b": "PARK JI SUNG",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
+  },
+  "1565549899095998626": {
+   "id": "1565549899095998626",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793326582455,
+   "a": "PARK JI SUNG",
+   "b": "YINN",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
+  },
+  "1565550850057834678": {
+   "id": "1565550850057834678",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793326809182,
+   "a": "PARK JI SUNG",
+   "b": "LEWITO",
+   "ganador": "PARK JI SUNG",
+   "votos": "1–0"
+  }
+ },
+ "llaves": {
   "1557966243867271220": {
    "id": "1557966243867271220",
    "sv": "[FFA] Freestyle For All 👾",
@@ -5757,8 +5641,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793322296166,
-   "ed": 1793325184700,
-   "texto": "`[ CUARTOS ]`\n⌞DREXX LRS ADRIAGNER⌝ 🆚 ⌞YINN VERC⌝\n⌞DREXX⌝ 🆚 ⌞VERC⌝\n⌞GUAICURUS⌝ 🆚 ⌞KARUMAI⌝\n`[ SEMIFINALES ]`\n⌞GUAICURUS⌝ 🆚 ⌞LIBERIA KIBAK⌝",
+   "ed": 1793326958317,
+   "texto": "`[ CUARTOS ]`\n⌞DREXX LRS ADRIAGNER⌝ 🆚 ⌞YINN VERC⌝\n⌞DREXX⌝ 🆚 ⌞VERC⌝\n⌞GUAICURUS⌝ 🆚 ⌞KARUMAI⌝\n`[ SEMIFINALES ]`\n⌞GUAICURUS⌝ 🆚 ⌞LIBERIA KIBAK⌝\n`[ FINAL ]`\n⌞ABBYSUS⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞ABBYSUS⌝ 🆚 ⌞PARK JI SUNG⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞YINN⌝\n⌞PARK JI SUNG⌝ 🆚 ⌞LEWITO⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5798,6 +5682,67 @@
      ],
      "GUAICURUS",
      "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ABBYSUS",
+      "PARK JI SUNG"
+     ],
+     "ABBYSUS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "ABBYSUS",
+      "PARK JI SUNG"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PARK JI SUNG",
+      "YINN"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PARK JI SUNG",
+      "LEWITO"
+     ],
+     "PARK JI SUNG",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1565551002948477030": {
+   "id": "1565551002948477030",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1793326845634,
+   "ed": 1793326871863,
+   "texto": "`[ FINAL ]`\n⌞MAKMAH⌝ 🆚 ⌞DYNOCO⌝",
+   "batallas": [
+    [
+     "FINAL",
+     [
+      "MAKMAH",
+      "DYNOCO"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
