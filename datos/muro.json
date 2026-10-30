@@ -1084,7 +1084,8 @@
 "rg": "",
 "c": [
 "pais",
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "sol": {
@@ -2641,14 +2642,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-03T06:36:47Z",
-"quien": [
-"Eclipsito"
-],
-"carta": "temporada"
-},
 {
 "tipo": "rango",
 "t": "2026-10-03T15:54:42Z",
@@ -5985,7 +5978,15 @@
 },
 {
 "tipo": "tarjeta",
-"t": "2026-10-30T00:32:00Z",
+"t": "2026-10-30T00:45:24Z",
+"quien": [
+"Noone"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-30T00:45:24Z",
 "quien": [
 "Dantemx"
 ],
