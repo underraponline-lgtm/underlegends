@@ -1685,14 +1685,14 @@
    "servidor": "f878da4ea385:99e0c0179dbe:ba481e"
   },
   "Vlade": {
-   "competitivo": "459028868a84:0a48057cb351",
-   "pais": "4692de3d761d:263a27e40647",
-   "servidor": "6b9c01d13c8d:99e0c0179dbe:552866"
+   "competitivo": "71482c5cd7db:0a48057cb351",
+   "pais": "887c4d9bd2ed:263a27e40647",
+   "servidor": "bcace3d06927:99e0c0179dbe:552866"
   },
   "Volk": {
-   "competitivo": "698d775f9c22:0a48057cb351",
-   "pais": "8b0f53c93af8:263a27e40647",
-   "servidor": "07dbefeaec28:99e0c0179dbe:055f77"
+   "competitivo": "5a8c4d98465e:0a48057cb351",
+   "pais": "8dab6bb9fddb:263a27e40647",
+   "servidor": "2e0ab5ad59f4:99e0c0179dbe:055f77"
   },
   "WILLY": {},
   "Wachiwa": {
@@ -1934,5 +1934,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-30T04:10:21+00:00"
+ "cuando": "2026-10-30T04:37:08+00:00"
 }
