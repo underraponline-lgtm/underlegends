@@ -3814,10 +3814,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 3000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Infecte": {
@@ -4113,10 +4110,7 @@
     "ovr": 48,
     "pod": 0,
     "pts": 32200,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "0/1",
@@ -4805,8 +4799,7 @@
     "racha": "1/1",
     "tg": {
      "dv": true,
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    },
    "FFA": {

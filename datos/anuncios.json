@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-30T03:55:38+00:00",
+ "cuando": "2026-10-30T04:25:14+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6770,6 +6770,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "yo mc 🇨🇱",
+   "quien": "cronoxzito",
+   "discord_id": "1487658663148785734",
+   "msg_id": "1565574985232293951",
+   "cuando": "2026-10-30T03:56:03"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Makmah 🇻🇪 (última)",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1565574980375281758",
+   "cuando": "2026-10-30T03:56:02"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Tuca 🇦🇷",
+   "quien": "tuquitta",
+   "discord_id": "458702447913861130",
+   "msg_id": "1565574975816073257",
+   "cuando": "2026-10-30T03:56:01"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Trot🇪🇸",
+   "quien": "eresmatrot",
+   "discord_id": "1347663033949880360",
+   "msg_id": "1565574973853012060",
+   "cuando": "2026-10-30T03:56:00"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42733,42 +42769,6 @@
    "discord_id": "1547397892153671792",
    "msg_id": "1552752655691161753",
    "cuando": "2026-09-24T18:44:41"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝︱inscripciones",
-   "texto": "Molusco",
-   "quien": "moluscoanvriento_79058",
-   "discord_id": "1363285354442133778",
-   "msg_id": "1552698802736070817",
-   "cuando": "2026-09-24T15:10:42"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝︱inscripciones",
-   "texto": "Prr🇦🇴",
-   "quien": "ndfue",
-   "discord_id": "1405241805733105704",
-   "msg_id": "1552698646649380995",
-   "cuando": "2026-09-24T15:10:05"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝︱inscripciones",
-   "texto": "gus",
-   "quien": "agusdema",
-   "discord_id": "989640104765177956",
-   "msg_id": "1552698640068251729",
-   "cuando": "2026-09-24T15:10:03"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝︱inscripciones",
-   "texto": "Trot🇪🇸",
-   "quien": "eresmatrot",
-   "discord_id": "1347663033949880360",
-   "msg_id": "1552698633659351211",
-   "cuando": "2026-09-24T15:10:02"
   }
  ]
 }
