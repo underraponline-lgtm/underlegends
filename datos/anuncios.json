@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-30T15:56:00+00:00",
+ "cuando": "2026-10-30T16:25:59+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -376,6 +376,40 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "DESGRACIAS EN TOKYO VOL 31 1 VS 1",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1565757203149758554",
+   "cuando": "2026-10-30T16:00:07",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "LEWITO",
+   "orgs": [],
+   "autor_h": "211322958af20ae2",
+   "cupos_texto": "16 / 24",
+   "inscriptos": 16,
+   "cupo_total": 24,
+   "rango": "PLATA 3",
+   "modalidad": "",
+   "horario": "EN 1 HORA",
+   "fecha": "",
+   "premios": "RESPETO",
+   "staff": {
+    "jurado": [
+     "LEWITO"
+    ],
+    "host": [
+     "LEWITO"
+    ],
+    "dj": [
+     "LEWITO"
+    ]
+   },
+   "autor": "Lewito",
+   "staff_cuentas": {},
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "qcyo rapeen 7",
@@ -1252,47 +1286,6 @@
    },
    "autor": "Lewito",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "TRIBIA",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1561200563578736691",
-   "cuando": "2026-10-18T02:13:40",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "",
-   "orgs": [
-    {
-     "n": "Velatz",
-     "id": "1426686911908675628"
-    }
-   ],
-   "autor_h": "c36f9caea613c5c9",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "Bronce III 🥉",
-   "modalidad": "Pandillas",
-   "horario": "11:30",
-   "fecha": "",
-   "premios": "1 Campeonato 🏆",
-   "staff": {
-    "jurado": [
-     "Velatz"
-    ],
-    "host": [
-     "Velatz"
-    ],
-    "dj": [
-     "Velatz"
-    ]
-   },
-   "autor": "Velatz",
-   "staff_cuentas": {
-    "Velatz": "1426686911908675628"
-   },
    "categoria_id": "1468478330826260500"
   },
   {
