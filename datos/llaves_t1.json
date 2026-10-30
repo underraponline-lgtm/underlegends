@@ -38442,5 +38442,150 @@
     625
    ]
   ]
+ },
+ "546": {
+  "dia": "2026-10-30",
+  "escala": "8-15",
+  "fecha": "30/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1565795814834708491"
+  ],
+  "n": 546,
+  "nombre": "Galacticos del Freestyle vol.13",
+  "participantes": 11,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Keider",
+       "Skiller🇨🇱"
+      ],
+      "Keider",
+      ""
+     ],
+     [
+      [
+       "black dmon🇪🇨",
+       "Walker"
+      ],
+      "black dmon🇪🇨",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "MaYeuTyK"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Xclusivo",
+       "Jobaking",
+       "19",
+       "SikoV 🇲🇽",
+       "Miniboy"
+      ],
+      "Xclusivo",
+      "triple (5 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "black dmon🇪🇨",
+       "Keider"
+      ],
+      "black dmon🇪🇨",
+      ""
+     ],
+     [
+      [
+       "Xclusivo",
+       "Makmah"
+      ],
+      "Xclusivo",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Xclusivo",
+       "Black dmon🇪🇨"
+      ],
+      "Xclusivo",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Xclusivo",
+    "Campeón",
+    7500
+   ],
+   [
+    "Black dmon🇪🇨",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Keider",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3500
+   ],
+   [
+    "19",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jobaking",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ],
+   [
+    "SikoV 🇲🇽",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Skiller🇨🇱",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Walker",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

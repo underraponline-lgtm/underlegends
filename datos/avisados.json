@@ -29562,5 +29562,181 @@
    ]
   ],
   "v": 2
+ },
+ "546": {
+  "antes": {
+   "19": [
+    239,
+    94,
+    true
+   ],
+   "Jobaking": [
+    55,
+    72,
+    false
+   ],
+   "Keider": [
+    102,
+    142,
+    false
+   ],
+   "MaYeuTyK": [
+    99,
+    138,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Miniboy": [
+    24,
+    29,
+    false
+   ],
+   "Walker": [
+    51,
+    68,
+    false
+   ],
+   "Xclusivo": [
+    223,
+    44,
+    true
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "Keider",
+    "Skiller🇨🇱",
+    "Keider"
+   ],
+   [
+    "black dmon🇪🇨",
+    "Walker",
+    "black dmon🇪🇨"
+   ],
+   [
+    "Makmah",
+    "MaYeuTyK",
+    "Makmah"
+   ],
+   [
+    "Xclusivo",
+    "Jobaking",
+    "Xclusivo"
+   ],
+   [
+    "Xclusivo",
+    "19",
+    "Xclusivo"
+   ],
+   [
+    "Xclusivo",
+    "SikoV 🇲🇽",
+    "Xclusivo"
+   ],
+   [
+    "Xclusivo",
+    "Miniboy",
+    "Xclusivo"
+   ],
+   [
+    "black dmon🇪🇨",
+    "Keider",
+    "black dmon🇪🇨"
+   ],
+   [
+    "Xclusivo",
+    "Makmah",
+    "Xclusivo"
+   ],
+   [
+    "Xclusivo",
+    "Black dmon🇪🇨",
+    "Xclusivo"
+   ]
+  ],
+  "ev_antes": {
+   "19": 5,
+   "Jobaking": 14,
+   "Keider": 6,
+   "MaYeuTyK": 7,
+   "Makmah": 87,
+   "Miniboy": 34,
+   "Walker": 7,
+   "Xclusivo": 18
+  },
+  "fecha": "30/10",
+  "firma": "416f97fa1dbf60cc",
+  "msg": "1565813542689579108",
+  "nombre": "Galacticos del Freestyle vol.13",
+  "num": 546,
+  "participantes": 11,
+  "sello": {
+   "Xclusivo": ""
+  },
+  "sv": "DDF",
+  "t": "2026-10-30T19:55:02Z",
+  "tabla": [
+   [
+    "Xclusivo",
+    "Campeón",
+    7500
+   ],
+   [
+    "Black dmon🇪🇨",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Keider",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Skiller🇨🇱",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Walker",
+    "Cuartos",
+    2000
+   ],
+   [
+    "MaYeuTyK",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Jobaking",
+    "Cuartos",
+    2000
+   ],
+   [
+    "19",
+    "Cuartos",
+    2000
+   ],
+   [
+    "SikoV 🇲🇽",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Miniboy",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

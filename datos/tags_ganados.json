@@ -1011,6 +1011,20 @@
    ]
   }
  },
+ "blackdmon": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1793390603259
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1793390603259
+   ]
+  }
+ },
  "blitz": {
   "servidor": {
    "📆 HABITUÉ": [
@@ -4116,6 +4130,13 @@
   }
  },
  "keider": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1793390603259
+   ]
+  },
   "temporada": {
    "🧟 RESUCITADO": [
     "🧟 RESUCITADO",
@@ -5477,6 +5498,13 @@
   }
  },
  "mayeutyk": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1793390603259
+   ]
+  },
   "temporada": {
    "🌍 TROTAMUNDOS": [
     "🌍 TROTAMUNDOS",
@@ -5742,6 +5770,11 @@
     "🏅 PODIOS",
     "t1",
     1792953978519
+   ],
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1793390603259
    ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -10875,6 +10908,16 @@
     "🐦‍🔥 FÉNIX",
     "t1",
     1792953978519
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1793390603259
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1793390603259
    ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",

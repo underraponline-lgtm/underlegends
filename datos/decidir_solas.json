@@ -2,25 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "863eff1a80",
-   "tipo": "alta",
-   "sec": "🪪 Identidad",
-   "que": "A «BETELGEUSE» lo buscó otra persona con /card en URBF (no lo usó él) y no está en la Lista de Raperos. Si ya está con otro nombre, elegilo o escribilo: le pongo su Discord.\nSu cuenta: https://discord.com/users/1386059494056005655",
-   "r": "Ya está resuelto",
-   "regla": "R3 · un alta que no hace falta: el bot, o una cuenta que buscó otro y no jugó",
-   "rk": "R3",
-   "por": "el ciclo",
-   "porque": "no usó /card: lo buscó otra persona, y no jugó en la T1 (ni su nombre ni con lo que se anotó está en ningún resultado). Si se anota sola, entra como cualquiera",
-   "t": 1792108653903,
-   "filas": [
-    725
-   ],
-   "variantes": [
-    "BETELGEUSE = 1386059494056005655"
-   ],
-   "escribio": {}
-  },
-  {
    "id": "308f8030d4",
    "tipo": "Nombre desconocido",
    "sec": "SNAKE INSIGNIA 5 8 · SR · 16/10 · #478",
@@ -2521,6 +2502,83 @@
     "alta": [
      "fenix",
      "913093970026987561"
+    ]
+   }
+  },
+  {
+   "id": "1ca2a84ebb",
+   "tipo": "Nombre desconocido",
+   "sec": "Galacticos del Freestyle vol.13 · DDF · 30/10 · #546",
+   "que": "¿Quién es «Black dmon🇪🇨»? (también escrito «black dmon🇪🇨»)",
+   "r": "Es Lilñaño",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Lilñaño: la misma cuenta de Discord",
+   "t": 1793390588500,
+   "filas": [
+    950,
+    953
+   ],
+   "variantes": [
+    "Black dmon🇪🇨",
+    "black dmon🇪🇨"
+   ],
+   "escribio": {
+    "alias": [
+     "Black dmon",
+     "Lilñaño"
+    ],
+    "filas": [
+     326
+    ]
+   }
+  },
+  {
+   "id": "fdb8820f7f",
+   "tipo": "Nombre desconocido",
+   "sec": "Galacticos del Freestyle vol.13 · DDF · 30/10 · #546",
+   "que": "¿Quién es «SikoV 🇲🇽»?",
+   "r": "Es alguien nuevo: alta con su cuenta 855279570953437195",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (855279570953437195)",
+   "t": 1793390588500,
+   "filas": [
+    951
+   ],
+   "variantes": [
+    "SikoV 🇲🇽"
+   ],
+   "escribio": {
+    "alta": [
+     "SikoV",
+     "855279570953437195"
+    ]
+   }
+  },
+  {
+   "id": "7e963db629",
+   "tipo": "Nombre desconocido",
+   "sec": "Galacticos del Freestyle vol.13 · DDF · 30/10 · #546",
+   "que": "¿Quién es «Skiller🇨🇱»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1258968231809384470",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1258968231809384470)",
+   "t": 1793390588500,
+   "filas": [
+    952
+   ],
+   "variantes": [
+    "Skiller🇨🇱"
+   ],
+   "escribio": {
+    "alta": [
+     "Skiller",
+     "1258968231809384470"
     ]
    }
   }
