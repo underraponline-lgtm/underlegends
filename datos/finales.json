@@ -899,5 +899,27 @@
   "sin_permiso": false,
   "sv": "FFA"
  },
+ "1565472961706594396": {
+  "autor": "1512148565890306153",
+  "canal": "1487207377601040516",
+  "cuando": "2026-10-29T21:10:39.152000+00:00",
+  "evento": "Rap para Raperos #1",
+  "fecha": "29/10",
+  "llave": "1565472961706594396",
+  "pregunta": "1565529202718019708",
+  "preguntada": "2026-10-29 8:54 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Joba 🇨🇱",
+     "Teo🇨🇴"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
