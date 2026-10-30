@@ -1699,10 +1699,10 @@
    "servidor": "272f38d5acf6:99e0c0179dbe:055f77"
   },
   "Walker": {
-   "competitivo": "40f8e41d67de:0a48057cb351",
-   "pais": "eaad0521fae8:263a27e40647",
-   "servidor": "e3148643caa5:99e0c0179dbe:324686",
-   "temporada": "c9e3fb24263d:6ec1a5248de8"
+   "competitivo": "996e34e79a2b:0a48057cb351",
+   "pais": "27026d29a0ed:263a27e40647",
+   "servidor": "45ba3c4d74b5:99e0c0179dbe:324686",
+   "temporada": "19dbb690721b:6ec1a5248de8"
   },
   "Warriorvid": {},
   "Xclusivo": {},
@@ -1715,38 +1715,38 @@
    "servidor": "49b45c822ffe:99e0c0179dbe:100254"
   },
   "Xplicit": {
-   "competitivo": "41718f32d0d9:0a48057cb351",
-   "pais": "2c80a3075aa5:263a27e40647",
-   "servidor": "d5b3722a9ffe:99e0c0179dbe:bc3af4"
+   "competitivo": "ebe51f7075ef:0a48057cb351",
+   "pais": "210993bbd9db:263a27e40647",
+   "servidor": "fa54e5404963:99e0c0179dbe:bc3af4"
   },
   "Xubaru": {
-   "competitivo": "89498da00713:0a48057cb351",
-   "pais": "af0ec76d700a:263a27e40647",
-   "servidor": "dbdfdde0dd50:99e0c0179dbe:a29fa0",
-   "temporada": "d4305f595d8c:6ec1a5248de8"
+   "competitivo": "a8a510ab827d:0a48057cb351",
+   "pais": "05b38147f58c:263a27e40647",
+   "servidor": "0fa0984b1e7b:99e0c0179dbe:a29fa0",
+   "temporada": "969447945654:6ec1a5248de8"
   },
   "YACO": {
    "servidor": "8dc17afd358c:99e0c0179dbe:980594"
   },
   "Yeyox": {
-   "competitivo": "43deb02fc4aa:0a48057cb351",
-   "pais": "9320173ea190:263a27e40647",
-   "servidor": "8a505296f9a2:99e0c0179dbe:93ed66"
+   "competitivo": "8655e3534d77:0a48057cb351",
+   "pais": "7ac53e5b2916:263a27e40647",
+   "servidor": "1e2221651a90:99e0c0179dbe:93ed66"
   },
   "Yio": {},
   "Yor": {
-   "competitivo": "7a6e0b07ac10:0a48057cb351",
-   "pais": "5d2941c5bfec:263a27e40647",
-   "servidor": "1c84690d3647:99e0c0179dbe:948362"
+   "competitivo": "e7c6277ca51b:0a48057cb351",
+   "pais": "e8313411d012:263a27e40647",
+   "servidor": "262483cc5a29:99e0c0179dbe:948362"
   },
   "Young": {
    "servidor": "c2767db846db:99e0c0179dbe:15af16"
   },
   "ZTR": {
-   "competitivo": "49c8364d0dd8:0a48057cb351",
-   "pais": "be88fe257424:263a27e40647",
-   "servidor": "f83c4ab33fe4:99e0c0179dbe:5bc8b2",
-   "temporada": "99093036a3e8:6ec1a5248de8"
+   "competitivo": "2aed186cbc10:0a48057cb351",
+   "pais": "30ed6d6e77f9:263a27e40647",
+   "servidor": "0d39046257cd:99e0c0179dbe:5bc8b2",
+   "temporada": "71e27f23f1f5:6ec1a5248de8"
   },
   "Zaamei": {
    "servidor": "b1642589051e:99e0c0179dbe:403ba8"
@@ -1757,18 +1757,18 @@
    "servidor": "8f69e009f8f5:99e0c0179dbe:2a03f7"
   },
   "Zaik": {
-   "competitivo": "422c2cd139d8:0a48057cb351",
-   "servidor": "b2d29386789b:99e0c0179dbe:284dc1",
-   "temporada": "c77f891d0cc2:6ec1a5248de8"
+   "competitivo": "e560ddbd78f4:0a48057cb351",
+   "servidor": "0963a9767861:99e0c0179dbe:284dc1",
+   "temporada": "905a372f03f8:6ec1a5248de8"
   },
   "Zamo": {
    "servidor": "f78f4273cc58:99e0c0179dbe:4b46a6"
   },
   "Zanet": {},
   "Zekha": {
-   "competitivo": "d004239485bb:0a48057cb351",
-   "pais": "b1d82fd94804:263a27e40647",
-   "servidor": "b78c99a9ad23:99e0c0179dbe:610cd5"
+   "competitivo": "8e0fbcc5bb52:0a48057cb351",
+   "pais": "8eaa8aa88e5b:263a27e40647",
+   "servidor": "41af1a47e103:99e0c0179dbe:610cd5"
   },
   "Zekki": {
    "servidor": "d2b86c0bbfd9:99e0c0179dbe:055f77"
@@ -1934,5 +1934,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-30T03:56:52+00:00"
+ "cuando": "2026-10-30T04:10:21+00:00"
 }
