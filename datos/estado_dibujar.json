@@ -1,61 +1,61 @@
 {
  "v": 1,
- "cuando": "2026-10-30T01:29:14Z",
+ "cuando": "2026-10-30T01:41:30Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1717.0,
+ "dur_s": 571.7,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.0
+   "s": 8.2
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 0.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 9.0
+   "s": 6.4
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 24.5
+   "s": 17.7
   },
   {
    "n": "5",
-   "que": "tanda 1 de 6 · 40 persona(s)",
+   "que": "tanda 1 de 3 · 40 persona(s)",
    "ok": false,
-   "s": 1610.9
+   "s": 472.7
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 10.0
+   "s": 9.3
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 53.6
+   "s": 55.7
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
+   "que": "03_Servidor/generar.py Acry"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Sami"
+   "que": "03_Servidor/generar.py Kyss"
   }
  ],
  "ultimo_evento": {
@@ -66,25 +66,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 71,
-   "read": 5025
+   "write": 93,
+   "read": 6426
   },
   "objeto": {
-   "leidas": 743313,
-   "escritas": 3989,
-   "pedidos": 946
+   "leidas": 836787,
+   "escritas": 4479,
+   "pedidos": 1071
   },
   "worker": {
-   "pedidos": 7859,
+   "pedidos": 7944,
    "errores": 0,
-   "sub": 9392,
+   "sub": 9449,
    "cortados": 0,
    "p50_ms": 1.24,
-   "p99_ms": 12.99,
+   "p99_ms": 12.88,
    "cpu": {
-    "total": 17283,
-    "objeto_10": 1810,
-    "worker_10": 228
+    "total": 17445,
+    "objeto_10": 1819,
+    "worker_10": 232
    }
   },
   "r2": {
