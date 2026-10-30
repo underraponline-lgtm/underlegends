@@ -635,6 +635,10 @@
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dans/sv-dra.webp"
  },
  "dantemx": {
+  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dantemx/bloq-competitivo.webp",
+  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dantemx/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dantemx/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dantemx/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dantemx/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dantemx/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dantemx/sv-ddf.webp",
@@ -642,7 +646,8 @@
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dantemx/sv-ffa.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dantemx/sv-frz.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dantemx/sv-fvs.webp",
-  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dantemx/sv-urbf.webp"
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dantemx/sv-urbf.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dantemx/temporada.webp"
  },
  "darkness": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/darkness/servidor.webp",
@@ -1059,6 +1064,7 @@
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/filozico/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/filozico/sv-ffa.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/filozico/sv-fvs.webp",
+  "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/filozico/sv-sr.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/filozico/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/filozico/temporada.webp"
  },
@@ -3599,6 +3605,7 @@
   "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/trelok/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/trelok/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/trelok/sv-acad.webp",
+  "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/trelok/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/trelok/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/trelok/sv-ffa.webp",
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/trelok/sv-frz.webp",

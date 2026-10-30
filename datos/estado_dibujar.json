@@ -1,86 +1,90 @@
 {
  "v": 1,
- "cuando": "2026-10-29T23:37:40Z",
+ "cuando": "2026-10-30T00:15:28Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 426.2,
+ "dur_s": 1894.4,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.1
+   "s": 8.5
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 1.0
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.7
+   "s": 9.6
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.2
+   "s": 21.6
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 36 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": false,
-   "s": 324.8
+   "s": 1780.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.0
+   "s": 12.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 56.3
+   "s": 59.5
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Artezzy"
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Scritura"
   }
  ],
  "ultimo_evento": {
-  "n": "542",
-  "nombre": "QCYO RAPEEN 6",
+  "n": "543",
+  "nombre": "Rap para Raperos #1",
   "sv": "FFA",
-  "dia": "2026-10-28"
+  "dia": "2026-10-29"
  },
  "cuotas": {
   "kv": {
-   "write": 382,
-   "read": 53525
+   "write": 3,
+   "read": 545
   },
   "objeto": {
-   "leidas": 2822294,
-   "escritas": 17120,
-   "pedidos": 8975
+   "leidas": 156284,
+   "escritas": 867,
+   "pedidos": 161
   },
   "worker": {
-   "pedidos": 7590,
+   "pedidos": 7706,
    "errores": 0,
-   "sub": 9179,
+   "sub": 9277,
    "cortados": 0,
    "p50_ms": 1.25,
-   "p99_ms": 12.87,
+   "p99_ms": 13.04,
    "cpu": {
-    "total": 16776,
-    "objeto_10": 1747,
-    "worker_10": 216
+    "total": 17041,
+    "objeto_10": 1782,
+    "worker_10": 220
    }
   },
   "r2": {
