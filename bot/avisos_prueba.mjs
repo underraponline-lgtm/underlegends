@@ -1147,8 +1147,11 @@ const ok = (cond, que, det) => {
       && V({ id: 8, accion: 'ganador', liga: 'fmh-carimex', ronda: 'x', lados: ['A', 'B'], ganador: 'A' }).error
       && V({ id: 8, accion: 'nombre', liga: '../x', nombre: 'A', es: 'B' }).error,
     'un nombre de una liga: quien lo mandó u otro de la Lista; alguien nuevo o el ganador, no', JSON.stringify(vl));
-    o.sql.exec("INSERT INTO reportes (quien, llave, que, texto, t) VALUES ('100000021', '464', 'nombre', 'soy yo', ?)", martes);
-    o.sql.exec("INSERT INTO reportes (quien, llave, que, texto, t) VALUES ('100000022', '360', 'otro', 'probando', ?)", martes);
+    // ⏳ los reportes con la hora de AHORA, no la de `martes`: `colaReportes()` borra con el reloj de verdad los de más de
+    // `REPORTE_VIDA_DIAS`, y con la fecha fija del 13/10 la prueba se rompió sola el 29/10 a las 2 PM (hora del este)
+    const recien = Date.now() - 60000;
+    o.sql.exec("INSERT INTO reportes (quien, llave, que, texto, t) VALUES ('100000021', '464', 'nombre', 'soy yo', ?)", recien);
+    o.sql.exec("INSERT INTO reportes (quien, llave, que, texto, t) VALUES ('100000022', '360', 'otro', 'probando', ?)", recien);
     const [r1, r2] = o.sql.exec('SELECT id FROM reportes ORDER BY id').toArray().map((x) => x.id);
     const d1 = await o.duenoReporte(V({ id: r1, accion: 'nombre', n: '464', nombre: 'Agus', reporta: true }));
     const d2 = await o.duenoReporte(V({ id: r2, accion: 'prueba' }));
@@ -1466,7 +1469,7 @@ const ok = (cond, que, det) => {
     const pm = o.panelDueno({ quien: '100000061', roles: o.rolesPanelDe('100000061') });
     const pa = o.panelDueno({ quien: '100000062', roles: o.rolesPanelDe('100000062') });
     const pd = o.panelDueno();
-    o.sql.exec("INSERT INTO reportes (quien, llave, que, texto, t) VALUES ('100000071', '466', 'otro', 'x', ?)", martes);
+    o.sql.exec("INSERT INTO reportes (quien, llave, que, texto, t) VALUES ('100000071', '466', 'otro', 'x', ?)", Date.now() - 60000);
     const rid = o.sql.exec('SELECT MAX(id) AS id FROM reportes').toArray()[0].id;
     const rp2 = await o.duenoReporte(Object.assign(V({ id: rid, accion: 'listo' }), { por: '100000061' }));
     ok(JSON.stringify(o.rolesPanelDe('100000061')) === '["moderador"]' && o.rolesPanelDe('100000063').length === 0

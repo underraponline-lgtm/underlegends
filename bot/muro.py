@@ -242,7 +242,8 @@ def crews_suben(ct, vivas):
              'tier': h[3], 'tn': nombres[h[3]] if 0 <= h[3] < len(nombres) else '', 'pts': int(h[4] or 0), 'sem': h[0]}
         if h[3] == diamante:
             x['tarjeta'] = True
-        if str(c.get('logo') or '').startswith('https://'):
+        # 🛡️ o el escudo armado (`esc:…`, 29/10/2026): lo dibuja la página
+        if str(c.get('logo') or '').startswith(('https://', 'esc:')):
             x['logo'] = c['logo']
         out.append(x)
     return out

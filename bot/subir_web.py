@@ -3155,7 +3155,7 @@ def _crews():
     rk_cfg = vivas.get('ranking') or {'modo': 'todos', 'n': 5}
     reps_de = {c.get('id'): c.get('reps') or [] for c in vivas.get('crews') or []}
     # 🖼️ el logo que subió el líder (19/10/2026): de R2, con su URL entera; si no hay, el del repo (`logos/crews/`)
-    logo_de = {c.get('id'): c.get('logo') for c in vivas.get('crews') or [] if str(c.get('logo') or '').startswith('https://')}
+    logo_de = {c.get('id'): c.get('logo') for c in vivas.get('crews') or [] if str(c.get('logo') or '').startswith(('https://', 'esc:'))}
     # 🏆 y su tier (`bot/crews_tiers.py`): Bronce si todavía no tiene
     tier_de = (_json('datos', 'crews_tiers.json') or {}).get('tier') or {}
     from comun.claves import clave as _ck

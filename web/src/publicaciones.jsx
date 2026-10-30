@@ -9,6 +9,7 @@
 // publicación —eran 46 de 80 renglones—, y Felicitar va sólo en los logros de verdad (campeón, rango, Most Wanted).
 import { Fragment, useMemo, useState } from 'react';
 import { MESES, ksDe, limpio, num, siglaDe } from './liga.js';
+import { Escudo, escudoDe } from './escudo.jsx';
 import { Cara, Carta, Ico, Vacio, accion, promoAbierta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { Elegido, X2 } from './encuestas.jsx';
@@ -90,7 +91,8 @@ export function Pub({ liga, it, A }) {
     // 🏆 una crew que sube de tier al cerrar la semana (bot/muro.py `crews_suben()`, 19/10/2026)
     const col = (liga.d.crews_tiers && (liga.d.crews_tiers.colores || [])[it.tier]) || '#E41373';
     cat = 'CREWS · SUBE DE TIER';
-    vis = it.logo ? <img className="pub-logo" alt="" src={it.logo} /> : <span className="pub-rg" style={{ background: col }}>{String(it.tn || '').slice(0, 2)}</span>;
+    vis = /^esc:/.test(it.logo || '') ? <span className="pub-logo con-esc"><Escudo e={escudoDe(it.logo, it.nombre)} /></span>
+      : it.logo ? <img className="pub-logo" alt="" src={it.logo} /> : <span className="pub-rg" style={{ background: col }}>{String(it.tn || '').slice(0, 2)}</span>;
     txt = <><b>{limpio(it.nombre)}</b> sube a <b style={{ color: col }}>{it.tn}</b>{it.tarjeta ? ' y desbloquea su tarjeta de crew' : ''}</>;
     det = it.pts ? num(it.pts) + ' puntos en la semana' : '';
     acc = <a className="pub-a" href={'#/crew/' + encodeURIComponent(it.crew)}>Ver la crew</a>;

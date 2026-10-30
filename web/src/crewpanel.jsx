@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from 'react';
 import { limpio, norm, num } from './liga.js';
 import { Cara, DosToques } from './piezas.jsx';
 import { aBase64, achicar } from './imagen.js';
-import { ENTRADA_NOMBRE, ROL_NOMBRE, accionCrew, armarCrews, codigoLink, crewDe, cuandoVence, diaCrew, errorCrew, linkCrew, quedan, useCrews } from './crews.js';
+import { ENTRADA_NOMBRE, ROL_NOMBRE, accionCrew, armarCrews, codigoLink, crewDe, cuandoVence, diaCrew, errorCrew, linkCrew, ptsSemana, quedan, useCrews } from './crews.js';
+import { COLORES, Escudo, FORMAS, NOMBRE_FORMA, NOMBRE_SIMBOLO, SIMBOLOS, codigoEscudo, delNombre, leerEscudo, sugerirSigla } from './escudo.jsx';
 
 // el orden de las letras para elegir el mínimo (de la mejor a la peor): sólo el orden, los umbrales viven en comun/rangos.py
 const LETRAS = ['SSS', 'SS', 'S', 'A', 'B', 'C', 'D', 'E'];
@@ -465,6 +466,8 @@ function AjustesLider({ c, va, hacer, setMsg, pend, mia }) {
   const [desc, setDesc] = useState(c.desc || '');
   const [logo, setLogo] = useState(null);
   const [subiendo, setSubiendo] = useState(false);
+  const [armarEsc, setArmarEsc] = useState(false);
+  const [esc, setEsc] = useState(() => leerEscudo(c.logo) || delNombre(c.nombre));
   const [rg, setRg] = useState((c.req && c.req.rg) || '');
   const [ev, setEv] = useState(String((c.req && c.req.ev) || 0));
   return (
@@ -504,7 +507,7 @@ function AjustesLider({ c, va, hacer, setMsg, pend, mia }) {
       <small className="cw-nota"><Cuesta precio={pNombre} saldo={saldo} /> El nombre se cambia una vez cada 30 días. La sigla es obligatoria.</small>
       <h3 className="cw-h">El logo</h3>
       <div className="cw-fila">
-        <ElegirLogo vista={logo ? logo[1] : c.logo} chico onElegido={(b, u) => setLogo([b, u])} onError={setMsg} />
+        <ElegirLogo vista={logo ? logo[1] : (/^https:/.test(c.logo || '') ? c.logo : '')} chico onElegido={(b, u) => setLogo([b, u])} onError={setMsg} />
         {logo && !subiendo ? <button type="button" className="btn verde chico" disabled={va || corto(pLogo)}
           onClick={async () => {
             setSubiendo(true);
@@ -513,7 +516,19 @@ function AjustesLider({ c, va, hacer, setMsg, pend, mia }) {
             if (j) setLogo(null);
           }}>{pLogo ? 'Subir el logo · ' + num(pLogo) : 'Subir el logo'}</button> : null}
       </div>
-      {pLogo ? <small className="cw-nota"><Cuesta precio={pLogo} saldo={saldo} /> Si la Liga no lo aprueba, te lo devolvemos.</small> : null}
+      {/* 🛡️ o el escudo armado (29/10/2026): del catálogo, sin filtro; se ve al toque */}
+      {armarEsc ? (
+        <div className="cw-bloque ae-lider">
+          <ArmarEscudo e={esc} setE={setEsc} />
+          <div className="cw-fila">
+            <button type="button" className="btn verde chico" disabled={va || corto(pLogo)}
+              onClick={async () => { const j = await hacer({ accion: 'logo', escudo: codigoEscudo(esc) }, 'Listo: ya se ve el escudo nuevo.'); if (j) setArmarEsc(false); }}>
+              {pLogo ? 'Usar este escudo · ' + num(pLogo) : 'Usar este escudo'}</button>
+            <button type="button" className="btn borde2 chico" onClick={() => setArmarEsc(false)}>Cancelar</button>
+          </div>
+        </div>
+      ) : <button type="button" className="te-link ae-cambia" onClick={() => setArmarEsc(true)}>🛡️ Armar un escudo en vez de una imagen</button>}
+      {pLogo ? <small className="cw-nota"><Cuesta precio={pLogo} saldo={saldo} /> Si la Liga no aprueba una imagen, te la devolvemos.</small> : null}
       {subiendo ? <Cargando titulo="Subiendo el logo de la crew" etapas={ETAPAS_LOGO} /> : null}
       {pend ? <small className="cw-nota">Tu logo nuevo espera que lo revise la Liga.</small> : null}
       <h3 className="cw-h">La descripción <small className="cw-en">· gratis</small></h3>
@@ -549,50 +564,203 @@ export function InvitarACrew({ k, nombre }) {
  * estaba sólo en Mi cuenta → Mi crew, detrás de las pestañas, y el botón de Crews te mandaba a otra página. `mia` viene
  * verificado y sin crew (quien llama ya lo miró).
  */
+// 🧱 FUNDAR UNA CREW EN UNA PANTALLA (el remake de las crews, Dlx 29/10/2026: «Me gusta todo»). De los cuatro frenos que
+// tenía fundar —verificarse, 2.500 PdT, subir un logo que pase el filtro y escribir la descripción—, los dos últimos se
+// vuelven un toque: el ESCUDO ARMADO es el logo (escudo.jsx; la imagen propia sigue, opcional) y el LEMA es la
+// descripción, elegido o escrito. La sigla se sugiere del nombre y la entrada viene en «abierta» (28 de 29 crews pedían
+// aprobación: nadie entraba en un toque). Las reglas no cambian: las mira bot/crews.js
+const LEMAS = ['Del barrio pa’l mundo', 'Pura calle, puro flow', 'Nadie nos regala nada', 'Rimas que pesan', 'La tarima es nuestra casa'];
+export const ENTRADA_CORTA = { abierta: 'Cualquiera, en un toque', pedido: 'Con pedido', invitacion: 'Sólo invitados' };
+const ETAPAS_ESCUDO = [[0, 'Armando la crew'], [6000, 'Ya casi']];
+
+/** 🛡️ Armar el escudo: forma, símbolo y dos colores. `e` y `setE` los lleva quien lo usa (la vista grande, también). */
+export function ArmarEscudo({ e, setE }) {
+  const otro = () => {
+    const r = (xs) => xs[Math.floor(Math.random() * xs.length)];
+    const a = r(COLORES);
+    let b = r(COLORES);
+    while (b === a) b = r(COLORES);
+    setE({ forma: r(Object.keys(FORMAS)), simb: r(Object.keys(SIMBOLOS)), a, b });
+  };
+  const color = (cual, t) => (
+    <div className="ae-fila" role="radiogroup" aria-label={'El color del ' + t.toLowerCase()}>
+      <span className="ae-t">{t}</span>
+      <span className="ae-sw">{COLORES.map((c) => (
+        <button key={c} type="button" role="radio" aria-checked={e[cual] === c} aria-label={'#' + c} className={e[cual] === c ? 'on' : ''}
+          style={{ background: '#' + c }} disabled={(cual === 'a' ? e.b : e.a) === c}
+          onClick={() => setE({ ...e, [cual]: c })} />
+      ))}</span>
+    </div>
+  );
+  return (
+    <div className="ae">
+      <div className="ae-fila" role="radiogroup" aria-label="La forma">
+        <span className="ae-t">Forma</span>
+        <span className="ae-grilla f">{Object.keys(FORMAS).map((f) => (
+          <button key={f} type="button" role="radio" aria-checked={e.forma === f} title={NOMBRE_FORMA[f]} className={e.forma === f ? 'on' : ''}
+            onClick={() => setE({ ...e, forma: f })}><Escudo e={{ forma: f, simb: e.simb, a: e.a, b: e.b }} titulo={NOMBRE_FORMA[f]} /></button>
+        ))}</span>
+      </div>
+      <div className="ae-fila" role="radiogroup" aria-label="El símbolo">
+        <span className="ae-t">Símbolo</span>
+        <span className="ae-grilla s">{Object.keys(SIMBOLOS).map((x) => (
+          <button key={x} type="button" role="radio" aria-checked={e.simb === x} title={NOMBRE_SIMBOLO[x]} className={e.simb === x ? 'on' : ''}
+            onClick={() => setE({ ...e, simb: x })}>
+            <svg viewBox="0 0 100 100" role="img" aria-label={NOMBRE_SIMBOLO[x]}><path d={SIMBOLOS[x]} fill={x === 'micro' ? 'none' : 'currentColor'}
+              stroke="currentColor" strokeWidth={x === 'micro' ? 7 : 2} strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </button>
+        ))}</span>
+      </div>
+      {color('a', 'Fondo')}
+      {color('b', 'Símbolo')}
+      <button type="button" className="btn borde2 chico ae-otro" onClick={otro}>🎲 Otro al azar</button>
+    </div>
+  );
+}
+
 export function CrearCrew({ mia }) {
   const { va, msg, hacer, setMsg } = useAccion();
   const [nombre, setNombre] = useState('');
   const [sigla, setSigla] = useState('');
-  const [desc, setDesc] = useState('');
+  const [siglaTocada, setSiglaTocada] = useState(false);
+  const [lema, setLema] = useState(LEMAS[0]);
+  const [propio, setPropio] = useState(false);
+  const [esc, setEsc] = useState(null);
   const [logo, setLogo] = useState(null);
-  const [entrada, setEntrada] = useState('pedido');
+  const [conImagen, setConImagen] = useState(false);
+  const [entrada, setEntrada] = useState('abierta');
   const [armando, setArmando] = useState(false);
   const precio = mia.precio ?? 2500;
   const sumar = (mia.prueba && mia.prueba.sumar) || 2;
   const espera = mia.espera_ms > 0;
+  // el escudo sigue al nombre hasta que se toca: es el mismo que la crew tendría sin logo (`delNombre()`)
+  const e = esc || delNombre(nombre.trim() || 'crew');
+  const sg = siglaTocada ? sigla : sugerirSigla(nombre);
+  const usaImagen = conImagen && logo;
   return (
     <div className="cw-bloque cw-armar">
-      <h3 className="cw-h">Arma tu crew</h3>
-      <p className="cw-nota">Cuesta <b>{num(precio)} Puntos de Tienda</b>{typeof mia.saldo === 'number' ? <> (tienes {num(mia.saldo)})</> : null}. Hasta {mia.max} raperos; tú eres el Líder.</p>
-      <p className="cw-nota cw-aviso-semana">⏳ Después tienes <b>una semana para sumar {sumar} personas</b> a la crew. Si no llegan, la crew se borra y los Puntos no vuelven.</p>
-      {espera ? <p className="cw-nota">Saliste de una crew hace poco: puedes armar la tuya en {Math.ceil(mia.espera_ms / 86400000)} días.</p> : null}
-      <form className="cw-crear" onSubmit={async (e) => {
-        e.preventDefault();
+      <h3 className="cw-h">Funda tu crew</h3>
+      {/* la vista previa: así se va a ver en la página de crews */}
+      <div className="ae-vista">
+        <span className="ae-vista-e">{usaImagen ? <img src={logo[1]} alt="" /> : <Escudo e={e} />}</span>
+        <span className="ae-vista-t">
+          <b>{nombre.trim() || 'Tu crew'}</b>
+          <small>{sg ? '[' + sg + '] · ' : ''}{ENTRADA_CORTA[entrada]} · 1/{mia.max || 20}</small>
+          {lema.trim() ? <i>«{lema.trim()}»</i> : null}
+        </span>
+      </div>
+      {espera ? <p className="cw-nota">Saliste de una crew hace poco: puedes fundar la tuya en {Math.ceil(mia.espera_ms / 86400000)} días.</p> : null}
+      <form className="cw-crear" onSubmit={async (ev) => {
+        ev.preventDefault();
         if (armando) return;
-        if (!logo) { setMsg('Falta el logo de la crew.'); return; }
+        if (conImagen && !logo) { setMsg('Elige la imagen, o vuelve al escudo armado.'); return; }
         setArmando(true);
-        await hacer({ accion: 'crear', nombre: nombre.trim(), sigla: sigla.trim(), desc: desc.trim(), entrada, img: await aBase64(logo[0]) },
-          (j) => '¡Tu crew está armada! Ahora suma a ' + sumar + ' personas en una semana.' + msgLogo(j));
+        const base = { accion: 'crear', nombre: nombre.trim(), sigla: sg.trim(), desc: lema.trim(), entrada };
+        await hacer(usaImagen ? { ...base, img: await aBase64(logo[0]) } : { ...base, escudo: codigoEscudo(e) },
+          (j) => '¡Nació tu crew! Ahora suma a ' + sumar + ' personas en una semana.' + msgLogo(j));
         setArmando(false);
       }}>
         <fieldset className="cw-campos" disabled={armando}>
-        <div className="cw-logo-campo"><span className="cw-logo-t">Logo</span>
-          <ElegirLogo vista={logo && logo[1]} onElegido={(b, u) => setLogo([b, u])} onError={setMsg} />
-          <small>Cuadrado, se ve en un círculo. Pasa por el filtro automático: nada de desnudos, sangre, odio ni datos personales.</small></div>
-        <label>Nombre<input className="cw-busca" value={nombre} maxLength={24} required minLength={3} onChange={(e) => setNombre(e.target.value)} placeholder="Los del Barrio" /></label>
-        <label>Sigla <small>(2 a 4 letras)</small><input className="cw-busca cw-sigla" value={sigla} maxLength={4} required minLength={2} pattern="[\p{L}\p{N}]{2,4}" title="De 2 a 4 letras o números" onChange={(e) => setSigla(e.target.value)} placeholder="LDB" /></label>
-        <label>Descripción <small>(10 a 160 letras, sin links)</small><textarea className="cw-busca cw-desc-in" value={desc} maxLength={160} minLength={10} required rows={2}
-          onChange={(e) => setDesc(e.target.value)} placeholder="Quiénes son, de dónde, qué buscan" /></label>
-        <fieldset className="cw-reps"><legend>Cómo se entra</legend>{Object.entries(ENTRADA_NOMBRE).map(([k, t]) => (
-          <label key={k} className={'cw-rep' + (entrada === k ? ' on' : '')}><input type="radio" name="cw-ent" checked={entrada === k} onChange={() => setEntrada(k)} />{t}</label>
-        ))}</fieldset>
+          <div className="ae-dos">
+            <label>Nombre<input className="cw-busca" value={nombre} maxLength={24} required minLength={3} onChange={(ev) => setNombre(ev.target.value)} placeholder="Los del Sur" /></label>
+            <label>Sigla<input className="cw-busca cw-sigla" value={sg} maxLength={4} required minLength={2} pattern="[\p{L}\p{N}]{2,4}" title="De 2 a 4 letras o números"
+              onChange={(ev) => { setSiglaTocada(true); setSigla(ev.target.value); }} placeholder="LDS" /></label>
+          </div>
+          {siglaTocada ? null : <small className="cw-nota ae-ayuda">La sigla sale sola del nombre; puedes cambiarla.</small>}
+          <fieldset className="cw-reps ae-bloque"><legend>Escudo</legend>
+            {conImagen ? (
+              <div className="cw-logo-campo">
+                <ElegirLogo vista={logo && logo[1]} onElegido={(b, u) => setLogo([b, u])} onError={setMsg} />
+                <small>Cuadrado, se ve en un círculo. Pasa por el filtro automático: nada de desnudos, sangre, odio ni datos personales.</small>
+                <button type="button" className="te-link ae-cambia" onClick={() => setConImagen(false)}>Volver al escudo armado</button>
+              </div>
+            ) : (
+              <>
+                <ArmarEscudo e={e} setE={setEsc} />
+                <button type="button" className="te-link ae-cambia" onClick={() => setConImagen(true)}>O sube una imagen propia</button>
+              </>
+            )}
+          </fieldset>
+          <fieldset className="cw-reps ae-bloque"><legend>Lema <small>(lo que se lee de la crew)</small></legend>
+            <span className="ae-chips">
+              {LEMAS.map((l) => <button key={l} type="button" className={!propio && lema === l ? 'on' : ''} aria-pressed={!propio && lema === l}
+                onClick={() => { setPropio(false); setLema(l); }}>«{l}»</button>)}
+              <button type="button" className={propio ? 'on' : ''} aria-pressed={propio} onClick={() => { setPropio(true); setLema(''); }}>✏️ Escribir el mío</button>
+            </span>
+            {propio ? <textarea className="cw-busca cw-desc-in" value={lema} maxLength={160} minLength={10} required rows={2} autoFocus
+              onChange={(ev) => setLema(ev.target.value)} placeholder="Quiénes son, de dónde, qué buscan (10 a 160 letras, sin links)" aria-label="Tu lema" /> : null}
+          </fieldset>
+          <fieldset className="cw-reps ae-bloque"><legend>¿Quién entra?</legend>
+            <span className="ae-chips">{Object.entries(ENTRADA_CORTA).map(([k, t]) => (
+              <button key={k} type="button" className={entrada === k ? 'on' : ''} aria-pressed={entrada === k} onClick={() => setEntrada(k)}>{t}</button>
+            ))}</span>
+            <small className="cw-nota">{ENTRADA_NOMBRE[entrada]}. Lo cambias cuando quieras.</small>
+          </fieldset>
         </fieldset>
-        {armando ? <Cargando titulo="Armando tu crew" etapas={ETAPAS_CREAR} /> : (
-          <button type="submit" className="btn verde" disabled={va || espera || (typeof mia.saldo === 'number' && mia.saldo < precio)}>
-            Armar la crew · {num(precio)}</button>
+        <p className="cw-nota cw-aviso-semana">⏳ Después tienes <b>una semana para sumar {sumar} personas</b>. Si no llegan, la crew se borra y los Puntos no vuelven.</p>
+        {armando ? <Cargando titulo="Armando tu crew" etapas={usaImagen ? ETAPAS_CREAR : ETAPAS_ESCUDO} /> : (
+          <button type="submit" className="btn verde ae-fundar" disabled={va || espera || (typeof mia.saldo === 'number' && mia.saldo < precio)}>
+            Fundar · {num(precio)} Puntos de Tienda</button>
         )}
+        {typeof mia.saldo === 'number' ? <small className="cw-nota">Tienes {num(mia.saldo)}. Hasta {mia.max || 20} raperos; tú eres el Líder.</small> : null}
       </form>
       {msg ? <p role="status" className="cw-msg">{msg}</p> : null}
+    </div>
+  );
+}
+
+/** ⭕ El anillo de la semana: qué parte de la crew ya jugó. `pct` de 0 a 100; lo de adentro, `children`. */
+export function Anillo({ pct, tam = 120, grosor = 11, children }) {
+  const r = (tam - grosor) / 2 - 1, L = 2 * Math.PI * r, p = Math.max(0, Math.min(100, pct || 0));
+  return (
+    <span className="anillo" style={{ width: tam, height: tam }}>
+      <svg width={tam} height={tam} viewBox={'0 0 ' + tam + ' ' + tam} aria-hidden="true">
+        <circle className="anillo-f" cx={tam / 2} cy={tam / 2} r={r} fill="none" strokeWidth={grosor} />
+        {p ? <circle cx={tam / 2} cy={tam / 2} r={r} fill="none" stroke="#F2B705" strokeWidth={grosor} strokeDasharray={(L * p) / 100 + ' ' + L}
+          transform={'rotate(-90 ' + tam / 2 + ' ' + tam / 2 + ')'} /> : null}
+      </svg>
+      <span className="anillo-in">{children}</span>
+    </span>
+  );
+}
+
+/**
+ * 🏠 LA CASA DE LA CREW (el remake, 29/10/2026): lo que hace volver cada semana, arriba de todo en su página. Cuántos de
+ * la crew ya jugaron esta semana —en grande, como la meta compartida de los clanes de Brawl Stars y Clash Royale— y
+ * quién sumó y quién falta, con su cara (Ren y otros, 2012: ver la actividad de tu grupo duplica las visitas).
+ * Los puntos de cada uno salen de las divisiones de la semana (`ptsSemana()`), los mismos que suma el tier.
+ */
+export function CasaCrew({ liga, c, T }) {
+  const pts = ptsSemana(liga);
+  const ks = (c.gente || []).map((g) => g[0]);
+  if (!ks.length) return null;
+  const jugT = ((T && T.crews && T.crews[c.id]) || [0, 0, 0])[2];
+  const sumaron = ks.filter((k) => (pts.get(k) || 0) > 0).sort((a, b) => (pts.get(b) || 0) - (pts.get(a) || 0));
+  const faltan = ks.filter((k) => !((pts.get(k) || 0) > 0));
+  // sin divisiones en el payload, el número de la crew (bot/crews_tiers.py)
+  const jug = pts.size ? sumaron.length : jugT;
+  const pct = Math.round((100 * jug) / ks.length);
+  const mitad = Math.ceil(ks.length / 2);
+  return (
+    <div className="casa">
+      {c.desc ? <p className="casa-lema">«{c.desc}»</p> : null}
+      <div className="casa-sem">
+        <Anillo pct={pct}><b>{pct}%</b><small>jugó</small></Anillo>
+        <p className="casa-t"><b>{jug} de {ks.length}</b> ya {jug === 1 ? 'jugó' : 'jugaron'} esta semana.{' '}
+          {jug >= mitad ? <span className="casa-ok">Ya jugó la mitad de la crew.</span>
+            : <>Faltan <b className="casa-n">{mitad - jug}</b> para que juegue la mitad.</>}
+          <small>La semana cierra el lunes a las 11 AM (hora del este).</small></p>
+      </div>
+      {pts.size ? (
+        <div className="casa-caras">
+          {sumaron.length ? <div><span className="casa-et">Sumaron</span><span className="casa-fila">{sumaron.map((k) => (
+            <a key={k} href={'#/r/' + encodeURIComponent(k)} title={nombreDe(liga, k) + ' · ' + num(pts.get(k)) + ' pts'}>
+              <Cara liga={liga} k={k} nombre={nombreDe(liga, k)} cls="cara casa-cara" lazy /><small>{num(pts.get(k))}</small></a>))}</span></div> : null}
+          {faltan.length ? <div><span className="casa-et">Todavía no</span><span className="casa-fila">{faltan.map((k) => (
+            <a key={k} href={'#/r/' + encodeURIComponent(k)} title={nombreDe(liga, k)}>
+              <Cara liga={liga} k={k} nombre={nombreDe(liga, k)} cls="cara casa-cara apagada" lazy /></a>))}</span></div> : null}
+        </div>
+      ) : null}
     </div>
   );
 }

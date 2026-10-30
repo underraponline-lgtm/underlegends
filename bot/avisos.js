@@ -4731,7 +4731,7 @@ export async function rutaAvisos(req, env, ruta) {
   }
   // 🌱 las 34 de antes, una vez: lo manda el ciclo, con su clave (`bot/crews_vivas.py --sembrar`); y 🪪 quiénes de las
   // crews no están verificados, cada corrida (`bot/crews_verificar.py`)
-  if (ruta === '/avisos/crews-sembrar' || ruta === '/avisos/crews-verificar' || ruta === '/avisos/crews-tiers') {
+  if (ruta === '/avisos/crews-sembrar' || ruta === '/avisos/crews-verificar' || ruta === '/avisos/crews-tiers' || ruta === '/avisos/crews-cerrar') {
     const k = req.headers.get('x-lg-ciclo') || '';
     if (!env.DISCORD_TOKEN || k !== await claveCiclo(env.DISCORD_TOKEN)) return json({ error: 'no existe' }, 404);
     const crudo = await req.text();
@@ -6638,6 +6638,8 @@ export class Avisos {
         return json(r, r.estado || 200);
       }
       if (ruta === '/crews-sembrar') { const r = CW.sembrar(this, d); return json(r, r.estado || 200); }
+      // 🆕 el relanzamiento (29/10/2026): cerrar varias y avisarle a su gente (`bot/crews_vivas.py --cerrar`)
+      if (ruta === '/crews-cerrar') { const r = CW.crewsCerrar(this, d); await this.vaciarBasuraCrews(); return json(r, r.estado || 200); }
       if (ruta === '/crews-tiers') { const r = CW.crewTiersAvisar(this, d); return json(r, r.estado || 200); }
       if (ruta === '/crews-verificar') {
         const ahora = Date.now();
@@ -11163,6 +11165,13 @@ export class Avisos {
     if (a !== 'crear' && a !== 'logo') return CW.crewAccion(this, d);
     const ch = a === 'crear' ? CW.chequeoCrear(this, d) : CW.chequeoLogo(this, d);
     if (ch.error) return ch;
+    // 🛡️ el escudo armado (`esc:…`, del catálogo de la Liga: CW.escudoOk) no es una imagen: ni IA ni R2
+    if (!d.img && d.escudo) {
+      const r = CW.crewAccion(this, d);
+      if (r.viejos) await this.borrarLogosCrew(r.viejos);
+      delete r.viejos;
+      return r;
+    }
     if (!d.img) return { error: 'logo', estado: 400 };
     const quien = String(d.quien || '');
     let b = null;

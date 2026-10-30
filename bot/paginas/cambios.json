@@ -11,6 +11,19 @@
  ],
  "cambios": [
   {
+   "version": "4.18",
+   "dia": "2026-10-29",
+   "cuando": "2026-10-29T21:30:00-04:00",
+   "titulo": "Las crews, de nuevo: fundar en un toque",
+   "items": [
+    "**Funda tu crew en una pantalla**: el nombre, la sigla (sale sola), el **escudo** que armas ahí mismo y el lema, con la vista previa en vivo.",
+    "El **escudo armado**: forma, símbolo y dos colores. Si prefieres, sigues pudiendo subir tu imagen.",
+    "Arriba de **Crews**: «Encontrar mi crew» y «Fundar una». Debajo, el **mazo** de crews para ti, las que **buscan su 2.º** y **la semana de las crews**, por la parte de cada crew que jugó.",
+    "La página de cada crew muestra **cuántos ya jugaron esta semana** y quién sumó.",
+    "Las crews se **relanzan**: se quedan Follombia, Knowledge Sombrío y Los ULEYES; quien estaba en otra puede fundar o sumarse ya, sin esperar."
+   ]
+  },
+  {
    "version": "4.17",
    "dia": "2026-10-27",
    "cuando": "2026-10-27T05:05:00-04:00",

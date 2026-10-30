@@ -72,6 +72,18 @@ export const PRUEBA_SUMAR = 2;
 export const LOGO_TOPE = 300 * 1024;
 // dónde viven los logos en R2. Con prefijo propio: la carpeta de una carta es el nombre de la persona
 export const LOGO_CARPETA = 'logos-crews/';
+/** 🛡️ EL ESCUDO ARMADO (Dlx, 29/10/2026, al remake de las crews: «Me gusta todo»): en vez de subir una imagen, el Líder
+ *  arma el escudo con un catálogo fijo —forma, símbolo y dos colores— y eso ES el logo: `esc:forma.simbolo.aaaaaa.bbbbbb`.
+ *  Como sale de piezas que la Liga dibujó, no pasa por el filtro de la IA ni por R2. Sólo 3 de las 29 crews tenían logo:
+ *  subir uno era uno de los cuatro frenos para fundar. Los catálogos son los de `web/src/escudo.jsx`: si se agrega una
+ *  pieza, en los dos. */
+export const ESC_FORMAS = ['escudo', 'circulo', 'hexagono', 'rombo'];
+export const ESC_SIMBOLOS = ['corona', 'micro', 'llama', 'rayo', 'estrella', 'calavera', 'diamante', 'ojo', 'puno', 'alas'];
+export const ESC_COLORES = ['e41373', '29b298', 'f2b705', '2f6fdb', 'e5484d', '9b5cff', '0e0e10', 'f6f6f6', 'ff7a1a', '5fc8c0'];
+export function escudoOk(s) {
+  const m = /^esc:([a-z]+)\.([a-z]+)\.([0-9a-f]{6})\.([0-9a-f]{6})$/.exec(typeof s === 'string' ? s : '');
+  return !!m && ESC_FORMAS.includes(m[1]) && ESC_SIMBOLOS.includes(m[2]) && ESC_COLORES.includes(m[3]) && ESC_COLORES.includes(m[4]) && m[3] !== m[4];
+}
 // el orden de las letras, para comparar «B o más». ⚠️ SÓLO EL ORDEN: los umbrales viven en comun/rangos.py y la letra de
 // cada uno la calcula el ciclo (está en `persona`); escribirlos acá sería el sexto lugar donde vive el rango
 export const ORDEN_RG = ['E', 'D', 'C', 'B', 'A', 'S', 'SS', 'SSS'];
@@ -172,6 +184,7 @@ export function validarCrew(d) {
   if (d.max !== undefined) { if (!LINK_USOS.includes(d.max)) return { error: 'max' }; out.max = d.max; }
   // el logo, en base64; lo mira el objeto (el tipo por los bytes, el tope, los metadatos y el filtro). ⚠️ `logo_url` y
   // `logo_v` NO se copian: los pone el objeto después del filtro
+  if (d.escudo !== undefined) { if (!escudoOk(d.escudo)) return { error: 'escudo' }; out.escudo = d.escudo; }
   if (d.img !== undefined) {
     if (typeof d.img !== 'string' || d.img.length > Math.ceil(LOGO_TOPE * 4 / 3) + 8 || !/^[A-Za-z0-9+/=]+$/.test(d.img)) return { error: 'img' };
     out.img = d.img;
@@ -572,14 +585,16 @@ export function crewAccion(o, d) {
     const ch = chequeoCrear(o, d);
     if (ch.error) return ch;
     const { nombre, sigla, entrada, precio, s, descr } = ch;
-    if (!d.logo_url) return mal('logo');
+    // el logo: el que pasó el filtro (`logo_url`, lo pone el objeto) o el escudo armado, que no necesita filtro
+    const logo = d.logo_url || (escudoOk(d.escudo) ? d.escudo : '');
+    if (!logo) return mal('logo');
     if (!o.cuentaCambio(quien, 'crew-crear', 3)) return mal('espera_dia', 429);
     const vence = ahora + PRUEBA_MS;
-    const ok = d.logo_v === 'ok';
+    const ok = d.logo_url ? d.logo_v === 'ok' : true;
     o.state.storage.transactionSync(() => {
       o.sql.exec('INSERT INTO crews (id, nombre, norm, sigla, entrada, reps, oficial, creada, por, nombre_t, t, vence, vence_aviso, ' +
         "logo, logo_pend, logo_t, logo_pend_t, descr) VALUES (?, ?, ?, ?, ?, '[]', 0, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?)", nombre, nombre,
-      normCrew(nombre), sigla, entrada, ahora, quien, ahora, ahora, vence, ok ? d.logo_url : '', ok ? '' : d.logo_url, ok ? ahora : 0,
+      normCrew(nombre), sigla, entrada, ahora, quien, ahora, ahora, vence, ok ? logo : '', ok ? '' : logo, ok && d.logo_url ? ahora : 0,
       ok ? 0 : ahora, descr);
       o.sql.exec('INSERT INTO crew_miembros (k, crew, rol, quien, desde) VALUES (?, ?, ?, ?, ?)', k, nombre, 'lider', quien, ahora);
       o.sql.exec('DELETE FROM crew_inv WHERE k = ?', k);
@@ -821,7 +836,10 @@ export function crewAccion(o, d) {
   }
   if (a === 'logo') {
     if (!puede(rol, 'nombre')) return mal('rol', 403);
-    if (!d.logo_url) return mal('logo');
+    const logo = d.logo_url || (escudoOk(d.escudo) ? d.escudo : '');
+    if (!logo) return mal('logo');
+    // el escudo armado sale del catálogo de la Liga: no hay nada que revisar
+    const visto = d.logo_url ? d.logo_v === 'ok' : true;
     // 💸 cuesta (`PRECIO_LOGO`); `chequeoLogo()` ya lo miró antes de pasarlo por la IA, y acá otra vez: entre las dos
     // pudo gastar en otra cosa
     const { precio_logo: precio } = crewConfig(o);
@@ -832,20 +850,21 @@ export function crewAccion(o, d) {
     o.state.storage.transactionSync(() => {
       // el que esperaba revisión no se llegó a ver: lo que se pagó por él vuelve
       if (c.logo_pend) { viejos.push(c.logo_pend); devolverLogo(o, c, ahora); }
-      if (d.logo_v === 'ok') {
+      if (visto) {
         if (c.logo) viejos.push(c.logo);
+        // ⚠️ `logo_t` sólo para lo que pasó el filtro: es «lo que aprobó el filtro» del Dashboard, y un escudo no es una imagen
         o.sql.exec("UPDATE crews SET logo = ?, logo_pend = '', logo_t = ?, logo_pend_t = 0, logo_pago = 0, logo_pago_q = '', t = ? WHERE id = ?",
-          d.logo_url, ahora, ahora, c.id);
+          logo, d.logo_url ? ahora : 0, ahora, c.id);
       } else {
         // ⚠️ `logo_pend_t` y no `logo_t`: tocar `logo_t` ponía el logo VIEJO en «lo que aprobó el filtro» del Dashboard,
         // al lado del nuevo, y su «Quitar» descartaba el nuevo (la revisión del 19/10/2026)
         o.sql.exec('UPDATE crews SET logo_pend = ?, logo_pend_t = ?, logo_pago = ?, logo_pago_q = ?, t = ? WHERE id = ?',
-          d.logo_url, ahora, precio, precio ? quien : '', ahora, c.id);
+          logo, ahora, precio, precio ? quien : '', ahora, c.id);
       }
       cobrar(o, quien, precio, 'crew-logo', ahora);
-      anotar(o, c.id, 'logo', d.logo_v === 'ok' ? 'ok' : 'revisar', k);
+      anotar(o, c.id, 'logo', visto ? (d.logo_url ? 'ok' : 'escudo') : 'revisar', k);
     });
-    return Object.assign({ ok: true, viejos, logo: d.logo_v === 'ok' ? 'ok' : 'revisar', precio }, precio ? { saldo: al.s - precio } : {});
+    return Object.assign({ ok: true, viejos, logo: visto ? 'ok' : 'revisar', precio }, precio ? { saldo: al.s - precio } : {});
   }
   if (a === 'req') {
     if (!puede(rol, 'entrada')) return mal('rol', 403);
@@ -968,6 +987,27 @@ function borrar(o, c, por, ahora, aviso = null) {
 }
 
 /**
+ * 🆕 EL RELANZAMIENTO DE LAS CREWS (Dlx, 29/10/2026: «Dale con todo»): cerrar varias de una vez —las sembradas el 19/10
+ * de un evento viejo que nadie usaba— y avisarle a su gente con el texto del relanzamiento (`{nombre}`, el de su crew).
+ * La gente queda libre sin espera, como en cualquier cierre (`borrar()`). Lo manda el ciclo, con su clave.
+ * `{ids: [...], aviso: [titulo, cuerpo]}` → `{ok, cerradas, no}`.
+ */
+export function crewsCerrar(o, d) {
+  const ids = d && Array.isArray(d.ids) ? d.ids : null;
+  const av = d && Array.isArray(d.aviso) ? d.aviso : null;
+  if (!ids || !ids.length || ids.length > 60 || !ids.every((x) => typeof x === 'string' && x.length <= 40)
+      || !av || av.length !== 2 || !av.every((x) => typeof x === 'string' && x.length > 0 && x.length <= 300)) return mal('datos');
+  const ahora = Date.now(), cerradas = [], no = [];
+  for (const id of ids) {
+    const c = crewDe(o, id);
+    if (!c) { no.push(id); continue; }
+    borrar(o, c, 'dueño', ahora, av.map((x) => x.split('{nombre}').join(c.nombre)));
+    cerradas.push(c.id);
+  }
+  return { ok: true, cerradas, no };
+}
+
+/**
  * 🔒 Lo del dueño (Dlx, desde el Dashboard): elegir el líder de una crew —lo que pidió para las 34 de hoy—, cambiarle
  * el nombre o cerrarla. Sin los límites de la gente (ni los 30 días del nombre ni el rol).
  */
@@ -1033,7 +1073,7 @@ export function crewLogosDueno(o) {
   const desde = Date.now() - 3 * DIA;
   return {
     pend: filas(o, "SELECT id, nombre, logo_pend AS url, logo_pend_t AS t FROM crews WHERE logo_pend != '' ORDER BY logo_pend_t"),
-    vistos: filas(o, "SELECT id, nombre, logo AS url, logo_t AS t FROM crews WHERE logo != '' AND logo_t > ? ORDER BY logo_t DESC", desde),
+    vistos: filas(o, "SELECT id, nombre, logo AS url, logo_t AS t FROM crews WHERE logo LIKE 'https:%' AND logo_t > ? ORDER BY logo_t DESC", desde),
   };
 }
 
@@ -1186,7 +1226,8 @@ export function crewVerificarAnunciados(o, ks) {
 
 /** 🗑️ Anotar logos que ya no se usan (vacíos afuera). Los borra de R2 quien puede esperar: `crewBasura()`. */
 function tirar(o, urls) {
-  for (const u of urls || []) if (u) o.sql.exec('INSERT OR IGNORE INTO crew_basura (url, t) VALUES (?, ?)', u, Date.now());
+  // sólo lo que vive en R2: un escudo armado (`esc:…`) no es un archivo
+  for (const u of urls || []) if (u && /^https:/.test(u)) o.sql.exec('INSERT OR IGNORE INTO crew_basura (url, t) VALUES (?, ?)', u, Date.now());
 }
 
 /** Los logos para borrar de R2 (hasta `n`), y `crewBasuraLista()` para darlos por borrados. Los llama el objeto

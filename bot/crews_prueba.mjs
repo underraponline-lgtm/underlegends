@@ -370,6 +370,27 @@ if (!DatabaseSync) {
   ok(ta.ok && ta.avisados === 3 && bandeja.some((b) => b.quien === id(900) && b.titulo === '🏆 Viejas sube a Plata')
     && CW.crewTiersAvisar(o, { sem: 'ayer', cambios: [] }).error === 'datos',
   'el cierre de los tiers le llega a la gente de la crew (la que no existe, nada)');
+  // 🛡️ el escudo armado (29/10/2026): es el logo, sin filtro ni R2; sólo del catálogo; no va a «lo que aprobó el filtro»
+  const ES = 'esc:escudo.micro.e41373.f6f6f6';
+  const ce = yo(950, 'esca', { accion: 'crear', nombre: 'Con Escudo', sigla: 'CE', logo_url: undefined, logo_v: undefined, escudo: ES });
+  const pubE = () => CW.crewsPublico(o).crews.find((c) => c.id === 'Con Escudo') || {};
+  ok(ce.ok && ce.logo === 'ok' && pubE().logo === ES && !CW.crewLogosDueno(o).vistos.some((x) => x.id === 'Con Escudo')
+    && !CW.crewLogosDueno(o).pend.some((x) => x.id === 'Con Escudo'), 'el escudo armado es el logo, sin revisión');
+  ok(CW.validarCrew({ accion: 'crear', escudo: 'esc:escudo.micro.123456.f6f6f6' }).error === 'escudo'
+    && CW.validarCrew({ accion: 'logo', escudo: 'esc:escudo.micro.e41373.e41373' }).error === 'escudo'
+    && CW.validarCrew({ accion: 'logo', escudo: 'https://x' }).error === 'escudo', 'el escudo sólo con piezas y colores del catálogo');
+  const ES2 = 'esc:rombo.puno.0e0e10.f2b705';
+  const le = yo(950, 'esca', { accion: 'logo', escudo: ES2, inicial: 9000 });
+  ok(le.ok && pubE().logo === ES2 && !(le.viejos || []).some((u) => /^https:/.test(u)), 'cambiar al escudo: se ve ya');
+  // y al cerrarla, un escudo no va a la basura de R2
+  ok(!CW.crewBasura(o, 500).some((u) => u.startsWith('esc:')), 'un escudo nunca va a la basura de R2');
+  // 🆕 el relanzamiento: cerrar varias de una vez, con el aviso de cada una; las que no existen se dicen
+  const antesC = CW.crewsPublico(o).crews.length;
+  const rc = CW.crewsCerrar(o, { ids: ['Con Escudo', 'NoExiste'], aviso: ['🆕 Las crews se relanzan', '{nombre} se cerró: funda la tuya'] });
+  ok(rc.ok && rc.cerradas.length === 1 && rc.no[0] === 'NoExiste' && CW.crewsPublico(o).crews.length === antesC - 1
+    && bandeja.some((b) => b.quien === id(950) && b.cuerpo === 'Con Escudo se cerró: funda la tuya')
+    && CW.crewsCerrar(o, { ids: [], aviso: ['a', 'b'] }).error === 'datos' && CW.crewsCerrar(o, { ids: ['x'] }).error === 'datos',
+  'el relanzamiento cierra las de la lista y le avisa a su gente');
   // 📊 los números del Dashboard: cuántos, de esta semana, sin nombres
   const nu = CW.crewNumeros(o);
   ok(nu.semana.creada >= 5 && nu.semana.link >= 2 && nu.semana.entro >= nu.semana.link && nu.hoy.crews >= 3 && nu.hoy.gente > 0

@@ -155,6 +155,47 @@ def sembrar():
     return 0 if r.ok else 1
 
 
+# 🆕 EL RELANZAMIENTO (Dlx, 29/10/2026: «Dale con todo»). Las 27 sembradas el 19/10 las armó Dlx de un evento de crews
+# viejo y casi nadie las usa: se quedan las tres que viven —Follombia, Knowledge Sombrío y Los ULEYES, la única fundada
+# por la gente— y el resto se cierra, con un aviso a su gente para que funde o se sume a otra sin esperar.
+QUEDAN = ('follombia', 'knowledge sombrio', 'los uleyes')
+AVISO_CIERRE = ['🆕 Las crews se relanzan',
+                '{nombre} se cerró con el relanzamiento de las crews. Ya puedes fundar la tuya en un toque o sumarte a otra, sin esperar.']
+
+
+def _sin_tildes(x):
+    import unicodedata
+    return ''.join(ch for ch in unicodedata.normalize('NFKD', str(x or '').lower()) if not unicodedata.combining(ch)).strip()
+
+
+def cerrar(si=False):
+    """Sin `--si`, sólo dice cuáles se cerrarían. Con `--si`, las cierra (`/avisos/crews-cerrar`)."""
+    import requests
+    pub = requests.get(WORKER + '/avisos/crews', timeout=30).json()
+    todas = pub.get('crews') or []
+    quedan = [c for c in todas if _sin_tildes(c.get('nombre')) in QUEDAN]
+    van = [c for c in todas if c not in quedan]
+    print('se quedan (%d): %s' % (len(quedan), ', '.join(c['nombre'] for c in quedan)))
+    print('se cierran (%d): %s' % (len(van), ', '.join('%s (%d)' % (c['nombre'], len(c.get('gente') or [])) for c in van)))
+    if len(quedan) != len(QUEDAN):
+        print('🔴 no encontré las %d que se quedan: no cierro nada' % len(QUEDAN))
+        return 1
+    if not si or not van:
+        return 0
+    import clave_ciclo as CC
+    import fotos as F
+    tok = F.env('DISCORD_TOKEN', obligatorio=False)
+    if not tok:
+        print('sin DISCORD_TOKEN: no puedo cerrar')
+        return 1
+    r = requests.post(WORKER + '/avisos/crews-cerrar', data=json.dumps({'ids': [c['id'] for c in van], 'aviso': AVISO_CIERRE},
+                                                                      ensure_ascii=False).encode('utf-8'),
+                      headers={'x-lg-ciclo': CC.clave(tok), 'content-type': 'application/json'}, timeout=60)
+    j = r.json() if r.headers.get('content-type', '').startswith('application/json') else {}
+    print(r.status_code, 'cerradas:', len(j.get('cerradas') or []), '· no estaban:', j.get('no'))
+    return 0 if r.ok and j.get('ok') else 1
+
+
 def _auto():
     mal = []
 
@@ -188,4 +229,6 @@ if __name__ == '__main__':
         sys.exit(_auto())
     if '--sembrar' in sys.argv:
         sys.exit(sembrar())
+    if '--cerrar' in sys.argv:
+        sys.exit(cerrar('--si' in sys.argv))
     bajar()

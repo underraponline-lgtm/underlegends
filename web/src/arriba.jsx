@@ -2,6 +2,7 @@
 // «Esta semana» y la barra IR A. Traducido de docs/remake/reales.py (cabecera, historias, momentos, hero, semana, ir_a).
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, capital, diaISO, ksDe, limpio, mult, norm, num, recorte, resultado, siglaDe, srcLogo, utc } from './liga.js';
+import { Escudo, escudoDe } from './escudo.jsx';
 import { Anotados, Cara, Carta, Chevron, Compartir, Ico, Poster, aDiscord, accion, enlace, nombrePais, silueta, subirSiEsta, useCampana } from './piezas.jsx';
 import { Miniatura, abrirVideo } from './video.jsx';
 import { useRacha } from './racha.js';
@@ -611,11 +612,11 @@ function claveCrew(n) {
   return limpio(n).toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
+// 🛡️ sin logo, el escudo de su nombre; con el escudo armado, ése (escudo.jsx). Nunca las iniciales (29/10/2026)
 export function CrewCirculo({ c, cls = 'h-c' }) {
-  if (c.logo) return <span className={cls}><img alt="" src={srcLogo(c.logo)} /></span>;
-  const p = limpio(c.crew).split(' ');
-  const mono = p.length > 1 ? p[0][0] + p[1][0] : p[0].slice(0, 2);
-  return <span className={cls + ' mono'}>{mono.toUpperCase()}</span>;
+  const e = escudoDe(c.logo, limpio(c.crew || c.nombre || ''));
+  if (e) return <span className={cls + ' con-esc'}><Escudo e={e} /></span>;
+  return <span className={cls}><img alt="" src={srcLogo(c.logo)} /></span>;
 }
 
 const firma = (items, resto = '') => items.reduce((m, it) => (String(it.t) > m ? String(it.t) : m), '') || resto;

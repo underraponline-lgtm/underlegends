@@ -89,6 +89,15 @@ ok(rs.ok && guardada && !Buffer.from(guardada[1]).includes(Buffer.from('Exif')) 
   'un JPEG de iPhone con Exif crea la crew, y se guarda sin el Exif');
 await yo.borrarLogosCrew(['https://pub-x.r2.dev/fondos/abc.webp', 'https://pub-x.r2.dev/oasis/temporada.webp']);
 ok(!borrados.some((k) => k.startsWith('fondos/') || k.startsWith('oasis/')), 'borrar logos nunca toca un fondo ni una carta');
+// 🛡️ el escudo armado (29/10/2026): ni la IA ni R2; y pasar de una imagen al escudo borra la imagen de R2
+const iaE = ia.length, r2E = r2.size;
+const re = await yo.crewConImagen(base(6, 'fio', { nombre: 'Armada', img: undefined, escudo: 'esc:hexagono.llama.2f6fdb.f2b705' }));
+ok(re.ok && ia.length === iaE && r2.size === r2E && pub().find((c) => c.id === 'Armada').logo === 'esc:hexagono.llama.2f6fdb.f2b705',
+  'crear con el escudo armado: sin IA ni R2');
+const deAna = pub().find((c) => c.id === 'Primera').logo.split('.r2.dev/')[1];
+const rx = await yo.crewConImagen({ quien: String(7000000001), de: 'ana', accion: 'logo', escudo: 'esc:circulo.ojo.9b5cff.f6f6f6', inicial: 5000, desde: 0 });
+ok(rx.ok && ia.length === iaE && borrados.includes(deAna) && !r2.has(deAna) && rx.viejos === undefined,
+  'cambiar la imagen por el escudo: la imagen vieja sale de R2');
 
 console.log(mal ? `\n  🔴 ${mal} mal, ${bien} bien` : `  ✅ logo de crews: ${bien} bien`);
 if (mal) process.exit(1);

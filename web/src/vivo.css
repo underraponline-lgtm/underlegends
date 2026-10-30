@@ -3593,3 +3593,69 @@ button.tb-yo.on{background:var(--inv);color:var(--inv-tinta);box-shadow:inset 0 
 .fr-ed-b small{margin-right:auto;font:700 12px/1 "Barlow Condensed",sans-serif;letter-spacing:.06em;opacity:.7;font-variant-numeric:tabular-nums}
 .fr-ed-b small.mal{color:#E5484D;opacity:1}
 .fr-ed-e{margin:0;font-size:13px}
+
+/* 🛡️ el escudo armado de una crew (escudo.jsx, 29/10/2026), dentro de cualquier círculo de crew: el escudo entero, sobre
+   el oscuro del círculo y con aire, así una forma que no es redonda no queda cortada por el recorte */
+.con-esc{background:#121214;padding:11%}
+.con-esc .cw-esc,.cw-esc{display:block;width:100%;height:100%;overflow:visible}
+
+/* ⭕ el anillo de la semana de una crew (crewpanel.jsx `Anillo`, 29/10/2026): el oro es el de la meta compartida */
+.anillo{position:relative;display:inline-grid;place-items:center;flex:none}
+.anillo svg{position:absolute;inset:0}
+.anillo-f{stroke:var(--suave)}
+.anillo-in{position:relative;display:grid;justify-items:center;gap:2px;text-align:center}
+.anillo-in b{font:900 26px/1 Archivo,sans-serif;font-stretch:115%;font-variant-numeric:tabular-nums}
+.anillo-in small{font:700 11px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+
+/* 🏠 la casa de la crew (crewpanel.jsx `CasaCrew`): el lema, el anillo y quién sumó */
+.casa{display:grid;gap:14px;margin:0 0 14px}
+.casa-lema{margin:0;font:italic 600 17px/1.4 Archivo,sans-serif;max-width:56ch}
+.casa-sem{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px}
+.casa-t{margin:0;font:500 16px/1.45 Archivo,sans-serif;max-width:40ch}
+.casa-t small{display:block;margin-top:4px;font-size:13px;color:var(--gris)}
+.casa-n{color:var(--magenta-tx,#D0106A)}
+.casa-ok{font-weight:800}
+.casa-caras{display:grid;gap:10px}
+.casa-caras>div{display:grid;gap:6px}
+.casa-et{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.casa-fila{display:flex;flex-wrap:wrap;gap:8px}
+.casa-fila a{display:grid;justify-items:center;gap:3px;color:inherit;text-decoration:none}
+.casa-fila small{font:700 12px/1 "Barlow Condensed",sans-serif;font-variant-numeric:tabular-nums}
+.casa-cara{width:42px;height:42px;box-shadow:0 0 0 2px #F2B705}
+.casa-cara.apagada{box-shadow:none;filter:grayscale(1);opacity:.55}
+
+/* 🛡️ armar el escudo y fundar en una pantalla (crewpanel.jsx `ArmarEscudo` y `CrearCrew`) */
+.ae{display:grid;gap:12px}
+.ae-fila{display:grid;gap:6px}
+.ae-t{font:700 13px/1 "Barlow Condensed",sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+.ae-grilla{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;max-width:360px}
+.ae-grilla.f{grid-template-columns:repeat(4,minmax(0,1fr));max-width:290px}
+.ae-grilla button{display:grid;place-items:center;aspect-ratio:1;padding:7px;border:2px solid var(--suave);background:var(--fondo);color:var(--tinta);cursor:pointer}
+.ae-grilla button svg{width:100%;height:100%}
+.ae-grilla button.on{border-color:var(--tinta);background:var(--caja)}
+.ae-sw{display:flex;flex-wrap:wrap;gap:8px}
+.ae-sw button{width:34px;height:34px;border-radius:50%;border:3px solid var(--fondo);box-shadow:0 0 0 1.5px var(--suave);cursor:pointer;padding:0}
+.ae-sw button.on{box-shadow:0 0 0 3px var(--tinta)}
+.ae-sw button:disabled{opacity:.25;cursor:not-allowed}
+.ae-otro{justify-self:start}
+.ae-cambia{justify-self:start;padding:0;border:0;background:none;font:600 14px/1.3 Archivo,sans-serif;cursor:pointer;text-align:left}
+.ae-vista{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:14px;padding:14px;background:#030304;color:#F6F6F6}
+.ae-vista-e{display:block;width:76px;height:76px}
+.ae-vista-e img{width:100%;height:100%;border-radius:50%;object-fit:cover;background:#F6F6F6}
+.ae-vista-t{display:grid;gap:4px;min-width:0}
+.ae-vista-t b{font:900 21px/1 Archivo,sans-serif;font-stretch:115%;text-transform:uppercase;overflow-wrap:anywhere}
+.ae-vista-t small{font:700 13px/1.2 "Barlow Condensed",sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#CFCFCA}
+.ae-vista-t i{font:italic 500 14px/1.35 Archivo,sans-serif;color:#CFCFCA}
+.ae-dos{display:grid;grid-template-columns:minmax(0,1fr) 96px;gap:10px}
+.ae-dos .cw-sigla{width:100%;text-transform:uppercase}
+.ae-ayuda{margin-top:-6px}
+.ae-bloque{display:grid;gap:10px}
+.ae-chips{display:flex;flex-wrap:wrap;gap:6px}
+.ae-chips button{min-height:38px;padding:6px 10px;border:1.5px solid var(--suave);background:var(--fondo);color:var(--tinta);font:600 14px/1.25 Archivo,sans-serif;cursor:pointer;text-align:left}
+.ae-chips button.on{border-color:var(--tinta);background:var(--inv);color:var(--inv-tinta)}
+.ae-fundar{width:100%}
+.ae-lider{margin:8px 0}
+/* ⚠️ un fieldset no se encoge por defecto (min-inline-size: min-content) y en el celular sacaba el formulario por la derecha */
+.cw-armar fieldset,.cw-armar form{min-width:0}
+.cw-armar .cw-crear,.cw-armar .cw-campos,.ae-bloque{grid-template-columns:minmax(0,1fr)}
+.cw-armar .ae-fundar{justify-self:stretch}

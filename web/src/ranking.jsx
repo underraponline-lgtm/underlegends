@@ -17,6 +17,7 @@
 // con «Encontrarme», los filtros de servidor, país y a quién seguís, y en el celular las columnas que entran.
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { MESES, limpio, norm, num, resultado, siglaDe, srcLogo, utc } from './liga.js';
+import { Escudo, escudoDe } from './escudo.jsx';
 import { Bandera, Cara, Carta, Chevron, Compartir, Ico, accion, enlace, nombrePais } from './piezas.jsx';
 import { useDesliza } from './anima.js';
 import { SeBusca } from './abajo.jsx';
@@ -163,6 +164,9 @@ function Pais({ x, f }) {
 
 function LogoCrew({ c, cls }) {
   const [mal, setMal] = useState(false);
+  // 🛡️ el escudo armado, o el de su nombre si no tiene logo (escudo.jsx, 29/10/2026)
+  const e = escudoDe(c.logo, limpio(c.crew));
+  if (e) return <span className={cls + ' con-esc'}><Escudo e={e} /></span>;
   if (c.logo && !mal) return <img className={cls} alt="" src={srcLogo(c.logo)} loading="lazy" onError={() => setMal(true)} />;
   return <span className={cls + ' ini'}>{limpio(c.crew).slice(0, 2).toUpperCase()}</span>;
 }

@@ -7,7 +7,7 @@ import { Bandera, Cara, Compartir, Sec, accion, enlace, nombrePais } from './pie
 import { McPersona } from './medio.jsx';
 import { CrewCirculo } from './arriba.jsx';
 import { crewViva, useCrews } from './crews.js';
-import { EntrarCrew, PanelCrew, RolCrew, SinVerificar, TierCrew } from './crewpanel.jsx';
+import { CasaCrew, EntrarCrew, PanelCrew, RolCrew, SinVerificar, TierCrew } from './crewpanel.jsx';
 import CSS_PAGINA from './css/grupo.css?inline';
 import { usarCss } from './css.js';
 
@@ -108,7 +108,8 @@ export function PaginaCrew({ liga, id }) {
           ['EL MEJOR', mejor ? <a className="te-link" href={'#/r/' + encodeURIComponent(mejor.k)}>{limpio(mejor.n)}</a> : limpio(c.mejor || '—')]]} />
       {viva ? (
         <Sec id="gp-unirse" titulo={'La crew'}>
-          {viva.desc ? <p className="cw-desc">{viva.desc}</p> : null}
+          {/* 🏠 la casa de la crew (el remake, 29/10/2026): el lema y cuántos ya jugaron esta semana, con sus caras */}
+          <CasaCrew liga={liga} c={viva} T={T} />
           <TierCrew T={T} id={viva.id} />
           <EntrarCrew c={viva} />
           <PanelCrew liga={liga} c={viva} />
