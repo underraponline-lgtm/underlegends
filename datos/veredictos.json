@@ -1629,6 +1629,17 @@
    "b": "EVANGELINE",
    "ganador": "PRAISERIZAS",
    "votos": "1–0"
+  },
+  "1565535716165812405": {
+   "id": "1565535716165812405",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793323200981,
+   "a": "DREXX",
+   "b": "VERC",
+   "ganador": "VERC",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5856,6 +5867,37 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1565531921096642712": {
+   "id": "1565531921096642712",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793322296166,
+   "ed": 1793323385227,
+   "texto": "`[ CUARTOS ]`\n⌞DREXX LRS ADRIAGNER⌝ 🆚 ⌞YINN VERC⌝\n⌞DREXX⌝ 🆚 ⌞VERC⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "DREXX LRS ADRIAGNER",
+      "YINN VERC"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "DREXX",
+      "VERC"
+     ],
+     "VERC",
+     "veredicto",
      []
     ]
    ]

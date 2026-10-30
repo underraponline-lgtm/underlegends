@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-30T00:55:17+00:00",
+ "cuando": "2026-10-30T01:26:07+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6784,8 +6784,8 @@
    "nombre": "Red Bull",
    "servidor": "LKR",
    "canal": "🐉ANUNCIOS",
-   "msg_id": "1565521568593875047",
-   "cuando": "2026-10-30T00:23:47",
+   "msg_id": "1565532390171082773",
+   "cuando": "2026-10-30T01:06:48",
    "canal_id": "1564463277348487219",
    "guild_id": "1558611504046153750",
    "organizador": "",
@@ -6807,6 +6807,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "MD🇲🇽",
+   "quien": "mdtereo",
+   "discord_id": "473221140043530240",
+   "msg_id": "1565530835942121485",
+   "cuando": "2026-10-30T01:00:37"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42797,15 +42806,6 @@
    "discord_id": "1548906948307451906",
    "msg_id": "1552505721147490415",
    "cuando": "2026-09-24T02:23:28"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝︱inscripciones",
-   "texto": "Lord 🇨🇴",
-   "quien": "kidbuu02124",
-   "discord_id": "1323444294534828104",
-   "msg_id": "1552505542860214273",
-   "cuando": "2026-09-24T02:22:45"
   }
  ]
 }

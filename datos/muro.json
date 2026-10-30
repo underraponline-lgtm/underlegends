@@ -576,6 +576,15 @@
 "rg": "",
 "c": []
 },
+"teo": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "adriagner": {
 "rg": "",
 "c": [
@@ -634,15 +643,6 @@
 "deluxe": {
 "rg": "",
 "c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
-"teo": {
-"rg": "E",
-"c": [
-"competitivo",
 "pais",
 "servidor",
 "temporada"
@@ -1188,9 +1188,7 @@
 },
 "mats": {
 "rg": "",
-"c": [
-"servidor"
-]
+"c": []
 },
 "joshu": {
 "rg": "",
@@ -2644,6 +2642,15 @@
 }
 },
 "cambios": [
+{
+"tipo": "rango",
+"t": "2026-10-03T15:54:42Z",
+"quien": [
+"yinn"
+],
+"rg": "D",
+"primero": true
+},
 {
 "tipo": "tarjeta",
 "t": "2026-10-03T15:54:42Z",
@@ -5984,14 +5991,6 @@
 "Dantemx"
 ],
 "carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-30T01:29:11Z",
-"quien": [
-"mats"
-],
-"carta": "servidor"
 }
 ]
 }

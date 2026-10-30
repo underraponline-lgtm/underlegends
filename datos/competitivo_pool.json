@@ -57,7 +57,7 @@
   "raw": "Liberia",
   "cc": "ar",
   "sv": "FFA",
-  "crew": "Fontana",
+  "crew": "",
   "discord_id": "1357796427191029932",
   "verificado": true,
   "ev": 23,
@@ -90,7 +90,6 @@
   "arc_pais": 100,
   "pos_sv": "2/155",
   "arc_sv": 99,
-  "pos_crew": "1/4",
   "tg_c": {
    "bestia": 3,
    "clasico": 4,
@@ -197,7 +196,6 @@
   "arc_pais": 97,
   "pos_sv": "3/155",
   "arc_sv": 99,
-  "pos_crew": "1/3",
   "tg_c": {
    "bestia": 2,
    "clasico": 3,
@@ -412,7 +410,6 @@
   "arc_pais": 98,
   "pos_sv": "5/155",
   "arc_sv": 97,
-  "pos_crew": "2/4",
   "tg_c": {
    "bestia": 2,
    "clasico": 3,
@@ -434,7 +431,7 @@
   "raw": "Verc",
   "cc": "cl",
   "sv": "FFA",
-  "crew": "kzt",
+  "crew": "",
   "discord_id": "913652602208649226",
   "verificado": true,
   "ev": 23,
@@ -467,7 +464,6 @@
   "arc_pais": 94,
   "pos_sv": "6/155",
   "arc_sv": 97,
-  "pos_crew": "",
   "tg_c": {
    "bestia": 3,
    "clasico": 3,
@@ -594,7 +590,7 @@
   "raw": "PichulaMc",
   "cc": "ar",
   "sv": "FFA",
-  "crew": "Arte del Chakalaje",
+  "crew": "",
   "discord_id": "578697503130779649",
   "verificado": true,
   "ev": 53,
@@ -627,7 +623,6 @@
   "arc_pais": 93,
   "pos_sv": "9/155",
   "arc_sv": 95,
-  "pos_crew": "",
   "tg_c": {
    "bestia": 1,
    "clasico": 4,
@@ -702,7 +697,7 @@
   "raw": "Masino",
   "cc": "cl",
   "sv": "FFA",
-  "crew": "NOBLESSE OBLIGE",
+  "crew": "",
   "discord_id": "1237192883535216715",
   "verificado": true,
   "ev": 8,
@@ -735,7 +730,6 @@
   "arc_pais": 92,
   "pos_sv": "10/155",
   "arc_sv": 94,
-  "pos_crew": "1/3",
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
@@ -789,7 +783,6 @@
   "arc_pais": 100,
   "pos_sv": "11/155",
   "arc_sv": 94,
-  "pos_crew": "2/3",
   "tg_c": {
    "bestia": 1,
    "clasico": 3,
@@ -1062,7 +1055,6 @@
   "arc_pais": 91,
   "pos_sv": "15/155",
   "arc_sv": 91,
-  "pos_crew": "",
   "tg_c": {
    "bestia": 1,
    "clasico": 3,
@@ -1325,7 +1317,6 @@
   "arc_pais": 87,
   "pos_sv": "18/155",
   "arc_sv": 89,
-  "pos_crew": "",
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
@@ -1961,7 +1952,6 @@
   "arc_pais": 86,
   "pos_sv": "24/155",
   "arc_sv": 85,
-  "pos_crew": "",
   "tg_c": {
    "bestia": 3,
    "clasico": 3,
@@ -2195,7 +2185,7 @@
   "raw": "Polosport",
   "cc": "ar",
   "sv": "FFA",
-  "crew": "Sexosos",
+  "crew": "",
   "discord_id": "716016310202400848",
   "verificado": true,
   "ev": 13,
@@ -2228,7 +2218,6 @@
   "arc_pais": 82,
   "pos_sv": "25/155",
   "arc_sv": 85,
-  "pos_crew": "1/5",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -2506,7 +2495,7 @@
   "raw": "Provenza",
   "cc": "ar",
   "sv": "FFA",
-  "crew": "B.A.A",
+  "crew": "",
   "discord_id": "711076230857752627",
   "verificado": true,
   "ev": 33,
@@ -2539,7 +2528,6 @@
   "arc_pais": 78,
   "pos_sv": "26/155",
   "arc_sv": 84,
-  "pos_crew": "",
   "tg_c": {
    "bestia": 3,
    "clasico": 4,
@@ -2716,7 +2704,7 @@
   "raw": "Zekha",
   "cc": "ar",
   "sv": "ACAD",
-  "crew": "Sexosos",
+  "crew": "",
   "discord_id": "931555298479587360",
   "verificado": true,
   "ev": 5,
@@ -2749,7 +2737,6 @@
   "arc_pais": 73,
   "pos_sv": "3/14",
   "arc_sv": 86,
-  "pos_crew": "2/5",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -3550,7 +3537,7 @@
   "raw": "NC",
   "cc": "ar",
   "sv": "FFA",
-  "crew": "Rosario",
+  "crew": "",
   "discord_id": "1523082259870257315",
   "verificado": true,
   "ev": 41,
@@ -3583,7 +3570,6 @@
   "arc_pais": 67,
   "pos_sv": "37/155",
   "arc_sv": 77,
-  "pos_crew": "",
   "tg_c": {
    "bestia": 1,
    "clasico": 2,
@@ -3653,7 +3639,7 @@
   "raw": "Cronox",
   "cc": "cl",
   "sv": "FFA",
-  "crew": "Fuera de Rango",
+  "crew": "",
   "discord_id": "1487658663148785734",
   "verificado": true,
   "ev": 30,
@@ -3686,7 +3672,6 @@
   "arc_pais": 78,
   "pos_sv": "39/155",
   "arc_sv": 75,
-  "pos_crew": "",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -4595,7 +4580,7 @@
   "raw": "Erik",
   "cc": "ar",
   "sv": "FFA",
-  "crew": "berazategui global hustlers",
+  "crew": "",
   "discord_id": "682072673580351492",
   "verificado": true,
   "ev": 3,
@@ -4628,7 +4613,6 @@
   "arc_pais": 64,
   "pos_sv": "42/155",
   "arc_sv": 74,
-  "pos_crew": "",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -5702,7 +5686,6 @@
   "arc_pais": 69,
   "pos_sv": "4/15",
   "arc_sv": 80,
-  "pos_crew": "3/5",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -6067,7 +6050,7 @@
   "raw": "MCNadie",
   "cc": "ar",
   "sv": "FFA",
-  "crew": "Lighting Force",
+  "crew": "",
   "discord_id": "1138166936547643412",
   "verificado": true,
   "ev": 6,
@@ -6100,7 +6083,6 @@
   "arc_pais": 53,
   "pos_sv": "55/155",
   "arc_sv": 65,
-  "pos_crew": "3/3",
   "tg_c": {
    "clasico": 1,
    "riv": 3
@@ -6365,56 +6347,6 @@
   }
  },
  {
-  "full": "Jobaking",
-  "raw": "Jobaking",
-  "cc": "cl",
-  "sv": "FFA",
-  "crew": "",
-  "discord_id": "1095893775383023708",
-  "verificado": true,
-  "ev": 12,
-  "score": 15.4,
-  "conf": 0.87,
-  "E": 29,
-  "C": 10,
-  "Dm": 0,
-  "T": 8,
-  "V": 36,
-  "wr": "25.0%",
-  "rch_act": 0,
-  "rch_max": 1,
-  "duel_v": 1,
-  "duel_t": 4,
-  "duel_real": true,
-  "dna_v": 0,
-  "dna_t": 0,
-  "din_v": 1,
-  "din_t": 4,
-  "crn_t": 6,
-  "cri_t": 25,
-  "pos": 51,
-  "total": 66,
-  "rango": "E",
-  "subrango": "E",
-  "ovr": 0,
-  "av": "",
-  "pos_pais": "14/36",
-  "arc_pais": 64,
-  "pos_sv": "58/155",
-  "arc_sv": 63,
-  "tg_c": {
-   "bestia": 1,
-   "clasico": 2,
-   "dg": 1,
-   "riv": 3,
-   "venc": 1
-  },
-  "tg_p": {
-   "paises": 3,
-   "paisesg": 1
-  }
- },
- {
   "full": "MATUK 🇦🇷",
   "raw": "MATUK",
   "cc": "ar",
@@ -6514,6 +6446,56 @@
    "paisesg": 1,
    "primer": true,
    "unico": true
+  }
+ },
+ {
+  "full": "Jobaking",
+  "raw": "Jobaking",
+  "cc": "cl",
+  "sv": "FFA",
+  "crew": "",
+  "discord_id": "1095893775383023708",
+  "verificado": true,
+  "ev": 13,
+  "score": 14.9,
+  "conf": 0.88,
+  "E": 28,
+  "C": 9,
+  "Dm": 0,
+  "T": 8,
+  "V": 35,
+  "wr": "20.0%",
+  "rch_act": 0,
+  "rch_max": 1,
+  "duel_v": 1,
+  "duel_t": 5,
+  "duel_real": true,
+  "dna_v": 0,
+  "dna_t": 0,
+  "din_v": 1,
+  "din_t": 5,
+  "crn_t": 6,
+  "cri_t": 26,
+  "pos": 51,
+  "total": 66,
+  "rango": "E",
+  "subrango": "E",
+  "ovr": 0,
+  "av": "",
+  "pos_pais": "14/36",
+  "arc_pais": 64,
+  "pos_sv": "58/155",
+  "arc_sv": 63,
+  "tg_c": {
+   "bestia": 1,
+   "clasico": 2,
+   "dg": 1,
+   "riv": 3,
+   "venc": 1
+  },
+  "tg_p": {
+   "paises": 3,
+   "paisesg": 1
   }
  },
  {
@@ -6809,7 +6791,6 @@
   "arc_pais": 81,
   "pos_sv": "59/155",
   "arc_sv": 63,
-  "pos_crew": "2/3",
   "tg_c": {
    "clasico": 1,
    "riv": 2
@@ -8151,7 +8132,6 @@
   "arc_pais": 56,
   "pos_sv": "69/155",
   "arc_sv": 56,
-  "pos_crew": "",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -8220,7 +8200,7 @@
   "raw": "rodrilp",
   "cc": "ar",
   "sv": "FFA",
-  "crew": "Fontana",
+  "crew": "",
   "discord_id": "1045042688094896249",
   "verificado": true,
   "ev": 2,
@@ -8252,8 +8232,7 @@
   "pos_pais": "25/45",
   "arc_pais": 47,
   "pos_sv": "70/155",
-  "arc_sv": 55,
-  "pos_crew": "3/4"
+  "arc_sv": 55
  },
  {
   "full": "Richard",
@@ -8576,7 +8555,6 @@
   "arc_pais": 52,
   "pos_sv": "73/155",
   "arc_sv": 54,
-  "pos_crew": "",
   "tg_c": {
    "clasico": 1,
    "riv": 4
@@ -9278,18 +9256,18 @@
   "Dm": 0,
   "T": 8,
   "V": 21,
-  "wr": "0.0%",
+  "wr": "25.0%",
   "rch_act": 1,
   "rch_max": 1,
-  "duel_v": 0,
-  "duel_t": 3,
+  "duel_v": 1,
+  "duel_t": 4,
   "duel_real": true,
   "dna_v": 0,
   "dna_t": 1,
-  "din_v": 0,
-  "din_t": 2,
+  "din_v": 1,
+  "din_t": 3,
   "crn_t": 5,
-  "cri_t": 20,
+  "cri_t": 21,
   "pos": 58,
   "total": 66,
   "rango": "E",
@@ -9794,7 +9772,7 @@
   "raw": "Saiko",
   "cc": "cl",
   "sv": "FFA",
-  "crew": "Área Limítrofe",
+  "crew": "",
   "discord_id": "942540846685909002",
   "verificado": true,
   "ev": 4,
@@ -9827,7 +9805,6 @@
   "arc_pais": 50,
   "pos_sv": "80/155",
   "arc_sv": 49,
-  "pos_crew": "",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -10499,7 +10476,7 @@
   "raw": "LEWITO",
   "cc": "ar",
   "sv": "FFA",
-  "crew": "Podesta City",
+  "crew": "",
   "discord_id": "1086485696572817418",
   "verificado": true,
   "ev": 5,
@@ -10532,7 +10509,6 @@
   "arc_pais": 40,
   "pos_sv": "84/155",
   "arc_sv": 46,
-  "pos_crew": "",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -10621,8 +10597,7 @@
   "pos_pais": "13/18",
   "arc_pais": 33,
   "pos_sv": "6/15",
-  "arc_sv": 67,
-  "pos_crew": "4/5"
+  "arc_sv": 67
  },
  {
   "full": "Trelok",
@@ -10980,7 +10955,7 @@
   "raw": "Crk",
   "cc": "mx",
   "sv": "FFA",
-  "crew": "Miakamata",
+  "crew": "",
   "discord_id": "559068959845122048",
   "verificado": true,
   "ev": 11,
@@ -11013,7 +10988,6 @@
   "arc_pais": 57,
   "pos_sv": "87/155",
   "arc_sv": 45,
-  "pos_crew": "",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -11121,7 +11095,7 @@
   "raw": "Volk",
   "cc": "mx",
   "sv": "FFA",
-  "crew": "Guardia Nacional",
+  "crew": "",
   "discord_id": "691801856099221594",
   "verificado": true,
   "ev": 4,
@@ -11154,7 +11128,6 @@
   "arc_pais": 52,
   "pos_sv": "88/155",
   "arc_sv": 44,
-  "pos_crew": "",
   "tg_c": {
    "clasico": 1,
    "riv": 1
@@ -11485,7 +11458,7 @@
   "raw": "Deuxs",
   "cc": "cl",
   "sv": "FFA",
-  "crew": "La Formula Crew",
+  "crew": "",
   "discord_id": "1338567692239765617",
   "verificado": true,
   "ev": 7,
@@ -11518,7 +11491,6 @@
   "arc_pais": 44,
   "pos_sv": "90/155",
   "arc_sv": 43,
-  "pos_crew": "",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -11770,7 +11742,7 @@
   "raw": "Gus",
   "cc": "uy",
   "sv": "FFA",
-  "crew": "montevideo wanders",
+  "crew": "",
   "discord_id": "989640104765177956",
   "verificado": true,
   "ev": 8,
@@ -11803,7 +11775,6 @@
   "arc_pais": 50,
   "pos_sv": "91/155",
   "arc_sv": 42,
-  "pos_crew": "",
   "tg_c": {
    "clasico": 1,
    "riv": 2
@@ -11864,7 +11835,7 @@
   "raw": "Humildad",
   "cc": "co",
   "sv": "SR",
-  "crew": "Santa Trinidad",
+  "crew": "",
   "discord_id": "1228547913240547338",
   "verificado": true,
   "ev": 2,
@@ -11897,7 +11868,6 @@
   "arc_pais": 38,
   "pos_sv": "7/15",
   "arc_sv": 60,
-  "pos_crew": "",
   "tg_c": {
    "bestia": 2,
    "clasico": 3,
@@ -12289,7 +12259,7 @@
   "raw": "Noone",
   "cc": "pe",
   "sv": "FFA",
-  "crew": "Peruvianleads",
+  "crew": "",
   "discord_id": "754749179410251847",
   "verificado": true,
   "ev": 6,
@@ -12322,7 +12292,6 @@
   "arc_pais": 58,
   "pos_sv": "97/155",
   "arc_sv": 38,
-  "pos_crew": "",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -12510,8 +12479,7 @@
   "pos_pais": "2/3",
   "arc_pais": 0,
   "pos_sv": "7/14",
-  "arc_sv": 57,
-  "pos_crew": ""
+  "arc_sv": 57
  },
  {
   "full": "Emily Family",
@@ -12800,7 +12768,7 @@
   "raw": "Molt",
   "cc": "cl",
   "sv": "SR",
-  "crew": "04",
+  "crew": "",
   "discord_id": "1355612971144839439",
   "verificado": true,
   "ev": 3,
@@ -12833,7 +12801,6 @@
   "arc_pais": 39,
   "pos_sv": "8/15",
   "arc_sv": 53,
-  "pos_crew": "",
   "tg_c": {
    "clasico": 1,
    "riv": 1
@@ -12972,7 +12939,6 @@
   "arc_pais": 31,
   "pos_sv": "104/155",
   "arc_sv": 34,
-  "pos_crew": "3/3",
   "tg_p": {
    "pionero": true
   }
@@ -13015,7 +12981,6 @@
   "arc_pais": 29,
   "pos_sv": "105/155",
   "arc_sv": 33,
-  "pos_crew": "4/4",
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
@@ -18488,7 +18453,7 @@
   "raw": "GP",
   "cc": "ve",
   "sv": "SR",
-  "crew": "Fuera de Rango",
+  "crew": "",
   "discord_id": "847124099243180042",
   "verificado": true,
   "ev": 2,
@@ -18521,7 +18486,6 @@
   "arc_pais": 28,
   "pos_sv": "11/15",
   "arc_sv": 33,
-  "pos_crew": "",
   "tg_c": {
    "clasico": 1,
    "riv": 1
@@ -20470,7 +20434,7 @@
   "raw": "Konan",
   "cc": "ar",
   "sv": "FFA",
-  "crew": "La Pampa Crew",
+  "crew": "",
   "discord_id": "680268290962227243",
   "verificado": true,
   "ev": 1,
@@ -20502,8 +20466,7 @@
   "pos_pais": "40/45",
   "arc_pais": 13,
   "pos_sv": "143/155",
-  "arc_sv": 8,
-  "pos_crew": ""
+  "arc_sv": 8
  },
  {
   "full": "PETER🇵🇪",
@@ -21622,7 +21585,7 @@
   "raw": "Luz",
   "cc": "cl",
   "sv": "FFA",
-  "crew": "Área Limítrofe",
+  "crew": "",
   "discord_id": "820803699928072193",
   "verificado": true,
   "ev": 1,
@@ -21654,8 +21617,7 @@
   "pos_pais": "32/36",
   "arc_pais": 14,
   "pos_sv": "144/155",
-  "arc_sv": 8,
-  "pos_crew": ""
+  "arc_sv": 8
  },
  {
   "full": "Desu",
@@ -23127,8 +23089,7 @@
   "pos_pais": "27/29",
   "arc_pais": 10,
   "pos_sv": "151/155",
-  "arc_sv": 3,
-  "pos_crew": "5/5"
+  "arc_sv": 3
  },
  {
   "full": "Mc Glock",
@@ -25115,7 +25076,7 @@
   "raw": "Dev",
   "cc": "ar",
   "sv": "ACAD",
-  "crew": "La Crew Anti Gay",
+  "crew": "",
   "discord_id": "1028631611685740684",
   "verificado": true,
   "ev": 1,
@@ -25148,7 +25109,6 @@
   "arc_pais": 2,
   "pos_sv": "14/14",
   "arc_sv": 7,
-  "pos_crew": "",
   "tg_c": {
    "clasico": 1,
    "riv": 1

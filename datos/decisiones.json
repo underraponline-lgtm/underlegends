@@ -650,6 +650,13 @@
    "cuando": "2026-10-28 3:04 PM ET",
    "por": "el ciclo (R4)",
    "nota": "es la misma batalla que «Tuca vs Carlosss» (ganó Tuca), ya cargada en el #540: contestar «Ganó» la contaría dos veces"
+  },
+  "rappararaperos1|FFA|29/10|octavos|joba|teo": {
+   "ganador": "Teo🇨🇴",
+   "batalla": "Rap para Raperos #1 · FFA · 29/10 · octavos · Joba 🇨🇱 🆚 Teo🇨🇴",
+   "cuando": "2026-10-29 9:23 PM ET",
+   "por": "el organizador, con el botón (<@1345962362615894027>)",
+   "nota": "bot/finales.py: el lector no entendió esa batalla y se la preguntó a quien publicó la llave"
   }
  },
  "anuncios_fuera": {
