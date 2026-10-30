@@ -5389,14 +5389,72 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1793386266686,
-   "ed": 1793386297999,
-   "texto": "`[ CUARTOS ]`\n⌞GEIDER⌝ 🆚 ⌞ESQUILER🤬⌝",
+   "ed": 1793388179716,
+   "texto": "`[ CUARTOS ]`\n⌞GEIDER⌝ 🆚 ⌞ESQUILER🤬⌝\n⌞LIL ÑÑO⌝ 🆚 ⌞DOMINICK⌝\n⌞MAKMAH⌝ 🆚 ⌞MATEUTYK⌝\n⌞Joba 🇨🇱⌝ 🆚 ⌞19🇻🇪⌝ 🆚 ⌞Siko 🇦🇫⌝ 🆚 ⌞lize 🇦🇷⌝ 🆚 ⌞miniboy 🇨🇱⌝ 🆚 ⌞xclusivo 🇻🇪⌝\n⌞Joba 🇨🇱⌝ 🆚 ⌞19🇻🇪⌝ 🆚 ⌞Siko 🇦🇫⌝ 🆚 ⌞lize 🇦🇷⌝ 🆚 ⌞miniboy 🇨🇱⌝ 🆚 ⌞xclusivo 🇻🇪⌝\n⌞ÑI ÑAÑO🥵⌝ 🆚 ⌞GEYDER🗿⌝",
    "batallas": [
     [
      "CUARTOS",
      [
       "GEIDER",
       "ESQUILER🤬"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "LIL ÑÑO",
+      "DOMINICK"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MAKMAH",
+      "MATEUTYK"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Joba 🇨🇱",
+      "19🇻🇪",
+      "Siko 🇦🇫",
+      "lize 🇦🇷",
+      "miniboy 🇨🇱",
+      "xclusivo 🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "Joba 🇨🇱",
+      "19🇻🇪",
+      "Siko 🇦🇫",
+      "lize 🇦🇷",
+      "miniboy 🇨🇱",
+      "xclusivo 🇻🇪"
+     ],
+     "xclusivo 🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "ÑI ÑAÑO🥵",
+      "GEYDER🗿"
      ],
      null,
      "última ronda y no dice campeón",

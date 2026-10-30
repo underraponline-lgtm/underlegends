@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-30T18:56:03+00:00",
+ "cuando": "2026-10-30T19:25:59+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6806,6 +6806,33 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "hola🇨🇱",
+   "quien": "wackmc1",
+   "discord_id": "1493013247488430202",
+   "msg_id": "1565804142319108207",
+   "cuando": "2026-10-30T19:06:38"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Miniboy",
+   "quien": "min_g16m",
+   "discord_id": "950011515434573824",
+   "msg_id": "1565804135650037771",
+   "cuando": "2026-10-30T19:06:37"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Lizen🇦🇷",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1565801711862415472",
+   "cuando": "2026-10-30T18:56:59"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -42778,33 +42805,6 @@
    "discord_id": "1345962362615894027",
    "msg_id": "1553135028764942457",
    "cuando": "2026-09-25T20:04:06"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Eze",
-   "quien": "shinshakaru",
-   "discord_id": "341753322148986881",
-   "msg_id": "1553134618461610208",
-   "cuando": "2026-09-25T20:02:28"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Abyssus 🇨🇦 x agree 🇮🇷 (llave mas cercana a la primera pls",
-   "quien": "vipertapestry",
-   "discord_id": "768561204707983361",
-   "msg_id": "1553133298727780484",
-   "cuando": "2026-09-25T19:57:14"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Fin x sosa🇵🇪",
-   "quien": "finallnme",
-   "discord_id": "1247102577573625856",
-   "msg_id": "1553132731322339470",
-   "cuando": "2026-09-25T19:54:58"
   }
  ]
 }
