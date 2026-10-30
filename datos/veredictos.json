@@ -2,61 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1563026559562944574": {
-   "id": "1563026559562944574",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1560448027490001067",
-   "pub": 1792724971429,
-   "a": "HEDORAH 🇨🇱",
-   "b": "CALÍZ🇲🇽",
-   "ganador": "HEDORAH 🇨🇱",
-   "votos": "1–0"
-  },
-  "1563027342119534686": {
-   "id": "1563027342119534686",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1792725158005,
-   "a": "ARTEZZY",
-   "b": "soul B",
-   "ganador": "soul B",
-   "votos": "1–0"
-  },
-  "1563027736220668017": {
-   "id": "1563027736220668017",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1560448027490001067",
-   "pub": 1792725251966,
-   "a": "LRS 🇦🇷",
-   "b": "SHADOW 🇨🇴",
-   "ganador": "LRS 🇦🇷",
-   "votos": "1–0"
-  },
-  "1563027739315806269": {
-   "id": "1563027739315806269",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1792725252704,
-   "a": "VILCA",
-   "b": "last",
-   "ganador": "last",
-   "votos": "1–0"
-  },
-  "1563029363862011936": {
-   "id": "1563029363862011936",
-   "sv": "🔥LKR (Champios Legue)🐉",
-   "g": "1558611504046153750",
-   "canal": "1560448027490001067",
-   "pub": 1792725640026,
-   "a": "CALÍZ🇲🇽",
-   "b": "SHADOW 🇨🇴",
-   "ganador": "CALÍZ🇲🇽",
-   "votos": "1–0"
-  },
   "1563033471335538720": {
    "id": "1563033471335538720",
    "sv": "🔥LKR (Champios Legue)🐉",
