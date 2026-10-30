@@ -505,7 +505,7 @@
    "n": 526,
    "sv": "LKR",
    "vence": "2026-10-30T20:44:26+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Hotaru Adeyemi 🏳️‍⚧️": {
    "avisado": "2026-10-16",
@@ -1467,7 +1467,7 @@
    "n": 526,
    "sv": "LKR",
    "vence": "2026-10-30T20:44:26+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Zack": {
    "avisado": "2026-10-25",
