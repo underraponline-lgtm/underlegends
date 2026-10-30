@@ -1,61 +1,57 @@
 {
  "v": 1,
- "cuando": "2026-10-30T21:39:29Z",
+ "cuando": "2026-10-30T21:45:54Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 473.4,
+ "dur_s": 351.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.2
+   "s": 8.6
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.8
+   "s": 0.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.4
+   "s": 6.0
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 22.2
+   "s": 17.3
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 1 · 39 persona(s)",
    "ok": false,
-   "s": 350.0
+   "s": 254.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.1
+   "s": 5.4
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 78.6
+   "s": 58.7
   }
  ],
  "fallas": [
   {
    "paso": "5",
    "que": "03_Servidor/generar.py Artezzy"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Vilca"
   }
  ],
  "ultimo_evento": {
@@ -70,20 +66,20 @@
    "read": 47757
   },
   "objeto": {
-   "leidas": 3261444,
-   "escritas": 20339,
-   "pedidos": 8396
+   "leidas": 3283410,
+   "escritas": 20534,
+   "pedidos": 8439
   },
   "worker": {
-   "pedidos": 8315,
+   "pedidos": 8340,
    "errores": 0,
-   "sub": 9797,
+   "sub": 9824,
    "cortados": 0,
    "p50_ms": 1.27,
-   "p99_ms": 12.7,
+   "p99_ms": 12.68,
    "cpu": {
-    "total": 18072,
-    "objeto_10": 1718,
+    "total": 18118,
+    "objeto_10": 1723,
     "worker_10": 205
    }
   },
