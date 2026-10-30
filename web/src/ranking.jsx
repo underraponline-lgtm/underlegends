@@ -70,6 +70,28 @@ function useSemanas(activo) {
   }, [activo]);
   return s;
 }
+// ── ⚔️ EL RANKING DE DUELOS, de `/api/duelos` (29/10/2026: el lobby se pasó de su tope por tercera vez y la lista salió
+// de ahí; `CLAVE_DUELOS` de bot/subir_web.py). Se pide al abrir Duelos, una vez por cada lobby nuevo (`sello`): cambia
+// cuando entra una llave. Si el lobby todavía la trae (uno viejo en caché), se usa ésa ────────
+let DUE = null, dueDe = null, duePidiendo = null, dueFallo = false;
+function useDuelos(activo, sello) {
+  const [d, setD] = useState(dueDe === sello ? DUE : null);
+  useEffect(() => {
+    if (!activo) return undefined;
+    if (DUE && dueDe === sello) { setD(DUE); return undefined; }
+    let vivo = true;
+    duePidiendo = duePidiendo || fetch('/api/duelos', { headers: { accept: 'application/json' } })
+      .then((r) => (r.ok ? r.json() : null)).catch(() => null)
+      .then((j) => { duePidiendo = null; return j; });
+    duePidiendo.then((j) => {
+      dueFallo = !(j && Array.isArray(j.duelos));
+      if (!dueFallo) { DUE = j.duelos; dueDe = sello; }
+      if (vivo) setD(dueFallo ? [] : DUE);
+    });
+    return () => { vivo = false; };
+  }, [activo, sello]);
+  return d;
+}
 function Tendencia({ g, lunes }) {
   if (!g || !g.length) return NADA;
   const max = Math.max(...g, 1);
@@ -298,7 +320,10 @@ const SUBS = {
     },
   },
   duelos: {
-    et: 'Duelos', filas: (L) => L.d.duelos || [], orden: 'g',
+    // ⚔️ de `/api/duelos` (`useDuelos()`); mientras llega, «Cargando…»
+    et: 'Duelos', filas: (L) => L.d.duelos || (dueDe === L.d.sello && DUE) || [], orden: 'g',
+    vacio: (L) => (L.d.duelos || (dueDe === L.d.sello && DUE) ? 'Todavía no hay nadie en este ranking.'
+      : dueFallo ? 'No pude traer los duelos. Prueba de nuevo en un rato.' : 'Cargando…'),
     cols: ['i', 'n', 'g', 't', 'wrd'], movil: ['i', 'n', 'g', 't', 'wrd'],
     // la regla es de Dlx (21/09, reconfirmada el 24/09): los triples no cuentan
     baj: <>Las batallas <b>uno contra uno</b> de las llaves: los triples y las de equipos no cuentan. Se ordena por <b>ganados</b>, porque un 1 de 1 da 100&nbsp;% y no dice nada.</>,
@@ -795,6 +820,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
   const yo = liga.yo;
   const miCrewF = yo ? liga.crewDe(yo) : null;
   const sem = useSemanas(sub === 'temporada');
+  const due = useDuelos(sub === 'duelos' && !liga.d.duelos, liga.d.sello);
   // 📊 la barra bajo cada nombre, sólo en la Temporada: sus puntos contra el que más sumó
   const maxPts = useMemo(() => (liga.d.tabla || []).reduce((m, f) => Math.max(m, f.pts || 0), 0), [liga]);
   const x = {
@@ -803,7 +829,7 @@ export function Ranking({ liga, sub: subRuta, ver: abre = '', dc, raiz }) {
     barra: sub === 'temporada', maxPts,
   };
 
-  const base = useMemo(() => (pronto ? [] : armar(liga, cfg)), [liga, sub, pronto]); // eslint-disable-line react-hooks/exhaustive-deps
+  const base = useMemo(() => (pronto ? [] : armar(liga, cfg)), [liga, sub, pronto, due]); // eslint-disable-line react-hooks/exhaustive-deps
   // 🏆 los que clasifican al torneo de cierre (ver `clasificados()`), y la fila después de la cual va la línea
   const clas = useMemo(() => clasificados(cfg, base), [base, sub]); // eslint-disable-line react-hooks/exhaustive-deps
   const corteK = clas && clas.length === cfg.final ? clave(clas[clas.length - 1]) : null;

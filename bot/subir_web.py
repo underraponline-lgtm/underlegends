@@ -51,6 +51,8 @@ CLAVE = 'web:lobby'
 CLAVE_PERFILES = 'web:perfiles'
 #: todas las llaves de la temporada, para los links viejos: ver `armar()`
 CLAVE_LLAVES = 'web:llaves'
+#: ⚔️ el ranking de Duelos entero (`/api/duelos`), aparte del lobby desde el 29/10/2026: lo pide el Ranking al abrir Duelos
+CLAVE_DUELOS = 'web:duelos'
 
 #: cuántos entran al ranking de la página. No son todos a propósito: el
 #: payload viaja entero en cada visita y una tabla de 300 no se lee.
@@ -370,6 +372,13 @@ def armar():
     filas_todas, tabla = tabla, tabla[:TOPE]
     # ▲▼ cuánto subió cada uno esta semana y quién debutó: contra la foto del lunes (ver `foto_semana()`)
     movimientos(tabla, gente, foto_semana(pool, escribir='--aplicar' in sys.argv))
+    # ⚔️ LOS DUELOS DE CADA FILA, `du: [ganados, jugados]` (29/10/2026): la lista entera de Duelos ya no viaja en el
+    # lobby (va a `CLAVE_DUELOS`, ver `main()`), y el Inicio —«Los que mandan», que sólo mira a los de la tabla— la
+    # arma con esto. Sólo quien tiene duelos de verdad, con la misma regla que `_duelos()`
+    _du = {d['k']: d for d in _duelos(tope=None)}
+    for f in tabla:
+        if f.get('k') in _du:
+            f['du'] = [_du[f['k']]['g'], _du[f['k']]['t']]
     # 🧑 LAS CARAS DE QUIENES QUEDAN FUERA DE LA TABLA (corta en `TOPE`): las historias, «lo último» y las llaves los
     # nombran igual, y sin esto salían con la inicial —medido el 02/10/2026: 19 de 219—. Nombre y cara, nada más (~45
     # bytes cada uno): la página la busca por nombre, `avNombre()` de web/src/liga.js
@@ -703,7 +712,9 @@ def armar():
         # récords son campos que el builder ya escribe y que **nadie
         # estaba mirando**. Es la forma de siempre en este repo, del lado
         # bueno: el dato estaba y el consumidor no lo pedía.
-        'duelos': _duelos(tope=300),
+        # ⚔️ NO VIAJA EN EL LOBBY (29/10/2026): `main()` lo sube aparte, a `CLAVE_DUELOS` (`/api/duelos`), y el Ranking
+        # lo pide al abrir Duelos. El lobby se pasó de su tope por tercera vez; al Inicio le alcanza con el `du` de la tabla
+        '_duelos': _duelos(tope=300),
         'rachas': _rachas(gente),
         'crews': _crews(),
         # 🏆 los tiers de las crews (19/10/2026, `bot/crews_tiers.py`): las reglas, y de cada una su tier y su semana
@@ -3970,6 +3981,13 @@ def _self_check():
     _lgd = p.pop('_ligas', None)
     p.pop('_tags', None)
     p.pop('_semanas', None)
+    _due = p.pop('_duelos', None)
+    # ⚔️ los duelos tampoco (29/10/2026): la lista va a `CLAVE_DUELOS` y la tabla lleva `du` para el Inicio
+    _dk = {d['k']: d for d in (_due or [])}
+    ok('duelos' not in p and isinstance(_due, list)
+       and all(f['du'] == [_dk[f['k']]['g'], _dk[f['k']]['t']] for f in (p.get('tabla') or []) if f.get('k') in _dk),
+       'los duelos no viajan en el lobby: van aparte, a `web:duelos`, y cada fila de la tabla trae su `du`  (%d con duelos)'
+       % sum(1 for f in (p.get('tabla') or []) if f.get('du')))
     ok('ligas' not in p and not any('fechas' in x for x in (((_lgd or {}).get('lobby') or {}).get('ligas') or []))
        and (_lgd is None or (_lgd.get('lobby') is not None) == bool(_lgd.get('ligas') is not None)),
        'las ligas no viajan en el lobby: van aparte, a `web:ligas` (lo del Inicio en `lobby`, sin las fechas)')
@@ -4244,6 +4262,9 @@ def _self_check():
     # ⚠️ Y SE PASÓ OTRA VEZ EL 20/10/2026, por 73 bytes (48,9 KB): las llaves de los servidores que no suman (3.90) entran
     # al lobby para el calendario y «Ver llave». Se sube a 52.000 —2 KB más por visita— y ES LA ÚLTIMA VEZ: lo próximo es
     # mudar `ligas`, que lo leen ocho lugares de la página (perfil, ranking, salón, ligas, el título y el Dashboard)
+    # ✅ Y SE MUDÓ EL 25/10/2026 (46,7 KB). ⚠️ SE PASÓ OTRA VEZ EL 29/10/2026 a las 8:45 PM ET (50,9 KB) y NO se subió:
+    # se mudó `duelos` (4,7 KB, lo leían dos lugares). Lo que crece sin techo es el `calendario` —toda la temporada,
+    # ~1,6 KB por semana—: si vuelve a pasarse, lo próximo es dejar en el lobby sólo sus últimas semanas
     ok(comp < 52000, 'y pesa poco: %.1f KB comprimido (%.1f KB de JSON)' % (comp / 1024.0, tam / 1024.0))
     ok(_compactas({'temporada': 'a1', 'pais': 'd4'}) == 'a1...d4' and _compactas({}) == '',
        'las versiones de las cartas viajan compactas, en el orden de `CARTAS`')
@@ -4266,6 +4287,7 @@ def main():
     ligas_det = p.pop('_ligas', None)
     tags_det = p.pop('_tags', None)
     sem_det = p.pop('_semanas', None)
+    due_det = p.pop('_duelos', None)
     redes_ok = _con_redes(perf) is not None
     print('\n══ LO QUE VA A LA WEB ══\n')
     print('   temporada %s · %d en el padrón del pool' % (p['temporada'],
@@ -4363,6 +4385,12 @@ def main():
         oks = subir(sem_det, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_SEMANAS)
         print('   %s' % ('✓ las semanas de cada uno: igual' if oks is None else '✅ las semanas de cada uno, subidas'
                          if oks else '🔴 no pude subir las semanas de cada uno'))
+    # ⚔️ EL RANKING DE DUELOS, aparte del lobby: sólo si cambió, que es cuando entra una llave con duelos. Aunque esté
+    # vacío: así una lista que se vació no queda vieja arriba
+    if due_det is not None:
+        okd = subir({'duelos': due_det}, solo_si_cambio='--siempre' not in sys.argv, clave=CLAVE_DUELOS)
+        print('   %s' % ('✓ los duelos: igual' if okd is None else '✅ los duelos, subidos (%d)' % len(due_det)
+                         if okd else '🔴 no pude subir los duelos'))
     # 🔑 LOS PERFILES, CON EL MISMO DIFF-WRITER: cambian cuando entra una
     # llave, no en cada corrida. Si fallan, el lobby ya está arriba.
     ok2 = None

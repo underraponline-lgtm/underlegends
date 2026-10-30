@@ -225,7 +225,11 @@ export function LosQueMandan({ liga, dc }) {
     yoComp = fila(puestoDe(liga, compT, (f) => f.k === yo.k, (f) => f.sc || 0, 'de Score', 1), '#/ranking/competitivo');
   }
   cats.push(['competitivo', 'Competitivo', compT.slice(0, 5).map((f) => <McPersona key={f.k} liga={liga} f={f} cual="competitivo" />), yoComp]);
-  const duT = (liga.d.duelos || []).filter((d) => !d.fc && liga.T[d.k]);
+  // ⚔️ de la tabla (`du: [ganados, jugados]`, 29/10/2026): la lista entera de Duelos ya no viaja en el lobby, y acá sólo
+  // se mira a los de la tabla. El mismo orden que el Ranking de Duelos: ganados, jugados y nombre
+  const duT = (liga.d.duelos || T.filter((f) => f.du).map((f) => ({ k: f.k, n: f.n, g: f.du[0], t: f.du[1], fc: f.fc }))
+    .sort((a, b) => b.g - a.g || b.t - a.t || ((a.n || '') < (b.n || '') ? -1 : (a.n || '') > (b.n || '') ? 1 : 0)))
+    .filter((d) => !d.fc && liga.T[d.k]);
   cats.push(['duelos', 'Duelos', duT.slice(0, 5).map((d) => <McPersona key={d.k} liga={liga} f={liga.T[d.k]} cual={liga.cartaDe(d.k, { comp: 1 }) || 'temporada'} dato={d.g + ' DE ' + d.t + ' DUELOS GANADOS'} />),
     yo ? fila(puestoDe(liga, duT, (d) => d.k === yo.k, (d) => d.g || 0, 'duelos ganados'), '#/ranking/duelos') : null]);
   const medT = T.filter((f) => (f.oro || 0) + (f.seg || 0) + (f.ter || 0))

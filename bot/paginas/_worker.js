@@ -710,7 +710,7 @@ export default {
     // 🏟️ y el detalle de las ligas (14/10/2026): las fechas y el flyer de cada una, al abrir Ligas
     if (url.pathname === '/api/perfiles' || url.pathname === '/api/llaves' || url.pathname === '/api/muro' ||
         url.pathname === '/api/ligas' || url.pathname === '/api/salon' || url.pathname === '/api/tags' || url.pathname === '/api/semanas'
-        || url.pathname === '/api/competencias') {
+        || url.pathname === '/api/competencias' || url.pathname === '/api/duelos') {
       if (req.method !== 'GET') return new Response('no', { status: 405 });
       const r = await fetch(ORIGEN + url.pathname.slice(4), {
         method: 'GET',
