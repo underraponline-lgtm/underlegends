@@ -367,6 +367,7 @@
    "vencido": false
   },
   "Eldinoco": {
+   "avisado": "2026-10-29",
    "chat": "2026-10-29",
    "con": null,
    "cumplido": "",
@@ -463,6 +464,18 @@
    "n": 512,
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
+   "vencido": false
+  },
+  "Guaicurús": {
+   "avisado": "2026-10-29",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-30T00:12:24+00:00",
+   "did": "",
+   "evento": "qcyo rapeen 7",
+   "n": 545,
+   "sv": "FFA",
+   "vence": "2026-11-06T00:12:24+00:00",
    "vencido": false
   },
   "Guty": {
@@ -637,6 +650,18 @@
    "sv": "SR",
    "vence": "2026-10-23T17:34:15+00:00",
    "vencido": true
+  },
+  "Karumailafmasha": {
+   "avisado": "2026-10-29",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-30T00:12:24+00:00",
+   "did": "",
+   "evento": "qcyo rapeen 7",
+   "n": 545,
+   "sv": "FFA",
+   "vence": "2026-11-06T00:12:24+00:00",
+   "vencido": false
   },
   "Khalil": {
    "avisado": "2026-10-27",
@@ -885,6 +910,18 @@
    "n": 542,
    "sv": "FFA",
    "vence": "2026-11-05T03:04:48+00:00",
+   "vencido": false
+  },
+  "Matias": {
+   "avisado": "2026-10-29",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-30T00:12:24+00:00",
+   "did": "896877041704644618",
+   "evento": "qcyo rapeen 7",
+   "n": 545,
+   "sv": "FFA",
+   "vence": "2026-11-06T00:12:24+00:00",
    "vencido": false
   },
   "Mc arepa": {
@@ -1515,6 +1552,18 @@
    "sv": "SR",
    "vence": "2026-10-28T21:05:52+00:00",
    "vencido": true
+  },
+  "publicenemy": {
+   "avisado": "2026-10-29",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-30T00:12:24+00:00",
+   "did": "",
+   "evento": "qcyo rapeen 7",
+   "n": 545,
+   "sv": "FFA",
+   "vence": "2026-11-06T00:12:24+00:00",
+   "vencido": false
   },
   "roda mc": {
    "avisado": "2026-10-26",

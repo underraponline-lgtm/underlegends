@@ -29198,5 +29198,366 @@
    ]
   ],
   "v": 2
+ },
+ "545": {
+  "antes": {
+   "Adriagner": [
+    62,
+    81,
+    false
+   ],
+   "Dominick": [
+    221,
+    41,
+    true
+   ],
+   "Drexx": [
+    34,
+    40,
+    false
+   ],
+   "Jobaking": [
+    54,
+    71,
+    false
+   ],
+   "Kochi": [
+    81,
+    106,
+    false
+   ],
+   "LRS": [
+    37,
+    46,
+    false
+   ],
+   "Liberia": [
+    8,
+    9,
+    false
+   ],
+   "Magic": [
+    167,
+    339,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Miniboy": [
+    24,
+    29,
+    false
+   ],
+   "Molusco": [
+    23,
+    27,
+    false
+   ],
+   "NXUZ": [
+    30,
+    35,
+    false
+   ],
+   "OKAM": [
+    31,
+    37,
+    false
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "PRAISERIZA": [
+    215,
+    6,
+    true
+   ],
+   "Presagio": [
+    49,
+    66,
+    false
+   ],
+   "Snow": [
+    5,
+    5,
+    false
+   ],
+   "Teito": [
+    66,
+    87,
+    false
+   ],
+   "Verc": [
+    11,
+    12,
+    false
+   ],
+   "mats": [
+    115,
+    175,
+    false
+   ],
+   "yinn": [
+    216,
+    19,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Guaicurús🇰🇷",
+    "OKAM",
+    "Guaicurús🇰🇷"
+   ],
+   [
+    "Drexx, Adriagner, LRS",
+    "Teito, Dominick",
+    "Drexx, Adriagner, LRS"
+   ],
+   [
+    "Drexx, Adriagner, LRS",
+    "Magic",
+    "Drexx, Adriagner, LRS"
+   ],
+   [
+    "Snow",
+    "Makmah",
+    "Snow"
+   ],
+   [
+    "Snow",
+    "Kochi",
+    "Snow"
+   ],
+   [
+    "Snow",
+    "mats, Matias",
+    "Snow"
+   ],
+   [
+    "Snow",
+    "NXUZ",
+    "Snow"
+   ],
+   [
+    "Presagio, PRAISERIZA, Oasis",
+    "Evangeline🇧🇴, Miniboy",
+    "Presagio, PRAISERIZA, Oasis"
+   ],
+   [
+    "Presagio, PRAISERIZA, Oasis",
+    "Jobaking",
+    "Presagio, PRAISERIZA, Oasis"
+   ],
+   [
+    "Guaicurús🇰🇷",
+    "Karumailafmasha🇹🇼",
+    "Guaicurús🇰🇷"
+   ],
+   [
+    "publicenemy🇦🇷, Liberia",
+    "Snow",
+    "publicenemy🇦🇷, Liberia"
+   ],
+   [
+    "Presagio, PRAISERIZA, Oasis",
+    "Molusco",
+    "Presagio, PRAISERIZA, Oasis"
+   ],
+   [
+    "yinn, Verc",
+    "Drexx, Adriagner, LRS",
+    "yinn, Verc"
+   ],
+   [
+    "Guaicurús🇰🇷",
+    "publicenemy🇦🇷, Liberia",
+    "Guaicurús🇰🇷"
+   ],
+   [
+    "Presagio, PRAISERIZA, Oasis",
+    "yinn, Verc",
+    "Presagio, PRAISERIZA, Oasis"
+   ],
+   [
+    "Presagio, PRAISERIZA, Oasis",
+    "Guaicurús🇰🇷",
+    "Presagio, PRAISERIZA, Oasis"
+   ]
+  ],
+  "ev_antes": {
+   "Adriagner": 9,
+   "Dominick": 29,
+   "Drexx": 28,
+   "Jobaking": 13,
+   "Kochi": 7,
+   "LRS": 27,
+   "Liberia": 23,
+   "Magic": 3,
+   "Makmah": 86,
+   "Miniboy": 33,
+   "Molusco": 23,
+   "NXUZ": 24,
+   "OKAM": 14,
+   "Oasis": 36,
+   "PRAISERIZA": 15,
+   "Presagio": 8,
+   "Snow": 40,
+   "Teito": 16,
+   "Verc": 23,
+   "mats": 4,
+   "yinn": 27
+  },
+  "fecha": "29/10",
+  "firma": "91620f6969d02214",
+  "msg": "1565559508334547065",
+  "nombre": "__ qcyo rapeen 7 __",
+  "num": 545,
+  "participantes": 26,
+  "sello": {
+   "Oasis": "e2d35771ec7f:6ec1a5248de8",
+   "PRAISERIZA": "",
+   "Presagio": "772afc88889a:6ec1a5248de8"
+  },
+  "sv": "FFA",
+  "t": "2026-10-30T02:54:31Z",
+  "tabla": [
+   [
+    "Guaicurús🇰🇷",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Presagio",
+    "Campeón",
+    3333
+   ],
+   [
+    "PRAISERIZA",
+    "Campeón",
+    3333
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    3333
+   ],
+   [
+    "publicenemy🇦🇷",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    2625
+   ],
+   [
+    "yinn",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Verc",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Karumailafmasha🇹🇼",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Molusco",
+    "Cuartos",
+    2500
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "Magic",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kochi",
+    "Octavos",
+    1250
+   ],
+   [
+    "NXUZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jobaking",
+    "Octavos",
+    1250
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    833
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    833
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    833
+   ],
+   [
+    "Teito",
+    "Octavos",
+    625
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    625
+   ],
+   [
+    "mats",
+    "Octavos",
+    625
+   ],
+   [
+    "Matias",
+    "Octavos",
+    625
+   ],
+   [
+    "Evangeline🇧🇴",
+    "Octavos",
+    625
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    625
+   ]
+  ],
+  "v": 2
  }
 }

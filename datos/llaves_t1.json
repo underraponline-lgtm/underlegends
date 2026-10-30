@@ -38179,5 +38179,268 @@
     2000
    ]
   ]
+ },
+ "545": {
+  "dia": "2026-10-29",
+  "escala": "16+",
+  "fecha": "29/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1565518702235877487"
+  ],
+  "n": 545,
+  "nombre": "qcyo rapeen 7",
+  "participantes": 26,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Guaicurús🇰🇷",
+       "yinn, Verc",
+       "OKAM"
+      ],
+      "Guaicurús🇰🇷, yinn, Verc",
+      "triple (3 bandas, pasan 2); también pasa: Yinn🇲🇦  + Verc🇨🇱"
+     ],
+     [
+      [
+       "Drexx, Adriagner, LRS",
+       "Karumailafmasha🇹🇼",
+       "Teito, Dominick",
+       "Magic"
+      ],
+      "Drexx, Adriagner, LRS, Karumailafmasha🇹🇼",
+      "triple (4 bandas, pasan 2); también pasa: Karumailafmasha🇹🇼"
+     ],
+     [
+      [
+       "Snow",
+       "Molusco",
+       "Makmah",
+       "Kochi",
+       "mats, Matias",
+       "NXUZ"
+      ],
+      "Snow, Molusco",
+      "triple (6 bandas, pasan 2); también pasa: Molusco"
+     ],
+     [
+      [
+       "Presagio, PRAISERIZA, Oasis",
+       "publicenemy🇦🇷, Liberia",
+       "Evangeline🇧🇴, Miniboy",
+       "Jobaking"
+      ],
+      "Presagio, PRAISERIZA, Oasis, publicenemy🇦🇷, Liberia",
+      "triple (4 bandas, pasan 2); también pasa: publicenemy🇦🇷 + liberia🇱🇷 (última)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Guaicurús🇰🇷",
+       "Karumailafmasha🇹🇼"
+      ],
+      "Guaicurús🇰🇷",
+      ""
+     ],
+     [
+      [
+       "publicenemy🇦🇷, Liberia",
+       "Snow"
+      ],
+      "publicenemy🇦🇷, Liberia",
+      ""
+     ],
+     [
+      [
+       "Presagio, PRAISERIZA, Oasis",
+       "Molusco"
+      ],
+      "Presagio, PRAISERIZA, Oasis",
+      ""
+     ],
+     [
+      [
+       "yinn, Verc",
+       "Drexx, Adriagner, LRS"
+      ],
+      "yinn, Verc",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Guaicurús🇰🇷",
+       "publicenemy🇦🇷, Liberia"
+      ],
+      "Guaicurús🇰🇷",
+      ""
+     ],
+     [
+      [
+       "Presagio, PRAISERIZA, Oasis",
+       "yinn, Verc"
+      ],
+      "Presagio, PRAISERIZA, Oasis",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Presagio, PRAISERIZA, Oasis",
+       "Guaicurús🇰🇷"
+      ],
+      "Presagio, PRAISERIZA, Oasis",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Guaicurús🇰🇷",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    3333
+   ],
+   [
+    "PRAISERIZA",
+    "Campeón",
+    3333
+   ],
+   [
+    "Presagio",
+    "Campeón",
+    3333
+   ],
+   [
+    "Liberia",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Verc",
+    "Semifinal",
+    2625
+   ],
+   [
+    "publicenemy🇦🇷",
+    "Semifinal",
+    2625
+   ],
+   [
+    "yinn",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Karumailafmasha🇹🇼",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Molusco",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Snow",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Jobaking",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kochi",
+    "Octavos",
+    1250
+   ],
+   [
+    "Magic",
+    "Octavos",
+    1250
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "NXUZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    1250
+   ],
+   [
+    "Adriagner",
+    "Cuartos",
+    833
+   ],
+   [
+    "Drexx",
+    "Cuartos",
+    833
+   ],
+   [
+    "LRS",
+    "Cuartos",
+    833
+   ],
+   [
+    "Dominick",
+    "Octavos",
+    625
+   ],
+   [
+    "Evangeline🇧🇴",
+    "Octavos",
+    625
+   ],
+   [
+    "Matias",
+    "Octavos",
+    625
+   ],
+   [
+    "Miniboy",
+    "Octavos",
+    625
+   ],
+   [
+    "Teito",
+    "Octavos",
+    625
+   ],
+   [
+    "mats",
+    "Octavos",
+    625
+   ]
+  ]
  }
 }

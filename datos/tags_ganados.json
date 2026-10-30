@@ -361,6 +361,11 @@
     "t1",
     1793029252929
    ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1793329652300
+   ],
    "🚪 DEBUT CON CORONA": [
     "🚪 DEBUT CON CORONA",
     "t1",
@@ -2457,6 +2462,11 @@
    ]
   },
   "servidor": {
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1793329652300
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
@@ -3413,6 +3423,20 @@
     "🧟 RESUCITADO",
     "t1",
     1792953978519
+   ]
+  }
+ },
+ "guaicurus": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1793329652300
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1793329652300
    ]
   }
  },
@@ -4720,6 +4744,11 @@
     "t1",
     1793327725986
    ],
+   "🎯 CAZADOR CAZADO": [
+    "🎯 CAZADOR CAZADO",
+    "t1",
+    1793329652300
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x1",
     "t1",
@@ -5407,6 +5436,15 @@
     "🧳 VIAJERO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "mats": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1793329652300
    ]
   }
  },
@@ -6853,7 +6891,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x20",
+    "👑 CAMPEÓN x21",
     "t1",
     1793029252929
    ],
@@ -8078,6 +8116,11 @@
     "t1",
     1793029252929
    ],
+   "⭐ DECACAMPEÓN": [
+    "⭐ DECACAMPEÓN",
+    "t1",
+    1793329652300
+   ],
    "⭐ PENTACAMPEÓN": [
     "⭐ PENTACAMPEÓN",
     "t1",
@@ -8094,7 +8137,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x9",
+    "👑 CAMPEÓN x10",
     "t1",
     1793029252929
    ],
@@ -8157,6 +8200,11 @@
     "t1",
     1793029252929
    ],
+   "🏯 CIUDADELA": [
+    "🏯 CIUDADELA",
+    "t1",
+    1793329652300
+   ],
    "🏰 FORTALEZA": [
     "🏰 FORTALEZA",
     "t1",
@@ -8180,7 +8228,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x5",
+    "👑 CAMPEÓN x6",
     "t1",
     1793029252929
    ],
@@ -11079,6 +11127,11 @@
     "📋 SEMANA PERFECTA x2",
     "t1",
     1793253930231
+   ],
+   "🔋 INAGOTABLE": [
+    "🔋 INAGOTABLE",
+    "t1",
+    1793329652300
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
