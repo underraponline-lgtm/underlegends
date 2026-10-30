@@ -82,5 +82,21 @@
     }
    ]
   }
- ]
+ ],
+ "_publicado": {
+  "DRA": {
+   "mensaje": "1565553067255009321",
+   "cuando": "2026-10-29 10:29 PM ET",
+   "here": true,
+   "link": "https://discord.com/channels/841017460341604382/1498326749748924416/1565553067255009321",
+   "editar": "python herramientas/anunciar.py docs/anuncios/2026-10-29_crews_relanzamiento.json --editar 1565553067255009321"
+  },
+  "FFA": {
+   "mensaje": "1565553075891081240",
+   "cuando": "2026-10-29 10:29 PM ET",
+   "here": true,
+   "link": "https://discord.com/channels/1468472442925092958/1531832189187264543/1565553075891081240",
+   "editar": "python herramientas/anunciar.py docs/anuncios/2026-10-29_crews_relanzamiento.json --servidor FFA --editar 1565553075891081240"
+  }
+ }
 }
