@@ -2,6 +2,7 @@
 "_leeme": "Los roles de Discord que da cada servidor de la Liga, por el nombre del rol (organizador, jurado, host, staff; ver tipo_de_rol()) y socio = el dueño. Lo escribe herramientas/servidores_de.py; lo junta bot/roles.py. Sólo gente de la Lista, salvo los socios (son los dueños de los servidores).",
 "organizador": {
 "1055474244089286706": [
+"FFA",
 "URBF",
 "FVS"
 ],
@@ -319,6 +320,7 @@
 "FFS"
 ],
 "1055474244089286706": [
+"FFA",
 "URBF"
 ],
 "1070553144964173906": [
@@ -927,6 +929,7 @@
 "FFS"
 ],
 "1055474244089286706": [
+"FFA",
 "URBF"
 ],
 "1070553144964173906": [
@@ -1551,6 +1554,9 @@
 ],
 "418822109075210240": [
 "Freestyler",
+"Fanático"
+],
+"425590804619198464": [
 "Fanático"
 ],
 "446845638307741708": [

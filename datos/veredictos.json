@@ -1475,6 +1475,39 @@
    "b": "SIN LÍMITES",
    "ganador": "SIN LÍMITES",
    "votos": "1–0"
+  },
+  "1565908635530436759": {
+   "id": "1565908635530436759",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793412111886,
+   "a": "DARKO",
+   "b": "LEYENDA",
+   "ganador": "DARKO",
+   "votos": "1–0"
+  },
+  "1565910893643043057": {
+   "id": "1565910893643043057",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793412650262,
+   "a": "VILCA",
+   "b": "LEYENDA",
+   "ganador": "VILCA",
+   "votos": "1–0"
+  },
+  "1565912524430250068": {
+   "id": "1565912524430250068",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793413039072,
+   "a": "MCAREPA",
+   "b": "SIN LÍMITES",
+   "ganador": "SIN LÍMITES",
+   "votos": "1–0"
   }
  },
  "llaves": {

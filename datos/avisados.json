@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "e6a55bca7d340f1a",
+  "firma": "7a9b9d435790be76",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "8379813e382c0462",
+  "firma": "edb4bc38d955c16a",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "b6dbd60affa065e4",
+  "firma": "9de5cd74af509bdd",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -18438,7 +18438,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "03e17967628ba3b9",
+  "firma": "60a3fc100c5728fd",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -18979,7 +18979,7 @@
    "Sin Limites": 21
   },
   "fecha": "22/10",
-  "firma": "e04b6be27c815121",
+  "firma": "24efbc09f9729d0c",
   "msg": "1562845541493374976",
   "nombre": "__ LA ISLA DE OKINAWA V.3 __",
   "num": 498,
@@ -19212,7 +19212,7 @@
    "Zignos": 24
   },
   "fecha": "22/10",
-  "firma": "3d0e68a34fec0053",
+  "firma": "64c27204ab93d05f",
   "msg": "1562967842851266610",
   "nombre": "__ SI NO SOS FOURBAR NO QUIERO NADA VOL.1 __",
   "num": 499,
@@ -19375,7 +19375,7 @@
    "PichulaMc": 41
   },
   "fecha": "22/10",
-  "firma": "37cee029a4fcb304",
+  "firma": "193cd9f167610afd",
   "msg": "1562977225790459957",
   "nombre": "19 (EDICIÓN FUTCARD VOL 4)",
   "num": 500,
@@ -20816,7 +20816,7 @@
    "VR": 4
   },
   "fecha": "23/10",
-  "firma": "32e4d03ff6d9c514",
+  "firma": "ebe83fc77db70eec",
   "msg": "1563368240221257751",
   "nombre": "19 CUP FUTCARD EDICIÓN 5",
   "num": 505,
@@ -21500,7 +21500,7 @@
    "Tam": 12
   },
   "fecha": "24/10",
-  "firma": "8e0e845de8b625de",
+  "firma": "d5e74eebc2a2f7eb",
   "msg": "1563694518920814593",
   "nombre": "GRISELDA RECORDS VOL. 4",
   "num": 510,
@@ -23869,7 +23869,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "2b316644bf3791d0",
+  "firma": "edcd076375456143",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -24037,7 +24037,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "8ce51453247aa9c7",
+  "firma": "ca99daad49b8c5d8",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -30434,9 +30434,9 @@
     "Agus"
    ],
    [
-    "POLLO",
+    "Polosport",
     "Monamay",
-    "POLLO"
+    "Polosport"
    ],
    [
     "Lizeninn",
@@ -30467,6 +30467,11 @@
     "Agus",
     "NC",
     "Agus"
+   ],
+   [
+    "Polosport",
+    "Lizeninn",
+    "Polosport"
    ],
    [
     "Vandu",
@@ -30509,7 +30514,7 @@
    "Walker": 8
   },
   "fecha": "30/10",
-  "firma": "3a0f454fb329ddb3",
+  "firma": "dc28d19829094869",
   "msg": "1565898869114413108",
   "nombre": "IDS V.3",
   "num": 549,
@@ -30542,6 +30547,11 @@
    ],
    [
     "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lizeninn",
     "Cuartos",
     2500
    ],

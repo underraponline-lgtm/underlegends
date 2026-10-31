@@ -916,10 +916,10 @@
    "semillero": {
     "nuevos": {
      "FFA": 27,
+     "FDS": 3,
      "FRZ": 4,
      "DDF": 5,
-     "ACAD": 2,
-     "FDS": 3
+     "ACAD": 2
     },
     "gente": {
      "FDS": 24,
@@ -927,7 +927,7 @@
      "FFA": 114,
      "FRZ": 15,
      "ACAD": 16,
-     "URBF": 13
+     "URBF": 14
     },
     "gana": "FRZ"
    },
@@ -942,7 +942,7 @@
     "FVS": 0,
     "LKR": 0,
     "SR": 0,
-    "URBF": 13
+    "URBF": 14
    }
   }
  ]
