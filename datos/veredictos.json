@@ -1596,6 +1596,17 @@
    "b": "Isabella 🇦🇷",
    "ganador": "Isabella 🇦🇷",
    "votos": "2–1"
+  },
+  "1565974632249692223": {
+   "id": "1565974632249692223",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793427846730,
+   "a": "tnor🇻🇪",
+   "b": "yinn 🇲🇦",
+   "ganador": "tnor🇻🇪",
+   "votos": "2–0"
   }
  },
  "llaves": {
@@ -5339,6 +5350,28 @@
       "ERIAN"
      ],
      "PRAISERIZAS",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1565980514471649362": {
+   "id": "1565980514471649362",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793429249161,
+   "ed": 1793429419214,
+   "texto": "`[ OCTAVOS ]`\n⌞Luffy 🇵🇪⌝ 🆚 ⌞tam🇻🇪⌝ 🆚 ⌞lord viruz🇨🇴⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "Luffy 🇵🇪",
+      "tam🇻🇪",
+      "lord viruz🇨🇴"
+     ],
+     "tam🇻🇪",
      "veredicto",
      []
     ]
