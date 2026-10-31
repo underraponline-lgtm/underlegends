@@ -3748,6 +3748,24 @@
      "cuentas": {
       "Erian 恵理久": "1055474244089286706"
      }
+    },
+    "1565897989443035248": {
+     "sv": "FDS",
+     "nombre": "RAP SIN GROSERIAS",
+     "mo": "2026-10-31T01:19:33Z",
+     "staff": {
+      "jurado": [
+       "el que este"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Abraham",
+       "id": "1489469731168845894"
+      }
+     ],
+     "organizador": "@Abraham",
+     "cuentas": {}
     }
    },
    "ver": {
@@ -4130,7 +4148,7 @@
       "ros81"
      ],
      "645308964141137952": [
-      "#47 | Soulb",
+      "#48 | Soulb",
       "Soul B",
       "sj.2008_"
      ]
@@ -4161,7 +4179,7 @@
     },
     "FDS|2026-10-14": {
      "645308964141137952": [
-      "#47 | Soulb",
+      "#48 | Soulb",
       "Soul B",
       "sj.2008_"
      ],
@@ -4207,7 +4225,7 @@
       "abrahammh"
      ],
      "781971857519804417": [
-      "#46 | Cinexfilo",
+      "#47 | Cinexfilo",
       "MR. CINEXFILO🇻🇪ᵇˡᶠ",
       "cinexfilosanity"
      ],
@@ -4260,19 +4278,19 @@
     },
     "FDS|2026-10-21": {
      "645308964141137952": [
-      "#47 | Soulb",
+      "#48 | Soulb",
       "Soul B",
       "sj.2008_"
      ],
      "1508623564285149357": [
-      "#35 | Sin Limites",
+      "#36 | Sin Limites",
       "SIN LIMITES",
       "sinlimites2026"
      ]
     },
     "FDS|2026-10-22": {
      "645308964141137952": [
-      "#47 | Soulb",
+      "#48 | Soulb",
       "Soul B",
       "sj.2008_"
      ],
@@ -4287,7 +4305,7 @@
       "sosaatrz"
      ],
      "1508623564285149357": [
-      "#35 | Sin Limites",
+      "#36 | Sin Limites",
       "SIN LIMITES",
       "sinlimites2026"
      ]
@@ -4539,7 +4557,7 @@
       "abraham_e29_03496"
      ],
      "1508623564285149357": [
-      "#35 | Sin Limites",
+      "#36 | Sin Limites",
       "SIN LIMITES",
       "sinlimites2026"
      ]
@@ -4558,7 +4576,7 @@
       "abraham_e29_03496"
      ],
      "1508623564285149357": [
-      "#35 | Sin Limites",
+      "#36 | Sin Limites",
       "SIN LIMITES",
       "sinlimites2026"
      ]
@@ -4695,9 +4713,30 @@
     },
     "FFA|2026-10-30": {
      "1345962362615894027": [
-      "#56 | Kravitz",
-      "Monamay",
+      "#57 | Kravitz",
+      "Kravitz",
       "thekravitz777"
+     ]
+    },
+    "FDS|2026-10-30": {
+     "1489469731168845894": [
+      "mcarepa",
+      "Abraham",
+      "abraham_e29_03496"
+     ]
+    },
+    "URBF|2026-10-30": {
+     "1055474244089286706": [
+      "",
+      "Erian 恵理久",
+      "deslanofthemind"
+     ]
+    },
+    "URBF|2026-10-25": {
+     "1055474244089286706": [
+      "",
+      "Erian 恵理久",
+      "deslanofthemind"
      ]
     }
    }

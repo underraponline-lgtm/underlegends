@@ -30128,5 +30128,464 @@
    ]
   ],
   "v": 2
+ },
+ "548": {
+  "antes": {
+   "Chente": [
+    379,
+    327,
+    true
+   ],
+   "DarnBless": [
+    94,
+    124,
+    false
+   ],
+   "Eseeka": [
+    509,
+    495,
+    true
+   ],
+   "Lizeninn": [
+    244,
+    110,
+    true
+   ],
+   "Luck": [
+    101,
+    139,
+    false
+   ],
+   "Mc arepa": [
+    133,
+    225,
+    false
+   ],
+   "NXUZ": [
+    29,
+    35,
+    false
+   ],
+   "OKAM": [
+    31,
+    37,
+    false
+   ],
+   "Sin Limites": [
+    27,
+    32,
+    false
+   ],
+   "gary": [
+    180,
+    392,
+    false
+   ],
+   "mats": [
+    111,
+    168,
+    false
+   ]
+  },
+  "canal": "1489848582189224104",
+  "duelos": [
+   [
+    "Sin Limites",
+    "mats",
+    "Sin Limites"
+   ],
+   [
+    "gary",
+    "Shitka🇲🇽",
+    "gary"
+   ],
+   [
+    "OKAM",
+    "jazi 🇦🇸",
+    "OKAM"
+   ],
+   [
+    "AL3 🇨🇺",
+    "Lizeninn",
+    "AL3 🇨🇺"
+   ],
+   [
+    "Luck",
+    "DarnBless",
+    "Luck"
+   ],
+   [
+    "Eseeka",
+    "NXUZ",
+    "Eseeka"
+   ],
+   [
+    "Sin Limites",
+    "Chente",
+    "Sin Limites"
+   ],
+   [
+    "Mc arepa",
+    "gary",
+    "Mc arepa"
+   ],
+   [
+    "AL3 🇨🇺",
+    "OKAM",
+    "AL3 🇨🇺"
+   ],
+   [
+    "Luck",
+    "Eseeka",
+    "Luck"
+   ],
+   [
+    "Mc arepa",
+    "Sin Limites",
+    "Mc arepa"
+   ],
+   [
+    "Luck",
+    "AL3 🇨🇺",
+    "Luck"
+   ],
+   [
+    "Luck",
+    "Mc arepa",
+    "Luck"
+   ],
+   [
+    "Sin Limites",
+    "AL3 🇨🇺",
+    "Sin Limites"
+   ]
+  ],
+  "ev_antes": {
+   "Chente": 3,
+   "DarnBless": 9,
+   "Eseeka": 1,
+   "Lizeninn": 9,
+   "Luck": 7,
+   "Mc arepa": 2,
+   "NXUZ": 25,
+   "OKAM": 15,
+   "Sin Limites": 37,
+   "gary": 1,
+   "mats": 5
+  },
+  "fecha": "26/10",
+  "firma": "9552541c2dde1c4b",
+  "msg": "1565899302046277764",
+  "nombre": "RAP SIN GROSERIAS 1",
+  "num": 548,
+  "participantes": 16,
+  "sello": {
+   "Luck": "ed1151506bf7:6ec1a5248de8"
+  },
+  "sv": "FDS",
+  "t": "2026-10-31T01:24:45Z",
+  "tabla": [
+   [
+    "Luck",
+    "Campeón",
+    10000
+   ],
+   [
+    "Mc arepa",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Sin Limites",
+    "Tercero",
+    6000
+   ],
+   [
+    "AL3 🇨🇺",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Chente",
+    "Cuartos",
+    2500
+   ],
+   [
+    "gary",
+    "Cuartos",
+    2500
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Eseeka",
+    "Cuartos",
+    2500
+   ],
+   [
+    "mats",
+    "Octavos",
+    1250
+   ],
+   [
+    "Shitka🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "jazi 🇦🇸",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lizeninn",
+    "Octavos",
+    1250
+   ],
+   [
+    "DarnBless",
+    "Octavos",
+    1250
+   ],
+   [
+    "NXUZ",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "549": {
+  "antes": {
+   "Agus": [
+    12,
+    13,
+    false
+   ],
+   "BastyRetro": [
+    75,
+    99,
+    false
+   ],
+   "Crk": [
+    54,
+    71,
+    false
+   ],
+   "Kochi": [
+    76,
+    100,
+    false
+   ],
+   "Leyenda": [
+    287,
+    191,
+    true
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "NC": [
+    23,
+    28,
+    false
+   ],
+   "ONDADISKO": [
+    348,
+    283,
+    true
+   ],
+   "PichulaMc": [
+    3,
+    3,
+    false
+   ],
+   "Polosport": [
+    30,
+    36,
+    false
+   ],
+   "Vandu": [
+    13,
+    14,
+    false
+   ],
+   "Walker": [
+    47,
+    62,
+    false
+   ]
+  },
+  "canal": "1511962554547703960",
+  "duelos": [
+   [
+    "NC",
+    "ONDADISKO",
+    "NC"
+   ],
+   [
+    "Agus",
+    "Makmah",
+    "Agus"
+   ],
+   [
+    "POLLO",
+    "Monamay",
+    "POLLO"
+   ],
+   [
+    "Lizeninn",
+    "Leyenda",
+    "Lizeninn"
+   ],
+   [
+    "BastyRetro",
+    "Crk",
+    "BastyRetro"
+   ],
+   [
+    "Vandu",
+    "Makmah",
+    "Vandu"
+   ],
+   [
+    "Vandu",
+    "ONDADISKO",
+    "Vandu"
+   ],
+   [
+    "PichulaMc",
+    "Kochi",
+    "PichulaMc"
+   ],
+   [
+    "Agus",
+    "NC",
+    "Agus"
+   ],
+   [
+    "Vandu",
+    "BastyRetro",
+    "Vandu"
+   ],
+   [
+    "PichulaMc",
+    "Walker",
+    "PichulaMc"
+   ],
+   [
+    "Agus",
+    "Polosport",
+    "Agus"
+   ],
+   [
+    "Vandu",
+    "PichulaMc",
+    "Vandu"
+   ],
+   [
+    "Agus",
+    "Vandu",
+    "Agus"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 20,
+   "BastyRetro": 5,
+   "Crk": 12,
+   "Kochi": 9,
+   "Leyenda": 7,
+   "Makmah": 89,
+   "NC": 41,
+   "ONDADISKO": 1,
+   "PichulaMc": 53,
+   "Polosport": 13,
+   "Vandu": 38,
+   "Walker": 8
+  },
+  "fecha": "30/10",
+  "firma": "3a0f454fb329ddb3",
+  "msg": "1565898869114413108",
+  "nombre": "IDS V.3",
+  "num": 549,
+  "participantes": 19,
+  "sello": {
+   "Agus": "c879678655ca:6ec1a5248de8"
+  },
+  "sv": "URBF",
+  "t": "2026-10-31T01:24:49Z",
+  "tabla": [
+   [
+    "Agus",
+    "Campeón",
+    10000
+   ],
+   [
+    "Vandu",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Polosport",
+    "Semifinal",
+    5250
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    5250
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "BastyRetro",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Walker",
+    "Cuartos",
+    2500
+   ],
+   [
+    "ONDADISKO",
+    "Octavos",
+    1875
+   ],
+   [
+    "Makmah",
+    "Octavos",
+    1250
+   ],
+   [
+    "Monamay",
+    "Octavos",
+    1250
+   ],
+   [
+    "Leyenda",
+    "Octavos",
+    1250
+   ],
+   [
+    "Crk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kochi",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

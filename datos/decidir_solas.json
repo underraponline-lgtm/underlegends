@@ -2797,6 +2797,147 @@
     "DOS NOMBRES: «matias la flauta» → «Matias» · cuenta 896877041704644618"
    ],
    "escribio": {}
+  },
+  {
+   "id": "a7a9224d56",
+   "tipo": "Batalla sin ganador",
+   "sec": "RAP SIN GROSERIAS 1 · FDS · 26/10 · #548",
+   "que": "¿Quién ganó en semifinales?\nSin límites 🇵🇪 🆚 Mc arepa",
+   "r": "No se jugó",
+   "regla": "R4 · una batalla que es copia de otra ya cargada",
+   "rk": "R4",
+   "por": "el ciclo",
+   "porque": "es la misma batalla que «Mc arepa vs Sin Limites» (ganó Mc arepa), ya cargada en el #548: contestar «Ganó» la contaría dos veces",
+   "t": 1793410665858,
+   "filas": [
+    972
+   ],
+   "variantes": [
+    "RAP SIN GROSERIAS 1 · FDS · 26/10 · semifinales · Sin límites 🇵🇪 🆚 Mc arepa"
+   ],
+   "escribio": {
+    "batalla": "RAP SIN GROSERIAS 1 · FDS · 26/10 · semifinales · Sin límites 🇵🇪 🆚 Mc arepa"
+   }
+  },
+  {
+   "id": "cbb9c30ce2",
+   "tipo": "Batalla sin ganador",
+   "sec": "RAP SIN GROSERIAS 1 · FDS · 26/10 · #548",
+   "que": "¿Quién ganó en semifinales?\nAL3 🇨🇺 🆚 Luck 🇵🇾",
+   "r": "No se jugó",
+   "regla": "R4 · una batalla que es copia de otra ya cargada",
+   "rk": "R4",
+   "por": "el ciclo",
+   "porque": "es la misma batalla que «Luck vs AL3 🇨🇺» (ganó Luck), ya cargada en el #548: contestar «Ganó» la contaría dos veces",
+   "t": 1793410665858,
+   "filas": [
+    973
+   ],
+   "variantes": [
+    "RAP SIN GROSERIAS 1 · FDS · 26/10 · semifinales · AL3 🇨🇺 🆚 Luck 🇵🇾"
+   ],
+   "escribio": {
+    "batalla": "RAP SIN GROSERIAS 1 · FDS · 26/10 · semifinales · AL3 🇨🇺 🆚 Luck 🇵🇾"
+   }
+  },
+  {
+   "id": "e047b35744",
+   "tipo": "Nombre desconocido",
+   "sec": "IDS V.3 · URBF · 30/10 · #549",
+   "que": "¿Quién es «POLLO»?",
+   "r": "Es Polosport",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Polosport: estaba en la llamada del evento con un nombre parecido",
+   "t": 1793410665858,
+   "filas": [
+    979
+   ],
+   "variantes": [
+    "POLLO"
+   ],
+   "escribio": {
+    "alias": [
+     "POLLO",
+     "Polosport"
+    ],
+    "filas": [
+     328
+    ]
+   }
+  },
+  {
+   "id": "5baabc65b5",
+   "tipo": "Nombre desconocido",
+   "sec": "RAP SIN GROSERIAS 1 · FDS · 26/10 · #548",
+   "que": "¿Quién es «AL3 🇨🇺»?",
+   "r": "Es alguien nuevo: alta con su cuenta 574766873871253504",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (574766873871253504)",
+   "t": 1793410665858,
+   "filas": [
+    976
+   ],
+   "variantes": [
+    "AL3 🇨🇺"
+   ],
+   "escribio": {
+    "alta": [
+     "AL3",
+     "574766873871253504"
+    ]
+   }
+  },
+  {
+   "id": "36f0166498",
+   "tipo": "Nombre desconocido",
+   "sec": "RAP SIN GROSERIAS 1 · FDS · 26/10 · #548",
+   "que": "¿Quién es «Shitka🇲🇽»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1173299039115157625",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1173299039115157625)",
+   "t": 1793410665858,
+   "filas": [
+    977
+   ],
+   "variantes": [
+    "Shitka🇲🇽"
+   ],
+   "escribio": {
+    "alta": [
+     "Shitka",
+     "1173299039115157625"
+    ]
+   }
+  },
+  {
+   "id": "513c94fcc4",
+   "tipo": "Nombre desconocido",
+   "sec": "RAP SIN GROSERIAS 1 · FDS · 26/10 · #548",
+   "que": "¿Quién es «jazi 🇦🇸»?",
+   "r": "Es alguien nuevo: alta con su cuenta 425590804619198464",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (425590804619198464)",
+   "t": 1793410665858,
+   "filas": [
+    978
+   ],
+   "variantes": [
+    "jazi 🇦🇸"
+   ],
+   "escribio": {
+    "alta": [
+     "jazi",
+     "425590804619198464"
+    ]
+   }
   }
  ],
  "deshechas": []

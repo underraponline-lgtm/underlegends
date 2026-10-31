@@ -3,12 +3,12 @@
  "chats": {
   "ACAD": "2026-10-27",
   "DDF": "2026-10-30",
-  "FDS": "2026-10-26",
+  "FDS": "2026-10-30",
   "FFA": "2026-10-30",
   "FRZ": "2026-10-27",
   "FVS": "2026-10-15",
   "SR": "2026-10-21",
-  "URBF": "2026-10-15"
+  "URBF": "2026-10-30"
  },
  "retos": {
   "19 FLEIVA WACK": {
@@ -59,6 +59,19 @@
    "n": 512,
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
+   "vencido": false
+  },
+  "AL3": {
+   "avisado": "2026-10-30",
+   "chat": "2026-10-30",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-27T02:05:05+00:00",
+   "did": "",
+   "evento": "RAP SIN GROSERIAS 1",
+   "n": 548,
+   "sv": "FDS",
+   "vence": "2026-11-03T02:05:05+00:00",
    "vencido": false
   },
   "ANG": {
@@ -1046,6 +1059,19 @@
    "vence": "2026-10-26T01:35:44+00:00",
    "vencido": true
   },
+  "Monamay": {
+   "avisado": "2026-10-30",
+   "chat": "2026-10-30",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-30T23:28:52+00:00",
+   "did": "",
+   "evento": "IDS V.3",
+   "n": 549,
+   "sv": "URBF",
+   "vence": "2026-11-06T23:28:52+00:00",
+   "vencido": false
+  },
   "NILS": {
    "avisado": "2026-10-25",
    "chat": "2026-10-25",
@@ -1346,6 +1372,19 @@
    "vence": "2026-10-26T04:19:55+00:00",
    "vencido": false
   },
+  "Shitka": {
+   "avisado": "2026-10-30",
+   "chat": "2026-10-30",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-27T02:05:05+00:00",
+   "did": "",
+   "evento": "RAP SIN GROSERIAS 1",
+   "n": 548,
+   "sv": "FDS",
+   "vence": "2026-11-03T02:05:05+00:00",
+   "vencido": false
+  },
   "SikoV": {
    "avisado": "2026-10-30",
    "chat": "2026-10-30",
@@ -1610,15 +1649,29 @@
   },
   "gary": {
    "avisado": "2026-10-26",
+   "avisado_cumplido": "2026-10-30",
    "chat": "2026-10-27",
-   "con": null,
-   "cumplido": "",
+   "con": 548,
+   "cumplido": "2026-10-27T02:05:05+00:00",
    "debut": "2026-10-26T22:39:00+00:00",
    "did": "928059886762356767",
    "evento": "DETALLES DEL EVENTO",
    "n": 531,
    "sv": "FFA",
    "vence": "2026-11-02T22:39:00+00:00",
+   "vencido": false
+  },
+  "jazi": {
+   "avisado": "2026-10-30",
+   "chat": "2026-10-30",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-27T02:05:05+00:00",
+   "did": "",
+   "evento": "RAP SIN GROSERIAS 1",
+   "n": 548,
+   "sv": "FDS",
+   "vence": "2026-11-03T02:05:05+00:00",
    "vencido": false
   },
   "lil": {
@@ -1737,7 +1790,7 @@
    "n": 505,
    "sv": "DDF",
    "vence": "2026-10-31T01:11:48+00:00",
-   "vencido": false
+   "vencido": true
   },
   "🔹 C3: ISAC": {
    "avisado": "2026-10-25",
@@ -1750,7 +1803,7 @@
    "n": 505,
    "sv": "DDF",
    "vence": "2026-10-31T01:11:48+00:00",
-   "vencido": false
+   "vencido": true
   },
   "🟢 Batalla 2: Mco": {
    "avisado": "2026-10-21",

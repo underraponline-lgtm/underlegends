@@ -1442,6 +1442,17 @@
    "b": "BastyRetro🇨🇱",
    "ganador": "erian 🇩🇴",
    "votos": "1–0"
+  },
+  "1565895436487761993": {
+   "id": "1565895436487761993",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1793408964989,
+   "a": "POLLOSPORT 🇦🇷",
+   "b": "AGUS 🇦🇷",
+   "ganador": "AGUS 🇦🇷",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5198,8 +5209,8 @@
    "g": "1467763447117778989",
    "canal": "1540223675146707045",
    "pub": 1793403662991,
-   "ed": 1793408294870,
-   "texto": "`[ OCTAVOS ]`\n⌞NC 🇦🇷⌝ 🆚 ⌞ONDADISKO 🇨🇱⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞MONAMAY 🇦🇷⌝\n⌞NAHU 🇦🇷⌝ 🆚 ⌞KOCHI 🇨🇱⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞MAKMAH 🇻🇪⌝\n⌞LONGSUN ZHAO 🇨🇳⌝ 🆚 ⌞LEYENDA 🇦🇷⌝\n⌞BASTYRETRO 🇨🇱⌝ 🆚 ⌞CRK 🇲🇽⌝\n⌞NAIN 🇦🇷⌝ 🆚 ⌞NUMBER 🇻🇪⌝\n`[ CUARTOS ]`\n⌞AGUS 🇦🇷⌝ 🆚 ⌞NC 🇰🇷⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞LONGSUN ZHAO 🇨🇳⌝\n⌞VANDU 🇨🇴⌝ 🆚 ⌞BASTYRETRO 🇨🇱⌝\n⌞LIZENINN 🇨🇳⌝ 🆚 ⌞POLLO 🇰🇷⌝",
+   "ed": 1793409173776,
+   "texto": "`[ OCTAVOS ]`\n⌞NC 🇦🇷⌝ 🆚 ⌞ONDADISKO 🇨🇱⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞MONAMAY 🇦🇷⌝\n⌞NAHU 🇦🇷⌝ 🆚 ⌞KOCHI 🇨🇱⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞MAKMAH 🇻🇪⌝\n⌞LONGSUN ZHAO 🇨🇳⌝ 🆚 ⌞LEYENDA 🇦🇷⌝\n⌞BASTYRETRO 🇨🇱⌝ 🆚 ⌞CRK 🇲🇽⌝\n⌞NAIN 🇦🇷⌝ 🆚 ⌞NUMBER 🇻🇪⌝\n`[ CUARTOS ]`\n⌞AGUS 🇦🇷⌝ 🆚 ⌞NC 🇰🇷⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞LONGSUN ZHAO 🇨🇳⌝\n⌞VANDU 🇨🇴⌝ 🆚 ⌞BASTYRETRO 🇨🇱⌝\n⌞LIZENINN 🇨🇳⌝ 🆚 ⌞POLLO 🇰🇷⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞PICHULA 🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞VANDU 🇨🇴⌝ 🆚 ⌞PICHULA 🇦🇷⌝\n⌞POLLOSPORT 🇦🇷⌝ 🆚 ⌞AGUS 🇦🇷⌝\n`[ FINAL ]`",
    "batallas": [
     [
      "OCTAVOS",
@@ -5277,8 +5288,8 @@
       "AGUS 🇦🇷",
       "NC 🇰🇷"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "AGUS 🇦🇷",
+     "ronda siguiente",
      []
     ],
     [
@@ -5288,7 +5299,7 @@
       "LONGSUN ZHAO 🇨🇳"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -5297,8 +5308,8 @@
       "VANDU 🇨🇴",
       "BASTYRETRO 🇨🇱"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "VANDU 🇨🇴",
+     "ronda siguiente",
      []
     ],
     [
@@ -5308,7 +5319,37 @@
       "POLLO 🇰🇷"
      ],
      null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "WALKER 🇨🇴",
+      "PICHULA 🇦🇷"
+     ],
+     "PICHULA 🇦🇷",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "VANDU 🇨🇴",
+      "PICHULA 🇦🇷"
+     ],
+     null,
      "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "POLLOSPORT 🇦🇷",
+      "AGUS 🇦🇷"
+     ],
+     "AGUS 🇦🇷",
+     "veredicto",
      []
     ]
    ]

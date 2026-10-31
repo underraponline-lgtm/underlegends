@@ -2,7 +2,7 @@
 "_leeme": "El muro de Publicaciones: cómo estaba cada uno (rango y tarjetas) y los cambios que se anotaron. Lo escribe bot/muro.py; lo demás del muro se arma en cada corrida.",
 "estado": {
 "makmah": {
-"rg": "B",
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -49,8 +49,8 @@
 "rg": "S",
 "c": []
 },
-"panchok": {
-"rg": "S",
+"six": {
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -58,8 +58,8 @@
 "temporada"
 ]
 },
-"six": {
-"rg": "B",
+"panchok": {
+"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -103,7 +103,7 @@
 ]
 },
 "agus": {
-"rg": "A",
+"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -112,7 +112,7 @@
 ]
 },
 "vandu": {
-"rg": "D",
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -197,6 +197,15 @@
 "rg": "B",
 "c": []
 },
+"nc": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "molusco": {
 "rg": "C",
 "c": [
@@ -214,7 +223,7 @@
 "rg": "A",
 "c": []
 },
-"nc": {
+"miniboy": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -223,11 +232,10 @@
 "temporada"
 ]
 },
-"miniboy": {
+"sinlimites": {
 "rg": "D",
 "c": [
 "competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -250,10 +258,11 @@
 "temporada"
 ]
 },
-"sinlimites": {
-"rg": "D",
+"nxuz": {
+"rg": "C",
 "c": [
 "competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -267,30 +276,21 @@
 "temporada"
 ]
 },
+"okam": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "xclusivo": {
 "rg": "C",
 "c": []
 },
-"nxuz": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "polosport": {
 "rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"okam": {
-"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -342,6 +342,10 @@
 "temporada"
 ]
 },
+"criszj": {
+"rg": "C",
+"c": []
+},
 "lrs": {
 "rg": "E",
 "c": [
@@ -350,10 +354,6 @@
 "servidor",
 "temporada"
 ]
-},
-"criszj": {
-"rg": "C",
-"c": []
 },
 "adriagner": {
 "rg": "C",
@@ -448,6 +448,14 @@
 "temporada"
 ]
 },
+"kochi": {
+"rg": "C",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "caliz": {
 "rg": "E",
 "c": [
@@ -456,14 +464,14 @@
 "temporada"
 ]
 },
-"presagio": {
+"walker": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
 },
-"walker": {
+"presagio": {
 "rg": "",
 "c": [
 "servidor",
@@ -522,19 +530,19 @@
 "temporada"
 ]
 },
+"crk": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "jult": {
 "rg": "E",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"crk": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -565,8 +573,8 @@
 "temporada"
 ]
 },
-"1200": {
-"rg": "E",
+"lizeninn": {
+"rg": "",
 "c": []
 },
 "masino": {
@@ -603,6 +611,18 @@
 "jj": {
 "rg": "",
 "c": []
+},
+"1200": {
+"rg": "E",
+"c": []
+},
+"darnbless": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
 },
 "last": {
 "rg": "",
@@ -678,6 +698,13 @@
 "temporada"
 ]
 },
+"luck": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "emizor": {
 "rg": "E",
 "c": []
@@ -685,6 +712,13 @@
 "19": {
 "rg": "",
 "c": []
+},
+"bastyretro": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "mcnadie": {
 "rg": "",
@@ -724,20 +758,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"bastyretro": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"kochi": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -802,10 +822,6 @@
 "rg": "",
 "c": []
 },
-"lizeninn": {
-"rg": "",
-"c": []
-},
 "juanpa": {
 "rg": "",
 "c": [
@@ -835,16 +851,16 @@
 "servidor"
 ]
 },
+"giansito": {
+"rg": "",
+"c": []
+},
 "prosu": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
-},
-"giansito": {
-"rg": "",
-"c": []
 },
 "erik": {
 "rg": "",
@@ -889,13 +905,6 @@
 "rg": "",
 "c": []
 },
-"darnbless": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "carlosmo": {
 "rg": "",
 "c": [
@@ -929,6 +938,13 @@
 "rg": "",
 "c": [
 "pais",
+"servidor",
+"temporada"
+]
+},
+"mcarepa": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
@@ -972,13 +988,6 @@
 "rg": "",
 "c": []
 },
-"luck": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "ezias": {
 "rg": "",
 "c": [
@@ -1006,6 +1015,13 @@
 ]
 },
 "deuxs": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"mats": {
 "rg": "",
 "c": [
 "servidor",
@@ -1074,10 +1090,6 @@
 "rg": "",
 "c": []
 },
-"rayo": {
-"rg": "",
-"c": []
-},
 "warap": {
 "rg": "",
 "c": []
@@ -1105,6 +1117,10 @@
 "rg": "",
 "c": []
 },
+"raizer": {
+"rg": "",
+"c": []
+},
 "ikonoxx": {
 "rg": "",
 "c": []
@@ -1112,17 +1128,6 @@
 "eldinoco": {
 "rg": "",
 "c": []
-},
-"raizer": {
-"rg": "",
-"c": []
-},
-"mats": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "riolu": {
 "rg": "",
@@ -1231,6 +1236,14 @@
 "rg": "",
 "c": []
 },
+"rayo": {
+"rg": "",
+"c": []
+},
+"leyenda": {
+"rg": "",
+"c": []
+},
 "noxvell": {
 "rg": "",
 "c": []
@@ -1245,10 +1258,6 @@
 "servidor",
 "temporada"
 ]
-},
-"leyenda": {
-"rg": "",
-"c": []
 },
 "rbk": {
 "rg": "",
@@ -2657,49 +2666,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "rango",
-"t": "2026-10-03T22:25:43Z",
-"quien": [
-"yinn"
-],
-"rg": "C",
-"primero": false
-},
-{
-"tipo": "rango",
-"t": "2026-10-03T22:25:43Z",
-"quien": [
-"NC"
-],
-"rg": "E",
-"primero": true
-},
-{
-"tipo": "rango",
-"t": "2026-10-03T22:25:43Z",
-"quien": [
-"Richard"
-],
-"rg": "E",
-"primero": true
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-03T22:25:43Z",
-"quien": [
-"Richard"
-],
-"carta": "competitivo"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-03T22:58:18Z",
-"quien": [
-"CrisZJ"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-03T22:58:18Z",
@@ -6006,6 +5972,49 @@
 "mats"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-10-31T01:36:27Z",
+"quien": [
+"Agus"
+],
+"rg": "S",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-31T01:36:27Z",
+"quien": [
+"Vandu"
+],
+"rg": "C",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-31T01:36:27Z",
+"quien": [
+"Kochi"
+],
+"rg": "C",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-31T01:36:27Z",
+"quien": [
+"Kochi"
+],
+"carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-31T01:36:27Z",
+"quien": [
+"DarnBless"
+],
+"carta": "competitivo"
 }
 ]
 }
