@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-31T18:25:34+00:00",
+ "cuando": "2026-10-31T18:55:51+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5869,6 +5869,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Tizi 🇦🇷",
+   "quien": "_tiziiiii",
+   "discord_id": "709496535280255037",
+   "msg_id": "1566156778117271575",
+   "cuando": "2026-10-31T18:27:53"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Sikov 🇲🇽",
+   "quien": "gabiv.com",
+   "discord_id": "855279570953437195",
+   "msg_id": "1566156273576054845",
+   "cuando": "2026-10-31T18:25:53"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -41850,24 +41868,6 @@
    "discord_id": "1089661639508377630",
    "msg_id": "1553894179900366939",
    "cuando": "2026-09-27T22:20:42"
-  },
-  {
-   "servidor": "FDS",
-   "canal": "✅╏inscripciones-express",
-   "texto": "MC Glock",
-   "quien": "mc_glock_",
-   "discord_id": "1520281483309224017",
-   "msg_id": "1553894146505187472",
-   "cuando": "2026-09-27T22:20:34"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Abyssus 🇨🇦",
-   "quien": "vipertapestry",
-   "discord_id": "768561204707983361",
-   "msg_id": "1553886581507494060",
-   "cuando": "2026-09-27T21:50:30"
   }
  ]
 }
