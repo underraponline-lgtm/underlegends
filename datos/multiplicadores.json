@@ -923,12 +923,12 @@
      "FFA": 34,
      "FDS": 3,
      "FRZ": 4,
-     "DDF": 5,
+     "DDF": 7,
      "ACAD": 2
     },
     "gente": {
      "FDS": 24,
-     "DDF": 44,
+     "DDF": 46,
      "FFA": 132,
      "FRZ": 15,
      "ACAD": 16,
@@ -938,7 +938,7 @@
    },
    "meta_va": {
     "ACAD": 16,
-    "DDF": 44,
+    "DDF": 46,
     "DRA": 0,
     "FDS": 24,
     "FFA": 132,

@@ -1089,6 +1089,7 @@
    "vencido": true
   },
   "Miniboy  LEVI": {
+   "avisado": "2026-10-31",
    "chat": "2026-10-31",
    "con": null,
    "cumplido": "",
@@ -1534,11 +1535,12 @@
    "vencido": false
   },
   "Tizi": {
+   "avisado": "2026-10-31",
    "chat": "2026-10-31",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-31T17:45:26+00:00",
-   "did": "",
+   "did": "709496535280255037",
    "evento": "19 CUP HALLOWEEN 2026 LLAVES DE COMPETENCIA",
    "n": 552,
    "sv": "DDF",
