@@ -389,6 +389,7 @@
   "rango": "S",
   "tg_t": {
    "busc": 3,
+   "cab": 2,
    "dobles": 6,
    "infalt": true,
    "perf": 2,
@@ -431,6 +432,7 @@
   "rango": "S",
   "tg_t": {
    "busc": 1,
+   "cab": 3,
    "dcor": true,
    "dobles": 2,
    "perf": 2,
@@ -557,6 +559,7 @@
   "total": 220,
   "rango": "S",
   "tg_t": {
+   "cab": 1,
    "dobles": 6,
    "perf": 2,
    "relampago": true,

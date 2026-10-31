@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-31T22:25:51+00:00",
+ "cuando": "2026-10-31T22:55:17+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5925,6 +5925,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Tokio🇬🇩",
+   "quien": "paratimiringuicaro",
+   "discord_id": "1249980492951060561",
+   "msg_id": "1566223402572709931",
+   "cuando": "2026-10-31T22:52:38"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "La gonorrea del bajo 🇨🇴",
+   "quien": "sblk2130",
+   "discord_id": "729064766307434587",
+   "msg_id": "1566221563949355102",
+   "cuando": "2026-10-31T22:45:19"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Tmax Turbo 🇪🇸",
+   "quien": "arowey0719_09614",
+   "discord_id": "1345623878474403901",
+   "msg_id": "1566220974083284993",
+   "cuando": "2026-10-31T22:42:59"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "ACZINO EL MÁS CHINGON🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1566217030837735518",
+   "cuando": "2026-10-31T22:27:19"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
@@ -41888,42 +41924,6 @@
    "discord_id": "885365894606381068",
    "msg_id": "1554211754748420117",
    "cuando": "2026-09-28T19:22:38"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "agustin51k 🇨🇱",
-   "quien": "agustin51k",
-   "discord_id": "1114241587262783631",
-   "msg_id": "1554209804006854687",
-   "cuando": "2026-09-28T19:14:53"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "juasmio",
-   "quien": "jmiopa",
-   "discord_id": "729439360545587291",
-   "msg_id": "1554209105969684582",
-   "cuando": "2026-09-28T19:12:06"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "agre",
-   "quien": "axel_2034",
-   "discord_id": "305098839868571651",
-   "msg_id": "1554200147162828831",
-   "cuando": "2026-09-28T18:36:30"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Cinexfilo 🇻🇪",
-   "quien": "cinexfilosanity",
-   "discord_id": "781971857519804417",
-   "msg_id": "1554199004051538052",
-   "cuando": "2026-09-28T18:31:58"
   }
  ]
 }
