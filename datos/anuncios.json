@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-31T21:55:38+00:00",
+ "cuando": "2026-10-31T22:25:51+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5138,7 +5138,7 @@
    "categoria_id": "868218509975498805"
   },
   {
-   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 9",
+   "nombre": "FAT BATTLES PALOOZA EDICIÓN HALOWEEN",
    "servidor": "ACAD",
    "canal": "🥇┇torneos",
    "msg_id": "1566207259321573508",
@@ -5928,6 +5928,24 @@
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
+   "texto": "Velatz 🇺🇲",
+   "quien": "funhorlavild",
+   "discord_id": "1426686911908675628",
+   "msg_id": "1566211350219460649",
+   "cuando": "2026-10-31T22:04:44"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "erian",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1566209617481171115",
+   "cuando": "2026-10-31T21:57:51"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
    "texto": "Calíz 🇲🇽",
    "quien": "caliz123_",
    "discord_id": "1546111597343146044",
@@ -6248,6 +6266,15 @@
    "discord_id": "1089661639508377630",
    "msg_id": "1566185745436246117",
    "cuando": "2026-10-31T20:23:00"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "tizi",
+   "quien": "_tiziiiii",
+   "discord_id": "709496535280255037",
+   "msg_id": "1566181844020498503",
+   "cuando": "2026-10-31T20:07:29"
   },
   {
    "servidor": "DDF",
@@ -41897,33 +41924,6 @@
    "discord_id": "781971857519804417",
    "msg_id": "1554199004051538052",
    "cuando": "2026-09-28T18:31:58"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Yeyox",
-   "quien": "yeyox07",
-   "discord_id": "896609871460442142",
-   "msg_id": "1554198922711269407",
-   "cuando": "2026-09-28T18:31:38"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Steven🇨🇴",
-   "quien": "jesuslgamer31",
-   "discord_id": "817387658656874536",
-   "msg_id": "1554198759163039826",
-   "cuando": "2026-09-28T18:30:59"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "19 🇮🇱",
-   "quien": "numbyng",
-   "discord_id": "1310075576991875144",
-   "msg_id": "1554198514387390677",
-   "cuando": "2026-09-28T18:30:01"
   }
  ]
 }

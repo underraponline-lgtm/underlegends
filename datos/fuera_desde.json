@@ -21,10 +21,17 @@
   },
   "kuni": {
    "temporada": "2026-10-26"
+  },
+  "nyl": {
+   "servidor": "2026-10-31",
+   "sv-ddf": "2026-10-31",
+   "sv-dra": "2026-10-31",
+   "sv-ffa": "2026-10-31",
+   "temporada": "2026-10-31"
   }
  },
- "pasaban": 411,
- "cuando": "2026-10-31T22:00:14Z",
+ "pasaban": 410,
+ "cuando": "2026-10-31T22:30:35Z",
  "borradas": [
   [
    "nashei",
