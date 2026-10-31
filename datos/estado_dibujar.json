@@ -1,61 +1,65 @@
 {
  "v": 1,
- "cuando": "2026-10-31T03:09:02Z",
+ "cuando": "2026-10-31T03:53:12Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 469.5,
+ "dur_s": 1061.3,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.5
+   "s": 7.0
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.7
+   "s": 0.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.3
+   "s": 8.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 18.8
+   "s": 20.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": false,
-   "s": 372.0
+   "s": 957.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 9.6
+   "s": 6.8
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 54.8
+   "s": 59.6
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Artezzy"
+   "que": "03_Servidor/generar.py ARDEAN"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Matias"
+   "que": "03_Servidor/generar.py Jupiter"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Sin Limites"
   }
  ],
  "ultimo_evento": {
@@ -66,31 +70,31 @@
  },
  "cuotas": {
   "kv": {
-   "write": 174,
-   "read": 13256
+   "write": 195,
+   "read": 15160
   },
   "objeto": {
-   "leidas": 980693,
-   "escritas": 7263,
-   "pedidos": 1712
+   "leidas": 1208289,
+   "escritas": 9140,
+   "pedidos": 2021
   },
   "worker": {
-   "pedidos": 7830,
+   "pedidos": 7751,
    "errores": 0,
-   "sub": 9320,
+   "sub": 9241,
    "cortados": 0,
    "p50_ms": 1.26,
-   "p99_ms": 12.19,
+   "p99_ms": 12.06,
    "cpu": {
-    "total": 17136,
-    "objeto_10": 1638,
-    "worker_10": 160
+    "total": 16963,
+    "objeto_10": 1620,
+    "worker_10": 152
    }
   },
   "r2": {
-   "objetos": 5558,
-   "gb": 0.488,
-   "ts": 1793374961
+   "objetos": 5631,
+   "gb": 0.495,
+   "ts": 1793418801
   }
  }
 }
