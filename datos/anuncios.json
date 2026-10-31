@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-31T18:04:35+00:00",
+ "cuando": "2026-10-31T18:25:34+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5869,6 +5869,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Makmah 🇻🇪 // Lavagirl 🇦🇼",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1566154973937532990",
+   "cuando": "2026-10-31T18:20:43"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "carlosmo",
+   "quien": "carlosmo_33",
+   "discord_id": "1252731911726567496",
+   "msg_id": "1566153928834285589",
+   "cuando": "2026-10-31T18:16:34"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -41850,24 +41868,6 @@
    "discord_id": "768561204707983361",
    "msg_id": "1553886581507494060",
    "cuando": "2026-09-27T21:50:30"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "colesito",
-   "quien": "colesito",
-   "discord_id": "790016013680771102",
-   "msg_id": "1553885089878904843",
-   "cuando": "2026-09-27T21:44:35"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Abyssus 🇨🇦",
-   "quien": "vipertapestry",
-   "discord_id": "768561204707983361",
-   "msg_id": "1553884709870772315",
-   "cuando": "2026-09-27T21:43:04"
   }
  ]
 }
