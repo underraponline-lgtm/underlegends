@@ -1,90 +1,98 @@
 {
  "v": 1,
- "cuando": "2026-10-31T04:41:47Z",
+ "cuando": "2026-10-31T05:29:24Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 624.3,
+ "dur_s": 1454.3,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.8
+   "s": 6.7
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.2
+   "s": 0.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.5
+   "s": 6.7
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 29.5
+   "s": 18.4
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": false,
-   "s": 508.6
+   "s": 1352.5
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.9
+   "s": 9.5
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 61.1
+   "s": 58.9
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Artezzy"
+   "que": "03_Servidor/generar.py .SosaATR"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py MZK"
+   "que": "03_Servidor/generar.py Juasmio"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Matias"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Rubik"
   }
  ],
  "ultimo_evento": {
-  "n": "549",
-  "nombre": "IDS V.3",
-  "sv": "URBF",
+  "n": "550",
+  "nombre": "qcyo rapeen",
+  "sv": "FFA",
   "dia": "2026-10-30"
  },
  "cuotas": {
   "kv": {
-   "write": 222,
-   "read": 18476
+   "write": 247,
+   "read": 20479
   },
   "objeto": {
-   "leidas": 1550245,
-   "escritas": 10241,
-   "pedidos": 2596
+   "leidas": 1916374,
+   "escritas": 12219,
+   "pedidos": 3070
   },
   "worker": {
-   "pedidos": 7864,
+   "pedidos": 7870,
    "errores": 0,
-   "sub": 9363,
+   "sub": 9366,
    "cortados": 0,
-   "p50_ms": 1.25,
-   "p99_ms": 12.04,
+   "p50_ms": 1.26,
+   "p99_ms": 12.09,
    "cpu": {
-    "total": 17179,
-    "objeto_10": 1643,
-    "worker_10": 154
+    "total": 17161,
+    "objeto_10": 1645,
+    "worker_10": 159
    }
   },
   "r2": {
