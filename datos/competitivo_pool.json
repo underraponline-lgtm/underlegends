@@ -734,10 +734,10 @@
   "tg_c": {
    "bestia": 3,
    "clasico": 3,
-   "dg": 17,
+   "dg": 18,
    "fg": 4,
-   "riv": 14,
-   "venc": 12,
+   "riv": 15,
+   "venc": 13,
    "vengo": 1
   },
   "tg_p": {
@@ -4621,7 +4621,7 @@
    "clasico": 1,
    "dg": 6,
    "mata": 1,
-   "riv": 11,
+   "riv": 12,
    "venc": 6
   },
   "tg_p": {

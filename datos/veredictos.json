@@ -2,28 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1563394187699814552": {
-   "id": "1563394187699814552",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1792812620807,
-   "a": "REVO - XOBARU",
-   "b": "SCOT - SOSA",
-   "ganador": "SCOT - SOSA",
-   "votos": "1–0"
-  },
-  "1563397358031740999": {
-   "id": "1563397358031740999",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1792813376673,
-   "a": "MC AREPA - VLOG",
-   "b": "TAYO - NXUZ",
-   "ganador": "MC AREPA - VLOG",
-   "votos": "1–0"
-  },
   "1563407278361542677": {
    "id": "1563407278361542677",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
@@ -1508,97 +1486,31 @@
    "b": "EZZE",
    "ganador": "EZZE",
    "votos": "1–0"
+  },
+  "1565929202937626715": {
+   "id": "1565929202937626715",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793417015538,
+   "a": "EZZE",
+   "b": "AKUSERU",
+   "ganador": "AKUSERU",
+   "votos": "1–0"
+  },
+  "1565932125222346753": {
+   "id": "1565932125222346753",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793417712265,
+   "a": "BLITZ",
+   "b": "ERIAN",
+   "ganador": "ERIAN",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1558324936198721537": {
-   "id": "1558324936198721537",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1557583344638623754",
-   "pub": 1791604017067,
-   "ed": 1791611938938,
-   "texto": "`[ OCTAVOS ]`\n⌞RODA🇵🇦⌝ 🆚 ⌞KRAKERO🇦🇷⌝\n⌞EZE🇦🇷⌝ 🆚 ⌞CRONOX🇨🇱⌝ 🆚 ⌞MONET🇲🇽⌝ 🆚 ⌞ZANIX🇨🇱⌝\n⌞PRESAGIO🇦🇷⌝ 🆚 ⌞AGUS🇦🇷⌝ 🆚 ⌞MR STILL BALLIN🇳🇴⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞TENOR🇻🇪⌝ 🆚 ⌞SEKO BOY🇨🇴⌝ 🆚 ⌞SOSA🇺🇾⌝\n⌞GUESS🇦🇷⌝ 🆚 ⌞CRONOX🇨🇱(R)⌝\n⌞ARAYA🇦🇿⌝ 🆚 ⌞ZAIK🇪🇸⌝ 🆚 ⌞TENOR🇻🇪(R)⌝ 🆚 ⌞XCLUSIVO🇻🇪⌝\n`[ CUARTOS ]`\n⌞MR STILL BALLIN🇳🇴⌝ 🆚 ⌞COLESITO🇨🇴⌝",
-   "batallas": [
-    [
-     "OCTAVOS",
-     [
-      "RODA🇵🇦",
-      "KRAKERO🇦🇷"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "EZE🇦🇷",
-      "CRONOX🇨🇱",
-      "MONET🇲🇽",
-      "ZANIX🇨🇱"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "PRESAGIO🇦🇷",
-      "AGUS🇦🇷",
-      "MR STILL BALLIN🇳🇴"
-     ],
-     "MR STILL BALLIN🇳🇴",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "MAKMA🇻🇪",
-      "TENOR🇻🇪",
-      "SEKO BOY🇨🇴",
-      "SOSA🇺🇾"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "GUESS🇦🇷",
-      "CRONOX🇨🇱(R)"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "ARAYA🇦🇿",
-      "ZAIK🇪🇸",
-      "TENOR🇻🇪(R)",
-      "XCLUSIVO🇻🇪"
-     ],
-     null,
-     "no aparece nadie después",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "MR STILL BALLIN🇳🇴",
-      "COLESITO🇨🇴"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ]
-   ]
-  },
   "1558628898583871540": {
    "id": "1558628898583871540",
    "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
@@ -5244,6 +5156,28 @@
      ],
      "AGUS 🇦🇷",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1565935828033863711": {
+   "id": "1565935828033863711",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793418595084,
+   "ed": 1793418647613,
+   "texto": "`[ CUARTOS ]`\n⌞SIX⌝ 🆚 ⌞LIZEN⌝ 🆚 ⌞TENOR⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "SIX",
+      "LIZEN",
+      "TENOR"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
