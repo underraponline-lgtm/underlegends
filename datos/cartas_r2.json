@@ -783,7 +783,8 @@
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dev/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dev/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dev/sv-ffa.webp",
-  "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dev/sv-frz.webp"
+  "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dev/sv-frz.webp",
+  "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/dev/temporada.webp"
  },
  "diablo": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/diablo/servidor.webp",
@@ -2956,6 +2957,11 @@
   "sv-frz": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/pipo/sv-frz.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/pipo/sv-fvs.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/pipo/sv-sr.webp"
+ },
+ "playazo12": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/playazo12/servidor.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/playazo12/sv-dra.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/playazo12/sv-ffa.webp"
  },
  "player": {
   "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/player/bloq-competitivo.webp",
