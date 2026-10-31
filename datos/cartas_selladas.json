@@ -1007,19 +1007,19 @@
   },
   "Mail O": {},
   "Majiztral": {
-   "competitivo": "6d28c46edb64:0a48057cb351",
-   "pais": "548757c7060a:263a27e40647",
-   "servidor": "9418ac331cab:99e0c0179dbe:25c183",
-   "temporada": "c3dc5def9ce8:6ec1a5248de8"
+   "competitivo": "abf68a6587f2:0a48057cb351",
+   "pais": "cc467cd96e4b:263a27e40647",
+   "servidor": "9087d5e68783:99e0c0179dbe:25c183",
+   "temporada": "6be576a1bdc6:6ec1a5248de8"
   },
   "Maki": {
    "servidor": "70fbb8574a0b:99e0c0179dbe:0ab0a0"
   },
   "Makmah": {
-   "competitivo": "84d4bc5500bf:0a48057cb351",
-   "pais": "2bf706ed2f21:263a27e40647",
-   "servidor": "213f9be01170:99e0c0179dbe:3580af",
-   "temporada": "3fafaa1a52c3:6ec1a5248de8"
+   "competitivo": "af958a30a291:0a48057cb351",
+   "pais": "5cb908434541:263a27e40647",
+   "servidor": "01077260df09:99e0c0179dbe:3580af",
+   "temporada": "21d19ed1fe10:6ec1a5248de8"
   },
   "Malova": {
    "servidor": "671a7c56b92d:99e0c0179dbe:15af16"
@@ -1033,10 +1033,10 @@
   },
   "Marto": {},
   "Masino": {
-   "competitivo": "a6595dd53eb8:0a48057cb351",
-   "pais": "fb9917e2a532:263a27e40647",
-   "servidor": "1a47aaa258ac:99e0c0179dbe:6ae78a",
-   "temporada": "4abfe332e311:6ec1a5248de8"
+   "competitivo": "f07bd1aa5eaa:0a48057cb351",
+   "pais": "5d8a44d0def7:263a27e40647",
+   "servidor": "a1628971da48:99e0c0179dbe:6ae78a",
+   "temporada": "a69fcbda324f:6ec1a5248de8"
   },
   "Mathhias": {
    "competitivo": "bfde4819c586:0a48057cb351",
@@ -1224,7 +1224,7 @@
   "Nox": {},
   "Noxvell": {},
   "Number": {
-   "competitivo": "2282836983fb:0a48057cb351",
+   "competitivo": "7102f6cd8212:0a48057cb351",
    "pais": "2ca3b8c9d80a:263a27e40647",
    "servidor": "4a1847b6cfac:99e0c0179dbe:431540",
    "temporada": "f0c318bfb5f0:6ec1a5248de8"
@@ -1949,5 +1949,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-31T03:52:06+00:00"
+ "cuando": "2026-10-31T04:07:29+00:00"
 }
