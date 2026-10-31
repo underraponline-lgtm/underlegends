@@ -5198,8 +5198,8 @@
    "g": "1467763447117778989",
    "canal": "1540223675146707045",
    "pub": 1793403662991,
-   "ed": 1793407821559,
-   "texto": "`[ OCTAVOS ]`\n⌞NC 🇦🇷⌝ 🆚 ⌞ONDADISKO 🇨🇱⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞MONAMAY 🇦🇷⌝\n⌞NAHU 🇦🇷⌝ 🆚 ⌞KOCHI 🇨🇱⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞MAKMAH 🇻🇪⌝\n⌞LONGSUN ZHAO 🇨🇳⌝ 🆚 ⌞LEYENDA 🇦🇷⌝\n⌞BASTYRETRO 🇨🇱⌝ 🆚 ⌞CRK 🇲🇽⌝\n⌞NAIN 🇦🇷⌝ 🆚 ⌞NUMBER 🇻🇪⌝\n`[ CUARTOS ]`\n⌞AGUS 🇦🇷⌝ 🆚 ⌞NC 🇰🇷⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞LONGSUN ZHAO 🇨🇳⌝\n⌞VANDU 🇨🇴⌝ 🆚 ⌞BASTYRETRO 🇨🇱⌝",
+   "ed": 1793408294870,
+   "texto": "`[ OCTAVOS ]`\n⌞NC 🇦🇷⌝ 🆚 ⌞ONDADISKO 🇨🇱⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞MONAMAY 🇦🇷⌝\n⌞NAHU 🇦🇷⌝ 🆚 ⌞KOCHI 🇨🇱⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞MAKMAH 🇻🇪⌝\n⌞LONGSUN ZHAO 🇨🇳⌝ 🆚 ⌞LEYENDA 🇦🇷⌝\n⌞BASTYRETRO 🇨🇱⌝ 🆚 ⌞CRK 🇲🇽⌝\n⌞NAIN 🇦🇷⌝ 🆚 ⌞NUMBER 🇻🇪⌝\n`[ CUARTOS ]`\n⌞AGUS 🇦🇷⌝ 🆚 ⌞NC 🇰🇷⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞LONGSUN ZHAO 🇨🇳⌝\n⌞VANDU 🇨🇴⌝ 🆚 ⌞BASTYRETRO 🇨🇱⌝\n⌞LIZENINN 🇨🇳⌝ 🆚 ⌞POLLO 🇰🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5296,6 +5296,16 @@
      [
       "VANDU 🇨🇴",
       "BASTYRETRO 🇨🇱"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "LIZENINN 🇨🇳",
+      "POLLO 🇰🇷"
      ],
      null,
      "última ronda y no dice campeón",
