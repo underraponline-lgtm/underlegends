@@ -629,7 +629,7 @@
    "dg": 40,
    "fg": 6,
    "fp": 6,
-   "riv": 56,
+   "riv": 57,
    "venc": 38,
    "vengo": 5
   },
@@ -3004,10 +3004,11 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 4,
+   "dg": 5,
    "fg": 1,
-   "riv": 8,
-   "venc": 4
+   "mata": 1,
+   "riv": 9,
+   "venc": 5
   },
   "tg_p": {
    "paises": 5,

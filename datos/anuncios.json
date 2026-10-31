@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-31T17:25:45+00:00",
+ "cuando": "2026-10-31T17:55:47+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4684,6 +4684,30 @@
    "categoria_id": "1373343272482902127"
   },
   {
+   "nombre": "19 CUP HALLOWEEN 2026",
+   "servidor": "DDF",
+   "canal": "『📢』Eventos",
+   "msg_id": "1566146070503759963",
+   "cuando": "2026-10-31T17:45:20",
+   "canal_id": "1470097121284980736",
+   "guild_id": "1469009547971526659",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "b360fced798207fd",
+   "cupos_texto": "16 almas valientes",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "[A definir / ¡Sorpresa macabra!]",
+   "horario": "",
+   "fecha": "",
+   "premios": "¡Flyer oficial de campeonato diseñado a mano (100% Sin IA)!",
+   "staff": {},
+   "autor": "₁₉",
+   "staff_cuentas": {},
+   "categoria_id": "1469944166137073857"
+  },
+  {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.13",
    "servidor": "DDF",
    "canal": "『📢』Eventos",
@@ -5026,30 +5050,6 @@
    "premios": "",
    "staff": {},
    "autor": "Lizeninn",
-   "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
-  },
-  {
-   "nombre": "EL CAMINO DEL MONJE",
-   "servidor": "DDF",
-   "canal": "『📢』Eventos",
-   "msg_id": "1561550271279136869",
-   "cuando": "2026-10-19T01:23:16",
-   "canal_id": "1470097121284980736",
-   "guild_id": "1469009547971526659",
-   "organizador": "shit4brains🇬🇵",
-   "orgs": [],
-   "autor_h": "e0acf3adfb0d85f0",
-   "cupos_texto": "16",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "PANDILLAS🥷",
-   "horario": "25 Minutos",
-   "fecha": "",
-   "premios": "",
-   "staff": {},
-   "autor": "Drexx",
    "staff_cuentas": {},
    "categoria_id": "1469944166137073857"
   },
@@ -5841,6 +5841,123 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "19",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1566147634165715005",
+   "cuando": "2026-10-31T17:51:33"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "el culo gordo de 19 🇻🇪",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1566147559297126491",
+   "cuando": "2026-10-31T17:51:15"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Number 🇦🇷\nDisfraz: Catarsis",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1566147446177005678",
+   "cuando": "2026-10-31T17:50:48"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Superman 🇰🇵 (como vi q\n se ponían superhéroes)",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1566147351142334715",
+   "cuando": "2026-10-31T17:50:26"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Number 🇸🇦🇫🇷",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1566147221689471067",
+   "cuando": "2026-10-31T17:49:55"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "MaYeuTyK 🇺🇾 \nDisfraz: condon usado",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1566147068618080267",
+   "cuando": "2026-10-31T17:49:18"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Steve de minecraft 🇳🇮",
+   "quien": "adriagner",
+   "discord_id": "1316490165836972104",
+   "msg_id": "1566146732172120075",
+   "cuando": "2026-10-31T17:47:58"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Majiztral 🇨🇴 (doctor doom)",
+   "quien": "majiztral",
+   "discord_id": "1492228152691396720",
+   "msg_id": "1566146724962111699",
+   "cuando": "2026-10-31T17:47:56"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "matias",
+   "quien": "matias999999999",
+   "discord_id": "896877041704644618",
+   "msg_id": "1566146660843651203",
+   "cuando": "2026-10-31T17:47:41"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Homelander 🇲🇽",
+   "quien": "leonart95.",
+   "discord_id": "1440039366654165212",
+   "msg_id": "1566146511967096965",
+   "cuando": "2026-10-31T17:47:06"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Roda mc🇵🇦 batman",
+   "quien": "rodaaa_mc",
+   "discord_id": "1492592375812587551",
+   "msg_id": "1566146263471095879",
+   "cuando": "2026-10-31T17:46:06"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "MANJI LOZANO🇧🇴🫩",
+   "quien": "vibesfly7",
+   "discord_id": "552121423804628995",
+   "msg_id": "1566146253551575122",
+   "cuando": "2026-10-31T17:46:04"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Furro🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1566146139244331179",
+   "cuando": "2026-10-31T17:45:37"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -41723,123 +41840,6 @@
    "discord_id": "1338567692239765617",
    "msg_id": "1553879695009779818",
    "cuando": "2026-09-27T21:23:08"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Park-Ji Sung🇯🇵 & Neo🇦🇷",
-   "quien": "fullylo4ded",
-   "discord_id": "979878316846768139",
-   "msg_id": "1553877211780747380",
-   "cuando": "2026-09-27T21:13:16"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Cronox + nacioenmilan 🇨🇱",
-   "quien": "cronoxzito",
-   "discord_id": "1487658663148785734",
-   "msg_id": "1553876665493495879",
-   "cuando": "2026-09-27T21:11:06"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "ANDY LUCAS 🇪🇸 + MI PUFLE🇫🇷",
-   "quien": "andy._.2321",
-   "discord_id": "853130894663745549",
-   "msg_id": "1553876584522448917",
-   "cuando": "2026-09-27T21:10:47"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Guess 🇦🇷 + EyS 🇺🇸",
-   "quien": "sinergiabreak",
-   "discord_id": "1515482513106272366",
-   "msg_id": "1553876452657729537",
-   "cuando": "2026-09-27T21:10:15"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Mco",
-   "quien": "mcorap",
-   "discord_id": "1048744067313451050",
-   "msg_id": "1553876426141343747",
-   "cuando": "2026-09-27T21:10:09"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "MaYeuTyK 🇺🇾",
-   "quien": "martinez4080",
-   "discord_id": "756958777126682674",
-   "msg_id": "1553876334978273281",
-   "cuando": "2026-09-27T21:09:47"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Gabox 🇧🇴",
-   "quien": "akamasterboy",
-   "discord_id": "720624879506030622",
-   "msg_id": "1553874172852174960",
-   "cuando": "2026-09-27T21:01:12"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "SILENCE LA CONSTANCIA 🇵🇪",
-   "quien": "s1l3nc3_bv",
-   "discord_id": "1276644368693858356",
-   "msg_id": "1553872989848739931",
-   "cuando": "2026-09-27T20:56:30"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Number 🇻🇪",
-   "quien": "numbyng",
-   "discord_id": "1310075576991875144",
-   "msg_id": "1553872742695047199",
-   "cuando": "2026-09-27T20:55:31"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "nxuz 🇵🇪",
-   "quien": "elinzano1009",
-   "discord_id": "1089661639508377630",
-   "msg_id": "1553872401882812527",
-   "cuando": "2026-09-27T20:54:10"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "Drexx la resurrección del Perú🇵🇪",
-   "quien": "manuxxx0789_78781",
-   "discord_id": "1150099153238630410",
-   "msg_id": "1553872189852360857",
-   "cuando": "2026-09-27T20:53:19"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "andy🇨🇦",
-   "quien": "andy._.2321",
-   "discord_id": "853130894663745549",
-   "msg_id": "1553872046935642315",
-   "cuando": "2026-09-27T20:52:45"
-  },
-  {
-   "servidor": "ACAD",
-   "canal": "📝┇inscripciones-1",
-   "texto": "flama🇦🇷",
-   "quien": "faustoo1406",
-   "discord_id": "949795011262840832",
-   "msg_id": "1553871687223738482",
-   "cuando": "2026-09-27T20:51:19"
   }
  ]
 }
