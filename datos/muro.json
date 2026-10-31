@@ -785,6 +785,14 @@
 "temporada"
 ]
 },
+"keider": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "rodas": {
 "rg": "E",
 "c": [
@@ -830,14 +838,6 @@
 "rg": "",
 "c": [
 "servidor"
-]
-},
-"keider": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
 ]
 },
 "hotaruadeyemi": {
