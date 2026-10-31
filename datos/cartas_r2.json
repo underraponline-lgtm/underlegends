@@ -64,6 +64,7 @@
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/adriagner/sv-ddf.webp",
   "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/adriagner/sv-dra.webp",
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/adriagner/sv-ffa.webp",
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/adriagner/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/adriagner/temporada.webp"
  },
  "adrianex": {
@@ -297,6 +298,10 @@
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bastyretro/temporada.webp"
  },
  "bau": {
+  "bloq-competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bau/bloq-competitivo.webp",
+  "bloq-pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bau/bloq-pais.webp",
+  "competitivo": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bau/competitivo.webp",
+  "pais": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bau/pais.webp",
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bau/servidor.webp",
   "sv-acad": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bau/sv-acad.webp",
   "sv-ddf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/bau/sv-ddf.webp",
@@ -1885,6 +1890,7 @@
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kyss/sv-ffs.webp",
   "sv-fvs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kyss/sv-fvs.webp",
   "sv-sr": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kyss/sv-sr.webp",
+  "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kyss/sv-urbf.webp",
   "temporada": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/kyss/temporada.webp"
  },
  "kzaone": {
@@ -3670,6 +3676,11 @@
   "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/titocalderon/sv-ffa.webp",
   "sv-ffs": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/titocalderon/sv-ffs.webp",
   "sv-urbf": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/titocalderon/sv-urbf.webp"
+ },
+ "tmaxturbopn": {
+  "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tmaxturbopn/servidor.webp",
+  "sv-dra": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tmaxturbopn/sv-dra.webp",
+  "sv-ffa": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tmaxturbopn/sv-ffa.webp"
  },
  "tolelirica": {
   "servidor": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/tolelirica/servidor.webp",
