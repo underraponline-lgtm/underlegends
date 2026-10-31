@@ -42,7 +42,7 @@
    "competitivo": "7230c1085004:7d41d0503ea2",
    "pais": "5f858b5019dd:ada55a12db94",
    "servidor": "828e5a798e60:decaf64d9256:3ce074",
-   "temporada": "8273862fc94f:6ec1a5248de8"
+   "temporada": "24fcefa49338:ccd09f762e04"
   },
   "Ac3nto": {
    "servidor": "03c350320fda:99e0c0179dbe:948362"
@@ -1183,7 +1183,7 @@
    "competitivo": "9d1b760f4015:7d41d0503ea2",
    "pais": "2e1e2d9a6caf:ada55a12db94",
    "servidor": "da670bfd6b6f:decaf64d9256:25c183",
-   "temporada": "0256e82cd925:ccd09f762e04"
+   "temporada": "51cb683bc9a0:ccd09f762e04"
   },
   "Nahu": {
    "servidor": "4a1ff1fe7a60:99e0c0179dbe:15af16"
@@ -1296,7 +1296,7 @@
    "competitivo": "9038963f2c9c:7d41d0503ea2",
    "pais": "21ab63f6d639:ada55a12db94",
    "servidor": "64fedbf38f56:decaf64d9256:25c183",
-   "temporada": "48a8d2967850:6ec1a5248de8"
+   "temporada": "f8eea69f819f:ccd09f762e04"
   },
   "Paria": {},
   "Partim": {
@@ -1638,7 +1638,7 @@
    "competitivo": "345905ff4712:7d41d0503ea2",
    "pais": "c29e6f745cea:ada55a12db94",
    "servidor": "c3496d5d8dc0:decaf64d9256:3d792e",
-   "temporada": "7e6585b9bf45:6ec1a5248de8"
+   "temporada": "abe72a11a11f:ccd09f762e04"
   },
   "Trot": {
    "competitivo": "539fd74952ac:7d41d0503ea2",
@@ -1804,7 +1804,7 @@
    "competitivo": "d338561e5ab7:7d41d0503ea2",
    "pais": "a268717ef06c:263a27e40647",
    "servidor": "c410a03b392a:99e0c0179dbe:786002",
-   "temporada": "bfb9d2ce1735:ccd09f762e04"
+   "temporada": "b55c8ceb658e:ccd09f762e04"
   },
   "ZiarKI": {},
   "Ziggy": {
@@ -1930,10 +1930,10 @@
    "servidor": "131cd3a9e63c:99e0c0179dbe:15af16"
   },
   "stormed": {
-   "competitivo": "87058d7a6d92:7d41d0503ea2",
+   "competitivo": "ffe8f82694bb:7d41d0503ea2",
    "pais": "490f426af77a:263a27e40647",
    "servidor": "a5848195880a:99e0c0179dbe:b49e39",
-   "temporada": "b52643abe459:ccd09f762e04"
+   "temporada": "aff251441616:ccd09f762e04"
   },
   "tito calderon": {
    "competitivo": "92c2ffc1d0d8:7d41d0503ea2",
@@ -1958,5 +1958,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-31T21:08:40+00:00"
+ "cuando": "2026-10-31T21:40:15+00:00"
 }
