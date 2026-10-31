@@ -36462,7 +36462,7 @@
        "LSO"
       ],
       "Erian, Provenza",
-      "triple (4 bandas, pasan 2); también pasa: PROVENZA 🇦🇷; Drafteado: Erian 🇩🇴"
+      "triple (4 bandas, pasan 2); también pasa: PROVENZA 🇦🇷; Drafteado: Erian"
      ],
      [
       [
@@ -38929,7 +38929,7 @@
      [
       [
        "gary",
-       "Shitka🇲🇽"
+       "Shitka"
       ],
       "gary",
       ""
@@ -38937,17 +38937,17 @@
      [
       [
        "OKAM",
-       "jazi 🇦🇸"
+       "jazi"
       ],
       "OKAM",
       ""
      ],
      [
       [
-       "AL3 🇨🇺",
+       "AL3",
        "Lizeninn"
       ],
-      "AL3 🇨🇺",
+      "AL3",
       ""
      ],
      [
@@ -38997,10 +38997,10 @@
      ],
      [
       [
-       "AL3 🇨🇺",
+       "AL3",
        "OKAM"
       ],
-      "AL3 🇨🇺",
+      "AL3",
       ""
      ],
      [
@@ -39027,26 +39027,10 @@
      [
       [
        "Luck",
-       "AL3 🇨🇺"
+       "AL3"
       ],
       "Luck",
       ""
-     ],
-     [
-      [
-       "AL3 🇨🇺",
-       "Luck 🇵🇾"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
-     ],
-     [
-      [
-       "Sin límites 🇵🇪",
-       "Mc arepa"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Semifinales"
@@ -39056,7 +39040,7 @@
      [
       [
        "Sin Limites",
-       "AL3 🇨🇺"
+       "AL3"
       ],
       "Sin Limites",
       "podio: tercer puesto sin batalla en la llave"
@@ -39096,7 +39080,7 @@
     6000
    ],
    [
-    "AL3 🇨🇺",
+    "AL3",
     "Cuarto",
     4500
    ],
@@ -39136,12 +39120,12 @@
     1250
    ],
    [
-    "Shitka🇲🇽",
+    "Shitka",
     "Octavos",
     1250
    ],
    [
-    "jazi 🇦🇸",
+    "jazi",
     "Octavos",
     1250
    ],
@@ -39183,10 +39167,10 @@
      ],
      [
       [
-       "POLLO",
+       "Polosport",
        "Monamay"
       ],
-      "POLLO",
+      "Polosport",
       ""
      ],
      [
@@ -39246,6 +39230,14 @@
      ],
      [
       [
+       "Polosport",
+       "Lizeninn"
+      ],
+      "Polosport",
+      ""
+     ],
+     [
+      [
        "Vandu",
        "BastyRetro"
       ],
@@ -39259,14 +39251,6 @@
       ],
       "PichulaMc",
       ""
-     ],
-     [
-      [
-       "POLLO",
-       "Lizeninn 🇦🇷"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Cuartos"
@@ -39330,6 +39314,11 @@
    ],
    [
     "BastyRetro",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Lizeninn",
     "Cuartos",
     2500
    ],

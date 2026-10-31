@@ -918,14 +918,16 @@
      "FFA": 27,
      "FRZ": 4,
      "DDF": 5,
-     "ACAD": 2
+     "ACAD": 2,
+     "FDS": 3
     },
     "gente": {
-     "FDS": 13,
+     "FDS": 24,
      "DDF": 41,
      "FFA": 114,
      "FRZ": 15,
-     "ACAD": 16
+     "ACAD": 16,
+     "URBF": 13
     },
     "gana": "FRZ"
    },
@@ -933,14 +935,14 @@
     "ACAD": 16,
     "DDF": 41,
     "DRA": 0,
-    "FDS": 13,
+    "FDS": 24,
     "FFA": 114,
     "FFS": 0,
     "FRZ": 15,
     "FVS": 0,
     "LKR": 0,
     "SR": 0,
-    "URBF": 0
+    "URBF": 13
    }
   }
  ]

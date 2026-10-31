@@ -49,8 +49,8 @@
 "rg": "S",
 "c": []
 },
-"six": {
-"rg": "B",
+"panchok": {
+"rg": "S",
 "c": [
 "competitivo",
 "pais",
@@ -58,8 +58,8 @@
 "temporada"
 ]
 },
-"panchok": {
-"rg": "S",
+"six": {
+"rg": "B",
 "c": [
 "competitivo",
 "pais",
@@ -276,6 +276,15 @@
 "temporada"
 ]
 },
+"polosport": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "okam": {
 "rg": "D",
 "c": [
@@ -288,15 +297,6 @@
 "xclusivo": {
 "rg": "C",
 "c": []
-},
-"polosport": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "cronox": {
 "rg": "D",
@@ -573,8 +573,8 @@
 "temporada"
 ]
 },
-"lizeninn": {
-"rg": "",
+"1200": {
+"rg": "E",
 "c": []
 },
 "masino": {
@@ -608,11 +608,18 @@
 "temporada"
 ]
 },
+"luck": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "jj": {
 "rg": "",
 "c": []
 },
-"1200": {
+"lizeninn": {
 "rg": "E",
 "c": []
 },
@@ -694,13 +701,6 @@
 "rg": "",
 "c": [
 "pais",
-"servidor",
-"temporada"
-]
-},
-"luck": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -793,6 +793,13 @@
 ]
 },
 "number": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"mcarepa": {
 "rg": "",
 "c": [
 "servidor",
@@ -942,13 +949,6 @@
 "temporada"
 ]
 },
-"mcarepa": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "andy": {
 "rg": "",
 "c": [
@@ -1087,6 +1087,10 @@
 "c": []
 },
 "fleivaman": {
+"rg": "",
+"c": []
+},
+"rayo": {
 "rg": "",
 "c": []
 },
@@ -1233,10 +1237,6 @@
 "c": []
 },
 "elsoolar": {
-"rg": "",
-"c": []
-},
-"rayo": {
 "rg": "",
 "c": []
 },
@@ -2666,14 +2666,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-03T22:58:18Z",
-"quien": [
-"EIDP"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-03T22:58:18Z",
@@ -6015,6 +6007,15 @@
 "DarnBless"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "rango",
+"t": "2026-10-31T01:59:45Z",
+"quien": [
+"Lizeninn"
+],
+"rg": "E",
+"primero": true
 }
 ]
 }

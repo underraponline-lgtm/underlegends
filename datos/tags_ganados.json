@@ -415,6 +415,11 @@
     "t1",
     1793064764072
    ],
+   "😈 BESTIA NEGRA": [
+    "😈 BESTIA NEGRA",
+    "t1",
+    1793412017262
+   ],
    "🤝 SIN MIEDO": [
     "🤝 SIN MIEDO",
     "t1",
@@ -4202,6 +4207,13 @@
   }
  },
  "kochi": {
+  "competitivo": {
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1793412017262
+   ]
+  },
   "servidor": {
    "⚔️ DUELISTA": [
     "⚔️ DUELISTA",
@@ -5641,6 +5653,11 @@
     "🌱 PROMESA",
     "t1",
     1792992726322
+   ],
+   "🎯 CAZADOR CAZADO": [
+    "🎯 CAZADOR CAZADO",
+    "t1",
+    1793412017262
    ],
    "🐺 LOBO SOLITARIO": [
     "🐺 LOBO SOLITARIO",
@@ -7268,6 +7285,11 @@
     "🗡️ MATAGIGANTES",
     "t1",
     1793160263646
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1793412017262
    ]
   },
   "pais": {
@@ -8989,6 +9011,11 @@
     "🤝 SIN MIEDO",
     "t1",
     1793029252929
+   ],
+   "🦁 TEMERARIO": [
+    "🦁 TEMERARIO",
+    "t1",
+    1793412017262
    ]
   },
   "servidor": {
