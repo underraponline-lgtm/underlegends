@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-31T02:55:36+00:00",
+ "cuando": "2026-10-31T03:25:51+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6792,6 +6792,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "tenor🇻🇪",
+   "quien": "tenor_25499",
+   "discord_id": "1370860602972569632",
+   "msg_id": "1565923870601388105",
+   "cuando": "2026-10-31T03:02:24"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Millonari-O 🇵🇾",
+   "quien": "pelotadel_10_68491",
+   "discord_id": "1373340031413911624",
+   "msg_id": "1565923315409879072",
+   "cuando": "2026-10-31T03:00:11"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Akuseru🇦🇷",
+   "quien": "akuseru_dionisio",
+   "discord_id": "1564834243039731832",
+   "msg_id": "1565923215166021638",
+   "cuando": "2026-10-31T02:59:47"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Ezze 🇦🇷",
+   "quien": "ezze_2003",
+   "discord_id": "1564832348766343232",
+   "msg_id": "1565923214792593481",
+   "cuando": "2026-10-31T02:59:47"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42755,42 +42791,6 @@
    "discord_id": "458519920330670086",
    "msg_id": "1553599578757005353",
    "cuando": "2026-09-27T02:50:04"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "maldita enfermedad🇪🇬",
-   "quien": "jdsdechiquito",
-   "discord_id": "1506837153324204032",
-   "msg_id": "1553598774033653822",
-   "cuando": "2026-09-27T02:46:52"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Bloody 🇨🇴",
-   "quien": "bloodypintor",
-   "discord_id": "692881329573986317",
-   "msg_id": "1553597882156716093",
-   "cuando": "2026-09-27T02:43:19"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "manteca sixseven🇦🇸",
-   "quien": "king_arg",
-   "discord_id": "451552733422682124",
-   "msg_id": "1553597056029823107",
-   "cuando": "2026-09-27T02:40:02"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Zeta 🇨🇴",
-   "quien": "zetaenmsi",
-   "discord_id": "535579351710957568",
-   "msg_id": "1553597038908674131",
-   "cuando": "2026-09-27T02:39:58"
   }
  ]
 }

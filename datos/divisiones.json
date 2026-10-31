@@ -505,6 +505,11 @@
      2
     ],
     [
+     "Number",
+     10562,
+     3
+    ],
+    [
      "Scritura",
      10375,
      2
@@ -531,11 +536,6 @@
     ],
     [
      "Lvel",
-     7188,
-     2
-    ],
-    [
-     "Number",
      7188,
      2
     ],
@@ -1379,6 +1379,7 @@
   "gibraltar 🇦🇨": 5,
   "ikonoxx": 5,
   "kerkoide": 5,
+  "leletras": 5,
   "leteletras": 5,
   "lil": 5,
   "luisito 🏆": 5,

@@ -509,6 +509,14 @@
 "temporada"
 ]
 },
+"number": {
+"rg": "D",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "badterne": {
 "rg": "",
 "c": []
@@ -786,13 +794,6 @@
 ]
 },
 "mtz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"number": {
 "rg": "",
 "c": [
 "servidor",
@@ -2666,22 +2667,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-03T22:58:18Z",
-"quien": [
-"EIDP"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-03T22:58:18Z",
-"quien": [
-"Player"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-03T22:58:18Z",
@@ -6016,6 +6001,23 @@
 ],
 "rg": "E",
 "primero": true
+},
+{
+"tipo": "rango",
+"t": "2026-10-31T03:34:17Z",
+"quien": [
+"Number"
+],
+"rg": "D",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-31T03:34:17Z",
+"quien": [
+"Number"
+],
+"carta": "competitivo"
 }
 ]
 }

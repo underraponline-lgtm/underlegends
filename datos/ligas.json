@@ -1,6 +1,6 @@
 {
  "_leeme": "Las ligas de los servidores: cada batalla y su resultado, y la tabla que sale de eso. Lo arma bot/ligas.py en cada corrida; las reglas viven ahí. Sin los mensajes: el repo es público. `batallas`: [id del mensaje, instante, jornada, a, b, ganador (vacío: pendiente), directa|replica, extras]. Las batallas con resultado cuentan como duelos (Ranking Duelos y Win%; el Score no). `flyer`: el último afiche de su canal de anuncios, re-alojado en R2 (`url`); `prox`: la próxima fecha que anunció (`d` el día, `t` el instante si lo dijo). Desde el 17/10/2026: `ptb` {id de la batalla: [PTB de a, de b]}, `flyers` (la galería, en R2), `staff` [[discord_id, nombre, mensajes en anuncios, en veredictos, último]] y `nov` (lo nuevo de las últimas horas, para «Seguir la liga»).",
- "t": "2026-10-31T02:58:31Z",
+ "t": "2026-10-31T03:32:59Z",
  "ligas": {
   "fmh-albiceleste": {
    "n": "FMH Albiceleste",
@@ -2237,10 +2237,10 @@
     ]
    ],
    "flyer": {
-    "id": "1558284027495059587",
-    "t": "2026-10-10T01:04:23Z",
-    "tit": "JUPITER vs MTZ",
-    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-tricolor/1558284027495059587.webp",
+    "id": "1565925614173560922",
+    "t": "2026-10-31T03:09:19Z",
+    "tit": "JUPITER vs PLAYER",
+    "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-tricolor/1565925614173560922.webp",
     "w": 720,
     "h": 900
    },
@@ -2303,6 +2303,41 @@
     ]
    },
    "flyers": [
+    {
+     "id": "1565925614173560922",
+     "t": "2026-10-31T03:09:19Z",
+     "tit": "JUPITER vs PLAYER",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-tricolor/1565925614173560922.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1565925211642138676",
+     "msg": "1565925211642138676",
+     "t": "2026-10-31T03:07:43Z",
+     "tit": "NATSUKI vs COLESITO",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-tricolor/1565925211642138676.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1565924716617662575",
+     "msg": "1565924716617662575",
+     "t": "2026-10-31T03:05:45Z",
+     "tit": "INSTINTO vs PROSU",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-tricolor/1565924716617662575.webp",
+     "w": 720,
+     "h": 900
+    },
+    {
+     "id": "1565924120405741649",
+     "msg": "1565924120405741649",
+     "t": "2026-10-31T03:03:23Z",
+     "tit": "BLOODY vs VARGAS",
+     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-tricolor/1565924120405741649.webp",
+     "w": 720,
+     "h": 900
+    },
     {
      "id": "1558284027495059587",
      "t": "2026-10-10T01:04:23Z",
@@ -2373,42 +2408,6 @@
      "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-tricolor/1552345387283652700.webp",
      "w": 720,
      "h": 900
-    },
-    {
-     "id": "1552310650775277589",
-     "msg": "1552310650775277589",
-     "t": "2026-09-23T13:28:19Z",
-     "tit": "PLAYER vs PROSU",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-tricolor/1552310650775277589.webp",
-     "w": 720,
-     "h": 900
-    },
-    {
-     "id": "1552088548335943730",
-     "msg": "1552088548335943730",
-     "t": "2026-09-22T22:45:46Z",
-     "tit": "BLOODY vs NATSUKI",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-tricolor/1552088548335943730.webp",
-     "w": 720,
-     "h": 900
-    },
-    {
-     "id": "1548844665107775579",
-     "msg": "1548844665107775579",
-     "t": "2026-09-13T23:55:44Z",
-     "tit": "ULTIMA BATALLA DE LA JORNADA",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-tricolor/1548844665107775579.webp",
-     "w": 720,
-     "h": 900
-    },
-    {
-     "id": "1548844315529453608",
-     "msg": "1548844315529453608",
-     "t": "2026-09-13T23:54:20Z",
-     "tit": "EXTRAPLAYER CONFIRMADO",
-     "url": "https://pub-70d5821d06a8432c9cffd0c102195000.r2.dev/ligas/fmh-tricolor/1548844315529453608.webp",
-     "w": 720,
-     "h": 900
     }
    ],
    "staff": [
@@ -2422,9 +2421,9 @@
     [
      "1344825963669749804",
      "⁺‧₊˚ ཐིNeisMCཋྀ ˚₊‧",
-     10,
-     27,
-     "2026-10-20T03:42:34Z"
+     14,
+     28,
+     "2026-10-31T03:14:56Z"
     ],
     [
      "794733304729436212",

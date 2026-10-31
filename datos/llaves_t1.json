@@ -2804,7 +2804,7 @@
      [
       [
        "Vlade",
-       "leteletras",
+       "leletras",
        "King",
        "Soft"
       ],
@@ -2839,7 +2839,7 @@
        "SMAFF"
       ],
       "Colesito, Juanpa",
-      "triple (4 bandas, pasan 2); también pasa: juanpa 🇨🇴"
+      "triple (4 bandas, pasan 2); también pasa: Juanpa 🇨🇴"
      ]
     ],
     "r": "Filtros"
@@ -3057,7 +3057,7 @@
     625
    ],
    [
-    "leteletras",
+    "leletras",
     "R32",
     625
    ],
@@ -38593,13 +38593,11 @@
   "escala": "16+",
   "fecha": "30/10",
   "links": [
-   "https://discord.com/channels/1468472442925092958/1487207377601040516/1565832494509457582",
-   "https://discord.com/channels/1468472442925092958/1487206164864438513/1565833784501342271",
-   "https://discord.com/channels/1468472442925092958/1487206164864438513/1565833975048441989"
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1565832494509457582"
   ],
   "n": 547,
   "nombre": "LA ISLA DE OKINAWA V.4",
-  "participantes": 28,
+  "participantes": 27,
   "rondas": [
    {
     "b": [
@@ -38677,18 +38675,6 @@
       ],
       "Molusco",
       "triple (6 bandas)"
-     ],
-     [
-      [
-       "71🇺🇸",
-       "Molusco 🇦🇷",
-       "Akuseru 🇦🇷",
-       "Number Laden 🇸🇦",
-       "matias la flauta 🇦🇷",
-       "no aka 🇪🇸"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -38759,7 +38745,7 @@
        "BastyRetro"
       ],
       "Erian",
-      "ganador según #veredictos"
+      ""
      ]
     ],
     "r": "Final"
@@ -39201,19 +39187,19 @@
      ],
      [
       [
+       "Walker",
+       "Number"
+      ],
+      "Walker",
+      ""
+     ],
+     [
+      [
        "PichulaMc",
        "Kochi"
       ],
       "PichulaMc",
       ""
-     ],
-     [
-      [
-       "NAIN",
-       "NUMBER"
-      ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -39359,6 +39345,11 @@
    ],
    [
     "Monamay",
+    "Octavos",
+    1250
+   ],
+   [
+    "Number",
     "Octavos",
     1250
    ]
