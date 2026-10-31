@@ -1673,8 +1673,8 @@
   "Valdoza": {},
   "Vandu": {
    "competitivo": "0738060307ce:0a48057cb351",
-   "pais": "362352d625c4:263a27e40647",
-   "servidor": "f90f8dc98de4:99e0c0179dbe:25c183",
+   "pais": "5e31f7f22ac6:ada55a12db94",
+   "servidor": "dbbe25dc2973:decaf64d9256:25c183",
    "temporada": "9ca30ac155d1:6ec1a5248de8"
   },
   "Vanet": {
@@ -1682,8 +1682,8 @@
   },
   "Velatz": {
    "competitivo": "c4bd0b9a6f9a:0a48057cb351",
-   "pais": "da0e4795be1c:263a27e40647",
-   "servidor": "3276bad84f3d:99e0c0179dbe:039304",
+   "pais": "cb6fb97529ae:ada55a12db94",
+   "servidor": "ba17455f2fa5:decaf64d9256:039304",
    "temporada": "9d38223f1686:6ec1a5248de8"
   },
   "Verc": {
@@ -1953,5 +1953,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-31T18:18:14+00:00"
+ "cuando": "2026-10-31T18:38:31+00:00"
 }
