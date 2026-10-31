@@ -129,6 +129,10 @@
 "temporada"
 ]
 },
+"tam": {
+"rg": "B",
+"c": []
+},
 "mco": {
 "rg": "B",
 "c": [
@@ -193,10 +197,6 @@
 "temporada"
 ]
 },
-"tam": {
-"rg": "B",
-"c": []
-},
 "nc": {
 "rg": "D",
 "c": [
@@ -249,6 +249,15 @@
 "temporada"
 ]
 },
+"okam": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "xubaru": {
 "rg": "C",
 "c": [
@@ -278,15 +287,6 @@
 },
 "polosport": {
 "rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"okam": {
-"rg": "D",
 "c": [
 "competitivo",
 "pais",
@@ -452,6 +452,15 @@
 "temporada"
 ]
 },
+"kravitz": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "kochi": {
 "rg": "C",
 "c": [
@@ -551,15 +560,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"kravitz": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]
@@ -728,6 +728,14 @@
 "temporada"
 ]
 },
+"lvel": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "mcnadie": {
 "rg": "",
 "c": [
@@ -765,14 +773,6 @@
 "vilca": {
 "rg": "",
 "c": [
-"servidor",
-"temporada"
-]
-},
-"lvel": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -950,6 +950,14 @@
 "temporada"
 ]
 },
+"aldre": {
+"rg": "",
+"c": [
+"pais",
+"servidor",
+"temporada"
+]
+},
 "agustin51k": {
 "rg": "",
 "c": [
@@ -1064,14 +1072,6 @@
 "rg": "",
 "c": [
 "servidor"
-]
-},
-"aldre": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
 ]
 },
 "gus": {
@@ -2667,14 +2667,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-03T23:08:01Z",
-"quien": [
-"NAW"
-],
-"carta": "servidor"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-03T23:08:01Z",
@@ -6019,6 +6011,15 @@
 "Paria"
 ],
 "rg": "D",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-10-31T15:39:58Z",
+"quien": [
+"OKAM"
+],
+"rg": "C",
 "primero": false
 }
 ]

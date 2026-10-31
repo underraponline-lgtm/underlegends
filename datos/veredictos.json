@@ -1629,6 +1629,83 @@
    "b": "Aldre 🇦🇷",
    "ganador": "OKAM",
    "votos": "1–0"
+  },
+  "1565986277642215485": {
+   "id": "1565986277642215485",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793430623208,
+   "a": "erian 🇫🇯",
+   "b": "kaiser🇵🇷",
+   "ganador": "erian 🇫🇯",
+   "votos": "1–0"
+  },
+  "1565986884138569789": {
+   "id": "1565986884138569789",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793430767808,
+   "a": "erpi🇵🇪",
+   "b": "tam🇻🇪",
+   "ganador": "tam🇻🇪",
+   "votos": "2–0"
+  },
+  "1565989176976085125": {
+   "id": "1565989176976085125",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793431314463,
+   "a": "Kravitz",
+   "b": "erian 🇫🇯",
+   "ganador": "erian 🇫🇯",
+   "votos": "1–0"
+  },
+  "1565992269511794759": {
+   "id": "1565992269511794759",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793432051781,
+   "a": "OKAM",
+   "b": "tam🇻🇪",
+   "ganador": "tam🇻🇪",
+   "votos": "1–0"
+  },
+  "1565996652274389003": {
+   "id": "1565996652274389003",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793433096713,
+   "a": "erian 🇫🇯",
+   "b": "tam🇻🇪",
+   "ganador": "erian 🇫🇯",
+   "votos": "2–1"
+  },
+  "1565997923702018211": {
+   "id": "1565997923702018211",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793433399845,
+   "a": "erian 🇫🇯",
+   "b": "tam🇻🇪",
+   "ganador": "tam🇻🇪",
+   "votos": "1–0"
+  },
+  "1566002558038839357": {
+   "id": "1566002558038839357",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793434504757,
+   "a": "Kravitz",
+   "b": "OKAM",
+   "ganador": "OKAM",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5137,7 +5214,7 @@
    "canal": "1540223675146707045",
    "pub": 1793403662991,
    "ed": 1793409173776,
-   "texto": "`[ OCTAVOS ]`\n⌞NC 🇦🇷⌝ 🆚 ⌞ONDADISKO 🇨🇱⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞MONAMAY 🇦🇷⌝\n⌞NAHU 🇦🇷⌝ 🆚 ⌞KOCHI 🇨🇱⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞MAKMAH 🇻🇪⌝\n⌞LONGSUN ZHAO 🇨🇳⌝ 🆚 ⌞LEYENDA 🇦🇷⌝\n⌞BASTYRETRO 🇨🇱⌝ 🆚 ⌞CRK 🇲🇽⌝\n⌞NAIN 🇦🇷⌝ 🆚 ⌞NUMBER 🇻🇪⌝\n`[ CUARTOS ]`\n⌞AGUS 🇦🇷⌝ 🆚 ⌞NC 🇰🇷⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞LONGSUN ZHAO 🇨🇳⌝\n⌞VANDU 🇨🇴⌝ 🆚 ⌞BASTYRETRO 🇨🇱⌝\n⌞LIZENINN 🇨🇳⌝ 🆚 ⌞POLLO 🇰🇷⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞PICHULA 🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞VANDU 🇨🇴⌝ 🆚 ⌞PICHULA 🇦🇷⌝\n⌞POLLOSPORT 🇦🇷⌝ 🆚 ⌞AGUS 🇦🇷⌝\n`[ FINAL ]`",
+   "texto": "`[ OCTAVOS ]`\n⌞NC 🇦🇷⌝ 🆚 ⌞ONDADISKO 🇨🇱⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞MONAMAY 🇦🇷⌝\n⌞NAHU 🇦🇷⌝ 🆚 ⌞KOCHI 🇨🇱⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞MAKMAH 🇻🇪⌝\n⌞LONGSUN ZHAO 🇨🇳⌝ 🆚 ⌞LEYENDA 🇦🇷⌝\n⌞BASTYRETRO 🇨🇱⌝ 🆚 ⌞CRK 🇲🇽⌝\n⌞NAIN 🇦🇷⌝ 🆚 ⌞NUMBER 🇻🇪⌝\n`[ CUARTOS ]`\n⌞AGUS 🇦🇷⌝ 🆚 ⌞NC 🇰🇷⌝\n⌞VANDU 🇨🇴⌝ 🆚 ⌞BASTYRETRO 🇨🇱⌝\n⌞LIZENINN 🇨🇳⌝ 🆚 ⌞POLLO 🇰🇷⌝\n⌞WALKER 🇨🇴⌝ 🆚 ⌞PICHULA 🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞VANDU 🇨🇴⌝ 🆚 ⌞PICHULA 🇦🇷⌝\n⌞POLLOSPORT 🇦🇷⌝ 🆚 ⌞AGUS 🇦🇷⌝\n`[ FINAL ]`",
    "batallas": [
     [
      "OCTAVOS",
@@ -5155,8 +5232,8 @@
       "PARK JI SUNG 🇰🇷",
       "MONAMAY 🇦🇷"
      ],
-     "PARK JI SUNG 🇰🇷",
-     "ronda siguiente",
+     null,
+     "no aparece nadie después",
      []
     ],
     [
@@ -5185,8 +5262,8 @@
       "LONGSUN ZHAO 🇨🇳",
       "LEYENDA 🇦🇷"
      ],
-     "LONGSUN ZHAO 🇨🇳",
-     "ronda siguiente",
+     null,
+     "no aparece nadie después",
      []
     ],
     [
@@ -5217,16 +5294,6 @@
      ],
      "AGUS 🇦🇷",
      "ronda siguiente",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "PARK JI SUNG 🇰🇷",
-      "LONGSUN ZHAO 🇨🇳"
-     ],
-     null,
-     "no aparece nadie después",
      []
     ],
     [
@@ -5383,8 +5450,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793429249161,
-   "ed": 1793430102186,
-   "texto": "`[ OCTAVOS ]`\n⌞Luffy 🇵🇪⌝ 🆚 ⌞tam🇻🇪⌝ 🆚 ⌞lord viruz🇨🇴⌝\n⌞kravitz⌝ 🆚 ⌞nc⌝\n`[ CUARTOS ]`\n⌞okam🇨🇷⌝ 🆚 ⌞Aldre 🇦🇷⌝",
+   "ed": 1793433555706,
+   "texto": "`[ OCTAVOS ]`\n⌞Luffy 🇵🇪⌝ 🆚 ⌞tam🇻🇪⌝ 🆚 ⌞lord viruz🇨🇴⌝\n⌞kravitz⌝ 🆚 ⌞nc⌝\n`[ CUARTOS ]`\n⌞okam🇨🇷⌝ 🆚 ⌞Aldre 🇦🇷⌝\n`[ CUARTOS ]`\n⌞erian 🇫🇯⌝ 🆚 ⌞kaiser🇵🇷⌝\n`[ CUARTOS ]`\n⌞erpi🇵🇪⌝ 🆚 ⌞tam🇻🇪⌝\n`[ SEMIFINALES ]`\n⌞Kravitz 🇨🇷⌝ 🆚 ⌞erian 🇫🇯⌝\n`[ SEMIFINALES ]`\n⌞Okam🇨🇷⌝ 🆚 ⌞Tam🇻🇪⌝\n`[ FINAL ]`\n⌞erian 🇫🇯⌝ 🆚 ⌞tam🇻🇪⌝\n⌞erian 🇫🇯⌝ 🆚 ⌞tam🇻🇪⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5414,6 +5481,87 @@
       "Aldre 🇦🇷"
      ],
      "okam🇨🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "erian 🇫🇯",
+      "kaiser🇵🇷"
+     ],
+     "erian 🇫🇯",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "erpi🇵🇪",
+      "tam🇻🇪"
+     ],
+     "tam🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Kravitz 🇨🇷",
+      "erian 🇫🇯"
+     ],
+     "erian 🇫🇯",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "Okam🇨🇷",
+      "Tam🇻🇪"
+     ],
+     "Tam🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "erian 🇫🇯",
+      "tam🇻🇪"
+     ],
+     "erian 🇫🇯",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "erian 🇫🇯",
+      "tam🇻🇪"
+     ],
+     "tam🇻🇪",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1566002558038839357": {
+   "id": "1566002558038839357",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793434504757,
+   "ed": 1793434661607,
+   "texto": "`[ TERCER LUGAR ]`\n⌞Kravitz 🇨🇷⌝ 🆚 ⌞Okam 🇨🇷⌝",
+   "batallas": [
+    [
+     "TERCER LUGAR",
+     [
+      "Kravitz 🇨🇷",
+      "Okam 🇨🇷"
+     ],
+     "Okam 🇨🇷",
      "veredicto",
      []
     ]

@@ -39620,5 +39620,261 @@
     1250
    ]
   ]
+ },
+ "551": {
+  "dia": "2026-10-31",
+  "escala": "16+",
+  "fecha": "31/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1565970079663919185"
+  ],
+  "n": 551,
+  "nombre": "Rap para Raperos 2",
+  "participantes": 19,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "NC",
+       "Lvel 🇻🇪"
+      ],
+      "NC",
+      ""
+     ],
+     [
+      [
+       "Kravitz",
+       "Supreme 🇻🇪"
+      ],
+      "Kravitz",
+      ""
+     ],
+     [
+      [
+       "OKAM",
+       "atari 🇨🇷"
+      ],
+      "OKAM",
+      ""
+     ],
+     [
+      [
+       "Aldre",
+       "Sin Limites"
+      ],
+      "Aldre",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "Isabella 🇦🇷"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "erpi 🇵🇪",
+       "Dyzz"
+      ],
+      "erpi 🇵🇪",
+      ""
+     ],
+     [
+      [
+       "Tam",
+       "Gustavo Urrutia Perez 🇲🇽",
+       "Luffy",
+       "lord viruz🇨🇴"
+      ],
+      "Tam",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "tnor🇻🇪",
+       "Pichulamc"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Kravitz",
+       "NC"
+      ],
+      "Kravitz",
+      ""
+     ],
+     [
+      [
+       "OKAM",
+       "Aldre"
+      ],
+      "OKAM",
+      ""
+     ],
+     [
+      [
+       "Erian",
+       "kaiser🇵🇷"
+      ],
+      "Erian",
+      "Walk-in 1: kaiser🇵🇷"
+     ],
+     [
+      [
+       "Tam",
+       "erpi 🇵🇪"
+      ],
+      "Tam",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Erian",
+       "Kravitz"
+      ],
+      "Erian",
+      ""
+     ],
+     [
+      [
+       "Tam",
+       "OKAM"
+      ],
+      "Tam",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "OKAM",
+       "Kravitz"
+      ],
+      "OKAM",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Tam",
+       "Erian"
+      ],
+      "Tam",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Tam",
+    "Campeón",
+    10000
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "OKAM",
+    "Tercero",
+    6000
+   ],
+   [
+    "Kravitz",
+    "Cuarto",
+    4500
+   ],
+   [
+    "Aldre",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "erpi 🇵🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gustavo Urrutia Perez 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Isabella 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Luffy",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Supreme 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "atari 🇨🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "kaiser🇵🇷",
+    "Cuartos",
+    1250
+   ],
+   [
+    "lord viruz🇨🇴",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

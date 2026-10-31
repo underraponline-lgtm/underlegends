@@ -2943,6 +2943,108 @@
      "1041113804513222758"
     ]
    }
+  },
+  {
+   "id": "b9fb0c6dec",
+   "tipo": "Nombre desconocido",
+   "sec": "Rap para Raperos 2 · FFA · 31/10 · #551",
+   "que": "¿Quién es «Supreme 🇻🇪»?",
+   "r": "Es Henry",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Henry: estaba en la llamada del evento con un nombre parecido",
+   "t": 1793461220326,
+   "filas": [
+    988
+   ],
+   "variantes": [
+    "Supreme 🇻🇪"
+   ],
+   "escribio": {
+    "alias": [
+     "Supreme",
+     "Henry"
+    ],
+    "filas": [
+     329
+    ]
+   }
+  },
+  {
+   "id": "686a5fa3e4",
+   "tipo": "Nombre desconocido",
+   "sec": "Rap para Raperos 2 · FFA · 31/10 · #551",
+   "que": "¿Quién es «lord viruz🇨🇴»?",
+   "r": "Es Lord Viruzz",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Lord Viruzz: estaba en la llamada del evento con un nombre parecido",
+   "t": 1793461220326,
+   "filas": [
+    992
+   ],
+   "variantes": [
+    "lord viruz🇨🇴"
+   ],
+   "escribio": {
+    "alias": [
+     "lord viruz",
+     "Lord Viruzz"
+    ],
+    "filas": [
+     330
+    ]
+   }
+  },
+  {
+   "id": "395b0da985",
+   "tipo": "Nombre desconocido",
+   "sec": "Rap para Raperos 2 · FFA · 31/10 · #551",
+   "que": "¿Quién es «atari 🇨🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1557863977353093140",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1557863977353093140)",
+   "t": 1793461220326,
+   "filas": [
+    989
+   ],
+   "variantes": [
+    "atari 🇨🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "atari",
+     "1557863977353093140"
+    ]
+   }
+  },
+  {
+   "id": "d2f4922c09",
+   "tipo": "Nombre desconocido",
+   "sec": "Rap para Raperos 2 · FFA · 31/10 · #551",
+   "que": "¿Quién es «erpi 🇵🇪»?",
+   "r": "Es alguien nuevo: alta con su cuenta 1383271591231619133",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1383271591231619133)",
+   "t": 1793461220326,
+   "filas": [
+    990
+   ],
+   "variantes": [
+    "erpi 🇵🇪"
+   ],
+   "escribio": {
+    "alta": [
+     "erpi",
+     "1383271591231619133"
+    ]
+   }
   }
  ],
  "deshechas": []

@@ -30968,5 +30968,252 @@
    ]
   ],
   "v": 2
+ },
+ "551": {
+  "antes": {
+   "Aldre": [
+    109,
+    156,
+    false
+   ],
+   "Dyzz": [
+    40,
+    52,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "Kravitz": [
+    57,
+    74,
+    false
+   ],
+   "Luffy": [
+    211,
+    535,
+    false
+   ],
+   "NC": [
+    22,
+    25,
+    false
+   ],
+   "OKAM": [
+    31,
+    36,
+    false
+   ],
+   "Sin Limites": [
+    25,
+    30,
+    false
+   ],
+   "Tam": [
+    221,
+    24,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "NC",
+    "Lvel 🇻🇪",
+    "NC"
+   ],
+   [
+    "Kravitz",
+    "Supreme 🇻🇪",
+    "Kravitz"
+   ],
+   [
+    "OKAM",
+    "atari 🇨🇷",
+    "OKAM"
+   ],
+   [
+    "Aldre",
+    "Sin Limites",
+    "Aldre"
+   ],
+   [
+    "Erian",
+    "Isabella 🇦🇷",
+    "Erian"
+   ],
+   [
+    "erpi 🇵🇪",
+    "Dyzz",
+    "erpi 🇵🇪"
+   ],
+   [
+    "Tam",
+    "Gustavo Urrutia Perez 🇲🇽",
+    "Tam"
+   ],
+   [
+    "Tam",
+    "Luffy",
+    "Tam"
+   ],
+   [
+    "Tam",
+    "lord viruz🇨🇴",
+    "Tam"
+   ],
+   [
+    "Kravitz",
+    "NC",
+    "Kravitz"
+   ],
+   [
+    "OKAM",
+    "Aldre",
+    "OKAM"
+   ],
+   [
+    "Erian",
+    "kaiser🇵🇷",
+    "Erian"
+   ],
+   [
+    "Tam",
+    "erpi 🇵🇪",
+    "Tam"
+   ],
+   [
+    "Erian",
+    "Kravitz",
+    "Erian"
+   ],
+   [
+    "Tam",
+    "OKAM",
+    "Tam"
+   ],
+   [
+    "Tam",
+    "Erian",
+    "Tam"
+   ],
+   [
+    "OKAM",
+    "Kravitz",
+    "OKAM"
+   ]
+  ],
+  "ev_antes": {
+   "Aldre": 3,
+   "Dyzz": 20,
+   "Erian": 61,
+   "Kravitz": 12,
+   "Luffy": 1,
+   "NC": 42,
+   "OKAM": 16,
+   "Sin Limites": 38,
+   "Tam": 17
+  },
+  "fecha": "31/10",
+  "firma": "06fbf3423b4d3563",
+  "msg": "1566111464283185365",
+  "nombre": "Rap para Raperos 2",
+  "num": 551,
+  "participantes": 19,
+  "sello": {
+   "Tam": ""
+  },
+  "sv": "FFA",
+  "t": "2026-10-31T15:27:48Z",
+  "tabla": [
+   [
+    "Tam",
+    "Campeón",
+    10000
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "OKAM",
+    "Tercero",
+    6000
+   ],
+   [
+    "Kravitz",
+    "Cuarto",
+    4500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Aldre",
+    "Cuartos",
+    2500
+   ],
+   [
+    "erpi 🇵🇪",
+    "Cuartos",
+    2500
+   ],
+   [
+    "kaiser🇵🇷",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Supreme 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "atari 🇨🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Sin Limites",
+    "Octavos",
+    1250
+   ],
+   [
+    "Isabella 🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dyzz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Gustavo Urrutia Perez 🇲🇽",
+    "Octavos",
+    1250
+   ],
+   [
+    "Luffy",
+    "Octavos",
+    1250
+   ],
+   [
+    "lord viruz🇨🇴",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }
