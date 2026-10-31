@@ -1039,9 +1039,9 @@
   },
   "Marto": {},
   "Masino": {
-   "competitivo": "15cbea8076b5:0a48057cb351",
-   "pais": "99b571b53792:263a27e40647",
-   "servidor": "1a47aaa258ac:99e0c0179dbe:6ae78a",
+   "competitivo": "00e6de049c4a:7d41d0503ea2",
+   "pais": "5bff04713e3c:ada55a12db94",
+   "servidor": "21f9b5edf545:decaf64d9256:6ae78a",
    "temporada": "42fb39df0c9a:6ec1a5248de8"
   },
   "Mathhias": {
@@ -1054,10 +1054,10 @@
    "servidor": "d0bfb45e3b88:99e0c0179dbe:9d9b02"
   },
   "Matias": {
-   "competitivo": "9dda2a0d8f82:0a48057cb351",
-   "pais": "05cb8358d029:263a27e40647",
-   "servidor": "bbb5686dee9e:99e0c0179dbe:86e978",
-   "temporada": "984d9df94d93:6ec1a5248de8"
+   "competitivo": "234dc3c2a380:7d41d0503ea2",
+   "pais": "b544f50dd86b:ada55a12db94",
+   "servidor": "2954462c1e2c:decaf64d9256:86e978",
+   "temporada": "ece541d1c941:ccd09f762e04"
   },
   "Matriz": {
    "servidor": "e2e6f3940bb0:99e0c0179dbe:055f77"
@@ -1958,5 +1958,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-31T19:30:02+00:00"
+ "cuando": "2026-10-31T19:38:58+00:00"
 }
