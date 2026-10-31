@@ -1,96 +1,104 @@
 {
  "v": 1,
- "cuando": "2026-10-31T07:20:16Z",
+ "cuando": "2026-10-31T15:57:59Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 515.5,
+ "dur_s": 1002.2,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.7
+   "s": 6.1
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 1.0
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 9.6
+   "s": 9.9
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.4
+   "s": 21.0
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 4 · 40 persona(s)",
    "ok": false,
-   "s": 415.6
+   "s": 895.0
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.3
+   "s": 9.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 56.1
+   "s": 58.2
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Artezzy"
+   "que": "03_Servidor/generar.py 19 FLEIVA WACK"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Vilca"
+   "que": "03_Servidor/generar.py Jupiter"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Magic"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Trot"
   }
  ],
  "ultimo_evento": {
-  "n": "550",
-  "nombre": "qcyo rapeen",
+  "n": "551",
+  "nombre": "Rap para Raperos 2",
   "sv": "FFA",
-  "dia": "2026-10-30"
+  "dia": "2026-10-31"
  },
  "cuotas": {
   "kv": {
-   "write": 308,
-   "read": 27183
+   "write": 347,
+   "read": 30248
   },
   "objeto": {
-   "leidas": 2514865,
-   "escritas": 15386,
-   "pedidos": 4218
+   "leidas": 2743587,
+   "escritas": 18185,
+   "pedidos": 5939
   },
   "worker": {
-   "pedidos": 8313,
+   "pedidos": 8600,
    "errores": 0,
-   "sub": 9813,
+   "sub": 10090,
    "cortados": 0,
-   "p50_ms": 1.24,
-   "p99_ms": 11.94,
+   "p50_ms": 1.22,
+   "p99_ms": 11.81,
    "cpu": {
-    "total": 18081,
-    "objeto_10": 1667,
+    "total": 18593,
+    "objeto_10": 1671,
     "worker_10": 160
    }
   },
   "r2": {
-   "objetos": 5631,
-   "gb": 0.495,
-   "ts": 1793418801
+   "objetos": 5668,
+   "gb": 0.499,
+   "ts": 1793462286
   }
  }
 }
