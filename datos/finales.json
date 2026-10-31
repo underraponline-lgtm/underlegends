@@ -923,5 +923,27 @@
   "sin_permiso": false,
   "sv": "FFA"
  },
+ "1565870133388513351": {
+  "autor": "1055474244089286706",
+  "canal": "1511963625793912892",
+  "cuando": "2026-10-30T23:28:52.260000+00:00",
+  "evento": "IDS V.3",
+  "fecha": "30/10",
+  "llave": "1565870133388513351",
+  "pregunta": "1565921778021171251",
+  "preguntada": "2026-10-30 10:54 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "NAIN",
+     "NUMBER"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "URBF"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

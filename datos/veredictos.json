@@ -1508,170 +1508,20 @@
    "b": "SIN LÍMITES",
    "ganador": "SIN LÍMITES",
    "votos": "1–0"
+  },
+  "1565916694281457724": {
+   "id": "1565916694281457724",
+   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
+   "g": "1489848581203689535",
+   "canal": "1536574435761332334",
+   "pub": 1793414033242,
+   "a": "SIN LÍMITES",
+   "b": "MCAREPA",
+   "ganador": "SIN LÍMITES",
+   "votos": "1–0"
   }
  },
  "llaves": {
-  "1558311407332753469": {
-   "id": "1558311407332753469",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1791600791534,
-   "ed": 1791605241172,
-   "texto": "`[ OCTAVOS ]`\n⌞NEXUZ🇵🇪⌝ 🆚 ⌞DOMINIK🇵🇪⌝\n⌞MCO🇦🇷⌝ 🆚 ⌞MAKMA🇻🇪⌝\n⌞MASINO🇨🇱⌝ 🆚 ⌞RODA🇵🇦⌝\n⌞WALKER🇨🇴⌝ 🆚 ⌞ELVIOLAGINA🇧🇦⌝\n⌞AGUSTIN🇺🇾⌝ 🆚 ⌞DYNOCO🇦🇷⌝\n⌞AGUS🇦🇷⌝ 🆚 ⌞MARTYNEZ🇺🇾⌝\n⌞TUCA🇦🇷⌝ 🆚 ⌞SPARTAN🇺🇾⌝\n⌞SHADOW🇨🇴⌝ 🆚 ⌞XCLUSIVO🇻🇪⌝\n`[ CUARTOS ]`\n⌞NEXUZ🇵🇪⌝ 🆚 ⌞RODA🇵🇦⌝\n⌞AGUS🇦🇷⌝ 🆚 ⌞AGUSTIN LA RELIQUIA🇺🇾⌝\n⌞MAKMA🇻🇪⌝ 🆚 ⌞WALKER🇨🇴⌝\n⌞XCLUSIVO🇻🇪⌝ 🆚 ⌞TUCA🇦🇷⌝\n`[ SEMIFINALES ]`\n⌞MAKMA🇻🇪⌝ 🆚 ⌞NEXUZ🇵🇪⌝\n⌞AGUS🇦🇷⌝ 🆚 ⌞XCLUSIVO🇻🇪⌝\n`[ FINAL ]`\n⌞MAKMA🇻🇪⌝ 🆚 ⌞AGUS🇦🇷⌝",
-   "batallas": [
-    [
-     "OCTAVOS",
-     [
-      "NEXUZ🇵🇪",
-      "DOMINIK🇵🇪"
-     ],
-     "NEXUZ🇵🇪",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "MCO🇦🇷",
-      "MAKMA🇻🇪"
-     ],
-     "MAKMA🇻🇪",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "MASINO🇨🇱",
-      "RODA🇵🇦"
-     ],
-     "MASINO🇨🇱",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "WALKER🇨🇴",
-      "ELVIOLAGINA🇧🇦"
-     ],
-     "WALKER🇨🇴",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "AGUSTIN🇺🇾",
-      "DYNOCO🇦🇷"
-     ],
-     "AGUSTIN🇺🇾",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "AGUS🇦🇷",
-      "MARTYNEZ🇺🇾"
-     ],
-     "AGUS🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "TUCA🇦🇷",
-      "SPARTAN🇺🇾"
-     ],
-     "TUCA🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "SHADOW🇨🇴",
-      "XCLUSIVO🇻🇪"
-     ],
-     "XCLUSIVO🇻🇪",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "NEXUZ🇵🇪",
-      "RODA🇵🇦"
-     ],
-     "NEXUZ🇵🇪",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "AGUS🇦🇷",
-      "AGUSTIN LA RELIQUIA🇺🇾"
-     ],
-     "AGUS🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "MAKMA🇻🇪",
-      "WALKER🇨🇴"
-     ],
-     "MAKMA🇻🇪",
-     "veredicto",
-     []
-    ],
-    [
-     "CUARTOS",
-     [
-      "XCLUSIVO🇻🇪",
-      "TUCA🇦🇷"
-     ],
-     "XCLUSIVO🇻🇪",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "MAKMA🇻🇪",
-      "NEXUZ🇵🇪"
-     ],
-     "MAKMA🇻🇪",
-     "veredicto",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "AGUS🇦🇷",
-      "XCLUSIVO🇻🇪"
-     ],
-     "AGUS🇦🇷",
-     "veredicto",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "MAKMA🇻🇪",
-      "AGUS🇦🇷"
-     ],
-     "AGUS🇦🇷",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1558324936198721537": {
    "id": "1558324936198721537",
    "sv": "[FFA] Freestyle For All 👾",
