@@ -1677,24 +1677,24 @@
   },
   "Valdoza": {},
   "Vandu": {
-   "competitivo": "0738060307ce:0a48057cb351",
-   "pais": "5e31f7f22ac6:ada55a12db94",
-   "servidor": "dbbe25dc2973:decaf64d9256:25c183",
-   "temporada": "9ca30ac155d1:6ec1a5248de8"
+   "competitivo": "b80544d9647e:7d41d0503ea2",
+   "pais": "3d41997a845c:ada55a12db94",
+   "servidor": "e259dbfffbaf:decaf64d9256:25c183",
+   "temporada": "f4c391facd34:ccd09f762e04"
   },
   "Vanet": {
    "servidor": "6c8ac408bbf5:99e0c0179dbe:055f77"
   },
   "Velatz": {
-   "competitivo": "c4bd0b9a6f9a:0a48057cb351",
-   "pais": "cb6fb97529ae:ada55a12db94",
-   "servidor": "ba17455f2fa5:decaf64d9256:039304",
-   "temporada": "9d38223f1686:6ec1a5248de8"
+   "competitivo": "53a6e23f7275:7d41d0503ea2",
+   "pais": "cf5a7376d900:ada55a12db94",
+   "servidor": "863301687a06:decaf64d9256:039304",
+   "temporada": "847286588155:ccd09f762e04"
   },
   "Verc": {
-   "competitivo": "6030fdaa728a:0a48057cb351",
-   "pais": "57694d01ffa3:263a27e40647",
-   "servidor": "40231caf610a:99e0c0179dbe:c43f56",
+   "competitivo": "397ba2520607:7d41d0503ea2",
+   "pais": "68ed9748ea9a:ada55a12db94",
+   "servidor": "bb204762e826:decaf64d9256:c43f56",
    "temporada": "8fce40ca265b:6ec1a5248de8"
   },
   "Vilca": {
@@ -1958,5 +1958,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-31T21:50:10+00:00"
+ "cuando": "2026-10-31T22:09:36+00:00"
 }
