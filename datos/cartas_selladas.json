@@ -1662,20 +1662,20 @@
    "servidor": "4573739e4f5f:99e0c0179dbe:c737a7"
   },
   "VR": {
-   "competitivo": "1c46488827f5:0a48057cb351",
-   "pais": "f5679c2d0aa1:263a27e40647",
-   "servidor": "69996ade555d:99e0c0179dbe:15af16",
-   "temporada": "001fde878fd4:6ec1a5248de8"
+   "competitivo": "75fc6be93dc8:0a48057cb351",
+   "pais": "dad87e44ef33:263a27e40647",
+   "servidor": "30ec367fa697:99e0c0179dbe:15af16",
+   "temporada": "d33899ea3e97:6ec1a5248de8"
   },
   "Val": {
    "servidor": "d4465c1b5631:99e0c0179dbe:25c183"
   },
   "Valdoza": {},
   "Vandu": {
-   "competitivo": "7cae89d562b2:0a48057cb351",
-   "pais": "bf75a5d627da:263a27e40647",
-   "servidor": "cfd3db10ebb2:99e0c0179dbe:25c183",
-   "temporada": "37fc21583378:6ec1a5248de8"
+   "competitivo": "0738060307ce:0a48057cb351",
+   "pais": "362352d625c4:263a27e40647",
+   "servidor": "f90f8dc98de4:99e0c0179dbe:25c183",
+   "temporada": "9ca30ac155d1:6ec1a5248de8"
   },
   "Vanet": {
    "servidor": "6c8ac408bbf5:99e0c0179dbe:055f77"
@@ -1953,5 +1953,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-31T05:44:29+00:00"
+ "cuando": "2026-10-31T06:09:17+00:00"
 }

@@ -1,51 +1,51 @@
 {
  "v": 1,
- "cuando": "2026-10-31T05:45:27Z",
+ "cuando": "2026-10-31T06:10:16Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 682.4,
+ "dur_s": 407.5,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.9
+   "s": 6.3
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.6
+   "s": 0.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.6
+   "s": 7.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 17.1
+   "s": 16.9
   },
   {
    "n": "5",
-   "que": "tanda 1 de 3 · 40 persona(s)",
+   "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 591.9
+   "s": 316.9
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.7
+   "s": 6.1
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 52.9
+   "s": 52.7
   }
  ],
  "fallas": [
@@ -55,11 +55,7 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py MetriOdin"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Velatz"
+   "que": "03_Servidor/generar.py VR"
   }
  ],
  "ultimo_evento": {
@@ -70,25 +66,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 267,
-   "read": 22069
+   "write": 281,
+   "read": 23719
   },
   "objeto": {
-   "leidas": 2111693,
-   "escritas": 13357,
-   "pedidos": 3280
+   "leidas": 2248202,
+   "escritas": 13963,
+   "pedidos": 3525
   },
   "worker": {
-   "pedidos": 7996,
+   "pedidos": 8042,
    "errores": 0,
-   "sub": 9490,
+   "sub": 9536,
    "cortados": 0,
    "p50_ms": 1.25,
    "p99_ms": 12.09,
    "cpu": {
-    "total": 17416,
-    "objeto_10": 1667,
-    "worker_10": 160
+    "total": 17528,
+    "objeto_10": 1668,
+    "worker_10": 161
    }
   },
   "r2": {
