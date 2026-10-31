@@ -805,7 +805,7 @@
   },
   "Kravitz": {
    "competitivo": "58d4777b2326:0a48057cb351",
-   "pais": "0ec4bd019179:263a27e40647",
+   "pais": "42393f826e17:263a27e40647",
    "servidor": "6e8d34df021f:99e0c0179dbe:effa76",
    "temporada": "9666c42b270a:6ec1a5248de8"
   },
@@ -1253,10 +1253,10 @@
    "temporada": "a76464818296:6ec1a5248de8"
   },
   "OKAM": {
-   "competitivo": "9fcdd3c3d5cf:0a48057cb351",
-   "pais": "a146b431acd3:263a27e40647",
-   "servidor": "39a76fdfd74f:99e0c0179dbe:25c183",
-   "temporada": "d1ac4755b7e7:6ec1a5248de8"
+   "competitivo": "ccbed196a6e7:0a48057cb351",
+   "pais": "d4c4438826f0:263a27e40647",
+   "servidor": "d50b04593514:99e0c0179dbe:25c183",
+   "temporada": "c6dc187b45f1:6ec1a5248de8"
   },
   "OKTA": {
    "servidor": "11a3516424b1:99e0c0179dbe:055f77"
@@ -1324,16 +1324,16 @@
    "servidor": "5e2249b127d7:99e0c0179dbe:980594"
   },
   "Player": {
-   "competitivo": "f217755032b8:0a48057cb351",
-   "pais": "93eefa017bdc:263a27e40647",
-   "servidor": "5c3ca4492596:99e0c0179dbe:ca38c9",
-   "temporada": "f64c9a1d6f2f:6ec1a5248de8"
+   "competitivo": "340e8e94a279:0a48057cb351",
+   "pais": "ff0dce9c7aab:263a27e40647",
+   "servidor": "d35f1a70ec10:99e0c0179dbe:ca38c9",
+   "temporada": "4025f4c6b427:6ec1a5248de8"
   },
   "Polosport": {
-   "competitivo": "279087a32744:0a48057cb351",
-   "pais": "7c028d3e83d7:263a27e40647",
-   "servidor": "06a42108fc70:99e0c0179dbe:c589ca",
-   "temporada": "c6535a2fa2d5:6ec1a5248de8"
+   "competitivo": "6a8e6fcfc47d:0a48057cb351",
+   "pais": "18c80d4fc74a:263a27e40647",
+   "servidor": "aafe0c5de7af:99e0c0179dbe:c589ca",
+   "temporada": "1ef501cce304:6ec1a5248de8"
   },
   "Pomberito": {},
   "Presagio": {
@@ -1356,8 +1356,8 @@
   },
   "Provenza": {
    "competitivo": "faa2dd44ef06:0a48057cb351",
-   "pais": "f94e7ca17f72:263a27e40647",
-   "servidor": "e0083fde358c:99e0c0179dbe:980594",
+   "pais": "ad040ef07178:263a27e40647",
+   "servidor": "cd13bd9513d4:99e0c0179dbe:980594",
    "temporada": "ef697c41efa5:6ec1a5248de8"
   },
   "Pwpwo": {
@@ -1379,8 +1379,8 @@
   },
   "RT": {
    "competitivo": "67e7a9557bbe:0a48057cb351",
-   "pais": "ec015f9e1b49:263a27e40647",
-   "servidor": "f947cf60521f:99e0c0179dbe:80c07f",
+   "pais": "42eb8e590aaf:263a27e40647",
+   "servidor": "567b67f244bb:99e0c0179dbe:80c07f",
    "temporada": "8830cc64f397:6ec1a5248de8"
   },
   "RZ": {
@@ -1517,10 +1517,10 @@
    "servidor": "a7f2c6559975:99e0c0179dbe:874d2d"
   },
   "Sin Limites": {
-   "competitivo": "c1b1451f4615:0a48057cb351",
-   "pais": "b47304c3bce0:263a27e40647",
-   "servidor": "a7efbbd3c9b5:99e0c0179dbe:25c183",
-   "temporada": "4bd6299e74b7:6ec1a5248de8"
+   "competitivo": "a60aa1b6e8a3:0a48057cb351",
+   "pais": "cad9dbaeb641:263a27e40647",
+   "servidor": "86fb7d2fe616:99e0c0179dbe:25c183",
+   "temporada": "78a423ad482b:6ec1a5248de8"
   },
   "Six": {
    "competitivo": "9c5a99e6d882:0a48057cb351",
@@ -1535,15 +1535,15 @@
    "servidor": "86be739d4f5c:99e0c0179dbe:055f77"
   },
   "Skratch": {
-   "competitivo": "e96f2ecae17b:0a48057cb351",
-   "pais": "2c97b169a48e:263a27e40647",
-   "servidor": "e25db529410b:99e0c0179dbe:43d041"
+   "competitivo": "970947d1f8c4:0a48057cb351",
+   "pais": "370e9e0696bd:263a27e40647",
+   "servidor": "7cd9ab75a1bc:99e0c0179dbe:43d041"
   },
   "Slasher": {},
   "Snow": {
    "competitivo": "f9b9e07df614:0a48057cb351",
-   "pais": "e2cb9e5e836e:263a27e40647",
-   "servidor": "5752c09f364c:99e0c0179dbe:43d041",
+   "pais": "e8738af9984c:263a27e40647",
+   "servidor": "ff35b554c201:99e0c0179dbe:43d041",
    "temporada": "f6ab6c05c6b6:6ec1a5248de8"
   },
   "Soft": {},
@@ -1595,18 +1595,18 @@
   "TYPHLOSION": {},
   "Tam": {},
   "Teito": {
-   "competitivo": "dc4855987af3:0a48057cb351",
-   "pais": "88b0ab35d978:263a27e40647",
-   "servidor": "ded53fcb1458:99e0c0179dbe:18ae17",
-   "temporada": "d271ee4186cd:6ec1a5248de8"
+   "competitivo": "02baf65d23ea:0a48057cb351",
+   "pais": "49ca331cf992:263a27e40647",
+   "servidor": "c743ea25cd2a:99e0c0179dbe:18ae17",
+   "temporada": "072fbdc3995a:6ec1a5248de8"
   },
   "Telmex": {
    "servidor": "a44b3afc37b9:99e0c0179dbe:c4a5ef"
   },
   "Tenor": {
    "competitivo": "9f175782f853:0a48057cb351",
-   "pais": "7f34ad9a835a:263a27e40647",
-   "servidor": "8e82c1a2e925:99e0c0179dbe:3580af",
+   "pais": "43c34e1442cc:263a27e40647",
+   "servidor": "d4026f214252:99e0c0179dbe:3580af",
    "temporada": "1aa23ff35029:6ec1a5248de8"
   },
   "Teo": {
@@ -1953,5 +1953,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-31T16:15:24+00:00"
+ "cuando": "2026-10-31T16:37:22+00:00"
 }

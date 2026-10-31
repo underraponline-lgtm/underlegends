@@ -1,51 +1,51 @@
 {
  "v": 1,
- "cuando": "2026-10-31T16:16:33Z",
+ "cuando": "2026-10-31T16:38:25Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 760.9,
+ "dur_s": 452.0,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.3
+   "s": 7.3
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 0.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 9.5
+   "s": 5.6
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.2
+   "s": 15.9
   },
   {
    "n": "5",
-   "que": "tanda 1 de 3 · 40 persona(s)",
+   "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 654.1
+   "s": 358.9
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.1
+   "s": 5.3
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 63.4
+   "s": 57.6
   }
  ],
  "fallas": [
@@ -55,7 +55,7 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Lvel"
+   "que": "03_Servidor/generar.py OKAM"
   }
  ],
  "ultimo_evento": {
@@ -66,25 +66,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 366,
-   "read": 31718
+   "write": 374,
+   "read": 33216
   },
   "objeto": {
-   "leidas": 2809387,
-   "escritas": 19296,
-   "pedidos": 6020
+   "leidas": 2845807,
+   "escritas": 19468,
+   "pedidos": 6178
   },
   "worker": {
    "pedidos": 8601,
    "errores": 0,
-   "sub": 10088,
+   "sub": 10086,
    "cortados": 0,
    "p50_ms": 1.22,
-   "p99_ms": 11.74,
+   "p99_ms": 11.52,
    "cpu": {
-    "total": 18594,
-    "objeto_10": 1671,
-    "worker_10": 157
+    "total": 18571,
+    "objeto_10": 1673,
+    "worker_10": 156
    }
   },
   "r2": {
