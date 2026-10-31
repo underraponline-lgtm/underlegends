@@ -1497,6 +1497,50 @@
    "b": "ERIAN",
    "ganador": "ERIAN",
    "votos": "1–0"
+  },
+  "1565944409755881543": {
+   "id": "1565944409755881543",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793420641126,
+   "a": "PRAISERIZAS BETELGEUSE",
+   "b": "SIX TENOR",
+   "ganador": "PRAISERIZAS BETELGEUSE",
+   "votos": "1–0"
+  },
+  "1565946497260986471": {
+   "id": "1565946497260986471",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793421138826,
+   "a": "PRAISERIZAS",
+   "b": "PARIA",
+   "ganador": "PRAISERIZAS",
+   "votos": "1–0"
+  },
+  "1565947327313879051": {
+   "id": "1565947327313879051",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793421336726,
+   "a": "PRAISERIZAS",
+   "b": "ZA",
+   "ganador": "PRAISERIZAS",
+   "votos": "1–0"
+  },
+  "1565949064426684417": {
+   "id": "1565949064426684417",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793421750886,
+   "a": "PRAISERIZAS",
+   "b": "ERIAN",
+   "ganador": "PRAISERIZAS",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5155,8 +5199,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793418595084,
-   "ed": 1793420097573,
-   "texto": "`[ CUARTOS ]`\n⌞SIX⌝ 🆚 ⌞LIZEN⌝ 🆚 ⌞TENOR⌝\n⌞BETELGEUSE⌝ 🆚 ⌞YINN⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞ERIAN⌝ 🆚 ⌞ZA⌝ 🆚 ⌞ORIUZ⌝\n⌞MCO⌝ 🆚 ⌞PARIA⌝ 🆚 ⌞ASSUAN⌝ 🆚 ⌞AKUSERU⌝\n`[ SEMIFINALES ]`",
+   "ed": 1793421760557,
+   "texto": "`[ CUARTOS ]`\n⌞SIX⌝ 🆚 ⌞LIZEN⌝ 🆚 ⌞TENOR⌝\n⌞BETELGEUSE⌝ 🆚 ⌞YINN⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞ERIAN⌝ 🆚 ⌞ZA⌝ 🆚 ⌞ORIUZ⌝\n⌞MCO⌝ 🆚 ⌞PARIA⌝ 🆚 ⌞ASSUAN⌝ 🆚 ⌞AKUSERU⌝\n`[ SEMIFINALES ]`\n⌞PRAISERIZAS BETELGEUSE⌝ 🆚 ⌞SIX TENOR⌝\n`[ FINAL ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞PARIA⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞ZA⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞ERIAN⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5166,7 +5210,7 @@
       "TENOR"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -5199,8 +5243,48 @@
       "ASSUAN",
       "AKUSERU"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "PARIA",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "PRAISERIZAS BETELGEUSE",
+      "SIX TENOR"
+     ],
+     "PRAISERIZAS BETELGEUSE",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PRAISERIZAS",
+      "PARIA"
+     ],
+     "PRAISERIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PRAISERIZAS",
+      "ZA"
+     ],
+     "PRAISERIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PRAISERIZAS",
+      "ERIAN"
+     ],
+     "PRAISERIZAS",
+     "veredicto",
      []
     ]
    ]

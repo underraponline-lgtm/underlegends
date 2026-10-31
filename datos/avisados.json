@@ -30597,5 +30597,376 @@
    ]
   ],
   "v": 2
+ },
+ "550": {
+  "antes": {
+   "Akuseru": [
+    429,
+    391,
+    true
+   ],
+   "Assuan": [
+    264,
+    153,
+    true
+   ],
+   "BLITZ": [
+    256,
+    140,
+    true
+   ],
+   "Betelguese": [
+    304,
+    219,
+    true
+   ],
+   "Dev": [
+    195,
+    449,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "Ezze": [
+    257,
+    142,
+    true
+   ],
+   "Jult": [
+    56,
+    73,
+    false
+   ],
+   "Kravitz": [
+    62,
+    80,
+    false
+   ],
+   "Lilñaño": [
+    90,
+    117,
+    false
+   ],
+   "MCO": [
+    16,
+    18,
+    false
+   ],
+   "Mc arepa": [
+    84,
+    109,
+    false
+   ],
+   "Millonari-O": [
+    295,
+    208,
+    true
+   ],
+   "Number": [
+    52,
+    68,
+    false
+   ],
+   "PRAISERIZA": [
+    219,
+    6,
+    true
+   ],
+   "Paria": [
+    234,
+    65,
+    true
+   ],
+   "Provenza": [
+    20,
+    22,
+    false
+   ],
+   "SULTAN": [
+    262,
+    150,
+    true
+   ],
+   "Six": [
+    7,
+    8,
+    false
+   ],
+   "Tenor": [
+    40,
+    52,
+    false
+   ],
+   "yinn": [
+    220,
+    16,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "oriuz 🇦🇷",
+    "Mc arepa",
+    "oriuz 🇦🇷"
+   ],
+   [
+    "oriuz 🇦🇷",
+    "Ezze",
+    "oriuz 🇦🇷"
+   ],
+   [
+    "yinn",
+    "Ezze",
+    "yinn"
+   ],
+   [
+    "yinn",
+    "Jult",
+    "yinn"
+   ],
+   [
+    "Erian",
+    "SULTAN",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "Dev",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "Millonari-O",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "BLITZ",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "Number",
+    "Erian"
+   ],
+   [
+    "Paria",
+    "Lilñaño",
+    "Paria"
+   ],
+   [
+    "Paria",
+    "xJuniorTime",
+    "Paria"
+   ],
+   [
+    "Paria",
+    "Kravitz",
+    "Paria"
+   ],
+   [
+    "Six",
+    "Lizen🇦🇷",
+    "Six"
+   ],
+   [
+    "Betelguese",
+    "yinn",
+    "Betelguese"
+   ],
+   [
+    "Erian",
+    "oriuz 🇦🇷",
+    "Erian"
+   ],
+   [
+    "MCO",
+    "Assuan",
+    "MCO"
+   ],
+   [
+    "MCO",
+    "Akuseru",
+    "MCO"
+   ],
+   [
+    "PRAISERIZA, Betelguese",
+    "Six, Tenor",
+    "PRAISERIZA, Betelguese"
+   ],
+   [
+    "Provenza, Erian",
+    "MCO, Paria",
+    "Provenza, Erian"
+   ],
+   [
+    "Tenor, Betelguese, PRAISERIZA",
+    "Paria, Erian, Provenza",
+    "Tenor, Betelguese, PRAISERIZA"
+   ]
+  ],
+  "ev_antes": {
+   "Akuseru": 1,
+   "Assuan": 4,
+   "BLITZ": 6,
+   "Betelguese": 2,
+   "Dev": 1,
+   "Erian": 60,
+   "Ezze": 2,
+   "Jult": 16,
+   "Kravitz": 11,
+   "Lilñaño": 4,
+   "MCO": 28,
+   "Mc arepa": 3,
+   "Millonari-O": 4,
+   "Number": 10,
+   "PRAISERIZA": 16,
+   "Paria": 13,
+   "Provenza": 33,
+   "SULTAN": 7,
+   "Six": 37,
+   "Tenor": 13,
+   "yinn": 28
+  },
+  "fecha": "30/10",
+  "firma": "420e0aebe26de6ca",
+  "msg": "1565949700987822131",
+  "nombre": "__ qcyo rapeen __",
+  "num": 550,
+  "participantes": 25,
+  "sello": {
+   "Betelguese": "",
+   "PRAISERIZA": "",
+   "Tenor": "d434a818326f:6ec1a5248de8"
+  },
+  "sv": "FFA",
+  "t": "2026-10-31T04:54:47Z",
+  "tabla": [
+   [
+    "Tenor",
+    "Campeón",
+    5958
+   ],
+   [
+    "Paria",
+    "Subcampeón",
+    5125
+   ],
+   [
+    "Betelguese",
+    "Campeón",
+    3333
+   ],
+   [
+    "PRAISERIZA",
+    "Campeón",
+    3333
+   ],
+   [
+    "Six",
+    "Semifinal",
+    2625
+   ],
+   [
+    "MCO",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Provenza",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Lizen🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "yinn",
+    "Cuartos",
+    2500
+   ],
+   [
+    "oriuz 🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Assuan",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Akuseru",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ezze",
+    "Octavos",
+    1875
+   ],
+   [
+    "Mc arepa",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jult",
+    "Octavos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dev",
+    "Octavos",
+    1250
+   ],
+   [
+    "Millonari-O",
+    "Octavos",
+    1250
+   ],
+   [
+    "BLITZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Number",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lilñaño",
+    "Octavos",
+    1250
+   ],
+   [
+    "xJuniorTime",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kravitz",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
  }
 }

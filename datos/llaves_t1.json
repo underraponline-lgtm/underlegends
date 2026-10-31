@@ -39354,5 +39354,271 @@
     1250
    ]
   ]
+ },
+ "550": {
+  "dia": "2026-10-30",
+  "escala": "16+",
+  "fecha": "30/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1565923164989558805"
+  ],
+  "n": 550,
+  "nombre": "qcyo rapeen",
+  "participantes": 25,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "oriuz 🇦🇷",
+       "Betelguese",
+       "Assuan",
+       "Mc arepa",
+       "Ezze"
+      ],
+      "oriuz 🇦🇷, Betelguese, Assuan",
+      "triple (5 bandas, pasan 3); también pasa: BETELGEUSE🇮🇶 / Assuan 🇨🇱"
+     ],
+     [
+      [
+       "yinn",
+       "Lizen🇦🇷",
+       "Akuseru",
+       "Ezze",
+       "Jult"
+      ],
+      "yinn, Lizen🇦🇷, Akuseru",
+      "triple (5 bandas, pasan 3); también pasa: Lizen🇦🇷 / Akuseru 🇦🇷"
+     ],
+     [
+      [
+       "Erian",
+       "Tenor",
+       "PRAISERIZA",
+       "SULTAN",
+       "Dev",
+       "Millonari-O",
+       "BLITZ",
+       "Number"
+      ],
+      "Erian, Tenor, PRAISERIZA",
+      "triple (8 bandas, pasan 3); también pasa: tenor / praiseriza"
+     ],
+     [
+      [
+       "Paria",
+       "Provenza",
+       "Six",
+       "MCO",
+       "Lilñaño",
+       "xJuniorTime",
+       "Kravitz"
+      ],
+      "Paria, Provenza, Six, MCO",
+      "triple (7 bandas, pasan 4); también pasa: za / six / Mco; Drafteado: Paria🇦🇷"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Six",
+       "Tenor",
+       "Lizen🇦🇷"
+      ],
+      "Six, Tenor",
+      "triple (3 bandas, pasan 2); también pasa: tenor"
+     ],
+     [
+      [
+       "Betelguese",
+       "PRAISERIZA",
+       "yinn"
+      ],
+      "Betelguese, PRAISERIZA",
+      "triple (3 bandas, pasan 2); también pasa: praiseriza"
+     ],
+     [
+      [
+       "Erian",
+       "Provenza",
+       "oriuz 🇦🇷"
+      ],
+      "Erian, Provenza",
+      "triple (3 bandas, pasan 2); también pasa: za"
+     ],
+     [
+      [
+       "MCO",
+       "Paria",
+       "Assuan",
+       "Akuseru"
+      ],
+      "MCO, Paria",
+      "triple (4 bandas, pasan 2); también pasa: Paria🇦🇷"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "PRAISERIZA, Betelguese",
+       "Six, Tenor"
+      ],
+      "PRAISERIZA, Betelguese",
+      "Drafteado: tenor🇻🇪"
+     ],
+     [
+      [
+       "Provenza, Erian",
+       "MCO, Paria"
+      ],
+      "Provenza, Erian",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Tenor, Betelguese, PRAISERIZA",
+       "Paria, Erian, Provenza"
+      ],
+      "Tenor, Betelguese, PRAISERIZA",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Tenor",
+    "Campeón",
+    5958
+   ],
+   [
+    "Paria",
+    "Subcampeón",
+    5125
+   ],
+   [
+    "Betelguese",
+    "Campeón",
+    3333
+   ],
+   [
+    "PRAISERIZA",
+    "Campeón",
+    3333
+   ],
+   [
+    "MCO",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Six",
+    "Semifinal",
+    2625
+   ],
+   [
+    "Akuseru",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Assuan",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Lizen🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Provenza",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "oriuz 🇦🇷",
+    "Cuartos",
+    2500
+   ],
+   [
+    "yinn",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Ezze",
+    "Octavos",
+    1875
+   ],
+   [
+    "BLITZ",
+    "Octavos",
+    1250
+   ],
+   [
+    "Dev",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jult",
+    "Octavos",
+    1250
+   ],
+   [
+    "Kravitz",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lilñaño",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mc arepa",
+    "Octavos",
+    1250
+   ],
+   [
+    "Millonari-O",
+    "Octavos",
+    1250
+   ],
+   [
+    "Number",
+    "Octavos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "xJuniorTime",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

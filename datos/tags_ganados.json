@@ -1040,11 +1040,23 @@
   }
  },
  "betelguese": {
+  "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1793423073293
+   ]
+  },
   "temporada": {
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
     "t1",
     1792953978519
+   ],
+   "🧳 VIAJERO": [
+    "🧳 VIAJERO",
+    "t1",
+    1793423073293
    ]
   }
  },
@@ -4267,6 +4279,11 @@
  },
  "kravitz": {
   "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1793423073293
+   ],
    "PIONERO": [
     "PIONERO",
     "t1",
@@ -5648,6 +5665,13 @@
   }
  },
  "mcarepa": {
+  "servidor": {
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1793423073293
+   ]
+  },
   "temporada": {
    "🌱 PROMESA": [
     "🌱 PROMESA",
@@ -7724,6 +7748,11 @@
     "t1",
     1792953978519
    ],
+   "🏟️ FINALISTA DE CASA": [
+    "🏟️ FINALISTA DE CASA",
+    "t1",
+    1793423073293
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
@@ -7740,6 +7769,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793029252929
+   ],
+   "🥈 SIEMPRE EN LA FINAL": [
+    "🥈 SIEMPRE EN LA FINAL",
+    "t1",
+    1793423073293
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -8347,7 +8381,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x10",
+    "👑 CAMPEÓN x11",
     "t1",
     1793029252929
    ],
@@ -9955,6 +9989,11 @@
     "🏆 CAMPEÓN",
     "t1",
     1792953978519
+   ],
+   "🏟️ FINALISTA DE CASA": [
+    "🏟️ FINALISTA DE CASA",
+    "t1",
+    1793423073293
    ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",

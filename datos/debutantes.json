@@ -117,9 +117,10 @@
   },
   "Akuseru": {
    "avisado": "2026-10-30",
+   "avisado_cumplido": "2026-10-31",
    "chat": "2026-10-31",
-   "con": null,
-   "cumplido": "",
+   "con": 550,
+   "cumplido": "2026-10-31T02:59:35+00:00",
    "debut": "2026-10-30T20:59:18+00:00",
    "did": "1564834243039731832",
    "evento": "LA ISLA DE OKINAWA V.4",
@@ -380,9 +381,10 @@
   },
   "Dev": {
    "avisado": "2026-10-25",
+   "avisado_cumplido": "2026-10-31",
    "chat": "2026-10-25",
-   "con": null,
-   "cumplido": "",
+   "con": 550,
+   "cumplido": "2026-10-31T02:59:35+00:00",
    "debut": "2026-10-25T21:03:19+00:00",
    "did": "1028631611685740684",
    "evento": "REDBULL CREW ARGENTINA 2026",
@@ -837,6 +839,18 @@
    "n": 532,
    "sv": "FFA",
    "vence": "2026-11-03T03:32:41+00:00",
+   "vencido": false
+  },
+  "Lizen": {
+   "avisado": "2026-10-31",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-31T02:59:35+00:00",
+   "did": "",
+   "evento": "qcyo rapeen",
+   "n": 550,
+   "sv": "FFA",
+   "vence": "2026-11-07T02:59:35+00:00",
    "vencido": false
   },
   "Lizenin": {
@@ -1734,6 +1748,18 @@
    "vence": "2026-10-28T21:05:52+00:00",
    "vencido": true
   },
+  "oriuz": {
+   "avisado": "2026-10-31",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-31T02:59:35+00:00",
+   "did": "",
+   "evento": "qcyo rapeen",
+   "n": 550,
+   "sv": "FFA",
+   "vence": "2026-11-07T02:59:35+00:00",
+   "vencido": false
+  },
   "publicenemy": {
    "avisado": "2026-10-29",
    "chat": "2026-10-30",
@@ -1784,6 +1810,18 @@
    "n": 517,
    "sv": "FFA",
    "vence": "2026-11-02T01:55:51+00:00",
+   "vencido": false
+  },
+  "xJuniorTime": {
+   "avisado": "2026-10-31",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-31T02:59:35+00:00",
+   "did": "",
+   "evento": "qcyo rapeen",
+   "n": 550,
+   "sv": "FFA",
+   "vence": "2026-11-07T02:59:35+00:00",
    "vencido": false
   },
   "💥 SF2: ISAC": {
