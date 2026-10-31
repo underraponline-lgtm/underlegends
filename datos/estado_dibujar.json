@@ -1,57 +1,57 @@
 {
  "v": 1,
- "cuando": "2026-10-31T20:23:15Z",
+ "cuando": "2026-10-31T20:51:26Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 922.2,
+ "dur_s": 1216.4,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.9
+   "s": 8.2
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 1.0
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.1
+   "s": 10.4
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 19.4
+   "s": 21.4
   },
   {
    "n": "5",
    "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": false,
-   "s": 822.4
+   "s": 1105.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 9.5
+   "s": 9.9
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 55.5
+   "s": 58.4
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py AGUSTÍN51K"
+   "que": "03_Servidor/generar.py ARDEAN"
   },
   {
    "paso": "5",
@@ -59,7 +59,11 @@
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Shadow"
+   "que": "03_Servidor/generar.py Musicdum"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py SOL"
   }
  ],
  "ultimo_evento": {
@@ -70,25 +74,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 493,
-   "read": 46142
+   "write": 516,
+   "read": 47860
   },
   "objeto": {
-   "leidas": 3394229,
-   "escritas": 23987,
-   "pedidos": 8000
+   "leidas": 3507528,
+   "escritas": 25371,
+   "pedidos": 8259
   },
   "worker": {
-   "pedidos": 8582,
+   "pedidos": 8627,
    "errores": 0,
-   "sub": 10100,
+   "sub": 10150,
    "cortados": 0,
    "p50_ms": 1.2,
-   "p99_ms": 10.78,
+   "p99_ms": 10.68,
    "cpu": {
-    "total": 18537,
-    "objeto_10": 1630,
-    "worker_10": 139
+    "total": 18623,
+    "objeto_10": 1633,
+    "worker_10": 135
    }
   },
   "r2": {

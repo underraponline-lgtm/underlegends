@@ -837,7 +837,8 @@
 "carlosmo": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "hotaruadeyemi": {
@@ -2670,14 +2671,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T00:41:44Z",
-"quien": [
-"Catarsis"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-04T00:41:44Z",
@@ -6024,6 +6017,14 @@
 "Walker"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-10-31T20:51:22Z",
+"quien": [
+"Carlosmo"
+],
+"carta": "temporada"
 }
 ]
 }
