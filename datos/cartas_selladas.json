@@ -1048,10 +1048,10 @@
    "servidor": "d0bfb45e3b88:99e0c0179dbe:9d9b02"
   },
   "Matias": {
-   "competitivo": "0a4eb330cfe5:0a48057cb351",
-   "pais": "bd60f1356db3:263a27e40647",
-   "servidor": "9655ae9006c2:99e0c0179dbe:86e978",
-   "temporada": "98e995a20191:6ec1a5248de8"
+   "competitivo": "f4f001356f55:0a48057cb351",
+   "pais": "29526c973333:263a27e40647",
+   "servidor": "c575fc9e355b:99e0c0179dbe:86e978",
+   "temporada": "31caef771e89:6ec1a5248de8"
   },
   "Matriz": {
    "servidor": "e2e6f3940bb0:99e0c0179dbe:055f77"
@@ -1064,7 +1064,7 @@
    "servidor": "9100b1adaf31:99e0c0179dbe:055f77"
   },
   "Mc arepa": {
-   "servidor": "525509aedf11:99e0c0179dbe:abdb4a",
+   "servidor": "bce9070733fd:99e0c0179dbe:abdb4a",
    "temporada": "2590a0044199:6ec1a5248de8"
   },
   "Mcarita": {
@@ -1949,5 +1949,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-10-31T02:46:37+00:00"
+ "cuando": "2026-10-31T03:07:58+00:00"
 }
