@@ -2,17 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1563407278361542677": {
-   "id": "1563407278361542677",
-   "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
-   "g": "1489848581203689535",
-   "canal": "1536574435761332334",
-   "pub": 1792815741864,
-   "a": "sosatr - okam",
-   "b": "mcarepa - vlog",
-   "ganador": "sosatr - okam",
-   "votos": "1–0"
-  },
   "1563670041134760029": {
    "id": "1563670041134760029",
    "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
@@ -5166,8 +5155,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793418595084,
-   "ed": 1793418647613,
-   "texto": "`[ CUARTOS ]`\n⌞SIX⌝ 🆚 ⌞LIZEN⌝ 🆚 ⌞TENOR⌝",
+   "ed": 1793420097573,
+   "texto": "`[ CUARTOS ]`\n⌞SIX⌝ 🆚 ⌞LIZEN⌝ 🆚 ⌞TENOR⌝\n⌞BETELGEUSE⌝ 🆚 ⌞YINN⌝ 🆚 ⌞PRAISERIZAS⌝\n⌞ERIAN⌝ 🆚 ⌞ZA⌝ 🆚 ⌞ORIUZ⌝\n⌞MCO⌝ 🆚 ⌞PARIA⌝ 🆚 ⌞ASSUAN⌝ 🆚 ⌞AKUSERU⌝\n`[ SEMIFINALES ]`",
    "batallas": [
     [
      "CUARTOS",
@@ -5175,6 +5164,40 @@
       "SIX",
       "LIZEN",
       "TENOR"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "BETELGEUSE",
+      "YINN",
+      "PRAISERIZAS"
+     ],
+     "PRAISERIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "ERIAN",
+      "ZA",
+      "ORIUZ"
+     ],
+     "ZA",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MCO",
+      "PARIA",
+      "ASSUAN",
+      "AKUSERU"
      ],
      null,
      "última ronda y no dice campeón",

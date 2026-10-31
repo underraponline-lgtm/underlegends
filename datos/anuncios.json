@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-31T03:55:45+00:00",
+ "cuando": "2026-10-31T04:25:43+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -6792,6 +6792,24 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Santi 🇦🇷",
+   "quien": "xfrezze88",
+   "discord_id": "1440157729065795667",
+   "msg_id": "1565940984662073357",
+   "cuando": "2026-10-31T04:10:24"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1565939307968069763",
+   "cuando": "2026-10-31T04:03:44"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42773,24 +42791,6 @@
    "discord_id": "1345962362615894027",
    "msg_id": "1553599762735833263",
    "cuando": "2026-09-27T02:50:47"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "dynoco",
-   "quien": "dynoco.",
-   "discord_id": "588547235621371936",
-   "msg_id": "1553599685514625076",
-   "cuando": "2026-09-27T02:50:29"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Number",
-   "quien": "number9408",
-   "discord_id": "458519920330670086",
-   "msg_id": "1553599578757005353",
-   "cuando": "2026-09-27T02:50:04"
   }
  ]
 }

@@ -848,10 +848,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 2062,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "",
@@ -938,10 +935,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 8662,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "1/1"
    },
    "FFA": {
     "duelos": "3/5",
@@ -1012,8 +1006,7 @@
     "pts": 2500,
     "racha": "0/0",
     "tg": {
-     "fund": true,
-     "nuevo": true
+     "fund": true
     }
    }
   },
@@ -1410,8 +1403,7 @@
     "pts": 4500,
     "racha": "0/0",
     "tg": {
-     "fund": true,
-     "nuevo": true
+     "fund": true
     }
    }
   },
@@ -1976,10 +1968,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "DAVIJUAN": {
@@ -2507,8 +2496,7 @@
     "pts": 1250,
     "racha": "0/0",
     "tg": {
-     "fund": true,
-     "nuevo": true
+     "fund": true
     }
    }
   },
@@ -3312,8 +3300,7 @@
     "pts": 5250,
     "racha": "1/1",
     "tg": {
-     "fund": true,
-     "nuevo": true
+     "fund": true
     }
    }
   },
@@ -3744,8 +3731,7 @@
     "racha": "1/1",
     "tg": {
      "fin": 1,
-     "fund": true,
-     "nuevo": true
+     "fund": true
     }
    }
   },
@@ -4906,10 +4892,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 2200,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FDS": {
     "duelos": "",
@@ -4942,8 +4925,7 @@
     "pts": 1250,
     "racha": "0/0",
     "tg": {
-     "fund": true,
-     "nuevo": true
+     "fund": true
     }
    }
   },
@@ -5407,10 +5389,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 4125,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "DDF": {
     "duelos": "0/1",
@@ -5529,10 +5508,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 2062,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "DDF": {
     "duelos": "",
@@ -6031,8 +6007,7 @@
     "pts": 1250,
     "racha": "0/0",
     "tg": {
-     "fund": true,
-     "nuevo": true
+     "fund": true
     }
    }
   },
@@ -6162,8 +6137,7 @@
     "pts": 5250,
     "racha": "1/1",
     "tg": {
-     "fund": true,
-     "nuevo": true
+     "fund": true
     }
    },
    "SR": {
@@ -6356,8 +6330,7 @@
     "pts": 1250,
     "racha": "0/0",
     "tg": {
-     "fund": true,
-     "nuevo": true
+     "fund": true
     }
    }
   },
@@ -6465,10 +6438,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 2062,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "1/2",
@@ -6569,8 +6539,7 @@
     "pts": 2500,
     "racha": "0/0",
     "tg": {
-     "fund": true,
-     "nuevo": true
+     "fund": true
     }
    }
   },
@@ -7684,10 +7653,7 @@
     "ovr": 45,
     "pod": 0,
     "pts": 12600,
-    "racha": "2/2",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "2/2"
    },
    "DDF": {
     "duelos": "12/15",
@@ -7745,10 +7711,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 2200,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "",
@@ -8201,8 +8164,7 @@
     "pts": 2500,
     "racha": "0/0",
     "tg": {
-     "fund": true,
-     "nuevo": true
+     "fund": true
     }
    }
   },
@@ -8777,10 +8739,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 2625,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "0/1",
@@ -8963,10 +8922,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 4125,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "DDF": {
     "duelos": "2/11",
@@ -9442,10 +9398,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1250,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "",
@@ -9494,8 +9447,7 @@
     "pts": 1250,
     "racha": "0/0",
     "tg": {
-     "fund": true,
-     "nuevo": true
+     "fund": true
     }
    },
    "URBF": {
@@ -9533,10 +9485,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 3000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "DDF": {
     "duelos": "0/1",
@@ -9768,10 +9717,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 2062,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "DDF": {
     "duelos": "2/3",
@@ -9831,8 +9777,7 @@
     "racha": "1/1",
     "tg": {
      "fin": 1,
-     "fund": true,
-     "nuevo": true
+     "fund": true
     }
    }
   },
@@ -9919,10 +9864,7 @@
     "ovr": 45,
     "pod": 0,
     "pts": 12200,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "URBF": {
     "duelos": "0/2",
@@ -10193,10 +10135,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 4125,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "0/1",
@@ -10354,8 +10293,7 @@
     "pts": 8250,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    },
    "FFA": {
@@ -10454,8 +10392,7 @@
     "pts": 1250,
     "racha": "0/0",
     "tg": {
-     "fund": true,
-     "nuevo": true
+     "fund": true
     }
    }
   },
@@ -10534,8 +10471,7 @@
     "pts": 1250,
     "racha": "0/0",
     "tg": {
-     "fund": true,
-     "nuevo": true
+     "fund": true
     }
    }
   },
@@ -11043,10 +10979,7 @@
     "ovr": 47,
     "pod": 0,
     "pts": 22031,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "melomaniaco": {
@@ -11180,8 +11113,7 @@
     "pts": 3750,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -11344,10 +11276,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1925,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "🔹 C2: UZI": {
@@ -11369,10 +11298,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 2200,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "🟢 Batalla 1: Carlos": {
