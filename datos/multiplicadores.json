@@ -915,15 +915,15 @@
    ],
    "semillero": {
     "nuevos": {
-     "FRZ": 4,
      "FFA": 27,
+     "FRZ": 4,
      "DDF": 5,
      "ACAD": 2
     },
     "gente": {
      "FDS": 13,
      "DDF": 41,
-     "FFA": 116,
+     "FFA": 114,
      "FRZ": 15,
      "ACAD": 16
     },
@@ -934,7 +934,7 @@
     "DDF": 41,
     "DRA": 0,
     "FDS": 13,
-    "FFA": 116,
+    "FFA": 114,
     "FFS": 0,
     "FRZ": 15,
     "FVS": 0,

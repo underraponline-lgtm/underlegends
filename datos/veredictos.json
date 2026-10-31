@@ -2,39 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1563332609407320117": {
-   "id": "1563332609407320117",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792797939398,
-   "a": "LAST 🇪🇸 + PICHULA 🇦🇷",
-   "b": "CARLOS 🇪🇨 + MAKMA 🇻🇪",
-   "ganador": "CARLOS 🇪🇨 + MAKMA 🇻🇪",
-   "votos": "1–0"
-  },
-  "1563334113350389795": {
-   "id": "1563334113350389795",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792798297966,
-   "a": "VELATZ 🇨🇱 + BNA 🇦🇷",
-   "b": "MATHIAS 🇻🇪 + MOLUSCO 🇦🇷",
-   "ganador": "MATHIAS 🇻🇪 + MOLUSCO 🇦🇷",
-   "votos": "1–0"
-  },
-  "1563336842328412354": {
-   "id": "1563336842328412354",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792798948605,
-   "a": "CARLOS 🇪🇨 + MAKMA 🇻🇪",
-   "b": "MATHIAS 🇻🇪 + MOLUSCO 🇦🇷",
-   "ganador": "MATHIAS 🇻🇪 + MOLUSCO 🇦🇷",
-   "votos": "1–0"
-  },
   "1563388733506719840": {
    "id": "1563388733506719840",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
@@ -5221,6 +5188,47 @@
      ],
      "XCLUSIVO",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1565873198296342692": {
+   "id": "1565873198296342692",
+   "sv": "✮ 𝑼𝒓𝒃𝒂𝒏 𝑭𝒓𝒆𝒆𝒔𝒕𝒚𝒍𝒆 ✮ | A New Era",
+   "g": "1467763447117778989",
+   "canal": "1540223675146707045",
+   "pub": 1793403662991,
+   "ed": 1793404259426,
+   "texto": "`[ OCTAVOS ]`\n⌞NC 🇦🇷⌝ 🆚 ⌞ONDADISKO 🇨🇱⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞MONAMAY 🇦🇷⌝\n⌞NAHU 🇦🇷⌝ 🆚 ⌞KOCHI 🇨🇱⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "NC 🇦🇷",
+      "ONDADISKO 🇨🇱"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "PARK JI SUNG 🇰🇷",
+      "MONAMAY 🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "NAHU 🇦🇷",
+      "KOCHI 🇨🇱"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]

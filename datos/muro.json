@@ -720,17 +720,17 @@
 "temporada"
 ]
 },
-"bastyretro": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "lvel": {
 "rg": "E",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"bastyretro": {
+"rg": "",
+"c": [
 "servidor",
 "temporada"
 ]
