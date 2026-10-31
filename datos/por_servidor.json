@@ -3844,12 +3844,12 @@
   },
   "Henry": {
    "FFA": {
-    "duelos": "",
-    "ev": 1,
+    "duelos": "0/1",
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 4125,
+    "pts": 7875,
     "racha": "0/0"
    }
   },
@@ -5547,11 +5547,11 @@
    },
    "FFA": {
     "duelos": "3/6",
-    "ev": 10,
+    "ev": 11,
     "oro": 0,
-    "ovr": 54,
+    "ovr": 55,
     "pod": 0,
-    "pts": 29658,
+    "pts": 33408,
     "racha": "0/1",
     "tg": {
      "fund": true
@@ -9402,20 +9402,6 @@
     }
    }
   },
-  "Supreme 🇻🇪": {
-   "FFA": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 3750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
-   }
-  },
   "Swid": {
    "FFA": {
     "duelos": "",
@@ -9475,7 +9461,7 @@
     "oro": 3,
     "ovr": 68,
     "pod": 8,
-    "pts": 122987,
+    "pts": 125987,
     "racha": "1/3",
     "tg": {
      "fin": 8,
@@ -10725,7 +10711,7 @@
     "racha": "0/0"
    }
   },
-  "atari 🇨🇷": {
+  "atari": {
    "FFA": {
     "duelos": "0/1",
     "ev": 1,
@@ -10862,7 +10848,7 @@
     "racha": "0/0"
    }
   },
-  "erpi 🇵🇪": {
+  "erpi": {
    "FFA": {
     "duelos": "1/2",
     "ev": 1,
@@ -11061,20 +11047,6 @@
     "pod": 0,
     "pts": 1500,
     "racha": "0/0"
-   }
-  },
-  "lord viruz🇨🇴": {
-   "FFA": {
-    "duelos": "",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 43,
-    "pod": 0,
-    "pts": 3750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "luisito 🏆": {

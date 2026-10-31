@@ -654,6 +654,13 @@
   }
  },
  "aldre": {
+  "pais": {
+   "INTERNACIONAL": [
+    "INTERNACIONAL",
+    "t1",
+    1793462591125
+   ]
+  },
   "servidor": {
    "⚔️ DUELISTA": [
     "⚔️ DUELISTA",
@@ -4894,6 +4901,11 @@
     "t1",
     1793327725986
    ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1793462591125
+   ],
    "🎯 CAZADOR CAZADO": [
     "🎯 CAZADOR CAZADO",
     "t1",
@@ -6423,6 +6435,11 @@
  },
  "nc": {
   "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1793462591125
+   ],
    "🐉 MATADRAGONES": [
     "🐉 MATADRAGONES",
     "t1",
@@ -9834,6 +9851,13 @@
   }
  },
  "tam": {
+  "competitivo": {
+   "😈 BESTIA NEGRA": [
+    "😈 BESTIA NEGRA",
+    "t1",
+    1793462591125
+   ]
+  },
   "pais": {
    "DA LA CARA": [
     "DA LA CARA",

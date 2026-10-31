@@ -551,6 +551,7 @@
    "vencido": false
   },
   "Gustavo Urrutia Perez": {
+   "avisado": "2026-10-31",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-31T06:06:01+00:00",
@@ -628,6 +629,7 @@
    "vencido": true
   },
   "Isabella": {
+   "avisado": "2026-10-31",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-31T06:06:01+00:00",
@@ -1481,17 +1483,6 @@
    "vence": "2026-11-02T22:39:00+00:00",
    "vencido": false
   },
-  "Supreme": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-31T06:06:01+00:00",
-   "did": "",
-   "evento": "Rap para Raperos 2",
-   "n": 551,
-   "sv": "FFA",
-   "vence": "2026-11-07T06:06:01+00:00",
-   "vencido": false
-  },
   "Swid": {
    "avisado": "2026-10-26",
    "chat": "2026-10-27",
@@ -1676,10 +1667,11 @@
    "vencido": true
   },
   "atari": {
+   "avisado": "2026-10-31",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-31T06:06:01+00:00",
-   "did": "",
+   "did": "1557863977353093140",
    "evento": "Rap para Raperos 2",
    "n": 551,
    "sv": "FFA",
@@ -1700,10 +1692,11 @@
    "vencido": false
   },
   "erpi": {
+   "avisado": "2026-10-31",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-31T06:06:01+00:00",
-   "did": "",
+   "did": "1383271591231619133",
    "evento": "Rap para Raperos 2",
    "n": 551,
    "sv": "FFA",
@@ -1751,6 +1744,7 @@
    "vencido": false
   },
   "kaiser": {
+   "avisado": "2026-10-31",
    "con": null,
    "cumplido": "",
    "debut": "2026-10-31T06:06:01+00:00",
@@ -1773,17 +1767,6 @@
    "sv": "FFA",
    "vence": "2026-10-25T02:26:23+00:00",
    "vencido": true
-  },
-  "lord viruz": {
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-31T06:06:01+00:00",
-   "did": "",
-   "evento": "Rap para Raperos 2",
-   "n": 551,
-   "sv": "FFA",
-   "vence": "2026-11-07T06:06:01+00:00",
-   "vencido": false
   },
   "mats": {
    "avisado": "2026-10-23",

@@ -5444,6 +5444,57 @@
     ]
    ]
   },
+  "1565944325601361981": {
+   "id": "1565944325601361981",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793420621062,
+   "ed": 1793421760557,
+   "texto": "`[ SEMIFINALES ]`\n⌞PRAISERIZAS BETELGEUSE⌝ 🆚 ⌞SIX TENOR⌝\n`[ FINAL ]`\n⌞PRAISERIZAS⌝ 🆚 ⌞PARIA⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞ZA⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞ERIAN⌝",
+   "batallas": [
+    [
+     "SEMIFINALES",
+     [
+      "PRAISERIZAS BETELGEUSE",
+      "SIX TENOR"
+     ],
+     "PRAISERIZAS BETELGEUSE",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PRAISERIZAS",
+      "PARIA"
+     ],
+     "PRAISERIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PRAISERIZAS",
+      "ZA"
+     ],
+     "PRAISERIZAS",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "PRAISERIZAS",
+      "ERIAN"
+     ],
+     "PRAISERIZAS",
+     "veredicto",
+     []
+    ]
+   ]
+  },
   "1565980514471649362": {
    "id": "1565980514471649362",
    "sv": "[FFA] Freestyle For All 👾",

@@ -307,6 +307,15 @@
 "temporada"
 ]
 },
+"lordviruzz": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "bna": {
 "rg": "C",
 "c": []
@@ -323,15 +332,6 @@
 "dominick": {
 "rg": "D",
 "c": []
-},
-"lordviruzz": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "trot": {
 "rg": "D",
