@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "425b7425ac16782e",
+  "firma": "c2188602641b9b94",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -6508,7 +6508,7 @@
    "Trot": 13
   },
   "fecha": "11/10",
-  "firma": "272d834f6f4c5ff7",
+  "firma": "0081797ff5d51e12",
   "msg": "1558907910707224587",
   "nombre": "RED BULL NACIONAL ESPAÑA T.5",
   "num": 448,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "9527e726a91830cf",
+  "firma": "f2de4df7162f9857",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -18979,7 +18979,7 @@
    "Sin Limites": 21
   },
   "fecha": "22/10",
-  "firma": "4577f2eb44a69361",
+  "firma": "89db647f10f49bd0",
   "msg": "1562845541493374976",
   "nombre": "__ LA ISLA DE OKINAWA V.3 __",
   "num": 498,
@@ -19212,7 +19212,7 @@
    "Zignos": 24
   },
   "fecha": "22/10",
-  "firma": "b45067189ba17fc6",
+  "firma": "632a6673956c1334",
   "msg": "1562967842851266610",
   "nombre": "__ SI NO SOS FOURBAR NO QUIERO NADA VOL.1 __",
   "num": 499,
@@ -20816,7 +20816,7 @@
    "VR": 4
   },
   "fecha": "23/10",
-  "firma": "e3e7e1f5901153a5",
+  "firma": "a0fd459c385bba2b",
   "msg": "1563368240221257751",
   "nombre": "19 CUP FUTCARD EDICIÓN 5",
   "num": 505,
@@ -20950,7 +20950,7 @@
    "Sin Limites": 26
   },
   "fecha": "23/10",
-  "firma": "53e8718fd5feea88",
+  "firma": "5c7766dabe7922b1",
   "msg": "1563384839284195339",
   "nombre": "GRISELDA RECORDS VOL. 2",
   "num": 506,
@@ -21230,7 +21230,7 @@
    "Shadow": 13
   },
   "fecha": "24/10",
-  "firma": "d70a7428b1fbc27c",
+  "firma": "63517ea3cf9c31e6",
   "msg": "1563613115495489728",
   "nombre": "19 FUTCARD EDITION - 6 COMPE GAY",
   "num": 508,
@@ -23869,7 +23869,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "00cdff74650ca0ef",
+  "firma": "923b547ccc983e16",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -24037,7 +24037,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "f11c89ff89acb9e4",
+  "firma": "320f8a722cad3309",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -28920,6 +28920,11 @@
     "NC",
     "Lizeninn",
     "NC"
+   ],
+   [
+    "Teo",
+    "Jobaking",
+    "Teo"
    ]
   ],
   "ev_antes": {
@@ -28941,7 +28946,7 @@
    "yinn": 26
   },
   "fecha": "29/10",
-  "firma": "fb4fdec88986ea91",
+  "firma": "2b15f7738c5a05be",
   "msg": "1565508537881198633",
   "nombre": "Rap para Raperos #1",
   "num": 543,
@@ -29054,6 +29059,11 @@
    ],
    [
     "Tam",
+    "Octavos",
+    1250
+   ],
+   [
+    "Jobaking",
     "Octavos",
     1250
    ]
@@ -29980,7 +29990,7 @@
    "Teo": 18
   },
   "fecha": "30/10",
-  "firma": "dae872f783476589",
+  "firma": "23da0135e1b0e410",
   "msg": "1565861597019111555",
   "nombre": "__ LA ISLA DE OKINAWA V.4 __",
   "num": 547,

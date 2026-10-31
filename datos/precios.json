@@ -2,94 +2,6 @@
  "_leeme": "El precio por cabeza: lo arma bot/precios.py en el ciclo (paso 2b4). Las reglas y los números viven en ese archivo.",
  "precios": [
   {
-   "id": 1,
-   "cabeza": "Panchok",
-   "monto": 1000,
-   "t": "2026-10-01T20:52:11Z",
-   "fin": "2026-10-05T04:00:00Z",
-   "e": "cazado",
-   "por": [
-    [
-     "Zetryko",
-     1000
-    ]
-   ],
-   "ev": {
-    "n": 401,
-    "nombre": "COPA DE GRUPOS LCW",
-    "sv": "ACAD",
-    "t": "2026-10-03T21:05:11Z"
-   }
-  },
-  {
-   "id": 2,
-   "cabeza": "Majiztral",
-   "monto": 1000,
-   "t": "2026-10-01T20:52:27Z",
-   "fin": "2026-10-05T04:00:00Z",
-   "e": "cazado",
-   "por": [
-    [
-     "NXUZ",
-     1000
-    ]
-   ],
-   "ev": {
-    "n": 395,
-    "nombre": "JH DE LA CRUZ CUP",
-    "sv": "DDF",
-    "t": "2026-10-04T20:25:08Z"
-   }
-  },
-  {
-   "id": 3,
-   "cabeza": "Bloody",
-   "monto": 1000,
-   "t": "2026-10-01T20:52:40Z",
-   "fin": "2026-10-05T04:00:00Z",
-   "e": "cazado",
-   "por": [
-    [
-     "Abyssus",
-     1000
-    ]
-   ],
-   "ev": {
-    "n": 377,
-    "nombre": "DESGRACIAS EN TOKYO VOL 20",
-    "sv": "FFA",
-    "t": "2026-10-01T21:25:37Z"
-   }
-  },
-  {
-   "id": 4,
-   "cabeza": "Makmah",
-   "monto": 1000,
-   "t": "2026-10-01T20:52:51Z",
-   "fin": "2026-10-05T04:00:00Z",
-   "e": "devuelto"
-  },
-  {
-   "id": 5,
-   "cabeza": "Colesito",
-   "monto": 1000,
-   "t": "2026-10-01T20:53:08Z",
-   "fin": "2026-10-05T04:00:00Z",
-   "e": "cazado",
-   "por": [
-    [
-     "Lambroggini",
-     1000
-    ]
-   ],
-   "ev": {
-    "n": 377,
-    "nombre": "DESGRACIAS EN TOKYO VOL 20",
-    "sv": "FFA",
-    "t": "2026-10-01T21:25:37Z"
-   }
-  },
-  {
    "id": 6,
    "cabeza": "Jupiter",
    "monto": 500,
@@ -559,10 +471,6 @@
   }
  ],
  "suma": {
-  "Zetryko": 1000,
-  "NXUZ": 1000,
-  "Abyssus": 1000,
-  "Lambroggini": 1000,
   "PichulaMc": 3875,
   "SGB": 500,
   "Snow": 250,
