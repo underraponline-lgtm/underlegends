@@ -1607,6 +1607,28 @@
    "b": "yinn 🇲🇦",
    "ganador": "tnor🇻🇪",
    "votos": "2–0"
+  },
+  "1565982809758375936": {
+   "id": "1565982809758375936",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793429796400,
+   "a": "Kravitz",
+   "b": "nc",
+   "ganador": "Kravitz",
+   "votos": "1–0"
+  },
+  "1565984020117065738": {
+   "id": "1565984020117065738",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793430084972,
+   "a": "OKAM",
+   "b": "Aldre 🇦🇷",
+   "ganador": "OKAM",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5361,8 +5383,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793429249161,
-   "ed": 1793429419214,
-   "texto": "`[ OCTAVOS ]`\n⌞Luffy 🇵🇪⌝ 🆚 ⌞tam🇻🇪⌝ 🆚 ⌞lord viruz🇨🇴⌝",
+   "ed": 1793430102186,
+   "texto": "`[ OCTAVOS ]`\n⌞Luffy 🇵🇪⌝ 🆚 ⌞tam🇻🇪⌝ 🆚 ⌞lord viruz🇨🇴⌝\n⌞kravitz⌝ 🆚 ⌞nc⌝\n`[ CUARTOS ]`\n⌞okam🇨🇷⌝ 🆚 ⌞Aldre 🇦🇷⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5372,6 +5394,26 @@
       "lord viruz🇨🇴"
      ],
      "tam🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "kravitz",
+      "nc"
+     ],
+     "kravitz",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "okam🇨🇷",
+      "Aldre 🇦🇷"
+     ],
+     "okam🇨🇷",
      "veredicto",
      []
     ]
