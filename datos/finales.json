@@ -969,5 +969,34 @@
   "sin_permiso": false,
   "sv": "FFA"
  },
+ "1566146094549958868": {
+  "autor": "1345454905325781012",
+  "canal": "1470097588635176960",
+  "cuando": "2026-10-31T17:45:26.528000+00:00",
+  "evento": "19 CUP HALLOWEEN 2026 LLAVES DE COMPETENCIA",
+  "fecha": "31/10",
+  "llave": "1566146094549958868",
+  "pregunta": "1566201136699154534",
+  "preguntada": "2026-10-31 5:24 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "💀 Carlosmo (Payaso de it) 🇵🇪",
+     "Miniboy 🇨🇱 LEVI"
+    ],
+    "ronda": "CUARTOS"
+   },
+   {
+    "lados": [
+     "Tizi 🇦🇷",
+     "silence kla ignorancia peru"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "DDF"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }

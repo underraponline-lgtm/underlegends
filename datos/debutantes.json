@@ -496,7 +496,7 @@
    "n": 509,
    "sv": "DDF",
    "vence": "2026-10-31T21:01:57+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Fear": {
    "avisado": "2026-10-29",
