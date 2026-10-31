@@ -1669,9 +1669,9 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793432051781,
-   "a": "okam🇨🇷",
-   "b": "tam🇻🇪",
-   "ganador": "tam🇻🇪",
+   "a": "Okam🇨🇷",
+   "b": "Tam🇻🇪",
+   "ganador": "Tam🇻🇪",
    "votos": "1–0"
   },
   "1565996652274389003": {
@@ -1681,7 +1681,7 @@
    "canal": "1487206164864438513",
    "pub": 1793433096713,
    "a": "erian 🇫🇯",
-   "b": "tam🇻🇪",
+   "b": "Tam🇻🇪",
    "ganador": "erian 🇫🇯",
    "votos": "2–1"
   },
@@ -1692,8 +1692,8 @@
    "canal": "1487206164864438513",
    "pub": 1793433399845,
    "a": "erian 🇫🇯",
-   "b": "tam🇻🇪",
-   "ganador": "tam🇻🇪",
+   "b": "Tam🇻🇪",
+   "ganador": "Tam🇻🇪",
    "votos": "1–0"
   },
   "1566002558038839357": {
@@ -1702,9 +1702,9 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793434504757,
-   "a": "kravitz",
-   "b": "okam🇨🇷",
-   "ganador": "okam🇨🇷",
+   "a": "Kravitz 🇨🇷",
+   "b": "Okam🇨🇷",
+   "ganador": "Okam🇨🇷",
    "votos": "1–0"
   }
  },
@@ -5687,6 +5687,47 @@
      "veredicto",
      []
     ],
+    [
+     "SEMIFINALES",
+     [
+      "Okam🇨🇷",
+      "Tam🇻🇪"
+     ],
+     "Tam🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "erian 🇫🇯",
+      "tam🇻🇪"
+     ],
+     "erian 🇫🇯",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "erian 🇫🇯",
+      "tam🇻🇪"
+     ],
+     "tam🇻🇪",
+     "veredicto",
+     []
+    ]
+   ]
+  },
+  "1565992269511794759": {
+   "id": "1565992269511794759",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793432051781,
+   "ed": 1793433555706,
+   "texto": "`[ SEMIFINALES ]`\n⌞Okam🇨🇷⌝ 🆚 ⌞Tam🇻🇪⌝\n`[ FINAL ]`\n⌞erian 🇫🇯⌝ 🆚 ⌞tam🇻🇪⌝\n⌞erian 🇫🇯⌝ 🆚 ⌞tam🇻🇪⌝",
+   "batallas": [
     [
      "SEMIFINALES",
      [
