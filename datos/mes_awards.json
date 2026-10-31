@@ -3780,6 +3780,35 @@
      ],
      "organizador": "@nachonc_",
      "cuentas": {}
+    },
+    "1565952336189333596": {
+     "sv": "FFA",
+     "nombre": "Rap para Raperos #2",
+     "mo": "2026-10-31T04:55:30Z",
+     "staff": {
+      "jurado": [
+       "Okam",
+       "Kravitz"
+      ],
+      "host": [
+       "Playazo12"
+      ],
+      "dj": [
+       "Okam"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "Okam",
+       "id": "1512148565890306153"
+      }
+     ],
+     "organizador": "",
+     "cuentas": {
+      "Okam": "1512148565890306153",
+      "Kravitz": "1345962362615894027",
+      "Playazo12": "1472344806687637515"
+     }
     }
    },
    "ver": {

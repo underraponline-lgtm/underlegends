@@ -1,5 +1,5 @@
 {
- "cuando": "2026-10-31T04:55:55+00:00",
+ "cuando": "2026-10-31T05:25:58+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -376,6 +376,50 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "Rap para Raperos #2",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1565952336189333596",
+   "cuando": "2026-10-31T04:55:30",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "",
+   "orgs": [
+    {
+     "n": "Okam",
+     "id": "1512148565890306153"
+    }
+   ],
+   "autor_h": "9d1c0ccb4b38f08d",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "BRONCE III",
+   "modalidad": "",
+   "horario": "CUANDO TODO ESTÉ LISTO",
+   "fecha": "HOY",
+   "premios": "ROL CAMPEON Y PUNTOS RANKING",
+   "staff": {
+    "jurado": [
+     "Okam",
+     "Kravitz"
+    ],
+    "host": [
+     "Playazo12"
+    ],
+    "dj": [
+     "Okam"
+    ]
+   },
+   "autor": "Okam",
+   "staff_cuentas": {
+    "Okam": "1512148565890306153",
+    "Kravitz": "1345962362615894027",
+    "Playazo12": "1472344806687637515"
+   },
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "qcyo rapeen 8",
@@ -1238,35 +1282,6 @@
    "horario": "10 minutos",
    "fecha": "",
    "premios": "puntos para el ascenso",
-   "staff": {},
-   "autor": "LRS la sustancia  💫",
-   "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "FREESTYLE LEAGUE N°2",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1561593562850926735",
-   "cuando": "2026-10-19T04:15:18",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "LRS",
-   "orgs": [
-    {
-     "n": "LRS",
-     "id": ""
-    }
-   ],
-   "autor_h": "275527176611c43b",
-   "cupos_texto": "8",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "BRONCE",
-   "modalidad": "1 🆚 1",
-   "horario": "en 20 minutos",
-   "fecha": "",
-   "premios": "Cupo para el ascenso",
    "staff": {},
    "autor": "LRS la sustancia  💫",
    "staff_cuentas": {},
@@ -6792,6 +6807,87 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Isabella 🇦🇷 rapea en la cuenta de <@578697503130779649>",
+   "quien": "thekravitz777",
+   "discord_id": "1345962362615894027",
+   "msg_id": "1565958735816302695",
+   "cuando": "2026-10-31T05:20:56"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "erian 🇫🇯",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1565956978331885600",
+   "cuando": "2026-10-31T05:13:57"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1565955641720447038",
+   "cuando": "2026-10-31T05:08:39"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Aldre 🇦🇷",
+   "quien": "aldrebxjd",
+   "discord_id": "515712116381188097",
+   "msg_id": "1565955116379668602",
+   "cuando": "2026-10-31T05:06:33"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "okam🇨🇷",
+   "quien": "okam77_25976",
+   "discord_id": "1512148565890306153",
+   "msg_id": "1565953783618478213",
+   "cuando": "2026-10-31T05:01:16"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lvel 🇻🇪",
+   "quien": "soycoma__42587",
+   "discord_id": "1241407042195816459",
+   "msg_id": "1565953673727713390",
+   "cuando": "2026-10-31T05:00:49"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Kravitz 🇨🇷 papá de Dyzz",
+   "quien": "thekravitz777",
+   "discord_id": "1345962362615894027",
+   "msg_id": "1565953240519151717",
+   "cuando": "2026-10-31T04:59:06"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Dyzz papa de kravitz 🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1565953052228329473",
+   "cuando": "2026-10-31T04:58:21"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Number 🇺🇾 primera",
+   "quien": "number9408",
+   "discord_id": "458519920330670086",
+   "msg_id": "1565952612149366958",
+   "cuando": "2026-10-31T04:56:36"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -42710,87 +42806,6 @@
    "discord_id": "1048744067313451050",
    "msg_id": "1553611003877400617",
    "cuando": "2026-09-27T03:35:28"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Lhyon🇦🇷",
-   "quien": "lhyonsito",
-   "discord_id": "429733075870810112",
-   "msg_id": "1553606603352055871",
-   "cuando": "2026-09-27T03:17:58"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Sin límites 🇵🇪",
-   "quien": "sinlimites2026",
-   "discord_id": "1508623564285149357",
-   "msg_id": "1553605522220130317",
-   "cuando": "2026-09-27T03:13:41"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Choo🇭🇳",
-   "quien": "30fps30hz",
-   "discord_id": "1364747464170668042",
-   "msg_id": "1553602239854284951",
-   "cuando": "2026-09-27T03:00:38"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Soft 🇻🇪",
-   "quien": "sofstylee_85489",
-   "discord_id": "1365502221902418000",
-   "msg_id": "1553601820201586710",
-   "cuando": "2026-09-27T02:58:58"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Makma",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1553601812538597510",
-   "cuando": "2026-09-27T02:58:56"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "SMAFF 🇵🇪",
-   "quien": "martogodxtw0",
-   "discord_id": "708868542518263822",
-   "msg_id": "1553600298251984907",
-   "cuando": "2026-09-27T02:52:55"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Lrs🇦🇷",
-   "quien": "lrs0378",
-   "discord_id": "1385452830684614697",
-   "msg_id": "1553600254098809025",
-   "cuando": "2026-09-27T02:52:45"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Makma 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1553600205386031154",
-   "cuando": "2026-09-27T02:52:33"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "KRAVITZ🇨🇷",
-   "quien": "thekravitz777",
-   "discord_id": "1345962362615894027",
-   "msg_id": "1553599762735833263",
-   "cuando": "2026-09-27T02:50:47"
   }
  ]
 }

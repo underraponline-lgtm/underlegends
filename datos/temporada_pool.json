@@ -1759,7 +1759,7 @@
   "crew": "",
   "discord_id": "1370860602972569632",
   "verificado": true,
-  "pts": 92581,
+  "pts": 93181,
   "ev": 14,
   "wr": "50.0%",
   "pod": 3,
@@ -5277,7 +5277,8 @@
   "total": 218,
   "rango": "E",
   "tg_t": {
-   "svc": 1
+   "svc": 1,
+   "svtag": "campeon"
   }
  },
  {
@@ -11202,12 +11203,12 @@
   }
  },
  {
-  "full": "oriuz 🇦🇷",
+  "full": "oriuz",
   "raw": "oriuz",
   "cc": "ar",
   "sv": "FFA",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "764617398602039371",
   "verificado": false,
   "pts": 7500,
   "ev": 1,
@@ -14187,7 +14188,7 @@
   "cc": "",
   "sv": "FFA",
   "crew": "",
-  "discord_id": "",
+  "discord_id": "1041113804513222758",
   "verificado": false,
   "pts": 3750,
   "ev": 1,
