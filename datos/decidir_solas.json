@@ -3045,6 +3045,49 @@
      "1383271591231619133"
     ]
    }
+  },
+  {
+   "id": "f434f06f48",
+   "tipo": "Nombre desconocido",
+   "sec": "19 CUP HALLOWEEN 2026 LLAVES DE COMPETENCIA · DDF · 31/10 · #552",
+   "que": "¿Quién es «Tizi 🇦🇷»?",
+   "r": "Es alguien nuevo: alta con su cuenta 709496535280255037",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (709496535280255037)",
+   "t": 1793482674981,
+   "filas": [
+    997
+   ],
+   "variantes": [
+    "Tizi 🇦🇷"
+   ],
+   "escribio": {
+    "alta": [
+     "Tizi",
+     "709496535280255037"
+    ]
+   }
+  },
+  {
+   "id": "d242d83b7d",
+   "tipo": "Nombre desconocido",
+   "sec": "19 CUP HALLOWEEN 2026 LLAVES DE COMPETENCIA · DDF · 31/10 · #552",
+   "que": "¿Quién es «silence kla ignorancia peru»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1793482674981,
+   "filas": [
+    998
+   ],
+   "variantes": [
+    "silence kla ignorancia peru"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

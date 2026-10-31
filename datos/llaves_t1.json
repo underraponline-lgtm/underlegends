@@ -39897,11 +39897,11 @@
     "b": [
      [
       [
-       "Tizi 🇦🇷",
-       "silence kla ignorancia peru"
+       "silence kla ignorancia peru",
+       "Tizi 🇦🇷"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "silence kla ignorancia peru",
+      "ganador: ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -39926,11 +39926,11 @@
      ],
      [
       [
-       "💀 Carlosmo (Payaso de it) 🇵🇪",
+       "Carlosmo",
        "Miniboy 🇨🇱 LEVI"
       ],
-      "",
-      "sin ganador: espera en ✅ Decidir"
+      "Carlosmo",
+      "ganador: ✅ Decidir; Walk-in 1: 💀 Carlosmo (Payaso de it) 🇵🇪; Walk-in 1: Miniboy 🇨🇱 LEVI"
      ]
     ],
     "r": "Cuartos"
@@ -39986,11 +39986,6 @@
   "sv": "DDF",
   "tabla": [
    [
-    "Carlosmo",
-    "Cuarto",
-    4500
-   ],
-   [
     "MaYeuTyK",
     "Subcampeón",
     3750
@@ -40006,13 +40001,28 @@
     2500
    ],
    [
+    "Carlosmo",
+    "Cuarto",
+    2250
+   ],
+   [
     "Keider",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Miniboy 🇨🇱 LEVI",
     "Cuartos",
     1250
    ],
    [
     "OKAM",
     "Cuartos",
+    1250
+   ],
+   [
+    "Tizi 🇦🇷",
+    "Octavos",
     1250
    ]
   ]

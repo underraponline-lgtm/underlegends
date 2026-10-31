@@ -1508,13 +1508,13 @@
   },
   "Carlosmo": {
    "DDF": {
-    "duelos": "0/1",
+    "duelos": "1/2",
     "ev": 1,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 44,
     "pod": 0,
-    "pts": 22500,
-    "racha": "0/0",
+    "pts": 11250,
+    "racha": "1/1",
     "tg": {
      "nuevo": true
     }
@@ -6138,7 +6138,7 @@
     "ovr": 50,
     "pod": 1,
     "pts": 33500,
-    "racha": "0/0"
+    "racha": "1/1"
    },
    "FFA": {
     "duelos": "5/9",
@@ -6631,6 +6631,20 @@
     "racha": "0/0",
     "tg": {
      "fund": true
+    }
+   }
+  },
+  "Miniboy 🇨🇱 LEVI": {
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 6250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },
@@ -9671,6 +9685,20 @@
     "racha": "0/0"
    }
   },
+  "Tizi 🇦🇷": {
+   "DDF": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 6250,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Trelok": {
    "FFA": {
     "duelos": "",
@@ -11295,6 +11323,17 @@
     "ovr": 46,
     "pod": 0,
     "pts": 16087,
+    "racha": "0/0"
+   }
+  },
+  "silence kla ignorancia peru": {
+   "DDF": {
+    "duelos": "1/1",
+    "ev": 0,
+    "oro": 0,
+    "ovr": 40,
+    "pod": 0,
+    "pts": 0,
     "racha": "0/0"
    }
   },
