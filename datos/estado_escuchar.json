@@ -1,21 +1,21 @@
 {
  "v": 1,
- "cuando": "2026-10-31T19:29:54Z",
+ "cuando": "2026-10-31T20:07:21Z",
  "trabajo": "escuchar",
  "codigo": 0,
- "dur_s": 390.8,
+ "dur_s": 837.0,
  "pasos": [
   {
    "n": "0a",
    "que": "los nombres de Discord de la Lista, del Operativo",
    "ok": true,
-   "s": 1.6
+   "s": 2.1
   },
   {
    "n": "0a2",
    "que": "las crews, del objeto",
    "ok": true,
-   "s": 0.9
+   "s": 1.0
   },
   {
    "n": "0b",
@@ -27,19 +27,19 @@
    "n": "0c",
    "que": "lo corregido desde los reportes",
    "ok": true,
-   "s": 2.2
+   "s": 2.7
   },
   {
    "n": "1",
    "que": "las llaves cargadas en `Entrada`",
    "ok": true,
-   "s": 72.6
+   "s": 79.9
   },
   {
    "n": "1c",
    "que": "las vitrinas del Oficial",
    "ok": true,
-   "s": 41.7
+   "s": 45.8
   },
   {
    "n": "1a",
@@ -57,25 +57,25 @@
    "n": "1b",
    "que": "quién está verificado y en qué servidores, desde Discord",
    "ok": true,
-   "s": 35.5
+   "s": 38.3
   },
   {
    "n": "1b2",
    "que": "quién está en la llamada (sólo con un evento en vivo)",
    "ok": true,
-   "s": 1.6
+   "s": 2.7
   },
   {
    "n": "2",
    "que": "el padrón y los pools, desde el Sheet",
    "ok": true,
-   "s": 6.1
+   "s": 7.0
   },
   {
    "n": "2b0",
    "que": "el Writing Challenge de FFA",
    "ok": true,
-   "s": 0.6
+   "s": 0.5
   },
   {
    "n": "2b",
@@ -87,7 +87,7 @@
    "n": "2b2",
    "que": "las insignias",
    "ok": true,
-   "s": 1.5
+   "s": 1.2
   },
   {
    "n": "2b3",
@@ -111,13 +111,13 @@
    "n": "2b3c",
    "que": "el reto del debut",
    "ok": true,
-   "s": 1.2
+   "s": 1.0
   },
   {
    "n": "2b4",
    "que": "el precio por cabeza",
    "ok": true,
-   "s": 0.6
+   "s": 1.0
   },
   {
    "n": "2b4b",
@@ -129,7 +129,7 @@
    "n": "2b5",
    "que": "las invitaciones de la Liga",
    "ok": true,
-   "s": 3.5
+   "s": 5.6
   },
   {
    "n": "2b5b",
@@ -141,31 +141,31 @@
    "n": "2b6",
    "que": "el #N del apodo",
    "ok": true,
-   "s": 37.0
+   "s": 421.3
   },
   {
    "n": "2b7",
    "que": "el rol de rango en DRA",
    "ok": true,
-   "s": 3.7
+   "s": 4.7
   },
   {
    "n": "2b8",
    "que": "las batallas en video",
    "ok": true,
-   "s": 2.6
+   "s": 3.0
   },
   {
    "n": "2b8c",
    "que": "las promociones",
    "ok": true,
-   "s": 2.9
+   "s": 2.1
   },
   {
    "n": "2b8d",
    "que": "los MES AWARDS",
    "ok": false,
-   "s": 43.1
+   "s": 45.9
   },
   {
    "n": "2b8e",
@@ -177,7 +177,7 @@
    "n": "2b8f",
    "que": "los tiers",
    "ok": true,
-   "s": 5.8
+   "s": 9.0
   },
   {
    "n": "2b8g",
@@ -207,19 +207,19 @@
    "n": "2b9",
    "que": "las ligas",
    "ok": true,
-   "s": 33.4
+   "s": 32.6
   },
   {
    "n": "2b9b",
    "que": "el ascenso de cada servidor",
    "ok": true,
-   "s": 1.8
+   "s": 2.1
   },
   {
    "n": "2b9c",
    "que": "las cartas de liga",
    "ok": true,
-   "s": 1.1
+   "s": 33.7
   },
   {
    "n": "2b10",
@@ -231,7 +231,7 @@
    "n": "2c",
    "que": "la web",
    "ok": true,
-   "s": 50.2
+   "s": 53.6
   },
   {
    "n": "2c2",
@@ -249,7 +249,7 @@
    "n": "2d",
    "que": "lo contestado en ✅ Decidir, y los alias de la hoja AKAs",
    "ok": true,
-   "s": 16.4
+   "s": 16.6
   },
   {
    "n": "2e",
@@ -261,7 +261,7 @@
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.2
+   "s": 6.9
   },
   {
    "n": "2f2",
@@ -273,7 +273,7 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 10.3
+   "s": 9.9
   }
  ],
  "fallas": [
@@ -282,20 +282,20 @@
    "que": "bot/mes_awards.py --aplicar"
   }
  ],
- "decidir": 147,
+ "decidir": 149,
  "ultimo_evento": {
-  "n": "551",
-  "nombre": "Rap para Raperos 2",
-  "sv": "FFA",
+  "n": "552",
+  "nombre": "19 CUP HALLOWEEN 2026 LLAVES DE COMPETENCIA",
+  "sv": "DDF",
   "dia": "2026-10-31"
  },
  "retencion": {
   "v": 1,
-  "cuando": "2026-10-31T19:24:46Z",
+  "cuando": "2026-10-31T19:54:56Z",
   "definicion": "jugó otro evento, otro día, dentro de los 14 días de su primero",
   "jugadores": 597,
-  "un_evento": 284,
-  "diez_o_mas": 90,
+  "un_evento": 283,
+  "diez_o_mas": 91,
   "cohortes": [
    {
     "semana": "2026-09-21",
@@ -337,25 +337,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 455,
-   "read": 43001
+   "write": 479,
+   "read": 45155
   },
   "objeto": {
-   "leidas": 3241220,
-   "escritas": 21992,
-   "pedidos": 7675
+   "leidas": 3344408,
+   "escritas": 23670,
+   "pedidos": 7916
   },
   "worker": {
-   "pedidos": 8619,
+   "pedidos": 8577,
    "errores": 0,
-   "sub": 10147,
+   "sub": 10097,
    "cortados": 0,
-   "p50_ms": 1.21,
-   "p99_ms": 10.86,
+   "p50_ms": 1.2,
+   "p99_ms": 10.78,
    "cpu": {
-    "total": 18625,
-    "objeto_10": 1646,
-    "worker_10": 141
+    "total": 18527,
+    "objeto_10": 1629,
+    "worker_10": 138
    }
   },
   "r2": {

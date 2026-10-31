@@ -4732,6 +4732,13 @@
      0,
      0
     ],
+    "Carlosmo": [
+     0,
+     1,
+     0,
+     0,
+     0
+    ],
     "Carlosss": [
      0,
      2,
@@ -5049,7 +5056,7 @@
     ],
     "Keider": [
      0,
-     1,
+     2,
      0,
      0,
      0
@@ -5252,7 +5259,7 @@
     ],
     "MaYeuTyK": [
      0,
-     1,
+     2,
      0,
      0,
      0
@@ -5260,6 +5267,13 @@
     "Magic": [
      1,
      0,
+     0,
+     0,
+     0
+    ],
+    "Majiztral": [
+     0,
+     1,
      0,
      0,
      0
@@ -5413,7 +5427,7 @@
     ],
     "OKAM": [
      2,
-     3,
+     4,
      0,
      0,
      0
@@ -5728,8 +5742,8 @@
     ],
     "Walker": [
      0,
-     3,
-     0,
+     4,
+     1,
      0,
      0
     ],
@@ -5874,6 +5888,7 @@
     "Jobaking": 900,
     "KIRITO": 300,
     "Karumailafmasha🇹🇼": 300,
+    "Keider": 600,
     "Khalil": 300,
     "Kochi": 300,
     "Kyss": 600,
@@ -5887,6 +5902,7 @@
     "Lvel": 300,
     "MATUK 🇦🇷": 300,
     "MTZ": 1000,
+    "MaYeuTyK": 600,
     "Magic": 300,
     "Makmah": 900,
     "Manteca mantecosa 🇨🇾": 300,
@@ -5924,7 +5940,7 @@
     "Vandu": 300,
     "Verc": 900,
     "Vilca": 600,
-    "Walker": 600,
+    "Walker": 1600,
     "francis": 300,
     "mats": 900,
     "melomaniaco": 300,
@@ -6050,7 +6066,7 @@
   "Jupiter": 2200,
   "KIRITO": 300,
   "Karumailafmasha🇹🇼": 300,
-  "Keider": 1200,
+  "Keider": 1800,
   "Khalil": 300,
   "Kminant": 300,
   "Kochi": 600,
@@ -6087,7 +6103,7 @@
   "MCO": 7100,
   "MHS": 300,
   "MTZ": 1900,
-  "MaYeuTyK": 1000,
+  "MaYeuTyK": 1600,
   "Magic": 600,
   "Majiztral": 1200,
   "Makmah": 7600,
@@ -6188,7 +6204,7 @@
   "Velatz": 4600,
   "Verc": 6700,
   "Vilca": 1600,
-  "Walker": 6900,
+  "Walker": 7900,
   "Warap": 900,
   "Xclusivo": 3800,
   "Xplicit": 300,

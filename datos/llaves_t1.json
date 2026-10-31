@@ -39881,5 +39881,140 @@
     1250
    ]
   ]
+ },
+ "552": {
+  "dia": "2026-10-31",
+  "escala": "16+",
+  "fecha": "31/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1566146094549958868"
+  ],
+  "n": 552,
+  "nombre": "19 CUP HALLOWEEN 2026 LLAVES DE COMPETENCIA",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Tizi 🇦🇷",
+       "silence kla ignorancia peru"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "MaYeuTyK",
+       "Keider"
+      ],
+      "MaYeuTyK",
+      "Walk-in 1: MaYeuTyK 🇺🇾; Walk-in 1: Keider (El recibe pipe) 🇧🇷"
+     ],
+     [
+      [
+       "Majiztral",
+       "OKAM"
+      ],
+      "Majiztral",
+      "Walk-in 1: Majiztral 🇨🇴; Walk-in 1: okam🇨🇷"
+     ],
+     [
+      [
+       "💀 Carlosmo (Payaso de it) 🇵🇪",
+       "Miniboy 🇨🇱 LEVI"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "MaYeuTyK",
+       "Carlosmo"
+      ],
+      "MaYeuTyK",
+      ""
+     ],
+     [
+      [
+       "Walker",
+       "Majiztral"
+      ],
+      "Walker",
+      "Walk-in 2: Walker"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Majiztral",
+       "Carlosmo"
+      ],
+      "Majiztral",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Walker",
+       "MaYeuTyK"
+      ],
+      "Walker",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Carlosmo",
+    "Cuarto",
+    4500
+   ],
+   [
+    "MaYeuTyK",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Majiztral",
+    "Tercero",
+    3000
+   ],
+   [
+    "Walker",
+    "Campeón",
+    2500
+   ],
+   [
+    "Keider",
+    "Cuartos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    1250
+   ]
+  ]
  }
 }

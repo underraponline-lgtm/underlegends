@@ -5163,6 +5163,11 @@
     "t1",
     1793029252929
    ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1793477231914
+   ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
     "t1",
@@ -5662,6 +5667,11 @@
  },
  "mayeutyk": {
   "servidor": {
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1793477231914
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
@@ -7366,6 +7376,11 @@
     "t1",
     1793064764072
    ],
+   "EMBAJADOR": [
+    "EMBAJADOR",
+    "t1",
+    1793477231914
+   ],
    "INTERNACIONAL": [
     "INTERNACIONAL",
     "t1",
@@ -7419,6 +7434,11 @@
     "⚡ RELÁMPAGO",
     "t1",
     1792953978519
+   ],
+   "🌍 TROTAMUNDOS": [
+    "🌍 TROTAMUNDOS",
+    "t1",
+    1793477231914
    ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x3",
@@ -11072,6 +11092,33 @@
   }
  },
  "walker": {
+  "competitivo": {
+   "⚔️ DUELISTA": [
+    "⚔️ DUELISTA",
+    "t1",
+    1793477231914
+   ],
+   "🎯 FRANCOTIRADOR": [
+    "🎯 FRANCOTIRADOR",
+    "t1",
+    1793477231914
+   ],
+   "😈 BESTIA NEGRA": [
+    "😈 BESTIA NEGRA",
+    "t1",
+    1793477231914
+   ],
+   "🤝 SIN MIEDO": [
+    "🤝 SIN MIEDO",
+    "t1",
+    1793477231914
+   ],
+   "🧊 SANGRE FRÍA": [
+    "🧊 SANGRE FRÍA",
+    "t1",
+    1793477231914
+   ]
+  },
   "servidor": {
    "⚔️ DUELISTA": [
     "⚔️ DUELISTA",
@@ -11093,6 +11140,11 @@
     "t1",
     1793029252929
    ],
+   "🏯 CIUDADELA": [
+    "🏯 CIUDADELA",
+    "t1",
+    1793477231914
+   ],
    "🏰 FORTALEZA": [
     "🏰 FORTALEZA",
     "t1",
@@ -11105,20 +11157,35 @@
    ]
   },
   "temporada": {
+   "⭐ PENTACAMPEÓN": [
+    "⭐ PENTACAMPEÓN",
+    "t1",
+    1793477231914
+   ],
    "🐺 LOBO SOLITARIO": [
     "🐺 LOBO SOLITARIO",
     "t1",
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x4",
+    "👑 CAMPEÓN x5",
     "t1",
     1793029252929
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1793477231914
    ],
    "📋 SEMANA PERFECTA": [
     "📋 SEMANA PERFECTA",
     "t1",
     1793029252929
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1793477231914
    ],
    "🚪 DEBUT CON CORONA": [
     "🚪 DEBUT CON CORONA",

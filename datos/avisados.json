@@ -20816,7 +20816,7 @@
    "VR": 4
   },
   "fecha": "23/10",
-  "firma": "ebe83fc77db70eec",
+  "firma": "e3e7e1f5901153a5",
   "msg": "1563368240221257751",
   "nombre": "19 CUP FUTCARD EDICIÓN 5",
   "num": 505,
@@ -20950,7 +20950,7 @@
    "Sin Limites": 26
   },
   "fecha": "23/10",
-  "firma": "8f9203c6d9a3b392",
+  "firma": "53e8718fd5feea88",
   "msg": "1563384839284195339",
   "nombre": "GRISELDA RECORDS VOL. 2",
   "num": 506,
@@ -21500,7 +21500,7 @@
    "Tam": 12
   },
   "fecha": "24/10",
-  "firma": "d5e74eebc2a2f7eb",
+  "firma": "5a1332208a38cd00",
   "msg": "1563694518920814593",
   "nombre": "GRISELDA RECORDS VOL. 4",
   "num": 510,
@@ -29980,7 +29980,7 @@
    "Teo": 18
   },
   "fecha": "30/10",
-  "firma": "a285a9e5fb0aed1f",
+  "firma": "dae872f783476589",
   "msg": "1565861597019111555",
   "nombre": "__ LA ISLA DE OKINAWA V.4 __",
   "num": 547,
@@ -31211,6 +31211,125 @@
    [
     "lord viruz🇨🇴",
     "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "552": {
+  "antes": {
+   "Carlosmo": [
+    97,
+    127,
+    false
+   ],
+   "Keider": [
+    86,
+    112,
+    false
+   ],
+   "MaYeuTyK": [
+    93,
+    121,
+    false
+   ],
+   "Majiztral": [
+    39,
+    48,
+    false
+   ],
+   "OKAM": [
+    27,
+    32,
+    false
+   ],
+   "Walker": [
+    48,
+    64,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "MaYeuTyK",
+    "Keider",
+    "MaYeuTyK"
+   ],
+   [
+    "Majiztral",
+    "OKAM",
+    "Majiztral"
+   ],
+   [
+    "MaYeuTyK",
+    "Carlosmo",
+    "MaYeuTyK"
+   ],
+   [
+    "Walker",
+    "Majiztral",
+    "Walker"
+   ],
+   [
+    "Walker",
+    "MaYeuTyK",
+    "Walker"
+   ],
+   [
+    "Majiztral",
+    "Carlosmo",
+    "Majiztral"
+   ]
+  ],
+  "ev_antes": {
+   "Carlosmo": 1,
+   "Keider": 8,
+   "MaYeuTyK": 8,
+   "Majiztral": 22,
+   "OKAM": 17,
+   "Walker": 9
+  },
+  "fecha": "31/10",
+  "firma": "e2a512bf8118a2e2",
+  "msg": "1566174419850625176",
+  "nombre": "19 CUP HALLOWEEN 2026 LLAVES DE COMPETENCIA",
+  "num": 552,
+  "participantes": 16,
+  "sello": {
+   "Walker": "dfe30fded2a6:6ec1a5248de8"
+  },
+  "sv": "DDF",
+  "t": "2026-10-31T19:54:37Z",
+  "tabla": [
+   [
+    "Carlosmo",
+    "Cuarto",
+    4500
+   ],
+   [
+    "MaYeuTyK",
+    "Subcampeón",
+    3750
+   ],
+   [
+    "Majiztral",
+    "Tercero",
+    3000
+   ],
+   [
+    "Walker",
+    "Campeón",
+    2500
+   ],
+   [
+    "Keider",
+    "Cuartos",
+    1250
+   ],
+   [
+    "OKAM",
+    "Cuartos",
     1250
    ]
   ],
