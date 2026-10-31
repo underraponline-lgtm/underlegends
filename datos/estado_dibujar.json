@@ -1,61 +1,57 @@
 {
  "v": 1,
- "cuando": "2026-10-31T00:30:37Z",
+ "cuando": "2026-10-31T00:40:05Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1482.2,
+ "dur_s": 441.2,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.6
+   "s": 6.1
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.8
+   "s": 1.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.3
+   "s": 9.2
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 19.6
+   "s": 20.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 6 · 40 persona(s)",
+   "que": "tanda 1 de 1 · 39 persona(s)",
    "ok": false,
-   "s": 1377.1
+   "s": 338.2
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 10.7
+   "s": 6.2
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 57.9
+   "s": 58.7
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py SOL"
+   "que": "03_Servidor/generar.py Artezzy"
   }
  ],
  "ultimo_evento": {
@@ -66,25 +62,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 24,
-   "read": 1758
+   "write": 43,
+   "read": 3167
   },
   "objeto": {
-   "leidas": 133287,
-   "escritas": 1126,
-   "pedidos": 254
+   "leidas": 174021,
+   "escritas": 1357,
+   "pedidos": 312
   },
   "worker": {
-   "pedidos": 8096,
+   "pedidos": 8103,
    "errores": 0,
-   "sub": 9539,
+   "sub": 9546,
    "cortados": 0,
    "p50_ms": 1.29,
    "p99_ms": 12.4,
    "cpu": {
-    "total": 17660,
-    "objeto_10": 1692,
-    "worker_10": 183
+    "total": 17656,
+    "objeto_10": 1693,
+    "worker_10": 184
    }
   },
   "r2": {
