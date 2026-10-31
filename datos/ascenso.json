@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-10-31T22:58:34Z",
+ "t": "2026-10-31T23:36:01Z",
  "sv": {
   "SR": {
    "filas": [
@@ -54,6 +54,13 @@
      "Colesito"
     ],
     [
+     "AARÓN EL ARTE",
+     "ar",
+     6000,
+     6000,
+     ""
+    ],
+    [
      "MASINO",
      "cl",
      5250,
@@ -94,6 +101,13 @@
      4500,
      4500,
      "Catarsis"
+    ],
+    [
+     "BAU",
+     "ar",
+     4500,
+     4500,
+     "Bau"
     ],
     [
      "KISHNAMURTI",
@@ -502,6 +516,25 @@
       ]
      ],
      "fuera": []
+    },
+    {
+     "n": 553,
+     "evento": "SNAKE INSIGNIA 7 8",
+     "dia": "2026-10-31",
+     "rango": "2",
+     "puntos": [
+      [
+       "Aarón El arte",
+       "Campeón",
+       6000
+      ],
+      [
+       "Bau",
+       "Subcampeón",
+       4500
+      ]
+     ],
+     "fuera": []
     }
    ],
    "pendiente": [
@@ -512,6 +545,16 @@
      "gente": [
       "Velatz",
       "Zignos"
+     ],
+     "detalle": "no hubo partido por el 3º: ¿los dos semifinalistas suman como 3º, o ninguno?"
+    },
+    {
+     "que": "duda",
+     "evento": "SNAKE INSIGNIA 7 8",
+     "dia": "2026-10-31",
+     "gente": [
+      "Makmah",
+      "Trelok"
      ],
      "detalle": "no hubo partido por el 3º: ¿los dos semifinalistas suman como 3º, o ninguno?"
     }
@@ -712,7 +755,8 @@
   "430": "2",
   "460": "3",
   "478": "2",
-  "496": "2"
+  "496": "2",
+  "553": "2"
  },
  "nombres": {
   "1476311763912757420": "SCazulo",

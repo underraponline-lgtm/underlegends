@@ -40026,5 +40026,180 @@
     1250
    ]
   ]
+ },
+ "553": {
+  "dia": "2026-10-31",
+  "escala": "16+",
+  "fecha": "31/10",
+  "links": [
+   "https://discord.com/channels/492346406976356374/863208023857823785/1566203719354159269"
+  ],
+  "n": 553,
+  "nombre": "SNAKE INSIGNIA 7 8",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Aarón El arte🇦🇷",
+       "Delux",
+       "bay🇺🇾",
+       "Erian"
+      ],
+      "Aarón El arte🇦🇷",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Trelok",
+       "JOAQUIN",
+       "Bloody",
+       "Kastigoz 🇨🇴"
+      ],
+      "Trelok",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Makmah",
+       "Velatz",
+       "Vandu",
+       "Agus"
+      ],
+      "Makmah",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Bau",
+       "NC",
+       "Prosu",
+       "Valdrax"
+      ],
+      "Bau",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Aarón El arte🇦🇷",
+       "Trelok"
+      ],
+      "Aarón El arte🇦🇷",
+      ""
+     ],
+     [
+      [
+       "Bau",
+       "Makmah"
+      ],
+      "Bau",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Aarón El arte🇦🇷",
+       "Bau"
+      ],
+      "Aarón El arte🇦🇷",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "SR",
+  "tabla": [
+   [
+    "Aarón El arte🇦🇷",
+    "Campeón",
+    10000
+   ],
+   [
+    "Bau",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Trelok",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Agus",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Bloody",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Delux",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "JOAQUIN",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kastigoz 🇨🇴",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Prosu",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Valdrax",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Velatz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "bay🇺🇾",
+    "Cuartos",
+    2500
+   ]
+  ]
  }
 }

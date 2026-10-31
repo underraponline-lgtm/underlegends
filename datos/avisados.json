@@ -18438,7 +18438,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "60a3fc100c5728fd",
+  "firma": "8ab589aa9223c2fa",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -23294,7 +23294,7 @@
    "Vandu": 34
   },
   "fecha": "25/10",
-  "firma": "04cbbf38b1ad1a5c",
+  "firma": "896195e067058743",
   "msg": "1564145050185891903",
   "nombre": "CHILL",
   "num": 518,
@@ -30469,6 +30469,11 @@
     "Vandu"
    ],
    [
+    "Walker",
+    "Number",
+    "Walker"
+   ],
+   [
     "PichulaMc",
     "Kochi",
     "PichulaMc"
@@ -30524,7 +30529,7 @@
    "Walker": 8
   },
   "fecha": "30/10",
-  "firma": "dc28d19829094869",
+  "firma": "b7df58228a6ae875",
   "msg": "1565898869114413108",
   "nombre": "IDS V.3",
   "num": 549,
@@ -30597,6 +30602,11 @@
    ],
    [
     "Crk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Number",
     "Octavos",
     1250
    ],
@@ -31341,6 +31351,244 @@
     "OKAM",
     "Cuartos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "553": {
+  "antes": {
+   "Agus": [
+    12,
+    13,
+    false
+   ],
+   "Bloody": [
+    31,
+    36,
+    false
+   ],
+   "Delux": [
+    28,
+    33,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "NC": [
+    22,
+    25,
+    false
+   ],
+   "Prosu": [
+    93,
+    121,
+    false
+   ],
+   "Trelok": [
+    108,
+    154,
+    false
+   ],
+   "Vandu": [
+    13,
+    14,
+    false
+   ],
+   "Velatz": [
+    16,
+    19,
+    false
+   ]
+  },
+  "canal": "863207986264932372",
+  "duelos": [
+   [
+    "Aarón El arte🇦🇷",
+    "Delux",
+    "Aarón El arte🇦🇷"
+   ],
+   [
+    "Aarón El arte🇦🇷",
+    "bay🇺🇾",
+    "Aarón El arte🇦🇷"
+   ],
+   [
+    "Aarón El arte🇦🇷",
+    "Erian",
+    "Aarón El arte🇦🇷"
+   ],
+   [
+    "Trelok",
+    "JOAQUIN",
+    "Trelok"
+   ],
+   [
+    "Trelok",
+    "Bloody",
+    "Trelok"
+   ],
+   [
+    "Trelok",
+    "Kastigoz 🇨🇴",
+    "Trelok"
+   ],
+   [
+    "Makmah",
+    "Velatz",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Vandu",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Agus",
+    "Makmah"
+   ],
+   [
+    "Bau",
+    "NC",
+    "Bau"
+   ],
+   [
+    "Bau",
+    "Prosu",
+    "Bau"
+   ],
+   [
+    "Bau",
+    "Valdrax",
+    "Bau"
+   ],
+   [
+    "Aarón El arte🇦🇷",
+    "Trelok",
+    "Aarón El arte🇦🇷"
+   ],
+   [
+    "Bau",
+    "Makmah",
+    "Bau"
+   ],
+   [
+    "Aarón El arte🇦🇷",
+    "Bau",
+    "Aarón El arte🇦🇷"
+   ]
+  ],
+  "ev_antes": {
+   "Agus": 21,
+   "Bloody": 24,
+   "Delux": 13,
+   "Erian": 62,
+   "Makmah": 90,
+   "NC": 43,
+   "Prosu": 5,
+   "Trelok": 2,
+   "Vandu": 39,
+   "Velatz": 41
+  },
+  "fecha": "31/10",
+  "firma": "c391c70b56ebab19",
+  "msg": "1566227272355020941",
+  "nombre": "SNAKE INSIGNIA 7 8",
+  "num": 553,
+  "participantes": 16,
+  "sello": {
+   "Aarón El arte🇦🇷": ""
+  },
+  "sv": "SR",
+  "t": "2026-10-31T23:24:37Z",
+  "tabla": [
+   [
+    "Aarón El arte🇦🇷",
+    "Campeón",
+    10000
+   ],
+   [
+    "Bau",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Trelok",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Makmah",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Delux",
+    "Cuartos",
+    2500
+   ],
+   [
+    "bay🇺🇾",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2500
+   ],
+   [
+    "JOAQUIN",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Bloody",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kastigoz 🇨🇴",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Velatz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Vandu",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Agus",
+    "Cuartos",
+    2500
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Prosu",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Valdrax",
+    "Cuartos",
+    2500
    ]
   ],
   "v": 2

@@ -15,7 +15,7 @@
     "duelos": "",
     "ev": 3,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 45,
     "pod": 0,
     "pts": 14438,
     "racha": "0/0"
@@ -309,6 +309,21 @@
     "racha": "0/0"
    }
   },
+  "Aarón El arte🇦🇷": {
+   "SR": {
+    "duelos": "2/2",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 46,
+    "pod": 1,
+    "pts": 15000,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   }
+  },
   "Ab'l 🇦🇷 🇩🇴": {
    "FFA": {
     "duelos": "",
@@ -558,12 +573,12 @@
    },
    "SR": {
     "duelos": "6/7",
-    "ev": 3,
+    "ev": 4,
     "oro": 1,
-    "ovr": 50,
+    "ovr": 51,
     "pod": 2,
-    "pts": 42250,
-    "racha": "2/2",
+    "pts": 46000,
+    "racha": "0/2",
     "tg": {
      "fin": 1,
      "fund": true
@@ -684,7 +699,7 @@
     "duelos": "2/7",
     "ev": 16,
     "oro": 2,
-    "ovr": 59,
+    "ovr": 58,
     "pod": 3,
     "pts": 69737,
     "racha": "0/3",
@@ -770,7 +785,7 @@
     "duelos": "",
     "ev": 8,
     "oro": 0,
-    "ovr": 50,
+    "ovr": 49,
     "pod": 1,
     "pts": 23162,
     "racha": "0/0",
@@ -1092,12 +1107,27 @@
     }
    }
   },
+  "Bau": {
+   "SR": {
+    "duelos": "1/2",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 46,
+    "pod": 1,
+    "pts": 11250,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
+   }
+  },
   "Benjixo": {
    "FFA": {
     "duelos": "1/3",
     "ev": 6,
     "oro": 1,
-    "ovr": 52,
+    "ovr": 51,
     "pod": 1,
     "pts": 57750,
     "racha": "0/2",
@@ -1243,12 +1273,12 @@
    },
    "SR": {
     "duelos": "2/4",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 47,
     "pod": 0,
-    "pts": 23750,
-    "racha": "1/1",
+    "pts": 27500,
+    "racha": "0/1",
     "tg": {
      "fund": true
     }
@@ -1715,7 +1745,7 @@
     "duelos": "1/7",
     "ev": 12,
     "oro": 0,
-    "ovr": 53,
+    "ovr": 52,
     "pod": 1,
     "pts": 30308,
     "racha": "0/1",
@@ -2169,6 +2199,18 @@
     "racha": "0/4",
     "tg": {
      "fin": 4
+    }
+   },
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },
@@ -2967,7 +3009,7 @@
     "duelos": "14/26",
     "ev": 30,
     "oro": 4,
-    "ovr": 71,
+    "ovr": 70,
     "pod": 8,
     "pts": 213984,
     "racha": "3/3",
@@ -2990,11 +3032,11 @@
    },
    "SR": {
     "duelos": "0/1",
-    "ev": 6,
+    "ev": 7,
     "oro": 0,
-    "ovr": 47,
+    "ovr": 48,
     "pod": 0,
-    "pts": 23875,
+    "pts": 27625,
     "racha": "0/0",
     "tg": {
      "llave": true
@@ -4140,7 +4182,7 @@
     "duelos": "0/2",
     "ev": 8,
     "oro": 1,
-    "ovr": 53,
+    "ovr": 52,
     "pod": 2,
     "pts": 54475,
     "racha": "2/2",
@@ -4158,6 +4200,20 @@
     "pod": 0,
     "pts": 1250,
     "racha": "0/0"
+   }
+  },
+  "JOAQUIN": {
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "JOSHU": {
@@ -4280,7 +4336,7 @@
     "duelos": "0/2",
     "ev": 5,
     "oro": 0,
-    "ovr": 49,
+    "ovr": 48,
     "pod": 0,
     "pts": 42200,
     "racha": "0/0"
@@ -4461,7 +4517,7 @@
     "duelos": "3/5",
     "ev": 7,
     "oro": 0,
-    "ovr": 51,
+    "ovr": 50,
     "pod": 1,
     "pts": 38350,
     "racha": "0/1",
@@ -4577,6 +4633,20 @@
     "ovr": 44,
     "pod": 0,
     "pts": 7500,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
+  "Kastigoz 🇨🇴": {
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -4841,7 +4911,7 @@
     "duelos": "1/2",
     "ev": 1,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 43,
     "pod": 0,
     "pts": 6600,
     "racha": "0/0",
@@ -5224,7 +5294,7 @@
     "duelos": "",
     "ev": 2,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 43,
     "pod": 0,
     "pts": 3937,
     "racha": "0/0"
@@ -6220,12 +6290,12 @@
     }
    },
    "SR": {
-    "duelos": "0/2",
-    "ev": 5,
+    "duelos": "0/3",
+    "ev": 6,
     "oro": 0,
-    "ovr": 46,
+    "ovr": 47,
     "pod": 0,
-    "pts": 13125,
+    "pts": 21000,
     "racha": "0/0",
     "tg": {
      "fund": true,
@@ -6957,14 +7027,15 @@
    },
    "SR": {
     "duelos": "0/1",
-    "ev": 4,
+    "ev": 5,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 46,
     "pod": 0,
-    "pts": 7625,
+    "pts": 11375,
     "racha": "0/0",
     "tg": {
-     "fund": true
+     "fund": true,
+     "llave": true
     }
    },
    "URBF": {
@@ -7451,7 +7522,7 @@
     "duelos": "36/42",
     "ev": 37,
     "oro": 21,
-    "ovr": 84,
+    "ovr": 83,
     "pod": 29,
     "pts": 375477,
     "racha": "3/14",
@@ -7566,7 +7637,7 @@
     "duelos": "0/1",
     "ev": 1,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 43,
     "pod": 0,
     "pts": 6600,
     "racha": "0/0"
@@ -7946,7 +8017,7 @@
     "duelos": "5/6",
     "ev": 3,
     "oro": 1,
-    "ovr": 49,
+    "ovr": 48,
     "pod": 1,
     "pts": 27063,
     "racha": "0/1",
@@ -8018,11 +8089,11 @@
    },
    "SR": {
     "duelos": "4/6",
-    "ev": 3,
+    "ev": 4,
     "oro": 1,
     "ovr": 48,
     "pod": 1,
-    "pts": 18750,
+    "pts": 22500,
     "racha": "0/2",
     "tg": {
      "fin": 1
@@ -8811,7 +8882,7 @@
     "duelos": "2/7",
     "ev": 6,
     "oro": 0,
-    "ovr": 49,
+    "ovr": 48,
     "pod": 0,
     "pts": 38313,
     "racha": "1/1"
@@ -9199,7 +9270,7 @@
     "duelos": "",
     "ev": 2,
     "oro": 0,
-    "ovr": 45,
+    "ovr": 44,
     "pod": 0,
     "pts": 9750,
     "racha": "0/0"
@@ -9712,6 +9783,18 @@
      "fin": 1,
      "nuevo": true
     }
+   },
+   "SR": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 7875,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Trot": {
@@ -9983,7 +10066,7 @@
     "duelos": "0/1",
     "ev": 2,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 43,
     "pod": 0,
     "pts": 3937,
     "racha": "0/0"
@@ -10039,6 +10122,20 @@
     "pod": 0,
     "pts": 7500,
     "racha": "0/0"
+   }
+  },
+  "Valdrax": {
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Valen": {
@@ -10107,6 +10204,18 @@
      "fin": 1
     }
    },
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
    "URBF": {
     "duelos": "4/6",
     "ev": 2,
@@ -10167,11 +10276,11 @@
    },
    "SR": {
     "duelos": "1/2",
-    "ev": 3,
+    "ev": 4,
     "oro": 0,
     "ovr": 45,
     "pod": 0,
-    "pts": 7750,
+    "pts": 11500,
     "racha": "0/1",
     "tg": {
      "fund": true
@@ -10788,6 +10897,20 @@
     "racha": "1/1",
     "tg": {
      "fin": 1
+    }
+   }
+  },
+  "bay🇺🇾": {
+   "SR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },
