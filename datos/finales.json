@@ -945,5 +945,27 @@
   "sin_permiso": false,
   "sv": "URBF"
  },
+ "1565970079663919185": {
+  "autor": "1512148565890306153",
+  "canal": "1487207377601040516",
+  "cuando": "2026-10-31T06:06:01.309000+00:00",
+  "evento": "Rap para Raperos 2",
+  "fecha": "31/10",
+  "llave": "1565970079663919185",
+  "pregunta": "1566133156736925827",
+  "preguntada": "2026-10-31 12:54 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "tnor🇻🇪",
+     "Pichulamc"
+    ],
+    "ronda": "OCTAVOS"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": false,
+  "sv": "FFA"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
