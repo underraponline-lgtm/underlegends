@@ -5198,8 +5198,8 @@
    "g": "1467763447117778989",
    "canal": "1540223675146707045",
    "pub": 1793403662991,
-   "ed": 1793404259426,
-   "texto": "`[ OCTAVOS ]`\n⌞NC 🇦🇷⌝ 🆚 ⌞ONDADISKO 🇨🇱⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞MONAMAY 🇦🇷⌝\n⌞NAHU 🇦🇷⌝ 🆚 ⌞KOCHI 🇨🇱⌝",
+   "ed": 1793405421821,
+   "texto": "`[ OCTAVOS ]`\n⌞NC 🇦🇷⌝ 🆚 ⌞ONDADISKO 🇨🇱⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞MONAMAY 🇦🇷⌝\n⌞NAHU 🇦🇷⌝ 🆚 ⌞KOCHI 🇨🇱⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞MAKMAH 🇻🇪⌝\n⌞LONGSUN ZHAO 🇨🇳⌝ 🆚 ⌞LEYENDA 🇦🇷⌝\n⌞BASTYRETRO 🇨🇱⌝ 🆚 ⌞CRK 🇲🇽⌝\n⌞NAIN 🇦🇷⌝ 🆚 ⌞NUMBER 🇻🇪⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5226,6 +5226,46 @@
      [
       "NAHU 🇦🇷",
       "KOCHI 🇨🇱"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "AGUS 🇦🇷",
+      "MAKMAH 🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "LONGSUN ZHAO 🇨🇳",
+      "LEYENDA 🇦🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "BASTYRETRO 🇨🇱",
+      "CRK 🇲🇽"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "NAIN 🇦🇷",
+      "NUMBER 🇻🇪"
      ],
      null,
      "última ronda y no dice campeón",
