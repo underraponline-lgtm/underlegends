@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-10-31T02:01:44Z",
+ "cuando": "2026-10-31T02:13:25Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1344.6,
+ "dur_s": 654.3,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 10.1
+   "s": 6.7
   },
   {
    "n": "2f2",
@@ -27,39 +27,39 @@
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 27.6
+   "s": 16.1
   },
   {
    "n": "5",
-   "que": "tanda 1 de 6 · 40 persona(s)",
+   "que": "tanda 1 de 3 · 40 persona(s)",
    "ok": false,
-   "s": 1232.5
+   "s": 559.9
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 11.7
+   "s": 6.1
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 55.9
+   "s": 58.5
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py .SosaATR"
+   "que": "03_Servidor/generar.py Agus"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Jupiter"
+   "que": "03_Servidor/generar.py Jobaking"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Rubik"
+   "que": "03_Servidor/generar.py Oasis"
   }
  ],
  "ultimo_evento": {
@@ -70,25 +70,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 101,
-   "read": 8480
+   "write": 128,
+   "read": 9898
   },
   "objeto": {
-   "leidas": 650952,
-   "escritas": 4720,
-   "pedidos": 1167
+   "leidas": 738980,
+   "escritas": 6122,
+   "pedidos": 1236
   },
   "worker": {
-   "pedidos": 8079,
+   "pedidos": 8015,
    "errores": 0,
-   "sub": 9553,
+   "sub": 9504,
    "cortados": 0,
    "p50_ms": 1.27,
    "p99_ms": 12.4,
    "cpu": {
-    "total": 17616,
-    "objeto_10": 1660,
-    "worker_10": 175
+    "total": 17497,
+    "objeto_10": 1650,
+    "worker_10": 171
    }
   },
   "r2": {
