@@ -5198,8 +5198,8 @@
    "g": "1467763447117778989",
    "canal": "1540223675146707045",
    "pub": 1793403662991,
-   "ed": 1793405421821,
-   "texto": "`[ OCTAVOS ]`\n⌞NC 🇦🇷⌝ 🆚 ⌞ONDADISKO 🇨🇱⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞MONAMAY 🇦🇷⌝\n⌞NAHU 🇦🇷⌝ 🆚 ⌞KOCHI 🇨🇱⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞MAKMAH 🇻🇪⌝\n⌞LONGSUN ZHAO 🇨🇳⌝ 🆚 ⌞LEYENDA 🇦🇷⌝\n⌞BASTYRETRO 🇨🇱⌝ 🆚 ⌞CRK 🇲🇽⌝\n⌞NAIN 🇦🇷⌝ 🆚 ⌞NUMBER 🇻🇪⌝",
+   "ed": 1793407821559,
+   "texto": "`[ OCTAVOS ]`\n⌞NC 🇦🇷⌝ 🆚 ⌞ONDADISKO 🇨🇱⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞MONAMAY 🇦🇷⌝\n⌞NAHU 🇦🇷⌝ 🆚 ⌞KOCHI 🇨🇱⌝\n⌞AGUS 🇦🇷⌝ 🆚 ⌞MAKMAH 🇻🇪⌝\n⌞LONGSUN ZHAO 🇨🇳⌝ 🆚 ⌞LEYENDA 🇦🇷⌝\n⌞BASTYRETRO 🇨🇱⌝ 🆚 ⌞CRK 🇲🇽⌝\n⌞NAIN 🇦🇷⌝ 🆚 ⌞NUMBER 🇻🇪⌝\n`[ CUARTOS ]`\n⌞AGUS 🇦🇷⌝ 🆚 ⌞NC 🇰🇷⌝\n⌞PARK JI SUNG 🇰🇷⌝ 🆚 ⌞LONGSUN ZHAO 🇨🇳⌝\n⌞VANDU 🇨🇴⌝ 🆚 ⌞BASTYRETRO 🇨🇱⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5207,8 +5207,8 @@
       "NC 🇦🇷",
       "ONDADISKO 🇨🇱"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "NC 🇦🇷",
+     "ronda siguiente",
      []
     ],
     [
@@ -5217,8 +5217,8 @@
       "PARK JI SUNG 🇰🇷",
       "MONAMAY 🇦🇷"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "PARK JI SUNG 🇰🇷",
+     "ronda siguiente",
      []
     ],
     [
@@ -5228,7 +5228,7 @@
       "KOCHI 🇨🇱"
      ],
      null,
-     "última ronda y no dice campeón",
+     "no aparece nadie después",
      []
     ],
     [
@@ -5237,8 +5237,8 @@
       "AGUS 🇦🇷",
       "MAKMAH 🇻🇪"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "AGUS 🇦🇷",
+     "ronda siguiente",
      []
     ],
     [
@@ -5247,8 +5247,8 @@
       "LONGSUN ZHAO 🇨🇳",
       "LEYENDA 🇦🇷"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "LONGSUN ZHAO 🇨🇳",
+     "ronda siguiente",
      []
     ],
     [
@@ -5257,8 +5257,8 @@
       "BASTYRETRO 🇨🇱",
       "CRK 🇲🇽"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "BASTYRETRO 🇨🇱",
+     "ronda siguiente",
      []
     ],
     [
@@ -5266,6 +5266,36 @@
      [
       "NAIN 🇦🇷",
       "NUMBER 🇻🇪"
+     ],
+     null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "AGUS 🇦🇷",
+      "NC 🇰🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "PARK JI SUNG 🇰🇷",
+      "LONGSUN ZHAO 🇨🇳"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "VANDU 🇨🇴",
+      "BASTYRETRO 🇨🇱"
      ],
      null,
      "última ronda y no dice campeón",
