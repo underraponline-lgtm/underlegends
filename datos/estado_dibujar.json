@@ -1,61 +1,61 @@
 {
  "v": 1,
- "cuando": "2026-10-30T23:25:06Z",
+ "cuando": "2026-10-31T00:05:16Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1187.0,
+ "dur_s": 1776.0,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.5
+   "s": 10.4
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.0
+   "s": 1.1
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 9.8
+   "s": 9.3
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.9
+   "s": 36.7
   },
   {
    "n": "5",
-   "que": "tanda 1 de 5 · 40 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": false,
-   "s": 1073.4
+   "s": 1647.1
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 11.6
+   "s": 10.9
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 61.5
+   "s": 59.2
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py AGUSTÍN51K"
+   "que": "03_Servidor/generar.py .SosaATR"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py PichulaMc"
+   "que": "03_Servidor/generar.py SOL"
   }
  ],
  "ultimo_evento": {
@@ -66,25 +66,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 515,
-   "read": 54396
+   "write": 9,
+   "read": 482
   },
   "objeto": {
-   "leidas": 3678720,
-   "escritas": 23702,
-   "pedidos": 9309
+   "leidas": 26031,
+   "escritas": 451,
+   "pedidos": 39
   },
   "worker": {
-   "pedidos": 8330,
+   "pedidos": 8273,
    "errores": 0,
-   "sub": 9777,
+   "sub": 9715,
    "cortados": 0,
-   "p50_ms": 1.27,
+   "p50_ms": 1.28,
    "p99_ms": 12.53,
    "cpu": {
-    "total": 18185,
-    "objeto_10": 1719,
-    "worker_10": 194
+    "total": 17965,
+    "objeto_10": 1693,
+    "worker_10": 192
    }
   },
   "r2": {
