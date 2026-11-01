@@ -1,39 +1,39 @@
 {
  "v": 1,
- "cuando": "2026-11-01T05:11:23Z",
+ "cuando": "2026-11-01T05:55:38Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 621.7,
+ "dur_s": 1219.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.2
+   "s": 6.3
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.0
+   "s": 0.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 10.4
+   "s": 6.7
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.5
+   "s": 18.9
   },
   {
    "n": "5",
-   "que": "tanda 1 de 3 · 40 persona(s)",
+   "que": "tanda 1 de 7 · 40 persona(s)",
    "ok": false,
-   "s": 515.0
+   "s": 1128.2
   },
   {
    "n": "5b",
@@ -45,46 +45,58 @@
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 59.7
+   "s": 52.6
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Artezzy"
+   "que": "03_Servidor/generar.py Abyssus"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Mc arepa"
+   "que": "03_Servidor/generar.py Jeisy"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Luz"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py OKAM"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Six"
   }
  ],
  "ultimo_evento": {
-  "n": "554",
-  "nombre": "19 CUP LLAVES",
-  "sv": "DDF",
-  "dia": "2026-10-31"
+  "n": "555",
+  "nombre": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS",
+  "sv": "FFA",
+  "dia": "2026-10-20"
  },
  "cuotas": {
   "kv": {
-   "write": 203,
-   "read": 20073
+   "write": 229,
+   "read": 21974
   },
   "objeto": {
-   "leidas": 1552822,
-   "escritas": 8100,
-   "pedidos": 3100
+   "leidas": 1744572,
+   "escritas": 10255,
+   "pedidos": 3520
   },
   "worker": {
-   "pedidos": 9797,
+   "pedidos": 9731,
    "errores": 0,
-   "sub": 11403,
+   "sub": 11339,
    "cortados": 0,
    "p50_ms": 1.14,
-   "p99_ms": 10.37,
+   "p99_ms": 10.43,
    "cpu": {
-    "total": 21062,
-    "objeto_10": 1621,
-    "worker_10": 113
+    "total": 20964,
+    "objeto_10": 1606,
+    "worker_10": 115
    }
   },
   "r2": {
