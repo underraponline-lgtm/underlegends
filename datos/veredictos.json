@@ -1629,6 +1629,17 @@
    "b": "MC DL🇲🇽",
    "ganador": "KUDE 🇦🇷",
    "votos": "1–0"
+  },
+  "1566589400379302001": {
+   "id": "1566589400379302001",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560645560015519834",
+   "pub": 1793574418874,
+   "a": "MAJIZTRAL 🇨🇴",
+   "b": "CHOP🇭🇳",
+   "ganador": "CHOP🇭🇳",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5566,6 +5577,37 @@
      ],
      "MR STILL BALLIN🇮🇲",
      "veredicto",
+     []
+    ]
+   ]
+  },
+  "1566589303226896494": {
+   "id": "1566589303226896494",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560645560015519834",
+   "pub": 1793574395711,
+   "ed": 1793575229404,
+   "texto": "`[ CUARTOS ]`\n⌞MAJIZTRAL 🇨🇴⌝ 🆚 ⌞CHOP🇭🇳⌝\n⌞MATTHIAS 🇻🇪⌝ 🆚 ⌞CARLOS🇪🇨⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "MAJIZTRAL 🇨🇴",
+      "CHOP🇭🇳"
+     ],
+     "CHOP🇭🇳",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MATTHIAS 🇻🇪",
+      "CARLOS🇪🇨"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
