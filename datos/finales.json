@@ -1023,5 +1023,27 @@
   "sin_permiso": true,
   "sv": "ACAD"
  },
+ "1566300280969236521": {
+  "autor": "1439654304314032271",
+  "canal": "1309234583023124531",
+  "cuando": "2026-11-01T03:58:07.435000+00:00",
+  "evento": "CALLE DEL TERROR",
+  "fecha": "31/10",
+  "llave": "1566300280969236521",
+  "pregunta": "",
+  "preguntada": "2026-11-01 2:45 AM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Lizen🇦🇷",
+     "GERONIMO🇻🇪"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "sv": "ACAD"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
