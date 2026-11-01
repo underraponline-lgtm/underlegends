@@ -382,15 +382,15 @@
   "Desu": {
    "avisado": "2026-10-20",
    "chat": "2026-10-21",
-   "con": null,
-   "cumplido": "",
+   "con": 555,
+   "cumplido": "2026-10-21T03:23:26+00:00",
    "debut": "2026-10-21T01:13:25+00:00",
    "did": "",
    "evento": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS",
    "n": 493,
    "sv": "FFA",
    "vence": "2026-10-28T01:13:25+00:00",
-   "vencido": true
+   "vencido": false
   },
   "Dev": {
    "avisado": "2026-10-25",
@@ -1421,8 +1421,8 @@
    "avisado": "2026-10-20",
    "avisado_cumplido": "2026-10-21",
    "chat": "2026-10-21",
-   "con": 494,
-   "cumplido": "2026-10-21T19:01:36+00:00",
+   "con": 555,
+   "cumplido": "2026-10-21T03:23:26+00:00",
    "debut": "2026-10-21T01:13:25+00:00",
    "did": "1560477107598008355",
    "evento": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS",

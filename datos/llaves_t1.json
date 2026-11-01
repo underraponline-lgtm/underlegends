@@ -2839,7 +2839,7 @@
        "SMAFF"
       ],
       "Colesito, Juanpa",
-      "triple (4 bandas, pasan 2); también pasa: Juanpa 🇨🇴"
+      "triple (4 bandas, pasan 2); también pasa: Juanpa"
      ]
     ],
     "r": "Filtros"
@@ -5153,7 +5153,7 @@
      [
       [
        "MCO",
-       "IFX 🇦🇷",
+       "CEEGE",
        "Zeta"
       ],
       "MCO",
@@ -5300,17 +5300,17 @@
     1250
    ],
    [
+    "CEEGE",
+    "Octavos",
+    1250
+   ],
+   [
     "EMMY",
     "Octavos",
     1250
    ],
    [
     "GP",
-    "Octavos",
-    1250
-   ],
-   [
-    "IFX 🇦🇷",
     "Octavos",
     1250
    ],
@@ -40334,6 +40334,173 @@
     "Walker",
     "Cuartos",
     2000
+   ]
+  ]
+ },
+ "555": {
+  "dia": "2026-10-20",
+  "escala": "16+",
+  "fecha": "20/10",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1562305286507728908"
+  ],
+  "n": 555,
+  "nombre": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Provenza, Neo",
+       "Tam, PichulaMc"
+      ],
+      "Provenza, Neo",
+      "Drafteado: TAM 🇻🇪"
+     ],
+     [
+      [
+       "NC, Six",
+       "AKARK, Desu"
+      ],
+      "NC, Six",
+      "Drafteado: NC 🇦🇷; Drafteado: ASURA 🇪🇸"
+     ],
+     [
+      [
+       "Oasis, Snow",
+       "Andres, Player"
+      ],
+      "Oasis, Snow",
+      "Drafteado: NHP 🇨🇱"
+     ],
+     [
+      [
+       "Abyssus, Velatz",
+       "SULTAN, Vandu"
+      ],
+      "Abyssus, Velatz",
+      "Drafteado: ABYSSUS 🇵🇦; Drafteado: VANDU 🇨🇴"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Provenza, Neo, Tam",
+       "Six, NC, AKARK"
+      ],
+      "Provenza, Neo, Tam",
+      ""
+     ],
+     [
+      [
+       "Oasis, Snow, Andres",
+       "Abyssus, Velatz, Vandu"
+      ],
+      "Oasis, Snow, Andres",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Oasis, Andres, Snow, Abyssus",
+       "Provenza, Neo, Tam, NC"
+      ],
+      "Oasis, Andres, Snow, Abyssus",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Abyssus",
+    "Campeón",
+    4250
+   ],
+   [
+    "Andres",
+    "Campeón",
+    3750
+   ],
+   [
+    "NC",
+    "Subcampeón",
+    3625
+   ],
+   [
+    "Tam",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Vandu",
+    "Semifinal",
+    3000
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    2500
+   ],
+   [
+    "Snow",
+    "Campeón",
+    2500
+   ],
+   [
+    "Neo",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Provenza",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "AKARK",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Six",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Velatz",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Desu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Player",
+    "Cuartos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Cuartos",
+    1250
    ]
   ]
  }

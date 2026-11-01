@@ -244,6 +244,11 @@
     "t1",
     1793029252929
    ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1793511279019
+   ],
    "🎯 CAZARRECOMPENSAS": [
     "🎯 CAZARRECOMPENSAS",
     "t1",
@@ -255,7 +260,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x5",
+    "👑 CAMPEÓN x6",
     "t1",
     1793029252929
    ],
@@ -750,6 +755,11 @@
     "t1",
     1792953978519
    ],
+   "🏰 FORTALEZA": [
+    "🏰 FORTALEZA",
+    "t1",
+    1793511279019
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
@@ -757,8 +767,13 @@
    ]
   },
   "temporada": {
+   "⚡ RELÁMPAGO": [
+    "⚡ RELÁMPAGO",
+    "t1",
+    1793511279019
+   ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x3",
+    "👑 CAMPEÓN x4",
     "t1",
     1793079194391
    ],
@@ -6650,6 +6665,11 @@
     "t1",
     1793029252929
    ],
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1793511279019
+   ],
    "📋 SEMANA PERFECTA": [
     "📋 SEMANA PERFECTA",
     "t1",
@@ -7235,7 +7255,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x21",
+    "👑 CAMPEÓN x22",
     "t1",
     1793029252929
    ],
@@ -8284,6 +8304,20 @@
   }
  },
  "player": {
+  "competitivo": {
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1793511279019
+   ]
+  },
+  "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1793511279019
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -9690,7 +9724,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x7",
+    "👑 CAMPEÓN x8",
     "t1",
     1793029252929
    ],
@@ -9982,6 +10016,11 @@
     "INTERNACIONAL",
     "t1",
     1793065196408
+   ],
+   "MEDALLERO": [
+    "MEDALLERO",
+    "t1",
+    1793511279019
    ],
    "PIONERO": [
     "PIONERO",
@@ -10917,6 +10956,11 @@
     "📅 INFALTABLE",
     "t1",
     1793029252929
+   ],
+   "📈 EN ASCENSO": [
+    "📈 EN ASCENSO",
+    "t1",
+    1793511279019
    ],
    "📋 SEMANA PERFECTA": [
     "📋 SEMANA PERFECTA",

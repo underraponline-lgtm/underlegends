@@ -4894,7 +4894,7 @@
    "an": {
     "1566313645850234961": {
      "sv": "FFA",
-     "nombre": "qcyo rapeen 9",
+     "nombre": "la palera del edi",
      "mo": "2026-11-01T05:06:13Z",
      "staff": {},
      "orgs": [
@@ -4907,7 +4907,30 @@
      "cuentas": {}
     }
    },
-   "ver": {}
+   "ver": {
+    "FFA|2026-11-01": {
+     "1493416945037611140": [
+      "Lizeninn",
+      "Lizeninn",
+      "lizeninn."
+     ],
+     "794200141023412244": [
+      "#7 | mr. still ballin",
+      "mr. still ballin",
+      "imstillplayin"
+     ],
+     "1345962362615894027": [
+      "#57 | Kravitz",
+      "Kravitz",
+      "thekravitz777"
+     ],
+     "1523082259870257315": [
+      "nc",
+      "Nc",
+      "nachonc_"
+     ]
+    }
+   }
   }
  }
 }

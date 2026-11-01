@@ -92,7 +92,7 @@
   "msg": "1554362792432246878"
  },
  "372": {
-  "firma": "__ RAP EXHIBITION 2 8 __|29/09|18|13|1|0",
+  "firma": "__ RAP EXHIBITION 2 8 __|29/09|18|13|2|0",
   "msg": "1554619603953385566"
  },
  "373": {
@@ -27991,7 +27991,7 @@
    "mats": 3
   },
   "fecha": "27/10",
-  "firma": "834fe42b356a5517",
+  "firma": "8599e387db670773",
   "msg": "1564844210035757187",
   "nombre": "__ QCYO RAPEEN 5 __",
   "num": 539,
@@ -31740,6 +31740,243 @@
     "TøKīØ🦠🧠",
     "Cuartos",
     2000
+   ]
+  ],
+  "v": 2
+ },
+ "555": {
+  "antes": {
+   "AKARK": [
+    315,
+    229,
+    true
+   ],
+   "Abyssus": [
+    19,
+    22,
+    false
+   ],
+   "Andres": [
+    232,
+    51,
+    true
+   ],
+   "Desu": [
+    507,
+    488,
+    true
+   ],
+   "NC": [
+    21,
+    24,
+    false
+   ],
+   "Neo": [
+    233,
+    52,
+    true
+   ],
+   "Oasis": [
+    2,
+    2,
+    false
+   ],
+   "PichulaMc": [
+    3,
+    3,
+    false
+   ],
+   "Player": [
+    56,
+    73,
+    false
+   ],
+   "Provenza": [
+    20,
+    23,
+    false
+   ],
+   "SULTAN": [
+    263,
+    146,
+    true
+   ],
+   "Six": [
+    6,
+    7,
+    false
+   ],
+   "Snow": [
+    5,
+    6,
+    false
+   ],
+   "Tam": [
+    224,
+    17,
+    true
+   ],
+   "Vandu": [
+    13,
+    14,
+    false
+   ],
+   "Velatz": [
+    17,
+    20,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Provenza, Neo",
+    "Tam, PichulaMc",
+    "Provenza, Neo"
+   ],
+   [
+    "NC, Six",
+    "AKARK, Desu",
+    "NC, Six"
+   ],
+   [
+    "Oasis, Snow",
+    "Andres, Player",
+    "Oasis, Snow"
+   ],
+   [
+    "Abyssus, Velatz",
+    "SULTAN, Vandu",
+    "Abyssus, Velatz"
+   ],
+   [
+    "Provenza, Neo, Tam",
+    "Six, NC, AKARK",
+    "Provenza, Neo, Tam"
+   ],
+   [
+    "Oasis, Snow, Andres",
+    "Abyssus, Velatz, Vandu",
+    "Oasis, Snow, Andres"
+   ],
+   [
+    "Oasis, Andres, Snow, Abyssus",
+    "Provenza, Neo, Tam, NC",
+    "Oasis, Andres, Snow, Abyssus"
+   ]
+  ],
+  "ev_antes": {
+   "AKARK": 2,
+   "Abyssus": 19,
+   "Andres": 18,
+   "Desu": 1,
+   "NC": 44,
+   "Neo": 13,
+   "Oasis": 37,
+   "PichulaMc": 55,
+   "Player": 11,
+   "Provenza": 34,
+   "SULTAN": 8,
+   "Six": 38,
+   "Snow": 41,
+   "Tam": 18,
+   "Vandu": 40,
+   "Velatz": 42
+  },
+  "fecha": "20/10",
+  "firma": "aad574bbd44ce024",
+  "msg": "1566322093061046293",
+  "nombre": "DESGRACIAS EN TOKYO VOL 29 PANDILLAS",
+  "num": 555,
+  "participantes": 16,
+  "sello": {
+   "Abyssus": "18ac07e89b98:ccd09f762e04",
+   "Andres": "",
+   "Oasis": "87264644e697:ccd09f762e04",
+   "Snow": "403c6b15a18f:ccd09f762e04"
+  },
+  "sv": "FFA",
+  "t": "2026-11-01T05:24:46Z",
+  "tabla": [
+   [
+    "Abyssus",
+    "Campeón",
+    4250
+   ],
+   [
+    "Andres",
+    "Campeón",
+    3750
+   ],
+   [
+    "NC",
+    "Subcampeón",
+    3625
+   ],
+   [
+    "Tam",
+    "Subcampeón",
+    3125
+   ],
+   [
+    "Vandu",
+    "Semifinal",
+    3000
+   ],
+   [
+    "Oasis",
+    "Campeón",
+    2500
+   ],
+   [
+    "Snow",
+    "Campeón",
+    2500
+   ],
+   [
+    "Provenza",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Neo",
+    "Subcampeón",
+    1875
+   ],
+   [
+    "Six",
+    "Semifinal",
+    1750
+   ],
+   [
+    "AKARK",
+    "Semifinal",
+    1750
+   ],
+   [
+    "Velatz",
+    "Semifinal",
+    1750
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Desu",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Player",
+    "Cuartos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Cuartos",
+    1250
    ]
   ],
   "v": 2

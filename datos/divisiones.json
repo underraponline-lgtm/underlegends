@@ -37,6 +37,11 @@
      "MCO",
      11625,
      2
+    ],
+    [
+     "Velatz",
+     3750,
+     1
     ]
    ]
   ],
@@ -48,9 +53,9 @@
      7
     ],
     [
-     "PRAISERIZA",
-     46747,
-     4
+     "NC",
+     47700,
+     7
     ],
     [
      "Sin Limites",
@@ -73,11 +78,6 @@
      3
     ],
     [
-     "LRS",
-     19748,
-     4
-    ],
-    [
      "Mr Still Ballin",
      12500,
      1
@@ -98,12 +98,12 @@
      1
     ],
     [
-     "Bloody",
-     3750,
+     "Snow",
+     7500,
      1
     ],
     [
-     "Velatz",
+     "Bloody",
      3750,
      1
     ]
@@ -132,9 +132,9 @@
      8
     ],
     [
-     "NC",
-     47700,
-     7
+     "PRAISERIZA",
+     46747,
+     4
     ],
     [
      "NXUZ",
@@ -289,6 +289,11 @@
      2
     ],
     [
+     "LRS",
+     19748,
+     4
+    ],
+    [
      "Soulb",
      17500,
      1
@@ -332,11 +337,6 @@
      "Colesito",
      7500,
      2
-    ],
-    [
-     "Snow",
-     7500,
-     1
     ],
     [
      "Geoka",
@@ -1079,6 +1079,7 @@
   "Bludi🇨🇴": 5,
   "Btrece": 5,
   "Bull12r": 5,
+  "CEEGE": 5,
   "CHOCLITO": 5,
   "CJ": 4,
   "Cabece": 5,
@@ -1196,7 +1197,7 @@
   "Gocho": 4,
   "Gosu Z": 5,
   "Greyfitsh🇵🇦": 4,
-  "Guess": 2,
+  "Guess": 3,
   "Gus": 5,
   "Guty": 5,
   "Gwynyth": 5,
@@ -1209,7 +1210,6 @@
   "Holden": 5,
   "Hotaru Adeyemi 🏳️‍⚧️": 4,
   "Humildad": 5,
-  "IFX": 5,
   "ISAIAS": 5,
   "Iguana": 5,
   "Imagy": 5,
@@ -1272,7 +1272,7 @@
   "LKS 🇨🇱": 5,
   "LOLOELGAUCHO": 5,
   "LOLOELGAUCHO 🇦🇷": 5,
-  "LRS": 3,
+  "LRS": 4,
   "LRS LA MARIHUANA🇵🇰": 5,
   "LSO": 5,
   "LV": 5,
@@ -1344,7 +1344,7 @@
   "MvA": 5,
   "N1k": 5,
   "NAW": 5,
-  "NC": 4,
+  "NC": 3,
   "NILS": 5,
   "NXUZ": 4,
   "NYCO": 5,
@@ -1373,7 +1373,7 @@
   "PETER🇵🇪": 5,
   "PIERR🇵🇪": 5,
   "PLA PLA": 5,
-  "PRAISERIZA": 3,
+  "PRAISERIZA": 4,
   "PROMETHEUS BIB 🇨🇴": 5,
   "PUBLIC ENEMY": 5,
   "Paja lenta🇬🇩": 5,
@@ -1453,7 +1453,7 @@
   "Skratch": 5,
   "Slasher": 5,
   "Snake": 5,
-  "Snow": 4,
+  "Snow": 3,
   "Soft": 5,
   "Sombra": 4,
   "Soneto": 5,
@@ -1484,7 +1484,7 @@
   "Valen": 5,
   "Vandu": 3,
   "Vargas": 5,
-  "Velatz": 3,
+  "Velatz": 2,
   "Verc": 4,
   "Vilca": 4,
   "Vlade": 5,
@@ -2533,7 +2533,7 @@
   ],
   [
    "2026-10-19",
-   "Guess",
+   "Velatz",
    2
   ],
   [
@@ -2558,7 +2558,7 @@
   ],
   [
    "2026-10-19",
-   "LRS",
+   "NC",
    3
   ],
   [
@@ -2601,12 +2601,12 @@
    "Cronox",
    "Fazer",
    "Noa",
+   "PRAISERIZA",
    "Panchok",
    "Pomberito",
    "Prodigy",
    "Provenza",
    "Raizer",
-   "Snow",
    "Verc",
    "Zignos"
   ],
@@ -2628,12 +2628,10 @@
    "Deluxe",
    "Dominick",
    "FanDAbel",
-   "Guess",
    "J19",
    "Julix🇧🇴",
    "Kuni",
    "LAST",
-   "LRS",
    "Liberia",
    "Lizeninn",
    "MATUK 🇦🇷",
@@ -2645,6 +2643,7 @@
    "Mathhias",
    "Miniboy",
    "Mosquitrap 🦟",
+   "NC",
    "OKAM",
    "PichulaMc",
    "SULTAN",
@@ -2654,6 +2653,7 @@
    "Tuca",
    "TøKīØ🦠🧠",
    "Vandu",
+   "Velatz",
    "Vilca",
    "Zekha"
   ]
