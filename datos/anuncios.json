@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-01T02:55:30+00:00",
+ "cuando": "2026-11-01T03:25:55+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5917,6 +5917,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Suplente last🇺🇾🇪🇸",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1566291146743742576",
+   "cuando": "2026-11-01T03:21:49"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Velatz 🇺🇸",
+   "quien": "funhorlavild",
+   "discord_id": "1426686911908675628",
+   "msg_id": "1566290779239092307",
+   "cuando": "2026-11-01T03:20:22"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Calíz 🇲🇽",
+   "quien": "caliz123_",
+   "discord_id": "1546111597343146044",
+   "msg_id": "1566288761539657749",
+   "cuando": "2026-11-01T03:12:20"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Lrs🇦🇷",
+   "quien": "lrs0378",
+   "discord_id": "1385452830684614697",
+   "msg_id": "1566284677726208041",
+   "cuando": "2026-11-01T02:56:07"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
@@ -41880,42 +41916,6 @@
    "discord_id": "1347663033949880360",
    "msg_id": "1554583590321389651",
    "cuando": "2026-09-29T20:00:10"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "morro_gxrcia18 🇦🇷",
-   "quien": "gru20192",
-   "discord_id": "1296910893354979368",
-   "msg_id": "1554568011866841089",
-   "cuando": "2026-09-29T18:58:16"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Cinexfilo 🇻🇪",
-   "quien": "cinexfilosanity",
-   "discord_id": "781971857519804417",
-   "msg_id": "1554343945339670571",
-   "cuando": "2026-09-29T04:07:54"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "snow🇨🇴",
-   "quien": "snowzzzzzzzz",
-   "discord_id": "1097714486795849748",
-   "msg_id": "1554341295760085043",
-   "cuando": "2026-09-29T03:57:23"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "praiseriza",
-   "quien": "lein7426",
-   "discord_id": "1078792444080046271",
-   "msg_id": "1554337467048534077",
-   "cuando": "2026-09-29T03:42:10"
   }
  ]
 }
