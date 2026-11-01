@@ -440,7 +440,7 @@
    "temporada": "d1c926b195b1:ccd09f762e04"
   },
   "Erian": {
-   "competitivo": "385a1e822b4a:7d41d0503ea2",
+   "competitivo": "bade010483d2:7d41d0503ea2",
    "pais": "bf7f7a90abd0:ada55a12db94",
    "servidor": "07f7128fb6a8:decaf64d9256:99e3cc",
    "temporada": "438d4d20fbec:ccd09f762e04"
@@ -539,10 +539,10 @@
   },
   "Garxziiscity": {},
   "Geoka": {
-   "competitivo": "df30cc656b0b:7d41d0503ea2",
-   "pais": "2db21c648455:ada55a12db94",
+   "competitivo": "8702eecbe212:7d41d0503ea2",
+   "pais": "03e163aee5d5:ada55a12db94",
    "servidor": "3c1aadd07645:decaf64d9256:431540",
-   "temporada": "65bd22be6be0:ccd09f762e04"
+   "temporada": "e4fc207f2d87:ccd09f762e04"
   },
   "Geremy": {
    "servidor": "4dd315c53988:decaf64d9256:980594"
@@ -1149,10 +1149,10 @@
    "temporada": "ca880e41aef6:ccd09f762e04"
   },
   "Mr Still Ballin": {
-   "competitivo": "131f9514140c:7d41d0503ea2",
+   "competitivo": "12bd0b66f5c9:7d41d0503ea2",
    "pais": "6072d4a842b5:ada55a12db94",
    "servidor": "2601c05a2b21:decaf64d9256:c09f56",
-   "temporada": "b7f3986a1be1:ccd09f762e04"
+   "temporada": "4ff8d0de5604:ccd09f762e04"
   },
   "Mspedrito": {
    "servidor": "c97088c01554:decaf64d9256:055f77"
@@ -1968,5 +1968,5 @@
    "servidor": "7f8885a35a6d:decaf64d9256:93a344"
   }
  },
- "cuando": "2026-11-01T06:50:52+00:00"
+ "cuando": "2026-11-01T07:00:47+00:00"
 }
