@@ -1,6 +1,6 @@
 {
  "_leeme": "El ranking de ascenso de cada servidor, al día (bot/ascenso.py): su tabla oficial más lo que vino después, con sus reglas (datos/ascenso_reglas.json). `filas`: [nombre, cc, pts, lo sumado, raw]. `pendiente`: lo que no se sabe y no suma (las preguntas de Dlx a cada servidor).",
- "t": "2026-10-31T23:36:01Z",
+ "t": "2026-11-01T00:04:28Z",
  "sv": {
   "SR": {
    "filas": [
@@ -54,11 +54,11 @@
      "Colesito"
     ],
     [
-     "AARÓN EL ARTE",
+     "MITO",
      "ar",
      6000,
      6000,
-     ""
+     "Mito"
     ],
     [
      "MASINO",
@@ -524,7 +524,7 @@
      "rango": "2",
      "puntos": [
       [
-       "Aarón El arte",
+       "Mito",
        "Campeón",
        6000
       ],

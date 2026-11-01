@@ -40042,20 +40042,20 @@
     "b": [
      [
       [
-       "Aarón El arte🇦🇷",
+       "Mito",
        "Delux",
-       "bay🇺🇾",
+       "Ivan",
        "Erian"
       ],
-      "Aarón El arte🇦🇷",
+      "Mito",
       "triple (4 bandas)"
      ],
      [
       [
        "Trelok",
-       "JOAQUIN",
+       "Joaquín La Profecia 👨🏻‍🍳",
        "Bloody",
-       "Kastigoz 🇨🇴"
+       "Kastigoz"
       ],
       "Trelok",
       "triple (4 bandas)"
@@ -40087,10 +40087,10 @@
     "b": [
      [
       [
-       "Aarón El arte🇦🇷",
+       "Mito",
        "Trelok"
       ],
-      "Aarón El arte🇦🇷",
+      "Mito",
       ""
      ],
      [
@@ -40108,10 +40108,10 @@
     "b": [
      [
       [
-       "Aarón El arte🇦🇷",
+       "Mito",
        "Bau"
       ],
-      "Aarón El arte🇦🇷",
+      "Mito",
       ""
      ]
     ],
@@ -40121,7 +40121,7 @@
   "sv": "SR",
   "tabla": [
    [
-    "Aarón El arte🇦🇷",
+    "Mito",
     "Campeón",
     10000
    ],
@@ -40161,12 +40161,17 @@
     2500
    ],
    [
-    "JOAQUIN",
+    "Ivan",
     "Cuartos",
     2500
    ],
    [
-    "Kastigoz 🇨🇴",
+    "Joaquín La Profecia 👨🏻‍🍳",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Kastigoz",
     "Cuartos",
     2500
    ],
@@ -40194,11 +40199,146 @@
     "Velatz",
     "Cuartos",
     2500
+   ]
+  ]
+ },
+ "554": {
+  "dia": "2026-10-31",
+  "escala": "8-15",
+  "fecha": "31/10",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1566228896850903131"
+  ],
+  "n": 554,
+  "nombre": "19 CUP LLAVES",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "JULIX",
+       "Walker"
+      ],
+      "JULIX",
+      ""
+     ],
+     [
+      [
+       "Keider",
+       "Number VE"
+      ],
+      "Keider",
+      ""
+     ],
+     [
+      [
+       "Carlosss",
+       "Mathhias"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "TøKīØ🦠🧠"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "JULIX"
+      ],
+      "Carlosss",
+      ""
+     ],
+     [
+      [
+       "Makmah",
+       "Keider"
+      ],
+      "Makmah",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "JULIX",
+       "Keider"
+      ],
+      "JULIX",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "Carlosss",
+       "Makmah"
+      ],
+      "Carlosss",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Carlosss",
+    "Campeón",
+    7500
    ],
    [
-    "bay🇺🇾",
+    "Makmah",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "JULIX",
+    "Tercero",
+    4000
+   ],
+   [
+    "Keider",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Mathhias",
     "Cuartos",
-    2500
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Walker",
+    "Cuartos",
+    2000
    ]
   ]
  }

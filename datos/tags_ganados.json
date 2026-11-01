@@ -1526,6 +1526,11 @@
     "t1",
     1793029252929
    ],
+   "🎯 INFALIBLE": [
+    "🎯 INFALIBLE",
+    "t1",
+    1793491575234
+   ],
    "😈 BESTIA NEGRA": [
     "😈 BESTIA NEGRA",
     "t1",
@@ -1552,6 +1557,11 @@
     "🏅 PODIOS",
     "t1",
     1793029252929
+   ],
+   "🏅 VITRINA LLENA": [
+    "🏅 VITRINA LLENA",
+    "t1",
+    1793491575234
    ],
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",
@@ -1601,9 +1611,14 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x7",
+    "👑 CAMPEÓN x8",
     "t1",
     1793029252929
+   ],
+   "💯 BICENTENARIO": [
+    "💯 BICENTENARIO",
+    "t1",
+    1793491575234
    ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
@@ -4157,6 +4172,11 @@
     "🏅 PODIOS",
     "t1",
     1793062856503
+   ],
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1793491575234
    ]
   },
   "temporada": {
@@ -4257,6 +4277,11 @@
    ]
   },
   "temporada": {
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1793491575234
+   ],
    "🧟 RESUCITADO": [
     "🧟 RESUCITADO",
     "t1",
@@ -5322,6 +5347,11 @@
     "t1",
     1793029252929
    ],
+   "REY DEL DERBI": [
+    "REY DEL DERBI",
+    "t1",
+    1793491575234
+   ],
    "SIN FRONTERAS": [
     "SIN FRONTERAS",
     "t1",
@@ -6075,6 +6105,20 @@
     "🧳 VIAJERO",
     "t1",
     1793029252929
+   ]
+  }
+ },
+ "mito": {
+  "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1793491575234
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1793491575234
    ]
   }
  },
@@ -10471,6 +10515,11 @@
     "📋 SEMANA PERFECTA",
     "t1",
     1792953978519
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1793491575234
    ],
    "🛫 NÓMADA": [
     "🛫 NÓMADA",

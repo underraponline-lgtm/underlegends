@@ -3187,6 +3187,33 @@
      "721093043197050951"
     ]
    }
+  },
+  {
+   "id": "32bd37d3d0",
+   "tipo": "Nombre desconocido",
+   "sec": "PRADERAP VOL.2 · ACAD · 27/10 · #535",
+   "que": "¿Quién es «Turbo 🇪🇦»?",
+   "r": "Es Tmax Turbo [PN]",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Tmax Turbo [PN]: estaba en la llamada del evento con un nombre parecido",
+   "t": 1793491559040,
+   "filas": [
+    917
+   ],
+   "variantes": [
+    "Turbo 🇪🇦"
+   ],
+   "escribio": {
+    "alias": [
+     "Turbo",
+     "Tmax Turbo [PN]"
+    ],
+    "filas": [
+     333
+    ]
+   }
   }
  ],
  "deshechas": []

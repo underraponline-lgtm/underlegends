@@ -31411,23 +31411,23 @@
   "canal": "863207986264932372",
   "duelos": [
    [
-    "Aarón El arte🇦🇷",
+    "Mito",
     "Delux",
-    "Aarón El arte🇦🇷"
+    "Mito"
    ],
    [
-    "Aarón El arte🇦🇷",
-    "bay🇺🇾",
-    "Aarón El arte🇦🇷"
+    "Mito",
+    "Ivan",
+    "Mito"
    ],
    [
-    "Aarón El arte🇦🇷",
+    "Mito",
     "Erian",
-    "Aarón El arte🇦🇷"
+    "Mito"
    ],
    [
     "Trelok",
-    "JOAQUIN",
+    "Joaquín La Profecia 👨🏻‍🍳",
     "Trelok"
    ],
    [
@@ -31437,7 +31437,7 @@
    ],
    [
     "Trelok",
-    "Kastigoz 🇨🇴",
+    "Kastigoz",
     "Trelok"
    ],
    [
@@ -31471,9 +31471,9 @@
     "Bau"
    ],
    [
-    "Aarón El arte🇦🇷",
+    "Mito",
     "Trelok",
-    "Aarón El arte🇦🇷"
+    "Mito"
    ],
    [
     "Bau",
@@ -31481,9 +31481,9 @@
     "Bau"
    ],
    [
-    "Aarón El arte🇦🇷",
+    "Mito",
     "Bau",
-    "Aarón El arte🇦🇷"
+    "Mito"
    ]
   ],
   "ev_antes": {
@@ -31499,7 +31499,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "c391c70b56ebab19",
+  "firma": "1693c6dfaad597c8",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -31511,7 +31511,7 @@
   "t": "2026-10-31T23:24:37Z",
   "tabla": [
    [
-    "Aarón El arte🇦🇷",
+    "Mito",
     "Campeón",
     10000
    ],
@@ -31536,7 +31536,7 @@
     2500
    ],
    [
-    "bay🇺🇾",
+    "Ivan",
     "Cuartos",
     2500
    ],
@@ -31546,7 +31546,7 @@
     2500
    ],
    [
-    "JOAQUIN",
+    "Joaquín La Profecia 👨🏻‍🍳",
     "Cuartos",
     2500
    ],
@@ -31556,7 +31556,7 @@
     2500
    ],
    [
-    "Kastigoz 🇨🇴",
+    "Kastigoz",
     "Cuartos",
     2500
    ],
@@ -31589,6 +31589,157 @@
     "Valdrax",
     "Cuartos",
     2500
+   ]
+  ],
+  "v": 2
+ },
+ "554": {
+  "antes": {
+   "Carlosss": [
+    18,
+    21,
+    false
+   ],
+   "JULIX": [
+    257,
+    139,
+    true
+   ],
+   "Keider": [
+    88,
+    114,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Mathhias": [
+    87,
+    112,
+    false
+   ],
+   "Number VE": [
+    78,
+    103,
+    false
+   ],
+   "TøKīØ🦠🧠": [
+    63,
+    80,
+    false
+   ],
+   "Walker": [
+    24,
+    29,
+    false
+   ]
+  },
+  "canal": "1469943905771585708",
+  "duelos": [
+   [
+    "JULIX",
+    "Walker",
+    "JULIX"
+   ],
+   [
+    "Keider",
+    "Number VE",
+    "Keider"
+   ],
+   [
+    "Carlosss",
+    "Mathhias",
+    "Carlosss"
+   ],
+   [
+    "Makmah",
+    "TøKīØ🦠🧠",
+    "Makmah"
+   ],
+   [
+    "Carlosss",
+    "JULIX",
+    "Carlosss"
+   ],
+   [
+    "Makmah",
+    "Keider",
+    "Makmah"
+   ],
+   [
+    "Carlosss",
+    "Makmah",
+    "Carlosss"
+   ],
+   [
+    "JULIX",
+    "Keider",
+    "JULIX"
+   ]
+  ],
+  "ev_antes": {
+   "Carlosss": 15,
+   "JULIX": 4,
+   "Keider": 9,
+   "Makmah": 91,
+   "Mathhias": 7,
+   "Number VE": 12,
+   "TøKīØ🦠🧠": 9,
+   "Walker": 10
+  },
+  "fecha": "31/10",
+  "firma": "d7d2454c7d6f26d8",
+  "msg": "1566232552568786995",
+  "nombre": "19 CUP LLAVES",
+  "num": 554,
+  "participantes": 8,
+  "sello": {
+   "Carlosss": "16402d2f46f0:e8f4f15f7e3a"
+  },
+  "sv": "DDF",
+  "t": "2026-10-31T23:54:43Z",
+  "tabla": [
+   [
+    "Carlosss",
+    "Campeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "JULIX",
+    "Tercero",
+    4000
+   ],
+   [
+    "Keider",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Walker",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Mathhias",
+    "Cuartos",
+    2000
+   ],
+   [
+    "TøKīØ🦠🧠",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2

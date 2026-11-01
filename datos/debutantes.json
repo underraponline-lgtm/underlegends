@@ -89,19 +89,6 @@
    "vence": "2026-11-03T03:32:41+00:00",
    "vencido": false
   },
-  "Aarón El arte": {
-   "avisado": "2026-10-31",
-   "chat": "2026-10-31",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-31T21:34:25+00:00",
-   "did": "",
-   "evento": "SNAKE INSIGNIA 7 8",
-   "n": 553,
-   "sv": "SR",
-   "vence": "2026-11-07T21:34:25+00:00",
-   "vencido": false
-  },
   "Abysuss": {
    "avisado": "2026-10-12",
    "chat": "2026-10-12",
@@ -666,6 +653,18 @@
    "vence": "2026-11-07T06:06:01+00:00",
    "vencido": false
   },
+  "Ivan": {
+   "avisado": "2026-10-31",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-31T21:34:25+00:00",
+   "did": "206800559372632064",
+   "evento": "SNAKE INSIGNIA 7 8",
+   "n": 553,
+   "sv": "SR",
+   "vence": "2026-11-07T21:34:25+00:00",
+   "vencido": false
+  },
   "J.r": {
    "avisado": "2026-10-19",
    "chat": "2026-10-20",
@@ -691,19 +690,6 @@
    "n": 488,
    "sv": "FFA",
    "vence": "2026-10-26T06:14:16+00:00",
-   "vencido": false
-  },
-  "JOAQUIN": {
-   "avisado": "2026-10-31",
-   "chat": "2026-10-31",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-31T21:34:25+00:00",
-   "did": "",
-   "evento": "SNAKE INSIGNIA 7 8",
-   "n": 553,
-   "sv": "SR",
-   "vence": "2026-11-07T21:34:25+00:00",
    "vencido": false
   },
   "Jahno Afrodisiaco": {
@@ -805,7 +791,7 @@
    "con": null,
    "cumplido": "",
    "debut": "2026-10-31T21:34:25+00:00",
-   "did": "",
+   "did": "721093043197050951",
    "evento": "SNAKE INSIGNIA 7 8",
    "n": 553,
    "sv": "SR",
@@ -1767,19 +1753,6 @@
    "n": 551,
    "sv": "FFA",
    "vence": "2026-11-07T06:06:01+00:00",
-   "vencido": false
-  },
-  "bay": {
-   "avisado": "2026-10-31",
-   "chat": "2026-10-31",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-31T21:34:25+00:00",
-   "did": "",
-   "evento": "SNAKE INSIGNIA 7 8",
-   "n": 553,
-   "sv": "SR",
-   "vence": "2026-11-07T21:34:25+00:00",
    "vencido": false
   },
   "dyss": {
