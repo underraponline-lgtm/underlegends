@@ -61,7 +61,7 @@
    "n": 512,
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
-   "vencido": false
+   "vencido": true
   },
   "AL3": {
    "avisado": "2026-10-30",
@@ -181,7 +181,7 @@
    "n": 512,
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
-   "vencido": false
+   "vencido": true
   },
   "BLUE BURKA": {
    "avisado": "2026-10-23",
@@ -233,7 +233,7 @@
    "n": 512,
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Cannox": {
    "avisado": "2026-10-30",
@@ -298,7 +298,7 @@
    "n": 512,
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Colo": {
    "avisado": "2026-10-25",
@@ -311,7 +311,7 @@
    "n": 512,
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
-   "vencido": false
+   "vencido": true
   },
   "DARK ANGEL": {
    "avisado": "2026-10-23",
@@ -548,7 +548,7 @@
    "n": 512,
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Guaicurús": {
    "avisado": "2026-10-29",
@@ -716,7 +716,7 @@
    "n": 512,
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Joaquín La Profecia 👨🏻‍🍳": {
    "avisado": "2026-10-12",
@@ -1176,7 +1176,7 @@
    "n": 512,
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Nain sdp": {
    "avisado": "2026-10-30",
@@ -1728,7 +1728,7 @@
    "n": 512,
    "sv": "FFA",
    "vence": "2026-11-01T00:48:12+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Zaza B": {
    "avisado": "2026-10-26",
