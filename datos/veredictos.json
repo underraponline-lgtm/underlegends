@@ -1739,6 +1739,28 @@
    "b": "TOKIO 🇦🇷",
    "ganador": "MILO 🇲🇽",
    "votos": "1–0"
+  },
+  "1566325092378607659": {
+   "id": "1566325092378607659",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793511402936,
+   "a": "makmah 🇻🇪",
+   "b": "nc🇰🇷",
+   "ganador": "makmah 🇻🇪",
+   "votos": "2–1"
+  },
+  "1566327342614192240": {
+   "id": "1566327342614192240",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793511939434,
+   "a": "geoka",
+   "b": "erian",
+   "ganador": "geoka",
+   "votos": "2–1"
   }
  },
  "llaves": {
@@ -5739,8 +5761,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793509526550,
-   "ed": 1793510148538,
-   "texto": "`[ OCTAVOS ]`\n⌞MR STILL BALIN⌝ 🆚 ⌞BLITZ⌝ 🆚 ⌞LISEN⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞MILLONARIO⌝ 🆚 ⌞CALIZ⌝ 🆚 ⌞SNOW⌝",
+   "ed": 1793512422190,
+   "texto": "`[ OCTAVOS ]`\n⌞MR STILL BALIN⌝ 🆚 ⌞BLITZ⌝ 🆚 ⌞LISEN⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞MILLONARIO⌝ 🆚 ⌞CALIZ⌝ 🆚 ⌞SNOW⌝\n`[ OCTAVOS ]`\n⌞okam🇨🇷⌝ 🆚 ⌞nc🇰🇷⌝ 🆚 ⌞yinn 🇲🇦⌝ 🆚 ⌞erian🇵🇦⌝\n`[ CUARTOS ]`\n⌞makmah 🇻🇪⌝ 🆚 ⌞nc🇰🇷⌝\n`[ CUARTOS ]`\n⌞geoka⌝ 🆚 ⌞erian⌝\n`[ SEMIFINALES ]`\n⌞BLITZ 🇮🇱⌝ 🆚 ⌞makmah 🇻🇪⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5749,8 +5771,8 @@
       "BLITZ",
       "LISEN"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "BLITZ",
+     "ronda siguiente",
      []
     ],
     [
@@ -5763,6 +5785,48 @@
      ],
      "SNOW",
      "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "okam🇨🇷",
+      "nc🇰🇷",
+      "yinn 🇲🇦",
+      "erian🇵🇦"
+     ],
+     "erian🇵🇦",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "makmah 🇻🇪",
+      "nc🇰🇷"
+     ],
+     "makmah 🇻🇪",
+     "veredicto",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "geoka",
+      "erian"
+     ],
+     "geoka",
+     "veredicto",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "BLITZ 🇮🇱",
+      "makmah 🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
      []
     ]
    ]
