@@ -77,7 +77,7 @@
 ]
 },
 "mrstillballin": {
-"rg": "A",
+"rg": "S",
 "c": [
 "competitivo",
 "servidor",
@@ -163,14 +163,6 @@
 "temporada"
 ]
 },
-"zignos": {
-"rg": "B",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "abyssus": {
 "rg": "S",
 "c": [
@@ -193,6 +185,14 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"zignos": {
+"rg": "B",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -240,6 +240,15 @@
 "temporada"
 ]
 },
+"okam": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "delux": {
 "rg": "C",
 "c": [
@@ -258,15 +267,6 @@
 ]
 },
 "bloody": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"okam": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -306,15 +306,6 @@
 "rg": "C",
 "c": []
 },
-"cronox": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "majiztral": {
 "rg": "C",
 "c": [
@@ -328,12 +319,8 @@
 "rg": "C",
 "c": []
 },
-"dominick": {
+"cronox": {
 "rg": "D",
-"c": []
-},
-"lordviruzz": {
-"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -341,8 +328,8 @@
 "temporada"
 ]
 },
-"trot": {
-"rg": "D",
+"lordviruzz": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -380,6 +367,19 @@
 "rg": "C",
 "c": [
 "competitivo",
+"servidor",
+"temporada"
+]
+},
+"dominick": {
+"rg": "D",
+"c": []
+},
+"trot": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
 "servidor",
 "temporada"
 ]
@@ -451,6 +451,15 @@
 "temporada"
 ]
 },
+"geoka": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "paria": {
 "rg": "D",
 "c": []
@@ -486,15 +495,6 @@
 },
 "keider": {
 "rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"geoka": {
-"rg": "E",
 "c": [
 "competitivo",
 "pais",
@@ -548,14 +548,6 @@
 "rg": "",
 "c": []
 },
-"cinexfilo": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "jult": {
 "rg": "E",
 "c": [
@@ -588,6 +580,14 @@
 "c": [
 "competitivo",
 "pais",
+"servidor",
+"temporada"
+]
+},
+"cinexfilo": {
+"rg": "E",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -888,6 +888,10 @@
 "rg": "",
 "c": []
 },
+"blitz": {
+"rg": "",
+"c": []
+},
 "mosquitrap": {
 "rg": "",
 "c": []
@@ -905,17 +909,6 @@
 "servidor",
 "temporada"
 ]
-},
-"zeta": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"fazer": {
-"rg": "",
-"c": []
 },
 "juanpa": {
 "rg": "",
@@ -989,11 +982,14 @@
 "rg": "",
 "c": []
 },
-"blitz": {
+"zeta": {
 "rg": "",
-"c": []
+"c": [
+"servidor",
+"temporada"
+]
 },
-"betelguese": {
+"fazer": {
 "rg": "",
 "c": []
 },
@@ -1067,6 +1063,10 @@
 "servidor"
 ]
 },
+"betelguese": {
+"rg": "",
+"c": []
+},
 "richard": {
 "rg": "E",
 "c": [
@@ -1093,10 +1093,6 @@
 ]
 },
 "noa": {
-"rg": "",
-"c": []
-},
-"fleivaman": {
 "rg": "",
 "c": []
 },
@@ -1149,6 +1145,10 @@
 "temporada"
 ]
 },
+"millonario": {
+"rg": "",
+"c": []
+},
 "scritura": {
 "rg": "",
 "c": [
@@ -1182,10 +1182,6 @@
 "servidor",
 "temporada"
 ]
-},
-"millonario": {
-"rg": "",
-"c": []
 },
 "joshu": {
 "rg": "",
@@ -1225,6 +1221,10 @@
 "pais",
 "servidor"
 ]
+},
+"fleivaman": {
+"rg": "",
+"c": []
 },
 "chekialo": {
 "rg": "",
@@ -1286,10 +1286,6 @@
 "temporada"
 ]
 },
-"akark": {
-"rg": "",
-"c": []
-},
 "hh": {
 "rg": "",
 "c": [
@@ -1307,6 +1303,14 @@
 "servidor"
 ]
 },
+"maticerna": {
+"rg": "",
+"c": []
+},
+"akark": {
+"rg": "",
+"c": []
+},
 "road": {
 "rg": "",
 "c": []
@@ -1319,10 +1323,6 @@
 ]
 },
 "julix-bo": {
-"rg": "",
-"c": []
-},
-"maticerna": {
 "rg": "",
 "c": []
 },
@@ -2674,22 +2674,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T03:08:41Z",
-"quien": [
-"Number VE"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T03:08:41Z",
-"quien": [
-"Number VE"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-04T03:08:41Z",
@@ -6029,6 +6013,24 @@
 "Abyssus"
 ],
 "rg": "S",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-11-01T06:33:06Z",
+"quien": [
+"Mr Still Ballin"
+],
+"rg": "S",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-11-01T06:33:06Z",
+"quien": [
+"Geoka"
+],
+"rg": "D",
 "primero": false
 }
 ]

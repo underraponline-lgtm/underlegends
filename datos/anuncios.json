@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-01T05:55:24+00:00",
+ "cuando": "2026-11-01T06:25:40+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5920,6 +5920,15 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
+   "texto": "Relámpago 🇵🇪",
+   "quien": "elmichi0650",
+   "discord_id": "1196253986081210448",
+   "msg_id": "1566335412723515403",
+   "cuando": "2026-11-01T06:17:43"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
    "texto": "Lrs🇦🇷",
    "quien": "lrs0378",
    "discord_id": "1385452830684614697",
@@ -6046,19 +6055,19 @@
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "praiseriza 🇻🇪",
-   "quien": "lein7426",
-   "discord_id": "1078792444080046271",
-   "msg_id": "1566313802935566500",
+   "texto": "makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1566313801631137915",
    "cuando": "2026-11-01T04:51:51"
   },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
-   "texto": "makmah 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1566313801631137915",
+   "texto": "praiseriza 🇻🇪",
+   "quien": "lein7426",
+   "discord_id": "1078792444080046271",
+   "msg_id": "1566313802935566500",
    "cuando": "2026-11-01T04:51:51"
   },
   {
@@ -41907,15 +41916,6 @@
    "discord_id": "522777983921029162",
    "msg_id": "1554599072722190369",
    "cuando": "2026-09-29T21:01:41"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Pulido🇪🇸",
-   "quien": "pulido6207",
-   "discord_id": "384414196785479680",
-   "msg_id": "1554594807400108074",
-   "cuando": "2026-09-29T20:44:45"
   }
  ]
 }

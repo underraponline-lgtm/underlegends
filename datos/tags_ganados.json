@@ -1446,6 +1446,11 @@
     "t1",
     1792992726322
    ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1793514814004
+   ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
     "t1",
@@ -3511,6 +3516,11 @@
     "📅 INFALTABLE",
     "t1",
     1793029252929
+   ],
+   "📋 SEMANA PERFECTA": [
+    "📋 SEMANA PERFECTA",
+    "t1",
+    1793514814004
    ],
    "🔟 DOBLE DÍGITO": [
     "🔟 DOBLE DÍGITO",
@@ -6005,6 +6015,15 @@
    ]
   }
  },
+ "millonario": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1793514814004
+   ]
+  }
+ },
  "miniboy": {
   "competitivo": {
    "⚔️ DUELISTA": [
@@ -6396,6 +6415,11 @@
     "t1",
     1793029252929
    ],
+   "🎯 FRANCOTIRADOR": [
+    "🎯 FRANCOTIRADOR",
+    "t1",
+    1793514814004
+   ],
    "🧊 SANGRE FRÍA": [
     "🧊 SANGRE FRÍA",
     "t1",
@@ -6422,6 +6446,11 @@
     "🏟️ FINALISTA DE CASA",
     "t1",
     1793029252929
+   ],
+   "🏯 CIUDADELA": [
+    "🏯 CIUDADELA",
+    "t1",
+    1793514814004
    ],
    "🏰 FORTALEZA": [
     "🏰 FORTALEZA",
@@ -6450,13 +6479,18 @@
     "t1",
     1793143878537
    ],
+   "🐦‍🔥 FÉNIX": [
+    "🐦‍🔥 FÉNIX",
+    "t1",
+    1793514814004
+   ],
    "🐺 LOBO SOLITARIO": [
     "🐺 LOBO SOLITARIO",
     "t1",
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x5",
+    "👑 CAMPEÓN x6",
     "t1",
     1793029252929
    ],
@@ -6481,7 +6515,7 @@
     1793029252929
    ],
    "📋 SEMANA PERFECTA x%d": [
-    "📋 SEMANA PERFECTA x2",
+    "📋 SEMANA PERFECTA x3",
     "t1",
     1793029252929
    ],
@@ -6499,6 +6533,11 @@
     "🥉 AL PODIO",
     "t1",
     1793029252929
+   ],
+   "🧟 RESUCITADO": [
+    "🧟 RESUCITADO",
+    "t1",
+    1793514814004
    ],
    "🧳 VIAJERO": [
     "🧳 VIAJERO",
@@ -11623,6 +11662,11 @@
     "📆 HABITUÉ",
     "t1",
     1793029252929
+   ],
+   "📖 HISTORIA VIVA": [
+    "📖 HISTORIA VIVA",
+    "t1",
+    1793514814004
    ],
    "🧱 FUNDADOR": [
     "🧱 FUNDADOR",

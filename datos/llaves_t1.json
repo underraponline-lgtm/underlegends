@@ -40503,5 +40503,170 @@
     1250
    ]
   ]
+ },
+ "556": {
+  "dia": "2026-11-01",
+  "escala": "8-15",
+  "fecha": "01/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487206164864438513/1566317222245310496"
+  ],
+  "n": 556,
+  "nombre": "la palera del edi",
+  "participantes": 13,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "BLITZ",
+       "Mr Still Ballin",
+       "LISEN"
+      ],
+      "BLITZ",
+      "triple (3 bandas); Revivido: mr still ballin 🇳🇴"
+     ],
+     [
+      [
+       "Snow",
+       "PRAISERIZA",
+       "Millonari-O",
+       "Calíz"
+      ],
+      "Snow",
+      "triple (4 bandas)"
+     ],
+     [
+      [
+       "Erian",
+       "OKAM",
+       "NC",
+       "yinn"
+      ],
+      "Erian",
+      "triple (4 bandas)"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "NC"
+      ],
+      "Makmah",
+      "Walk-in 1: makmah 🇻🇪"
+     ],
+     [
+      [
+       "Geoka",
+       "Erian"
+      ],
+      "Geoka",
+      "Walk-in 1: Geoka 🇦🇷"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "BLITZ"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Mr Still Ballin",
+       "Geoka"
+      ],
+      "Mr Still Ballin",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Mr Still Ballin",
+       "Makmah"
+      ],
+      "Mr Still Ballin",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Mr Still Ballin",
+    "Campeón",
+    4375
+   ],
+   [
+    "BLITZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Geoka",
+    "Semifinal",
+    1750
+   ],
+   [
+    "NC",
+    "Cuartos",
+    1625
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    625
+   ],
+   [
+    "LISEN",
+    "Octavos",
+    625
+   ],
+   [
+    "Millonari-O",
+    "Octavos",
+    625
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    625
+   ],
+   [
+    "PRAISERIZA",
+    "Octavos",
+    625
+   ],
+   [
+    "yinn",
+    "Octavos",
+    625
+   ]
+  ]
  }
 }

@@ -879,6 +879,17 @@
    "vence": "2026-11-05T21:10:39+00:00",
    "vencido": false
   },
+  "LISEN": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-01T05:05:26+00:00",
+   "did": "",
+   "evento": "la palera del edi",
+   "n": 556,
+   "sv": "FFA",
+   "vence": "2026-11-08T05:05:26+00:00",
+   "vencido": false
+  },
   "LSO": {
    "avisado": "2026-10-25",
    "avisado_cumplido": "2026-10-27",

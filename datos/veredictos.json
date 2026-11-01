@@ -1761,6 +1761,17 @@
    "b": "erian",
    "ganador": "geoka",
    "votos": "2–1"
+  },
+  "1566332316765265921": {
+   "id": "1566332316765265921",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793513125364,
+   "a": "mr still ballin🇮🇲",
+   "b": "makmah 🇻🇪",
+   "ganador": "mr still ballin🇮🇲",
+   "votos": "3–2"
   }
  },
  "llaves": {
@@ -5761,8 +5772,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793509526550,
-   "ed": 1793512422190,
-   "texto": "`[ OCTAVOS ]`\n⌞MR STILL BALIN⌝ 🆚 ⌞BLITZ⌝ 🆚 ⌞LISEN⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞MILLONARIO⌝ 🆚 ⌞CALIZ⌝ 🆚 ⌞SNOW⌝\n`[ OCTAVOS ]`\n⌞okam🇨🇷⌝ 🆚 ⌞nc🇰🇷⌝ 🆚 ⌞yinn 🇲🇦⌝ 🆚 ⌞erian🇵🇦⌝\n`[ CUARTOS ]`\n⌞makmah 🇻🇪⌝ 🆚 ⌞nc🇰🇷⌝\n`[ CUARTOS ]`\n⌞geoka⌝ 🆚 ⌞erian⌝\n`[ SEMIFINALES ]`\n⌞BLITZ 🇮🇱⌝ 🆚 ⌞makmah 🇻🇪⌝",
+   "ed": 1793513430940,
+   "texto": "`[ OCTAVOS ]`\n⌞MR STILL BALIN⌝ 🆚 ⌞BLITZ⌝ 🆚 ⌞LISEN⌝\n⌞PRAISERIZAS⌝ 🆚 ⌞MILLONARIO⌝ 🆚 ⌞CALIZ⌝ 🆚 ⌞SNOW⌝\n`[ OCTAVOS ]`\n⌞okam🇨🇷⌝ 🆚 ⌞nc🇰🇷⌝ 🆚 ⌞yinn 🇲🇦⌝ 🆚 ⌞erian🇵🇦⌝\n`[ CUARTOS ]`\n⌞makmah 🇻🇪⌝ 🆚 ⌞nc🇰🇷⌝\n`[ CUARTOS ]`\n⌞geoka⌝ 🆚 ⌞erian⌝\n`[ SEMIFINALES ]`\n⌞BLITZ 🇮🇱⌝ 🆚 ⌞makmah 🇻🇪⌝\n`[ SEMIFINALES ]`\n⌞GEOKA🇦🇷⌝ 🆚 ⌞mr still ballin🇮🇲⌝\n`[ FINAL ]`\n⌞MR STILL BALLIN🇮🇲⌝ 🆚 ⌞MAKMAH🇻🇪⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5825,8 +5836,28 @@
       "BLITZ 🇮🇱",
       "makmah 🇻🇪"
      ],
-     null,
-     "última ronda y no dice campeón",
+     "makmah 🇻🇪",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "GEOKA🇦🇷",
+      "mr still ballin🇮🇲"
+     ],
+     "mr still ballin🇮🇲",
+     "ronda siguiente",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "MR STILL BALLIN🇮🇲",
+      "MAKMAH🇻🇪"
+     ],
+     "MR STILL BALLIN🇮🇲",
+     "veredicto",
      []
     ]
    ]

@@ -17917,7 +17917,7 @@
    "Velatz": 37
   },
   "fecha": "21/10",
-  "firma": "2588950dd275def2",
+  "firma": "ef7b40f864869f7b",
   "msg": "1562578019472773131",
   "nombre": "__ DESGRACIAS EN TOKYO VOL 30 1 VS 1 __",
   "num": 494,
@@ -22721,7 +22721,7 @@
    "doble h": 2
   },
   "fecha": "25/10",
-  "firma": "5952089acf85aa4c",
+  "firma": "474947df3f00c6b1",
   "msg": "1564072873163890759",
   "nombre": "__ AGUANTE EL ROJO Y EL BARCELONA Multiverse __",
   "num": 516,
@@ -27991,7 +27991,7 @@
    "mats": 3
   },
   "fecha": "27/10",
-  "firma": "8599e387db670773",
+  "firma": "78ca570fd5fd3764",
   "msg": "1564844210035757187",
   "nombre": "__ QCYO RAPEEN 5 __",
   "num": 539,
@@ -29990,7 +29990,7 @@
    "Teo": 18
   },
   "fecha": "30/10",
-  "firma": "0031872f647aa571",
+  "firma": "3b3639c219523467",
   "msg": "1565861597019111555",
   "nombre": "__ LA ISLA DE OKINAWA V.4 __",
   "num": 547,
@@ -31499,7 +31499,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "1693c6dfaad597c8",
+  "firma": "34a8a8fd52b9727d",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -31977,6 +31977,220 @@
     "SULTAN",
     "Cuartos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "556": {
+  "antes": {
+   "BLITZ": [
+    257,
+    139,
+    true
+   ],
+   "Calíz": [
+    48,
+    64,
+    false
+   ],
+   "Erian": [
+    4,
+    4,
+    false
+   ],
+   "Geoka": [
+    50,
+    66,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Millonari-O": [
+    280,
+    177,
+    true
+   ],
+   "Mr Still Ballin": [
+    9,
+    10,
+    false
+   ],
+   "NC": [
+    20,
+    23,
+    false
+   ],
+   "OKAM": [
+    29,
+    34,
+    false
+   ],
+   "PRAISERIZA": [
+    222,
+    5,
+    true
+   ],
+   "yinn": [
+    224,
+    18,
+    true
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "BLITZ",
+    "Mr Still Ballin",
+    "BLITZ"
+   ],
+   [
+    "BLITZ",
+    "LISEN",
+    "BLITZ"
+   ],
+   [
+    "Snow",
+    "PRAISERIZA",
+    "Snow"
+   ],
+   [
+    "Snow",
+    "Millonari-O",
+    "Snow"
+   ],
+   [
+    "Snow",
+    "Calíz",
+    "Snow"
+   ],
+   [
+    "Erian",
+    "OKAM",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "NC",
+    "Erian"
+   ],
+   [
+    "Erian",
+    "yinn",
+    "Erian"
+   ],
+   [
+    "Makmah",
+    "NC",
+    "Makmah"
+   ],
+   [
+    "Geoka",
+    "Erian",
+    "Geoka"
+   ],
+   [
+    "Makmah",
+    "BLITZ",
+    "Makmah"
+   ],
+   [
+    "Mr Still Ballin",
+    "Geoka",
+    "Mr Still Ballin"
+   ],
+   [
+    "Mr Still Ballin",
+    "Makmah",
+    "Mr Still Ballin"
+   ]
+  ],
+  "ev_antes": {
+   "BLITZ": 7,
+   "Calíz": 19,
+   "Erian": 63,
+   "Geoka": 20,
+   "Makmah": 92,
+   "Millonari-O": 5,
+   "Mr Still Ballin": 12,
+   "NC": 45,
+   "OKAM": 18,
+   "PRAISERIZA": 17,
+   "yinn": 29
+  },
+  "fecha": "01/11",
+  "firma": "927c2c63484d7917",
+  "msg": "1566337161006026843",
+  "nombre": "__ la palera del edi __",
+  "num": 556,
+  "participantes": 13,
+  "sello": {
+   "Mr Still Ballin": "8de3f050327a:ccd09f762e04"
+  },
+  "sv": "FFA",
+  "t": "2026-11-01T06:24:39Z",
+  "tabla": [
+   [
+    "Mr Still Ballin",
+    "Campeón",
+    4375
+   ],
+   [
+    "BLITZ",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    2500
+   ],
+   [
+    "Erian",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Geoka",
+    "Semifinal",
+    1750
+   ],
+   [
+    "NC",
+    "Cuartos",
+    1625
+   ],
+   [
+    "LISEN",
+    "Octavos",
+    625
+   ],
+   [
+    "PRAISERIZA",
+    "Octavos",
+    625
+   ],
+   [
+    "Millonari-O",
+    "Octavos",
+    625
+   ],
+   [
+    "Calíz",
+    "Octavos",
+    625
+   ],
+   [
+    "OKAM",
+    "Octavos",
+    625
+   ],
+   [
+    "yinn",
+    "Octavos",
+    625
    ]
   ],
   "v": 2
