@@ -9768,6 +9768,20 @@
     }
    }
   },
+  "Tmax Turbo [PN]": {
+   "ACAD": {
+    "duelos": "0/1",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 938,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Trelok": {
    "FFA": {
     "duelos": "",
@@ -9880,20 +9894,6 @@
     "racha": "1/1",
     "tg": {
      "fin": 1,
-     "nuevo": true
-    }
-   }
-  },
-  "Turbo 🇪🇦": {
-   "ACAD": {
-    "duelos": "0/1",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 938,
-    "racha": "0/0",
-    "tg": {
      "nuevo": true
     }
    }

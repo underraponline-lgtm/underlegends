@@ -1,7 +1,7 @@
 {
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
-  "ACAD": "2026-10-27",
+  "ACAD": "2026-10-31",
   "DDF": "2026-10-31",
   "FDS": "2026-10-30",
   "FFA": "2026-10-31",
@@ -1585,6 +1585,19 @@
    "vence": "2026-11-07T17:45:26+00:00",
    "vencido": false
   },
+  "Tmax Turbo [PN]": {
+   "avisado": "2026-10-31",
+   "chat": "2026-10-31",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-10-27T20:02:54+00:00",
+   "did": "1345623878474403901",
+   "evento": "PRADERAP VOL.2",
+   "n": 535,
+   "sv": "ACAD",
+   "vence": "2026-11-03T20:02:54+00:00",
+   "vencido": false
+  },
   "Trelok": {
    "avisado": "2026-10-27",
    "avisado_cumplido": "2026-10-27",
@@ -1596,19 +1609,6 @@
    "n": 532,
    "sv": "FFA",
    "vence": "2026-11-03T03:32:41+00:00",
-   "vencido": false
-  },
-  "Turbo": {
-   "avisado": "2026-10-27",
-   "chat": "2026-10-27",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-27T20:02:54+00:00",
-   "did": "",
-   "evento": "PRADERAP VOL.2",
-   "n": 535,
-   "sv": "ACAD",
-   "vence": "2026-11-03T20:02:54+00:00",
    "vencido": false
   },
   "VECA": {

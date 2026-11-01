@@ -921,15 +921,15 @@
    "semillero": {
     "nuevos": {
      "FFA": 34,
+     "SR": 2,
      "FDS": 3,
      "FRZ": 4,
      "DDF": 7,
-     "ACAD": 2,
-     "SR": 2
+     "ACAD": 3
     },
     "gente": {
      "FDS": 24,
-     "DDF": 46,
+     "DDF": 49,
      "FFA": 132,
      "FRZ": 15,
      "ACAD": 16,
@@ -940,7 +940,7 @@
    },
    "meta_va": {
     "ACAD": 16,
-    "DDF": 46,
+    "DDF": 49,
     "DRA": 0,
     "FDS": 24,
     "FFA": 132,
