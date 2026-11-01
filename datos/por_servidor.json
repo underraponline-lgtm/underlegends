@@ -180,10 +180,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 938,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "AL3": {
@@ -786,10 +783,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 938,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Assuan": {
@@ -871,10 +865,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "BLANKO 🇺🇸": {
@@ -1329,10 +1320,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1875,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "CHOCLITO": {
@@ -1786,10 +1774,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 3938,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "1/1"
    }
   },
   "Colesito": {
@@ -1853,10 +1838,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 3938,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "1/1"
    }
   },
   "Corvo": {
@@ -2385,10 +2367,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 3500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "SR": {
     "duelos": "",
@@ -3256,8 +3235,7 @@
     "pts": 8250,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -3470,10 +3448,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 938,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "GP": {
@@ -4262,10 +4237,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 938,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Jere": {
@@ -4463,8 +4435,7 @@
     "pts": 5000,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -5160,10 +5131,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 1750,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "LRS LA MARIHUANA🇵🇰": {
@@ -5377,10 +5345,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 2000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Liberia": {
@@ -5712,10 +5677,7 @@
     "ovr": 44,
     "pod": 0,
     "pts": 7500,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Luz": {
@@ -5829,8 +5791,7 @@
     "pts": 23687,
     "racha": "0/2",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -5878,10 +5839,7 @@
     "ovr": 46,
     "pod": 0,
     "pts": 19700,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "0/1",
@@ -6330,10 +6288,7 @@
     "ovr": 47,
     "pod": 1,
     "pts": 11000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "FFA": {
     "duelos": "1/2",
@@ -6559,10 +6514,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 2000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Medster": {
@@ -7057,10 +7009,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 938,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "NXUZ": {
@@ -9168,10 +9117,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 2000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    },
    "SR": {
     "duelos": "0/1",
@@ -9558,8 +9504,7 @@
     "pts": 15500,
     "racha": "0/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    },
    "FFA": {
@@ -9712,10 +9657,7 @@
     "ovr": 42,
     "pod": 0,
     "pts": 2000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "0/0"
    }
   },
   "Tiago Context 🇦🇷": {
@@ -9893,8 +9835,7 @@
     "pts": 7500,
     "racha": "1/1",
     "tg": {
-     "fin": 1,
-     "nuevo": true
+     "fin": 1
     }
    }
   },
@@ -10664,10 +10605,7 @@
     "ovr": 43,
     "pod": 0,
     "pts": 3938,
-    "racha": "1/1",
-    "tg": {
-     "nuevo": true
-    }
+    "racha": "1/1"
    }
   },
   "Zafka": {
