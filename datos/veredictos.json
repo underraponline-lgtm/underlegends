@@ -2,39 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1564043044515356843": {
-   "id": "1564043044515356843",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792967320327,
-   "a": "KUNI 🇦🇷",
-   "b": "GUESS 🇦🇷",
-   "ganador": "GUESS 🇦🇷",
-   "votos": "2–1"
-  },
-  "1564044082194546841": {
-   "id": "1564044082194546841",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792967567729,
-   "a": "BYSHOP 🇦🇷",
-   "b": "MCO 🇦🇷",
-   "ganador": "MCO 🇦🇷",
-   "votos": "3–0"
-  },
-  "1564045603686584332": {
-   "id": "1564045603686584332",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792967930481,
-   "a": "DELUXE 🇦🇷",
-   "b": "MCO 🇦🇷",
-   "ganador": "DELUXE 🇦🇷",
-   "votos": "2–0"
-  },
   "1564050162886905878": {
    "id": "1564050162886905878",
    "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
@@ -1651,6 +1618,17 @@
    "b": "makmah 🇻🇪",
    "ganador": "mr still ballin🇮🇲",
    "votos": "2–1"
+  },
+  "1566584493257662546": {
+   "id": "1566584493257662546",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560645560015519834",
+   "pub": 1793573248925,
+   "a": "LAST 🇺🇾",
+   "b": "MATTHIAS🇻🇪",
+   "ganador": "MATTHIAS🇻🇪",
+   "votos": "1–0"
   }
  },
  "llaves": {
