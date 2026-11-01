@@ -1,6 +1,2706 @@
 {
  "_leeme": "Los MES AWARDS: los nominados, los votos al cierre y los ganadores de cada mes. Los escribe bot/mes_awards.py (paso 2b8d); los votos los guarda el objeto (bot/avisos.js). `vistas`: las promos abiertas y las felicitaciones, contadas de a poco (bot/mes_otros.py).",
- "meses": {},
+ "meses": {
+  "2026-10": {
+   "nominado": "2026-11-01T16:33:48Z",
+   "abre": "2026-11-01T23:00:00Z",
+   "cierra": "2026-11-04T23:00:00Z",
+   "sacar": [],
+   "cats": {
+    "rapero": {
+     "nom": [
+      {
+       "op": "Makmah",
+       "n": "Makmah",
+       "pts": 523950,
+       "oro": 5,
+       "ev": 75
+      },
+      {
+       "op": "PichulaMc",
+       "n": "PichulaMc",
+       "pts": 380459,
+       "oro": 9,
+       "ev": 45
+      },
+      {
+       "op": "Erian",
+       "n": "Erian",
+       "pts": 358298,
+       "oro": 8,
+       "ev": 54
+      },
+      {
+       "op": "Oasis",
+       "n": "Oasis",
+       "pts": 324462,
+       "oro": 17,
+       "ev": 30
+      },
+      {
+       "op": "Snow",
+       "n": "Snow",
+       "pts": 266986,
+       "oro": 7,
+       "ev": 32
+      }
+     ]
+    },
+    "revelacion": {
+     "nom": [
+      {
+       "op": "Catarsis",
+       "n": "Catarsis",
+       "pts": 60250,
+       "oro": 1,
+       "ev": 3
+      },
+      {
+       "op": "Adriagner",
+       "n": "Adriagner",
+       "pts": 59936,
+       "oro": 3,
+       "ev": 11
+      },
+      {
+       "op": "Teo",
+       "n": "Teo",
+       "pts": 58572,
+       "oro": 0,
+       "ev": 19
+      },
+      {
+       "op": "Luck",
+       "n": "Luck",
+       "pts": 55112,
+       "oro": 1,
+       "ev": 8
+      },
+      {
+       "op": "Lvel 🇻🇪",
+       "n": "Lvel 🇻🇪",
+       "pts": 47449,
+       "oro": 0,
+       "ev": 17
+      }
+     ]
+    },
+    "batalla": {
+     "nom": [
+      {
+       "op": "0uk1CE5A3Ic",
+       "n": "ZETA 🆚 RUBIK || FINAL MATANZA DE DIOSES - C16",
+       "sv": "SR",
+       "gente": [
+        "Zeta",
+        "Rubik"
+       ],
+       "vistas": 89
+      },
+      {
+       "op": "kaD74Qr7ky8",
+       "n": "RUBIK 🆚 SCORPIO | FINAL MATANZA DE DIOSES - C15",
+       "sv": "SR",
+       "gente": [
+        "Rubik"
+       ],
+       "vistas": 50
+      }
+     ]
+    },
+    "servidor": {
+     "nom": [
+      {
+       "op": "FFA",
+       "n": "Freestyle For All",
+       "gente": 365,
+       "ev": 82
+      },
+      {
+       "op": "ACAD",
+       "n": "Academia de Rap",
+       "gente": 138,
+       "ev": 10
+      },
+      {
+       "op": "DDF",
+       "n": "Dimensión del Freestyle",
+       "gente": 107,
+       "ev": 38
+      },
+      {
+       "op": "SR",
+       "n": "Snake Rap",
+       "gente": 66,
+       "ev": 5
+      },
+      {
+       "op": "URBF",
+       "n": "Urban Freestyle",
+       "gente": 52,
+       "ev": 7
+      }
+     ]
+    },
+    "organizador": {
+     "nom": [
+      {
+       "op": "LEWITO",
+       "n": "LEWITO",
+       "q": "LEWITO",
+       "quien": [
+        "LEWITO"
+       ],
+       "d": "22 eventos · 489 raperos"
+      },
+      {
+       "op": "NC",
+       "n": "NC",
+       "q": "NC",
+       "quien": [
+        "NC"
+       ],
+       "d": "11 eventos · 240 raperos"
+      },
+      {
+       "op": "Kravitz",
+       "n": "Kravitz",
+       "q": "Kravitz",
+       "quien": [
+        "Kravitz"
+       ],
+       "d": "10 eventos · 178 raperos"
+      },
+      {
+       "op": "Flennzs",
+       "n": "Flennzs",
+       "q": "Flennzs",
+       "quien": [
+        "Flennzs"
+       ],
+       "d": "8 eventos · 178 raperos"
+      },
+      {
+       "op": "Velatz",
+       "n": "Velatz",
+       "q": "Velatz",
+       "quien": [
+        "Velatz"
+       ],
+       "d": "7 eventos · 136 raperos"
+      }
+     ]
+    },
+    "staff": {
+     "nom": [
+      {
+       "op": "LEWITO",
+       "n": "LEWITO",
+       "q": "LEWITO",
+       "quien": [
+        "LEWITO"
+       ],
+       "d": "22 fechas de staff"
+      },
+      {
+       "op": "Kravitz",
+       "n": "Kravitz",
+       "q": "Kravitz",
+       "quien": [
+        "Kravitz"
+       ],
+       "d": "12 fechas de staff"
+      },
+      {
+       "op": "Flennzs",
+       "n": "Flennzs",
+       "q": "Flennzs",
+       "quien": [
+        "Flennzs"
+       ],
+       "d": "11 fechas de staff"
+      },
+      {
+       "op": "Adriagner",
+       "n": "Adriagner",
+       "q": "Adriagner",
+       "quien": [
+        "Adriagner"
+       ],
+       "d": "9 fechas de staff"
+      },
+      {
+       "op": "ARDEAN",
+       "n": "ARDEAN",
+       "q": "ARDEAN",
+       "quien": [
+        "ARDEAN"
+       ],
+       "d": "9 fechas de staff"
+      }
+     ]
+    },
+    "duelista": {
+     "nom": [
+      {
+       "op": "Makmah",
+       "n": "Makmah",
+       "q": "Makmah",
+       "quien": [
+        "Makmah"
+       ],
+       "d": "41 de 80 duelos ganados"
+      },
+      {
+       "op": "PichulaMc",
+       "n": "PichulaMc",
+       "q": "PichulaMc",
+       "quien": [
+        "PichulaMc"
+       ],
+       "d": "36 de 57 duelos ganados"
+      },
+      {
+       "op": "Agus",
+       "n": "Agus",
+       "q": "Agus",
+       "quien": [
+        "Agus"
+       ],
+       "d": "32 de 41 duelos ganados"
+      },
+      {
+       "op": "Erian",
+       "n": "Erian",
+       "q": "Erian",
+       "quien": [
+        "Erian"
+       ],
+       "d": "31 de 59 duelos ganados"
+      },
+      {
+       "op": "Carlosss",
+       "n": "Carlosss",
+       "q": "Carlosss",
+       "quien": [
+        "Carlosss"
+       ],
+       "d": "26 de 33 duelos ganados"
+      }
+     ]
+    },
+    "cazador": {
+     "nom": [
+      {
+       "op": "PichulaMc",
+       "n": "PichulaMc",
+       "q": "PichulaMc",
+       "quien": [
+        "PichulaMc"
+       ],
+       "d": "6 cabezas cazadas"
+      },
+      {
+       "op": "Makmah",
+       "n": "Makmah",
+       "q": "Makmah",
+       "quien": [
+        "Makmah"
+       ],
+       "d": "4 cabezas cazadas"
+      },
+      {
+       "op": "Polosport",
+       "n": "Polosport",
+       "q": "Polosport",
+       "quien": [
+        "Polosport"
+       ],
+       "d": "4 cabezas cazadas"
+      },
+      {
+       "op": "Six",
+       "n": "Six",
+       "q": "Six",
+       "quien": [
+        "Six"
+       ],
+       "d": "4 cabezas cazadas"
+      },
+      {
+       "op": "Mr Still Ballin",
+       "n": "Mr Still Ballin",
+       "q": "Mr Still Ballin",
+       "quien": [
+        "Mr Still Ballin"
+       ],
+       "d": "3 cabezas cazadas"
+      }
+     ]
+    },
+    "batacazo": {
+     "nom": [
+      {
+       "op": "553:Bau",
+       "n": "Bau",
+       "q": "Bau",
+       "quien": [
+        "Bau"
+       ],
+       "d": "le ganó a Makmah (#1) siendo #135 · SNAKE INSIGNIA 7 8"
+      },
+      {
+       "op": "477:Nemi",
+       "n": "Nemi",
+       "q": "Nemi",
+       "quien": [
+        "Nemi"
+       ],
+       "d": "le ganó a Makmah (#1) siendo #53 · DESGRACIAS EN TOKYO VOL27"
+      },
+      {
+       "op": "541:Soulb",
+       "n": "Soulb",
+       "q": "Soulb",
+       "quien": [
+        "Soulb"
+       ],
+       "d": "le ganó a Makmah (#1) siendo #45 · EL CAMINO DEL MONJE V.2"
+      },
+      {
+       "op": "436:HH",
+       "n": "HH",
+       "q": "HH",
+       "quien": [
+        "HH"
+       ],
+       "d": "le ganó a Erian (#4) siendo #126 · LA BELLA ARTE DE LA DESGRACIA VOL3"
+      },
+      {
+       "op": "488:Sin Limites",
+       "n": "Sin Limites",
+       "q": "Sin Limites",
+       "quien": [
+        "Sin Limites"
+       ],
+       "d": "le ganó a Makmah (#1) siendo #28 · FREESTYLE LEAGUE N3"
+      }
+     ]
+    },
+    "imparable": {
+     "nom": [
+      {
+       "op": "Over",
+       "n": "Over",
+       "q": "Over",
+       "quien": [
+        "Over"
+       ],
+       "d": "13 duelos ganados seguidos"
+      },
+      {
+       "op": "Carlosss",
+       "n": "Carlosss",
+       "q": "Carlosss",
+       "quien": [
+        "Carlosss"
+       ],
+       "d": "10 duelos ganados seguidos"
+      },
+      {
+       "op": "Walker",
+       "n": "Walker",
+       "q": "Walker",
+       "quien": [
+        "Walker"
+       ],
+       "d": "9 duelos ganados seguidos"
+      },
+      {
+       "op": "PichulaMc",
+       "n": "PichulaMc",
+       "q": "PichulaMc",
+       "quien": [
+        "PichulaMc"
+       ],
+       "d": "8 duelos ganados seguidos"
+      },
+      {
+       "op": "Agus",
+       "n": "Agus",
+       "q": "Agus",
+       "quien": [
+        "Agus"
+       ],
+       "d": "7 duelos ganados seguidos"
+      }
+     ]
+    },
+    "evento": {
+     "nom": [
+      {
+       "op": "400",
+       "n": "VALHALLA VOL1",
+       "sv": "ACAD",
+       "d": "78 raperos · ACAD",
+       "quien": []
+      },
+      {
+       "op": "503",
+       "n": "FREESTYLE FOR ALL ESPECIAL 1800",
+       "sv": "FFA",
+       "d": "32 raperos · FFA · organiza LEWITO",
+       "quien": [
+        "LEWITO"
+       ]
+      },
+      {
+       "op": "531",
+       "n": "DETALLES DEL EVENTO",
+       "sv": "FFA",
+       "d": "32 raperos · FFA",
+       "quien": []
+      },
+      {
+       "op": "536",
+       "n": "FREESTYLE FOR ALL ESPECIAL 1800 PANDILLAS",
+       "sv": "FFA",
+       "d": "32 raperos · FFA · organiza LEWITO",
+       "quien": [
+        "LEWITO"
+       ]
+      },
+      {
+       "op": "468",
+       "n": "DEM UZBEKISTAN FECHA 2",
+       "sv": "FFA",
+       "d": "30 raperos · FFA · organiza Benjixo",
+       "quien": [
+        "Benjixo"
+       ]
+      }
+     ]
+    },
+    "promo": {
+     "nom": [
+      {
+       "op": "v-eD6swgNiR4I",
+       "n": "Makma vs Trust/Semifinal/Liga del volcán Regional ChessBattles Colima 2026",
+       "q": "Makmah",
+       "quien": [
+        "Makmah"
+       ],
+       "d": "Makmah · 1 persona la abrió",
+       "vid": "eD6swgNiR4I"
+      },
+      {
+       "op": "1560157739794178188-0",
+       "n": "Estaba Dicho.  (EP)",
+       "q": "GP",
+       "quien": [
+        "GP"
+       ],
+       "d": "GP · 1 persona la abrió",
+       "vid": "BgPckuiHByg"
+      },
+      {
+       "op": "1565540543990075533-0",
+       "n": "Hawler x @kiorOnTheBeat - K vamo a hacer",
+       "q": "Jothaze",
+       "quien": [
+        "Jothaze"
+       ],
+       "d": "Jothaze · la compartió el 29/10",
+       "vid": "-z5y4msW9xI"
+      },
+      {
+       "op": "v-NWO5AIKRzHw",
+       "n": "CRATER VS MAKMA | OCTAVOS DE FINAL | CLUB BOITCOT EDICIÓN 1 | FREESTYLE COLIMA",
+       "q": "Makmah",
+       "quien": [
+        "Makmah"
+       ],
+       "d": "Makmah · la compartió el 26/10",
+       "vid": "NWO5AIKRzHw"
+      },
+      {
+       "op": "v-CQ7hta4T-c8",
+       "n": "Grizzlee vs Makma/3er y 4to lugar/Liga del volcán Regional ChessBattles Colima 2",
+       "q": "Makmah",
+       "quien": [
+        "Makmah"
+       ],
+       "d": "Makmah · la compartió el 16/10",
+       "vid": "CQ7hta4T-c8"
+      }
+     ]
+    },
+    "publicacion": {
+     "nom": [
+      {
+       "op": "129e25edf2b1",
+       "n": "Liberia subió a S",
+       "q": "Liberia",
+       "quien": [
+        "Liberia"
+       ],
+       "d": "3 felicitaciones"
+      },
+      {
+       "op": "684d718f6442",
+       "n": "Agus subió a A",
+       "q": "Agus",
+       "quien": [
+        "Agus"
+       ],
+       "d": "2 felicitaciones"
+      },
+      {
+       "op": "fc78df2c9d31",
+       "n": "Verc subió a A",
+       "q": "Verc",
+       "quien": [
+        "Verc"
+       ],
+       "d": "2 felicitaciones"
+      },
+      {
+       "op": "011a3dd86705",
+       "n": "Neo y BNA, campeón de FREESTYLE FOR ALL ESPECIAL 1800",
+       "q": "Neo",
+       "quien": [
+        "Neo",
+        "BNA",
+        "MCO",
+        "Panchok"
+       ],
+       "d": "1 felicitación"
+      },
+      {
+       "op": "1257e01f1589",
+       "n": "BNA subió a C",
+       "q": "BNA",
+       "quien": [
+        "BNA"
+       ],
+       "d": "1 felicitación"
+      }
+     ]
+    },
+    "hincha": {
+     "nom": [
+      {
+       "op": "Makmah",
+       "n": "Makmah",
+       "q": "Makmah",
+       "quien": [
+        "Makmah"
+       ],
+       "did": "897942226955563068",
+       "d": "48 puntos de participación en la página"
+      },
+      {
+       "op": "PichulaMc",
+       "n": "PichulaMc",
+       "q": "PichulaMc",
+       "quien": [
+        "PichulaMc"
+       ],
+       "did": "578697503130779649",
+       "d": "40 puntos de participación en la página"
+      },
+      {
+       "op": "ForceGP",
+       "n": "ForceGP",
+       "q": "ForceGP",
+       "quien": [
+        "ForceGP"
+       ],
+       "did": "884190151180447744",
+       "d": "39 puntos de participación en la página"
+      },
+      {
+       "op": "Majiztral",
+       "n": "Majiztral",
+       "q": "Majiztral",
+       "quien": [
+        "Majiztral"
+       ],
+       "did": "1492228152691396720",
+       "d": "36 puntos de participación en la página"
+      },
+      {
+       "op": "Flennzs",
+       "n": "Flennzs",
+       "q": "Flennzs",
+       "quien": [
+        "Flennzs"
+       ],
+       "did": "1414431452346581052",
+       "d": "34 puntos de participación en la página"
+      }
+     ]
+    },
+    "clasico": {
+     "nom": [
+      {
+       "op": "Agus vs Mr Still Ballin",
+       "n": "Agus vs Mr Still Ballin",
+       "q": "Agus",
+       "quien": [
+        "Agus",
+        "Mr Still Ballin"
+       ],
+       "d": "4 duelos · Agus 1, Mr Still Ballin 3"
+      },
+      {
+       "op": "Carlosss vs Makmah",
+       "n": "Carlosss vs Makmah",
+       "q": "Carlosss",
+       "quien": [
+        "Carlosss",
+        "Makmah"
+       ],
+       "d": "4 duelos · Carlosss 2, Makmah 2"
+      },
+      {
+       "op": "Liberia vs Oasis",
+       "n": "Liberia vs Oasis",
+       "q": "Liberia",
+       "quien": [
+        "Liberia",
+        "Oasis"
+       ],
+       "d": "4 duelos · Liberia 1, Oasis 3"
+      },
+      {
+       "op": "Makmah vs PichulaMc",
+       "n": "Makmah vs PichulaMc",
+       "q": "Makmah",
+       "quien": [
+        "Makmah",
+        "PichulaMc"
+       ],
+       "d": "4 duelos · Makmah 1, PichulaMc 3"
+      },
+      {
+       "op": "Agus vs Liberia",
+       "n": "Agus vs Liberia",
+       "q": "Agus",
+       "quien": [
+        "Agus",
+        "Liberia"
+       ],
+       "d": "3 duelos · Agus 1, Liberia 2"
+      }
+     ]
+    },
+    "sobreviviente": {
+     "nom": [
+      {
+       "op": "Panchok",
+       "n": "Panchok",
+       "q": "Panchok",
+       "quien": [
+        "Panchok"
+       ],
+       "d": "sobrevivió 1 vez"
+      }
+     ]
+    },
+    "constante": {
+     "nom": [
+      {
+       "op": "Oasis",
+       "n": "Oasis",
+       "q": "Oasis",
+       "quien": [
+        "Oasis"
+       ],
+       "d": "23 podios · 🥇17 🥈5 🥉1"
+      },
+      {
+       "op": "Makmah",
+       "n": "Makmah",
+       "q": "Makmah",
+       "quien": [
+        "Makmah"
+       ],
+       "d": "17 podios · 🥇5 🥈11 🥉1"
+      },
+      {
+       "op": "Snow",
+       "n": "Snow",
+       "q": "Snow",
+       "quien": [
+        "Snow"
+       ],
+       "d": "16 podios · 🥇7 🥈8 🥉1"
+      },
+      {
+       "op": "Verc",
+       "n": "Verc",
+       "q": "Verc",
+       "quien": [
+        "Verc"
+       ],
+       "d": "16 podios · 🥇7 🥈7 🥉2"
+      },
+      {
+       "op": "Erian",
+       "n": "Erian",
+       "q": "Erian",
+       "quien": [
+        "Erian"
+       ],
+       "d": "15 podios · 🥇8 🥈7"
+      }
+     ]
+    },
+    "villano": {
+     "nom": [
+      {
+       "op": "RT",
+       "n": "RT",
+       "q": "RT",
+       "quien": [
+        "RT"
+       ],
+       "d": "al azar entre los que compitieron este mes"
+      },
+      {
+       "op": "Liam",
+       "n": "Liam",
+       "q": "Liam",
+       "quien": [
+        "Liam"
+       ],
+       "d": "al azar entre los que compitieron este mes"
+      },
+      {
+       "op": "Iguana",
+       "n": "Iguana",
+       "q": "Iguana",
+       "quien": [
+        "Iguana"
+       ],
+       "d": "al azar entre los que compitieron este mes"
+      },
+      {
+       "op": "Noone",
+       "n": "Noone",
+       "q": "Noone",
+       "quien": [
+        "Noone"
+       ],
+       "d": "al azar entre los que compitieron este mes"
+      },
+      {
+       "op": "SOL",
+       "n": "SOL",
+       "q": "SOL",
+       "quien": [
+        "SOL"
+       ],
+       "d": "al azar entre los que compitieron este mes"
+      }
+     ]
+    },
+    "showman": {
+     "nom": [
+      {
+       "op": "Erik",
+       "n": "Erik",
+       "q": "Erik",
+       "quien": [
+        "Erik"
+       ],
+       "d": "al azar entre los que compitieron este mes"
+      },
+      {
+       "op": "Selek",
+       "n": "Selek",
+       "q": "Selek",
+       "quien": [
+        "Selek"
+       ],
+       "d": "al azar entre los que compitieron este mes"
+      },
+      {
+       "op": "Mc arepa",
+       "n": "Mc arepa",
+       "q": "Mc arepa",
+       "quien": [
+        "Mc arepa"
+       ],
+       "d": "al azar entre los que compitieron este mes"
+      },
+      {
+       "op": "Mr Still Ballin",
+       "n": "Mr Still Ballin",
+       "q": "Mr Still Ballin",
+       "quien": [
+        "Mr Still Ballin"
+       ],
+       "d": "al azar entre los que compitieron este mes"
+      },
+      {
+       "op": "BastyRetro",
+       "n": "BastyRetro",
+       "q": "BastyRetro",
+       "quien": [
+        "BastyRetro"
+       ],
+       "d": "al azar entre los que compitieron este mes"
+      }
+     ]
+    },
+    "momento": {
+     "nom": [
+      {
+       "op": "484:Guess vs Xubaru",
+       "n": "Guess vs Xubaru",
+       "q": "Guess",
+       "quien": [
+        "Guess",
+        "Xubaru"
+       ],
+       "d": "LA BELLA ARTE DE LA DESGRACIA VOL7 · ganó Guess · al azar"
+      },
+      {
+       "op": "379:Snow vs Zignos",
+       "n": "Snow vs Zignos",
+       "q": "Snow",
+       "quien": [
+        "Snow",
+        "Zignos"
+       ],
+       "d": "Dos Generaciones Un Destino Vol 2 · ganó Snow · al azar"
+      },
+      {
+       "op": "419:Provenza vs Aldre",
+       "n": "Provenza vs Aldre",
+       "q": "Provenza",
+       "quien": [
+        "Provenza",
+        "Aldre"
+       ],
+       "d": "MAÑANA DE LLUVIA VOL 1 · ganó Provenza · al azar"
+      },
+      {
+       "op": "470:Verc vs Geoka",
+       "n": "Verc vs Geoka",
+       "q": "Verc",
+       "quien": [
+        "Verc",
+        "Geoka"
+       ],
+       "d": "Inserte Nombre de la Compe · ganó Verc · al azar"
+      },
+      {
+       "op": "514:Carlosss vs Krtman",
+       "n": "Carlosss vs Krtman",
+       "q": "Carlosss",
+       "quien": [
+        "Carlosss",
+        "Krtman"
+       ],
+       "d": "IDENTITY V · ganó Carlosss · al azar"
+      }
+     ]
+    },
+    "crew": {
+     "nom": [
+      {
+       "op": "Follombia",
+       "n": "Follombia",
+       "quien": [],
+       "d": "896.878 pts · 8 jugaron"
+      },
+      {
+       "op": "KS",
+       "n": "KS",
+       "quien": [],
+       "d": "258.879 pts · 3 jugaron"
+      },
+      {
+       "op": "Los ULEYES",
+       "n": "Los ULEYES",
+       "quien": [],
+       "d": "131.002 pts · 2 jugaron"
+      }
+     ]
+    },
+    "pais": {
+     "nom": [
+      {
+       "op": "Argentina",
+       "n": "Argentina",
+       "cc": "ar",
+       "quien": [],
+       "d": "2.869.912 pts · 46 jugaron"
+      },
+      {
+       "op": "Chile",
+       "n": "Chile",
+       "cc": "cl",
+       "quien": [],
+       "d": "1.667.559 pts · 34 jugaron"
+      },
+      {
+       "op": "Colombia",
+       "n": "Colombia",
+       "cc": "co",
+       "quien": [],
+       "d": "1.361.061 pts · 25 jugaron"
+      },
+      {
+       "op": "Venezuela",
+       "n": "Venezuela",
+       "cc": "ar",
+       "quien": [],
+       "d": "1.186.031 pts · 19 jugaron"
+      },
+      {
+       "op": "Perú",
+       "n": "Perú",
+       "cc": "pe",
+       "quien": [],
+       "d": "549.240 pts · 20 jugaron"
+      }
+     ]
+    },
+    "liga": {
+     "nom": [
+      {
+       "op": "fms-titans",
+       "n": "FMS Titans",
+       "sv": "DDF",
+       "d": "45 batallas · 16 raperos"
+      },
+      {
+       "op": "fms-peru",
+       "n": "FMS Perú",
+       "sv": "DDF",
+       "d": "35 batallas · 14 raperos"
+      },
+      {
+       "op": "lkr-champions",
+       "n": "Champions League LKR",
+       "sv": "LKR",
+       "d": "22 batallas · 22 raperos"
+      },
+      {
+       "op": "fmh-espana",
+       "n": "FMH España",
+       "sv": "URBF",
+       "d": "13 batallas · 12 raperos"
+      },
+      {
+       "op": "fmh-andes",
+       "n": "FMH Andes",
+       "sv": "URBF",
+       "d": "12 batallas · 11 raperos"
+      }
+     ]
+    },
+    "jurado": {
+     "nom": [
+      {
+       "op": "Flennzs",
+       "n": "Flennzs",
+       "q": "Flennzs",
+       "quien": [
+        "Flennzs"
+       ],
+       "d": "13 eventos de jurado"
+      },
+      {
+       "op": "LEWITO",
+       "n": "LEWITO",
+       "q": "LEWITO",
+       "quien": [
+        "LEWITO"
+       ],
+       "d": "13 eventos de jurado"
+      },
+      {
+       "op": "Kravitz",
+       "n": "Kravitz",
+       "q": "Kravitz",
+       "quien": [
+        "Kravitz"
+       ],
+       "d": "12 eventos de jurado"
+      },
+      {
+       "op": "Adriagner",
+       "n": "Adriagner",
+       "q": "Adriagner",
+       "quien": [
+        "Adriagner"
+       ],
+       "d": "7 eventos de jurado"
+      },
+      {
+       "op": "Velatz",
+       "n": "Velatz",
+       "q": "Velatz",
+       "quien": [
+        "Velatz"
+       ],
+       "d": "7 eventos de jurado"
+      }
+     ]
+    },
+    "host": {
+     "nom": [
+      {
+       "op": "LEWITO",
+       "n": "LEWITO",
+       "q": "LEWITO",
+       "quien": [
+        "LEWITO"
+       ],
+       "d": "24 eventos de host"
+      },
+      {
+       "op": "Kravitz",
+       "n": "Kravitz",
+       "q": "Kravitz",
+       "quien": [
+        "Kravitz"
+       ],
+       "d": "11 eventos de host"
+      },
+      {
+       "op": "Adriagner",
+       "n": "Adriagner",
+       "q": "Adriagner",
+       "quien": [
+        "Adriagner"
+       ],
+       "d": "7 eventos de host"
+      },
+      {
+       "op": "Velatz",
+       "n": "Velatz",
+       "q": "Velatz",
+       "quien": [
+        "Velatz"
+       ],
+       "d": "6 eventos de host"
+      },
+      {
+       "op": "Elsoolar",
+       "n": "Elsoolar",
+       "q": "Elsoolar",
+       "quien": [
+        "Elsoolar"
+       ],
+       "d": "5 eventos de host"
+      }
+     ]
+    },
+    "dj": {
+     "nom": [
+      {
+       "op": "LEWITO",
+       "n": "LEWITO",
+       "q": "LEWITO",
+       "quien": [
+        "LEWITO"
+       ],
+       "d": "13 eventos de DJ"
+      },
+      {
+       "op": "Kravitz",
+       "n": "Kravitz",
+       "q": "Kravitz",
+       "quien": [
+        "Kravitz"
+       ],
+       "d": "9 eventos de DJ"
+      },
+      {
+       "op": "Adriagner",
+       "n": "Adriagner",
+       "q": "Adriagner",
+       "quien": [
+        "Adriagner"
+       ],
+       "d": "7 eventos de DJ"
+      },
+      {
+       "op": "Velatz",
+       "n": "Velatz",
+       "q": "Velatz",
+       "quien": [
+        "Velatz"
+       ],
+       "d": "5 eventos de DJ"
+      },
+      {
+       "op": "Zaik",
+       "n": "Zaik",
+       "q": "Zaik",
+       "quien": [
+        "Zaik"
+       ],
+       "d": "5 eventos de DJ"
+      }
+     ]
+    }
+   },
+   "sv": {
+    "ACAD": {
+     "cats": {
+      "rapero": {
+       "nom": [
+        {
+         "op": "Panchok",
+         "n": "Panchok",
+         "pts": 103662,
+         "oro": 4,
+         "ev": 8
+        },
+        {
+         "op": "MCO",
+         "n": "MCO",
+         "pts": 53088,
+         "oro": 0,
+         "ev": 5
+        },
+        {
+         "op": "Lord Viruzz",
+         "n": "Lord Viruzz",
+         "pts": 41004,
+         "oro": 1,
+         "ev": 6
+        },
+        {
+         "op": "Makmah",
+         "n": "Makmah",
+         "pts": 33001,
+         "oro": 0,
+         "ev": 5
+        },
+        {
+         "op": "Erian",
+         "n": "Erian",
+         "pts": 30388,
+         "oro": 0,
+         "ev": 5
+        }
+       ]
+      },
+      "revelacion": {
+       "nom": [
+        {
+         "op": "Ariaxer",
+         "n": "Ariaxer",
+         "pts": 8588,
+         "oro": 0,
+         "ev": 4
+        },
+        {
+         "op": "Tmax Turbo [PN]",
+         "n": "Tmax Turbo [PN]",
+         "pts": 938,
+         "oro": 0,
+         "ev": 1
+        },
+        {
+         "op": "Blaxx",
+         "n": "Blaxx",
+         "pts": 817,
+         "oro": 0,
+         "ev": 1
+        },
+        {
+         "op": "Ezias🥈✒️🧢🐍",
+         "n": "Ezias🥈✒️🧢🐍",
+         "pts": 625,
+         "oro": 0,
+         "ev": 1
+        },
+        {
+         "op": "Galileo",
+         "n": "Galileo",
+         "pts": 625,
+         "oro": 0,
+         "ev": 1
+        }
+       ]
+      },
+      "staff": {
+       "nom": [
+        {
+         "op": "ARDEAN",
+         "n": "ARDEAN",
+         "q": "ARDEAN",
+         "quien": [
+          "ARDEAN"
+         ],
+         "d": "9 fechas de staff"
+        },
+        {
+         "op": "Mosquitrap 🦟",
+         "n": "Mosquitrap 🦟",
+         "q": "Mosquitrap 🦟",
+         "quien": [
+          "Mosquitrap 🦟"
+         ],
+         "d": "5 fechas de staff"
+        },
+        {
+         "op": "Ivan",
+         "n": "Ivan",
+         "q": "Ivan",
+         "quien": [
+          "Ivan"
+         ],
+         "d": "2 fechas de staff"
+        },
+        {
+         "op": "Leonart",
+         "n": "Leonart",
+         "q": "Leonart",
+         "quien": [
+          "Leonart"
+         ],
+         "d": "2 fechas de staff"
+        },
+        {
+         "op": "Bocamio",
+         "n": "Bocamio",
+         "q": "Bocamio",
+         "quien": [
+          "Bocamio"
+         ],
+         "d": "1 fecha de staff"
+        }
+       ]
+      }
+     },
+     "juegan": [
+      "1200",
+      "Abyssus",
+      "Acry",
+      "Agus",
+      "Andy",
+      "ARDEAN",
+      "Ariaxer",
+      "BELIKKO",
+      "Bishop",
+      "Blaxx",
+      "Bloody",
+      "BNA",
+      "Btrece",
+      "Calíz",
+      "Carlos",
+      "Catarsis",
+      "CHOCLITO",
+      "Chop",
+      "Chuwin",
+      "Corvo",
+      "Damian",
+      "DANCOLL",
+      "DarnBless",
+      "Deluxe",
+      "Dev",
+      "Dominick",
+      "Drexx",
+      "Dynoco",
+      "Dyzz",
+      "Eclipsito",
+      "Efimero",
+      "El Wachin",
+      "Emilio Alva",
+      "Emily Family",
+      "Erian",
+      "Eze",
+      "Ezias🥈✒️🧢🐍",
+      "Flama",
+      "Fol",
+      "G-MC",
+      "Galileo",
+      "Geoka",
+      "Gosu Z",
+      "Guess",
+      "Hassan",
+      "Heat",
+      "Hotaru Adeyemi 🏳️‍⚧️",
+      "Infecte",
+      "Jayden",
+      "JEIXDER",
+      "Jere",
+      "Jobaking",
+      "Joshema",
+      "Jupiter",
+      "Kochi",
+      "Kourier",
+      "Krish",
+      "Kuni",
+      "Kyron",
+      "LAST",
+      "Leonart",
+      "Leyenda",
+      "Liberia",
+      "Lilñaño",
+      "Lizeninn",
+      "Lord Viruzz",
+      "Luck",
+      "luisito 🏆",
+      "LV",
+      "Lvel 🇻🇪",
+      "Mail O",
+      "Majiztral",
+      "Makmah",
+      "Masino",
+      "Mathhias",
+      "MauzzitoEmeces",
+      "MAWS🇻🇪",
+      "MaYeuTyK",
+      "Mc Glock",
+      "MCO",
+      "MetriOdin",
+      "Miniboy",
+      "Molusco",
+      "Monet",
+      "Mr Still Ballin",
+      "Mr.Kude",
+      "MTZ",
+      "Noa",
+      "Noone",
+      "Nox",
+      "Number",
+      "NXUZ",
+      "ONZASS",
+      "Panchok",
+      "PichulaMc",
+      "Player",
+      "Rayden",
+      "Redstonita",
+      "Reyes",
+      "Rubik",
+      "Ruvick",
+      "Ryuk",
+      "Saiko",
+      "Saz",
+      "SDK",
+      "SGB",
+      "Shadow",
+      "Sin Limites",
+      "SOL",
+      "Sombra",
+      "Sosa",
+      "Teito",
+      "Teo",
+      "Tiagoms",
+      "Tmax Turbo [PN]",
+      "Trot",
+      "TYPHLOSION",
+      "TøKīØ🦠🧠",
+      "UDDIZIM",
+      "Vandu",
+      "VECA 🇧🇱",
+      "Velatz",
+      "Volk",
+      "VR",
+      "Warriorvid",
+      "Xervoe",
+      "YIN-SON 🇺🇸",
+      "Yio",
+      "Yor",
+      "Zafka",
+      "Zaik 🇪🇸",
+      "Zanet",
+      "Zanti",
+      "Zekha",
+      "Zetryko",
+      "Zignos",
+      "ZWO 🇦🇷",
+      "🇺🇾 ATR"
+     ]
+    },
+    "DDF": {
+     "cats": {
+      "rapero": {
+       "nom": [
+        {
+         "op": "Carlosss",
+         "n": "Carlosss",
+         "pts": 195912,
+         "oro": 7,
+         "ev": 15
+        },
+        {
+         "op": "Makmah",
+         "n": "Makmah",
+         "pts": 189488,
+         "oro": 2,
+         "ev": 17
+        },
+        {
+         "op": "PichulaMc",
+         "n": "PichulaMc",
+         "pts": 124875,
+         "oro": 5,
+         "ev": 7
+        },
+        {
+         "op": "Erian",
+         "n": "Erian",
+         "pts": 84386,
+         "oro": 3,
+         "ev": 15
+        },
+        {
+         "op": "NXUZ",
+         "n": "NXUZ",
+         "pts": 81388,
+         "oro": 1,
+         "ev": 12
+        }
+       ]
+      },
+      "revelacion": {
+       "nom": [
+        {
+         "op": "Adriagner",
+         "n": "Adriagner",
+         "pts": 51188,
+         "oro": 3,
+         "ev": 7
+        },
+        {
+         "op": "RT",
+         "n": "RT",
+         "pts": 18150,
+         "oro": 0,
+         "ev": 4
+        }
+       ]
+      },
+      "staff": {
+       "nom": [
+        {
+         "op": "Adriagner",
+         "n": "Adriagner",
+         "q": "Adriagner",
+         "quien": [
+          "Adriagner"
+         ],
+         "d": "9 fechas de staff"
+        },
+        {
+         "op": "19 FLEIVA WACK",
+         "n": "19 FLEIVA WACK",
+         "q": "19 FLEIVA WACK",
+         "quien": [
+          "19 FLEIVA WACK"
+         ],
+         "d": "6 fechas de staff"
+        },
+        {
+         "op": "Drexx",
+         "n": "Drexx",
+         "q": "Drexx",
+         "quien": [
+          "Drexx"
+         ],
+         "d": "4 fechas de staff"
+        },
+        {
+         "op": "Mito",
+         "n": "Mito",
+         "q": "Mito",
+         "quien": [
+          "Mito"
+         ],
+         "d": "4 fechas de staff"
+        },
+        {
+         "op": "Keider",
+         "n": "Keider",
+         "q": "Keider",
+         "quien": [
+          "Keider"
+         ],
+         "d": "3 fechas de staff"
+        }
+       ]
+      }
+     },
+     "juegan": [
+      "19",
+      "Adriagner",
+      "Agus",
+      "Andres",
+      "ARDEAN",
+      "Assuan",
+      "BastyRetro",
+      "Betelguese",
+      "Bloody",
+      "Bludi🇨🇴",
+      "Btrece",
+      "BTRX",
+      "Cabece",
+      "Calíz",
+      "Carlosmo",
+      "Carlosss",
+      "Chop",
+      "Colesito",
+      "CrisZJ",
+      "Crk",
+      "Cronox",
+      "Desio",
+      "Dios",
+      "Dm🇵🇪",
+      "Dominick",
+      "Drexx",
+      "Dynoco",
+      "Eclipsito",
+      "EIDP",
+      "Elbesaabuelas",
+      "Eldinoco🇦🇷",
+      "EmiZor",
+      "Erian",
+      "EVANGELINE🇧🇴",
+      "Evangeline🇵🇪",
+      "Ezias🥈✒️🧢🐍",
+      "FanDAbel",
+      "Fix 17",
+      "FOTOSÍNTESIS",
+      "Gerox",
+      "GROOMER🇧🇴",
+      "JEIXDER",
+      "Jobaking",
+      "Julix🇧🇴",
+      "Keider",
+      "Krtman",
+      "LAST",
+      "Leonart",
+      "Liberia",
+      "Lilñaño",
+      "Lizenin",
+      "Lizeninn",
+      "Lord Viruzz",
+      "LRS",
+      "LRS LA MARIHUANA🇵🇰",
+      "LSO",
+      "Luck",
+      "Majiztral",
+      "Makmah",
+      "Marcos",
+      "Masino",
+      "Mathhias",
+      "MaYeuTyK",
+      "MCNadie",
+      "MCO",
+      "Miniboy",
+      "Miniboy 🇨🇱 LEVI",
+      "Misterioso",
+      "Monet",
+      "Mosquitrap 🦟",
+      "Noa",
+      "Number VE",
+      "NXUZ",
+      "OKAM",
+      "Panchok",
+      "PichulaMc",
+      "Pipe",
+      "Player",
+      "RC🇲🇽",
+      "REPTILE JR",
+      "Rodas",
+      "RT",
+      "Senticide",
+      "Shadow",
+      "SikoV",
+      "Sin Limites",
+      "Skiller",
+      "Soulb",
+      "Spartan",
+      "Tam",
+      "Teito",
+      "Teo",
+      "Tizi",
+      "Tuca",
+      "TøKīØ🦠🧠",
+      "V-zir 🇻🇪",
+      "Vilca",
+      "VR",
+      "Walker",
+      "Xclusivo",
+      "Xplicit",
+      "Xubaru",
+      "Zetryko",
+      "💥 SF2: ISAC",
+      "🔹 C3: ISAC",
+      "🟢 Batalla 2: Mco",
+      "🟢 Batalla 4: GHV"
+     ]
+    },
+    "FFA": {
+     "cats": {
+      "rapero": {
+       "nom": [
+        {
+         "op": "Oasis",
+         "n": "Oasis",
+         "pts": 324462,
+         "oro": 17,
+         "ev": 30
+        },
+        {
+         "op": "Snow",
+         "n": "Snow",
+         "pts": 266986,
+         "oro": 7,
+         "ev": 32
+        },
+        {
+         "op": "Makmah",
+         "n": "Makmah",
+         "pts": 247462,
+         "oro": 3,
+         "ev": 44
+        },
+        {
+         "op": "Six",
+         "n": "Six",
+         "pts": 222647,
+         "oro": 3,
+         "ev": 31
+        },
+        {
+         "op": "Verc",
+         "n": "Verc",
+         "pts": 208612,
+         "oro": 7,
+         "ev": 23
+        }
+       ]
+      },
+      "revelacion": {
+       "nom": [
+        {
+         "op": "Teo",
+         "n": "Teo",
+         "pts": 50725,
+         "oro": 0,
+         "ev": 15
+        },
+        {
+         "op": "Lvel 🇻🇪",
+         "n": "Lvel 🇻🇪",
+         "pts": 43294,
+         "oro": 0,
+         "ev": 13
+        },
+        {
+         "op": "Aldre",
+         "n": "Aldre",
+         "pts": 26775,
+         "oro": 0,
+         "ev": 4
+        },
+        {
+         "op": "Zaik 🇪🇸",
+         "n": "Zaik 🇪🇸",
+         "pts": 24688,
+         "oro": 0,
+         "ev": 10
+        },
+        {
+         "op": "Trelok",
+         "n": "Trelok",
+         "pts": 23125,
+         "oro": 0,
+         "ev": 2
+        }
+       ]
+      },
+      "staff": {
+       "nom": [
+        {
+         "op": "LEWITO",
+         "n": "LEWITO",
+         "q": "LEWITO",
+         "quien": [
+          "LEWITO"
+         ],
+         "d": "22 fechas de staff"
+        },
+        {
+         "op": "Kravitz",
+         "n": "Kravitz",
+         "q": "Kravitz",
+         "quien": [
+          "Kravitz"
+         ],
+         "d": "12 fechas de staff"
+        },
+        {
+         "op": "Flennzs",
+         "n": "Flennzs",
+         "q": "Flennzs",
+         "quien": [
+          "Flennzs"
+         ],
+         "d": "11 fechas de staff"
+        },
+        {
+         "op": "NC",
+         "n": "NC",
+         "q": "NC",
+         "quien": [
+          "NC"
+         ],
+         "d": "9 fechas de staff"
+        },
+        {
+         "op": "Xubaru",
+         "n": "Xubaru",
+         "q": "Xubaru",
+         "quien": [
+          "Xubaru"
+         ],
+         "d": "9 fechas de staff"
+        }
+       ]
+      }
+     },
+     "juegan": [
+      ".SosaATR",
+      "1200",
+      "19 FLEIVA WACK",
+      "7",
+      "71",
+      "Abyssus",
+      "Abysuss",
+      "Adriagner",
+      "AFR",
+      "Agenda motta 🇨🇦 🇦🇷",
+      "Agente sombra",
+      "Agus",
+      "AKARK",
+      "AKKAMARU 🇪🇸",
+      "Akuseru",
+      "Akutagawa🇹🇼",
+      "Aldre",
+      "ALESS",
+      "Alexi",
+      "Alonso",
+      "ALTER 🇨🇱",
+      "Andres",
+      "Andy",
+      "ANG",
+      "ANTONIO🇵🇾",
+      "ANTORCHA",
+      "Apolo",
+      "araya",
+      "ARDEAN",
+      "AREZ",
+      "Ariaxer",
+      "Artezzy",
+      "Assuan",
+      "atari",
+      "Axinu",
+      "Badterne",
+      "baggio🇮🇹",
+      "BastyRetro",
+      "BELIKKO",
+      "benjadsantis🇦🇷",
+      "BENJI 🇵🇪",
+      "Benjixo",
+      "Benju",
+      "Betelguese",
+      "BLITZ",
+      "Bloody",
+      "BLUE BURKA🇦🇪",
+      "BRAGEURITHER🇦🇪",
+      "Btrece",
+      "BTRX",
+      "Bull12r",
+      "Cajita",
+      "Calíz",
+      "Cannox",
+      "Cazafla anti cazanova🇭🇹",
+      "CFM",
+      "chekialo 🇧🇯",
+      "Chente",
+      "CHOCLITO",
+      "Chop",
+      "Cinexfilo",
+      "CJ",
+      "Ckl",
+      "Cody🇺🇸",
+      "Colesito",
+      "Colo",
+      "crakero",
+      "Crk",
+      "Cronox",
+      "Dantemx",
+      "DARK ANGEL 🇨🇴",
+      "DarkoMC",
+      "DarnBless",
+      "DAVIJUAN",
+      "Deko",
+      "Delux",
+      "Denik",
+      "Desio",
+      "Desu",
+      "Deuxs",
+      "Dev",
+      "DEWACHOMEFUI 🇨🇲",
+      "DO-C",
+      "doble h",
+      "Dominick",
+      "Drexx",
+      "Drezz🇵🇪",
+      "dxg",
+      "Dynoco",
+      "dyss",
+      "Dyzz",
+      "Eclipsito",
+      "Ed",
+      "Edd y Eddy 🇻🇪",
+      "Efimero",
+      "EGI",
+      "Egipto 🇨🇷",
+      "EIDP",
+      "Eliot",
+      "Elsoolar",
+      "Emily Family",
+      "EmiZor",
+      "Enkil 🇦🇷",
+      "Erian",
+      "Erik",
+      "Erizo",
+      "erpi",
+      "Evangeline🇧🇴",
+      "Eze",
+      "Ezias🥈✒️🧢🐍",
+      "Ezze",
+      "F1THER",
+      "FAT PENIS",
+      "Fear",
+      "fenix",
+      "Fin",
+      "Fisics",
+      "fleivaman",
+      "Focox",
+      "Freestyle4AllmyNiggaz 🌏🌏",
+      "gary",
+      "Geoka",
+      "Ger9🇨🇱",
+      "GGWAN",
+      "Gian",
+      "gibraltar 🇦🇨",
+      "Gocho",
+      "Gosu Z",
+      "Greyfitsh🇵🇦",
+      "Guaicurús🇰🇷",
+      "Guess",
+      "Gus",
+      "Gustavo Urrutia Perez 🇲🇽",
+      "Guty",
+      "Gwynyth",
+      "Hardcore",
+      "Hassan",
+      "Henry",
+      "HH",
+      "Holden",
+      "Hotaru Adeyemi 🏳️‍⚧️",
+      "Iguana",
+      "ikonoxx",
+      "Imagy",
+      "Ineedrubbers🇮🇱",
+      "Isabella 🇦🇷",
+      "ISAIAS",
+      "Ivaynex",
+      "Izaya",
+      "J.r",
+      "J19",
+      "Jahno Afrodisiaco 🇦🇷",
+      "Jeisy",
+      "JEIXDER",
+      "JHEYSON",
+      "JJ",
+      "Jobaking",
+      "Joshema",
+      "JOSHU",
+      "Juasmio",
+      "Jult",
+      "Jupiter",
+      "kaiser🇵🇷",
+      "Karumailafmasha🇹🇼",
+      "Keider",
+      "kerkoide",
+      "Khalil",
+      "KIRITO",
+      "Kminant",
+      "Kochi",
+      "Konan",
+      "Korey",
+      "Kourier",
+      "Kravitz",
+      "Krinkross🇪🇸",
+      "Krish",
+      "Kun Z",
+      "Kwl",
+      "Kyss",
+      "LA ORDEN DEL GRIAL 🇵🇪 🇨🇱 🇦🇷",
+      "Lambroggini",
+      "LAST",
+      "Launok",
+      "Lautaro la sinceridad 🇨🇨",
+      "Leonart",
+      "Letrao🇨🇱",
+      "LEWITO",
+      "LGBD",
+      "Liam",
+      "Liberia",
+      "lil",
+      "Lilñaño",
+      "LitKunai",
+      "Lizeninn",
+      "Lizen🇦🇷",
+      "LKS 🇨🇱",
+      "LOLOELGAUCHO",
+      "Lord Viruzz",
+      "LOS DUEÑOS DE TU BURRA 🇦🇷",
+      "LRS",
+      "LSO",
+      "Luck",
+      "Luffy",
+      "luisito 🏆",
+      "Lukas",
+      "Luz",
+      "Luzzano",
+      "Lvel 🇻🇪",
+      "Magic",
+      "Majiztral",
+      "Makmah",
+      "MALBORO",
+      "Malva",
+      "Manteca mantecosa 🇨🇾",
+      "Marcos",
+      "Marto",
+      "Masino",
+      "Mathhias",
+      "Matias",
+      "MATICERNA",
+      "mats",
+      "MATUK 🇦🇷",
+      "Mau KC 🇨🇴",
+      "MauzzitoEmeces",
+      "MaYeuTyK",
+      "Mc arepa",
+      "MCNadie",
+      "MCO",
+      "MD",
+      "melomaniaco",
+      "MetriOdin",
+      "METRO",
+      "MHS",
+      "Millonari-O",
+      "Miniboy",
+      "Mito",
+      "Molusco",
+      "Monet",
+      "Mosquitrap 🦟",
+      "Mr Still Ballin",
+      "MTZ",
+      "Musicdum",
+      "MZK",
+      "N1k",
+      "Nain sdp",
+      "NC",
+      "nebu",
+      "Nemi",
+      "Neo",
+      "NewCharacter🇦🇷",
+      "NILS",
+      "Nmb",
+      "Noone",
+      "npk",
+      "Number",
+      "Number Laden 🇸🇦",
+      "NXUZ",
+      "NYCO",
+      "Oasis",
+      "OEP",
+      "OG",
+      "OKAM",
+      "Ola🇲🇽",
+      "Olga de Kiev 🇩🇴",
+      "Oni 🇦🇷",
+      "ONZASS",
+      "oriuz",
+      "Panchok",
+      "Paria",
+      "Partim",
+      "Penescrotopene 🇰🇷⚫️",
+      "Personality",
+      "PETER🇵🇪",
+      "PichulaMc",
+      "PIERR🇵🇪",
+      "Pipe",
+      "Player",
+      "Polosport",
+      "Pomberito",
+      "PRAISERIZA",
+      "Presagio",
+      "Prodigy",
+      "PROMETHEUS BIB 🇨🇴",
+      "Prosu",
+      "Provenza",
+      "publicenemy🇦🇷",
+      "QZ🇦🇷",
+      "Ram",
+      "Rayo",
+      "Rbk",
+      "Respawn",
+      "Revo",
+      "Reyes",
+      "Richard",
+      "Riolu",
+      "Risa",
+      "Rodas",
+      "rodrilp",
+      "Rosmel 🇻🇪",
+      "RT",
+      "Ruvi",
+      "Ruvick",
+      "Rydo",
+      "SAEVA",
+      "Saiko",
+      "Sami",
+      "Santi",
+      "Santo Trinidad 🇨🇴",
+      "Saz",
+      "Scot",
+      "Scritura",
+      "Selek",
+      "Senticide",
+      "setesfifi",
+      "Shadow",
+      "Sin Limites",
+      "SINTEXT",
+      "Six",
+      "Skratch",
+      "Slasher",
+      "Snake",
+      "Snow",
+      "Soneto",
+      "SONIC_DORADITO",
+      "Sosa",
+      "Soulb",
+      "Stt🇮🇨",
+      "SULTAN",
+      "Swid",
+      "Tam",
+      "Tayo",
+      "Teito",
+      "Tenor",
+      "Teo",
+      "Tier",
+      "tito calderon",
+      "tomyhilfiger🇾🇹",
+      "Trelok",
+      "Trot",
+      "Tuca",
+      "Tusicario",
+      "TøKīØ🦠🧠",
+      "Under",
+      "Valdoza",
+      "Valen",
+      "Vandu",
+      "Velatz",
+      "Verc",
+      "Volk",
+      "Walker",
+      "Warap",
+      "wei shenlong",
+      "Xclusivo",
+      "xJuniorTime",
+      "Xplic🇨🇱",
+      "Xubaru",
+      "yinn",
+      "Yor",
+      "YOUNG VLAD 🇨🇴",
+      "Zack🇺🇸",
+      "Zaik 🇪🇸",
+      "Zaza",
+      "ZiarKI",
+      "Zignos",
+      "🇺🇸 x Za"
+     ]
+    },
+    "FRZ": {
+     "cats": {
+      "rapero": {
+       "nom": [
+        {
+         "op": "Scritura",
+         "n": "Scritura",
+         "pts": 9375,
+         "oro": 0,
+         "ev": 2
+        },
+        {
+         "op": "Erian",
+         "n": "Erian",
+         "pts": 8850,
+         "oro": 0,
+         "ev": 2
+        },
+        {
+         "op": "Luck",
+         "n": "Luck",
+         "pts": 7700,
+         "oro": 0,
+         "ev": 1
+        },
+        {
+         "op": "Juasmio",
+         "n": "Juasmio",
+         "pts": 7500,
+         "oro": 1,
+         "ev": 1
+        },
+        {
+         "op": "Ragnar",
+         "n": "Ragnar",
+         "pts": 7500,
+         "oro": 1,
+         "ev": 1
+        }
+       ]
+      },
+      "staff": {
+       "nom": [
+        {
+         "op": "Ceko",
+         "n": "Ceko",
+         "q": "Ceko",
+         "quien": [
+          "Ceko"
+         ],
+         "d": "2 fechas de staff"
+        }
+       ]
+      }
+     },
+     "juegan": [
+      "Abraham 🇻🇪",
+      "Andresito",
+      "BM",
+      "Cinexfilo",
+      "David CM",
+      "Dynoco",
+      "Dyzz",
+      "EmiZor",
+      "Erian",
+      "J.r",
+      "Juasmio",
+      "Lizennin🇸🇴",
+      "Luck",
+      "Milo",
+      "Molt",
+      "Mosquitrap 🦟",
+      "Mr.Kude",
+      "MTZ",
+      "NC",
+      "Pipe",
+      "Ragna 🇨🇱",
+      "Ragnar",
+      "Rbk",
+      "Scritura",
+      "Sin Limites",
+      "Soulb",
+      "Tiago Context 🇦🇷",
+      "Vilca"
+     ]
+    },
+    "FVS": {
+     "cats": {
+      "rapero": {
+       "nom": [
+        {
+         "op": "Molusco",
+         "n": "Molusco",
+         "pts": 25000,
+         "oro": 1,
+         "ev": 1
+        },
+        {
+         "op": "Vandu",
+         "n": "Vandu",
+         "pts": 18750,
+         "oro": 0,
+         "ev": 1
+        },
+        {
+         "op": "Raizer",
+         "n": "Raizer",
+         "pts": 13125,
+         "oro": 0,
+         "ev": 1
+        },
+        {
+         "op": "Sin Limites",
+         "n": "Sin Limites",
+         "pts": 13125,
+         "oro": 0,
+         "ev": 1
+        }
+       ]
+      },
+      "staff": {
+       "nom": [
+        {
+         "op": "Astral",
+         "n": "Astral",
+         "q": "Astral",
+         "quien": [
+          "Astral"
+         ],
+         "d": "1 fecha de staff"
+        },
+        {
+         "op": "ForceGP",
+         "n": "ForceGP",
+         "q": "ForceGP",
+         "quien": [
+          "ForceGP"
+         ],
+         "d": "1 fecha de staff"
+        },
+        {
+         "op": "Mathhias",
+         "n": "Mathhias",
+         "q": "Mathhias",
+         "quien": [
+          "Mathhias"
+         ],
+         "d": "1 fecha de staff"
+        },
+        {
+         "op": "Saiko",
+         "n": "Saiko",
+         "q": "Saiko",
+         "quien": [
+          "Saiko"
+         ],
+         "d": "1 fecha de staff"
+        },
+        {
+         "op": "Xervoe",
+         "n": "Xervoe",
+         "q": "Xervoe",
+         "quien": [
+          "Xervoe"
+         ],
+         "d": "1 fecha de staff"
+        }
+       ]
+      }
+     },
+     "juegan": [
+      "Kusoh",
+      "Molusco",
+      "Raizer",
+      "Sin Limites",
+      "Vandu"
+     ]
+    },
+    "SR": {
+     "cats": {
+      "rapero": {
+       "nom": [
+        {
+         "op": "Over",
+         "n": "Over",
+         "pts": 59000,
+         "oro": 1,
+         "ev": 2
+        },
+        {
+         "op": "Agus",
+         "n": "Agus",
+         "pts": 43750,
+         "oro": 1,
+         "ev": 3
+        },
+        {
+         "op": "Catarsis",
+         "n": "Catarsis",
+         "pts": 37500,
+         "oro": 0,
+         "ev": 1
+        },
+        {
+         "op": "Bloody",
+         "n": "Bloody",
+         "pts": 26250,
+         "oro": 0,
+         "ev": 2
+        },
+        {
+         "op": "Prosu",
+         "n": "Prosu",
+         "pts": 20000,
+         "oro": 1,
+         "ev": 3
+        }
+       ]
+      },
+      "revelacion": {
+       "nom": [
+        {
+         "op": "nueve7",
+         "n": "nueve7",
+         "pts": 2500,
+         "oro": 0,
+         "ev": 1
+        },
+        {
+         "op": "Scritura",
+         "n": "Scritura",
+         "pts": 2500,
+         "oro": 0,
+         "ev": 1
+        },
+        {
+         "op": "Magic",
+         "n": "Magic",
+         "pts": 1250,
+         "oro": 0,
+         "ev": 1
+        }
+       ]
+      },
+      "batalla": {
+       "nom": [
+        {
+         "op": "0uk1CE5A3Ic",
+         "n": "ZETA 🆚 RUBIK || FINAL MATANZA DE DIOSES - C16",
+         "sv": "SR",
+         "gente": [
+          "Zeta",
+          "Rubik"
+         ],
+         "vistas": 89
+        },
+        {
+         "op": "kaD74Qr7ky8",
+         "n": "RUBIK 🆚 SCORPIO | FINAL MATANZA DE DIOSES - C15",
+         "sv": "SR",
+         "gente": [
+          "Rubik"
+         ],
+         "vistas": 50
+        }
+       ]
+      },
+      "staff": {
+       "nom": [
+        {
+         "op": "GP",
+         "n": "GP",
+         "q": "GP",
+         "quien": [
+          "GP"
+         ],
+         "d": "3 fechas de staff"
+        },
+        {
+         "op": "Deluxe",
+         "n": "Deluxe",
+         "q": "Deluxe",
+         "quien": [
+          "Deluxe"
+         ],
+         "d": "1 fecha de staff"
+        },
+        {
+         "op": "DLO",
+         "n": "DLO",
+         "q": "DLO",
+         "quien": [
+          "DLO"
+         ],
+         "d": "1 fecha de staff"
+        },
+        {
+         "op": "Jothaze",
+         "n": "Jothaze",
+         "q": "Jothaze",
+         "quien": [
+          "Jothaze"
+         ],
+         "d": "1 fecha de staff"
+        },
+        {
+         "op": "Lunatico",
+         "n": "Lunatico",
+         "q": "Lunatico",
+         "quien": [
+          "Lunatico"
+         ],
+         "d": "1 fecha de staff"
+        }
+       ]
+      }
+     },
+     "juegan": [
+      "Abyssus",
+      "Agus",
+      "Bau",
+      "Bloody",
+      "BNA",
+      "Catarsis",
+      "Choka",
+      "Chop",
+      "Colesito",
+      "Cronox",
+      "David 🇨🇴",
+      "Delux",
+      "Deluxe",
+      "Desio",
+      "Dynoco",
+      "Eclipsito",
+      "Efimero",
+      "Erian",
+      "Fazer",
+      "Global Hustler",
+      "GP",
+      "Guess",
+      "Gus",
+      "Ivan",
+      "Joaquín La Profecia 👨🏻‍🍳",
+      "Jupiter",
+      "Kain",
+      "Kastigoz",
+      "Kravitz",
+      "Kyss",
+      "Magic",
+      "MAGMAHK",
+      "Makmah",
+      "Masino",
+      "MCO",
+      "METRA",
+      "Mito",
+      "Molt",
+      "NC",
+      "Nemi",
+      "Neo",
+      "nueve7",
+      "OKAM",
+      "Over",
+      "Panchok",
+      "Partim",
+      "PichulaMc",
+      "Prosu",
+      "Road",
+      "Rubik",
+      "Scritura",
+      "Six",
+      "SK8",
+      "Sombra",
+      "Sosa",
+      "SYEPORUTE🇿🇲",
+      "Trelok",
+      "Valdoza",
+      "Valdrax",
+      "Valen",
+      "Vandu",
+      "Vargas",
+      "Velatz",
+      "Verc",
+      "Zeta",
+      "Zignos"
+     ]
+    },
+    "URBF": {
+     "cats": {
+      "rapero": {
+       "nom": [
+        {
+         "op": "Motera",
+         "n": "Motera",
+         "pts": 47500,
+         "oro": 1,
+         "ev": 2
+        },
+        {
+         "op": "Carlosmo",
+         "n": "Carlosmo",
+         "pts": 37500,
+         "oro": 1,
+         "ev": 1
+        },
+        {
+         "op": "Liberia",
+         "n": "Liberia",
+         "pts": 33750,
+         "oro": 1,
+         "ev": 1
+        },
+        {
+         "op": "Vandu",
+         "n": "Vandu",
+         "pts": 33750,
+         "oro": 0,
+         "ev": 2
+        },
+        {
+         "op": "PichulaMc",
+         "n": "PichulaMc",
+         "pts": 29875,
+         "oro": 0,
+         "ev": 3
+        }
+       ]
+      },
+      "revelacion": {
+       "nom": [
+        {
+         "op": "Medster",
+         "n": "Medster",
+         "pts": 17500,
+         "oro": 0,
+         "ev": 1
+        },
+        {
+         "op": "Catarsis",
+         "n": "Catarsis",
+         "pts": 16500,
+         "oro": 1,
+         "ev": 1
+        },
+        {
+         "op": "stormed",
+         "n": "stormed",
+         "pts": 10000,
+         "oro": 0,
+         "ev": 1
+        }
+       ]
+      },
+      "staff": {
+       "nom": [
+        {
+         "op": "Erian",
+         "n": "Erian",
+         "q": "Erian",
+         "quien": [
+          "Erian"
+         ],
+         "d": "4 fechas de staff"
+        },
+        {
+         "op": "NeisMC",
+         "n": "NeisMC",
+         "q": "NeisMC",
+         "quien": [
+          "NeisMC"
+         ],
+         "d": "4 fechas de staff"
+        },
+        {
+         "op": "Bocamio",
+         "n": "Bocamio",
+         "q": "Bocamio",
+         "quien": [
+          "Bocamio"
+         ],
+         "d": "2 fechas de staff"
+        },
+        {
+         "op": "MTZ",
+         "n": "MTZ",
+         "q": "MTZ",
+         "quien": [
+          "MTZ"
+         ],
+         "d": "2 fechas de staff"
+        },
+        {
+         "op": "Catarsis",
+         "n": "Catarsis",
+         "q": "Catarsis",
+         "quien": [
+          "Catarsis"
+         ],
+         "d": "1 fecha de staff"
+        }
+       ]
+      }
+     },
+     "juegan": [
+      "Aby",
+      "Agus",
+      "AGUSTÍN51K",
+      "BastyRetro",
+      "Benjixo",
+      "Campoy",
+      "Carlosmo",
+      "Catarsis",
+      "Cinexfilo",
+      "Crk",
+      "Cronox",
+      "El Hombre Eyau",
+      "Erian",
+      "Faso",
+      "Guess",
+      "Hassan",
+      "JHEYSON",
+      "Jupiter",
+      "Kochi",
+      "Korey",
+      "Leyenda",
+      "Liberia",
+      "Lizeninn",
+      "Makmah",
+      "MCO",
+      "Medster",
+      "melomaniaco",
+      "Millonari-O",
+      "Monamay",
+      "Motera",
+      "MTZ",
+      "NC",
+      "Nemi",
+      "Number",
+      "ONDADISKO",
+      "Ortiz",
+      "PichulaMc",
+      "Polosport",
+      "Presagio",
+      "Rodas",
+      "Shadow",
+      "Sin Limites",
+      "Sosa",
+      "stormed",
+      "Trot",
+      "Tusicario",
+      "Vacile🇪🇸",
+      "Vandu",
+      "Vargas",
+      "Velatz",
+      "Walker",
+      "Xowee"
+     ]
+    }
+   }
+  }
+ },
  "vivo": {
   "mes": "2026-11"
  },
