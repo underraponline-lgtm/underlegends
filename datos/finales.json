@@ -1001,5 +1001,27 @@
   "sin_permiso": false,
   "sv": "DDF"
  },
+ "1566218030692827249": {
+  "autor": "1440039366654165212",
+  "canal": "1309234583023124531",
+  "cuando": "2026-10-31T22:31:17.441000+00:00",
+  "evento": "FAT BATTLES PALOOZA EDICIÓN HALOWEEN",
+  "fecha": "31/10",
+  "llave": "1566218030692827249",
+  "pregunta": "",
+  "preguntada": "2026-10-31 10:53 PM ET",
+  "preguntas": [
+   {
+    "lados": [
+     "Panchok 🇨🇱",
+     "MILO 🇲🇽"
+    ],
+    "ronda": "FINAL"
+   }
+  ],
+  "respondidas": {},
+  "sin_permiso": true,
+  "sv": "ACAD"
+ },
  "_leeme": "Las llaves que el ciclo no entendió y se las preguntó a quien las publicó, con botones o un menú (bot/finales.py). Una vez por llave, por su ID: así nunca se pregunta dos veces. Dlx, 12/10/2026."
 }
