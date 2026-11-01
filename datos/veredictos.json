@@ -2,39 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1564028924617564169": {
-   "id": "1564028924617564169",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792963953881,
-   "a": "GEOKA 🇦🇷",
-   "b": "ARIAXER 🇦🇷",
-   "ganador": "GEOKA 🇦🇷",
-   "votos": "3–0"
-  },
-  "1564032039047401696": {
-   "id": "1564032039047401696",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792964696419,
-   "a": "WACHIN 🇦🇷",
-   "b": "MCO 🇦🇷",
-   "ganador": "MCO 🇦🇷",
-   "votos": "3–0"
-  },
-  "1564033320520782038": {
-   "id": "1564033320520782038",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792965001946,
-   "a": "EZEE 🇦🇷",
-   "b": "DELUXE 🇦🇷",
-   "ganador": "DELUXE 🇦🇷",
-   "votos": "1–0"
-  },
   "1564036937843613918": {
    "id": "1564036937843613918",
    "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
