@@ -2,39 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1564021629623861289": {
-   "id": "1564021629623861289",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792962214619,
-   "a": "SEKKA 🇦🇷",
-   "b": "KUDE 🇦🇷",
-   "ganador": "SEKKA 🇦🇷",
-   "votos": "3–1"
-  },
-  "1564023326526144614": {
-   "id": "1564023326526144614",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792962619192,
-   "a": "FLAMA 🇦🇷",
-   "b": "HOTARU 🇦🇷🏳️‍⚧",
-   "ganador": "HOTARU 🇦🇷🏳️‍⚧",
-   "votos": "4–0"
-  },
-  "1564025551860138075": {
-   "id": "1564025551860138075",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792963149753,
-   "a": "BNA 🇦🇷",
-   "b": "GUESS 🇦🇷",
-   "ganador": "GUESS 🇦🇷",
-   "votos": "3–2"
-  },
   "1564028924617564169": {
    "id": "1564028924617564169",
    "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
