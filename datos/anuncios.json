@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-01T04:25:42+00:00",
+ "cuando": "2026-11-01T04:55:41+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -381,8 +381,8 @@
    "nombre": "qcyo rapeen 9",
    "servidor": "FFA",
    "canal": "✦🏆—eventos",
-   "msg_id": "1566265381197451456",
-   "cuando": "2026-11-01T01:39:26",
+   "msg_id": "1566313645850234961",
+   "cuando": "2026-11-01T04:51:13",
    "canal_id": "1487206325602484295",
    "guild_id": "1468472442925092958",
    "organizador": "@nachonc_",
@@ -5917,6 +5917,132 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "BLITZ 🇮🇱",
+   "quien": "nahanah",
+   "discord_id": "1023727385822122104",
+   "msg_id": "1566314210152030350",
+   "cuando": "2026-11-01T04:53:28"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "okam🇨🇷",
+   "quien": "okam77_25976",
+   "discord_id": "1512148565890306153",
+   "msg_id": "1566314061405360211",
+   "cuando": "2026-11-01T04:52:52"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "mr still ballin 🇳🇴",
+   "quien": "imstillplayin",
+   "discord_id": "794200141023412244",
+   "msg_id": "1566314041620570223",
+   "cuando": "2026-11-01T04:52:48"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Lizen🇦🇷",
+   "quien": "lizeninn.",
+   "discord_id": "1493416945037611140",
+   "msg_id": "1566313889807736955",
+   "cuando": "2026-11-01T04:52:12"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Geoka 🇨🇾",
+   "quien": "goksito_8",
+   "discord_id": "1325042155819106324",
+   "msg_id": "1566313839719485613",
+   "cuando": "2026-11-01T04:52:00"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Number 🇻🇪",
+   "quien": "numbyng",
+   "discord_id": "1310075576991875144",
+   "msg_id": "1566313819733758005",
+   "cuando": "2026-11-01T04:51:55"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "senticide🇨🇱",
+   "quien": "pakelopakelo",
+   "discord_id": "1355393300672020570",
+   "msg_id": "1566313808018931925",
+   "cuando": "2026-11-01T04:51:52"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "praiseriza 🇻🇪",
+   "quien": "lein7426",
+   "discord_id": "1078792444080046271",
+   "msg_id": "1566313802935566500",
+   "cuando": "2026-11-01T04:51:51"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1566313801631137915",
+   "cuando": "2026-11-01T04:51:51"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "erian 🇵🇸",
+   "quien": "deslanofthemind",
+   "discord_id": "1055474244089286706",
+   "msg_id": "1566313797860204675",
+   "cuando": "2026-11-01T04:51:50"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Monet 🇲🇽",
+   "quien": "monet_x.",
+   "discord_id": "1501320596485701642",
+   "msg_id": "1566313794081267744",
+   "cuando": "2026-11-01T04:51:49"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "yinn 🇲🇦",
+   "quien": "yinnmtz",
+   "discord_id": "1538896358679908437",
+   "msg_id": "1566313780596580393",
+   "cuando": "2026-11-01T04:51:45"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Millonari-O 🇵🇾",
+   "quien": "pelotadel_10_68491",
+   "discord_id": "1373340031413911624",
+   "msg_id": "1566313761667813417",
+   "cuando": "2026-11-01T04:51:41"
+  },
+  {
+   "servidor": "ACAD",
+   "canal": "📝┇inscripciones-1",
+   "texto": "Monet 🇲🇽",
+   "quien": "monet_x.",
+   "discord_id": "1501320596485701642",
+   "msg_id": "1566309368029384815",
+   "cuando": "2026-11-01T04:34:13"
+  },
   {
    "servidor": "ACAD",
    "canal": "📝┇inscripciones-1",
@@ -41790,132 +41916,6 @@
    "discord_id": "790016013680771102",
    "msg_id": "1554585480752930848",
    "cuando": "2026-09-29T20:07:41"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Ceegee 🇦🇷",
-   "quien": "inflox",
-   "discord_id": "598344541770219550",
-   "msg_id": "1554585152963870823",
-   "cuando": "2026-09-29T20:06:23"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "MCO 🇦🇷",
-   "quien": "mcorap",
-   "discord_id": "1048744067313451050",
-   "msg_id": "1554584682056912977",
-   "cuando": "2026-09-29T20:04:30"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Erian el papá de colesito 🇩🇴",
-   "quien": "_5thofnovember",
-   "discord_id": "681588123699904563",
-   "msg_id": "1554584388518281307",
-   "cuando": "2026-09-29T20:03:21"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "six",
-   "quien": "ivanjajaa",
-   "discord_id": "639232575461654538",
-   "msg_id": "1554584304322089102",
-   "cuando": "2026-09-29T20:03:00"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Makma 🇻🇪",
-   "quien": "makmah_g",
-   "discord_id": "897942226955563068",
-   "msg_id": "1554584229591912639",
-   "cuando": "2026-09-29T20:02:43"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Juanpa 🇨🇴",
-   "quien": "juanpa2345",
-   "discord_id": "435987670171385866",
-   "msg_id": "1554584040785580095",
-   "cuando": "2026-09-29T20:01:58"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Alonso🇨🇱",
-   "quien": "prettyboyflxwz",
-   "discord_id": "1542400551839338567",
-   "msg_id": "1554584020640210995",
-   "cuando": "2026-09-29T20:01:53"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Aktybo🇦🇷",
-   "quien": "aktybo.",
-   "discord_id": "1230341652841758750",
-   "msg_id": "1554583929967607829",
-   "cuando": "2026-09-29T20:01:31"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Sin límites🇵🇪",
-   "quien": "sinlimites2026",
-   "discord_id": "1508623564285149357",
-   "msg_id": "1554583747041689695",
-   "cuando": "2026-09-29T20:00:48"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Sebita🇱🇷",
-   "quien": "malasiafighter",
-   "discord_id": "1357796427191029932",
-   "msg_id": "1554583740649439384",
-   "cuando": "2026-09-29T20:00:46"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Soneto 🇪🇨",
-   "quien": "pllsuax",
-   "discord_id": "745324578347286528",
-   "msg_id": "1554583693870506177",
-   "cuando": "2026-09-29T20:00:35"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "PRRR🇦🇴",
-   "quien": "ndfue",
-   "discord_id": "1405241805733105704",
-   "msg_id": "1554583657283330232",
-   "cuando": "2026-09-29T20:00:26"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "melztube🇨🇴",
-   "quien": "nevencito",
-   "discord_id": "796816573331275787",
-   "msg_id": "1554583618532417557",
-   "cuando": "2026-09-29T20:00:17"
-  },
-  {
-   "servidor": "SR",
-   "canal": "[📝]inscripciones",
-   "texto": "Trot🇪🇸",
-   "quien": "eresmatrot",
-   "discord_id": "1347663033949880360",
-   "msg_id": "1554583590321389651",
-   "cuando": "2026-09-29T20:00:10"
   }
  ]
 }

@@ -4887,6 +4887,27 @@
      ]
     }
    }
+  },
+  "2026-11": {
+   "promo": {},
+   "pub": {},
+   "an": {
+    "1566313645850234961": {
+     "sv": "FFA",
+     "nombre": "qcyo rapeen 9",
+     "mo": "2026-11-01T05:06:13Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "nachonc_",
+       "id": ""
+      }
+     ],
+     "organizador": "@nachonc_",
+     "cuentas": {}
+    }
+   },
+   "ver": {}
   }
  }
 }
