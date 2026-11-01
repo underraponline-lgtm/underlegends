@@ -1639,7 +1639,8 @@
   "Tmax Turbo [PN]": {
    "competitivo": "f4ba3e4071cf:7d41d0503ea2",
    "pais": "7b00ea3528f3:ada55a12db94",
-   "servidor": "7fca8df3a7c0:decaf64d9256:99e3cc"
+   "servidor": "7fca8df3a7c0:decaf64d9256:99e3cc",
+   "temporada": "d862fbf9d144:ccd09f762e04"
   },
   "Tole Lirica": {
    "servidor": "efd66fcc7bef:decaf64d9256:055f77"
@@ -1788,9 +1789,9 @@
    "servidor": "4c4f8577533d:decaf64d9256:2a03f7"
   },
   "Zaik": {
-   "competitivo": "25d098a20057:7d41d0503ea2",
-   "servidor": "83af58691f11:decaf64d9256:284dc1",
-   "temporada": "a8467b9fdc3a:ccd09f762e04"
+   "competitivo": "6ad7d9f098d9:7d41d0503ea2",
+   "servidor": "65a310691fbe:decaf64d9256:284dc1",
+   "temporada": "e60ff711e81a:ccd09f762e04"
   },
   "Zamo": {
    "servidor": "f78f4273cc58:decaf64d9256:4b46a6"
@@ -1805,10 +1806,10 @@
    "servidor": "d2b86c0bbfd9:decaf64d9256:055f77"
   },
   "Zeta": {
-   "competitivo": "4480814c22bc:7d41d0503ea2",
+   "competitivo": "154fefee4fea:7d41d0503ea2",
    "pais": "544c2c1b1058:ada55a12db94",
-   "servidor": "86cb36d7b1cd:decaf64d9256:15af16",
-   "temporada": "a958bff8d19a:ccd09f762e04"
+   "servidor": "ce303236d46a:decaf64d9256:15af16",
+   "temporada": "0f444e2fb9c7:ccd09f762e04"
   },
   "Zetryko": {
    "competitivo": "fd41b127bb75:7d41d0503ea2",
@@ -1821,10 +1822,10 @@
    "servidor": "95727acb7156:decaf64d9256:055f77"
   },
   "Zignos": {
-   "competitivo": "afe03393c8c9:7d41d0503ea2",
+   "competitivo": "5d884ca78229:7d41d0503ea2",
    "pais": "fc2b3d4971c4:ada55a12db94",
-   "servidor": "d768e1390d9a:decaf64d9256:3580af",
-   "temporada": "5029bb0a9b2e:ccd09f762e04"
+   "servidor": "9a3ada93a15f:decaf64d9256:3580af",
+   "temporada": "6aa182139bb1:ccd09f762e04"
   },
   "Zkalefa": {
    "servidor": "f7db99f48cc8:decaf64d9256:15af16"
@@ -1968,5 +1969,5 @@
    "servidor": "7f8885a35a6d:decaf64d9256:93a344"
   }
  },
- "cuando": "2026-11-01T08:04:53+00:00"
+ "cuando": "2026-11-01T16:44:24+00:00"
 }
