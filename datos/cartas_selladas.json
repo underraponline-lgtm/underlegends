@@ -1758,12 +1758,12 @@
    "temporada": "817caf9608a5:ccd09f762e04"
   },
   "YACO": {
-   "servidor": "8dc17afd358c:99e0c0179dbe:980594"
+   "servidor": "8dc17afd358c:decaf64d9256:980594"
   },
   "Yeyox": {
    "competitivo": "2c340953c4e3:7d41d0503ea2",
-   "pais": "7ac53e5b2916:263a27e40647",
-   "servidor": "1e2221651a90:99e0c0179dbe:93ed66"
+   "pais": "7ac53e5b2916:ada55a12db94",
+   "servidor": "1e2221651a90:decaf64d9256:93ed66"
   },
   "Yio": {},
   "Yor": {
@@ -1772,7 +1772,7 @@
    "servidor": "06add3a05f98:decaf64d9256:948362"
   },
   "Young": {
-   "servidor": "c2767db846db:99e0c0179dbe:15af16"
+   "servidor": "c2767db846db:decaf64d9256:15af16"
   },
   "ZTR": {
    "competitivo": "1f9ad405ce5e:7d41d0503ea2",
@@ -1781,7 +1781,7 @@
    "temporada": "2dd1a3f2a150:ccd09f762e04"
   },
   "Zaamei": {
-   "servidor": "b1642589051e:99e0c0179dbe:403ba8"
+   "servidor": "b1642589051e:decaf64d9256:403ba8"
   },
   "Zafka": {
    "competitivo": "8bf6c6a8474c:7d41d0503ea2",
@@ -1794,7 +1794,7 @@
    "temporada": "a8467b9fdc3a:ccd09f762e04"
   },
   "Zamo": {
-   "servidor": "f78f4273cc58:99e0c0179dbe:4b46a6"
+   "servidor": "f78f4273cc58:decaf64d9256:4b46a6"
   },
   "Zanet": {},
   "Zekha": {
@@ -1803,7 +1803,7 @@
    "servidor": "2a07cd426934:decaf64d9256:610cd5"
   },
   "Zekki": {
-   "servidor": "d2b86c0bbfd9:99e0c0179dbe:055f77"
+   "servidor": "d2b86c0bbfd9:decaf64d9256:055f77"
   },
   "Zeta": {
    "competitivo": "b832a8a7a98e:7d41d0503ea2",
@@ -1819,7 +1819,7 @@
   },
   "ZiarKI": {},
   "Ziggy": {
-   "servidor": "95727acb7156:99e0c0179dbe:055f77"
+   "servidor": "95727acb7156:decaf64d9256:055f77"
   },
   "Zignos": {
    "competitivo": "5c72718f422d:7d41d0503ea2",
@@ -1828,22 +1828,22 @@
    "temporada": "5029bb0a9b2e:ccd09f762e04"
   },
   "Zkalefa": {
-   "servidor": "f7db99f48cc8:99e0c0179dbe:15af16"
+   "servidor": "f7db99f48cc8:decaf64d9256:15af16"
   },
   "ajoel08": {
-   "servidor": "f5d8b897c1c2:99e0c0179dbe:67201a",
-   "temporada": "0ab704c07a5f:6ec1a5248de8"
+   "servidor": "f5d8b897c1c2:decaf64d9256:67201a",
+   "temporada": "0ab704c07a5f:ccd09f762e04"
   },
   "androide": {
-   "servidor": "d83342c293c7:99e0c0179dbe:055f77"
+   "servidor": "d83342c293c7:decaf64d9256:055f77"
   },
   "araya": {},
   "axzeye": {
-   "servidor": "62b20ddd6ea6:99e0c0179dbe:43d041"
+   "servidor": "62b20ddd6ea6:decaf64d9256:43d041"
   },
   "cardozo": {},
   "chupapene": {
-   "servidor": "03cada35e488:99e0c0179dbe:980594"
+   "servidor": "03cada35e488:decaf64d9256:980594"
   },
   "crakero": {
    "competitivo": "5783a801b4bc:7d41d0503ea2",
@@ -1969,5 +1969,5 @@
    "servidor": "7f8885a35a6d:decaf64d9256:93a344"
   }
  },
- "cuando": "2026-11-01T04:47:02+00:00"
+ "cuando": "2026-11-01T05:10:18+00:00"
 }
