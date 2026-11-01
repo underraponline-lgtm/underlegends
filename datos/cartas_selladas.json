@@ -1742,10 +1742,10 @@
    "servidor": "fa54e5404963:99e0c0179dbe:bc3af4"
   },
   "Xubaru": {
-   "competitivo": "a8a510ab827d:0a48057cb351",
-   "pais": "db688edb861d:263a27e40647",
-   "servidor": "876f2fbd20fd:99e0c0179dbe:a29fa0",
-   "temporada": "969447945654:6ec1a5248de8"
+   "competitivo": "2f9296e5ef0b:7d41d0503ea2",
+   "pais": "4da041c381d7:ada55a12db94",
+   "servidor": "64d4f0a83cc3:decaf64d9256:a29fa0",
+   "temporada": "817caf9608a5:ccd09f762e04"
   },
   "YACO": {
    "servidor": "8dc17afd358c:99e0c0179dbe:980594"
@@ -1959,5 +1959,5 @@
    "servidor": "7f8885a35a6d:99e0c0179dbe:93a344"
   }
  },
- "cuando": "2026-11-01T01:16:15+00:00"
+ "cuando": "2026-11-01T01:30:27+00:00"
 }
