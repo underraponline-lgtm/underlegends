@@ -2,17 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1564050162886905878": {
-   "id": "1564050162886905878",
-   "sv": "#LaCrew ||🎤ACADEMIA DE RAP 🎤",
-   "g": "765045834647339038",
-   "canal": "1309238412976590908",
-   "pub": 1792969017479,
-   "a": "SEKKA 🇦🇷",
-   "b": "DELUXE 🇦🇷",
-   "ganador": "DELUXE 🇦🇷",
-   "votos": "1–0"
-  },
   "1564098545173405807": {
    "id": "1564098545173405807",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1628,6 +1617,17 @@
    "a": "LAST 🇺🇾",
    "b": "MATTHIAS🇻🇪",
    "ganador": "MATTHIAS🇻🇪",
+   "votos": "1–0"
+  },
+  "1566584941326639105": {
+   "id": "1566584941326639105",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560645560015519834",
+   "pub": 1793573355753,
+   "a": "KUDE 🇦🇷",
+   "b": "MC DL🇲🇽",
+   "ganador": "KUDE 🇦🇷",
    "votos": "1–0"
   }
  },
