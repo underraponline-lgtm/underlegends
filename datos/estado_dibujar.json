@@ -1,86 +1,98 @@
 {
  "v": 1,
- "cuando": "2026-11-02T20:30:18Z",
+ "cuando": "2026-11-02T20:54:55Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 461.9,
+ "dur_s": 1237.3,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.1
+   "s": 6.5
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.0
+   "s": 1.2
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 10.1
+   "s": 9.8
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 24.4
+   "s": 21.7
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 40 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": false,
-   "s": 337.2
+   "s": 1125.9
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.1
+   "s": 11.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 74.5
+   "s": 59.4
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Artezzy"
+   "que": "03_Servidor/generar.py Adriagner"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Keider"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Miniboy"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Riolu"
   }
  ],
  "ultimo_evento": {
-  "n": "560",
-  "nombre": "RAP PARA RAPEROS",
-  "sv": "FFA",
+  "n": "561",
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.15",
+  "sv": "DDF",
   "dia": "2026-11-02"
  },
  "cuotas": {
   "kv": {
-   "write": 466,
-   "read": 43917
+   "write": 488,
+   "read": 45560
   },
   "objeto": {
-   "leidas": 2698314,
-   "escritas": 26260,
-   "pedidos": 7236
+   "leidas": 2809800,
+   "escritas": 27560,
+   "pedidos": 7424
   },
   "worker": {
-   "pedidos": 7524,
+   "pedidos": 7529,
    "errores": 1,
-   "sub": 9013,
+   "sub": 9007,
    "cortados": 1,
-   "p50_ms": 1.36,
-   "p99_ms": 13.23,
+   "p50_ms": 1.35,
+   "p99_ms": 13.22,
    "cpu": {
-    "total": 16438,
-    "objeto_10": 1680,
-    "worker_10": 225
+    "total": 16534,
+    "objeto_10": 1693,
+    "worker_10": 227
    }
   },
   "r2": {
