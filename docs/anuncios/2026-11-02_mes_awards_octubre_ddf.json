@@ -1,0 +1,77 @@
+{
+ "_leeme": "Los MES AWARDS de DDF de octubre (02/11/2026), en su canal de anuncios con @everyone (Dlx: «encuentra el canal de anuncio de cada servidor… con un everyone»). Nominados de datos/mes_awards.json (meses.2026-10.sv.DDF). Cierra el 04/11 a las 6 PM ET.",
+ "flags": 32768,
+ "components": [
+  {
+   "type": 17,
+   "accent_color": 15906565,
+   "components": [
+    {
+     "type": 9,
+     "components": [
+      {
+       "type": 10,
+       "content": "# 🏆 LOS AWARDS DE DDF · OCTUBRE\n**Lo mejor de octubre en Dimensión del Freestyle, votado por los que jugaron acá.** Cierra <t:1793833200:R>."
+      }
+     ],
+     "accessory": {
+      "type": 11,
+      "media": {
+       "url": "https://underlegends.pages.dev/ul.png"
+      }
+     }
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🎤 Los nominados\n**Rapero del mes** · Carlosss · Makmah · PichulaMc · Erian · NXUZ\n**Revelación** · Adriagner · RT\n**Staff del mes** · Adriagner · 19 FLEIVA WACK · Drexx · Mito · Keider"
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🗳️ Cómo votar\nSi jugaste en DDF en octubre, entra a la página de DDF en la Liga con tu Discord y elige uno por categoría. Puedes cambiar tu voto hasta que cierra.\nCada ganador se lleva su **insignia**, **1.000 Puntos de Tienda** y su lugar en la página de DDF.\n> ⏳ Cierra el <t:1793833200:F>"
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 2
+    },
+    {
+     "type": 1,
+     "components": [
+      {
+       "type": 2,
+       "style": 5,
+       "label": "Votar en DDF",
+       "emoji": {
+        "name": "🏆"
+       },
+       "url": "https://underlegends.pages.dev/freestyle-rap/sv/ddf"
+      }
+     ]
+    },
+    {
+     "type": 10,
+     "content": "-# Liga Global de Freestyle en Español · Under Legends"
+    }
+   ]
+  }
+ ],
+ "_publicado": {
+  "DDF": {
+   "mensaje": "1566936979646582907",
+   "cuando": "2026-11-02 5:08 PM ET",
+   "everyone": true,
+   "link": "https://discord.com/channels/1469009547971526659/1469943663332425738/1566936979646582907",
+   "editar": "python herramientas/anunciar.py docs/anuncios/2026-11-02_mes_awards_octubre_ddf.json --servidor DDF --editar 1566936979646582907"
+  }
+ }
+}

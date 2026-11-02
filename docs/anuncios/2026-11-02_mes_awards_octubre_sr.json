@@ -1,0 +1,77 @@
+{
+ "_leeme": "Los MES AWARDS de SR de octubre (02/11/2026), en su canal de anuncios con @everyone (Dlx: «encuentra el canal de anuncio de cada servidor… con un everyone»). Nominados de datos/mes_awards.json (meses.2026-10.sv.SR). Cierra el 04/11 a las 6 PM ET.",
+ "flags": 32768,
+ "components": [
+  {
+   "type": 17,
+   "accent_color": 15906565,
+   "components": [
+    {
+     "type": 9,
+     "components": [
+      {
+       "type": 10,
+       "content": "# 🏆 LOS AWARDS DE SR · OCTUBRE\n**Lo mejor de octubre en Snake Rap, votado por los que jugaron acá.** Cierra <t:1793833200:R>."
+      }
+     ],
+     "accessory": {
+      "type": 11,
+      "media": {
+       "url": "https://underlegends.pages.dev/ul.png"
+      }
+     }
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🎤 Los nominados\n**Rapero del mes** · Over · Agus · Catarsis · Bloody · Prosu\n**Revelación** · nueve7 · Scritura · Magic\n**Batalla del mes** · ZETA 🆚 RUBIK (FINAL MATANZA DE DIOSES C16) · RUBIK 🆚 SCORPIO (FINAL MATANZA DE DIOSES C15)\n**Staff del mes** · GP · Deluxe · DLO · Jothaze · Lunatico"
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🗳️ Cómo votar\nSi jugaste en SR en octubre, entra a la página de SR en la Liga con tu Discord y elige uno por categoría. Puedes cambiar tu voto hasta que cierra.\nCada ganador se lleva su **insignia**, **1.000 Puntos de Tienda** y su lugar en la página de SR.\n> ⏳ Cierra el <t:1793833200:F>"
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 2
+    },
+    {
+     "type": 1,
+     "components": [
+      {
+       "type": 2,
+       "style": 5,
+       "label": "Votar en SR",
+       "emoji": {
+        "name": "🏆"
+       },
+       "url": "https://underlegends.pages.dev/freestyle-rap/sv/sr"
+      }
+     ]
+    },
+    {
+     "type": 10,
+     "content": "-# Liga Global de Freestyle en Español · Under Legends"
+    }
+   ]
+  }
+ ],
+ "_publicado": {
+  "SR": {
+   "mensaje": "1566936991587762347",
+   "cuando": "2026-11-02 5:08 PM ET",
+   "everyone": true,
+   "link": "https://discord.com/channels/492346406976356374/863208009503997952/1566936991587762347",
+   "editar": "python herramientas/anunciar.py docs/anuncios/2026-11-02_mes_awards_octubre_sr.json --servidor SR --editar 1566936991587762347"
+  }
+ }
+}
