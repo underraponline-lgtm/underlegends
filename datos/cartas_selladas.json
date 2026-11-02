@@ -1726,18 +1726,18 @@
    "servidor": "bcace3d06927:decaf64d9256:552866"
   },
   "Volk": {
-   "competitivo": "ea31863032b2:7d41d0503ea2",
-   "pais": "2d73d20c9f52:ada55a12db94",
-   "servidor": "2f4f0a68b59d:decaf64d9256:055f77"
+   "competitivo": "e68503a455d7:7d41d0503ea2",
+   "pais": "f8d50de51c58:ada55a12db94",
+   "servidor": "646d93ba0b9f:decaf64d9256:055f77"
   },
   "WILLY": {},
   "Wachiwa": {
    "servidor": "272f38d5acf6:decaf64d9256:055f77"
   },
   "Walker": {
-   "competitivo": "16691edc0000:7d41d0503ea2",
-   "pais": "76b68815b1df:ada55a12db94",
-   "servidor": "f0fd36d18fdd:decaf64d9256:324686",
+   "competitivo": "ca2515f234a7:7d41d0503ea2",
+   "pais": "f1162c929ba8:ada55a12db94",
+   "servidor": "1e325ed8c0dd:decaf64d9256:324686",
    "temporada": "b2550d6163ec:ccd09f762e04"
   },
   "Warriorvid": {},
@@ -1751,14 +1751,14 @@
    "servidor": "49b45c822ffe:decaf64d9256:100254"
   },
   "Xplicit": {
-   "competitivo": "bbedc51a5ace:7d41d0503ea2",
-   "pais": "89bf359ebfd9:ada55a12db94",
-   "servidor": "b7715963f84a:decaf64d9256:bc3af4"
+   "competitivo": "03a5fc8d40b1:7d41d0503ea2",
+   "pais": "dbf5ed8ac501:ada55a12db94",
+   "servidor": "4625ef372de2:decaf64d9256:bc3af4"
   },
   "Xubaru": {
-   "competitivo": "827c1e3e1284:7d41d0503ea2",
-   "pais": "4da041c381d7:ada55a12db94",
-   "servidor": "64d4f0a83cc3:decaf64d9256:a29fa0",
+   "competitivo": "4f44b0328ba2:7d41d0503ea2",
+   "pais": "319a7927b060:ada55a12db94",
+   "servidor": "3072299b46c6:decaf64d9256:a29fa0",
    "temporada": "eb0528b3db01:ccd09f762e04"
   },
   "YACO": {
@@ -1974,5 +1974,5 @@
    "servidor": "7f8885a35a6d:decaf64d9256:93a344"
   }
  },
- "cuando": "2026-11-02T21:08:28+00:00"
+ "cuando": "2026-11-02T21:40:17+00:00"
 }
