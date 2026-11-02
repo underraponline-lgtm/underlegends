@@ -21,7 +21,7 @@ const PrimerosPasos = lazy(() => import('./tutorial.jsx').then((m) => ({ default
 
 // ✍️ lo que pide cada tarjeta, dicho para alguien nuevo (Dlx, 07/10/2026: «sé más descriptivo»). El número sale del
 // payload («10 eventos», de `comun/requisitos.py`); qué es y cómo se consigue, de `requisitos.js`
-const pideLargo = (p) => {
+export const pideLargo = (p) => {
   if (p === 'nada') return 'Sin requisito';
   if (/verificad/i.test(p)) return RQ.verificadoGuia;
   if (/pase/i.test(p)) return RQ.paseGuia;
@@ -29,20 +29,20 @@ const pideLargo = (p) => {
   return m ? RQ.queEs(m[2], Number(m[1])) : p;
 };
 
-const SECCIONES = [
+export const SECCIONES = [
   ['empezar', 'Cómo empezar'], ['tarjetas', 'Tarjetas'], ['tags', 'Los TAG'], ['puntos', 'Puntos'], ['rangos', 'Rangos'],
   ['mw', 'Most Wanted'], ['semana', 'La semana'], ['palabras', 'Palabras'], ['preguntas', 'Preguntas'],
 ];
 
 // las palabras de la Liga, por tema (el texto de la Guía de siempre)
-const MW_TIENDA = [
+export const MW_TIENDA = [
   ['Most Wanted', 'Los buscados de la semana{MW}, de lunes a lunes, cada uno con su recompensa. El primero que le gana a uno en un evento de la Liga lo caza y cobra; si nadie lo caza y jugó, sobrevive y se lleva la mitad. Lo cobrado suma a tus Puntos de la Temporada, nunca al Competitivo, y además el 10 % va a tus Puntos de Tienda.'],
   ['El Elegido', 'Uno de los buscados lo elige la gente: mientras corre un Most Wanted se vota quién es buscado en el siguiente, y el más votado entra como «El Elegido». Vota cualquiera que entre con Discord; nadie se vota a sí mismo, y hacen falta 3 votos.'],
   ['El ×2 votado', 'Durante la semana se vota qué servidor se lleva el ×2 la siguiente: el más votado sale del sorteo del lunes con ×2 como mínimo. Se puede votar a cualquiera, también al tuyo. Hacen falta 3 votos.'],
   ['Puntos de Tienda', 'Una moneda aparte de los puntos del ranking: todos arrancan con los mismos y se ven en la Tienda, entrando con Discord. Se ganan cazando (todo el precio por cabeza, y el 10 % del Most Wanted) y hoy sirven para el precio por cabeza.'],
   ['Precio por cabeza', 'Cualquiera pone Puntos de Tienda sobre un rapero de la temporada. El primero que le gana en un evento de la Liga se los lleva: esos Puntos de Tienda y lo mismo en su Temporada. Si nadie lo caza en la semana, vuelven a quien los puso. Nadie ve quién puso un precio.'],
 ];
-const SEMANA = [
+export const SEMANA = [
   ['Multiplicador', 'Cada lunes a las 11 AM (hora del este) se sortea uno por servidor: esa semana, los puntos de Temporada de sus eventos valen ×0,5 a ×5. El Competitivo y el Most Wanted no cambian.'],
   ['Evento dorado', 'Cada semana, el primer evento de un servidor desde un día sorteado vale ×3 encima de su multiplicador. Se sabe desde el lunes.'],
   ['Guerra de servidores', 'Cada semana los servidores se enfrentan de a dos: gana el que más puntos hace por persona en sus eventos, y la semana siguiente lleva ×1,5.'],
@@ -60,7 +60,7 @@ const SEMANA = [
   ['Insignias', 'Lo que te ganaste, para siempre: debut, podio, campeón, racha, duelos, Most Wanted… Están en tu perfil, con las que te faltan.'],
   ['Con tiempo', 'Los eventos anunciados con 12 horas o más de anticipación llevan 📣 en «Lo que viene» y en el calendario.'],
 ];
-const PALABRAS = [
+export const PALABRAS = [
   ['OVR', 'El número de tu temporada, de 40 a 99. Ordena el ranking y es el que lleva tu tarjeta de Temporada.'],
   ['Score', 'El número del Competitivo, de 0 a 100. Mide la calidad y no la cantidad: de él sale tu rango.'],
   ['Rango', 'La letra, de E a SSS. Es una sola por persona y es la misma en todas tus tarjetas.'],
@@ -82,7 +82,7 @@ const PALABRAS = [
   ['Nivel', 'El tuyo, no el del Pase: dice qué tan activo eres en la Liga y abre los temas de la página (en el nivel 2, 3 y 5). Sube jugando eventos (+10 cada uno), cada día que entras (+2) y con lo que haces: mirar una llave en vivo, seguir raperos, votar, felicitar, apostar, poner precios, reportar un error que se corrigió, activar la campana, mostrar tus redes, ponerle fondo a tu perfil o foto a una tarjeta y las Tareas del Pase. Cada cosa cuenta una vez y con tope: en Mi cuenta, «Cómo subir de nivel».'],
   ['Felicitar', 'En Publicaciones, un toque en un logro (un campeón, un rango, el Most Wanted), uno por persona. Se ve cuántos felicitaron, nunca quiénes, y a quien felicitan le llega un aviso.'],
 ];
-const PREGUNTAS = [
+export const PREGUNTAS = [
   ['¿Cómo pido mi tarjeta?', <>En Discord, con <code>/card</code>. Son dos pasos: verifícate (entrando con Discord en <a href="#/cuenta">Mi cuenta</a>) y se desbloquea tu Servidor; cumplí tu primera Tarea del <a href="#/pase">Pase de rapero</a> y se desbloquea tu Temporada. La Competitiva y la de País piden además su requisito, y <code>/verificar</code> te dice qué te falta.</>],
   ['¿Cómo aparezco en el ranking?', <>Jugando un evento en un servidor de la Liga. Con una participación ya entras al ranking de Temporada.</>],
   ['¿Cada cuánto se actualiza?', <>Sola, cada media hora. De 3 a 11 de la mañana (hora del este de EE. UU.) corre dos veces.</>],
@@ -92,8 +92,8 @@ const PREGUNTAS = [
   ['¿Mi servidor se puede sumar a la Liga?', <>Sí: escribile a <b>@itsdlx</b> en Discord. Qué gana tu servidor y qué hace el bot, en <a href="#/socios">Socios</a>.</>],
   ['¿Cómo borro mis datos?', <>Escribe <code>/borrar-mis-datos</code> en Discord: te muestra qué se borra y, si confirmas, lo borra al instante. Todo sobre tus datos está en la <a href="privacidad.html">política de privacidad</a>.</>],
 ];
-const NOMBRE_EV = { '16+': '16 o más', '8-15': '8 a 15', '4-7': '4 a 7' };
-const PUESTOS = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos', 'Dieciseisavos'];
+export const NOMBRE_EV = { '16+': '16 o más', '8-15': '8 a 15', '4-7': '4 a 7' };
+export const PUESTOS = ['Campeón', 'Subcampeón', 'Tercero', 'Cuarto', 'Semifinal', 'Cuartos', 'Octavos', 'Dieciseisavos'];
 const MEDALLA = PUESTO_MEDALLA;
 
 const Lista = ({ xs }) => (

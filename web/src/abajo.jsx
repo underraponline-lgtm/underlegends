@@ -104,7 +104,7 @@ function Encima({ id, d }) {
 const REMERA = 'M84 26 Q100 38 116 26 L140 33 Q157 41 171 62 L156 85 L140 76 Q137 130 141 184 Q100 189 59 184 Q63 130 60 76 L44 85 L29 62 Q43 41 60 33 Z';
 const BUZO = 'M78 34 Q100 46 122 34 L142 40 Q161 50 172 86 L167 150 L147 150 L144 98 Q142 140 145 181 Q100 187 55 181 Q58 140 56 98 L53 150 L33 150 L28 86 Q39 50 58 40 Z';
 
-function Prenda({ tipo, color, logo, texto }) {
+export function Prenda({ tipo, color, logo, texto }) {
   const id = 'pr' + useId().replace(/[^a-z0-9]/gi, '');
   const osc = oscuro(color);
   const tinta = osc ? '#FFFFFF' : '#141414';
@@ -192,7 +192,7 @@ function Prenda({ tipo, color, logo, texto }) {
 }
 
 // la plancha de stickers: troquelados, con su borde blanco, su sombra y un brillo, cada uno un poco girado
-function Stickers({ logos }) {
+export function Stickers({ logos }) {
   const id = 'st' + useId().replace(/[^a-z0-9]/gi, '');
   const pos = [[64, 62, -8], [136, 64, 6], [100, 102, -3], [62, 140, 7], [138, 138, -6]];
   return (

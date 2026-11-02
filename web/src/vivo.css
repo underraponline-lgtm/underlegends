@@ -3440,14 +3440,14 @@ a.rk-z:hover{border-color:var(--linea)}
    ⚠️ La raya del título es la que separa: los bloques de las columnas de costado (Eventos, Publicaciones) ya no llevan
    la suya abajo, o eran dos rayas por bloque. Mi cuenta y el Changelog no entran: sus títulos van adentro de tarjetas
    con borde, y la raya se sumaba al marco */
-.app :is(.evp-h2,.pub-dh,.evp-dia){border-top:2px solid var(--linea);padding-top:12px;font:900 22px/1 Archivo,sans-serif;font-stretch:125%;
+.app :is(.evp-h2,.pub-dh,.evp-dia,.pb-dh,.pb-st,.gx-h){border-top:2px solid var(--linea);padding-top:12px;font:900 22px/1 Archivo,sans-serif;font-stretch:125%;
   text-transform:uppercase;word-spacing:.08em}
-@media (min-width: 900px){.app :is(.pub-dh,.evp-dia){font-size:30px}}
+@media (min-width: 900px){.app :is(.pub-dh,.evp-dia,.pb-dh,.gx-h){font-size:30px}}
 .app .evp-dia{margin:14px 16px 2px;padding:12px 0 0}
 @media (min-width: 900px){.app .evp-dia{margin:14px 0 2px}}
-.app :is(.evp-bloque,.pub-bloque){border-bottom:0}
+.app :is(.evp-bloque,.pub-bloque,.pb-bloque){border-bottom:0}
 .app :is(.evp-der,.pub-der){border-top:0}
-.app :is(.ti-h,.lk-h,.lgf-st,.dv-gt,.cw-h,.g-t){font:900 16px/1.1 Archivo,sans-serif;font-stretch:115%;letter-spacing:0;word-spacing:.1em;
+.app :is(.ti-h,.lk-h,.lgf-st,.dv-gt,.cw-h,.g-t,.tn-h,.gx-pesos h3){font:900 16px/1.1 Archivo,sans-serif;font-stretch:115%;letter-spacing:0;word-spacing:.1em;
   text-transform:uppercase;color:var(--tinta)}
 .app .g-t.vivo{color:var(--magenta)}
 

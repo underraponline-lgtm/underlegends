@@ -10,7 +10,7 @@ import { Categoria, Nominado, reparto, useSalon } from './salon.jsx';
 
 export const REDES = { instagram: 'Instagram', tiktok: 'TikTok', youtube: 'YouTube', twitch: 'Twitch', x: 'X', twitter: 'X', kick: 'Kick' };
 
-function ir(d) {
+export function ir(d) {
   if (!d) return;
   if (d.carta) accion.carta(d.carta, d.cual);
   else if (d.perfil) accion.perfil(d.perfil);
@@ -23,7 +23,7 @@ function ir(d) {
 
 // 🧹 el dibujo de cada novedad sale de UN lugar (`Vis` de medio.jsx): esta copia no conocía el flyer ni el logo de UL, y
 // el flyer de una liga salía roto («/logos/https://…», lo encontró el recorrido del 19/10/2026)
-function Nota({ liga, x }) {
+export function Nota({ liga, x }) {
   const vis = <Vis liga={liga} v={x[2]} />;
   return (
     <li><button type="button" className="sin-boton nota-b" onClick={() => ir(x[4])}>
@@ -153,7 +153,7 @@ export function PerfilSv({ liga, sv, enc }) {
 // «cada Tier 1 con los suyos»: su rapero, su revelación, su batalla y su staff del mes, con lo que se jugó acá, votados
 // por sus jugadores). Salen de `/api/salon` (`bot/mes_awards.py`) y se votan como los de la Liga (`enc`); quién puede
 // votar lo decide el Worker. Sin nominados ni ganadores, no se dibuja: se ve desde el día 1 del mes siguiente
-function MesSv({ liga, sv, enc }) {
+export function MesSv({ liga, sv, enc }) {
   const S = useSalon();
   if (!S || !S.cats_sv) return null;
   const ab = S.abierto && S.abierto.sv && S.abierto.sv[sv] ? S.abierto : null;
@@ -195,7 +195,7 @@ function MesSv({ liga, sv, enc }) {
   );
 }
 
-function PromosSv({ liga, sv }) {
+export function PromosSv({ liga, sv }) {
   const A = useAplausos();
   const xs = (liga.muro || []).filter((it) => it.tipo === 'promo' && it.sv === sv && it.o !== 'liga').slice(0, 4);
   if (!xs.length) return null;
