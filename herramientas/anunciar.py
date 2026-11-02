@@ -6,6 +6,8 @@
     python herramientas/anunciar.py MENSAJE.json --editar ID   reemplaza ese mensaje
 
     --servidor FFA   en el canal de novedades de ese servidor (`canales.FFA.novedades`)
+    --canal ID       en ese canal (con `--servidor` para el link): uno suelto, como el chat general de un servidor
+                     donde el bot no puede escribir en anuncios (02/11/2026). No se guarda en datos/servidores.json
     --everyone       menciona a todos. SÓLO si Dlx lo pide para ese anuncio
     --here           menciona a los que están conectados: el de siempre (Dlx, 29/09/2026: «QUE SUELTES ESE HERE!!»)
     --fijar          además lo fija en el canal (pide el permiso de fijar)
@@ -86,11 +88,13 @@ def main():
                 pila = list(c.get('components') or []) + pila
         else:
             msg['content'] = (mencion + ' ' + (msg.get('content') or '')).strip()
-    ch = canal(sv)
+    suelto = sys.argv[sys.argv.index('--canal') + 1] if '--canal' in sys.argv else None
+    ch = suelto or canal(sv)
     if not ch:
         print('  🔴 no hay canales.%s.novedades en datos/servidores.json' % sv)
         return 1
-    print('canal: %s (canales.%s.novedades)%s\n' % (ch, sv, ' · CON ' + mencion if everyone else ''))
+    print('canal: %s (%s)%s\n' % (ch, '--canal' if suelto else 'canales.%s.novedades' % sv,
+                                  ' · CON ' + mencion if everyone else ''))
     for e in msg.get('embeds') or []:
         print('  ' + (e.get('title') or ''))
         for l in (e.get('description') or '').split('\n'):

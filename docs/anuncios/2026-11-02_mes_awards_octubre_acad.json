@@ -1,0 +1,77 @@
+{
+ "_leeme": "Los MES AWARDS de ACAD de octubre (02/11/2026), en su chat general y SIN mención (Dlx: «sea en chat general de sus servidores sin mención»): el bot no puede escribir en sus anuncios. Nominados de datos/mes_awards.json (meses.2026-10.sv.ACAD). Cierra el 04/11 a las 6 PM ET.",
+ "flags": 32768,
+ "components": [
+  {
+   "type": 17,
+   "accent_color": 15906565,
+   "components": [
+    {
+     "type": 9,
+     "components": [
+      {
+       "type": 10,
+       "content": "# 🏆 LOS AWARDS DE ACAD · OCTUBRE\n**Lo mejor de octubre en Academia de Rap, votado por los que jugaron acá.** Cierra <t:1793833200:R>."
+      }
+     ],
+     "accessory": {
+      "type": 11,
+      "media": {
+       "url": "https://underlegends.pages.dev/logos/acad.webp"
+      }
+     }
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🎤 Los nominados\n**Rapero del mes** · Panchok · MCO · Lord Viruzz · Makmah · Erian\n**Revelación** · Ariaxer · Tmax Turbo [PN] · Blaxx · Ezias🥈✒️🧢🐍 · Galileo\n**Staff del mes** · ARDEAN · Mosquitrap 🦟 · Ivan · Leonart · Bocamio"
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🗳️ Cómo votar\nSi jugaste en ACAD en octubre, entra a la página de ACAD en la Liga con tu Discord y elige uno por categoría. Puedes cambiar tu voto hasta que cierra.\nCada ganador se lleva su **insignia**, **1.000 Puntos de Tienda** y su lugar en la página de ACAD.\n> ⏳ Cierra el <t:1793833200:F>"
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 2
+    },
+    {
+     "type": 1,
+     "components": [
+      {
+       "type": 2,
+       "style": 5,
+       "label": "Votar en ACAD",
+       "emoji": {
+        "name": "🏆"
+       },
+       "url": "https://underlegends.pages.dev/freestyle-rap/sv/acad"
+      }
+     ]
+    },
+    {
+     "type": 10,
+     "content": "-# Liga Global de Freestyle en Español · Under Legends"
+    }
+   ]
+  }
+ ],
+ "_publicado": {
+  "ACAD": {
+   "mensaje": "1566938348621406251",
+   "cuando": "2026-11-02 5:20 PM ET",
+   "canal": "925213294703300649",
+   "link": "https://discord.com/channels/765045834647339038/925213294703300649/1566938348621406251",
+   "editar": "python herramientas/anunciar.py docs/anuncios/2026-11-02_mes_awards_octubre_acad.json --servidor ACAD --canal 925213294703300649 --editar 1566938348621406251"
+  }
+ }
+}
