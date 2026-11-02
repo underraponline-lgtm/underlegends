@@ -28470,23 +28470,22 @@
      [
       [
        "Oasis",
-       "PichulaMc",
        "1200"
       ],
       "Oasis",
-      "triple (3 bandas); Revivido: Pichulamc"
+      "triple (3 bandas, pasan 2); también pasa: Park-Ji Sung🇰🇷"
      ],
      [
       [
        "Agus",
+       "Oasis",
        "Jobaking",
        "Dyzz",
        "Tenor",
-       "Kyss",
-       "PichulaMc"
+       "Kyss"
       ],
-      "Agus",
-      "triple (6 bandas)"
+      "Agus, Oasis",
+      "triple (6 bandas, pasan 2); también pasa: Park-Ji Sung🇰🇷"
      ]
     ],
     "r": "Octavos"
@@ -28617,11 +28616,6 @@
     "Sosa",
     "Cuartos",
     2500
-   ],
-   [
-    "PichulaMc",
-    "Octavos",
-    1875
    ],
    [
     "1200",
@@ -29564,7 +29558,7 @@
      [
       [
        "Makmah",
-       "PichulaMc"
+       "PichulaMc, Oasis"
       ],
       "Makmah",
       ""
@@ -29747,11 +29741,6 @@
     1250
    ],
    [
-    "PichulaMc",
-    "Octavos",
-    1250
-   ],
-   [
     "Scritura",
     "Octavos",
     1250
@@ -29770,6 +29759,16 @@
     "Zignos",
     "Octavos",
     1250
+   ],
+   [
+    "Oasis",
+    "Octavos",
+    625
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    625
    ]
   ]
  },
@@ -35221,12 +35220,12 @@
      [
       [
        "Tam",
+       "Oasis",
        "OKAM",
-       "LEWITO",
-       "PichulaMc"
+       "LEWITO"
       ],
-      "Tam",
-      "triple (4 bandas)"
+      "Tam, Oasis",
+      "triple (4 bandas, pasan 2); también pasa: Park-Ji Sung🇰🇷"
      ],
      [
       [
@@ -35492,11 +35491,6 @@
     1250
    ],
    [
-    "PichulaMc",
-    "Octavos",
-    1250
-   ],
-   [
     "QZ🇦🇷",
     "Octavos",
     1250
@@ -35566,7 +35560,7 @@
       [
        "Badterne",
        "PRAISERIZA",
-       "PichulaMc",
+       "PichulaMc, Oasis",
        "Andres",
        "Jult"
       ],
@@ -35692,11 +35686,6 @@
     2500
    ],
    [
-    "PichulaMc",
-    "Cuartos",
-    2500
-   ],
-   [
     "Pipe",
     "Cuartos",
     2500
@@ -35715,6 +35704,16 @@
     "yinn",
     "Subcampeón",
     2500
+   ],
+   [
+    "Oasis",
+    "Cuartos",
+    1250
+   ],
+   [
+    "PichulaMc",
+    "Cuartos",
+    1250
    ]
   ]
  },
@@ -36461,12 +36460,12 @@
      ],
      [
       [
-       "PichulaMc",
+       "PichulaMc, Oasis",
        "Abyssus",
        "Khalil",
        "SULTAN"
       ],
-      "PichulaMc, Abyssus",
+      "PichulaMc, Oasis, Abyssus",
       "triple (4 bandas, pasan 2); también pasa: Abyssus 🇨🇦"
      ],
      [
@@ -37531,12 +37530,12 @@
     "b": [
      [
       [
-       "PichulaMc",
+       "PichulaMc, Oasis",
        "Cazafla anti cazanova🇭🇹",
        "Manteca mantecosa 🇨🇾",
        "Gus, Tuca"
       ],
-      "PichulaMc",
+      "PichulaMc, Oasis",
       "triple (4 bandas)"
      ],
      [
@@ -37600,10 +37599,10 @@
      ],
      [
       [
-       "PichulaMc",
+       "PichulaMc, Oasis",
        "Cronox"
       ],
-      "PichulaMc",
+      "PichulaMc, Oasis",
       ""
      ]
     ],
@@ -37617,14 +37616,6 @@
        "Tenor, Provenza, yinn"
       ],
       "Six, Presagio, Badterne",
-      ""
-     ],
-     [
-      [
-       "Oasis",
-       "PichulaMc"
-      ],
-      "Oasis",
       ""
      ]
     ],
@@ -37650,11 +37641,6 @@
     "Oasis",
     "Campeón",
     10000
-   ],
-   [
-    "PichulaMc",
-    "Semifinal",
-    5250
    ],
    [
     "Badterne",
@@ -39689,11 +39675,11 @@
      ],
      [
       [
-       "Tenor",
-       "PichulaMc"
+       "tnor🇻🇪",
+       "Pichulamc 🇦🇷 + Oasis 🇵🇱"
       ],
-      "Tenor",
-      "ganador: ✅ Decidir"
+      "",
+      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -39852,11 +39838,6 @@
    ],
    [
     "Lvel 🇻🇪",
-    "Octavos",
-    1250
-   ],
-   [
-    "PichulaMc",
     "Octavos",
     1250
    ],

@@ -19,19 +19,19 @@
 "temporada"
 ]
 },
+"erian": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "pichulamc": {
 "rg": "A",
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"erian": {
-"rg": "B",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -306,6 +306,15 @@
 "rg": "C",
 "c": []
 },
+"cronox": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "majiztral": {
 "rg": "C",
 "c": [
@@ -318,15 +327,6 @@
 "bna": {
 "rg": "C",
 "c": []
-},
-"cronox": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "lordviruzz": {
 "rg": "C",
@@ -342,15 +342,6 @@
 "c": []
 },
 "drexx": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"tenor": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -381,6 +372,15 @@
 },
 "trot": {
 "rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"tenor": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",

@@ -2,28 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1564098545173405807": {
-   "id": "1564098545173405807",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1792980552715,
-   "a": "DEKO",
-   "b": "DYSS",
-   "ganador": "DEKO",
-   "votos": "1–0"
-  },
-  "1564101103996510309": {
-   "id": "1564101103996510309",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1792981162786,
-   "a": "MATS MC NADIE",
-   "b": "GIAN PARK JI SUNG",
-   "ganador": "GIAN PARK JI SUNG",
-   "votos": "1–0"
-  },
   "1564102068996669462": {
    "id": "1564102068996669462",
    "sv": "[FFA] Freestyle For All 👾",
@@ -1683,6 +1661,39 @@
    "a": "GERÓNIMO",
    "b": "MARTÍNEZ",
    "ganador": "MARTÍNEZ",
+   "votos": "1–0"
+  },
+  "1566630063565185235": {
+   "id": "1566630063565185235",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1565416431745634374",
+   "pub": 1793584113733,
+   "a": "ZZZ",
+   "b": "LAST",
+   "ganador": "ZZZ",
+   "votos": "1–0"
+  },
+  "1566632473230704735": {
+   "id": "1566632473230704735",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793584688242,
+   "a": "KEIDER",
+   "b": "JEIXDER",
+   "ganador": "JEIXDER",
+   "votos": "1–0"
+  },
+  "1566636863043928097": {
+   "id": "1566636863043928097",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793585734855,
+   "a": "GEOKA",
+   "b": "GUS",
+   "ganador": "GUS",
    "votos": "1–0"
   }
  },
@@ -5702,8 +5713,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793583510367,
-   "ed": 1793583905046,
-   "texto": "`[ OCTAVOS ]`\n⌞GUS⌝ 🆚 ⌞MCO⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞AFR⌝\n⌞EL NOVIO DE TU NOVIA⌝ 🆚 ⌞ESTRONCIO PY⌝ 🆚 ⌞SOUL B⌝ 🆚 ⌞AGUSTIN LA RELIQUIA⌝",
+   "ed": 1793585996581,
+   "texto": "`[ OCTAVOS ]`\n⌞GUS⌝ 🆚 ⌞MCO⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞AFR⌝\n⌞EL NOVIO DE TU NOVIA⌝ 🆚 ⌞ESTRONCIO PY⌝ 🆚 ⌞SOUL B⌝ 🆚 ⌞AGUSTIN LA RELIQUIA⌝\n⌞AKUSERU⌝ 🆚 ⌞KEIDER⌝ 🆚 ⌞JEIXDER⌝\n⌞KEIDER⌝ 🆚 ⌞JEIXDER⌝\n⌞PARIA⌝ 🆚 ⌞LVEL⌝ 🆚 ⌞YOR⌝ 🆚 ⌞EZZE⌝ 🆚 ⌞ZA⌝ 🆚 ⌞SULTAN⌝ 🆚 ⌞LIZEN⌝\n⌞GEOKA⌝ 🆚 ⌞GUS⌝",
    "batallas": [
     [
      "OCTAVOS",
@@ -5727,6 +5738,52 @@
      ],
      null,
      "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "AKUSERU",
+      "KEIDER",
+      "JEIXDER"
+     ],
+     "AKUSERU",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "KEIDER",
+      "JEIXDER"
+     ],
+     "JEIXDER",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "PARIA",
+      "LVEL",
+      "YOR",
+      "EZZE",
+      "ZA",
+      "SULTAN",
+      "LIZEN"
+     ],
+     "PARIA",
+     "veredicto",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "GEOKA",
+      "GUS"
+     ],
+     "GUS",
+     "veredicto",
      []
     ]
    ]
