@@ -1,7 +1,7 @@
 {
  "_leeme": "Las misiones de la semana: las arma bot/misiones.py en el paso 1c, enteras en cada corrida. Las reglas y los números viven en ese archivo. `suma` es lo que cada uno lleva sumado a la Temporada; `semanas`, qué tocó cada semana y quién cumplió.",
  "bono": 1000,
- "sem": "2026-10-26",
+ "sem": "2026-11-02",
  "semanas": {
   "2026-10-05": {
    "fin": "2026-10-12T15:00:00Z",
@@ -6155,6 +6155,51 @@
     "publicenemy🇦🇷": 300,
     "yinn": 2900
    }
+  },
+  "2026-11-02": {
+   "fin": "2026-11-09T16:00:00Z",
+   "lista": [
+    [
+     "eventos2",
+     "Juega 2 eventos",
+     "facil",
+     2,
+     300
+    ],
+    [
+     "arriba1",
+     "Ganale un duelo a alguien de rango más alto que el tuyo",
+     "media",
+     1,
+     600
+    ],
+    [
+     "campeon",
+     "Gana un evento",
+     "dificil",
+     1,
+     1000
+    ],
+    [
+     "caza",
+     "Ganale un duelo a Vandu",
+     "caza",
+     1,
+     800,
+     "Vandu"
+    ],
+    [
+     "dorado",
+     "Juega el evento dorado de Academia de Rap",
+     "dorado",
+     1,
+     600,
+     null,
+     "ACAD"
+    ]
+   ],
+   "prog": {},
+   "pts": {}
   }
  },
  "suma": {

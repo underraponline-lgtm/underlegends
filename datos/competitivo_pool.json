@@ -3630,8 +3630,8 @@
    "venc": 3
   },
   "tg_p": {
-   "paises": 5,
-   "paisesg": 2
+   "paises": 6,
+   "paisesg": 3
   }
  },
  {
@@ -4138,16 +4138,16 @@
   "tg_c": {
    "bestia": 2,
    "clasico": 2,
-   "dg": 12,
+   "dg": 13,
    "fg": 1,
    "fp": 2,
    "mata": 1,
-   "riv": 17,
-   "venc": 11
+   "riv": 19,
+   "venc": 12
   },
   "tg_p": {
-   "paises": 7,
-   "paisesg": 5
+   "paises": 8,
+   "paisesg": 6
   }
  },
  {
@@ -6857,7 +6857,7 @@
    "venc": 4
   },
   "tg_p": {
-   "paises": 5,
+   "paises": 6,
    "paisesg": 2
   }
  },

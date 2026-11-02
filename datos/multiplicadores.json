@@ -827,6 +827,25 @@
       "URBF",
       "FFS"
      ]
+    ],
+    "ppp": {
+     "SR": 3625.0,
+     "FDS": 2828.1,
+     "FRZ": 3383.3,
+     "FFA": 4682.5,
+     "ACAD": 3000.0,
+     "FVS": 0,
+     "LKR": 3000.0,
+     "DDF": 4704.1,
+     "URBF": 3158.3,
+     "FFS": 0
+    },
+    "gana": [
+     "SR",
+     "FFA",
+     "ACAD",
+     "DDF",
+     "URBF"
     ]
    },
    "metas": {
@@ -938,7 +957,8 @@
      "SR": 16,
      "LKR": 16
     },
-    "gana": "FFA"
+    "gana": "FFA",
+    "final": true
    },
    "meta_va": {
     "ACAD": 16,
@@ -952,6 +972,129 @@
     "LKR": 16,
     "SR": 16,
     "URBF": 15
+   },
+   "organizadores_final": true,
+   "premios_semana": {
+    "figura": [
+     "Makmah",
+     175125
+    ],
+    "revelacion": [
+     "Ezze",
+     43500
+    ],
+    "servidor": [
+     "FFA",
+     143
+    ]
+   }
+  },
+  {
+   "id": "2026-11-02",
+   "inicio": "2026-11-02T16:00:00Z",
+   "fin": "2026-11-09T16:00:00Z",
+   "temporada": "prueba",
+   "sorteado": "2026-11-02T16:23:14Z",
+   "sv": {
+    "FFA": 5,
+    "DDF": 0.75,
+    "LKR": 1,
+    "FDS": 1.5,
+    "DRA": 1,
+    "URBF": 3.0,
+    "FFS": 1,
+    "ACAD": 3.0,
+    "SR": 1.5,
+    "FRZ": 2,
+    "FVS": 1
+   },
+   "dorado": {
+    "sv": "ACAD",
+    "desde": "2026-11-06T05:00:00Z"
+   },
+   "guerra": {
+    "pares": [
+     [
+      "FVS",
+      "DRA"
+     ],
+     [
+      "FFS",
+      "FRZ"
+     ],
+     [
+      "DDF",
+      "SR"
+     ],
+     [
+      "LKR",
+      "URBF"
+     ],
+     [
+      "ACAD",
+      "FFA"
+     ]
+    ]
+   },
+   "metas": {
+    "ACAD": 30,
+    "DDF": 51,
+    "DRA": 8,
+    "FDS": 25,
+    "FFA": 168,
+    "FFS": 8,
+    "FRZ": 14,
+    "FVS": 8,
+    "LKR": 21,
+    "SR": 25,
+    "URBF": 15
+   },
+   "votado": {
+    "sv": "URBF",
+    "votos": 2,
+    "de": 5
+   },
+   "premios": {
+    "URBF": [
+     "votado",
+     "guerra"
+    ],
+    "SR": [
+     "guerra"
+    ],
+    "FFA": [
+     "guerra",
+     "semillero"
+    ],
+    "ACAD": [
+     "guerra"
+    ],
+    "DDF": [
+     "guerra"
+    ]
+   },
+   "copa": {
+    "org": "NC",
+    "clave": "nc"
+   },
+   "organizadores": [],
+   "semillero": {
+    "nuevos": {},
+    "gente": {},
+    "gana": null
+   },
+   "meta_va": {
+    "ACAD": 0,
+    "DDF": 0,
+    "DRA": 0,
+    "FDS": 0,
+    "FFA": 0,
+    "FFS": 0,
+    "FRZ": 0,
+    "FVS": 0,
+    "LKR": 0,
+    "SR": 0,
+    "URBF": 0
    }
   }
  ]
