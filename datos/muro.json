@@ -392,6 +392,15 @@
 "rg": "B",
 "c": []
 },
+"dyzz": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "criszj": {
 "rg": "C",
 "c": []
@@ -408,15 +417,6 @@
 "neo": {
 "rg": "C",
 "c": []
-},
-"dyzz": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
 },
 "paria": {
 "rg": "D",
@@ -460,6 +460,10 @@
 "temporada"
 ]
 },
+"badterne": {
+"rg": "",
+"c": []
+},
 "soulb": {
 "rg": "E",
 "c": [
@@ -487,10 +491,6 @@
 },
 "btrx": {
 "rg": "C",
-"c": []
-},
-"badterne": {
-"rg": "",
 "c": []
 },
 "caliz": {
@@ -876,6 +876,13 @@
 "temporada"
 ]
 },
+"mats": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "lilnano": {
 "rg": "",
 "c": [
@@ -894,13 +901,6 @@
 "rg": "",
 "c": [
 "pais",
-"servidor",
-"temporada"
-]
-},
-"mats": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -960,11 +960,11 @@
 "temporada"
 ]
 },
-"assuan": {
+"akuseru": {
 "rg": "",
 "c": []
 },
-"akuseru": {
+"assuan": {
 "rg": "",
 "c": []
 },

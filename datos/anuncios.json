@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-02T05:55:49+00:00",
+ "cuando": "2026-11-02T06:25:44+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -376,6 +376,53 @@
    "autor": "Geronimo",
    "staff_cuentas": {},
    "categoria_id": "1497457390637809837"
+  },
+  {
+   "nombre": "Rap para Raperos #3",
+   "servidor": "FFA",
+   "canal": "✦🏆—eventos",
+   "msg_id": "1566695559132348550",
+   "cuando": "2026-11-02T06:08:49",
+   "canal_id": "1487206325602484295",
+   "guild_id": "1468472442925092958",
+   "organizador": "37 OKAM",
+   "orgs": [
+    {
+     "n": "37",
+     "id": ""
+    },
+    {
+     "n": "OKAM",
+     "id": ""
+    }
+   ],
+   "autor_h": "9d1c0ccb4b38f08d",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "BRONCE III",
+   "modalidad": "",
+   "horario": "CUANDO TODO ESTÉ LISTO",
+   "fecha": "HOY",
+   "premios": "ROL CAMPEON Y PUNTOS RANKING",
+   "staff": {
+    "jurado": [
+     "🧑‍⚖️  #37",
+     "OKAM"
+    ],
+    "host": [
+     "Okam"
+    ],
+    "dj": [
+     "💿  #37",
+     "OKAM  🇨🇷"
+    ]
+   },
+   "autor": "Okam",
+   "staff_cuentas": {
+    "Okam": "1512148565890306153"
+   },
+   "categoria_id": "1468478330826260500"
   },
   {
    "nombre": "la palera del kachum",
@@ -1202,49 +1249,6 @@
    },
    "autor": "Lewito",
    "staff_cuentas": {},
-   "categoria_id": "1468478330826260500"
-  },
-  {
-   "nombre": "LA ISLA DE OKINAWA V.2 🗾☯️ (DUPLAS)",
-   "servidor": "FFA",
-   "canal": "✦🏆—eventos",
-   "msg_id": "1561902449382662215",
-   "cuando": "2026-10-20T00:42:42",
-   "canal_id": "1487206325602484295",
-   "guild_id": "1468472442925092958",
-   "organizador": "KRAVITZ",
-   "orgs": [
-    {
-     "n": "KRAVITZ",
-     "id": ""
-    }
-   ],
-   "autor_h": "7cc3316a3e5f345f",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "PLATA III",
-   "modalidad": "",
-   "horario": "CUANDO ESTÉ TODO LISTO",
-   "fecha": "HOY",
-   "premios": "ROL CAMPEON Y PUNTOS RANKING",
-   "staff": {
-    "jurado": [
-     "🧑‍⚖️ KRAVITZ 🇨🇷"
-    ],
-    "host": [
-     "🎤 KRAVITZ 🇨🇷"
-    ],
-    "dj": [
-     "Kravitz",
-     "Zaik"
-    ]
-   },
-   "autor": "Kravitz",
-   "staff_cuentas": {
-    "Kravitz": "1345962362615894027",
-    "Zaik": "1555067257376346122"
-   },
    "categoria_id": "1468478330826260500"
   },
   {
@@ -5816,6 +5820,78 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "andres 🇨🇱",
+   "quien": "andresnhp",
+   "discord_id": "1468995046161256706",
+   "msg_id": "1566698426765279233",
+   "cuando": "2026-11-02T06:20:12"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Sin límites 🇵🇪",
+   "quien": "sinlimites2026",
+   "discord_id": "1508623564285149357",
+   "msg_id": "1566695991502045434",
+   "cuando": "2026-11-02T06:10:32"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "okam🇨🇷",
+   "quien": "okam77_25976",
+   "discord_id": "1512148565890306153",
+   "msg_id": "1566695864942993499",
+   "cuando": "2026-11-02T06:10:02"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "ChozaDeChops🇭🇳",
+   "quien": "30fps30hz",
+   "discord_id": "1364747464170668042",
+   "msg_id": "1566695850158071880",
+   "cuando": "2026-11-02T06:09:58"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Last🇺🇾🇪🇸",
+   "quien": "last5724",
+   "discord_id": "483070865081237505",
+   "msg_id": "1566695836321321162",
+   "cuando": "2026-11-02T06:09:55"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "nc🇰🇷",
+   "quien": "nachonc_",
+   "discord_id": "1523082259870257315",
+   "msg_id": "1566695833951404086",
+   "cuando": "2026-11-02T06:09:54"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "mats🇺🇾",
+   "quien": "matttt.15",
+   "discord_id": "597240876573392946",
+   "msg_id": "1566695815441813537",
+   "cuando": "2026-11-02T06:09:50"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Dyzz🇨🇱",
+   "quien": "dyzzmc",
+   "discord_id": "1525996330042921081",
+   "msg_id": "1566695772144013434",
+   "cuando": "2026-11-02T06:09:39"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -41743,78 +41819,6 @@
    "discord_id": "885365894606381068",
    "msg_id": "1554938149010931865",
    "cuando": "2026-09-30T19:29:04"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "erian",
-   "quien": "deslanofthemind",
-   "discord_id": "1055474244089286706",
-   "msg_id": "1554935782299672577",
-   "cuando": "2026-09-30T19:19:39"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "MTZ 🇲🇽",
-   "quien": "diego__mtz",
-   "discord_id": "794733304729436212",
-   "msg_id": "1554935470587379815",
-   "cuando": "2026-09-30T19:18:25"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Guess 🇦🇷",
-   "quien": "sinergiabreak",
-   "discord_id": "1515482513106272366",
-   "msg_id": "1554935080366112789",
-   "cuando": "2026-09-30T19:16:52"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Yeyox",
-   "quien": "yeyox07",
-   "discord_id": "896609871460442142",
-   "msg_id": "1554934435626090631",
-   "cuando": "2026-09-30T19:14:18"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Agustín la reliquia 🇸🇲",
-   "quien": "fabrythenoob7n76687",
-   "discord_id": "595648807920861205",
-   "msg_id": "1554934412959948882",
-   "cuando": "2026-09-30T19:14:13"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Bloody",
-   "quien": "bloodypintor",
-   "discord_id": "692881329573986317",
-   "msg_id": "1554934359331569837",
-   "cuando": "2026-09-30T19:14:00"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Noxvell 🇨🇱",
-   "quien": "maxdyz",
-   "discord_id": "1492591227567210679",
-   "msg_id": "1554934341929410713",
-   "cuando": "2026-09-30T19:13:56"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Dominick 🇵🇪",
-   "quien": "equisde_xd23",
-   "discord_id": "1439048698142134436",
-   "msg_id": "1554934341530947595",
-   "cuando": "2026-09-30T19:13:56"
   }
  ]
 }

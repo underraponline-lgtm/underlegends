@@ -683,6 +683,13 @@
   }
  },
  "akuseru": {
+  "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1793601241992
+   ]
+  },
   "temporada": {
    "🌱 PROMESA": [
     "🌱 PROMESA",
@@ -987,6 +994,11 @@
     "👑 CAMPEÓN x2",
     "t1",
     1793160263646
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1793601241992
    ],
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
@@ -2858,6 +2870,11 @@
    ]
   },
   "servidor": {
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1793601241992
+   ],
    "🏛️ PILAR": [
     "🏛️ PILAR",
     "t1",
@@ -3338,7 +3355,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x10",
+    "👑 CAMPEÓN x9",
     "t1",
     1793029252929
    ],
@@ -3607,6 +3624,11 @@
    ]
   },
   "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1793601241992
+   ],
    "🏛️ PILAR": [
     "🏛️ PILAR",
     "t1",
@@ -3630,7 +3652,7 @@
     1793317391221
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x1",
+    "👑 CAMPEÓN x2",
     "t1",
     1793029252929
    ],
@@ -3648,6 +3670,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793029252929
+   ],
+   "🗺️ CONQUISTADOR": [
+    "🗺️ CONQUISTADOR",
+    "t1",
+    1793601241992
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -5869,6 +5896,11 @@
  },
  "mats": {
   "servidor": {
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1793601241992
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",

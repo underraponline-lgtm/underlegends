@@ -41132,22 +41132,22 @@
     "b": [
      [
       [
-       "gianla🇨🇦",
+       "Badterne",
        "Erian",
        "ikonoxx"
       ],
-      "gianla🇨🇦, Erian",
+      "Badterne, Erian",
       "triple (3 bandas, pasan 2); también pasa: Erian 🇩🇴"
      ],
      [
       [
-       "Dyzzchol🇨🇱",
+       "Dyzz",
        "Vandu",
        "Sin Limites",
        "BLITZ",
        "NC"
       ],
-      "Dyzzchol🇨🇱, Vandu",
+      "Dyzz, Vandu",
       "triple (5 bandas, pasan 2); también pasa: vandu 🇨🇦"
      ],
      [
@@ -41175,10 +41175,10 @@
     "b": [
      [
       [
-       "Dyzzchol🇨🇱, Vandu",
-       "gianla🇨🇦, Erian"
+       "Dyzz, Vandu",
+       "Badterne, Erian"
       ],
-      "Dyzzchol🇨🇱, Vandu",
+      "Dyzz, Vandu",
       "Drafteado: erian🇰🇷"
      ],
      [
@@ -41196,10 +41196,10 @@
     "b": [
      [
       [
-       "Dyzzchol🇨🇱, Vandu, Erian",
-       "Geoka, Akuseru, mats"
+       "Geoka, Akuseru, mats",
+       "Dyzz, Vandu, Erian"
       ],
-      "Dyzzchol🇨🇱, Vandu, Erian",
+      "Geoka, Akuseru, mats",
       ""
      ]
     ],
@@ -41209,33 +41209,38 @@
   "sv": "FFA",
   "tabla": [
    [
-    "Erian",
+    "mats",
     "Campeón",
     4250
    ],
    [
-    "mats",
+    "Erian",
     "Subcampeón",
     3416
    ],
    [
-    "Dyzzchol🇨🇱",
-    "Campeón",
-    2500
-   ],
-   [
-    "Vandu",
-    "Campeón",
-    2500
-   ],
-   [
     "Akuseru",
-    "Subcampeón",
-    2000
+    "Campeón",
+    2500
+   ],
+   [
+    "Geoka",
+    "Campeón",
+    2500
    ],
    [
     "BLITZ",
     "Cuartos",
+    2000
+   ],
+   [
+    "Badterne",
+    "Semifinal",
+    2000
+   ],
+   [
+    "Dyzz",
+    "Subcampeón",
     2000
    ],
    [
@@ -41246,11 +41251,6 @@
    [
     "Ezze",
     "Cuartos",
-    2000
-   ],
-   [
-    "Geoka",
-    "Subcampeón",
     2000
    ],
    [
@@ -41269,8 +41269,8 @@
     2000
    ],
    [
-    "gianla🇨🇦",
-    "Semifinal",
+    "Vandu",
+    "Subcampeón",
     2000
    ],
    [

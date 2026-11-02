@@ -3144,6 +3144,44 @@
      334
     ]
    }
+  },
+  {
+   "id": "e03bafe20c",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«gianla» es Badterne? La cuenta de Badterne en la Lista se anotó como «gianla», y en el ranking suman aparte. Si es la misma persona, los puntos de «gianla» pasan a Badterne.\nLa cuenta: https://discord.com/users/1514844014325796977",
+   "r": "Es la misma persona",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "la misma persona: «gianla» ya es alias de Badterne",
+   "t": 1793601229300,
+   "filas": [
+    1019
+   ],
+   "variantes": [
+    "DOS NOMBRES: «gianla» → «Badterne» · cuenta 1514844014325796977"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "18dbea99ff",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«Dyzzchol» es Dyzz? La cuenta de Dyzz en la Lista se anotó como «Dyzzchol», y en el ranking suman aparte. Si es la misma persona, los puntos de «Dyzzchol» pasan a Dyzz.\nLa cuenta: https://discord.com/users/1525996330042921081",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no hace falta: «Dyzzchol» ya no suma aparte en el ranking",
+   "t": 1793601229300,
+   "filas": [
+    1020
+   ],
+   "variantes": [
+    "DOS NOMBRES: «Dyzzchol» → «Dyzz» · cuenta 1525996330042921081"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

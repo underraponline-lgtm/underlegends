@@ -7633,6 +7633,38 @@
      ],
      "organizador": "@nachonc_",
      "cuentas": {}
+    },
+    "1566695559132348550": {
+     "sv": "FFA",
+     "nombre": "Rap para Raperos #3",
+     "mo": "2026-11-02T06:08:49Z",
+     "staff": {
+      "jurado": [
+       "🧑‍⚖️  #37",
+       "OKAM"
+      ],
+      "host": [
+       "Okam"
+      ],
+      "dj": [
+       "💿  #37",
+       "OKAM  🇨🇷"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "37",
+       "id": ""
+      },
+      {
+       "n": "OKAM",
+       "id": ""
+      }
+     ],
+     "organizador": "37 OKAM",
+     "cuentas": {
+      "Okam": "1512148565890306153"
+     }
     }
    },
    "ver": {
@@ -7677,7 +7709,7 @@
     },
     "FFA|2026-11-02": {
      "1345962362615894027": [
-      "#57 | Kravitz",
+      "#58 | Kravitz",
       "Kravitz",
       "thekravitz777"
      ],

@@ -18423,7 +18423,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "dd10167be182783c",
+  "firma": "368556b1c7d69480",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -18964,7 +18964,7 @@
    "Sin Limites": 21
   },
   "fecha": "22/10",
-  "firma": "a2ffcda83585d934",
+  "firma": "c09bbb9c6c5b8f98",
   "msg": "1562845541493374976",
   "nombre": "__ LA ISLA DE OKINAWA V.3 __",
   "num": 498,
@@ -19197,7 +19197,7 @@
    "Zignos": 24
   },
   "fecha": "22/10",
-  "firma": "cc54c31ddb363221",
+  "firma": "e585057492919b36",
   "msg": "1562967842851266610",
   "nombre": "__ SI NO SOS FOURBAR NO QUIERO NADA VOL.1 __",
   "num": 499,
@@ -23859,7 +23859,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "74578a2ba0ac9cc9",
+  "firma": "487c1d2f5884538b",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -24027,7 +24027,7 @@
    "Vandu": 35
   },
   "fecha": "20/10",
-  "firma": "82ccd04f014c9f6d",
+  "firma": "4649640f0c2adf64",
   "msg": "1564147704035151906",
   "nombre": "RAP SIN GROSERIAS 2",
   "num": 522,
@@ -24441,7 +24441,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "02edda6a3c16826e",
+  "firma": "9cdbf1e3e76b8d01",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -29970,7 +29970,7 @@
    "Teo": 18
   },
   "fecha": "30/10",
-  "firma": "2431c54a2c2db805",
+  "firma": "bd694002e3342f7d",
   "msg": "1565861597019111555",
   "nombre": "__ LA ISLA DE OKINAWA V.4 __",
   "num": 547,
@@ -30509,7 +30509,7 @@
    "Walker": 8
   },
   "fecha": "30/10",
-  "firma": "9707dec3bdad288e",
+  "firma": "8b1eb2f47389f2f5",
   "msg": "1565898869114413108",
   "nombre": "IDS V.3",
   "num": 549,
@@ -31479,7 +31479,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "592e07dc018311bc",
+  "firma": "d4567ee1386d4929",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -32804,24 +32804,24 @@
   "canal": "1468472443843776659",
   "duelos": [
    [
-    "gianla🇨🇦",
+    "Badterne",
     "ikonoxx",
-    "gianla🇨🇦"
+    "Badterne"
    ],
    [
-    "Dyzzchol🇨🇱",
+    "Dyzz",
     "Sin Limites",
-    "Dyzzchol🇨🇱"
+    "Dyzz"
    ],
    [
-    "Dyzzchol🇨🇱",
+    "Dyzz",
     "BLITZ",
-    "Dyzzchol🇨🇱"
+    "Dyzz"
    ],
    [
-    "Dyzzchol🇨🇱",
+    "Dyzz",
     "NC",
-    "Dyzzchol🇨🇱"
+    "Dyzz"
    ],
    [
     "EmiZor",
@@ -32834,9 +32834,9 @@
     "Geoka"
    ],
    [
-    "Dyzzchol🇨🇱, Vandu",
-    "gianla🇨🇦, Erian",
-    "Dyzzchol🇨🇱, Vandu"
+    "Dyzz, Vandu",
+    "Badterne, Erian",
+    "Dyzz, Vandu"
    ],
    [
     "Geoka, Akuseru",
@@ -32844,9 +32844,9 @@
     "Geoka, Akuseru"
    ],
    [
-    "Dyzzchol🇨🇱, Vandu, Erian",
     "Geoka, Akuseru, mats",
-    "Dyzzchol🇨🇱, Vandu, Erian"
+    "Dyzz, Vandu, Erian",
+    "Geoka, Akuseru, mats"
    ]
   ],
   "ev_antes": {
@@ -32864,7 +32864,7 @@
    "mats": 6
   },
   "fecha": "02/11",
-  "firma": "a7605c4d53b18c11",
+  "firma": "b0290a7dafac9095",
   "msg": "1566691494083960924",
   "nombre": "__ LA PALERA DEL KACHUM __",
   "num": 559,
@@ -32878,37 +32878,37 @@
   "t": "2026-11-02T05:54:37Z",
   "tabla": [
    [
-    "Erian",
+    "mats",
     "Campeón",
     4250
    ],
    [
-    "mats",
+    "Erian",
     "Subcampeón",
     3416
    ],
    [
-    "Dyzzchol🇨🇱",
-    "Campeón",
-    2500
-   ],
-   [
-    "Vandu",
-    "Campeón",
-    2500
-   ],
-   [
     "Geoka",
-    "Subcampeón",
-    2000
+    "Campeón",
+    2500
    ],
    [
     "Akuseru",
+    "Campeón",
+    2500
+   ],
+   [
+    "Dyzz",
     "Subcampeón",
     2000
    ],
    [
-    "gianla🇨🇦",
+    "Vandu",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "Badterne",
     "Semifinal",
     2000
    ],
