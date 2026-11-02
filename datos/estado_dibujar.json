@@ -1,90 +1,98 @@
 {
  "v": 1,
- "cuando": "2026-11-02T02:56:14Z",
+ "cuando": "2026-11-02T03:28:44Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 696.4,
+ "dur_s": 1414.3,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.2
+   "s": 6.3
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.0
+   "s": 0.7
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 9.4
+   "s": 6.9
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.5
+   "s": 29.2
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": false,
-   "s": 587.6
+   "s": 1299.6
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.9
+   "s": 9.4
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 62.7
+   "s": 61.4
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Artezzy"
+   "que": "03_Servidor/generar.py .SosaATR"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py MZK"
+   "que": "03_Servidor/generar.py Keider"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py MetriOdin"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Rodas"
   }
  ],
  "ultimo_evento": {
-  "n": "557",
-  "nombre": "RED BULL SUDAMÉRICA",
-  "sv": "LKR",
+  "n": "558",
+  "nombre": "COCINE FIDEOS",
+  "sv": "FFA",
   "dia": "2026-11-01"
  },
  "cuotas": {
   "kv": {
-   "write": 119,
-   "read": 10940
+   "write": 152,
+   "read": 12715
   },
   "objeto": {
-   "leidas": 491678,
-   "escritas": 6671,
-   "pedidos": 1416
+   "leidas": 659608,
+   "escritas": 8578,
+   "pedidos": 1665
   },
   "worker": {
-   "pedidos": 8193,
+   "pedidos": 8128,
    "errores": 0,
-   "sub": 9708,
+   "sub": 9624,
    "cortados": 0,
    "p50_ms": 1.23,
-   "p99_ms": 11.87,
+   "p99_ms": 11.83,
    "cpu": {
-    "total": 17842,
-    "objeto_10": 1740,
-    "worker_10": 161
+    "total": 17694,
+    "objeto_10": 1736,
+    "worker_10": 164
    }
   },
   "r2": {
