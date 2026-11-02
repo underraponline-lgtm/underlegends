@@ -456,7 +456,7 @@
       },
       {
        "op": "531",
-       "n": "DETALLES DEL EVENTO",
+       "n": "$10",
        "sv": "FFA",
        "d": "32 raperos · FFA",
        "quien": []

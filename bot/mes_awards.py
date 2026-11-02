@@ -875,7 +875,9 @@ def main():
     print('\n══ LOS MES AWARDS ══\n')
     r = correr(aplicar='--aplicar' in sys.argv)
     v = r.get('vivo')
-    if v:
+    # 🔴 `vivo` ya no trae `cats` (desde el 18/10, «hasta que termine el mes»): `v['cats']` tumbaba el paso ANTES de subir el
+    # Salón, y la página se quedó con lo del 19/10 —sin los nominados ni la votación de octubre— hasta el 02/11/2026
+    if v and v.get('cats'):
         print('   📈 así va %s:' % nombre_mes(v['mes']))
         for c, n, _de in CATS:
             print('      %-18s %s' % (n, ', '.join(str(x.get('n'))[:24] for x in v['cats'].get(c) or [])))
