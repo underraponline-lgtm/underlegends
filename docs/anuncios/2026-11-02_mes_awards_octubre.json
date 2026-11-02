@@ -1,0 +1,93 @@
+{
+ "_leeme": "Los MES AWARDS de octubre (02/11/2026): la votación abrió el 01/11 a las 6 PM ET y la página no la mostraba hasta el 02/11 a las 4:53 PM ET (bot/mes_awards.py se caía antes de subir el Salón). Cierra el 04/11 a las 6 PM ET. Componentes V2, con @here (`--here`).",
+ "flags": 32768,
+ "components": [
+  {
+   "type": 17,
+   "accent_color": 15906565,
+   "components": [
+    {
+     "type": 9,
+     "components": [
+      {
+       "type": 10,
+       "content": "# 🏆 MES AWARDS · OCTUBRE\n**Ya puedes votar lo mejor de octubre en la Liga.** Cierra <t:1793833200:R>."
+      }
+     ],
+     "accessory": {
+      "type": 11,
+      "media": {
+       "url": "https://underlegends.pages.dev/ul.png"
+      }
+     }
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🎤 Las principales\n**Rapero del mes** · Makmah · PichulaMc · Erian · Oasis · Snow\n**Revelación** · Catarsis · Adriagner · Teo · Luck · Lvel\n**Batalla del mes** · Zeta vs Rubik · Rubik vs Scorpio\n**Servidor del mes** · FFA · ACAD · DDF · SR · URBF"
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🗳️ Cómo votar\nEntra al **Salón de la fama** con tu Discord y elige uno por categoría. Puedes cambiar tu voto hasta que cierra.\nHay 22 categorías más: el villano, el clásico, el momento, la crew, el país, la liga, el staff y otras.\n-# Cada servidor Tier 1 tiene además las suyas, en su página, votadas por los que jugaron ahí."
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🎁 Qué se gana\nCada ganador se lleva su **insignia**, su lugar en el Salón y Puntos de Tienda: **3.000** el Rapero del mes, **2.000** la Revelación, **1.500** la Batalla y **1.000** las demás categorías de personas. La crew, el país, la liga y el servidor ganadores salen en el Salón y en Publicaciones.\n> ⏳ Cierra el <t:1793833200:F>"
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 2
+    },
+    {
+     "type": 1,
+     "components": [
+      {
+       "type": 2,
+       "style": 5,
+       "label": "Votar ahora",
+       "emoji": {
+        "name": "🏆"
+       },
+       "url": "https://underlegends.pages.dev/freestyle-rap/salon"
+      }
+     ]
+    },
+    {
+     "type": 10,
+     "content": "-# Liga Global de Freestyle en Español · Under Legends"
+    }
+   ]
+  }
+ ],
+ "_publicado": {
+  "DRA": {
+   "mensaje": "1566934905810722998",
+   "cuando": "2026-11-02 5:00 PM ET",
+   "here": true,
+   "link": "https://discord.com/channels/841017460341604382/1498326749748924416/1566934905810722998",
+   "editar": "python herramientas/anunciar.py docs/anuncios/2026-11-02_mes_awards_octubre.json --editar 1566934905810722998"
+  },
+  "FFA": {
+   "mensaje": "1566934911967953009",
+   "cuando": "2026-11-02 5:00 PM ET",
+   "here": true,
+   "link": "https://discord.com/channels/1468472442925092958/1531832189187264543/1566934911967953009",
+   "editar": "python herramientas/anunciar.py docs/anuncios/2026-11-02_mes_awards_octubre.json --servidor FFA --editar 1566934911967953009"
+  }
+ }
+}

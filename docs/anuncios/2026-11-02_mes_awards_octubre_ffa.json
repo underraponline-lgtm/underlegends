@@ -1,0 +1,77 @@
+{
+ "_leeme": "Los MES AWARDS de FFA de octubre (02/11/2026): sólo en FFA, con @everyone (Dlx: «el de servidor solo a ffa con everyone»). Los nominados salen de datos/mes_awards.json (meses.2026-10.sv.FFA). Cierra el 04/11 a las 6 PM ET.",
+ "flags": 32768,
+ "components": [
+  {
+   "type": 17,
+   "accent_color": 15906565,
+   "components": [
+    {
+     "type": 9,
+     "components": [
+      {
+       "type": 10,
+       "content": "# 🏆 LOS AWARDS DE FFA · OCTUBRE\n**Lo mejor de octubre en FFA, votado por los que jugaron acá.** Cierra <t:1793833200:R>."
+      }
+     ],
+     "accessory": {
+      "type": 11,
+      "media": {
+       "url": "https://underlegends.pages.dev/ul.png"
+      }
+     }
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🎤 Los nominados\n**Rapero del mes** · Oasis · Snow · Makmah · Six · Verc\n**Revelación** · Teo · Lvel · Aldre · Zaik · Trelok\n**Staff del mes** · LEWITO · Kravitz · Flennzs · NC · Xubaru"
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 1
+    },
+    {
+     "type": 10,
+     "content": "## 🗳️ Cómo votar\nSi jugaste en FFA en octubre, entra a la página de FFA con tu Discord y elige uno por categoría. Puedes cambiar tu voto hasta que cierra.\nCada ganador se lleva su **insignia**, **1.000 Puntos de Tienda** y su lugar en la página de FFA.\n> ⏳ Cierra el <t:1793833200:F>"
+    },
+    {
+     "type": 14,
+     "divider": true,
+     "spacing": 2
+    },
+    {
+     "type": 1,
+     "components": [
+      {
+       "type": 2,
+       "style": 5,
+       "label": "Votar en FFA",
+       "emoji": {
+        "name": "🏆"
+       },
+       "url": "https://underlegends.pages.dev/freestyle-rap/sv/ffa"
+      }
+     ]
+    },
+    {
+     "type": 10,
+     "content": "-# Liga Global de Freestyle en Español · Under Legends"
+    }
+   ]
+  }
+ ],
+ "_publicado": {
+  "FFA": {
+   "mensaje": "1566934931777658891",
+   "cuando": "2026-11-02 5:00 PM ET",
+   "everyone": true,
+   "link": "https://discord.com/channels/1468472442925092958/1531832189187264543/1566934931777658891",
+   "editar": "python herramientas/anunciar.py docs/anuncios/2026-11-02_mes_awards_octubre_ffa.json --servidor FFA --editar 1566934931777658891"
+  }
+ }
+}
