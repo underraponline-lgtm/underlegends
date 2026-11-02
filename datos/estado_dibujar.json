@@ -1,86 +1,98 @@
 {
  "v": 1,
- "cuando": "2026-11-02T00:07:11Z",
+ "cuando": "2026-11-02T00:53:52Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 317.9,
+ "dur_s": 1446.8,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 7.1
+   "s": 8.5
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.7
+   "s": 0.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.6
+   "s": 7.4
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 18.2
+   "s": 20.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 1 · 39 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": false,
-   "s": 223.9
+   "s": 1336.2
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.4
+   "s": 10.0
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 55.0
+   "s": 62.1
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Artezzy"
+   "que": "03_Servidor/generar.py .SosaATR"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Jupiter"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py MetriOdin"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Riolu"
   }
  ],
  "ultimo_evento": {
-  "n": "556",
-  "nombre": "la palera del edi",
-  "sv": "FFA",
+  "n": "557",
+  "nombre": "RED BULL SUDAMÉRICA",
+  "sv": "LKR",
   "dia": "2026-11-01"
  },
  "cuotas": {
   "kv": {
-   "write": 0,
-   "read": 874
+   "write": 25,
+   "read": 2611
   },
   "objeto": {
-   "leidas": 15115,
-   "escritas": 136,
-   "pedidos": 35
+   "leidas": 127585,
+   "escritas": 2131,
+   "pedidos": 336
   },
   "worker": {
-   "pedidos": 8612,
+   "pedidos": 8222,
    "errores": 0,
-   "sub": 10139,
+   "sub": 9734,
    "cortados": 0,
-   "p50_ms": 1.18,
-   "p99_ms": 11.02,
+   "p50_ms": 1.2,
+   "p99_ms": 11.17,
    "cpu": {
-    "total": 18651,
-    "objeto_10": 1732,
-    "worker_10": 132
+    "total": 17853,
+    "objeto_10": 1727,
+    "worker_10": 135
    }
   },
   "r2": {
