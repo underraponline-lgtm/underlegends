@@ -1,9 +1,9 @@
 {
  "v": 1,
- "cuando": "2026-11-02T06:20:07Z",
+ "cuando": "2026-11-02T06:50:58Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 915.2,
+ "dur_s": 975.7,
  "pasos": [
   {
    "n": "2f",
@@ -15,55 +15,55 @@
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.6
+   "s": 0.8
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 5.4
+   "s": 7.8
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 15.8
+   "s": 20.7
   },
   {
    "n": "5",
-   "que": "tanda 1 de 6 · 40 persona(s)",
+   "que": "tanda 1 de 5 · 40 persona(s)",
    "ok": false,
-   "s": 821.9
+   "s": 873.9
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 7.9
+   "s": 6.1
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 56.7
+   "s": 59.1
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py ARDEAN"
+   "que": "03_Servidor/generar.py 19 FLEIVA WACK"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Jobaking"
+   "que": "03_Servidor/generar.py Kravitz"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Miniboy"
+   "que": "03_Servidor/generar.py RT"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Saturb"
+   "que": "03_Servidor/generar.py Vilca"
   }
  ],
  "ultimo_evento": {
@@ -74,25 +74,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 252,
-   "read": 22772
+   "write": 271,
+   "read": 24450
   },
   "objeto": {
-   "leidas": 1354807,
-   "escritas": 13342,
-   "pedidos": 2960
+   "leidas": 1479768,
+   "escritas": 14814,
+   "pedidos": 3196
   },
   "worker": {
-   "pedidos": 7957,
+   "pedidos": 7898,
    "errores": 1,
-   "sub": 9452,
+   "sub": 9396,
    "cortados": 1,
-   "p50_ms": 1.23,
-   "p99_ms": 11.87,
+   "p50_ms": 1.24,
+   "p99_ms": 11.89,
    "cpu": {
-    "total": 17370,
-    "objeto_10": 1752,
-    "worker_10": 177
+    "total": 17233,
+    "objeto_10": 1753,
+    "worker_10": 176
    }
   },
   "r2": {
