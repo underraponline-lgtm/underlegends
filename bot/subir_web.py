@@ -1014,6 +1014,26 @@ def _orgs(ann, tabla, pool, apodos=None, staff=None, perfiles=None):
 
 _EMOJI = re.compile(r'<a?:\w+:\d+>')
 _MENCION = re.compile(r'<[@#][!&]?\d+>|@everyone|@here')
+_HORA_DC = re.compile(r'<t:(\d{9,11})(?::([tTdDfFR]))?>')
+_DIAS_DC = ('lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo')
+_MESES_DC = ('enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre',
+             'noviembre', 'diciembre')
+
+
+def _hora_discord(seg, estilo='f', sin_el=False):
+    """`<t:…>` de Discord, escrita en hora del este: «el miércoles 4 de noviembre a las 6:00 PM (hora del este)».
+    La relativa (`R`, «en 2 días») también va con la fecha: el texto se guarda y «en 2 días» dejaría de ser cierto."""
+    import datetime as dt
+    from zoneinfo import ZoneInfo
+    d = dt.datetime.fromtimestamp(seg, ZoneInfo('America/New_York'))
+    h = d.strftime('%I:%M %p').lstrip('0')
+    # «Cierra el <t:…:F>»: el «el» ya lo puso quien escribió
+    fecha = ('' if sin_el else 'el ') + '%s %d de %s' % (_DIAS_DC[d.weekday()], d.day, _MESES_DC[d.month - 1])
+    if estilo in ('t', 'T'):
+        return 'a las %s (hora del este)' % h
+    if estilo in ('d', 'D'):
+        return fecha
+    return '%s a las %s (hora del este)' % (fecha, h)
 
 
 def _limpio_md(s):
@@ -1025,10 +1045,14 @@ def _limpio_md(s):
     """
     out = []
     for l in str(s or '').split('\n'):
+        # 🕐 la hora de Discord (`<t:1793833200:R>`) se ve en la zona de cada uno ADENTRO de Discord; afuera es texto crudo
+        # (el anuncio de los MES AWARDS salió así en Publicaciones, 02/11/2026). Va escrita, en hora del este
+        l = _HORA_DC.sub(lambda m: _hora_discord(int(m.group(1)), m.group(2) or 'f',
+                                                 sin_el=bool(re.search(r'\bel\s*$', m.string[:m.start()], re.I))), l)
         l = _MENCION.sub('', _EMOJI.sub('', l))
         # un anuncio con ping arranca con «@everyone»: en la página no dice nada
         l = re.sub(r'@(everyone|here)\b', '', l)
-        l = re.sub(r'^\s*(-#|#{1,3})\s*', '', l)
+        l = re.sub(r'^\s*(-#|#{1,3}|>{1,3})\s*', '', l)
         l = re.sub(r'\*\*|__|~~|`', '', l).strip(' ▬—=·\t')
         if l:
             out.append(l)
@@ -4236,6 +4260,10 @@ def _self_check():
        'y las cinco dimensiones del Score, con nombre (ninguna quedó sin explicar)')
     ok(_limpio_md('# 🏆 HOLA <:CorazonLleno:152933862521543> @everyone\n▬▬▬\n**chau**')
        == ['🏆 HOLA', 'chau'], 'el texto de Discord sale sin su formato')
+    # 🕐 02/11/2026: el anuncio de los MES AWARDS salió con «<t:1793833200:R>» en crudo
+    ok(_limpio_md('Cierra <t:1793833200:R>.\n> Cierra el <t:1793833200:F>')
+       == ['Cierra el miércoles 4 de noviembre a las 6:00 PM (hora del este).',
+           'Cierra el miércoles 4 de noviembre a las 6:00 PM (hora del este)'], 'y la hora de Discord, escrita en hora del este')
     ok(_org('@!    MMC.') == 'MMC.', 'y el organizador sin la arroba')
     # 👥 los organizadores de a uno (14/10/2026): viajan sólo si dicen otra cosa que `org`
     ok(_os({'organizador': 'FLENNZS LEWITO AX', 'orgs': [{'n': 'FLENNZS'}, {'n': 'LEWITO'}, {'n': 'AX'}]})
