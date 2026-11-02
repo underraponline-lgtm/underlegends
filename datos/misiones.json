@@ -4586,7 +4586,7 @@
      0
     ],
     "ANG": [
-     1,
+     0,
      1,
      0,
      0,
@@ -4607,7 +4607,7 @@
      0
     ],
     "Agus": [
-     1,
+     0,
      3,
      0,
      0,
@@ -4621,14 +4621,14 @@
      0
     ],
     "Aldre": [
-     1,
+     0,
      1,
      0,
      0,
      0
     ],
     "Andres": [
-     2,
+     1,
      2,
      0,
      0,
@@ -4684,7 +4684,7 @@
      0
     ],
     "Badterne": [
-     2,
+     1,
      4,
      1,
      1,
@@ -4866,7 +4866,7 @@
      0
     ],
     "Dyzz": [
-     3,
+     1,
      3,
      0,
      0,
@@ -4929,7 +4929,7 @@
      0
     ],
     "Erian": [
-     3,
+     1,
      12,
      0,
      0,
@@ -5006,14 +5006,14 @@
      0
     ],
     "Gustavo Urrutia Perez 🇲🇽": [
-     1,
+     0,
      0,
      0,
      0,
      0
     ],
     "Henry": [
-     1,
+     0,
      0,
      0,
      0,
@@ -5034,7 +5034,7 @@
      0
     ],
     "Isabella 🇦🇷": [
-     1,
+     0,
      0,
      0,
      0,
@@ -5097,7 +5097,7 @@
      0
     ],
     "Jult": [
-     1,
+     0,
      1,
      0,
      0,
@@ -5146,7 +5146,7 @@
      0
     ],
     "Kravitz": [
-     1,
+     0,
      1,
      0,
      0,
@@ -5160,7 +5160,7 @@
      0
     ],
     "Kyss": [
-     1,
+     0,
      2,
      0,
      0,
@@ -5223,7 +5223,7 @@
      0
     ],
     "Lautaro la sinceridad 🇨🇨": [
-     1,
+     0,
      2,
      0,
      0,
@@ -5286,7 +5286,7 @@
      0
     ],
     "Lord Viruzz": [
-     1,
+     0,
      1,
      0,
      0,
@@ -5300,7 +5300,7 @@
      0
     ],
     "Luffy": [
-     1,
+     0,
      0,
      0,
      0,
@@ -5314,7 +5314,7 @@
      0
     ],
     "Lvel": [
-     2,
+     1,
      0,
      0,
      0,
@@ -5370,7 +5370,7 @@
      0
     ],
     "Makmah": [
-     3,
+     2,
      10,
      0,
      0,
@@ -5489,7 +5489,7 @@
      0
     ],
     "NC": [
-     2,
+     1,
      7,
      0,
      0,
@@ -5545,7 +5545,7 @@
      0
     ],
     "OKAM": [
-     3,
+     2,
      6,
      0,
      0,
@@ -5559,8 +5559,8 @@
      0
     ],
     "Oasis": [
-     3,
-     5,
+     2,
+     4,
      0,
      0,
      0
@@ -5573,7 +5573,7 @@
      0
     ],
     "PRAISERIZA": [
-     2,
+     1,
      4,
      0,
      0,
@@ -5602,13 +5602,13 @@
     ],
     "PichulaMc": [
      2,
-     7,
+     8,
      0,
      0,
      0
     ],
     "Pipe": [
-     1,
+     0,
      1,
      0,
      0,
@@ -5636,7 +5636,7 @@
      0
     ],
     "Provenza": [
-     3,
+     2,
      5,
      0,
      0,
@@ -5727,14 +5727,14 @@
      0
     ],
     "Sin Limites": [
-     2,
+     1,
      4,
      0,
      0,
      0
     ],
     "Six": [
-     3,
+     2,
      7,
      0,
      0,
@@ -5783,7 +5783,7 @@
      0
     ],
     "Tam": [
-     1,
+     0,
      3,
      0,
      1,
@@ -5799,7 +5799,7 @@
     "Tenor": [
      1,
      2,
-     0,
+     1,
      0,
      0
     ],
@@ -5832,7 +5832,7 @@
      0
     ],
     "Trelok": [
-     2,
+     1,
      3,
      0,
      0,
@@ -5923,21 +5923,21 @@
      0
     ],
     "Zignos": [
-     1,
+     0,
      1,
      0,
      0,
      0
     ],
     "atari": [
-     1,
+     0,
      0,
      0,
      0,
      0
     ],
     "erpi": [
-     1,
+     0,
      1,
      0,
      0,
@@ -5986,7 +5986,7 @@
      0
     ],
     "kaiser🇵🇷": [
-     1,
+     0,
      1,
      0,
      0,
@@ -6035,7 +6035,7 @@
      0
     ],
     "yinn": [
-     3,
+     2,
      6,
      1,
      0,
@@ -6044,12 +6044,10 @@
    },
    "pts": {
     "19 FLEIVA WACK": 1800,
-    "ANG": 300,
     "Abyssus": 300,
     "Adriagner": 900,
-    "Agus": 900,
+    "Agus": 600,
     "Akuseru": 600,
-    "Aldre": 300,
     "Andres": 900,
     "BELIKKO": 300,
     "BLITZ": 600,
@@ -6074,28 +6072,21 @@
     "Geoka": 2900,
     "Guaicurús🇰🇷": 300,
     "Gus": 900,
-    "Gustavo Urrutia Perez 🇲🇽": 300,
-    "Henry": 300,
-    "Isabella 🇦🇷": 300,
     "Jobaking": 900,
     "Julix": 600,
-    "Jult": 300,
     "KIRITO": 300,
     "Karumailafmasha🇹🇼": 300,
     "Keider": 600,
     "Khalil": 300,
     "Kochi": 300,
-    "Kravitz": 300,
-    "Kyss": 900,
+    "Kyss": 600,
     "LRS": 900,
     "LSO": 300,
-    "Lautaro la sinceridad 🇨🇨": 900,
+    "Lautaro la sinceridad 🇨🇨": 600,
     "Liberia": 900,
     "Lilñaño": 600,
     "Lizeninn": 600,
-    "Lord Viruzz": 300,
     "Luck": 900,
-    "Luffy": 300,
     "Lvel": 300,
     "MATUK 🇦🇷": 300,
     "MTZ": 1000,
@@ -6120,7 +6111,6 @@
     "PRAISERIZA": 900,
     "Paria": 600,
     "PichulaMc": 900,
-    "Pipe": 300,
     "Polosport": 900,
     "Presagio": 900,
     "Provenza": 900,
@@ -6133,9 +6123,9 @@
     "Snow": 300,
     "Sosa": 300,
     "Soulb": 1000,
-    "Tam": 1700,
+    "Tam": 1400,
     "Teito": 300,
-    "Tenor": 900,
+    "Tenor": 2900,
     "Teo": 300,
     "Trelok": 900,
     "Trot": 300,
@@ -6145,11 +6135,7 @@
     "Verc": 900,
     "Vilca": 600,
     "Walker": 1600,
-    "Zignos": 300,
-    "atari": 300,
-    "erpi": 300,
     "francis": 300,
-    "kaiser🇵🇷": 300,
     "mats": 2900,
     "melomaniaco": 300,
     "publicenemy🇦🇷": 300,
@@ -6182,11 +6168,11 @@
     ],
     [
      "caza",
-     "Ganale un duelo a Vandu",
+     "Ganale un duelo a OKAM",
      "caza",
      1,
      800,
-     "Vandu"
+     "OKAM"
     ],
     [
      "dorado",
@@ -6211,7 +6197,6 @@
   "AKARK": 600,
   "ALESS": 300,
   "ALTER 🇨🇱": 300,
-  "ANG": 300,
   "ANTONIO🇵🇾": 300,
   "ANTORCHA": 300,
   "ARDEAN": 300,
@@ -6220,10 +6205,10 @@
   "Abysuss": 1600,
   "Adriagner": 4100,
   "Agente sombra": 300,
-  "Agus": 8300,
+  "Agus": 8000,
   "Akuseru": 600,
   "Akutagawa🇹🇼": 300,
-  "Aldre": 2200,
+  "Aldre": 1900,
   "Alexi": 300,
   "Andres": 4800,
   "Andy": 300,
@@ -6300,18 +6285,16 @@
   "Guaicurús🇰🇷": 300,
   "Guess": 4500,
   "Gus": 900,
-  "Gustavo Urrutia Perez 🇲🇽": 300,
   "HH": 300,
   "HOTU": 1000,
   "Hardcore": 300,
   "Hassan": 300,
-  "Henry": 600,
+  "Henry": 300,
   "Holden": 300,
   "Hotaru Adeyemi 🏳️‍⚧️": 900,
   "ISAIAS": 300,
   "Iguana": 300,
   "Imagy": 300,
-  "Isabella 🇦🇷": 300,
   "J19": 1000,
   "JHEYSON": 300,
   "JJ": 2900,
@@ -6321,7 +6304,7 @@
   "Juasmio": 1900,
   "Julix": 600,
   "Julix🇧🇴": 1000,
-  "Jult": 900,
+  "Jult": 600,
   "Jupiter": 2200,
   "KIRITO": 300,
   "Karumailafmasha🇹🇼": 300,
@@ -6330,19 +6313,19 @@
   "Kminant": 300,
   "Kochi": 600,
   "Korey": 300,
-  "Kravitz": 1500,
+  "Kravitz": 1200,
   "Krinkross🇪🇸": 300,
   "Krish": 600,
   "Kun Z": 300,
   "Kusoh": 600,
-  "Kyss": 2200,
+  "Kyss": 1900,
   "LAST": 1000,
   "LEWITO": 300,
   "LKS 🇨🇱": 300,
   "LRS": 3100,
   "LSO": 300,
   "Launok": 300,
-  "Lautaro la sinceridad 🇨🇨": 900,
+  "Lautaro la sinceridad 🇨🇨": 600,
   "Leonart": 300,
   "Letrao🇨🇱": 1300,
   "Leyenda": 300,
@@ -6351,9 +6334,8 @@
   "Lilñaño": 600,
   "LitKunai": 300,
   "Lizeninn": 600,
-  "Lord Viruzz": 1900,
+  "Lord Viruzz": 1600,
   "Luck": 900,
-  "Luffy": 300,
   "Luzzano": 900,
   "Lvel": 900,
   "MALBORO": 600,
@@ -6407,7 +6389,6 @@
   "Paria": 1200,
   "Personality": 300,
   "PichulaMc": 9100,
-  "Pipe": 300,
   "Player": 3200,
   "Polosport": 3100,
   "Pomberito": 2900,
@@ -6447,9 +6428,9 @@
   "Soneto": 300,
   "Sosa": 2500,
   "Soulb": 5200,
-  "Tam": 7700,
+  "Tam": 7400,
   "Teito": 600,
-  "Tenor": 4100,
+  "Tenor": 6100,
   "Teo": 900,
   "Tier": 300,
   "Trelok": 900,
@@ -6477,19 +6458,16 @@
   "Zaza": 300,
   "Zekha": 1000,
   "Zetryko": 1600,
-  "Zignos": 6100,
+  "Zignos": 5800,
   "araya": 300,
-  "atari": 300,
   "chekialo 🇧🇯": 1300,
   "crakero": 300,
   "doble h": 300,
   "dxg": 300,
-  "erpi": 300,
   "fleivaman": 1300,
   "francis": 1200,
   "giansito": 1000,
   "ikonoxx": 600,
-  "kaiser🇵🇷": 300,
   "kerkoide": 300,
   "mats": 2900,
   "melomaniaco": 600,

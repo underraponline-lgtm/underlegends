@@ -1720,72 +1720,6 @@
   }
  },
  "llaves": {
-  "1559279649400561765": {
-   "id": "1559279649400561765",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1791831638432,
-   "ed": 1791833221397,
-   "texto": "`[ OCTAVOS ]`\n⌞YINN🇪🇸⌝ 🆚 ⌞VERC🇨🇱⌝ 🆚 ⌞O.E.P🇨🇴⌝\n⌞SNOW🇨🇴⌝ 🆚 ⌞CAJITA🇻🇪⌝ 🆚 ⌞TEO🇨🇴⌝\n⌞BENJIXO🇦🇷⌝ 🆚 ⌞AFR🇨🇱⌝ 🆚 ⌞DOBLE H🇨🇱⌝\n⌞LVEL🇻🇪⌝ 🆚 ⌞JJ🇨🇴⌝ 🆚 ⌞ONZAS🇻🇪⌝\n⌞GUESS🇦🇷⌝ 🆚 ⌞EFIMERO🇨🇱⌝ 🆚 ⌞ARIAXER🇦🇷⌝",
-   "batallas": [
-    [
-     "OCTAVOS",
-     [
-      "YINN🇪🇸",
-      "VERC🇨🇱",
-      "O.E.P🇨🇴"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "SNOW🇨🇴",
-      "CAJITA🇻🇪",
-      "TEO🇨🇴"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "BENJIXO🇦🇷",
-      "AFR🇨🇱",
-      "DOBLE H🇨🇱"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "LVEL🇻🇪",
-      "JJ🇨🇴",
-      "ONZAS🇻🇪"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ],
-    [
-     "OCTAVOS",
-     [
-      "GUESS🇦🇷",
-      "EFIMERO🇨🇱",
-      "ARIAXER🇦🇷"
-     ],
-     "GUESS🇦🇷",
-     "veredicto",
-     []
-    ]
-   ]
-  },
   "1559383999531589753": {
    "id": "1559383999531589753",
    "sv": "[FFA] Freestyle For All 👾",
@@ -5888,6 +5822,68 @@
      [
       "GEOKA🇧🇩",
       "ERIAN🇰🇷"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
+  },
+  "1566890012036042857": {
+   "id": "1566890012036042857",
+   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
+   "g": "1469009547971526659",
+   "canal": "1498009509036163173",
+   "pub": 1793646090278,
+   "ed": 1793647373377,
+   "texto": "`[ CUARTOS ]`\n⌞DESIO⌝ 🆚 ⌞AM⌝\n⌞AM⌝ 🆚 ⌞DESIO⌝\n⌞MAKMAH⌝ 🆚 ⌞BOOTRAX⌝\n⌞XCLUSIBA⌝ 🆚 ⌞MARKITOSTOYS⌝ 🆚 ⌞PROBLEMA MIA(VOGL)⌝\n⌞EVANGELINNE⌝ 🆚 ⌞DOMINICK⌝",
+   "batallas": [
+    [
+     "CUARTOS",
+     [
+      "DESIO",
+      "AM"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "AM",
+      "DESIO"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MAKMAH",
+      "BOOTRAX"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "XCLUSIBA",
+      "MARKITOSTOYS",
+      "PROBLEMA MIA(VOGL)"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "EVANGELINNE",
+      "DOMINICK"
      ],
      null,
      "última ronda y no dice campeón",

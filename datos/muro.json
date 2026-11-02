@@ -306,15 +306,6 @@
 "temporada"
 ]
 },
-"cronox": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "majiztral": {
 "rg": "C",
 "c": [
@@ -327,6 +318,15 @@
 "bna": {
 "rg": "C",
 "c": []
+},
+"cronox": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "chop": {
 "rg": "D",
@@ -342,6 +342,15 @@
 ]
 },
 "drexx": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"tenor": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -385,15 +394,6 @@
 },
 "dyzz": {
 "rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"tenor": {
-"rg": "C",
 "c": [
 "competitivo",
 "pais",

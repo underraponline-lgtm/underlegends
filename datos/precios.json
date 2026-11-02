@@ -2,14 +2,6 @@
  "_leeme": "El precio por cabeza: lo arma bot/precios.py en el ciclo (paso 2b4). Las reglas y los números viven en ese archivo.",
  "precios": [
   {
-   "id": 7,
-   "cabeza": "Makmah",
-   "monto": 2500,
-   "t": "2026-10-03T19:20:08Z",
-   "fin": "2026-10-05T15:00:00Z",
-   "e": "devuelto"
-  },
-  {
    "id": 8,
    "cabeza": "Hassan",
    "monto": 1000,
