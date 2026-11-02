@@ -381,6 +381,7 @@
   },
   "Desu": {
    "avisado": "2026-10-20",
+   "avisado_cumplido": "2026-11-01",
    "chat": "2026-10-21",
    "con": 555,
    "cumplido": "2026-10-21T03:23:26+00:00",
@@ -601,6 +602,18 @@
    "vence": "2026-10-30T20:44:26+00:00",
    "vencido": true
   },
+  "Hirex": {
+   "avisado": "2026-11-01",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-01T20:39:59+00:00",
+   "did": "1478514834193645688",
+   "evento": "RED BULL SUDAMÉRICA",
+   "n": 557,
+   "sv": "LKR",
+   "vence": "2026-11-08T20:39:59+00:00",
+   "vencido": false
+  },
   "Hotaru Adeyemi 🏳️‍⚧️": {
    "avisado": "2026-10-16",
    "avisado_cumplido": "2026-10-18",
@@ -693,6 +706,18 @@
    "n": 488,
    "sv": "FFA",
    "vence": "2026-10-26T06:14:16+00:00",
+   "vencido": false
+  },
+  "JL": {
+   "avisado": "2026-11-01",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-01T20:39:59+00:00",
+   "did": "",
+   "evento": "RED BULL SUDAMÉRICA",
+   "n": 557,
+   "sv": "LKR",
+   "vence": "2026-11-08T20:39:59+00:00",
    "vencido": false
   },
   "Jahno Afrodisiaco": {
@@ -880,6 +905,7 @@
    "vencido": false
   },
   "LISEN": {
+   "avisado": "2026-11-01",
    "con": null,
    "cumplido": "",
    "debut": "2026-11-01T05:05:26+00:00",
@@ -902,6 +928,18 @@
    "n": 511,
    "sv": "DDF",
    "vence": "2026-11-01T04:08:34+00:00",
+   "vencido": false
+  },
+  "LUIS": {
+   "avisado": "2026-11-01",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-01T20:39:59+00:00",
+   "did": "",
+   "evento": "RED BULL SUDAMÉRICA",
+   "n": 557,
+   "sv": "LKR",
+   "vence": "2026-11-08T20:39:59+00:00",
    "vencido": false
   },
   "Lautaro la sinceridad": {

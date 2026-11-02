@@ -1423,11 +1423,11 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 2,
+    "ev": 3,
     "oro": 0,
-    "ovr": 44,
+    "ovr": 45,
     "pod": 0,
-    "pts": 4500,
+    "pts": 8250,
     "racha": "0/0",
     "tg": {
      "fund": true
@@ -1518,6 +1518,18 @@
     "pod": 0,
     "pts": 1250,
     "racha": "1/1"
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Carlosmo": {
@@ -1693,6 +1705,19 @@
     "pod": 0,
     "pts": 35562,
     "racha": "0/1"
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 1,
+    "ovr": 46,
+    "pod": 1,
+    "pts": 15000,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
    },
    "SR": {
     "duelos": "0/1",
@@ -3309,6 +3334,18 @@
     "pod": 0,
     "pts": 1250,
     "racha": "0/0"
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1875,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "Fin": {
@@ -3878,6 +3915,20 @@
     "racha": "0/0"
    }
   },
+  "Hirex": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1875,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
   "Holden": {
    "FFA": {
     "duelos": "",
@@ -4162,6 +4213,20 @@
     "racha": "2/2",
     "tg": {
      "fin": 2
+    }
+   }
+  },
+  "JL": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1875,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },
@@ -5009,11 +5074,11 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 1250,
+    "pts": 3125,
     "racha": "0/0",
     "tg": {
      "fund": true
@@ -5180,6 +5245,20 @@
     "pod": 0,
     "pts": 6250,
     "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   }
+  },
+  "LUIS": {
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 44,
+    "pod": 0,
+    "pts": 7875,
+    "racha": "1/1",
     "tg": {
      "nuevo": true
     }
@@ -5746,6 +5825,18 @@
     "pod": 0,
     "pts": 43294,
     "racha": "0/0"
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1875,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
    }
   },
   "MAGMAHK": {
@@ -6106,12 +6197,12 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 44,
     "pod": 0,
-    "pts": 1250,
-    "racha": "0/0",
+    "pts": 9125,
+    "racha": "1/1",
     "tg": {
      "fund": true
     }
@@ -6177,6 +6268,18 @@
     "racha": "0/1",
     "tg": {
      "fin": 1
+    }
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    },
    "URBF": {
@@ -6426,13 +6529,14 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
-    "pod": 0,
-    "pts": 1250,
-    "racha": "0/0",
+    "ovr": 46,
+    "pod": 1,
+    "pts": 12500,
+    "racha": "1/1",
     "tg": {
+     "fin": 1,
      "fund": true
     }
    }
@@ -6523,11 +6627,11 @@
   "Mc dl": {
    "LKR": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 42,
+    "ovr": 43,
     "pod": 0,
-    "pts": 2000,
+    "pts": 3875,
     "racha": "0/0"
    }
   },
@@ -6914,6 +7018,18 @@
     "ovr": 42,
     "pod": 0,
     "pts": 2200,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
+    }
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 43,
+    "pod": 0,
+    "pts": 3750,
     "racha": "0/0",
     "tg": {
      "nuevo": true
@@ -8306,11 +8422,11 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 1,
+    "ev": 2,
     "oro": 0,
-    "ovr": 43,
+    "ovr": 44,
     "pod": 0,
-    "pts": 2500,
+    "pts": 4375,
     "racha": "0/0",
     "tg": {
      "fund": true
@@ -8428,6 +8544,18 @@
     "racha": "0/0",
     "tg": {
      "fund": true
+    }
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 42,
+    "pod": 0,
+    "pts": 1875,
+    "racha": "0/0",
+    "tg": {
+     "nuevo": true
     }
    }
   },

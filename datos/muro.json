@@ -337,6 +337,10 @@
 "temporada"
 ]
 },
+"chop": {
+"rg": "D",
+"c": []
+},
 "drexx": {
 "rg": "C",
 "c": [
@@ -403,10 +407,6 @@
 },
 "neo": {
 "rg": "C",
-"c": []
-},
-"chop": {
-"rg": "D",
 "c": []
 },
 "dyzz": {
@@ -548,6 +548,14 @@
 "rg": "",
 "c": []
 },
+"mayeutyk": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "jult": {
 "rg": "E",
 "c": [
@@ -678,6 +686,13 @@
 "rg": "",
 "c": []
 },
+"mathhias": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "soneto": {
 "rg": "E",
 "c": [
@@ -703,6 +718,14 @@
 "rg": "",
 "c": [
 "pais",
+"servidor",
+"temporada"
+]
+},
+"lvel": {
+"rg": "E",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -747,20 +770,6 @@
 "temporada"
 ]
 },
-"mayeutyk": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"mathhias": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "alexi": {
 "rg": "",
 "c": []
@@ -783,14 +792,6 @@
 "rg": "",
 "c": [
 "pais",
-"servidor",
-"temporada"
-]
-},
-"lvel": {
-"rg": "E",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -982,6 +983,18 @@
 "rg": "",
 "c": []
 },
+"carlos": {
+"rg": "",
+"c": []
+},
+"richard": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "zeta": {
 "rg": "",
 "c": [
@@ -1067,18 +1080,6 @@
 "rg": "",
 "c": []
 },
-"richard": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
-"carlos": {
-"rg": "",
-"c": []
-},
 "gus": {
 "rg": "",
 "c": [
@@ -1095,6 +1096,12 @@
 "noa": {
 "rg": "",
 "c": []
+},
+"rbk": {
+"rg": "",
+"c": [
+"servidor"
+]
 },
 "marto": {
 "rg": "",
@@ -1271,12 +1278,6 @@
 "c": [
 "servidor",
 "temporada"
-]
-},
-"rbk": {
-"rg": "",
-"c": [
-"servidor"
 ]
 },
 "saiko": {
@@ -2674,14 +2675,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T03:08:41Z",
-"quien": [
-"Nexus"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-04T05:00:45Z",
@@ -6032,6 +6025,14 @@
 ],
 "rg": "D",
 "primero": false
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-02T00:28:35Z",
+"quien": [
+"MaYeuTyK"
+],
+"carta": "competitivo"
 }
 ]
 }

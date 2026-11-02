@@ -40668,5 +40668,241 @@
     625
    ]
   ]
+ },
+ "557": {
+  "dia": "2026-11-01",
+  "escala": "16+",
+  "fecha": "01/11",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1560645507095728278/1566552410262863914"
+  ],
+  "n": 557,
+  "nombre": "RED BULL SUDAMÉRICA",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Majiztral",
+       "Rbk"
+      ],
+      "Majiztral",
+      ""
+     ],
+     [
+      [
+       "Chop",
+       "Hirex"
+      ],
+      "Chop",
+      ""
+     ],
+     [
+      [
+       "LUIS",
+       "Richard"
+      ],
+      "LUIS",
+      ""
+     ],
+     [
+      [
+       "Calíz",
+       "Lvel 🇻🇪"
+      ],
+      "Calíz",
+      ""
+     ],
+     [
+      [
+       "Carlos",
+       "JL"
+      ],
+      "Carlos",
+      ""
+     ],
+     [
+      [
+       "Mathhias",
+       "LAST"
+      ],
+      "Mathhias",
+      ""
+     ],
+     [
+      [
+       "Mr.Kude",
+       "Mc dl"
+      ],
+      "Mr.Kude",
+      ""
+     ],
+     [
+      [
+       "MaYeuTyK",
+       "Filozico"
+      ],
+      "MaYeuTyK",
+      ""
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Chop",
+       "Majiztral"
+      ],
+      "Chop",
+      ""
+     ],
+     [
+      [
+       "LUIS",
+       "Calíz"
+      ],
+      "LUIS",
+      ""
+     ],
+     [
+      [
+       "Mathhias",
+       "Carlos"
+      ],
+      "Mathhias",
+      ""
+     ],
+     [
+      [
+       "MaYeuTyK",
+       "Mr.Kude"
+      ],
+      "MaYeuTyK",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Chop",
+       "LUIS"
+      ],
+      "Chop",
+      ""
+     ],
+     [
+      [
+       "Mathhias",
+       "MaYeuTyK"
+      ],
+      "Mathhias",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Chop",
+       "Mathhias"
+      ],
+      "Chop",
+      "ganador según #veredictos"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Chop",
+    "Campeón",
+    10000
+   ],
+   [
+    "Mathhias",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "LUIS",
+    "Semifinal",
+    5250
+   ],
+   [
+    "MaYeuTyK",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Calíz",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Carlos",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Majiztral",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Mr.Kude",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Filozico",
+    "Octavos",
+    1250
+   ],
+   [
+    "Hirex",
+    "Octavos",
+    1250
+   ],
+   [
+    "JL",
+    "Octavos",
+    1250
+   ],
+   [
+    "LAST",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Mc dl",
+    "Octavos",
+    1250
+   ],
+   [
+    "Rbk",
+    "Octavos",
+    1250
+   ],
+   [
+    "Richard",
+    "Octavos",
+    1250
+   ]
+  ]
  }
 }

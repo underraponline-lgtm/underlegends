@@ -1662,6 +1662,17 @@
    "b": "LUIS 🇦🇷",
    "ganador": "CHOP🇭🇳",
    "votos": "1–0"
+  },
+  "1566602096684568767": {
+   "id": "1566602096684568767",
+   "sv": "🔥LKR (Champios Legue)🐉",
+   "g": "1558611504046153750",
+   "canal": "1560645560015519834",
+   "pub": 1793577445909,
+   "a": "MATTHIAS🇻🇪",
+   "b": "CHOP🇭🇳",
+   "ganador": "CHOP🇭🇳",
+   "votos": "2–1"
   }
  },
  "llaves": {
@@ -5609,8 +5620,8 @@
    "g": "1558611504046153750",
    "canal": "1560645560015519834",
    "pub": 1793574395711,
-   "ed": 1793576981737,
-   "texto": "`[ CUARTOS ]`\n⌞MAJIZTRAL 🇨🇴⌝ 🆚 ⌞CHOP🇭🇳⌝\n⌞MATTHIAS 🇻🇪⌝ 🆚 ⌞CARLOS🇪🇨⌝\n⌞MARTÍNEZ 🇺🇾⌝ 🆚 ⌞KUDE🇦🇷⌝\n⌞CHOP⌝ 🆚 ⌞LUIS⌝\n⌞MARTÍNEZ 🇺🇾⌝ 🆚 ⌞MATTHIAS 🇻🇪⌝",
+   "ed": 1793578258469,
+   "texto": "`[ CUARTOS ]`\n⌞MAJIZTRAL 🇨🇴⌝ 🆚 ⌞CHOP🇭🇳⌝\n⌞MATTHIAS 🇻🇪⌝ 🆚 ⌞CARLOS🇪🇨⌝\n⌞MARTÍNEZ 🇺🇾⌝ 🆚 ⌞KUDE🇦🇷⌝\n⌞CHOP⌝ 🆚 ⌞LUIS⌝\n⌞MARTÍNEZ 🇺🇾⌝ 🆚 ⌞MATTHIAS 🇻🇪⌝\n⌞MATTHIAS 🇻🇪⌝ 🆚 ⌞CHOP🇭🇳⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5657,6 +5668,16 @@
      [
       "MARTÍNEZ 🇺🇾",
       "MATTHIAS 🇻🇪"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "MATTHIAS 🇻🇪",
+      "CHOP🇭🇳"
      ],
      null,
      "última ronda y no dice campeón",
