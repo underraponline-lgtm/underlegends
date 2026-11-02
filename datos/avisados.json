@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "27d0e719efe202be",
+  "firma": "d63a40c01fb6e212",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "028061ead63b930a",
+  "firma": "8fa874f2466dc62a",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -12529,7 +12529,7 @@
    "Vargas": 1
   },
   "fecha": "14/10",
-  "firma": "b5dd064dfb266375",
+  "firma": "3c0beadb52428da9",
   "msg": "1560070688113688601",
   "nombre": "FF Freestyle Clasico",
   "num": 473,
@@ -13865,7 +13865,7 @@
    "Vandu": 22
   },
   "fecha": "16/10",
-  "firma": "ad56875615adb0ae",
+  "firma": "c1b20b22949f040b",
   "msg": "1560779869497983097",
   "nombre": "PRADERAP VOL.1",
   "num": 479,
@@ -14591,7 +14591,7 @@
    "Panchok": 15
   },
   "fecha": "17/10",
-  "firma": "45e3e1c89cf2d341",
+  "firma": "4302f54a0b74d444",
   "msg": "1561153562665558208",
   "nombre": "MUNDIALITO",
   "num": 482,
@@ -17815,11 +17815,6 @@
    ],
    [
     "Oasis",
-    "PichulaMc",
-    "Oasis"
-   ],
-   [
-    "Oasis",
     "1200",
     "Oasis"
    ],
@@ -17841,11 +17836,6 @@
    [
     "Agus",
     "Kyss",
-    "Agus"
-   ],
-   [
-    "Agus",
-    "PichulaMc",
     "Agus"
    ],
    [
@@ -17917,7 +17907,7 @@
    "Velatz": 37
   },
   "fecha": "21/10",
-  "firma": "2adce653f587205e",
+  "firma": "1a370189aa6731d6",
   "msg": "1562578019472773131",
   "nombre": "__ DESGRACIAS EN TOKYO VOL 30 1 VS 1 __",
   "num": 494,
@@ -17967,11 +17957,6 @@
     "Colesito",
     "Cuartos",
     2500
-   ],
-   [
-    "PichulaMc",
-    "Octavos",
-    1875
    ],
    [
     "SULTAN",
@@ -22721,7 +22706,7 @@
    "doble h": 2
   },
   "fecha": "25/10",
-  "firma": "474947df3f00c6b1",
+  "firma": "671e0c5143b7853f",
   "msg": "1564072873163890759",
   "nombre": "__ AGUANTE EL ROJO Y EL BARCELONA Multiverse __",
   "num": 516,
@@ -23294,7 +23279,7 @@
    "Vandu": 34
   },
   "fecha": "25/10",
-  "firma": "896195e067058743",
+  "firma": "2f154e2afb8a0b0d",
   "msg": "1564145050185891903",
   "nombre": "CHILL",
   "num": 518,
@@ -23869,7 +23854,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "1a94a804ba350d6c",
+  "firma": "3cc10f661020c237",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -24451,7 +24436,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "b411abefb3623307",
+  "firma": "c3a030e7a500b9ae",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -26875,7 +26860,7 @@
    "Teo": 17
   },
   "fecha": "27/10",
-  "firma": "88c45925aeaa414a",
+  "firma": "24448c72879b769f",
   "msg": "1564804334967980113",
   "nombre": "PRADERAP VOL.2",
   "num": 535,
@@ -27991,7 +27976,7 @@
    "mats": 3
   },
   "fecha": "27/10",
-  "firma": "78ca570fd5fd3764",
+  "firma": "6e8a928b71ce22f4",
   "msg": "1564844210035757187",
   "nombre": "__ QCYO RAPEEN 5 __",
   "num": 539,
@@ -29990,7 +29975,7 @@
    "Teo": 18
   },
   "fecha": "30/10",
-  "firma": "6f33c17d69893647",
+  "firma": "2431c54a2c2db805",
   "msg": "1565861597019111555",
   "nombre": "__ LA ISLA DE OKINAWA V.4 __",
   "num": 547,
@@ -31499,7 +31484,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "34a8a8fd52b9727d",
+  "firma": "b35d67c68aadbe4e",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -32444,6 +32429,7 @@
   "v": 2
  },
  "558": {
+  "al_dia": true,
   "antes": {
    "AFR": [
     184,
@@ -32643,7 +32629,7 @@
    "Zignos": 27
   },
   "fecha": "01/11",
-  "firma": "6a62841d043e79b7",
+  "firma": "51457028d492f780",
   "msg": "1566645439611011152",
   "nombre": "__ COCINE FIDEOS __",
   "num": 558,

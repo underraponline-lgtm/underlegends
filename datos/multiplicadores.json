@@ -931,21 +931,21 @@
     "gente": {
      "FDS": 24,
      "DDF": 49,
-     "FFA": 139,
+     "FFA": 138,
      "FRZ": 15,
      "ACAD": 16,
      "URBF": 15,
      "SR": 16,
      "LKR": 16
     },
-    "gana": "FRZ"
+    "gana": "FFA"
    },
    "meta_va": {
     "ACAD": 16,
     "DDF": 49,
     "DRA": 0,
     "FDS": 24,
-    "FFA": 139,
+    "FFA": 138,
     "FFS": 0,
     "FRZ": 15,
     "FVS": 0,
