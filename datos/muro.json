@@ -655,7 +655,8 @@
 "rg": "",
 "c": [
 "competitivo",
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "leonart": {
@@ -1100,7 +1101,8 @@
 "rbk": {
 "rg": "",
 "c": [
-"servidor"
+"servidor",
+"temporada"
 ]
 },
 "marto": {
@@ -2675,22 +2677,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T05:00:45Z",
-"quien": [
-"NXUZ"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T05:00:45Z",
-"quien": [
-"NXUZ"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-04T16:25:45Z",
@@ -6033,6 +6019,22 @@
 "MaYeuTyK"
 ],
 "carta": "competitivo"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-02T01:11:00Z",
+"quien": [
+"LAST"
+],
+"carta": "temporada"
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-02T01:11:00Z",
+"quien": [
+"Rbk"
+],
+"carta": "temporada"
 }
 ]
 }

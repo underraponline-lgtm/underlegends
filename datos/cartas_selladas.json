@@ -474,8 +474,8 @@
    "servidor": "287c5cc58f74:decaf64d9256:80c07f"
   },
   "Filozico": {
-   "competitivo": "13b3f9700f07:7d41d0503ea2",
-   "pais": "6320e8712b4f:ada55a12db94",
+   "competitivo": "f2d8684262e8:7d41d0503ea2",
+   "pais": "4d6813dadfbe:ada55a12db94",
    "servidor": "8266f1dcabf9:decaf64d9256:abdb4a",
    "temporada": "c79c899015c5:ccd09f762e04"
   },
@@ -853,9 +853,10 @@
   },
   "L": {},
   "LAST": {
-   "competitivo": "270751ab8353:7d41d0503ea2",
+   "competitivo": "53be7e881ef0:7d41d0503ea2",
    "pais": "0ac006abeb3b:ada55a12db94",
-   "servidor": "c5ecee872c2c:decaf64d9256:88f477"
+   "servidor": "c5ecee872c2c:decaf64d9256:88f477",
+   "temporada": "4ca0144f489a:ccd09f762e04"
   },
   "LEWITO": {
    "competitivo": "4486192ca5eb:7d41d0503ea2",
@@ -1054,18 +1055,18 @@
    "temporada": "edf3d63311f1:ccd09f762e04"
   },
   "Mathhias": {
-   "competitivo": "dc87e2f3974e:7d41d0503ea2",
-   "pais": "fe848ee8a23c:ada55a12db94",
-   "servidor": "531708c36400:decaf64d9256:ce9c52",
-   "temporada": "486e86871385:ccd09f762e04"
+   "competitivo": "7719fac20720:7d41d0503ea2",
+   "pais": "b400a731316a:ada55a12db94",
+   "servidor": "5868f2fed486:decaf64d9256:ce9c52",
+   "temporada": "4937d35b0a26:ccd09f762e04"
   },
   "MathiasMC": {
    "servidor": "d0bfb45e3b88:decaf64d9256:9d9b02"
   },
   "Matias": {
-   "competitivo": "62cd1383538c:7d41d0503ea2",
-   "pais": "e2b295f0a61b:ada55a12db94",
-   "servidor": "18c7d49be24f:decaf64d9256:86e978",
+   "competitivo": "c924664f0c19:7d41d0503ea2",
+   "pais": "f66f274b8e41:ada55a12db94",
+   "servidor": "f46467d2dd54:decaf64d9256:86e978",
    "temporada": "16bc97d5367e:ccd09f762e04"
   },
   "Matriz": {
@@ -1969,5 +1970,5 @@
    "servidor": "7f8885a35a6d:decaf64d9256:93a344"
   }
  },
- "cuando": "2026-11-02T00:52:40+00:00"
+ "cuando": "2026-11-02T01:10:01+00:00"
 }
