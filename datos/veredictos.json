@@ -2,39 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1564111949933838377": {
-   "id": "1564111949933838377",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1792983748659,
-   "a": "DEKO",
-   "b": "PRODIGY",
-   "ganador": "PRODIGY",
-   "votos": "1–0"
-  },
-  "1564115088367943792": {
-   "id": "1564115088367943792",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1792984496920,
-   "a": "GIAN PARK JI SUNG",
-   "b": "SIX",
-   "ganador": "GIAN PARK JI SUNG",
-   "votos": "1–0"
-  },
-  "1564117122903449742": {
-   "id": "1564117122903449742",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1792984981991,
-   "a": "LEWITO",
-   "b": "ERIZO",
-   "ganador": "LEWITO",
-   "votos": "1–0"
-  },
   "1564118984725635203": {
    "id": "1564118984725635203",
    "sv": "[FFA] Freestyle For All 👾",
