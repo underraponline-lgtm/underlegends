@@ -3203,6 +3203,25 @@
    "escribio": {
     "quien": "RAP PARA RAPEROS · FFA · 02/11 · ChozaDeChops🇭🇳"
    }
+  },
+  {
+   "id": "6665281d89",
+   "tipo": "Alias posible",
+   "sec": "🪪 Identidad",
+   "que": "¿«ChozaDeChops» es Chop? La cuenta de Chop en la Lista se anotó como «ChozaDeChops», y en el ranking suman aparte. Si es la misma persona, los puntos de «ChozaDeChops» pasan a Chop.\nLa cuenta: https://discord.com/users/1364747464170668042",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no hace falta: «ChozaDeChops» ya no suma aparte en el ranking",
+   "t": 1793606455637,
+   "filas": [
+    1022
+   ],
+   "variantes": [
+    "DOS NOMBRES: «ChozaDeChops» → «Chop» · cuenta 1364747464170668042"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

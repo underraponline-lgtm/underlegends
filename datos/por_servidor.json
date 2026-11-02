@@ -1693,12 +1693,12 @@
     }
    },
    "FFA": {
-    "duelos": "0/3",
-    "ev": 13,
+    "duelos": "1/5",
+    "ev": 14,
     "oro": 0,
-    "ovr": 50,
+    "ovr": 52,
     "pod": 0,
-    "pts": 35562,
+    "pts": 44562,
     "racha": "0/1"
    },
    "LKR": {
@@ -1722,20 +1722,6 @@
     "pod": 0,
     "pts": 6250,
     "racha": "0/0"
-   }
-  },
-  "ChozaDeChops🇭🇳": {
-   "FFA": {
-    "duelos": "1/2",
-    "ev": 1,
-    "oro": 0,
-    "ovr": 44,
-    "pod": 0,
-    "pts": 9000,
-    "racha": "0/0",
-    "tg": {
-     "nuevo": true
-    }
    }
   },
   "Chuwin": {

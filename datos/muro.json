@@ -328,6 +328,10 @@
 "rg": "C",
 "c": []
 },
+"chop": {
+"rg": "D",
+"c": []
+},
 "lordviruzz": {
 "rg": "C",
 "c": [
@@ -336,10 +340,6 @@
 "servidor",
 "temporada"
 ]
-},
-"chop": {
-"rg": "D",
-"c": []
 },
 "drexx": {
 "rg": "C",
@@ -370,6 +370,10 @@
 "rg": "D",
 "c": []
 },
+"andres": {
+"rg": "B",
+"c": []
+},
 "trot": {
 "rg": "D",
 "c": [
@@ -378,10 +382,6 @@
 "servidor",
 "temporada"
 ]
-},
-"andres": {
-"rg": "B",
-"c": []
 },
 "dyzz": {
 "rg": "E",
@@ -680,6 +680,13 @@
 "temporada"
 ]
 },
+"mats": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "luck": {
 "rg": "",
 "c": [
@@ -690,13 +697,6 @@
 "emizor": {
 "rg": "D",
 "c": []
-},
-"mats": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "mathhias": {
 "rg": "",
