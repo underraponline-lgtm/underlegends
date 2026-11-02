@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-02T19:25:47+00:00",
+ "cuando": "2026-11-02T19:55:13+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5162,31 +5162,6 @@
    "categoria_id": "1309234419525222477"
   },
   {
-   "nombre": "RED BULL CREW",
-   "servidor": "ACAD",
-   "canal": "🥇┇torneos",
-   "msg_id": "1565812411036868800",
-   "cuando": "2026-10-30T19:39:30",
-   "canal_id": "1309243940448243856",
-   "guild_id": "765045834647339038",
-   "organizador": "",
-   "orgs": [],
-   "autor_h": "33b8d394b34980ad",
-   "cupos_texto": "",
-   "inscriptos": null,
-   "cupo_total": null,
-   "rango": "",
-   "modalidad": "",
-   "horario": "",
-   "fecha": "SÁBADO 7 DE NOVIEMBRE",
-   "premios": "",
-   "staff": {},
-   "autor": "Leonar-T",
-   "staff_cuentas": {},
-   "de_imagen": true,
-   "categoria_id": "1309234419525222477"
-  },
-  {
    "nombre": "PRADERAP VOL.2",
    "servidor": "ACAD",
    "canal": "🥇┇torneos",
@@ -5918,6 +5893,15 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Nxuz",
+   "quien": "elinzano1009",
+   "discord_id": "1089661639508377630",
+   "msg_id": "1566901405804134421",
+   "cuando": "2026-11-02T19:46:46"
+  },
   {
    "servidor": "DDF",
    "canal": "『📑』Inscripciones",
@@ -41908,15 +41892,6 @@
    "discord_id": "1439048698142134436",
    "msg_id": "1554984573060784189",
    "cuando": "2026-09-30T22:33:32"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Teito🇨🇴+dominick🇵🇪",
-   "quien": "teitomc.",
-   "discord_id": "1503540314948898937",
-   "msg_id": "1554984541721075743",
-   "cuando": "2026-09-30T22:33:24"
   }
  ]
 }

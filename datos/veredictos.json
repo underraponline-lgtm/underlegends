@@ -5835,8 +5835,8 @@
    "g": "1469009547971526659",
    "canal": "1498009509036163173",
    "pub": 1793646090278,
-   "ed": 1793647373377,
-   "texto": "`[ CUARTOS ]`\n⌞DESIO⌝ 🆚 ⌞AM⌝\n⌞AM⌝ 🆚 ⌞DESIO⌝\n⌞MAKMAH⌝ 🆚 ⌞BOOTRAX⌝\n⌞XCLUSIBA⌝ 🆚 ⌞MARKITOSTOYS⌝ 🆚 ⌞PROBLEMA MIA(VOGL)⌝\n⌞EVANGELINNE⌝ 🆚 ⌞DOMINICK⌝",
+   "ed": 1793648410297,
+   "texto": "`[ CUARTOS ]`\n⌞DESIO⌝ 🆚 ⌞AM⌝\n⌞AM⌝ 🆚 ⌞DESIO⌝\n⌞MAKMAH⌝ 🆚 ⌞BOOTRAX⌝\n⌞XCLUSIBA⌝ 🆚 ⌞MARKITOSTOYS⌝ 🆚 ⌞PROBLEMA MIA(VOGL)⌝\n⌞EVANGELINNE⌝ 🆚 ⌞DOMINICK⌝\n⌞EVANGELINE⌝ 🆚 ⌞MAKMAH⌝\n⌞XCLUSIVO⌝ 🆚 ⌞AM⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5884,6 +5884,26 @@
      [
       "EVANGELINNE",
       "DOMINICK"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "EVANGELINE",
+      "MAKMAH"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "CUARTOS",
+     [
+      "XCLUSIVO",
+      "AM"
      ],
      null,
      "última ronda y no dice campeón",
