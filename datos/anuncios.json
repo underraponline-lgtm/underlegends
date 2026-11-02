@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-02T18:25:35+00:00",
+ "cuando": "2026-11-02T18:55:19+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -4648,6 +4648,50 @@
    "categoria_id": "1373343272482902127"
   },
   {
+   "nombre": "GALACTICOS DEL FREESTYLE VOL.15",
+   "servidor": "DDF",
+   "canal": "『📢』Eventos",
+   "msg_id": "1566883982123991051",
+   "cuando": "2026-11-02T18:37:32",
+   "canal_id": "1470097121284980736",
+   "guild_id": "1469009547971526659",
+   "organizador": "",
+   "orgs": [
+    {
+     "n": "John pork",
+     "id": "1316490165836972104"
+    }
+   ],
+   "autor_h": "0f624d80ff313923",
+   "cupos_texto": "INDEFINIDOS",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "1V1",
+   "horario": "YAAAA",
+   "fecha": "AHORIIITA",
+   "premios": "SALON DE LA FAMA DE GDF",
+   "staff": {
+    "jurado": [
+     "John pork"
+    ],
+    "host": [
+     "John pork"
+    ],
+    "dj": [
+     "Bootrax Humilde"
+    ]
+   },
+   "autor": "John pork",
+   "staff_cuentas": {
+    "John pork": "1316490165836972104",
+    "Bootrax Humilde": "1122273746099638354"
+   },
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-02T18:38:05"
+  },
+  {
    "nombre": "19 CUP COMPE EXPRESS",
    "servidor": "DDF",
    "canal": "『📢』Eventos",
@@ -4669,7 +4713,9 @@
    "staff": {},
    "autor": "₁₉",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-02T18:38:05"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.13",
@@ -4710,7 +4756,9 @@
    "staff_cuentas": {
     "John pork": "1316490165836972104"
    },
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-02T18:38:05"
   },
   {
    "nombre": "GALACTICOS DEL FREESTYLE VOL.12",
@@ -4751,7 +4799,9 @@
    "staff_cuentas": {
     "John pork": "1316490165836972104"
    },
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-02T18:38:05"
   },
   {
    "nombre": "EL CAMINO DEL MONJE V.2",
@@ -4775,7 +4825,9 @@
    "staff": {},
    "autor": "Drexx",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-02T18:38:05"
   },
   {
    "nombre": "ZONA MORTAL",
@@ -4799,7 +4851,9 @@
    "staff": {},
    "autor": "KEIDER",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-02T18:38:05"
   },
   {
    "nombre": "ROUSS CUP #1",
@@ -4823,7 +4877,9 @@
    "staff": {},
    "autor": "Evan†geline",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-02T18:38:05"
   },
   {
    "nombre": "GRISELDA RECORDS VOL. 6",
@@ -4847,7 +4903,9 @@
    "staff": {},
    "autor": "Lizeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-02T18:38:05"
   },
   {
    "nombre": "GRISELDA RECORDS VOL. 5",
@@ -4871,7 +4929,9 @@
    "staff": {},
    "autor": "Lizeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-02T18:38:05"
   },
   {
    "nombre": "GRISELDA RECORDS VOL. 5",
@@ -4895,7 +4955,9 @@
    "staff": {},
    "autor": "Lizeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-02T18:38:05"
   },
   {
    "nombre": "GRISELDA RECORDS VOL. 4",
@@ -4919,7 +4981,9 @@
    "staff": {},
    "autor": "Lizeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-02T18:38:05"
   },
   {
    "nombre": "GRISELDA RECORDS VOL. 3",
@@ -4943,7 +5007,9 @@
    "staff": {},
    "autor": "Lizeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-02T18:38:05"
   },
   {
    "nombre": "GRISELDA RECORDS VOL. 2",
@@ -4967,7 +5033,9 @@
    "staff": {},
    "autor": "Lizeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-02T18:38:05"
   },
   {
    "nombre": "ZONA MORTAL",
@@ -4991,7 +5059,9 @@
    "staff": {},
    "autor": "KEIDER",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-02T18:38:05"
   },
   {
    "nombre": "GRISELDA RECORDS",
@@ -5015,7 +5085,9 @@
    "staff": {},
    "autor": "Lizeninn",
    "staff_cuentas": {},
-   "categoria_id": "1469944166137073857"
+   "categoria_id": "1469944166137073857",
+   "inscripciones": "abiertas",
+   "inscripciones_cuando": "2026-11-02T18:38:05"
   },
   {
    "nombre": "FAT BATTLES PALOOZA T.3 FECHA 4 🏆 ( DOMINGO - MAÑANA )",
@@ -5846,6 +5918,114 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "19",
+   "quien": "19_vz1",
+   "discord_id": "1345454905325781012",
+   "msg_id": "1566887923414990859",
+   "cuando": "2026-11-02T18:53:12"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Number 🇻🇪🇸🇦🇫🇷",
+   "quien": "pepinilloricksinho",
+   "discord_id": "1366112483391176776",
+   "msg_id": "1566887666782441515",
+   "cuando": "2026-11-02T18:52:11"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "sadasdassdasdasdsadsadasdasdasd🇺🇾",
+   "quien": "martinez4080",
+   "discord_id": "756958777126682674",
+   "msg_id": "1566886952442269730",
+   "cuando": "2026-11-02T18:49:20"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Stan🇨🇱",
+   "quien": "algoritmokrt",
+   "discord_id": "1359316127901024357",
+   "msg_id": "1566886854517727454",
+   "cuando": "2026-11-02T18:48:57"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Desio 🇨🇴",
+   "quien": "desio_3",
+   "discord_id": "1179906216567250950",
+   "msg_id": "1566886623008923809",
+   "cuando": "2026-11-02T18:48:02"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "AM 🇬🇹",
+   "quien": "jirafa02",
+   "discord_id": "752763980077858829",
+   "msg_id": "1566884603224915990",
+   "cuando": "2026-11-02T18:40:00"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Penepenez🇵🇪",
+   "quien": "equisde_xd23",
+   "discord_id": "1439048698142134436",
+   "msg_id": "1566884235111829525",
+   "cuando": "2026-11-02T18:38:32"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Volg 🇵🇦",
+   "quien": "rodaaa_mc",
+   "discord_id": "1492592375812587551",
+   "msg_id": "1566884176433647767",
+   "cuando": "2026-11-02T18:38:18"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "asuka langley soryu🇪🇸",
+   "quien": "marcosq_14",
+   "discord_id": "1294600140815990858",
+   "msg_id": "1566884144850669750",
+   "cuando": "2026-11-02T18:38:11"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Bootrax humilde🇵🇪",
+   "quien": "gianfraxruizescor11",
+   "discord_id": "1122273746099638354",
+   "msg_id": "1566884141910466571",
+   "cuando": "2026-11-02T18:38:10"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "makmah 🇻🇪",
+   "quien": "makmah_g",
+   "discord_id": "897942226955563068",
+   "msg_id": "1566884127016362117",
+   "cuando": "2026-11-02T18:38:07"
+  },
+  {
+   "servidor": "DDF",
+   "canal": "『📑』Inscripciones",
+   "texto": "Evangeline🇧🇴",
+   "quien": "vibesfly7",
+   "discord_id": "552121423804628995",
+   "msg_id": "1566884125594492939",
+   "cuando": "2026-11-02T18:38:06"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -41737,114 +41917,6 @@
    "discord_id": "1503540314948898937",
    "msg_id": "1554984541721075743",
    "cuando": "2026-09-30T22:33:24"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Paria🇦🇷",
-   "quien": "elconocimientoeslibertad",
-   "discord_id": "1286348537499488299",
-   "msg_id": "1554984201248579737",
-   "cuando": "2026-09-30T22:32:03"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "nc+gocho🇮🇶🇮🇶",
-   "quien": "nachonc_",
-   "discord_id": "1523082259870257315",
-   "msg_id": "1554984081421373442",
-   "cuando": "2026-09-30T22:31:35"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "elsoolar🇨🇴  con no c",
-   "quien": "elsoolar",
-   "discord_id": "758073934645297262",
-   "msg_id": "1554983863237746759",
-   "cuando": "2026-09-30T22:30:43"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Geoka 🇦🇷 + paria 🇦🇷",
-   "quien": "goksito_8",
-   "discord_id": "1325042155819106324",
-   "msg_id": "1554983802559012895",
-   "cuando": "2026-09-30T22:30:28"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "snow🇨🇴  yinn🇲🇦 ( primera )",
-   "quien": "snowzzzzzzzz",
-   "discord_id": "1097714486795849748",
-   "msg_id": "1554983505388376115",
-   "cuando": "2026-09-30T22:29:17"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Elpibeosiris🇦🇷",
-   "quien": "elpibeosiris2001",
-   "discord_id": "1551401043152343183",
-   "msg_id": "1554983275074822206",
-   "cuando": "2026-09-30T22:28:22"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Pichulamc 🇦🇷 <@979878316846768139>  🇵🇱",
-   "quien": "dariel.ivo",
-   "discord_id": "578697503130779649",
-   "msg_id": "1554983228626964561",
-   "cuando": "2026-09-30T22:28:11"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Yo + mnzana 🇨🇱",
-   "quien": "cronoxzito",
-   "discord_id": "1487658663148785734",
-   "msg_id": "1554983225737216132",
-   "cuando": "2026-09-30T22:28:11"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Teito🇨🇴",
-   "quien": "teitomc.",
-   "discord_id": "1503540314948898937",
-   "msg_id": "1554983167583191051",
-   "cuando": "2026-09-30T22:27:57"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "Teito 🇨🇴",
-   "quien": "teitomc.",
-   "discord_id": "1503540314948898937",
-   "msg_id": "1554941408601710643",
-   "cuando": "2026-09-30T19:42:01"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "MHS🇦🇷",
-   "quien": "elmatyy29",
-   "discord_id": "1548112739770040372",
-   "msg_id": "1554940521095364739",
-   "cuando": "2026-09-30T19:38:29"
-  },
-  {
-   "servidor": "URBF",
-   "canal": "《📑》Inscripciones",
-   "texto": "motera",
-   "quien": "hbrsg_",
-   "discord_id": "885365894606381068",
-   "msg_id": "1554938149010931865",
-   "cuando": "2026-09-30T19:29:04"
   }
  ]
 }

@@ -7665,6 +7665,33 @@
      "cuentas": {
       "Okam": "1512148565890306153"
      }
+    },
+    "1566883982123991051": {
+     "sv": "DDF",
+     "nombre": "GALACTICOS DEL FREESTYLE VOL.15",
+     "mo": "2026-11-02T18:37:32Z",
+     "staff": {
+      "jurado": [
+       "John pork"
+      ],
+      "host": [
+       "John pork"
+      ],
+      "dj": [
+       "Bootrax Humilde"
+      ]
+     },
+     "orgs": [
+      {
+       "n": "John pork",
+       "id": "1316490165836972104"
+      }
+     ],
+     "organizador": "",
+     "cuentas": {
+      "John pork": "1316490165836972104",
+      "Bootrax Humilde": "1122273746099638354"
+     }
     }
    },
    "ver": {
