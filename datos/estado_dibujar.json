@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-11-02T07:12:40Z",
+ "cuando": "2026-11-02T07:57:23Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 563.8,
+ "dur_s": 1367.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.1
+   "s": 6.0
   },
   {
    "n": "2f2",
@@ -21,70 +21,78 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 6.9
+   "s": 9.7
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 19.5
+   "s": 20.9
   },
   {
    "n": "5",
-   "que": "tanda 1 de 3 · 40 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": false,
-   "s": 469.8
+   "s": 1264.5
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.6
+   "s": 10.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 54.3
+   "s": 54.6
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Artezzy"
+   "que": "03_Servidor/generar.py ARDEAN"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py MTZ"
+   "que": "03_Servidor/generar.py Jupiter"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Mcarita"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Rubik"
   }
  ],
  "ultimo_evento": {
-  "n": "559",
-  "nombre": "LA PALERA DEL KACHUM",
+  "n": "560",
+  "nombre": "RAP PARA RAPEROS",
   "sv": "FFA",
   "dia": "2026-11-02"
  },
  "cuotas": {
   "kv": {
-   "write": 284,
-   "read": 26078
+   "write": 308,
+   "read": 27945
   },
   "objeto": {
-   "leidas": 1619883,
-   "escritas": 15286,
-   "pedidos": 3460
+   "leidas": 1858472,
+   "escritas": 16840,
+   "pedidos": 3884
   },
   "worker": {
-   "pedidos": 7963,
+   "pedidos": 7979,
    "errores": 1,
-   "sub": 9453,
+   "sub": 9483,
    "cortados": 1,
    "p50_ms": 1.24,
    "p99_ms": 11.87,
    "cpu": {
-    "total": 17363,
-    "objeto_10": 1753,
-    "worker_10": 176
+    "total": 17419,
+    "objeto_10": 1746,
+    "worker_10": 174
    }
   },
   "r2": {
