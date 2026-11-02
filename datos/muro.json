@@ -257,6 +257,10 @@
 "temporada"
 ]
 },
+"xclusivo": {
+"rg": "C",
+"c": []
+},
 "bloody": {
 "rg": "C",
 "c": [
@@ -293,10 +297,6 @@
 "temporada"
 ]
 },
-"xclusivo": {
-"rg": "C",
-"c": []
-},
 "polosport": {
 "rg": "C",
 "c": [
@@ -329,6 +329,10 @@
 ]
 },
 "chop": {
+"rg": "D",
+"c": []
+},
+"dominick": {
 "rg": "D",
 "c": []
 },
@@ -374,10 +378,6 @@
 "servidor",
 "temporada"
 ]
-},
-"dominick": {
-"rg": "D",
-"c": []
 },
 "andres": {
 "rg": "B",
@@ -786,13 +786,6 @@
 "rg": "",
 "c": []
 },
-"mcarepa": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "vilca": {
 "rg": "",
 "c": [
@@ -838,6 +831,13 @@
 "rg": "",
 "c": []
 },
+"mcarepa": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "juasmio": {
 "rg": "",
 "c": [
@@ -846,21 +846,7 @@
 "temporada"
 ]
 },
-"mtz": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "prosu": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
-"carlosmo": {
 "rg": "",
 "c": [
 "servidor",
@@ -887,6 +873,13 @@
 "rg": "",
 "c": [
 "servidor"
+]
+},
+"mtz": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
 ]
 },
 "gus": {
@@ -935,6 +928,20 @@
 "temporada"
 ]
 },
+"marcos": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"carlosmo": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "juanpa": {
 "rg": "",
 "c": [
@@ -965,10 +972,6 @@
 "c": []
 },
 "assuan": {
-"rg": "",
-"c": []
-},
-"pomberito": {
 "rg": "",
 "c": []
 },
@@ -1034,13 +1037,6 @@
 "rg": "",
 "c": []
 },
-"marcos": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
-},
 "santi": {
 "rg": "",
 "c": []
@@ -1053,6 +1049,10 @@
 ]
 },
 "ikonoxx": {
+"rg": "",
+"c": []
+},
+"pomberito": {
 "rg": "",
 "c": []
 },
@@ -1126,6 +1126,13 @@
 "rg": "",
 "c": []
 },
+"krtman": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
 "rbk": {
 "rg": "",
 "c": [
@@ -1141,16 +1148,16 @@
 "rg": "",
 "c": []
 },
+"evangeline-pe": {
+"rg": "",
+"c": []
+},
 "prodigy": {
 "rg": "",
 "c": [
 "servidor",
 "temporada"
 ]
-},
-"evangeline-pe": {
-"rg": "",
-"c": []
 },
 "francis": {
 "rg": "",
@@ -1279,13 +1286,6 @@
 "warap": {
 "rg": "",
 "c": []
-},
-"krtman": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "saiko": {
 "rg": "",

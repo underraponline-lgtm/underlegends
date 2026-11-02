@@ -2,75 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "33deab39ff",
-   "tipo": "Nombre desconocido",
-   "sec": "FREESTYLE LEAGUE N3 · FFA · 19/10 · #488",
-   "que": "¿Quién es «J19 🇨🇷»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1401047963853389965",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1401047963853389965)",
-   "t": 1792424088334,
-   "filas": [
-    752
-   ],
-   "variantes": [
-    "J19 🇨🇷"
-   ],
-   "escribio": {
-    "alta": [
-     "J19",
-     "1401047963853389965"
-    ]
-   }
-  },
-  {
-   "id": "bf2ff1fe92",
-   "tipo": "Nombre desconocido",
-   "sec": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2 · FFA · 19/10 · #489",
-   "que": "¿Quién es «matacuak🇵🇪»?",
-   "r": "Es Andy (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @andy._.2321 · en la Lista: Andy se anotó como «matacuak» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1792440173084,
-   "filas": [
-    757
-   ],
-   "variantes": [
-    "matacuak🇵🇪"
-   ],
-   "escribio": {
-    "quien": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2 · FFA · 19/10 · matacuak🇵🇪"
-   }
-  },
-  {
-   "id": "58e89cb132",
-   "tipo": "Nombre desconocido",
-   "sec": "ME QUISIERA MORIR PERO NO MULTIVERSE VOL.2 · FFA · 19/10 · #489",
-   "que": "¿Quién es «Kwl🇳🇮»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1506335168699301939",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1506335168699301939)",
-   "t": 1792440173084,
-   "filas": [
-    756
-   ],
-   "variantes": [
-    "Kwl🇳🇮"
-   ],
-   "escribio": {
-    "alta": [
-     "Kwl",
-     "1506335168699301939"
-    ]
-   }
-  },
-  {
    "id": "ac261e254f",
    "tipo": "Nombre desconocido",
    "sec": "LA REDENCIÓN · FFA · 19/10 · #490",
@@ -3220,6 +3151,25 @@
    ],
    "variantes": [
     "DOS NOMBRES: «ChozaDeChops» → «Chop» · cuenta 1364747464170668042"
+   ],
+   "escribio": {}
+  },
+  {
+   "id": "9ad75ff64a",
+   "tipo": "Nombre desconocido",
+   "sec": "GALACTICOS DEL FREESTYLE VOL.15 · DDF · 02/11 · #561",
+   "que": "¿Quién es «MOMENTO DE LA NOCHE: AM»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1793651599127,
+   "filas": [
+    1024
+   ],
+   "variantes": [
+    "MOMENTO DE LA NOCHE: AM"
    ],
    "escribio": {}
   }

@@ -1451,9 +1451,19 @@
     "📆 HABITUÉ",
     "t1",
     1793029252929
+   ],
+   "🧱 FUNDADOR": [
+    "🧱 FUNDADOR",
+    "t1",
+    1793651614877
    ]
   },
   "temporada": {
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1793651614877
+   ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
     "t1",
@@ -5878,6 +5888,13 @@
   }
  },
  "marcos": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1793651614877
+   ]
+  },
   "temporada": {
    "📈 EN ASCENSO": [
     "📈 EN ASCENSO",
@@ -11900,6 +11917,11 @@
    ]
   },
   "temporada": {
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1793651614877
+   ],
    "🏁 SEMIFINALISTA SERIAL": [
     "🏁 SEMIFINALISTA SERIAL",
     "t1",
@@ -11911,7 +11933,7 @@
     1792953978519
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x1",
+    "👑 CAMPEÓN x2",
     "t1",
     1793390603259
    ],

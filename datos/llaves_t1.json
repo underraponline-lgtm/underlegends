@@ -41432,5 +41432,158 @@
     2000
    ]
   ]
+ },
+ "561": {
+  "dia": "2026-11-02",
+  "escala": "8-15",
+  "fecha": "02/11",
+  "links": [
+   "https://discord.com/channels/1469009547971526659/1470097588635176960/1566887426096504944"
+  ],
+  "n": 561,
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.15",
+  "participantes": 12,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Evangeline🇵🇪",
+       "Dominick",
+       "Krtman"
+      ],
+      "Evangeline🇵🇪",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Makmah",
+       "BTRX",
+       "Number VE"
+      ],
+      "Makmah",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Xclusivo",
+       "Volg 🇵🇦",
+       "Marcos"
+      ],
+      "Xclusivo",
+      "triple (3 bandas)"
+     ],
+     [
+      [
+       "Am",
+       "Desio"
+      ],
+      "Am",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Makmah",
+       "Evangeline🇵🇪"
+      ],
+      "Makmah",
+      ""
+     ],
+     [
+      [
+       "Xclusivo",
+       "Am"
+      ],
+      "Xclusivo",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Xclusivo",
+       "Makmah"
+      ],
+      "Xclusivo",
+      ""
+     ],
+     [
+      [
+       "Xclusivo",
+       "MOMENTO DE LA NOCHE: AM"
+      ],
+      "Xclusivo",
+      "Walk-in 2: MOMENTO DE LA NOCHE: AM"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "DDF",
+  "tabla": [
+   [
+    "Xclusivo",
+    "Campeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Am",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Evangeline🇵🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "BTRX",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Desio",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Krtman",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Marcos",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Volg 🇵🇦",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

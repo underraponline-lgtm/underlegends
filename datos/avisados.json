@@ -33094,5 +33094,186 @@
    ]
   ],
   "v": 2
+ },
+ "561": {
+  "antes": {
+   "BTRX": [
+    240,
+    66,
+    true
+   ],
+   "Desio": [
+    382,
+    321,
+    true
+   ],
+   "Dominick": [
+    231,
+    48,
+    true
+   ],
+   "Krtman": [
+    124,
+    196,
+    false
+   ],
+   "Makmah": [
+    1,
+    1,
+    false
+   ],
+   "Marcos": [
+    107,
+    147,
+    false
+   ],
+   "Number VE": [
+    79,
+    104,
+    false
+   ],
+   "Xclusivo": [
+    228,
+    37,
+    true
+   ]
+  },
+  "canal": "1566326935058124832",
+  "duelos": [
+   [
+    "Evangeline🇵🇪",
+    "Dominick",
+    "Evangeline🇵🇪"
+   ],
+   [
+    "Evangeline🇵🇪",
+    "Krtman",
+    "Evangeline🇵🇪"
+   ],
+   [
+    "Makmah",
+    "BTRX",
+    "Makmah"
+   ],
+   [
+    "Makmah",
+    "Number VE",
+    "Makmah"
+   ],
+   [
+    "Xclusivo",
+    "Volg 🇵🇦",
+    "Xclusivo"
+   ],
+   [
+    "Xclusivo",
+    "Marcos",
+    "Xclusivo"
+   ],
+   [
+    "Am",
+    "Desio",
+    "Am"
+   ],
+   [
+    "Makmah",
+    "Evangeline🇵🇪",
+    "Makmah"
+   ],
+   [
+    "Xclusivo",
+    "Am",
+    "Xclusivo"
+   ],
+   [
+    "Xclusivo",
+    "Makmah",
+    "Xclusivo"
+   ],
+   [
+    "Xclusivo",
+    "MOMENTO DE LA NOCHE: AM",
+    "Xclusivo"
+   ]
+  ],
+  "ev_antes": {
+   "BTRX": 13,
+   "Desio": 3,
+   "Dominick": 31,
+   "Krtman": 3,
+   "Makmah": 93,
+   "Marcos": 7,
+   "Number VE": 13,
+   "Xclusivo": 19
+  },
+  "fecha": "02/11",
+  "firma": "2210319025518fa6",
+  "msg": "1566909178818076723",
+  "nombre": "GALACTICOS DEL FREESTYLE VOL.15",
+  "num": 561,
+  "participantes": 12,
+  "sello": {
+   "Xclusivo": ""
+  },
+  "sv": "DDF",
+  "t": "2026-11-02T20:24:17Z",
+  "tabla": [
+   [
+    "Xclusivo",
+    "Campeón",
+    7500
+   ],
+   [
+    "Makmah",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "Evangeline🇵🇪",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Am",
+    "Semifinal",
+    3500
+   ],
+   [
+    "Dominick",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Krtman",
+    "Cuartos",
+    2000
+   ],
+   [
+    "BTRX",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Number VE",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Volg 🇵🇦",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Marcos",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Desio",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

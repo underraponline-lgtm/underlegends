@@ -2,7 +2,7 @@
  "_leeme": "El reto del debut (bot/debutantes.py): quién debutó desde el 12/10/2026 a las 6 PM ET, cuándo vence, si lo cumplió y qué ya se avisó. Dlx, 12/10/2026.",
  "chats": {
   "ACAD": "2026-10-31",
-  "DDF": "2026-10-31",
+  "DDF": "2026-11-02",
   "FDS": "2026-10-30",
   "FFA": "2026-11-02",
   "FRZ": "2026-10-27",
@@ -127,6 +127,19 @@
    "n": 547,
    "sv": "FFA",
    "vence": "2026-11-06T20:59:18+00:00",
+   "vencido": false
+  },
+  "Am": {
+   "avisado": "2026-11-02",
+   "chat": "2026-11-02",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-02T18:51:13+00:00",
+   "did": "752763980077858829",
+   "evento": "GALACTICOS DEL FREESTYLE VOL.15",
+   "n": 561,
+   "sv": "DDF",
+   "vence": "2026-11-09T18:51:13+00:00",
    "vencido": false
   },
   "Andresito": {
@@ -449,6 +462,7 @@
    "vencido": false
   },
   "El novio de tu novia": {
+   "avisado": "2026-11-02",
    "chat": "2026-11-02",
    "con": null,
    "cumplido": "",
@@ -970,6 +984,7 @@
   },
   "Lizen": {
    "avisado": "2026-10-31",
+   "avisado_cumplido": "2026-11-02",
    "chat": "2026-11-01",
    "con": 558,
    "cumplido": "2026-11-02T01:30:37+00:00",
@@ -1730,6 +1745,19 @@
    "n": 460,
    "sv": "SR",
    "vence": "2026-10-19T22:01:43+00:00",
+   "vencido": false
+  },
+  "Volg": {
+   "avisado": "2026-11-02",
+   "chat": "2026-11-02",
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-02T18:51:13+00:00",
+   "did": "",
+   "evento": "GALACTICOS DEL FREESTYLE VOL.15",
+   "n": 561,
+   "sv": "DDF",
+   "vence": "2026-11-09T18:51:13+00:00",
    "vencido": false
   },
   "Warap": {
