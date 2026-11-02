@@ -1,94 +1,98 @@
 {
  "v": 1,
- "cuando": "2026-11-02T05:42:34Z",
+ "cuando": "2026-11-02T06:20:07Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 571.5,
+ "dur_s": 915.2,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 8.3
+   "s": 5.8
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 0.9
+   "s": 0.6
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 8.5
+   "s": 5.4
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 19.8
+   "s": 15.8
   },
   {
    "n": "5",
-   "que": "tanda 1 de 3 · 40 persona(s)",
+   "que": "tanda 1 de 6 · 40 persona(s)",
    "ok": false,
-   "s": 469.8
+   "s": 821.9
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 5.6
+   "s": 7.9
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 57.5
+   "s": 56.7
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Artezzy"
+   "que": "03_Servidor/generar.py ARDEAN"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Guess"
+   "que": "03_Servidor/generar.py Jobaking"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py TøKīØ🦠🧠"
+   "que": "03_Servidor/generar.py Miniboy"
+  },
+  {
+   "paso": "5",
+   "que": "03_Servidor/generar.py Saturb"
   }
  ],
  "ultimo_evento": {
-  "n": "558",
-  "nombre": "COCINE FIDEOS",
+  "n": "559",
+  "nombre": "LA PALERA DEL KACHUM",
   "sv": "FFA",
-  "dia": "2026-11-01"
+  "dia": "2026-11-02"
  },
  "cuotas": {
   "kv": {
-   "write": 231,
-   "read": 21034
+   "write": 252,
+   "read": 22772
   },
   "objeto": {
-   "leidas": 1194276,
-   "escritas": 11727,
-   "pedidos": 2649
+   "leidas": 1354807,
+   "escritas": 13342,
+   "pedidos": 2960
   },
   "worker": {
-   "pedidos": 7955,
-   "errores": 0,
-   "sub": 9445,
-   "cortados": 0,
+   "pedidos": 7957,
+   "errores": 1,
+   "sub": 9452,
+   "cortados": 1,
    "p50_ms": 1.23,
    "p99_ms": 11.87,
    "cpu": {
-    "total": 17355,
-    "objeto_10": 1745,
-    "worker_10": 172
+    "total": 17370,
+    "objeto_10": 1752,
+    "worker_10": 177
    }
   },
   "r2": {
