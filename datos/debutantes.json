@@ -113,7 +113,7 @@
    "n": 517,
    "sv": "FFA",
    "vence": "2026-11-02T01:55:51+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Akuseru": {
    "avisado": "2026-10-30",
@@ -377,7 +377,7 @@
    "n": 517,
    "sv": "FFA",
    "vence": "2026-11-02T01:55:51+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Desu": {
    "avisado": "2026-10-20",
@@ -1808,7 +1808,7 @@
    "n": 517,
    "sv": "FFA",
    "vence": "2026-11-02T01:55:51+00:00",
-   "vencido": false
+   "vencido": true
   },
   "erpi": {
    "avisado": "2026-10-31",
@@ -1992,7 +1992,7 @@
    "n": 517,
    "sv": "FFA",
    "vence": "2026-11-02T01:55:51+00:00",
-   "vencido": false
+   "vencido": true
   },
   "xJuniorTime": {
    "avisado": "2026-10-31",

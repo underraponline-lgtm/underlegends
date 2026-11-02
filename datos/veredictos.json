@@ -5695,6 +5695,41 @@
      []
     ]
    ]
+  },
+  "1566627532865011807": {
+   "id": "1566627532865011807",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793583510367,
+   "ed": 1793583905046,
+   "texto": "`[ OCTAVOS ]`\n⌞GUS⌝ 🆚 ⌞MCO⌝ 🆚 ⌞VANDU⌝ 🆚 ⌞AFR⌝\n⌞EL NOVIO DE TU NOVIA⌝ 🆚 ⌞ESTRONCIO PY⌝ 🆚 ⌞SOUL B⌝ 🆚 ⌞AGUSTIN LA RELIQUIA⌝",
+   "batallas": [
+    [
+     "OCTAVOS",
+     [
+      "GUS",
+      "MCO",
+      "VANDU",
+      "AFR"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "OCTAVOS",
+     [
+      "EL NOVIO DE TU NOVIA",
+      "ESTRONCIO PY",
+      "SOUL B",
+      "AGUSTIN LA RELIQUIA"
+     ],
+     null,
+     "última ronda y no dice campeón",
+     []
+    ]
+   ]
   }
  }
 }

@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-02T01:25:07+00:00",
+ "cuando": "2026-11-02T01:54:55+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5811,6 +5811,42 @@
   }
  ],
  "inscripciones": [
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Jeixder 🇦🇷",
+   "quien": "jeixder",
+   "discord_id": "1236088830604476526",
+   "msg_id": "1566629838008225907",
+   "cuando": "2026-11-02T01:47:39"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Akuseru🇦🇷",
+   "quien": "akuseru_dionisio",
+   "discord_id": "1564834243039731832",
+   "msg_id": "1566626430173847695",
+   "cuando": "2026-11-02T01:34:07"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "MCO 🇦🇷",
+   "quien": "mcorap",
+   "discord_id": "1048744067313451050",
+   "msg_id": "1566625865356546261",
+   "cuando": "2026-11-02T01:31:52"
+  },
+  {
+   "servidor": "FFA",
+   "canal": "✦📝—inscripciones",
+   "texto": "Yor 🇪🇸",
+   "quien": "yor1312",
+   "discord_id": "855875724774735922",
+   "msg_id": "1566624887802433547",
+   "cuando": "2026-11-02T01:27:59"
+  },
   {
    "servidor": "FFA",
    "canal": "✦📝—inscripciones",
@@ -41774,42 +41810,6 @@
    "discord_id": "897942226955563068",
    "msg_id": "1554720635429585018",
    "cuando": "2026-09-30T05:04:44"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Skratch 🇨🇱",
-   "quien": "66skratch",
-   "discord_id": "712512566215180320",
-   "msg_id": "1554720635047903284",
-   "cuando": "2026-09-30T05:04:44"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "emi 🇲🇽",
-   "quien": "ventu._.x",
-   "discord_id": "913850096062439456",
-   "msg_id": "1554720623073296386",
-   "cuando": "2026-09-30T05:04:41"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Emily Family 🇵🇾",
-   "quien": "plapla23",
-   "discord_id": "839707244069126174",
-   "msg_id": "1554720607948505140",
-   "cuando": "2026-09-30T05:04:38"
-  },
-  {
-   "servidor": "FFA",
-   "canal": "✦📝—inscripciones",
-   "texto": "Pichulamc",
-   "quien": "dariel.ivo",
-   "discord_id": "578697503130779649",
-   "msg_id": "1554720581843157045",
-   "cuando": "2026-09-30T05:04:32"
   }
  ]
 }
