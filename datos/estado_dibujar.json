@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-11-02T06:50:58Z",
+ "cuando": "2026-11-02T07:12:40Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 975.7,
+ "dur_s": 563.8,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 5.8
+   "s": 6.1
   },
   {
    "n": "2f2",
@@ -21,49 +21,41 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 7.8
+   "s": 6.9
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 20.7
+   "s": 19.5
   },
   {
    "n": "5",
-   "que": "tanda 1 de 5 · 40 persona(s)",
+   "que": "tanda 1 de 3 · 40 persona(s)",
    "ok": false,
-   "s": 873.9
+   "s": 469.8
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 6.1
+   "s": 5.6
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 59.1
+   "s": 54.3
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py 19 FLEIVA WACK"
+   "que": "03_Servidor/generar.py Artezzy"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Kravitz"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py RT"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Vilca"
+   "que": "03_Servidor/generar.py MTZ"
   }
  ],
  "ultimo_evento": {
@@ -74,23 +66,23 @@
  },
  "cuotas": {
   "kv": {
-   "write": 271,
-   "read": 24450
+   "write": 284,
+   "read": 26078
   },
   "objeto": {
-   "leidas": 1479768,
-   "escritas": 14814,
-   "pedidos": 3196
+   "leidas": 1619883,
+   "escritas": 15286,
+   "pedidos": 3460
   },
   "worker": {
-   "pedidos": 7898,
+   "pedidos": 7963,
    "errores": 1,
-   "sub": 9396,
+   "sub": 9453,
    "cortados": 1,
    "p50_ms": 1.24,
-   "p99_ms": 11.89,
+   "p99_ms": 11.87,
    "cpu": {
-    "total": 17233,
+    "total": 17363,
     "objeto_10": 1753,
     "worker_10": 176
    }
