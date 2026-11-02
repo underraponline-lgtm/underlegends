@@ -2,26 +2,6 @@
  "_leeme": "El precio por cabeza: lo arma bot/precios.py en el ciclo (paso 2b4). Las reglas y los números viven en ese archivo.",
  "precios": [
   {
-   "id": 9,
-   "cabeza": "Zignos",
-   "monto": 500,
-   "t": "2026-10-03T21:14:55Z",
-   "fin": "2026-10-05T15:00:00Z",
-   "e": "cazado",
-   "por": [
-    [
-     "SGB",
-     500
-    ]
-   ],
-   "ev": {
-    "n": 400,
-    "nombre": "VALHALLA VOL1",
-    "sv": "ACAD",
-    "t": "2026-10-04T23:05:06Z"
-   }
-  },
-  {
    "id": 10,
    "cabeza": "Catarsis",
    "monto": 500,
@@ -483,7 +463,6 @@
   }
  ],
  "suma": {
-  "SGB": 500,
   "Snow": 250,
   "Velatz": 250,
   "PRAISERIZA": 14500,

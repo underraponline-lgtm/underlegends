@@ -4642,7 +4642,7 @@
    "Zetryko": 3
   },
   "fecha": "09/10",
-  "firma": "d908a9fc7132ed4f",
+  "firma": "d63a40c01fb6e212",
   "msg": "1558266219923112047",
   "nombre": "FAT BATTLES PALOOZA T.3 FECHA 6",
   "num": 438,
@@ -9436,7 +9436,7 @@
    "Zignos": 19
   },
   "fecha": "12/10",
-  "firma": "bbda6a47f257e6bf",
+  "firma": "8fa874f2466dc62a",
   "msg": "1559587802864295988",
   "nombre": "GODZ",
   "num": 460,
@@ -22711,7 +22711,7 @@
    "doble h": 2
   },
   "fecha": "25/10",
-  "firma": "fc2b4d2ae77ea705",
+  "firma": "1fd5f3ea95562338",
   "msg": "1564072873163890759",
   "nombre": "__ AGUANTE EL ROJO Y EL BARCELONA Multiverse __",
   "num": 516,
@@ -24441,7 +24441,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "a3d7ff47b5b1d451",
+  "firma": "24d48f0ff0d15d45",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -27981,7 +27981,7 @@
    "mats": 3
   },
   "fecha": "27/10",
-  "firma": "8ea4f0daf914fcde",
+  "firma": "0f495ff0d30405ca",
   "msg": "1564844210035757187",
   "nombre": "__ QCYO RAPEEN 5 __",
   "num": 539,
@@ -28494,19 +28494,19 @@
   "canal": "1468472443843776659",
   "duelos": [
    [
-    "PichulaMc, Oasis",
+    "PichulaMc",
     "Cazafla anti cazanova🇭🇹",
-    "PichulaMc, Oasis"
+    "PichulaMc"
    ],
    [
-    "PichulaMc, Oasis",
+    "PichulaMc",
     "Manteca mantecosa 🇨🇾",
-    "PichulaMc, Oasis"
+    "PichulaMc"
    ],
    [
-    "PichulaMc, Oasis",
+    "PichulaMc",
     "Gus, Tuca",
-    "PichulaMc, Oasis"
+    "PichulaMc"
    ],
    [
     "LRS",
@@ -28549,14 +28549,19 @@
     "Oasis"
    ],
    [
-    "PichulaMc, Oasis",
+    "PichulaMc",
     "Cronox",
-    "PichulaMc, Oasis"
+    "PichulaMc"
    ],
    [
     "Six, Presagio, Badterne",
     "Tenor, Provenza, yinn",
     "Six, Presagio, Badterne"
+   ],
+   [
+    "Oasis",
+    "PichulaMc",
+    "Oasis"
    ],
    [
     "Oasis",
@@ -28586,7 +28591,7 @@
    "yinn": 25
   },
   "fecha": "28/10",
-  "firma": "10b7ba3194ecc4c9",
+  "firma": "9952966948d82c19",
   "msg": "1565236518367264860",
   "nombre": "__ QCYO RAPEEN 6 __",
   "num": 542,
@@ -28601,6 +28606,11 @@
     "Oasis",
     "Campeón",
     10000
+   ],
+   [
+    "PichulaMc",
+    "Semifinal",
+    5250
    ],
    [
     "Six",
@@ -31479,7 +31489,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "3b9bfbf1c0d99af4",
+  "firma": "fa5eaf8cd1e51447",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
