@@ -1077,15 +1077,25 @@
     "org": "NC",
     "clave": "nc"
    },
-   "organizadores": [],
+   "organizadores": [
+    [
+     "Adriagner",
+     11,
+     1
+    ]
+   ],
    "semillero": {
-    "nuevos": {},
-    "gente": {},
+    "nuevos": {
+     "DDF": 1
+    },
+    "gente": {
+     "DDF": 11
+    },
     "gana": null
    },
    "meta_va": {
     "ACAD": 0,
-    "DDF": 0,
+    "DDF": 11,
     "DRA": 0,
     "FDS": 0,
     "FFA": 0,

@@ -1371,7 +1371,7 @@
   "tg_c": {
    "bestia": 3,
    "clasico": 4,
-   "dg": 52,
+   "dg": 53,
    "fg": 4,
    "fp": 13,
    "mata": 3,
@@ -1792,17 +1792,17 @@
   "pos_sv": "",
   "arc_sv": 0,
   "tg_c": {
-   "bestia": 2,
+   "bestia": 3,
    "clasico": 3,
-   "dg": 11,
+   "dg": 14,
    "fg": 3,
    "fp": 2,
-   "riv": 18,
-   "venc": 10
+   "riv": 20,
+   "venc": 12
   },
   "tg_p": {
-   "paises": 8,
-   "paisesg": 7
+   "paises": 9,
+   "paisesg": 8
   }
  },
  {
@@ -8500,7 +8500,7 @@
   "arc_sv": 0,
   "tg_c": {
    "bestia": 1,
-   "clasico": 1,
+   "clasico": 2,
    "dg": 1,
    "riv": 4,
    "venc": 1
@@ -9856,7 +9856,18 @@
   "pos_pais": "",
   "arc_pais": 0,
   "pos_sv": "12/15",
-  "arc_sv": 27
+  "arc_sv": 27,
+  "tg_c": {
+   "bestia": 1,
+   "clasico": 1,
+   "dg": 1,
+   "riv": 2,
+   "venc": 1
+  },
+  "tg_p": {
+   "paises": 2,
+   "paisesg": 1
+  }
  },
  {
   "full": "MR.LABURO🇨🇴",
@@ -10419,11 +10430,11 @@
    "bestia": 1,
    "clasico": 1,
    "dg": 1,
-   "riv": 3,
+   "riv": 4,
    "venc": 1
   },
   "tg_p": {
-   "paises": 3,
+   "paises": 4,
    "paisesg": 1
   }
  },
@@ -12010,7 +12021,7 @@
   "arc_sv": 0,
   "tg_c": {
    "bestia": 1,
-   "clasico": 1,
+   "clasico": 2,
    "dg": 1,
    "riv": 4,
    "venc": 1
