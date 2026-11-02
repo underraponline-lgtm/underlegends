@@ -1432,14 +1432,16 @@
    },
    "LKR": {
     "duelos": "",
-    "ev": 3,
-    "oro": 0,
-    "ovr": 45,
-    "pod": 0,
-    "pts": 8250,
-    "racha": "0/0",
+    "ev": 4,
+    "oro": 1,
+    "ovr": 48,
+    "pod": 1,
+    "pts": 18250,
+    "racha": "1/1",
     "tg": {
-     "fund": true
+     "fin": 1,
+     "fund": true,
+     "llave": true
     }
    }
   },
@@ -5090,7 +5092,8 @@
     "pts": 3125,
     "racha": "0/0",
     "tg": {
-     "fund": true
+     "fund": true,
+     "llave": true
     }
    }
   },
@@ -5350,6 +5353,19 @@
     "pod": 0,
     "pts": 3937,
     "racha": "0/0"
+   },
+   "LKR": {
+    "duelos": "",
+    "ev": 1,
+    "oro": 0,
+    "ovr": 45,
+    "pod": 1,
+    "pts": 3750,
+    "racha": "1/1",
+    "tg": {
+     "fin": 1,
+     "nuevo": true
+    }
    },
    "SR": {
     "duelos": "",
@@ -6212,7 +6228,8 @@
     "pts": 9125,
     "racha": "1/1",
     "tg": {
-     "fund": true
+     "fund": true,
+     "llave": true
     }
    }
   },
@@ -6545,7 +6562,8 @@
     "racha": "1/1",
     "tg": {
      "fin": 1,
-     "fund": true
+     "fund": true,
+     "llave": true
     }
    }
   },
@@ -6640,7 +6658,10 @@
     "ovr": 43,
     "pod": 0,
     "pts": 3875,
-    "racha": "0/0"
+    "racha": "0/0",
+    "tg": {
+     "llave": true
+    }
    }
   },
   "Medster": {
@@ -8431,7 +8452,8 @@
     "pts": 4375,
     "racha": "0/0",
     "tg": {
-     "fund": true
+     "fund": true,
+     "llave": true
     }
    }
   },

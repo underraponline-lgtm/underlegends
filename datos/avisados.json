@@ -33285,5 +33285,53 @@
    ]
   ],
   "v": 2
+ },
+ "562": {
+  "antes": {
+   "Calíz": [
+    49,
+    67,
+    false
+   ],
+   "Leonart": [
+    68,
+    89,
+    false
+   ]
+  },
+  "canal": "",
+  "duelos": [
+   [
+    "Calíz",
+    "Leonart",
+    "Calíz"
+   ]
+  ],
+  "ev_antes": {
+   "Calíz": 21,
+   "Leonart": 11
+  },
+  "fecha": "02/11",
+  "nombre": "Freestyle Master Series ZZZ",
+  "num": 562,
+  "participantes": 16,
+  "sello": {
+   "Calíz": "4f53eac22b35:a883a3be167d"
+  },
+  "sv": "LKR",
+  "t": "2026-11-02T22:24:34Z",
+  "tabla": [
+   [
+    "Calíz",
+    "Campeón",
+    10000
+   ],
+   [
+    "Leonart",
+    "Subcampeón",
+    3750
+   ]
+  ],
+  "v": 2
  }
 }

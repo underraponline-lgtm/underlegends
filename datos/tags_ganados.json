@@ -1527,6 +1527,16 @@
     "t1",
     1793514814004
    ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1793658682261
+   ],
+   "💯 CENTENARIO": [
+    "💯 CENTENARIO",
+    "t1",
+    1793658682261
+   ],
    "📅 INFALTABLE": [
     "📅 INFALTABLE",
     "t1",
@@ -1536,6 +1546,11 @@
     "🔟 DOBLE DÍGITO",
     "t1",
     1793029252929
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1793658682261
    ],
    "🧟 RESUCITADO": [
     "🧟 RESUCITADO",
@@ -4807,6 +4822,11 @@
  },
  "leonart": {
   "pais": {
+   "DA LA CARA": [
+    "DA LA CARA",
+    "t1",
+    1793658682261
+   ],
    "EMBAJADOR": [
     "EMBAJADOR",
     "t1",
@@ -9374,6 +9394,11 @@
  },
  "rbk": {
   "servidor": {
+   "🔑 LLAVE DE LA CASA": [
+    "🔑 LLAVE DE LA CASA",
+    "t1",
+    1793658682261
+   ],
    "🧱 FUNDADOR": [
     "🧱 FUNDADOR",
     "t1",

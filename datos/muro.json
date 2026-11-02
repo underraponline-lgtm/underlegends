@@ -418,6 +418,14 @@
 "rg": "C",
 "c": []
 },
+"caliz": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "paria": {
 "rg": "D",
 "c": []
@@ -492,14 +500,6 @@
 "btrx": {
 "rg": "C",
 "c": []
-},
-"caliz": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
 },
 "keider": {
 "rg": "D",
@@ -628,6 +628,15 @@
 "temporada"
 ]
 },
+"leonart": {
+"rg": "D",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "shadow": {
 "rg": "E",
 "c": [
@@ -659,15 +668,6 @@
 "rg": "",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"leonart": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
 "servidor",
 "temporada"
 ]

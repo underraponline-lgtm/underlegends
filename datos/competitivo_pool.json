@@ -4474,7 +4474,7 @@
   "T": 8,
   "V": 41,
   "wr": "33.3%",
-  "rch_act": 0,
+  "rch_act": 1,
   "rch_max": 1,
   "duel_v": 2,
   "duel_t": 6,
@@ -4499,6 +4499,7 @@
    "bestia": 1,
    "clasico": 1,
    "dg": 2,
+   "fp": 1,
    "riv": 6,
    "venc": 2
   },
@@ -6287,7 +6288,7 @@
   "T": 8,
   "V": 41,
   "wr": "30.0%",
-  "rch_act": 0,
+  "rch_act": 1,
   "rch_max": 1,
   "duel_v": 3,
   "duel_t": 10,
@@ -6313,6 +6314,7 @@
    "bestia": 1,
    "clasico": 1,
    "dg": 5,
+   "fg": 1,
    "mata": 1,
    "riv": 15,
    "venc": 5

@@ -41585,5 +41585,100 @@
     2000
    ]
   ]
+ },
+ "562": {
+  "dia": "2026-11-02",
+  "escala": "16+",
+  "fecha": "02/11",
+  "links": [
+   "https://discord.com/channels/1558611504046153750/1558611505040064607/1566935878796972105"
+  ],
+  "n": 562,
+  "nombre": "Freestyle Master Series ZZZ",
+  "participantes": 16,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Calíz",
+       "Leonart"
+      ],
+      "Calíz",
+      "Walk-in 1: Leonar-T 🇲🇽"
+     ],
+     [
+      [
+       "Bootrax humilde🇵🇪",
+       "Hotaru Adeyemi 🏳️‍⚧️🇮🇹"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Hirex🇨🇴",
+       "teito 🇨🇴"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Keish🇪🇸",
+       "Chop 🇭🇳"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Liam 🇭🇳",
+       "Ricard 🇪🇨"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Mc dl 🇲🇽",
+       "revivimos"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Mrkude 🇦🇷",
+       "King Chile🇨🇱"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ],
+     [
+      [
+       "Terry 🇦🇷",
+       "Dios 🇲🇽"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "LKR",
+  "tabla": [
+   [
+    "Calíz",
+    "Campeón",
+    10000
+   ],
+   [
+    "Leonart",
+    "Subcampeón",
+    3750
+   ]
+  ]
  }
 }
