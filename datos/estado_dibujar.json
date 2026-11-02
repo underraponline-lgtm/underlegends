@@ -1,15 +1,15 @@
 {
  "v": 1,
- "cuando": "2026-11-02T20:10:13Z",
+ "cuando": "2026-11-02T20:30:18Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 514.9,
+ "dur_s": 461.9,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 10.7
+   "s": 7.1
   },
   {
    "n": "2f2",
@@ -21,41 +21,37 @@
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 10.2
+   "s": 10.1
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 22.3
+   "s": 24.4
   },
   {
    "n": "5",
-   "que": "tanda 1 de 2 · 40 persona(s)",
+   "que": "tanda 1 de 1 · 40 persona(s)",
    "ok": false,
-   "s": 398.6
+   "s": 337.2
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 7.5
+   "s": 6.1
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 63.0
+   "s": 74.5
   }
  ],
  "fallas": [
   {
    "paso": "5",
    "que": "03_Servidor/generar.py Artezzy"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Tenor"
   }
  ],
  "ultimo_evento": {
@@ -66,25 +62,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 447,
-   "read": 42275
+   "write": 466,
+   "read": 43917
   },
   "objeto": {
-   "leidas": 2579908,
-   "escritas": 25050,
-   "pedidos": 6871
+   "leidas": 2698314,
+   "escritas": 26260,
+   "pedidos": 7236
   },
   "worker": {
-   "pedidos": 7319,
+   "pedidos": 7524,
    "errores": 1,
-   "sub": 8801,
+   "sub": 9013,
    "cortados": 1,
    "p50_ms": 1.36,
-   "p99_ms": 13.07,
+   "p99_ms": 13.23,
    "cpu": {
-    "total": 16009,
-    "objeto_10": 1661,
-    "worker_10": 210
+    "total": 16438,
+    "objeto_10": 1680,
+    "worker_10": 225
    }
   },
   "r2": {
