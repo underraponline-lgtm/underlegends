@@ -5678,7 +5678,7 @@
       ],
       "dj": [
        "Kravitz",
-       "DarnBless"
+       "mcDarnBless"
       ]
      },
      "orgs": [
@@ -5691,7 +5691,7 @@
      "cuentas": {
       "Kravitz": "1345962362615894027",
       "mats": "597240876573392946",
-      "DarnBless": "1508771760709963930"
+      "mcDarnBless": "1508771760709963930"
      }
     },
     "1562940331782185063": {
@@ -7610,6 +7610,20 @@
      "sv": "FFA",
      "nombre": "cocine fideos",
      "mo": "2026-11-02T01:31:49Z",
+     "staff": {},
+     "orgs": [
+      {
+       "n": "nachonc_",
+       "id": ""
+      }
+     ],
+     "organizador": "@nachonc_",
+     "cuentas": {}
+    },
+    "1566668944343830620": {
+     "sv": "FFA",
+     "nombre": "la palera del kachum",
+     "mo": "2026-11-02T04:38:03Z",
      "staff": {},
      "orgs": [
       {

@@ -2,39 +2,6 @@
  "_leeme": "Los eventos de vidas de #veredictos ya armados —quién peleó con quién y quién ganó—, para cargarlos aunque ya no estén entre los últimos mensajes del canal; y cada batalla con su ganador (`batallas`), para la llave que no lo dice; y cada llave como se jugó (`llaves`), que manda sobre la del organizador. Sin los mensajes: el repo es público. Lo escribe bot/escuchar.py (vidas()).",
  "eventos": {},
  "batallas": {
-  "1564125219948601345": {
-   "id": "1564125219948601345",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1792986912477,
-   "a": "ZA",
-   "b": "GIAN",
-   "ganador": "GIAN",
-   "votos": "1–0"
-  },
-  "1564125918157340763": {
-   "id": "1564125918157340763",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1792987078943,
-   "a": "GIAN",
-   "b": "LEWITO",
-   "ganador": "GIAN",
-   "votos": "1–0"
-  },
-  "1564128109865730153": {
-   "id": "1564128109865730153",
-   "sv": "[FFA] Freestyle For All 👾",
-   "g": "1468472442925092958",
-   "canal": "1487206164864438513",
-   "pub": 1792987601487,
-   "a": "GIAN",
-   "b": "TUCA",
-   "ganador": "GIAN",
-   "votos": "1–0"
-  },
   "1564387151590981775": {
    "id": "1564387151590981775",
    "sv": "#FDS ╏FREESTYLE DISCORD SERIES",
