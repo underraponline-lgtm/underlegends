@@ -1,69 +1,61 @@
 {
  "v": 1,
- "cuando": "2026-11-02T20:54:55Z",
+ "cuando": "2026-11-02T21:10:30Z",
  "trabajo": "dibujar",
  "codigo": 0,
- "dur_s": 1237.3,
+ "dur_s": 496.8,
  "pasos": [
   {
    "n": "2f",
    "que": "las fotos que faltan, de Discord a R2",
    "ok": true,
-   "s": 6.5
+   "s": 7.5
   },
   {
    "n": "2f2",
    "que": "los TAGs elegidos",
    "ok": true,
-   "s": 1.2
+   "s": 0.9
   },
   {
    "n": "3",
    "que": "qué cambió",
    "ok": true,
-   "s": 9.8
+   "s": 10.5
   },
   {
    "n": "4",
    "que": "las caras, desde R2",
    "ok": true,
-   "s": 21.7
+   "s": 27.7
   },
   {
    "n": "5",
-   "que": "tanda 1 de 6 · 40 persona(s)",
+   "que": "tanda 1 de 2 · 40 persona(s)",
    "ok": false,
-   "s": 1125.9
+   "s": 379.7
   },
   {
    "n": "5b",
    "que": "las Bloqueadas",
    "ok": true,
-   "s": 11.6
+   "s": 7.5
   },
   {
    "n": "6",
    "que": "refrescar KV",
    "ok": true,
-   "s": 59.4
+   "s": 61.9
   }
  ],
  "fallas": [
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Adriagner"
+   "que": "03_Servidor/generar.py Artezzy"
   },
   {
    "paso": "5",
-   "que": "03_Servidor/generar.py Keider"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Miniboy"
-  },
-  {
-   "paso": "5",
-   "que": "03_Servidor/generar.py Riolu"
+   "que": "03_Servidor/generar.py Vilca"
   }
  ],
  "ultimo_evento": {
@@ -74,25 +66,25 @@
  },
  "cuotas": {
   "kv": {
-   "write": 488,
-   "read": 45560
+   "write": 504,
+   "read": 47137
   },
   "objeto": {
-   "leidas": 2809800,
-   "escritas": 27560,
-   "pedidos": 7424
+   "leidas": 2848133,
+   "escritas": 27800,
+   "pedidos": 7552
   },
   "worker": {
-   "pedidos": 7529,
+   "pedidos": 7571,
    "errores": 1,
-   "sub": 9007,
+   "sub": 9047,
    "cortados": 1,
    "p50_ms": 1.35,
    "p99_ms": 13.22,
    "cpu": {
-    "total": 16534,
-    "objeto_10": 1693,
-    "worker_10": 227
+    "total": 16539,
+    "objeto_10": 1699,
+    "worker_10": 226
    }
   },
   "r2": {
