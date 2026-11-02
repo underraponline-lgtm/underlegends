@@ -2,26 +2,6 @@
  "_leeme": "El precio por cabeza: lo arma bot/precios.py en el ciclo (paso 2b4). Las reglas y los números viven en ese archivo.",
  "precios": [
   {
-   "id": 8,
-   "cabeza": "Hassan",
-   "monto": 1000,
-   "t": "2026-10-03T20:08:13Z",
-   "fin": "2026-10-05T15:00:00Z",
-   "e": "cazado",
-   "por": [
-    [
-     "PichulaMc",
-     1000
-    ]
-   ],
-   "ev": {
-    "n": 389,
-    "nombre": "RED BULL NACIONAL ALBICELESTE",
-    "sv": "URBF",
-    "t": "2026-10-03T22:26:19Z"
-   }
-  },
-  {
    "id": 9,
    "cabeza": "Zignos",
    "monto": 500,
@@ -503,12 +483,12 @@
   }
  ],
  "suma": {
-  "PichulaMc": 3875,
   "SGB": 500,
   "Snow": 250,
   "Velatz": 250,
   "PRAISERIZA": 14500,
   "Six": 5000,
+  "PichulaMc": 2875,
   "PIERR": 5000,
   "Emilio Alva": 2500,
   "Tuca": 1000,
