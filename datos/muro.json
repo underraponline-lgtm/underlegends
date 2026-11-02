@@ -120,19 +120,6 @@
 "temporada"
 ]
 },
-"og": {
-"rg": "B",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"tam": {
-"rg": "B",
-"c": []
-},
 "carlosss": {
 "rg": "S",
 "c": [
@@ -141,9 +128,14 @@
 "temporada"
 ]
 },
-"yinn": {
-"rg": "C",
-"c": []
+"og": {
+"rg": "B",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "mco": {
 "rg": "B",
@@ -162,6 +154,14 @@
 "servidor",
 "temporada"
 ]
+},
+"tam": {
+"rg": "B",
+"c": []
+},
+"yinn": {
+"rg": "C",
+"c": []
 },
 "abyssus": {
 "rg": "S",
@@ -206,10 +206,6 @@
 "temporada"
 ]
 },
-"tuca": {
-"rg": "B",
-"c": []
-},
 "hassan": {
 "rg": "A",
 "c": []
@@ -222,6 +218,10 @@
 "servidor",
 "temporada"
 ]
+},
+"tuca": {
+"rg": "B",
+"c": []
 },
 "walker": {
 "rg": "A",
@@ -249,15 +249,6 @@
 "temporada"
 ]
 },
-"delux": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "sinlimites": {
 "rg": "D",
 "c": [
@@ -275,7 +266,7 @@
 "temporada"
 ]
 },
-"polosport": {
+"delux": {
 "rg": "C",
 "c": [
 "competitivo",
@@ -305,6 +296,15 @@
 "xclusivo": {
 "rg": "C",
 "c": []
+},
+"polosport": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
 },
 "cronox": {
 "rg": "D",
@@ -485,6 +485,10 @@
 "rg": "C",
 "c": []
 },
+"badterne": {
+"rg": "",
+"c": []
+},
 "caliz": {
 "rg": "E",
 "c": [
@@ -520,15 +524,6 @@
 "temporada"
 ]
 },
-"nemi": {
-"rg": "E",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
 "number": {
 "rg": "D",
 "c": [
@@ -544,10 +539,6 @@
 "temporada"
 ]
 },
-"badterne": {
-"rg": "",
-"c": []
-},
 "mayeutyk": {
 "rg": "",
 "c": [
@@ -557,6 +548,15 @@
 ]
 },
 "jult": {
+"rg": "E",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
+"nemi": {
 "rg": "E",
 "c": [
 "competitivo",
