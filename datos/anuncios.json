@@ -1,5 +1,5 @@
 {
- "cuando": "2026-11-02T17:25:41+00:00",
+ "cuando": "2026-11-02T17:55:47+00:00",
  "anuncios": [
   {
    "nombre": "¡SE LLEGÓ LA GRAN NOCHE!",
@@ -5793,6 +5793,31 @@
    "staff_cuentas": {},
    "de_imagen": true,
    "categoria_id": "1564463238937186477"
+  },
+  {
+   "nombre": "Freestyle Master Series ZZZ",
+   "servidor": "LKR",
+   "canal": "Anuncios📢",
+   "msg_id": "1566872940094554203",
+   "cuando": "2026-11-02T17:53:40",
+   "canal_id": "1565416157463191634",
+   "guild_id": "1558611504046153750",
+   "organizador": "",
+   "orgs": [],
+   "autor_h": "80e0eb5c03ff9aaf",
+   "cupos_texto": "",
+   "inscriptos": null,
+   "cupo_total": null,
+   "rango": "",
+   "modalidad": "",
+   "horario": "17:30HRS",
+   "fecha": "",
+   "premios": "",
+   "staff": {},
+   "autor": "Terry_",
+   "staff_cuentas": {},
+   "de_imagen": true,
+   "categoria_id": "1565413197450846218"
   },
   {
    "nombre": "JORNADA 1",
