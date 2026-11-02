@@ -4500,7 +4500,7 @@
    "clasico": 1,
    "dg": 2,
    "fp": 1,
-   "riv": 6,
+   "riv": 7,
    "venc": 2
   },
   "tg_p": {
@@ -6313,15 +6313,15 @@
   "tg_c": {
    "bestia": 1,
    "clasico": 1,
-   "dg": 5,
+   "dg": 6,
    "fg": 1,
    "mata": 1,
-   "riv": 15,
-   "venc": 5
+   "riv": 16,
+   "venc": 6
   },
   "tg_p": {
-   "paises": 8,
-   "paisesg": 3
+   "paises": 9,
+   "paisesg": 4
   }
  },
  {

@@ -1335,7 +1335,7 @@
    "n": 531,
    "sv": "FFA",
    "vence": "2026-11-02T22:39:00+00:00",
-   "vencido": false
+   "vencido": true
   },
   "PETER": {
    "avisado": "2026-10-16",
@@ -1412,7 +1412,7 @@
    "n": 531,
    "sv": "FFA",
    "vence": "2026-11-02T22:39:00+00:00",
-   "vencido": false
+   "vencido": true
   },
   "RC": {
    "avisado": "2026-10-18",
@@ -1613,7 +1613,7 @@
    "n": 531,
    "sv": "FFA",
    "vence": "2026-11-02T22:39:00+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Swid": {
    "avisado": "2026-10-26",
@@ -1626,7 +1626,7 @@
    "n": 531,
    "sv": "FFA",
    "vence": "2026-11-02T22:39:00+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Tiago Context": {
    "avisado": "2026-10-27",
