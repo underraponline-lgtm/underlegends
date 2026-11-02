@@ -448,6 +448,17 @@
    "vence": "2026-10-29T00:30:05+00:00",
    "vencido": false
   },
+  "El novio de tu novia": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-02T01:30:37+00:00",
+   "did": "",
+   "evento": "COCINE FIDEOS",
+   "n": 558,
+   "sv": "FFA",
+   "vence": "2026-11-09T01:30:37+00:00",
+   "vencido": false
+  },
   "Eldinoco": {
    "avisado": "2026-10-29",
    "chat": "2026-10-29",
@@ -459,6 +470,17 @@
    "n": 544,
    "sv": "DDF",
    "vence": "2026-11-06T01:30:46+00:00",
+   "vencido": false
+  },
+  "Estroncio PY": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-02T01:30:37+00:00",
+   "did": "",
+   "evento": "COCINE FIDEOS",
+   "n": 558,
+   "sv": "FFA",
+   "vence": "2026-11-09T01:30:37+00:00",
    "vencido": false
   },
   "Evanlyne": {
@@ -958,8 +980,8 @@
   "Lizen": {
    "avisado": "2026-10-31",
    "chat": "2026-11-01",
-   "con": null,
-   "cumplido": "",
+   "con": 558,
+   "cumplido": "2026-11-02T01:30:37+00:00",
    "debut": "2026-10-31T02:59:35+00:00",
    "did": "",
    "evento": "qcyo rapeen",
@@ -1796,19 +1818,6 @@
    "sv": "FFA",
    "vence": "2026-11-07T06:06:01+00:00",
    "vencido": false
-  },
-  "dyss": {
-   "avisado": "2026-10-26",
-   "chat": "2026-10-26",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-10-26T01:55:51+00:00",
-   "did": "",
-   "evento": "QCYO RAPEEN 3",
-   "n": 517,
-   "sv": "FFA",
-   "vence": "2026-11-02T01:55:51+00:00",
-   "vencido": true
   },
   "erpi": {
    "avisado": "2026-10-31",

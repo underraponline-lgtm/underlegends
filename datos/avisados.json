@@ -18438,7 +18438,7 @@
    "Velatz": 38
   },
   "fecha": "21/10",
-  "firma": "b448e7d233e2c974",
+  "firma": "badfc264a4b4dd75",
   "msg": "1562607463755161734",
   "nombre": "SNAKE INSIGNIA 6 8",
   "num": 496,
@@ -29990,7 +29990,7 @@
    "Teo": 18
   },
   "fecha": "30/10",
-  "firma": "83608d0511dd358f",
+  "firma": "6f33c17d69893647",
   "msg": "1565861597019111555",
   "nombre": "__ LA ISLA DE OKINAWA V.4 __",
   "num": 547,
@@ -30529,7 +30529,7 @@
    "Walker": 8
   },
   "fecha": "30/10",
-  "firma": "f7c0979eb1cc14ae",
+  "firma": "8e941db5190cb899",
   "msg": "1565898869114413108",
   "nombre": "IDS V.3",
   "num": 549,
@@ -32437,6 +32437,320 @@
    ],
    [
     "Filozico",
+    "Octavos",
+    1250
+   ]
+  ],
+  "v": 2
+ },
+ "558": {
+  "antes": {
+   "AFR": [
+    184,
+    407,
+    false
+   ],
+   "Akuseru": [
+    319,
+    236,
+    true
+   ],
+   "EIDP": [
+    243,
+    92,
+    true
+   ],
+   "Ezze": [
+    254,
+    129,
+    true
+   ],
+   "Gus": [
+    110,
+    157,
+    false
+   ],
+   "JEIXDER": [
+    122,
+    182,
+    false
+   ],
+   "Keider": [
+    50,
+    67,
+    false
+   ],
+   "MCO": [
+    16,
+    17,
+    false
+   ],
+   "Paria": [
+    237,
+    61,
+    true
+   ],
+   "Provenza": [
+    20,
+    23,
+    false
+   ],
+   "SULTAN": [
+    262,
+    146,
+    true
+   ],
+   "Soulb": [
+    45,
+    59,
+    false
+   ],
+   "Vandu": [
+    13,
+    14,
+    false
+   ],
+   "Velatz": [
+    17,
+    18,
+    false
+   ],
+   "Yor": [
+    164,
+    326,
+    false
+   ],
+   "Zignos": [
+    21,
+    24,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "Gus",
+    "MCO",
+    "Gus"
+   ],
+   [
+    "Gus",
+    "AFR",
+    "Gus"
+   ],
+   [
+    "El novio de tu novia 🇧🇧",
+    "Estroncio PY🇵🇾",
+    "El novio de tu novia 🇧🇧"
+   ],
+   [
+    "El novio de tu novia 🇧🇧",
+    "Soulb",
+    "El novio de tu novia 🇧🇧"
+   ],
+   [
+    "JEIXDER",
+    "Keider",
+    "JEIXDER"
+   ],
+   [
+    "Paria",
+    "Lvel 🇻🇪",
+    "Paria"
+   ],
+   [
+    "Paria",
+    "Yor",
+    "Paria"
+   ],
+   [
+    "Paria",
+    "Ezze",
+    "Paria"
+   ],
+   [
+    "Paria",
+    "Zignos",
+    "Paria"
+   ],
+   [
+    "Paria",
+    "SULTAN",
+    "Paria"
+   ],
+   [
+    "Paria",
+    "Lizen🇦🇷",
+    "Paria"
+   ],
+   [
+    "Gus",
+    "El novio de tu novia 🇧🇧",
+    "Gus"
+   ],
+   [
+    "Provenza",
+    "JEIXDER",
+    "Provenza"
+   ],
+   [
+    "Paria",
+    "Akuseru",
+    "Paria"
+   ],
+   [
+    "Vandu",
+    "EIDP",
+    "Vandu"
+   ],
+   [
+    "Vandu",
+    "Velatz",
+    "Vandu"
+   ],
+   [
+    "Provenza",
+    "Gus",
+    "Provenza"
+   ],
+   [
+    "Vandu",
+    "Paria",
+    "Vandu"
+   ],
+   [
+    "Provenza",
+    "Vandu",
+    "Provenza"
+   ]
+  ],
+  "ev_antes": {
+   "AFR": 1,
+   "Akuseru": 2,
+   "EIDP": 9,
+   "Ezze": 3,
+   "Gus": 9,
+   "JEIXDER": 6,
+   "Keider": 10,
+   "MCO": 29,
+   "Paria": 14,
+   "Provenza": 35,
+   "SULTAN": 9,
+   "Soulb": 16,
+   "Vandu": 41,
+   "Velatz": 43,
+   "Yor": 3,
+   "Zignos": 27
+  },
+  "fecha": "01/11",
+  "firma": "6a62841d043e79b7",
+  "msg": "1566645439611011152",
+  "nombre": "__ COCINE FIDEOS __",
+  "num": 558,
+  "participantes": 20,
+  "sello": {
+   "Provenza": "85a601b66a25:ccd09f762e04"
+  },
+  "sv": "FFA",
+  "t": "2026-11-02T02:54:35Z",
+  "tabla": [
+   [
+    "Provenza",
+    "Campeón",
+    10000
+   ],
+   [
+    "Vandu",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Gus",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Paria",
+    "Semifinal",
+    5250
+   ],
+   [
+    "El novio de tu novia 🇧🇧",
+    "Cuartos",
+    2500
+   ],
+   [
+    "JEIXDER",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Akuseru",
+    "Cuartos",
+    2500
+   ],
+   [
+    "EIDP",
+    "Cuartos",
+    2500
+   ],
+   [
+    "Velatz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "MCO",
+    "Octavos",
+    1250
+   ],
+   [
+    "AFR",
+    "Octavos",
+    1250
+   ],
+   [
+    "Estroncio PY🇵🇾",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Octavos",
+    1250
+   ],
+   [
+    "Keider",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "Yor",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ezze",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zignos",
+    "Octavos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lizen🇦🇷",
     "Octavos",
     1250
    ]

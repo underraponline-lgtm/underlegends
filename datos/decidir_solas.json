@@ -2,140 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "5f46b78e27",
-   "tipo": "alta",
-   "sec": "🪪 Identidad",
-   "que": "A «Loki Salta» lo buscó otra persona con /card en ACAD (no lo usó él) y no está en la Lista de Raperos. Si ya está con otro nombre, elegilo o escribilo: le pongo su Discord.\nSu cuenta: https://discord.com/users/549637741550239775",
-   "r": "Ya está resuelto",
-   "regla": "R3 · un alta que no hace falta: el bot, o una cuenta que buscó otro y no jugó",
-   "rk": "R3",
-   "por": "el ciclo",
-   "porque": "no usó /card: lo buscó otra persona, y no jugó en la T1 (ni su nombre ni con lo que se anotó está en ningún resultado). Si se anota sola, entra como cualquiera",
-   "t": 1792358921598,
-   "filas": [
-    738
-   ],
-   "variantes": [
-    "Loki Salta = 549637741550239775"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "b4bf00ec53",
-   "tipo": "Nombre desconocido",
-   "sec": "LA BELLA ARTE DE LA DESGRACIA VOL7 · FFA · 18/10 · #484",
-   "que": "¿Quién es «DarkoMC🇲🇽»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1375578701302857738",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1375578701302857738)",
-   "t": 1792361117261,
-   "filas": [
-    739
-   ],
-   "variantes": [
-    "DarkoMC🇲🇽"
-   ],
-   "escribio": {
-    "alta": [
-     "DarkoMC",
-     "1375578701302857738"
-    ]
-   }
-  },
-  {
-   "id": "83ff28c5f1",
-   "tipo": "Nombre desconocido",
-   "sec": "LA ISLA DE OKINAWA V.1 · FFA · 18/10 · #485",
-   "que": "¿Quién es «Joba 🇨🇱»?",
-   "r": "Es Jobaking (en este evento)",
-   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
-   "rk": "R21",
-   "por": "el ciclo",
-   "porque": "la cuenta @jobains (en Discord: «𝐉𝐨𝐛𝐚𝐤𝟏𝐧𝐠 :v») · en la Lista: Jobaking se anotó como «Joba» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
-   "t": 1792366401327,
-   "filas": [
-    742
-   ],
-   "variantes": [
-    "Joba 🇨🇱"
-   ],
-   "escribio": {
-    "quien": "LA ISLA DE OKINAWA V.1 · FFA · 18/10 · Joba 🇨🇱"
-   }
-  },
-  {
-   "id": "9bfbfe67e7",
-   "tipo": "Nombre desconocido",
-   "sec": "LA ISLA DE OKINAWA V.1 · FFA · 18/10 · #485",
-   "que": "¿Quién es «Millonari-O🇵🇾»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1373340031413911624",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1373340031413911624)",
-   "t": 1792366401327,
-   "filas": [
-    743
-   ],
-   "variantes": [
-    "Millonari-O🇵🇾"
-   ],
-   "escribio": {
-    "alta": [
-     "Millonari-O",
-     "1373340031413911624"
-    ]
-   }
-  },
-  {
-   "id": "9fb0a5b6fc",
-   "tipo": "alta",
-   "sec": "🪪 Identidad",
-   "que": "A «dyzzmzt» lo buscó otra persona con /card en ACAD (no lo usó él) y no está en la Lista de Raperos. Si ya está con otro nombre, elegilo o escribilo: le pongo su Discord.\nSu cuenta: https://discord.com/users/1406806279275417640",
-   "r": "Ya está resuelto",
-   "regla": "R3 · un alta que no hace falta: el bot, o una cuenta que buscó otro y no jugó",
-   "rk": "R3",
-   "por": "el ciclo",
-   "porque": "no usó /card: lo buscó otra persona, y no jugó en la T1 (ni su nombre ni con lo que se anotó está en ningún resultado). Si se anota sola, entra como cualquiera",
-   "t": 1792371510125,
-   "filas": [
-    744
-   ],
-   "variantes": [
-    "dyzzmzt = 1406806279275417640"
-   ],
-   "escribio": {}
-  },
-  {
-   "id": "743534cf20",
-   "tipo": "Nombre desconocido",
-   "sec": "LA MISIÓN DEL MONJE · DDF · 18/10 · #486",
-   "que": "¿Quién es «MOSQUITORAP🇦🇷»?",
-   "r": "Es Mosquitrap 🦟",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "alias de Mosquitrap 🦟: estaba en la llamada del evento con un nombre parecido",
-   "t": 1792378946207,
-   "filas": [
-    746
-   ],
-   "variantes": [
-    "MOSQUITORAP🇦🇷"
-   ],
-   "escribio": {
-    "alias": [
-     "MOSQUITORAP",
-     "Mosquitrap 🦟"
-    ],
-    "filas": [
-     296
-    ]
-   }
-  },
-  {
    "id": "081ad7e845",
    "tipo": "Nombre desconocido",
    "sec": "FREESTYLE LEAGUE · FFA · 19/10 · #487",
@@ -3214,6 +3080,46 @@
      333
     ]
    }
+  },
+  {
+   "id": "219759c9f1",
+   "tipo": "Nombre desconocido",
+   "sec": "COCINE FIDEOS · FFA · 01/11 · #558",
+   "que": "¿Quién es «Estroncio PY🇵🇾»?",
+   "r": "Es Millonari-O (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @pelotadel_10_68491 (en Discord: «Estroncio PY🇵🇾») · en la Lista: Millonari-O se anotó como «Estroncio PY» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1793588654536,
+   "filas": [
+    1016
+   ],
+   "variantes": [
+    "Estroncio PY🇵🇾"
+   ],
+   "escribio": {
+    "quien": "COCINE FIDEOS · FFA · 01/11 · Estroncio PY🇵🇾"
+   }
+  },
+  {
+   "id": "e8a8269195",
+   "tipo": "Nombre desconocido",
+   "sec": "QCYO RAPEEN 3 · FFA · 25/10 · #517",
+   "que": "¿Quién es «dyss»?",
+   "r": "Ya no hace falta",
+   "regla": "cierre · ya no hacía falta preguntarlo",
+   "rk": "cierre",
+   "por": "el ciclo",
+   "porque": "ya no está en ningún resultado: el lector lo lee distinto, o ya es alias de alguien",
+   "t": 1793588654536,
+   "filas": [
+    852
+   ],
+   "variantes": [
+    "dyss"
+   ],
+   "escribio": {}
   }
  ],
  "deshechas": []

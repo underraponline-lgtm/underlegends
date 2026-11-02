@@ -120,6 +120,15 @@
 "temporada"
 ]
 },
+"provenza": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "carlosss": {
 "rg": "S",
 "c": [
@@ -155,6 +164,14 @@
 "temporada"
 ]
 },
+"zignos": {
+"rg": "B",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "tam": {
 "rg": "B",
 "c": []
@@ -176,23 +193,6 @@
 "c": [
 "competitivo",
 "pais",
-"servidor",
-"temporada"
-]
-},
-"provenza": {
-"rg": "C",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"zignos": {
-"rg": "B",
-"c": [
-"competitivo",
 "servidor",
 "temporada"
 ]
@@ -418,6 +418,10 @@
 "temporada"
 ]
 },
+"paria": {
+"rg": "D",
+"c": []
+},
 "onzass": {
 "rg": "E",
 "c": []
@@ -430,6 +434,10 @@
 "servidor",
 "temporada"
 ]
+},
+"eidp": {
+"rg": "D",
+"c": []
 },
 "eclipsito": {
 "rg": "C",
@@ -459,10 +467,6 @@
 "servidor",
 "temporada"
 ]
-},
-"paria": {
-"rg": "D",
-"c": []
 },
 "kravitz": {
 "rg": "E",
@@ -690,8 +694,8 @@
 "temporada"
 ]
 },
-"eidp": {
-"rg": "",
+"sultan": {
+"rg": "E",
 "c": []
 },
 "soneto": {
@@ -864,10 +868,22 @@
 "temporada"
 ]
 },
+"ezze": {
+"rg": "",
+"c": []
+},
 "lilnano": {
 "rg": "",
 "c": [
 "servidor"
+]
+},
+"gus": {
+"rg": "E",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
 ]
 },
 "zetryko": {
@@ -929,10 +945,6 @@
 "servidor",
 "temporada"
 ]
-},
-"ezze": {
-"rg": "",
-"c": []
 },
 "trelok": {
 "rg": "",
@@ -1029,10 +1041,6 @@
 "temporada"
 ]
 },
-"sultan": {
-"rg": "",
-"c": []
-},
 "valdoza": {
 "rg": "",
 "c": []
@@ -1051,6 +1059,14 @@
 "deuxs": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"jeixder": {
+"rg": "",
+"c": [
+"pais",
 "servidor",
 "temporada"
 ]
@@ -1080,13 +1096,6 @@
 "betelguese": {
 "rg": "",
 "c": []
-},
-"gus": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "sol": {
 "rg": "",
@@ -1216,14 +1225,6 @@
 "temporada"
 ]
 },
-"jeixder": {
-"rg": "",
-"c": [
-"pais",
-"servidor",
-"temporada"
-]
-},
 "j19": {
 "rg": "",
 "c": [
@@ -1295,6 +1296,10 @@
 "servidor",
 "temporada"
 ]
+},
+"akuseru": {
+"rg": "",
+"c": []
 },
 "cajita": {
 "rg": "",
@@ -2677,38 +2682,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T16:25:45Z",
-"quien": [
-"Colesito"
-],
-"carta": "pais"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T16:39:36Z",
-"quien": [
-"Sexo"
-],
-"carta": "servidor"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T16:39:36Z",
-"quien": [
-"Sexo"
-],
-"carta": "temporada"
-},
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T18:46:32Z",
-"quien": [
-"Panchok"
-],
-"carta": "pais"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-04T18:46:32Z",
@@ -6035,6 +6008,41 @@
 "Rbk"
 ],
 "carta": "temporada"
+},
+{
+"tipo": "rango",
+"t": "2026-11-02T03:03:54Z",
+"quien": [
+"EIDP"
+],
+"rg": "D",
+"primero": true
+},
+{
+"tipo": "rango",
+"t": "2026-11-02T03:03:54Z",
+"quien": [
+"SULTAN"
+],
+"rg": "E",
+"primero": true
+},
+{
+"tipo": "rango",
+"t": "2026-11-02T03:03:54Z",
+"quien": [
+"Gus"
+],
+"rg": "E",
+"primero": true
+},
+{
+"tipo": "tarjeta",
+"t": "2026-11-02T03:03:54Z",
+"quien": [
+"Gus"
+],
+"carta": "competitivo"
 }
 ]
 }

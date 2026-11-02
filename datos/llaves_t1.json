@@ -32902,14 +32902,6 @@
      ],
      [
       [
-       "Keider",
-       "dyss"
-      ],
-      "Keider",
-      "ganador según #veredictos"
-     ],
-     [
-      [
        "Tenor, 🇺🇸 x Za, Tam",
        "Makmah",
        "Erian"
@@ -32925,6 +32917,14 @@
       ],
       "Tuca",
       "triple (3 bandas); Revivido: lewito"
+     ],
+     [
+      [
+       "KEIDER🇧🇷",
+       "dyss"
+      ],
+      "",
+      "sin ganador: espera en ✅ Decidir"
      ]
     ],
     "r": "Octavos"
@@ -33085,11 +33085,6 @@
    ],
    [
     "SULTAN",
-    "Octavos",
-    1250
-   ],
-   [
-    "dyss",
     "Octavos",
     1250
    ],
@@ -40881,6 +40876,242 @@
    ],
    [
     "Richard",
+    "Octavos",
+    1250
+   ]
+  ]
+ },
+ "558": {
+  "dia": "2026-11-01",
+  "escala": "16+",
+  "fecha": "01/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1566625548699177061"
+  ],
+  "n": 558,
+  "nombre": "COCINE FIDEOS",
+  "participantes": 20,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "Gus",
+       "Vandu",
+       "MCO",
+       "AFR"
+      ],
+      "Gus, Vandu",
+      "triple (4 bandas, pasan 2); también pasa: vandu 🇨🇦"
+     ],
+     [
+      [
+       "El novio de tu novia 🇧🇧",
+       "EIDP",
+       "Estroncio PY🇵🇾",
+       "Soulb"
+      ],
+      "El novio de tu novia 🇧🇧, EIDP",
+      "triple (4 bandas, pasan 2); también pasa: Agustín la reliquia 🇺🇾"
+     ],
+     [
+      [
+       "JEIXDER",
+       "Akuseru",
+       "Keider"
+      ],
+      "JEIXDER, Akuseru",
+      "triple (3 bandas, pasan 2); también pasa: Akuseru 🇦🇷"
+     ],
+     [
+      [
+       "Paria",
+       "Provenza",
+       "Lvel 🇻🇪",
+       "Yor",
+       "Ezze",
+       "Zignos",
+       "SULTAN",
+       "Lizen🇦🇷"
+      ],
+      "Paria, Provenza",
+      "triple (8 bandas, pasan 2); también pasa: za"
+     ]
+    ],
+    "r": "Octavos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Gus",
+       "El novio de tu novia 🇧🇧"
+      ],
+      "Gus",
+      ""
+     ],
+     [
+      [
+       "Provenza",
+       "JEIXDER"
+      ],
+      "Provenza",
+      ""
+     ],
+     [
+      [
+       "Paria",
+       "Akuseru"
+      ],
+      "Paria",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "EIDP",
+       "Velatz"
+      ],
+      "Vandu",
+      "triple (3 bandas)"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Provenza",
+       "Gus"
+      ],
+      "Provenza",
+      ""
+     ],
+     [
+      [
+       "Vandu",
+       "Paria"
+      ],
+      "Vandu",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Provenza",
+       "Vandu"
+      ],
+      "Provenza",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Provenza",
+    "Campeón",
+    10000
+   ],
+   [
+    "Vandu",
+    "Subcampeón",
+    7500
+   ],
+   [
+    "Gus",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Paria",
+    "Semifinal",
+    5250
+   ],
+   [
+    "Akuseru",
+    "Cuartos",
+    2500
+   ],
+   [
+    "EIDP",
+    "Cuartos",
+    2500
+   ],
+   [
+    "El novio de tu novia 🇧🇧",
+    "Cuartos",
+    2500
+   ],
+   [
+    "JEIXDER",
+    "Cuartos",
+    2500
+   ],
+   [
+    "AFR",
+    "Octavos",
+    1250
+   ],
+   [
+    "Estroncio PY🇵🇾",
+    "Octavos",
+    1250
+   ],
+   [
+    "Ezze",
+    "Octavos",
+    1250
+   ],
+   [
+    "Keider",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lizen🇦🇷",
+    "Octavos",
+    1250
+   ],
+   [
+    "Lvel 🇻🇪",
+    "Octavos",
+    1250
+   ],
+   [
+    "MCO",
+    "Octavos",
+    1250
+   ],
+   [
+    "SULTAN",
+    "Octavos",
+    1250
+   ],
+   [
+    "Soulb",
+    "Octavos",
+    1250
+   ],
+   [
+    "Velatz",
+    "Cuartos",
+    1250
+   ],
+   [
+    "Yor",
+    "Octavos",
+    1250
+   ],
+   [
+    "Zignos",
     "Octavos",
     1250
    ]

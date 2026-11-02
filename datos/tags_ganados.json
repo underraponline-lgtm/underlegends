@@ -3023,6 +3023,13 @@
   }
  },
  "eidp": {
+  "competitivo": {
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1793588669220
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -3035,6 +3042,11 @@
     "📋 SEMANA PERFECTA",
     "t1",
     1792953978519
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1793588669220
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -3819,6 +3831,13 @@
     "📆 HABITUÉ",
     "t1",
     1792953978519
+   ]
+  },
+  "temporada": {
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1793588669220
    ]
   }
  },
@@ -8873,6 +8892,11 @@
     "🤝 SIN MIEDO",
     "t1",
     1793029252929
+   ],
+   "🧊 SANGRE FRÍA": [
+    "🧊 SANGRE FRÍA",
+    "t1",
+    1793588669220
    ]
   },
   "pais": {
@@ -8913,6 +8937,11 @@
     "t1",
     1792953978519
    ],
+   "🏰 FORTALEZA": [
+    "🏰 FORTALEZA",
+    "t1",
+    1793588669220
+   ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
     "t1",
@@ -8941,9 +8970,14 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x2",
+    "👑 CAMPEÓN x3",
     "t1",
     1793029252929
+   ],
+   "💯 BICENTENARIO": [
+    "💯 BICENTENARIO",
+    "t1",
+    1793588669220
    ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
@@ -10116,6 +10150,13 @@
   }
  },
  "sultan": {
+  "competitivo": {
+   "🗡️ MATAGIGANTES": [
+    "🗡️ MATAGIGANTES",
+    "t1",
+    1793588669220
+   ]
+  },
   "servidor": {
    "📆 HABITUÉ": [
     "📆 HABITUÉ",
@@ -10128,6 +10169,11 @@
     "📈 EN ASCENSO",
     "t1",
     1793029252929
+   ],
+   "🔟 DOBLE DÍGITO": [
+    "🔟 DOBLE DÍGITO",
+    "t1",
+    1793588669220
    ]
   }
  },
