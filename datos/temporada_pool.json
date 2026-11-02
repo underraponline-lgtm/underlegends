@@ -75,7 +75,7 @@
   "total": 222,
   "rango": "SS",
   "tg_t": {
-   "busc": 3,
+   "busc": 4,
    "cab": 1,
    "dcor": true,
    "dobles": 13,
@@ -84,6 +84,7 @@
    "podsem": true,
    "relampago": true,
    "solo": 3,
+   "suelto": true,
    "svc": 1,
    "trios": 8
   }
@@ -119,7 +120,7 @@
   "total": 222,
   "rango": "SS",
   "tg_t": {
-   "busc": 2,
+   "busc": 3,
    "cab": 1,
    "dobles": 19,
    "infalt": true,
@@ -129,6 +130,7 @@
    "rev": 1,
    "solo": 1,
    "sube": true,
+   "suelto": true,
    "svc": 4,
    "trios": 8
   }
@@ -253,7 +255,7 @@
   "total": 222,
   "rango": "S",
   "tg_t": {
-   "busc": 6,
+   "busc": 7,
    "cab": 6,
    "cobro": 1,
    "dobles": 12,
@@ -261,6 +263,7 @@
    "perf": 2,
    "relampago": true,
    "solo": 1,
+   "suelto": true,
    "svc": 1,
    "trios": 10
   }
@@ -342,7 +345,7 @@
   "total": 222,
   "rango": "S",
   "tg_t": {
-   "busc": 1,
+   "busc": 2,
    "dcor": true,
    "dobles": 4,
    "infalt": true,
@@ -351,6 +354,7 @@
    "relampago": true,
    "rey": true,
    "solo": 1,
+   "suelto": true,
    "svc": 3,
    "trios": 5
   }
@@ -438,7 +442,6 @@
    "rev": 1,
    "rey": true,
    "solo": 1,
-   "suelto": true,
    "svc": 1,
    "trios": 2
   }
@@ -558,10 +561,12 @@
   "total": 222,
   "rango": "S",
   "tg_t": {
+   "busc": 1,
    "dobles": 11,
    "infalt": true,
    "perf": 2,
    "sube": true,
+   "suelto": true,
    "trios": 6
   }
  },
@@ -596,12 +601,14 @@
   "total": 222,
   "rango": "S",
   "tg_t": {
+   "busc": 1,
    "cab": 1,
    "dobles": 6,
    "perf": 2,
    "relampago": true,
    "rev": 1,
    "solo": 1,
+   "suelto": true,
    "svc": 4,
    "trios": 5
   }
@@ -676,12 +683,13 @@
   "total": 222,
   "rango": "A",
   "tg_t": {
-   "busc": 2,
+   "busc": 3,
    "cobro": 1,
    "dcor": true,
    "dobles": 3,
    "relampago": true,
    "sube": true,
+   "suelto": true,
    "svc": 1,
    "trios": 2
   }
@@ -1551,10 +1559,12 @@
   "total": 222,
   "rango": "B",
   "tg_t": {
+   "busc": 1,
    "cobro": 2,
    "dobles": 3,
    "infalt": true,
    "sube": true,
+   "suelto": true,
    "svc": 1,
    "svtag": "campeon",
    "trios": 2
@@ -2008,7 +2018,9 @@
   "total": 222,
   "rango": "B",
   "tg_t": {
-   "dobles": 7
+   "busc": 1,
+   "dobles": 7,
+   "suelto": true
   }
  },
  {
@@ -2568,8 +2580,9 @@
   "total": 222,
   "rango": "C",
   "tg_t": {
-   "busc": 1,
+   "busc": 2,
    "dobles": 2,
+   "suelto": true,
    "svc": 1
   }
  },
@@ -2857,11 +2870,12 @@
   "total": 222,
   "rango": "C",
   "tg_t": {
-   "busc": 1,
+   "busc": 2,
    "dcor": true,
    "dobles": 2,
    "perf": 1,
    "relampago": true,
+   "suelto": true,
    "svc": 2
   }
  },
@@ -3801,7 +3815,6 @@
   "rango": "D",
   "tg_t": {
    "busc": 2,
-   "suelto": true,
    "svc": 2,
    "trios": 1
   }
@@ -4626,8 +4639,10 @@
   "total": 222,
   "rango": "E",
   "tg_t": {
+   "busc": 1,
    "dobles": 1,
-   "sube": true
+   "sube": true,
+   "suelto": true
   }
  },
  {
@@ -5017,8 +5032,10 @@
   "total": 222,
   "rango": "E",
   "tg_t": {
+   "busc": 1,
    "reciente": true,
    "sube": true,
+   "suelto": true,
    "trios": 1
   }
  },
@@ -6545,7 +6562,9 @@
   "total": 222,
   "rango": "E",
   "tg_t": {
-   "dobles": 1
+   "busc": 1,
+   "dobles": 1,
+   "suelto": true
   }
  },
  {
@@ -6788,8 +6807,7 @@
   "rango": "E",
   "tg_t": {
    "busc": 1,
-   "reciente": true,
-   "suelto": true
+   "reciente": true
   }
  },
  {
@@ -9334,7 +9352,11 @@
   "o": 259,
   "pos": 148,
   "total": 222,
-  "rango": "E"
+  "rango": "E",
+  "tg_t": {
+   "busc": 1,
+   "suelto": true
+  }
  },
  {
   "full": "Elbesaabuelas",
@@ -9400,8 +9422,7 @@
   "rango": "E",
   "tg_t": {
    "busc": 1,
-   "dobles": 1,
-   "suelto": true
+   "dobles": 1
   }
  },
  {

@@ -1709,47 +1709,6 @@
   }
  },
  "llaves": {
-  "1559242126087426189": {
-   "id": "1559242126087426189",
-   "sv": "🌌┃𝐃𝐈𝐌𝐄𝐍𝐒𝐈Ó𝐍 𝐃𝐄𝐋 𝐅𝐑𝐄𝐄𝐒𝐓𝐘𝐋𝐄┃🌌",
-   "g": "1469009547971526659",
-   "canal": "1498009509036163173",
-   "pub": 1791822692177,
-   "ed": 1791823637025,
-   "texto": "`[ SEMIFINALES ]`\n⌞WALKER⌝ 🆚 ⌞ERIAN⌝\n⌞KEIDER⌝ 🆚 ⌞TOKIO⌝\n`[ FINAL ]`\n⌞TOKIO⌝ 🆚 ⌞WALKER⌝",
-   "batallas": [
-    [
-     "SEMIFINALES",
-     [
-      "WALKER",
-      "ERIAN"
-     ],
-     "WALKER",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "SEMIFINALES",
-     [
-      "KEIDER",
-      "TOKIO"
-     ],
-     "TOKIO",
-     "ronda siguiente",
-     []
-    ],
-    [
-     "FINAL",
-     [
-      "TOKIO",
-      "WALKER"
-     ],
-     null,
-     "última ronda y no dice campeón",
-     []
-    ]
-   ]
-  },
   "1559279649400561765": {
    "id": "1559279649400561765",
    "sv": "[FFA] Freestyle For All 👾",

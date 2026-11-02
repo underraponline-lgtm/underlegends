@@ -3016,6 +3016,7 @@
     "pts": 230232,
     "racha": "1/3",
     "tg": {
+     "bcasa": true,
      "fin": 8,
      "fund": true
     }
@@ -4756,6 +4757,7 @@
     "pts": 19750,
     "racha": "0/2",
     "tg": {
+     "bcasa": true,
      "fin": 1
     }
    },
