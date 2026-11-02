@@ -41279,5 +41279,145 @@
     2000
    ]
   ]
+ },
+ "560": {
+  "dia": "2026-11-02",
+  "escala": "8-15",
+  "fecha": "02/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1566701130451517550"
+  ],
+  "n": 560,
+  "nombre": "RAP PARA RAPEROS",
+  "participantes": 8,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "OKAM",
+       "Sin Limites"
+      ],
+      "OKAM",
+      ""
+     ],
+     [
+      [
+       "mats",
+       "Andres"
+      ],
+      "mats",
+      ""
+     ],
+     [
+      [
+       "LAST",
+       "Crk"
+      ],
+      "LAST",
+      ""
+     ],
+     [
+      [
+       "ChozaDeChops🇭🇳",
+       "Dyzz"
+      ],
+      "ChozaDeChops🇭🇳",
+      ""
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "LAST",
+       "OKAM"
+      ],
+      "LAST",
+      ""
+     ],
+     [
+      [
+       "mats",
+       "ChozaDeChops🇭🇳"
+      ],
+      "mats",
+      ""
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "OKAM",
+       "ChozaDeChops🇭🇳"
+      ],
+      "OKAM",
+      "podio: tercer puesto sin batalla en la llave"
+     ]
+    ],
+    "r": "Tercer puesto"
+   },
+   {
+    "b": [
+     [
+      [
+       "mats",
+       "LAST"
+      ],
+      "mats",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "mats",
+    "Campeón",
+    7500
+   ],
+   [
+    "LAST",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "OKAM",
+    "Tercero",
+    4000
+   ],
+   [
+    "ChozaDeChops🇭🇳",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Andres",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Crk",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dyzz",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

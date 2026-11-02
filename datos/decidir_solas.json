@@ -3182,6 +3182,27 @@
     "DOS NOMBRES: «Dyzzchol» → «Dyzz» · cuenta 1525996330042921081"
    ],
    "escribio": {}
+  },
+  {
+   "id": "30cf144feb",
+   "tipo": "Nombre desconocido",
+   "sec": "RAP PARA RAPEROS · FFA · 02/11 · #560",
+   "que": "¿Quién es «ChozaDeChops🇭🇳»?",
+   "r": "Es Chop (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @30fps30hz · en la Lista: Chop se anotó como «ChozaDeChops» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1793604814492,
+   "filas": [
+    1021
+   ],
+   "variantes": [
+    "ChozaDeChops🇭🇳"
+   ],
+   "escribio": {
+    "quien": "RAP PARA RAPEROS · FFA · 02/11 · ChozaDeChops🇭🇳"
+   }
   }
  ],
  "deshechas": []

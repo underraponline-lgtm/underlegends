@@ -223,6 +223,15 @@
 "rg": "B",
 "c": []
 },
+"okam": {
+"rg": "C",
+"c": [
+"competitivo",
+"pais",
+"servidor",
+"temporada"
+]
+},
 "walker": {
 "rg": "A",
 "c": [
@@ -240,15 +249,6 @@
 ]
 },
 "miniboy": {
-"rg": "D",
-"c": [
-"competitivo",
-"pais",
-"servidor",
-"temporada"
-]
-},
-"okam": {
 "rg": "D",
 "c": [
 "competitivo",
@@ -379,8 +379,12 @@
 "temporada"
 ]
 },
-"tenor": {
-"rg": "C",
+"andres": {
+"rg": "B",
+"c": []
+},
+"dyzz": {
+"rg": "E",
 "c": [
 "competitivo",
 "pais",
@@ -388,12 +392,8 @@
 "temporada"
 ]
 },
-"andres": {
-"rg": "B",
-"c": []
-},
-"dyzz": {
-"rg": "E",
+"tenor": {
+"rg": "C",
 "c": [
 "competitivo",
 "pais",
@@ -536,9 +536,25 @@
 "temporada"
 ]
 },
+"last": {
+"rg": "",
+"c": [
+"competitivo",
+"servidor",
+"temporada"
+]
+},
 "presagio": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"crk": {
+"rg": "E",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -604,14 +620,6 @@
 "temporada"
 ]
 },
-"crk": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "kyss": {
 "rg": "E",
 "c": [
@@ -655,14 +663,6 @@
 "temporada"
 ]
 },
-"last": {
-"rg": "",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "leonart": {
 "rg": "D",
 "c": [
@@ -690,6 +690,13 @@
 "emizor": {
 "rg": "D",
 "c": []
+},
+"mats": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
 },
 "mathhias": {
 "rg": "",
@@ -872,13 +879,6 @@
 "rg": "E",
 "c": [
 "competitivo",
-"servidor",
-"temporada"
-]
-},
-"mats": {
-"rg": "",
-"c": [
 "servidor",
 "temporada"
 ]
@@ -2682,14 +2682,6 @@
 }
 },
 "cambios": [
-{
-"tipo": "tarjeta",
-"t": "2026-10-04T18:46:32Z",
-"quien": [
-"Teito"
-],
-"carta": "temporada"
-},
 {
 "tipo": "tarjeta",
 "t": "2026-10-04T18:46:32Z",
@@ -6043,6 +6035,15 @@
 "EmiZor"
 ],
 "rg": "D",
+"primero": false
+},
+{
+"tipo": "rango",
+"t": "2026-11-02T07:33:14Z",
+"quien": [
+"OKAM"
+],
+"rg": "C",
 "primero": false
 }
 ]

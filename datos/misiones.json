@@ -4629,7 +4629,7 @@
     ],
     "Andres": [
      2,
-     1,
+     2,
      0,
      0,
      0
@@ -4774,6 +4774,13 @@
      0,
      0
     ],
+    "ChozaDeChops🇭🇳": [
+     0,
+     1,
+     0,
+     0,
+     0
+    ],
     "Cinexfilo": [
      0,
      1,
@@ -4797,7 +4804,7 @@
     ],
     "Crk": [
      0,
-     1,
+     2,
      0,
      0,
      0
@@ -4867,7 +4874,7 @@
     ],
     "Dyzz": [
      3,
-     2,
+     3,
      0,
      0,
      0
@@ -5168,7 +5175,7 @@
     ],
     "LAST": [
      0,
-     0,
+     1,
      0,
      0,
      0
@@ -5546,7 +5553,7 @@
     ],
     "OKAM": [
      3,
-     5,
+     6,
      0,
      0,
      0
@@ -5728,7 +5735,7 @@
     ],
     "Sin Limites": [
      2,
-     3,
+     4,
      0,
      0,
      0
@@ -5994,8 +6001,8 @@
     ],
     "mats": [
      1,
-     3,
-     0,
+     4,
+     1,
      0,
      0
     ],
@@ -6050,7 +6057,7 @@
     "Agus": 900,
     "Akuseru": 600,
     "Aldre": 300,
-    "Andres": 300,
+    "Andres": 900,
     "BELIKKO": 300,
     "BLITZ": 600,
     "Badterne": 3700,
@@ -6060,6 +6067,7 @@
     "Carlosss": 600,
     "Cazafla anti cazanova🇭🇹": 300,
     "CrisZJ": 600,
+    "Crk": 600,
     "Cronox": 300,
     "Deuxs": 300,
     "Dominick": 900,
@@ -6148,7 +6156,7 @@
     "erpi": 300,
     "francis": 300,
     "kaiser🇵🇷": 300,
-    "mats": 900,
+    "mats": 2900,
     "melomaniaco": 300,
     "publicenemy🇦🇷": 300,
     "yinn": 2900
@@ -6178,7 +6186,7 @@
   "Akutagawa🇹🇼": 300,
   "Aldre": 2200,
   "Alexi": 300,
-  "Andres": 4200,
+  "Andres": 4800,
   "Andy": 300,
   "Ariaxer": 600,
   "Assuan": 1300,
@@ -6205,7 +6213,7 @@
   "Colesito": 4800,
   "Corvo": 1000,
   "CrisZJ": 3100,
-  "Crk": 1900,
+  "Crk": 2500,
   "Cronox": 1900,
   "DAVIJUAN": 300,
   "DO-C": 600,
@@ -6444,7 +6452,7 @@
   "ikonoxx": 600,
   "kaiser🇵🇷": 300,
   "kerkoide": 300,
-  "mats": 900,
+  "mats": 2900,
   "melomaniaco": 600,
   "nebu": 300,
   "publicenemy🇦🇷": 300,

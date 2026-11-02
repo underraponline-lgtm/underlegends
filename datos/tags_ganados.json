@@ -793,6 +793,11 @@
     "t1",
     1793511279019
    ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1793604826687
+   ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x4",
     "t1",
@@ -5896,6 +5901,11 @@
  },
  "mats": {
   "servidor": {
+   "🏅 PODIOS": [
+    "🏅 PODIOS",
+    "t1",
+    1793604826687
+   ],
    "🏆 CAMPEÓN": [
     "🏆 CAMPEÓN",
     "t1",
@@ -5908,10 +5918,20 @@
    ]
   },
   "temporada": {
+   "⚡ RELÁMPAGO": [
+    "⚡ RELÁMPAGO",
+    "t1",
+    1793604826687
+   ],
    "🌱 PROMESA": [
     "🌱 PROMESA",
     "t1",
     1793599452998
+   ],
+   "📋 SEMANA PERFECTA": [
+    "📋 SEMANA PERFECTA",
+    "t1",
+    1793604826687
    ],
    "🥉 AL PODIO": [
     "🥉 AL PODIO",
@@ -7714,6 +7734,11 @@
  },
  "okam": {
   "competitivo": {
+   "🎯 FRANCOTIRADOR": [
+    "🎯 FRANCOTIRADOR",
+    "t1",
+    1793604826687
+   ],
    "🐉 MATADRAGONES": [
     "🐉 MATADRAGONES",
     "t1",
@@ -7777,6 +7802,11 @@
     "🏆 CAMPEÓN",
     "t1",
     1793029252929
+   ],
+   "🏛️ PILAR": [
+    "🏛️ PILAR",
+    "t1",
+    1793604826687
    ],
    "📆 HABITUÉ": [
     "📆 HABITUÉ",

@@ -32949,5 +32949,150 @@
    ]
   ],
   "v": 2
+ },
+ "560": {
+  "antes": {
+   "Andres": [
+    232,
+    50,
+    true
+   ],
+   "Crk": [
+    62,
+    80,
+    false
+   ],
+   "Dyzz": [
+    41,
+    51,
+    false
+   ],
+   "LAST": [
+    67,
+    88,
+    false
+   ],
+   "OKAM": [
+    27,
+    32,
+    false
+   ],
+   "Sin Limites": [
+    25,
+    30,
+    false
+   ],
+   "mats": [
+    91,
+    121,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "OKAM",
+    "Sin Limites",
+    "OKAM"
+   ],
+   [
+    "mats",
+    "Andres",
+    "mats"
+   ],
+   [
+    "LAST",
+    "Crk",
+    "LAST"
+   ],
+   [
+    "ChozaDeChops🇭🇳",
+    "Dyzz",
+    "ChozaDeChops🇭🇳"
+   ],
+   [
+    "LAST",
+    "OKAM",
+    "LAST"
+   ],
+   [
+    "mats",
+    "ChozaDeChops🇭🇳",
+    "mats"
+   ],
+   [
+    "mats",
+    "LAST",
+    "mats"
+   ],
+   [
+    "OKAM",
+    "ChozaDeChops🇭🇳",
+    "OKAM"
+   ]
+  ],
+  "ev_antes": {
+   "Andres": 19,
+   "Crk": 13,
+   "Dyzz": 22,
+   "LAST": 11,
+   "OKAM": 20,
+   "Sin Limites": 40,
+   "mats": 7
+  },
+  "fecha": "02/11",
+  "firma": "47fbb8f62aca7d50",
+  "msg": "1566714400314884126",
+  "nombre": "RAP PARA RAPEROS",
+  "num": 560,
+  "participantes": 8,
+  "sello": {
+   "mats": "1745a9fd16c4:ccd09f762e04"
+  },
+  "sv": "FFA",
+  "t": "2026-11-02T07:24:41Z",
+  "tabla": [
+   [
+    "mats",
+    "Campeón",
+    7500
+   ],
+   [
+    "LAST",
+    "Subcampeón",
+    5000
+   ],
+   [
+    "OKAM",
+    "Tercero",
+    4000
+   ],
+   [
+    "ChozaDeChops🇭🇳",
+    "Cuarto",
+    3000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Andres",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Crk",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Dyzz",
+    "Cuartos",
+    2000
+   ]
+  ],
+  "v": 2
  }
 }

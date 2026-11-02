@@ -274,6 +274,17 @@
    "vence": "2026-10-23T17:34:15+00:00",
    "vencido": true
   },
+  "ChozaDeChops": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-02T06:30:57+00:00",
+   "did": "",
+   "evento": "RAP PARA RAPEROS",
+   "n": 560,
+   "sv": "FFA",
+   "vence": "2026-11-09T06:30:57+00:00",
+   "vencido": false
+  },
   "Chuwin": {
    "avisado": "2026-10-19",
    "chat": "2026-10-19",
