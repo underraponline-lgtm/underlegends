@@ -1,16 +1,6 @@
 {
  "_leeme": "El reloj de bot/fuera.py: desde qué día le sobra cada tarjeta a cada carpeta de R2 (`verificados.puede()`). A los 7 días seguidos se borra esa tarjeta (Dlx, 27/09/2026). No se edita a mano.",
  "desde": {
-  "denik": {
-   "bloq-competitivo": "2026-10-26",
-   "bloq-pais": "2026-10-26",
-   "competitivo": "2026-10-26",
-   "pais": "2026-10-26",
-   "servidor": "2026-10-26",
-   "sv-dra": "2026-10-26",
-   "sv-ffa": "2026-10-26",
-   "temporada": "2026-10-26"
-  },
   "fleivawack": {
    "competitivo": "2026-10-30",
    "temporada": "2026-10-30"
@@ -18,9 +8,6 @@
   "g4b0": {
    "servidor": "2026-10-28",
    "sv-dra": "2026-10-28"
-  },
-  "kuni": {
-   "temporada": "2026-10-26"
   },
   "nyl": {
    "servidor": "2026-10-31",
@@ -31,16 +18,8 @@
   }
  },
  "pasaban": 411,
- "cuando": "2026-11-02T04:30:04Z",
+ "cuando": "2026-11-02T05:05:27Z",
  "borradas": [
-  [
-   "nashei",
-   "2026-10-15"
-  ],
-  [
-   "elsoolar",
-   "2026-10-16"
-  ],
   [
    "alexi",
    "2026-10-17"
@@ -832,6 +811,14 @@
   [
    "meidei",
    "2026-10-30"
+  ],
+  [
+   "denik",
+   "2026-11-02"
+  ],
+  [
+   "kuni",
+   "2026-11-02"
   ]
  ]
 }
