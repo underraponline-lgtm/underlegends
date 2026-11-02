@@ -41116,5 +41116,168 @@
     1250
    ]
   ]
+ },
+ "559": {
+  "dia": "2026-11-02",
+  "escala": "8-15",
+  "fecha": "02/11",
+  "links": [
+   "https://discord.com/channels/1468472442925092958/1487207377601040516/1566681849273655357"
+  ],
+  "n": 559,
+  "nombre": "LA PALERA DEL KACHUM",
+  "participantes": 14,
+  "rondas": [
+   {
+    "b": [
+     [
+      [
+       "gianla🇨🇦",
+       "Erian",
+       "ikonoxx"
+      ],
+      "gianla🇨🇦, Erian",
+      "triple (3 bandas, pasan 2); también pasa: Erian 🇩🇴"
+     ],
+     [
+      [
+       "Dyzzchol🇨🇱",
+       "Vandu",
+       "Sin Limites",
+       "BLITZ",
+       "NC"
+      ],
+      "Dyzzchol🇨🇱, Vandu",
+      "triple (5 bandas, pasan 2); también pasa: vandu 🇨🇦"
+     ],
+     [
+      [
+       "EmiZor",
+       "mats",
+       "OKAM"
+      ],
+      "EmiZor, mats",
+      "triple (3 bandas, pasan 2); también pasa: mats🇺🇾"
+     ],
+     [
+      [
+       "Geoka",
+       "Akuseru",
+       "Ezze"
+      ],
+      "Geoka, Akuseru",
+      "triple (3 bandas, pasan 2); también pasa: Akuseru 🇦🇷"
+     ]
+    ],
+    "r": "Cuartos"
+   },
+   {
+    "b": [
+     [
+      [
+       "Dyzzchol🇨🇱, Vandu",
+       "gianla🇨🇦, Erian"
+      ],
+      "Dyzzchol🇨🇱, Vandu",
+      "Drafteado: erian🇰🇷"
+     ],
+     [
+      [
+       "Geoka, Akuseru",
+       "mats, EmiZor"
+      ],
+      "Geoka, Akuseru",
+      "Drafteado: mats🇺🇾"
+     ]
+    ],
+    "r": "Semifinales"
+   },
+   {
+    "b": [
+     [
+      [
+       "Dyzzchol🇨🇱, Vandu, Erian",
+       "Geoka, Akuseru, mats"
+      ],
+      "Dyzzchol🇨🇱, Vandu, Erian",
+      ""
+     ]
+    ],
+    "r": "Final"
+   }
+  ],
+  "sv": "FFA",
+  "tabla": [
+   [
+    "Erian",
+    "Campeón",
+    4250
+   ],
+   [
+    "mats",
+    "Subcampeón",
+    3416
+   ],
+   [
+    "Dyzzchol🇨🇱",
+    "Campeón",
+    2500
+   ],
+   [
+    "Vandu",
+    "Campeón",
+    2500
+   ],
+   [
+    "Akuseru",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "BLITZ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "EmiZor",
+    "Semifinal",
+    2000
+   ],
+   [
+    "Ezze",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Geoka",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2000
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "gianla🇨🇦",
+    "Semifinal",
+    2000
+   ],
+   [
+    "ikonoxx",
+    "Cuartos",
+    2000
+   ]
+  ]
  }
 }

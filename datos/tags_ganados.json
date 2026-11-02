@@ -682,6 +682,20 @@
    ]
   }
  },
+ "akuseru": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1793599452998
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1793599452998
+   ]
+  }
+ },
  "aldre": {
   "pais": {
    "INTERNACIONAL": [
@@ -2888,6 +2902,30 @@
    ]
   }
  },
+ "dyzzchol": {
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1793599452998
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1793599452998
+   ],
+   "🚪 DEBUT CON CORONA": [
+    "🚪 DEBUT CON CORONA",
+    "t1",
+    1793599452998
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1793599452998
+   ]
+  }
+ },
  "eclipsito": {
   "pais": {
    "DA LA CARA": [
@@ -3217,6 +3255,11 @@
     "t1",
     1793029252929
    ],
+   "🏯 CIUDADELA": [
+    "🏯 CIUDADELA",
+    "t1",
+    1793599452998
+   ],
    "🏰 FORTALEZA": [
     "🏰 FORTALEZA",
     "t1",
@@ -3248,6 +3291,11 @@
     "⚡ RELÁMPAGO",
     "t1",
     1793029252929
+   ],
+   "⭐ DECACAMPEÓN": [
+    "⭐ DECACAMPEÓN",
+    "t1",
+    1793599452998
    ],
    "⭐ PENTACAMPEÓN": [
     "⭐ PENTACAMPEÓN",
@@ -3290,7 +3338,7 @@
     1793029252929
    ],
    "👑 CAMPEÓN x%d": [
-    "👑 CAMPEÓN x9",
+    "👑 CAMPEÓN x10",
     "t1",
     1793029252929
    ],
@@ -3425,6 +3473,13 @@
   }
  },
  "ezze": {
+  "servidor": {
+   "📆 HABITUÉ": [
+    "📆 HABITUÉ",
+    "t1",
+    1793599452998
+   ]
+  },
   "temporada": {
    "🌱 PROMESA": [
     "🌱 PROMESA",
@@ -5819,6 +5874,18 @@
     "t1",
     1793329652300
    ]
+  },
+  "temporada": {
+   "🌱 PROMESA": [
+    "🌱 PROMESA",
+    "t1",
+    1793599452998
+   ],
+   "🥉 AL PODIO": [
+    "🥉 AL PODIO",
+    "t1",
+    1793599452998
+   ]
   }
  },
  "matuk": {
@@ -6792,6 +6859,11 @@
     "t1",
     1793029252929
    ],
+   "💯 BICENTENARIO": [
+    "💯 BICENTENARIO",
+    "t1",
+    1793599452998
+   ],
    "💯 CENTENARIO": [
     "💯 CENTENARIO",
     "t1",
@@ -7695,6 +7767,11 @@
     "🌍 TROTAMUNDOS",
     "t1",
     1793477231914
+   ],
+   "🎖️ CURTIDO": [
+    "🎖️ CURTIDO",
+    "t1",
+    1793599452998
    ],
    "👑 CAMPEÓN x%d": [
     "👑 CAMPEÓN x3",
@@ -10885,6 +10962,11 @@
     "t1",
     1793029252929
    ],
+   "🏆 CAMPEÓN": [
+    "🏆 CAMPEÓN",
+    "t1",
+    1793599452998
+   ],
    "🏛️ PILAR": [
     "🏛️ PILAR",
     "t1",
@@ -10926,6 +11008,11 @@
     "🏁 SEMIFINALISTA SERIAL",
     "t1",
     1793029252929
+   ],
+   "👑 CAMPEÓN x%d": [
+    "👑 CAMPEÓN x1",
+    "t1",
+    1793599452998
    ],
    "💯 BICENTENARIO": [
     "💯 BICENTENARIO",

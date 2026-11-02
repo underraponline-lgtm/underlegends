@@ -407,6 +407,17 @@
    "vence": "2026-11-01T21:03:19+00:00",
    "vencido": false
   },
+  "Dyzzchol": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-02T05:14:20+00:00",
+   "did": "",
+   "evento": "LA PALERA DEL KACHUM",
+   "n": 559,
+   "sv": "FFA",
+   "vence": "2026-11-09T05:14:20+00:00",
+   "vencido": false
+  },
   "EVANGELINE": {
    "avisado": "2026-10-18",
    "chat": "2026-10-18",
@@ -1848,6 +1859,17 @@
    "n": 531,
    "sv": "FFA",
    "vence": "2026-11-02T22:39:00+00:00",
+   "vencido": false
+  },
+  "gianla": {
+   "con": null,
+   "cumplido": "",
+   "debut": "2026-11-02T05:14:20+00:00",
+   "did": "",
+   "evento": "LA PALERA DEL KACHUM",
+   "n": 559,
+   "sv": "FFA",
+   "vence": "2026-11-09T05:14:20+00:00",
    "vencido": false
   },
   "jazi": {

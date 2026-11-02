@@ -1607,6 +1607,28 @@
    "b": "GUS",
    "ganador": "ZA",
    "votos": "1–0"
+  },
+  "1566686215401508989": {
+   "id": "1566686215401508989",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793597501374,
+   "a": "mats🇺🇾+Emi 🇲🇽",
+   "b": "Geoka 🇧🇩+Akuseru 🇦🇷",
+   "ganador": "Geoka 🇧🇩+Akuseru 🇦🇷",
+   "votos": "1–0"
+  },
+  "1566687962476052481": {
+   "id": "1566687962476052481",
+   "sv": "[FFA] Freestyle For All 👾",
+   "g": "1468472442925092958",
+   "canal": "1487206164864438513",
+   "pub": 1793597917909,
+   "a": "GEOKA🇧🇩",
+   "b": "ERIAN🇰🇷",
+   "ganador": "ERIAN🇰🇷",
+   "votos": "1–0"
   }
  },
  "llaves": {
@@ -5757,8 +5779,8 @@
    "g": "1468472442925092958",
    "canal": "1487206164864438513",
    "pub": 1793595627422,
-   "ed": 1793596968827,
-   "texto": "`[ CUARTOS ]`\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞Dyzzchol🇨🇱⌝ 🆚 ⌞vandu🇨🇦⌝ 🆚 ⌞blitz⌝ 🆚 ⌞nc⌝\n`[ CUARTOS ]`\n⌞okam🇨🇷⌝ 🆚 ⌞Emi 🇲🇽⌝ 🆚 ⌞mats🇺🇾⌝\n`[ SEMIFINALES ]`\n⌞gianla🇨🇦+erian🇰🇷⌝ 🆚 ⌞Dyzzchol🇨🇱+vandu🇨🇦⌝",
+   "ed": 1793598531653,
+   "texto": "`[ CUARTOS ]`\n⌞Sin límites 🇵🇪⌝ 🆚 ⌞Dyzzchol🇨🇱⌝ 🆚 ⌞vandu🇨🇦⌝ 🆚 ⌞blitz⌝ 🆚 ⌞nc⌝\n`[ CUARTOS ]`\n⌞okam🇨🇷⌝ 🆚 ⌞Emi 🇲🇽⌝ 🆚 ⌞mats🇺🇾⌝\n`[ SEMIFINALES ]`\n⌞gianla🇨🇦+erian🇰🇷⌝ 🆚 ⌞Dyzzchol🇨🇱+vandu🇨🇦⌝\n`[ SEMIFINALES ]`\n⌞mats🇺🇾+Emi 🇲🇽⌝ 🆚 ⌞Geoka 🇧🇩+Akuseru 🇦🇷⌝\n`[ FINAL ]`\n⌞Dyzzchol🇨🇱+vandu🇨🇦+erian🇰🇷⌝ 🆚 ⌞Geoka🇧🇩+Akuseru🇦🇷+mats🇺🇾⌝\n⌞GEOKA🇧🇩⌝ 🆚 ⌞ERIAN🇰🇷⌝",
    "batallas": [
     [
      "CUARTOS",
@@ -5791,7 +5813,37 @@
       "Dyzzchol🇨🇱+vandu🇨🇦"
      ],
      null,
+     "no aparece nadie después",
+     []
+    ],
+    [
+     "SEMIFINALES",
+     [
+      "mats🇺🇾+Emi 🇲🇽",
+      "Geoka 🇧🇩+Akuseru 🇦🇷"
+     ],
+     "Geoka 🇧🇩+Akuseru 🇦🇷",
+     "veredicto",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "Dyzzchol🇨🇱+vandu🇨🇦+erian🇰🇷",
+      "Geoka🇧🇩+Akuseru🇦🇷+mats🇺🇾"
+     ],
+     null,
      "última ronda y no dice campeón",
+     []
+    ],
+    [
+     "FINAL",
+     [
+      "GEOKA🇧🇩",
+      "ERIAN🇰🇷"
+     ],
+     "ERIAN🇰🇷",
+     "veredicto",
      []
     ]
    ]

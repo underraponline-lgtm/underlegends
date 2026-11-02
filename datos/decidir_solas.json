@@ -2,30 +2,6 @@
  "_leeme": "Lo que ✅ Decidir cerró o contestó solo, con la regla y la prueba (sheet/decidir.py, resolver_solo()), para «Lo que se resolvió solo» del Dashboard y su «Deshacer». «deshechas»: lo que Dlx deshizo; ninguna regla lo vuelve a tocar. Dlx, 13/10/2026.",
  "solas": [
   {
-   "id": "081ad7e845",
-   "tipo": "Nombre desconocido",
-   "sec": "FREESTYLE LEAGUE · FFA · 19/10 · #487",
-   "que": "¿Quién es «MALBORO 🇦🇷»?",
-   "r": "Es alguien nuevo: alta con su cuenta 1220200835531935784",
-   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
-   "rk": "Discord",
-   "por": "el ciclo (su cuenta de Discord)",
-   "porque": "nuevo: entró a la Lista con la cuenta con que se anotó (1220200835531935784)",
-   "t": 1792387237130,
-   "filas": [
-    751
-   ],
-   "variantes": [
-    "MALBORO 🇦🇷"
-   ],
-   "escribio": {
-    "alta": [
-     "MALBORO",
-     "1220200835531935784"
-    ]
-   }
-  },
-  {
    "id": "33deab39ff",
    "tipo": "Nombre desconocido",
    "sec": "FREESTYLE LEAGUE N3 · FFA · 19/10 · #488",
@@ -3120,6 +3096,54 @@
     "dyss"
    ],
    "escribio": {}
+  },
+  {
+   "id": "4a45c8cb26",
+   "tipo": "Nombre desconocido",
+   "sec": "LA PALERA DEL KACHUM · FFA · 02/11 · #559",
+   "que": "¿Quién es «Dyzzchol🇨🇱»?",
+   "r": "Es Dyzz (en este evento)",
+   "regla": "R21 · la cuenta que se anotó así para ese evento es de alguien de la Lista que esa noche no jugó con su nombre",
+   "rk": "R21",
+   "por": "el ciclo",
+   "porque": "la cuenta @dyzzmc (en Discord: «#59 | 📿», «Dyzzmzt») · en la Lista: Dyzz se anotó como «Dyzzchol» para ese evento, no es staff de FFA y esa noche no jugó con su nombre",
+   "t": 1793599435043,
+   "filas": [
+    1017
+   ],
+   "variantes": [
+    "Dyzzchol🇨🇱"
+   ],
+   "escribio": {
+    "quien": "LA PALERA DEL KACHUM · FFA · 02/11 · Dyzzchol🇨🇱"
+   }
+  },
+  {
+   "id": "2b0f205ae6",
+   "tipo": "Nombre desconocido",
+   "sec": "LA PALERA DEL KACHUM · FFA · 02/11 · #559",
+   "que": "¿Quién es «gianla🇨🇦»?",
+   "r": "Es Badterne",
+   "regla": "Discord · su cuenta de Discord: la inscripción, el podio, la llave o la llamada",
+   "rk": "Discord",
+   "por": "el ciclo (su cuenta de Discord)",
+   "porque": "alias de Badterne: estaba en la llamada del evento con un nombre parecido",
+   "t": 1793599435043,
+   "filas": [
+    1018
+   ],
+   "variantes": [
+    "gianla🇨🇦"
+   ],
+   "escribio": {
+    "alias": [
+     "gianla",
+     "Badterne"
+    ],
+    "filas": [
+     334
+    ]
+   }
   }
  ],
  "deshechas": []

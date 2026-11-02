@@ -18964,7 +18964,7 @@
    "Sin Limites": 21
   },
   "fecha": "22/10",
-  "firma": "87dfcfe1beae9f70",
+  "firma": "a2ffcda83585d934",
   "msg": "1562845541493374976",
   "nombre": "__ LA ISLA DE OKINAWA V.3 __",
   "num": 498,
@@ -19115,7 +19115,7 @@
    ],
    [
     "Makmah",
-    "PichulaMc",
+    "PichulaMc, Oasis",
     "Makmah"
    ],
    [
@@ -19197,7 +19197,7 @@
    "Zignos": 24
   },
   "fecha": "22/10",
-  "firma": "7abf0aff6f54a886",
+  "firma": "cc54c31ddb363221",
   "msg": "1562967842851266610",
   "nombre": "__ SI NO SOS FOURBAR NO QUIERO NADA VOL.1 __",
   "num": 499,
@@ -19264,11 +19264,6 @@
     1250
    ],
    [
-    "PichulaMc",
-    "Octavos",
-    1250
-   ],
-   [
     "DO-C",
     "Octavos",
     1250
@@ -19287,6 +19282,16 @@
     "Zignos",
     "Octavos",
     1250
+   ],
+   [
+    "PichulaMc",
+    "Octavos",
+    625
+   ],
+   [
+    "Oasis",
+    "Octavos",
+    625
    ]
   ],
   "v": 2
@@ -23854,7 +23859,7 @@
    "Vilca": 1
   },
   "fecha": "14/10",
-  "firma": "3cc10f661020c237",
+  "firma": "74578a2ba0ac9cc9",
   "msg": "1564147696351191051",
   "nombre": "GG SANGRERAP 1",
   "num": 521,
@@ -24436,7 +24441,7 @@
    "Vilca": 1
   },
   "fecha": "22/10",
-  "firma": "c3a030e7a500b9ae",
+  "firma": "02edda6a3c16826e",
   "msg": "1564147714000953499",
   "nombre": "GG SANGRERAP 4",
   "num": 525,
@@ -31474,7 +31479,7 @@
    "Velatz": 41
   },
   "fecha": "31/10",
-  "firma": "b35d67c68aadbe4e",
+  "firma": "592e07dc018311bc",
   "msg": "1566227272355020941",
   "nombre": "SNAKE INSIGNIA 7 8",
   "num": 553,
@@ -32729,6 +32734,218 @@
     "Lizen🇦🇷",
     "Octavos",
     1250
+   ]
+  ],
+  "v": 2
+ },
+ "559": {
+  "antes": {
+   "Akuseru": [
+    294,
+    198,
+    true
+   ],
+   "BLITZ": [
+    253,
+    125,
+    true
+   ],
+   "EmiZor": [
+    246,
+    99,
+    true
+   ],
+   "Erian": [
+    3,
+    3,
+    false
+   ],
+   "Ezze": [
+    251,
+    119,
+    true
+   ],
+   "Geoka": [
+    46,
+    62,
+    false
+   ],
+   "NC": [
+    21,
+    24,
+    false
+   ],
+   "OKAM": [
+    26,
+    31,
+    false
+   ],
+   "Sin Limites": [
+    27,
+    32,
+    false
+   ],
+   "Vandu": [
+    13,
+    14,
+    false
+   ],
+   "ikonoxx": [
+    276,
+    170,
+    true
+   ],
+   "mats": [
+    115,
+    167,
+    false
+   ]
+  },
+  "canal": "1468472443843776659",
+  "duelos": [
+   [
+    "gianla🇨🇦",
+    "ikonoxx",
+    "gianla🇨🇦"
+   ],
+   [
+    "Dyzzchol🇨🇱",
+    "Sin Limites",
+    "Dyzzchol🇨🇱"
+   ],
+   [
+    "Dyzzchol🇨🇱",
+    "BLITZ",
+    "Dyzzchol🇨🇱"
+   ],
+   [
+    "Dyzzchol🇨🇱",
+    "NC",
+    "Dyzzchol🇨🇱"
+   ],
+   [
+    "EmiZor",
+    "OKAM",
+    "EmiZor"
+   ],
+   [
+    "Geoka",
+    "Ezze",
+    "Geoka"
+   ],
+   [
+    "Dyzzchol🇨🇱, Vandu",
+    "gianla🇨🇦, Erian",
+    "Dyzzchol🇨🇱, Vandu"
+   ],
+   [
+    "Geoka, Akuseru",
+    "mats, EmiZor",
+    "Geoka, Akuseru"
+   ],
+   [
+    "Dyzzchol🇨🇱, Vandu, Erian",
+    "Geoka, Akuseru, mats",
+    "Dyzzchol🇨🇱, Vandu, Erian"
+   ]
+  ],
+  "ev_antes": {
+   "Akuseru": 3,
+   "BLITZ": 8,
+   "EmiZor": 11,
+   "Erian": 64,
+   "Ezze": 4,
+   "Geoka": 21,
+   "NC": 46,
+   "OKAM": 19,
+   "Sin Limites": 39,
+   "Vandu": 42,
+   "ikonoxx": 6,
+   "mats": 6
+  },
+  "fecha": "02/11",
+  "firma": "a7605c4d53b18c11",
+  "msg": "1566691494083960924",
+  "nombre": "__ LA PALERA DEL KACHUM __",
+  "num": 559,
+  "participantes": 14,
+  "sello": {
+   "Dyzzchol🇨🇱": "",
+   "Erian": "afe68bdf1ecb:ccd09f762e04",
+   "Vandu": "c02c83beb3aa:ccd09f762e04"
+  },
+  "sv": "FFA",
+  "t": "2026-11-02T05:54:37Z",
+  "tabla": [
+   [
+    "Erian",
+    "Campeón",
+    4250
+   ],
+   [
+    "mats",
+    "Subcampeón",
+    3416
+   ],
+   [
+    "Dyzzchol🇨🇱",
+    "Campeón",
+    2500
+   ],
+   [
+    "Vandu",
+    "Campeón",
+    2500
+   ],
+   [
+    "Geoka",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "Akuseru",
+    "Subcampeón",
+    2000
+   ],
+   [
+    "gianla🇨🇦",
+    "Semifinal",
+    2000
+   ],
+   [
+    "EmiZor",
+    "Semifinal",
+    2000
+   ],
+   [
+    "ikonoxx",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Sin Limites",
+    "Cuartos",
+    2000
+   ],
+   [
+    "BLITZ",
+    "Cuartos",
+    2000
+   ],
+   [
+    "NC",
+    "Cuartos",
+    2000
+   ],
+   [
+    "OKAM",
+    "Cuartos",
+    2000
+   ],
+   [
+    "Ezze",
+    "Cuartos",
+    2000
    ]
   ],
   "v": 2
