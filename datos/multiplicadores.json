@@ -1075,9 +1075,16 @@
    },
    "copa": {
     "org": "NC",
-    "clave": "nc"
+    "clave": "nc",
+    "n": 563,
+    "nombre": "qcyo rapeen"
    },
    "organizadores": [
+    [
+     "NC",
+     21,
+     1
+    ],
     [
      "Adriagner",
      11,
@@ -1086,20 +1093,22 @@
    ],
    "semillero": {
     "nuevos": {
-     "DDF": 1
+     "DDF": 1,
+     "FFA": 5
     },
     "gente": {
      "DDF": 11,
-     "LKR": 2
+     "LKR": 2,
+     "FFA": 21
     },
-    "gana": null
+    "gana": "FFA"
    },
    "meta_va": {
     "ACAD": 0,
     "DDF": 11,
     "DRA": 0,
     "FDS": 0,
-    "FFA": 0,
+    "FFA": 21,
     "FFS": 0,
     "FRZ": 0,
     "FVS": 0,

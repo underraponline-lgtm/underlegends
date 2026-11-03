@@ -701,14 +701,6 @@
 "temporada"
 ]
 },
-"soneto": {
-"rg": "E",
-"c": [
-"competitivo",
-"servidor",
-"temporada"
-]
-},
 "gocho": {
 "rg": "E",
 "c": [
@@ -782,6 +774,14 @@
 "vilca": {
 "rg": "",
 "c": [
+"servidor",
+"temporada"
+]
+},
+"soneto": {
+"rg": "E",
+"c": [
+"competitivo",
 "servidor",
 "temporada"
 ]
@@ -938,10 +938,6 @@
 "temporada"
 ]
 },
-"ojosdetailandia": {
-"rg": "",
-"c": []
-},
 "juanpa": {
 "rg": "",
 "c": [
@@ -1049,15 +1045,7 @@
 "rg": "",
 "c": []
 },
-"pomberito": {
-"rg": "",
-"c": []
-},
-"valdoza": {
-"rg": "",
-"c": []
-},
-"ortiz": {
+"millonario": {
 "rg": "",
 "c": []
 },
@@ -1068,7 +1056,15 @@
 "temporada"
 ]
 },
-"millonario": {
+"pomberito": {
+"rg": "",
+"c": []
+},
+"valdoza": {
+"rg": "",
+"c": []
+},
+"ortiz": {
 "rg": "",
 "c": []
 },
@@ -1317,6 +1313,17 @@
 "temporada"
 ]
 },
+"sosaatr": {
+"rg": "",
+"c": [
+"servidor",
+"temporada"
+]
+},
+"ojosdetailandia": {
+"rg": "",
+"c": []
+},
 "chekialo": {
 "rg": "",
 "c": []
@@ -1356,13 +1363,6 @@
 "blackdmon": {
 "rg": "",
 "c": []
-},
-"sosaatr": {
-"rg": "",
-"c": [
-"servidor",
-"temporada"
-]
 },
 "emilyfamily": {
 "rg": "",

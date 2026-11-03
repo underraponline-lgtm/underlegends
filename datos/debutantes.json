@@ -1899,18 +1899,6 @@
    "vence": "2026-11-07T06:06:01+00:00",
    "vencido": false
   },
-  "familiafortunayexito": {
-   "chat": "2026-11-03",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-03T02:50:33+00:00",
-   "did": "",
-   "evento": "qcyo rapeen",
-   "n": 563,
-   "sv": "FFA",
-   "vence": "2026-11-10T02:50:33+00:00",
-   "vencido": false
-  },
   "fenix": {
    "avisado": "2026-10-29",
    "chat": "2026-10-30",
@@ -2017,18 +2005,6 @@
    "vence": "2026-10-28T21:05:52+00:00",
    "vencido": true
   },
-  "ojos de tailandia": {
-   "chat": "2026-11-03",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-03T02:50:33+00:00",
-   "did": "",
-   "evento": "qcyo rapeen",
-   "n": 563,
-   "sv": "FFA",
-   "vence": "2026-11-10T02:50:33+00:00",
-   "vencido": false
-  },
   "oriuz": {
    "avisado": "2026-10-31",
    "chat": "2026-11-01",
@@ -2040,18 +2016,6 @@
    "n": 550,
    "sv": "FFA",
    "vence": "2026-11-07T02:59:35+00:00",
-   "vencido": false
-  },
-  "pelota del 10": {
-   "chat": "2026-11-03",
-   "con": null,
-   "cumplido": "",
-   "debut": "2026-11-03T02:50:33+00:00",
-   "did": "",
-   "evento": "qcyo rapeen",
-   "n": 563,
-   "sv": "FFA",
-   "vence": "2026-11-10T02:50:33+00:00",
    "vencido": false
   },
   "publicenemy": {

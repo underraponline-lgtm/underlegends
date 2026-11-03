@@ -6234,6 +6234,13 @@
      0,
      0
     ],
+    "Deuxs": [
+     1,
+     0,
+     8,
+     0,
+     0
+    ],
     "Dominic 🇲🇽": [
      1,
      0,
@@ -6332,6 +6339,13 @@
      0,
      0
     ],
+    "Millonari-O": [
+     1,
+     0,
+     16,
+     0,
+     0
+    ],
     "Number VE": [
      1,
      0,
@@ -6343,6 +6357,13 @@
      1,
      0,
      2,
+     0,
+     0
+    ],
+    "Six": [
+     1,
+     1,
+     1,
      0,
      0
     ],
@@ -6374,13 +6395,6 @@
      0,
      0
     ],
-    "familiafortunayexito 🇫🇷": [
-     1,
-     0,
-     8,
-     0,
-     0
-    ],
     "ikonoxx": [
      1,
      0,
@@ -6394,27 +6408,13 @@
      16,
      0,
      0
-    ],
-    "ojos de tailandia🇹🇭": [
-     1,
-     1,
-     1,
-     0,
-     0
-    ],
-    "pelota del 10 🇵🇾": [
-     1,
-     0,
-     16,
-     0,
-     0
     ]
    },
    "pts": {
     "Calíz": 1300,
     "Makmah": 300,
-    "Xclusivo": 1600,
-    "ojos de tailandia🇹🇭": 1600
+    "Six": 1600,
+    "Xclusivo": 1600
    }
   }
  },
@@ -6653,7 +6653,7 @@
   "Senticide": 600,
   "Shadow": 300,
   "Sin Limites": 3400,
-  "Six": 5700,
+  "Six": 7300,
   "Snow": 7100,
   "Soneto": 300,
   "Sosa": 2500,
@@ -6702,7 +6702,6 @@
   "mats": 2900,
   "melomaniaco": 600,
   "nebu": 300,
-  "ojos de tailandia🇹🇭": 1600,
   "publicenemy🇦🇷": 300,
   "roda mc 🇵🇦": 1000,
   "rodrilp": 900,
