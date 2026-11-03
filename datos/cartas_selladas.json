@@ -1693,10 +1693,10 @@
   },
   "Valdoza": {},
   "Vandu": {
-   "competitivo": "454fd57b597c:7d41d0503ea2",
-   "pais": "8c97232763a1:ada55a12db94",
-   "servidor": "3e91548f904f:decaf64d9256:25c183",
-   "temporada": "1c5332a350df:ccd09f762e04"
+   "competitivo": "dd908e9b3c15:7d41d0503ea2",
+   "pais": "5d8bdc365412:ada55a12db94",
+   "servidor": "9537c8b0ec57:decaf64d9256:25c183",
+   "temporada": "5294a660e522:ccd09f762e04"
   },
   "Vanet": {
    "servidor": "6c8ac408bbf5:decaf64d9256:055f77"
@@ -1975,5 +1975,5 @@
    "servidor": "7f8885a35a6d:decaf64d9256:93a344"
   }
  },
- "cuando": "2026-11-03T17:40:56+00:00"
+ "cuando": "2026-11-03T17:59:53+00:00"
 }
