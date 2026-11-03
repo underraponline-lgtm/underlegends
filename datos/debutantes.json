@@ -165,7 +165,7 @@
    "n": 533,
    "sv": "FRZ",
    "vence": "2026-11-03T18:35:17+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Apolo": {
    "avisado": "2026-10-18",
@@ -1068,7 +1068,7 @@
    "n": 533,
    "sv": "FRZ",
    "vence": "2026-11-03T18:35:17+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Luck": {
    "avisado": "2026-10-23",
@@ -1486,7 +1486,7 @@
    "n": 533,
    "sv": "FRZ",
    "vence": "2026-11-03T18:35:17+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Revo": {
    "avisado": "2026-10-19",
@@ -1687,7 +1687,7 @@
    "n": 533,
    "sv": "FRZ",
    "vence": "2026-11-03T18:35:17+00:00",
-   "vencido": false
+   "vencido": true
   },
   "Tizi": {
    "avisado": "2026-10-31",
